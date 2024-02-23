@@ -71,12 +71,24 @@ private:
     std::vector<ConditionFn> conditions_met;
 };
 
+std::string CleanCheckConditionString(std::string condition);
+
+#define LOCATION(check, condition) LocationAccess(check, {[]{return condition;}}, CleanCheckConditionString(#condition))
+
 //this class is meant to hold an item location with a boolean function to determine its accessibility from a specific area
 class LocationAccess {
 public:
 
     explicit LocationAccess(RandomizerCheck location_, std::vector<ConditionFn> conditions_met_)
-        : location(location_) {
+        : location(location_), condition_str("") {
+        conditions_met.resize(2);
+        for (size_t i = 0; i < conditions_met_.size(); i++) {
+            conditions_met[i] = conditions_met_[i];
+        }
+    }
+
+    explicit LocationAccess(RandomizerCheck location_, std::vector<ConditionFn> conditions_met_, std::string condition_str_)
+        : location(location_), condition_str(condition_str_) {
         conditions_met.resize(2);
         for (size_t i = 0; i < conditions_met_.size(); i++) {
             conditions_met[i] = conditions_met_[i];
@@ -107,9 +119,14 @@ public:
         return location;
     }
 
+    std::string GetConditionStr() const {
+        return condition_str;
+    }
+
 protected:
     RandomizerCheck location;
     std::vector<ConditionFn> conditions_met;
+    std::string condition_str;
 
     //Makes sure shop locations are buyable
     bool CanBuy() const;

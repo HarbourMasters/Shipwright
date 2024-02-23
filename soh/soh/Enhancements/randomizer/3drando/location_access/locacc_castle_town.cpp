@@ -38,21 +38,21 @@ void AreaTable_Init_CastleTown() {
                   EventAccess(&logic->GossipStoneFairy, {[]{return logic->GossipStoneFairy || logic->CanSummonGossipFairyWithoutSuns;}}),
                 }, {
                   //Locations
-                  LocationAccess(RC_TOT_LEFT_GOSSIP_STONE,         {[]{return true;}}),
-                  LocationAccess(RC_TOT_LEFT_CENTER_GOSSIP_STONE,  {[]{return true;}}),
-                  LocationAccess(RC_TOT_RIGHT_CENTER_GOSSIP_STONE, {[]{return true;}}),
-                  LocationAccess(RC_TOT_RIGHT_GOSSIP_STONE,        {[]{return true;}}),
+                  LOCATION(RC_TOT_LEFT_GOSSIP_STONE,         true),
+                  LOCATION(RC_TOT_LEFT_CENTER_GOSSIP_STONE,  true),
+                  LOCATION(RC_TOT_RIGHT_CENTER_GOSSIP_STONE, true),
+                  LOCATION(RC_TOT_RIGHT_GOSSIP_STONE,        true),
                 }, {
                   //Exits
-                  Entrance(RR_THE_MARKET,  {[]{return true;}}),
+                  Entrance(RR_THE_MARKET,     {[]{return true;}}),
                   Entrance(RR_TEMPLE_OF_TIME, {[]{return true;}}),
   });
 
   areaTable[RR_TEMPLE_OF_TIME] = Area("Temple of Time", "Temple of Time", RA_TEMPLE_OF_TIME, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_TOT_LIGHT_ARROWS_CUTSCENE, {[]{return logic->IsAdult && logic->CanTriggerLACS;}}),
-                  LocationAccess(RC_ALTAR_HINT_CHILD, {[]{return logic->IsChild;}}),
-                  LocationAccess(RC_ALTAR_HINT_ADULT, {[]{return logic->IsAdult;}}),
+                  LOCATION(RC_TOT_LIGHT_ARROWS_CUTSCENE, logic->IsAdult && logic->CanTriggerLACS),
+                  LOCATION(RC_ALTAR_HINT_CHILD,          logic->IsChild),
+                  LOCATION(RC_ALTAR_HINT_ADULT,          logic->IsAdult),
                 }, {
                   //Exits
                   Entrance(RR_TOT_ENTRANCE,            {[]{return true;}}),
@@ -64,8 +64,8 @@ void AreaTable_Init_CastleTown() {
                   //EventAccess(&logic->TimeTravel, {[]{return true;}}),
                 }, {
                   //Locations
-                  LocationAccess(RC_TOT_MASTER_SWORD, {[]{return logic->IsAdult;}}),
-                  LocationAccess(RC_SHEIK_AT_TEMPLE, {[]{return logic->ForestMedallion && logic->IsAdult;}}),
+                  LOCATION(RC_TOT_MASTER_SWORD, logic->IsAdult),
+                  LOCATION(RC_SHEIK_AT_TEMPLE,  logic->ForestMedallion && logic->IsAdult),
                 }, {
                   //Exits
                   Entrance(RR_TEMPLE_OF_TIME, {[]{return true;}}),
@@ -85,10 +85,10 @@ void AreaTable_Init_CastleTown() {
                   EventAccess(&logic->BugRock,          {[]{return true;}}),
                 }, {
                   //Locations
-                  LocationAccess(RC_HC_MALON_EGG,              {[]{return true;}}),
-                  LocationAccess(RC_HC_GS_TREE,                {[]{return logic->CanChildAttack;}}),
-                  LocationAccess(RC_HC_MALON_GOSSIP_STONE,     {[]{return true;}}),
-                  LocationAccess(RC_HC_ROCK_WALL_GOSSIP_STONE, {[]{return true;}}),
+                  LOCATION(RC_HC_MALON_EGG,              true),
+                  LOCATION(RC_HC_GS_TREE,                logic->CanChildAttack),
+                  LOCATION(RC_HC_MALON_GOSSIP_STONE,     true),
+                  LOCATION(RC_HC_ROCK_WALL_GOSSIP_STONE, true),
                 }, {
                   //Exits
                   Entrance(RR_CASTLE_GROUNDS,          {[]{return true;}}),
@@ -101,8 +101,8 @@ void AreaTable_Init_CastleTown() {
                   //Events
                 }, {
                   //Locations
-                  LocationAccess(RC_HC_ZELDAS_LETTER, {[]{return true;}}),
-                  LocationAccess(RC_SONG_FROM_IMPA,   {[]{return true;}}),
+                  LOCATION(RC_HC_ZELDAS_LETTER, true),
+                  LOCATION(RC_SONG_FROM_IMPA,   true),
                 }, {
                   //Exits
                   Entrance(RR_HYRULE_CASTLE_GROUNDS, {[]{return true;}}),
@@ -110,7 +110,7 @@ void AreaTable_Init_CastleTown() {
 
   areaTable[RR_HC_GREAT_FAIRY_FOUNTAIN] = Area("HC Great Fairy Fountain", "HC Great Fairy Fountain", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_HC_GREAT_FAIRY_REWARD, {[]{return logic->CanUse(RG_ZELDAS_LULLABY);}}),
+                  LOCATION(RC_HC_GREAT_FAIRY_REWARD, logic->CanUse(RG_ZELDAS_LULLABY)),
                 }, {
                   //Exits
                   Entrance(RR_CASTLE_GROUNDS, {[]{return true;}}),
@@ -123,8 +123,8 @@ void AreaTable_Init_CastleTown() {
                   EventAccess(&logic->WanderingBugs,    {[]{return logic->WanderingBugs    || logic->CanBlastOrSmash;}}),
                 }, {
                   //Locations
-                  LocationAccess(RC_HC_GS_STORMS_GROTTO,           {[]{return (logic->CanBlastOrSmash && logic->HookshotOrBoomerang) || (logic->Boomerang && randoCtx->GetTrickOption(RT_HC_STORMS_GS));}}),
-                  LocationAccess(RC_HC_STORMS_GROTTO_GOSSIP_STONE, {[]{return logic->CanBlastOrSmash;}}),
+                  LOCATION(RC_HC_GS_STORMS_GROTTO,           (logic->CanBlastOrSmash && logic->HookshotOrBoomerang) || (logic->Boomerang && randoCtx->GetTrickOption(RT_HC_STORMS_GS))),
+                  LOCATION(RC_HC_STORMS_GROTTO_GOSSIP_STONE, logic->CanBlastOrSmash),
                 }, {
                   //Exits
                   Entrance(RR_CASTLE_GROUNDS, {[]{return true;}}),
@@ -134,8 +134,7 @@ void AreaTable_Init_CastleTown() {
                   EventAccess(&logic->BuiltRainbowBridge, {[]{return logic->CanBuildRainbowBridge;}}),
                 }, {
                   //Locations                                   //the terrain was lowered such that you can't get this GS with a simple sword slash
-                  LocationAccess(RC_OGC_GS, {[]{return logic->CanJumpslash || logic->CanUseProjectile
-                  || (logic->CanShield && logic->CanUse(RG_MEGATON_HAMMER)) || logic->CanUse(RG_DINS_FIRE);}}),
+                  LOCATION(RC_OGC_GS, logic->CanJumpslash || logic->CanUseProjectile || (logic->CanShield && logic->CanUse(RG_MEGATON_HAMMER)) || logic->CanUse(RG_DINS_FIRE)),
                 }, {
                   //Exits
                   Entrance(RR_CASTLE_GROUNDS,           {[]{return logic->AtNight;}}),
@@ -145,7 +144,7 @@ void AreaTable_Init_CastleTown() {
 
   areaTable[RR_OGC_GREAT_FAIRY_FOUNTAIN] = Area("OGC Great Fairy Fountain", "OGC Great Fairy Fountain", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_OGC_GREAT_FAIRY_REWARD, {[]{return logic->CanUse(RG_ZELDAS_LULLABY);}}),
+                  LOCATION(RC_OGC_GREAT_FAIRY_REWARD, logic->CanUse(RG_ZELDAS_LULLABY)),
                 }, {
                   //Exits
                   Entrance(RR_CASTLE_GROUNDS, {[]{return true;}}),
@@ -166,8 +165,8 @@ void AreaTable_Init_CastleTown() {
 
   areaTable[RR_MARKET_GUARD_HOUSE] = Area("Market Guard House", "Market Guard House", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_MARKET_10_BIG_POES,    {[]{return logic->IsAdult && logic->BigPoeKill;}}),
-                  LocationAccess(RC_MARKET_GS_GUARD_HOUSE, {[]{return logic->IsChild;}}),
+                  LOCATION(RC_MARKET_10_BIG_POES,    logic->IsAdult && logic->BigPoeKill),
+                  LOCATION(RC_MARKET_GS_GUARD_HOUSE, logic->IsChild),
                 }, {
                   //Exits
                   Entrance(RR_MARKET_ENTRANCE, {[]{return true;}}),
@@ -175,14 +174,14 @@ void AreaTable_Init_CastleTown() {
 
   areaTable[RR_MARKET_BAZAAR] = Area("Market Bazaar", "Market Bazaar", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_MARKET_BAZAAR_ITEM_1, {[]{return true;}}),
-                  LocationAccess(RC_MARKET_BAZAAR_ITEM_2, {[]{return true;}}),
-                  LocationAccess(RC_MARKET_BAZAAR_ITEM_3, {[]{return true;}}),
-                  LocationAccess(RC_MARKET_BAZAAR_ITEM_4, {[]{return true;}}),
-                  LocationAccess(RC_MARKET_BAZAAR_ITEM_5, {[]{return true;}}),
-                  LocationAccess(RC_MARKET_BAZAAR_ITEM_6, {[]{return true;}}),
-                  LocationAccess(RC_MARKET_BAZAAR_ITEM_7, {[]{return true;}}),
-                  LocationAccess(RC_MARKET_BAZAAR_ITEM_8, {[]{return true;}}),
+                  LOCATION(RC_MARKET_BAZAAR_ITEM_1, true),
+                  LOCATION(RC_MARKET_BAZAAR_ITEM_2, true),
+                  LOCATION(RC_MARKET_BAZAAR_ITEM_3, true),
+                  LOCATION(RC_MARKET_BAZAAR_ITEM_4, true),
+                  LOCATION(RC_MARKET_BAZAAR_ITEM_5, true),
+                  LOCATION(RC_MARKET_BAZAAR_ITEM_6, true),
+                  LOCATION(RC_MARKET_BAZAAR_ITEM_7, true),
+                  LOCATION(RC_MARKET_BAZAAR_ITEM_8, true),
                 }, {
                   //Exits
                   Entrance(RR_THE_MARKET, {[]{return true;}}),
@@ -199,7 +198,7 @@ void AreaTable_Init_CastleTown() {
 
   areaTable[RR_MARKET_SHOOTING_GALLERY] = Area("Market Shooting Gallery", "Market Shooting Gallery", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_MARKET_SHOOTING_GALLERY_REWARD, {[]{return logic->IsChild && logic->ChildsWallet;}}),
+                  LOCATION(RC_MARKET_SHOOTING_GALLERY_REWARD, logic->IsChild && logic->ChildsWallet),
                 }, {
                   //Exits
                   Entrance(RR_THE_MARKET, {[]{return true;}}),
@@ -207,9 +206,9 @@ void AreaTable_Init_CastleTown() {
 
   areaTable[RR_MARKET_BOMBCHU_BOWLING] = Area("Market Bombchu Bowling", "Market Bombchu Bowling", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_MARKET_BOMBCHU_BOWLING_FIRST_PRIZE,  {[]{return logic->CanPlayBowling;}}),
-                  LocationAccess(RC_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE, {[]{return logic->CanPlayBowling;}}),
-                  LocationAccess(RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS,     {[]{return logic->CanPlayBowling;}}),
+                  LOCATION(RC_MARKET_BOMBCHU_BOWLING_FIRST_PRIZE,  logic->CanPlayBowling),
+                  LOCATION(RC_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE, logic->CanPlayBowling),
+                  LOCATION(RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS,     logic->CanPlayBowling),
                 }, {
                   //Exits
                   Entrance(RR_THE_MARKET, {[]{return true;}}),
@@ -217,14 +216,14 @@ void AreaTable_Init_CastleTown() {
 
   areaTable[RR_MARKET_POTION_SHOP] = Area("Market Potion Shop", "Market Potion Shop", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_MARKET_POTION_SHOP_ITEM_1, {[]{return true;}}),
-                  LocationAccess(RC_MARKET_POTION_SHOP_ITEM_2, {[]{return true;}}),
-                  LocationAccess(RC_MARKET_POTION_SHOP_ITEM_3, {[]{return true;}}),
-                  LocationAccess(RC_MARKET_POTION_SHOP_ITEM_4, {[]{return true;}}),
-                  LocationAccess(RC_MARKET_POTION_SHOP_ITEM_5, {[]{return true;}}),
-                  LocationAccess(RC_MARKET_POTION_SHOP_ITEM_6, {[]{return true;}}),
-                  LocationAccess(RC_MARKET_POTION_SHOP_ITEM_7, {[]{return true;}}),
-                  LocationAccess(RC_MARKET_POTION_SHOP_ITEM_8, {[]{return true;}}),
+                  LOCATION(RC_MARKET_POTION_SHOP_ITEM_1, true),
+                  LOCATION(RC_MARKET_POTION_SHOP_ITEM_2, true),
+                  LOCATION(RC_MARKET_POTION_SHOP_ITEM_3, true),
+                  LOCATION(RC_MARKET_POTION_SHOP_ITEM_4, true),
+                  LOCATION(RC_MARKET_POTION_SHOP_ITEM_5, true),
+                  LOCATION(RC_MARKET_POTION_SHOP_ITEM_6, true),
+                  LOCATION(RC_MARKET_POTION_SHOP_ITEM_7, true),
+                  LOCATION(RC_MARKET_POTION_SHOP_ITEM_8, true),
                 }, {
                   //Exits
                   Entrance(RR_THE_MARKET, {[]{return true;}}),
@@ -232,13 +231,13 @@ void AreaTable_Init_CastleTown() {
 
   areaTable[RR_MARKET_TREASURE_CHEST_GAME] = Area("Market Treasure Chest Game", "Market Treasure Chest Game", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_GREG_HINT, {[]{return true;}}),
-                  LocationAccess(RC_MARKET_TREASURE_CHEST_GAME_REWARD, {[]{return logic->ChildsWallet && ((logic->CanUse(RG_LENS_OF_TRUTH) && !randoCtx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME)) || (randoCtx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_SINGLE_KEYS) && logic->SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 6)) || (randoCtx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_PACK) && logic->SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 1)));}}),
-                  LocationAccess(RC_MARKET_TREASURE_CHEST_GAME_ITEM_1, {[]{return logic->ChildsWallet && ((randoCtx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_SINGLE_KEYS) && logic->SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 1)) || (randoCtx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_PACK) && logic->SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 1)) || (logic->CanUse(RG_LENS_OF_TRUTH) && !randoCtx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME)));}}),
-                  LocationAccess(RC_MARKET_TREASURE_CHEST_GAME_ITEM_2, {[]{return logic->ChildsWallet && ((randoCtx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_SINGLE_KEYS) && logic->SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 2)) || (randoCtx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_PACK) && logic->SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 1)) || (logic->CanUse(RG_LENS_OF_TRUTH) && !randoCtx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME)));}}),
-                  LocationAccess(RC_MARKET_TREASURE_CHEST_GAME_ITEM_3, {[]{return logic->ChildsWallet && ((randoCtx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_SINGLE_KEYS) && logic->SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 3)) || (randoCtx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_PACK) && logic->SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 1)) || (logic->CanUse(RG_LENS_OF_TRUTH) && !randoCtx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME)));}}),
-                  LocationAccess(RC_MARKET_TREASURE_CHEST_GAME_ITEM_4, {[]{return logic->ChildsWallet && ((randoCtx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_SINGLE_KEYS) && logic->SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 4)) || (randoCtx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_PACK) && logic->SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 1)) || (logic->CanUse(RG_LENS_OF_TRUTH) && !randoCtx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME)));}}),
-                  LocationAccess(RC_MARKET_TREASURE_CHEST_GAME_ITEM_5, {[]{return logic->ChildsWallet && ((randoCtx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_SINGLE_KEYS) && logic->SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 5)) || (randoCtx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_PACK) && logic->SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 1)) || (logic->CanUse(RG_LENS_OF_TRUTH) && !randoCtx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME)));}}),
+                  LOCATION(RC_GREG_HINT, true),
+                  LOCATION(RC_MARKET_TREASURE_CHEST_GAME_REWARD, logic->ChildsWallet && ((logic->CanUse(RG_LENS_OF_TRUTH) && !randoCtx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME)) || (randoCtx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_SINGLE_KEYS) && logic->SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 6)) || (randoCtx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_PACK) && logic->SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 1)))),
+                  LOCATION(RC_MARKET_TREASURE_CHEST_GAME_ITEM_1, logic->ChildsWallet && ((randoCtx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_SINGLE_KEYS) && logic->SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 1)) || (randoCtx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_PACK) && logic->SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 1)) || (logic->CanUse(RG_LENS_OF_TRUTH) && !randoCtx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME)))),
+                  LOCATION(RC_MARKET_TREASURE_CHEST_GAME_ITEM_2, logic->ChildsWallet && ((randoCtx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_SINGLE_KEYS) && logic->SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 2)) || (randoCtx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_PACK) && logic->SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 1)) || (logic->CanUse(RG_LENS_OF_TRUTH) && !randoCtx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME)))),
+                  LOCATION(RC_MARKET_TREASURE_CHEST_GAME_ITEM_3, logic->ChildsWallet && ((randoCtx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_SINGLE_KEYS) && logic->SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 3)) || (randoCtx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_PACK) && logic->SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 1)) || (logic->CanUse(RG_LENS_OF_TRUTH) && !randoCtx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME)))),
+                  LOCATION(RC_MARKET_TREASURE_CHEST_GAME_ITEM_4, logic->ChildsWallet && ((randoCtx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_SINGLE_KEYS) && logic->SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 4)) || (randoCtx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_PACK) && logic->SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 1)) || (logic->CanUse(RG_LENS_OF_TRUTH) && !randoCtx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME)))),
+                  LOCATION(RC_MARKET_TREASURE_CHEST_GAME_ITEM_5, logic->ChildsWallet && ((randoCtx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_SINGLE_KEYS) && logic->SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 5)) || (randoCtx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_PACK) && logic->SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 1)) || (logic->CanUse(RG_LENS_OF_TRUTH) && !randoCtx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME)))),
                 }, {
                   //Exits
                   Entrance(RR_THE_MARKET, {[]{return true;}}),
@@ -246,14 +245,14 @@ void AreaTable_Init_CastleTown() {
 
   areaTable[RR_MARKET_BOMBCHU_SHOP] = Area("Market Bombchu Shop", "Market Bombchu Shop", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_MARKET_BOMBCHU_SHOP_ITEM_1, {[]{return true;}}),
-                  LocationAccess(RC_MARKET_BOMBCHU_SHOP_ITEM_2, {[]{return true;}}),
-                  LocationAccess(RC_MARKET_BOMBCHU_SHOP_ITEM_3, {[]{return true;}}),
-                  LocationAccess(RC_MARKET_BOMBCHU_SHOP_ITEM_4, {[]{return true;}}),
-                  LocationAccess(RC_MARKET_BOMBCHU_SHOP_ITEM_5, {[]{return true;}}),
-                  LocationAccess(RC_MARKET_BOMBCHU_SHOP_ITEM_6, {[]{return true;}}),
-                  LocationAccess(RC_MARKET_BOMBCHU_SHOP_ITEM_7, {[]{return true;}}),
-                  LocationAccess(RC_MARKET_BOMBCHU_SHOP_ITEM_8, {[]{return true;}}),
+                  LOCATION(RC_MARKET_BOMBCHU_SHOP_ITEM_1, true),
+                  LOCATION(RC_MARKET_BOMBCHU_SHOP_ITEM_2, true),
+                  LOCATION(RC_MARKET_BOMBCHU_SHOP_ITEM_3, true),
+                  LOCATION(RC_MARKET_BOMBCHU_SHOP_ITEM_4, true),
+                  LOCATION(RC_MARKET_BOMBCHU_SHOP_ITEM_5, true),
+                  LOCATION(RC_MARKET_BOMBCHU_SHOP_ITEM_6, true),
+                  LOCATION(RC_MARKET_BOMBCHU_SHOP_ITEM_7, true),
+                  LOCATION(RC_MARKET_BOMBCHU_SHOP_ITEM_8, true),
                 }, {
                   //Exits
                   Entrance(RR_MARKET_BACK_ALLEY, {[]{return true;}}),
@@ -261,7 +260,7 @@ void AreaTable_Init_CastleTown() {
 
   areaTable[RR_MARKET_DOG_LADY_HOUSE] = Area("Market Dog Lady House", "Market Dog Lady House", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_MARKET_LOST_DOG, {[]{return logic->IsChild && logic->AtNight;}}),
+                  LOCATION(RC_MARKET_LOST_DOG, logic->IsChild && logic->AtNight),
                 }, {
                   //Exits
                   Entrance(RR_MARKET_BACK_ALLEY, {[]{return true;}}),

@@ -10,11 +10,11 @@ void AreaTable_Init_DeathMountain() {
                   EventAccess(&logic->BeanPlantFairy, {[]{return logic->BeanPlantFairy || (CanPlantBean(RR_DEATH_MOUNTAIN_TRAIL) && logic->CanUse(RG_SONG_OF_STORMS) && (logic->HasExplosives || logic->GoronBracelet));}}),
                 }, {
                   //Locations
-                  LocationAccess(RC_DMT_CHEST,                    {[]{return logic->CanBlastOrSmash || (randoCtx->GetTrickOption(RT_DMT_BOMBABLE) && logic->IsChild && logic->GoronBracelet);}}),
-                  LocationAccess(RC_DMT_FREESTANDING_POH,         {[]{return logic->CanTakeDamage || logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && CanPlantBean(RR_DEATH_MOUNTAIN_TRAIL) && (logic->HasExplosives || logic->GoronBracelet));}}),
-                  LocationAccess(RC_DMT_GS_BEAN_PATCH,            {[]{return logic->CanPlantBugs && (logic->HasExplosives || logic->GoronBracelet || (randoCtx->GetTrickOption(RT_DMT_SOIL_GS) && (logic->CanTakeDamage || logic->CanUse(RG_HOVER_BOOTS)) && logic->CanUse(RG_BOOMERANG)));}}),
-                  LocationAccess(RC_DMT_GS_NEAR_KAK,              {[]{return logic->CanBlastOrSmash;}}),
-                  LocationAccess(RC_DMT_GS_ABOVE_DODONGOS_CAVERN, {[]{return logic->IsAdult && logic->AtNight && (logic->CanUse(RG_MEGATON_HAMMER) || (randoCtx->GetTrickOption(RT_DMT_HOOKSHOT_LOWER_GS) && logic->CanUse(RG_HOOKSHOT)) || (randoCtx->GetTrickOption(RT_DMT_BEAN_LOWER_GS) && CanPlantBean(RR_DEATH_MOUNTAIN_TRAIL)) || (randoCtx->GetTrickOption(RT_DMT_HOVERS_LOWER_GS) && logic->CanUse(RG_HOVER_BOOTS)) || randoCtx->GetTrickOption(RT_DMT_JS_LOWER_GS)) && logic->CanGetNightTimeGS;}}),
+                  LOCATION(RC_DMT_CHEST,                    logic->CanBlastOrSmash || (randoCtx->GetTrickOption(RT_DMT_BOMBABLE) && logic->IsChild && logic->GoronBracelet)),
+                  LOCATION(RC_DMT_FREESTANDING_POH,         logic->CanTakeDamage || logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && CanPlantBean(RR_DEATH_MOUNTAIN_TRAIL) && (logic->HasExplosives || logic->GoronBracelet))),
+                  LOCATION(RC_DMT_GS_BEAN_PATCH,            logic->CanPlantBugs && (logic->HasExplosives || logic->GoronBracelet || (randoCtx->GetTrickOption(RT_DMT_SOIL_GS) && (logic->CanTakeDamage || logic->CanUse(RG_HOVER_BOOTS)) && logic->CanUse(RG_BOOMERANG)))),
+                  LOCATION(RC_DMT_GS_NEAR_KAK,              logic->CanBlastOrSmash),
+                  LOCATION(RC_DMT_GS_ABOVE_DODONGOS_CAVERN, logic->IsAdult && logic->AtNight && (logic->CanUse(RG_MEGATON_HAMMER) || (randoCtx->GetTrickOption(RT_DMT_HOOKSHOT_LOWER_GS) && logic->CanUse(RG_HOOKSHOT)) || (randoCtx->GetTrickOption(RT_DMT_BEAN_LOWER_GS) && CanPlantBean(RR_DEATH_MOUNTAIN_TRAIL)) || (randoCtx->GetTrickOption(RT_DMT_HOVERS_LOWER_GS) && logic->CanUse(RG_HOVER_BOOTS)) || randoCtx->GetTrickOption(RT_DMT_JS_LOWER_GS)) && logic->CanGetNightTimeGS),
                 }, {
                   //Exits
                   Entrance(RR_KAK_BEHIND_GATE,          {[]{return true;}}),
@@ -31,11 +31,11 @@ void AreaTable_Init_DeathMountain() {
                   EventAccess(&logic->BugRock,            {[]{return logic->BugRock            || logic->IsChild;}}),
                 }, {
                   //Locations
-                  LocationAccess(RC_DMT_TRADE_BROKEN_SWORD,    {[]{return logic->IsAdult && logic->BrokenSword;}}),
-                  LocationAccess(RC_DMT_TRADE_EYEDROPS,        {[]{return logic->IsAdult && logic->Eyedrops;}}),
-                  LocationAccess(RC_DMT_TRADE_CLAIM_CHECK,     {[]{return logic->IsAdult && logic->ClaimCheck;}}),
-                  LocationAccess(RC_DMT_GS_FALLING_ROCKS_PATH, {[]{return logic->IsAdult && logic->AtNight && (logic->CanUse(RG_MEGATON_HAMMER) || randoCtx->GetTrickOption(RT_DMT_UPPER_GS)) && logic->CanGetNightTimeGS;}}),
-                  LocationAccess(RC_DMT_GOSSIP_STONE,          {[]{return true;}}),
+                  LOCATION(RC_DMT_TRADE_BROKEN_SWORD,    logic->IsAdult && logic->BrokenSword),
+                  LOCATION(RC_DMT_TRADE_EYEDROPS,        logic->IsAdult && logic->Eyedrops),
+                  LOCATION(RC_DMT_TRADE_CLAIM_CHECK,     logic->IsAdult && logic->ClaimCheck),
+                  LOCATION(RC_DMT_GS_FALLING_ROCKS_PATH, logic->IsAdult && logic->AtNight && (logic->CanUse(RG_MEGATON_HAMMER) || randoCtx->GetTrickOption(RT_DMT_UPPER_GS)) && logic->CanGetNightTimeGS),
+                  LOCATION(RC_DMT_GOSSIP_STONE,          true),
                 }, {
                   //Exits
                   Entrance(RR_DEATH_MOUNTAIN_TRAIL,     {[]{return true;}}),
@@ -52,8 +52,8 @@ void AreaTable_Init_DeathMountain() {
 
   areaTable[RR_DMT_COW_GROTTO] = Area("DMT Cow Grotto", "DMT Cow Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_DMT_COW_GROTTO_COW,     {[]{return logic->CanUse(RG_EPONAS_SONG);}}),
-                  LocationAccess(RC_DMT_COW_GROTTO_BEEHIVE, {[]{return logic->CanBreakLowerBeehives;}}),
+                  LOCATION(RC_DMT_COW_GROTTO_COW,     logic->CanUse(RG_EPONAS_SONG)),
+                  LOCATION(RC_DMT_COW_GROTTO_BEEHIVE, logic->CanBreakLowerBeehives),
                 }, {
                   //Exits
                   Entrance(RR_DEATH_MOUNTAIN_SUMMIT, {[]{return true;}}),
@@ -62,11 +62,11 @@ void AreaTable_Init_DeathMountain() {
 
   areaTable[RR_DMT_STORMS_GROTTO] = Area("DMT Storms Grotto", "DMT Storms Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, grottoEvents, {
                   //Locations
-                  LocationAccess(RC_DMT_STORMS_GROTTO_CHEST,         {[]{return true;}}),
-                  LocationAccess(RC_DMT_STORMS_GROTTO_FISH,          {[]{return logic->HasBottle;}}),
-                  LocationAccess(RC_DMT_STORMS_GROTTO_GOSSIP_STONE,  {[]{return true;}}),
-                  LocationAccess(RC_DMT_STORMS_GROTTO_BEEHIVE_LEFT,  {[]{return logic->CanBreakLowerBeehives;}}),
-                  LocationAccess(RC_DMT_STORMS_GROTTO_BEEHIVE_RIGHT, {[]{return logic->CanBreakLowerBeehives;}}),
+                  LOCATION(RC_DMT_STORMS_GROTTO_CHEST,         true),
+                  LOCATION(RC_DMT_STORMS_GROTTO_FISH,          logic->HasBottle),
+                  LOCATION(RC_DMT_STORMS_GROTTO_GOSSIP_STONE,  true),
+                  LOCATION(RC_DMT_STORMS_GROTTO_BEEHIVE_LEFT,  logic->CanBreakLowerBeehives),
+                  LOCATION(RC_DMT_STORMS_GROTTO_BEEHIVE_RIGHT, logic->CanBreakLowerBeehives),
                 }, {
                   //Exits
                   Entrance(RR_DEATH_MOUNTAIN_TRAIL, {[]{return true;}}),
@@ -74,7 +74,7 @@ void AreaTable_Init_DeathMountain() {
 
   areaTable[RR_DMT_GREAT_FAIRY_FOUNTAIN] = Area("DMT Great Fairy Fountain", "DMT Great Fairy Fountain", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_DMT_GREAT_FAIRY_REWARD, {[]{return logic->CanUse(RG_ZELDAS_LULLABY);}}),
+                  LOCATION(RC_DMT_GREAT_FAIRY_REWARD, logic->CanUse(RG_ZELDAS_LULLABY)),
                 }, {
                   //Exits
                   Entrance(RR_DEATH_MOUNTAIN_SUMMIT, {[]{return true;}}),
@@ -91,17 +91,17 @@ void AreaTable_Init_DeathMountain() {
                   EventAccess(&logic->StopGCRollingGoronAsAdult, {[]{return logic->StopGCRollingGoronAsAdult || (logic->IsAdult && (logic->GoronBracelet || logic->HasExplosives || logic->Bow || (randoCtx->GetTrickOption(RT_GC_LINK_GORON_DINS) && logic->CanUse(RG_DINS_FIRE))));}}),
                 }, {
                   //Locations
-                  LocationAccess(RC_GC_MAZE_LEFT_CHEST,        {[]{return logic->CanUse(RG_MEGATON_HAMMER) || logic->CanUse(RG_SILVER_GAUNTLETS) || (randoCtx->GetTrickOption(RT_GC_LEFTMOST) && logic->HasExplosives && logic->CanUse(RG_HOVER_BOOTS));}}),
-                  LocationAccess(RC_GC_MAZE_CENTER_CHEST,      {[]{return logic->CanBlastOrSmash  || logic->CanUse(RG_SILVER_GAUNTLETS);}}),
-                  LocationAccess(RC_GC_MAZE_RIGHT_CHEST,       {[]{return logic->CanBlastOrSmash  || logic->CanUse(RG_SILVER_GAUNTLETS);}}),
-                  LocationAccess(RC_GC_POT_FREESTANDING_POH,   {[]{return logic->IsChild && logic->GoronCityChildFire && (logic->Bombs || (logic->GoronBracelet && randoCtx->GetTrickOption(RT_GC_POT_STRENGTH)) || (logic->HasBombchus && randoCtx->GetTrickOption(RT_GC_POT)));}}),
-                  LocationAccess(RC_GC_ROLLING_GORON_AS_CHILD, {[]{return logic->IsChild && (logic->HasExplosives || (logic->GoronBracelet && randoCtx->GetTrickOption(RT_GC_ROLLING_STRENGTH)));}}),
-                  LocationAccess(RC_GC_ROLLING_GORON_AS_ADULT, {[]{return logic->StopGCRollingGoronAsAdult;}}),
-                  LocationAccess(RC_GC_GS_BOULDER_MAZE,        {[]{return logic->IsChild && logic->CanBlastOrSmash;}}),
-                  LocationAccess(RC_GC_GS_CENTER_PLATFORM,     {[]{return logic->CanAdultAttack;}}),
-                  LocationAccess(RC_GC_MEDIGORON,              {[]{return logic->IsAdult && logic->AdultsWallet && (logic->CanBlastOrSmash || logic->GoronBracelet);}}),
-                  LocationAccess(RC_GC_MAZE_GOSSIP_STONE,      {[]{return logic->CanBlastOrSmash || logic->CanUse(RG_SILVER_GAUNTLETS);}}),
-                  LocationAccess(RC_GC_MEDIGORON_GOSSIP_STONE, {[]{return logic->CanBlastOrSmash || logic->GoronBracelet;}}),
+                  LOCATION(RC_GC_MAZE_LEFT_CHEST,        logic->CanUse(RG_MEGATON_HAMMER) || logic->CanUse(RG_SILVER_GAUNTLETS) || (randoCtx->GetTrickOption(RT_GC_LEFTMOST) && logic->HasExplosives && logic->CanUse(RG_HOVER_BOOTS))),
+                  LOCATION(RC_GC_MAZE_CENTER_CHEST,      logic->CanBlastOrSmash  || logic->CanUse(RG_SILVER_GAUNTLETS)),
+                  LOCATION(RC_GC_MAZE_RIGHT_CHEST,       logic->CanBlastOrSmash  || logic->CanUse(RG_SILVER_GAUNTLETS)),
+                  LOCATION(RC_GC_POT_FREESTANDING_POH,   logic->IsChild && logic->GoronCityChildFire && (logic->Bombs || (logic->GoronBracelet && randoCtx->GetTrickOption(RT_GC_POT_STRENGTH)) || (logic->HasBombchus && randoCtx->GetTrickOption(RT_GC_POT)))),
+                  LOCATION(RC_GC_ROLLING_GORON_AS_CHILD, logic->IsChild && (logic->HasExplosives || (logic->GoronBracelet && randoCtx->GetTrickOption(RT_GC_ROLLING_STRENGTH)))),
+                  LOCATION(RC_GC_ROLLING_GORON_AS_ADULT, logic->StopGCRollingGoronAsAdult),
+                  LOCATION(RC_GC_GS_BOULDER_MAZE,        logic->IsChild && logic->CanBlastOrSmash),
+                  LOCATION(RC_GC_GS_CENTER_PLATFORM,     logic->CanAdultAttack),
+                  LOCATION(RC_GC_MEDIGORON,              logic->IsAdult && logic->AdultsWallet && (logic->CanBlastOrSmash || logic->GoronBracelet)),
+                  LOCATION(RC_GC_MAZE_GOSSIP_STONE,      logic->CanBlastOrSmash || logic->CanUse(RG_SILVER_GAUNTLETS)),
+                  LOCATION(RC_GC_MEDIGORON_GOSSIP_STONE, logic->CanBlastOrSmash || logic->GoronBracelet),
                 }, {
                   //Exits
                   Entrance(RR_DEATH_MOUNTAIN_TRAIL, {[]{return true;}}),
@@ -125,7 +125,7 @@ void AreaTable_Init_DeathMountain() {
                   EventAccess(&logic->GoronCityChildFire, {[]{return logic->GoronCityChildFire || (logic->IsChild && logic->CanUse(RG_STICKS));}}),
                 }, {
                   //Locations
-                  LocationAccess(RC_GC_DARUNIAS_JOY, {[]{return logic->IsChild && logic->CanUse(RG_SARIAS_SONG);}}),
+                  LOCATION(RC_GC_DARUNIAS_JOY, logic->IsChild && logic->CanUse(RG_SARIAS_SONG)),
                 }, {
                   //Exits
                   Entrance(RR_GORON_CITY,      {[]{return true;}}),
@@ -140,14 +140,14 @@ void AreaTable_Init_DeathMountain() {
 
   areaTable[RR_GC_SHOP] = Area("GC Shop", "GC Shop", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_GC_SHOP_ITEM_1, {[]{return true;}}),
-                  LocationAccess(RC_GC_SHOP_ITEM_2, {[]{return true;}}),
-                  LocationAccess(RC_GC_SHOP_ITEM_3, {[]{return true;}}),
-                  LocationAccess(RC_GC_SHOP_ITEM_4, {[]{return true;}}),
-                  LocationAccess(RC_GC_SHOP_ITEM_5, {[]{return true;}}),
-                  LocationAccess(RC_GC_SHOP_ITEM_6, {[]{return true;}}),
-                  LocationAccess(RC_GC_SHOP_ITEM_7, {[]{return true;}}),
-                  LocationAccess(RC_GC_SHOP_ITEM_8, {[]{return true;}}),
+                  LOCATION(RC_GC_SHOP_ITEM_1, true),
+                  LOCATION(RC_GC_SHOP_ITEM_2, true),
+                  LOCATION(RC_GC_SHOP_ITEM_3, true),
+                  LOCATION(RC_GC_SHOP_ITEM_4, true),
+                  LOCATION(RC_GC_SHOP_ITEM_5, true),
+                  LOCATION(RC_GC_SHOP_ITEM_6, true),
+                  LOCATION(RC_GC_SHOP_ITEM_7, true),
+                  LOCATION(RC_GC_SHOP_ITEM_8, true),
                 }, {
                   //Exits
                   Entrance(RR_GORON_CITY, {[]{return true;}}),
@@ -155,10 +155,10 @@ void AreaTable_Init_DeathMountain() {
 
   areaTable[RR_GC_GROTTO] = Area("GC Grotto", "GC Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_GC_DEKU_SCRUB_GROTTO_LEFT,   {[]{return logic->CanStunDeku;}}),
-                  LocationAccess(RC_GC_DEKU_SCRUB_GROTTO_RIGHT,  {[]{return logic->CanStunDeku;}}),
-                  LocationAccess(RC_GC_DEKU_SCRUB_GROTTO_CENTER, {[]{return logic->CanStunDeku;}}),
-                  LocationAccess(RC_GC_GROTTO_BEEHIVE,           {[]{return logic->CanBreakUpperBeehives;}}),
+                  LOCATION(RC_GC_DEKU_SCRUB_GROTTO_LEFT,   logic->CanStunDeku),
+                  LOCATION(RC_GC_DEKU_SCRUB_GROTTO_RIGHT,  logic->CanStunDeku),
+                  LOCATION(RC_GC_DEKU_SCRUB_GROTTO_CENTER, logic->CanStunDeku),
+                  LOCATION(RC_GC_GROTTO_BEEHIVE,           logic->CanBreakUpperBeehives),
                 }, {
                   //Exits
                   Entrance(RR_GC_GROTTO_PLATFORM, {[]{return true;}}),
@@ -176,9 +176,9 @@ void AreaTable_Init_DeathMountain() {
                   EventAccess(&logic->GossipStoneFairy, {[]{return logic->GossipStoneFairy || (logic->HasExplosives && logic->CanSummonGossipFairyWithoutSuns && (logic->FireTimer >= 16 || logic->Hearts >= 3));}}),
                 }, {
                   //Locations
-                  LocationAccess(RC_DMC_WALL_FREESTANDING_POH, {[]{return logic->FireTimer >= 16 || logic->Hearts >= 3;}}),
-                  LocationAccess(RC_DMC_GS_CRATE,              {[]{return (logic->FireTimer >= 8 || logic->Hearts >= 3) && logic->IsChild && logic->CanChildAttack;}}),
-                  LocationAccess(RC_DMC_GOSSIP_STONE,          {[]{return logic->HasExplosives && (logic->FireTimer >= 16 || logic->Hearts >= 3);}}),
+                  LOCATION(RC_DMC_WALL_FREESTANDING_POH, logic->FireTimer >= 16 || logic->Hearts >= 3),
+                  LOCATION(RC_DMC_GS_CRATE,              (logic->FireTimer >= 8 || logic->Hearts >= 3) && logic->IsChild && logic->CanChildAttack),
+                  LOCATION(RC_DMC_GOSSIP_STONE,          logic->HasExplosives && (logic->FireTimer >= 16 || logic->Hearts >= 3)),
                 }, {
                   //Exits
                   Entrance(RR_DMC_UPPER_NEARBY,         {[]{return true;}}),
@@ -189,7 +189,7 @@ void AreaTable_Init_DeathMountain() {
 
   areaTable[RR_DMC_LADDER_AREA_NEARBY] = Area("DMC Ladder Area Nearby", "Death Mountain Crater", RA_DEATH_MOUNTAIN_CRATER, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_DMC_DEKU_SCRUB, {[]{return logic->IsChild && logic->CanStunDeku;}}),
+                  LOCATION(RC_DMC_DEKU_SCRUB, logic->IsChild && logic->CanStunDeku),
                 }, {
                   //Exits
                   Entrance(RR_DMC_UPPER_NEARBY, {[]{return logic->Hearts >= 3;}}),
@@ -214,8 +214,8 @@ void AreaTable_Init_DeathMountain() {
 
   areaTable[RR_DMC_CENTRAL_NEARBY] = Area("DMC Central Nearby", "Death Mountain Crater", RA_DEATH_MOUNTAIN_CRATER, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_DMC_VOLCANO_FREESTANDING_POH, {[]{return logic->IsAdult && logic->Hearts >= 3 && (CanPlantBean(RR_DMC_CENTRAL_LOCAL) || (randoCtx->GetTrickOption(RT_DMC_HOVER_BEAN_POH) && logic->HoverBoots));}}),
-                  LocationAccess(RC_SHEIK_IN_CRATER,              {[]{return logic->IsAdult && (logic->FireTimer >= 8 || logic->Hearts >= 3);}}),
+                  LOCATION(RC_DMC_VOLCANO_FREESTANDING_POH, logic->IsAdult && logic->Hearts >= 3 && (CanPlantBean(RR_DMC_CENTRAL_LOCAL) || (randoCtx->GetTrickOption(RT_DMC_HOVER_BEAN_POH) && logic->HoverBoots))),
+                  LOCATION(RC_SHEIK_IN_CRATER,              logic->IsAdult && (logic->FireTimer >= 8 || logic->Hearts >= 3)),
                 }, {
                   //Exits
                   Entrance(RR_DMC_CENTRAL_LOCAL, {[]{return logic->FireTimer >= 48;}}),
@@ -226,7 +226,7 @@ void AreaTable_Init_DeathMountain() {
                   EventAccess(&logic->BeanPlantFairy, {[]{return logic->BeanPlantFairy || (CanPlantBean(RR_DMC_CENTRAL_LOCAL) && logic->CanUse(RG_SONG_OF_STORMS));}}),
                 }, {
                   //Locations
-                  LocationAccess(RC_DMC_GS_BEAN_PATCH, {[]{return (logic->FireTimer >= 8 || logic->Hearts >= 3) && logic->CanPlantBugs && logic->CanChildAttack;}}),
+                  LOCATION(RC_DMC_GS_BEAN_PATCH, (logic->FireTimer >= 8 || logic->Hearts >= 3) && logic->CanPlantBugs && logic->CanChildAttack),
                 }, {
                   //Exits
                   Entrance(RR_DMC_CENTRAL_NEARBY,   {[]{return true;}}),
@@ -237,7 +237,7 @@ void AreaTable_Init_DeathMountain() {
 
   areaTable[RR_DMC_GREAT_FAIRY_FOUNTAIN] = Area("DMC Great Fairy Fountain", "DMC Great Fairy Fountain", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_DMC_GREAT_FAIRY_REWARD, {[]{return logic->CanUse(RG_ZELDAS_LULLABY);}}),
+                  LOCATION(RC_DMC_GREAT_FAIRY_REWARD, logic->CanUse(RG_ZELDAS_LULLABY)),
                 }, {
                   //Exits
                   Entrance(RR_DMC_LOWER_LOCAL, {[]{return true;}}),
@@ -245,11 +245,11 @@ void AreaTable_Init_DeathMountain() {
 
   areaTable[RR_DMC_UPPER_GROTTO] = Area("DMC Upper Grotto", "DMC Upper Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, grottoEvents, {
                   //Locations
-                  LocationAccess(RC_DMC_UPPER_GROTTO_CHEST,         {[]{return true;}}),
-                  LocationAccess(RC_DMC_UPPER_GROTTO_FISH,          {[]{return logic->HasBottle;}}),
-                  LocationAccess(RC_DMC_UPPER_GROTTO_GOSSIP_STONE,  {[]{return true;}}),
-                  LocationAccess(RC_DMC_UPPER_GROTTO_BEEHIVE_LEFT,  {[]{return logic->CanBreakLowerBeehives;}}),
-                  LocationAccess(RC_DMC_UPPER_GROTTO_BEEHIVE_RIGHT, {[]{return logic->CanBreakLowerBeehives;}}),
+                  LOCATION(RC_DMC_UPPER_GROTTO_CHEST,         true),
+                  LOCATION(RC_DMC_UPPER_GROTTO_FISH,          logic->HasBottle),
+                  LOCATION(RC_DMC_UPPER_GROTTO_GOSSIP_STONE,  true),
+                  LOCATION(RC_DMC_UPPER_GROTTO_BEEHIVE_LEFT,  logic->CanBreakLowerBeehives),
+                  LOCATION(RC_DMC_UPPER_GROTTO_BEEHIVE_RIGHT, logic->CanBreakLowerBeehives),
                 }, {
                   //Exits
                   Entrance(RR_DMC_UPPER_LOCAL, {[]{return true;}}),
@@ -257,10 +257,10 @@ void AreaTable_Init_DeathMountain() {
 
   areaTable[RR_DMC_HAMMER_GROTTO] = Area("DMC Hammer Grotto", "DMC Hammer Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_DMC_DEKU_SCRUB_GROTTO_LEFT,   {[]{return logic->CanStunDeku;}}),
-                  LocationAccess(RC_DMC_DEKU_SCRUB_GROTTO_RIGHT,  {[]{return logic->CanStunDeku;}}),
-                  LocationAccess(RC_DMC_DEKU_SCRUB_GROTTO_CENTER, {[]{return logic->CanStunDeku;}}),
-                  LocationAccess(RC_DMC_HAMMER_GROTTO_BEEHIVE,    {[]{return logic->CanBreakUpperBeehives;}}),
+                  LOCATION(RC_DMC_DEKU_SCRUB_GROTTO_LEFT,   logic->CanStunDeku),
+                  LOCATION(RC_DMC_DEKU_SCRUB_GROTTO_RIGHT,  logic->CanStunDeku),
+                  LOCATION(RC_DMC_DEKU_SCRUB_GROTTO_CENTER, logic->CanStunDeku),
+                  LOCATION(RC_DMC_HAMMER_GROTTO_BEEHIVE,    logic->CanBreakUpperBeehives),
                 }, {
                   //Exits
                   Entrance(RR_DMC_LOWER_LOCAL, {[]{return true;}}),
