@@ -404,10 +404,10 @@ void SetMarginAll(const char* ButtonName, bool SetActivated) {
             std::string cvarNameMargins = std::string(cvarName).append("UseMargins");
             if (CVarGetInteger(cvarPosType.c_str(),0) <= 2 && SetActivated) { //Our element is not Hidden or Non anchor
                 for (int i = 0; i < arrayLengthNonMargin; i++){
-                    if ((strcmp(cvarName, MarginCvarNonAnchor[i]) == 0) && (CVarGetInteger(cvarPosType.c_str(), 0) == 0)) { //Our element is both in original position and do not have anchor by default so we skip it.
+                    if ((strcmp(cvarName, MarginCvarNonAnchor[i]) == 0) && (CVarGetInteger(cvarPosType.c_str(), 0) == ORIGINAL_LOCATION)) { //Our element is both in original position and do not have anchor by default so we skip it.
                         CVarSetInteger(cvarNameMargins.c_str(), false); //force set off
                     } 
-                    else if ((strcmp(cvarName, MarginCvarNonAnchor[i]) == 0) && (CVarGetInteger(cvarPosType.c_str(), 0) != 0)) { //Our element is not in original position regarless it has no anchor by default since player made it anchored we can toggle margins
+                    else if ((strcmp(cvarName, MarginCvarNonAnchor[i]) == 0) && (CVarGetInteger(cvarPosType.c_str(), 0) != ORIGINAL_LOCATION)) { //Our element is not in original position regarless it has no anchor by default since player made it anchored we can toggle margins
                         CVarSetInteger(cvarNameMargins.c_str(), SetActivated);
                     } 
                     else if (strcmp(cvarName, MarginCvarNonAnchor[i]) != 0) { //Our elements has an anchor by default so regarless of it's position right now that okay to toggle margins.
@@ -1277,9 +1277,9 @@ void Draw_Placements(){
             DrawPositionsRadioBoxes("gVSOA");
             s16 Min_X_VSOA = 0;
             s16 Max_X_VSOA = ImGui::GetWindowViewport()->Size.x/2;
-            if(CVarGetInteger("gVSOAPosType",0) == 2){
+            if(CVarGetInteger("gVSOAPosType",0) == ANCHOR_RIGHT){
                 Max_X_VSOA = 290;
-            } else if(CVarGetInteger("gVSOAPosType",0) == 4){
+            } else if(CVarGetInteger("gVSOAPosType",0) == HIDDEN){
                 Min_X_VSOA = (ImGui::GetWindowViewport()->Size.x/2)*-1;
             }
             DrawPositionSlider("gVSOA", 0, ImGui::GetWindowViewport()->Size.y/2, Min_X_VSOA, Max_X_VSOA);
@@ -1303,9 +1303,9 @@ void Draw_Placements(){
             DrawPositionsRadioBoxes("gDPad");
             s16 Min_X_Dpad = 0;
             s16 Max_X_Dpad = ImGui::GetWindowViewport()->Size.x/2;
-            if(CVarGetInteger("gDPadPosType",0) == 2){
+            if(CVarGetInteger("gDPadPosType",0) == ANCHOR_RIGHT){
                 Max_X_Dpad = 290;
-            } else if(CVarGetInteger("gDPadPosType",0) == 4){
+            } else if(CVarGetInteger("gDPadPosType",0) == HIDDEN){
                 Min_X_Dpad = (ImGui::GetWindowViewport()->Size.x/2)*-1;
             }
             DrawPositionSlider("gDPad", 0, ImGui::GetWindowViewport()->Size.y/2, Min_X_Dpad, Max_X_Dpad);

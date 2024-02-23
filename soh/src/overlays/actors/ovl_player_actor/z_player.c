@@ -11080,7 +11080,7 @@ void func_80848EF8(Player* this, PlayState* play) {
             s16 X_Margins_VSOA;
             s16 Y_Margins_VSOA;
             if (CVarGetInteger("gVSOAUseMargins", 0) != 0) {
-                if (CVarGetInteger("gVSOAPosType", 0) == 0) {
+                if (CVarGetInteger("gVSOAPosType", 0) == ORIGINAL_LOCATION) {
                     X_Margins_VSOA = Left_Margins;
                 };
                 Y_Margins_VSOA = Top_Margins;
@@ -11094,19 +11094,19 @@ void func_80848EF8(Player* this, PlayState* play) {
             s16 PosY_VSOA;
             if (CVarGetInteger("gVSOAPosType", 0) != 0) {
                 PosY_VSOA = CVarGetInteger("gVSOAPosY", 0) + Y_Margins_VSOA;
-                if (CVarGetInteger("gVSOAPosType", 0) == 1) { // Anchor Left
+                if (CVarGetInteger("gVSOAPosType", 0) == ANCHOR_LEFT) { 
                     if (CVarGetInteger("gVSOAUseMargins", 0) != 0) {
                         X_Margins_VSOA = Left_Margins;
                     };
                     PosX_VSOA = OTRGetDimensionFromLeftEdge(CVarGetInteger("gVSOAPosX", 0) + X_Margins_VSOA);
-                } else if (CVarGetInteger("gVSOAPosType", 0) == 2) { // Anchor Right
+                } else if (CVarGetInteger("gVSOAPosType", 0) == ANCHOR_RIGHT) { 
                     if (CVarGetInteger("gVSOAUseMargins", 0) != 0) {
                         X_Margins_VSOA = Right_Margins;
                     };
                     PosX_VSOA = OTRGetDimensionFromRightEdge(CVarGetInteger("gVSOAPosX", 0) + X_Margins_VSOA);
-                } else if (CVarGetInteger("gVSOAPosType", 0) == 3) { // Anchor None
+                } else if (CVarGetInteger("gVSOAPosType", 0) == ANCHOR_NONE) {
                     PosX_VSOA = CVarGetInteger("gVSOAPosX", 0);
-                } else if (CVarGetInteger("gVSOAPosType", 0) == 4) { // Hidden
+                } else if (CVarGetInteger("gVSOAPosType", 0) == HIDDEN) { 
                     PosX_VSOA = -9999;
                 }
             } else {
