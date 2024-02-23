@@ -11092,7 +11092,7 @@ void func_80848EF8(Player* this, PlayState* play) {
             s16 PosY_VSOA_ori = 60 + Y_Margins_VSOA;
             s16 PosX_VSOA;
             s16 PosY_VSOA;
-            if (CVarGetInteger("gVSOAPosType", 0) != ANCHOR_NONE) {
+            if (CVarGetInteger("gVSOAPosType", 0) != ORIGINAL_LOCATION) {
                 PosY_VSOA = CVarGetInteger("gVSOAPosY", 0) + Y_Margins_VSOA;
                 if (CVarGetInteger("gVSOAPosType", 0) == ANCHOR_LEFT) { 
                     if (CVarGetInteger("gVSOAUseMargins", 0) != 0) {

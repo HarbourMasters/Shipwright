@@ -432,7 +432,6 @@ void HealthMeter_Draw(PlayState* play) {
         } else if (CVarGetInteger("gHeartsCountPosType", 0) == ANCHOR_NONE) {
             offsetX = CVarGetInteger("gHeartsCountPosX", 0)+70.0f;
         } else if (CVarGetInteger("gHeartsCountPosType", 0) == HIDDEN) {
-        } else if (CVarGetInteger("gHeartsCountPosType", 0) == HIDDEN) {
             offsetX = -9999;
         }
     } else {
