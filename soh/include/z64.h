@@ -2322,8 +2322,6 @@ typedef enum {
     /* 0x02 */ PAUSE_ANY_CURSOR_ALWAYS_OFF,
 } PauseCursorAnySlotOptions;
 
-typedef enum { ORIGINAL_LOCATION, ANCHOR_LEFT, ANCHOR_RIGHT, ANCHOR_NONE, HIDDEN } PosType;
-
 typedef enum {
     ORIGINAL_LOCATION,
     ANCHOR_LEFT,
