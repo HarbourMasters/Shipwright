@@ -209,6 +209,9 @@ typedef enum {
     // Opt: *EnOkarinaTag
     // Vanilla condition: !Flags_GetEventChkInf(EVENTCHKINF_OPENED_THE_DOOR_OF_TIME)
     GI_VB_BE_ELIGIBLE_TO_OPEN_DOT,
+    // Opt: *BgDyYoseizo
+    // Vanilla condition: see soh/src/overlays/actors/ovl_Bg_Dy_Yoseizo/z_bg_dy_yoseizo.c
+    GI_VB_BE_ELIGIBLE_FOR_GREAT_FAIRY_REWARD,
 
     /*** Play Cutscenes ***/
 

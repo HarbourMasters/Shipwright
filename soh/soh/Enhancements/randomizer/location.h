@@ -79,7 +79,7 @@ class SpoilerCollectionCheck {
         return SpoilerCollectionCheck(SPOILER_CHK_MASTER_SWORD, 0x00, 0x00);
     }
 
-    static auto RandomizerInf(const uint8_t flag) {
+    static auto RandomizerInf(const uint16_t flag) {
         return SpoilerCollectionCheck(SPOILER_CHK_RANDOMIZER_INF, 0x00, flag);
     }
 };

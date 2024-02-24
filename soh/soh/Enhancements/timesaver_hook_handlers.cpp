@@ -21,6 +21,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Fu/z_en_fu.h"
 #include "src/overlays/actors/ovl_Bg_Spot02_Objects/z_bg_spot02_objects.h"
 #include "src/overlays/actors/ovl_Bg_Hidan_Kousi/z_bg_hidan_kousi.h"
+#include "src/overlays/actors/ovl_Bg_Dy_Yoseizo/z_bg_dy_yoseizo.h"
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 }
@@ -581,6 +582,47 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
         case GI_VB_BIGGORON_CONSIDER_SWORD_FORGED:
             *should = Environment_GetBgsDayCount() >= CVarGetInteger("gForgeTime", 3);
             break;
+        case GI_VB_BE_ELIGIBLE_FOR_GREAT_FAIRY_REWARD: {
+            BgDyYoseizo* bgDyYoseizo = static_cast<BgDyYoseizo*>(opt);
+            RandomizerInf flag = RAND_INF_MAX;
+
+            if (gPlayState->sceneNum == SCENE_GREAT_FAIRYS_FOUNTAIN_SPELLS) {
+                switch (bgDyYoseizo->fountainType) {
+                    case 0:
+                        flag = RAND_INF_ZF_GREAT_FAIRY_REWARD;
+                        break;
+                    case 1:
+                        flag = RAND_INF_HC_GREAT_FAIRY_REWARD;
+                        break;
+                    case 2:
+                        flag = RAND_INF_COLOSSUS_GREAT_FAIRY_REWARD;
+                        break;
+                }
+            } else {
+                switch (bgDyYoseizo->fountainType) {
+                    case 0:
+                        flag = RAND_INF_DMT_GREAT_FAIRY_REWARD;
+                        break;
+                    case 1:
+                        flag = RAND_INF_DMC_GREAT_FAIRY_REWARD;
+                        break;
+                    case 2:
+                        flag = RAND_INF_OGC_GREAT_FAIRY_REWARD;
+                        break;
+                }
+            }
+
+            if (flag != RAND_INF_MAX && (IS_RANDO || CVarGetInteger("gTimeSavers.SkipMiscInteractions", IS_RANDO))) {
+                if (IS_RANDO || *should) {
+                    Flags_SetRandomizerInf(flag);
+                    gSaveContext.healthAccumulator = 0x140;
+                    Magic_Fill(gPlayState);
+                }
+                *should = false;
+            }
+
+            break;
+        }
     }
 }
 
@@ -878,6 +920,24 @@ void TimeSaverOnFlagSetHandler(int16_t flagType, int16_t flag) {
                     break;
                 case RAND_INF_DUNGEONS_DONE_SPIRIT_TEMPLE:
                     vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_SPIRIT_MEDALLION).GetGIEntry_Copy();
+                    break;
+                case RAND_INF_ZF_GREAT_FAIRY_REWARD:
+                    vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_FARORES_WIND).GetGIEntry_Copy();
+                    break;
+                case RAND_INF_HC_GREAT_FAIRY_REWARD:
+                    vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_DINS_FIRE).GetGIEntry_Copy();
+                    break;
+                case RAND_INF_COLOSSUS_GREAT_FAIRY_REWARD:
+                    vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_NAYRUS_LOVE).GetGIEntry_Copy();
+                    break;
+                case RAND_INF_DMT_GREAT_FAIRY_REWARD:
+                    vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_MAGIC_SINGLE).GetGIEntry_Copy();
+                    break;
+                case RAND_INF_DMC_GREAT_FAIRY_REWARD:
+                    vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_MAGIC_DOUBLE).GetGIEntry_Copy();
+                    break;
+                case RAND_INF_OGC_GREAT_FAIRY_REWARD:
+                    vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_DOUBLE_DEFENSE).GetGIEntry_Copy();
                     break;
             }
             break;
