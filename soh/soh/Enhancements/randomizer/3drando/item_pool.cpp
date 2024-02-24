@@ -1079,6 +1079,7 @@ void GenerateItemPool() {
           silversToAdd.push_back(RG_GERUDO_TRAINING_GROUNDS_TOILET_SILVER_RUPEE);
       }
       if (ctx->GetDungeon(Rando::SPIRIT_TEMPLE)->IsVanilla()) {
+          silversToAdd.push_back(RG_SPIRIT_CHILD_GATE_SILVER_RUPEE);
           silversToAdd.push_back(RG_SPIRIT_CHILD_BLOCK_PUSH_SILVER_RUPEE);
           silversToAdd.push_back(RG_SPIRIT_BOULDER_SILVER_RUPEE);
       }

@@ -93,6 +93,7 @@ Context::Context() {
     mTrials = std::make_shared<Trials>();
     mSettings = std::make_shared<Settings>();
     mFishsanity = std::make_shared<Fishsanity>();
+    mSilverRupees = std::make_shared<SilverRupees>();
     for (auto& location : StaticData::GetLocationTable()) {
         mSpoilerfileCheckNameToEnum[location.GetName()] = location.GetRandomizerCheck();
     }

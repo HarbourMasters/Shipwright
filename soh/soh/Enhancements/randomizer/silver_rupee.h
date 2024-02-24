@@ -17,6 +17,7 @@ namespace Rando {
         uint8_t GetCollected() const;
         uint8_t GetTotal() const;
         void IncrementCollected(uint8_t amount = 1);
+        void Reset();
     private:
         uint8_t mCollected = 0;
         uint8_t mTotal;
@@ -29,6 +30,8 @@ namespace Rando {
         SilverRupees();
 
         SilverRupeesInfo& GetInfo(RandomizerGet rgid);
+        size_t GetInfoListSize();
+        void ResetAll();
         static CustomMessage GetSilverRupeeMessage(u16 rgid);
     private:
         std::array<SilverRupeesInfo, RG_SILVER_RUPEE_LAST - RG_SILVER_RUPEE_FIRST + 1> mSilverRupees;

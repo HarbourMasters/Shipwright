@@ -1177,6 +1177,18 @@ void RegisterSilverRupeeShuffle() {
                 silverRupee->giEntry = OTRGlobals::Instance->gRandoContext->GetItemLocation(silverRupee->rc)->GetPlacedItem().GetGIEntry().get();
                 silverRupee->actionFunc = EnGSwitch_Randomizer_SilverRupeeIdle;
                 silverRupee->actor.draw = EnGSwitch_Randomizer_Draw;
+            } else if (silverRupee->type == ENGSWITCH_SILVER_TRACKER) {
+                Rando::Identifier randoIdentifier = { static_cast<SceneID>(gPlayState->sceneNum), RCQUEST_VANILLA, actor->params };
+                silverRupee->rg = Rando::StaticData::silverTrackerMap.at(randoIdentifier);
+                if (OTRGlobals::Instance->gRandoContext->GetSilverRupees()->GetInfo(silverRupee->rg).GetCollected() >= silverRupee->silverCount) {
+                    if ((gPlayState->sceneNum == SCENE_GERUDO_TRAINING_GROUND) && (silverRupee->actor.room == 2)) {
+                        Flags_SetTempClear(gPlayState, silverRupee->actor.room);
+                    } else {
+                        func_80078884(NA_SE_SY_CORRECT_CHIME);
+                        Flags_SetSwitch(gPlayState, silverRupee->switchFlag);
+                    }
+                    Actor_Kill(&silverRupee->actor);
+                }
             }
         }
     });

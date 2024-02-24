@@ -21,6 +21,7 @@ void Randomizer_DrawTriforcePieceGI(PlayState* play, GetItemEntry getItemEntry);
 void Randomizer_DrawOcarinaButton(PlayState* play, GetItemEntry* getItemEntry);
 void Randomizer_DrawBronzeScale(PlayState* play, GetItemEntry* getItemEntry);
 void Randomizer_DrawFishingPoleGI(PlayState* play, GetItemEntry* getItemEntry);
+void Randomizer_DrawSilverRupee(PlayState* play, GetItemEntry* getItemEntry);
 #ifdef __cplusplus
 };
 #endif

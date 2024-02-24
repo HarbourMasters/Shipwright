@@ -5,6 +5,25 @@
 
 namespace Rando {
 
+    std::unordered_map<Identifier, RandomizerGet> StaticData::silverTrackerMap = {
+        { { SCENE_ICE_CAVERN, RCQUEST_VANILLA, 328 }, RG_ICE_CAVERN_SPINNING_BLADES_SILVER_RUPEE },
+        { { SCENE_ICE_CAVERN, RCQUEST_VANILLA, 329 }, RG_ICE_CAVERN_SLIDING_SILVER_RUPEE }, 
+        { { SCENE_BOTTOM_OF_THE_WELL, RCQUEST_VANILLA, 351 }, RG_BOTTOM_OF_THE_WELL_SILVER_RUPEE },
+        { { SCENE_GERUDO_TRAINING_GROUND, RCQUEST_VANILLA, 348 }, RG_GERUDO_TRAINING_GROUNDS_BOULDER_SILVER_RUPEE },
+        { { SCENE_GERUDO_TRAINING_GROUND, RCQUEST_VANILLA, 332 }, RG_GERUDO_TRAINING_GROUNDS_LAVA_SILVER_RUPEE },
+        { { SCENE_GERUDO_TRAINING_GROUND, RCQUEST_VANILLA, 347 }, RG_GERUDO_TRAINING_GROUNDS_TOILET_SILVER_RUPEE },
+        { { SCENE_SPIRIT_TEMPLE, RCQUEST_VANILLA, 325 }, RG_SPIRIT_CHILD_GATE_SILVER_RUPEE },
+        { { SCENE_SPIRIT_TEMPLE, RCQUEST_VANILLA, 330 }, RG_SPIRIT_CHILD_BLOCK_PUSH_SILVER_RUPEE },
+        { { SCENE_SPIRIT_TEMPLE, RCQUEST_VANILLA, 322 }, RG_SPIRIT_BOULDER_SILVER_RUPEE },
+        { { SCENE_SHADOW_TEMPLE, RCQUEST_VANILLA, 321 }, RG_SHADOW_SCYTHE_SILVER_RUPEE },
+        { { SCENE_SHADOW_TEMPLE, RCQUEST_VANILLA, 329 }, RG_SHADOW_OUTSIDE_SPIKE_RAIN_SILVER_RUPEE },
+        { { SCENE_SHADOW_TEMPLE, RCQUEST_VANILLA, 328 }, RG_SHADOW_INVISIBLE_SPIKES_SILVER_RUPEE },
+        { { SCENE_INSIDE_GANONS_CASTLE, RCQUEST_VANILLA, 334 }, RG_FOREST_TRIAL_SILVER_RUPEE },
+        { { SCENE_INSIDE_GANONS_CASTLE, RCQUEST_VANILLA, 329 }, RG_FIRE_TRIAL_SILVER_RUPEE },
+        { { SCENE_INSIDE_GANONS_CASTLE, RCQUEST_VANILLA, 331 }, RG_SPIRIT_TRIAL_SILVER_RUPEE },
+        { { SCENE_INSIDE_GANONS_CASTLE, RCQUEST_VANILLA, 338 }, RG_LIGHT_TRIAL_SILVER_RUPEE },
+    };
+
     std::unordered_map<Position, RandomizerCheck> StaticData::silverRupeeMap = {
             { { SCENE_ICE_CAVERN, {414.0f, 178.0f, -579.0f} }, RC_ICE_CAVERN_SPINNING_BLADES_SILVER_RUPEE_1 },
             { { SCENE_ICE_CAVERN, {389.0f, 0.0f, -382.0f } }, RC_ICE_CAVERN_SPINNING_BLADES_SILVER_RUPEE_2 },
@@ -36,6 +55,11 @@ namespace Rando {
             { { SCENE_GERUDO_TRAINING_GROUND, { 2453.0f, -890.0f, -1612.0f } }, RC_GERUDO_TRAINING_GROUNDS_TOILET_SILVER_RUPEE_3 },
             { { SCENE_GERUDO_TRAINING_GROUND, { 2497.0f, -605.0f, -1465.0f } }, RC_GERUDO_TRAINING_GROUNDS_TOILET_SILVER_RUPEE_4 },
             { { SCENE_GERUDO_TRAINING_GROUND, { 2308.0f, -961.0f, -1464.0f } }, RC_GERUDO_TRAINING_GROUNDS_TOILET_SILVER_RUPEE_5 },
+            { { SCENE_SPIRIT_TEMPLE, { -335.0f, 30.0f, -1409.0f } }, RC_SPIRIT_CHILD_GATE_SILVER_RUPEE_1 },
+            { { SCENE_SPIRIT_TEMPLE, { -347.0f, 229.0f, -1075.0f } }, RC_SPIRIT_CHILD_GATE_SILVER_RUPEE_2 },
+            { { SCENE_SPIRIT_TEMPLE, { -511.0f, 50.0f, -1075.0f } }, RC_SPIRIT_CHILD_GATE_SILVER_RUPEE_3 },
+            { { SCENE_SPIRIT_TEMPLE, { -672.0f, 50.0f, -1075.0f } }, RC_SPIRIT_CHILD_GATE_SILVER_RUPEE_4 },
+            { { SCENE_SPIRIT_TEMPLE, { -766.0f, 229.0f, -1075.0f } }, RC_SPIRIT_CHILD_GATE_SILVER_RUPEE_5 },
             { { SCENE_SPIRIT_TEMPLE, { -984.0f, 923.0f, -450.0f } }, RC_SPIRIT_CHILD_BLOCK_PUSH_SILVER_RUPEE_1 },
             { { SCENE_SPIRIT_TEMPLE, { -1123.0f, 923.0f, 428.0f } }, RC_SPIRIT_CHILD_BLOCK_PUSH_SILVER_RUPEE_2 },
             { { SCENE_SPIRIT_TEMPLE, { -1275.0f, 922.0f, -247.0f } }, RC_SPIRIT_CHILD_BLOCK_PUSH_SILVER_RUPEE_3 },
@@ -61,7 +85,7 @@ namespace Rando {
             { { SCENE_SHADOW_TEMPLE, { 2478.0f, -1343.0f, 1208.0f } }, RC_SHADOW_INVISIBLE_SPIKES_SILVER_RUPEE_3 },
             { { SCENE_SHADOW_TEMPLE, { 2940.0f, -1268.0f, 1069.0f } }, RC_SHADOW_INVISIBLE_SPIKES_SILVER_RUPEE_4 },
             { { SCENE_SHADOW_TEMPLE, { 2042.0f, -1203.0f, 849.0f } }, RC_SHADOW_INVISIBLE_SPIKES_SILVER_RUPEE_5 },
-            { { SCENE_INSIDE_GANONS_CASTLE, { 1643.0f, 164.0f, 1550.0f } }, RC_FOREST_TRIAL_SILVER_RUPEE_1 },
+            { { SCENE_INSIDE_GANONS_CASTLE, { 1634.0f, 164.0f, 1550.0f } }, RC_FOREST_TRIAL_SILVER_RUPEE_1 },
             { { SCENE_INSIDE_GANONS_CASTLE, { 1651.0f, 30.0f, 2021.0f } }, RC_FOREST_TRIAL_SILVER_RUPEE_2 },
             { { SCENE_INSIDE_GANONS_CASTLE, { 1538.0f, 118.0f, 2225.0f } }, RC_FOREST_TRIAL_SILVER_RUPEE_3 },
             { { SCENE_INSIDE_GANONS_CASTLE, { 1361.0f, 115.0f, 1222.0f } }, RC_FOREST_TRIAL_SILVER_RUPEE_4 },
@@ -91,6 +115,7 @@ namespace Rando {
             { RG_GERUDO_TRAINING_GROUNDS_BOULDER_SILVER_RUPEE, { "Boulder Maze in the Gerudo Training Grounds", "Boulder Maze in the Gerudo Training Grounds", "Boulder Maze in the Gerudo Training Grounds" } },
             { RG_GERUDO_TRAINING_GROUNDS_LAVA_SILVER_RUPEE, { "Lava room in the Gerudo Training Grounds", "Lava room in the Gerudo Training Grounds", "Lava room in the Gerudo Training Grounds" } },
             { RG_GERUDO_TRAINING_GROUNDS_TOILET_SILVER_RUPEE, { "Whirlpool room in the Gerudo Training Grounds", "Whirlpool room in the Gerudo Training Grounds", "Whirlpool room in the Gerudo Training Grounds" } },
+            { RG_SPIRIT_CHILD_GATE_SILVER_RUPEE, { "Child-side Gate room in the Spirit Temple", "Child-side Gate room in the Spirit Temple", "Child-side Gate room in the Spirit Temple" } },
             { RG_SPIRIT_CHILD_BLOCK_PUSH_SILVER_RUPEE, { "Child-side Block Pushing room in the Spirit Temple", "Child-side Block Pushing room in the Spirit Temple", "Child-side Block Pushing room in the Spirit Temple" } },
             { RG_SPIRIT_BOULDER_SILVER_RUPEE, { "Boulder room in the Spirit Temple", "Boulder room in the Spirit Temple", "Boulder room in the Spirit Temple" } },
             { RG_SHADOW_SCYTHE_SILVER_RUPEE, { "Spinning Scythes room in the Shadow Temple", "Spinning Scythes room in the Shadow Temple", "Spinning Scythes room in the Shadow Temple" } },
@@ -157,6 +182,16 @@ namespace Rando {
         return messageEntry;
     }
 
+    size_t SilverRupees::GetInfoListSize() {
+        return mSilverRupees.size();
+    }
+
+    void SilverRupees::ResetAll() {
+        for (auto& silverRupee : mSilverRupees) {
+            silverRupee.Reset();
+        }
+    }
+
     SilverRupeesInfo &SilverRupees::GetInfo(RandomizerGet rgid) {
         return mSilverRupees[rgid - RG_SILVER_RUPEE_FIRST];
     }
@@ -180,4 +215,7 @@ namespace Rando {
     void SilverRupeesInfo::IncrementCollected(uint8_t amount) {
         mCollected += amount;
     }
-} // Rando
+    void SilverRupeesInfo::Reset() {
+        mCollected = 0;
+    }
+    } // namespace Rando

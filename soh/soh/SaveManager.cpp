@@ -428,6 +428,13 @@ void SaveManager::LoadRandomizerVersion3() {
         SaveManager::Instance->LoadData("", trialId);
         randoContext->GetTrial(trialId)->SetAsRequired();
     });
+
+    randoContext->GetSilverRupees()->ResetAll();
+    SaveManager::Instance->LoadArray("silverRupees", randoContext->GetSilverRupees()->GetInfoListSize(), [&](size_t i) {
+        size_t value;
+        SaveManager::Instance->LoadData("", value);
+        randoContext->GetSilverRupees()->GetInfo(static_cast<RandomizerGet>(i + RG_SILVER_RUPEE_FIRST)).IncrementCollected(value);
+    });
 }
 
 void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool fullSave) {
@@ -510,6 +517,10 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool f
         if (randoContext->GetTrial(i)->IsRequired()) {
             SaveManager::Instance->SaveData("", i);
         }
+    });
+
+    SaveManager::Instance->SaveArray("silverRupees", randoContext->GetSilverRupees()->GetInfoListSize(), [&](size_t i) {
+        SaveManager::Instance->SaveData("", randoContext->GetSilverRupees()->GetInfo(static_cast<RandomizerGet>(i + RG_SILVER_RUPEE_FIRST)).GetCollected());
     });
 }
 
