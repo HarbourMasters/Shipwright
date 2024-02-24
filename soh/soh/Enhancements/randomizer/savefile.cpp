@@ -137,6 +137,11 @@ void SetStartingItems() {
         gSaveContext.inventory.gsTokens = Randomizer_GetSettingValue(RSK_STARTING_SKULLTULA_TOKEN);
     }
 
+    if ((Randomizer_GetSettingValue(RSK_STARTING_HEARTS) + 1) != 3) {
+        gSaveContext.healthCapacity = (Randomizer_GetSettingValue(RSK_STARTING_HEARTS) + 1) * 16;
+        gSaveContext.health = gSaveContext.healthCapacity;
+    }
+
     if (Randomizer_GetSettingValue(RSK_STARTING_OCARINA)) {
         INV_CONTENT(ITEM_OCARINA_FAIRY) = ITEM_OCARINA_FAIRY;
     }

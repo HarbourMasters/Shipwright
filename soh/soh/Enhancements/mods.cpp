@@ -431,7 +431,7 @@ void UpdatePermanentHeartLossState() {
     if (!CVarGetInteger("gPermanentHeartLoss", 0) && hasAffectedHealth) {
         uint8_t heartContainers = gSaveContext.sohStats.heartContainers; // each worth 16 health
         uint8_t heartPieces = gSaveContext.sohStats.heartPieces; // each worth 4 health, but only in groups of 4
-        uint8_t startingHealth = 16 * 3;
+        uint8_t startingHealth = 16 * (IS_RANDO ? (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_STARTING_HEARTS) + 1) : 3);
 
 
         uint8_t newCapacity = startingHealth + (heartContainers * 16) + ((heartPieces - (heartPieces % 4)) * 4);
