@@ -19,7 +19,6 @@ extern "C" {
     extern SaveContext gSaveContext;
 }
 
-
 // ImVec4 Colors
 #define COLOR_WHITE ImVec4(1.00f, 1.00f, 1.00f, 1.00f)
 #define COLOR_LIGHT_RED ImVec4(1.0f, 0.05f, 0.0f, 1.0f)
@@ -47,6 +46,9 @@ static ImVec4 colorChoice = ImVec4(0.0f, 0.0f, 0.0f, 1.0f);
 static const char* backgroundColor;
 static std::string itemImager;
 static std::string itemNamer;
+static uint32_t splitCounter;
+//static uint32_t buttonNum;
+//static std::string buttonAction;
 
 using json = nlohmann::json;
 
@@ -174,6 +176,20 @@ std::string formatTimestampTimeSplit(uint32_t value) {
     uint32_t ss = sec - hh * 3600 - mm * 60;
     uint32_t ds = value % 10;
     return fmt::format("{}:{:0>2}:{:0>2}.{}", hh, mm, ss, ds);
+}
+
+void TimeSplitSplitsHandlerS(uint32_t itemID) {
+    uint32_t loopCounter = 0;
+    for (auto& str : splitItem) {
+        if (itemID == splitItem[loopCounter]) {
+            splitTime[loopCounter] = GAMEPLAYSTAT_TOTAL_TIME;
+            splitStatus[loopCounter] = 1;
+            if (splitTime[loopCounter] < splitBest[loopCounter]) {
+                splitBest[loopCounter] = splitTime[loopCounter];
+            }
+        }
+        loopCounter++;
+    }
 }
 
 void TimeSplitSplitsHandler(GetItemEntry itemEntry) {
@@ -409,6 +425,86 @@ void DrawTimeSplitManageList() {
     ImGui::EndTable();
 }
 
+void ListManagerButtonHandler(std::string action, uint32_t buttonNum) {
+    if (action == "minus") {
+        uint32_t curTemp = splitItem[buttonNum];
+        uint32_t newTemp = splitItem[buttonNum + 1];
+        splitItem[buttonNum] = newTemp;
+        splitItem[buttonNum + 1] = curTemp;
+    }
+    if (action == "plus") {
+        uint32_t curTemp = splitItem[buttonNum];
+        uint32_t newTemp = splitItem[buttonNum - 1];
+        splitItem[buttonNum] = newTemp;
+        splitItem[buttonNum - 1] = curTemp;
+    }
+    
+}
+
+void DrawTimeSplitListManager() {
+    std::string buttonLabelP;
+    std::string buttonLabelM;
+    uint32_t loopCounter = 0;
+
+    ImGui::BeginTable("List Manager", 3);
+    ImGui::TableSetupColumn("List Order", ImGuiTableColumnFlags_WidthFixed | ImGuiTableColumnFlags_NoHeaderLabel, 80.0f);
+    ImGui::TableSetupColumn("Item Image", ImGuiTableColumnFlags_WidthFixed | ImGuiTableColumnFlags_NoHeaderLabel, 22.0f);
+    ImGui::TableSetupColumn("Item Name");
+    ImGui::TableNextColumn();
+    for (auto& str : splitItem) {
+        for (const auto& obj : splitObjects) {
+            if (obj.itemID == splitItem[loopCounter]) {
+                splitCounter = loopCounter;
+                itemImager = obj.itemImage;
+                itemNamer = obj.itemName;
+            }
+        }
+
+        if (loopCounter - 1 > splitItem.size() || loopCounter > splitItem.size()) {
+            buttonLabelP = "x";
+        } else {
+            buttonLabelP = std::to_string(splitCounter).c_str();
+        }
+
+        if (loopCounter + 1 >= splitItem.size()) {
+            buttonLabelM = "x";
+        } else {
+            buttonLabelM = std::to_string(splitCounter).c_str();
+        }
+
+        if (ImGui::Button(buttonLabelP.c_str())) {
+            if (buttonLabelP == "x") {
+
+            } else {
+                std::string buttonAction = "plus";
+                uint32_t buttonID = std::stoi(buttonLabelP);
+                ListManagerButtonHandler(buttonAction, buttonID);
+            }
+        }
+        
+        ImGui::SameLine();
+        ImGui::Text(std::to_string(loopCounter).c_str());
+        ImGui::SameLine();
+        if (ImGui::Button(buttonLabelM.c_str())) {
+            if (buttonLabelM == "x") {
+
+            } else {
+                std::string buttonAction = "minus";
+                uint32_t buttonID = std::stoi(buttonLabelM);
+                ListManagerButtonHandler(buttonAction, buttonID);
+            }
+        }
+        
+        ImGui::TableNextColumn();
+        ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(itemImager), ImVec2(24.0f, 24.0f), ImVec2(0, 0), ImVec2(1, 1));
+        ImGui::TableNextColumn();
+        ImGui::Text(itemNamer.c_str());
+        ImGui::TableNextColumn();
+        loopCounter++;
+    }
+    ImGui::EndTable();
+}
+
 void TimeSplitWindow::DrawElement() {
     if (!initialized) {
         InitializeSplitFile();
@@ -429,9 +525,18 @@ void TimeSplitWindow::DrawElement() {
     if (ImGui::BeginTabItem("Manage List")) {
         ImGui::TextColored(statusColor, status.c_str());
         UIWidgets::PaddedSeparator();
-        ImGui::BeginChild("Split List");
-        DrawTimeSplitManageList();
-        ImGui::EndChild();
+        ImGui::BeginTabBar("List Options");
+        if (ImGui::BeginTabItem("Add Items")) {
+            ImGui::BeginChild("Split List");
+            DrawTimeSplitManageList();
+            ImGui::EndChild();
+            ImGui::EndTabItem();
+        }
+        if (ImGui::BeginTabItem("Change Order")) {
+            //DrawTimeSplitListManager();
+            ImGui::EndTabItem();
+        }
+        ImGui::EndTabBar();
         ImGui::EndTabItem();
     }
     ImGui::EndTabBar();
