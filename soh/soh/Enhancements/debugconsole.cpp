@@ -10,7 +10,6 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/cosmetics/CosmeticsEditor.h"
 #include "soh/Enhancements/audio/AudioEditor.h"
-#include "soh/Enhancements/audio/AudioCollection.h"
 
 #define Path _Path
 #define PATH_HACK
@@ -1290,25 +1289,25 @@ static bool GenerateRandoHandler(std::shared_ptr<LUS::Console> Console, const st
     return 1;
 }
 
-static std::map<std::string, CosmeticGroup> cosmetic_groups = {
-    {"link", GROUP_LINK},
-    {"mirror_shield", GROUP_MIRRORSHIELD},
-    {"swords", GROUP_SWORDS},
-    {"gloves", GROUP_GLOVES},
-    {"equipment", GROUP_EQUIPMENT},
-    {"consumable", GROUP_CONSUMABLE},
-    {"hud", GROUP_HUD},
-    {"kaleido", GROUP_KALEIDO},
-    {"title", GROUP_TITLE},
-    {"npc", GROUP_NPC},
-    {"world", GROUP_WORLD},
-    {"magic", GROUP_MAGIC},
-    {"arrows", GROUP_ARROWS},
-    {"spin_attack", GROUP_SPIN_ATTACK},
-    {"trials", GROUP_TRAILS},
-    {"navi", GROUP_NAVI},
-    {"ivan", GROUP_IVAN},
-};
+static constexpr std::array<std::pair<const char*, CosmeticGroup>, COSMETICS_GROUP_MAX> cosmetic_groups = {{
+    {"link", COSMETICS_GROUP_LINK},
+    {"mirror_shield", COSMETICS_GROUP_MIRRORSHIELD},
+    {"swords", COSMETICS_GROUP_SWORDS},
+    {"gloves", COSMETICS_GROUP_GLOVES},
+    {"equipment", COSMETICS_GROUP_EQUIPMENT},
+    {"consumable", COSMETICS_GROUP_CONSUMABLE},
+    {"hud", COSMETICS_GROUP_HUD},
+    {"kaleido", COSMETICS_GROUP_KALEIDO},
+    {"title", COSMETICS_GROUP_TITLE},
+    {"npc", COSMETICS_GROUP_NPC},
+    {"world", COSMETICS_GROUP_WORLD},
+    {"magic", COSMETICS_GROUP_MAGIC},
+    {"arrows", COSMETICS_GROUP_ARROWS},
+    {"spin_attack", COSMETICS_GROUP_SPIN_ATTACK},
+    {"trials", COSMETICS_GROUP_TRAILS},
+    {"navi", COSMETICS_GROUP_NAVI},
+    {"ivan", COSMETICS_GROUP_IVAN},
+}};
 
 static bool CosmeticsHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {

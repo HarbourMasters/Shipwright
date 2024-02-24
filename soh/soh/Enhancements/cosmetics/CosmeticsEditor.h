@@ -11,23 +11,24 @@
 // Not to be confused with tabs, groups are 1:1 with the boxes shown in the UI, grouping them allows us to reset/randomize
 // every item in a group at once. If you are looking for tabs they are rendered manually in ImGui in `DrawCosmeticsEditor`
 typedef enum {
-    GROUP_LINK,
-    GROUP_MIRRORSHIELD,
-    GROUP_SWORDS,
-    GROUP_GLOVES,
-    GROUP_EQUIPMENT,
-    GROUP_CONSUMABLE,
-    GROUP_HUD,
-    GROUP_KALEIDO,
-    GROUP_TITLE,
-    GROUP_NPC,
-    GROUP_WORLD,
-    GROUP_MAGIC,
-    GROUP_ARROWS,
-    GROUP_SPIN_ATTACK,
-    GROUP_TRAILS,
-    GROUP_NAVI,
-    GROUP_IVAN,
+    COSMETICS_GROUP_LINK,
+    COSMETICS_GROUP_MIRRORSHIELD,
+    COSMETICS_GROUP_SWORDS,
+    COSMETICS_GROUP_GLOVES,
+    COSMETICS_GROUP_EQUIPMENT,
+    COSMETICS_GROUP_CONSUMABLE,
+    COSMETICS_GROUP_HUD,
+    COSMETICS_GROUP_KALEIDO,
+    COSMETICS_GROUP_TITLE,
+    COSMETICS_GROUP_NPC,
+    COSMETICS_GROUP_WORLD,
+    COSMETICS_GROUP_MAGIC,
+    COSMETICS_GROUP_ARROWS,
+    COSMETICS_GROUP_SPIN_ATTACK,
+    COSMETICS_GROUP_TRAILS,
+    COSMETICS_GROUP_NAVI,
+    COSMETICS_GROUP_IVAN,
+    COSMETICS_GROUP_MAX
 } CosmeticGroup;
 
 typedef struct {
