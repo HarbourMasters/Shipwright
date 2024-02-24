@@ -8,6 +8,7 @@
 #include "textures/message_static/message_static.h"
 #include "textures/message_texture_static/message_texture_static.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/OTRGlobals.h"
 
@@ -3069,7 +3070,9 @@ void Message_Draw(PlayState* play) {
         POLY_OPA_DISP = plusOne;
     }
     plusOne = Graph_GfxPlusOne(polyOpaP = POLY_OPA_DISP);
-    gSPDisplayList(OVERLAY_DISP++, plusOne);
+    if (!GameInteractor_NoUIActive()) {
+        gSPDisplayList(OVERLAY_DISP++, plusOne);
+    }
     Message_DrawMain(play, &plusOne);
     gSPEndDisplayList(plusOne++);
     Graph_BranchDlist(polyOpaP, plusOne);
