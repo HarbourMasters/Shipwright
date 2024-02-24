@@ -2,33 +2,14 @@
 #include "soh/resource/type/AudioSample.h"
 #include "spdlog/spdlog.h"
 
-namespace LUS {
-std::shared_ptr<IResource>
-AudioSampleFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
-    auto resource = std::make_shared<AudioSample>(initData);
-    std::shared_ptr<ResourceVersionFactory> factory = nullptr;
-
-    switch (resource->GetInitData()->ResourceVersion) {
-    case 2:
-	factory = std::make_shared<AudioSampleFactoryV0>();
-	break;
+namespace SOH {
+std::shared_ptr<LUS::IResource> ResourceFactoryBinaryAudioSampleV2::ReadResource(std::shared_ptr<LUS::File> file) {
+    if (!FileHasValidFormatAndReader(file)) {
+        return nullptr;
     }
 
-    if (factory == nullptr) {
-        SPDLOG_ERROR("Failed to load AudioSample with version {}", resource->GetInitData()->ResourceVersion);
-	return nullptr;
-    }
-
-    factory->ParseFileBinary(reader, resource);
-
-    return resource;
-}
-
-void LUS::AudioSampleFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
-                                                 std::shared_ptr<IResource> resource)
-{
-    std::shared_ptr<AudioSample> audioSample = std::static_pointer_cast<AudioSample>(resource);
-    ResourceVersionFactory::ParseFileBinary(reader, audioSample);
+    auto audioSample = std::make_shared<AudioSample>(file->InitData);
+    auto reader = std::get<std::shared_ptr<LUS::BinaryReader>>(file->Reader);
 
     audioSample->sample.codec = reader->ReadUByte();
     audioSample->sample.medium = reader->ReadUByte();
@@ -65,9 +46,10 @@ void LUS::AudioSampleFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> re
     }
     audioSample->book.book = audioSample->bookData.data();
     audioSample->sample.book = &audioSample->book;
-}
-} // namespace LUS
 
+    return audioSample;
+}
+} // namespace SOH
 
 /*
 in ResourceMgr_LoadAudioSample we used to have

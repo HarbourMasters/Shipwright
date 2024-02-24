@@ -1,6 +1,6 @@
 #include "SetEchoSettings.h"
 
-namespace LUS {
+namespace SOH {
 EchoSettings* SetEchoSettings::GetPointer() {
     return &settings;
 }
@@ -8,4 +8,4 @@ EchoSettings* SetEchoSettings::GetPointer() {
 size_t SetEchoSettings::GetPointerSize() {
 	return sizeof(EchoSettings);
 }
-} // namespace LUS
+} // namespace SOH

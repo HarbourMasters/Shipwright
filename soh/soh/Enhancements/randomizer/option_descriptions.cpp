@@ -170,12 +170,14 @@ void Settings::CreateOptionDescriptions() {
         "This also adds the one-way entrance from Gerudo Valley to Lake Hylia in the pool of "
         "overworld entrances when they are shuffled.";
     mOptionDescriptions[RSK_MIXED_ENTRANCE_POOLS] =
-        "Shuffle entrances into a mixed pool instead of separate ones.\n"
+        "Shuffle entrances into a mixed pool instead of separate ones. Has no affect on pools whose "
+        "entrances aren't shuffled, and \"Shuffle Boss Entrances\" must be set to \"Full\" to include them.\n"
         "\n"
         "For example, enabling the settings to shuffle grotto, dungeon, and overworld entrances and "
         "selecting grotto and dungeon entrances here will allow a dungeon to be inside a grotto or "
         "vice versa, while overworld entrances are shuffled in their own separate pool and indoors stay vanilla.";
     mOptionDescriptions[RSK_MIX_DUNGEON_ENTRANCES] = "Dungeon entrances will be part of the mixed pool";
+    mOptionDescriptions[RSK_MIX_BOSS_ENTRANCES] = "Boss entrances will be part of the mixed pool";
     mOptionDescriptions[RSK_MIX_OVERWORLD_ENTRANCES] = "Overworld entrances will be part of the mixed pool";
     mOptionDescriptions[RSK_MIX_INTERIOR_ENTRANCES] = "Interior entrances will be part of the mixed pool";
     mOptionDescriptions[RSK_MIX_GROTTO_ENTRANCES] = "Grotto entrances will be part of the mixed pool";

@@ -1,0 +1,61 @@
+name: test-builds-on-distros
+on:
+  workflow_dispatch:    # by request
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  build:
+    strategy:
+      matrix:
+        image: ["archlinux:base", "opensuse/tumbleweed:latest", "ubuntu:mantic", "debian:bookworm", "fedora:39"]
+        cc: ["gcc", "clang"] 
+        include:
+        - cxx: g++
+          cc: gcc
+        - cxx: clang++
+          cc: clang
+    runs-on: ${{ (vars.LINUX_RUNNER && fromJSON(vars.LINUX_RUNNER)) || 'ubuntu-latest' }}
+    container:
+      image: ${{ matrix.image }}
+    steps:
+    - name: Install dependencies (pacman)
+      if: ${{ matrix.image == 'archlinux:base' }}
+      run: |
+        echo arch
+        echo pacman -S ${{ matrix.cc }} git cmake ninja lsb-release sdl2 libpng sdl2_net boost
+        pacman -Syu --noconfirm
+        pacman -S --noconfirm ${{ matrix.cc }} git cmake ninja lsb-release sdl2 libpng sdl2_net boost
+    - name: Install dependencies (dnf)
+      if: ${{ matrix.image == 'fedora:39' }}
+      run: |
+        echo fedora
+        echo dnf install ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'gcc-c++') || '' }} git cmake ninja-build lsb_release SDL2-devel libpng-devel boost-devel
+        dnf -y upgrade
+        dnf -y install ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'gcc-c++') || '' }} git cmake ninja-build lsb_release SDL2-devel libpng-devel boost-devel
+    - name: Install dependencies (apt)
+      if: ${{ matrix.image == 'ubuntu:mantic' || matrix.image == 'debian:bookworm' }}
+      run: |
+        echo debian based
+        echo apt-get install ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'g++') || '' }} git cmake ninja-build lsb-release libsdl2-dev libpng-dev libsdl2-net-dev libboost-dev libopengl-dev
+        apt-get update
+        apt-get -y full-upgrade
+        apt-get -y install ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'g++') || '' }} git cmake ninja-build lsb-release libsdl2-dev libpng-dev libsdl2-net-dev libboost-dev libopengl-dev
+    - name: Install dependencies (zypper)
+      if: ${{ matrix.image == 'opensuse/tumbleweed:latest' }}
+      run: |
+        echo openSUSE
+        echo zypper in ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'gcc-c++') || '' }} ${{ matrix.cc == 'clang' && 'libstdc++-devel' || '' }} git cmake ninja SDL2-devel libpng16-devel
+        zypper --non-interactive dup
+        zypper --non-interactive in ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'gcc-c++') || '' }} ${{ matrix.cc == 'clang' && 'libstdc++-devel' || '' }} git cmake ninja SDL2-devel libpng16-devel
+    - uses: actions/checkout@v3
+      with:
+        submodules: true
+    - name: Build SoH
+      run: |
+        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
+        cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release -DBUILD_REMOTE_CONTROL=1
+        cmake --build build-cmake --config Release -j3
+      env:
+        CC: ${{ matrix.cc }}
+        CXX: ${{ matrix.cxx }}
