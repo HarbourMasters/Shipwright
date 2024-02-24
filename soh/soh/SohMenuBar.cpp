@@ -1882,6 +1882,7 @@ extern std::shared_ptr<RandomizerSettingsWindow> mRandomizerSettingsWindow;
 extern std::shared_ptr<ItemTrackerWindow> mItemTrackerWindow;
 extern std::shared_ptr<ItemTrackerSettingsWindow> mItemTrackerSettingsWindow;
 extern std::shared_ptr<EntranceTrackerWindow> mEntranceTrackerWindow;
+extern std::shared_ptr<EntranceTrackerSettingsWindow> mEntranceTrackerSettingsWindow;
 extern std::shared_ptr<CheckTracker::CheckTrackerWindow> mCheckTrackerWindow;
 extern std::shared_ptr<CheckTracker::CheckTrackerSettingsWindow> mCheckTrackerSettingsWindow;
 extern "C" u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
@@ -1900,11 +1901,19 @@ void DrawRandomizerMenu() {
         ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0, 0));
         ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
         ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
+
     #ifdef __WIIU__
         static ImVec2 buttonSize(200.0f * 2.0f, 0.0f);
+        static ImVec2 buttonWithOptionsSize(170.0f * 2.0f, 0.0f);
+        static ImVec2 optionsButtonSize(25.0f * 2.0f, 0.0f);
+        static float separationToOptionsButton = 5.0f * 2.0f;
     #else
         static ImVec2 buttonSize(200.0f, 0.0f);
+        static ImVec2 buttonWithOptionsSize(170.0f, 0.0f);
+        static ImVec2 optionsButtonSize(25.0f, 0.0f);
+        static float separationToOptionsButton = 5.0f;
     #endif
+
         if (mRandomizerSettingsWindow) {
             if (ImGui::Button(GetWindowButtonText("Randomizer Settings", CVarGetInteger("gRandomizerSettingsEnabled", 0)).c_str(), buttonSize)) {
                 mRandomizerSettingsWindow->ToggleVisibility();
@@ -1912,36 +1921,58 @@ void DrawRandomizerMenu() {
         }
 
         UIWidgets::Spacer(0);
+
         if (mItemTrackerWindow) {
-            if (ImGui::Button(GetWindowButtonText("Item Tracker", CVarGetInteger("gItemTrackerEnabled", 0)).c_str(), buttonSize)) {
+            if (ImGui::Button(GetWindowButtonText("Item Tracker", CVarGetInteger("gItemTrackerEnabled", 0)).c_str(), buttonWithOptionsSize)) {
                 mItemTrackerWindow->ToggleVisibility();
             }
         }
 
-        UIWidgets::Spacer(0);
+        ImGui::SameLine(0, 0);
+        ImVec2 cursor = ImGui::GetCursorPos();
+        ImGui::SetCursorPos(ImVec2(cursor.x + separationToOptionsButton, cursor.y));
+
         if (mItemTrackerSettingsWindow) {
-            if (ImGui::Button(GetWindowButtonText("Item Tracker Settings", CVarGetInteger("gItemTrackerSettingsEnabled", 0)).c_str(), buttonSize)) {
+            if (ImGui::Button(ICON_FA_COG "##ItemTrackerSettings", optionsButtonSize)) {
                 mItemTrackerSettingsWindow->ToggleVisibility();
             }
         }
+
         UIWidgets::Spacer(0);
         if (mEntranceTrackerWindow) {
-            if (ImGui::Button(GetWindowButtonText("Entrance Tracker", CVarGetInteger("gEntranceTrackerEnabled", 0)).c_str(), buttonSize)) {
+            if (ImGui::Button(GetWindowButtonText("Entrance Tracker", CVarGetInteger("gEntranceTrackerEnabled", 0)).c_str(), buttonWithOptionsSize)) {
                 mEntranceTrackerWindow->ToggleVisibility();
             }
         }
+
+        ImGui::SameLine(0, 0);
+        cursor = ImGui::GetCursorPos();
+        ImGui::SetCursorPos(ImVec2(cursor.x + separationToOptionsButton, cursor.y));
+
+        if (mEntranceTrackerSettingsWindow) {
+            if (ImGui::Button(ICON_FA_COG "##EntranceTrackerSettings", optionsButtonSize)) {
+                mEntranceTrackerSettingsWindow->ToggleVisibility();
+            }
+        }
+
         UIWidgets::Spacer(0);
+
         if (mCheckTrackerWindow) {
-            if (ImGui::Button(GetWindowButtonText("Check Tracker", CVarGetInteger("gCheckTrackerEnabled", 0)).c_str(), buttonSize)) {
+            if (ImGui::Button(GetWindowButtonText("Check Tracker", CVarGetInteger("gCheckTrackerEnabled", 0)).c_str(), buttonWithOptionsSize)) {
                 mCheckTrackerWindow->ToggleVisibility();
             }
         }
-        UIWidgets::Spacer(0);
+
+        ImGui::SameLine(0, 0);
+        cursor = ImGui::GetCursorPos();
+        ImGui::SetCursorPos(ImVec2(cursor.x + separationToOptionsButton, cursor.y));
+
         if (mCheckTrackerSettingsWindow) {
-            if (ImGui::Button(GetWindowButtonText("Check Tracker Settings", CVarGetInteger("gCheckTrackerSettingsEnabled", 0)).c_str(), buttonSize)) {
+            if (ImGui::Button(ICON_FA_COG "##CheckTrackerSettings", optionsButtonSize)) {
                 mCheckTrackerSettingsWindow->ToggleVisibility();
             }
         }
+
         ImGui::PopStyleVar(3);
         ImGui::PopStyleColor(1);
 
