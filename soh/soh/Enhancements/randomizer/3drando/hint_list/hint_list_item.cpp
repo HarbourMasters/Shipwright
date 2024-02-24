@@ -2113,6 +2113,73 @@ void HintTable_Init_Item() {
                        Text{"a fishing pole", /*french*/"canne à pêche", /*spanish*/"caña de pescar"}
     );
 
+    // TODO: Translations
+    hintTable[RHT_ICE_CAVERN_SILVER_RUPEE] = HintText::Item({
+      //obscure text
+      Text{"cold unlocking currency"},
+    }, {
+      //ambiguous text
+      Text{"a Silver Rupee"},
+    },
+      Text{"an Ice Cavern Silver Rupee"}
+    );
+
+    hintTable[RHT_BOTTOM_OF_THE_WELL_SILVER_RUPEE] = HintText::Item(
+        {
+            // obscure text
+            Text{ "damp unlocking currency" },
+        },
+        {
+            // ambiguous text
+            Text{ "a Silver Rupee" },
+        },
+        Text{ "a Bottom of the Well Silver Rupee" });
+
+    hintTable[RHT_GERUDO_TRAINING_GROUNDS_SILVER_RUPEE] = HintText::Item(
+        {
+            // obscure text
+            Text{ "stolen unlocking currency" },
+        },
+        {
+            // ambiguous text
+            Text{ "a Silver Rupee" },
+        },
+        Text{ "a Gerudo Training Grounds Silver Rupee" });
+
+    hintTable[RHT_SPIRIT_TEMPLE_SILVER_RUPEE] = HintText::Item(
+        {
+            // obscure text
+            Text{ "spiritual unlocking currency" },
+        },
+        {
+            // ambiguous text
+            Text{ "a Silver Rupee" },
+        },
+        Text{ "a Spirit Temple Silver Rupee" });
+
+    hintTable[RHT_SHADOW_TEMPLE_SILVER_RUPEE] = HintText::Item(
+        {
+            // obscure text
+            Text{ "dark unlocking currency" },
+        },
+        {
+            // ambiguous text
+            Text{ "a Silver Rupee" },
+        },
+        Text{ "a Shadow Temple Silver Rupee" });
+
+    hintTable[RHT_GANONS_CASTLE_SILVER_RUPEE] = HintText::Item(
+        {
+            // obscure text
+            Text{ "evil unlocking currency" },
+        },
+        {
+            // ambiguous text
+            Text{ "a Silver Rupee" },
+        },
+        Text{ "a Ganon's Castle Silver Rupee" });
+    // TODO: End Translation
+
     hintTable[RHT_EPONA] = HintText::Item({
                        //obscure text
                        Text{"a horse",              /*french*/"un fidèle destrier", /*spanish*/"una yegua"},

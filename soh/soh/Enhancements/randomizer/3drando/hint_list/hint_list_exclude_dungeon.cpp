@@ -1151,6 +1151,21 @@ void HintTable_Init_Exclude_Dungeon() {
                        Text{"#upon a web of glass# in the Spirit Temple sits a spider holding", /*french*/"une #Skulltula sur une paroi de verre du Temple de l'Esprit# a", /*spanish*/"#sobre una plataforma de cristal# yace una Skulltula que otorga"},
   });
 
+  //TODO: Translate
+  hintTable[RHT_SPIRIT_CHILD_GATE_SILVER_RUPEE] = HintText::Exclude({
+    //obscure text
+    Text{"a #gate# in the Spirit Temple guards"}
+  });
+  hintTable[RHT_SPIRIT_CHILD_BLOCK_PUSH_SILVER_RUPEE] = HintText::Exclude({
+    //obscure text
+    Text{"#Beamos and blocks# in the Spirit Temple guard"}
+  });
+  hintTable[RHT_SPIRIT_BOULDER_SILVER_RUPEE] = HintText::Exclude({
+    //obscure text
+    Text{"#rolling rocks# in the Spirit Temple guard"}
+  });
+  //TODO: End Translation
+
   /*--------------------------
   |      SHADOW TEMPLE       |
   ---------------------------*/
@@ -1392,6 +1407,21 @@ void HintTable_Init_Exclude_Dungeon() {
                        Text{"a #suspended spider# guards", /*french*/"une #Skulltula près du repère du Temple de l'Ombre# a", /*spanish*/"una #Skulltula flotante# del Templo de las Sombras otorga"},
   });
 
+  //TODO: Translate
+  hintTable[RHT_SHADOW_SPINNING_SCYTHE_SILVER_RUPEE] = HintText::Exclude({
+    //obscure text
+    Text{"a #spinning scythe# guards"}
+  });
+
+  hintTable[RHT_SHADOW_OUTSIDE_SPIKE_RAIN_SILVER_RUPEE] = HintText::Exclude({
+    //obscure text
+    Text{"a #Beamos and Spike Trap# in the Shadow Temple guard"}
+  });
+  hintTable[RHT_SHADOW_INVISIBLE_SPIKES_SILVER_RUPEE] = HintText::Exclude({
+    //obscure text
+    Text{"#invisible spikes# guard"}
+  });
+
   /*--------------------------
   |    BOTTOM OF THE WELL    |
   ---------------------------*/
@@ -1511,6 +1541,11 @@ void HintTable_Init_Exclude_Dungeon() {
                        //obscure text
                        Text{"a #spider locked in a crypt# within the well guards", /*french*/"une #Skulltula embarrée dans la crypte au fonds du Puits# a", /*spanish*/"una #Skulltula encerrada en una cripta# del pozo otorga"},
   });
+  
+  hintTable[RHT_BOTTOM_OF_THE_WELL_SILVER_RUPEE] = HintText::Exclude({
+    //obscure text
+    Text{"#Redeads in a well# guard"}
+  });
 
   /*--------------------------
   |        ICE CAVERN        |
@@ -1585,6 +1620,12 @@ void HintTable_Init_Exclude_Dungeon() {
     hintTable[RHT_ICE_CAVERN_MQ_GS_RED_ICE] = HintText::Exclude({
                        //obscure text
                        Text{"a #spider in fiery ice# hoards", /*french*/"une #Skulltula figée dans la glace rouge# a", /*spanish*/"una #Skulltula tras un ardiente hielo# otorga"},
+  });
+
+  // TODO: Translate
+  hintTable[RHT_ICE_CAVERN_SPINNING_BLADES_SILVER_RUPEE] = HintText::Exclude({
+    // obscure text
+    Text{"#spinning ice# guards"}
   });
 
   /*--------------------------
@@ -1765,6 +1806,21 @@ void HintTable_Init_Exclude_Dungeon() {
                        //obscure text
                        Text{"a #feat of strength# rewards thieves with", /*french*/"#derrière un bloc argent# dans le Gymnase Gerudo gît", /*spanish*/"una #hazaña de fuerza# premia a las bandidas con"},
   });
+
+  // TODO: Translate
+  hintTable[RHT_GERUDO_TRAINING_GROUND_BOULDER_SILVER_RUPEE] = HintText::Exclude({
+    //obscure text
+    Text{"a #boulder maze# in the Gerudo Training Grounds guards"}
+  });
+  hintTable[RHT_GERUDO_TRAINING_GROUND_LAVA_SILVER_RUPEE] = HintText::Exclude({
+    //obscure text
+    Text{"a #fiery trial# in the Gerudo Training Grounds guards"}
+  });
+  hintTable[RHT_GERUDO_TRAINING_GROUND_TOILET_SILVER_RUPEE] = HintText::Exclude({
+    //obscure text
+    Text{"a #swirly trial# in the Gerudo Training Grounds guards"}
+  });
+  //TODO: End Translation
 
   /*--------------------------
   |      GANONS CASTLE       |
@@ -1960,5 +2016,23 @@ void HintTable_Init_Exclude_Dungeon() {
     hintTable[RHT_GANONS_CASTLE_MQ_DEKU_SCRUB_LEFT] = HintText::Exclude({
                        //obscure text
                        Text{"#scrubs in Ganon's Castle# sell", /*french*/"les #pestes Mojo dans le Château de Ganon# vendent", /*spanish*/"los #dekus del Castillo de Ganon# venden"},
+  });
+
+  hintTable[RHT_FOREST_TRIAL_SILVER_RUPEE] = HintText::Exclude({
+    //obscure text
+    Text{"the #test of the wilds# holds", /*french*/"l'#épreuve des bois# contient", /*spanish*/"la #prueba de la naturaleza# brinda"},
+  });
+  //TODO: Translate
+  hintTable[RHT_FIRE_TRIAL_SILVER_RUPEE] = HintText::Exclude({
+    //obscure text
+    Text{"the #test of flames# holds"}
+  });
+  hintTable[RHT_SPIRIT_TRIAL_SILVER_RUPEE] = HintText::Exclude({
+    //obscure text
+    Text{"the #test of the sands# holds", /*french*/"l'#épreuve des sables# contient", /*spanish*/"la #prueba de las arenas# brinda"}
+  });
+  hintTable[RHT_LIGHT_TRIAL_SILVER_RUPEE] = HintText::Exclude({
+    //obscure text
+    Text{"the #test of radiance# holds", /*french*/"l'#épreuve du ciel# contient", /*spanish*/"la #prueba del resplandor# brinda"}
   });
 }
