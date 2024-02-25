@@ -1542,7 +1542,7 @@ void HintTable_Init_Exclude_Dungeon() {
                        Text{"a #spider locked in a crypt# within the well guards", /*french*/"une #Skulltula embarrée dans la crypte au fonds du Puits# a", /*spanish*/"una #Skulltula encerrada en una cripta# del pozo otorga"},
   });
   
-  hintTable[RHT_BOTTOM_OF_THE_WELL_SILVER_RUPEE] = HintText::Exclude({
+  hintTable[RHT_BOTTOM_OF_THE_WELL_BASEMENT_SILVER_RUPEE] = HintText::Exclude({
     //obscure text
     Text{"#Redeads in a well# guard"}
   });

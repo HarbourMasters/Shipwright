@@ -42,6 +42,12 @@ void AreaTable_Init_BottomOfTheWell() {
                   LocationAccess(RC_BOTTOM_OF_THE_WELL_GS_WEST_INNER_ROOM,           {[]{return logic->Boomerang && (randoCtx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH)) && logic->SmallKeys(RR_BOTTOM_OF_THE_WELL, 3);}}),
                   LocationAccess(RC_BOTTOM_OF_THE_WELL_GS_EAST_INNER_ROOM,           {[]{return logic->Boomerang && (randoCtx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH)) && logic->SmallKeys(RR_BOTTOM_OF_THE_WELL, 3);}}),
                   LocationAccess(RC_BOTTOM_OF_THE_WELL_GS_LIKE_LIKE_CAGE,            {[]{return logic->SmallKeys(RR_BOTTOM_OF_THE_WELL, 3) && (randoCtx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH)) && logic->Boomerang;}}),
+                  LocationAccess(RC_BOTTOM_OF_THE_WELL_SILVER_RUPEE_1, {[]{return true;}}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_BOTTOM_OF_THE_WELL_SILVER_RUPEE_1, {[]{return true;}}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_BOTTOM_OF_THE_WELL_SILVER_RUPEE_2, {[]{return true;}}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_BOTTOM_OF_THE_WELL_SILVER_RUPEE_3, {[]{return true;}}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_BOTTOM_OF_THE_WELL_SILVER_RUPEE_4, {[]{return true;}}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_BOTTOM_OF_THE_WELL_SILVER_RUPEE_5, {[]{return true;}}), /*TODO: Silver Rupee Logic*/
                 }, {
                   //Exits
                   Entrance(RR_BOTTOM_OF_THE_WELL_ENTRYWAY, {[]{return true;}}),

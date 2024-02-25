@@ -38,6 +38,16 @@ void AreaTable_Init_IceCavern() {
                   LocationAccess(RC_ICE_CAVERN_GS_SPINNING_SCYTHE_ROOM, {[]{return logic->HookshotOrBoomerang;}}),
                   LocationAccess(RC_ICE_CAVERN_GS_HEART_PIECE_ROOM,     {[]{return logic->BlueFire && logic->HookshotOrBoomerang;}}),
                   LocationAccess(RC_ICE_CAVERN_GS_PUSH_BLOCK_ROOM,      {[]{return logic->BlueFire && (logic->HookshotOrBoomerang || (randoCtx->GetTrickOption(RT_ICE_BLOCK_GS) && logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)));}}),
+                  LocationAccess(RC_ICE_CAVERN_SPINNING_BLADES_SILVER_RUPEE_1, {[]{return true;}}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_ICE_CAVERN_SPINNING_BLADES_SILVER_RUPEE_2, {[]{return true;}}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_ICE_CAVERN_SPINNING_BLADES_SILVER_RUPEE_3, {[]{return true;}}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_ICE_CAVERN_SPINNING_BLADES_SILVER_RUPEE_4, {[]{return true;}}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_ICE_CAVERN_SPINNING_BLADES_SILVER_RUPEE_5, {[]{return true;}}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_ICE_CAVERN_SLIDING_SILVER_RUPEE_1, {[]{return true;}}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_ICE_CAVERN_SLIDING_SILVER_RUPEE_2, {[]{return true;}}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_ICE_CAVERN_SLIDING_SILVER_RUPEE_3, {[]{return true;}}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_ICE_CAVERN_SLIDING_SILVER_RUPEE_4, {[]{return true;}}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_ICE_CAVERN_SLIDING_SILVER_RUPEE_5, {[]{return true;}}), /*TODO: Silver Rupee Logic*/
   }, {});
   }
 

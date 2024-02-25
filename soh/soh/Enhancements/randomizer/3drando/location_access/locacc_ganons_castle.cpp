@@ -58,12 +58,23 @@ void AreaTable_Init_GanonsCastle() {
                 }, {
                   //Locations
                   LocationAccess(RC_GANONS_CASTLE_FOREST_TRIAL_CHEST, {[]{return logic->CanAdultDamage || logic->CanChildDamage;}}),
+                  LocationAccess(RC_FOREST_TRIAL_SILVER_RUPEE_1, {[]{return true;}}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_FOREST_TRIAL_SILVER_RUPEE_2, {[]{return true;}}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_FOREST_TRIAL_SILVER_RUPEE_3, {[]{return true;}}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_FOREST_TRIAL_SILVER_RUPEE_4, {[]{return true;}}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_FOREST_TRIAL_SILVER_RUPEE_5, {[]{return true;}}), /*TODO: Silver Rupee Logic*/
   }, {});
 
   areaTable[RR_GANONS_CASTLE_FIRE_TRIAL] = Area("Ganon's Castle Fire Trial", "Ganon's Castle", RA_GANONS_CASTLE, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&logic->FireTrialClear, {[]{return logic->CanUse(RG_GORON_TUNIC) && logic->CanUse(RG_GOLDEN_GAUNTLETS) && logic->CanUse(RG_LIGHT_ARROWS) && logic->CanUse(RG_LONGSHOT);}}),
-  }, {}, {});
+  }, {
+    LocationAccess(RC_FIRE_TRIAL_SILVER_RUPEE_1, {[]{return true;}}), /*TODO: Silver Rupee Logic*/
+    LocationAccess(RC_FIRE_TRIAL_SILVER_RUPEE_2, {[]{return true;}}), /*TODO: Silver Rupee Logic*/
+    LocationAccess(RC_FIRE_TRIAL_SILVER_RUPEE_3, {[]{return true;}}), /*TODO: Silver Rupee Logic*/
+    LocationAccess(RC_FIRE_TRIAL_SILVER_RUPEE_4, {[]{return true;}}), /*TODO: Silver Rupee Logic*/
+    LocationAccess(RC_FIRE_TRIAL_SILVER_RUPEE_5, {[]{return true;}}), /*TODO: Silver Rupee Logic*/
+  }, {});
 
   areaTable[RR_GANONS_CASTLE_WATER_TRIAL] = Area("Ganon's Castle Water Trial", "Ganon's Castle", RA_GANONS_CASTLE, NO_DAY_NIGHT_CYCLE, {
                   //Events
@@ -93,6 +104,11 @@ void AreaTable_Init_GanonsCastle() {
                   //Locations
                   LocationAccess(RC_GANONS_CASTLE_SPIRIT_TRIAL_CRYSTAL_SWITCH_CHEST, {[]{return (randoCtx->GetTrickOption(RT_GANON_SPIRIT_TRIAL_HOOKSHOT) || logic->CanUse(RG_HOOKSHOT)) && logic->CanJumpslash;}}),
                   LocationAccess(RC_GANONS_CASTLE_SPIRIT_TRIAL_INVISIBLE_CHEST,      {[]{return (randoCtx->GetTrickOption(RT_GANON_SPIRIT_TRIAL_HOOKSHOT) || logic->CanUse(RG_HOOKSHOT)) && logic->HasBombchus && (randoCtx->GetTrickOption(RT_LENS_GANON) || logic->CanUse(RG_LENS_OF_TRUTH));}}),
+                  LocationAccess(RC_SPIRIT_TRIAL_SILVER_RUPEE_1, {[]{return true;}}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_SPIRIT_TRIAL_SILVER_RUPEE_2, {[]{return true;}}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_SPIRIT_TRIAL_SILVER_RUPEE_3, {[]{return true;}}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_SPIRIT_TRIAL_SILVER_RUPEE_4, {[]{return true;}}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_SPIRIT_TRIAL_SILVER_RUPEE_5, {[]{return true;}}), /*TODO: Silver Rupee Logic*/
   }, {});
 
   areaTable[RR_GANONS_CASTLE_LIGHT_TRIAL] = Area("Ganon's Castle Light Trial", "Ganon's Castle", RA_GANONS_CASTLE, NO_DAY_NIGHT_CYCLE, {
@@ -108,6 +124,11 @@ void AreaTable_Init_GanonsCastle() {
                   LocationAccess(RC_GANONS_CASTLE_LIGHT_TRIAL_THIRD_RIGHT_CHEST,       {[]{return true;}}),
                   LocationAccess(RC_GANONS_CASTLE_LIGHT_TRIAL_INVISIBLE_ENEMIES_CHEST, {[]{return randoCtx->GetTrickOption(RT_LENS_GANON) || logic->CanUse(RG_LENS_OF_TRUTH);}}),
                   LocationAccess(RC_GANONS_CASTLE_LIGHT_TRIAL_LULLABY_CHEST,           {[]{return logic->CanUse(RG_ZELDAS_LULLABY) && logic->SmallKeys(RR_GANONS_CASTLE, 1);}}),
+                  LocationAccess(RC_LIGHT_TRIAL_SILVER_RUPEE_1, {[]{return true;}}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_LIGHT_TRIAL_SILVER_RUPEE_2, {[]{return true;}}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_LIGHT_TRIAL_SILVER_RUPEE_3, {[]{return true;}}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_LIGHT_TRIAL_SILVER_RUPEE_4, {[]{return true;}}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_LIGHT_TRIAL_SILVER_RUPEE_5, {[]{return true;}}), /*TODO: Silver Rupee Logic*/
   }, {});
   }
 

@@ -39,6 +39,11 @@ void AreaTable_Init_ShadowTemple() {
                   //Locations
                   LocationAccess(RC_SHADOW_TEMPLE_COMPASS_CHEST,            {[]{return logic->CanJumpslash;}}),
                   LocationAccess(RC_SHADOW_TEMPLE_EARLY_SILVER_RUPEE_CHEST, {[]{return logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_HOOKSHOT);}}),
+                  LocationAccess(RC_SHADOW_SCYTHE_SILVER_RUPEE_1, {[]{return true;}}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_SHADOW_SCYTHE_SILVER_RUPEE_2, {[]{return true;}}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_SHADOW_SCYTHE_SILVER_RUPEE_3, {[]{return true;}}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_SHADOW_SCYTHE_SILVER_RUPEE_4, {[]{return true;}}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_SHADOW_SCYTHE_SILVER_RUPEE_5, {[]{return true;}}), /*TODO: Silver Rupee Logic*/
                   LocationAccess(RC_SHADOW_TEMPLE_GS_NEAR_SHIP,             {[]{return false;}}),
                 }, {
                   //Exits
@@ -50,10 +55,20 @@ void AreaTable_Init_ShadowTemple() {
                   //Locations
                   LocationAccess(RC_SHADOW_TEMPLE_INVISIBLE_BLADES_VISIBLE_CHEST,   {[]{return logic->CanJumpslash;}}),
                   LocationAccess(RC_SHADOW_TEMPLE_INVISIBLE_BLADES_INVISIBLE_CHEST, {[]{return logic->CanJumpslash;}}),
+                  LocationAccess(RC_SHADOW_OUTSIDE_SPIKE_RAIN_SILVER_RUPEE_1, {[]{return true;}}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_SHADOW_OUTSIDE_SPIKE_RAIN_SILVER_RUPEE_2, {[]{return true;}}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_SHADOW_OUTSIDE_SPIKE_RAIN_SILVER_RUPEE_3, {[]{return true;}}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_SHADOW_OUTSIDE_SPIKE_RAIN_SILVER_RUPEE_4, {[]{return true;}}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_SHADOW_OUTSIDE_SPIKE_RAIN_SILVER_RUPEE_5, {[]{return true;}}), /*TODO: Silver Rupee Logic*/
                   LocationAccess(RC_SHADOW_TEMPLE_FALLING_SPIKES_LOWER_CHEST,       {[]{return true;}}),
                   LocationAccess(RC_SHADOW_TEMPLE_FALLING_SPIKES_UPPER_CHEST,       {[]{return (randoCtx->GetTrickOption(RT_SHADOW_UMBRELLA) && logic->HoverBoots) || logic->GoronBracelet;}}),
                   LocationAccess(RC_SHADOW_TEMPLE_FALLING_SPIKES_SWITCH_CHEST,      {[]{return (randoCtx->GetTrickOption(RT_SHADOW_UMBRELLA) && logic->HoverBoots) || logic->GoronBracelet;}}),
                   LocationAccess(RC_SHADOW_TEMPLE_INVISIBLE_SPIKES_CHEST,           {[]{return logic->SmallKeys(RR_SHADOW_TEMPLE, 2, 3) && ((randoCtx->GetTrickOption(RT_LENS_SHADOW_PLATFORM) && randoCtx->GetTrickOption(RT_LENS_SHADOW)) || logic->CanUse(RG_LENS_OF_TRUTH));}}),
+                  LocationAccess(RC_SHADOW_INVISIBLE_SPIKES_SILVER_RUPEE_1, {[]{return true;}}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_SHADOW_INVISIBLE_SPIKES_SILVER_RUPEE_2, {[]{return true;}}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_SHADOW_INVISIBLE_SPIKES_SILVER_RUPEE_3, {[]{return true;}}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_SHADOW_INVISIBLE_SPIKES_SILVER_RUPEE_4, {[]{return true;}}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_SHADOW_INVISIBLE_SPIKES_SILVER_RUPEE_5, {[]{return true;}}), /*TODO: Silver Rupee Logic*/
                   LocationAccess(RC_SHADOW_TEMPLE_FREESTANDING_KEY,                 {[]{return logic->SmallKeys(RR_SHADOW_TEMPLE, 2, 3) && ((randoCtx->GetTrickOption(RT_LENS_SHADOW_PLATFORM) && randoCtx->GetTrickOption(RT_LENS_SHADOW)) || logic->CanUse(RG_LENS_OF_TRUTH)) && logic->Hookshot && (logic->Bombs || logic->GoronBracelet || (randoCtx->GetTrickOption(RT_SHADOW_FREESTANDING_KEY) && logic->HasBombchus));}}),
                   LocationAccess(RC_SHADOW_TEMPLE_GS_LIKE_LIKE_ROOM,                {[]{return logic->CanJumpslash;}}),
                   LocationAccess(RC_SHADOW_TEMPLE_GS_FALLING_SPIKES_ROOM,           {[]{return logic->Hookshot || (randoCtx->GetTrickOption(RT_SHADOW_UMBRELLA_GS) && logic->HoverBoots);}}),
