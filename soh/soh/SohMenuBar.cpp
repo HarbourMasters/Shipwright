@@ -37,6 +37,10 @@
 #include "Enhancements/randomizer/randomizer_settings_window.h"
 #include "Enhancements/resolution-editor/ResolutionEditor.h"
 
+// FA icons are kind of wonky, if they worked how I expected them to the "+ 2.0f" wouldn't be needed, but
+// they don't work how I expect them to so I added that because it looked good when I eyeballed it
+#define FA_ICON_BUTTON_FRAME_PADDING_X(icon) (((optionsButtonSize.x - ImGui::CalcTextSize(icon).x) / 2) + 2.0f)
+
 extern bool ToggleAltAssetsAtEndOfFrame;
 extern bool isBetaQuestEnabled;
 
@@ -1933,9 +1937,11 @@ void DrawRandomizerMenu() {
         ImGui::SetCursorPos(ImVec2(cursor.x + separationToOptionsButton, cursor.y));
 
         if (mItemTrackerSettingsWindow) {
+            ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(FA_ICON_BUTTON_FRAME_PADDING_X(ICON_FA_COG), 6.0f));
             if (ImGui::Button(ICON_FA_COG "##ItemTrackerSettings", optionsButtonSize)) {
                 mItemTrackerSettingsWindow->ToggleVisibility();
             }
+            ImGui::PopStyleVar();
         }
 
         UIWidgets::Spacer(0);
@@ -1950,9 +1956,11 @@ void DrawRandomizerMenu() {
         ImGui::SetCursorPos(ImVec2(cursor.x + separationToOptionsButton, cursor.y));
 
         if (mEntranceTrackerSettingsWindow) {
+            ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(FA_ICON_BUTTON_FRAME_PADDING_X(ICON_FA_COG), 6.0f));
             if (ImGui::Button(ICON_FA_COG "##EntranceTrackerSettings", optionsButtonSize)) {
                 mEntranceTrackerSettingsWindow->ToggleVisibility();
             }
+            ImGui::PopStyleVar();
         }
 
         UIWidgets::Spacer(0);
@@ -1968,9 +1976,11 @@ void DrawRandomizerMenu() {
         ImGui::SetCursorPos(ImVec2(cursor.x + separationToOptionsButton, cursor.y));
 
         if (mCheckTrackerSettingsWindow) {
+            ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(FA_ICON_BUTTON_FRAME_PADDING_X(ICON_FA_COG), 6.0f));
             if (ImGui::Button(ICON_FA_COG "##CheckTrackerSettings", optionsButtonSize)) {
                 mCheckTrackerSettingsWindow->ToggleVisibility();
             }
+            ImGui::PopStyleVar();
         }
 
         ImGui::PopStyleVar(3);
