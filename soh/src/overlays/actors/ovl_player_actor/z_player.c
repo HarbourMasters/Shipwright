@@ -5212,7 +5212,7 @@ s32 func_8083AD4C(PlayState* play, Player* this) {
         if (func_8002DD6C(this)) {
             bool shouldUseBowCamera = LINK_IS_ADULT;
 
-            if(CVarGetInteger("gBowSlingShotAmmoFix", 0)){
+            if (CVarGetInteger("gBowSlingShotAmmoFix", 0) || CVarGetInteger("gEnhancements.EquimentAlwaysVisible", 0)) {
                 shouldUseBowCamera = this->heldItemAction != PLAYER_IA_SLINGSHOT;
             }
             
@@ -12154,7 +12154,7 @@ s32 func_8084B3CC(PlayState* play, Player* this) {
 
         if (!func_8002DD6C(this) || Player_HoldsHookshot(this)) {
             s32 projectileItemToUse = ITEM_BOW;
-            if(CVarGetInteger("gBowSlingShotAmmoFix", 0)){
+            if (CVarGetInteger("gBowSlingShotAmmoFix", 0) || CVarGetInteger("gEnhancements.EquimentAlwaysVisible", 0)) {
                 projectileItemToUse = LINK_IS_ADULT ? ITEM_BOW : ITEM_SLINGSHOT;
             }
 
