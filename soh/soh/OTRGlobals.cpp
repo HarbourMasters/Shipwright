@@ -1395,6 +1395,7 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
 
         // Actually update the CVar now before runing the alt asset update listeners
         CVarSetInteger("gAltAssets", !CVarGetInteger("gAltAssets", 0));
+        UpdatePatchCustomEquipmentDlists();
         gfx_texture_cache_clear();
         SOH::SkeletonPatcher::UpdateSkeletons();
         GameInteractor::Instance->ExecuteHooks<GameInteractor::OnAssetAltChange>();

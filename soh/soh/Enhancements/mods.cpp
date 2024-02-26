@@ -760,7 +760,7 @@ void UpdatePatchHand() {
         ResourceMgr_UnpatchGfxByName(gLinkChildLeftFistAndBoomerangNearDL, "adultBoomerang");
         ResourceMgr_UnpatchGfxByName(gLinkChildRightFistAndDekuShieldNearDL, "adultDekuShield");
     }
-    if ((CVarGetInteger("gEnhancements.EquimentAlwaysVisible", 0)) && LINK_IS_ADULT && Player_IsCustomLinkModel) {
+    if ((CVarGetInteger("gEnhancements.EquimentAlwaysVisible", 0)) && LINK_IS_ADULT) {
         ResourceMgr_PatchCustomGfxByName(gLinkChildLeftFistNearDL, "customAdultHand1", 0, gsSPDisplayListOTRFilePath(gLinkAdultLeftHandClosedNearDL));
         ResourceMgr_PatchCustomGfxByName(gLinkChildLeftFistNearDL, "customAdultHand2", 1, gsSPEndDisplayList());
         ResourceMgr_PatchCustomGfxByName(gLinkChildRightHandClosedNearDL, "customAdultHand3", 0, gsSPDisplayListOTRFilePath(gLinkAdultRightHandClosedNearDL));
@@ -771,7 +771,7 @@ void UpdatePatchHand() {
         ResourceMgr_UnpatchGfxByName(gLinkChildRightHandClosedNearDL, "customAdultHand3");
         ResourceMgr_UnpatchGfxByName(gLinkChildRightHandClosedNearDL, "customAdultHand4");
     }
-    if ((CVarGetInteger("gEnhancements.CustomEquipDlists", 0)) && LINK_IS_CHILD && Player_IsCustomLinkModel) {
+    if ((CVarGetInteger("gEnhancements.EquimentAlwaysVisible", 0)) && LINK_IS_CHILD) {
         ResourceMgr_PatchCustomGfxByName(gLinkAdultLeftHandClosedNearDL, "customChildHand1", 0, gsSPDisplayListOTRFilePath(gLinkChildLeftFistNearDL));
         ResourceMgr_PatchCustomGfxByName(gLinkAdultLeftHandClosedNearDL, "customChildHand2", 1, gsSPEndDisplayList());
         ResourceMgr_PatchCustomGfxByName(gLinkAdultRightHandClosedNearDL, "customChildHand3", 0, gsSPDisplayListOTRFilePath(gLinkChildRightHandClosedNearDL));
@@ -794,7 +794,7 @@ void PatchOrUnpatch(const char* resource, const char* gfx, const char* dlist1, c
     if (resource == NULL || gfx == NULL || dlist1 == NULL || dlist2 == NULL)
         return;
 
-    if (ResourceGetIsCustomByName(gfx) && CVarGetInteger("gEnhancements.CustomEquipDlists", 0)) {
+    if (ResourceGetIsCustomByName(gfx) && CVarGetInteger("gAltAssets", 0)) {
         if (alternateDL == NULL || ResourceGetIsCustomByName(alternateDL) || ResourceMgr_FileExists(alternateDL)) {
             ResourceMgr_PatchCustomGfxByName(resource, dlist1, 0, gsSPDisplayListOTRFilePath(gfx));
             if (dlist3 == NULL) {
