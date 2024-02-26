@@ -163,11 +163,30 @@ public:
     static GameInteractionEffectQueryResult RemoveEffect(RemovableGameInteractionEffect* effect);
 
     // Game Hooks
-    template <typename H> struct RegisteredGameHooks { inline static std::vector<typename H::fn> functions; };
-    template <typename H> void RegisterGameHook(typename H::fn h) { RegisteredGameHooks<H>::functions.push_back(h); }
+    uint32_t nextHookId = 1;
+    template <typename H> struct RegisteredGameHooks { inline static std::unordered_map<uint32_t, typename H::fn> functions; };
+    template <typename H> struct HooksToUnregister { inline static std::vector<uint32_t> hooks; };
+    template <typename H> uint32_t RegisterGameHook(typename H::fn h) {
+        // Ensure hook id is unique and not 0, which is reserved for invalid hooks
+        if (this->nextHookId == 0 || this->nextHookId >= UINT32_MAX) this->nextHookId = 1;
+        while (RegisteredGameHooks<H>::functions.find(this->nextHookId) != RegisteredGameHooks<H>::functions.end()) {
+            this->nextHookId++;
+        }
+
+        RegisteredGameHooks<H>::functions[this->nextHookId] = h;
+        return this->nextHookId++;
+    }
+    template <typename H> void UnregisterGameHook(uint32_t id) {
+        HooksToUnregister<H>::hooks.push_back(id);
+    }
+
     template <typename H, typename... Args> void ExecuteHooks(Args&&... args) {
-        for (auto& fn : RegisteredGameHooks<H>::functions) {
-            fn(std::forward<Args>(args)...);
+        for (auto& hookId : HooksToUnregister<H>::hooks) {
+            RegisteredGameHooks<H>::functions.erase(hookId);
+        }
+        HooksToUnregister<H>::hooks.clear();
+        for (auto& hook : RegisteredGameHooks<H>::functions) {
+            hook.second(std::forward<Args>(args)...);
         }
     }
 
@@ -221,9 +240,10 @@ public:
 
     DEFINE_HOOK(OnFileDropped, void(std::string filePath));
     DEFINE_HOOK(OnAssetAltChange, void());
+    DEFINE_HOOK(OnKaleidoUpdate, void());
 
     // Helpers
-    static bool IsSaveLoaded();
+    static bool IsSaveLoaded(bool allowDbgSave = false);
     static bool IsGameplayPaused();
     static bool CanSpawnActor();
     static bool CanAddOrTakeAmmo(int16_t amount, int16_t item);

@@ -16,6 +16,7 @@ void EnSi_Init(Actor* thisx, PlayState* play);
 void EnSi_Destroy(Actor* thisx, PlayState* play);
 void EnSi_Update(Actor* thisx, PlayState* play);
 void EnSi_Draw(Actor* thisx, PlayState* play);
+void EnSi_Reset();
 
 s32 func_80AFB748(EnSi* this, PlayState* play);
 void func_80AFB768(EnSi* this, PlayState* play);
@@ -61,7 +62,7 @@ const ActorInit En_Si_InitVars = {
     (ActorFunc)EnSi_Destroy,
     (ActorFunc)EnSi_Update,
     (ActorFunc)EnSi_Draw,
-    NULL,
+    (ActorResetFunc)EnSi_Reset,
 };
 
 void EnSi_Init(Actor* thisx, PlayState* play) {
@@ -190,7 +191,7 @@ void func_80AFB950(EnSi* this, PlayState* play) {
             player->actor.freezeTimer = 0;
             func_8083C148(GET_PLAYER(play), play);
             func_80078884(NA_SE_SY_CAMERA_ZOOM_UP);
-            player->currentYaw = player->actor.shape.rot.y;
+            player->yaw = player->actor.shape.rot.y;
         }
     }
 }
@@ -222,6 +223,11 @@ void EnSi_Draw(Actor* thisx, PlayState* play) {
             GetItemEntry_Draw(play, getItem);
         }
     }
+}
+
+void EnSi_Reset() {
+    textId = 0xB4;
+    giveItemId = ITEM_SKULL_TOKEN;
 }
 
 void Randomizer_UpdateSkullReward(EnSi* this, PlayState* play) {

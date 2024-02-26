@@ -320,8 +320,8 @@ void func_809C9700(EnBox* this, PlayState* play) {
         this->unk_1FB = ENBOX_STATE_0;
     } else {
         if (this->unk_1FB == ENBOX_STATE_0) {
-            if (!(player->stateFlags2 & 0x1000000)) {
-                player->stateFlags2 |= 0x800000;
+            if (!(player->stateFlags2 & PLAYER_STATE2_ATTEMPT_PLAY_FOR_ACTOR)) {
+                player->stateFlags2 |= PLAYER_STATE2_NEAR_OCARINA_ACTOR;
                 return;
             }
             this->unk_1FB = ENBOX_STATE_1;
@@ -646,9 +646,17 @@ void EnBox_UpdateSizeAndTexture(EnBox* this, PlayState* play) {
 
     if (!isVanilla) {
         getItemCategory = this->getItemEntry.getItemCategory;
-        // If they don't have bombchu's yet consider the bombchu item major
-        if (this->getItemEntry.gid == GID_BOMBCHU && INV_CONTENT(ITEM_BOMBCHU) != ITEM_BOMBCHU) {
-            getItemCategory = ITEM_CATEGORY_MAJOR;
+        // If they have bombchus, don't consider the bombchu item major
+        if (
+            INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU &&
+            ((this->getItemEntry.modIndex == MOD_RANDOMIZER && this->getItemEntry.getItemId == RG_PROGRESSIVE_BOMBCHUS) || 
+            (this->getItemEntry.modIndex == MOD_NONE && (
+                this->getItemEntry.getItemId == GI_BOMBCHUS_5 ||
+                this->getItemEntry.getItemId == GI_BOMBCHUS_10 ||
+                this->getItemEntry.getItemId == GI_BOMBCHUS_20
+            )))
+        ) {
+            getItemCategory = ITEM_CATEGORY_JUNK;
         // If it's a bottle and they already have one, consider the item lesser
         } else if (
             (this->getItemEntry.modIndex == MOD_RANDOMIZER && this->getItemEntry.getItemId >= RG_BOTTLE_WITH_RED_POTION && this->getItemEntry.getItemId <= RG_BOTTLE_WITH_BIG_POE) ||
