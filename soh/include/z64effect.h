@@ -38,7 +38,7 @@ typedef struct {
     /* 0x0C */ Vec3f position;
     /* 0x18 */ Vec3s unkVelocity;
     /* 0x1E */ Vec3s unkPosition;
-    /* 0x24 */ u32 epoch;
+               u32 epoch;
 } EffectSparkElement; // size = 0x28
 
 typedef struct {
@@ -86,7 +86,7 @@ typedef struct {
     /* 0x194 */ s32 elemDuration;
     /* 0x198 */ s32 unkFlag;
     /* 0x19C */ s32 calcMode;
-    /* 0x1A0 */ TrailType trailType; // 1 is swords, 2 is boomerang, 3 is bombchu, 0 is rest
+                TrailType trailType; // 1 is swords, 2 is boomerang, 3 is bombchu, 0 is rest
 } EffectBlureInit1;                  // size = 0x1A0
 
 typedef struct {
@@ -103,7 +103,7 @@ typedef struct {
     /* 0x1B */ u8 mode4Param;
     /* 0x1C */ Color_RGBA8 altPrimColor; // used with drawMode 1
     /* 0x20 */ Color_RGBA8 altEnvColor;  // used with drawMode 1
-    /* 0x1A0 */ TrailType trailType;     // 1 is swords, 2 is boomerang, 3 is bombchu, 4 is stick, 0 is rest
+               TrailType trailType;     // 1 is swords, 2 is boomerang, 3 is bombchu, 4 is stick, 0 is rest
 } EffectBlureInit2;                      // size = 0x24
 
 typedef struct {
@@ -123,7 +123,7 @@ typedef struct {
     /* 0x1A1 */ u8 drawMode;                    // 0: simple; 1: simple with alt colors; 2+: smooth
     /* 0x1A2 */ Color_RGBA8 altPrimColor;       // used with drawMode 1
     /* 0x1A6 */ Color_RGBA8 altEnvColor;        // used with drawMode 1
-    /* 0x1A0 */ TrailType trailType; // 1 is default swords, 2 is boomerang, 3 is bombchu, 0 is rest. 4 is
+                TrailType trailType; // 1 is default swords, 2 is boomerang, 3 is bombchu, 0 is rest. 4 is
                                                 // Kokiri, 5 is Master, 6 is BGS, 7 is Stick, 8 is Hammer.
 } EffectBlure;                                  // size = 0x1AC
 
@@ -135,7 +135,7 @@ typedef struct {
     /* 0x10 */ f32 startX;
     /* 0x14 */ s16 yaw;
     /* 0x16 */ s16 pitch;
-    /* 0x18 */ u32 epoch;
+               u32 epoch;
 } EffectShieldParticleElement; // size = 0x1C
 
 typedef struct {
@@ -244,7 +244,7 @@ typedef struct EffectSs {
     /* 0x5C */ s16 life;    // -1 means this entry is free
     /* 0x5E */ u8 priority; // Lower value means higher priority
     /* 0x5F */ u8 type;
-    u32 epoch;
+               u32 epoch;
 } EffectSs; // size = 0x60
 
 typedef struct {
