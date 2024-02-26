@@ -2,8 +2,8 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 
 #include "soh/frame_interpolation.h"
+#include "soh/util.h"
 #include <assert.h>
-#include <stdio.h>
 
 void EffectBlure_AddVertex(EffectBlure* this, Vec3f* p1, Vec3f* p2) {
     EffectBlureElement* elem;
@@ -200,36 +200,6 @@ void EffectBlure_Init2(void* thisx, void* initParamsx) {
 void EffectBlure_Destroy(void* thisx) {
 }
 
-void updateTrailColor(const char* trailName, Color_RGBA8* color, int* changed, int* reset) {
-    Color_RGBA8 defaultColor = { 255, 255, 255, 255 };
-    char cvarName[50];
-    if (CVarGetInteger(snprintf(cvarName, sizeof(cvarName), "%s.Changed", trailName), 0)) {
-        *color = CVarGetColor(snprintf(cvarName, sizeof(cvarName), "%s.Value", trailName), defaultColor);
-        *changed = 1;
-    } else if (*changed) {
-        *color = defaultColor;
-        *reset = 1;
-    }
-}
-
-void updateParticleColors(Color_RGBA8* color, Color_RGBA8 p1StartColor, Color_RGBA8 p2StartColor,
-                          Color_RGBA8 p1EndColor, Color_RGBA8 p2EndColor) {
-    p1StartColor.r = color->r;
-    p2StartColor.r = color->r * 0.8f;
-    p1EndColor.r = color->r * 0.6f;
-    p2EndColor.r = color->r * 0.4f;
-
-    p1StartColor.g = color->g;
-    p2StartColor.g = color->g * 0.8f;
-    p1EndColor.g = color->g * 0.6f;
-    p2EndColor.g = color->g * 0.4f;
-
-    p1StartColor.b = color->b;
-    p2StartColor.b = color->b * 0.8f;
-    p1EndColor.b = color->b * 0.6f;
-    p2EndColor.b = color->b * 0.4f;
-}
-
 s32 EffectBlure_Update(void* thisx) {
     EffectBlure* this = (EffectBlure*)thisx;
     s32 i;
@@ -239,26 +209,26 @@ s32 EffectBlure_Update(void* thisx) {
 
     switch (this->trailType) { // a better way?
         case TRAIL_TYPE_BOOMERANG:
-            updateTrailColor("gCosmetics.Trails_Boomerang", &color, &changed, &reset);
+            UpdateColor("gCosmetics.Trails_Boomerang", &color, &changed, &reset);
             break;
         case TRAIL_TYPE_BOMBCHU:
-            updateTrailColor("gCosmetics.Trails_Bombchu", &color, &changed, &reset);
-            updateParticleColors(&color, this->p1StartColor, this->p2StartColor, this->p1EndColor, this->p2EndColor);
+            UpdateColor("gCosmetics.Trails_Bombchu", &color, &changed, &reset);
+            UpdateParticleColors(&color, this->p1StartColor, this->p2StartColor, this->p1EndColor, this->p2EndColor);
             break;
         case TRAIL_TYPE_KOKIRI_SWORD:
-            updateTrailColor("gCosmetics.Trails_KokiriSword", &color, &changed, &reset);
+            UpdateColor("gCosmetics.Trails_KokiriSword", &color, &changed, &reset);
             break;
         case TRAIL_TYPE_MASTER_SWORD:
-            updateTrailColor("gCosmetics.Trails_MasterSword", &color, &changed, &reset);
+            UpdateColor("gCosmetics.Trails_MasterSword", &color, &changed, &reset);
             break;
         case TRAIL_TYPE_BIGGORON_SWORD:
-            updateTrailColor("gCosmetics.Trails_BiggoronSword", &color, &changed, &reset);
+            UpdateColor("gCosmetics.Trails_BiggoronSword", &color, &changed, &reset);
             break;
         case TRAIL_TYPE_STICK:
-            updateTrailColor("gCosmetics.Trails_Stick", &color, &changed, &reset);
+            UpdateColor("gCosmetics.Trails_Stick", &color, &changed, &reset);
             break;
         case TRAIL_TYPE_HAMMER:
-            updateTrailColor("gCosmetics.Trails_Hammer", &color, &changed, &reset);
+            UpdateColor("gCosmetics.Trails_Hammer", &color, &changed, &reset);
             break;
         default:
             break;
