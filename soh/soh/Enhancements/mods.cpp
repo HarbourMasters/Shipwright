@@ -736,6 +736,13 @@ void UpdatePatchChildHylianShield() {
 
 void RegisterPatchChildHylianShieldHandler() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
+        static uint16_t lastItemOnB = gSaveContext.equips.buttonItems[0];
+        if (lastItemOnB != gSaveContext.equips.buttonItems[0]) {
+            UpdatePatchChildHylianShield();
+            lastItemOnB = gSaveContext.equips.buttonItems[0];
+        }
+    });
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int32_t sceneNum) {
         UpdatePatchChildHylianShield();
     });
 }
