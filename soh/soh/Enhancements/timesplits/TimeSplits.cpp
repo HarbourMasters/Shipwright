@@ -162,19 +162,19 @@ std::vector<TimeSplitObject> splitObjects = {
 {	123, "Magic Meter", 						"ITEM_MAGIC_SMALL"},
 {	124, "Double Magic Meter", 				    "ITEM_MAGIC_LARGE"},
 {	125, "Double Defense", 						"ITEM_HEART_CONTAINER"},
-{	152, "Deku Stick Upgrade (20)", 			"ITEM_STICK_UPGRADE_20"}, 
-{	153, "Deku Stick Upgrade (30)", 			"ITEM_STICK_UPGRADE_30"},
-{	154, "Deku Nut Upgrade (30)", 				"ITEM_NUT_UPGRADE_30"},
-{	155, "Deku Nut Upgrade (40)", 				"ITEM_NUT_UPGRADE_40"},
-{   657, "Queen Gohma",                         "RG_TRIFORCE_PIECE_GOHMA"},
-{   658, "King Dodongo",                        "RG_TRIFORCE_PIECE_DODONGO"},
-{   659, "Barinade",                            "RG_TRIFORCE_PIECE_BARINADE"},
-{   660, "Phantom Ganon",                       "RG_TRIFORCE_PIECE_PHANTOM_GANON"},
-{   661, "Volvagia",                            "RG_TRIFORCE_PIECE_VOLVAGIA"},
-{   662, "Morpha",                              "RG_TRIFORCE_PIECE_MORPHA"},
-{   663, "Bongo Bongo",                         "RG_TRIFORCE_PIECE_BONGO"},
-{   664, "Twinrova",                            "RG_TRIFORCE_PIECE_TWINROVA"},  
-{   665, "Ganondorf",                           "RG_TRIFORCE_PIECE_GANONDORF"},
+{	152, "Deku Stick Upgrade (20)", 			"ITEM_STICK"}, 
+{	153, "Deku Stick Upgrade (30)", 			"ITEM_STICK"},
+{	154, "Deku Nut Upgrade (30)", 				"ITEM_NUT"},
+{	155, "Deku Nut Upgrade (40)", 				"ITEM_NUT"},
+{   657, "Queen Gohma",                         "RG_TRIFORCE_PIECE"}, 
+{   658, "King Dodongo",                        "RG_TRIFORCE_PIECE"},
+{   659, "Barinade",                            "RG_TRIFORCE_PIECE"},
+{   660, "Phantom Ganon",                       "RG_TRIFORCE_PIECE"},
+{   661, "Volvagia",                            "RG_TRIFORCE_PIECE"},
+{   662, "Morpha",                              "RG_TRIFORCE_PIECE"},
+{   663, "Bongo Bongo",                         "RG_TRIFORCE_PIECE"},
+{   664, "Twinrova",                            "RG_TRIFORCE_PIECE"},  
+{   665, "Ganondorf",                           "RG_TRIFORCE_PIECE"},
 {   666, "Ganon",                               "RG_TRIFORCE_PIECE"},
 };
 
@@ -350,12 +350,7 @@ void DrawTimeSplitSplits(){
             }
         }
         ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
-        if (LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(itemImager)  == nullptr) {
-            ImGui::Button(std::to_string(buttonID).c_str());
-            buttonID++;
-        } else {
-            ImGui::ImageButton(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(itemImager), ImVec2(26.0f, 26.0f), ImVec2(0, 0), ImVec2(1, 1));
-        }
+        ImGui::ImageButton(std::to_string(buttonID).c_str(), LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(itemImager), ImVec2(26.0f, 26.0f), ImVec2(0, 0), ImVec2(1, 1));
         ImGui::PopStyleColor();
         
         if (ImGui::IsItemActive()) {
@@ -434,6 +429,7 @@ void DrawTimeSplitSplits(){
         ImGui::Text(formatTimestampTimeSplit(splitPreviousBest[loopCounter]).c_str());
         ImGui::PopStyleVar();
         loopCounter++;
+        buttonID++;
     }
     ImGui::EndTable();
     ImGui::PopStyleVar(1);
@@ -468,29 +464,14 @@ void DrawTimeSplitManageList() {
     ImGui::TableNextColumn();
     uint32_t buttonID = 0;
     for (const auto& obj : splitObjects) {
-        
-        if (LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(obj.itemImage) == nullptr) {
-            if (ImGui::Button(std::to_string(buttonID).c_str())) {
-                splitItem.push_back(obj.itemID);
-                splitTime.push_back(0);
-                splitPreviousBest.push_back(0);
-                splitBest.push_back(100000);
-                splitStatus.push_back(0);
-                statusColor = COLOR_GREEN;
-                status = obj.itemName + std::string(" added to list");
-            }
-            buttonID++;
-        } else {
-            if (ImGui::ImageButton(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(obj.itemImage), ImVec2(24.0f, 24.0f), ImVec2(0, 0), ImVec2(1, 1))) {
-                splitItem.push_back(obj.itemID);
-                splitTime.push_back(0);
-                splitPreviousBest.push_back(0);
-                splitBest.push_back(100000);
-                splitStatus.push_back(0);
-                statusColor = COLOR_GREEN;
-                status = obj.itemName + std::string(" added to list");
-        }
-        
+        if (ImGui::ImageButton(std::to_string(buttonID).c_str(), LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(obj.itemImage), ImVec2(24.0f, 24.0f), ImVec2(0, 0), ImVec2(1, 1))) {
+            splitItem.push_back(obj.itemID);
+            splitTime.push_back(0);
+            splitPreviousBest.push_back(0);
+            splitBest.push_back(100000);
+            splitStatus.push_back(0);
+            statusColor = COLOR_GREEN;
+            status = obj.itemName + std::string(" added to list");
         }
         ImGui::SameLine();
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0.0f, 8.0f));
@@ -498,6 +479,7 @@ void DrawTimeSplitManageList() {
         ImGui::Text(obj.itemName);
         ImGui::PopStyleVar(1);
         ImGui::TableNextColumn();
+        buttonID++;
     }
     ImGui::EndTable();
 }
