@@ -186,8 +186,7 @@ namespace SohGui {
         gui->AddGuiWindow(mRandomizerSettingsWindow);
         mModalWindow = std::make_shared<SohModalWindow>("gOpenWindows.modalWindowEnabled", "Modal Window");
         gui->AddGuiWindow(mModalWindow);
-        CVarSetInteger("gOpenWindows.modalWindowEnabled", 1);
-        CVarSave();
+        mModalWindow->Show();
     }
 
     void Destroy() {

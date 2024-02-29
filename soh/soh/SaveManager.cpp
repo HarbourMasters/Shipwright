@@ -1024,13 +1024,6 @@ void SaveManager::SaveGlobal() {
     output << std::setw(4) << globalBlock << std::endl;
 }
 
-void callback1() {
-    SPDLOG_INFO("callback 1");
-}
-
-void callback2() {
-    SPDLOG_INFO("callback 2");
-}
 
 void SaveManager::LoadFile(int fileNum) {
     SPDLOG_INFO("Load File - fileNum: {}", fileNum);
