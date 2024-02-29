@@ -1504,7 +1504,8 @@ void func_80862E6C(EnTest* this, PlayState* play) {
             this->actor.home.rot.x = this->bodyBreak.count;
         }
 
-        if (BodyBreak_SpawnParts(&this->actor, &this->bodyBreak, play, this->actor.params + 8)) {
+        if (BodyBreak_SpawnParts(&this->actor, &this->bodyBreak, play, this->actor.params + 8,
+                                 this->skelAnime.skeletonHeader->skeletonType == SKELANIME_TYPE_FLEX)) {
             this->actor.child = &this->actor;
         }
     } else {
@@ -1630,7 +1631,8 @@ void EnTest_Rise(EnTest* this, PlayState* play) {
 void func_808633E8(EnTest* this, PlayState* play) {
     this->actor.params = STALFOS_TYPE_1;
 
-    if (BodyBreak_SpawnParts(&this->actor, &this->bodyBreak, play, this->actor.params)) {
+    if (BodyBreak_SpawnParts(&this->actor, &this->bodyBreak, play, this->actor.params,
+                             this->skelAnime.skeletonHeader->skeletonType == SKELANIME_TYPE_FLEX)) {
         Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos, 0xD0);
 
         if (this->actor.parent != NULL) {
