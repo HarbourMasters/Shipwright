@@ -12,6 +12,8 @@
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/boss-rush/BossRush.h"
 
+#include "soh/Enhancements/timesplits/TimeSplits.h"
+
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 typedef enum {
@@ -900,6 +902,7 @@ void BossFd2_CollisionCheck(BossFd2* this, PlayState* play) {
                 Audio_PlayActorSound2(&this->actor, NA_SE_EN_VALVAISA_DEAD);
                 Enemy_StartFinishingBlow(play, &this->actor);
                 gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_VOLVAGIA] = GAMEPLAYSTAT_TOTAL_TIME;
+                TimeSplitSplitsHandlerS(661);
                 BossRush_HandleCompleteBoss(play);
             } else if (damage) {
                 BossFd2_SetupDamaged(this, play);

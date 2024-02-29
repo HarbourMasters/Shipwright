@@ -10,6 +10,7 @@
 #include "soh/Enhancements/boss-rush/BossRush.h"
 
 #include <string.h>
+#include "soh/Enhancements/timesplits/TimeSplits.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
@@ -1691,6 +1692,7 @@ void func_8090120C(BossGanon2* this, PlayState* play) {
                 gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
                 BossRush_HandleCompleteBoss(play);
                 gSaveContext.sohStats.gameComplete = true;
+                TimeSplitSplitsHandlerS(666);
                 this->unk_39E = Play_CreateSubCamera(play);
                 Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
                 Play_ChangeCameraStatus(play, this->unk_39E, CAM_STAT_ACTIVE);

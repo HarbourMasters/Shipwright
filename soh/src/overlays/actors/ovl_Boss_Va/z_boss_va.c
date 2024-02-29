@@ -17,6 +17,8 @@
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/boss-rush/BossRush.h"
 
+#include "soh/Enhancements/timesplits/TimeSplits.h"
+
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 #define GET_BODY(this) ((BossVa*)(this)->actor.parent)
@@ -1398,6 +1400,7 @@ void BossVa_BodyPhase4(BossVa* this, PlayState* play) {
                             BossVa_SetupBodyDeath(this, play);
                             Enemy_StartFinishingBlow(play, &this->actor);
                             gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_BARINADE] = GAMEPLAYSTAT_TOTAL_TIME;
+                            TimeSplitSplitsHandlerS(659);
                             BossRush_HandleCompleteBoss(play);
                             return;
                         }

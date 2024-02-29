@@ -10,6 +10,8 @@
 #include <stdlib.h> // malloc
 #include <string.h> // memcpy
 
+#include "soh/Enhancements/timesplits/TimeSplits.h"
+
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 #define LAVA_TEX_WIDTH 32
@@ -1547,6 +1549,7 @@ void BossDodongo_DeathCutscene(BossDodongo* this, PlayState* play) {
             this->cameraAt.y = camera->at.y;
             this->cameraAt.z = camera->at.z;
             gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_KING_DODONGO] = GAMEPLAYSTAT_TOTAL_TIME;
+            TimeSplitSplitsHandlerS(658);
             BossRush_HandleCompleteBoss(play);
             break;
         case 5:

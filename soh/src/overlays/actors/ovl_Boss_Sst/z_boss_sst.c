@@ -13,6 +13,8 @@
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/boss-rush/BossRush.h"
 
+#include "soh/Enhancements/timesplits/TimeSplits.h"
+
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED | ACTOR_FLAG_DRAGGED_BY_HOOKSHOT)
 
 #define vParity actionVar
@@ -2564,6 +2566,7 @@ void BossSst_HeadCollisionCheck(BossSst* this, PlayState* play) {
                     Enemy_StartFinishingBlow(play, &this->actor);
                     BossSst_HeadSetupDeath(this, play);
                     gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_BONGO_BONGO] = GAMEPLAYSTAT_TOTAL_TIME;
+                    TimeSplitSplitsHandlerS(663);
                     BossRush_HandleCompleteBoss(play);
                 } else {
                     BossSst_HeadSetupDamage(this);

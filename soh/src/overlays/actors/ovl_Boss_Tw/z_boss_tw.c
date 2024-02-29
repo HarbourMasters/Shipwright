@@ -7,6 +7,7 @@
 #include "soh/Enhancements/boss-rush/BossRush.h"
 
 #include <string.h>
+#include "soh/Enhancements/timesplits/TimeSplits.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
@@ -5290,6 +5291,7 @@ void BossTw_TwinrovaDamage(BossTw* this, PlayState* play, u8 damage) {
             Enemy_StartFinishingBlow(play, &this->actor);
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_TWINROBA_YOUNG_DEAD);
             gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_TWINROVA] = GAMEPLAYSTAT_TOTAL_TIME;
+            TimeSplitSplitsHandlerS(664);
             BossRush_HandleCompleteBoss(play);
             return;
         }

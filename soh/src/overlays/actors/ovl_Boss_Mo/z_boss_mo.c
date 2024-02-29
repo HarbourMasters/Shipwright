@@ -15,6 +15,7 @@
 #include "soh/Enhancements/boss-rush/BossRush.h"
 
 #include <string.h>
+#include "soh/Enhancements/timesplits/TimeSplits.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
@@ -1794,6 +1795,7 @@ void BossMo_CoreCollisionCheck(BossMo* this, PlayState* play) {
                         ((sMorphaTent1->csCamera == 0) && (sMorphaTent2 != NULL) && (sMorphaTent2->csCamera == 0))) {
                         Enemy_StartFinishingBlow(play, &this->actor);
                         gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_MORPHA] = GAMEPLAYSTAT_TOTAL_TIME;
+                        TimeSplitSplitsHandlerS(662);
                         BossRush_HandleCompleteBoss(play);
                         Audio_QueueSeqCmd(0x1 << 28 | SEQ_PLAYER_BGM_MAIN << 24 | 0x100FF);
                         this->csState = MO_DEATH_START;

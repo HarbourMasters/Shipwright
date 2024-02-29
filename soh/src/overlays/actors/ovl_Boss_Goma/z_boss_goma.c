@@ -6,6 +6,8 @@
 #include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
 #include "soh/Enhancements/boss-rush/BossRush.h"
 
+#include "soh/Enhancements/timesplits/TimeSplits.h"
+
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 // IRIS_FOLLOW: gohma looks towards the player (iris rotation)
@@ -1842,6 +1844,7 @@ void BossGoma_UpdateHit(BossGoma* this, PlayState* play) {
                     BossGoma_SetupDefeated(this, play);
                     Enemy_StartFinishingBlow(play, &this->actor);
                     gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_GOHMA] = GAMEPLAYSTAT_TOTAL_TIME;
+                    TimeSplitSplitsHandlerS(657);
                     BossRush_HandleCompleteBoss(play);
                 }
 

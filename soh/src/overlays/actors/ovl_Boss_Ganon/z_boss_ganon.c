@@ -14,6 +14,7 @@
 #include "soh/Enhancements/boss-rush/BossRush.h"
 
 #include <string.h>
+#include "soh/Enhancements/timesplits/TimeSplits.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
@@ -2813,6 +2814,7 @@ void BossGanon_UpdateDamage(BossGanon* this, PlayState* play) {
                     Audio_QueueSeqCmd(0x100100FF);
                     this->screenFlashTimer = 4;
                     gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_GANONDORF] = GAMEPLAYSTAT_TOTAL_TIME;
+                    TimeSplitSplitsHandlerS(665);
                     BossRush_HandleCompleteBoss(play);
                 } else {
                     Audio_PlayActorSound2(&this->actor, NA_SE_EN_GANON_DAMAGE2);
