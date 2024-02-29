@@ -558,7 +558,7 @@ void DrawEnhancementsMenu() {
                 UIWidgets::Tooltip("Pierre appears when Ocarina is pulled out. Requires learning scarecrow song.");
                 UIWidgets::PaddedEnhancementCheckbox("Remember Save Location", "gRememberSaveLocation", true, false);
                 UIWidgets::Tooltip("When loading a save, places Link at the last entrance he went through.\n"
-                        "This doesn't work if the save was made in a grotto.");
+                        "This doesn't work if the save was made in grottos/fairy fountains or dungeons.");
                 UIWidgets::PaddedEnhancementCheckbox("Skip Magic Arrow Equip Animation", "gSkipArrowAnimation", true, false);
                 UIWidgets::PaddedEnhancementCheckbox("Skip save confirmation", "gSkipSaveConfirmation", true, false);
                 UIWidgets::Tooltip("Skip the \"Game saved.\" confirmation screen");

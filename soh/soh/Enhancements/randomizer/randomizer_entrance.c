@@ -398,6 +398,11 @@ void Entrance_SetSavewarpEntrance(void) {
         gSaveContext.entranceIndex = 0x0486; // Gerudo Fortress -> Thieve's Hideout spawn 0
     } else if (scene == SCENE_LINKS_HOUSE) {
         gSaveContext.entranceIndex = Entrance_OverrideNextIndex(LINK_HOUSE_SAVEWARP_ENTRANCE);
+    } else if (CVarGetInteger("gRememberSaveLocation", 0) && scene != SCENE_FAIRYS_FOUNTAIN && scene != SCENE_GROTTOS &&
+               // Use the saved entrance value with remember save location, except when in grottos/fairy fountains or if
+               // the entrance index is -1 (new save)
+               gSaveContext.entranceIndex != -1) {
+        return;
     } else if (LINK_IS_CHILD) {
         gSaveContext.entranceIndex = Entrance_OverrideNextIndex(LINK_HOUSE_SAVEWARP_ENTRANCE); // Child Overworld Spawn
     } else {
