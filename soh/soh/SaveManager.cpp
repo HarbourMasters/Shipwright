@@ -1024,7 +1024,6 @@ void SaveManager::SaveGlobal() {
     output << std::setw(4) << globalBlock << std::endl;
 }
 
-
 void SaveManager::LoadFile(int fileNum) {
     SPDLOG_INFO("Load File - fileNum: {}", fileNum);
     std::filesystem::path fileName = GetFileName(fileNum);
@@ -1077,7 +1076,7 @@ void SaveManager::LoadFile(int fileNum) {
         GameInteractor::Instance->ExecuteHooks<GameInteractor::OnLoadFile>(fileNum);
     } catch (const std::exception& e) {
         input.close();
-        std::filesystem::path newFile(LUS::Context::GetPathRelativeToAppDirectory("Save") + ("/file" + std::to_string(fileNum + 1) + ".bak"));
+        std::filesystem::path newFile(LUS::Context::GetPathRelativeToAppDirectory("Save") + ("/file" + std::to_string(fileNum + 1) + "-" + std::to_string(GetUnixTimestamp()) + ".bak"));
 #if defined(__SWITCH__) || defined(__WIIU__)
         copy_file(fileName.c_str(), newFile.c_str());
 #else
