@@ -170,7 +170,7 @@ void func_80AFBE8C(EnSiofuki* this, PlayState* play) {
     } else {
         if (this->applySpeed) {
             player->linearVelocity = this->appliedSpeed + player->linearVelocity;
-            player->currentYaw = this->appliedYaw;
+            player->yaw = this->appliedYaw;
         }
 
         this->targetAppliedSpeed = 0.0f;

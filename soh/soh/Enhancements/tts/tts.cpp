@@ -168,7 +168,7 @@ void RegisterOnInterfaceUpdateHook() {
         
         prevTimer = timer;
         
-        if (!GameInteractor::IsSaveLoaded()) return;
+        if (!GameInteractor::IsSaveLoaded(true)) return;
         
         static int16_t lostHealth = 0;
         static int16_t prevHealth = 0;
@@ -1037,24 +1037,24 @@ void InitTTSBank() {
             break;
     }
 
-    auto sceneFile = LUS::Context::GetInstance()->GetResourceManager()->LoadFile("accessibility/texts/scenes" + languageSuffix);
+    auto sceneFile = LUS::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->LoadFileRaw("accessibility/texts/scenes" + languageSuffix);
     if (sceneFile != nullptr) {
-        sceneMap = nlohmann::json::parse(sceneFile->Buffer, nullptr, true, true);
+        sceneMap = nlohmann::json::parse(*sceneFile->Buffer.get(), nullptr, true, true);
     }
     
-    auto miscFile = LUS::Context::GetInstance()->GetResourceManager()->LoadFile("accessibility/texts/misc" + languageSuffix);
+    auto miscFile = LUS::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->LoadFileRaw("accessibility/texts/misc" + languageSuffix);
     if (miscFile != nullptr) {
-        miscMap = nlohmann::json::parse(miscFile->Buffer, nullptr, true, true);
+        miscMap = nlohmann::json::parse(*miscFile->Buffer.get(), nullptr, true, true);
     }
     
-    auto kaleidoFile = LUS::Context::GetInstance()->GetResourceManager()->LoadFile("accessibility/texts/kaleidoscope" + languageSuffix);
+    auto kaleidoFile = LUS::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->LoadFileRaw("accessibility/texts/kaleidoscope" + languageSuffix);
     if (kaleidoFile != nullptr) {
-        kaleidoMap = nlohmann::json::parse(kaleidoFile->Buffer, nullptr, true, true);
+        kaleidoMap = nlohmann::json::parse(*kaleidoFile->Buffer.get(), nullptr, true, true);
     }
     
-    auto fileChooseFile = LUS::Context::GetInstance()->GetResourceManager()->LoadFile("accessibility/texts/filechoose" + languageSuffix);
+    auto fileChooseFile = LUS::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->LoadFileRaw("accessibility/texts/filechoose" + languageSuffix);
     if (fileChooseFile != nullptr) {
-        fileChooseMap = nlohmann::json::parse(fileChooseFile->Buffer, nullptr, true, true);
+        fileChooseMap = nlohmann::json::parse(*fileChooseFile->Buffer.get(), nullptr, true, true);
     }
 }
 

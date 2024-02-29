@@ -3,34 +3,10 @@
 #include "spdlog/spdlog.h"
 #include "libultraship/libultraship.h"
 
-namespace LUS {
-std::shared_ptr<IResource>
-SetMeshFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
-    auto resource = std::make_shared<SetMesh>(initData);
-    std::shared_ptr<ResourceVersionFactory> factory = nullptr;
-
-    switch (resource->GetInitData()->ResourceVersion) {
-    case 0:
-        factory = std::make_shared<SetMeshFactoryV0>();
-        break;
-    }
-
-    if (factory == nullptr)
-    {
-        SPDLOG_ERROR("Failed to load SetMesh with version {}", resource->GetInitData()->ResourceVersion);
-        return nullptr;
-    }
-
-    factory->ParseFileBinary(reader, resource);
-
-    return resource;
-}
-
-void LUS::SetMeshFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
-                                        std::shared_ptr<IResource> resource)
-{
-    std::shared_ptr<SetMesh> setMesh = std::static_pointer_cast<SetMesh>(resource);
-    ResourceVersionFactory::ParseFileBinary(reader, setMesh);
+namespace SOH {
+std::shared_ptr<LUS::IResource>
+SetMeshFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<LUS::BinaryReader> reader) {
+    auto setMesh = std::make_shared<SetMesh>(initData);
 
     ReadCommandId(setMesh, reader);
     
@@ -143,10 +119,10 @@ void LUS::SetMeshFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader
             std::string meshOpa = reader->ReadString();
             std::string meshXlu = reader->ReadString();
 
-            auto opaRes = LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(meshOpa.c_str());
-            auto xluRes = LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(meshXlu.c_str());
-            dlist.opa = meshOpa != "" ? (Gfx*)(opaRes ? opaRes->GetRawPointer() : nullptr) : 0;
-            dlist.xlu = meshXlu != "" ? (Gfx*)(xluRes ? xluRes->GetRawPointer() : nullptr) : 0;
+            auto opaRes = meshOpa != "" ? LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(meshOpa.c_str()) : nullptr;
+            auto xluRes = meshXlu != "" ? LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(meshXlu.c_str()) : nullptr;
+            dlist.opa = (Gfx*)(opaRes ? opaRes->GetRawPointer() : nullptr);
+            dlist.xlu = (Gfx*)(xluRes ? xluRes->GetRawPointer() : nullptr);
 
             setMesh->dlists2.push_back(dlist);
         } else {
@@ -164,6 +140,7 @@ void LUS::SetMeshFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader
     } else {
         SPDLOG_ERROR("Tried to load mesh in SetMesh scene header with type that doesn't exist: {}", setMesh->meshHeader.base.type);
     }
-}
 
-} // namespace LUS
+    return setMesh;
+}
+} // namespace SOH

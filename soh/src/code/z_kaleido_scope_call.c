@@ -1,5 +1,6 @@
 #include "global.h"
 #include "vt.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 void (*sKaleidoScopeUpdateFunc)(PlayState* play);
 void (*sKaleidoScopeDrawFunc)(PlayState* play);
@@ -55,6 +56,8 @@ void KaleidoScopeCall_Destroy(PlayState* play) {
 void KaleidoScopeCall_Update(PlayState* play) {
     KaleidoMgrOverlay* kaleidoScopeOvl = &gKaleidoMgrOverlayTable[KALEIDO_OVL_KALEIDO_SCOPE];
     PauseContext* pauseCtx = &play->pauseCtx;
+
+    GameInteractor_ExecuteOnKaleidoUpdate();
 
     if (!gSaveContext.sohStats.gameComplete &&
         (!IS_BOSS_RUSH || !gSaveContext.isBossRushPaused)) {
