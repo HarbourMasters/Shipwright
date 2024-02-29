@@ -28,6 +28,10 @@ void SkelAnime_DrawLimbLod(PlayState* play, s32 limbIndex, void** skeleton, Vec3
     Vec3f pos;
     Vec3s rot;
 
+    if (CVarGetInteger("gDisableLOD", 0)) {
+        lod = 0;
+    }
+
     OPEN_DISPS(play->state.gfxCtx);
 
     Matrix_Push();
@@ -135,6 +139,10 @@ void SkelAnime_DrawFlexLimbLod(PlayState* play, s32 limbIndex, void** skeleton, 
     Vec3f pos;
     Vec3s rot;
 
+    if (CVarGetInteger("gDisableLOD", 0)) {
+        lod = 0;
+    }
+
     Matrix_Push();
 
     limb = (LodLimb*)SEGMENTED_TO_VIRTUAL(skeleton[limbIndex]);
@@ -194,6 +202,10 @@ void SkelAnime_DrawFlexLod(PlayState* play, void** skeleton, Vec3s* jointTable, 
     Vec3f pos;
     Vec3s rot;
     Mtx* mtx = Graph_Alloc(play->state.gfxCtx, dListCount * sizeof(Mtx));
+
+    if (CVarGetInteger("gDisableLOD", 0)) {
+        lod = 0;
+    }
 
     if (skeleton == NULL) {
         osSyncPrintf(VT_FGCOL(RED));
