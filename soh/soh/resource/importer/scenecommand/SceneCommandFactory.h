@@ -5,11 +5,12 @@
 #include "ResourceFactory.h"
 #include "soh/resource/type/scenecommand/SceneCommand.h"
 
-namespace LUS {
-class SceneCommandFactory : public ResourceFactory {};
+namespace SOH {
+class SceneCommandFactoryBinaryV0 {
+    public:
+        virtual std::shared_ptr<LUS::IResource> ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<LUS::BinaryReader> reader) = 0;
 
-class SceneCommandVersionFactory : public ResourceVersionFactory {
-protected:
-    void ReadCommandId(std::shared_ptr<ISceneCommand> command, std::shared_ptr<BinaryReader> reader);
+    protected:
+        void ReadCommandId(std::shared_ptr<ISceneCommand> command, std::shared_ptr<LUS::BinaryReader> reader);
 };
-}; // namespace LUS
+} // namespace SOH

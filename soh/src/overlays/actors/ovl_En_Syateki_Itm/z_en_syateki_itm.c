@@ -107,7 +107,7 @@ void EnSyatekiItm_Idle(EnSyatekiItm* this, PlayState* play) {
         player->actor.world.pos.x = -12.0f;
         player->actor.world.pos.y = 20.0f;
         player->actor.world.pos.z = 182.0f;
-        player->currentYaw = player->actor.world.rot.y = player->actor.shape.rot.y = 0x7F03;
+        player->yaw = player->actor.world.rot.y = player->actor.shape.rot.y = 0x7F03;
         player->actor.world.rot.x = player->actor.shape.rot.x = player->actor.world.rot.z = player->actor.shape.rot.z =
             0;
         s32 ammunition = 15;

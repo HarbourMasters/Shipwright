@@ -7,7 +7,7 @@
 #include "SceneCommand.h"
 #include <libultraship/libultra/types.h>
 
-namespace LUS {
+namespace SOH {
 class SetExitList : public SceneCommand<uint16_t> {
   public:
     using SceneCommand::SceneCommand;

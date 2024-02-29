@@ -9,7 +9,7 @@
 // #include <libultraship/libultra/types.h>
 #include "z64math.h"
 
-namespace LUS {
+namespace SOH {
 typedef struct {
     /* 0x00 */ s16   id;
     /* 0x02 */ Vec3s pos;
