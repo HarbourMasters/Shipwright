@@ -191,7 +191,7 @@ void func_80AFB950(EnSi* this, PlayState* play) {
             player->actor.freezeTimer = 0;
             func_8083C148(GET_PLAYER(play), play);
             func_80078884(NA_SE_SY_CAMERA_ZOOM_UP);
-            player->currentYaw = player->actor.shape.rot.y;
+            player->yaw = player->actor.shape.rot.y;
         }
     }
 }

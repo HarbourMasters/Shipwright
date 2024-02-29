@@ -797,7 +797,7 @@ void EnFloormas_GrabLink(EnFloormas* this, PlayState* play) {
     this->actor.world.pos.z = Math_CosS(this->actor.shape.rot.y) * (xzDelta * 0.1f) + player->actor.world.pos.z;
 
     // let go
-    if (!(player->stateFlags2 & 0x80) || (player->invincibilityTimer < 0)) {
+    if (!(player->stateFlags2 & PLAYER_STATE2_GRABBED_BY_ENEMY) || (player->invincibilityTimer < 0)) {
         parent = (EnFloormas*)this->actor.parent;
         child = (EnFloormas*)this->actor.child;
 

@@ -67,6 +67,7 @@ typedef enum {
     GROUP_EQUIPMENT,
     GROUP_CONSUMABLE,
     GROUP_HUD,
+    GROUP_KALEIDO,
     GROUP_TITLE,
     GROUP_NPC,
     GROUP_WORLD,
@@ -75,6 +76,7 @@ typedef enum {
     GROUP_SPIN_ATTACK,
     GROUP_TRAILS,
     GROUP_NAVI,
+    GROUP_IVAN,
 } CosmeticGroup;
 
 std::map<CosmeticGroup, const char*> groupLabels = {
@@ -85,6 +87,7 @@ std::map<CosmeticGroup, const char*> groupLabels = {
     { GROUP_EQUIPMENT, "Equipment" },
     { GROUP_CONSUMABLE, "Consumables" },
     { GROUP_HUD, "HUD" },
+    { GROUP_KALEIDO, "Pause Menu" },
     { GROUP_TITLE, "Title Screen" },
     { GROUP_NPC, "NPCs" },
     { GROUP_WORLD, "World" },
@@ -93,6 +96,7 @@ std::map<CosmeticGroup, const char*> groupLabels = {
     { GROUP_SPIN_ATTACK, "Spin Attack" },
     { GROUP_TRAILS, "Trails" },
     { GROUP_NAVI, "Navi" },
+    { GROUP_IVAN, "Ivan" } 
 };
 
 typedef struct {
@@ -265,6 +269,38 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Hud_NameTagActorText",          "Nametag Text",         GROUP_HUD,          ImVec4(255, 255, 255, 255), true, true, false),
     COSMETIC_OPTION("Hud_NameTagActorBackground",    "Nametag Background",   GROUP_HUD,          ImVec4(0,     0,   0,  80), true, false, true),
 
+    COSMETIC_OPTION("Kal_ItemSelA",                  "Item Select Color",    GROUP_KALEIDO,      ImVec4(10,   50,  80, 255), false, true, false),
+    COSMETIC_OPTION("Kal_ItemSelB",                  "Item Select Color B",  GROUP_KALEIDO,      ImVec4(70,  100, 130, 255), false, true, true),
+    COSMETIC_OPTION("Kal_ItemSelC",                  "Item Select Color C",  GROUP_KALEIDO,      ImVec4(70,  100, 130, 255), false, true, true),
+    COSMETIC_OPTION("Kal_ItemSelD",                  "Item Select Color D",  GROUP_KALEIDO,      ImVec4(10,   50,  80, 255), false, true, true),
+
+    COSMETIC_OPTION("Kal_EquipSelA",                 "Equip Select Color",   GROUP_KALEIDO,      ImVec4(10,   50,  40, 255), false, true, false),
+    COSMETIC_OPTION("Kal_EquipSelB",                 "Equip Select Color B", GROUP_KALEIDO,      ImVec4(90,  100,  60, 255), false, true, true),
+    COSMETIC_OPTION("Kal_EquipSelC",                 "Equip Select Color C", GROUP_KALEIDO,      ImVec4(90,  100,  60, 255), false, true, true),
+    COSMETIC_OPTION("Kal_EquipSelD",                 "Equip Select Color D", GROUP_KALEIDO,      ImVec4(10,   50,  80, 255), false, true, true),
+
+    COSMETIC_OPTION("Kal_MapSelDunA",                "Map Dungeon Color",    GROUP_KALEIDO,      ImVec4(80,   40,  30, 255), false, true, true),
+    COSMETIC_OPTION("Kal_MapSelDunB",                "Map Dungeon Color B",  GROUP_KALEIDO,      ImVec4(140,  60,  60, 255), false, true, true),
+    COSMETIC_OPTION("Kal_MapSelDunC",                "Map Dungeon Color C",  GROUP_KALEIDO,      ImVec4(140,  60,  60, 255), false, true, true),
+    COSMETIC_OPTION("Kal_MapSelDunD",                "Map Dungeon Color D",  GROUP_KALEIDO,      ImVec4(80,   40,  30, 255), false, true, true),
+
+    COSMETIC_OPTION("Kal_QuestStatusA",              "Quest Status Color",   GROUP_KALEIDO,      ImVec4(80, 80, 50, 255),    false, true, false),
+    COSMETIC_OPTION("Kal_QuestStatusB",              "Quest Status Color B", GROUP_KALEIDO,      ImVec4(120, 120, 70, 255),  false, true, true),
+    COSMETIC_OPTION("Kal_QuestStatusC",              "Quest Status Color C", GROUP_KALEIDO,      ImVec4(120, 120, 70, 255),  false, true, true),
+    COSMETIC_OPTION("Kal_QuestStatusD",              "Quest Status Color D", GROUP_KALEIDO,      ImVec4(80, 80, 50, 255),    false, true, true),
+
+    COSMETIC_OPTION("Kal_MapSelectA",                "Map Color",            GROUP_KALEIDO,      ImVec4(80, 40, 30, 255),    false, true, false),
+    COSMETIC_OPTION("Kal_MapSelectB",                "Map Color B",          GROUP_KALEIDO,      ImVec4(140, 60, 60, 255),   false, true, true),
+    COSMETIC_OPTION("Kal_MapSelectC",                "Map Color C",          GROUP_KALEIDO,      ImVec4(140, 60, 60, 255),   false, true, true),
+    COSMETIC_OPTION("Kal_MapSelectD",                "Map Color D",          GROUP_KALEIDO,      ImVec4(80, 40, 30, 255),    false, true, true),
+
+    COSMETIC_OPTION("Kal_SaveA",                     "Save Color",           GROUP_KALEIDO,      ImVec4(50, 50, 50, 255),    false, true, false),
+    COSMETIC_OPTION("Kal_SaveB",                     "Save Color B",         GROUP_KALEIDO,      ImVec4(110, 110, 110, 255), false, true, true),
+    COSMETIC_OPTION("Kal_SaveC",                     "Save Color C",         GROUP_KALEIDO,      ImVec4(110, 110, 110, 255), false, true, true),
+    COSMETIC_OPTION("Kal_SaveD",                     "Save Color D",         GROUP_KALEIDO,      ImVec4(50, 50, 50, 255),    false, true, true),
+
+    COSMETIC_OPTION("Kal_NamePanel",                 "Name Panel",           GROUP_KALEIDO,      ImVec4(90,100,130,255),     true, true, false),
+
     COSMETIC_OPTION("Title_FileChoose",              "File Choose",          GROUP_TITLE,        ImVec4(100, 150, 255, 255), false, true, false),
     COSMETIC_OPTION("Title_NintendoLogo",            "Nintendo Logo",        GROUP_TITLE,        ImVec4(  0,   0, 255, 255), false, true, true),
     COSMETIC_OPTION("Title_N64LogoRed",              "N64 Red",              GROUP_TITLE,        ImVec4(150,   0,   0, 255), false, true, true),
@@ -316,6 +352,9 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Navi_EnemySecondary",           "Enemy Secondary",      GROUP_NAVI,         ImVec4(200, 155,   0,   0), false, true, true),
     COSMETIC_OPTION("Navi_PropsPrimary",             "Props Primary",        GROUP_NAVI,         ImVec4(  0, 255,   0, 255), false, true, false),
     COSMETIC_OPTION("Navi_PropsSecondary",           "Props Secondary",      GROUP_NAVI,         ImVec4(  0, 255,   0,   0), false, true, true),
+    
+    COSMETIC_OPTION("Ivan_IdlePrimary",              "Ivan Idle Primary",    GROUP_IVAN,         ImVec4(255, 255, 255, 255), false, true, false),
+    COSMETIC_OPTION("Ivan_IdleSecondary",            "Ivan Idle Secondary",  GROUP_IVAN,         ImVec4(  0, 255,   0, 255), false, true, true),
 
     COSMETIC_OPTION("NPC_FireKeesePrimary",          "Fire Keese Primary",   GROUP_NPC,          ImVec4(255, 255, 255, 255), false, true, false),
     COSMETIC_OPTION("NPC_FireKeeseSecondary",        "Fire Keese Secondary", GROUP_NPC,          ImVec4(255, 255, 255, 255), false, true, true),
@@ -1026,12 +1065,16 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
     if (manualChange || CVarGetInteger(npcGoldenSkulltula.rainbowCvar, 0)) {
         static Color_RGBA8 defaultColor = {npcGoldenSkulltula.defaultColor.x, npcGoldenSkulltula.defaultColor.y, npcGoldenSkulltula.defaultColor.z, npcGoldenSkulltula.defaultColor.w};
         Color_RGBA8 color = CVarGetColor(npcGoldenSkulltula.cvar, defaultColor);
-        PATCH_GFX(gGiSkulltulaTokenDL,                            "NPC_GoldenSkulltula1",     npcGoldenSkulltula.changedCvar,       5, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gGiSkulltulaTokenDL,                            "NPC_GoldenSkulltula2",     npcGoldenSkulltula.changedCvar,       6, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
-        PATCH_GFX(gGiSkulltulaTokenFlameDL,                       "NPC_GoldenSkulltula3",     npcGoldenSkulltula.changedCvar,      32, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gGiSkulltulaTokenFlameDL,                       "NPC_GoldenSkulltula4",     npcGoldenSkulltula.changedCvar,      33, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
-        PATCH_GFX(object_st_DL_003FB0,                            "NPC_GoldenSkulltula5",     npcGoldenSkulltula.changedCvar,     118, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(object_st_DL_003FB0,                            "NPC_GoldenSkulltula6",     npcGoldenSkulltula.changedCvar,     119, gsDPSetEnvColor(color.r / 4, color.g / 4, color.b / 4, 255));
+        PATCH_GFX(gSkulltulaTokenDL,                              "NPC_GoldenSkulltula1",     npcGoldenSkulltula.changedCvar,       5, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gSkulltulaTokenDL,                              "NPC_GoldenSkulltula2",     npcGoldenSkulltula.changedCvar,       6, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
+        PATCH_GFX(gSkulltulaTokenFlameDL,                         "NPC_GoldenSkulltula3",     npcGoldenSkulltula.changedCvar,      32, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gSkulltulaTokenFlameDL,                         "NPC_GoldenSkulltula4",     npcGoldenSkulltula.changedCvar,      33, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
+        PATCH_GFX(gGiSkulltulaTokenDL,                            "NPC_GoldenSkulltula5",     npcGoldenSkulltula.changedCvar,       5, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiSkulltulaTokenDL,                            "NPC_GoldenSkulltula6",     npcGoldenSkulltula.changedCvar,       6, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
+        PATCH_GFX(gGiSkulltulaTokenFlameDL,                       "NPC_GoldenSkulltula7",     npcGoldenSkulltula.changedCvar,      32, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiSkulltulaTokenFlameDL,                       "NPC_GoldenSkulltula8",     npcGoldenSkulltula.changedCvar,      33, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
+        PATCH_GFX(object_st_DL_003FB0,                            "NPC_GoldenSkulltula9",     npcGoldenSkulltula.changedCvar,     118, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(object_st_DL_003FB0,                            "NPC_GoldenSkulltula10",    npcGoldenSkulltula.changedCvar,     119, gsDPSetEnvColor(color.r / 4, color.g / 4, color.b / 4, 255));
     }
 
     static CosmeticOption& npcGerudo = cosmeticOptions.at("NPC_Gerudo");
@@ -1142,6 +1185,43 @@ void DrawScaleSlider(const std::string CvarName,float DefaultValue){
     //Disabled for now. feature not done and several fixes needed to be merged.
     //UIWidgets::EnhancementSliderFloat("Scale : %dx", InvisibleLabel.c_str(), CvarLabel.c_str(), 0.1f, 3.0f,"",DefaultValue,true);
 }
+void Draw_Table_Dropdown(const char* Header_Title, const char* Table_ID, const char* Column_Title, const char* Slider_Title, const char* Slider_ID, int MinY, int MaxY, int MinX, int MaxX, float Default_Value) {
+    if (ImGui::CollapsingHeader(Header_Title)) {
+        if (ImGui::BeginTable(Table_ID, 1, FlagsTable)) {
+            ImGui::TableSetupColumn(Column_Title, FlagsCell, TablesCellsWidth);
+            Table_InitHeader(false);
+            DrawUseMarginsSlider(Slider_Title, Slider_ID);
+            DrawPositionsRadioBoxes(Slider_ID);
+            DrawPositionSlider(Slider_ID, MinY, MaxY, MinX, MaxX);
+            DrawScaleSlider(Slider_ID, Default_Value);
+            ImGui::NewLine();
+            ImGui::EndTable();
+        }
+    }
+}
+void C_Button_Dropdown(const char* Header_Title, const char* Table_ID, const char* Column_Title, const char* Slider_Title, const char* Slider_ID, const char* Int_Type, float Slider_Scale_Value) {
+    if (ImGui::CollapsingHeader(Header_Title)) {
+        if (ImGui::BeginTable(Table_ID, 1, FlagsTable)) {
+            ImGui::TableSetupColumn(Column_Title, FlagsCell, TablesCellsWidth);
+            Table_InitHeader(false);
+            DrawUseMarginsSlider(Slider_Title, Slider_ID);
+            DrawPositionsRadioBoxes(Slider_ID);
+            s16 Min_X_CU = 0;
+            s16 Max_X_CU = ImGui::GetWindowViewport()->Size.x/2;
+            if(CVarGetInteger(Int_Type,0) == 2){
+                Max_X_CU = 294;
+            } else if(CVarGetInteger(Int_Type,0) == 3){
+                Max_X_CU = ImGui::GetWindowViewport()->Size.x/2;
+            } else if(CVarGetInteger(Int_Type,0) == 4){
+                Min_X_CU = (ImGui::GetWindowViewport()->Size.x/2)*-1;
+            }
+            DrawPositionSlider(Slider_ID, 0, ImGui::GetWindowViewport()->Size.y/2, Min_X_CU, Max_X_CU);
+            DrawScaleSlider(Slider_ID, Slider_Scale_Value);
+            ImGui::NewLine();
+            ImGui::EndTable();
+        }
+    }
+}
 void Draw_Placements(){
     if (ImGui::BeginTable("tableMargins", 1, FlagsTable)) {
         ImGui::TableSetupColumn("General margins settings", FlagsCell, TablesCellsWidth);
@@ -1208,126 +1288,13 @@ void Draw_Placements(){
             ImGui::EndTable();
         }
     }
-    if (ImGui::CollapsingHeader("B Button position")) {
-        if (ImGui::BeginTable("tablebbtn", 1, FlagsTable)) {
-            ImGui::TableSetupColumn("B Button settings", FlagsCell, TablesCellsWidth);
-            Table_InitHeader(false);
-            DrawUseMarginsSlider("B Button", "gBBtn");
-            DrawPositionsRadioBoxes("gBBtn");
-            DrawPositionSlider("gBBtn", 0, ImGui::GetWindowViewport()->Size.y/4+50, -1, ImGui::GetWindowViewport()->Size.x-50);
-            DrawScaleSlider("gBBtn",0.95f);
-            ImGui::NewLine();
-            ImGui::EndTable();
-        }
-    }
-    if (ImGui::CollapsingHeader("A Button position")) {
-        if (ImGui::BeginTable("tableabtn", 1, FlagsTable)) {
-            ImGui::TableSetupColumn("A Button settings", FlagsCell, TablesCellsWidth);
-            Table_InitHeader(false);
-            DrawUseMarginsSlider("A Button", "gABtn");
-            DrawPositionsRadioBoxes("gABtn");
-            DrawPositionSlider("gABtn", -10, ImGui::GetWindowViewport()->Size.y/4+50, -20, ImGui::GetWindowViewport()->Size.x-50);
-            DrawScaleSlider("gABtn",0.95f);
-            ImGui::NewLine();
-            ImGui::EndTable();
-        }
-    }
-    if (ImGui::CollapsingHeader("Start Button position")) {
-        if (ImGui::BeginTable("tablestartbtn", 1, FlagsTable)) {
-            ImGui::TableSetupColumn("Start Button settings", FlagsCell, TablesCellsWidth);
-            Table_InitHeader(false);
-            DrawUseMarginsSlider("Start Button", "gStartBtn");
-            DrawPositionsRadioBoxes("gStartBtn");
-            DrawPositionSlider("gStartBtn", 0, ImGui::GetWindowViewport()->Size.y/2, 0, ImGui::GetWindowViewport()->Size.x/2+70);
-            DrawScaleSlider("gStartBtn",0.75f);
-            ImGui::NewLine();
-            ImGui::EndTable();
-        }
-    }
-    if (ImGui::CollapsingHeader("C Button Up position")) {
-        if (ImGui::BeginTable("tablecubtn", 1, FlagsTable)) {
-            ImGui::TableSetupColumn("C Button Up settings", FlagsCell, TablesCellsWidth);
-            Table_InitHeader(false);
-            DrawUseMarginsSlider("C Button Up", "gCBtnU");
-            DrawPositionsRadioBoxes("gCBtnU");
-            s16 Min_X_CU = 0;
-            s16 Max_X_CU = ImGui::GetWindowViewport()->Size.x/2;
-            if(CVarGetInteger("gCBtnUPosType",0) == 2){
-                Max_X_CU = 294;
-            } else if(CVarGetInteger("gCBtnUPosType",0) == 3){
-                Max_X_CU = ImGui::GetWindowViewport()->Size.x/2;
-            } else if(CVarGetInteger("gCBtnUPosType",0) == 4){
-                Min_X_CU = (ImGui::GetWindowViewport()->Size.x/2)*-1;
-            }
-            DrawPositionSlider("gCBtnU", 0, ImGui::GetWindowViewport()->Size.y/2, Min_X_CU, Max_X_CU);
-            DrawScaleSlider("gCBtnU",0.5f);
-            ImGui::NewLine();
-            ImGui::EndTable();
-        }
-    }
-    if (ImGui::CollapsingHeader("C Button Down position")) {
-        if (ImGui::BeginTable("tablecdbtn", 1, FlagsTable)) {
-            ImGui::TableSetupColumn("C Button Down settings", FlagsCell, TablesCellsWidth);
-            Table_InitHeader(false);
-            DrawUseMarginsSlider("C Button Down", "gCBtnD");
-            DrawPositionsRadioBoxes("gCBtnD");
-            s16 Min_X_CD = 0;
-            s16 Max_X_CD = ImGui::GetWindowViewport()->Size.x/2;
-            if(CVarGetInteger("gCBtnDPosType",0) == 2){
-                Max_X_CD = 294;
-            } else if(CVarGetInteger("gCBtnDPosType",0) == 3){
-                Max_X_CD = ImGui::GetWindowViewport()->Size.x/2;
-            } else if(CVarGetInteger("gCBtnDPosType",0) == 4){
-                Min_X_CD = (ImGui::GetWindowViewport()->Size.x/2)*-1;
-            }
-            DrawPositionSlider("gCBtnD", 0, ImGui::GetWindowViewport()->Size.y/2, Min_X_CD, Max_X_CD);
-            DrawScaleSlider("gCBtnD",0.87f);
-            ImGui::NewLine();
-            ImGui::EndTable();
-        }
-    }
-    if (ImGui::CollapsingHeader("C Button Left position")) {
-        if (ImGui::BeginTable("tableclbtn", 1, FlagsTable)) {
-            ImGui::TableSetupColumn("C Button Left settings", FlagsCell, TablesCellsWidth);
-            Table_InitHeader(false);
-            DrawUseMarginsSlider("C Button Left", "gCBtnL");
-            DrawPositionsRadioBoxes("gCBtnL");
-            s16 Min_X_CL = 0;
-            s16 Max_X_CL = ImGui::GetWindowViewport()->Size.x/2;
-            if(CVarGetInteger("gCBtnLPosType",0) == 2){
-                Max_X_CL = 294;
-            } else if(CVarGetInteger("gCBtnLPosType",0) == 3){
-                Max_X_CL = ImGui::GetWindowViewport()->Size.x/2;
-            } else if(CVarGetInteger("gCBtnLPosType",0) == 4){
-                Min_X_CL = (ImGui::GetWindowViewport()->Size.x/2)*-1;
-            }
-            DrawPositionSlider("gCBtnL", 0, ImGui::GetWindowViewport()->Size.y/2, Min_X_CL, Max_X_CL);
-            DrawScaleSlider("gCBtnL",0.87f);
-            ImGui::NewLine();
-            ImGui::EndTable();
-        }
-    }
-    if (ImGui::CollapsingHeader("C Button Right position")) {
-        if (ImGui::BeginTable("tablecrnbtn", 1, FlagsTable)) {
-            ImGui::TableSetupColumn("C Button Right settings", FlagsCell, TablesCellsWidth);
-            Table_InitHeader(false);
-            DrawUseMarginsSlider("C Button Right", "gCBtnR");
-            DrawPositionsRadioBoxes("gCBtnR");
-            s16 Min_X_CR = 0;
-            s16 Max_X_CR = ImGui::GetWindowViewport()->Size.x/2;
-            if(CVarGetInteger("gCBtnRPosType",0) == 2){
-                Max_X_CR = 294;
-            } else if(CVarGetInteger("gCBtnRPosType",0) == 3){
-                Max_X_CR = ImGui::GetWindowViewport()->Size.x/2;
-            } else if(CVarGetInteger("gCBtnRPosType",0) == 4){
-                Min_X_CR = (ImGui::GetWindowViewport()->Size.x/2)*-1;
-            }
-            DrawPositionSlider("gCBtnR", 0, ImGui::GetWindowViewport()->Size.y/2, Min_X_CR, Max_X_CR);
-            DrawScaleSlider("gCBtnR",0.87f);
-            ImGui::NewLine();
-            ImGui::EndTable();
-        }
-    }
+    Draw_Table_Dropdown("B Button position", "tablebbtn", "B Button settings", "B Button", "gBBtn", 0, ImGui::GetWindowViewport()->Size.y/4+50, -1, ImGui::GetWindowViewport()->Size.x-50, 0.95f);
+    Draw_Table_Dropdown("A Button position", "tableabtn", "A Button settings", "A Button", "gABtn", -10, ImGui::GetWindowViewport()->Size.y/4+50, -20, ImGui::GetWindowViewport()->Size.x-50, 0.95f);
+    Draw_Table_Dropdown("Start Button position", "tablestartbtn", "Start Button settings", "Start Button", "gStartBtn", 0, ImGui::GetWindowViewport()->Size.y/2, 0, ImGui::GetWindowViewport()->Size.x/2+70, 0.75f);
+    C_Button_Dropdown("C Button Up position", "tablecubtn", "C Button Up settings", "C Button Up", "gCBtnU", "gCBtnUPosType", 0.5f);
+    C_Button_Dropdown("C Button Down position", "tablecdbtn", "C Button Down settings", "C Button Down", "gCBtnD", "gCBtnDPosType", 0.87f);
+    C_Button_Dropdown("C Button Left position", "tableclbtn", "C Button Left settings", "C Button Left", "gCBtnL", "gCBtnLPosType", 0.87f);
+    C_Button_Dropdown("C Button Right position", "tablecrbtn", "C Button Right settings", "C Button Right", "gCBtnR", "gCBtnRPosType", 0.87f);
     if (CVarGetInteger("gDpadEquips",0) && ImGui::CollapsingHeader("DPad items position")) {
         if (ImGui::BeginTable("tabledpaditems", 1, FlagsTable)) {
             ImGui::TableSetupColumn("DPad items settings", FlagsCell, TablesCellsWidth);
@@ -1347,115 +1314,15 @@ void Draw_Placements(){
             ImGui::EndTable();
         }
     }
-    if (ImGui::CollapsingHeader("Minimaps position")) {
-        if (ImGui::BeginTable("tableminimapspos", 1, FlagsTable)) {
-            ImGui::TableSetupColumn("minimaps settings", FlagsCell, TablesCellsWidth);
-            Table_InitHeader(false);
-            DrawUseMarginsSlider("Minimap", "gMinimap");
-            DrawPositionsRadioBoxes("gMinimap", false);
-            DrawPositionSlider("gMinimap", (ImGui::GetWindowViewport()->Size.y/3)*-1, ImGui::GetWindowViewport()->Size.y/3, ImGui::GetWindowViewport()->Size.x*-1, ImGui::GetWindowViewport()->Size.x/2);
-            DrawScaleSlider("gMinimap",1.0f);
-            ImGui::NewLine();
-            ImGui::EndTable();
-        }
-    }
-    if (ImGui::CollapsingHeader("Small Keys counter position")) {
-        if (ImGui::BeginTable("tablesmolekeys", 1, FlagsTable)) {
-            ImGui::TableSetupColumn("Small Keys counter settings", FlagsCell, TablesCellsWidth);
-            Table_InitHeader(false);
-            DrawUseMarginsSlider("Small Keys counter", "gSKC");
-            DrawPositionsRadioBoxes("gSKC");
-            DrawPositionSlider("gSKC", 0, ImGui::GetWindowViewport()->Size.y/3, -1, ImGui::GetWindowViewport()->Size.x/2);
-            DrawScaleSlider("gSKC",1.0f);
-            ImGui::NewLine();
-            ImGui::EndTable();
-        }
-    }
-    if (ImGui::CollapsingHeader("Rupee counter position")) {
-        if (ImGui::BeginTable("tablerupeecount", 1, FlagsTable)) {
-            ImGui::TableSetupColumn("Rupee counter settings", FlagsCell, TablesCellsWidth);
-            Table_InitHeader(false);
-            DrawUseMarginsSlider("Rupee counter", "gRC");
-            DrawPositionsRadioBoxes("gRC");
-            DrawPositionSlider("gRC", -2, ImGui::GetWindowViewport()->Size.y/3, -3, ImGui::GetWindowViewport()->Size.x/2);
-            DrawScaleSlider("gRC",1.0f);
-            ImGui::NewLine();
-            ImGui::EndTable();
-        }
-    }
-    if (ImGui::CollapsingHeader("Carrots position")) {
-        if (ImGui::BeginTable("tableCarrots", 1, FlagsTable)) {
-            ImGui::TableSetupColumn("Carrots settings", FlagsCell, TablesCellsWidth);
-            Table_InitHeader(false);
-            DrawUseMarginsSlider("Carrots", "gCarrots");
-            DrawPositionsRadioBoxes("gCarrots");
-            DrawPositionSlider("gCarrots", 0, ImGui::GetWindowViewport()->Size.y/2, -50, ImGui::GetWindowViewport()->Size.x/2+25);
-            DrawScaleSlider("gCarrots",1.0f);
-            ImGui::NewLine();
-            ImGui::EndTable();
-        }
-    }
-    if (ImGui::CollapsingHeader("Timers position")) {
-        if (ImGui::BeginTable("tabletimers", 1, FlagsTable)) {
-            ImGui::TableSetupColumn("Timers settings", FlagsCell, TablesCellsWidth);
-            Table_InitHeader(false);
-            DrawUseMarginsSlider("Timers", "gTimers");
-            DrawPositionsRadioBoxes("gTimers");
-            DrawPositionSlider("gTimers", 0, ImGui::GetWindowViewport()->Size.y/2, -50, ImGui::GetWindowViewport()->Size.x/2-50);
-            DrawScaleSlider("gTimers",1.0f);
-            ImGui::NewLine();
-            ImGui::EndTable();
-        }
-    }
-    if (ImGui::CollapsingHeader("Archery Scores position")) {
-        if (ImGui::BeginTable("tablearchery", 1, FlagsTable)) {
-            ImGui::TableSetupColumn("Archery Scores settings", FlagsCell, TablesCellsWidth);
-            Table_InitHeader(false);
-            DrawUseMarginsSlider("Archery scores", "gAS");
-            DrawPositionsRadioBoxes("gAS", false);
-            DrawPositionSlider("gAS", 0, ImGui::GetWindowViewport()->Size.y/2, -50, ImGui::GetWindowViewport()->Size.x/2-50);
-            DrawScaleSlider("gAS",1.0f);
-            ImGui::NewLine();
-            ImGui::EndTable();
-        }
-    }
-    if (ImGui::CollapsingHeader("Title cards (Maps) position")) {
-        if (ImGui::BeginTable("tabletcmaps", 1, FlagsTable)) {
-            ImGui::TableSetupColumn("Titlecard maps settings", FlagsCell, TablesCellsWidth);
-            Table_InitHeader(false);
-            DrawUseMarginsSlider("Title cards (overworld)", "gTCM");
-            DrawPositionsRadioBoxes("gTCM");
-            DrawPositionSlider("gTCM", 0, ImGui::GetWindowViewport()->Size.y/2, -50, ImGui::GetWindowViewport()->Size.x/2+10);
-            DrawScaleSlider("gTCM",1.0f);
-            ImGui::NewLine();
-            ImGui::EndTable();
-        }
-    }
-    if (ImGui::CollapsingHeader("Title cards (Bosses) position")) {
-        if (ImGui::BeginTable("tabletcbosses", 1, FlagsTable)) {
-            ImGui::TableSetupColumn("Title cards (Bosses) settings", FlagsCell, TablesCellsWidth);
-            Table_InitHeader(false);
-            DrawUseMarginsSlider("Title cards (Bosses)", "gTCB");
-            DrawPositionsRadioBoxes("gTCB");
-            DrawPositionSlider("gTCB", 0, ImGui::GetWindowViewport()->Size.y/2, -50, ImGui::GetWindowViewport()->Size.x/2+10);
-            DrawScaleSlider("gTCB",1.0f);
-            ImGui::NewLine();
-            ImGui::EndTable();
-        }
-    }
-    if (ImGui::CollapsingHeader("In-game Gameplay Timer position")) {
-        if (ImGui::BeginTable("tablegameplaytimer", 1, FlagsTable)) {
-            ImGui::TableSetupColumn("In-game Gameplay Timer settings", FlagsCell, TablesCellsWidth);
-            Table_InitHeader(false);
-            DrawUseMarginsSlider("In-game Gameplay Timer", "gIGT");
-            DrawPositionsRadioBoxes("gIGT");
-            DrawPositionSlider("gIGT", 0, ImGui::GetWindowViewport()->Size.y / 2, -50,
-                               ImGui::GetWindowViewport()->Size.x / 2 + 10);
-            DrawScaleSlider("gIGT", 1.0f);
-            ImGui::NewLine();
-            ImGui::EndTable();
-        }
-    }
+    Draw_Table_Dropdown("Minimaps position", "tableminimapspos", "minimaps settings", "Minimap", "gMinimap", (ImGui::GetWindowViewport()->Size.y/3)*-1, ImGui::GetWindowViewport()->Size.y/3, ImGui::GetWindowViewport()->Size.x*-1, ImGui::GetWindowViewport()->Size.x/2, 1.0f);
+    Draw_Table_Dropdown("Small Keys counter position", "tablesmolekeys", "Small Keys counter settings", "Small Keys counter", "gSKC", 0, ImGui::GetWindowViewport()->Size.y/3, -1, ImGui::GetWindowViewport()->Size.x/2, 1.0f);
+    Draw_Table_Dropdown("Rupee counter position", "tablerupeecount", "Rupee counter settings", "Rupee counter", "gRC", -2, ImGui::GetWindowViewport()->Size.y/3, -3, ImGui::GetWindowViewport()->Size.x/2, 1.0f);
+    Draw_Table_Dropdown("Carrots position", "tableCarrots", "Carrots settings", "Carrots", "gCarrots", 0, ImGui::GetWindowViewport()->Size.y/2, -50, ImGui::GetWindowViewport()->Size.x/2+25, 1.0f);
+    Draw_Table_Dropdown("Timers position", "tabletimers", "Timers settings", "Timers", "gTimers", 0, ImGui::GetWindowViewport()->Size.y/2, -50, ImGui::GetWindowViewport()->Size.x/2-50, 1.0f);
+    Draw_Table_Dropdown("Archery Scores position", "tablearchery", "Archery Scores settings", "Archery scores", "gAS", 0, ImGui::GetWindowViewport()->Size.y/2, -50, ImGui::GetWindowViewport()->Size.x/2-50, 1.0f);
+    Draw_Table_Dropdown("Title cards (Maps) position", "tabletcmaps", "Titlecard maps settings", "Title cards (overworld)", "gTCM", 0, ImGui::GetWindowViewport()->Size.y/2, -50, ImGui::GetWindowViewport()->Size.x/2+10, 1.0f);
+    Draw_Table_Dropdown("Title cards (Bosses) position", "tabletcbosses", "Title cards (Bosses) settings", "Title cards (Bosses)", "gTCB", 0, ImGui::GetWindowViewport()->Size.y/2, -50, ImGui::GetWindowViewport()->Size.x/2+10, 1.0f);
+    Draw_Table_Dropdown("In-game Gameplay Timer position", "tablegameplaytimer", "In-game Gameplay Timer settings", "In-game Gameplay Timer", "gIGT", 0, ImGui::GetWindowViewport()->Size.y / 2, -50, ImGui::GetWindowViewport()->Size.x / 2 + 10, 1.0f);
     if (ImGui::CollapsingHeader("Enemy Health Bar position")) {
         if (ImGui::BeginTable("enemyhealthbar", 1, FlagsTable)) {
             ImGui::TableSetupColumn("Enemy Health Bar settings", FlagsCell, TablesCellsWidth);
@@ -1483,7 +1350,21 @@ void Draw_Placements(){
         }
     }
 }
-
+void Reset_Option_Single(const char* Button_Title, const char* name) {
+    ImGui::SameLine();
+    if (ImGui::Button(Button_Title)) {
+        CVarClear(name);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+}
+void Reset_Option_Double(const char* Button_Title, const char* name) {
+    ImGui::SameLine();
+    if (ImGui::Button(Button_Title)) {
+        CVarClear((std::string(name) + ".Value").c_str());
+        CVarClear((std::string(name) + ".Changed").c_str());
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+}
 void DrawSillyTab() {
     ImGui::BeginDisabled(CVarGetInteger("gDisableChangingSettings", 0));
     if (CVarGetInteger("gLetItSnow", 0)) {
@@ -1491,7 +1372,7 @@ void DrawSillyTab() {
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         }
     }
-    if (UIWidgets::EnhancementSliderFloat("Link Body Scale: %f", "##Link_BodyScale", "gCosmetics.Link_BodyScale.Value", 0.001f, 0.025f, "", 0.01f, true)) {
+    if (UIWidgets::EnhancementSliderFloat("Link Body Scale: %.3fx", "##Link_BodyScale", "gCosmetics.Link_BodyScale.Value", 0.001f, 0.025f, "", 0.01f, true)) {
         CVarSetInteger("gCosmetics.Link_BodyScale.Changed", 1);
     }
     ImGui::SameLine();
@@ -1506,70 +1387,31 @@ void DrawSillyTab() {
             player->actor.scale.z = 0.01f;
         }
     }
-    if (UIWidgets::EnhancementSliderFloat("Link Head Scale: %f", "##Link_HeadScale", "gCosmetics.Link_HeadScale.Value", 0.4f, 4.0f, "", 1.0f, false)) {
+    if (UIWidgets::EnhancementSliderFloat("Link Head Scale: %.2fx", "##Link_HeadScale", "gCosmetics.Link_HeadScale.Value", 0.4f, 4.0f, "", 1.0f, false)) {
         CVarSetInteger("gCosmetics.Link_HeadScale.Changed", 1);
     }
-    ImGui::SameLine();
-    if (ImGui::Button("Reset##Link_HeadScale")) {
-        CVarClear("gCosmetics.Link_HeadScale.Value");
-        CVarClear("gCosmetics.Link_HeadScale.Changed");
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-    }
+    Reset_Option_Double("Reset##Link_HeadScale", "gCosmetics.Link_HeadScale");
     if (UIWidgets::EnhancementSliderFloat("Link Sword Scale: %f", "##Link_SwordScale", "gCosmetics.Link_SwordScale.Value", 1.0f, 2.5f, "", 1.0f, false)) {
         CVarSetInteger("gCosmetics.Link_SwordScale.Changed", 1);
     }
-    ImGui::SameLine();
-    if (ImGui::Button("Reset##Link_SwordScale")) {
-        CVarClear("gCosmetics.Link_SwordScale.Value");
-        CVarClear("gCosmetics.Link_SwordScale.Changed");
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-    }
+    Reset_Option_Double("Reset##Link_SwordScale", "gCosmetics.Link_SwordScale");
     UIWidgets::EnhancementSliderFloat("Bunny Hood Length: %f", "##BunnyHood_EarLength", "gCosmetics.BunnyHood_EarLength", -300.0f, 1000.0f, "", 0.0f, false);
-    ImGui::SameLine();
-    if (ImGui::Button("Reset##BunnyHood_EarLength")) {
-        CVarClear("gCosmetics.BunnyHood_EarLength");
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-    }
+    Reset_Option_Single("Reset##BunnyHood_EarLength", "gCosmetics.BunnyHood_EarLength");
     UIWidgets::EnhancementSliderFloat("Bunny Hood Spread: %f", "##BunnyHood_EarSpread", "gCosmetics.BunnyHood_EarSpread", -300.0f, 500.0f, "", 0.0f, false);
-    ImGui::SameLine();
-    if (ImGui::Button("Reset##BunnyHood_EarSpread")) {
-        CVarClear("gCosmetics.BunnyHood_EarSpread");
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-    }
-    UIWidgets::EnhancementSliderFloat("Goron Neck Length: %f", "##Goron_NeckLength", "gCosmetics.Goron_NeckLength", 0.0f, 5000.0f, "", 0.0f, false);
-    ImGui::SameLine();
-    if (ImGui::Button("Reset##Goron_NeckLength")) {
-        CVarClear("gCosmetics.Goron_NeckLength");
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-    }
+    Reset_Option_Single("Reset##BunnyHood_EarSpread", "gCosmetics.BunnyHood_EarSpread");
+    UIWidgets::EnhancementSliderFloat("Goron Neck Length: %f", "##Goron_NeckLength", "gCosmetics.Goron_NeckLength", 0.0f, 1000.0f, "", 0.0f, false);
+    Reset_Option_Single("Reset##Goron_NeckLength", "gCosmetics.Goron_NeckLength");
     UIWidgets::EnhancementCheckbox("Unfix Goron Spin", "gUnfixGoronSpin");
     UIWidgets::EnhancementSliderFloat("Fairies Size: %f", "##Fairies_Size", "gCosmetics.Fairies_Size", 0.25f, 5.0f, "", 1.0f, false);
-    ImGui::SameLine();
-    if (ImGui::Button("Reset##Fairies_Size")) {
-        CVarClear("gCosmetics.Fairies_Size");
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-    }
+    Reset_Option_Single("Reset##Fairies_Size", "gCosmetics.Fairies_Size");
     UIWidgets::EnhancementSliderFloat("N64 Logo Spin Speed: %f", "##N64Logo_SpinSpeed", "gCosmetics.N64Logo_SpinSpeed", 0.25f, 5.0f, "", 1.0f, false);
-    ImGui::SameLine();
-    if (ImGui::Button("Reset##N64Logo_SpinSpeed")) {
-        CVarClear("gCosmetics.N64Logo_SpinSpeed");
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-    }
+    Reset_Option_Single("Reset##N64Logo_SpinSpeed", "gCosmetics.N64Logo_SpinSpeed");
     UIWidgets::EnhancementSliderFloat("Moon Size: %f", "##Moon_Size", "gCosmetics.Moon_Size", 0.5f, 2.0f, "", 1.0f, false);
-    ImGui::SameLine();
-    if (ImGui::Button("Reset##Moon_Size")) {
-        CVarClear("gCosmetics.Moon_Size");
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-    }
+    Reset_Option_Single("Reset##Moon_Size", "gCosmetics.Moon_Size");
     if (UIWidgets::EnhancementSliderFloat("Kak Windmill Speed: %f", "##Kak_Windmill_Speed", "gCosmetics.Kak_Windmill_Speed.Value", 100.0f, 6000.0f, "", 100.0f, false)) {
         CVarSetInteger("gCosmetics.Kak_Windmill_Speed.Changed", 1);
     }
-    ImGui::SameLine();
-    if (ImGui::Button("Reset##Kak_Windmill_Speed")) {
-        CVarClear("gCosmetics.Kak_Windmill_Speed.Value");
-        CVarClear("gCosmetics.Kak_Windmill_Speed.Changed");
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-    }
+    Reset_Option_Double("Reset##Kak_Windmill_Speed", "gCosmetics.Kak_Windmill_Speed");
     ImGui::EndDisabled();
 }
 
@@ -1592,6 +1434,104 @@ void CopyMultipliedColor(CosmeticOption& cosmeticOptionSrc, CosmeticOption& cosm
     CVarSetInteger((cosmeticOptionTarget.changedCvar), 1);
 }
 
+void ToggleRainbow(CosmeticOption& cosmeticOption, bool state) {
+    if (state) {
+        CVarSetInteger(cosmeticOption.rainbowCvar, 1);
+        CVarSetInteger(cosmeticOption.changedCvar, 1);
+    } else {
+        CVarClear(cosmeticOption.rainbowCvar);
+        CVarClear(cosmeticOption.changedCvar);
+    }
+}
+
+void ApplySideEffects(CosmeticOption& cosmeticOption) {
+    if (CVarGetInteger("gCosmetics.AdvancedMode", 0)) {
+        return;
+    }
+
+    // This bit is kind of experimental, not sure how I feel about it yet, but it allows for
+    // advanced cosmetic options to be changed based on a non-advanced option.
+    if (cosmeticOption.label == "Bow Body") {
+        CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Equipment_BowTips"), 0.5f);
+        CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Equipment_BowHandle"), 1.0f);
+        CopyMultipliedColor(cosmeticOption, cosmeticOption, 4.0f);
+    } else if (cosmeticOption.label == "Idle Primary") {
+        CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Navi_IdleSecondary"), 0.5f);
+    } else if (cosmeticOption.label == "Enemy Primary") {
+        CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Navi_EnemySecondary"), 0.5f);
+    } else if (cosmeticOption.label == "NPC Primary") {
+        CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Navi_NPCSecondary"), 1.0f);
+    } else if (cosmeticOption.label == "Props Primary") {
+        CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Navi_PropsSecondary"), 1.0f);
+    } else if (cosmeticOption.label == "Ivan Idle Primary") {
+        CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Ivan_IdleSecondary"), 0.5f);
+    } else if (cosmeticOption.label == "Level 1 Secondary") {
+        CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("SpinAttack_Level1Primary"), 2.0f);
+    } else if (cosmeticOption.label == "Level 2 Secondary") {
+        CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("SpinAttack_Level2Primary"), 2.0f);
+    } else if (cosmeticOption.label == "Item Select Color") {
+        if (CVarGetInteger(cosmeticOption.rainbowCvar, 0)) {
+            ToggleRainbow(cosmeticOptions.at("Kal_ItemSelB"), true);
+            ToggleRainbow(cosmeticOptions.at("Kal_ItemSelC"), true);
+            ToggleRainbow(cosmeticOptions.at("Kal_ItemSelD"), true);
+        } else {
+            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Kal_ItemSelB"), 2.0f);
+            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Kal_ItemSelC"), 2.0f);
+            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Kal_ItemSelD"), 1.0f);
+        }
+    } else if (cosmeticOption.label == "Equip Select Color") {
+        if (CVarGetInteger(cosmeticOption.rainbowCvar, 0)) {
+            ToggleRainbow(cosmeticOptions.at("Kal_EquipSelB"), true);
+            ToggleRainbow(cosmeticOptions.at("Kal_EquipSelC"), true);
+            ToggleRainbow(cosmeticOptions.at("Kal_EquipSelD"), true);
+        } else {
+            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Kal_EquipSelB"), 2.0f);
+            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Kal_EquipSelC"), 2.0f);
+            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Kal_EquipSelD"), 1.0f);
+        }
+    } else if (cosmeticOption.label == "Map Dungeon Color") {
+        if (CVarGetInteger(cosmeticOption.rainbowCvar, 0)) {
+            ToggleRainbow(cosmeticOptions.at("Kal_MapSelDunB"), true);
+            ToggleRainbow(cosmeticOptions.at("Kal_MapSelDunC"), true);
+            ToggleRainbow(cosmeticOptions.at("Kal_MapSelDunD"), true);
+        } else {
+            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Kal_MapSelDunB"), 2.0f);
+            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Kal_MapSelDunC"), 2.0f);
+            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Kal_MapSelDunD"), 1.0f);
+        }
+    } else if (cosmeticOption.label == "Quest Status Color") {
+        if (CVarGetInteger(cosmeticOption.rainbowCvar, 0)) {
+            ToggleRainbow(cosmeticOptions.at("Kal_QuestStatusB"), true);
+            ToggleRainbow(cosmeticOptions.at("Kal_QuestStatusC"), true);
+            ToggleRainbow(cosmeticOptions.at("Kal_QuestStatusD"), true);
+        } else {
+            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Kal_QuestStatusB"), 2.0f);
+            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Kal_QuestStatusC"), 2.0f);
+            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Kal_QuestStatusD"), 1.0f);
+        }
+    } else if (cosmeticOption.label == "Map Color") {
+        if (CVarGetInteger(cosmeticOption.rainbowCvar, 0)) {
+            ToggleRainbow(cosmeticOptions.at("Kal_MapSelectB"), true);
+            ToggleRainbow(cosmeticOptions.at("Kal_MapSelectC"), true);
+            ToggleRainbow(cosmeticOptions.at("Kal_MapSelectD"), true);
+        } else {
+            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Kal_MapSelectB"), 2.0f);
+            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Kal_MapSelectC"), 2.0f);
+            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Kal_MapSelectD"), 1.0f);
+        }
+    } else if (cosmeticOption.label == "Save Color") {
+        if (CVarGetInteger(cosmeticOption.rainbowCvar, 0)) {
+            ToggleRainbow(cosmeticOptions.at("Kal_SaveB"), true);
+            ToggleRainbow(cosmeticOptions.at("Kal_SaveC"), true);
+            ToggleRainbow(cosmeticOptions.at("Kal_SaveD"), true);
+        } else {
+            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Kal_SaveB"), 2.0f);
+            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Kal_SaveC"), 2.0f);
+            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Kal_SaveD"), 1.0f);
+        }
+    }
+}
+
 void RandomizeColor(CosmeticOption& cosmeticOption) {
     Color_RGBA8 newColor;
     newColor.r = Random(0, 255);
@@ -1611,26 +1551,7 @@ void RandomizeColor(CosmeticOption& cosmeticOption) {
     CVarSetColor(cosmeticOption.cvar, newColor);
     CVarSetInteger((cosmeticOption.rainbowCvar), 0);
     CVarSetInteger((cosmeticOption.changedCvar), 1);
-
-    // This bit is kind of experimental, not sure how I feel about it yet, but it allows for
-    // advanced cosmetic options to be changed based on a non-advanced option.
-    if (cosmeticOption.label == "Bow Body") {
-        CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Equipment_BowTips"), 0.5f);
-        CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Equipment_BowHandle"), 1.0f);
-        CopyMultipliedColor(cosmeticOption, cosmeticOption, 4.0f);
-    } else if (cosmeticOption.label == "Idle Primary") {
-        CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Navi_IdleSecondary"), 0.5f);
-    } else if (cosmeticOption.label == "Enemy Primary") {
-        CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Navi_EnemySecondary"), 0.5f);
-    } else if (cosmeticOption.label == "NPC Primary") {
-        CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Navi_NPCSecondary"), 1.0f);
-    } else if (cosmeticOption.label == "Props Primary") {
-        CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Navi_PropsSecondary"), 1.0f);
-    } else if (cosmeticOption.label == "Level 1 Secondary") {
-        CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("SpinAttack_Level1Primary"), 2.0f);
-    } else if (cosmeticOption.label == "Level 2 Secondary") {
-        CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("SpinAttack_Level2Primary"), 2.0f);
-    }
+    ApplySideEffects(cosmeticOption);
 }
 
 void ResetColor(CosmeticOption& cosmeticOption) {
@@ -1650,7 +1571,7 @@ void ResetColor(CosmeticOption& cosmeticOption) {
     CVarClear((std::string(cosmeticOption.cvar) + ".A").c_str());
     CVarClear((std::string(cosmeticOption.cvar) + ".Type").c_str());
 
-    // This portion should match 1:1 the multiplied colors in `RandomizeColor()`
+    // This portion should match 1:1 the multiplied colors in `ApplySideEffect()`
     if (cosmeticOption.label == "Bow Body") {
         ResetColor(cosmeticOptions.at("Equipment_BowTips"));
         ResetColor(cosmeticOptions.at("Equipment_BowHandle"));
@@ -1666,6 +1587,30 @@ void ResetColor(CosmeticOption& cosmeticOption) {
         ResetColor(cosmeticOptions.at("SpinAttack_Level1Primary"));
     } else if (cosmeticOption.label == "Level 2 Secondary") {
         ResetColor(cosmeticOptions.at("SpinAttack_Level2Primary"));
+    } else if (cosmeticOption.label == "Item Select Color") {
+        ResetColor(cosmeticOptions.at("Kal_ItemSelB"));
+        ResetColor(cosmeticOptions.at("Kal_ItemSelC"));
+        ResetColor(cosmeticOptions.at("Kal_ItemSelD"));
+    } else if (cosmeticOption.label == "Equip Select Color") {
+        ResetColor(cosmeticOptions.at("Kal_EquipSelB"));
+        ResetColor(cosmeticOptions.at("Kal_EquipSelC"));
+        ResetColor(cosmeticOptions.at("Kal_EquipSelD"));
+    } else if (cosmeticOption.label == "Map Dungeon Color") {
+        ResetColor(cosmeticOptions.at("Kal_MapSelDunB"));
+        ResetColor(cosmeticOptions.at("Kal_MapSelDunC"));
+        ResetColor(cosmeticOptions.at("Kal_MapSelDunD"));
+    } else if (cosmeticOption.label == "Quest Status Color") {
+        ResetColor(cosmeticOptions.at("Kal_QuestStatusB"));
+        ResetColor(cosmeticOptions.at("Kal_QuestStatusC"));
+        ResetColor(cosmeticOptions.at("Kal_QuestStatusD"));
+    } else if (cosmeticOption.label == "Map Color") {
+        ResetColor(cosmeticOptions.at("Kal_MapSelectB"));
+        ResetColor(cosmeticOptions.at("Kal_MapSelectC"));
+        ResetColor(cosmeticOptions.at("Kal_MapSelectD"));
+    } else if (cosmeticOption.label == "Save Color") {
+        ResetColor(cosmeticOptions.at("Kal_SaveB"));
+        ResetColor(cosmeticOptions.at("Kal_SaveC"));
+        ResetColor(cosmeticOptions.at("Kal_SaveD"));
     }
 }
 
@@ -1686,6 +1631,7 @@ void DrawCosmeticRow(CosmeticOption& cosmeticOption) {
         CVarSetColor(cosmeticOption.cvar, color);
         CVarSetInteger((cosmeticOption.rainbowCvar), 0);
         CVarSetInteger((cosmeticOption.changedCvar), 1);
+        ApplySideEffects(cosmeticOption);
         ApplyOrResetCustomGfxPatches();
         LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
@@ -1703,6 +1649,7 @@ void DrawCosmeticRow(CosmeticOption& cosmeticOption) {
         if (ImGui::Checkbox(("Rainbow##" + cosmeticOption.label).c_str(), &isRainbow)) {
             CVarSetInteger((cosmeticOption.rainbowCvar), isRainbow);
             CVarSetInteger((cosmeticOption.changedCvar), 1);
+            ApplySideEffects(cosmeticOption);
             ApplyOrResetCustomGfxPatches();
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         }
@@ -1759,7 +1706,7 @@ static const char* colorSchemes[2] = {
 };
 
 void CosmeticsEditorWindow::DrawElement() {
-    ImGui::SetNextWindowSize(ImVec2(480, 520), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowSize(ImVec2(550, 520), ImGuiCond_FirstUseEver);
     if (!ImGui::Begin("Cosmetics Editor", &mIsVisible)) {
         ImGui::End();
         return;
@@ -1793,15 +1740,12 @@ void CosmeticsEditorWindow::DrawElement() {
         }
     }
     UIWidgets::EnhancementCheckbox("Sync Rainbow colors", "gCosmetics.RainbowSync");
-    UIWidgets::EnhancementSliderFloat("Rainbow Speed: %f", "##rainbowSpeed", "gCosmetics.RainbowSpeed", 0.03f, 1.0f, "", 0.6f, false);
+    UIWidgets::EnhancementSliderFloat("Rainbow Speed: %.3f", "##rainbowSpeed", "gCosmetics.RainbowSpeed", 0.03f, 1.0f, "", 0.6f, false, true);
+    UIWidgets::EnhancementCheckbox("Randomize All on New Scene", "gCosmetics.RandomizeAllOnNewScene");
+    UIWidgets::Tooltip("Enables randomizing all unlocked cosmetics when you enter a new scene.");
+
     if (ImGui::Button("Randomize All", ImVec2(ImGui::GetContentRegionAvail().x / 2, 30.0f))) {
-        for (auto& [id, cosmeticOption] : cosmeticOptions) {
-            if (!CVarGetInteger(cosmeticOption.lockedCvar, 0) && (!cosmeticOption.advancedOption || CVarGetInteger("gCosmetics.AdvancedMode", 0))) {
-                RandomizeColor(cosmeticOption);
-            }
-        }
-        ApplyOrResetCustomGfxPatches();
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        CosmeticsEditor_RandomizeAll();
     }
     ImGui::SameLine();
     if (ImGui::Button("Reset All", ImVec2(ImGui::GetContentRegionAvail().x, 30.0f))) {
@@ -1861,6 +1805,7 @@ void CosmeticsEditorWindow::DrawElement() {
         if (ImGui::BeginTabItem("World & NPCs")) {
             DrawCosmeticGroup(GROUP_WORLD);
             DrawCosmeticGroup(GROUP_NAVI);
+            DrawCosmeticGroup(GROUP_IVAN);
             DrawCosmeticGroup(GROUP_NPC);
             ImGui::EndTabItem();
         }
@@ -1873,8 +1818,14 @@ void CosmeticsEditorWindow::DrawElement() {
             DrawCosmeticGroup(GROUP_TITLE);
             ImGui::EndTabItem();
         }
+
         if (ImGui::BeginTabItem("HUD Placement")) {
             Draw_Placements();
+            ImGui::EndTabItem();
+        }
+
+        if (ImGui::BeginTabItem("Pause Menu")) {
+            DrawCosmeticGroup(GROUP_KALEIDO);
             ImGui::EndTabItem();
         }
         ImGui::EndTabBar();
@@ -1891,6 +1842,14 @@ void RegisterOnLoadGameHook() {
 void RegisterOnGameFrameUpdateHook() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
         CosmeticsUpdateTick();
+    });
+}
+
+void Cosmetics_RegisterOnSceneInitHook() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) {
+        if (CVarGetInteger("gCosmetics.RandomizeAllOnNewScene", 0)) {
+            CosmeticsEditor_RandomizeAll();
+        }
     });
 }
 
@@ -1911,6 +1870,7 @@ void CosmeticsEditorWindow::InitElement() {
 
     RegisterOnLoadGameHook();
     RegisterOnGameFrameUpdateHook();
+    Cosmetics_RegisterOnSceneInitHook();
 }
 
 void CosmeticsEditor_RandomizeAll() {

@@ -9,7 +9,7 @@
 // #include <libultraship/libultra/types.h>
 #include "z64math.h"
 
-namespace LUS {
+namespace SOH {
 typedef struct {
     struct {
         s8 room;    // Room to switch to

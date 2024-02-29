@@ -553,7 +553,7 @@ void func_80997220(DoorShutter* this, PlayState* play) {
     }
     this->unk_164 = 0;
     this->dyna.actor.velocity.y = 0.0f;
-    if (DoorShutter_SetupDoor(this, play) && !(player->stateFlags1 & 0x800)) {
+    if (DoorShutter_SetupDoor(this, play) && !(player->stateFlags1 & PLAYER_STATE1_ITEM_OVER_HEAD)) {
         DoorShutter_SetupAction(this, func_80997568);
         func_8002DF54(play, NULL, 2);
     }
@@ -637,7 +637,7 @@ void DoorShutter_Update(Actor* thisx, PlayState* play) {
     DoorShutter* this = (DoorShutter*)thisx;
     Player* player = GET_PLAYER(play);
 
-    if (!(player->stateFlags1 & 0x100004C0) || (this->actionFunc == DoorShutter_SetupType)) {
+    if (!(player->stateFlags1 & (PLAYER_STATE1_TEXT_ON_SCREEN | PLAYER_STATE1_DEAD | PLAYER_STATE1_GETTING_ITEM | PLAYER_STATE1_IN_ITEM_CS)) || (this->actionFunc == DoorShutter_SetupType)) {
         this->actionFunc(this, play);
     }
 }

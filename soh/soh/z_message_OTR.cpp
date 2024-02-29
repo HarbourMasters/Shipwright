@@ -15,8 +15,35 @@ extern "C" MessageTableEntry* sFraMessageEntryTablePtr;
 extern "C" MessageTableEntry* sStaffMessageEntryTablePtr;
 //extern "C" MessageTableEntry* _message_0xFFFC_nes;	
 
-MessageTableEntry* OTRMessage_LoadTable(const char* filePath, bool isNES) {
-    auto file = std::static_pointer_cast<LUS::Text>(LUS::Context::GetInstance()->GetResourceManager()->LoadResource(filePath));
+static void SetMessageEntry(MessageTableEntry& entry, const SOH::MessageEntry& msgEntry) {
+    entry.textId = msgEntry.id;
+    entry.typePos = (msgEntry.textboxType << 4) | msgEntry.textboxYPos;
+    entry.segment = msgEntry.msg.c_str();
+    entry.msgSize = msgEntry.msg.size();
+}
+
+static void OTRMessage_LoadCustom(const std::string& folderPath, MessageTableEntry*& table, size_t tableSize) {
+    auto lst = *LUS::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->ListFiles(folderPath).get();
+
+    for (auto& tPath : lst) {
+        auto file = std::static_pointer_cast<SOH::Text>(LUS::Context::GetInstance()->GetResourceManager()->LoadResource(tPath));
+
+        for (size_t j = 0; j < file->messages.size(); ++j) {
+            // Check if same text ID exists already
+            auto existingEntry = std::find_if(table, table + tableSize, [id = file->messages[j].id](const auto& entry) {
+                return entry.textId == id;
+            });
+
+            if (existingEntry != table + tableSize) {
+                // Replace existing message
+                SetMessageEntry(*existingEntry, file->messages[j]);
+            }
+        }
+    }
+}
+
+MessageTableEntry* OTRMessage_LoadTable(const std::string& filePath, bool isNES) {
+    auto file = std::static_pointer_cast<SOH::Text>(LUS::Context::GetInstance()->GetResourceManager()->LoadResource(filePath));
 
     if (file == nullptr)
         return nullptr;
@@ -63,14 +90,12 @@ MessageTableEntry* OTRMessage_LoadTable(const char* filePath, bool isNES) {
             table[file->messages.size()].msgSize = kaeporaMsgSize;
         }
 
-        table[i].textId = file->messages[i].id;
-        table[i].typePos = (file->messages[i].textboxType << 4) | file->messages[i].textboxYPos;
-        table[i].segment = file->messages[i].msg.c_str();
-        table[i].msgSize = file->messages[i].msg.size();
+        SetMessageEntry(table[i], file->messages[i]);
 
         if (isNES && file->messages[i].id == 0xFFFC)
             _message_0xFFFC_nes = (char*)file->messages[i].msg.c_str();
     }
+    OTRMessage_LoadCustom("override/" + filePath.substr(0, filePath.find_last_of('/')) + "/*", table, file->messages.size() + 1);
 
     // Assert that the first message starts at the first text ID
     assert(table[0].textId == 0x0001);
@@ -95,18 +120,15 @@ extern "C" void OTRMessage_Init()
 
     if (sStaffMessageEntryTablePtr == NULL) {
         auto file2 =
-            std::static_pointer_cast<LUS::Text>(LUS::Context::GetInstance()->GetResourceManager()->LoadResource(
+            std::static_pointer_cast<SOH::Text>(LUS::Context::GetInstance()->GetResourceManager()->LoadResource(
                 "text/staff_message_data_static/staff_message_data_static"));
         // OTRTODO: Should not be malloc'ing here. It's fine for now since we check that the message table is already null.
         sStaffMessageEntryTablePtr = (MessageTableEntry*)malloc(sizeof(MessageTableEntry) * file2->messages.size());
 
         for (size_t i = 0; i < file2->messages.size(); i++) {
-            sStaffMessageEntryTablePtr[i].textId = file2->messages[i].id;
-            sStaffMessageEntryTablePtr[i].typePos =
-                (file2->messages[i].textboxType << 4) | file2->messages[i].textboxYPos;
-            sStaffMessageEntryTablePtr[i].segment = file2->messages[i].msg.c_str();
-            sStaffMessageEntryTablePtr[i].msgSize = file2->messages[i].msg.size();
+            SetMessageEntry(sStaffMessageEntryTablePtr[i], file2->messages[i]);
         }
+        OTRMessage_LoadCustom("override/text/staff_message_data_static/*", sStaffMessageEntryTablePtr, file2->messages.size());
 
         // Assert staff credits start at the first credits ID
         assert(sStaffMessageEntryTablePtr[0].textId == 0x0500);
@@ -160,4 +182,9 @@ extern "C" void OTRMessage_Init()
         CustomMessage("You look bored. Wanna go out for a&walk?\x1B&%gYes&No%w",
                       "Du siehst gelangweilt aus.&Willst du einen Spaziergang machen?\x1B&%gJa&Nein%w",
                       "Tu as l'air de t'ennuyer. Tu veux&aller faire un tour?\x1B&%gOui&Non%w"));
+    CustomMessageManager::Instance->CreateMessage(
+        customMessageTableID, TEXT_FISHERMAN_LEAVE,
+        CustomMessage("Hey! Hey!&You can't take the rod out of here!&I'm serious!^Do you want to quit?&\x1B&%gYes&No%w",
+                      "Hey! Hey!&Du kannst die Angel doch nicht&einfach mitnehmen!&Ganz im Ernst!^Möchtest du aufhören?&\x1B&%gJa&Nein%w", //TODO Used AI translation as placeholder
+                      "Holà! Holà!&Les cannes ne sortent pas d'ici!&Je suis sérieux!^Voulez-vous arrêter?&\x1B&%gOui&Non%w")); //TODO Used AI translation as placeholder
 }

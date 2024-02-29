@@ -175,33 +175,33 @@ void BossRush_HandleBlueWarp(PlayState* play, f32 warpPosX, f32 warpPosZ) {
         // Gohma & Phantom Ganon
         if (warpPosX == -100 && warpPosZ == -170) {
             if (gSaveContext.linkAge == LINK_AGE_CHILD) {
-                play->nextEntranceIndex = 0x040F;
+                play->nextEntranceIndex = ENTR_DEKU_TREE_BOSS_0;
             } else {
-                play->nextEntranceIndex = 0x000C;
+                play->nextEntranceIndex = ENTR_FOREST_TEMPLE_BOSS_0;
             }
         // King Dodongo & Volvagia
         } else if (warpPosX == 100 && warpPosZ == -170) {
             if (gSaveContext.linkAge == LINK_AGE_CHILD) {
-                play->nextEntranceIndex = 0x040B;
+                play->nextEntranceIndex = ENTR_DODONGOS_CAVERN_BOSS_0;
             } else {
-                play->nextEntranceIndex = 0x0305;
+                play->nextEntranceIndex = ENTR_FIRE_TEMPLE_BOSS_0;
             }
         // Barinade & Morb
         } else if (warpPosX == 199 && warpPosZ == 0) {
             if (gSaveContext.linkAge == LINK_AGE_CHILD) {
-                play->nextEntranceIndex = 0x0301;
+                play->nextEntranceIndex = ENTR_JABU_JABU_BOSS_0;
             } else {
-                play->nextEntranceIndex = 0x0417;
+                play->nextEntranceIndex = ENTR_WATER_TEMPLE_BOSS_0;
             }
         // Twinrova
         } else if (warpPosX == 100 && warpPosZ == 170) {
-            play->nextEntranceIndex = 0x05EC;
+            play->nextEntranceIndex = ENTR_SPIRIT_TEMPLE_BOSS_2;
         // Bongo Bongo
         } else if (warpPosX == -100 && warpPosZ == 170) {
-            play->nextEntranceIndex = 0x0413;
+            play->nextEntranceIndex = ENTR_SHADOW_TEMPLE_BOSS_0;
         // Ganondork
         } else if (warpPosX == -199 && warpPosZ == 0) {
-            play->nextEntranceIndex = 0x041F;
+            play->nextEntranceIndex = ENTR_GANONDORF_BOSS_0;
         }
     // If coming from a boss room, teleport back to Chamber of Sages and set flag.
     } else {
@@ -216,10 +216,10 @@ void BossRush_HandleBlueWarp(PlayState* play, f32 warpPosX, f32 warpPosZ) {
                 BossRush_SetEquipment(LINK_AGE_ADULT);
             // Warp to credits.
             } else if (gSaveContext.bossRushOptions[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_CHILD) {
-                play->nextEntranceIndex = 0x6B;
+                play->nextEntranceIndex = ENTR_CHAMBER_OF_THE_SAGES_0;
                 gSaveContext.nextCutsceneIndex = 0xFFF2;
-                play->sceneLoadFlag = 0x14;
-                play->fadeTransition = 3;
+                play->transitionTrigger = TRANS_TRIGGER_START;
+                play->transitionType = TRANS_TYPE_FADE_WHITE;
             }
         }
     }
@@ -293,7 +293,7 @@ void BossRush_InitSave() {
 
     gSaveContext.questId = QUEST_BOSSRUSH;
     gSaveContext.isBossRushPaused = 1;
-    gSaveContext.entranceIndex = 107;
+    gSaveContext.entranceIndex = ENTR_CHAMBER_OF_THE_SAGES_0;
     gSaveContext.cutsceneIndex = 0x8000;
     gSaveContext.isMagicAcquired = 1;
 

@@ -154,7 +154,7 @@ list(FILTER soh__Enhancements EXCLUDE REGEX "soh/Enhancements/gfx.*")
 # handle crowd control removals
 list(REMOVE_ITEM soh__Enhancements "soh/Enhancements/crowd-control/soh.cs")
 list(REMOVE_ITEM soh__Enhancements "soh/Enhancements/crowd-control/soh.ccpak")
-if (!BUILD_CROWD_CONTROL)
+if (!BUILD_REMOTE_CONTROL)
     list(FILTER soh__Enhancements EXCLUDE REGEX "soh/Enhancements/crowd-control/*")
 endif()
 
@@ -354,9 +354,15 @@ endif()
 find_package(SDL2)
 set(SDL2-INCLUDE ${SDL2_INCLUDE_DIRS})
 
-if (BUILD_CROWD_CONTROL)
+if (BUILD_REMOTE_CONTROL)
     find_package(SDL2_net)
-    set(SDL2-NET-INCLUDE ${SDL_NET_INCLUDE_DIRS})
+
+    if(NOT SDL2_net_FOUND)
+        message(STATUS "SDL2_net not found (it's possible the version installed is too old). Disabling BUILD_REMOTE_CONTROL.")
+        set(BUILD_REMOTE_CONTROL 0)
+    else()
+        set(SDL2-NET-INCLUDE ${SDL_NET_INCLUDE_DIRS})
+    endif()
 endif()
 
 target_include_directories(${PROJECT_NAME} PRIVATE assets
@@ -408,9 +414,8 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			"$<$<CONFIG:Release>:"
 				"NDEBUG"
 			">"
-            "$<$<BOOL:${BUILD_CROWD_CONTROL}>:ENABLE_CROWD_CONTROL>"
+            "$<$<BOOL:${BUILD_REMOTE_CONTROL}>:ENABLE_REMOTE_CONTROL>"
 			"INCLUDE_GAME_PRINTF;"
-            "ENABLE_CROWD_CONTROL;"
 			"UNICODE;"
 			"_UNICODE"
 			STORMLIB_NO_AUTO_LINK
@@ -455,7 +460,7 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU|Clang|AppleClang")
 		"$<$<CONFIG:Release>:"
 			"NDEBUG"
 		">"
-        "$<$<BOOL:${BUILD_CROWD_CONTROL}>:ENABLE_CROWD_CONTROL>"
+        "$<$<BOOL:${BUILD_REMOTE_CONTROL}>:ENABLE_REMOTE_CONTROL>"
 		"SPDLOG_ACTIVE_LEVEL=0;"
 		"_CONSOLE;"
 		"_CRT_SECURE_NO_WARNINGS;"
@@ -624,6 +629,8 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
             -Wno-parentheses
             -Wno-narrowing
             -Wno-missing-braces
+            -Wno-int-conversion
+            -Wno-implicit-int
             $<$<COMPILE_LANGUAGE:C>:
                 -Werror-implicit-function-declaration
                 -Wno-incompatible-pointer-types
@@ -689,7 +696,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			"glu32;"
 			"SDL2::SDL2;"
 			"SDL2::SDL2main;"
-            "$<$<BOOL:${BUILD_CROWD_CONTROL}>:SDL2_net::SDL2_net-static>"
+            "$<$<BOOL:${BUILD_REMOTE_CONTROL}>:SDL2_net::SDL2_net-static>"
 			"glfw;"
 			"winmm;"
 			"imm32;"
@@ -742,7 +749,7 @@ else()
         "ZAPDUtils;"
 		"ZAPDLib;"
 		SDL2::SDL2
-        "$<$<BOOL:${BUILD_CROWD_CONTROL}>:SDL2_net::SDL2_net>"
+        "$<$<BOOL:${BUILD_REMOTE_CONTROL}>:SDL2_net::SDL2_net>"
 		${CMAKE_DL_LIBS}
 		Threads::Threads
 	)

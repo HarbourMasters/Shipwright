@@ -579,7 +579,7 @@ s32 func_80B150AC(EnTa* this, PlayState* play, s32 idx) {
     Player* player = GET_PLAYER(play);
     Actor* interactRangeActor;
 
-    if (player->stateFlags1 & 0x800) {
+    if (player->stateFlags1 & PLAYER_STATE1_ITEM_OVER_HEAD) {
         interactRangeActor = player->interactRangeActor;
         if (interactRangeActor != NULL && interactRangeActor->id == ACTOR_EN_NIW &&
             interactRangeActor == &this->superCuccos[idx]->actor) {
@@ -613,7 +613,7 @@ void func_80B15100(EnTa* this, PlayState* play) {
         if (player->heldActor == &this->superCuccos[unk_2CA]->actor) {
             player->heldActor = NULL;
         }
-        player->stateFlags1 &= ~0x800;
+        player->stateFlags1 &= ~PLAYER_STATE1_ITEM_OVER_HEAD;
         this->superCuccos[unk_2CA] = NULL;
     }
     this->unk_2E0 |= 1;
@@ -669,17 +669,17 @@ void func_80B15424(EnTa* this, PlayState* play) {
     func_80B15308(this);
 
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(play)) {
-        play->nextEntranceIndex = 0x5E4;
+        play->nextEntranceIndex = ENTR_LON_LON_BUILDINGS_2;
 
         if (gSaveContext.eventInf[0] & 0x100) {
-            play->fadeTransition = 46;
-            gSaveContext.nextTransitionType = 3;
+            play->transitionType = TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_WHITE, TCS_FAST);
+            gSaveContext.nextTransitionType = TRANS_TYPE_FADE_WHITE;
         } else {
-            play->fadeTransition = 38;
-            gSaveContext.nextTransitionType = 2;
+            play->transitionType = TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_BLACK, TCS_FAST);
+            gSaveContext.nextTransitionType = TRANS_TYPE_FADE_BLACK;
         }
 
-        play->sceneLoadFlag = 0x14;
+        play->transitionTrigger = TRANS_TRIGGER_START;
         gSaveContext.eventInf[0] |= 0x400;
         this->actionFunc = func_80B153D4;
         this->unk_2CC = 22;

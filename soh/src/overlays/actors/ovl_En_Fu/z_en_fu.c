@@ -208,17 +208,17 @@ void func_80A1DBD4(EnFu* this, PlayState* play) {
         play->msgCtx.ocarinaMode = OCARINA_MODE_00;
         Flags_SetEventChkInf(EVENTCHKINF_PLAYED_SONG_OF_STORMS_IN_WINDMILL);
     } else if (play->msgCtx.ocarinaMode == OCARINA_MODE_02) {
-        player->stateFlags2 &= ~0x1000000;
+        player->stateFlags2 &= ~PLAYER_STATE2_ATTEMPT_PLAY_FOR_ACTOR;
         this->actionFunc = EnFu_WaitAdult;
     } else if (play->msgCtx.ocarinaMode == OCARINA_MODE_01) {
-        player->stateFlags2 |= 0x800000;
+        player->stateFlags2 |= PLAYER_STATE2_NEAR_OCARINA_ACTOR;
     }
 }
 
 void EnFu_WaitForPlayback(EnFu* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    player->stateFlags2 |= 0x800000;
+    player->stateFlags2 |= PLAYER_STATE2_NEAR_OCARINA_ACTOR;
     // if dialog state is 7, player has played back the song
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_SONG_DEMO_DONE) {
         func_8010BD58(play, OCARINA_ACTION_PLAYBACK_STORMS);
@@ -229,7 +229,7 @@ void EnFu_WaitForPlayback(EnFu* this, PlayState* play) {
 void EnFu_TeachSong(EnFu* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    player->stateFlags2 |= 0x800000;
+    player->stateFlags2 |= PLAYER_STATE2_NEAR_OCARINA_ACTOR;
     // if dialog state is 2, start song demonstration
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_CLOSING) {
         this->behaviorFlags &= ~FU_WAIT;
@@ -246,7 +246,7 @@ void EnFu_WaitAdult(EnFu* this, PlayState* play) {
     yawDiff = this->actor.yawTowardsPlayer - this->actor.shape.rot.y;
     if ((Flags_GetEventChkInf(EVENTCHKINF_LEARNED_SONG_OF_STORMS))) {
         func_80A1D94C(this, play, 0x508E, func_80A1DBA0);
-    } else if (player->stateFlags2 & 0x1000000) {
+    } else if (player->stateFlags2 & PLAYER_STATE2_ATTEMPT_PLAY_FOR_ACTOR) {
         this->actor.textId = 0x5035;
         Message_StartTextbox(play, this->actor.textId, NULL);
         this->actionFunc = IS_RANDO ? func_80A1DBD4 : EnFu_TeachSong;
@@ -257,7 +257,7 @@ void EnFu_WaitAdult(EnFu* this, PlayState* play) {
         if (this->actor.xzDistToPlayer < 100.0f) {
             this->actor.textId = 0x5034;
             func_8002F2CC(&this->actor, play, 100.0f);
-            player->stateFlags2 |= 0x800000;
+            player->stateFlags2 |= PLAYER_STATE2_NEAR_OCARINA_ACTOR;
         }
     }
 }

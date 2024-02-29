@@ -242,6 +242,7 @@ namespace Areas {
 void  AreaTable_Init();
 Area* AreaTable(const uint32_t areaKey);
 std::vector<Entrance*> GetShuffleableEntrances(EntranceType type, bool onlyPrimary = true);
+Entrance* GetEntrance(const std::string name);
 
 // Overworld
 void AreaTable_Init_LostWoods();

@@ -76,6 +76,7 @@ const std::vector<const char*> enhancementsCvars = {
     "gForgeTime",
     "gClimbSpeed",
     "gFasterBlockPush",
+    "gCrawlSpeed",
     "gFasterHeavyBlockLift",
     "gNoForcedNavi",
     "gSkulltulaFreeze",
@@ -142,6 +143,8 @@ const std::vector<const char*> enhancementsCvars = {
     "gInjectItemCounts",
     "gDayGravePull",
     "gDampeAllNight",
+    "gQuitFishingAtDoor",
+    "gSkipSwimDeepEndAnim",
     "gSkipScarecrow",
     "gBlueFireArrows",
     "gSunlightArrows",
@@ -189,6 +192,14 @@ const std::vector<const char*> enhancementsCvars = {
     "gBombchuBowlingNoSmallCucco",
     "gBombchuBowlingNoBigCucco",
     "gBombchuBowlingAmmunition",
+    "gCustomizeOcarinaGame",
+    "gInstantOcarinaGameWin",
+    "gOcarinaGameNoteSpeed",
+    "gOcarinaUnlimitedFailTime",
+    "gOcarinaGameStartingNotes",
+    "gOcarinaGameRoundOneNotes",
+    "gOcarinaGameRoundTwoNotes",
+    "gOcarinaGameRoundThreeNotes",
     "gCreditsFix",
     "gSilverRupeeJingleExtend",
     "gStaticExplosionRadius",
@@ -248,6 +259,25 @@ const std::vector<const char*> enhancementsCvars = {
     "gAddTraps.Speed",
     "gAddTraps.Tele",
     "gAddTraps.Void",
+    "gToTMedallionsColors", 
+    "gCuccoStayDurationMultiplier",
+    "gDeleteFileOnDeath",
+    "gEnemySizeScalesHealth",
+    "gEnhancements.BetterAmmoRendering",
+    "gEnhancements.EquimentAlwaysVisible",
+    "gEnhancements.FixDaruniaDanceSpeed",
+    "gEnhancements.OpenAllHours",
+    "gEnhancements.ResetNaviTimer",
+    "gEnhancements.ScaleAdultEquimentAsChild",
+    "gEnhancements.LeeverSpawnRate",
+    "gEnhancements.SwordToggle",
+    "gEnhancements.FixFloorSwitches", 
+    "gFixZoraHintDialogue",
+    "gHurtContainer",
+    "gPauseWarp",
+    "gPermanentHeartLoss",
+    "gRemoveExplosiveLimit",
+    "gToggleStrength",
 };
 
 const std::vector<const char*> cheatCvars = {
@@ -260,6 +290,8 @@ const std::vector<const char*> cheatCvars = {
     "gWalkSpeedToggle",
     "gWalkModifierOne",
     "gWalkModifierTwo",
+    "gSwimModifierOne",
+    "gSwimModifierTwo",
     "gGoronPot",
     "gDampeWin",
     "gCustomizeShootingGallery",
@@ -298,6 +330,7 @@ const std::vector<const char*> cheatCvars = {
     "gSwitchAge",
     "gSwitchTimeline",
     "gNoRedeadFreeze",
+    "gNoKeeseGuayTarget",
     "gBombTimerMultiplier",
     "gNoFishDespawn",
     "gNoBugsDespawn",
@@ -317,6 +350,7 @@ const std::vector<const char*> cheatCvars = {
     "gCosmetics.Link_HeadScale.Value",
     "gCosmetics.Link_SwordScale.Changed",
     "gCosmetics.Link_SwordScale.Value",
+    "gEnhancements.RememberMapToggleState",
 };
 
 const std::vector<const char*> randomizerCvars = {
@@ -511,6 +545,8 @@ const std::vector<PresetEntry> vanillaPlusPresetEntries = {
     PRESET_ENTRY_S32("gNaviTextFix", 1),
     // Extend Silver Rupee Jingle
     PRESET_ENTRY_S32("gSilverRupeeJingleExtend", 1),
+    // Fix some Floor Switches
+    PRESET_ENTRY_S32("gEnhancements.FixFloorSwitches", 1),
 
     // Red Ganon blood
     PRESET_ENTRY_S32("gRedGanonBlood", 1),
@@ -582,6 +618,8 @@ const std::vector<PresetEntry> enhancedPresetEntries = {
     PRESET_ENTRY_S32("gSilverRupeeJingleExtend", 1),
     // Fix enemies not spawning on ground over water
     PRESET_ENTRY_S32("gEnemySpawnsOverWaterboxes", 1),
+    // Fix some Floor Switches
+    PRESET_ENTRY_S32("gEnhancements.FixFloorSwitches", 1),
 
     // Red Ganon blood
     PRESET_ENTRY_S32("gRedGanonBlood", 1),
@@ -704,6 +742,8 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     PRESET_ENTRY_S32("gNaviTextFix", 1),
     // Extend Silver Rupee Jingle
     PRESET_ENTRY_S32("gSilverRupeeJingleExtend", 1),
+    // Fix some Floor Switches
+    PRESET_ENTRY_S32("gEnhancements.FixFloorSwitches", 1),
 
     // Red Ganon blood
     PRESET_ENTRY_S32("gRedGanonBlood", 1),
@@ -787,6 +827,13 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     // Adult Minimum Weight (8 to 13)
     PRESET_ENTRY_S32("gAdultMinimumWeightFish", 6),
 
+    // Customize Lost Woods Ocarina Game Behavior
+    PRESET_ENTRY_S32("gCustomizeOcarinaGame", 1),
+    // Start With Five Notes
+    PRESET_ENTRY_S32("gOcarinaGameStartingNotes", 5),
+    // Round One Notes
+    PRESET_ENTRY_S32("gOcarinaGameRoundOneNotes", 5),
+
     // Visual Stone of Agony
     PRESET_ENTRY_S32("gVisualAgony", 1),
     // Pull grave during the day
@@ -795,6 +842,9 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     PRESET_ENTRY_S32("gSkipScarecrow", 1),
     // Chest size & texture matches contents
     PRESET_ENTRY_S32("gChestSizeAndTextureMatchesContents", CSMC_BOTH),
+
+    // Color Temple of Time's Medallions
+    PRESET_ENTRY_S32("gToTMedallionsColors", 1),
 
     // Pause link animation (0 to 16)
     PRESET_ENTRY_S32("gPauseLiveLink", 16),

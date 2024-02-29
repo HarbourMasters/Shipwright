@@ -1538,15 +1538,15 @@ void BossGanon_DeathAndTowerCutscene(BossGanon* this, PlayState* play) {
             }
 
             if (this->csTimer == 180) {
-                play->sceneLoadFlag = 0x14;
+                play->transitionTrigger = TRANS_TRIGGER_START;
                 if ((IS_RANDO && Randomizer_GetSettingValue(RSK_SKIP_TOWER_ESCAPE) || IS_BOSS_RUSH)) {
                     Flags_SetEventChkInf(EVENTCHKINF_WATCHED_GANONS_CASTLE_COLLAPSE_CAUGHT_BY_GERUDO);
-                    play->nextEntranceIndex = 0x517;
+                    play->nextEntranceIndex = ENTR_GANON_BOSS_0;
                 }
                 else {
-                    play->nextEntranceIndex = 0x43F;
+                    play->nextEntranceIndex = ENTR_GANONS_TOWER_COLLAPSE_EXTERIOR_0;
                 }
-                play->fadeTransition = 5;
+                play->transitionType = TRANS_TYPE_FADE_WHITE_FAST;
             }
             break;
 
@@ -2276,10 +2276,10 @@ void BossGanon_Wait(BossGanon* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
 
     if ((this->unk_1C2 == 0) && !(player->actor.world.pos.y < 0.0f)) {
-        if (!(player->stateFlags1 & 0x2000) && (fabsf(player->actor.world.pos.x) < 110.0f) &&
+        if (!(player->stateFlags1 & PLAYER_STATE1_HANGING_OFF_LEDGE) && (fabsf(player->actor.world.pos.x) < 110.0f) &&
             (fabsf(player->actor.world.pos.z) < 110.0f)) {
             BossGanon_SetupPoundFloor(this, play);
-        } else if ((this->timers[0] == 0) && !(player->stateFlags1 & 0x2000)) {
+        } else if ((this->timers[0] == 0) && !(player->stateFlags1 & PLAYER_STATE1_HANGING_OFF_LEDGE)) {
             this->timers[0] = (s16)Rand_ZeroFloat(30.0f) + 30;
 
             if ((s8)this->actor.colChkInfo.health >= 20) {

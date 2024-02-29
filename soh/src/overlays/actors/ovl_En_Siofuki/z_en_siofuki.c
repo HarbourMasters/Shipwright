@@ -164,13 +164,13 @@ void func_80AFBE8C(EnSiofuki* this, PlayState* play) {
                 Math_ApproachF(&this->appliedSpeed, this->targetAppliedSpeed, 1.0f, 0.1f);
             }
 
-            player->windDirection = this->appliedYaw;
-            player->windSpeed = this->appliedSpeed;
+            player->pushedYaw = this->appliedYaw;
+            player->pushedSpeed = this->appliedSpeed;
         }
     } else {
         if (this->applySpeed) {
             player->linearVelocity = this->appliedSpeed + player->linearVelocity;
-            player->currentYaw = this->appliedYaw;
+            player->yaw = this->appliedYaw;
         }
 
         this->targetAppliedSpeed = 0.0f;

@@ -18,15 +18,13 @@ extern "C" {
 #include "variables.h"
 #include "functions.h"
 #include "macros.h"
-extern PlayState* gPlayState;
-
-char** ResourceMgr_ListFiles(const char* searchMask, int* resultSize);
 }
 
 char searchString[64] = "";
-int displayListsSearchResultsCount;
-char** displayListsSearchResults;
-char* activeDisplayList = nullptr;
+std::string activeDisplayList = "";
+std::vector<std::string> displayListSearchResults;
+int16_t searchDebounceFrames = -1;
+bool doSearch = false;
 
 std::map<int, std::string> cmdMap = {
     { G_SETPRIMCOLOR, "gsDPSetPrimColor" },
@@ -36,7 +34,60 @@ std::map<int, std::string> cmdMap = {
     { G_SETINTENSITY, "gsDPSetGrayscaleColor" },
     { G_LOADTLUT, "gsDPLoadTLUT" },
     { G_ENDDL, "gsSPEndDisplayList" },
+    { G_TEXTURE, "gsSPTexture" },
+    { G_SETTIMG, "gsDPSetTextureImage" },
+    { G_SETTIMG_OTR_HASH, "gsDPSetTextureImage" },
+    { G_SETTIMG_OTR_FILEPATH, "gsDPSetTextureImage" },
+    { G_RDPTILESYNC, "gsDPTileSync" },
+    { G_SETTILE, "gsDPSetTile" },
+    { G_RDPLOADSYNC, "gsDPLoadSync" },
+    { G_LOADBLOCK, "gsDPLoadBlock" },
+    { G_SETTILESIZE, "gsDPSetTileSize" },
+    { G_DL, "gsSPDisplayList" },
+    { G_DL_OTR_FILEPATH, "gsSPDisplayList" },
+    { G_DL_OTR_HASH, "gsSPDisplayList" },
+    { G_MTX, "gsSPMatrix" },
+    { G_MTX_OTR, "gsSPMatrix" },
+    { G_VTX, "gsSPVertex" },
+    { G_VTX_OTR_FILEPATH, "gsSPVertex" },
+    { G_VTX_OTR_HASH, "gsSPVertex" },
+    { G_GEOMETRYMODE, "gsSPSetGeometryMode" },
+    { G_SETOTHERMODE_H, "gsSPSetOtherMode_H" },
+    { G_SETOTHERMODE_L, "gsSPSetOtherMode_L" },
+    { G_TRI1, "gsSP1Triangle" },
+    { G_TRI1_OTR, "gsSP1Triangle" },
+    { G_TRI2, "gsSP2Triangles" },
+    { G_SETCOMBINE, "gsDPSetCombineLERP" },
+    { G_CULLDL, "gsSPCullDisplayList" },
+    { G_NOOP, "gsDPNoOp" },
+    { G_SPNOOP, "gsSPNoOp" },
+    { G_MARKER, "LUS Custom Marker" },
 };
+
+void PerformDisplayListSearch() {
+    auto result = LUS::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->ListFiles("*" + std::string(searchString) + "*DL*");
+
+    displayListSearchResults.clear();
+
+    // Filter the file results even further as StormLib can only use wildcard searching
+    for (size_t i = 0; i < result->size(); i++) {
+        std::string val = result->at(i);
+        if (val.ends_with("DL") || val.find("DL_") != std::string::npos) {
+            displayListSearchResults.push_back(val);
+        }
+    }
+
+    // Sort the final list
+    std::sort(displayListSearchResults.begin(), displayListSearchResults.end(), [](const std::string& a, const std::string& b) {
+        return std::lexicographical_compare(
+            a.begin(), a.end(),
+            b.begin(), b.end(),
+            [](char c1, char c2) {
+                return std::tolower(c1) < std::tolower(c2);
+            }
+        );
+    });
+}
 
 void DLViewerWindow::DrawElement() {
     ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
@@ -45,22 +96,48 @@ void DLViewerWindow::DrawElement() {
         return;
     }
 
+    // Debounce the search field as listing otr files is expensive
     if (ImGui::InputText("Search Display Lists", searchString, ARRAY_COUNT(searchString))) {
-        displayListsSearchResults = ResourceMgr_ListFiles(("*" + std::string(searchString) + "*DL").c_str(), &displayListsSearchResultsCount);
+        doSearch = true;
+        searchDebounceFrames = 30;
     }
 
-    if (ImGui::BeginCombo("Active Display List", activeDisplayList)) {
-        for (int i = 0; i < displayListsSearchResultsCount; i++) {
-            if (ImGui::Selectable(displayListsSearchResults[i])) {
-                activeDisplayList = displayListsSearchResults[i];
+    if (doSearch) {
+        if (searchDebounceFrames == 0) {
+            doSearch = false;
+            PerformDisplayListSearch();
+        }
+
+        searchDebounceFrames--;
+    }
+
+    if (ImGui::BeginCombo("Active Display List", activeDisplayList.c_str())) {
+        for (size_t i = 0; i < displayListSearchResults.size(); i++) {
+            if (ImGui::Selectable(displayListSearchResults[i].c_str())) {
+                activeDisplayList = displayListSearchResults[i];
                 break;
             }
         }
         ImGui::EndCombo();
     }
-    if (activeDisplayList != nullptr) {
+
+    if (activeDisplayList == "") {
+        ImGui::End();
+        return;
+    }
+
+    try {
         auto res = std::static_pointer_cast<LUS::DisplayList>(LUS::Context::GetInstance()->GetResourceManager()->LoadResource(activeDisplayList));
-        for (int i = 0; i < res->Instructions.size(); i++) {
+
+        if (res->GetInitData()->Type != static_cast<uint32_t>(LUS::ResourceType::DisplayList)) {
+            ImGui::Text("Resource type is not a Display List. Please choose another.");
+            ImGui::End();
+            return;
+        }
+
+        ImGui::Text("Total Instruction Size: %lu", res->Instructions.size());
+
+        for (size_t i = 0; i < res->Instructions.size(); i++) {
             std::string id = "##CMD" + std::to_string(i);
             Gfx* gfx = (Gfx*)&res->Instructions[i];
             int cmd = gfx->words.w0 >> 24;
@@ -70,10 +147,11 @@ void DLViewerWindow::DrawElement() {
 
             ImGui::BeginGroup();
             ImGui::PushItemWidth(25.0f);
-            ImGui::Text("%d", i);
+            ImGui::Text("%lu", i);
             ImGui::PopItemWidth();
             ImGui::SameLine();
-            ImGui::PushItemWidth(150.0f);
+            ImGui::PushItemWidth(175.0f);
+
             if (ImGui::BeginCombo(("CMD" + id).c_str(), cmdLabel.c_str())) {
                 if (ImGui::Selectable("gsDPSetPrimColor") && cmd != G_SETPRIMCOLOR) {
                     *gfx = gsDPSetPrimColor(0, 0, 0, 0, 0, 255);
@@ -92,8 +170,10 @@ void DLViewerWindow::DrawElement() {
                 }
                 ImGui::EndCombo();
             }
+
             ImGui::PopItemWidth();
-            if (gfx->words.w0 >> 24 == G_SETPRIMCOLOR || gfx->words.w0 >> 24 == G_SETINTENSITY || gfx->words.w0 >> 24 == G_SETENVCOLOR) {
+
+            if (cmd == G_SETPRIMCOLOR || cmd == G_SETINTENSITY || cmd == G_SETENVCOLOR) {
                 uint8_t r = _SHIFTR(gfx->words.w1, 24, 8);
                 uint8_t g = _SHIFTR(gfx->words.w1, 16, 8);
                 uint8_t b = _SHIFTR(gfx->words.w1, 8, 8);
@@ -117,21 +197,141 @@ void DLViewerWindow::DrawElement() {
                 }
                 ImGui::PopItemWidth();
             }
-            if (gfx->words.w0 >> 24 == G_RDPPIPESYNC) {
+            if (cmd == G_RDPPIPESYNC) {
             }
-            if (gfx->words.w0 >> 24 == G_SETGRAYSCALE) {
+            if (cmd == G_SETGRAYSCALE) {
                 bool* state = (bool*)&gfx->words.w1;
                 ImGui::SameLine();
                 if (ImGui::Checkbox(("state" + id).c_str(), state)) {
                     // 
                 }
             }
+            if (cmd == G_SETTILE) {
+                ImGui::SameLine();
+                ImGui::Text("FMT: %u", _SHIFTR(gfx->words.w0, 21, 3));
+                ImGui::SameLine();
+                ImGui::Text("SIZ: %u", _SHIFTR(gfx->words.w0, 19, 2));
+                ImGui::SameLine();
+                ImGui::Text("LINE: %u", _SHIFTR(gfx->words.w0, 9, 9));
+                ImGui::SameLine();
+                ImGui::Text("TMEM: %u", _SHIFTR(gfx->words.w0, 0, 9));
+                ImGui::SameLine();
+                ImGui::Text("TILE: %u", _SHIFTR(gfx->words.w1, 24, 3));
+                ImGui::SameLine();
+                ImGui::Text("PAL: %u", _SHIFTR(gfx->words.w1, 20, 4));
+                ImGui::SameLine();
+                ImGui::Text("CMT: %u", _SHIFTR(gfx->words.w1, 18, 2));
+                ImGui::SameLine();
+                ImGui::Text("MASKT: %u", _SHIFTR(gfx->words.w1, 14, 4));
+                ImGui::SameLine();
+                ImGui::Text("SHIFT: %u", _SHIFTR(gfx->words.w1, 10, 4));
+                ImGui::SameLine();
+                ImGui::Text("CMS: %u", _SHIFTR(gfx->words.w1, 8, 2));
+                ImGui::SameLine();
+                ImGui::Text("MASKS: %u", _SHIFTR(gfx->words.w1, 4, 4));
+                ImGui::SameLine();
+                ImGui::Text("SHIFTS: %u", _SHIFTR(gfx->words.w1, 0, 4));
+            }
+            if (cmd == G_SETTIMG) {
+                ImGui::SameLine();
+                ImGui::Text("FMT: %u", _SHIFTR(gfx->words.w0, 21, 3));
+                ImGui::SameLine();
+                ImGui::Text("SIZ: %u", _SHIFTR(gfx->words.w0, 19, 2));
+                ImGui::SameLine();
+                ImGui::Text("WIDTH: %u", _SHIFTR(gfx->words.w0, 0, 10));
+                ImGui::SameLine();
+            }
+            if (cmd == G_SETTIMG_OTR_HASH) {
+                gfx++;
+                uint64_t hash = ((uint64_t)gfx->words.w0 << 32) + (uint64_t)gfx->words.w1;
+                const char* fileName = ResourceGetNameByCrc(hash);
+
+                gfx--;
+                ImGui::SameLine();
+                ImGui::Text("FMT: %u", _SHIFTR(gfx->words.w0, 21, 3));
+                ImGui::SameLine();
+                ImGui::Text("SIZ: %u", _SHIFTR(gfx->words.w0, 19, 2));
+                ImGui::SameLine();
+                ImGui::Text("WIDTH: %u", _SHIFTR(gfx->words.w0, 0, 10));
+                ImGui::SameLine();
+                ImGui::Text("Texture Name: %s", fileName);
+            }
+            if (cmd == G_SETTIMG_OTR_FILEPATH) {
+                char* fileName = (char*)gfx->words.w1;
+                gfx++;
+                ImGui::SameLine();
+                ImGui::Text("FMT: %u", _SHIFTR(gfx->words.w0, 21, 3));
+                ImGui::SameLine();
+                ImGui::Text("SIZ: %u", _SHIFTR(gfx->words.w0, 19, 2));
+                ImGui::SameLine();
+                ImGui::Text("WIDTH: %u", _SHIFTR(gfx->words.w0, 0, 10));
+                ImGui::SameLine();
+                ImGui::Text("Texture Name: %s", fileName);
+            }
+            if (cmd == G_VTX) {
+                ImGui::SameLine();
+                ImGui::Text("Num VTX: %u", _SHIFTR(gfx->words.w0, 12, 8));
+                ImGui::SameLine();
+                ImGui::Text("Offset: %u", _SHIFTR(gfx->words.w0, 1, 7) - _SHIFTR(gfx->words.w0, 12, 8));
+            }
+            if (cmd == G_VTX_OTR_HASH) {
+                gfx++;
+                uint64_t hash = ((uint64_t)gfx->words.w0 << 32) + (uint64_t)gfx->words.w1;
+                const char* fileName = ResourceGetNameByCrc(hash);
+
+                gfx--;
+                ImGui::SameLine();
+                ImGui::Text("Num VTX: %u", _SHIFTR(gfx->words.w0, 12, 8));
+                ImGui::SameLine();
+                ImGui::Text("Offset: %u", _SHIFTR(gfx->words.w0, 1, 7) - _SHIFTR(gfx->words.w0, 12, 8));
+
+                ImGui::SameLine();
+                ImGui::Text("Vertex Name: %s", fileName);
+            }
+            if (cmd == G_VTX_OTR_FILEPATH) {
+                char* fileName = (char*)gfx->words.w1;
+
+                gfx++;
+                ImGui::SameLine();
+                ImGui::Text("Num VTX: %u", _SHIFTR(gfx->words.w0, 12, 8));
+                ImGui::SameLine();
+                ImGui::Text("Offset: %u", _SHIFTR(gfx->words.w0, 1, 7) - _SHIFTR(gfx->words.w0, 12, 8));
+
+                ImGui::SameLine();
+                ImGui::Text("Vertex Name: %s", fileName);
+            }
+            if (cmd == G_DL) {
+            }
+            if (cmd == G_DL_OTR_HASH) {
+                gfx++;
+                uint64_t hash = ((uint64_t)gfx->words.w0 << 32) + (uint64_t)gfx->words.w1;
+                const char* fileName = ResourceGetNameByCrc(hash);
+                ImGui::SameLine();
+                ImGui::Text("DL Name: %s", fileName);
+            }
+            if (cmd == G_DL_OTR_FILEPATH) {
+                char* fileName = (char*)gfx->words.w1;
+                ImGui::SameLine();
+                ImGui::Text("DL Name: %s", fileName);
+            }
+
+            // Skip second half of instructions that are over 128-bit wide
+            if (cmd == G_SETTIMG_OTR_HASH || cmd == G_DL_OTR_HASH || cmd == G_VTX_OTR_HASH ||
+                cmd == G_BRANCH_Z_OTR || cmd == G_MARKER || cmd == G_MTX_OTR) {
+                i++;
+                ImGui::Text("%lu - Reserved - Second half of %s", i, cmdLabel.c_str());
+            }
             ImGui::EndGroup();
         }
+    } catch (const std::exception& e) {
+        ImGui::Text("Error displaying DL instructions.");
+        ImGui::End();
+        return;
     }
+
     ImGui::End();
 }
 
 void DLViewerWindow::InitElement() {
-    displayListsSearchResults = ResourceMgr_ListFiles("*DL", &displayListsSearchResultsCount);
+    PerformDisplayListSearch();
 }

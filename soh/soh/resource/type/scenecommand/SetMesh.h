@@ -8,7 +8,7 @@
 #include "libultraship/libultra.h"
 #include "z64math.h"
 
-namespace LUS {
+namespace SOH {
 typedef struct {
     /* 0x00 */ u8    type;
 } PolygonBase;

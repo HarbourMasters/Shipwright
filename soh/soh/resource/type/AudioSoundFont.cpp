@@ -1,6 +1,6 @@
 #include "AudioSoundFont.h"
 
-namespace LUS {
+namespace SOH {
 SoundFont* AudioSoundFont::GetPointer() {
     return &soundFont;
 }
@@ -8,4 +8,4 @@ SoundFont* AudioSoundFont::GetPointer() {
 size_t AudioSoundFont::GetPointerSize() {
     return sizeof(SoundFont);
 }
-} // namespace LUS
+} // namespace SOH

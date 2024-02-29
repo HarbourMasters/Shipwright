@@ -33,5 +33,10 @@
     <string>public.app-category.games</string>
     <key>LSMinimumSystemVersion</key>
     <string>10.15</string>
+    <key>LSArchitecturePriority</key>
+    <array>
+        <string>arm64</string>
+        <string>x86_64</string>
+    </array>
 </dict>
 </plist>

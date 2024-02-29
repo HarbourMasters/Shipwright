@@ -9,7 +9,7 @@
 #include "soh/resource/type/CollisionHeader.h"
 // #include <libultraship/libultra/types.h>
 
-namespace LUS {
+namespace SOH {
 class SetCollisionHeader : public SceneCommand<CollisionHeaderData> {
   public:
     using SceneCommand::SceneCommand;
