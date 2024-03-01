@@ -127,7 +127,7 @@ s16 func_80A9C6C0(PlayState* play, Actor* thisx) {
     s16 ret = NPC_TALK_STATE_TALKING;
 
     switch (Message_GetState(&play->msgCtx)) {
-        case TEXT_STATE_DONE:
+        case TEXT_STATE_CLOSING:
             ret = NPC_TALK_STATE_IDLE;
             switch (this->actor.textId) {
                 case 0x4012:
@@ -159,8 +159,8 @@ s16 func_80A9C6C0(PlayState* play, Actor* thisx) {
                 break;
             }
             if (this->actor.textId == 0x4014) {
-                if (play->msgCtx.choiceIndex == 0) {
-                    EnKz_SetupGetItem(this, play);
+                if (play->msgCtx.choiceIndex == 0 && this->actor.textId == 0x4014) {
+                    // EnKz_SetupGetItem(this, play);
                     ret = NPC_TALK_STATE_ACTION;
                 } else {
                     this->actor.textId = 0x4016;
@@ -173,9 +173,13 @@ s16 func_80A9C6C0(PlayState* play, Actor* thisx) {
                 ret = NPC_TALK_STATE_ACTION;
             }
             break;
+        case TEXT_STATE_DONE:
+            if (Message_ShouldAdvance(play)) {
+                ret = NPC_TALK_STATE_ITEM_GIVEN;
+            }
+            break;
         case TEXT_STATE_NONE:
         case TEXT_STATE_DONE_HAS_NEXT:
-        case TEXT_STATE_CLOSING:
         case TEXT_STATE_SONG_DEMO_DONE:
         case TEXT_STATE_8:
         case TEXT_STATE_9:
@@ -200,29 +204,29 @@ s32 func_80A9C95C(PlayState* play, EnKz* this, s16* talkState, f32 unkf, NpcGetT
     s16 sp32;
     s16 sp30;
     f32 xzDistToPlayer;
-    f32 yaw;
+    // f32 yaw;
 
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
         *talkState = NPC_TALK_STATE_TALKING;
         return 1;
     }
 
-    if (*talkState != NPC_TALK_STATE_IDLE) {
-        *talkState = updateTalkState(play, &this->actor);
-        return 0;
-    }
+    // yaw = Math_Vec3f_Yaw(&this->actor.home.pos, &player->actor.world.pos);
+    // yaw -= this->actor.shape.rot.y;
+    // if ((fabsf(yaw) > 1638.0f) || (this->actor.xzDistToPlayer < 265.0f)) {
+    //     this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    //     return 0;
+    // }
 
-    yaw = Math_Vec3f_Yaw(&this->actor.home.pos, &player->actor.world.pos);
-    yaw -= this->actor.shape.rot.y;
-    if ((fabsf(yaw) > 1638.0f) || (this->actor.xzDistToPlayer < 265.0f)) {
-        this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
-        return 0;
-    }
-
-    this->actor.flags |= ACTOR_FLAG_TARGETABLE;
+    // this->actor.flags |= ACTOR_FLAG_TARGETABLE;
 
     Actor_GetScreenPos(play, &this->actor, &sp32, &sp30);
     if (!((sp32 >= -30) && (sp32 < 361) && (sp30 >= -10) && (sp30 < 241))) {
+        return 0;
+    }
+
+    if (*talkState != NPC_TALK_STATE_IDLE) {
+        *talkState = updateTalkState(play, &this->actor);
         return 0;
     }
 
@@ -240,6 +244,16 @@ s32 func_80A9C95C(PlayState* play, EnKz* this, s16* talkState, f32 unkf, NpcGetT
 
 void func_80A9CB18(EnKz* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
+    f32 yaw;
+
+    yaw = Math_Vec3f_Yaw(&this->actor.home.pos, &player->actor.world.pos);
+    yaw -= this->actor.shape.rot.y;
+    if ((fabsf(yaw) > 1638.0f) || (this->actor.xzDistToPlayer < 265.0f)) {
+        this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+        return 0;
+    }
+
+    this->actor.flags |= ACTOR_FLAG_TARGETABLE;
 
     if (func_80A9C95C(play, this, &this->interactInfo.talkState, 340.0f, EnKz_GetText, func_80A9C6C0)) {
         if (GameInteractor_Should(GI_VB_BE_ABLE_TO_EXCHANGE_RUTOS_LETTER, (this->actor.textId == 0x401A), this) &&
@@ -262,12 +276,12 @@ void func_80A9CB18(EnKz* this, PlayState* play) {
                     this->actor.textId = 0x4014;
                     this->sfxPlayed = false;
                     player->actor.textId = this->actor.textId;
-                    this->isTrading = true;
+                    // this->isTrading = true;
                     return;
                 }
             }
 
-            this->isTrading = false;
+            // this->isTrading = false;
             if (Flags_GetInfTable(INFTABLE_139)) {
                 this->actor.textId = CHECK_QUEST_ITEM(QUEST_SONG_SERENADE) ? 0x4045 : 0x401A;
                 player->actor.textId = this->actor.textId;
@@ -434,6 +448,7 @@ void EnKz_StopMweep(EnKz* this, PlayState* play) {
 
 void EnKz_Wait(EnKz* this, PlayState* play) {
     if (this->interactInfo.talkState == NPC_TALK_STATE_ACTION) {
+        this->interactInfo.talkState = NPC_TALK_STATE_IDLE;
         this->actionFunc = EnKz_SetupGetItem;
         EnKz_SetupGetItem(this, play);
     } else {
@@ -460,7 +475,7 @@ void EnKz_SetupGetItem(EnKz* this, PlayState* play) {
             Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_ZD_TRADE_PRESCRIPTION);
         }
     } else {
-        getItemId = this->isTrading ? GI_FROG : GI_TUNIC_ZORA;
+        getItemId = func_8002F368(play) == EXCH_ITEM_PRESCRIPTION ? GI_FROG : GI_TUNIC_ZORA;
         yRange = fabsf(this->actor.yDistToPlayer) + 1.0f;
         xzRange = this->actor.xzDistToPlayer + 1.0f;
         Actor_OfferGetItem(&this->actor, play, getItemId, xzRange, yRange);
