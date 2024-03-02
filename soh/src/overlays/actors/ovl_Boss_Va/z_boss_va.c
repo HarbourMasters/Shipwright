@@ -1400,7 +1400,7 @@ void BossVa_BodyPhase4(BossVa* this, PlayState* play) {
                             BossVa_SetupBodyDeath(this, play);
                             Enemy_StartFinishingBlow(play, &this->actor);
                             gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_BARINADE] = GAMEPLAYSTAT_TOTAL_TIME;
-                            TimeSplitSplitsHandlerS(659);
+                            TimeSplitSplitsHandlerS(BOSS_BARINADE);
                             BossRush_HandleCompleteBoss(play);
                             return;
                         }

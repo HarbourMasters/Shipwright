@@ -2814,7 +2814,7 @@ void BossGanon_UpdateDamage(BossGanon* this, PlayState* play) {
                     Audio_QueueSeqCmd(0x100100FF);
                     this->screenFlashTimer = 4;
                     gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_GANONDORF] = GAMEPLAYSTAT_TOTAL_TIME;
-                    TimeSplitSplitsHandlerS(665);
+                    TimeSplitSplitsHandlerS(BOSS_GANONDORF);
                     BossRush_HandleCompleteBoss(play);
                 } else {
                     Audio_PlayActorSound2(&this->actor, NA_SE_EN_GANON_DAMAGE2);

@@ -168,16 +168,16 @@ std::vector<TimeSplitObject> splitObjects = {
 {	ITEM_STICK_UPGRADE_30, 	"Deku Stick Upgrade (30)", 				"ITEM_STICK"},
 {	ITEM_NUT_UPGRADE_30, 	"Deku Nut Upgrade (30)", 				"ITEM_NUT"},
 {	ITEM_NUT_UPGRADE_40, 	"Deku Nut Upgrade (40)", 				"ITEM_NUT"},
-{   657,                    "Queen Gohma",                          "SPECIAL_TRIFORCE_PIECE_WHITE"}, 
-{   658,                    "King Dodongo",                         "SPECIAL_TRIFORCE_PIECE_WHITE"},
-{   659,                    "Barinade",                             "SPECIAL_TRIFORCE_PIECE_WHITE"},
-{   660,                    "Phantom Ganon",                        "SPECIAL_TRIFORCE_PIECE_WHITE"},
-{   661,                    "Volvagia",                             "SPECIAL_TRIFORCE_PIECE_WHITE"},
-{   662,                    "Morpha",                               "SPECIAL_TRIFORCE_PIECE_WHITE"},
-{   663,                    "Bongo Bongo",                          "SPECIAL_TRIFORCE_PIECE_WHITE"},
-{   664,                    "Twinrova",                             "SPECIAL_TRIFORCE_PIECE_WHITE"},  
-{   665,                    "Ganondorf",                            "SPECIAL_TRIFORCE_PIECE_WHITE"},
-{   666,                    "Ganon",                                "SPECIAL_TRIFORCE_PIECE_WHITE"},
+{   BOSS_QUEEN_GOHMA,       "Queen Gohma",                          "SPECIAL_TRIFORCE_PIECE_WHITE"}, 
+{   BOSS_KING_DODONGO,      "King Dodongo",                         "SPECIAL_TRIFORCE_PIECE_WHITE"},
+{   BOSS_BARINADE,          "Barinade",                             "SPECIAL_TRIFORCE_PIECE_WHITE"},
+{   BOSS_PHANTOM_GANON,     "Phantom Ganon",                        "SPECIAL_TRIFORCE_PIECE_WHITE"},
+{   BOSS_VOLVAGIA,          "Volvagia",                             "SPECIAL_TRIFORCE_PIECE_WHITE"},
+{   BOSS_MORPHA,            "Morpha",                               "SPECIAL_TRIFORCE_PIECE_WHITE"},
+{   BOSS_BONGO_BONGO,       "Bongo Bongo",                          "SPECIAL_TRIFORCE_PIECE_WHITE"},
+{   BOSS_TWINROVA,          "Twinrova",                             "SPECIAL_TRIFORCE_PIECE_WHITE"},  
+{   BOSS_GANONDORF,         "Ganondorf",                            "SPECIAL_TRIFORCE_PIECE_WHITE"},
+{   BOSS_GANON,             "Ganon",                                "SPECIAL_TRIFORCE_PIECE_WHITE"},
 };
 
 std::string formatTimestampTimeSplit(uint32_t value) {
@@ -401,6 +401,8 @@ void DrawTimeSplitSplits(){
                 itemNamer = obj.itemName;
                 if (obj.itemImage == "SPECIAL_TRIFORCE_PIECE_WHITE") {
                     TimeSplitColorTint();
+                } else {
+                    pieceTint = { 1, 1, 1, 1 };
                 }
             }
         }

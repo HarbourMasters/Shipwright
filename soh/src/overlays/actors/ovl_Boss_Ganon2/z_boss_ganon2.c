@@ -1692,7 +1692,7 @@ void func_8090120C(BossGanon2* this, PlayState* play) {
                 gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
                 BossRush_HandleCompleteBoss(play);
                 gSaveContext.sohStats.gameComplete = true;
-                TimeSplitSplitsHandlerS(666);
+                TimeSplitSplitsHandlerS(BOSS_GANON);
                 this->unk_39E = Play_CreateSubCamera(play);
                 Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
                 Play_ChangeCameraStatus(play, this->unk_39E, CAM_STAT_ACTIVE);

@@ -1251,7 +1251,7 @@ void BossGanondrof_CollisionCheck(BossGanondrof* this, PlayState* play) {
                             BossGanondrof_SetupDeath(this, play);
                             Enemy_StartFinishingBlow(play, &this->actor);
                             gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_PHANTOM_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
-                            TimeSplitSplitsHandlerS(660);
+                            TimeSplitSplitsHandlerS(BOSS_PHANTOM_GANON);
                             BossRush_HandleCompleteBoss(play);
                             return;
                         }

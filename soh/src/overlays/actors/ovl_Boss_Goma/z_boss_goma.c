@@ -1844,7 +1844,7 @@ void BossGoma_UpdateHit(BossGoma* this, PlayState* play) {
                     BossGoma_SetupDefeated(this, play);
                     Enemy_StartFinishingBlow(play, &this->actor);
                     gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_GOHMA] = GAMEPLAYSTAT_TOTAL_TIME;
-                    TimeSplitSplitsHandlerS(657);
+                    TimeSplitSplitsHandlerS(BOSS_QUEEN_GOHMA);
                     BossRush_HandleCompleteBoss(play);
                 }
 

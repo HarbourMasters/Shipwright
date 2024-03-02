@@ -2566,7 +2566,7 @@ void BossSst_HeadCollisionCheck(BossSst* this, PlayState* play) {
                     Enemy_StartFinishingBlow(play, &this->actor);
                     BossSst_HeadSetupDeath(this, play);
                     gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_BONGO_BONGO] = GAMEPLAYSTAT_TOTAL_TIME;
-                    TimeSplitSplitsHandlerS(663);
+                    TimeSplitSplitsHandlerS(BOSS_BONGO_BONGO);
                     BossRush_HandleCompleteBoss(play);
                 } else {
                     BossSst_HeadSetupDamage(this);
