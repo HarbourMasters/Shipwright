@@ -1074,10 +1074,6 @@ void DrawEnhancementsMenu() {
                     ToggleAltAssetsAtEndOfFrame = true;
                 }
                 UIWidgets::Tooltip("Toggle between standard assets and alternate assets. Usually mods will indicate if this setting has to be used or not.");
-                if (UIWidgets::PaddedEnhancementCheckbox("Use Custom Equipment", "gEnhancements.CustomEquipDlists", true, false)) {
-                    UpdatePatchCustomEquipmentDlists();
-                }
-                UIWidgets::Tooltip("Toggle between standard equipment and custom equipment. Usually mods will indicate if this setting has to be used or not.");
                 UIWidgets::PaddedEnhancementCheckbox("Disable Bomb Billboarding", "gDisableBombBillboarding", true, false);
                 UIWidgets::Tooltip("Disables bombs always rotating to face the camera. To be used in conjunction with mods that want to replace bombs with 3D objects.");
                 UIWidgets::PaddedEnhancementCheckbox("Disable Grotto Fixed Rotation", "gDisableGrottoRotation", true, false);

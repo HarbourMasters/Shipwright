@@ -794,22 +794,26 @@ void PatchOrUnpatch(const char* resource, const char* gfx, const char* dlist1, c
     if (resource == NULL || gfx == NULL || dlist1 == NULL || dlist2 == NULL)
         return;
 
-    if (ResourceGetIsCustomByName(gfx) && CVarGetInteger("gAltAssets", 0)) {
-        if (alternateDL == NULL || ResourceGetIsCustomByName(alternateDL) || ResourceMgr_FileExists(alternateDL)) {
-            ResourceMgr_PatchCustomGfxByName(resource, dlist1, 0, gsSPDisplayListOTRFilePath(gfx));
-            if (dlist3 == NULL) {
-                ResourceMgr_PatchCustomGfxByName(resource, dlist2, 1, gsSPEndDisplayList());
-            } else {
-                ResourceMgr_PatchCustomGfxByName(resource, dlist2, 1, gsSPDisplayListOTRFilePath(alternateDL));
+    if (CVarGetInteger("gAltAssets", 0)) {
+        if (ResourceGetIsCustomByName(gfx)) {
+            if (alternateDL == NULL || ResourceGetIsCustomByName(alternateDL) || ResourceMgr_FileExists(alternateDL)) {
+                ResourceMgr_PatchCustomGfxByName(resource, dlist1, 0, gsSPDisplayListOTRFilePath(gfx));
+                if (dlist3 == NULL) {
+                    ResourceMgr_PatchCustomGfxByName(resource, dlist2, 1, gsSPEndDisplayList());
+                } else {
+                    ResourceMgr_PatchCustomGfxByName(resource, dlist2, 1, gsSPDisplayListOTRFilePath(alternateDL));
+                }
+                if (dlist3 != NULL) {
+                    ResourceMgr_PatchCustomGfxByName(resource, dlist3, 2, gsSPEndDisplayList());
+                }
             }
-            if (dlist3 != NULL)
-                ResourceMgr_PatchCustomGfxByName(resource, dlist3, 2, gsSPEndDisplayList());
         }
     } else {
         ResourceMgr_UnpatchGfxByName(resource, dlist1);
         ResourceMgr_UnpatchGfxByName(resource, dlist2);
-        if (dlist3 != NULL)
+        if (dlist3 != NULL) {
             ResourceMgr_UnpatchGfxByName(resource, dlist3);
+        }
     }
 }
 
