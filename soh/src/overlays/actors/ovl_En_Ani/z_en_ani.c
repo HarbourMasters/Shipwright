@@ -131,8 +131,11 @@ void func_809B0558(EnAni* this, PlayState* play) {
         if (!IS_RANDO) {
             func_8002F434(&this->actor, play, GI_HEART_PIECE, 10000.0f, 200.0f);
         } else {
-            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_MAN_ON_ROOF, GI_HEART_PIECE);
-            GiveItemEntryFromActor(&this->actor, play, getItemEntry, 10000.0f, 200.0f);
+            // AP: MAN ON ROOF
+            Randomizer_SendAPItemFromKnownCheck(RC_KAK_MAN_ON_ROOF);
+
+            // GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_MAN_ON_ROOF, GI_HEART_PIECE);
+            // GiveItemEntryFromActor(&this->actor, play, getItemEntry, 10000.0f, 200.0f);
         }
     }
 }
@@ -145,8 +148,11 @@ void func_809B05F0(EnAni* this, PlayState* play) {
     if (!IS_RANDO) {
         func_8002F434(&this->actor, play, GI_HEART_PIECE, 10000.0f, 200.0f);
     } else {
-        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_MAN_ON_ROOF, GI_HEART_PIECE);
-        GiveItemEntryFromActor(&this->actor, play, getItemEntry, 10000.0f, 200.0f);
+        // AP: MAN ON ROOF
+        Randomizer_SendAPItemFromKnownCheck(RC_KAK_MAN_ON_ROOF);
+
+        // GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_MAN_ON_ROOF, GI_HEART_PIECE);
+        // GiveItemEntryFromActor(&this->actor, play, getItemEntry, 10000.0f, 200.0f);
     }
 }
 

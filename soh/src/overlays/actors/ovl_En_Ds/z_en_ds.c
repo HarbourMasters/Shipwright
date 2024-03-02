@@ -97,8 +97,8 @@ void EnDs_GiveOddPotion(EnDs* this, PlayState* play) {
     } else {
         u32 itemId = GI_ODD_POTION;
         if (IS_RANDO) {
-            GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_TRADE_ODD_MUSHROOM, GI_ODD_POTION);
-            GiveItemEntryFromActor(&this->actor, play, itemEntry, 10000.0f, 50.0f);
+            // GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_TRADE_ODD_MUSHROOM, GI_ODD_POTION);
+            // GiveItemEntryFromActor(&this->actor, play, itemEntry, 10000.0f, 50.0f);
             Randomizer_ConsumeAdultTradeItem(play, ITEM_ODD_MUSHROOM);
             return;
         }
@@ -112,8 +112,8 @@ void EnDs_TalkAfterBrewOddPotion(EnDs* this, PlayState* play) {
         this->actionFunc = EnDs_GiveOddPotion;
         u32 itemId = GI_ODD_POTION;
         if (IS_RANDO) {
-            GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_TRADE_ODD_MUSHROOM, GI_ODD_POTION);
-            GiveItemEntryFromActor(&this->actor, play, itemEntry, 10000.0f, 50.0f);
+            // GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_TRADE_ODD_MUSHROOM, GI_ODD_POTION);
+            // GiveItemEntryFromActor(&this->actor, play, itemEntry, 10000.0f, 50.0f);
             Randomizer_ConsumeAdultTradeItem(play, ITEM_ODD_MUSHROOM);
             return;
         }

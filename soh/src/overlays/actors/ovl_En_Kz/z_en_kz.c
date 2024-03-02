@@ -349,6 +349,7 @@ void EnKz_Init(Actor* thisx, PlayState* play) {
             EnKz_SetMovedPos(this, play);
         }
     } else {
+        // TODO: AP: CHECK Zora's Fountain
         int zorasFountain = Randomizer_GetSettingValue(RSK_ZORAS_FOUNTAIN);
         switch (zorasFountain) {
             case 0:

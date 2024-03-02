@@ -18,7 +18,7 @@ void EnBomBowlPit_GivePrize(EnBomBowlPit* this, PlayState* play);
 void EnBomBowlPit_WaitTillPrizeGiven(EnBomBowlPit* this, PlayState* play);
 void EnBomBowlPit_Reset(EnBomBowlPit* this, PlayState* play);
 
-static s32 sGetItemIds[] = { GI_BOMB_BAG_30, GI_HEART_PIECE, GI_BOMBCHUS_10, GI_BOMBS_1, GI_RUPEE_PURPLE };
+static s32 sGetItemIds[] = { GI_RUPEE_GREEN, GI_RUPEE_GREEN, GI_RUPEE_GREEN, GI_RUPEE_GREEN, GI_RUPEE_GREEN };
 
 const ActorInit En_Bom_Bowl_Pit_InitVars = {
     ACTOR_EN_BOM_BOWL_PIT,
@@ -186,17 +186,26 @@ void EnBomBowlPit_GivePrize(EnBomBowlPit* this, PlayState* play) {
     if (IS_RANDO) {
         switch (this->prizeIndex) {
             case EXITEM_BOMB_BAG_BOWLING:
-                this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_FIRST_PRIZE, GI_BOMB_BAG_20);
-                this->getItemId = this->getItemEntry.getItemId;
+                // AP: BOMBCHU BOWLING FIRST PRIZE
+                Randomizer_SendAPItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_FIRST_PRIZE);
+
+                // this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_FIRST_PRIZE, GI_BOMB_BAG_20);
+                // this->getItemId = this->getItemEntry.getItemId;
                 break;
             case EXITEM_HEART_PIECE_BOWLING:
-                this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE, GI_HEART_PIECE);
-                this->getItemId = this->getItemEntry.getItemId;
+                // AP: BOMBCHU BOWLING SECOND PRIZE
+                Randomizer_SendAPItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE);
+
+                // this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE, GI_HEART_PIECE);
+                // this->getItemId = this->getItemEntry.getItemId;
                 break;
-            case EXITEM_BOMBCHUS_BOWLING:
-                this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS, GI_BOMBCHUS_10);
-                this->getItemId = this->getItemEntry.getItemId;
-                break;
+            // case EXITEM_BOMBCHUS_BOWLING:
+            //     // AP: BOMBCHU BOWLING BOMBCHUS
+            //     Randomizer_SendAPItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS);
+
+            //     // this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS, GI_BOMBCHUS_10);
+            //     // this->getItemId = this->getItemEntry.getItemId;
+            //     break;
         }
     }
 

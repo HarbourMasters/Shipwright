@@ -431,8 +431,11 @@ void EnExItem_TargetPrizeGive(EnExItem* this, PlayState* play) {
             s32 getItemId = (CUR_UPG_VALUE(UPG_BULLET_BAG) == 2) ? GI_BULLET_BAG_50 : GI_BULLET_BAG_40;
             func_8002F434(&this->actor, play, getItemId, 2000.0f, 1000.0f);
         } else {
-            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LW_TARGET_IN_WOODS, GI_BULLET_BAG_50);
-            GiveItemEntryFromActor(&this->actor, play, getItemEntry, 2000.0f, 1000.0f);
+            // AP: TARGET IN WOODS
+            Randomizer_SendAPItemFromKnownCheck(RC_LW_TARGET_IN_WOODS);
+
+            // GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LW_TARGET_IN_WOODS, GI_BULLET_BAG_50);
+            // GiveItemEntryFromActor(&this->actor, play, getItemEntry, 2000.0f, 1000.0f);
         }
 
     }

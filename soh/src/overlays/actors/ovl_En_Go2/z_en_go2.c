@@ -349,15 +349,18 @@ s16 EnGo2_UpdateTalkStateGoronCityRollingBig(PlayState* play, EnGo2* this) {
         case TEXT_STATE_EVENT:
             if (Message_ShouldAdvance(play)) {
                 if (this->actor.textId == 0x3012) {
-                    this->actionFunc = EnGo2_SetupGetItem;
+                    // this->actionFunc = EnGo2_SetupGetItem;
                     if(!IS_RANDO) {
                         EnGo2_GetItem(this, play, CUR_CAPACITY(UPG_BOMB_BAG) == 30 ? GI_BOMB_BAG_40 : GI_BOMB_BAG_30);
                     } else {
-                        EnGo2_GetItemEntry(this, play, Randomizer_GetItemFromKnownCheck(RC_GC_ROLLING_GORON_AS_CHILD, GI_BOMB_BAG_40));
+                        // AP: ROLLING GORON AS CHILD
+                        Randomizer_SendAPItemFromKnownCheck(RC_GC_ROLLING_GORON_AS_CHILD);
+
+                        // EnGo2_GetItemEntry(this, play, Randomizer_GetItemFromKnownCheck(RC_GC_ROLLING_GORON_AS_CHILD, GI_BOMB_BAG_40));
                     }
                     Message_CloseTextbox(play);
                     Flags_SetInfTable(INFTABLE_11E);
-                    return NPC_TALK_STATE_ACTION;
+                    return NPC_TALK_STATE_IDLE;
                 } else {
                     return NPC_TALK_STATE_ACTION;
                 }
@@ -548,15 +551,16 @@ s16 EnGo2_UpdateTalkStateGoronCityLink(PlayState* play, EnGo2* this) {
                         this->actionFunc = EnGo2_SetupGetItem;
                         return NPC_TALK_STATE_ACTION;
                     } else {
-                        if (Flags_GetTreasure(play, 0x1F)) {
+                        if (Randomizer_CheckAPLocationChecked(RC_GC_ROLLING_GORON_AS_ADULT)) {
                             return NPC_TALK_STATE_IDLE;
                         }
 
                         Flags_SetInfTable(INFTABLE_GORON_CITY_DOORS_UNLOCKED);
-                        EnGo2_GetItemEntry(this, play, Randomizer_GetItemFromKnownCheck(RC_GC_ROLLING_GORON_AS_ADULT, GI_TUNIC_GORON));
-                        this->actionFunc = EnGo2_SetupGetItem;
-                        Flags_SetTreasure(play, 0x1F);
-                        return NPC_TALK_STATE_ACTION;
+                        // AP: ROLLING GORON AS ADULT
+                        Randomizer_SendAPItemFromKnownCheck(RC_GC_ROLLING_GORON_AS_ADULT);
+                        // EnGo2_GetItemEntry(this, play, Randomizer_GetItemFromKnownCheck(RC_GC_ROLLING_GORON_AS_ADULT, GI_TUNIC_GORON));
+                        // this->actionFunc = EnGo2_SetupGetItem;
+                        return NPC_TALK_STATE_IDLE;
                     }
                 case 0x3037:
                     Flags_SetInfTable(INFTABLE_SPOKE_TO_GORON_LINK);
@@ -627,18 +631,21 @@ s16 EnGo2_UpdateTalkStateGoronDmtBiggoron(PlayState* play, EnGo2* this) {
     switch (EnGo2_GetDialogState(this, play)) {
         case TEXT_STATE_DONE:
             if (this->actor.textId == 0x305E) {
-                if((!IS_RANDO && gSaveContext.bgsFlag) || (IS_RANDO && Flags_GetTreasure(play, 0x1F))) {
+                if((!IS_RANDO && gSaveContext.bgsFlag) || (IS_RANDO && Randomizer_CheckAPLocationChecked(RC_DMT_TRADE_CLAIM_CHECK))) {
                     return NPC_TALK_STATE_IDLE;
                 }
                 
                 if(IS_RANDO) {
-                    EnGo2_GetItemEntry(this, play, Randomizer_GetItemFromKnownCheck(RC_DMT_TRADE_CLAIM_CHECK, GI_SWORD_BGS));
-                    Flags_SetTreasure(play, 0x1F);
+                    // AP: CLAIM CHECK
+                    Randomizer_SendAPItemFromKnownCheck(RC_DMT_TRADE_CLAIM_CHECK);
+                    // EnGo2_GetItemEntry(this, play, Randomizer_GetItemFromKnownCheck(RC_DMT_TRADE_CLAIM_CHECK, GI_SWORD_BGS));
+                    // Flags_SetTreasure(play, 0x1F);
+                    return NPC_TALK_STATE_IDLE;
                 } else {
                     EnGo2_GetItem(this, play, GI_SWORD_BGS);
+                    this->actionFunc = EnGo2_SetupGetItem;
+                    return NPC_TALK_STATE_ACTION;
                 }
-                this->actionFunc = EnGo2_SetupGetItem;
-                return NPC_TALK_STATE_ACTION;
             } else {
                 return NPC_TALK_STATE_IDLE;
             }
@@ -664,10 +671,11 @@ s16 EnGo2_UpdateTalkStateGoronDmtBiggoron(PlayState* play, EnGo2* this) {
                 if ((this->actor.textId == 0x3054) || (this->actor.textId == 0x3055)) {
                     if (play->msgCtx.choiceIndex == 0) {
                         if (IS_RANDO) {
-                            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DMT_TRADE_BROKEN_SWORD, GI_PRESCRIPTION);
-                            Randomizer_ConsumeAdultTradeItem(play, ITEM_SWORD_BROKEN);
-                            EnGo2_GetItemEntry(this, play, getItemEntry);
-                            Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_DMT_TRADE_BROKEN_SWORD);
+                            // GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DMT_TRADE_BROKEN_SWORD, GI_PRESCRIPTION);
+                            // Randomizer_ConsumeAdultTradeItem(play, ITEM_SWORD_BROKEN);
+                            // EnGo2_GetItemEntry(this, play, getItemEntry);
+                            // Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_DMT_TRADE_BROKEN_SWORD);
+                            return NPC_TALK_STATE_IDLE;
                         } else {
                             u32 getItemId = GI_PRESCRIPTION;
                             EnGo2_GetItem(this, play, getItemId);
@@ -1960,10 +1968,12 @@ void EnGo2_BiggoronEyedrops(EnGo2* this, PlayState* play) {
                 this->skelAnime.playSpeed = 0.0f;
                 this->skelAnime.curFrame = this->skelAnime.endFrame;
                 if (IS_RANDO) {
-                    GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DMT_TRADE_EYEDROPS, GI_CLAIM_CHECK);
-                    Randomizer_ConsumeAdultTradeItem(play, ITEM_EYEDROPS);
-                    EnGo2_GetItemEntry(this, play, getItemEntry);
-                    Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_DMT_TRADE_EYEDROPS);
+                    // GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DMT_TRADE_EYEDROPS, GI_CLAIM_CHECK);
+                    // Randomizer_ConsumeAdultTradeItem(play, ITEM_EYEDROPS);
+                    // EnGo2_GetItemEntry(this, play, getItemEntry);
+                    // Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_DMT_TRADE_EYEDROPS);
+                    this->goronState = 0;
+                    return;
                 } else {
                     u32 getItemId = GI_CLAIM_CHECK;
                     EnGo2_GetItem(this, play, getItemId);

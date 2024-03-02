@@ -1819,6 +1819,7 @@ void DrawRemoteControlMenu() {
 extern std::shared_ptr<RandomizerSettingsWindow> mRandomizerSettingsWindow;
 extern std::shared_ptr<ItemTrackerWindow> mItemTrackerWindow;
 extern std::shared_ptr<ItemTrackerSettingsWindow> mItemTrackerSettingsWindow;
+extern std::shared_ptr<OoTAP_Window> mOoTAPWindow;
 extern std::shared_ptr<EntranceTrackerWindow> mEntranceTrackerWindow;
 extern std::shared_ptr<CheckTracker::CheckTrackerWindow> mCheckTrackerWindow;
 extern std::shared_ptr<CheckTracker::CheckTrackerSettingsWindow> mCheckTrackerSettingsWindow;
@@ -1834,13 +1835,13 @@ void DrawRandomizerMenu() {
     #else
         static ImVec2 buttonSize(200.0f, 0.0f);
     #endif
-        if (mRandomizerSettingsWindow) {
-            if (ImGui::Button(GetWindowButtonText("Randomizer Settings", CVarGetInteger("gRandomizerSettingsEnabled", 0)).c_str(), buttonSize)) {
-                mRandomizerSettingsWindow->ToggleVisibility();
-            }
-        }
+        // if (mRandomizerSettingsWindow) {
+        //     if (ImGui::Button(GetWindowButtonText("Randomizer Settings", CVarGetInteger("gRandomizerSettingsEnabled", 0)).c_str(), buttonSize)) {
+        //         mRandomizerSettingsWindow->ToggleVisibility();
+        //     }
+        // }
 
-        UIWidgets::Spacer(0);
+        // UIWidgets::Spacer(0);
         if (mItemTrackerWindow) {
             if (ImGui::Button(GetWindowButtonText("Item Tracker", CVarGetInteger("gItemTrackerEnabled", 0)).c_str(), buttonSize)) {
                 mItemTrackerWindow->ToggleVisibility();
@@ -1932,7 +1933,7 @@ void DrawArchipelagoMenu() {
         static std::string slotName = CVarGetString("gArchipelago.SlotName", "Username");
         static std::string password = CVarGetString("gArchipelago.Password", "");
         static uint16_t port = CVarGetInteger("gArchipelago.Port", 0);
-        bool isFormValid = !isStringEmpty(CVarGetString("gArchipelago.IP", "archipelago.gg")) && port > 1024 && port < 65535;
+        bool isFormValid = OoTAP_STARTED || (!isStringEmpty(CVarGetString("gArchipelago.IP", "archipelago.gg")) && port > 1024 && port < 65535 && GameInteractor::IsSaveLoaded());
 
         ImGui::Text("Remote IP & Port");
         if (ImGui::InputText("##gArchipelago.IP", (char*)ip.c_str(), ip.capacity() + 1)) {
@@ -1980,14 +1981,23 @@ void DrawArchipelagoMenu() {
         }
         ImGui::EndDisabled();
 
-        if (OoTAP_ENABLED) {
-            ImGui::Spacing();
-            if (OoTAP_CONNECTED) {
-                ImGui::Text("Connected");
+        if (!isFormValid) {
+            if (!GameInteractor::IsSaveLoaded()) {
+                ImGui::Text("Can't connect; load a save first.");
             } else {
-                ImGui::Text("Connecting...");
+                ImGui::Text("Can't connect; invalid IP or port.");
             }
         }
+        ImGui::Spacing();
+
+        ImGui::Text("-- Settings --");
+
+        ImGui::Spacing();
+        if (ImGui::Button(GetWindowButtonText("Archipelago Window", CVarGetInteger("gOoTAPWindowEnabled", 0)).c_str())) {
+            mOoTAPWindow->ToggleVisibility();
+        }
+        UIWidgets::EnhancementCheckbox("Window Dragging", "gArchipelago.WindowDragging", false, "", UIWidgets::CheckboxGraphics::Cross, true);
+        UIWidgets::EnhancementSliderFloat((std::string("Window Scale: ") + std::to_string(CVarGetFloat("gArchipelago.WindowScale", 2))).c_str(), "##ArchipelagoWindowScale", "gArchipelago.WindowScale", 0.5, 3, "", 2, false);
 
         ImGui::Dummy(ImVec2(0.0f, 0.0f));
         ImGui::EndMenu();
@@ -2010,6 +2020,10 @@ void SohMenuBar::DrawElement() {
 
         ImGui::SetCursorPosY(0.0f);
 
+        DrawArchipelagoMenu();
+
+        ImGui::SetCursorPosY(0.0f);
+
         DrawEnhancementsMenu();
 
         ImGui::SetCursorPosY(0.0f);
@@ -2019,10 +2033,6 @@ void SohMenuBar::DrawElement() {
         ImGui::SetCursorPosY(0.0f);
 
         DrawDeveloperToolsMenu();
-
-        ImGui::SetCursorPosY(0.0f);
-
-        DrawArchipelagoMenu();
 
         ImGui::SetCursorPosY(0.0f);
 

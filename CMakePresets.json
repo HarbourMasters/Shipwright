@@ -1,0 +1,18 @@
+{
+    "version": 2,
+    "configurePresets": [
+        {
+            "name": "configure",
+            "displayName": "Custom configure preset",
+            "description": "Sets Ninja generator, build and install directory",
+            "generator": "Visual Studio 17 2022",
+            "binaryDir": "${sourceDir}/out/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}"
+            },
+            "toolset": "v142",
+            "architecture": "x64"
+        }
+    ]
+}

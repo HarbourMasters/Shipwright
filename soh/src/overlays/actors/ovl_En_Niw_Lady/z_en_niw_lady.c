@@ -312,8 +312,11 @@ void func_80ABA654(EnNiwLady* this, PlayState* play) {
                 this->getItemId = GI_BOTTLE;
                 func_8002F434(&this->actor, play, GI_BOTTLE, 100.0f, 50.0f);
             } else {
-                this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_ANJU_AS_CHILD, GI_BOTTLE);
-                GiveItemEntryFromActor(&this->actor, play, this->getItemEntry, 100.0f, 50.0f);
+                // AP: ANJU AS CHILD
+                Randomizer_SendAPItemFromKnownCheck(RC_KAK_ANJU_AS_CHILD);
+
+                // this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_ANJU_AS_CHILD, GI_BOTTLE);
+                // GiveItemEntryFromActor(&this->actor, play, this->getItemEntry, 100.0f, 50.0f);
             }
 
             this->actionFunc = func_80ABAC00;
@@ -401,8 +404,11 @@ void func_80ABA9B8(EnNiwLady* this, PlayState* play) {
                 if (!IS_RANDO) {
                     func_8002F434(&this->actor, play, GI_POCKET_EGG, 200.0f, 100.0f);
                 } else {
-                    this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_ANJU_AS_ADULT, GI_POCKET_EGG);
-                    GiveItemEntryFromActor(&this->actor, play, this->getItemEntry, 200.0f, 100.0f);
+                    // AP: ANJU AS CHILD
+                    Randomizer_SendAPItemFromKnownCheck(RC_KAK_ANJU_AS_ADULT);
+
+                    // this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_ANJU_AS_ADULT, GI_POCKET_EGG);
+                    // GiveItemEntryFromActor(&this->actor, play, this->getItemEntry, 200.0f, 100.0f);
                     Flags_SetItemGetInf(ITEMGETINF_2C);
                 }
 

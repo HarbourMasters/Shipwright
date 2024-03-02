@@ -283,14 +283,21 @@ void func_809DF8FC(EnCow* this, PlayState* play) {
 
 bool EnCow_HasBeenMilked(EnCow* this, PlayState* play) {
     CowIdentity cowIdentity = Randomizer_IdentifyCow(play->sceneNum, this->actor.world.pos.x, this->actor.world.pos.z);
-    return Flags_GetRandomizerInf(cowIdentity.randomizerInf);
+    // AP: CHECK IF THE COW HAS BEEN MILKED!
+    return Randomizer_CheckAPLocationChecked(cowIdentity.randomizerCheck);
+    // return Flags_GetRandomizerInf(cowIdentity.randomizerInf);
 }
 
 void EnCow_GivePlayerRandomizedItem(EnCow* this, PlayState* play) {
     if (!EnCow_HasBeenMilked(this, play)) {
         CowIdentity cowIdentity = Randomizer_IdentifyCow(play->sceneNum, this->actor.world.pos.x, this->actor.world.pos.z);
-        GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(cowIdentity.randomizerCheck, GI_MILK);
-        GiveItemEntryFromActor(&this->actor, play, itemEntry, 10000.0f, 100.0f);
+
+        // TODO: CHECK AP SETTING: COW RANDO
+        // AP: GIVE AP ITEM FROM COW
+        Randomizer_SendAPItemFromKnownCheck(cowIdentity.randomizerCheck);
+
+        // GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(cowIdentity.randomizerCheck, GI_MILK);
+        // GiveItemEntryFromActor(&this->actor, play, itemEntry, 10000.0f, 100.0f);
     } else {
         // once we've gotten the rando reward from the cow,
         // return them to the their default action function
@@ -311,9 +318,7 @@ void func_809DF96C(EnCow* this, PlayState* play) {
                     // when randomized with cowsanity, if we haven't gotten the
                     // reward from this cow yet, give that, otherwise use the
                     // vanilla cow behavior
-                    if (IS_RANDO &&
-                        Randomizer_GetSettingValue(RSK_SHUFFLE_COWS) &&
-                        !EnCow_HasBeenMilked(this, play)) {
+                    if (IS_RANDO && !EnCow_HasBeenMilked(this, play)) {
                         EnCow_SetCowMilked(this, play);
                         // setting the ocarina mode here prevents intermittent issues
                         // with the item get not triggering until walking away

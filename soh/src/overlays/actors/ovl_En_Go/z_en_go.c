@@ -961,29 +961,33 @@ void EnGo_GetItem(EnGo* this, PlayState* play) {
                 if (!IS_RANDO) {
                     getItemId = GI_SWORD_BGS;
                 } else {
-                    getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DMT_TRADE_CLAIM_CHECK, GI_SWORD_BGS);
-                    getItemId = getItemEntry.getItemId;
+                    // AP: SEND CLAIM CHECK ITEM
+                    Randomizer_SendAPItemFromKnownCheck(RC_DMT_TRADE_CLAIM_CHECK);
+
+                    // getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DMT_TRADE_CLAIM_CHECK, GI_SWORD_BGS);
+                    // getItemId = getItemEntry.getItemId;
                 }
                 this->unk_20C = 1;
             }
-            if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_EYEDROPS) {
-                if (IS_RANDO) {
-                    getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DMT_TRADE_EYEDROPS, GI_CLAIM_CHECK);
-                    getItemId = getItemEntry.getItemId;
-                    Randomizer_ConsumeAdultTradeItem(play, ITEM_EYEDROPS);
-                } else {
-                    getItemId = GI_CLAIM_CHECK;
-                }
-            }
-            if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_SWORD_BROKEN) {
-                if (IS_RANDO) {
-                    getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DMT_TRADE_BROKEN_SWORD, GI_PRESCRIPTION);
-                    Randomizer_ConsumeAdultTradeItem(play, ITEM_SWORD_BROKEN);
-                    getItemId = getItemEntry.getItemId;
-                } else {
-                    getItemId = GI_PRESCRIPTION;
-                }
-            }
+            // AP unsupported check
+            // if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_EYEDROPS) {
+            //     if (IS_RANDO) {
+            //         getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DMT_TRADE_EYEDROPS, GI_CLAIM_CHECK);
+            //         getItemId = getItemEntry.getItemId;
+            //         Randomizer_ConsumeAdultTradeItem(play, ITEM_EYEDROPS);
+            //     } else {
+            //         getItemId = GI_CLAIM_CHECK;
+            //     }
+            // }
+            // if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_SWORD_BROKEN) {
+            //     if (IS_RANDO) {
+            //         getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DMT_TRADE_BROKEN_SWORD, GI_PRESCRIPTION);
+            //         Randomizer_ConsumeAdultTradeItem(play, ITEM_SWORD_BROKEN);
+            //         getItemId = getItemEntry.getItemId;
+            //     } else {
+            //         getItemId = GI_PRESCRIPTION;
+            //     }
+            // }
         }
 
         if ((this->actor.params & 0xF0) == 0) {

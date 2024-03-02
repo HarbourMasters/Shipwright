@@ -137,7 +137,7 @@ void EnBox_Init(Actor* thisx, PlayState* play2) {
 
     if (play) {} // helps the compiler store play2 into s1
 
-    if (Flags_GetTreasure(play, this->dyna.actor.params & 0x1F)) {
+    if (Flags_GetTreasure(play, this->dyna.actor.params & 0x1F) || Randomizer_CheckAPLocationCheckedFromActor(this->dyna.actor.id, play->sceneNum, this->dyna.actor.params)) {
         this->alpha = 255;
         this->iceSmokeTimer = 100;
         EnBox_SetupAction(this, EnBox_Open);
@@ -192,12 +192,13 @@ void EnBox_Init(Actor* thisx, PlayState* play2) {
     SkelAnime_Init(play, &this->skelanime, &gTreasureChestSkel, anim, this->jointTable, this->morphTable, 5);
     Animation_Change(&this->skelanime, anim, 1.5f, animFrameStart, endFrame, ANIMMODE_ONCE, 0.0f);
 
-    if (IS_RANDO) {
-        this->getItemEntry = Randomizer_GetItemFromActor(this->dyna.actor.id, play->sceneNum, this->dyna.actor.params, this->dyna.actor.params >> 5 & 0x7F);
-    } else {
-        this->getItemEntry = ItemTable_RetrieveEntry(MOD_NONE, this->dyna.actor.params >> 5 & 0x7F);
-    }
+    // if (IS_RANDO) {
+    //     this->getItemEntry = Randomizer_GetItemFromActor(this->dyna.actor.id, play->sceneNum, this->dyna.actor.params, this->dyna.actor.params >> 5 & 0x7F);
+    // } else {
+    //     this->getItemEntry = ItemTable_RetrieveEntry(MOD_NONE, this->dyna.actor.params >> 5 & 0x7F);
+    // }
 
+    // TODO: UPDATE CHEST SIZE & TEXTURE WITH AP ITEM PROGRESSION CHECK
     EnBox_UpdateSizeAndTexture(this, play);
     // For SOH we spawn a chest actor instead of rendering the object from scratch for forest boss
     // key chest, and it's up on the wall so disable gravity for it.
@@ -471,39 +472,40 @@ void EnBox_WaitOpen(EnBox* this, PlayState* play) {
         func_8002DBD0(&this->dyna.actor, &sp4C, &player->actor.world.pos);
         if (sp4C.z > -50.0f && sp4C.z < 0.0f && fabsf(sp4C.y) < 10.0f && fabsf(sp4C.x) < 20.0f &&
             Player_IsFacingActor(&this->dyna.actor, 0x3000, play)) {
-            GetItemEntry sItem = Randomizer_GetItemFromActor(this->dyna.actor.id, play->sceneNum, this->dyna.actor.params, this->dyna.actor.params >> 5 & 0x7F);
-            GetItemEntry blueRupee = ItemTable_RetrieveEntry(MOD_NONE, GI_RUPEE_BLUE);
+            GetItemEntry sItem = Randomizer_GetItemFromKnownCheck(RC_UNKNOWN_CHECK, GI_RUPEE_GREEN);
+            // GetItemEntry sItem = Randomizer_GetItemFromActor(this->dyna.actor.id, play->sceneNum, this->dyna.actor.params, this->dyna.actor.params >> 5 & 0x7F);
+            // GetItemEntry blueRupee = ItemTable_RetrieveEntry(MOD_NONE, GI_RUPEE_BLUE);
             
-            // RANDOTODO treasure chest game rando
-            if (Randomizer_GetSettingValue(RSK_SHUFFLE_CHEST_MINIGAME)) {
-                if (IS_RANDO && play->sceneNum == SCENE_TREASURE_BOX_SHOP && (this->dyna.actor.params & 0x60) != 0x20) {
-                    if((this->dyna.actor.params & 0xF) < 2) {
-                        if(Flags_GetCollectible(play, 0x1B)) {
-                            sItem = blueRupee;
-                        }
-                    }
-                    if((this->dyna.actor.params & 0xF) >= 2 && (this->dyna.actor.params & 0xF) < 4) {
-                        if(Flags_GetCollectible(play, 0x1C)) {
-                            sItem = blueRupee;
-                        }
-                    }
-                    if((this->dyna.actor.params & 0xF) >= 4 && (this->dyna.actor.params & 0xF) < 6) {
-                        if(Flags_GetCollectible(play, 0x1D)) {
-                            sItem = blueRupee;
-                        }
-                    }
-                    if((this->dyna.actor.params & 0xF) >= 6 && (this->dyna.actor.params & 0xF) < 8) {
-                        if(Flags_GetCollectible(play, 0x1E)) {
-                            sItem = blueRupee;
-                        }
-                    }
-                    if((this->dyna.actor.params & 0xF) >= 8 && (this->dyna.actor.params & 0xF) < 10) {
-                        if(Flags_GetCollectible(play, 0x1F)) {
-                            sItem = blueRupee;
-                        }
-                    }
-                }
-            }
+            // // RANDOTODO treasure chest game rando
+            // if (Randomizer_GetSettingValue(RSK_SHUFFLE_CHEST_MINIGAME)) {
+            //     if (IS_RANDO && play->sceneNum == SCENE_TREASURE_BOX_SHOP && (this->dyna.actor.params & 0x60) != 0x20) {
+            //         if((this->dyna.actor.params & 0xF) < 2) {
+            //             if(Flags_GetCollectible(play, 0x1B)) {
+            //                 sItem = blueRupee;
+            //             }
+            //         }
+            //         if((this->dyna.actor.params & 0xF) >= 2 && (this->dyna.actor.params & 0xF) < 4) {
+            //             if(Flags_GetCollectible(play, 0x1C)) {
+            //                 sItem = blueRupee;
+            //             }
+            //         }
+            //         if((this->dyna.actor.params & 0xF) >= 4 && (this->dyna.actor.params & 0xF) < 6) {
+            //             if(Flags_GetCollectible(play, 0x1D)) {
+            //                 sItem = blueRupee;
+            //             }
+            //         }
+            //         if((this->dyna.actor.params & 0xF) >= 6 && (this->dyna.actor.params & 0xF) < 8) {
+            //             if(Flags_GetCollectible(play, 0x1E)) {
+            //                 sItem = blueRupee;
+            //             }
+            //         }
+            //         if((this->dyna.actor.params & 0xF) >= 8 && (this->dyna.actor.params & 0xF) < 10) {
+            //             if(Flags_GetCollectible(play, 0x1F)) {
+            //                 sItem = blueRupee;
+            //             }
+            //         }
+            //     }
+            // }
             // Chests need to have a negative getItemId in order to not immediately give their item
             // when approaching.
             if (IS_RANDO) {
@@ -548,6 +550,8 @@ void EnBox_Open(EnBox* this, PlayState* play) {
         if (Animation_OnFrame(&this->skelanime, 30.0f)) {
             sfxId = NA_SE_EV_TBOX_UNLOCK;
             gSaveContext.sohStats.count[COUNT_CHESTS_OPENED]++;
+            // AP: SEND AP ITEM FROM CHEST
+            Randomizer_SendAPItemFromActor(this->dyna.actor.id, play->sceneNum, this->dyna.actor.params);
         } else if (Animation_OnFrame(&this->skelanime, 90.0f)) {
             sfxId = NA_SE_EV_TBOX_OPEN;
         }

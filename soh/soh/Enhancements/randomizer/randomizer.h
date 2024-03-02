@@ -63,6 +63,7 @@ class Randomizer {
     s16 GetItemModelFromId(s16 itemId);
     s32 GetItemIDFromGetItemID(s32 getItemId);
     bool SpoilerFileExists(const char* spoilerFileName);
+    void ClearRandomizer();
     void LoadRandomizerSettings(const char* spoilerFileName);
     void LoadHintLocations(const char* spoilerFileName);
     void LoadMerchantMessages(const char* spoilerFileName);
@@ -90,7 +91,11 @@ class Randomizer {
     ShopItemIdentity IdentifyShopItem(s32 sceneNum, u8 slotIndex);
     CowIdentity IdentifyCow(s32 sceneNum, s32 posX, s32 posZ);
     GetItemEntry GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogItemId, bool checkObtainability = true);
+    void SendAPItemFromKnownCheck(RandomizerCheck check);
     GetItemEntry GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogItemId, bool checkObtainability = true);
+    void SendAPItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams);
+    bool CheckAPLocationCheckedFromActor(s16 actorId, s16 sceneNum, s16 actorParams);
+    bool CheckAPLocationChecked(RandomizerCheck check);
     GetItemID GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItemID ogItemId);
     ItemObtainability GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck);
     ItemObtainability GetItemObtainabilityFromRandomizerGet(RandomizerGet randomizerCheck);

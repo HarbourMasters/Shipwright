@@ -11,6 +11,7 @@ void AP_Init(const char*);
 bool AP_IsInit();
 
 void AP_Start();
+void AP_Shutdown();
 
 struct AP_NetworkVersion {
     int major;

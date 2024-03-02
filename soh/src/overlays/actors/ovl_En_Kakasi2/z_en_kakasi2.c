@@ -117,6 +117,7 @@ void func_80A90264(EnKakasi2* this, PlayState* play) {
 
     this->unk_194++;
     
+    // TODO: AP: CHECK Free Scarecrow's Song
     bool skipScarecrow = play->msgCtx.msgMode == MSGMODE_OCARINA_PLAYING &&
                             ((CVarGetInteger("gSkipScarecrow", 0) && gSaveContext.scarecrowSpawnSongSet) ||
                             (IS_RANDO && Randomizer_GetSettingValue(RSK_SKIP_SCARECROWS_SONG)));

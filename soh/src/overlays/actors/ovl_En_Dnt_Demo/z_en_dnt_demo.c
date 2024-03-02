@@ -139,19 +139,23 @@ void EnDntDemo_Judge(EnDntDemo* this, PlayState* play) {
             Player* player = GET_PLAYER(play);
             switch (Player_GetMask(play)) {
                 case PLAYER_MASK_SKULL:
-                    if (!Flags_GetTreasure(play, 0x1F) && !Player_InBlockingCsMode(play, player)) {
-                        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DEKU_THEATER_SKULL_MASK, GI_STICK_UPGRADE_30);
-                        GiveItemEntryWithoutActor(play, getItemEntry);
-                        player->pendingFlag.flagID = 0x1F;
-                        player->pendingFlag.flagType = FLAG_SCENE_TREASURE;
+                    if (!Flags_GetTreasure(play, 0x1F) && !Player_InBlockingCsMode(play, player) && !Randomizer_CheckAPLocationChecked(RC_DEKU_THEATER_SKULL_MASK)) {
+                        // GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DEKU_THEATER_SKULL_MASK, GI_STICK_UPGRADE_30);
+                        // GiveItemEntryWithoutActor(play, getItemEntry);
+                        // AP: SKULL MASK CHECK
+                        Randomizer_SendAPItemFromKnownCheck(RC_DEKU_THEATER_SKULL_MASK);
+                        // player->pendingFlag.flagID = 0x1F;
+                        // player->pendingFlag.flagType = FLAG_SCENE_TREASURE;
                     }
                     break;
                 case PLAYER_MASK_TRUTH:
-                    if (!Flags_GetTreasure(play, 0x1E) && !Player_InBlockingCsMode(play, player)) {
-                        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DEKU_THEATER_MASK_OF_TRUTH, GI_NUT_UPGRADE_40);
-                        GiveItemEntryWithoutActor(play, getItemEntry);
-                        player->pendingFlag.flagID = 0x1E;
-                        player->pendingFlag.flagType = FLAG_SCENE_TREASURE;
+                    if (!Flags_GetTreasure(play, 0x1E) && !Player_InBlockingCsMode(play, player) && !Randomizer_CheckAPLocationChecked(RC_DEKU_THEATER_MASK_OF_TRUTH)) {
+                        // GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DEKU_THEATER_MASK_OF_TRUTH, GI_NUT_UPGRADE_40);
+                        // GiveItemEntryWithoutActor(play, getItemEntry);
+                        // AP: MASK OF TRUTH CHECK
+                        Randomizer_SendAPItemFromKnownCheck(RC_DEKU_THEATER_MASK_OF_TRUTH);
+                        // player->pendingFlag.flagID = 0x1E;
+                        // player->pendingFlag.flagType = FLAG_SCENE_TREASURE;
                     }
                     break;
             }

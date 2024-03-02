@@ -131,13 +131,14 @@ void func_80A89160(EnJs* this, PlayState* play) {
         this->actor.parent = NULL;
         En_Js_SetupAction(this, func_80A8910C);
     } else {
-        if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF && 
-            !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN)) {
-            GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_WASTELAND_BOMBCHU_SALESMAN, GI_BOMBCHUS_10);
-            gSaveContext.pendingSale = itemEntry.itemId;
-            gSaveContext.pendingSaleMod = itemEntry.modIndex;
-            GiveItemEntryFromActor(&this->actor, play, itemEntry, 10000.0f, 50.0f);
-            Flags_SetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN);
+        // TODO: AP: CHECK Shuffle Medigoron & Carpet Salesman
+        if (IS_RANDO) {
+            Randomizer_SendAPItemFromKnownCheck(RC_WASTELAND_BOMBCHU_SALESMAN);
+            // GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_WASTELAND_BOMBCHU_SALESMAN, GI_BOMBCHUS_10);
+            // gSaveContext.pendingSale = itemEntry.itemId;
+            // gSaveContext.pendingSaleMod = itemEntry.modIndex;
+            // GiveItemEntryFromActor(&this->actor, play, itemEntry, 10000.0f, 50.0f);
+            // Flags_SetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN);
         } else {
             GetItemEntry itemEntry = ItemTable_Retrieve(GI_BOMBCHUS_10);
             gSaveContext.pendingSale = itemEntry.itemId;

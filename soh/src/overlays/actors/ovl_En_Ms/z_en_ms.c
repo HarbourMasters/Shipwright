@@ -120,6 +120,7 @@ void EnMs_Talk(EnMs* this, PlayState* play) {
     u8 dialogState;
 
     dialogState = Message_GetState(&play->msgCtx);
+    // TODO: AP: CHECK SHUFFLE MAGIC BEANS
     if (dialogState != TEXT_STATE_CHOICE) {
         if ((dialogState == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) { // advanced final textbox
             this->actionFunc = EnMs_Wait;
@@ -135,8 +136,11 @@ void EnMs_Talk(EnMs* this, PlayState* play) {
                     return;
                 }
                 if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MAGIC_BEANS)) {
-                    GiveItemEntryFromActor(&this->actor, play, 
-                        Randomizer_GetItemFromKnownCheck(RC_ZR_MAGIC_BEAN_SALESMAN, GI_BEAN), 90.0f, 10.0f);
+                    // AP: MAGIC BEAN SALESMAN
+                    Randomizer_SendAPItemFromKnownCheck(RC_ZR_MAGIC_BEAN_SALESMAN);
+
+                    // GiveItemEntryFromActor(&this->actor, play, 
+                    //     Randomizer_GetItemFromKnownCheck(RC_ZR_MAGIC_BEAN_SALESMAN, GI_BEAN), 90.0f, 10.0f);
                 } else {
                     func_8002F434(&this->actor, play, GI_BEAN, 90.0f, 10.0f);
                 }

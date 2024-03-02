@@ -665,10 +665,13 @@ s16 func_80A70058(PlayState* play, Actor* thisx) {
                         if (!IS_RANDO) {
                             func_80A6F7CC(this, play, GI_HEART_PIECE);
                         } else {
-                            this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MARKET_LOST_DOG, GI_HEART_PIECE);
+                            // AP: LOST DOG
+                            Randomizer_SendAPItemFromKnownCheck(RC_MARKET_LOST_DOG);
+
+                            // this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MARKET_LOST_DOG, GI_HEART_PIECE);
                             // The follownig line and last arguments of GiveItemEntryFromActor are copied from func_80A6F7CC
-                            this->unkGetItemId = this->getItemEntry.getItemId;
-                            GiveItemEntryFromActor(&this->actor, play, this->getItemEntry, this->actor.xzDistToPlayer + 1.0f, fabsf(this->actor.yDistToPlayer) + 1.0f);
+                            // this->unkGetItemId = this->getItemEntry.getItemId;
+                            // GiveItemEntryFromActor(&this->actor, play, this->getItemEntry, this->actor.xzDistToPlayer + 1.0f, fabsf(this->actor.yDistToPlayer) + 1.0f);
                         }
                     }
                     this->actionFunc = func_80A714C4;

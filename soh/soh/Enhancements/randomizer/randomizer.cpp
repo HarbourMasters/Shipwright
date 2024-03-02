@@ -35,6 +35,7 @@
 #include "randomizer_settings_window.h"
 #include "savefile.h"
 #include "soh/util.h"
+#include "soh/OoTAP.h"
 
 extern "C" uint32_t ResourceMgr_IsGameMasterQuest();
 extern "C" uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
@@ -149,9 +150,7 @@ Sprite* Randomizer::GetSeedTexture(uint8_t index) {
 }
 
 Randomizer::~Randomizer() { 
-    this->randoSettings.clear();
-    this->itemLocations.clear();
-    this->merchantPrices.clear();
+    this->ClearRandomizer();
 }
 
 std::unordered_map<std::string, RandomizerInf> spoilerFileTrialToEnum = {
@@ -392,6 +391,17 @@ void DrawTagChips(const std::vector<RandomizerTrickTag> &rtTags) {
         ImGui::PopStyleColor();
         ImGui::EndDisabled();
     }
+}
+
+void Randomizer::ClearRandomizer() {
+    this->randoSettings.clear();
+    this->itemLocations.clear();
+    this->merchantPrices.clear();
+    this->trialsRequired.clear();
+    this->masterQuestDungeons.clear();
+    excludedLocations.clear();
+    enabledTricks.clear();
+    enabledGlitches.clear();
 }
 
 void Randomizer::LoadRandomizerSettings(const char* spoilerFileName) {
@@ -1610,8 +1620,24 @@ RandomizerGetData Randomizer::GetRandomizerGetDataFromKnownCheck(RandomizerCheck
 }
 
 GetItemEntry Randomizer::GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogItemId, bool checkObtainability) {
-    RandomizerGetData rgData = this->itemLocations[GetCheckFromActor(actorId, sceneNum, actorParams)];
+    // TODO: INTERCEPT GET ITEM FROM ACTOR WITH AP LOCATION CHECK
+    RandomizerCheck check = GetCheckFromActor(actorId, sceneNum, actorParams);
+    RandomizerGetData rgData = this->itemLocations[check];
     return GetItemEntryFromRGData(rgData, ogItemId, checkObtainability);
+}
+
+void Randomizer::SendAPItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams) {
+    RandomizerCheck check = GetCheckFromActor(actorId, sceneNum, actorParams);
+    OoTAP_SendItem(check);
+}
+
+bool Randomizer::CheckAPLocationCheckedFromActor(s16 actorId, s16 sceneNum, s16 actorParams) {
+    RandomizerCheck check = GetCheckFromActor(actorId, sceneNum, actorParams);
+    return OoTAP_IsRandoCheckChecked(check);
+}
+
+bool Randomizer::CheckAPLocationChecked(RandomizerCheck check) {
+    return OoTAP_IsRandoCheckChecked(check);
 }
 
 ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck) {
@@ -2795,6 +2821,10 @@ GetItemEntry Randomizer::GetItemEntryFromRGData(RandomizerGetData rgData, GetIte
 GetItemEntry Randomizer::GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogItemId, bool checkObtainability) {
     RandomizerGetData rgData = this->itemLocations[randomizerCheck];
     return GetItemEntryFromRGData(rgData, ogItemId, checkObtainability);
+}
+
+void Randomizer::SendAPItemFromKnownCheck(RandomizerCheck check) {
+    OoTAP_SendItem(check);
 }
 
 RandomizerCheck Randomizer::GetCheckFromActor(s16 actorId, s16 sceneNum, s16 actorParams) {

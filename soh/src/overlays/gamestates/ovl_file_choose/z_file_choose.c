@@ -666,8 +666,8 @@ static void DrawMoreInfo(FileChooseContext* this, s16 fileIndex, u8 alpha) {
     DrawCounters(this, fileIndex, alpha);
 }
 
-#define MIN_QUEST (ResourceMgr_GameHasOriginal() ? QUEST_NORMAL : QUEST_MASTER)
-#define MAX_QUEST QUEST_BOSSRUSH
+#define MIN_QUEST QUEST_NORMAL
+#define MAX_QUEST QUEST_NORMAL
 
 void Sram_InitDebugSave(void);
 void Sram_InitBossRushSave();

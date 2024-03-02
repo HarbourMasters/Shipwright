@@ -601,15 +601,21 @@ void EnGe1_BeginGiveItem_Archery(EnGe1* this, PlayState* play) {
                     break;
             }
         } else {
-            getItemEntry = Randomizer_GetItemFromKnownCheck(RC_GF_HBA_1500_POINTS, CUR_UPG_VALUE(UPG_QUIVER) == 1 ? GI_QUIVER_40 : GI_QUIVER_50);
-            getItemId = getItemEntry.getItemId;
+            // AP: HORSEBACK ARCHERY 1500 POINTS
+            Randomizer_SendAPItemFromKnownCheck(RC_GF_HBA_1500_POINTS);
+
+            // getItemEntry = Randomizer_GetItemFromKnownCheck(RC_GF_HBA_1500_POINTS, CUR_UPG_VALUE(UPG_QUIVER) == 1 ? GI_QUIVER_40 : GI_QUIVER_50);
+            // getItemId = getItemEntry.getItemId;
         }
     } else {
         if (!IS_RANDO) {
             getItemId = GI_HEART_PIECE;
         } else {
-            getItemEntry = Randomizer_GetItemFromKnownCheck(RC_GF_HBA_1000_POINTS, GI_HEART_PIECE);
-            getItemId = getItemEntry.getItemId;
+            // AP: HORSEBACK ARCHERY 1500 POINTS
+            Randomizer_SendAPItemFromKnownCheck(RC_GF_HBA_1000_POINTS);
+
+            // getItemEntry = Randomizer_GetItemFromKnownCheck(RC_GF_HBA_1000_POINTS, GI_HEART_PIECE);
+            // getItemId = getItemEntry.getItemId;
         }
     }
 

@@ -1,0 +1,11 @@
+prefix=@prefix@
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: ixwebsocket
+Description: websocket and http client and server library, with TLS support and very few dependencies
+Version: @version@
+Libs: -L${libdir} -lixwebsocket
+Cflags: -I${includedir}
+Requires: @requires@

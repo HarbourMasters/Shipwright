@@ -362,8 +362,11 @@ void func_80A2FB40(EnGb* this, PlayState* play) {
         if (!IS_RANDO) {
             func_8002F434(&this->dyna.actor, play, GI_BOTTLE, 100.0f, 10.0f);
         } else {
-            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MARKET_10_BIG_POES, GI_BOTTLE);
-            GiveItemEntryFromActor(&this->dyna.actor, play, getItemEntry, 100.0f, 10.0f);
+            // AP: 10 BIG POES
+            Randomizer_SendAPItemFromKnownCheck(RC_MARKET_10_BIG_POES);
+
+            // GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MARKET_10_BIG_POES, GI_BOTTLE);
+            // GiveItemEntryFromActor(&this->dyna.actor, play, getItemEntry, 100.0f, 10.0f);
         }
         this->actionFunc = func_80A2FBB0;
     }
@@ -377,8 +380,11 @@ void func_80A2FBB0(EnGb* this, PlayState* play) {
         if (!IS_RANDO) {
             func_8002F434(&this->dyna.actor, play, GI_BOTTLE, 100.0f, 10.0f);
         } else {
-            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MARKET_10_BIG_POES, GI_BOTTLE);
-            GiveItemEntryFromActor(&this->dyna.actor, play, getItemEntry, 100.0f, 10.0f);
+            // AP: 10 BIG POES
+            Randomizer_SendAPItemFromKnownCheck(RC_MARKET_10_BIG_POES);
+
+            // GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MARKET_10_BIG_POES, GI_BOTTLE);
+            // GiveItemEntryFromActor(&this->dyna.actor, play, getItemEntry, 100.0f, 10.0f);
         }
     }
 }

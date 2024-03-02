@@ -32,6 +32,7 @@
 #include "soh/Enhancements/presets.h"
 #include "soh/resource/type/Skeleton.h"
 #include "libultraship/libultraship.h"
+#include "OoTAP.h"
 
 #ifdef ENABLE_REMOTE_CONTROL
 #include "Enhancements/crowd-control/CrowdControl.h"
@@ -127,6 +128,7 @@ namespace SohGui {
     std::shared_ptr<CheckTracker::CheckTrackerWindow> mCheckTrackerWindow;
     std::shared_ptr<EntranceTrackerWindow> mEntranceTrackerWindow;
     std::shared_ptr<ItemTrackerSettingsWindow> mItemTrackerSettingsWindow;
+    std::shared_ptr<OoTAP_Window> mOoTAPWindow;
     std::shared_ptr<ItemTrackerWindow> mItemTrackerWindow;
     std::shared_ptr<RandomizerSettingsWindow> mRandomizerSettingsWindow;
 
@@ -187,6 +189,8 @@ namespace SohGui {
         gui->AddGuiWindow(mItemTrackerWindow);
         mItemTrackerSettingsWindow = std::make_shared<ItemTrackerSettingsWindow>("gItemTrackerSettingsEnabled", "Item Tracker Settings");
         gui->AddGuiWindow(mItemTrackerSettingsWindow);
+        mOoTAPWindow = std::make_shared<OoTAP_Window>("gOoTAPWindowEnabled", "Archipelago");
+        gui->AddGuiWindow(mOoTAPWindow);
         mRandomizerSettingsWindow = std::make_shared<RandomizerSettingsWindow>("gRandomizerSettingsEnabled", "Randomizer Settings");
         gui->AddGuiWindow(mRandomizerSettingsWindow);
         mAdvancedResolutionSettingsWindow = std::make_shared<AdvancedResolutionSettings::AdvancedResolutionSettingsWindow>("gAdvancedResolutionEditorEnabled", "Advanced Resolution Settings");
@@ -198,6 +202,7 @@ namespace SohGui {
         mRandomizerSettingsWindow = nullptr;
         mItemTrackerWindow = nullptr;
         mItemTrackerSettingsWindow = nullptr;
+        mOoTAPWindow = nullptr;
         mEntranceTrackerWindow = nullptr;
         mCheckTrackerWindow = nullptr;
         mCheckTrackerSettingsWindow = nullptr;

@@ -1,4 +1,5 @@
 #include "GameInteractor_Hooks.h"
+#include "soh/OoTAP.h"
 
 // MARK: - Gameplay
 

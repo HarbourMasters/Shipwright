@@ -41,6 +41,7 @@
 #include "Enhancements/randomizer/randomizer_check_tracker.h"
 #include "Enhancements/randomizer/3drando/random.hpp"
 #include "Enhancements/gameplaystats.h"
+#include "soh/OoTAP.h"
 #include "Enhancements/n64_weird_frame_data.inc"
 #include "frame_interpolation.h"
 #include "variables.h"
@@ -2403,12 +2404,28 @@ extern "C" GetItemEntry Randomizer_GetItemFromActor(s16 actorId, s16 sceneNum, s
     return OTRGlobals::Instance->gRandomizer->GetItemFromActor(actorId, sceneNum, actorParams, ogId);
 }
 
+extern "C" void Randomizer_SendAPItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams) {
+    OTRGlobals::Instance->gRandomizer->SendAPItemFromActor(actorId, sceneNum, actorParams);
+}
+
+extern "C" bool Randomizer_CheckAPLocationCheckedFromActor(s16 actorId, s16 sceneNum, s16 actorParams) {
+    return OTRGlobals::Instance->gRandomizer->CheckAPLocationCheckedFromActor(actorId, sceneNum, actorParams);
+}
+
+extern "C" bool Randomizer_CheckAPLocationChecked(RandomizerCheck check) {
+    return OTRGlobals::Instance->gRandomizer->CheckAPLocationChecked(check);
+}
+
 extern "C" GetItemEntry Randomizer_GetItemFromActorWithoutObtainabilityCheck(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogId) {
     return OTRGlobals::Instance->gRandomizer->GetItemFromActor(actorId, sceneNum, actorParams, ogId, false);
 }
 
 extern "C" GetItemEntry Randomizer_GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId) {
     return OTRGlobals::Instance->gRandomizer->GetItemFromKnownCheck(randomizerCheck, ogId);
+}
+
+extern "C" void Randomizer_SendAPItemFromKnownCheck(RandomizerCheck randomizerCheck) {
+    OTRGlobals::Instance->gRandomizer->SendAPItemFromKnownCheck(randomizerCheck);
 }
 
 extern "C" GetItemEntry Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(RandomizerCheck randomizerCheck, GetItemID ogId) {

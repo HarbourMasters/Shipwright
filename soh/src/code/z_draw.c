@@ -404,6 +404,7 @@ void GetItem_Draw(PlayState* play, s16 drawId) {
  * Uses the Custom Draw Function if it exists, or just calls `GetItem_Draw`
  */
 void GetItemEntry_Draw(PlayState* play, GetItemEntry getItemEntry) {
+    // TODO: IMPLEMENT CUSTOM ITEM DRAW FOR AP ITEMS
     if (getItemEntry.drawFunc != NULL) {
         getItemEntry.drawFunc(play, &getItemEntry);
     } else {

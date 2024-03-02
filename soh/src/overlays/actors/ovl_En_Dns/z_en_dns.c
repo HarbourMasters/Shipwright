@@ -173,18 +173,32 @@ void EnDns_Init(Actor* thisx, PlayState* play) {
         s16 respawnData = gSaveContext.respawn[RESPAWN_MODE_RETURN].data & ((1 << 8) - 1);
         this->scrubIdentity = Randomizer_IdentifyScrub(play->sceneNum, this->actor.params, respawnData);
 
-        if ((Randomizer_GetSettingValue(RSK_SHUFFLE_SCRUBS) == RO_SCRUBS_AFFORDABLE ||
-             Randomizer_GetSettingValue(RSK_SHUFFLE_SCRUBS) == RO_SCRUBS_RANDOM) &&
-            this->scrubIdentity.itemPrice != -1) {
-            this->dnsItemEntry->itemPrice = this->scrubIdentity.itemPrice;
+        // TODO: AP: CHECK IF SCRUBS ARE RANDOMIZED
+        this->scrubIdentity.isShuffled = true;
+        // AP: Check if scrub item has already been bought
+        if (this->scrubIdentity.isShuffled && Randomizer_CheckAPLocationChecked(this->scrubIdentity.randomizerCheck)) {
+            EnDns_Destroy(thisx, play);
+            Actor_Kill(&this->actor);
+            return;
         }
 
-        if (Randomizer_GetSettingValue(RSK_SHUFFLE_SCRUBS) == RO_SCRUBS_EXPENSIVE) {
-            // temporary workaround: always use 40 rupees as price instead of 70
-            if (this->actor.params == 0x0006) {
-                this->dnsItemEntry->itemPrice = 40;
-            }
-        }
+        // TODO: AP: CHECK SCRUB PRICE FROM SETTINGS/SPOILER LOG
+
+        this->scrubIdentity.itemPrice = 10;
+        this->dnsItemEntry->itemPrice = 10;
+
+        // if ((Randomizer_GetSettingValue(RSK_SHUFFLE_SCRUBS) == RO_SCRUBS_AFFORDABLE ||
+        //      Randomizer_GetSettingValue(RSK_SHUFFLE_SCRUBS) == RO_SCRUBS_RANDOM) &&
+        //     this->scrubIdentity.itemPrice != -1) {
+        //     this->dnsItemEntry->itemPrice = this->scrubIdentity.itemPrice;
+        // }
+
+        // if (Randomizer_GetSettingValue(RSK_SHUFFLE_SCRUBS) == RO_SCRUBS_EXPENSIVE) {
+        //     // temporary workaround: always use 40 rupees as price instead of 70
+        //     if (this->actor.params == 0x0006) {
+        //         this->dnsItemEntry->itemPrice = 40;
+        //     }
+        // }
 
         if (this->scrubIdentity.isShuffled) {
             this->dnsItemEntry->getItemId = this->scrubIdentity.getItemId;
@@ -432,11 +446,19 @@ void func_809EFDD0(EnDns* this, PlayState* play) {
         gSaveContext.pendingSale = itemEntry.itemId;
         gSaveContext.pendingSaleMod = itemEntry.modIndex;
         func_8002F434(&this->actor, play, pendingGetItemId, 130.0f, 100.0f);
-    } else {
-        GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(this->scrubIdentity.randomizerCheck, this->scrubIdentity.getItemId);
-        gSaveContext.pendingSale = itemEntry.itemId;
-        gSaveContext.pendingSaleMod = itemEntry.modIndex;
-        GiveItemEntryFromActor(&this->actor, play, itemEntry, 130.0f, 100.0f);
+    } else if (!Randomizer_CheckAPLocationChecked(this->scrubIdentity.randomizerCheck)) {
+        // AP: GIVE SCRUB ITEM
+        Randomizer_SendAPItemFromKnownCheck(this->scrubIdentity.randomizerCheck);
+
+        this->maintainCollider = 0;
+        this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+        EnDns_ChangeAnim(this, ENDNS_ANIM_1);
+        this->actionFunc = EnDns_SetupBurrow;
+
+        // GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(this->scrubIdentity.randomizerCheck, this->scrubIdentity.getItemId);
+        // gSaveContext.pendingSale = itemEntry.itemId;
+        // gSaveContext.pendingSaleMod = itemEntry.modIndex;
+        // GiveItemEntryFromActor(&this->actor, play, itemEntry, 130.0f, 100.0f);
     }
 }
 
