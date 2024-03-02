@@ -1257,7 +1257,7 @@ void DrawEnhancementsMenu() {
             UIWidgets::PaddedEnhancementCheckbox("Fix raised Floor Switches", "gEnhancements.FixFloorSwitches", true, false);
             UIWidgets::Tooltip("Fixes the two raised floor switches, the one in Forest Temple Basement and the one at the top of Fire Temple. \n"
                 "This will lower them, making activating them easier");
-            UIWidgets::PaddedEnhancementCheckbox("Fix Zora hint dialogue", "gFixZoraHintDialogue", true, false);
+            UIWidgets::PaddedEnhancementCheckbox("Fix Zora hint dialogue", "gEnhancements.FixZoraHintDialogue", true, false);
             UIWidgets::Tooltip("Fixes one Zora's dialogue giving a hint about bringing Ruto's Letter to King Zora to properly occur before moving King Zora rather than after");
             if (UIWidgets::PaddedEnhancementCheckbox("Fix hand holding Hammer", "gFixHammerHand", true, false)) {
                 UpdatePatchHand();
