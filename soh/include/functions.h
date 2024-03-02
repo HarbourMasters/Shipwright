@@ -2467,6 +2467,10 @@ void Message_DrawText(PlayState* play, Gfx** gfxP);
 void Interface_CreateQuadVertexGroup(Vtx* vtxList, s32 xStart, s32 yStart, s32 width, s32 height, u8 flippedH);
 void Interface_RandoRestoreSwordless(void);
 
+//Pause Warp
+void PauseWarp_HandleSelection();
+void PauseWarp_Execute();
+
 // #endregion
 
 #ifdef __cplusplus

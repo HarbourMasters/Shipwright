@@ -267,5 +267,6 @@ void AreaTable_Init_DekuTree() {
              {
                  // Exits
                  Entrance(DEKU_TREE_BOSS_ENTRYWAY, { [] { return true; } }),
+                 Entrance(KF_OUTSIDE_DEKU_TREE, { [] { return DekuTreeClear; } }),
              });
 }
