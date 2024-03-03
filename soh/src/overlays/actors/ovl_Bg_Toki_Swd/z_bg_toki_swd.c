@@ -7,6 +7,8 @@
 #include "z_bg_toki_swd.h"
 #include "objects/object_toki_objects/object_toki_objects.h"
 
+#include "soh/Enhancements/timesplits/TimeSplits.h"
+
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 void BgTokiSwd_Init(Actor* thisx, PlayState* play);
@@ -124,6 +126,7 @@ void func_808BAF40(BgTokiSwd* this, PlayState* play) {
             if (!LINK_IS_ADULT) {
                  if (!IS_RANDO || !Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD)) {
                     Item_Give(play, ITEM_SWORD_MASTER);
+                    TimeSplitSplitsHandlerS(ITEM_SWORD_MASTER);
                  }
                 play->csCtx.segment = D_808BB2F0;
             } else {

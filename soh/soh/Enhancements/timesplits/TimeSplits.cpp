@@ -603,6 +603,42 @@ void DrawTimeSplitManageList() {
     ImGui::EndTable();
 }
 
+//void DrawTimeSplitListManager() {
+//    uint32_t buttonID = 0;
+//    ImGui::BeginTable("Equipment", 4);
+//    ImGui::TableSetupColumn("Special");
+//    ImGui::TableSetupColumn("Kokiri");
+//    ImGui::TableSetupColumn("Goron");
+//    ImGui::TableSetupColumn("Zora");
+//    ImGui::TableNextColumn();
+//
+//    for (const auto& obj : splitObjects) {
+//        if (obj.itemImage == "SPECIAL_TRIFORCE_PIECE_WHITE") {
+//            itemNum = obj.itemID;
+//            TimeSplitColorTint();
+//        } else {
+//            pieceTint = { 1, 1, 1, 1 };
+//        }
+//        if (obj.itemID == ITEM_BULLET_BAG_30) {
+//            if (ImGui::ImageButton(std::to_string(buttonID).c_str(),
+//                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(obj.itemImage),
+//                                   ImVec2(24.0f, 24.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), pieceTint)) {
+//                splitItem.push_back(obj.itemID);
+//                splitTime.push_back(0);
+//                splitPreviousBest.push_back(0);
+//                splitBest.push_back(100000);
+//                if (splitItem.size() == 1) {
+//                    splitStatus.push_back(2);
+//                } else {
+//                    splitStatus.push_back(0);
+//                }
+//                statusColor = COLOR_GREEN;
+//                status = obj.itemName + std::string(" added to list");
+//            }
+//        }
+//    }
+//}
+
 void TimeSplitWindow::DrawElement() {
     if (!initialized) {
         InitializeSplitFile();
