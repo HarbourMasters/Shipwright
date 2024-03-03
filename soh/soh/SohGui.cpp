@@ -224,5 +224,7 @@ namespace SohGui {
         mStatsWindow = nullptr;
         mConsoleWindow = nullptr;
         mSohMenuBar = nullptr;
+        mInputViewer = nullptr;
+        mInputViewerSettings = nullptr;
     }
 }
