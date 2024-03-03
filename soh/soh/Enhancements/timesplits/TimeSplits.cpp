@@ -282,7 +282,6 @@ void DrawTimeSplitOptions() {
                 splitTime.push_back(0);
                 splitPreviousBest.push_back(0);
                 splitBest.push_back(100000);
-                // set the first entry in the splits to active (2)
                 if (i == 0) {
                     splitStatus.push_back(2);
                 } else {
@@ -332,7 +331,6 @@ void DrawTimeSplitOptions() {
         splitStatus.clear();
         splitTime.clear();
         for (int i = 0; i < splitItem.size(); i++) {
-            // set the first entry in the splits to active (2)
             if (i == 0)  {
                 splitStatus.push_back(2);
             } else {
@@ -586,7 +584,6 @@ void DrawTimeSplitManageList() {
             splitTime.push_back(0);
             splitPreviousBest.push_back(0);
             splitBest.push_back(100000);
-            // Check Active Split 0: uncollected 1: collected 2: active
             if (splitItem.size() == 1) {
                 splitStatus.push_back(2);
             } else {
@@ -637,8 +634,6 @@ void TimeSplitWindow::DrawElement() {
 
 void TimeSplitWindow::InitElement() {
     LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("SPECIAL_TRIFORCE_PIECE_WHITE", gWTriforcePieceTex, ImVec4(1, 1, 1, 1));
-    //LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("DPAD_MINUS", gDPadMinusTex, ImVec4(1, 1, 1, 1));
-    LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("DPAD_PLUS", gDPadTex, ImVec4(1, 1, 1, 1));
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>([](GetItemEntry itemEntry) {
         TimeSplitSplitsHandler(itemEntry);
     });
