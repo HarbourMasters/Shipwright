@@ -354,7 +354,6 @@ void InputViewer::DrawElement() {
 }
 
 InputViewerSettingsWindow::~InputViewerSettingsWindow() {
-    // SPDLOG_TRACE("destruct input viewer settings window");
 }
 
 void InputViewerSettingsWindow::DrawElement() {

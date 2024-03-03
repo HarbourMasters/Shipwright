@@ -870,7 +870,6 @@ OTRVersion ReadPortVersionFromOTR(std::string otrPath) {
     // Use a temporary archive instance to load the otr and read the version file
     auto archive = LUS::OtrArchive(otrPath);
     if (archive.Open()) {
-        // for now just make a portVersion resource
         auto t = archive.LoadFileRaw("portVersion");
         if (t != nullptr && t->IsLoaded) {
             auto stream = std::make_shared<LUS::MemoryStream>(t->Buffer->data(), t->Buffer->size());
@@ -1582,10 +1581,6 @@ extern "C" void ResourceMgr_UnloadOriginalWhenAltExists(const char* resName) {
     }
 }
 
-// extern "C" void ResourceMgr_LoadFile(const char* resName) {
-//     LUS::Context::GetInstance()->GetResourceManager()->LoadResource(resName);
-// }
-
 std::shared_ptr<LUS::IResource> GetResourceByNameHandlingMQ(const char* path) {
     std::string Path = path;
     if (ResourceMgr_IsGameMasterQuest()) {
@@ -1606,20 +1601,6 @@ extern "C" char* GetResourceDataByNameHandlingMQ(const char* path) {
     
     return (char*)res->GetRawPointer();
 }
-
-// extern "C" char* ResourceMgr_LoadFileFromDisk(const char* filePath) {
-//     FILE* file = fopen(filePath, "r");
-//     fseek(file, 0, SEEK_END);
-//     int fSize = ftell(file);
-//     fseek(file, 0, SEEK_SET);
-
-//     char* data = (char*)malloc(fSize);
-//     fread(data, 1, fSize, file);
-
-//     fclose(file);
-
-//     return data;
-// }
 
 extern "C" uint8_t ResourceMgr_TexIsRaw(const char* texPath) {
     auto res = std::static_pointer_cast<LUS::Texture>(GetResourceByNameHandlingMQ(texPath));
