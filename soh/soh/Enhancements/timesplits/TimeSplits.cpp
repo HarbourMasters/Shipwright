@@ -195,6 +195,9 @@ void TimeSplitSplitsHandlerS(uint32_t itemID) {
         if (itemID == splitItem[loopCounter]) {
             splitTime[loopCounter] = GAMEPLAYSTAT_TOTAL_TIME;
             splitStatus[loopCounter] = 1;
+            if (loopCounter < (splitItem.size() - 1)) {
+                splitStatus[loopCounter + 1] = 2;
+            }
             if (splitTime[loopCounter] < splitBest[loopCounter]) {
                 splitBest[loopCounter] = splitTime[loopCounter];
             }
@@ -209,11 +212,23 @@ void TimeSplitSplitsHandler(GetItemEntry itemEntry) {
     }
     uint32_t loopCounter = 0;
     for (auto& str : splitItem) {
+        if (itemEntry.itemId == ITEM_NUTS_5 || itemEntry.itemId == ITEM_NUTS_10) {
+            itemEntry.itemId = ITEM_NUT;
+        } else if (itemEntry.itemId == ITEM_STICKS_5 || itemEntry.itemId == ITEM_STICKS_10) {
+            itemEntry.itemId == ITEM_STICK;
+        }
         if (itemEntry.itemId == splitItem[loopCounter]) {
             splitTime[loopCounter] = GAMEPLAYSTAT_TOTAL_TIME;
             splitStatus[loopCounter] = 1;
+            if (loopCounter < (splitItem.size() - 1)) {
+                splitStatus[loopCounter + 1] = 2;
+            }
             if (splitTime[loopCounter] < splitBest[loopCounter]) {
                 splitBest[loopCounter] = splitTime[loopCounter];
+            }
+            if (loopCounter == (splitItem.size() - 1)) {
+                gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
+                gSaveContext.sohStats.gameComplete = true;
             }
         }
         loopCounter++;
@@ -267,7 +282,12 @@ void DrawTimeSplitOptions() {
                 splitTime.push_back(0);
                 splitPreviousBest.push_back(0);
                 splitBest.push_back(100000);
-                splitStatus.push_back(0);
+                // set the first entry in the splits to active (2)
+                if (i == 0) {
+                    splitStatus.push_back(2);
+                } else {
+                    splitStatus.push_back(0);
+                }
             }
             splitItem = j[textBuffer]["splitItem"].get<std::vector<uint32_t>>();
             splitTime = j[textBuffer]["splitTime"].get<std::vector<uint32_t>>();
@@ -312,7 +332,12 @@ void DrawTimeSplitOptions() {
         splitStatus.clear();
         splitTime.clear();
         for (int i = 0; i < splitItem.size(); i++) {
-            splitStatus.push_back(0);
+            // set the first entry in the splits to active (2)
+            if (i == 0)  {
+                splitStatus.push_back(2);
+            } else {
+                splitStatus.push_back(0);
+            }
             splitTime.push_back(0);
         }
         splitCurNum++;
@@ -406,6 +431,9 @@ void DrawTimeSplitSplits(){
                 }
             }
         }
+        if (splitStatus[buttonID] == 2) {
+            ImGui::TableSetBgColor(ImGuiTableBgTarget_RowBg0, IM_COL32(47, 79, 90, 255));
+        }
         ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
         ImGui::ImageButton(std::to_string(buttonID).c_str(), LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(itemImager),
                                ImVec2(26.0f, 26.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), pieceTint);
@@ -472,7 +500,7 @@ void DrawTimeSplitSplits(){
         }
         ImGui::TableNextColumn();
         // +/-
-        if (splitStatus[loopCounter] == 0) {
+        if (splitStatus[loopCounter] != 1) {
             if (splitPreviousBest[loopCounter] == 0) {
                 ImGui::TextColored(COLOR_WHITE, formatTimestampTimeSplit(GAMEPLAYSTAT_TOTAL_TIME).c_str());
             } else {
@@ -558,7 +586,12 @@ void DrawTimeSplitManageList() {
             splitTime.push_back(0);
             splitPreviousBest.push_back(0);
             splitBest.push_back(100000);
-            splitStatus.push_back(0);
+            // Check Active Split 0: uncollected 1: collected 2: active
+            if (splitItem.size() == 1) {
+                splitStatus.push_back(2);
+            } else {
+                splitStatus.push_back(0);
+            }
             statusColor = COLOR_GREEN;
             status = obj.itemName + std::string(" added to list");
         }
