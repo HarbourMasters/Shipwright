@@ -411,6 +411,9 @@ namespace Rando {
     }
 
     bool Logic::SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmountGlitchless, uint8_t requiredAmountGlitched) {
+        if (SkeletonKey) {
+            return true;
+        }
         switch (dungeon) {
             case RR_FOREST_TEMPLE:
                 /*if (IsGlitched && (GetDifficultyValueFromString(GlitchHookshotJump_Boots) >= static_cast<uint8_t>(GlitchDifficulty::INTERMEDIATE) || GetDifficultyValueFromString(GlitchHoverBoost) >= static_cast<uint8_t>(GlitchDifficulty::NOVICE) ||
@@ -670,6 +673,9 @@ namespace Rando {
 
         //Triforce Pieces
         TriforcePieces = 0;
+
+        //Skeleton Key
+        SkeletonKey = false;
 
         //Boss Souls
         CanSummonGohma        = false;

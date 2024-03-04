@@ -782,6 +782,10 @@ void GenerateItemPool() {
     ctx->possibleIceTrapModels.push_back(RG_OCARINA_C_RIGHT_BUTTON);
   }
 
+  if (ctx->GetOption(RSK_SKELETON_KEY)) {
+    AddItemToMainPool(RG_SKELETON_KEY);
+  }
+
   if (ctx->GetOption(RSK_SHUFFLE_SWIM)) {
     AddItemToMainPool(RG_PROGRESSIVE_SCALE);
   }

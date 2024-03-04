@@ -607,7 +607,8 @@ const std::vector<FlagTable> flagTables = {
         { RAND_INF_ZD_FISH_2, "RAND_INF_ZD_FISH_2" },
         { RAND_INF_ZD_FISH_3, "RAND_INF_ZD_FISH_3" },
         { RAND_INF_ZD_FISH_4, "RAND_INF_ZD_FISH_4" },
-        { RAND_INF_ZD_FISH_5, "RAND_INF_ZD_FISH_5" }
+        { RAND_INF_ZD_FISH_5, "RAND_INF_ZD_FISH_5" },
+        { RAND_INF_HAS_SKELETON_KEY, "RAND_INF_HAS_SKELETON_KEY" }
     } },
 };
 
