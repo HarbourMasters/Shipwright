@@ -827,10 +827,6 @@ void UpdateCheck(uint32_t check, RandomizerCheckTrackerData data) {
 void CheckTrackerWindow::DrawElement() {
     ImGui::SetNextWindowSize(ImVec2(400, 540), ImGuiCond_FirstUseEver);
 
-    if (!initialized && (gPlayState == nullptr || gSaveContext.fileNum < 0 || gSaveContext.fileNum > 2)) {
-        return;
-    }
-
     if (CVarGetInteger("gCheckTrackerWindowType", TRACKER_WINDOW_WINDOW) == TRACKER_WINDOW_FLOATING) {
         if (CVarGetInteger("gCheckTrackerShowOnlyPaused", 0) && (gPlayState == nullptr || gPlayState->pauseCtx.state == 0)) {
             return;
@@ -851,7 +847,7 @@ void CheckTrackerWindow::DrawElement() {
 
     BeginFloatWindows("Check Tracker", mIsVisible, ImGuiWindowFlags_NoScrollbar);
 
-    if (!GameInteractor::IsSaveLoaded()) {
+    if (!GameInteractor::IsSaveLoaded() || !initialized) {
         ImGui::Text("Waiting for file load..."); //TODO Language
         EndFloatWindows();
         return;
