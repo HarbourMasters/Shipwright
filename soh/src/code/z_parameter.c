@@ -2919,6 +2919,9 @@ void Inventory_UpdateBottleItem(PlayState* play, u8 item, u8 button) {
 
     play->pauseCtx.cursorItem[PAUSE_ITEM] = item;
     gSaveContext.buttonStatus[BUTTON_STATUS_INDEX(button)] = BTN_ENABLED;
+    if (item != ITEM_BOTTLE) {
+        TimeSplitSplitsHandlerS(item);
+    }
 }
 
 s32 Inventory_ConsumeFairy(PlayState* play) {

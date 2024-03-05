@@ -38,6 +38,7 @@ static std::vector<uint32_t> splitTime;
 static std::vector<uint32_t> splitBest;
 static std::vector<uint32_t> splitPreviousBest;
 static std::vector<uint32_t> splitStatus;
+static uint32_t splitTokens;
 static std::string status;
 static ImVec4 statusColor = COLOR_WHITE;
 static uint32_t splitCurNum = 0;
@@ -56,128 +57,211 @@ static ImVec4 pieceTint;
 using json = nlohmann::json;
 
 std::vector<TimeSplitObject> splitObjects = {
- //	ID,	                    Item Name							    Image Name	
-{	ITEM_STICK, 	 		"Deku Stick", 							"ITEM_STICK"},
-{	ITEM_NUT,				"Deku Nut", 							"ITEM_NUT"},
-{	ITEM_BOW, 	 			"Fairy Bow", 							"ITEM_BOW"},
-{	ITEM_ARROW_FIRE, 		"Fire Arrow", 							"ITEM_ARROW_FIRE"},
-{	ITEM_DINS_FIRE, 		"Din's Fire", 							"ITEM_DINS_FIRE"},
-{	ITEM_SLINGSHOT, 		"Fairy Slingshot", 						"ITEM_SLINGSHOT"},
-{	ITEM_OCARINA_FAIRY, 	"Fairy Ocarina", 						"ITEM_OCARINA_FAIRY"},
-{	ITEM_OCARINA_TIME, 		"Ocarina of Time", 						"ITEM_OCARINA_TIME"},
-{	ITEM_BOMBCHU, 	 		"Bombchu", 								"ITEM_BOMBCHU"},
-{	ITEM_HOOKSHOT,  		"Hookshot", 							"ITEM_HOOKSHOT"},
-{	ITEM_LONGSHOT,  		"Longshot", 							"ITEM_LONGSHOT"},
-{	ITEM_ARROW_ICE,  		"Ice Arrow", 							"ITEM_ARROW_ICE"},
-{	ITEM_FARORES_WIND,  	"Farore's Wind", 						"ITEM_FARORES_WIND"},
-{	ITEM_BOOMERANG,  		"Boomerang", 							"ITEM_BOOMERANG"},
-{	ITEM_LENS,  			"Lens of Truth", 						"ITEM_LENS"},
-{	ITEM_BEAN,  			"Magic Bean", 							"ITEM_BEAN"},
-{	ITEM_HAMMER,  			"Megaton Hammer", 						"ITEM_HAMMER"},
-{	ITEM_ARROW_LIGHT,  		"Light Arrow", 							"ITEM_ARROW_LIGHT"},
-{	ITEM_NAYRUS_LOVE,  		"Nayru's Love", 						"ITEM_NAYRUS_LOVE"},
-{	ITEM_BOTTLE,  			"Empty Bottle", 						"ITEM_BOTTLE"},
-{	ITEM_POTION_RED,  		"Red Potion", 							"ITEM_POTION_RED"},
-{	ITEM_POTION_GREEN,  	"Green Potion", 						"ITEM_POTION_GREEN"},
-{	ITEM_POTION_BLUE,  		"Blue Potion", 							"ITEM_POTION_BLUE"},
-{	ITEM_FAIRY,  			"Bottled Fairy", 						"ITEM_FAIRY"},
-{	ITEM_FISH,  			"Fish", 								"ITEM_FISH"},
-{	ITEM_MILK_BOTTLE,  		"Lon Lon Milk & Bottle", 				"ITEM_MILK_BOTTLE"},
-{	ITEM_LETTER_RUTO,  		"Ruto's Letter", 						"ITEM_LETTER_RUTO"},
-{	ITEM_BLUE_FIRE,  		"Blue Fire", 							"ITEM_BLUE_FIRE"},
-{	ITEM_BUG,  				"Bug", 									"ITEM_BUG"},
-{	ITEM_BIG_POE,  			"Big Poe", 								"ITEM_BIG_POE"},
-{	ITEM_POE,  				"Poe", 									"ITEM_POE"},
-{	ITEM_WEIRD_EGG,  		"Weird Egg", 							"ITEM_WEIRD_EGG"},
-{	ITEM_CHICKEN,  			"Chicken", 								"ITEM_CHICKEN"},
-{	ITEM_LETTER_ZELDA,  	"Zelda's Letter", 						"ITEM_LETTER_ZELDA"},
-{	ITEM_MASK_KEATON,  		"Keaton Mask", 							"ITEM_MASK_KEATON"},
-{	ITEM_MASK_SKULL,  		"Skull Mask", 							"ITEM_MASK_SKULL"},
-{	ITEM_MASK_SPOOKY,  		"Spooky Mask", 							"ITEM_MASK_SPOOKY"},
-{	ITEM_MASK_BUNNY,  		"Bunny Hood", 							"ITEM_MASK_BUNNY"},
-{	ITEM_MASK_GORON,  		"Goron Mask", 							"ITEM_MASK_GORON"},
-{	ITEM_MASK_ZORA,  		"Zora Mask", 							"ITEM_MASK_ZORA"},
-{	ITEM_MASK_GERUDO,  		"Gerudo Mask", 							"ITEM_MASK_GERUDO"},
-{	ITEM_MASK_TRUTH,  		"Mask of Truth", 						"ITEM_MASK_TRUTH"},
-{	ITEM_POCKET_EGG,  		"Pocket Egg", 							"ITEM_POCKET_EGG"},
-{	ITEM_POCKET_CUCCO,  	"Pocket Cucco", 						"ITEM_POCKET_CUCCO"},
-{	ITEM_COJIRO,  			"Cojiro", 								"ITEM_COJIRO"},
-{	ITEM_ODD_MUSHROOM,  	"Odd Mushroom", 						"ITEM_ODD_MUSHROOM"},
-{	ITEM_ODD_POTION,  		"Odd Potion", 							"ITEM_ODD_POTION"},
-{	ITEM_SAW,  				"Poacher's Saw", 						"ITEM_SAW"},
-{	ITEM_SWORD_BROKEN,  	"Goron's Sword (Broken)", 				"ITEM_SWORD_BROKEN"},
-{	ITEM_PRESCRIPTION,  	"Prescription", 						"ITEM_PRESCRIPTION"},
-{	ITEM_FROG,  			"Eyeball Frog", 						"ITEM_FROG"},
-{	ITEM_EYEDROPS,  		"Eye Drops", 							"ITEM_EYEDROPS"},
-{	ITEM_CLAIM_CHECK,  		"Claim Check",  						"ITEM_CLAIM_CHECK"},
-{	ITEM_SWORD_KOKIRI,  	"Kokiri Sword", 						"ITEM_SWORD_KOKIRI"},
-{	ITEM_SWORD_MASTER,  	"Master Sword", 						"ITEM_SWORD_MASTER"},
-{	ITEM_SWORD_BGS,  		"Giant's Knife & Biggoron's Sword", 	"ITEM_SWORD_BGS"},
-{	ITEM_SHIELD_DEKU,  		"Deku Shield", 							"ITEM_SHIELD_DEKU"},
-{	ITEM_SHIELD_HYLIAN, 	"Hylian Shield", 						"ITEM_SHIELD_HYLIAN"},
-{	ITEM_SHIELD_MIRROR, 	"Mirror Shield", 						"ITEM_SHIELD_MIRROR"},
-{	ITEM_TUNIC_GORON,  		"Goron Tunic", 							"ITEM_TUNIC_GORON"},
-{	ITEM_TUNIC_ZORA,  		"Zora Tunic", 							"ITEM_TUNIC_ZORA"},
-{	ITEM_BOOTS_IRON,  		"Iron Boots", 							"ITEM_BOOTS_IRON"},
-{	ITEM_BOOTS_HOVER,  		"Hover Boots", 							"ITEM_BOOTS_HOVER"},
-{	ITEM_BULLET_BAG_30, 	"Bullet Bag (30)", 						"ITEM_BULLET_BAG_30"},
-{	ITEM_BULLET_BAG_40, 	"Bullet Bag (40)", 						"ITEM_BULLET_BAG_40"},
-{	ITEM_BULLET_BAG_50, 	"Bullet Bag (50)", 						"ITEM_BULLET_BAG_50"},
-{	ITEM_QUIVER_30,  		"Quiver (30)", 							"ITEM_QUIVER_30"},
-{	ITEM_QUIVER_40,  		"Big Quiver (40)", 						"ITEM_QUIVER_40"},
-{	ITEM_QUIVER_50,  		"Biggest Quiver (50)", 					"ITEM_QUIVER_50"},
-{	ITEM_BOMB_BAG_20,  		"Bomb Bag (20)", 						"ITEM_BOMB_BAG_20"},
-{	ITEM_BOMB_BAG_30,  		"Big Bomb Bag (30)", 					"ITEM_BOMB_BAG_30"},
-{	ITEM_BOMB_BAG_40,  		"Biggest Bomb Bag (40)", 				"ITEM_BOMB_BAG_40"},
-{	ITEM_BRACELET,  		"Goron's Bracelet", 					"ITEM_BRACELET"},
-{	ITEM_GAUNTLETS_SILVER,  "Silver Gauntlets", 					"ITEM_GAUNTLETS_SILVER"},
-{	ITEM_GAUNTLETS_GOLD,  	"Golden Gauntlets", 					"ITEM_GAUNTLETS_GOLD"},
-{	ITEM_SCALE_SILVER,  	"Silver Scale", 						"ITEM_SCALE_SILVER"},
-{	ITEM_SCALE_GOLDEN,  	"Golden Scale", 						"ITEM_SCALE_GOLDEN"},
-{	ITEM_SWORD_KNIFE,  		"Giant's Knife (Broken)", 				"ITEM_SWORD_KNIFE"},
-{	ITEM_WALLET_ADULT,  	"Adult's Wallet", 						"ITEM_WALLET_ADULT"},
-{	ITEM_WALLET_GIANT,  	"Giant's Wallet", 						"ITEM_WALLET_GIANT"},
-{	ITEM_FISHING_POLE,  	"Fishing Pole", 						"ITEM_FISHING_POLE"},
-{	ITEM_SONG_MINUET,  		"Minuet of Forest",						"QUEST_SONG_MINUET"},
-{	ITEM_SONG_BOLERO,  		"Bolero of Fire", 						"QUEST_SONG_BOLERO"},
-{	ITEM_SONG_SERENADE,  	"Serenade of Water", 					"QUEST_SONG_SERENADE"},
-{	ITEM_SONG_REQUIEM,  	"Requiem of Spirit", 					"QUEST_SONG_REQUIEM"},
-{	ITEM_SONG_NOCTURNE,  	"Nocturne of Shadow", 					"QUEST_SONG_NOCTURNE"},
-{	ITEM_SONG_PRELUDE,  	"Prelude of Light", 					"QUEST_SONG_PRELUDE"},
-{	ITEM_SONG_LULLABY,  	"Zelda's Lullaby", 						"QUEST_SONG_LULLABY"},
-{	ITEM_SONG_EPONA,  		"Epona's Song", 						"QUEST_SONG_EPONA"},
-{	ITEM_SONG_SARIA,  		"Saria's Song", 						"QUEST_SONG_SARIA"},
-{	ITEM_SONG_SUN,  		"Sun's Song", 							"QUEST_SONG_SUN"},
-{	ITEM_SONG_TIME, 		"Song of Time", 						"QUEST_SONG_TIME"},
-{	ITEM_SONG_STORMS, 		"Song of Storms", 						"QUEST_SONG_STORMS"},
-{	ITEM_MEDALLION_FOREST, 	"Forest Medallion", 					"QUEST_MEDALLION_FOREST"},
-{	ITEM_MEDALLION_FIRE, 	"Fire Medallion", 						"QUEST_MEDALLION_FIRE"},
-{	ITEM_MEDALLION_WATER, 	"Water Medallion", 						"QUEST_MEDALLION_WATER"},
-{	ITEM_MEDALLION_SPIRIT, 	"Spirit Medallion", 					"QUEST_MEDALLION_SPIRIT"},
-{	ITEM_MEDALLION_SHADOW, 	"Shadow Medallion", 					"QUEST_MEDALLION_SHADOW"},
-{	ITEM_MEDALLION_LIGHT, 	"Light Medallion", 						"QUEST_MEDALLION_LIGHT"},
-{	ITEM_KOKIRI_EMERALD, 	"Kokiri's Emerald", 					"QUEST_KOKIRI_EMERALD"},
-{	ITEM_GORON_RUBY, 		"Goron's Ruby", 						"QUEST_GORON_RUBY"},
-{	ITEM_ZORA_SAPPHIRE, 	"Zora's Sapphire", 						"QUEST_ZORA_SAPPHIRE"},
-{	ITEM_STONE_OF_AGONY, 	"Stone of Agony", 						"QUEST_STONE_OF_AGONY"},
-{	ITEM_GERUDO_CARD, 		"Gerudo's Card", 						"QUEST_GERUDO_CARD"},
-{	ITEM_MAGIC_SMALL, 		"Magic Meter", 							"ITEM_MAGIC_SMALL"},
-{	ITEM_MAGIC_LARGE, 		"Double Magic Meter", 				    "ITEM_MAGIC_LARGE"},
-{	ITEM_DOUBLE_DEFENSE, 	"Double Defense", 						"ITEM_HEART_CONTAINER"},
-{	ITEM_STICK_UPGRADE_20, 	"Deku Stick Upgrade (20)", 				"ITEM_STICK"}, 
-{	ITEM_STICK_UPGRADE_30, 	"Deku Stick Upgrade (30)", 				"ITEM_STICK"},
-{	ITEM_NUT_UPGRADE_30, 	"Deku Nut Upgrade (30)", 				"ITEM_NUT"},
-{	ITEM_NUT_UPGRADE_40, 	"Deku Nut Upgrade (40)", 				"ITEM_NUT"},
-{   BOSS_QUEEN_GOHMA,       "Queen Gohma",                          "SPECIAL_TRIFORCE_PIECE_WHITE"}, 
-{   BOSS_KING_DODONGO,      "King Dodongo",                         "SPECIAL_TRIFORCE_PIECE_WHITE"},
-{   BOSS_BARINADE,          "Barinade",                             "SPECIAL_TRIFORCE_PIECE_WHITE"},
-{   BOSS_PHANTOM_GANON,     "Phantom Ganon",                        "SPECIAL_TRIFORCE_PIECE_WHITE"},
-{   BOSS_VOLVAGIA,          "Volvagia",                             "SPECIAL_TRIFORCE_PIECE_WHITE"},
-{   BOSS_MORPHA,            "Morpha",                               "SPECIAL_TRIFORCE_PIECE_WHITE"},
-{   BOSS_BONGO_BONGO,       "Bongo Bongo",                          "SPECIAL_TRIFORCE_PIECE_WHITE"},
-{   BOSS_TWINROVA,          "Twinrova",                             "SPECIAL_TRIFORCE_PIECE_WHITE"},  
-{   BOSS_GANONDORF,         "Ganondorf",                            "SPECIAL_TRIFORCE_PIECE_WHITE"},
-{   BOSS_GANON,             "Ganon",                                "SPECIAL_TRIFORCE_PIECE_WHITE"},
+     //	ID,	                    Item Name							    Image Name	
+    {	ITEM_STICK, 	 		"Deku Stick", 							"ITEM_STICK"},
+    {	ITEM_NUT,				"Deku Nut", 							"ITEM_NUT"},
+    {	ITEM_BOW, 	 			"Fairy Bow", 							"ITEM_BOW"},
+    {	ITEM_ARROW_FIRE, 		"Fire Arrow", 							"ITEM_ARROW_FIRE"},
+    {	ITEM_DINS_FIRE, 		"Din's Fire", 							"ITEM_DINS_FIRE"},
+    {	ITEM_SLINGSHOT, 		"Fairy Slingshot", 						"ITEM_SLINGSHOT"},
+    {	ITEM_OCARINA_FAIRY, 	"Fairy Ocarina", 						"ITEM_OCARINA_FAIRY"},
+    {	ITEM_OCARINA_TIME, 		"Ocarina of Time", 						"ITEM_OCARINA_TIME"},
+    {	ITEM_BOMBCHU, 	 		"Bombchu", 								"ITEM_BOMBCHU"},
+    {	ITEM_HOOKSHOT,  		"Hookshot", 							"ITEM_HOOKSHOT"},
+    {	ITEM_LONGSHOT,  		"Longshot", 							"ITEM_LONGSHOT"},
+    {	ITEM_ARROW_ICE,  		"Ice Arrow", 							"ITEM_ARROW_ICE"},
+    {	ITEM_FARORES_WIND,  	"Farore's Wind", 						"ITEM_FARORES_WIND"},
+    {	ITEM_BOOMERANG,  		"Boomerang", 							"ITEM_BOOMERANG"},
+    {	ITEM_LENS,  			"Lens of Truth", 						"ITEM_LENS"},
+    {	ITEM_BEAN,  			"Magic Bean", 							"ITEM_BEAN"},
+    {	ITEM_HAMMER,  			"Megaton Hammer", 						"ITEM_HAMMER"},
+    {	ITEM_ARROW_LIGHT,  		"Light Arrow", 							"ITEM_ARROW_LIGHT"},
+    {	ITEM_NAYRUS_LOVE,  		"Nayru's Love", 						"ITEM_NAYRUS_LOVE"},
+    {	ITEM_BOTTLE,  			"Empty Bottle", 						"ITEM_BOTTLE"},
+    {	ITEM_POTION_RED,  		"Red Potion", 							"ITEM_POTION_RED"},
+    {	ITEM_POTION_GREEN,  	"Green Potion", 						"ITEM_POTION_GREEN"},
+    {	ITEM_POTION_BLUE,  		"Blue Potion", 							"ITEM_POTION_BLUE"},
+    {	ITEM_FAIRY,  			"Bottled Fairy", 						"ITEM_FAIRY"},
+    {	ITEM_FISH,  			"Fish", 								"ITEM_FISH"},
+    {	ITEM_MILK_BOTTLE,  		"Lon Lon Milk & Bottle", 				"ITEM_MILK_BOTTLE"},
+    {	ITEM_LETTER_RUTO,  		"Ruto's Letter", 						"ITEM_LETTER_RUTO"},
+    {	ITEM_BLUE_FIRE,  		"Blue Fire", 							"ITEM_BLUE_FIRE"},
+    {	ITEM_BUG,  				"Bug", 									"ITEM_BUG"},
+    {	ITEM_BIG_POE,  			"Big Poe", 								"ITEM_BIG_POE"},
+    {	ITEM_POE,  				"Poe", 									"ITEM_POE"},
+    {	ITEM_WEIRD_EGG,  		"Weird Egg", 							"ITEM_WEIRD_EGG"},
+    {	ITEM_CHICKEN,  			"Chicken", 								"ITEM_CHICKEN"},
+    {	ITEM_LETTER_ZELDA,  	"Zelda's Letter", 						"ITEM_LETTER_ZELDA"},
+    {	ITEM_MASK_KEATON,  		"Keaton Mask", 							"ITEM_MASK_KEATON"},
+    {	ITEM_MASK_SKULL,  		"Skull Mask", 							"ITEM_MASK_SKULL"},
+    {	ITEM_MASK_SPOOKY,  		"Spooky Mask", 							"ITEM_MASK_SPOOKY"},
+    {	ITEM_MASK_BUNNY,  		"Bunny Hood", 							"ITEM_MASK_BUNNY"},
+    {	ITEM_MASK_GORON,  		"Goron Mask", 							"ITEM_MASK_GORON"},
+    {	ITEM_MASK_ZORA,  		"Zora Mask", 							"ITEM_MASK_ZORA"},
+    {	ITEM_MASK_GERUDO,  		"Gerudo Mask", 							"ITEM_MASK_GERUDO"},
+    {	ITEM_MASK_TRUTH,  		"Mask of Truth", 						"ITEM_MASK_TRUTH"},
+    {	ITEM_POCKET_EGG,  		"Pocket Egg", 							"ITEM_POCKET_EGG"},
+    {	ITEM_POCKET_CUCCO,  	"Pocket Cucco", 						"ITEM_POCKET_CUCCO"},
+    {	ITEM_COJIRO,  			"Cojiro", 								"ITEM_COJIRO"},
+    {	ITEM_ODD_MUSHROOM,  	"Odd Mushroom", 						"ITEM_ODD_MUSHROOM"},
+    {	ITEM_ODD_POTION,  		"Odd Potion", 							"ITEM_ODD_POTION"},
+    {	ITEM_SAW,  				"Poacher's Saw", 						"ITEM_SAW"},
+    {	ITEM_SWORD_BROKEN,  	"Goron's Sword (Broken)", 				"ITEM_SWORD_BROKEN"},
+    {	ITEM_PRESCRIPTION,  	"Prescription", 						"ITEM_PRESCRIPTION"},
+    {	ITEM_FROG,  			"Eyeball Frog", 						"ITEM_FROG"},
+    {	ITEM_EYEDROPS,  		"Eye Drops", 							"ITEM_EYEDROPS"},
+    {	ITEM_CLAIM_CHECK,  		"Claim Check",  						"ITEM_CLAIM_CHECK"},
+    {	ITEM_SWORD_KOKIRI,  	"Kokiri Sword", 						"ITEM_SWORD_KOKIRI"},
+    {	ITEM_SWORD_MASTER,  	"Master Sword", 						"ITEM_SWORD_MASTER"},
+    {	ITEM_SWORD_BGS,  		"Giant's Knife & Biggoron's Sword", 	"ITEM_SWORD_BGS"},
+    {	ITEM_SHIELD_DEKU,  		"Deku Shield", 							"ITEM_SHIELD_DEKU"},
+    {	ITEM_SHIELD_HYLIAN, 	"Hylian Shield", 						"ITEM_SHIELD_HYLIAN"},
+    {	ITEM_SHIELD_MIRROR, 	"Mirror Shield", 						"ITEM_SHIELD_MIRROR"},
+    {	ITEM_TUNIC_GORON,  		"Goron Tunic", 							"ITEM_TUNIC_GORON"},
+    {	ITEM_TUNIC_ZORA,  		"Zora Tunic", 							"ITEM_TUNIC_ZORA"},
+    {	ITEM_BOOTS_IRON,  		"Iron Boots", 							"ITEM_BOOTS_IRON"},
+    {	ITEM_BOOTS_HOVER,  		"Hover Boots", 							"ITEM_BOOTS_HOVER"},
+    {	ITEM_BULLET_BAG_30, 	"Bullet Bag (30)", 						"ITEM_BULLET_BAG_30"},
+    {	ITEM_BULLET_BAG_40, 	"Bullet Bag (40)", 						"ITEM_BULLET_BAG_40"},
+    {	ITEM_BULLET_BAG_50, 	"Bullet Bag (50)", 						"ITEM_BULLET_BAG_50"},
+    {	ITEM_QUIVER_30,  		"Quiver (30)", 							"ITEM_QUIVER_30"},
+    {	ITEM_QUIVER_40,  		"Big Quiver (40)", 						"ITEM_QUIVER_40"},
+    {	ITEM_QUIVER_50,  		"Biggest Quiver (50)", 					"ITEM_QUIVER_50"},
+    {	ITEM_BOMB_BAG_20,  		"Bomb Bag (20)", 						"ITEM_BOMB_BAG_20"},
+    {	ITEM_BOMB_BAG_30,  		"Big Bomb Bag (30)", 					"ITEM_BOMB_BAG_30"},
+    {	ITEM_BOMB_BAG_40,  		"Biggest Bomb Bag (40)", 				"ITEM_BOMB_BAG_40"},
+    {	ITEM_BRACELET,  		"Goron's Bracelet", 					"ITEM_BRACELET"},
+    {	ITEM_GAUNTLETS_SILVER,  "Silver Gauntlets", 					"ITEM_GAUNTLETS_SILVER"},
+    {	ITEM_GAUNTLETS_GOLD,  	"Golden Gauntlets", 					"ITEM_GAUNTLETS_GOLD"},
+    {	ITEM_SCALE_SILVER,  	"Silver Scale", 						"ITEM_SCALE_SILVER"},
+    {	ITEM_SCALE_GOLDEN,  	"Golden Scale", 						"ITEM_SCALE_GOLDEN"},
+    {	ITEM_SWORD_KNIFE,  		"Giant's Knife (Broken)", 				"ITEM_SWORD_KNIFE"},
+    {	ITEM_WALLET_ADULT,  	"Adult's Wallet", 						"ITEM_WALLET_ADULT"},
+    {	ITEM_WALLET_GIANT,  	"Giant's Wallet", 						"ITEM_WALLET_GIANT"},
+    {	ITEM_FISHING_POLE,  	"Fishing Pole", 						"ITEM_FISHING_POLE"},
+    {	ITEM_SONG_MINUET,  		"Minuet of Forest",						"QUEST_SONG_MINUET"},
+    {	ITEM_SONG_BOLERO,  		"Bolero of Fire", 						"QUEST_SONG_BOLERO"},
+    {	ITEM_SONG_SERENADE,  	"Serenade of Water", 					"QUEST_SONG_SERENADE"},
+    {	ITEM_SONG_REQUIEM,  	"Requiem of Spirit", 					"QUEST_SONG_REQUIEM"},
+    {	ITEM_SONG_NOCTURNE,  	"Nocturne of Shadow", 					"QUEST_SONG_NOCTURNE"},
+    {	ITEM_SONG_PRELUDE,  	"Prelude of Light", 					"QUEST_SONG_PRELUDE"},
+    {	ITEM_SONG_LULLABY,  	"Zelda's Lullaby", 						"QUEST_SONG_LULLABY"},
+    {	ITEM_SONG_EPONA,  		"Epona's Song", 						"QUEST_SONG_EPONA"},
+    {	ITEM_SONG_SARIA,  		"Saria's Song", 						"QUEST_SONG_SARIA"},
+    {	ITEM_SONG_SUN,  		"Sun's Song", 							"QUEST_SONG_SUN"},
+    {	ITEM_SONG_TIME, 		"Song of Time", 						"QUEST_SONG_TIME"},
+    {	ITEM_SONG_STORMS, 		"Song of Storms", 						"QUEST_SONG_STORMS"},
+    {	ITEM_MEDALLION_FOREST, 	"Forest Medallion", 					"QUEST_MEDALLION_FOREST"},
+    {	ITEM_MEDALLION_FIRE, 	"Fire Medallion", 						"QUEST_MEDALLION_FIRE"},
+    {	ITEM_MEDALLION_WATER, 	"Water Medallion", 						"QUEST_MEDALLION_WATER"},
+    {	ITEM_MEDALLION_SPIRIT, 	"Spirit Medallion", 					"QUEST_MEDALLION_SPIRIT"},
+    {	ITEM_MEDALLION_SHADOW, 	"Shadow Medallion", 					"QUEST_MEDALLION_SHADOW"},
+    {	ITEM_MEDALLION_LIGHT, 	"Light Medallion", 						"QUEST_MEDALLION_LIGHT"},
+    {	ITEM_KOKIRI_EMERALD, 	"Kokiri's Emerald", 					"QUEST_KOKIRI_EMERALD"},
+    {	ITEM_GORON_RUBY, 		"Goron's Ruby", 						"QUEST_GORON_RUBY"},
+    {	ITEM_ZORA_SAPPHIRE, 	"Zora's Sapphire", 						"QUEST_ZORA_SAPPHIRE"},
+    {	ITEM_STONE_OF_AGONY, 	"Stone of Agony", 						"QUEST_STONE_OF_AGONY"},
+    {	ITEM_GERUDO_CARD, 		"Gerudo's Card", 						"QUEST_GERUDO_CARD"},
+    {   ITEM_SKULL_TOKEN,       "Skulltula Token",                      "QUEST_SKULL_TOKEN"},
+    {	ITEM_MAGIC_SMALL, 		"Magic Meter", 							"ITEM_MAGIC_SMALL"},
+    {	ITEM_MAGIC_LARGE, 		"Double Magic Meter", 				    "ITEM_MAGIC_LARGE"},
+    {	ITEM_DOUBLE_DEFENSE, 	"Double Defense", 						"ITEM_HEART_CONTAINER"},
+    {	ITEM_STICK_UPGRADE_20, 	"Deku Stick Upgrade (20)", 				"ITEM_STICK"}, 
+    {	ITEM_STICK_UPGRADE_30, 	"Deku Stick Upgrade (30)", 				"ITEM_STICK"},
+    {	ITEM_NUT_UPGRADE_30, 	"Deku Nut Upgrade (30)", 				"ITEM_NUT"},
+    {	ITEM_NUT_UPGRADE_40, 	"Deku Nut Upgrade (40)", 				"ITEM_NUT"},
+    {   BOSS_QUEEN_GOHMA,       "Queen Gohma",                          "SPECIAL_TRIFORCE_PIECE_WHITE"}, 
+    {   BOSS_KING_DODONGO,      "King Dodongo",                         "SPECIAL_TRIFORCE_PIECE_WHITE"},
+    {   BOSS_BARINADE,          "Barinade",                             "SPECIAL_TRIFORCE_PIECE_WHITE"},
+    {   BOSS_PHANTOM_GANON,     "Phantom Ganon",                        "SPECIAL_TRIFORCE_PIECE_WHITE"},
+    {   BOSS_VOLVAGIA,          "Volvagia",                             "SPECIAL_TRIFORCE_PIECE_WHITE"},
+    {   BOSS_MORPHA,            "Morpha",                               "SPECIAL_TRIFORCE_PIECE_WHITE"},
+    {   BOSS_BONGO_BONGO,       "Bongo Bongo",                          "SPECIAL_TRIFORCE_PIECE_WHITE"},
+    {   BOSS_TWINROVA,          "Twinrova",                             "SPECIAL_TRIFORCE_PIECE_WHITE"},  
+    {   BOSS_GANONDORF,         "Ganondorf",                            "SPECIAL_TRIFORCE_PIECE_WHITE"},
+    {   BOSS_GANON,             "Ganon",                                "SPECIAL_TRIFORCE_PIECE_WHITE"},
+};
+
+std::vector<TimeSplitObject> equipmentObjects = {
+    {	ITEM_SWORD_KOKIRI,  	"Kokiri Sword", 						"ITEM_SWORD_KOKIRI"},
+    {	ITEM_SHIELD_DEKU,  		"Deku Shield", 							"ITEM_SHIELD_DEKU"},
+    {	ITEM_BRACELET,  		"Goron's Bracelet", 	                "ITEM_BRACELET"},
+    {	ITEM_SCALE_SILVER,  	"Silver Scale", 		                "ITEM_SCALE_SILVER"},
+    {	ITEM_SWORD_MASTER,  	"Master Sword", 						"ITEM_SWORD_MASTER"},
+    {	ITEM_SHIELD_HYLIAN, 	"Hylian Shield", 						"ITEM_SHIELD_HYLIAN"},
+    {	ITEM_TUNIC_GORON,  		"Goron Tunic", 							"ITEM_TUNIC_GORON"},
+    {	ITEM_BOOTS_IRON,  		"Iron Boots", 							"ITEM_BOOTS_IRON"},
+    {	ITEM_SWORD_BGS,  		"Giant's Knife & Biggoron's Sword", 	"ITEM_SWORD_BGS"},
+    {	ITEM_SHIELD_MIRROR, 	"Mirror Shield", 						"ITEM_SHIELD_MIRROR"},
+    {	ITEM_TUNIC_ZORA,  		"Zora Tunic", 							"ITEM_TUNIC_ZORA"},
+    {	ITEM_BOOTS_HOVER,  		"Hover Boots", 							"ITEM_BOOTS_HOVER"},
+};
+
+std::vector<TimeSplitObject> questObjects = {
+    {	ITEM_STONE_OF_AGONY, 	"Stone of Agony", 						"QUEST_STONE_OF_AGONY"},
+    {	ITEM_MEDALLION_LIGHT, 	"Light Medallion", 						"QUEST_MEDALLION_LIGHT"},
+    {	ITEM_SONG_LULLABY,  	"Zelda's Lullaby", 						"QUEST_SONG_LULLABY"},
+    {	ITEM_SONG_MINUET,  		"Minuet of Forest",						"QUEST_SONG_MINUET"},
+    {	ITEM_GERUDO_CARD, 		"Gerudo's Card", 						"QUEST_GERUDO_CARD"},
+    {	ITEM_MEDALLION_FOREST, 	"Forest Medallion", 					"QUEST_MEDALLION_FOREST"},
+    {	ITEM_SONG_EPONA,  		"Epona's Song", 						"QUEST_SONG_EPONA"},
+    {	ITEM_SONG_BOLERO,  		"Bolero of Fire", 						"QUEST_SONG_BOLERO"},
+    {   ITEM_SKULL_TOKEN,       "Skulltula Token",                      "QUEST_SKULL_TOKEN"},
+    {	ITEM_MEDALLION_FIRE, 	"Fire Medallion", 						"QUEST_MEDALLION_FIRE"},
+    {	ITEM_SONG_SARIA,  		"Saria's Song", 						"QUEST_SONG_SARIA"},
+    {	ITEM_SONG_SERENADE,  	"Serenade of Water", 					"QUEST_SONG_SERENADE"},
+    {	ITEM_KOKIRI_EMERALD, 	"Kokiri's Emerald", 					"QUEST_KOKIRI_EMERALD"},
+    {	ITEM_MEDALLION_WATER, 	"Water Medallion", 						"QUEST_MEDALLION_WATER"},
+    {	ITEM_SONG_SUN,  		"Sun's Song", 							"QUEST_SONG_SUN"},
+    {	ITEM_SONG_REQUIEM,  	"Requiem of Spirit", 					"QUEST_SONG_REQUIEM"},
+    {	ITEM_GORON_RUBY, 		"Goron's Ruby", 						"QUEST_GORON_RUBY"},
+    {	ITEM_MEDALLION_SPIRIT, 	"Spirit Medallion", 					"QUEST_MEDALLION_SPIRIT"},
+    {	ITEM_SONG_TIME, 		"Song of Time", 						"QUEST_SONG_TIME"},
+    {	ITEM_SONG_NOCTURNE,  	"Nocturne of Shadow", 					"QUEST_SONG_NOCTURNE"},
+    {	ITEM_ZORA_SAPPHIRE, 	"Zora's Sapphire", 						"QUEST_ZORA_SAPPHIRE"},
+    {	ITEM_MEDALLION_SHADOW, 	"Shadow Medallion", 					"QUEST_MEDALLION_SHADOW"},
+    {	ITEM_SONG_STORMS, 		"Song of Storms", 						"QUEST_SONG_STORMS"},
+    {	ITEM_SONG_PRELUDE,  	"Prelude of Light", 					"QUEST_SONG_PRELUDE"},
+};
+
+std::vector<TimeSplitObject> inventoryObjects = {
+    {	ITEM_STICK, 	 		"Deku Stick", 							"ITEM_STICK"},
+    {	ITEM_SLINGSHOT, 		"Fairy Slingshot", 						"ITEM_SLINGSHOT"},
+    {	ITEM_BOOMERANG,  		"Boomerang", 							"ITEM_BOOMERANG"},
+    {	ITEM_BOTTLE,  			"Empty Bottle", 						"ITEM_BOTTLE"},
+    {	ITEM_NUT,				"Deku Nut", 							"ITEM_NUT"},
+    {	ITEM_OCARINA_FAIRY, 	"Fairy Ocarina", 						"ITEM_OCARINA_FAIRY"},
+    {	ITEM_LENS,  			"Lens of Truth", 						"ITEM_LENS"},
+    {	ITEM_DOUBLE_DEFENSE, 	"Double Defense", 						"ITEM_HEART_CONTAINER"},
+    {	ITEM_BOMB,  		    "Bombs", 						        "ITEM_BOMB"},
+    {	ITEM_BOMBCHU, 	 		"Bombchu", 								"ITEM_BOMBCHU"},
+    {	ITEM_BEAN,  			"Magic Bean", 							"ITEM_BEAN"},
+    {	ITEM_FISHING_POLE,  	"Fishing Pole", 						"ITEM_FISHING_POLE"},
+    {	ITEM_BOW, 	 			"Fairy Bow", 							"ITEM_BOW"},
+    {	ITEM_HOOKSHOT,  		"Hookshot", 							"ITEM_HOOKSHOT"},
+    {	ITEM_HAMMER,  			"Megaton Hammer", 						"ITEM_HAMMER"},
+    {	ITEM_WALLET_ADULT,  	"Adult's Wallet", 						"ITEM_WALLET_ADULT"},
+    {	ITEM_ARROW_FIRE, 		"Fire Arrow", 							"ITEM_ARROW_FIRE"},
+    {	ITEM_ARROW_ICE,  		"Ice Arrow", 							"ITEM_ARROW_ICE"},
+    {	ITEM_ARROW_LIGHT,  		"Light Arrow", 							"ITEM_ARROW_LIGHT"},
+    {	ITEM_POCKET_EGG,  		"Pocket Egg", 							"ITEM_POCKET_EGG"},
+    {	ITEM_DINS_FIRE, 		"Din's Fire", 							"ITEM_DINS_FIRE"},
+    {	ITEM_FARORES_WIND,  	"Farore's Wind", 						"ITEM_FARORES_WIND"},
+    {	ITEM_NAYRUS_LOVE,  		"Nayru's Love", 						"ITEM_NAYRUS_LOVE"},
+    {	ITEM_WEIRD_EGG,  		"Weird Egg", 							"ITEM_WEIRD_EGG"},
+};
+
+std::vector<TimeSplitObject> bossObjects = {
+    {   BOSS_QUEEN_GOHMA,       "Queen Gohma",                          "SPECIAL_TRIFORCE_PIECE_WHITE"}, 
+    {   BOSS_KING_DODONGO,      "King Dodongo",                         "SPECIAL_TRIFORCE_PIECE_WHITE"},
+    {   BOSS_BARINADE,          "Barinade",                             "SPECIAL_TRIFORCE_PIECE_WHITE"},
+    {   BOSS_PHANTOM_GANON,     "Phantom Ganon",                        "SPECIAL_TRIFORCE_PIECE_WHITE"},
+    {   BOSS_VOLVAGIA,          "Volvagia",                             "SPECIAL_TRIFORCE_PIECE_WHITE"},
+    {   BOSS_MORPHA,            "Morpha",                               "SPECIAL_TRIFORCE_PIECE_WHITE"},
+    {   BOSS_BONGO_BONGO,       "Bongo Bongo",                          "SPECIAL_TRIFORCE_PIECE_WHITE"},
+    {   BOSS_TWINROVA,          "Twinrova",                             "SPECIAL_TRIFORCE_PIECE_WHITE"},  
+    {   BOSS_GANONDORF,         "Ganondorf",                            "SPECIAL_TRIFORCE_PIECE_WHITE"},
+    {   BOSS_GANON,             "Ganon",                                "SPECIAL_TRIFORCE_PIECE_WHITE"},
 };
 
 std::string formatTimestampTimeSplit(uint32_t value) {
@@ -193,13 +277,19 @@ void TimeSplitSplitsHandlerS(uint32_t itemID) {
     uint32_t loopCounter = 0;
     for (auto& str : splitItem) {
         if (itemID == splitItem[loopCounter]) {
-            splitTime[loopCounter] = GAMEPLAYSTAT_TOTAL_TIME;
-            splitStatus[loopCounter] = 1;
-            if (loopCounter < (splitItem.size() - 1)) {
-                splitStatus[loopCounter + 1] = 2;
-            }
-            if (splitTime[loopCounter] < splitBest[loopCounter]) {
-                splitBest[loopCounter] = splitTime[loopCounter];
+            if (splitStatus[loopCounter] == 2) {
+                splitTime[loopCounter] = GAMEPLAYSTAT_TOTAL_TIME;
+                splitStatus[loopCounter] = 1;
+                if (loopCounter < (splitItem.size() - 1)) {
+                    splitStatus[loopCounter + 1] = 2;
+                }
+                if (splitTime[loopCounter] < splitBest[loopCounter]) {
+                    splitBest[loopCounter] = splitTime[loopCounter];
+                }
+                if (loopCounter == (splitItem.size() - 1)) {
+                    gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
+                    gSaveContext.sohStats.gameComplete = true;
+                }
             }
         }
         loopCounter++;
@@ -216,19 +306,25 @@ void TimeSplitSplitsHandler(GetItemEntry itemEntry) {
             itemEntry.itemId = ITEM_NUT;
         } else if (itemEntry.itemId == ITEM_STICKS_5 || itemEntry.itemId == ITEM_STICKS_10) {
             itemEntry.itemId == ITEM_STICK;
+        } else if (itemEntry.itemId == ITEM_SKULL_TOKEN) {
+            if (gSaveContext.inventory.gsTokens != splitTokens) {
+                return;
+            }
         }
         if (itemEntry.itemId == splitItem[loopCounter]) {
-            splitTime[loopCounter] = GAMEPLAYSTAT_TOTAL_TIME;
-            splitStatus[loopCounter] = 1;
-            if (loopCounter < (splitItem.size() - 1)) {
-                splitStatus[loopCounter + 1] = 2;
-            }
-            if (splitTime[loopCounter] < splitBest[loopCounter]) {
-                splitBest[loopCounter] = splitTime[loopCounter];
-            }
-            if (loopCounter == (splitItem.size() - 1)) {
-                gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
-                gSaveContext.sohStats.gameComplete = true;
+            if (splitStatus[loopCounter] == 2) {
+                splitTime[loopCounter] = GAMEPLAYSTAT_TOTAL_TIME;
+                splitStatus[loopCounter] = 1;
+                if (loopCounter < (splitItem.size() - 1)) {
+                    splitStatus[loopCounter + 1] = 2;
+                }
+                if (splitTime[loopCounter] < splitBest[loopCounter]) {
+                    splitBest[loopCounter] = splitTime[loopCounter];
+                }
+                if (loopCounter == (splitItem.size() - 1)) {
+                    gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
+                    gSaveContext.sohStats.gameComplete = true;
+                }
             }
         }
         loopCounter++;
@@ -249,6 +345,7 @@ void DrawTimeSplitOptions() {
 
         existingData[textBuffer]["splitItem"] = splitItem;
         existingData[textBuffer]["splitTime"] = splitTime;
+        existingData[textBuffer]["splitTokens"] = splitTokens;
         existingData[textBuffer]["splitPreviousBest"] = splitPreviousBest;
         existingData[textBuffer]["backgroundColor.r"] = colorChoice.x;
         existingData[textBuffer]["backgroundColor.g"] = colorChoice.y;
@@ -290,6 +387,7 @@ void DrawTimeSplitOptions() {
             }
             splitItem = j[textBuffer]["splitItem"].get<std::vector<uint32_t>>();
             splitTime = j[textBuffer]["splitTime"].get<std::vector<uint32_t>>();
+            splitTokens = j[textBuffer]["splitTokens"];
             splitPreviousBest = j[textBuffer]["splitPreviousBest"].get<std::vector<uint32_t>>();
             colorChoice.x = j[textBuffer]["backgroundColor.r"];
             colorChoice.y = j[textBuffer]["backgroundColor.g"];
@@ -308,6 +406,7 @@ void DrawTimeSplitOptions() {
     if (ImGui::Button("Reset List")) {
         splitItem.clear();
         splitTime.clear();
+        splitTokens = 0;
         splitStatus.clear();
         splitPreviousBest.clear();
         status = "List has been reset";
@@ -488,7 +587,15 @@ void DrawTimeSplitSplits(){
         // Item Name
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0.0f, 5.0f));
         ImGui::AlignTextToFramePadding();
-        ImGui::Text(itemNamer.c_str());
+        if (itemNum == ITEM_SKULL_TOKEN) {
+            std::string skullText = itemNamer.c_str();
+            skullText += " (";
+            skullText += std::to_string(splitTokens).c_str();
+            skullText += ")";
+            ImGui::Text(skullText.c_str());
+        } else {
+            ImGui::Text(itemNamer.c_str());
+        }
         ImGui::TableNextColumn();
         // Current Time
         if (splitTime[loopCounter] == 0) {
@@ -552,6 +659,7 @@ void InitializeSplitFile() {
     if (!std::filesystem::exists("splitdata.json")) {
         json j;
         j["splitItem"] = splitItem;
+        j["splitTokens"] = splitTokens;
         j["splitTime"] = splitTime;
         j["splitPreviousBest"] = splitPreviousBest;
         j["backgroundColor.r"] = colorChoice.x;
@@ -566,78 +674,611 @@ void InitializeSplitFile() {
 
 static bool initialized = false;
 
-void DrawTimeSplitManageList() {
-    ImGui::BeginTable("Items", 1);
-    ImGui::TableNextColumn();
-    uint32_t buttonID = 0;
+void TimeSplitAddToSplits(uint32_t itemToAdd) {
+    std::string itemStatus;
     for (const auto& obj : splitObjects) {
-        if (obj.itemImage == "SPECIAL_TRIFORCE_PIECE_WHITE") {
-            itemNum = obj.itemID;
-            TimeSplitColorTint();
-        } else {
-            pieceTint = { 1, 1, 1, 1 };
+        if (obj.itemID == itemToAdd) {
+            itemStatus = obj.itemName;
         }
-        if (ImGui::ImageButton(std::to_string(buttonID).c_str(),
+    }
+    splitItem.push_back(itemToAdd);
+    splitTime.push_back(0);
+    splitPreviousBest.push_back(0);
+    splitBest.push_back(100000);
+    if (splitItem.size() == 1) {
+        splitStatus.push_back(2);
+    } else {
+        splitStatus.push_back(0);
+    }
+    statusColor = COLOR_GREEN;
+    status = itemStatus + std::string(" added to list");
+}
+
+void DrawTimeSplitListManager() {
+    uint32_t equipmentID = 0;
+    uint32_t questID = 0;
+    uint32_t inventoryID = 0;
+    uint32_t bossID = 0;
+
+    ImGui::BeginTable("Equipment", 3);
+    ImGui::TableSetupColumn("Equip1", ImGuiTableColumnFlags_WidthFixed, 35.0f);
+    ImGui::TableSetupColumn("Equip2", ImGuiTableColumnFlags_WidthFixed, 35.0f);
+    ImGui::TableSetupColumn("Equip3", ImGuiTableColumnFlags_WidthFixed, 35.0f);
+    ImGui::TableNextColumn();
+    for (const auto& obj : equipmentObjects) {
+        
+        if (equipmentID == 4 || equipmentID == 8) {
+            ImGui::TableNextColumn();
+        }
+        if (ImGui::ImageButton(std::to_string(equipmentID).c_str(),
                                LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(obj.itemImage),
-                               ImVec2(24.0f, 24.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), pieceTint)) {
-            splitItem.push_back(obj.itemID);
-            splitTime.push_back(0);
-            splitPreviousBest.push_back(0);
-            splitBest.push_back(100000);
-            if (splitItem.size() == 1) {
-                splitStatus.push_back(2);
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            if (obj.itemID == ITEM_BRACELET) {
+                ImGui::OpenPopup("Strength");
+            } else if (obj.itemID == ITEM_SCALE_SILVER) {
+                ImGui::OpenPopup("Scale");
             } else {
-                splitStatus.push_back(0);
+                TimeSplitAddToSplits(obj.itemID);
             }
-            statusColor = COLOR_GREEN;
-            status = obj.itemName + std::string(" added to list");
+        }
+        equipmentID++;
+    }
+    if (ImGui::BeginPopupContextItem("Strength")) {
+        if (ImGui::ImageButton(std::to_string(ITEM_BRACELET).c_str(),
+                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_BRACELET"),
+                   ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_BRACELET);
+            ImGui::CloseCurrentPopup();
         }
         ImGui::SameLine();
-        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0.0f, 8.0f));
+        if (ImGui::ImageButton(std::to_string(ITEM_GAUNTLETS_SILVER).c_str(),
+                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_GAUNTLETS_SILVER"),
+                   ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_GAUNTLETS_SILVER);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::SameLine();
+        if (ImGui::ImageButton(std::to_string(ITEM_GAUNTLETS_GOLD).c_str(),
+                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_GAUNTLETS_GOLD"),
+                   ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_GAUNTLETS_GOLD);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::EndPopup();
+    }
+    if (ImGui::BeginPopupContextItem("Scale")) {
+        if (ImGui::ImageButton(std::to_string(ITEM_SCALE_SILVER).c_str(),
+                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_SCALE_SILVER"),
+                   ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_SCALE_SILVER);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::SameLine();
+        if (ImGui::ImageButton(std::to_string(ITEM_SCALE_GOLDEN).c_str(),
+                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_SCALE_GOLDEN"),
+                   ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_SCALE_GOLDEN);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::EndPopup();
+    }
+    ImGui::EndTable();
+    ImGui::SameLine(129.0f);
+
+    ImGui::BeginTable("Quest", 6);
+    ImGui::TableSetupColumn("Quest1", ImGuiTableColumnFlags_WidthFixed, 35.0f);
+    ImGui::TableSetupColumn("Quest2", ImGuiTableColumnFlags_WidthFixed, 35.0f);
+    ImGui::TableSetupColumn("Quest3", ImGuiTableColumnFlags_WidthFixed, 35.0f);
+    ImGui::TableSetupColumn("Quest4", ImGuiTableColumnFlags_WidthFixed, 35.0f);
+    ImGui::TableSetupColumn("Quest5", ImGuiTableColumnFlags_WidthFixed, 35.0f);
+    ImGui::TableSetupColumn("Quest6", ImGuiTableColumnFlags_WidthFixed, 35.0f);
+    ImGui::TableNextColumn();
+
+    for (const auto& obj : questObjects) {
+        if (questID == 4 || questID == 8 || questID == 12 || questID == 16 || questID == 20) {
+            ImGui::TableNextColumn();
+        }
+        if (ImGui::ImageButton(std::to_string(questID).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(obj.itemImage),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            if (obj.itemID == ITEM_SKULL_TOKEN) {
+                ImGui::OpenPopup("Skull Count");
+            } else {
+                TimeSplitAddToSplits(obj.itemID);
+            }
+        }
+        questID++;
+    }
+    if (ImGui::BeginPopupContextItem("Skull Count")) {
+        UIWidgets::PaddedEnhancementSliderInt("Skulltula Count: %d Tokens", "##splitToken", "gTimeSplit.SkullTokens", 0, 100, "", 0, true, true, false);
+        if (ImGui::Button("Set", ImVec2(30.0f, 20.0f))) {
+            splitTokens = CVarGetInteger("gTimeSplit.SkullTokens", 0);
+            TimeSplitAddToSplits(ITEM_SKULL_TOKEN);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::EndPopup();
+    }
+    ImGui::EndTable();
+
+    ImGui::BeginTable("Inventory", 6);
+    ImGui::TableSetupColumn("Inv1", ImGuiTableColumnFlags_WidthFixed, 35.0f);
+    ImGui::TableSetupColumn("Inv2", ImGuiTableColumnFlags_WidthFixed, 35.0f);
+    ImGui::TableSetupColumn("Inv3", ImGuiTableColumnFlags_WidthFixed, 35.0f);
+    ImGui::TableSetupColumn("Inv4", ImGuiTableColumnFlags_WidthFixed, 35.0f);
+    ImGui::TableSetupColumn("Inv5", ImGuiTableColumnFlags_WidthFixed, 35.0f);
+    ImGui::TableSetupColumn("Inv6", ImGuiTableColumnFlags_WidthFixed, 35.0f);
+    ImGui::TableNextColumn();
+
+    for (const auto& obj : inventoryObjects) {
+        if (inventoryID == 4 || inventoryID == 8 || inventoryID == 12 || inventoryID == 16 || inventoryID == 20) {
+            ImGui::TableNextColumn();
+        }
+        if (ImGui::ImageButton(std::to_string(inventoryID).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(obj.itemImage),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            if (obj.itemID == ITEM_STICK) {
+                //ImGui::OpenPopup("Stick");
+                TimeSplitAddToSplits(obj.itemID);
+            } else if (obj.itemID == ITEM_SLINGSHOT) {
+                ImGui::OpenPopup("Slingshot");
+            } else if (obj.itemID == ITEM_NUT) {
+                //ImGui::OpenPopup("Nut");
+                TimeSplitAddToSplits(obj.itemID);
+            } else if (obj.itemID == ITEM_OCARINA_FAIRY) {
+                ImGui::OpenPopup("Ocarina");
+            } else if (obj.itemID == ITEM_BOMB) {
+                ImGui::OpenPopup("Bomb");
+            } else if (obj.itemID == ITEM_BOW) {
+                ImGui::OpenPopup("Bow");
+            } else if (obj.itemID == ITEM_HOOKSHOT) {
+                ImGui::OpenPopup("Hookshot");
+            } else if (obj.itemID == ITEM_BOTTLE) {
+                ImGui::OpenPopup("Bottles");
+            } else if (obj.itemID == ITEM_WALLET_ADULT) {
+                ImGui::OpenPopup("Wallet");
+            } else if (obj.itemID == ITEM_POCKET_EGG) {
+                ImGui::OpenPopup("AdultTrade");
+            } else if (obj.itemID == ITEM_WEIRD_EGG) {
+                ImGui::OpenPopup("ChildTrade");
+            } else {
+                TimeSplitAddToSplits(obj.itemID);
+            }
+        }
+        inventoryID++;
+    }
+    if (ImGui::BeginPopupContextItem("Stick")) {
+        if (ImGui::ImageButton(std::to_string(ITEM_STICK).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_STICK"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_STICK);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::SameLine();
+        if (ImGui::ImageButton(std::to_string(ITEM_STICK_UPGRADE_20).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_STICK_UPGRADE_20"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_STICK_UPGRADE_20);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::SameLine();
+        if (ImGui::ImageButton(std::to_string(ITEM_STICK_UPGRADE_30).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_STICK_UPGRADE_30"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_STICK_UPGRADE_30);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::EndPopup();
+    }
+    if (ImGui::BeginPopupContextItem("Slingshot")) {
+        if (ImGui::ImageButton(std::to_string(ITEM_SLINGSHOT).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_SLINGSHOT"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_SLINGSHOT);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::SameLine();
+        if (ImGui::ImageButton(std::to_string(ITEM_BULLET_BAG_40).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_BULLET_BAG_40"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_BULLET_BAG_40);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::SameLine();
+        if (ImGui::ImageButton(std::to_string(ITEM_BULLET_BAG_50).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_BULLET_BAG_50"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_BULLET_BAG_50);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::EndPopup();
+    }
+    if (ImGui::BeginPopupContextItem("Nut")) {
+        if (ImGui::ImageButton(std::to_string(ITEM_NUT).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_NUT"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_NUT);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::SameLine();
+        if (ImGui::ImageButton(std::to_string(ITEM_NUT_UPGRADE_30).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_NUT_UPGRADE_30"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_NUT_UPGRADE_30);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::SameLine();
+        if (ImGui::ImageButton(std::to_string(ITEM_NUT_UPGRADE_40).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_NUT_UPGRADE_40"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_NUT_UPGRADE_40);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::EndPopup();
+    }
+    if (ImGui::BeginPopupContextItem("Ocarina")) {
+        if (ImGui::ImageButton(std::to_string(ITEM_OCARINA_FAIRY).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_OCARINA_FAIRY"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_OCARINA_FAIRY);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::SameLine();
+        if (ImGui::ImageButton(std::to_string(ITEM_OCARINA_TIME).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_OCARINA_TIME"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_OCARINA_TIME);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::EndPopup();
+    }
+    if (ImGui::BeginPopupContextItem("Bomb")) {
+        if (ImGui::ImageButton(std::to_string(ITEM_BOMB_BAG_20).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_BOMB_BAG_20"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_BOMB_BAG_20);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::SameLine();
+        if (ImGui::ImageButton(std::to_string(ITEM_BOMB_BAG_30).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_BOMB_BAG_30"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_BOMB_BAG_30);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::SameLine();
+        if (ImGui::ImageButton(std::to_string(ITEM_BOMB_BAG_40).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_BOMB_BAG_40"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_BOMB_BAG_40);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::EndPopup();
+    }
+    if (ImGui::BeginPopupContextItem("Bow")) {
+        if (ImGui::ImageButton(std::to_string(ITEM_BOW).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_BOW"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_BOW);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::SameLine();
+        if (ImGui::ImageButton(std::to_string(ITEM_QUIVER_40).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_QUIVER_40"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_QUIVER_40);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::SameLine();
+        if (ImGui::ImageButton(std::to_string(ITEM_QUIVER_50).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_QUIVER_50"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_QUIVER_50);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::EndPopup();
+    }
+    if (ImGui::BeginPopupContextItem("Hookshot")) {
+        if (ImGui::ImageButton(std::to_string(ITEM_HOOKSHOT).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_HOOKSHOT"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_HOOKSHOT);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::SameLine();
+        if (ImGui::ImageButton(std::to_string(ITEM_LONGSHOT).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_LONGSHOT"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_LONGSHOT);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::EndPopup();
+    }
+    if (ImGui::BeginPopupContextItem("Bottles")) {
+        if (ImGui::ImageButton(std::to_string(ITEM_BOTTLE).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_BOTTLE"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_BOTTLE);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::SameLine();
+        if (ImGui::ImageButton(std::to_string(ITEM_POTION_RED).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_POTION_RED"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_POTION_RED);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::SameLine();
+        if (ImGui::ImageButton(std::to_string(ITEM_POTION_GREEN).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_POTION_GREEN"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_POTION_GREEN);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::SameLine();
+        if (ImGui::ImageButton(std::to_string(ITEM_POTION_BLUE).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_POTION_BLUE"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_POTION_BLUE);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::SameLine();
+        if (ImGui::ImageButton(std::to_string(ITEM_FAIRY).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_FAIRY"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_FAIRY);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::SameLine();
+        if (ImGui::ImageButton(std::to_string(ITEM_FISH).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_FISH"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_FISH);
+            ImGui::CloseCurrentPopup();
+        }
+        if (ImGui::ImageButton(std::to_string(ITEM_MILK_BOTTLE).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_MILK_BOTTLE"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_MILK_BOTTLE);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::SameLine();
+        if (ImGui::ImageButton(std::to_string(ITEM_LETTER_RUTO).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_LETTER_RUTO"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_LETTER_RUTO);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::SameLine();
+        if (ImGui::ImageButton(std::to_string(ITEM_BLUE_FIRE).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_BLUE_FIRE"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_BLUE_FIRE);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::SameLine();
+        if (ImGui::ImageButton(std::to_string(ITEM_BUG).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_BUG"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_BUG);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::SameLine();
+        if (ImGui::ImageButton(std::to_string(ITEM_BIG_POE).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_BIG_POE"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_BIG_POE);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::SameLine();
+        if (ImGui::ImageButton(std::to_string(ITEM_POE).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_POE"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_POE);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::EndPopup();
+    }
+    if (ImGui::BeginPopupContextItem("Wallet")) {
+        if (ImGui::ImageButton(std::to_string(ITEM_WALLET_ADULT).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_WALLET_ADULT"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_WALLET_ADULT);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::SameLine();
+        if (ImGui::ImageButton(std::to_string(ITEM_WALLET_GIANT).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_WALLET_GIANT"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_WALLET_GIANT);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::EndPopup();
+    }
+    if (ImGui::BeginPopupContextItem("AdultTrade")) {
+        if (ImGui::ImageButton(std::to_string(ITEM_POCKET_EGG).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_POCKET_EGG"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_POCKET_EGG);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::SameLine();
+        if (ImGui::ImageButton(std::to_string(ITEM_POCKET_CUCCO).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_POCKET_CUCCO"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_POCKET_CUCCO);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::SameLine();
+        if (ImGui::ImageButton(std::to_string(ITEM_COJIRO).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_COJIRO"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_COJIRO);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::SameLine();
+        if (ImGui::ImageButton(std::to_string(ITEM_ODD_MUSHROOM).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_ODD_MUSHROOM"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_ODD_MUSHROOM);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::SameLine();
+        if (ImGui::ImageButton(std::to_string(ITEM_ODD_POTION).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_ODD_POTION"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_ODD_POTION);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::SameLine();
+        if (ImGui::ImageButton(std::to_string(ITEM_SAW).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_SAW"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_SAW);
+            ImGui::CloseCurrentPopup();
+        }
+        if (ImGui::ImageButton(std::to_string(ITEM_SWORD_BROKEN).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_SWORD_BROKEN"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_SWORD_BROKEN);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::SameLine();
+        if (ImGui::ImageButton(std::to_string(ITEM_PRESCRIPTION).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_PRESCRIPTION"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_PRESCRIPTION);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::SameLine();
+        if (ImGui::ImageButton(std::to_string(ITEM_FROG).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_FROG"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_FROG);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::SameLine();
+        if (ImGui::ImageButton(std::to_string(ITEM_EYEDROPS).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_EYEDROPS"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_EYEDROPS);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::SameLine();
+        if (ImGui::ImageButton(std::to_string(ITEM_CLAIM_CHECK).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_CLAIM_CHECK"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_CLAIM_CHECK);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::EndPopup();
+    }
+    if (ImGui::BeginPopupContextItem("ChildTrade")) {
+        if (ImGui::ImageButton(std::to_string(ITEM_WEIRD_EGG).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_WEIRD_EGG"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_WEIRD_EGG);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::SameLine();
+        if (ImGui::ImageButton(std::to_string(ITEM_CHICKEN).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_CHICKEN"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_CHICKEN);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::SameLine();
+        if (ImGui::ImageButton(std::to_string(ITEM_LETTER_ZELDA).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_LETTER_ZELDA"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_LETTER_ZELDA);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::SameLine();
+        if (ImGui::ImageButton(std::to_string(ITEM_MASK_KEATON).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_MASK_KEATON"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_MASK_KEATON);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::SameLine();
+        if (ImGui::ImageButton(std::to_string(ITEM_MASK_SKULL).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_MASK_SKULL"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_MASK_SKULL);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::SameLine();
+        if (ImGui::ImageButton(std::to_string(ITEM_MASK_SPOOKY).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_MASK_SPOOKY"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_MASK_SPOOKY);
+            ImGui::CloseCurrentPopup();
+        }
+        if (ImGui::ImageButton(std::to_string(ITEM_MASK_BUNNY).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_MASK_BUNNY"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_MASK_BUNNY);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::SameLine();
+        if (ImGui::ImageButton(std::to_string(ITEM_MASK_GORON).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_MASK_GORON"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_MASK_GORON);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::SameLine();
+        if (ImGui::ImageButton(std::to_string(ITEM_MASK_ZORA).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_MASK_ZORA"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_MASK_ZORA);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::SameLine();
+        if (ImGui::ImageButton(std::to_string(ITEM_MASK_GERUDO).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_MASK_GERUDO"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_MASK_GERUDO);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::SameLine();
+        if (ImGui::ImageButton(std::to_string(ITEM_MASK_TRUTH).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_MASK_TRUTH"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_MASK_TRUTH);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::EndPopup();
+    }
+    ImGui::EndTable();
+
+    // SPACE SAVE FOR MISC ITEMS (12 SLOTS/3 COLUMNS x4)
+
+    ImGui::BeginTable("Bosses", 2);
+    ImGui::TableSetupColumn("Boss1", ImGuiTableColumnFlags_WidthFixed, 150.0f);
+    ImGui::TableSetupColumn("Boss2", ImGuiTableColumnFlags_WidthFixed, 150.0f);
+    ImGui::TableNextColumn();
+
+    for (const auto& obj : bossObjects) {
+        if (bossID == 5) {
+            ImGui::TableNextColumn();
+        }
+        itemNum = obj.itemID;
+        TimeSplitColorTint();
+        if (ImGui::ImageButton(std::to_string(bossID).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(obj.itemImage),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), pieceTint)) {
+            TimeSplitAddToSplits(obj.itemID);
+        }
+        ImGui::SameLine();
+        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0.0f, 5.0f));
         ImGui::AlignTextToFramePadding();
         ImGui::Text(obj.itemName);
         ImGui::PopStyleVar(1);
-        ImGui::TableNextColumn();
-        buttonID++;
+        bossID++;
     }
     ImGui::EndTable();
 }
-
-//void DrawTimeSplitListManager() {
-//    uint32_t buttonID = 0;
-//    ImGui::BeginTable("Equipment", 4);
-//    ImGui::TableSetupColumn("Special");
-//    ImGui::TableSetupColumn("Kokiri");
-//    ImGui::TableSetupColumn("Goron");
-//    ImGui::TableSetupColumn("Zora");
-//    ImGui::TableNextColumn();
-//
-//    for (const auto& obj : splitObjects) {
-//        if (obj.itemImage == "SPECIAL_TRIFORCE_PIECE_WHITE") {
-//            itemNum = obj.itemID;
-//            TimeSplitColorTint();
-//        } else {
-//            pieceTint = { 1, 1, 1, 1 };
-//        }
-//        if (obj.itemID == ITEM_BULLET_BAG_30) {
-//            if (ImGui::ImageButton(std::to_string(buttonID).c_str(),
-//                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(obj.itemImage),
-//                                   ImVec2(24.0f, 24.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), pieceTint)) {
-//                splitItem.push_back(obj.itemID);
-//                splitTime.push_back(0);
-//                splitPreviousBest.push_back(0);
-//                splitBest.push_back(100000);
-//                if (splitItem.size() == 1) {
-//                    splitStatus.push_back(2);
-//                } else {
-//                    splitStatus.push_back(0);
-//                }
-//                statusColor = COLOR_GREEN;
-//                status = obj.itemName + std::string(" added to list");
-//            }
-//        }
-//    }
-//}
 
 void TimeSplitWindow::DrawElement() {
     if (!initialized) {
@@ -659,7 +1300,7 @@ void TimeSplitWindow::DrawElement() {
         ImGui::TextColored(statusColor, status.c_str());
         UIWidgets::PaddedSeparator();
         ImGui::BeginChild("Add Items");
-        DrawTimeSplitManageList();
+        DrawTimeSplitListManager();
         ImGui::EndChild();
         ImGui::EndTabItem();
     }
