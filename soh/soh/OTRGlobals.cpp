@@ -872,8 +872,7 @@ OTRVersion ReadPortVersionFromOTR(std::string otrPath) {
     // Use a temporary archive instance to load the otr and read the version file
     auto archive = LUS::OtrArchive(otrPath);
     if (archive.Open()) {
-        // for now just make a portVersion resource
-        auto t = archive.LoadFileRaw("portVersion");
+        auto t = archive.LoadFile("portVersion", std::make_shared<LUS::ResourceInitData>());
         if (t != nullptr && t->IsLoaded) {
             auto stream = std::make_shared<LUS::MemoryStream>(t->Buffer->data(), t->Buffer->size());
             auto reader = std::make_shared<LUS::BinaryReader>(stream);
