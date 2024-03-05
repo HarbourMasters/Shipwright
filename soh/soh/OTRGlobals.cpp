@@ -118,6 +118,7 @@ GameInteractorSail* GameInteractorSail::Instance;
 #include "soh/resource/importer/SkeletonLimbFactory.h"
 #include "soh/resource/importer/TextFactory.h"
 #include "soh/resource/importer/BackgroundFactory.h"
+#include "soh/resource/importer/RawJsonFactory.h"
 
 #include "soh/config/ConfigUpdaters.h"
 
@@ -341,6 +342,7 @@ OTRGlobals::OTRGlobals() {
     loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryAudioSoundFontV2>(), RESOURCE_FORMAT_BINARY, "AudioSoundFont", static_cast<uint32_t>(SOH::ResourceType::SOH_AudioSoundFont), 2);
     loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryAudioSequenceV2>(), RESOURCE_FORMAT_BINARY, "AudioSequence", static_cast<uint32_t>(SOH::ResourceType::SOH_AudioSequence), 2);
     loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryBackgroundV0>(), RESOURCE_FORMAT_BINARY, "Background", static_cast<uint32_t>(SOH::ResourceType::SOH_Background), 0);
+    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryRawJsonV0>(), RESOURCE_FORMAT_BINARY, "RawJson", static_cast<uint32_t>(SOH::ResourceType::SOH_RawJson), 0);
 
     gSaveStateMgr = std::make_shared<SaveStateMgr>();
     gRandomizer = std::make_shared<Randomizer>();
@@ -1108,6 +1110,9 @@ extern "C" void InitOTR() {
     SpeechSynthesizer::Instance->Init();
 #elif defined(_WIN32)
     SpeechSynthesizer::Instance = new SAPISpeechSynthesizer();
+    SpeechSynthesizer::Instance->Init();
+#else
+    SpeechSynthesizer::Instance = new SpeechLogger();
     SpeechSynthesizer::Instance->Init();
 #endif
 
