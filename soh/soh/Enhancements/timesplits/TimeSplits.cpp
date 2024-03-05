@@ -458,34 +458,34 @@ void DrawTimeSplitOptions() {
 
 void TimeSplitColorTint() {
     switch (itemNum) {
-        case 657:
+        case BOSS_QUEEN_GOHMA:
             pieceTint = COLOR_LIGHT_GREEN;
             break;
-        case 658:
+        case BOSS_KING_DODONGO:
             pieceTint = COLOR_LIGHT_RED;
             break;
-        case 659:
+        case BOSS_BARINADE:
             pieceTint = COLOR_LIGHT_BLUE;
             break;
-        case 660:
+        case BOSS_PHANTOM_GANON:
             pieceTint = COLOR_GREEN;
             break;
-        case 661:
+        case BOSS_VOLVAGIA:
             pieceTint = COLOR_RED;
             break;
-        case 662:
+        case BOSS_MORPHA:
             pieceTint = COLOR_BLUE;
             break;
-        case 663:
+        case BOSS_BONGO_BONGO:
             pieceTint = COLOR_PURPLE;
             break;
-        case 664:
+        case BOSS_TWINROVA:
             pieceTint = COLOR_ORANGE;
             break;
-        case 665:
+        case BOSS_GANONDORF:
             pieceTint = COLOR_GREY;
             break;
-        case 666:
+        case BOSS_GANON:
             pieceTint = COLOR_YELLOW;
             break;
         default:
