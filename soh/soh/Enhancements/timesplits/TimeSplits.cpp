@@ -236,7 +236,7 @@ std::vector<TimeSplitObject> inventoryObjects = {
     {	ITEM_BOMB,  		    "Bombs", 						        "ITEM_BOMB"},
     {	ITEM_BOMBCHU, 	 		"Bombchu", 								"ITEM_BOMBCHU"},
     {	ITEM_BEAN,  			"Magic Bean", 							"ITEM_BEAN"},
-    {	ITEM_FISHING_POLE,  	"Fishing Pole", 						"ITEM_FISHING_POLE"},
+    {	ITEM_MAGIC_SMALL, 		"Magic Meter", 							"ITEM_MAGIC_SMALL"},
     {	ITEM_BOW, 	 			"Fairy Bow", 							"ITEM_BOW"},
     {	ITEM_HOOKSHOT,  		"Hookshot", 							"ITEM_HOOKSHOT"},
     {	ITEM_HAMMER,  			"Megaton Hammer", 						"ITEM_HAMMER"},
@@ -834,6 +834,8 @@ void DrawTimeSplitListManager() {
                 ImGui::OpenPopup("Hookshot");
             } else if (obj.itemID == ITEM_BOTTLE) {
                 ImGui::OpenPopup("Bottles");
+            } else if (obj.itemID == ITEM_MAGIC_SMALL) {
+                ImGui::OpenPopup("Magic");
             } else if (obj.itemID == ITEM_WALLET_ADULT) {
                 ImGui::OpenPopup("Wallet");
             } else if (obj.itemID == ITEM_POCKET_EGG) {
@@ -1074,6 +1076,22 @@ void DrawTimeSplitListManager() {
                                LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_POE"),
                                ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
             TimeSplitAddToSplits(ITEM_POE);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::EndPopup();
+    }
+    if (ImGui::BeginPopupContextItem("Magic")) {
+        if (ImGui::ImageButton(std::to_string(ITEM_MAGIC_SMALL).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_MAGIC_SMALL"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_MAGIC_SMALL);
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::SameLine();
+        if (ImGui::ImageButton(std::to_string(ITEM_MAGIC_LARGE).c_str(),
+                               LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_MAGIC_LARGE"),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+            TimeSplitAddToSplits(ITEM_MAGIC_LARGE);
             ImGui::CloseCurrentPopup();
         }
         ImGui::EndPopup();
