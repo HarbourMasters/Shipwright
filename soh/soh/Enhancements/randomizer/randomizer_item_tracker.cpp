@@ -290,15 +290,15 @@ bool IsValidSaveFile() {
 }
 
 bool HasSong(ItemTrackerItem item) {
-    return (1 << item.id) & gSaveContext.inventory.questItems;
+    return GameInteractor::IsSaveLoaded() ? false : ((1 << item.id) & gSaveContext.inventory.questItems);
 }
 
 bool HasQuestItem(ItemTrackerItem item) {
-    return (item.data & gSaveContext.inventory.questItems) != 0;
+    return GameInteractor::IsSaveLoaded() ? false : ((item.data & gSaveContext.inventory.questItems) != 0);
 }
 
 bool HasEquipment(ItemTrackerItem item) {
-    return (item.data & gSaveContext.inventory.equipment) != 0;
+    return GameInteractor::IsSaveLoaded() ? false : ((item.data & gSaveContext.inventory.equipment) != 0);
 }
 
 ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
@@ -408,6 +408,9 @@ ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
 #define IM_COL_PURPLE IM_COL32(180, 90, 200, 255)
 
 void DrawItemCount(ItemTrackerItem item) {
+    if (!GameInteractor::IsSaveLoaded()) {
+        return;
+    }
     int iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
     ItemTrackerNumbers currentAndMax = GetItemCurrentAndMax(item);
     ImVec2 p = ImGui::GetCursorScreenPos();
@@ -558,7 +561,7 @@ void DrawQuest(ItemTrackerItem item) {
 
 void DrawItem(ItemTrackerItem item) {
 
-    uint32_t actualItemId = INV_CONTENT(item.id);
+    uint32_t actualItemId =  GameInteractor::IsSaveLoaded() ? ITEM_NONE : INV_CONTENT(item.id);
     int iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
     bool hasItem = actualItemId != ITEM_NONE;
     std::string itemName = "";
@@ -628,7 +631,7 @@ void DrawItem(ItemTrackerItem item) {
 }
 
 void DrawBottle(ItemTrackerItem item) {
-    uint32_t actualItemId = gSaveContext.inventory.items[SLOT(item.id) + item.data];
+    uint32_t actualItemId = GameInteractor::IsSaveLoaded() ? false : (gSaveContext.inventory.items[SLOT(item.id) + item.data]);
     bool hasItem = actualItemId != ITEM_NONE;
 
     if (GameInteractor::IsSaveLoaded() && (hasItem && item.id != actualItemId && actualItemTrackerItemMap.find(actualItemId) != actualItemTrackerItemMap.end())) {
@@ -647,8 +650,8 @@ void DrawDungeonItem(ItemTrackerItem item) {
     ImU32 dungeonColor = IM_COL_WHITE;
     uint32_t bitMask = 1 << (item.id - ITEM_KEY_BOSS); // Bitset starts at ITEM_KEY_BOSS == 0. the rest are sequential
     int iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
-    bool hasItem = (bitMask & gSaveContext.inventory.dungeonItems[item.data]) != 0;
-    bool hasSmallKey = (gSaveContext.inventory.dungeonKeys[item.data]) >= 0;
+    bool hasItem = GameInteractor::IsSaveLoaded() ? false : ((bitMask & gSaveContext.inventory.dungeonItems[item.data]) != 0);
+    bool hasSmallKey = GameInteractor::IsSaveLoaded() ? false : ((gSaveContext.inventory.dungeonKeys[item.data]) >= 0);
     ImGui::BeginGroup();
     if (itemId == ITEM_KEY_SMALL) {
         ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(hasSmallKey && IsValidSaveFile() ? item.name : item.nameFaded),
@@ -725,13 +728,15 @@ void DrawNotes(bool resizeable = false) {
         }
     };
     ImVec2 size = resizeable ? ImVec2(-FLT_MIN, ImGui::GetContentRegionAvail().y) : ImVec2(((iconSize + iconSpacing) * 6) - 8, 200);
-    if (ItemTrackerNotes::TrackerNotesInputTextMultiline("##ItemTrackerNotes", &itemTrackerNotes, size, ImGuiInputTextFlags_AllowTabInput)) {
-        notesNeedSave = true;
-        notesIdleFrames = 0;
-    }
-    if ((ImGui::IsItemDeactivatedAfterEdit() || (notesNeedSave && notesIdleFrames > notesMaxIdleFrames)) && IsValidSaveFile()) {
-        notesNeedSave = false;
-        SaveManager::Instance->SaveSection(gSaveContext.fileNum, itemTrackerSectionId, true);
+    if (GameInteractor::IsSaveLoaded()) {
+        if (ItemTrackerNotes::TrackerNotesInputTextMultiline("##ItemTrackerNotes", &itemTrackerNotes, size, ImGuiInputTextFlags_AllowTabInput)) {
+            notesNeedSave = true;
+            notesIdleFrames = 0;
+        }
+        if ((ImGui::IsItemDeactivatedAfterEdit() || (notesNeedSave && notesIdleFrames > notesMaxIdleFrames)) && IsValidSaveFile()) {
+            notesNeedSave = false;
+            SaveManager::Instance->SaveSection(gSaveContext.fileNum, itemTrackerSectionId, true);
+        }
     }
     ImGui::EndGroup();
 }
