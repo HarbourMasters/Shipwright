@@ -539,6 +539,9 @@ void CheckTrackerTransition(uint32_t sceneNum) {
             SetShopSeen(sceneNum, false);
             break;
     }
+    if (!IsAreaSpoiled(currentArea)) {
+        SetAreaSpoiled(currentArea);
+    }
 }
 
 void CheckTrackerFrame() {
@@ -783,6 +786,7 @@ void SaveTrackerData(SaveContext* saveContext, int sectionID, bool gameSave) {
             SaveManager::Instance->SaveData("hintItem", saveContext->checkTrackerData[i].hintItem);
         });
     });
+    SaveManager::Instance->SaveData("areasSpoiled", areasSpoiled);
 }
 
 void SaveFile(SaveContext* saveContext, int sectionID, bool fullSave) {
@@ -798,6 +802,7 @@ void LoadFile() {
             SaveManager::Instance->LoadData("hintItem", gSaveContext.checkTrackerData[i].hintItem);
         });
     });
+    SaveManager::Instance->LoadData("areasSpoiled", areasSpoiled);
 }
 
 void Teardown() {
@@ -807,6 +812,15 @@ void Teardown() {
     areasSpoiled = 0;
 
     lastLocationChecked = RC_UNKNOWN_CHECK;
+}
+
+bool IsAreaSpoiled(RandomizerCheckArea rcArea) {
+    return areasSpoiled & (1 << rcArea);
+}
+
+void SetAreaSpoiled(RandomizerCheckArea rcArea) {
+    areasSpoiled |= (1 << currentArea);
+    SaveManager::Instance->SaveSection(gSaveContext.fileNum, sectionId, true);
 }
 
 void UpdateCheck(uint32_t check, RandomizerCheckTrackerData data) {
@@ -857,8 +871,6 @@ void CheckTrackerWindow::DrawElement() {
     if (gPlayState != nullptr) {
         sceneId = (SceneID)gPlayState->sceneNum;
     }
-
-    areasSpoiled |= (1 << currentArea);
 
     //Quick Options
 #ifdef __WIIU__
@@ -921,7 +933,6 @@ void CheckTrackerWindow::DrawElement() {
     Color_RGBA8 mainColor;
     Color_RGBA8 extraColor;
     std::string stemp;
-    s32 areaMask = 1;
 
     for (auto& [rcArea, objs] : checksByArea) {
         RandomizerCheckArea thisArea = currentArea;
@@ -974,7 +985,7 @@ void CheckTrackerWindow::DrawElement() {
             ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(extraColor.r / 255.0f, extraColor.g / 255.0f,
                                                         extraColor.b / 255.0f, extraColor.a / 255.0f));
 
-            isThisAreaSpoiled = areasSpoiled & areaMask || CVarGetInteger("gCheckTrackerOptionMQSpoilers", 0) || !IS_RANDO ||
+            isThisAreaSpoiled = IsAreaSpoiled(rcArea) || CVarGetInteger("gCheckTrackerOptionMQSpoilers", 0) || !IS_RANDO ||
                                 OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_RANDOM_MQ_DUNGEONS) == RO_MQ_DUNGEONS_NONE ||
                                 OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_RANDOM_MQ_DUNGEONS) == RO_MQ_DUNGEONS_SELECTION ||
                                (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_RANDOM_MQ_DUNGEONS) == RO_MQ_DUNGEONS_SET_NUMBER &&
@@ -1011,7 +1022,6 @@ void CheckTrackerWindow::DrawElement() {
                 ImGui::TreePop();
             }
         }
-        areaMask <<= 1;
     }
 
     ImGui::EndTable(); //Checks Lead-out
@@ -1215,10 +1225,10 @@ bool IsVisibleInCheckTracker(RandomizerCheckObject rcObj) {
 }
 
 void UpdateInventoryChecks() {
-    //For all the areas with compasses, if you have one, spoil the area
+    //For all the areas with maps, if you have one, spoil the area
     for (auto [scene, area] : DungeonRCAreasBySceneID) {
         if (CHECK_DUNGEON_ITEM(DUNGEON_MAP, scene)) {
-            areasSpoiled |= (1 << area);
+            SetAreaSpoiled(area);
         }
     }
 }
@@ -1228,9 +1238,6 @@ void UpdateAreaFullyChecked(RandomizerCheckArea area) {
 
 void UpdateAreas(RandomizerCheckArea area) {
     areasFullyChecked[area] = areaChecksGotten[area] == checksByArea.find(area)->second.size();
-    if (areaChecksGotten[area] != 0 || RandomizerCheckObjects::AreaIsOverworld(area)) {
-        areasSpoiled |= (1 << area);
-    }
 }
 
 void UpdateAllOrdering() {

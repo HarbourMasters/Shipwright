@@ -407,7 +407,7 @@ ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
 #define IM_COL_GRAY IM_COL32(155, 155, 155, 255)
 #define IM_COL_PURPLE IM_COL32(180, 90, 200, 255)
 
-void DrawItemCount(ItemTrackerItem item) {
+void DrawItemCount(ItemTrackerItem item, bool hideMax) {
     if (!GameInteractor::IsSaveLoaded()) {
         return;
     }
@@ -419,7 +419,7 @@ void DrawItemCount(ItemTrackerItem item) {
 
     if (item.id == ITEM_KEY_SMALL && IsValidSaveFile()) {
         std::string currentString = "";
-        std::string maxString = std::to_string(currentAndMax.maxCapacity);
+        std::string maxString = hideMax ? "???" : std::to_string(currentAndMax.maxCapacity);
         ImU32 currentColor = IM_COL_WHITE;
         ImU32 maxColor = IM_COL_GREEN;
         // "Collected / Max", "Current / Collected / Max", "Current / Max"
@@ -551,7 +551,7 @@ void DrawQuest(ItemTrackerItem item) {
                  ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
     if (item.id == QUEST_SKULL_TOKEN) {
-        DrawItemCount(item);
+        DrawItemCount(item, false);
     }
 
     ImGui::EndGroup();
@@ -620,7 +620,7 @@ void DrawItem(ItemTrackerItem item) {
     ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(hasItem && IsValidSaveFile() ? item.name : item.nameFaded),
                  ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
     
-    DrawItemCount(item);
+    DrawItemCount(item, false);
     ImGui::EndGroup();
 
     if (itemName == "") {
@@ -662,16 +662,18 @@ void DrawDungeonItem(ItemTrackerItem item) {
                      ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
     }
 
-    if (ResourceMgr_IsSceneMasterQuest(item.data) && (CHECK_DUNGEON_ITEM(DUNGEON_MAP, item.data) || item.data == SCENE_GERUDO_TRAINING_GROUND || item.data == SCENE_INSIDE_GANONS_CASTLE)) {
+    if (ResourceMgr_IsSceneMasterQuest(item.data) && (CHECK_DUNGEON_ITEM(DUNGEON_MAP, item.data) || item.data == SCENE_GERUDO_TRAINING_GROUND || item.data == SCENE_INSIDE_GANONS_CASTLE)
+        && GameInteractor::IsSaveLoaded()) {
         dungeonColor = IM_COL_PURPLE;
     }
 
     if (itemId == ITEM_KEY_SMALL) {
-        DrawItemCount(item);
+        DrawItemCount(item, OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_RANDOM_MQ_DUNGEONS) != RO_MQ_DUNGEONS_NONE && !(CHECK_DUNGEON_ITEM(DUNGEON_MAP, item.data)));
 
         ImVec2 p = ImGui::GetCursorScreenPos();
+        int offset = GameInteractor::IsSaveLoaded() ? 16 : 13;
         std::string dungeonName = itemTrackerDungeonShortNames[item.data];
-        ImGui::SetCursorScreenPos(ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(dungeonName.c_str()).x / 2), p.y - (iconSize + 13)));
+        ImGui::SetCursorScreenPos(ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(dungeonName.c_str()).x / 2), p.y - (iconSize + offset)));
         ImGui::PushStyleColor(ImGuiCol_Text, dungeonColor);
         ImGui::Text("%s", dungeonName.c_str());
         ImGui::PopStyleColor();
