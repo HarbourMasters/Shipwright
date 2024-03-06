@@ -56,6 +56,13 @@ static const ALIGN_ASSET(2) char gTriforcePiece2DL[] = dgTriforcePiece2DL;
 #define dgTriforcePieceCompletedDL "__OTR__objects/object_triforce_completed/gTriforcePieceCompletedDL"
 static const ALIGN_ASSET(2) char gTriforcePieceCompletedDL[] = dgTriforcePieceCompletedDL;
 
+#define dgLinkBottleDL "__OTR__objects/object_link_eq/gLinkBottleDL"
+static const ALIGN_ASSET(2) char gLinkBottleDL[] = dgLinkBottleDL;
+
+#define dgLinkBottleContentsDL "__OTR__objects/object_link_eq/gLinkBottleContentsDL"
+static const ALIGN_ASSET(2) char gLinkBottleContentsDL[] = dgLinkBottleContentsDL;
+
+
 // overlays
 #define dgOptionsDividerChangeLangVtx "__OTR__overlays/ovl_file_choose/gOptionsDividerChangeLangVtx"
 static const ALIGN_ASSET(2) char gOptionsDividerChangeLangVtx[] = dgOptionsDividerChangeLangVtx;
