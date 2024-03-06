@@ -2617,7 +2617,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_HEART_CONTAINER);
         messageEntry.Replace("{{heartContainerCount}}", std::to_string(gSaveContext.sohStats.heartContainers + 1));
     }
-    if (textId == TEXT_HEART_PIECE && CVarGetInteger("gInjectItemCounts", 0)) {
+    if (textId == TEXT_HEART_PIECE && (CVarGetInteger("gInjectItemCounts", 0) || CVarGetInteger("gBanker", 0))) {
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_HEART_PIECE);
         messageEntry.Replace("{{heartPieceCount}}", std::to_string(gSaveContext.sohStats.heartPieces + 1));
     }
@@ -2626,6 +2626,91 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
     }
     if (textId == TEXT_FISHERMAN_LEAVE && CVarGetInteger("gQuitFishingAtDoor", 0)) {
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_FISHERMAN_LEAVE);
+    }
+    if (textId == TEXT_BEGGAR_VANILLA && CVarGetInteger("gBanker", 0)) {
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_BANKER_GREETING);
+    }
+    if (textId == TEXT_BANKER_OPTIONS && CVarGetInteger("gBanker", 0)) {
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_BANKER_OPTIONS);
+    }
+    if (textId == TEXT_BANKER_BALANCE && CVarGetInteger("gBanker", 0)) {
+        s32 playerBalance = gSaveContext.playerBalance;
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_BANKER_BALANCE);
+        messageEntry.Replace("{{playerBalance}}", std::to_string(playerBalance));
+    }
+    if (textId == TEXT_BANKER_WITHDRAWAL_AMOUNT && CVarGetInteger("gBanker", 0)) {
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_BANKER_WITHDRAWAL_AMOUNT);
+    }
+    if (textId == TEXT_BANKER_WITHDRAWAL_CONFIRM && CVarGetInteger("gBanker", 0)) {
+        s32 playerBalance = gSaveContext.playerBalance;
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_BANKER_WITHDRAWAL_CONFIRM);
+        messageEntry.Replace("{{playerBalance}}", std::to_string(playerBalance));
+    }
+    if (textId == TEXT_BANKER_DEPOSIT_AMOUNT && CVarGetInteger("gBanker", 0)) {
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_BANKER_DEPOSIT_AMOUNT);
+    }
+    if (textId == TEXT_BANKER_DEPOSIT_CONFIRM && CVarGetInteger("gBanker", 0)) {
+        s32 playerBalance = gSaveContext.playerBalance;
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_BANKER_DEPOSIT_CONFIRM);
+        messageEntry.Replace("{{playerBalance}}", std::to_string(playerBalance));
+    }
+    if (textId == TEXT_BANKER_REWARD_WARP_TRANSFER_INTRO && CVarGetInteger("gBanker", 0)) {
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_BANKER_REWARD_WARP_TRANSFER_INTRO);
+    }
+    if (textId == TEXT_BANKER_REWARD_WARP_TRANSFER_ITEM && CVarGetInteger("gBanker", 0)) {
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_BANKER_REWARD_WARP_TRANSFER_ITEM);
+    }
+    if (textId == TEXT_BANKER_REWARD_WARP_TRANSFER_LORE_1 && CVarGetInteger("gBanker", 0)) {
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_BANKER_REWARD_WARP_TRANSFER_LORE_1);
+    }
+    if (textId == TEXT_BANKER_REWARD_WARP_TRANSFER_LORE_2 && CVarGetInteger("gBanker", 0)) {
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_BANKER_REWARD_WARP_TRANSFER_LORE_2);
+    }
+    if (textId == TEXT_BANKER_REWARD_WARP_TRANSFER_LORE_3 && CVarGetInteger("gBanker", 0)) {
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_BANKER_REWARD_WARP_TRANSFER_LORE_3);
+    }
+    if (textId == TEXT_BANKER_REWARD_FEE && CVarGetInteger("gBanker", 0)) {
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_BANKER_REWARD_FEE);
+    }
+    if (textId == TEXT_BANKER_REWARD_PIECE_OF_HEART && CVarGetInteger("gBanker", 0)) {
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_BANKER_REWARD_PIECE_OF_HEART);
+    }
+    if (textId == TEXT_BANKER_ERROR_ZERO_AMOUNT && CVarGetInteger("gBanker", 0)) {
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_BANKER_ERROR_ZERO_AMOUNT);
+    }
+    if (textId == TEXT_BANKER_ERROR_INSUFFICIENT_BALANCE && CVarGetInteger("gBanker", 0)) {
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_BANKER_ERROR_INSUFFICIENT_BALANCE);
+    }
+    if (textId == TEXT_BANKER_ERROR_WALLET_FULL && CVarGetInteger("gBanker", 0)) {
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_BANKER_ERROR_WALLET_FULL);
+    }
+    if (textId == TEXT_BANKER_ERROR_MAX_BALANCE && CVarGetInteger("gBanker", 0)) {
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_BANKER_ERROR_MAX_BALANCE);
+    }
+    if (textId == TEXT_BANKER_ERROR_DEPOSIT_NOT_WORTHWHILE && CVarGetInteger("gBanker", 0)) {
+        s32 rupeesFee = gSaveContext.rupeesFee;
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_BANKER_ERROR_DEPOSIT_NOT_WORTHWHILE);
+        messageEntry.Replace("{{rupeesFee}}", std::to_string(rupeesFee));
+    }
+    if (textId == TEXT_BANKER_TRANSACTION_FEE && CVarGetInteger("gBanker", 0)) {
+        s32 rupeesFee = gSaveContext.rupeesFee;
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_BANKER_TRANSACTION_FEE);
+        messageEntry.Replace("{{rupeesFee}}", std::to_string(rupeesFee));
+    }
+    if (textId == TEXT_BANKER_EXCESS && CVarGetInteger("gBanker", 0)) {
+        s32 playerBalance = gSaveContext.playerBalance;
+        s32 excessRupees = gSaveContext.excessRupees;
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_BANKER_EXCESS);
+        messageEntry.Replace("{{playerBalance}}", std::to_string(playerBalance));
+        messageEntry.Replace("{{excessRupees}}", std::to_string(excessRupees));
+    }
+    if (textId == TEXT_BANKER_EXCESS_FULL && CVarGetInteger("gBanker", 0)) {
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_BANKER_EXCESS_FULL);
+    }
+    if (textId == TEXT_BANKER_EXCESS_FEE && CVarGetInteger("gBanker", 0)) {
+        s32 rupeesFee = gSaveContext.rupeesFee;
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_BANKER_EXCESS_FEE);
+        messageEntry.Replace("{{rupeesFee}}", std::to_string(rupeesFee));
     }
     font->charTexBuf[0] = (messageEntry.GetTextBoxType() << 4) | messageEntry.GetTextBoxPosition();
     switch (gSaveContext.language) {

@@ -32,6 +32,8 @@ void func_80A7127C(EnHy* this, PlayState* play);
 void EnHy_DoNothing(EnHy* this, PlayState* play);
 void func_80A714C4(EnHy* this, PlayState* play);
 
+extern void BankerMain(PlayState* play, GraphicsContext* gfxCtx);
+
 const ActorInit En_Hy_InitVars = {
     ACTOR_EN_HY,
     ACTORCAT_NPC,
@@ -1104,6 +1106,13 @@ void func_80A71530(EnHy* this, PlayState* play) {
 
 void EnHy_Update(Actor* thisx, PlayState* play) {
     EnHy* this = (EnHy*)thisx;
+
+    //Banker Enhancement Hook Start 
+    //(Might end up using the hook system, but this was a niche use case so I didn't bother.)
+    if (this->actor.id == 366 && this->actor.params == 1925 && CVarGetInteger("gBanker", 0)) {
+        BankerMain(play, play->state.gfxCtx);
+    }
+    //Banker Enhancement Hook End
 
     if (this->actionFunc != EnHy_InitImpl) {
         gSegments[6] = VIRTUAL_TO_PHYSICAL(play->objectCtx.status[this->objBankIndexOsAnime].segment);

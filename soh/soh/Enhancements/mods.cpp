@@ -27,6 +27,8 @@
 #include "objects/object_link_boy/object_link_boy.h"
 #include "objects/object_link_child/object_link_child.h"
 
+#include "custom-message/CustomMessageTypes.h"
+
 extern "C" {
 #include <z64.h>
 #include "align_asset_macro.h"
@@ -42,6 +44,11 @@ extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 extern void Overlay_DisplayText(float duration, const char* text);
 uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
+
+extern int balanceUpdated;
+extern int balanceMaxed;
+extern int balanceWasMaxed;
+extern bool prevTextboxCharm; //This will be removed later once TEXT_PIRATE_CHARM has been implemented
 }
 
 // GreyScaleEndDlist
@@ -1394,6 +1401,23 @@ void RegisterPauseMenuHooks() {
     });
 }
 
+void RegisterBankUpdate() {
+    auto handleBankUpdate = []() {
+        if (prevTextboxCharm) { //This will be removed when TEXT_PIRATE_CHARM has been implemented. TEXT_BLUE_RUPEE is being used as a placeholder in banker.c and conflicts with this logic.
+            return;
+        }
+        uint16_t messageIndex = gPlayState->msgCtx.textId;
+        bool isBankerActive = CVarGetInteger("gBanker", 0);
+        bool isRupeeMessage = (messageIndex == TEXT_BLUE_RUPEE) || (messageIndex == TEXT_RED_RUPEE) || (messageIndex == TEXT_PURPLE_RUPEE) || (messageIndex == TEXT_HUGE_RUPEE);
+        if (isBankerActive && isRupeeMessage && balanceUpdated && Message_ShouldAdvance(gPlayState)) {
+            uint16_t messageToShow = balanceWasMaxed ? TEXT_BANKER_EXCESS_FULL : TEXT_BANKER_EXCESS;
+            Message_ContinueTextbox(gPlayState, messageToShow);
+            balanceMaxed = balanceUpdated = balanceWasMaxed = 0;
+        }
+    };
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnDialogMessage>(handleBankUpdate);
+}
+
 void InitMods() {
     RegisterTTS();
     RegisterInfiniteMoney();
@@ -1433,4 +1457,5 @@ void InitMods() {
     RegisterPatchHandHandler();
     RegisterHurtContainerModeHandler();
     RegisterPauseMenuHooks();
+    RegisterBankUpdate();
 }

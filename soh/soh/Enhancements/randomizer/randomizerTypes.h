@@ -1272,6 +1272,7 @@ typedef enum {
     RG_HEART_CONTAINER,
     RG_ICE_TRAP,
     RG_MILK,
+    RG_PIRATES_CHARM,
     RG_BOMBS_5,
     RG_BOMBS_10,
     RG_BOMBS_20,

@@ -178,6 +178,8 @@ typedef enum {
   HEART_CONTAINER,
   ICE_TRAP,
   MILK,
+  PIRATES_CHARM,
+
 
   BOMBS_5,
   BOMBS_10,

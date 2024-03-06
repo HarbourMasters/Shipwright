@@ -13,7 +13,7 @@ extern "C" MessageTableEntry* sNesMessageEntryTablePtr;
 extern "C" MessageTableEntry* sGerMessageEntryTablePtr;
 extern "C" MessageTableEntry* sFraMessageEntryTablePtr;
 extern "C" MessageTableEntry* sStaffMessageEntryTablePtr;
-//extern "C" MessageTableEntry* _message_0xFFFC_nes;	
+//extern "C" MessageTableEntry* _message_0xFFFC_nes;  
 
 static void SetMessageEntry(MessageTableEntry& entry, const SOH::MessageEntry& msgEntry) {
     entry.textId = msgEntry.id;
@@ -187,4 +187,142 @@ extern "C" void OTRMessage_Init()
         CustomMessage("Hey! Hey!&You can't take the rod out of here!&I'm serious!^Do you want to quit?&\x1B&%gYes&No%w",
                       "Hey! Hey!&Du kannst die Angel doch nicht&einfach mitnehmen!&Ganz im Ernst!^Möchtest du aufhören?&\x1B&%gJa&Nein%w", //TODO Used AI translation as placeholder
                       "Holà! Holà!&Les cannes ne sortent pas d'ici!&Je suis sérieux!^Voulez-vous arrêter?&\x1B&%gOui&Non%w")); //TODO Used AI translation as placeholder
+    CustomMessageManager::Instance->CreateMessage(
+        customMessageTableID, TEXT_BANKER_GREETING,
+        CustomMessage("Hey there, @! You&making a deposit? Or are you&here to make a withdrawal?",
+                    "Hallo, @! Machen Sie&eine Einzahlung? Oder sind Sie&hier, um eine Auszahlung&vorzunehmen?",
+                    "Salut, @! Vous&effectuez un dépôt ? Ou êtes-vous&ici pour effectuer un retrait?"));
+    CustomMessageManager::Instance->CreateMessage(
+        customMessageTableID, TEXT_BANKER_OPTIONS,
+        CustomMessage("What would you like to do?" "\x1C" "&%gDeposit Rupees&%gWithdrawal Rupees&%gNothing%w",
+                    "Was würdest du gern tun?" "\x1C" "&%gRubine einzahlen&%gRubine abheben&%gNichts%w",
+                    "Qu'est-ce que tu aimerais faire?" "\x1C" "&%gDéposer des rubis&%gRetirer des rubis&%gRien%w"));
+    CustomMessageManager::Instance->CreateMessage(
+        customMessageTableID, TEXT_BANKER_BALANCE,
+        CustomMessage("If I remember, as of your last &warp transfer your balance is&%y{{playerBalance}}%w rupees.",
+                      "Wenn ich mich erinnere, betrug Ihr&Guthaben bei Ihrem letzten&Warp-Transfer %y{{playerBalance}}%w Rupien.",
+                      "Si je me souviens bien, lors de&votre dernier transfert Warp,&votre solde était de %y{{playerBalance}}%w roupies."));
+    CustomMessageManager::Instance->CreateMessage(
+            customMessageTableID, TEXT_BANKER_WITHDRAWAL_AMOUNT,
+            CustomMessage("\x08Select Withdrawal Amount:&     rupees.&Set the amount with \xAA and&press \x9F to decide.\x0A",
+                        "\x08" "Auszahlungsbetrag:&     Rubine.&Wählen Sie den Betrag mit \xAA.&Drücken Sie \x9F, um zu entscheiden.\x0A",
+                        "\x08Sélectionnez le montant du retrait:&     Roupies.&Réglez le montant avec \xAA et&appuyez sur \x9F pour décider.\x0A"));
+    CustomMessageManager::Instance->CreateMessage(
+        customMessageTableID, TEXT_BANKER_WITHDRAWAL_CONFIRM,
+        CustomMessage("Here are your rupees. Your new&balance is %y{{playerBalance}}%w rupees. See you&later!",
+                      "Hier sind deine Rupien. Ihr neues&Guthaben beträgt %y{{playerBalance}}%w Rupien.&Bis später!",
+                      "Voici vos roupies. Votre nouveau&solde est de %y{{playerBalance}}%w roupies. À plus&tard!"));
+    CustomMessageManager::Instance->CreateMessage(
+        customMessageTableID, TEXT_BANKER_DEPOSIT_AMOUNT,
+        CustomMessage("\x08Select Deposit Amount:&     rupees.&Set the amount with \xAA and press&\x9F to decide.\x0A",
+                    "\x08" "Einzahlungsbetrag:&     Rubine.&Wählen Sie den Betrag mit \xAA.&Drücken Sie \x9F, um zu entscheiden.\x0A",
+                    "\x08Sélectionnez le montant du dépôt:&     Roupies.&Réglez le montant avec \xAA et&appuyez sur \x9F pour décider.\x0A"));
+    CustomMessageManager::Instance->CreateMessage(
+        customMessageTableID, TEXT_BANKER_DEPOSIT_CONFIRM,
+        CustomMessage("You've deposited your rupees. Your&new balance is %y{{playerBalance}}%w rupees. See&you later!",
+                    "Sie haben Ihre Rupien eingezahlt.&Ihr neues Guthaben beträgt %y{{playexrBalance}}%w&Rupien. Bis später!",
+                    "Vous avez déposé vos roupies.&Votre nouveau solde est de %y{{playerBalance}}%w&roupies. À plus tard!"));
+    CustomMessageManager::Instance->CreateMessage(
+        customMessageTableID, TEXT_BANKER_REWARD_WARP_TRANSFER_INTRO,
+        CustomMessage("Ho ho! Your savings have reached&%y200%w rupees! A fine achievement,&young spender!",
+                    "Ho ho! Ihre Ersparnisse haben %y200%w&Rupien erreicht! Eine tolle Leistung,&junger Spender!",
+                    "Ho ho! Vos économies ont atteint&%y200%w roupies! Une belle réussite,&jeune dépensier!"));
+    CustomMessageManager::Instance->CreateMessage(
+        customMessageTableID, TEXT_BANKER_REWARD_WARP_TRANSFER_ITEM,
+        CustomMessage("To reward your thriftiness, I've got&a special trinket for you...The&%rPirate's Charm%w!",
+                    "Um deine Sparsamkeit zu belohnen,&habe ich ein besonderes&Schmuckstück für dich... den&%rPiratenzauber%w!",
+                    "Pour récompenser votre économie,&j'ai un bijou spécial pour vous... Le&%rCharme du Pirate%w!"));
+    CustomMessageManager::Instance->CreateGetItemMessage(
+        //ITEM_RUPEE_BLUE is a placeholder for ITEM_PIRATE_CHARM which has not been implemented yet.
+        customMessageTableID, (GetItemID)TEXT_BANKER_REWARD_WARP_TRANSFER_LORE_1, ITEM_RUPEE_BLUE,
+        CustomMessage("This charm, infused with pirate&magic, can warp your treasures&directly to the bank! No more&heavy wallets for you!",
+                    "Dieser mit Piratenmagie&durchdrungene Zauber kann Ihre&Schätze direkt an die Bank bringen!&Keine schweren Geldbörsen mehr!",
+                    "Ce charme, imprégné de magie&pirate, peut transférer vos trésors&directement à la banque! Fini les&portefeuilles lourds pour vous!",
+                    TEXTBOX_TYPE_BLUE));
+    CustomMessageManager::Instance->CreateMessage(
+        customMessageTableID, TEXT_BANKER_REWARD_WARP_TRANSFER_LORE_2,
+        CustomMessage("And that's not all! It also lets me&whisper your new balance to you&through the winds, once a %bwarp&transfer%w is complete.",
+                    "Außerdem kann ich Ihnen Ihr neues&Gleichgewicht durch den Wind&zuflüstern, sobald ein %bWarp-Transfer%w&abgeschlossen ist.",
+                    "Cela me permet également de vous&murmurer votre nouvel équilibre à&travers les vents, une fois le&%btransfert de distorsion%w terminé."));
+    CustomMessageManager::Instance->CreateMessage(
+        customMessageTableID, TEXT_BANKER_REWARD_WARP_TRANSFER_LORE_3,
+        CustomMessage("I've taken to calling it a %bwarp&transfer%w. A fitting name, don't you&think? It's quite the convenience!",
+                    "Ich habe angefangen, es einen&%bWarp-Transfer%w zu nennen. Ein&passender Name, finden Sie nicht?&Das ist wirklich praktisch!",
+                    "J'ai pris l'habitude de l'appeler&%btransfert de distorsion%w. Un nom&approprié, vous ne trouvez pas?&C'est tout à fait pratique!"));
+    CustomMessageManager::Instance->CreateMessage(
+        customMessageTableID, TEXT_BANKER_REWARD_FEE,
+        CustomMessage("Wow, over %y1000%w rupees saved! To&thank you, I'm dropping all&withdrawal and deposit fees!",
+                    "Wow, über %y1000%w Rupien gespart!&Als Dankeschön verzichte ich auf&alle Abhebungs- und&Einzahlungsgebühren!",
+                    "Wow, plus de %y1000%w roupies&économisées! Pour vous remercier,&je supprime tous les frais de&retrait et de dépôt!"));
+    CustomMessageManager::Instance->CreateMessage(
+        customMessageTableID, TEXT_BANKER_REWARD_PIECE_OF_HEART,
+        CustomMessage("Astounding! A whopping %y5000%w&rupees saved! For such a feat, a&%rPiece of Heart%w is yours!",
+                    "Erstaunlich! Satte %y5000%w Rupien&gespart! Für eine solche Leistung&gehört Ihnen ein %rStück Herz%w!",
+                    "Étonnant! Un énorme %y5000%w roupies&économisées! Pour un tel exploit,&un %rFragment de Coeur%w!"));
+    CustomMessageManager::Instance->CreateMessage(
+        customMessageTableID, TEXT_BANKER_ERROR_ZERO_AMOUNT,
+        CustomMessage(
+            "Eh, @? You can't&deposit the air in your pockets!&Come back when you've got some&real Rupees.",
+            "Äh, @? Sie können die&Luft nicht in Ihren Taschen&deponieren! Kommen Sie zurück,&wenn Sie echte Rupien haben.",
+            "Hein, @? Vous ne&pouvez pas déposer l'air dans vos&poches ! Revenez quand vous&aurez de vrais rubis."
+        ));
+    CustomMessageManager::Instance->CreateMessage(
+        customMessageTableID, TEXT_BANKER_ERROR_INSUFFICIENT_BALANCE,
+        CustomMessage(
+            "Oh, @! It seems your&balance is running low. You need&more Rupees in the bank to make&this withdrawal.",
+            "Oh, @! Es scheint, dass&Ihr Guthaben zur Neige geht. Für&diese Auszahlung benötigen Sie&mehr Rupien auf der Bank.",
+            "Oh, @! Il semble que&votre solde soit faible. Vous avez&besoin de plus de roupies en&banque pour effectuer ce retrait."
+        ));
+    CustomMessageManager::Instance->CreateMessage(
+        customMessageTableID, TEXT_BANKER_ERROR_WALLET_FULL,
+        CustomMessage(
+            "Whoa there, @! That&amount's too hefty for your wallet.&Trim it down a bit, eh?",
+            "Wow, @! Dieser Betrag&ist zu hoch für Ihren Geldbeutel.&Reduzieren Sie es ein wenig, oder?",
+            "Waouh, @! Ce montant&est trop lourd pour votre&portefeuille. Réduisez-le un peu,&hein?"
+        ));
+    CustomMessageManager::Instance->CreateMessage(
+        customMessageTableID, TEXT_BANKER_ERROR_MAX_BALANCE,
+        CustomMessage(
+            "Woah, @! The bank's&max capacity is %y5000%w Rupees. I&don't have enough room for that&amount!",
+            "Boah, @! Die maximale&Kapazität der Bank beträgt %y5000%w&Rupien. Ich habe nicht genug Platz&für diese Menge!",
+            "Waouh, @! La capacité&maximale de la banque est de&%y5000%w roupies. Je n'ai pas assez de&place pour ce montant!"
+        ));
+    CustomMessageManager::Instance->CreateMessage(
+        customMessageTableID, TEXT_BANKER_ERROR_DEPOSIT_NOT_WORTHWHILE,
+        CustomMessage(
+            "Hold up, @! There's a %y{{rupeesFee}}%w&Rupee handling fee. You'd lose&Rupees, not gain! Deposit more to&make it worthwhile.",
+            "Warte, @! Es fällt eine&Bearbeitungsgebühr von %y{{rupeesFee}}%w Rupien&an. Du würdest Rubine verlieren!&Zahlen Sie bitte mehr ein.",
+            "Tenir bon, @! Il y a des&frais de traitement de %y{{rupeesFee}}%w roupies.&Vous perdriez des rubis! Déposez&davantage s'il vous plaît."
+        ));
+    CustomMessageManager::Instance->CreateMessage(
+        customMessageTableID, TEXT_BANKER_TRANSACTION_FEE,
+        CustomMessage(
+            "Ah, @! There's a %y{{rupeesFee}}%w&Rupee fee. Is that okay?\x1B&%gProceed&%gNevermind%w",
+            "Ach, @! Es fällt eine&Gebühr von %y{{rupeesFee}}%w Rupien an. Okay?\x1B&%gWeiter&%gNichts tun%w",
+            "Ah, @! Il y a des&frais de %y{{rupeesFee}}%w roupies. Est-ce OK?\x1B&%gProcéder&%gPas grave%w"
+        ));
+    CustomMessageManager::Instance->CreateMessage(
+        customMessageTableID, TEXT_BANKER_EXCESS,
+        CustomMessage(
+            "Hey @! Banker here!&Your wallet is full. Warping over&%y{{excessRupees}}%w rupees!&Your new balance is %y{{playerBalance}}%w.",
+            "Hey @! Banker hier!&Ihr Geldbeutel ist voll. Warping&über %y{{excessRupees}}%w Rupien!&Ihr neues Guthaben beträgt %y{{playerBalance}}%w.",
+            "Hé @! Banquier ici!&Votre portefeuille est plein.&Déformation de plus de %y{{excessRupees}}%w roupies!&Votre nouveau solde est de %y{{playerBalance}}%w.",
+            TEXTBOX_TYPE_BLUE
+        ));
+    CustomMessageManager::Instance->CreateMessage(
+        customMessageTableID, TEXT_BANKER_EXCESS_FULL,
+        CustomMessage(
+            "Hey @! Banker here!&I can't do a warp transfer when&your account is maxed out. Come&make a withdrawal!",
+            "Hey @! Banker hier!&Ich kann keine Warp-Überweisung&durchführen, wenn Ihr Konto voll&ist. Machen Sie eine Auszahlung!",
+            "Hé @! Banquier ici! Je&ne peux pas effectuer de transfert&Warp lorsque votre compte est au&maximum. Venez faire un retrait!",
+            TEXTBOX_TYPE_BLUE
+        )); 
+    CustomMessageManager::Instance->CreateMessage(
+        customMessageTableID, TEXT_BANKER_EXCESS_FEE,
+        CustomMessage(
+            "Hey @! Banker here!&There's a %y{{rupeesFee}}%w Rupee fee for warp&transfers. Your account doesn't&have enough to cover it.",
+            "Hey @! Banker hier! Es&gibt eine Gebühr von %y{{rupeesFee}}%w Rupien für&Warp-Überweisungen. Ihr Konto hat&nicht genug, um sie zu decken.",
+            "Hé @! Banquier ici! Il y&a des frais de %y{{rupeesFee}}%w roupies pour les&transferts Warp. Votre compte n'a&pas assez pour les couvrir.",
+            TEXTBOX_TYPE_BLUE
+        )); 
 }

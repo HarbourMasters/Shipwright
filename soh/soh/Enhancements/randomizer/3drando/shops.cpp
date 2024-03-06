@@ -299,7 +299,7 @@ void InitTrickNames() {
      Text{"Cave Charm", "Charme de grotte", "Amuleto de la cueva"},
      Text{"Stone of Agahnim", "Fragment d'Agahnim", "Piedra de Agahnim"},
      Text{"Shard of Agony", "Fragment de Souffrance", "Piedra de la Agonía"},
-     Text{"Pirate's Charm", "Pierre de Pirate", "Amuleto Pirata"}};
+     Text{"Stone of Misery", "Pierre de Misère", "Piedra de la Miseria"}};
   trickNameTable[GI_DINS_FIRE] = {
      Text{"Eldin's Fire", "Feu d'Eldin", "Fuego de Eldin"},
      Text{"Din's Blaze", "Flamme de Din", "Poder de Din"},

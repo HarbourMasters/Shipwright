@@ -30,6 +30,10 @@
 // So, when indexing into it with a item button index, we need to adjust
 #define BUTTON_STATUS_INDEX(button) ((button) >= 4) ? ((button) + 1) : (button)
 
+int balanceUpdated = 0;
+int balanceMaxed = 0;
+int balanceWasMaxed = 0;
+
 s16 Top_HUD_Margin = 0;
 s16 Left_HUD_Margin = 0;
 s16 Right_HUD_Margin = 0;
@@ -6550,34 +6554,49 @@ void Interface_Update(PlayState* play) {
         (play->transitionMode == TRANS_MODE_OFF) && !Play_InCsMode(play)) {}
 
     if (gSaveContext.rupeeAccumulator != 0) {
-        if (gSaveContext.rupeeAccumulator > 0) {
+            if (gSaveContext.rupeeAccumulator > 0) {
             if (gSaveContext.rupees < CUR_CAPACITY(UPG_WALLET)) {
-                gSaveContext.rupeeAccumulator--;
-                gSaveContext.rupees++;
-                Audio_PlaySoundGeneral(NA_SE_SY_RUPY_COUNT, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-            } else {
-                // "Rupee Amount MAX = %d"
-                osSyncPrintf("ルピー数ＭＡＸ = %d\n", CUR_CAPACITY(UPG_WALLET));
-                gSaveContext.rupees = CUR_CAPACITY(UPG_WALLET);
+                    gSaveContext.rupeeAccumulator--;
+                    gSaveContext.rupees++;
+                    Audio_PlaySoundGeneral(NA_SE_SY_RUPY_COUNT, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                } else {
+                balanceWasMaxed = (gSaveContext.playerBalance == 5000) ? 1 : 0;
+                if (CVarGetInteger("gBanker", 0) && gSaveContext.hasWarpTransfer) {
+                    int rupeesToAdd = gSaveContext.rupeeAccumulator;
+                    if (gSaveContext.playerBalance + rupeesToAdd > 5000) {
+                        rupeesToAdd = 5000 - gSaveContext.playerBalance;
+                        balanceMaxed = 1;
+                    }
+                    gSaveContext.playerBalance += rupeesToAdd;
+                    osSyncPrintf("Added %d rupees to bank balance. New balance = %d\n", rupeesToAdd,
+                                gSaveContext.playerBalance);
+                    gSaveContext.excessRupees = rupeesToAdd;
                 gSaveContext.rupeeAccumulator = 0;
-            }
-        } else if (gSaveContext.rupees != 0) {
-            if (gSaveContext.rupeeAccumulator <= -50) {
-                gSaveContext.rupeeAccumulator += 10;
-                gSaveContext.rupees -= 10;
-
-                if (gSaveContext.rupees < 0) {
-                    gSaveContext.rupees = 0;
+                    balanceUpdated = 1;
+                } else {
+                    // "Rupee Amount MAX = %d"
+                    osSyncPrintf("ルピー数ＭＡＸ = %d\n", CUR_CAPACITY(UPG_WALLET));
+                    gSaveContext.rupees = CUR_CAPACITY(UPG_WALLET);
+                    gSaveContext.rupeeAccumulator = 0;
                 }
+                }
+            } else if (gSaveContext.rupees != 0) {
+                if (gSaveContext.rupeeAccumulator <= -50) {
+                    gSaveContext.rupeeAccumulator += 10;
+                    gSaveContext.rupees -= 10;
 
-                Audio_PlaySoundGeneral(NA_SE_SY_RUPY_COUNT, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                    if (gSaveContext.rupees < 0) {
+                        gSaveContext.rupees = 0;
+                    }
+
+                    Audio_PlaySoundGeneral(NA_SE_SY_RUPY_COUNT, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                } else {
+                    gSaveContext.rupeeAccumulator++;
+                    gSaveContext.rupees--;
+                    Audio_PlaySoundGeneral(NA_SE_SY_RUPY_COUNT, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                }
             } else {
-                gSaveContext.rupeeAccumulator++;
-                gSaveContext.rupees--;
-                Audio_PlaySoundGeneral(NA_SE_SY_RUPY_COUNT, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-            }
-        } else {
-            gSaveContext.rupeeAccumulator = 0;
+                gSaveContext.rupeeAccumulator = 0;
         }
         if (gSaveContext.rupeeAccumulator == 0 && gSaveContext.pendingSale != ITEM_NONE) {
             u16 tempSaleItem = gSaveContext.pendingSale;

@@ -667,6 +667,11 @@ void DrawEnhancementsMenu() {
                     "- Not within range of Ocarina playing spots");
                 UIWidgets::PaddedEnhancementCheckbox("Pause Warp", "gPauseWarp", true, false);
                 UIWidgets::Tooltip("Selection of warp song in pause menu initiates warp. Disables song playback.");
+                UIWidgets::PaddedEnhancementCheckbox("Skip water take breath animation", "gSkipSwimDeepEndAnim", true, false);
+                UIWidgets::Tooltip("Skips Link's taking breath animation after coming up from water. This setting does not interfere with getting items from underwater.");
+                UIWidgets::PaddedEnhancementCheckbox("Open Bank Account", "gBanker", true, false);
+                UIWidgets::Tooltip("Allows the player to visit the beggar NPC to make a withdrawal."
+                "All excess rupees from checks will autoomatically warped to the bank.");
                 
                 ImGui::EndTable();
                 ImGui::EndMenu();
