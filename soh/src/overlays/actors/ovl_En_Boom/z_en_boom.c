@@ -89,7 +89,7 @@ void EnBoom_Init(Actor* thisx, PlayState* play) {
     blure.elemDuration = 8;
     blure.unkFlag = 0;
     blure.calcMode = 0;
-    blure.trailType = 2;
+    blure.trailType = TRAIL_TYPE_BOOMERANG;
 
     Effect_Add(play, &this->effectIndex, EFFECT_BLURE1, 0, 0, &blure);
 
