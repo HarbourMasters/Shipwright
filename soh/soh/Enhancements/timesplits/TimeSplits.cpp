@@ -344,10 +344,13 @@ void TimeSplitSplitsHandlerS(uint32_t itemID) {
 
 void TimeSplitSceneSplitHandler(uint32_t entrance) {
     uint32_t loopCounter = 0;
+    if (entrance == ESCAPE_KOKIRI_FOREST && gSaveContext.cutsceneIndex != 0xfff0) {
+        return;
+    } 
+    if (entrance != ESCAPE_LOST_WOODS && entrance != ESCAPE_KOKIRI_FOREST) {
+        entrance += 667;
+    }
     for (auto& str : splitItem) {
-        if (entrance == ESCAPE_KOKIRI_FOREST && gSaveContext.cutsceneIndex != 0xfff0) {
-            return;
-        }
         if (entrance == splitItem[loopCounter]) {
             if (splitStatus[loopCounter] == 2) {
                 splitTime[loopCounter] = GAMEPLAYSTAT_TOTAL_TIME;
@@ -364,7 +367,7 @@ void TimeSplitSceneSplitHandler(uint32_t entrance) {
             }
         }
         loopCounter++;
-    }
+    } 
 }
 
 void TimeSplitSplitsHandler(GetItemEntry itemEntry) {
