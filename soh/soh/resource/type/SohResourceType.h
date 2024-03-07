@@ -17,5 +17,6 @@ enum class ResourceType {
     SOH_AudioSequence = 0x4F534551,   // OSEQ
     SOH_Background = 0x4F424749,      // OBGI
     SOH_SceneCommand = 0x4F52434D,    // ORCM
+    SOH_RawJson = 0x4A534F4E,         // JSON
 };
 } // namespace SOH
