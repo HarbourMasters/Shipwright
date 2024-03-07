@@ -647,8 +647,12 @@ void DrawEnhancementsMenu() {
                 UIWidgets::Tooltip("Adds a prompt to equip newly-obtained swords, shields and tunics");
                 UIWidgets::PaddedEnhancementCheckbox("Better Owl", "gBetterOwl", true, false);
                 UIWidgets::Tooltip("The default response to Kaepora Gaebora is always that you understood what he said");
-                UIWidgets::PaddedEnhancementCheckbox("Exit Market at Night", "gMarketSneak", true, false);
-                UIWidgets::Tooltip("Allows exiting Hyrule Castle Market Town to Hyrule Field at night by speaking to the guard next to the gate.");
+                UIWidgets::PaddedEnhancementCheckbox("Bridge Open At Night", "gEnhancements.BridgeOpenAtNight", true, false);
+                UIWidgets::Tooltip("Makes the bridge to Hyrule Market stay open at night.");
+                const bool bBridgeOpenAtNightEnabled = CVarGetInteger("gEnhancements.BridgeOpenAtNight", 0);
+                UIWidgets::PaddedEnhancementCheckbox("Exit Market at Night", "gMarketSneak", true, false, bBridgeOpenAtNightEnabled, "Forced enabled when Bridge Open At Night is enabled");
+                UIWidgets::Tooltip("Allows exiting Hyrule Castle Market Town to Hyrule Field at night by speaking "
+                "to the guard next to the gate.");
                 UIWidgets::PaddedEnhancementCheckbox("Shops and Games Always Open", "gEnhancements.OpenAllHours", true, false);
                 UIWidgets::Tooltip("Shops and minigames are open both day and night. Requires scene reload to take effect.");
                 UIWidgets::PaddedEnhancementCheckbox("Link as default file name", "gLinkDefaultName", true, false);

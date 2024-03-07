@@ -26,6 +26,7 @@
 #include "src/overlays/actors/ovl_Obj_Switch/z_obj_switch.h"
 #include "objects/object_link_boy/object_link_boy.h"
 #include "objects/object_link_child/object_link_child.h"
+#include "src/overlays/actors/ovl_Bg_Spot00_Hanebasi/z_bg_spot00_hanebasi.h"
 
 extern "C" {
 #include <z64.h>
@@ -1360,7 +1361,6 @@ void RegisterToTMedallions() {
     });
 }
 
-
 void RegisterFloorSwitchesHook() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>([](void* refActor) {
         Actor* actor = static_cast<Actor*>(refActor);
@@ -1390,6 +1390,20 @@ void RegisterPauseMenuHooks() {
                     PauseWarp_Execute();
             });
             pauseWarpHooksRegistered = true;
+        }
+    });
+}
+			
+void RegisterBridgeDownAllNight() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* refActor) {
+        Actor* actor = static_cast<Actor*>(refActor);
+
+        if (CVarGetInteger("gEnhancements.BridgeOpenAtNight", 0) && (actor->id == ACTOR_BG_SPOT00_HANEBASI) &&
+            gSaveContext.cutsceneIndex != 0xFFF1) {
+            BgSpot00Hanebasi* bgSpot00Hanebasi = static_cast<BgSpot00Hanebasi*>(refActor);
+
+            ((BgSpot00Hanebasi*)actor)->dyna.actor.shape.rot.x = 0;
+            ((BgSpot00Hanebasi*)actor)->destAngle = 0;
         }
     });
 }
@@ -1428,6 +1442,7 @@ void InitMods() {
     RegisterRandomizedEnemySizes();
     RegisterOpenAllHours();
     RegisterToTMedallions();
+    RegisterBridgeDownAllNight();
     NameTag_RegisterHooks();
     RegisterFloorSwitchesHook();
     RegisterPatchHandHandler();

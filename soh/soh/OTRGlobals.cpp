@@ -2621,7 +2621,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_HEART_PIECE);
         messageEntry.Replace("{{heartPieceCount}}", std::to_string(gSaveContext.sohStats.heartPieces + 1));
     }
-    if (textId == TEXT_MARKET_GUARD_NIGHT && CVarGetInteger("gMarketSneak", 0) && play->sceneNum == SCENE_MARKET_ENTRANCE_NIGHT) {
+    if (textId == TEXT_MARKET_GUARD_NIGHT && (CVarGetInteger("gMarketSneak", 0) || CVarGetInteger("gEnhancements.BridgeOpenAtNight", 0)) && play->sceneNum == SCENE_MARKET_ENTRANCE_NIGHT) {
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_MARKET_GUARD_NIGHT);
     }
     if (textId == TEXT_FISHERMAN_LEAVE && CVarGetInteger("gQuitFishingAtDoor", 0)) {
