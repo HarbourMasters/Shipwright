@@ -199,6 +199,8 @@ std::vector<TimeSplitObject> splitObjects = {
     {   ENTER_INSIDE_GANONS_CASTLE,             "Enter Ganons Castle",                  "SPECIAL_TRIFORCE_PIECE_WHITE"},
     {   ENTER_GANONS_TOWER_COLLAPSE_INTERIOR,   "Enter Tower Collapse Interior",        "SPECIAL_TRIFORCE_PIECE_WHITE"},
     {   ENTER_INSIDE_GANONS_CASTLE_COLLAPSE,    "Enter Ganons Castle Collapse",         "SPECIAL_TRIFORCE_PIECE_WHITE"},
+    {   ESCAPE_LOST_WOODS,                      "Lost Woods Escape",                    "SPECIAL_TRIFORCE_PIECE_WHITE"},
+    {   ESCAPE_KOKIRI_FOREST,                   "Forest Escape",                        "SPECIAL_TRIFORCE_PIECE_WHITE"},
 };
 
 std::vector<TimeSplitObject> equipmentObjects = {
@@ -217,70 +219,70 @@ std::vector<TimeSplitObject> equipmentObjects = {
 };
 
 std::vector<TimeSplitObject> questObjects = {
-    {	ITEM_STONE_OF_AGONY, 	"Stone of Agony", 						"QUEST_STONE_OF_AGONY"},
-    {	ITEM_MEDALLION_LIGHT, 	"Light Medallion", 						"QUEST_MEDALLION_LIGHT"},
-    {	ITEM_SONG_LULLABY,  	"Zelda's Lullaby", 						"QUEST_SONG_LULLABY"},
-    {	ITEM_SONG_MINUET,  		"Minuet of Forest",						"QUEST_SONG_MINUET"},
-    {	ITEM_GERUDO_CARD, 		"Gerudo's Card", 						"QUEST_GERUDO_CARD"},
-    {	ITEM_MEDALLION_FOREST, 	"Forest Medallion", 					"QUEST_MEDALLION_FOREST"},
-    {	ITEM_SONG_EPONA,  		"Epona's Song", 						"QUEST_SONG_EPONA"},
-    {	ITEM_SONG_BOLERO,  		"Bolero of Fire", 						"QUEST_SONG_BOLERO"},
-    {   ITEM_SKULL_TOKEN,       "Skulltula Token",                      "QUEST_SKULL_TOKEN"},
-    {	ITEM_MEDALLION_FIRE, 	"Fire Medallion", 						"QUEST_MEDALLION_FIRE"},
-    {	ITEM_SONG_SARIA,  		"Saria's Song", 						"QUEST_SONG_SARIA"},
-    {	ITEM_SONG_SERENADE,  	"Serenade of Water", 					"QUEST_SONG_SERENADE"},
-    {	ITEM_KOKIRI_EMERALD, 	"Kokiri's Emerald", 					"QUEST_KOKIRI_EMERALD"},
-    {	ITEM_MEDALLION_WATER, 	"Water Medallion", 						"QUEST_MEDALLION_WATER"},
-    {	ITEM_SONG_SUN,  		"Sun's Song", 							"QUEST_SONG_SUN"},
-    {	ITEM_SONG_REQUIEM,  	"Requiem of Spirit", 					"QUEST_SONG_REQUIEM"},
-    {	ITEM_GORON_RUBY, 		"Goron's Ruby", 						"QUEST_GORON_RUBY"},
-    {	ITEM_MEDALLION_SPIRIT, 	"Spirit Medallion", 					"QUEST_MEDALLION_SPIRIT"},
-    {	ITEM_SONG_TIME, 		"Song of Time", 						"QUEST_SONG_TIME"},
-    {	ITEM_SONG_NOCTURNE,  	"Nocturne of Shadow", 					"QUEST_SONG_NOCTURNE"},
-    {	ITEM_ZORA_SAPPHIRE, 	"Zora's Sapphire", 						"QUEST_ZORA_SAPPHIRE"},
-    {	ITEM_MEDALLION_SHADOW, 	"Shadow Medallion", 					"QUEST_MEDALLION_SHADOW"},
-    {	ITEM_SONG_STORMS, 		"Song of Storms", 						"QUEST_SONG_STORMS"},
-    {	ITEM_SONG_PRELUDE,  	"Prelude of Light", 					"QUEST_SONG_PRELUDE"},
+    {	ITEM_STONE_OF_AGONY, 	"Stone of Agony", 		"QUEST_STONE_OF_AGONY"},
+    {	ITEM_MEDALLION_LIGHT, 	"Light Medallion", 		"QUEST_MEDALLION_LIGHT"},
+    {	ITEM_SONG_LULLABY,  	"Zelda's Lullaby", 		"QUEST_SONG_LULLABY"},
+    {	ITEM_SONG_MINUET,  		"Minuet of Forest",		"QUEST_SONG_MINUET"},
+    {	ITEM_GERUDO_CARD, 		"Gerudo's Card", 		"QUEST_GERUDO_CARD"},
+    {	ITEM_MEDALLION_FOREST, 	"Forest Medallion", 	"QUEST_MEDALLION_FOREST"},
+    {	ITEM_SONG_EPONA,  		"Epona's Song", 		"QUEST_SONG_EPONA"},
+    {	ITEM_SONG_BOLERO,  		"Bolero of Fire", 		"QUEST_SONG_BOLERO"},
+    {   ITEM_SKULL_TOKEN,       "Skulltula Token",      "QUEST_SKULL_TOKEN"},
+    {	ITEM_MEDALLION_FIRE, 	"Fire Medallion", 		"QUEST_MEDALLION_FIRE"},
+    {	ITEM_SONG_SARIA,  		"Saria's Song", 		"QUEST_SONG_SARIA"},
+    {	ITEM_SONG_SERENADE,  	"Serenade of Water", 	"QUEST_SONG_SERENADE"},
+    {	ITEM_KOKIRI_EMERALD, 	"Kokiri's Emerald", 	"QUEST_KOKIRI_EMERALD"},
+    {	ITEM_MEDALLION_WATER, 	"Water Medallion", 		"QUEST_MEDALLION_WATER"},
+    {	ITEM_SONG_SUN,  		"Sun's Song", 			"QUEST_SONG_SUN"},
+    {	ITEM_SONG_REQUIEM,  	"Requiem of Spirit", 	"QUEST_SONG_REQUIEM"},
+    {	ITEM_GORON_RUBY, 		"Goron's Ruby", 		"QUEST_GORON_RUBY"},
+    {	ITEM_MEDALLION_SPIRIT, 	"Spirit Medallion", 	"QUEST_MEDALLION_SPIRIT"},
+    {	ITEM_SONG_TIME, 		"Song of Time", 		"QUEST_SONG_TIME"},
+    {	ITEM_SONG_NOCTURNE,  	"Nocturne of Shadow", 	"QUEST_SONG_NOCTURNE"},
+    {	ITEM_ZORA_SAPPHIRE, 	"Zora's Sapphire", 		"QUEST_ZORA_SAPPHIRE"},
+    {	ITEM_MEDALLION_SHADOW, 	"Shadow Medallion", 	"QUEST_MEDALLION_SHADOW"},
+    {	ITEM_SONG_STORMS, 		"Song of Storms", 		"QUEST_SONG_STORMS"},
+    {	ITEM_SONG_PRELUDE,  	"Prelude of Light", 	"QUEST_SONG_PRELUDE"},
 };
 
 std::vector<TimeSplitObject> inventoryObjects = {
-    {	ITEM_STICK, 	 		"Deku Stick", 							"ITEM_STICK"},
-    {	ITEM_SLINGSHOT, 		"Fairy Slingshot", 						"ITEM_SLINGSHOT"},
-    {	ITEM_BOOMERANG,  		"Boomerang", 							"ITEM_BOOMERANG"},
-    {	ITEM_BOTTLE,  			"Empty Bottle", 						"ITEM_BOTTLE"},
-    {	ITEM_NUT,				"Deku Nut", 							"ITEM_NUT"},
-    {	ITEM_OCARINA_FAIRY, 	"Fairy Ocarina", 						"ITEM_OCARINA_FAIRY"},
-    {	ITEM_LENS,  			"Lens of Truth", 						"ITEM_LENS"},
-    {	ITEM_DOUBLE_DEFENSE, 	"Double Defense", 						"ITEM_HEART_CONTAINER"},
-    {	ITEM_BOMB,  		    "Bombs", 						        "ITEM_BOMB"},
-    {	ITEM_BOMBCHU, 	 		"Bombchu", 								"ITEM_BOMBCHU"},
-    {	ITEM_BEAN,  			"Magic Bean", 							"ITEM_BEAN"},
-    {	ITEM_MAGIC_SMALL, 		"Magic Meter", 							"ITEM_MAGIC_SMALL"},
-    {	ITEM_BOW, 	 			"Fairy Bow", 							"ITEM_BOW"},
-    {	ITEM_HOOKSHOT,  		"Hookshot", 							"ITEM_HOOKSHOT"},
-    {	ITEM_HAMMER,  			"Megaton Hammer", 						"ITEM_HAMMER"},
-    {	ITEM_WALLET_ADULT,  	"Adult's Wallet", 						"ITEM_WALLET_ADULT"},
-    {	ITEM_ARROW_FIRE, 		"Fire Arrow", 							"ITEM_ARROW_FIRE"},
-    {	ITEM_ARROW_ICE,  		"Ice Arrow", 							"ITEM_ARROW_ICE"},
-    {	ITEM_ARROW_LIGHT,  		"Light Arrow", 							"ITEM_ARROW_LIGHT"},
-    {	ITEM_POCKET_EGG,  		"Pocket Egg", 							"ITEM_POCKET_EGG"},
-    {	ITEM_DINS_FIRE, 		"Din's Fire", 							"ITEM_DINS_FIRE"},
-    {	ITEM_FARORES_WIND,  	"Farore's Wind", 						"ITEM_FARORES_WIND"},
-    {	ITEM_NAYRUS_LOVE,  		"Nayru's Love", 						"ITEM_NAYRUS_LOVE"},
-    {	ITEM_WEIRD_EGG,  		"Weird Egg", 							"ITEM_WEIRD_EGG"},
+    {	ITEM_STICK, 	 		"Deku Stick", 		"ITEM_STICK"},
+    {	ITEM_SLINGSHOT, 		"Fairy Slingshot", 	"ITEM_SLINGSHOT"},
+    {	ITEM_BOOMERANG,  		"Boomerang", 		"ITEM_BOOMERANG"},
+    {	ITEM_BOTTLE,  			"Empty Bottle", 	"ITEM_BOTTLE"},
+    {	ITEM_NUT,				"Deku Nut", 		"ITEM_NUT"},
+    {	ITEM_OCARINA_FAIRY, 	"Fairy Ocarina", 	"ITEM_OCARINA_FAIRY"},
+    {	ITEM_LENS,  			"Lens of Truth", 	"ITEM_LENS"},
+    {	ITEM_DOUBLE_DEFENSE, 	"Double Defense", 	"ITEM_HEART_CONTAINER"},
+    {	ITEM_BOMB,  		    "Bombs", 			"ITEM_BOMB"},
+    {	ITEM_BOMBCHU, 	 		"Bombchu", 			"ITEM_BOMBCHU"},
+    {	ITEM_BEAN,  			"Magic Bean", 		"ITEM_BEAN"},
+    {	ITEM_MAGIC_SMALL, 		"Magic Meter", 		"ITEM_MAGIC_SMALL"},
+    {	ITEM_BOW, 	 			"Fairy Bow", 		"ITEM_BOW"},
+    {	ITEM_HOOKSHOT,  		"Hookshot", 		"ITEM_HOOKSHOT"},
+    {	ITEM_HAMMER,  			"Megaton Hammer", 	"ITEM_HAMMER"},
+    {	ITEM_WALLET_ADULT,  	"Adult's Wallet", 	"ITEM_WALLET_ADULT"},
+    {	ITEM_ARROW_FIRE, 		"Fire Arrow", 		"ITEM_ARROW_FIRE"},
+    {	ITEM_ARROW_ICE,  		"Ice Arrow", 		"ITEM_ARROW_ICE"},
+    {	ITEM_ARROW_LIGHT,  		"Light Arrow", 		"ITEM_ARROW_LIGHT"},
+    {	ITEM_POCKET_EGG,  		"Pocket Egg", 		"ITEM_POCKET_EGG"},
+    {	ITEM_DINS_FIRE, 		"Din's Fire", 		"ITEM_DINS_FIRE"},
+    {	ITEM_FARORES_WIND,  	"Farore's Wind", 	"ITEM_FARORES_WIND"},
+    {	ITEM_NAYRUS_LOVE,  		"Nayru's Love", 	"ITEM_NAYRUS_LOVE"},
+    {	ITEM_WEIRD_EGG,  		"Weird Egg", 		"ITEM_WEIRD_EGG"},
 };
 
 std::vector<TimeSplitObject> bossObjects = {
-    {   BOSS_QUEEN_GOHMA,       "Queen Gohma",                          "SPECIAL_TRIFORCE_PIECE_WHITE"}, 
-    {   BOSS_KING_DODONGO,      "King Dodongo",                         "SPECIAL_TRIFORCE_PIECE_WHITE"},
-    {   BOSS_BARINADE,          "Barinade",                             "SPECIAL_TRIFORCE_PIECE_WHITE"},
-    {   BOSS_PHANTOM_GANON,     "Phantom Ganon",                        "SPECIAL_TRIFORCE_PIECE_WHITE"},
-    {   BOSS_VOLVAGIA,          "Volvagia",                             "SPECIAL_TRIFORCE_PIECE_WHITE"},
-    {   BOSS_MORPHA,            "Morpha",                               "SPECIAL_TRIFORCE_PIECE_WHITE"},
-    {   BOSS_BONGO_BONGO,       "Bongo Bongo",                          "SPECIAL_TRIFORCE_PIECE_WHITE"},
-    {   BOSS_TWINROVA,          "Twinrova",                             "SPECIAL_TRIFORCE_PIECE_WHITE"},  
-    {   BOSS_GANONDORF,         "Ganondorf",                            "SPECIAL_TRIFORCE_PIECE_WHITE"},
-    {   BOSS_GANON,             "Ganon",                                "SPECIAL_TRIFORCE_PIECE_WHITE"},
+    {   BOSS_QUEEN_GOHMA,       "Queen Gohma",      "SPECIAL_TRIFORCE_PIECE_WHITE"}, 
+    {   BOSS_KING_DODONGO,      "King Dodongo",     "SPECIAL_TRIFORCE_PIECE_WHITE"},
+    {   BOSS_BARINADE,          "Barinade",         "SPECIAL_TRIFORCE_PIECE_WHITE"},
+    {   BOSS_PHANTOM_GANON,     "Phantom Ganon",    "SPECIAL_TRIFORCE_PIECE_WHITE"},
+    {   BOSS_VOLVAGIA,          "Volvagia",         "SPECIAL_TRIFORCE_PIECE_WHITE"},
+    {   BOSS_MORPHA,            "Morpha",           "SPECIAL_TRIFORCE_PIECE_WHITE"},
+    {   BOSS_BONGO_BONGO,       "Bongo Bongo",      "SPECIAL_TRIFORCE_PIECE_WHITE"},
+    {   BOSS_TWINROVA,          "Twinrova",         "SPECIAL_TRIFORCE_PIECE_WHITE"},  
+    {   BOSS_GANONDORF,         "Ganondorf",        "SPECIAL_TRIFORCE_PIECE_WHITE"},
+    {   BOSS_GANON,             "Ganon",            "SPECIAL_TRIFORCE_PIECE_WHITE"},
 };
 
 std::vector<TimeSplitObject> sceneObjects = {
@@ -300,6 +302,8 @@ std::vector<TimeSplitObject> sceneObjects = {
     {   ENTER_INSIDE_GANONS_CASTLE,             "Enter Ganons Castle",              "SPECIAL_TRIFORCE_PIECE_WHITE"},
     {   ENTER_GANONS_TOWER_COLLAPSE_INTERIOR,   "Enter Tower Collapse Interior",    "SPECIAL_TRIFORCE_PIECE_WHITE"},
     {   ENTER_INSIDE_GANONS_CASTLE_COLLAPSE,    "Enter Ganons Castle Collapse",     "SPECIAL_TRIFORCE_PIECE_WHITE"},
+    {   ESCAPE_LOST_WOODS,                      "Lost Woods Escape",                "SPECIAL_TRIFORCE_PIECE_WHITE"},
+    {   ESCAPE_KOKIRI_FOREST,                   "Forest Escape",                    "SPECIAL_TRIFORCE_PIECE_WHITE"},
 };
 
 std::string formatTimestampTimeSplit(uint32_t value) {
@@ -309,6 +313,11 @@ std::string formatTimestampTimeSplit(uint32_t value) {
     uint32_t ss = sec - hh * 3600 - mm * 60;
     uint32_t ds = value % 10;
     return fmt::format("{}:{:0>2}:{:0>2}.{}", hh, mm, ss, ds);
+}
+
+void TimeSplitCompleteSplits() {
+    gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
+    gSaveContext.sohStats.gameComplete = true;
 }
 
 void TimeSplitSplitsHandlerS(uint32_t itemID) {
@@ -325,8 +334,7 @@ void TimeSplitSplitsHandlerS(uint32_t itemID) {
                     splitBest[loopCounter] = splitTime[loopCounter];
                 }
                 if (loopCounter == (splitItem.size() - 1)) {
-                    gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
-                    gSaveContext.sohStats.gameComplete = true;
+                    TimeSplitCompleteSplits();
                 }
             }
         }
@@ -334,10 +342,13 @@ void TimeSplitSplitsHandlerS(uint32_t itemID) {
     }
 }
 
-void TimeSplitSceneSplitHandler(uint32_t sceneNum) {
+void TimeSplitSceneSplitHandler(uint32_t entrance) {
     uint32_t loopCounter = 0;
     for (auto& str : splitItem) {
-        if (sceneNum == splitItem[loopCounter]) {
+        if (entrance == ESCAPE_KOKIRI_FOREST && gSaveContext.cutsceneIndex != 0xfff0) {
+            return;
+        }
+        if (entrance == splitItem[loopCounter]) {
             if (splitStatus[loopCounter] == 2) {
                 splitTime[loopCounter] = GAMEPLAYSTAT_TOTAL_TIME;
                 splitStatus[loopCounter] = 1;
@@ -348,8 +359,7 @@ void TimeSplitSceneSplitHandler(uint32_t sceneNum) {
                     splitBest[loopCounter] = splitTime[loopCounter];
                 }
                 if (loopCounter == (splitItem.size() - 1)) {
-                    gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
-                    gSaveContext.sohStats.gameComplete = true;
+                    TimeSplitCompleteSplits();
                 }
             }
         }
@@ -383,8 +393,7 @@ void TimeSplitSplitsHandler(GetItemEntry itemEntry) {
                     splitBest[loopCounter] = splitTime[loopCounter];
                 }
                 if (loopCounter == (splitItem.size() - 1)) {
-                    gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
-                    gSaveContext.sohStats.gameComplete = true;
+                    TimeSplitCompleteSplits();
                 }
             }
         }
@@ -1367,28 +1376,54 @@ void DrawTimeSplitListManager() {
 
     if (ImGui::CollapsingHeader("Scenes")) {
         if (ImGui::CollapsingHeader("Dungeon Entrances")) {
-            ImGui::BeginTable("Scenes", 2);
-            ImGui::TableSetupColumn("Scene1", ImGuiTableColumnFlags_WidthFixed, (250.0f * uiScale));
-            ImGui::TableSetupColumn("Scene2", ImGuiTableColumnFlags_WidthFixed, (250.0f * uiScale));
+            ImGui::BeginTable("Dungeons", 2);
+            ImGui::TableSetupColumn("Dungeon1", ImGuiTableColumnFlags_WidthFixed, (250.0f * uiScale));
+            ImGui::TableSetupColumn("Dungeon2", ImGuiTableColumnFlags_WidthFixed, (250.0f * uiScale));
             ImGui::TableNextColumn();
 
             for (const auto& obj : sceneObjects) {
                 if (sceneID == 8) {
                     ImGui::TableNextColumn();
                 }
-                itemNum = obj.itemID;
-                //TimeSplitColorTint();
-                if (ImGui::ImageButton(std::to_string(sceneID).c_str(),
-                                       LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(obj.itemImage),
-                                       ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                    TimeSplitAddToSplits(obj.itemID);
+                if (obj.itemID >= ENTER_DEKU_TREE) {
+                    itemNum = obj.itemID;
+                    //TimeSplitColorTint();
+                    if (ImGui::ImageButton(std::to_string(sceneID).c_str(),
+                                           LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(obj.itemImage),
+                                           ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+                        TimeSplitAddToSplits(obj.itemID);
+                    }
+                    ImGui::SameLine();
+                    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0.0f, 5.0f));
+                    ImGui::AlignTextToFramePadding();
+                    ImGui::Text(obj.itemName);
+                    ImGui::PopStyleVar(1);
+                    sceneID++;
                 }
-                ImGui::SameLine();
-                ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0.0f, 5.0f));
-                ImGui::AlignTextToFramePadding();
-                ImGui::Text(obj.itemName);
-                ImGui::PopStyleVar(1);
-                sceneID++;
+            }
+            ImGui::EndTable();
+        }
+        if (ImGui::CollapsingHeader("Overworld Entrances")) {
+            ImGui::BeginTable("Overworld", 1);
+            ImGui::TableSetupColumn("Overworld1", ImGuiTableColumnFlags_WidthFixed, (250.0f * uiScale));
+            ImGui::TableNextColumn();
+
+            for (const auto& obj : sceneObjects) {
+                if (obj.itemID < ENTER_DEKU_TREE) {
+                    itemNum = obj.itemID;
+                    //TimeSplitColorTint();
+                    if (ImGui::ImageButton(std::to_string(sceneID).c_str(),
+                                           LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(obj.itemImage),
+                                           ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+                        TimeSplitAddToSplits(obj.itemID);
+                    }
+                    ImGui::SameLine();
+                    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0.0f, 5.0f));
+                    ImGui::AlignTextToFramePadding();
+                    ImGui::Text(obj.itemName);
+                    ImGui::PopStyleVar(1);
+                    sceneID++;
+                }
             }
             ImGui::EndTable();
         }
@@ -1432,7 +1467,7 @@ void TimeSplitWindow::InitElement() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>([](GetItemEntry itemEntry) {
         TimeSplitSplitsHandler(itemEntry);
     });
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) {
-        TimeSplitSceneSplitHandler(gPlayState->sceneNum + 667);
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneSpawnActors>([]() {
+        TimeSplitSceneSplitHandler(gSaveContext.entranceIndex);
     });
 }
