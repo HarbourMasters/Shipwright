@@ -12,11 +12,13 @@
 #include <overlays/misc/ovl_kaleido_scope/z_kaleido_scope.h>
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/stairs.h"
 
 #include <libultraship/libultraship.h>
 
 #include <time.h>
 #include <assert.h>
+// #include <stdlib.h>
 
 void* D_8012D1F0 = NULL;
 //UNK_TYPE D_8012D1F4 = 0; // unused
@@ -221,6 +223,10 @@ void Play_Destroy(GameState* thisx) {
     KaleidoScopeCall_Destroy(play);
     KaleidoManager_Destroy();
     ZeldaArena_Cleanup();
+
+    // #Region [SoH] Stairs
+    StairsArena_Cleanup();
+
     Fault_RemoveClient(&D_801614B8);
     disableBetaQuest();
     gPlayState = NULL;
@@ -472,13 +478,23 @@ void Play_Init(GameState* thisx) {
     gPlayState = play;
     //play->state.gfxCtx = NULL;
     uintptr_t zAlloc;
+    uintptr_t stairsAlloc;
     uintptr_t zAllocAligned;
+    uintptr_t stairsAllocAligned;
     size_t zAllocSize;
+    size_t stairsAllocSize;
     Player* player;
     s32 playerStartCamId;
     s32 i;
     u8 tempSetupIndex;
     s32 pad[2];
+
+    // #Region [SoH] Stairs
+    if (CVarGetInteger("gSimulateHeap", 0)) {
+        CVarSetInteger("gStairs", 1);
+    } else {
+        CVarSetInteger("gStairs", 0);
+    }
 
     // Skip Child Stealth when option is enabled, Zelda's Letter isn't obtained and Impa's reward hasn't been received
     // eventChkInf[4] & 1 = Got Zelda's Letter
@@ -663,6 +679,15 @@ void Play_Init(GameState* thisx) {
     VisMono_Init(&D_80161498);
     D_801614B0.a = 0;
     Flags_UnsetAllEnv(play);
+
+    // #Region [SoH] Stairs
+    // Stairs Heap
+    if (CVarGetInteger("gStairs", 0)) {
+        stairsAllocSize = Stairs_GetSize();
+        stairsAlloc = GAMESTATE_ALLOC_MC(&play->state, stairsAllocSize);
+        stairsAllocAligned = (stairsAlloc + 8) & ~0xF;
+        StairsArena_Init(stairsAllocAligned, stairsAllocSize - stairsAllocAligned + stairsAlloc);
+    }
 
     osSyncPrintf("ZELDA ALLOC SIZE=%x\n", THA_GetSize(&play->state.tha));
     zAllocSize = THA_GetSize(&play->state.tha);

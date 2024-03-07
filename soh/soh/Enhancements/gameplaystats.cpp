@@ -14,6 +14,7 @@ extern "C" {
 #include <libultraship/bridge.h>
 #include <libultraship/libultraship.h>
 #include "soh/Enhancements/enhancementTypes.h"
+#include "soh/Enhancements/stairs.h"
 
 extern "C" {
 #include <z64.h>

@@ -3,6 +3,8 @@
 #include "soh/ActorDB.h"
 #include <assert.h>
 
+#include "soh/Enhancements/stairs.h"
+
 RomFile sNaviMsgFiles[];
 
 s32 Object_Spawn(ObjectContext* objectCtx, s16 objectId) {
@@ -71,6 +73,11 @@ void Object_InitBank(PlayState* play, ObjectContext* objectCtx) {
 
     objectCtx->spaceStart = objectCtx->status[0].segment =
         GAMESTATE_ALLOC_MC(&play->state, spaceSize);
+
+    if (CVarGetInteger("gStairs", 0)) {
+        Stairs_DecreaseSize(spaceSize);
+    }
+
     objectCtx->spaceEnd = (void*)((uintptr_t)objectCtx->spaceStart + spaceSize);
 
     objectCtx->mainKeepIndex = Object_Spawn(objectCtx, OBJECT_GAMEPLAY_KEEP);

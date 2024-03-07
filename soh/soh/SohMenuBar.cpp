@@ -1285,6 +1285,8 @@ void DrawEnhancementsMenu() {
             UIWidgets::Tooltip("Restore a bug from NTSC 1.0 that allows bypassing Bongo Bongo's intro cutscene to quickly kill him");
             UIWidgets::PaddedEnhancementCheckbox("Original RBA Values", "gRestoreRBAValues", true, false);
             UIWidgets::Tooltip("Restores the original outcomes when performing Reverse Bottle Adventure.");
+            UIWidgets::PaddedEnhancementCheckbox("Simulate N64 Heap", "gSimulateHeap", true, false);
+            UIWidgets::Tooltip("This restores heap fragmentation glitches, such as causing the Royal Tomb to not load when reloading its graveyard room.");
 
             ImGui::EndMenu();
         }
@@ -1633,7 +1635,8 @@ extern std::shared_ptr<MessageViewer> mMessageViewerWindow;
 void DrawDeveloperToolsMenu() {
     if (ImGui::BeginMenu("Developer Tools")) {
         ImGui::BeginDisabled(CVarGetInteger("gDisableChangingSettings", 0));
-
+        UIWidgets::EnhancementCheckbox("Stairs heap display", "gStairsDisplay");
+        UIWidgets::Tooltip("Visualises the stair heap");
         UIWidgets::EnhancementCheckbox("OoT Debug Mode", "gDebugEnabled");
         UIWidgets::Tooltip("Enables Debug Mode, allowing you to select maps with L + R + Z, noclip with L + D-pad Right, and open the debug menu with L on the pause screen");
         if (CVarGetInteger("gDebugEnabled", 0)) {
