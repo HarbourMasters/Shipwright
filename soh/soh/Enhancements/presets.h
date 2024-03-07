@@ -260,6 +260,8 @@ const std::vector<const char*> enhancementsCvars = {
     "gAddTraps.Tele",
     "gAddTraps.Void",
     "gToTMedallionsColors", 
+    "gEnhancements.ChildHoldsHylianShield",
+    "gEnhancements.RotateScaleChildHylianShield",
     "gCuccoStayDurationMultiplier",
     "gDeleteFileOnDeath",
     "gEnemySizeScalesHealth",
