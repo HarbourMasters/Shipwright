@@ -448,5 +448,5 @@ _packages
 */extract_assets_cmake*
 /build*
 
-soh/build.c
+soh/src/boot/build.c
 soh/properties.h
