@@ -1088,7 +1088,6 @@ static s8 sItemActions[] = {
     PLAYER_IA_SWORD_BIGGORON,      // ITEM_SWORD_BIGGORON
 };
 
-static u8 sMaskMemory;
 u8 gWalkSpeedToggle1;
 u8 gWalkSpeedToggle2;
 
@@ -2262,8 +2261,8 @@ void Player_ProcessItemButtons(Player* this, PlayState* play) {
 
             if (gSaveContext.equips.buttonItems[0] != maskItem && gSaveContext.equips.buttonItems[1] != maskItem &&
                 gSaveContext.equips.buttonItems[2] != maskItem && gSaveContext.equips.buttonItems[3] != maskItem &&
-                !hasOnDpad) {
-                this->currentMask = sMaskMemory = PLAYER_MASK_NONE;
+                !hasOnDpad && !CVarGetInteger("gEnhancements.KeepMasks", 0)) {
+                this->currentMask = gSaveContext.maskMemory = PLAYER_MASK_NONE;
                 func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
             }
         } else {
@@ -3220,7 +3219,8 @@ void Player_UseItem(PlayState* play, Player* this, s32 item) {
                     this->currentMask = itemAction - PLAYER_IA_MASK_KEATON + 1;
                 }
 
-                sMaskMemory = this->currentMask;
+                gSaveContext.maskMemory = this->currentMask;
+
                 func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
             } else if (((itemAction >= PLAYER_IA_OCARINA_FAIRY) && (itemAction <= PLAYER_IA_OCARINA_OF_TIME)) ||
                 (itemAction >= PLAYER_IA_BOTTLE_FISH)) {
@@ -5069,7 +5069,9 @@ void func_8083A0F4(PlayState* play, Player* this) {
             this->interactRangeActor->parent = &this->actor;
             Player_SetupAction(play, this, Player_Action_8084F608, 0);
             this->stateFlags1 |= PLAYER_STATE1_IN_CUTSCENE;
-            sMaskMemory = PLAYER_MASK_NONE;
+            if (!CVarGetInteger("gEnhancements.KeepBunnyHoodThroughTime", 0) || !CVarGetInteger("gAdultBunnyHood", 0) || gSaveContext.maskMemory != PLAYER_MASK_BUNNY) {
+                gSaveContext.maskMemory = PLAYER_MASK_NONE;
+            }
         } else {
             LinkAnimationHeader* anim;
 
@@ -8937,7 +8939,9 @@ void func_80843AE8(PlayState* play, Player* this) {
         OnePointCutscene_Init(play, 9908, 125, &this->actor, MAIN_CAM);
     } else if (play->gameOverCtx.state == GAMEOVER_DEATH_WAIT_GROUND) {
         play->gameOverCtx.state = GAMEOVER_DEATH_DELAY_MENU;
-        sMaskMemory = PLAYER_MASK_NONE;
+        if (!CVarGetInteger("gEnhancements.KeepMasksOnDeath", 0)) {
+            gSaveContext.maskMemory = PLAYER_MASK_NONE;
+        }
     }
 }
 
@@ -10192,9 +10196,9 @@ void Player_Init(Actor* thisx, PlayState* play2) {
     this->prevBoots = this->currentBoots;
     if (CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA) {
         if (INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_SOLD_OUT) {
-            sMaskMemory = PLAYER_MASK_NONE;
+            gSaveContext.maskMemory = PLAYER_MASK_NONE;
         }
-        this->currentMask = sMaskMemory;
+        this->currentMask = gSaveContext.maskMemory;
     }
     Player_InitCommon(this, play, gPlayerSkelHeaders[((void)0, gSaveContext.linkAge)]);
     this->giObjectSegment = (void*)(((uintptr_t)ZELDA_ARENA_MALLOC_DEBUG(0x3008) + 8) & ~0xF);
