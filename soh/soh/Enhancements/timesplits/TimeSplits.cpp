@@ -594,11 +594,12 @@ void DrawTimeSplitSplits(){
                 itemNum = obj.itemID;
                 itemImager = obj.itemImage;
                 itemNamer = obj.itemName;
-                if (obj.itemImage == "SPECIAL_TRIFORCE_PIECE_WHITE") {
-                    TimeSplitColorTint();
-                } else {
-                    pieceTint = { 1, 1, 1, 1 };
-                }
+                //if (obj.itemImage == "SPECIAL_TRIFORCE_PIECE_WHITE") {
+                //    TimeSplitColorTint();
+                //} else {
+                //    pieceTint = COLOR_WHITE;
+                //}
+                TimeSplitColorTint();
             }
         }
         if (splitStatus[buttonID] == 2) {
