@@ -10,7 +10,6 @@
 enum class SaveStateReturn {
     SUCCESS,
     FAIL_INVALID_SLOT,
-    FAIL_NO_MEMORY,
     FAIL_STATE_EMPTY,
     FAIL_WRONG_GAMESTATE,
     FAIL_BAD_REQUEST,
