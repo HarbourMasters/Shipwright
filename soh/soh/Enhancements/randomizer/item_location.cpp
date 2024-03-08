@@ -117,11 +117,11 @@ void ItemLocation::SetAsHinted() {
     hintedAt = true;
 }
 
-const std::vector<RandomizerHintKey>& ItemLocation::GetHintedBy() const {
+const std::vector<RandomizerHint>& ItemLocation::GetHintedBy() const {
     return hintedBy;
 }
 
-void ItemLocation::AddHintedBy(const RandomizerHintKey hintKey) {
+void ItemLocation::AddHintedBy(const RandomizerHint hintKey) {
     hintedBy.push_back(hintKey);
 } 
 

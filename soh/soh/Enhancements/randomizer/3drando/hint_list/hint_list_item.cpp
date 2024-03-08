@@ -2126,10 +2126,16 @@ void HintTable_Init_Item() {
                        //clear text
                        Text{"Epona", /*french*/"Epona", /*spanish*/"a Epona"}
     );
+
     hintTable[RHT_HINT_MYSTERIOUS] = HintText::Item({
       Text{"something mysterious", /*french*/"un sacré mystère",  /*spanish*/"algo misterioso", /*german*/"etwas Unvorhergesehenes"},
       Text{"an unknown treasure",  /*french*/"un trésor inconnu", /*spanish*/"un desconocido tesoro", /*german*/"ein unbekannter Schatz"},
     });
+
+    hintTable[RHT_MYSTERIOUS_ITEM] = HintText::Item({
+      Text{"mysterious item", /*french*/"objet mystérieux",  /*spanish*/"algo misterioso", /*german*/ "mysteriösen Gegenstand"},
+      });
+
 
     // [RHT_HINT_ERROR] = HintText::Item({
     //                      //obscure text

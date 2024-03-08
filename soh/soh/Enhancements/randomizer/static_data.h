@@ -32,7 +32,7 @@ class StaticData {
       static std::vector<std::vector<RandomizerCheck>> shopLocationLists;
       static std::vector<RandomizerCheck> scrubLocations;
       static std::vector<RandomizerCheck> gossipStoneLocations;
-      static std::vector<RandomizerCheck> otherHintLocations;
+      static std::vector<RandomizerCheck> staticHintLocations;
       static std::vector<RandomizerCheck> pondFishLocations;
       static std::vector<RandomizerCheck> overworldFishLocations;
       static std::array<std::pair<RandomizerCheck, RandomizerCheck>, 17> randomizerFishingPondFish;

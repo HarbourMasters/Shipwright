@@ -7,6 +7,7 @@
 #include "3drando/text.hpp"
 #include "hint.h"
 #include "fishsanity.h"
+#include "trial.h"
 
 #include <memory>
 #include <array>
@@ -36,9 +37,8 @@ class Context {
     static std::shared_ptr<Context> CreateInstance();
     static std::shared_ptr<Context> GetInstance();
     void InitStaticData();
-    Hint* GetHint(RandomizerHintKey hintKey);
-    void AddHint(RandomizerHintKey hintId, const Text& text, RandomizerCheck hintedLocation, HintType hintType, std::string distributionName,
-                 RandomizerArea hintedArea = RA_NONE);
+    Hint* GetHint(RandomizerHint hintKey);
+    void AddHint(const RandomizerHint hintId, const Hint hint);
     ItemLocation* GetItemLocation(RandomizerCheck locKey);
     ItemLocation* GetItemLocation(size_t locKey);
     ItemOverride& GetItemOverride(RandomizerCheck locKey);
@@ -73,6 +73,7 @@ class Context {
     void ResetLogic();
     std::shared_ptr<Trials> GetTrials();
     TrialInfo* GetTrial(size_t key) const;
+    TrialInfo* GetTrial(TrialKey key) const;
     static Sprite* GetSeedTexture(uint8_t index);
     Option& GetOption(RandomizerSettingKey key) const;
     TrickOption& GetTrickOption(RandomizerTrick key) const;

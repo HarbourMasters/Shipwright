@@ -52,14 +52,12 @@ enum class HintCategory {
   Boss,
   Bridge,
   GanonsBossKey,
-  LACS,
   Altar,
   Validation,
-  OtherHint,
+  StaticHint,
   MasterSword,
-  GanonLine,
+  GanonJoke,
   SheikLine,
-  MerchantsDialogs,
 };
 
 class HintText {
@@ -116,10 +114,6 @@ public:
         return HintText{std::move(obscureText), std::move(ambiguousText), std::move(clearText), HintCategory::GanonsBossKey};
     }
 
-    static auto LACS(std::vector<Text>&& obscureText, std::vector<Text>&& ambiguousText = {}, Text&& clearText = {}) {
-        return HintText{std::move(obscureText), std::move(ambiguousText), std::move(clearText), HintCategory::LACS};
-    }
-
     static auto Altar(std::vector<Text>&& obscureText, std::vector<Text>&& ambiguousText = {}, Text&& clearText = {}) {
         return HintText{std::move(obscureText), std::move(ambiguousText), std::move(clearText), HintCategory::Altar};
     }
@@ -128,24 +122,16 @@ public:
         return HintText{std::move(obscureText), std::move(ambiguousText), std::move(clearText), HintCategory::Validation};
     }
 
-    static auto OtherHint(std::vector<Text>&& obscureText, std::vector<Text>&& ambiguousText = {}, Text&& clearText = {}) {
-        return HintText{std::move(obscureText), std::move(ambiguousText), std::move(clearText), HintCategory::OtherHint};
+    static auto StaticHint(std::vector<Text>&& obscureText, std::vector<Text>&& ambiguousText = {}, Text&& clearText = {}) {
+        return HintText{std::move(obscureText), std::move(ambiguousText), std::move(clearText), HintCategory::StaticHint};
     }
 
     static auto MasterSword(std::vector<Text>&& obscureText, std::vector<Text>&& ambiguousText = {}, Text&& clearText = {}) {
         return HintText{std::move(obscureText), std::move(ambiguousText), std::move(clearText), HintCategory::MasterSword};
     }
 
-    static auto GanonLine(std::vector<Text>&& obscureText, std::vector<Text>&& ambiguousText = {}, Text&& clearText = {}) {
-        return HintText{std::move(obscureText), std::move(ambiguousText), std::move(clearText), HintCategory::GanonLine};
-    }
-
-    static auto SheikLine(std::vector<Text>&& obscureText, std::vector<Text>&& ambiguousText = {}, Text&& clearText = {}) {
-        return HintText{std::move(obscureText), std::move(ambiguousText), std::move(clearText), HintCategory::SheikLine};
-    }
-
-    static auto MerchantsDialogs(std::vector<Text>&& obscureText, std::vector<Text>&& ambiguousText = {}, Text&& clearText = {}) {
-        return HintText{std::move(obscureText), std::move(ambiguousText), std::move(clearText), HintCategory::MerchantsDialogs};
+    static auto GanonJoke(std::vector<Text>&& obscureText, std::vector<Text>&& ambiguousText = {}, Text&& clearText = {}) {
+        return HintText{std::move(obscureText), std::move(ambiguousText), std::move(clearText), HintCategory::GanonJoke};
     }
 
     Text& GetObscure() {

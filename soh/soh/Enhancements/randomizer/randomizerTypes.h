@@ -3,6 +3,8 @@
 #include <stdint.h>
 #include "z64item.h"
 #include "randomizer_inf.h"
+#include <array>
+#include <string>
 
 #define MAX_TRICK_NAME_SIZE 50
 
@@ -38,16 +40,39 @@ typedef enum {
 } RandomizerCheckStatus;
 
 typedef enum {
-    HINT_TYPE_STATIC,
+    HINT_TYPE_ALTAR_CHILD,
+    HINT_TYPE_ALTAR_ADULT,
+    HINT_TYPE_STATIC_ENTRANCE,
+    HINT_TYPE_STATIC_ITEM,
+    HINT_TYPE_STATIC_LOCATION,
+    HINT_TYPE_MERCHANT,
     HINT_TYPE_TRIAL,
     HINT_TYPE_WOTH, // Way of the Hero
-    HINT_TYPE_BARREN,
+    HINT_TYPE_FOOLISH,
     HINT_TYPE_ENTRANCE,
     HINT_TYPE_ITEM_AREA,
     HINT_TYPE_ITEM_LOCATION,
+    HINT_TYPE_TEXT,
     HINT_TYPE_JUNK,
     HINT_TYPE_MAX
 } HintType;
+
+std::array<std::string, HINT_TYPE_MAX> hintTypeNames = {
+    "Child Altar",
+    "Adult Altar",
+    "Static Entrance",
+    "Static Item",
+    "Static Junk",
+    "Static Location",
+    "Trial",
+    "WotH",
+    "Barren",
+    "Entrance",
+    "Item Area",
+    "Item Location",
+    "Text",
+    "Junk"
+};
 
 typedef enum {
     RA_NONE,
@@ -90,24 +115,33 @@ typedef enum {
     RA_MAX
 } RandomizerArea;
 
+typedef enum {
+    TK_LIGHT_TRIAL,
+    TK_FOREST_TRIAL,
+    TK_FIRE_TRIAL,
+    TK_WATER_TRIAL,
+    TK_SPIRIT_TRIAL,
+    TK_SHADOW_TRIAL,
+} TrialKey;
+
 // Check types based on main settings
 typedef enum {
-    RCTYPE_STANDARD,       // Base set of rando checks
-    RCTYPE_SKULL_TOKEN,    // Gold Skulltulas
-    RCTYPE_COW,            // Cows
-    RCTYPE_ADULT_TRADE,    // Adult trade quest checks
-    RCTYPE_FROG_SONG,      // Frog song purple rupee checks
-    RCTYPE_MAP_COMPASS,    // Maps/Compasses
-    RCTYPE_SMALL_KEY,      // Small Keys
-    RCTYPE_GF_KEY,         // Gerudo Fortress Keys
-    RCTYPE_BOSS_KEY,       // Boss Keys
-    RCTYPE_GANON_BOSS_KEY, // Ganon's boss key
-    RCTYPE_SHOP,           // shops
-    RCTYPE_SCRUB,          // scrubs
-    RCTYPE_MERCHANT,       // merchants
-    RCTYPE_CHEST_GAME,     // todo replace this once we implement it, just using it to exclude for now
-    RCTYPE_LINKS_POCKET,   // todo this feels hacky
-    RCTYPE_GOSSIP_STONE,
+    RCTYPE_STANDARD,                   // Base set of rando checks
+    RCTYPE_SKULL_TOKEN,                // Gold Skulltulas
+    RCTYPE_COW,                        // Cows
+    RCTYPE_ADULT_TRADE,                // Adult trade quest checks
+    RCTYPE_FROG_SONG,                  // Frog song purple rupee checks
+    RCTYPE_MAP_COMPASS,                // Maps/Compasses
+    RCTYPE_SMALL_KEY,                  // Small Keys
+    RCTYPE_GF_KEY,                     // Gerudo Fortress Keys
+    RCTYPE_BOSS_KEY,                   // Boss Keys
+    RCTYPE_GANON_BOSS_KEY,             // Ganon's boss key
+    RCTYPE_SHOP,                       // shops
+    RCTYPE_SCRUB,                      // scrubs
+    RCTYPE_MERCHANT,                   // merchants
+    RCTYPE_CHEST_GAME,                 // RANDOTODO replace this once we implement it, just using it to exclude for now
+    RCTYPE_LINKS_POCKET,               // RANDOTODO this feels hacky, replace with better starting items
+    RCTYPE_GOSSIP_STONE,               // RANDOTODO make these into event access
     RCTYPE_SONG_LOCATION,              // Song locations
     RCTYPE_BOSS_HEART_OR_OTHER_REWARD, // Boss heart container or lesser dungeon rewards (lens, ice arrow)
     RCTYPE_DUNGEON_REWARD,             // Dungeon rewards (blue warps)
@@ -1388,46 +1422,46 @@ typedef enum {
     RC_PIERRE,
     RC_DELIVER_RUTOS_LETTER,
     RC_MASTER_SWORD_PEDESTAL,
-    RC_COLOSSUS_GOSSIP_STONE,
-    RC_DMC_GOSSIP_STONE,
-    RC_DMC_UPPER_GROTTO_GOSSIP_STONE,
-    RC_DMT_GOSSIP_STONE,
-    RC_DMT_STORMS_GROTTO_GOSSIP_STONE,
-    RC_DODONGOS_CAVERN_GOSSIP_STONE,
-    RC_FAIRY_GOSSIP_STONE,
-    RC_GC_MAZE_GOSSIP_STONE,
-    RC_GC_MEDIGORON_GOSSIP_STONE,
-    RC_GV_GOSSIP_STONE,
-    RC_GY_GOSSIP_STONE,
-    RC_HC_MALON_GOSSIP_STONE,
-    RC_HC_ROCK_WALL_GOSSIP_STONE,
-    RC_HC_STORMS_GROTTO_GOSSIP_STONE,
-    RC_HF_COW_GROTTO_GOSSIP_STONE,
-    RC_HF_NEAR_MARKET_GOSSIP_STONE,
-    RC_HF_OPEN_GROTTO_GOSSIP_STONE,
-    RC_HF_SOUTHEAST_GOSSIP_STONE,
-    RC_JABU_GOSSIP_STONE,
     RC_KF_DEKU_TREE_LEFT_GOSSIP_STONE,
     RC_KF_DEKU_TREE_RIGHT_GOSSIP_STONE,
     RC_KF_GOSSIP_STONE,
-    RC_KF_STORMS_GOSSIP_STONE,
-    RC_KAK_OPEN_GROTTO_GOSSIP_STONE,
-    RC_LH_LAB_GOSSIP_STONE,
-    RC_LH_SOUTHEAST_GOSSIP_STONE,
-    RC_LH_SOUTHWEST_GOSSIP_STONE,
+    RC_KF_STORMS_GROTTO_GOSSIP_STONE,
     RC_LW_GOSSIP_STONE,
-    RC_LW_NEAR_SHORTCUTS_GOSSIP_STONE,
+    RC_LW_NEAR_SHORTCUTS_GROTTO_GOSSIP_STONE,
     RC_SFM_MAZE_LOWER_GOSSIP_STONE,
     RC_SFM_MAZE_UPPER_GOSSIP_STONE,
     RC_SFM_SARIA_GOSSIP_STONE,
+    RC_HF_COW_GROTTO_GOSSIP_STONE,
+    RC_HF_NEAR_MARKET_GROTTO_GOSSIP_STONE,
+    RC_HF_OPEN_GROTTO_GOSSIP_STONE,
+    RC_HF_SOUTHEAST_GROTTO_GOSSIP_STONE,
     RC_TOT_LEFT_CENTER_GOSSIP_STONE,
-    RC_TOT_LEFT_GOSSIP_STONE,
+    RC_TOT_LEFTMOST_GOSSIP_STONE,
     RC_TOT_RIGHT_CENTER_GOSSIP_STONE,
-    RC_TOT_RIGHT_GOSSIP_STONE,
-    RC_ZD_GOSSIP_STONE,
+    RC_TOT_RIGHTMOST_GOSSIP_STONE,
+    RC_HC_MALON_GOSSIP_STONE,
+    RC_HC_ROCK_WALL_GOSSIP_STONE,
+    RC_HC_STORMS_GROTTO_GOSSIP_STONE,
+    RC_KAK_OPEN_GROTTO_GOSSIP_STONE,
+    RC_GRAVEYARD_GOSSIP_STONE,
+    RC_DMT_GOSSIP_STONE,
+    RC_DMT_STORMS_GROTTO_GOSSIP_STONE,
+    RC_GC_MAZE_GOSSIP_STONE,
+    RC_GC_MEDIGORON_GOSSIP_STONE,
+    RC_DMC_GOSSIP_STONE,
+    RC_DMC_UPPER_GROTTO_GOSSIP_STONE,
     RC_ZR_NEAR_DOMAIN_GOSSIP_STONE,
     RC_ZR_NEAR_GROTTOS_GOSSIP_STONE,
     RC_ZR_OPEN_GROTTO_GOSSIP_STONE,
+    RC_ZD_GOSSIP_STONE,
+    RC_ZF_JABU_GOSSIP_STONE,
+    RC_ZF_FAIRY_GOSSIP_STONE,
+    RC_LH_LAB_GOSSIP_STONE,
+    RC_LH_SOUTHEAST_GOSSIP_STONE,
+    RC_LH_SOUTHWEST_GOSSIP_STONE,
+    RC_GV_GOSSIP_STONE,
+    RC_COLOSSUS_GOSSIP_STONE,
+    RC_DODONGOS_CAVERN_GOSSIP_STONE,
     RC_KF_STORMS_GROTTO_BEEHIVE_LEFT,
     RC_KF_STORMS_GROTTO_BEEHIVE_RIGHT,
     RC_LW_NEAR_SHORTCUTS_GROTTO_BEEHIVE_LEFT,
@@ -1996,58 +2030,53 @@ typedef enum {
 
 typedef enum {
     RH_NONE,
-    RH_COLOSSUS_GOSSIP_STONE,
-    RH_DMC_GOSSIP_STONE,
-    RH_DMC_UPPER_GROTTO_GOSSIP_STONE,
-    RH_DMT_GOSSIP_STONE,
-    RH_DMT_STORMS_GROTTO_GOSSIP_STONE,
-    RH_DODONGOS_CAVERN_GOSSIP_STONE,
-    RH_ZF_FAIRY_GOSSIP_STONE,
-    RH_GC_MAZE_GOSSIP_STONE,
-    RH_GC_MEDIGORON_GOSSIP_STONE,
-    RH_GV_GOSSIP_STONE,
-    RH_GRAVEYARD_GOSSIP_STONE,
-    RH_HC_MALON_GOSSIP_STONE,
-    RH_HC_ROCK_WALL_GOSSIP_STONE,
-    RH_HC_STORMS_GROTTO_GOSSIP_STONE,
+    RH_KF_DEKU_TREE_LEFT_GOSSIP_STONE,
+    RH_KF_DEKU_TREE_RIGHT_GOSSIP_STONE,
+    RH_KF_GOSSIP_STONE,
+    RH_KF_STORMS_GROTTO_GOSSIP_STONE,
+    RH_LW_GOSSIP_STONE,
+    RH_LW_NEAR_SHORTCUTS_GROTTO_GOSSIP_STONE,
+    RH_SFM_MAZE_LOWER_GOSSIP_STONE,
+    RH_SFM_MAZE_UPPER_GOSSIP_STONE,
+    RH_SFM_SARIA_GOSSIP_STONE,
     RH_HF_COW_GROTTO_GOSSIP_STONE,
     RH_HF_NEAR_MARKET_GROTTO_GOSSIP_STONE,
     RH_HF_OPEN_GROTTO_GOSSIP_STONE,
     RH_HF_SOUTHEAST_GROTTO_GOSSIP_STONE,
-    RH_ZF_JABU_GOSSIP_STONE,
-    RH_KF_DEKU_TREE_GOSSIP_STONE_LEFT,
-    RH_KF_DEKU_TREE_GOSSIP_STONE_RIGHT,
-    RH_KF_GOSSIP_STONE,
-    RH_KF_STORMS_GROTTO_GOSSIP_STONE,
+    RH_TOT_LEFT_CENTER_GOSSIP_STONE,
+    RH_TOT_LEFTMOST_GOSSIP_STONE,
+    RH_TOT_RIGHT_CENTER_GOSSIP_STONE,
+    RH_TOT_RIGHTMOST_GOSSIP_STONE,
+    RH_HC_MALON_GOSSIP_STONE,
+    RH_HC_ROCK_WALL_GOSSIP_STONE,
+    RH_HC_STORMS_GROTTO_GOSSIP_STONE,
     RH_KAK_OPEN_GROTTO_GOSSIP_STONE,
-    RH_LH_LAB_GOSSIP_STONE,
-    RH_LH_SOUTHEAST_GOSSIP_STONE,
-    RH_LH_SOUTHWEST_GOSSIP_STONE,
-    RH_LW_GOSSIP_STONE,
-    RH_LW_NEAR_SHORTCUTS_GROTTO_GOSSIP_STONE,
-    RH_SFM_MAZE_GOSSIP_STONE_LOWER,
-    RH_SFM_MAZE_GOSSIP_STONE_UPPER,
-    RH_SFM_SARIA_GOSSIP_STONE,
-    RH_TOT_GOSSIP_STONE_LEFT_CENTER,
-    RH_TOT_GOSSIP_STONE_LEFT,
-    RH_TOT_GOSSIP_STONE_RIGHT_CENTER,
-    RH_TOT_GOSSIP_STONE_RIGHT,
-    RH_ZD_GOSSIP_STONE,
+    RH_GRAVEYARD_GOSSIP_STONE,
+    RH_DMT_GOSSIP_STONE,
+    RH_DMT_STORMS_GROTTO_GOSSIP_STONE,
+    RH_GC_MAZE_GOSSIP_STONE,
+    RH_GC_MEDIGORON_GOSSIP_STONE,
+    RH_DMC_GOSSIP_STONE,
+    RH_DMC_UPPER_GROTTO_GOSSIP_STONE,
     RH_ZR_NEAR_DOMAIN_GOSSIP_STONE,
     RH_ZR_NEAR_GROTTOS_GOSSIP_STONE,
     RH_ZR_OPEN_GROTTO_GOSSIP_STONE,
-    RH_GANONDORF_HINT,
+    RH_ZD_GOSSIP_STONE,
+    RH_ZF_JABU_GOSSIP_STONE,
+    RH_ZF_FAIRY_GOSSIP_STONE,
+    RH_LH_LAB_GOSSIP_STONE,
+    RH_LH_SOUTHEAST_GOSSIP_STONE,
+    RH_LH_SOUTHWEST_GOSSIP_STONE,
+    RH_GV_GOSSIP_STONE,
+    RH_COLOSSUS_GOSSIP_STONE,
+    RH_DODONGOS_CAVERN_GOSSIP_STONE,
+    RH_ENDGAME_HINT,
     RH_GANONDORF_NOHINT,
     RH_DAMPES_DIARY,
     RH_GREG_RUPEE,
-    RH_BEAN_SALESMAN,
-    RH_MEDIGORON,
-    RH_GRANNYS_SHOP,
-    RH_WASTELAND_BOMBCHU_SALESMAN,
-    RH_WASTELAND_BOMBCHU_SALESMAN_POST,
     RH_ALTAR_CHILD,
     RH_ALTAR_ADULT,
-    RH_SARIA,
+    RH_SARIA_HINT,
     RH_FISHING_POLE,
     RH_SHEIK_LIGHT_ARROWS,
     RH_MINUET_WARP_LOC,
@@ -2056,15 +2085,91 @@ typedef enum {
     RH_REQUIEM_WARP_LOC,
     RH_NOCTURNE_WARP_LOC,
     RH_PRELUDE_WARP_LOC,
-    RH_FROGS,
+    RH_MEDIGORON,
+    RH_CARPET_SALESMAN,
+    RH_BEAN_SALESMAN,
+    RH_GRANNY,
+    RH_HBA_HINT,
+    RH_MALON_HINT,
+    RH_CHICKENS_HINT,
+    RH_BIG_POES_HINT,
+    RH_BIGGORON_HINT,
+    RH_FROGS_HINT,
+    RH_KAK_10_SKULLS_HINT,
+    RH_KAK_20_SKULLS_HINT,
+    RH_KAK_30_SKULLS_HINT,
+    RH_KAK_40_SKULLS_HINT,
+    RH_KAK_50_SKULLS_HINT,
+    RH_KAK_100_SKULLS_HINT,
     RH_MAX,
-} RandomizerHintKey;
+} RandomizerHint;
+
+//RANDOTODO When dynamic grotto check names are done, apply it to these hints
+std::array<std::string, RH_MAX> hintKeyNames = {
+    "ERROR HINT",
+    "Desert Collosus Gossip Stone",
+    "DMC Gossip Stone",
+    "DMC Upper Grotto Gossip Stone",
+    "DMT Gossip Stone",
+    "DMT Storms Grotto Gossip Stone",
+    "Dodongo's Cavern Gossip Stone",
+    "GC Maze Gossip Stone",
+    "GC Medigoron Gossip Stone",
+    "Graveyard Gossip Stone",
+    "HC Near Malon Gossip Stone",
+    "HC Rock Wall Gossip Stone",
+    "HC Storm Grotto Gossip Stone",
+    "HF Cow Grotto Gossip Stone",
+    "HF Near Market Grotto Gossip Stone",
+    "HF Open Grotto Gossip Stone",
+    "HF Southeast Grotto Gossip Stone",
+    "ZF Near Fairy Gossip Stone",
+    "ZF Near Jabu Gossip Stone",
+    "KF Right Near Deku Gossip Stone",
+    "KF Left Near Deku Gossip Stone", //RANDOTODO find cardinal direction
+    "KF Gossip Stone",
+    "KF Storms Grotto Gossip Stone",
+    "Kak Open Grotto Gossip Stone",
+    "LH Near Lab Gossip Stone",
+    "LH Southeast Gossip Stone",
+    "LH Southwest Gossip Stone",
+    "LW Gossip Stone",
+    "LW Near Shortcuts Grotto Gossip Stone",
+    "SFM Near LW Gossip Stone",
+    "SFM Center Gossip Stone",
+    "SFM Near Forst Temple Gossip Stone",
+    "Market Leftmost Center Gossip Stone",
+    "Market Left Center Gossip Stone",
+    "Market Right Center Gossip Stone",
+    "Market Rightmost Gossip Stone",
+    "ZD Gossip Stone",
+    "ZR Near Domain Gossip Stone",
+    "ZR Near Grottos Gossip Stone",
+    "ZR Open Grotto Gossip Stone",
+    "Ganondorf Hint",
+    "Ganondorf Joke",
+    "Dampe's Diary Hint",
+    "Treasure Chest Game Greg Hint",
+    "ToT Altar as Child",
+    "ToT Altar as Adult",
+    "Saria's Magic Hint",
+    "Fishing Pole Hint",
+    "Sheik in Ganons Castle Hint",
+    "Minuet of Forest Destination",
+    "Bolero of Fire Destination",
+    "Serenade of Water Destination",
+    "Requiem of Spirit Destination",
+    "Nocturne of Shadow Destination",
+    "Prelude of Light Destination",
+    "Medigoron Hint"
+    "Carpet Salseman Hint"
+    "Bean Salseman Hint"
+    "Granny Hint"
+};
 
 typedef enum {
     RHT_NONE,
-    RHT_PREFIX,
     RHT_WAY_OF_THE_HERO,
-    RHT_PLUNDERING,
     RHT_FOOLISH,
     RHT_CAN_BE_FOUND_AT,
     RHT_HOARDS,
@@ -3367,60 +3472,67 @@ typedef enum {
     // Trials
     RHT_SIX_TRIALS,
     RHT_ZERO_TRIALS,
-    RHT_FOUR_TO_FIVE_TRIALS,
-    RHT_ONE_TO_THREE_TRIALS,
+    RHT_TRIAL_OFF,
+    RHT_TRIAL_ON,
+    RHT_LIGHT_TRIAL,
+    RHT_FOREST_TRIAL,
+    RHT_FIRE_TRIAL,
+    RHT_WATER_TRIAL,
+    RHT_SPIRIT_TRIAL,
+    RHT_SHADOW_TRIAL,
     // Altar
-    RHT_SPIRITUAL_STONE_TEXT_START,
+    RHT_CHILD_ALTAR_STONES,
     RHT_CHILD_ALTAR_TEXT_END_DOTOPEN,
     RHT_CHILD_ALTAR_TEXT_END_DOTSONGONLY,
     RHT_CHILD_ALTAR_TEXT_END_DOTCLOSED,
-    RHT_ADULT_ALTAR_TEXT_START,
+    RHT_ADULT_ALTAR_MEDALLIONS,
     RHT_ADULT_ALTAR_TEXT_END,
-    // Validation Line
-    RHT_VALIDATION_LINE,
-    // Light Arrow Location
-    RHT_LIGHT_ARROW_LOCATION_HINT,
-    RHT_SHEIK_LIGHT_ARROW_HINT,
-    // Master Sword Location
-    RHT_MASTER_SWORD_LOCATION_HINT,
-    RHT_SHEIK_MASTER_SWORD_LOCATION_HINT,
-    // Your Pocket
-    RHT_YOUR_POCKET,
-    // Other Hints
-    RHT_DAMPE_DIARY01,
-    RHT_DAMPE_DIARY02,
-    RHT_GREG_HINT01,
-    RHT_GREG_HINT02,
-    RHT_SARIA_TEXT01,
-    RHT_SARIA_TEXT02,
-    RHT_WARP_TO,
-    RHT_WARP_CHOICE,
-    RHT_FROGS_HINT01,
-    RHT_FROGS_HINT02,
-    RHT_FISHING_POLE_HINT01,
-    RHT_FISHING_POLE_HINT02,
-    // Ganon Line
-    RHT_GANON_LINE01,
-    RHT_GANON_LINE02,
-    RHT_GANON_LINE03,
-    RHT_GANON_LINE04,
-    RHT_GANON_LINE05,
-    RHT_GANON_LINE06,
-    RHT_GANON_LINE07,
-    RHT_GANON_LINE08,
-    RHT_GANON_LINE09,
-    RHT_GANON_LINE10,
-    RHT_GANON_LINE11,
-    // Merchants
-    RHT_BEAN_SALESMAN_FIRST,
-    RHT_BEAN_SALESMAN_SECOND,
-    RHT_MEDIGORON_DIALOG_FIRST,
-    RHT_MEDIGORON_DIALOG_SECOND,
+    // Static Item Hints
+    RHT_GANONDORF_HINT_LA_ONLY,
+    RHT_SHEIK_HINT_LA_ONLY,
+    RHT_GANONDORF_HINT_LA_AND_MS,
+    RHT_SHEIK_HINT_LA_AND_MS,
+    RHT_DAMPE_DIARY,
+    RHT_GREG_HINT,
+    RHT_SARIA_HINT,
+    RHT_FISHING_POLE_HINT,
+    // Static Entrance Hints
+    RHT_WARP_SONG,
+    // Static Location Hints
+    RHT_MYSTERIOUS_ITEM,
+    RHT_MEDIGORON_HINT,
     RHT_CARPET_SALESMAN_DIALOG_FIRST,
     RHT_CARPET_SALESMAN_DIALOG_MYSTERIOUS,
     RHT_CARPET_SALESMAN_DIALOG_HINTED,
-    RHT_CARPET_SALESMAN_DIALOG_FINAL,
-    RHT_GRANNY_DIALOG,
+    RHT_BEAN_SALESMAN_HINT,
+    RHT_GRANNY_HINT,
+    RHT_HBA_HINT_SIGN,
+    RHT_HBA_HINT_NOT_ON_HORSE,
+    RHT_HBA_HINT_INITIAL,
+    RHT_HBA_HINT_HAVE_1000,
+    RHT_MALON_HINT_HOW_IS_EPONA,
+    RHT_MALON_HINT_OBSTICLE_COURSE,
+    RHT_MALON_HINT_TURNING_EVIL,
+    RHT_MALON_HINT_INGO_TEMPTED,
+    RHT_CHICKENS_HINT,
+    RHT_BIG_POES_HINT,
+    RHT_BIGGORON_HINT,
+    RHT_FROGS_HINT,
+    RHT_SKULLS_HINT,
+    // Ganon Line
+    RHT_GANON_JOKE01,
+    RHT_GANON_JOKE02,
+    RHT_GANON_JOKE03,
+    RHT_GANON_JOKE04,
+    RHT_GANON_JOKE05,
+    RHT_GANON_JOKE06,
+    RHT_GANON_JOKE07,
+    RHT_GANON_JOKE08,
+    RHT_GANON_JOKE09,
+    RHT_GANON_JOKE10,
+    RHT_GANON_JOKE11,
+    // Your Pocket
+    RHT_YOUR_POCKET,
     RHT_MAX
 } RandomizerHintTextKey;
 

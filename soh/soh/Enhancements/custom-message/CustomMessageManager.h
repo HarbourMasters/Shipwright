@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <unordered_map>
+#include <map>
 #include <cstdint>
 #include <exception>
 
@@ -30,6 +31,7 @@ class CustomMessage {
     CustomMessage() = default;
     CustomMessage(std::string english_, std::string german_, std::string french_,
                   TextBoxType type_ = TEXTBOX_TYPE_BLACK, TextBoxPosition position_ = TEXTBOX_POS_BOTTOM);
+    CustomMessage(std::string english_, TextBoxType type_ = TEXTBOX_TYPE_BLACK, TextBoxPosition position_ = TEXTBOX_POS_BOTTOM);
     CustomMessage(Text text, TextBoxType type_ = TEXTBOX_TYPE_BLACK, TextBoxPosition position_ = TEXTBOX_POS_BOTTOM);
 
     static std::string MESSAGE_END() ;
@@ -42,12 +44,15 @@ class CustomMessage {
     const std::string& GetEnglish() const;
     const std::string& GetFrench() const;
     const std::string& GetGerman() const;
+    const std::string& GetForLanguage(uint8_t language) const;
     const TextBoxType& GetTextBoxType() const;
+    const void SetTextBoxType(TextBoxType boxType);
     const TextBoxPosition& GetTextBoxPosition() const;
 
     CustomMessage operator+(const CustomMessage& right) const;
     CustomMessage operator+(const std::string& right) const;
     void operator+=(const std::string& right);
+    void operator+=(const CustomMessage& right);
     bool operator==(const CustomMessage& right) const;
     bool operator!=(const CustomMessage& right) const;
 
@@ -72,6 +77,16 @@ class CustomMessage {
      * @param newFrench the new string for the French message
      */
     void Replace(std::string&& oldStr, std::string&& newEnglish, std::string&& newGerman, std::string&& newFrench);
+
+    /**
+     * @brief Finds an instance of oldStr in each language of the CustomMessage,
+     * and replaces it with the corresponding string in the provided CustomMessage.
+     * Typically used for dynamic variable replacement (i.e. gameplay stats, skulltula count)
+     *
+     * @param oldStr the string to be replaced
+     * @param newMessage the message containing the new strings.
+     */
+    void Replace(std::string&& oldStr, CustomMessage newMessage);
 
     /**
      * @brief Capitalizes the first letter of the string for each language.
@@ -102,6 +117,31 @@ class CustomMessage {
      * @param iid the ItemID whose icon should be displayed in this message's textbox.
      */
     void Format(ItemID iid);
+
+    /**
+     * @brief Replaces various symbols with the control codes necessary to
+     * display them in OoT's textboxes. i.e. special characters, colors, newlines,
+     * wait for input, etc. Also adds the item icon to each page of the textbox.
+     *
+     * @param iid the ItemID whose icon should be displayed in this message's textbox.
+     */
+    void Format(ItemID iid);
+
+    /**
+     * @brief Automatically format a text to fit into textboxes 
+     *
+     * RANDOTODO whoever knows exactly what this does check my adaption and write a better comment
+     */
+    void AutoFormat();
+
+    /**
+     * @brief Replaces {{d}} in text with the supplied number, and if plural
+     * options exist (2 blocks of text surrounded by |) choose the former if it 1,
+     * and the latter otherwise, deleting the other and the |'s.
+     *
+     * @param num the number to insert.
+     */
+    void CustomMessage::InsertNumber(uint8_t num);
 
     /**
      * @brief Replaces various symbols with the control codes necessary to

@@ -90,7 +90,7 @@ uint32_t Rando::Location::Getuint32_t() const {
 }
 
 const HintText& Rando::Location::GetHint() const {
-    return Hint(hintKey);
+    return GetHintText(hintKey);
 }
 
 RandomizerGet Rando::Location::GetVanillaItem() const {

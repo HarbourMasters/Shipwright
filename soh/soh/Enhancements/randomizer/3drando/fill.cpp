@@ -1147,7 +1147,7 @@ int Fill() {
       ctx->GetEntranceShuffler()->CreateEntranceOverrides();
       
       //funny ganon line
-      Text ganonText = RandomElement(GetHintCategory(HintCategory::GanonLine)).GetText();
+      Text ganonText = RandomElement(GetHintCategory(HintCategory::GanonJoke)).GetText();
       CreateMessageFromTextObject(0x70CB, 0, 2, 3, AddColorsAndFormat(ganonText));
       SetGanonText(ganonText);
       

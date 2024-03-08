@@ -91,6 +91,29 @@ public:
         }
     }
 
+    void Replace(std::string oldStr, Text newText) {
+        size_t position = english.find(oldStr);
+        while (position != std::string::npos) {
+            english.replace(position, oldStr.length(), newText.GetEnglish());
+            position = english.find(oldStr);
+        }
+        position = french.find(oldStr);
+        while (position != std::string::npos) {
+            french.replace(position, oldStr.length(), newText.GetFrench());
+            position = french.find(oldStr);
+        }
+        position = spanish.find(oldStr);
+        while (position != std::string::npos) {
+            spanish.replace(position, oldStr.length(), newText.GetSpanish());
+            position = spanish.find(oldStr);
+        }
+        position = german.find(oldStr);
+        while (position != std::string::npos) {
+            german.replace(position, oldStr.length(), newText.GetGerman());
+            position = german.find(oldStr);
+        }
+    }
+
     // Convert first char to upper case
     Text Capitalize(void) const {
         Text cap = *this + "";
