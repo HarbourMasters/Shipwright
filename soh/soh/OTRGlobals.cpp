@@ -321,6 +321,7 @@ OTRGlobals::OTRGlobals() {
     auto sohInputEditorWindow = std::make_shared<SohInputEditorWindow>("gControllerConfigurationEnabled", "Input Editor");
     context->InitWindow(sohInputEditorWindow);
     context->InitAudio();
+    context->InitGfxDebugger();
 
     SPDLOG_INFO("Starting Ship of Harkinian version {}", (char*)gBuildVersion);
 
