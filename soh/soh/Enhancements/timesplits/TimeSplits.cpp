@@ -183,24 +183,24 @@ std::vector<TimeSplitObject> splitObjects = {
     {   BOSS_TWINROVA,                          "Twinrova",                             "SPECIAL_TRIFORCE_PIECE_WHITE"},  
     {   BOSS_GANONDORF,                         "Ganondorf",                            "SPECIAL_TRIFORCE_PIECE_WHITE"},
     {   BOSS_GANON,                             "Ganon",                                "SPECIAL_TRIFORCE_PIECE_WHITE"},
-    {   ENTER_DEKU_TREE,                        "Enter Deku Tree",                      "SPECIAL_TRIFORCE_PIECE_WHITE"},
-    {   ENTER_DODONGOS_CAVERN,                  "Enter Dodongos Cavern",                "SPECIAL_TRIFORCE_PIECE_WHITE"},
-    {   ENTER_JABU_JABU,                        "Enter Jabu Jabu's Belly",              "SPECIAL_TRIFORCE_PIECE_WHITE"},
-    {   ENTER_FOREST_TEMPLE,                    "Enter Forest Temple",                  "SPECIAL_TRIFORCE_PIECE_WHITE"},
-    {   ENTER_FIRE_TEMPLE,                      "Enter Fire Temple",                    "SPECIAL_TRIFORCE_PIECE_WHITE"},
-    {   ENTER_WATER_TEMPLE,                     "Enter Water Temple",                   "SPECIAL_TRIFORCE_PIECE_WHITE"},
-    {   ENTER_SPIRIT_TEMPLE,                    "Enter Spirit Temple",                  "SPECIAL_TRIFORCE_PIECE_WHITE"},
-    {   ENTER_SHADOW_TEMPLE,                    "Enter Shadow Temple",                  "SPECIAL_TRIFORCE_PIECE_WHITE"},
-    {   ENTER_BOTTOM_OF_THE_WELL,               "Enter Bottom of the Well",             "SPECIAL_TRIFORCE_PIECE_WHITE"},
-    {   ENTER_ICE_CAVERN,                       "Enter Ice Cavern",                     "SPECIAL_TRIFORCE_PIECE_WHITE"},
-    {   ENTER_GANONS_TOWER,                     "Enter Ganons Tower",                   "SPECIAL_TRIFORCE_PIECE_WHITE"},
-    {   ENTER_GERUDO_TRAINING_GROUND,           "Enter Gerudo Training Grounds",        "SPECIAL_TRIFORCE_PIECE_WHITE"},
-    {   ENTER_THIEVES_HIDEOUT,                  "Enter Thieves Hideout",                "SPECIAL_TRIFORCE_PIECE_WHITE"},
-    {   ENTER_INSIDE_GANONS_CASTLE,             "Enter Ganons Castle",                  "SPECIAL_TRIFORCE_PIECE_WHITE"},
-    {   ENTER_GANONS_TOWER_COLLAPSE_INTERIOR,   "Enter Tower Collapse Interior",        "SPECIAL_TRIFORCE_PIECE_WHITE"},
-    {   ENTER_INSIDE_GANONS_CASTLE_COLLAPSE,    "Enter Ganons Castle Collapse",         "SPECIAL_TRIFORCE_PIECE_WHITE"},
-    {   ESCAPE_LOST_WOODS,                      "Lost Woods Escape",                    "SPECIAL_TRIFORCE_PIECE_WHITE"},
-    {   ESCAPE_KOKIRI_FOREST,                   "Forest Escape",                        "SPECIAL_TRIFORCE_PIECE_WHITE"},
+    {   ENTER_DEKU_TREE,                        "Enter Deku Tree",                      "SPECIAL_SPLIT_ENTRANCE"},
+    {   ENTER_DODONGOS_CAVERN,                  "Enter Dodongos Cavern",                "SPECIAL_SPLIT_ENTRANCE"},
+    {   ENTER_JABU_JABU,                        "Enter Jabu Jabu's Belly",              "SPECIAL_SPLIT_ENTRANCE"},
+    {   ENTER_FOREST_TEMPLE,                    "Enter Forest Temple",                  "SPECIAL_SPLIT_ENTRANCE"},
+    {   ENTER_FIRE_TEMPLE,                      "Enter Fire Temple",                    "SPECIAL_SPLIT_ENTRANCE"},
+    {   ENTER_WATER_TEMPLE,                     "Enter Water Temple",                   "SPECIAL_SPLIT_ENTRANCE"},
+    {   ENTER_SPIRIT_TEMPLE,                    "Enter Spirit Temple",                  "SPECIAL_SPLIT_ENTRANCE"},
+    {   ENTER_SHADOW_TEMPLE,                    "Enter Shadow Temple",                  "SPECIAL_SPLIT_ENTRANCE"},
+    {   ENTER_BOTTOM_OF_THE_WELL,               "Enter Bottom of the Well",             "SPECIAL_SPLIT_ENTRANCE"},
+    {   ENTER_ICE_CAVERN,                       "Enter Ice Cavern",                     "SPECIAL_SPLIT_ENTRANCE"},
+    {   ENTER_GANONS_TOWER,                     "Enter Ganons Tower",                   "SPECIAL_SPLIT_ENTRANCE"},
+    {   ENTER_GERUDO_TRAINING_GROUND,           "Enter Gerudo Training Grounds",        "SPECIAL_SPLIT_ENTRANCE"},
+    {   ENTER_THIEVES_HIDEOUT,                  "Enter Thieves Hideout",                "SPECIAL_SPLIT_ENTRANCE"},
+    {   ENTER_INSIDE_GANONS_CASTLE,             "Enter Ganons Castle",                  "SPECIAL_SPLIT_ENTRANCE"},
+    {   ENTER_GANONS_TOWER_COLLAPSE_INTERIOR,   "Enter Tower Collapse Interior",        "SPECIAL_SPLIT_ENTRANCE"},
+    {   ENTER_INSIDE_GANONS_CASTLE_COLLAPSE,    "Enter Ganons Castle Collapse",         "SPECIAL_SPLIT_ENTRANCE"},
+    {   ESCAPE_LOST_WOODS,                      "Lost Woods Escape",                    "SPECIAL_SPLIT_ENTRANCE"},
+    {   ESCAPE_KOKIRI_FOREST,                   "Forest Escape",                        "SPECIAL_SPLIT_ENTRANCE"},
 };
 
 std::vector<TimeSplitObject> equipmentObjects = {
@@ -286,24 +286,24 @@ std::vector<TimeSplitObject> bossObjects = {
 };
 
 std::vector<TimeSplitObject> sceneObjects = {
-    {   ENTER_DEKU_TREE,                        "Enter Deku Tree",                  "SPECIAL_TRIFORCE_PIECE_WHITE"},
-    {   ENTER_DODONGOS_CAVERN,                  "Enter Dodongos Cavern",            "SPECIAL_TRIFORCE_PIECE_WHITE"},
-    {   ENTER_JABU_JABU,                        "Enter Jabu Jabu's Belly",          "SPECIAL_TRIFORCE_PIECE_WHITE"},
-    {   ENTER_FOREST_TEMPLE,                    "Enter Forest Temple",              "SPECIAL_TRIFORCE_PIECE_WHITE"},
-    {   ENTER_FIRE_TEMPLE,                      "Enter Fire Temple",                "SPECIAL_TRIFORCE_PIECE_WHITE"},
-    {   ENTER_WATER_TEMPLE,                     "Enter Water Temple",               "SPECIAL_TRIFORCE_PIECE_WHITE"},
-    {   ENTER_SPIRIT_TEMPLE,                    "Enter Spirit Temple",              "SPECIAL_TRIFORCE_PIECE_WHITE"},
-    {   ENTER_SHADOW_TEMPLE,                    "Enter Shadow Temple",              "SPECIAL_TRIFORCE_PIECE_WHITE"},
-    {   ENTER_BOTTOM_OF_THE_WELL,               "Enter Bottom of the Well",         "SPECIAL_TRIFORCE_PIECE_WHITE"},
-    {   ENTER_ICE_CAVERN,                       "Enter Ice Cavern",                 "SPECIAL_TRIFORCE_PIECE_WHITE"},
-    {   ENTER_GANONS_TOWER,                     "Enter Ganons Tower",               "SPECIAL_TRIFORCE_PIECE_WHITE"},
-    {   ENTER_GERUDO_TRAINING_GROUND,           "Enter Gerudo Training Grounds",    "SPECIAL_TRIFORCE_PIECE_WHITE"},
-    {   ENTER_THIEVES_HIDEOUT,                  "Enter Thieves Hideout",            "SPECIAL_TRIFORCE_PIECE_WHITE"},
-    {   ENTER_INSIDE_GANONS_CASTLE,             "Enter Ganons Castle",              "SPECIAL_TRIFORCE_PIECE_WHITE"},
-    {   ENTER_GANONS_TOWER_COLLAPSE_INTERIOR,   "Enter Tower Collapse Interior",    "SPECIAL_TRIFORCE_PIECE_WHITE"},
-    {   ENTER_INSIDE_GANONS_CASTLE_COLLAPSE,    "Enter Ganons Castle Collapse",     "SPECIAL_TRIFORCE_PIECE_WHITE"},
-    {   ESCAPE_LOST_WOODS,                      "Lost Woods Escape",                "SPECIAL_TRIFORCE_PIECE_WHITE"},
-    {   ESCAPE_KOKIRI_FOREST,                   "Forest Escape",                    "SPECIAL_TRIFORCE_PIECE_WHITE"},
+    {   ENTER_DEKU_TREE,                        "Enter Deku Tree",                  "SPECIAL_SPLIT_ENTRANCE"},
+    {   ENTER_DODONGOS_CAVERN,                  "Enter Dodongos Cavern",            "SPECIAL_SPLIT_ENTRANCE"},
+    {   ENTER_JABU_JABU,                        "Enter Jabu Jabu's Belly",          "SPECIAL_SPLIT_ENTRANCE"},
+    {   ENTER_FOREST_TEMPLE,                    "Enter Forest Temple",              "SPECIAL_SPLIT_ENTRANCE"},
+    {   ENTER_FIRE_TEMPLE,                      "Enter Fire Temple",                "SPECIAL_SPLIT_ENTRANCE"},
+    {   ENTER_WATER_TEMPLE,                     "Enter Water Temple",               "SPECIAL_SPLIT_ENTRANCE"},
+    {   ENTER_SPIRIT_TEMPLE,                    "Enter Spirit Temple",              "SPECIAL_SPLIT_ENTRANCE"},
+    {   ENTER_SHADOW_TEMPLE,                    "Enter Shadow Temple",              "SPECIAL_SPLIT_ENTRANCE"},
+    {   ENTER_BOTTOM_OF_THE_WELL,               "Enter Bottom of the Well",         "SPECIAL_SPLIT_ENTRANCE"},
+    {   ENTER_ICE_CAVERN,                       "Enter Ice Cavern",                 "SPECIAL_SPLIT_ENTRANCE"},
+    {   ENTER_GANONS_TOWER,                     "Enter Ganons Tower",               "SPECIAL_SPLIT_ENTRANCE"},
+    {   ENTER_GERUDO_TRAINING_GROUND,           "Enter Gerudo Training Grounds",    "SPECIAL_SPLIT_ENTRANCE"},
+    {   ENTER_THIEVES_HIDEOUT,                  "Enter Thieves Hideout",            "SPECIAL_SPLIT_ENTRANCE"},
+    {   ENTER_INSIDE_GANONS_CASTLE,             "Enter Ganons Castle",              "SPECIAL_SPLIT_ENTRANCE"},
+    {   ENTER_GANONS_TOWER_COLLAPSE_INTERIOR,   "Enter Tower Collapse Interior",    "SPECIAL_SPLIT_ENTRANCE"},
+    {   ENTER_INSIDE_GANONS_CASTLE_COLLAPSE,    "Enter Ganons Castle Collapse",     "SPECIAL_SPLIT_ENTRANCE"},
+    {   ESCAPE_LOST_WOODS,                      "Lost Woods Escape",                "SPECIAL_SPLIT_ENTRANCE"},
+    {   ESCAPE_KOKIRI_FOREST,                   "Forest Escape",                    "SPECIAL_SPLIT_ENTRANCE"},
 };
 
 std::string formatTimestampTimeSplit(uint32_t value) {
@@ -410,6 +410,7 @@ void DrawTimeSplitOptions() {
     ImGui::PushItemWidth(165.0f);
     ImGui::InputText("##List Name", textBuffer, sizeof(textBuffer));
     ImGui::PopItemWidth();
+    ImGui::SameLine();    
     if (ImGui::Button("Save List")) {
         std::ifstream existingFile("splitdata.json");
         json existingData;
@@ -431,7 +432,34 @@ void DrawTimeSplitOptions() {
         status = "List has been saved to disk";
         statusColor = COLOR_LIGHT_BLUE;
     }
-    ImGui::SameLine(0);
+    UIWidgets::Spacer(0);
+    ImGui::Text("Saved Lists");
+    ImGui::SameLine();
+    std::ifstream lists("splitdata.json");
+    json comboList;
+    lists >> comboList;
+    std::vector<std::string> keys;
+    for (auto& entry : comboList.items()) {
+        keys.push_back(entry.key());
+    }
+    static uint32_t selectedItem = 0;
+    static std::string listItem = keys[0];
+    ImGui::PushItemWidth(151.0f);
+    if (ImGui::BeginCombo("##lists", keys[selectedItem].c_str())) {
+        for (int i = 0; i < keys.size(); i++) {
+            bool isSelected = (selectedItem == i);
+            if (ImGui::Selectable(keys[i].c_str(), isSelected)) {
+                selectedItem = i;
+                listItem = keys[i].c_str();
+            }
+            if (isSelected) {
+                ImGui::SetItemDefaultFocus();
+            }
+        }
+        ImGui::EndCombo();
+    }
+    ImGui::PopItemWidth();
+    ImGui::SameLine();
     if (ImGui::Button("Load List")) {
         std::ifstream file("splitdata.json");
         json j;
@@ -440,14 +468,14 @@ void DrawTimeSplitOptions() {
             file >> j;
             file.close();
         }
-        if (j[textBuffer]["splitItem"].size() > 0) {
+        if (j[listItem]["splitItem"].size() > 0) {
             splitItem.clear();
             splitTime.clear();
             splitPreviousBest.clear();
             splitBest.clear();
             splitStatus.clear();
 
-            for (int i = 0; i < j[textBuffer]["splitItem"].size(); i++) {
+            for (int i = 0; i < j[listItem]["splitItem"].size(); i++) {
                 splitItem.push_back(0);
                 splitTime.push_back(0);
                 splitPreviousBest.push_back(0);
@@ -458,14 +486,14 @@ void DrawTimeSplitOptions() {
                     splitStatus.push_back(0);
                 }
             }
-            splitItem = j[textBuffer]["splitItem"].get<std::vector<uint32_t>>();
-            splitTime = j[textBuffer]["splitTime"].get<std::vector<uint32_t>>();
-            splitTokens = j[textBuffer]["splitTokens"];
-            splitPreviousBest = j[textBuffer]["splitPreviousBest"].get<std::vector<uint32_t>>();
-            colorChoice.x = j[textBuffer]["backgroundColor.r"];
-            colorChoice.y = j[textBuffer]["backgroundColor.g"];
-            colorChoice.z = j[textBuffer]["backgroundColor.b"];
-            colorChoice.w = j[textBuffer]["backgroundColor.a"];
+            splitItem = j[listItem]["splitItem"].get<std::vector<uint32_t>>();
+            splitTime = j[listItem]["splitTime"].get<std::vector<uint32_t>>();
+            splitTokens = j[listItem]["splitTokens"];
+            splitPreviousBest = j[listItem]["splitPreviousBest"].get<std::vector<uint32_t>>();
+            colorChoice.x = j[listItem]["backgroundColor.r"];
+            colorChoice.y = j[listItem]["backgroundColor.g"];
+            colorChoice.z = j[listItem]["backgroundColor.b"];
+            colorChoice.w = j[listItem]["backgroundColor.a"];
             file.close();
             status = "List has been loaded from Save Data";
             statusColor = COLOR_LIGHT_BLUE;
@@ -474,16 +502,6 @@ void DrawTimeSplitOptions() {
             statusColor = COLOR_RED;
         }
         
-    }
-    ImGui::SameLine();
-    if (ImGui::Button("Reset List")) {
-        splitItem.clear();
-        splitTime.clear();
-        splitTokens = 0;
-        splitStatus.clear();
-        splitPreviousBest.clear();
-        status = "List has been reset";
-        statusColor = COLOR_RED;
     }
     UIWidgets::Spacer(0);
     ImGui::Text("Background Color");
@@ -524,6 +542,16 @@ void DrawTimeSplitOptions() {
                 splitPreviousBest[i] = splitBest[i];
             }
         }
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Reset List")) {
+        splitItem.clear();
+        splitTime.clear();
+        splitTokens = 0;
+        splitStatus.clear();
+        splitPreviousBest.clear();
+        status = "List has been reset";
+        statusColor = COLOR_RED;
     }
     ImGui::TextColored(statusColor, status.c_str());
     UIWidgets::PaddedSeparator();
@@ -594,11 +622,6 @@ void DrawTimeSplitSplits(){
                 itemNum = obj.itemID;
                 itemImager = obj.itemImage;
                 itemNamer = obj.itemName;
-                //if (obj.itemImage == "SPECIAL_TRIFORCE_PIECE_WHITE") {
-                //    TimeSplitColorTint();
-                //} else {
-                //    pieceTint = COLOR_WHITE;
-                //}
                 TimeSplitColorTint();
             }
         }
@@ -666,9 +689,9 @@ void DrawTimeSplitSplits(){
             skullText += " (";
             skullText += std::to_string(splitTokens).c_str();
             skullText += ")";
-            ImGui::Text(skullText.c_str());
+            ImGui::TextWrapped(skullText.c_str());
         } else {
-            ImGui::Text(itemNamer.c_str());
+            ImGui::TextWrapped(itemNamer.c_str());
         }
         ImGui::TableNextColumn();
         // Current Time
@@ -769,72 +792,54 @@ void TimeSplitAddToSplits(uint32_t itemToAdd) {
 }
 
 void DrawTimeSplitListManager() {
-    uint32_t equipmentID = 0;
-    uint32_t questID = 0;
-    uint32_t inventoryID = 0;
-    uint32_t bossID = 0;
-    uint32_t sceneID = 0;
-
     if (ImGui::CollapsingHeader("Equipment & Quest Status")) {
         ImGui::BeginTable("Equipment", 3);
-        ImGui::TableSetupColumn("Equip1", ImGuiTableColumnFlags_WidthFixed, (35.0f * uiScale));
-        ImGui::TableSetupColumn("Equip2", ImGuiTableColumnFlags_WidthFixed, (35.0f * uiScale));
-        ImGui::TableSetupColumn("Equip3", ImGuiTableColumnFlags_WidthFixed, (35.0f * uiScale));
+        for (int i = 0; i < 3; i++) {
+            ImGui::TableSetupColumn(std::to_string(i).c_str(), ImGuiTableColumnFlags_WidthFixed, (35.0f * uiScale));
+        }
         ImGui::TableNextColumn();
-        for (const auto& obj : equipmentObjects) {
-            
-            if (equipmentID == 4 || equipmentID == 8) {
+        for (int i = 0; i < 12; i++) {
+            if (i == 4 || i == 8) {
                 ImGui::TableNextColumn();
             }
-            if (ImGui::ImageButton(std::to_string(equipmentID).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(obj.itemImage),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                if (obj.itemID == ITEM_BRACELET) {
+            if (ImGui::ImageButton(std::to_string(i).c_str(), LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(equipmentObjects[i].itemImage),
+                                ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+                if (equipmentObjects[i].itemID == ITEM_BRACELET) {
                     ImGui::OpenPopup("Strength");
-                } else if (obj.itemID == ITEM_SCALE_SILVER) {
+                } else if (equipmentObjects[i].itemID == ITEM_SCALE_SILVER) {
                     ImGui::OpenPopup("Scale");
                 } else {
-                    TimeSplitAddToSplits(obj.itemID);
+                    TimeSplitAddToSplits(equipmentObjects[i].itemID);
                 }
             }
-            equipmentID++;
         }
         if (ImGui::BeginPopupContextItem("Strength")) {
-            if (ImGui::ImageButton(std::to_string(ITEM_BRACELET).c_str(),
-                       LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_BRACELET"),
-                       ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_BRACELET);
-                ImGui::CloseCurrentPopup();
-            }
-            ImGui::SameLine();
-            if (ImGui::ImageButton(std::to_string(ITEM_GAUNTLETS_SILVER).c_str(),
-                       LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_GAUNTLETS_SILVER"),
-                       ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_GAUNTLETS_SILVER);
-                ImGui::CloseCurrentPopup();
-            }
-            ImGui::SameLine();
-            if (ImGui::ImageButton(std::to_string(ITEM_GAUNTLETS_GOLD).c_str(),
-                       LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_GAUNTLETS_GOLD"),
-                       ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_GAUNTLETS_GOLD);
-                ImGui::CloseCurrentPopup();
+            for (int i = ITEM_BRACELET; i <= ITEM_GAUNTLETS_GOLD; i++) {
+                for (auto& obj : splitObjects) {
+                    if (obj.itemID == i) {
+                        if (ImGui::ImageButton(std::to_string(i).c_str(), LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(obj.itemImage),
+                                       ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+                            TimeSplitAddToSplits(i);
+                            ImGui::CloseCurrentPopup();
+                        }
+                        ImGui::SameLine();
+                    }
+                }
             }
             ImGui::EndPopup();
         }
         if (ImGui::BeginPopupContextItem("Scale")) {
-            if (ImGui::ImageButton(std::to_string(ITEM_SCALE_SILVER).c_str(),
-                       LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_SCALE_SILVER"),
-                       ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_SCALE_SILVER);
-                ImGui::CloseCurrentPopup();
-            }
-            ImGui::SameLine();
-            if (ImGui::ImageButton(std::to_string(ITEM_SCALE_GOLDEN).c_str(),
-                       LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_SCALE_GOLDEN"),
-                       ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_SCALE_GOLDEN);
-                ImGui::CloseCurrentPopup();
+            for (int i = ITEM_SCALE_SILVER; i <= ITEM_SCALE_GOLDEN; i++) {
+                for (auto& obj : splitObjects) {
+                    if (obj.itemID == i) {
+                        if (ImGui::ImageButton(std::to_string(i).c_str(), LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(obj.itemImage),
+                                       ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+                            TimeSplitAddToSplits(i);
+                            ImGui::CloseCurrentPopup();
+                        }
+                        ImGui::SameLine();
+                    }
+                }
             }
             ImGui::EndPopup();
         }
@@ -842,28 +847,22 @@ void DrawTimeSplitListManager() {
         ImGui::SameLine(129.0f * uiScale);
 
         ImGui::BeginTable("Quest", 6);
-        ImGui::TableSetupColumn("Quest1", ImGuiTableColumnFlags_WidthFixed, (35.0f * uiScale));
-        ImGui::TableSetupColumn("Quest2", ImGuiTableColumnFlags_WidthFixed, (35.0f * uiScale));
-        ImGui::TableSetupColumn("Quest3", ImGuiTableColumnFlags_WidthFixed, (35.0f * uiScale));
-        ImGui::TableSetupColumn("Quest4", ImGuiTableColumnFlags_WidthFixed, (35.0f * uiScale));
-        ImGui::TableSetupColumn("Quest5", ImGuiTableColumnFlags_WidthFixed, (35.0f * uiScale));
-        ImGui::TableSetupColumn("Quest6", ImGuiTableColumnFlags_WidthFixed, (35.0f * uiScale));
+        for (int i = 0; i < 6; i++) {
+            ImGui::TableSetupColumn(std::to_string(i).c_str(), ImGuiTableColumnFlags_WidthFixed, (35.0f * uiScale));
+        }
         ImGui::TableNextColumn();
-
-        for (const auto& obj : questObjects) {
-            if (questID == 4 || questID == 8 || questID == 12 || questID == 16 || questID == 20) {
+        for (int i = 0; i < 24; i++) {
+            if (i == 4 || i == 8 || i == 12 || i == 16 || i == 20) {
                 ImGui::TableNextColumn();
             }
-            if (ImGui::ImageButton(std::to_string(questID).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(obj.itemImage),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                if (obj.itemID == ITEM_SKULL_TOKEN) {
+            if (ImGui::ImageButton(std::to_string(i).c_str(), LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(questObjects[i].itemImage),
+                                ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+                if (questObjects[i].itemID == ITEM_SKULL_TOKEN) {
                     ImGui::OpenPopup("Skull Count");
                 } else {
-                    TimeSplitAddToSplits(obj.itemID);
+                    TimeSplitAddToSplits(questObjects[i].itemID);
                 }
             }
-            questID++;
         }
         if (ImGui::BeginPopupContextItem("Skull Count")) {
             UIWidgets::PaddedEnhancementSliderInt("Skulltula Count: %d Tokens", "##splitToken", "gTimeSplit.SkullTokens", 0, 100, "", 0, true, true, false);
@@ -876,563 +875,318 @@ void DrawTimeSplitListManager() {
         }
         ImGui::EndTable();
     }
-
     if (ImGui::CollapsingHeader("Inventory")) {
         ImGui::BeginTable("Inventory", 6);
-        ImGui::TableSetupColumn("Inv1", ImGuiTableColumnFlags_WidthFixed, (35.0f * uiScale));
-        ImGui::TableSetupColumn("Inv2", ImGuiTableColumnFlags_WidthFixed, (35.0f * uiScale));
-        ImGui::TableSetupColumn("Inv3", ImGuiTableColumnFlags_WidthFixed, (35.0f * uiScale));
-        ImGui::TableSetupColumn("Inv4", ImGuiTableColumnFlags_WidthFixed, (35.0f * uiScale));
-        ImGui::TableSetupColumn("Inv5", ImGuiTableColumnFlags_WidthFixed, (35.0f * uiScale));
-        ImGui::TableSetupColumn("Inv6", ImGuiTableColumnFlags_WidthFixed, (35.0f * uiScale));
+        for (int i = 0; i < 6; i++) {
+            ImGui::TableSetupColumn(std::to_string(i).c_str(), ImGuiTableColumnFlags_WidthFixed, (35.0f * uiScale));
+        }
         ImGui::TableNextColumn();
-
-        for (const auto& obj : inventoryObjects) {
-            if (inventoryID == 4 || inventoryID == 8 || inventoryID == 12 || inventoryID == 16 || inventoryID == 20) {
+        for (int i = 0; i < 24; i++) {
+            if (i == 4 || i == 8 || i == 12 || i == 16 || i == 20) {
                 ImGui::TableNextColumn();
             }
-            if (ImGui::ImageButton(std::to_string(inventoryID).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(obj.itemImage),
+            if (ImGui::ImageButton(std::to_string(i).c_str(),
+                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(inventoryObjects[i].itemImage),
                                    ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                if (obj.itemID == ITEM_STICK) {
+                if (inventoryObjects[i].itemID == ITEM_STICK) {
                     //ImGui::OpenPopup("Stick");
-                    TimeSplitAddToSplits(obj.itemID);
-                } else if (obj.itemID == ITEM_SLINGSHOT) {
+                    TimeSplitAddToSplits(inventoryObjects[i].itemID);
+                } else if (inventoryObjects[i].itemID == ITEM_SLINGSHOT) {
                     ImGui::OpenPopup("Slingshot");
-                } else if (obj.itemID == ITEM_NUT) {
+                } else if (inventoryObjects[i].itemID == ITEM_NUT) {
                     //ImGui::OpenPopup("Nut");
-                    TimeSplitAddToSplits(obj.itemID);
-                } else if (obj.itemID == ITEM_OCARINA_FAIRY) {
+                    TimeSplitAddToSplits(inventoryObjects[i].itemID);
+                } else if (inventoryObjects[i].itemID == ITEM_OCARINA_FAIRY) {
                     ImGui::OpenPopup("Ocarina");
-                } else if (obj.itemID == ITEM_BOMB) {
+                } else if (inventoryObjects[i].itemID == ITEM_BOMB) {
                     ImGui::OpenPopup("Bomb");
-                } else if (obj.itemID == ITEM_BOW) {
+                } else if (inventoryObjects[i].itemID == ITEM_BOW) {
                     ImGui::OpenPopup("Bow");
-                } else if (obj.itemID == ITEM_HOOKSHOT) {
+                } else if (inventoryObjects[i].itemID == ITEM_HOOKSHOT) {
                     ImGui::OpenPopup("Hookshot");
-                } else if (obj.itemID == ITEM_BOTTLE) {
+                } else if (inventoryObjects[i].itemID == ITEM_BOTTLE) {
                     ImGui::OpenPopup("Bottles");
-                } else if (obj.itemID == ITEM_MAGIC_SMALL) {
+                } else if (inventoryObjects[i].itemID == ITEM_MAGIC_SMALL) {
                     ImGui::OpenPopup("Magic");
-                } else if (obj.itemID == ITEM_WALLET_ADULT) {
+                } else if (inventoryObjects[i].itemID == ITEM_WALLET_ADULT) {
                     ImGui::OpenPopup("Wallet");
-                } else if (obj.itemID == ITEM_POCKET_EGG) {
+                } else if (inventoryObjects[i].itemID == ITEM_POCKET_EGG) {
                     ImGui::OpenPopup("AdultTrade");
-                } else if (obj.itemID == ITEM_WEIRD_EGG) {
+                } else if (inventoryObjects[i].itemID == ITEM_WEIRD_EGG) {
                     ImGui::OpenPopup("ChildTrade");
                 } else {
-                    TimeSplitAddToSplits(obj.itemID);
+                    TimeSplitAddToSplits(inventoryObjects[i].itemID);
                 }
             }
-            inventoryID++;
         }
         if (ImGui::BeginPopupContextItem("Stick")) {
-            if (ImGui::ImageButton(std::to_string(ITEM_STICK).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_STICK"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_STICK);
-                ImGui::CloseCurrentPopup();
-            }
-            ImGui::SameLine();
-            if (ImGui::ImageButton(std::to_string(ITEM_STICK_UPGRADE_20).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_STICK_UPGRADE_20"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_STICK_UPGRADE_20);
-                ImGui::CloseCurrentPopup();
-            }
-            ImGui::SameLine();
-            if (ImGui::ImageButton(std::to_string(ITEM_STICK_UPGRADE_30).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_STICK_UPGRADE_30"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_STICK_UPGRADE_30);
-                ImGui::CloseCurrentPopup();
+            for (int i = ITEM_STICK; i <= ITEM_STICK_UPGRADE_30; i++) {
+                for (auto& obj : splitObjects) {
+                    if (obj.itemID == i) {
+                        if (ImGui::ImageButton(std::to_string(i).c_str(), LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(obj.itemImage),
+                                       ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+                            TimeSplitAddToSplits(i);
+                            ImGui::CloseCurrentPopup();
+                        }
+                        ImGui::SameLine();
+                    }
+                }
+                if (i == ITEM_STICK) {
+                    i = (ITEM_STICK_UPGRADE_20 - 1);
+                }
             }
             ImGui::EndPopup();
         }
         if (ImGui::BeginPopupContextItem("Slingshot")) {
-            if (ImGui::ImageButton(std::to_string(ITEM_SLINGSHOT).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_SLINGSHOT"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_SLINGSHOT);
-                ImGui::CloseCurrentPopup();
-            }
-            ImGui::SameLine();
-            if (ImGui::ImageButton(std::to_string(ITEM_BULLET_BAG_40).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_BULLET_BAG_40"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_BULLET_BAG_40);
-                ImGui::CloseCurrentPopup();
-            }
-            ImGui::SameLine();
-            if (ImGui::ImageButton(std::to_string(ITEM_BULLET_BAG_50).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_BULLET_BAG_50"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_BULLET_BAG_50);
-                ImGui::CloseCurrentPopup();
+            for (int i = ITEM_SLINGSHOT; i <= ITEM_BULLET_BAG_50; i++) {
+                for (auto& obj : splitObjects) {
+                    if (obj.itemID == i) {
+                        if (ImGui::ImageButton(std::to_string(i).c_str(), LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(obj.itemImage),
+                                       ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+                            TimeSplitAddToSplits(i);
+                            ImGui::CloseCurrentPopup();
+                        }
+                        ImGui::SameLine();
+                    }
+                }
+                if (i == ITEM_SLINGSHOT) {
+                    i = (ITEM_BULLET_BAG_40 - 1);
+                }
             }
             ImGui::EndPopup();
         }
         if (ImGui::BeginPopupContextItem("Nut")) {
-            if (ImGui::ImageButton(std::to_string(ITEM_NUT).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_NUT"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_NUT);
-                ImGui::CloseCurrentPopup();
-            }
-            ImGui::SameLine();
-            if (ImGui::ImageButton(std::to_string(ITEM_NUT_UPGRADE_30).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_NUT_UPGRADE_30"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_NUT_UPGRADE_30);
-                ImGui::CloseCurrentPopup();
-            }
-            ImGui::SameLine();
-            if (ImGui::ImageButton(std::to_string(ITEM_NUT_UPGRADE_40).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_NUT_UPGRADE_40"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_NUT_UPGRADE_40);
-                ImGui::CloseCurrentPopup();
+            for (int i = ITEM_NUT; i <= ITEM_NUT_UPGRADE_40; i++) {
+                for (auto& obj : splitObjects) {
+                    if (obj.itemID == i) {
+                        if (ImGui::ImageButton(std::to_string(i).c_str(), LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(obj.itemImage),
+                                       ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+                            TimeSplitAddToSplits(i);
+                            ImGui::CloseCurrentPopup();
+                        }
+                        ImGui::SameLine();
+                    }
+                }
+                if (i == ITEM_NUT) {
+                    i = (ITEM_NUT_UPGRADE_30 - 1);
+                }
             }
             ImGui::EndPopup();
         }
         if (ImGui::BeginPopupContextItem("Ocarina")) {
-            if (ImGui::ImageButton(std::to_string(ITEM_OCARINA_FAIRY).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_OCARINA_FAIRY"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_OCARINA_FAIRY);
-                ImGui::CloseCurrentPopup();
-            }
-            ImGui::SameLine();
-            if (ImGui::ImageButton(std::to_string(ITEM_OCARINA_TIME).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_OCARINA_TIME"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_OCARINA_TIME);
-                ImGui::CloseCurrentPopup();
+            for (int i = ITEM_OCARINA_FAIRY; i <= ITEM_OCARINA_TIME; i++) {
+                for (auto& obj : splitObjects) {
+                    if (obj.itemID == i) {
+                        if (ImGui::ImageButton(std::to_string(i).c_str(), LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(obj.itemImage),
+                                       ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+                            TimeSplitAddToSplits(i);
+                            ImGui::CloseCurrentPopup();
+                        }
+                        ImGui::SameLine();
+                    }
+                }
             }
             ImGui::EndPopup();
         }
         if (ImGui::BeginPopupContextItem("Bomb")) {
-            if (ImGui::ImageButton(std::to_string(ITEM_BOMB_BAG_20).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_BOMB_BAG_20"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_BOMB_BAG_20);
-                ImGui::CloseCurrentPopup();
-            }
-            ImGui::SameLine();
-            if (ImGui::ImageButton(std::to_string(ITEM_BOMB_BAG_30).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_BOMB_BAG_30"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_BOMB_BAG_30);
-                ImGui::CloseCurrentPopup();
-            }
-            ImGui::SameLine();
-            if (ImGui::ImageButton(std::to_string(ITEM_BOMB_BAG_40).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_BOMB_BAG_40"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_BOMB_BAG_40);
-                ImGui::CloseCurrentPopup();
+            for (int i = ITEM_BOMB_BAG_20; i <= ITEM_BOMB_BAG_40; i++) {
+                for (auto& obj : splitObjects) {
+                    if (obj.itemID == i) {
+                        if (ImGui::ImageButton(std::to_string(i).c_str(), LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(obj.itemImage),
+                                       ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+                            TimeSplitAddToSplits(i);
+                            ImGui::CloseCurrentPopup();
+                        }
+                        ImGui::SameLine();
+                    }
+                }
             }
             ImGui::EndPopup();
         }
         if (ImGui::BeginPopupContextItem("Bow")) {
-            if (ImGui::ImageButton(std::to_string(ITEM_BOW).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_BOW"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_BOW);
-                ImGui::CloseCurrentPopup();
-            }
-            ImGui::SameLine();
-            if (ImGui::ImageButton(std::to_string(ITEM_QUIVER_40).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_QUIVER_40"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_QUIVER_40);
-                ImGui::CloseCurrentPopup();
-            }
-            ImGui::SameLine();
-            if (ImGui::ImageButton(std::to_string(ITEM_QUIVER_50).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_QUIVER_50"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_QUIVER_50);
-                ImGui::CloseCurrentPopup();
+            for (int i = ITEM_BOW; i <= ITEM_QUIVER_50; i++) {
+                for (auto& obj : splitObjects) {
+                    if (obj.itemID == i) {
+                        if (ImGui::ImageButton(std::to_string(i).c_str(), LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(obj.itemImage),
+                                       ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+                            TimeSplitAddToSplits(i);
+                            ImGui::CloseCurrentPopup();
+                        }
+                        ImGui::SameLine();
+                    }
+                }
+                if (i == ITEM_BOW) {
+                    i = (ITEM_QUIVER_40 - 1);
+                }
             }
             ImGui::EndPopup();
         }
         if (ImGui::BeginPopupContextItem("Hookshot")) {
-            if (ImGui::ImageButton(std::to_string(ITEM_HOOKSHOT).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_HOOKSHOT"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_HOOKSHOT);
-                ImGui::CloseCurrentPopup();
-            }
-            ImGui::SameLine();
-            if (ImGui::ImageButton(std::to_string(ITEM_LONGSHOT).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_LONGSHOT"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_LONGSHOT);
-                ImGui::CloseCurrentPopup();
+            for (int i = ITEM_HOOKSHOT; i <= ITEM_LONGSHOT; i++) {
+                for (auto& obj : splitObjects) {
+                    if (obj.itemID == i) {
+                        if (ImGui::ImageButton(std::to_string(i).c_str(), LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(obj.itemImage),
+                                       ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+                            TimeSplitAddToSplits(i);
+                            ImGui::CloseCurrentPopup();
+                        }
+                        ImGui::SameLine();
+                    }
+                }
             }
             ImGui::EndPopup();
         }
         if (ImGui::BeginPopupContextItem("Bottles")) {
-            if (ImGui::ImageButton(std::to_string(ITEM_BOTTLE).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_BOTTLE"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_BOTTLE);
-                ImGui::CloseCurrentPopup();
-            }
-            ImGui::SameLine();
-            if (ImGui::ImageButton(std::to_string(ITEM_POTION_RED).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_POTION_RED"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_POTION_RED);
-                ImGui::CloseCurrentPopup();
-            }
-            ImGui::SameLine();
-            if (ImGui::ImageButton(std::to_string(ITEM_POTION_GREEN).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_POTION_GREEN"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_POTION_GREEN);
-                ImGui::CloseCurrentPopup();
-            }
-            ImGui::SameLine();
-            if (ImGui::ImageButton(std::to_string(ITEM_POTION_BLUE).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_POTION_BLUE"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_POTION_BLUE);
-                ImGui::CloseCurrentPopup();
-            }
-            ImGui::SameLine();
-            if (ImGui::ImageButton(std::to_string(ITEM_FAIRY).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_FAIRY"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_FAIRY);
-                ImGui::CloseCurrentPopup();
-            }
-            ImGui::SameLine();
-            if (ImGui::ImageButton(std::to_string(ITEM_FISH).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_FISH"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_FISH);
-                ImGui::CloseCurrentPopup();
-            }
-            if (ImGui::ImageButton(std::to_string(ITEM_MILK_BOTTLE).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_MILK_BOTTLE"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_MILK_BOTTLE);
-                ImGui::CloseCurrentPopup();
-            }
-            ImGui::SameLine();
-            if (ImGui::ImageButton(std::to_string(ITEM_LETTER_RUTO).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_LETTER_RUTO"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_LETTER_RUTO);
-                ImGui::CloseCurrentPopup();
-            }
-            ImGui::SameLine();
-            if (ImGui::ImageButton(std::to_string(ITEM_BLUE_FIRE).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_BLUE_FIRE"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_BLUE_FIRE);
-                ImGui::CloseCurrentPopup();
-            }
-            ImGui::SameLine();
-            if (ImGui::ImageButton(std::to_string(ITEM_BUG).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_BUG"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_BUG);
-                ImGui::CloseCurrentPopup();
-            }
-            ImGui::SameLine();
-            if (ImGui::ImageButton(std::to_string(ITEM_BIG_POE).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_BIG_POE"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_BIG_POE);
-                ImGui::CloseCurrentPopup();
-            }
-            ImGui::SameLine();
-            if (ImGui::ImageButton(std::to_string(ITEM_POE).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_POE"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_POE);
-                ImGui::CloseCurrentPopup();
+            for (int i = ITEM_BOTTLE; i <= ITEM_POE; i++) {
+                for (auto& obj : splitObjects) {
+                    if (obj.itemID == i) {
+                        if (ImGui::ImageButton(std::to_string(i).c_str(), LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(obj.itemImage),
+                                       ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+                            TimeSplitAddToSplits(i);
+                            ImGui::CloseCurrentPopup();
+                        }
+                        if (i != ITEM_FISH) {
+                            ImGui::SameLine();
+                        }
+                    }
+                }
             }
             ImGui::EndPopup();
         }
         if (ImGui::BeginPopupContextItem("Magic")) {
-            if (ImGui::ImageButton(std::to_string(ITEM_MAGIC_SMALL).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_MAGIC_SMALL"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_MAGIC_SMALL);
-                ImGui::CloseCurrentPopup();
-            }
-            ImGui::SameLine();
-            if (ImGui::ImageButton(std::to_string(ITEM_MAGIC_LARGE).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_MAGIC_LARGE"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_MAGIC_LARGE);
-                ImGui::CloseCurrentPopup();
+            for (int i = ITEM_MAGIC_SMALL; i <= ITEM_MAGIC_LARGE; i++) {
+                for (auto& obj : splitObjects) {
+                    if (obj.itemID == i) {
+                        if (ImGui::ImageButton(std::to_string(i).c_str(), LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(obj.itemImage),
+                                       ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+                            TimeSplitAddToSplits(i);
+                            ImGui::CloseCurrentPopup();
+                        }
+                        ImGui::SameLine();
+                    }
+                }
             }
             ImGui::EndPopup();
         }
         if (ImGui::BeginPopupContextItem("Wallet")) {
-            if (ImGui::ImageButton(std::to_string(ITEM_WALLET_ADULT).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_WALLET_ADULT"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_WALLET_ADULT);
-                ImGui::CloseCurrentPopup();
-            }
-            ImGui::SameLine();
-            if (ImGui::ImageButton(std::to_string(ITEM_WALLET_GIANT).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_WALLET_GIANT"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_WALLET_GIANT);
-                ImGui::CloseCurrentPopup();
+            for (int i = ITEM_WALLET_ADULT; i <= ITEM_WALLET_GIANT; i++) {
+                for (auto& obj : splitObjects) {
+                    if (obj.itemID == i) {
+                        if (ImGui::ImageButton(std::to_string(i).c_str(), LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(obj.itemImage),
+                                       ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+                            TimeSplitAddToSplits(i);
+                            ImGui::CloseCurrentPopup();
+                        }
+                        ImGui::SameLine();
+                    }
+                }
             }
             ImGui::EndPopup();
         }
         if (ImGui::BeginPopupContextItem("AdultTrade")) {
-            if (ImGui::ImageButton(std::to_string(ITEM_POCKET_EGG).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_POCKET_EGG"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_POCKET_EGG);
-                ImGui::CloseCurrentPopup();
-            }
-            ImGui::SameLine();
-            if (ImGui::ImageButton(std::to_string(ITEM_POCKET_CUCCO).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_POCKET_CUCCO"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_POCKET_CUCCO);
-                ImGui::CloseCurrentPopup();
-            }
-            ImGui::SameLine();
-            if (ImGui::ImageButton(std::to_string(ITEM_COJIRO).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_COJIRO"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_COJIRO);
-                ImGui::CloseCurrentPopup();
-            }
-            ImGui::SameLine();
-            if (ImGui::ImageButton(std::to_string(ITEM_ODD_MUSHROOM).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_ODD_MUSHROOM"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_ODD_MUSHROOM);
-                ImGui::CloseCurrentPopup();
-            }
-            ImGui::SameLine();
-            if (ImGui::ImageButton(std::to_string(ITEM_ODD_POTION).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_ODD_POTION"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_ODD_POTION);
-                ImGui::CloseCurrentPopup();
-            }
-            ImGui::SameLine();
-            if (ImGui::ImageButton(std::to_string(ITEM_SAW).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_SAW"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_SAW);
-                ImGui::CloseCurrentPopup();
-            }
-            if (ImGui::ImageButton(std::to_string(ITEM_SWORD_BROKEN).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_SWORD_BROKEN"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_SWORD_BROKEN);
-                ImGui::CloseCurrentPopup();
-            }
-            ImGui::SameLine();
-            if (ImGui::ImageButton(std::to_string(ITEM_PRESCRIPTION).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_PRESCRIPTION"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_PRESCRIPTION);
-                ImGui::CloseCurrentPopup();
-            }
-            ImGui::SameLine();
-            if (ImGui::ImageButton(std::to_string(ITEM_FROG).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_FROG"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_FROG);
-                ImGui::CloseCurrentPopup();
-            }
-            ImGui::SameLine();
-            if (ImGui::ImageButton(std::to_string(ITEM_EYEDROPS).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_EYEDROPS"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_EYEDROPS);
-                ImGui::CloseCurrentPopup();
-            }
-            ImGui::SameLine();
-            if (ImGui::ImageButton(std::to_string(ITEM_CLAIM_CHECK).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_CLAIM_CHECK"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_CLAIM_CHECK);
-                ImGui::CloseCurrentPopup();
+            for (int i = ITEM_POCKET_EGG; i <= ITEM_CLAIM_CHECK; i++) {
+                for (auto& obj : splitObjects) {
+                    if (obj.itemID == i) {
+                        if (ImGui::ImageButton(std::to_string(i).c_str(), LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(obj.itemImage),
+                                       ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+                            TimeSplitAddToSplits(i);
+                            ImGui::CloseCurrentPopup();
+                        }
+                        if (i != ITEM_SAW) {
+                            ImGui::SameLine();
+                        }
+                    }
+                }
             }
             ImGui::EndPopup();
         }
         if (ImGui::BeginPopupContextItem("ChildTrade")) {
-            if (ImGui::ImageButton(std::to_string(ITEM_WEIRD_EGG).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_WEIRD_EGG"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_WEIRD_EGG);
-                ImGui::CloseCurrentPopup();
-            }
-            ImGui::SameLine();
-            if (ImGui::ImageButton(std::to_string(ITEM_CHICKEN).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_CHICKEN"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_CHICKEN);
-                ImGui::CloseCurrentPopup();
-            }
-            ImGui::SameLine();
-            if (ImGui::ImageButton(std::to_string(ITEM_LETTER_ZELDA).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_LETTER_ZELDA"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_LETTER_ZELDA);
-                ImGui::CloseCurrentPopup();
-            }
-            ImGui::SameLine();
-            if (ImGui::ImageButton(std::to_string(ITEM_MASK_KEATON).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_MASK_KEATON"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_MASK_KEATON);
-                ImGui::CloseCurrentPopup();
-            }
-            ImGui::SameLine();
-            if (ImGui::ImageButton(std::to_string(ITEM_MASK_SKULL).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_MASK_SKULL"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_MASK_SKULL);
-                ImGui::CloseCurrentPopup();
-            }
-            ImGui::SameLine();
-            if (ImGui::ImageButton(std::to_string(ITEM_MASK_SPOOKY).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_MASK_SPOOKY"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_MASK_SPOOKY);
-                ImGui::CloseCurrentPopup();
-            }
-            if (ImGui::ImageButton(std::to_string(ITEM_MASK_BUNNY).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_MASK_BUNNY"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_MASK_BUNNY);
-                ImGui::CloseCurrentPopup();
-            }
-            ImGui::SameLine();
-            if (ImGui::ImageButton(std::to_string(ITEM_MASK_GORON).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_MASK_GORON"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_MASK_GORON);
-                ImGui::CloseCurrentPopup();
-            }
-            ImGui::SameLine();
-            if (ImGui::ImageButton(std::to_string(ITEM_MASK_ZORA).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_MASK_ZORA"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_MASK_ZORA);
-                ImGui::CloseCurrentPopup();
-            }
-            ImGui::SameLine();
-            if (ImGui::ImageButton(std::to_string(ITEM_MASK_GERUDO).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_MASK_GERUDO"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_MASK_GERUDO);
-                ImGui::CloseCurrentPopup();
-            }
-            ImGui::SameLine();
-            if (ImGui::ImageButton(std::to_string(ITEM_MASK_TRUTH).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_MASK_TRUTH"),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                TimeSplitAddToSplits(ITEM_MASK_TRUTH);
-                ImGui::CloseCurrentPopup();
+            for (int i = ITEM_WEIRD_EGG; i <= ITEM_MASK_TRUTH; i++) {
+                for (auto& obj : splitObjects) {
+                    if (obj.itemID == i) {
+                        if (ImGui::ImageButton(std::to_string(i).c_str(), LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(obj.itemImage),
+                                       ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+                            TimeSplitAddToSplits(i);
+                            ImGui::CloseCurrentPopup();
+                        }
+                        if (i != ITEM_MASK_SPOOKY) {
+                            ImGui::SameLine();
+                        }
+                    }
+                }
             }
             ImGui::EndPopup();
         }
         ImGui::EndTable();
     }
-
     // SPACE SAVE FOR MISC ITEMS (12 SLOTS/3 COLUMNS x4)
     if (ImGui::CollapsingHeader("Bosses")) {
         ImGui::BeginTable("Bosses", 2);
         ImGui::TableSetupColumn("Boss1", ImGuiTableColumnFlags_WidthFixed, (150.0f * uiScale));
         ImGui::TableSetupColumn("Boss2", ImGuiTableColumnFlags_WidthFixed, (150.0f * uiScale));
         ImGui::TableNextColumn();
-
-        for (const auto& obj : bossObjects) {
-            if (bossID == 5) {
+        for (int i = 0; i < 10; i++) {
+            if (i == 5) {
                 ImGui::TableNextColumn();
             }
-            itemNum = obj.itemID;
+            itemNum = bossObjects[i].itemID;
             TimeSplitColorTint();
-            if (ImGui::ImageButton(std::to_string(bossID).c_str(),
-                                   LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(obj.itemImage),
-                                   ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), pieceTint)) {
-                TimeSplitAddToSplits(obj.itemID);
+            if (ImGui::ImageButton(std::to_string(i).c_str(), LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(bossObjects[i].itemImage),
+                                ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), pieceTint)) {
+                TimeSplitAddToSplits(bossObjects[i].itemID);
             }
             ImGui::SameLine();
             ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0.0f, 5.0f));
             ImGui::AlignTextToFramePadding();
-            ImGui::Text(obj.itemName);
+            ImGui::Text(bossObjects[i].itemName);
             ImGui::PopStyleVar(1);
-            bossID++;
         }
         ImGui::EndTable();
     }
-    
-
     if (ImGui::CollapsingHeader("Scenes")) {
         if (ImGui::CollapsingHeader("Dungeon Entrances")) {
             ImGui::BeginTable("Dungeons", 2);
-            ImGui::TableSetupColumn("Dungeon1", ImGuiTableColumnFlags_WidthFixed, (250.0f * uiScale));
-            ImGui::TableSetupColumn("Dungeon2", ImGuiTableColumnFlags_WidthFixed, (250.0f * uiScale));
+            ImGui::TableSetupColumn("Dungeon1", ImGuiTableColumnFlags_WidthFixed, (220.0f * uiScale));
+            ImGui::TableSetupColumn("Dungeon2", ImGuiTableColumnFlags_WidthFixed, (220.0f * uiScale));
             ImGui::TableNextColumn();
-
-            for (const auto& obj : sceneObjects) {
-                if (sceneID == 8) {
+            for (int i = 0; i < 16; i++) {
+                if (i == 8) {
                     ImGui::TableNextColumn();
                 }
-                if (obj.itemID >= ENTER_DEKU_TREE) {
-                    itemNum = obj.itemID;
-                    //TimeSplitColorTint();
-                    if (ImGui::ImageButton(std::to_string(sceneID).c_str(),
-                                           LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(obj.itemImage),
-                                           ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                        TimeSplitAddToSplits(obj.itemID);
-                    }
-                    ImGui::SameLine();
-                    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0.0f, 5.0f));
-                    ImGui::AlignTextToFramePadding();
-                    ImGui::Text(obj.itemName);
-                    ImGui::PopStyleVar(1);
-                    sceneID++;
+                //itemNum = sceneObjects[i].itemID;
+                //TimeSplitColorTint();
+                if (ImGui::ImageButton(std::to_string(i).c_str(), LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(sceneObjects[i].itemImage),
+                                       ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+                    TimeSplitAddToSplits(sceneObjects[i].itemID);
                 }
+                ImGui::SameLine();
+                ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0.0f, 5.0f));
+                ImGui::AlignTextToFramePadding();
+                ImGui::TextWrapped(sceneObjects[i].itemName);
+                ImGui::PopStyleVar(1);
             }
             ImGui::EndTable();
         }
         if (ImGui::CollapsingHeader("Overworld Entrances")) {
             ImGui::BeginTable("Overworld", 1);
-            ImGui::TableSetupColumn("Overworld1", ImGuiTableColumnFlags_WidthFixed, (250.0f * uiScale));
+            ImGui::TableSetupColumn("Overworld1", ImGuiTableColumnFlags_WidthFixed, (220.0f * uiScale));
             ImGui::TableNextColumn();
-
-            for (const auto& obj : sceneObjects) {
-                if (obj.itemID < ENTER_DEKU_TREE) {
-                    itemNum = obj.itemID;
-                    //TimeSplitColorTint();
-                    if (ImGui::ImageButton(std::to_string(sceneID).c_str(),
-                                           LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(obj.itemImage),
-                                           ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
-                        TimeSplitAddToSplits(obj.itemID);
-                    }
-                    ImGui::SameLine();
-                    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0.0f, 5.0f));
-                    ImGui::AlignTextToFramePadding();
-                    ImGui::Text(obj.itemName);
-                    ImGui::PopStyleVar(1);
-                    sceneID++;
+            for (int i = 16; i <= 17; i++) {
+                //itemNum = obj.itemID;
+                //TimeSplitColorTint();
+                if (ImGui::ImageButton(std::to_string(i).c_str(), LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(sceneObjects[i].itemImage),
+                                       ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+                    TimeSplitAddToSplits(sceneObjects[i].itemID);
                 }
+                ImGui::SameLine();
+                ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0.0f, 5.0f));
+                ImGui::AlignTextToFramePadding();
+                ImGui::TextWrapped(sceneObjects[i].itemName);
+                ImGui::PopStyleVar(1);
             }
             ImGui::EndTable();
         }
     }
-    
 }
 
 void TimeSplitWindow::DrawElement() {
@@ -1468,6 +1222,7 @@ void TimeSplitWindow::DrawElement() {
 
 void TimeSplitWindow::InitElement() {
     LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("SPECIAL_TRIFORCE_PIECE_WHITE", gWTriforcePieceTex, ImVec4(1, 1, 1, 1));
+    LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("SPECIAL_SPLIT_ENTRANCE", gSplitEntranceTex, ImVec4(1, 1, 1, 1));
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>([](GetItemEntry itemEntry) {
         TimeSplitSplitsHandler(itemEntry);
     });
