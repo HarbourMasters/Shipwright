@@ -708,6 +708,17 @@ void DrawEnhancementsMenu() {
                 UIWidgets::Tooltip("Prevent bombchus from forcing the camera into first-person mode when released.");
                 UIWidgets::PaddedEnhancementCheckbox("Aiming reticle for the bow/slingshot", "gBowReticle", true, false);
                 UIWidgets::Tooltip("Aiming with a bow or slingshot will display a reticle as with the hookshot when the projectile is ready to fire.");
+                if (UIWidgets::PaddedEnhancementCheckbox("Aim boomerang in first-person mode", "gBoomerangFirstPerson", true, false)) {
+                    if (CVarGetInteger("gBoomerangFirstPerson", 0) == 0) {
+                        CVarSetInteger("gBoomerangReticle", 0);
+                    }
+                }
+                UIWidgets::Tooltip(
+                    "Change aiming for the boomerang from third person to first person to see past Link's head");
+                if (CVarGetInteger("gBoomerangFirstPerson", 0) == 1) {
+                    UIWidgets::PaddedEnhancementCheckbox("Aiming reticle for boomerang", "gBoomerangReticle", true, false);
+                    UIWidgets::Tooltip("Aiming with the boomerang will display a reticle as with the hookshot");
+                }
                 if (UIWidgets::PaddedEnhancementCheckbox("Allow strength equipment to be toggled", "gToggleStrength", true, false)) {
                     if (!CVarGetInteger("gToggleStrength", 0)) {
                         CVarSetInteger("gStrengthDisabled", 0);

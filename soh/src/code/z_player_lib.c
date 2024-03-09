@@ -858,6 +858,16 @@ s32 Player_HoldsSlingshot(Player* this) {
     return this->heldItemAction == PLAYER_IA_SLINGSHOT;
 }
 
+// #region SOH [Enhancement]
+s32 Player_HoldsBoomerang(Player* this) {
+    return this->heldItemAction == PLAYER_IA_BOOMERANG;
+}
+
+s32 Player_AimsBoomerang(Player* this) {
+    return Player_HoldsBoomerang(this) && (this->unk_834 != 0);
+}
+// #endregion
+
 s32 func_8008F128(Player* this) {
     return Player_HoldsHookshot(this) && (this->heldActor == NULL);
 }
@@ -1917,6 +1927,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                             play, this, ((this->heldItemAction == PLAYER_IA_HOOKSHOT) ? 38600.0f : 77600.0f) * CVarGetFloat("gCheatHookshotReachMultiplier", 1.0f));
                     }
                 }
+            // #region SOH [Enhancement]            
             } else if (CVarGetInteger("gBowReticle", 0) && (
                         (this->heldItemAction == PLAYER_IA_BOW_FIRE) ||
                         (this->heldItemAction == PLAYER_IA_BOW_ICE) ||
@@ -1935,6 +1946,24 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                         Player_DrawHookshotReticle(play, this, RETICLE_MAX);
                     }
                 }
+            } else if (CVarGetInteger("gBoomerangReticle", 0) && (this->heldItemAction == PLAYER_IA_BOOMERANG)) {
+                if (Player_HoldsBoomerang(this) != 0) {
+                    MtxF sp44;
+                    s32 pad;
+
+                    if (LINK_AGE_IN_YEARS == YEARS_ADULT) {
+                        Matrix_RotateZYX(-31200, -9200, 17000, MTXMODE_APPLY);
+                    } else {
+                        Matrix_RotateZYX(-31200, -8700, 17000, MTXMODE_APPLY);
+                    }
+                    Matrix_Get(&sp44);
+
+                    if (Player_AimsBoomerang(this) != 0) {
+                        Matrix_Translate(500.0f, 300.0f, 0.0f, MTXMODE_APPLY);
+                        Player_DrawHookshotReticle(play, this, 37000.0f);
+                    }
+                }
+            // #endregion
             }
 
             if ((this->unk_862 != 0) || ((func_8002DD6C(this) == 0) && (heldActor != NULL))) {
