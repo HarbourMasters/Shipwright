@@ -61,6 +61,9 @@ static const ALIGN_ASSET(2) char gCustomMasterSwordInSheathDL[] = dgCustomMaster
 #define dgCustomLongswordDL "__OTR__objects/object_custom_equip/gCustomLongswordDL"
 static const ALIGN_ASSET(2) char gCustomLongswordDL[] = dgCustomLongswordDL;
 
+#define dgCustomBreakableLongswordDL "__OTR__objects/object_custom_equip/gCustomBreakableLongswordDL"
+static const ALIGN_ASSET(2) char gCustomBreakableLongswordDL[] = dgCustomBreakableLongswordDL;
+
 #define dgCustomBrokenLongswordDL "__OTR__objects/object_custom_equip/gCustomBrokenLongswordDL"
 static const ALIGN_ASSET(2) char gCustomBrokenLongswordDL[] = dgCustomBrokenLongswordDL;
 
@@ -69,6 +72,18 @@ static const ALIGN_ASSET(2) char gCustomLongswordSheathDL[] = dgCustomLongswordS
 
 #define dgCustomLongswordInSheathDL "__OTR__objects/object_custom_equip/gCustomLongswordInSheathDL"
 static const ALIGN_ASSET(2) char gCustomLongswordInSheathDL[] = dgCustomLongswordInSheathDL;
+
+#define dgCustomBreakableLongswordSheathDL "__OTR__objects/object_custom_equip/gCustomBreakableLongswordSheathDL"
+static const ALIGN_ASSET(2) char gCustomBreakableLongswordSheathDL[] = dgCustomBreakableLongswordSheathDL;
+
+#define dgCustomBreakableLongswordInSheathDL "__OTR__objects/object_custom_equip/gCustomBreakableLongswordInSheathDL"
+static const ALIGN_ASSET(2) char gCustomBreakableLongswordInSheathDL[] = dgCustomBreakableLongswordInSheathDL;
+
+#define dgCustomBrokenLongswordSheathDL "__OTR__objects/object_custom_equip/gCustomBrokenLongswordSheathDL"
+static const ALIGN_ASSET(2) char gCustomBrokenLongswordSheathDL[] = dgCustomBrokenLongswordSheathDL;
+
+#define dgCustomBrokenLongswordInSheathDL "__OTR__objects/object_custom_equip/gCustomBrokenLongswordInSheathDL"
+static const ALIGN_ASSET(2) char gCustomBrokenLongswordInSheathDL[] = dgCustomBrokenLongswordInSheathDL;
 
 #define dgCustomDekuShieldDL "__OTR__objects/object_custom_equip/gCustomDekuShieldDL"
 static const ALIGN_ASSET(2) char gCustomDekuShieldDL[] = dgCustomDekuShieldDL;
