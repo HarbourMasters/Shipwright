@@ -16,6 +16,7 @@ void UpdateHyperEnemiesState();
 void UpdateHyperBossesState();
 void InitMods();
 void UpdatePatchHand(); 
+void UpdatePatchCustomEquipmentDlists();
 
 #ifdef __cplusplus
 }
