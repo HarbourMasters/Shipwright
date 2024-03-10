@@ -328,7 +328,15 @@ void TimeSplitSplitsHandlerS(uint32_t itemID) {
                 splitTime[loopCounter] = GAMEPLAYSTAT_TOTAL_TIME;
                 splitStatus[loopCounter] = 1;
                 if (loopCounter < (splitItem.size() - 1)) {
-                    splitStatus[loopCounter + 1] = 2;
+                    for (int i = loopCounter; i < splitItem.size(); i++) {
+                        if (splitStatus[i] == 0) {
+                            splitStatus[i] = 2;
+                            i = splitItem.size() - 1;
+                        }
+                        if (splitStatus[splitItem.size() - 1] == 1) {
+                            TimeSplitCompleteSplits();
+                        }
+                    }
                 }
                 if (splitTime[loopCounter] < splitBest[loopCounter]) {
                     splitBest[loopCounter] = splitTime[loopCounter];
@@ -348,7 +356,7 @@ void TimeSplitSceneSplitHandler(uint32_t entrance) {
         return;
     } 
     if (entrance != ESCAPE_LOST_WOODS && entrance != ESCAPE_KOKIRI_FOREST) {
-        entrance += 667;
+        entrance = gPlayState->sceneNum + ENTER_DEKU_TREE;
     }
     for (auto& str : splitItem) {
         if (entrance == splitItem[loopCounter]) {
@@ -356,7 +364,15 @@ void TimeSplitSceneSplitHandler(uint32_t entrance) {
                 splitTime[loopCounter] = GAMEPLAYSTAT_TOTAL_TIME;
                 splitStatus[loopCounter] = 1;
                 if (loopCounter < (splitItem.size() - 1)) {
-                    splitStatus[loopCounter + 1] = 2;
+                    for (int i = loopCounter; i < splitItem.size(); i++) {
+                        if (splitStatus[i] == 0) {
+                            splitStatus[i] = 2;
+                            i = splitItem.size() - 1;
+                        }
+                        if (splitStatus[splitItem.size() - 1] == 1) {
+                            TimeSplitCompleteSplits();
+                        }
+                    }
                 }
                 if (splitTime[loopCounter] < splitBest[loopCounter]) {
                     splitBest[loopCounter] = splitTime[loopCounter];
@@ -390,7 +406,15 @@ void TimeSplitSplitsHandler(GetItemEntry itemEntry) {
                 splitTime[loopCounter] = GAMEPLAYSTAT_TOTAL_TIME;
                 splitStatus[loopCounter] = 1;
                 if (loopCounter < (splitItem.size() - 1)) {
-                    splitStatus[loopCounter + 1] = 2;
+                    for (int i = loopCounter; i < splitItem.size(); i++) {
+                        if (splitStatus[i] == 0) {
+                            splitStatus[i] = 2;
+                            i = splitItem.size() - 1;
+                        }
+                        if (splitStatus[splitItem.size() - 1] == 1) {
+                            TimeSplitCompleteSplits();
+                        }
+                    }
                 }
                 if (splitTime[loopCounter] < splitBest[loopCounter]) {
                     splitBest[loopCounter] = splitTime[loopCounter];
@@ -606,9 +630,11 @@ void DrawTimeSplitSplits(){
     }
     //List Removals
     if (CVarGetInteger("gTimeSplit.EnableEdits", 0)) {
-        ImGui::BeginTable("Remove Entries", 2);
+        ImGui::BeginTable("Remove Entries", 4);
         ImGui::TableSetupColumn("Item Image", ImGuiTableColumnFlags_WidthFixed | ImGuiTableColumnFlags_NoHeaderLabel, (28.0f * uiScale));
         ImGui::TableSetupColumn("Item Name");
+        ImGui::TableSetupColumn("Current Best", ImGuiTableColumnFlags_WidthFixed, (90.0f * uiScale));
+        ImGui::TableSetupColumn("Prev. Best", ImGuiTableColumnFlags_WidthFixed, (90.0f * uiScale));
         ImGui::TableHeadersRow();
         ImGui::TableNextColumn();
         for (int i = 0; i < splitItem.size(); i++) {
@@ -621,16 +647,19 @@ void DrawTimeSplitSplits(){
                 }
             }
             ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.75f, 0.0f, 0.0f, 1.0f));
+            // Item Image (Removal)
             if (ImGui::ImageButton(std::to_string(i).c_str(), LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(itemImager),
                                ImVec2(26.0f * uiScale, 26.0f *uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), pieceTint)) {
+                uint32_t currentStatus = splitStatus[i];
                 splitItem.erase(splitItem.begin() + i);
                 splitTime.erase(splitTime.begin() + i);
                 splitPreviousBest.erase(splitPreviousBest.begin() + i);
                 splitBest.erase(splitBest.begin() + i);
                 splitStatus.erase(splitStatus.begin() + i);
+                splitStatus[i] = currentStatus;
             }
-            ImGui::PopStyleColor();
             ImGui::TableNextColumn();
+            // Item Name (Removal)
             ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0.0f, 5.0f * uiScale));
             ImGui::AlignTextToFramePadding();
             if (itemNum == ITEM_SKULL_TOKEN) {
@@ -642,6 +671,25 @@ void DrawTimeSplitSplits(){
             } else {
                 ImGui::TextWrapped(itemNamer.c_str());
             }
+            ImGui::TableNextColumn();
+            if (splitBest[i] != 100000) {
+                if (ImGui::Button(std::string(formatTimestampTimeSplit(splitBest[i])).c_str(),
+                                  ImVec2(85.0f, 30.0f))) {
+                    splitBest[i] = 100000;
+                }
+            } else {
+                ImGui::TextColored(COLOR_RED, "No Data");
+            }
+            ImGui::TableNextColumn();
+            // Previous Best (Removal)
+            if (splitPreviousBest[i] != 0) {
+                if (ImGui::Button(std::string(formatTimestampTimeSplit(splitPreviousBest[i])).c_str(), ImVec2(85.0f, 30.0f))) {
+                    splitPreviousBest[i] = 0;
+                }
+            } else {
+                ImGui::TextColored(COLOR_RED, "No Data");
+            }
+            ImGui::PopStyleColor();
             ImGui::PopStyleVar();
             ImGui::TableNextColumn();
         }
@@ -706,6 +754,7 @@ void DrawTimeSplitSplits(){
                             v++;
                             o--;
                         }
+                        splitStatus[loopCounter] = 3;
                     } else {
                         int v = 0;
                         int o = nextIndex + v + 1;
@@ -718,12 +767,24 @@ void DrawTimeSplitSplits(){
                             v++;
                             o++;
                         }
+                        splitStatus[loopCounter] = 0;
                     }
                     splitItem[loopCounter] = draggedItem;
                     splitTime[loopCounter] = draggedTime;
                     splitBest[loopCounter] = draggedBest;
                     splitPreviousBest[loopCounter] = draggedPreviousBest;
                     splitStatus[loopCounter] = draggedStatus;
+                    for (int i = 0; i < splitItem.size(); i++) {
+                        if (splitStatus[i] != 1) {
+                            splitStatus[i] = 2;
+                            for (int v = i + 1; v < splitItem.size(); v++) {
+                                if (splitStatus[v] != 1){
+                                    splitStatus[v] = 0;
+                                }
+                            }
+                            i = splitItem.size() - 1;
+                        }
+                    }
                 }
                 ImGui::EndDragDropTarget();
             }
@@ -1259,7 +1320,12 @@ void TimeSplitWindow::DrawElement() {
         initialized = true;
     }
 
-    uiScale = CVarGetInteger("gImGuiScale", 0);
+    if (CVarGetInteger("gImGuiScale", 0)) {
+        uiScale = 1;
+    } else {
+        uiScale = CVarGetInteger("gImGuiScale", 0);
+    }
+    
     ImGui::PushStyleColor(ImGuiCol_WindowBg, colorChoice);
     if (!ImGui::Begin("Time Splitter Window", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();
