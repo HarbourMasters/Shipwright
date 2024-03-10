@@ -874,35 +874,35 @@ void KaleidoScope_UpdateItemEquip(PlayState* play) {
     s16 X_Margins_DPad_Items;
     s16 Y_Margins_DPad_Items;
     if (CVarGetInteger("gBBtnUseMargins", 0) != 0) {
-        if (CVarGetInteger("gBBtnPosType", 0) == 0) {X_Margins_BtnB = Right_HUD_Margin;};
+        if (CVarGetInteger("gBBtnPosType", 0) == ORIGINAL_LOCATION) {X_Margins_BtnB = Right_HUD_Margin;};
         Y_Margins_BtnB = (Top_HUD_Margin*-1);
     } else {
         X_Margins_BtnB = 0;
         Y_Margins_BtnB = 0;
     }
     if (CVarGetInteger("gCBtnLUseMargins", 0) != 0) {
-        if (CVarGetInteger("gCBtnLPosType", 0) == 0) {X_Margins_CL = Right_HUD_Margin;};
+        if (CVarGetInteger("gCBtnLPosType", 0) == ORIGINAL_LOCATION) {X_Margins_CL = Right_HUD_Margin;};
         Y_Margins_CL = (Top_HUD_Margin*-1);
     } else {
         X_Margins_CL = 0;
         Y_Margins_CL = 0;
     }
     if (CVarGetInteger("gCBtnRUseMargins", 0) != 0) {
-        if (CVarGetInteger("gCBtnRPosType", 0) == 0) {X_Margins_CR = Right_HUD_Margin;};
+        if (CVarGetInteger("gCBtnRPosType", 0) == ORIGINAL_LOCATION) {X_Margins_CR = Right_HUD_Margin;};
         Y_Margins_CR = (Top_HUD_Margin*-1);
     } else {
         X_Margins_CR = 0;
         Y_Margins_CR = 0;
     }
     if (CVarGetInteger("gCBtnDUseMargins", 0) != 0) {
-        if (CVarGetInteger("gCBtnDPosType", 0) == 0) {X_Margins_CD = Right_HUD_Margin;};
+        if (CVarGetInteger("gCBtnDPosType", 0) == ORIGINAL_LOCATION) {X_Margins_CD = Right_HUD_Margin;};
         Y_Margins_CD = (Top_HUD_Margin*-1);
     } else {
         X_Margins_CD = 0;
         Y_Margins_CD = 0;
     }
     if (CVarGetInteger("gDPadUseMargins", 0) != 0) {
-        if (CVarGetInteger("gDPadPosType", 0) == 0) {X_Margins_DPad_Items = Right_HUD_Margin;};
+        if (CVarGetInteger("gDPadPosType", 0) == ORIGINAL_LOCATION) {X_Margins_DPad_Items = Right_HUD_Margin;};
         Y_Margins_DPad_Items = (Top_HUD_Margin*-1);
     } else {
         X_Margins_DPad_Items = 0;
@@ -925,24 +925,24 @@ void KaleidoScope_UpdateItemEquip(PlayState* play) {
     }; //(X,Y) Used with custom position to place it properly.
 
     //DPadItems
-    if (CVarGetInteger("gDPadPosType", 0) != 0) {
+    if (CVarGetInteger("gDPadPosType", 0) != ORIGINAL_LOCATION) {
         sCButtonPosY[3] = CVarGetInteger("gDPadPosY", 0)+Y_Margins_DPad_Items+DPad_ItemsOffset[0][1];//Up
         sCButtonPosY[4] = CVarGetInteger("gDPadPosY", 0)+Y_Margins_DPad_Items+DPad_ItemsOffset[1][1];//Down
         sCButtonPosY[5] = CVarGetInteger("gDPadPosY", 0)+Y_Margins_DPad_Items+DPad_ItemsOffset[2][1];//Left
         sCButtonPosY[6] = CVarGetInteger("gDPadPosY", 0)+Y_Margins_DPad_Items+DPad_ItemsOffset[3][1];//Right
-        if (CVarGetInteger("gDPadPosType", 0) == 1) {//Anchor Left
+        if (CVarGetInteger("gDPadPosType", 0) == ANCHOR_LEFT) {
             if (CVarGetInteger("gDPadUseMargins", 0) != 0) {X_Margins_DPad_Items = Left_HUD_Margin;};
             sCButtonPosX[3] = OTRGetDimensionFromLeftEdge(CVarGetInteger("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[0][0]);
             sCButtonPosX[4] = OTRGetDimensionFromLeftEdge(CVarGetInteger("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[1][0]);
             sCButtonPosX[5] = OTRGetDimensionFromLeftEdge(CVarGetInteger("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[2][0]);
             sCButtonPosX[6] = OTRGetDimensionFromLeftEdge(CVarGetInteger("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[3][0]);
-        } else if (CVarGetInteger("gDPadPosType", 0) == 2) {//Anchor Right
+        } else if (CVarGetInteger("gDPadPosType", 0) == ANCHOR_RIGHT) {
             if (CVarGetInteger("gDPadUseMargins", 0) != 0) {X_Margins_DPad_Items = Right_HUD_Margin;};
             sCButtonPosX[3] = OTRGetDimensionFromRightEdge(CVarGetInteger("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[0][0]);
             sCButtonPosX[4] = OTRGetDimensionFromRightEdge(CVarGetInteger("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[1][0]);
             sCButtonPosX[5] = OTRGetDimensionFromRightEdge(CVarGetInteger("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[2][0]);
             sCButtonPosX[6] = OTRGetDimensionFromRightEdge(CVarGetInteger("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[3][0]);
-        } else if (CVarGetInteger("gDPadPosType", 0) == 3) {//Anchor None
+        } else if (CVarGetInteger("gDPadPosType", 0) == ANCHOR_NONE) {
             sCButtonPosX[3] = CVarGetInteger("gDPadPosX", 0)+DPad_ItemsOffset[0][0];
             sCButtonPosX[4] = CVarGetInteger("gDPadPosX", 0)+DPad_ItemsOffset[1][0];
             sCButtonPosX[5] = CVarGetInteger("gDPadPosX", 0)+DPad_ItemsOffset[2][0];
@@ -959,15 +959,15 @@ void KaleidoScope_UpdateItemEquip(PlayState* play) {
         sCButtonPosY[6] = ItemIconPos_ori[6][1];
     }
     //C button Left
-    if (CVarGetInteger("gCBtnLPosType", 0) != 0) {
+    if (CVarGetInteger("gCBtnLPosType", 0) != ORIGINAL_LOCATION) {
         sCButtonPosY[0] = CVarGetInteger("gCBtnLPosY", 0)+Y_Margins_CL;
-        if (CVarGetInteger("gCBtnLPosType", 0) == 1) {//Anchor Left
+        if (CVarGetInteger("gCBtnLPosType", 0) == ANCHOR_LEFT) {
             if (CVarGetInteger("gCBtnLUseMargins", 0) != 0) {X_Margins_CL = Left_HUD_Margin;};
             sCButtonPosX[0] = OTRGetDimensionFromLeftEdge(CVarGetInteger("gCBtnLPosX", 0)+X_Margins_CL);
-        } else if (CVarGetInteger("gCBtnLPosType", 0) == 2) {//Anchor Right
+        } else if (CVarGetInteger("gCBtnLPosType", 0) == ANCHOR_RIGHT) {
             if (CVarGetInteger("gCBtnLUseMargins", 0) != 0) {X_Margins_CL = Right_HUD_Margin;};
             sCButtonPosX[0] = OTRGetDimensionFromRightEdge(CVarGetInteger("gCBtnLPosX", 0)+X_Margins_CL);
-        } else if (CVarGetInteger("gCBtnLPosType", 0) == 3) {//Anchor None
+        } else if (CVarGetInteger("gCBtnLPosType", 0) == ANCHOR_NONE) {
             sCButtonPosX[0] = CVarGetInteger("gCBtnLPosX", 0);
         }
     } else {
@@ -975,15 +975,15 @@ void KaleidoScope_UpdateItemEquip(PlayState* play) {
         sCButtonPosY[0] = ItemIconPos_ori[0][1];
     }
     //C Button down
-    if (CVarGetInteger("gCBtnDPosType", 0) != 0) {
+    if (CVarGetInteger("gCBtnDPosType", 0) != ORIGINAL_LOCATION) {
         sCButtonPosY[1] = CVarGetInteger("gCBtnDPosY", 0)+Y_Margins_CD;
-        if (CVarGetInteger("gCBtnDPosType", 0) == 1) {//Anchor Left
+        if (CVarGetInteger("gCBtnDPosType", 0) == ANCHOR_LEFT) {
             if (CVarGetInteger("gCBtnDUseMargins", 0) != 0) {X_Margins_CD = Left_HUD_Margin;};
             sCButtonPosX[1] = OTRGetDimensionFromLeftEdge(CVarGetInteger("gCBtnDPosX", 0)+X_Margins_CD);
-        } else if (CVarGetInteger("gCBtnDPosType", 0) == 2) {//Anchor Right
+        } else if (CVarGetInteger("gCBtnDPosType", 0) == ANCHOR_RIGHT) {
             if (CVarGetInteger("gCBtnDUseMargins", 0) != 0) {X_Margins_CD = Right_HUD_Margin;};
             sCButtonPosX[1] = OTRGetDimensionFromRightEdge(CVarGetInteger("gCBtnDPosX", 0)+X_Margins_CD);
-        } else if (CVarGetInteger("gCBtnDPosType", 0) == 3) {//Anchor None
+        } else if (CVarGetInteger("gCBtnDPosType", 0) == ANCHOR_NONE) {
             sCButtonPosX[1] = CVarGetInteger("gCBtnDPosX", 0);
         }
     } else {
@@ -991,15 +991,15 @@ void KaleidoScope_UpdateItemEquip(PlayState* play) {
         sCButtonPosY[1] = ItemIconPos_ori[1][1];
     }
     //C button Right
-    if (CVarGetInteger("gCBtnRPosType", 0) != 0) {
+    if (CVarGetInteger("gCBtnRPosType", 0) != ORIGINAL_LOCATION) {
         sCButtonPosY[2] = CVarGetInteger("gCBtnRPosY", 0)+Y_Margins_CR;
-        if (CVarGetInteger("gCBtnRPosType", 0) == 1) {//Anchor Left
+        if (CVarGetInteger("gCBtnRPosType", 0) == ANCHOR_LEFT) {
             if (CVarGetInteger("gCBtnRUseMargins", 0) != 0) {X_Margins_CR = Left_HUD_Margin;};
             sCButtonPosX[2] = OTRGetDimensionFromLeftEdge(CVarGetInteger("gCBtnRPosX", 0)+X_Margins_CR);
-        } else if (CVarGetInteger("gCBtnRPosType", 0) == 2) {//Anchor Right
+        } else if (CVarGetInteger("gCBtnRPosType", 0) == ANCHOR_RIGHT) {
             if (CVarGetInteger("gCBtnRUseMargins", 0) != 0) {X_Margins_CR = Right_HUD_Margin;};
             sCButtonPosX[2] = OTRGetDimensionFromRightEdge(CVarGetInteger("gCBtnRPosX", 0)+X_Margins_CR);
-        } else if (CVarGetInteger("gCBtnRPosType", 0) == 3) {//Anchor None
+        } else if (CVarGetInteger("gCBtnRPosType", 0) == ANCHOR_NONE) {
             sCButtonPosX[2] = CVarGetInteger("gCBtnRPosX", 0);
         }
     } else {

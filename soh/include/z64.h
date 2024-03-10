@@ -2335,6 +2335,15 @@ typedef enum {
 } PauseCursorAnySlotOptions;
 
 typedef enum {
+    ORIGINAL_LOCATION,
+    ANCHOR_LEFT,
+    ANCHOR_RIGHT,
+    ANCHOR_NONE,
+    HIDDEN,
+    ANCHOR_TO_LIFE_METER
+} PosType;
+
+typedef enum {
     LED_SOURCE_TUNIC_ORIGINAL,
     LED_SOURCE_TUNIC_COSMETICS,
     LED_SOURCE_HEALTH,

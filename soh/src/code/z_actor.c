@@ -1126,17 +1126,17 @@ void TitleCard_Draw(PlayState* play, TitleCardContext* titleCtx) {
         s16 TitleCard_MarginX = 0;
         s16 TitleCard_PosX = titleCtx->x;
         s16 TitleCard_PosY = titleCtx->y;
-        if (TitleCard_PosType_Checker != 0) {
+        if (TitleCard_PosType_Checker != ORIGINAL_LOCATION) {
             TitleCard_PosY = TitleCard_PosY_Modifier;
-            if (TitleCard_PosType_Checker == 1) {//Anchor Left
+            if (TitleCard_PosType_Checker == ANCHOR_LEFT) {
                 if (TitleCard_Margin_Checker != 0) {TitleCard_MarginX = CVarGetInteger("gHUDMargin_L", 0)*-1;};
                 TitleCard_PosX = OTRGetDimensionFromLeftEdge(TitleCard_PosX_Modifier+TitleCard_MarginX)-11;            
-            } else if (TitleCard_PosType_Checker == 2) {//Anchor Right
+            } else if (TitleCard_PosType_Checker == ANCHOR_RIGHT) {
                 if (TitleCard_Margin_Checker != 0) {TitleCard_MarginX = CVarGetInteger("gHUDMargin_R", 0);};
                 TitleCard_PosX = OTRGetDimensionFromRightEdge(TitleCard_PosX_Modifier+TitleCard_MarginX);
-            } else if (TitleCard_PosType_Checker == 3) {//Anchor None
+            } else if (TitleCard_PosType_Checker == ANCHOR_NONE) {
                 TitleCard_PosX = TitleCard_PosX_Modifier;
-            } else if (TitleCard_PosType_Checker == 4) {//Hidden
+            } else if (TitleCard_PosType_Checker == HIDDEN) {
                 TitleCard_PosX = -9999;
             }
         }
