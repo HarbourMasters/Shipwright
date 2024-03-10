@@ -398,7 +398,7 @@ s32 CollisionPoly_LineVsPoly(CollisionPoly* poly, Vec3s* vtxList, Vec3f* posA, V
         (poly->normal.x * posB->x + poly->normal.y * posB->y + poly->normal.z * posB->z) * COLPOLY_NORMAL_FRAC +
         plane.originDist;
 
-#ifdef __WIIU__
+#if defined(__SWITCH__) || defined(__WIIU__)
     // on some platforms this ends up as very small numbers due to rounding issues
     if (IS_ZERO(planeDistA)) {
         planeDistA = 0.0f;
