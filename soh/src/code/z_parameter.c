@@ -2696,6 +2696,7 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
 
     if (item >= RG_SILVER_RUPEE_FIRST && item <= RG_SILVER_RUPEE_LAST) {
         Randomizer_IncrementSilverRupeeCount(item, 1);
+        Rupees_ChangeBy(5);
         return Return_Item_Entry(giEntry, RG_NONE);
     }
 
