@@ -171,6 +171,16 @@ namespace Rando {
         if (rgid >= RG_SILVER_RUPEE_FIRST && rgid <= RG_SILVER_RUPEE_LAST) {
             messageEntry =
                     CustomMessageManager::Instance->RetrieveMessage(Randomizer::getItemMessageTableID, RG_SILVER_RUPEE_FIRST);
+            auto ctx = Rando::Context::GetInstance();
+            // Get the collected amount + 1, since the text is retrieved before the count is incremented in `Randomizer_Item_Give`
+            int srCount = ctx->GetSilverRupees()->GetInfo(static_cast<RandomizerGet>(rgid)).GetCollected() + 1;
+            bool complete = ctx->GetSilverRupees()->GetInfo(static_cast<RandomizerGet>(rgid)).GetTotal() <= srCount;
+            if (complete) {
+                messageEntry.Replace("{{count_text}}", "That's all of them");
+            } else {
+                messageEntry.Replace("{{count_text}}", "You have collected %g{{count}}%w of them so far");
+                messageEntry.Replace("{{count}}", std::to_string(srCount));
+            }
         }/* else if (rgid >= RG_SILVER_RUPEE_POUCH_FIRST && rgid <= RG_SILVER_RUPEE_POUCH_LAST) {
             messageEntry =
                     CustomMessageManager::Instance->RetrieveMessage(Randomizer::getItemMessageTableID, RG_SILVER_RUPEE_POUCH_FIRST);

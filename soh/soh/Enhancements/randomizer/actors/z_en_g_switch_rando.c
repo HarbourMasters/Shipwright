@@ -8,6 +8,13 @@ void EnGSwitch_Randomizer_SilverRupeeIdle(EnGSwitch* self, PlayState* play) {
     self->actor.shape.rot.y += 0x800;
     if (self->actor.xyzDistToPlayerSq < 900.0f) {
         if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_SILVER_RUPEES) != RO_SILVER_SHUFFLE_VANILLA) {
+            player->getItemEntry = *self->giEntry;
+
+            if (self->giEntry->getItemId == RG_ICE_TRAP) {
+                Message_StartTextbox(play, 0xF8, NULL);
+            } else {
+                Message_StartTextbox(play, self->giEntry->textId, NULL);
+            }
             if (self->giEntry->modIndex == MOD_NONE) {
                 // RANDOTOD: Move this into Item_Give() or some other more central location
                 if (self->giEntry->getItemId == GI_SWORD_BGS) {
@@ -26,14 +33,6 @@ void EnGSwitch_Randomizer_SilverRupeeIdle(EnGSwitch* self, PlayState* play) {
             // if (self->giEntry->getItemId == RG_ICE_TRAP && Message_GetState(&play->msgCtx) != TEXT_STATE_CLOSING) {
             //     player->actor.freezeTimer = 10;
             // }
-
-            player->getItemEntry = *self->giEntry;
-
-            if (self->giEntry->getItemId == RG_ICE_TRAP) {
-                Message_StartTextbox(play, 0xF8, NULL);
-            } else {
-                Message_StartTextbox(play, self->giEntry->textId, NULL);
-            }
 
             if (IS_RANDO) {
                 if (self->giEntry->getItemId != RG_ICE_TRAP) {
