@@ -579,7 +579,7 @@ void DrawTimeSplitOptions() {
         status = "List has been reset";
         statusColor = COLOR_RED;
     }
-    UIWidgets::EnhancementCheckbox("Enable Removals", "gTimeSplit.EnableEdits", false);
+    UIWidgets::EnhancementCheckbox("Edit Splits", "gTimeSplit.EnableEdits", false);
     ImGui::TextColored(statusColor, status.c_str());
     UIWidgets::PaddedSeparator();
 }
@@ -672,11 +672,16 @@ void DrawTimeSplitSplits(){
                 ImGui::TextWrapped(itemNamer.c_str());
             }
             ImGui::TableNextColumn();
+            // Current Best (Removal) - needs work
             if (splitBest[i] != 100000) {
-                if (ImGui::Button(std::string(formatTimestampTimeSplit(splitBest[i])).c_str(),
-                                  ImVec2(85.0f, 30.0f))) {
+                if (splitBest[i] != splitPreviousBest[i]) {
+                    if (ImGui::Button(std::string(formatTimestampTimeSplit(splitBest[i])).c_str(), ImVec2(85.0f, 30.0f))) {
                     splitBest[i] = 100000;
+                    }
+                } else {
+                    ImGui::TextColored(COLOR_WHITE, "No Change");
                 }
+                
             } else {
                 ImGui::TextColored(COLOR_RED, "No Data");
             }
