@@ -944,8 +944,6 @@ void DrawTimeSplitListManager() {
         if (i != 0 && (i + 1) % 8 == 0) {
             ImGui::TableNextRow();
             ImGui::TableSetColumnIndex(0);
-            
-            //ImGui::TableNextColumn();
         } else {
             ImGui::TableNextColumn();
         }
