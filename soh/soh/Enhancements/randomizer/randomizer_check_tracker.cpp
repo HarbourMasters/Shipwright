@@ -785,6 +785,7 @@ void CheckTrackerFlagSet(int16_t flagType, int32_t flag) {
 
 void InitTrackerData(bool isDebug) {
     TrySetAreas();
+    areasSpoiled = 0;
     for (auto& [rc, rco] : RandomizerCheckObjects::GetAllRCObjects()) {
         if (rc != RC_UNKNOWN_CHECK && rc != RC_MAX) {
             DefaultCheckData(rc);
