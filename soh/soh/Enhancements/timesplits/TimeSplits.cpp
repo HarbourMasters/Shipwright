@@ -922,6 +922,37 @@ void TimeSplitAddToSplits(uint32_t itemToAdd) {
 }
 
 void DrawTimeSplitListManager() {
+    if (splitItem.size() == 0) {
+        ImGui::BeginTable("Current List", 1);
+    } else {
+        ImGui::BeginTable("Current List", splitItem.size(), 0, ImVec2(2400.0f, 0.0f));
+        for (int i = 0; i < splitItem.size(); i++) {
+            if (i < 8) {
+                ImGui::TableSetupColumn(std::to_string(i).c_str(), ImGuiTableColumnFlags_WidthFixed | ImGuiTableColumnFlags_NoHeaderLabel, (35.0f * uiScale));
+            }
+        }
+        ImGui::TableNextColumn();
+    }
+    for (int i = 0; i < splitItem.size(); i++) {
+        for (auto& obj : splitObjects) {
+            if (splitItem[i] == obj.itemID) {
+                ImGui::ImageButton(std::to_string(i).c_str(), LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(obj.itemImage),
+                                ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1));
+            }
+        }
+
+        if (i != 0 && (i + 1) % 8 == 0) {
+            ImGui::TableNextRow();
+            ImGui::TableSetColumnIndex(0);
+            
+            //ImGui::TableNextColumn();
+        } else {
+            ImGui::TableNextColumn();
+        }
+    }
+    ImGui::EndTable();
+    UIWidgets::PaddedSeparator();
+    ImGui::BeginChild("AddtoList");
     if (ImGui::CollapsingHeader("Equipment & Quest Status")) {
         ImGui::BeginTable("Equipment", 3);
         for (int i = 0; i < 3; i++) {
@@ -1317,6 +1348,7 @@ void DrawTimeSplitListManager() {
             ImGui::EndTable();
         }
     }
+    ImGui::EndChild();
 }
 
 void TimeSplitWindow::DrawElement() {
