@@ -103,6 +103,23 @@ std::map<SceneID, RandomizerCheckArea> DungeonRCAreasBySceneID = {
     {SCENE_INSIDE_GANONS_CASTLE,   RCAREA_GANONS_CASTLE},
 };
 
+// Dungeon entrances with obvious visual differences between MQ and vanilla qualifying as spoiling on sight
+std::vector<uint32_t> spoilingEntrances = {
+    0x0000, // ENTR_DEKU_TREE_0
+    0x0467, // ENTR_DODONGOS_CAVERN_1
+    0x0028, // ENTR_JABU_JABU_0
+    0x0407, // ENTR_JABU_JABU_1
+    0x0169, // ENTR_FOREST_TEMPLE_0
+    0x0165, // ENTR_FIRE_TEMPLE_0
+    0x0175, // ENTR_FIRE_TEMPLE_1
+    0x0423, // ENTR_WATER_TEMPLE_1
+    0x0082, // ENTR_SPIRIT_TEMPLE_0
+    0x02B2, // ENTR_SHADOW_TEMPLE_1
+    0x0088, // ENTR_ICE_CAVERN_0
+    0x0008, // ENTR_GERUDO_TRAINING_GROUNDS_0
+    0x0467  // ENTR_INSIDE_GANONS_CASTLE_0
+};
+
 std::map<RandomizerCheckArea, std::vector<RandomizerCheckObject>> checksByArea;
 bool areasFullyChecked[RCAREA_INVALID];
 u32 areasSpoiled = 0;
@@ -262,6 +279,10 @@ void SetCheckCollected(RandomizerCheck rc) {
         }
     }
     SaveManager::Instance->SaveSection(gSaveContext.fileNum, sectionId, true);
+
+    if (!IsAreaSpoiled(rcObj.rcArea)) {
+        SetAreaSpoiled(rcObj.rcArea);
+    }
 
     doAreaScroll = true;
     UpdateOrdering(rcObj.rcArea);
@@ -467,9 +488,14 @@ void CheckTrackerLoadGame(int32_t fileNum) {
                 areaChecksGotten[realRcObj.rcArea]++;
             }
         }
-
-        if (areaChecksGotten[realRcObj.rcArea] != 0 || RandomizerCheckObjects::AreaIsOverworld(realRcObj.rcArea)) {
-            areasSpoiled |= (1 << realRcObj.rcArea);
+    }
+    for (int i = RCAREA_KOKIRI_FOREST; i < RCAREA_INVALID; i++) {
+        if (!IsAreaSpoiled((RandomizerCheckArea)i) && (RandomizerCheckObjects::AreaIsOverworld((RandomizerCheckArea)i) || !IS_RANDO ||
+            OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_RANDOM_MQ_DUNGEONS) == RO_MQ_DUNGEONS_NONE ||
+            OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_RANDOM_MQ_DUNGEONS) == RO_MQ_DUNGEONS_SELECTION ||
+            (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_RANDOM_MQ_DUNGEONS) == RO_MQ_DUNGEONS_SET_NUMBER &&
+            OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_COUNT) == 12))) {
+            SetAreaSpoiled((RandomizerCheckArea)i);
         }
     }
     if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LINKS_POCKET) != RO_LINKS_POCKET_NOTHING && IS_RANDO) {
@@ -539,7 +565,7 @@ void CheckTrackerTransition(uint32_t sceneNum) {
             SetShopSeen(sceneNum, false);
             break;
     }
-    if (!IsAreaSpoiled(currentArea)) {
+    if (!IsAreaSpoiled(currentArea) && (RandomizerCheckObjects::AreaIsOverworld(currentArea) || std::find(spoilingEntrances.begin(), spoilingEntrances.end(), gPlayState->nextEntranceIndex) != spoilingEntrances.end())) {
         SetAreaSpoiled(currentArea);
     }
 }
@@ -819,7 +845,7 @@ bool IsAreaSpoiled(RandomizerCheckArea rcArea) {
 }
 
 void SetAreaSpoiled(RandomizerCheckArea rcArea) {
-    areasSpoiled |= (1 << currentArea);
+    areasSpoiled |= (1 << rcArea);
     SaveManager::Instance->SaveSection(gSaveContext.fileNum, sectionId, true);
 }
 
@@ -985,11 +1011,7 @@ void CheckTrackerWindow::DrawElement() {
             ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(extraColor.r / 255.0f, extraColor.g / 255.0f,
                                                         extraColor.b / 255.0f, extraColor.a / 255.0f));
 
-            isThisAreaSpoiled = IsAreaSpoiled(rcArea) || CVarGetInteger("gCheckTrackerOptionMQSpoilers", 0) || !IS_RANDO ||
-                                OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_RANDOM_MQ_DUNGEONS) == RO_MQ_DUNGEONS_NONE ||
-                                OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_RANDOM_MQ_DUNGEONS) == RO_MQ_DUNGEONS_SELECTION ||
-                               (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_RANDOM_MQ_DUNGEONS) == RO_MQ_DUNGEONS_SET_NUMBER &&
-                                OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_COUNT) == 12);
+            isThisAreaSpoiled = IsAreaSpoiled(rcArea) || CVarGetInteger("gCheckTrackerOptionMQSpoilers", 0);
 
             if (isThisAreaSpoiled) {
                 if (showVOrMQ && RandomizerCheckObjects::AreaIsDungeon(rcArea)) {

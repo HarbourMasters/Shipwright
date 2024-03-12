@@ -9,6 +9,7 @@
 #include <vector>
 #include <libultraship/libultraship.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "randomizer_check_tracker.h"
 #include <algorithm>
 
 extern "C" {
@@ -406,6 +407,7 @@ ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
 #define IM_COL_GREEN IM_COL32(0, 255, 0, 255)
 #define IM_COL_GRAY IM_COL32(155, 155, 155, 255)
 #define IM_COL_PURPLE IM_COL32(180, 90, 200, 255)
+#define IM_COL_LIGHT_YELLOW IM_COL32(255, 255, 130, 255)
 
 void DrawItemCount(ItemTrackerItem item, bool hideMax) {
     if (!GameInteractor::IsSaveLoaded()) {
@@ -662,13 +664,15 @@ void DrawDungeonItem(ItemTrackerItem item) {
                      ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
     }
 
-    if (ResourceMgr_IsSceneMasterQuest(item.data) && (CHECK_DUNGEON_ITEM(DUNGEON_MAP, item.data) || item.data == SCENE_GERUDO_TRAINING_GROUND || item.data == SCENE_INSIDE_GANONS_CASTLE)
-        && GameInteractor::IsSaveLoaded()) {
-        dungeonColor = IM_COL_PURPLE;
+    if (CheckTracker::IsAreaSpoiled(RandomizerCheckObjects::GetRCAreaBySceneID((SceneID)item.data)) && GameInteractor::IsSaveLoaded()) {
+        if (ResourceMgr_IsSceneMasterQuest(item.data))
+            dungeonColor = IM_COL_PURPLE;
+        else
+            dungeonColor = IM_COL_LIGHT_YELLOW;
     }
 
     if (itemId == ITEM_KEY_SMALL) {
-        DrawItemCount(item, OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_RANDOM_MQ_DUNGEONS) != RO_MQ_DUNGEONS_NONE && !(CHECK_DUNGEON_ITEM(DUNGEON_MAP, item.data)));
+        DrawItemCount(item, !CheckTracker::IsAreaSpoiled(RandomizerCheckObjects::GetRCAreaBySceneID((SceneID)item.data)));
 
         ImVec2 p = ImGui::GetCursorScreenPos();
         int offset = GameInteractor::IsSaveLoaded() ? 16 : 13;
