@@ -1472,6 +1472,9 @@ void DrawCheatsMenu() {
         UIWidgets::Spacer(0);
         UIWidgets::EnhancementSliderFloat("Hookshot Reach Multiplier: %.2fx", "##gCheatHookshotReachMultiplier", "gCheatHookshotReachMultiplier", 1.0f, 5.0f, "", 1.0f, false);
         UIWidgets::Spacer(2.0f);
+        UIWidgets::EnhancementSliderFloat("Time Multiplier: %.1fx", "##gCheatTimeMultiplier", "gCheatTimeMultiplier", 0.2f, 5.0f, "", 1.0f, false);
+        UIWidgets::Spacer(2.0f);
+
         if (ImGui::Button("Change Age")) {
             CVarSetInteger("gSwitchAge", 1);
         }
