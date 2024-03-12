@@ -714,10 +714,24 @@ void AudioEditor_RandomizeAll() {
     ReplayCurrentBGM();
 }
 
+void AudioEditor_RandomizeGroup(SeqType group) {
+    RandomizeGroup(group);
+
+    LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    ReplayCurrentBGM();
+}
+
 void AudioEditor_ResetAll() {
     for (auto type : allTypes) {
         ResetGroup(AudioCollection::Instance->GetAllSequences(), type);
     }
+
+    LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    ReplayCurrentBGM();
+}
+
+void AudioEditor_ResetGroup(SeqType group) {
+    ResetGroup(AudioCollection::Instance->GetAllSequences(), group);
 
     LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     ReplayCurrentBGM();
