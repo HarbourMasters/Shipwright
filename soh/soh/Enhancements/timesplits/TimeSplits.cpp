@@ -166,8 +166,8 @@ std::vector<TimeSplitObject> splitObjects = {
     {	ITEM_STONE_OF_AGONY, 	                "Stone of Agony", 						"QUEST_STONE_OF_AGONY"},
     {	ITEM_GERUDO_CARD, 		                "Gerudo's Card", 						"QUEST_GERUDO_CARD"},
     {   ITEM_SKULL_TOKEN,                       "Skulltula Token",                      "QUEST_SKULL_TOKEN"},
-    {	ITEM_MAGIC_SMALL, 		                "Magic Meter", 							"ITEM_MAGIC_SMALL"},
-    {	ITEM_MAGIC_LARGE, 		                "Double Magic", 				        "ITEM_MAGIC_LARGE"},
+    {	ITEM_SINGLE_MAGIC, 		                "Magic Meter", 							"ITEM_MAGIC_SMALL"},
+    {	ITEM_DOUBLE_MAGIC, 		                "Double Magic", 				        "ITEM_MAGIC_LARGE"},
     {	ITEM_DOUBLE_DEFENSE, 	                "Double Defense", 						"ITEM_HEART_CONTAINER"},
     {	ITEM_STICK_UPGRADE_20, 	                "Deku Stick Upgrade (20)", 				"ITEM_STICK"}, 
     {	ITEM_STICK_UPGRADE_30, 	                "Deku Stick Upgrade (30)", 				"ITEM_STICK"},
@@ -257,7 +257,7 @@ std::vector<TimeSplitObject> inventoryObjects = {
     {	ITEM_BOMB,  		    "Bombs", 			"ITEM_BOMB"},
     {	ITEM_BOMBCHU, 	 		"Bombchu", 			"ITEM_BOMBCHU"},
     {	ITEM_BEAN,  			"Magic Bean", 		"ITEM_BEAN"},
-    {	ITEM_MAGIC_SMALL, 		"Magic Meter", 		"ITEM_MAGIC_SMALL"},
+    {	ITEM_SINGLE_MAGIC, 		"Magic Meter", 		"ITEM_MAGIC_SMALL"},
     {	ITEM_BOW, 	 			"Fairy Bow", 		"ITEM_BOW"},
     {	ITEM_HOOKSHOT,  		"Hookshot", 		"ITEM_HOOKSHOT"},
     {	ITEM_HAMMER,  			"Megaton Hammer", 	"ITEM_HAMMER"},
@@ -1065,7 +1065,7 @@ void DrawTimeSplitListManager() {
                     ImGui::OpenPopup("Hookshot");
                 } else if (inventoryObjects[i].itemID == ITEM_BOTTLE) {
                     ImGui::OpenPopup("Bottles");
-                } else if (inventoryObjects[i].itemID == ITEM_MAGIC_SMALL) {
+                } else if (inventoryObjects[i].itemID == ITEM_SINGLE_MAGIC) {
                     ImGui::OpenPopup("Magic");
                 } else if (inventoryObjects[i].itemID == ITEM_WALLET_ADULT) {
                     ImGui::OpenPopup("Wallet");
@@ -1213,7 +1213,7 @@ void DrawTimeSplitListManager() {
             ImGui::EndPopup();
         }
         if (ImGui::BeginPopupContextItem("Magic")) {
-            for (int i = ITEM_MAGIC_SMALL; i <= ITEM_MAGIC_LARGE; i++) {
+            for (int i = ITEM_SINGLE_MAGIC; i <= ITEM_DOUBLE_MAGIC; i++) {
                 for (auto& obj : splitObjects) {
                     if (obj.itemID == i) {
                         if (ImGui::ImageButton(std::to_string(i).c_str(), LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(obj.itemImage),
