@@ -809,7 +809,7 @@ void DrawTimeSplitSplits(){
             ImGui::TableNextColumn();
             if (splitStatus[loopCounter] == 2) {
                 // Current Time (Active)
-                if (splitTime[loopCounter] == 0) {
+                if (splitTime[loopCounter] != 1) {
                     ImGui::Text(formatTimestampTimeSplit(GAMEPLAYSTAT_TOTAL_TIME).c_str());
                 } else {
                     ImGui::Text(formatTimestampTimeSplit(splitTime[loopCounter]).c_str());
