@@ -466,6 +466,9 @@ void DrawTimeSplitOptions() {
     for (auto& entry : comboList.items()) {
         keys.push_back(entry.key());
     }
+    if (keys.size() == 0) {
+        keys.push_back("No Saved Lists");
+    }
     static uint32_t selectedItem = 0;
     static std::string listItem = keys[0];
     ImGui::PushItemWidth(151.0f);
@@ -525,7 +528,23 @@ void DrawTimeSplitOptions() {
             status = "List does not exist in Save Data";
             statusColor = COLOR_RED;
         }
-        
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Delete List")) {
+        std::ifstream file("splitdata.json");
+        json j;
+
+        if (file.is_open()) {
+            file >> j;
+            file.close();
+        }
+        j.erase(listItem);
+
+        std::ofstream newFile("splitdata.json");
+        newFile << j.dump(4);
+        newFile.close();
+        status = "List has been deleted";
+        statusColor = COLOR_RED;
     }
     UIWidgets::Spacer(0);
     ImGui::Text("Background Color");
@@ -580,6 +599,8 @@ void DrawTimeSplitOptions() {
         statusColor = COLOR_RED;
     }
     UIWidgets::EnhancementCheckbox("Edit Splits", "gTimeSplit.EnableEdits", false);
+    ImGui::SameLine();
+    UIWidgets::EnhancementCheckbox("Hide Tabs", "gTimeSplit.EnableTabs", false);
     ImGui::TextColored(statusColor, status.c_str());
     UIWidgets::PaddedSeparator();
 }
@@ -625,9 +646,11 @@ void TimeSplitColorTint() {
 void DrawTimeSplitSplits(){
     uint32_t loopCounter = 0;
     uint32_t buttonID = 0;
-    if (ImGui::CollapsingHeader("Time Splitter")) {
+    ImGui::PushStyleColor(ImGuiCol_Header, colorChoice);
+    if (ImGui::CollapsingHeader("Time Split Options")) {
         DrawTimeSplitOptions();
     }
+    ImGui::PopStyleColor();
     //List Removals
     if (CVarGetInteger("gTimeSplit.EnableEdits", 0)) {
         ImGui::BeginTable("Remove Entries", 4);
@@ -885,14 +908,6 @@ void DrawTimeSplitSplits(){
 void InitializeSplitFile() {
     if (!std::filesystem::exists("splitdata.json")) {
         json j;
-        j["splitItem"] = splitItem;
-        j["splitTokens"] = splitTokens;
-        j["splitTime"] = splitTime;
-        j["splitPreviousBest"] = splitPreviousBest;
-        j["backgroundColor.r"] = colorChoice.x;
-        j["backgroundColor.g"] = colorChoice.y;
-        j["backgroundColor.b"] = colorChoice.z;
-        j["backgroundColor.a"] = colorChoice.w;
         std::ofstream file("splitdata.json");
         file << j.dump(4);
         file.close();
@@ -922,6 +937,7 @@ void TimeSplitAddToSplits(uint32_t itemToAdd) {
 }
 
 void DrawTimeSplitListManager() {
+    ImGui::Text("List Preview");
     if (splitItem.size() == 0) {
         ImGui::BeginTable("Current List", 1);
     } else {
@@ -936,8 +952,10 @@ void DrawTimeSplitListManager() {
     for (int i = 0; i < splitItem.size(); i++) {
         for (auto& obj : splitObjects) {
             if (splitItem[i] == obj.itemID) {
+                itemNum = obj.itemID;
+                TimeSplitColorTint();
                 ImGui::ImageButton(std::to_string(i).c_str(), LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(obj.itemImage),
-                                ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1));
+                                ImVec2(32.0f * uiScale, 32.0f * uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), pieceTint);
             }
         }
 
@@ -1367,20 +1385,24 @@ void TimeSplitWindow::DrawElement() {
         ImGui::PopStyleColor(1);
         return;
     }
-    ImGui::BeginTabBar("Split Tabs");
-    if (ImGui::BeginTabItem("Splits")) {
+    if (CVarGetInteger("gTimeSplit.EnableTabs", 0)) {
         DrawTimeSplitSplits();
-        ImGui::EndTabItem();
+    } else {
+        ImGui::BeginTabBar("Split Tabs");
+        if (ImGui::BeginTabItem("Splits")) {
+            DrawTimeSplitSplits();
+            ImGui::EndTabItem();
+        }
+        if (ImGui::BeginTabItem("Manage List")) {
+            ImGui::TextColored(statusColor, status.c_str());
+            UIWidgets::PaddedSeparator();
+            ImGui::BeginChild("Add Items");
+            DrawTimeSplitListManager();
+            ImGui::EndChild();
+            ImGui::EndTabItem();
+        }
+        ImGui::EndTabBar();
     }
-    if (ImGui::BeginTabItem("Manage List")) {
-        ImGui::TextColored(statusColor, status.c_str());
-        UIWidgets::PaddedSeparator();
-        ImGui::BeginChild("Add Items");
-        DrawTimeSplitListManager();
-        ImGui::EndChild();
-        ImGui::EndTabItem();
-    }
-    ImGui::EndTabBar();
     ImGui::End();
     ImGui::PopStyleColor();
 }
