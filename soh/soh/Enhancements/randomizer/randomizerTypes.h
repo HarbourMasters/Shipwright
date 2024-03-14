@@ -3816,6 +3816,13 @@ typedef enum {
     RO_FISHSANITY_BOTH
 } RandoOptionsFishsanity;
 
+//Infinite Upgrades settings (off, progressive, condensed progressive)
+typedef enum {
+    RO_INF_UPGRADES_OFF,
+    RO_INF_UPGRADES_PROGRESSIVE,
+    RO_INF_UPGRADES_CONDENSED_PROGRESSIVE,
+} RandoOptionInfiniteUpgrades;
+
 //Any Dungeon Item (start with, vanilla, own dungeon, any dungeon,
 //overworld, anywhere)
 typedef enum {

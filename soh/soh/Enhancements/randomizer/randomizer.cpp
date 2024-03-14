@@ -613,9 +613,9 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
     // Same thing with the infinite upgrades, if we're not shuffling them
     // and we're using the Plentiful item pool, we should prevent the infinite
     // upgrades from being gotten
-    bool infiniteUpgrades = GetRandoSettingValue(RSK_INFINITE_UPGRADES);
+    u8 infiniteUpgrades = GetRandoSettingValue(RSK_INFINITE_UPGRADES);
 
-    u8 numWallets = 2 + (u8)tycoonWallet + (u8)infiniteUpgrades;
+    u8 numWallets = 2 + (u8)tycoonWallet + (infiniteUpgrades != RO_INF_UPGRADES_OFF ? 1 : 0);
     switch (randoGet) {
         case RG_NONE:
         case RG_TRIFORCE:
@@ -652,15 +652,15 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
 
         // Inventory Items
         case RG_PROGRESSIVE_STICK_UPGRADE:
-            return infiniteUpgrades ?
+            return infiniteUpgrades != RO_INF_UPGRADES_OFF ?
                 (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_STICK_UPGRADE) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN) :
                 (CUR_UPG_VALUE(UPG_STICKS) < 3 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE);
         case RG_PROGRESSIVE_NUT_UPGRADE:
-            return infiniteUpgrades ?
+            return infiniteUpgrades != RO_INF_UPGRADES_OFF ?
                 (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_NUT_UPGRADE) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN) :
                 (CUR_UPG_VALUE(UPG_NUTS) < 3 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE);
         case RG_PROGRESSIVE_BOMB_BAG:
-            return infiniteUpgrades ?
+            return infiniteUpgrades != RO_INF_UPGRADES_OFF ?
                 (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_BOMB_BAG) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN) :
                 (CUR_UPG_VALUE(UPG_BOMB_BAG) < 3 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE);
         case RG_BOMBS_5:
@@ -673,7 +673,7 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_BUY_BOMBS_30:
             return CUR_UPG_VALUE(UPG_BOMB_BAG) ? CAN_OBTAIN : CANT_OBTAIN_NEED_UPGRADE;
         case RG_PROGRESSIVE_BOW:
-            return infiniteUpgrades ?
+            return infiniteUpgrades != RO_INF_UPGRADES_OFF ?
                 (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_QUIVER) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN) :
                 (CUR_UPG_VALUE(UPG_QUIVER) < 3 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE);
         case RG_ARROWS_5:
@@ -684,7 +684,7 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_BUY_ARROWS_50:
             return CUR_UPG_VALUE(UPG_QUIVER) ? CAN_OBTAIN : CANT_OBTAIN_NEED_UPGRADE;
         case RG_PROGRESSIVE_SLINGSHOT:
-            return infiniteUpgrades ?
+            return infiniteUpgrades != RO_INF_UPGRADES_OFF ?
                 (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_BULLET_BAG) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN) :
                 (CUR_UPG_VALUE(UPG_BULLET_BAG) < 3 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE);
         case RG_DEKU_SEEDS_30:
@@ -814,7 +814,7 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_PROGRESSIVE_MAGIC_METER:
         case RG_MAGIC_SINGLE:
         case RG_MAGIC_DOUBLE:
-            return infiniteUpgrades ?
+            return infiniteUpgrades != RO_INF_UPGRADES_OFF ?
                 (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_MAGIC_METER) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN) :
                 (gSaveContext.magicLevel < 2 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE);
         case RG_FISHING_POLE:
@@ -986,7 +986,7 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
     // Same thing with the infinite upgrades, if we're not shuffling them
     //and we're using the Plentiful item pool, we should prevent the infinite
     //upgrades from being gotten
-    bool infiniteUpgrades = GetRandoSettingValue(RSK_INFINITE_UPGRADES);
+    u8 infiniteUpgrades = GetRandoSettingValue(RSK_INFINITE_UPGRADES);
     switch (randoGet) {
         case RG_NONE:
             return ogItemId;
@@ -1034,7 +1034,7 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                     return GI_STICK_UPGRADE_30;
                 case 3:
                 case 4:
-                    return infiniteUpgrades ? (GetItemID)RG_STICK_UPGRADE_INF : GI_STICK_UPGRADE_30;
+                    return infiniteUpgrades == RO_INF_UPGRADES_PROGRESSIVE ? (GetItemID)RG_STICK_UPGRADE_INF : GI_STICK_UPGRADE_30;
             }
         case RG_PROGRESSIVE_NUT_UPGRADE:
             switch (CUR_UPG_VALUE(UPG_NUTS)) {
@@ -1045,7 +1045,7 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                     return GI_NUT_UPGRADE_40;
                 case 3:
                 case 4:
-                    return infiniteUpgrades ? (GetItemID)RG_NUT_UPGRADE_INF : GI_NUT_UPGRADE_40;
+                    return infiniteUpgrades == RO_INF_UPGRADES_PROGRESSIVE ? (GetItemID)RG_NUT_UPGRADE_INF : GI_NUT_UPGRADE_40;
             }
         case RG_PROGRESSIVE_BOMB_BAG:
             switch (CUR_UPG_VALUE(UPG_BOMB_BAG)) {
@@ -1057,7 +1057,7 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                     return GI_BOMB_BAG_40;
                 case 3:
                 case 4:
-                    return infiniteUpgrades ? (GetItemID)RG_BOMB_BAG_INF : GI_BOMB_BAG_40;
+                    return infiniteUpgrades == RO_INF_UPGRADES_PROGRESSIVE ? (GetItemID)RG_BOMB_BAG_INF : GI_BOMB_BAG_40;
             }
         case RG_BOMBS_5:
         case RG_BUY_BOMBS_525:
@@ -1081,7 +1081,7 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                     return GI_QUIVER_50;
                 case 3:
                 case 4:
-                    return infiniteUpgrades ? (GetItemID)RG_QUIVER_INF : GI_QUIVER_50;
+                    return infiniteUpgrades == RO_INF_UPGRADES_PROGRESSIVE ? (GetItemID)RG_QUIVER_INF : GI_QUIVER_50;
             }
         case RG_ARROWS_5:
         case RG_BUY_ARROWS_10:
@@ -1102,7 +1102,7 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                     return GI_BULLET_BAG_50;
                 case 3:
                 case 4:
-                    return infiniteUpgrades ? (GetItemID)RG_BULLET_BAG_INF : GI_BULLET_BAG_50;
+                    return infiniteUpgrades == RO_INF_UPGRADES_PROGRESSIVE ? (GetItemID)RG_BULLET_BAG_INF : GI_BULLET_BAG_50;
             }
         case RG_DEKU_SEEDS_30:
         case RG_BUY_DEKU_SEEDS_30:
@@ -1127,7 +1127,7 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
         case RG_PROGRESSIVE_BOMBCHUS:
             if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_NONE) {
                 return (GetItemID)RG_PROGRESSIVE_BOMBCHUS;
-            } else if (infiniteUpgrades) {
+            } else if (infiniteUpgrades != RO_INF_UPGRADES_OFF) {
                 return (GetItemID)RG_BOMBCHU_INF;
             } else if (AMMO(ITEM_BOMBCHU) < 5) {
                 return GI_BOMBCHUS_10;
@@ -1250,10 +1250,10 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                 case 1:
                     return GI_WALLET_GIANT;
                 case 2:
-                    return tycoonWallet ? (GetItemID)RG_TYCOON_WALLET : infiniteUpgrades ? (GetItemID)RG_WALLET_INF : GI_WALLET_GIANT;
+                    return tycoonWallet ? (GetItemID)RG_TYCOON_WALLET : infiniteUpgrades != RO_INF_UPGRADES_OFF ? (GetItemID)RG_WALLET_INF : GI_WALLET_GIANT;
                 case 3:
                 case 4:
-                    return infiniteUpgrades ? (GetItemID)RG_WALLET_INF : tycoonWallet ? (GetItemID)RG_TYCOON_WALLET : GI_WALLET_GIANT;
+                    return infiniteUpgrades != RO_INF_UPGRADES_OFF ? (GetItemID)RG_WALLET_INF : tycoonWallet ? (GetItemID)RG_TYCOON_WALLET : GI_WALLET_GIANT;
             }
         case RG_PROGRESSIVE_SCALE:
             if (!Flags_GetRandomizerInf(RAND_INF_CAN_SWIM)) {
@@ -1274,7 +1274,7 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                     return (GetItemID)RG_MAGIC_DOUBLE;
                 case 2:
                 case 3:
-                    return infiniteUpgrades ? (GetItemID)RG_MAGIC_INF : (GetItemID)RG_MAGIC_DOUBLE;
+                    return infiniteUpgrades != RO_INF_UPGRADES_OFF ? (GetItemID)RG_MAGIC_INF : (GetItemID)RG_MAGIC_DOUBLE;
             }
 
         case RG_RECOVERY_HEART:

@@ -119,20 +119,24 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
     RandomizerGet actual = RG_NONE;
     const bool tycoonWallet =
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHOPSANITY) > RO_SHOPSANITY_ZERO_ITEMS;
-    const bool infiniteUpgrades = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_INFINITE_UPGRADES);
+    const u8 infiniteUpgrades = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_INFINITE_UPGRADES);
     switch (randomizerGet) {
         case RG_PROGRESSIVE_STICK_UPGRADE:
             switch (CUR_UPG_VALUE(UPG_STICKS)) {
                 case 0:
                 case 1:
-                    actual = RG_DEKU_STICK_CAPACITY_20;
+                    if (infiniteUpgrades == RO_INF_UPGRADES_CONDENSED_PROGRESSIVE) {
+                        actual = RG_STICK_UPGRADE_INF;
+                    } else {
+                        actual = RG_DEKU_STICK_CAPACITY_20;
+                    }
                     break;
                 case 2:
                     actual = RG_DEKU_STICK_CAPACITY_30;
                     break;
                 case 3:
                 case 4:
-                    if (infiniteUpgrades) {
+                    if (infiniteUpgrades == RO_INF_UPGRADES_PROGRESSIVE) {
                         actual = RG_STICK_UPGRADE_INF;
                     } else {
                         actual = RG_DEKU_STICK_CAPACITY_30;
@@ -146,14 +150,18 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
             switch (CUR_UPG_VALUE(UPG_NUTS)) {
                 case 0:
                 case 1:
-                    actual = RG_DEKU_NUT_CAPACITY_30;
+                    if (infiniteUpgrades == RO_INF_UPGRADES_CONDENSED_PROGRESSIVE) {
+                        actual = RG_NUT_UPGRADE_INF;
+                    } else {
+                        actual = RG_DEKU_NUT_CAPACITY_30;
+                    }
                     break;
                 case 2:
                     actual = RG_DEKU_NUT_CAPACITY_40;
                     break;
                 case 3:
                 case 4:
-                    if (infiniteUpgrades) {
+                    if (infiniteUpgrades == RO_INF_UPGRADES_PROGRESSIVE) {
                         actual = RG_NUT_UPGRADE_INF;
                     } else {
                         actual = RG_DEKU_NUT_CAPACITY_40;
@@ -169,14 +177,18 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
                     actual = RG_BOMB_BAG;
                     break;
                 case 1:
-                    actual = RG_BIG_BOMB_BAG;
+                    if (infiniteUpgrades == RO_INF_UPGRADES_CONDENSED_PROGRESSIVE) {
+                        actual = RG_BOMB_BAG_INF;
+                    } else {
+                        actual = RG_BIG_BOMB_BAG;
+                    }
                     break;
                 case 2:
                     actual = RG_BIGGEST_BOMB_BAG;
                     break;
                 case 3:
                 case 4:
-                    if (infiniteUpgrades) {
+                    if (infiniteUpgrades == RO_INF_UPGRADES_PROGRESSIVE) {
                         actual = RG_BOMB_BAG_INF;
                     } else {
                         actual = RG_BIGGEST_BOMB_BAG;
@@ -192,14 +204,18 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
                     actual = RG_FAIRY_BOW;
                     break;
                 case 1:
-                    actual = RG_BIG_QUIVER;
+                    if (infiniteUpgrades == RO_INF_UPGRADES_CONDENSED_PROGRESSIVE) {
+                        actual = RG_QUIVER_INF;
+                    } else {
+                        actual = RG_BIG_QUIVER;
+                    }
                     break;
                 case 2:
                     actual = RG_BIGGEST_QUIVER;
                     break;
                 case 3:
                 case 4:
-                    if (infiniteUpgrades) {
+                    if (infiniteUpgrades == RO_INF_UPGRADES_PROGRESSIVE) {
                         actual = RG_QUIVER_INF;
                     } else {
                         actual = RG_BIGGEST_QUIVER;
@@ -215,14 +231,18 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
                     actual = RG_FAIRY_SLINGSHOT;
                     break;
                 case 1:
-                    actual = RG_BIG_BULLET_BAG;
+                    if (infiniteUpgrades == RO_INF_UPGRADES_CONDENSED_PROGRESSIVE) {
+                        actual = RG_BULLET_BAG_INF;
+                    } else {
+                        actual = RG_BIG_BULLET_BAG;
+                    }
                     break;
                 case 2:
                     actual = RG_BIGGEST_BULLET_BAG;
                     break;
                 case 3:
                 case 4:
-                    if (infiniteUpgrades) {
+                    if (infiniteUpgrades == RO_INF_UPGRADES_PROGRESSIVE) {
                         actual = RG_BULLET_BAG_INF;
                     } else {
                         actual = RG_BIGGEST_BULLET_BAG;
@@ -291,7 +311,7 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
                     break;
                 case 3:
                 case 4:
-                    if (infiniteUpgrades) {
+                    if (infiniteUpgrades != RO_INF_UPGRADES_OFF) {
                         actual = RG_WALLET_INF;
                     } else {
                         actual = tycoonWallet ? RG_TYCOON_WALLET : RG_GIANT_WALLET;
@@ -328,7 +348,7 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
                     break;
                 case 2:
                 case 3:
-                    if (infiniteUpgrades) {
+                    if (infiniteUpgrades != RO_INF_UPGRADES_OFF) {
                         actual = RG_MAGIC_INF;
                     } else {
                         actual = RG_MAGIC_DOUBLE;
@@ -344,7 +364,7 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
         case RG_PROGRESSIVE_BOMBCHUS:
             if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_NONE) {
                 actual = RG_BOMBCHU_20;
-            } else if (infiniteUpgrades) {
+            } else if (infiniteUpgrades != RO_INF_UPGRADES_OFF) {
                 actual = RG_BOMBCHU_INF;
             } else if (AMMO(ITEM_BOMBCHU) < 5) {
                 actual = RG_BOMBCHU_10;

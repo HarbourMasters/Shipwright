@@ -179,7 +179,7 @@ void Settings::CreateOptions() {
     // TODO: Compasses show rewards/woth, maps show dungeon mode
     mOptions[RSK_BLUE_FIRE_ARROWS] = Option::Bool("Blue Fire Arrows", "gRandomizeBlueFireArrows", mOptionDescriptions[RSK_BLUE_FIRE_ARROWS]);
     mOptions[RSK_SUNLIGHT_ARROWS] = Option::Bool("Sunlight Arrows", "gRandomizeSunlightArrows", mOptionDescriptions[RSK_SUNLIGHT_ARROWS]);
-    mOptions[RSK_INFINITE_UPGRADES] = Option::Bool("Infinite Upgrades", "gRandomizeInfiniteUpgrades", mOptionDescriptions[RSK_INFINITE_UPGRADES]);
+    mOptions[RSK_INFINITE_UPGRADES] = Option::U8("Infinite Upgrades", {"Off", "Progressive", "Condensed Progressive"}, OptionCategory::Setting, "gRandomizeInfiniteUpgrades", mOptionDescriptions[RSK_INFINITE_UPGRADES]);
     mOptions[RSK_ITEM_POOL] = Option::U8("Item Pool", {"Plentiful", "Balanced", "Scarce", "Minimal"}, OptionCategory::Setting, "gRandomizeItemPool", mOptionDescriptions[RSK_ITEM_POOL], WidgetType::Combobox, RO_ITEM_POOL_BALANCED);
     mOptions[RSK_ICE_TRAPS] = Option::U8("Ice Traps", {"Off", "Normal", "Extra", "Mayhem", "Onslaught"}, OptionCategory::Setting, "gRandomizeIceTraps", mOptionDescriptions[RSK_ICE_TRAPS], WidgetType::Combobox, RO_ICE_TRAPS_NORMAL);
     // TODO: Remove Double Defense, Progressive Goron Sword

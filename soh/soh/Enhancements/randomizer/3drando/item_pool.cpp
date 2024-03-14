@@ -841,7 +841,7 @@ void GenerateItemPool() {
     ctx->possibleIceTrapModels.push_back(RG_FISHING_POLE);
   }
 
-  if (ctx->GetOption(RSK_INFINITE_UPGRADES)) {
+  if (ctx->GetOption(RSK_INFINITE_UPGRADES).Is(RO_INF_UPGRADES_PROGRESSIVE)) {
     AddItemToMainPool(RG_PROGRESSIVE_BOMB_BAG);
     AddItemToMainPool(RG_PROGRESSIVE_BOW);
     AddItemToMainPool(RG_PROGRESSIVE_NUT_UPGRADE);
