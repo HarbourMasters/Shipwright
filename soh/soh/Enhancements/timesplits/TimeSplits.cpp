@@ -320,6 +320,16 @@ void TimeSplitCompleteSplits() {
     gSaveContext.sohStats.gameComplete = true;
 }
 
+void TimeSplitSkipSplit(uint32_t splitID) {
+    splitStatus[splitID] = 3;
+    if (splitID + 1 == splitItem.size()) {
+        TimeSplitCompleteSplits();
+    } else {
+        splitStatus[splitID + 1] = 2;
+    }
+    
+}
+
 void TimeSplitSplitsHandlerS(uint32_t itemID) {
     uint32_t loopCounter = 0;
     for (auto& str : splitItem) {
@@ -338,7 +348,7 @@ void TimeSplitSplitsHandlerS(uint32_t itemID) {
                         }
                     }
                 }
-                if (splitTime[loopCounter] < splitBest[loopCounter]) {
+                if (splitTime[loopCounter] < splitBest[loopCounter] || splitBest[loopCounter] == 0) {
                     splitBest[loopCounter] = splitTime[loopCounter];
                 }
                 if (loopCounter == (splitItem.size() - 1)) {
@@ -374,7 +384,7 @@ void TimeSplitSceneSplitHandler(uint32_t entrance) {
                         }
                     }
                 }
-                if (splitTime[loopCounter] < splitBest[loopCounter]) {
+                if (splitTime[loopCounter] < splitBest[loopCounter] || splitBest[loopCounter] == 0) {
                     splitBest[loopCounter] = splitTime[loopCounter];
                 }
                 if (loopCounter == (splitItem.size() - 1)) {
@@ -416,7 +426,7 @@ void TimeSplitSplitsHandler(GetItemEntry itemEntry) {
                         }
                     }
                 }
-                if (splitTime[loopCounter] < splitBest[loopCounter]) {
+                if (splitTime[loopCounter] < splitBest[loopCounter] || splitBest[loopCounter] == 0) {
                     splitBest[loopCounter] = splitTime[loopCounter];
                 }
                 if (loopCounter == (splitItem.size() - 1)) {
@@ -506,7 +516,7 @@ void DrawTimeSplitOptions() {
                 splitItem.push_back(0);
                 splitTime.push_back(0);
                 splitPreviousBest.push_back(0);
-                splitBest.push_back(100000);
+                splitBest.push_back(0);
                 if (i == 0) {
                     splitStatus.push_back(2);
                 } else {
@@ -579,7 +589,7 @@ void DrawTimeSplitOptions() {
     ImGui::SameLine();
     if (ImGui::Button("Update Splits")) {
         for (int i = 0; i < splitItem.size(); i++) {
-            if (splitPreviousBest[i] == 0) {
+            if (splitPreviousBest[i] == 0 || splitBest[i] == 0) {
                 splitPreviousBest[i] = splitBest[i];
             } else if (splitPreviousBest[i] > splitBest[i]) {
                 splitPreviousBest[i] = splitBest[i];
@@ -759,8 +769,12 @@ void DrawTimeSplitSplits(){
                 }
             }
             ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
-            ImGui::ImageButton(std::to_string(buttonID).c_str(), LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(itemImager),
-                                   ImVec2(26.0f * uiScale, 26.0f *uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), pieceTint);
+            if (ImGui::ImageButton(std::to_string(buttonID).c_str(), LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(itemImager),
+                                   ImVec2(26.0f * uiScale, 26.0f *uiScale), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), pieceTint)) {
+                if (splitStatus[loopCounter] == 2) {
+                    TimeSplitSkipSplit(loopCounter);
+                }
+            }
             ImGui::PopStyleColor();
             if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None)) {
                 ImGui::SetDragDropPayload("DragMove", &buttonID, sizeof(uint32_t));
@@ -934,7 +948,7 @@ void TimeSplitAddToSplits(uint32_t itemToAdd) {
     splitItem.push_back(itemToAdd);
     splitTime.push_back(0);
     splitPreviousBest.push_back(0);
-    splitBest.push_back(100000);
+    splitBest.push_back(0);
     if (splitItem.size() == 1) {
         splitStatus.push_back(2);
     } else {
