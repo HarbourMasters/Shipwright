@@ -601,6 +601,9 @@ void DrawTimeSplitOptions() {
     UIWidgets::EnhancementCheckbox("Edit Splits", "gTimeSplit.EnableEdits", false);
     ImGui::SameLine();
     UIWidgets::EnhancementCheckbox("Hide Tabs", "gTimeSplit.EnableTabs", false);
+    ImGui::SameLine();
+    UIWidgets::EnhancementCheckbox("Active Tracking", "gTimeSplit.EnableTracking", false);
+    UIWidgets::Tooltip("Keeps Active Split in view for longer lists.");
     ImGui::TextColored(statusColor, status.c_str());
     UIWidgets::PaddedSeparator();
 }
@@ -728,6 +731,7 @@ void DrawTimeSplitSplits(){
             totalPreviousBest += splitPreviousBest[i];
         }
         ImGui::TextColored(COLOR_YELLOW, (splitAttempt).c_str());
+        ImGui::BeginChild("SplitTable", ImVec2(0.0f, ImGui::GetWindowHeight() - 128.0f));
         ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, ImVec2(4, 0));
         ImGui::BeginTable("Splits", 5, ImGuiTableFlags_Hideable | ImGuiTableFlags_Reorderable);
         ImGui::TableSetupColumn("Item Image", ImGuiTableColumnFlags_WidthFixed | ImGuiTableColumnFlags_NoHeaderLabel, (27.0f * uiScale));
@@ -750,6 +754,9 @@ void DrawTimeSplitSplits(){
             // Item Image
             if (splitStatus[buttonID] == 2) {
                 ImGui::TableSetBgColor(ImGuiTableBgTarget_RowBg0, IM_COL32(47, 79, 90, 255));
+                if (CVarGetInteger("gTimeSplit.EnableTracking", 0)) {
+                    ImGui::SetScrollHereY(loopCounter * 0.01f);
+                }
             }
             ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
             ImGui::ImageButton(std::to_string(buttonID).c_str(), LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(itemImager),
@@ -888,6 +895,7 @@ void DrawTimeSplitSplits(){
         }
         ImGui::EndTable();
         ImGui::PopStyleVar();
+        ImGui::EndChild();
         UIWidgets::PaddedSeparator();
         ImGui::SetCursorPosX(ImGui::GetWindowWidth() -
                              ImGui::CalcTextSize(formatTimestampTimeSplit(GAMEPLAYSTAT_TOTAL_TIME).c_str()).x -
