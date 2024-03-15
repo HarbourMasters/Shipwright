@@ -30,6 +30,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/randomizer/randomizer_grotto.h"
 #include "soh/frame_interpolation.h"
+#include "soh/Enhancements/timesplits/TimeSplits.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -9023,7 +9024,7 @@ s32 func_80843E64(PlayState* play, Player* this) {
         Player_RequestRumble(this, impactInfo->rumbleStrength, impactInfo->rumbleDuration, impactInfo->rumbleDecreaseRate, 0);
         Player_PlaySfx(this, NA_SE_PL_BODY_HIT);
         func_80832698(this, impactInfo->sfxId);
-
+        
         return impactIndex + 1;
     }
 
@@ -11449,6 +11450,8 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
                                   : (this->bodyShockTimer != 0) ? &gPlayerAnim_link_normal_electric_shock_end
                                                             : &gPlayerAnim_link_derth_rebirth);
                 }
+                TimeSplitSceneSplitHandler(gSaveContext.entranceIndex);
+                
             } else {
                 if ((this->actor.parent == NULL) &&
                     ((play->transitionTrigger == TRANS_TRIGGER_START) || (this->unk_A87 != 0) || !func_808382DC(this, play))) {
@@ -15978,7 +15981,7 @@ s32 Player_InflictDamageModified(PlayState* play, s32 damage, u8 modified) {
         this->stateFlags2 &= ~PLAYER_STATE2_GRABBED_BY_ENEMY;
         return 1;
     }
-
+    
     return 0;
 }
 

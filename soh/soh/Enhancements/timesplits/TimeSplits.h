@@ -9,6 +9,7 @@ extern "C" {
 #endif
 
 void TimeSplitSplitsHandlerS(uint32_t itemID);
+void TimeSplitSceneSplitHandler(uint32_t entrance);
 
 #ifdef __cplusplus
 }
@@ -66,5 +67,6 @@ typedef enum {
     ENTER_GANONS_TOWER_COLLAPSE_INTERIOR,
     ENTER_INSIDE_GANONS_CASTLE_COLLAPSE,
     ESCAPE_KOKIRI_FOREST = 286,
-    ESCAPE_LOST_WOODS = 477
+    ESCAPE_LOST_WOODS = 477,
+    WATCHTOWER_DEATH = 513 
 };

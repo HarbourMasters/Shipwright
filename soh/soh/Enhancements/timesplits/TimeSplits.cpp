@@ -201,6 +201,7 @@ std::vector<TimeSplitObject> splitObjects = {
     {   ENTER_INSIDE_GANONS_CASTLE_COLLAPSE,    "Enter Ganons Castle Collapse",         "SPECIAL_SPLIT_ENTRANCE"},
     {   ESCAPE_LOST_WOODS,                      "Lost Woods Escape",                    "SPECIAL_SPLIT_ENTRANCE"},
     {   ESCAPE_KOKIRI_FOREST,                   "Forest Escape",                        "SPECIAL_SPLIT_ENTRANCE"},
+    {   WATCHTOWER_DEATH,                       "Watchtower Death",                     "SPECIAL_SPLIT_ENTRANCE"},
 };
 
 std::vector<TimeSplitObject> equipmentObjects = {
@@ -304,6 +305,7 @@ std::vector<TimeSplitObject> sceneObjects = {
     {   ENTER_INSIDE_GANONS_CASTLE_COLLAPSE,    "Enter Ganons Castle Collapse",     "SPECIAL_SPLIT_ENTRANCE"},
     {   ESCAPE_LOST_WOODS,                      "Lost Woods Escape",                "SPECIAL_SPLIT_ENTRANCE"},
     {   ESCAPE_KOKIRI_FOREST,                   "Forest Escape",                    "SPECIAL_SPLIT_ENTRANCE"},
+    {   WATCHTOWER_DEATH,                       "Watchtower Death",                 "SPECIAL_SPLIT_ENTRANCE"},
 };
 
 std::string formatTimestampTimeSplit(uint32_t value) {
@@ -365,8 +367,11 @@ void TimeSplitSceneSplitHandler(uint32_t entrance) {
     if (entrance == ESCAPE_KOKIRI_FOREST && gSaveContext.cutsceneIndex != 0xfff0) {
         return;
     } 
-    if (entrance != ESCAPE_LOST_WOODS && entrance != ESCAPE_KOKIRI_FOREST) {
+    if (entrance != ESCAPE_LOST_WOODS && entrance != ESCAPE_KOKIRI_FOREST && entrance != WATCHTOWER_DEATH) {
         entrance = gPlayState->sceneNum + ENTER_DEKU_TREE;
+    }
+    if (entrance == WATCHTOWER_DEATH && gSaveContext.health != 0) {
+        return;
     }
     for (auto& str : splitItem) {
         if (entrance == splitItem[loopCounter]) {
@@ -1370,7 +1375,7 @@ void DrawTimeSplitListManager() {
             ImGui::BeginTable("Overworld", 1);
             ImGui::TableSetupColumn("Overworld1", ImGuiTableColumnFlags_WidthFixed, (220.0f * uiScale));
             ImGui::TableNextColumn();
-            for (int i = 16; i <= 17; i++) {
+            for (int i = 16; i <= 18; i++) {
                 //itemNum = obj.itemID;
                 //TimeSplitColorTint();
                 if (ImGui::ImageButton(std::to_string(i).c_str(), LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(sceneObjects[i].itemImage),
