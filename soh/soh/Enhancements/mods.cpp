@@ -1501,7 +1501,7 @@ std::map<s32, SpecialRespawnInfo> swimSpecialRespawnInfo = {
     },
     {
         ENTR_GERUDO_VALLEY_1,//caught by gerudos as child
-        { { -74.5, -70, -116.5 }, -16384 }
+        { { -424, -2051, -74 }, 16384 }
     }
 };
 
