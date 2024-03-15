@@ -73,6 +73,12 @@ static const ALIGN_ASSET(2) char gArrowDownTex[] = dgArrowDown;
 #define dgTriforcePiece "__OTR__textures/parameter_static/gTriforcePiece"
 static const ALIGN_ASSET(2) char gTriforcePieceTex[] = dgTriforcePiece;
 
+#define dgWTriforcePiece "__OTR__textures/parameter_static/gWTriforcePiece"
+static const ALIGN_ASSET(2) char gWTriforcePieceTex[] = dgWTriforcePiece;
+
+#define dgSplitEntrance "__OTR__textures/parameter_static/gSplitEntrance"
+static const ALIGN_ASSET(2) char gSplitEntranceTex[] = dgSplitEntrance;
+
 #define dgFileSelMQButtonTex "__OTR__textures/title_static/gFileSelMQButtonTex"
 static const ALIGN_ASSET(2) char gFileSelMQButtonTex[] = dgFileSelMQButtonTex;
 

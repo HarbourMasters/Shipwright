@@ -12,6 +12,8 @@
 #include "scenes/indoors/daiyousei_izumi/daiyousei_izumi_scene.h"
 #include "soh/frame_interpolation.h"
 
+#include "soh/Enhancements/timesplits/TimeSplits.h"
+
 #define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA)
 
 typedef enum {
@@ -238,16 +240,19 @@ void BgDyYoseizo_ChooseType(BgDyYoseizo* this, PlayState* play) {
         switch (this->fountainType) {
             case FAIRY_SPELL_FARORES_WIND:
                 if (!Flags_GetItemGetInf(ITEMGETINF_18)) {
+                    TimeSplitSplitsHandlerS(ITEM_FARORES_WIND);
                     givingReward = true;
                 }
                 break;
             case FAIRY_SPELL_DINS_FIRE:
                 if (!Flags_GetItemGetInf(ITEMGETINF_19)) {
+                    TimeSplitSplitsHandlerS(ITEM_DINS_FIRE);
                     givingReward = true;
                 }
                 break;
             case FAIRY_SPELL_NAYRUS_LOVE:
                 if (!Flags_GetItemGetInf(ITEMGETINF_1A)) {
+                    TimeSplitSplitsHandlerS(ITEM_NAYRUS_LOVE);
                     givingReward = true;
                 }
                 break;
@@ -742,6 +747,7 @@ void BgDyYoseizo_Give_Reward(BgDyYoseizo* this, PlayState* play) {
             case FAIRY_UPGRADE_MAGIC:
                 gSaveContext.isMagicAcquired = true;
                 gSaveContext.magicFillTarget = MAGIC_NORMAL_METER;
+                TimeSplitSplitsHandlerS(ITEM_SINGLE_MAGIC);
                 Interface_ChangeAlpha(9);
                 break;
             case FAIRY_UPGRADE_DOUBLE_MAGIC:
@@ -751,10 +757,12 @@ void BgDyYoseizo_Give_Reward(BgDyYoseizo* this, PlayState* play) {
                 gSaveContext.isDoubleMagicAcquired = true;
                 gSaveContext.magicFillTarget = MAGIC_DOUBLE_METER;
                 gSaveContext.magicLevel = 0;
+                TimeSplitSplitsHandlerS(ITEM_DOUBLE_MAGIC);
                 Interface_ChangeAlpha(9);
                 break;
             case FAIRY_UPGRADE_HALF_DAMAGE:
                 gSaveContext.isDoubleDefenseAcquired = true;
+                TimeSplitSplitsHandlerS(ITEM_DOUBLE_DEFENSE);
                 Interface_ChangeAlpha(9);
                 break;
         }
