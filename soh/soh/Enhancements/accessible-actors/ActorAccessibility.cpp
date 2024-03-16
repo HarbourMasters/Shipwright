@@ -18,6 +18,10 @@
 #include "soh/Enhancements/tts/tts.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/audio/AudioDecoder.h"
+
+std::vector<uint32_t> buttons = { BTN_A, BTN_B, BTN_CUP,   BTN_CDOWN, BTN_CLEFT, BTN_CRIGHT, BTN_L,
+                                  BTN_Z, BTN_R, BTN_START, BTN_DUP,   BTN_DDOWN, BTN_DLEFT,  BTN_DRIGHT };
+
 extern "C" {
 extern PlayState* gPlayState;
 extern bool freezeGame;
@@ -465,11 +469,25 @@ int ActorAccessibility_GetRandomStartingFrameCount(int min, int max) {
         list = (VAList_t*)aa->currentSceneGlobal;
         for (VAList_t::iterator i = list->begin(); i != list->end(); i++)
             ActorAccessibility_RunAccessibilityForActor(play, &(*i));
-
+        
+        ActorAccessibility_AudioGlossary(play);
+        
         //Processes external audio engine.
         ActorAccessibility_PrepareNextAudioFrame();
     }
-//Virtual actor config.
+    
+    void ActorAccessibility_AudioGlossary(PlayState* play) {
+        AccessibleActorList_t::iterator i = aa->accessibleActorList.begin();
+        OSContPad* trackerButtonsPressed = LUS::Context::GetInstance()->GetControlDeck()->GetPads();
+        bool comboStartGlossary = trackerButtonsPressed != nullptr && trackerButtonsPressed[0].button & buttons[10] &&
+                                trackerButtonsPressed[0].button & buttons[6];
+        if (comboStartGlossary) {
+            SpeechSynthesizer::Instance->Speak((*i).second.policy.englishName, GetLanguageCode());
+            return;
+        }
+        
+    }
+        //Virtual actor config.
     VirtualActorList* ActorAccessibility_GetVirtualActorList(s16 sceneNum, s8 roomNum)
     {
         SceneAndRoom sr;

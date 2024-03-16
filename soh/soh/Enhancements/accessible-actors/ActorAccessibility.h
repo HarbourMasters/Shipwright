@@ -184,6 +184,8 @@ void ActorAccessibility_HandleSoundExtractionMode(PlayState* play);
 //This is called by the audio thread when it's ready to try to pull sfx from the game.
 void ActorAccessibility_DoSoundExtractionStep();
 
+
+void ActorAccessibility_AudioGlossary(PlayState* play);
 #ifdef __cplusplus
 }
 
