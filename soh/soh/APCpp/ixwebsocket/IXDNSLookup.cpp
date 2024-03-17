@@ -17,8 +17,6 @@
 #undef UNICODE
 #endif
 
-#pragma comment(lib, "ws2_32.lib")
-
 #include "IXDNSLookup.h"
 
 #include "IXNetSystem.h"

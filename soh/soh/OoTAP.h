@@ -19,6 +19,7 @@ extern void OoTAP_SendChatMsg(std::string msg);
 void OoTAP_DrawStatus();
 void OoTAP_ItemClear();
 void OoTAP_ItemReceive(int64_t id, bool notify);
+void OoTAP_ConnectError(std::string msg);
 void OoTAP_LocationChecked(int64_t id);
 void OoTAP_UpdateReceivedItems();
 bool OoTAP_IsRandoCheckChecked(RandomizerCheck check);

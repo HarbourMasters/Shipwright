@@ -65,6 +65,7 @@ void OoTAP_Enable(const char* ip, int port, const char* slotName, const char* pa
     AP_SetLocationCheckedCallback(&OoTAP_LocationChecked);
     AP_SetDeathLinkSupported(false);
 
+    AP_RegisterConnectErrorCallback(&OoTAP_ConnectError);
     // AP_RegisterSlotDataRawCallback("Forest", &OoTAP_SetForest);
     AP_RegisterSlotDataIntCallback("open_kakariko", &OoTAP_SetKakarikoGate);
     // AP_RegisterSlotDataIntCallback("open_door_of_time", &OoTAP_SetDoorOfTime);
@@ -477,6 +478,10 @@ void OoTAP_ItemClear() {
 
 void OoTAP_ItemReceive(int64_t id, bool notify) {
     cachedItems.push_back(id);
+}
+
+void OoTAP_ConnectError(std::string msg) {
+    OoTAP_SendMessage(msg);
 }
 
 void OoTAP_UpdateReceivedItems() {

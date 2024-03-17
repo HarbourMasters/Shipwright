@@ -135,10 +135,11 @@ endif()
 file(GLOB_RECURSE soh__APCpp RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
     "soh/APCpp/*.cpp"
     "soh/APCpp/*.h"
-    "soh/APCpp/json/*.cpp"
-    "soh/APCpp/json/*.h"
     "soh/APCpp/ixwebsocket/*.cpp"
     "soh/APCpp/ixwebsocket/*.h"
+    "soh/APCpp/json/*.cpp"
+    "soh/APCpp/json/*.h"
+    "soh/APCpp/json/*.inl"
     )
 # }}}
 

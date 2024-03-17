@@ -210,6 +210,8 @@ std::string AP_GetPrivateServerDataPrefix();
 // If values are required beyond that a copy is needed
 void AP_RegisterSetReplyCallback(void (*f_setreply)(AP_SetReply));
 
+void AP_RegisterConnectErrorCallback(void (*f_connecterror)(std::string));
+
 // Receive all SetReplys with Keys in parameter list
 void AP_SetNotify(std::map<std::string,AP_DataType>);
 // Single Key version of above for convenience

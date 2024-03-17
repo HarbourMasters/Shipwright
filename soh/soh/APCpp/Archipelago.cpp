@@ -3,15 +3,15 @@
 #include "ixwebsocket/IXNetSystem.h"
 #include "ixwebsocket/IXWebSocket.h"
 #include "ixwebsocket/IXUserAgent.h"
+#include "json/json.h"
+#include "json/reader.h"
+#include "json/value.h"
+#include "json/writer.h"
 
 #include <cstddef>
 #include <cstdint>
 #include <random>
 #include <fstream>
-#include "json/json.h"
-#include "json/reader.h"
-#include "json/value.h"
-#include "json/writer.h"
 #include <deque>
 #include <set>
 #include <string>
@@ -63,6 +63,7 @@ void (*checklocfunc)(int64_t);
 void (*locinfofunc)(std::vector<AP_NetworkItem>) = nullptr;
 void (*recvdeath)() = nullptr;
 void (*setreplyfunc)(AP_SetReply) = nullptr;
+void (*connecterrorfunc)(std::string) = nullptr;
 
 // Serverdata Management
 std::map<std::string,AP_DataType> map_serverdata_typemanage;
@@ -150,8 +151,10 @@ void AP_Init(const char* ip, const char* game, const char* player_name, const ch
                     itr.second->status = AP_RequestStatus::Error;
                     map_server_data.erase(itr.first);
                 }
-                printf("AP: Error connecting to Archipelago. Retries: %d\n", msg->errorInfo.retries-1);
+                (*connecterrorfunc)("Error connecting to Archipelago. Retries: " + std::to_string(msg->errorInfo.retries-1) + "\n");
+                printf(("AP: Error connecting to Archipelago. Retries: " + std::to_string(msg->errorInfo.retries-1) + "\n").c_str());
                 if (msg->errorInfo.retries-1 >= 2 && isSSL && !ssl_success) {
+                    (*connecterrorfunc)("SSL connection failed. Attempting unencrypted...\n");
                     printf("AP: SSL connection failed. Attempting unencrypted...\n");
                     webSocket.setUrl("ws://" + ap_ip);
                     isSSL = false;
@@ -265,6 +268,7 @@ void AP_Shutdown() {
     locinfofunc = nullptr;
     recvdeath = nullptr;
     setreplyfunc = nullptr;
+    connecterrorfunc = nullptr;
     map_serverdata_typemanage.clear();
     int last_item_idx = 0;
     sp_save_path.clear();
@@ -534,6 +538,10 @@ void AP_SetServerData(AP_SetServerDataRequest* request) {
 
 void AP_RegisterSetReplyCallback(void (*f_setreply)(AP_SetReply)) {
     setreplyfunc = f_setreply;
+}
+
+void AP_RegisterConnectErrorCallback(void (*f_connecterror)(std::string)) {
+    connecterrorfunc = f_connecterror;
 }
 
 void AP_SetNotify(std::map<std::string,AP_DataType> keylist) {
