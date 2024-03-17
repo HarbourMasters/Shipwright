@@ -140,8 +140,9 @@ void EnMs_Talk(EnMs* this, PlayState* play) {
                         return;
                     }
                     if (Randomizer_GetSettingValue(RSK_SHUFFLE_MAGIC_BEANS)){
-                        GiveItemEntryFromActor(&this->actor, play, 
-                            Randomizer_GetItemFromKnownCheck(RC_ZR_MAGIC_BEAN_SALESMAN, GI_BEAN), 90.0f, 10.0f);
+                        Randomizer_SendAPItemFromKnownCheck(RC_ZR_MAGIC_BEAN_SALESMAN);
+                        // GiveItemEntryFromActor(&this->actor, play, 
+                        //     Randomizer_GetItemFromKnownCheck(RC_ZR_MAGIC_BEAN_SALESMAN, GI_BEAN), 90.0f, 10.0f);
                     } else {
                         func_8002F434(&this->actor, play, GI_BEAN, 90.0f, 10.0f);
                     }
