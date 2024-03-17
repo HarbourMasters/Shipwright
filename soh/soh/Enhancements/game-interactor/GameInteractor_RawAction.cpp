@@ -111,9 +111,9 @@ void GameInteractor::RawAction::FreezePlayer() {
 void GameInteractor::RawAction::BurnPlayer() {
     Player* player = GET_PLAYER(gPlayState);
     for (int i = 0; i < 18; i++) {
-        player->flameTimers[i] = Rand_S16Offset(0, 200);
+        player->bodyFlameTimers[i] = Rand_S16Offset(0, 200);
     }
-    player->isBurning = true;
+    player->bodyIsBurning = true;
     func_80837C0C(gPlayState, player, 0, 0, 0, 0, 0);
 }
 

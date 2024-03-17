@@ -93,6 +93,7 @@ GameInteractorSail* GameInteractorSail::Instance;
 #include <libultraship/libultraship.h>
 
 // Resource Types/Factories
+#include "soh/resource/type/SohResourceType.h"
 #include "soh/resource/type/Animation.h"
 #include "soh/resource/type/AudioSample.h"
 #include "soh/resource/type/AudioSequence.h"
@@ -118,6 +119,7 @@ GameInteractorSail* GameInteractorSail::Instance;
 #include "soh/resource/importer/SkeletonLimbFactory.h"
 #include "soh/resource/importer/TextFactory.h"
 #include "soh/resource/importer/BackgroundFactory.h"
+#include "soh/resource/importer/RawJsonFactory.h"
 
 #include "soh/config/ConfigUpdaters.h"
 
@@ -265,7 +267,10 @@ OTRGlobals::OTRGlobals() {
     if (patchesPath.length() > 0 && std::filesystem::exists(patchesPath)) {
         if (std::filesystem::is_directory(patchesPath)) {
             for (const auto& p : std::filesystem::recursive_directory_iterator(patchesPath, std::filesystem::directory_options::follow_directory_symlink)) {
-                if (StringHelper::IEquals(p.path().extension().string(), ".otr")) {
+                if (StringHelper::IEquals(p.path().extension().string(), ".otr") ||
+                    StringHelper::IEquals(p.path().extension().string(), ".mpq") ||
+                    StringHelper::IEquals(p.path().extension().string(), ".o2r") ||
+                    StringHelper::IEquals(p.path().extension().string(), ".zip")) {
                     patchOTRs.push_back(p.path().generic_string());
                 }
             }
@@ -320,19 +325,25 @@ OTRGlobals::OTRGlobals() {
 
     SPDLOG_INFO("Starting Ship of Harkinian version {}", (char*)gBuildVersion);
 
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(static_cast<uint32_t>(LUS::ResourceType::SOH_Animation), std::make_shared<LUS::AnimationFactory>());
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(static_cast<uint32_t>(LUS::ResourceType::SOH_PlayerAnimation), std::make_shared<LUS::PlayerAnimationFactory>());
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(static_cast<uint32_t>(LUS::ResourceType::SOH_Room), std::make_shared<LUS::SceneFactory>()); // Is room scene? maybe?
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(static_cast<uint32_t>(LUS::ResourceType::SOH_CollisionHeader), std::make_shared<LUS::CollisionHeaderFactory>());
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(static_cast<uint32_t>(LUS::ResourceType::SOH_Skeleton), std::make_shared<LUS::SkeletonFactory>());
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(static_cast<uint32_t>(LUS::ResourceType::SOH_SkeletonLimb), std::make_shared<LUS::SkeletonLimbFactory>());
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(static_cast<uint32_t>(LUS::ResourceType::SOH_Path), std::make_shared<LUS::PathFactory>());
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(static_cast<uint32_t>(LUS::ResourceType::SOH_Cutscene), std::make_shared<LUS::CutsceneFactory>());
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(static_cast<uint32_t>(LUS::ResourceType::SOH_Text), std::make_shared<LUS::TextFactory>());
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(static_cast<uint32_t>(LUS::ResourceType::SOH_AudioSample), std::make_shared<LUS::AudioSampleFactory>());
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(static_cast<uint32_t>(LUS::ResourceType::SOH_AudioSoundFont), std::make_shared<LUS::AudioSoundFontFactory>());
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(static_cast<uint32_t>(LUS::ResourceType::SOH_AudioSequence), std::make_shared<LUS::AudioSequenceFactory>());
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(static_cast<uint32_t>(LUS::ResourceType::SOH_Background), std::make_shared<LUS::BackgroundFactory>());
+    auto loader = context->GetResourceManager()->GetResourceLoader();
+    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryAnimationV0>(), RESOURCE_FORMAT_BINARY, "Animation", static_cast<uint32_t>(SOH::ResourceType::SOH_Animation), 0);
+    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryPlayerAnimationV0>(), RESOURCE_FORMAT_BINARY, "PlayerAnimation", static_cast<uint32_t>(SOH::ResourceType::SOH_PlayerAnimation), 0);
+    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinarySceneV0>(), RESOURCE_FORMAT_BINARY, "Room", static_cast<uint32_t>(SOH::ResourceType::SOH_Room), 0); // Is room scene? maybe?
+    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryCollisionHeaderV0>(), RESOURCE_FORMAT_BINARY, "CollisionHeader", static_cast<uint32_t>(SOH::ResourceType::SOH_CollisionHeader), 0);
+    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryXMLCollisionHeaderV0>(), RESOURCE_FORMAT_XML, "CollisionHeader", static_cast<uint32_t>(SOH::ResourceType::SOH_CollisionHeader), 0);
+    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinarySkeletonV0>(), RESOURCE_FORMAT_BINARY, "Skeleton", static_cast<uint32_t>(SOH::ResourceType::SOH_Skeleton), 0);
+    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryXMLSkeletonV0>(), RESOURCE_FORMAT_XML, "Skeleton", static_cast<uint32_t>(SOH::ResourceType::SOH_Skeleton), 0);
+    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinarySkeletonLimbV0>(), RESOURCE_FORMAT_BINARY, "SkeletonLimb", static_cast<uint32_t>(SOH::ResourceType::SOH_SkeletonLimb), 0);
+    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryXMLSkeletonLimbV0>(), RESOURCE_FORMAT_XML, "SkeletonLimb", static_cast<uint32_t>(SOH::ResourceType::SOH_SkeletonLimb), 0);
+    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryPathV0>(), RESOURCE_FORMAT_BINARY, "Path", static_cast<uint32_t>(SOH::ResourceType::SOH_Path), 0);
+    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryCutsceneV0>(), RESOURCE_FORMAT_BINARY, "Cutscene", static_cast<uint32_t>(SOH::ResourceType::SOH_Cutscene), 0);
+    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryTextV0>(), RESOURCE_FORMAT_BINARY, "Text", static_cast<uint32_t>(SOH::ResourceType::SOH_Text), 0);
+    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryXMLTextV0>(), RESOURCE_FORMAT_XML, "Text", static_cast<uint32_t>(SOH::ResourceType::SOH_Text), 0);
+    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryAudioSampleV2>(), RESOURCE_FORMAT_BINARY, "AudioSample", static_cast<uint32_t>(SOH::ResourceType::SOH_AudioSample), 2);
+    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryAudioSoundFontV2>(), RESOURCE_FORMAT_BINARY, "AudioSoundFont", static_cast<uint32_t>(SOH::ResourceType::SOH_AudioSoundFont), 2);
+    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryAudioSequenceV2>(), RESOURCE_FORMAT_BINARY, "AudioSequence", static_cast<uint32_t>(SOH::ResourceType::SOH_AudioSequence), 2);
+    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryBackgroundV0>(), RESOURCE_FORMAT_BINARY, "Background", static_cast<uint32_t>(SOH::ResourceType::SOH_Background), 0);
+    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryRawJsonV0>(), RESOURCE_FORMAT_BINARY, "RawJson", static_cast<uint32_t>(SOH::ResourceType::SOH_RawJson), 0);
 
     gSaveStateMgr = std::make_shared<SaveStateMgr>();
     gRandomizer = std::make_shared<Randomizer>();
@@ -535,7 +546,7 @@ extern "C" void VanillaItemTable_Init() {
     static GetItemEntry getItemTable[] = {
         GET_ITEM(ITEM_BOMBS_5,          OBJECT_GI_BOMB_1,        GID_BOMB,             0x32, 0x59, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_BOMBS_5),
         GET_ITEM(ITEM_NUTS_5,           OBJECT_GI_NUTS,          GID_NUTS,             0x34, 0x0C, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_NUTS_5),
-        GET_ITEM(ITEM_BOMBCHU,          OBJECT_GI_BOMB_2,        GID_BOMBCHU,          0x33, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_BOMBCHUS_10),
+        GET_ITEM(ITEM_BOMBCHU,          OBJECT_GI_BOMB_2,        GID_BOMBCHU,          0x33, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_BOMBCHUS_10),
         GET_ITEM(ITEM_BOW,              OBJECT_GI_BOW,           GID_BOW,              0x31, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_BOW),
         GET_ITEM(ITEM_SLINGSHOT,        OBJECT_GI_PACHINKO,      GID_SLINGSHOT,        0x30, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_SLINGSHOT),
         GET_ITEM(ITEM_BOOMERANG,        OBJECT_GI_BOOMERANG,     GID_BOOMERANG,        0x35, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_BOOMERANG),
@@ -638,8 +649,8 @@ extern "C" void VanillaItemTable_Init() {
         GET_ITEM(ITEM_BOMBS_20,         OBJECT_GI_BOMB_1,        GID_BOMB,             0x32, 0x59, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_BOMBS_20),
         GET_ITEM(ITEM_BOMBS_30,         OBJECT_GI_BOMB_1,        GID_BOMB,             0x32, 0x59, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_BOMBS_30),
         GET_ITEM(ITEM_SEEDS_30,         OBJECT_GI_SEED,          GID_SEEDS,            0xDC, 0x50, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_SEEDS_30),
-        GET_ITEM(ITEM_BOMBCHUS_5,       OBJECT_GI_BOMB_2,        GID_BOMBCHU,          0x33, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_BOMBCHUS_5),
-        GET_ITEM(ITEM_BOMBCHUS_20,      OBJECT_GI_BOMB_2,        GID_BOMBCHU,          0x33, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_BOMBCHUS_20),
+        GET_ITEM(ITEM_BOMBCHUS_5,       OBJECT_GI_BOMB_2,        GID_BOMBCHU,          0x33, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_BOMBCHUS_5),
+        GET_ITEM(ITEM_BOMBCHUS_20,      OBJECT_GI_BOMB_2,        GID_BOMBCHU,          0x33, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_BOMBCHUS_20),
         GET_ITEM(ITEM_FISH,             OBJECT_GI_FISH,          GID_FISH,             0x47, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_JUNK,            MOD_NONE, GI_FISH),
         GET_ITEM(ITEM_BUG,              OBJECT_GI_INSECT,        GID_BUG,              0x7A, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_JUNK,            MOD_NONE, GI_BUGS),
         GET_ITEM(ITEM_BLUE_FIRE,        OBJECT_GI_FIRE,          GID_BLUE_FIRE,        0x5D, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_JUNK,            MOD_NONE, GI_BLUE_FIRE),
@@ -861,8 +872,8 @@ OTRVersion ReadPortVersionFromOTR(std::string otrPath) {
 
     // Use a temporary archive instance to load the otr and read the version file
     auto archive = LUS::OtrArchive(otrPath);
-    if (archive.LoadRaw()) {
-        auto t = archive.LoadFileRaw("portVersion");
+    if (archive.Open()) {
+        auto t = archive.LoadFile("portVersion", std::make_shared<LUS::ResourceInitData>());
         if (t != nullptr && t->IsLoaded) {
             auto stream = std::make_shared<LUS::MemoryStream>(t->Buffer->data(), t->Buffer->size());
             auto reader = std::make_shared<LUS::BinaryReader>(stream);
@@ -872,7 +883,7 @@ OTRVersion ReadPortVersionFromOTR(std::string otrPath) {
             version.minor = reader->ReadUInt16();
             version.patch = reader->ReadUInt16();
         }
-        archive.UnloadRaw();
+        archive.Close();
     }
 
     return version;
@@ -1100,6 +1111,9 @@ extern "C" void InitOTR() {
     SpeechSynthesizer::Instance->Init();
 #elif defined(_WIN32)
     SpeechSynthesizer::Instance = new SAPISpeechSynthesizer();
+    SpeechSynthesizer::Instance->Init();
+#else
+    SpeechSynthesizer::Instance = new SpeechLogger();
     SpeechSynthesizer::Instance->Init();
 #endif
 
@@ -1391,7 +1405,7 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
         // Actually update the CVar now before runing the alt asset update listeners
         CVarSetInteger("gAltAssets", !CVarGetInteger("gAltAssets", 0));
         gfx_texture_cache_clear();
-        LUS::SkeletonPatcher::UpdateSkeletons();
+        SOH::SkeletonPatcher::UpdateSkeletons();
         GameInteractor::Instance->ExecuteHooks<GameInteractor::OnAssetAltChange>();
     }
 
@@ -1573,10 +1587,6 @@ extern "C" void ResourceMgr_UnloadOriginalWhenAltExists(const char* resName) {
     }
 }
 
-extern "C" void ResourceMgr_LoadFile(const char* resName) {
-    LUS::Context::GetInstance()->GetResourceManager()->LoadResource(resName);
-}
-
 std::shared_ptr<LUS::IResource> GetResourceByNameHandlingMQ(const char* path) {
     std::string Path = path;
     if (ResourceMgr_IsGameMasterQuest()) {
@@ -1598,20 +1608,6 @@ extern "C" char* GetResourceDataByNameHandlingMQ(const char* path) {
     return (char*)res->GetRawPointer();
 }
 
-extern "C" char* ResourceMgr_LoadFileFromDisk(const char* filePath) {
-    FILE* file = fopen(filePath, "r");
-    fseek(file, 0, SEEK_END);
-    int fSize = ftell(file);
-    fseek(file, 0, SEEK_SET);
-
-    char* data = (char*)malloc(fSize);
-    fread(data, 1, fSize, file);
-
-    fclose(file);
-
-    return data;
-}
-
 extern "C" uint8_t ResourceMgr_TexIsRaw(const char* texPath) {
     auto res = std::static_pointer_cast<LUS::Texture>(GetResourceByNameHandlingMQ(texPath));
     return res->Flags & TEX_FLAG_LOAD_AS_RAW;
@@ -1619,7 +1615,7 @@ extern "C" uint8_t ResourceMgr_TexIsRaw(const char* texPath) {
 
 extern "C" uint8_t ResourceMgr_ResourceIsBackground(char* texPath) {
     auto res = GetResourceByNameHandlingMQ(texPath);
-    return res->GetInitData()->Type == static_cast<uint32_t>(LUS::ResourceType::SOH_Background);
+    return res->GetInitData()->Type == static_cast<uint32_t>(SOH::ResourceType::SOH_Background);
 }
 
 extern "C" char* ResourceMgr_LoadJPEG(char* data, size_t dataSize)
@@ -1690,7 +1686,7 @@ extern "C" Sprite* GetSeedTexture(uint8_t index) {
 }
 
 extern "C" char* ResourceMgr_LoadPlayerAnimByName(const char* animPath) {
-    auto anim = std::static_pointer_cast<LUS::PlayerAnimation>(GetResourceByNameHandlingMQ(animPath));
+    auto anim = std::static_pointer_cast<SOH::PlayerAnimation>(GetResourceByNameHandlingMQ(animPath));
 
     return (char*)&anim->limbRotData[0];
 }
@@ -1954,7 +1950,7 @@ extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path, Skel
     // Therefore we can take this oppurtunity to take note of the Skeleton that is created...
     if (skelAnime != nullptr) {
         auto stringPath = std::string(path);
-        LUS::SkeletonPatcher::RegisterSkeleton(stringPath, skelAnime);
+        SOH::SkeletonPatcher::RegisterSkeleton(stringPath, skelAnime);
     }
 
     return skelHeader;
@@ -1962,12 +1958,12 @@ extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path, Skel
 
 extern "C" void ResourceMgr_UnregisterSkeleton(SkelAnime* skelAnime) {
     if (skelAnime != nullptr)
-        LUS::SkeletonPatcher::UnregisterSkeleton(skelAnime);
+        SOH::SkeletonPatcher::UnregisterSkeleton(skelAnime);
 }
 
 extern "C" void ResourceMgr_ClearSkeletons(SkelAnime* skelAnime) {
     if (skelAnime != nullptr)
-        LUS::SkeletonPatcher::ClearSkeletons();
+        SOH::SkeletonPatcher::ClearSkeletons();
 }
 
 extern "C" s32* ResourceMgr_LoadCSByName(const char* path) {
@@ -2605,10 +2601,11 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             messageEntry = OTRGlobals::Instance->gRandomizer->GetGoronMessage(choice);
         } else if (Randomizer_GetSettingValue(RSK_FROGS_HINT) && textId == TEXT_FROGS_UNDERWATER) {
             messageEntry = OTRGlobals::Instance->gRandomizer->GetFrogsMessage(textId);
-        } else if (Randomizer_GetSettingValue(RSK_SARIA_HINT)) {
-            if ((gPlayState->sceneNum == SCENE_SACRED_FOREST_MEADOW && textId == TEXT_SARIA_SFM) || (textId >= TEXT_SARIAS_SONG_TEXT_START && textId <= TEXT_SARIAS_SONG_TEXT_END)) {
-                messageEntry = OTRGlobals::Instance->gRandomizer->GetSariaMessage(textId);
-            }
+        } else if (Randomizer_GetSettingValue(RSK_SARIA_HINT) && 
+        (gPlayState->sceneNum == SCENE_SACRED_FOREST_MEADOW && textId == TEXT_SARIA_SFM) || (textId >= TEXT_SARIAS_SONG_FACE_TO_FACE && textId <= TEXT_SARIAS_SONG_CHANNELING_POWER)) {
+            messageEntry = OTRGlobals::Instance->gRandomizer->GetSariaMessage(textId);
+        } else if (textId == TEXT_BEAN_SALESMAN_BUY_FOR_100) {
+            messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN_BUY_FOR_100);
         }
     }
     if (textId == TEXT_GS_NO_FREEZE || textId == TEXT_GS_FREEZE) {

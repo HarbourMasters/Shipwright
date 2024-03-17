@@ -11,7 +11,7 @@
 #include <libultraship/libultra/types.h>
 
 
-namespace LUS {
+namespace SOH {
 
 class SetAlternateHeaders : public SceneCommand<void> {
   public:

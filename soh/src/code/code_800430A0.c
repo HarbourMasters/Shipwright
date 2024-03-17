@@ -48,7 +48,7 @@ void func_800432A0(CollisionContext* colCtx, s32 bgId, Actor* actor) {
         s16 rot = colCtx->dyna.bgActors[bgId].curTransform.rot.y - colCtx->dyna.bgActors[bgId].prevTransform.rot.y;
 
         if (actor->id == ACTOR_PLAYER) {
-            ((Player*)actor)->currentYaw += rot;
+            ((Player*)actor)->yaw += rot;
         }
 
         actor->shape.rot.y += rot;
