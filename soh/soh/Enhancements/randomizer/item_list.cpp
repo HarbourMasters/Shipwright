@@ -323,6 +323,8 @@ void Rando::StaticData::InitItemTable() {
     itemTable[RG_SPIRIT_TRIAL_SILVER_RUPEE].SetCustomDrawFunc(Randomizer_DrawSilverRupee);
     itemTable[RG_LIGHT_TRIAL_SILVER_RUPEE]          = Item(RG_LIGHT_TRIAL_SILVER_RUPEE,          Text{ "Light Trial Silver Rupee",       "Light Trial Silver Rupee",         "Light Trial Silver Rupee"},                ITEMTYPE_SILVERRUPEE, 0, true, &logic->noVariable,     RHT_GANONS_CASTLE_SILVER_RUPEE, RG_LIGHT_TRIAL_SILVER_RUPEE, OBJECT_GI_RUPY, GID_RUPEE_GOLD, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_SILVER_RUPEE, MOD_RANDOMIZER);
     itemTable[RG_LIGHT_TRIAL_SILVER_RUPEE].SetCustomDrawFunc(Randomizer_DrawSilverRupee);
+    itemTable[RG_MAGICAL_SILVER_RUPEE] = Item(RG_MAGICAL_SILVER_RUPEE, Text{ "Magical Silver Rupee", "Magical Silver Rupee", "Magical Silver Rupee" }, ITEMTYPE_SILVERRUPEE, 0, true, &logic->noVariable, RHT_MAGICAL_SILVER_RUPEE, RG_MAGICAL_SILVER_RUPEE, OBJECT_GI_RUPY, GID_RUPEE_GOLD, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_SILVER_RUPEE, MOD_RANDOMIZER);
+    itemTable[RG_MAGICAL_SILVER_RUPEE].SetCustomDrawFunc(Randomizer_DrawSilverRupee);
 
     // Individual stages of progressive items (only here for GetItemEntry purposes, not for use in seed gen)
     itemTable[RG_HOOKSHOT] =                            Item(RG_HOOKSHOT,                         Text{ "Hookshot", "Grappin", "Fanghaken" },                                                                       ITEMTYPE_ITEM,              GI_HOOKSHOT,        true,  &logic->ProgressiveHookshot, RHT_HOOKSHOT,               ITEM_HOOKSHOT,                  OBJECT_GI_HOOKSHOT,     GID_HOOKSHOT,       0x36,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,  MOD_NONE);

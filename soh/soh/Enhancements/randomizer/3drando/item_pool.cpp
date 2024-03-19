@@ -1063,6 +1063,10 @@ void GenerateItemPool() {
 
   // Silver Rupees
 
+  // Add the Magical Silver Rupee if the option is on
+  if (ctx->GetOption(RSK_MAGICAL_SILVER_RUPEE)) {
+    AddItemToMainPool(RG_MAGICAL_SILVER_RUPEE);
+  }
   // The Silver Rupees to add to the pool will be different according to which dungeons are vanilla/mq.
   if (ctx->GetOption(RSK_SHUFFLE_SILVER_RUPEES).IsNot(RO_SILVER_SHUFFLE_VANILLA)) {
       std::vector<RandomizerGet> silversToAdd;

@@ -417,6 +417,8 @@ typedef enum {
     RAND_INF_SHADOW_TRIAL_MQ_SILVER_RUPEE_4,
     RAND_INF_SHADOW_TRIAL_MQ_SILVER_RUPEE_5,
 
+    RAND_INF_MAGICAL_SILVER_RUPEE,
+
     // If you add anything to this list, you need to update the size of randomizerInf in z64save.h to be
     // ceil(RAND_INF_MAX / 16)
 

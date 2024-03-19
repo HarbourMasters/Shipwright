@@ -1208,7 +1208,8 @@ void RegisterSilverRupeeShuffle() {
             } else if (silverRupee->type == ENGSWITCH_SILVER_TRACKER) {
                 Rando::Identifier randoIdentifier = { static_cast<SceneID>(gPlayState->sceneNum), RCQUEST_VANILLA, actor->params };
                 silverRupee->rg = Rando::StaticData::silverTrackerMap.at(randoIdentifier);
-                if (OTRGlobals::Instance->gRandoContext->GetSilverRupees()->GetInfo(silverRupee->rg).GetCollected() >= silverRupee->silverCount) {
+                if ((OTRGlobals::Instance->gRandoContext->GetSilverRupees()->GetInfo(silverRupee->rg).GetCollected() >= silverRupee->silverCount)
+                    || Flags_GetRandomizerInf(RAND_INF_MAGICAL_SILVER_RUPEE)) {
                     if ((gPlayState->sceneNum == SCENE_GERUDO_TRAINING_GROUND) && (silverRupee->actor.room == 2)) {
                         Flags_SetTempClear(gPlayState, silverRupee->actor.room);
                     } else {

@@ -2863,6 +2863,14 @@ void CreateGetItemMessages(const std::array<GetItemMessage, N>* messageEntries) 
 //                                          "You got a %cSilver Rupee Pouch%w for the&%g{{location}}%w!",
 //                                          "Du hast einen %cBeutel mit Silberrupien%g für die für die&%g{{location}}%w!",
 //                                          "Vous avez reçu une %cPochette en Roupie d'Argent%w pour le&%g{{location}}%w!" });
+    customMessageManager->CreateMessage(Randomizer::getItemMessageTableID, RG_MAGICAL_SILVER_RUPEE,
+                                        CustomMessage("You found the %cMagical Silver Rupee%w!&This magical silver "
+                                                      "rupee automatically&completes all Silver Rupee Puzzles!",
+                                                      "You found the %cMagical Silver Rupee%w!&This magical silver "
+                                                      "rupee automatically&completes all Silver Rupee Puzzles!",
+                                                      "You found the %cMagical Silver Rupee%w!&This magical silver "
+                                                      "rupee automatically&completes all Silver Rupee Puzzles!",
+                                                      TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM));
 }
 
 void CreateRupeeMessages() {

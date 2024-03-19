@@ -404,6 +404,8 @@ void Settings::CreateOptionDescriptions() {
                                                      "Overworld - Silver Rupees can only appear outside of dungeons.\n"
                                                      "\n"
                                                      "Anywhere - Silver Rupees can appear anywhere in the world.";
+    mOptionDescriptions[RSK_MAGICAL_SILVER_RUPEE] = "Adds a Magical Silver Rupee that opens all silver rupee puzzles to the item pool."
+    "It is not considered in logic, so you will not be required to find it to beat the seed, but if you do find it, it is a nice bonus.";
     mOptionDescriptions[RSK_GANONS_BOSS_KEY] =
         "Vanilla - Ganon's Boss Key will appear in the vanilla location.\n"
         "\n"
