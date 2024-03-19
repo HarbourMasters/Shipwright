@@ -6,15 +6,17 @@
 #include <vector>
 #include <string>
 #include "nlohmann/json.hpp"
+#include <unordered_set>
 
 namespace Rando {
 class DungeonInfo {
   public:
     DungeonInfo(std::string name_, RandomizerHintTextKey hintKey_, RandomizerGet map_, RandomizerGet compass_,
-                RandomizerGet smallKey_, RandomizerGet keyRing_, RandomizerGet bossKey_, RandomizerArea area_, 
-                uint8_t vanillaKeyCount_, uint8_t mqKeyCount_, std::vector<RandomizerCheck> vanillaLocations_,
-                std::vector<RandomizerCheck> mqLocations_, std::vector<RandomizerCheck> sharedLocations_,
-                std::vector<RandomizerCheck> bossRoomLocations_);
+                RandomizerGet smallKey_, RandomizerGet keyRing_, RandomizerGet bossKey_,
+                std::unordered_set<RandomizerGet> vanillaSilverRupees_, std::unordered_set<RandomizerGet> mqSilverRupees_,
+                RandomizerArea area_, uint8_t vanillaKeyCount_, uint8_t mqKeyCount_,
+                std::vector<RandomizerCheck> vanillaLocations_, std::vector<RandomizerCheck> mqLocations_,
+                std::vector<RandomizerCheck> sharedLocations_, std::vector<RandomizerCheck> bossRoomLocations_);
     DungeonInfo();
     ~DungeonInfo();
 
@@ -26,6 +28,8 @@ class DungeonInfo {
     void ClearKeyRing();
     bool HasKeyRing() const;
     bool IsVanilla() const;
+    bool ContainsSilverRupee(RandomizerGet rg) const;
+    bool HasSilverRupees() const;
     uint8_t GetSmallKeyCount() const;
     RandomizerHintTextKey GetHintKey() const;
     RandomizerArea GetArea() const;
@@ -50,6 +54,8 @@ class DungeonInfo {
     RandomizerGet smallKey;
     RandomizerGet keyRing;
     RandomizerGet bossKey;
+    std::unordered_set<RandomizerGet> vanillaSilverRupees;
+    std::unordered_set<RandomizerGet> mqSilverRupees;
     uint8_t vanillaKeyCount{};
     uint8_t mqKeyCount{};
     bool masterQuest = false;
