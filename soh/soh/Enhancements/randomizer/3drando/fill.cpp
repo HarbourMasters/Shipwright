@@ -893,7 +893,7 @@ static void RandomizeDungeonItems() {
   std::vector<RandomizerGet> overworldItems;
 
   for (auto dungeon : ctx->GetDungeons()->GetDungeonList()) {
-    if (ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_OWN_DUNGEON)) {
+    if (ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_ANY_DUNGEON)) {
       auto dungeonKeys = FilterAndEraseFromPool(ItemPool, [dungeon](const RandomizerGet i){return (i == dungeon->GetSmallKey()) || (i == dungeon->GetKeyRing());});
       AddElementsToPool(anyDungeonItems, dungeonKeys);
     } else if (ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_OVERWORLD)) {
