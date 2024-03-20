@@ -287,7 +287,7 @@ Text AutoFormatHintText(const Text& unformattedHintText, const std::vector<std::
         strings[i] = textStr;
     }
 
-    return {strings[0], strings[1], ""/*spanish*/, strings[2]};
+    return {strings[0], strings[2], ""/*spanish*/, strings[1]};
 }
 
 std::array<DungeonHintInfo, 10> dungeonInfoData;
@@ -615,6 +615,7 @@ void CreateGanonAndSheikText() {
     }
 
     ctx->AddHint(RH_GANONDORF_HINT, AutoFormatHintText(ganonHintText), lightArrowLocation[0], HINT_TYPE_STATIC, "Static", lightArrowArea);
+    ctx->AddHint(RH_GANONDORF_NOHINT, AutoFormatHintText(ganonText), lightArrowLocation[0], HINT_TYPE_STATIC, "Static", lightArrowArea);
 
     if (!ctx->GetOption(RSK_TRIAL_COUNT).Is(0)) {
       sheikText = ::Hint(RHT_SHEIK_LIGHT_ARROW_HINT).GetText() + LightArrowAreaText + "%w.";
@@ -963,7 +964,7 @@ static void DistributeHints(std::vector<uint8_t>& selected, size_t stoneCount, s
     for (uint8_t distribution = 0; distribution < distTable.size(); distribution++){
       currentWeight -= distTable[distribution].weight;
       if (currentWeight <= 0){
-        if (stoneCount >= distTable[distribution].copies){
+        if (stoneCount >= distTable[distribution].copies || distTable[distribution].copies == 0){
           selected[distribution] += 1;
           stoneCount -= distTable[distribution].copies;
           break;
@@ -1074,8 +1075,9 @@ void CreateStoneHints() {
 
   while(totalStones != 0){
     totalStones = PlaceHints(selectedHints, distTable);
-    if (totalStones != 0){
+    while (totalStones != 0){
       DistributeHints(selectedHints, totalStones, distTable, hintSetting.junkWeight, false);
+      totalStones = PlaceHints(selectedHints, distTable);
     }
   }
 

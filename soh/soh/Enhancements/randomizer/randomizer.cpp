@@ -271,7 +271,7 @@ void Randomizer::LoadHintMessages() {
         CustomMessage(ctx->GetHint(RH_GANONDORF_HINT)->GetText()));
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::hintMessageTableID, TEXT_GANONDORF_NOHINT,
-        CustomMessage(ctx->GetHint(RH_SARIA)->GetText()));//RANDOTODO: Change to RH_BLANK or remove {{message}} replacment
+        CustomMessage(ctx->GetHint(RH_GANONDORF_NOHINT)->GetText()));
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::hintMessageTableID, TEXT_SHEIK_NEED_HOOK,
         CustomMessage("{{message}}", "{{message}}", "{{message}}"));
