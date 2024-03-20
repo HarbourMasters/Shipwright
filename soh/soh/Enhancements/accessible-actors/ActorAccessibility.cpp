@@ -59,6 +59,8 @@ typedef struct {
 
 }SfxRecord;
 
+
+
 class ActorAccessibility {
   public:
       int isOn = 0;
@@ -80,6 +82,15 @@ class ActorAccessibility {
     VirtualActorList* currentRoomLocal = NULL;
 };
 static ActorAccessibility* aa;
+
+class AudioGlossaryData {
+  public:
+    AccessibleActorList_t::iterator current = aa->accessibleActorList.begin();
+    bool GlossaryStarted = false;
+    int cooldown = 0;
+    int frameCount = 0;
+};
+static AudioGlossaryData* glossary;
 
 uint64_t ActorAccessibility_GetNextID() {
     uint64_t result = aa->nextActorID;
@@ -115,6 +126,7 @@ void ActorAccessibility_OnGameStillFrozen()
     void ActorAccessibility_Init() {
 
     aa = new ActorAccessibility();
+    glossary = new AudioGlossaryData();
     aa->isOn = CVarGetInteger("gA11yAudioInteraction", 0);
     if (!aa->isOn)
         return;
@@ -396,12 +408,13 @@ int ActorAccessibility_GetRandomStartingFrameCount(int min, int max) {
             }
             }
         actor->frameCount++;
+        glossary->frameCount++;
         if (actor->frameCount != 1 && (actor->frameCount - 1) % actor->policy.n != 0)
             return;
         if (!actor->policy.runsAlways && actor->xyzDistToPlayer > actor->policy.distance) {
             return;
         }
-        if (actor->isDrawn == 0 && actor->actor->id != 406 && actor->actor->id != 302)
+        if (actor->isDrawn == 0 && actor->actor->id != 406 && actor->actor->id != 302 && !glossary->GlossaryStarted)
             return;
         if (actor->policy.aimAssist.isProvider) {
             if (player->stateFlags1 & PLAYER_STATE1_FIRST_PERSON &&
@@ -426,7 +439,7 @@ int ActorAccessibility_GetRandomStartingFrameCount(int min, int max) {
             actor->policy.callback(actor);
         else
             ActorAccessibility_PlaySoundForActor(actor, 0, actor->policy.sound, false);
-
+        
     }
     void ActorAccessibility_RunAccessibilityForAllActors(PlayState* play) {
         
@@ -453,6 +466,11 @@ int ActorAccessibility_GetRandomStartingFrameCount(int min, int max) {
         if (player->stateFlags1 & PLAYER_STATE1_IN_CUTSCENE) {
             return;
         }
+        ActorAccessibility_AudioGlossary(play);
+        if (glossary->GlossaryStarted) {
+            
+            return;
+        }
         //Real actors.
         for (AccessibleActorList_t::iterator i = aa->accessibleActorList.begin(); i != aa->accessibleActorList.end(); i++)
             ActorAccessibility_RunAccessibilityForActor(play, &i->second);
@@ -470,20 +488,63 @@ int ActorAccessibility_GetRandomStartingFrameCount(int min, int max) {
         for (VAList_t::iterator i = list->begin(); i != list->end(); i++)
             ActorAccessibility_RunAccessibilityForActor(play, &(*i));
         
-        ActorAccessibility_AudioGlossary(play);
+        
         
         //Processes external audio engine.
         ActorAccessibility_PrepareNextAudioFrame();
     }
     
     void ActorAccessibility_AudioGlossary(PlayState* play) {
-        AccessibleActorList_t::iterator i = aa->accessibleActorList.begin();
+        if (glossary->GlossaryStarted) {
+            AccessibleActor glossaryActor = (*glossary->current).second;
+            ActorAccessibility_CopyParamsFromRealActor(&glossaryActor);
+            glossaryActor.policy.distance = glossaryActor.xzDistToPlayer * 3;
+            glossaryActor.policy.ydist = 1000;
+            glossaryActor.frameCount = glossary->frameCount;
+            ActorAccessibility_RunAccessibilityForActor(play, &glossaryActor);
+        }
+        if (glossary->cooldown != 0) {
+            glossary->cooldown--;
+            return;
+        }
+        
         OSContPad* trackerButtonsPressed = LUS::Context::GetInstance()->GetControlDeck()->GetPads();
         bool comboStartGlossary = trackerButtonsPressed != nullptr && trackerButtonsPressed[0].button & buttons[10] &&
                                 trackerButtonsPressed[0].button & buttons[6];
         if (comboStartGlossary) {
-            SpeechSynthesizer::Instance->Speak((*i).second.policy.englishName, GetLanguageCode());
+            glossary->GlossaryStarted = true;
+            glossary->current = aa->accessibleActorList.begin();
+            SpeechSynthesizer::Instance->Speak((*glossary->current).second.policy.englishName, GetLanguageCode());
             return;
+        }
+        bool comboNextGlossary = trackerButtonsPressed != nullptr && trackerButtonsPressed[0].button & buttons[13] &&
+                                  trackerButtonsPressed[0].button & buttons[6];
+        if (comboNextGlossary && glossary->GlossaryStarted) {
+            if (glossary->current != aa->accessibleActorList.end()) {
+                glossary->current++;
+                
+            };
+            glossary->cooldown = 20;
+            SpeechSynthesizer::Instance->Speak((*glossary->current).second.policy.englishName, GetLanguageCode());
+        }
+        bool comboPrevGlossary = trackerButtonsPressed != nullptr && trackerButtonsPressed[0].button & buttons[12] &&
+                                 trackerButtonsPressed[0].button & buttons[6];
+        if (comboPrevGlossary && glossary->GlossaryStarted) {
+            if (glossary->current != aa->accessibleActorList.begin()) {
+                glossary->current--;
+                
+            };
+            glossary->cooldown = 20;
+            
+            
+            SpeechSynthesizer::Instance->Speak((*glossary->current).second.policy.englishName, GetLanguageCode());
+            
+        }
+        bool comboDisableGlossary = trackerButtonsPressed != nullptr && trackerButtonsPressed[0].button & buttons[11] &&
+                                 trackerButtonsPressed[0].button & buttons[6];
+        if (comboDisableGlossary) {
+            glossary->cooldown = 0;
+            glossary->GlossaryStarted = false;
         }
         
     }
