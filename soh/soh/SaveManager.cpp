@@ -351,6 +351,13 @@ void SaveManager::LoadRandomizerVersion3() {
                 // all ItemLocations is 0 anyway.
                 randoContext->GetItemLocation(i)->SetCustomPrice(price);
             }
+            uint16_t obtained = 0; 
+            SaveManager::Instance->LoadData("obtained", obtained, (uint16_t)0);
+            if (obtained) {
+                randoContext->GetItemLocation(i)->MarkAsObtained();
+            } else {
+                randoContext->GetItemLocation(i)->MarkAsNotObtained();
+            }
         });
     });
 
@@ -449,6 +456,7 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool f
             if (randoContext->GetItemLocation(i)->HasCustomPrice()) {
                 SaveManager::Instance->SaveData("price", randoContext->GetItemLocation(i)->GetPrice());
             }
+            SaveManager::Instance->SaveData("obtained", randoContext->GetItemLocation(i)->HasObtained());
         });
     });
 
@@ -726,6 +734,9 @@ void SaveManager::InitFileNormal() {
     }
     for (int flag = 0; flag < ARRAY_COUNT(gSaveContext.infTable); flag++) {
         gSaveContext.infTable[flag] = 0;
+    }
+    for (int flag = 0; flag < ARRAY_COUNT(gSaveContext.randomizerInf); flag++) {
+        gSaveContext.randomizerInf[flag] = 0;
     }
     gSaveContext.worldMapAreaData = 0;
     gSaveContext.scarecrowLongSongSet = 0;

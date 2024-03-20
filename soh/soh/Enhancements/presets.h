@@ -280,6 +280,18 @@ const std::vector<const char*> enhancementsCvars = {
     "gPermanentHeartLoss",
     "gRemoveExplosiveLimit",
     "gToggleStrength",
+    "gTimeSavers.SkipCutscene.Intro",
+    "gTimeSavers.SkipCutscene.Entrances",
+    "gTimeSavers.SkipCutscene.Story",
+    "gTimeSavers.SkipCutscene.LearnSong",
+    "gTimeSavers.SkipCutscene.BossIntro",
+    "gTimeSavers.SkipCutscene.GlitchAiding",
+    "gTimeSavers.SkipCutscene.OnePoint",
+    "gTimeSavers.NoForcedDialog",
+    "gTimeSavers.SkipOwlInteractions",
+    "gTimeSavers.SkipMiscInteractions",
+    "gTimeSavers.DisableTitleCard",
+    "gTimeSavers.SkipGetItemAnimation",
 };
 
 const std::vector<const char*> cheatCvars = {

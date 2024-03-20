@@ -15,6 +15,13 @@ typedef enum {
 } ChestStyleMatchesContentsType;
 
 typedef enum {
+    SGIA_DISABLED,
+    SGIA_JUNK,
+    SGIA_ALL,
+    SGIA_SIZE
+} SkipGetItemAnimationType;
+
+typedef enum {
     BUNNY_HOOD_VANILLA,
     BUNNY_HOOD_FAST_AND_JUMP,
     BUNNY_HOOD_FAST

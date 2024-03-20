@@ -7,6 +7,7 @@
 #include "z_en_zl4.h"
 #include "objects/object_zl4/object_zl4.h"
 #include "scenes/indoors/nakaniwa/nakaniwa_scene.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
@@ -227,20 +228,6 @@ u16 EnZl4_GetText(PlayState* play, Actor* thisx) {
     return ret;
 }
 
-void GivePlayerRandoRewardZeldaChild(EnZl4* zelda, PlayState* play, RandomizerCheck check) {
-    if (zelda->actor.parent != NULL && zelda->actor.parent->id == GET_PLAYER(play)->actor.id &&
-        !Flags_GetTreasure(play, 0x1E)) {
-        Flags_SetTreasure(play, 0x1E);
-    } else if (!Flags_GetTreasure(play, 0x1E) && !Randomizer_GetSettingValue(RSK_SKIP_CHILD_ZELDA) && Actor_TextboxIsClosing(&zelda->actor, play) &&
-               (play->msgCtx.textId == 0x703C || play->msgCtx.textId == 0x703D)) {
-        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, GI_LETTER_ZELDA);
-        GiveItemEntryFromActor(&zelda->actor, play, getItemEntry, 10000.0f, 100.0f);
-    } else if (Flags_GetTreasure(play, 0x1E) && !Player_InBlockingCsMode(play, GET_PLAYER(play))) {
-        gSaveContext.unk_13EE = 0x32;
-        Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER);
-    }
-}
-
 s16 func_80B5B9B0(PlayState* play, Actor* thisx) {
     EnZl4* this = (EnZl4*)thisx;
 
@@ -388,12 +375,6 @@ void EnZl4_Init(Actor* thisx, PlayState* play) {
     this->actor.targetMode = 6;
     this->actor.textId = -1;
     this->eyeExpression = this->mouthExpression = ZL4_MOUTH_NEUTRAL;
-
-    if (IS_RANDO) {
-        Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ZL4_ANIM_0);
-        this->actionFunc = EnZl4_Idle;
-        return;
-    }
 
     if (gSaveContext.sceneSetupIndex >= 4) {
         Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ZL4_ANIM_0);
@@ -1127,14 +1108,16 @@ s32 EnZl4_CsMakePlan(EnZl4* this, PlayState* play) {
                 Camera_ChangeSetting(GET_ACTIVE_CAM(play), 1);
                 this->talkState = 7;
                 play->talkWithPlayer(play, &this->actor);
-                func_8002F434(&this->actor, play, GI_LETTER_ZELDA, fabsf(this->actor.xzDistToPlayer) + 1.0f,
-                              fabsf(this->actor.yDistToPlayer) + 1.0f);
+                if (GameInteractor_Should(GI_VB_GIVE_ITEM_ZELDAS_LETTER, true, NULL)) {
+                    func_8002F434(&this->actor, play, GI_LETTER_ZELDA, fabsf(this->actor.xzDistToPlayer) + 1.0f,
+                                fabsf(this->actor.yDistToPlayer) + 1.0f);
+                }
                 play->msgCtx.stateTimer = 4;
                 play->msgCtx.msgMode = MSGMODE_TEXT_CLOSING;
             }
             break;
         case 7:
-            if (Actor_HasParent(&this->actor, play)) {
+            if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(GI_VB_GIVE_ITEM_ZELDAS_LETTER, true, NULL)) {
                 Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ZL4_ANIM_0);
                 this->talkState++;
             } else {
@@ -1225,11 +1208,6 @@ void EnZl4_Idle(EnZl4* this, PlayState* play) {
     Npc_UpdateTalking(play, &this->actor, &this->interactInfo.talkState, this->collider.dim.radius + 60.0f,
                       EnZl4_GetText, func_80B5B9B0);
     func_80B5BB78(this, play);
-    
-    if (IS_RANDO) {
-        GivePlayerRandoRewardZeldaChild(this, play, RC_HC_ZELDAS_LETTER);
-        return;
-    }
 }
 
 void EnZl4_TheEnd(EnZl4* this, PlayState* play) {

@@ -1,0 +1,6 @@
+#ifndef TIMESAVER_HOOK_HANDLERS_H
+#define TIMESAVER_HOOK_HANDLERS_H
+
+void TimeSaverRegisterHooks();
+
+#endif // TIMESAVER_HOOK_HANDLERS_H

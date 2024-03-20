@@ -9,6 +9,7 @@
 #include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
 #include "objects/object_sa/object_sa.h"
 #include "soh/Enhancements/boss-rush/BossRush.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #include "vt.h"
 
@@ -241,7 +242,9 @@ void func_8098E8C8(DemoSa* this, PlayState* play) {
 
     Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DEMO_EFFECT, posX, posY, posZ, 0, 0, 0,
                        0xB);
-    Item_Give(play, ITEM_MEDALLION_FOREST);
+    if (GameInteractor_Should(GI_VB_GIVE_ITEM_FOREST_MEDALLION, true, NULL)) {
+        Item_Give(play, ITEM_MEDALLION_FOREST);
+    }
 }
 
 void func_8098E944(DemoSa* this, PlayState* play) {
@@ -258,7 +261,9 @@ void func_8098E960(DemoSa* this, PlayState* play) {
             this->action = 1;
             play->csCtx.segment = D_8099010C;
             gSaveContext.cutsceneTrigger = 2;
-            Item_Give(play, ITEM_MEDALLION_FOREST);
+            if (GameInteractor_Should(GI_VB_GIVE_ITEM_FOREST_MEDALLION, true, NULL)) {
+                Item_Give(play, ITEM_MEDALLION_FOREST);
+            }
             player->actor.world.rot.y = player->actor.shape.rot.y = this->actor.world.rot.y + 0x8000;
         } else {
             this->action = 1;

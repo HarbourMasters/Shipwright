@@ -226,60 +226,6 @@ void Play_Destroy(GameState* thisx) {
     gPlayState = NULL;
 }
 
-void GivePlayerRandoRewardSongOfTime(PlayState* play, RandomizerCheck check) {
-    Player* player = GET_PLAYER(play);
-
-    if (gSaveContext.entranceIndex == ENTR_HYRULE_FIELD_16 && player != NULL && !Player_InBlockingCsMode(play, player) &&
-        !Flags_GetTreasure(play, 0x1F) && gSaveContext.nextTransitionType == TRANS_NEXT_TYPE_DEFAULT && !gSaveContext.pendingIceTrapCount) {
-        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_SONG_OF_TIME);
-        GiveItemEntryWithoutActor(play, getItemEntry);
-        player->pendingFlag.flagID = 0x1F;
-        player->pendingFlag.flagType = FLAG_SCENE_TREASURE;
-    }
-}
-
-void GivePlayerRandoRewardNocturne(PlayState* play, RandomizerCheck check) {
-    Player* player = GET_PLAYER(play);
-
-    if ((gSaveContext.entranceIndex == ENTR_KAKARIKO_VILLAGE_0 ||
-         gSaveContext.entranceIndex == ENTR_KAKARIKO_VILLAGE_1 ||
-         gSaveContext.entranceIndex == ENTR_KAKARIKO_VILLAGE_2) && LINK_IS_ADULT && CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST) &&
-        CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE) && CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER) && player != NULL &&
-        !Player_InBlockingCsMode(play, player) && !Flags_GetEventChkInf(EVENTCHKINF_BONGO_BONGO_ESCAPED_FROM_WELL)) {
-        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_NOCTURNE_OF_SHADOW);
-        GiveItemEntryWithoutActor(play, getItemEntry);
-        player->pendingFlag.flagID = 0xAA;
-        player->pendingFlag.flagType = FLAG_EVENT_CHECK_INF;
-    }
-}
-
-void GivePlayerRandoRewardRequiem(PlayState* play, RandomizerCheck check) {
-    Player* player = GET_PLAYER(play);
-
-    if ((gSaveContext.gameMode == 0) && (gSaveContext.respawnFlag <= 0) && (gSaveContext.cutsceneIndex < 0xFFF0)) {
-        if ((gSaveContext.entranceIndex == ENTR_DESERT_COLOSSUS_1) && !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_REQUIEM_OF_SPIRIT) && player != NULL &&
-            !Player_InBlockingCsMode(play, player)) {
-            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_SONG_OF_TIME);
-            GiveItemEntryWithoutActor(play, getItemEntry);
-            player->pendingFlag.flagID = 0xAC;
-            player->pendingFlag.flagType = FLAG_EVENT_CHECK_INF;
-        }
-    }
-}
-
-void GivePlayerRandoRewardMasterSword(PlayState* play, RandomizerCheck check) {
-    Player* player = GET_PLAYER(play);
-
-    if (gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_2 && LINK_IS_ADULT && player != NULL &&
-        !Player_InBlockingCsMode(play, player) && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) &&
-        !Flags_GetRandomizerInf(RAND_INF_TOT_MASTER_SWORD)) {
-        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_MASTER_SWORD);
-        GiveItemEntryWithoutActor(play, getItemEntry);
-        player->pendingFlag.flagID = RAND_INF_TOT_MASTER_SWORD;
-        player->pendingFlag.flagType = FLAG_RANDOMIZER_INF;
-    }
-}
-
 u8 CheckStoneCount() {
     u8 stoneCount = 0;
 
@@ -400,69 +346,6 @@ u8 CheckLACSRewardCount() {
             break;
     }
     return lacsRewardCount;
-}
-
-void GivePlayerRandoRewardZeldaLightArrowsGift(PlayState* play, RandomizerCheck check) {
-    Player* player = GET_PLAYER(play);
-
-    u8 meetsRequirements = 0;
-
-    switch (Randomizer_GetSettingValue(RSK_GANONS_BOSS_KEY)) {
-        case RO_GANON_BOSS_KEY_LACS_STONES:
-            if ((CheckStoneCount() + CheckLACSRewardCount()) >= Randomizer_GetSettingValue(RSK_LACS_STONE_COUNT)) {
-                meetsRequirements = true;
-            }
-            break;
-        case RO_GANON_BOSS_KEY_LACS_MEDALLIONS:
-            if ((CheckMedallionCount() + CheckLACSRewardCount()) >= Randomizer_GetSettingValue(RSK_LACS_MEDALLION_COUNT)) {
-                meetsRequirements = true;
-            }
-            break;
-        case RO_GANON_BOSS_KEY_LACS_REWARDS:
-            if ((CheckMedallionCount() + CheckStoneCount() + CheckLACSRewardCount()) >= Randomizer_GetSettingValue(RSK_LACS_REWARD_COUNT)) {
-                meetsRequirements = true;
-            }
-            break;
-        case RO_GANON_BOSS_KEY_LACS_DUNGEONS:
-            if ((CheckDungeonCount() + CheckLACSRewardCount()) >= Randomizer_GetSettingValue(RSK_LACS_DUNGEON_COUNT)) {
-                meetsRequirements = true;
-            }
-            break;
-        case RO_GANON_BOSS_KEY_LACS_TOKENS:
-            if (gSaveContext.inventory.gsTokens >= Randomizer_GetSettingValue(RSK_LACS_TOKEN_COUNT)) {
-                meetsRequirements = true;
-            }
-            break;
-        default:
-            if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW)) {
-                meetsRequirements = true;
-            }
-            break;
-    }
-
-    if (meetsRequirements && LINK_IS_ADULT &&
-        (gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_TEMPLE_OF_TIME) &&
-        !Flags_GetTreasure(play, 0x1E) && player != NULL && !Player_InBlockingCsMode(play, player) &&
-        play->transitionTrigger == TRANS_TRIGGER_OFF) {
-        GetItemEntry getItem = Randomizer_GetItemFromKnownCheck(check, GI_ARROW_LIGHT);
-        if (GiveItemEntryWithoutActor(play, getItem)) {
-            player->pendingFlag.flagID = 0x1E;
-            player->pendingFlag.flagType = FLAG_SCENE_TREASURE;
-        }
-    }
-}
-
-void GivePlayerRandoRewardSariaGift(PlayState* play, RandomizerCheck check) {
-    Player* player = GET_PLAYER(play);
-    if (gSaveContext.entranceIndex == ENTR_LOST_WOODS_9) {
-        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_ZELDAS_LULLABY);
-
-        if (!Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_SARIA_ON_BRIDGE) && player != NULL && !Player_InBlockingCsMode(play, player)) {
-            GiveItemEntryWithoutActor(play, getItemEntry);
-            player->pendingFlag.flagType = FLAG_EVENT_CHECK_INF;
-            player->pendingFlag.flagID = 0xC1;
-        }
-    }
 }
 
 void Play_Init(GameState* thisx) {
@@ -1448,15 +1331,6 @@ skip:
 
     Environment_Update(play, &play->envCtx, &play->lightCtx, &play->pauseCtx, &play->msgCtx,
                        &play->gameOverCtx, play->state.gfxCtx);
-
-    if (IS_RANDO) {
-        GivePlayerRandoRewardSariaGift(play, RC_LW_GIFT_FROM_SARIA);
-        GivePlayerRandoRewardSongOfTime(play, RC_SONG_FROM_OCARINA_OF_TIME);
-        GivePlayerRandoRewardZeldaLightArrowsGift(play, RC_TOT_LIGHT_ARROWS_CUTSCENE);
-        GivePlayerRandoRewardNocturne(play, RC_SHEIK_IN_KAKARIKO);
-        GivePlayerRandoRewardRequiem(play, RC_SHEIK_AT_COLOSSUS);
-        GivePlayerRandoRewardMasterSword(play, RC_TOT_MASTER_SWORD);
-    }
 }
 
 void Play_DrawOverlayElements(PlayState* play) {

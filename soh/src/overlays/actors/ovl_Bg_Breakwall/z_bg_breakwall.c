@@ -8,6 +8,7 @@
 #include "scenes/dungeons/ddan/ddan_scene.h"
 #include "objects/object_bwall/object_bwall.h"
 #include "objects/object_kingdodongo/object_kingdodongo.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
@@ -300,10 +301,13 @@ void BgBreakwall_Wait(BgBreakwall* this, PlayState* play) {
 
         if ((wallType == BWALL_DC_ENTRANCE) && (!Flags_GetEventChkInf(EVENTCHKINF_ENTERED_DODONGOS_CAVERN))) {
             Flags_SetEventChkInf(EVENTCHKINF_ENTERED_DODONGOS_CAVERN);
-            Cutscene_SetSegment(play, gDcOpeningCs);
-            gSaveContext.cutsceneTrigger = 1;
+            s32 flag = EVENTCHKINF_ENTERED_DODONGOS_CAVERN;
+            if (GameInteractor_Should(GI_VB_PLAY_ENTRANCE_CS, true, &flag)) {
+                Cutscene_SetSegment(play, gDcOpeningCs);
+                gSaveContext.cutsceneTrigger = 1;
+                func_8002DF54(play, NULL, 0x31);
+            }
             Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-            func_8002DF54(play, NULL, 0x31);
         }
 
         if (this->dyna.actor.params < 0) {

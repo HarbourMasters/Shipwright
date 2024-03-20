@@ -11,6 +11,7 @@
 #include "scenes/indoors/yousei_izumi_yoko/yousei_izumi_yoko_scene.h"
 #include "scenes/indoors/daiyousei_izumi/daiyousei_izumi_scene.h"
 #include "soh/frame_interpolation.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA)
 
@@ -67,19 +68,6 @@ const ActorInit Bg_Dy_Yoseizo_InitVars = {
     NULL,
     NULL,
 };
-
-void GivePlayerRandoRewardGreatFairy(BgDyYoseizo* this, PlayState* play) {
-    Player* player = GET_PLAYER(play);
-    GetItemEntry getItemEntry = Randomizer_GetItemFromActor(this->actor.id, play->sceneNum, this->fountainType + 1, GI_NONE);
-
-    if (this->actor.parent == GET_PLAYER(play) && !Flags_GetTreasure(play, this->fountainType + 1) &&
-        !Player_InBlockingCsMode(play, GET_PLAYER(play))) {
-        Flags_SetTreasure(play, this->fountainType + 1);
-        Actor_Kill(&this->actor);
-    } else if (!Flags_GetTreasure(play, this->fountainType + 1)) {
-        GiveItemEntryFromActor(&this->actor, play, getItemEntry, 10000.0f, 100.0f);
-    }
-}
 
 void BgDyYoseizo_Init(Actor* thisx, PlayState* play2) {
     PlayState* play = play2;
@@ -196,31 +184,25 @@ void BgDyYoseizo_Bob(BgDyYoseizo* this, PlayState* play) {
 }
 
 void BgDyYoseizo_CheckMagicAcquired(BgDyYoseizo* this, PlayState* play) {
+    u8 isEligible = true;
     if (Flags_GetSwitch(play, 0x38)) {
         play->msgCtx.ocarinaMode = OCARINA_MODE_04;
 
-        if(IS_RANDO) {
-            gSaveContext.healthAccumulator = 0x140;
-            Magic_Fill(play);
-            if(Flags_GetTreasure(play, this->fountainType + 1)) {
-                Actor_Kill(&this->actor);
-            } else {
-                GivePlayerRandoRewardGreatFairy(this, play);
-            }
-            return;
-        } 
-
         if (play->sceneNum == SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC) {
             if (!gSaveContext.isMagicAcquired && (this->fountainType != FAIRY_UPGRADE_MAGIC)) {
-                Actor_Kill(&this->actor);
-                return;
+                isEligible = false;
             }
         } else {
             if (!gSaveContext.isMagicAcquired) {
-                Actor_Kill(&this->actor);
-                return;
+                isEligible = false;
             }
         }
+
+        if (!GameInteractor_Should(GI_VB_BE_ELIGIBLE_FOR_GREAT_FAIRY_REWARD, isEligible, this)) {
+            Actor_Kill(&this->actor);
+            return;
+        }
+
         func_8002DF54(play, &this->actor, 1);
         this->actionFunc = BgDyYoseizo_ChooseType;
     }

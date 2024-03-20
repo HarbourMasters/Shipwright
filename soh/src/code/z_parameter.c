@@ -2128,7 +2128,9 @@ u8 Item_Give(PlayState* play, u8 item) {
                 AMMO(ITEM_STICK) = CUR_CAPACITY(UPG_STICKS);
             }
         }
-        item = ITEM_STICK;
+        // [SOH] This results in the same behavior as the original code, but also allows us to get an accurate ReceivedItemEntry hook
+        INV_CONTENT(ITEM_STICK) = ITEM_STICK;
+        return Return_Item(item, MOD_NONE, returnItem);
     } else if (item == ITEM_NUT) {
         if (gSaveContext.inventory.items[slot] == ITEM_NONE) {
             Inventory_ChangeUpgrade(UPG_NUTS, 1);
@@ -2152,7 +2154,9 @@ u8 Item_Give(PlayState* play, u8 item) {
                 AMMO(ITEM_NUT) = CUR_CAPACITY(UPG_NUTS);
             }
         }
-        item = ITEM_NUT;
+        // [SOH] This results in the same behavior as the original code, but also allows us to get an accurate ReceivedItemEntry hook
+        INV_CONTENT(ITEM_NUT) = ITEM_NUT;
+        return Return_Item(item, MOD_NONE, returnItem);
     } else if (item == ITEM_BOMB) {
         // "Bomb  Bomb  Bomb  Bomb Bomb   Bomb Bomb"
         osSyncPrintf(" 爆弾  爆弾  爆弾  爆弾 爆弾   爆弾 爆弾 \n");

@@ -7,6 +7,7 @@
 #include "z_en_ta.h"
 #include "vt.h"
 #include "objects/object_ta/object_ta.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
 
@@ -466,7 +467,7 @@ void func_80B14B6C(EnTa* this, PlayState* play) {
         func_80B13AA0(this, func_80B14AF4, func_80B167C0);
         this->unk_2CC = 5;
         Flags_SetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE);
-        if (IS_RANDO) {
+        if (GameInteractor_Should(GI_VB_PLAY_ONEPOINT_ACTOR_CS, true, this)) {
             OnePointCutscene_EndCutscene(play, csCamIdx);
         }
         Animation_PlayOnce(&this->skelAnime, &gTalonRunTransitionAnim);

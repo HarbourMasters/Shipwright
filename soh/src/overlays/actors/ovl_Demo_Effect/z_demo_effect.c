@@ -142,7 +142,7 @@ f32 DemoEffect_InterpolateCsFrames(PlayState* play, s32 csActionId) {
  */
 void DemoEffect_InitJewel(PlayState* play, DemoEffect* this) {
     this->initDrawFunc = DemoEffect_DrawJewel;
-    if (IS_RANDO && play->sceneNum == SCENE_JABU_JABU) {
+    if (IS_RANDO && (play->sceneNum != SCENE_TEMPLE_OF_TIME || this->actor.params == DEMO_EFFECT_LIGHTARROW)) {
         this->initDrawFunc = DemoEffect_DrawGetItem;
     }
     if (!LINK_IS_ADULT) {
@@ -156,7 +156,7 @@ void DemoEffect_InitJewel(PlayState* play, DemoEffect* this) {
         Actor_SetScale(&this->actor, 0.10f);
     }
     this->csActionId = 1;
-    this->actor.shape.rot.x = (IS_RANDO && play->sceneNum == SCENE_JABU_JABU) ? 0 : 16384;
+    this->actor.shape.rot.x = (IS_RANDO && (play->sceneNum != SCENE_TEMPLE_OF_TIME || this->actor.params == DEMO_EFFECT_LIGHTARROW)) ? 0 : 16384;
     DemoEffect_InitJewelColor(this);
     this->jewel.alpha = 0;
     this->jewelCsRotation.x = this->jewelCsRotation.y = this->jewelCsRotation.z = 0;
@@ -2087,13 +2087,48 @@ void DemoEffect_DrawGetItem(Actor* thisx, PlayState* play) {
             this->getItem.isLoaded = 1;
             return;
         }
-        if (IS_RANDO && play->sceneNum == SCENE_JABU_JABU) {
-            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_BARINADE, RG_ZORA_SAPPHIRE);
-            this->getItem.drawId = getItemEntry.gid;
-            func_8002EBCC(thisx, play, 0);
-            func_8002ED80(thisx, play, 0);
-            GetItemEntry_Draw(play, getItemEntry);
-            return;
+        if (IS_RANDO && (play->sceneNum != SCENE_TEMPLE_OF_TIME || this->actor.params == DEMO_EFFECT_LIGHTARROW)) {
+            GetItemEntry getItemEntry = GET_ITEM_NONE;
+
+            switch (this->actor.params) {
+                case DEMO_EFFECT_JEWEL_KOKIRI:
+                    getItemEntry = Randomizer_GetItemFromKnownCheck(RC_QUEEN_GOHMA, RG_KOKIRI_EMERALD);
+                    break;
+                case DEMO_EFFECT_JEWEL_GORON:
+                    getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KING_DODONGO, RG_GORON_RUBY);
+                    break;
+                case DEMO_EFFECT_JEWEL_ZORA:
+                    getItemEntry = Randomizer_GetItemFromKnownCheck(RC_BARINADE, RG_ZORA_SAPPHIRE);
+                    break;
+                case DEMO_EFFECT_MEDAL_FOREST:
+                    getItemEntry = Randomizer_GetItemFromKnownCheck(RC_PHANTOM_GANON, RG_FOREST_MEDALLION);
+                    break;
+                case DEMO_EFFECT_MEDAL_FIRE:
+                    getItemEntry = Randomizer_GetItemFromKnownCheck(RC_VOLVAGIA, RG_FIRE_MEDALLION);
+                    break;
+                case DEMO_EFFECT_MEDAL_WATER:
+                    getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MORPHA, RG_WATER_MEDALLION);
+                    break;
+                case DEMO_EFFECT_MEDAL_SPIRIT:
+                    getItemEntry = Randomizer_GetItemFromKnownCheck(RC_TWINROVA, RG_SPIRIT_MEDALLION);
+                    break;
+                case DEMO_EFFECT_MEDAL_SHADOW:
+                    getItemEntry = Randomizer_GetItemFromKnownCheck(RC_BONGO_BONGO, RG_SHADOW_MEDALLION);
+                    break;
+                case DEMO_EFFECT_MEDAL_LIGHT:
+                    getItemEntry = Randomizer_GetItemFromKnownCheck(RC_GIFT_FROM_SAGES, RG_LIGHT_MEDALLION);
+                    break;
+                case DEMO_EFFECT_LIGHTARROW:
+                    getItemEntry = Randomizer_GetItemFromKnownCheck(RC_TOT_LIGHT_ARROWS_CUTSCENE, RG_LIGHT_ARROWS);
+                    break;
+            }
+            if (getItemEntry.getItemId != GI_NONE) {
+                this->getItem.drawId = getItemEntry.gid;
+                func_8002EBCC(thisx, play, 0);
+                func_8002ED80(thisx, play, 0);
+                GetItemEntry_Draw(play, getItemEntry);
+                return;
+            }
         }
         func_8002EBCC(thisx, play, 0);
         func_8002ED80(thisx, play, 0);

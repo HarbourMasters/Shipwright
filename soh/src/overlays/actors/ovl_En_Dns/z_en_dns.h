@@ -32,7 +32,10 @@ typedef struct EnDns {
     /* 0x02BD */ u8 dropCollectible;
     /* 0x02C0 */ DnsItemEntry* dnsItemEntry;
     /* 0x02C4 */ f32 yInitPos;
-    /*        */ ScrubIdentity scrubIdentity;
+    // #region SOH [Randomizer]
+    /*        */ DnsItemEntry sohDnsItemEntry;
+    /*        */ ScrubIdentity sohScrubIdentity;
+    // #endregion
 } EnDns; // size = 0x02C8
 
 #endif

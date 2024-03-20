@@ -10,6 +10,7 @@
 #include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
 #include "objects/object_zl2/object_zl2.h"
 #include "objects/object_zl2_anime1/object_zl2_anime1.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
@@ -633,7 +634,9 @@ void EnZl2_GiveLightArrows(EnZl2* this, PlayState* play) {
         posY = player->actor.world.pos.y + 80.0f;
         posZ = player->actor.world.pos.z;
         Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_EFFECT, posX, posY, posZ, 0, 0, 0, 0x17, true);
-        Item_Give(play, ITEM_ARROW_LIGHT);
+        if (GameInteractor_Should(GI_VB_GIVE_ITEM_LIGHT_ARROW, true, NULL)) {
+            Item_Give(play, ITEM_ARROW_LIGHT);
+        }
         this->unk_244 = 1;
     }
 }

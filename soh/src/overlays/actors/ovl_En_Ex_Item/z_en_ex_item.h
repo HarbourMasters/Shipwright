@@ -6,7 +6,7 @@
 
 struct EnExItem;
 
-typedef void (*EnExItemActionFunc)(struct EnExItem* this, PlayState* play);
+typedef void (*EnExItemActionFunc)(struct EnExItem* enExItem, PlayState* play);
 typedef void (*EnExItemLightFunc)(Actor*, PlayState*, s32);
 
 typedef struct EnExItem {

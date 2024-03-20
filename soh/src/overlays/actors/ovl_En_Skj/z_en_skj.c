@@ -1039,11 +1039,8 @@ void EnSkj_SariaSongTalk(EnSkj* this, PlayState* play) {
             EnSkj_SetupWaitInRange(this);
         } else {
             func_80AFFE24(this);
-            if (!IS_RANDO) {
+            if (GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_SKULL_KID_SARIAS_SONG, true, this)) {
                 func_8002F434(&this->actor, play, GI_HEART_PIECE, EnSkj_GetItemXzRange(this), EnSkj_GetItemYRange(this));
-            } else {
-                GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LW_SKULL_KID, GI_HEART_PIECE);
-                GiveItemEntryFromActor(&this->actor, play, getItemEntry, EnSkj_GetItemXzRange(this), EnSkj_GetItemYRange(this));
             }
         }
     }
@@ -1054,15 +1051,12 @@ void func_80AFFE24(EnSkj* this) {
 }
 
 void func_80AFFE44(EnSkj* this, PlayState* play) {
-    if (Actor_HasParent(&this->actor, play)) {
+    if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_SKULL_KID_SARIAS_SONG, true, this)) {
         this->actor.parent = NULL;
         EnSkj_SetupPostSariasSong(this);
     } else {
-        if (!IS_RANDO) {
+        if (GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_SKULL_KID_SARIAS_SONG, true, this)) {
             func_8002F434(&this->actor, play, GI_HEART_PIECE, EnSkj_GetItemXzRange(this), EnSkj_GetItemYRange(this));
-        } else {
-            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LW_SKULL_KID, GI_HEART_PIECE);
-            GiveItemEntryFromActor(&this->actor, play, getItemEntry, EnSkj_GetItemXzRange(this), EnSkj_GetItemYRange(this));
         }
     }
 }
@@ -1072,7 +1066,7 @@ void EnSkj_SetupPostSariasSong(EnSkj* this) {
 }
 
 void EnSkj_ChangeModeAfterSong(EnSkj* this, PlayState* play) {
-    if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) {
+    if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play) || !GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_SKULL_KID_SARIAS_SONG, true, this)) {
         Flags_SetItemGetInf(ITEMGETINF_16);
         EnSkj_SetNaviId(this);
         EnSkj_SetupWaitInRange(this);

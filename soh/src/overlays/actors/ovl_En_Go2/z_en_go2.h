@@ -107,4 +107,9 @@ typedef struct EnGo2 {
     /*        */ GetItemEntry getItemEntry;
 } EnGo2; // size = 0x05A0
 
+void EnGo2_GetItemAnimation(EnGo2* enGo2, PlayState* play);
+void EnGo2_RollingAnimation(EnGo2* enGo2, PlayState* play);
+void EnGo2_GoronRollingBigContinueRolling(EnGo2* enGo2, PlayState* play);
+void func_80A46B40(EnGo2* enGo2, PlayState* play);
+
 #endif
