@@ -116,6 +116,7 @@ RandomizerCheckArea previousArea = RCAREA_INVALID;
 RandomizerCheckArea currentArea = RCAREA_INVALID;
 OSContPad* trackerButtonsPressed;
 
+bool passesTextFilter(ImGuiTextFilter& checkSearch, const RandomizerCheckObject rcObject);
 void BeginFloatWindows(std::string UniqueName, bool& open, ImGuiWindowFlags flags = 0);
 bool CompareChecks(RandomizerCheckObject, RandomizerCheckObject);
 bool CheckByArea(RandomizerCheckArea);
@@ -892,6 +893,14 @@ void CheckTrackerWindow::DrawElement() {
         optExpandAll = false;
         optCollapseAll = true;
     }
+    ImGui::SameLine();
+    static ImGuiTextFilter checkSearch;
+    if (ImGui::Button("Clear")) {
+        checkSearch.Clear();
+    }
+    UIWidgets::Tooltip("Clear the search field");
+    checkSearch.Draw();
+
     UIWidgets::PaddedSeparator();
 
     //Checks Section Lead-in
@@ -1005,11 +1014,14 @@ void CheckTrackerWindow::DrawElement() {
                 ImGui::SetScrollHereY(0.0f);
                 doAreaScroll = false;
             }
-            for (auto rco : objs) {
-                if (IsVisibleInCheckTracker(rco) && doDraw && isThisAreaSpoiled) {
-                    DrawLocation(rco);
+
+            for (auto rcObject : objs) {
+                if (IsVisibleInCheckTracker(rcObject) && passesTextFilter(checkSearch, rcObject) && doDraw &&
+                    isThisAreaSpoiled) {
+                    DrawLocation(rcObject);
                 }
             }
+
             if (doDraw) {
                 ImGui::TreePop();
             }
@@ -1024,6 +1036,13 @@ void CheckTrackerWindow::DrawElement() {
         optCollapseAll = false;
         optExpandAll = false;
     }
+}
+
+bool passesTextFilter(ImGuiTextFilter& checkSearch, RandomizerCheckObject rcObject) {
+    return (
+        checkSearch.PassFilter(RandomizerCheckObjects::GetRCAreaName(rcObject.rcArea).c_str()) ||
+        checkSearch.PassFilter(rcObject.rcShortName.c_str())
+    );
 }
 
 // Windowing stuff
