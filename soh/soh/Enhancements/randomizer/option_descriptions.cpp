@@ -546,6 +546,7 @@ void Settings::CreateOptionDescriptions() {
     mOptionDescriptions[RSK_BLUE_FIRE_ARROWS] =
         "Ice Arrows act like Blue Fire, making them able to melt red ice. "
         "Item placement logic will respect this option, so it might be required to use this to progress.";
+    mOptionDescriptions[RSK_SKELETON_KEY] = "Adds a new item called the \"Skeleton Key\", it unlocks every dungeon door locked by a small key.";
     mOptionDescriptions[RSK_LIGHT_ARROWS_HINT] =
         "Light Arrows can be used to light up the sun switches instead of using the Mirror Shield. "
         "Item placement logic will respect this option, so it might be required to use this to progress.";
