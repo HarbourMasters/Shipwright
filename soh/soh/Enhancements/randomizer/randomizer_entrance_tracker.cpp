@@ -639,95 +639,95 @@ void InitEntranceTrackingData() {
     SortEntranceListByType(destListSortedByType, 1);
 }
 
+void EntranceTrackerSettingsWindow::DrawElement() {
+    ImGui::SetNextWindowSize(ImVec2(600, 375), ImGuiCond_FirstUseEver);
+
+    if (!ImGui::Begin("Entrance Tracker Settings", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
+        ImGui::End();
+        return;
+    }
+
+    if (ImGui::BeginTable("entranceTrackerSettings", 1, ImGuiTableFlags_BordersInnerH)) {
+
+        ImGui::TableNextColumn();
+
+        UIWidgets::Spacer(0);
+        ImGui::TextWrapped("The entrance tracker will only track shuffled entrances");
+        UIWidgets::Spacer(0);
+
+        ImGui::TableNextColumn();
+
+        if (ImGui::BeginTable("entranceTrackerSubSettings", 2, ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_SizingStretchProp)) {
+
+            ImGui::TableNextColumn();
+
+            ImGui::Text("Sort By");
+            UIWidgets::EnhancementRadioButton("To", "gEntranceTrackerSortBy", 0);
+            UIWidgets::Tooltip("Sort entrances by the original source entrance");
+            UIWidgets::EnhancementRadioButton("From", "gEntranceTrackerSortBy", 1);
+            UIWidgets::Tooltip("Sort entrances by the overrided destination");
+
+            UIWidgets::Spacer(2.0f);
+
+            ImGui::Text("List Items");
+            UIWidgets::PaddedEnhancementCheckbox("Auto scroll", "gEntranceTrackerAutoScroll", true, false);
+            UIWidgets::Tooltip("Automatically scroll to the first aviable entrance in the current scene");
+            UIWidgets::PaddedEnhancementCheckbox("Highlight previous", "gEntranceTrackerHighlightPrevious", true, false);
+            UIWidgets::Tooltip("Highlight the previous entrance that Link came from");
+            UIWidgets::PaddedEnhancementCheckbox("Highlight available", "gEntranceTrackerHighlightAvailable", true, false);
+            UIWidgets::Tooltip("Highlight available entrances in the current scene");
+            UIWidgets::PaddedEnhancementCheckbox("Hide undiscovered", "gEntranceTrackerCollapseUndiscovered", true, false);
+            UIWidgets::Tooltip("Collapse undiscovered entrances towards the bottom of each group");
+            bool disableHideReverseEntrances = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_DECOUPLED_ENTRANCES) == RO_GENERIC_ON;
+            static const char* disableHideReverseEntrancesText = "This option is disabled because \"Decouple Entrances\" is enabled.";
+            UIWidgets::PaddedEnhancementCheckbox("Hide reverse", "gEntranceTrackerHideReverseEntrances", true, false,
+                                          disableHideReverseEntrances, disableHideReverseEntrancesText, UIWidgets::CheckboxGraphics::Cross, true);
+            UIWidgets::Tooltip("Hide reverse entrance transitions when Decouple Entrances is off");
+            UIWidgets::Spacer(0);
+
+            ImGui::TableNextColumn();
+
+            ImGui::Text("Group By");
+            UIWidgets::EnhancementRadioButton("Area", "gEntranceTrackerGroupBy", 0);
+            UIWidgets::Tooltip("Group entrances by their area");
+            UIWidgets::EnhancementRadioButton("Type", "gEntranceTrackerGroupBy", 1);
+            UIWidgets::Tooltip("Group entrances by their entrance type");
+
+            UIWidgets::Spacer(2.0f);
+
+            ImGui::Text("Spoiler Reveal");
+            UIWidgets::PaddedEnhancementCheckbox("Show \"To\"", "gEntranceTrackerShowTo", true, false);
+            UIWidgets::Tooltip("Reveal the \"To\" entrance for undiscovered entrances");
+            UIWidgets::PaddedEnhancementCheckbox("Show \"From\"", "gEntranceTrackerShowFrom", true, false);
+            UIWidgets::Tooltip("Reveal the \"From\" entrance for undiscovered entrances");
+
+            ImGui::EndTable();
+        }
+
+        ImGui::TableNextColumn();
+
+        ImGui::SetNextItemOpen(false, ImGuiCond_Once);
+        if (ImGui::TreeNode("Legend")) {
+            ImGui::TextColored(ImColor(COLOR_ORANGE), "Last Entrance");
+            ImGui::TextColored(ImColor(COLOR_GREEN), "Available Entrances");
+            ImGui::TextColored(ImColor(COLOR_GRAY), "Undiscovered Entrances");
+            ImGui::TreePop();
+        }
+
+        UIWidgets::Spacer(0);
+
+        ImGui::EndTable();
+    }
+
+    ImGui::End();
+}
+
 void EntranceTrackerWindow::DrawElement() {
     ImGui::SetNextWindowSize(ImVec2(600, 375), ImGuiCond_FirstUseEver);
 
     if (!ImGui::Begin("Entrance Tracker", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();
         return;
-    }
-
-    // Begin tracker settings
-    ImGui::SetNextItemOpen(false, ImGuiCond_Once);
-    if (ImGui::TreeNode("Tracker Settings")) {
-        // Reduce indentation from the tree node for the table
-        ImGui::SetCursorPosX((ImGui::GetCursorPosX() / 2) + 4.0f);
-
-        if (ImGui::BeginTable("entranceTrackerSettings", 1, ImGuiTableFlags_BordersInnerH)) {
-
-            ImGui::TableNextColumn();
-
-            UIWidgets::Spacer(0);
-            ImGui::TextWrapped("The entrance tracker will only track shuffled entrances");
-            UIWidgets::Spacer(0);
-
-            ImGui::TableNextColumn();
-
-            if (ImGui::BeginTable("entranceTrackerSubSettings", 2, ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_SizingStretchProp)) {
-
-                ImGui::TableNextColumn();
-
-                ImGui::Text("Sort By");
-                UIWidgets::EnhancementRadioButton("To", "gEntranceTrackerSortBy", 0);
-                UIWidgets::Tooltip("Sort entrances by the original source entrance");
-                UIWidgets::EnhancementRadioButton("From", "gEntranceTrackerSortBy", 1);
-                UIWidgets::Tooltip("Sort entrances by the overrided destination");
-
-                UIWidgets::Spacer(2.0f);
-
-                ImGui::Text("List Items");
-                UIWidgets::PaddedEnhancementCheckbox("Auto scroll", "gEntranceTrackerAutoScroll", true, false);
-                UIWidgets::Tooltip("Automatically scroll to the first aviable entrance in the current scene");
-                UIWidgets::PaddedEnhancementCheckbox("Highlight previous", "gEntranceTrackerHighlightPrevious", true, false);
-                UIWidgets::Tooltip("Highlight the previous entrance that Link came from");
-                UIWidgets::PaddedEnhancementCheckbox("Highlight available", "gEntranceTrackerHighlightAvailable", true, false);
-                UIWidgets::Tooltip("Highlight available entrances in the current scene");
-                UIWidgets::PaddedEnhancementCheckbox("Hide undiscovered", "gEntranceTrackerCollapseUndiscovered", true, false);
-                UIWidgets::Tooltip("Collapse undiscovered entrances towards the bottom of each group");
-                bool disableHideReverseEntrances = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_DECOUPLED_ENTRANCES) == RO_GENERIC_ON;
-                static const char* disableHideReverseEntrancesText = "This option is disabled because \"Decouple Entrances\" is enabled.";
-                UIWidgets::PaddedEnhancementCheckbox("Hide reverse", "gEntranceTrackerHideReverseEntrances", true, false,
-                                              disableHideReverseEntrances, disableHideReverseEntrancesText, UIWidgets::CheckboxGraphics::Cross, true);
-                UIWidgets::Tooltip("Hide reverse entrance transitions when Decouple Entrances is off");
-                UIWidgets::Spacer(0);
-
-                ImGui::TableNextColumn();
-
-                ImGui::Text("Group By");
-                UIWidgets::EnhancementRadioButton("Area", "gEntranceTrackerGroupBy", 0);
-                UIWidgets::Tooltip("Group entrances by their area");
-                UIWidgets::EnhancementRadioButton("Type", "gEntranceTrackerGroupBy", 1);
-                UIWidgets::Tooltip("Group entrances by their entrance type");
-
-                UIWidgets::Spacer(2.0f);
-
-                ImGui::Text("Spoiler Reveal");
-                UIWidgets::PaddedEnhancementCheckbox("Show \"To\"", "gEntranceTrackerShowTo", true, false);
-                UIWidgets::Tooltip("Reveal the \"To\" entrance for undiscovered entrances");
-                UIWidgets::PaddedEnhancementCheckbox("Show \"From\"", "gEntranceTrackerShowFrom", true, false);
-                UIWidgets::Tooltip("Reveal the \"From\" entrance for undiscovered entrances");
-
-                ImGui::EndTable();
-            }
-
-            ImGui::TableNextColumn();
-
-            ImGui::SetNextItemOpen(false, ImGuiCond_Once);
-            if (ImGui::TreeNode("Legend")) {
-                ImGui::TextColored(ImColor(COLOR_ORANGE), "Last Entrance");
-                ImGui::TextColored(ImColor(COLOR_GREEN), "Available Entrances");
-                ImGui::TextColored(ImColor(COLOR_GRAY), "Undiscovered Entrances");
-                ImGui::TreePop();
-            }
-
-            UIWidgets::Spacer(0);
-
-            ImGui::EndTable();
-        }
-
-        ImGui::TreePop();
-    } else {
-        UIWidgets::PaddedSeparator();
     }
 
     static ImGuiTextFilter locationSearch;
