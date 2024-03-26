@@ -117,6 +117,7 @@ RandomizerCheckArea currentArea = RCAREA_INVALID;
 OSContPad* trackerButtonsPressed;
 
 bool passesTextFilter(ImGuiTextFilter& checkSearch, const RandomizerCheckObject rcObject);
+bool shouldHideArea(ImGuiTextFilter& checkSearch, std::map<RandomizerCheckArea, std::vector<RandomizerCheckObject>> checksByArea, const RandomizerCheckArea rcArea);
 void BeginFloatWindows(std::string UniqueName, bool& open, ImGuiWindowFlags flags = 0);
 bool CompareChecks(RandomizerCheckObject, RandomizerCheckObject);
 bool CheckByArea(RandomizerCheckArea);
@@ -948,10 +949,9 @@ void CheckTrackerWindow::DrawElement() {
             previousShowHidden = showHidden;
             doAreaScroll = true;
         }
-        if (!showHidden && (
-            hideComplete && thisAreaFullyChecked || 
-            hideIncomplete && !thisAreaFullyChecked
-        )) {
+        if (shouldHideArea(checkSearch, checksByArea, rcArea) || 
+            (!showHidden && ( hideComplete && thisAreaFullyChecked || hideIncomplete && !thisAreaFullyChecked))
+        ) {
             doDraw = false;
         } else {
             //Get the colour for the area
@@ -1036,6 +1036,20 @@ void CheckTrackerWindow::DrawElement() {
         optCollapseAll = false;
         optExpandAll = false;
     }
+}
+
+bool shouldHideArea(ImGuiTextFilter& checkSearch, std::map<RandomizerCheckArea, std::vector<RandomizerCheckObject>> checksByArea, RandomizerCheckArea rcArea) {
+    bool shouldHideFilteredAreas = CVarGetInteger("gCheckTrackerHideFilteredAreas", 0);
+    if (!shouldHideFilteredAreas) {
+        return false;
+    }
+    std::vector<RandomizerCheckObject> checksForArea = checksByArea[rcArea];
+    for (unsigned long i = 0; i < checksForArea.size(); i++) {
+        if (passesTextFilter(checkSearch, checksForArea[i])) {
+            return false;
+        }
+    }
+    return true;
 }
 
 bool passesTextFilter(ImGuiTextFilter& checkSearch, RandomizerCheckObject rcObject) {
@@ -1596,6 +1610,11 @@ void CheckTrackerSettingsWindow::DrawElement() {
         RecalculateAreaTotals();
     }
     UIWidgets::Tooltip("If enabled, will show GS locations in the tracker regardless of tokensanity settings.");
+
+    // Filtering settings
+    UIWidgets::PaddedSeparator();
+    UIWidgets::EnhancementCheckbox("Filter Empty Areas", "gCheckTrackerHideFilteredAreas");
+    UIWidgets::Tooltip("If enabled, will hide area headers that have no locations matching filter");
 
     ImGui::TableNextColumn();
 
