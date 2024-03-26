@@ -33,9 +33,9 @@ using json = nlohmann::json;
 
 void to_json(json& j, const RandomizerCheckTrackerData& rctd) {
     j = json {
-        { "status", rctd.status == RCSHOW_COLLECTED ? RCSHOW_SAVED : rctd.status }, 
-        { "skipped", rctd.skipped }, 
-        { "price", rctd.price }, 
+        { "status", rctd.status == RCSHOW_COLLECTED ? RCSHOW_SAVED : rctd.status },
+        { "skipped", rctd.skipped },
+        { "price", rctd.price },
         { "hintItem", rctd.hintItem }};
     }
 
@@ -489,7 +489,7 @@ void CheckTrackerLoadGame(int32_t fileNum) {
                 break;
         }
         RandomizerCheckObject linksPocket = { RC_LINKS_POCKET, RCVORMQ_BOTH, RCTYPE_LINKS_POCKET, startingArea, ACTOR_ID_MAX, SCENE_ID_MAX, 0x00, GI_NONE, false, "Link's Pocket", "Link's Pocket" };
-        
+
         checksByArea.find(startingArea)->second.push_back(linksPocket);
         areaChecksGotten[startingArea]++;
         areaCheckTotals[startingArea]++;
@@ -665,7 +665,7 @@ void CheckTrackerFlagSet(int16_t flagType, int32_t flag) {
             break;
         case FLAG_EVENT_CHECK_INF:
             if ((flag == EVENTCHKINF_CARPENTERS_FREE(0) || flag == EVENTCHKINF_CARPENTERS_FREE(1) ||
-                 flag == EVENTCHKINF_CARPENTERS_FREE(2) || flag == EVENTCHKINF_CARPENTERS_FREE(3)) 
+                 flag == EVENTCHKINF_CARPENTERS_FREE(2) || flag == EVENTCHKINF_CARPENTERS_FREE(3))
                 && GET_EVENTCHKINF_CARPENTERS_FREE_ALL()) {
                 SetCheckCollected(RC_GF_GERUDO_MEMBERSHIP_CARD);
                 return;
@@ -812,12 +812,12 @@ void Teardown() {
 
 void UpdateCheck(uint32_t check, RandomizerCheckTrackerData data) {
     auto area = RandomizerCheckObjects::GetAllRCObjects().find(static_cast<RandomizerCheck>(check))->second.rcArea;
-    if ((!gSaveContext.checkTrackerData[check].skipped && data.skipped) || 
-        ((gSaveContext.checkTrackerData[check].status != RCSHOW_COLLECTED && gSaveContext.checkTrackerData[check].status != RCSHOW_SAVED) && 
+    if ((!gSaveContext.checkTrackerData[check].skipped && data.skipped) ||
+        ((gSaveContext.checkTrackerData[check].status != RCSHOW_COLLECTED && gSaveContext.checkTrackerData[check].status != RCSHOW_SAVED) &&
             (data.status == RCSHOW_COLLECTED || data.status == RCSHOW_SAVED))) {
         areaChecksGotten[area]++;
-    } else if ((gSaveContext.checkTrackerData[check].skipped && !data.skipped) || 
-        ((gSaveContext.checkTrackerData[check].status == RCSHOW_COLLECTED || gSaveContext.checkTrackerData[check].status == RCSHOW_SAVED) && 
+    } else if ((gSaveContext.checkTrackerData[check].skipped && !data.skipped) ||
+        ((gSaveContext.checkTrackerData[check].status == RCSHOW_COLLECTED || gSaveContext.checkTrackerData[check].status == RCSHOW_SAVED) &&
             (data.status != RCSHOW_COLLECTED && data.status != RCSHOW_SAVED))) {
         areaChecksGotten[area]--;
     }
@@ -949,7 +949,7 @@ void CheckTrackerWindow::DrawElement() {
             previousShowHidden = showHidden;
             doAreaScroll = true;
         }
-        if (shouldHideArea(checkSearch, checksByArea, rcArea) || 
+        if (shouldHideArea(checkSearch, checksByArea, rcArea) ||
             (!showHidden && ( hideComplete && thisAreaFullyChecked || hideIncomplete && !thisAreaFullyChecked))
         ) {
             doDraw = false;
@@ -1333,7 +1333,7 @@ bool IsHeartPiece(GetItemID giid) {
 }
 
 void DrawLocation(RandomizerCheckObject rcObj) {
-    Color_RGBA8 mainColor; 
+    Color_RGBA8 mainColor;
     Color_RGBA8 extraColor;
     std::string txt;
     bool showHidden = CVarGetInteger("gCheckTrackerOptionShowHidden", 0);
@@ -1383,13 +1383,13 @@ void DrawLocation(RandomizerCheckObject rcObj) {
                     CVarGetColor("gCheckTrackerUncheckedMainColor", Color_Main_Default);
         extraColor = CVarGetColor("gCheckTrackerUncheckedExtraColor",  Color_Unchecked_Extra_Default);
     }
- 
+
     //Main Text
     txt = rcObj.rcShortName;
     if (lastLocationChecked == rcObj.rc) {
         txt = "* " + txt;
     }
- 
+
     // Draw button - for Skipped/Seen/Scummed/Unchecked only
     if (status == RCSHOW_UNCHECKED || status == RCSHOW_SEEN || status == RCSHOW_IDENTIFIED || status == RCSHOW_SCUMMED || skipped) {
         if (UIWidgets::StateButton(std::to_string(rcObj.rc).c_str(), skipped ? ICON_FA_PLUS : ICON_FA_TIMES)) {
@@ -1494,13 +1494,13 @@ void RainbowTick() {
         if (CVarGetInteger((cvar + "RBM").c_str(), 0) == 0) {
             continue;
         }
-     
+
         Color_RGBA8 newColor;
         newColor.r = sin(freqHue +              0) * 127 + 128;
         newColor.g = sin(freqHue + (2 * M_PI / 3)) * 127 + 128;
         newColor.b = sin(freqHue + (4 * M_PI / 3)) * 127 + 128;
         newColor.a = 255;
-         
+
         CVarSetColor(cvar.c_str(), newColor);
     }
 
@@ -1537,7 +1537,7 @@ void ImGuiDrawTwoColorPickerSection(const char* text, const char* cvarMainName, 
                 main_color = CVarGetColor(cvarMainName, main_default_color);
             };
             ImGui::PopItemWidth();
-         
+
             ImGui::TableNextColumn();
             ImGui::AlignTextToFramePadding();
             ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
