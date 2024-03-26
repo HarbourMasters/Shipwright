@@ -1039,13 +1039,12 @@ void CheckTrackerWindow::DrawElement() {
 }
 
 bool shouldHideArea(ImGuiTextFilter& checkSearch, std::map<RandomizerCheckArea, std::vector<RandomizerCheckObject>> checksByArea, RandomizerCheckArea rcArea) {
-    bool shouldHideFilteredAreas = CVarGetInteger("gCheckTrackerHideFilteredAreas", 0);
+    bool shouldHideFilteredAreas = CVarGetInteger("gCheckTrackerHideFilteredAreas", 1);
     if (!shouldHideFilteredAreas) {
         return false;
     }
-    std::vector<RandomizerCheckObject> checksForArea = checksByArea[rcArea];
-    for (unsigned long i = 0; i < checksForArea.size(); i++) {
-        if (passesTextFilter(checkSearch, checksForArea[i])) {
+    for (auto check : checksByArea[rcArea]) {
+        if (passesTextFilter(checkSearch, check)) {
             return false;
         }
     }
@@ -1613,7 +1612,7 @@ void CheckTrackerSettingsWindow::DrawElement() {
 
     // Filtering settings
     UIWidgets::PaddedSeparator();
-    UIWidgets::EnhancementCheckbox("Filter Empty Areas", "gCheckTrackerHideFilteredAreas");
+    UIWidgets::EnhancementCheckbox("Filter Empty Areas", "gCheckTrackerHideFilteredAreas", false, "", UIWidgets::CheckboxGraphics::Checkmark, true);
     UIWidgets::Tooltip("If enabled, will hide area headers that have no locations matching filter");
 
     ImGui::TableNextColumn();
