@@ -525,7 +525,7 @@ extern "C" void Randomizer_DrawFishingPoleGI(PlayState* play, GetItemEntry* getI
 extern "C" void Randomizer_DrawSilverRupee(PlayState* play, GetItemEntry* getItemEntry) {
     OPEN_DISPS(play->state.gfxCtx);
     Color_RGB8 silverRupeeColor =
-        CVarGetColor24("gCosmetics.Consumable_SilverRupee.Value", Color_RGB8(255, 255, 255));
+        CVarGetColor24("gCosmetics.Consumable_SilverRupee.Value", Color_RGB8({ 255, 255, 255 }));
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
               G_MTX_MODELVIEW | G_MTX_LOAD);
