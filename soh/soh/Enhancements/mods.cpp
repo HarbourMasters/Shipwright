@@ -1194,7 +1194,7 @@ void RegisterSilverRupeeShuffle() {
         if (actor->id == ACTOR_EN_G_SWITCH) {
             auto* silverRupee = reinterpret_cast<EnGSwitch*>(actor);
             if (silverRupee->type == ENGSWITCH_SILVER_RUPEE) {
-                Rando::Position randoPos = {static_cast<SceneID>(gPlayState->sceneNum), actor->world.pos};
+                Rando::Position randoPos = {static_cast<SceneID>(gPlayState->sceneNum), ResourceMgr_IsSceneMasterQuest(gPlayState->sceneNum) ? RCQUEST_MQ : RCQUEST_VANILLA, actor->world.pos};
                 silverRupee->rc = Rando::StaticData::silverRupeeMap.at(randoPos);
                 Rando::Location* loc = Rando::StaticData::GetLocation(silverRupee->rc);
                 silverRupee->randInfFlag = static_cast<RandomizerInf>(loc->GetCollectionCheck().flag);

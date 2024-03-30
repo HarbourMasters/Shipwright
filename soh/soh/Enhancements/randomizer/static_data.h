@@ -9,6 +9,7 @@
 namespace Rando {
 struct Position{
     SceneID scene;
+    RandomizerCheckQuest quest;
     Vec3f pos;
 };
 
