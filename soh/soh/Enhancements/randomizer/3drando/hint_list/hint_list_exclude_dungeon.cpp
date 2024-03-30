@@ -1152,11 +1152,11 @@ void HintTable_Init_Exclude_Dungeon() {
   });
 
   //TODO: Translate
-  hintTable[RHT_SPIRIT_CHILD_GATE_SILVER_RUPEE] = HintText::Exclude({
+  hintTable[RHT_SPIRIT_GATE_SILVER_RUPEE] = HintText::Exclude({
     //obscure text
     Text{"a #gate# in the Spirit Temple guards"}
   });
-  hintTable[RHT_SPIRIT_CHILD_BLOCK_PUSH_SILVER_RUPEE] = HintText::Exclude({
+  hintTable[RHT_SPIRIT_BEAMOS_SILVER_RUPEE] = HintText::Exclude({
     //obscure text
     Text{"#Beamos and blocks# in the Spirit Temple guard"}
   });
