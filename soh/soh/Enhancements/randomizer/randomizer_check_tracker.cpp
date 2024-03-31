@@ -1043,18 +1043,20 @@ bool shouldHideArea(ImGuiTextFilter& checkSearch, std::map<RandomizerCheckArea, 
     if (!shouldHideFilteredAreas) {
         return false;
     }
+
     for (auto check : checksByArea[rcArea]) {
-        if (passesTextFilter(checkSearch, check)) {
+        if (IsVisibleInCheckTracker(check) && passesTextFilter(checkSearch, check)) {
             return false;
         }
     }
+
     return true;
 }
 
-bool passesTextFilter(ImGuiTextFilter& checkSearch, RandomizerCheckObject rcObject) {
+bool passesTextFilter(ImGuiTextFilter& checkSearch, RandomizerCheckObject check) {
     return (
-        checkSearch.PassFilter(RandomizerCheckObjects::GetRCAreaName(rcObject.rcArea).c_str()) ||
-        checkSearch.PassFilter(rcObject.rcShortName.c_str())
+        checkSearch.PassFilter(RandomizerCheckObjects::GetRCAreaName(check.rcArea).c_str()) ||
+        checkSearch.PassFilter(check.rcShortName.c_str())
     );
 }
 
