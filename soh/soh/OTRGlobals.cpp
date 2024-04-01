@@ -2547,12 +2547,12 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
                 RandomizerInf randoInf = (RandomizerInf)((textId - (TEXT_SHOP_ITEM_RANDOM + NUM_SHOP_ITEMS)) + RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1);
                 messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(randoInf, TEXT_SHOP_ITEM_RANDOM_CONFIRM);
             }
-        } else if (CVarGetInteger("gRandomizeRupeeNames", 1) &&
+        } else if (CVarGetInteger(RANDO_ENHANCEMENT_CVAR("RandomizeRupeeNames"), 1) &&
                    (textId == TEXT_BLUE_RUPEE || textId == TEXT_RED_RUPEE || textId == TEXT_PURPLE_RUPEE ||
                    textId == TEXT_HUGE_RUPEE)) {
             messageEntry = Randomizer::GetRupeeMessage(textId);
             // In rando, replace Navi's general overworld hints with rando-related gameplay tips
-        } else if (CVarGetInteger("gRandoRelevantNavi", 1) && textId >= 0x0140 && textId <= 0x015F) {
+        } else if (CVarGetInteger(RANDO_ENHANCEMENT_CVAR("RandoRelevantNavi"), 1) && textId >= 0x0140 && textId <= 0x015F) {
             u16 naviTextId = Random(0, NUM_NAVI_MESSAGES);
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::NaviRandoMessageTableID, naviTextId);
         } else if (Randomizer_GetSettingValue(RSK_SHUFFLE_MAGIC_BEANS) && textId == TEXT_BEAN_SALESMAN) {
