@@ -2966,8 +2966,8 @@ void GenerateRandomizerImgui(std::string seed = "") {
 
     if (OTRGlobals::Instance->HasMasterQuest() && OTRGlobals::Instance->HasOriginal()) {
         // If both OTRs are loaded.
-        cvarSettings[RSK_RANDOM_MQ_DUNGEONS] = CVarGetInteger(RANDOMIZER_SEED_CVAR("MqDungeons"), RO_MQ_DUNGEONS_NONE);
-        cvarSettings[RSK_MQ_DUNGEON_COUNT] = CVarGetInteger(RANDOMIZER_SEED_CVAR("MqDungeonCount"), 12);
+        cvarSettings[RSK_RANDOM_MQ_DUNGEONS] = CVarGetInteger(RANDOMIZER_SEED_CVAR("MQDungeons"), RO_MQ_DUNGEONS_NONE);
+        cvarSettings[RSK_MQ_DUNGEON_COUNT] = CVarGetInteger(RANDOMIZER_SEED_CVAR("MQDungeonCount"), 12);
     } else if (OTRGlobals::Instance->HasMasterQuest()) {
         // If only Master Quest is loaded.
         cvarSettings[RSK_RANDOM_MQ_DUNGEONS] = RO_MQ_DUNGEONS_SET_NUMBER;
@@ -2982,18 +2982,18 @@ void GenerateRandomizerImgui(std::string seed = "") {
     cvarSettings[RSK_TRIFORCE_HUNT_PIECES_TOTAL] = CVarGetInteger(RANDOMIZER_SEED_CVAR("TriforceHuntTotalPieces"), 30);
     cvarSettings[RSK_TRIFORCE_HUNT_PIECES_REQUIRED] = CVarGetInteger(RANDOMIZER_SEED_CVAR("TriforceHuntRequiredPieces"), 20);
     
-    cvarSettings[RSK_MQ_DEKU_TREE] = CVarGetInteger(RANDOMIZER_SEED_CVAR("MqDungeonsDekuTree"), 0);
-    cvarSettings[RSK_MQ_DODONGOS_CAVERN] = CVarGetInteger(RANDOMIZER_SEED_CVAR("MqDungeonsDodongosCavern"), 0);
-    cvarSettings[RSK_MQ_JABU_JABU] = CVarGetInteger(RANDOMIZER_SEED_CVAR("MqDungeonsJabuJabu"), 0);
-    cvarSettings[RSK_MQ_FOREST_TEMPLE] = CVarGetInteger(RANDOMIZER_SEED_CVAR("MqDungeonsForestTemple"), 0);
-    cvarSettings[RSK_MQ_FIRE_TEMPLE] = CVarGetInteger(RANDOMIZER_SEED_CVAR("MqDungeonsFireTemple"), 0);
-    cvarSettings[RSK_MQ_WATER_TEMPLE] = CVarGetInteger(RANDOMIZER_SEED_CVAR("MqDungeonsWaterTemple"), 0);
-    cvarSettings[RSK_MQ_SPIRIT_TEMPLE] = CVarGetInteger(RANDOMIZER_SEED_CVAR("MqDungeonsSpiritTemple"), 0);
-    cvarSettings[RSK_MQ_SHADOW_TEMPLE] = CVarGetInteger(RANDOMIZER_SEED_CVAR("MqDungeonsShadowTemple"), 0);
-    cvarSettings[RSK_MQ_BOTTOM_OF_THE_WELL] = CVarGetInteger(RANDOMIZER_SEED_CVAR("MqDungeonsBottomOfTheWell"), 0);
-    cvarSettings[RSK_MQ_ICE_CAVERN] = CVarGetInteger(RANDOMIZER_SEED_CVAR("MqDungeonsIceCavern"), 0);
-    cvarSettings[RSK_MQ_GTG] = CVarGetInteger(RANDOMIZER_SEED_CVAR("MqDungeonsGTG"), 0);
-    cvarSettings[RSK_MQ_GANONS_CASTLE] = CVarGetInteger(RANDOMIZER_SEED_CVAR("MqDungeonsGanonsCastle"), 0);
+    cvarSettings[RSK_MQ_DEKU_TREE] = CVarGetInteger(RANDOMIZER_SEED_CVAR("MQDungeonsDekuTree"), 0);
+    cvarSettings[RSK_MQ_DODONGOS_CAVERN] = CVarGetInteger(RANDOMIZER_SEED_CVAR("MQDungeonsDodongosCavern"), 0);
+    cvarSettings[RSK_MQ_JABU_JABU] = CVarGetInteger(RANDOMIZER_SEED_CVAR("MQDungeonsJabuJabu"), 0);
+    cvarSettings[RSK_MQ_FOREST_TEMPLE] = CVarGetInteger(RANDOMIZER_SEED_CVAR("MQDungeonsForestTemple"), 0);
+    cvarSettings[RSK_MQ_FIRE_TEMPLE] = CVarGetInteger(RANDOMIZER_SEED_CVAR("MQDungeonsFireTemple"), 0);
+    cvarSettings[RSK_MQ_WATER_TEMPLE] = CVarGetInteger(RANDOMIZER_SEED_CVAR("MQDungeonsWaterTemple"), 0);
+    cvarSettings[RSK_MQ_SPIRIT_TEMPLE] = CVarGetInteger(RANDOMIZER_SEED_CVAR("MQDungeonsSpiritTemple"), 0);
+    cvarSettings[RSK_MQ_SHADOW_TEMPLE] = CVarGetInteger(RANDOMIZER_SEED_CVAR("MQDungeonsShadowTemple"), 0);
+    cvarSettings[RSK_MQ_BOTTOM_OF_THE_WELL] = CVarGetInteger(RANDOMIZER_SEED_CVAR("MQDungeonsBottomOfTheWell"), 0);
+    cvarSettings[RSK_MQ_ICE_CAVERN] = CVarGetInteger(RANDOMIZER_SEED_CVAR("MQDungeonsIceCavern"), 0);
+    cvarSettings[RSK_MQ_GTG] = CVarGetInteger(RANDOMIZER_SEED_CVAR("MQDungeonsGTG"), 0);
+    cvarSettings[RSK_MQ_GANONS_CASTLE] = CVarGetInteger(RANDOMIZER_SEED_CVAR("MQDungeonsGanonsCastle"), 0);
 
     // Enable if any of the entrance rando options are enabled.
     cvarSettings[RSK_SHUFFLE_ENTRANCES] = CVarGetInteger(RANDOMIZER_SEED_CVAR("ShuffleDungeonsEntrances"), RO_DUNGEON_ENTRANCE_SHUFFLE_OFF) ||
@@ -3522,37 +3522,37 @@ void RandomizerSettingsWindow::DrawElement() {
                         "\n"
                         "Selection - Leave unchecked for Vanilla and checked for Master Quest."
                     );
-                    UIWidgets::EnhancementCombobox(RANDOMIZER_SEED_CVAR("MqDungeons"), randoMqDungeons, RO_MQ_DUNGEONS_NONE);
+                    UIWidgets::EnhancementCombobox(RANDOMIZER_SEED_CVAR("MQDungeons"), randoMqDungeons, RO_MQ_DUNGEONS_NONE);
                     ImGui::PopItemWidth();
-                    if (CVarGetInteger(RANDOMIZER_SEED_CVAR("MqDungeons"), RO_MQ_DUNGEONS_NONE) == RO_MQ_DUNGEONS_SET_NUMBER) {
+                    if (CVarGetInteger(RANDOMIZER_SEED_CVAR("MQDungeons"), RO_MQ_DUNGEONS_NONE) == RO_MQ_DUNGEONS_SET_NUMBER) {
                         UIWidgets::PaddedEnhancementSliderInt(
-                            "Master Quest Dungeon Count: %d", "##RandoMqDungeonCount", RANDOMIZER_SEED_CVAR("MqDungeonCount"), 1,
-                            12, "", CVarGetInteger(RANDOMIZER_SEED_CVAR("MqDungeonCount"), 12), true, true, false);
+                            "Master Quest Dungeon Count: %d", "##RandoMqDungeonCount", RANDOMIZER_SEED_CVAR("MQDungeonCount"), 1,
+                            12, "", CVarGetInteger(RANDOMIZER_SEED_CVAR("MQDungeonCount"), 12), true, true, false);
                     }
-                    else if (CVarGetInteger(RANDOMIZER_SEED_CVAR("MqDungeons"), RO_MQ_DUNGEONS_NONE) == RO_MQ_DUNGEONS_SELECTION) {
+                    else if (CVarGetInteger(RANDOMIZER_SEED_CVAR("MQDungeons"), RO_MQ_DUNGEONS_NONE) == RO_MQ_DUNGEONS_SELECTION) {
                         UIWidgets::EnhancementCheckbox("Deku Tree##RandomizeMqDungeons",
-                                                       RANDOMIZER_SEED_CVAR("MqDungeonsDekuTree"));
+                                                       RANDOMIZER_SEED_CVAR("MQDungeonsDekuTree"));
                         UIWidgets::EnhancementCheckbox("Dodongo's Cavern##RandomizeMqDungeons",
-                                                       RANDOMIZER_SEED_CVAR("MqDungeonsDodongosCavern"));
+                                                       RANDOMIZER_SEED_CVAR("MQDungeonsDodongosCavern"));
                         UIWidgets::EnhancementCheckbox("Jabu Jabu's Belly##RandomizeMqDungeons",
-                                                       RANDOMIZER_SEED_CVAR("MqDungeonsJabuJabu"));
+                                                       RANDOMIZER_SEED_CVAR("MQDungeonsJabuJabu"));
                         UIWidgets::EnhancementCheckbox("Forest Temple##RandomizeMqDungeons",
-                                                       RANDOMIZER_SEED_CVAR("MqDungeonsForestTemple"));
+                                                       RANDOMIZER_SEED_CVAR("MQDungeonsForestTemple"));
                         UIWidgets::EnhancementCheckbox("Fire Temple##RandomizeMqDungeons",
-                                                       RANDOMIZER_SEED_CVAR("MqDungeonsFireTemple"));
+                                                       RANDOMIZER_SEED_CVAR("MQDungeonsFireTemple"));
                         UIWidgets::EnhancementCheckbox("Water Temple##RandomizeMqDungeons",
-                                                       RANDOMIZER_SEED_CVAR("MqDungeonsWaterTemple"));
+                                                       RANDOMIZER_SEED_CVAR("MQDungeonsWaterTemple"));
                         UIWidgets::EnhancementCheckbox("Spirit Temple##RandomizeMqDungeons",
-                                                       RANDOMIZER_SEED_CVAR("MqDungeonsSpiritTemple"));
+                                                       RANDOMIZER_SEED_CVAR("MQDungeonsSpiritTemple"));
                         UIWidgets::EnhancementCheckbox("Shadow Temple##RandomizeMqDungeons",
-                                                       RANDOMIZER_SEED_CVAR("MqDungeonsShadowTemple"));
+                                                       RANDOMIZER_SEED_CVAR("MQDungeonsShadowTemple"));
                         UIWidgets::EnhancementCheckbox("Bottom of the Well##RandomizeMqDungeons",
-                                                       RANDOMIZER_SEED_CVAR("MqDungeonsBottomOfTheWell"));
+                                                       RANDOMIZER_SEED_CVAR("MQDungeonsBottomOfTheWell"));
                         UIWidgets::EnhancementCheckbox("Ice Cavern##RandomizeMqDungeons",
-                                                       RANDOMIZER_SEED_CVAR("MqDungeonsIceCavern"));
-                        UIWidgets::EnhancementCheckbox("Gerudo Training Grounds##RandomizeMqDungeons", RANDOMIZER_SEED_CVAR("MqDungeonsGTG"));
+                                                       RANDOMIZER_SEED_CVAR("MQDungeonsIceCavern"));
+                        UIWidgets::EnhancementCheckbox("Gerudo Training Grounds##RandomizeMqDungeons", RANDOMIZER_SEED_CVAR("MQDungeonsGTG"));
                         UIWidgets::EnhancementCheckbox("Ganon's Castle##RandomizeMqDungeons",
-                                                       RANDOMIZER_SEED_CVAR("MqDungeonsGanonsCastle"));
+                                                       RANDOMIZER_SEED_CVAR("MQDungeonsGanonsCastle"));
                     }
 
                     UIWidgets::PaddedSeparator();
