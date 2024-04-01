@@ -165,41 +165,41 @@ namespace SohGui {
             SPDLOG_ERROR("Could not find input editor window");
         }
 
-        mAudioEditorWindow = std::make_shared<AudioEditor>("gAudioEditor.WindowOpen", "Audio Editor");
+        mAudioEditorWindow = std::make_shared<AudioEditor>(WINDOW_CVAR("AudioEditor"), "Audio Editor");
         gui->AddGuiWindow(mAudioEditorWindow);
-        mInputViewer = std::make_shared<InputViewer>("gOpenWindows.InputViewer", "Input Viewer");
+        mInputViewer = std::make_shared<InputViewer>(WINDOW_CVAR("InputViewer"), "Input Viewer");
         gui->AddGuiWindow(mInputViewer);
-        mInputViewerSettings = std::make_shared<InputViewerSettingsWindow>("gOpenWindows.InputViewerSettings", "Input Viewer Settings");
+        mInputViewerSettings = std::make_shared<InputViewerSettingsWindow>(WINDOW_CVAR("InputViewerSettings"), "Input Viewer Settings");
         gui->AddGuiWindow(mInputViewerSettings);
-        mCosmeticsEditorWindow = std::make_shared<CosmeticsEditorWindow>("gCosmeticsEditorEnabled", "Cosmetics Editor");
+        mCosmeticsEditorWindow = std::make_shared<CosmeticsEditorWindow>(WINDOW_CVAR("CosmeticsEditor"), "Cosmetics Editor");
         gui->AddGuiWindow(mCosmeticsEditorWindow);
-        mActorViewerWindow = std::make_shared<ActorViewerWindow>("gActorViewerEnabled", "Actor Viewer");
+        mActorViewerWindow = std::make_shared<ActorViewerWindow>(WINDOW_CVAR("ActorViewer"), "Actor Viewer");
         gui->AddGuiWindow(mActorViewerWindow);
-        mColViewerWindow = std::make_shared<ColViewerWindow>("gCollisionViewerEnabled", "Collision Viewer");
+        mColViewerWindow = std::make_shared<ColViewerWindow>(WINDOW_CVAR("CollisionViewer"), "Collision Viewer");
         gui->AddGuiWindow(mColViewerWindow);
-        mSaveEditorWindow = std::make_shared<SaveEditorWindow>("gSaveEditorEnabled", "Save Editor");
+        mSaveEditorWindow = std::make_shared<SaveEditorWindow>(WINDOW_CVAR("SaveEditor"), "Save Editor");
         gui->AddGuiWindow(mSaveEditorWindow);
-        mDLViewerWindow = std::make_shared<DLViewerWindow>("gDLViewerEnabled", "Display List Viewer");
+        mDLViewerWindow = std::make_shared<DLViewerWindow>(WINDOW_CVAR("DLViewer"), "Display List Viewer");
         gui->AddGuiWindow(mDLViewerWindow);
-        mValueViewerWindow = std::make_shared<ValueViewerWindow>("gValueViewer.WindowOpen", "Value Viewer");
+        mValueViewerWindow = std::make_shared<ValueViewerWindow>(WINDOW_CVAR("ValueViewer"), "Value Viewer");
         gui->AddGuiWindow(mValueViewerWindow);
-        mMessageViewerWindow = std::make_shared<MessageViewer>("gMessageViewerEnabled", "Message Viewer");
+        mMessageViewerWindow = std::make_shared<MessageViewer>(WINDOW_CVAR("MessageViewer"), "Message Viewer");
         gui->AddGuiWindow(mMessageViewerWindow);
-        mGameplayStatsWindow = std::make_shared<GameplayStatsWindow>("gGameplayStatsEnabled", "Gameplay Stats");
+        mGameplayStatsWindow = std::make_shared<GameplayStatsWindow>(WINDOW_CVAR("GameplayStats"), "Gameplay Stats");
         gui->AddGuiWindow(mGameplayStatsWindow);
-        mCheckTrackerWindow = std::make_shared<CheckTracker::CheckTrackerWindow>("gCheckTrackerEnabled", "Check Tracker");
+        mCheckTrackerWindow = std::make_shared<CheckTracker::CheckTrackerWindow>(WINDOW_CVAR("CheckTracker"), "Check Tracker");
         gui->AddGuiWindow(mCheckTrackerWindow);
-        mCheckTrackerSettingsWindow = std::make_shared<CheckTracker::CheckTrackerSettingsWindow>("gCheckTrackerSettingsEnabled", "Check Tracker Settings");
+        mCheckTrackerSettingsWindow = std::make_shared<CheckTracker::CheckTrackerSettingsWindow>(WINDOW_CVAR("CheckTrackerSettings"), "Check Tracker Settings");
         gui->AddGuiWindow(mCheckTrackerSettingsWindow);
-        mEntranceTrackerWindow = std::make_shared<EntranceTrackerWindow>("gEntranceTrackerEnabled","Entrance Tracker");
+        mEntranceTrackerWindow = std::make_shared<EntranceTrackerWindow>(WINDOW_CVAR("EntranceTracker"),"Entrance Tracker");
         gui->AddGuiWindow(mEntranceTrackerWindow);
         mItemTrackerWindow = std::make_shared<ItemTrackerWindow>(WINDOW_CVAR("ItemTracker"), "Item Tracker");
         gui->AddGuiWindow(mItemTrackerWindow);
-        mItemTrackerSettingsWindow = std::make_shared<ItemTrackerSettingsWindow>("gItemTrackerSettingsEnabled", "Item Tracker Settings");
+        mItemTrackerSettingsWindow = std::make_shared<ItemTrackerSettingsWindow>(WINDOW_CVAR("ItemTrackerSettings"), "Item Tracker Settings");
         gui->AddGuiWindow(mItemTrackerSettingsWindow);
-        mRandomizerSettingsWindow = std::make_shared<RandomizerSettingsWindow>("gRandomizerSettingsEnabled", "Randomizer Settings");
+        mRandomizerSettingsWindow = std::make_shared<RandomizerSettingsWindow>(WINDOW_CVAR("RandomizerSettings"), "Randomizer Settings");
         gui->AddGuiWindow(mRandomizerSettingsWindow);
-        mAdvancedResolutionSettingsWindow = std::make_shared<AdvancedResolutionSettings::AdvancedResolutionSettingsWindow>("gAdvancedResolutionEditorEnabled", "Advanced Resolution Settings");
+        mAdvancedResolutionSettingsWindow = std::make_shared<AdvancedResolutionSettings::AdvancedResolutionSettingsWindow>(WINDOW_CVAR("AdvancedResolutionEditor"), "Advanced Resolution Settings");
         gui->AddGuiWindow(mAdvancedResolutionSettingsWindow);
     }
 

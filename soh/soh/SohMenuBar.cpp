@@ -256,12 +256,12 @@ void DrawSettingsMenu() {
             ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
             ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
             if (mInputViewer) {
-                if (ImGui::Button(GetWindowButtonText("Input Viewer", CVarGetInteger("gOpenWindows.InputViewer", 0)).c_str(), ImVec2 (-1.0f, 0.0f))) {
+                if (ImGui::Button(GetWindowButtonText("Input Viewer", CVarGetInteger(WINDOW_CVAR("InputViewer"), 0)).c_str(), ImVec2 (-1.0f, 0.0f))) {
                     mInputViewer->ToggleVisibility();
                 }
             }
             if (mInputViewerSettings) {
-                if (ImGui::Button(GetWindowButtonText("Input Viewer Settings", CVarGetInteger("gOpenWindows.InputViewerSettings", 0)).c_str(), ImVec2 (-1.0f, 0.0f))) {
+                if (ImGui::Button(GetWindowButtonText("Input Viewer Settings", CVarGetInteger(WINDOW_CVAR("InputViewerSettings"), 0)).c_str(), ImVec2 (-1.0f, 0.0f))) {
                     mInputViewerSettings->ToggleVisibility();
                 }
             }
@@ -295,7 +295,7 @@ void DrawSettingsMenu() {
                 ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
                 ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
                 UIWidgets::Spacer(0);
-                if (ImGui::Button(GetWindowButtonText("Advanced Resolution", CVarGetInteger("gAdvancedResolutionEditorEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
+                if (ImGui::Button(GetWindowButtonText("Advanced Resolution", CVarGetInteger(WINDOW_CVAR("AdvancedResolutionEditor"), 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
                     mAdvancedResolutionSettingsWindow->ToggleVisibility();
                 }
                 ImGui::PopStyleColor(1);
@@ -1403,19 +1403,19 @@ void DrawEnhancementsMenu() {
         ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
 
         if (mCosmeticsEditorWindow) {
-            if (ImGui::Button(GetWindowButtonText("Cosmetics Editor", CVarGetInteger("gCosmeticsEditorEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
+            if (ImGui::Button(GetWindowButtonText("Cosmetics Editor", CVarGetInteger(WINDOW_CVAR("CosmeticsEditor"), 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
                 mCosmeticsEditorWindow->ToggleVisibility();
             }
         }
 
         if (mAudioEditorWindow) {
-            if (ImGui::Button(GetWindowButtonText("Audio Editor", CVarGetInteger("gAudioEditor.WindowOpen", 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
+            if (ImGui::Button(GetWindowButtonText("Audio Editor", CVarGetInteger(WINDOW_CVAR("AudioEditor"), 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
                 mAudioEditorWindow->ToggleVisibility();
             }
         }
 
         if (mGameplayStatsWindow) {
-            if (ImGui::Button(GetWindowButtonText("Gameplay Stats", CVarGetInteger("gGameplayStatsEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
+            if (ImGui::Button(GetWindowButtonText("Gameplay Stats", CVarGetInteger(WINDOW_CVAR("GameplayStats"), 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
                 mGameplayStatsWindow->ToggleVisibility();
             }
         }
@@ -1700,37 +1700,37 @@ void DrawDeveloperToolsMenu() {
         }
         UIWidgets::Spacer(0);
         if (mSaveEditorWindow) {
-            if (ImGui::Button(GetWindowButtonText("Save Editor", CVarGetInteger("gSaveEditorEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
+            if (ImGui::Button(GetWindowButtonText("Save Editor", CVarGetInteger(WINDOW_CVAR("SaveEditor"), 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
                 mSaveEditorWindow->ToggleVisibility();
             }
         }
         UIWidgets::Spacer(0);
         if (mColViewerWindow) {
-            if (ImGui::Button(GetWindowButtonText("Collision Viewer", CVarGetInteger("gCollisionViewerEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
+            if (ImGui::Button(GetWindowButtonText("Collision Viewer", CVarGetInteger(WINDOW_CVAR("CollisionViewer"), 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
                 mColViewerWindow->ToggleVisibility();
             }
         }
         UIWidgets::Spacer(0);
         if (mActorViewerWindow) {
-            if (ImGui::Button(GetWindowButtonText("Actor Viewer", CVarGetInteger("gActorViewerEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
+            if (ImGui::Button(GetWindowButtonText("Actor Viewer", CVarGetInteger(WINDOW_CVAR("ActorViewer"), 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
                 mActorViewerWindow->ToggleVisibility();
             }
         }
         UIWidgets::Spacer(0);
         if (mDLViewerWindow) {
-            if (ImGui::Button(GetWindowButtonText("Display List Viewer", CVarGetInteger("gDLViewerEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
+            if (ImGui::Button(GetWindowButtonText("Display List Viewer", CVarGetInteger(WINDOW_CVAR("DLViewer"), 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
                 mDLViewerWindow->ToggleVisibility();
             }
         }
         UIWidgets::Spacer(0);
         if (mValueViewerWindow) {
-            if (ImGui::Button(GetWindowButtonText("Value Viewer", CVarGetInteger("gValueViewer.WindowOpen", 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
+            if (ImGui::Button(GetWindowButtonText("Value Viewer", CVarGetInteger(WINDOW_CVAR("ValueViewer"), 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
                 mValueViewerWindow->ToggleVisibility();
             }
         }
         UIWidgets::Spacer(0);
         if (mMessageViewerWindow) {
-            if (ImGui::Button(GetWindowButtonText("Message Viewer", CVarGetInteger("gMessageViewerEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
+            if (ImGui::Button(GetWindowButtonText("Message Viewer", CVarGetInteger(WINDOW_CVAR("MessageViewer"), 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
                 mMessageViewerWindow->ToggleVisibility();
             }
         }
@@ -1892,7 +1892,7 @@ void DrawRandomizerMenu() {
         static ImVec2 buttonSize(200.0f, 0.0f);
     #endif
         if (mRandomizerSettingsWindow) {
-            if (ImGui::Button(GetWindowButtonText("Randomizer Settings", CVarGetInteger("gRandomizerSettingsEnabled", 0)).c_str(), buttonSize)) {
+            if (ImGui::Button(GetWindowButtonText("Randomizer Settings", CVarGetInteger(WINDOW_CVAR("RandomizerSettings"), 0)).c_str(), buttonSize)) {
                 mRandomizerSettingsWindow->ToggleVisibility();
             }
         }
@@ -1906,25 +1906,25 @@ void DrawRandomizerMenu() {
 
         UIWidgets::Spacer(0);
         if (mItemTrackerSettingsWindow) {
-            if (ImGui::Button(GetWindowButtonText("Item Tracker Settings", CVarGetInteger("gItemTrackerSettingsEnabled", 0)).c_str(), buttonSize)) {
+            if (ImGui::Button(GetWindowButtonText("Item Tracker Settings", CVarGetInteger(WINDOW_CVAR("ItemTrackerSettings"), 0)).c_str(), buttonSize)) {
                 mItemTrackerSettingsWindow->ToggleVisibility();
             }
         }
         UIWidgets::Spacer(0);
         if (mEntranceTrackerWindow) {
-            if (ImGui::Button(GetWindowButtonText("Entrance Tracker", CVarGetInteger("gEntranceTrackerEnabled", 0)).c_str(), buttonSize)) {
+            if (ImGui::Button(GetWindowButtonText("Entrance Tracker", CVarGetInteger(WINDOW_CVAR("EntranceTracker"), 0)).c_str(), buttonSize)) {
                 mEntranceTrackerWindow->ToggleVisibility();
             }
         }
         UIWidgets::Spacer(0);
         if (mCheckTrackerWindow) {
-            if (ImGui::Button(GetWindowButtonText("Check Tracker", CVarGetInteger("gCheckTrackerEnabled", 0)).c_str(), buttonSize)) {
+            if (ImGui::Button(GetWindowButtonText("Check Tracker", CVarGetInteger(WINDOW_CVAR("CheckTracker"), 0)).c_str(), buttonSize)) {
                 mCheckTrackerWindow->ToggleVisibility();
             }
         }
         UIWidgets::Spacer(0);
         if (mCheckTrackerSettingsWindow) {
-            if (ImGui::Button(GetWindowButtonText("Check Tracker Settings", CVarGetInteger("gCheckTrackerSettingsEnabled", 0)).c_str(), buttonSize)) {
+            if (ImGui::Button(GetWindowButtonText("Check Tracker Settings", CVarGetInteger(WINDOW_CVAR("CheckTrackerSettings"), 0)).c_str(), buttonSize)) {
                 mCheckTrackerSettingsWindow->ToggleVisibility();
             }
         }
