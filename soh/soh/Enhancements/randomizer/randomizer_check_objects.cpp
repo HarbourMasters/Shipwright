@@ -885,10 +885,10 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
             (!RandomizerCheckObjects::AreaIsDungeon(locationIt.rcArea) ||
                 locationIt.vOrMQ == RCVORMQ_BOTH ||
                 locationIt.vOrMQ == RCVORMQ_MQ &&
-                    ((CVarGetInteger(RANDOMIZER_SEED_CVAR("MqDungeons"), RO_MQ_DUNGEONS_NONE) == RO_MQ_DUNGEONS_SET_NUMBER && (CVarGetInteger(RANDOMIZER_SEED_CVAR("MqDungeonCount"), 12) > 0) || // at least one MQ dungeon
-                      CVarGetInteger(RANDOMIZER_SEED_CVAR("MqDungeons"), RO_MQ_DUNGEONS_NONE) == RO_MQ_DUNGEONS_RANDOM_NUMBER)) ||
+                    ((CVarGetInteger(RANDOMIZER_SEED_CVAR("MQDungeons"), RO_MQ_DUNGEONS_NONE) == RO_MQ_DUNGEONS_SET_NUMBER && (CVarGetInteger(RANDOMIZER_SEED_CVAR("MQDungeonCount"), 12) > 0) || // at least one MQ dungeon
+                      CVarGetInteger(RANDOMIZER_SEED_CVAR("MQDungeons"), RO_MQ_DUNGEONS_NONE) == RO_MQ_DUNGEONS_RANDOM_NUMBER)) ||
                 locationIt.vOrMQ == RCVORMQ_VANILLA &&
-                    (CVarGetInteger(RANDOMIZER_SEED_CVAR("MqDungeons"), RO_MQ_DUNGEONS_NONE) != RO_MQ_DUNGEONS_SET_NUMBER || CVarGetInteger(RANDOMIZER_SEED_CVAR("MqDungeonCount"), 12) < 12) // at least one vanilla dungeon
+                    (CVarGetInteger(RANDOMIZER_SEED_CVAR("MQDungeons"), RO_MQ_DUNGEONS_NONE) != RO_MQ_DUNGEONS_SET_NUMBER || CVarGetInteger(RANDOMIZER_SEED_CVAR("MQDungeonCount"), 12) < 12) // at least one vanilla dungeon
             ) &&
             (locationIt.rcType != RCTYPE_SHOP || CVarGetInteger(RANDOMIZER_SEED_CVAR("Shopsanity"), RO_SHOPSANITY_OFF) > RO_SHOPSANITY_ZERO_ITEMS) &&
             (locationIt.rcType != RCTYPE_SCRUB || CVarGetInteger(RANDOMIZER_SEED_CVAR("ShuffleScrubs"), RO_SCRUBS_OFF) != RO_SCRUBS_OFF ||
