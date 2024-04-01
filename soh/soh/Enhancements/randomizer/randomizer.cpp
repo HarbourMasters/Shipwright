@@ -3154,8 +3154,8 @@ void RandomizerSettingsWindow::DrawElement() {
     ImGui::EndDisabled();
 
     UIWidgets::Spacer(0);
-    UIWidgets::EnhancementCheckbox("Manual seed entry", "gRandoManualSeedEntry", false, "");
-    if (CVarGetInteger("gRandoManualSeedEntry", 0)) {
+    UIWidgets::EnhancementCheckbox("Manual seed entry", RANDOMIZER_SEED_CVAR("ManualSeedEntry"), false, "");
+    if (CVarGetInteger(RANDOMIZER_SEED_CVAR("ManualSeedEntry"), 0)) {
         ImGui::Text("Seed");
         ImGui::InputText("##RandomizerSeed", seedString, MAX_SEED_STRING_SIZE, ImGuiInputTextFlags_CallbackCharFilter, UIWidgets::TextFilters::FilterAlphaNum);
         UIWidgets::Tooltip(
@@ -3176,7 +3176,7 @@ void RandomizerSettingsWindow::DrawElement() {
     UIWidgets::Spacer(0);
     ImGui::BeginDisabled(CVarGetInteger(RANDOMIZER_SEED_CVAR("DontGenerateSpoiler"), 0) && gSaveContext.gameMode != GAMEMODE_FILE_SELECT);
     if (ImGui::Button("Generate Randomizer")) {
-        GenerateRandomizer(CVarGetInteger("gRandoManualSeedEntry", 0) ? seedString : "");
+        GenerateRandomizer(CVarGetInteger(RANDOMIZER_SEED_CVAR("ManualSeedEntry"), 0) ? seedString : "");
     }
     ImGui::EndDisabled();
 
