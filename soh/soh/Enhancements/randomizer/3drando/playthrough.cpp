@@ -10,7 +10,7 @@
 #include "spoiler_log.hpp"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "variables.h"
-#include "soh\OTRGlobals.h"
+#include "soh/OTRGlobals.h"
 
 namespace Playthrough {
 

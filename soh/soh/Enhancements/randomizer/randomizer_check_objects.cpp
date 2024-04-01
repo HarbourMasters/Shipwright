@@ -3,7 +3,7 @@
 #include <string>
 #include <libultraship/bridge.h>
 #include "z64.h"
-#include "soh\OTRGlobals.h"
+#include "soh/OTRGlobals.h"
 
 //            RandomizerCheck,                                                RCVORMQ,         RCTYPE,              RCAREA,                        ActorId,            SceneId,                              ActorParams,                 OG ItemID,           "Short name", "Spoiler name", vanillaCompletion
 std::map<RandomizerCheck, RandomizerCheckObject> rcObjects = {
