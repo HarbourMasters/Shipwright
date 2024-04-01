@@ -770,7 +770,7 @@ void BeginFloatingWindows(std::string UniqueName, ImGuiWindowFlags flags = 0) {
         ImGui::SetNextWindowViewport(ImGui::GetMainViewport()->ID);
         windowFlags |= ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoScrollbar;
 
-        if (!CVarGetInteger(ITEM_TRACKER_CVAR("HudEditMode"), 0)) {
+        if (!CVarGetInteger(ITEM_TRACKER_CVAR("Draggable"), 0)) {
             windowFlags |= ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoMove;
         }
     }
@@ -1144,7 +1144,7 @@ void ItemTrackerSettingsWindow::DrawElement() {
     }
 
     if (CVarGetInteger(ITEM_TRACKER_CVAR("WindowType"), TRACKER_WINDOW_FLOATING) == TRACKER_WINDOW_FLOATING) {
-        if (UIWidgets::PaddedEnhancementCheckbox("Enable Dragging", ITEM_TRACKER_CVAR("HudEditMode"))) {
+        if (UIWidgets::PaddedEnhancementCheckbox("Enable Dragging", ITEM_TRACKER_CVAR("Draggable"))) {
             shouldUpdateVectors = true;
         }
         if (UIWidgets::PaddedEnhancementCheckbox("Only enable while paused", ITEM_TRACKER_CVAR("ShowOnlyPaused"))) {
