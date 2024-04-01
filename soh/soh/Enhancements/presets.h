@@ -479,7 +479,7 @@ const std::vector<const char*> randomizerCvars = {
     RANDOMIZER_SEED_CVAR("ZorasFountain"),
     RANDOMIZER_SEED_CVAR("Shuffle100GSReward"),
     RANDOMIZER_SEED_CVAR("GregHint"),
-    "gRandoManualSeedEntry",
+    RANDOMIZER_SEED_CVAR("ManualSeedEntry"),
     RANDOMIZER_SEED_CVAR("TriforceHuntTotalPieces"),
     RANDOMIZER_SEED_CVAR("TriforceHuntRequiredPieces"),
     RANDOMIZER_SEED_CVAR("TriforceHunt"),
