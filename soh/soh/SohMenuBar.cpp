@@ -1899,7 +1899,7 @@ void DrawRandomizerMenu() {
 
         UIWidgets::Spacer(0);
         if (mItemTrackerWindow) {
-            if (ImGui::Button(GetWindowButtonText("Item Tracker", CVarGetInteger("gItemTrackerEnabled", 0)).c_str(), buttonSize)) {
+            if (ImGui::Button(GetWindowButtonText("Item Tracker", CVarGetInteger(WINDOW_CVAR("ItemTracker"), 0)).c_str(), buttonSize)) {
                 mItemTrackerWindow->ToggleVisibility();
             }
         }
