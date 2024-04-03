@@ -306,6 +306,7 @@ OTRGlobals::OTRGlobals() {
     context = LUS::Context::CreateUninitializedInstance("Ship of Harkinian", appShortName, "shipofharkinian.json");
 
     context->InitLogging();
+    context->InitGfxDebugger();
     context->InitConfiguration();
     context->InitConsoleVariables();
 
