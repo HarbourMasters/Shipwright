@@ -1752,27 +1752,27 @@ bool isStringEmpty(std::string str) {
 #ifdef ENABLE_REMOTE_CONTROL
 void DrawRemoteControlMenu() {
     if (ImGui::BeginMenu("Network")) {
-        static std::string ip = CVarGetString("gRemote.IP", "127.0.0.1");
-        static uint16_t port = CVarGetInteger("gRemote.Port", 43384);
-        bool isFormValid = !isStringEmpty(CVarGetString("gRemote.IP", "127.0.0.1")) && port > 1024 && port < 65535;
+        static std::string ip = CVarGetString(REMOTE_CVAR("IP"), "127.0.0.1");
+        static uint16_t port = CVarGetInteger(REMOTE_CVAR("Port"), 43384);
+        bool isFormValid = !isStringEmpty(CVarGetString(REMOTE_CVAR("IP"), "127.0.0.1")) && port > 1024 && port < 65535;
 
         const char* remoteOptions[2] = { "Sail", "Crowd Control"};
 
         ImGui::BeginDisabled(GameInteractor::Instance->isRemoteInteractorEnabled);
         ImGui::Text("Remote Interaction Scheme");
-        if (UIWidgets::EnhancementCombobox("gRemote.Scheme", remoteOptions, GI_SCHEME_SAIL)) {
-            switch (CVarGetInteger("gRemote.Scheme", GI_SCHEME_SAIL)) {
+        if (UIWidgets::EnhancementCombobox(REMOTE_CVAR("Scheme"), remoteOptions, GI_SCHEME_SAIL)) {
+            switch (CVarGetInteger(REMOTE_CVAR("Scheme"), GI_SCHEME_SAIL)) {
                 case GI_SCHEME_SAIL:
                 case GI_SCHEME_CROWD_CONTROL:
-                    CVarSetString("gRemote.IP", "127.0.0.1");
-                    CVarSetInteger("gRemote.Port", 43384);
+                    CVarSetString(REMOTE_CVAR("IP"), "127.0.0.1");
+                    CVarSetInteger(REMOTE_CVAR("Port"), 43384);
                     ip = "127.0.0.1";
                     port = 43384;
                     break;
             }
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         }
-        switch (CVarGetInteger("gRemote.Scheme", GI_SCHEME_SAIL)) {
+        switch (CVarGetInteger(REMOTE_CVAR("Scheme"), GI_SCHEME_SAIL)) {
             case GI_SCHEME_SAIL:
                 UIWidgets::InsertHelpHoverText(
                     "Sail is a networking protocol designed to facilitate remote "
@@ -1805,14 +1805,14 @@ void DrawRemoteControlMenu() {
 
         ImGui::Text("Remote IP & Port");
         if (ImGui::InputText("##gRemote.IP", (char*)ip.c_str(), ip.capacity() + 1)) {
-            CVarSetString("gRemote.IP", ip.c_str());
+            CVarSetString(REMOTE_CVAR("IP"), ip.c_str());
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         }
 
         ImGui::SameLine();
         ImGui::PushItemWidth(ImGui::GetFontSize() * 5);
         if (ImGui::InputScalar("##gRemote.Port", ImGuiDataType_U16, &port)) {
-            CVarSetInteger("gRemote.Port", port);
+            CVarSetInteger(REMOTE_CVAR("Port"), port);
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         }
 
@@ -1825,9 +1825,9 @@ void DrawRemoteControlMenu() {
         const char* buttonLabel = GameInteractor::Instance->isRemoteInteractorEnabled ? "Disable" : "Enable";
         if (ImGui::Button(buttonLabel, ImVec2(-1.0f, 0.0f))) {
             if (GameInteractor::Instance->isRemoteInteractorEnabled) {
-                CVarSetInteger("gRemote.Enabled", 0);
+                CVarSetInteger(REMOTE_CVAR("Enabled"), 0);
                 LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-                switch (CVarGetInteger("gRemote.Scheme", GI_SCHEME_SAIL)) {
+                switch (CVarGetInteger(REMOTE_CVAR("Scheme"), GI_SCHEME_SAIL)) {
                     case GI_SCHEME_SAIL:
                         GameInteractorSail::Instance->Disable();
                         break;
@@ -1836,9 +1836,9 @@ void DrawRemoteControlMenu() {
                         break;
                 }
             } else {
-                CVarSetInteger("gRemote.Enabled", 1);
+                CVarSetInteger(REMOTE_CVAR("Enabled"), 1);
                 LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-                switch (CVarGetInteger("gRemote.Scheme", GI_SCHEME_SAIL)) {
+                switch (CVarGetInteger(REMOTE_CVAR("Scheme"), GI_SCHEME_SAIL)) {
                     case GI_SCHEME_SAIL:
                         GameInteractorSail::Instance->Enable();
                         break;

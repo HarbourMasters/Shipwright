@@ -1148,8 +1148,8 @@ extern "C" void InitOTR() {
     srand(now);
 #ifdef ENABLE_REMOTE_CONTROL
     SDLNet_Init();
-    if (CVarGetInteger("gRemote.Enabled", 0)) {
-        switch (CVarGetInteger("gRemote.Scheme", GI_SCHEME_SAIL)) {
+    if (CVarGetInteger(REMOTE_CVAR("Enabled"), 0)) {
+        switch (CVarGetInteger(REMOTE_CVAR("Scheme"), GI_SCHEME_SAIL)) {
             case GI_SCHEME_SAIL:
                 GameInteractorSail::Instance->Enable();
                 break;
@@ -1174,8 +1174,8 @@ extern "C" void DeinitOTR() {
     SaveManager_ThreadPoolWait();
     OTRAudio_Exit();
 #ifdef ENABLE_REMOTE_CONTROL
-    if (CVarGetInteger("gRemote.Enabled", 0)) {
-        switch (CVarGetInteger("gRemote.Scheme", GI_SCHEME_SAIL)) {
+    if (CVarGetInteger(REMOTE_CVAR("Enabled"), 0)) {
+        switch (CVarGetInteger(REMOTE_CVAR("Scheme"), GI_SCHEME_SAIL)) {
             case GI_SCHEME_SAIL:
                 GameInteractorSail::Instance->Disable();
                 break;
