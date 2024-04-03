@@ -547,7 +547,7 @@ extern std::shared_ptr<GameplayStatsWindow> mGameplayStatsWindow;
 void DrawEnhancementsMenu() {
     if (ImGui::BeginMenu("Enhancements"))
     {
-        ImGui::BeginDisabled(CVarGetInteger("gDisableChangingSettings", 0));
+        ImGui::BeginDisabled(CVarGetInteger(SETTING_CVAR("DisableChanges"), 0));
 
         DrawPresetSelector(PRESET_TYPE_ENHANCEMENTS);
 
@@ -1430,7 +1430,7 @@ void DrawEnhancementsMenu() {
 void DrawCheatsMenu() {
     if (ImGui::BeginMenu("Cheats"))
     {
-        ImGui::BeginDisabled(CVarGetInteger("gDisableChangingSettings", 0));
+        ImGui::BeginDisabled(CVarGetInteger(SETTING_CVAR("DisableChanges"), 0));
         ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 8.0f);
         ImGui::BeginTable("##cheatsMenu", 2, ImGuiTableFlags_SizingFixedFit);
         ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthStretch);
@@ -1624,15 +1624,15 @@ extern std::shared_ptr<MessageViewer> mMessageViewerWindow;
 
 void DrawDeveloperToolsMenu() {
     if (ImGui::BeginMenu("Developer Tools")) {
-        ImGui::BeginDisabled(CVarGetInteger("gDisableChangingSettings", 0));
+        ImGui::BeginDisabled(CVarGetInteger(SETTING_CVAR("DisableChanges"), 0));
 
-        UIWidgets::EnhancementCheckbox("OoT Debug Mode", "gDebugEnabled");
+        UIWidgets::EnhancementCheckbox("OoT Debug Mode", DEV_TOOLS_CVAR("DebugEnabled"));
         UIWidgets::Tooltip("Enables Debug Mode, allowing you to select maps with L + R + Z, noclip with L + D-pad Right, and open the debug menu with L on the pause screen");
-        if (CVarGetInteger("gDebugEnabled", 0)) {
-            UIWidgets::EnhancementCheckbox("OoT Registry Editor", "gRegEditEnabled");
+        if (CVarGetInteger(DEV_TOOLS_CVAR("DebugEnabled"), 0)) {
+            UIWidgets::EnhancementCheckbox("OoT Registry Editor", DEV_TOOLS_CVAR("RegEditEnabled"));
             UIWidgets::Tooltip("Enables the registry editor");
             ImGui::Text("Debug Save File Mode:");
-            UIWidgets::EnhancementCombobox("gDebugSaveFileMode", DebugSaveFileModes, 1);
+            UIWidgets::EnhancementCombobox(DEV_TOOLS_CVAR("DebugSaveFileMode"), DebugSaveFileModes, 1);
             UIWidgets::Tooltip(
                 "Changes the behaviour of debug file select creation (creating a save file on slot 1 with debug mode on)\n"
                 "- Off: The debug save file will be a normal savefile\n"
@@ -1640,17 +1640,17 @@ void DrawDeveloperToolsMenu() {
                 "- Maxed: The debug save file will be a save file with all of the items & upgrades"
             );
         }
-        UIWidgets::PaddedEnhancementCheckbox("OoT Skulltula Debug", "gSkulltulaDebugEnabled", true, false);
+        UIWidgets::PaddedEnhancementCheckbox("OoT Skulltula Debug", DEV_TOOLS_CVAR("SkulltulaDebugEnabled"), true, false);
         UIWidgets::Tooltip("Enables Skulltula Debug, when moving the cursor in the menu above various map icons (boss key, compass, map screen locations, etc) will set the GS bits in that area.\nUSE WITH CAUTION AS IT DOES NOT UPDATE THE GS COUNT.");
-        UIWidgets::PaddedEnhancementCheckbox("Fast File Select", "gSkipLogoTitle", true, false);
+        UIWidgets::PaddedEnhancementCheckbox("Fast File Select", DEV_TOOLS_CVAR("SkipLogoTitle"), true, false);
         UIWidgets::Tooltip("Load the game to the selected menu or file\n\"Zelda Map Select\" require debug mode else you will fallback to File choose menu\nUsing a file number that don't have save will create a save file only if you toggle on \"Create a new save if none ?\" else it will bring you to the File choose menu");
-        if (CVarGetInteger("gSkipLogoTitle", 0)) {
+        if (CVarGetInteger(DEV_TOOLS_CVAR("SkipLogoTitle"), 0)) {
             ImGui::Text("Loading:");
-            UIWidgets::EnhancementCombobox("gSaveFileID", FastFileSelect, 0);
+            UIWidgets::EnhancementCombobox(DEV_TOOLS_CVAR("SaveFileID"), FastFileSelect, 0);
         };
-        UIWidgets::PaddedEnhancementCheckbox("Better Debug Warp Screen", "gBetterDebugWarpScreen", true, false);
+        UIWidgets::PaddedEnhancementCheckbox("Better Debug Warp Screen", DEV_TOOLS_CVAR("BetterDebugWarpScreen"), true, false);
         UIWidgets::Tooltip("Optimized debug warp screen, with the added ability to chose entrances and time of day");
-        UIWidgets::PaddedEnhancementCheckbox("Debug Warp Screen Translation", "gDebugWarpScreenTranslation", true, false, false, "", UIWidgets::CheckboxGraphics::Cross, true);
+        UIWidgets::PaddedEnhancementCheckbox("Debug Warp Screen Translation", DEV_TOOLS_CVAR("DebugWarpScreenTranslation"), true, false, false, "", UIWidgets::CheckboxGraphics::Cross, true);
         UIWidgets::Tooltip("Translate the Debug Warp Screen based on the game language");
         if (gPlayState != NULL) {
             UIWidgets::PaddedSeparator();
@@ -1661,12 +1661,12 @@ void DrawDeveloperToolsMenu() {
                 ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
                 ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
                 if (ImGui::Button("Advance 1", ImVec2(ImGui::GetContentRegionAvail().x / 2.0f, 0.0f))) {
-                    CVarSetInteger("gFrameAdvance", 1);
+                    CVarSetInteger(GENERAL_CVAR("FrameAdvance"), 1);
                 }
                 ImGui::SameLine();
                 ImGui::Button("Advance (Hold)");
                 if (ImGui::IsItemActive()) {
-                    CVarSetInteger("gFrameAdvance", 1);
+                    CVarSetInteger(GENERAL_CVAR("FrameAdvance"), 1);
                 }
                 ImGui::PopStyleVar(3);
                 ImGui::PopStyleColor(1);

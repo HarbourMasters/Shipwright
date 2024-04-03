@@ -3286,15 +3286,15 @@ void FileChoose_Main(GameState* thisx) {
         gSaveContext.skyboxTime += 0x10;
     }
 
-    if (CVarGetInteger("gSkipLogoTitle", 0) && CVarGetInteger("gSaveFileID", FASTFILE_1) <= FASTFILE_3 && !isFastFileIdIncompatible) {
-        if (Save_Exist(CVarGetInteger("gSaveFileID", FASTFILE_1)) && FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(CVarGetInteger("gSaveFileID", FASTFILE_1)))) {
-            this->buttonIndex = CVarGetInteger("gSaveFileID", FASTFILE_1);
+    if (CVarGetInteger(DEV_TOOLS_CVAR("SkipLogoTitle"), 0) && CVarGetInteger(DEV_TOOLS_CVAR("SaveFileID"), FASTFILE_1) <= FASTFILE_3 && !isFastFileIdIncompatible) {
+        if (Save_Exist(CVarGetInteger(DEV_TOOLS_CVAR("SaveFileID"), FASTFILE_1)) && FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(CVarGetInteger(DEV_TOOLS_CVAR("SaveFileID"), FASTFILE_1)))) {
+            this->buttonIndex = CVarGetInteger(DEV_TOOLS_CVAR("SaveFileID"), FASTFILE_1);
             this->menuMode = FS_MENU_MODE_SELECT;
             this->selectMode = SM_LOAD_GAME;
         } else {
             isFastFileIdIncompatible = 1;
         }
-    } else if (CVarGetInteger("gSkipLogoTitle", 0) && CVarGetInteger("gSaveFileID", FASTFILE_1) == FASTFILE_MAP_SELECT) {
+    } else if (CVarGetInteger(DEV_TOOLS_CVAR("SkipLogoTitle"), 0) && CVarGetInteger(DEV_TOOLS_CVAR("SaveFileID"), FASTFILE_1) == FASTFILE_MAP_SELECT) {
         this->buttonIndex = 0xFF;
         this->menuMode = FS_MENU_MODE_SELECT;
         this->selectMode = SM_LOAD_GAME;
