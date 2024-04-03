@@ -126,8 +126,8 @@ void DrawMenuBarIcon() {
         ImVec2 iconSize = ImVec2(16.0f * 2, 16.0f * 2);
         float posScale = 2.0f;
 #else
-        ImVec2 iconSize = ImVec2(16.0f, 16.0f);
-        float posScale = 1.0f;
+        float posScale = GImGui->CurrentDpiScale * imguiScaleOptionToValue[CVarGetInteger("gImGuiScale", defaultImGuiScale)];
+        ImVec2 iconSize = ImVec2(16.0f * posScale, 16.0f * posScale);
 #endif
         ImGui::SetCursorPos(ImVec2(5, 2.5f) * posScale);
         ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("Game_Icon"), iconSize);
@@ -1889,7 +1889,7 @@ void DrawRandomizerMenu() {
     #ifdef __WIIU__
         static ImVec2 buttonSize(200.0f * 2.0f, 0.0f);
     #else
-        static ImVec2 buttonSize(200.0f, 0.0f);
+        static ImVec2 buttonSize(-1.0f, 0.0f);
     #endif
         if (mRandomizerSettingsWindow) {
             if (ImGui::Button(GetWindowButtonText("Randomizer Settings", CVarGetInteger("gRandomizerSettingsEnabled", 0)).c_str(), buttonSize)) {
