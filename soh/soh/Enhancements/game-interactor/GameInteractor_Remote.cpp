@@ -8,6 +8,7 @@
 #include <tuple>
 #include <type_traits>
 #include <libultraship/libultraship.h>
+#include "soh/OTRGlobals.h"
 
 // MARK: - Remote
 
