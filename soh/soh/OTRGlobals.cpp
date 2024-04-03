@@ -1246,7 +1246,7 @@ extern "C" void Graph_StartFrame() {
 
     switch (dwScancode) {
         case KbScancode::LUS_KB_F5: {
-            if (CVarGetInteger("gSaveStatesEnabled", 0) == 0) {
+            if (CVarGetInteger(CHEAT_CVAR("SaveStatesEnabled"), 0) == 0) {
                 LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->
                     TextDrawNotification(6.0f, true, "Save states not enabled. Check Cheats Menu.");
                 return;
@@ -1268,7 +1268,7 @@ extern "C" void Graph_StartFrame() {
             break;
         }
         case KbScancode::LUS_KB_F6: {
-            if (CVarGetInteger("gSaveStatesEnabled", 0) == 0) {
+            if (CVarGetInteger(CHEAT_CVAR("SaveStatesEnabled"), 0) == 0) {
                 LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->
                     TextDrawNotification(6.0f, true, "Save states not enabled. Check Cheats Menu.");
                 return;
@@ -1283,7 +1283,7 @@ extern "C" void Graph_StartFrame() {
             break;
         }
         case KbScancode::LUS_KB_F7: {
-            if (CVarGetInteger("gSaveStatesEnabled", 0) == 0) {
+            if (CVarGetInteger(CHEAT_CVAR("SaveStatesEnabled"), 0) == 0) {
                 LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->
                     TextDrawNotification(6.0f, true, "Save states not enabled. Check Cheats Menu.");
                 return;

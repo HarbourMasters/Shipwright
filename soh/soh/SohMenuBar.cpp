@@ -1440,32 +1440,32 @@ void DrawCheatsMenu() {
         ImGui::Text("Inventory:");
         UIWidgets::PaddedSeparator();
 
-        UIWidgets::PaddedEnhancementCheckbox("Super Tunic", "gSuperTunic", true, false);
+        UIWidgets::PaddedEnhancementCheckbox("Super Tunic", CHEAT_CVAR("SuperTunic"), true, false);
         UIWidgets::Tooltip("Makes every tunic have the effects of every other tunic");
-        UIWidgets::PaddedEnhancementCheckbox("Easy ISG", "gEzISG", true, false);
+        UIWidgets::PaddedEnhancementCheckbox("Easy ISG", CHEAT_CVAR("EasyISG"), true, false);
         UIWidgets::Tooltip("Passive Infinite Sword Glitch\nIt makes your sword's swing effect and hitbox stay active indefinitely");
-        UIWidgets::PaddedEnhancementCheckbox("Easy QPA", "gEzQPA", true, false);
+        UIWidgets::PaddedEnhancementCheckbox("Easy QPA", CHEAT_CVAR("EasyQPA"), true, false);
         UIWidgets::Tooltip("Gives you the glitched damage value of the quick put away glitch.");
-        UIWidgets::PaddedEnhancementCheckbox("Timeless Equipment", "gTimelessEquipment", true, false);
+        UIWidgets::PaddedEnhancementCheckbox("Timeless Equipment", CHEAT_CVAR("TimelessEquipment"), true, false);
         UIWidgets::Tooltip("Allows any item to be equipped, regardless of age\nAlso allows Child to use Adult strength upgrades");
-        UIWidgets::PaddedEnhancementCheckbox("Unrestricted Items", "gNoRestrictItems", true, false);
+        UIWidgets::PaddedEnhancementCheckbox("Unrestricted Items", CHEAT_CVAR("NoRestrictItems"), true, false);
         UIWidgets::Tooltip("Allows you to use any item at any location");
-        UIWidgets::PaddedEnhancementCheckbox("Fireproof Deku Shield", "gFireproofDekuShield", true, false);
+        UIWidgets::PaddedEnhancementCheckbox("Fireproof Deku Shield", CHEAT_CVAR("FireproofDekuShield"), true, false);
         UIWidgets::Tooltip("Prevents the Deku Shield from burning on contact with fire");
-        UIWidgets::PaddedEnhancementCheckbox("Shield with Two-Handed Weapons", "gShieldTwoHanded", true, false);
+        UIWidgets::PaddedEnhancementCheckbox("Shield with Two-Handed Weapons", CHEAT_CVAR("ShieldTwoHanded"), true, false);
         UIWidgets::Tooltip("This allows you to put up your shield with any two-handed weapon in hand except for Deku Sticks");
         UIWidgets::Spacer(2.0f);
         ImGui::Text("Deku Sticks:");
-        UIWidgets::EnhancementCombobox("gDekuStickCheat", DekuStickCheat, DEKU_STICK_NORMAL);
+        UIWidgets::EnhancementCombobox(CHEAT_CVAR("DekuStick"), DekuStickCheat, DEKU_STICK_NORMAL);
         UIWidgets::Spacer(2.0f);
-        UIWidgets::EnhancementSliderFloat("Bomb Timer Multiplier: %.2fx", "##gBombTimerMultiplier", "gBombTimerMultiplier", 0.1f, 5.0f, "", 1.0f, false);
-        UIWidgets::PaddedEnhancementCheckbox("Hookshot Everything", "gHookshotEverything", true, false);
+        UIWidgets::EnhancementSliderFloat("Bomb Timer Multiplier: %.2fx", "##gBombTimerMultiplier", CHEAT_CVAR("BombTimerMultiplier"), 0.1f, 5.0f, "", 1.0f, false);
+        UIWidgets::PaddedEnhancementCheckbox("Hookshot Everything", CHEAT_CVAR("HookshotEverything"), true, false);
         UIWidgets::Tooltip("Makes every surface in the game hookshot-able");
         UIWidgets::Spacer(0);
-        UIWidgets::EnhancementSliderFloat("Hookshot Reach Multiplier: %.2fx", "##gCheatHookshotReachMultiplier", "gCheatHookshotReachMultiplier", 1.0f, 5.0f, "", 1.0f, false);
+        UIWidgets::EnhancementSliderFloat("Hookshot Reach Multiplier: %.2fx", "##gCheatHookshotReachMultiplier", CHEAT_CVAR("HookshotReachMultiplier"), 1.0f, 5.0f, "", 1.0f, false);
         UIWidgets::Spacer(2.0f);
         if (ImGui::Button("Change Age")) {
-            CVarSetInteger("gSwitchAge", 1);
+            CVarSetInteger(GENERAL_CVAR("SwitchAge"), 1);
         }
         UIWidgets::Tooltip("Switches Link's age and reloads the area.");  
         UIWidgets::Spacer(2.0f);
@@ -1478,12 +1478,12 @@ void DrawCheatsMenu() {
         UIWidgets::Spacer(2.0f);
 
         if (ImGui::BeginMenu("Infinite...")) {
-            UIWidgets::EnhancementCheckbox("Money", "gInfiniteMoney");
-            UIWidgets::PaddedEnhancementCheckbox("Health", "gInfiniteHealth", true, false);
-            UIWidgets::PaddedEnhancementCheckbox("Ammo", "gInfiniteAmmo", true, false);
-            UIWidgets::PaddedEnhancementCheckbox("Magic", "gInfiniteMagic", true, false);
-            UIWidgets::PaddedEnhancementCheckbox("Nayru's Love", "gInfiniteNayru", true, false);
-            UIWidgets::PaddedEnhancementCheckbox("Epona Boost", "gInfiniteEpona", true, false);
+            UIWidgets::EnhancementCheckbox("Money", CHEAT_CVAR("InfiniteMoney"));
+            UIWidgets::PaddedEnhancementCheckbox("Health", CHEAT_CVAR("InfiniteHealth"), true, false);
+            UIWidgets::PaddedEnhancementCheckbox("Ammo", CHEAT_CVAR("InfiniteAmmo"), true, false);
+            UIWidgets::PaddedEnhancementCheckbox("Magic", CHEAT_CVAR("InfiniteMagic"), true, false);
+            UIWidgets::PaddedEnhancementCheckbox("Nayru's Love", CHEAT_CVAR("InfiniteNayru"), true, false);
+            UIWidgets::PaddedEnhancementCheckbox("Epona Boost", CHEAT_CVAR("InfiniteEponaBoost"), true, false);
 
             ImGui::EndMenu();
         }
@@ -1501,13 +1501,13 @@ void DrawCheatsMenu() {
             UIWidgets::PaddedText("they WILL break across transitions and", true, false);
             UIWidgets::PaddedText("load zones (like doors). Support for", true, false);
             UIWidgets::PaddedText("related issues will not be provided.", true, false);
-            if (UIWidgets::PaddedEnhancementCheckbox("I promise I have read the warning", "gSaveStatePromise", true,
+            if (UIWidgets::PaddedEnhancementCheckbox("I promise I have read the warning", CHEAT_CVAR("SaveStatePromise"), true,
                                                      false)) {
-                CVarSetInteger("gSaveStatesEnabled", 0);
+                CVarSetInteger(CHEAT_CVAR("SaveStatesEnabled"), 0);
                 LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
             }
-            if (CVarGetInteger("gSaveStatePromise", 0) == 1) {
-                UIWidgets::PaddedEnhancementCheckbox("I understand, enable save states", "gSaveStatesEnabled", true,
+            if (CVarGetInteger(CHEAT_CVAR("SaveStatePromise"), 0) == 1) {
+                UIWidgets::PaddedEnhancementCheckbox("I understand, enable save states", CHEAT_CVAR("SaveStatesEnabled"), true,
                                                      false);
                 UIWidgets::Tooltip("F5 to save, F6 to change slots, F7 to load");
             }
@@ -1519,44 +1519,44 @@ void DrawCheatsMenu() {
         ImGui::Text("Behavior:");
         UIWidgets::PaddedSeparator();
 
-        UIWidgets::PaddedEnhancementCheckbox("No Clip", "gNoClip", true, false);
+        UIWidgets::PaddedEnhancementCheckbox("No Clip", CHEAT_CVAR("NoClip"), true, false);
         UIWidgets::Tooltip("Allows you to walk through walls");
-        UIWidgets::PaddedEnhancementCheckbox("Climb Everything", "gClimbEverything", true, false);
+        UIWidgets::PaddedEnhancementCheckbox("Climb Everything", CHEAT_CVAR("ClimbEverything"), true, false);
         UIWidgets::Tooltip("Makes every surface in the game climbable");
-        UIWidgets::PaddedEnhancementCheckbox("Moon Jump on L", "gMoonJumpOnL", true, false);
+        UIWidgets::PaddedEnhancementCheckbox("Moon Jump on L", CHEAT_CVAR("MoonJumpOnL"), true, false);
         UIWidgets::Tooltip("Holding L makes you float into the air");
-        UIWidgets::PaddedEnhancementCheckbox("Easy Frame Advancing", "gCheatEasyPauseBufferEnabled", true, false);
+        UIWidgets::PaddedEnhancementCheckbox("Easy Frame Advancing", CHEAT_CVAR("EasyPauseBuffer"), true, false);
         UIWidgets::Tooltip("Continue holding START button when unpausing to only advance a single frame and then re-pause");
-        const bool bEasyFrameAdvanceEnabled = CVarGetInteger("gCheatEasyPauseBufferEnabled", 0);
-        UIWidgets::PaddedEnhancementCheckbox("Easy Input Buffering", "gCheatEasyInputBufferingEnabled", true, false, bEasyFrameAdvanceEnabled, "Forced enabled when Easy Frame Advancing is enabled", UIWidgets::CheckboxGraphics::Checkmark);
+        const bool bEasyFrameAdvanceEnabled = CVarGetInteger(CHEAT_CVAR("EasyPauseBuffer"), 0);
+        UIWidgets::PaddedEnhancementCheckbox("Easy Input Buffering", CHEAT_CVAR("EasyInputBuffer"), true, false, bEasyFrameAdvanceEnabled, "Forced enabled when Easy Frame Advancing is enabled", UIWidgets::CheckboxGraphics::Checkmark);
         UIWidgets::Tooltip("Inputs that are held down while the Subscreen is closing will be pressed when the game is resumed");
-        UIWidgets::PaddedEnhancementCheckbox("Drops Don't Despawn", "gDropsDontDie", true, false);
+        UIWidgets::PaddedEnhancementCheckbox("Drops Don't Despawn", CHEAT_CVAR("DropsDontDie"), true, false);
         UIWidgets::Tooltip("Drops from enemies, grass, etc. don't disappear after a set amount of time");
-        UIWidgets::PaddedEnhancementCheckbox("Fish Don't despawn", "gNoFishDespawn", true, false);
+        UIWidgets::PaddedEnhancementCheckbox("Fish Don't despawn", CHEAT_CVAR("NoFishDespawn"), true, false);
         UIWidgets::Tooltip("Prevents fish from automatically despawning after a while when dropped");
-        UIWidgets::PaddedEnhancementCheckbox("Bugs Don't despawn", "gNoBugsDespawn", true, false);
+        UIWidgets::PaddedEnhancementCheckbox("Bugs Don't despawn", CHEAT_CVAR("NoBugsDespawn"), true, false);
         UIWidgets::Tooltip("Prevents bugs from automatically despawning after a while when dropped");
-        UIWidgets::PaddedEnhancementCheckbox("Freeze Time", "gFreezeTime", true, false);
+        UIWidgets::PaddedEnhancementCheckbox("Freeze Time", CHEAT_CVAR("FreezeTime"), true, false);
         UIWidgets::Tooltip("Freezes the time of day");
-        UIWidgets::PaddedEnhancementCheckbox("Time Sync", "gTimeSync", true, false);
+        UIWidgets::PaddedEnhancementCheckbox("Time Sync", CHEAT_CVAR("TimeSync"), true, false);
         UIWidgets::Tooltip("This syncs the ingame time with the real world time");
-        UIWidgets::PaddedEnhancementCheckbox("No ReDead/Gibdo Freeze", "gNoRedeadFreeze", true, false);
+        UIWidgets::PaddedEnhancementCheckbox("No ReDead/Gibdo Freeze", CHEAT_CVAR("NoRedeadFreeze"), true, false);
         UIWidgets::Tooltip("Prevents ReDeads and Gibdos from being able to freeze you with their scream");
-        UIWidgets::PaddedEnhancementCheckbox("Keese/Guay don't target you", "gNoKeeseGuayTarget", true, false);
+        UIWidgets::PaddedEnhancementCheckbox("Keese/Guay don't target you", CHEAT_CVAR("NoKeeseGuayTarget"), true, false);
         UIWidgets::Tooltip("Keese and Guay no longer target you and simply ignore you as if you were wearing the skull mask");
         {
-            static int32_t betaQuestEnabled = CVarGetInteger("gEnableBetaQuest", 0);
+            static int32_t betaQuestEnabled = CVarGetInteger(CHEAT_CVAR("EnableBetaQuest"), 0);
             static int32_t lastBetaQuestEnabled = betaQuestEnabled;
-            static int32_t betaQuestWorld = CVarGetInteger("gBetaQuestWorld", 0xFFEF);
+            static int32_t betaQuestWorld = CVarGetInteger(CHEAT_CVAR("BetaQuestWorld"), 0xFFEF);
             static int32_t lastBetaQuestWorld = betaQuestWorld;
 
             if (!isBetaQuestEnabled) {
                 UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
             }
 
-            UIWidgets::PaddedEnhancementCheckbox("Enable Beta Quest", "gEnableBetaQuest", true, false);
+            UIWidgets::PaddedEnhancementCheckbox("Enable Beta Quest", CHEAT_CVAR("EnableBetaQuest"), true, false);
             UIWidgets::Tooltip("Turns on OoT Beta Quest. *WARNING* This will reset your game.");
-            betaQuestEnabled = CVarGetInteger("gEnableBetaQuest", 0);
+            betaQuestEnabled = CVarGetInteger(CHEAT_CVAR("EnableBetaQuest"), 0);
             if (betaQuestEnabled) {
                 if (betaQuestEnabled != lastBetaQuestEnabled) {
                     betaQuestWorld = 0;
@@ -1588,15 +1588,15 @@ void DrawCheatsMenu() {
             }
             else {
                 lastBetaQuestWorld = betaQuestWorld = 0xFFEF;
-                CVarClear("gBetaQuestWorld");
+                CVarClear(CHEAT_CVAR("BetaQuestWorld"));
             }
             if (betaQuestEnabled != lastBetaQuestEnabled || betaQuestWorld != lastBetaQuestWorld)
             {
                 // Reset the game if the beta quest state or world changed because beta quest happens on redirecting the title screen cutscene.
                 lastBetaQuestEnabled = betaQuestEnabled;
                 lastBetaQuestWorld = betaQuestWorld;
-                CVarSetInteger("gEnableBetaQuest", betaQuestEnabled);
-                CVarSetInteger("gBetaQuestWorld", betaQuestWorld);
+                CVarSetInteger(CHEAT_CVAR("EnableBetaQuest"), betaQuestEnabled);
+                CVarSetInteger(CHEAT_CVAR("BetaQuestWorld"), betaQuestWorld);
 
                 std::reinterpret_pointer_cast<LUS::ConsoleWindow>(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->Dispatch("reset");
                 LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();

@@ -66,7 +66,7 @@ void ReloadSceneTogglingLinkAge() {
 void RegisterInfiniteMoney() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
         if (!GameInteractor::IsSaveLoaded(true)) return;
-        if (CVarGetInteger("gInfiniteMoney", 0) != 0) {
+        if (CVarGetInteger(CHEAT_CVAR("InfiniteMoney"), 0) != 0) {
             if (gSaveContext.rupees < CUR_CAPACITY(UPG_WALLET)) {
                 gSaveContext.rupees = CUR_CAPACITY(UPG_WALLET);
             }
@@ -77,7 +77,7 @@ void RegisterInfiniteMoney() {
 void RegisterInfiniteHealth() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
         if (!GameInteractor::IsSaveLoaded(true)) return;
-        if (CVarGetInteger("gInfiniteHealth", 0) != 0) {
+        if (CVarGetInteger(CHEAT_CVAR("InfiniteHealth"), 0) != 0) {
             if (gSaveContext.health < gSaveContext.healthCapacity) {
                 gSaveContext.health = gSaveContext.healthCapacity;
             }
@@ -88,7 +88,7 @@ void RegisterInfiniteHealth() {
 void RegisterInfiniteAmmo() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
         if (!GameInteractor::IsSaveLoaded(true)) return;
-        if (CVarGetInteger("gInfiniteAmmo", 0) != 0) {
+        if (CVarGetInteger(CHEAT_CVAR("InfiniteAmmo"), 0) != 0) {
             // Deku Sticks
             if (AMMO(ITEM_STICK) < CUR_CAPACITY(UPG_STICKS)) {
                 AMMO(ITEM_STICK) = CUR_CAPACITY(UPG_STICKS);
@@ -125,7 +125,7 @@ void RegisterInfiniteAmmo() {
 void RegisterInfiniteMagic() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
         if (!GameInteractor::IsSaveLoaded(true)) return;
-        if (CVarGetInteger("gInfiniteMagic", 0) != 0) {
+        if (CVarGetInteger(CHEAT_CVAR("InfiniteMagic"), 0) != 0) {
             if (gSaveContext.isMagicAcquired && gSaveContext.magic != (gSaveContext.isDoubleMagicAcquired + 1) * 0x30) {
                 gSaveContext.magic = (gSaveContext.isDoubleMagicAcquired + 1) * 0x30;
             }
@@ -136,7 +136,7 @@ void RegisterInfiniteMagic() {
 void RegisterInfiniteNayrusLove() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
         if (!GameInteractor::IsSaveLoaded(true)) return;
-        if (CVarGetInteger("gInfiniteNayru", 0) != 0) {
+        if (CVarGetInteger(CHEAT_CVAR("InfiniteNayru"), 0) != 0) {
             gSaveContext.nayrusLoveTimer = 0x44B;
         }
     });
@@ -146,7 +146,7 @@ void RegisterMoonJumpOnL() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
         if (!GameInteractor::IsSaveLoaded(true)) return;
         
-        if (CVarGetInteger("gMoonJumpOnL", 0) != 0) {
+        if (CVarGetInteger(CHEAT_CVAR("MoonJumpOnL"), 0) != 0) {
             Player* player = GET_PLAYER(gPlayState);
 
             if (CHECK_BTN_ANY(gPlayState->state.input[0].cur.button, BTN_L)) {
@@ -161,7 +161,7 @@ void RegisterInfiniteISG() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
         if (!GameInteractor::IsSaveLoaded(true)) return;
 
-        if (CVarGetInteger("gEzISG", 0) != 0) {
+        if (CVarGetInteger(CHEAT_CVAR("EasyISG"), 0) != 0) {
             Player* player = GET_PLAYER(gPlayState);
             player->meleeWeaponState = 1;
         }
@@ -173,7 +173,7 @@ void RegisterEzQPA() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
         if (!GameInteractor::IsSaveLoaded(true)) return;
 
-        if (CVarGetInteger("gEzQPA", 0) != 0) {
+        if (CVarGetInteger(CHEAT_CVAR("EasyQPA"), 0) != 0) {
             Player* player = GET_PLAYER(gPlayState);
             player->meleeWeaponQuads[0].info.toucher.dmgFlags = 0x16171617;
             player->meleeWeaponQuads[1].info.toucher.dmgFlags = 0x16171617;
@@ -185,7 +185,7 @@ void RegisterUnrestrictedItems() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
         if (!GameInteractor::IsSaveLoaded(true)) return;
 
-        if (CVarGetInteger("gNoRestrictItems", 0) != 0) {
+        if (CVarGetInteger(CHEAT_CVAR("NoRestrictItems"), 0) != 0) {
             u8 sunsBackup = gPlayState->interfaceCtx.restrictions.sunsSong;
             memset(&gPlayState->interfaceCtx.restrictions, 0, sizeof(gPlayState->interfaceCtx.restrictions));
             gPlayState->interfaceCtx.restrictions.sunsSong = sunsBackup;
@@ -195,7 +195,7 @@ void RegisterUnrestrictedItems() {
 
 void RegisterFreezeTime() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (CVarGetInteger("gFreezeTime", 0) != 0) {
+        if (CVarGetInteger(CHEAT_CVAR("FreezeTime"), 0) != 0) {
             if (CVarGetInteger("gPrevTime", -1) == -1) {
                 CVarSetInteger("gPrevTime", gSaveContext.dayTime);
             }
@@ -214,7 +214,7 @@ void RegisterSwitchAge() {
         static bool warped = false;
 
         if (!GameInteractor::IsSaveLoaded(true)) {
-            CVarClear("gSwitchAge");
+            CVarClear(GENERAL_CVAR("SwitchAge"));
             warped = false;
             return;
         }
@@ -224,7 +224,7 @@ void RegisterSwitchAge() {
         static RoomContext* roomCtx;
         static s32 roomNum;
 
-        if (CVarGetInteger("gSwitchAge", 0) && !warped) {
+        if (CVarGetInteger(GENERAL_CVAR("SwitchAge"), 0) && !warped) {
             playerPos = GET_PLAYER(gPlayState)->actor.world.pos;
             playerYaw = GET_PLAYER(gPlayState)->actor.shape.rot.y;
             roomCtx = &gPlayState->roomCtx;
@@ -243,7 +243,7 @@ void RegisterSwitchAge() {
                 func_80097534(gPlayState, roomCtx);  // load map for new room (unloading the previous room)
             }
             warped = false;
-            CVarClear("gSwitchAge");
+            CVarClear(GENERAL_CVAR("SwitchAge"));
         }
     });
 }
