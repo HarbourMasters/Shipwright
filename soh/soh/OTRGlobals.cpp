@@ -120,6 +120,7 @@ GameInteractorSail* GameInteractorSail::Instance;
 #include "soh/resource/importer/SkeletonLimbFactory.h"
 #include "soh/resource/importer/TextFactory.h"
 #include "soh/resource/importer/BackgroundFactory.h"
+#include "soh/resource/importer/RawJsonFactory.h"
 
 #include "soh/config/ConfigUpdaters.h"
 
@@ -271,7 +272,10 @@ OTRGlobals::OTRGlobals() {
     if (patchesPath.length() > 0 && std::filesystem::exists(patchesPath)) {
         if (std::filesystem::is_directory(patchesPath)) {
             for (const auto& p : std::filesystem::recursive_directory_iterator(patchesPath, std::filesystem::directory_options::follow_directory_symlink)) {
-                if (StringHelper::IEquals(p.path().extension().string(), ".otr")) {
+                if (StringHelper::IEquals(p.path().extension().string(), ".otr") ||
+                    StringHelper::IEquals(p.path().extension().string(), ".mpq") ||
+                    StringHelper::IEquals(p.path().extension().string(), ".o2r") ||
+                    StringHelper::IEquals(p.path().extension().string(), ".zip")) {
                     patchOTRs.push_back(p.path().generic_string());
                 }
             }
@@ -308,6 +312,7 @@ OTRGlobals::OTRGlobals() {
     context = LUS::Context::CreateUninitializedInstance("Ship of Harkinian", appShortName, "shipofharkinian.json");
 
     context->InitLogging();
+    context->InitGfxDebugger();
     context->InitConfiguration();
     context->InitConsoleVariables();
 
@@ -344,6 +349,7 @@ OTRGlobals::OTRGlobals() {
     loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryAudioSoundFontV2>(), RESOURCE_FORMAT_BINARY, "AudioSoundFont", static_cast<uint32_t>(SOH::ResourceType::SOH_AudioSoundFont), 2);
     loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryAudioSequenceV2>(), RESOURCE_FORMAT_BINARY, "AudioSequence", static_cast<uint32_t>(SOH::ResourceType::SOH_AudioSequence), 2);
     loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryBackgroundV0>(), RESOURCE_FORMAT_BINARY, "Background", static_cast<uint32_t>(SOH::ResourceType::SOH_Background), 0);
+    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryRawJsonV0>(), RESOURCE_FORMAT_BINARY, "RawJson", static_cast<uint32_t>(SOH::ResourceType::SOH_RawJson), 0);
 
     gSaveStateMgr = std::make_shared<SaveStateMgr>();
     gRandoContext = Rando::Context::CreateInstance();
@@ -876,8 +882,8 @@ OTRVersion ReadPortVersionFromOTR(std::string otrPath) {
 
     // Use a temporary archive instance to load the otr and read the version file
     auto archive = LUS::OtrArchive(otrPath);
-    if (archive.LoadRaw()) {
-        auto t = archive.LoadFileRaw("portVersion");
+    if (archive.Open()) {
+        auto t = archive.LoadFile("portVersion", std::make_shared<LUS::ResourceInitData>());
         if (t != nullptr && t->IsLoaded) {
             auto stream = std::make_shared<LUS::MemoryStream>(t->Buffer->data(), t->Buffer->size());
             auto reader = std::make_shared<LUS::BinaryReader>(stream);
@@ -887,7 +893,7 @@ OTRVersion ReadPortVersionFromOTR(std::string otrPath) {
             version.minor = reader->ReadUInt16();
             version.patch = reader->ReadUInt16();
         }
-        archive.UnloadRaw();
+        archive.Close();
     }
 
     return version;
@@ -1115,6 +1121,9 @@ extern "C" void InitOTR() {
     SpeechSynthesizer::Instance->Init();
 #elif defined(_WIN32)
     SpeechSynthesizer::Instance = new SAPISpeechSynthesizer();
+    SpeechSynthesizer::Instance->Init();
+#else
+    SpeechSynthesizer::Instance = new SpeechLogger();
     SpeechSynthesizer::Instance->Init();
 #endif
 
@@ -1589,10 +1598,6 @@ extern "C" void ResourceMgr_UnloadOriginalWhenAltExists(const char* resName) {
     }
 }
 
-extern "C" void ResourceMgr_LoadFile(const char* resName) {
-    LUS::Context::GetInstance()->GetResourceManager()->LoadResource(resName);
-}
-
 std::shared_ptr<LUS::IResource> GetResourceByNameHandlingMQ(const char* path) {
     std::string Path = path;
     if (ResourceMgr_IsGameMasterQuest()) {
@@ -1612,20 +1617,6 @@ extern "C" char* GetResourceDataByNameHandlingMQ(const char* path) {
     }
     
     return (char*)res->GetRawPointer();
-}
-
-extern "C" char* ResourceMgr_LoadFileFromDisk(const char* filePath) {
-    FILE* file = fopen(filePath, "r");
-    fseek(file, 0, SEEK_END);
-    int fSize = ftell(file);
-    fseek(file, 0, SEEK_SET);
-
-    char* data = (char*)malloc(fSize);
-    fread(data, 1, fSize, file);
-
-    fclose(file);
-
-    return data;
 }
 
 extern "C" uint8_t ResourceMgr_TexIsRaw(const char* texPath) {

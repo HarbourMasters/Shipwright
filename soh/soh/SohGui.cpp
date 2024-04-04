@@ -133,8 +133,8 @@ namespace SohGui {
     std::shared_ptr<ItemTrackerSettingsWindow> mItemTrackerSettingsWindow;
     std::shared_ptr<ItemTrackerWindow> mItemTrackerWindow;
     std::shared_ptr<RandomizerSettingsWindow> mRandomizerSettingsWindow;
-
     std::shared_ptr<AdvancedResolutionSettings::AdvancedResolutionSettingsWindow> mAdvancedResolutionSettingsWindow;
+    std::shared_ptr<SohModalWindow> mModalWindow;
 
     void SetupGuiElements() {
         auto gui = LUS::Context::GetInstance()->GetWindow()->GetGui();
@@ -201,9 +201,13 @@ namespace SohGui {
         gui->AddGuiWindow(mRandomizerSettingsWindow);
         mAdvancedResolutionSettingsWindow = std::make_shared<AdvancedResolutionSettings::AdvancedResolutionSettingsWindow>("gAdvancedResolutionEditorEnabled", "Advanced Resolution Settings");
         gui->AddGuiWindow(mAdvancedResolutionSettingsWindow);
+        mModalWindow = std::make_shared<SohModalWindow>("gOpenWindows.modalWindowEnabled", "Modal Window");
+        gui->AddGuiWindow(mModalWindow);
+        mModalWindow->Show();
     }
 
     void Destroy() {
+        mModalWindow = nullptr;
         mAdvancedResolutionSettingsWindow = nullptr;
         mRandomizerSettingsWindow = nullptr;
         mItemTrackerWindow = nullptr;
@@ -226,5 +230,9 @@ namespace SohGui {
         mSohMenuBar = nullptr;
         mInputViewer = nullptr;
         mInputViewerSettings = nullptr;
+    }
+
+    void RegisterPopup(std::string title, std::string message, std::string button1, std::string button2, std::function<void()> button1callback, std::function<void()> button2callback) {
+        mModalWindow->RegisterPopup(title, message, button1, button2, button1callback, button2callback);
     }
 }
