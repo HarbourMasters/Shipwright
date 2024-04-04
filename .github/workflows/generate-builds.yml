@@ -77,15 +77,15 @@ jobs:
         sudo mv /usr/local/bin/gtar /usr/local/bin/gtar.orig
         sudo cp .github/workflows//gtar /usr/local/bin/gtar
         sudo chmod +x /usr/local/bin/gtar
-    # - name: Cache MacPorts
-    #   id: cache-macports
-    #   if: ${{ !vars.MAC_RUNNER }}
-    #   uses: actions/cache@v2
-    #   with:
-    #     path: /opt/local/
-    #     key: ${{ runner.os }}-macports-${{ hashFiles('.github/workflows/macports-deps.txt') }}
-    #     restore-keys: |
-    #       ${{ runner.os }}-macports-
+    - name: Cache MacPorts
+      id: cache-macports
+      if: ${{ !vars.MAC_RUNNER }}
+      uses: actions/cache@v2
+      with:
+        path: /opt/local/
+        key: ${{ runner.os }}-macports-${{ hashFiles('.github/workflows/macports-deps.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-macports-
     - name: Install MacPorts (if necessary)
       if: ${{ !vars.MAC_RUNNER }}
       run: |
@@ -96,10 +96,6 @@ jobs:
           sudo installer -pkg ./MacPorts-2.9.1-12-Monterey.pkg -target /
         fi
         echo "/opt/local/bin:/opt/local/sbin" >> $GITHUB_PATH
-    # - name: Update MacPorts
-    #   if: ${{ !vars.MAC_RUNNER }}
-    #   run: |
-    #     sudo port selfupdate
     - name: Install dependencies
       if: ${{ !vars.MAC_RUNNER }}
       run: |
