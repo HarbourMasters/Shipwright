@@ -135,29 +135,6 @@ void EnDntDemo_Judge(EnDntDemo* this, PlayState* play) {
             this->judgeTimer = 0;
         }
     } else {
-        if (IS_RANDO) {
-            Player* player = GET_PLAYER(play);
-            switch (Player_GetMask(play)) {
-                case PLAYER_MASK_SKULL:
-                    if (!Flags_GetTreasure(play, 0x1F) && !Player_InBlockingCsMode(play, player)) {
-                        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DEKU_THEATER_SKULL_MASK, GI_STICK_UPGRADE_30);
-                        GiveItemEntryWithoutActor(play, getItemEntry);
-                        player->pendingFlag.flagID = 0x1F;
-                        player->pendingFlag.flagType = FLAG_SCENE_TREASURE;
-                    }
-                    break;
-                case PLAYER_MASK_TRUTH:
-                    if (!Flags_GetTreasure(play, 0x1E) && !Player_InBlockingCsMode(play, player)) {
-                        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DEKU_THEATER_MASK_OF_TRUTH, GI_NUT_UPGRADE_40);
-                        GiveItemEntryWithoutActor(play, getItemEntry);
-                        player->pendingFlag.flagID = 0x1E;
-                        player->pendingFlag.flagType = FLAG_SCENE_TREASURE;
-                    }
-                    break;
-            }
-            return;
-        }
-
         if ((Player_GetMask(play) != 0) && (this->subCamera == SUBCAM_FREE)) {
             this->subCamera = OnePointCutscene_Init(play, 2220, -99, &this->scrubs[3]->actor, MAIN_CAM);
         }
