@@ -100,7 +100,6 @@ jobs:
       if: ${{ !vars.MAC_RUNNER }}
       run: |
         sudo port selfupdate
-        sudo port upgrade outdated
     - name: Install dependencies
       if: ${{ !vars.MAC_RUNNER }}
       run: |
