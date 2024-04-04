@@ -1828,8 +1828,8 @@ MtxF* Matrix_CheckFloats(MtxF* mf, char* file, s32 line);
 void Matrix_SetTranslateScaleMtx2(Mtx* mtx, f32 scaleX, f32 scaleY, f32 scaleZ, f32 translateX, f32 translateY,
                                   f32 translateZ);
 uintptr_t SysUcode_GetUCodeBoot(void);
-uintptr_t SysUcode_GetUCodeBootSize(void);
-uintptr_t SysUcode_GetUCode(void);
+size_t SysUcode_GetUCodeBootSize(void);
+uint32_t SysUcode_GetUCode(void);
 uintptr_t SysUcode_GetUCodeData(void);
 void func_800D2E30(UnkRumbleStruct* arg0);
 void func_800D3140(UnkRumbleStruct* arg0);

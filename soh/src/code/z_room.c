@@ -8,6 +8,8 @@
 #include <string.h>
 #include <assert.h>
 
+#include "public/bridge/gfxbridge.h"
+
 void func_80095AB4(PlayState* play, Room* room, u32 flags);
 void func_80095D04(PlayState* play, Room* room, u32 flags);
 void func_80096F6C(PlayState* play, Room* room, u32 flags);
@@ -369,8 +371,7 @@ void func_80096680(PlayState* play, Room* room, u32 flags) {
         }
 
         if (sp98) {
-            // gSPLoadUcodeL(POLY_OPA_DISP++, rspS2DEX)?
-            //gSPLoadUcodeEx(POLY_OPA_DISP++, OS_K0_TO_PHYSICAL(D_80113070), OS_K0_TO_PHYSICAL(D_801579A0), 0x800);
+            gSPLoadUcodeL(POLY_OPA_DISP++, ucode_s2dex);
 
             {
                 Vec3f sp60;
@@ -383,8 +384,7 @@ void func_80096680(PlayState* play, Room* room, u32 flags) {
                 POLY_OPA_DISP = spA8;
             }
 
-            // gSPLoadUcode(POLY_OPA_DISP++, SysUcode_GetUCode(), SysUcode_GetUCodeData())?
-            gSPLoadUcodeEx(POLY_OPA_DISP++, SysUcode_GetUCode(), SysUcode_GetUCodeData(), 0x800);
+            gSPLoadUcode(POLY_OPA_DISP++, SysUcode_GetUCode());
         }
     }
 
@@ -472,8 +472,7 @@ void func_80096B6C(PlayState* play, Room* room, u32 flags) {
         }
 
         if (sp94) {
-            // gSPLoadUcodeL(POLY_OPA_DISP++, rspS2DEX)?
-            //gSPLoadUcodeEx(POLY_OPA_DISP++, OS_K0_TO_PHYSICAL(D_80113070), OS_K0_TO_PHYSICAL(D_801579A0), 0x800);
+            gSPLoadUcodeL(POLY_OPA_DISP++, ucode_s2dex);
 
             {
                 Vec3f sp5C;
@@ -485,8 +484,7 @@ void func_80096B6C(PlayState* play, Room* room, u32 flags) {
                 POLY_OPA_DISP = spA8;
             }
 
-            // gSPLoadUcode(POLY_OPA_DISP++, SysUcode_GetUCode(), SysUcode_GetUCodeData())?
-            gSPLoadUcodeEx(POLY_OPA_DISP++, SysUcode_GetUCode(), SysUcode_GetUCodeData(), 0x800);
+            gSPLoadUcode(POLY_OPA_DISP++, SysUcode_GetUCode());
         }
     }
 
