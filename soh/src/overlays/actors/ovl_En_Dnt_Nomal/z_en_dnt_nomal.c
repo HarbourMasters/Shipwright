@@ -12,6 +12,7 @@
 #include "overlays/effects/ovl_Effect_Ss_Hahen/z_eff_ss_hahen.h"
 #include "objects/object_hintnuts/object_hintnuts.h"
 #include "vt.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
@@ -252,7 +253,7 @@ void EnDntNomal_TargetWait(EnDntNomal* this, PlayState* play) {
             if (!LINK_IS_ADULT && !Flags_GetItemGetInf(ITEMGETINF_1D)) {
                 this->hitCounter++;
                 if (this->hitCounter >= 3) {
-                    if(IS_RANDO) {
+                    if (!GameInteractor_Should(GI_VB_PLAY_ONEPOINT_ACTOR_CS, true, &this->actor)) {
                         this->actionFunc = EnDntNomal_TargetGivePrize;
                     } else {
                         OnePointCutscene_Init(play, 4140, -99, &this->actor, MAIN_CAM);
