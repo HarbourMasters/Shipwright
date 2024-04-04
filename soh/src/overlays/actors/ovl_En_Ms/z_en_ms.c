@@ -134,7 +134,7 @@ void EnMs_Talk(EnMs* this, PlayState* play) {
                 }
     
                 if (GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_MAGIC_BEAN_SALESMAN, true, this)) {
-                    func_8002F434(&this->actor, play, GI_BEAN, 90.0f, 10.0f);
+                    Actor_OfferGetItem(&this->actor, play, GI_BEAN, 90.0f, 10.0f);
                     this->actionFunc = EnMs_Sell;
                 }
                 return;
@@ -152,7 +152,7 @@ void EnMs_Sell(EnMs* this, PlayState* play) {
         this->actor.parent = NULL;
         this->actionFunc = EnMs_TalkAfterPurchase;
     } else {
-        func_8002F434(&this->actor, play, GI_BEAN, 90.0f, 10.0f);
+        Actor_OfferGetItem(&this->actor, play, GI_BEAN, 90.0f, 10.0f);
     }
 }
 

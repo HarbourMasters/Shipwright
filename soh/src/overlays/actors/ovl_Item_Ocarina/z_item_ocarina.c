@@ -190,7 +190,7 @@ void ItemOcarina_WaitInWater(ItemOcarina* this, PlayState* play) {
         this->actor.draw = NULL;
     } else {
         if (GameInteractor_Should(GI_VB_GIVE_ITEM_OCARINA_OF_TIME, true, NULL)) {
-            func_8002F434(&this->actor, play, GI_OCARINA_OOT, 30.0f, 50.0f);
+            Actor_OfferGetItem(&this->actor, play, GI_OCARINA_OOT, 30.0f, 50.0f);
         }
 
         if ((play->gameplayFrames & 13) == 0) {

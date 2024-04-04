@@ -314,7 +314,7 @@ void func_80ABA654(EnNiwLady* this, PlayState* play) {
 
             if (GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_ANJU_AS_CHILD, true, this)) {
                 this->getItemId = GI_BOTTLE;
-                func_8002F434(&this->actor, play, GI_BOTTLE, 100.0f, 50.0f);
+                Actor_OfferGetItem(&this->actor, play, GI_BOTTLE, 100.0f, 50.0f);
             } else {
                 // Circumvent the item offer action
                 this->actionFunc = func_80ABAC84;
@@ -327,7 +327,7 @@ void func_80ABA654(EnNiwLady* this, PlayState* play) {
         }
         if (this->unk_26C == 1) {
             this->getItemId = GI_RUPEE_PURPLE;
-            func_8002F434(&this->actor, play, GI_RUPEE_PURPLE, 100.0f, 50.0f);
+            Actor_OfferGetItem(&this->actor, play, GI_RUPEE_PURPLE, 100.0f, 50.0f);
             this->actionFunc = func_80ABAC00;
         }
         this->actionFunc = func_80ABA244;
@@ -405,7 +405,7 @@ void func_80ABA9B8(EnNiwLady* this, PlayState* play) {
                 this->actor.parent = NULL;
 
                 if (GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_ANJU_AS_ADULT, true, this)) {
-                    func_8002F434(&this->actor, play, GI_POCKET_EGG, 200.0f, 100.0f);
+                    Actor_OfferGetItem(&this->actor, play, GI_POCKET_EGG, 200.0f, 100.0f);
                     this->actionFunc = func_80ABAC00;
                 } else {
                     // Circumvent the item offer action
@@ -440,7 +440,7 @@ void func_80ABAB08(EnNiwLady* this, PlayState* play) {
                 Message_CloseTextbox(play);
                 this->actor.parent = NULL;
                 if (GameInteractor_Should(GI_VB_TRADE_POCKET_CUCCO, true, this)) {
-                    func_8002F434(&this->actor, play, GI_COJIRO, 200.0f, 100.0f);
+                    Actor_OfferGetItem(&this->actor, play, GI_COJIRO, 200.0f, 100.0f);
                     this->actionFunc = func_80ABAC00;
                 } else {
                     // Circumvent the item offer action
@@ -471,7 +471,7 @@ void func_80ABAC00(EnNiwLady* this, PlayState* play) {
         if (LINK_IS_ADULT) {
             getItemId = !Flags_GetItemGetInf(ITEMGETINF_2C) ? GI_POCKET_EGG : GI_COJIRO;
         }
-        func_8002F434(&this->actor, play, getItemId, 200.0f, 100.0f);
+        Actor_OfferGetItem(&this->actor, play, getItemId, 200.0f, 100.0f);
     }
 }
 

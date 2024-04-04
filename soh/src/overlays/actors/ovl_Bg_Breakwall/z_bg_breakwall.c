@@ -305,7 +305,7 @@ void BgBreakwall_Wait(BgBreakwall* this, PlayState* play) {
             if (GameInteractor_Should(GI_VB_PLAY_ENTRANCE_CS, true, &flag)) {
                 Cutscene_SetSegment(play, gDcOpeningCs);
                 gSaveContext.cutsceneTrigger = 1;
-                func_8002DF54(play, NULL, 0x31);
+                Player_SetCsActionWithHaltedActors(play, NULL, 0x31);
             }
             Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
         }

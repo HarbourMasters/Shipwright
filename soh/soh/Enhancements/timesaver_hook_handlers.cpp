@@ -464,7 +464,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
                             gPlayState->transitionType = TRANS_TYPE_FADE_WHITE;
                             gPlayState->transitionTrigger = TRANS_TRIGGER_START;
                             gSaveContext.nextTransitionType = 2;
-                            func_8002DF54(gPlayState, &player->actor, 8);
+                            Player_SetCsActionWithHaltedActors(gPlayState, &player->actor, 8);
                         }
                     }
                 });

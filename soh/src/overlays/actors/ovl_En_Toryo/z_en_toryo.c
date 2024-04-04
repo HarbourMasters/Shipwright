@@ -317,7 +317,7 @@ void func_80B20768(EnToryo* this, PlayState* play) {
             this->unk_1E4 = 5;
             Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_GV_TRADE_SAW);
         } else {
-            func_8002F434(&this->actor, play, GI_SWORD_BROKEN, 100.0f, 10.0f);
+            Actor_OfferGetItem(&this->actor, play, GI_SWORD_BROKEN, 100.0f, 10.0f);
         }
         return;
     }

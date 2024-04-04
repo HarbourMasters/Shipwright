@@ -1215,7 +1215,7 @@ void func_80A99504(EnKo* this, PlayState* play) {
         this->actor.parent = NULL;
         this->actionFunc = func_80A99560;
     } else {
-        func_8002F434(&this->actor, play, GI_SAW, 120.0f, 10.0f);
+        Actor_OfferGetItem(&this->actor, play, GI_SAW, 120.0f, 10.0f);
     }
 }
 

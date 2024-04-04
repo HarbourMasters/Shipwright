@@ -59,7 +59,7 @@ void ItemBHeart_Update(Actor* thisx, PlayState* play) {
         Flags_SetCollectible(play, 0x1F);
         Actor_Kill(&this->actor);
     } else {
-        func_8002F434(&this->actor, play, GI_HEART_CONTAINER_2, 30.0f, 40.0f);
+        Actor_OfferGetItem(&this->actor, play, GI_HEART_CONTAINER_2, 30.0f, 40.0f);
     }
 }
 

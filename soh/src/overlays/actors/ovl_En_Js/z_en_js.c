@@ -136,7 +136,7 @@ void func_80A89160(EnJs* this, PlayState* play) {
         GetItemEntry itemEntry = ItemTable_Retrieve(GI_BOMBCHUS_10);
         gSaveContext.pendingSale = itemEntry.itemId;
         gSaveContext.pendingSaleMod = itemEntry.modIndex;
-        func_8002F434(&this->actor, play, GI_BOMBCHUS_10, 10000.0f, 50.0f);
+        Actor_OfferGetItem(&this->actor, play, GI_BOMBCHUS_10, 10000.0f, 50.0f);
     }
 }
 

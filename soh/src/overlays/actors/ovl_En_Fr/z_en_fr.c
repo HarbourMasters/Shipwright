@@ -1020,7 +1020,7 @@ void EnFr_Deactivate(EnFr* this, PlayState* play) {
     } else {
         this->actionFunc = EnFr_GiveReward;
         if (GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_FROGS, true, this)) {
-            func_8002F434(&this->actor, play, this->reward, 30.0f, 100.0f);
+            Actor_OfferGetItem(&this->actor, play, this->reward, 30.0f, 100.0f);
         }
     }
 }
@@ -1030,7 +1030,7 @@ void EnFr_GiveReward(EnFr* this, PlayState* play) {
         this->actor.parent = NULL;
         this->actionFunc = EnFr_SetIdle;
     } else {
-        func_8002F434(&this->actor, play, this->reward, 30.0f, 100.0f);
+        Actor_OfferGetItem(&this->actor, play, this->reward, 30.0f, 100.0f);
     }
 }
 

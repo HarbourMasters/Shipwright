@@ -387,7 +387,7 @@ void EnSyatekiMan_EndGame(EnSyatekiMan* this, PlayState* play) {
                         }
                     }
                     if (GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_SHOOTING_GALLERY, true, this)) {
-                        func_8002F434(&this->actor, play, this->getItemId, 2000.0f, 1000.0f);
+                        Actor_OfferGetItem(&this->actor, play, this->getItemId, 2000.0f, 1000.0f);
                     }
                     this->actionFunc = EnSyatekiMan_GivePrize;
                     break;
@@ -421,7 +421,7 @@ void EnSyatekiMan_GivePrize(EnSyatekiMan* this, PlayState* play) {
     if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_SHOOTING_GALLERY, true, this)) {
         this->actionFunc = EnSyatekiMan_FinishPrize;
     } else { 
-        func_8002F434(&this->actor, play, this->getItemId, 2000.0f, 1000.0f);
+        Actor_OfferGetItem(&this->actor, play, this->getItemId, 2000.0f, 1000.0f);
     }
 }
 

@@ -499,7 +499,7 @@ void DoorWarp1_ChildWarpIdle(DoorWarp1* this, PlayState* play) {
         Audio_PlaySoundGeneral(NA_SE_EV_LINK_WARP, &player->actor.projectedPos, 4, &D_801333E0, &D_801333E0,
                                &D_801333E8);
         OnePointCutscene_Init(play, 0x25E7, 999, &this->actor, MAIN_CAM);
-        func_8002DF54(play, &this->actor, 10);
+        Player_SetCsActionWithHaltedActors(play, &this->actor, 10);
 
         player->unk_450.x = this->actor.world.pos.x;
         player->unk_450.z = this->actor.world.pos.z;
@@ -584,7 +584,7 @@ void DoorWarp1_RutoWarpIdle(DoorWarp1* this, PlayState* play) {
 
     if (this->rutoWarpState != WARP_BLUE_RUTO_STATE_INITIAL && DoorWarp1_PlayerInRange(this, play)) {
         this->rutoWarpState = WARP_BLUE_RUTO_STATE_ENTERED;
-        func_8002DF54(play, &this->actor, 10);
+        Player_SetCsActionWithHaltedActors(play, &this->actor, 10);
         this->unk_1B2 = 1;
         DoorWarp1_SetupAction(this, func_80999EE0);
     }
@@ -706,7 +706,7 @@ void DoorWarp1_AdultWarpIdle(DoorWarp1* this, PlayState* play) {
         player = GET_PLAYER(play);
 
         OnePointCutscene_Init(play, 0x25E8, 999, &this->actor, MAIN_CAM);
-        func_8002DF54(play, &this->actor, 10);
+        Player_SetCsActionWithHaltedActors(play, &this->actor, 10);
         player->unk_450.x = this->actor.world.pos.x;
         player->unk_450.z = this->actor.world.pos.z;
         this->unk_1B2 = 20;

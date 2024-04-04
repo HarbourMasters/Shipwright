@@ -68,7 +68,7 @@ void EnBomBowlPit_DetectHit(EnBomBowlPit* this, PlayState* play) {
 
             if (((fabsf(chuPosDiff.x) < 40.0f) || (BREG(2))) && ((fabsf(chuPosDiff.y) < 40.0f) || (BREG(2))) &&
                 ((fabsf(chuPosDiff.z) < 40.0f) || (BREG(2)))) {
-                func_8002DF54(play, NULL, 8);
+                Player_SetCsActionWithHaltedActors(play, NULL, 8);
                 chu->timer = 1;
 
                 this->camId = Play_CreateSubCamera(play);
@@ -107,7 +107,7 @@ void EnBomBowlPit_DetectHit(EnBomBowlPit* this, PlayState* play) {
                 Message_StartTextbox(play, this->actor.textId, NULL);
                 this->unk_154 = TEXT_STATE_EVENT;
                 func_80078884(NA_SE_EV_HIT_SOUND);
-                func_8002DF54(play, NULL, 8);
+                Player_SetCsActionWithHaltedActors(play, NULL, 8);
                 this->status = 1;
                 this->actionFunc = EnBomBowlPit_CameraDollyIn;
                 break;
@@ -167,7 +167,7 @@ void EnBomBowlPit_SetupGivePrize(EnBomBowlPit* this, PlayState* play) {
 
         Play_ClearCamera(play, this->camId);
         Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_ACTIVE);
-        func_8002DF54(play, NULL, 8);
+        Player_SetCsActionWithHaltedActors(play, NULL, 8);
         this->actionFunc = EnBomBowlPit_GivePrize;
     }
 }
@@ -175,7 +175,7 @@ void EnBomBowlPit_SetupGivePrize(EnBomBowlPit* this, PlayState* play) {
 void EnBomBowlPit_GivePrize(EnBomBowlPit* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    func_8002DF54(play, NULL, 7);
+    Player_SetCsActionWithHaltedActors(play, NULL, 7);
     this->getItemId = sGetItemIds[this->prizeIndex];
     this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
 
@@ -203,7 +203,7 @@ void EnBomBowlPit_GivePrize(EnBomBowlPit* this, PlayState* play) {
     player->stateFlags1 &= ~PLAYER_STATE1_IN_CUTSCENE;
     this->actor.parent = NULL;
     if (!IS_RANDO || this->getItemEntry.getItemId == GI_NONE) {
-        func_8002F434(&this->actor, play, this->getItemId, 2000.0f, 1000.0f);
+        Actor_OfferGetItem(&this->actor, play, this->getItemId, 2000.0f, 1000.0f);
     } else {
         GiveItemEntryFromActor(&this->actor, play, this->getItemEntry, 2000.0f, 1000.0f);
     }
@@ -216,7 +216,7 @@ void EnBomBowlPit_WaitTillPrizeGiven(EnBomBowlPit* this, PlayState* play) {
         this->actionFunc = EnBomBowlPit_Reset;
     } else {
          if (!IS_RANDO || this->getItemEntry.getItemId == GI_NONE) {
-            func_8002F434(&this->actor, play, this->getItemId, 2000.0f, 1000.0f);
+            Actor_OfferGetItem(&this->actor, play, this->getItemId, 2000.0f, 1000.0f);
         } else {
             GiveItemEntryFromActor(&this->actor, play, this->getItemEntry, 2000.0f, 1000.0f);
         }

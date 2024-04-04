@@ -732,7 +732,7 @@ void func_8001E5C8(EnItem00* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
     if (this->getItemId != GI_NONE) {
         if (!Actor_HasParent(&this->actor, play)) {
-            func_8002F434(&this->actor, play, this->getItemId, 50.0f, 80.0f);
+            Actor_OfferGetItem(&this->actor, play, this->getItemId, 50.0f, 80.0f);
             this->unk_15A++;
         } else {
             this->getItemId = GI_NONE;

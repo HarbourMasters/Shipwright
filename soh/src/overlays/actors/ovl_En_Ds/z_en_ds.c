@@ -95,7 +95,7 @@ void EnDs_GiveOddPotion(EnDs* this, PlayState* play) {
         this->actionFunc = EnDs_DisplayOddPotionText;
         gSaveContext.timer2State = 0;
     } else {
-        func_8002F434(&this->actor, play, GI_ODD_POTION, 10000.0f, 50.0f);
+        Actor_OfferGetItem(&this->actor, play, GI_ODD_POTION, 10000.0f, 50.0f);
     }
 }
 
@@ -105,7 +105,7 @@ void EnDs_TalkAfterBrewOddPotion(EnDs* this, PlayState* play) {
         this->actionFunc = EnDs_GiveOddPotion;
         u32 itemId = GI_ODD_POTION;
         if (GameInteractor_Should(GI_VB_TRADE_ODD_MUSHROOM, true, this)) {
-            func_8002F434(&this->actor, play, itemId, 10000.0f, 50.0f);
+            Actor_OfferGetItem(&this->actor, play, itemId, 10000.0f, 50.0f);
         }
     }
 }
@@ -178,7 +178,7 @@ void EnDs_GiveBluePotion(EnDs* this, PlayState* play) {
         this->actor.parent = NULL;
         this->actionFunc = EnDs_Talk;
     } else {
-        func_8002F434(&this->actor, play, GI_POTION_BLUE, 10000.0f, 50.0f);
+        Actor_OfferGetItem(&this->actor, play, GI_POTION_BLUE, 10000.0f, 50.0f);
     }
 }
 
@@ -200,7 +200,7 @@ void EnDs_OfferBluePotion(EnDs* this, PlayState* play) {
 
                         if (GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_GRANNYS_SHOP, true, this)) {
                             GetItemEntry itemEntry = ItemTable_Retrieve(GI_POTION_BLUE);
-                            func_8002F434(&this->actor, play, GI_POTION_BLUE, 10000.0f, 50.0f);
+                            Actor_OfferGetItem(&this->actor, play, GI_POTION_BLUE, 10000.0f, 50.0f);
                             gSaveContext.pendingSale = itemEntry.itemId;
                             gSaveContext.pendingSaleMod = itemEntry.modIndex;
                         }

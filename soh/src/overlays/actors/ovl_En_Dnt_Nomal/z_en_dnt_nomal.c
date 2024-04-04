@@ -256,7 +256,7 @@ void EnDntNomal_TargetWait(EnDntNomal* this, PlayState* play) {
                         this->actionFunc = EnDntNomal_TargetGivePrize;
                     } else {
                         OnePointCutscene_Init(play, 4140, -99, &this->actor, MAIN_CAM);
-                        func_8002DF54(play, &this->actor, 1);
+                        Player_SetCsActionWithHaltedActors(play, &this->actor, 1);
                         this->timer4 = 50;
                         this->actionFunc = EnDntNomal_SetupTargetUnburrow;
                     }
@@ -346,7 +346,7 @@ void EnDntNomal_TargetTalk(EnDntNomal* this, PlayState* play) {
         Message_CloseTextbox(play);
         func_8005B1A4(GET_ACTIVE_CAM(play));
         GET_ACTIVE_CAM(play)->csId = 0;
-        func_8002DF54(play, NULL, 8);
+        Player_SetCsActionWithHaltedActors(play, NULL, 8);
         this->actionFunc = EnDntNomal_SetupTargetGivePrize;
     }
 }
@@ -368,7 +368,7 @@ void EnDntNomal_TargetGivePrize(EnDntNomal* this, PlayState* play) {
 
         if (Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_EX_ITEM, itemX, itemY, itemZ, 0,
                                0, 0, EXITEM_BULLET_BAG) == NULL) {
-            func_8002DF54(play, NULL, 7);
+            Player_SetCsActionWithHaltedActors(play, NULL, 7);
             Actor_Kill(&this->actor);
         }
         this->spawnedItem = true;

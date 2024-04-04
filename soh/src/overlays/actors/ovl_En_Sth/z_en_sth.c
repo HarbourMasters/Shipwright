@@ -302,7 +302,7 @@ void EnSth_GivePlayerItem(EnSth* this, PlayState* play) {
     }
 
     if (!IS_RANDO || getItemEntry.getItemId == GI_NONE) {
-        func_8002F434(&this->actor, play, getItemId, 10000.0f, 50.0f);
+        Actor_OfferGetItem(&this->actor, play, getItemId, 10000.0f, 50.0f);
     } else {
         GiveItemEntryFromActor(&this->actor, play, getItemEntry, 10000.0f, 50.0f);
     }

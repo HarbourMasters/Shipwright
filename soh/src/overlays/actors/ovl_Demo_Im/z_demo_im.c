@@ -880,7 +880,7 @@ void func_80986B2C(PlayState* play) {
         }
         play->transitionType = TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_BLACK, TCS_FAST);
         play->transitionTrigger = TRANS_TRIGGER_START;
-        func_8002DF54(play, &player->actor, 8);
+        Player_SetCsActionWithHaltedActors(play, &player->actor, 8);
     }
 }
 

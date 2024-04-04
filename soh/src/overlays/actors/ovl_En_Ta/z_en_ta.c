@@ -707,7 +707,7 @@ void func_80B154FC(EnTa* this, PlayState* play) {
                     switch (EnTa_GetSuperCuccosCount(this, play)) {
                         case 1:
                             gSaveContext.timer1State = 0;
-                            func_8002DF54(play, &this->actor, 1);
+                            Player_SetCsActionWithHaltedActors(play, &this->actor, 1);
 
                             Message_StartTextbox(play, 0x2084, &this->actor);
                             this->actionFunc = func_80B15424;
@@ -749,7 +749,7 @@ void func_80B154FC(EnTa* this, PlayState* play) {
         this->unk_2E0 &= ~0x200;
         func_80078884(NA_SE_SY_FOUND);
         gSaveContext.timer1State = 0;
-        func_8002DF54(play, &this->actor, 1);
+        Player_SetCsActionWithHaltedActors(play, &this->actor, 1);
         Message_StartTextbox(play, 0x2081, &this->actor);
         this->actionFunc = func_80B15424;
         func_80B14E28(this, play);
@@ -802,7 +802,7 @@ void func_80B1585C(EnTa* this, PlayState* play) {
         Animation_Change(&this->skelAnime, &gTalonSitWakeUpAnim, 1.0f,
                          Animation_GetLastFrame(&gTalonSitWakeUpAnim) - 1.0f,
                          Animation_GetLastFrame(&gTalonSitWakeUpAnim), ANIMMODE_ONCE, 10.0f);
-        func_8002DF54(play, &this->actor, 7);
+        Player_SetCsActionWithHaltedActors(play, &this->actor, 7);
     }
 }
 
@@ -817,7 +817,7 @@ void func_80B15AD4(EnTa* this, PlayState* play) {
         func_800F5ACC(NA_BGM_TIMED_MINI_GAME);
         this->unk_2E0 |= 0x200;
         Message_CloseTextbox(play);
-        func_8002DF54(play, &this->actor, 1);
+        Player_SetCsActionWithHaltedActors(play, &this->actor, 1);
     }
 
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(play)) {
@@ -877,10 +877,10 @@ void func_80B15E80(EnTa* this, PlayState* play) {
         }
         this->unk_2E0 &= ~0x2;
     } else if (this->unk_2E0 & 2) {
-        func_8002F434(&this->actor, play, GI_MILK, 10000.0f, 50.0f);
+        Actor_OfferGetItem(&this->actor, play, GI_MILK, 10000.0f, 50.0f);
     } else {
         if (!IS_RANDO) {
-            func_8002F434(&this->actor, play, GI_MILK_BOTTLE, 10000.0f, 50.0f);
+            Actor_OfferGetItem(&this->actor, play, GI_MILK_BOTTLE, 10000.0f, 50.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LLR_TALONS_CHICKENS, GI_MILK_BOTTLE);
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 10000.0f, 50.0f);
@@ -895,7 +895,7 @@ void func_80B15F54(EnTa* this, PlayState* play) {
         this->unk_2E0 &= ~0x2;
         func_80B13AA0(this, func_80B15E80, func_80B16938);
         if (!IS_RANDO) {
-            func_8002F434(&this->actor, play, GI_MILK_BOTTLE, 10000.0f, 50.0f);
+            Actor_OfferGetItem(&this->actor, play, GI_MILK_BOTTLE, 10000.0f, 50.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LLR_TALONS_CHICKENS, GI_MILK_BOTTLE);
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 10000.0f, 50.0f);
@@ -923,7 +923,7 @@ void func_80B15FE8(EnTa* this, PlayState* play) {
                         GetItemEntry itemEntry = ItemTable_Retrieve(GI_MILK);
                         gSaveContext.pendingSale = itemEntry.itemId;
                         gSaveContext.pendingSaleMod = itemEntry.modIndex;
-                        func_8002F434(&this->actor, play, GI_MILK, 10000.0f, 50.0f);
+                        Actor_OfferGetItem(&this->actor, play, GI_MILK, 10000.0f, 50.0f);
                         break;
                 }
                 break;
@@ -1014,7 +1014,7 @@ void func_80B1642C(EnTa* this, PlayState* play) {
             Message_CloseTextbox(play);
             this->unk_2E0 |= 2;
             func_80B13AA0(this, func_80B15E80, func_80B16938);
-            func_8002F434(&this->actor, play, GI_MILK, 10000.0f, 50.0f);
+            Actor_OfferGetItem(&this->actor, play, GI_MILK, 10000.0f, 50.0f);
         } else {
             Message_ContinueTextbox(play, 0x208A);
             func_80B13AA0(this, func_80B15E28, func_80B16938);
