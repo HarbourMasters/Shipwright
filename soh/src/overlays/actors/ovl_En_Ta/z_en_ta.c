@@ -16,21 +16,21 @@ void EnTa_Destroy(Actor* thisx, PlayState* play);
 void EnTa_Update(Actor* thisx, PlayState* play);
 void EnTa_Draw(Actor* thisx, PlayState* play);
 
-void func_80B14634(EnTa* this, PlayState* play);
-void func_80B146F8(EnTa* this, PlayState* play);
-void func_80B14754(EnTa* this, PlayState* play);
-void func_80B14C18(EnTa* this, PlayState* play);
-void func_80B14CAC(EnTa* this, PlayState* play);
-void func_80B14D98(EnTa* this, PlayState* play);
-void func_80B154FC(EnTa* this, PlayState* play);
-void func_80B16504(EnTa* this, PlayState* play);
-void func_80B16608(EnTa* this, PlayState* play);
-void func_80B166CC(EnTa* this);
-void func_80B16700(EnTa* this);
-void func_80B167C0(EnTa* this);
-void func_80B167FC(EnTa* this);
-void func_80B16854(EnTa* this);
-void func_80B16938(EnTa* this);
+void EnTa_IdleAsleepInCastle(EnTa* this, PlayState* play);
+void EnTa_IdleAsleepInLonLonHouse(EnTa* this, PlayState* play);
+void EnTa_IdleAsleepInKakariko(EnTa* this, PlayState* play);
+void EnTa_IdleAwakeInCastle(EnTa* this, PlayState* play);
+void EnTa_IdleAwakeInKakariko(EnTa* this, PlayState* play);
+void EnTa_IdleAtRanch(EnTa* this, PlayState* play);
+void EnTa_RunCuccoGame(EnTa* this, PlayState* play);
+void EnTa_IdleSittingInLonLonHouse(EnTa* this, PlayState* play);
+void EnTa_IdleAfterCuccoGameFinished(EnTa* this, PlayState* play);
+void EnTa_BlinkWaitUntilNext(EnTa* this);
+void EnTa_BlinkAdvanceState(EnTa* this);
+void EnTa_AnimRepeatCurrent(EnTa* this);
+void EnTa_AnimSleeping(EnTa* this);
+void EnTa_AnimSitSleeping(EnTa* this);
+void EnTa_AnimRunToEnd(EnTa* this);
 
 const ActorInit En_Ta_InitVars = {
     ACTOR_EN_TA,
@@ -65,7 +65,7 @@ static ColliderCylinderInit sCylinderInit = {
     { 30, 40, 0, { 0, 0, 0 } },
 };
 
-void func_80B13AA0(EnTa* this, EnTaActionFunc arg1, EnTaUnkFunc arg2) {
+void EnTa_SetupAction(EnTa* this, EnTaActionFunc arg1, EnTaUnkFunc arg2) {
     this->actionFunc = arg1;
     this->unk_260 = arg2;
 }
@@ -114,7 +114,7 @@ void EnTa_Init(Actor* thisx, PlayState* play2) {
     this->unk_2CE = 0;
     this->unk_2E2 = 0;
     this->blinkTimer = 20;
-    this->unk_2B0 = func_80B166CC;
+    this->unk_2B0 = EnTa_BlinkWaitUntilNext;
     Actor_SetScale(&this->actor, 0.01f);
     this->actor.targetMode = 6;
     this->actor.velocity.y = -4.0f;
@@ -129,12 +129,12 @@ void EnTa_Init(Actor* thisx, PlayState* play2) {
             } else if (!LINK_IS_ADULT) {
                 Actor_Kill(&this->actor);
             } else if (Flags_GetEventChkInf(EVENTCHKINF_TALON_WOKEN_IN_KAKARIKO)) {
-                func_80B13AA0(this, func_80B14CAC, func_80B167C0);
+                EnTa_SetupAction(this, EnTa_IdleAwakeInKakariko, EnTa_AnimRepeatCurrent);
                 this->eyeIndex = 0;
                 Animation_PlayOnce(&this->skelAnime, &gTalonStandAnim);
                 this->currentAnimation = &gTalonStandAnim;
             } else {
-                func_80B13AA0(this, func_80B14754, func_80B167FC);
+                EnTa_SetupAction(this, EnTa_IdleAsleepInKakariko, EnTa_AnimSleeping);
                 this->eyeIndex = 2;
                 Animation_PlayOnce(&this->skelAnime, &gTalonSleepAnim);
                 this->currentAnimation = &gTalonSleepAnim;
@@ -151,7 +151,7 @@ void EnTa_Init(Actor* thisx, PlayState* play2) {
                 Actor_Kill(&this->actor);
                 osSyncPrintf(VT_FGCOL(CYAN) " 夜はいない \n" VT_RST);
             } else {
-                func_80B13AA0(this, func_80B14D98, func_80B167C0);
+                EnTa_SetupAction(this, EnTa_IdleAtRanch, EnTa_AnimRepeatCurrent);
                 this->eyeIndex = 0;
                 Animation_PlayOnce(&this->skelAnime, &gTalonStandAnim);
                 this->currentAnimation = &gTalonStandAnim;
@@ -163,12 +163,12 @@ void EnTa_Init(Actor* thisx, PlayState* play2) {
                 if (Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE)) {
                     Actor_Kill(&this->actor);
                 } else if (Flags_GetEventChkInf(EVENTCHKINF_TALON_WOKEN_IN_CASTLE)) {
-                    func_80B13AA0(this, func_80B14C18, func_80B167C0);
+                    EnTa_SetupAction(this, EnTa_IdleAwakeInCastle, EnTa_AnimRepeatCurrent);
                     this->eyeIndex = 0;
                     Animation_PlayOnce(&this->skelAnime, &gTalonStandAnim);
                     this->currentAnimation = &gTalonStandAnim;
                 } else {
-                    func_80B13AA0(this, func_80B14634, func_80B167FC);
+                    EnTa_SetupAction(this, EnTa_IdleAsleepInCastle, EnTa_AnimSleeping);
                     this->eyeIndex = 2;
                     Animation_PlayOnce(&this->skelAnime, &gTalonSleepAnim);
                     this->currentAnimation = &gTalonSleepAnim;
@@ -196,19 +196,19 @@ void EnTa_Init(Actor* thisx, PlayState* play2) {
                         func_80B13AAC(this, play);
 
                         if (gSaveContext.eventInf[0] & 0x400) {
-                            func_80B13AA0(this, func_80B16608, func_80B16938);
+                            EnTa_SetupAction(this, EnTa_IdleAfterCuccoGameFinished, EnTa_AnimRunToEnd);
                             Animation_Change(&this->skelAnime, &gTalonSitWakeUpAnim, 1.0f,
                                              Animation_GetLastFrame(&gTalonSitWakeUpAnim) - 1.0f,
                                              Animation_GetLastFrame(&gTalonSitWakeUpAnim), ANIMMODE_ONCE, 0.0f);
                             gSaveContext.eventInf[0] &= ~0x400;
                         } else {
-                            func_80B13AA0(this, func_80B16504, func_80B16854);
+                            EnTa_SetupAction(this, EnTa_IdleSittingInLonLonHouse, EnTa_AnimSitSleeping);
                             this->eyeIndex = 0;
                             Animation_PlayOnce(&this->skelAnime, &gTalonSitSleepingAnim);
                             this->currentAnimation = &gTalonSitSleepingAnim;
                         }
                     } else {
-                        func_80B13AA0(this, func_80B146F8, func_80B167FC);
+                        EnTa_SetupAction(this, EnTa_IdleAsleepInLonLonHouse, EnTa_AnimSleeping);
                         this->eyeIndex = 2;
                         Animation_PlayOnce(&this->skelAnime, &gTalonSleepAnim);
                         this->currentAnimation = &gTalonSleepAnim;
@@ -216,7 +216,7 @@ void EnTa_Init(Actor* thisx, PlayState* play2) {
                     }
                 }
             } else {
-                func_80B13AA0(this, func_80B14634, func_80B167FC);
+                EnTa_SetupAction(this, EnTa_IdleAsleepInCastle, EnTa_AnimSleeping);
                 this->eyeIndex = 2;
                 Animation_PlayOnce(&this->skelAnime, &gTalonSleepAnim);
                 this->currentAnimation = &gTalonSleepAnim;
@@ -265,22 +265,22 @@ s32 func_80B142F4(EnTa* this, PlayState* play, u16 textId) {
 
 void func_80B14398(EnTa* this, PlayState* play) {
     if (Actor_TextboxIsClosing(&this->actor, play)) {
-        func_80B13AA0(this, func_80B14754, func_80B167FC);
+        EnTa_SetupAction(this, EnTa_IdleAsleepInKakariko, EnTa_AnimSleeping);
     }
 }
 
 void func_80B143D4(EnTa* this, PlayState* play) {
     if (Actor_TextboxIsClosing(&this->actor, play)) {
-        func_80B13AA0(this, func_80B146F8, func_80B167FC);
+        EnTa_SetupAction(this, EnTa_IdleAsleepInLonLonHouse, EnTa_AnimSleeping);
     }
 }
 
 void func_80B14410(EnTa* this) {
     if (!LINK_IS_ADULT) {
-        func_80B13AA0(this, func_80B14C18, func_80B167C0);
+        EnTa_SetupAction(this, EnTa_IdleAwakeInCastle, EnTa_AnimRepeatCurrent);
         Flags_SetEventChkInf(EVENTCHKINF_TALON_WOKEN_IN_CASTLE);
     } else {
-        func_80B13AA0(this, func_80B14CAC, func_80B167C0);
+        EnTa_SetupAction(this, EnTa_IdleAwakeInKakariko, EnTa_AnimRepeatCurrent);
         Flags_SetEventChkInf(EVENTCHKINF_TALON_WOKEN_IN_KAKARIKO);
     }
 }
@@ -297,12 +297,12 @@ void func_80B144D8(EnTa* this, PlayState* play) {
     if (Actor_TextboxIsClosing(&this->actor, play)) {
         func_80B14410(this);
         this->blinkTimer = 1;
-        this->unk_2B0 = func_80B16700;
+        this->unk_2B0 = EnTa_BlinkAdvanceState;
     }
 
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) {
         this->eyeIndex = 1;
-        func_80B13AA0(this, func_80B1448C, func_80B167C0);
+        EnTa_SetupAction(this, func_80B1448C, EnTa_AnimRepeatCurrent);
     }
     func_80B14248(this);
     this->unk_2E0 |= 4;
@@ -312,7 +312,7 @@ void func_80B14570(EnTa* this, PlayState* play) {
     this->unk_2E0 |= 4;
 
     if (this->unk_2CC == 0) {
-        func_80B13AA0(this, func_80B144D8, func_80B167C0);
+        EnTa_SetupAction(this, func_80B144D8, EnTa_AnimRepeatCurrent);
         this->unk_2CE = 3;
         this->unk_2CC = 60;
         Animation_PlayOnce(&this->skelAnime, &gTalonWakeUpAnim);
@@ -323,11 +323,11 @@ void func_80B14570(EnTa* this, PlayState* play) {
 
 void func_80B145F8(EnTa* this, PlayState* play) {
     if (Actor_TextboxIsClosing(&this->actor, play)) {
-        func_80B13AA0(this, func_80B14634, func_80B167FC);
+        EnTa_SetupAction(this, EnTa_IdleAsleepInCastle, EnTa_AnimSleeping);
     }
 }
 
-void func_80B14634(EnTa* this, PlayState* play) {
+void EnTa_IdleAsleepInCastle(EnTa* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
@@ -336,14 +336,14 @@ void func_80B14634(EnTa* this, PlayState* play) {
         switch (exchangeItemId) {
             case EXCH_ITEM_CHICKEN:
                 player->actor.textId = 0x702B;
-                func_80B13AA0(this, func_80B14570, func_80B167C0);
+                EnTa_SetupAction(this, func_80B14570, EnTa_AnimRepeatCurrent);
                 this->unk_2CC = 40;
                 break;
             default:
                 if (exchangeItemId != EXCH_ITEM_NONE) {
                     player->actor.textId = 0x702A;
                 }
-                func_80B13AA0(this, func_80B145F8, func_80B167FC);
+                EnTa_SetupAction(this, func_80B145F8, EnTa_AnimSleeping);
                 break;
         }
     } else {
@@ -352,15 +352,15 @@ void func_80B14634(EnTa* this, PlayState* play) {
     }
 }
 
-void func_80B146F8(EnTa* this, PlayState* play) {
+void EnTa_IdleAsleepInLonLonHouse(EnTa* this, PlayState* play) {
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
-        func_80B13AA0(this, func_80B143D4, func_80B167FC);
+        EnTa_SetupAction(this, func_80B143D4, EnTa_AnimSleeping);
     }
     this->actor.textId = 0x204B;
     func_8002F2CC(&this->actor, play, 100.0f);
 }
 
-void func_80B14754(EnTa* this, PlayState* play) {
+void EnTa_IdleAsleepInKakariko(EnTa* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
@@ -369,14 +369,14 @@ void func_80B14754(EnTa* this, PlayState* play) {
         switch (exchangeItemId) {
             case EXCH_ITEM_POCKET_CUCCO:
                 player->actor.textId = 0x702B;
-                func_80B13AA0(this, func_80B14570, func_80B167C0);
+                EnTa_SetupAction(this, func_80B14570, EnTa_AnimRepeatCurrent);
                 this->unk_2CC = 40;
                 break;
             default:
                 if (exchangeItemId != EXCH_ITEM_NONE) {
                     player->actor.textId = 0x5015;
                 }
-                func_80B13AA0(this, func_80B14398, func_80B167FC);
+                EnTa_SetupAction(this, func_80B14398, EnTa_AnimSleeping);
                 break;
         }
     } else {
@@ -411,7 +411,7 @@ void func_80B1490C(EnTa* this, PlayState* play) {
     this->actor.shape.rot.y += 0xC00;
 
     if (this->unk_2CC == 0) {
-        func_80B13AA0(this, func_80B14898, func_80B167C0);
+        EnTa_SetupAction(this, func_80B14898, EnTa_AnimRepeatCurrent);
         this->unk_2CC = 60;
     }
 }
@@ -421,7 +421,7 @@ void func_80B1496C(EnTa* this, PlayState* play) {
     func_80B14818(this, play);
 
     if (this->unk_2CC == 0) {
-        func_80B13AA0(this, func_80B1490C, func_80B167C0);
+        EnTa_SetupAction(this, func_80B1490C, EnTa_AnimRepeatCurrent);
         this->unk_2CC = 5;
     }
 }
@@ -431,7 +431,7 @@ void func_80B149F4(EnTa* this, PlayState* play) {
     this->actor.shape.rot.y -= 0xD00;
 
     if (this->unk_2CC == 0) {
-        func_80B13AA0(this, func_80B1496C, func_80B167C0);
+        EnTa_SetupAction(this, func_80B1496C, EnTa_AnimRepeatCurrent);
         this->unk_2CC = 65;
     }
 }
@@ -445,7 +445,7 @@ void func_80B14A54(EnTa* this, PlayState* play) {
     }
     if (this->unk_2CC == 0) {
         this->unk_2CC = 5;
-        func_80B13AA0(this, func_80B149F4, func_80B167C0);
+        EnTa_SetupAction(this, func_80B149F4, EnTa_AnimRepeatCurrent);
     }
 }
 
@@ -455,7 +455,7 @@ void func_80B14AF4(EnTa* this, PlayState* play) {
 
     if (this->unk_2CC == 0) {
         Audio_PlayActorSound2(&this->actor, NA_SE_VO_TA_CRY_1);
-        func_80B13AA0(this, func_80B14A54, func_80B167C0);
+        EnTa_SetupAction(this, func_80B14A54, EnTa_AnimRepeatCurrent);
         this->unk_2CC = 65;
         this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
     }
@@ -464,7 +464,7 @@ void func_80B14AF4(EnTa* this, PlayState* play) {
 void func_80B14B6C(EnTa* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT) {
         s16 csCamIdx = OnePointCutscene_Init(play, 4175, -99, &this->actor, MAIN_CAM);
-        func_80B13AA0(this, func_80B14AF4, func_80B167C0);
+        EnTa_SetupAction(this, func_80B14AF4, EnTa_AnimRepeatCurrent);
         this->unk_2CC = 5;
         Flags_SetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE);
         if (GameInteractor_Should(GI_VB_PLAY_ONEPOINT_ACTOR_CS, true, this)) {
@@ -476,42 +476,42 @@ void func_80B14B6C(EnTa* this, PlayState* play) {
     this->unk_2E0 |= 1;
 }
 
-void func_80B14C18(EnTa* this, PlayState* play) {
+void EnTa_IdleAwakeInCastle(EnTa* this, PlayState* play) {
     if (func_80B142F4(this, play, 0x702C)) {
-        func_80B13AA0(this, func_80B14B6C, func_80B167C0);
+        EnTa_SetupAction(this, func_80B14B6C, EnTa_AnimRepeatCurrent);
     }
     func_80B14248(this);
 }
 
 void func_80B14C60(EnTa* this, PlayState* play) {
     if (Actor_TextboxIsClosing(&this->actor, play)) {
-        func_80B13AA0(this, func_80B14CAC, func_80B167C0);
+        EnTa_SetupAction(this, EnTa_IdleAwakeInKakariko, EnTa_AnimRepeatCurrent);
     }
     this->unk_2E0 |= 1;
 }
 
-void func_80B14CAC(EnTa* this, PlayState* play) {
+void EnTa_IdleAwakeInKakariko(EnTa* this, PlayState* play) {
     if (Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED)) {
         if (func_80B142F4(this, play, 0x5017)) {
-            func_80B13AA0(this, func_80B14C60, func_80B167C0);
+            EnTa_SetupAction(this, func_80B14C60, EnTa_AnimRepeatCurrent);
             Flags_SetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_KAKARIKO);
         }
     } else if (func_80B142F4(this, play, 0x5016)) {
-        func_80B13AA0(this, func_80B14C60, func_80B167C0);
+        EnTa_SetupAction(this, func_80B14C60, EnTa_AnimRepeatCurrent);
     }
     func_80B14248(this);
 }
 
 void func_80B14D4C(EnTa* this, PlayState* play) {
     if (Actor_TextboxIsClosing(&this->actor, play)) {
-        func_80B13AA0(this, func_80B14D98, func_80B167C0);
+        EnTa_SetupAction(this, EnTa_IdleAtRanch, EnTa_AnimRepeatCurrent);
     }
     this->unk_2E0 |= 1;
 }
 
-void func_80B14D98(EnTa* this, PlayState* play) {
+void EnTa_IdleAtRanch(EnTa* this, PlayState* play) {
     if (func_80B142F4(this, play, 0x2055)) {
-        func_80B13AA0(this, func_80B14D4C, func_80B167C0);
+        EnTa_SetupAction(this, func_80B14D4C, EnTa_AnimRepeatCurrent);
     }
 }
 
@@ -551,7 +551,7 @@ void func_80B14EDC(EnTa* this, PlayState* play) {
 }
 
 void func_80B14F20(EnTa* this, EnTaActionFunc arg1) {
-    func_80B13AA0(this, arg1, func_80B16854);
+    EnTa_SetupAction(this, arg1, EnTa_AnimSitSleeping);
     this->eyeIndex = 2;
     Animation_Change(&this->skelAnime, &gTalonSitSleepingAnim, 1.0f, 0.0f,
                      Animation_GetLastFrame(&gTalonSitSleepingAnim), ANIMMODE_ONCE, -5.0f);
@@ -561,7 +561,7 @@ void func_80B14F20(EnTa* this, EnTaActionFunc arg1) {
 
 void func_80B14FAC(EnTa* this, EnTaActionFunc arg1) {
     this->eyeIndex = 1;
-    func_80B13AA0(this, arg1, func_80B16938);
+    EnTa_SetupAction(this, arg1, EnTa_AnimRunToEnd);
     this->unk_2E0 &= ~0x10;
     Animation_Change(&this->skelAnime, &gTalonSitWakeUpAnim, 1.0f, 0.0f, Animation_GetLastFrame(&gTalonSitWakeUpAnim),
                      ANIMMODE_ONCE, -5.0f);
@@ -570,7 +570,7 @@ void func_80B14FAC(EnTa* this, EnTaActionFunc arg1) {
 void func_80B15034(EnTa* this, PlayState* play) {
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(play)) {
         Message_CloseTextbox(play);
-        func_80B14F20(this, func_80B16504);
+        func_80B14F20(this, EnTa_IdleSittingInLonLonHouse);
         func_80B13AAC(this, play);
     }
     this->unk_2E0 |= 1;
@@ -602,7 +602,7 @@ void func_80B15100(EnTa* this, PlayState* play) {
         this->unk_2E0 &= ~0x10;
         Message_CloseTextbox(play);
         unk_2CA = this->unk_2CA;
-        this->actionFunc = func_80B154FC;
+        this->actionFunc = EnTa_RunCuccoGame;
         this->superCuccos[unk_2CA]->actor.gravity = 0.1f;
         this->superCuccos[unk_2CA]->actor.velocity.y = 0.0f;
         this->superCuccos[unk_2CA]->actor.speedXZ = 0.0f;
@@ -687,7 +687,7 @@ void func_80B15424(EnTa* this, PlayState* play) {
     }
 }
 
-void func_80B154FC(EnTa* this, PlayState* play) {
+void EnTa_RunCuccoGame(EnTa* this, PlayState* play) {
     s32 i;
 
     for (i = 0; i < ARRAY_COUNT(this->superCuccos); i++) {
@@ -797,7 +797,7 @@ void func_80B1585C(EnTa* this, PlayState* play) {
     }
 
     if (this->unk_2CC == 0) {
-        func_80B13AA0(this, func_80B154FC, func_80B16938);
+        EnTa_SetupAction(this, EnTa_RunCuccoGame, EnTa_AnimRunToEnd);
         this->unk_2E0 &= ~0x10;
         Animation_Change(&this->skelAnime, &gTalonSitWakeUpAnim, 1.0f,
                          Animation_GetLastFrame(&gTalonSitWakeUpAnim) - 1.0f,
@@ -808,7 +808,7 @@ void func_80B1585C(EnTa* this, PlayState* play) {
 
 void func_80B15AD4(EnTa* this, PlayState* play) {
     if (this->unk_2CC == 0 && this->unk_2E0 & 0x20) {
-        func_80B13AA0(this, func_80B1585C, func_80B16938);
+        EnTa_SetupAction(this, func_80B1585C, EnTa_AnimRunToEnd);
         this->unk_2E0 &= ~0x10;
         Animation_Change(&this->skelAnime, &gTalonSitHandsUpAnim, 1.0f, 1.0f,
                          Animation_GetLastFrame(&gTalonSitHandsUpAnim), ANIMMODE_ONCE, 0.0f);
@@ -829,7 +829,7 @@ void func_80B15AD4(EnTa* this, PlayState* play) {
 
 void func_80B15BF8(EnTa* this, PlayState* play) {
     if (this->unk_2E0 & 0x10) {
-        func_80B13AA0(this, func_80B15AD4, func_80B16938);
+        EnTa_SetupAction(this, func_80B15AD4, EnTa_AnimRunToEnd);
         this->unk_2E0 &= ~0x10;
         Animation_Change(&this->skelAnime, &gTalonSitHandsUpAnim, 1.0f, 0.0f, 1.0f, ANIMMODE_ONCE, 0.0f);
         this->unk_2CC = 5;
@@ -842,7 +842,7 @@ void func_80B15BF8(EnTa* this, PlayState* play) {
 
 void func_80B15CC8(EnTa* this, PlayState* play) {
     if (this->unk_2E0 & 0x10) {
-        func_80B13AA0(this, func_80B15BF8, func_80B16938);
+        EnTa_SetupAction(this, func_80B15BF8, EnTa_AnimRunToEnd);
         this->unk_2E0 &= ~0x10;
         Animation_Change(&this->skelAnime, &gTalonSitHandsUpAnim, -1.0f, 29.0f, 0.0f, ANIMMODE_ONCE, 10.0f);
     }
@@ -853,25 +853,25 @@ void func_80B15CC8(EnTa* this, PlayState* play) {
 }
 
 void func_80B15D90(EnTa* this, PlayState* play) {
-    func_80B13AA0(this, func_80B15CC8, func_80B16938);
+    EnTa_SetupAction(this, func_80B15CC8, EnTa_AnimRunToEnd);
     this->unk_2E0 &= ~0x10;
     Animation_Change(&this->skelAnime, &gTalonSitHandsUpAnim, 1.0f, 8.0f, 29.0f, ANIMMODE_ONCE, -10.0f);
     Message_ContinueTextbox(play, 0x2080);
     this->unk_2E0 &= ~0x20;
 }
 
-void func_80B15E28(EnTa* this, PlayState* play) {
+void EnTa_TalkGeneralInLonLonHouse(EnTa* this, PlayState* play) {
     if (Actor_TextboxIsClosing(&this->actor, play)) {
-        func_80B14F20(this, func_80B16504);
+        func_80B14F20(this, EnTa_IdleSittingInLonLonHouse);
         func_80B13AAC(this, play);
     }
     this->unk_2E0 |= 1;
 }
 
-void func_80B15E80(EnTa* this, PlayState* play) {
+void EnTa_GiveItemInLonLonHouse(EnTa* this, PlayState* play) {
     if (Actor_HasParent(&this->actor, play)) {
         this->actor.parent = NULL;
-        this->actionFunc = func_80B15E28;
+        this->actionFunc = EnTa_TalkGeneralInLonLonHouse;
         if (!(this->unk_2E0 & 0x2)) {
             Flags_SetItemGetInf(ITEMGETINF_TALON_BOTTLE);
         }
@@ -889,11 +889,11 @@ void func_80B15E80(EnTa* this, PlayState* play) {
     this->unk_2E0 |= 1;
 }
 
-void func_80B15F54(EnTa* this, PlayState* play) {
+void EnTa_TalkAfterCuccoGameFirstWon(EnTa* this, PlayState* play) {
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(play)) {
         Message_CloseTextbox(play);
         this->unk_2E0 &= ~0x2;
-        func_80B13AA0(this, func_80B15E80, func_80B16938);
+        EnTa_SetupAction(this, EnTa_GiveItemInLonLonHouse, EnTa_AnimRunToEnd);
         if (!IS_RANDO) {
             Actor_OfferGetItem(&this->actor, play, GI_MILK_BOTTLE, 10000.0f, 50.0f);
         } else {
@@ -910,15 +910,15 @@ void func_80B15FE8(EnTa* this, PlayState* play) {
                 switch (func_80B14DD8()) {
                     case 0:
                         Message_ContinueTextbox(play, 0x85);
-                        func_80B13AA0(this, func_80B15034, func_80B16938);
+                        EnTa_SetupAction(this, func_80B15034, EnTa_AnimRunToEnd);
                         break;
                     case 1:
                         Message_ContinueTextbox(play, 0x208A);
-                        func_80B13AA0(this, func_80B15E28, func_80B16938);
+                        EnTa_SetupAction(this, EnTa_TalkGeneralInLonLonHouse, EnTa_AnimRunToEnd);
                         break;
                     case 2:
                         this->unk_2E0 |= 2;
-                        func_80B13AA0(this, func_80B15E80, func_80B16938);
+                        EnTa_SetupAction(this, EnTa_GiveItemInLonLonHouse, EnTa_AnimRunToEnd);
                         Rupees_ChangeBy(-30);
                         GetItemEntry itemEntry = ItemTable_Retrieve(GI_MILK);
                         gSaveContext.pendingSale = itemEntry.itemId;
@@ -930,14 +930,14 @@ void func_80B15FE8(EnTa* this, PlayState* play) {
             case 1:
                 if (gSaveContext.rupees < 10) {
                     Message_ContinueTextbox(play, 0x85);
-                    func_80B13AA0(this, func_80B15034, func_80B16938);
+                    EnTa_SetupAction(this, func_80B15034, EnTa_AnimRunToEnd);
                 } else {
                     Rupees_ChangeBy(-10);
                     func_80B15D90(this, play);
                 }
                 break;
             case 2:
-                func_80B14F20(this, func_80B16504);
+                func_80B14F20(this, EnTa_IdleSittingInLonLonHouse);
                 func_80B13AAC(this, play);
                 break;
         }
@@ -962,14 +962,14 @@ void func_80B161C0(EnTa* this, PlayState* play) {
             case 0:
                 if (gSaveContext.rupees < price) {
                     Message_ContinueTextbox(play, 0x85);
-                    func_80B13AA0(this, func_80B15034, func_80B16938);
+                    EnTa_SetupAction(this, func_80B15034, EnTa_AnimRunToEnd);
                 } else {
                     Rupees_ChangeBy(-price);
                     func_80B15D90(this, play);
                 }
                 break;
             case 1:
-                func_80B14F20(this, func_80B16504);
+                func_80B14F20(this, EnTa_IdleSittingInLonLonHouse);
                 func_80B13AAC(this, play);
                 break;
         }
@@ -983,7 +983,7 @@ void func_80B161C0(EnTa* this, PlayState* play) {
 void func_80B162E8(EnTa* this, PlayState* play) {
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE) && Message_ShouldAdvance(play)) {
         Message_ContinueTextbox(play, 0x2087);
-        func_80B13AA0(this, func_80B15F54, func_80B16938);
+        EnTa_SetupAction(this, EnTa_TalkAfterCuccoGameFirstWon, EnTa_AnimRunToEnd);
     }
 
     if (this->unk_2E0 & 0x10) {
@@ -996,10 +996,10 @@ void func_80B16364(EnTa* this, PlayState* play) {
         Flags_SetInfTable(INFTABLE_TALKED_TO_TALON_IN_RANCH_HOUSE);
         if (Flags_GetItemGetInf(ITEMGETINF_TALON_BOTTLE)) {
             Message_ContinueTextbox(play, 0x208B);
-            func_80B13AA0(this, func_80B15FE8, func_80B16938);
+            EnTa_SetupAction(this, func_80B15FE8, EnTa_AnimRunToEnd);
         } else {
             Message_ContinueTextbox(play, 0x207F);
-            func_80B13AA0(this, func_80B161C0, func_80B16938);
+            EnTa_SetupAction(this, func_80B161C0, EnTa_AnimRunToEnd);
         }
     }
 
@@ -1013,16 +1013,16 @@ void func_80B1642C(EnTa* this, PlayState* play) {
         if (Inventory_HasEmptyBottle()) {
             Message_CloseTextbox(play);
             this->unk_2E0 |= 2;
-            func_80B13AA0(this, func_80B15E80, func_80B16938);
+            EnTa_SetupAction(this, EnTa_GiveItemInLonLonHouse, EnTa_AnimRunToEnd);
             Actor_OfferGetItem(&this->actor, play, GI_MILK, 10000.0f, 50.0f);
         } else {
             Message_ContinueTextbox(play, 0x208A);
-            func_80B13AA0(this, func_80B15E28, func_80B16938);
+            EnTa_SetupAction(this, EnTa_TalkGeneralInLonLonHouse, EnTa_AnimRunToEnd);
         }
     }
 }
 
-void func_80B16504(EnTa* this, PlayState* play) {
+void EnTa_IdleSittingInLonLonHouse(EnTa* this, PlayState* play) {
     u16 faceReaction = Text_GetFaceReaction(play, 0x18);
 
     func_80B13AAC(this, play);
@@ -1031,7 +1031,7 @@ void func_80B16504(EnTa* this, PlayState* play) {
         Audio_PlayActorSound2(&this->actor, NA_SE_VO_TA_SURPRISE);
 
         if (faceReaction != 0) {
-            func_80B14FAC(this, func_80B15E28);
+            func_80B14FAC(this, EnTa_TalkGeneralInLonLonHouse);
         } else {
             Flags_SetInfTable(INFTABLE_TALKED_TO_TALON_IN_RANCH_HOUSE);
 
@@ -1052,7 +1052,7 @@ void func_80B16504(EnTa* this, PlayState* play) {
     this->unk_2E0 &= ~1;
 }
 
-void func_80B16608(EnTa* this, PlayState* play) {
+void EnTa_IdleAfterCuccoGameFinished(EnTa* this, PlayState* play) {
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
         switch (this->actor.textId) {
             case 0x2085:
@@ -1073,17 +1073,17 @@ void func_80B16608(EnTa* this, PlayState* play) {
     this->unk_2E0 |= 1;
 }
 
-void func_80B166CC(EnTa* this) {
+void EnTa_BlinkWaitUntilNext(EnTa* this) {
     s16 temp_v0 = this->blinkTimer - 1;
 
     if (temp_v0 != 0) {
         this->blinkTimer = temp_v0;
     } else {
-        this->unk_2B0 = func_80B16700;
+        this->unk_2B0 = EnTa_BlinkAdvanceState;
     }
 }
 
-void func_80B16700(EnTa* this) {
+void EnTa_BlinkAdvanceState(EnTa* this) {
     s16 blinkTimer = this->blinkTimer - 1;
 
     if (blinkTimer != 0) {
@@ -1101,7 +1101,7 @@ void func_80B16700(EnTa* this) {
                 blinkTimer = (s32)(Rand_ZeroOne() * 60.0f) + 20;
             }
             this->blinkTimer = blinkTimer;
-            this->unk_2B0 = func_80B166CC;
+            this->unk_2B0 = EnTa_BlinkWaitUntilNext;
         } else {
             this->eyeIndex = nextEyeIndex;
             this->blinkTimer = 1;
@@ -1109,13 +1109,13 @@ void func_80B16700(EnTa* this) {
     }
 }
 
-void func_80B167C0(EnTa* this) {
+void EnTa_AnimRepeatCurrent(EnTa* this) {
     if (SkelAnime_Update(&this->skelAnime)) {
         Animation_PlayOnce(&this->skelAnime, this->currentAnimation);
     }
 }
 
-void func_80B167FC(EnTa* this) {
+void EnTa_AnimSleeping(EnTa* this) {
     if (SkelAnime_Update(&this->skelAnime)) {
         Animation_PlayOnce(&this->skelAnime, this->currentAnimation);
         Audio_PlayActorSound2(&this->actor, NA_SE_VO_TA_SLEEP);
@@ -1123,7 +1123,7 @@ void func_80B167FC(EnTa* this) {
     this->unk_2E0 |= 0xC;
 }
 
-void func_80B16854(EnTa* this) {
+void EnTa_AnimSitSleeping(EnTa* this) {
     if (this->unk_2E2 > 0) {
         this->unk_2E2--;
     } else {
@@ -1142,7 +1142,7 @@ void func_80B16854(EnTa* this) {
     this->unk_2E0 |= 4;
 }
 
-void func_80B16938(EnTa* this) {
+void EnTa_AnimRunToEnd(EnTa* this) {
     if (!(this->unk_2E0 & 0x10)) {
         if (SkelAnime_Update(&this->skelAnime)) {
             this->unk_2E0 |= 0x10;
