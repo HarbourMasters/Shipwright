@@ -869,7 +869,7 @@ void EnTa_TalkGeneralInLonLonHouse(EnTa* this, PlayState* play) {
 }
 
 void EnTa_GiveItemInLonLonHouse(EnTa* this, PlayState* play) {
-    if (Actor_HasParent(&this->actor, play)) {
+    if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_TALONS_CHICKENS, true, &this->actor)) {
         this->actor.parent = NULL;
         this->actionFunc = EnTa_TalkGeneralInLonLonHouse;
         if (!(this->unk_2E0 & 0x2)) {
@@ -879,11 +879,8 @@ void EnTa_GiveItemInLonLonHouse(EnTa* this, PlayState* play) {
     } else if (this->unk_2E0 & 2) {
         Actor_OfferGetItem(&this->actor, play, GI_MILK, 10000.0f, 50.0f);
     } else {
-        if (!IS_RANDO) {
+        if (GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_TALONS_CHICKENS, true, &this->actor)) {
             Actor_OfferGetItem(&this->actor, play, GI_MILK_BOTTLE, 10000.0f, 50.0f);
-        } else {
-            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LLR_TALONS_CHICKENS, GI_MILK_BOTTLE);
-            GiveItemEntryFromActor(&this->actor, play, getItemEntry, 10000.0f, 50.0f);
         }
     }
     this->unk_2E0 |= 1;
@@ -894,11 +891,8 @@ void EnTa_TalkAfterCuccoGameFirstWon(EnTa* this, PlayState* play) {
         Message_CloseTextbox(play);
         this->unk_2E0 &= ~0x2;
         EnTa_SetupAction(this, EnTa_GiveItemInLonLonHouse, EnTa_AnimRunToEnd);
-        if (!IS_RANDO) {
+        if (GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_TALONS_CHICKENS, true, &this->actor)) {
             Actor_OfferGetItem(&this->actor, play, GI_MILK_BOTTLE, 10000.0f, 50.0f);
-        } else {
-            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LLR_TALONS_CHICKENS, GI_MILK_BOTTLE);
-            GiveItemEntryFromActor(&this->actor, play, getItemEntry, 10000.0f, 50.0f);
         }
     }
 }

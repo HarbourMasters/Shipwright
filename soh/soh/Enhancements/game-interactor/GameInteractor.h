@@ -292,6 +292,8 @@ typedef enum {
     GI_VB_GIVE_ITEM_FROM_SHOOTING_GALLERY,
     // Opt: *EnExItem
     GI_VB_GIVE_ITEM_FROM_TARGET_IN_WOODS,
+    // Opt: *EnTa
+    GI_VB_GIVE_ITEM_FROM_TALONS_CHICKENS,
     // Opt: *EnDivingGame
     GI_VB_GIVE_ITEM_FROM_DIVING_MINIGAME,
 
