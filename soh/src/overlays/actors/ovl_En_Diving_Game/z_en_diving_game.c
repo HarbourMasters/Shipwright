@@ -8,6 +8,7 @@
 #include "overlays/actors/ovl_En_Ex_Ruppy/z_en_ex_ruppy.h"
 #include "objects/object_zo/object_zo.h"
 #include "vt.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
@@ -455,11 +456,8 @@ void func_809EEA00(EnDivingGame* this, PlayState* play) {
     if ((this->unk_292 == Message_GetState(&play->msgCtx) && Message_ShouldAdvance(play))) {
         Message_CloseTextbox(play);
         this->actor.parent = NULL;
-        if (!IS_RANDO) {
+        if (GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_DIVING_MINIGAME, true, &this->actor)) {
             Actor_OfferGetItem(&this->actor, play, GI_SCALE_SILVER, 90.0f, 10.0f);
-        } else {
-            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_ZD_DIVING_MINIGAME, GI_SCALE_SILVER);
-            GiveItemEntryFromActor(&this->actor, play, getItemEntry, 90.0f, 10.0f);
         }
         this->actionFunc = func_809EEA90;
     }
@@ -467,14 +465,11 @@ void func_809EEA00(EnDivingGame* this, PlayState* play) {
 
 void func_809EEA90(EnDivingGame* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
-    if (Actor_HasParent(&this->actor, play)) {
+    if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_DIVING_MINIGAME, true, &this->actor)) {
         this->actionFunc = func_809EEAF8;
     } else {
-        if (!IS_RANDO) {
+        if (GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_DIVING_MINIGAME, true, &this->actor)) {
             Actor_OfferGetItem(&this->actor, play, GI_SCALE_SILVER, 90.0f, 10.0f);
-        } else {
-            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_ZD_DIVING_MINIGAME, GI_SCALE_SILVER);
-            GiveItemEntryFromActor(&this->actor, play, getItemEntry, 90.0f, 10.0f);
         }
     }
 }
@@ -482,7 +477,8 @@ void func_809EEA90(EnDivingGame* this, PlayState* play) {
 // Award the scale?
 void func_809EEAF8(EnDivingGame* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
-    if (Message_GetState(&play->msgCtx) == TEXT_STATE_DONE && Message_ShouldAdvance(play)) {
+    if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE && Message_ShouldAdvance(play)) ||
+         !GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_DIVING_MINIGAME, true, &this->actor)) {
         // "Successful completion"
         osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ 正常終了 ☆☆☆☆☆ \n" VT_RST);
         this->allRupeesThrown = this->state = this->phase = this->unk_2A2 = this->grabbedRupeesCounter = 0;
