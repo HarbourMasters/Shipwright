@@ -551,117 +551,13 @@ Rando::ItemLocation* GetItemLocation(RandomizerGet item) {
     })[0]);
 }
 
-// Writes the hints to the spoiler log, if they are enabled.
-static void WriteHints() {
-    auto ctx = Rando::Context::GetInstance();
-
-    uint8_t language = ctx->GetOption(RSK_LANGUAGE).GetSelectedOptionIndex();
-
-    if (ctx->GetOption(RSK_SHUFFLE_WARP_SONGS)) {
-        jsonData["warpMinuetText"] = ctx->GetHint(RH_MINUET_WARP_LOC)->GetMessage().GetForLanguage(language);
-        jsonData["warpBoleroText"] = ctx->GetHint(RH_BOLERO_WARP_LOC)->GetMessage().GetForLanguage(language);
-        jsonData["warpSerenadeText"] = ctx->GetHint(RH_SERENADE_WARP_LOC)->GetMessage().GetForLanguage(language);
-        jsonData["warpRequiemText"] = ctx->GetHint(RH_REQUIEM_WARP_LOC)->GetMessage().GetForLanguage(language);
-        jsonData["warpNocturneText"] = ctx->GetHint(RH_NOCTURNE_WARP_LOC)->GetMessage().GetForLanguage(language);
-        jsonData["warpPreludeText"] = ctx->GetHint(RH_PRELUDE_WARP_LOC)->GetMessage().GetForLanguage(language);
-    }
-    jsonData["childAltar"]["hintText"] = ctx->GetHint(RH_ALTAR_CHILD)->GetMessage().GetForLanguage(language);
-    jsonData["adultAltar"]["hintText"] = ctx->GetHint(RH_ALTAR_ADULT)->GetMessage().GetForLanguage(language);
-
-    Rando::ItemLocation* emeraldLoc = GetItemLocation(RG_KOKIRI_EMERALD);
-    Rando::ItemLocation* rubyLoc = GetItemLocation(RG_GORON_RUBY);
-    Rando::ItemLocation* sapphireLoc = GetItemLocation(RG_ZORA_SAPPHIRE);
-    std::string emeraldArea;
-    std::string erubyArea;
-    std::string sapphireArea;
-
-    jsonData["childAltar"]["rewards"]["emeraldLoc"] = Rando::StaticData::GetLocation(emeraldLoc->GetRandomizerCheck())->GetName();
-    jsonData["childAltar"]["rewards"]["rubyLoc"] = Rando::StaticData::GetLocation(rubyLoc->GetRandomizerCheck())->GetName();
-    jsonData["childAltar"]["rewards"]["sapphireLoc"] =
-        Rando::StaticData::GetLocation(sapphireLoc->GetRandomizerCheck())->GetName();
-
-    Rando::ItemLocation* forestMedallionLoc = GetItemLocation(RG_FOREST_MEDALLION);
-    Rando::ItemLocation* fireMedallionLoc = GetItemLocation(RG_FIRE_MEDALLION);
-    Rando::ItemLocation* waterMedallionLoc = GetItemLocation(RG_WATER_MEDALLION);
-    Rando::ItemLocation* shadowMedallionLoc = GetItemLocation(RG_SHADOW_MEDALLION);
-    Rando::ItemLocation* spiritMedallionLoc = GetItemLocation(RG_SPIRIT_MEDALLION);
-    Rando::ItemLocation* lightMedallionLoc = GetItemLocation(RG_LIGHT_MEDALLION);
-
-    jsonData["adultAltar"]["rewards"]["forestMedallionLoc"] =
-        Rando::StaticData::GetLocation(forestMedallionLoc->GetRandomizerCheck())->GetName();
-    jsonData["adultAltar"]["rewards"]["fireMedallionLoc"] =
-        Rando::StaticData::GetLocation(fireMedallionLoc->GetRandomizerCheck())->GetName();
-    jsonData["adultAltar"]["rewards"]["waterMedallionLoc"] =
-        Rando::StaticData::GetLocation(waterMedallionLoc->GetRandomizerCheck())->GetName();
-    jsonData["adultAltar"]["rewards"]["shadowMedallionLoc"] =
-        Rando::StaticData::GetLocation(shadowMedallionLoc->GetRandomizerCheck())->GetName();
-    jsonData["adultAltar"]["rewards"]["spiritMedallionLoc"] =
-        Rando::StaticData::GetLocation(spiritMedallionLoc->GetRandomizerCheck())->GetName();
-    jsonData["adultAltar"]["rewards"]["lightMedallionLoc"] =
-        Rando::StaticData::GetLocation(lightMedallionLoc->GetRandomizerCheck())->GetName();
-
-    jsonData["ganonText"] = ctx->GetHint(RH_GANONDORF_NOHINT)->GetMessage().GetForLanguage(language);
-    if (ctx->GetOption(RSK_LIGHT_ARROWS_HINT)){
-      jsonData["ganonHintText"] = ctx->GetHint(RH_ENDGAME_HINT)->GetMessage().GetForLanguage(language);
-      jsonData["lightArrowHintLoc"] = GetLightArrowHintLoc();
-      jsonData["lightArrowArea"] = ::GetHintText(ctx->GetHint(RH_ENDGAME_HINT)->GetHintedArea()).GetText().GetEnglish();
-      jsonData["masterSwordHintLoc"] = GetMasterSwordHintLoc();
-      if (!ctx->GetOption(RSK_TRIAL_COUNT).Is(0)) {
-          jsonData["sheikText"] = ctx->GetHint(RH_SHEIK_LIGHT_ARROWS)->GetMessage().GetForLanguage(language);
-      }
-    }
-    if (ctx->GetOption(RSK_DAMPES_DIARY_HINT)){
-      jsonData["dampeText"] = ctx->GetHint(RH_DAMPES_DIARY)->GetMessage().GetForLanguage(language);
-      jsonData["dampeHintLoc"] = Rando::StaticData::GetLocation(ctx->GetHint(RH_DAMPES_DIARY)->GetHintedLocation())->GetName();
-      jsonData["dampeRegion"] = ::GetHintText(ctx->GetHint(RH_DAMPES_DIARY)->GetHintedArea()).GetText().GetEnglish();
-    }
-    if (ctx->GetOption(RSK_GREG_HINT)){
-      jsonData["gregText"] = ctx->GetHint(RH_GREG_RUPEE)->GetMessage().GetForLanguage(language);
-      jsonData["gregLoc"] = Rando::StaticData::GetLocation(ctx->GetHint(RH_GREG_RUPEE)->GetHintedLocation())->GetName();
-      jsonData["gregRegion"] = ::GetHintText(ctx->GetHint(RH_GREG_RUPEE)->GetHintedArea()).GetText().GetEnglish();
-    }
-    if (ctx->GetOption(RSK_SARIA_HINT)){
-      jsonData["sariaText"] = ctx->GetHint(RH_SARIA)->GetMessage().GetForLanguage(language);
-      jsonData["sariaHintLoc"] = Rando::StaticData::GetLocation(ctx->GetHint(RH_SARIA)->GetHintedLocation())->GetName();
-      jsonData["sariaRegion"] = ::GetHintText(ctx->GetHint(RH_SARIA)->GetHintedArea()).GetText().GetEnglish();
-    }
-    if (ctx->GetOption(RSK_FISHING_POLE_HINT)) {
-      jsonData["fishingPoleText"] = ctx->GetHint(RH_FISHING_POLE)->GetMessage().GetForLanguage(language);
-      jsonData["fishingPoleHintLoc"] = Rando::StaticData::GetLocation(ctx->GetHint(RH_FISHING_POLE)->GetHintedLocation())->GetName();
-      jsonData["fishingPoleRegion"] = ::GetHintText(ctx->GetHint(RH_FISHING_POLE)->GetHintedArea()).GetText().GetEnglish();
-    }
-
-    if (ctx->GetOption(RSK_GOSSIP_STONE_HINTS).Is(RO_GOSSIP_STONES_NONE)) {
-        return;
-    }
-    for (const RandomizerCheck key : Rando::StaticData::gossipStoneLocations) { //RANDOTODO should be merged with static hints, iterate over hint keys
-        Rando::Hint* hint = ctx->GetHint((RandomizerHint)(key - RC_COLOSSUS_GOSSIP_STONE + 1));
-        Rando::ItemLocation* hintedLocation = ctx->GetItemLocation(hint->GetHintedLocation());
-        std::string hintTextString = hint->GetMessage().GetForLanguage(language);
-        HintType hintType = hint->GetHintType();
-
-        std::string textStr = hintTextString;
-        std::string name = Rando::StaticData::GetLocation(key)->GetName();
-        jsonData["hints"][name]["hint"] = textStr;
-        jsonData["hints"][name]["distribution"] = hint->GetDistribution();
-        jsonData["hints"][name]["type"] = hintTypeNames[(int)hintType];
-        if (hintType == HINT_TYPE_ITEM_LOCATION || hintType == HINT_TYPE_ITEM_AREA || hintType == HINT_TYPE_WOTH) {
-            jsonData["hints"][name]["item"] = hintedLocation->GetPlacedItemName().GetEnglish();
-            jsonData["hints"][name]["location"] = Rando::StaticData::GetLocation(hintedLocation->GetRandomizerCheck())->GetName();
-        }
-        if (hintType != HINT_TYPE_TRIAL && hintType != HINT_TYPE_TEXT) {
-            jsonData["hints"][name]["area"] = ::GetHintText(hint->GetHintedArea()).GetText().Capitalize().GetEnglish();
-        }
-    }
-}
-
 static void WriteAllLocations() {
     auto ctx = Rando::Context::GetInstance();
     for (const RandomizerCheck key : ctx->allLocations) {
         Rando::ItemLocation* location = ctx->GetItemLocation(key);
         std::string placedItemName;
 
-        switch (ctx->GetOption(RSK_LANGUAGE).GetSelectedOptionIndex()) {
+        switch (gSaveContext.language) {
           case 0:
           default:
             placedItemName = location->GetPlacedItemName().english;
@@ -687,12 +583,12 @@ static void WriteAllLocations() {
             jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]["price"] =
                 location->GetPrice();
         }
-        if (location->IsHintedAt()) {
+        if (location->IsAHintAccessible()) {
           hintedLocations.emplace(Rando::StaticData::GetLocation(key)->GetHintKey(), location);
         }
 
         if (location->GetPlacedRandomizerGet() == RG_ICE_TRAP) {
-          switch (ctx->GetOption(RSK_LANGUAGE).GetSelectedOptionIndex()) {
+          switch (gSaveContext.language) {
               case 0:
               default:
                   jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]["model"] =

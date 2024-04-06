@@ -2531,39 +2531,29 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
              (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == RO_GOSSIP_STONES_NEED_STONE && CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)))) {
 
             Actor* stone = GET_PLAYER(play)->targetActor; 
-            actorParams = stone->params;
-
-            // if we're in a generic grotto
-            if (play->sceneNum == SCENE_GROTTOS && actorParams == 14360) {
-                // look for the chest in the actorlist to determine
-                // which grotto we're in
-                int numOfActorLists =
-                    sizeof(play->actorCtx.actorLists) / sizeof(play->actorCtx.actorLists[0]);
-                for (int i = 0; i < numOfActorLists; i++) {
-                    if (play->actorCtx.actorLists[i].length) {
-                        if (play->actorCtx.actorLists[i].head->id == 10) {
-                            // set the params for the hint check to be negative chest params
-                            actorParams = 0 - play->actorCtx.actorLists[i].head->params;
-                        }
-                    }
-                }
+            RandomizerHint stoneHint = RH_NONE;
+            if (stone->flags <= 0x3C and stoneFlagToHint.contains(stone->flags)){ //The hint stones all have unique flags, so we can identify the stone by the flag (Assuming the location list is accurate)
+                stoneHint = stoneFlagToHint[stone->flags];
             }
-
-            RandomizerCheck hintCheck =
-                Randomizer_GetCheckFromActor(stone->id, play->sceneNum, actorParams);
-
-            messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, hintCheck);
+            if (stoneHint == RH_NONE){
+                messageEntry = CustomMessage("ERROR: INVALID STONE FLAGS: " + std::to_string(stone->flags));
+            } else {
+                messageEntry = ctx->GetHint(stoneHint)->GetMessage();
+            }
         } else if ((textId == TEXT_ALTAR_CHILD || textId == TEXT_ALTAR_ADULT)) {
             // rando hints at altar
-            messageEntry = (LINK_IS_ADULT)
-               ? CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_ALTAR_ADULT)
-               : CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_ALTAR_CHILD);
+            messageEntry = (LINK_IS_ADULT) ? ctx->GetHint(RH_ALTAR_ADULT)->GetMessage() : ctx->GetHint(RH_ALTAR_CHILD)->GetMessage();
         } else if (textId == TEXT_GANONDORF) {
-            if ((INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT && CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER)) ||
-              !Randomizer_GetSettingValue(RSK_LIGHT_ARROWS_HINT)) {
-                messageEntry = ctx->GetHint(RH_GANONDORF_NOHINT)->GetMessage();
-            } else {
-                messageEntry = ctx->GetHint(RH_ENDGAME_HINT)->GetMessage(0);
+            if (ctx->GetOption(RSK_GANONDORF_HINT)){
+                if (ctx->GetOption(RSK_SHUFFLE_MASTER_SWORD) && !CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER)){
+                    messageEntry = INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT ?
+                                   ctx->GetHint(RH_GANONDORF_HINT)->GetMessage(1):
+                                   ctx->GetHint(RH_GANONDORF_HINT)->GetMessage(2);
+                } else {
+                    messageEntry = INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT ?
+                                   ctx->GetHint(RH_GANONDORF_JOKE)->GetMessage():
+                                   ctx->GetHint(RH_GANONDORF_HINT)->GetMessage(0);
+                }
             }
         } else if (textId == TEXT_SHEIK_NEED_HOOK || textId == TEXT_SHEIK_HAVE_HOOK) {
             messageEntry = OTRGlobals::Instance->gRandomizer->GetSheikMessage(gPlayState->sceneNum, textId);            
@@ -2590,81 +2580,123 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
         } else if (CVarGetInteger("gRandoRelevantNavi", 1) && textId >= TEXT_NAVI_DEKU_TREE_SUMMONS && textId <= TEXT_NAVI_TRY_TO_KEEP_MOVING) {
             u16 naviTextId = Random(0, NUM_NAVI_MESSAGES);
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::NaviRandoMessageTableID, naviTextId);
-        } else if (textId == TEXT_BEAN_SALESMAN_BUY_FOR_10 && Randomizer_GetSettingValue(RSK_SHUFFLE_MAGIC_BEANS)) {
-            //RANDOTODO better magic beans hint setting
-            messageEntry = OTRGlobals::Instance->gRandomizer->GetMiscHintMessage(TEXT_BEAN_SALESMAN_BUY_FOR_10, RC_ZR_MAGIC_BEAN_SALESMAN, Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) == RO_SHUFFLE_MERCHANTS_ON_NO_HINT);
-        } else if (textId == TEXT_GRANNYS_SHOP && !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_GRANNYS_SHOP) && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF &&
-            (Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE) || INV_CONTENT(ITEM_CLAIM_CHECK) == ITEM_CLAIM_CHECK)){
-            messageEntry = OTRGlobals::Instance->gRandomizer->GetMiscHintMessage(TEXT_GRANNYS_SHOP, RC_KAK_GRANNYS_SHOP, Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) == RO_SHUFFLE_MERCHANTS_ON_NO_HINT, true);
-        } else if (textId == TEXT_MEDIGORON && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF){
-            messageEntry = OTRGlobals::Instance->gRandomizer->GetMiscHintMessage(TEXT_MEDIGORON, RC_GC_MEDIGORON, Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) == RO_SHUFFLE_MERCHANTS_ON_NO_HINT);
-        } else if (textId == TEXT_CARPET_SALESMAN_1 && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF){
-            messageEntry = OTRGlobals::Instance->gRandomizer->GetMiscHintMessage(TEXT_CARPET_SALESMAN_1, RC_WASTELAND_BOMBCHU_SALESMAN);
-        } else if (textId == TEXT_CARPET_SALESMAN_2 && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF){
+        } 
+        else if (textId == TEXT_BEAN_SALESMAN_BUY_FOR_10 && ctx->GetOption(RSK_SHUFFLE_MAGIC_BEANS)) {
+            messageEntry = ctx->GetHint(RH_BEAN_SALESMAN)->GetMessage();
+        } 
+        else if (textId == TEXT_GRANNYS_SHOP && !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_GRANNYS_SHOP) && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF &&
+            (ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) || INV_CONTENT(ITEM_CLAIM_CHECK) == ITEM_CLAIM_CHECK)){
+            messageEntry = messageEntry = ctx->GetHint(RH_GRANNY)->GetMessage();
+        } 
+        else if (textId == TEXT_MEDIGORON && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF){
+            messageEntry = messageEntry = ctx->GetHint(RH_MEDIGORON)->GetMessage();
+        } 
+        else if (textId == TEXT_CARPET_SALESMAN_1 && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF){
+            messageEntry = messageEntry = ctx->GetHint(RH_CARPET_SALESMAN)->GetMessage();
+        } 
+        else if (textId == TEXT_CARPET_SALESMAN_2 && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF){
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, textId);
-        } else if ((textId == TEXT_BUY_BOMBCHU_10_DESC || textId == TEXT_BUY_BOMBCHU_10_PROMPT) 
-                    && Randomizer_GetSettingValue(RSK_BOMBCHUS_IN_LOGIC)) {
+        } 
+        else if ((textId == TEXT_BUY_BOMBCHU_10_DESC || textId == TEXT_BUY_BOMBCHU_10_PROMPT) 
+                    && ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC)) {
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId);
-        } else if (textId == TEXT_SKULLTULA_PEOPLE_IM_CURSED) {
+        } 
+        else if (textId == TEXT_SKULLTULA_PEOPLE_IM_CURSED) {
             actorParams = GET_PLAYER(play)->targetActor->params;
-            if (actorParams == 1 && Randomizer_GetSettingValue(RSK_KAK_10_SKULLS_HINT)){
+            if (actorParams == 1 && ctx->GetOption(RSK_KAK_10_SKULLS_HINT)){
                 messageEntry = ctx->GetHint(RH_KAK_10_SKULLS_HINT)->GetMessage();
-            } else if (actorParams == 2 && Randomizer_GetSettingValue(RSK_KAK_20_SKULLS_HINT)){
+            } else if (actorParams == 2 && ctx->GetOption(RSK_KAK_20_SKULLS_HINT)){
                 messageEntry = ctx->GetHint(RH_KAK_20_SKULLS_HINT)->GetMessage();
-            } else if (actorParams == 3 && Randomizer_GetSettingValue(RSK_KAK_30_SKULLS_HINT)){
+            } else if (actorParams == 3 && ctx->GetOption(RSK_KAK_30_SKULLS_HINT)){
                 messageEntry = ctx->GetHint(RH_KAK_30_SKULLS_HINT)->GetMessage();
-            } else if (actorParams == 4 && Randomizer_GetSettingValue(RSK_KAK_40_SKULLS_HINT)){
+            } else if (actorParams == 4 && ctx->GetOption(RSK_KAK_40_SKULLS_HINT)){
                 messageEntry = ctx->GetHint(RH_KAK_40_SKULLS_HINT)->GetMessage();
-            } else if (Randomizer_GetSettingValue(RSK_KAK_50_SKULLS_HINT)){
+            } else if (ctx->GetOption(RSK_KAK_50_SKULLS_HINT)){
                 messageEntry = ctx->GetHint(RH_KAK_50_SKULLS_HINT)->GetMessage();
             }
-        } else if (textId == TEXT_DAMPES_DIARY && Randomizer_GetSettingValue(RSK_DAMPES_DIARY_HINT)) {
+        } else if (textId == TEXT_DAMPES_DIARY && ctx->GetOption(RSK_DAMPES_DIARY_HINT)) {
             messageEntry = ctx->GetHint(RH_DAMPES_DIARY)->GetMessage();
-        } else if ((textId == TEXT_CHEST_GAME_PROCEED || textId == TEXT_CHEST_GAME_REAL_GAMBLER || textId == TEXT_CHEST_GAME_THANKS_A_LOT) &&
-                   play->sceneNum == SCENE_TREASURE_BOX_SHOP && Randomizer_GetSettingValue(RSK_GREG_HINT)) {
-            messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::randoMiscHintsTableID, TEXT_CHEST_GAME_PROCEED);
-        } else if ((textId >= TEXT_WARP_MINUET_OF_FOREST && textId <= TEXT_WARP_PRELUDE_OF_LIGHT) && Randomizer_GetSettingValue(RSK_SHUFFLE_WARP_SONGS)) {
-            messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::randoMiscHintsTableID, textId);
-        } else if (textId == TEXT_LAKE_HYLIA_WATER_SWITCH_NAVI || textId == TEXT_LAKE_HYLIA_WATER_SWITCH_SIGN) {
+        }
+        else if ((textId == TEXT_CHEST_GAME_PROCEED || textId == TEXT_CHEST_GAME_REAL_GAMBLER || textId == TEXT_CHEST_GAME_THANKS_A_LOT) &&
+                   play->sceneNum == SCENE_TREASURE_BOX_SHOP && ctx->GetOption(RSK_GREG_HINT)) {
+            messageEntry = ctx->GetHint(RH_GREG_RUPEE)->GetMessage();
+        }
+        else if (textId >= TEXT_WARP_MINUET_OF_FOREST && ctx->GetOption(RSK_SHUFFLE_WARP_SONGS)) {
+            messageEntry = ctx->GetHint(RH_MINUET_WARP_LOC)->GetMessage();
+        }
+        else if (textId >= TEXT_WARP_BOLERO_OF_FIRE && ctx->GetOption(RSK_SHUFFLE_WARP_SONGS)) {
+            messageEntry = ctx->GetHint(RH_BOLERO_WARP_LOC)->GetMessage();
+        }
+        else if (textId >= TEXT_WARP_SERENADE_OF_WATER && ctx->GetOption(RSK_SHUFFLE_WARP_SONGS)) {
+            messageEntry = ctx->GetHint(RH_SERENADE_WARP_LOC)->GetMessage();
+        }
+        else if (textId >= TEXT_WARP_REQUIEM_OF_SPIRIT && ctx->GetOption(RSK_SHUFFLE_WARP_SONGS)) {
+            messageEntry = ctx->GetHint(RH_REQUIEM_WARP_LOC)->GetMessage();
+        }
+        else if (textId >= TEXT_WARP_NOCTURNE_OF_SHADOW && ctx->GetOption(RSK_SHUFFLE_WARP_SONGS)) {
+            messageEntry = ctx->GetHint(RH_NOCTURNE_WARP_LOC)->GetMessage();
+        }
+        else if (textId >= TEXT_WARP_PRELUDE_OF_LIGHT && ctx->GetOption(RSK_SHUFFLE_WARP_SONGS)) {
+            messageEntry = ctx->GetHint(RH_PRELUDE_WARP_LOC)->GetMessage();
+        }
+        else if (textId == TEXT_LAKE_HYLIA_WATER_SWITCH_NAVI || textId == TEXT_LAKE_HYLIA_WATER_SWITCH_SIGN) {
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, textId);
-        } else if (textId == TEXT_SHOOTING_GALLERY_MAN_COME_BACK_WITH_BOW) {
+        }
+        else if (textId == TEXT_SHOOTING_GALLERY_MAN_COME_BACK_WITH_BOW) {
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_SHOOTING_GALLERY_MAN_COME_BACK_WITH_BOW);
-        } else if (textId == TEXT_FIRE_TEMPLE_GORON_OWE_YOU_BIG_TIME || (textId >= TEXT_FIRE_TEMPLE_GORON_FALLING_DOORS_SECRET && textId <= TEXT_FIRE_TEMPLE_GORON_SOUNDS_DIFFERENT_SECRET)) {
+        }
+        else if (textId == TEXT_FIRE_TEMPLE_GORON_OWE_YOU_BIG_TIME || (textId >= TEXT_FIRE_TEMPLE_GORON_FALLING_DOORS_SECRET && textId <= TEXT_FIRE_TEMPLE_GORON_SOUNDS_DIFFERENT_SECRET)) {
             u16 choice = Random(0, NUM_GORON_MESSAGES);
             messageEntry = OTRGlobals::Instance->gRandomizer->GetGoronMessage(choice);
-        } else if (textId == TEXT_FROGS_UNDERWATER && Randomizer_GetSettingValue(RSK_FROGS_HINT)) {
+        }
+        else if (textId == TEXT_FROGS_UNDERWATER && ctx->GetOption(RSK_FROGS_HINT)) {
            messageEntry = ctx->GetHint(RH_FROGS_HINT)->GetMessage(), TEXTBOX_TYPE_BLUE;
-        } else if ((textId == TEXT_FISHING_POND_START || textId == TEXT_FISHING_POND_START_MET) && 
-                   Randomizer_GetSettingValue(RSK_SHUFFLE_FISHING_POLE) && !Flags_GetRandomizerInf(RAND_INF_FISHING_POLE_FOUND)) {
+        }
+        else if ((textId == TEXT_FISHING_POND_START || textId == TEXT_FISHING_POND_START_MET) && 
+                   ctx->GetOption(RSK_SHUFFLE_FISHING_POLE) && !Flags_GetRandomizerInf(RAND_INF_FISHING_POLE_FOUND)) {
             messageEntry = OTRGlobals::Instance->gRandomizer->GetFishingPondOwnerMessage(textId);
-        } else if (textId == TEXT_SARIA_SFM && gPlayState->sceneNum == SCENE_SACRED_FOREST_MEADOW && Randomizer_GetSettingValue(RSK_SARIA_HINT)){
+        }
+        else if (textId == TEXT_SARIA_SFM && gPlayState->sceneNum == SCENE_SACRED_FOREST_MEADOW && ctx->GetOption(RSK_SARIA_HINT)){
             messageEntry = ctx->GetHint(RH_SARIA_HINT)->GetMessage();
-        } else if ((textId >= TEXT_SARIAS_SONG_FACE_TO_FACE && textId <= TEXT_SARIAS_SONG_CHANNELING_POWER) && Randomizer_GetSettingValue(RSK_SARIA_HINT)){
+        }
+        else if ((textId >= TEXT_SARIAS_SONG_FACE_TO_FACE && textId <= TEXT_SARIAS_SONG_CHANNELING_POWER) && ctx->GetOption(RSK_SARIA_HINT)){
             messageEntry = ctx->GetHint(RH_SARIA_HINT)->GetMessage() + "\x0B"; //Should this just be a seperate HintTextKey?
             messageEntry.SetTextBoxType(TEXTBOX_TYPE_BLUE);
-        } else if (Randomizer_GetSettingValue(RSK_BIGGORON_HINT) && (textId == TEXT_BIGGORON_BETTER_AT_SMITHING || textId ==  TEXT_BIGGORON_WAITING_FOR_YOU || textId ==  TEXT_BIGGORON_RETURN_AFTER_A_FEW_DAYS)) {
+        }
+        else if (ctx->GetOption(RSK_BIGGORON_HINT) && (textId == TEXT_BIGGORON_BETTER_AT_SMITHING || textId ==  TEXT_BIGGORON_WAITING_FOR_YOU || textId ==  TEXT_BIGGORON_RETURN_AFTER_A_FEW_DAYS)) {
            messageEntry = ctx->GetHint(RH_BIGGORON_HINT)->GetMessage();
-        } else if (Randomizer_GetSettingValue(RSK_BIG_POES_HINT) && (textId == TEXT_GHOST_SHOP_EXPLAINATION || textId == TEXT_GHOST_SHOP_CARD_HAS_POINTS)) {
+        }
+        else if (ctx->GetOption(RSK_BIG_POES_HINT) && (textId == TEXT_GHOST_SHOP_EXPLAINATION || textId == TEXT_GHOST_SHOP_CARD_HAS_POINTS)) {
             messageEntry = ctx->GetHint(RH_BIG_POES_HINT)->GetMessage();
-        } else if (Randomizer_GetSettingValue(RSK_CHICKENS_HINT) && (textId >= TEXT_ANJU_PLEASE_BRING_MY_CUCCOS_BACK && textId <= TEXT_ANJU_PLEASE_BRING_1_CUCCO)) {
+        }
+        else if (ctx->GetOption(RSK_CHICKENS_HINT) && (textId >= TEXT_ANJU_PLEASE_BRING_MY_CUCCOS_BACK && textId <= TEXT_ANJU_PLEASE_BRING_1_CUCCO)) {
             messageEntry = ctx->GetHint(RH_CHICKENS_HINT)->GetMessage();
-        } else if ((textId == TEXT_MALON_EVERYONE_TURNING_EVIL || textId == TEXT_MALON_I_SING_THIS_SONG)&& Randomizer_GetSettingValue(RSK_MALON_HINT)){
+        }
+        else if ((textId == TEXT_MALON_EVERYONE_TURNING_EVIL || textId == TEXT_MALON_I_SING_THIS_SONG)&& ctx->GetOption(RSK_MALON_HINT)){
             messageEntry = ctx->GetHint(RH_MALON_HINT)->GetMessage(0);
-        } else if (textId == TEXT_MALON_HOW_IS_EPONA_DOING && Randomizer_GetSettingValue(RSK_MALON_HINT)){
+        }
+        else if (textId == TEXT_MALON_HOW_IS_EPONA_DOING && ctx->GetOption(RSK_MALON_HINT)){
             messageEntry = ctx->GetHint(RH_MALON_HINT)->GetMessage(1);
-        } else if (textId == TEXT_MALON_OBSTICLE_COURSE && Randomizer_GetSettingValue(RSK_MALON_HINT)){
+        }
+        else if (textId == TEXT_MALON_OBSTICLE_COURSE && ctx->GetOption(RSK_MALON_HINT)){
             messageEntry = ctx->GetHint(RH_MALON_HINT)->GetMessage(2);
-        } else if (textId == TEXT_MALON_INGO_MUST_HAVE_BEEN_TEMPTED && Randomizer_GetSettingValue(RSK_MALON_HINT)){
+        }
+        else if (textId == TEXT_MALON_INGO_MUST_HAVE_BEEN_TEMPTED && ctx->GetOption(RSK_MALON_HINT)){
             messageEntry = ctx->GetHint(RH_MALON_HINT)->GetMessage(3);
-        } else if (Randomizer_GetSettingValue(RSK_KAK_100_SKULLS_HINT) && textId == TEXT_SKULLTULA_PEOPLE_MAKE_YOU_VERY_RICH) {
+        }
+        else if (ctx->GetOption(RSK_KAK_100_SKULLS_HINT) && textId == TEXT_SKULLTULA_PEOPLE_MAKE_YOU_VERY_RICH) {
             messageEntry = ctx->GetHint(RH_KAK_100_SKULLS_HINT)->GetMessage();
-        } else if (textId == TEXT_GF_HBA_SIGN && Randomizer_GetSettingValue(RSK_HBA_HINT)) {
+        }
+        else if (textId == TEXT_GF_HBA_SIGN && ctx->GetOption(RSK_HBA_HINT)) {
             messageEntry = ctx->GetHint(RH_HBA_HINT)->GetMessage(0);
-        } else if (textId == TEXT_HBA_NOT_ON_HORSE && Randomizer_GetSettingValue(RSK_HBA_HINT)) {
+        }
+        else if (textId == TEXT_HBA_NOT_ON_HORSE && ctx->GetOption(RSK_HBA_HINT)) {
             messageEntry = ctx->GetHint(RH_HBA_HINT)->GetMessage(1);
-        } else if (textId == TEXT_HBA_INITIAL_EXPLAINATION && Randomizer_GetSettingValue(RSK_HBA_HINT)) {
+        }
+        else if (textId == TEXT_HBA_INITIAL_EXPLAINATION && ctx->GetOption(RSK_HBA_HINT)) {
             messageEntry = ctx->GetHint(RH_HBA_HINT)->GetMessage(2);
-        } else if (textId == TEXT_HBA_ALREADY_HAVE_1000 && Randomizer_GetSettingValue(RSK_HBA_HINT)) {
+        }
+        else if (textId == TEXT_HBA_ALREADY_HAVE_1000 && ctx->GetOption(RSK_HBA_HINT)) {
             messageEntry = ctx->GetHint(RH_HBA_HINT)->GetMessage(3);
         }
     }
@@ -2687,16 +2719,16 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             // In rando we need to bump the token count by one to show the correct count
             s16 gsCount = gSaveContext.inventory.gsTokens + (IS_RANDO ? 1 : 0);
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId);
-            messageEntry.Replace("{{gsCount}}", std::to_string(gsCount));
+            messageEntry.Replace("[[gsCount]]", std::to_string(gsCount));
         }
     }
     if (textId == TEXT_HEART_CONTAINER && CVarGetInteger("gInjectItemCounts", 0)) {
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_HEART_CONTAINER);
-        messageEntry.Replace("{{heartContainerCount}}", std::to_string(gSaveContext.sohStats.heartContainers + 1));
+        messageEntry.Replace("[[heartContainerCount]]", std::to_string(gSaveContext.sohStats.heartContainers + 1));
     }
     if (textId == TEXT_HEART_PIECE && CVarGetInteger("gInjectItemCounts", 0)) {
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_HEART_PIECE);
-        messageEntry.Replace("{{heartPieceCount}}", std::to_string(gSaveContext.sohStats.heartPieces + 1));
+        messageEntry.Replace("[[heartPieceCount]]", std::to_string(gSaveContext.sohStats.heartPieces + 1));
     }
     if (textId == TEXT_MARKET_GUARD_NIGHT && CVarGetInteger("gMarketSneak", 0) && play->sceneNum == SCENE_MARKET_ENTRANCE_NIGHT) {
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_MARKET_GUARD_NIGHT);

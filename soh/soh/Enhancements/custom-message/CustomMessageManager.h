@@ -4,6 +4,7 @@
 #include <map>
 #include <cstdint>
 #include <exception>
+#include <vector>
 
 #include "../../../include/z64item.h"
 #include "../../../include/message_data_textbox_types.h"
@@ -11,14 +12,14 @@
 
 #undef MESSAGE_END
 
-#define QM_WHITE 0x00
-#define QM_RED 0x41
-#define QM_GREEN 0x42
-#define QM_BLUE 0x43
-#define QM_LBLUE 0x44
-#define QM_PINK 0x45
-#define QM_YELLOW 0x46
-#define QM_BLACK 0x47
+#define QM_WHITE (char)0x00
+#define QM_RED (char)0x41
+#define QM_GREEN (char)0x42
+#define QM_BLUE (char)0x43
+#define QM_LBLUE (char)0x44
+#define QM_PINK (char)0x45
+#define QM_YELLOW (char)0x46
+#define QM_BLACK (char)0x47
 
 /**
  * @brief Encapsulates logic surrounding languages, and formatting strings for OoT's textboxes and
@@ -31,7 +32,10 @@ class CustomMessage {
     CustomMessage() = default;
     CustomMessage(std::string english_, std::string german_, std::string french_,
                   TextBoxType type_ = TEXTBOX_TYPE_BLACK, TextBoxPosition position_ = TEXTBOX_POS_BOTTOM);
+    CustomMessage(std::string english_, std::string german_, std::string french_, std::vector<char> colors_, std::vector<bool> capital_ = {},
+              TextBoxType type_ = TEXTBOX_TYPE_BLACK, TextBoxPosition position_ = TEXTBOX_POS_BOTTOM);
     CustomMessage(std::string english_, TextBoxType type_ = TEXTBOX_TYPE_BLACK, TextBoxPosition position_ = TEXTBOX_POS_BOTTOM);
+    CustomMessage(std::string english_, std::vector<char> colors_, std::vector<bool> capital_ = {}, TextBoxType type_ = TEXTBOX_TYPE_BLACK, TextBoxPosition position_ = TEXTBOX_POS_BOTTOM);
     CustomMessage(Text text, TextBoxType type_ = TEXTBOX_TYPE_BLACK, TextBoxPosition position_ = TEXTBOX_POS_BOTTOM);
 
     static std::string MESSAGE_END() ;
@@ -45,8 +49,14 @@ class CustomMessage {
     const std::string& GetFrench() const;
     const std::string& GetGerman() const;
     const std::string& GetForLanguage(uint8_t language) const;
+    const std::string& GetForCurrentLanguage() const;
+    const std::array<std::string, LANGUAGE_MAX> GetAllStrings() const;
+    const std::vector<char>& GetColors() const;
+    void SetColors(std::vector<char> colors_);
+    const std::vector<bool>& GetCapital() const;
+    void SetCapital(std::vector<bool> capital_);
     const TextBoxType& GetTextBoxType() const;
-    const void SetTextBoxType(TextBoxType boxType);
+    void SetTextBoxType(TextBoxType boxType);
     const TextBoxPosition& GetTextBoxPosition() const;
 
     CustomMessage operator+(const CustomMessage& right) const;
@@ -110,13 +120,9 @@ class CustomMessage {
     void ReplaceAltarIcons();
 
     /**
-     * @brief Replaces various symbols with the control codes necessary to
-     * display them in OoT's textboxes. i.e. special characters, colors, newlines,
-     * wait for input, etc. Also adds the item icon to each page of the textbox.
-     *
-     * @param iid the ItemID whose icon should be displayed in this message's textbox.
+     * @brief Replaces [[1]] style variable strings with the provided vector of customMessages
      */
-    void Format(ItemID iid);
+    void InsertNames(std::vector<CustomMessage> toInsert);
 
     /**
      * @brief Replaces various symbols with the control codes necessary to
@@ -135,13 +141,13 @@ class CustomMessage {
     void AutoFormat();
 
     /**
-     * @brief Replaces {{d}} in text with the supplied number, and if plural
+     * @brief Replaces [[d]] in text with the supplied number, and if plural
      * options exist (2 blocks of text surrounded by |) choose the former if it 1,
      * and the latter otherwise, deleting the other and the |'s.
      *
      * @param num the number to insert.
      */
-    void CustomMessage::InsertNumber(uint8_t num);
+    void InsertNumber(uint8_t num);
 
     /**
      * @brief Replaces various symbols with the control codes necessary to
@@ -151,11 +157,11 @@ class CustomMessage {
     void Format();
 
   private:
-    std::string english = "";
-    std::string french = "";
-    std::string german = "";
+    std::array<std::string, LANGUAGE_MAX> messages ={"","",""};
     TextBoxType type = TEXTBOX_TYPE_BLACK;
     TextBoxPosition position = TEXTBOX_POS_BOTTOM;
+    std::vector<char> colors = {};
+    std::vector<bool> capital = {};
 };
 
 typedef std::unordered_map<uint16_t, CustomMessage> CustomMessageTable;

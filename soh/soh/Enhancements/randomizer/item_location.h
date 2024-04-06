@@ -33,8 +33,8 @@ class ItemLocation {
     void SetCustomPrice(uint16_t price_);
     bool IsHintable() const;
     void SetAsHintable();
-    bool IsHintedAt() const;
-    void SetAsHinted();
+    bool IsAHintAccessible() const;
+    void SetHintAccesible();
     const std::vector<RandomizerHint>& GetHintedBy() const;
     void AddHintedBy(RandomizerHint hintKey);
     bool IsHidden() const;
@@ -53,7 +53,7 @@ class ItemLocation {
   private:
     RandomizerCheck rc;
     std::vector<RandomizerHint> hintedBy = {};
-    bool hintedAt = false;
+    bool hintAccesible = false;
     bool isHintable = false;
     bool addedToPool = false;
     RandomizerGet placedItem = RG_NONE;

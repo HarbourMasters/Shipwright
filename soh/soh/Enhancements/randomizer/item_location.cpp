@@ -109,12 +109,12 @@ void ItemLocation::SetAsHintable() {
     isHintable = true;
 }
 
-bool ItemLocation::IsHintedAt() const {
-    return hintedAt;
+bool ItemLocation::IsAHintAccessible() const {
+    return hintAccesible;
 }
 
-void ItemLocation::SetAsHinted() {
-    hintedAt = true;
+void ItemLocation::SetHintAccesible() {
+    hintAccesible = true;
 }
 
 const std::vector<RandomizerHint>& ItemLocation::GetHintedBy() const {
@@ -193,7 +193,7 @@ void ItemLocation::ResetVariables() {
     placedItem = RG_NONE;
     delayedItem = RG_NONE;
     isHintable = false;
-    hintedAt = false;
+    hintAccesible = false;
     hintedBy = {};
     price = 0;
     hasCustomPrice = false;

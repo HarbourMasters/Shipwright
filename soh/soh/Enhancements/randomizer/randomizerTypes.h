@@ -3,8 +3,9 @@
 #include <stdint.h>
 #include "z64item.h"
 #include "randomizer_inf.h"
-#include <array>
 #include <string>
+#include <unordered_map>
+#include "../custom-message/CustomMessageManager.h"
 
 #define MAX_TRICK_NAME_SIZE 50
 
@@ -40,38 +41,35 @@ typedef enum {
 } RandomizerCheckStatus;
 
 typedef enum {
-    HINT_TYPE_ALTAR_CHILD,
-    HINT_TYPE_ALTAR_ADULT,
-    HINT_TYPE_STATIC_ENTRANCE,
-    HINT_TYPE_STATIC_ITEM,
-    HINT_TYPE_STATIC_LOCATION,
-    HINT_TYPE_MERCHANT,
+    HINT_TYPE_HINT_KEY,
+    HINT_TYPE_AREA,
+    HINT_TYPE_ITEM,
     HINT_TYPE_TRIAL,
-    HINT_TYPE_WOTH, // Way of the Hero
-    HINT_TYPE_FOOLISH,
     HINT_TYPE_ENTRANCE,
     HINT_TYPE_ITEM_AREA,
-    HINT_TYPE_ITEM_LOCATION,
-    HINT_TYPE_TEXT,
-    HINT_TYPE_JUNK,
+    HINT_TYPE_MERCHANT,
+    HINT_TYPE_ALTAR_CHILD,
+    HINT_TYPE_ALTAR_ADULT,
+    HINT_TYPE_WOTH, // Way of the Hero
+    HINT_TYPE_FOOLISH,
+    HINT_TYPE_MESSAGE,
     HINT_TYPE_MAX
 } HintType;
 
-std::array<std::string, HINT_TYPE_MAX> hintTypeNames = {
-    "Child Altar",
-    "Adult Altar",
-    "Static Entrance",
-    "Static Item",
-    "Static Junk",
-    "Static Location",
-    "Trial",
-    "WotH",
-    "Barren",
-    "Entrance",
-    "Item Area",
-    "Item Location",
-    "Text",
-    "Junk"
+// RANDOTODO find somewhere better and translate
+std::unordered_map<HintType, CustomMessage> hintTypeNames = {
+    {HINT_TYPE_HINT_KEY, CustomMessage("Message")},
+    {HINT_TYPE_AREA, CustomMessage("Area")},
+    {HINT_TYPE_ITEM, CustomMessage("Item")},
+    {HINT_TYPE_TRIAL, CustomMessage("Trial")},
+    {HINT_TYPE_ENTRANCE, CustomMessage("Entrance")},
+    {HINT_TYPE_ITEM_AREA, CustomMessage("Item Area")},
+    {HINT_TYPE_MERCHANT, CustomMessage("Merchant")},
+    {HINT_TYPE_ALTAR_CHILD, CustomMessage("Child Altar")},
+    {HINT_TYPE_ALTAR_ADULT, CustomMessage("Adult Altar")},
+    {HINT_TYPE_WOTH,  CustomMessage("Way of the Hero")},
+    {HINT_TYPE_FOOLISH, CustomMessage("Foolish")},
+    {HINT_TYPE_MESSAGE, CustomMessage("Hardcoded Message")}
 };
 
 typedef enum {
@@ -2036,8 +2034,8 @@ typedef enum {
     RH_KF_STORMS_GROTTO_GOSSIP_STONE,
     RH_LW_GOSSIP_STONE,
     RH_LW_NEAR_SHORTCUTS_GROTTO_GOSSIP_STONE,
-    RH_SFM_MAZE_LOWER_GOSSIP_STONE,
-    RH_SFM_MAZE_UPPER_GOSSIP_STONE,
+    RH_SFM_MAZE_NEAR_LW_GOSSIP_STONE,
+    RH_SFM_MAZE_CENTER_GOSSIP_STONE,
     RH_SFM_SARIA_GOSSIP_STONE,
     RH_HF_COW_GROTTO_GOSSIP_STONE,
     RH_HF_NEAR_MARKET_GROTTO_GOSSIP_STONE,
@@ -2070,15 +2068,15 @@ typedef enum {
     RH_GV_GOSSIP_STONE,
     RH_COLOSSUS_GOSSIP_STONE,
     RH_DODONGOS_CAVERN_GOSSIP_STONE,
-    RH_ENDGAME_HINT,
-    RH_GANONDORF_NOHINT,
+    RH_GANONDORF_HINT,
+    RH_GANONDORF_JOKE,
+    RH_SHEIK_HINT,
     RH_DAMPES_DIARY,
     RH_GREG_RUPEE,
     RH_ALTAR_CHILD,
     RH_ALTAR_ADULT,
     RH_SARIA_HINT,
     RH_FISHING_POLE,
-    RH_SHEIK_LIGHT_ARROWS,
     RH_MINUET_WARP_LOC,
     RH_BOLERO_WARP_LOC,
     RH_SERENADE_WARP_LOC,
@@ -2103,69 +2101,6 @@ typedef enum {
     RH_KAK_100_SKULLS_HINT,
     RH_MAX,
 } RandomizerHint;
-
-//RANDOTODO When dynamic grotto check names are done, apply it to these hints
-std::array<std::string, RH_MAX> hintKeyNames = {
-    "ERROR HINT",
-    "Desert Collosus Gossip Stone",
-    "DMC Gossip Stone",
-    "DMC Upper Grotto Gossip Stone",
-    "DMT Gossip Stone",
-    "DMT Storms Grotto Gossip Stone",
-    "Dodongo's Cavern Gossip Stone",
-    "GC Maze Gossip Stone",
-    "GC Medigoron Gossip Stone",
-    "Graveyard Gossip Stone",
-    "HC Near Malon Gossip Stone",
-    "HC Rock Wall Gossip Stone",
-    "HC Storm Grotto Gossip Stone",
-    "HF Cow Grotto Gossip Stone",
-    "HF Near Market Grotto Gossip Stone",
-    "HF Open Grotto Gossip Stone",
-    "HF Southeast Grotto Gossip Stone",
-    "ZF Near Fairy Gossip Stone",
-    "ZF Near Jabu Gossip Stone",
-    "KF Right Near Deku Gossip Stone",
-    "KF Left Near Deku Gossip Stone", //RANDOTODO find cardinal direction
-    "KF Gossip Stone",
-    "KF Storms Grotto Gossip Stone",
-    "Kak Open Grotto Gossip Stone",
-    "LH Near Lab Gossip Stone",
-    "LH Southeast Gossip Stone",
-    "LH Southwest Gossip Stone",
-    "LW Gossip Stone",
-    "LW Near Shortcuts Grotto Gossip Stone",
-    "SFM Near LW Gossip Stone",
-    "SFM Center Gossip Stone",
-    "SFM Near Forst Temple Gossip Stone",
-    "Market Leftmost Center Gossip Stone",
-    "Market Left Center Gossip Stone",
-    "Market Right Center Gossip Stone",
-    "Market Rightmost Gossip Stone",
-    "ZD Gossip Stone",
-    "ZR Near Domain Gossip Stone",
-    "ZR Near Grottos Gossip Stone",
-    "ZR Open Grotto Gossip Stone",
-    "Ganondorf Hint",
-    "Ganondorf Joke",
-    "Dampe's Diary Hint",
-    "Treasure Chest Game Greg Hint",
-    "ToT Altar as Child",
-    "ToT Altar as Adult",
-    "Saria's Magic Hint",
-    "Fishing Pole Hint",
-    "Sheik in Ganons Castle Hint",
-    "Minuet of Forest Destination",
-    "Bolero of Fire Destination",
-    "Serenade of Water Destination",
-    "Requiem of Spirit Destination",
-    "Nocturne of Shadow Destination",
-    "Prelude of Light Destination",
-    "Medigoron Hint"
-    "Carpet Salseman Hint"
-    "Bean Salseman Hint"
-    "Granny Hint"
-};
 
 typedef enum {
     RHT_NONE,
@@ -3489,9 +3424,9 @@ typedef enum {
     RHT_ADULT_ALTAR_TEXT_END,
     // Static Item Hints
     RHT_GANONDORF_HINT_LA_ONLY,
-    RHT_SHEIK_HINT_LA_ONLY,
+    RHT_GANONDORF_HINT_MS_ONLY,
     RHT_GANONDORF_HINT_LA_AND_MS,
-    RHT_SHEIK_HINT_LA_AND_MS,
+    RHT_SHEIK_HINT_LA_ONLY,
     RHT_DAMPE_DIARY,
     RHT_GREG_HINT,
     RHT_SARIA_HINT,
@@ -3665,7 +3600,8 @@ typedef enum {
     RSK_ICE_TRAPS,
     RSK_GOSSIP_STONE_HINTS,
     RSK_TOT_ALTAR_HINT,
-    RSK_LIGHT_ARROWS_HINT,
+    RSK_GANONDORF_HINT,
+    RSK_SHEIK_LA_HINT,
     RSK_DAMPES_DIARY_HINT,
     RSK_GREG_HINT,
     RSK_SARIA_HINT,
@@ -3695,7 +3631,6 @@ typedef enum {
     RSK_SKIP_CHILD_ZELDA,
     RSK_STARTING_CONSUMABLES,
     RSK_FULL_WALLETS,
-    RSK_LANGUAGE,
     RSK_SHUFFLE_CHEST_MINIGAME,
     RSK_CUCCO_COUNT,
     RSK_BIG_POE_COUNT,
@@ -4206,3 +4141,5 @@ typedef enum {
     TH_MESSAGE_FINISHED,
     TH_MESSAGE_SURPLUS,
 } TriforceHuntMessages;
+
+

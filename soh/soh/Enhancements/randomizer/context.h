@@ -81,6 +81,7 @@ class Context {
     void ParseSpoiler(const char* spoilerFileName, bool plandoMode);
     void ParseHashIconIndexesJson(nlohmann::json spoilerFileJson);
     void ParseItemLocationsJson(nlohmann::json spoilerFileJson);
+    void WriteHintJson(nlohmann::json& spoilerFileJson);
     void ParseHintJson(nlohmann::json spoilerFileJson);
     std::map<RandomizerCheck, ItemOverride> overrides = {};
     std::vector<std::vector<RandomizerCheck>> playthroughLocations = {};
@@ -99,15 +100,6 @@ class Context {
     std::unordered_map<std::string, HintType> mSpoilerfileHintTypeNameToEnum;
     std::unordered_map<std::string, RandomizerArea> mSpoilerfileAreaNameToEnum;
     std::array<Hint, RH_MAX> hintTable = {};
-    RandomizerCheck mEmeraldLoc = RC_UNKNOWN_CHECK;
-    RandomizerCheck mRubyLoc = RC_UNKNOWN_CHECK;
-    RandomizerCheck mSapphireLoc = RC_UNKNOWN_CHECK;
-    RandomizerCheck mForestMedallionLoc = RC_UNKNOWN_CHECK;
-    RandomizerCheck mFireMedallionLoc = RC_UNKNOWN_CHECK;
-    RandomizerCheck mWaterMedallionLoc = RC_UNKNOWN_CHECK;
-    RandomizerCheck mShadowMedallionLoc = RC_UNKNOWN_CHECK;
-    RandomizerCheck mSpiritMedallionLoc = RC_UNKNOWN_CHECK;
-    RandomizerCheck mLightMedallionLoc = RC_UNKNOWN_CHECK;
     std::array<ItemLocation, RC_MAX> itemLocationTable = {};
     std::shared_ptr<Settings> mSettings;
     std::shared_ptr<EntranceShuffler> mEntranceShuffler;
