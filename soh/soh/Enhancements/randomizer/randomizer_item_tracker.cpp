@@ -291,15 +291,15 @@ bool IsValidSaveFile() {
 }
 
 bool HasSong(ItemTrackerItem item) {
-    return GameInteractor::IsSaveLoaded() ? false : ((1 << item.id) & gSaveContext.inventory.questItems);
+    return GameInteractor::IsSaveLoaded() ? ((1 << item.id) & gSaveContext.inventory.questItems) : false;
 }
 
 bool HasQuestItem(ItemTrackerItem item) {
-    return GameInteractor::IsSaveLoaded() ? false : ((item.data & gSaveContext.inventory.questItems) != 0);
+    return GameInteractor::IsSaveLoaded() ? (item.data & gSaveContext.inventory.questItems) : false;
 }
 
 bool HasEquipment(ItemTrackerItem item) {
-    return GameInteractor::IsSaveLoaded() ? false : ((item.data & gSaveContext.inventory.equipment) != 0);
+    return GameInteractor::IsSaveLoaded() ? (item.data & gSaveContext.inventory.equipment) : false;
 }
 
 ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
@@ -563,7 +563,7 @@ void DrawQuest(ItemTrackerItem item) {
 
 void DrawItem(ItemTrackerItem item) {
 
-    uint32_t actualItemId =  GameInteractor::IsSaveLoaded() ? ITEM_NONE : INV_CONTENT(item.id);
+    uint32_t actualItemId = GameInteractor::IsSaveLoaded() ? INV_CONTENT(item.id) : ITEM_NONE;
     int iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
     bool hasItem = actualItemId != ITEM_NONE;
     std::string itemName = "";
@@ -633,7 +633,7 @@ void DrawItem(ItemTrackerItem item) {
 }
 
 void DrawBottle(ItemTrackerItem item) {
-    uint32_t actualItemId = GameInteractor::IsSaveLoaded() ? false : (gSaveContext.inventory.items[SLOT(item.id) + item.data]);
+    uint32_t actualItemId = GameInteractor::IsSaveLoaded() ? (gSaveContext.inventory.items[SLOT(item.id) + item.data]) : false;
     bool hasItem = actualItemId != ITEM_NONE;
 
     if (GameInteractor::IsSaveLoaded() && (hasItem && item.id != actualItemId && actualItemTrackerItemMap.find(actualItemId) != actualItemTrackerItemMap.end())) {
@@ -652,7 +652,7 @@ void DrawDungeonItem(ItemTrackerItem item) {
     ImU32 dungeonColor = IM_COL_WHITE;
     uint32_t bitMask = 1 << (item.id - ITEM_KEY_BOSS); // Bitset starts at ITEM_KEY_BOSS == 0. the rest are sequential
     int iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
-    bool hasItem = GameInteractor::IsSaveLoaded() ? false : ((bitMask & gSaveContext.inventory.dungeonItems[item.data]) != 0);
+    bool hasItem = GameInteractor::IsSaveLoaded() ? (bitMask & gSaveContext.inventory.dungeonItems[item.data]) : false;
     bool hasSmallKey = GameInteractor::IsSaveLoaded() ? false : ((gSaveContext.inventory.dungeonKeys[item.data]) >= 0);
     ImGui::BeginGroup();
     if (itemId == ITEM_KEY_SMALL) {
