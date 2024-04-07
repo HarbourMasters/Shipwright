@@ -85,9 +85,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 ################################################################################
 # Sub-projects
 ################################################################################
-# add_compile_definitions(USE_ZAPD)
 add_subdirectory(libultraship ${CMAKE_BINARY_DIR}/libultraship)
-
 add_subdirectory(ZAPDTR/ZAPD ${CMAKE_BINARY_DIR}/ZAPD)
 add_subdirectory(OTRExporter)
 add_subdirectory(soh)
