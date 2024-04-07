@@ -17,6 +17,10 @@
 #include <libultraship/libultra/types.h>
 #include "soh/Enhancements/cosmetics/CosmeticsEditor.h"
 
+#ifdef _MSC_VER
+#define strdup _strdup
+#endif
+
 namespace UIWidgets {
 
     // MARK: - Layout Helper
@@ -46,7 +50,7 @@ namespace UIWidgets {
             currentLineLength++;
         }
 
-        return _strdup(newText.c_str());
+        return strdup(newText.c_str());
     }
 
     char* WrappedText(const std::string& text, unsigned int charactersPerLine) {
