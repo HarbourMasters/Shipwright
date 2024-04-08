@@ -96,11 +96,6 @@ jobs:
           sudo installer -pkg ./MacPorts-2.9.1-12-Monterey.pkg -target /
         fi
         echo "/opt/local/bin:/opt/local/sbin" >> $GITHUB_PATH
-    - name: Update MacPorts
-      if: ${{ !vars.MAC_RUNNER }}
-      run: |
-        sudo port selfupdate
-        sudo port upgrade outdated
     - name: Install dependencies
       if: ${{ !vars.MAC_RUNNER }}
       run: |
