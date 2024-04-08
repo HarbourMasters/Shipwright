@@ -764,6 +764,14 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
             *should = eligible;
             break;
         }
+        case GI_VB_GIVE_ITEM_FROM_HORSEBACK_ARCHERY: {
+            // give both rewards at the same time
+            if (gSaveContext.minigameScore >= 1500) {
+                Flags_SetItemGetInf(ITEMGETINF_0F);
+            }
+            *should = false;
+            break;
+        }
         case GI_VB_GIVE_ITEM_FROM_SKULLTULA_REWARD: {
             // In z_en_sth.c the rewards are stored in sGetItemIds, the first entry
             // in that array is GI_RUPEE_GOLD, and the reward is picked in EnSth_GivePlayerItem

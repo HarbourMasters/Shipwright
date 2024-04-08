@@ -8,6 +8,7 @@
 #include "vt.h"
 #include "objects/object_ge1/object_ge1.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
 
@@ -531,16 +532,8 @@ void EnGe1_WaitTillItemGiven_Archery(EnGe1* this, PlayState* play) {
     GetItemEntry getItemEntry = (GetItemEntry)GET_ITEM_NONE;
     s32 getItemId;
 
-    if (Actor_HasParent(&this->actor, play)) {
-        if (IS_RANDO && gSaveContext.minigameScore >= 1500 && !Flags_GetInfTable(INFTABLE_190)) {
-            Flags_SetItemGetInf(ITEMGETINF_0F);
-            Flags_SetInfTable(INFTABLE_190);
-            this->stateFlags |= GE1_STATE_GIVE_QUIVER;
-            this->actor.parent = NULL;
-            return;
-        } else {
-            this->actionFunc = EnGe1_SetupWait_Archery;
-        }
+    if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_HORSEBACK_ARCHERY, true, this)) {
+        this->actionFunc = EnGe1_SetupWait_Archery;
 
         if (this->stateFlags & GE1_STATE_GIVE_QUIVER) {
             Flags_SetItemGetInf(ITEMGETINF_0F);
@@ -549,33 +542,21 @@ void EnGe1_WaitTillItemGiven_Archery(EnGe1* this, PlayState* play) {
         }
     } else {
         if (this->stateFlags & GE1_STATE_GIVE_QUIVER) {
-            if (!IS_RANDO) {
-                switch (CUR_UPG_VALUE(UPG_QUIVER)) {
-                    //! @bug Asschest. See next function for details
-                    case 1:
-                        getItemId = GI_QUIVER_40;
-                        break;
-                    case 2:
-                        getItemId = GI_QUIVER_50;
-                        break;
-                }
-            } else {
-                getItemEntry = Randomizer_GetItemFromKnownCheck(RC_GF_HBA_1500_POINTS, CUR_UPG_VALUE(UPG_QUIVER) == 1 ? GI_QUIVER_40 : GI_QUIVER_50);
-                getItemId = getItemEntry.getItemId;
+            switch (CUR_UPG_VALUE(UPG_QUIVER)) {
+                //! @bug Asschest. See next function for details
+                case 1:
+                    getItemId = GI_QUIVER_40;
+                    break;
+                case 2:
+                    getItemId = GI_QUIVER_50;
+                    break;
             }
         } else {
-            if (!IS_RANDO) {
-                getItemId = GI_HEART_PIECE;
-            } else {
-                getItemEntry = Randomizer_GetItemFromKnownCheck(RC_GF_HBA_1000_POINTS, GI_HEART_PIECE);
-                getItemId = getItemEntry.getItemId;
-            }
+            getItemId = GI_HEART_PIECE;
         }
 
-        if (!IS_RANDO || getItemEntry.getItemId == GI_NONE) {
+        if (GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_HORSEBACK_ARCHERY, true, this)) {
             Actor_OfferGetItem(&this->actor, play, getItemId, 10000.0f, 50.0f);
-        } else {
-            GiveItemEntryFromActor(&this->actor, play, getItemEntry, 10000.0f, 50.0f);
         }
     }
 }
@@ -590,33 +571,21 @@ void EnGe1_BeginGiveItem_Archery(EnGe1* this, PlayState* play) {
     }
 
     if (this->stateFlags & GE1_STATE_GIVE_QUIVER) {
-        if (!IS_RANDO) {
-            switch (CUR_UPG_VALUE(UPG_QUIVER)) {
-                //! @bug Asschest. See next function for details
-                case 1:
-                    getItemId = GI_QUIVER_40;
-                    break;
-                case 2:
-                    getItemId = GI_QUIVER_50;
-                    break;
-            }
-        } else {
-            getItemEntry = Randomizer_GetItemFromKnownCheck(RC_GF_HBA_1500_POINTS, CUR_UPG_VALUE(UPG_QUIVER) == 1 ? GI_QUIVER_40 : GI_QUIVER_50);
-            getItemId = getItemEntry.getItemId;
+        switch (CUR_UPG_VALUE(UPG_QUIVER)) {
+            //! @bug Asschest. See next function for details
+            case 1:
+                getItemId = GI_QUIVER_40;
+                break;
+            case 2:
+                getItemId = GI_QUIVER_50;
+                break;
         }
     } else {
-        if (!IS_RANDO) {
-            getItemId = GI_HEART_PIECE;
-        } else {
-            getItemEntry = Randomizer_GetItemFromKnownCheck(RC_GF_HBA_1000_POINTS, GI_HEART_PIECE);
-            getItemId = getItemEntry.getItemId;
-        }
+        getItemId = GI_HEART_PIECE;
     }
 
-    if (!IS_RANDO || getItemEntry.getItemId == GI_NONE) {
+    if (GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_HORSEBACK_ARCHERY, true, this)) {
         Actor_OfferGetItem(&this->actor, play, getItemId, 10000.0f, 50.0f);
-    } else {
-        GiveItemEntryFromActor(&this->actor, play, getItemEntry, 10000.0f, 50.0f);
     }
 }
 
