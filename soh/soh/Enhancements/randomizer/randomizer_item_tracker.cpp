@@ -653,7 +653,7 @@ void DrawDungeonItem(ItemTrackerItem item) {
     uint32_t bitMask = 1 << (item.id - ITEM_KEY_BOSS); // Bitset starts at ITEM_KEY_BOSS == 0. the rest are sequential
     int iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
     bool hasItem = GameInteractor::IsSaveLoaded() ? (bitMask & gSaveContext.inventory.dungeonItems[item.data]) : false;
-    bool hasSmallKey = GameInteractor::IsSaveLoaded() ? false : ((gSaveContext.inventory.dungeonKeys[item.data]) >= 0);
+    bool hasSmallKey = GameInteractor::IsSaveLoaded() ? ((gSaveContext.inventory.dungeonKeys[item.data]) >= 0)  : false;
     ImGui::BeginGroup();
     if (itemId == ITEM_KEY_SMALL) {
         ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(hasSmallKey && IsValidSaveFile() ? item.name : item.nameFaded),
@@ -664,17 +664,15 @@ void DrawDungeonItem(ItemTrackerItem item) {
                      ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
     }
 
-    if (CheckTracker::IsAreaSpoiled(RandomizerCheckObjects::GetRCAreaBySceneID((SceneID)item.data)) && GameInteractor::IsSaveLoaded()) {
-        if (ResourceMgr_IsSceneMasterQuest(item.data))
-            dungeonColor = IM_COL_PURPLE;
-        else
-            dungeonColor = IM_COL_LIGHT_YELLOW;
+    if (CheckTracker::IsAreaSpoiled(RandomizerCheckObjects::GetRCAreaBySceneID(static_cast<SceneID>(item.data))) && GameInteractor::IsSaveLoaded()) {
+        dungeonColor = (ResourceMgr_IsSceneMasterQuest(item.data) ? IM_COL_PURPLE : IM_COL_LIGHT_YELLOW);
     }
 
     if (itemId == ITEM_KEY_SMALL) {
-        DrawItemCount(item, !CheckTracker::IsAreaSpoiled(RandomizerCheckObjects::GetRCAreaBySceneID((SceneID)item.data)));
+        DrawItemCount(item, !CheckTracker::IsAreaSpoiled(RandomizerCheckObjects::GetRCAreaBySceneID(static_cast<SceneID>(item.data))));
 
         ImVec2 p = ImGui::GetCursorScreenPos();
+        // offset puts the text at the correct level. for some reason, if the save is loaded, the margin is 3 pixels higher only for small keys, so we use 16 then. Otherwise, 13 is where everything else is
         int offset = GameInteractor::IsSaveLoaded() ? 16 : 13;
         std::string dungeonName = itemTrackerDungeonShortNames[item.data];
         ImGui::SetCursorScreenPos(ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(dungeonName.c_str()).x / 2), p.y - (iconSize + offset)));
