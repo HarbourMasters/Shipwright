@@ -24,6 +24,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Ms/z_en_ms.h"
 #include "src/overlays/actors/ovl_En_Fr/z_en_fr.h"
 #include "src/overlays/actors/ovl_En_Syateki_Man/z_en_syateki_man.h"
+#include "src/overlays/actors/ovl_En_Sth/z_en_sth.h"
 #include "adult_trade_shuffle.h"
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
@@ -761,6 +762,33 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
                 CHECK_QUEST_ITEM(QUEST_ZORA_SAPPHIRE)
             );
             *should = eligible;
+            break;
+        }
+        case GI_VB_GIVE_ITEM_FROM_SKULLTULA_REWARD: {
+            // In z_en_sth.c the rewards are stored in sGetItemIds, the first entry
+            // in that array is GI_RUPEE_GOLD, and the reward is picked in EnSth_GivePlayerItem
+            // via sGetItemIds[this->actor.params]. This means if actor.params == 0 we're looking
+            // at the 100 GS reward
+            EnSth* enSth = static_cast<EnSth*>(optionalArg);
+            if (enSth->actor.params == 0) {
+                // if nothing is shuffled onto 100 GS,
+                // or we already got the 100 GS reward,
+                // let the player farm
+                if (!RAND_GET_OPTION(RSK_SHUFFLE_100_GS_REWARD) ||
+                    Flags_GetRandomizerInf(RAND_INF_KAK_100_GOLD_SKULLTULA_REWARD)) {
+                    *should = true;
+                    break;
+                }
+
+                // we're giving the 100 GS rando reward! set the rando inf
+                Flags_SetRandomizerInf(RAND_INF_KAK_100_GOLD_SKULLTULA_REWARD);
+                
+                // also set the actionfunc so this doesn't immediately get
+                // called again (and lead to a vanilla+rando item give
+                // because the flag check will pass next time)
+                enSth->actionFunc = (EnSthActionFunc)EnSth_RewardObtainedTalk;
+            }
+            *should = false;
             break;
         }
         case GI_VB_TRADE_TIMER_ODD_MUSHROOM:
