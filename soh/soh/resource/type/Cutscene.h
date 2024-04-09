@@ -3,9 +3,6 @@
 #include <vector>
 #include <string>
 #include "Resource.h"
-#include "Vec2f.h"
-#include "Vec3f.h"
-#include "Color3b.h"
 
 namespace SOH {
 
