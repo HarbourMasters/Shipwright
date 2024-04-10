@@ -11,7 +11,10 @@ extern u8 gEquipAgeReqs[][4];
 extern u8 gSlotAgeReqs[];
 extern u8 gItemAgeReqs[];
 extern u8 gAreaGsFlags[];
-extern bool gSelectingMask;
+
+#define MAP_48x85_TEX_WIDTH 48
+#define MAP_48x85_TEX_HEIGHT 85
+#define MAP_48x85_TEX_SIZE ((MAP_48x85_TEX_WIDTH * MAP_48x85_TEX_HEIGHT) / 2) // 48x85 CI4 texture
 
 #define AGE_REQ_ADULT LINK_AGE_ADULT
 #define AGE_REQ_CHILD LINK_AGE_CHILD
@@ -46,6 +49,6 @@ void PauseMapMark_Draw(PlayState* play);
 
 void KaleidoScope_UpdateCursorSize(PauseContext* pauseCtx);
 
-void KaleidoScope_ResetTradeSelect();
+void KaleidoScope_ResetItemCycling();
 
 #endif

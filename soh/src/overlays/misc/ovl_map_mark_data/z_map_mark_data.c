@@ -1762,6 +1762,13 @@ static MapMarkData sMapMarkJabuJabuBellyMq[] = {
           } },
         { MAP_MARK_NONE, 0, { 0 } },
     },
+    // Jabu-Jabu's Belly minimap 16
+    // SoH [General] - This entry corresponds to Big Octorok's room and is missing in the MQ game
+    // N64 hardware does an OoB read and lands on MQ Forest Temple room 0
+    // To avoid UB with OoB for SoH, the correct entry is now added below
+    {
+        { MAP_MARK_NONE, 0, { 0 } },
+    },
 };
 
 static MapMarkData sMapMarkForestTempleMq[] = {

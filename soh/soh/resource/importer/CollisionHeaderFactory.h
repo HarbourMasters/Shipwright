@@ -1,17 +1,17 @@
 #pragma once
 
 #include "Resource.h"
-#include "ResourceFactory.h"
+#include "ResourceFactoryBinary.h"
+#include "ResourceFactoryXML.h"
 
-namespace LUS {
-class CollisionHeaderFactory : public ResourceFactory {
+namespace SOH {
+class ResourceFactoryBinaryCollisionHeaderV0 : public LUS::ResourceFactoryBinary {
   public:
-    std::shared_ptr<IResource>
-    ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) override;
+    std::shared_ptr<LUS::IResource> ReadResource(std::shared_ptr<LUS::File> file) override;
 };
 
-class CollisionHeaderFactoryV0 : public ResourceVersionFactory {
+class ResourceFactoryXMLCollisionHeaderV0 : public LUS::ResourceFactoryXML {
   public:
-    void ParseFileBinary(std::shared_ptr<BinaryReader> reader, std::shared_ptr<IResource> resource) override;
+    std::shared_ptr<LUS::IResource> ReadResource(std::shared_ptr<LUS::File> file) override;
 };
-}; // namespace LUS
+} // namespace SOH

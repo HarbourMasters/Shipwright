@@ -331,5 +331,6 @@ void AreaTable_Init_WaterTemple() {
         {
             // Exits
             Entrance(WATER_TEMPLE_BOSS_ENTRYWAY, { [] { return false; } }),
+            Entrance(LAKE_HYLIA, { [] { return WaterTempleClear; } }),
         });
 }

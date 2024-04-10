@@ -209,5 +209,6 @@ void AreaTable_Init_ShadowTemple() {
              {
                  // Exits
                  Entrance(SHADOW_TEMPLE_BOSS_ENTRYWAY, { [] { return false; } }),
+                 Entrance(GRAVEYARD_WARP_PAD_REGION, { [] { return ShadowTempleClear; } }),
              });
 }

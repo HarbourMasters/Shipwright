@@ -179,17 +179,17 @@ void AreaTable_Init_JabuJabusBelly() {
                   //Locations
                   LocationAccess(JABU_JABUS_BELLY_MQ_SECOND_ROOM_LOWER_CHEST,      {[]{return true;}}),
                   LocationAccess(JABU_JABUS_BELLY_MQ_SECOND_ROOM_UPPER_CHEST,      {[]{return (IsAdult && (CanUse(HOVER_BOOTS) || CanUse(HOOKSHOT))) || ChildCanAccess(JABU_JABUS_BELLY_MQ_BOSS_AREA);}}),
-                  LocationAccess(JABU_JABUS_BELLY_MQ_COMPASS_CHEST,                {[]{return true;}}),
-                  LocationAccess(JABU_JABUS_BELLY_MQ_BASEMENT_NEAR_VINES_CHEST,    {[]{return true;}}),
-                  LocationAccess(JABU_JABUS_BELLY_MQ_BASEMENT_NEAR_SWITCHES_CHEST, {[]{return true;}}),
+                  LocationAccess(JABU_JABUS_BELLY_MQ_COMPASS_CHEST,                {[]{return (IsChild || CanDive || CanUse(IRON_BOOTS) || LogicJabuAlcoveJumpDive) && (CanUse(SLINGSHOT) || CanUse(BOW) || CanUse(HOOKSHOT) || HasBombchus || (LogicJabuMQRangJump && CanUse(BOOMERANG)));}}),
+                  LocationAccess(JABU_JABUS_BELLY_MQ_BASEMENT_NEAR_VINES_CHEST,    {[]{return CanUse(SLINGSHOT);}}),
+                  LocationAccess(JABU_JABUS_BELLY_MQ_BASEMENT_NEAR_SWITCHES_CHEST, {[]{return CanUse(SLINGSHOT);}}),
                   LocationAccess(JABU_JABUS_BELLY_MQ_BOOMERANG_ROOM_SMALL_CHEST,   {[]{return true;}}),
-                  LocationAccess(JABU_JABUS_BELLY_MQ_BOOMERANG_CHEST,              {[]{return true;}}),
+                  LocationAccess(JABU_JABUS_BELLY_MQ_BOOMERANG_CHEST,              {[]{return CanUse(KOKIRI_SWORD) || CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD) || CanUse(MEGATON_HAMMER) || CanUse(SLINGSHOT) || CanUse(BOW) || CanUse(STICKS) || Bombs;}}),
                   LocationAccess(JABU_JABUS_BELLY_MQ_GS_BOOMERANG_CHEST_ROOM,      {[]{return CanPlay(SongOfTime) || (LogicJabuMQSoTGS && IsChild && CanUse(BOOMERANG));}}),
                     //Trick: CanPlay(SongOfTime) || (LogicJabuMQSoTGS && IsChild && CanUse(BOOMERANG))
   }, {
                   //Exits
                   Entrance(JABU_JABUS_BELLY_MQ_BEGINNING, {[]{return true;}}),
-                  Entrance(JABU_JABUS_BELLY_MQ_DEPTHS,    {[]{return HasExplosives && IsChild && CanUse(BOOMERANG);}}),
+                  Entrance(JABU_JABUS_BELLY_MQ_DEPTHS,    {[]{return HasExplosives && CanUse(SLINGSHOT) && CanUse(BOOMERANG);}}),
   });
 
   areaTable[JABU_JABUS_BELLY_MQ_DEPTHS] = Area("Jabu Jabus Belly MQ Depths", "Jabu Jabus Belly", JABU_JABUS_BELLY, NO_DAY_NIGHT_CYCLE, {}, {
@@ -209,8 +209,8 @@ void AreaTable_Init_JabuJabusBelly() {
   }, {
                   //Locations
                   LocationAccess(JABU_JABUS_BELLY_MQ_COW,             {[]{return CanPlay(EponasSong);}}),
-                  LocationAccess(JABU_JABUS_BELLY_MQ_NEAR_BOSS_CHEST, {[]{return true;}}),
-                  LocationAccess(JABU_JABUS_BELLY_MQ_GS_NEAR_BOSS,    {[]{return true;}}),
+                  LocationAccess(JABU_JABUS_BELLY_MQ_NEAR_BOSS_CHEST, {[]{return CanUse(SLINGSHOT);}}),
+                  LocationAccess(JABU_JABUS_BELLY_MQ_GS_NEAR_BOSS,    {[]{return CanUse(BOOMERANG) || (LogicJabuNearBossRanged && CanUse(HOOKSHOT));}}),
   }, {
                   //Exits
                   Entrance(JABU_JABUS_BELLY_MQ_MAIN, {[]{return true;}}),
@@ -245,5 +245,6 @@ void AreaTable_Init_JabuJabusBelly() {
              {
                  // Exits
                  Entrance(JABU_JABUS_BELLY_BOSS_ENTRYWAY, { [] { return false; } }),
+                 Entrance(ZORAS_FOUNTAIN, { [] { return JabuJabusBellyClear; } }),
              });
 }

@@ -22,6 +22,22 @@ void SohInputEditorWindow::InitElement() {
     mButtonsBitmasks = { BTN_A, BTN_B, BTN_START, BTN_L, BTN_R, BTN_Z, BTN_CUP, BTN_CDOWN, BTN_CLEFT, BTN_CRIGHT };
     mDpadBitmasks = { BTN_DUP, BTN_DDOWN, BTN_DLEFT, BTN_DRIGHT };
     mModifierButtonsBitmasks = { BTN_MODIFIER1, BTN_MODIFIER2 };
+
+    addButtonName(BTN_A,		"A");
+    addButtonName(BTN_B,		"B");
+    addButtonName(BTN_CUP,		"C Up");
+    addButtonName(BTN_CDOWN,	"C Down");
+    addButtonName(BTN_CLEFT,	"C Left");
+    addButtonName(BTN_CRIGHT,	"C Right");
+    addButtonName(BTN_L,		"L");
+    addButtonName(BTN_Z,		"Z");
+    addButtonName(BTN_R,		"R");
+    addButtonName(BTN_START,	"Start");
+    addButtonName(BTN_DUP,		"D-pad up");
+    addButtonName(BTN_DDOWN,	"D-pad down");
+    addButtonName(BTN_DLEFT,	"D-pad left");
+    addButtonName(BTN_DRIGHT,	"D-pad right");
+    addButtonName(0,			"None");
 }
 
 #define INPUT_EDITOR_WINDOW_GAME_INPUT_BLOCK_ID 95237929
@@ -636,6 +652,45 @@ void SohInputEditorWindow::DrawStickSection(uint8_t port, uint8_t stick, int32_t
     ImGui::EndGroup();
     ImGui::SetNextItemOpen(true, ImGuiCond_Once);
     if (ImGui::TreeNode(StringHelper::Sprintf("Analog Stick Options##%d", id).c_str())) {
+        ImGui::Text("Sensitivity:");
+
+        int32_t sensitivityPercentage = controllerStick->GetSensitivityPercentage();
+        if (sensitivityPercentage == 0) {
+            ImGui::BeginDisabled();
+        }
+        ImGui::PushButtonRepeat(true);
+        if (ImGui::Button(StringHelper::Sprintf("-##Sensitivity%d", id).c_str())) {
+            controllerStick->SetSensitivity(sensitivityPercentage - 1);
+        }
+        ImGui::PopButtonRepeat();
+        if (sensitivityPercentage == 0) {
+            ImGui::EndDisabled();
+        }
+        ImGui::SameLine(0.0f, 0.0f);
+        ImGui::SetNextItemWidth(SCALE_IMGUI_SIZE(160.0f));
+        if (ImGui::SliderInt(StringHelper::Sprintf("##Sensitivity%d", id).c_str(), &sensitivityPercentage, 0, 200, "%d%%",
+                             ImGuiSliderFlags_AlwaysClamp)) {
+            controllerStick->SetSensitivity(sensitivityPercentage);
+        }
+        ImGui::SameLine(0.0f, 0.0f);
+        if (sensitivityPercentage == 200) {
+            ImGui::BeginDisabled();
+        }
+        ImGui::PushButtonRepeat(true);
+        if (ImGui::Button(StringHelper::Sprintf("+##Sensitivity%d", id).c_str())) {
+            controllerStick->SetSensitivity(sensitivityPercentage + 1);
+        }
+        ImGui::PopButtonRepeat();
+        if (sensitivityPercentage == 200) {
+            ImGui::EndDisabled();
+        }
+        if (!controllerStick->SensitivityIsDefault()) {
+            ImGui::SameLine();
+            if (ImGui::Button(StringHelper::Sprintf("Reset to Default###resetStickSensitivity%d", id).c_str())) {
+                controllerStick->ResetSensitivityToDefault();
+            }
+        }
+
         ImGui::Text("Deadzone:");
 
         int32_t deadzonePercentage = controllerStick->GetDeadzonePercentage();
@@ -978,14 +1033,6 @@ void SohInputEditorWindow::DrawAddLEDMappingButton(uint8_t port) {
     }
 }
 
-void SohInputEditorWindow::DrawHelpIcon(const std::string& helptext) {
-    // place the ? button to the most of the right side of the cell it is using.
-    ImGui::SetCursorPosY(ImGui::GetCursorPosY() - SCALE_IMGUI_SIZE(22));
-    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + ImGui::GetContentRegionAvail().x - SCALE_IMGUI_SIZE(15));
-    ImGui::SmallButton("?");
-    UIWidgets::Tooltip(helptext.c_str());
-}
-
 void SohInputEditorWindow::DrawLEDSection(uint8_t port) {
     for (auto [id, mapping] :
          LUS::Context::GetInstance()->GetControlDeck()->GetControllerByPort(port)->GetLED()->GetAllLEDMappings()) {
@@ -1024,11 +1071,11 @@ void SohInputEditorWindow::DrawLEDSection(uint8_t port) {
                 };
                 UIWidgets::PaddedText("Source");
                 UIWidgets::EnhancementCombobox("gLedColorSource", ledSources, LED_SOURCE_TUNIC_ORIGINAL);
-                DrawHelpIcon("Health\n- Red when health critical (13-20% depending on max health)\n- Yellow when "
-                             "health < 40%. Green otherwise.\n\n"
-                             "Tunics: colors will mirror currently equipped tunic, whether original or the current "
-                             "values in Cosmetics Editor.\n\n"
-                             "Custom: single, solid color");
+                UIWidgets::Tooltip("Health\n- Red when health critical (13-20% depending on max health)\n- Yellow when "
+                                   "health < 40%. Green otherwise.\n\n"
+                                   "Tunics: colors will mirror currently equipped tunic, whether original or the current "
+                                   "values in Cosmetics Editor.\n\n"
+                                   "Custom: single, solid color");
                 if (CVarGetInteger("gLedColorSource", 1) == LED_SOURCE_CUSTOM) {
                     UIWidgets::Spacer(3);
                     auto port1Color = CVarGetColor24("gLedPort1Color", { 255, 255, 255 });
@@ -1046,14 +1093,14 @@ void SohInputEditorWindow::DrawLEDSection(uint8_t port) {
                     ImGui::SameLine();
                     ImGui::Text("Custom Color");
                 }
-                UIWidgets::PaddedEnhancementSliderFloat("Brightness: %d%%", "##LED_Brightness", "gLedBrightness", 0.0f,
+                UIWidgets::PaddedEnhancementSliderFloat("Brightness: %.1f %%", "##LED_Brightness", "gLedBrightness", 0.0f,
                                                         1.0f, "", 1.0f, true, true);
-                DrawHelpIcon("Sets the brightness of controller LEDs. 0% brightness = LEDs off.");
+                UIWidgets::Tooltip("Sets the brightness of controller LEDs. 0% brightness = LEDs off.");
                 UIWidgets::PaddedEnhancementCheckbox(
                     "Critical Health Override", "gLedCriticalOverride", true, true,
                     CVarGetInteger("gLedColorSource", LED_SOURCE_TUNIC_ORIGINAL) == LED_SOURCE_HEALTH,
                     "Override redundant for health source.", UIWidgets::CheckboxGraphics::Cross, true);
-                DrawHelpIcon("Shows red color when health is critical, otherwise displays according to color source.");
+                UIWidgets::Tooltip("Shows red color when health is critical, otherwise displays according to color source.");
             }
             ImGui::TreePop();
         }
@@ -1391,6 +1438,273 @@ void SohInputEditorWindow::DrawLEDDeviceIcons(uint8_t portIndex) {
     }
 }
 
+const ImGuiTableFlags PANEL_TABLE_FLAGS =
+    ImGuiTableFlags_BordersH |
+    ImGuiTableFlags_BordersV;
+const ImGuiTableColumnFlags PANEL_TABLE_COLUMN_FLAGS =
+    ImGuiTableColumnFlags_IndentEnable |
+    ImGuiTableColumnFlags_NoSort;
+
+namespace TableHelper {
+    void InitHeader(bool has_header = true) {
+        if (has_header) {
+            ImGui::TableHeadersRow();
+        }
+        ImGui::TableNextRow();
+        ImGui::TableNextColumn();
+        ImGui::AlignTextToFramePadding(); //This is to adjust Vertical pos of item in a cell to be normlized.
+        ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
+    }
+
+    void NextCol() {
+        ImGui::TableNextColumn();
+        ImGui::AlignTextToFramePadding();
+        ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
+    }
+
+    void NextLine() {
+        ImGui::TableNextRow();
+        ImGui::TableNextColumn();
+        ImGui::AlignTextToFramePadding();
+        ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
+    }
+}
+
+typedef uint32_t N64ButtonMask;
+
+void SohInputEditorWindow::addButtonName(N64ButtonMask mask, const char* name) {
+    buttons.push_back(std::make_pair(mask, name));
+    buttonNames[mask] = std::prev(buttons.end());
+}
+
+// Ocarina button maps
+static CustomButtonMap ocarinaD5 = {"D5", "gOcarinaD5BtnMap", BTN_CUP};
+static CustomButtonMap ocarinaB4 = {"B4", "gOcarinaB4BtnMap", BTN_CLEFT};
+static CustomButtonMap ocarinaA4 = {"A4", "gOcarinaA4BtnMap", BTN_CRIGHT};
+static CustomButtonMap ocarinaF4 = {"F4", "gOcarinaF4BtnMap", BTN_CDOWN};
+static CustomButtonMap ocarinaD4 = {"D4", "gOcarinaD4BtnMap", BTN_A};
+static CustomButtonMap ocarinaSongDisable = {"Disable songs", "gOcarinaDisableBtnMap", BTN_L};
+static CustomButtonMap ocarinaSharp = {"Pitch up", "gOcarinaSharpBtnMap", BTN_R};
+static CustomButtonMap ocarinaFlat = {"Pitch down", "gOcarinaFlatBtnMap", BTN_Z};
+
+// Draw a button mapping setting consisting of a padded label and button dropdown.
+// excludedButtons indicates which buttons are unavailable to choose from.
+void SohInputEditorWindow::DrawMapping(CustomButtonMap& mapping, float labelWidth, N64ButtonMask excludedButtons) {
+    N64ButtonMask currentButton = CVarGetInteger(mapping.cVarName, mapping.defaultBtn);
+
+    const char* preview;
+    if (buttonNames.contains(currentButton)) {
+        preview = buttonNames[currentButton]->second;
+    } else {
+        preview = "Unknown";
+    }
+
+    UIWidgets::Spacer(0);
+    ImVec2 cursorPos = ImGui::GetCursorPos();
+    ImVec2 textSize = ImGui::CalcTextSize(mapping.label);
+    ImGui::SetCursorPosY(cursorPos.y + textSize.y / 4);
+    ImGui::SetCursorPosX(cursorPos.x + abs(textSize.x - labelWidth));
+    ImGui::Text("%s", mapping.label);
+    ImGui::SameLine();
+    ImGui::SetCursorPosY(cursorPos.y);
+
+    ImGui::SetNextItemWidth(ImGui::GetFontSize() * 8);
+        if (ImGui::BeginCombo(StringHelper::Sprintf("##%s", mapping.cVarName).c_str(), preview)) {
+        for (auto i = buttons.begin(); i != buttons.end(); i++) {
+            if ((i->first & excludedButtons) != 0) {
+                continue;
+            }
+            if (ImGui::Selectable(i->second, i->first == currentButton)) {
+                CVarSetInteger(mapping.cVarName, i->first);
+                LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+            }
+        }
+        ImGui::EndCombo();
+    }
+    UIWidgets::Spacer(0);
+}
+
+void SohInputEditorWindow::DrawOcarinaControlPanel() {
+    if (!ImGui::BeginTable("tableCustomOcarinaControls", 1, PANEL_TABLE_FLAGS)) {
+        return;
+    }
+
+    ImGui::TableSetupColumn("Custom Ocarina Controls", PANEL_TABLE_COLUMN_FLAGS | ImGuiTableColumnFlags_WidthStretch);
+    TableHelper::InitHeader(false);
+
+    ImVec2 cursor = ImGui::GetCursorPos();
+    ImGui::SetCursorPos(ImVec2(cursor.x + 5, cursor.y + 5));
+    UIWidgets::EnhancementCheckbox("Customize Ocarina Controls", "gCustomOcarinaControls");
+
+    if (CVarGetInteger("gCustomOcarinaControls", 0) == 1) {
+        if (ImGui::BeginTable("tableCustomMainOcarinaControls", 2, ImGuiTableFlags_SizingStretchProp)) {
+            float labelWidth;
+            N64ButtonMask disableMask = BTN_B;
+            if (CVarGetInteger("gDpadOcarina", 0)) {
+                disableMask |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
+            }
+
+            ImGui::TableSetupColumn("Notes##CustomOcarinaNotes", PANEL_TABLE_COLUMN_FLAGS);
+            ImGui::TableSetupColumn("Modifiers##CustomOcaranaModifiers", PANEL_TABLE_COLUMN_FLAGS);
+            TableHelper::InitHeader(false);
+
+            LUS::GuiWindow::BeginGroupPanel("Notes", ImGui::GetContentRegionAvail());
+            labelWidth = ImGui::CalcTextSize("D5").x + 10;
+            DrawMapping(ocarinaD5, labelWidth, disableMask);
+            DrawMapping(ocarinaB4, labelWidth, disableMask);
+            DrawMapping(ocarinaA4, labelWidth, disableMask);
+            DrawMapping(ocarinaF4, labelWidth, disableMask);
+            DrawMapping(ocarinaD4, labelWidth, disableMask);
+            ImGui::Dummy(ImVec2(0, 5));
+            float cursorY = ImGui::GetCursorPosY();
+            LUS::GuiWindow::EndGroupPanel(0);
+
+            TableHelper::NextCol();
+
+            LUS::GuiWindow::BeginGroupPanel("Modifiers", ImGui::GetContentRegionAvail());
+            labelWidth = ImGui::CalcTextSize(ocarinaSongDisable.label).x + 10;
+            DrawMapping(ocarinaSongDisable, labelWidth, disableMask);
+            DrawMapping(ocarinaSharp, labelWidth, disableMask);
+            DrawMapping(ocarinaFlat, labelWidth, disableMask);
+            LUS::GuiWindow::EndGroupPanel(cursorY - ImGui::GetCursorPosY() + 2);
+
+            ImGui::EndTable();
+        }
+    } else {
+        UIWidgets::Spacer(0);
+        ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+        ImGui::TextWrapped("To modify the main ocarina controls, select the \"Customize Ocarina Controls\" checkbox.");
+        UIWidgets::Spacer(0);
+    }
+
+    LUS::GuiWindow::BeginGroupPanel("Alternate controls", ImGui::GetContentRegionAvail());
+    if (ImGui::BeginTable("tableOcarinaAlternateControls", 2, ImGuiTableFlags_SizingFixedSame)) {
+        ImGui::TableSetupColumn("D-pad", PANEL_TABLE_COLUMN_FLAGS);
+        ImGui::TableSetupColumn("Right stick", PANEL_TABLE_COLUMN_FLAGS);
+        TableHelper::InitHeader(false);
+        ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+        UIWidgets::EnhancementCheckbox("Play with D-pad", "gDpadOcarina");
+        TableHelper::NextCol();
+        UIWidgets::EnhancementCheckbox("Play with camera stick", "gRStickOcarina");
+        UIWidgets::Spacer(0);
+        ImGui::EndTable();
+    }
+    LUS::GuiWindow::EndGroupPanel(0);
+
+    ImGui::EndTable();
+}
+
+void SohInputEditorWindow::DrawCameraControlPanel() {
+    ImVec2 cursor = ImGui::GetCursorPos();
+    ImGui::SetCursorPos(ImVec2(cursor.x + 5, cursor.y + 5));
+    LUS::GuiWindow::BeginGroupPanel("Aiming/First-Person Camera", ImGui::GetContentRegionAvail());
+    UIWidgets::PaddedEnhancementCheckbox("Right Stick Aiming", "gRightStickAiming");
+    UIWidgets::Tooltip("Allows for aiming with the right stick in:\n-First-Person/C-Up view\n-Weapon Aiming");
+    if (CVarGetInteger("gRightStickAiming", 0)) {
+        UIWidgets::PaddedEnhancementCheckbox("Allow moving while in first person mode", "gMoveWhileFirstPerson");
+        UIWidgets::Tooltip("Changes the left stick to move the player while in first person mode");
+    }
+    UIWidgets::PaddedEnhancementCheckbox("Invert Aiming X Axis", "gInvertAimingXAxis");
+    UIWidgets::Tooltip("Inverts the Camera X Axis in:\n-First-Person/C-Up view\n-Weapon Aiming");
+    UIWidgets::PaddedEnhancementCheckbox("Invert Aiming Y Axis", "gInvertAimingYAxis", true, true, false, "", UIWidgets::CheckboxGraphics::Cross, true);
+    UIWidgets::Tooltip("Inverts the Camera Y Axis in:\n-First-Person/C-Up view\n-Weapon Aiming");
+    UIWidgets::PaddedEnhancementCheckbox("Invert Shield Aiming Y Axis", "gInvertShieldAimingYAxis", true, true, false, "", UIWidgets::CheckboxGraphics::Cross, true);
+    UIWidgets::Tooltip("Inverts the Shield Aiming Y Axis");
+    UIWidgets::PaddedEnhancementCheckbox("Invert Shield Aiming X Axis", "gInvertShieldAimingXAxis");
+    UIWidgets::Tooltip("Inverts the Shield Aiming X Axis");
+    UIWidgets::PaddedEnhancementCheckbox("Invert Z-Weapon Aiming Y Axis", "gInvertZAimingYAxis", true, true, false, "", UIWidgets::CheckboxGraphics::Cross, true);
+    UIWidgets::Tooltip("Inverts the Camera Y Axis in:\n-Z-Weapon Aiming");
+    UIWidgets::PaddedEnhancementCheckbox("Disable Auto-Centering in First-Person View", "gDisableAutoCenterViewFirstPerson");
+    UIWidgets::Tooltip("Prevents the C-Up view from auto-centering, allowing for Gyro Aiming");
+    if (UIWidgets::PaddedEnhancementCheckbox("Enable Custom Aiming/First-Person sensitivity", "gEnableFirstPersonSensitivity", true, false)) {
+        if (!CVarGetInteger("gEnableFirstPersonSensitivity", 0)) {
+            CVarClear("gFirstPersonCameraSensitivityX");
+            CVarClear("gFirstPersonCameraSensitivityY");
+        }
+    }
+    if (CVarGetInteger("gEnableFirstPersonSensitivity", 0)) {
+        UIWidgets::EnhancementSliderFloat("Aiming/First-Person Horizontal Sensitivity: %.0f %%", "##FirstPersonSensitivity Horizontal",
+                                            "gFirstPersonCameraSensitivityX", 0.01f, 5.0f, "", 1.0f, true);
+        UIWidgets::EnhancementSliderFloat("Aiming/First-Person Vertical Sensitivity: %.0f %%", "##FirstPersonSensitivity Vertical",
+                                          "gFirstPersonCameraSensitivityY", 0.01f, 5.0f, "", 1.0f, true);
+    }
+    UIWidgets::Spacer(0);
+    LUS::GuiWindow::EndGroupPanel(0);
+
+    UIWidgets::Spacer(0);
+    cursor = ImGui::GetCursorPos();
+    ImGui::SetCursorPos(ImVec2(cursor.x + 5, cursor.y + 5));
+    LUS::GuiWindow::BeginGroupPanel("Third-Person Camera", ImGui::GetContentRegionAvail());
+
+    UIWidgets::PaddedEnhancementCheckbox("Free Camera", "gFreeCamera");
+    UIWidgets::Tooltip("Enables free camera control\nNote: You must remap C buttons off of the right stick in the "
+                            "controller config menu, and map the camera stick to the right stick.");
+    UIWidgets::PaddedEnhancementCheckbox("Invert Camera X Axis", "gInvertXAxis");
+    UIWidgets::Tooltip("Inverts the Camera X Axis in:\n-Free camera");
+    UIWidgets::PaddedEnhancementCheckbox("Invert Camera Y Axis", "gInvertYAxis", true, true, false, "", UIWidgets::CheckboxGraphics::Cross, true);
+    UIWidgets::Tooltip("Inverts the Camera Y Axis in:\n-Free camera");
+    UIWidgets::Spacer(0);
+    UIWidgets::PaddedEnhancementSliderFloat("Third-Person Horizontal Sensitivity: %.0f %%", "##ThirdPersonSensitivity Horizontal",
+                                            "gThirdPersonCameraSensitivityX", 0.01f, 5.0f, "", 1.0f, true, true, false, true);
+    UIWidgets::PaddedEnhancementSliderFloat("Third-Person Vertical Sensitivity: %.0f %%", "##ThirdPersonSensitivity Vertical",
+                                            "gThirdPersonCameraSensitivityY", 0.01f, 5.0f, "", 1.0f, true, true, false, true);
+    UIWidgets::PaddedEnhancementSliderInt("Camera Distance: %d", "##CamDist",
+                                    "gFreeCameraDistMax", 100, 900, "", 185, true, false, true);
+    UIWidgets::PaddedEnhancementSliderInt("Camera Transition Speed: %d", "##CamTranSpeed",
+                                    "gFreeCameraTransitionSpeed", 0, 900, "", 25, true, false, true);
+    LUS::GuiWindow::EndGroupPanel(0);
+}
+
+void SohInputEditorWindow::DrawDpadControlPanel() {
+    ImVec2 cursor = ImGui::GetCursorPos();
+    ImGui::SetCursorPos(ImVec2(cursor.x + 5, cursor.y + 5));
+    LUS::GuiWindow::BeginGroupPanel("D-Pad Options", ImGui::GetContentRegionAvail());
+    UIWidgets::PaddedEnhancementCheckbox("D-pad Support on Pause Screen", "gDpadPause");
+    UIWidgets::Tooltip("Navigate Pause with the D-pad\nIf used with D-pad as Equip Items, you must hold C-Up to equip instead of navigate\n"
+                "To make the cursor only move a single space no matter how long a direction is held, manually set gDpadHoldChange to 0");
+    UIWidgets::PaddedEnhancementCheckbox("D-pad Support in Text Boxes", "gDpadText");
+    UIWidgets::Tooltip("Navigate choices in text boxes, shop item selection, and the file select / name entry screens with the D-pad\n"
+                "To make the cursor only move a single space during name entry no matter how long a direction is held, manually set gDpadHoldChange to 0");
+    UIWidgets::PaddedEnhancementCheckbox("D-pad as Equip Items", "gDpadEquips");
+    UIWidgets::Tooltip("Equip items and equipment on the D-pad\nIf used with D-pad on Pause Screen, you must hold C-Up to equip instead of navigate");
+    LUS::GuiWindow::EndGroupPanel(0);
+}
+
+void SohInputEditorWindow::DrawMiscControlPanel() {
+    ImVec2 cursor = ImGui::GetCursorPos();
+    ImGui::SetCursorPos(ImVec2(cursor.x + 5, cursor.y + 5));
+    LUS::GuiWindow::BeginGroupPanel("Misc Controls", ImGui::GetContentRegionAvail());
+    UIWidgets::PaddedText("Allow the cursor to be on any slot");
+    static const char* cursorOnAnySlot[3] = { "Only in Rando", "Always", "Never" };
+    UIWidgets::EnhancementCombobox("gPauseAnyCursor", cursorOnAnySlot, PAUSE_ANY_CURSOR_RANDO_ONLY);
+    UIWidgets::Tooltip("Allows the cursor on the pause menu to be over any slot. Sometimes required in rando to select "
+                 "certain items.");
+    UIWidgets::Spacer(0);
+    ImGui::BeginDisabled(CVarGetInteger("gDisableChangingSettings", 0));
+    UIWidgets::PaddedEnhancementCheckbox("Enable speed modifiers", "gEnableWalkModify", true, false);
+    UIWidgets::Tooltip("Hold the assigned button to change the maximum walking or swimming speed");
+     if (CVarGetInteger("gEnableWalkModify", 0)) {
+        UIWidgets::Spacer(5);
+        LUS::GuiWindow::BeginGroupPanel("Speed Modifier", ImGui::GetContentRegionAvail());
+        UIWidgets::PaddedEnhancementCheckbox("Toggle modifier instead of holding", "gWalkSpeedToggle", true, false);
+        LUS::GuiWindow::BeginGroupPanel("Walk Modifier", ImGui::GetContentRegionAvail());
+        UIWidgets::PaddedEnhancementCheckbox("Don't affect jump distance/velocity", "gWalkModifierDoesntChangeJump", true, false);
+        UIWidgets::PaddedEnhancementSliderFloat("Walk Modifier 1: %.0f %%", "##WalkMod1", "gWalkModifierOne", 0.0f, 5.0f, "", 1.0f, true, true, false, true);
+        UIWidgets::PaddedEnhancementSliderFloat("Walk Modifier 2: %.0f %%", "##WalkMod2", "gWalkModifierTwo", 0.0f, 5.0f, "", 1.0f, true, true, false, true);
+        LUS::GuiWindow::EndGroupPanel(0);
+        LUS::GuiWindow::BeginGroupPanel("Swim Modifier", ImGui::GetContentRegionAvail());
+        UIWidgets::PaddedEnhancementSliderFloat("Swim Modifier 1: %.0f %%", "##SwimMod1", "gSwimModifierOne", 0.0f, 5.0f, "", 1.0f, true, true, false, true);
+        UIWidgets::PaddedEnhancementSliderFloat("Swim Modifier 2: %.0f %%", "##SwimMod2", "gSwimModifierTwo", 0.0f, 5.0f, "", 1.0f, true, true, false, true);
+        LUS::GuiWindow::EndGroupPanel(0);
+        LUS::GuiWindow::EndGroupPanel(0);
+    }
+    ImGui::EndDisabled();
+    UIWidgets::Spacer(0);
+    UIWidgets::PaddedEnhancementCheckbox("Answer Navi Prompt with L Button", "gNaviOnL");
+    UIWidgets::Tooltip("Speak to Navi with L but enter first-person camera with C-Up");
+    LUS::GuiWindow::EndGroupPanel(0);
+}
+
 void SohInputEditorWindow::DrawLinkTab() {
     uint8_t portIndex = 0;
     if (ImGui::BeginTabItem(StringHelper::Sprintf("Link (P1)###port%d", portIndex).c_str())) {
@@ -1475,6 +1789,46 @@ void SohInputEditorWindow::DrawLinkTab() {
             DrawButtonLine("M2", portIndex, BTN_MODIFIER2);
         } else {
             DrawButtonDeviceIcons(portIndex, mModifierButtonsBitmasks);
+        }
+
+        if (ImGui::CollapsingHeader("Ocarina Controls")) {
+            ImGui::PopStyleColor();
+            ImGui::PopStyleColor();
+            ImGui::PopStyleColor();
+            DrawOcarinaControlPanel();
+            ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(0.133f, 0.133f, 0.133f, 1.0f));
+            ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
+            ImGui::PushStyleColor(ImGuiCol_HeaderActive, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
+        }
+
+        if (ImGui::CollapsingHeader("Camera Controls")) {
+            ImGui::PopStyleColor();
+            ImGui::PopStyleColor();
+            ImGui::PopStyleColor();
+            DrawCameraControlPanel();
+            ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(0.133f, 0.133f, 0.133f, 1.0f));
+            ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
+            ImGui::PushStyleColor(ImGuiCol_HeaderActive, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
+        }
+
+        if (ImGui::CollapsingHeader("D-Pad Controls")) {
+            ImGui::PopStyleColor();
+            ImGui::PopStyleColor();
+            ImGui::PopStyleColor();
+            DrawDpadControlPanel();
+            ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(0.133f, 0.133f, 0.133f, 1.0f));
+            ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
+            ImGui::PushStyleColor(ImGuiCol_HeaderActive, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
+        }
+
+        if (ImGui::CollapsingHeader("Miscellaneous Controls")) {
+            ImGui::PopStyleColor();
+            ImGui::PopStyleColor();
+            ImGui::PopStyleColor();
+            DrawMiscControlPanel();
+            ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(0.133f, 0.133f, 0.133f, 1.0f));
+            ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
+            ImGui::PushStyleColor(ImGuiCol_HeaderActive, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
         }
 
         ImGui::PopStyleColor();

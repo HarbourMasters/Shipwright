@@ -132,16 +132,6 @@ typedef enum {
     /* 0x40 */ PLAYER_IA_MASK_GERUDO,
     /* 0x41 */ PLAYER_IA_MASK_TRUTH,
     /* 0x42 */ PLAYER_IA_LENS_OF_TRUTH,
-    // Upstream TODO: Document why these entries were added
-    /* 0x43 */ PLAYER_IA_SHIELD_DEKU,
-    /* 0x44 */ PLAYER_IA_SHIELD_HYLIAN,
-    /* 0x45 */ PLAYER_IA_SHIELD_MIRROR,
-    /* 0x46 */ PLAYER_IA_TUNIC_KOKIRI,
-    /* 0x47 */ PLAYER_IA_TUNIC_GORON,
-    /* 0x48 */ PLAYER_IA_TUNIC_ZORA,
-    /* 0x49 */ PLAYER_IA_BOOTS_KOKIRI,
-    /* 0x4A */ PLAYER_IA_BOOTS_IRON,
-    /* 0x4B */ PLAYER_IA_BOOTS_HOVER,
     /* 0x4C */ PLAYER_IA_MAX
 } PlayerItemAction;
 
@@ -355,7 +345,7 @@ typedef enum {
 #define PLAYER_LIMB_BUF_COUNT LIMB_BUF_COUNT(PLAYER_LIMB_MAX)
 
 typedef struct {
-    /* 0x00 */ f32 unk_00;
+    /* 0x00 */ f32 ceilingCheckHeight;
     /* 0x04 */ f32 unk_04;
     /* 0x08 */ f32 unk_08;
     /* 0x0C */ f32 unk_0C;
@@ -369,7 +359,7 @@ typedef struct {
     /* 0x2C */ f32 unk_2C;
     /* 0x30 */ f32 unk_30;
     /* 0x34 */ f32 unk_34;
-    /* 0x38 */ f32 unk_38;
+    /* 0x38 */ f32 wallCheckRadius;
     /* 0x3C */ f32 unk_3C;
     /* 0x40 */ f32 unk_40;
     /* 0x44 */ Vec3s unk_44;
@@ -499,180 +489,187 @@ typedef s32 (*UpperActionFunc)(struct Player*, struct PlayState*);
 typedef void (*PlayerFuncA74)(struct PlayState*, struct Player*);
 
 typedef struct Player {
-    /* 0x0000 */ Actor      actor;
-    /* 0x014C */ s8         currentTunic; // current tunic from `PlayerTunic`
-    /* 0x014D */ s8         currentSwordItemId;
-    /* 0x014E */ s8         currentShield; // current shield from `PlayerShield`
-    /* 0x014F */ s8         currentBoots; // current boots from `PlayerBoots`
-    /* 0x0150 */ s8         heldItemButton; // Button index for the item currently used
-    /* 0x0151 */ s8         heldItemAction; // Item action for the item currently used
-    /* 0x0152 */ u8         heldItemId; // Item id for the item currently used
-    /* 0x0153 */ s8         prevBoots; // previous boots from `PlayerBoots`
-    /* 0x0154 */ s8         itemAction; // the difference between this and heldItemAction is unclear
-    /* 0x0155 */ char       unk_155[0x003];
-    /* 0x0158 */ u8         modelGroup;
-    /* 0x0159 */ u8         nextModelGroup;
-    /* 0x015A */ s8         itemChangeType;
-    /* 0x015B */ u8         modelAnimType;
-    /* 0x015C */ u8         leftHandType;
-    /* 0x015D */ u8         rightHandType;
-    /* 0x015E */ u8         sheathType;
-    /* 0x015F */ u8         currentMask; // current mask equipped from `PlayerMask`
-    /* 0x0160 */ Gfx**      rightHandDLists;
-    /* 0x0164 */ Gfx**      leftHandDLists;
-    /* 0x0168 */ Gfx**      sheathDLists;
-    /* 0x016C */ Gfx**      waistDLists;
-    /* 0x0170 */ u8         giObjectLoading;
+    /* 0x0000 */ Actor actor;
+    /* 0x014C */ s8 currentTunic; // current tunic from `PlayerTunic`
+    /* 0x014D */ s8 currentSwordItemId;
+    /* 0x014E */ s8 currentShield; // current shield from `PlayerShield`
+    /* 0x014F */ s8 currentBoots; // current boots from `PlayerBoots`
+    /* 0x0150 */ s8 heldItemButton; // Button index for the item currently used
+    /* 0x0151 */ s8 heldItemAction; // Item action for the item currently used
+    /* 0x0152 */ u8 heldItemId; // Item id for the item currently used
+    /* 0x0153 */ s8 prevBoots; // previous boots from `PlayerBoots`
+    /* 0x0154 */ s8 itemAction; // the difference between this and heldItemAction is unclear
+    /* 0x0155 */ char unk_155[0x003];
+    /* 0x0158 */ u8 modelGroup;
+    /* 0x0159 */ u8 nextModelGroup;
+    /* 0x015A */ s8 itemChangeType;
+    /* 0x015B */ u8 modelAnimType;
+    /* 0x015C */ u8 leftHandType;
+    /* 0x015D */ u8 rightHandType;
+    /* 0x015E */ u8 sheathType;
+    /* 0x015F */ u8 currentMask; // current mask equipped from `PlayerMask`
+    /* 0x0160 */ Gfx** rightHandDLists;
+    /* 0x0164 */ Gfx** leftHandDLists;
+    /* 0x0168 */ Gfx** sheathDLists;
+    /* 0x016C */ Gfx** waistDLists;
+    /* 0x0170 */ u8 giObjectLoading;
     /* 0x0174 */ DmaRequest giObjectDmaRequest;
     /* 0x0194 */ OSMesgQueue giObjectLoadQueue;
-    /* 0x01AC */ OSMesg     giObjectLoadMsg;
-    /* 0x01B0 */ void*      giObjectSegment; // also used for title card textures
-    /* 0x01B4 */ SkelAnime  skelAnime;
-    /* 0x01F8 */ Vec3s      jointTable[PLAYER_LIMB_BUF_COUNT];
-    /* 0x0288 */ Vec3s      morphTable[PLAYER_LIMB_BUF_COUNT];
-    /* 0x0318 */ Vec3s      blendTable[PLAYER_LIMB_BUF_COUNT];
-    /* 0x03A8 */ s16        unk_3A8[2];
-    /* 0x03AC */ Actor*     heldActor;
-    /* 0x03B0 */ Vec3f      leftHandPos;
-    /* 0x03BC */ Vec3s      unk_3BC;
-    /* 0x03C4 */ Actor*     unk_3C4;
-    /* 0x03C8 */ Vec3f      unk_3C8;
-    /* 0x03D4 */ char       unk_3D4[0x058];
-    /* 0x042C */ s8         doorType;
-    /* 0x042D */ s8         doorDirection;
-    /* 0x042E */ s16        doorTimer;
-    /* 0x0430 */ Actor*     doorActor;
-    /* 0x0434 */ s16        getItemId; // Upstream TODO: Document why this is s16 while it's s8 upstream
-    /* 0x0436 */ u16        getItemDirection;
-    /* 0x0438 */ Actor*     interactRangeActor;
-    /* 0x043C */ s8         mountSide;
-    /* 0x043D */ char       unk_43D[0x003];
-    /* 0x0440 */ Actor*     rideActor;
-    /* 0x0444 */ u8         csAction;
-    /* 0x0445 */ u8         prevCsAction;
-    /* 0x0446 */ u8         cueId;
-    /* 0x0447 */ u8         unk_447;
-    /* 0x0448 */ Actor*     csActor;
-    /* 0x044C */ char       unk_44C[0x004];
-    /* 0x0450 */ Vec3f      unk_450;
-    /* 0x045C */ Vec3f      unk_45C;
-    /* 0x0468 */ char       unk_468[0x002];
-    /* 0x046A */ s16        doorBgCamIndex;
-    /* 0x046C */ s16        subCamId;
-    /* 0x046E */ char       unk_46E[0x02A];
+    /* 0x01AC */ OSMesg giObjectLoadMsg;
+    /* 0x01B0 */ void* giObjectSegment; // also used for title card textures
+    /* 0x01B4 */ SkelAnime skelAnime;
+    /* 0x01F8 */ Vec3s jointTable[PLAYER_LIMB_BUF_COUNT];
+    /* 0x0288 */ Vec3s morphTable[PLAYER_LIMB_BUF_COUNT];
+    /* 0x0318 */ Vec3s blendTable[PLAYER_LIMB_BUF_COUNT];
+    /* 0x03A8 */ s16 unk_3A8[2];
+    /* 0x03AC */ Actor* heldActor;
+    /* 0x03B0 */ Vec3f leftHandPos;
+    /* 0x03BC */ Vec3s unk_3BC;
+    /* 0x03C4 */ Actor* unk_3C4;
+    /* 0x03C8 */ Vec3f unk_3C8;
+    /* 0x03D4 */ char unk_3D4[0x058];
+    /* 0x042C */ s8 doorType;
+    /* 0x042D */ s8 doorDirection;
+    /* 0x042E */ s16 doorTimer;
+    /* 0x0430 */ Actor* doorActor;
+    /* 0x0434 */ s16 getItemId; // Upstream TODO: Document why this is s16 while it's s8 upstream
+    /* 0x0436 */ u16 getItemDirection;
+    /* 0x0438 */ Actor* interactRangeActor;
+    /* 0x043C */ s8 mountSide;
+    /* 0x043D */ char unk_43D[0x003];
+    /* 0x0440 */ Actor* rideActor;
+    /* 0x0444 */ u8 csAction;
+    /* 0x0445 */ u8 prevCsAction;
+    /* 0x0446 */ u8 cueId;
+    /* 0x0447 */ u8 unk_447;
+    /* 0x0448 */ Actor* csActor; // Actor involved in a `csAction`. Typically the actor that invoked the cutscene.
+    /* 0x044C */ char unk_44C[0x004];
+    /* 0x0450 */ Vec3f unk_450;
+    /* 0x045C */ Vec3f unk_45C;
+    /* 0x0468 */ char unk_468[0x002];
+    /* 0x046A */ s16 doorBgCamIndex;
+    /* 0x046C */ s16 subCamId;
+    /* 0x046E */ char unk_46E[0x02A];
     /* 0x0498 */ ColliderCylinder cylinder;
     /* 0x04E4 */ ColliderQuad meleeWeaponQuads[2];
     /* 0x05E4 */ ColliderQuad shieldQuad;
-    /* 0x0664 */ Actor*     unk_664;
-    /* 0x0668 */ char       unk_668[0x004];
-    /* 0x066C */ s32        unk_66C;
-    /* 0x0670 */ s32        meleeWeaponEffectIndex;
+    /* 0x0664 */ Actor* unk_664;
+    /* 0x0668 */ char unk_668[0x004];
+    /* 0x066C */ s32 unk_66C;
+    /* 0x0670 */ s32 meleeWeaponEffectIndex;
     /* 0x0674 */ PlayerActionFunc actionFunc;
     /* 0x0678 */ PlayerAgeProperties* ageProperties;
-    /* 0x067C */ u32        stateFlags1;
-    /* 0x0680 */ u32        stateFlags2;
-    /* 0x0684 */ Actor*     unk_684;
-    /* 0x0688 */ Actor*     boomerangActor;
-    /* 0x068C */ Actor*     naviActor;
-    /* 0x0690 */ s16        naviTextId;
-    /* 0x0692 */ u8         stateFlags3;
-    /* 0x0693 */ s8         exchangeItemId;
-    /* 0x0694 */ Actor*     targetActor;
-    /* 0x0698 */ f32        targetActorDistance;
-    /* 0x069C */ char       unk_69C[0x004];
-    /* 0x06A0 */ f32        unk_6A0;
-    /* 0x06A4 */ f32        closestSecretDistSq;
-    /* 0x06A8 */ Actor*     unk_6A8;
-    /* 0x06AC */ s8         unk_6AC;
-    /* 0x06AD */ u8         unk_6AD;
-    /* 0x06AE */ u16        unk_6AE;
-    /* 0x06B0 */ s16        unk_6B0;
-    /* 0x06B2 */ char       unk_6B4[0x004];
-    /* 0x06B6 */ s16        unk_6B6;
-    /* 0x06B8 */ s16        unk_6B8;
-    /* 0x06BA */ s16        unk_6BA;
-    /* 0x06BC */ s16        unk_6BC;
-    /* 0x06BE */ s16        unk_6BE;
-    /* 0x06C0 */ s16        unk_6C0;
-    /* 0x06C2 */ s16        unk_6C2;
-    /* 0x06C4 */ f32        unk_6C4;
-    /* 0x06C8 */ SkelAnime  upperSkelAnime;
-    /* 0x070C */ Vec3s      upperJointTable[PLAYER_LIMB_BUF_COUNT];
-    /* 0x079C */ Vec3s      upperMorphTable[PLAYER_LIMB_BUF_COUNT];
+    /* 0x067C */ u32 stateFlags1;
+    /* 0x0680 */ u32 stateFlags2;
+    /* 0x0684 */ Actor* unk_684;
+    /* 0x0688 */ Actor* boomerangActor;
+    /* 0x068C */ Actor* naviActor;
+    /* 0x0690 */ s16 naviTextId;
+    /* 0x0692 */ u8 stateFlags3;
+    /* 0x0693 */ s8 exchangeItemId;
+    /* 0x0694 */ Actor* targetActor;
+    /* 0x0698 */ f32 targetActorDistance;
+    /* 0x069C */ char unk_69C[0x004];
+    /* 0x06A0 */ f32 unk_6A0;
+    /* 0x06A4 */ f32 closestSecretDistSq;
+    /* 0x06A8 */ Actor* unk_6A8;
+    /* 0x06AC */ s8 unk_6AC;
+    /* 0x06AD */ u8 unk_6AD;
+    /* 0x06AE */ u16 unk_6AE;
+    /* 0x06B0 */ s16 unk_6B0;
+    /* 0x06B2 */ char unk_6B4[0x004];
+    /* 0x06B6 */ s16 unk_6B6;
+    /* 0x06B8 */ s16 unk_6B8;
+    /* 0x06BA */ s16 unk_6BA;
+    /* 0x06BC */ s16 unk_6BC;
+    /* 0x06BE */ s16 unk_6BE;
+    /* 0x06C0 */ s16 unk_6C0;
+    /* 0x06C2 */ s16 unk_6C2;
+    /* 0x06C4 */ f32 unk_6C4;
+    /* 0x06C8 */ SkelAnime upperSkelAnime;
+    /* 0x070C */ Vec3s upperJointTable[PLAYER_LIMB_BUF_COUNT];
+    /* 0x079C */ Vec3s upperMorphTable[PLAYER_LIMB_BUF_COUNT];
     /* 0x082C */ UpperActionFunc upperActionFunc;
-    /* 0x0830 */ f32        upperAnimBlendWeight;
-    /* 0x0834 */ s16        unk_834;
-    /* 0x0836 */ s8         unk_836;
-    /* 0x0837 */ u8         unk_837;
-    /* 0x0838 */ f32        linearVelocity;
-    /* 0x083C */ s16        currentYaw;
-    /* 0x083E */ s16        targetYaw;
-    /* 0x0840 */ u16        underwaterTimer;
-    /* 0x0842 */ s8         meleeWeaponAnimation;
-    /* 0x0843 */ s8         meleeWeaponState;
-    /* 0x0844 */ s8         unk_844;
-    /* 0x0845 */ u8         unk_845;
-    /* 0x0846 */ u8         unk_846;
-    /* 0x0847 */ s8         unk_847[4];
-    /* 0x084B */ s8         unk_84B[4];
-    /* 0x084F */ s8         unk_84F;
-    /* 0x0850 */ s16        unk_850; // multipurpose timer
-    /* 0x0854 */ f32        unk_854;
-    /* 0x0858 */ f32        unk_858;
-    /* 0x085C */ f32        unk_85C; // stick length among other things
-    /* 0x0860 */ s16        unk_860; // stick flame timer among other things
-    /* 0x0862 */ s16        unk_862; // get item draw ID + 1
-    /* 0x0864 */ f32        unk_864;
-    /* 0x0868 */ f32        unk_868;
-    /* 0x086C */ f32        unk_86C;
-    /* 0x0870 */ f32        unk_870;
-    /* 0x0874 */ f32        unk_874;
-    /* 0x0878 */ f32        unk_878;
-    /* 0x087C */ s16        unk_87C;
-    /* 0x087E */ s16        unk_87E;
-    /* 0x0880 */ f32        unk_880;
-    /* 0x0884 */ f32        yDistToLedge; // y distance to ground above an interact wall. LEDGE_DIST_MAX if no ground is found
-    /* 0x0888 */ f32        distToInteractWall; // distance to the colliding wall plane
-    /* 0x088C */ u8         unk_88C;
-    /* 0x088D */ u8         unk_88D;
-    /* 0x088E */ u8         unk_88E;
-    /* 0x088F */ u8         unk_88F;
-    /* 0x0890 */ u8         unk_890;
-    /* 0x0891 */ u8         shockTimer;
-    /* 0x0892 */ u8         unk_892;
-    /* 0x0893 */ u8         hoverBootsTimer;
-    /* 0x0894 */ s16        fallStartHeight; // last truncated Y position before falling
-    /* 0x0896 */ s16        fallDistance; // truncated Y distance the player has fallen so far (positive is down)
-    /* 0x0898 */ s16        floorPitch; // angle of the floor slope in the direction of current world yaw (positive for ascending slope)
-    /* 0x089A */ s16        floorPitchAlt; // the calculation for this value is bugged and doesn't represent anything meaningful
-    /* 0x089C */ s16        unk_89C;
-    /* 0x089E */ u16        floorSfxOffset;
-    /* 0x08A0 */ u8         unk_8A0;
-    /* 0x08A1 */ u8         unk_8A1;
-    /* 0x08A2 */ s16        unk_8A2;
-    /* 0x08A4 */ f32        unk_8A4;
-    /* 0x08A8 */ f32        unk_8A8;
-    /* 0x08AC */ f32        pushedSpeed; // Pushing player, examples include water currents, floor conveyors, climbing sloped surfaces
-    /* 0x08B0 */ s16        pushedYaw; // Yaw direction of player being pushed
+    /* 0x0830 */ f32 upperAnimBlendWeight;
+    /* 0x0834 */ s16 unk_834;
+    /* 0x0836 */ s8 unk_836;
+    /* 0x0837 */ u8 unk_837;
+    /* 0x0838 */ f32 linearVelocity;
+    /* 0x083C */ s16 yaw; // General yaw value, used both for world and shape rotation. Current or target value depending on context.
+    /* 0x083E */ s16 zTargetYaw; // yaw relating to Z targeting/"parallel" mode
+    /* 0x0840 */ u16 underwaterTimer;
+    /* 0x0842 */ s8 meleeWeaponAnimation;
+    /* 0x0843 */ s8 meleeWeaponState;
+    /* 0x0844 */ s8 unk_844;
+    /* 0x0845 */ u8 unk_845;
+    /* 0x0846 */ u8 unk_846;
+    /* 0x0847 */ s8 unk_847[4];
+    /* 0x084B */ s8 unk_84B[4];
+
+    /* 0x084F */ union {
+        s8 actionVar1;
+    } av1; // "Action Variable 1": context dependent variable that has different meanings depending on what action is currently running
+
+    /* 0x0850 */ union {
+        s16 actionVar2;
+    } av2; // "Action Variable 2": context dependent variable that has different meanings depending on what action is currently running
+
+    /* 0x0854 */ f32 unk_854;
+    /* 0x0858 */ f32 unk_858;
+    /* 0x085C */ f32 unk_85C; // stick length among other things
+    /* 0x0860 */ s16 unk_860; // stick flame timer among other things
+    /* 0x0862 */ s16 unk_862; // get item draw ID + 1
+    /* 0x0864 */ f32 unk_864;
+    /* 0x0868 */ f32 unk_868;
+    /* 0x086C */ f32 unk_86C;
+    /* 0x0870 */ f32 unk_870;
+    /* 0x0874 */ f32 unk_874;
+    /* 0x0878 */ f32 unk_878;
+    /* 0x087C */ s16 unk_87C;
+    /* 0x087E */ s16 unk_87E;
+    /* 0x0880 */ f32 unk_880;
+    /* 0x0884 */ f32 yDistToLedge; // y distance to ground above an interact wall. LEDGE_DIST_MAX if no ground is found
+    /* 0x0888 */ f32 distToInteractWall; // xyz distance to the interact wall
+    /* 0x088C */ u8 ledgeClimbType;
+    /* 0x088D */ u8 ledgeClimbDelayTimer;
+    /* 0x088E */ u8 unk_88E;
+    /* 0x088F */ u8 unk_88F;
+    /* 0x0890 */ u8 unk_890;
+    /* 0x0891 */ u8 bodyShockTimer;
+    /* 0x0892 */ u8 unk_892;
+    /* 0x0893 */ u8 hoverBootsTimer;
+    /* 0x0894 */ s16 fallStartHeight; // last truncated Y position before falling
+    /* 0x0896 */ s16 fallDistance; // truncated Y distance the player has fallen so far (positive is down)
+    /* 0x0898 */ s16 floorPitch; // angle of the floor slope in the direction of current world yaw (positive for ascending slope)
+    /* 0x089A */ s16 floorPitchAlt; // the calculation for this value is bugged and doesn't represent anything meaningful
+    /* 0x089C */ s16 unk_89C;
+    /* 0x089E */ u16 floorSfxOffset;
+    /* 0x08A0 */ u8 unk_8A0;
+    /* 0x08A1 */ u8 unk_8A1;
+    /* 0x08A2 */ s16 unk_8A2;
+    /* 0x08A4 */ f32 unk_8A4;
+    /* 0x08A8 */ f32 unk_8A8;
+    /* 0x08AC */ f32 pushedSpeed; // Pushing player, examples include water currents, floor conveyors, climbing sloped surfaces
+    /* 0x08B0 */ s16 pushedYaw; // Yaw direction of player being pushed
     /* 0x08B4 */ WeaponInfo meleeWeaponInfo[3];
-    /* 0x0908 */ Vec3f      bodyPartsPos[PLAYER_BODYPART_MAX];
-    /* 0x09E0 */ MtxF       mf_9E0;
-    /* 0x0A20 */ MtxF       shieldMf;
-    /* 0x0A60 */ u8         isBurning;
-    /* 0x0A61 */ u8         flameTimers[PLAYER_BODYPART_MAX]; // one flame per body part
-    /* 0x0A73 */ u8         unk_A73;
+    /* 0x0908 */ Vec3f bodyPartsPos[PLAYER_BODYPART_MAX];
+    /* 0x09E0 */ MtxF mf_9E0;
+    /* 0x0A20 */ MtxF shieldMf;
+    /* 0x0A60 */ u8 bodyIsBurning;
+    /* 0x0A61 */ u8 bodyFlameTimers[PLAYER_BODYPART_MAX]; // one flame per body part
+    /* 0x0A73 */ u8 unk_A73;
     /* 0x0A74 */ PlayerFuncA74 func_A74;
-    /* 0x0A78 */ s8         invincibilityTimer; // prevents damage when nonzero (positive = visible, counts towards zero each frame)
-    /* 0x0A79 */ u8         unk_A79;
-    /* 0x0A7A */ u8         unk_A7A;
-    /* 0x0A7B */ u8         unk_A7B;
-    /* 0x0A7C */ f32        unk_A7C;
-    /* 0x0A80 */ s16        unk_A80;
-    /* 0x0A82 */ u16        unk_A82;
-    /* 0x0A84 */ s16        unk_A84;
-    /* 0x0A86 */ s8         unk_A86;
-    /* 0x0A87 */ u8         unk_A87;
-    /* 0x0A88 */ Vec3f      unk_A88; // previous body part 0 position
+    /* 0x0A78 */ s8 invincibilityTimer; // prevents damage when nonzero (positive = visible, counts towards zero each frame)
+    /* 0x0A79 */ u8 floorTypeTimer; // counts up every frame the current floor type is the same as the last frame
+    /* 0x0A7A */ u8 floorProperty;
+    /* 0x0A7B */ u8 prevFloorType;
+    /* 0x0A7C */ f32 prevControlStickMagnitude;
+    /* 0x0A80 */ s16 prevControlStickAngle;
+    /* 0x0A82 */ u16 prevFloorSfxOffset;
+    /* 0x0A84 */ s16 unk_A84;
+    /* 0x0A86 */ s8 unk_A86;
+    /* 0x0A87 */ u8 unk_A87;
+    /* 0x0A88 */ Vec3f unk_A88; // previous body part 0 position
     // #region SOH [General]
     // Upstream TODO: Rename these to be more obviously SoH specific
     /*        */ PendingFlag pendingFlag;
@@ -680,7 +677,7 @@ typedef struct Player {
     // #endregion
     // #region SOH [Enhancements]
     // Upstream TODO: Rename this to make it more obvious it is apart of an enhancement
-    /*        */ u8         boomerangQuickRecall; // Has the player pressed the boomerang button while it's in the air still?
+    /*        */ u8 boomerangQuickRecall; // Has the player pressed the boomerang button while it's in the air still?
     // #endregion
     u8 ivanFloating;
     u8 ivanDamageMultiplier;

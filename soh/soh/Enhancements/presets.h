@@ -1,6 +1,7 @@
 #pragma once
 
 #include <map>
+#include <string>
 #include <vector>
 #include <variant>
 #include <cstdint>
@@ -11,6 +12,7 @@ enum PresetEntryType {
     PRESET_ENTRY_TYPE_S32,
     PRESET_ENTRY_TYPE_FLOAT,
     PRESET_ENTRY_TYPE_STRING,
+    PRESET_ENTRY_TYPE_CPP_STRING,
 };
 
 enum PresetType {
@@ -36,8 +38,10 @@ enum RandomizerPreset {
 typedef struct PresetEntry {
     const char* cvar;
     PresetEntryType type;
-    std::variant<int32_t, float, const char*> value;
+    std::variant<int32_t, float, const char*, std::string> value;
 } PresetEntry;
+
+std::string FormatLocations(std::vector<RandomizerCheck> locs);
 
 #define PRESET_ENTRY_S32(cvar, value) \
     { cvar,    PRESET_ENTRY_TYPE_S32, value }
@@ -45,6 +49,8 @@ typedef struct PresetEntry {
     { cvar,  PRESET_ENTRY_TYPE_FLOAT, value }
 #define PRESET_ENTRY_STRING(cvar, value) \
     { cvar, PRESET_ENTRY_TYPE_STRING, value }
+#define PRESET_ENTRY_CPP_STRING(cvar, value) \
+    { cvar, PRESET_ENTRY_TYPE_CPP_STRING, value }
 
 void DrawPresetSelector(PresetType presetType);
 void clearCvars(std::vector<const char*> cvarsToClear);
@@ -70,6 +76,7 @@ const std::vector<const char*> enhancementsCvars = {
     "gForgeTime",
     "gClimbSpeed",
     "gFasterBlockPush",
+    "gCrawlSpeed",
     "gFasterHeavyBlockLift",
     "gNoForcedNavi",
     "gSkulltulaFreeze",
@@ -136,6 +143,7 @@ const std::vector<const char*> enhancementsCvars = {
     "gInjectItemCounts",
     "gDayGravePull",
     "gDampeAllNight",
+    "gQuitFishingAtDoor",
     "gSkipSwimDeepEndAnim",
     "gSkipScarecrow",
     "gBlueFireArrows",
@@ -184,6 +192,14 @@ const std::vector<const char*> enhancementsCvars = {
     "gBombchuBowlingNoSmallCucco",
     "gBombchuBowlingNoBigCucco",
     "gBombchuBowlingAmmunition",
+    "gCustomizeOcarinaGame",
+    "gInstantOcarinaGameWin",
+    "gOcarinaGameNoteSpeed",
+    "gOcarinaUnlimitedFailTime",
+    "gOcarinaGameStartingNotes",
+    "gOcarinaGameRoundOneNotes",
+    "gOcarinaGameRoundTwoNotes",
+    "gOcarinaGameRoundThreeNotes",
     "gCreditsFix",
     "gSilverRupeeJingleExtend",
     "gStaticExplosionRadius",
@@ -245,6 +261,25 @@ const std::vector<const char*> enhancementsCvars = {
     "gAddTraps.Speed",
     "gAddTraps.Tele",
     "gAddTraps.Void",
+    "gToTMedallionsColors", 
+    "gCuccoStayDurationMultiplier",
+    "gDeleteFileOnDeath",
+    "gEnemySizeScalesHealth",
+    "gEnhancements.BetterAmmoRendering",
+    "gEnhancements.EquimentAlwaysVisible",
+    "gEnhancements.FixDaruniaDanceSpeed",
+    "gEnhancements.OpenAllHours",
+    "gEnhancements.ResetNaviTimer",
+    "gEnhancements.ScaleAdultEquimentAsChild",
+    "gEnhancements.LeeverSpawnRate",
+    "gEnhancements.SwordToggle",
+    "gEnhancements.FixFloorSwitches", 
+    "gFixZoraHintDialogue",
+    "gHurtContainer",
+    "gPauseWarp",
+    "gPermanentHeartLoss",
+    "gRemoveExplosiveLimit",
+    "gToggleStrength",
 };
 
 const std::vector<const char*> cheatCvars = {
@@ -257,6 +292,8 @@ const std::vector<const char*> cheatCvars = {
     "gWalkSpeedToggle",
     "gWalkModifierOne",
     "gWalkModifierTwo",
+    "gSwimModifierOne",
+    "gSwimModifierTwo",
     "gGoronPot",
     "gDampeWin",
     "gCustomizeShootingGallery",
@@ -295,6 +332,7 @@ const std::vector<const char*> cheatCvars = {
     "gSwitchAge",
     "gSwitchTimeline",
     "gNoRedeadFreeze",
+    "gNoKeeseGuayTarget",
     "gBombTimerMultiplier",
     "gNoFishDespawn",
     "gNoBugsDespawn",
@@ -314,6 +352,7 @@ const std::vector<const char*> cheatCvars = {
     "gCosmetics.Link_HeadScale.Value",
     "gCosmetics.Link_SwordScale.Changed",
     "gCosmetics.Link_SwordScale.Value",
+    "gEnhancements.RememberMapToggleState",
 };
 
 const std::vector<const char*> randomizerCvars = {
@@ -508,6 +547,8 @@ const std::vector<PresetEntry> vanillaPlusPresetEntries = {
     PRESET_ENTRY_S32("gNaviTextFix", 1),
     // Extend Silver Rupee Jingle
     PRESET_ENTRY_S32("gSilverRupeeJingleExtend", 1),
+    // Fix some Floor Switches
+    PRESET_ENTRY_S32("gEnhancements.FixFloorSwitches", 1),
 
     // Red Ganon blood
     PRESET_ENTRY_S32("gRedGanonBlood", 1),
@@ -579,6 +620,8 @@ const std::vector<PresetEntry> enhancedPresetEntries = {
     PRESET_ENTRY_S32("gSilverRupeeJingleExtend", 1),
     // Fix enemies not spawning on ground over water
     PRESET_ENTRY_S32("gEnemySpawnsOverWaterboxes", 1),
+    // Fix some Floor Switches
+    PRESET_ENTRY_S32("gEnhancements.FixFloorSwitches", 1),
 
     // Red Ganon blood
     PRESET_ENTRY_S32("gRedGanonBlood", 1),
@@ -701,6 +744,8 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     PRESET_ENTRY_S32("gNaviTextFix", 1),
     // Extend Silver Rupee Jingle
     PRESET_ENTRY_S32("gSilverRupeeJingleExtend", 1),
+    // Fix some Floor Switches
+    PRESET_ENTRY_S32("gEnhancements.FixFloorSwitches", 1),
 
     // Red Ganon blood
     PRESET_ENTRY_S32("gRedGanonBlood", 1),
@@ -784,6 +829,13 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     // Adult Minimum Weight (8 to 13)
     PRESET_ENTRY_S32("gAdultMinimumWeightFish", 6),
 
+    // Customize Lost Woods Ocarina Game Behavior
+    PRESET_ENTRY_S32("gCustomizeOcarinaGame", 1),
+    // Start With Five Notes
+    PRESET_ENTRY_S32("gOcarinaGameStartingNotes", 5),
+    // Round One Notes
+    PRESET_ENTRY_S32("gOcarinaGameRoundOneNotes", 5),
+
     // Visual Stone of Agony
     PRESET_ENTRY_S32("gVisualAgony", 1),
     // Pull grave during the day
@@ -792,6 +844,9 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     PRESET_ENTRY_S32("gSkipScarecrow", 1),
     // Chest size & texture matches contents
     PRESET_ENTRY_S32("gChestSizeAndTextureMatchesContents", CSMC_BOTH),
+
+    // Color Temple of Time's Medallions
+    PRESET_ENTRY_S32("gToTMedallionsColors", 1),
 
     // Pause link animation (0 to 16)
     PRESET_ENTRY_S32("gPauseLiveLink", 16),
@@ -869,7 +924,8 @@ const std::vector<PresetEntry> spockRacePresetEntries = {
     PRESET_ENTRY_S32("gRandomizeDampeHint", 1),
     PRESET_ENTRY_S32("gRandomizeDoorOfTime", RO_DOOROFTIME_OPEN),
     PRESET_ENTRY_S32("gRandomizeEnableBombchuDrops", 1),
-    PRESET_ENTRY_STRING("gRandomizeExcludedLocations", "78,143,144,229,"),
+    PRESET_ENTRY_CPP_STRING("gRandomizeExcludedLocations", FormatLocations( 
+        { RC_MARKET_10_BIG_POES, RC_KAK_40_GOLD_SKULLTULA_REWARD, RC_KAK_50_GOLD_SKULLTULA_REWARD, RC_ZR_FROGS_OCARINA_GAME })),
     PRESET_ENTRY_S32("gRandomizeForest", RO_FOREST_OPEN),
     PRESET_ENTRY_S32("gRandomizeFullWallets", 1),
     PRESET_ENTRY_S32("gRandomizeGanonTrial", RO_GANONS_TRIALS_SKIP),
@@ -961,7 +1017,8 @@ const std::vector<PresetEntry> spockRaceNoLogicPresetEntries = {
     PRESET_ENTRY_S32("gRandomizeDampeHint", 1),
     PRESET_ENTRY_S32("gRandomizeDoorOfTime", RO_DOOROFTIME_OPEN),
     PRESET_ENTRY_S32("gRandomizeEnableBombchuDrops", 1),
-    PRESET_ENTRY_STRING("gRandomizeExcludedLocations", "78,143,144,229,"),
+    PRESET_ENTRY_CPP_STRING("gRandomizeExcludedLocations", FormatLocations(
+        { RC_MARKET_10_BIG_POES, RC_KAK_40_GOLD_SKULLTULA_REWARD, RC_KAK_50_GOLD_SKULLTULA_REWARD, RC_ZR_FROGS_OCARINA_GAME })),
     PRESET_ENTRY_S32("gRandomizeForest", RO_FOREST_OPEN),
     PRESET_ENTRY_S32("gRandomizeFullWallets", 1),
     PRESET_ENTRY_S32("gRandomizeGanonTrial", RO_GANONS_TRIALS_SKIP),
@@ -1014,7 +1071,7 @@ const std::vector<PresetEntry> s6PresetEntries = {
     PRESET_ENTRY_S32("gRandomizeBigPoeTargetCount", 1),
     PRESET_ENTRY_S32("gRandomizeCuccosToReturn", 4),
     PRESET_ENTRY_S32("gRandomizeDoorOfTime", RO_DOOROFTIME_OPEN),
-    PRESET_ENTRY_STRING("gRandomizeExcludedLocations", "48,"),
+    PRESET_ENTRY_CPP_STRING("gRandomizeExcludedLocations", FormatLocations({ RC_DEKU_THEATER_MASK_OF_TRUTH })),
     PRESET_ENTRY_S32("gRandomizeForest", RO_FOREST_CLOSED_DEKU),
     PRESET_ENTRY_S32("gRandomizeGanonTrial", RO_GANONS_TRIALS_SKIP),
     PRESET_ENTRY_S32("gRandomizeGerudoFortress", RO_GF_FAST),

@@ -8,7 +8,7 @@
 #include "SceneCommand.h"
 #include <libultraship/libultra/types.h>
 
-namespace LUS {
+namespace SOH {
 class SetObjectList : public SceneCommand<int16_t> {
   public:
     using SceneCommand::SceneCommand;

@@ -503,3 +503,16 @@ std::vector<Entrance*> GetShuffleableEntrances(EntranceType type, bool onlyPrima
   }
   return entrancesToShuffle;
 }
+
+// Get the specific entrance by name
+Entrance* GetEntrance(const std::string name) {
+  for (uint32_t area : Areas::GetAllAreas()) {
+    for (auto& exit : AreaTable(area)->exits) {
+      if (exit.GetName() == name) {
+        return &exit;
+      }
+    }
+  }
+
+  return nullptr;
+}

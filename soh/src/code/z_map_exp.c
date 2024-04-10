@@ -524,7 +524,6 @@ void Map_Init(PlayState* play) {
     interfaceCtx->unk_25A = -1;
 
     interfaceCtx->mapSegment = GAMESTATE_ALLOC_MC(&play->state, 2 * sizeof(char*));
-    interfaceCtx->mapSegmentName = GAMESTATE_ALLOC_MC(&play->state, 2 * sizeof(char*));
     // "ＭＡＰ texture initialization scene_data_ID=%d mapSegment=%x"
     osSyncPrintf("\n\n\nＭＡＰ テクスチャ初期化   scene_data_ID=%d\nmapSegment=%x\n\n", play->sceneNum,
                  interfaceCtx->mapSegment, play);

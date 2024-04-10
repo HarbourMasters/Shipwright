@@ -1902,7 +1902,7 @@ s32 BgCheck_CheckWallImpl(CollisionContext* colCtx, u16 xpFlags, Vec3f* posResul
     s32 bgId2;
     f32 nx, ny, nz; // unit normal of polygon
 
-    if (CVarGetInteger("gNoClip", 0) != 0) {
+    if (CVarGetInteger("gNoClip", 0) && actor != NULL && actor->id == ACTOR_PLAYER) {
         return false;
     }
 
