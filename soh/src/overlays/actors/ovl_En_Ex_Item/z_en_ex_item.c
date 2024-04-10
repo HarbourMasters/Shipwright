@@ -229,25 +229,19 @@ void EnExItem_WaitForObject(EnExItem* this, PlayState* play) {
                 this->scale = 0.5f;
                 this->unkFloat = 0.5f;
                 this->actor.velocity.y = 10.0f;
-                if (!IS_RANDO || !Randomizer_GetSettingValue(RSK_SHUFFLE_CHEST_MINIGAME)) {
-                    switch (this->type) {
-                        case EXITEM_GREEN_RUPEE_CHEST:
-                            this->giDrawId = GID_RUPEE_GREEN;
-                            break;
-                        case EXITEM_BLUE_RUPEE_CHEST:
-                            this->giDrawId = GID_RUPEE_BLUE;
-                            break;
-                        case EXITEM_RED_RUPEE_CHEST:
-                            this->giDrawId = GID_RUPEE_RED;
-                            break;
-                        case EXITEM_14:
-                            this->giDrawId = GID_RUPEE_PURPLE;
-                            break;
-                    }
-                } else {
-                    if (play->sceneNum == SCENE_TREASURE_BOX_SHOP) {
-                        this->giDrawId = GetChestGameRandoGiDrawId(play->roomCtx.curRoom.num, GID_RUPEE_GREEN, play);
-                    }
+                switch (this->type) {
+                    case EXITEM_GREEN_RUPEE_CHEST:
+                        this->giDrawId = GID_RUPEE_GREEN;
+                        break;
+                    case EXITEM_BLUE_RUPEE_CHEST:
+                        this->giDrawId = GID_RUPEE_BLUE;
+                        break;
+                    case EXITEM_RED_RUPEE_CHEST:
+                        this->giDrawId = GID_RUPEE_RED;
+                        break;
+                    case EXITEM_14:
+                        this->giDrawId = GID_RUPEE_PURPLE;
+                        break;
                 }
                 this->actionFunc = EnExItem_ExitChest;
                 break;

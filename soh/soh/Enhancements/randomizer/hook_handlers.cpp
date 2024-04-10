@@ -26,6 +26,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Syateki_Man/z_en_syateki_man.h"
 #include "src/overlays/actors/ovl_En_Sth/z_en_sth.h"
 #include "src/overlays/actors/ovl_Item_Etcetera/z_item_etcetera.h"
+#include "src/overlays/actors/ovl_En_Box/z_en_box.h"
 #include "adult_trade_shuffle.h"
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
@@ -282,6 +283,12 @@ void ItemEtcetera_DrawRandomizedItem(ItemEtcetera* itemEtcetera, PlayState* play
     GetItemEntry_Draw(play, itemEtcetera->sohItemEntry);
 }
 
+void ItemEtcetera_DrawRandomizedItemThroughLens(ItemEtcetera* itemEtcetera, PlayState* play) {
+    if (play->actorCtx.lensActive) {
+        ItemEtcetera_DrawRandomizedItem(itemEtcetera, play);
+    }
+}
+
 void ItemEtcetera_func_80B858B4_Randomized(ItemEtcetera* itemEtcetera, PlayState* play) {
     if (itemEtcetera->actor.xzDistToPlayer < 30.0f &&
         fabsf(itemEtcetera->actor.yDistToPlayer) < 50.0f) {
@@ -394,9 +401,50 @@ RandomizerCheck EnFr_RandomizerCheckFromSongIndex(u16 songIndex) {
     }
 }
 
+void RandomizerSetChestGameRandomizerInf(RandomizerCheck rc) {
+    switch (rc) {
+        case RC_MARKET_TREASURE_CHEST_GAME_ITEM_1:
+            Flags_SetRandomizerInf(RAND_INF_MARKET_TREASURE_CHEST_GAME_ITEM_1);
+            break;
+        case RC_MARKET_TREASURE_CHEST_GAME_ITEM_2:
+            Flags_SetRandomizerInf(RAND_INF_MARKET_TREASURE_CHEST_GAME_ITEM_2);
+            break;
+        case RC_MARKET_TREASURE_CHEST_GAME_ITEM_3:
+            Flags_SetRandomizerInf(RAND_INF_MARKET_TREASURE_CHEST_GAME_ITEM_3);
+            break;
+        case RC_MARKET_TREASURE_CHEST_GAME_ITEM_4:
+            Flags_SetRandomizerInf(RAND_INF_MARKET_TREASURE_CHEST_GAME_ITEM_4);
+            break;
+        case RC_MARKET_TREASURE_CHEST_GAME_ITEM_5:
+            Flags_SetRandomizerInf(RAND_INF_MARKET_TREASURE_CHEST_GAME_ITEM_5);
+            break;
+        case RC_MARKET_TREASURE_CHEST_GAME_KEY_1:
+            Flags_SetRandomizerInf(RAND_INF_MARKET_TREASURE_CHEST_GAME_KEY_1);
+            break;
+        case RC_MARKET_TREASURE_CHEST_GAME_KEY_2:
+            Flags_SetRandomizerInf(RAND_INF_MARKET_TREASURE_CHEST_GAME_KEY_2);
+            break;
+        case RC_MARKET_TREASURE_CHEST_GAME_KEY_3:
+            Flags_SetRandomizerInf(RAND_INF_MARKET_TREASURE_CHEST_GAME_KEY_3);
+            break;
+        case RC_MARKET_TREASURE_CHEST_GAME_KEY_4:
+            Flags_SetRandomizerInf(RAND_INF_MARKET_TREASURE_CHEST_GAME_KEY_4);
+            break;
+        case RC_MARKET_TREASURE_CHEST_GAME_KEY_5:
+            Flags_SetRandomizerInf(RAND_INF_MARKET_TREASURE_CHEST_GAME_KEY_5);
+            break;
+    }
+}
+
 void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void* optionalArg) {
     switch (id) {
         case GI_VB_GIVE_ITEM_FROM_CHEST: {
+            EnBox* chest = static_cast<EnBox*>(optionalArg);
+            RandomizerCheck rc = OTRGlobals::Instance->gRandomizer->GetCheckFromActor(chest->dyna.actor.id, gPlayState->sceneNum, chest->dyna.actor.params);
+            
+            // if this is a treasure chest game chest then set the appropriate rando inf
+            RandomizerSetChestGameRandomizerInf(rc);
+
             Player* player = GET_PLAYER(gPlayState);
             player->av2.actionVar2 = 1;
             player->getItemId = GI_NONE;
@@ -895,6 +943,32 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
 }
 
 void RandomizerOnSceneInitHandler(int16_t sceneNum) {
+    // Treasure Chest Game
+    // todo: for now we're just unsetting all of them, we will
+    //       probably need to do something different when we implement shuffle
+    if (sceneNum == SCENE_TREASURE_BOX_SHOP) {
+        Flags_UnsetRandomizerInf(RAND_INF_MARKET_TREASURE_CHEST_GAME_ITEM_1);
+        Rando::Context::GetInstance()->GetItemLocation(RC_MARKET_TREASURE_CHEST_GAME_ITEM_1)->MarkAsNotObtained();
+        Flags_UnsetRandomizerInf(RAND_INF_MARKET_TREASURE_CHEST_GAME_ITEM_2);
+        Rando::Context::GetInstance()->GetItemLocation(RC_MARKET_TREASURE_CHEST_GAME_ITEM_2)->MarkAsNotObtained();
+        Flags_UnsetRandomizerInf(RAND_INF_MARKET_TREASURE_CHEST_GAME_ITEM_3);
+        Rando::Context::GetInstance()->GetItemLocation(RC_MARKET_TREASURE_CHEST_GAME_ITEM_3)->MarkAsNotObtained();
+        Flags_UnsetRandomizerInf(RAND_INF_MARKET_TREASURE_CHEST_GAME_ITEM_4);
+        Rando::Context::GetInstance()->GetItemLocation(RC_MARKET_TREASURE_CHEST_GAME_ITEM_4)->MarkAsNotObtained();
+        Flags_UnsetRandomizerInf(RAND_INF_MARKET_TREASURE_CHEST_GAME_ITEM_5);
+        Rando::Context::GetInstance()->GetItemLocation(RC_MARKET_TREASURE_CHEST_GAME_ITEM_5)->MarkAsNotObtained();
+        Flags_UnsetRandomizerInf(RAND_INF_MARKET_TREASURE_CHEST_GAME_KEY_1);
+        Rando::Context::GetInstance()->GetItemLocation(RC_MARKET_TREASURE_CHEST_GAME_KEY_1)->MarkAsNotObtained();
+        Flags_UnsetRandomizerInf(RAND_INF_MARKET_TREASURE_CHEST_GAME_KEY_2);
+        Rando::Context::GetInstance()->GetItemLocation(RC_MARKET_TREASURE_CHEST_GAME_KEY_2)->MarkAsNotObtained();
+        Flags_UnsetRandomizerInf(RAND_INF_MARKET_TREASURE_CHEST_GAME_KEY_3);
+        Rando::Context::GetInstance()->GetItemLocation(RC_MARKET_TREASURE_CHEST_GAME_KEY_3)->MarkAsNotObtained();
+        Flags_UnsetRandomizerInf(RAND_INF_MARKET_TREASURE_CHEST_GAME_KEY_4);
+        Rando::Context::GetInstance()->GetItemLocation(RC_MARKET_TREASURE_CHEST_GAME_KEY_4)->MarkAsNotObtained();
+        Flags_UnsetRandomizerInf(RAND_INF_MARKET_TREASURE_CHEST_GAME_KEY_5);
+        Rando::Context::GetInstance()->GetItemLocation(RC_MARKET_TREASURE_CHEST_GAME_KEY_5)->MarkAsNotObtained();
+    }
+
     // LACs & Prelude checks
     static uint32_t updateHook = 0;
 
@@ -1033,6 +1107,17 @@ void RandomizerOnActorInitHandler(void* actorRef) {
             }
             case ITEM_ETC_ARROW_FIRE: {
                 itemEtcetera->futureActionFunc = (ItemEtceteraActionFunc)ItemEtcetera_UpdateRandomizedFireArrow;
+                break;
+            }
+            case ITEM_ETC_RUPEE_GREEN_CHEST_GAME:
+            case ITEM_ETC_RUPEE_BLUE_CHEST_GAME:
+            case ITEM_ETC_RUPEE_RED_CHEST_GAME:
+            case ITEM_ETC_RUPEE_PURPLE_CHEST_GAME:
+            case ITEM_ETC_HEART_PIECE_CHEST_GAME:
+            case ITEM_ETC_KEY_SMALL_CHEST_GAME: {
+                if (rc != RC_UNKNOWN_CHECK) {
+                    itemEtcetera->drawFunc = (ActorFunc)ItemEtcetera_DrawRandomizedItemThroughLens;
+                }
                 break;
             }
         }

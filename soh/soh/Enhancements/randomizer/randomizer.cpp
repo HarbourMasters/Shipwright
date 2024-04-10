@@ -1649,21 +1649,28 @@ Rando::Location* Randomizer::GetCheckObjectFromActor(s16 actorId, s16 sceneNum, 
     RandomizerCheck specialRc = RC_UNKNOWN_CHECK;
     // TODO: Migrate these special cases into table, or at least document why they are special
     switch(sceneNum) {
-        case SCENE_TREASURE_BOX_SHOP:
-            if(actorParams == 20170) specialRc = RC_MARKET_TREASURE_CHEST_GAME_REWARD;
+        case SCENE_TREASURE_BOX_SHOP: {
+            if ((actorId == ACTOR_EN_BOX && actorParams == 20170) || (actorId == ACTOR_ITEM_ETCETERA && actorParams == 2572)) {
+                specialRc = RC_MARKET_TREASURE_CHEST_GAME_REWARD;
+            }
 
-            // RANDOTODO update logic to match 3ds rando when we implement keysanity
-            // keep keys og
-            if ((actorParams & 0x60) == 0x20) break;
-
-            if (GetRandoSettingValue(RSK_SHUFFLE_CHEST_MINIGAME)) {
-                if((actorParams & 0xF) < 2) specialRc = RC_MARKET_TREASURE_CHEST_GAME_ITEM_1;
-                if((actorParams & 0xF) < 4) specialRc = RC_MARKET_TREASURE_CHEST_GAME_ITEM_2;
-                if((actorParams & 0xF) < 6) specialRc = RC_MARKET_TREASURE_CHEST_GAME_ITEM_3;
-                if((actorParams & 0xF) < 8) specialRc = RC_MARKET_TREASURE_CHEST_GAME_ITEM_4;
-                if((actorParams & 0xF) < 10) specialRc = RC_MARKET_TREASURE_CHEST_GAME_ITEM_5;
+            // todo: handle the itemetc part of this so drawing works when we implement shuffle
+            if (actorId == ACTOR_EN_BOX) {
+                bool isAKey = (actorParams & 0x60) == 0x20;
+                if ((actorParams & 0xF) < 2) {
+                    specialRc = isAKey ? RC_MARKET_TREASURE_CHEST_GAME_KEY_1 : RC_MARKET_TREASURE_CHEST_GAME_ITEM_1;
+                } else if ((actorParams & 0xF) < 4) {
+                    specialRc = isAKey ? RC_MARKET_TREASURE_CHEST_GAME_KEY_2 : RC_MARKET_TREASURE_CHEST_GAME_ITEM_2;
+                } else if ((actorParams & 0xF) < 6) {
+                    specialRc = isAKey ? RC_MARKET_TREASURE_CHEST_GAME_KEY_3 : RC_MARKET_TREASURE_CHEST_GAME_ITEM_3;
+                } else if ((actorParams & 0xF) < 8) {
+                    specialRc = isAKey ? RC_MARKET_TREASURE_CHEST_GAME_KEY_4 : RC_MARKET_TREASURE_CHEST_GAME_ITEM_4;
+                } else if ((actorParams & 0xF) < 10) {
+                    specialRc = isAKey ? RC_MARKET_TREASURE_CHEST_GAME_KEY_5 : RC_MARKET_TREASURE_CHEST_GAME_ITEM_5;
+                }
             }
             break;
+        }
         case SCENE_SACRED_FOREST_MEADOW:
             if (actorId == ACTOR_EN_SA) {
                 specialRc = RC_SONG_FROM_SARIA;

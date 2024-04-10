@@ -254,6 +254,7 @@ typedef enum {
 
     /*** Give Items ***/
 
+    // Opt: *EnBox
     GI_VB_GIVE_ITEM_FROM_CHEST,
     GI_VB_GIVE_ITEM_FROM_BLUE_WARP,
     // Opt: *EnItem00

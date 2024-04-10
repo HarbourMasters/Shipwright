@@ -206,16 +206,6 @@ void ItemEtcetera_DrawThroughLens(Actor* thisx, PlayState* play) {
     if (play->actorCtx.lensActive) {
         func_8002EBCC(&this->actor, play, 0);
         func_8002ED80(&this->actor, play, 0);
-
-        if(IS_RANDO && play->sceneNum == SCENE_TREASURE_BOX_SHOP) {
-            GetItemEntry randoGetItem = GetChestGameRandoGetItem(this->actor.room, this->giDrawId, play);
-            EnItem00_CustomItemsParticles(&this->actor, play, randoGetItem);
-            if (randoGetItem.itemId != ITEM_NONE) {
-                GetItemEntry_Draw(play, randoGetItem);
-                return;
-            }
-        }
-        
         GetItem_Draw(play, this->giDrawId);
     }
 }

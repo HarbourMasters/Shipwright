@@ -6866,7 +6866,7 @@ s32 Player_ActionChange_2(Player* this, PlayState* play) {
                 }
 
                 func_80836898(play, this, func_8083A434);
-                if (GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_CHEST, true, &giEntry)) {
+                if (GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_CHEST, true, chest)) {
                 this->stateFlags1 |= PLAYER_STATE1_GETTING_ITEM | PLAYER_STATE1_ITEM_OVER_HEAD | PLAYER_STATE1_IN_CUTSCENE;
                 func_8083AE40(this, giEntry.objectId);
                 }
