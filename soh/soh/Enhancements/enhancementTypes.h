@@ -78,4 +78,10 @@ typedef enum {
     DEKU_STICK_UNBREAKABLE_AND_ALWAYS_ON_FIRE,
 } DekuStickType;
 
+typedef enum {
+    SWORD_TOGGLE_NONE,
+    SWORD_TOGGLE_CHILD,
+    SWORD_TOGGLE_BOTH_AGES,
+} SwordToggleMode;
+
 #endif

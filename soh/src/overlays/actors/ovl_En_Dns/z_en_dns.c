@@ -460,7 +460,7 @@ void func_809EFF50(EnDns* this, PlayState* play) {
 void func_809EFF98(EnDns* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    if (player->stateFlags1 & 0x400) {
+    if (player->stateFlags1 & PLAYER_STATE1_GETTING_ITEM) {
         if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) {
             this->dnsItemEntry->setRupeesAndFlags(this);
             this->dropCollectible = 1;

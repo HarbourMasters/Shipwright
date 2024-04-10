@@ -9,7 +9,6 @@
 #include <bit>
 #include <map>
 #include <string>
-#include <regex>
 #include <libultraship/libultraship.h>
 #include "dlViewer.h"
 
@@ -66,16 +65,14 @@ std::map<int, std::string> cmdMap = {
 };
 
 void PerformDisplayListSearch() {
-    auto result = LUS::Context::GetInstance()->GetResourceManager()->GetArchive()->ListFiles("*" + std::string(searchString) + "*DL*");
-
-    std::regex dlSearch(".*((DL)|(DL_.*))$");
+    auto result = LUS::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->ListFiles("*" + std::string(searchString) + "*DL*");
 
     displayListSearchResults.clear();
 
     // Filter the file results even further as StormLib can only use wildcard searching
     for (size_t i = 0; i < result->size(); i++) {
         std::string val = result->at(i);
-        if (std::regex_search(val.c_str(), dlSearch)) {
+        if (val.ends_with("DL") || val.find("DL_") != std::string::npos) {
             displayListSearchResults.push_back(val);
         }
     }
@@ -98,8 +95,6 @@ void DLViewerWindow::DrawElement() {
         ImGui::End();
         return;
     }
-
-    ImGui::Text("%d", searchDebounceFrames);
 
     // Debounce the search field as listing otr files is expensive
     if (ImGui::InputText("Search Display Lists", searchString, ARRAY_COUNT(searchString))) {
@@ -134,7 +129,7 @@ void DLViewerWindow::DrawElement() {
     try {
         auto res = std::static_pointer_cast<LUS::DisplayList>(LUS::Context::GetInstance()->GetResourceManager()->LoadResource(activeDisplayList));
 
-        if (res->GetInitData()->Type != LUS::ResourceType::DisplayList) {
+        if (res->GetInitData()->Type != static_cast<uint32_t>(LUS::ResourceType::DisplayList)) {
             ImGui::Text("Resource type is not a Display List. Please choose another.");
             ImGui::End();
             return;
