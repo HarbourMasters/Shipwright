@@ -1206,7 +1206,10 @@ void RegisterSilverRupeeShuffle() {
                 silverRupee->actionFunc = EnGSwitch_Randomizer_SilverRupeeIdle;
                 silverRupee->actor.draw = EnGSwitch_Randomizer_Draw;
             } else if (silverRupee->type == ENGSWITCH_SILVER_TRACKER) {
-                Rando::Identifier randoIdentifier = { static_cast<SceneID>(gPlayState->sceneNum), RCQUEST_VANILLA, actor->params };
+                Rando::Identifier randoIdentifier = {
+                    static_cast<SceneID>(gPlayState->sceneNum),
+                    ResourceMgr_IsSceneMasterQuest(gPlayState->sceneNum) ? RCQUEST_MQ : RCQUEST_VANILLA, actor->params
+                };
                 silverRupee->rg = Rando::StaticData::silverTrackerMap.at(randoIdentifier);
                 if ((OTRGlobals::Instance->gRandoContext->GetSilverRupees()->GetInfo(silverRupee->rg).GetCollected() >= silverRupee->silverCount)
                     || Flags_GetRandomizerInf(RAND_INF_MAGICAL_SILVER_RUPEE)) {

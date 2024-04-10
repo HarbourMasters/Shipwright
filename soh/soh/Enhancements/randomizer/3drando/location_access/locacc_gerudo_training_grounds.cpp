@@ -158,6 +158,9 @@ void AreaTable_Init_GerudoTrainingGrounds() {
   areaTable[RR_GERUDO_TRAINING_GROUNDS_MQ_UNDERWATER] = Area("Gerudo Training Grounds MQ Underwater", "Gerudo Training Grounds", RA_GERUDO_TRAINING_GROUND, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(RC_GERUDO_TRAINING_GROUND_MQ_UNDERWATER_SILVER_RUPEE_CHEST, {[]{return logic->HasFireSource && logic->IsAdult && logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer >= 24 && logic->CanTakeDamage;}}),
+                  LocationAccess(RC_GERUDO_TRAINING_GROUNDS_MQ_TOILET_SILVER_RUPEE_1, {[]{ return true; }}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_GERUDO_TRAINING_GROUNDS_MQ_TOILET_SILVER_RUPEE_2, {[]{ return true; }}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_GERUDO_TRAINING_GROUNDS_MQ_TOILET_SILVER_RUPEE_3, {[]{ return true; }}), /*TODO: Silver Rupee Logic*/
   }, {});
 
   areaTable[RR_GERUDO_TRAINING_GROUNDS_MQ_LEFT_SIDE] = Area("Gerudo Training Grounds MQ Left Side", "Gerudo Training Grounds", RA_GERUDO_TRAINING_GROUND, NO_DAY_NIGHT_CYCLE, {}, {
@@ -176,6 +179,11 @@ void AreaTable_Init_GerudoTrainingGrounds() {
                   //Locations
                   LocationAccess(RC_GERUDO_TRAINING_GROUND_MQ_BEFORE_HEAVY_BLOCK_CHEST, {[]{return logic->IsAdult && (logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD));}}),
                   LocationAccess(RC_GERUDO_TRAINING_GROUND_MQ_HEAVY_BLOCK_CHEST,        {[]{return logic->CanUse(RG_SILVER_GAUNTLETS) && (logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD));}}),
+                  LocationAccess(RC_GERUDO_TRAINING_GROUNDS_MQ_BOULDER_SILVER_RUPEE_1, {[]{ return true; }}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_GERUDO_TRAINING_GROUNDS_MQ_BOULDER_SILVER_RUPEE_2, {[]{ return true; }}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_GERUDO_TRAINING_GROUNDS_MQ_BOULDER_SILVER_RUPEE_3, {[]{ return true; }}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_GERUDO_TRAINING_GROUNDS_MQ_BOULDER_SILVER_RUPEE_4, {[]{ return true; }}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_GERUDO_TRAINING_GROUNDS_MQ_BOULDER_SILVER_RUPEE_5, {[]{ return true; }}), /*TODO: Silver Rupee Logic*/
   }, {
                   //Exits
                   Entrance(RR_GERUDO_TRAINING_GROUNDS_MQ_BACK_AREAS, {[]{return logic->IsAdult && (logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD)) && (randoCtx->GetTrickOption(RT_LENS_GTG_MQ) || logic->CanUse(RG_LENS_OF_TRUTH)) && logic->BlueFire && (logic->CanUse(RG_SONG_OF_TIME) || (randoCtx->GetTrickOption(RT_GTG_FAKE_WALL) && logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)));}}),
@@ -198,6 +206,12 @@ void AreaTable_Init_GerudoTrainingGrounds() {
                   LocationAccess(RC_GERUDO_TRAINING_GROUND_MQ_MAZE_RIGHT_CENTRAL_CHEST, {[]{return true;}}),
                   LocationAccess(RC_GERUDO_TRAINING_GROUND_MQ_MAZE_RIGHT_SIDE_CHEST,    {[]{return true;}}),
                   LocationAccess(RC_GERUDO_TRAINING_GROUND_MQ_ICE_ARROWS_CHEST,         {[]{return logic->SmallKeys(RR_GERUDO_TRAINING_GROUNDS, 3);}}),
+                  LocationAccess(RC_GERUDO_TRAINING_GROUNDS_MQ_LAVA_SILVER_RUPEE_1, {[]{ return true; }}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_GERUDO_TRAINING_GROUNDS_MQ_LAVA_SILVER_RUPEE_2, {[]{ return true; }}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_GERUDO_TRAINING_GROUNDS_MQ_LAVA_SILVER_RUPEE_3, {[]{ return true; }}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_GERUDO_TRAINING_GROUNDS_MQ_LAVA_SILVER_RUPEE_4, {[]{ return true; }}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_GERUDO_TRAINING_GROUNDS_MQ_LAVA_SILVER_RUPEE_5, {[]{ return true; }}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_GERUDO_TRAINING_GROUNDS_MQ_LAVA_SILVER_RUPEE_6, {[]{ return true; }}), /*TODO: Silver Rupee Logic*/
   }, {
                   //Exits
                   Entrance(RR_GERUDO_TRAINING_GROUNDS_MQ_UNDERWATER,  {[]{return logic->IsAdult && (logic->CanUse(RG_LONGSHOT) || (logic->CanUse(RG_HOOKSHOT) && logic->Bow));}}),

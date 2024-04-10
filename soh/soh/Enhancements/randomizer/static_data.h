@@ -59,7 +59,7 @@ namespace std {
     template<>
     struct hash<Rando::Position> {
         inline size_t operator()(const Rando::Position& pos) const {
-            return hash<int>{}(pos.scene) ^ hash<float>{}(pos.pos.x) ^ hash<float>{}(pos.pos.y) ^ hash<float>{}(pos.pos.z);
+            return hash<int>{}(pos.scene) ^ hash<int>{}(pos.quest) ^ hash<float>{}(pos.pos.x) ^ hash<float>{}(pos.pos.y) ^ hash<float>{}(pos.pos.z);
         }
     };
 

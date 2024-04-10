@@ -1081,22 +1081,37 @@ void GenerateItemPool() {
           silversToAdd.push_back(RG_GERUDO_TRAINING_GROUNDS_BOULDER_SILVER_RUPEE);
           silversToAdd.push_back(RG_GERUDO_TRAINING_GROUNDS_LAVA_SILVER_RUPEE);
           silversToAdd.push_back(RG_GERUDO_TRAINING_GROUNDS_TOILET_SILVER_RUPEE);
+      } else {
+        silversToAdd.push_back(RG_GERUDO_TRAINING_GROUNDS_MQ_BOULDER_SILVER_RUPEE);
+        silversToAdd.push_back(RG_GERUDO_TRAINING_GROUNDS_MQ_LAVA_SILVER_RUPEE);
+        silversToAdd.push_back(RG_GERUDO_TRAINING_GROUNDS_MQ_TOILET_SILVER_RUPEE);
       }
       if (ctx->GetDungeon(Rando::SPIRIT_TEMPLE)->IsVanilla()) {
           silversToAdd.push_back(RG_SPIRIT_GATE_SILVER_RUPEE);
           silversToAdd.push_back(RG_SPIRIT_BEAMOS_SILVER_RUPEE);
           silversToAdd.push_back(RG_SPIRIT_BOULDER_SILVER_RUPEE);
+      } else {
+        silversToAdd.push_back(RG_SPIRIT_MQ_LOBBY_SILVER_RUPEE);
       }
       if (ctx->GetDungeon(Rando::SHADOW_TEMPLE)->IsVanilla()) {
           silversToAdd.push_back(RG_SHADOW_SCYTHE_SILVER_RUPEE);
           silversToAdd.push_back(RG_SHADOW_OUTSIDE_SPIKE_RAIN_SILVER_RUPEE);
           silversToAdd.push_back(RG_SHADOW_INVISIBLE_SPIKES_SILVER_RUPEE);
+      } else {
+        silversToAdd.push_back(RG_SHADOW_MQ_SCYTHE_SILVER_RUPEE);
+        silversToAdd.push_back(RG_SHADOW_MQ_INVISIBLE_SCYTHE_SILVER_RUPEE);
+        silversToAdd.push_back(RG_SHADOW_MQ_OUTSIDE_SPIKE_RAIN_SILVER_RUPEE);
+        silversToAdd.push_back(RG_SHADOW_MQ_INVISIBLE_SPIKES_SILVER_RUPEE);
       }
       if (ctx->GetDungeon(Rando::GANONS_CASTLE)->IsVanilla()) {
           silversToAdd.push_back(RG_FOREST_TRIAL_SILVER_RUPEE);
           silversToAdd.push_back(RG_FIRE_TRIAL_SILVER_RUPEE);
           silversToAdd.push_back(RG_SPIRIT_TRIAL_SILVER_RUPEE);
           silversToAdd.push_back(RG_LIGHT_TRIAL_SILVER_RUPEE);
+      } else {
+        silversToAdd.push_back(RG_FIRE_TRIAL_MQ_SILVER_RUPEE);
+        silversToAdd.push_back(RG_WATER_TRIAL_MQ_SILVER_RUPEE);
+        silversToAdd.push_back(RG_SHADOW_TRIAL_MQ_SILVER_RUPEE);
       }
       for (auto rgid : silversToAdd) {
           AddItemToMainPool(rgid, ctx->GetSilverRupees()->GetInfo(rgid).GetTotal());

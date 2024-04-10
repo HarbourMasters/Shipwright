@@ -162,6 +162,11 @@ void AreaTable_Init_SpiritTemple() {
                   LocationAccess(RC_SPIRIT_TEMPLE_MQ_ENTRANCE_FRONT_LEFT_CHEST, {[]{return true;}}),
                   LocationAccess(RC_SPIRIT_TEMPLE_MQ_ENTRANCE_BACK_LEFT_CHEST,  {[]{return Here(RR_SPIRIT_TEMPLE_MQ_LOBBY, []{return logic->CanBlastOrSmash;}) && ((logic->IsChild && logic->CanUse(RG_FAIRY_SLINGSHOT)) || (logic->IsAdult && logic->CanUse(RG_FAIRY_BOW)));}}),
                   LocationAccess(RC_SPIRIT_TEMPLE_MQ_ENTRANCE_BACK_RIGHT_CHEST, {[]{return logic->HasBombchus || (logic->IsAdult && (logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT))) || (logic->IsChild && (logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_BOOMERANG)));}}),
+                  LocationAccess(RC_SPIRIT_MQ_LOBBY_SILVER_RUPEE_1, {[]{ return true; }}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_SPIRIT_MQ_LOBBY_SILVER_RUPEE_2, {[]{ return true; }}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_SPIRIT_MQ_LOBBY_SILVER_RUPEE_3, {[]{ return true; }}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_SPIRIT_MQ_LOBBY_SILVER_RUPEE_4, {[]{ return true; }}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_SPIRIT_MQ_LOBBY_SILVER_RUPEE_5, {[]{ return true; }}), /*TODO: Silver Rupee Logic*/
   }, {
                   //Exits
                   Entrance(RR_SPIRIT_TEMPLE_ENTRYWAY, {[]{return true;}}),

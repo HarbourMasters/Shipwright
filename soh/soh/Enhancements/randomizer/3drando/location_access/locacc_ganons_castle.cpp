@@ -190,7 +190,14 @@ void AreaTable_Init_GanonsCastle() {
                   //Events
                   EventAccess(&logic->FireTrialClear, {[]{return logic->CanUse(RG_GORON_TUNIC) && logic->CanUse(RG_GOLDEN_GAUNTLETS) && logic->CanUse(RG_LIGHT_ARROWS) && (logic->CanUse(RG_LONGSHOT) || logic->HoverBoots || (randoCtx->GetTrickOption(RT_GANON_MQ_FIRE_TRIAL) && logic->CanUse(RG_HOOKSHOT)));}}),
                     //Trick: logic->CanUse(RG_GORON_TUNIC) && logic->CanUse(RG_GOLDEN_GAUNTLETS) && logic->CanUse(RG_LIGHT_ARROWS) && (logic->CanUse(RG_LONGSHOT) || logic->HoverBoots || (LogicFireTrialMQ && logic->CanUse(RG_HOOKSHOT)))
-  }, {}, {});
+  }, {
+                  // Locations
+                  LocationAccess(RC_FIRE_TRIAL_MQ_SILVER_RUPEE_1, {[]{ return true; }}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_FIRE_TRIAL_MQ_SILVER_RUPEE_2, {[]{ return true; }}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_FIRE_TRIAL_MQ_SILVER_RUPEE_3, {[]{ return true; }}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_FIRE_TRIAL_MQ_SILVER_RUPEE_4, {[]{ return true; }}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_FIRE_TRIAL_MQ_SILVER_RUPEE_5, {[]{ return true; }}), /*TODO: Silver Rupee Logic*/
+  }, {});
 
   areaTable[RR_GANONS_CASTLE_MQ_WATER_TRIAL] = Area("Ganon's Castle MQ Water Trial", "Ganons Castle", RA_GANONS_CASTLE, NO_DAY_NIGHT_CYCLE, {
                   //Events
@@ -199,6 +206,11 @@ void AreaTable_Init_GanonsCastle() {
   }, {
                   //Locations
                   LocationAccess(RC_GANONS_CASTLE_MQ_WATER_TRIAL_CHEST, {[]{return logic->BlueFire;}}),
+                  LocationAccess(RC_WATER_TRIAL_MQ_SILVER_RUPEE_1, {[]{ return true; }}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_WATER_TRIAL_MQ_SILVER_RUPEE_2, {[]{ return true; }}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_WATER_TRIAL_MQ_SILVER_RUPEE_3, {[]{ return true; }}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_WATER_TRIAL_MQ_SILVER_RUPEE_4, {[]{ return true; }}), /*TODO: Silver Rupee Logic*/
+                  LocationAccess(RC_WATER_TRIAL_MQ_SILVER_RUPEE_5, {[]{ return true; }}), /*TODO: Silver Rupee Logic*/
   }, {});
 
   areaTable[RR_GANONS_CASTLE_MQ_SHADOW_TRIAL] = Area("Ganon's Castle MQ Shadow Trial", "Ganons Castle", RA_GANONS_CASTLE, NO_DAY_NIGHT_CYCLE, {
@@ -210,6 +222,11 @@ void AreaTable_Init_GanonsCastle() {
                   LocationAccess(RC_GANONS_CASTLE_MQ_SHADOW_TRIAL_BOMB_FLOWER_CHEST, {[]{return logic->IsAdult && ((logic->Bow && (logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS))) || (logic->CanUse(RG_HOVER_BOOTS) && (randoCtx->GetTrickOption(RT_LENS_GANON_MQ) || logic->CanUse(RG_LENS_OF_TRUTH)) && (logic->HasExplosives || logic->GoronBracelet || logic->CanUse(RG_DINS_FIRE))));}}),
                   LocationAccess(RC_GANONS_CASTLE_MQ_SHADOW_TRIAL_EYE_SWITCH_CHEST,  {[]{return logic->IsAdult && logic->Bow && (randoCtx->GetTrickOption(RT_LENS_GANON_MQ) || logic->CanUse(RG_LENS_OF_TRUTH)) && (logic->HoverBoots || (logic->Hookshot && (logic->HasFireSource || randoCtx->GetTrickOption(RT_GANON_MQ_SHADOW_TRIAL))));}}),
                     //Trick: logic->IsAdult && logic->Bow && (LogicLensCastleMQ || logic->CanUse(RG_LENS_OF_TRUTH)) && (logic->HoverBoots || (logic->Hookshot && (logic->HasFireSource || LogicShadowTrialMQ)))
+                    LocationAccess(RC_SHADOW_TRIAL_MQ_SILVER_RUPEE_1, {[]{ return true; }}), /*TODO: Silver Rupee Logic*/
+                    LocationAccess(RC_SHADOW_TRIAL_MQ_SILVER_RUPEE_2, {[]{ return true; }}), /*TODO: Silver Rupee Logic*/
+                    LocationAccess(RC_SHADOW_TRIAL_MQ_SILVER_RUPEE_3, {[]{ return true; }}), /*TODO: Silver Rupee Logic*/
+                    LocationAccess(RC_SHADOW_TRIAL_MQ_SILVER_RUPEE_4, {[]{ return true; }}), /*TODO: Silver Rupee Logic*/
+                    LocationAccess(RC_SHADOW_TRIAL_MQ_SILVER_RUPEE_5, {[]{ return true; }}), /*TODO: Silver Rupee Logic*/
   }, {});
 
   areaTable[RR_GANONS_CASTLE_MQ_SPIRIT_TRIAL] = Area("Ganon's Castle MQ Spirit Castle", "Ganons Castle", RA_GANONS_CASTLE, NO_DAY_NIGHT_CYCLE, {
