@@ -25,6 +25,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Fr/z_en_fr.h"
 #include "src/overlays/actors/ovl_En_Syateki_Man/z_en_syateki_man.h"
 #include "src/overlays/actors/ovl_En_Sth/z_en_sth.h"
+#include "src/overlays/actors/ovl_Item_Etcetera/z_item_etcetera.h"
 #include "adult_trade_shuffle.h"
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
@@ -271,6 +272,27 @@ void ItemBHeart_UpdateRandomizedItem(Actor* actor, PlayState* play) {
     if ((itemBHeart->actor.xzDistToPlayer < 30.0f) && (fabsf(itemBHeart->actor.yDistToPlayer) < 40.0f)) {
         Flags_SetCollectible(play, 0x1F);
         Actor_Kill(&itemBHeart->actor);
+    }
+}
+
+void ItemEtcetera_DrawRandomizedItem(ItemEtcetera* itemEtcetera, PlayState* play) {
+    EnItem00_CustomItemsParticles(&itemEtcetera->actor, play, itemEtcetera->sohItemEntry);
+    GetItemEntry_Draw(play, itemEtcetera->sohItemEntry);
+}
+
+void ItemEtcetera_func_80B858B4_Randomized(ItemEtcetera* itemEtcetera, PlayState* play) {
+    if (itemEtcetera->actor.xzDistToPlayer < 30.0f &&
+        fabsf(itemEtcetera->actor.yDistToPlayer) < 50.0f) {
+        if ((itemEtcetera->actor.params & 0xFF) == 1) {
+            Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_RUTOS_LETTER);
+            Flags_SetSwitch(play, 0xB);
+        }
+
+        Actor_Kill(&itemEtcetera->actor);
+    } else {
+        if ((play->gameplayFrames & 0xD) == 0) {
+            EffectSsBubble_Spawn(play, &itemEtcetera->actor.world.pos, 0.0f, 0.0f, 10.0f, 0.13f);
+        }
     }
 }
 
@@ -951,6 +973,23 @@ void RandomizerOnActorInitHandler(void* actorRef) {
                     enDnsUpdateHook = 0;
                     enDnsKillHook = 0;
                 });
+            }
+        }
+    }
+
+    if (actor->id == ACTOR_ITEM_ETCETERA) {
+        ItemEtcetera* itemEtcetera = static_cast<ItemEtcetera*>(actorRef);
+        RandomizerCheck rc = OTRGlobals::Instance->gRandomizer->GetCheckFromActor(itemEtcetera->actor.id, gPlayState->sceneNum, itemEtcetera->actor.params);
+        if (rc != RC_UNKNOWN_CHECK) {
+            itemEtcetera->sohItemEntry = Rando::Context::GetInstance()->GetFinalGIEntry(rc, true, (GetItemID)Rando::StaticData::GetLocation(rc)->GetVanillaItem());
+            itemEtcetera->drawFunc = (ActorFunc)ItemEtcetera_DrawRandomizedItem;
+        }
+
+        int32_t type = itemEtcetera->actor.params & 0xFF;
+        switch (type) {
+            case ITEM_ETC_LETTER: {
+                itemEtcetera->futureActionFunc = (ItemEtceteraActionFunc)ItemEtcetera_func_80B858B4_Randomized;
+                break;
             }
         }
     }

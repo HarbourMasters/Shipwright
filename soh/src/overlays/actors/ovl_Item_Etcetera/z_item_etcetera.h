@@ -16,6 +16,9 @@ typedef struct ItemEtcetera {
     /* 0x0154 */ u8 objBankIndex;
     /* 0x0158 */ ActorFunc drawFunc;
     /* 0x015C */ ItemEtceteraActionFunc actionFunc;
+    // #region SOH [Randomizer] Caching the get item entry for the draw function for performance
+    /*        */ GetItemEntry sohItemEntry;
+    // #endregion
 } ItemEtcetera; // size = 0x0160
 
 typedef enum {
