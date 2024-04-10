@@ -294,7 +294,12 @@ std::vector<uint32_t> GetAccessibleLocations(const std::vector<uint32_t>& allowe
         }
 
         // Add shuffled entrances to the entrance playthrough
-        if (mode == SearchMode::GeneratePlaythrough && exit.IsShuffled() && !exit.IsAddedToPool() && !noRandomEntrances) {
+        // Include bluewarps when unshuffled but dungeon or boss shuffle is on
+        if (mode == SearchMode::GeneratePlaythrough &&
+            (exit.IsShuffled() || (exit.GetType() == EntranceType::BlueWarp &&
+                                   (Settings::ShuffleDungeonEntrances.IsNot(SHUFFLEDUNGEONS_OFF) ||
+                                    Settings::ShuffleBossEntrances.IsNot(SHUFFLEBOSSES_OFF)))) &&
+            !exit.IsAddedToPool() && !noRandomEntrances) {
           entranceSphere.push_back(&exit);
           exit.AddToPool();
           // Don't list a two-way coupled entrance from both directions

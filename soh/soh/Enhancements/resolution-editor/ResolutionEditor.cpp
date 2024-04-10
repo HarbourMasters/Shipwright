@@ -115,7 +115,7 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
             const bool disabled_resolutionSlider = (CVarGetInteger("gAdvancedResolution.VerticalResolutionToggle", 0) &&
                                                     CVarGetInteger("gAdvancedResolution.Enabled", 0)) ||
                                                    CVarGetInteger("gLowResMode", 0);
-            if (UIWidgets::EnhancementSliderFloat("Internal Resolution: %d %%", "##IMul", "gInternalResolution", 0.5f,
+            if (UIWidgets::EnhancementSliderFloat("Internal Resolution: %.1f%%", "##IMul", "gInternalResolution", 0.5f,
                                                   2.0f, "", 1.0f, true, true, disabled_resolutionSlider)) {
                 LUS::Context::GetInstance()->GetWindow()->SetResolutionMultiplier(
                     CVarGetFloat("gInternalResolution", 1));

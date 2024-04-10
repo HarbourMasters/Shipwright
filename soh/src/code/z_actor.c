@@ -486,7 +486,7 @@ void func_8002C124(TargetContext* targetCtx, PlayState* play) {
 
         func_8002BE64(targetCtx, targetCtx->unk_4C, spBC.x, spBC.y, spBC.z);
 
-        if ((!(player->stateFlags1 & 0x40)) || (actor != player->unk_664)) {
+        if ((!(player->stateFlags1 & PLAYER_STATE1_TEXT_ON_SCREEN)) || (actor != player->unk_664)) {
             OVERLAY_DISP = Gfx_SetupDL(OVERLAY_DISP, 0x39);
 
             for (spB0 = 0, spAC = targetCtx->unk_4C; spB0 < spB8; spB0++, spAC = (spAC + 1) % 3) {
@@ -1376,7 +1376,7 @@ f32 Actor_HeightDiff(Actor* actorA, Actor* actorB) {
 }
 
 f32 Player_GetHeight(Player* player) {
-    f32 offset = (player->stateFlags1 & 0x800000) ? 32.0f : 0.0f;
+    f32 offset = (player->stateFlags1 & PLAYER_STATE1_ON_HORSE) ? 32.0f : 0.0f;
 
     if (LINK_IS_ADULT) {
         return offset + 68.0f;
@@ -1386,9 +1386,9 @@ f32 Player_GetHeight(Player* player) {
 }
 
 f32 func_8002DCE4(Player* player) {
-    if (player->stateFlags1 & 0x800000) {
+    if (player->stateFlags1 & PLAYER_STATE1_ON_HORSE) {
         return 8.0f;
-    } else if (player->stateFlags1 & 0x8000000) {
+    } else if (player->stateFlags1 & PLAYER_STATE1_IN_WATER) {
         return (R_RUN_SPEED_LIMIT / 100.0f) * 0.6f;
     } else {
         return R_RUN_SPEED_LIMIT / 100.0f;
@@ -1396,7 +1396,7 @@ f32 func_8002DCE4(Player* player) {
 }
 
 s32 func_8002DD6C(Player* player) {
-    return player->stateFlags1 & 0x8;
+    return player->stateFlags1 & PLAYER_STATE1_ITEM_IN_HAND;
 }
 
 s32 func_8002DD78(Player* player) {
@@ -1406,19 +1406,19 @@ s32 func_8002DD78(Player* player) {
 s32 func_8002DDA8(PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    return (player->stateFlags1 & 0x800) || func_8002DD78(player);
+    return (player->stateFlags1 & PLAYER_STATE1_ITEM_OVER_HEAD) || func_8002DD78(player);
 }
 
 s32 func_8002DDE4(PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    return player->stateFlags2 & 0x8;
+    return player->stateFlags2 & PLAYER_STATE2_FOOTSTEP;
 }
 
 s32 func_8002DDF4(PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    return player->stateFlags2 & 0x1000;
+    return player->stateFlags2 & PLAYER_STATE2_STATIONARY_LADDER;
 }
 
 void func_8002DE04(PlayState* play, Actor* actorA, Actor* actorB) {
@@ -1440,12 +1440,12 @@ void func_8002DE74(PlayState* play, Player* player) {
 
 void Actor_MountHorse(PlayState* play, Player* player, Actor* horse) {
     player->rideActor = horse;
-    player->stateFlags1 |= 0x800000;
+    player->stateFlags1 |= PLAYER_STATE1_ON_HORSE;
     horse->child = &player->actor;
 }
 
 s32 func_8002DEEC(Player* player) {
-    return (player->stateFlags1 & 0x20000080) || (player->csAction != 0);
+    return (player->stateFlags1 & (PLAYER_STATE1_DEAD | PLAYER_STATE1_IN_CUTSCENE)) || (player->csAction != 0);
 }
 
 void func_8002DF18(PlayState* play, Player* player) {
@@ -2005,10 +2005,13 @@ u32 Actor_HasParent(Actor* actor, PlayState* play) {
 s32 GiveItemEntryWithoutActor(PlayState* play, GetItemEntry getItemEntry) {
     Player* player = GET_PLAYER(play);
 
-    if (!(player->stateFlags1 & 0x3C7080) && Player_GetExplosiveHeld(player) < 0) {
+    if (!(player->stateFlags1 & 
+        (PLAYER_STATE1_DEAD | PLAYER_STATE1_CHARGING_SPIN_ATTACK | PLAYER_STATE1_HANGING_OFF_LEDGE | PLAYER_STATE1_CLIMBING_LEDGE |
+         PLAYER_STATE1_JUMPING | PLAYER_STATE1_FREEFALL | PLAYER_STATE1_FIRST_PERSON | PLAYER_STATE1_CLIMBING_LADDER)) && 
+         Player_GetExplosiveHeld(player) < 0) {
         if (((player->heldActor != NULL) && ((getItemEntry.getItemId > GI_NONE) && (getItemEntry.getItemId < GI_MAX)) || 
             (IS_RANDO && (getItemEntry.getItemId > RG_NONE) && (getItemEntry.getItemId < RG_MAX))) ||
-            (!(player->stateFlags1 & 0x20000800))) {
+            (!(player->stateFlags1 & (PLAYER_STATE1_ITEM_OVER_HEAD | PLAYER_STATE1_IN_CUTSCENE)))) {
             if ((getItemEntry.getItemId != GI_NONE)) {
                 player->getItemEntry = getItemEntry;
                 player->getItemId = getItemEntry.getItemId;
@@ -2041,11 +2044,14 @@ s32 GiveItemEntryWithoutActor(PlayState* play, GetItemEntry getItemEntry) {
 s32 GiveItemEntryFromActor(Actor* actor, PlayState* play, GetItemEntry getItemEntry, f32 xzRange, f32 yRange) {
     Player* player = GET_PLAYER(play);
 
-    if (!(player->stateFlags1 & 0x3C7080) && Player_GetExplosiveHeld(player) < 0) {
+    if (!(player->stateFlags1 & 
+        (PLAYER_STATE1_DEAD | PLAYER_STATE1_CHARGING_SPIN_ATTACK | PLAYER_STATE1_HANGING_OFF_LEDGE | PLAYER_STATE1_CLIMBING_LEDGE |
+         PLAYER_STATE1_JUMPING | PLAYER_STATE1_FREEFALL | PLAYER_STATE1_FIRST_PERSON | PLAYER_STATE1_CLIMBING_LADDER)) && 
+         Player_GetExplosiveHeld(player) < 0) {
         if ((((player->heldActor != NULL) || (actor == player->targetActor)) && 
             ((!IS_RANDO && ((getItemEntry.getItemId > GI_NONE) && (getItemEntry.getItemId < GI_MAX))) || 
                 (IS_RANDO && ((getItemEntry.getItemId > RG_NONE) && (getItemEntry.getItemId < RG_MAX))))) ||
-                    (!(player->stateFlags1 & 0x20000800))) {
+                    (!(player->stateFlags1 & (PLAYER_STATE1_ITEM_OVER_HEAD | PLAYER_STATE1_IN_CUTSCENE)))) {
             if ((actor->xzDistToPlayer < xzRange) && (fabsf(actor->yDistToPlayer) < yRange)) {
                 s16 yawDiff = actor->yawTowardsPlayer - player->actor.shape.rot.y;
                 s32 absYawDiff = ABS(yawDiff);
@@ -2083,10 +2089,13 @@ void GiveItemEntryFromActorWithFixedRange(Actor* actor, PlayState* play, GetItem
 s32 func_8002F434(Actor* actor, PlayState* play, s32 getItemId, f32 xzRange, f32 yRange) {
     Player* player = GET_PLAYER(play);
 
-    if (!(player->stateFlags1 & 0x3C7080) && Player_GetExplosiveHeld(player) < 0) {
+    if (!(player->stateFlags1 & 
+        (PLAYER_STATE1_DEAD | PLAYER_STATE1_CHARGING_SPIN_ATTACK | PLAYER_STATE1_HANGING_OFF_LEDGE | PLAYER_STATE1_CLIMBING_LEDGE |
+         PLAYER_STATE1_JUMPING | PLAYER_STATE1_FREEFALL | PLAYER_STATE1_FIRST_PERSON | PLAYER_STATE1_CLIMBING_LADDER)) && 
+         Player_GetExplosiveHeld(player) < 0) {
         if ((((player->heldActor != NULL) || (actor == player->targetActor)) && 
             ((!IS_RANDO && ((getItemId > GI_NONE) && (getItemId < GI_MAX))) || (IS_RANDO && ((getItemId > RG_NONE) && (getItemId < RG_MAX))))) ||
-            (!(player->stateFlags1 & 0x20000800))) {
+            (!(player->stateFlags1 & (PLAYER_STATE1_ITEM_OVER_HEAD | PLAYER_STATE1_IN_CUTSCENE)))) {
             if ((actor->xzDistToPlayer < xzRange) && (fabsf(actor->yDistToPlayer) < yRange)) {
                 s16 yawDiff = actor->yawTowardsPlayer - player->actor.shape.rot.y;
                 s32 absYawDiff = ABS(yawDiff);
@@ -2156,7 +2165,9 @@ s32 Actor_IsMounted(PlayState* play, Actor* horse) {
 u32 Actor_SetRideActor(PlayState* play, Actor* horse, s32 mountSide) {
     Player* player = GET_PLAYER(play);
 
-    if (!(player->stateFlags1 & 0x003C7880)) {
+    if (!(player->stateFlags1 & 
+        (PLAYER_STATE1_DEAD | PLAYER_STATE1_ITEM_OVER_HEAD | PLAYER_STATE1_CHARGING_SPIN_ATTACK | PLAYER_STATE1_HANGING_OFF_LEDGE |
+         PLAYER_STATE1_CLIMBING_LEDGE | PLAYER_STATE1_JUMPING | PLAYER_STATE1_FREEFALL | PLAYER_STATE1_FIRST_PERSON | PLAYER_STATE1_CLIMBING_LADDER))) {
         player->rideActor = horse;
         player->mountSide = mountSide;
         return true;
@@ -2501,8 +2512,18 @@ void func_800304DC(PlayState* play, ActorContext* actorCtx, ActorEntry* actorEnt
 }
 
 u32 D_80116068[ACTORCAT_MAX] = {
-    0x100000C0, 0x100000C0, 0x00000000, 0x100004C0, 0x00000080, 0x300000C0,
-    0x10000080, 0x00000000, 0x300000C0, 0x100004C0, 0x00000000, 0x100000C0,
+    PLAYER_STATE1_TEXT_ON_SCREEN | PLAYER_STATE1_DEAD | PLAYER_STATE1_IN_ITEM_CS,
+    PLAYER_STATE1_TEXT_ON_SCREEN | PLAYER_STATE1_DEAD | PLAYER_STATE1_IN_ITEM_CS,
+    0,
+    PLAYER_STATE1_TEXT_ON_SCREEN | PLAYER_STATE1_GETTING_ITEM | PLAYER_STATE1_DEAD | PLAYER_STATE1_IN_ITEM_CS,
+    PLAYER_STATE1_DEAD,
+    PLAYER_STATE1_TEXT_ON_SCREEN | PLAYER_STATE1_DEAD | PLAYER_STATE1_IN_ITEM_CS | PLAYER_STATE1_IN_CUTSCENE,
+    PLAYER_STATE1_DEAD | PLAYER_STATE1_IN_ITEM_CS,
+    0,
+    PLAYER_STATE1_TEXT_ON_SCREEN | PLAYER_STATE1_DEAD | PLAYER_STATE1_IN_ITEM_CS | PLAYER_STATE1_IN_CUTSCENE,
+    PLAYER_STATE1_TEXT_ON_SCREEN | PLAYER_STATE1_GETTING_ITEM | PLAYER_STATE1_DEAD | PLAYER_STATE1_IN_ITEM_CS,
+    0,
+    PLAYER_STATE1_TEXT_ON_SCREEN | PLAYER_STATE1_DEAD | PLAYER_STATE1_IN_ITEM_CS,
 };
 
 void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
@@ -2543,11 +2564,11 @@ void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
 
     sp80 = &D_80116068[0];
 
-    if (player->stateFlags2 & 0x8000000) {
+    if (player->stateFlags2 & PLAYER_STATE2_OCARINA_PLAYING) {
         unkFlag = ACTOR_FLAG_NO_FREEZE_OCARINA;
     }
 
-    if ((player->stateFlags1 & 0x40) && ((player->actor.textId & 0xFF00) != 0x600)) {
+    if ((player->stateFlags1 & PLAYER_STATE1_TEXT_ON_SCREEN) && ((player->actor.textId & 0xFF00) != 0x600)) {
         sp74 = player->targetActor;
     }
 
@@ -2880,11 +2901,19 @@ s32 func_800314D4(PlayState* play, Actor* actor, Vec3f* arg2, f32 arg3) {
     if ((arg2->z > -actor->uncullZoneScale) && (arg2->z < (actor->uncullZoneForward + actor->uncullZoneScale))) {
         var = (arg3 < 1.0f) ? 1.0f : 1.0f / arg3;
 
-        if ((((fabsf(arg2->x) - actor->uncullZoneScale) * var) < 1.0f) &&
-            (((arg2->y + actor->uncullZoneDownward) * var) > -1.0f) &&
-            (((arg2->y - actor->uncullZoneScale) * var) < 1.0f)) {
+        // #region SoH [Widescreen support]
+        // Doors will cull quite noticeably on wider screens. For these actors the zone is increased
+        f32 limit = 1.0f;
+        if (((actor->id == ACTOR_EN_DOOR) || (actor->id == ACTOR_DOOR_SHUTTER)) && CVarGetInteger("gIncreaseDoorUncullZones", 1)) {
+            limit = 2.0f;
+        }
+
+        if ((((fabsf(arg2->x) - actor->uncullZoneScale) * var) < limit) &&
+            (((arg2->y + actor->uncullZoneDownward) * var) > -limit) &&
+            (((arg2->y - actor->uncullZoneScale) * var) < limit)) {
             return true;
         }
+        // #endregion
     }
 
     return false;
@@ -3883,7 +3912,7 @@ s16 Actor_TestFloorInDirection(Actor* actor, PlayState* play, f32 distance, s16 
 s32 Actor_IsTargeted(PlayState* play, Actor* actor) {
     Player* player = GET_PLAYER(play);
 
-    if ((player->stateFlags1 & 0x10) && actor->isTargeted) {
+    if ((player->stateFlags1 & PLAYER_STATE1_ENEMY_TARGET) && actor->isTargeted) {
         return true;
     } else {
         return false;
@@ -3896,7 +3925,7 @@ s32 Actor_IsTargeted(PlayState* play, Actor* actor) {
 s32 Actor_OtherIsTargeted(PlayState* play, Actor* actor) {
     Player* player = GET_PLAYER(play);
 
-    if ((player->stateFlags1 & 0x10) && !actor->isTargeted) {
+    if ((player->stateFlags1 & PLAYER_STATE1_ENEMY_TARGET) && !actor->isTargeted) {
         return true;
     } else {
         return false;

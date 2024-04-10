@@ -1,6 +1,6 @@
 #include "Background.h"
 
-namespace LUS {
+namespace SOH {
 uint8_t* Background::GetPointer() {
     return Data.data();
 }
@@ -8,4 +8,4 @@ uint8_t* Background::GetPointer() {
 size_t Background::GetPointerSize() {
     return Data.size() * sizeof(uint8_t);
 }
-} // namespace LUS
+} // namespace SOH

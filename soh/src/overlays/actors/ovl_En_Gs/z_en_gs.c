@@ -144,8 +144,8 @@ void func_80A4E470(EnGs* this, PlayState* play) {
     if (this->actor.xzDistToPlayer <= 100.0f) {
         bREG(15) = 1;
         if (this->unk_19D == 0) {
-            player->stateFlags2 |= 0x800000;
-            if (player->stateFlags2 & 0x1000000) {
+            player->stateFlags2 |= PLAYER_STATE2_NEAR_OCARINA_ACTOR;
+            if (player->stateFlags2 & PLAYER_STATE2_ATTEMPT_PLAY_FOR_ACTOR) {
                 func_8010BD58(play, OCARINA_ACTION_FREE_PLAY);
                 this->unk_19D |= 1;
             }
@@ -168,7 +168,7 @@ void func_80A4E470(EnGs* this, PlayState* play) {
                 this->unk_19D = 0;
                 Flags_SetSwitch(play, (this->actor.params >> 8) & 0x3F);
             } else if (play->msgCtx.ocarinaMode == OCARINA_MODE_01) {
-                player->stateFlags2 |= 0x800000;
+                player->stateFlags2 |= PLAYER_STATE2_NEAR_OCARINA_ACTOR;
             }
         }
     }

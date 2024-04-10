@@ -2,6 +2,7 @@
 #include "textures/icon_item_static/icon_item_static.h"
 #include "textures/parameter_static/parameter_static.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
+#include "soh/Enhancements/enhancementTypes.h"
 
 static u8 sChildUpgrades[] = { UPG_BULLET_BAG, UPG_BOMB_BAG, UPG_STRENGTH, UPG_SCALE };
 static u8 sAdultUpgrades[] = { UPG_QUIVER, UPG_BOMB_BAG, UPG_STRENGTH, UPG_SCALE };
@@ -562,20 +563,32 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
             if (CHECK_AGE_REQ_EQUIP(pauseCtx->cursorY[PAUSE_EQUIP], pauseCtx->cursorX[PAUSE_EQUIP])) {
                 if (CHECK_BTN_ALL(input->press.button, BTN_A)) {
 
+                    // #Region SoH [Enhancements]
                     // Allow Link to remove his equipment from the equipment subscreen by toggling on/off
                     // Shields will be un-equipped entirely, and tunics/boots will revert to Kokiri Tunic/Kokiri Boots
                     // Only BGS/Giant's Knife is affected, and it will revert to Master Sword.
 
                     // If we have the feature toggled on
                     if (CVarGetInteger("gEquipmentCanBeRemoved", 0)) {
-                        
-                        // If we're on the "swords" section of the equipment screen AND we're on a currently-equipped BGS/Giant's Knife
-                        if (pauseCtx->cursorY[PAUSE_EQUIP] == 0 && pauseCtx->cursorX[PAUSE_EQUIP] == 3 
-                            && CUR_EQUIP_VALUE(EQUIP_TYPE_SWORD) == EQUIP_VALUE_SWORD_BIGGORON && CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER)){ // And we have the Master Sword
-                            Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_MASTER); // "Unequip" it by equipping Master Sword
-                            gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
-                            gSaveContext.infTable[29] = 0;
-                            goto RESUME_EQUIPMENT_SWORD;               // Skip to here so we don't re-equip it
+
+                        if (CVarGetInteger("gEnhancements.SwordToggle", SWORD_TOGGLE_NONE) == SWORD_TOGGLE_BOTH_AGES ||
+                            (CVarGetInteger("gEnhancements.SwordToggle", SWORD_TOGGLE_NONE) == SWORD_TOGGLE_CHILD) && LINK_IS_CHILD) {
+                            // If we're on the "swords" section of the equipment screen AND we're on a currently-equipped sword  
+                            if (pauseCtx->cursorY[PAUSE_EQUIP] == 0 && pauseCtx->cursorX[PAUSE_EQUIP] == CUR_EQUIP_VALUE(EQUIP_TYPE_SWORD)) {
+                                Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_NONE);
+                                gSaveContext.equips.buttonItems[0] = ITEM_NONE;
+                                Flags_SetInfTable(INFTABLE_SWORDLESS);
+                                goto RESUME_EQUIPMENT_SWORD;               // Skip to here so we don't re-equip it
+                            }
+                        } else {
+                            // If we're on the "swords" section of the equipment screen AND we're on a currently-equipped BGS/Giant's Knife
+                            if (pauseCtx->cursorY[PAUSE_EQUIP] == 0 && pauseCtx->cursorX[PAUSE_EQUIP] == 3 
+                                && CUR_EQUIP_VALUE(EQUIP_TYPE_SWORD) == EQUIP_VALUE_SWORD_BIGGORON && CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER)){ // And we have the Master Sword
+                                Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_MASTER); // "Unequip" it by equipping Master Sword
+                                gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
+                                Flags_UnsetInfTable(INFTABLE_SWORDLESS);
+                                goto RESUME_EQUIPMENT_SWORD;               // Skip to here so we don't re-equip it
+                            }
                         }
 
                         // If we're on the "shields" section of the equipment screen AND we're on a currently-equipped shield

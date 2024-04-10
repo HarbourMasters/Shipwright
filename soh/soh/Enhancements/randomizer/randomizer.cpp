@@ -315,6 +315,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "World Settings:Overworld Spawns", RSK_SHUFFLE_OVERWORLD_SPAWNS },
     { "World Settings:Mixed Entrance Pools", RSK_MIXED_ENTRANCE_POOLS },
     { "World Settings:Mix Dungeons", RSK_MIX_DUNGEON_ENTRANCES },
+    { "World Settings:Mix Bosses", RSK_MIX_BOSS_ENTRANCES },
     { "World Settings:Mix Overworld", RSK_MIX_OVERWORLD_ENTRANCES },
     { "World Settings:Mix Interiors", RSK_MIX_INTERIOR_ENTRANCES },
     { "World Settings:Mix Grottos", RSK_MIX_GROTTO_ENTRANCES },
@@ -548,13 +549,18 @@ void Randomizer::LoadMerchantMessages(const char* spoilerFileName) {
             "\x12\x38\x82" "Aufgeben! Ich verkaufe dir einen&%g{{item}}%w&für %r{{price}} Rubine%w!\x07\x10\xA3",
             "\x12\x38\x82" "J'abandonne! Tu veux bien m'acheter&un %g{{item}}%w?&Ça fera %r{{price}} Rubis%w!\x07\x10\xA3"));
     CustomMessageManager::Instance->CreateMessage(
-        Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN,
+        Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN_BUY_FOR_10,
         CustomMessage("I tried to be a %rmagic bean%w salesman,&but it turns out my marketing skills&weren't worth "
             "beans!^Anyway, want to buy my&%gmysterious item%w for 60 Rupees?\x1B&%gYes&No%w",
             "Möchten Sie einen geheimnisvollen&Gegenstand für 60 Rubine?\x1B&%gJa&Nein%w",
             "J'ai essayé d'être un vendeur de&%rharicots magiques%w, mais j'étais&mauvais au niveau du marketing et&ça "
             "me courait sur le haricot...^Enfin bref, ça te dirait de m'acheter un&"
             "%gobjet mystérieux%w pour 60 Rubis?\x1B&%gOui&Non%w"));
+    CustomMessageManager::Instance->CreateMessage(
+        Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN_BUY_FOR_100,
+        CustomMessage("I never thought I'd say this, but I'm &selling the last %rMagic Bean%w. %r99%w Rupees...\x1B&%gYes&No%w",
+            "\x1B&%gJa&Nein%w",
+            "Je te vends mon dernier %rHaricot&magique%w pour %r99 Rubis%w.\x1B&%gAcheter&Ne pas acheter%w"));
 
 
     //Setup for merchant text boxes
@@ -566,7 +572,7 @@ void Randomizer::LoadMerchantMessages(const char* spoilerFileName) {
             "Wie wäre es mit %g&{{item}}%w für %y200 Rubine?%w\x1B&%gJa!&Nein!%w",
             "Veux-tu acheter %g&{{item}}%w pour %y200 rubis?%w\x1B&%gOui&Non&w"));
 
-    //Granny Shopy
+    //Granny Shop
     //RANDOTODO: Implement obscure/ambiguous hints
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::merchantMessageTableID, TEXT_GRANNYS_SHOP,
@@ -899,6 +905,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_SHUFFLE_OVERWORLD_SPAWNS:
                     case RSK_MIXED_ENTRANCE_POOLS:
                     case RSK_MIX_DUNGEON_ENTRANCES:
+                    case RSK_MIX_BOSS_ENTRANCES:
                     case RSK_MIX_OVERWORLD_ENTRANCES:
                     case RSK_MIX_INTERIOR_ENTRANCES:
                     case RSK_MIX_GROTTO_ENTRANCES:
@@ -1562,9 +1569,9 @@ void Randomizer::ParseEntranceDataFile(const char* spoilerFileName, bool silent)
 
     // set all the entrances to be 0 to indicate an unshuffled entrance
     for (auto &entranceOveride : gSaveContext.entranceOverrides) {
+        entranceOveride.type = 0;
         entranceOveride.index = 0;
         entranceOveride.destination = 0;
-        entranceOveride.blueWarp = 0;
         entranceOveride.override = 0;
         entranceOveride.overrideDestination = 0;
     }
@@ -1579,12 +1586,12 @@ void Randomizer::ParseEntranceDataFile(const char* spoilerFileName, bool silent)
             json entranceJson = *it;
 
             for (auto entranceIt = entranceJson.begin(); entranceIt != entranceJson.end(); ++entranceIt) {
-                if (entranceIt.key() == "index") {
+                if (entranceIt.key() == "type") {
+                    gSaveContext.entranceOverrides[i].type = entranceIt.value();
+                } else if (entranceIt.key() == "index") {
                     gSaveContext.entranceOverrides[i].index = entranceIt.value();
                 } else if (entranceIt.key() == "destination") {
                     gSaveContext.entranceOverrides[i].destination = entranceIt.value();
-                } else if (entranceIt.key() == "blueWarp") {
-                    gSaveContext.entranceOverrides[i].blueWarp = entranceIt.value();
                 } else if (entranceIt.key() == "override") {
                     gSaveContext.entranceOverrides[i].override = entranceIt.value();
                 } else if (entranceIt.key() == "overrideDestination") {
@@ -3008,6 +3015,7 @@ void GenerateRandomizerImgui(std::string seed = "") {
     cvarSettings[RSK_SHUFFLE_OVERWORLD_SPAWNS] = CVarGetInteger("gRandomizeShuffleOverworldSpawns", RO_GENERIC_OFF);
     cvarSettings[RSK_MIXED_ENTRANCE_POOLS] = CVarGetInteger("gRandomizeMixedEntrances", RO_GENERIC_OFF);
     cvarSettings[RSK_MIX_DUNGEON_ENTRANCES] = CVarGetInteger("gRandomizeMixDungeons", RO_GENERIC_OFF);
+    cvarSettings[RSK_MIX_BOSS_ENTRANCES] = CVarGetInteger("gRandomizeMixBosses", RO_GENERIC_OFF);
     cvarSettings[RSK_MIX_OVERWORLD_ENTRANCES] = CVarGetInteger("gRandomizeMixOverworld", RO_GENERIC_OFF);
     cvarSettings[RSK_MIX_INTERIOR_ENTRANCES] = CVarGetInteger("gRandomizeMixInteriors", RO_GENERIC_OFF);
     cvarSettings[RSK_MIX_GROTTO_ENTRANCES] = CVarGetInteger("gRandomizeMixGrottos", RO_GENERIC_OFF);
@@ -3706,7 +3714,8 @@ void RandomizerSettingsWindow::DrawElement() {
                 // Mixed Entrance Pools
                 UIWidgets::EnhancementCheckbox("Mixed Entrance Pools", "gRandomizeMixedEntrances");
                 UIWidgets::InsertHelpHoverText(
-                    "Shuffle entrances into a mixed pool instead of separate ones.\n"
+                    "Shuffle entrances into a mixed pool instead of separate ones. Has no affect on pools whose "
+                    "entrances aren't shuffled, and \"Shuffle Boss Entrances\" must be set to \"Full\" to include them.\n"
                     "\n"
                     "For example, enabling the settings to shuffle grotto, dungeon, and overworld entrances and "
                     "selecting grotto and dungeon entrances here will allow a dungeon to be inside a grotto or "
@@ -3719,6 +3728,13 @@ void RandomizerSettingsWindow::DrawElement() {
                         ImGui::SetCursorPosX(20);
                         UIWidgets::EnhancementCheckbox("Mix Dungeons", "gRandomizeMixDungeons");
                         UIWidgets::InsertHelpHoverText("Dungeon entrances will be part of the mixed pool");
+                    }
+                    if (CVarGetInteger("gRandomizeShuffleBossEntrances", RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF) ==
+                        RO_BOSS_ROOM_ENTRANCE_SHUFFLE_FULL) {
+                        UIWidgets::Spacer(0);
+                        ImGui::SetCursorPosX(20);
+                        UIWidgets::EnhancementCheckbox("Mix Bosses", "gRandomizeMixBosses");
+                        UIWidgets::InsertHelpHoverText("Boss entrances will be part of the mixed pool");
                     }
                     if (CVarGetInteger("gRandomizeShuffleOverworldEntrances", RO_GENERIC_OFF)) {
                         UIWidgets::Spacer(0);
@@ -4221,7 +4237,7 @@ void RandomizerSettingsWindow::DrawElement() {
                                 break;
                             case RO_LACS_GREG_REWARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Stone Count: %d", "##RandoLacsStoneCount", 
-                                                            "gRandomizeLacsStoneCount", 1, 4, "", 4, true, true, false);
+                                                            "gRandomizeLacsStoneCount", 1, 4, "", 3, true, true, false);
                                 break;
                             case RO_LACS_WILDCARD_REWARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Stone Count: %d", "##RandoLacsStoneCount", 
@@ -4250,7 +4266,7 @@ void RandomizerSettingsWindow::DrawElement() {
                                 break;
                             case RO_LACS_GREG_REWARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Medallion Count: %d", "##RandoLacsMedallionCount", 
-                                                            "gRandomizeLacsMedallionCount", 1, 7, "", 7, true, true, false);
+                                                            "gRandomizeLacsMedallionCount", 1, 7, "", 6, true, true, false);
                                 break;
                             case RO_LACS_WILDCARD_REWARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Medallion Count: %d", "##RandoLacsMedallionCount", 
@@ -4279,7 +4295,7 @@ void RandomizerSettingsWindow::DrawElement() {
                                 break;
                             case RO_LACS_GREG_REWARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Reward Count: %d", "##RandoLacsRewardCount", 
-                                                            "gRandomizeLacsRewardCount", 1, 10, "", 10, true, true, false);
+                                                            "gRandomizeLacsRewardCount", 1, 10, "", 9, true, true, false);
                                 break;
                             case RO_LACS_WILDCARD_REWARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Reward Count: %d", "##RandoLacsRewardCount", 
@@ -4308,7 +4324,7 @@ void RandomizerSettingsWindow::DrawElement() {
                                 break;
                             case RO_LACS_GREG_REWARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Dungeon Count: %d", "##RandoLacsDungeonCount", 
-                                                            "gRandomizeLacsDungeonCount", 1, 9, "", 9, true, true, false);
+                                                            "gRandomizeLacsDungeonCount", 1, 9, "", 8, true, true, false);
                                 break;
                             case RO_LACS_WILDCARD_REWARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Dungeon Count: %d", "##RandoLacsDungeonCount", 
@@ -4707,7 +4723,11 @@ void RandomizerSettingsWindow::DrawElement() {
                                             excludedLocationString += std::to_string(excludedLocationIt);
                                             excludedLocationString += ",";
                                         }
-                                        CVarSetString("gRandomizeExcludedLocations", excludedLocationString.c_str());
+                                        if (excludedLocationString == "") {
+                                            CVarClear("gRandomizeExcludedLocations");
+                                        } else {
+                                            CVarSetString("gRandomizeExcludedLocations", excludedLocationString.c_str());
+                                        }
                                         LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                                     }
                                     ImGui::SameLine();
@@ -4893,7 +4913,7 @@ void RandomizerSettingsWindow::DrawElement() {
                         enabledTrickString += std::to_string(enabledTrickIt);
                         enabledTrickString += ",";
                     }
-                    CVarSetString("gRandomizeEnabledTricks", enabledTrickString.c_str());
+                    CVarClear("gRandomizeEnabledTricks");
                     LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                 }
                 ImGui::SameLine();
@@ -5097,7 +5117,7 @@ void RandomizerSettingsWindow::DrawElement() {
                             enabledTrickString += std::to_string(enabledTrickIt);
                             enabledTrickString += ",";
                         }
-                        CVarSetString("gRandomizeEnabledTricks", enabledTrickString.c_str());
+                        CVarClear("gRandomizeEnabledTricks");
                         LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                     }
                     
@@ -5135,7 +5155,11 @@ void RandomizerSettingsWindow::DrawElement() {
                                                 enabledTrickString += std::to_string(enabledTrickIt);
                                                 enabledTrickString += ",";
                                             }
-                                            CVarSetString("gRandomizeEnabledTricks", enabledTrickString.c_str());
+                                            if (enabledTrickString == "") {
+                                                CVarClear("gRandomizeEnabledTricks");
+                                            } else {
+                                                CVarSetString("gRandomizeEnabledTricks", enabledTrickString.c_str());
+                                            }
                                             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                                         }
                                         DrawTagChips(*rtObject.rtTags);
@@ -5374,7 +5398,7 @@ CustomMessage Randomizer::GetSheikMessage(s16 scene, u16 originalTextId) {
 }
 
 CustomMessage Randomizer::GetSariaMessage(u16 originalTextId) {
-    if (originalTextId == TEXT_SARIA_SFM || (originalTextId >= TEXT_SARIAS_SONG_TEXT_START && originalTextId <= TEXT_SARIAS_SONG_TEXT_END)) {
+    if (originalTextId == TEXT_SARIA_SFM || (originalTextId >= TEXT_SARIAS_SONG_FACE_TO_FACE && originalTextId <= TEXT_SARIAS_SONG_CHANNELING_POWER)) {
         CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_SARIAS_SONG_FACE_TO_FACE);
         CustomMessage messageEntry2 = messageEntry;
         std::string code = originalTextId == TEXT_SARIA_SFM ? "" : "\x0B";
