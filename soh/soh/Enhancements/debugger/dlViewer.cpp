@@ -9,7 +9,6 @@
 #include <bit>
 #include <map>
 #include <string>
-#include <regex>
 #include <libultraship/libultraship.h>
 #include "dlViewer.h"
 
@@ -68,14 +67,12 @@ std::map<int, std::string> cmdMap = {
 void PerformDisplayListSearch() {
     auto result = LUS::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->ListFiles("*" + std::string(searchString) + "*DL*");
 
-    std::regex dlSearch(".*((DL)|(DL_.*))$");
-
     displayListSearchResults.clear();
 
     // Filter the file results even further as StormLib can only use wildcard searching
     for (size_t i = 0; i < result->size(); i++) {
         std::string val = result->at(i);
-        if (std::regex_search(val.c_str(), dlSearch)) {
+        if (val.ends_with("DL") || val.find("DL_") != std::string::npos) {
             displayListSearchResults.push_back(val);
         }
     }
@@ -98,8 +95,6 @@ void DLViewerWindow::DrawElement() {
         ImGui::End();
         return;
     }
-
-    ImGui::Text("%d", searchDebounceFrames);
 
     // Debounce the search field as listing otr files is expensive
     if (ImGui::InputText("Search Display Lists", searchString, ARRAY_COUNT(searchString))) {

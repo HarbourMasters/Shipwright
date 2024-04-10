@@ -95,8 +95,6 @@ uint8_t ResourceMgr_FileExists(const char* resName);
 uint8_t ResourceMgr_FileAltExists(const char* resName);
 void ResourceMgr_UnloadOriginalWhenAltExists(const char* resName);
 char* GetResourceDataByNameHandlingMQ(const char* path);
-void ResourceMgr_LoadFile(const char* resName);
-char* ResourceMgr_LoadFileFromDisk(const char* filePath);
 uint8_t ResourceMgr_TexIsRaw(const char* texPath);
 uint8_t ResourceMgr_ResourceIsBackground(char* texPath);
 char* ResourceMgr_LoadJPEG(char* data, size_t dataSize);
