@@ -43,8 +43,8 @@ public:
     const CustomMessage& GetAmbiguous(uint8_t selection) const;
     uint8_t GetAmbiguousSize() const;
     uint8_t GetObscureSize() const;
-    const CustomMessage& GetText() const;
-    const CustomMessage GetTextCopy() const;
+    const CustomMessage& GetMessage() const;
+    const CustomMessage GetMessageCopy() const;
     bool operator==(const HintText& right) const;
     bool operator!=(const HintText& right) const;
 
@@ -52,6 +52,22 @@ private:
     CustomMessage clearText;
     std::vector<CustomMessage> ambiguousText = {};
     std::vector<CustomMessage> obscureText = {};
+};
+
+struct StaticHintInfo{
+  HintType type;
+  std::vector<RandomizerHintTextKey> hintKeys;
+  RandomizerSettingKey setting;
+  std::variant<bool, uint8_t> condition;
+  std::vector<RandomizerCheck> targetChecks;
+  std::vector<RandomizerGet> targetItems;
+  std::vector<RandomizerCheck> hintChecks;
+  bool yourPocket;
+  int num;
+
+  StaticHintInfo(HintType _type, std::vector<RandomizerHintTextKey> _textKeys, RandomizerSettingKey _setting, std::variant<bool, uint8_t> _condition,
+                 std::vector<RandomizerCheck> _targetChecks, std::vector<RandomizerGet> _targetItems = {},
+                 std::vector<RandomizerCheck> _hintChecks = {}, bool _yourPocket = false, int _num = 0);
 };
 
 using ConditionalAlwaysHint = std::pair<RandomizerCheck, std::function<bool()>>;

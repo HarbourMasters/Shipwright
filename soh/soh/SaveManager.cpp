@@ -435,21 +435,10 @@ void SaveManager::LoadRandomizerVersion3() {
     });
 
     SaveManager::Instance->LoadArray("hintLocations", RH_MAX, [&](size_t i) {
-        SaveManager::Instance->LoadStruct("", [&]() {
-            RandomizerHint rhk;
-            SaveManager::Insta/nce->LoadData("hintKey", rhk, RH_NONE);
-            HintType ht;
-            SaveManager::Instance->LoadData("hintType", ht, HINT_TYPE_MESSAGE);
-            std::string hd;
-            SaveManager::Instance->LoadData("hintDistribution", hd, (std::string)"Unknown");
-            std::vector<RandomizerHintTextKey> htk;
-            SaveManager::Instance->LoadData("hintkeys", htk, {});
-            std::vector<RandomizerCheck> hl;
-            SaveManager::Instance->LoadData("hintedLocations", hl, {});
-            std::vector<TrialKey> htr;
-            SaveManager::Instance->LoadData("hintedTrials", htr, {});
-            randoContext->AddHint(rhk, Rando::Hint(rhk, ht, hd, htk, hl, htr));
-        });
+        auto hint = RandomizerHint(i);
+        nlohmann::ordered_json json;
+        SaveManager::Instance->LoadData(Rando::StaticData::hintNames[(uint32_t)hint].GetEnglish(), json);
+        randoContext->AddHint(hint, Rando::Hint(hint, json));
     });
 
     SaveManager::Instance->LoadData("adultTradeItems", gSaveContext.adultTradeItems);
@@ -524,18 +513,8 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool f
     });
 
     SaveManager::Instance->SaveArray("hintLocations", RH_MAX, [&](size_t i) {
-        SaveManager::Instance->SaveStruct("", [&]() {
-            auto hint = randoContext->GetHint(RandomizerHint(i));
-            SaveManager::Instance->SaveData("hintKey", RandomizerHint(i));
-            SaveManager::Instance->SaveStruct("hintText", [&]() {
-                SaveManager::Instance->SaveData("english", hint->GetMessage().GetEnglish());
-                SaveManager::Instance->SaveData("french", hint->GetMessage().GetFrench());
-                SaveManager::Instance->SaveData("german", hint->GetMessage().GetGerman());
-            });
-            SaveManager::Instance->SaveData("hintedCheck", hint->GetHintedLocation());
-            SaveManager::Instance->SaveData("hintType", hint->GetHintType());
-            SaveManager::Instance->SaveData("hintedArea", hint->GetHintedArea());
-        });
+        auto hint = randoContext->GetHint(RandomizerHint(i));
+        SaveManager::Instance->SaveData(Rando::StaticData::hintNames[(uint32_t)hint].GetEnglish(), hint->toJSON());
     });
 
     SaveManager::Instance->SaveData("adultTradeItems", saveContext->adultTradeItems);

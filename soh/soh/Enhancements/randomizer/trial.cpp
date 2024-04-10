@@ -31,12 +31,12 @@ void TrialInfo::SetAsSkipped() {
 }
 
 Trials::Trials() {
-    mTrials[TK_LIGHT_TRIAL] = TrialInfo(GetHintText(RHT_LIGHT_TRIAL).GetText(), TK_LIGHT_TRIAL);
-    mTrials[TK_FOREST_TRIAL] = TrialInfo(GetHintText(RHT_FOREST_TRIAL).GetText(), TK_FOREST_TRIAL);
-    mTrials[TK_FIRE_TRIAL] = TrialInfo(GetHintText(RHT_FIRE_TRIAL).GetText(), TK_FIRE_TRIAL);
-    mTrials[TK_WATER_TRIAL] = TrialInfo(GetHintText(RHT_WATER_TRIAL).GetText(), TK_WATER_TRIAL);
-    mTrials[TK_SPIRIT_TRIAL] = TrialInfo(GetHintText(RHT_SPIRIT_TRIAL).GetText(), TK_SPIRIT_TRIAL);
-    mTrials[TK_SHADOW_TRIAL] = TrialInfo(GetHintText(RHT_SHADOW_TRIAL).GetText(), TK_SHADOW_TRIAL);
+    mTrials[TK_LIGHT_TRIAL] = TrialInfo(GetHintText(RHT_LIGHT_TRIAL).GetMessage(), TK_LIGHT_TRIAL);
+    mTrials[TK_FOREST_TRIAL] = TrialInfo(GetHintText(RHT_FOREST_TRIAL).GetMessage(), TK_FOREST_TRIAL);
+    mTrials[TK_FIRE_TRIAL] = TrialInfo(GetHintText(RHT_FIRE_TRIAL).GetMessage(), TK_FIRE_TRIAL);
+    mTrials[TK_WATER_TRIAL] = TrialInfo(GetHintText(RHT_WATER_TRIAL).GetMessage(), TK_WATER_TRIAL);
+    mTrials[TK_SPIRIT_TRIAL] = TrialInfo(GetHintText(RHT_SPIRIT_TRIAL).GetMessage(), TK_SPIRIT_TRIAL);
+    mTrials[TK_SHADOW_TRIAL] = TrialInfo(GetHintText(RHT_SHADOW_TRIAL).GetMessage(), TK_SHADOW_TRIAL);
 }
 Trials::~Trials() = default;
 
@@ -67,6 +67,7 @@ std::vector<TrialInfo*> Trials::GetTrialList() {
 size_t Trials::GetTrialListSize() const {
     return mTrials.size();
 }
+
 void Trials::ParseJson(nlohmann::json spoilerFileJson) {
     nlohmann::json trialsJson = spoilerFileJson["requiredTrials"];
     for (auto it = trialsJson.begin(); it != trialsJson.end(); ++it) {
@@ -80,4 +81,13 @@ void Trials::ParseJson(nlohmann::json spoilerFileJson) {
         }
     }
 }
+
+std::unordered_map<TrialKey, HintText> Trials::GetAllTrialHintHeys() const {
+    std::unordered_map<TrialKey, HintText> output = {};
+    for (auto trial: mTrials){
+        output[trial.GetKey()] = trial.GetName();
+    }
+    return output;
+}
+
 } // namespace Rando

@@ -82,6 +82,7 @@ class Context {
     void ParseHashIconIndexesJson(nlohmann::json spoilerFileJson);
     void ParseItemLocationsJson(nlohmann::json spoilerFileJson);
     void WriteHintJson(nlohmann::json& spoilerFileJson);
+    void AddHintFromJson(RandomizerHint hint, nlohmann::json hintEntry);
     void ParseHintJson(nlohmann::json spoilerFileJson);
     std::map<RandomizerCheck, ItemOverride> overrides = {};
     std::vector<std::vector<RandomizerCheck>> playthroughLocations = {};
@@ -89,7 +90,6 @@ class Context {
     std::vector<RandomizerGet> possibleIceTrapModels = {};
     std::unordered_map<RandomizerCheck, RandomizerGet> iceTrapModels = {};
     std::array<uint8_t, 5> hashIconIndexes = {};
-    std::unordered_map<std::string, RandomizerCheck> mSpoilerfileCheckNameToEnum;
     bool playthroughBeatable = false;
     bool allLocationsReachable = false;
     RandomizerArea GetAreaFromString(std::string str);
@@ -97,8 +97,6 @@ class Context {
   private:
     static std::weak_ptr<Context> mContext;
     std::unordered_map<std::string, RandomizerGet> mSpoilerfileGetNameToEnum;
-    std::unordered_map<std::string, HintType> mSpoilerfileHintTypeNameToEnum;
-    std::unordered_map<std::string, RandomizerArea> mSpoilerfileAreaNameToEnum;
     std::array<Hint, RH_MAX> hintTable = {};
     std::array<ItemLocation, RC_MAX> itemLocationTable = {};
     std::shared_ptr<Settings> mSettings;

@@ -56,22 +56,6 @@ typedef enum {
     HINT_TYPE_MAX
 } HintType;
 
-// RANDOTODO find somewhere better and translate
-std::unordered_map<HintType, CustomMessage> hintTypeNames = {
-    {HINT_TYPE_HINT_KEY, CustomMessage("Message")},
-    {HINT_TYPE_AREA, CustomMessage("Area")},
-    {HINT_TYPE_ITEM, CustomMessage("Item")},
-    {HINT_TYPE_TRIAL, CustomMessage("Trial")},
-    {HINT_TYPE_ENTRANCE, CustomMessage("Entrance")},
-    {HINT_TYPE_ITEM_AREA, CustomMessage("Item Area")},
-    {HINT_TYPE_MERCHANT, CustomMessage("Merchant")},
-    {HINT_TYPE_ALTAR_CHILD, CustomMessage("Child Altar")},
-    {HINT_TYPE_ALTAR_ADULT, CustomMessage("Adult Altar")},
-    {HINT_TYPE_WOTH,  CustomMessage("Way of the Hero")},
-    {HINT_TYPE_FOOLISH, CustomMessage("Foolish")},
-    {HINT_TYPE_MESSAGE, CustomMessage("Hardcoded Message")}
-};
-
 typedef enum {
     RA_NONE,
     RA_LINKS_POCKET,

@@ -2923,46 +2923,6 @@ int32_t TokensRequiredBySettings() {
     return tokens;
 }
 
-std::array<RandomizerHintTextKey, RA_MAX> AreaHintTextKeys = {
-    RHT_LINKS_POCKET, //explicit none in area hints usually means it's a starting item, so say Link's pocket
-    RHT_LINKS_POCKET,
-    RHT_KOKIRI_FOREST,
-    RHT_THE_LOST_WOODS,
-    RHT_SACRED_FOREST_MEADOW,
-    RHT_HYRULE_FIELD,
-    RHT_LAKE_HYLIA,
-    RHT_GERUDO_VALLEY,
-    RHT_GERUDO_FORTRESS,
-    RHT_HAUNTED_WASTELAND,
-    RHT_DESERT_COLOSSUS,
-    RHT_THE_MARKET,
-    RHT_TEMPLE_OF_TIME,
-    RHT_HYRULE_CASTLE,
-    RHT_OUTSIDE_GANONS_CASTLE,
-    RHT_CASTLE_GROUNDS,
-    RHT_KAKARIKO_VILLAGE,
-    RHT_THE_GRAVEYARD,
-    RHT_DEATH_MOUNTAIN_TRAIL,
-    RHT_GORON_CITY,
-    RHT_DEATH_MOUNTAIN_CRATER,
-    RHT_ZORAS_RIVER,
-    RHT_ZORAS_DOMAIN,
-    RHT_ZORAS_FOUNTAIN,
-    RHT_LON_LON_RANCH,
-    RHT_DEKU_TREE,
-    RHT_DODONGOS_CAVERN,
-    RHT_JABU_JABUS_BELLY,
-    RHT_FOREST_TEMPLE,
-    RHT_FIRE_TEMPLE,
-    RHT_WATER_TEMPLE,
-    RHT_SPIRIT_TEMPLE,
-    RHT_SHADOW_TEMPLE,
-    RHT_BOTTOM_OF_THE_WELL,
-    RHT_ICE_CAVERN,
-    RHT_GERUDO_TRAINING_GROUND,
-    RHT_GANONS_CASTLE
-};
-
 std::array<ConditionalAlwaysHint, 12> conditionalAlwaysHints = {
     std::make_pair(RC_MARKET_10_BIG_POES,
                    []() {
@@ -3017,8 +2977,3 @@ std::array<ConditionalAlwaysHint, 12> conditionalAlwaysHints = {
 const HintText& GetHintText(const RandomizerHintTextKey hintKey) {
     return hintTable[hintKey];
 }
-
-const HintText& GetHintText(const RandomizerArea area) {
-    return hintTable[AreaHintTextKeys[area]];
-}
-

@@ -5,6 +5,7 @@
 #include "../custom-message/CustomMessageManager.h"
 #include <array>
 #include <nlohmann/json.hpp>
+#include <unordered_map>
 
 namespace Rando {
 class TrialInfo {
@@ -35,6 +36,7 @@ class Trials {
     std::vector<TrialInfo*> GetTrialList();
     size_t GetTrialListSize() const;
     void ParseJson(nlohmann::json spoilerFileJson);
+    std::unordered_map<TrialKey, HintText> GetAllTrialHintHeys() const;
   private:
     std::vector<TrialInfo> mTrials;
 };

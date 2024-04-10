@@ -39,7 +39,6 @@
 #include "soh/util.h"
 #include "fishsanity.h"
 #include "randomizerTypes.h"
-#include "static_hint_data.h"
 
 extern "C" uint32_t ResourceMgr_IsGameMasterQuest();
 extern "C" uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
@@ -158,8 +157,8 @@ Randomizer::Randomizer() {
     SpoilerfileAreaNameToEnum["the Graveyard"] = RCAREA_GRAVEYARD;
     SpoilerfileAreaNameToEnum["Haunted Wasteland"] = RCAREA_WASTELAND;
     SpoilerfileAreaNameToEnum["outside Ganon's Castle"] = RCAREA_HYRULE_CASTLE;
-    for (int c = 0; c < Rando::StaticHintData::hintTypeNames.size(); c++) {
-        SpoilerfileHintTypeNameToEnum[Rando::StaticHintData::hintTypeNames[(HintType)c].GetEnglish()] = (HintType)c;
+    for (int c = 0; c < Rando::StaticData::hintTypeNames.size(); c++) {
+        SpoilerfileHintTypeNameToEnum[Rando::StaticData::hintTypeNames[(HintType)c].GetEnglish()] = (HintType)c;
     }
 }
 
