@@ -38,4 +38,6 @@ typedef enum {
     /* 0x0D */ ITEM_ETC_KEY_SMALL_CHEST_GAME
 } ItemEtceteraType;
 
+void ItemEtcetera_SpawnSparkles(ItemEtcetera* ItemEtcetera, PlayState* play);
+
 #endif

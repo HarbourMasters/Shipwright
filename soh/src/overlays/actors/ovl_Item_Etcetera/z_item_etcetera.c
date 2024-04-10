@@ -120,24 +120,13 @@ void func_80B857D0(ItemEtcetera* this, PlayState* play) {
 
 void func_80B85824(ItemEtcetera* this, PlayState* play) {
     if (Actor_HasParent(&this->actor, play)) {
-        if ((this->actor.params & 0xFF) == 7) {
-            if (IS_RANDO) {
-                Flags_SetTreasure(play, 0x1F);
-            }
-        }
-
         if ((this->actor.params & 0xFF) == 1) {
             Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_RUTOS_LETTER);
             Flags_SetSwitch(play, 0xB);
         }
         Actor_Kill(&this->actor);
     } else {
-        if (!IS_RANDO) {
-            Actor_OfferGetItem(&this->actor, play, this->getItemId, 30.0f, 50.0f);
-        } else {
-            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_SUN, GI_ARROW_FIRE);
-            GiveItemEntryFromActor(&this->actor, play, getItemEntry, 30.0f, 50.0f);
-        }
+        Actor_OfferGetItem(&this->actor, play, this->getItemId, 30.0f, 50.0f);
     }
 }
 
@@ -233,7 +222,6 @@ void ItemEtcetera_DrawThroughLens(Actor* thisx, PlayState* play) {
 
 void ItemEtcetera_Draw(Actor* thisx, PlayState* play) {
     ItemEtcetera* this = (ItemEtcetera*)thisx;
-    s32 type = this->actor.params & 0xFF;
 
     func_8002EBCC(&this->actor, play, 0);
     func_8002ED80(&this->actor, play, 0);

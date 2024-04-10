@@ -277,6 +277,8 @@ void ItemBHeart_UpdateRandomizedItem(Actor* actor, PlayState* play) {
 
 void ItemEtcetera_DrawRandomizedItem(ItemEtcetera* itemEtcetera, PlayState* play) {
     EnItem00_CustomItemsParticles(&itemEtcetera->actor, play, itemEtcetera->sohItemEntry);
+    func_8002EBCC(&itemEtcetera->actor, play, 0);
+    func_8002ED80(&itemEtcetera->actor, play, 0);
     GetItemEntry_Draw(play, itemEtcetera->sohItemEntry);
 }
 
@@ -293,6 +295,44 @@ void ItemEtcetera_func_80B858B4_Randomized(ItemEtcetera* itemEtcetera, PlayState
         if ((play->gameplayFrames & 0xD) == 0) {
             EffectSsBubble_Spawn(play, &itemEtcetera->actor.world.pos, 0.0f, 0.0f, 10.0f, 0.13f);
         }
+    }
+}
+
+void ItemEtcetera_func_80B85824_Randomized(ItemEtcetera* itemEtcetera, PlayState* play) {
+    if ((itemEtcetera->actor.params & 0xFF) != 7) {
+        return;
+    }
+
+    if (itemEtcetera->actor.xzDistToPlayer < 30.0f &&
+        fabsf(itemEtcetera->actor.yDistToPlayer) < 50.0f) {
+
+        Flags_SetTreasure(play, 0x1F);
+        Actor_Kill(&itemEtcetera->actor);
+    }
+}
+
+void ItemEtcetera_MoveRandomizedFireArrowDown(ItemEtcetera* itemEtcetera, PlayState* play) {
+    Actor_UpdateBgCheckInfo(play, &itemEtcetera->actor, 10.0f, 10.0f, 0.0f, 5);
+    Actor_MoveForward(&itemEtcetera->actor);
+    if (!(itemEtcetera->actor.bgCheckFlags & 1)) {
+        ItemEtcetera_SpawnSparkles(itemEtcetera, play);
+    }
+    itemEtcetera->actor.shape.rot.y += 0x400;
+    ItemEtcetera_func_80B85824_Randomized(itemEtcetera, play);
+}
+
+void ItemEtcetera_UpdateRandomizedFireArrow(ItemEtcetera* itemEtcetera, PlayState* play) {
+    if ((play->csCtx.state != CS_STATE_IDLE) && (play->csCtx.npcActions[0] != NULL)) {
+        if (play->csCtx.npcActions[0]->action == 2) {
+            itemEtcetera->actor.draw = (ActorFunc)ItemEtcetera_DrawRandomizedItem;
+            itemEtcetera->actor.gravity = -0.1f;
+            itemEtcetera->actor.minVelocityY = -4.0f;
+            itemEtcetera->actionFunc = ItemEtcetera_MoveRandomizedFireArrowDown;
+        }
+    } else {
+        itemEtcetera->actor.gravity = -0.1f;
+        itemEtcetera->actor.minVelocityY = -4.0f;
+        itemEtcetera->actionFunc = ItemEtcetera_MoveRandomizedFireArrowDown;
     }
 }
 
@@ -989,6 +1029,10 @@ void RandomizerOnActorInitHandler(void* actorRef) {
         switch (type) {
             case ITEM_ETC_LETTER: {
                 itemEtcetera->futureActionFunc = (ItemEtceteraActionFunc)ItemEtcetera_func_80B858B4_Randomized;
+                break;
+            }
+            case ITEM_ETC_ARROW_FIRE: {
+                itemEtcetera->futureActionFunc = (ItemEtceteraActionFunc)ItemEtcetera_UpdateRandomizedFireArrow;
                 break;
             }
         }
