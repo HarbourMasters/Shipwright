@@ -1995,3 +1995,4 @@ hintTable[RHT_SHADOW_TEMPLE_MAP_CHEST] = HintText(CustomMessage("They say that t
                                                                   /*german*/ "",
                                                                   /*french*/ "Selon moi, les #pestes Mojo dans le Château de Ganon# vendent #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                // /*spanish*/ Según dicen, los #dekus del Castillo de Ganon# venden #[[1]]#.
+}

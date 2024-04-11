@@ -9,7 +9,6 @@
 #include "../randomizerTypes.h"
 #include "../context.h"
 #include "../../custom-message/CustomMessageManager.h"
-#include "../trial.h"
 
 struct HintDistributionSetting {
   std::string name;
