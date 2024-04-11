@@ -219,7 +219,7 @@ std::unordered_map<RandomizerHint, StaticHintInfo> staticHintInfoMap = {
 std::unordered_map<std::string, uint32_t> PopulateTranslationMap(std::unordered_map<uint32_t, CustomMessage> input){
   std::unordered_map<std::string, uint32_t> output = {};
   for (const auto& [key, message] : input) {
-    std::array<std::string, LANGUAGE_MAX> strings = message.GetAllStrings();
+    std::vector<std::string> strings = message.GetAllStrings();
     for (std::string string: strings){
       if (output.contains(string)){
         if (output[string] != key){
@@ -235,7 +235,7 @@ std::unordered_map<std::string, uint32_t> PopulateTranslationMap(std::unordered_
 std::unordered_map<std::string, uint32_t> PopulateTranslationMap(std::unordered_map<uint32_t, RandomizerHintTextKey> input){
   std::unordered_map<std::string, uint32_t> output = {};
   for (const auto& [key, text] : input) {
-    std::array<std::string, LANGUAGE_MAX> strings = ::GetHintText(text).GetClear().GetAllStrings();
+    std::vector<std::string> strings = ::GetHintText(text).GetClear().GetAllStrings();
     for (std::string string: strings){
       if (output.contains(string)){
         if (output[string] != key){

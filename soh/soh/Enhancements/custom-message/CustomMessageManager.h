@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <exception>
 #include <vector>
+#include <string>
 
 #include "../../../include/z64item.h"
 #include "../../../include/message_data_textbox_types.h"
@@ -48,7 +49,7 @@ class CustomMessage {
     const std::string& GetGerman() const;
     const std::string& GetForLanguage(uint8_t language) const;
     const std::string& GetForCurrentLanguage() const;
-    const std::array<std::string, LANGUAGE_MAX> GetAllStrings() const;
+    const std::vector<std::string> GetAllStrings() const;
     const std::vector<char>& GetColors() const;
     void SetColors(std::vector<char> colors_);
     const std::vector<bool>& GetCapital() const;
@@ -155,7 +156,7 @@ class CustomMessage {
     void Format();
 
   private:
-    std::array<std::string, LANGUAGE_MAX> messages ={"","",""};
+    std::vector<std::string> messages = {"","",""};
     TextBoxType type = TEXTBOX_TYPE_BLACK;
     TextBoxPosition position = TEXTBOX_POS_BOTTOM;
     std::vector<char> colors = {};

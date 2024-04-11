@@ -2580,6 +2580,9 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
         else if (textId == TEXT_BEAN_SALESMAN_BUY_FOR_10 && ctx->GetOption(RSK_SHUFFLE_MAGIC_BEANS)) {
             messageEntry = ctx->GetHint(RH_BEAN_SALESMAN)->GetMessage();
         } 
+        else if (textId == TEXT_BEAN_SALESMAN_BUY_FOR_100) {
+            messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN_BUY_FOR_100);
+        } 
         else if (textId == TEXT_GRANNYS_SHOP && !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_GRANNYS_SHOP) && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF &&
             (ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) || INV_CONTENT(ITEM_CLAIM_CHECK) == ITEM_CLAIM_CHECK)){
             messageEntry = messageEntry = ctx->GetHint(RH_GRANNY)->GetMessage();

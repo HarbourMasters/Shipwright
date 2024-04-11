@@ -386,7 +386,7 @@ void Context::WriteHintJson(nlohmann::json& spoilerFileJson){
 }
 
 nlohmann::json getValueForMessage(std::unordered_map<std::string, nlohmann::json> map, CustomMessage message){
-    std::array<std::string, LANGUAGE_MAX> strings = message.GetAllStrings();
+    std::vector<std::string> strings = message.GetAllStrings();
     for (uint8_t language = 0; language < LANGUAGE_MAX; language++){
         if (map.contains(strings[language])){
             return strings[language];

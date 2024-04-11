@@ -1,10 +1,10 @@
 #pragma once
 
-#include "3drando/text.hpp"
 #include "randomizerTypes.h"
 #include "../custom-message/CustomMessageManager.h"
-#include <array>
 #include <nlohmann/json.hpp>
+#include "3drando/hint_list.hpp"
+#include "3drando/hints.hpp"
 #include <unordered_map>
 
 namespace Rando {

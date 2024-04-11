@@ -1,6 +1,5 @@
 #pragma once
 
-#include <array>
 #include <string>
 #include <vector>
 
@@ -72,7 +71,7 @@ struct StaticHintInfo{
 
 using ConditionalAlwaysHint = std::pair<RandomizerCheck, std::function<bool()>>;
 
-extern std::array<ConditionalAlwaysHint, 12> conditionalAlwaysHints;
+extern std::vector<ConditionalAlwaysHint> conditionalAlwaysHints;
 
 extern void CreateAllHints();
 extern void CreateWarpSongTexts();

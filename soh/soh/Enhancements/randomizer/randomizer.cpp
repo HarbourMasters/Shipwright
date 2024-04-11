@@ -350,6 +350,11 @@ void Randomizer::LoadMerchantMessages() {
         CustomMessage("\x08[[item]]  [[price]] Rupees\x09&&\x1B%gBuy&Don't buy%w\x09\x02",
             "\x08[[item]]  [[price]] Rubine\x09&&\x1B%gKaufen&Nicht kaufen%w\x09\x02",
             "\x08[[item]]  [[price]] Rubis\x09&&\x1B%gAcheter&Ne pas acheter%w\x09\x02"));
+    CustomMessageManager::Instance->CreateMessage(
+        Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN_BUY_FOR_100,
+        CustomMessage("I never thought I'd say this, but I'm &selling the last %rMagic Bean%w. %r99%w Rupees...\x1B&%gYes&No%w",
+                      "\x1B&%gJa&Nein%w",
+                      "Je te vends mon dernier %rHaricot&magique%w pour %r99 Rubis%w.\x1B&%gAcheter&Ne pas acheter%w"));
 }
 
 bool Randomizer::IsTrialRequired(RandomizerInf trial) {

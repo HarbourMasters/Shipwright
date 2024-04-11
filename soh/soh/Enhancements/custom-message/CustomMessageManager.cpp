@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <stdint.h>
 #include <cstring>
-#include <string>
+#include <map>
 #include <spdlog/spdlog.h>
 #include <variables.h>
 
@@ -124,7 +124,7 @@ const std::string& CustomMessage::GetForCurrentLanguage() const {
     return messages[gSaveContext.language].length() > 0 ? messages[gSaveContext.language] : messages[LANGUAGE_ENG];
 }
 
-const std::array<std::string, LANGUAGE_MAX> CustomMessage::GetAllStrings() const{
+const std::vector<std::string> CustomMessage::GetAllStrings() const{
     return messages;
 }
 

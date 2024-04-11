@@ -3,9 +3,6 @@
 #include <stdint.h>
 #include "z64item.h"
 #include "randomizer_inf.h"
-#include <string>
-#include <unordered_map>
-#include "../custom-message/CustomMessageManager.h"
 
 #define MAX_TRICK_NAME_SIZE 50
 

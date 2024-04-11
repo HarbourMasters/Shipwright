@@ -1,7 +1,6 @@
 #pragma once
 
 #include "hints.hpp"
-
 #include <vector>
 
 extern std::array<HintText, RHT_MAX> hintTable;

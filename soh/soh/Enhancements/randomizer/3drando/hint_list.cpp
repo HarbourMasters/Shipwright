@@ -4,8 +4,6 @@
 #include "../randomizerTypes.h"
 #include "../context.h"
 
-#include <array>
-
 using namespace CustomMessages;
 
 // Big thanks to Lioncache, Gabyelnuevo, Danius88, and Charade for their translations!
@@ -2923,7 +2921,7 @@ int32_t TokensRequiredBySettings() {
     return tokens;
 }
 
-std::array<ConditionalAlwaysHint, 12> conditionalAlwaysHints = {
+std::vector<ConditionalAlwaysHint> conditionalAlwaysHints = {
     std::make_pair(RC_MARKET_10_BIG_POES,
                    []() {
                        auto ctx = Rando::Context::GetInstance();

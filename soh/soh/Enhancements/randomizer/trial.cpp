@@ -1,5 +1,4 @@
 #include "trial.h"
-#include "3drando/hint_list.hpp"
 
 namespace Rando {
 TrialInfo::TrialInfo(CustomMessage name_, TrialKey key_) : name(std::move(name_)), key(std::move(key_)) {}

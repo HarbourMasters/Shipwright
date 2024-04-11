@@ -1,7 +1,6 @@
 #pragma once
 
 #include <string>
-#include "z64.h"
 
 #define PLURAL 0
 #define SINGULAR 1
@@ -48,11 +47,11 @@ public:
 
     const std::string& GetForLanguage(uint8_t language) const {
         switch (language) {
-            case LANGUAGE_ENG:
+            case 0: //LANGUAGE_ENG: changed to resolve #include loops
                 return GetEnglish();
-            case LANGUAGE_FRA:
+            case 2: //LANGUAGE_FRA:
                 return GetFrench();
-            case LANGUAGE_GER:
+            case 1: //LANGUAGE_GER:
                 return GetGerman();
             default:
                 return GetEnglish();
