@@ -437,7 +437,8 @@ void DrawGameplayStatsHeader() {
     ImGui::BeginTable("gameplayStatsHeader", 1, ImGuiTableFlags_BordersOuter);
     ImGui::TableSetupColumn("stat", ImGuiTableColumnFlags_WidthStretch);
     GameplayStatsRow("Build Version:", (char*)gBuildVersion);
-    if (((char*)gGitBranch) != "develop") {
+    //if branch doesn't start with "develop"
+    if (strncmp((char*)gGitBranch, "develop", strlen("develop")) != 0) {
         GameplayStatsRow("Git Branch:", (char*)gGitBranch);
     }
     if (CVarGetInteger("gGameplayStats.ShowDebugInfo", 0)) {

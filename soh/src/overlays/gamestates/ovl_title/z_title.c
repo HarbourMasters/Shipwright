@@ -30,7 +30,8 @@ void Title_PrintBuildInfo(Gfx** gfxp) {
     GfxPrint_Open(&printer, g);
     GfxPrint_SetColor(&printer, 131, 154, 255, 255);
 
-    bool showGitBranch = ((char*)gGitBranch) != "develop";
+    //if branch doesn't start with "develop"
+    bool showGitBranch = strncmp((char*)gGitBranch, "develop", strlen("develop")) != 0;
     bool showGitCommit = CVarGetInteger("gDebugEnabled", 0);
 
     GfxPrint_SetPos(&printer, 1, showGitBranch ? (showGitCommit ? 23 : 24) : (showGitCommit ? 24 : 25));
