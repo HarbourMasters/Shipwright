@@ -2,32 +2,14 @@
 #include "soh/resource/type/Path.h"
 #include "spdlog/spdlog.h"
 
-namespace LUS {
-std::shared_ptr<IResource>
-PathFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
-    auto resource = std::make_shared<Path>(initData);
-    std::shared_ptr<ResourceVersionFactory> factory = nullptr;
-
-    switch (resource->GetInitData()->ResourceVersion) {
-    case 0:
-	factory = std::make_shared<PathFactoryV0>();
-	break;
+namespace SOH {
+std::shared_ptr<LUS::IResource> ResourceFactoryBinaryPathV0::ReadResource(std::shared_ptr<LUS::File> file) {
+    if (!FileHasValidFormatAndReader(file)) {
+        return nullptr;
     }
 
-    if (factory == nullptr) {
-        SPDLOG_ERROR("Failed to load Path with version {}", resource->GetInitData()->ResourceVersion);
-	return nullptr;
-    }
-
-    factory->ParseFileBinary(reader, resource);
-
-    return resource;
-}
-
-void LUS::PathFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
-                                          std::shared_ptr<IResource> resource) {
-    std::shared_ptr<Path> path = std::static_pointer_cast<Path>(resource);
-    ResourceVersionFactory::ParseFileBinary(reader, path);
+    auto path = std::make_shared<Path>(file->InitData);
+    auto reader = std::get<std::shared_ptr<LUS::BinaryReader>>(file->Reader);
 
     path->numPaths = reader->ReadUInt32();
     path->paths.reserve(path->numPaths);
@@ -52,5 +34,7 @@ void LUS::PathFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
 
         path->pathData.push_back(pathDataEntry);
     }
+
+    return path;
 }
-} // namespace LUS
+} // namespace SOH

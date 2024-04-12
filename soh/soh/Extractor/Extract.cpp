@@ -107,7 +107,8 @@ void Extractor::ShowSizeErrorBox() const {
 }
 
 void Extractor::ShowCrcErrorBox() const {
-    ShowErrorBox("Rom CRC invalid", "Rom CRC did not match the list of known good roms. Please find another.");
+    ShowErrorBox("Rom CRC invalid", "Rom CRC did not match the list of known compatible roms. Please find another.\n\n"
+                                    "Visit https://ship.equipment/ to validate your ROM and see a list of compatible versions");
 }
 
 void Extractor::ShowCompressedErrorBox() const {
@@ -479,7 +480,8 @@ bool Extractor::Run(std::string searchPath, RomSearchMode searchMode) {
                     ShowCrcErrorBox();
                 } else {
                     ShowErrorBox("Rom CRC invalid",
-                                 "Rom CRC did not match the list of known good roms. Trying the next one...");
+                                 "Rom CRC did not match the list of known compatible roms. Trying the next one...\n\n"
+                                 "Visit https://ship.equipment/ to validate your ROM and see a list of compatible versions");
                 }
                 continue;
             }

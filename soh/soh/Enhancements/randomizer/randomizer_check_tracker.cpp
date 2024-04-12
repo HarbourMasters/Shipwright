@@ -781,7 +781,6 @@ void InitTrackerData(bool isDebug) {
         }
     }
     UpdateAllOrdering();
-    UpdateInventoryChecks();
 }
 
 void SaveTrackerData(SaveContext* saveContext, int sectionID, bool gameSave) {
@@ -1381,7 +1380,7 @@ void DrawLocation(RandomizerCheck rc) {
                 : CVarGetColor("gCheckTrackerSeenMainColor", Color_Main_Default);
         extraColor = CVarGetColor("gCheckTrackerSeenExtraColor", Color_Seen_Extra_Default);
     } else if (status == RCSHOW_SCUMMED) {
-        if (!showHidden && CVarGetInteger("gCheckTrackerKnownHide", 0)) {
+        if (!showHidden && CVarGetInteger("gCheckTrackerScummedHide", 0)) {
             return;
         }
         mainColor =

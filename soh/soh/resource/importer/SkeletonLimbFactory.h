@@ -1,23 +1,17 @@
 #pragma once
 
 #include "Resource.h"
-#include "ResourceFactory.h"
+#include "ResourceFactoryBinary.h"
+#include "ResourceFactoryXML.h"
 
-namespace LUS {
-class SkeletonLimbFactory : public ResourceFactory
-{
+namespace SOH {
+class ResourceFactoryBinarySkeletonLimbV0 : public LUS::ResourceFactoryBinary {
   public:
-    std::shared_ptr<IResource>
-    ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) override;
-    std::shared_ptr<IResource>
-    ReadResourceXML(std::shared_ptr<ResourceInitData> initData, tinyxml2::XMLElement *reader) override;
+    std::shared_ptr<LUS::IResource> ReadResource(std::shared_ptr<LUS::File> file) override;
 };
 
-class SkeletonLimbFactoryV0 : public ResourceVersionFactory
-{
+class ResourceFactoryXMLSkeletonLimbV0 : public LUS::ResourceFactoryXML {
   public:
-    void ParseFileBinary(std::shared_ptr<BinaryReader> reader, std::shared_ptr<IResource> resource) override;
-    void ParseFileXML(tinyxml2::XMLElement* reader, std::shared_ptr<IResource> resource) override;
+    std::shared_ptr<LUS::IResource> ReadResource(std::shared_ptr<LUS::File> file) override;  
 };
-}; // namespace LUS
-
+} // namespace SOH

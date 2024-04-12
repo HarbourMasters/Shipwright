@@ -392,7 +392,7 @@ s32 EnXc_SerenadeCS(EnXc* this, PlayState* play) {
 
         if (((CHECK_OWNED_EQUIP(EQUIP_TYPE_BOOTS, EQUIP_INV_BOOTS_IRON) && !IS_RANDO) ||
              (Flags_GetTreasure(play, 2) && IS_RANDO)) &&
-            !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_SERENADE_OF_WATER) && !(stateFlags & 0x20000000) &&
+            !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_SERENADE_OF_WATER) && !(stateFlags & PLAYER_STATE1_IN_CUTSCENE) &&
             !Play_InCsMode(play)) {
             if (!IS_RANDO) {
                 Cutscene_SetSegment(play, &gIceCavernSerenadeCs);
