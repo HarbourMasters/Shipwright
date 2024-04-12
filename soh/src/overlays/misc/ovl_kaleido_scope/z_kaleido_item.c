@@ -237,8 +237,8 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
     s16 oldCursorPoint;
     s16 moveCursorResult;
     bool dpad = (CVarGetInteger("gDpadPause", 0) && !CHECK_BTN_ALL(input->cur.button, BTN_CUP));
-    bool pauseAnyCursor = (CVarGetInteger("gPauseAnyCursor", 0) == PAUSE_ANY_CURSOR_RANDO_ONLY && IS_RANDO) ||
-                          (CVarGetInteger("gPauseAnyCursor", 0) == PAUSE_ANY_CURSOR_ALWAYS_ON);
+    bool pauseAnyCursor = pauseCtx->cursorSpecialPos == 0 && ((CVarGetInteger("gPauseAnyCursor", 0) == PAUSE_ANY_CURSOR_RANDO_ONLY && IS_RANDO) ||
+                          (CVarGetInteger("gPauseAnyCursor", 0) == PAUSE_ANY_CURSOR_ALWAYS_ON));
 
     // only allow mask select when:
     // the shop is open:
