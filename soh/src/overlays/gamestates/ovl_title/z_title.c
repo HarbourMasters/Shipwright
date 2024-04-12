@@ -30,8 +30,24 @@ void Title_PrintBuildInfo(Gfx** gfxp) {
     GfxPrint_Open(&printer, g);
     GfxPrint_SetColor(&printer, 131, 154, 255, 255);
 
-    GfxPrint_SetPos(&printer, 1, 25);
+    bool showGitBranch = ((char*)gGitBranch) != "develop";
+    bool showGitCommit = CVarGetInteger("gDebugEnabled", 0);
+
+    GfxPrint_SetPos(&printer, 1, showGitBranch ? (showGitCommit ? 23 : 24) : (showGitCommit ? 24 : 25));
     GfxPrint_Printf(&printer, "%s", gBuildVersion);
+    if (showGitBranch) {
+        GfxPrint_SetPos(&printer, 1, showGitCommit ? 24 : 25);
+        GfxPrint_Printf(&printer, "Git Branch: %s", gGitBranch);
+    }
+    if (showGitCommit) {
+        //truncate the commit to 7 characters
+        char gGitCommitHashTruncated[8];
+        strncpy(gGitCommitHashTruncated, gGitCommitHash, 7);
+        gGitCommitHashTruncated[7] = 0;
+
+        GfxPrint_SetPos(&printer, 1, 25);
+        GfxPrint_Printf(&printer, "Git Commit: %s", gGitCommitHashTruncated);
+    }
     GfxPrint_SetPos(&printer, 1, 26);
     GfxPrint_Printf(&printer, "%s", gBuildDate);
 

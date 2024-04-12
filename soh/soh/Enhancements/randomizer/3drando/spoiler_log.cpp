@@ -864,6 +864,8 @@ const char* SpoilerLog_Write(int language) {
     jsonData.clear();
 
     jsonData["version"] = (char*) gBuildVersion;
+    jsonData["git_branch"] = (char*) gGitBranch;
+    jsonData["git_commit"] = (char*) gGitCommitHash;
     jsonData["seed"] = Settings::seedString;
     jsonData["finalSeed"] = Settings::seed;
 

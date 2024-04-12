@@ -323,7 +323,7 @@ OTRGlobals::OTRGlobals() {
     context->InitWindow(sohInputEditorWindow);
     context->InitAudio();
 
-    SPDLOG_INFO("Starting Ship of Harkinian version {}", (char*)gBuildVersion);
+    SPDLOG_INFO("Starting Ship of Harkinian version {} (Branch: {} | Commit: {})", (char*)gBuildVersion, (char*)gGitBranch, (char*)gGitCommitHash);
 
     auto loader = context->GetResourceManager()->GetResourceLoader();
     loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryAnimationV0>(), RESOURCE_FORMAT_BINARY, "Animation", static_cast<uint32_t>(SOH::ResourceType::SOH_Animation), 0);
