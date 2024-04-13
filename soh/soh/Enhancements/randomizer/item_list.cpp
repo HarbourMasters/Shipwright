@@ -289,6 +289,7 @@ void Rando::StaticData::InitItemTable() {
     itemTable[RG_BRONZE_SCALE].SetCustomDrawFunc(Randomizer_DrawBronzeScale);
 
     itemTable[RG_SKELETON_KEY] = Item(RG_SKELETON_KEY, Text{ "Skeleton Key", "!!!", "!!!" }, ITEMTYPE_ITEM, GI_STONE_OF_AGONY, true, &logic->SkeletonKey, RHT_SKELETON_KEY, RG_SKELETON_KEY, OBJECT_GI_MAP, GID_STONE_OF_AGONY, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_RANDOMIZER);
+    itemTable[RG_SKELETON_KEY].SetCustomDrawFunc(Randomizer_DrawSkeletonKey);
 
     itemTable[RG_TRIFORCE] =                            Item(RG_TRIFORCE,                         Text{ "Triforce", "Triforce", "Triforce" },                                                                       ITEMTYPE_EVENT,             RG_TRIFORCE,        false, &logic->noVariable,          RHT_NONE);
     itemTable[RG_HINT] =                                Item(RG_HINT,                             Text{ "Hint", "Indice", "Hinweis" },                                                                              ITEMTYPE_EVENT,             RG_HINT,            false, &logic->noVariable,          RHT_NONE);
