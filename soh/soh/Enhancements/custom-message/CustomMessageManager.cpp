@@ -16,7 +16,7 @@ static const std::unordered_map<std::string, char> textBoxSpecialCharacters = {
     { "è", 0x95 }, { "é", 0x96 }, { "ê", 0x97 }, { "ë", 0x98 }, { "ï", 0x99 }, { "ô", 0x9A }, { "ö", 0x9B },
     { "ù", 0x9C }, { "û", 0x9D }, { "ü", 0x9E }
 };
-static const std::unordered_map<std::string, char> percentColors = { { "w", QM_WHITE },  { "r", QM_RED },   { "g", QM_GREEN },
+static const std::unordered_map<std::string, std::string> percentColors = { { "w", QM_WHITE },  { "r", QM_RED },   { "g", QM_GREEN },
                                                               { "b", QM_BLUE },   { "c", QM_LBLUE }, { "p", QM_PINK },
                                                               { "y", QM_YELLOW }, { "B", QM_BLACK } };
 
@@ -79,7 +79,7 @@ CustomMessage::CustomMessage(std::string english_, std::string german_, std::str
     messages[LANGUAGE_FRA] = std::move(french_);
 }
 
-CustomMessage::CustomMessage(std::string english_, std::string german_, std::string french_, std::vector<char> colors_,
+CustomMessage::CustomMessage(std::string english_, std::string german_, std::string french_, std::vector<std::string> colors_,
                               std::vector<bool> capital_, TextBoxType type_, TextBoxPosition position_) {
     messages[LANGUAGE_ENG] = std::move(english_);
     messages[LANGUAGE_GER] = std::move(german_);
@@ -95,7 +95,7 @@ CustomMessage::CustomMessage(std::string english_, TextBoxType type_, TextBoxPos
     messages[LANGUAGE_ENG] = std::move(english_);
 }
 
-CustomMessage::CustomMessage(std::string english_, std::vector<char> colors_, std::vector<bool> capital_, TextBoxType type_, TextBoxPosition position_){
+CustomMessage::CustomMessage(std::string english_, std::vector<std::string> colors_, std::vector<bool> capital_, TextBoxType type_, TextBoxPosition position_){
     messages[LANGUAGE_ENG] = std::move(english_);
     colors = colors_;
     capital = capital_;
@@ -141,11 +141,11 @@ const std::vector<bool>& CustomMessage::GetCapital() const {
 void CustomMessage::SetCapital(std::vector<bool> capital_){
     capital = capital_;
 }
-const std::vector<char>& CustomMessage::GetColors() const {
+const std::vector<std::string>& CustomMessage::GetColors() const {
     return colors;
 }
 
-void CustomMessage::SetColors(std::vector<char> colors_){
+void CustomMessage::SetColors(std::vector<std::string> colors_){
     colors = colors_;
 }
 
@@ -162,7 +162,7 @@ const TextBoxPosition& CustomMessage::GetTextBoxPosition() const {
 }
 
 CustomMessage CustomMessage::operator+(const CustomMessage& right) const {
-    std::vector<char> newColors = colors;
+    std::vector<std::string> newColors = colors;
     newColors.insert(colors.end(), right.colors.begin(), right.colors.end());
     std::vector<bool> newCapital = capital;
     newCapital.insert(capital.end(), right.capital.begin(), right.capital.end());
@@ -208,27 +208,6 @@ void CustomMessage::Replace(std::string&& oldStr, std::string&& newStr) {
     }
     Format();
 }
-
-/* void CustomMessage::Replace(std::string&& oldStr, std::string&& newEnglish, std::string&& newGerman,
-                            std::string&& newFrench) {
-    size_t position = 0;
-    position = english.find(oldStr);
-    while (position != std::string::npos) {
-        english.replace(position, oldStr.length(), newEnglish);
-        position = english.find(oldStr);
-    }
-    position = french.find(oldStr);
-    while (position != std::string::npos) {
-        french.replace(position, oldStr.length(), newFrench);
-        position = french.find(oldStr);
-    }
-    position = german.find(oldStr);
-    while (position != std::string::npos) {
-        german.replace(position, oldStr.length(), newGerman);
-        position = german.find(oldStr);
-    }
-    Format();
-} */
 
 void CustomMessage::Replace(std::string&& oldStr, CustomMessage newMessage) {
     for (uint8_t language = 0; language < LANGUAGE_MAX; language++) {
@@ -421,9 +400,9 @@ void CustomMessage::ReplaceColors() {
                 start_pos += textToReplace.length();
             }
         }
-        for (const auto& color: colors) {
+        for (auto color: colors) {
           if (const size_t firstHashtag = str.find('#'); firstHashtag != std::string::npos) {
-            str.replace(firstHashtag, 1, &color);
+            str.replace(firstHashtag, 1, color);
             if (const size_t secondHashtag = str.find('#', firstHashtag + 1); secondHashtag != std::string::npos) {
               str.replace(secondHashtag, 1, QM_WHITE);
             } else {
@@ -473,8 +452,8 @@ std::string CustomMessage::NEWLINE() {
     return "\x01"s;
 }
 
-std::string CustomMessage::COLOR(uint8_t x) {
-    return "\x05"s + char(x);
+std::string CustomMessage::COLOR(std::string x) {
+    return "\x05"s + x;
 }
 
 std::string CustomMessage::WAIT_FOR_INPUT() {

@@ -11,14 +11,14 @@
 
 #undef MESSAGE_END
 
-#define QM_WHITE (char)0x00
-#define QM_RED (char)0x41
-#define QM_GREEN (char)0x42
-#define QM_BLUE (char)0x43
-#define QM_LBLUE (char)0x44
-#define QM_PINK (char)0x45
-#define QM_YELLOW (char)0x46
-#define QM_BLACK (char)0x47
+#define QM_WHITE "\x00"
+#define QM_RED "\x41"
+#define QM_GREEN "\x42"
+#define QM_BLUE "\x43"
+#define QM_LBLUE "\x44"
+#define QM_PINK "\x45"
+#define QM_YELLOW "\x46"
+#define QM_BLACK "\x47"
 
 /**
  * @brief Encapsulates logic surrounding languages, and formatting strings for OoT's textboxes and
@@ -31,16 +31,16 @@ class CustomMessage {
     CustomMessage() = default;
     CustomMessage(std::string english_, std::string german_, std::string french_,
                   TextBoxType type_ = TEXTBOX_TYPE_BLACK, TextBoxPosition position_ = TEXTBOX_POS_BOTTOM);
-    CustomMessage(std::string english_, std::string german_, std::string french_, std::vector<char> colors_, std::vector<bool> capital_ = {},
+    CustomMessage(std::string english_, std::string german_, std::string french_, std::vector<std::string> colors_, std::vector<bool> capital_ = {},
               TextBoxType type_ = TEXTBOX_TYPE_BLACK, TextBoxPosition position_ = TEXTBOX_POS_BOTTOM);
     CustomMessage(std::string english_, TextBoxType type_ = TEXTBOX_TYPE_BLACK, TextBoxPosition position_ = TEXTBOX_POS_BOTTOM);
-    CustomMessage(std::string english_, std::vector<char> colors_, std::vector<bool> capital_ = {}, TextBoxType type_ = TEXTBOX_TYPE_BLACK, TextBoxPosition position_ = TEXTBOX_POS_BOTTOM);
+    CustomMessage(std::string english_, std::vector<std::string> colors_, std::vector<bool> capital_ = {}, TextBoxType type_ = TEXTBOX_TYPE_BLACK, TextBoxPosition position_ = TEXTBOX_POS_BOTTOM);
     CustomMessage(Text text, TextBoxType type_ = TEXTBOX_TYPE_BLACK, TextBoxPosition position_ = TEXTBOX_POS_BOTTOM);
 
     static std::string MESSAGE_END() ;
     static std::string ITEM_OBTAINED(uint8_t x) ;
     static std::string NEWLINE() ;
-    static std::string COLOR(uint8_t x) ;
+    static std::string COLOR(std::string x) ;
     static std::string WAIT_FOR_INPUT() ;
     static std::string PLAYER_NAME() ;
 
@@ -50,8 +50,8 @@ class CustomMessage {
     const std::string& GetForLanguage(uint8_t language) const;
     const std::string& GetForCurrentLanguage() const;
     const std::vector<std::string> GetAllStrings() const;
-    const std::vector<char>& GetColors() const;
-    void SetColors(std::vector<char> colors_);
+    const std::vector<std::string>& GetColors() const;
+    void SetColors(std::vector<std::string> colors_);
     const std::vector<bool>& GetCapital() const;
     void SetCapital(std::vector<bool> capital_);
     const TextBoxType& GetTextBoxType() const;
@@ -159,7 +159,7 @@ class CustomMessage {
     std::vector<std::string> messages = {"","",""};
     TextBoxType type = TEXTBOX_TYPE_BLACK;
     TextBoxPosition position = TEXTBOX_POS_BOTTOM;
-    std::vector<char> colors = {};
+    std::vector<std::string> colors = {};
     std::vector<bool> capital = {};
 };
 

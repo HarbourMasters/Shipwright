@@ -31,8 +31,8 @@ void HintTable_Init() {
     hintTable[RHT_WAY_OF_THE_HERO] =
         HintText(CustomMessage( "They say that #[[1]]# is on #the way of the hero#.", 
                                 "",
-                        /*french*/ "Selon moi, #[[1]]# est sur #la voie du héros#.", {QM_RED, QM_LBLUE}));
-                    // /*spanish*/ "Según dicen, #[[1]]# conduce a la senda del héroe."
+                     /*french*/ "Selon moi, #[[1]]# est sur #la voie du héros#.", {QM_RED, QM_LBLUE}));
+                 // /*spanish*/ "Según dicen, #[[1]]# conduce a la senda del héroe."
     hintTable[RHT_FOOLISH] = 
         HintText(CustomMessage( "They say that plundering #[[1]]# is #a foolish choice#.",
                                 "",

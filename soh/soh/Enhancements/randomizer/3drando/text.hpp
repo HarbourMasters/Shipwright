@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <stdint.h>
 
 #define PLURAL 0
 #define SINGULAR 1

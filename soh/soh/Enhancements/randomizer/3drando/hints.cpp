@@ -23,7 +23,7 @@ HintDistributionSetting::HintDistributionSetting(std::string _name,
                           uint8_t _fixed, 
                           uint8_t _copies, 
                           std::function<bool(RandomizerCheck)> _filter,
-                          uint8_t _dungeonLimit = 40){
+                          uint8_t _dungeonLimit){
     name = _name;
     type = _type;
     weight = _weight;
@@ -33,7 +33,6 @@ HintDistributionSetting::HintDistributionSetting(std::string _name,
     dungeonLimit = _dungeonLimit;
   }
 
-HintText::HintText() = default;
 HintText::HintText(CustomMessage clearText_, std::vector<CustomMessage> ambiguousText_, std::vector<CustomMessage> obscureText_)
 : clearText(std::move(clearText_)), ambiguousText(std::move(ambiguousText_)), obscureText(std::move(obscureText_)){}
 
@@ -401,22 +400,22 @@ void CreateWarpSongTexts() {
       auto destination = entrance->GetConnectedRegion()->GetArea();
       switch (entrance->GetIndex()) {
         case 0x0600: // minuet RANDOTODO make into entrance hints when they are added
-          ctx->AddHint(RH_MINUET_WARP_LOC, Hint(RH_MINUET_WARP_LOC, HINT_TYPE_AREA, {RHT_WARP_SONG}, {}, {destination}));
+          ctx->AddHint(RH_MINUET_WARP_LOC, Hint(RH_MINUET_WARP_LOC, HINT_TYPE_AREA, "", {RHT_WARP_SONG}, {}, {destination}));
           break;
         case 0x04F6: // bolero
-          ctx->AddHint(RH_BOLERO_WARP_LOC, Hint(RH_BOLERO_WARP_LOC, HINT_TYPE_AREA, {RHT_WARP_SONG}, {}, {destination}));
+          ctx->AddHint(RH_BOLERO_WARP_LOC, Hint(RH_BOLERO_WARP_LOC, HINT_TYPE_AREA, "", {RHT_WARP_SONG}, {}, {destination}));
           break;
         case 0x0604: // serenade
-          ctx->AddHint(RH_SERENADE_WARP_LOC, Hint(RH_SERENADE_WARP_LOC, HINT_TYPE_AREA, {RHT_WARP_SONG}, {}, {destination}));
+          ctx->AddHint(RH_SERENADE_WARP_LOC, Hint(RH_SERENADE_WARP_LOC, HINT_TYPE_AREA, "", {RHT_WARP_SONG}, {}, {destination}));
           break;
         case 0x01F1: // requiem
-          ctx->AddHint(RH_REQUIEM_WARP_LOC, Hint(RH_REQUIEM_WARP_LOC, HINT_TYPE_AREA, {RHT_WARP_SONG}, {}, {destination}));
+          ctx->AddHint(RH_REQUIEM_WARP_LOC, Hint(RH_REQUIEM_WARP_LOC, HINT_TYPE_AREA, "", {RHT_WARP_SONG}, {}, {destination}));
           break;
         case 0x0568: // nocturne
-          ctx->AddHint(RH_NOCTURNE_WARP_LOC, Hint(RH_NOCTURNE_WARP_LOC, HINT_TYPE_AREA, {RHT_WARP_SONG}, {}, {destination}));
+          ctx->AddHint(RH_NOCTURNE_WARP_LOC, Hint(RH_NOCTURNE_WARP_LOC, HINT_TYPE_AREA, "", {RHT_WARP_SONG}, {}, {destination}));
           break;
         case 0x05F4: // prelude
-          ctx->AddHint(RH_PRELUDE_WARP_LOC, Hint(RH_PRELUDE_WARP_LOC, HINT_TYPE_AREA, {RHT_WARP_SONG}, {}, {destination}));
+          ctx->AddHint(RH_PRELUDE_WARP_LOC, Hint(RH_PRELUDE_WARP_LOC, HINT_TYPE_AREA, "", {RHT_WARP_SONG}, {}, {destination}));
           break;
         default:
           break;

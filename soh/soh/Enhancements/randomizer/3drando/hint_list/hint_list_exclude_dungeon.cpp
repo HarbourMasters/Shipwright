@@ -1,8 +1,6 @@
 #include "../hint_list.hpp"
 #include "../../context.h"
 
-//{QM_RED, QM_GREEN}
-
 void HintTable_Init_Exclude_Dungeon() {
   /*--------------------------
   |        DEKU TREE         |

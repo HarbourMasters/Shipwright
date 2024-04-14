@@ -2528,8 +2528,8 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
 
             Actor* stone = GET_PLAYER(play)->targetActor; 
             RandomizerHint stoneHint = RH_NONE;
-            if (stone->flags <= 0x3C and stoneFlagToHint.contains(stone->flags)){ //The hint stones all have unique flags, so we can identify the stone by the flag (Assuming the location list is accurate)
-                stoneHint = stoneFlagToHint[stone->flags];
+            if (stone->flags <= 0x3C and Rando::StaticData::stoneFlagToHint.contains(stone->flags)){ //The hint stones all have unique flags, so we can identify the stone by the flag (Assuming the location list is accurate)
+                stoneHint = Rando::StaticData::stoneFlagToHint[stone->flags];
             }
             if (stoneHint == RH_NONE){
                 messageEntry = CustomMessage("ERROR: INVALID STONE FLAGS: " + std::to_string(stone->flags));
