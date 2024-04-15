@@ -5,7 +5,7 @@
 
 namespace Rando {
 
-std::unordered_map<HintType, CustomMessage> hintTypeNames = {
+std::unordered_map<uint32_t, CustomMessage> hintTypeNames = {
     {HINT_TYPE_HINT_KEY, CustomMessage("Message")},
     {HINT_TYPE_AREA, CustomMessage("Area")},
     {HINT_TYPE_ITEM, CustomMessage("Item")},
@@ -140,7 +140,7 @@ std::unordered_map<RandomizerCheck, RandomizerHint> StaticData::gossipStoneCheck
   {RC_ZR_OPEN_GROTTO_GOSSIP_STONE,           RH_ZR_OPEN_GROTTO_GOSSIP_STONE}
 };
 
-std::unordered_map<RandomizerArea, RandomizerHintTextKey> areaNames = { //RANDOTODO resolve None in area
+std::unordered_map<uint32_t, RandomizerHintTextKey> areaNames = { //RANDOTODO resolve None in area
     {RA_NONE, RHT_LINKS_POCKET}, //explicit none in area hints usually means it's a starting item, so say Link's pocket
     {RA_LINKS_POCKET, RHT_LINKS_POCKET},
     {RA_KOKIRI_FOREST, RHT_KOKIRI_FOREST},
