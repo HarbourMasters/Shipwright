@@ -11339,7 +11339,7 @@ void Player_Draw(Actor* thisx, PlayState* play2) {
             lod = 1;
         }
 
-        if (CVarGetInteger("gDisableLOD", 0) != 0) {
+        if (CVarGetInteger("gDisableLOD", 0)) {
             lod = 0;
         }
 
