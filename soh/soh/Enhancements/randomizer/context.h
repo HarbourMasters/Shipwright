@@ -81,8 +81,7 @@ class Context {
     void ParseSpoiler(const char* spoilerFileName, bool plandoMode);
     void ParseHashIconIndexesJson(nlohmann::json spoilerFileJson);
     void ParseItemLocationsJson(nlohmann::json spoilerFileJson);
-    void WriteHintJson(nlohmann::json& spoilerFileJson);
-    void AddHintFromJson(RandomizerHint hint, nlohmann::json hintEntry);
+    void WriteHintJson(nlohmann::ordered_json& spoilerFileJson);
     void ParseHintJson(nlohmann::json spoilerFileJson);
     std::map<RandomizerCheck, ItemOverride> overrides = {};
     std::vector<std::vector<RandomizerCheck>> playthroughLocations = {};

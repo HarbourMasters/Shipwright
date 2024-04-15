@@ -7,6 +7,7 @@
 #include "Enhancements/randomizer/trial.h"
 #include "soh/util.h"
 #include "Enhancements/randomizer/hint.h"
+#include "Enhancements/randomizer/item.h"
 
 #include "z64.h"
 #include "functions.h"
@@ -515,7 +516,56 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool f
 
     SaveManager::Instance->SaveArray("hintLocations", RH_MAX, [&](size_t i) {
         auto hint = randoContext->GetHint(RandomizerHint(i));
-        SaveManager::Instance->SaveData(Rando::StaticData::hintNames[(uint32_t)hint].GetEnglish(), hint->toJSON());
+        // RANDOTODO a way for saveData to accept a raw JSON would make maintaining hint code nicer.
+        // save manager forces code rewrites between the spoiler log and internal saves, when the code needs to do the exact same thing
+        // in cases where data needs to be loaded in from the spoiler log for plando mode.
+        // fails as push_back is ambiguous
+        // SaveManager::Instance->SaveData(Rando::StaticData::hintNames[(uint32_t)hint].GetEnglish(), hint->toJSON());
+        SaveManager::Instance->SaveStruct("", [&]() {
+            bool enabled = hint->IsEnabled();
+            SaveManager::Instance->SaveData("enabled", enabled);
+            if (enabled){
+                std::vector<std::string> messages = hint->GetAllMessageStrings();
+
+                SaveManager::Instance->SaveArray("messages", messages.size(), [&](size_t i) {
+                    SaveManager::Instance->SaveData("", messages[i]);
+                });
+
+                SaveManager::Instance->SaveData("distribution", hint->GetDistribution());
+                SaveManager::Instance->SaveData("type", Rando::StaticData::hintTypeNames[hint->GetHintType()].GetEnglish());
+                
+                std::vector<RandomizerHintTextKey> hintKeys = hint->GetHintKeys();
+                SaveManager::Instance->SaveArray("hintKeys", hintKeys.size(), [&](size_t i) {
+                    SaveManager::Instance->SaveData("", hintKeys[i]);
+                });
+
+                std::vector<RandomizerCheck> locations = hint->GetHintedLocations();
+                SaveManager::Instance->SaveArray("locations", locations.size(), [&](size_t i) {
+                    SaveManager::Instance->SaveData("", locations[i]);
+                });
+
+                std::vector<RandomizerGet> items = hint->GetHintedItems();
+                SaveManager::Instance->SaveArray("items", items.size(), [&](size_t i) {
+                    SaveManager::Instance->SaveData("", items[i]);
+                });
+                
+                std::vector<uint8_t> chosenName = hint->GetChosenNames();
+                SaveManager::Instance->SaveArray("chosenName", chosenName.size(), [&](size_t i) {
+                    SaveManager::Instance->SaveData("", chosenName[i]);
+                });
+                
+                std::vector<RandomizerArea> areas = hint->GetHintedAreas();
+                SaveManager::Instance->SaveArray("areas", areas.size(), [&](size_t i) {
+                    SaveManager::Instance->SaveData("", areas[i]);
+                });
+                
+                std::vector<TrialKey> trials = hint->GetHintedTrials();
+                SaveManager::Instance->SaveArray("trials", trials.size(), [&](size_t i) {
+                    SaveManager::Instance->SaveData("", trials[i]);
+                });
+
+            }
+        });
     });
 
     SaveManager::Instance->SaveData("adultTradeItems", saveContext->adultTradeItems);

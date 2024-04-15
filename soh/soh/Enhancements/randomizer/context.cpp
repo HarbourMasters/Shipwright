@@ -10,7 +10,7 @@
 #include "rando_hash.h"
 #include "fishsanity.h"
 #include "static_data.h"
-#include "3drando/hints.cpp"
+#include "3drando/hints.hpp"
 
 #include <fstream>
 #include <spdlog/spdlog.h>
@@ -186,7 +186,7 @@ std::vector<RandomizerCheck> Context::GetLocations(const std::vector<RandomizerC
 }
 
 void Context::ClearItemLocations() {
-    for (int i = 0; i < itemLocationTable.size(); i++) {
+    for (uint i = 0; i < itemLocationTable.size(); i++) {
         GetItemLocation(static_cast<RandomizerCheck>(i))->ResetVariables();
     }
 }
@@ -379,7 +379,7 @@ void Context::ParseItemLocationsJson(nlohmann::json spoilerFileJson) {
     }
 }
 
-void Context::WriteHintJson(nlohmann::json& spoilerFileJson){
+void Context::WriteHintJson(nlohmann::ordered_json& spoilerFileJson){
     for (Hint hint: hintTable){
         hint.logHint(spoilerFileJson);
     }
@@ -400,19 +400,19 @@ void Context::ParseHintJson(nlohmann::json spoilerFileJson) {
         RandomizerHint hint = (RandomizerHint)hintNum;
         nlohmann::json hintEntry = getValueForMessage(spoilerFileJson["Gossip Stone Hints"], Rando::StaticData::hintNames[hint]); //RNADOTODO are spaces OK?
         if (hintEntry.size() > 0){
-            AddHintFromJson(hint, hintEntry);
+            AddHint(hint, Hint(hint, hintEntry));
         } else {
             hintEntry = getValueForMessage(spoilerFileJson["Static Hints"], Rando::StaticData::hintNames[hint]);
             if (hintEntry.size() > 0){
-                AddHintFromJson(hint, hintEntry);
+                AddHint(hint, Hint(hint, hintEntry));
             } else {
                 if (hint == RH_ALTAR_CHILD && GetOption(RSK_TOT_ALTAR_HINT)){
                     CreateChildAltarHint();
                 } else if (hint == RH_ALTAR_ADULT && GetOption(RSK_TOT_ALTAR_HINT)){
                     CreateAdultAltarHint();
-                } else if (RH_GANONDORF_JOKE) {
+                } else if (hint == RH_GANONDORF_JOKE) {
                     CreateGanondorfJoke();
-                } else if (RH_GANONDORF_HINT && GetOption(RSK_GANONDORF_HINT)){
+                } else if (hint == RH_GANONDORF_HINT && GetOption(RSK_GANONDORF_HINT)){
                     CreateGanondorfHint();
                 } else if (StaticData::staticHintInfoMap.contains(hint)){
                     CreateStaticHintFromData(hint, StaticData::staticHintInfoMap[hint]);

@@ -63,7 +63,8 @@ struct StaticHintInfo{
   bool yourPocket;
   int num;
 
-  StaticHintInfo(HintType _type, std::vector<RandomizerHintTextKey> _textKeys, RandomizerSettingKey _setting, std::variant<bool, uint8_t> _condition,
+  StaticHintInfo() = default;
+  StaticHintInfo(HintType _type, std::vector<RandomizerHintTextKey> _hintKeys, RandomizerSettingKey _setting, std::variant<bool, uint8_t> _condition,
                  std::vector<RandomizerCheck> _targetChecks, std::vector<RandomizerGet> _targetItems = {},
                  std::vector<RandomizerCheck> _hintChecks = {}, bool _yourPocket = false, int _num = 0);
 };
@@ -74,3 +75,8 @@ extern std::vector<ConditionalAlwaysHint> conditionalAlwaysHints;
 
 extern void CreateAllHints();
 extern void CreateWarpSongTexts();
+void CreateGanondorfHint();
+void CreateGanondorfJoke();
+void CreateChildAltarHint();
+void CreateAdultAltarHint();
+void CreateStaticHintFromData(RandomizerHint hint, StaticHintInfo staticData);

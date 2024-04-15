@@ -632,7 +632,7 @@ const char* SpoilerLog_Write() {
     WriteSettings();
     WriteExcludedLocations();
     WriteStartingInventory();
-    WriteEnabledTricks(spoilerLog);
+    WriteEnabledTricks(spoilerLog); //RANDOTODO clean up spoilerLog refernces
     //if (Settings::Logic.Is(LOGIC_GLITCHED)) {
     //    WriteEnabledGlitches(spoilerLog);
     //}
@@ -643,7 +643,7 @@ const char* SpoilerLog_Write() {
     ctx->playthroughLocations.clear();
     ctx->playthroughBeatable = false;
 
-    WriteHints();
+    ctx->WriteHintJson(jsonData);
     WriteShuffledEntrances();
     WriteAllLocations();
 

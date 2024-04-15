@@ -23,7 +23,7 @@ class StaticData {
       static void InitItemTable();
       static Item& RetrieveItem(const RandomizerGet rgid);
       static Item& ItemFromGIID(const int giid);
-      static std::array<Item, RG_MAX>& GetItemTable();
+      static std::array<Item, RG_MAX>& GetItemTable();// is there a reason this is a function and not just an exposed table?
       static void InitLocationTable();
       static Location* GetLocation(RandomizerCheck locKey);
       static std::array<Rando::Location, RC_MAX>& GetLocationTable();

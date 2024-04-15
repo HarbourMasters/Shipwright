@@ -73,7 +73,7 @@ typedef struct {
     std::string UNSKIPPABLE();
     std::string TWO_WAY_CHOICE();
     std::string NEWLINE();
-    std::string COLOR(uint8_t x);
+    std::string COLOR(std::string x);
     std::string CENTER_TEXT();
     std::string IF_NOT_MQ();
     std::string MQ_ELSE();

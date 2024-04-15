@@ -15,7 +15,7 @@ Hint::Hint(RandomizerHint ownKey_,
            std::vector<RandomizerCheck> locations_,
            std::vector<RandomizerArea> areas_,
            std::vector<TrialKey> trials_)
-    : ownKey(ownKey_), hintType(hintType_), hintKeys(hintKeys_), distribution(std::move(distribution_)), locations(locations_), areas(areas_), trials(trials_) {
+    : ownKey(ownKey_), hintType(hintType_), distribution(std::move(distribution_)), hintKeys(hintKeys_), locations(locations_), areas(areas_), trials(trials_) {
   ExtrapolateDataFromLocations();
   SetLocationsAsHinted();
   enabled = true;
@@ -41,36 +41,40 @@ Hint::Hint(RandomizerHint ownKey_, std::vector<CustomMessage> messages_)
   enabled = true;
 }
 
-Hint::Hint(RandomizerHint ownKey_, json json_) 
-: ownKey(ownKey_){
+Hint::Hint(RandomizerHint ownKey_, nlohmann::json json_){
+  ownKey = ownKey_;
   HintType type = (HintType)Rando::StaticData::hintTypeNameToEnum[json_["type"].get<std::string>()];
 
+  if (json_.contains("enabled") && !json_["enabled"].get<bool>()){
+    return;
+  }
   if (json_.contains("distribution")){
       distribution = json_["distribution"].get<std::string>();
   }            
-  std::vector<RandomizerCheck> locations = {};
   if (json_.contains("locations")){
       for (auto loc: json_["locations"]){
-          locations.push_back(StaticData::locationNameToEnum[loc.get<std::string>()]);
+          locations.push_back((RandomizerCheck)StaticData::locationNameToEnum[loc.get<std::string>()]);
       }
   }
-  std::vector<RandomizerArea> areas = {};
   if (json_.contains("areas")){
       for (auto area: json_["areas"]){
           areas.push_back((RandomizerArea)Rando::StaticData::areaNameToEnum[area]);
       }
   }
-  std::vector<TrialKey> trials = {};
   if (json_.contains("trials")){
       for (auto trial: json_["trials"]){
           trials.push_back((TrialKey)Rando::StaticData::trialNameToEnum[trial]);
       }
   }
-  std::vector<RandomizerHintTextKey> hintKeys = {};
   if (json_.contains("hintKeys")){
       for (auto hintKey: json_["hintKeys"]){
           hintKeys.push_back((RandomizerHintTextKey)hintKey.get<uint32_t>());
       }
+  }
+  if (json_.contains("chosenName")){
+    for (auto name: json_["chosenName"]){
+        chosenName.push_back(name.get<uint32_t>());
+    }
   }
   ExtrapolateDataFromLocations();
   SetLocationsAsHinted();
@@ -79,15 +83,17 @@ Hint::Hint(RandomizerHint ownKey_, json json_)
 
 const std::vector<std::string> Hint::GetAllMessageStrings() const {
   std::vector<std::string> hintMessages = {};
-  uint8_t numMessages = std::max(messages.size(), hintKeys.size(), 1);
-
+  uint8_t numMessages = std::max(messages.size(), hintKeys.size());
+  if (numMessages == 0){
+    numMessages = 1; //RANDOTODO make std::max actually fucking work for 3 arguments
+  }
   for (int c = 0; c < numMessages; c++){
     hintMessages.push_back(GetMessage(c).GetForCurrentLanguage());
   }
   return hintMessages;
 }
 
-const CustomMessage& Hint::GetMessage(uint8_t id) const {
+const CustomMessage Hint::GetMessage(uint8_t id) const {
     auto ctx = Rando::Context::GetInstance();
     if (hintType == HINT_TYPE_HINT_KEY){
         return ::GetHintText(hintKeys[id]).GetMessage();
@@ -119,7 +125,7 @@ const CustomMessage& Hint::GetMessage(uint8_t id) const {
       hintText = ::GetHintText(RHT_FOOLISH).GetMessage();
     } else if (hintType == HINT_TYPE_ITEM) {
       if (items.size() > 0) {
-        hintText = items[0].GetName();
+        hintText = StaticData::GetItemTable()[items[0]].GetName();
       } else {
         hintText = CustomMessage("ERROR: ITEM HINT WITH NO ITEMS");
       }
@@ -138,36 +144,36 @@ const CustomMessage& Hint::GetMessage(uint8_t id) const {
     std::vector<CustomMessage> toInsert = {};
 
     switch (hintType){
-      case HINT_TYPE_ITEM:
-        for(uint8_t b = 0; b < locations.size(); b++){
-          toInsert.push_back(items[b].GetName());
-        }
-        break;
-      case HINT_TYPE_MERCHANT:
+      case HINT_TYPE_ITEM:{
         //if we write items
-        bool mysterious = hintType == HINT_TYPE_MERCHANT && ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ON_NO_HINT);
         for(uint8_t b = 0; b < locations.size(); b++){
-          toInsert.push_back(GetItemName(b, mysterious));
+          toInsert.push_back(StaticData::GetItemTable()[items[b]].GetName());
         }
-        break;
-      case HINT_TYPE_TRIAL:
+        break;}
+      case HINT_TYPE_MERCHANT:{
+          bool mysterious = hintType == HINT_TYPE_MERCHANT && ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ON_NO_HINT);
+          for(uint8_t b = 0; b < locations.size(); b++){
+            toInsert.push_back(GetItemName(b, mysterious));
+          }
+          break;}
+      case HINT_TYPE_TRIAL:{
         //If we write trials
         for(uint8_t b = 0; b < trials.size(); b++){
           toInsert.push_back(ctx->GetTrial(trials[b])->GetName());
         }
-        break;
-      case HINT_TYPE_ITEM_AREA:
+        break;}
+      case HINT_TYPE_ITEM_AREA:{
         //If we write items and areas
         for(uint8_t b = 0; b < items.size(); b++){
-          toInsert.push_back(items[b].GetName());
+          toInsert.push_back(StaticData::GetItemTable()[items[b]].GetName());
           toInsert.push_back(::GetHintText(Rando::StaticData::areaNames[areas[b]]).GetMessage());
         }
-        break;
+        break;}
       case HINT_TYPE_ALTAR_CHILD:
       case HINT_TYPE_ALTAR_ADULT:
       case HINT_TYPE_AREA:
       case HINT_TYPE_WOTH:
-      case HINT_TYPE_FOOLISH:
+      case HINT_TYPE_FOOLISH:{
         //If we write areas
         for(uint8_t b = 0; b < areas.size(); b++){
           CustomMessage areaText;
@@ -178,6 +184,11 @@ const CustomMessage& Hint::GetMessage(uint8_t id) const {
           }
           toInsert.push_back(areaText);
         }
+        break;}
+      case HINT_TYPE_HINT_KEY:
+      case HINT_TYPE_MESSAGE:
+      case HINT_TYPE_ENTRANCE:
+      case HINT_TYPE_MAX:
         break;
     }
 
@@ -251,9 +262,9 @@ void Hint::ResetVariables() {
   chosenName = {};
 }
 
-nlohmann::json Hint::toJSON() {
+oJson Hint::toJSON() {
   auto ctx = Rando::Context::GetInstance();
-  nlohmann::json log = {};
+  nlohmann::ordered_json log = {};
   if (enabled){
     std::vector<std::string> hintMessages = GetAllMessageStrings();
     if (hintMessages.size() > 0){
@@ -265,7 +276,7 @@ nlohmann::json Hint::toJSON() {
     log["type"] = Rando::StaticData::hintTypeNames[hintType].GetForCurrentLanguage();
     if (hintKeys.size() > 0){
       std::vector<std::string> hintKeyStrings = {};
-      for (int c = 0; c < hintKeys.size(); c++){
+      for (uint c = 0; c < hintKeys.size(); c++){
         hintKeyStrings[c] = std::to_string(hintKeys[c]);
       }
       log["hintKeys"] = hintKeyStrings;
@@ -273,36 +284,36 @@ nlohmann::json Hint::toJSON() {
     if (hintType != HINT_TYPE_FOOLISH){
       if (locations.size() > 0){
         std::vector<std::string> locStrings = {};
-        for (int c = 0; c < locations.size(); c++){
+        for (uint c = 0; c < locations.size(); c++){
           locStrings[c] = Rando::StaticData::GetLocation(locations[c])->GetName();//RANDOTODO change to CustomMessage when VB is done
         }
         log["locations"] = locStrings;
       }
       if (items.size() > 0){
         std::vector<std::string> itemStrings = {};
-        for (int c = 0; c < items.size(); c++){
-          itemStrings[c] = items[c].GetName().GetEnglish();//RANDOTODO change to CustomMessage
+        for (uint c = 0; c < items.size(); c++){
+          itemStrings[c] = StaticData::GetItemTable()[items[c]].GetName().GetEnglish();//RANDOTODO change to CustomMessage
         }
         log["items"] = itemStrings;
       }
       if (chosenName.size() > 0){
         std::vector<std::string> nameStrings = {};
-        for (int c = 0; c < chosenName.size(); c++){
+        for (uint c = 0; c < chosenName.size(); c++){
           nameStrings[c] = std::to_string(chosenName[c]);
         }
-        log["items"] = nameStrings;
+        log["chosenName"] = nameStrings;
       }
     }
     if (areas.size() > 0){
       std::vector<std::string> areaStrings = {};
-      for (int c = 0; c < areas.size(); c++){
+      for (uint c = 0; c < areas.size(); c++){
         areaStrings[c] =::GetHintText(Rando::StaticData::areaNames[areas[c]]).GetMessage().GetForCurrentLanguage();
       }
       log["areas"] = areaStrings;
     }
     if (trials.size() > 0){
       std::vector<std::string> trialStrings = {};
-      for (int c = 0; c < trials.size(); c++){
+      for (uint c = 0; c < trials.size(); c++){
         trialStrings[c] = ctx->GetTrial(trials[c])->GetName().GetForCurrentLanguage();
       }
       log["trials"] = trialStrings;
@@ -312,7 +323,7 @@ nlohmann::json Hint::toJSON() {
 }
 
 // RANDOTODO add logging control
-void Hint::logHint(nlohmann::json& jsonData){
+void Hint::logHint(oJson& jsonData){
   std::string logMap = "Static Hints";
   if (ownKey < RH_GANONDORF_HINT){
     logMap = "Gossip Stone Hints";
@@ -359,11 +370,11 @@ void Hint::ExtrapolateDataFromLocations(){
     if (doArea){
       areas[c] = ctx->GetItemLocation(locations[c])->GetArea();
     }
-    items[c] = ctx->GetItemLocation(locations[c])->GetPlacedItem();
+    items[c] = ctx->GetItemLocation(locations[c])->GetPlacedRandomizerGet();
     if (ctx->GetOption(RSK_HINT_CLARITY).Is(RO_HINT_CLARITY_AMBIGUOUS)){
-      chosenName[c] = Random(0, items[c].GetHint().GetAmbiguousSize()-1);
+      chosenName[c] = Random(0, StaticData::GetItemTable()[items[c]].GetHint().GetAmbiguousSize()-1);
     } else if (ctx->GetOption(RSK_HINT_CLARITY).Is(RO_HINT_CLARITY_OBSCURE)){
-      chosenName[c] = Random(0, items[c].GetHint().GetObscureSize()-1);
+      chosenName[c] = Random(0, StaticData::GetItemTable()[items[c]].GetHint().GetObscureSize()-1);
     }
   }
 }
@@ -375,7 +386,27 @@ void Hint::SetLocationsAsHinted(){
   }
 }
 
-static CustomMessage GetBridgeReqsText() {
+bool Hint::IsEnabled(){
+  return enabled;
+}
+
+std::vector<RandomizerHintTextKey> Hint::GetHintKeys(){
+  return hintKeys;
+}
+
+std::vector<RandomizerGet> Hint::GetHintedItems(){
+  return items;
+}
+
+std::vector<uint8_t> Hint::GetChosenNames(){
+  return chosenName;
+}
+
+std::vector<TrialKey> Hint::GetHintedTrials(){
+  return trials;
+}
+
+CustomMessage Hint::GetBridgeReqsText() {
   auto ctx = Rando::Context::GetInstance();
   CustomMessage bridgeMessage;
 
@@ -383,7 +414,7 @@ static CustomMessage GetBridgeReqsText() {
     return ::GetHintText(RHT_BRIDGE_OPEN_HINT).GetMessage();
   } 
   else if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_VANILLA)) {
-    return  ::GetHintText(RHT_BRIDGE_VANILLA_HINT).GetMessage();
+    return ::GetHintText(RHT_BRIDGE_VANILLA_HINT).GetMessage();
   } 
   else if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_STONES)) {
     bridgeMessage = ::GetHintText(RHT_BRIDGE_VANILLA_HINT).GetMessage();
@@ -411,7 +442,7 @@ static CustomMessage GetBridgeReqsText() {
   return bridgeMessage;
 }
 
-static CustomMessage GetGanonBossKeyText() {
+CustomMessage Hint::GetGanonBossKeyText() {
   auto ctx = Rando::Context::GetInstance();
   CustomMessage ganonBossKeyMessage;
 

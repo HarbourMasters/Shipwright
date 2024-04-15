@@ -106,6 +106,12 @@ bool HintText::operator!=(const HintText& right) const {
     return !operator==(right);
 }
 
+StaticHintInfo::StaticHintInfo(HintType _type, std::vector<RandomizerHintTextKey> _hintKeys, RandomizerSettingKey _setting,
+                               std::variant<bool, uint8_t> _condition, std::vector<RandomizerCheck> _targetChecks,
+                               std::vector<RandomizerGet> _targetItems, std::vector<RandomizerCheck> _hintChecks, bool _yourPocket, int _num):
+                               type(_type), hintKeys(_hintKeys), setting(_setting), condition(_condition), targetChecks(_targetChecks),
+                               targetItems(_targetItems), hintChecks(_hintChecks), yourPocket(_yourPocket), num(_num){}
+
 RandomizerHintTextKey GetRandomJunkHint(){ 
   //temp code to handle random junk hints now I work in keys instead of a vector of HintText
   // Will be replaced with a better system once more customisable hint pools are added
@@ -478,10 +484,7 @@ uint8_t PlaceHints(std::vector<uint8_t>& selectedHints,
     std::vector<RandomizerCheck> hintTypePool = FilterHintability(ctx->allLocations, distribution.filter);
     for (uint8_t numHint = 0; numHint < selectedHints[curSlot]; numHint++){
 
-      SPDLOG_DEBUG("Attempting to make hint of type: ");
-      SPDLOG_DEBUG(StaticData::hintTypeNames[distribution.type]);
-      SPDLOG_DEBUG("\n");
-
+      SPDLOG_DEBUG("Attempting to make hint of type: " + StaticData::hintTypeNames[distribution.type].GetEnglish() + "\n");
       RandomizerCheck hintedLocation = RC_UNKNOWN_CHECK;
 
       hintedLocation = CreateRandomHint(hintTypePool, distribution.copies, distribution.type, distribution.name);
@@ -584,6 +587,7 @@ std::vector<RandomizerCheck> FindItemsAndMarkHinted(std::vector<RandomizerGet> i
       ctx->GetItemLocation(found[0])->SetHintAccesible();
     }
   }
+  return locations;
 }
 
 void CreateChildAltarHint() {
@@ -610,7 +614,9 @@ void CreateAdultAltarHint() {
 
 void CreateStaticHintFromData(RandomizerHint hint, StaticHintInfo staticData){
   auto ctx = Rando::Context::GetInstance();
-  if (ctx->GetOption(staticData.setting).Is(staticData.condition)){
+  Option option = ctx->GetOption(staticData.setting);
+  if ((std::holds_alternative<bool>(staticData.condition) && option.Is(std::get<bool>(staticData.condition))) ||
+      (std::holds_alternative<uint8_t>(staticData.condition) && option.Is(std::get<uint8_t>(staticData.condition)))){
     std::vector<RandomizerCheck> locations = staticData.targetChecks;
     if (staticData.hintChecks.size() > 0){
       locations = FindItemsAndMarkHinted(staticData.targetItems, staticData.hintChecks);
