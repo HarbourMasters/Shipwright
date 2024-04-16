@@ -1194,6 +1194,10 @@ void RegisterSilverRupeeShuffle() {
         if (actor->id == ACTOR_EN_G_SWITCH) {
             auto* silverRupee = reinterpret_cast<EnGSwitch*>(actor);
             if (silverRupee->type == ENGSWITCH_SILVER_RUPEE) {
+                // Override any Actor_Kill calls from the vanilla silver rupee init function.
+                silverRupee->actor.update = EnGSwitch_Update;
+                silverRupee->actor.flags = ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED;
+                Actor_SetScale(&silverRupee->actor, 0.03f);
                 Rando::Position randoPos = {static_cast<SceneID>(gPlayState->sceneNum), ResourceMgr_IsSceneMasterQuest(gPlayState->sceneNum) ? RCQUEST_MQ : RCQUEST_VANILLA, actor->world.pos};
                 silverRupee->rc = Rando::StaticData::silverRupeeMap.at(randoPos);
                 Rando::Location* loc = Rando::StaticData::GetLocation(silverRupee->rc);

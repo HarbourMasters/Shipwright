@@ -8,6 +8,14 @@ struct EnGSwitch;
 
 typedef void (*EnGSwitchActionFunc)(struct EnGSwitch*, PlayState*);
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+void EnGSwitch_Update(Actor* thisx, PlayState* play);
+#ifdef __cplusplus
+}
+#endif
+
 typedef enum {
     /* 0 */ GSWITCH_NONE,
     /* 1 */ GSWITCH_APPEAR,
