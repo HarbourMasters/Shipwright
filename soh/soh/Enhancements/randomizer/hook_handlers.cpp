@@ -27,6 +27,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Sth/z_en_sth.h"
 #include "src/overlays/actors/ovl_Item_Etcetera/z_item_etcetera.h"
 #include "src/overlays/actors/ovl_En_Box/z_en_box.h"
+#include "src/overlays/actors/ovl_En_Skj/z_en_skj.h"
 #include "adult_trade_shuffle.h"
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
@@ -906,6 +907,13 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
                 // because the flag check will pass next time)
                 enSth->actionFunc = (EnSthActionFunc)EnSth_RewardObtainedTalk;
             }
+            *should = false;
+            break;
+        }
+        case GI_VB_GIVE_ITEM_FROM_OCARINA_MEMORY_GAME: {
+            EnSkj* enSkj = static_cast<EnSkj*>(optionalArg);
+            Flags_SetItemGetInf(ITEMGETINF_17);
+            enSkj->actionFunc = (EnSkjActionFunc)EnSkj_CleanupOcarinaGame;
             *should = false;
             break;
         }

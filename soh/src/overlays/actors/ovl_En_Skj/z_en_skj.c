@@ -1541,7 +1541,9 @@ void EnSkj_WaitForOfferResponse(EnSkj* this, PlayState* play) {
 
 void EnSkj_WonOcarinaMiniGame(EnSkj* this, PlayState* play) {
     if (D_80B01EA0) {
-        this->actionFunc = EnSkj_WaitToGiveReward;
+        if (GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_OCARINA_MEMORY_GAME, true, this)) {
+            this->actionFunc = EnSkj_WaitToGiveReward;
+        }
     } else {
         func_8002F2CC(&this->actor, play, 26.0f);
     }
@@ -1549,13 +1551,8 @@ void EnSkj_WonOcarinaMiniGame(EnSkj* this, PlayState* play) {
 
 void EnSkj_WaitToGiveReward(EnSkj* this, PlayState* play) {
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) {
-        if (IS_RANDO && gSaveContext.ocarinaGameRoundNum != 3) {
-            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LW_OCARINA_MEMORY_GAME, GI_HEART_PIECE);
-            GiveItemEntryFromActor(&this->actor, play, getItemEntry, 26.0f, 26.0f);
-        } else {
-            Actor_OfferGetItem(&this->actor, play, sOcarinaGameRewards[gSaveContext.ocarinaGameRoundNum], 26.0f, 26.0f);
-        }
-
+        Actor_OfferGetItem(&this->actor, play,
+                           sOcarinaGameRewards[gSaveContext.ocarinaGameRoundNum], 26.0f, 26.0f);
         this->actionFunc = EnSkj_GiveOcarinaGameReward;
     }
 }
@@ -1565,12 +1562,8 @@ void EnSkj_GiveOcarinaGameReward(EnSkj* this, PlayState* play) {
         this->actor.parent = NULL;
         this->actionFunc = EnSkj_FinishOcarinaGameRound;
     } else {
-        if (IS_RANDO && gSaveContext.ocarinaGameRoundNum != 3) {
-            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LW_OCARINA_MEMORY_GAME, GI_HEART_PIECE);
-            GiveItemEntryFromActor(&this->actor, play, getItemEntry, 26.0f, 26.0f);
-        } else {
-            Actor_OfferGetItem(&this->actor, play, sOcarinaGameRewards[gSaveContext.ocarinaGameRoundNum], 26.0f, 26.0f);
-        }
+        Actor_OfferGetItem(&this->actor, play,
+                           sOcarinaGameRewards[gSaveContext.ocarinaGameRoundNum], 26.0f, 26.0f);
     }
 }
 
@@ -1582,11 +1575,7 @@ void EnSkj_FinishOcarinaGameRound(EnSkj* this, PlayState* play) {
             gSaveContext.ocarinaGameRoundNum++;
         }
 
-        if (IS_RANDO) {
-            gSaveContext.ocarinaGameRoundNum = 3;
-        }
-
-        if (ocarinaGameRoundNum == 2 || IS_RANDO) {
+        if (ocarinaGameRoundNum == 2) {
             Flags_SetItemGetInf(ITEMGETINF_17);
             this->actionFunc = EnSkj_CleanupOcarinaGame;
         } else {

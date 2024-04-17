@@ -287,6 +287,8 @@ typedef enum {
     // Opt: *EnFr
     GI_VB_GIVE_ITEM_FROM_FROGS,
     // Opt: *EnSkj
+    GI_VB_GIVE_ITEM_FROM_OCARINA_MEMORY_GAME,
+    // Opt: *EnSkj
     GI_VB_GIVE_ITEM_FROM_SKULL_KID_SARIAS_SONG,
     GI_VB_GIVE_ITEM_FROM_MAN_ON_ROOF,
     // Opt: *EnSyatekiMan
