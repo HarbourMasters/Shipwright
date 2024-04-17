@@ -29,6 +29,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Box/z_en_box.h"
 #include "src/overlays/actors/ovl_En_Skj/z_en_skj.h"
 #include "src/overlays/actors/ovl_En_Hy/z_en_hy.h"
+#include "src/overlays/actors/ovl_Obj_Comb/z_obj_comb.h"
 #include "adult_trade_shuffle.h"
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
@@ -599,7 +600,11 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
         case GI_VB_GIVE_ITEM_FROM_ITEM_00: {
             EnItem00* item00 = static_cast<EnItem00*>(optionalArg);
             if (item00->actor.params == ITEM00_SOH_DUMMY) {
-                Flags_SetCollectible(gPlayState, item00->collectibleFlag);
+                if (item00->randoInf != RAND_INF_MAX) {
+                    Flags_SetRandomizerInf(item00->randoInf);
+                } else {
+                    Flags_SetCollectible(gPlayState, item00->collectibleFlag);
+                }
                 Actor_Kill(&item00->actor);
                 *should = false;
             } else if (item00->actor.params == ITEM00_SOH_GIVE_ITEM_ENTRY) {
@@ -1043,6 +1048,70 @@ void EnDns_RandomizerPurchase(EnDns* enDns) {
     Flags_SetRandomizerInf(enDns->sohScrubIdentity.randomizerInf);
 }
 
+void ObjComb_RandomizerChooseItemDrop(ObjComb* objComb, PlayState* play) {
+    s16 params = objComb->actor.params & 0x1F;
+
+    if (
+        RAND_GET_OPTION(RSK_SHUFFLE_BEEHIVES) &&
+        !Flags_GetRandomizerInf(objComb->beehiveIdentity.randomizerInf)
+    ) {
+        EnItem00* item00 = (EnItem00*)Item_DropCollectible2(play, &objComb->actor.world.pos, ITEM00_SOH_DUMMY);
+        item00->randoInf = objComb->beehiveIdentity.randomizerInf;
+        item00->itemEntry = OTRGlobals::Instance->gRandomizer->GetItemFromKnownCheck(objComb->beehiveIdentity.randomizerCheck, GI_NONE);
+        item00->actor.draw = (ActorFunc)EnItem00_DrawRandomizedItem;
+        return;
+    }
+
+    if ((params > 0) || (params < 0x1A)) {
+        if (params == 6) {
+            if (Flags_GetCollectible(play, (objComb->actor.params >> 8) & 0x3F)) {
+                params = -1;
+            } else {
+                params = (params | (((objComb->actor.params >> 8) & 0x3F) << 8));
+            }
+        } else if (Rand_ZeroOne() < 0.5f) {
+            params = -1;
+        }
+        if (params >= 0 && !CVarGetInteger("gNoRandomDrops", 0)) {
+            Item_DropCollectible(play, &objComb->actor.world.pos, params);
+        }
+    }
+}
+
+void ObjComb_RandomizerWait(ObjComb* objComb, PlayState* play) {
+    s32 dmgFlags;
+
+    objComb->unk_1B0 -= 50;
+    if (
+        RAND_GET_OPTION(RSK_SHUFFLE_BEEHIVES) &&
+        !Flags_GetRandomizerInf(objComb->beehiveIdentity.randomizerInf)
+    ) {
+        if (objComb->unk_1B0 <= -5000) {
+            objComb->unk_1B0 = 1500;
+        }
+    } else if (objComb->unk_1B0 < 0) {
+        objComb->unk_1B0 = 0;
+    }
+
+    if ((objComb->collider.base.acFlags & AC_HIT) != 0) {
+        objComb->collider.base.acFlags &= ~AC_HIT;
+        dmgFlags = objComb->collider.elements[0].info.acHitInfo->toucher.dmgFlags;
+        if (dmgFlags & 0x4001F866) {
+            objComb->unk_1B0 = 1500;
+        } else {
+            ObjComb_Break(objComb, play);
+            ObjComb_RandomizerChooseItemDrop(objComb, play);
+            Actor_Kill(&objComb->actor);
+        }
+    } else {
+        CollisionCheck_SetAC(play, &play->colChkCtx, &objComb->collider.base);
+    }
+
+    if (objComb->actor.update != NULL) {
+        CollisionCheck_SetOC(play, &play->colChkCtx, &objComb->collider.base);
+    }    
+}
+
 void RandomizerOnActorInitHandler(void* actorRef) {
     Actor* actor = static_cast<Actor*>(actorRef);
 
@@ -1139,6 +1208,13 @@ void RandomizerOnActorInitHandler(void* actorRef) {
                 break;
             }
         }
+    }
+
+    if (actor->id == ACTOR_OBJ_COMB) {
+        ObjComb* objComb = static_cast<ObjComb*>(actorRef);
+        s16 respawnData = gSaveContext.respawn[RESPAWN_MODE_RETURN].data & ((1 << 8) - 1);
+        objComb->beehiveIdentity = OTRGlobals::Instance->gRandomizer->IdentifyBeehive(gPlayState->sceneNum, (s16)actor->world.pos.x, respawnData);
+        objComb->actionFunc = (ObjCombActionFunc)ObjComb_RandomizerWait;
     }
 }
 
