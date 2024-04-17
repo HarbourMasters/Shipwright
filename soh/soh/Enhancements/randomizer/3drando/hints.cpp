@@ -4,7 +4,6 @@
 #include "random.hpp"
 #include "spoiler_log.hpp"
 #include "fill.hpp"
-#include "hint_list.hpp"
 #include "../trial.h"
 #include "../entrance.h"
 #include "z64item.h"
@@ -176,14 +175,14 @@ const std::array<HintSetting, 4> hintSettingTable{{
     .trialCopies = 1,
     .junkWeight = 6,
     .distTable = {
-      {"WotH",       HINT_TYPE_WOTH,          7,  0, 1, FilterWotHLocations,      2},
-      {"Barren",     HINT_TYPE_FOOLISH,        4,  0, 1, FilterBarrenLocations,    1},
+      {"WotH",       HINT_TYPE_WOTH,      7,   0, 1, FilterWotHLocations,      2},
+      {"Barren",     HINT_TYPE_FOOLISH,   4,   0, 1, FilterBarrenLocations,    1},
       //("Entrance",   HINT_TYPE_ENTRANCE,      6,  0, 1), //not yet implemented
-      {"Song",       HINT_TYPE_ITEM, 2,  0, 1, FilterSongLocations},
-      {"Overworld",  HINT_TYPE_ITEM, 4,  0, 1, FilterOverworldLocations},
-      {"Dungeon",    HINT_TYPE_ITEM, 3,  0, 1, FilterDungeonLocations},
-      {"Named Item", HINT_TYPE_ITEM_AREA,    10,  0, 1, FilterGoodItems},
-      {"Random"    , HINT_TYPE_ITEM_AREA,    12,  0, 1, NoFilter}
+      {"Song",       HINT_TYPE_ITEM,      2,   0, 1, FilterSongLocations},
+      {"Overworld",  HINT_TYPE_ITEM,      4,   0, 1, FilterOverworldLocations},
+      {"Dungeon",    HINT_TYPE_ITEM,      3,   0, 1, FilterDungeonLocations},
+      {"Named Item", HINT_TYPE_ITEM_AREA, 10,  0, 1, FilterGoodItems},
+      {"Random"    , HINT_TYPE_ITEM_AREA, 12,  0, 1, NoFilter}
     }
   },
   // Strong hints
@@ -192,14 +191,14 @@ const std::array<HintSetting, 4> hintSettingTable{{
     .trialCopies = 1,
     .junkWeight = 0,
     .distTable = {
-      {"WotH",       HINT_TYPE_WOTH,         12, 0, 2, FilterWotHLocations,      2},
-      {"Barren",     HINT_TYPE_FOOLISH,       12, 0, 1, FilterBarrenLocations,    1},
+      {"WotH",       HINT_TYPE_WOTH,      12, 0, 2, FilterWotHLocations,      2},
+      {"Barren",     HINT_TYPE_FOOLISH,   12, 0, 1, FilterBarrenLocations,    1},
       //{"Entrance",   HINT_TYPE_ENTRANCE,      4, 0, 1}, //not yet implemented
-      {"Song",       HINT_TYPE_ITEM, 4, 0, 1, FilterSongLocations},
-      {"Overworld",  HINT_TYPE_ITEM, 6, 0, 1, FilterOverworldLocations},
-      {"Dungeon",    HINT_TYPE_ITEM, 6, 0, 1, FilterDungeonLocations},
-      {"Named Item", HINT_TYPE_ITEM_AREA,     8, 0, 1, FilterGoodItems},
-      {"Random"    , HINT_TYPE_ITEM_AREA,     8, 0, 1, NoFilter},
+      {"Song",       HINT_TYPE_ITEM,      4,  0, 1, FilterSongLocations},
+      {"Overworld",  HINT_TYPE_ITEM,      6,  0, 1, FilterOverworldLocations},
+      {"Dungeon",    HINT_TYPE_ITEM,      6,  0, 1, FilterDungeonLocations},
+      {"Named Item", HINT_TYPE_ITEM_AREA, 8,  0, 1, FilterGoodItems},
+      {"Random"    , HINT_TYPE_ITEM_AREA, 8,  0, 1, NoFilter},
     },
   },
   // Very strong hints
@@ -208,16 +207,110 @@ const std::array<HintSetting, 4> hintSettingTable{{
     .trialCopies = 1,
     .junkWeight = 0,
     .distTable = {
-      {"WotH",       HINT_TYPE_WOTH,         15, 0, 2, FilterWotHLocations},
-      {"Barren",     HINT_TYPE_FOOLISH,       15, 0, 1, FilterBarrenLocations},
+      {"WotH",       HINT_TYPE_WOTH,      15, 0, 2, FilterWotHLocations},
+      {"Barren",     HINT_TYPE_FOOLISH,   15, 0, 1, FilterBarrenLocations},
       //{"Entrance",   HINT_TYPE_ENTRANCE,     10, 0, 1}, //not yet implemented
-      {"Song",       HINT_TYPE_ITEM, 2, 0, 1, FilterSongLocations},
-      {"Overworld",  HINT_TYPE_ITEM, 7, 0, 1, FilterOverworldLocations},
-      {"Dungeon",    HINT_TYPE_ITEM, 7, 0, 1, FilterDungeonLocations},
-      {"Named Item", HINT_TYPE_ITEM_AREA,     5, 0, 1, FilterGoodItems},
+      {"Song",       HINT_TYPE_ITEM,      2,  0, 1, FilterSongLocations},
+      {"Overworld",  HINT_TYPE_ITEM,      7,  0, 1, FilterOverworldLocations},
+      {"Dungeon",    HINT_TYPE_ITEM,      7,  0, 1, FilterDungeonLocations},
+      {"Named Item", HINT_TYPE_ITEM_AREA, 5,  0, 1, FilterGoodItems},
     },
   },
 }};
+
+uint8_t StonesRequiredBySettings() {
+    auto ctx = Rando::Context::GetInstance();
+    uint8_t stones = 0;
+    if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_STONES)) {
+        stones = ctx->GetOption(RSK_RAINBOW_BRIDGE_STONE_COUNT).Value<uint8_t>();
+    } else if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_DUNGEON_REWARDS)) {
+        stones = ctx->GetOption(RSK_RAINBOW_BRIDGE_REWARD_COUNT).Value<uint8_t>() - 6;
+    } else if ((ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_DUNGEONS)) && (ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON))) {
+        stones = ctx->GetOption(RSK_RAINBOW_BRIDGE_DUNGEON_COUNT).Value<uint8_t>() - 6;
+    }
+    if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_STONES)) {
+        stones = std::max<uint8_t>({ stones, ctx->GetOption(RSK_LACS_STONE_COUNT).Value<uint8_t>() });
+    } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_STONES)) {
+        stones = std::max<uint8_t>({ stones, (uint8_t)(ctx->GetOption(RSK_LACS_REWARD_COUNT).Value<uint8_t>() - 6 )});
+    } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_DUNGEONS)) {
+        stones = std::max<uint8_t>({ stones, (uint8_t)(ctx->GetOption(RSK_LACS_DUNGEON_COUNT).Value<uint8_t>() - 6 )});
+    }
+    return stones;
+}
+
+uint8_t MedallionsRequiredBySettings() {
+    auto ctx = Rando::Context::GetInstance();
+    uint8_t medallions = 0;
+    if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_MEDALLIONS)) {
+        medallions = ctx->GetOption(RSK_RAINBOW_BRIDGE_MEDALLION_COUNT).Value<uint8_t>();
+    } else if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_DUNGEON_REWARDS)) {
+        medallions = ctx->GetOption(RSK_RAINBOW_BRIDGE_REWARD_COUNT).Value<uint8_t>() - 3;
+    } else if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_DUNGEONS) && ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON)) {
+        medallions = ctx->GetOption(RSK_RAINBOW_BRIDGE_DUNGEON_COUNT).Value<uint8_t>() - 3;
+    }
+    if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_MEDALLIONS)) {
+        medallions = std::max({ medallions, ctx->GetOption(RSK_LACS_MEDALLION_COUNT).Value<uint8_t>() });
+    } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_REWARDS)) {
+        medallions = std::max({ medallions, (uint8_t)(ctx->GetOption(RSK_LACS_REWARD_COUNT).Value<uint8_t>() - 3 )});
+    } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_DUNGEONS) && ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON)) {
+        medallions = std::max({ medallions, (uint8_t)(ctx->GetOption(RSK_LACS_DUNGEON_COUNT).Value<uint8_t>() - 3 )});
+    }
+    return medallions;
+}
+
+uint8_t TokensRequiredBySettings() {
+    auto ctx = Rando::Context::GetInstance();
+    uint8_t tokens = 0;
+    if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_TOKENS)) {
+        tokens = ctx->GetOption(RSK_RAINBOW_BRIDGE_TOKEN_COUNT).Value<uint8_t>();
+    }
+    if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_TOKENS)) {
+        tokens = std::max<uint8_t>({ tokens, ctx->GetOption(RSK_LACS_TOKEN_COUNT).Value<uint8_t>() });
+    }
+    return tokens;
+}
+
+std::vector<std::pair<RandomizerCheck, std::function<bool()>>> conditionalAlwaysHints = {
+    std::make_pair(RC_MARKET_10_BIG_POES, []() {
+                       auto ctx = Rando::Context::GetInstance();
+                       return ctx->GetOption(RSK_BIG_POE_COUNT).Value<uint8_t>() >= 3 && !ctx->GetOption(RSK_BIG_POES_HINT);
+                   }), // Remember, the option's value being 3 means 4 are required
+    std::make_pair(RC_DEKU_THEATER_MASK_OF_TRUTH, []() {
+                       auto ctx = Rando::Context::GetInstance();
+                       return !ctx->GetOption(RSK_COMPLETE_MASK_QUEST);
+                   }),
+    std::make_pair(RC_SONG_FROM_OCARINA_OF_TIME, []() { return StonesRequiredBySettings() < 2; }),
+    std::make_pair(RC_HF_OCARINA_OF_TIME_ITEM, []() { return StonesRequiredBySettings() < 2; }),
+    std::make_pair(RC_SHEIK_IN_KAKARIKO, []() { return MedallionsRequiredBySettings() < 5; }),
+    std::make_pair(RC_DMT_TRADE_CLAIM_CHECK, []() {
+                       auto ctx = Rando::Context::GetInstance();
+                       return !ctx->GetOption(RSK_BIGGORON_HINT);
+                   }),
+    std::make_pair(RC_KAK_30_GOLD_SKULLTULA_REWARD, []() {
+                       auto ctx = Rando::Context::GetInstance();
+                       return !ctx->GetOption(RSK_KAK_30_SKULLS_HINT) && TokensRequiredBySettings() < 30;
+                   }),
+    std::make_pair(RC_KAK_40_GOLD_SKULLTULA_REWARD, []() {
+                       auto ctx = Rando::Context::GetInstance();
+                       return !ctx->GetOption(RSK_KAK_40_SKULLS_HINT) && TokensRequiredBySettings() < 40;
+                   }),
+    std::make_pair(RC_KAK_50_GOLD_SKULLTULA_REWARD, []() {
+                       auto ctx = Rando::Context::GetInstance();
+                       return !ctx->GetOption(RSK_KAK_50_SKULLS_HINT) && TokensRequiredBySettings() < 50;
+                   }),
+    std::make_pair(RC_ZR_FROGS_OCARINA_GAME, []() {
+                       auto ctx = Rando::Context::GetInstance();
+                       return !ctx->GetOption(RSK_FROGS_HINT);
+                   }),
+    std::make_pair(RC_KF_LINKS_HOUSE_COW, []() {
+                       auto ctx = Rando::Context::GetInstance();
+                       return !ctx->GetOption(RSK_MALON_HINT);
+                   }),
+    std::make_pair(RC_KAK_100_GOLD_SKULLTULA_REWARD, []() {
+                       auto ctx = Rando::Context::GetInstance();
+                       return !ctx->GetOption(RSK_KAK_100_SKULLS_HINT) && TokensRequiredBySettings() < 100;
+                   }),
+};
 
 static std::vector<RandomizerCheck> GetEmptyGossipStones() {
   auto emptyGossipStones = GetEmptyLocations(Rando::StaticData::gossipStoneLocations);
@@ -392,7 +485,7 @@ static void CreateTrialHints(uint8_t copies) {
         auto requiredTrials = FilterFromPool(trials, [](TrialInfo* trial){return trial->IsRequired();});
       }
       for (auto& trial : trials) {//create a hint for each hinted trial
-        AddGossipStoneHintCopies(copies, HINT_TYPE_TRIAL, "Trial", {}, {}, {trial->GetKey()});
+        AddGossipStoneHintCopies(copies, HINT_TYPE_TRIAL, "Trial", {}, {}, {trial->GetTrialKey()});
       }
     }
   }

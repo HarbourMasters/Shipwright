@@ -142,11 +142,7 @@ Randomizer::Randomizer() {
         if (item.GetName().english.empty()) continue;
         SpoilerfileGetNameToEnum[item.GetName().english] = item.GetRandomizerGet();
         SpoilerfileGetNameToEnum[item.GetName().french] = item.GetRandomizerGet();
-        EnumToSpoilerfileGetName[item.GetRandomizerGet()] = {
-            item.GetName().english,
-            item.GetName().english,
-            item.GetName().french,
-        };
+        EnumToSpoilerfileGetName[item.GetRandomizerGet()] = CustomMessage(item.GetName());
     }
     for (auto area : rcAreaNames) {
         SpoilerfileAreaNameToEnum[area.second] = area.first;
@@ -2476,21 +2472,13 @@ CustomMessage Randomizer::GetMerchantMessage(RandomizerInf randomizerInf, u16 te
     CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, textId);
     RandomizerCheck rc = GetCheckFromRandomizerInf(randomizerInf);
     RandomizerGet shopItemGet = ctx->GetItemLocation(rc)->GetPlacedRandomizerGet();
-    std::array<std::string, LANGUAGE_MAX> shopItemName;
+    CustomMessage shopItemName;
     if (mysterious) {
-        shopItemName = {
-            "mysterious item",
-            "mysteriösen Gegenstand",
-            "objet mystérieux"
-        };
+        shopItemName = Rando::StaticData::hintTextTable[RHT_MYSTERIOUS_ITEM].GetMessage(); 
     // TODO: This should eventually be replaced with a full fledged trick model & trick name system
     } else if (shopItemGet == RG_ICE_TRAP) {
         shopItemGet = ctx->overrides[rc].LooksLike();
-        shopItemName = {
-            std::string(ctx->overrides[rc].GetTrickName().english),
-            std::string(ctx->overrides[rc].GetTrickName().french),
-            std::string(ctx->overrides[rc].GetTrickName().english)
-        };
+        shopItemName = CustomMessage(ctx->overrides[rc].GetTrickName());
     } else { 
         shopItemName = EnumToSpoilerfileGetName[shopItemGet];
     }
@@ -2500,16 +2488,10 @@ CustomMessage Randomizer::GetMerchantMessage(RandomizerInf randomizerInf, u16 te
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, TEXT_SCRUB_RANDOM_FREE);
     }
 
-    messageEntry.Replace("[[item]]", std::move(shopItemName[0]), std::move(shopItemName[1]), std::move(shopItemName[2]));
+    messageEntry.Replace("[[item]]", shopItemName);
     messageEntry.Replace("[[price]]", std::to_string(shopItemPrice));
     return messageEntry;
 }
-
-static const char* mapGetItemHints[3][2] = {
-    { " It's ordinary.", " It's masterful!" },
-    { "&Sieht aus wie immer.", " &Man kann darauf die Worte&%r\"Master Quest\"%w entziffern..." },
-    { "&Elle vous semble %rordinaire%w.", "&Étrange... les mots %r\"Master&Quest\"%w sont gravés dessus." },
-};
 
 CustomMessage Randomizer::GetMapGetItemMessageWithHint(GetItemEntry itemEntry) {
     CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::getItemMessageTableID, itemEntry.getItemId);
@@ -2553,9 +2535,9 @@ CustomMessage Randomizer::GetMapGetItemMessageWithHint(GetItemEntry itemEntry) {
        ) {
         messageEntry.Replace("[[typeHint]]", "");
     } else if (ResourceMgr_IsSceneMasterQuest(sceneNum)) {
-        messageEntry.Replace("[[typeHint]]", mapGetItemHints[0][1], mapGetItemHints[1][1], mapGetItemHints[2][1]);
+        messageEntry.Replace("[[typeHint]]", Rando::StaticData::hintTextTable[RHT_DUNGEON_MASTERFUL].GetMessage());
     } else {
-        messageEntry.Replace("[[typeHint]]", mapGetItemHints[0][0], mapGetItemHints[1][0], mapGetItemHints[2][0]);
+        messageEntry.Replace("[[typeHint]]", Rando::StaticData::hintTextTable[RHT_DUNGEON_ORDINARY].GetMessage());
     }
 
     return messageEntry;
@@ -2602,8 +2584,9 @@ void CreateRupeeMessages() {
 
 CustomMessage Randomizer::GetRupeeMessage(u16 rupeeTextId) {
     CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::rupeeMessageTableID, rupeeTextId);
-    messageEntry.Replace("[[rupee]]", RandomElement(englishRupeeNames),
-                                                 RandomElement(germanRupeeNames), RandomElement(frenchRupeeNames));
+    messageEntry.Replace("[[rupee]]", CustomMessage(RandomElement(englishRupeeNames),
+                                                    RandomElement(germanRupeeNames),
+                                                    RandomElement(frenchRupeeNames)));
     return messageEntry;
 }
 
@@ -2665,9 +2648,9 @@ CustomMessage Randomizer::GetTriforcePieceMessage() {
 
     CustomMessage messageEntry =
         CustomMessageManager::Instance->RetrieveMessage(Randomizer::triforcePieceMessageTableID, messageIndex);
-    messageEntry.Replace("[[current]]", std::to_string(current), std::to_string(current), std::to_string(current));
-    messageEntry.Replace("[[remaining]]", std::to_string(remaining), std::to_string(remaining), std::to_string(remaining));
-    messageEntry.Replace("[[required]]", std::to_string(required), std::to_string(required), std::to_string(required));
+    messageEntry.Replace("[[current]]", std::to_string(current));
+    messageEntry.Replace("[[remaining]]", std::to_string(remaining));
+    messageEntry.Replace("[[required]]", std::to_string(required));
     return messageEntry;
 }
 

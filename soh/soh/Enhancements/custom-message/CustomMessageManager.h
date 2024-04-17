@@ -77,18 +77,6 @@ class CustomMessage {
 
     /**
      * @brief Finds an instance of oldStr in each language of the CustomMessage,
-     * and replaces it with the corresponding new string provided for each language.
-     * Typically used for dynamic variable replacement (i.e. gameplay stats, skulltula count)
-     *
-     * @param oldStr the string to be replaced
-     * @param newEnglish the new string for the English message
-     * @param newGerman the new string for the German message
-     * @param newFrench the new string for the French message
-     */
-    void Replace(std::string&& oldStr, std::string&& newEnglish, std::string&& newGerman, std::string&& newFrench);
-
-    /**
-     * @brief Finds an instance of oldStr in each language of the CustomMessage,
      * and replaces it with the corresponding string in the provided CustomMessage.
      * Typically used for dynamic variable replacement (i.e. gameplay stats, skulltula count)
      *

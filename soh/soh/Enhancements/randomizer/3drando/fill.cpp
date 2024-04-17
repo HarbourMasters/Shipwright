@@ -9,7 +9,6 @@
 #include "spoiler_log.hpp"
 #include "starting_inventory.hpp"
 #include "hints.hpp"
-#include "hint_list.hpp"
 #include "../entrance.h"
 #include "shops.hpp"
 #include "pool_functions.hpp"

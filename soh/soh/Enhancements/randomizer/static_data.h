@@ -21,12 +21,18 @@ class StaticData {
 
     public:
       static void InitItemTable();
+      static void HintTable_Init();
+      static void HintTable_Init_Item();
+      static void HintTable_Init_Exclude_Overworld();
+      static void HintTable_Init_Exclude_Dungeon();
       static Item& RetrieveItem(const RandomizerGet rgid);
       static Item& ItemFromGIID(const int giid);
       static std::array<Item, RG_MAX>& GetItemTable();// is there a reason this is a function and not just an exposed table?
       static void InitLocationTable();
       static Location* GetLocation(RandomizerCheck locKey);
       static std::array<Rando::Location, RC_MAX>& GetLocationTable();
+      static std::unordered_map<std::string, uint32_t> PopulateTranslationMap(std::unordered_map<uint32_t, CustomMessage> input);
+      static std::unordered_map<std::string, uint32_t> PopulateTranslationMap(std::unordered_map<uint32_t, RandomizerHintTextKey> input);
       static std::vector<RandomizerCheck> overworldLocations;
       static std::vector<RandomizerCheck> dungeonRewardLocations;
       static std::vector<std::vector<RandomizerCheck>> shopLocationLists;
@@ -47,10 +53,11 @@ class StaticData {
       static std::unordered_map<RandomizerCheck, RandomizerHint> gossipStoneCheckToHint;
       static std::unordered_map<uint32_t, RandomizerHintTextKey> areaNames;
       static std::unordered_map<std::string, uint32_t> areaNameToEnum;
-      static std::unordered_map<uint32_t, RandomizerHintTextKey> trialNames;
+      static std::unordered_map<uint32_t, RandomizerHintTextKey> trialData;
       static std::unordered_map<std::string, uint32_t> trialNameToEnum;
       static std::unordered_map<RandomizerHint, StaticHintInfo> staticHintInfoMap;
       static std::unordered_map<u32, RandomizerHint> stoneFlagToHint;
+      static std::array<HintText, RHT_MAX> hintTextTable;
 
       StaticData();
       ~StaticData();

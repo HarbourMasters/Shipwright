@@ -69,10 +69,6 @@ struct StaticHintInfo{
                  std::vector<RandomizerCheck> _hintChecks = {}, bool _yourPocket = false, int _num = 0);
 };
 
-using ConditionalAlwaysHint = std::pair<RandomizerCheck, std::function<bool()>>;
-
-extern std::vector<ConditionalAlwaysHint> conditionalAlwaysHints;
-
 extern void CreateAllHints();
 extern void CreateWarpSongTexts();
 void CreateGanondorfHint();

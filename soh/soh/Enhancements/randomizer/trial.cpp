@@ -1,16 +1,21 @@
 #include "trial.h"
+#include "static_data.h"
 
 namespace Rando {
-TrialInfo::TrialInfo(CustomMessage name_, TrialKey key_) : name(std::move(name_)), key(std::move(key_)) {}
+TrialInfo::TrialInfo(RandomizerHintTextKey nameKey_, TrialKey trialKey_) : nameKey(std::move(nameKey_)), trialKey(std::move(trialKey_)) {}
 TrialInfo::TrialInfo() = default;
 TrialInfo::~TrialInfo() = default;
 
 CustomMessage TrialInfo::GetName() const {
-    return name;
+    return StaticData::hintTextTable[nameKey].GetMessage();
 }
 
-TrialKey TrialInfo::GetKey() const {
-    return key;
+RandomizerHintTextKey TrialInfo::GetNameKey() const {
+    return nameKey;
+}
+
+TrialKey TrialInfo::GetTrialKey() const {
+    return trialKey;
 }
 
 bool TrialInfo::IsSkipped() const {
@@ -30,12 +35,10 @@ void TrialInfo::SetAsSkipped() {
 }
 
 Trials::Trials() {
-    mTrials[TK_LIGHT_TRIAL] = TrialInfo(GetHintText(RHT_LIGHT_TRIAL).GetMessage(), TK_LIGHT_TRIAL);
-    mTrials[TK_FOREST_TRIAL] = TrialInfo(GetHintText(RHT_FOREST_TRIAL).GetMessage(), TK_FOREST_TRIAL);
-    mTrials[TK_FIRE_TRIAL] = TrialInfo(GetHintText(RHT_FIRE_TRIAL).GetMessage(), TK_FIRE_TRIAL);
-    mTrials[TK_WATER_TRIAL] = TrialInfo(GetHintText(RHT_WATER_TRIAL).GetMessage(), TK_WATER_TRIAL);
-    mTrials[TK_SPIRIT_TRIAL] = TrialInfo(GetHintText(RHT_SPIRIT_TRIAL).GetMessage(), TK_SPIRIT_TRIAL);
-    mTrials[TK_SHADOW_TRIAL] = TrialInfo(GetHintText(RHT_SHADOW_TRIAL).GetMessage(), TK_SHADOW_TRIAL);
+    mTrials = {};
+    for (auto [trialKey, hintKey] : StaticData::trialData){
+        mTrials[trialKey] = TrialInfo(hintKey, (TrialKey)trialKey);
+    }
 }
 Trials::~Trials() = default;
 
@@ -81,10 +84,10 @@ void Trials::ParseJson(nlohmann::json spoilerFileJson) {
     }
 }
 
-std::unordered_map<TrialKey, HintText> Trials::GetAllTrialHintHeys() const {
-    std::unordered_map<TrialKey, HintText> output = {};
+std::unordered_map<uint32_t, RandomizerHintTextKey> Trials::GetAllTrialHintHeys() const {
+    std::unordered_map<uint32_t, RandomizerHintTextKey> output = {};
     for (auto trial: mTrials){
-        output[trial.GetKey()] = trial.GetName();
+        output[(uint32_t)trial.GetTrialKey()] = trial.GetNameKey();
     }
     return output;
 }

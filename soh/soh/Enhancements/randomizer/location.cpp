@@ -1,5 +1,5 @@
 #include "location.h"
-#include "3drando/hint_list.hpp"
+#include "static_data.h"
 #include <algorithm>
 
 RandomizerCheck Rando::Location::GetRandomizerCheck() const {
@@ -47,7 +47,7 @@ RandomizerHintTextKey Rando::Location::GetHintKey() const {
 }
 
 HintText* Rando::Location::GetHint() {
-    return &hintTable[hintKey];
+    return &StaticData::hintTextTable[hintKey];
 }
 
 const std::string& Rando::Location::GetName() const {
@@ -90,7 +90,7 @@ uint32_t Rando::Location::Getuint32_t() const {
 }
 
 const HintText& Rando::Location::GetHint() const {
-    return GetHintText(hintKey);
+    return StaticData::hintTextTable[hintKey];
 }
 
 RandomizerGet Rando::Location::GetVanillaItem() const {

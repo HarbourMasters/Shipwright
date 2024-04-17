@@ -9,7 +9,6 @@
 #include "settings.h"
 #include "rando_hash.h"
 #include "fishsanity.h"
-#include "static_data.h"
 #include "3drando/hints.hpp"
 
 #include <fstream>
@@ -50,6 +49,14 @@ Context::Context() {
 
 RandomizerArea Context::GetAreaFromString(std::string str) {
     return (RandomizerArea)StaticData::areaNameToEnum[str];
+}
+
+void Context::InitEarlyStaticData() {
+    StaticData::HintTable_Init();
+    StaticData::trialNameToEnum = StaticData::PopulateTranslationMap(StaticData::trialData);
+    StaticData::hintNameToEnum = StaticData::PopulateTranslationMap(StaticData::hintNames);
+    StaticData::hintTypeNameToEnum = StaticData::PopulateTranslationMap(StaticData::hintTypeNames);
+    StaticData::areaNameToEnum = StaticData::PopulateTranslationMap(StaticData::areaNames);
 }
 
 void Context::InitStaticData() {

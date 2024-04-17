@@ -1,11 +1,10 @@
 #include <unordered_map>
 #include "static_data.h"
-#include "../custom-message/CustomMessageManager.h"
 #include <spdlog/spdlog.h>
 
 namespace Rando {
 
-std::unordered_map<uint32_t, CustomMessage> hintTypeNames = {
+std::unordered_map<uint32_t, CustomMessage> StaticData::hintTypeNames = {
     {HINT_TYPE_HINT_KEY, CustomMessage("Message")},
     {HINT_TYPE_AREA, CustomMessage("Area")},
     {HINT_TYPE_ITEM, CustomMessage("Item")},
@@ -140,7 +139,7 @@ std::unordered_map<RandomizerCheck, RandomizerHint> StaticData::gossipStoneCheck
   {RC_ZR_OPEN_GROTTO_GOSSIP_STONE,           RH_ZR_OPEN_GROTTO_GOSSIP_STONE}
 };
 
-std::unordered_map<uint32_t, RandomizerHintTextKey> areaNames = { //RANDOTODO resolve None in area
+std::unordered_map<uint32_t, RandomizerHintTextKey> StaticData::areaNames = { //RANDOTODO resolve None in area
     {RA_NONE, RHT_LINKS_POCKET}, //explicit none in area hints usually means it's a starting item, so say Link's pocket
     {RA_LINKS_POCKET, RHT_LINKS_POCKET},
     {RA_KOKIRI_FOREST, RHT_KOKIRI_FOREST},
@@ -180,7 +179,7 @@ std::unordered_map<uint32_t, RandomizerHintTextKey> areaNames = { //RANDOTODO re
     {RA_GANONS_CASTLE, RHT_GANONS_CASTLE}
 };
 
-std::unordered_map<uint32_t, RandomizerHintTextKey> trialNames = { 
+std::unordered_map<uint32_t, RandomizerHintTextKey> StaticData::trialData = {
     {TK_LIGHT_TRIAL, RHT_LIGHT_TRIAL}, 
     {TK_FOREST_TRIAL, RHT_FOREST_TRIAL},
     {TK_FIRE_TRIAL, RHT_FIRE_TRIAL},
@@ -189,7 +188,7 @@ std::unordered_map<uint32_t, RandomizerHintTextKey> trialNames = {
     {TK_SPIRIT_TRIAL, RHT_SPIRIT_TRIAL}
 };
 
-std::unordered_map<RandomizerHint, StaticHintInfo> staticHintInfoMap = {
+std::unordered_map<RandomizerHint, StaticHintInfo> StaticData::staticHintInfoMap = {
   //RH_GANONDORF_HINT is special cased due to being different based on master sword shuffle
   //Altar hints are special cased due to special hint marking rules
   //warp song hints are special cased due to entrences not being done properly yet
@@ -216,7 +215,7 @@ std::unordered_map<RandomizerHint, StaticHintInfo> staticHintInfoMap = {
   {RH_KAK_100_SKULLS_HINT, StaticHintInfo(HINT_TYPE_ITEM,     {RHT_SKULLS_HINT},                   RSK_KAK_100_SKULLS_HINT, true, {RC_KAK_100_GOLD_SKULLTULA_REWARD}, {}, {}, false, 100)}
 };
 
-std::unordered_map<std::string, uint32_t> PopulateTranslationMap(std::unordered_map<uint32_t, CustomMessage> input){
+std::unordered_map<std::string, uint32_t> StaticData::PopulateTranslationMap(std::unordered_map<uint32_t, CustomMessage> input){
   std::unordered_map<std::string, uint32_t> output = {};
   for (const auto& [key, message] : input) {
     std::vector<std::string> strings = message.GetAllStrings();
@@ -232,10 +231,11 @@ std::unordered_map<std::string, uint32_t> PopulateTranslationMap(std::unordered_
   }
   return output;
 }
-std::unordered_map<std::string, uint32_t> PopulateTranslationMap(std::unordered_map<uint32_t, RandomizerHintTextKey> input){
+
+std::unordered_map<std::string, uint32_t> StaticData::PopulateTranslationMap(std::unordered_map<uint32_t, RandomizerHintTextKey> input){
   std::unordered_map<std::string, uint32_t> output = {};
   for (const auto& [key, text] : input) {
-    std::vector<std::string> strings = ::GetHintText(text).GetClear().GetAllStrings();
+    std::vector<std::string> strings = hintTextTable[text].GetClear().GetAllStrings();
     for (std::string string: strings){
       if (output.contains(string)){
         if (output[string] != key){
@@ -249,12 +249,13 @@ std::unordered_map<std::string, uint32_t> PopulateTranslationMap(std::unordered_
   return output;
 }
 
-std::unordered_map<std::string, uint32_t> StaticData::hintNameToEnum = PopulateTranslationMap(StaticData::hintNames);
-std::unordered_map<std::string, uint32_t> StaticData::hintTypeNameToEnum = PopulateTranslationMap(StaticData::hintTypeNames);
-std::unordered_map<std::string, uint32_t> StaticData::areaNameToEnum = PopulateTranslationMap(StaticData::areaNames);
-std::unordered_map<std::string, uint32_t> StaticData::trialNameToEnum = PopulateTranslationMap(StaticData::trialNames);
+std::unordered_map<std::string, uint32_t> StaticData::hintNameToEnum = {};
+std::unordered_map<std::string, uint32_t> StaticData::hintTypeNameToEnum = {};
+std::unordered_map<std::string, uint32_t> StaticData::areaNameToEnum = {};
+std::unordered_map<std::string, uint32_t> StaticData::trialNameToEnum = {};
+std::unordered_map<std::string, uint32_t> StaticData::locationNameToEnum = {}; //is filled in context based on location table, not touching that because of VB 
 
-std::unordered_map<u32, RandomizerHint> stoneFlagToHint{
+std::unordered_map<u32, RandomizerHint> StaticData::stoneFlagToHint{
     {0x0, RH_NONE},
     {0x1, RH_ZF_FAIRY_GOSSIP_STONE},
     {0x2, RH_ZF_JABU_GOSSIP_STONE},
@@ -297,4 +298,5 @@ std::unordered_map<u32, RandomizerHint> stoneFlagToHint{
     {0x3C, RH_KF_STORMS_GROTTO_GOSSIP_STONE}
 };
 
+std::array<HintText, RHT_MAX> StaticData::hintTextTable = {};
 }

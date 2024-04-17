@@ -3,25 +3,26 @@
 #include "randomizerTypes.h"
 #include "../custom-message/CustomMessageManager.h"
 #include <nlohmann/json.hpp>
-#include "3drando/hint_list.hpp"
+#include "static_data.h"
 #include <unordered_map>
 
 namespace Rando {
 class TrialInfo {
   public:
-    explicit TrialInfo(CustomMessage name_, TrialKey key_);
+    explicit TrialInfo(RandomizerHintTextKey nameKey_, TrialKey key_);
     TrialInfo();
     ~TrialInfo();
 
     CustomMessage GetName() const;
-    TrialKey GetKey() const;
+    RandomizerHintTextKey GetNameKey() const;
+    TrialKey GetTrialKey() const;
     bool IsSkipped() const;
     bool IsRequired() const;
     void SetAsRequired();
     void SetAsSkipped();
   private:
-    CustomMessage name;
-    TrialKey key;
+    RandomizerHintTextKey nameKey;
+    TrialKey trialKey;
     bool skipped = true;
 };
 
@@ -35,7 +36,7 @@ class Trials {
     std::vector<TrialInfo*> GetTrialList();
     size_t GetTrialListSize() const;
     void ParseJson(nlohmann::json spoilerFileJson);
-    std::unordered_map<TrialKey, HintText> GetAllTrialHintHeys() const;
+    std::unordered_map<uint32_t, RandomizerHintTextKey> GetAllTrialHintHeys() const;
   private:
     std::vector<TrialInfo> mTrials;
 };
