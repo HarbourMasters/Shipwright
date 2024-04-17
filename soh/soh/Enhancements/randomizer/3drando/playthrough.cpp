@@ -23,6 +23,7 @@ int Playthrough_Init(uint32_t seed, std::set<RandomizerCheck> excludedLocations,
     CustomMessages::ClearMessages();
     ctx->ItemReset();
     ctx->HintReset();
+    ctx->SilverRupeeReset();
     ctx->GetLogic()->Reset();
     Areas::AccessReset();
 

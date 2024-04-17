@@ -279,6 +279,11 @@ void Context::HintReset() {
     }
 }
 
+void Context::SilverRupeeReset() {
+    mSilverRupees.reset();
+    mSilverRupees = std::make_shared<SilverRupees>();
+}
+
 void Context::CreateItemOverrides() {
     SPDLOG_DEBUG("NOW CREATING OVERRIDES\n\n");
     for (RandomizerCheck locKey : allLocations) {

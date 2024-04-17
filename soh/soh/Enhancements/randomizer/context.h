@@ -58,6 +58,7 @@ class Context {
     void ClearItemLocations();
     void ItemReset();
     void HintReset();
+    void SilverRupeeReset();
     void CreateItemOverrides();
     bool IsSeedGenerated() const;
     void SetSeedGenerated(bool seedGenerated = true);
