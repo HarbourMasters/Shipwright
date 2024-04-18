@@ -18,6 +18,7 @@ class SetPathways : public SceneCommand<PathData*> {
     size_t GetPointerSize();
 
     uint32_t numPaths;
+    std::vector<std::string> pathFileNames;
     std::vector<PathData*> paths;
 };
 }; // namespace LUS

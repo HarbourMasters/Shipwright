@@ -8,4 +8,12 @@ class SetWindSettingsFactory : public SceneCommandFactoryBinaryV0 {
     std::shared_ptr<LUS::IResource>
     ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<LUS::BinaryReader> reader) override;
 };
+
+class SetWindSettingsFactoryXML : public SceneCommandFactoryXMLV0 {
+  public:
+    std::shared_ptr<LUS::IResource>
+    ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, tinyxml2::XMLElement* reader) override;
+};
+
+void LogWindSettingsAsXML(std::shared_ptr<LUS::IResource> resource);
 } // namespace SOH
