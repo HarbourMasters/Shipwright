@@ -293,6 +293,8 @@ typedef enum {
     RAND_INF_MARKET_TREASURE_CHEST_GAME_KEY_4,
     RAND_INF_MARKET_TREASURE_CHEST_GAME_KEY_5,
 
+    RAND_INF_GF_ITEM_FROM_LEADER_OF_FORTRESS,
+    RAND_INF_GF_GTG_GATE_PERMANENTLY_OPEN,
     // If you add anything to this list, you need to update the size of randomizerInf in z64save.h to be ceil(RAND_INF_MAX / 16)
 
     RAND_INF_MAX,

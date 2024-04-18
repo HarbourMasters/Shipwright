@@ -31,6 +31,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Hy/z_en_hy.h"
 #include "src/overlays/actors/ovl_Obj_Comb/z_obj_comb.h"
 #include "src/overlays/actors/ovl_En_Bom_Bowl_Pit/z_en_bom_bowl_pit.h"
+#include "src/overlays/actors/ovl_En_Ge1/z_en_ge1.h"
 #include "adult_trade_shuffle.h"
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
@@ -135,6 +136,13 @@ void RandomizerOnFlagSetHandler(int16_t flagType, int16_t flag) {
 }
 
 void RandomizerOnSceneFlagSetHandler(int16_t sceneNum, int16_t flagType, int16_t flag) {
+    if (RAND_GET_OPTION(RSK_SHUFFLE_DUNGEON_ENTRANCES) != RO_DUNGEON_ENTRANCE_SHUFFLE_OFF &&
+        sceneNum == SCENE_GERUDOS_FORTRESS &&
+        flagType == FLAG_SCENE_SWITCH &&
+        flag == 0x3A) {
+        Flags_SetRandomizerInf(RAND_INF_GF_GTG_GATE_PERMANENTLY_OPEN);
+    }
+
     RandomizerCheck rc = GetRandomizerCheckFromSceneFlag(sceneNum, flagType, flag);
     if (rc == RC_UNKNOWN_CHECK) return;
 
@@ -964,6 +972,21 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
             }
             break;
         }
+        case GI_VB_GERUDOS_BE_FRIENDLY: {
+            *should = CHECK_QUEST_ITEM(QUEST_GERUDO_CARD);
+            break;
+        }
+        case GI_VB_GTG_GATE_BE_OPEN: {
+            if (Flags_GetRandomizerInf(RAND_INF_GF_GTG_GATE_PERMANENTLY_OPEN)) {
+                *should = true;
+            }
+            break;
+        }
+        case GI_VB_GIVE_ITEM_GERUDO_MEMBERSHIP_CARD: {
+            Flags_SetRandomizerInf(RAND_INF_GF_ITEM_FROM_LEADER_OF_FORTRESS);
+            *should = false;
+            break;
+        }
         case GI_VB_TRADE_TIMER_ODD_MUSHROOM:
         case GI_VB_TRADE_TIMER_EYEDROPS:
         case GI_VB_TRADE_TIMER_FROG:
@@ -1273,6 +1296,15 @@ void RandomizerOnActorInitHandler(void* actorRef) {
         if (rc != RC_UNKNOWN_CHECK) {
             enExItem->sohItemEntry = Rando::Context::GetInstance()->GetFinalGIEntry(rc, true, (GetItemID)Rando::StaticData::GetLocation(rc)->GetVanillaItem());
             enExItem->actionFunc = (EnExItemActionFunc)EnExItem_WaitForObjectRandomized;
+        }
+    }
+
+    if (actor->id == ACTOR_EN_GE1) {
+        EnGe1* enGe1 = static_cast<EnGe1*>(actorRef);
+        auto ge1Type = enGe1->actor.params & 0xFF;
+        if (ge1Type == GE1_TYPE_TRAINING_GROUNDS_GUARD &&
+            Flags_GetRandomizerInf(RAND_INF_GF_GTG_GATE_PERMANENTLY_OPEN)) {
+            enGe1->actionFunc = (EnGe1ActionFunc)EnGe1_SetNormalText;
         }
     }
 }

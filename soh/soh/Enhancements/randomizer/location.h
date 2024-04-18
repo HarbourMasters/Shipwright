@@ -59,10 +59,6 @@ class SpoilerCollectionCheck {
         return SpoilerCollectionCheck(SPOILER_CHK_MINIGAME, 0x00, bit);
     }
 
-    static auto GerudoToken() {
-        return SpoilerCollectionCheck(SPOILER_CHK_GERUDO_MEMBERSHIP_CARD, 0x00, 0x00);
-    }
-
     static auto BigPoePoints() {
         return SpoilerCollectionCheck(SPOILER_CHK_POE_POINTS, 0x00, 0x00);
     }

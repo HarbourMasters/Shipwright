@@ -134,7 +134,7 @@ void EnGe1_Init(Actor* thisx, PlayState* play) {
         case GE1_TYPE_GATE_OPERATOR:
             this->hairstyle = GE1_HAIR_STRAIGHT;
 
-            if (EnGe1_CheckCarpentersFreed()) {
+            if (GameInteractor_Should(GI_VB_GERUDOS_BE_FRIENDLY, EnGe1_CheckCarpentersFreed(), NULL)) {
                 this->actionFunc = EnGe1_CheckGate_GateOp;
             } else {
                 this->actionFunc = EnGe1_WatchForPlayerFrontOnly;
@@ -144,7 +144,7 @@ void EnGe1_Init(Actor* thisx, PlayState* play) {
         case GE1_TYPE_NORMAL:
             this->hairstyle = GE1_HAIR_STRAIGHT;
 
-            if (EnGe1_CheckCarpentersFreed()) {
+            if (GameInteractor_Should(GI_VB_GERUDOS_BE_FRIENDLY, EnGe1_CheckCarpentersFreed(), NULL)) {
                 this->actionFunc = EnGe1_SetNormalText;
             } else {
                 this->actionFunc = EnGe1_WatchForAndSensePlayer;
@@ -174,7 +174,7 @@ void EnGe1_Init(Actor* thisx, PlayState* play) {
 
             if (gSaveContext.eventInf[0] & 0x100) {
                 this->actionFunc = EnGe1_TalkAfterGame_Archery;
-            } else if (EnGe1_CheckCarpentersFreed()) {
+            } else if (GameInteractor_Should(GI_VB_GERUDOS_BE_FRIENDLY, EnGe1_CheckCarpentersFreed(), NULL)) {
                 this->actionFunc = EnGe1_Wait_Archery;
             } else {
                 this->actionFunc = EnGe1_WatchForPlayerFrontOnly;
@@ -184,13 +184,8 @@ void EnGe1_Init(Actor* thisx, PlayState* play) {
         case GE1_TYPE_TRAINING_GROUNDS_GUARD:
             this->hairstyle = GE1_HAIR_STRAIGHT;
 
-            if (EnGe1_CheckCarpentersFreed()) {
-                // If the gtg gate is permanently open, don't let the gaurd charge to open it again
-                if (IS_RANDO && gSaveContext.sceneFlags[93].swch & 0x00000004) {
-                    this->actionFunc = EnGe1_SetNormalText;
-                } else {
-                    this->actionFunc = EnGe1_CheckForCard_GTGGuard;
-                }
+            if (GameInteractor_Should(GI_VB_GERUDOS_BE_FRIENDLY, EnGe1_CheckCarpentersFreed(), NULL)) {
+                this->actionFunc = EnGe1_CheckForCard_GTGGuard;
             } else {
                 this->actionFunc = EnGe1_WatchForPlayerFrontOnly;
             }
@@ -236,14 +231,6 @@ void EnGe1_SetAnimationIdle(EnGe1* this) {
 }
 
 s32 EnGe1_CheckCarpentersFreed(void) {
-    if (IS_RANDO) {
-        if (CHECK_QUEST_ITEM(QUEST_GERUDO_CARD)) {
-            return 1;
-        } else {
-            return 0;
-        }
-    }
-
     u16 carpenterFlags = gSaveContext.eventChkInf[9];
     if (!((carpenterFlags & 1) && (carpenterFlags & 2) && (carpenterFlags & 4) && (carpenterFlags & 8))) {
         return 0;

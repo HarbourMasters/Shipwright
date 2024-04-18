@@ -426,8 +426,6 @@ bool HasItemBeenCollected(RandomizerCheck rc) {
         return Flags_GetRandomizerInf(OTRGlobals::Instance->gRandomizer->GetRandomizerInfFromCheck(rc));
     case SpoilerCollectionCheckType::SPOILER_CHK_EVENT_CHK_INF:
         return gSaveContext.eventChkInf[flag / 16] & (0x01 << flag % 16);
-    case SpoilerCollectionCheckType::SPOILER_CHK_GERUDO_MEMBERSHIP_CARD:
-        return CHECK_FLAG_ALL(gSaveContext.eventChkInf[0x09], 0x0F);
     case SpoilerCollectionCheckType::SPOILER_CHK_GOLD_SKULLTULA:
         return GET_GS_FLAGS(scene) & flag;
     case SpoilerCollectionCheckType::SPOILER_CHK_INF_TABLE:

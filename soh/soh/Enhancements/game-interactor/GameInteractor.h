@@ -212,6 +212,10 @@ typedef enum {
     // Opt: *BgDyYoseizo
     // Vanilla condition: see soh/src/overlays/actors/ovl_Bg_Dy_Yoseizo/z_bg_dy_yoseizo.c
     GI_VB_BE_ELIGIBLE_FOR_GREAT_FAIRY_REWARD,
+    // Vanilla condition: see CheckCarpentersFreed in z_en_ge1 and z_en_ge2
+    GI_VB_GERUDOS_BE_FRIENDLY,
+    // Vanilla condition: switch
+    GI_VB_GTG_GATE_BE_OPEN,
 
     /*** Play Cutscenes ***/
 
@@ -307,6 +311,8 @@ typedef enum {
     GI_VB_GIVE_ITEM_FROM_LOST_DOG,
     // Opt: *EnBomBowlPit
     GI_VB_GIVE_ITEM_FROM_BOMBCHU_BOWLING,
+
+    GI_VB_GIVE_ITEM_GERUDO_MEMBERSHIP_CARD,
 
     GI_VB_GIVE_ITEM_FAIRY_OCARINA,
     GI_VB_GIVE_ITEM_WEIRD_EGG,
