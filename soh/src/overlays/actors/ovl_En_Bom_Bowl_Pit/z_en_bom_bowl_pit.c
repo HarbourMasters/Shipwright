@@ -2,6 +2,7 @@
 #include "vt.h"
 #include "overlays/actors/ovl_En_Bom_Chu/z_en_bom_chu.h"
 #include "overlays/actors/ovl_En_Ex_Item/z_en_ex_item.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
@@ -177,56 +178,30 @@ void EnBomBowlPit_GivePrize(EnBomBowlPit* this, PlayState* play) {
 
     Player_SetCsActionWithHaltedActors(play, NULL, 7);
     this->getItemId = sGetItemIds[this->prizeIndex];
-    this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
 
     if ((this->getItemId == GI_BOMB_BAG_30) && (CUR_CAPACITY(UPG_BOMB_BAG) == 30)) {
         this->getItemId = GI_BOMB_BAG_40;
     }
 
-    if (IS_RANDO) {
-        switch (this->prizeIndex) {
-            case EXITEM_BOMB_BAG_BOWLING:
-                this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_FIRST_PRIZE, GI_BOMB_BAG_20);
-                this->getItemId = this->getItemEntry.getItemId;
-                break;
-            case EXITEM_HEART_PIECE_BOWLING:
-                this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE, GI_HEART_PIECE);
-                this->getItemId = this->getItemEntry.getItemId;
-                break;
-            case EXITEM_BOMBCHUS_BOWLING:
-                this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS, GI_BOMBCHUS_10);
-                this->getItemId = this->getItemEntry.getItemId;
-                break;
-        }
-    }
-
     player->stateFlags1 &= ~PLAYER_STATE1_IN_CUTSCENE;
     this->actor.parent = NULL;
-    if (!IS_RANDO || this->getItemEntry.getItemId == GI_NONE) {
+    if (GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_BOMBCHU_BOWLING, true, this)) {
         Actor_OfferGetItem(&this->actor, play, this->getItemId, 2000.0f, 1000.0f);
-    } else {
-        GiveItemEntryFromActor(&this->actor, play, this->getItemEntry, 2000.0f, 1000.0f);
     }
     player->stateFlags1 |= PLAYER_STATE1_IN_CUTSCENE;
     this->actionFunc = EnBomBowlPit_WaitTillPrizeGiven;
 }
 
 void EnBomBowlPit_WaitTillPrizeGiven(EnBomBowlPit* this, PlayState* play) {
-    if (Actor_HasParent(&this->actor, play)) {
+    if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_BOMBCHU_BOWLING, true, this)) {
         this->actionFunc = EnBomBowlPit_Reset;
     } else {
-         if (!IS_RANDO || this->getItemEntry.getItemId == GI_NONE) {
-            Actor_OfferGetItem(&this->actor, play, this->getItemId, 2000.0f, 1000.0f);
-        } else {
-            GiveItemEntryFromActor(&this->actor, play, this->getItemEntry, 2000.0f, 1000.0f);
-        }
+        Actor_OfferGetItem(&this->actor, play, this->getItemId, 2000.0f, 1000.0f);
     }
 }
 
 void EnBomBowlPit_Reset(EnBomBowlPit* this, PlayState* play) {
-    if (((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) &&
-          Message_ShouldAdvance(play)) ||
-        (IS_RANDO && this->getItemId == GI_ICE_TRAP)) {
+    if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) {
         // "Normal termination"/"completion"
         osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ 正常終了 ☆☆☆☆☆ \n" VT_RST);
         if (this->getItemId == GI_HEART_PIECE) {
