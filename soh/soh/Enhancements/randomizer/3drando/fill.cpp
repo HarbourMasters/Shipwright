@@ -846,10 +846,10 @@ static void RandomizeDungeonItems() {
   }
 
   if (GerudoKeys.Is(GERUDOKEYS_ANY_DUNGEON)) {
-      auto gerudoKeys = FilterAndEraseFromPool(ItemPool, [](const auto i) { return i == GERUDO_FORTRESS_SMALL_KEY; });
+      auto gerudoKeys = FilterAndEraseFromPool(ItemPool, [](const auto i) { return i == GERUDO_FORTRESS_SMALL_KEY || i == GERUDO_FORTRESS_KEY_RING; });
     AddElementsToPool(anyDungeonItems, gerudoKeys);
   } else if (GerudoKeys.Is(GERUDOKEYS_OVERWORLD)) {
-      auto gerudoKeys = FilterAndEraseFromPool(ItemPool, [](const auto i) { return i == GERUDO_FORTRESS_SMALL_KEY; });
+      auto gerudoKeys = FilterAndEraseFromPool(ItemPool, [](const auto i) { return i == GERUDO_FORTRESS_SMALL_KEY || i == GERUDO_FORTRESS_KEY_RING; });
     AddElementsToPool(overworldItems, gerudoKeys);
   }
 
