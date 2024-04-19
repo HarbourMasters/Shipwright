@@ -4,6 +4,8 @@
 #include <vector>
 #include <algorithm>
 
+#include <stdio.h>
+
 std::vector<std::string> sceneNames = {
     "Inside the Deku Tree",
     "Dodongo's Cavern",
@@ -349,3 +351,35 @@ size_t SohUtils::CopyStringToCharBuffer(char* buffer, const std::string& source,
 
     return 0;
 }
+
+extern "C" void UpdateColor(const char* trailName, Color_RGBA8* color, int* changed, int* reset) {
+    Color_RGBA8 defaultColor = { 255, 255, 255, 255 };
+    char cvarName[50];
+    if (CVarGetInteger(cvarName,0)) {
+        snprintf(cvarName, sizeof(cvarName), "%s.Value", trailName);
+        *color = CVarGetColor(cvarName, defaultColor);
+        *changed = 1;
+    } else if (*changed) {
+        *color = defaultColor;
+        *reset = 1;
+    }
+}
+
+extern "C" void UpdateParticleColors(Color_RGBA8* color, Color_RGBA8 p1StartColor, Color_RGBA8 p2StartColor,
+                          Color_RGBA8 p1EndColor, Color_RGBA8 p2EndColor) {
+    p1StartColor.r = color->r;
+    p2StartColor.r = color->r * 0.8f;
+    p1EndColor.r = color->r * 0.6f;
+    p2EndColor.r = color->r * 0.4f;
+
+    p1StartColor.g = color->g;
+    p2StartColor.g = color->g * 0.8f;
+    p1EndColor.g = color->g * 0.6f;
+    p2EndColor.g = color->g * 0.4f;
+
+    p1StartColor.b = color->b;
+    p2StartColor.b = color->b * 0.8f;
+    p1EndColor.b = color->b * 0.6f;
+    p2EndColor.b = color->b * 0.4f;
+}
+
