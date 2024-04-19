@@ -288,7 +288,6 @@ jobs:
     - name: Install dependencies
       if: ${{ !vars.LINUX_RUNNER }}
       run: |
-        sudo apt-get update
         sudo apt-get install -y ninja-build
         sudo apt-get remove -y cmake
         wget https://github.com/Kitware/CMake/releases/download/v3.28.3/cmake-3.28.3-linux-x86_64.sh -O /tmp/cmake.sh
