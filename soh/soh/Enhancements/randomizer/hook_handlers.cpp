@@ -107,6 +107,15 @@ bool MeetsLACSRequirements() {
     return false;
 }
 
+bool CompletedAllTrials() {
+    return Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_WATER_TRIAL) &&
+           Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_LIGHT_TRIAL) &&
+           Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_FIRE_TRIAL) &&
+           Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_SHADOW_TRIAL) &&
+           Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_SPIRIT_TRIAL) &&
+           Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_FOREST_TRIAL);
+}
+
 // Todo Move this to randomizer context, clear it out on save load etc
 static std::queue<RandomizerCheck> randomizerQueuedChecks;
 static RandomizerCheck randomizerQueuedCheck = RC_UNKNOWN_CHECK;
@@ -1305,6 +1314,12 @@ void RandomizerOnActorInitHandler(void* actorRef) {
         if (ge1Type == GE1_TYPE_TRAINING_GROUNDS_GUARD &&
             Flags_GetRandomizerInf(RAND_INF_GF_GTG_GATE_PERMANENTLY_OPEN)) {
             enGe1->actionFunc = (EnGe1ActionFunc)EnGe1_SetNormalText;
+        }
+    }
+
+    if (actor->id == ACTOR_DEMO_KEKKAI && actor->params == 0) { // 0 == KEKKAI_TOWER
+        if (CompletedAllTrials()) {
+            Actor_Kill(actor);
         }
     }
 }

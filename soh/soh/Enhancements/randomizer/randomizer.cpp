@@ -164,21 +164,6 @@ Randomizer::Randomizer() {
 Randomizer::~Randomizer() {
 }
 
-std::unordered_map<std::string, RandomizerInf> spoilerFileTrialToEnum = {
-    { "the Forest Trial", RAND_INF_TRIALS_DONE_FOREST_TRIAL },
-    { "l'épreuve de la Forêt", RAND_INF_TRIALS_DONE_FOREST_TRIAL },
-    { "the Fire Trial", RAND_INF_TRIALS_DONE_FIRE_TRIAL },
-    { "l'épreuve du Feu", RAND_INF_TRIALS_DONE_FIRE_TRIAL },
-    { "the Water Trial", RAND_INF_TRIALS_DONE_WATER_TRIAL },
-    { "l'épreuve de l'Eau", RAND_INF_TRIALS_DONE_WATER_TRIAL },
-    { "the Spirit Trial", RAND_INF_TRIALS_DONE_SPIRIT_TRIAL },
-    { "l'épreuve de l'Esprit", RAND_INF_TRIALS_DONE_SPIRIT_TRIAL },
-    { "the Shadow Trial", RAND_INF_TRIALS_DONE_SHADOW_TRIAL },
-    { "l'épreuve de l'Ombre", RAND_INF_TRIALS_DONE_SHADOW_TRIAL },
-    { "the Light Trial", RAND_INF_TRIALS_DONE_LIGHT_TRIAL },
-    { "l'épreuve de la Lumière", RAND_INF_TRIALS_DONE_LIGHT_TRIAL }
-};
-
 std::unordered_map<std::string, SceneID> spoilerFileDungeonToScene = {
     { "Deku Tree", SCENE_DEKU_TREE },
     { "Dodongo's Cavern", SCENE_DODONGOS_CAVERN },
@@ -576,8 +561,17 @@ void Randomizer::LoadMerchantMessages() {
                 "\x08{{item}}  {{price}} Rubis\x09&&\x1B%gAcheter&Ne pas acheter%w\x09\x02"));
 }
 
-bool Randomizer::IsTrialRequired(RandomizerInf trial) {
-    return Rando::Context::GetInstance()->GetTrial(trial - RAND_INF_TRIALS_DONE_LIGHT_TRIAL)->IsRequired();
+std::map<s32, Rando::TrialKey> trialFlagToTrialKey = {
+    { EVENTCHKINF_COMPLETED_LIGHT_TRIAL, Rando::TrialKey::LIGHT_TRIAL, },
+    { EVENTCHKINF_COMPLETED_FOREST_TRIAL, Rando::TrialKey::FOREST_TRIAL, },
+    { EVENTCHKINF_COMPLETED_FIRE_TRIAL, Rando::TrialKey::FIRE_TRIAL, },
+    { EVENTCHKINF_COMPLETED_WATER_TRIAL, Rando::TrialKey::WATER_TRIAL, },
+    { EVENTCHKINF_COMPLETED_SPIRIT_TRIAL, Rando::TrialKey::SPIRIT_TRIAL, },
+    { EVENTCHKINF_COMPLETED_SHADOW_TRIAL, Rando::TrialKey::SHADOW_TRIAL, }
+};
+
+bool Randomizer::IsTrialRequired(s32 trialFlag) {
+    return Rando::Context::GetInstance()->GetTrial(trialFlagToTrialKey[trialFlag])->IsRequired();
 }
 
 GetItemEntry Randomizer::GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogItemId,

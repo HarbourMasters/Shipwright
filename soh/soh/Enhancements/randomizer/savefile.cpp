@@ -351,10 +351,15 @@ extern "C" void Randomizer_InitSaveFile() {
         gSaveContext.entranceIndex = -1;
     }
 
-    // If any trials aren't required, set them as completed
-    for (u16 i = RAND_INF_TRIALS_DONE_LIGHT_TRIAL; i <= RAND_INF_TRIALS_DONE_SHADOW_TRIAL; i++) {
-        if (!OTRGlobals::Instance->gRandomizer->IsTrialRequired((RandomizerInf)i)) {
-            Flags_SetRandomizerInf((RandomizerInf)i);
+    for (auto trialFlag : { EVENTCHKINF_COMPLETED_LIGHT_TRIAL,
+                        EVENTCHKINF_COMPLETED_FOREST_TRIAL,
+                        EVENTCHKINF_COMPLETED_FIRE_TRIAL,
+                        EVENTCHKINF_COMPLETED_WATER_TRIAL,
+                        EVENTCHKINF_COMPLETED_SPIRIT_TRIAL,
+                        EVENTCHKINF_COMPLETED_SHADOW_TRIAL }
+    ) {
+        if (!OTRGlobals::Instance->gRandomizer->IsTrialRequired(trialFlag)) {
+            Flags_SetEventChkInf(trialFlag);
         }
     }
 

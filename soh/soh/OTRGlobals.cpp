@@ -2359,8 +2359,8 @@ extern "C" void Randomizer_LoadMerchantMessages() {
     OTRGlobals::Instance->gRandomizer->LoadMerchantMessages();
 }
 
-extern "C" bool Randomizer_IsTrialRequired(RandomizerInf trial) {
-    return OTRGlobals::Instance->gRandomizer->IsTrialRequired(trial);
+extern "C" bool Randomizer_IsTrialRequired(s32 trialFlag) {
+    return OTRGlobals::Instance->gRandomizer->IsTrialRequired(trialFlag);
 }
 
 extern "C" u32 SpoilerFileExists(const char* spoilerFileName) {

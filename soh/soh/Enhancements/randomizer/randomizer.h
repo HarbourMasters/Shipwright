@@ -46,7 +46,7 @@ class Randomizer {
     bool SpoilerFileExists(const char* spoilerFileName);
     void LoadMerchantMessages();
     void LoadHintMessages();
-    bool IsTrialRequired(RandomizerInf trial);
+    bool IsTrialRequired(s32 trialFlag);
     u8 GetRandoSettingValue(RandomizerSettingKey randoSettingKey);
     RandomizerCheck GetCheckFromRandomizerInf(RandomizerInf randomizerInf);
     RandomizerInf GetRandomizerInfFromCheck(RandomizerCheck rc);
