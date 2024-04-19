@@ -919,10 +919,10 @@ static void RandomizeDungeonItems() {
   }
 
   if (ctx->GetOption(RSK_GERUDO_KEYS).Is(RO_GERUDO_KEYS_ANY_DUNGEON)) {
-      auto gerudoKeys = FilterAndEraseFromPool(ItemPool, [](const auto i) { return i == RG_GERUDO_FORTRESS_SMALL_KEY; });
+      auto gerudoKeys = FilterAndEraseFromPool(ItemPool, [](const auto i) { return i == RG_GERUDO_FORTRESS_SMALL_KEY || i == RG_GERUDO_FORTRESS_KEY_RING; });
     AddElementsToPool(anyDungeonItems, gerudoKeys);
   } else if (ctx->GetOption(RSK_GERUDO_KEYS).Is(RO_GERUDO_KEYS_OVERWORLD)) {
-      auto gerudoKeys = FilterAndEraseFromPool(ItemPool, [](const auto i) { return i == RG_GERUDO_FORTRESS_SMALL_KEY; });
+      auto gerudoKeys = FilterAndEraseFromPool(ItemPool, [](const auto i) { return i == RG_GERUDO_FORTRESS_SMALL_KEY || i == RG_GERUDO_FORTRESS_KEY_RING; });
     AddElementsToPool(overworldItems, gerudoKeys);
   }
 
