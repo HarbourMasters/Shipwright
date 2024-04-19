@@ -9,6 +9,7 @@
 #include <vector>
 #include <libultraship/libultraship.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "randomizer_check_tracker.h"
 #include <algorithm>
 
 extern "C" {
