@@ -136,7 +136,7 @@ void TimeSaverOnGameFrameUpdateHandler() {
 
 void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void* opt) {
     switch (id) {
-        case GI_VB_PLAY_TRANSITION_CS:
+        case GI_VB_PLAY_TRANSITION_CS: {
             if (CVarGetInteger("gTimeSavers.SkipCutscene.Intro", IS_RANDO) && gSaveContext.entranceIndex == ENTR_LINKS_HOUSE_0 && gSaveContext.cutsceneIndex == 0xFFF1) {
                 gSaveContext.cutsceneIndex = 0;
                 *should = false;
@@ -260,7 +260,16 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
                     *should = false;
                 }
             }
+
+            if (gSaveContext.entranceIndex == ENTR_GANONS_TOWER_COLLAPSE_EXTERIOR_0) {
+                if (CVarGetInteger("gTimeSavers.SkipTowerEscape", false) || IS_BOSS_RUSH) {
+                    Flags_SetEventChkInf(EVENTCHKINF_WATCHED_GANONS_CASTLE_COLLAPSE_CAUGHT_BY_GERUDO);
+                    gSaveContext.entranceIndex = ENTR_GANON_BOSS_0;
+                    *should = false;
+                }
+            }
             break;
+        }
         case GI_VB_PLAY_ENTRANCE_CS: {
             s32* entranceFlag = static_cast<s32*>(opt);
             if (CVarGetInteger("gTimeSavers.SkipCutscene.Entrances", IS_RANDO) && (*entranceFlag != EVENTCHKINF_EPONA_OBTAINED)) {
