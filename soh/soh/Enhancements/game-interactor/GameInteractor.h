@@ -113,6 +113,7 @@ typedef enum {
     GI_VB_SHIEK_PREPARE_TO_GIVE_SERENADE_OF_WATER,
     // Vanilla condition: !EVENTCHKINF_LEARNED_PRELUDE_OF_LIGHT and EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP
     GI_VB_BE_ELIGIBLE_FOR_PRELUDE_OF_LIGHT,
+    GI_VB_BE_ELIGIBLE_FOR_RAINBOW_BRIDGE,
     /* Vanilla Condition: 
     ```
         LINK_IS_ADULT &&
@@ -255,6 +256,7 @@ typedef enum {
     GI_VB_PLAY_ROYAL_FAMILY_TOMB_EXPLODE,
     // Opt: *EnOkarinaTag
     GI_VB_PLAY_DOOR_OF_TIME_CS,
+    GI_VB_PLAY_RAINBOW_BRIDGE_CS,
 
     /*** Give Items ***/
 

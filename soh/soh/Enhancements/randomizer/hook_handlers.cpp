@@ -116,6 +116,59 @@ bool CompletedAllTrials() {
            Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_FOREST_TRIAL);
 }
 
+bool MeetsRainbowBridgeRequirements() {
+    switch (RAND_GET_OPTION(RSK_RAINBOW_BRIDGE)) {
+        case RO_BRIDGE_VANILLA: {
+            if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) &&
+                (INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT)) {
+                return true;
+            }
+            break;
+        }
+        case RO_BRIDGE_STONES: {
+            if ((CheckStoneCount() + CheckBridgeRewardCount()) >= RAND_GET_OPTION(RSK_RAINBOW_BRIDGE_STONE_COUNT)) {
+                return true;
+            }
+            break;
+        }
+        case RO_BRIDGE_MEDALLIONS: {
+            if ((CheckMedallionCount() + CheckBridgeRewardCount()) >= RAND_GET_OPTION(RSK_RAINBOW_BRIDGE_MEDALLION_COUNT)) {
+                return true;
+            }
+            break;
+        }
+        case RO_BRIDGE_DUNGEON_REWARDS: {
+            if ((CheckMedallionCount() + CheckStoneCount() + CheckBridgeRewardCount()) >= RAND_GET_OPTION(RSK_RAINBOW_BRIDGE_REWARD_COUNT)) {
+                return true;
+            }
+            break;
+        }
+        case RO_BRIDGE_DUNGEONS: {
+            if ((CheckDungeonCount() + CheckBridgeRewardCount()) >= RAND_GET_OPTION(RSK_RAINBOW_BRIDGE_DUNGEON_COUNT)) {
+                return true;
+            }
+            break;
+        }
+        case RO_BRIDGE_TOKENS: {
+            if (gSaveContext.inventory.gsTokens >= RAND_GET_OPTION(RSK_RAINBOW_BRIDGE_TOKEN_COUNT)) {
+                return true;
+            }
+            break;
+        }
+        case RO_BRIDGE_GREG: {
+            if (Flags_GetRandomizerInf(RAND_INF_GREG_FOUND)) {
+                return true;
+            }
+            break;
+        }
+        case RO_BRIDGE_ALWAYS_OPEN: {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 // Todo Move this to randomizer context, clear it out on save load etc
 static std::queue<RandomizerCheck> randomizerQueuedChecks;
 static RandomizerCheck randomizerQueuedCheck = RC_UNKNOWN_CHECK;
@@ -994,6 +1047,10 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
         case GI_VB_GIVE_ITEM_GERUDO_MEMBERSHIP_CARD: {
             Flags_SetRandomizerInf(RAND_INF_GF_ITEM_FROM_LEADER_OF_FORTRESS);
             *should = false;
+            break;
+        }
+        case GI_VB_BE_ELIGIBLE_FOR_RAINBOW_BRIDGE: {
+            *should = MeetsRainbowBridgeRequirements();
             break;
         }
         case GI_VB_TRADE_TIMER_ODD_MUSHROOM:

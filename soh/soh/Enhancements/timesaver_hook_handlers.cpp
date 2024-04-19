@@ -666,6 +666,13 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
 
             break;
         }
+        case GI_VB_PLAY_RAINBOW_BRIDGE_CS: {
+            if (CVarGetInteger("gTimeSavers.SkipCutscene.Story", IS_RANDO)) {
+                *should = false;
+                func_800F595C(NA_BGM_BRIDGE_TO_GANONS);
+            }
+            break;
+        }
     }
 }
 
