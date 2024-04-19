@@ -846,6 +846,14 @@ void TimeSaverOnActorInitHandler(void* actorRef) {
             enPoSistersKillHook = 0;
         });
     }
+
+    // Fire Temple Darunia cutscene
+    if (actor->id == ACTOR_EN_DU && gPlayState->sceneNum == SCENE_FIRE_TEMPLE) {
+        if (CVarGetInteger("gTimeSavers.SkipCutscene.GlitchAiding", 0)) {
+            Flags_SetInfTable(INFTABLE_SPOKE_TO_DARUNIA_IN_FIRE_TEMPLE);
+            Actor_Kill(actor);
+        }
+    }
 }
 
 void TimeSaverOnSceneInitHandler(int16_t sceneNum) {

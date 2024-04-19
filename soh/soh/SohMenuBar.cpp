@@ -581,7 +581,7 @@ void DrawEnhancementsMenu() {
                     CVarGetInteger("gTimeSavers.SkipCutscene.Story", IS_RANDO) &&
                     CVarGetInteger("gTimeSavers.SkipCutscene.LearnSong", IS_RANDO) &&
                     CVarGetInteger("gTimeSavers.SkipCutscene.BossIntro", IS_RANDO) &&
-                    CVarGetInteger("gTimeSavers.SkipCutscene.GlitchAiding", IS_RANDO) &&
+                    CVarGetInteger("gTimeSavers.SkipCutscene.GlitchAiding", 0) &&
                     CVarGetInteger("gTimeSavers.SkipCutscene.OnePoint", IS_RANDO) &&
                     CVarGetInteger("gTimeSavers.NoForcedDialog", IS_RANDO) &&
                     CVarGetInteger("gTimeSavers.SkipOwlInteractions", IS_RANDO) &&
@@ -593,7 +593,7 @@ void DrawEnhancementsMenu() {
                     CVarGetInteger("gTimeSavers.SkipCutscene.Story", IS_RANDO) ||
                     CVarGetInteger("gTimeSavers.SkipCutscene.LearnSong", IS_RANDO) ||
                     CVarGetInteger("gTimeSavers.SkipCutscene.BossIntro", IS_RANDO) ||
-                    CVarGetInteger("gTimeSavers.SkipCutscene.GlitchAiding", IS_RANDO) ||
+                    CVarGetInteger("gTimeSavers.SkipCutscene.GlitchAiding", 0) ||
                     CVarGetInteger("gTimeSavers.SkipCutscene.OnePoint", IS_RANDO) ||
                     CVarGetInteger("gTimeSavers.NoForcedDialog", IS_RANDO) ||
                     CVarGetInteger("gTimeSavers.SkipOwlInteractions", IS_RANDO) ||
@@ -637,7 +637,7 @@ void DrawEnhancementsMenu() {
                 UIWidgets::PaddedEnhancementCheckbox("Skip Story Cutscenes", "gTimeSavers.SkipCutscene.Story", false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
                 UIWidgets::PaddedEnhancementCheckbox("Skip Song Cutscenes", "gTimeSavers.SkipCutscene.LearnSong", false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
                 UIWidgets::PaddedEnhancementCheckbox("Skip Boss Introductions", "gTimeSavers.SkipCutscene.BossIntro", false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
-                UIWidgets::PaddedEnhancementCheckbox("Skip Glitch-Aiding Cutscenes", "gTimeSavers.SkipCutscene.GlitchAiding", false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
+                UIWidgets::PaddedEnhancementCheckbox("Skip Glitch-Aiding Cutscenes", "gTimeSavers.SkipCutscene.GlitchAiding", false, false, false, "", UIWidgets::CheckboxGraphics::Cross, 0);
                 UIWidgets::Tooltip("Skip cutscenes that are associated with useful glitches, currently this is only the Fire Temple Darunia CS and Forest Temple Poe Sisters CS");
                 UIWidgets::PaddedEnhancementCheckbox("Skip One Point Cutscenes (Chests, Door Unlocks, etc)", "gTimeSavers.SkipCutscene.OnePoint", false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
                 UIWidgets::PaddedEnhancementCheckbox("No Forced Dialog", "gTimeSavers.NoForcedDialog", false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
