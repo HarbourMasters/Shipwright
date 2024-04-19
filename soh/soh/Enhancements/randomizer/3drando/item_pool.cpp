@@ -468,7 +468,7 @@ void PlaceJunkInExcludedLocation(const RandomizerCheck il) {
       return;
     }
   }
-  printf("ERROR: No Junk to Place!!!\n");
+  SPDLOG_ERROR("ERROR: No Junk to Place!!!");
 }
 
 static void PlaceVanillaDekuScrubItems() {

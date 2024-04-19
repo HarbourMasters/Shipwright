@@ -635,7 +635,7 @@ static void AssumedFill(const std::vector<RandomizerGet>& items, const std::vect
                         bool setLocationsAsHintable = false) {
     auto ctx = Rando::Context::GetInstance();
     if (items.size() > allowedLocations.size()) {
-        printf("\x1b[2;2HERROR: MORE ITEMS THAN LOCATIONS IN GIVEN LISTS");
+        SPDLOG_ERROR("ERROR: MORE ITEMS THAN LOCATIONS IN GIVEN LISTS");
         SPDLOG_DEBUG("Items:\n");
         // NOLINTNEXTLINE(clang-diagnostic-unused-variable)
         for (const RandomizerGet item : items) {
@@ -919,10 +919,10 @@ static void RandomizeDungeonItems() {
   }
 
   if (ctx->GetOption(RSK_GERUDO_KEYS).Is(RO_GERUDO_KEYS_ANY_DUNGEON)) {
-      auto gerudoKeys = FilterAndEraseFromPool(ItemPool, [](const auto i) { return i == RG_GERUDO_FORTRESS_SMALL_KEY; });
+      auto gerudoKeys = FilterAndEraseFromPool(ItemPool, [](const auto i) { return i == RG_GERUDO_FORTRESS_SMALL_KEY || i == RG_GERUDO_FORTRESS_KEY_RING; });
     AddElementsToPool(anyDungeonItems, gerudoKeys);
   } else if (ctx->GetOption(RSK_GERUDO_KEYS).Is(RO_GERUDO_KEYS_OVERWORLD)) {
-      auto gerudoKeys = FilterAndEraseFromPool(ItemPool, [](const auto i) { return i == RG_GERUDO_FORTRESS_SMALL_KEY; });
+      auto gerudoKeys = FilterAndEraseFromPool(ItemPool, [](const auto i) { return i == RG_GERUDO_FORTRESS_SMALL_KEY || i == RG_GERUDO_FORTRESS_KEY_RING; });
     AddElementsToPool(overworldItems, gerudoKeys);
   }
 
@@ -984,9 +984,9 @@ void VanillaFill() {
   }
   //If necessary, handle ER stuff
   if (ctx->GetOption(RSK_SHUFFLE_ENTRANCES)) {
-    printf("\x1b[7;10HShuffling Entrances...");
+    SPDLOG_INFO("Shuffling Entrances...");
     ctx->GetEntranceShuffler()->ShuffleAllEntrances();
-    printf("\x1b[7;32HDone");
+    SPDLOG_INFO("Shuffling Entrances Done");
   }
   // Populate the playthrough for entrances so they are placed in the spoiler log
   GeneratePlaythrough();
@@ -997,11 +997,6 @@ void VanillaFill() {
 }
 
 void ClearProgress() {
-  printf("\x1b[7;32H    "); // Done
-  printf("\x1b[8;10H                    "); // Placing Items...Done
-  printf("\x1b[9;10H                              "); // Calculating Playthrough...Done
-  printf("\x1b[10;10H                     "); // Creating Hints...Done
-  printf("\x1b[11;10H                                  "); // Writing Spoiler Log...Done
 }
 
 int Fill() {
@@ -1024,13 +1019,13 @@ int Fill() {
     //can validate the world using deku/hylian shields
     AddElementsToPool(ItemPool, GetMinVanillaShopItems(32)); //assume worst case shopsanity 4
     if (ctx->GetOption(RSK_SHUFFLE_ENTRANCES)) {
-      printf("\x1b[7;10HShuffling Entrances");
+      SPDLOG_INFO("Shuffling Entrances...");
       if (ctx->GetEntranceShuffler()->ShuffleAllEntrances() == ENTRANCE_SHUFFLE_FAILURE) {
         retries++;
         ClearProgress();
         continue;
       }
-      printf("\x1b[7;32HDone");
+      SPDLOG_INFO("Shuffling Entrances Done");
     }
     SetAreas();
     //erase temporary shop items
@@ -1154,19 +1149,20 @@ int Fill() {
     GeneratePlaythrough();
     //Successful placement, produced beatable result
     if(ctx->playthroughBeatable && !placementFailure) {
-      printf("Done");
-      printf("\x1b[9;10HCalculating Playthrough...");
+      SPDLOG_INFO("Calculating Playthrough...");
       PareDownPlaythrough();
       CalculateWotH();
       CalculateBarren(); 
-      printf("Done");
+      SPDLOG_INFO("Calculating Playthrough Done");
       ctx->CreateItemOverrides();
       ctx->GetEntranceShuffler()->CreateEntranceOverrides();
       
+      SPDLOG_INFO("Creating Other Hint Texts...");
       //funny ganon line
       Text ganonText = RandomElement(GetHintCategory(HintCategory::GanonLine)).GetText();
       CreateMessageFromTextObject(0x70CB, 0, 2, 3, AddColorsAndFormat(ganonText));
       SetGanonText(ganonText);
+      SPDLOG_INFO("Creating Other Hint Texts Done");
       
       CreateAllHints();
       CreateWarpSongTexts();
@@ -1174,7 +1170,7 @@ int Fill() {
     }
     //Unsuccessful placement
     if(retries < 4) {
-      SPDLOG_DEBUG("\nGOT STUCK. RETRYING...\n");
+      SPDLOG_DEBUG("Failed to generate a beatable seed. Retrying...");
       Areas::ResetAllLocations();
       logic->Reset();
       ClearProgress();
