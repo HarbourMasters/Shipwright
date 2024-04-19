@@ -23,6 +23,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_Bg_Hidan_Kousi/z_bg_hidan_kousi.h"
 #include "src/overlays/actors/ovl_Bg_Dy_Yoseizo/z_bg_dy_yoseizo.h"
 #include "src/overlays/actors/ovl_En_Dnt_Demo/z_en_dnt_demo.h"
+#include "src/overlays/actors/ovl_En_Po_Sisters/z_en_po_sisters.h"
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 }
@@ -686,6 +687,8 @@ static uint32_t enFuUpdateHook = 0;
 static uint32_t enFuKillHook = 0;
 static uint32_t bgSpot02UpdateHook = 0;
 static uint32_t bgSpot02KillHook = 0;
+static uint32_t enPoSistersUpdateHook = 0;
+static uint32_t enPoSistersKillHook = 0;
 void TimeSaverOnActorInitHandler(void* actorRef) {
     Actor* actor = static_cast<Actor*>(actorRef);
 
@@ -815,6 +818,33 @@ void TimeSaverOnActorInitHandler(void* actorRef) {
     if (actor->id == ACTOR_EN_DNT_DEMO && (IS_RANDO || CVarGetInteger("gTimeSavers.SkipMiscInteractions", IS_RANDO))) {
         EnDntDemo* enDntDemo = static_cast<EnDntDemo*>(actorRef);
         enDntDemo->actionFunc = EnDntDemo_JudgeSkipToReward;
+    }
+
+    // Forest Temple entrance cutscene
+    if (actor->id == ACTOR_EN_PO_SISTERS && actor->params == 4124) {
+        if (CVarGetInteger("gTimeSavers.SkipCutscene.GlitchAiding", 0)) {
+            Flags_SetSwitch(gPlayState, 0x1B);
+            Actor_Kill(actor);
+        }
+    }
+
+    // Forest Temple purple poe fight speedup
+    if (actor->id == ACTOR_EN_PO_SISTERS && actor->params == 28) {
+        enPoSistersUpdateHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* innerActorRef) mutable {
+            Actor* innerActor = static_cast<Actor*>(innerActorRef);
+            if (innerActor->id == ACTOR_EN_PO_SISTERS && innerActor->params == 28 && (CVarGetInteger("gTimeSavers.SkipMiscInteractions", IS_RANDO))) {
+                EnPoSisters* enPoSisters = static_cast<EnPoSisters*>(innerActorRef);
+                if (enPoSisters->actionFunc == func_80ADB338) {
+                    enPoSisters->unk_19C = 0;
+                }
+            }
+        });
+        enPoSistersKillHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) mutable {
+            GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(enPoSistersUpdateHook);
+            GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(enPoSistersKillHook);
+            enPoSistersUpdateHook = 0;
+            enPoSistersKillHook = 0;
+        });
     }
 }
 
