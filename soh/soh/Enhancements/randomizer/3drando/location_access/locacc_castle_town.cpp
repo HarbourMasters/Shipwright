@@ -65,6 +65,7 @@ void AreaTable_Init_CastleTown() {
                 }, {
                   //Locations
                   LocationAccess(RC_TOT_MASTER_SWORD, {[]{return logic->IsAdult;}}),
+                  LocationAccess(RC_GIFT_FROM_SAGES, {[]{return logic->IsAdult;}}),
                   LocationAccess(RC_SHEIK_AT_TEMPLE, {[]{return logic->ForestMedallion && logic->IsAdult;}}),
                 }, {
                   //Exits
