@@ -1025,7 +1025,7 @@ void FileChoose_UpdateRandomizer() {
             return;
     }
 
-    if (!SpoilerFileExists(CVarGetString("gSpoilerLog", "")) && !CVarGetInteger(RANDOMIZER_SEED_CVAR("DontGenerateSpoiler"), 0)) {
+    if (!SpoilerFileExists(CVarGetString("gSpoilerLog", "")) && !CVarGetInteger(CVAR_RANDOMIZER_SETTING("DontGenerateSpoiler"), 0)) {
             CVarSetString("gSpoilerLog", "");
             fileSelectSpoilerFileLoaded = false;
     }
@@ -1053,7 +1053,7 @@ void FileChoose_UpdateRandomizer() {
             Randomizer_LoadEntranceOverrides(fileLoc, silent);
             fileSelectSpoilerFileLoaded = true;
 
-            if (SpoilerFileExists(CVarGetString("gSpoilerLog", "")) && CVarGetInteger(RANDOMIZER_SEED_CVAR("DontGenerateSpoiler"), 0)) {
+            if (SpoilerFileExists(CVarGetString("gSpoilerLog", "")) && CVarGetInteger(CVAR_RANDOMIZER_SETTING("DontGenerateSpoiler"), 0)) {
                 remove(fileLoc);
             }
     }
@@ -3286,15 +3286,15 @@ void FileChoose_Main(GameState* thisx) {
         gSaveContext.skyboxTime += 0x10;
     }
 
-    if (CVarGetInteger(DEV_TOOLS_CVAR("SkipLogoTitle"), 0) && CVarGetInteger(DEV_TOOLS_CVAR("SaveFileID"), FASTFILE_1) <= FASTFILE_3 && !isFastFileIdIncompatible) {
-        if (Save_Exist(CVarGetInteger(DEV_TOOLS_CVAR("SaveFileID"), FASTFILE_1)) && FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(CVarGetInteger(DEV_TOOLS_CVAR("SaveFileID"), FASTFILE_1)))) {
-            this->buttonIndex = CVarGetInteger(DEV_TOOLS_CVAR("SaveFileID"), FASTFILE_1);
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("SkipLogoTitle"), 0) && CVarGetInteger(CVAR_DEVELOPER_TOOLS("SaveFileID"), FASTFILE_1) <= FASTFILE_3 && !isFastFileIdIncompatible) {
+        if (Save_Exist(CVarGetInteger(CVAR_DEVELOPER_TOOLS("SaveFileID"), FASTFILE_1)) && FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(CVarGetInteger(CVAR_DEVELOPER_TOOLS("SaveFileID"), FASTFILE_1)))) {
+            this->buttonIndex = CVarGetInteger(CVAR_DEVELOPER_TOOLS("SaveFileID"), FASTFILE_1);
             this->menuMode = FS_MENU_MODE_SELECT;
             this->selectMode = SM_LOAD_GAME;
         } else {
             isFastFileIdIncompatible = 1;
         }
-    } else if (CVarGetInteger(DEV_TOOLS_CVAR("SkipLogoTitle"), 0) && CVarGetInteger(DEV_TOOLS_CVAR("SaveFileID"), FASTFILE_1) == FASTFILE_MAP_SELECT) {
+    } else if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("SkipLogoTitle"), 0) && CVarGetInteger(CVAR_DEVELOPER_TOOLS("SaveFileID"), FASTFILE_1) == FASTFILE_MAP_SELECT) {
         this->buttonIndex = 0xFF;
         this->menuMode = FS_MENU_MODE_SELECT;
         this->selectMode = SM_LOAD_GAME;

@@ -17,7 +17,7 @@ void GameInteractor::EnableRemoteInteractor() {
         return;
     }
 
-    if (SDLNet_ResolveHost(&remoteIP, CVarGetString(REMOTE_CVAR("IP"), "127.0.0.1"), CVarGetInteger(REMOTE_CVAR("Port"), 43384)) == -1) {
+    if (SDLNet_ResolveHost(&remoteIP, CVarGetString(CVAR_REMOTE("IP"), "127.0.0.1"), CVarGetInteger(CVAR_REMOTE("Port"), 43384)) == -1) {
         SPDLOG_ERROR("[GameInteractor] SDLNet_ResolveHost: {}", SDLNet_GetError());
     }
 

@@ -3312,7 +3312,7 @@ void EnHorse_CheckBoost(EnHorse* thisx, PlayState* play2) {
                     this->stateFlags |= ENHORSE_BOOST;
                     this->stateFlags |= ENHORSE_FIRST_BOOST_REGEN;
                     this->stateFlags |= ENHORSE_FLAG_8;
-                    if (!CVarGetInteger(CHEAT_CVAR("InfiniteEponaBoost"), 0)) { this->numBoosts--; }
+                    if (!CVarGetInteger(CVAR_CHEAT("InfiniteEponaBoost"), 0)) { this->numBoosts--; }
                     this->boostTimer = 0;
                     if (this->numBoosts == 0) {
                         this->boostRegenTime = 140;

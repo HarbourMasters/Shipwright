@@ -340,7 +340,7 @@ void KaleidoScope_HandleItemCycles(PlayState* play) {
     gSlotAgeReqs[SLOT_TRADE_CHILD] =
         (
             ((CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA) && CVarGetInteger("gAdultBunnyHood", 0)) ||
-            CVarGetInteger(CHEAT_CVAR("TimelessEquipment"), 0)
+            CVarGetInteger(CVAR_CHEAT("TimelessEquipment"), 0)
         ) &&
         INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_MASK_BUNNY
             ? AGE_REQ_NONE
@@ -349,7 +349,7 @@ void KaleidoScope_HandleItemCycles(PlayState* play) {
     //also update the age requirement for the bunny hood itself
     gItemAgeReqs[ITEM_MASK_BUNNY] =
         ((CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA) && CVarGetInteger("gAdultBunnyHood", 0)) ||
-        CVarGetInteger(CHEAT_CVAR("TimelessEquipment"), 0)
+        CVarGetInteger(CVAR_CHEAT("TimelessEquipment"), 0)
             ? AGE_REQ_NONE
             : AGE_REQ_CHILD;
 

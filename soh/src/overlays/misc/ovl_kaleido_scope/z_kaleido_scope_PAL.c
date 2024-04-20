@@ -1963,7 +1963,7 @@ void KaleidoScope_DrawInfoPanel(PlayState* play) {
             POLY_KAL_DISP = KaleidoScope_QuadTextureIA4(POLY_KAL_DISP, pauseCtx->nameSegment, 128, 16, 0);
         }
 
-        if (pauseCtx->pageIndex == PAUSE_MAP && CVarGetInteger(DEV_TOOLS_CVAR("SkulltulaDebugEnabled"), 0) != 0) {
+        if (pauseCtx->pageIndex == PAUSE_MAP && CVarGetInteger(CVAR_DEVELOPER_TOOLS("SkulltulaDebugEnabled"), 0) != 0) {
             if (YREG(7) != 0) {
                 osSyncPrintf(VT_FGCOL(YELLOW));
                 osSyncPrintf("キンスタ数(%d) Get_KIN_STA=%x (%x)  (%x)\n", YREG(6), GET_GS_FLAGS(YREG(6)),
@@ -3994,7 +3994,7 @@ void KaleidoScope_Update(PlayState* play)
                     // Boss Rush skips past the "Save?" window when pressing B while paused.
                     if (CHECK_BTN_ALL(input->press.button, BTN_START) ||
                         (CHECK_BTN_ALL(input->press.button, BTN_B) && IS_BOSS_RUSH)) {
-                        if (CVarGetInteger(CHEAT_CVAR("EasyPauseBuffer"), 0) || CVarGetInteger(CHEAT_CVAR("EasyInputBuffer"), 0)) {
+                        if (CVarGetInteger(CVAR_CHEAT("EasyPauseBuffer"), 0) || CVarGetInteger(CVAR_CHEAT("EasyInputBuffer"), 0)) {
                             // Easy pause buffer is 13 frames, 12 for kaledio to end, and one more to advance a single frame
                             CVarSetInteger("gCheatEasyPauseBufferTimer", 13);
                         }
