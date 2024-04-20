@@ -283,10 +283,10 @@ const std::vector<const char*> enhancementsCvars = {
 
 const std::vector<const char*> cheatCvars = {
     "gConsoleEnabled",
-    "gActorViewerEnabled",
-    "gCollisionViewerEnabled",
-    "gDLViewerEnabled",
-    "gSaveEditorEnabled",
+    WINDOW_CVAR("ActorViewer"),
+    WINDOW_CVAR("CollisionViewer"),
+    WINDOW_CVAR("DLViewer"),
+    WINDOW_CVAR("SaveEditor"),
     "gEnableWalkModify",
     "gWalkSpeedToggle",
     "gWalkModifierOne",
@@ -485,10 +485,10 @@ const std::vector<const char*> randomizerCvars = {
     RANDOMIZER_SEED_CVAR("TriforceHunt"),
     RANDOMIZER_SEED_CVAR("ShuffleMasterSword"),
     RANDOMIZER_SEED_CVAR("SariaHint"),
-    "gRandomizeRupeeNames",
+    RANDO_ENHANCEMENT_CVAR("RandomizeRupeeNames"),
     RANDOMIZER_SEED_CVAR("FrogsHint"),
-    "gRandoRelevantNavi",
-    "gRandoQuestItemFanfares",
+    RANDO_ENHANCEMENT_CVAR("RandoRelevantNavi"),
+    RANDO_ENHANCEMENT_CVAR("QuestItemFanfares"),
 };
 
 const std::vector<PresetEntry> vanillaPlusPresetEntries = {

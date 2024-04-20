@@ -65,7 +65,7 @@ private:
 uint32_t IsGameMasterQuest();
 #endif
 
-#define RANDOMIZER_CVAR(var) "gRandoEnhancements." var
+#define RANDO_ENHANCEMENT_CVAR(var) "gRandoEnhancements." var
 #define RANDOMIZER_SEED_CVAR(var) "gRandoSettings." var
 #define COSMETIC_CVAR(var) "gCosmetics." var
 #define AUDIO_CVAR(var) "gAudioEditor." var
@@ -79,7 +79,8 @@ uint32_t IsGameMasterQuest();
 #define ITEM_TRACKER_CVAR(var) TRACKER_CVAR("ItemTracker." var)
 #define CHECK_TRACKER_CVAR(var) TRACKER_CVAR("CheckTracker." var)
 #define ENTRANCE_TRACKER_CVAR(var) TRACKER_CVAR("EntranceTracker." var)
-#define DEV_TOOLS_CVAR(var) "gDeveloperTools."
+#define DEV_TOOLS_CVAR(var) "gDeveloperTools." var
+#define GENERAL_CVAR(var) "gGeneral." var
 
 #ifndef __cplusplus
     void InitOTR(void);
