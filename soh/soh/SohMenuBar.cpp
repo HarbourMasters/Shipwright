@@ -586,7 +586,8 @@ void DrawEnhancementsMenu() {
                     CVarGetInteger("gTimeSavers.NoForcedDialog", IS_RANDO) &&
                     CVarGetInteger("gTimeSavers.SkipOwlInteractions", IS_RANDO) &&
                     CVarGetInteger("gTimeSavers.SkipMiscInteractions", IS_RANDO) &&
-                    CVarGetInteger("gTimeSavers.DisableTitleCard", IS_RANDO);
+                    CVarGetInteger("gTimeSavers.DisableTitleCard", IS_RANDO) &&
+                    CVarGetInteger("gTimeSavers.SkipTowerEscape", false);
                 bool someChecked =
                     CVarGetInteger("gTimeSavers.SkipCutscene.Intro", IS_RANDO) ||
                     CVarGetInteger("gTimeSavers.SkipCutscene.Entrances", IS_RANDO) ||
@@ -598,7 +599,8 @@ void DrawEnhancementsMenu() {
                     CVarGetInteger("gTimeSavers.NoForcedDialog", IS_RANDO) ||
                     CVarGetInteger("gTimeSavers.SkipOwlInteractions", IS_RANDO) ||
                     CVarGetInteger("gTimeSavers.SkipMiscInteractions", IS_RANDO) ||
-                    CVarGetInteger("gTimeSavers.DisableTitleCard", IS_RANDO);
+                    CVarGetInteger("gTimeSavers.DisableTitleCard", IS_RANDO) ||
+                    CVarGetInteger("gTimeSavers.SkipTowerEscape", false);
 
                 ImGuiContext* g = ImGui::GetCurrentContext();
                 ImGuiItemFlags backup_item_flags = g->CurrentItemFlags;
@@ -616,6 +618,7 @@ void DrawEnhancementsMenu() {
                         CVarSetInteger("gTimeSavers.SkipOwlInteractions", 1);
                         CVarSetInteger("gTimeSavers.SkipMiscInteractions", 1);
                         CVarSetInteger("gTimeSavers.DisableTitleCard", 1);
+                        CVarSetInteger("gTimeSavers.SkipTowerEscape", 1);
                     } else {
                         CVarSetInteger("gTimeSavers.SkipCutscene.Intro", 0);
                         CVarSetInteger("gTimeSavers.SkipCutscene.Entrances", 0);
@@ -628,6 +631,7 @@ void DrawEnhancementsMenu() {
                         CVarSetInteger("gTimeSavers.SkipOwlInteractions", 0);
                         CVarSetInteger("gTimeSavers.SkipMiscInteractions", 0);
                         CVarSetInteger("gTimeSavers.DisableTitleCard", 0);
+                        CVarSetInteger("gTimeSavers.SkipTowerEscape", 0);
                     }
                     LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                 }
@@ -645,6 +649,8 @@ void DrawEnhancementsMenu() {
                 UIWidgets::PaddedEnhancementCheckbox("Skip Owl Interactions", "gTimeSavers.SkipOwlInteractions", false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
                 UIWidgets::PaddedEnhancementCheckbox("Skip Misc Interactions", "gTimeSavers.SkipMiscInteractions", false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
                 UIWidgets::PaddedEnhancementCheckbox("Disable Title Card", "gTimeSavers.DisableTitleCard", false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
+                UIWidgets::PaddedEnhancementCheckbox("Skip Tower Escape", "gTimeSavers.SkipTowerEscape", false, false, false, "", UIWidgets::CheckboxGraphics::Cross, false);
+                UIWidgets::Tooltip("Skip the tower escape sequence between Ganondorf and Ganon.");
 
                 UIWidgets::PaddedText("Skip Get Item Animations", true, false);
                 UIWidgets::EnhancementCombobox("gTimeSavers.SkipGetItemAnimation", skipGetItemAnimationOptions, SGIA_DISABLED);

@@ -147,7 +147,6 @@ void Settings::CreateOptions() {
     mOptions[RSK_KEYRINGS_GANONS_CASTLE] = Option::Bool("Ganon's Castle", "gRandomizeShuffleKeyRingsGanonsCastle");
     mOptions[RSK_SKIP_CHILD_STEALTH] = Option::Bool("Skip Child Stealth", {"Don't Skip", "Skip"}, OptionCategory::Setting, "gRandomizeSkipChildStealth", mOptionDescriptions[RSK_SKIP_CHILD_STEALTH], WidgetType::Checkbox, RO_GENERIC_DONT_SKIP);
     mOptions[RSK_SKIP_CHILD_ZELDA] = Option::Bool("Skip Child Zelda", {"Don't Skip", "Skip"}, OptionCategory::Setting, "gRandomizeSkipChildZelda", mOptionDescriptions[RSK_SKIP_CHILD_ZELDA], WidgetType::Checkbox, RO_GENERIC_DONT_SKIP);
-    mOptions[RSK_SKIP_TOWER_ESCAPE] = Option::Bool("Skip Tower Escape", {"Don't Skip", "Skip"}, OptionCategory::Setting, "gRandomizeSkipTowerEscape", mOptionDescriptions[RSK_SKIP_TOWER_ESCAPE], WidgetType::Checkbox, RO_GENERIC_DONT_SKIP);
     mOptions[RSK_SKIP_EPONA_RACE] = Option::Bool("Skip Epona Race", {"Don't Skip", "Skip"}, OptionCategory::Setting, "gRandomizeSkipEponaRace", mOptionDescriptions[RSK_SKIP_EPONA_RACE], WidgetType::Checkbox, RO_GENERIC_DONT_SKIP);
     mOptions[RSK_SKIP_SCARECROWS_SONG] = Option::Bool("Skip Scarecrow's Song", "gRandomizeSkipScarecrowsSong", mOptionDescriptions[RSK_SKIP_SCARECROWS_SONG]);
     mOptions[RSK_BIG_POE_COUNT] = Option::U8("Big Poe Target Count", {NumOpts(1, 10)}, OptionCategory::Setting, "gRandomizeBigPoeTargetCount", mOptionDescriptions[RSK_BIG_POE_COUNT], WidgetType::Slider, 9);
@@ -716,7 +715,6 @@ void Settings::CreateOptions() {
         &mOptions[RSK_SKIP_CHILD_STEALTH],
         &mOptions[RSK_SKIP_CHILD_ZELDA],
         &mOptions[RSK_SKIP_EPONA_RACE],
-        &mOptions[RSK_SKIP_TOWER_ESCAPE],
         &mOptions[RSK_COMPLETE_MASK_QUEST],
         &mOptions[RSK_SKIP_SCARECROWS_SONG]
     }, false, WidgetContainerType::COLUMN);
@@ -1200,7 +1198,6 @@ void Settings::CreateOptions() {
         { "Timesaver Settings:Big Poe Target Count", RSK_BIG_POE_COUNT },
         { "Timesaver Settings:Skip Child Stealth", RSK_SKIP_CHILD_STEALTH },
         { "Timesaver Settings:Skip Epona Race", RSK_SKIP_EPONA_RACE },
-        { "Timesaver Settings:Skip Tower Escape", RSK_SKIP_TOWER_ESCAPE },
         { "Timesaver Settings:Complete Mask Quest", RSK_COMPLETE_MASK_QUEST },
         { "Timesaver Settings:Skip Scarecrow's Song", RSK_SKIP_SCARECROWS_SONG },
         { "Timesaver Settings:Enable Glitch-Useful Cutscenes", RSK_ENABLE_GLITCH_CUTSCENES },
@@ -2523,7 +2520,6 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
                 case RSK_SKIP_CHILD_ZELDA:
                 case RSK_SKIP_CHILD_STEALTH:
                 case RSK_SKIP_EPONA_RACE:
-                case RSK_SKIP_TOWER_ESCAPE:
                     if (it.value() == "Don't Skip") {
                         mOptions[index].SetSelectedIndex(RO_GENERIC_DONT_SKIP);
                     } else if (it.value() == "Skip") {
