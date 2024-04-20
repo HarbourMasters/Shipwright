@@ -33,9 +33,9 @@ using json = nlohmann::json;
 
 void to_json(json& j, const RandomizerCheckTrackerData& rctd) {
     j = json {
-        { "status", rctd.status == RCSHOW_COLLECTED ? RCSHOW_SAVED : rctd.status }, 
-        { "skipped", rctd.skipped }, 
-        { "price", rctd.price }, 
+        { "status", rctd.status == RCSHOW_COLLECTED ? RCSHOW_SAVED : rctd.status },
+        { "skipped", rctd.skipped },
+        { "price", rctd.price },
         { "hintItem", rctd.hintItem }};
     }
 
@@ -133,6 +133,8 @@ RandomizerCheckArea previousArea = RCAREA_INVALID;
 RandomizerCheckArea currentArea = RCAREA_INVALID;
 OSContPad* trackerButtonsPressed;
 
+bool passesTextFilter(ImGuiTextFilter& checkSearch, const RandomizerCheckObject rcObject);
+bool shouldHideArea(ImGuiTextFilter& checkSearch, std::map<RandomizerCheckArea, std::vector<RandomizerCheckObject>> checksByArea, const RandomizerCheckArea rcArea);
 void BeginFloatWindows(std::string UniqueName, bool& open, ImGuiWindowFlags flags = 0);
 bool CompareChecks(RandomizerCheckObject, RandomizerCheckObject);
 bool CheckByArea(RandomizerCheckArea);
@@ -513,7 +515,7 @@ void CheckTrackerLoadGame(int32_t fileNum) {
                 break;
         }
         RandomizerCheckObject linksPocket = { RC_LINKS_POCKET, RCVORMQ_BOTH, RCTYPE_LINKS_POCKET, startingArea, ACTOR_ID_MAX, SCENE_ID_MAX, 0x00, GI_NONE, false, "Link's Pocket", "Link's Pocket" };
-        
+
         checksByArea.find(startingArea)->second.push_back(linksPocket);
         areaChecksGotten[startingArea]++;
         areaCheckTotals[startingArea]++;
@@ -692,7 +694,7 @@ void CheckTrackerFlagSet(int16_t flagType, int32_t flag) {
             break;
         case FLAG_EVENT_CHECK_INF:
             if ((flag == EVENTCHKINF_CARPENTERS_FREE(0) || flag == EVENTCHKINF_CARPENTERS_FREE(1) ||
-                 flag == EVENTCHKINF_CARPENTERS_FREE(2) || flag == EVENTCHKINF_CARPENTERS_FREE(3)) 
+                 flag == EVENTCHKINF_CARPENTERS_FREE(2) || flag == EVENTCHKINF_CARPENTERS_FREE(3))
                 && GET_EVENTCHKINF_CARPENTERS_FREE_ALL()) {
                 SetCheckCollected(RC_GF_GERUDO_MEMBERSHIP_CARD);
                 return;
@@ -851,12 +853,12 @@ void SetAreaSpoiled(RandomizerCheckArea rcArea) {
 
 void UpdateCheck(uint32_t check, RandomizerCheckTrackerData data) {
     auto area = RandomizerCheckObjects::GetAllRCObjects().find(static_cast<RandomizerCheck>(check))->second.rcArea;
-    if ((!gSaveContext.checkTrackerData[check].skipped && data.skipped) || 
-        ((gSaveContext.checkTrackerData[check].status != RCSHOW_COLLECTED && gSaveContext.checkTrackerData[check].status != RCSHOW_SAVED) && 
+    if ((!gSaveContext.checkTrackerData[check].skipped && data.skipped) ||
+        ((gSaveContext.checkTrackerData[check].status != RCSHOW_COLLECTED && gSaveContext.checkTrackerData[check].status != RCSHOW_SAVED) &&
             (data.status == RCSHOW_COLLECTED || data.status == RCSHOW_SAVED))) {
         areaChecksGotten[area]++;
-    } else if ((gSaveContext.checkTrackerData[check].skipped && !data.skipped) || 
-        ((gSaveContext.checkTrackerData[check].status == RCSHOW_COLLECTED || gSaveContext.checkTrackerData[check].status == RCSHOW_SAVED) && 
+    } else if ((gSaveContext.checkTrackerData[check].skipped && !data.skipped) ||
+        ((gSaveContext.checkTrackerData[check].status == RCSHOW_COLLECTED || gSaveContext.checkTrackerData[check].status == RCSHOW_SAVED) &&
             (data.status != RCSHOW_COLLECTED && data.status != RCSHOW_SAVED))) {
         areaChecksGotten[area]--;
     }
@@ -927,6 +929,14 @@ void CheckTrackerWindow::DrawElement() {
         optExpandAll = false;
         optCollapseAll = true;
     }
+    ImGui::SameLine();
+    static ImGuiTextFilter checkSearch;
+    if (ImGui::Button("Clear")) {
+        checkSearch.Clear();
+    }
+    UIWidgets::Tooltip("Clear the search field");
+    checkSearch.Draw();
+
     UIWidgets::PaddedSeparator();
 
     //Checks Section Lead-in
@@ -973,10 +983,9 @@ void CheckTrackerWindow::DrawElement() {
             previousShowHidden = showHidden;
             doAreaScroll = true;
         }
-        if (!showHidden && (
-            hideComplete && thisAreaFullyChecked || 
-            hideIncomplete && !thisAreaFullyChecked
-        )) {
+        if (shouldHideArea(checkSearch, checksByArea, rcArea) ||
+            (!showHidden && ((hideComplete && thisAreaFullyChecked) || (hideIncomplete && !thisAreaFullyChecked)))
+        ) {
             doDraw = false;
         } else {
             //Get the colour for the area
@@ -1035,11 +1044,14 @@ void CheckTrackerWindow::DrawElement() {
                 ImGui::SetScrollHereY(0.0f);
                 doAreaScroll = false;
             }
-            for (auto rco : objs) {
-                if (IsVisibleInCheckTracker(rco) && doDraw && isThisAreaSpoiled) {
-                    DrawLocation(rco);
+
+            for (auto rcObject : objs) {
+                if (IsVisibleInCheckTracker(rcObject) && passesTextFilter(checkSearch, rcObject) && doDraw &&
+                    isThisAreaSpoiled) {
+                    DrawLocation(rcObject);
                 }
             }
+
             if (doDraw) {
                 ImGui::TreePop();
             }
@@ -1053,6 +1065,28 @@ void CheckTrackerWindow::DrawElement() {
         optCollapseAll = false;
         optExpandAll = false;
     }
+}
+
+bool shouldHideArea(ImGuiTextFilter& checkSearch, std::map<RandomizerCheckArea, std::vector<RandomizerCheckObject>> checksByArea, RandomizerCheckArea rcArea) {
+    bool shouldHideFilteredAreas = CVarGetInteger("gTrackers.CheckTracker.HideFilteredAreas", 1);
+    if (!shouldHideFilteredAreas) {
+        return false;
+    }
+
+    for (auto check : checksByArea[rcArea]) {
+        if (IsVisibleInCheckTracker(check) && passesTextFilter(checkSearch, check)) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+bool passesTextFilter(ImGuiTextFilter& checkSearch, RandomizerCheckObject check) {
+    return (
+        checkSearch.PassFilter(RandomizerCheckObjects::GetRCAreaName(check.rcArea).c_str()) ||
+        checkSearch.PassFilter(check.rcShortName.c_str())
+    );
 }
 
 // Windowing stuff
@@ -1326,7 +1360,7 @@ bool IsHeartPiece(GetItemID giid) {
 }
 
 void DrawLocation(RandomizerCheckObject rcObj) {
-    Color_RGBA8 mainColor; 
+    Color_RGBA8 mainColor;
     Color_RGBA8 extraColor;
     std::string txt;
     bool showHidden = CVarGetInteger("gCheckTrackerOptionShowHidden", 0);
@@ -1376,13 +1410,13 @@ void DrawLocation(RandomizerCheckObject rcObj) {
                     CVarGetColor("gCheckTrackerUncheckedMainColor", Color_Main_Default);
         extraColor = CVarGetColor("gCheckTrackerUncheckedExtraColor",  Color_Unchecked_Extra_Default);
     }
- 
+
     //Main Text
     txt = rcObj.rcShortName;
     if (lastLocationChecked == rcObj.rc) {
         txt = "* " + txt;
     }
- 
+
     // Draw button - for Skipped/Seen/Scummed/Unchecked only
     if (status == RCSHOW_UNCHECKED || status == RCSHOW_SEEN || status == RCSHOW_IDENTIFIED || status == RCSHOW_SCUMMED || skipped) {
         if (UIWidgets::StateButton(std::to_string(rcObj.rc).c_str(), skipped ? ICON_FA_PLUS : ICON_FA_TIMES)) {
@@ -1487,13 +1521,13 @@ void RainbowTick() {
         if (CVarGetInteger((cvar + "RBM").c_str(), 0) == 0) {
             continue;
         }
-     
+
         Color_RGBA8 newColor;
         newColor.r = sin(freqHue +              0) * 127 + 128;
         newColor.g = sin(freqHue + (2 * M_PI / 3)) * 127 + 128;
         newColor.b = sin(freqHue + (4 * M_PI / 3)) * 127 + 128;
         newColor.a = 255;
-         
+
         CVarSetColor(cvar.c_str(), newColor);
     }
 
@@ -1530,7 +1564,7 @@ void ImGuiDrawTwoColorPickerSection(const char* text, const char* cvarMainName, 
                 main_color = CVarGetColor(cvarMainName, main_default_color);
             };
             ImGui::PopItemWidth();
-         
+
             ImGui::TableNextColumn();
             ImGui::AlignTextToFramePadding();
             ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
@@ -1603,6 +1637,11 @@ void CheckTrackerSettingsWindow::DrawElement() {
         RecalculateAreaTotals();
     }
     UIWidgets::Tooltip("If enabled, will show GS locations in the tracker regardless of tokensanity settings.");
+
+    // Filtering settings
+    UIWidgets::PaddedSeparator();
+    UIWidgets::EnhancementCheckbox("Filter Empty Areas", "gTrackers.CheckTracker.HideFilteredAreas", false, "", UIWidgets::CheckboxGraphics::Checkmark, true);
+    UIWidgets::Tooltip("If enabled, will hide area headers that have no locations matching filter");
 
     ImGui::TableNextColumn();
 
