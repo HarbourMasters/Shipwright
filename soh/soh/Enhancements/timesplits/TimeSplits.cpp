@@ -1401,9 +1401,9 @@ void TimeSplitWindow::DrawElement() {
     }
 
     if (CVarGetInteger("gImGuiScale", 0)) {
-        uiScale = 1;
-    } else {
         uiScale = CVarGetInteger("gImGuiScale", 0);
+    } else {
+        uiScale = 1;
     }
     
     ImGui::PushStyleColor(ImGuiCol_WindowBg, colorChoice);
