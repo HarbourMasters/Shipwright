@@ -1607,11 +1607,8 @@ void Inventory_SwapAgeEquipment(void) {
     s16 i;
     u16 shieldEquipValue;
 
-    if (IS_RANDO) {
-        Rando_Inventory_SwapAgeEquipment();
-        return;
-    } else if (CVarGetInteger("gSwitchAge", 0) || CVarGetInteger("gSwitchTimeline", 0)) {
-        // Can Utilise the Rando Flow Path
+    // Mod Enhancments can utilise the rando flow path
+    if (IS_RANDO || CVarGetInteger("gSwitchAge", 0) || CVarGetInteger("gSwitchTimeline", 0)) {
         Rando_Inventory_SwapAgeEquipment();
         CVarSetInteger("gSwitchTimeline", 0);
         return;
