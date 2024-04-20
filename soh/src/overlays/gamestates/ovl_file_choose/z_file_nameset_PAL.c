@@ -692,6 +692,7 @@ void FileChoose_UpdateOptionsMenu(GameState* thisx) {
         sLastOptionButtonIndex = -1;
         osSyncPrintf("ＳＡＶＥ");
         Save_SaveGlobal();
+        CVarSave();
         osSyncPrintf(VT_FGCOL(YELLOW));
         osSyncPrintf("Na_SetSoundOutputMode = %d\n", gSaveContext.audioSetting);
         osSyncPrintf("Na_SetSoundOutputMode = %d\n", gSaveContext.audioSetting);
