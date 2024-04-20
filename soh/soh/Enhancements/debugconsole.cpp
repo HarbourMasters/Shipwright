@@ -1587,7 +1587,7 @@ void DebugConsole_Init(void) {
 
     CMD_REGISTER("sfx", {SfxHandler, "Change SFX.", {
             {"reset|randomize", LUS::ArgumentType::TEXT},
-            {"group name", LUS::ArgumentType::TEXT, true},
+            {"group_name", LUS::ArgumentType::TEXT, true},
     }});
 
     CVarSave();
