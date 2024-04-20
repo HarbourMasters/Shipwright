@@ -81,6 +81,7 @@ uint32_t IsGameMasterQuest();
 #define ENTRANCE_TRACKER_CVAR(var) TRACKER_CVAR("EntranceTracker." var)
 #define DEV_TOOLS_CVAR(var) "gDeveloperTools." var
 #define GENERAL_CVAR(var) "gGeneral." var
+#define REMOTE_CVAR(var) "gRemote." var
 
 #ifndef __cplusplus
     void InitOTR(void);

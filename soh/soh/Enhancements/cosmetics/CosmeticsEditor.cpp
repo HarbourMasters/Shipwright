@@ -13,6 +13,7 @@
 #include <libultraship/libultraship.h>
 
 #include "soh/UIWidgets.hpp"
+#include "soh/OTRGlobals.h"
 
 extern "C" {
 #include <z64.h>
@@ -1344,7 +1345,7 @@ void Reset_Option_Double(const char* Button_Title, const char* name) {
     }
 }
 void DrawSillyTab() {
-    ImGui::BeginDisabled(CVarGetInteger("gDisableChangingSettings", 0));
+    ImGui::BeginDisabled(CVarGetInteger(SETTING_CVAR("DisableChanges"), 0));
     if (CVarGetInteger("gLetItSnow", 0)) {
         if (UIWidgets::EnhancementCheckbox("Let It Snow", "gLetItSnow")) {
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();

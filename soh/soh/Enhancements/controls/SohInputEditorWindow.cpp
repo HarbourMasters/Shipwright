@@ -1680,7 +1680,7 @@ void SohInputEditorWindow::DrawMiscControlPanel() {
     UIWidgets::Tooltip("Allows the cursor on the pause menu to be over any slot. Sometimes required in rando to select "
                  "certain items.");
     UIWidgets::Spacer(0);
-    ImGui::BeginDisabled(CVarGetInteger("gDisableChangingSettings", 0));
+    ImGui::BeginDisabled(CVarGetInteger(SETTING_CVAR("DisableChanges"), 0));
     UIWidgets::PaddedEnhancementCheckbox("Enable speed modifiers", "gEnableWalkModify", true, false);
     UIWidgets::Tooltip("Hold the assigned button to change the maximum walking or swimming speed");
      if (CVarGetInteger("gEnableWalkModify", 0)) {

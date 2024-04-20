@@ -1148,8 +1148,8 @@ extern "C" void InitOTR() {
     srand(now);
 #ifdef ENABLE_REMOTE_CONTROL
     SDLNet_Init();
-    if (CVarGetInteger("gRemote.Enabled", 0)) {
-        switch (CVarGetInteger("gRemote.Scheme", GI_SCHEME_SAIL)) {
+    if (CVarGetInteger(REMOTE_CVAR("Enabled"), 0)) {
+        switch (CVarGetInteger(REMOTE_CVAR("Scheme"), GI_SCHEME_SAIL)) {
             case GI_SCHEME_SAIL:
                 GameInteractorSail::Instance->Enable();
                 break;
@@ -1174,8 +1174,8 @@ extern "C" void DeinitOTR() {
     SaveManager_ThreadPoolWait();
     OTRAudio_Exit();
 #ifdef ENABLE_REMOTE_CONTROL
-    if (CVarGetInteger("gRemote.Enabled", 0)) {
-        switch (CVarGetInteger("gRemote.Scheme", GI_SCHEME_SAIL)) {
+    if (CVarGetInteger(REMOTE_CVAR("Enabled"), 0)) {
+        switch (CVarGetInteger(REMOTE_CVAR("Scheme"), GI_SCHEME_SAIL)) {
             case GI_SCHEME_SAIL:
                 GameInteractorSail::Instance->Disable();
                 break;
@@ -1246,7 +1246,7 @@ extern "C" void Graph_StartFrame() {
 
     switch (dwScancode) {
         case KbScancode::LUS_KB_F5: {
-            if (CVarGetInteger("gSaveStatesEnabled", 0) == 0) {
+            if (CVarGetInteger(CHEAT_CVAR("SaveStatesEnabled"), 0) == 0) {
                 LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->
                     TextDrawNotification(6.0f, true, "Save states not enabled. Check Cheats Menu.");
                 return;
@@ -1268,7 +1268,7 @@ extern "C" void Graph_StartFrame() {
             break;
         }
         case KbScancode::LUS_KB_F6: {
-            if (CVarGetInteger("gSaveStatesEnabled", 0) == 0) {
+            if (CVarGetInteger(CHEAT_CVAR("SaveStatesEnabled"), 0) == 0) {
                 LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->
                     TextDrawNotification(6.0f, true, "Save states not enabled. Check Cheats Menu.");
                 return;
@@ -1283,7 +1283,7 @@ extern "C" void Graph_StartFrame() {
             break;
         }
         case KbScancode::LUS_KB_F7: {
-            if (CVarGetInteger("gSaveStatesEnabled", 0) == 0) {
+            if (CVarGetInteger(CHEAT_CVAR("SaveStatesEnabled"), 0) == 0) {
                 LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->
                     TextDrawNotification(6.0f, true, "Save states not enabled. Check Cheats Menu.");
                 return;
