@@ -14,7 +14,7 @@ FaultClient sGameFaultClient;
 u16 sLastButtonPressed;
 
 // Forward declared, because this in a C++ header.
-int gfx_create_framebuffer(uint32_t width, uint32_t height);
+int gfx_create_framebuffer(uint32_t width, uint32_t height, uint32_t native_width, uint32_t native_height, uint8_t resize);
 void gfx_texture_cache_clear();
 
 
@@ -247,7 +247,7 @@ void GameState_Update(GameState* gameState) {
 
     if (fbTest == -1)
     {
-        fbTest = gfx_create_framebuffer(64, 112);
+        fbTest = gfx_create_framebuffer(64, 112, SCREEN_WIDTH, SCREEN_HEIGHT, true);
         //fbTest = gfx_create_framebuffer(256, 512);
     }
 
