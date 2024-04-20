@@ -1,5 +1,6 @@
 #include "valueViewer.h"
 #include "../../UIWidgets.hpp"
+#include "soh/Enhancements/stairs.h"
 
 extern "C" {
 #include <z64.h>
@@ -14,26 +15,33 @@ s32 GfxPrint_Printf(GfxPrint* printer, const char* fmt, ...);
 
 ImVec4 WHITE = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
 
+static u32 stairsOutMaxFree;
+static u32 stairsOutFree;
+static u32 stairsOutAlloc;
+
 std::vector<ValueTableElement> valueTable = {
-    { "Time",               "gSaveContext.dayTime",                 "TIME:",   TYPE_U16,   false, []() -> void* { return &gSaveContext.dayTime; },                      WHITE },
-    { "Age",                "gSaveContext.linkAge",                 "AGE:",    TYPE_S32,   false, []() -> void* { return &gSaveContext.linkAge; },                      WHITE },
-    { "Health",             "gSaveContext.health",                  "HP:",     TYPE_S16,   false, []() -> void* { return &gSaveContext.health; },                       WHITE },
-    { "Navi Timer",         "gSaveContext.naviTimer",               "NAVI:",   TYPE_U16,   false, []() -> void* { return &gSaveContext.naviTimer; },                    WHITE },
-    { "Scene ID",           "play->sceneNum",                       "SCENE:",  TYPE_S16,   true,  []() -> void* { return &gPlayState->sceneNum; },                      WHITE },
-    { "Room ID",            "play->roomCtx.curRoom.num",            "ROOM:",   TYPE_S8,    true,  []() -> void* { return &gPlayState->roomCtx.curRoom.num; },           WHITE },
-    { "Entrance ID",        "gSaveContext.entranceIndex",           "ENTR:",   TYPE_S32,   false, []() -> void* { return &gSaveContext.entranceIndex; },                WHITE },
-    { "Cutscene ID",        "gSaveContext.cutsceneIndex",           "CUTS:",   TYPE_S32,   false, []() -> void* { return &gSaveContext.cutsceneIndex; },                WHITE },
-    { "Link X",             "Player->actor.world.pos.x",            "X:",      TYPE_FLOAT, true,  []() -> void* { return &GET_PLAYER(gPlayState)->actor.world.pos.x; }, WHITE },
-    { "Link Y",             "Player->actor.world.pos.y",            "Y:",      TYPE_FLOAT, true,  []() -> void* { return &GET_PLAYER(gPlayState)->actor.world.pos.y; }, WHITE },
-    { "Link Z",             "Player->actor.world.pos.z",            "Z:",      TYPE_FLOAT, true,  []() -> void* { return &GET_PLAYER(gPlayState)->actor.world.pos.z; }, WHITE },
-    { "Link Yaw",           "Player->actor.world.rot.y",            "ROT:",    TYPE_S16,   true,  []() -> void* { return &GET_PLAYER(gPlayState)->actor.world.rot.y; }, WHITE },
-    { "Link Velocity",      "Player->linearVelocity",               "V:",      TYPE_FLOAT, true,  []() -> void* { return &GET_PLAYER(gPlayState)->linearVelocity; },    WHITE },
-    { "Link X Velocity",    "Player->actor.velocity.x",             "XV:",     TYPE_FLOAT, true,  []() -> void* { return &GET_PLAYER(gPlayState)->actor.velocity.x; },  WHITE },
-    { "Link Y Velocity",    "Player->actor.velocity.y",             "YV:",     TYPE_FLOAT, true,  []() -> void* { return &GET_PLAYER(gPlayState)->actor.velocity.y; },  WHITE },
-    { "Link Z Velocity",    "Player->actor.velocity.z",             "ZV:",     TYPE_FLOAT, true,  []() -> void* { return &GET_PLAYER(gPlayState)->actor.velocity.z; },  WHITE },
-    { "Text ID",            "play->msgCtx.textId",                  "TEXTID:", TYPE_U16,   true,  []() -> void* { return &gPlayState->msgCtx.textId; },                 WHITE },
-    { "Analog Stick X",     "play->state.input->cur.stick_x",       "AX:",     TYPE_S8,    true,  []() -> void* { return &gPlayState->state.input->cur.stick_x; },      WHITE },
-    { "Analog Stick Y",     "play->state.input->cur.stick_y",       "AY:",     TYPE_S8,    true,  []() -> void* { return &gPlayState->state.input->cur.stick_y; },      WHITE },
+    { "Time",               "gSaveContext.dayTime",                 "TIME:",         TYPE_U16,   false, []() -> void* { return &gSaveContext.dayTime; },                      WHITE },
+    { "Age",                "gSaveContext.linkAge",                 "AGE:",          TYPE_S32,   false, []() -> void* { return &gSaveContext.linkAge; },                      WHITE },
+    { "Health",             "gSaveContext.health",                  "HP:",           TYPE_S16,   false, []() -> void* { return &gSaveContext.health; },                       WHITE },
+    { "Navi Timer",         "gSaveContext.naviTimer",               "NAVI:",         TYPE_U16,   false, []() -> void* { return &gSaveContext.naviTimer; },                    WHITE },
+    { "Scene ID",           "play->sceneNum",                       "SCENE:",        TYPE_S16,   true,  []() -> void* { return &gPlayState->sceneNum; },                      WHITE },
+    { "Room ID",            "play->roomCtx.curRoom.num",            "ROOM:",         TYPE_S8,    true,  []() -> void* { return &gPlayState->roomCtx.curRoom.num; },           WHITE },
+    { "Entrance ID",        "gSaveContext.entranceIndex",           "ENTR:",         TYPE_S32,   false, []() -> void* { return &gSaveContext.entranceIndex; },                WHITE },
+    { "Cutscene ID",        "gSaveContext.cutsceneIndex",           "CUTS:",         TYPE_S32,   false, []() -> void* { return &gSaveContext.cutsceneIndex; },                WHITE },
+    { "Link X",             "Player->actor.world.pos.x",            "X:",            TYPE_FLOAT, true,  []() -> void* { return &GET_PLAYER(gPlayState)->actor.world.pos.x; }, WHITE },
+    { "Link Y",             "Player->actor.world.pos.y",            "Y:",            TYPE_FLOAT, true,  []() -> void* { return &GET_PLAYER(gPlayState)->actor.world.pos.y; }, WHITE },
+    { "Link Z",             "Player->actor.world.pos.z",            "Z:",            TYPE_FLOAT, true,  []() -> void* { return &GET_PLAYER(gPlayState)->actor.world.pos.z; }, WHITE },
+    { "Link Yaw",           "Player->actor.world.rot.y",            "ROT:",          TYPE_S16,   true,  []() -> void* { return &GET_PLAYER(gPlayState)->actor.world.rot.y; }, WHITE },
+    { "Link Velocity",      "Player->linearVelocity",               "V:",            TYPE_FLOAT, true,  []() -> void* { return &GET_PLAYER(gPlayState)->linearVelocity; },    WHITE },
+    { "Link X Velocity",    "Player->actor.velocity.x",             "XV:",           TYPE_FLOAT, true,  []() -> void* { return &GET_PLAYER(gPlayState)->actor.velocity.x; },  WHITE },
+    { "Link Y Velocity",    "Player->actor.velocity.y",             "YV:",           TYPE_FLOAT, true,  []() -> void* { return &GET_PLAYER(gPlayState)->actor.velocity.y; },  WHITE },
+    { "Link Z Velocity",    "Player->actor.velocity.z",             "ZV:",           TYPE_FLOAT, true,  []() -> void* { return &GET_PLAYER(gPlayState)->actor.velocity.z; },  WHITE },
+    { "Text ID",            "play->msgCtx.textId",                  "TEXTID:",       TYPE_U16,   true,  []() -> void* { return &gPlayState->msgCtx.textId; },                 WHITE },
+    { "Analog Stick X",     "play->state.input->cur.stick_x",       "AX:",           TYPE_S8,    true,  []() -> void* { return &gPlayState->state.input->cur.stick_x; },      WHITE },
+    { "Analog Stick Y",     "play->state.input->cur.stick_y",       "AY:",           TYPE_S8,    true,  []() -> void* { return &gPlayState->state.input->cur.stick_y; },      WHITE },
+    { "Stairs: outMaxFree", "",                                     "STAIR-OM:",     TYPE_U32,   true,  []() -> void* { StairsArena_GetSizes(&stairsOutMaxFree, &stairsOutFree, &stairsOutAlloc); return &stairsOutMaxFree; }, WHITE },
+    { "Stairs: outFree",    "",                                     "STAIR-OF:",     TYPE_U32,   true,  []() -> void* { StairsArena_GetSizes(&stairsOutMaxFree, &stairsOutFree, &stairsOutAlloc); return &stairsOutFree; },    WHITE },
+    { "Stairs: outAlloc",   "",                                     "STAIR-OA:",     TYPE_U32,   true,  []() -> void* { StairsArena_GetSizes(&stairsOutMaxFree, &stairsOutFree, &stairsOutAlloc); return &stairsOutAlloc; },   WHITE },
     /* TODO: Find these (from GZ)
     "XZ Units Traveled (Camera based speed variable)" f32 0x801C9018
     "Movement Angle" x16 0x801DBB1C

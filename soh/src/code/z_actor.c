@@ -11,6 +11,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/nametag.h"
+#include "soh/Enhancements/stairs.h"
 
 #include "soh/ActorDB.h"
 
@@ -3106,6 +3107,13 @@ void func_80031C3C(ActorContext* actorCtx, PlayState* play) {
         actorCtx->absoluteSpace = NULL;
     }
 
+    if (CVarGetInteger("gStairs", 0)) {
+        if (Stairs_GetAbsoluteSpace()) {
+            StairsArena_FreeAbsolute();
+            Stairs_UnregisterAbsoluteSpace();
+        }
+    }
+
     Play_SaveSceneFlags(play);
     func_80030488(play);
 }
@@ -3173,6 +3181,22 @@ void Actor_FreeOverlay(ActorDBEntry* dbEntry) {
             dbEntry->reset();
         }
 
+        if (CVarGetInteger("gStairs", 0)) {
+            if (Stairs_GetOverlayRegistered(dbEntry->id)) {
+                u16 allocType = Stairs_GetAllocType(dbEntry->id);
+
+                if (allocType & STAIRS_ACTOROVL_ALLOC_PERSISTENT) {
+                    // Persistent, do not de-allocate
+                } else if (allocType & STAIRS_ACTOROVL_ALLOC_ABSOLUTE) {
+                    // Unregister but do not de-allocate
+                    Stairs_UnregisterOverlay(dbEntry->id);
+                } else {
+                    StairsArena_FreeOverlay(dbEntry->id);
+                    Stairs_UnregisterOverlay(dbEntry->id);
+                }
+            }
+        }
+
         if (HREG(20) != 0) {
             osSyncPrintf("アクタークライアントが０になりました\n"); // "Actor client is now 0"
         }
@@ -3219,6 +3243,28 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
         return NULL;
     }
 
+    if (CVarGetInteger("gStairs", 0)) {
+        u16 allocType = Stairs_GetAllocType(dbEntry->id);
+        size_t overlaySize = Stairs_GetOverlaySize(dbEntry->id);
+        void* loadedRamAddr = NULL;
+        if (Stairs_RegisterOverlay(actorId)) {
+            if (allocType == 0xFFFF) {
+
+            } else if (allocType & STAIRS_ACTOROVL_ALLOC_ABSOLUTE) {
+                if (Stairs_RegisterAbsoluteSpace()) {
+                    loadedRamAddr = StairsArena_MallocRAbsolute(STAIRS_ACTOROVL_ABSOLUTE_SPACE_SIZE);
+                }
+            } else if (allocType & STAIRS_ACTOROVL_ALLOC_PERSISTENT) {
+                loadedRamAddr = StairsArena_MallocROverlay(overlaySize, dbEntry->id);
+            } else {
+                loadedRamAddr = StairsArena_MallocOverlay(overlaySize, dbEntry->id);
+            }
+            if (loadedRamAddr == NULL) {
+                return NULL;
+            }
+        }
+    }
+
     objBankIndex = Object_GetIndex(&gPlayState->objectCtx, dbEntry->objectId);
 
     if (objBankIndex < 0 && (!gMapLoading || CVarGetInteger("gRandomizedEnemies", 0))) {
@@ -3242,6 +3288,14 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
                      dbEntry->name, dbEntry->instanceSize);
         Actor_FreeOverlay(dbEntry);
         return NULL;
+    }
+
+    if ((CVarGetInteger("gStairs", 0))) {
+        if (StairsArena_MallocGeneral(dbEntry->instanceSize, (uintptr_t)actor) == NULL) {
+            Actor_FreeOverlay(dbEntry);
+            actor = NULL;
+            return NULL;
+        }
     }
 
     assert(dbEntry->numLoaded < 255);
@@ -3384,6 +3438,10 @@ Actor* Actor_Delete(ActorContext* actorCtx, Actor* actor, PlayState* play) {
     Actor_Destroy(actor, play);
 
     newHead = Actor_RemoveFromCategory(play, actorCtx, actor);
+
+    if (CVarGetInteger("gStairs", 0)) {
+        StairsArena_FreeGeneral((uintptr_t)actor);
+    }
 
     ZELDA_ARENA_FREE_DEBUG(actor);
 
@@ -3556,14 +3614,23 @@ void BodyBreak_Alloc(BodyBreak* bodyBreak, s32 count, PlayState* play) {
 
     matricesSize = (count + 1) * sizeof(*bodyBreak->matrices);
     bodyBreak->matrices = ZELDA_ARENA_MALLOC_DEBUG(matricesSize);
+    if ((CVarGetInteger("gStairs", 0))) {
+        StairsArena_MallocGeneral(matricesSize, (uintptr_t)bodyBreak->matrices);
+    }
 
     if (bodyBreak->matrices != NULL) {
         dListsSize = (count + 1) * sizeof(*bodyBreak->dLists);
         bodyBreak->dLists = ZELDA_ARENA_MALLOC_DEBUG(dListsSize);
+        if ((CVarGetInteger("gStairs", 0))) {
+            StairsArena_MallocGeneral(dListsSize, (uintptr_t)bodyBreak->dLists);
+        }
 
         if (bodyBreak->dLists != NULL) {
             objectIdsSize = (count + 1) * sizeof(*bodyBreak->objectIds);
             bodyBreak->objectIds = ZELDA_ARENA_MALLOC_DEBUG(objectIdsSize);
+            if ((CVarGetInteger("gStairs", 0))) {
+                StairsArena_MallocGeneral(objectIdsSize, (uintptr_t)bodyBreak->objectIds);
+            }
 
             if (bodyBreak->objectIds != NULL) {
                 memset((u8*)bodyBreak->matrices,0, matricesSize);
@@ -3576,14 +3643,23 @@ void BodyBreak_Alloc(BodyBreak* bodyBreak, s32 count, PlayState* play) {
     }
 
     if (bodyBreak->matrices != NULL) {
+        if (CVarGetInteger("gStairs", 0)) {
+            StairsArena_FreeGeneral((uintptr_t)bodyBreak->matrices);
+        }
         ZELDA_ARENA_FREE_DEBUG(bodyBreak->matrices);
     }
 
     if (bodyBreak->dLists != NULL) {
+        if (CVarGetInteger("gStairs", 0)) {
+            StairsArena_FreeGeneral((uintptr_t)bodyBreak->dLists);
+        }
         ZELDA_ARENA_FREE_DEBUG(bodyBreak->dLists);
     }
 
     if (bodyBreak->objectIds != NULL) {
+        if (CVarGetInteger("gStairs", 0)) {
+            StairsArena_FreeGeneral((uintptr_t)bodyBreak->objectIds);
+        }
         ZELDA_ARENA_FREE_DEBUG(bodyBreak->objectIds);
     }
 }
@@ -3650,6 +3726,12 @@ s32 BodyBreak_SpawnParts(Actor* actor, BodyBreak* bodyBreak, PlayState* play, s1
     }
 
     bodyBreak->val = BODYBREAK_STATUS_FINISHED;
+
+    if (CVarGetInteger("gStairs", 0)) {
+        StairsArena_FreeGeneral((uintptr_t)bodyBreak->matrices);
+        StairsArena_FreeGeneral((uintptr_t)bodyBreak->dLists);
+        StairsArena_FreeGeneral((uintptr_t)bodyBreak->objectIds);
+    }
 
     ZELDA_ARENA_FREE_DEBUG(bodyBreak->matrices);
     ZELDA_ARENA_FREE_DEBUG(bodyBreak->dLists);
