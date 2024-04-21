@@ -14,7 +14,7 @@ std::shared_ptr<LUS::IResource> SetCollisionHeaderFactory::ReadResource(std::sha
     setCollisionHeader->fileName = reader->ReadString();
     setCollisionHeader->collisionHeader = std::static_pointer_cast<CollisionHeader>(LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(setCollisionHeader->fileName.c_str()));
 
-    if (CVarGetInteger("gDebugResourceLogging", 0)) {
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ResourceLogging"), 0)) {
         LogSetCollisionHeaderAsXML(setCollisionHeader);
     }
 

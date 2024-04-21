@@ -16,7 +16,7 @@ SetObjectListFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initDa
         setObjectList->objects.push_back(reader->ReadUInt16());
     }
 
-    if (CVarGetInteger("gDebugResourceLogging", 0)) {
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ResourceLogging"), 0)) {
         LogObjectListAsXML(setObjectList);
     }
 

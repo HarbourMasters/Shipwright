@@ -148,7 +148,7 @@ SetMeshFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, st
         SPDLOG_ERROR("Tried to load mesh in SetMesh scene header with type that doesn't exist: {}", setMesh->meshHeader.base.type);
     }
 
-    if (CVarGetInteger("gDebugResourceLogging", 0)) {
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ResourceLogging"), 0)) {
         LogMeshAsXML(setMesh);
     }
 

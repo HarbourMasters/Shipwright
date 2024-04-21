@@ -31,7 +31,7 @@ SetLightListFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initDat
         setLightList->lightList.push_back(light);
     }
 
-    if (CVarGetInteger("gDebugResourceLogging", 0)) {
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ResourceLogging"), 0)) {
         LogLightListAsXML(setLightList);
     }
 

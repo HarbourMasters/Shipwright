@@ -44,7 +44,7 @@ std::shared_ptr<LUS::IResource> SetLightingSettingsFactory::ReadResource(std::sh
         setLightingSettings->settings.push_back(lightSettings);
     }
 
-    if (CVarGetInteger("gDebugResourceLogging", 0)) {
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ResourceLogging"), 0)) {
         LogLightingSettingsAsXML(setLightingSettings);
     }
 

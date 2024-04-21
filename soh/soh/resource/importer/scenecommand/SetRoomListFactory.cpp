@@ -24,7 +24,7 @@ SetRoomListFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData
         setRoomList->rooms.push_back(room);
     }
 
-    if (CVarGetInteger("gDebugResourceLogging", 0)) {
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ResourceLogging"), 0)) {
         LogRoomListAsXML(setRoomList);
     }
 

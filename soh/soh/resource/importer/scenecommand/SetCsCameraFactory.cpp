@@ -15,7 +15,7 @@ SetCsCameraFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData
 
     // OTRTODO: FINISH!
 
-    if (CVarGetInteger("gDebugResourceLogging", 0)) {
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ResourceLogging"), 0)) {
         LogCsCameraAsXML(setCsCamera);
     }
 

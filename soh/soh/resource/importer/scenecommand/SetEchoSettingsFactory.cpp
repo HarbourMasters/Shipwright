@@ -12,7 +12,7 @@ SetEchoSettingsFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> init
 	
     setEchoSettings->settings.echo = reader->ReadInt8();
 
-    if (CVarGetInteger("gDebugResourceLogging", 0)) {
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ResourceLogging"), 0)) {
         LogEchoSettingsAsXML(setEchoSettings);
     }
 

@@ -15,7 +15,7 @@ SetWindSettingsFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> init
     setWind->settings.windSouth = reader->ReadInt8();
     setWind->settings.windSpeed = reader->ReadUByte();
 
-    if (CVarGetInteger("gDebugResourceLogging", 0)) {
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ResourceLogging"), 0)) {
         LogWindSettingsAsXML(setWind);
     }
 

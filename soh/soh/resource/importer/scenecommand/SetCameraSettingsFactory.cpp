@@ -13,7 +13,7 @@ std::shared_ptr<LUS::IResource> SetCameraSettingsFactory::ReadResource(std::shar
     setCameraSettings->settings.cameraMovement = reader->ReadInt8();
     setCameraSettings->settings.worldMapArea = reader->ReadInt32();
 
-    if (CVarGetInteger("gDebugResourceLogging", 0)) {
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ResourceLogging"), 0)) {
         LogCameraSettingsAsXML(setCameraSettings);
     }
 

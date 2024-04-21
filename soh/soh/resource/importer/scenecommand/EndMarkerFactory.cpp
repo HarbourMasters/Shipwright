@@ -10,7 +10,7 @@ EndMarkerFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, 
 
     ReadCommandId(endMarker, reader);
 
-    if (CVarGetInteger("gDebugResourceLogging", 0)) {
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ResourceLogging"), 0)) {
         LogEndMarkerAsXML(endMarker);
     }
 

@@ -29,7 +29,7 @@ std::shared_ptr<LUS::IResource> SetTransitionActorListFactory::ReadResource(std:
         setTransitionActorList->transitionActorList.push_back(entry);
     }
 
-    if (CVarGetInteger("gDebugResourceLogging", 0)) {
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ResourceLogging"), 0)) {
         LogTransitionActorListAsXML(setTransitionActorList);
     }
 

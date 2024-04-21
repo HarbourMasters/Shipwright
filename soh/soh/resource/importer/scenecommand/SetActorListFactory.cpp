@@ -27,7 +27,7 @@ SetActorListFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initDat
         setActorList->actorList.push_back(entry);
     }
 
-    if (CVarGetInteger("gDebugResourceLogging", 0)) {
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ResourceLogging"), 0)) {
         LogActorListAsXML(setActorList);
     }
 

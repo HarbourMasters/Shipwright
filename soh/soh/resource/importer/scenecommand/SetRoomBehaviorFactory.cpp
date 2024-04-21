@@ -13,7 +13,7 @@ SetRoomBehaviorFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> init
     setRoomBehavior->roomBehavior.gameplayFlags = reader->ReadInt8();
     setRoomBehavior->roomBehavior.gameplayFlags2 = reader->ReadInt32();
 
-    if (CVarGetInteger("gDebugResourceLogging", 0)) {
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ResourceLogging"), 0)) {
         LogRoomBehaviorAsXML(setRoomBehavior);
     }
 

@@ -22,7 +22,7 @@ std::shared_ptr<LUS::IResource> SetAlternateHeadersFactory::ReadResource(std::sh
         }
     }
 
-    if (CVarGetInteger("gDebugResourceLogging", 0)) {
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ResourceLogging"), 0)) {
         LogAlternateHeadersAsXML(setAlternateHeaders);
     }
 

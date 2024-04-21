@@ -13,7 +13,7 @@ std::shared_ptr<LUS::IResource> SetSpecialObjectsFactory::ReadResource(std::shar
     setSpecialObjects->specialObjects.elfMessage = reader->ReadInt8();
     setSpecialObjects->specialObjects.globalObject = reader->ReadInt16();
 
-    if (CVarGetInteger("gDebugResourceLogging", 0)) {
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ResourceLogging"), 0)) {
         LogSpecialObjectsAsXML(setSpecialObjects);
     }
 

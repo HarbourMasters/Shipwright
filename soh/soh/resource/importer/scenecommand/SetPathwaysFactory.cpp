@@ -19,7 +19,7 @@ SetPathwaysFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData
         setPathways->paths.push_back(path->GetPointer());
     }
 
-    if (CVarGetInteger("gDebugResourceLogging", 0)) {
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ResourceLogging"), 0)) {
         LogPathwaysAsXML(setPathways);
     }
 

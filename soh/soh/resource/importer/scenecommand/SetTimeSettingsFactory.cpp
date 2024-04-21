@@ -14,7 +14,7 @@ SetTimeSettingsFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> init
     setTimeSettings->settings.minute = reader->ReadInt8();
     setTimeSettings->settings.timeIncrement = reader->ReadInt8();
 
-    if (CVarGetInteger("gDebugResourceLogging", 0)) {
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ResourceLogging"), 0)) {
         LogTimeSettingsAsXML(setTimeSettings);
     }
 

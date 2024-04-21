@@ -14,7 +14,7 @@ SetCutscenesFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initDat
     setCutscenes->fileName = reader->ReadString();
     setCutscenes->cutscene = std::static_pointer_cast<Cutscene>(LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(setCutscenes->fileName.c_str()));
 
-    if (CVarGetInteger("gDebugResourceLogging", 0)) {
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ResourceLogging"), 0)) {
         LogCutscenesAsXML(setCutscenes);
     }
 

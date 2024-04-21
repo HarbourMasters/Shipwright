@@ -21,7 +21,7 @@ SetEntranceListFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> init
         setEntranceList->entrances.push_back(entranceEntry);
     }
 
-    if (CVarGetInteger("gDebugResourceLogging", 0)) {
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ResourceLogging"), 0)) {
         LogEntranceListAsXML(setEntranceList);
     }
 

@@ -27,7 +27,7 @@ std::shared_ptr<LUS::IResource> SetStartPositionListFactory::ReadResource(std::s
         setStartPositionList->startPositions.push_back(entry);
     }
 
-    if (CVarGetInteger("gDebugResourceLogging", 0)) {
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ResourceLogging"), 0)) {
         LogStartPositionListAsXML(setStartPositionList);
     }
 

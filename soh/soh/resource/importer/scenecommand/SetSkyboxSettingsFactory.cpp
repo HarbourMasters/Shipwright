@@ -15,7 +15,7 @@ std::shared_ptr<LUS::IResource> SetSkyboxSettingsFactory::ReadResource(std::shar
     setSkyboxSettings->settings.weather = reader->ReadInt8();
     setSkyboxSettings->settings.indoors = reader->ReadInt8();
 
-    if (CVarGetInteger("gDebugResourceLogging", 0)) {
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ResourceLogging"), 0)) {
         LogSkyboxSettingsAsXML(setSkyboxSettings);
     }
 
