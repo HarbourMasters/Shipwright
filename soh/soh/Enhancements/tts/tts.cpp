@@ -3,7 +3,7 @@
 
 #include <cassert>
 #include <File.h>
-#include <RawJson.h>
+#include <Json.h>
 #include <libultraship/classes.h>
 #include <nlohmann/json.hpp>
 #include <spdlog/fmt/fmt.h>
@@ -1041,19 +1041,19 @@ void InitTTSBank() {
 
     auto initData = std::make_shared<LUS::ResourceInitData>();
     initData->Format = RESOURCE_FORMAT_BINARY;
-    initData->Type = static_cast<uint32_t>(LUS::ResourceType::RawJson);
+    initData->Type = static_cast<uint32_t>(LUS::ResourceType::Json);
     initData->ResourceVersion = 0;
     
-    sceneMap = std::static_pointer_cast<LUS::RawJson>(
+    sceneMap = std::static_pointer_cast<LUS::Json>(
         LUS::Context::GetInstance()->GetResourceManager()->LoadResource("accessibility/texts/scenes" + languageSuffix, true, initData))->Data;
 
-    miscMap = std::static_pointer_cast<LUS::RawJson>(
+    miscMap = std::static_pointer_cast<LUS::Json>(
         LUS::Context::GetInstance()->GetResourceManager()->LoadResource("accessibility/texts/misc" + languageSuffix, true, initData))->Data;
 
-    kaleidoMap = std::static_pointer_cast<LUS::RawJson>(
+    kaleidoMap = std::static_pointer_cast<LUS::Json>(
         LUS::Context::GetInstance()->GetResourceManager()->LoadResource("accessibility/texts/kaleidoscope" + languageSuffix, true, initData))->Data;
 
-    fileChooseMap = std::static_pointer_cast<LUS::RawJson>(
+    fileChooseMap = std::static_pointer_cast<LUS::Json>(
         LUS::Context::GetInstance()->GetResourceManager()->LoadResource("accessibility/texts/filechoose" + languageSuffix, true, initData))->Data;
 }
 
