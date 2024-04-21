@@ -377,6 +377,9 @@ void CustomMessage::AutoFormatString(std::string& str) const {// did I do this r
     }
     ReplaceSpecialCharacters(str);
     ReplaceAltarIcons(str);
+    std::replace(str.begin(), str.end(), '&', NEWLINE()[0]);
+    std::replace(str.begin(), str.end(), '^', WAIT_FOR_INPUT()[0]);
+    std::replace(str.begin(), str.end(), '@', PLAYER_NAME()[0]);
     str += MESSAGE_END();
 }
 

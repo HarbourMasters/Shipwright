@@ -2747,14 +2747,14 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
     switch (gSaveContext.language) {
         case LANGUAGE_FRA:
             return msgCtx->msgLength = font->msgLength =
-                       CopyStringToCharBuffer(messageEntry.GetFrench(), buffer, maxBufferSize);
+                       CopyStringToCharBuffer(messageEntry.GetFrench(MF_RAW), buffer, maxBufferSize);
         case LANGUAGE_GER:
             return msgCtx->msgLength = font->msgLength =
-                       CopyStringToCharBuffer(messageEntry.GetGerman(), buffer, maxBufferSize);
+                       CopyStringToCharBuffer(messageEntry.GetGerman(MF_RAW), buffer, maxBufferSize);
         case LANGUAGE_ENG:
         default:
             return msgCtx->msgLength = font->msgLength =
-                       CopyStringToCharBuffer(messageEntry.GetEnglish(), buffer, maxBufferSize);
+                       CopyStringToCharBuffer(messageEntry.GetEnglish(MF_RAW), buffer, maxBufferSize);
     }
     return false;
 }
