@@ -331,12 +331,12 @@ AudioCollection::AudioCollection() {
 }
 
 std::string AudioCollection::GetCvarKey(std::string sfxKey) {
-    auto prefix = AUDIO_CVAR("ReplacedSequences.");
+    auto prefix = CVAR_AUDIO("ReplacedSequences.");
     return prefix + sfxKey + ".value";
 }
 
 std::string AudioCollection::GetCvarLockKey(std::string sfxKey) {
-    auto prefix = std::string(AUDIO_CVAR("ReplacedSequences."));
+    auto prefix = std::string(CVAR_AUDIO("ReplacedSequences."));
     return prefix + sfxKey + ".locked";
 }
 
@@ -365,7 +365,7 @@ uint16_t AudioCollection::GetReplacementSequence(uint16_t seqId) {
     // for Hyrule Field instead. Otherwise, leave it alone, so that without any sfx editor modifications we will
     // play the normal track as usual.
     if (seqId == NA_BGM_FIELD_MORNING) {
-        if (CVarGetInteger(AUDIO_CVAR("ReplacedSequences.NA_BGM_FIELD_LOGIC.value"), NA_BGM_FIELD_LOGIC) != NA_BGM_FIELD_LOGIC) {
+        if (CVarGetInteger(CVAR_AUDIO("ReplacedSequences.NA_BGM_FIELD_LOGIC.value"), NA_BGM_FIELD_LOGIC) != NA_BGM_FIELD_LOGIC) {
             seqId = NA_BGM_FIELD_LOGIC;
         }
     }
@@ -384,7 +384,7 @@ uint16_t AudioCollection::GetReplacementSequence(uint16_t seqId) {
 }
 
 void AudioCollection::RemoveFromShufflePool(SequenceInfo* seqInfo) {
-    const std::string cvarKey = std::string(AUDIO_CVAR("Excluded.")) + seqInfo->sfxKey;
+    const std::string cvarKey = std::string(CVAR_AUDIO("Excluded.")) + seqInfo->sfxKey;
     excludedSequences.insert(seqInfo);
     includedSequences.erase(seqInfo);
     CVarSetInteger(cvarKey.c_str(), 1);
@@ -392,7 +392,7 @@ void AudioCollection::RemoveFromShufflePool(SequenceInfo* seqInfo) {
 }
 
 void AudioCollection::AddToShufflePool(SequenceInfo* seqInfo) {
-    const std::string cvarKey = std::string(AUDIO_CVAR("Excluded.")) + seqInfo->sfxKey;
+    const std::string cvarKey = std::string(CVAR_AUDIO("Excluded.")) + seqInfo->sfxKey;
     includedSequences.insert(seqInfo);
     excludedSequences.erase(seqInfo);
     CVarClear(cvarKey.c_str());
@@ -404,7 +404,7 @@ void AudioCollection::InitializeShufflePool() {
     
     for (auto& [seqId, seqInfo] : sequenceMap) {
         if (!seqInfo.canBeUsedAsReplacement) continue;
-        const std::string cvarKey = std::string(AUDIO_CVAR("Excluded.")) + seqInfo.sfxKey;
+        const std::string cvarKey = std::string(CVAR_AUDIO("Excluded.")) + seqInfo.sfxKey;
         if (CVarGetInteger(cvarKey.c_str(), 0)) {
             excludedSequences.insert(&seqInfo);
         } else {

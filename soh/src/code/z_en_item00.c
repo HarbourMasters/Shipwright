@@ -792,7 +792,7 @@ void EnItem00_Update(Actor* thisx, PlayState* play) {
 
     if (this->unk_15A > 0) {
         this->unk_15A--;
-        if (CVarGetInteger(CHEAT_CVAR("DropsDontDie"), 0) && (this->unk_154 <= 0)) {
+        if (CVarGetInteger(CVAR_CHEAT("DropsDontDie"), 0) && (this->unk_154 <= 0)) {
             this->unk_15A++;
         }
     }

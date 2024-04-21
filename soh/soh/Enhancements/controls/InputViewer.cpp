@@ -60,7 +60,7 @@ void InputViewer::RenderButton(std::string btnTexture, std::string btnOutlineTex
 }
 
 void InputViewer::DrawElement() {
-    if (CVarGetInteger(WINDOW_CVAR("InputViewer"), 0)) {
+    if (CVarGetInteger(CVAR_WINDOW("InputViewer"), 0)) {
         static bool sButtonTexturesLoaded = false;
         if (!sButtonTexturesLoaded) {
             LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage(

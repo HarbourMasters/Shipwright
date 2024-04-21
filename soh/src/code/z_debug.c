@@ -133,7 +133,7 @@ void func_8006390C(Input* input) {
     InputCombo* input_combo;
     s32 i;
 
-    if (!CVarGetInteger("gDebugEnabled", 0))
+    if (!CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0))
         return;
 
     regGroup = (gGameInfo->regGroup * REG_PAGES + gGameInfo->regPage) * REG_PER_PAGE - REG_PER_PAGE;
@@ -216,7 +216,7 @@ void func_80063C04(GfxPrint* printer) {
     s32 pad;
     char name[3];
 
-    if (!CVarGetInteger("gDebugEnabled", 0))
+    if (!CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0))
         return;
 
     // set up register name string
@@ -243,7 +243,7 @@ void func_80063D7C(GraphicsContext* gfxCtx) {
     GfxPrint printer;
     Gfx* tempRet;
 
-    if (!CVarGetInteger("gDebugEnabled", 0) || GameInteractor_NoUIActive()) {
+    if (!CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0) || GameInteractor_NoUIActive()) {
         return;
     }
 
