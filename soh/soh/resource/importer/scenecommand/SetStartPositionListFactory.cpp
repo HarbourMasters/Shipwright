@@ -1,5 +1,6 @@
 #include "soh/resource/importer/scenecommand/SetStartPositionListFactory.h"
 #include "soh/resource/type/scenecommand/SetStartPositionList.h"
+#include "soh/resource/logging/SceneCommandLoggers.h"
 #include "spdlog/spdlog.h"
 
 namespace SOH {
@@ -26,7 +27,9 @@ std::shared_ptr<LUS::IResource> SetStartPositionListFactory::ReadResource(std::s
         setStartPositionList->startPositions.push_back(entry);
     }
 
-    //LogStartPositionListAsXML(setStartPositionList);
+    if (CVarGetInteger("gDebugResourceLogging", 0)) {
+        LogStartPositionListAsXML(setStartPositionList);
+    }
 
     return setStartPositionList;
 }
@@ -60,31 +63,5 @@ std::shared_ptr<LUS::IResource> SetStartPositionListFactoryXML::ReadResource(std
     setStartPositionList->numStartPositions = setStartPositionList->startPositions.size();
 
     return setStartPositionList;
-}
-
-void LogStartPositionListAsXML(std::shared_ptr<LUS::IResource> resource) {
-    std::shared_ptr<SetStartPositionList> setStartPositionList = std::static_pointer_cast<SetStartPositionList>(resource);
-
-    tinyxml2::XMLDocument doc;
-    tinyxml2::XMLElement* root = doc.NewElement("SetStartPositionList");
-    doc.InsertFirstChild(root);
-
-    for (size_t i = 0; i < setStartPositionList->numStartPositions; i++) {
-        tinyxml2::XMLElement* entry = doc.NewElement("StartPositionEntry");
-        entry->SetAttribute("Id", setStartPositionList->startPositions[i].id);
-        entry->SetAttribute("PosX", setStartPositionList->startPositions[i].pos.x);
-        entry->SetAttribute("PosY", setStartPositionList->startPositions[i].pos.y);
-        entry->SetAttribute("PosZ", setStartPositionList->startPositions[i].pos.z);
-        entry->SetAttribute("RotX", setStartPositionList->startPositions[i].rot.x);
-        entry->SetAttribute("RotY", setStartPositionList->startPositions[i].rot.y);
-        entry->SetAttribute("RotZ", setStartPositionList->startPositions[i].rot.z);
-        entry->SetAttribute("Params", setStartPositionList->startPositions[i].params);
-        root->InsertEndChild(entry);
-    }
-
-    tinyxml2::XMLPrinter printer;
-    doc.Accept(&printer);
-
-    SPDLOG_INFO("{}: {}", resource->GetInitData()->Path, printer.CStr());
 }
 } // namespace SOH

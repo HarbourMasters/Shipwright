@@ -1,5 +1,6 @@
 #include "soh/resource/importer/scenecommand/SetCutscenesFactory.h"
 #include "soh/resource/type/scenecommand/SetCutscenes.h"
+#include "soh/resource/logging/SceneCommandLoggers.h"
 #include <libultraship/libultraship.h>
 #include "spdlog/spdlog.h"
 
@@ -13,7 +14,9 @@ SetCutscenesFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initDat
     setCutscenes->fileName = reader->ReadString();
     setCutscenes->cutscene = std::static_pointer_cast<Cutscene>(LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(setCutscenes->fileName.c_str()));
 
-    //LogCutscenesAsXML(setCutscenes);
+    if (CVarGetInteger("gDebugResourceLogging", 0)) {
+        LogCutscenesAsXML(setCutscenes);
+    }
 
     return setCutscenes;
 }
@@ -28,20 +31,5 @@ std::shared_ptr<LUS::IResource> SetCutscenesFactoryXML::ReadResource(std::shared
     setCutscenes->cutscene = std::static_pointer_cast<Cutscene>(LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(setCutscenes->fileName.c_str()));
 
     return setCutscenes;
-}
-
-void LogCutscenesAsXML(std::shared_ptr<LUS::IResource> resource) {
-    std::shared_ptr<SetCutscenes> setCutscenes = std::static_pointer_cast<SetCutscenes>(resource);
-
-    tinyxml2::XMLDocument doc;
-    tinyxml2::XMLElement* root = doc.NewElement("SetCutscenes");
-    doc.InsertFirstChild(root);
-
-    root->SetAttribute("FileName", setCutscenes->fileName.c_str());
-
-    tinyxml2::XMLPrinter printer;
-    doc.Accept(&printer);
-
-    SPDLOG_INFO("{}: {}", resource->GetInitData()->Path, printer.CStr());
 }
 } // namespace SOH

@@ -1,5 +1,6 @@
 #include "soh/resource/importer/scenecommand/SetTimeSettingsFactory.h"
 #include "soh/resource/type/scenecommand/SetTimeSettings.h"
+#include "soh/resource/logging/SceneCommandLoggers.h"
 #include "spdlog/spdlog.h"
 
 namespace SOH {
@@ -13,7 +14,9 @@ SetTimeSettingsFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> init
     setTimeSettings->settings.minute = reader->ReadInt8();
     setTimeSettings->settings.timeIncrement = reader->ReadInt8();
 
-    //LogTimeSettingsAsXML(setTimeSettings);
+    if (CVarGetInteger("gDebugResourceLogging", 0)) {
+        LogTimeSettingsAsXML(setTimeSettings);
+    }
 
     return setTimeSettings;
 }
@@ -29,22 +32,5 @@ std::shared_ptr<LUS::IResource> SetTimeSettingsFactoryXML::ReadResource(std::sha
     setTimeSettings->settings.timeIncrement = reader->IntAttribute("TimeIncrement");
 
     return setTimeSettings;
-}
-
-void LogTimeSettingsAsXML(std::shared_ptr<LUS::IResource> resource) {
-    std::shared_ptr<SetTimeSettings> setTimeSettings = std::static_pointer_cast<SetTimeSettings>(resource);
-
-    tinyxml2::XMLDocument doc;
-    tinyxml2::XMLElement* root = doc.NewElement("SetTimeSettings");
-    doc.InsertFirstChild(root);
-
-    root->SetAttribute("Hour", setTimeSettings->settings.hour);
-    root->SetAttribute("Minute", setTimeSettings->settings.minute);
-    root->SetAttribute("TimeIncrement", setTimeSettings->settings.timeIncrement);
-
-    tinyxml2::XMLPrinter printer;
-    doc.Accept(&printer);
-
-    SPDLOG_INFO("{}: {}", resource->GetInitData()->Path, printer.CStr());
 }
 } // namespace SOH

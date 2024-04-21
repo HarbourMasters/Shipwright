@@ -1,5 +1,6 @@
 #include "soh/resource/importer/scenecommand/SetSpecialObjectsFactory.h"
 #include "soh/resource/type/scenecommand/SetSpecialObjects.h"
+#include "soh/resource/logging/SceneCommandLoggers.h"
 #include "spdlog/spdlog.h"
 
 namespace SOH {
@@ -12,7 +13,9 @@ std::shared_ptr<LUS::IResource> SetSpecialObjectsFactory::ReadResource(std::shar
     setSpecialObjects->specialObjects.elfMessage = reader->ReadInt8();
     setSpecialObjects->specialObjects.globalObject = reader->ReadInt16();
 
-    //LogSpecialObjectsAsXML(setSpecialObjects);
+    if (CVarGetInteger("gDebugResourceLogging", 0)) {
+        LogSpecialObjectsAsXML(setSpecialObjects);
+    }
 
     return setSpecialObjects;
 }
@@ -27,21 +30,5 @@ std::shared_ptr<LUS::IResource> SetSpecialObjectsFactoryXML::ReadResource(std::s
     setSpecialObjects->specialObjects.globalObject = reader->IntAttribute("GlobalObject");
 
     return setSpecialObjects;
-}
-
-void LogSpecialObjectsAsXML(std::shared_ptr<LUS::IResource> resource) {
-    std::shared_ptr<SetSpecialObjects> setSpecialObjects = std::static_pointer_cast<SetSpecialObjects>(resource);
-
-    tinyxml2::XMLDocument doc;
-    tinyxml2::XMLElement* root = doc.NewElement("SetSpecialObjects");
-    doc.InsertFirstChild(root);
-
-    root->SetAttribute("ElfMessage", setSpecialObjects->specialObjects.elfMessage);
-    root->SetAttribute("GlobalObject", setSpecialObjects->specialObjects.globalObject);
-
-    tinyxml2::XMLPrinter printer;
-    doc.Accept(&printer);
-
-    SPDLOG_INFO("{}: {}", resource->GetInitData()->Path, printer.CStr());
 }
 } // namespace SOH

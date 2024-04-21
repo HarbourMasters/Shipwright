@@ -1,5 +1,6 @@
 #include "soh/resource/importer/scenecommand/SetPathwaysFactory.h"
 #include "soh/resource/type/scenecommand/SetPathways.h"
+#include "soh/resource/logging/SceneCommandLoggers.h"
 #include "spdlog/spdlog.h"
 #include <libultraship/libultraship.h>
 
@@ -18,7 +19,9 @@ SetPathwaysFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData
         setPathways->paths.push_back(path->GetPointer());
     }
 
-    //LogPathwaysAsXML(setPathways);
+    if (CVarGetInteger("gDebugResourceLogging", 0)) {
+        LogPathwaysAsXML(setPathways);
+    }
 
     return setPathways;
 }
@@ -46,24 +49,5 @@ std::shared_ptr<LUS::IResource> SetPathwaysFactoryXML::ReadResource(std::shared_
     setPathways->numPaths = setPathways->paths.size();
 
     return setPathways;
-}
-
-void LogPathwaysAsXML(std::shared_ptr<LUS::IResource> resource) {
-    std::shared_ptr<SetPathways> setPathways = std::static_pointer_cast<SetPathways>(resource);
-
-    tinyxml2::XMLDocument doc;
-    tinyxml2::XMLElement* root = doc.NewElement("SetPathways");
-    doc.InsertFirstChild(root);
-
-    for (size_t i = 0; i < setPathways->pathFileNames.size(); i++) {
-        tinyxml2::XMLElement* pathway = doc.NewElement("Pathway");
-        pathway->SetAttribute("FilePath", setPathways->pathFileNames[i].c_str());
-        root->InsertEndChild(pathway);
-    }
-
-    tinyxml2::XMLPrinter printer;
-    doc.Accept(&printer);
-
-    SPDLOG_INFO("{}: {}", resource->GetInitData()->Path, printer.CStr());
 }
 } // namespace SOH

@@ -1,5 +1,6 @@
 #include "soh/resource/importer/scenecommand/SetAlternateHeadersFactory.h"
 #include "soh/resource/type/scenecommand/SetAlternateHeaders.h"
+#include "soh/resource/logging/SceneCommandLoggers.h"
 #include "spdlog/spdlog.h"
 #include "libultraship/libultraship.h"
 
@@ -21,7 +22,9 @@ std::shared_ptr<LUS::IResource> SetAlternateHeadersFactory::ReadResource(std::sh
         }
     }
 
-    //LogAlternateHeadersAsXML(setAlternateHeaders);
+    if (CVarGetInteger("gDebugResourceLogging", 0)) {
+        LogAlternateHeadersAsXML(setAlternateHeaders);
+    }
 
     return setAlternateHeaders;
 }
@@ -53,18 +56,5 @@ std::shared_ptr<LUS::IResource> SetAlternateHeadersFactoryXML::ReadResource(std:
     setAlternateHeaders->numHeaders = setAlternateHeaders->headers.size();
 
     return setAlternateHeaders;
-}
-
-void LogAlternateHeadersAsXML(std::shared_ptr<LUS::IResource> resource) {
-    std::shared_ptr<SetAlternateHeaders> setAlternateHeaders = std::static_pointer_cast<SetAlternateHeaders>(resource);
-
-    tinyxml2::XMLDocument doc;
-    tinyxml2::XMLElement* root = doc.NewElement("SetAlternateHeaders");
-    doc.InsertFirstChild(root);
-
-    tinyxml2::XMLPrinter printer;
-    doc.Accept(&printer);
-
-    SPDLOG_INFO("{}: {}", resource->GetInitData()->Path, printer.CStr());
 }
 } // namespace SOH

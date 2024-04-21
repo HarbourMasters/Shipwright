@@ -1,5 +1,6 @@
 #include "soh/resource/importer/scenecommand/SetCameraSettingsFactory.h"
 #include "soh/resource/type/scenecommand/SetCameraSettings.h"
+#include "soh/resource/logging/SceneCommandLoggers.h"
 #include "spdlog/spdlog.h"
 
 namespace SOH {
@@ -12,7 +13,9 @@ std::shared_ptr<LUS::IResource> SetCameraSettingsFactory::ReadResource(std::shar
     setCameraSettings->settings.cameraMovement = reader->ReadInt8();
     setCameraSettings->settings.worldMapArea = reader->ReadInt32();
 
-    //LogCameraSettingsAsXML(setCameraSettings);
+    if (CVarGetInteger("gDebugResourceLogging", 0)) {
+        LogCameraSettingsAsXML(setCameraSettings);
+    }
 
     return setCameraSettings;
 }
@@ -27,21 +30,5 @@ std::shared_ptr<LUS::IResource> SetCameraSettingsFactoryXML::ReadResource(std::s
     setCameraSettings->settings.worldMapArea = reader->IntAttribute("WorldMapArea");
 
     return setCameraSettings;
-}
-
-void LogCameraSettingsAsXML(std::shared_ptr<LUS::IResource> resource) {
-    std::shared_ptr<SetCameraSettings> setCameraSettings = std::static_pointer_cast<SetCameraSettings>(resource);
-
-    tinyxml2::XMLDocument doc;
-    tinyxml2::XMLElement* root = doc.NewElement("SetCameraSettings");
-    doc.InsertFirstChild(root);
-
-    root->SetAttribute("CameraMovement", setCameraSettings->settings.cameraMovement);
-    root->SetAttribute("WorldMapArea", setCameraSettings->settings.worldMapArea);
-
-    tinyxml2::XMLPrinter printer;
-    doc.Accept(&printer);
-
-    SPDLOG_INFO("{}: {}", resource->GetInitData()->Path, printer.CStr());
 }
 } // namespace SOH

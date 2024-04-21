@@ -1,5 +1,6 @@
 #include "soh/resource/importer/scenecommand/EndMarkerFactory.h"
 #include "soh/resource/type/scenecommand/EndMarker.h"
+#include "soh/resource/logging/SceneCommandLoggers.h"
 #include "spdlog/spdlog.h"
 
 namespace SOH {
@@ -9,7 +10,9 @@ EndMarkerFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, 
 
     ReadCommandId(endMarker, reader);
 
-    //LogEndMarkerAsXML(endMarker);
+    if (CVarGetInteger("gDebugResourceLogging", 0)) {
+        LogEndMarkerAsXML(endMarker);
+    }
 
     return endMarker;
 }
@@ -21,18 +24,5 @@ std::shared_ptr<LUS::IResource> EndMarkerFactoryXML::ReadResource(std::shared_pt
     endMarker->cmdId = SceneCommandID::EndMarker;
 
     return endMarker;
-}
-
-void LogEndMarkerAsXML(std::shared_ptr<LUS::IResource> resource) {
-    std::shared_ptr<EndMarker> endMarker = std::static_pointer_cast<EndMarker>(resource);
-
-    tinyxml2::XMLDocument doc;
-    tinyxml2::XMLElement* root = doc.NewElement("EndMarker");
-    doc.InsertFirstChild(root);
-
-    tinyxml2::XMLPrinter printer;
-    doc.Accept(&printer);
-
-    SPDLOG_INFO("{}: {}", resource->GetInitData()->Path, printer.CStr());
 }
 } // namespace SOH

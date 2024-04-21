@@ -4,6 +4,7 @@
 #include "Resource.h"
 #include "ResourceFactory.h"
 #include "soh/resource/type/scenecommand/SceneCommand.h"
+#include "public/bridge/consolevariablebridge.h"
 
 namespace SOH {
 class SceneCommandFactoryBinaryV0 {

@@ -1660,6 +1660,8 @@ void DrawDeveloperToolsMenu() {
         UIWidgets::Tooltip("Optimized debug warp screen, with the added ability to chose entrances and time of day");
         UIWidgets::PaddedEnhancementCheckbox("Debug Warp Screen Translation", "gDebugWarpScreenTranslation", true, false, false, "", UIWidgets::CheckboxGraphics::Cross, true);
         UIWidgets::Tooltip("Translate the Debug Warp Screen based on the game language");
+        UIWidgets::PaddedEnhancementCheckbox("Resource logging", "gDebugResourceLogging", true, false);
+        UIWidgets::Tooltip("Logs some resources as XML when they're loaded in binary format");
         if (gPlayState != NULL) {
             UIWidgets::PaddedSeparator();
             ImGui::Checkbox("Frame Advance##frameAdvance", (bool*)&gPlayState->frameAdvCtx.enabled);

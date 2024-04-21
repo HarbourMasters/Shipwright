@@ -1,5 +1,6 @@
 #include "soh/resource/importer/scenecommand/SetEntranceListFactory.h"
 #include "soh/resource/type/scenecommand/SetEntranceList.h"
+#include "soh/resource/logging/SceneCommandLoggers.h"
 #include "spdlog/spdlog.h"
 
 namespace SOH {
@@ -20,7 +21,9 @@ SetEntranceListFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> init
         setEntranceList->entrances.push_back(entranceEntry);
     }
 
-    //LogEntranceListAsXML(setEntranceList);
+    if (CVarGetInteger("gDebugResourceLogging", 0)) {
+        LogEntranceListAsXML(setEntranceList);
+    }
 
     return setEntranceList;
 }
@@ -48,25 +51,5 @@ std::shared_ptr<LUS::IResource> SetEntranceListFactoryXML::ReadResource(std::sha
     setEntranceList->numEntrances = setEntranceList->entrances.size();
 
     return setEntranceList;
-}
-
-void LogEntranceListAsXML(std::shared_ptr<LUS::IResource> resource) {
-    std::shared_ptr<SetEntranceList> setEntranceList = std::static_pointer_cast<SetEntranceList>(resource);
-
-    tinyxml2::XMLDocument doc;
-    tinyxml2::XMLElement* root = doc.NewElement("SetEntranceList");
-    doc.InsertFirstChild(root);
-
-    for (size_t i = 0; i < setEntranceList->numEntrances; i++) {
-        tinyxml2::XMLElement* entry = doc.NewElement("EntranceEntry");
-        entry->SetAttribute("Spawn", setEntranceList->entrances[i].spawn);
-        entry->SetAttribute("Room", setEntranceList->entrances[i].room);
-        root->InsertEndChild(entry);
-    }
-
-    tinyxml2::XMLPrinter printer;
-    doc.Accept(&printer);
-
-    SPDLOG_INFO("{}: {}", resource->GetInitData()->Path, printer.CStr());
 }
 } // namespace SOH

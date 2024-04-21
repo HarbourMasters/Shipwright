@@ -1,5 +1,6 @@
 #include "soh/resource/importer/scenecommand/SetActorListFactory.h"
 #include "soh/resource/type/scenecommand/SetActorList.h"
+#include "soh/resource/logging/SceneCommandLoggers.h"
 #include "spdlog/spdlog.h"
 
 namespace SOH {
@@ -26,7 +27,9 @@ SetActorListFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initDat
         setActorList->actorList.push_back(entry);
     }
 
-    //LogActorListAsXML(setActorList);
+    if (CVarGetInteger("gDebugResourceLogging", 0)) {
+        LogActorListAsXML(setActorList);
+    }
 
     return setActorList;
 }
@@ -60,31 +63,5 @@ std::shared_ptr<LUS::IResource> SetActorListFactoryXML::ReadResource(std::shared
     setActorList->numActors = setActorList->actorList.size();
 
     return setActorList;
-}
-
-void LogActorListAsXML(std::shared_ptr<LUS::IResource> resource) {
-    std::shared_ptr<SetActorList> setActorList = std::static_pointer_cast<SetActorList>(resource);
-
-    tinyxml2::XMLDocument doc;
-    tinyxml2::XMLElement* root = doc.NewElement("SetActorList");
-    doc.InsertFirstChild(root);
-
-    for (size_t i = 0; i < setActorList->numActors; i++) {
-        tinyxml2::XMLElement* entry = doc.NewElement("ActorEntry");
-        entry->SetAttribute("Id", setActorList->actorList[i].id);
-        entry->SetAttribute("PosX", setActorList->actorList[i].pos.x);
-        entry->SetAttribute("PosY", setActorList->actorList[i].pos.y);
-        entry->SetAttribute("PosZ", setActorList->actorList[i].pos.z);
-        entry->SetAttribute("RotX", setActorList->actorList[i].rot.x);
-        entry->SetAttribute("RotY", setActorList->actorList[i].rot.y);
-        entry->SetAttribute("RotZ", setActorList->actorList[i].rot.z);
-        entry->SetAttribute("Params", setActorList->actorList[i].params);
-        root->InsertEndChild(entry);
-    }
-
-    tinyxml2::XMLPrinter printer;
-    doc.Accept(&printer);
-
-    SPDLOG_INFO("{}: {}", resource->GetInitData()->Path, printer.CStr());
 }
 } // namespace SOH

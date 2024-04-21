@@ -1,5 +1,6 @@
 #include "soh/resource/importer/scenecommand/SetExitListFactory.h"
 #include "soh/resource/type/scenecommand/SetExitList.h"
+#include "soh/resource/logging/SceneCommandLoggers.h"
 #include "spdlog/spdlog.h"
 
 namespace SOH {
@@ -15,7 +16,9 @@ SetExitListFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData
         setExitList->exits.push_back(reader->ReadUInt16());
     }
 
-    //LogExitListAsXML(setExitList);
+    if (CVarGetInteger("gDebugResourceLogging", 0)) {
+        LogExitListAsXML(setExitList);
+    }
 
     return setExitList;
 }
@@ -40,24 +43,5 @@ std::shared_ptr<LUS::IResource> SetExitListFactoryXML::ReadResource(std::shared_
     setExitList->numExits = setExitList->exits.size();
 
     return setExitList;
-}
-
-void LogExitListAsXML(std::shared_ptr<LUS::IResource> resource) {
-    std::shared_ptr<SetExitList> setExitList = std::static_pointer_cast<SetExitList>(resource);
-
-    tinyxml2::XMLDocument doc;
-    tinyxml2::XMLElement* root = doc.NewElement("SetExitList");
-    doc.InsertFirstChild(root);
-
-    for (size_t i = 0; i < setExitList->numExits; i++) {
-        tinyxml2::XMLElement* entry = doc.NewElement("ExitEntry");
-        entry->SetAttribute("Id", setExitList->exits[i]);
-        root->InsertEndChild(entry);
-    }
-
-    tinyxml2::XMLPrinter printer;
-    doc.Accept(&printer);
-
-    SPDLOG_INFO("{}: {}", resource->GetInitData()->Path, printer.CStr());
 }
 } // namespace SOH

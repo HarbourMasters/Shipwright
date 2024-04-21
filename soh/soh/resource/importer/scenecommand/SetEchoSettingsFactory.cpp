@@ -1,5 +1,6 @@
 #include "soh/resource/importer/scenecommand/SetEchoSettingsFactory.h"
 #include "soh/resource/type/scenecommand/SetEchoSettings.h"
+#include "soh/resource/logging/SceneCommandLoggers.h"
 #include "spdlog/spdlog.h"
 
 namespace SOH {
@@ -11,7 +12,9 @@ SetEchoSettingsFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> init
 	
     setEchoSettings->settings.echo = reader->ReadInt8();
 
-    //LogEchoSettingsAsXML(setEchoSettings);
+    if (CVarGetInteger("gDebugResourceLogging", 0)) {
+        LogEchoSettingsAsXML(setEchoSettings);
+    }
 
     return setEchoSettings;
 }
@@ -25,20 +28,5 @@ std::shared_ptr<LUS::IResource> SetEchoSettingsFactoryXML::ReadResource(std::sha
     setEchoSettings->settings.echo = reader->IntAttribute("Echo");
 
     return setEchoSettings;
-}
-
-void LogEchoSettingsAsXML(std::shared_ptr<LUS::IResource> resource) {
-    std::shared_ptr<SetEchoSettings> setEchoSettings = std::static_pointer_cast<SetEchoSettings>(resource);
-
-    tinyxml2::XMLDocument doc;
-    tinyxml2::XMLElement* root = doc.NewElement("SetEchoSettings");
-    doc.InsertFirstChild(root);
-
-    root->SetAttribute("Echo", setEchoSettings->settings.echo);
-
-    tinyxml2::XMLPrinter printer;
-    doc.Accept(&printer);
-
-    SPDLOG_INFO("{}: {}", resource->GetInitData()->Path, printer.CStr());
 }
 } // namespace SOH

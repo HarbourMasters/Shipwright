@@ -1,5 +1,6 @@
 #include "soh/resource/importer/scenecommand/SetMeshFactory.h"
 #include "soh/resource/type/scenecommand/SetMesh.h"
+#include "soh/resource/logging/SceneCommandLoggers.h"
 #include "spdlog/spdlog.h"
 #include "libultraship/libultraship.h"
 
@@ -147,7 +148,9 @@ SetMeshFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, st
         SPDLOG_ERROR("Tried to load mesh in SetMesh scene header with type that doesn't exist: {}", setMesh->meshHeader.base.type);
     }
 
-    //LogMeshAsXML(setMesh);
+    if (CVarGetInteger("gDebugResourceLogging", 0)) {
+        LogMeshAsXML(setMesh);
+    }
 
     return setMesh;
 }
@@ -315,106 +318,5 @@ std::shared_ptr<LUS::IResource> SetMeshFactoryXML::ReadResource(std::shared_ptr<
     }
 
     return setMesh;
-}
-
-void LogMeshAsXML(std::shared_ptr<LUS::IResource> resource) {
-    std::shared_ptr<SetMesh> setMesh = std::static_pointer_cast<SetMesh>(resource);
-
-    tinyxml2::XMLDocument doc;
-    tinyxml2::XMLElement* root = doc.NewElement("SetMesh");
-    doc.InsertFirstChild(root);
-
-    root->SetAttribute("Data", setMesh->data);
-    root->SetAttribute("MeshHeaderType", setMesh->meshHeader.base.type);
-
-    if (setMesh->meshHeader.base.type == 0) {
-        root->SetAttribute("PolyNum", setMesh->meshHeader.polygon0.num);
-        PolygonDlist* dlist = (PolygonDlist*)setMesh->meshHeader.polygon0.start;
-        for (int i = 0; i < setMesh->meshHeader.polygon0.num; i += 1) {
-            tinyxml2::XMLElement* polygon = doc.NewElement("Polygon");
-            polygon->SetAttribute("PolyType", "0");
-            polygon->SetAttribute("MeshOpa", setMesh->opaPaths[i].c_str());
-            polygon->SetAttribute("MeshXlu", setMesh->xluPaths[i].c_str());
-
-            root->InsertEndChild(polygon);
-        }
-        dlist += 1;
-    } else if (setMesh->meshHeader.base.type == 1) {
-        root->SetAttribute("PolyNum", "1");
-        tinyxml2::XMLElement* polygon = doc.NewElement("Polygon");
-        polygon->SetAttribute("Format", setMesh->meshHeader.polygon1.format);
-        polygon->SetAttribute("ImgOpa", "");
-        polygon->SetAttribute("ImgXlu", "");
-
-        if (setMesh->meshHeader.polygon1.format == 1) {
-            polygon->SetAttribute("BgImageCount", "0");
-        } else {
-            polygon->SetAttribute("BgImageCount", setMesh->meshHeader.polygon1.multi.count);
-        }
-
-        polygon->SetAttribute("PolyType", "0");
-
-        polygon->SetAttribute("MeshOpa", setMesh->opaPaths[0].c_str());
-        polygon->SetAttribute("MeshXlu", setMesh->xluPaths[0].c_str());
-
-        root->InsertEndChild(polygon);
-
-        BgImage* image = setMesh->meshHeader.polygon1.multi.list;
-        int count = setMesh->meshHeader.polygon1.format == 1 ? 1 : setMesh->meshHeader.polygon1.multi.count;
-        for (int i = 0; i < count; i += 1) {
-            tinyxml2::XMLElement* bgImage = doc.NewElement("BgImage");
-            if (setMesh->meshHeader.polygon1.format == 1) {
-                bgImage->SetAttribute("Unknown_00", image->unk_00);
-                bgImage->SetAttribute("Id", image->id);
-                bgImage->SetAttribute("ImagePath", setMesh->imagePaths[i].c_str());
-                bgImage->SetAttribute("Unknown_0C", setMesh->meshHeader.polygon1.single.unk_0C);
-                bgImage->SetAttribute("TLUT", setMesh->meshHeader.polygon1.single.tlut);
-                bgImage->SetAttribute("Width", setMesh->meshHeader.polygon1.single.width);
-                bgImage->SetAttribute("Height", setMesh->meshHeader.polygon1.single.height);
-                bgImage->SetAttribute("Fmt", setMesh->meshHeader.polygon1.single.fmt);
-                bgImage->SetAttribute("Siz", setMesh->meshHeader.polygon1.single.siz);
-                bgImage->SetAttribute("Mode0", setMesh->meshHeader.polygon1.single.mode0);
-                bgImage->SetAttribute("TLUTCount", setMesh->meshHeader.polygon1.single.tlutCount);
-            } else {
-                bgImage->SetAttribute("Unknown_00", image->unk_00);
-                bgImage->SetAttribute("Id", image->id);
-                bgImage->SetAttribute("ImagePath", setMesh->imagePaths[i].c_str());
-                bgImage->SetAttribute("Unknown_0C", image->unk_0C);
-                bgImage->SetAttribute("TLUT", image->tlut);
-                bgImage->SetAttribute("Width", image->width);
-                bgImage->SetAttribute("Height", image->height);
-                bgImage->SetAttribute("Fmt", image->fmt);
-                bgImage->SetAttribute("Siz", image->siz);
-                bgImage->SetAttribute("Mode0", image->mode0);
-                bgImage->SetAttribute("TLUTCount", image->tlutCount);
-            }
-            polygon->InsertEndChild(bgImage);
-
-            image += 1;
-        }
-    } else if (setMesh->meshHeader.base.type == 2) {
-        root->SetAttribute("PolyNum", setMesh->meshHeader.polygon2.num);
-        PolygonDlist2* dlist = (PolygonDlist2*)setMesh->meshHeader.polygon2.start;
-        for (int i = 0; i < setMesh->meshHeader.polygon2.num; i += 1) {
-            tinyxml2::XMLElement* polygon = doc.NewElement("Polygon");
-            polygon->SetAttribute("PolyType", "0");
-
-            polygon->SetAttribute("PosX", dlist->pos.x);
-            polygon->SetAttribute("PosY", dlist->pos.y);
-            polygon->SetAttribute("PosZ", dlist->pos.z);
-            polygon->SetAttribute("Unknown", dlist->unk_06);
-
-            polygon->SetAttribute("MeshOpa", setMesh->opaPaths[i].c_str());
-            polygon->SetAttribute("MeshXlu", setMesh->xluPaths[i].c_str());
-
-            root->InsertEndChild(polygon);
-            dlist += 1;
-        }
-    }
-
-    tinyxml2::XMLPrinter printer;
-    doc.Accept(&printer);
-
-    SPDLOG_INFO("{}: {}", resource->GetInitData()->Path, printer.CStr());
 }
 } // namespace SOH

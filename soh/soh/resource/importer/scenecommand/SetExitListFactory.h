@@ -14,6 +14,4 @@ class SetExitListFactoryXML : public SceneCommandFactoryXMLV0 {
     std::shared_ptr<LUS::IResource>
     ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, tinyxml2::XMLElement* reader) override;
 };
-
-void LogExitListAsXML(std::shared_ptr<LUS::IResource> resource);
 } // namespace SOH

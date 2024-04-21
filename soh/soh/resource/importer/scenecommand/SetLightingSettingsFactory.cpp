@@ -1,5 +1,6 @@
 #include "soh/resource/importer/scenecommand/SetLightingSettingsFactory.h"
 #include "soh/resource/type/scenecommand/SetLightingSettings.h"
+#include "soh/resource/logging/SceneCommandLoggers.h"
 #include "spdlog/spdlog.h"
 
 namespace SOH {
@@ -43,7 +44,9 @@ std::shared_ptr<LUS::IResource> SetLightingSettingsFactory::ReadResource(std::sh
         setLightingSettings->settings.push_back(lightSettings);
     }
 
-    //LogLightingSettingsAsXML(setLightingSettings);
+    if (CVarGetInteger("gDebugResourceLogging", 0)) {
+        LogLightingSettingsAsXML(setLightingSettings);
+    }
 
     return setLightingSettings;
 }
@@ -90,47 +93,5 @@ std::shared_ptr<LUS::IResource> SetLightingSettingsFactoryXML::ReadResource(std:
     }
 
     return setLightingSettings;
-}
-
-void LogLightingSettingsAsXML(std::shared_ptr<LUS::IResource> resource) {
-    std::shared_ptr<SetLightingSettings> setLightingSettings = std::static_pointer_cast<SetLightingSettings>(resource);
-
-    tinyxml2::XMLDocument doc;
-    tinyxml2::XMLElement* root = doc.NewElement("SetLightingSettings");
-    doc.InsertFirstChild(root);
-
-    for (size_t i = 0; i < setLightingSettings->settings.size(); i++) {
-        tinyxml2::XMLElement* entry = doc.NewElement("LightingSetting");
-        entry->SetAttribute("AmbientColorR", setLightingSettings->settings[i].ambientColor[0]);
-        entry->SetAttribute("AmbientColorG", setLightingSettings->settings[i].ambientColor[1]);
-        entry->SetAttribute("AmbientColorB", setLightingSettings->settings[i].ambientColor[2]);
-
-        entry->SetAttribute("Light1DirX", setLightingSettings->settings[i].light1Dir[0]);
-        entry->SetAttribute("Light1DirY", setLightingSettings->settings[i].light1Dir[1]);
-        entry->SetAttribute("Light1DirZ", setLightingSettings->settings[i].light1Dir[2]);
-        entry->SetAttribute("Light1ColorR", setLightingSettings->settings[i].light1Color[0]);
-        entry->SetAttribute("Light1ColorG", setLightingSettings->settings[i].light1Color[1]);
-        entry->SetAttribute("Light1ColorB", setLightingSettings->settings[i].light1Color[2]);
-
-        entry->SetAttribute("Light2DirX", setLightingSettings->settings[i].light2Dir[0]);
-        entry->SetAttribute("Light2DirY", setLightingSettings->settings[i].light2Dir[1]);
-        entry->SetAttribute("Light2DirZ", setLightingSettings->settings[i].light2Dir[2]);
-        entry->SetAttribute("Light2ColorR", setLightingSettings->settings[i].light2Color[0]);
-        entry->SetAttribute("Light2ColorG", setLightingSettings->settings[i].light2Color[1]);
-        entry->SetAttribute("Light2ColorB", setLightingSettings->settings[i].light2Color[2]);
-
-        entry->SetAttribute("FogColorR", setLightingSettings->settings[i].fogColor[0]);
-        entry->SetAttribute("FogColorG", setLightingSettings->settings[i].fogColor[1]);
-        entry->SetAttribute("FogColorB", setLightingSettings->settings[i].fogColor[2]);
-        entry->SetAttribute("FogNear", setLightingSettings->settings[i].fogNear);
-        entry->SetAttribute("FogFar", setLightingSettings->settings[i].fogFar);
-
-        root->InsertEndChild(entry);
-    }
-
-    tinyxml2::XMLPrinter printer;
-    doc.Accept(&printer);
-
-    SPDLOG_INFO("{}: {}", resource->GetInitData()->Path, printer.CStr());
 }
 } // namespace SOH

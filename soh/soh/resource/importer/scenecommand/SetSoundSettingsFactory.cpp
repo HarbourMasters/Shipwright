@@ -1,5 +1,6 @@
 #include "soh/resource/importer/scenecommand/SetSoundSettingsFactory.h"
 #include "soh/resource/type/scenecommand/SetSoundSettings.h"
+#include "soh/resource/logging/SceneCommandLoggers.h"
 #include "spdlog/spdlog.h"
 
 namespace SOH {
@@ -13,7 +14,9 @@ std::shared_ptr<LUS::IResource> SetSoundSettingsFactory::ReadResource(std::share
     setSoundSettings->settings.natureAmbienceId = reader->ReadInt8();
     setSoundSettings->settings.seqId = reader->ReadInt8();
 
-    //LogSoundSettingsAsXML(setSoundSettings);
+    if (CVarGetInteger("gDebugResourceLogging", 0)) {
+        LogSoundSettingsAsXML(setSoundSettings);
+    }
 
     return setSoundSettings;
 }
@@ -29,22 +32,5 @@ std::shared_ptr<LUS::IResource> SetSoundSettingsFactoryXML::ReadResource(std::sh
     setSoundSettings->settings.seqId = reader->IntAttribute("SeqId");
 
     return setSoundSettings;
-}
-
-void LogSoundSettingsAsXML(std::shared_ptr<LUS::IResource> resource) {
-    std::shared_ptr<SetSoundSettings> setSoundSettings = std::static_pointer_cast<SetSoundSettings>(resource);
-
-    tinyxml2::XMLDocument doc;
-    tinyxml2::XMLElement* root = doc.NewElement("SetSoundSettings");
-    doc.InsertFirstChild(root);
-
-    root->SetAttribute("Reverb", setSoundSettings->settings.reverb);
-    root->SetAttribute("NatureAmbienceId", setSoundSettings->settings.natureAmbienceId);
-    root->SetAttribute("SeqId", setSoundSettings->settings.seqId);
-
-    tinyxml2::XMLPrinter printer;
-    doc.Accept(&printer);
-
-    SPDLOG_INFO("{}: {}", resource->GetInitData()->Path, printer.CStr());
 }
 } // namespace SOH

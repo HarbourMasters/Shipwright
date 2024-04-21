@@ -1,5 +1,6 @@
 #include "soh/resource/importer/scenecommand/SetRoomListFactory.h"
 #include "soh/resource/type/scenecommand/SetRoomList.h"
+#include "soh/resource/logging/SceneCommandLoggers.h"
 #include "spdlog/spdlog.h"
 
 namespace SOH {
@@ -23,7 +24,9 @@ SetRoomListFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData
         setRoomList->rooms.push_back(room);
     }
 
-    //LogRoomListAsXML(setRoomList);
+    if (CVarGetInteger("gDebugResourceLogging", 0)) {
+        LogRoomListAsXML(setRoomList);
+    }
 
     return setRoomList;
 }
@@ -56,24 +59,5 @@ std::shared_ptr<LUS::IResource> SetRoomListFactoryXML::ReadResource(std::shared_
     setRoomList->numRooms = setRoomList->rooms.size();
 
     return setRoomList;
-}
-
-void LogRoomListAsXML(std::shared_ptr<LUS::IResource> resource) {
-    std::shared_ptr<SetRoomList> setRoomList = std::static_pointer_cast<SetRoomList>(resource);
-
-    tinyxml2::XMLDocument doc;
-    tinyxml2::XMLElement* root = doc.NewElement("SetRoomList");
-    doc.InsertFirstChild(root);
-
-    for (size_t i = 0; i < setRoomList->numRooms; i++) {
-        tinyxml2::XMLElement* entry = doc.NewElement("RoomEntry");
-        entry->SetAttribute("Path", setRoomList->fileNames[i].c_str());
-        root->InsertEndChild(entry);
-    }
-
-    tinyxml2::XMLPrinter printer;
-    doc.Accept(&printer);
-
-    SPDLOG_INFO("{}: {}", resource->GetInitData()->Path, printer.CStr());
 }
 } // namespace SOH

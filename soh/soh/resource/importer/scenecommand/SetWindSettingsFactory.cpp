@@ -1,5 +1,6 @@
 #include "soh/resource/importer/scenecommand/SetWindSettingsFactory.h"
 #include "soh/resource/type/scenecommand/SetWindSettings.h"
+#include "soh/resource/logging/SceneCommandLoggers.h"
 #include "spdlog/spdlog.h"
 
 namespace SOH {
@@ -14,7 +15,9 @@ SetWindSettingsFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> init
     setWind->settings.windSouth = reader->ReadInt8();
     setWind->settings.windSpeed = reader->ReadUByte();
 
-    //LogWindSettingsAsXML(setWind);
+    if (CVarGetInteger("gDebugResourceLogging", 0)) {
+        LogWindSettingsAsXML(setWind);
+    }
 
     return setWind;
 }
@@ -31,23 +34,5 @@ std::shared_ptr<LUS::IResource> SetWindSettingsFactoryXML::ReadResource(std::sha
     setWind->settings.windSpeed = reader->IntAttribute("WindSpeed");
 
     return setWind;
-}
-
-void LogWindSettingsAsXML(std::shared_ptr<LUS::IResource> resource) {
-    std::shared_ptr<SetWindSettings> setWindSettings = std::static_pointer_cast<SetWindSettings>(resource);
-
-    tinyxml2::XMLDocument doc;
-    tinyxml2::XMLElement* root = doc.NewElement("SetWindSettings");
-    doc.InsertFirstChild(root);
-
-    root->SetAttribute("WindWest", setWindSettings->settings.windWest);
-    root->SetAttribute("WindVertical", setWindSettings->settings.windVertical);
-    root->SetAttribute("WindSouth", setWindSettings->settings.windSouth);
-    root->SetAttribute("WindSpeed", setWindSettings->settings.windSpeed);
-
-    tinyxml2::XMLPrinter printer;
-    doc.Accept(&printer);
-
-    SPDLOG_INFO("{}: {}", resource->GetInitData()->Path, printer.CStr());
 }
 } // namespace SOH
