@@ -363,18 +363,6 @@ void Play_Init(GameState* thisx) {
     u8 tempSetupIndex;
     s32 pad[2];
 
-    // Skip Child Stealth when option is enabled, Zelda's Letter isn't obtained and Impa's reward hasn't been received
-    // eventChkInf[4] & 1 = Got Zelda's Letter
-    // eventChkInf[5] & 0x200 = Got Impa's reward
-    // entranceIndex 0x7A, ENTR_CASTLE_COURTYARD_GUARDS_DAY_0, Castle Courtyard - Day from crawlspace
-    // entranceIndex 0x400, ENTR_CASTLE_COURTYARD_ZELDA_0, Zelda's Courtyard
-    if (IS_RANDO && Randomizer_GetSettingValue(RSK_SKIP_CHILD_STEALTH) &&
-        !Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER) && !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_ZELDAS_LULLABY)) {
-        if (gSaveContext.entranceIndex == ENTR_CASTLE_COURTYARD_GUARDS_DAY_0) {
-            gSaveContext.entranceIndex = ENTR_CASTLE_COURTYARD_ZELDA_0;
-        }
-    }
-
     // Properly initialize the frame counter so it doesn't use garbage data
     if (!firstInit) {
         play->gameplayFrames = 0;

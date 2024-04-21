@@ -280,6 +280,13 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
                     *should = false;
                 }
             }
+
+            if (gSaveContext.entranceIndex == ENTR_CASTLE_COURTYARD_GUARDS_DAY_0) {
+                if (CVarGetInteger("gTimeSavers.SkipChildStealth", false)) {
+                    gSaveContext.entranceIndex = ENTR_CASTLE_COURTYARD_ZELDA_0;
+                    *should = false;
+                }
+            }
             break;
         }
         case GI_VB_PLAY_ENTRANCE_CS: {
