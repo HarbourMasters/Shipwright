@@ -155,6 +155,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
                 if ((gSaveContext.entranceIndex == ENTR_DESERT_COLOSSUS_1) && !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_REQUIEM_OF_SPIRIT)) {
                     Flags_SetEventChkInf(EVENTCHKINF_LEARNED_REQUIEM_OF_SPIRIT);
                     // Normally happens in the cutscene
+                    gSaveContext.dayTime = gSaveContext.skyboxTime = 0xAC60;
                     if (GameInteractor_Should(GI_VB_GIVE_ITEM_REQUIEM_OF_SPIRIT, true, NULL)) {
                         Item_Give(gPlayState, ITEM_SONG_REQUIEM);
                     }
@@ -183,8 +184,6 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
                 uint8_t isBlueWarp = 0;
                 // Deku Tree Blue warp
                 if (gSaveContext.entranceIndex == ENTR_KOKIRI_FOREST_0 && gSaveContext.cutsceneIndex == 0xFFF1) {
-                    gSaveContext.dayTime = gSaveContext.skyboxTime = 0x8000;
-
                     gSaveContext.entranceIndex = ENTR_KOKIRI_FOREST_11;
                     isBlueWarp = 1;
                 // Dodongo's Cavern Blue warp
@@ -199,9 +198,13 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
                 } else if (gSaveContext.entranceIndex == ENTR_CHAMBER_OF_THE_SAGES_0 && gSaveContext.cutsceneIndex == 0x0 && gSaveContext.chamberCutsceneNum == CHAMBER_CS_FOREST) {
                     // Normally set in the blue warp cutscene
                     Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_DEKU_TREE_SPROUT);
-                    gSaveContext.dayTime = gSaveContext.skyboxTime = 0x8000;
 
-                    gSaveContext.entranceIndex = ENTR_SACRED_FOREST_MEADOW_3;
+                    if (IS_RANDO) {
+                        gSaveContext.entranceIndex = ENTR_SACRED_FOREST_MEADOW_3;
+                    } else {
+                        gSaveContext.entranceIndex = ENTR_KOKIRI_FOREST_12;
+                    }
+
                     isBlueWarp = 1;
                 // Fire Temple Blue warp
                 } else if (gSaveContext.entranceIndex == ENTR_KAKARIKO_VILLAGE_0 && gSaveContext.cutsceneIndex == 0xFFF3) {
@@ -209,6 +212,9 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
                     isBlueWarp = 1;
                 // Water Temple Blue warp
                 } else if (gSaveContext.entranceIndex == ENTR_CHAMBER_OF_THE_SAGES_0 && gSaveContext.cutsceneIndex == 0x0 && gSaveContext.chamberCutsceneNum == CHAMBER_CS_WATER) {
+                    // Normally set in the blue warp cutscene
+                    gSaveContext.dayTime = gSaveContext.skyboxTime = 0x4800;
+
                     gSaveContext.entranceIndex = ENTR_LAKE_HYLIA_9;
                     isBlueWarp = 1;
                 // Spirit Temple Blue warp
@@ -222,6 +228,9 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
                 }
 
                 if (isBlueWarp) {
+                    // Normally set in the blue warp cutscene
+                    gSaveContext.dayTime = gSaveContext.skyboxTime = 0x8000;
+
                     *should = false;
                     gSaveContext.cutsceneIndex = 0;
 
@@ -232,6 +241,9 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
 
                 // Flee hyrule castle cutscene
                 if (gSaveContext.entranceIndex == ENTR_HYRULE_FIELD_0 && gSaveContext.cutsceneIndex == 0xFFF1) {
+                    // Normally set in the blue warp cutscene
+                    gSaveContext.dayTime = gSaveContext.skyboxTime = 0x4AAA;
+
                     gSaveContext.cutsceneIndex = 0;
                     *should = false;
                 }
@@ -420,6 +432,14 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
             }
             break;
         }
+        case GI_VB_DEKU_JR_CONSIDER_FOREST_TEMPLE_FINISHED: {
+            // We're overriding this so that the Deku JR doesn't despawn after skipping the forest temple blue warp cutscene.
+            // It typically relies on the forest medallion being obtained, but that isn't given yet until after scene init
+            if (CVarGetInteger("gTimeSavers.SkipCutscene.Story", IS_RANDO)) {
+                *should = Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP);
+            }
+            break;
+        }
         case GI_VB_GIVE_ITEM_FROM_BLUE_WARP:
         case GI_VB_PLAY_SHIEK_BLOCK_MASTER_SWORD_CS:
         case GI_VB_GIVE_ITEM_FAIRY_OCARINA:
@@ -514,6 +534,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
                             } else {
                                 gPlayState->nextEntranceIndex = ENTR_HYRULE_FIELD_17;
                             }
+                            gSaveContext.dayTime = gSaveContext.skyboxTime = 0x8000;
                             gPlayState->transitionType = TRANS_TYPE_FADE_WHITE;
                             gPlayState->transitionTrigger = TRANS_TRIGGER_START;
                             gSaveContext.nextTransitionType = 2;

@@ -83,6 +83,9 @@ typedef enum {
     // Opt: *EnMd
     // Vanilla condition: CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)
     GI_VB_MIDO_CONSIDER_DEKU_TREE_DEAD,
+    // Opt: *ObjDekujr
+    // Vanilla condition: CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST)
+    GI_VB_DEKU_JR_CONSIDER_FOREST_TEMPLE_FINISHED,
     // Opt: *EnKo
     // Vanilla condition: CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)
     GI_VB_OPEN_KOKIRI_FOREST,
