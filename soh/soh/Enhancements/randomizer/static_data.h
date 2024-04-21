@@ -56,7 +56,8 @@ class StaticData {
       static std::unordered_map<uint32_t, RandomizerHintTextKey> trialData;
       static std::unordered_map<std::string, uint32_t> trialNameToEnum;
       static std::unordered_map<RandomizerHint, StaticHintInfo> staticHintInfoMap;
-      static std::unordered_map<u32, RandomizerHint> stoneFlagToHint;
+      static std::unordered_map<u32, RandomizerHint> stoneParamsToHint;
+      static std::unordered_map<u32, RandomizerHint> grottoChestParamsToHint;
       static std::array<HintText, RHT_MAX> hintTextTable;
 
       StaticData();

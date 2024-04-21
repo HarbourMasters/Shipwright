@@ -110,28 +110,44 @@ CustomMessage::CustomMessage(Text text, TextBoxType type_,TextBoxPosition positi
     messages[LANGUAGE_FRA] = text.GetFrench();
 }
 
-const std::string& CustomMessage::GetEnglish() const {
-    return messages[LANGUAGE_ENG];
+const std::string CustomMessage::GetEnglish(MessageFormat format) const {
+    return GetForLanguage(LANGUAGE_ENG, format);
 }
 
-const std::string& CustomMessage::GetGerman() const {
-    return GetForLanguage(LANGUAGE_GER);
+const std::string CustomMessage::GetGerman(MessageFormat format) const {
+    return GetForLanguage(LANGUAGE_GER, format);
 }
 
-const std::string& CustomMessage::GetFrench() const {
-    return GetForLanguage(LANGUAGE_FRA);
+const std::string CustomMessage::GetFrench(MessageFormat format) const {
+    return GetForLanguage(LANGUAGE_FRA, format);
 }
 
-const std::string& CustomMessage::GetForLanguage(uint8_t language) const {
-    return messages[language].length() > 0 ? messages[language] : messages[LANGUAGE_ENG];
+const std::string CustomMessage::GetForCurrentLanguage(MessageFormat format) const {
+    return GetForLanguage(gSaveContext.language, format);
 }
 
-const std::string& CustomMessage::GetForCurrentLanguage() const {
-    return messages[gSaveContext.language].length() > 0 ? messages[gSaveContext.language] : messages[LANGUAGE_ENG];
+const std::string CustomMessage::GetForLanguage(uint8_t language, MessageFormat format) const {
+    std::string output = messages[language].length() > 0 ? messages[language] : messages[LANGUAGE_ENG];
+    ProcessMessageFormat(output, format);
+    return output;
 }
 
-const std::vector<std::string> CustomMessage::GetAllStrings() const{
-    return messages;
+const std::vector<std::string> CustomMessage::GetAllMessages(MessageFormat format) const{
+    std::vector<std::string> output = messages;
+    for (auto str : output){
+        ProcessMessageFormat(str, format);
+    }
+    return output;
+}
+
+void CustomMessage::ProcessMessageFormat(std::string& str, MessageFormat format) const {
+    if (format == MF_FORMATTED){
+        FormatString(str);
+    } else if (format == MF_CLEAN){
+        CleanString(str);
+    } else if (format == MF_AUTO_FORMAT){
+        AutoFormatString(str);
+    }
 }
 
 const std::vector<bool>& CustomMessage::GetCapital() const {
@@ -163,12 +179,15 @@ const TextBoxPosition& CustomMessage::GetTextBoxPosition() const {
 
 CustomMessage CustomMessage::operator+(const CustomMessage& right) const {
     std::vector<std::string> newColors = colors;
-    newColors.insert(colors.end(), right.colors.begin(), right.colors.end());
+    std::vector<std::string> rColors = right.GetColors();
+    for (auto color: rColors){
+        newColors.push_back(color);
+    }
     std::vector<bool> newCapital = capital;
-    newCapital.insert(capital.end(), right.capital.begin(), right.capital.end());
-    return CustomMessage(messages[LANGUAGE_ENG] + right.GetEnglish(),
-                         messages[LANGUAGE_GER] + right.GetGerman(),
-                         messages[LANGUAGE_FRA] + right.GetFrench(),
+    newCapital.insert(capital.end(), right.GetCapital().begin(), right.GetCapital().end());
+    return CustomMessage(messages[LANGUAGE_ENG] + right.GetEnglish(MF_RAW),
+                         messages[LANGUAGE_GER] + right.GetGerman(MF_RAW),
+                         messages[LANGUAGE_FRA] + right.GetFrench(MF_RAW),
                          newColors, newCapital, type, position);
 }
 
@@ -177,11 +196,11 @@ CustomMessage CustomMessage::operator+(const std::string& right) const {
 }
 
 void CustomMessage::operator+=(const CustomMessage& right) {
-    messages[LANGUAGE_ENG] += right.GetEnglish();
-    messages[LANGUAGE_GER] += right.GetGerman();
-    messages[LANGUAGE_FRA] += right.GetFrench();
-    colors.insert(colors.end(), right.GetColors().begin(), right.colors.end());
-    capital.insert(capital.end(), right.capital.begin(), right.capital.end());
+    messages[LANGUAGE_ENG] += right.GetEnglish(MF_RAW);
+    messages[LANGUAGE_GER] += right.GetGerman(MF_RAW);
+    messages[LANGUAGE_FRA] += right.GetFrench(MF_RAW);
+    colors.insert(colors.end(), right.GetColors().begin(), right.GetColors().end());
+    capital.insert(capital.end(), right.GetCapital().begin(), right.GetCapital().end());
 }
 
 void CustomMessage::operator+=(const std::string& right) {
@@ -206,7 +225,6 @@ void CustomMessage::Replace(std::string&& oldStr, std::string&& newStr) {
             position = str.find(oldStr);
         }
     }
-    Format();
 }
 
 void CustomMessage::Replace(std::string&& oldStr, CustomMessage newMessage) {
@@ -217,7 +235,6 @@ void CustomMessage::Replace(std::string&& oldStr, CustomMessage newMessage) {
             position = messages[language].find(oldStr);
         }
     }
-    Format();
 }
 
 void CustomMessage::Format(ItemID iid) {
@@ -230,23 +247,59 @@ void CustomMessage::Format(ItemID iid) {
             start_pos += 3;
         }
         std::replace(str.begin(), str.end(), '@', PLAYER_NAME()[0]);
+        ReplaceSpecialCharacters(str);
+        ReplaceColors(str);
+        ReplaceAltarIcons(str);
     }
-    ReplaceSpecialCharacters();
-    ReplaceColors();
-    ReplaceAltarIcons();
     *this += MESSAGE_END();
 }
 
 void CustomMessage::Format() {
     for (std::string& str : messages) {
-        std::replace(str.begin(), str.end(), '&', NEWLINE()[0]);
-        std::replace(str.begin(), str.end(), '^', WAIT_FOR_INPUT()[0]);
-        std::replace(str.begin(), str.end(), '@', PLAYER_NAME()[0]);
+        FormatString(str);
     }
-    ReplaceSpecialCharacters();
-    ReplaceColors();
-    ReplaceAltarIcons();
-    *this += MESSAGE_END();
+}
+
+void CustomMessage::AutoFormat() {
+    for (std::string& str : messages) {
+        AutoFormatString(str);
+    }
+}
+
+void CustomMessage::Clean() {
+    for (std::string& str : messages) {
+        CleanString(str);
+    }
+}
+
+void CustomMessage::FormatString(std::string& str) const {
+    std::replace(str.begin(), str.end(), '&', NEWLINE()[0]);
+    std::replace(str.begin(), str.end(), '^', WAIT_FOR_INPUT()[0]);
+    std::replace(str.begin(), str.end(), '@', PLAYER_NAME()[0]);
+    ReplaceSpecialCharacters(str);
+    ReplaceColors(str);
+    ReplaceAltarIcons(str);
+    str += MESSAGE_END();
+}
+
+void DeleteControlCode(std::string& str, std::string code){
+    size_t start_pos = 0;
+    while ((start_pos = str.find(code, start_pos)) != std::string::npos) {
+        str.replace(start_pos, code.length(), "");
+        start_pos += code.length();
+    }
+}
+
+void CustomMessage::CleanString(std::string& str) const {
+    std::replace(str.begin(), str.end(), '&', "\n"[0]);
+    std::replace(str.begin(), str.end(), '^', " "[0]);
+    for (const auto& colorPair : percentColors) {
+        DeleteControlCode(str, "%" + colorPair.first);
+    }
+    std::erase(str, '#');
+    for (const auto& iconPair : altarIcons) {
+        DeleteControlCode(str, "$" + iconPair.first);
+    }
 }
 
 static size_t NextLineLength(const std::string* textStr, const size_t lastNewline, bool hasIcon = false) {
@@ -294,37 +347,37 @@ static size_t NextLineLength(const std::string* textStr, const size_t lastNewlin
   }
 }
 
-void CustomMessage::AutoFormat() {// did I do this right?
-    ReplaceAltarIcons();
-    ReplaceColors();
-    for (std::string &str : messages) {
-        // insert newlines either manually or when encountering a '&'
-        size_t lastNewline = 0;
-        const bool hasIcon = str.find('$', 0) != std::string::npos;
-        size_t lineLength = NextLineLength(&str, lastNewline, hasIcon);
-        while (lastNewline + lineLength < str.length()) {
-            const size_t carrot = str.find('^', lastNewline);
-            const size_t ampersand = str.find('&', lastNewline);
-            const size_t lastSpace = str.rfind(' ', lastNewline + lineLength);
-            const size_t lastPeriod = str.rfind('.', lastNewline + lineLength);
-            // replace '&' first if it's within the newline range
-            if (ampersand < lastNewline + lineLength) {
-                lastNewline = ampersand + 1;
-                // or move the lastNewline cursor to the next line if a '^' is encountered
-            } else if (carrot < lastNewline + lineLength) {
-                lastNewline = carrot + 1;
-                // some lines need to be split but don't have spaces, look for periods instead
-            } else if (lastSpace == std::string::npos) {
-                str.replace(lastPeriod, 1, ".&");
-                lastNewline = lastPeriod + 2;
-            } else {
-                str.replace(lastSpace, 1, "&");
-                lastNewline = lastSpace + 1;
-            }
-          lineLength = NextLineLength(&str, lastNewline, hasIcon);
+void CustomMessage::AutoFormatString(std::string& str) const {// did I do this right?
+    ReplaceAltarIcons(str);
+    ReplaceColors(str);
+    // insert newlines either manually or when encountering a '&'
+    size_t lastNewline = 0;
+    const bool hasIcon = str.find('$', 0) != std::string::npos;
+    size_t lineLength = NextLineLength(&str, lastNewline, hasIcon);
+    while (lastNewline + lineLength < str.length()) {
+        const size_t carrot = str.find('^', lastNewline);
+        const size_t ampersand = str.find('&', lastNewline);
+        const size_t lastSpace = str.rfind(' ', lastNewline + lineLength);
+        const size_t lastPeriod = str.rfind('.', lastNewline + lineLength);
+        // replace '&' first if it's within the newline range
+        if (ampersand < lastNewline + lineLength) {
+            lastNewline = ampersand + 1;
+            // or move the lastNewline cursor to the next line if a '^' is encountered
+        } else if (carrot < lastNewline + lineLength) {
+            lastNewline = carrot + 1;
+            // some lines need to be split but don't have spaces, look for periods instead
+        } else if (lastSpace == std::string::npos) {
+            str.replace(lastPeriod, 1, ".&");
+            lastNewline = lastPeriod + 2;
+        } else {
+            str.replace(lastSpace, 1, "&");
+            lastNewline = lastSpace + 1;
         }
+        lineLength = NextLineLength(&str, lastNewline, hasIcon);
     }
-    ReplaceAltarIcons();
+    ReplaceSpecialCharacters(str);
+    ReplaceAltarIcons(str);
+    str += MESSAGE_END();
 }
 
 void CustomMessage::InsertNumber(uint8_t num){
@@ -346,7 +399,7 @@ void CustomMessage::InsertNumber(uint8_t num){
     }
     //remove the remaining bar
     this->Replace("|", "");
-    Replace("{{d}}", std::to_string(num));
+    Replace("[[d]]", std::to_string(num));
 }
 
 
@@ -356,17 +409,15 @@ void CustomMessage::Capitalize() {
     }
 }
 
-void CustomMessage::ReplaceSpecialCharacters() {
+void CustomMessage::ReplaceSpecialCharacters(std::string& str) const {
     // add special characters
-    for (std::string& str : messages) {
-        for (auto specialCharacterPair : textBoxSpecialCharacters) {
-            size_t start_pos = 0;
-            std::string textBoxSpecialCharacterString = ""s;
-            textBoxSpecialCharacterString += specialCharacterPair.second;
-            while ((start_pos = str.find(specialCharacterPair.first, start_pos)) != std::string::npos) {
-                str.replace(start_pos, specialCharacterPair.first.length(), textBoxSpecialCharacterString);
-                start_pos += textBoxSpecialCharacterString.length();
-            }
+    for (auto specialCharacterPair : textBoxSpecialCharacters) {
+        size_t start_pos = 0;
+        std::string textBoxSpecialCharacterString = ""s;
+        textBoxSpecialCharacterString += specialCharacterPair.second;
+        while ((start_pos = str.find(specialCharacterPair.first, start_pos)) != std::string::npos) {
+            str.replace(start_pos, specialCharacterPair.first.length(), textBoxSpecialCharacterString);
+            start_pos += textBoxSpecialCharacterString.length();
         }
     }
 }
@@ -389,43 +440,38 @@ const char* Interface_ReplaceSpecialCharacters(char text[]) {
     return textChar;
 }
 
-void CustomMessage::ReplaceColors() {
-    for (std::string& str : messages) {
-        for (const auto& colorPair : percentColors) {
-            std::string textToReplace = "%";
-            textToReplace += colorPair.first;
-            size_t start_pos = 0;
-            while ((start_pos = str.find(textToReplace, start_pos)) != std::string::npos) {
-                str.replace(start_pos, textToReplace.length(), COLOR(colorPair.second));
-                start_pos += textToReplace.length();
-            }
+void CustomMessage::ReplaceColors(std::string& str) const {
+    for (const auto& colorPair : percentColors) {
+        std::string textToReplace = "%";
+        textToReplace += colorPair.first;
+        size_t start_pos = 0;
+        while ((start_pos = str.find(textToReplace, start_pos)) != std::string::npos) {
+            str.replace(start_pos, textToReplace.length(), COLOR(colorPair.second));
+            start_pos += textToReplace.length();
         }
-        for (auto color: colors) {
-          if (const size_t firstHashtag = str.find('#'); firstHashtag != std::string::npos) {
-            str.replace(firstHashtag, 1, color);
-            if (const size_t secondHashtag = str.find('#', firstHashtag + 1); secondHashtag != std::string::npos) {
-              str.replace(secondHashtag, 1, QM_WHITE);
-            } else {
-              SPDLOG_DEBUG("non-matching hashtags in string: \"%s\"", str);
-            }
-          }
-        }
-        // Remove any remaining '#' characters.
-        std::erase(str, '#');
-
     }
+    for (auto color: colors) {
+        if (const size_t firstHashtag = str.find('#'); firstHashtag != std::string::npos) {
+            str.replace(firstHashtag, 1, COLOR(color));
+        if (const size_t secondHashtag = str.find('#', firstHashtag + 1); secondHashtag != std::string::npos) {
+            str.replace(secondHashtag, 1, COLOR(QM_WHITE));
+        } else {
+            SPDLOG_DEBUG("non-matching hashtags in string: \"%s\"", str);
+        }
+        }
+    }
+    // Remove any remaining '#' characters.
+    std::erase(str, '#');
 }
 
-void CustomMessage::ReplaceAltarIcons() {
-    for (std::string& str : messages) {
-        for (const auto& iconPair : altarIcons) {
-            std::string textToReplace = "$";
-            textToReplace += iconPair.first;
-            size_t start_pos = 0;
-            while ((start_pos = str.find(textToReplace, start_pos)) != std::string::npos) {
-                str.replace(start_pos, textToReplace.length(), ITEM_OBTAINED(iconPair.second));
-                start_pos += textToReplace.length();
-            }
+void CustomMessage::ReplaceAltarIcons(std::string& str) const {
+    for (const auto& iconPair : altarIcons) {
+        std::string textToReplace = "$";
+        textToReplace += iconPair.first;
+        size_t start_pos = 0;
+        while ((start_pos = str.find(textToReplace, start_pos)) != std::string::npos) {
+            str.replace(start_pos, textToReplace.length(), ITEM_OBTAINED(iconPair.second));
+            start_pos += textToReplace.length();
         }
     }
 }
@@ -436,7 +482,7 @@ void CustomMessage::InsertNames(std::vector<CustomMessage> toInsert){
         if ((capital.size() > a) && (capital[a] = true)){
             temp.Capitalize();
         } 
-        Replace(std::move("[[" + std::to_string(a) + "]]"), temp); 
+        Replace(std::move("[[" + std::to_string(a+1) + "]]"), temp); 
     }
 }
 

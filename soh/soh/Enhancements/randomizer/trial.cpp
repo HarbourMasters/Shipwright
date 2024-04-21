@@ -35,9 +35,8 @@ void TrialInfo::SetAsSkipped() {
 }
 
 Trials::Trials() {
-    mTrials = {};
-    for (auto [trialKey, hintKey] : StaticData::trialData){
-        mTrials[trialKey] = TrialInfo(hintKey, (TrialKey)trialKey);
+    for (const auto trial : StaticData::trialData){
+        mTrials[trial.first] = TrialInfo(trial.second, static_cast<TrialKey>(trial.first));
     }
 }
 Trials::~Trials() = default;
@@ -61,7 +60,7 @@ void Trials::RequireAll() {
 std::vector<TrialInfo*> Trials::GetTrialList() {
     std::vector<TrialInfo*> trialList{};
     for (size_t i = 0; i < mTrials.size(); i++) {
-        trialList[i] = &mTrials[i];
+        trialList.push_back(&mTrials[i]);
     }
     return trialList;
 }

@@ -28,8 +28,8 @@ class Hint {
           int num_ = 0);
      Hint(RandomizerHint ownKey_, std::vector<CustomMessage> messages_);
      Hint(RandomizerHint ownKey_, nlohmann::json json_);
-     const std::vector<std::string> GetAllMessageStrings() const;
-     const CustomMessage GetMessage(uint8_t id = 0) const;
+     const std::vector<std::string> GetAllMessageStrings(MessageFormat format = MF_AUTO_FORMAT) const ;
+     const CustomMessage GetMessage(MessageFormat format = MF_AUTO_FORMAT, uint8_t id = 0) const ;
      std::vector<RandomizerCheck> GetHintedLocations();
      void AddHintedLocation (RandomizerCheck location);
      HintType GetHintType();

@@ -154,7 +154,7 @@ Randomizer::Randomizer() {
     SpoilerfileAreaNameToEnum["Haunted Wasteland"] = RCAREA_WASTELAND;
     SpoilerfileAreaNameToEnum["outside Ganon's Castle"] = RCAREA_HYRULE_CASTLE;
     for (int c = 0; c < Rando::StaticData::hintTypeNames.size(); c++) {
-        SpoilerfileHintTypeNameToEnum[Rando::StaticData::hintTypeNames[(HintType)c].GetEnglish()] = (HintType)c;
+        SpoilerfileHintTypeNameToEnum[Rando::StaticData::hintTypeNames[(HintType)c].GetEnglish(MF_CLEAN)] = (HintType)c;
     }
 }
 
@@ -2416,8 +2416,8 @@ CustomMessage Randomizer::GetSheikMessage(s16 scene, u16 originalTextId) {
             }
             break;
         case SCENE_INSIDE_GANONS_CASTLE:
-            if (ctx->GetOption(RSK_SHEIK_LA_HINT) && !INV_CONTENT(ITEM_ARROW_LIGHT) != ITEM_ARROW_LIGHT) {
-                messageEntry = ctx->GetHint(RH_SHEIK_HINT)->GetMessage();
+            if (ctx->GetOption(RSK_SHEIK_LA_HINT) && INV_CONTENT(ITEM_ARROW_LIGHT) != ITEM_ARROW_LIGHT) {
+                messageEntry = ctx->GetHint(RH_SHEIK_HINT)->GetMessage(MF_AUTO_FORMAT);
             } else if (!(CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER) && INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT &&
                        CUR_CAPACITY(UPG_QUIVER) >= 30 && gSaveContext.isMagicAcquired)) {
                 messageEntry = CustomMessage("You are still ill-equipped to&face %rGanondorf%w."
@@ -2462,7 +2462,7 @@ CustomMessage Randomizer::GetFishingPondOwnerMessage(u16 originalTextId) {
         ) + messageEntry;
     }
 
-    messageEntry.Format();
+    messageEntry.Format(); //RANDOTODO why is this needed when it's not elsewhere....
 
     return messageEntry;
 }

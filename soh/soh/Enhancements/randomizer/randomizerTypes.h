@@ -101,6 +101,7 @@ typedef enum {
     TK_WATER_TRIAL,
     TK_SPIRIT_TRIAL,
     TK_SHADOW_TRIAL,
+    TK_MAX
 } TrialKey;
 
 // Check types based on main settings
@@ -3411,7 +3412,8 @@ typedef enum {
     RHT_SHEIK_HINT_LA_ONLY,
     RHT_DAMPE_DIARY,
     RHT_GREG_HINT,
-    RHT_SARIA_HINT,
+    RHT_SARIA_TALK_HINT,
+    RHT_SARIA_SONG_HINT,
     RHT_FISHING_POLE_HINT,
     // Static Entrance Hints
     RHT_WARP_SONG,

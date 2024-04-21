@@ -393,7 +393,7 @@ void Context::WriteHintJson(nlohmann::ordered_json& spoilerFileJson){
 }
 
 nlohmann::json getValueForMessage(std::unordered_map<std::string, nlohmann::json> map, CustomMessage message){
-    std::vector<std::string> strings = message.GetAllStrings();
+    std::vector<std::string> strings = message.GetAllMessages();
     for (uint8_t language = 0; language < LANGUAGE_MAX; language++){
         if (map.contains(strings[language])){
             return strings[language];
@@ -405,7 +405,7 @@ nlohmann::json getValueForMessage(std::unordered_map<std::string, nlohmann::json
 void Context::ParseHintJson(nlohmann::json spoilerFileJson) {
     for (uint8_t hintNum = 1; hintNum < RH_MAX; hintNum++){
         RandomizerHint hint = (RandomizerHint)hintNum;
-        nlohmann::json hintEntry = getValueForMessage(spoilerFileJson["Gossip Stone Hints"], Rando::StaticData::hintNames[hint]); //RNADOTODO are spaces OK?
+        nlohmann::json hintEntry = getValueForMessage(spoilerFileJson["Gossip Stone Hints"], Rando::StaticData::hintNames[hint]);
         if (hintEntry.size() > 0){
             AddHint(hint, Hint(hint, hintEntry));
         } else {

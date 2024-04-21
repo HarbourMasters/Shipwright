@@ -498,16 +498,7 @@ static void WriteRequiredTrials() {
     auto ctx = Rando::Context::GetInstance();
     for (const auto& trial : ctx->GetTrials()->GetTrialList()) {
         if (trial->IsRequired()) {
-            std::string trialName;
-            switch (gSaveContext.language) {
-                case LANGUAGE_FRA:
-                    trialName = trial->GetName().GetFrench();
-                    break;
-                case LANGUAGE_ENG:
-                default:
-                    trialName = trial->GetName().GetEnglish();
-                    break;
-            }
+            std::string trialName = trial->GetName().GetForCurrentLanguage(MF_CLEAN);
             jsonData["requiredTrials"].push_back(RemoveLineBreaks(trialName));
         }
     }

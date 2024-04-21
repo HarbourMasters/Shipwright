@@ -193,11 +193,11 @@ std::unordered_map<RandomizerHint, StaticHintInfo> StaticData::staticHintInfoMap
   //Altar hints are special cased due to special hint marking rules
   //warp song hints are special cased due to entrences not being done properly yet
   // Ganondorf Joke is special Cased as the text is random
-  {RH_SHEIK_HINT,          StaticHintInfo(HINT_TYPE_ITEM,     {RHT_SHEIK_HINT_LA_ONLY},            RSK_SHEIK_LA_HINT,       true, {}, {RG_LIGHT_ARROWS},            {RC_SHEIK_HINT_GC, RC_SHEIK_HINT_MQ_GC}, true)},
-  {RH_DAMPES_DIARY,        StaticHintInfo(HINT_TYPE_ITEM,     {RHT_DAMPE_DIARY},                   RSK_DAMPES_DIARY_HINT,   true, {}, {RG_PROGRESSIVE_HOOKSHOT},    {RC_DAMPE_HINT})},
-  {RH_GREG_RUPEE,          StaticHintInfo(HINT_TYPE_ITEM,     {RHT_GREG_HINT},                     RSK_GREG_HINT,           true, {}, {RG_GREG_RUPEE},              {RC_GREG_HINT})},
-  {RH_SARIA_HINT,          StaticHintInfo(HINT_TYPE_ITEM,     {RHT_SARIA_HINT},                    RSK_SARIA_HINT,          true, {}, {RG_PROGRESSIVE_MAGIC_METER}, {RC_SARIA_SONG_HINT, RC_SONG_FROM_SARIA}, true)},
-  {RH_FISHING_POLE,        StaticHintInfo(HINT_TYPE_ITEM,     {RHT_FISHING_POLE_HINT},             RSK_FISHING_POLE_HINT,   true, {}, {RG_FISHING_POLE},            {RC_FISHING_POLE_HINT}, true)},
+  {RH_SHEIK_HINT,          StaticHintInfo(HINT_TYPE_AREA,     {RHT_SHEIK_HINT_LA_ONLY},            RSK_SHEIK_LA_HINT,       true, {}, {RG_LIGHT_ARROWS},            {RC_SHEIK_HINT_GC, RC_SHEIK_HINT_MQ_GC}, true)},
+  {RH_DAMPES_DIARY,        StaticHintInfo(HINT_TYPE_AREA,     {RHT_DAMPE_DIARY},                   RSK_DAMPES_DIARY_HINT,   true, {}, {RG_PROGRESSIVE_HOOKSHOT},    {RC_DAMPE_HINT})},
+  {RH_GREG_RUPEE,          StaticHintInfo(HINT_TYPE_AREA,     {RHT_GREG_HINT},                     RSK_GREG_HINT,           true, {}, {RG_GREG_RUPEE},              {RC_GREG_HINT})},
+  {RH_SARIA_HINT,          StaticHintInfo(HINT_TYPE_AREA,     {RHT_SARIA_TALK_HINT, RHT_SARIA_SONG_HINT}, RSK_SARIA_HINT,   true, {}, {RG_PROGRESSIVE_MAGIC_METER}, {RC_SARIA_SONG_HINT, RC_SONG_FROM_SARIA}, true)},
+  {RH_FISHING_POLE,        StaticHintInfo(HINT_TYPE_AREA,     {RHT_FISHING_POLE_HINT},             RSK_FISHING_POLE_HINT,   true, {}, {RG_FISHING_POLE},            {RC_FISHING_POLE_HINT}, true)},
   {RH_MEDIGORON,           StaticHintInfo(HINT_TYPE_MERCHANT, {RHT_MEDIGORON_HINT},                RSK_SHUFFLE_MERCHANTS, (uint8_t)RO_SHUFFLE_MERCHANTS_OFF, {RC_GC_MEDIGORON})},
   {RH_GRANNY,              StaticHintInfo(HINT_TYPE_MERCHANT, {RHT_GRANNY_HINT},                   RSK_SHUFFLE_MERCHANTS, (uint8_t)RO_SHUFFLE_MERCHANTS_OFF, {RC_KAK_GRANNYS_SHOP})},
   {RH_CARPET_SALESMAN,     StaticHintInfo(HINT_TYPE_MERCHANT, {RHT_CARPET_SALESMAN_DIALOG_HINTED}, RSK_SHUFFLE_MERCHANTS, (uint8_t)RO_SHUFFLE_MERCHANTS_OFF, {RC_WASTELAND_BOMBCHU_SALESMAN})},
@@ -218,11 +218,11 @@ std::unordered_map<RandomizerHint, StaticHintInfo> StaticData::staticHintInfoMap
 std::unordered_map<std::string, uint32_t> StaticData::PopulateTranslationMap(std::unordered_map<uint32_t, CustomMessage> input){
   std::unordered_map<std::string, uint32_t> output = {};
   for (const auto& [key, message] : input) {
-    std::vector<std::string> strings = message.GetAllStrings();
+    std::vector<std::string> strings = message.GetAllMessages();
     for (std::string string: strings){
       if (output.contains(string)){
         if (output[string] != key){
-          SPDLOG_DEBUG("\tREPEATED STRING IN " + message.GetEnglish() + "\n\n"); //RANDOTODO should this cause an error of some kind?
+          SPDLOG_DEBUG("\tREPEATED STRING IN " + message.GetEnglish(MF_CLEAN) + "\n\n"); //RANDOTODO should this cause an error of some kind?
         }
       } else {
         output[string] = key;
@@ -235,7 +235,7 @@ std::unordered_map<std::string, uint32_t> StaticData::PopulateTranslationMap(std
 std::unordered_map<std::string, uint32_t> StaticData::PopulateTranslationMap(std::unordered_map<uint32_t, RandomizerHintTextKey> input){
   std::unordered_map<std::string, uint32_t> output = {};
   for (const auto& [key, text] : input) {
-    std::vector<std::string> strings = hintTextTable[text].GetClear().GetAllStrings();
+    std::vector<std::string> strings = hintTextTable[text].GetClear().GetAllMessages();
     for (std::string string: strings){
       if (output.contains(string)){
         if (output[string] != key){
@@ -255,47 +255,50 @@ std::unordered_map<std::string, uint32_t> StaticData::areaNameToEnum = {};
 std::unordered_map<std::string, uint32_t> StaticData::trialNameToEnum = {};
 std::unordered_map<std::string, uint32_t> StaticData::locationNameToEnum = {}; //is filled in context based on location table, not touching that because of VB 
 
-std::unordered_map<u32, RandomizerHint> StaticData::stoneFlagToHint{
-    {0x0, RH_NONE},
-    {0x1, RH_ZF_FAIRY_GOSSIP_STONE},
-    {0x2, RH_ZF_JABU_GOSSIP_STONE},
-    {0x3, RH_LH_LAB_GOSSIP_STONE},
-    {0x4, RH_DMT_GOSSIP_STONE},
-    {0x5, RH_DMC_GOSSIP_STONE},
-    {0x6, RH_TOT_LEFTMOST_GOSSIP_STONE},
-    {0x7, RH_TOT_RIGHTMOST_GOSSIP_STONE},
-    {0x8, RH_LH_SOUTHWEST_GOSSIP_STONE},
-    {0x9, RH_ZD_GOSSIP_STONE},
-    {0xA, RH_GRAVEYARD_GOSSIP_STONE},
-    {0xB, RH_HC_ROCK_WALL_GOSSIP_STONE},
-    {0xC, RH_ZR_NEAR_DOMAIN_GOSSIP_STONE},
-    {0xD, RH_ZR_NEAR_GROTTOS_GOSSIP_STONE},
-    {0xE, RH_TOT_LEFT_CENTER_GOSSIP_STONE},
-    {0xF, RH_LH_SOUTHEAST_GOSSIP_STONE},
-    {0x10, RH_TOT_RIGHT_CENTER_GOSSIP_STONE},
-    {0x11, RH_GV_GOSSIP_STONE},
-    {0x12, RH_HC_MALON_GOSSIP_STONE},
-    {0x13, RH_HC_STORMS_GROTTO_GOSSIP_STONE},
-    {0x15, RH_GC_MAZE_GOSSIP_STONE},
-    {0x16, RH_SFM_MAZE_NEAR_LW_GOSSIP_STONE},
-    {0x17, RH_SFM_MAZE_CENTER_GOSSIP_STONE},
-    {0x18, RH_GC_MEDIGORON_GOSSIP_STONE},
-    {0x19, RH_COLOSSUS_GOSSIP_STONE},
-    {0x1A, RH_HF_COW_GROTTO_GOSSIP_STONE},
-    {0x1B, RH_SFM_SARIA_GOSSIP_STONE},
-    {0x1C, RH_LW_GOSSIP_STONE},
-    {0x1D, RH_KF_GOSSIP_STONE},
-    {0x1E, RH_KF_DEKU_TREE_LEFT_GOSSIP_STONE},
-    {0x1F, RH_KF_DEKU_TREE_RIGHT_GOSSIP_STONE},
-    {0x30, RH_HF_NEAR_MARKET_GROTTO_GOSSIP_STONE},
-    {0x32, RH_HF_SOUTHEAST_GROTTO_GOSSIP_STONE},
-    {0x33, RH_HF_OPEN_GROTTO_GOSSIP_STONE},
-    {0x34, RH_LW_NEAR_SHORTCUTS_GROTTO_GOSSIP_STONE},
-    {0x37, RH_DMT_STORMS_GROTTO_GOSSIP_STONE},
-    {0x38, RH_KAK_OPEN_GROTTO_GOSSIP_STONE},
-    {0x39, RH_ZR_OPEN_GROTTO_GOSSIP_STONE},
-    {0x3A, RH_DMC_UPPER_GROTTO_GOSSIP_STONE},
-    {0x3C, RH_KF_STORMS_GROTTO_GOSSIP_STONE}
+std::unordered_map<u32, RandomizerHint> StaticData::stoneParamsToHint{
+  {0x1,  RH_ZF_FAIRY_GOSSIP_STONE},
+  {0x2,  RH_ZF_JABU_GOSSIP_STONE},
+  {0x3,  RH_LH_LAB_GOSSIP_STONE},
+  {0x4,  RH_DMT_GOSSIP_STONE},
+  {0x5,  RH_DMC_GOSSIP_STONE},
+  {0x6,  RH_TOT_LEFTMOST_GOSSIP_STONE},
+  {0x7,  RH_TOT_LEFT_CENTER_GOSSIP_STONE},
+  {0x8,  RH_LH_SOUTHWEST_GOSSIP_STONE},
+  {0x9,  RH_ZD_GOSSIP_STONE}, 
+  {0xA,  RH_GRAVEYARD_GOSSIP_STONE},
+  {0xB,  RH_HC_ROCK_WALL_GOSSIP_STONE},
+  {0xC,  RH_ZR_NEAR_DOMAIN_GOSSIP_STONE},
+  {0xD,  RH_ZR_NEAR_GROTTOS_GOSSIP_STONE},
+  {0xE,  RH_TOT_RIGHT_CENTER_GOSSIP_STONE },
+  {0xF,  RH_LH_SOUTHEAST_GOSSIP_STONE},
+  {0x10, RH_TOT_RIGHTMOST_GOSSIP_STONE },
+  {0x11, RH_GV_GOSSIP_STONE},
+  {0x12, RH_HC_MALON_GOSSIP_STONE},
+  {0x13, RH_HC_STORMS_GROTTO_GOSSIP_STONE},
+  {0x15, RH_GC_MAZE_GOSSIP_STONE},
+  {0x16, RH_SFM_MAZE_NEAR_LW_GOSSIP_STONE},
+  {0x17, RH_SFM_MAZE_CENTER_GOSSIP_STONE},
+  //generic grottos all use 0x18, grottoChestParamsToHint is used for conversion
+  {0x19, RH_GC_MEDIGORON_GOSSIP_STONE},
+  {0x1A, RH_COLOSSUS_GOSSIP_STONE},
+  {0x1B, RH_HF_COW_GROTTO_GOSSIP_STONE},
+  {0x1C, RH_SFM_SARIA_GOSSIP_STONE},
+  {0x1D, RH_LW_GOSSIP_STONE},
+  {0x1E, RH_KF_GOSSIP_STONE},
+  {0x1F, RH_KF_DEKU_TREE_LEFT_GOSSIP_STONE},
+  {0x20, RH_KF_DEKU_TREE_RIGHT_GOSSIP_STONE},
+};
+
+std::unordered_map<u32, RandomizerHint> StaticData::grottoChestParamsToHint{
+  {22944, RH_HF_NEAR_MARKET_GROTTO_GOSSIP_STONE},
+  {22978, RH_HF_SOUTHEAST_GROTTO_GOSSIP_STONE},
+  {22947, RH_HF_OPEN_GROTTO_GOSSIP_STONE},
+  {22964, RH_LW_NEAR_SHORTCUTS_GROTTO_GOSSIP_STONE},
+  {23255, RH_DMT_STORMS_GROTTO_GOSSIP_STONE},
+  {22984, RH_KAK_OPEN_GROTTO_GOSSIP_STONE},
+  {22985, RH_ZR_OPEN_GROTTO_GOSSIP_STONE},
+  {23802, RH_DMC_UPPER_GROTTO_GOSSIP_STONE},
+  {22988, RH_KF_STORMS_GROTTO_GOSSIP_STONE}
 };
 
 std::array<HintText, RHT_MAX> StaticData::hintTextTable = {};

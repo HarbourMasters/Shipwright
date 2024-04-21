@@ -577,7 +577,7 @@ uint8_t PlaceHints(std::vector<uint8_t>& selectedHints,
     std::vector<RandomizerCheck> hintTypePool = FilterHintability(ctx->allLocations, distribution.filter);
     for (uint8_t numHint = 0; numHint < selectedHints[curSlot]; numHint++){
 
-      SPDLOG_DEBUG("Attempting to make hint of type: " + StaticData::hintTypeNames[distribution.type].GetEnglish() + "\n");
+      SPDLOG_DEBUG("Attempting to make hint of type: " + StaticData::hintTypeNames[distribution.type].GetEnglish(MF_CLEAN) + "\n");
       RandomizerCheck hintedLocation = RC_UNKNOWN_CHECK;
 
       hintedLocation = CreateRandomHint(hintTypePool, distribution.copies, distribution.type, distribution.name);

@@ -11,7 +11,7 @@
 
 #undef MESSAGE_END
 
-#define QM_WHITE "\x00"
+#define QM_WHITE "\x00"s
 #define QM_RED "\x41"
 #define QM_GREEN "\x42"
 #define QM_BLUE "\x43"
@@ -19,6 +19,13 @@
 #define QM_PINK "\x45"
 #define QM_YELLOW "\x46"
 #define QM_BLACK "\x47"
+
+typedef enum {
+    MF_FORMATTED,
+    MF_CLEAN,
+    MF_RAW,
+    MF_AUTO_FORMAT
+} MessageFormat;
 
 /**
  * @brief Encapsulates logic surrounding languages, and formatting strings for OoT's textboxes and
@@ -44,12 +51,13 @@ class CustomMessage {
     static std::string WAIT_FOR_INPUT() ;
     static std::string PLAYER_NAME() ;
 
-    const std::string& GetEnglish() const;
-    const std::string& GetFrench() const;
-    const std::string& GetGerman() const;
-    const std::string& GetForLanguage(uint8_t language) const;
-    const std::string& GetForCurrentLanguage() const;
-    const std::vector<std::string> GetAllStrings() const;
+    const std::string GetEnglish(MessageFormat format = MF_FORMATTED) const;
+    const std::string GetFrench(MessageFormat format = MF_FORMATTED) const;
+    const std::string GetGerman(MessageFormat format = MF_FORMATTED) const;
+    const std::string GetForCurrentLanguage(MessageFormat format = MF_FORMATTED) const;
+    const std::string GetForLanguage(uint8_t language, MessageFormat format = MF_FORMATTED) const;
+    const std::vector<std::string> GetAllMessages(MessageFormat format = MF_FORMATTED) const;
+    void ProcessMessageFormat(std::string& str, MessageFormat format) const;
     const std::vector<std::string>& GetColors() const;
     void SetColors(std::vector<std::string> colors_);
     const std::vector<bool>& GetCapital() const;
@@ -94,17 +102,17 @@ class CustomMessage {
      * @brief Replaces special characters (things like diacritics for non-english langugages)
      * with the control codes used to display them in OoT's textboxes.
      */
-    void ReplaceSpecialCharacters();
+    void ReplaceSpecialCharacters(std::string& str) const;
 
     /**
      * @brief Replaces our color variable strings with the OoT control codes.
      */
-    void ReplaceColors();
+    void ReplaceColors(std::string& str) const;
 
     /**
      * @brief Replaces `$<char>` variable strings with OoT control codes.
      */
-    void ReplaceAltarIcons();
+    void ReplaceAltarIcons(std::string& str) const;
 
     /**
      * @brief Replaces [[1]] style variable strings with the provided vector of customMessages
@@ -121,13 +129,6 @@ class CustomMessage {
     void Format(ItemID iid);
 
     /**
-     * @brief Automatically format a text to fit into textboxes 
-     *
-     * RANDOTODO whoever knows exactly what this does check my adaption and write a better comment
-     */
-    void AutoFormat();
-
-    /**
      * @brief Replaces [[d]] in text with the supplied number, and if plural
      * options exist (2 blocks of text surrounded by |) choose the former if it 1,
      * and the latter otherwise, deleting the other and the |'s.
@@ -142,6 +143,38 @@ class CustomMessage {
      * wait for input, etc.
      */
     void Format();
+
+    /**
+     * @brief formats the message specifically to fit in OoT's 
+     * textboxes, and use it's formatting.
+     */
+    void AutoFormat();
+
+    /**
+     * @brief Removes all OoT formatting from the message, 
+     * making it a good form for writing into spoiler logs.
+     */
+    void Clean();
+
+    /**
+     * @brief Replaces various symbols with the control codes necessary to
+     * display them in OoT's textboxes for a single string
+     * . i.e. special characters, colors, newlines, wait for input, etc.
+     */
+    void FormatString(std::string& str) const;
+    
+    /**
+     * @brief formats the string specifically to fit in OoT's 
+     * textboxes, and use it's formatting.
+     * RANDOTODO whoever knows exactly what this does check my adaption
+     */
+    void AutoFormatString(std::string& str) const;
+
+    /**
+     * @brief Removes symbols used for control codes from the string,
+     * leaving raw text
+     */
+    void CleanString(std::string& str) const;
 
   private:
     std::vector<std::string> messages = {"","",""};

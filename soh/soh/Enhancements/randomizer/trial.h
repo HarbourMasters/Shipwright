@@ -38,6 +38,6 @@ class Trials {
     void ParseJson(nlohmann::json spoilerFileJson);
     std::unordered_map<uint32_t, RandomizerHintTextKey> GetAllTrialHintHeys() const;
   private:
-    std::vector<TrialInfo> mTrials;
+    std::array<TrialInfo, TK_MAX> mTrials;
 };
 }
