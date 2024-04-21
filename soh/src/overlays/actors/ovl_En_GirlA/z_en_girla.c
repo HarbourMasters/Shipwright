@@ -1287,7 +1287,7 @@ void EnGirlA_InitializeItemAction(EnGirlA* this, PlayState* play) {
             this->giDrawId = getItemEntry.gid;
 
             // Correct the rotation for spiritual stones, but only if mysterious shuffle isn't on, else it's obvious what's there in shops
-            if (!CVarGetInteger("gRandoEnhancements.MysteriousShuffle", 0) && (getItemEntry.getItemId >= RG_KOKIRI_EMERALD && getItemEntry.getItemId <= RG_ZORA_SAPPHIRE)) {
+            if (!CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0) && (getItemEntry.getItemId >= RG_KOKIRI_EMERALD && getItemEntry.getItemId <= RG_ZORA_SAPPHIRE)) {
                 this->actor.shape.rot.y = this->actor.shape.rot.y + 20000;
             }
         }
@@ -1332,7 +1332,7 @@ void EnGirlA_Draw(Actor* thisx, PlayState* play) {
 
     if (this->actor.params == SI_RANDOMIZED_ITEM) {
         ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(play->sceneNum, this->randoSlotIndex);
-        GetItemEntry getItemEntry = (CVarGetInteger("gRandoEnhancements.MysteriousShuffle", 0) && this->actor.params == SI_RANDOMIZED_ITEM) ? GetItemMystery() : 
+        GetItemEntry getItemEntry = (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0) && this->actor.params == SI_RANDOMIZED_ITEM) ? GetItemMystery() : 
                                     Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
 
         EnItem00_CustomItemsParticles(&this->actor, play, getItemEntry);

@@ -1449,7 +1449,7 @@ void DrawLocation(RandomizerCheckObject rcObj) {
     //Draw the extra info
     txt = "";
 
-    bool mystery = CVarGetInteger("gRandoEnhancements.MysteriousShuffle", 0) && OTRGlobals::Instance->gRandomizer->merchantPrices.contains(rcObj.rc);
+    bool mystery = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0) && OTRGlobals::Instance->gRandomizer->merchantPrices.contains(rcObj.rc);
 
     if (checkData.hintItem != 0) {
         // TODO hints
