@@ -10846,6 +10846,7 @@ void Player_UpdateCamAndSeqModes(PlayState* play, Player* this) {
     if (this->actor.category == ACTORCAT_PLAYER) {
         seqMode = SEQ_MODE_DEFAULT;
 
+        this->cylinder.hideColliderInCollisionViewer = 0;
         if (this->csAction != 0) {
             Camera_ChangeMode(Play_GetCamera(play, 0), CAM_MODE_NORMAL);
         } else if (!(this->stateFlags1 & PLAYER_STATE1_FIRST_PERSON)) {
@@ -10912,6 +10913,7 @@ void Player_UpdateCamAndSeqModes(PlayState* play, Player* this) {
         } else {
             // First person mode
             seqMode = SEQ_MODE_STILL;
+            this->cylinder.hideColliderInCollisionViewer = 1;
         }
 
         if (play->actorCtx.targetCtx.bgmEnemy != NULL && !CVarGetInteger(AUDIO_CVAR("EnemyBGMDisable"), 0)) {

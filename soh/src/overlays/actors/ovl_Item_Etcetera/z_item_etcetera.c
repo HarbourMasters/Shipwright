@@ -36,6 +36,26 @@ const ActorInit Item_Etcetera_InitVars = {
     NULL,
 };
 
+static ColliderCylinderInit sUselessCylinderInit = {
+    {
+        COLTYPE_NONE,
+        AT_NONE,
+        AC_ON,
+        OC1_NONE,
+        OC2_NONE,
+        COLSHAPE_CYLINDER,
+    },
+    {
+        ELEMTYPE_UNK2,
+        { 0x00000000, 0x00, 0x00 },
+        { 0x00000048, 0x00, 0x00 },
+        TOUCH_NONE,
+        BUMP_NONE,
+        OCELEM_NONE,
+    },
+    { 15, 50, 0, { 0 } },
+};
+
 static s16 sObjectIds[] = {
     OBJECT_GI_BOTTLE, OBJECT_GI_BOTTLE_LETTER, OBJECT_GI_SHIELD_2, OBJECT_GI_ARROWCASE, OBJECT_GI_SCALE,
     OBJECT_GI_SCALE,  OBJECT_GI_KEY,           OBJECT_GI_M_ARROW,  OBJECT_GI_RUPY,      OBJECT_GI_RUPY,
@@ -106,9 +126,24 @@ void ItemEtcetera_Init(Actor* thisx, PlayState* play) {
             this->actor.world.pos.y += 15.0f;
             break;
     }
+
+    if (CVarGetInteger("gCollisionGoggles", 0)) {
+        this->useUselessCylinder = 1;
+    } else {
+        this->useUselessCylinder = 0;
+    }
+    if (this->useUselessCylinder) {
+        Collider_InitCylinder(play, &this->uselessCollider);
+        Collider_SetCylinder(play, &this->uselessCollider, &this->actor, &sUselessCylinderInit);
+    }
 }
 
 void ItemEtcetera_Destroy(Actor* thisx, PlayState* play) {
+    ItemEtcetera* this = (ItemEtcetera*)thisx;
+
+    if (this->useUselessCylinder) {
+        Collider_DestroyCylinder(play, &this->uselessCollider);
+    }
 }
 
 void func_80B857D0(ItemEtcetera* this, PlayState* play) {
@@ -221,6 +256,11 @@ void ItemEtcetera_UpdateFireArrow(ItemEtcetera* this, PlayState* play) {
 void ItemEtcetera_Update(Actor* thisx, PlayState* play) {
     ItemEtcetera* this = (ItemEtcetera*)thisx;
     this->actionFunc(this, play);
+
+    if (this->useUselessCylinder) {
+        Collider_UpdateCylinder(&this->actor, &this->uselessCollider);
+        CollisionCheck_SetAC(play, &play->colChkCtx, &this->uselessCollider.base);
+    }
 }
 
 void ItemEtcetera_DrawThroughLens(Actor* thisx, PlayState* play) {

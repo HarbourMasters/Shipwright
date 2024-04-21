@@ -16,6 +16,8 @@ typedef struct ItemEtcetera {
     /* 0x0154 */ u8 objBankIndex;
     /* 0x0158 */ ActorFunc drawFunc;
     /* 0x015C */ ItemEtceteraActionFunc actionFunc;
+    s32 useUselessCylinder;
+    ColliderCylinder uselessCollider;
 } ItemEtcetera; // size = 0x0160
 
 typedef enum {
