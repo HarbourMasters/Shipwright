@@ -340,7 +340,7 @@ void KaleidoScope_HandleItemCycles(PlayState* play) {
     gSlotAgeReqs[SLOT_TRADE_CHILD] =
         (
             ((CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA) && CVarGetInteger("gAdultBunnyHood", 0)) ||
-            CVarGetInteger("gTimelessEquipment", 0)
+            CVarGetInteger(CVAR_CHEAT("TimelessEquipment"), 0)
         ) &&
         INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_MASK_BUNNY
             ? AGE_REQ_NONE
@@ -349,7 +349,7 @@ void KaleidoScope_HandleItemCycles(PlayState* play) {
     //also update the age requirement for the bunny hood itself
     gItemAgeReqs[ITEM_MASK_BUNNY] =
         ((CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA) && CVarGetInteger("gAdultBunnyHood", 0)) ||
-        CVarGetInteger("gTimelessEquipment", 0)
+        CVarGetInteger(CVAR_CHEAT("TimelessEquipment"), 0)
             ? AGE_REQ_NONE
             : AGE_REQ_CHILD;
 
@@ -415,8 +415,8 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
     s16 oldCursorPoint;
     s16 moveCursorResult;
     bool dpad = (CVarGetInteger("gDpadPause", 0) && !CHECK_BTN_ALL(input->cur.button, BTN_CUP));
-    bool pauseAnyCursor = (CVarGetInteger("gPauseAnyCursor", 0) == PAUSE_ANY_CURSOR_RANDO_ONLY && IS_RANDO) ||
-                          (CVarGetInteger("gPauseAnyCursor", 0) == PAUSE_ANY_CURSOR_ALWAYS_ON);
+    bool pauseAnyCursor = pauseCtx->cursorSpecialPos == 0 && ((CVarGetInteger("gPauseAnyCursor", 0) == PAUSE_ANY_CURSOR_RANDO_ONLY && IS_RANDO) ||
+                          (CVarGetInteger("gPauseAnyCursor", 0) == PAUSE_ANY_CURSOR_ALWAYS_ON));
 
     OPEN_DISPS(play->state.gfxCtx);
 

@@ -675,7 +675,7 @@ void Play_Init(GameState* thisx) {
 
     Fault_AddClient(&D_801614B8, ZeldaArena_Display, NULL, NULL);
     // In order to keep bunny hood equipped on first load, we need to pre-set the age reqs for the item and slot
-    if ((CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA && CVarGetInteger("gAdultBunnyHood", 0)) || CVarGetInteger("gTimelessEquipment", 0)) {
+    if ((CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA && CVarGetInteger("gAdultBunnyHood", 0)) || CVarGetInteger(CVAR_CHEAT("TimelessEquipment"), 0)) {
         gItemAgeReqs[ITEM_MASK_BUNNY] = AGE_REQ_NONE;
         if(INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_MASK_BUNNY)
             gSlotAgeReqs[SLOT_TRADE_CHILD] = AGE_REQ_NONE;
@@ -1846,7 +1846,7 @@ void Play_Main(GameState* thisx) {
         LOG_NUM("1", 1);
     }
     
-    if (CVarGetInteger("gTimeSync", 0)) {
+    if (CVarGetInteger(CVAR_CHEAT("TimeSync"), 0)) {
         const int maxRealDaySeconds = 86400;
         const int maxInGameDayTicks = 65536;
 

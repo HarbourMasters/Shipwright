@@ -1655,11 +1655,11 @@ void Message_OpenText(PlayState* play, u16 textId) {
                             //font->msgLength, __FILE__, __LINE__);
 
     } else if (CVarGetInteger("gAskToEquip", 0) &&
-               (((LINK_IS_ADULT || CVarGetInteger("gTimelessEquipment", 0)) &&
+               (((LINK_IS_ADULT || CVarGetInteger(CVAR_CHEAT("TimelessEquipment"), 0)) &&
                  // 0C = Biggoron, 4B = Giant's, 4E = Mirror Shield, 50-51 = Tunics
                  (textId == 0x0C || textId == 0x4B || textId == 0x4E ||
                   textId == 0x50 || textId == 0x51)) ||
-                ((!LINK_IS_ADULT || CVarGetInteger("gTimelessEquipment", 0)) &&
+                ((!LINK_IS_ADULT || CVarGetInteger(CVAR_CHEAT("TimelessEquipment"), 0)) &&
                 // 4C = Deku Shield, A4 = Kokiri Sword
                  (textId == 0x4C || textId == 0xA4)) ||
                 // 4D == Hylian Shield
@@ -3007,7 +3007,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
  * the last value being saved in a static variable.
  */
 void Message_DrawDebugVariableChanged(s16* var, GraphicsContext* gfxCtx) {
-    if (!CVarGetInteger("gDebugEnabled", 0)) { return; }
+    if (!CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0)) { return; }
 
     static s16 sVarLastValue = 0;
     static s16 sFillTimer = 0;

@@ -1149,8 +1149,8 @@ extern "C" void InitOTR() {
     srand(now);
 #ifdef ENABLE_REMOTE_CONTROL
     SDLNet_Init();
-    if (CVarGetInteger("gRemote.Enabled", 0)) {
-        switch (CVarGetInteger("gRemote.Scheme", GI_SCHEME_SAIL)) {
+    if (CVarGetInteger(CVAR_REMOTE("Enabled"), 0)) {
+        switch (CVarGetInteger(CVAR_REMOTE("Scheme"), GI_SCHEME_SAIL)) {
             case GI_SCHEME_SAIL:
                 GameInteractorSail::Instance->Enable();
                 break;
@@ -1175,8 +1175,8 @@ extern "C" void DeinitOTR() {
     SaveManager_ThreadPoolWait();
     OTRAudio_Exit();
 #ifdef ENABLE_REMOTE_CONTROL
-    if (CVarGetInteger("gRemote.Enabled", 0)) {
-        switch (CVarGetInteger("gRemote.Scheme", GI_SCHEME_SAIL)) {
+    if (CVarGetInteger(CVAR_REMOTE("Enabled"), 0)) {
+        switch (CVarGetInteger(CVAR_REMOTE("Scheme"), GI_SCHEME_SAIL)) {
             case GI_SCHEME_SAIL:
                 GameInteractorSail::Instance->Disable();
                 break;
@@ -1247,7 +1247,7 @@ extern "C" void Graph_StartFrame() {
 
     switch (dwScancode) {
         case KbScancode::LUS_KB_F5: {
-            if (CVarGetInteger("gSaveStatesEnabled", 0) == 0) {
+            if (CVarGetInteger(CVAR_CHEAT("SaveStatesEnabled"), 0) == 0) {
                 LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->
                     TextDrawNotification(6.0f, true, "Save states not enabled. Check Cheats Menu.");
                 return;
@@ -1269,7 +1269,7 @@ extern "C" void Graph_StartFrame() {
             break;
         }
         case KbScancode::LUS_KB_F6: {
-            if (CVarGetInteger("gSaveStatesEnabled", 0) == 0) {
+            if (CVarGetInteger(CVAR_CHEAT("SaveStatesEnabled"), 0) == 0) {
                 LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->
                     TextDrawNotification(6.0f, true, "Save states not enabled. Check Cheats Menu.");
                 return;
@@ -1284,7 +1284,7 @@ extern "C" void Graph_StartFrame() {
             break;
         }
         case KbScancode::LUS_KB_F7: {
-            if (CVarGetInteger("gSaveStatesEnabled", 0) == 0) {
+            if (CVarGetInteger(CVAR_CHEAT("SaveStatesEnabled"), 0) == 0) {
                 LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->
                     TextDrawNotification(6.0f, true, "Save states not enabled. Check Cheats Menu.");
                 return;
@@ -2536,12 +2536,12 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
                 RandomizerInf randoInf = (RandomizerInf)((textId - (TEXT_SHOP_ITEM_RANDOM + NUM_SHOP_ITEMS)) + RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1);
                 messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(randoInf, TEXT_SHOP_ITEM_RANDOM_CONFIRM);
             }
-        } else if (CVarGetInteger("gRandomizeRupeeNames", 1) &&
+        } else if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("RandomizeRupeeNames"), 1) &&
                    (textId == TEXT_BLUE_RUPEE || textId == TEXT_RED_RUPEE || textId == TEXT_PURPLE_RUPEE ||
                    textId == TEXT_HUGE_RUPEE)) {
             messageEntry = Randomizer::GetRupeeMessage(textId);
             // In rando, replace Navi's general overworld hints with rando-related gameplay tips
-        } else if (CVarGetInteger("gRandoRelevantNavi", 1) && textId >= 0x0140 && textId <= 0x015F) {
+        } else if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("RandoRelevantNavi"), 1) && textId >= 0x0140 && textId <= 0x015F) {
             u16 naviTextId = Random(0, NUM_NAVI_MESSAGES);
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::NaviRandoMessageTableID, naviTextId);
         } else if (Randomizer_GetSettingValue(RSK_SHUFFLE_MAGIC_BEANS) && textId == TEXT_BEAN_SALESMAN) {
