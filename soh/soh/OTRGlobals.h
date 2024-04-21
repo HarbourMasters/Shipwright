@@ -65,6 +65,22 @@ private:
 uint32_t IsGameMasterQuest();
 #endif
 
+#define CVAR_RANDOMIZER_ENHANCEMENT(var) "gRandoEnhancements." var
+#define CVAR_RANDOMIZER_SETTING(var) "gRandoSettings." var
+#define CVAR_COSMETIC(var) "gCosmetics." var
+#define CVAR_AUDIO(var) "gAudioEditor." var
+#define CVAR_CHEAT(var) "gCheats." var
+#define CVAR_ENHANCEMENT(var) "gEnhancements." var
+#define CVAR_SETTING(var) "gSettings." var
+#define CVAR_WINDOW(var) "gOpenWindows." var
+#define CVAR_TRACKER(var) "gTrackers." var
+#define CVAR_TRACKER_ITEM(var) CVAR_TRACKER("ItemTracker." var)
+#define CVAR_TRACKER_CHECK(var) CVAR_TRACKER("CheckTracker." var)
+#define CVAR_TRACKER_ENTRANCE(var) CVAR_TRACKER("EntranceTracker." var)
+#define CVAR_DEVELOPER_TOOLS(var) "gDeveloperTools." var
+#define CVAR_GENERAL(var) "gGeneral." var
+#define CVAR_REMOTE(var) "gRemote." var
+
 #ifndef __cplusplus
     void InitOTR(void);
 void DeinitOTR(void);
@@ -95,8 +111,6 @@ uint8_t ResourceMgr_FileExists(const char* resName);
 uint8_t ResourceMgr_FileAltExists(const char* resName);
 void ResourceMgr_UnloadOriginalWhenAltExists(const char* resName);
 char* GetResourceDataByNameHandlingMQ(const char* path);
-void ResourceMgr_LoadFile(const char* resName);
-char* ResourceMgr_LoadFileFromDisk(const char* filePath);
 uint8_t ResourceMgr_TexIsRaw(const char* texPath);
 uint8_t ResourceMgr_ResourceIsBackground(char* texPath);
 char* ResourceMgr_LoadJPEG(char* data, size_t dataSize);

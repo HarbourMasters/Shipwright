@@ -1,6 +1,6 @@
 #include "SetSkyboxModifier.h"
 
-namespace LUS {
+namespace SOH {
 SkyboxModifier* SetSkyboxModifier::GetPointer() {
     return &modifier;
 }
@@ -8,4 +8,4 @@ SkyboxModifier* SetSkyboxModifier::GetPointer() {
 size_t SetSkyboxModifier::GetPointerSize() {
 	return sizeof(SkyboxModifier);
 }
-} // namespace LUS
+} // namespace SOH

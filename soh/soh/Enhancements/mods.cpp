@@ -23,6 +23,7 @@
 #include "src/overlays/actors/ovl_En_Tp/z_en_tp.h"
 #include "src/overlays/actors/ovl_En_Firefly/z_en_firefly.h"
 #include "src/overlays/actors/ovl_En_Xc/z_en_xc.h"
+#include "src/overlays/actors/ovl_Obj_Switch/z_obj_switch.h"
 #include "objects/object_link_boy/object_link_boy.h"
 #include "objects/object_link_child/object_link_child.h"
 
@@ -64,8 +65,8 @@ void ReloadSceneTogglingLinkAge() {
 
 void RegisterInfiniteMoney() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!GameInteractor::IsSaveLoaded()) return;
-        if (CVarGetInteger("gInfiniteMoney", 0) != 0) {
+        if (!GameInteractor::IsSaveLoaded(true)) return;
+        if (CVarGetInteger(CVAR_CHEAT("InfiniteMoney"), 0) != 0) {
             if (gSaveContext.rupees < CUR_CAPACITY(UPG_WALLET)) {
                 gSaveContext.rupees = CUR_CAPACITY(UPG_WALLET);
             }
@@ -75,8 +76,8 @@ void RegisterInfiniteMoney() {
 
 void RegisterInfiniteHealth() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!GameInteractor::IsSaveLoaded()) return;
-        if (CVarGetInteger("gInfiniteHealth", 0) != 0) {
+        if (!GameInteractor::IsSaveLoaded(true)) return;
+        if (CVarGetInteger(CVAR_CHEAT("InfiniteHealth"), 0) != 0) {
             if (gSaveContext.health < gSaveContext.healthCapacity) {
                 gSaveContext.health = gSaveContext.healthCapacity;
             }
@@ -86,8 +87,8 @@ void RegisterInfiniteHealth() {
 
 void RegisterInfiniteAmmo() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!GameInteractor::IsSaveLoaded()) return;
-        if (CVarGetInteger("gInfiniteAmmo", 0) != 0) {
+        if (!GameInteractor::IsSaveLoaded(true)) return;
+        if (CVarGetInteger(CVAR_CHEAT("InfiniteAmmo"), 0) != 0) {
             // Deku Sticks
             if (AMMO(ITEM_STICK) < CUR_CAPACITY(UPG_STICKS)) {
                 AMMO(ITEM_STICK) = CUR_CAPACITY(UPG_STICKS);
@@ -123,8 +124,8 @@ void RegisterInfiniteAmmo() {
 
 void RegisterInfiniteMagic() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!GameInteractor::IsSaveLoaded()) return;
-        if (CVarGetInteger("gInfiniteMagic", 0) != 0) {
+        if (!GameInteractor::IsSaveLoaded(true)) return;
+        if (CVarGetInteger(CVAR_CHEAT("InfiniteMagic"), 0) != 0) {
             if (gSaveContext.isMagicAcquired && gSaveContext.magic != (gSaveContext.isDoubleMagicAcquired + 1) * 0x30) {
                 gSaveContext.magic = (gSaveContext.isDoubleMagicAcquired + 1) * 0x30;
             }
@@ -134,8 +135,8 @@ void RegisterInfiniteMagic() {
 
 void RegisterInfiniteNayrusLove() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!GameInteractor::IsSaveLoaded()) return;
-        if (CVarGetInteger("gInfiniteNayru", 0) != 0) {
+        if (!GameInteractor::IsSaveLoaded(true)) return;
+        if (CVarGetInteger(CVAR_CHEAT("InfiniteNayru"), 0) != 0) {
             gSaveContext.nayrusLoveTimer = 0x44B;
         }
     });
@@ -143,9 +144,9 @@ void RegisterInfiniteNayrusLove() {
 
 void RegisterMoonJumpOnL() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!GameInteractor::IsSaveLoaded()) return;
+        if (!GameInteractor::IsSaveLoaded(true)) return;
         
-        if (CVarGetInteger("gMoonJumpOnL", 0) != 0) {
+        if (CVarGetInteger(CVAR_CHEAT("MoonJumpOnL"), 0) != 0) {
             Player* player = GET_PLAYER(gPlayState);
 
             if (CHECK_BTN_ANY(gPlayState->state.input[0].cur.button, BTN_L)) {
@@ -158,9 +159,9 @@ void RegisterMoonJumpOnL() {
 
 void RegisterInfiniteISG() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!GameInteractor::IsSaveLoaded()) return;
+        if (!GameInteractor::IsSaveLoaded(true)) return;
 
-        if (CVarGetInteger("gEzISG", 0) != 0) {
+        if (CVarGetInteger(CVAR_CHEAT("EasyISG"), 0) != 0) {
             Player* player = GET_PLAYER(gPlayState);
             player->meleeWeaponState = 1;
         }
@@ -170,9 +171,9 @@ void RegisterInfiniteISG() {
 //Permanent quick put away (QPA) glitched damage value
 void RegisterEzQPA() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!GameInteractor::IsSaveLoaded()) return;
+        if (!GameInteractor::IsSaveLoaded(true)) return;
 
-        if (CVarGetInteger("gEzQPA", 0) != 0) {
+        if (CVarGetInteger(CVAR_CHEAT("EasyQPA"), 0) != 0) {
             Player* player = GET_PLAYER(gPlayState);
             player->meleeWeaponQuads[0].info.toucher.dmgFlags = 0x16171617;
             player->meleeWeaponQuads[1].info.toucher.dmgFlags = 0x16171617;
@@ -182,9 +183,9 @@ void RegisterEzQPA() {
 
 void RegisterUnrestrictedItems() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!GameInteractor::IsSaveLoaded()) return;
+        if (!GameInteractor::IsSaveLoaded(true)) return;
 
-        if (CVarGetInteger("gNoRestrictItems", 0) != 0) {
+        if (CVarGetInteger(CVAR_CHEAT("NoRestrictItems"), 0) != 0) {
             u8 sunsBackup = gPlayState->interfaceCtx.restrictions.sunsSong;
             memset(&gPlayState->interfaceCtx.restrictions, 0, sizeof(gPlayState->interfaceCtx.restrictions));
             gPlayState->interfaceCtx.restrictions.sunsSong = sunsBackup;
@@ -194,7 +195,7 @@ void RegisterUnrestrictedItems() {
 
 void RegisterFreezeTime() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (CVarGetInteger("gFreezeTime", 0) != 0) {
+        if (CVarGetInteger(CVAR_CHEAT("FreezeTime"), 0) != 0) {
             if (CVarGetInteger("gPrevTime", -1) == -1) {
                 CVarSetInteger("gPrevTime", gSaveContext.dayTime);
             }
@@ -210,17 +211,20 @@ void RegisterFreezeTime() {
 /// Switches Link's age and respawns him at the last entrance he entered.
 void RegisterSwitchAge() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!GameInteractor::IsSaveLoaded()) {
-            CVarClear("gSwitchAge");
+        static bool warped = false;
+
+        if (!GameInteractor::IsSaveLoaded(true)) {
+            CVarClear(CVAR_GENERAL("SwitchAge"));
+            warped = false;
             return;
         }
-        static bool warped = false;
+
         static Vec3f playerPos;
         static int16_t playerYaw;
         static RoomContext* roomCtx;
         static s32 roomNum;
 
-        if (CVarGetInteger("gSwitchAge", 0) && !warped) {
+        if (CVarGetInteger(CVAR_GENERAL("SwitchAge"), 0) && !warped) {
             playerPos = GET_PLAYER(gPlayState)->actor.world.pos;
             playerYaw = GET_PLAYER(gPlayState)->actor.shape.rot.y;
             roomCtx = &gPlayState->roomCtx;
@@ -239,7 +243,7 @@ void RegisterSwitchAge() {
                 func_80097534(gPlayState, roomCtx);  // load map for new room (unloading the previous room)
             }
             warped = false;
-            CVarClear("gSwitchAge");
+            CVarClear(CVAR_GENERAL("SwitchAge"));
         }
     });
 }
@@ -248,7 +252,7 @@ void RegisterSwitchAge() {
 void RegisterOcarinaTimeTravel() {
 
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnOcarinaSongAction>([]() {
-        if (!GameInteractor::IsSaveLoaded()) {
+        if (!GameInteractor::IsSaveLoaded(true)) {
             CVarClear("gTimeTravel");
             return;
         }
@@ -1356,6 +1360,23 @@ void RegisterToTMedallions() {
     });
 }
 
+
+void RegisterFloorSwitchesHook() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>([](void* refActor) {
+        Actor* actor = static_cast<Actor*>(refActor);
+        if (actor->id != ACTOR_OBJ_SWITCH || !CVarGetInteger("gEnhancements.FixFloorSwitches", 0)) {
+            return;
+        }
+
+        ObjSwitch* switchActor = reinterpret_cast<ObjSwitch*>(actor);
+        s32 type = (switchActor->dyna.actor.params & 7);
+
+        if (switchActor->dyna.actor.params == 0x1200 || switchActor->dyna.actor.params == 0x3A00) {
+            switchActor->dyna.actor.world.pos.y -= 1;
+        }
+    });
+}
+
 void RegisterPauseMenuHooks() {
     static bool pauseWarpHooksRegistered = false;
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([&]() {
@@ -1408,6 +1429,7 @@ void InitMods() {
     RegisterOpenAllHours();
     RegisterToTMedallions();
     NameTag_RegisterHooks();
+    RegisterFloorSwitchesHook();
     RegisterPatchHandHandler();
     RegisterHurtContainerModeHandler();
     RegisterPauseMenuHooks();

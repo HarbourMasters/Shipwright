@@ -18,7 +18,7 @@ void KaleidoSetup_Update(PlayState* play) {
         play->shootingGalleryStatus <= 1 && gSaveContext.magicState != MAGIC_STATE_STEP_CAPACITY && gSaveContext.magicState != MAGIC_STATE_FILL &&
         (play->sceneNum != SCENE_BOMBCHU_BOWLING_ALLEY || !Flags_GetSwitch(play, 0x38))) {
 
-        u8 easyPauseBufferEnabled = CVarGetInteger("gCheatEasyPauseBufferEnabled", 0);
+        u8 easyPauseBufferEnabled = CVarGetInteger(CVAR_CHEAT("EasyPauseBuffer"), 0);
         u8 easyPauseBufferTimer = CVarGetInteger("gCheatEasyPauseBufferTimer", 0);
 
         // If start is not seen as pressed on the 2nd to last frame then we should end the easy frame advance flow

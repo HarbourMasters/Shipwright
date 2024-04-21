@@ -3,33 +3,14 @@
 #include "spdlog/spdlog.h"
 #include "libultraship/libultraship.h"
 
-namespace LUS {
-std::shared_ptr<IResource>
-AudioSoundFontFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
-    auto resource = std::make_shared<AudioSoundFont>(initData);
-    std::shared_ptr<ResourceVersionFactory> factory = nullptr;
-
-    switch (resource->GetInitData()->ResourceVersion) {
-    case 2:
-	factory = std::make_shared<AudioSoundFontFactoryV0>();
-	break;
-    }
-
-    if (factory == nullptr)
-    {
-        SPDLOG_ERROR("Failed to load AudioSoundFont with version {}", resource->GetInitData()->ResourceVersion);
+namespace SOH {
+std::shared_ptr<LUS::IResource> ResourceFactoryBinaryAudioSoundFontV2::ReadResource(std::shared_ptr<LUS::File> file) {
+    if (!FileHasValidFormatAndReader(file)) {
         return nullptr;
     }
 
-    factory->ParseFileBinary(reader, resource);
-
-    return resource;
-}
-
-void LUS::AudioSoundFontFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
-                                                    std::shared_ptr<IResource> resource) {
-    std::shared_ptr<AudioSoundFont> audioSoundFont = std::static_pointer_cast<AudioSoundFont>(resource);
-    ResourceVersionFactory::ParseFileBinary(reader, audioSoundFont);
+    auto audioSoundFont = std::make_shared<AudioSoundFont>(file->InitData);
+    auto reader = std::get<std::shared_ptr<LUS::BinaryReader>>(file->Reader);
 
     audioSoundFont->soundFont.fntIndex = reader->ReadInt32();
     audioSoundFont->medium = reader->ReadInt8();
@@ -186,5 +167,7 @@ void LUS::AudioSoundFontFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader>
         audioSoundFont->soundEffects.push_back(soundEffect);
     }
     audioSoundFont->soundFont.soundEffects = audioSoundFont->soundEffects.data();
+
+    return audioSoundFont;
 }
-} // namespace LUS
+} // namespace SOH

@@ -10,7 +10,7 @@
 extern "C" void Play_InitScene(PlayState * play, s32 spawn);
 extern "C" void Play_InitEnvironment(PlayState * play, s16 skyboxId);
 void OTRPlay_InitScene(PlayState* play, s32 spawn);
-s32 OTRScene_ExecuteCommands(PlayState* play, LUS::Scene* scene);
+s32 OTRScene_ExecuteCommands(PlayState* play, SOH::Scene* scene);
 
 //LUS::OTRResource* OTRPlay_LoadFile(PlayState* play, RomFile* file) {
 LUS::IResource* OTRPlay_LoadFile(PlayState* play, const char* fileName)
@@ -75,7 +75,7 @@ void OTRPlay_InitScene(PlayState* play, s32 spawn) {
     func_80096FD4(play, &play->roomCtx.curRoom);
     YREG(15) = 0;
     gSaveContext.worldMapArea = 0;
-    OTRScene_ExecuteCommands(play, (LUS::Scene*)play->sceneSegment);
+    OTRScene_ExecuteCommands(play, (SOH::Scene*)play->sceneSegment);
     Play_InitEnvironment(play, play->skyboxId);
     // Unpause the timer for Boss Rush when the scene loaded isn't the Chamber of Sages.
     if (IS_BOSS_RUSH && play->sceneNum != SCENE_CHAMBER_OF_THE_SAGES) {

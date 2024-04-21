@@ -3,6 +3,7 @@
 #include "public/bridge/consolevariablebridge.h"
 #include "libultraship/libultra/controller.h"
 #include "Context.h"
+#include "soh/OTRGlobals.h"
 #ifndef IMGUI_DEFINE_MATH_OPERATORS
 #define IMGUI_DEFINE_MATH_OPERATORS
 #endif
@@ -59,7 +60,7 @@ void InputViewer::RenderButton(std::string btnTexture, std::string btnOutlineTex
 }
 
 void InputViewer::DrawElement() {
-    if (CVarGetInteger("gOpenWindows.InputViewer", 0)) {
+    if (CVarGetInteger(CVAR_WINDOW("InputViewer"), 0)) {
         static bool sButtonTexturesLoaded = false;
         if (!sButtonTexturesLoaded) {
             LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage(

@@ -51,6 +51,8 @@ bool IsCheckShuffled(RandomizerCheckObject check);
 void InitTrackerData(bool isDebug);
 RandomizerCheckArea GetCheckArea();
 void UpdateCheck(uint32_t, RandomizerCheckTrackerData);
+bool IsAreaSpoiled(RandomizerCheckArea rcArea);
+void SetAreaSpoiled(RandomizerCheckArea rcArea);
 } // namespace CheckTracker
 
 

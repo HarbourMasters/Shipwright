@@ -8,7 +8,7 @@
 // #include <libultraship/libultra/types.h>
 #include "soh/resource/type/Path.h"
 
-namespace LUS {
+namespace SOH {
 
 class SetPathways : public SceneCommand<PathData*> {
   public:
