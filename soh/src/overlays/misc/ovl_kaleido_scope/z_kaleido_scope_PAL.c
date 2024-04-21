@@ -1084,7 +1084,7 @@ void KaleidoScope_HandlePageToggles(PauseContext* pauseCtx, Input* input) {
         PageLeft_BTN = BTN_L;
     }
 
-    if (CVarGetInteger("gDebugEnabled", 0) && (pauseCtx->debugState == 0) && CHECK_BTN_ALL(input->press.button, Debug_BTN)) {
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0) && (pauseCtx->debugState == 0) && CHECK_BTN_ALL(input->press.button, Debug_BTN)) {
         pauseCtx->debugState = 1;
         return;
     }

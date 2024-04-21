@@ -2945,7 +2945,7 @@ void FileChoose_LoadGame(GameState* thisx) {
     gSaveContext.fileNum = this->buttonIndex;
     gSaveContext.gameMode = 0;
 
-    if ((this->buttonIndex == FS_BTN_SELECT_FILE_1 && CVarGetInteger("gDebugEnabled", 0)) || this->buttonIndex == 0xFF) {
+    if ((this->buttonIndex == FS_BTN_SELECT_FILE_1 && CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0)) || this->buttonIndex == 0xFF) {
         if (this->buttonIndex == 0xFF) {
             Sram_InitDebugSave();
         } else {

@@ -7619,7 +7619,7 @@ Vec3s Camera_Update(Camera* camera) {
     }
 
     // enable/disable debug cam
-    if (CVarGetInteger("gDebugEnabled", 0) && CHECK_BTN_ALL(D_8015BD7C->state.input[2].press.button, BTN_START)) {
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0) && CHECK_BTN_ALL(D_8015BD7C->state.input[2].press.button, BTN_START)) {
         gDbgCamEnabled ^= 1;
         if (gDbgCamEnabled) {
             DbgCamera_Enable(&D_8015BD80, camera);
@@ -7702,7 +7702,7 @@ Vec3s Camera_Update(Camera* camera) {
     }
 
     if (camera->timer != -1 && CHECK_BTN_ALL(D_8015BD7C->state.input[0].press.button, BTN_DRIGHT) &&
-        CVarGetInteger("gDebugEnabled", 0)) {
+        CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0)) {
         camera->timer = 0;
     }
 
