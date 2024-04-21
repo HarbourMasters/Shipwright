@@ -292,6 +292,8 @@ const std::vector<const char*> enhancementsCvars = {
     "gTimeSavers.SkipMiscInteractions",
     "gTimeSavers.DisableTitleCard",
     "gTimeSavers.SkipGetItemAnimation",
+    "gTimeSavers.SkipChildStealth",
+    "gTimeSavers.SkipTowerEscape",
 };
 
 const std::vector<const char*> cheatCvars = {

@@ -535,7 +535,7 @@ void EnOssan_TalkGoronShopkeeper(PlayState* play) {
             Message_ContinueTextbox(play, 0x300F);
         }
     } else if ((!IS_RANDO && !CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) ||
-               (IS_RANDO && !Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE))) {
+               (IS_RANDO && !Flags_GetEventChkInf(EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP))) {
         Message_ContinueTextbox(play, 0x3057);
     } else {
         Message_ContinueTextbox(play, 0x305B);

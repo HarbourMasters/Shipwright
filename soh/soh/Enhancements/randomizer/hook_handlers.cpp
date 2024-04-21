@@ -642,7 +642,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
             if (!Flags_GetEventChkInf(EVENTCHKINF_KING_ZORA_MOVED)) {
                 GET_PLAYER(gPlayState)->exchangeItemId = EXCH_ITEM_LETTER_RUTO;
             }
-            *should = Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_JABU_JABUS_BELLY);
+            *should = Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP);
             break;
         }
         case GI_VB_BE_ABLE_TO_EXCHANGE_RUTOS_LETTER: {
@@ -1051,6 +1051,15 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
         }
         case GI_VB_BE_ELIGIBLE_FOR_RAINBOW_BRIDGE: {
             *should = MeetsRainbowBridgeRequirements();
+            break;
+        }
+        case GI_VB_PLAY_BLUE_WARP_CS: {
+            // We need to override just these two temples because they check medallions instead of flags
+            if (gPlayState->sceneNum == SCENE_SPIRIT_TEMPLE_BOSS) {
+                *should = !Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_SPIRIT_TEMPLE);
+            } else if (gPlayState->sceneNum == SCENE_SHADOW_TEMPLE_BOSS) {
+                *should = !Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_SHADOW_TEMPLE);
+            }
             break;
         }
         case GI_VB_TRADE_TIMER_ODD_MUSHROOM:
