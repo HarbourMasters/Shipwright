@@ -1228,7 +1228,7 @@ void Actor_Init(Actor* actor, PlayState* play) {
     actor->uncullZoneForward = 1000.0f;
     actor->uncullZoneScale = 350.0f;
     actor->uncullZoneDownward = 700.0f;
-    if (CVarGetInteger("gDisableDrawDistance", 0) != 0 && actor->id != ACTOR_EN_TORCH2 && actor->id != ACTOR_EN_BLKOBJ // Extra check for Dark Link and his room 
+    if (CVarGetInteger(CVAR_ENHANCEMENT("DisableDrawDistance"), 0) != 0 && actor->id != ACTOR_EN_TORCH2 && actor->id != ACTOR_EN_BLKOBJ // Extra check for Dark Link and his room 
         && actor->id != ACTOR_EN_HORSE // Check for Epona, else if we call her she will spawn at the other side of the  map + we can hear her during the title screen sequence
         && actor->id != ACTOR_EN_HORSE_GANON && actor->id != ACTOR_EN_HORSE_ZELDA  // check for Zelda's and Ganondorf's horses that will always be scene during cinematic whith camera paning
         && (play->sceneNum != SCENE_DODONGOS_CAVERN && actor->id != ACTOR_EN_ZF)) { // Check for DC and Lizalfos for the case where the miniboss music would still play under certains conditions and changing room
@@ -2350,7 +2350,7 @@ void Actor_DrawFaroresWindPointer(PlayState* play) {
             D_8015BC14 = 60;
             D_8015BC18 = 1.0f;
         } else if (D_8015BC14) {
-            D_8015BC14-= CVarGetInteger("gFastFarores", 0) ? 5 : 1;
+            D_8015BC14-= CVarGetInteger(CVAR_ENHANCEMENT("FastFarores"), 0) ? 5 : 1;
         } else if (D_8015BC18 > 0.0f) {
             static Vec3f effectVel = { 0.0f, -0.05f, 0.0f };
             static Vec3f effectAccel = { 0.0f, -0.025f, 0.0f };
@@ -2898,7 +2898,7 @@ s32 func_800314B0(PlayState* play, Actor* actor) {
 s32 func_800314D4(PlayState* play, Actor* actor, Vec3f* arg2, f32 arg3) {
     f32 var;
 
-    if (CVarGetInteger("gDisableDrawDistance", 0) != 0 && actor->id != ACTOR_EN_TORCH2 && actor->id != ACTOR_EN_BLKOBJ // Extra check for Dark Link and his room 
+    if (CVarGetInteger(CVAR_ENHANCEMENT("DisableDrawDistance"), 0) != 0 && actor->id != ACTOR_EN_TORCH2 && actor->id != ACTOR_EN_BLKOBJ // Extra check for Dark Link and his room 
         && actor->id != ACTOR_EN_HORSE // Check for Epona, else if we call her she will spawn at the other side of the  map + we can hear her during the title screen sequence
         && actor->id != ACTOR_EN_HORSE_GANON && actor->id != ACTOR_EN_HORSE_ZELDA  // check for Zelda's and Ganondorf's horses that will always be scene during cinematic whith camera paning
         && (play->sceneNum != SCENE_DODONGOS_CAVERN && actor->id != ACTOR_EN_ZF)) { // Check for DC and Lizalfos for the case where the miniboss music would still play under certains conditions and changing room
@@ -3192,7 +3192,7 @@ int gMapLoading = 0;
 Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 posX, f32 posY, f32 posZ,
                    s16 rotX, s16 rotY, s16 rotZ, s16 params, s16 canRandomize) {
 
-    uint8_t tryRandomizeEnemy = CVarGetInteger("gRandomizedEnemies", 0) && gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2 && canRandomize;
+    uint8_t tryRandomizeEnemy = CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) && gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2 && canRandomize;
 
     if (tryRandomizeEnemy) {
         if (!GetRandomizedEnemy(play, &actorId, &posX, &posY, &posZ, &rotX, &rotY, &rotZ, &params)) {
@@ -3221,7 +3221,7 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
 
     objBankIndex = Object_GetIndex(&gPlayState->objectCtx, dbEntry->objectId);
 
-    if (objBankIndex < 0 && (!gMapLoading || CVarGetInteger("gRandomizedEnemies", 0))) {
+    if (objBankIndex < 0 && (!gMapLoading || CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0))) {
         objBankIndex = 0;
     }
 
@@ -3299,7 +3299,7 @@ Actor* Actor_SpawnAsChild(ActorContext* actorCtx, Actor* parent, PlayState* play
     // Gohma (z_boss_goma.c), the Stalchildren spawner (z_en_encount1.c) and the falling platform spawning Stalfos in
     // Forest Temple (z_bg_mori_bigst.c) that normally rely on this behaviour are changed when
     // Enemy Rando is on so they still work properly even without assigning a parent.
-    if (CVarGetInteger("gRandomizedEnemies", 0) && (spawnedActor->id == ACTOR_EN_FLOORMAS || spawnedActor->id == ACTOR_EN_PEEHAT)) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) && (spawnedActor->id == ACTOR_EN_FLOORMAS || spawnedActor->id == ACTOR_EN_PEEHAT)) {
         return spawnedActor;
     }
 

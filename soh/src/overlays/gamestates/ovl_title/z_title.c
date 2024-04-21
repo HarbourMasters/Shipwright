@@ -167,7 +167,7 @@ void Title_Draw(TitleContext* this) {
     Matrix_RotateZYX(0, sTitleRotY, 0, MTXMODE_APPLY);
 
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(this->state.gfxCtx), G_MTX_LOAD);
-    if (CVarGetInteger("gAuthenticLogo", 0)) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("AuthenticLogo"), 0)) {
         gSPDisplayList(POLY_OPA_DISP++, gNintendo64LogoDL);
     } else {
         gSPDisplayList(POLY_OPA_DISP++, gShipLogoDL);
@@ -192,7 +192,7 @@ void Title_Draw(TitleContext* this) {
 
     for (idx = 0, y = 94; idx < 16; idx++, y += 2)
     {
-        gDPLoadMultiTile(POLY_OPA_DISP++, CVarGetInteger("gAuthenticLogo", 0) ? nintendo_rogo_static_Tex_000000 : nintendo_rogo_static_Tex_LUS_000000, 0, G_TX_RENDERTILE, G_IM_FMT_I, G_IM_SIZ_8b, 192, 32,
+        gDPLoadMultiTile(POLY_OPA_DISP++, CVarGetInteger(CVAR_ENHANCEMENT("AuthenticLogo"), 0) ? nintendo_rogo_static_Tex_000000 : nintendo_rogo_static_Tex_LUS_000000, 0, G_TX_RENDERTILE, G_IM_FMT_I, G_IM_SIZ_8b, 192, 32,
                          0, idx * 2, 192 - 1, (idx + 1) * 2 - 1, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
                          G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
         
@@ -237,7 +237,7 @@ void Title_Main(GameState* thisx) {
     Title_Calc(this);
     Title_Draw(this);
 
-    if (!CVarGetInteger("gAuthenticLogo", 0)) {
+    if (!CVarGetInteger(CVAR_ENHANCEMENT("AuthenticLogo"), 0)) {
         Gfx* gfx = POLY_OPA_DISP;
         s32 pad;
 

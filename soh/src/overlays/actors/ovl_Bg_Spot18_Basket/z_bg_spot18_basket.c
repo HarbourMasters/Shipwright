@@ -297,7 +297,7 @@ void func_808B7F74(BgSpot18Basket* this) {
     shapeRotY = this->dyna.actor.shape.rot.y;
     this->actionFunc = func_808B7FC0;
 
-    if ((shapeRotY < -0x2E93) || (shapeRotY >= 0x7C19) || CVarGetInteger("gGoronPot", 0)) {
+    if ((shapeRotY < -0x2E93) || (shapeRotY >= 0x7C19) || CVarGetInteger(CVAR_ENHANCEMENT("GoronPot"), 0)) {
         this->unk_218 = 2;
     } else if (shapeRotY < 0x26C2) {
         this->unk_218 = 1;

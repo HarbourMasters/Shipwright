@@ -1248,7 +1248,7 @@ void Draw_Placements(){
             ImGui::EndTable();
         }
     }
-    if (CVarGetInteger("gVisualAgony",0) && ImGui::CollapsingHeader("Visual stone of agony position")) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("VisualAgony"),0) && ImGui::CollapsingHeader("Visual stone of agony position")) {
         if (ImGui::BeginTable("tabledvisualstoneofagony", 1, FlagsTable)) {
             ImGui::TableSetupColumn("Visual stone of agony settings", FlagsCell, TablesCellsWidth);
             Table_InitHeader(false);

@@ -512,9 +512,9 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
     }
 
     bool playCutscene = false;
-    if (!CVarGetInteger("gCreditsFix", 1) && (cmd->startFrame == csCtx->frames)) {
+    if (!CVarGetInteger(CVAR_ENHANCEMENT("CreditsFix"), 1) && (cmd->startFrame == csCtx->frames)) {
         playCutscene = true;
-    } else if (CVarGetInteger("gCreditsFix", 1)) {
+    } else if (CVarGetInteger(CVAR_ENHANCEMENT("CreditsFix"), 1)) {
         u16 delay = 0;
         
         // HACK:  Align visual timing with audio during credits sequence
@@ -616,7 +616,7 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                 play->transitionType = TRANS_TYPE_INSTANT;
                 break;
             case 8:
-                if (CVarGetInteger("gBetterFW", 0)) {
+                if (CVarGetInteger(CVAR_ENHANCEMENT("BetterFarore"), 0)) {
                     FaroresWindData tempFW = gSaveContext.backupFW;
                     gSaveContext.backupFW = gSaveContext.fw;
                     gSaveContext.fw = tempFW;

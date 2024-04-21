@@ -6,7 +6,7 @@ s32 sShrinkWindowVal = 0;
 s32 sShrinkWindowCurrentVal = 0;
 
 void ShrinkWindow_SetVal(s32 value) {
-    if (CVarGetInteger("gDisableBlackBars", 0)) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("DisableBlackBars"), 0)) {
         sShrinkWindowVal = 0;
         return;
     }
@@ -21,7 +21,7 @@ u32 ShrinkWindow_GetVal(void) {
 }
 
 void ShrinkWindow_SetCurrentVal(s32 currentVal) {
-    if (CVarGetInteger("gDisableBlackBars", 0)) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("DisableBlackBars"), 0)) {
         sShrinkWindowCurrentVal = 0;
         return;
     }

@@ -405,7 +405,7 @@ void EnWallmas_ReturnToCeiling(EnWallmas* this, PlayState* play) {
         }
     }
     if (this->actor.params == WMT_SHADOWTAG) {
-        if (!CVarGetInteger("gShadowTag", 0)) {
+        if (!CVarGetInteger(CVAR_ENHANCEMENT("ShadowTag"), 0)) {
             Actor_Kill(&this->actor);
         } 
     }
@@ -439,7 +439,7 @@ void EnWallmas_Die(EnWallmas* this, PlayState* play) {
         Actor_Kill(&this->actor);
     }
     if (this->actor.params == WMT_SHADOWTAG) {
-        if (!CVarGetInteger("gShadowTag", 0)) {
+        if (!CVarGetInteger(CVAR_ENHANCEMENT("ShadowTag"), 0)) {
             Actor_Kill(&this->actor);
         } else {
             EnWallmas_Init(this, play);

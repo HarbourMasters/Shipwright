@@ -1082,7 +1082,7 @@ void EnGo2_BiggoronSetTextId(EnGo2* this, PlayState* play, Player* player) {
             if (func_8002F368(play) == EXCH_ITEM_CLAIM_CHECK) {
                 if (IS_RANDO && Flags_GetTreasure(play, 0x1F)) {
                     textId = 0x3003;
-                } else if (Environment_GetBgsDayCount() >= CVarGetInteger("gForgeTime", 3)) {
+                } else if (Environment_GetBgsDayCount() >= CVarGetInteger(CVAR_ENHANCEMENT("ForgeTime"), 3)) {
                     textId = 0x305E;
                 } else {
                     textId = 0x305D;
@@ -1091,7 +1091,7 @@ void EnGo2_BiggoronSetTextId(EnGo2* this, PlayState* play, Player* player) {
             } else {
                 if (IS_RANDO && Flags_GetTreasure(play, 0x1F)) {
                     textId = 0x305E;
-                } else if (Environment_GetBgsDayCount() >= CVarGetInteger("gForgeTime", 3)) {
+                } else if (Environment_GetBgsDayCount() >= CVarGetInteger(CVAR_ENHANCEMENT("ForgeTime"), 3)) {
                     textId = 0x3002;
                 } else {
                     textId = 0x305D;

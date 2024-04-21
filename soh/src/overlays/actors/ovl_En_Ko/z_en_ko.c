@@ -1095,7 +1095,7 @@ void func_80A98DB4(EnKo* this, PlayState* play) {
         dist = this->actor.xzDistToPlayer;
     }
 
-    if (CVarGetInteger("gDisableKokiriDrawDistance", 0) != 0) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("DisableKokiriDrawDistance"), 0) != 0) {
         this->appearDist = 32767.0f;
         Math_SmoothStepToF(&this->modelAlpha, (this->appearDist < dist) ? 0.0f : 255.0f, 0.3f, 40.0f, 1.0f);
         f32 test = this->appearDist;

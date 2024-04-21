@@ -1318,10 +1318,10 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
             this->kbdY = 0;
             this->charIndex = 0;
             this->charBgAlpha = 0;
-            this->newFileNameCharCount = CVarGetInteger("gLinkDefaultName", 0) ? 4 : 0;
+            this->newFileNameCharCount = CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) ? 4 : 0;
             this->nameEntryBoxPosX = 120;
             this->nameEntryBoxAlpha = 0;
-            memcpy(Save_GetSaveMetaInfo(this->buttonIndex)->playerName, CVarGetInteger("gLinkDefaultName", 0) ? &linkName : &emptyName, 8);
+            memcpy(Save_GetSaveMetaInfo(this->buttonIndex)->playerName, CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) ? &linkName : &emptyName, 8);
             return;
         }
     }
@@ -2005,7 +2005,7 @@ void FileChoose_DrawFileInfo(GameState* thisx, s16 fileIndex, s16 isActive) {
                                &deathCountSplit[2]);
 
         // draw death count
-        if (CVarGetInteger("gFileSelectMoreInfo", 0) == 0 || this->menuMode != FS_MENU_MODE_SELECT) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("FileSelectMoreInfo"), 0) == 0 || this->menuMode != FS_MENU_MODE_SELECT) {
             for (i = 0, vtxOffset = 0; i < 3; i++, vtxOffset += 4) {
                 FileChoose_DrawCharacter(this->state.gfxCtx, sp54->fontBuf + deathCountSplit[i] * FONT_CHAR_TEX_SIZE,
                                          vtxOffset);
@@ -2029,7 +2029,7 @@ void FileChoose_DrawFileInfo(GameState* thisx, s16 fileIndex, s16 isActive) {
 
         i = Save_GetSaveMetaInfo(fileIndex)->healthCapacity / 0x10;
 
-        if (CVarGetInteger("gFileSelectMoreInfo", 0) == 0 || this->menuMode != FS_MENU_MODE_SELECT) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("FileSelectMoreInfo"), 0) == 0 || this->menuMode != FS_MENU_MODE_SELECT) {
             // draw hearts
             for (vtxOffset = 0, j = 0; j < i; j++, vtxOffset += 4) {
                 gSPVertex(POLY_OPA_DISP++, &this->windowContentVtx[D_8081284C[fileIndex] + vtxOffset] + 0x30, 4, 0);
@@ -2046,7 +2046,7 @@ void FileChoose_DrawFileInfo(GameState* thisx, s16 fileIndex, s16 isActive) {
             textAlpha = 255;
         }
 
-        if (CVarGetInteger("gFileSelectMoreInfo", 0) != 0 && this->menuMode == FS_MENU_MODE_SELECT) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("FileSelectMoreInfo"), 0) != 0 && this->menuMode == FS_MENU_MODE_SELECT) {
             DrawMoreInfo(this, fileIndex, textAlpha);
         } else {
             // draw quest items
@@ -2336,7 +2336,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
                             this->fileInfoAlpha[fileIndex]);
 
             // Draw the small file name box instead when more meta info is enabled
-            if (CVarGetInteger("gFileSelectMoreInfo", 0) != 0 && this->menuMode == FS_MENU_MODE_SELECT) {
+            if (CVarGetInteger(CVAR_ENHANCEMENT("FileSelectMoreInfo"), 0) != 0 && this->menuMode == FS_MENU_MODE_SELECT) {
                 // Location of file 1 small name box vertices
                 gSPVertex(POLY_OPA_DISP++, &this->windowContentVtx[68], 4, 0);
 
@@ -2976,7 +2976,7 @@ void FileChoose_LoadGame(GameState* thisx) {
     gSaveContext.seqId = (u8)NA_BGM_DISABLED;
     gSaveContext.natureAmbienceId = 0xFF;
     gSaveContext.showTitleCard = true;
-    if (!CVarGetInteger("gDogFollowsEverywhere", 0)) {
+    if (!CVarGetInteger(CVAR_ENHANCEMENT("DogFollowsEverywhere"), 0)) {
         gSaveContext.dogParams = 0;
     }
     gSaveContext.timer1State = 0;
@@ -3282,7 +3282,7 @@ void FileChoose_Main(GameState* thisx) {
         sWindowContentColors[0][2] = 255;
     }
 
-    if (CVarGetInteger("gTimeFlowFileSelect", 0) != 0) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("TimeFlowFileSelect"), 0) != 0) {
         gSaveContext.skyboxTime += 0x10;
     }
 

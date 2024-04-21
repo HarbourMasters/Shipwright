@@ -2251,7 +2251,7 @@ void Player_ProcessItemButtons(Player* this, PlayState* play) {
     s32 i;
 
     if (this->currentMask != PLAYER_MASK_NONE) {
-        if (CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA) {
             s32 maskItem = this->currentMask - PLAYER_MASK_KEATON + ITEM_MASK_KEATON;
             bool hasOnDpad = false;
             if (CVarGetInteger("gDpadEquips", 0) != 0) {
@@ -2377,7 +2377,7 @@ void Player_StartChangingHeldItem(Player* this, PlayState* play) {
 }
 
 void Player_UpdateItems(Player* this, PlayState* play) {
-    if ((this->actor.category == ACTORCAT_PLAYER) && (CVarGetInteger("gQuickPutaway", 0) || !(this->stateFlags1 & PLAYER_STATE1_START_PUTAWAY)) &&
+    if ((this->actor.category == ACTORCAT_PLAYER) && (CVarGetInteger(CVAR_ENHANCEMENT("QuickPutaway"), 0) || !(this->stateFlags1 & PLAYER_STATE1_START_PUTAWAY)) &&
         ((this->heldItemAction == this->itemAction) || (this->stateFlags1 & PLAYER_STATE1_SHIELDING)) &&
         (gSaveContext.health != 0) && (play->csCtx.state == CS_STATE_IDLE) && (this->csAction == 0) &&
         (play->shootingGalleryStatus == 0) && (play->activeCamera == MAIN_CAM) &&
@@ -2393,7 +2393,7 @@ void Player_UpdateItems(Player* this, PlayState* play) {
 // Determine projectile type for bow or slingshot
 s32 func_80834380(PlayState* play, Player* this, s32* itemPtr, s32* typePtr) {
     bool useBow = LINK_IS_ADULT;
-    if(CVarGetInteger("gBowSlingShotAmmoFix", 0)){
+    if(CVarGetInteger(CVAR_ENHANCEMENT("BowSlingshotAmmoFix"), 0)){
         useBow = this->heldItemAction != PLAYER_IA_SLINGSHOT;
     }
     if (useBow) {
@@ -2937,7 +2937,7 @@ s32 Player_UpperAction_CarryActor(Player* this, PlayState* play) {
 }
 
 void func_808357E8(Player* this, Gfx** dLists) {
-    if (LINK_IS_ADULT && (CVarGetInteger("gEnhancements.EquimentAlwaysVisible", 0))) {
+    if (LINK_IS_ADULT && (CVarGetInteger(CVAR_ENHANCEMENT("EquimentAlwaysVisible"), 0))) {
         this->leftHandDLists = &dLists[1];
     } else {
         this->leftHandDLists = &dLists[gSaveContext.linkAge];
@@ -3021,7 +3021,7 @@ s32 func_808359FC(Player* this, PlayState* play) {
 }
 
 s32 spawn_boomerang_ivan(EnPartner* this, PlayState* play) {
-    if (!CVarGetInteger("gIvanCoopModeEnabled", 0)) {
+    if (!CVarGetInteger(CVAR_ENHANCEMENT("IvanCoopModeEnabled"), 0)) {
         return 0;
     }
 
@@ -3055,7 +3055,7 @@ s32 func_80835B60(Player* this, PlayState* play) {
         return 1;
     }
 
-    if (sUseHeldItem && CVarGetInteger("gFastBoomerang", 0)) {
+    if (sUseHeldItem && CVarGetInteger(CVAR_ENHANCEMENT("FastBoomerang"), 0)) {
         this->boomerangQuickRecall = true;
     }
 
@@ -3179,7 +3179,7 @@ void Player_UseItem(PlayState* play, Player* this, s32 item) {
                  ((itemAction == PLAYER_IA_MAGIC_BEAN) && (AMMO(ITEM_BEAN) == 0)) ||
                  (temp = Player_ActionToExplosive(this, itemAction),
                   ((temp >= 0) && ((AMMO(sExplosiveInfos[temp].itemId) == 0) ||
-                                   (play->actorCtx.actorLists[ACTORCAT_EXPLOSIVE].length >= 3 && !CVarGetInteger("gRemoveExplosiveLimit", 0))))))) {
+                                   (play->actorCtx.actorLists[ACTORCAT_EXPLOSIVE].length >= 3 && !CVarGetInteger(CVAR_ENHANCEMENT("RemoveExplosiveLimit"), 0))))))) {
                 // Prevent some items from being used if player is out of ammo.
                 // Also prevent explosives from being used if there are 3 or more active (outside of bombchu bowling)
                 func_80078884(NA_SE_SY_ERROR);
@@ -3241,7 +3241,7 @@ void Player_UseItem(PlayState* play, Player* this, s32 item) {
                     (item != this->heldItemId) &&
                     (sItemChangeTypes[gPlayerModelTypes[this->modelGroup][PLAYER_MODELGROUPENTRY_ANIM]][nextAnimType] !=
                      PLAYER_ITEM_CHG_0) &&
-                    (!CVarGetInteger("gSeparateArrows", 0) ||
+                    (!CVarGetInteger(CVAR_ENHANCEMENT("SeparateArrows"), 0) ||
                      itemAction < PLAYER_IA_BOW || itemAction > PLAYER_IA_BOW_0E ||
                      this->heldItemAction < PLAYER_IA_BOW || this->heldItemAction > PLAYER_IA_BOW_0E)) {
                     // Start the held item change process
@@ -4038,7 +4038,7 @@ s32 func_80837B18_modified(PlayState* play, Player* this, s32 damage, u8 modifie
 
     s32 modifiedDamage = damage;
     if (modified) {
-        modifiedDamage *= (1 << CVarGetInteger("gDamageMul", 0));
+        modifiedDamage *= (1 << CVarGetInteger(CVAR_ENHANCEMENT("DamageMult"), 0));
     }
 
     return Health_ChangeBy(play, modifiedDamage);
@@ -4263,7 +4263,7 @@ s32 func_808382DC(Player* this, PlayState* play) {
 
     if (this->unk_A86 != 0) {
         if (!Player_InBlockingCsMode(play, this)) {
-            Player_InflictDamageModified(play, -16 * (1 << CVarGetInteger("gVoidDamageMul", 0)), false);
+            Player_InflictDamageModified(play, -16 * (1 << CVarGetInteger(CVAR_ENHANCEMENT("VoidDamageMult"), 0)), false);
             this->unk_A86 = 0;
         }
     } else {
@@ -5096,7 +5096,7 @@ void func_8083A0F4(PlayState* play, Player* this) {
 
             // Same actor is used for small and large silver rocks, use actor params to identify large ones
             bool isLargeSilverRock = interactActorId == ACTOR_EN_ISHI && interactRangeActor->params & 1 == 1;
-            if (CVarGetInteger("gFasterHeavyBlockLift", 0) && (isLargeSilverRock || interactActorId == ACTOR_BG_HEAVY_BLOCK)) {
+            if (CVarGetInteger(CVAR_ENHANCEMENT("FasterHeavyBlockLift"), 0) && (isLargeSilverRock || interactActorId == ACTOR_BG_HEAVY_BLOCK)) {
                 LinkAnimation_PlayOnceSetSpeed(play, &this->skelAnime, anim, 5.0f);
             } else {
                 LinkAnimation_PlayOnce(play, &this->skelAnime, anim);
@@ -5355,7 +5355,7 @@ s32 func_8083AD4C(PlayState* play, Player* this) {
         if (func_8002DD6C(this)) {
             bool shouldUseBowCamera = LINK_IS_ADULT;
 
-            if(CVarGetInteger("gBowSlingShotAmmoFix", 0)){
+            if(CVarGetInteger(CVAR_ENHANCEMENT("BowSlingshotAmmoFix"), 0)){
                 shouldUseBowCamera = this->heldItemAction != PLAYER_IA_SLINGSHOT;
             }
             
@@ -5423,7 +5423,7 @@ void func_8083AF44(PlayState* play, Player* this, s32 magicSpell) {
     //! magic value, it will be consumed to zero.
     Magic_RequestChange(play, sMagicSpellCosts[magicSpell], MAGIC_CONSUME_WAIT_PREVIEW);
 
-    u8 isFastFarores = CVarGetInteger("gFastFarores", 0) && this->itemAction == PLAYER_IA_FARORES_WIND;
+    u8 isFastFarores = CVarGetInteger(CVAR_ENHANCEMENT("FastFarores"), 0) && this->itemAction == PLAYER_IA_FARORES_WIND;
 
     if (isFastFarores) {
         LinkAnimation_PlayOnceSetSpeed(play, &this->skelAnime, &gPlayerAnim_link_magic_tame, 0.83f * 2);
@@ -6018,7 +6018,7 @@ s32 func_8083C6B8(PlayState* play, Player* this) {
             sp24 = this->actor.world.pos;
             sp24.y += 50.0f;
 
-            if (CVarGetInteger("gHoverFishing", 0)
+            if (CVarGetInteger(CVAR_ENHANCEMENT("HoverFishing"), 0)
                     ? 0
                     : !(this->actor.bgCheckFlags & 1) || (this->actor.world.pos.z > 1300.0f) ||
                           BgCheck_SphVsFirstPoly(&play->colCtx, &sp24, 20.0f)) {
@@ -6265,7 +6265,7 @@ s32 func_8083D12C(PlayState* play, Player* this, Input* arg2) {
 
                 func_80832340(play, this);
                 // Skip take breath animation on surface if Link didn't grab an item while underwater and the setting is enabled
-                if (CVarGetInteger("gSkipSwimDeepEndAnim", 0) && !(this->stateFlags1 & PLAYER_STATE1_ITEM_OVER_HEAD)) {
+                if (CVarGetInteger(CVAR_ENHANCEMENT("SkipSwimDeepEndAnim"), 0) && !(this->stateFlags1 & PLAYER_STATE1_ITEM_OVER_HEAD)) {
                     auto lastAnimFrame = Animation_GetLastFrame(&gPlayerAnim_link_swimer_swim_deep_end);
                     LinkAnimation_Change(play, &this->skelAnime, &gPlayerAnim_link_swimer_swim_deep_end, 1.0f,
                         lastAnimFrame, lastAnimFrame, ANIMMODE_ONCE, -6.0f);
@@ -6547,7 +6547,7 @@ void func_8083DFE0(Player* this, f32* arg1, s16* arg2) {
             }
         }
 
-        if (CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) == BUNNY_HOOD_FAST_AND_JUMP && this->currentMask == PLAYER_MASK_BUNNY) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_VANILLA) == BUNNY_HOOD_FAST_AND_JUMP && this->currentMask == PLAYER_MASK_BUNNY) {
             maxSpeed *= 1.5f;
         } 
         
@@ -6751,7 +6751,7 @@ s32 Player_ActionChange_2(Player* this, PlayState* play) {
     if(gSaveContext.pendingIceTrapCount) {
         gSaveContext.pendingIceTrapCount--;
         GameInteractor_ExecuteOnItemReceiveHooks(ItemTable_RetrieveEntry(MOD_RANDOMIZER, RG_ICE_TRAP));
-        if (CVarGetInteger("gAddTraps.enabled", 0)) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0)) {
             return 1;
         }
         this->stateFlags1 &= ~(PLAYER_STATE1_GETTING_ITEM | PLAYER_STATE1_ITEM_OVER_HEAD);
@@ -6805,7 +6805,7 @@ s32 Player_ActionChange_2(Player* this, PlayState* play) {
 
                 // Skip cutscenes from picking up consumables with "Fast Pickup Text" enabled, even when the player never picked it up before.
                 // But only for bushes/rocks/enemies because otherwise it can lead to softlocks in deku mask theatre and potentially other places.
-                uint8_t skipItemCutscene = CVarGetInteger("gFastDrops", 0) && isDropToSkip;
+                uint8_t skipItemCutscene = CVarGetInteger(CVAR_ENHANCEMENT("FastDrops"), 0) && isDropToSkip;
 
                 // Same as above but for rando. Rando is different because we want to enable cutscenes for items that the player already has because
                 // those items could be a randomized item coming from scrubs, freestanding PoH's and keys. So we need to once again overrule
@@ -6844,7 +6844,7 @@ s32 Player_ActionChange_2(Player* this, PlayState* play) {
                     giEntry = this->getItemEntry;
                 }
                 EnBox* chest = (EnBox*)interactedActor;
-                if (CVarGetInteger("gFastChests", 0) != 0) {
+                if (CVarGetInteger(CVAR_ENHANCEMENT("FastChests"), 0) != 0) {
                     giEntry.gi = -1 * abs(giEntry.gi);
                 }
 
@@ -7129,10 +7129,10 @@ s32 Player_TryEnteringCrawlspace(Player* this, PlayState* play, u32 interactWall
                 func_80832224(this);
                 this->actor.prevPos = this->actor.world.pos;
                 // #region SOH [Enhancement]
-                if (CVarGetInteger("gCrawlSpeed", 1) > 1) {
+                if (CVarGetInteger(CVAR_ENHANCEMENT("CrawlSpeed"), 1) > 1) {
                     // increase animation speed when entering a tunnel
                     LinkAnimation_Change(play, &this->skelAnime, &gPlayerAnim_link_child_tunnel_start,
-                                         ((CVarGetInteger("gCrawlSpeed", 1) + 1.0f) / 2.0f), 0.0f,
+                                         ((CVarGetInteger(CVAR_ENHANCEMENT("CrawlSpeed"), 1) + 1.0f) / 2.0f), 0.0f,
                                          Animation_GetLastFrame(&gPlayerAnim_link_child_tunnel_start), ANIMMODE_ONCE,
                                          0.0f);
                     Player_AnimReplaceApplyFlags(play, this, 0x9D);
@@ -7222,10 +7222,10 @@ s32 Player_TryLeavingCrawlspace(Player* this, PlayState* play) {
             if (this->linearVelocity > 0.0f) {
                 this->actor.shape.rot.y = this->actor.wallYaw + 0x8000;
                 // #region SOH [Enhancement]
-                if (CVarGetInteger("gCrawlSpeed", 1) > 1) {
+                if (CVarGetInteger(CVAR_ENHANCEMENT("CrawlSpeed"), 1) > 1) {
                     // animation when exiting a tunnel forward
                     LinkAnimation_Change(play, &this->skelAnime, &gPlayerAnim_link_child_tunnel_end,
-                                         ((CVarGetInteger("gCrawlSpeed", 1) + 1.0f) / 2.0f), 0.0f,
+                                         ((CVarGetInteger(CVAR_ENHANCEMENT("CrawlSpeed"), 1) + 1.0f) / 2.0f), 0.0f,
                                          Animation_GetLastFrame(&gPlayerAnim_link_child_tunnel_end), ANIMMODE_ONCE,
                                          0.0f);
                     Player_AnimReplaceApplyFlags(play, this, 0x9D);
@@ -7240,9 +7240,9 @@ s32 Player_TryLeavingCrawlspace(Player* this, PlayState* play) {
                 this->actor.shape.rot.y = this->actor.wallYaw;
                 // #region SOH [Enhancement]
                 // animation when exiting a tunnel backward 
-                if (CVarGetInteger("gCrawlSpeed",1) > 1) {
+                if (CVarGetInteger(CVAR_ENHANCEMENT("CrawlSpeed"),1) > 1) {
                     LinkAnimation_Change(play, &this->skelAnime, &gPlayerAnim_link_child_tunnel_start,
-                                         -1.0f * ((CVarGetInteger("gCrawlSpeed", 1) + 1.0f) / 2.0f),
+                                         -1.0f * ((CVarGetInteger(CVAR_ENHANCEMENT("CrawlSpeed"), 1) + 1.0f) / 2.0f),
                                          Animation_GetLastFrame(&gPlayerAnim_link_child_tunnel_start), 0.0f, ANIMMODE_ONCE, 0.0f);
                     Player_AnimReplaceApplyFlags(play, this, 0x9D);
                     OnePointCutscene_Init(play, 9602, 999, NULL, MAIN_CAM);
@@ -7547,9 +7547,9 @@ void func_8084029C(Player* this, f32 arg1) {
     }
 
     if ((this->currentBoots == PLAYER_BOOTS_HOVER ||
-         (CVarGetInteger("gIvanCoopModeEnabled", 0) && this->ivanFloating)) &&
+         (CVarGetInteger(CVAR_ENHANCEMENT("IvanCoopModeEnabled"), 0) && this->ivanFloating)) &&
         !(this->actor.bgCheckFlags & 1) &&
-        (this->hoverBootsTimer != 0 || (CVarGetInteger("gIvanCoopModeEnabled", 0) && this->ivanFloating))) {
+        (this->hoverBootsTimer != 0 || (CVarGetInteger(CVAR_ENHANCEMENT("IvanCoopModeEnabled"), 0) && this->ivanFloating))) {
         func_8002F8F0(&this->actor, NA_SE_PL_HOBBERBOOTS_LV - SFX_FLAG);
     } else if (func_8084021C(this->unk_868, arg1, 29.0f, 10.0f) || func_8084021C(this->unk_868, arg1, 29.0f, 24.0f)) {
         func_808327F8(this, this->linearVelocity);
@@ -7742,7 +7742,7 @@ void func_808409CC(PlayState* play, Player* this) {
                 if (sp34 < 4) {
                     if (((sp34 != 0) && (sp34 != 3)) || ((this->rightHandType == PLAYER_MODELTYPE_RH_SHIELD) &&
                                                          ((sp34 == 3) || Player_GetMeleeWeaponHeld(this)))) {
-                        if ((sp34 == 1) && Player_HoldsTwoHandedWeapon(this) && CVarGetInteger("gTwoHandedIdle", 0) == 1) {
+                        if ((sp34 == 1) && Player_HoldsTwoHandedWeapon(this) && CVarGetInteger(CVAR_ENHANCEMENT("TwoHandedIdle"), 0) == 1) {
                             sp34 = 4;
                         }
                         sp38 = sp34 + 9;
@@ -8285,7 +8285,7 @@ void Player_Action_80842180(Player* this, PlayState* play) {
                 }
             }
 
-            if (CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA && this->currentMask == PLAYER_MASK_BUNNY) {
+            if (CVarGetInteger(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA && this->currentMask == PLAYER_MASK_BUNNY) {
                 sp2C *= 1.5f;
             }
             
@@ -8462,7 +8462,7 @@ s32 func_808428D8(Player* this, PlayState* play) {
     this->meleeWeaponAnimation = PLAYER_MWA_STAB_1H;
     this->yaw = this->actor.shape.rot.y + this->unk_6BE;
 
-    if (!CVarGetInteger("gCrouchStabHammerFix", 0)) {
+    if (!CVarGetInteger(CVAR_ENHANCEMENT("CrouchStabHammerFix"), 0)) {
         return 1;
     }
 
@@ -8473,7 +8473,7 @@ s32 func_808428D8(Player* this, PlayState* play) {
         swordId = Player_GetMeleeWeaponHeld(this) - 1;
     }
 
-    if (swordId != 4 && !CVarGetInteger("gCrouchStabFix", 0)) { // 4 = Megaton Hammer
+    if (swordId != 4 && !CVarGetInteger(CVAR_ENHANCEMENT("CrouchStabFix"), 0)) { // 4 = Megaton Hammer
         return 1;
     }
 
@@ -8907,12 +8907,12 @@ void func_80843AE8(PlayState* play, Player* this) {
                     LinkAnimation_Change(play, &this->skelAnime, &gPlayerAnim_link_derth_rebirth, 1.0f, 99.0f,
                                          Animation_GetLastFrame(&gPlayerAnim_link_derth_rebirth), ANIMMODE_ONCE, 0.0f);
                 }
-                if (CVarGetInteger("gFairyReviveEffect", 0)) {
-                    if (CVarGetInteger("gFairyRevivePercentRestore", 0)) {
+                if (CVarGetInteger(CVAR_ENHANCEMENT("FairyReviveEffect"), 0)) {
+                    if (CVarGetInteger(CVAR_ENHANCEMENT("FairyRevivePercentRestore"), 0)) {
                         gSaveContext.healthAccumulator =
-                            (gSaveContext.healthCapacity * CVarGetInteger("gFairyReviveHealth", 100) / 100 + 15) / 16 * 16;
+                            (gSaveContext.healthCapacity * CVarGetInteger(CVAR_ENHANCEMENT("FairyReviveHealth"), 100) / 100 + 15) / 16 * 16;
                     } else {
-                        gSaveContext.healthAccumulator = CVarGetInteger("gFairyReviveHealth", 20) * 16;
+                        gSaveContext.healthAccumulator = CVarGetInteger(CVAR_ENHANCEMENT("FairyReviveHealth"), 20) * 16;
                     }
                 } else {
                     gSaveContext.healthAccumulator = 0x140;
@@ -9013,7 +9013,7 @@ s32 func_80843E64(PlayState* play, Player* this) {
 
         impactInfo = &D_80854600[impactIndex];
 
-        if (Player_InflictDamageModified(play, impactInfo->damage * (1 << CVarGetInteger("gFallDamageMul", 0)),
+        if (Player_InflictDamageModified(play, impactInfo->damage * (1 << CVarGetInteger(CVAR_ENHANCEMENT("FallDamageMult"), 0)),
                                          false)) {
             return -1;
         }
@@ -9833,7 +9833,7 @@ void Player_Action_80846120(Player* this, PlayState* play) {
     if (LinkAnimation_OnFrame(&this->skelAnime, 229.0f)) {
         Actor* heldActor = this->heldActor;
 
-        if (CVarGetInteger("gFasterHeavyBlockLift", 0)) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("FasterHeavyBlockLift"), 0)) {
             // This is the difference in rotation when the animation is sped up 5x
             heldActor->shape.rot.x -= 3510;
         }
@@ -9932,7 +9932,7 @@ void Player_Action_808464B0(Player* this, PlayState* play) {
             heldActor->velocity.y = 0.0f;
             heldActor->speedXZ = 0.0f;
             func_80834644(play, this);
-            if (heldActor->id == ACTOR_EN_BOM_CHU && !CVarGetInteger("gDisableFirstPersonChus", 0)) {
+            if (heldActor->id == ACTOR_EN_BOM_CHU && !CVarGetInteger(CVAR_ENHANCEMENT("DisableFirstPersonChus"), 0)) {
                 func_8083B8F4(this, play);
             }
         }
@@ -10190,7 +10190,7 @@ void Player_Init(Actor* thisx, PlayState* play2) {
     Player_UseItem(play, this, ITEM_NONE);
     Player_SetEquipmentData(play, this);
     this->prevBoots = this->currentBoots;
-    if (CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA) {
         if (INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_SOLD_OUT) {
             sMaskMemory = PLAYER_MASK_NONE;
         }
@@ -10446,7 +10446,7 @@ void func_808473D4(PlayState* play, Player* this) {
         if (doAction != DO_ACTION_PUTAWAY) {
             this->unk_837 = 20;
         } else if (this->unk_837 != 0) {
-            if (CVarGetInteger("gInstantPutaway", 0) != 0) {
+            if (CVarGetInteger(CVAR_ENHANCEMENT("InstantPutaway"), 0) != 0) {
                 this->unk_837 = 0;
             } else {
                 doAction = DO_ACTION_NONE;
@@ -10483,7 +10483,7 @@ s32 Player_UpdateHoverBoots(Player* this) {
     s32 cond;
 
     if ((this->currentBoots == PLAYER_BOOTS_HOVER ||
-         (CVarGetInteger("gIvanCoopModeEnabled", 0) && this->ivanFloating)) &&
+         (CVarGetInteger(CVAR_ENHANCEMENT("IvanCoopModeEnabled"), 0) && this->ivanFloating)) &&
         (this->hoverBootsTimer != 0)) {
         this->hoverBootsTimer--;
     } else {
@@ -10491,7 +10491,7 @@ s32 Player_UpdateHoverBoots(Player* this) {
     }
 
     cond = (this->currentBoots == PLAYER_BOOTS_HOVER ||
-            (CVarGetInteger("gIvanCoopModeEnabled", 0) && this->ivanFloating)) &&
+            (CVarGetInteger(CVAR_ENHANCEMENT("IvanCoopModeEnabled"), 0) && this->ivanFloating)) &&
            ((this->actor.yDistToWater >= 0.0f) || (func_80838144(sFloorType) >= 0) || func_8083816C(sFloorType));
 
     if (cond && (this->actor.bgCheckFlags & 1) && (this->hoverBootsTimer != 0)) {
@@ -10654,7 +10654,7 @@ void Player_ProcessSceneCollision(PlayState* play, Player* this) {
         sTouchedWallFlags = func_80041DB8(&play->colCtx, this->actor.wallPoly, this->actor.wallBgId);
 
         // conflicts arise from these two being enabled at once, and with ClimbEverything on, FixVineFall is redundant anyway
-        if (CVarGetInteger("gFixVineFall", 0) && !CVarGetInteger(CVAR_CHEAT("ClimbEverything"), 0)) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("FixVineFall"), 0) && !CVarGetInteger(CVAR_CHEAT("ClimbEverything"), 0)) {
             /* This fixes the "started climbing a wall and then immediately fell off" bug.
             * The main idea is if a climbing wall is detected, double-check that it will
             * still be valid once climbing begins by doing a second raycast with a small
@@ -11073,7 +11073,7 @@ void func_80848EF8(Player* this, PlayState* play) {
         if (CVarGetInteger("gCosmetics.Hud_StoneOfAgony.Changed", 0)) {
             stoneOfAgonyColor = CVarGetColor24("gCosmetics.Hud_StoneOfAgony.Value", stoneOfAgonyColor);
         }
-        if (CVarGetInteger("gVisualAgony", 0) && !this->stateFlags1 && !GameInteractor_NoUIActive()) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("VisualAgony"), 0) && !this->stateFlags1 && !GameInteractor_NoUIActive()) {
             s16 Top_Margins = (CVarGetInteger("gHUDMargin_T", 0) * -1);
             s16 Left_Margins = CVarGetInteger("gHUDMargin_L", 0);
             s16 Right_Margins = CVarGetInteger("gHUDMargin_R", 0);
@@ -11157,7 +11157,7 @@ void func_80848EF8(Player* this, PlayState* play) {
 
         if (this->unk_6A0 > 4000000.0f) {
             this->unk_6A0 = 0.0f;
-            if (CVarGetInteger("gVisualAgony", 0) && !this->stateFlags1 && !GameInteractor_NoUIActive()) {
+            if (CVarGetInteger(CVAR_ENHANCEMENT("VisualAgony"), 0) && !this->stateFlags1 && !GameInteractor_NoUIActive()) {
                 // This audio is placed here and not in previous CVar check to prevent ears ra.. :)
                 Audio_PlaySoundGeneral(NA_SE_SY_MESSAGE_WOMAN, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E0);
             }
@@ -11627,7 +11627,7 @@ void Player_Update(Actor* thisx, PlayState* play) {
     if (func_8084FCAC(this, play)) {
         if (gSaveContext.dogParams < 0) {
             // Disable object dependency to prevent losing dog in scenes other than market
-            if (Object_GetIndex(&play->objectCtx, OBJECT_DOG) < 0 && !CVarGetInteger("gDogFollowsEverywhere", 0)) {
+            if (Object_GetIndex(&play->objectCtx, OBJECT_DOG) < 0 && !CVarGetInteger(CVAR_ENHANCEMENT("DogFollowsEverywhere"), 0)) {
                 gSaveContext.dogParams = 0;
             } else {
                 gSaveContext.dogParams &= 0x7FFF;
@@ -11638,7 +11638,7 @@ void Player_Update(Actor* thisx, PlayState* play) {
                                   sDogSpawnPos.z, 0, this->actor.shape.rot.y, 0, dogParams | 0x8000, true);
                 if (dog != NULL) {
                     // Room -1 allows actor to cross between rooms, similar to Navi
-                    dog->room = CVarGetInteger("gDogFollowsEverywhere", 0) ? -1 : 0;
+                    dog->room = CVarGetInteger(CVAR_ENHANCEMENT("DogFollowsEverywhere"), 0) ? -1 : 0;
                 }
             }
         }
@@ -11799,7 +11799,7 @@ void Player_DrawGameplay(PlayState* play, Player* this, s32 lod, Gfx* cullDList,
         }
 
        
-        if (this->currentMask != PLAYER_MASK_BUNNY || !CVarGetInteger("gHideBunnyHood", 0)) {
+        if (this->currentMask != PLAYER_MASK_BUNNY || !CVarGetInteger(CVAR_ENHANCEMENT("HideBunnyHood"), 0)) {
             gSPDisplayList(POLY_OPA_DISP++, sMaskDlists[this->currentMask - 1]);
         }
 
@@ -11807,7 +11807,7 @@ void Player_DrawGameplay(PlayState* play, Player* this, s32 lod, Gfx* cullDList,
     }
 
     if ((this->currentBoots == PLAYER_BOOTS_HOVER ||
-         (CVarGetInteger("gIvanCoopModeEnabled", 0) && this->ivanFloating)) &&
+         (CVarGetInteger(CVAR_ENHANCEMENT("IvanCoopModeEnabled"), 0) && this->ivanFloating)) &&
         !(this->actor.bgCheckFlags & 1) &&
         !(this->stateFlags1 & PLAYER_STATE1_ON_HORSE) && (this->hoverBootsTimer != 0)) {
         s32 sp5C;
@@ -11892,7 +11892,7 @@ void Player_Draw(Actor* thisx, PlayState* play2) {
             lod = 1;
         }
 
-        if (CVarGetInteger("gDisableLOD", 0)) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("DisableLOD"), 0)) {
             lod = 0;
         }
 
@@ -12072,7 +12072,7 @@ s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
 
     if (CVarGetInteger("gMoveWhileFirstPerson", 0)) {
         f32 movementSpeed = LINK_IS_ADULT ? 9.0f : 8.25f;
-        if (CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA && this->currentMask == PLAYER_MASK_BUNNY) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA && this->currentMask == PLAYER_MASK_BUNNY) {
             movementSpeed *= 1.5f;
         }
 
@@ -12296,7 +12296,7 @@ s32 func_8084B3CC(PlayState* play, Player* this) {
 
         if (!func_8002DD6C(this) || Player_HoldsHookshot(this)) {
             s32 projectileItemToUse = ITEM_BOW;
-            if(CVarGetInteger("gBowSlingShotAmmoFix", 0)){
+            if(CVarGetInteger(CVAR_ENHANCEMENT("BowSlingshotAmmoFix"), 0)){
                 projectileItemToUse = LINK_IS_ADULT ? ITEM_BOW : ITEM_SLINGSHOT;
             }
 
@@ -12637,7 +12637,7 @@ void Player_Action_8084BF1C(Player* this, PlayState* play) {
         phi_f2 = -1.0f;
     }
 
-    this->skelAnime.playSpeed = phi_f2 * phi_f0 + phi_f2 * CVarGetInteger("gClimbSpeed", 0);
+    this->skelAnime.playSpeed = phi_f2 * phi_f0 + phi_f2 * CVarGetInteger(CVAR_ENHANCEMENT("ClimbSpeed"), 0);
 
     if (this->av2.actionVar2 >= 0) {
         if ((this->actor.wallPoly != NULL) && (this->actor.wallBgId != BGCHECK_SCENE)) {
@@ -12810,8 +12810,8 @@ void Player_Action_8084C760(Player* this, PlayState* play) {
             // player speed in a tunnel
             if (!Player_TryLeavingCrawlspace(this, play)) {
                 // #region SOH [Enhancement]
-                if (CVarGetInteger("gCrawlSpeed", 1) > 1) {
-                    this->linearVelocity = sControlInput->rel.stick_y * 0.03f * CVarGetInteger("gCrawlSpeed", 1);
+                if (CVarGetInteger(CVAR_ENHANCEMENT("CrawlSpeed"), 1) > 1) {
+                    this->linearVelocity = sControlInput->rel.stick_y * 0.03f * CVarGetInteger(CVAR_ENHANCEMENT("CrawlSpeed"), 1);
                 // #endregion
                 } else {
                     this->linearVelocity = sControlInput->rel.stick_y * 0.03f;
@@ -13462,7 +13462,7 @@ s32 func_8084DFF4(PlayState* play, Player* this) {
         }
         this->av1.actionVar1 = 1;
         equipItem = giEntry.itemId;
-        equipNow = CVarGetInteger("gAskToEquip", 0) && giEntry.modIndex == MOD_NONE &&
+        equipNow = CVarGetInteger(CVAR_ENHANCEMENT("AskToEquip"), 0) && giEntry.modIndex == MOD_NONE &&
                     equipItem >= ITEM_SWORD_KOKIRI && equipItem <= ITEM_TUNIC_ZORA &&
                     CHECK_AGE_REQ_ITEM(equipItem);
 
@@ -13836,29 +13836,29 @@ void Player_Action_8084EAC0(Player* this, PlayState* play) {
             } else {
                 s32 sp28 = D_808549FC[this->itemAction - PLAYER_IA_BOTTLE_POTION_RED];
 
-                if (CVarGetInteger("gRedPotionEffect", 0) && this->itemAction == PLAYER_IA_BOTTLE_POTION_RED) {
-                    if (CVarGetInteger("gRedPercentRestore", 0)) {
+                if (CVarGetInteger(CVAR_ENHANCEMENT("RedPotionEffect"), 0) && this->itemAction == PLAYER_IA_BOTTLE_POTION_RED) {
+                    if (CVarGetInteger(CVAR_ENHANCEMENT("RedPercentRestore"), 0)) {
                         gSaveContext.healthAccumulator =
-                            (gSaveContext.healthCapacity * CVarGetInteger("gRedPotionHealth", 100) / 100 + 15) / 16 * 16;
+                            (gSaveContext.healthCapacity * CVarGetInteger(CVAR_ENHANCEMENT("RedPotionHealth"), 100) / 100 + 15) / 16 * 16;
                     } else {
-                        gSaveContext.healthAccumulator = CVarGetInteger("gRedPotionHealth", 20) * 16;
+                        gSaveContext.healthAccumulator = CVarGetInteger(CVAR_ENHANCEMENT("RedPotionHealth"), 20) * 16;
                     }
-                } else if (CVarGetInteger("gBluePotionEffects", 0) &&
+                } else if (CVarGetInteger(CVAR_ENHANCEMENT("BluePotionEffects"), 0) &&
                            this->itemAction == PLAYER_IA_BOTTLE_POTION_BLUE) {
-                    if (CVarGetInteger("gBlueHealthPercentRestore", 0)) {
+                    if (CVarGetInteger(CVAR_ENHANCEMENT("BlueHealthPercentRestore"), 0)) {
                         gSaveContext.healthAccumulator =
-                            (gSaveContext.healthCapacity * CVarGetInteger("gBluePotionHealth", 100) / 100 + 15) / 16 * 16;
+                            (gSaveContext.healthCapacity * CVarGetInteger(CVAR_ENHANCEMENT("BluePotionHealth"), 100) / 100 + 15) / 16 * 16;
                     } else {
-                        gSaveContext.healthAccumulator = CVarGetInteger("gBluePotionHealth", 20) * 16;
+                        gSaveContext.healthAccumulator = CVarGetInteger(CVAR_ENHANCEMENT("BluePotionHealth"), 20) * 16;
                     }
 
-                    if (CVarGetInteger("gBlueManaPercentRestore", 0)) {
+                    if (CVarGetInteger(CVAR_ENHANCEMENT("BlueManaPercentRestore"), 0)) {
                         if (gSaveContext.magicState != MAGIC_STATE_ADD) {
                             Magic_Fill(play);
                         }
 
                         Magic_RequestChange(play,
-                                      (gSaveContext.magicLevel * 48 * CVarGetInteger("gBluePotionMana", 100) / 100 + 15) /
+                                      (gSaveContext.magicLevel * 48 * CVarGetInteger(CVAR_ENHANCEMENT("BluePotionMana"), 100) / 100 + 15) /
                                           16 * 16,
                                       MAGIC_ADD);
                     } else {
@@ -13866,18 +13866,18 @@ void Player_Action_8084EAC0(Player* this, PlayState* play) {
                             Magic_Fill(play);
                         }
 
-                        Magic_RequestChange(play, CVarGetInteger("gBluePotionMana", 100), MAGIC_ADD);
+                        Magic_RequestChange(play, CVarGetInteger(CVAR_ENHANCEMENT("BluePotionMana"), 100), MAGIC_ADD);
                         ;
                     }
-                } else if (CVarGetInteger("gGreenPotionEffect", 0) &&
+                } else if (CVarGetInteger(CVAR_ENHANCEMENT("GreenPotionEffect"), 0) &&
                            this->itemAction == PLAYER_IA_BOTTLE_POTION_GREEN) {
-                    if (CVarGetInteger("gGreenPercentRestore", 0)) {
+                    if (CVarGetInteger(CVAR_ENHANCEMENT("GreenPercentRestore"), 0)) {
                         if (gSaveContext.magicState != MAGIC_STATE_ADD) {
                             Magic_Fill(play);
                         }
 
                         Magic_RequestChange(play,
-                                      (gSaveContext.magicLevel * 48 * CVarGetInteger("gGreenPotionMana", 100) / 100 + 15) /
+                                      (gSaveContext.magicLevel * 48 * CVarGetInteger(CVAR_ENHANCEMENT("GreenPotionMana"), 100) / 100 + 15) /
                                           16 * 16,
                                       MAGIC_ADD);
                     } else {
@@ -13885,25 +13885,25 @@ void Player_Action_8084EAC0(Player* this, PlayState* play) {
                             Magic_Fill(play);
                         }
 
-                        Magic_RequestChange(play, CVarGetInteger("gGreenPotionMana", 100), MAGIC_ADD);
+                        Magic_RequestChange(play, CVarGetInteger(CVAR_ENHANCEMENT("GreenPotionMana"), 100), MAGIC_ADD);
                         ;
                     }
-                } else if (CVarGetInteger("gMilkEffect", 0) && (this->itemAction == PLAYER_IA_BOTTLE_MILK_FULL ||
+                } else if (CVarGetInteger(CVAR_ENHANCEMENT("MilkEffect"), 0) && (this->itemAction == PLAYER_IA_BOTTLE_MILK_FULL ||
                                                              this->itemAction == PLAYER_IA_BOTTLE_MILK_HALF)) {
-                    if (CVarGetInteger("gMilkPercentRestore", 0)) {
+                    if (CVarGetInteger(CVAR_ENHANCEMENT("MilkPercentRestore"), 0)) {
                         gSaveContext.healthAccumulator =
-                            (gSaveContext.healthCapacity * CVarGetInteger("gMilkHealth", 100) / 100 + 15) / 16 * 16;
+                            (gSaveContext.healthCapacity * CVarGetInteger(CVAR_ENHANCEMENT("MilkHealth"), 100) / 100 + 15) / 16 * 16;
                     } else {
-                        gSaveContext.healthAccumulator = CVarGetInteger("gMilkHealth", 5) * 16;
+                        gSaveContext.healthAccumulator = CVarGetInteger(CVAR_ENHANCEMENT("MilkHealth"), 5) * 16;
                     }
-                    if (CVarGetInteger("gSeparateHalfMilkEffect", 0) &&
+                    if (CVarGetInteger(CVAR_ENHANCEMENT("SeparateHalfMilkEffect"), 0) &&
                         this->itemAction == PLAYER_IA_BOTTLE_MILK_HALF) {
-                        if (CVarGetInteger("gHalfMilkPercentRestore", 0)) {
+                        if (CVarGetInteger(CVAR_ENHANCEMENT("HalfMilkPercentRestore"), 0)) {
                             gSaveContext.healthAccumulator =
-                                (gSaveContext.healthCapacity * CVarGetInteger("gHalfMilkHealth", 100) / 100 + 15) / 16 *
+                                (gSaveContext.healthCapacity * CVarGetInteger(CVAR_ENHANCEMENT("HalfMilkHealth"), 100) / 100 + 15) / 16 *
                                 16;
                         } else {
-                            gSaveContext.healthAccumulator = CVarGetInteger("gHalfMilkHealth", 5) * 16;
+                            gSaveContext.healthAccumulator = CVarGetInteger(CVAR_ENHANCEMENT("HalfMilkHealth"), 5) * 16;
                         }
                     }
                 } else {
@@ -13959,7 +13959,7 @@ void Player_Action_8084ECA4(Player* this, PlayState* play) {
     if (LinkAnimation_Update(play, &this->skelAnime)) {
         if (this->av1.actionVar1 != 0) {
             if (this->av2.actionVar2 == 0) {
-                if (CVarGetInteger("gFastDrops", 0)) {
+                if (CVarGetInteger(CVAR_ENHANCEMENT("FastDrops"), 0)) {
                     this->av1.actionVar1 = 0;
                 } else {
                     Message_StartTextbox(play, D_80854A04[this->av1.actionVar1 - 1].textId, &this->actor);
@@ -13998,7 +13998,7 @@ void Player_Action_8084ECA4(Player* this, PlayState* play) {
                             this->av2.actionVar2 = 0;
                             this->interactRangeActor->parent = &this->actor;
                             Player_UpdateBottleHeld(play, this, catchInfo->itemId, ABS(catchInfo->itemAction));
-                            if (!CVarGetInteger("gFastDrops", 0)) {
+                            if (!CVarGetInteger(CVAR_ENHANCEMENT("FastDrops"), 0)) {
                                 this->stateFlags1 |= PLAYER_STATE1_IN_ITEM_CS | PLAYER_STATE1_IN_CUTSCENE;
                                 Player_AnimPlayOnceAdjusted(play, this, sp24->unk_04);
                                 func_80835EA4(play, 4);
@@ -14033,12 +14033,12 @@ void Player_Action_8084EED8(Player* this, PlayState* play) {
         Player_PlaySfx(this, NA_SE_EV_BOTTLE_CAP_OPEN);
         Player_PlaySfx(this, NA_SE_EV_FIATY_HEAL - SFX_FLAG);
     } else if (LinkAnimation_OnFrame(&this->skelAnime, 47.0f)) {
-        if (CVarGetInteger("gFairyEffect", 0)) {
-            if (CVarGetInteger("gFairyPercentRestore", 0)) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("FairyEffect"), 0)) {
+            if (CVarGetInteger(CVAR_ENHANCEMENT("FairyPercentRestore"), 0)) {
                 gSaveContext.healthAccumulator =
-                    (gSaveContext.healthCapacity * CVarGetInteger("gFairyHealth", 100) / 100 + 15) / 16 * 16;
+                    (gSaveContext.healthCapacity * CVarGetInteger(CVAR_ENHANCEMENT("FairyHealth"), 100) / 100 + 15) / 16 * 16;
             } else {
-                gSaveContext.healthAccumulator = CVarGetInteger("gFairyHealth", 8) * 16;
+                gSaveContext.healthAccumulator = CVarGetInteger(CVAR_ENHANCEMENT("FairyHealth"), 8) * 16;
             }
         } else {
             gSaveContext.healthAccumulator = 0x140;
@@ -14695,7 +14695,7 @@ static AnimSfxEntry D_80854A8C[][2] = {
 };
 
 void Player_Action_808507F4(Player* this, PlayState* play) {
-    u8 isFastFarores = CVarGetInteger("gFastFarores", 0) && this->itemAction == PLAYER_IA_FARORES_WIND;
+    u8 isFastFarores = CVarGetInteger(CVAR_ENHANCEMENT("FastFarores"), 0) && this->itemAction == PLAYER_IA_FARORES_WIND;
     if (LinkAnimation_Update(play, &this->skelAnime)) {
         if (this->av1.actionVar1 < 0) {
             if ((this->itemAction == PLAYER_IA_NAYRUS_LOVE) || isFastFarores || (gSaveContext.magicState == MAGIC_STATE_IDLE)) {
@@ -15890,7 +15890,7 @@ void func_80852C50(PlayState* play, Player* this, CsCmdActorAction* arg2) {
     sp24 = D_808547C4[this->cueId];
     func_80852B4C(play, this, linkCsAction, &D_80854E50[ABS(sp24)]);
 
-    if (CVarGetInteger("gFixEyesOpenWhileSleeping", 0) && (play->csCtx.linkAction->action == 28 || play->csCtx.linkAction->action == 29)) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("FixEyesOpenWhileSleeping"), 0) && (play->csCtx.linkAction->action == 28 || play->csCtx.linkAction->action == 29)) {
         this->skelAnime.jointTable[22].x = 8;
     }
 }
