@@ -1959,20 +1959,20 @@ void FileChoose_DrawFileInfo(GameState* thisx, s16 fileIndex, s16 isActive) {
     s16 deathCountSplit[3];
 
     Color_RGB8 heartColor = {HEARTS_PRIM_R, HEARTS_PRIM_G, HEARTS_PRIM_B};
-    if (CVarGetInteger("gCosmetics.Consumable_Hearts.Changed", 0)) {
-        heartColor = CVarGetColor24("gCosmetics.Consumable_Hearts.Value", heartColor);
+    if (CVarGetInteger(CVAR_COSMETIC("Consumable.Hearts.Changed"), 0)) {
+        heartColor = CVarGetColor24(CVAR_COSMETIC("Consumable.Hearts.Value"), heartColor);
     }
     Color_RGB8 heartBorder = {HEARTS_ENV_R, HEARTS_ENV_G, HEARTS_ENV_B};
-    if (CVarGetInteger("gCosmetics.Consumable_HeartBorder.Changed", 0)) {
-        heartBorder = CVarGetColor24("gCosmetics.Consumable_HeartBorder.Value", heartBorder);
+    if (CVarGetInteger(CVAR_COSMETIC("Consumable.HeartBorder.Changed"), 0)) {
+        heartBorder = CVarGetColor24(CVAR_COSMETIC("Consumable.HeartBorder.Value"), heartBorder);
     }
     Color_RGB8 ddColor = {HEARTS_DD_ENV_R, HEARTS_DD_ENV_G, HEARTS_DD_ENV_B};
-    if (CVarGetInteger("gCosmetics.Consumable_DDHearts.Changed", 0)) {
-        ddColor = CVarGetColor24("gCosmetics.Consumable_DDHearts.Value", ddColor);
+    if (CVarGetInteger(CVAR_COSMETIC("Consumable.DDHearts.Changed"), 0)) {
+        ddColor = CVarGetColor24(CVAR_COSMETIC("Consumable.DDHearts.Value"), ddColor);
     }
     Color_RGB8 ddBorder = {HEARTS_DD_PRIM_R, HEARTS_DD_PRIM_G, HEARTS_DD_PRIM_B};
-    if (CVarGetInteger("gCosmetics.Consumable_DDHeartBorder.Changed", 0)) {
-        ddBorder = CVarGetColor24("gCosmetics.Consumable_DDHeartBorder.Value", ddBorder);
+    if (CVarGetInteger(CVAR_COSMETIC("Consumable.DDHeartBorder.Changed"), 0)) {
+        ddBorder = CVarGetColor24(CVAR_COSMETIC("Consumable.DDHeartBorder.Value"), ddBorder);
     }
 
     OPEN_DISPS(this->state.gfxCtx);
@@ -3256,8 +3256,8 @@ void FileChoose_Main(GameState* thisx) {
     Input* input = &this->state.input[0];
 
     Color_RGB8 helpTextColor = { 100, 255, 255 };
-    if (CVarGetInteger("gCosmetics.Title_FileChoose.Changed", 0)) {
-        Color_RGB8 backgroundColor = CVarGetColor24("gCosmetics.Title_FileChoose.Value", (Color_RGB8){ 100, 150, 255 });
+    if (CVarGetInteger(CVAR_COSMETIC("Title.FileChoose.Changed"), 0)) {
+        Color_RGB8 backgroundColor = CVarGetColor24(CVAR_COSMETIC("Title.FileChoose.Value"), (Color_RGB8){ 100, 150, 255 });
         this->windowColor[0] = backgroundColor.r;
         this->windowColor[1] = backgroundColor.g;
         this->windowColor[2] = backgroundColor.b;

@@ -1486,7 +1486,7 @@ s32 EnElf_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* p
         if (this->fairyFlags & FAIRY_FLAG_BIG) {
             scale *= 2.0f;
         }
-        scale *= CVarGetFloat("gCosmetics.Fairies_Size", 1.0f);
+        scale *= CVarGetFloat(CVAR_COSMETIC("Fairies.Size"), 1.0f);
 
         scale *= (this->actor.scale.x * 124.99999f);
         Matrix_MultVec3f(&zeroVec, &mtxMult);
