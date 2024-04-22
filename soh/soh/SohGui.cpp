@@ -202,7 +202,7 @@ namespace SohGui {
         gui->AddGuiWindow(mRandomizerSettingsWindow);
         mAdvancedResolutionSettingsWindow = std::make_shared<AdvancedResolutionSettings::AdvancedResolutionSettingsWindow>(CVAR_WINDOW("AdvancedResolutionEditor"), "Advanced Resolution Settings");
         gui->AddGuiWindow(mAdvancedResolutionSettingsWindow);
-        mTimeSplitWindow = std::make_shared<TimeSplitWindow>("gTimeSplitEnabled", "Time Splits");
+        mTimeSplitWindow = std::make_shared<TimeSplitWindow>(CVAR_WINDOW("TimeSplitEnabled"), "Time Splits");
         gui->AddGuiWindow(mTimeSplitWindow);
         mModalWindow = std::make_shared<SohModalWindow>("gOpenWindows.modalWindowEnabled", "Modal Window");
         gui->AddGuiWindow(mModalWindow);

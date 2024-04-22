@@ -600,7 +600,7 @@ void DrawTimeSplitOptions() {
                 splitPreviousBest[i] = splitBest[i];
             }
         }
-        status = "Splits updated";
+        status = "Splits updated locally, click Save List to write to disk.";
         statusColor = COLOR_GREEN;
     }
     ImGui::SameLine();
@@ -613,11 +613,13 @@ void DrawTimeSplitOptions() {
         status = "List has been reset";
         statusColor = COLOR_RED;
     }
-    UIWidgets::EnhancementCheckbox("Edit Splits", "gTimeSplit.EnableEdits", false);
+    UIWidgets::EnhancementCheckbox("Edit Splits", CVAR_ENHANCEMENT("TimeSplit.EnableEdits"), false);
+    UIWidgets::Tooltip("Allows removing items and clearing split data.");
     ImGui::SameLine();
-    UIWidgets::EnhancementCheckbox("Hide Tabs", "gTimeSplit.EnableTabs", false);
+    UIWidgets::EnhancementCheckbox("Hide Tabs", CVAR_ENHANCEMENT("TimeSplit.EnableTabs"), false);
+    UIWidgets::Tooltip("Toggles he display of the Tabs at the top of the window.");
     ImGui::SameLine();
-    UIWidgets::EnhancementCheckbox("Active Tracking", "gTimeSplit.EnableTracking", false);
+    UIWidgets::EnhancementCheckbox("Active Tracking", CVAR_ENHANCEMENT("TimeSplit.EnableTracking"), false);
     UIWidgets::Tooltip("Keeps Active Split in view for longer lists.");
     ImGui::TextColored(statusColor, status.c_str());
     UIWidgets::PaddedSeparator();
@@ -670,7 +672,7 @@ void DrawTimeSplitSplits(){
     }
     ImGui::PopStyleColor();
     //List Removals
-    if (CVarGetInteger("gTimeSplit.EnableEdits", 0)) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSplit.EnableEdits"), 0)) {
         ImGui::BeginTable("Remove Entries", 4);
         ImGui::TableSetupColumn("Item Image", ImGuiTableColumnFlags_WidthFixed | ImGuiTableColumnFlags_NoHeaderLabel, (28.0f * uiScale));
         ImGui::TableSetupColumn("Item Name");
@@ -769,7 +771,7 @@ void DrawTimeSplitSplits(){
             // Item Image
             if (splitStatus[buttonID] == 2) {
                 ImGui::TableSetBgColor(ImGuiTableBgTarget_RowBg0, IM_COL32(47, 79, 90, 255));
-                if (CVarGetInteger("gTimeSplit.EnableTracking", 0)) {
+                if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSplit.EnableTracking"), 0)) {
                     ImGui::SetScrollHereY(loopCounter * 0.01f);
                 }
             }
@@ -1069,9 +1071,9 @@ void DrawTimeSplitListManager() {
             }
         }
         if (ImGui::BeginPopupContextItem("Skull Count")) {
-            UIWidgets::PaddedEnhancementSliderInt("Skulltula Count: %d Tokens", "##splitToken", "gTimeSplit.SkullTokens", 0, 100, "", 0, true, true, false);
+            UIWidgets::PaddedEnhancementSliderInt("Skulltula Count: %d Tokens", "##splitToken", CVAR_ENHANCEMENT("TimeSplit.SkullTokens"), 0, 100, "", 0, true, true, false);
             if (ImGui::Button("Set", ImVec2(30.0f, 20.0f))) {
-                splitTokens = CVarGetInteger("gTimeSplit.SkullTokens", 0);
+                splitTokens = CVarGetInteger(CVAR_ENHANCEMENT("TimeSplit.SkullTokens"), 0);
                 TimeSplitAddToSplits(ITEM_SKULL_TOKEN);
                 ImGui::CloseCurrentPopup();
             }
@@ -1412,7 +1414,7 @@ void TimeSplitWindow::DrawElement() {
         ImGui::PopStyleColor(1);
         return;
     }
-    if (CVarGetInteger("gTimeSplit.EnableTabs", 0)) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSplit.EnableTabs"), 0)) {
         DrawTimeSplitSplits();
     } else {
         ImGui::BeginTabBar("Split Tabs");

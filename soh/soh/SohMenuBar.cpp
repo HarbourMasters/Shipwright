@@ -1416,7 +1416,7 @@ void DrawEnhancementsMenu() {
         }
 
         if (mTimeSplitWindow) {
-            if (ImGui::Button(GetWindowButtonText("Time Splits", CVarGetInteger("gTimeSplitEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
+            if (ImGui::Button(GetWindowButtonText("Time Splits", CVarGetInteger(CVAR_WINDOW("gTimeSplitEnabled"), 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
                 mTimeSplitWindow->ToggleVisibility();
             }
         }
