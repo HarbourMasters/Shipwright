@@ -13,13 +13,19 @@ public:
       : english(std::move(english_)),
         french(std::move(french_)),
         spanish(std::move(spanish_)),
-        german(std::move("")) {}
+        german(std::move("")) {
+            // german defaults to english text until a translation is provided.
+            german = english;
+        }
     Text(std::string english_, std::string french_, std::string spanish_, std::string german_)
       : english(std::move(english_)),
         french(std::move(french_)),
         spanish(std::move(spanish_)),
         german(std::move(german_)) {}
-    Text(std::string english_) : english(std::move(english_)), french(std::move("")), spanish(std::move("")), german(std::move("")) {}
+    Text(std::string english_) : english(std::move(english_)), french(std::move("")), spanish(std::move("")), german(std::move("")) {
+        // default unprovided languages to english text
+        french = spanish = german = english;
+    }
 
     const std::string& GetEnglish() const {
         return english;
