@@ -1,4 +1,5 @@
 #include "Resource.h"
+#include "soh/OTRGlobals.h"
 
 namespace SOH {
 
