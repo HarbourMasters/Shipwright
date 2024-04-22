@@ -92,14 +92,14 @@ jobs:
         if [ -d /opt/local/ ]; then
           echo "MacPorts already installed"
         else
-          wget https://github.com/macports/macports-base/releases/download/v2.7.2/MacPorts-2.7.2-12-Monterey.pkg
-          sudo installer -pkg ./MacPorts-2.7.2-12-Monterey.pkg -target /
+          wget https://github.com/macports/macports-base/releases/download/v2.9.1/MacPorts-2.9.1-12-Monterey.pkg
+          sudo installer -pkg ./MacPorts-2.9.1-12-Monterey.pkg -target /
         fi
         echo "/opt/local/bin:/opt/local/sbin" >> $GITHUB_PATH
     - name: Install dependencies
       if: ${{ !vars.MAC_RUNNER }}
       run: |
-        brew uninstall --ignore-dependencies libpng
+        brew uninstall --ignore-dependencies libpng libzip
         sudo port install $(cat .github/workflows/macports-deps.txt)
         brew install ninja
     - name: Download soh.otr
@@ -175,6 +175,21 @@ jobs:
         make -j 10
         sudo make install
         sudo cp -av /usr/local/lib/libSDL* /lib/x86_64-linux-gnu/
+    - name: Install latest libzip
+      if: ${{ (matrix.os == 'ubuntu-20.04' && !vars.LINUX_COMPATIBILITY_RUNNER) }}
+      run: |
+        sudo apt-get remove libzip-dev zipcmp zipmerge ziptool
+        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
+        if [ ! -d "libzip-1.10.1" ]; then
+          wget https://libzip.org/download/libzip-1.10.1.tar.gz
+          tar -xzvf libzip-1.10.1.tar.gz
+        fi
+        cd libzip-1.10.1
+        mkdir build
+        cd build
+        cmake ..
+        make
+        sudo make install
     - name: Install latest SDL_net
       if: ${{ (matrix.os == 'ubuntu-20.04' && !vars.LINUX_COMPATIBILITY_RUNNER) || (matrix.os == 'ubuntu-22.04' && !vars.LINUX_PERFORMANCE_RUNNER) }}
       run: |
@@ -224,6 +239,14 @@ jobs:
         sudo apt-get remove -y cmake
         wget https://github.com/Kitware/CMake/releases/download/v3.28.3/cmake-3.28.3-linux-x86_64.sh -O /tmp/cmake.sh
         sudo sh /tmp/cmake.sh --prefix=/usr/local/ --exclude-subdir
+        wget https://libzip.org/download/libzip-1.10.1.tar.gz
+        tar -xzvf libzip-1.10.1.tar.gz
+        cd libzip-1.10.1
+        mkdir build
+        cd build
+        cmake -H.. -B. -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/Switch.cmake
+        make
+        make install
     - name: Fix dubious ownership error
       if: ${{ vars.LINUX_RUNNER }}
       run: git config --global --add safe.directory '*'
@@ -265,11 +288,18 @@ jobs:
     - name: Install dependencies
       if: ${{ !vars.LINUX_RUNNER }}
       run: |
-        sudo apt-get update
         sudo apt-get install -y ninja-build
         sudo apt-get remove -y cmake
         wget https://github.com/Kitware/CMake/releases/download/v3.28.3/cmake-3.28.3-linux-x86_64.sh -O /tmp/cmake.sh
         sudo sh /tmp/cmake.sh --prefix=/usr/local/ --exclude-subdir
+        wget https://libzip.org/download/libzip-1.10.1.tar.gz
+        tar -xzvf libzip-1.10.1.tar.gz
+        cd libzip-1.10.1
+        mkdir build
+        cd build
+        cmake -H.. -B. -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/WiiU.cmake
+        make
+        make install
     - uses: actions/checkout@v3
       with:
         submodules: true

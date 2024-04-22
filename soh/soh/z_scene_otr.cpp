@@ -39,17 +39,6 @@ extern "C" s32 Object_Spawn(ObjectContext* objectCtx, s16 objectId);
 extern "C" RomFile sNaviMsgFiles[];
 s32 OTRScene_ExecuteCommands(PlayState* play, SOH::Scene* scene);
 
-std::shared_ptr<LUS::File> ResourceMgr_LoadFile(const char* path) {
-    std::string Path = path;
-    if (IsGameMasterQuest()) {
-        size_t pos = 0;
-        if ((pos = Path.find("/nonmq/", 0)) != std::string::npos) {
-            Path.replace(pos, 7, "/mq/");
-        }
-    }
-    return LUS::Context::GetInstance()->GetResourceManager()->LoadFile(Path.c_str());
-}
-
 // Forward Declaration of function declared in OTRGlobals.cpp
 std::shared_ptr<LUS::IResource> GetResourceByNameHandlingMQ(const char* path);
 
