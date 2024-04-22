@@ -1541,7 +1541,7 @@ void Inventory_SwapAgeEquipment(void) {
 
         // When using enhancements, set swordless flag if player doesn't have kokiri sword or hasn't equipped a sword yet.
         // Then set the child equips button items to item none to ensure kokiri sword is not equipped
-        if ((CVarGetInteger("gSwitchAge", 0) || CVarGetInteger("gSwitchTimeline", 0)) && (CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_KOKIRI) == 0 || Flags_GetInfTable(INFTABLE_SWORDLESS))) {
+        if ((CVarGetInteger(CVAR_GENERAL("SwitchAge"), 0) || CVarGetInteger("gSwitchTimeline", 0)) && (CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_KOKIRI) == 0 || Flags_GetInfTable(INFTABLE_SWORDLESS))) {
             Flags_SetInfTable(INFTABLE_SWORDLESS);
             gSaveContext.childEquips.buttonItems[0] = ITEM_NONE;
         }
@@ -1556,7 +1556,7 @@ void Inventory_SwapAgeEquipment(void) {
 
         gSaveContext.adultEquips.equipment = gSaveContext.equips.equipment;
         // Switching age using enhancements separated out to make vanilla flow clear
-        if (CVarGetInteger("gSwitchAge", 0) || CVarGetInteger("gSwitchTimeline", 0)) {
+        if (CVarGetInteger(CVAR_GENERAL("SwitchAge"), 0) || CVarGetInteger("gSwitchTimeline", 0)) {
             for (i = 0; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
                 gSaveContext.equips.buttonItems[i] = gSaveContext.childEquips.buttonItems[i];
 
@@ -1631,7 +1631,7 @@ void Inventory_SwapAgeEquipment(void) {
                                             (EQUIP_VALUE_BOOTS_KOKIRI << (EQUIP_TYPE_BOOTS * 4));
         }
 
-        if ((CVarGetInteger("gSwitchAge", 0) || CVarGetInteger("gSwitchTimeline", 0)) &&
+        if ((CVarGetInteger(CVAR_GENERAL("SwitchAge"), 0) || CVarGetInteger("gSwitchTimeline", 0)) &&
             (gSaveContext.equips.buttonItems[0] == ITEM_NONE)) {
             Flags_SetInfTable(INFTABLE_SWORDLESS);
             if (gSaveContext.childEquips.equipment == 0) {
@@ -5725,7 +5725,7 @@ void Interface_Draw(PlayState* play) {
         if ((play->pauseCtx.state == 0) && (play->pauseCtx.debugState == 0)) {
             if (gSaveContext.minigameState != 1) {
                 // Carrots rendering if the action corresponds to riding a horse
-                if (interfaceCtx->unk_1EE == 8 && !CVarGetInteger("gInfiniteEpona", 0)) {
+                if (interfaceCtx->unk_1EE == 8 && !CVarGetInteger(CVAR_CHEAT("InfiniteEponaBoost"), 0)) {
                     // Load Carrot Icon
                     gDPLoadTextureBlock(OVERLAY_DISP++, gCarrotIconTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 16, 16, 0,
                                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
@@ -6539,11 +6539,11 @@ void Interface_Update(PlayState* play) {
     D_80125A58 = Player_GetEnvironmentalHazard(play);
 
     if (D_80125A58 == 1) {
-        if (CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC) == EQUIP_VALUE_TUNIC_GORON || CVarGetInteger("gSuperTunic", 0) != 0) {
+        if (CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC) == EQUIP_VALUE_TUNIC_GORON || CVarGetInteger(CVAR_CHEAT("SuperTunic"), 0) != 0) {
             D_80125A58 = 0;
         }
     } else if ((Player_GetEnvironmentalHazard(play) >= 2) && (Player_GetEnvironmentalHazard(play) < 5)) {
-        if (CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC) == EQUIP_VALUE_TUNIC_ZORA || CVarGetInteger("gSuperTunic", 0) != 0) {
+        if (CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC) == EQUIP_VALUE_TUNIC_ZORA || CVarGetInteger(CVAR_CHEAT("SuperTunic"), 0) != 0) {
             D_80125A58 = 0;
         }
     }

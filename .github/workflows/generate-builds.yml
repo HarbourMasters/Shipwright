@@ -92,15 +92,10 @@ jobs:
         if [ -d /opt/local/ ]; then
           echo "MacPorts already installed"
         else
-          wget https://github.com/macports/macports-base/releases/download/v2.9.1/MacPorts-2.9.1-12-Monterey.pkg
-          sudo installer -pkg ./MacPorts-2.9.1-12-Monterey.pkg -target /
+          wget https://github.com/macports/macports-base/releases/download/v2.9.3/MacPorts-2.9.3-12-Monterey.pkg
+          sudo installer -pkg ./MacPorts-2.9.3-12-Monterey.pkg -target /
         fi
         echo "/opt/local/bin:/opt/local/sbin" >> $GITHUB_PATH
-    - name: Update MacPorts
-      if: ${{ !vars.MAC_RUNNER }}
-      run: |
-        sudo port selfupdate
-        sudo port upgrade outdated
     - name: Install dependencies
       if: ${{ !vars.MAC_RUNNER }}
       run: |
@@ -293,7 +288,6 @@ jobs:
     - name: Install dependencies
       if: ${{ !vars.LINUX_RUNNER }}
       run: |
-        sudo apt-get update
         sudo apt-get install -y ninja-build
         sudo apt-get remove -y cmake
         wget https://github.com/Kitware/CMake/releases/download/v3.28.3/cmake-3.28.3-linux-x86_64.sh -O /tmp/cmake.sh

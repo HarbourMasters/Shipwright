@@ -2074,7 +2074,7 @@ void Player_InitExplosiveIA(PlayState* play, Player* this) {
                            this->actor.world.pos.y, this->actor.world.pos.z, 0, this->actor.shape.rot.y, 0, 0);
     if (spawnedActor != NULL) {
         if ((explosiveType != 0) && (play->bombchuBowlingStatus != 0)) {
-            if (!CVarGetInteger("gInfiniteAmmo", 0)) {
+            if (!CVarGetInteger(CVAR_CHEAT("InfiniteAmmo"), 0)) {
                 play->bombchuBowlingStatus--;
             }
             if (play->bombchuBowlingStatus == 0) {
@@ -2494,10 +2494,10 @@ LinkAnimationHeader* func_808346C4(PlayState* play, Player* this) {
 
     if (this->unk_870 < 0.5f) {
         return D_808543A4[Player_HoldsTwoHandedWeapon(this) &&
-                          !(CVarGetInteger("gShieldTwoHanded", 0) && (this->heldItemAction != PLAYER_IA_DEKU_STICK))];
+                          !(CVarGetInteger(CVAR_CHEAT("ShieldTwoHanded"), 0) && (this->heldItemAction != PLAYER_IA_DEKU_STICK))];
     } else {
         return D_808543AC[Player_HoldsTwoHandedWeapon(this) &&
-                          !(CVarGetInteger("gShieldTwoHanded", 0) && (this->heldItemAction != PLAYER_IA_DEKU_STICK))];
+                          !(CVarGetInteger(CVAR_CHEAT("ShieldTwoHanded"), 0) && (this->heldItemAction != PLAYER_IA_DEKU_STICK))];
     }
 }
 
@@ -2749,11 +2749,11 @@ s32 func_808350A4(PlayState* play, Player* this) {
             func_80834380(play, this, &item, &arrowType);
 
             if (gSaveContext.minigameState == 1) {
-                if (!CVarGetInteger("gInfiniteAmmo", 0)) {
+                if (!CVarGetInteger(CVAR_CHEAT("InfiniteAmmo"), 0)) {
                     play->interfaceCtx.hbaAmmo--;
                 }
             } else if (play->shootingGalleryStatus != 0) {
-                if (!CVarGetInteger("gInfiniteAmmo", 0)) {
+                if (!CVarGetInteger(CVAR_CHEAT("InfiniteAmmo"), 0)) {
                     play->shootingGalleryStatus--;
                 }
             } else {
@@ -4226,7 +4226,7 @@ s32 func_8083816C(s32 arg0) {
 }
 
 void func_8083819C(Player* this, PlayState* play) {
-    if (this->currentShield == PLAYER_SHIELD_DEKU && (CVarGetInteger("gFireproofDekuShield", 0) == 0)) {
+    if (this->currentShield == PLAYER_SHIELD_DEKU && (CVarGetInteger(CVAR_CHEAT("FireproofDekuShield"), 0) == 0)) {
         Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_SHIELD, this->actor.world.pos.x, this->actor.world.pos.y,
                     this->actor.world.pos.z, 0, 0, 0, 1, true);
         Inventory_DeleteEquipment(play, EQUIP_TYPE_SHIELD);
@@ -4339,18 +4339,18 @@ s32 func_808382DC(Player* this, PlayState* play) {
 
                             if (this->unk_870 < 0.5f) {
                                 anim = D_808543BC[Player_HoldsTwoHandedWeapon(this) &&
-                                                  !(CVarGetInteger("gShieldTwoHanded", 0) &&
+                                                  !(CVarGetInteger(CVAR_CHEAT("ShieldTwoHanded"), 0) &&
                                                     (this->heldItemAction != PLAYER_IA_DEKU_STICK))];
                             } else {
                                 anim = D_808543B4[Player_HoldsTwoHandedWeapon(this) &&
-                                                  !(CVarGetInteger("gShieldTwoHanded", 0) &&
+                                                  !(CVarGetInteger(CVAR_CHEAT("ShieldTwoHanded"), 0) &&
                                                     (this->heldItemAction != PLAYER_IA_DEKU_STICK))];
                             }
                             LinkAnimation_PlayOnce(play, &this->upperSkelAnime, anim);
                         } else {
                             Player_AnimPlayOnce(play, this,
                                           D_808543C4[Player_HoldsTwoHandedWeapon(this) &&
-                                                     !(CVarGetInteger("gShieldTwoHanded", 0) &&
+                                                     !(CVarGetInteger(CVAR_CHEAT("ShieldTwoHanded"), 0) &&
                                                        (this->heldItemAction != PLAYER_IA_DEKU_STICK))]);
                         }
                     }
@@ -4407,7 +4407,7 @@ s32 func_808382DC(Player* this, PlayState* play) {
                     ((sp48 >= 0) &&
                      SurfaceType_IsWallDamage(&play->colCtx, this->actor.floorPoly, this->actor.floorBgId) &&
                      (this->floorTypeTimer >= D_808544F4[sp48])) ||
-                    ((sp48 >= 0) && ((this->currentTunic != PLAYER_TUNIC_GORON && CVarGetInteger("gSuperTunic", 0) == 0) ||
+                    ((sp48 >= 0) && ((this->currentTunic != PLAYER_TUNIC_GORON && CVarGetInteger(CVAR_CHEAT("SuperTunic"), 0) == 0) ||
                                      (this->floorTypeTimer >= D_808544F4[sp48])))) {
                     this->floorTypeTimer = 0;
                     this->actor.colChkInfo.damage = 4;
@@ -5226,7 +5226,7 @@ s32 func_8083A6AC(Player* this, PlayState* play) {
 
         if (BgCheck_EntityLineTest1(&play->colCtx, &this->actor.world.pos, &sp74, &sp68, &sp84, true, false, false,
                                     true, &sp80) &&
-            ((ABS(sp84->normal.y) < 600) || (CVarGetInteger("gClimbEverything", 0) != 0))) {
+            ((ABS(sp84->normal.y) < 600) || (CVarGetInteger(CVAR_CHEAT("ClimbEverything"), 0) != 0))) {
             f32 nx = COLPOLY_GET_NORMAL(sp84->normal.x);
             f32 ny = COLPOLY_GET_NORMAL(sp84->normal.y);
             f32 nz = COLPOLY_GET_NORMAL(sp84->normal.z);
@@ -8505,7 +8505,7 @@ void func_80842A28(PlayState* play, Player* this) {
 }
 
 void func_80842A88(PlayState* play, Player* this) {
-    if (CVarGetInteger("gDekuStickCheat", DEKU_STICK_NORMAL) == DEKU_STICK_NORMAL) {
+    if (CVarGetInteger(CVAR_CHEAT("DekuStick"), DEKU_STICK_NORMAL) == DEKU_STICK_NORMAL) {
         Inventory_ChangeAmmo(ITEM_STICK, -1);
         Player_UseItem(play, this, ITEM_NONE);
     }
@@ -8513,7 +8513,7 @@ void func_80842A88(PlayState* play, Player* this) {
 
 s32 func_80842AC4(PlayState* play, Player* this) {
     if ((this->heldItemAction == PLAYER_IA_DEKU_STICK) && (this->unk_85C > 0.5f)) {
-        if (AMMO(ITEM_STICK) != 0 && CVarGetInteger("gDekuStickCheat", DEKU_STICK_NORMAL) == DEKU_STICK_NORMAL) {
+        if (AMMO(ITEM_STICK) != 0 && CVarGetInteger(CVAR_CHEAT("DekuStick"), DEKU_STICK_NORMAL) == DEKU_STICK_NORMAL) {
             EffectSsStick_Spawn(play, &this->bodyPartsPos[PLAYER_BODYPART_R_HAND],
                                 this->actor.shape.rot.y + 0x8000);
             this->unk_85C = 0.5f;
@@ -8950,7 +8950,7 @@ static AnimSfxEntry D_808545F0[] = {
 };
 
 void Player_Action_80843CEC(Player* this, PlayState* play) {
-    if (this->currentTunic != PLAYER_TUNIC_GORON && CVarGetInteger("gSuperTunic", 0) == 0) {
+    if (this->currentTunic != PLAYER_TUNIC_GORON && CVarGetInteger(CVAR_CHEAT("SuperTunic"), 0) == 0) {
         if ((play->roomCtx.curRoom.behaviorType2 == ROOM_BEHAVIOR_TYPE2_3) || (sFloorType == 9) ||
             ((func_80838144(sFloorType) >= 0) &&
              !SurfaceType_IsWallDamage(&play->colCtx, this->actor.floorPoly, this->actor.floorBgId))) {
@@ -10655,7 +10655,7 @@ void Player_ProcessSceneCollision(PlayState* play, Player* this) {
         sTouchedWallFlags = func_80041DB8(&play->colCtx, this->actor.wallPoly, this->actor.wallBgId);
 
         // conflicts arise from these two being enabled at once, and with ClimbEverything on, FixVineFall is redundant anyway
-        if (CVarGetInteger("gFixVineFall", 0) && !CVarGetInteger("gClimbEverything", 0)) {
+        if (CVarGetInteger("gFixVineFall", 0) && !CVarGetInteger(CVAR_CHEAT("ClimbEverything"), 0)) {
             /* This fixes the "started climbing a wall and then immediately fell off" bug.
             * The main idea is if a climbing wall is detected, double-check that it will
             * still be valid once climbing begins by doing a second raycast with a small
@@ -10724,7 +10724,7 @@ void Player_ProcessSceneCollision(PlayState* play, Player* this) {
         if ((this->actor.bgCheckFlags & 0x200) && (sShapeYawToTouchedWall < 0x3000)) {
             CollisionPoly* wallPoly = this->actor.wallPoly;
 
-            if ((ABS(wallPoly->normal.y) < 600) || (CVarGetInteger("gClimbEverything", 0) != 0)) {
+            if ((ABS(wallPoly->normal.y) < 600) || (CVarGetInteger(CVAR_CHEAT("ClimbEverything"), 0) != 0)) {
                 f32 sp8C = COLPOLY_GET_NORMAL(wallPoly->normal.x);
                 f32 sp88 = COLPOLY_GET_NORMAL(wallPoly->normal.y);
                 f32 sp84 = COLPOLY_GET_NORMAL(wallPoly->normal.z);
@@ -10915,7 +10915,7 @@ void Player_UpdateCamAndSeqModes(PlayState* play, Player* this) {
             seqMode = SEQ_MODE_STILL;
         }
 
-        if (play->actorCtx.targetCtx.bgmEnemy != NULL && !CVarGetInteger("gEnemyBGMDisable", 0)) {
+        if (play->actorCtx.targetCtx.bgmEnemy != NULL && !CVarGetInteger(CVAR_AUDIO("EnemyBGMDisable"), 0)) {
             seqMode = SEQ_MODE_ENEMY;
             Audio_SetBgmEnemyVolume(sqrtf(play->actorCtx.targetCtx.bgmEnemy->xyzDistToPlayerSq));
         }
@@ -10935,7 +10935,7 @@ static Color_RGBA8 D_808547C0 = { 255, 50, 0, 0 };
 void func_80848A04(PlayState* play, Player* this) {
     f32 temp;
 
-    if (CVarGetInteger("gDekuStickCheat", DEKU_STICK_NORMAL) == DEKU_STICK_UNBREAKABLE_AND_ALWAYS_ON_FIRE) {
+    if (CVarGetInteger(CVAR_CHEAT("DekuStick"), DEKU_STICK_NORMAL) == DEKU_STICK_UNBREAKABLE_AND_ALWAYS_ON_FIRE) {
         f32 temp2 = 1.0f;       // Secondary temporary variable to use with the alleged draw flame function
         this->unk_860 = 200;    // Keeps the stick's flame lit
         this->unk_85C = 1.0f;   // Ensures the stick is the proper length
@@ -10943,20 +10943,20 @@ void func_80848A04(PlayState* play, Player* this) {
                       0, 8);      // I believe this draws the flame effect
     }
 
-    if (this->unk_85C == 0.0f && CVarGetInteger("gDekuStickCheat", DEKU_STICK_NORMAL) == DEKU_STICK_NORMAL) {
+    if (this->unk_85C == 0.0f && CVarGetInteger(CVAR_CHEAT("DekuStick"), DEKU_STICK_NORMAL) == DEKU_STICK_NORMAL) {
         Player_UseItem(play, this, 0xFF);
         return;
     }
 
     temp = 1.0f;
-    if (DECR(this->unk_860) == 0 && CVarGetInteger("gDekuStickCheat", DEKU_STICK_NORMAL) == DEKU_STICK_NORMAL) {
+    if (DECR(this->unk_860) == 0 && CVarGetInteger(CVAR_CHEAT("DekuStick"), DEKU_STICK_NORMAL) == DEKU_STICK_NORMAL) {
         Inventory_ChangeAmmo(ITEM_STICK, -1);
         this->unk_860 = 1;
         temp = 0.0f;
         this->unk_85C = temp;
     } else if (this->unk_860 > 200) {
         temp = (210 - this->unk_860) / 10.0f;
-    } else if (this->unk_860 < 20 && CVarGetInteger("gDekuStickCheat", DEKU_STICK_NORMAL) == DEKU_STICK_NORMAL) {
+    } else if (this->unk_860 < 20 && CVarGetInteger(CVAR_CHEAT("DekuStick"), DEKU_STICK_NORMAL) == DEKU_STICK_NORMAL) {
         temp = this->unk_860 / 20.0f;
         this->unk_85C = temp;
     }
@@ -11002,7 +11002,7 @@ void Player_UpdateBodyBurn(PlayState* play, Player* this) {
     s32 sp58;
     s32 sp54;
 
-    if (this->currentTunic == PLAYER_TUNIC_GORON || CVarGetInteger("gSuperTunic", 0) != 0) {
+    if (this->currentTunic == PLAYER_TUNIC_GORON || CVarGetInteger(CVAR_CHEAT("SuperTunic"), 0) != 0) {
         sp54 = 20;
     } else {
         sp54 = (s32)(this->linearVelocity * 0.4f) + 1;
@@ -11257,7 +11257,7 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
     func_808473D4(play, this);
     func_80836BEC(this, play);
 
-    if ((this->heldItemAction == PLAYER_IA_DEKU_STICK) && ((this->unk_860 != 0) || CVarGetInteger("gDekuStickCheat", DEKU_STICK_NORMAL) == DEKU_STICK_UNBREAKABLE_AND_ALWAYS_ON_FIRE)) {
+    if ((this->heldItemAction == PLAYER_IA_DEKU_STICK) && ((this->unk_860 != 0) || CVarGetInteger(CVAR_CHEAT("DekuStick"), DEKU_STICK_NORMAL) == DEKU_STICK_UNBREAKABLE_AND_ALWAYS_ON_FIRE)) {
         func_80848A04(play, this);
     } else if ((this->heldItemAction == PLAYER_IA_FISHING_POLE) && (this->unk_860 < 0)) {
         this->unk_860++;
@@ -11895,7 +11895,7 @@ void Player_Draw(Actor* thisx, PlayState* play2) {
             lod = 1;
         }
 
-        if (CVarGetInteger("gDisableLOD", 0) != 0) {
+        if (CVarGetInteger("gDisableLOD", 0)) {
             lod = 0;
         }
 
@@ -14377,7 +14377,7 @@ void Player_Action_8084FBF4(Player* this, PlayState* play) {
 s32 func_8084FCAC(Player* this, PlayState* play) {
     sControlInput = &play->state.input[0];
 
-    if (CVarGetInteger("gDebugEnabled", 0) &&
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0) &&
         ((CHECK_BTN_ALL(sControlInput->cur.button, BTN_A | BTN_L | BTN_R) &&
           CHECK_BTN_ALL(sControlInput->press.button, BTN_B)) ||
          (CHECK_BTN_ALL(sControlInput->cur.button, BTN_L) && CHECK_BTN_ALL(sControlInput->press.button, BTN_DRIGHT)))) {
