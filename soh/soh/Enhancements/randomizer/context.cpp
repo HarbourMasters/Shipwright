@@ -20,19 +20,6 @@ namespace Rando {
 std::weak_ptr<Context> Context::mContext;
 
 Context::Context() {
-    mSpoilerfileCheckNameToEnum["Invalid Location"] = RC_UNKNOWN_CHECK;
-    mSpoilerfileCheckNameToEnum["Link's Pocket"] = RC_LINKS_POCKET;
-
-    for (auto& item : StaticData::GetItemTable()) {
-        // Easiest way to filter out all the empty values from the array, since we still technically want the 0/RG_NONE
-        // entry
-        if (item.GetName().english.empty()) {
-            continue;
-        }
-        mSpoilerfileGetNameToEnum[item.GetName().english] = item.GetRandomizerGet();
-        mSpoilerfileGetNameToEnum[item.GetName().french] = item.GetRandomizerGet();
-    }
-
     mSpoilerfileHintTypeNameToEnum = {
         { "Static", HINT_TYPE_STATIC },
         { "Trial", HINT_TYPE_TRIAL },
@@ -93,9 +80,6 @@ Context::Context() {
     mTrials = std::make_shared<Trials>();
     mSettings = std::make_shared<Settings>();
     mFishsanity = std::make_shared<Fishsanity>();
-    for (auto& location : StaticData::GetLocationTable()) {
-        mSpoilerfileCheckNameToEnum[location.GetName()] = location.GetRandomizerCheck();
-    }
 }
 
 RandomizerArea Context::GetAreaFromString(std::string str) {
@@ -409,22 +393,22 @@ void Context::ParseHashIconIndexesJson(nlohmann::json spoilerFileJson) {
 void Context::ParseItemLocationsJson(nlohmann::json spoilerFileJson) {
     nlohmann::json locationsJson = spoilerFileJson["locations"];
     for (auto it = locationsJson.begin(); it != locationsJson.end(); ++it) {
-        RandomizerCheck rc = mSpoilerfileCheckNameToEnum[it.key()];
+        RandomizerCheck rc = StaticData::SpoilerfileCheckNameToEnum[it.key()];
         if (it->is_structured()) {
             nlohmann::json itemJson = *it;
             for (auto itemit = itemJson.begin(); itemit != itemJson.end(); ++itemit) {
                 if (itemit.key() == "item") {
-                    itemLocationTable[rc].SetPlacedItem(mSpoilerfileGetNameToEnum[itemit.value().get<std::string>()]);
+                    itemLocationTable[rc].SetPlacedItem(StaticData::SpoilerfileItemNameToEnum[itemit.value().get<std::string>()]);
                 } else if (itemit.key() == "price") {
                     itemLocationTable[rc].SetCustomPrice(itemit.value().get<uint16_t>());
                 } else if (itemit.key() == "model") {
-                    overrides[rc] = ItemOverride(rc, mSpoilerfileGetNameToEnum[itemit.value().get<std::string>()]);
+                    overrides[rc] = ItemOverride(rc, StaticData::SpoilerfileItemNameToEnum[itemit.value().get<std::string>()]);
                 } else if (itemit.key() == "trickName") {
                     overrides[rc].SetTrickName(Text(itemit.value().get<std::string>()));
                 }
             }
         } else {
-            itemLocationTable[rc].SetPlacedItem(mSpoilerfileGetNameToEnum[it.value().get<std::string>()]);
+            itemLocationTable[rc].SetPlacedItem(StaticData::SpoilerfileItemNameToEnum[it.value().get<std::string>()]);
         }
     }
 }
@@ -433,23 +417,23 @@ void Context::ParseHintJson(nlohmann::json spoilerFileJson) {
     // Child Altar
     std::string childAltarText = spoilerFileJson["childAltar"]["hintText"].get<std::string>();
     AddHint(RH_ALTAR_CHILD, Text(childAltarText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static", RA_NONE);
-    mEmeraldLoc = mSpoilerfileCheckNameToEnum[spoilerFileJson["childAltar"]["rewards"]["emeraldLoc"]];
-    mRubyLoc = mSpoilerfileCheckNameToEnum[spoilerFileJson["childAltar"]["rewards"]["rubyLoc"]];
-    mSapphireLoc = mSpoilerfileCheckNameToEnum[spoilerFileJson["childAltar"]["rewards"]["sapphireLoc"]];
+    mEmeraldLoc = StaticData::SpoilerfileCheckNameToEnum[spoilerFileJson["childAltar"]["rewards"]["emeraldLoc"]];
+    mRubyLoc = StaticData::SpoilerfileCheckNameToEnum[spoilerFileJson["childAltar"]["rewards"]["rubyLoc"]];
+    mSapphireLoc = StaticData::SpoilerfileCheckNameToEnum[spoilerFileJson["childAltar"]["rewards"]["sapphireLoc"]];
 
     // Adult Altar
     std::string adultAltarText = spoilerFileJson["adultAltar"]["hintText"].get<std::string>();
     AddHint(RH_ALTAR_ADULT, Text(adultAltarText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static", RA_NONE);
-    mForestMedallionLoc = mSpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["forestMedallionLoc"].get<std::string>()];
-    mFireMedallionLoc = mSpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["fireMedallionLoc"].get<std::string>()];
-    mWaterMedallionLoc = mSpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["waterMedallionLoc"].get<std::string>()];
-    mShadowMedallionLoc = mSpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["shadowMedallionLoc"].get<std::string>()];
-    mSpiritMedallionLoc = mSpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["spiritMedallionLoc"].get<std::string>()];
-    mLightMedallionLoc = mSpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["lightMedallionLoc"].get<std::string>()];
+    mForestMedallionLoc = StaticData::SpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["forestMedallionLoc"].get<std::string>()];
+    mFireMedallionLoc = StaticData::SpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["fireMedallionLoc"].get<std::string>()];
+    mWaterMedallionLoc = StaticData::SpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["waterMedallionLoc"].get<std::string>()];
+    mShadowMedallionLoc = StaticData::SpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["shadowMedallionLoc"].get<std::string>()];
+    mSpiritMedallionLoc = StaticData::SpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["spiritMedallionLoc"].get<std::string>()];
+    mLightMedallionLoc = StaticData::SpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["lightMedallionLoc"].get<std::string>()];
 
     // Ganondorf and Sheik Light Arrow Hints
     std::string ganonHintText = spoilerFileJson["ganonHintText"].get<std::string>();
-    RandomizerCheck lightArrowLoc = mSpoilerfileCheckNameToEnum[spoilerFileJson["lightArrowHintLoc"].get<std::string>()];
+    RandomizerCheck lightArrowLoc = StaticData::SpoilerfileCheckNameToEnum[spoilerFileJson["lightArrowHintLoc"].get<std::string>()];
     std::string lightArrowRegion = spoilerFileJson["lightArrowArea"].get<std::string>();
     AddHint(RH_GANONDORF_HINT, Text(ganonHintText), lightArrowLoc, HINT_TYPE_STATIC, "Static", mSpoilerfileAreaNameToEnum[lightArrowRegion]);
     if (spoilerFileJson.contains("sheikText")) {
@@ -463,7 +447,7 @@ void Context::ParseHintJson(nlohmann::json spoilerFileJson) {
     if (spoilerFileJson.contains("dampeText")) {
         std::string dampeText = spoilerFileJson["dampeText"].get<std::string>();
         std::string dampeRegion = spoilerFileJson["dampeRegion"].get<std::string>();
-        RandomizerCheck dampeHintLoc = mSpoilerfileCheckNameToEnum[spoilerFileJson["dampeHintLoc"].get<std::string>()];
+        RandomizerCheck dampeHintLoc = StaticData::SpoilerfileCheckNameToEnum[spoilerFileJson["dampeHintLoc"].get<std::string>()];
         AddHint(RH_DAMPES_DIARY, Text(dampeText), dampeHintLoc, HINT_TYPE_STATIC, "Static", mSpoilerfileAreaNameToEnum[dampeRegion]);
     }
 
@@ -471,7 +455,7 @@ void Context::ParseHintJson(nlohmann::json spoilerFileJson) {
     if (spoilerFileJson.contains("gregText")) {
         std::string gregText = spoilerFileJson["gregText"].get<std::string>();
         std::string gregRegion = spoilerFileJson["gregRegion"].get<std::string>();
-        RandomizerCheck gregLoc = mSpoilerfileCheckNameToEnum[spoilerFileJson["gregLoc"].get<std::string>()];
+        RandomizerCheck gregLoc = StaticData::SpoilerfileCheckNameToEnum[spoilerFileJson["gregLoc"].get<std::string>()];
         AddHint(RH_GREG_RUPEE, Text(gregText), gregLoc, HINT_TYPE_STATIC, "Static", mSpoilerfileAreaNameToEnum[gregRegion]);
     }
 
@@ -479,7 +463,7 @@ void Context::ParseHintJson(nlohmann::json spoilerFileJson) {
     if (spoilerFileJson.contains("sariaText")) {
         std::string sariaText = spoilerFileJson["sariaText"].get<std::string>();
         std::string sariaRegion = spoilerFileJson["sariaRegion"].get<std::string>();
-        RandomizerCheck sariaHintLoc = mSpoilerfileCheckNameToEnum[spoilerFileJson["sariaHintLoc"].get<std::string>()];
+        RandomizerCheck sariaHintLoc = StaticData::SpoilerfileCheckNameToEnum[spoilerFileJson["sariaHintLoc"].get<std::string>()];
         AddHint(RH_SARIA, Text(sariaText), sariaHintLoc, HINT_TYPE_STATIC, "Static", mSpoilerfileAreaNameToEnum[sariaRegion]);
     }
 
@@ -487,7 +471,7 @@ void Context::ParseHintJson(nlohmann::json spoilerFileJson) {
     if(spoilerFileJson.contains("fishingPoleText")) {
         std::string fishingPoleText = spoilerFileJson["fishingPoleText"].get<std::string>();
         std::string fishingPoleRegion = spoilerFileJson["fishingPoleRegion"].get<std::string>();
-        RandomizerCheck fishingPoleHintLoc = mSpoilerfileCheckNameToEnum[spoilerFileJson["fishingPoleHintLoc"].get<std::string>()];
+        RandomizerCheck fishingPoleHintLoc = StaticData::SpoilerfileCheckNameToEnum[spoilerFileJson["fishingPoleHintLoc"].get<std::string>()];
         AddHint(RH_FISHING_POLE, Text(fishingPoleText), fishingPoleHintLoc, HINT_TYPE_STATIC, "Static", mSpoilerfileAreaNameToEnum[fishingPoleRegion]);
     }
 
@@ -520,11 +504,11 @@ void Context::ParseHintJson(nlohmann::json spoilerFileJson) {
     // Gossip Stones
     nlohmann::json hintsJson = spoilerFileJson["hints"];
     for (auto it = hintsJson.begin(); it != hintsJson.end(); ++it) {
-        RandomizerCheck gossipStoneLoc = mSpoilerfileCheckNameToEnum[it.key()];
+        RandomizerCheck gossipStoneLoc = StaticData::SpoilerfileCheckNameToEnum[it.key()];
         nlohmann::json hintInfo = it.value();
         std::string hintText = hintInfo["hint"].get<std::string>();
         HintType hintType = mSpoilerfileHintTypeNameToEnum[hintInfo["type"].get<std::string>()];
-        RandomizerCheck hintedLocation = hintInfo.contains("location") ? mSpoilerfileCheckNameToEnum[hintInfo["location"]] : RC_UNKNOWN_CHECK;
+        RandomizerCheck hintedLocation = hintInfo.contains("location") ? StaticData::SpoilerfileCheckNameToEnum[hintInfo["location"]] : RC_UNKNOWN_CHECK;
         RandomizerArea hintedArea = hintInfo.contains("area") ? mSpoilerfileAreaNameToEnum[hintInfo["area"].get<std::string>()] : RA_NONE;
         std::string distribution = hintInfo["distribution"].get<std::string>();
         AddHint(static_cast<RandomizerHintKey>(gossipStoneLoc - RC_COLOSSUS_GOSSIP_STONE + 1), Text(hintText), hintedLocation, hintType, distribution, hintedArea);

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <array>
-#include <unordered_map>
+#include <map>
 #include "randomizerTypes.h"
 #include "item.h"
 #include "location.h"
@@ -27,6 +27,9 @@ class StaticData {
       static void InitLocationTable();
       static Location* GetLocation(RandomizerCheck locKey);
       static std::array<Rando::Location, RC_MAX>& GetLocationTable();
+      static std::unordered_map<std::string, RandomizerCheck> SpoilerfileCheckNameToEnum;
+      static std::unordered_map<std::string, RandomizerGet> SpoilerfileItemNameToEnum;
+      static std::multimap<std::tuple<s16, s16, s32>, RandomizerCheck> CheckFromActorMultimap;
       static std::vector<RandomizerCheck> overworldLocations;
       static std::vector<RandomizerCheck> dungeonRewardLocations;
       static std::vector<std::vector<RandomizerCheck>> shopLocationLists;
