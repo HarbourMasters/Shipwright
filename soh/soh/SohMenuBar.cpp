@@ -126,7 +126,7 @@ void DrawMenuBarIcon() {
         ImVec2 iconSize = ImVec2(16.0f * 2, 16.0f * 2);
         float posScale = 2.0f;
 #else
-        float posScale = GImGui->CurrentDpiScale * imguiScaleOptionToValue[CVarGetInteger("gImGuiScale", defaultImGuiScale)];
+        float posScale = LUS::Context::GetInstance()->GetWindow()->GetGui()->GetCurrentDpiScale() * imguiScaleOptionToValue[CVarGetInteger("gImGuiScale", defaultImGuiScale)];
         ImVec2 iconSize = ImVec2(16.0f * posScale, 16.0f * posScale);
 #endif
         ImGui::SetCursorPos(ImVec2(5, 2.5f) * posScale);
