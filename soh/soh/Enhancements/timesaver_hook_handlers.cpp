@@ -26,6 +26,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Po_Sisters/z_en_po_sisters.h"
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
+extern int32_t D_8011D3AC;
 }
 
 #define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).GetSelectedOptionIndex()
@@ -315,6 +316,13 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
         case GI_VB_PLAY_ONEPOINT_ACTOR_CS: {
             if (CVarGetInteger("gTimeSavers.SkipCutscene.OnePoint", IS_RANDO)) {
                 Actor* actor = static_cast<Actor*>(opt);
+
+                // there are a few checks throughout the game (such as chest spawns) that rely on this
+                // the checks are for func_8005B198() == this->dyna.actor.category
+                // func_8005B198 just returns D_8011D3AC
+                // D_8011D3AC is set to camera->target->category in Camera_Demo5
+                D_8011D3AC = actor->category;
+
                 switch (actor->category) {
                     case ACTORCAT_BG:
                         if (actor->id == ACTOR_BG_DDAN_KD) {
