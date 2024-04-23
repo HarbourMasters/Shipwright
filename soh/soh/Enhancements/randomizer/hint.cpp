@@ -51,40 +51,68 @@ Hint::Hint(RandomizerHint ownKey_, nlohmann::json json_){
   
   if (json_.contains("distribution")){
     distribution = json_["distribution"].get<std::string>();
-  }            
+  }
+
   if (json_.contains("locations")){
     for (auto loc: json_["locations"]){
       locations.push_back((RandomizerCheck)StaticData::locationNameToEnum[loc.get<std::string>()]);
     }
+  } else if (json_.contains("location")){
+    locations.push_back((RandomizerCheck)StaticData::locationNameToEnum[json_["location"].get<std::string>()]);
   }
+
   if (json_.contains("type")){
     hintType = (HintType)StaticData::hintTypeNameToEnum[json_["type"].get<std::string>()];
   }
+
   if (json_.contains("areas")){
     for (auto area: json_["areas"]){
       areas.push_back((RandomizerArea)Rando::StaticData::areaNameToEnum[area]);
     }
+  } else if (json_.contains("area")){
+    areas.push_back((RandomizerArea)Rando::StaticData::areaNameToEnum[json_["area"]]);
   }
+
   if (json_.contains("trials")){
     for (auto trial: json_["trials"]){
       trials.push_back((TrialKey)Rando::StaticData::trialNameToEnum[trial]);
     }
+  } else if (json_.contains("trial")){
+    trials.push_back((TrialKey)Rando::StaticData::trialNameToEnum[json_["trial"]]);
   }
+
   if (json_.contains("hintKeys")){
     for (auto hintKey: json_["hintKeys"]){
       hintKeys.push_back((RandomizerHintTextKey)hintKey.get<uint32_t>());
     }
+  } else if (json_.contains("hintKey")){
+    hintKeys.push_back((RandomizerHintTextKey)json_["hintKey"].get<uint32_t>());
   }
+
   if (json_.contains("itemNamesChosen")){
     for (auto name: json_["itemNamesChosen"]){
       itemNamesChosen.push_back(name.get<uint32_t>());
     }
+  } else if (json_.contains("itemNameChosen")){
+    itemNamesChosen.push_back(json_["itemNameChosen"].get<uint32_t>());
   }
+
   if (json_.contains("hintTextsChosen")){
     for (auto name: json_["hintTextsChosen"]){
       hintTextsChosen.push_back(name.get<uint32_t>());
     }
+  } else if (json_.contains("hintTextChosen")){
+    hintTextsChosen.push_back(json_["hintTextChosen"].get<uint32_t>());
   }
+
+  if (json_.contains("areaNamesChosen")){
+    for (auto name: json_["areaNamesChosen"]){
+      areaNamesChosen.push_back(name.get<uint32_t>());
+    }
+  } else if (json_.contains("areaNameChosen")){
+    areaNamesChosen.push_back(json_["areaNameChosen"].get<uint32_t>());
+  }
+
   FillGapsInData();
   SetLocationsAsHinted();
   enabled = true;
@@ -184,7 +212,10 @@ void Hint::NamesChosen(){
 }
 
 uint8_t Hint::GetNumberOfMessages() const {
-  uint8_t numMessages = std::max(messages.size(), hintKeys.size());
+  size_t numMessages = std::max(messages.size(), hintKeys.size());
+  if (StaticData::staticHintInfoMap.contains(ownKey)){
+    numMessages = std::max(StaticData::staticHintInfoMap[ownKey].hintKeys.size(), numMessages);
+  }
   if (numMessages == 0){
       numMessages = 1; //RANDOTODO make std::max actually fucking work for 3 arguments
   }
@@ -341,58 +372,100 @@ oJson Hint::toJSON() {
   nlohmann::ordered_json log = {};
   if (enabled){
     std::vector<std::string> hintMessages = GetAllMessageStrings(MF_CLEAN);
-    if (hintMessages.size() > 0){
+    if (hintMessages.size() == 1){
+      log["message"] = hintMessages[0];
+    } else if (hintMessages.size() > 1){
       log["messages"] = hintMessages;
     }
+
     if (distribution != ""){
       log["distribution"] = distribution;
     }
     log["type"] = StaticData::hintTypeNames[hintType].GetForCurrentLanguage(MF_CLEAN);
-    if (hintKeys.size() > 0){
+
+    if (hintKeys.size() == 1){
+      log["hintKey"] = std::to_string(hintKeys[0]);
+    } else if (hintKeys.size() > 1){
       std::vector<std::string> hintKeyStrings = {};
       for (uint c = 0; c < hintKeys.size(); c++){
         hintKeyStrings.push_back(std::to_string(hintKeys[c]));
       }
       log["hintKeys"] = hintKeyStrings;
     }
+
+    if (hintTextsChosen.size() == 1){
+      log["hintTextChosen"] = std::to_string(hintTextsChosen[0]);
+    } else if (hintTextsChosen.size() > 1){
+      std::vector<std::string> nameStrings = {};
+      for (uint c = 0; c < hintTextsChosen.size(); c++){
+        nameStrings.push_back(std::to_string(hintTextsChosen[c]));
+      }
+      log["hintTextsChosen"] = nameStrings;
+    }
+
     if (hintType != HINT_TYPE_FOOLISH){
-      if (locations.size() > 0){
-        std::vector<std::string> locStrings = {};
-        for (uint c = 0; c < locations.size(); c++){
-          locStrings.push_back(StaticData::GetLocation(locations[c])->GetName());//RANDOTODO change to CustomMessage when VB is done
+      if (!(StaticData::staticHintInfoMap.contains(ownKey) && 
+          StaticData::staticHintInfoMap[ownKey].targetChecks.size() > 0)){
+        if (locations.size() == 1){
+          log["location"] = StaticData::GetLocation(locations[0])->GetName();//RANDOTODO change to CustomMessage when VB is done;
+        } else if (locations.size() > 1){
+          //If we have defaults, no need to write more
+          std::vector<std::string> locStrings = {};
+          for (uint c = 0; c < locations.size(); c++){
+            locStrings.push_back(StaticData::GetLocation(locations[c])->GetName());//RANDOTODO change to CustomMessage when VB is done
+          }
+          log["locations"] = locStrings;
         }
-        log["locations"] = locStrings;
       }
-      if (items.size() > 0){
-        std::vector<std::string> itemStrings = {};
-        for (uint c = 0; c < items.size(); c++){
-          itemStrings.push_back(StaticData::GetItemTable()[items[c]].GetName().GetEnglish());//RANDOTODO change to CustomMessage
+      
+      if (!(StaticData::staticHintInfoMap.contains(ownKey) &&
+          StaticData::staticHintInfoMap[ownKey].targetItems.size() > 0)){
+        if (items.size() == 1){
+          log["item"] = StaticData::GetItemTable()[items[0]].GetName().GetEnglish();//RANDOTODO change to CustomMessage;
+        } else if (items.size() > 1){
+          std::vector<std::string> itemStrings = {};
+          for (uint c = 0; c < items.size(); c++){
+            itemStrings.push_back(StaticData::GetItemTable()[items[c]].GetName().GetEnglish());//RANDOTODO change to CustomMessage
+          }
+          log["items"] = itemStrings;
         }
-        log["items"] = itemStrings;
       }
-      if (itemNamesChosen.size() > 0){
+
+      if (itemNamesChosen.size() == 1){
+        log["itemNameChosen"] = std::to_string(itemNamesChosen[0]);
+      } else if (itemNamesChosen.size() > 1){
         std::vector<std::string> nameStrings = {};
         for (uint c = 0; c < itemNamesChosen.size(); c++){
           nameStrings.push_back(std::to_string(itemNamesChosen[c]));
         }
         log["itemNamesChosen"] = nameStrings;
       }
-      if (hintTextsChosen.size() > 0){
-        std::vector<std::string> nameStrings = {};
-        for (uint c = 0; c < hintTextsChosen.size(); c++){
-          nameStrings.push_back(std::to_string(hintTextsChosen[c]));
-        }
-        log["hintTextsChosen"] = nameStrings;
-      }
     }
-    if (areas.size() > 0){
+    if (areas.size() == 1){
+      log["area"] = StaticData::hintTextTable[StaticData::areaNames[areas[0]]].GetClear().GetForCurrentLanguage(MF_CLEAN);
+    } else if (areas.size() > 0 && 
+          !(StaticData::staticHintInfoMap.contains(ownKey) && StaticData::staticHintInfoMap[ownKey].targetChecks.size() > 0)){
+      // If we got locations from defaults, areas are derived from them and don't need logging
       std::vector<std::string> areaStrings = {};
       for (uint c = 0; c < areas.size(); c++){
         areaStrings.push_back(StaticData::hintTextTable[StaticData::areaNames[areas[c]]].GetClear().GetForCurrentLanguage(MF_CLEAN));
       }
       log["areas"] = areaStrings;
     }
-    if (trials.size() > 0){
+
+    if (areaNamesChosen.size() == 1){
+      log["areaNameChosen"] = std::to_string(areaNamesChosen[0]);
+    } else if (areaNamesChosen.size() > 1){
+      std::vector<std::string> nameStrings = {};
+      for (uint c = 0; c < areaNamesChosen.size(); c++){
+        nameStrings.push_back(std::to_string(areaNamesChosen[c]));
+      }
+      log["areaNamesChosen"] = nameStrings;
+    }
+
+    if (trials.size() == 1){
+      log["trial"] = ctx->GetTrial(trials[0])->GetName().GetForCurrentLanguage(MF_CLEAN);
+    } else if (trials.size() > 0){
       std::vector<std::string> trialStrings = {};
       for (uint c = 0; c < trials.size(); c++){
         trialStrings.push_back(ctx->GetTrial(trials[c])->GetName().GetForCurrentLanguage(MF_CLEAN));
