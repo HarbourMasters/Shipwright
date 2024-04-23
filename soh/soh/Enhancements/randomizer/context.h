@@ -36,7 +36,6 @@ class Context {
     Context();
     static std::shared_ptr<Context> CreateInstance();
     static std::shared_ptr<Context> GetInstance();
-    void InitEarlyStaticData();
     void InitStaticData();
     Hint* GetHint(RandomizerHint hintKey);
     void AddHint(const RandomizerHint hintId, const Hint hint);

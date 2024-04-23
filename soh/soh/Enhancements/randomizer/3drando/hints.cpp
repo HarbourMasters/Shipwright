@@ -84,6 +84,17 @@ const CustomMessage& HintText::GetMessage() const {
     }
 }
 
+const CustomMessage& HintText::GetMessage(uint8_t selection) const {
+    auto ctx = Rando::Context::GetInstance();
+    if (ctx->GetOption(RSK_HINT_CLARITY).Is(RO_HINT_CLARITY_OBSCURE)) {
+        return GetObscure(selection);
+    } else if (ctx->GetOption(RSK_HINT_CLARITY).Is(RO_HINT_CLARITY_AMBIGUOUS)) {
+        return GetAmbiguous(selection);
+    } else {
+        return GetClear();
+    }
+}
+
 const CustomMessage HintText::GetMessageCopy() const {
     auto ctx = Rando::Context::GetInstance();
     if (ctx->GetOption(RSK_HINT_CLARITY).Is(RO_HINT_CLARITY_OBSCURE)) {
@@ -667,7 +678,7 @@ void CreateStoneHints() {
   GetAccessibleLocations({});
 }
 
-std::vector<RandomizerCheck> FindItemsAndMarkHinted(std::vector<RandomizerGet> items, std::vector<RandomizerCheck> hintChecks, bool alwaysAvalible = false){
+std::vector<RandomizerCheck> FindItemsAndMarkHinted(std::vector<RandomizerGet> items, std::vector<RandomizerCheck> hintChecks){
   std::vector<RandomizerCheck> locations = {};
   auto ctx = Rando::Context::GetInstance();
   for (uint8_t c = 0; c < items.size(); c++){
@@ -676,7 +687,8 @@ std::vector<RandomizerCheck> FindItemsAndMarkHinted(std::vector<RandomizerGet> i
     if (found.size() > 0){
       locations.push_back(found[0]);
     }
-    if (alwaysAvalible || (!ctx->GetItemLocation(found[0])->IsAHintAccessible() && IsReachableWithout(hintChecks,found[0],true))){
+    //RANDOTODO make the called functions of this always return true if empty hintChecks are provided
+    if (hintChecks.size() == 0 || (!ctx->GetItemLocation(found[0])->IsAHintAccessible() && IsReachableWithout(hintChecks,found[0],true))){
       ctx->GetItemLocation(found[0])->SetHintAccesible();
     }
   }
@@ -688,7 +700,11 @@ void CreateChildAltarHint() {
   std::vector<RandomizerCheck> stoneLocs = {};
   if (ctx->GetOption(RSK_TOT_ALTAR_HINT)) {
     //force marking the rewards as hinted if they are at the end of dungeons as they can be inffered
-    stoneLocs = FindItemsAndMarkHinted({RG_KOKIRI_EMERALD, RG_GORON_RUBY, RG_ZORA_SAPPHIRE}, {RC_ALTAR_HINT_CHILD}, ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON));
+    if (ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON)){
+      stoneLocs = FindItemsAndMarkHinted({RG_KOKIRI_EMERALD, RG_GORON_RUBY, RG_ZORA_SAPPHIRE}, {});
+    } else {
+      stoneLocs = FindItemsAndMarkHinted({RG_KOKIRI_EMERALD, RG_GORON_RUBY, RG_ZORA_SAPPHIRE}, {RC_ALTAR_HINT_CHILD});
+    }
   }
   ctx->AddHint(RH_ALTAR_CHILD, Hint(RH_ALTAR_CHILD, HINT_TYPE_ALTAR_CHILD, {}, stoneLocs));
 }
@@ -699,8 +715,14 @@ void CreateAdultAltarHint() {
 
   if (ctx->GetOption(RSK_TOT_ALTAR_HINT)) {
     //force marking the rewards as hinted if they are at the end of dungeons as they can be inffered
+    if (ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON)){
     medallionLocs = FindItemsAndMarkHinted({RG_LIGHT_MEDALLION, RG_FOREST_MEDALLION, RG_FIRE_MEDALLION, RG_WATER_MEDALLION, RG_SPIRIT_MEDALLION, RG_SHADOW_MEDALLION},
-                                            {RC_ALTAR_HINT_ADULT}, ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON));
+                                             {});
+    } else {
+      medallionLocs = FindItemsAndMarkHinted({RG_LIGHT_MEDALLION, RG_FOREST_MEDALLION, RG_FIRE_MEDALLION, RG_WATER_MEDALLION, RG_SPIRIT_MEDALLION, RG_SHADOW_MEDALLION},
+                                             {RC_ALTAR_HINT_ADULT});
+    }
+    
   }
   ctx->AddHint(RH_ALTAR_ADULT, Hint(RH_ALTAR_ADULT, HINT_TYPE_ALTAR_ADULT, {}, medallionLocs));
 }
@@ -710,18 +732,19 @@ void CreateStaticHintFromData(RandomizerHint hint, StaticHintInfo staticData){
   Option option = ctx->GetOption(staticData.setting);
   if ((std::holds_alternative<bool>(staticData.condition) && option.Is(std::get<bool>(staticData.condition))) ||
       (std::holds_alternative<uint8_t>(staticData.condition) && option.Is(std::get<uint8_t>(staticData.condition)))){
-    std::vector<RandomizerCheck> locations = staticData.targetChecks;
-    if (staticData.hintChecks.size() > 0){
+    std::vector<RandomizerCheck> locations = {};
+    if (staticData.targetItems.size() > 0){
       locations = FindItemsAndMarkHinted(staticData.targetItems, staticData.hintChecks);
     }
-    ctx->AddHint(hint, Hint(hint, staticData.type, staticData.hintKeys, locations, {}, {}, staticData.yourPocket, staticData.num));
+    //hintKeys are defaulted to in the hint object and do not need to be specified
+    ctx->AddHint(hint, Hint(hint, staticData.type, {}, locations, {}, {}, staticData.yourPocket, staticData.num));
   }
 }
 
 void CreateStaticItemHint(RandomizerHint hintKey, std::vector<RandomizerHintTextKey> hintTextKeys,
-                          std::vector<RandomizerGet> items, std::vector<RandomizerCheck> hintChecks, bool alwaysAvalible = false, bool yourPocket = false) {
+                          std::vector<RandomizerGet> items, std::vector<RandomizerCheck> hintChecks, bool yourPocket = false) {
   auto ctx = Rando::Context::GetInstance();
-  std::vector<RandomizerCheck> locations = FindItemsAndMarkHinted(items, hintChecks, alwaysAvalible);
+  std::vector<RandomizerCheck> locations = FindItemsAndMarkHinted(items, hintChecks);
   ctx->AddHint(hintKey, Hint(hintKey, HINT_TYPE_AREA, hintTextKeys, locations, {}, {}, yourPocket));
 }
 
@@ -735,9 +758,9 @@ void CreateGanondorfHint(){
   if (ctx->GetOption(RSK_GANONDORF_HINT)){
     if (ctx->GetOption(RSK_SHUFFLE_MASTER_SWORD)) {
       CreateStaticItemHint(RH_GANONDORF_HINT, {RHT_GANONDORF_HINT_LA_ONLY, RHT_GANONDORF_HINT_MS_ONLY, RHT_GANONDORF_HINT_LA_AND_MS}, 
-                           {RG_LIGHT_ARROWS, RG_MASTER_SWORD}, {RC_GANONDORF_HINT}, false, true);
+                           {RG_LIGHT_ARROWS, RG_MASTER_SWORD}, {RC_GANONDORF_HINT}, true);
     } else {
-      CreateStaticItemHint(RH_GANONDORF_HINT, {RHT_GANONDORF_HINT_LA_ONLY}, {RG_LIGHT_ARROWS}, {RC_GANONDORF_HINT}, false, true);
+      CreateStaticItemHint(RH_GANONDORF_HINT, {RHT_GANONDORF_HINT_LA_ONLY}, {RG_LIGHT_ARROWS}, {RC_GANONDORF_HINT}, true);
     }
   }
 }

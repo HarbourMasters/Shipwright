@@ -23,16 +23,6 @@ Context::Context() {
     StaticData::locationNameToEnum["Invalid Location"] = RC_UNKNOWN_CHECK;
     StaticData::locationNameToEnum["Link's Pocket"] = RC_LINKS_POCKET;
 
-    for (auto& item : StaticData::GetItemTable()) {
-        // Easiest way to filter out all the empty values from the array, since we still technically want the 0/RG_NONE
-        // entry
-        if (item.GetName().english.empty()) {
-            continue;
-        }
-        StaticData::locationNameToEnum[item.GetName().english] = item.GetRandomizerGet();
-        StaticData::locationNameToEnum[item.GetName().french] = item.GetRandomizerGet();
-    }
-
     for (int i = 0; i < RC_MAX; i++) {
         itemLocationTable[i] = ItemLocation(static_cast<RandomizerCheck>(i));
     }
@@ -51,16 +41,12 @@ RandomizerArea Context::GetAreaFromString(std::string str) {
     return (RandomizerArea)StaticData::areaNameToEnum[str];
 }
 
-void Context::InitEarlyStaticData() {
+void Context::InitStaticData() {
     StaticData::HintTable_Init();
     StaticData::trialNameToEnum = StaticData::PopulateTranslationMap(StaticData::trialData);
     StaticData::hintNameToEnum = StaticData::PopulateTranslationMap(StaticData::hintNames);
     StaticData::hintTypeNameToEnum = StaticData::PopulateTranslationMap(StaticData::hintTypeNames);
     StaticData::areaNameToEnum = StaticData::PopulateTranslationMap(StaticData::areaNames);
-}
-
-void Context::InitStaticData() {
-    StaticData::InitItemTable();
     StaticData::InitLocationTable();
 }
 
@@ -230,7 +216,7 @@ void Context::HintReset() {
     for (const RandomizerCheck il : StaticData::gossipStoneLocations) {
         GetItemLocation(il)->ResetVariables();
     }
-    for (Hint hint : hintTable){
+    for (Hint& hint : hintTable){
         hint.ResetVariables();
     }
 }

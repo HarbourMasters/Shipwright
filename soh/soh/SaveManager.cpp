@@ -533,7 +533,7 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool f
                 SaveManager::Instance->SaveData("distribution", hint->GetDistribution());
                 SaveManager::Instance->SaveData("type", Rando::StaticData::hintTypeNames[hint->GetHintType()].GetEnglish(MF_CLEAN));
                 
-                std::vector<RandomizerHintTextKey> hintKeys = hint->GetHintKeys();
+                std::vector<RandomizerHintTextKey> hintKeys = hint->GetHintTextKeys();
                 SaveManager::Instance->SaveArray("hintKeys", hintKeys.size(), [&](size_t i) {
                     SaveManager::Instance->SaveData("", hintKeys[i]);
                 });
@@ -548,14 +548,24 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool f
                     SaveManager::Instance->SaveData("", Rando::StaticData::GetItemTable()[items[i]].GetName().GetEnglish());
                 });
                 
-                std::vector<uint8_t> chosenName = hint->GetChosenNames();
-                SaveManager::Instance->SaveArray("chosenName", chosenName.size(), [&](size_t i) {
-                    SaveManager::Instance->SaveData("", chosenName[i]);
+                std::vector<uint8_t> itemNamesChosen = hint->GetItemNamesChosen();
+                SaveManager::Instance->SaveArray("itemNamesChosen", itemNamesChosen.size(), [&](size_t i) {
+                    SaveManager::Instance->SaveData("", itemNamesChosen[i]);
+                });
+                
+                std::vector<uint8_t> hintTextsChosen = hint->GetHintTextsChosen();
+                SaveManager::Instance->SaveArray("hintTextsChosen", hintTextsChosen.size(), [&](size_t i) {
+                    SaveManager::Instance->SaveData("", hintTextsChosen[i]);
+                });
+
+                std::vector<uint8_t> areaTextsChosen = hint->GetAreaTextsChosen();
+                SaveManager::Instance->SaveArray("areaTextsChosen", areaTextsChosen.size(), [&](size_t i) {
+                    SaveManager::Instance->SaveData("", areaTextsChosen[i]);
                 });
                 
                 std::vector<RandomizerArea> areas = hint->GetHintedAreas();
                 SaveManager::Instance->SaveArray("areas", areas.size(), [&](size_t i) {
-                    SaveManager::Instance->SaveData("", Rando::StaticData::hintTextTable[Rando::StaticData::areaNames[areas[i]]].GetMessage().GetForCurrentLanguage(MF_CLEAN));
+                    SaveManager::Instance->SaveData("", Rando::StaticData::hintTextTable[Rando::StaticData::areaNames[areas[i]]].GetClear().GetForCurrentLanguage(MF_CLEAN));
                 });
                 
                 std::vector<TrialKey> trials = hint->GetHintedTrials();

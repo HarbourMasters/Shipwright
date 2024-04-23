@@ -42,6 +42,7 @@ public:
     uint8_t GetAmbiguousSize() const;
     uint8_t GetObscureSize() const;
     const CustomMessage& GetMessage() const;
+    const CustomMessage& GetMessage(uint8_t selection) const;
     const CustomMessage GetMessageCopy() const;
     bool operator==(const HintText& right) const;
     bool operator!=(const HintText& right) const;

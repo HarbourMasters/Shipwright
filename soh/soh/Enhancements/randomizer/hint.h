@@ -1,6 +1,7 @@
 #pragma once
 
 #include "3drando/text.hpp"
+#include "3drando/hints.hpp"
 #include "../custom-message/CustomMessageManager.h"
 #include "randomizerTypes.h"
 #include <vector>
@@ -28,31 +29,37 @@ class Hint {
           int num_ = 0);
      Hint(RandomizerHint ownKey_, std::vector<CustomMessage> messages_);
      Hint(RandomizerHint ownKey_, nlohmann::json json_);
+     void FillGapsInData();
+     void SetLocationsAsHinted() const;
+     void NamesChosen();
+     uint8_t GetNumberOfMessages() const;
      const std::vector<std::string> GetAllMessageStrings(MessageFormat format = MF_AUTO_FORMAT) const ;
      const CustomMessage GetMessage(MessageFormat format = MF_AUTO_FORMAT, uint8_t id = 0) const ;
-     std::vector<RandomizerCheck> GetHintedLocations();
-     void AddHintedLocation (RandomizerCheck location);
-     HintType GetHintType();
-     void SetHintType (HintType type);
-     std::vector<RandomizerArea> GetHintedAreas();
-     void AddHintedArea (RandomizerArea area);
-     const std::string& GetDistribution();
-     void SetDistribution (std::string distribution);
-     void ResetVariables();
+     const HintText GetHintText(uint8_t id = 0) const;
      oJson toJSON();
      void logHint(oJson& jsonData);
+     const HintText GetItemHintText(uint8_t slot, bool mysterious) const;
+     const HintText GetAreaHintText(uint8_t slot) const;
      const CustomMessage GetItemName(uint8_t slot, bool mysterious = false) const;
-     void ExtrapolateDataFromLocations();
-     void SetLocationsAsHinted();
-     bool IsEnabled();
-     std::vector<RandomizerHintTextKey> GetHintKeys();
-     std::vector<RandomizerGet> GetHintedItems();
-     std::vector<uint8_t> GetChosenNames();
-     std::vector<TrialKey> GetHintedTrials();
+     const CustomMessage GetAreaName(uint8_t slot) const;
      static CustomMessage GetBridgeReqsText();
      static CustomMessage GetGanonBossKeyText();
-     bool IsAddedToPool(); //what is this going to do again? 
-     void AddToPool();
+     void AddHintedLocation (RandomizerCheck location);
+     std::vector<RandomizerCheck> GetHintedLocations() const;
+     void SetHintType (HintType type);
+     HintType GetHintType() const;
+     void AddHintedArea (RandomizerArea area);
+     std::vector<RandomizerArea> GetHintedAreas() const;
+     void SetDistribution (std::string distribution);
+     const std::string& GetDistribution() const;
+     bool IsEnabled() const;
+     std::vector<RandomizerHintTextKey> GetHintTextKeys() const;
+     std::vector<RandomizerGet> GetHintedItems() const;
+     std::vector<uint8_t> GetItemNamesChosen() const;
+     std::vector<uint8_t> GetHintTextsChosen() const;
+     std::vector<uint8_t> GetAreaTextsChosen() const;
+     std::vector<TrialKey> GetHintedTrials() const;
+     void ResetVariables();
 
      private:
      RandomizerHint ownKey = RH_NONE;
@@ -67,6 +74,8 @@ class Hint {
      std::vector<CustomMessage> messages = {};
      std::vector<RandomizerGet> items = {};
      bool enabled = false;
-     std::vector<uint8_t> chosenName = {};
+     std::vector<uint8_t> itemNamesChosen = {};
+     std::vector<uint8_t> hintTextsChosen = {};
+     std::vector<uint8_t> areaNamesChosen = {};
 };
 }

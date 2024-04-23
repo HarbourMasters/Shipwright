@@ -16,8 +16,9 @@ Hint::Hint(RandomizerHint ownKey_,
            std::vector<RandomizerArea> areas_,
            std::vector<TrialKey> trials_)
     : ownKey(ownKey_), hintType(hintType_), distribution(std::move(distribution_)), hintKeys(hintKeys_), locations(locations_), areas(areas_), trials(trials_) {
-  ExtrapolateDataFromLocations();
+  FillGapsInData();
   SetLocationsAsHinted();
+  NamesChosen();
   enabled = true;
 }
 
@@ -30,8 +31,9 @@ Hint::Hint(RandomizerHint ownKey_,
            bool yourPocket_,
            int num_)
     : ownKey(ownKey_), hintType(hintType_), hintKeys(hintKeys_), locations(locations_), areas(areas_), trials(trials_), yourPocket(yourPocket_), num(num_) {
-  ExtrapolateDataFromLocations();
+  FillGapsInData();
   SetLocationsAsHinted();
+  NamesChosen();
   enabled = true;
 }
 
@@ -73,73 +75,192 @@ Hint::Hint(RandomizerHint ownKey_, nlohmann::json json_){
       hintKeys.push_back((RandomizerHintTextKey)hintKey.get<uint32_t>());
     }
   }
-  if (json_.contains("chosenName")){
-  for (auto name: json_["chosenName"]){
-    chosenName.push_back(name.get<uint32_t>());
+  if (json_.contains("itemNamesChosen")){
+    for (auto name: json_["itemNamesChosen"]){
+      itemNamesChosen.push_back(name.get<uint32_t>());
+    }
   }
+  if (json_.contains("hintTextsChosen")){
+    for (auto name: json_["hintTextsChosen"]){
+      hintTextsChosen.push_back(name.get<uint32_t>());
+    }
   }
-  ExtrapolateDataFromLocations();
+  FillGapsInData();
   SetLocationsAsHinted();
   enabled = true;
 }
 
-const std::vector<std::string> Hint::GetAllMessageStrings(MessageFormat format) const {
-  std::vector<std::string> hintMessages = {};
+void Hint::FillGapsInData(){
+  auto ctx = Rando::Context::GetInstance();
+  if (locations.size() == 0 && StaticData::staticHintInfoMap.contains(ownKey)){
+    locations = StaticData::staticHintInfoMap[ownKey].targetChecks;
+  }
+  bool fillAreas = true;
+  bool fillItems = true;
+  if (areas.size() > 0){
+    fillAreas = false;
+  }
+  if (items.size() > 0){
+    fillItems = false;
+  }
+  for(uint8_t c = 0; c < locations.size(); c++){
+    if (fillAreas){
+      areas.push_back(ctx->GetItemLocation(locations[c])->GetArea());
+    }
+    if (fillItems){
+      items.push_back(ctx->GetItemLocation(locations[c])->GetPlacedRandomizerGet());
+    }
+  }
+}
+
+void Hint::SetLocationsAsHinted() const {
+  auto ctx = Rando::Context::GetInstance();
+  for (uint8_t count = 0; count < locations.size(); count++){
+      ctx->GetItemLocation(locations[count])->AddHintedBy(ownKey);
+  }
+}
+
+uint8_t GetRandomHintTextEntry(const HintText hintText){
+  auto ctx = Rando::Context::GetInstance();
+  uint8_t size = 0;
+  if (ctx->GetOption(RSK_HINT_CLARITY).Is(RO_HINT_CLARITY_AMBIGUOUS)){
+    size = hintText.GetAmbiguousSize();
+  } else if (ctx->GetOption(RSK_HINT_CLARITY).Is(RO_HINT_CLARITY_OBSCURE)){
+    size = hintText.GetObscureSize();
+  }
+  if (size > 0){
+    return Random(0, size);
+  }
+  return 0;
+}
+
+void Hint::NamesChosen(){
+  auto ctx = Rando::Context::GetInstance();
+  std::vector<uint8_t> namesTemp = {};
+  bool saveNames = false;
+  uint8_t numMessages = GetNumberOfMessages();
+  for (uint8_t c = 0; c < numMessages; c++){
+    uint8_t selection = GetRandomHintTextEntry(GetHintText(c));
+    if (selection > 0){
+      saveNames = true;
+    }
+    namesTemp.push_back(selection);
+  }
+  if (saveNames) {
+    hintTextsChosen = namesTemp;
+  }
+
+  if (hintType == HINT_TYPE_ITEM || hintType == HINT_TYPE_ITEM_AREA || hintType == HINT_TYPE_MERCHANT){
+    bool mysterious = hintType == HINT_TYPE_MERCHANT && ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ON_NO_HINT);
+    for(uint8_t c = 0; c < locations.size(); c++){
+      namesTemp = {};
+      saveNames = false;
+      uint8_t selection = GetRandomHintTextEntry(GetItemHintText(c, mysterious));
+      if (selection > 0){
+        saveNames = true;
+      }
+      namesTemp.push_back(selection);
+    }
+    if (saveNames) {
+      itemNamesChosen = namesTemp;
+    }
+  }
+
+  if (hintType == HINT_TYPE_FOOLISH || hintType == HINT_TYPE_ITEM_AREA || hintType == HINT_TYPE_WOTH ||
+      hintType == HINT_TYPE_ALTAR_CHILD || hintType == HINT_TYPE_ALTAR_ADULT){
+    namesTemp = {};
+    saveNames = false;
+    for(uint8_t c = 0; c < areas.size(); c++){
+      uint8_t selection = GetRandomHintTextEntry(GetAreaHintText(c));
+      if (selection > 0){
+        saveNames = true;
+      }
+      namesTemp.push_back(selection);
+    }
+    if (saveNames) {
+      areaNamesChosen = namesTemp;
+    }
+  }
+}
+
+uint8_t Hint::GetNumberOfMessages() const {
   uint8_t numMessages = std::max(messages.size(), hintKeys.size());
   if (numMessages == 0){
-    numMessages = 1; //RANDOTODO make std::max actually fucking work for 3 arguments
+      numMessages = 1; //RANDOTODO make std::max actually fucking work for 3 arguments
   }
+  return numMessages;
+}
+
+const std::vector<std::string> Hint::GetAllMessageStrings(MessageFormat format) const {
+  std::vector<std::string> hintMessages = {};
+  uint8_t numMessages = GetNumberOfMessages();
   for (int c = 0; c < numMessages; c++){
     hintMessages.push_back(GetMessage(format, c).GetForCurrentLanguage(format));
   }
   return hintMessages;
 }
 
+const HintText Hint::GetHintText(uint8_t id) const {
+  auto ctx = Rando::Context::GetInstance();
+  if (hintKeys.size() > id){
+    return StaticData::hintTextTable[hintKeys[id]];
+  }
+// If a static hint, load default from staticHintInfoMap
+  if (StaticData::staticHintInfoMap.contains(ownKey) && StaticData::staticHintInfoMap[ownKey].hintKeys.size() > id){
+    return StaticData::hintTextTable[StaticData::staticHintInfoMap[ownKey].hintKeys[id]];
+  }
+
+  switch (hintType){
+    case HINT_TYPE_HINT_KEY:
+      return StaticData::hintTextTable[0]; 
+      break;
+    case HINT_TYPE_ALTAR_CHILD:
+      return StaticData::hintTextTable[RHT_CHILD_ALTAR_STONES];
+    case HINT_TYPE_ALTAR_ADULT:
+      return StaticData::hintTextTable[RHT_ADULT_ALTAR_MEDALLIONS];
+    case HINT_TYPE_TRIAL:
+      if (ctx->GetTrial(trials[0])->IsRequired()) {
+        return StaticData::hintTextTable[RHT_TRIAL_ON];
+      } else {
+        return StaticData::hintTextTable[RHT_TRIAL_OFF];
+      }
+    case HINT_TYPE_WOTH:
+      return StaticData::hintTextTable[RHT_WAY_OF_THE_HERO];
+    case HINT_TYPE_FOOLISH:
+      return StaticData::hintTextTable[RHT_FOOLISH];
+    case HINT_TYPE_ITEM:
+      if (locations.size() > 0) {
+        return *StaticData::GetLocation(locations[0])->GetHint();
+      } else {
+        return CustomMessage("ERROR: ITEM HINT WITH NO LOCATIONS OR HINT KEY");
+      }
+    case HINT_TYPE_ITEM_AREA:
+      if (locations.size() > 0) {
+        if (StaticData::GetLocation(locations[0])->IsDungeon()) {
+          return StaticData::hintTextTable[RHT_HOARDS];
+        } else {
+          return StaticData::hintTextTable[RHT_CAN_BE_FOUND_AT];
+        }
+      } else {
+        return CustomMessage("ERROR: ITEM AREA HINT WITH NO LOCATION"); //RANDOTODO get isDungeon from area?
+      }
+    default:
+      return CustomMessage("ERROR: NO HINTKEY PROVIDED AND HINT TYPE HAS NO DEFAULT");
+  }
+}
+
 const CustomMessage Hint::GetMessage(MessageFormat format, uint8_t id) const {
     auto ctx = Rando::Context::GetInstance();
-    if (hintType == HINT_TYPE_HINT_KEY){
-        return StaticData::hintTextTable[hintKeys[id]].GetMessage(); //not mapped to object on save
-    }
-
     CustomMessage hintText = CustomMessage("ERROR:NO MESSAGE FOUND");
-
     if (hintType == HINT_TYPE_MESSAGE){
       if (id < messages.size()){
         hintText = messages[id];
       }
     } else {
-      if (id < hintKeys.size()){
-          hintText = StaticData::hintTextTable[hintKeys[id]].GetMessage();
-      } else if (ctx->GetOption(RSK_TOT_ALTAR_HINT) && hintType == HINT_TYPE_ALTAR_CHILD) {
-          hintText = StaticData::hintTextTable[RHT_CHILD_ALTAR_STONES].GetMessage();
-      } else if (ctx->GetOption(RSK_TOT_ALTAR_HINT) && hintType == HINT_TYPE_ALTAR_ADULT) {
-          hintText = StaticData::hintTextTable[RHT_ADULT_ALTAR_MEDALLIONS].GetMessage();
-      } else if (hintType == HINT_TYPE_TRIAL) {
-        if (ctx->GetTrial(trials[0])->IsRequired()) {
-          hintText = StaticData::hintTextTable[RHT_TRIAL_ON].GetMessage();
-        } else {
-          hintText = StaticData::hintTextTable[RHT_TRIAL_OFF].GetMessage();
-        }
-      } else if (hintType == HINT_TYPE_WOTH) {
-        hintText = StaticData::hintTextTable[RHT_WAY_OF_THE_HERO].GetMessage();
-      } else if (hintType == HINT_TYPE_FOOLISH) {
-        hintText = StaticData::hintTextTable[RHT_FOOLISH].GetMessage();
-      } else if (hintType == HINT_TYPE_ITEM) {
-        if (locations.size() > 0) {
-          hintText = StaticData::GetLocation(locations[0])->GetHint()->GetMessage();
-        } else {
-          hintText = CustomMessage("ERROR: ITEM HINT WITH NO LOCATIONS");
-        }
-      } else if (hintType == HINT_TYPE_ITEM_AREA) {
-        if (locations.size() > 0) {
-          if (StaticData::GetLocation(locations[0])->IsDungeon()) {
-            hintText = StaticData::hintTextTable[RHT_HOARDS].GetMessage();
-          } else {
-            hintText = StaticData::hintTextTable[RHT_CAN_BE_FOUND_AT].GetMessage();
-          }
-        } else {
-          hintText = CustomMessage("ERROR: ITEM AREA HINT WITH NO LOCATION"); //RANDOTODO get isDungeon from area?
-        }
+      if (hintTextsChosen.size() > id){
+        hintText = GetHintText(id).GetMessage(hintTextsChosen[id]);
+      } else {
+        hintText = GetHintText(id).GetMessage();
       }
 
       std::vector<CustomMessage> toInsert = {};
@@ -148,7 +269,7 @@ const CustomMessage Hint::GetMessage(MessageFormat format, uint8_t id) const {
         case HINT_TYPE_ITEM:{
           //if we write items
           for(uint8_t b = 0; b < locations.size(); b++){
-            toInsert.push_back(StaticData::GetItemTable()[items[b]].GetName());
+            toInsert.push_back(GetItemName(b)); 
           }
           break;}
         case HINT_TYPE_MERCHANT:{
@@ -167,8 +288,8 @@ const CustomMessage Hint::GetMessage(MessageFormat format, uint8_t id) const {
         case HINT_TYPE_ITEM_AREA:{
           //If we write items and areas
           for(uint8_t b = 0; b < items.size(); b++){
-            toInsert.push_back(StaticData::GetItemTable()[items[b]].GetName());
-            toInsert.push_back(StaticData::hintTextTable[Rando::StaticData::areaNames[areas[b]]].GetMessage());
+            toInsert.push_back(GetItemName(b));
+            toInsert.push_back(GetAreaName(b));
           }
           break;}
         case HINT_TYPE_ALTAR_CHILD:
@@ -178,19 +299,10 @@ const CustomMessage Hint::GetMessage(MessageFormat format, uint8_t id) const {
         case HINT_TYPE_FOOLISH:{
           //If we write areas
           for(uint8_t b = 0; b < areas.size(); b++){
-            CustomMessage areaText;
-            if ((areas[b] == RA_LINKS_POCKET || areas[b] == RA_NONE) && yourPocket){
-              areaText = StaticData::hintTextTable[RHT_YOUR_POCKET].GetMessage();
-            } else {
-              areaText = StaticData::hintTextTable[Rando::StaticData::areaNames[areas[b]]].GetMessage();
-            }
-            toInsert.push_back(areaText);
+            toInsert.push_back(GetAreaName(b));
           }
           break;}
-        case HINT_TYPE_HINT_KEY:
-        case HINT_TYPE_MESSAGE:
-        case HINT_TYPE_ENTRANCE:
-        case HINT_TYPE_MAX:
+        default:
           break;
       }
 
@@ -222,54 +334,6 @@ const CustomMessage Hint::GetMessage(MessageFormat format, uint8_t id) const {
     }
 
     return hintText;
-}
-
-void Hint::AddHintedLocation(RandomizerCheck location) {
-    locations.push_back(location);
-}
-
-std::vector<RandomizerCheck> Hint::GetHintedLocations() {
-    return locations;
-}
-
-void Hint::SetHintType(HintType type) {
-    hintType = type;
-}
-
-HintType Hint::GetHintType() {
-    return hintType;
-}
-
-void Hint::AddHintedArea(RandomizerArea area) {
-    areas.push_back(area);
-}
-
-std::vector<RandomizerArea> Hint::GetHintedAreas() {
-    return areas;
-}
-
-void Hint::SetDistribution(std::string distributionName) {
-    distribution = distributionName;
-}
-
-const std::string& Hint::GetDistribution() {
-    return distribution;
-}
-
-void Hint::ResetVariables() {
-  ownKey = RH_NONE;
-  num = 0;
-  yourPocket = false;
-  messages = {};
-  hintKeys = {};
-  locations = {};
-  items = {};
-  trials = {};
-  hintType = HINT_TYPE_HINT_KEY;
-  areas = {};
-  distribution = "";
-  enabled = false;
-  chosenName = {};
 }
 
 oJson Hint::toJSON() {
@@ -306,18 +370,25 @@ oJson Hint::toJSON() {
         }
         log["items"] = itemStrings;
       }
-      if (chosenName.size() > 0){
+      if (itemNamesChosen.size() > 0){
         std::vector<std::string> nameStrings = {};
-        for (uint c = 0; c < chosenName.size(); c++){
-          nameStrings.push_back(std::to_string(chosenName[c]));
+        for (uint c = 0; c < itemNamesChosen.size(); c++){
+          nameStrings.push_back(std::to_string(itemNamesChosen[c]));
         }
-        log["chosenName"] = nameStrings;
+        log["itemNamesChosen"] = nameStrings;
+      }
+      if (hintTextsChosen.size() > 0){
+        std::vector<std::string> nameStrings = {};
+        for (uint c = 0; c < hintTextsChosen.size(); c++){
+          nameStrings.push_back(std::to_string(hintTextsChosen[c]));
+        }
+        log["hintTextsChosen"] = nameStrings;
       }
     }
     if (areas.size() > 0){
       std::vector<std::string> areaStrings = {};
       for (uint c = 0; c < areas.size(); c++){
-        areaStrings.push_back(StaticData::hintTextTable[StaticData::areaNames[areas[c]]].GetMessage().GetForCurrentLanguage(MF_CLEAN));
+        areaStrings.push_back(StaticData::hintTextTable[StaticData::areaNames[areas[c]]].GetClear().GetForCurrentLanguage(MF_CLEAN));
       }
       log["areas"] = areaStrings;
     }
@@ -332,89 +403,61 @@ oJson Hint::toJSON() {
   return log;
 }
 
-// RANDOTODO add logging control
 void Hint::logHint(oJson& jsonData){
+  auto ctx = Rando::Context::GetInstance();
   std::string logMap = "Static Hints";
+  bool staticHint = true;
   if (ownKey < RH_GANONDORF_HINT){
     logMap = "Gossip Stone Hints";
+    staticHint = false;
   }
-  if (enabled){
+  if (enabled &&
+      (!(staticHint && (hintType == HINT_TYPE_ITEM || hintType == HINT_TYPE_MERCHANT) && ctx->GetOption(RSK_HINT_CLARITY).Is(RO_HINT_CLARITY_CLEAR)))){
+      //skip if not enabled or if a static hint with no possible variance
     jsonData[logMap][Rando::StaticData::hintNames[ownKey].GetForCurrentLanguage(MF_CLEAN)] = toJSON();
   }
 }
 
-const CustomMessage Hint::GetItemName(uint8_t slot, bool mysterious) const { 
+const HintText Hint::GetItemHintText(uint8_t slot, bool mysterious) const {
+  //RANDOTODO make unreliant on locations, or make Hint accept ItemLocation
   auto ctx = Rando::Context::GetInstance();
   RandomizerCheck hintedCheck = locations[slot];
   RandomizerGet targetRG = ctx->GetItemLocation(hintedCheck)->GetPlacedRandomizerGet();
-  CustomMessage itemName;
-  
   if (mysterious){
-    itemName = StaticData::hintTextTable[RHT_MYSTERIOUS_ITEM].GetMessage();
+    return StaticData::hintTextTable[RHT_MYSTERIOUS_ITEM];
   } else if (!ctx->GetOption(RSK_HINT_CLARITY).Is(RO_HINT_CLARITY_AMBIGUOUS) && targetRG == RG_ICE_TRAP) { //RANDOTODO store in item hint instead of item
-      targetRG = ctx->overrides[hintedCheck].LooksLike();
-      itemName = {
-          ctx->overrides[hintedCheck].GetTrickName().english,
-          ctx->overrides[hintedCheck].GetTrickName().french,
-          ctx->overrides[hintedCheck].GetTrickName().english
-      };
+      return HintText(CustomMessage({ctx->overrides[hintedCheck].GetTrickName()}));
   } else {
-    if (ctx->GetOption(RSK_HINT_CLARITY).Is(RO_HINT_CLARITY_AMBIGUOUS)){
-      itemName = ctx->GetItemLocation(hintedCheck)->GetPlacedItem().GetHint().GetAmbiguous(chosenName[slot]);
-    } else if (ctx->GetOption(RSK_HINT_CLARITY).Is(RO_HINT_CLARITY_OBSCURE)){
-      itemName = ctx->GetItemLocation(hintedCheck)->GetPlacedItem().GetHint().GetObscure(chosenName[slot]);
-    } else {
-      itemName = ctx->GetItemLocation(hintedCheck)->GetPlacedItem().GetHint().GetClear();
-    }
-  }
-  return itemName;
-}
-
-void Hint::ExtrapolateDataFromLocations(){
-  auto ctx = Rando::Context::GetInstance();
-  bool doArea = true;
-  if (areas.size() > 0){
-    doArea = false;
-  }
-  for(uint8_t c = 0; c < locations.size(); c++){
-    if (doArea){
-      areas.push_back(ctx->GetItemLocation(locations[c])->GetArea());
-    }
-    items.push_back(ctx->GetItemLocation(locations[c])->GetPlacedRandomizerGet());
-    if (ctx->GetOption(RSK_HINT_CLARITY).Is(RO_HINT_CLARITY_AMBIGUOUS)){
-      chosenName.push_back(Random(0, StaticData::GetItemTable()[items[c]].GetHint().GetAmbiguousSize()-1));
-    } else if (ctx->GetOption(RSK_HINT_CLARITY).Is(RO_HINT_CLARITY_OBSCURE)){
-      chosenName.push_back(Random(0, StaticData::GetItemTable()[items[c]].GetHint().GetObscureSize()-1));
-    }
+    return ctx->GetItemLocation(hintedCheck)->GetPlacedItem().GetHint();
   }
 }
 
-void Hint::SetLocationsAsHinted(){
-  auto ctx = Rando::Context::GetInstance();
-  for (uint8_t count = 0; count < locations.size(); count++){
-      ctx->GetItemLocation(locations[count])->AddHintedBy(ownKey);
+const HintText Hint::GetAreaHintText(uint8_t slot) const { 
+  CustomMessage areaText;
+  if (yourPocket && (areas[slot] == RA_LINKS_POCKET || areas[slot] == RA_NONE)){
+    return StaticData::hintTextTable[RHT_YOUR_POCKET];
+  } else {
+    return StaticData::hintTextTable[Rando::StaticData::areaNames[areas[slot]]];
   }
 }
 
-bool Hint::IsEnabled(){
-  return enabled;
+
+const CustomMessage Hint::GetItemName(uint8_t slot, bool mysterious) const { 
+  uint8_t nameNum = 0;
+  if (itemNamesChosen.size() > slot){
+    nameNum = itemNamesChosen[slot];
+  }
+  return GetItemHintText(slot, mysterious).GetMessage(nameNum);
 }
 
-std::vector<RandomizerHintTextKey> Hint::GetHintKeys(){
-  return hintKeys;
+const CustomMessage Hint::GetAreaName(uint8_t slot) const { 
+  uint8_t nameNum = 0;
+  if (areaNamesChosen.size() > slot){
+    nameNum = areaNamesChosen[slot];
+  }
+  return GetAreaHintText(slot).GetMessage(nameNum);
 }
 
-std::vector<RandomizerGet> Hint::GetHintedItems(){
-  return items;
-}
-
-std::vector<uint8_t> Hint::GetChosenNames(){
-  return chosenName;
-}
-
-std::vector<TrialKey> Hint::GetHintedTrials(){
-  return trials;
-}
 
 CustomMessage Hint::GetBridgeReqsText() {
   auto ctx = Rando::Context::GetInstance();
@@ -504,6 +547,84 @@ CustomMessage Hint::GetGanonBossKeyText() {
     return StaticData::hintTextTable[RHT_GANON_BK_TRIFORCE_HINT].GetMessage();
   }
   return ganonBossKeyMessage;
+}
+
+
+void Hint::AddHintedLocation(RandomizerCheck location) {
+    locations.push_back(location);
+}
+
+std::vector<RandomizerCheck> Hint::GetHintedLocations() const {
+    return locations;
+}
+
+void Hint::SetHintType(HintType type) {
+    hintType = type;
+}
+
+HintType Hint::GetHintType() const {
+    return hintType;
+}
+
+void Hint::AddHintedArea(RandomizerArea area) {
+    areas.push_back(area);
+}
+
+std::vector<RandomizerArea> Hint::GetHintedAreas() const {
+    return areas;
+}
+
+void Hint::SetDistribution(std::string distributionName) {
+    distribution = distributionName;
+}
+
+const std::string& Hint::GetDistribution() const {
+    return distribution;
+}
+
+bool Hint::IsEnabled() const{
+  return enabled;
+}
+
+std::vector<RandomizerHintTextKey> Hint::GetHintTextKeys() const{
+  return hintKeys;
+}
+
+std::vector<RandomizerGet> Hint::GetHintedItems() const{
+  return items;
+}
+
+std::vector<uint8_t> Hint::GetItemNamesChosen() const{
+  return itemNamesChosen;
+}
+
+std::vector<uint8_t> Hint::GetHintTextsChosen() const{
+  return hintTextsChosen;
+}
+std::vector<uint8_t> Hint::GetAreaTextsChosen() const{
+  return areaNamesChosen;
+}
+
+std::vector<TrialKey> Hint::GetHintedTrials() const{
+  return trials;
+}
+
+void Hint::ResetVariables() {
+  ownKey = RH_NONE;
+  num = 0;
+  yourPocket = false;
+  messages = {};
+  hintKeys = {};
+  locations = {};
+  items = {};
+  trials = {};
+  hintType = HINT_TYPE_HINT_KEY;
+  areas = {};
+  distribution = "";
+  enabled = false;
+  itemNamesChosen = {};
+  hintTextsChosen = {};
+  areaNamesChosen = {};
 }
 
 }
