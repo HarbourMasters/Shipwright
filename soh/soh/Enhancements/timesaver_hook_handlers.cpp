@@ -866,10 +866,12 @@ void TimeSaverOnActorInitHandler(void* actorRef) {
     }
 
     // Forest Temple entrance cutscene
-    if (actor->id == ACTOR_EN_PO_SISTERS && actor->params == 4124) {
+    // This is a bit of a hack, we can't effectively override the behavior of the torches 
+    // or poes from which the cutscene is triggered until we can have a "BeforeActorInit" hook.
+    // So for now we're just going to set the flag before they get to the room the cutscene is in
+    if (gPlayState->sceneNum == SCENE_FOREST_TEMPLE && actor->id == ACTOR_EN_ST && !Flags_GetSwitch(gPlayState, 0x1B)) {
         if (CVarGetInteger("gTimeSavers.SkipCutscene.GlitchAiding", 0)) {
             Flags_SetSwitch(gPlayState, 0x1B);
-            Actor_Kill(actor);
         }
     }
 
