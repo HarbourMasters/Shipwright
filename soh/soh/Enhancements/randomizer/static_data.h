@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+#include <map>
 #include <unordered_map>
 #include "randomizerTypes.h"
 #include "item.h"
@@ -33,6 +34,7 @@ class StaticData {
       static std::array<Rando::Location, RC_MAX>& GetLocationTable();
       static std::unordered_map<std::string, uint32_t> PopulateTranslationMap(std::unordered_map<uint32_t, CustomMessage> input);
       static std::unordered_map<std::string, uint32_t> PopulateTranslationMap(std::unordered_map<uint32_t, RandomizerHintTextKey> input);
+      static std::multimap<std::tuple<s16, s16, s32>, RandomizerCheck> CheckFromActorMultimap;
       static std::vector<RandomizerCheck> overworldLocations;
       static std::vector<RandomizerCheck> dungeonRewardLocations;
       static std::vector<std::vector<RandomizerCheck>> shopLocationLists;

@@ -667,8 +667,9 @@ void CreateStoneHints() {
   
   while(totalStones != 0){
     totalStones = PlaceHints(selectedHints, distTable);
-    if (totalStones != 0){
+    while (totalStones != 0){
       DistributeHints(selectedHints, totalStones, distTable, hintSetting.junkWeight, false);
+      totalStones = PlaceHints(selectedHints, distTable);
     }
   }
 
@@ -777,8 +778,8 @@ void CreateAllHints(){
   }
 
   if (ctx->GetOption(RSK_GOSSIP_STONE_HINTS).IsNot(RO_GOSSIP_STONES_NONE)) {
-    printf("\x1b[10;10HCreating Hints...");
+    SPDLOG_INFO("Creating Hints...");
     CreateStoneHints();
-    printf("Done");
+    SPDLOG_INFO("Creating Hints Done");
   }
 }

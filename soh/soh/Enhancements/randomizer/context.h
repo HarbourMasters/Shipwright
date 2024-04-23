@@ -95,7 +95,6 @@ class Context {
 
   private:
     static std::weak_ptr<Context> mContext;
-    std::unordered_map<std::string, RandomizerGet> mSpoilerfileGetNameToEnum;
     std::array<Hint, RH_MAX> hintTable = {};
     std::array<ItemLocation, RC_MAX> itemLocationTable = {};
     std::shared_ptr<Settings> mSettings;
