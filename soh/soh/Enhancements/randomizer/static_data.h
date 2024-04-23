@@ -2,7 +2,7 @@
 
 #include <array>
 #include <map>
-#include <unodered_map>
+#include <unordered_map>
 #include "randomizerTypes.h"
 #include "item.h"
 #include "location.h"
