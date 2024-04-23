@@ -47,11 +47,8 @@ extern std::array<std::string, HINT_TYPE_MAX> hintTypeNames;
 using json = nlohmann::json;
 using namespace std::literals::string_literals;
 
-std::unordered_map<std::string, RandomizerCheck> SpoilerfileCheckNameToEnum;
-std::unordered_map<std::string, RandomizerGet> SpoilerfileGetNameToEnum;
 std::unordered_map<std::string, RandomizerCheckArea> SpoilerfileAreaNameToEnum;
 std::unordered_map<std::string, HintType> SpoilerfileHintTypeNameToEnum;
-std::multimap<std::tuple<s16, s16, s32>, RandomizerCheck> checkFromActorMultimap;
 std::set<RandomizerCheck> excludedLocations;
 std::set<RandomizerCheck> spoilerExcludedLocations;
 std::set<RandomizerTrick> enabledTricks;
@@ -129,24 +126,7 @@ static const char* frenchRupeeNames[36] = {
 Randomizer::Randomizer() {
     Rando::StaticData::InitItemTable();
     Rando::StaticData::InitLocationTable();
-    for (auto& location : Rando::StaticData::GetLocationTable()) {
-        SpoilerfileCheckNameToEnum[location.GetName()] = location.GetRandomizerCheck();
-        checkFromActorMultimap.emplace(std::make_tuple((s16)location.GetActorID(), (s16)location.GetScene(), location.GetActorParams()), location.GetRandomizerCheck());
-    }
-    SpoilerfileCheckNameToEnum["Invalid Location"] = RC_UNKNOWN_CHECK;
-    SpoilerfileCheckNameToEnum["Link's Pocket"] = RC_LINKS_POCKET;
 
-    for (auto& item: Rando::StaticData::GetItemTable()) {
-        // Easiest way to filter out all the empty values from the array, since we still technically want the 0/RG_NONE entry
-        if (item.GetName().english.empty()) continue;
-        SpoilerfileGetNameToEnum[item.GetName().english] = item.GetRandomizerGet();
-        SpoilerfileGetNameToEnum[item.GetName().french] = item.GetRandomizerGet();
-        EnumToSpoilerfileGetName[item.GetRandomizerGet()] = {
-            item.GetName().english,
-            item.GetName().english,
-            item.GetName().french,
-        };
-    }
     for (auto area : rcAreaNames) {
         SpoilerfileAreaNameToEnum[area.second] = area.first;
     }
@@ -1759,7 +1739,7 @@ Rando::Location* Randomizer::GetCheckObjectFromActor(s16 actorId, s16 sceneNum, 
         return Rando::StaticData::GetLocation(specialRc);
     }
 
-    auto range = checkFromActorMultimap.equal_range(std::make_tuple(actorId, sceneNum, actorParams));
+    auto range = Rando::StaticData::CheckFromActorMultimap.equal_range(std::make_tuple(actorId, sceneNum, actorParams));
 
     for (auto it = range.first; it != range.second; ++it) {
         if (
