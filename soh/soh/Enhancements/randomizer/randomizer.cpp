@@ -2613,7 +2613,11 @@ CustomMessage Randomizer::ReplaceWithItemName(CustomMessage message, std::string
                 ctx->overrides[hintedCheck].GetTrickName().english
             };
         } else {
-            itemName = EnumToSpoilerfileGetName[targetRG];
+            itemName = {
+                Rando::StaticData::RetrieveItem(targetRG).GetName().english,
+                Rando::StaticData::RetrieveItem(targetRG).GetName().french,
+                Rando::StaticData::RetrieveItem(targetRG).GetName().english,
+            };
         }
     message.Replace(std::move(toReplace), std::move(itemName[0]), std::move(itemName[1]), std::move(itemName[2]));
     return message;
@@ -2745,7 +2749,12 @@ CustomMessage Randomizer::GetMerchantMessage(RandomizerInf randomizerInf, u16 te
             std::string(ctx->overrides[rc].GetTrickName().english)
         };
     } else { 
-        shopItemName = EnumToSpoilerfileGetName[shopItemGet];
+        auto shopItem = Rando::StaticData::RetrieveItem(shopItemGet);
+        shopItemName = {
+            shopItem.GetName().english,
+            shopItem.GetName().french,
+            shopItem.GetName().english,
+        };
     }
     u16 shopItemPrice = ctx->GetItemLocation(rc)->GetPrice();
 
