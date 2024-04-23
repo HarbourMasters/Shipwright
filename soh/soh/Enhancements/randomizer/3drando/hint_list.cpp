@@ -404,6 +404,81 @@ void HintTable_Init() {
               /*french*/ "la #cinquième salle# de la Chasse-aux-Trésors contient",
               /*spanish*/ "#en la quinta sala del Cofre del Tesoro# aguarda" });
 
+    hintTable[RHT_MARKET_TREASURE_CHEST_GAME_KEY_1] = HintText::Sometimes(
+        {
+            // obscure text
+            Text{ "#gambling once# grants", /*french*/ "#parier une fois# donne",
+                  /*spanish*/ "#apostar solo una vez# revelará" },
+            Text{ "the #first or second game chest# contains",
+                  /*french*/ "le #premier ou deuxième coffre à jeu# contient",
+                  /*spanish*/ "#el primer o segundo cofre del azar# revela" },
+        },
+        {},
+        // clear text
+        Text{ "the #first locked room# in the chest game contains",
+              /*french*/ "la #première salle# de la Chasse-aux-Trésors contient",
+              /*spanish*/ "#en la primera sala del Cofre del Tesoro# aguarda" });
+
+    hintTable[RHT_MARKET_TREASURE_CHEST_GAME_KEY_2] = HintText::Sometimes(
+        {
+            // obscure text
+            Text{ "#gambling twice# grants", /*french*/ "#parier deux fois# donne",
+                  /*spanish*/ "#apostar dos veces# revelará" },
+            Text{ "the #third or fourth game chest# contains",
+                  /*french*/ "le #troisième ou quatrième coffre à jeu# contient",
+                  /*spanish*/ "#el tercer o cuarto cofre del azar# revela" },
+        },
+        {},
+        // clear text
+        Text{ "the #second locked room# in the chest game contains",
+              /*french*/ "la #deuxième salle# de la Chasse-aux-Trésors contient",
+              /*spanish*/ "#en la segunda sala del Cofre del Tesoro# aguarda" });
+
+    hintTable[RHT_MARKET_TREASURE_CHEST_GAME_KEY_3] = HintText::Sometimes(
+        {
+            // obscure text
+            Text{ "#gambling 3 times# grants", /*french*/ "#parier trois fois# donne",
+                  /*spanish*/ "#apostar tres veces# revelará" },
+            Text{ "the #fifth or sixth game chest# contains",
+                  /*french*/ "le #cinquième ou sixième coffre à jeu# contient",
+                  /*spanish*/ "#el quinto o sexto cofre del azar# revela" },
+        },
+        {},
+        // clear text
+        Text{ "the #third locked room# in the chest game contains",
+              /*french*/ "la #troisième salle# de la Chasse-aux-Trésors contient",
+              /*spanish*/ "#en la tercera sala del Cofre del Tesoro# aguarda" });
+
+    hintTable[RHT_MARKET_TREASURE_CHEST_GAME_KEY_4] = HintText::Sometimes(
+        {
+            // obscure text
+            Text{ "#gambling 4 times# grants", /*french*/ "#parier quatre fois# donne",
+                  /*spanish*/ "#apostar cuatro veces# revelará" },
+            Text{ "the #seventh or eighth game chest# contains",
+                  /*french*/ "le #septième ou huitième coffre à jeu# contient",
+                  /*spanish*/ "#el séptimo u octavo cofre del azar# revela" },
+        },
+        {},
+        // clear text
+        Text{ "the #fourth locked room# in the chest game contains",
+              /*french*/ "la #quatrième salle# de la Chasse-aux-Trésors contient",
+              /*spanish*/ "#en la cuarta sala del Cofre del Tesoro# aguarda" });
+
+    hintTable[RHT_MARKET_TREASURE_CHEST_GAME_KEY_5] = HintText::Sometimes(
+        {
+            // obscure text
+            Text{ "#gambling 5 times# grants", /*french*/ "#parier cinq fois# donne",
+                  /*spanish*/ "#apostar cinco veces# revelará" },
+            Text{ "the #ninth or tenth game chest# contains",
+                  /*french*/ "le #neuvième ou dixième coffre à jeu# contient",
+                  /*spanish*/ "#el noveno o décimo cofre del azar# revela" },
+        },
+        {},
+        // clear text
+        Text{ "the #fifth locked room# in the chest game contains",
+              /*french*/ "la #cinquième salle# de la Chasse-aux-Trésors contient",
+              /*spanish*/ "#en la quinta sala del Cofre del Tesoro# aguarda" });
+
     hintTable[RHT_GF_HBA_1500_POINTS] = HintText::Sometimes(
         {
             // obscure text
