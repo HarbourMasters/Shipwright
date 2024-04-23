@@ -1408,6 +1408,7 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
 
         // Actually update the CVar now before runing the alt asset update listeners
         CVarSetInteger("gAltAssets", !CVarGetInteger("gAltAssets", 0));
+        UpdatePatchCustomEquipmentDlists();
         gfx_texture_cache_clear();
         SOH::SkeletonPatcher::UpdateSkeletons();
         GameInteractor::Instance->ExecuteHooks<GameInteractor::OnAssetAltChange>();
@@ -1759,6 +1760,19 @@ extern "C" void ResourceMgr_PatchGfxByName(const char* path, const char* patchNa
             index,
             *gfx
         };
+    }
+
+    *gfx = instruction;
+}
+
+extern "C" void ResourceMgr_PatchCustomGfxByName(const char* path, const char* patchName, int index, Gfx instruction) {
+    auto res = std::static_pointer_cast<LUS::DisplayList>(
+        LUS::Context::GetInstance()->GetResourceManager()->LoadResource(path));
+
+    Gfx* gfx = (Gfx*)&res->Instructions[index];
+
+    if (!originalGfx.contains(path) || !originalGfx[path].contains(patchName)) {
+        originalGfx[path][patchName] = { index, *gfx };
     }
 
     *gfx = instruction;
