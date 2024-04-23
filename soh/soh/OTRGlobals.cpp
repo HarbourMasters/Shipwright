@@ -320,6 +320,12 @@ OTRGlobals::OTRGlobals() {
 
     auto sohInputEditorWindow = std::make_shared<SohInputEditorWindow>("gControllerConfigurationEnabled", "Input Editor");
     context->InitWindow(sohInputEditorWindow);
+
+    auto overlay = context->GetInstance()->GetWindow()->GetGui()->GetGameOverlay();
+    overlay->LoadFont("Press Start 2P", "fonts/PressStart2P-Regular.ttf", 12.0f);
+    overlay->LoadFont("Fipps", "fonts/Fipps-Regular.otf", 32.0f);
+    overlay->SetCurrentFont(CVarGetString(CVAR_GAME_OVERLAY_FONT, "Press Start 2P"));
+
     context->InitAudio();
 
     SPDLOG_INFO("Starting Ship of Harkinian version {}", (char*)gBuildVersion);
