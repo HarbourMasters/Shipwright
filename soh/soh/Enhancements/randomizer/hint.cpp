@@ -55,10 +55,10 @@ Hint::Hint(RandomizerHint ownKey_, nlohmann::json json_){
 
   if (json_.contains("locations")){
     for (auto loc: json_["locations"]){
-      locations.push_back((RandomizerCheck)StaticData::locationNameToEnum[loc.get<std::string>()]);
+      locations.push_back(StaticData::locationNameToEnum[loc.get<std::string>()]);
     }
   } else if (json_.contains("location")){
-    locations.push_back((RandomizerCheck)StaticData::locationNameToEnum[json_["location"].get<std::string>()]);
+    locations.push_back(StaticData::locationNameToEnum[json_["location"].get<std::string>()]);
   }
 
   if (json_.contains("type")){

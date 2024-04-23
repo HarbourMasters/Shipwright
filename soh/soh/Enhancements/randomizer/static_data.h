@@ -47,7 +47,8 @@ class StaticData {
       static std::unordered_map<int8_t, RandomizerCheck> randomizerGrottoFishMap;
       static std::vector<RandomizerHint> oldVerHintOrder;
       static uint16_t oldVerGossipStoneStart;
-      static std::unordered_map<std::string, uint32_t> locationNameToEnum;
+      static std::unordered_map<std::string, RandomizerCheck> locationNameToEnum;
+      static std::unordered_map<std::string, RandomizerGet> itemNameToEnum;
       static std::unordered_map<uint32_t, CustomMessage> hintNames;
       static std::unordered_map<std::string, uint32_t> hintNameToEnum;
       static std::unordered_map<uint32_t, CustomMessage> hintTypeNames;

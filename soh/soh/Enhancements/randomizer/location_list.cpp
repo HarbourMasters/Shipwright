@@ -3,7 +3,6 @@
 #define TWO_ACTOR_PARAMS(a, b) (abs(a) << 16) | abs(b)
 
 std::array<Rando::Location, RC_MAX> Rando::StaticData::locationTable;
-std::unordered_map<std::string, RandomizerCheck> Rando::StaticData::SpoilerfileCheckNameToEnum;
 std::multimap<std::tuple<s16, s16, s32>, RandomizerCheck> Rando::StaticData::CheckFromActorMultimap;
 
 std::vector<RandomizerCheck> KF_ShopLocations = {
@@ -1572,12 +1571,12 @@ void Rando::StaticData::InitLocationTable() {
     locationTable[RC_TRIFORCE_COMPLETED] = Location::Reward(RC_TRIFORCE_COMPLETED, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_MARKET, ACTOR_ID_MAX, SCENE_ID_MAX, 0x00, 0x00, "Completed Triforce", "Completed Triforce", RHT_NONE, RG_NONE, {}, SpoilerCollectionCheck::None(), SpoilerCollectionCheckGroup::GROUP_NO_GROUP);
     // clang-format on
 
-    // Init SpoilerfileCheckNameToEnum
-    SpoilerfileCheckNameToEnum["Invalid Location"] = RC_UNKNOWN_CHECK;
-    SpoilerfileCheckNameToEnum["Link's Pocket"] = RC_LINKS_POCKET;
+    // Init locationNameToEnum
+    locationNameToEnum["Invalid Location"] = RC_UNKNOWN_CHECK;
+    locationNameToEnum["Link's Pocket"] = RC_LINKS_POCKET;
 
     for (auto& location : locationTable) {
-        SpoilerfileCheckNameToEnum[location.GetName()] = location.GetRandomizerCheck();
+        locationNameToEnum[location.GetName()] = location.GetRandomizerCheck();
         CheckFromActorMultimap.emplace(std::make_tuple((int16_t)location.GetActorID(), (int16_t)location.GetScene(), location.GetActorParams()), location.GetRandomizerCheck());
     }
 }

@@ -347,22 +347,22 @@ void Context::ParseHashIconIndexesJson(nlohmann::json spoilerFileJson) {
 void Context::ParseItemLocationsJson(nlohmann::json spoilerFileJson) {
     nlohmann::json locationsJson = spoilerFileJson["locations"];
     for (auto it = locationsJson.begin(); it != locationsJson.end(); ++it) {
-        RandomizerCheck rc = (RandomizerCheck)Rando::StaticData::locationNameToEnum[it.key()];
+        RandomizerCheck rc = StaticData::locationNameToEnum[it.key()];
         if (it->is_structured()) {
             nlohmann::json itemJson = *it;
             for (auto itemit = itemJson.begin(); itemit != itemJson.end(); ++itemit) {
                 if (itemit.key() == "item") {
-                    itemLocationTable[rc].SetPlacedItem(StaticData::SpoilerfileItemNameToEnum[itemit.value().get<std::string>()]);
+                    itemLocationTable[rc].SetPlacedItem(StaticData::itemNameToEnum[itemit.value().get<std::string>()]);
                 } else if (itemit.key() == "price") {
                     itemLocationTable[rc].SetCustomPrice(itemit.value().get<uint16_t>());
                 } else if (itemit.key() == "model") {
-                    overrides[rc] = ItemOverride(rc, StaticData::SpoilerfileItemNameToEnum[itemit.value().get<std::string>()]);
+                    overrides[rc] = ItemOverride(rc, StaticData::itemNameToEnum[itemit.value().get<std::string>()]);
                 } else if (itemit.key() == "trickName") {
                     overrides[rc].SetTrickName(Text(itemit.value().get<std::string>()));
                 }
             }
         } else {
-            itemLocationTable[rc].SetPlacedItem(StaticData::SpoilerfileItemNameToEnum[it.value().get<std::string>()]);
+            itemLocationTable[rc].SetPlacedItem(StaticData::itemNameToEnum[it.value().get<std::string>()]);
         }
     }
 }

@@ -2647,7 +2647,7 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
 
     ctx->AddExcludedOptions();
     for (auto it = jsonExcludedLocations.begin(); it != jsonExcludedLocations.end(); ++it) {
-        const RandomizerCheck rc = (RandomizerCheck)Rando::StaticData::locationNameToEnum[it.value()];
+        const RandomizerCheck rc = Rando::StaticData::locationNameToEnum[it.value()];
         ctx->GetItemLocation(rc)->GetExcludedOption()->SetSelectedIndex(RO_GENERIC_ON);
     }
 
