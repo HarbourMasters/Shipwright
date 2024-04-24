@@ -964,7 +964,12 @@ static void DistributeHints(std::vector<uint8_t>& selected, size_t stoneCount, s
     for (uint8_t distribution = 0; distribution < distTable.size(); distribution++){
       currentWeight -= distTable[distribution].weight;
       if (currentWeight <= 0){
-        if (stoneCount >= distTable[distribution].copies || distTable[distribution].copies == 0){
+        if (distTable[distribution].copies == 0) {
+          // This should only happen if we ran out of locations to place hints of a certain distribution earlier. Skip
+          // to the next distribution.
+          break;
+        }
+        if (stoneCount >= distTable[distribution].copies){
           selected[distribution] += 1;
           stoneCount -= distTable[distribution].copies;
           break;
