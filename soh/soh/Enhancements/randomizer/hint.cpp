@@ -48,6 +48,21 @@ Hint::Hint(RandomizerHint ownKey_, nlohmann::json json_){
   if (json_.contains("enabled") && !json_["enabled"].get<bool>()){
     return;
   }
+  enabled = true;
+
+  if (json_.contains("type")){
+    hintType = (HintType)StaticData::hintTypeNameToEnum[json_["type"].get<std::string>()];
+  }
+
+  if (hintType == HINT_TYPE_MESSAGE){
+    if (json_.contains("messages")){
+      for (auto message: json_["messages"]){
+        messages.push_back(CustomMessage(message.get<std::string>()));
+      }
+    } else if (json_.contains("message")){
+      messages.push_back(CustomMessage(json_["message"].get<std::string>()));
+    }
+  }
   
   if (json_.contains("distribution")){
     distribution = json_["distribution"].get<std::string>();
@@ -61,8 +76,12 @@ Hint::Hint(RandomizerHint ownKey_, nlohmann::json json_){
     locations.push_back(StaticData::locationNameToEnum[json_["location"].get<std::string>()]);
   }
 
-  if (json_.contains("type")){
-    hintType = (HintType)StaticData::hintTypeNameToEnum[json_["type"].get<std::string>()];
+  if (json_.contains("itemNamesChosen")){
+    for (auto name: json_["itemNamesChosen"]){
+      itemNamesChosen.push_back(name.get<uint8_t>());
+    }
+  } else if (json_.contains("itemNameChosen")){
+    itemNamesChosen.push_back(json_["itemNameChosen"].get<uint8_t>());
   }
 
   if (json_.contains("areas")){
@@ -71,6 +90,14 @@ Hint::Hint(RandomizerHint ownKey_, nlohmann::json json_){
     }
   } else if (json_.contains("area")){
     areas.push_back((RandomizerArea)Rando::StaticData::areaNameToEnum[json_["area"]]);
+  }
+
+  if (json_.contains("areaNamesChosen")){
+    for (auto name: json_["areaNamesChosen"]){
+      areaNamesChosen.push_back(name.get<uint8_t>());
+    }
+  } else if (json_.contains("areaNameChosen")){
+    areaNamesChosen.push_back(json_["areaNameChosen"].get<uint8_t>());
   }
 
   if (json_.contains("trials")){
@@ -89,33 +116,16 @@ Hint::Hint(RandomizerHint ownKey_, nlohmann::json json_){
     hintKeys.push_back((RandomizerHintTextKey)json_["hintKey"].get<uint32_t>());
   }
 
-  if (json_.contains("itemNamesChosen")){
-    for (auto name: json_["itemNamesChosen"]){
-      itemNamesChosen.push_back(name.get<uint32_t>());
-    }
-  } else if (json_.contains("itemNameChosen")){
-    itemNamesChosen.push_back(json_["itemNameChosen"].get<uint32_t>());
-  }
-
   if (json_.contains("hintTextsChosen")){
     for (auto name: json_["hintTextsChosen"]){
-      hintTextsChosen.push_back(name.get<uint32_t>());
+      hintTextsChosen.push_back(name.get<uint8_t>());
     }
   } else if (json_.contains("hintTextChosen")){
-    hintTextsChosen.push_back(json_["hintTextChosen"].get<uint32_t>());
-  }
-
-  if (json_.contains("areaNamesChosen")){
-    for (auto name: json_["areaNamesChosen"]){
-      areaNamesChosen.push_back(name.get<uint32_t>());
-    }
-  } else if (json_.contains("areaNameChosen")){
-    areaNamesChosen.push_back(json_["areaNameChosen"].get<uint32_t>());
+    hintTextsChosen.push_back(json_["hintTextChosen"].get<uint8_t>());
   }
 
   FillGapsInData();
   SetLocationsAsHinted();
-  enabled = true;
 }
 
 void Hint::FillGapsInData(){
@@ -245,10 +255,6 @@ const HintText Hint::GetHintText(uint8_t id) const {
     case HINT_TYPE_HINT_KEY:
       return StaticData::hintTextTable[0]; 
       break;
-    case HINT_TYPE_ALTAR_CHILD:
-      return StaticData::hintTextTable[RHT_CHILD_ALTAR_STONES];
-    case HINT_TYPE_ALTAR_ADULT:
-      return StaticData::hintTextTable[RHT_ADULT_ALTAR_MEDALLIONS];
     case HINT_TYPE_TRIAL:
       if (ctx->GetTrial(trials[0])->IsRequired()) {
         return StaticData::hintTextTable[RHT_TRIAL_ON];
@@ -281,96 +287,104 @@ const HintText Hint::GetHintText(uint8_t id) const {
 }
 
 const CustomMessage Hint::GetMessage(MessageFormat format, uint8_t id) const {
-    auto ctx = Rando::Context::GetInstance();
-    CustomMessage hintText = CustomMessage("ERROR:NO MESSAGE FOUND");
-    if (hintType == HINT_TYPE_MESSAGE){
-      if (id < messages.size()){
-        hintText = messages[id];
-      }
+  auto ctx = Rando::Context::GetInstance();
+  CustomMessage hintText = CustomMessage("ERROR:NO MESSAGE FOUND");
+
+  uint8_t chosenMessage = 0;
+  if (hintTextsChosen.size() > id){
+    chosenMessage = id;
+  }
+
+  if (hintType == HINT_TYPE_MESSAGE){
+    if (id < messages.size()){
+      hintText = messages[id];
+    }
+  } else if (hintType == HINT_TYPE_ALTAR_CHILD){
+    if (ctx->GetOption(RSK_TOT_ALTAR_HINT)){
+      hintText = StaticData::hintTextTable[RHT_CHILD_ALTAR_STONES].GetMessage();
+    }
+    if (ctx->GetOption(RSK_DOOR_OF_TIME).Is(RO_DOOROFTIME_OPEN)) {
+        hintText += CustomMessage(StaticData::hintTextTable[RHT_CHILD_ALTAR_TEXT_END_DOTOPEN].GetMessage());
+    } else if (ctx->GetOption(RSK_DOOR_OF_TIME).Is(RO_DOOROFTIME_SONGONLY)) {
+        hintText += CustomMessage(StaticData::hintTextTable[RHT_CHILD_ALTAR_TEXT_END_DOTSONGONLY].GetMessage());
     } else {
-      if (hintTextsChosen.size() > id){
-        hintText = GetHintText(id).GetMessage(hintTextsChosen[id]);
-      } else {
-        hintText = GetHintText(id).GetMessage();
-      }
-
-      std::vector<CustomMessage> toInsert = {};
-
-      switch (hintType){
-        case HINT_TYPE_ITEM:{
-          //if we write items
-          for(uint8_t b = 0; b < locations.size(); b++){
-            toInsert.push_back(GetItemName(b)); 
-          }
-          break;}
-        case HINT_TYPE_MERCHANT:{
-            //if we write items, but need to adjust for merchants
-            bool mysterious = hintType == HINT_TYPE_MERCHANT && ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ON_NO_HINT);
-            for(uint8_t b = 0; b < locations.size(); b++){
-              toInsert.push_back(GetItemName(b, mysterious));
-            }
-            break;}
-        case HINT_TYPE_TRIAL:{
-          //If we write trials
-          for(uint8_t b = 0; b < trials.size(); b++){
-            toInsert.push_back(ctx->GetTrial(trials[b])->GetName());
-          }
-          break;}
-        case HINT_TYPE_ITEM_AREA:{
-          //If we write items and areas
-          for(uint8_t b = 0; b < items.size(); b++){
-            toInsert.push_back(GetItemName(b));
-            toInsert.push_back(GetAreaName(b));
-          }
-          break;}
-        case HINT_TYPE_ALTAR_CHILD:
-        case HINT_TYPE_ALTAR_ADULT:
-        case HINT_TYPE_AREA:
-        case HINT_TYPE_WOTH:
-        case HINT_TYPE_FOOLISH:{
-          //If we write areas
-          for(uint8_t b = 0; b < areas.size(); b++){
-            toInsert.push_back(GetAreaName(b));
-          }
-          break;}
-        default:
-          break;
-      }
-
-      hintText.InsertNames(toInsert);
-
-      if (hintType == HINT_TYPE_ALTAR_CHILD){
-          if (ctx->GetOption(RSK_DOOR_OF_TIME).Is(RO_DOOROFTIME_OPEN)) {
-              hintText += CustomMessage(StaticData::hintTextTable[RHT_CHILD_ALTAR_TEXT_END_DOTOPEN].GetMessage());
-          } else if (ctx->GetOption(RSK_DOOR_OF_TIME).Is(RO_DOOROFTIME_SONGONLY)) {
-              hintText += CustomMessage(StaticData::hintTextTable[RHT_CHILD_ALTAR_TEXT_END_DOTSONGONLY].GetMessage());
-          } else {
-              hintText += CustomMessage(StaticData::hintTextTable[RHT_CHILD_ALTAR_TEXT_END_DOTCLOSED].GetMessage());
-          }
-      } else if (hintType == HINT_TYPE_ALTAR_ADULT){
-        hintText += GetBridgeReqsText() + GetGanonBossKeyText() + StaticData::hintTextTable[RHT_ADULT_ALTAR_TEXT_END].GetMessage();
-      }
-
-      if (num != 0){
-        hintText.InsertNumber(num);
-      }
+        hintText += CustomMessage(StaticData::hintTextTable[RHT_CHILD_ALTAR_TEXT_END_DOTCLOSED].GetMessage());
     }
-
-    if (format == MF_FORMATTED){
-      hintText.Format();
-    } else if (format == MF_AUTO_FORMAT){
-      hintText.AutoFormat();
-    } else if (format == MF_CLEAN){
-      hintText.Clean();
+  } else if (hintType == HINT_TYPE_ALTAR_ADULT){
+    if (ctx->GetOption(RSK_TOT_ALTAR_HINT)){
+      hintText = StaticData::hintTextTable[RHT_ADULT_ALTAR_MEDALLIONS].GetMessage();
     }
+    hintText += GetBridgeReqsText() + GetGanonBossKeyText() + StaticData::hintTextTable[RHT_ADULT_ALTAR_TEXT_END].GetMessage();
+  } else {
+    hintText = GetHintText(id).GetMessage(chosenMessage);
+  }
 
-    return hintText;
+  std::vector<CustomMessage> toInsert = {};
+
+  switch (hintType){
+    case HINT_TYPE_ITEM:{
+      //if we write items
+      for(uint8_t b = 0; b < locations.size(); b++){
+        toInsert.push_back(GetItemName(b)); 
+      }
+      break;}
+    case HINT_TYPE_MERCHANT:{
+        //if we write items, but need to adjust for merchants
+        bool mysterious = hintType == HINT_TYPE_MERCHANT && ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ON_NO_HINT);
+        for(uint8_t b = 0; b < locations.size(); b++){
+          toInsert.push_back(GetItemName(b, mysterious));
+        }
+        break;}
+    case HINT_TYPE_TRIAL:{
+      //If we write trials
+      for(uint8_t b = 0; b < trials.size(); b++){
+        toInsert.push_back(ctx->GetTrial(trials[b])->GetName());
+      }
+      break;}
+    case HINT_TYPE_ITEM_AREA:{
+      //If we write items and areas
+      for(uint8_t b = 0; b < items.size(); b++){
+        toInsert.push_back(GetItemName(b));
+        toInsert.push_back(GetAreaName(b));
+      }
+      break;}
+    case HINT_TYPE_ALTAR_CHILD:
+    case HINT_TYPE_ALTAR_ADULT:
+    case HINT_TYPE_AREA:
+    case HINT_TYPE_WOTH:
+    case HINT_TYPE_FOOLISH:{
+      //If we write areas
+      for(uint8_t b = 0; b < areas.size(); b++){
+        toInsert.push_back(GetAreaName(b));
+      }
+      break;}
+    default:
+      break;
+  }
+
+  hintText.InsertNames(toInsert);
+
+  if (num != 0){
+    hintText.InsertNumber(num);
+  }
+
+  if (format == MF_FORMATTED){
+    hintText.Format();
+  } else if (format == MF_AUTO_FORMAT){
+    hintText.AutoFormat();
+  } else if (format == MF_CLEAN){
+    hintText.Clean();
+  }
+
+  return hintText;
 }
 
 oJson Hint::toJSON() {
   auto ctx = Rando::Context::GetInstance();
   nlohmann::ordered_json log = {};
   if (enabled){
+    log["type"] = StaticData::hintTypeNames[hintType].GetForCurrentLanguage(MF_CLEAN);
+    
     std::vector<std::string> hintMessages = GetAllMessageStrings(MF_CLEAN);
     if (hintMessages.size() == 1){
       log["message"] = hintMessages[0];
@@ -381,28 +395,7 @@ oJson Hint::toJSON() {
     if (distribution != ""){
       log["distribution"] = distribution;
     }
-    log["type"] = StaticData::hintTypeNames[hintType].GetForCurrentLanguage(MF_CLEAN);
-
-    if (hintKeys.size() == 1){
-      log["hintKey"] = std::to_string(hintKeys[0]);
-    } else if (hintKeys.size() > 1){
-      std::vector<std::string> hintKeyStrings = {};
-      for (uint c = 0; c < hintKeys.size(); c++){
-        hintKeyStrings.push_back(std::to_string(hintKeys[c]));
-      }
-      log["hintKeys"] = hintKeyStrings;
-    }
-
-    if (hintTextsChosen.size() == 1){
-      log["hintTextChosen"] = std::to_string(hintTextsChosen[0]);
-    } else if (hintTextsChosen.size() > 1){
-      std::vector<std::string> nameStrings = {};
-      for (uint c = 0; c < hintTextsChosen.size(); c++){
-        nameStrings.push_back(std::to_string(hintTextsChosen[c]));
-      }
-      log["hintTextsChosen"] = nameStrings;
-    }
-
+    
     if (hintType != HINT_TYPE_FOOLISH){
       if (!(StaticData::staticHintInfoMap.contains(ownKey) && 
           StaticData::staticHintInfoMap[ownKey].targetChecks.size() > 0)){
@@ -432,13 +425,13 @@ oJson Hint::toJSON() {
       }
 
       if (itemNamesChosen.size() == 1){
-        log["itemNameChosen"] = std::to_string(itemNamesChosen[0]);
+        log["itemNameChosen"] = itemNamesChosen[0];
       } else if (itemNamesChosen.size() > 1){
-        std::vector<std::string> nameStrings = {};
+        std::vector<uint8_t> nameNums = {};
         for (uint c = 0; c < itemNamesChosen.size(); c++){
-          nameStrings.push_back(std::to_string(itemNamesChosen[c]));
+          nameNums.push_back(itemNamesChosen[c]);
         }
-        log["itemNamesChosen"] = nameStrings;
+        log["itemNamesChosen"] = nameNums;
       }
     }
     if (areas.size() == 1){
@@ -454,13 +447,13 @@ oJson Hint::toJSON() {
     }
 
     if (areaNamesChosen.size() == 1){
-      log["areaNameChosen"] = std::to_string(areaNamesChosen[0]);
+      log["areaNameChosen"] = areaNamesChosen[0];
     } else if (areaNamesChosen.size() > 1){
-      std::vector<std::string> nameStrings = {};
+      std::vector<uint8_t> nameNums = {};
       for (uint c = 0; c < areaNamesChosen.size(); c++){
-        nameStrings.push_back(std::to_string(areaNamesChosen[c]));
+        nameNums.push_back(areaNamesChosen[c]);
       }
-      log["areaNamesChosen"] = nameStrings;
+      log["areaNamesChosen"] = nameNums;
     }
 
     if (trials.size() == 1){
@@ -472,6 +465,27 @@ oJson Hint::toJSON() {
       }
       log["trials"] = trialStrings;
     }
+
+    if (hintKeys.size() == 1){
+      log["hintKey"] = hintKeys[0];
+    } else if (hintKeys.size() > 1){
+      std::vector<uint32_t> hintKeyNums = {};
+      for (uint c = 0; c < hintKeys.size(); c++){
+        hintKeyNums.push_back(hintKeys[c]);
+      }
+      log["hintKeys"] = hintKeyNums;
+    }
+
+    if (hintTextsChosen.size() == 1){
+      log["hintTextChosen"] = hintTextsChosen[0];
+    } else if (hintTextsChosen.size() > 1){
+      std::vector<uint8_t> nameNums = {};
+      for (uint c = 0; c < hintTextsChosen.size(); c++){
+        nameNums.push_back(hintTextsChosen[c]);
+      }
+      log["hintTextsChosen"] = nameNums;
+    }
+
   }
   return log;
 }

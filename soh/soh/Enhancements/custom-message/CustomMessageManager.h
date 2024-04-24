@@ -70,7 +70,8 @@ class CustomMessage {
     CustomMessage operator+(const std::string& right) const;
     void operator+=(const std::string& right);
     void operator+=(const CustomMessage& right);
-    bool operator==(const CustomMessage& right) const;
+    bool operator==(const CustomMessage& operand) const;
+    bool operator==(const std::string& operand) const;
     bool operator!=(const CustomMessage& right) const;
 
     /**

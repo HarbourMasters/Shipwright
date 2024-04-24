@@ -384,30 +384,15 @@ nlohmann::json getValueForMessage(std::unordered_map<std::string, nlohmann::json
 }
 
 void Context::ParseHintJson(nlohmann::json spoilerFileJson) {
-    for (uint8_t hintNum = 1; hintNum < RH_MAX; hintNum++){
-        RandomizerHint hint = (RandomizerHint)hintNum;
-        nlohmann::json hintEntry = getValueForMessage(spoilerFileJson["Gossip Stone Hints"], Rando::StaticData::hintNames[hint]);
-        if (hintEntry.size() > 0){
-            AddHint(hint, Hint(hint, hintEntry));
-        } else {
-            hintEntry = getValueForMessage(spoilerFileJson["Static Hints"], Rando::StaticData::hintNames[hint]);
-            if (hintEntry.size() > 0){
-                AddHint(hint, Hint(hint, hintEntry));
-            } else {
-                if (hint == RH_ALTAR_CHILD && GetOption(RSK_TOT_ALTAR_HINT)){
-                    CreateChildAltarHint();
-                } else if (hint == RH_ALTAR_ADULT && GetOption(RSK_TOT_ALTAR_HINT)){
-                    CreateAdultAltarHint();
-                } else if (hint == RH_GANONDORF_JOKE) {
-                    CreateGanondorfJoke();
-                } else if (hint == RH_GANONDORF_HINT && GetOption(RSK_GANONDORF_HINT)){
-                    CreateGanondorfHint();
-                } else if (StaticData::staticHintInfoMap.contains(hint)){
-                    CreateStaticHintFromData(hint, StaticData::staticHintInfoMap[hint]);
-                }
-            }
-        }
+    for (auto hintData : spoilerFileJson["Gossip Stone Hints"].items()){
+        RandomizerHint hint = (RandomizerHint)StaticData::hintNameToEnum[hintData.key()];
+        AddHint(hint, Hint(hint, hintData.value()));
     }
+    for (auto hintData : spoilerFileJson["StaticHints"].items()){
+        RandomizerHint hint = (RandomizerHint)StaticData::hintNameToEnum[hintData.key()];
+        AddHint(hint, Hint(hint, hintData.value()));
+    }
+    CreateStaticHints();
 }
 
 std::shared_ptr<Settings> Context::GetSettings() {

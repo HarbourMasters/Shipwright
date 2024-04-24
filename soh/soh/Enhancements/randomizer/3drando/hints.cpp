@@ -73,17 +73,6 @@ uint8_t HintText::GetObscureSize() const{
     return obscureText.size();
 }
 
-const CustomMessage& HintText::GetMessage() const {
-    auto ctx = Rando::Context::GetInstance();
-    if (ctx->GetOption(RSK_HINT_CLARITY).Is(RO_HINT_CLARITY_OBSCURE)) {
-        return GetObscure();
-    } else if (ctx->GetOption(RSK_HINT_CLARITY).Is(RO_HINT_CLARITY_AMBIGUOUS)) {
-        return GetAmbiguous();
-    } else {
-        return GetClear();
-    }
-}
-
 const CustomMessage& HintText::GetMessage(uint8_t selection) const {
     auto ctx = Rando::Context::GetInstance();
     if (ctx->GetOption(RSK_HINT_CLARITY).Is(RO_HINT_CLARITY_OBSCURE)) {
@@ -698,47 +687,51 @@ std::vector<RandomizerCheck> FindItemsAndMarkHinted(std::vector<RandomizerGet> i
 
 void CreateChildAltarHint() {
   auto ctx = Rando::Context::GetInstance();
-  std::vector<RandomizerCheck> stoneLocs = {};
-  if (ctx->GetOption(RSK_TOT_ALTAR_HINT)) {
-    //force marking the rewards as hinted if they are at the end of dungeons as they can be inffered
-    if (ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON)){
-      stoneLocs = FindItemsAndMarkHinted({RG_KOKIRI_EMERALD, RG_GORON_RUBY, RG_ZORA_SAPPHIRE}, {});
-    } else {
-      stoneLocs = FindItemsAndMarkHinted({RG_KOKIRI_EMERALD, RG_GORON_RUBY, RG_ZORA_SAPPHIRE}, {RC_ALTAR_HINT_CHILD});
+  if (!ctx->GetHint(RH_ALTAR_CHILD)->IsEnabled()){
+    std::vector<RandomizerCheck> stoneLocs = {};
+    if (ctx->GetOption(RSK_TOT_ALTAR_HINT)) {
+      //force marking the rewards as hinted if they are at the end of dungeons as they can be inffered
+      if (ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON)){
+        stoneLocs = FindItemsAndMarkHinted({RG_KOKIRI_EMERALD, RG_GORON_RUBY, RG_ZORA_SAPPHIRE}, {});
+      } else {
+        stoneLocs = FindItemsAndMarkHinted({RG_KOKIRI_EMERALD, RG_GORON_RUBY, RG_ZORA_SAPPHIRE}, {RC_ALTAR_HINT_CHILD});
+      }
     }
+    ctx->AddHint(RH_ALTAR_CHILD, Hint(RH_ALTAR_CHILD, HINT_TYPE_ALTAR_CHILD, {}, stoneLocs));
   }
-  ctx->AddHint(RH_ALTAR_CHILD, Hint(RH_ALTAR_CHILD, HINT_TYPE_ALTAR_CHILD, {}, stoneLocs));
 }
 
 void CreateAdultAltarHint() {
   auto ctx = Rando::Context::GetInstance();
-  std::vector<RandomizerCheck> medallionLocs = {};
-
-  if (ctx->GetOption(RSK_TOT_ALTAR_HINT)) {
-    //force marking the rewards as hinted if they are at the end of dungeons as they can be inffered
-    if (ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON)){
-    medallionLocs = FindItemsAndMarkHinted({RG_LIGHT_MEDALLION, RG_FOREST_MEDALLION, RG_FIRE_MEDALLION, RG_WATER_MEDALLION, RG_SPIRIT_MEDALLION, RG_SHADOW_MEDALLION},
-                                             {});
-    } else {
+  if (!ctx->GetHint(RH_ALTAR_ADULT)->IsEnabled()){
+    std::vector<RandomizerCheck> medallionLocs = {};
+    if (ctx->GetOption(RSK_TOT_ALTAR_HINT)) {
+      //force marking the rewards as hinted if they are at the end of dungeons as they can be inffered
+      if (ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON)){
       medallionLocs = FindItemsAndMarkHinted({RG_LIGHT_MEDALLION, RG_FOREST_MEDALLION, RG_FIRE_MEDALLION, RG_WATER_MEDALLION, RG_SPIRIT_MEDALLION, RG_SHADOW_MEDALLION},
-                                             {RC_ALTAR_HINT_ADULT});
+                                              {});
+      } else {
+        medallionLocs = FindItemsAndMarkHinted({RG_LIGHT_MEDALLION, RG_FOREST_MEDALLION, RG_FIRE_MEDALLION, RG_WATER_MEDALLION, RG_SPIRIT_MEDALLION, RG_SHADOW_MEDALLION},
+                                              {RC_ALTAR_HINT_ADULT});
+      }
     }
-    
+    ctx->AddHint(RH_ALTAR_ADULT, Hint(RH_ALTAR_ADULT, HINT_TYPE_ALTAR_ADULT, {}, medallionLocs));
   }
-  ctx->AddHint(RH_ALTAR_ADULT, Hint(RH_ALTAR_ADULT, HINT_TYPE_ALTAR_ADULT, {}, medallionLocs));
 }
 
 void CreateStaticHintFromData(RandomizerHint hint, StaticHintInfo staticData){
   auto ctx = Rando::Context::GetInstance();
-  Option option = ctx->GetOption(staticData.setting);
-  if ((std::holds_alternative<bool>(staticData.condition) && option.Is(std::get<bool>(staticData.condition))) ||
-      (std::holds_alternative<uint8_t>(staticData.condition) && option.Is(std::get<uint8_t>(staticData.condition)))){
-    std::vector<RandomizerCheck> locations = {};
-    if (staticData.targetItems.size() > 0){
-      locations = FindItemsAndMarkHinted(staticData.targetItems, staticData.hintChecks);
+  if (!ctx->GetHint(hint)->IsEnabled()){
+    Option option = ctx->GetOption(staticData.setting);
+    if ((std::holds_alternative<bool>(staticData.condition) && option.Is(std::get<bool>(staticData.condition))) ||
+        (std::holds_alternative<uint8_t>(staticData.condition) && option.Is(std::get<uint8_t>(staticData.condition)))){
+      std::vector<RandomizerCheck> locations = {};
+      if (staticData.targetItems.size() > 0){
+        locations = FindItemsAndMarkHinted(staticData.targetItems, staticData.hintChecks);
+      }
+      //hintKeys are defaulted to in the hint object and do not need to be specified
+      ctx->AddHint(hint, Hint(hint, staticData.type, {}, locations, {}, {}, staticData.yourPocket, staticData.num));
     }
-    //hintKeys are defaulted to in the hint object and do not need to be specified
-    ctx->AddHint(hint, Hint(hint, staticData.type, {}, locations, {}, {}, staticData.yourPocket, staticData.num));
   }
 }
 
@@ -751,12 +744,14 @@ void CreateStaticItemHint(RandomizerHint hintKey, std::vector<RandomizerHintText
 
 void CreateGanondorfJoke(){
   auto ctx = Rando::Context::GetInstance();
-  ctx->AddHint(RH_GANONDORF_JOKE, Hint(RH_GANONDORF_JOKE, HINT_TYPE_HINT_KEY, {GetRandomGanonJoke()}));
+  if (!ctx->GetHint(RH_GANONDORF_JOKE)->IsEnabled()){
+    ctx->AddHint(RH_GANONDORF_JOKE, Hint(RH_GANONDORF_JOKE, HINT_TYPE_HINT_KEY, {GetRandomGanonJoke()}));
+  }
 }
 
 void CreateGanondorfHint(){
   auto ctx = Rando::Context::GetInstance();
-  if (ctx->GetOption(RSK_GANONDORF_HINT)){
+  if (ctx->GetOption(RSK_GANONDORF_HINT) && !ctx->GetHint(RH_GANONDORF_HINT)->IsEnabled()){
     if (ctx->GetOption(RSK_SHUFFLE_MASTER_SWORD)) {
       CreateStaticItemHint(RH_GANONDORF_HINT, {RHT_GANONDORF_HINT_LA_ONLY, RHT_GANONDORF_HINT_MS_ONLY, RHT_GANONDORF_HINT_LA_AND_MS}, 
                            {RG_LIGHT_ARROWS, RG_MASTER_SWORD}, {RC_GANONDORF_HINT}, true);
@@ -766,9 +761,7 @@ void CreateGanondorfHint(){
   }
 }
 
-void CreateAllHints(){
-  auto ctx = Rando::Context::GetInstance();
-
+void CreateStaticHints(){
   CreateChildAltarHint();
   CreateAdultAltarHint();
   CreateGanondorfJoke();
@@ -776,6 +769,12 @@ void CreateAllHints(){
   for (auto[hint, staticData] : StaticData::staticHintInfoMap){
     CreateStaticHintFromData(hint, staticData);
   }
+}
+
+void CreateAllHints(){
+  auto ctx = Rando::Context::GetInstance();
+
+  CreateStaticHints();
 
   if (ctx->GetOption(RSK_GOSSIP_STONE_HINTS).IsNot(RO_GOSSIP_STONES_NONE)) {
     SPDLOG_INFO("Creating Hints...");

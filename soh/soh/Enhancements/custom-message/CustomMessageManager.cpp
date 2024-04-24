@@ -213,6 +213,15 @@ bool CustomMessage::operator==(const CustomMessage& operand) const {
     return messages[LANGUAGE_ENG] == operand.messages[LANGUAGE_ENG];
 }
 
+bool CustomMessage::operator==(const std::string& operand) const {
+    for (auto str: messages){
+        if (str == operand){
+            return true;
+        }
+    }
+    return false;
+}
+
 bool CustomMessage::operator!=(const CustomMessage& operand) const {
     return !operator==(operand);
 }
