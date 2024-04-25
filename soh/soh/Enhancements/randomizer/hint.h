@@ -59,6 +59,7 @@ class Hint {
      std::vector<uint8_t> GetHintTextsChosen() const;
      std::vector<uint8_t> GetAreaTextsChosen() const;
      std::vector<TrialKey> GetHintedTrials() const;
+     int GetNum();
      void ResetVariables();
 
      private:

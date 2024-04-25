@@ -205,6 +205,7 @@ std::unordered_map<RandomizerHint, StaticHintInfo> StaticData::staticHintInfoMap
   {RH_HBA_HINT,            StaticHintInfo(HINT_TYPE_ITEM,     {RHT_HBA_HINT_SIGN, RHT_HBA_HINT_NOT_ON_HORSE, RHT_HBA_HINT_INITIAL, RHT_HBA_HINT_HAVE_1000}, RSK_HBA_HINT, true, {RC_GF_HBA_1000_POINTS, RC_GF_HBA_1500_POINTS})},
   {RH_MALON_HINT,          StaticHintInfo(HINT_TYPE_ITEM,     {RHT_MALON_HINT_TURNING_EVIL, RHT_MALON_HINT_HOW_IS_EPONA, RHT_MALON_HINT_OBSTICLE_COURSE, RHT_MALON_HINT_INGO_TEMPTED},RSK_MALON_HINT, true, {RC_KF_LINKS_HOUSE_COW})},
   {RH_BIG_POES_HINT,       StaticHintInfo(HINT_TYPE_ITEM,     {RHT_BIG_POES_HINT},                 RSK_BIG_POES_HINT,       true, {RC_MARKET_10_BIG_POES})},
+  {RH_CHICKENS_HINT,       StaticHintInfo(HINT_TYPE_ITEM,     {RHT_CHICKENS_HINT},                 RSK_CHICKENS_HINT,       true, {RC_KAK_ANJU_AS_CHILD})},
   {RH_BIGGORON_HINT,       StaticHintInfo(HINT_TYPE_ITEM,     {RHT_BIGGORON_HINT},                 RSK_BIGGORON_HINT,       true, {RC_DMT_TRADE_CLAIM_CHECK})},
   {RH_FROGS_HINT,          StaticHintInfo(HINT_TYPE_ITEM,     {RHT_FROGS_HINT},                    RSK_FROGS_HINT,          true, {RC_ZR_FROGS_OCARINA_GAME})},
   {RH_KAK_10_SKULLS_HINT,  StaticHintInfo(HINT_TYPE_ITEM,     {RHT_SKULLS_HINT},                   RSK_KAK_10_SKULLS_HINT,  true, {RC_KAK_10_GOLD_SKULLTULA_REWARD},  {}, {}, false, 10)},

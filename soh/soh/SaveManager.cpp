@@ -573,6 +573,9 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool f
                     SaveManager::Instance->SaveData("", randoContext->GetTrial(trials[i])->GetName().GetForCurrentLanguage(MF_CLEAN));
                 });
 
+                SaveManager::Instance->SaveData("num", hint->GetNum());
+
+
             }
         });
     });

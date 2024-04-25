@@ -2741,7 +2741,7 @@ void StaticData::HintTable_Init() {
                                              // /*spanish*/#[[1]]#. Vendo por #100 rupias#.&" + TWO_WAY_CHOICE() + "#Comprar&No comprar#
 
     hintTextTable[RHT_HBA_HINT_SIGN] = HintText(CustomMessage("#Horseback Archery# Range Prizes:&1000: #[[1]]#&1500: #[[2]]#^@'s Record: #\x1E\x00#",
-                                                              {QM_RED, QM_GREEN, QM_GREEN, QM_GREEN}));
+                                                              {QM_RED, QM_GREEN, QM_GREEN, QM_GREEN}, {}, TEXTBOX_TYPE_WOODEN));
 
     hintTextTable[RHT_HBA_HINT_NOT_ON_HORSE] = HintText(CustomMessage("Hey, rookie!&Come back on your #horse# and take on then #Horseback Archery# challenge!^"
                                                                       "Impress me with a high score of 1000 to win a #[[1]]# or score 1500 for my #[[2]]#!",

@@ -124,6 +124,10 @@ Hint::Hint(RandomizerHint ownKey_, nlohmann::json json_){
     hintTextsChosen.push_back(json_["hintTextChosen"].get<uint8_t>());
   }
 
+  if (json_.contains("num")){
+    num = json_["num"].get<int>();
+  }
+
   FillGapsInData();
   SetLocationsAsHinted();
 }
@@ -486,6 +490,10 @@ oJson Hint::toJSON() {
       log["hintTextsChosen"] = nameNums;
     }
 
+    if (num != 0){
+      log["num"] = num;
+    }
+
   }
   return log;
 }
@@ -694,6 +702,10 @@ std::vector<uint8_t> Hint::GetAreaTextsChosen() const{
 
 std::vector<TrialKey> Hint::GetHintedTrials() const{
   return trials;
+}
+
+int Hint::GetNum(){
+  return num;
 }
 
 void Hint::ResetVariables() {
