@@ -308,7 +308,7 @@ jobs:
         cd build
         cmake -H.. -B. -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/Switch.cmake
         make
-        sudo make install
+        make install
         cd ../..
 
     - name: Fix dubious ownership error
@@ -381,7 +381,7 @@ jobs:
         cd build
         cmake -H.. -B. -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/WiiU.cmake
         make
-        sudo make install
+        make install
         cd ../..
 
     - uses: actions/checkout@v3
