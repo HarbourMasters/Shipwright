@@ -20,6 +20,8 @@
 #define QM_YELLOW "\x46"
 #define QM_BLACK "\x47"
 
+#define HS_HORSE_ARCHERY "\x00"s //HS_HBA is an enum already
+
 typedef enum {
     MF_FORMATTED,
     MF_CLEAN,
@@ -48,6 +50,7 @@ class CustomMessage {
     static std::string ITEM_OBTAINED(uint8_t x) ;
     static std::string NEWLINE() ;
     static std::string COLOR(std::string x) ;
+    static std::string POINTS(std::string x) ;//HIGH_SCORE is also a macro
     static std::string WAIT_FOR_INPUT() ;
     static std::string PLAYER_NAME() ;
 

@@ -5,6 +5,7 @@
 #include "../static_data.h"
 
 using namespace CustomMessages;
+using namespace std::literals::string_literals;
 
 // Big thanks to Lioncache, Gabyelnuevo, Danius88, and Charade for their translations!
 
@@ -2740,7 +2741,7 @@ void StaticData::HintTable_Init() {
                                                            {QM_GREEN, QM_YELLOW, QM_GREEN}, {true}));
                                              // /*spanish*/#[[1]]#. Vendo por #100 rupias#.&" + TWO_WAY_CHOICE() + "#Comprar&No comprar#
 
-    hintTextTable[RHT_HBA_HINT_SIGN] = HintText(CustomMessage("#Horseback Archery# Range Prizes:&1000: #[[1]]#&1500: #[[2]]#^@'s Record: #\x1E\x00#",
+    hintTextTable[RHT_HBA_HINT_SIGN] = HintText(CustomMessage("#Horseback Archery# Range Prizes:&1000: #[[1]]#&1500: #[[2]]#^@'s Record: #" + CustomMessage::POINTS(HS_HORSE_ARCHERY) + "#",
                                                               {QM_RED, QM_GREEN, QM_GREEN, QM_GREEN}, {}, TEXTBOX_TYPE_WOODEN));
 
     hintTextTable[RHT_HBA_HINT_NOT_ON_HORSE] = HintText(CustomMessage("Hey, rookie!&Come back on your #horse# and take on then #Horseback Archery# challenge!^"

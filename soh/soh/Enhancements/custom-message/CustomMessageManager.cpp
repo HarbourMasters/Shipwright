@@ -514,6 +514,10 @@ std::string CustomMessage::COLOR(std::string x) {
     return "\x05"s + x;
 }
 
+std::string CustomMessage::POINTS(std::string x) {
+    return "\x1E"s + x;
+}
+
 std::string CustomMessage::WAIT_FOR_INPUT() {
     return "\x04"s;
 }
