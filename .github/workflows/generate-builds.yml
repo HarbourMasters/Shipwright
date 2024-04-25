@@ -190,6 +190,21 @@ jobs:
         cmake ..
         make
         sudo make install
+    - name: Install latest nlohmann
+      if: ${{ (matrix.os == 'ubuntu-20.04' && !vars.LINUX_COMPATIBILITY_RUNNER) }}
+      run: |
+        sudo apt-get remove nlohmann-json3-dev
+        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
+        if [ ! -d "json-3.11.3" ]; then
+          wget https://github.com/nlohmann/json/archive/refs/tags/v3.11.3.tar.gz
+          tar -xzvf v3.11.3.tar.gz
+        fi
+        cd json-3.11.3
+        mkdir build
+        cd build
+        cmake ..
+        make
+        sudo make install
     - name: Install latest SDL_net
       if: ${{ (matrix.os == 'ubuntu-20.04' && !vars.LINUX_COMPATIBILITY_RUNNER) || (matrix.os == 'ubuntu-22.04' && !vars.LINUX_PERFORMANCE_RUNNER) }}
       run: |
@@ -311,6 +326,17 @@ jobs:
         cmake -H.. -B. -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/WiiU.cmake
         make
         make install
+        cd ../..
+        wget https://github.com/nlohmann/json/archive/refs/tags/v3.11.3.tar.gz
+        tar -xzvf v3.11.3.tar.gz
+        cd json-3.11.3
+        mkdir build
+        cd build
+        cmake -H.. -B. -DJSON_BuildTests=OFF -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/WiiU.cmake
+        make
+        make install
+        cd ../..
+
     - uses: actions/checkout@v3
       with:
         submodules: true
