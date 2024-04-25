@@ -248,14 +248,17 @@ jobs:
         make
         make install
         cd ../..
+        mkdir nlohmann
+        cd nlohmann
         wget https://github.com/nlohmann/json/archive/refs/tags/v3.11.3.tar.gz
-        tar -xzvf json-3.11.3.tar.gz
-        cd json-3.11.3
+        tar -xzvf v3.11.3.tar.gz
+        cd v3.11.3
         mkdir build
         cd build
         cmake -H.. -B. -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/Switch.cmake
         make
         make install
+        cd ../../..
 
     - name: Fix dubious ownership error
       if: ${{ vars.LINUX_RUNNER }}
