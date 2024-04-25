@@ -388,7 +388,7 @@ void Context::ParseHintJson(nlohmann::json spoilerFileJson) {
         RandomizerHint hint = (RandomizerHint)StaticData::hintNameToEnum[hintData.key()];
         AddHint(hint, Hint(hint, hintData.value()));
     }
-    for (auto hintData : spoilerFileJson["StaticHints"].items()){
+    for (auto hintData : spoilerFileJson["Static Hints"].items()){
         RandomizerHint hint = (RandomizerHint)StaticData::hintNameToEnum[hintData.key()];
         AddHint(hint, Hint(hint, hintData.value()));
     }

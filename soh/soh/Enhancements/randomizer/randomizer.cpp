@@ -252,6 +252,13 @@ void Randomizer::LoadHintMessages() {
         "Komm wieder sobald du deinen eigenen&Bogen hast, um einen %rspeziellen Preis%w zu&erhalten!",
         "J'aurai %rune autre récompense%w pour toi&lorsque tu auras ton propre arc."));
 
+    // Warp Song Mysterious text
+    CustomMessageManager::Instance->CreateMessage(Randomizer::hintMessageTableID, TEXT_WARP_MINUET_OF_FOREST,
+        CustomMessage("Warp to&#a mysterious place?#&" + CustomMessages::TWO_WAY_CHOICE() + "#OK&No#",
+            "Zu&#ein mysteriöser Ort#?&" + CustomMessages::TWO_WAY_CHOICE() + "#OK&No#",
+            "Se téléporter vers&#un endroit mystérieux#?&" + CustomMessages::TWO_WAY_CHOICE() + "#OK!&Non#",
+            {QM_RED, QM_GREEN}));
+
     // Lake Hylia water level system
     CustomMessageManager::Instance->CreateMessage(Randomizer::hintMessageTableID, TEXT_LAKE_HYLIA_WATER_SWITCH_SIGN,
         CustomMessage("Water level control system.&Keep away!",

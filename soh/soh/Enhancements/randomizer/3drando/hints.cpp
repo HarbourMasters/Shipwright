@@ -493,10 +493,10 @@ static void CreateTrialHints(uint8_t copies) {
 
 void CreateWarpSongTexts() {
   auto ctx = Rando::Context::GetInstance();
-  if (ctx->GetOption(RSK_SHUFFLE_WARP_SONGS)){
+  if (ctx->GetOption(RSK_WARP_SONG_HINTS)){
     auto warpSongEntrances = GetShuffleableEntrances(EntranceType::WarpSong, false);
     for (auto entrance : warpSongEntrances) {
-      auto destination = entrance->GetConnectedRegion()->GetArea();
+      auto destination = entrance->GetConnectedRegion()->GetArea();//KNOWN ISSUE: says links pocket sometimes, putting off as this will need rewriting when entrance hits are added anyway
       switch (entrance->GetIndex()) {
         case 0x0600: // minuet RANDOTODO make into entrance hints when they are added
           ctx->AddHint(RH_MINUET_WARP_LOC, Hint(RH_MINUET_WARP_LOC, HINT_TYPE_AREA, "", {RHT_WARP_SONG}, {}, {destination}));

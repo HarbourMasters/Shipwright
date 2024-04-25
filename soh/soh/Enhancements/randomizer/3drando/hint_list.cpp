@@ -2596,7 +2596,7 @@ void StaticData::HintTable_Init() {
     |        ALTAR TEXT        |
     ---------------------------*/
 
-    hintTextTable[RHT_CHILD_ALTAR_STONES] = HintText(CustomMessage("3 Spiritual Stone4s found in Hyrule...^$0#[[1]]#...^$1#[[2]]#...^$2#[[3]]#...^",
+    hintTextTable[RHT_CHILD_ALTAR_STONES] = HintText(CustomMessage("3 Spiritual Stone's found in Hyrule...^$0#[[1]]#...^$1#[[2]]#...^$2#[[3]]#...^",
                                                         /*german*/ "Drei Heilige Steine, zu finden in Hyrule...$0#[[1]]#...^$1#[[2]]#...^$2#[[3]]#...^",
                                                         /*french*/ "Les trois Pierres Ancestrales cachées&dans Hyrule...$0#[[1]]#...^$1#[[2]]#...^$2#[[3]]#...^",
                                                         {QM_GREEN, QM_RED, QM_BLUE}, {true, true, true}));
@@ -2689,10 +2689,10 @@ void StaticData::HintTable_Init() {
     ---------------------------*/
 
     hintTextTable[RHT_WARP_SONG] = HintText(CustomMessage("Warp to&#[[1]]#?&" + TWO_WAY_CHOICE() + "#OK&No#",
-                                               /*german*/ "Zu&#[[1]]}?&" + TWO_WAY_CHOICE() + "#OK&No#",
+                                               /*german*/ "Zu&#[[1]]#?&" + TWO_WAY_CHOICE() + "#OK&No#",
                                                /*french*/ "Se téléporter vers&#[[1]]#?&" + TWO_WAY_CHOICE() + "#OK!&Non#",
                                                           {QM_RED, QM_GREEN}));
-
+                                                          
     /*--------------------------
     |   STATIC LOCATION HINTS   |
     ---------------------------*/
@@ -2743,16 +2743,16 @@ void StaticData::HintTable_Init() {
     hintTextTable[RHT_HBA_HINT_SIGN] = HintText(CustomMessage("#Horseback Archery# Range Prizes:&1000: #[[1]]#&1500: #[[2]]#^@'s Record: #\x1E\x00#",
                                                               {QM_RED, QM_GREEN, QM_GREEN, QM_GREEN}));
 
-    hintTextTable[RHT_HBA_HINT_NOT_ON_HORSE] = HintText(CustomMessage("Hey, rookie!&Come back on your #horse#&and take on the&#Horseback Archery# challenge!^"
-                                                                      "Impress me with a high score of 1000&to win a #[[1]]#&or score 1500 for my&#[[2]]#!",
+    hintTextTable[RHT_HBA_HINT_NOT_ON_HORSE] = HintText(CustomMessage("Hey, rookie!&Come back on your #horse# and take on then #Horseback Archery# challenge!^"
+                                                                      "Impress me with a high score of 1000 to win a #[[1]]# or score 1500 for my #[[2]]#!",
                                                                       {QM_RED, QM_RED, QM_GREEN, QM_GREEN}));
 
-    hintTextTable[RHT_HBA_HINT_INITIAL] = HintText(CustomMessage("Hey, rookie!&Want to take on the&#Horseback Archery# challenge?^"
-                                                                 "Impress me with a high score of 1000&to win a #[[1]]#&or score 1500 for my&#[[2]]#!\x0B",
+    hintTextTable[RHT_HBA_HINT_INITIAL] = HintText(CustomMessage("Hey, rookie!&Want to take on the #Horseback Archery# challenge?^"
+                                                                 "Impress me with a high score of 1000 to win a #[[1]]# or score 1500 for my #[[2]]#!\x0B",
                                                                  {QM_RED, QM_GREEN, QM_GREEN}));
 
     hintTextTable[RHT_HBA_HINT_HAVE_1000] = HintText(CustomMessage("Hey, newcomer!&Want to take on the&#Horseback Archery# challenge?^"
-                                                                   "Prove yourself to be a horsemaster&by scoring 1500 points to win &my #[[1]]#!\x0B",
+                                                                   "Prove yourself to be a horsemaster by scoring 1500 points to win  my #[[1]]#!\x0B",
                                                                    {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_MALON_HINT_HOW_IS_EPONA] = HintText(CustomMessage("@! You should come back &with Epona and try to beat my time&on the #Obsticle Course#!^"

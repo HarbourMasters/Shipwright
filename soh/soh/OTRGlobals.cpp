@@ -2629,23 +2629,27 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
                    play->sceneNum == SCENE_TREASURE_BOX_SHOP && ctx->GetOption(RSK_GREG_HINT)) {
             messageEntry = ctx->GetHint(RH_GREG_RUPEE)->GetMessage(MF_AUTO_FORMAT);
         }
-        else if (textId >= TEXT_WARP_MINUET_OF_FOREST && ctx->GetOption(RSK_SHUFFLE_WARP_SONGS)) {
+        else if (textId == TEXT_WARP_MINUET_OF_FOREST && ctx->GetOption(RSK_WARP_SONG_HINTS)) {
             messageEntry = ctx->GetHint(RH_MINUET_WARP_LOC)->GetMessage(MF_FORMATTED);
         }
-        else if (textId >= TEXT_WARP_BOLERO_OF_FIRE && ctx->GetOption(RSK_SHUFFLE_WARP_SONGS)) {
+        else if (textId == TEXT_WARP_BOLERO_OF_FIRE && ctx->GetOption(RSK_WARP_SONG_HINTS)) {
             messageEntry = ctx->GetHint(RH_BOLERO_WARP_LOC)->GetMessage(MF_FORMATTED);
         }
-        else if (textId >= TEXT_WARP_SERENADE_OF_WATER && ctx->GetOption(RSK_SHUFFLE_WARP_SONGS)) {
+        else if (textId == TEXT_WARP_SERENADE_OF_WATER && ctx->GetOption(RSK_WARP_SONG_HINTS)) {
             messageEntry = ctx->GetHint(RH_SERENADE_WARP_LOC)->GetMessage(MF_FORMATTED);
         }
-        else if (textId >= TEXT_WARP_REQUIEM_OF_SPIRIT && ctx->GetOption(RSK_SHUFFLE_WARP_SONGS)) {
+        else if (textId == TEXT_WARP_REQUIEM_OF_SPIRIT && ctx->GetOption(RSK_WARP_SONG_HINTS)) {
             messageEntry = ctx->GetHint(RH_REQUIEM_WARP_LOC)->GetMessage(MF_FORMATTED);
         }
-        else if (textId >= TEXT_WARP_NOCTURNE_OF_SHADOW && ctx->GetOption(RSK_SHUFFLE_WARP_SONGS)) {
+        else if (textId == TEXT_WARP_NOCTURNE_OF_SHADOW && ctx->GetOption(RSK_WARP_SONG_HINTS)) {
             messageEntry = ctx->GetHint(RH_NOCTURNE_WARP_LOC)->GetMessage(MF_FORMATTED);
         }
-        else if (textId >= TEXT_WARP_PRELUDE_OF_LIGHT && ctx->GetOption(RSK_SHUFFLE_WARP_SONGS)) {
+        else if (textId == TEXT_WARP_PRELUDE_OF_LIGHT && ctx->GetOption(RSK_WARP_SONG_HINTS)) {
             messageEntry = ctx->GetHint(RH_PRELUDE_WARP_LOC)->GetMessage(MF_FORMATTED);
+        }
+        else if (textId >= TEXT_WARP_MINUET_OF_FOREST &&  textId <= TEXT_WARP_PRELUDE_OF_LIGHT 
+                 && ctx->GetOption(RSK_SHUFFLE_WARP_SONGS)) {
+            messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_WARP_MINUET_OF_FOREST);
         }
         else if (textId == TEXT_LAKE_HYLIA_WATER_SWITCH_NAVI || textId == TEXT_LAKE_HYLIA_WATER_SWITCH_SIGN) {
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, textId);
