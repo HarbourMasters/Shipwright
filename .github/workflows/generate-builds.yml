@@ -253,7 +253,7 @@ jobs:
         cd json-3.11.3
         mkdir build
         cd build
-        cmake -H.. -B. -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/Switch.cmake
+        cmake -H.. -B. -DJSON_BuildTests=OFF -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/Switch.cmake
         make
         make install
         cd ../..
