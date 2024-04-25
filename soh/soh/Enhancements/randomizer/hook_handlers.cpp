@@ -244,6 +244,9 @@ void RandomizerOnPlayerUpdateForRCQueueHandler() {
             // Skipping ItemGet animation incompatible with checks that require closing a text box to finish
             rc != RC_HF_OCARINA_OF_TIME_ITEM &&
             rc != RC_SPIRIT_TEMPLE_SILVER_GAUNTLETS_CHEST &&
+            rc != RC_MARKET_BOMBCHU_BOWLING_FIRST_PRIZE &&
+            rc != RC_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE &&
+            rc != RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS &&
             // Always show ItemGet animation for ice traps
             !(getItemEntry.modIndex == MOD_RANDOMIZER && getItemEntry.getItemId == RG_ICE_TRAP) &&
             (
