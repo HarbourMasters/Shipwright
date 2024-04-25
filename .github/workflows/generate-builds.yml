@@ -47,6 +47,20 @@ jobs:
         make -j 10
         sudo make install
         sudo cp -av /usr/local/lib/libSDL* /lib/x86_64-linux-gnu/
+    - name: Install latest tinyxml2
+      run: |
+        sudo apt-get remove libtinyxml2-dev
+        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
+        if [ ! -d "tinyxml2-10.0.0" ]; then
+          wget https://github.com/leethomason/tinyxml2/archive/refs/tags/10.0.0.tar.gz
+          tar -xzf 10.0.0.tar.gz
+        fi
+        cd tinyxml2-10.0.0
+        mkdir build
+        cd build
+        cmake ..
+        make
+        sudo make install
     - name: Generate soh.otr
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
@@ -200,6 +214,21 @@ jobs:
           tar -xzvf v3.11.3.tar.gz
         fi
         cd json-3.11.3
+        mkdir build
+        cd build
+        cmake ..
+        make
+        sudo make install
+    - name: Install latest tinyxml2
+      if: ${{ (matrix.os == 'ubuntu-20.04' && !vars.LINUX_COMPATIBILITY_RUNNER) || (matrix.os == 'ubuntu-22.04' && !vars.LINUX_PERFORMANCE_RUNNER) }}
+      run: |
+        sudo apt-get remove libtinyxml2-dev
+        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
+        if [ ! -d "tinyxml2-10.0.0" ]; then
+          wget https://github.com/leethomason/tinyxml2/archive/refs/tags/10.0.0.tar.gz
+          tar -xzf 10.0.0.tar.gz
+        fi
+        cd tinyxml2-10.0.0
         mkdir build
         cd build
         cmake ..
