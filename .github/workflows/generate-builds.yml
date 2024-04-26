@@ -273,21 +273,16 @@ jobs:
   build-switch:
     needs: generate-soh-otr
     runs-on: ${{ (vars.LINUX_RUNNER && fromJSON(vars.LINUX_RUNNER)) || 'ubuntu-latest' }}
+    container:
+      image: devkitpro/devkita64:20240324
     steps:
-    - name: Install host dependencies
+    - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y $(cat .github/workflows/apt-deps.txt)
-    - name: Install dkp-pacman
-      run: |
-        wget https://apt.devkitpro.org/install-devkitpro-pacman
-        chmod +x ./install-devkitpro-pacman
-        sudo ./install-devkitpro-pacman
-    - name: Install dkp-pacman packages
-      run: |
-        sudo dkp-pacman -S --noconfirm switch-dev switch-libpng switch-glad
-    - name: Install extra dkp dependencies
-      run: |
+        sudo apt-get install -y ninja-build
+        sudo apt-get remove -y cmake
+        wget https://github.com/Kitware/CMake/releases/download/v3.28.3/cmake-3.28.3-linux-x86_64.sh -O /tmp/cmake.sh
+        sudo sh /tmp/cmake.sh --prefix=/usr/local/ --exclude-subdir
         wget https://libzip.org/download/libzip-1.10.1.tar.gz
         tar -xzvf libzip-1.10.1.tar.gz
         cd libzip-1.10.1
@@ -303,15 +298,6 @@ jobs:
         mkdir build
         cd build
         cmake -H.. -B. -DJSON_BuildTests=OFF -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/Switch.cmake
-        make
-        make install
-        cd ../..
-        wget https://github.com/leethomason/tinyxml2/archive/refs/tags/10.0.0.tar.gz
-        tar -xzf 10.0.0.tar.gz
-        cd tinyxml2-10.0.0
-        mkdir build
-        cd build
-        cmake -H.. -B. -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/Switch.cmake
         make
         make install
         cd ../..
