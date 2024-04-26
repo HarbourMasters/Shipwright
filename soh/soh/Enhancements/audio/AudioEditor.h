@@ -10,9 +10,9 @@
 #include <ImGui/imgui.h>
 #include "AudioCollection.h"
 
-class AudioEditor : public LUS::GuiWindow {
+class AudioEditor : public ShipDK::GuiWindow {
     public:
-        using LUS::GuiWindow::GuiWindow;
+        using GuiWindow::GuiWindow;
 
         void DrawElement() override;
         void InitElement() override;

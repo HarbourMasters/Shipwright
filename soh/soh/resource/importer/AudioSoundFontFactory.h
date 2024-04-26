@@ -4,8 +4,8 @@
 #include "ResourceFactoryBinary.h"
 
 namespace SOH {
-class ResourceFactoryBinaryAudioSoundFontV2 : public LUS::ResourceFactoryBinary {
+class ResourceFactoryBinaryAudioSoundFontV2 : public ShipDK::ResourceFactoryBinary {
   public:
-    std::shared_ptr<LUS::IResource> ReadResource(std::shared_ptr<LUS::File> file) override;
+    std::shared_ptr<ShipDK::IResource> ReadResource(std::shared_ptr<ShipDK::File> file) override;
 };
 } // namespace SOH

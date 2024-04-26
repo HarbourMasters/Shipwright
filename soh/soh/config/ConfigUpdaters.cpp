@@ -1,11 +1,11 @@
 #include "ConfigUpdaters.h"
 #include "soh/Enhancements/audio/AudioCollection.h"
 
-namespace LUS {
+namespace SOH {
     ConfigVersion1Updater::ConfigVersion1Updater() : ConfigVersionUpdater(1) {}
     ConfigVersion2Updater::ConfigVersion2Updater() : ConfigVersionUpdater(2) {}
     
-    void ConfigVersion1Updater::Update(Config* conf) {
+    void ConfigVersion1Updater::Update(ShipDK::Config* conf) {
         if (conf->GetInt("Window.Width", 640) == 640) {
             conf->Erase("Window.Width");
         }
@@ -36,10 +36,10 @@ namespace LUS {
         if (conf->GetInt("Window.Fullscreen.Height", 1080) == 1080) {
             conf->Erase("Window.Fullscreen.Height");
         }
-        if (conf->GetInt("Shortcuts.Fullscreen", KbScancode::LUS_KB_F11) == KbScancode::LUS_KB_F10) {
+        if (conf->GetInt("Shortcuts.Fullscreen", ShipDK::KbScancode::LUS_KB_F11) == ShipDK::KbScancode::LUS_KB_F10) {
             conf->Erase("Shortcuts.Fullscreen");
         }
-        if (conf->GetInt("Shortcuts.Console", KbScancode::LUS_KB_OEM_3) == KbScancode::LUS_KB_OEM_3) {
+        if (conf->GetInt("Shortcuts.Console", ShipDK::KbScancode::LUS_KB_OEM_3) == ShipDK::KbScancode::LUS_KB_OEM_3) {
             conf->Erase("Shortcuts.Console");
         }
         if (conf->GetString("Game.SaveName", "") == "") {
@@ -63,7 +63,7 @@ namespace LUS {
         CVarClear("gSeededRandomizedEnemies");
     }
 
-    void ConfigVersion2Updater::Update(Config* conf) {
+    void ConfigVersion2Updater::Update(ShipDK::Config* conf) {
         for (auto seq : AudioCollection::Instance->GetAllSequences()) {
             CVarClear(std::string("gAudioEditor.ReplacedSequences." + seq.second.sfxKey).c_str());
         }

@@ -9,11 +9,11 @@
 
 namespace SOH {
 
-class Scene : public LUS::Resource<void> {
+class Scene : public ShipDK::Resource<void> {
 public:
   using Resource::Resource;
 
-    Scene() : Resource(std::shared_ptr<LUS::ResourceInitData>()) {}
+    Scene() : Resource(std::shared_ptr<ShipDK::ResourceInitData>()) {}
 
     void* GetPointer();
   size_t GetPointerSize();

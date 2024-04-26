@@ -54,7 +54,7 @@ void CosmeticsEditor_ResetAll();
 void CosmeticsEditor_ResetGroup(CosmeticGroup group);
 void ApplyOrResetCustomGfxPatches(bool manualChange = true);
 
-class CosmeticsEditorWindow : public LUS::GuiWindow {
+class CosmeticsEditorWindow : public ShipDK::GuiWindow {
   public:
     using GuiWindow::GuiWindow;
 

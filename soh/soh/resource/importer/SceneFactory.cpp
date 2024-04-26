@@ -58,7 +58,7 @@ ResourceFactoryBinarySceneV0::ResourceFactoryBinarySceneV0() {
     sceneCommandFactories[SceneCommandID::SetMesh] = std::make_shared<SetMeshFactory>();
 }
 
-void ResourceFactoryBinarySceneV0::ParseSceneCommands(std::shared_ptr<Scene> scene, std::shared_ptr<LUS::BinaryReader> reader) {
+void ResourceFactoryBinarySceneV0::ParseSceneCommands(std::shared_ptr<Scene> scene, std::shared_ptr<ShipDK::BinaryReader> reader) {
     uint32_t commandCount = reader->ReadUInt32();
     scene->commands.reserve(commandCount);
 
@@ -68,16 +68,16 @@ void ResourceFactoryBinarySceneV0::ParseSceneCommands(std::shared_ptr<Scene> sce
 }
 
 std::shared_ptr<ISceneCommand> ResourceFactoryBinarySceneV0::ParseSceneCommand(std::shared_ptr<Scene> scene,
-                                                                std::shared_ptr<LUS::BinaryReader> reader, uint32_t index) {
+                                                                std::shared_ptr<ShipDK::BinaryReader> reader, uint32_t index) {
     SceneCommandID cmdID = (SceneCommandID)reader->ReadInt32();
 
-    reader->Seek(-sizeof(int32_t), LUS::SeekOffsetType::Current);
+    reader->Seek(-sizeof(int32_t), ShipDK::SeekOffsetType::Current);
 
     std::shared_ptr<ISceneCommand> result = nullptr;
     auto commandFactory = ResourceFactoryBinarySceneV0::sceneCommandFactories[cmdID];
 
     if (commandFactory != nullptr) {
-        auto initData = std::make_shared<LUS::ResourceInitData>();
+        auto initData = std::make_shared<ShipDK::ResourceInitData>();
         initData->Id = scene->GetInitData()->Id;
         initData->Type = static_cast<uint32_t>(SOH::ResourceType::SOH_SceneCommand);
         initData->Path = scene->GetInitData()->Path + "/SceneCommand" + std::to_string(index);
@@ -93,13 +93,13 @@ std::shared_ptr<ISceneCommand> ResourceFactoryBinarySceneV0::ParseSceneCommand(s
     return result;
 }
 
-std::shared_ptr<LUS::IResource> ResourceFactoryBinarySceneV0::ReadResource(std::shared_ptr<LUS::File> file) {
+std::shared_ptr<ShipDK::IResource> ResourceFactoryBinarySceneV0::ReadResource(std::shared_ptr<ShipDK::File> file) {
     if (!FileHasValidFormatAndReader(file)) {
         return nullptr;
     }
 
     auto scene = std::make_shared<Scene>(file->InitData);
-    auto reader = std::get<std::shared_ptr<LUS::BinaryReader>>(file->Reader);
+    auto reader = std::get<std::shared_ptr<ShipDK::BinaryReader>>(file->Reader);
 
     ParseSceneCommands(scene, reader);
 

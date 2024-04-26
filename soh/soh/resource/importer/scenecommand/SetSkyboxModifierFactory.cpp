@@ -3,8 +3,8 @@
 #include "spdlog/spdlog.h"
 
 namespace SOH {
-std::shared_ptr<LUS::IResource> SetSkyboxModifierFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData,
-                                                                 std::shared_ptr<LUS::BinaryReader> reader) {
+std::shared_ptr<ShipDK::IResource> SetSkyboxModifierFactory::ReadResource(std::shared_ptr<ShipDK::ResourceInitData> initData,
+                                                                 std::shared_ptr<ShipDK::BinaryReader> reader) {
     auto setSkyboxModifier = std::make_shared<SetSkyboxModifier>(initData);
 
 	ReadCommandId(setSkyboxModifier, reader);

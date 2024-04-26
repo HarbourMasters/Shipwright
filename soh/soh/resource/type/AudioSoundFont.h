@@ -52,11 +52,11 @@ typedef struct {
     s32 fntIndex;
 } SoundFont; // size = 0x14
 
-class AudioSoundFont : public LUS::Resource<SoundFont> {
+class AudioSoundFont : public ShipDK::Resource<SoundFont> {
 public:
     using Resource::Resource;
 
-    AudioSoundFont() : Resource(std::shared_ptr<LUS::ResourceInitData>()) {}
+    AudioSoundFont() : Resource(std::shared_ptr<ShipDK::ResourceInitData>()) {}
 
     SoundFont* GetPointer();
     size_t GetPointerSize();

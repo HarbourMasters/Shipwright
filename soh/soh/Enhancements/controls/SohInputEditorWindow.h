@@ -20,7 +20,7 @@ typedef struct {
     N64ButtonMask defaultBtn;
 } CustomButtonMap;
 
-class SohInputEditorWindow : public LUS::GuiWindow {
+class SohInputEditorWindow : public ShipDK::GuiWindow {
   public:
     using GuiWindow::GuiWindow;
     ~SohInputEditorWindow();
@@ -38,14 +38,14 @@ class SohInputEditorWindow : public LUS::GuiWindow {
     void UpdateElement() override;
 
   private:
-    void DrawStickDirectionLine(const char* axisDirectionName, uint8_t port, uint8_t stick, LUS::Direction direction,
+    void DrawStickDirectionLine(const char* axisDirectionName, uint8_t port, uint8_t stick, ShipDK::Direction direction,
                                 ImVec4 color);
     void DrawButtonLine(const char* buttonName, uint8_t port, uint16_t bitmask, ImVec4 color);
     void DrawButtonLineEditMappingButton(uint8_t port, uint16_t bitmask, std::string id);
     void DrawButtonLineAddMappingButton(uint8_t port, uint16_t bitmask);
 
-    void DrawStickDirectionLineEditMappingButton(uint8_t port, uint8_t stick, LUS::Direction direction, std::string id);
-    void DrawStickDirectionLineAddMappingButton(uint8_t port, uint8_t stick, LUS::Direction direction);
+    void DrawStickDirectionLineEditMappingButton(uint8_t port, uint8_t stick, ShipDK::Direction direction, std::string id);
+    void DrawStickDirectionLineAddMappingButton(uint8_t port, uint8_t stick, ShipDK::Direction direction);
     void DrawStickSection(uint8_t port, uint8_t stick, int32_t id, ImVec4 color);
 
     void DrawRumbleSection(uint8_t port);
@@ -74,20 +74,20 @@ class SohInputEditorWindow : public LUS::GuiWindow {
     int32_t mGameInputBlockTimer;
     int32_t mMappingInputBlockTimer;
     int32_t mRumbleTimer;
-    std::shared_ptr<LUS::ControllerRumbleMapping> mRumbleMappingToTest;
+    std::shared_ptr<ShipDK::ControllerRumbleMapping> mRumbleMappingToTest;
 
     // mBitmaskToMappingIds[port][bitmask] = { id0, id1, ... }
     std::unordered_map<uint8_t, std::unordered_map<uint16_t, std::vector<std::string>>> mBitmaskToMappingIds;
 
     // mStickDirectionToMappingIds[port][stick][direction] = { id0, id1, ... }
     std::unordered_map<uint8_t,
-                       std::unordered_map<uint8_t, std::unordered_map<LUS::Direction, std::vector<std::string>>>>
+                       std::unordered_map<uint8_t, std::unordered_map<ShipDK::Direction, std::vector<std::string>>>>
         mStickDirectionToMappingIds;
 
     void UpdateBitmaskToMappingIds(uint8_t port);
     void UpdateStickDirectionToMappingIds(uint8_t port);
 
-    void GetButtonColorsForLUSDeviceIndex(LUS::LUSDeviceIndex lusIndex, ImVec4& buttonColor,
+    void GetButtonColorsForLUSDeviceIndex(ShipDK::ShipDKDeviceIndex lusIndex, ImVec4& buttonColor,
                                           ImVec4& buttonHoveredColor);
     void DrawLinkTab();
     void DrawIvanTab();
@@ -97,7 +97,7 @@ class SohInputEditorWindow : public LUS::GuiWindow {
     std::set<uint16_t> mDpadBitmasks;
     std::set<uint16_t> mModifierButtonsBitmasks;
     void DrawButtonDeviceIcons(uint8_t portIndex, std::set<uint16_t> bitmasks);
-    void DrawAnalogStickDeviceIcons(uint8_t portIndex, LUS::Stick stick);
+    void DrawAnalogStickDeviceIcons(uint8_t portIndex, ShipDK::Stick stick);
     void DrawRumbleDeviceIcons(uint8_t portIndex);
     void DrawGyroDeviceIcons(uint8_t portIndex);
     void DrawLEDDeviceIcons(uint8_t portIndex);

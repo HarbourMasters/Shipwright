@@ -63,11 +63,11 @@ LinkAnimationHeader linkAnimationHeader;
 TransformUpdateIndex transformUpdateIndex;
 };
 
-class Animation : public LUS::Resource<AnimationData> {
+class Animation : public ShipDK::Resource<AnimationData> {
 public:
     using Resource::Resource;
 
-    Animation() : Resource(std::shared_ptr<LUS::ResourceInitData>()) {}
+    Animation() : Resource(std::shared_ptr<ShipDK::ResourceInitData>()) {}
 
     AnimationData* GetPointer();
     size_t GetPointerSize();

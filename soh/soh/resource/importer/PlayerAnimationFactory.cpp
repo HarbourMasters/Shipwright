@@ -3,13 +3,13 @@
 #include "spdlog/spdlog.h"
 
 namespace SOH {
-std::shared_ptr<LUS::IResource> ResourceFactoryBinaryPlayerAnimationV0::ReadResource(std::shared_ptr<LUS::File> file) {
+std::shared_ptr<ShipDK::IResource> ResourceFactoryBinaryPlayerAnimationV0::ReadResource(std::shared_ptr<ShipDK::File> file) {
     if (!FileHasValidFormatAndReader(file)) {
         return nullptr;
     }
 
     auto playerAnimation = std::make_shared<PlayerAnimation>(file->InitData);
-    auto reader = std::get<std::shared_ptr<LUS::BinaryReader>>(file->Reader);
+    auto reader = std::get<std::shared_ptr<ShipDK::BinaryReader>>(file->Reader);
 
     uint32_t numEntries = reader->ReadUInt32();
     playerAnimation->limbRotData.reserve(numEntries);

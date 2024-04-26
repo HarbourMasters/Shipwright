@@ -1322,7 +1322,7 @@ void Draw_Placements(){
             if (ImGui::Button("Reset##EnemyHealthBarWidth")) {
                 CVarClear("gCosmetics.Hud_EnemyHealthBarWidth.Value");
                 CVarClear("gCosmetics.Hud_EnemyHealthBarWidth.Changed");
-                LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                ShipDK::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
             }
             ImGui::NewLine();
             ImGui::EndTable();
@@ -1333,7 +1333,7 @@ void Reset_Option_Single(const char* Button_Title, const char* name) {
     ImGui::SameLine();
     if (ImGui::Button(Button_Title)) {
         CVarClear(name);
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        ShipDK::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
 }
 void Reset_Option_Double(const char* Button_Title, const char* name) {
@@ -1341,14 +1341,14 @@ void Reset_Option_Double(const char* Button_Title, const char* name) {
     if (ImGui::Button(Button_Title)) {
         CVarClear((std::string(name) + ".Value").c_str());
         CVarClear((std::string(name) + ".Changed").c_str());
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        ShipDK::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
 }
 void DrawSillyTab() {
     ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
     if (CVarGetInteger("gLetItSnow", 0)) {
         if (UIWidgets::EnhancementCheckbox("Let It Snow", "gLetItSnow")) {
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+            ShipDK::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         }
     }
     if (UIWidgets::EnhancementSliderFloat("Link Body Scale: %.3fx", "##Link_BodyScale", "gCosmetics.Link_BodyScale.Value", 0.001f, 0.025f, "", 0.01f, true)) {
@@ -1358,7 +1358,7 @@ void DrawSillyTab() {
     if (ImGui::Button("Reset##Link_BodyScale")) {
         CVarClear("gCosmetics.Link_BodyScale.Value");
         CVarClear("gCosmetics.Link_BodyScale.Changed");
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        ShipDK::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         if (gPlayState != nullptr) {
             static Player* player = GET_PLAYER(gPlayState);
             player->actor.scale.x = 0.01f;
@@ -1612,7 +1612,7 @@ void DrawCosmeticRow(CosmeticOption& cosmeticOption) {
         CVarSetInteger((cosmeticOption.changedCvar), 1);
         ApplySideEffects(cosmeticOption);
         ApplyOrResetCustomGfxPatches();
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        ShipDK::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
     ImGui::SameLine();
     ImGui::Text("%s", cosmeticOption.label.c_str());
@@ -1620,7 +1620,7 @@ void DrawCosmeticRow(CosmeticOption& cosmeticOption) {
     if (ImGui::Button(("Random##" + cosmeticOption.label).c_str())) {
         RandomizeColor(cosmeticOption);
         ApplyOrResetCustomGfxPatches();
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        ShipDK::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
     if (cosmeticOption.supportsRainbow) {
         ImGui::SameLine();
@@ -1630,21 +1630,21 @@ void DrawCosmeticRow(CosmeticOption& cosmeticOption) {
             CVarSetInteger((cosmeticOption.changedCvar), 1);
             ApplySideEffects(cosmeticOption);
             ApplyOrResetCustomGfxPatches();
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+            ShipDK::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         }
     }
     ImGui::SameLine();
     bool isLocked = (bool)CVarGetInteger((cosmeticOption.lockedCvar), 0);
     if (ImGui::Checkbox(("Locked##" + cosmeticOption.label).c_str(), &isLocked)) {
         CVarSetInteger((cosmeticOption.lockedCvar), isLocked);
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        ShipDK::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
     if (CVarGetInteger((cosmeticOption.changedCvar), 0)) {
         ImGui::SameLine();
         if (ImGui::Button(("Reset##" + cosmeticOption.label).c_str())) {
             ResetColor(cosmeticOption);
             ApplyOrResetCustomGfxPatches();
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+            ShipDK::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         }
     }
 }
@@ -1660,7 +1660,7 @@ void DrawCosmeticGroup(CosmeticGroup cosmeticGroup) {
             }
         }
         ApplyOrResetCustomGfxPatches();
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        ShipDK::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
     ImGui::SameLine();
     if (ImGui::Button(("Reset##" + label).c_str())) {
@@ -1670,7 +1670,7 @@ void DrawCosmeticGroup(CosmeticGroup cosmeticGroup) {
             }
         }
         ApplyOrResetCustomGfxPatches();
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        ShipDK::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
     for (auto& [id, cosmeticOption] : cosmeticOptions) {
         if (cosmeticOption.group == cosmeticGroup && (!cosmeticOption.advancedOption || CVarGetInteger("gCosmetics.AdvancedMode", 0))) {
@@ -1706,7 +1706,7 @@ void CosmeticsEditorWindow::DrawElement() {
                     CVarSetInteger(cosmeticOption.lockedCvar, 1);
                 }
             }
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+            ShipDK::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         }
         ImGui::SameLine();
         if (ImGui::Button("Unlock All Advanced", ImVec2(ImGui::GetContentRegionAvail().x, 30.0f))) {
@@ -1715,7 +1715,7 @@ void CosmeticsEditorWindow::DrawElement() {
                     CVarSetInteger(cosmeticOption.lockedCvar, 0);
                 }
             }
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+            ShipDK::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         }
     }
     UIWidgets::EnhancementCheckbox("Sync Rainbow colors", "gCosmetics.RainbowSync");
@@ -1734,7 +1734,7 @@ void CosmeticsEditorWindow::DrawElement() {
             }
         }
         ApplyOrResetCustomGfxPatches();
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        ShipDK::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
 
     if (ImGui::Button("Lock All", ImVec2(ImGui::GetContentRegionAvail().x / 2, 30.0f))) {
@@ -1743,7 +1743,7 @@ void CosmeticsEditorWindow::DrawElement() {
                 CVarSetInteger(cosmeticOption.lockedCvar, 1);
             }
         }
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        ShipDK::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
     ImGui::SameLine();
     if (ImGui::Button("Unlock All", ImVec2(ImGui::GetContentRegionAvail().x, 30.0f))) {
@@ -1752,7 +1752,7 @@ void CosmeticsEditorWindow::DrawElement() {
                 CVarSetInteger(cosmeticOption.lockedCvar, 0);
             }
         }
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        ShipDK::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
 
     if (ImGui::BeginTabBar("CosmeticsContextTabBar", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
@@ -1777,7 +1777,7 @@ void CosmeticsEditorWindow::DrawElement() {
             if (ImGui::Button("Reset##Trails_Duration")) {
                 CVarClear("gCosmetics.Trails_Duration.Value");
                 CVarClear("gCosmetics.Trails_Duration.Changed");
-                LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                ShipDK::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
             }
             ImGui::EndTabItem();
         }
@@ -1843,7 +1843,7 @@ void CosmeticsEditorWindow::InitElement() {
         cosmeticOption.currentColor.z = cvarColor.b / 255.0;
         cosmeticOption.currentColor.w = cvarColor.a / 255.0;
     }
-    LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    ShipDK::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     ApplyOrResetCustomGfxPatches();
     ApplyAuthenticGfxPatches();
 
@@ -1860,7 +1860,7 @@ void CosmeticsEditor_RandomizeAll() {
         }
     }
 
-    LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    ShipDK::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     ApplyOrResetCustomGfxPatches();
 }
 
@@ -1873,7 +1873,7 @@ void CosmeticsEditor_RandomizeGroup(CosmeticGroup group) {
         }
     }
 
-    LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    ShipDK::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     ApplyOrResetCustomGfxPatches();
 }
 
@@ -1884,7 +1884,7 @@ void CosmeticsEditor_ResetAll() {
         }
     }
 
-    LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    ShipDK::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     ApplyOrResetCustomGfxPatches();
 }
 
@@ -1895,6 +1895,6 @@ void CosmeticsEditor_ResetGroup(CosmeticGroup group) {
         }
     }
 
-    LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    ShipDK::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     ApplyOrResetCustomGfxPatches();
 }

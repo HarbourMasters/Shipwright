@@ -14,7 +14,7 @@ typedef enum {
 } ColViewerRenderSetting;
 
 #ifdef __cplusplus
-class ColViewerWindow : public LUS::GuiWindow {
+class ColViewerWindow : public ShipDK::GuiWindow {
   public:
     using GuiWindow::GuiWindow;
 

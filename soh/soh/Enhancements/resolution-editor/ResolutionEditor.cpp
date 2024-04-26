@@ -117,7 +117,7 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
                                                    CVarGetInteger("gLowResMode", 0);
             if (UIWidgets::EnhancementSliderFloat("Internal Resolution: %.1f%%", "##IMul", "gInternalResolution", 0.5f,
                                                   2.0f, "", 1.0f, true, true, disabled_resolutionSlider)) {
-                LUS::Context::GetInstance()->GetWindow()->SetResolutionMultiplier(
+                ShipDK::Context::GetInstance()->GetWindow()->SetResolutionMultiplier(
                     CVarGetFloat("gInternalResolution", 1));
             }
             UIWidgets::Tooltip("Multiplies your output resolution by the value entered.");
@@ -126,7 +126,7 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
 #ifndef __WIIU__
             if (UIWidgets::PaddedEnhancementSliderInt("MSAA: %d", "##IMSAA", "gMSAAValue", 1, 8, "", 1, true, true,
                                                       false)) {
-                LUS::Context::GetInstance()->GetWindow()->SetMsaaLevel(CVarGetInteger("gMSAAValue", 1));
+                ShipDK::Context::GetInstance()->GetWindow()->SetMsaaLevel(CVarGetInteger("gMSAAValue", 1));
             };
             UIWidgets::Tooltip(
                 "Activates multi-sample anti-aliasing when above 1x, up to 8x for 8 samples for every pixel.\n\n"
