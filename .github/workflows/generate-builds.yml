@@ -310,6 +310,10 @@ jobs:
         make
         make install
         cd ../..
+        echo 🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋
+        echo CMAKE MODULE PATH
+        echo $CMAKE_MODULE_PATH
+        echo 🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋
 
     - name: Fix dubious ownership error
       if: ${{ vars.LINUX_RUNNER }}
@@ -374,15 +378,19 @@ jobs:
         make
         make install
         cd ../..
-# wget https://github.com/leethomason/tinyxml2/archive/refs/tags/10.0.0.tar.gz
-# tar -xzf 10.0.0.tar.gz
-# cd tinyxml2-10.0.0
-# mkdir build
-# cd build
-# cmake -H.. -B. -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/WiiU.cmake
-# make
-# make install
-# cd ../..
+        wget https://github.com/leethomason/tinyxml2/archive/refs/tags/10.0.0.tar.gz
+        tar -xzf 10.0.0.tar.gz
+        cd tinyxml2-10.0.0
+        mkdir build
+        cd build
+        cmake -H.. -B. -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/WiiU.cmake
+        make
+        make install
+        cd ../..
+        echo 🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋
+        echo CMAKE MODULE PATH
+        echo $CMAKE_MODULE_PATH
+        echo 🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋
 
     - uses: actions/checkout@v3
       with:
