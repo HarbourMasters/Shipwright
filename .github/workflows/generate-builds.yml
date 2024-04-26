@@ -284,6 +284,7 @@ jobs:
         chmod +x ./install-devkitpro-pacman
         sudo ./install-devkitpro-pacman
     - name: Install dkp-pacman packages
+      run: |
         sudo dkp-pacman -S --noconfirm switch-dev switch-libpng switch-glad
     - name: Install extra dkp dependencies
       run: |
