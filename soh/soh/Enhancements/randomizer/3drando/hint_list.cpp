@@ -2778,7 +2778,7 @@ void StaticData::HintTable_Init() {
     hintTextTable[RHT_BIG_POES_HINT] = HintText(CustomMessage("You have #\x1E\x01 Poe Points#!&Reach 1000 and you'll get a&#[[1]]#!",
                                                               {QM_YELLOW, QM_GREEN}));
 
-    hintTextTable[RHT_BIGGORON_HINT] = HintText(CustomMessage("Arrrrrre you here to claim my finest&#[[1]]#?&Shoooooow me your #Claim Check#.",
+    hintTextTable[RHT_BIGGORON_HINT] = HintText(CustomMessage("Arrrrrre you here to claim my finest #[[1]]#? Shoooooow me your #Claim Check#.",
                                                               {QM_GREEN, QM_RED}));
 
     hintTextTable[RHT_FROGS_HINT] = HintText(CustomMessage("Some frogs holding #[[1]]# are looking at you from underwater...",
