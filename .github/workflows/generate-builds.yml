@@ -306,7 +306,7 @@ jobs:
         cd tinyxml2-10.0.0
         mkdir build
         cd build
-        cmake ..
+        cmake -H.. -B. -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/Switch.cmake
         make
         make install
         cd ../..
