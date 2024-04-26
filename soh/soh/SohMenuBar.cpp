@@ -666,6 +666,10 @@ void DrawEnhancementsMenu() {
 
                 UIWidgets::PaddedEnhancementSliderInt("Text Speed: %dx", "##TEXTSPEED", CVAR_ENHANCEMENT("TextSpeed"), 1, 5, "", 1, true, false, true);
                 UIWidgets::PaddedEnhancementCheckbox("Skip Text", CVAR_ENHANCEMENT("SkipText"), false, true);
+                UIWidgets::PaddedEnhancementSliderInt("Slow Text Speed: %dx", "##SLOWTEXTSPEED", CVAR_ENHANCEMENT("SlowTextSpeed"), 1, 5, "", 1, true, false, true);
+                if (ImGui::Button("Match Normal Text")) {
+                    CVarSetInteger(CVAR_ENHANCEMENT("SlowTextSpeed"), CVarGetInteger(CVAR_ENHANCEMENT("TextSpeed"), 1));
+                }
                 UIWidgets::Tooltip("Holding down B skips text");
                 UIWidgets::PaddedEnhancementSliderFloat("King Zora Speed: %.2fx", "##MWEEPSPEED", CVAR_ENHANCEMENT("MweepSpeed"), 0.1f, 5.0f, "", 1.0f, false, false, true);
                 UIWidgets::PaddedEnhancementSliderInt("Vine/Ladder Climb speed +%d", "##CLIMBSPEED", CVAR_ENHANCEMENT("ClimbSpeed"), 0, 12, "", 0, true, false, true);

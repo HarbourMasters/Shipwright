@@ -300,6 +300,7 @@ const std::vector<const char*> enhancementsCvars = {
     CVAR_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"),
     CVAR_ENHANCEMENT("TimeSavers.SkipChildStealth"),
     CVAR_ENHANCEMENT("TimeSavers.SkipTowerEscape"),
+    CVAR_ENHANCEMENT("SlowTextSpeed"),
 };
 
 const std::vector<const char*> cheatCvars = {
@@ -559,6 +560,8 @@ const std::vector<PresetEntry> vanillaPlusPresetEntries = {
 
     // Text Speed (1 to 5)
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("TextSpeed"), 5),
+    // Slow Text Speed (1 to 5)
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("SlowTextSpeed"), 5),
     // Skip Text
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("SkipText"), 1),
     // King Zora Speed (1 to 5)
@@ -630,6 +633,8 @@ const std::vector<PresetEntry> enhancedPresetEntries = {
 
     // Text Speed (1 to 5)
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("TextSpeed"), 5),
+    // Slow Text Speed (1 to 5)
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("SlowTextSpeed"), 5),
     // Skip Text
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("SkipText"), 1),
     // King Zora Speed (1 to 5)
@@ -762,6 +767,8 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
 
     // Text Speed (1 to 5)
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("TextSpeed"), 5),
+    // Slow Text Speed (1 to 5)
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("SlowTextSpeed"), 5),
     // Skip Text
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("SkipText"), 1),
     // King Zora Speed (1 to 5)
@@ -914,6 +921,7 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
 const std::vector<PresetEntry> spockRacePresetEntries = {
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("LogicRules"), 0),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("TextSpeed"), 5),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("SlowTextSpeed"), 5),
     PRESET_ENTRY_FLOAT(CVAR_ENHANCEMENT("MweepSpeed"), 5.0f),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("ClimbSpeed"), 4),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FasterBlockPush"), 5),
