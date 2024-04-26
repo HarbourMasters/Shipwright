@@ -236,7 +236,7 @@ const std::vector<std::string> Hint::GetAllMessageStrings(MessageFormat format) 
   std::vector<std::string> hintMessages = {};
   uint8_t numMessages = GetNumberOfMessages();
   for (int c = 0; c < numMessages; c++){
-    hintMessages.push_back(GetMessage(format, c).GetForCurrentLanguage(format));
+    hintMessages.push_back(GetHintMessage(format, c).GetForCurrentLanguage(format));
   }
   return hintMessages;
 }
@@ -286,7 +286,7 @@ const HintText Hint::GetHintText(uint8_t id) const {
   }
 }
 
-const CustomMessage Hint::GetMessage(MessageFormat format, uint8_t id) const {
+const CustomMessage Hint::GetHintMessage(MessageFormat format, uint8_t id) const {
   auto ctx = Rando::Context::GetInstance();
   CustomMessage hintText = CustomMessage("ERROR:NO MESSAGE FOUND");
 
@@ -301,22 +301,22 @@ const CustomMessage Hint::GetMessage(MessageFormat format, uint8_t id) const {
     }
   } else if (hintType == HINT_TYPE_ALTAR_CHILD){
     if (ctx->GetOption(RSK_TOT_ALTAR_HINT)){
-      hintText = StaticData::hintTextTable[RHT_CHILD_ALTAR_STONES].GetMessage();
+      hintText = StaticData::hintTextTable[RHT_CHILD_ALTAR_STONES].GetHintMessage();
     }
     if (ctx->GetOption(RSK_DOOR_OF_TIME).Is(RO_DOOROFTIME_OPEN)) {
-        hintText += CustomMessage(StaticData::hintTextTable[RHT_CHILD_ALTAR_TEXT_END_DOTOPEN].GetMessage());
+        hintText += CustomMessage(StaticData::hintTextTable[RHT_CHILD_ALTAR_TEXT_END_DOTOPEN].GetHintMessage());
     } else if (ctx->GetOption(RSK_DOOR_OF_TIME).Is(RO_DOOROFTIME_SONGONLY)) {
-        hintText += CustomMessage(StaticData::hintTextTable[RHT_CHILD_ALTAR_TEXT_END_DOTSONGONLY].GetMessage());
+        hintText += CustomMessage(StaticData::hintTextTable[RHT_CHILD_ALTAR_TEXT_END_DOTSONGONLY].GetHintMessage());
     } else {
-        hintText += CustomMessage(StaticData::hintTextTable[RHT_CHILD_ALTAR_TEXT_END_DOTCLOSED].GetMessage());
+        hintText += CustomMessage(StaticData::hintTextTable[RHT_CHILD_ALTAR_TEXT_END_DOTCLOSED].GetHintMessage());
     }
   } else if (hintType == HINT_TYPE_ALTAR_ADULT){
     if (ctx->GetOption(RSK_TOT_ALTAR_HINT)){
-      hintText = StaticData::hintTextTable[RHT_ADULT_ALTAR_MEDALLIONS].GetMessage();
+      hintText = StaticData::hintTextTable[RHT_ADULT_ALTAR_MEDALLIONS].GetHintMessage();
     }
-    hintText += GetBridgeReqsText() + GetGanonBossKeyText() + StaticData::hintTextTable[RHT_ADULT_ALTAR_TEXT_END].GetMessage();
+    hintText += GetBridgeReqsText() + GetGanonBossKeyText() + StaticData::hintTextTable[RHT_ADULT_ALTAR_TEXT_END].GetHintMessage();
   } else {
-    hintText = GetHintText(id).GetMessage(chosenMessage);
+    hintText = GetHintText(id).GetHintMessage(chosenMessage);
   }
 
   std::vector<CustomMessage> toInsert = {};
@@ -404,7 +404,7 @@ oJson Hint::toJSON() {
         } else if (locations.size() > 1){
           //If we have defaults, no need to write more
           std::vector<std::string> locStrings = {};
-          for (uint c = 0; c < locations.size(); c++){
+          for (size_t c = 0; c < locations.size(); c++){
             locStrings.push_back(StaticData::GetLocation(locations[c])->GetName());//RANDOTODO change to CustomMessage when VB is done
           }
           log["locations"] = locStrings;
@@ -417,7 +417,7 @@ oJson Hint::toJSON() {
           log["item"] = StaticData::GetItemTable()[items[0]].GetName().GetEnglish();//RANDOTODO change to CustomMessage;
         } else if (items.size() > 1){
           std::vector<std::string> itemStrings = {};
-          for (uint c = 0; c < items.size(); c++){
+          for (size_t c = 0; c < items.size(); c++){
             itemStrings.push_back(StaticData::GetItemTable()[items[c]].GetName().GetEnglish());//RANDOTODO change to CustomMessage
           }
           log["items"] = itemStrings;
@@ -428,7 +428,7 @@ oJson Hint::toJSON() {
         log["itemNameChosen"] = itemNamesChosen[0];
       } else if (itemNamesChosen.size() > 1){
         std::vector<uint8_t> nameNums = {};
-        for (uint c = 0; c < itemNamesChosen.size(); c++){
+        for (size_t c = 0; c < itemNamesChosen.size(); c++){
           nameNums.push_back(itemNamesChosen[c]);
         }
         log["itemNamesChosen"] = nameNums;
@@ -440,7 +440,7 @@ oJson Hint::toJSON() {
           !(StaticData::staticHintInfoMap.contains(ownKey) && StaticData::staticHintInfoMap[ownKey].targetChecks.size() > 0)){
       // If we got locations from defaults, areas are derived from them and don't need logging
       std::vector<std::string> areaStrings = {};
-      for (uint c = 0; c < areas.size(); c++){
+      for (size_t c = 0; c < areas.size(); c++){
         areaStrings.push_back(StaticData::hintTextTable[StaticData::areaNames[areas[c]]].GetClear().GetForCurrentLanguage(MF_CLEAN));
       }
       log["areas"] = areaStrings;
@@ -450,7 +450,7 @@ oJson Hint::toJSON() {
       log["areaNameChosen"] = areaNamesChosen[0];
     } else if (areaNamesChosen.size() > 1){
       std::vector<uint8_t> nameNums = {};
-      for (uint c = 0; c < areaNamesChosen.size(); c++){
+      for (size_t c = 0; c < areaNamesChosen.size(); c++){
         nameNums.push_back(areaNamesChosen[c]);
       }
       log["areaNamesChosen"] = nameNums;
@@ -460,7 +460,7 @@ oJson Hint::toJSON() {
       log["trial"] = ctx->GetTrial(trials[0])->GetName().GetForCurrentLanguage(MF_CLEAN);
     } else if (trials.size() > 0){
       std::vector<std::string> trialStrings = {};
-      for (uint c = 0; c < trials.size(); c++){
+      for (size_t c = 0; c < trials.size(); c++){
         trialStrings.push_back(ctx->GetTrial(trials[c])->GetName().GetForCurrentLanguage(MF_CLEAN));
       }
       log["trials"] = trialStrings;
@@ -470,7 +470,7 @@ oJson Hint::toJSON() {
       log["hintKey"] = hintKeys[0];
     } else if (hintKeys.size() > 1){
       std::vector<uint32_t> hintKeyNums = {};
-      for (uint c = 0; c < hintKeys.size(); c++){
+      for (size_t c = 0; c < hintKeys.size(); c++){
         hintKeyNums.push_back(hintKeys[c]);
       }
       log["hintKeys"] = hintKeyNums;
@@ -480,7 +480,7 @@ oJson Hint::toJSON() {
       log["hintTextChosen"] = hintTextsChosen[0];
     } else if (hintTextsChosen.size() > 1){
       std::vector<uint8_t> nameNums = {};
-      for (uint c = 0; c < hintTextsChosen.size(); c++){
+      for (size_t c = 0; c < hintTextsChosen.size(); c++){
         nameNums.push_back(hintTextsChosen[c]);
       }
       log["hintTextsChosen"] = nameNums;
@@ -534,7 +534,7 @@ const CustomMessage Hint::GetItemName(uint8_t slot, bool mysterious) const {
   if (itemNamesChosen.size() > slot){
     nameNum = itemNamesChosen[slot];
   }
-  return GetItemHintText(slot, mysterious).GetMessage(nameNum);
+  return GetItemHintText(slot, mysterious).GetHintMessage(nameNum);
 }
 
 const CustomMessage Hint::GetAreaName(uint8_t slot) const { 
@@ -542,7 +542,7 @@ const CustomMessage Hint::GetAreaName(uint8_t slot) const {
   if (areaNamesChosen.size() > slot){
     nameNum = areaNamesChosen[slot];
   }
-  return GetAreaHintText(slot).GetMessage(nameNum);
+  return GetAreaHintText(slot).GetHintMessage(nameNum);
 }
 
 
@@ -551,33 +551,33 @@ CustomMessage Hint::GetBridgeReqsText() {
   CustomMessage bridgeMessage;
 
   if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_ALWAYS_OPEN)) {
-    return StaticData::hintTextTable[RHT_BRIDGE_OPEN_HINT].GetMessage();
+    return StaticData::hintTextTable[RHT_BRIDGE_OPEN_HINT].GetHintMessage();
   } 
   else if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_VANILLA)) {
-    return StaticData::hintTextTable[RHT_BRIDGE_VANILLA_HINT].GetMessage();
+    return StaticData::hintTextTable[RHT_BRIDGE_VANILLA_HINT].GetHintMessage();
   } 
   else if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_STONES)) {
-    bridgeMessage = StaticData::hintTextTable[RHT_BRIDGE_VANILLA_HINT].GetMessage();
+    bridgeMessage = StaticData::hintTextTable[RHT_BRIDGE_VANILLA_HINT].GetHintMessage();
     bridgeMessage.InsertNumber(ctx->GetOption(RSK_RAINBOW_BRIDGE_STONE_COUNT).Value<uint8_t>());
   } 
   else if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_MEDALLIONS)) {
-    bridgeMessage = StaticData::hintTextTable[RHT_BRIDGE_MEDALLIONS_HINT].GetMessage();
+    bridgeMessage = StaticData::hintTextTable[RHT_BRIDGE_MEDALLIONS_HINT].GetHintMessage();
     bridgeMessage.InsertNumber(ctx->GetOption(RSK_RAINBOW_BRIDGE_MEDALLION_COUNT).Value<uint8_t>());
   } 
   else if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_DUNGEON_REWARDS)) {
-    bridgeMessage = StaticData::hintTextTable[RHT_BRIDGE_REWARDS_HINT].GetMessage();
+    bridgeMessage = StaticData::hintTextTable[RHT_BRIDGE_REWARDS_HINT].GetHintMessage();
     bridgeMessage.InsertNumber(ctx->GetOption(RSK_RAINBOW_BRIDGE_REWARD_COUNT).Value<uint8_t>());
   } 
   else if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_DUNGEONS)) {
-    bridgeMessage = StaticData::hintTextTable[RHT_BRIDGE_DUNGEONS_HINT].GetMessage();
+    bridgeMessage = StaticData::hintTextTable[RHT_BRIDGE_DUNGEONS_HINT].GetHintMessage();
     bridgeMessage.InsertNumber(ctx->GetOption(RSK_RAINBOW_BRIDGE_DUNGEON_COUNT).Value<uint8_t>());
   } 
   else if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_TOKENS)) {
-    bridgeMessage = StaticData::hintTextTable[RHT_BRIDGE_TOKENS_HINT].GetMessage();
+    bridgeMessage = StaticData::hintTextTable[RHT_BRIDGE_TOKENS_HINT].GetHintMessage();
     bridgeMessage.InsertNumber(ctx->GetOption(RSK_RAINBOW_BRIDGE_TOKEN_COUNT).Value<uint8_t>());
   } 
   else if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_GREG)) {
-    return  StaticData::hintTextTable[RHT_BRIDGE_GREG_HINT].GetMessage();
+    return  StaticData::hintTextTable[RHT_BRIDGE_GREG_HINT].GetHintMessage();
   }
   return bridgeMessage;
 }
@@ -587,51 +587,51 @@ CustomMessage Hint::GetGanonBossKeyText() {
   CustomMessage ganonBossKeyMessage;
 
   if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_STARTWITH)) {
-    return StaticData::hintTextTable[RHT_GANON_BK_START_WITH_HINT].GetMessage();
+    return StaticData::hintTextTable[RHT_GANON_BK_START_WITH_HINT].GetHintMessage();
   } 
   else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_VANILLA)) {
-    return StaticData::hintTextTable[RHT_GANON_BK_VANILLA_HINT].GetMessage();
+    return StaticData::hintTextTable[RHT_GANON_BK_VANILLA_HINT].GetHintMessage();
   } 
   else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_OWN_DUNGEON)) {
-    return StaticData::hintTextTable[RHT_GANON_BK_OWN_DUNGEON_HINT].GetMessage();
+    return StaticData::hintTextTable[RHT_GANON_BK_OWN_DUNGEON_HINT].GetHintMessage();
   } 
   else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_ANY_DUNGEON)) {
-    return StaticData::hintTextTable[RHT_GANON_BK_ANY_DUNGEON_HINT].GetMessage();
+    return StaticData::hintTextTable[RHT_GANON_BK_ANY_DUNGEON_HINT].GetHintMessage();
   } 
   else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_OVERWORLD)) {
-    return StaticData::hintTextTable[RHT_GANON_BK_OVERWORLD_HINT].GetMessage();
+    return StaticData::hintTextTable[RHT_GANON_BK_OVERWORLD_HINT].GetHintMessage();
   } 
   else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_ANYWHERE)) {
-    return StaticData::hintTextTable[RHT_GANON_BK_ANYWHERE_HINT].GetMessage();
+    return StaticData::hintTextTable[RHT_GANON_BK_ANYWHERE_HINT].GetHintMessage();
   } 
   else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_KAK_TOKENS)) {
-    return StaticData::hintTextTable[RHT_GANON_BK_SKULLTULA_HINT].GetMessage();
+    return StaticData::hintTextTable[RHT_GANON_BK_SKULLTULA_HINT].GetHintMessage();
   } 
   else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_VANILLA)) {
-    return StaticData::hintTextTable[RHT_LACS_VANILLA_HINT].GetMessage();
+    return StaticData::hintTextTable[RHT_LACS_VANILLA_HINT].GetHintMessage();
   } 
   else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_STONES)) {
-    ganonBossKeyMessage = StaticData::hintTextTable[RHT_LACS_STONES_HINT].GetMessage();
+    ganonBossKeyMessage = StaticData::hintTextTable[RHT_LACS_STONES_HINT].GetHintMessage();
     ganonBossKeyMessage.InsertNumber(ctx->GetOption(RSK_LACS_STONE_COUNT).Value<uint8_t>());
   } 
   else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_MEDALLIONS)) {
-    ganonBossKeyMessage = StaticData::hintTextTable[RHT_LACS_MEDALLIONS_HINT].GetMessage();
+    ganonBossKeyMessage = StaticData::hintTextTable[RHT_LACS_MEDALLIONS_HINT].GetHintMessage();
     ganonBossKeyMessage.InsertNumber(ctx->GetOption(RSK_LACS_MEDALLION_COUNT).Value<uint8_t>());
   }
   else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_REWARDS)) {
-    ganonBossKeyMessage = StaticData::hintTextTable[RHT_LACS_REWARDS_HINT].GetMessage();
+    ganonBossKeyMessage = StaticData::hintTextTable[RHT_LACS_REWARDS_HINT].GetHintMessage();
     ganonBossKeyMessage.InsertNumber(ctx->GetOption(RSK_LACS_REWARD_COUNT).Value<uint8_t>());
   } 
   else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_DUNGEONS)) {
-    ganonBossKeyMessage = StaticData::hintTextTable[RHT_LACS_DUNGEONS_HINT].GetMessage();
+    ganonBossKeyMessage = StaticData::hintTextTable[RHT_LACS_DUNGEONS_HINT].GetHintMessage();
     ganonBossKeyMessage.InsertNumber(ctx->GetOption(RSK_LACS_DUNGEON_COUNT).Value<uint8_t>());
   } 
   else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_TOKENS)) {
-    ganonBossKeyMessage = StaticData::hintTextTable[RHT_LACS_TOKENS_HINT].GetMessage();
+    ganonBossKeyMessage = StaticData::hintTextTable[RHT_LACS_TOKENS_HINT].GetHintMessage();
     ganonBossKeyMessage.InsertNumber(ctx->GetOption(RSK_LACS_TOKEN_COUNT).Value<uint8_t>());
   }
   else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_TRIFORCE_HUNT)) {
-    return StaticData::hintTextTable[RHT_GANON_BK_TRIFORCE_HINT].GetMessage();
+    return StaticData::hintTextTable[RHT_GANON_BK_TRIFORCE_HINT].GetHintMessage();
   }
   return ganonBossKeyMessage;
 }

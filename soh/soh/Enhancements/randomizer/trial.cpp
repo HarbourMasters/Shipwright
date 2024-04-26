@@ -7,7 +7,7 @@ TrialInfo::TrialInfo() = default;
 TrialInfo::~TrialInfo() = default;
 
 CustomMessage TrialInfo::GetName() const {
-    return StaticData::hintTextTable[nameKey].GetMessage();
+    return StaticData::hintTextTable[nameKey].GetHintMessage();
 }
 
 RandomizerHintTextKey TrialInfo::GetNameKey() const {
