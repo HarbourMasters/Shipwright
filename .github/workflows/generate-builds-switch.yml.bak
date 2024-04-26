@@ -1,0 +1,73 @@
+  build-switch:
+    needs: generate-soh-otr
+    runs-on: ${{ (vars.LINUX_RUNNER && fromJSON(vars.LINUX_RUNNER)) || 'ubuntu-latest' }}
+    container:
+      image: devkitpro/devkita64:20240324
+    steps:
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y ninja-build
+        sudo apt-get remove -y cmake
+        wget https://github.com/Kitware/CMake/releases/download/v3.28.3/cmake-3.28.3-linux-x86_64.sh -O /tmp/cmake.sh
+        sudo sh /tmp/cmake.sh --prefix=/usr/local/ --exclude-subdir
+        wget https://libzip.org/download/libzip-1.10.1.tar.gz
+        tar -xzvf libzip-1.10.1.tar.gz
+        cd libzip-1.10.1
+        mkdir build
+        cd build
+        cmake -H.. -B. -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/Switch.cmake
+        make
+        make install
+        cd ../..
+        wget https://github.com/nlohmann/json/archive/refs/tags/v3.11.3.tar.gz
+        tar -xzvf v3.11.3.tar.gz
+        cd json-3.11.3
+        mkdir build
+        cd build
+        cmake -H.. -B. -DJSON_BuildTests=OFF -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/Switch.cmake
+        make
+        make install
+        cd ../..
+        wget https://github.com/leethomason/tinyxml2/archive/refs/tags/10.0.0.tar.gz
+        tar -xzf 10.0.0.tar.gz
+        cd tinyxml2-10.0.0
+        mkdir build
+        cd build
+        cmake -H.. -B. -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/Switch.cmake
+        make
+        make install
+        cd ../..
+
+    - name: Fix dubious ownership error
+      if: ${{ vars.LINUX_RUNNER }}
+      run: git config --global --add safe.directory '*'
+    - uses: actions/checkout@v3
+      with:
+        submodules: true
+    - name: ccache
+      uses: hendrikmuhs/ccache-action@v1.2.11
+      with:
+        key: ${{ runner.os }}-switch-ccache-${{ github.ref }}-${{ github.sha }}
+        restore-keys: |
+          ${{ runner.os }}-switch-ccache-${{ github.ref }}
+          ${{ runner.os }}-switch-ccache-
+    - name: Build SoH
+      run: |
+        cmake -H. -Bbuild-switch -GNinja -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/Switch.cmake -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DCMAKE_C_COMPILER_LAUNCHER=ccache
+        cmake --build build-switch --target soh_nro -j3
+
+        mv build-switch/soh/*.nro soh.nro
+        mv README.md readme.txt
+    - name: Download soh.otr
+      uses: actions/download-artifact@v4
+      with:
+        name: soh.otr
+    - name: Upload build
+      uses: actions/upload-artifact@v4
+      with:
+        name: soh-switch
+        path: |
+          soh.nro
+          soh.otr
+          readme.txt
