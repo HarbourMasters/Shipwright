@@ -3047,7 +3047,7 @@ void CollisionCheck_ApplyDamage(PlayState* play, CollisionCheckContext* colChkCt
         collider->actor->colChkInfo.damage += damage;
     }
 
-    if (CVarGetInteger("gIvanCoopModeEnabled", 0)) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("IvanCoopModeEnabled"), 0)) {
         collider->actor->colChkInfo.damage *= GET_PLAYER(play)->ivanDamageMultiplier;
     }
 }
@@ -3667,7 +3667,7 @@ u8 CollisionCheck_GetSwordDamage(s32 dmgFlags, PlayState* play) {
         damage = 8;
     }
 
-    if (CVarGetInteger("gIvanCoopModeEnabled", 0)) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("IvanCoopModeEnabled"), 0)) {
         damage *= GET_PLAYER(play)->ivanDamageMultiplier;
     }
 

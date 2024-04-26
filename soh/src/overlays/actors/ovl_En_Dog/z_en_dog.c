@@ -373,7 +373,7 @@ void EnDog_FollowPlayer(EnDog* this, PlayState* play) {
         return;
     }
 
-    if (CVarGetInteger("gDogFollowsEverywhere", 0)) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("DogFollowsEverywhere"), 0)) {
         // If the dog is too far away it's usually because they are stuck in a hole or on a different floor, this gives them a push
         if (this->actor.xyzDistToPlayerSq > 250000.0f) {
             Player* player = GET_PLAYER(play);
@@ -394,7 +394,7 @@ void EnDog_FollowPlayer(EnDog* this, PlayState* play) {
     }
 
     if (this->actor.xzDistToPlayer > 400.0f) {
-        if (CVarGetInteger("gDogFollowsEverywhere", 0)) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("DogFollowsEverywhere"), 0)) {
             // Instead of stopping following when the dog gets too far, just speed them up.
             speed = this->actor.xzDistToPlayer / 25.0f;
         } else {
@@ -419,7 +419,7 @@ void EnDog_FollowPlayer(EnDog* this, PlayState* play) {
 
     Math_ApproachF(&this->actor.speedXZ, speed, 0.6f, 1.0f);
 
-    if (!(this->actor.xzDistToPlayer > 400.0f) || CVarGetInteger("gDogFollowsEverywhere", 0)) {
+    if (!(this->actor.xzDistToPlayer > 400.0f) || CVarGetInteger(CVAR_ENHANCEMENT("DogFollowsEverywhere"), 0)) {
         Math_SmoothStepToS(&this->actor.world.rot.y, this->actor.yawTowardsPlayer, 10, 1000, 1);
         this->actor.shape.rot = this->actor.world.rot;
     }
@@ -500,11 +500,11 @@ void EnDog_Draw(Actor* thisx, PlayState* play) {
     EnDog* this = (EnDog*)thisx;
     Color_RGB8 colors[] = { { 255, 255, 200 }, { 150, 100, 50 } };
 
-    if (CVarGetInteger("gCosmetics.NPC_Dog1.Changed", 0)) {
-        colors[0] = CVarGetColor24("gCosmetics.NPC_Dog1.Value", colors[0]);
+    if (CVarGetInteger(CVAR_COSMETIC("NPC.Dog1.Changed"), 0)) {
+        colors[0] = CVarGetColor24(CVAR_COSMETIC("NPC.Dog1.Value"), colors[0]);
     }
-    if (CVarGetInteger("gCosmetics.NPC_Dog2.Changed", 0)) {
-        colors[1] = CVarGetColor24("gCosmetics.NPC_Dog2.Value", colors[1]);
+    if (CVarGetInteger(CVAR_COSMETIC("NPC.Dog2.Changed"), 0)) {
+        colors[1] = CVarGetColor24(CVAR_COSMETIC("NPC.Dog2.Value"), colors[1]);
     }
 
     OPEN_DISPS(play->state.gfxCtx);

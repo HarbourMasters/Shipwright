@@ -2123,17 +2123,17 @@ Color_RGB8 GetColorForControllerLED() {
             switch (CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC)) {
                 case EQUIP_VALUE_TUNIC_KOKIRI:
                     color = source == LED_SOURCE_TUNIC_COSMETICS
-                                ? CVarGetColor24("gCosmetics.Link_KokiriTunic.Value", kokiriColor)
+                                ? CVarGetColor24(CVAR_COSMETIC("Link.KokiriTunic.Value"), kokiriColor)
                                 : kokiriColor;
                     break;
                 case EQUIP_VALUE_TUNIC_GORON:
                     color = source == LED_SOURCE_TUNIC_COSMETICS
-                                ? CVarGetColor24("gCosmetics.Link_GoronTunic.Value", goronColor)
+                                ? CVarGetColor24(CVAR_COSMETIC("Link.GoronTunic.Value"), goronColor)
                                 : goronColor;
                     break;
                 case EQUIP_VALUE_TUNIC_ZORA:
                     color = source == LED_SOURCE_TUNIC_COSMETICS
-                                ? CVarGetColor24("gCosmetics.Link_ZoraTunic.Value", zoraColor)
+                                ? CVarGetColor24(CVAR_COSMETIC("Link.ZoraTunic.Value"), zoraColor)
                                 : zoraColor;
                     break;
             }
@@ -2145,16 +2145,16 @@ Color_RGB8 GetColorForControllerLED() {
                 switch (category) {
                     case ACTORCAT_PLAYER:
                         if (source == LED_SOURCE_NAVI_COSMETICS &&
-                            CVarGetInteger("gCosmetics.Navi_IdlePrimary.Changed", 0)) {
-                            color = CVarGetColor24("gCosmetics.Navi_IdlePrimary.Value", defaultIdleColor.inner);
+                            CVarGetInteger(CVAR_COSMETIC("Navi.IdlePrimary.Changed"), 0)) {
+                            color = CVarGetColor24(CVAR_COSMETIC("Navi.IdlePrimary.Value"), defaultIdleColor.inner);
                             break;
                         }
                         color = LEDColorDefaultNaviColorList[category].inner;
                         break;
                     case ACTORCAT_NPC:
                         if (source == LED_SOURCE_NAVI_COSMETICS &&
-                            CVarGetInteger("gCosmetics.Navi_NPCPrimary.Changed", 0)) {
-                            color = CVarGetColor24("gCosmetics.Navi_NPCPrimary.Value", defaultNPCColor.inner);
+                            CVarGetInteger(CVAR_COSMETIC("Navi.NPCPrimary.Changed"), 0)) {
+                            color = CVarGetColor24(CVAR_COSMETIC("Navi.NPCPrimary.Value"), defaultNPCColor.inner);
                             break;
                         }
                         color = LEDColorDefaultNaviColorList[category].inner;
@@ -2162,23 +2162,23 @@ Color_RGB8 GetColorForControllerLED() {
                     case ACTORCAT_ENEMY:
                     case ACTORCAT_BOSS:
                         if (source == LED_SOURCE_NAVI_COSMETICS &&
-                            CVarGetInteger("gCosmetics.Navi_EnemyPrimary.Changed", 0)) {
-                            color = CVarGetColor24("gCosmetics.Navi_EnemyPrimary.Value", defaultEnemyColor.inner);
+                            CVarGetInteger(CVAR_COSMETIC("Navi.EnemyPrimary.Changed"), 0)) {
+                            color = CVarGetColor24(CVAR_COSMETIC("Navi.EnemyPrimary.Value"), defaultEnemyColor.inner);
                             break;
                         }
                         color = LEDColorDefaultNaviColorList[category].inner;
                         break;
                     default:
                         if (source == LED_SOURCE_NAVI_COSMETICS &&
-                            CVarGetInteger("gCosmetics.Navi_PropsPrimary.Changed", 0)) {
-                            color = CVarGetColor24("gCosmetics.Navi_PropsPrimary.Value", defaultPropsColor.inner);
+                            CVarGetInteger(CVAR_COSMETIC("Navi.PropsPrimary.Changed"), 0)) {
+                            color = CVarGetColor24(CVAR_COSMETIC("Navi.PropsPrimary.Value"), defaultPropsColor.inner);
                             break;
                         }
                         color = LEDColorDefaultNaviColorList[category].inner;
                 }
             } else { // No target actor.
-                if (source == LED_SOURCE_NAVI_COSMETICS && CVarGetInteger("gCosmetics.Navi_IdlePrimary.Changed", 0)) {
-                    color = CVarGetColor24("gCosmetics.Navi_IdlePrimary.Value", defaultIdleColor.inner);
+                if (source == LED_SOURCE_NAVI_COSMETICS && CVarGetInteger(CVAR_COSMETIC("Navi.IdlePrimary.Changed"), 0)) {
+                    color = CVarGetColor24(CVAR_COSMETIC("Navi.IdlePrimary.Value"), defaultIdleColor.inner);
                 } else {
                     color = LEDColorDefaultNaviColorList[ACTORCAT_PLAYER].inner;
                 }
@@ -2597,7 +2597,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
         }
     }
     if (textId == TEXT_GS_NO_FREEZE || textId == TEXT_GS_FREEZE) {
-        if (CVarGetInteger("gInjectItemCounts", 0) != 0) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("InjectItemCounts"), 0) != 0) {
             // The freeze text cannot be manually dismissed and must be auto-dismissed.
             // This is fine and even wanted when skull tokens are not shuffled, but when
             // when they are shuffled we don't want to be able to manually dismiss the box.
@@ -2605,7 +2605,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             // animation until the text box auto-dismisses.
             // RANDOTODO: Implement a way to determine if an item came from a skulltula and
             // inject the auto-dismiss control code if it did.
-            if (CVarGetInteger("gSkulltulaFreeze", 0) != 0 &&
+            if (CVarGetInteger(CVAR_ENHANCEMENT("SkulltulaFreeze"), 0) != 0 &&
                 !(IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_TOKENS) != RO_TOKENSANITY_OFF)) {
                 textId = TEXT_GS_NO_FREEZE;
             } else {
@@ -2618,18 +2618,18 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             messageEntry.Replace("{{gsCount}}", std::to_string(gsCount));
         }
     }
-    if (textId == TEXT_HEART_CONTAINER && CVarGetInteger("gInjectItemCounts", 0)) {
+    if (textId == TEXT_HEART_CONTAINER && CVarGetInteger(CVAR_ENHANCEMENT("InjectItemCounts"), 0)) {
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_HEART_CONTAINER);
         messageEntry.Replace("{{heartContainerCount}}", std::to_string(gSaveContext.sohStats.heartContainers + 1));
     }
-    if (textId == TEXT_HEART_PIECE && CVarGetInteger("gInjectItemCounts", 0)) {
+    if (textId == TEXT_HEART_PIECE && CVarGetInteger(CVAR_ENHANCEMENT("InjectItemCounts"), 0)) {
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_HEART_PIECE);
         messageEntry.Replace("{{heartPieceCount}}", std::to_string(gSaveContext.sohStats.heartPieces + 1));
     }
-    if (textId == TEXT_MARKET_GUARD_NIGHT && CVarGetInteger("gMarketSneak", 0) && play->sceneNum == SCENE_MARKET_ENTRANCE_NIGHT) {
+    if (textId == TEXT_MARKET_GUARD_NIGHT && CVarGetInteger(CVAR_ENHANCEMENT("MarketSneak"), 0) && play->sceneNum == SCENE_MARKET_ENTRANCE_NIGHT) {
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_MARKET_GUARD_NIGHT);
     }
-    if (textId == TEXT_FISHERMAN_LEAVE && CVarGetInteger("gQuitFishingAtDoor", 0)) {
+    if (textId == TEXT_FISHERMAN_LEAVE && CVarGetInteger(CVAR_ENHANCEMENT("QuitFishingAtDoor"), 0)) {
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_FISHERMAN_LEAVE);
     }
     font->charTexBuf[0] = (messageEntry.GetTextBoxType() << 4) | messageEntry.GetTextBoxPosition();

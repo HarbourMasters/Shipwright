@@ -125,7 +125,7 @@ void EnBom_Init(Actor* thisx, PlayState* play) {
     Collider_SetCylinder(play, &this->bombCollider, thisx, &sCylinderInit);
     Collider_SetJntSph(play, &this->explosionCollider, thisx, &sJntSphInit, &this->explosionColliderItems[0]);
     this->explosionColliderItems[0].info.toucher.damage += (thisx->shape.rot.z & 0xFF00) >> 8;
-    if (CVarGetInteger("gNutsExplodeBombs", 0)) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("NutsExplodeBombs"), 0)) {
         this->bombCollider.info.bumper.dmgFlags |= 1;
     }
 
@@ -199,7 +199,7 @@ void EnBom_Explode(EnBom* this, PlayState* play) {
         func_800AA000(this->actor.xzDistToPlayer, 0xFF, 0x14, 0x96);
     }
 
-    if (CVarGetInteger("gStaticExplosionRadius", 0)) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("StaticExplosionRadius"), 0)) {
         //72 is the maximum radius of an OoT bomb explosion
         this->explosionCollider.elements[0].dim.worldSphere.radius = 72;
     } else {
@@ -397,7 +397,7 @@ void EnBom_Draw(Actor* thisx, PlayState* play) {
 
     if (thisx->params == BOMB_BODY) {
         Gfx_SetupDL_25Opa(play->state.gfxCtx);
-        if (!CVarGetInteger("gDisableBombBillboarding", 0)) {
+        if (!CVarGetInteger(CVAR_ENHANCEMENT("DisableBombBillboarding"), 0)) {
             Matrix_ReplaceRotation(&play->billboardMtxF);
         }
         func_8002EBCC(thisx, play, 0);
