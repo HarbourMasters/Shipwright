@@ -125,7 +125,7 @@ void Sram_OpenSave() {
 
         default:
             // Use the saved entrance value with remember save location, except when in grottos/fairy fountains
-            if (CVarGetInteger("gRememberSaveLocation", 0) && gSaveContext.savedSceneNum != SCENE_FAIRYS_FOUNTAIN &&
+            if (CVarGetInteger(CVAR_ENHANCEMENT("RememberSaveLocation"), 0) && gSaveContext.savedSceneNum != SCENE_FAIRYS_FOUNTAIN &&
                 gSaveContext.savedSceneNum != SCENE_GROTTOS) {
                 break;
             }
@@ -142,7 +142,7 @@ void Sram_OpenSave() {
     osSyncPrintf(VT_RST);
 
     if (gSaveContext.health < 0x30) {
-        gSaveContext.health = CVarGetInteger("gFullHealthSpawn", 0) ? gSaveContext.healthCapacity : 0x30;
+        gSaveContext.health = CVarGetInteger(CVAR_ENHANCEMENT("FullHealthSpawn"), 0) ? gSaveContext.healthCapacity : 0x30;
     }
 
     if (gSaveContext.scarecrowLongSongSet) {

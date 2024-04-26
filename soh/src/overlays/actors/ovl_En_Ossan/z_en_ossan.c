@@ -1976,9 +1976,9 @@ void EnOssan_UpdateItemSelectedProperty(EnOssan* this) {
 
 void EnOssan_UpdateCursorAnim(EnOssan* this) {
     Color_RGB8 aButtonColor = { 0, 80, 255 };
-    if (CVarGetInteger("gCosmetics.Hud_AButton.Changed", 0)) {
-        aButtonColor = CVarGetColor24("gCosmetics.Hud_AButton.Value", aButtonColor);
-    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.AButton.Changed"), 0)) {
+        aButtonColor = CVarGetColor24(CVAR_COSMETIC("HUD.AButton.Value"), aButtonColor);
+    } else if (CVarGetInteger(CVAR_COSMETIC("DefaultColorScheme"), COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
         aButtonColor = (Color_RGB8){ 0, 255, 80 };
     }
     f32 t;
@@ -2535,7 +2535,7 @@ s32 EnGo2_OverrideLimbDrawGoronShopkeeper (PlayState* play, s32 limb, Gfx** dLis
     EnOssan* this = (EnOssan*)thisx;
 
     if (limb == 17) {
-        Matrix_Translate(CVarGetFloat("gCosmetics.Goron_NeckLength", 0.0f), 0.0f, 0.0f, MTXMODE_APPLY);
+        Matrix_Translate(CVarGetFloat(CVAR_COSMETIC("Goron.NeckLength"), 0.0f), 0.0f, 0.0f, MTXMODE_APPLY);
     }
     return 0;
 }

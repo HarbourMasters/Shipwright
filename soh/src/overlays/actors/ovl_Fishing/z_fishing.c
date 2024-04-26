@@ -2901,24 +2901,24 @@ f32 Fishing_GetMinimumRequiredScore() {
     // RANDOTODO: update the enhancement sliders to not allow
     // values above rando fish weight values when rando'd
     if(sLinkAge == 1) {
-        weight = CVarGetInteger("gCustomizeFishing", 0) ? CVarGetInteger("gChildMinimumWeightFish", 10) : 10;
+        weight = CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFishing"), 0) ? CVarGetInteger(CVAR_ENHANCEMENT("MinimumFishWeightChild"), 10) : 10;
     } else {
-        weight = CVarGetInteger("gCustomizeFishing", 0) ? CVarGetInteger("gAdultMinimumWeightFish", 13) : 13;     
+        weight = CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFishing"), 0) ? CVarGetInteger(CVAR_ENHANCEMENT("MinimumFishWeightAdult"), 13) : 13;     
     }
 
     return sqrt(((f32)weight - 0.5f) / 0.0036f);
 }
 
 bool getInstantFish() {
-    return CVarGetInteger("gCustomizeFishing", 0) && CVarGetInteger("gInstantFishing", 0);
+    return CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFishing"), 0) && CVarGetInteger(CVAR_ENHANCEMENT("InstantFishing"), 0);
 }
 
 bool getGuaranteeBite() {
-    return CVarGetInteger("gCustomizeFishing", 0) && CVarGetInteger("gGuaranteeFishingBite", 0);
+    return CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFishing"), 0) && CVarGetInteger(CVAR_ENHANCEMENT("GuaranteeFishingBite"), 0);
 }
 
 bool getFishNeverEscape() {
-    return CVarGetInteger("gCustomizeFishing", 0) && CVarGetInteger("gFishNeverEscape", 0);
+    return CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFishing"), 0) && CVarGetInteger(CVAR_ENHANCEMENT("FishNeverEscape"), 0);
 }
 
 void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
@@ -5513,7 +5513,7 @@ void Fishing_UpdateOwner(Actor* thisx, PlayState* play2) {
             player->actor.speedXZ = 0.0f;
             
             // #region SOH [Enhancement]
-            if (CVarGetInteger("gQuitFishingAtDoor", 0)) {
+            if (CVarGetInteger(CVAR_ENHANCEMENT("QuitFishingAtDoor"), 0)) {
                 Fishing_QuitAtDoor(this, play);
             }
             // #endregion
