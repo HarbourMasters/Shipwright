@@ -70,7 +70,7 @@ void KaleidoScope_DrawAmmoCount(PauseContext* pauseCtx, GraphicsContext* gfxCtx,
     gDPPipeSync(POLY_KAL_DISP++);
 
     if (i != 0) {
-        gSPVertex(POLY_KAL_DISP++, &pauseCtx->itemVtx[((CVarGetInteger("gEnhancements.BetterAmmoRendering", 0) ? sAllAmmoVtxOffset[slot] : sAmmoVtxOffset[slot]) + 31) * 4], 4, 0);
+        gSPVertex(POLY_KAL_DISP++, &pauseCtx->itemVtx[((CVarGetInteger(CVAR_ENHANCEMENT("BetterAmmoRendering"), 0) ? sAllAmmoVtxOffset[slot] : sAmmoVtxOffset[slot]) + 31) * 4], 4, 0);
 
         gDPLoadTextureBlock(POLY_KAL_DISP++, ((u8*)_gAmmoDigit0Tex[i]), G_IM_FMT_IA, G_IM_SIZ_8b, 8, 8, 0,
                             G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
@@ -79,7 +79,7 @@ void KaleidoScope_DrawAmmoCount(PauseContext* pauseCtx, GraphicsContext* gfxCtx,
         gSP1Quadrangle(POLY_KAL_DISP++, 0, 2, 3, 1, 0);
     }
 
-    gSPVertex(POLY_KAL_DISP++, &pauseCtx->itemVtx[((CVarGetInteger("gEnhancements.BetterAmmoRendering", 0) ? sAllAmmoVtxOffset[slot] : sAmmoVtxOffset[slot]) + 32) * 4], 4, 0);
+    gSPVertex(POLY_KAL_DISP++, &pauseCtx->itemVtx[((CVarGetInteger(CVAR_ENHANCEMENT("BetterAmmoRendering"), 0) ? sAllAmmoVtxOffset[slot] : sAmmoVtxOffset[slot]) + 32) * 4], 4, 0);
 
     gDPLoadTextureBlock(POLY_KAL_DISP++, ((u8*)_gAmmoDigit0Tex[ammo]), G_IM_FMT_IA, G_IM_SIZ_8b, 8, 8, 0,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
@@ -313,7 +313,7 @@ bool CanMaskSelect() {
     // * zelda's letter check: Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)
     // * kak gate check: Flags_GetInfTable(INFTABLE_SHOWED_ZELDAS_LETTER_TO_GATE_GUARD)
     // and the mask quest is complete: Flags_GetEventChkInf(EVENTCHKINF_PAID_BACK_BUNNY_HOOD_FEE)
-    return CVarGetInteger("gMaskSelect", 0) &&
+    return CVarGetInteger(CVAR_ENHANCEMENT("MaskSelect"), 0) &&
            Flags_GetEventChkInf(EVENTCHKINF_PAID_BACK_BUNNY_HOOD_FEE) &&
            Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER) &&
            Flags_GetInfTable(INFTABLE_SHOWED_ZELDAS_LETTER_TO_GATE_GUARD);
@@ -339,7 +339,7 @@ void KaleidoScope_HandleItemCycles(PlayState* play) {
     //to allow adult link to wear it if the setting is enabled
     gSlotAgeReqs[SLOT_TRADE_CHILD] =
         (
-            ((CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA) && CVarGetInteger("gAdultBunnyHood", 0)) ||
+            ((CVarGetInteger(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA) && CVarGetInteger(CVAR_ENHANCEMENT("AdultBunnyHood"), 0)) ||
             CVarGetInteger(CVAR_CHEAT("TimelessEquipment"), 0)
         ) &&
         INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_MASK_BUNNY
@@ -348,7 +348,7 @@ void KaleidoScope_HandleItemCycles(PlayState* play) {
     
     //also update the age requirement for the bunny hood itself
     gItemAgeReqs[ITEM_MASK_BUNNY] =
-        ((CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA) && CVarGetInteger("gAdultBunnyHood", 0)) ||
+        ((CVarGetInteger(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA) && CVarGetInteger(CVAR_ENHANCEMENT("AdultBunnyHood"), 0)) ||
         CVarGetInteger(CVAR_CHEAT("TimelessEquipment"), 0)
             ? AGE_REQ_NONE
             : AGE_REQ_CHILD;
@@ -779,7 +779,7 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
     gDPSetCombineLERP(POLY_KAL_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0, PRIMITIVE,
                       ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
 
-    u8 gBetterAmmoRendering = CVarGetInteger("gEnhancements.BetterAmmoRendering", 0);
+    u8 gBetterAmmoRendering = CVarGetInteger(CVAR_ENHANCEMENT("BetterAmmoRendering"), 0);
 
     for (i = 0; i < (gBetterAmmoRendering ? 24 : 15); i++) {
         if ((gBetterAmmoRendering ? ItemInSlotUsesAmmo(i) : gAmmoItems[i] != ITEM_NONE) && (gSaveContext.inventory.items[i] != ITEM_NONE)) {
@@ -826,7 +826,7 @@ void KaleidoScope_SetupItemEquip(PlayState* play, u16 item, u16 slot, s16 animX,
     sEquipMoveTimer = 10;
     if ((pauseCtx->equipTargetItem == ITEM_ARROW_FIRE) || (pauseCtx->equipTargetItem == ITEM_ARROW_ICE) ||
         (pauseCtx->equipTargetItem == ITEM_ARROW_LIGHT)) {
-        if (CVarGetInteger("gSkipArrowAnimation", 0)) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("SkipArrowAnimation"), 0)) {
             Audio_PlaySoundGeneral(NA_SE_SY_DECIDE, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
         } else {
             u16 index = 0;
@@ -1037,7 +1037,7 @@ void KaleidoScope_UpdateItemEquip(PlayState* play) {
 
         if (D_8082A488 == 0) {
             pauseCtx->equipTargetItem -= 0xBF - ITEM_BOW_ARROW_FIRE;
-            if (!CVarGetInteger("gSeparateArrows", 0)) {
+            if (!CVarGetInteger(CVAR_ENHANCEMENT("SeparateArrows"), 0)) {
                 pauseCtx->equipTargetSlot = SLOT_BOW;
             }
             sEquipMoveTimer = 6;
@@ -1123,7 +1123,7 @@ void KaleidoScope_UpdateItemEquip(PlayState* play) {
                         pauseCtx->equipTargetItem = ITEM_BOW_ARROW_LIGHT;
                         break;
                 }
-                if (!CVarGetInteger("gSeparateArrows", 0)) {
+                if (!CVarGetInteger(CVAR_ENHANCEMENT("SeparateArrows"), 0)) {
                     pauseCtx->equipTargetSlot = SLOT_BOW;
                 }
             }
@@ -1156,7 +1156,7 @@ void KaleidoScope_UpdateItemEquip(PlayState* play) {
                 if (pauseCtx->equipTargetItem == ITEM_BOW) {
                     if (gSaveContext.equips.buttonItems[otherButtonIndex] >= ITEM_BOW_ARROW_FIRE &&
                         gSaveContext.equips.buttonItems[otherButtonIndex] <= ITEM_BOW_ARROW_LIGHT &&
-                        !CVarGetInteger("gSeparateArrows", 0)) {
+                        !CVarGetInteger(CVAR_ENHANCEMENT("SeparateArrows"), 0)) {
                             gSaveContext.equips.buttonItems[otherButtonIndex] = gSaveContext.equips.buttonItems[targetButtonIndex];
                             gSaveContext.equips.cButtonSlots[otherSlotIndex] = gSaveContext.equips.cButtonSlots[pauseCtx->equipTargetCBtn];
                             Interface_LoadItemIcon2(play, otherButtonIndex);

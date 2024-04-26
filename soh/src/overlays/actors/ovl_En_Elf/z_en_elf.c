@@ -631,15 +631,15 @@ void func_80A0329C(EnElf* this, PlayState* play) {
 
         if ((heightDiff > 0.0f) && (heightDiff < 60.0f)) {
             if (!func_80A01F90(&this->actor.world.pos, &refActor->actor.world.pos, 10.0f)) {
-                if (CVarGetInteger("gFairyEffect", 0) && !(this->fairyFlags & FAIRY_FLAG_BIG))
+                if (CVarGetInteger(CVAR_ENHANCEMENT("FairyEffect"), 0) && !(this->fairyFlags & FAIRY_FLAG_BIG))
                 {
-                    if (CVarGetInteger("gFairyPercentRestore", 0))
+                    if (CVarGetInteger(CVAR_ENHANCEMENT("FairyPercentRestore"), 0))
                     {
-                        Health_ChangeBy(play, (gSaveContext.healthCapacity * CVarGetInteger("gFairyHealth", 100) / 100 + 15) / 16 * 16);
+                        Health_ChangeBy(play, (gSaveContext.healthCapacity * CVarGetInteger(CVAR_ENHANCEMENT("FairyHealth"), 100) / 100 + 15) / 16 * 16);
                     }
                     else
                     {
-                        Health_ChangeBy(play, CVarGetInteger("gFairyHealth", 8) * 16);
+                        Health_ChangeBy(play, CVarGetInteger(CVAR_ENHANCEMENT("FairyHealth"), 8) * 16);
                     }
                 }
                 else

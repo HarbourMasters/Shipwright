@@ -408,7 +408,7 @@ s32 EnTk_ChooseReward(EnTk* this) {
     f32 luck;
     s32 reward;
 
-    if ((IS_RANDO || CVarGetInteger("gDampeWin", 0)) && !Flags_GetCollectible(gPlayState, COLLECTFLAG_GRAVEDIGGING_HEART_PIECE) && this->heartPieceSpawned == 0) {
+    if ((IS_RANDO || CVarGetInteger(CVAR_ENHANCEMENT("DampeWin"), 0)) && !Flags_GetCollectible(gPlayState, COLLECTFLAG_GRAVEDIGGING_HEART_PIECE) && this->heartPieceSpawned == 0) {
         return 3;
     }
 
@@ -502,7 +502,7 @@ void EnTk_Init(Actor* thisx, PlayState* play) {
 
     CollisionCheck_SetInfo2(&this->actor.colChkInfo, NULL, &sColChkInfoInit);
 
-    if (CVarGetInteger("gDampeAllNight", 0)) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("DampeAllNight"), 0)) {
         if (!!LINK_IS_ADULT || play->sceneNum != SCENE_GRAVEYARD) {
             Actor_Kill(&this->actor);
             return;
@@ -610,7 +610,7 @@ void EnTk_Dig(EnTk* this, PlayState* play) {
 
         this->rewardTimer = 0;
 
-        if (this->validDigHere == 1 || IS_RANDO || CVarGetInteger("gDampeWin", 0)) {
+        if (this->validDigHere == 1 || IS_RANDO || CVarGetInteger(CVAR_ENHANCEMENT("DampeWin"), 0)) {
             rewardOrigin.x = 0.0f;
             rewardOrigin.y = 0.0f;
             rewardOrigin.z = -40.0f;
@@ -625,15 +625,15 @@ void EnTk_Dig(EnTk* this, PlayState* play) {
             this->currentReward = EnTk_ChooseReward(this);
 
             if (this->currentReward == 3) {
-                if (IS_RANDO || CVarGetInteger("gDampeWin", 0)) {
+                if (IS_RANDO || CVarGetInteger(CVAR_ENHANCEMENT("DampeWin"), 0)) {
                     /*
                     * Upgrade the purple rupee reward to the heart piece if this
                     * is the first grand prize dig.
                     */
-                    if (!Flags_GetItemGetInf(ITEMGETINF_1C) && !(IS_RANDO || CVarGetInteger("gDampeWin", 0))) {
+                    if (!Flags_GetItemGetInf(ITEMGETINF_1C) && !(IS_RANDO || CVarGetInteger(CVAR_ENHANCEMENT("DampeWin"), 0))) {
                         Flags_SetItemGetInf(ITEMGETINF_1C);
                         this->currentReward = 4;
-                    } else if ((IS_RANDO || CVarGetInteger("gDampeWin", 0)) && !Flags_GetCollectible(gPlayState, COLLECTFLAG_GRAVEDIGGING_HEART_PIECE) && this->heartPieceSpawned == 0) {
+                    } else if ((IS_RANDO || CVarGetInteger(CVAR_ENHANCEMENT("DampeWin"), 0)) && !Flags_GetCollectible(gPlayState, COLLECTFLAG_GRAVEDIGGING_HEART_PIECE) && this->heartPieceSpawned == 0) {
                         this->currentReward = 4;
                     }
                 }
@@ -646,7 +646,7 @@ void EnTk_Dig(EnTk* this, PlayState* play) {
                 // If true, spawn the heart piece and set the vanilla itemGetInf flag and new temp clear flag.
                 if (!heartPieceSpawned &&
                     (!(gSaveContext.itemGetInf[1] & ITEMGETINFFLAG_GRAVEDIGGING_HEART_PIECE) ||
-                    CVarGetInteger("gGravediggingTourFix", 0) &&
+                    CVarGetInteger(CVAR_ENHANCEMENT("GravediggingTourFix"), 0) &&
                         !Flags_GetCollectible(play, COLLECTFLAG_GRAVEDIGGING_HEART_PIECE))) {
                     this->currentReward = 4;
                     gSaveContext.itemGetInf[1] |= ITEMGETINFFLAG_GRAVEDIGGING_HEART_PIECE;
@@ -668,7 +668,7 @@ void EnTk_Dig(EnTk* this, PlayState* play) {
 
     if (this->skelAnime.curFrame >= 32.0f && this->rewardTimer == 10) {
         /* Play a reward sound shortly after digging */
-        if (!(IS_RANDO || CVarGetInteger("gDampeWin", 0)) && this->validDigHere == 0) {
+        if (!(IS_RANDO || CVarGetInteger(CVAR_ENHANCEMENT("DampeWin"), 0)) && this->validDigHere == 0) {
             /* Bad dig spot */
             Audio_PlayActorSound2(&this->actor, NA_SE_SY_ERROR);
         } else if (this->currentReward == 4) {

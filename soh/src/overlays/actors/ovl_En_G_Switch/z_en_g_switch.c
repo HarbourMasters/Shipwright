@@ -212,7 +212,7 @@ void EnGSwitch_SilverRupeeTracker(EnGSwitch* this, PlayState* play) {
     static s8 majorScale[] = { 0, 2, 4, 5, 7, 9, 11, 13, 15, 17 };
 
     if (this->noteIndex < sCollectedCount) {
-        if (sCollectedCount < (CVarGetInteger("gSilverRupeeJingleExtend", 0) ? 10 : 5)) {
+        if (sCollectedCount < (CVarGetInteger(CVAR_ENHANCEMENT("SilverRupeeJingleExtend"), 0) ? 10 : 5)) {
             // "sound?"
             osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ 音？ ☆☆☆☆☆ %d\n" VT_RST, this->noteIndex);
             Audio_PlaySoundTransposed(&D_801333D4, NA_SE_EV_FIVE_COUNT_LUPY, majorScale[this->noteIndex]);
@@ -480,7 +480,7 @@ void EnGSwitch_DrawRupee(Actor* thisx, PlayState* play) {
     if (!this->broken) {
         OPEN_DISPS(play->state.gfxCtx);
 
-        if (CVarGetInteger("gNewDrops", 0)) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("NewDrops"), 0)) {
             // purple/gold/silver rupees need less scaling
             f32 mtxScale = this->colorIdx >= 3 ? 17.5f : 25.0f;
             Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);

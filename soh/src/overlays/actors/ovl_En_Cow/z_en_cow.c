@@ -123,7 +123,7 @@ void EnCow_Init(Actor* thisx, PlayState* play) {
             func_809DEE9C(this);
             this->actionFunc = func_809DF96C;
             if (play->sceneNum == SCENE_LINKS_HOUSE) {
-                if (!LINK_IS_ADULT && !CVarGetInteger("gCowOfTime", 0)) {
+                if (!LINK_IS_ADULT && !CVarGetInteger(CVAR_ENHANCEMENT("CowOfTime"), 0)) {
                     Actor_Kill(&this->actor);
                     return;
                 }
