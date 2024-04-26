@@ -1417,9 +1417,9 @@ void DrawEnhancementsMenu() {
         #ifdef __SWITCH__
         UIWidgets::Spacer(0);
         ImGui::Text("Switch performance mode");
-        if (UIWidgets::EnhancementCombobox(CVAR_ENHANCEMENT("SwitchPerfMode"), SWITCH_CPU_PROFILES, (int)LUS::SwitchProfiles::STOCK)) {
-            SPDLOG_INFO("Profile:: %s", SWITCH_CPU_PROFILES[CVarGetInteger(CVAR_ENHANCEMENT("SwitchPerfMode"), (int)LUS::SwitchProfiles::STOCK)]);
-            LUS::Switch::ApplyOverclock();
+        if (UIWidgets::EnhancementCombobox(CVAR_ENHANCEMENT("SwitchPerfMode"), SWITCH_CPU_PROFILES, (int)ShipDK::SwitchProfiles::STOCK)) {
+            SPDLOG_INFO("Profile:: %s", SWITCH_CPU_PROFILES[CVarGetInteger(CVAR_ENHANCEMENT("SwitchPerfMode"), (int)ShipDK::SwitchProfiles::STOCK)]);
+            ShipDK::Switch::ApplyOverclock();
         }
         #endif
 

@@ -912,7 +912,7 @@ void CheckSoHOTRVersion(std::string otrPath) {
         Extractor::ShowErrorBox("soh.otr file is missing", msg.c_str());
         exit(1);
 #elif defined(__SWITCH__)
-        LUS::Switch::PrintErrorMessageToScreen(("\x1b[2;2HYou are missing the soh.otr file." + msg).c_str());
+        ShipDK::Switch::PrintErrorMessageToScreen(("\x1b[2;2HYou are missing the soh.otr file." + msg).c_str());
 #elif defined(__WIIU__)
         OSFatal(("You are missing the soh.otr file\n\n" + msg).c_str());
 #endif
@@ -925,7 +925,7 @@ void CheckSoHOTRVersion(std::string otrPath) {
         Extractor::ShowErrorBox("soh.otr file version does not match", msg.c_str());
         exit(1);
 #elif defined(__SWITCH__)
-        LUS::Switch::PrintErrorMessageToScreen(("\x1b[2;2HYou have an old soh.otr file." + msg).c_str());
+        ShipDK::Switch::PrintErrorMessageToScreen(("\x1b[2;2HYou have an old soh.otr file." + msg).c_str());
 #elif defined(__WIIU__)
         OSFatal(("You have an old soh.otr file\n\n" + msg).c_str());
 #endif
@@ -984,7 +984,7 @@ void DetectOTRVersion(std::string fileName, bool isMQ) {
         }
 
 #elif defined(__SWITCH__)
-        LUS::Switch::PrintErrorMessageToScreen("\x1b[2;2HYou've launched the Ship with an old game OTR file."
+        ShipDK::Switch::PrintErrorMessageToScreen("\x1b[2;2HYou've launched the Ship with an old game OTR file."
                                                "\x1b[4;2HPlease regenerate a new game OTR and relaunch."
                                                "\x1b[6;2HPress the Home button to exit...");
 #elif defined(__WIIU__)
@@ -1012,7 +1012,7 @@ bool PathTestCleanup(FILE* tfile) {
 extern "C" void InitOTR() {
 
 #ifdef __SWITCH__
-    LUS::Switch::Init(LUS::PreInitPhase);
+    ShipDK::Switch::Init(ShipDK::PreInitPhase);
 #elif defined(__WIIU__)
     LUS::WiiU::Init(appShortName);
 #endif
@@ -1089,7 +1089,7 @@ extern "C" void InitOTR() {
         }
 
 #elif defined(__SWITCH__)
-        LUS::Switch::PrintErrorMessageToScreen("\x1b[2;2HYou've launched the Ship without a game OTR file."
+        ShipDK::Switch::PrintErrorMessageToScreen("\x1b[2;2HYou've launched the Ship without a game OTR file."
                                                "\x1b[4;2HPlease generate a game OTR and relaunch."
                                                "\x1b[6;2HPress the Home button to exit...");
 #elif defined(__WIIU__)
