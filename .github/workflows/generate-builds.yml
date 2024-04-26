@@ -374,15 +374,15 @@ jobs:
         make
         make install
         cd ../..
-        wget https://github.com/leethomason/tinyxml2/archive/refs/tags/10.0.0.tar.gz
-        tar -xzf 10.0.0.tar.gz
-        cd tinyxml2-10.0.0
-        mkdir build
-        cd build
-        cmake -H.. -B. -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/WiiU.cmake
-        make
-        make install
-        cd ../..
+# wget https://github.com/leethomason/tinyxml2/archive/refs/tags/10.0.0.tar.gz
+# tar -xzf 10.0.0.tar.gz
+# cd tinyxml2-10.0.0
+# mkdir build
+# cd build
+# cmake -H.. -B. -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/WiiU.cmake
+# make
+# make install
+# cd ../..
 
     - uses: actions/checkout@v3
       with:
