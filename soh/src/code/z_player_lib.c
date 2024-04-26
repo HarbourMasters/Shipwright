@@ -1068,14 +1068,14 @@ void Player_DrawImpl(PlayState* play, void** skeleton, Vec3s* jointTable, s32 dL
 
     Color_RGB8 sTemp;
     color = &sTunicColors[tunic];
-    if (tunic == PLAYER_TUNIC_KOKIRI && CVarGetInteger("gCosmetics.Link_KokiriTunic.Changed", 0)) {
-        sTemp = CVarGetColor24("gCosmetics.Link_KokiriTunic.Value", sTunicColors[PLAYER_TUNIC_KOKIRI]);
+    if (tunic == PLAYER_TUNIC_KOKIRI && CVarGetInteger(CVAR_COSMETIC("Link.KokiriTunic.Changed"), 0)) {
+        sTemp = CVarGetColor24(CVAR_COSMETIC("Link.KokiriTunic.Value"), sTunicColors[PLAYER_TUNIC_KOKIRI]);
         color = &sTemp;
-    } else if (tunic == PLAYER_TUNIC_GORON && CVarGetInteger("gCosmetics.Link_GoronTunic.Changed", 0)) {
-        sTemp = CVarGetColor24("gCosmetics.Link_GoronTunic.Value", sTunicColors[PLAYER_TUNIC_GORON]);
+    } else if (tunic == PLAYER_TUNIC_GORON && CVarGetInteger(CVAR_COSMETIC("Link.GoronTunic.Changed"), 0)) {
+        sTemp = CVarGetColor24(CVAR_COSMETIC("Link.GoronTunic.Value"), sTunicColors[PLAYER_TUNIC_GORON]);
         color = &sTemp;
-    } else if (tunic == PLAYER_TUNIC_ZORA && CVarGetInteger("gCosmetics.Link_ZoraTunic.Changed", 0)) {
-        sTemp = CVarGetColor24("gCosmetics.Link_ZoraTunic.Value", sTunicColors[PLAYER_TUNIC_ZORA]);
+    } else if (tunic == PLAYER_TUNIC_ZORA && CVarGetInteger(CVAR_COSMETIC("Link.ZoraTunic.Changed"), 0)) {
+        sTemp = CVarGetColor24(CVAR_COSMETIC("Link.ZoraTunic.Value"), sTunicColors[PLAYER_TUNIC_ZORA]);
         color = &sTemp;
     }
 
@@ -1100,11 +1100,11 @@ void Player_DrawImpl(PlayState* play, void** skeleton, Vec3s* jointTable, s32 dL
                 gDPPipeSync(POLY_OPA_DISP++);
 
                 color = &sGauntletColors[strengthUpgrade - 2];
-                if (strengthUpgrade == PLAYER_STR_SILVER_G && CVarGetInteger("gCosmetics.Gloves_SilverGauntlets.Changed", 0)) {
-                    sTemp = CVarGetColor24("gCosmetics.Gloves_SilverGauntlets.Value", sGauntletColors[PLAYER_STR_SILVER_G - 2]);
+                if (strengthUpgrade == PLAYER_STR_SILVER_G && CVarGetInteger(CVAR_COSMETIC("Gloves.SilverGauntlets.Changed"), 0)) {
+                    sTemp = CVarGetColor24(CVAR_COSMETIC("Gloves.SilverGauntlets.Value"), sGauntletColors[PLAYER_STR_SILVER_G - 2]);
                     color = &sTemp;
-                } else if (strengthUpgrade == PLAYER_STR_GOLD_G && CVarGetInteger("gCosmetics.Gloves_GoldenGauntlets.Changed", 0)) {
-                    sTemp = CVarGetColor24("gCosmetics.Gloves_GoldenGauntlets.Value", sGauntletColors[PLAYER_STR_GOLD_G - 2]);
+                } else if (strengthUpgrade == PLAYER_STR_GOLD_G && CVarGetInteger(CVAR_COSMETIC("Gloves.GoldenGauntlets.Changed"), 0)) {
+                    sTemp = CVarGetColor24(CVAR_COSMETIC("Gloves.GoldenGauntlets.Value"), sGauntletColors[PLAYER_STR_GOLD_G - 2]);
                     color = &sTemp;
                 }
                 gDPSetEnvColor(POLY_OPA_DISP++, color->r, color->g, color->b, 0);
@@ -1310,8 +1310,8 @@ s32 Player_OverrideLimbDrawGameplayCommon(PlayState* play, s32 limbIndex, Gfx** 
         }
 
         if (limbIndex == PLAYER_LIMB_HEAD) {
-            if (CVarGetInteger("gCosmetics.Link_HeadScale.Changed", 0)) {
-                f32 scale = CVarGetFloat("gCosmetics.Link_HeadScale.Value", 1.0f);
+            if (CVarGetInteger(CVAR_COSMETIC("Link.HeadScale.Changed"), 0)) {
+                f32 scale = CVarGetFloat(CVAR_COSMETIC("Link.HeadScale.Value"), 1.0f);
                 Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
                 if (scale > 1.2f) {
                     Matrix_Translate(-((LINK_IS_ADULT ? 320.0f : 200.0f) * scale), 0.0f, 0.0f, MTXMODE_APPLY);
@@ -1323,8 +1323,8 @@ s32 Player_OverrideLimbDrawGameplayCommon(PlayState* play, s32 limbIndex, Gfx** 
             rot->y -= this->unk_6B8;
             rot->z += this->unk_6B6;
         } else if (limbIndex == PLAYER_LIMB_L_HAND) {
-            if (CVarGetInteger("gCosmetics.Link_SwordScale.Changed", 0)) {
-                f32 scale = CVarGetFloat("gCosmetics.Link_SwordScale.Value", 1.0f);
+            if (CVarGetInteger(CVAR_COSMETIC("Link.SwordScale.Changed"), 0)) {
+                f32 scale = CVarGetFloat(CVAR_COSMETIC("Link.SwordScale.Value"), 1.0f);
                 Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
                 Matrix_Translate(-((LINK_IS_ADULT ? 320.0f : 200.0f) * scale), 0.0f, 0.0f, MTXMODE_APPLY);
             }
@@ -1684,11 +1684,11 @@ void Player_DrawHookshotReticle(PlayState* play, Player* this, f32 hookshotRange
                             G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, 6, 6, G_TX_NOLOD, G_TX_NOLOD);
         if (SurfaceType_IsHookshotSurface(&play->colCtx, colPoly, bgId) && CVarGetInteger(CVAR_ENHANCEMENT("HookshotableReticle"), false)) {
             const Color_RGBA8 defaultColor = { .r = 0, .g = 255, .b = 0, .a = 255 };
-            const Color_RGBA8 color = CVarGetColor("gCosmetics.HookshotReticle_Target.Value", defaultColor);
+            const Color_RGBA8 color = CVarGetColor(CVAR_COSMETIC("HookshotReticle.Target.Value"), defaultColor);
             gDPSetPrimColor(WORLD_OVERLAY_DISP++, 0, 0, color.r, color.g, color.b, color.a);
         } else {
             const Color_RGBA8 defaultColor = { .r = 255, .g = 0, .b = 0, .a = 255 };
-            const Color_RGBA8 color = CVarGetColor("gCosmetics.HookshotReticle_NonTarget.Value", defaultColor);
+            const Color_RGBA8 color = CVarGetColor(CVAR_COSMETIC("HookshotReticle.NonTarget.Value"), defaultColor);
             gDPSetPrimColor(WORLD_OVERLAY_DISP++, 0, 0, color.r, color.g, color.b, color.a);
         }
         gSPVertex(WORLD_OVERLAY_DISP++, (uintptr_t)gLinkAdultHookshotReticleVtx, 3, 0);

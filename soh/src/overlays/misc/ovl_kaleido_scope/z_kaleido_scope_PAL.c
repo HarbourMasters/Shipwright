@@ -1129,14 +1129,14 @@ void KaleidoScope_DrawCursor(PlayState* play, u16 pageIndex) {
 
     temp = pauseCtx->unk_1E4;
 
-    if (CVarGetInteger("gCosmetics.Hud_AButton.Changed", 0)) {
-        sCursorColors[2] = CVarGetColor24("gCosmetics.Hud_AButton.Value", sCursorColors[2]);
-    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.AButton.Changed"), 0)) {
+        sCursorColors[2] = CVarGetColor24(CVAR_COSMETIC("HUD.AButton.Value"), sCursorColors[2]);
+    } else if (CVarGetInteger(CVAR_COSMETIC("DefaultColorScheme"), COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
         sCursorColors[2] = (Color_RGB8){ 0, 255, 50 };
     }
 
-    if (CVarGetInteger("gCosmetics.Hud_CButtons.Changed", 0)) {
-        sCursorColors[1] = CVarGetColor24("gCosmetics.Hud_CButtons.Value", sCursorColors[1]);
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.CButtons.Changed"), 0)) {
+        sCursorColors[1] = CVarGetColor24(CVAR_COSMETIC("HUD.CButtons.Value"), sCursorColors[1]);
     }
 
     if ((((pauseCtx->unk_1E4 == 0) || (temp == 8)) && (pauseCtx->state == 6)) ||
@@ -1210,19 +1210,19 @@ void KaleidoScope_DrawPages(PlayState* play, GraphicsContext* gfxCtx) {
         { 0, 0, 0 }, { 255, 255, 0 }, { 0, 50, 255 }, { 0, 0, 0 }, { 0, 0, 0 },     { 0, 50, 255 },
     };
     Color_RGB8 aButtonColor = { 100, 100, 255 };
-    if (CVarGetInteger("gCosmetics.Hud_AButton.Changed", 0)) {
-        aButtonColor = CVarGetColor24("gCosmetics.Hud_AButton.Value", aButtonColor);
-        D_8082ACF4[8] = CVarGetColor24("gCosmetics.Hud_AButton.Value", D_8082ACF4[8]);
-        D_8082ACF4[11] = CVarGetColor24("gCosmetics.Hud_AButton.Value", D_8082ACF4[11]);
-    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.AButton.Changed"), 0)) {
+        aButtonColor = CVarGetColor24(CVAR_COSMETIC("HUD.AButton.Value"), aButtonColor);
+        D_8082ACF4[8] = CVarGetColor24(CVAR_COSMETIC("HUD.AButton.Value"), D_8082ACF4[8]);
+        D_8082ACF4[11] = CVarGetColor24(CVAR_COSMETIC("HUD.AButton.Value"), D_8082ACF4[11]);
+    } else if (CVarGetInteger(CVAR_COSMETIC("DefaultColorScheme"), COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
         aButtonColor = (Color_RGB8){ 100, 255, 100 };
         D_8082ACF4[8] = (Color_RGB8){ 0, 255, 50 };
         D_8082ACF4[11] = (Color_RGB8){ 0, 255, 50 };
     }
 
-    if (CVarGetInteger("gCosmetics.Hud_CButtons.Changed", 0)) {
-        D_8082ACF4[4] = CVarGetColor24("gCosmetics.Hud_CButtons.Value", D_8082ACF4[4]);
-        D_8082ACF4[7] = CVarGetColor24("gCosmetics.Hud_CButtons.Value", D_8082ACF4[7]);
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.CButtons.Changed"), 0)) {
+        D_8082ACF4[4] = CVarGetColor24(CVAR_COSMETIC("HUD.CButtons.Value"), D_8082ACF4[4]);
+        D_8082ACF4[7] = CVarGetColor24(CVAR_COSMETIC("HUD.CButtons.Value"), D_8082ACF4[7]);
     }
 
     static s16 D_8082AD3C = 20;
@@ -1670,31 +1670,31 @@ void KaleidoScope_DrawPages(PlayState* play, GraphicsContext* gfxCtx) {
 
 void KaleidoScope_DrawInfoPanel(PlayState* play) {
     Color_RGB8 aButtonColor = { 0, 100, 255 };
-    if (CVarGetInteger("gCosmetics.Hud_AButton.Changed", 0)) {
-        aButtonColor = CVarGetColor24("gCosmetics.Hud_AButton.Value", aButtonColor);
-    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.AButton.Changed"), 0)) {
+        aButtonColor = CVarGetColor24(CVAR_COSMETIC("HUD.AButton.Value"), aButtonColor);
+    } else if (CVarGetInteger(CVAR_COSMETIC("DefaultColorScheme"), COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
         aButtonColor = (Color_RGB8){ 0, 255, 100 };
     }
 
     Color_RGB8 cButtonsColor = {255, 160, 0};
-    if (CVarGetInteger("gCosmetics.Hud_CButtons.Changed", 0)) {
-        cButtonsColor = CVarGetColor24("gCosmetics.Hud_CButtons.Value", cButtonsColor);
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.CButtons.Changed"), 0)) {
+        cButtonsColor = CVarGetColor24(CVAR_COSMETIC("HUD.CButtons.Value"), cButtonsColor);
     }
     Color_RGB8 cUpButtonColor = cButtonsColor;
-    if (CVarGetInteger("gCosmetics.Hud_CUpButton.Changed", 0)) {
-        cUpButtonColor = CVarGetColor24("gCosmetics.Hud_CUpButton.Value", cUpButtonColor);
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.CUpButton.Changed"), 0)) {
+        cUpButtonColor = CVarGetColor24(CVAR_COSMETIC("HUD.CUpButton.Value"), cUpButtonColor);
     }
     Color_RGB8 cDownButtonColor = cButtonsColor;
-    if (CVarGetInteger("gCosmetics.Hud_CDownButton.Changed", 0)) {
-        cDownButtonColor = CVarGetColor24("gCosmetics.Hud_CDownButton.Value", cDownButtonColor);
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.CDownButton.Changed"), 0)) {
+        cDownButtonColor = CVarGetColor24(CVAR_COSMETIC("HUD.CDownButton.Value"), cDownButtonColor);
     }
     Color_RGB8 cLeftButtonColor = cButtonsColor;
-    if (CVarGetInteger("gCosmetics.Hud_CLeftButton.Changed", 0)) {
-        cLeftButtonColor = CVarGetColor24("gCosmetics.Hud_CLeftButton.Value", cLeftButtonColor);
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.CLeftButton.Changed"), 0)) {
+        cLeftButtonColor = CVarGetColor24(CVAR_COSMETIC("HUD.CLeftButton.Value"), cLeftButtonColor);
     }
     Color_RGB8 cRightButtonColor = cButtonsColor;
-    if (CVarGetInteger("gCosmetics.Hud_CRightButton.Changed", 0)) {
-        cRightButtonColor = CVarGetColor24("gCosmetics.Hud_CRightButton.Value", cRightButtonColor);
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.CRightButton.Changed"), 0)) {
+        cRightButtonColor = CVarGetColor24(CVAR_COSMETIC("HUD.CRightButton.Value"), cRightButtonColor);
     }
 
     static const void* sToEquipTextures[3] = {
@@ -1883,7 +1883,7 @@ void KaleidoScope_DrawInfoPanel(PlayState* play) {
     gSPMatrix(POLY_KAL_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    const Color_RGBA8 namePanelColor = CVarGetColor("gCosmetics.Kal_NamePanel.Value", (Color_RGBA8){90,100,130,255});
+    const Color_RGBA8 namePanelColor = CVarGetColor(CVAR_COSMETIC("Kaleido.NamePanel.Value"), (Color_RGBA8){90,100,130,255});
     
     gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, namePanelColor.r, namePanelColor.g, namePanelColor.b, namePanelColor.a);
     gSPVertex(POLY_KAL_DISP++, &pauseCtx->infoPanelVtx[0], 16, 0);
@@ -2450,40 +2450,40 @@ static s16 D_8082B0E4[] = {
 
 static const char* gPageVtxColorCvars[][4] = {
     {
-        "gCosmetics.Kal_ItemSelA.Value",
-        "gCosmetics.Kal_ItemSelB.Value",
-        "gCosmetics.Kal_ItemSelC.Value",
-        "gCosmetics.Kal_ItemSelD.Value",
+        CVAR_COSMETIC("Kaleido.ItemSelA.Value"),
+        CVAR_COSMETIC("Kaleido.ItemSelB.Value"),
+        CVAR_COSMETIC("Kaleido.ItemSelC.Value"),
+        CVAR_COSMETIC("Kaleido.ItemSelD.Value"),
     },
     {
-        "gCosmetics.Kal_EquipSelA.Value",
-        "gCosmetics.Kal_EquipSelB.Value",
-        "gCosmetics.Kal_EquipSelC.Value",
-        "gCosmetics.Kal_EquipSelD.Value",
+        CVAR_COSMETIC("Kaleido.EquipSelA.Value"),
+        CVAR_COSMETIC("Kaleido.EquipSelB.Value"),
+        CVAR_COSMETIC("Kaleido.EquipSelC.Value"),
+        CVAR_COSMETIC("Kaleido.EquipSelD.Value"),
     },
     {
-        "gCosmetics.Kal_MapSelDunA.Value",
-        "gCosmetics.Kal_MapSelDunB.Value",
-        "gCosmetics.Kal_MapSelDunC.Value",
-        "gCosmetics.Kal_MapSelDunD.Value",
+        CVAR_COSMETIC("Kaleido.MapSelDunA.Value"),
+        CVAR_COSMETIC("Kaleido.MapSelDunB.Value"),
+        CVAR_COSMETIC("Kaleido.MapSelDunC.Value"),
+        CVAR_COSMETIC("Kaleido.MapSelDunD.Value"),
     },
     {
-        "gCosmetics.Kal_QuestStatusA.Value",
-        "gCosmetics.Kal_QuestStatusB.Value",
-        "gCosmetics.Kal_QuestStatusC.Value",
-        "gCosmetics.Kal_QuestStatusD.Value",
+        CVAR_COSMETIC("Kaleido.QuestStatusA.Value"),
+        CVAR_COSMETIC("Kaleido.QuestStatusB.Value"),
+        CVAR_COSMETIC("Kaleido.QuestStatusC.Value"),
+        CVAR_COSMETIC("Kaleido.QuestStatusD.Value"),
     },
     {
-        "gCosmetics.Kal_MapSelectA.Value",
-        "gCosmetics.Kal_MapSelectB.Value",
-        "gCosmetics.Kal_MapSelectC.Value",
-        "gCosmetics.Kal_MapSelectD.Value",
+        CVAR_COSMETIC("Kaleido.MapSelectA.Value"),
+        CVAR_COSMETIC("Kaleido.MapSelectB.Value"),
+        CVAR_COSMETIC("Kaleido.MapSelectC.Value"),
+        CVAR_COSMETIC("Kaleido.MapSelectD.Value"),
     },
     {
-        "gCosmetics.Kal_SaveA.Value",
-        "gCosmetics.Kal_SaveB.Value",
-        "gCosmetics.Kal_SaveC.Value",
-        "gCosmetics.Kal_SaveD.Value",
+        CVAR_COSMETIC("Kaleido.SaveA.Value"),
+        CVAR_COSMETIC("Kaleido.SaveB.Value"),
+        CVAR_COSMETIC("Kaleido.SaveC.Value"),
+        CVAR_COSMETIC("Kaleido.SaveD.Value"),
     },
 };
 

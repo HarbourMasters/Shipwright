@@ -99,30 +99,30 @@ void Message_ResetOcarinaNoteState(void) {
     sOcarinaNoteABtnEnv = (Color_RGB8){ 10, 10, 10 };
     sOcarinaNoteCBtnPrim = (Color_RGB8){ 255, 255, 50 };
     sOcarinaNoteCBtnEnv = (Color_RGB8){ 10, 10, 10 };
-    if (CVarGetInteger("gCosmetics.Hud_AButton.Changed", 0)) {
-        sOcarinaNoteABtnPrim = CVarGetColor24("gCosmetics.Hud_AButton.Value", sOcarinaNoteABtnPrim);
-    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.AButton.Changed"), 0)) {
+        sOcarinaNoteABtnPrim = CVarGetColor24(CVAR_COSMETIC("HUD.AButton.Value"), sOcarinaNoteABtnPrim);
+    } else if (CVarGetInteger(CVAR_COSMETIC("DefaultColorScheme"), COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
         sOcarinaNoteABtnPrim = (Color_RGB8){ 80, 255, 150 };
     }
-    if (CVarGetInteger("gCosmetics.Hud_CButtons.Changed", 0)) {
-        sOcarinaNoteCBtnPrim = CVarGetColor24("gCosmetics.Hud_CButtons.Value", sOcarinaNoteCBtnPrim);
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.CButtons.Changed"), 0)) {
+        sOcarinaNoteCBtnPrim = CVarGetColor24(CVAR_COSMETIC("HUD.CButtons.Value"), sOcarinaNoteCBtnPrim);
     }
 
     sOcarinaNoteCUpBtnPrim = sOcarinaNoteCBtnPrim;
     sOcarinaNoteCDownBtnPrim = sOcarinaNoteCBtnPrim;
     sOcarinaNoteCLeftBtnPrim = sOcarinaNoteCBtnPrim;
     sOcarinaNoteCRightBtnPrim = sOcarinaNoteCBtnPrim;
-    if (CVarGetInteger("gCosmetics.Hud_CUpButton.Changed", 0)) {
-        sOcarinaNoteCUpBtnPrim = CVarGetColor24("gCosmetics.Hud_CUpButton.Value", sOcarinaNoteCUpBtnPrim);
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.CUpButton.Changed"), 0)) {
+        sOcarinaNoteCUpBtnPrim = CVarGetColor24(CVAR_COSMETIC("HUD.CUpButton.Value"), sOcarinaNoteCUpBtnPrim);
     }
-    if (CVarGetInteger("gCosmetics.Hud_CDownButton.Changed", 0)) {
-        sOcarinaNoteCDownBtnPrim = CVarGetColor24("gCosmetics.Hud_CDownButton.Value", sOcarinaNoteCDownBtnPrim);
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.CDownButton.Changed"), 0)) {
+        sOcarinaNoteCDownBtnPrim = CVarGetColor24(CVAR_COSMETIC("HUD.CDownButton.Value"), sOcarinaNoteCDownBtnPrim);
     }
-    if (CVarGetInteger("gCosmetics.Hud_CLeftButton.Changed", 0)) {
-        sOcarinaNoteCLeftBtnPrim = CVarGetColor24("gCosmetics.Hud_CLeftButton.Value", sOcarinaNoteCLeftBtnPrim);
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.CLeftButton.Changed"), 0)) {
+        sOcarinaNoteCLeftBtnPrim = CVarGetColor24(CVAR_COSMETIC("HUD.CLeftButton.Value"), sOcarinaNoteCLeftBtnPrim);
     }
-    if (CVarGetInteger("gCosmetics.Hud_CRightButton.Changed", 0)) {
-        sOcarinaNoteCRightBtnPrim = CVarGetColor24("gCosmetics.Hud_CRightButton.Value", sOcarinaNoteCRightBtnPrim);
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.CRightButton.Changed"), 0)) {
+        sOcarinaNoteCRightBtnPrim = CVarGetColor24(CVAR_COSMETIC("HUD.CRightButton.Value"), sOcarinaNoteCRightBtnPrim);
     }
 }
 
@@ -463,14 +463,14 @@ void Message_DrawTextboxIcon(PlayState* play, Gfx** p, s16 x, s16 y) {
         { 0, 0, 0 },
         { 0, 130, 255 },
     };
-    if (CVarGetInteger("gCosmetics.Hud_AButton.Changed", 0)) {
-        Color_RGB8 color = CVarGetColor24("gCosmetics.Hud_AButton.Value", (Color_RGB8){ 50, 130, 255 });
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.AButton.Changed"), 0)) {
+        Color_RGB8 color = CVarGetColor24(CVAR_COSMETIC("HUD.AButton.Value"), (Color_RGB8){ 50, 130, 255 });
         sIconPrimColors[0].r = color.r - 50;
         sIconPrimColors[0].g = color.g - 50;
         sIconPrimColors[0].b = color.b - 50;
         sIconPrimColors[1] = color;
         sIconEnvColors[1] = color;
-    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
+    } else if (CVarGetInteger(CVAR_COSMETIC("DefaultColorScheme"), COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
         sIconPrimColors[0] = (Color_RGB8){ 0, 200, 80 };
         sIconPrimColors[1] = (Color_RGB8){ 50, 255, 130 }; 
         sIconEnvColors[1] = (Color_RGB8){ 50, 255, 130 }; 
@@ -2018,14 +2018,14 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
         { 10, 10, 10 },
         { 50, 50, 255 },
     };
-    if (CVarGetInteger("gCosmetics.Hud_AButton.Changed", 0)) {
-        Color_RGB8 color = CVarGetColor24("gCosmetics.Hud_AButton.Value", (Color_RGB8){ 100, 200, 255 });
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.AButton.Changed"), 0)) {
+        Color_RGB8 color = CVarGetColor24(CVAR_COSMETIC("HUD.AButton.Value"), (Color_RGB8){ 100, 200, 255 });
         sOcarinaNoteAPrimColors[0].r = (color.r / 255.0f) * 95;
         sOcarinaNoteAPrimColors[0].g = (color.g / 255.0f) * 95;
         sOcarinaNoteAPrimColors[0].b = (color.b / 255.0f) * 95;
         sOcarinaNoteAPrimColors[1] = color;
         sOcarinaNoteAEnvColors[1] = color;
-    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
+    } else if (CVarGetInteger(CVAR_COSMETIC("DefaultColorScheme"), COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
         sOcarinaNoteAPrimColors[0] = (Color_RGB8){ 80, 255, 150 };
         sOcarinaNoteAPrimColors[1] = (Color_RGB8){ 100, 255, 200 };
         sOcarinaNoteAEnvColors[1] = (Color_RGB8){ 50, 255, 50 };
@@ -2039,8 +2039,8 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
         { 10, 10, 10 },
         { 110, 110, 50 },
     };
-    if (CVarGetInteger("gCosmetics.Hud_CButtons.Changed", 0)) {
-        Color_RGB8 color = CVarGetColor24("gCosmetics.Hud_CButtons.Value", (Color_RGB8){ 100, 200, 255 });
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.CButtons.Changed"), 0)) {
+        Color_RGB8 color = CVarGetColor24(CVAR_COSMETIC("HUD.CButtons.Value"), (Color_RGB8){ 100, 200, 255 });
         sOcarinaNoteCPrimColors[0] = color;
         sOcarinaNoteCPrimColors[1] = color;
         sOcarinaNoteCEnvColors[1].r = (color.r / 255.0f) * 95;
@@ -2056,8 +2056,8 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
         { 10, 10, 10 },
         { 110, 110, 50 },
     };
-    if (CVarGetInteger("gCosmetics.Hud_CUpButton.Changed", 0)) {
-        Color_RGB8 color = CVarGetColor24("gCosmetics.Hud_CUpButton.Value", (Color_RGB8){ 100, 200, 255 });
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.CUpButton.Changed"), 0)) {
+        Color_RGB8 color = CVarGetColor24(CVAR_COSMETIC("HUD.CUpButton.Value"), (Color_RGB8){ 100, 200, 255 });
         sOcarinaNoteCUpPrimColors[0] = color;
         sOcarinaNoteCUpPrimColors[1] = color;
         sOcarinaNoteCUpEnvColors[1].r = (color.r / 255.0f) * 95;
@@ -2073,8 +2073,8 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
         { 10, 10, 10 },
         { 110, 110, 50 },
     };
-    if (CVarGetInteger("gCosmetics.Hud_CDownButton.Changed", 0)) {
-        Color_RGB8 color = CVarGetColor24("gCosmetics.Hud_CDownButton.Value", (Color_RGB8){ 100, 200, 255 });
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.CDownButton.Changed"), 0)) {
+        Color_RGB8 color = CVarGetColor24(CVAR_COSMETIC("HUD.CDownButton.Value"), (Color_RGB8){ 100, 200, 255 });
         sOcarinaNoteCDownPrimColors[0] = color;
         sOcarinaNoteCDownPrimColors[1] = color;
         sOcarinaNoteCDownEnvColors[1].r = (color.r / 255.0f) * 95;
@@ -2090,8 +2090,8 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
         { 10, 10, 10 },
         { 110, 110, 50 },
     };
-    if (CVarGetInteger("gCosmetics.Hud_CLeftButton.Changed", 0)) {
-        Color_RGB8 color = CVarGetColor24("gCosmetics.Hud_CLeftButton.Value", (Color_RGB8){ 100, 200, 255 });
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.CLeftButton.Changed"), 0)) {
+        Color_RGB8 color = CVarGetColor24(CVAR_COSMETIC("HUD.CLeftButton.Value"), (Color_RGB8){ 100, 200, 255 });
         sOcarinaNoteCLeftPrimColors[0] = color;
         sOcarinaNoteCLeftPrimColors[1] = color;
         sOcarinaNoteCLeftEnvColors[1].r = (color.r / 255.0f) * 95;
@@ -2107,8 +2107,8 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
         { 10, 10, 10 },
         { 110, 110, 50 },
     };
-    if (CVarGetInteger("gCosmetics.Hud_CRightButton.Changed", 0)) {
-        Color_RGB8 color = CVarGetColor24("gCosmetics.Hud_CRightButton.Value", (Color_RGB8){ 100, 200, 255 });
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.CRightButton.Changed"), 0)) {
+        Color_RGB8 color = CVarGetColor24(CVAR_COSMETIC("HUD.CRightButton.Value"), (Color_RGB8){ 100, 200, 255 });
         sOcarinaNoteCRightPrimColors[0] = color;
         sOcarinaNoteCRightPrimColors[1] = color;
         sOcarinaNoteCRightEnvColors[1].r = (color.r / 255.0f) * 95;

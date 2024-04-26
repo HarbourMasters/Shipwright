@@ -353,50 +353,50 @@ void func_8002BE98(TargetContext* targetCtx, s32 actorCategory, PlayState* play)
 }
 
 void func_8002BF60(TargetContext* targetCtx, Actor* actor, s32 actorCategory, PlayState* play) {
-    if (CVarGetInteger("gCosmetics.Navi_IdlePrimary.Changed", 0)) {
-        sNaviColorList[ACTORCAT_PLAYER].inner = CVarGetColor("gCosmetics.Navi_IdlePrimary.Value", defaultIdlePrimaryColor);
+    if (CVarGetInteger(CVAR_COSMETIC("Navi.IdlePrimary.Changed"), 0)) {
+        sNaviColorList[ACTORCAT_PLAYER].inner = CVarGetColor(CVAR_COSMETIC("Navi.IdlePrimary.Value"), defaultIdlePrimaryColor);
     } else {
         sNaviColorList[ACTORCAT_PLAYER].inner = defaultIdlePrimaryColor;
     }
-    if (CVarGetInteger("gCosmetics.Navi_IdleSecondary.Changed", 0)) {
-        sNaviColorList[ACTORCAT_PLAYER].outer = CVarGetColor("gCosmetics.Navi_IdleSecondary.Value", defaultIdleSecondaryColor);
+    if (CVarGetInteger(CVAR_COSMETIC("Navi.IdleSecondary.Changed"), 0)) {
+        sNaviColorList[ACTORCAT_PLAYER].outer = CVarGetColor(CVAR_COSMETIC("Navi.IdleSecondary.Value"), defaultIdleSecondaryColor);
     } else {
         sNaviColorList[ACTORCAT_PLAYER].outer = defaultIdleSecondaryColor;
     }
     
-    if (CVarGetInteger("gCosmetics.Navi_NPCPrimary.Changed", 0)) {
-        sNaviColorList[ACTORCAT_NPC].inner = CVarGetColor("gCosmetics.Navi_NPCPrimary.Value", defaultNPCPrimaryColor);
+    if (CVarGetInteger(CVAR_COSMETIC("Navi.NPCPrimary.Changed"), 0)) {
+        sNaviColorList[ACTORCAT_NPC].inner = CVarGetColor(CVAR_COSMETIC("Navi.NPCPrimary.Value"), defaultNPCPrimaryColor);
     } else {
         sNaviColorList[ACTORCAT_NPC].inner = defaultNPCPrimaryColor;
     }
-    if (CVarGetInteger("gCosmetics.Navi_NPCSecondary.Changed", 0)) {
-        sNaviColorList[ACTORCAT_NPC].outer = CVarGetColor("gCosmetics.Navi_NPCSecondary.Value", defaultNPCSecondaryColor);
+    if (CVarGetInteger(CVAR_COSMETIC("Navi.NPCSecondary.Changed"), 0)) {
+        sNaviColorList[ACTORCAT_NPC].outer = CVarGetColor(CVAR_COSMETIC("Navi.NPCSecondary.Value"), defaultNPCSecondaryColor);
     } else {
         sNaviColorList[ACTORCAT_NPC].outer = defaultNPCSecondaryColor;
     }
 
-    if (CVarGetInteger("gCosmetics.Navi_EnemyPrimary.Changed", 0)) {
-        sNaviColorList[ACTORCAT_ENEMY].inner = CVarGetColor("gCosmetics.Navi_EnemyPrimary.Value", defaultEnemyPrimaryColor);
-        sNaviColorList[ACTORCAT_BOSS].inner = CVarGetColor("gCosmetics.Navi_EnemyPrimary.Value", defaultEnemyPrimaryColor);
+    if (CVarGetInteger(CVAR_COSMETIC("Navi.EnemyPrimary.Changed"), 0)) {
+        sNaviColorList[ACTORCAT_ENEMY].inner = CVarGetColor(CVAR_COSMETIC("Navi.EnemyPrimary.Value"), defaultEnemyPrimaryColor);
+        sNaviColorList[ACTORCAT_BOSS].inner = CVarGetColor(CVAR_COSMETIC("Navi.EnemyPrimary.Value"), defaultEnemyPrimaryColor);
     } else {
         sNaviColorList[ACTORCAT_ENEMY].inner = defaultEnemyPrimaryColor;
         sNaviColorList[ACTORCAT_BOSS].inner = defaultEnemyPrimaryColor;
     }
-    if (CVarGetInteger("gCosmetics.Navi_EnemySecondary.Changed", 0)) {
-        sNaviColorList[ACTORCAT_ENEMY].outer = CVarGetColor("gCosmetics.Navi_EnemySecondary.Value", defaultEnemySecondaryColor);
-        sNaviColorList[ACTORCAT_BOSS].outer = CVarGetColor("gCosmetics.Navi_EnemySecondary.Value", defaultEnemySecondaryColor);
+    if (CVarGetInteger(CVAR_COSMETIC("Navi.EnemySecondary.Changed"), 0)) {
+        sNaviColorList[ACTORCAT_ENEMY].outer = CVarGetColor(CVAR_COSMETIC("Navi.EnemySecondary.Value"), defaultEnemySecondaryColor);
+        sNaviColorList[ACTORCAT_BOSS].outer = CVarGetColor(CVAR_COSMETIC("Navi.EnemySecondary.Value"), defaultEnemySecondaryColor);
     } else {
         sNaviColorList[ACTORCAT_ENEMY].outer = defaultEnemySecondaryColor;
         sNaviColorList[ACTORCAT_BOSS].outer = defaultEnemySecondaryColor;
     }
 
-    if (CVarGetInteger("gCosmetics.Navi_PropsPrimary.Changed", 0)) {
-        sNaviColorList[ACTORCAT_PROP].inner = CVarGetColor("gCosmetics.Navi_PropsPrimary.Value", defaultPropsPrimaryColor);
+    if (CVarGetInteger(CVAR_COSMETIC("Navi.PropsPrimary.Changed"), 0)) {
+        sNaviColorList[ACTORCAT_PROP].inner = CVarGetColor(CVAR_COSMETIC("Navi.PropsPrimary.Value"), defaultPropsPrimaryColor);
     } else {
         sNaviColorList[ACTORCAT_PROP].inner = defaultPropsPrimaryColor;
     }
-    if (CVarGetInteger("gCosmetics.Navi_PropsSecondary.Changed", 0)) {
-        sNaviColorList[ACTORCAT_PROP].outer = CVarGetColor("gCosmetics.Navi_PropsSecondary.Value", defaultPropsSecondaryColor);
+    if (CVarGetInteger(CVAR_COSMETIC("Navi.PropsSecondary.Changed"), 0)) {
+        sNaviColorList[ACTORCAT_PROP].outer = CVarGetColor(CVAR_COSMETIC("Navi.PropsSecondary.Value"), defaultPropsSecondaryColor);
     } else {
         sNaviColorList[ACTORCAT_PROP].outer = defaultPropsSecondaryColor;
     }
@@ -1119,10 +1119,10 @@ void TitleCard_Draw(PlayState* play, TitleCardContext* titleCtx) {
     if (titleCtx->alpha != 0) {
         width = titleCtx->width;
         height = titleCtx->height;
-        s16 TitleCard_PosX_Modifier = (titleCtx->isBossCard ? CVarGetInteger("gTCBPosX", 0) : CVarGetInteger("gTCMPosX", 0));
-        s16 TitleCard_PosY_Modifier = (titleCtx->isBossCard ? CVarGetInteger("gTCBPosY", 0) : CVarGetInteger("gTCMPosY", 0));
-        s16 TitleCard_PosType_Checker = (titleCtx->isBossCard ? CVarGetInteger("gTCBPosType", 0) : CVarGetInteger("gTCMPosType", 0));
-        s16 TitleCard_Margin_Checker = (titleCtx->isBossCard ? CVarGetInteger("gTCBUseMargins", 0) : CVarGetInteger("gTCMUseMargins", 0));
+        s16 TitleCard_PosX_Modifier = (titleCtx->isBossCard ? CVarGetInteger(CVAR_COSMETIC("TitleCard.Boss.PosX"), 0) : CVarGetInteger(CVAR_COSMETIC("TitleCard.Map.PosX"), 0));
+        s16 TitleCard_PosY_Modifier = (titleCtx->isBossCard ? CVarGetInteger(CVAR_COSMETIC("TitleCard.Boss.PosY"), 0) : CVarGetInteger(CVAR_COSMETIC("TitleCard.Map.PosY"), 0));
+        s16 TitleCard_PosType_Checker = (titleCtx->isBossCard ? CVarGetInteger(CVAR_COSMETIC("TitleCard.Boss.PosType"), 0) : CVarGetInteger(CVAR_COSMETIC("TitleCard.Map.PosType"), 0));
+        s16 TitleCard_Margin_Checker = (titleCtx->isBossCard ? CVarGetInteger(CVAR_COSMETIC("TitleCard.Boss.UseMargins"), 0) : CVarGetInteger(CVAR_COSMETIC("TitleCard.Map.UseMargins"), 0));
         s16 TitleCard_MarginX = 0;
         s16 TitleCard_PosX = titleCtx->x;
         s16 TitleCard_PosY = titleCtx->y;

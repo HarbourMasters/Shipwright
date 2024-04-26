@@ -745,8 +745,8 @@ void EnPartner_Update(Actor* thisx, PlayState* play) {
         CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
     }
 
-    if (CVarGetInteger("gCosmetics.Ivan_IdlePrimary.Changed", 0)) {
-        Color_RGB8 ivanColor1 = CVarGetColor24("gCosmetics.Ivan_IdlePrimary.Value", (Color_RGB8){ 255, 255, 255 });
+    if (CVarGetInteger(CVAR_COSMETIC("Ivan.IdlePrimary.Changed"), 0)) {
+        Color_RGB8 ivanColor1 = CVarGetColor24(CVAR_COSMETIC("Ivan.IdlePrimary.Value"), (Color_RGB8){ 255, 255, 255 });
         this->innerColor.r = ivanColor1.r;
         this->innerColor.g = ivanColor1.g;
         this->innerColor.b = ivanColor1.b;
@@ -756,8 +756,8 @@ void EnPartner_Update(Actor* thisx, PlayState* play) {
         this->innerColor.b = 255;
     }
 
-    if (CVarGetInteger("gCosmetics.Ivan_IdleSecondary.Changed", 0)) {
-        Color_RGB8 ivanColor2 = CVarGetColor24("gCosmetics.Ivan_IdleSecondary.Value", (Color_RGB8){ 0, 255, 0 });
+    if (CVarGetInteger(CVAR_COSMETIC("Ivan.IdleSecondary.Changed"), 0)) {
+        Color_RGB8 ivanColor2 = CVarGetColor24(CVAR_COSMETIC("Ivan.IdleSecondary.Value"), (Color_RGB8){ 0, 255, 0 });
         this->outerColor.r = ivanColor2.r;
         this->outerColor.g = ivanColor2.g;
         this->outerColor.b = ivanColor2.b;

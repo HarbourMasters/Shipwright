@@ -2123,17 +2123,17 @@ Color_RGB8 GetColorForControllerLED() {
             switch (CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC)) {
                 case EQUIP_VALUE_TUNIC_KOKIRI:
                     color = source == LED_SOURCE_TUNIC_COSMETICS
-                                ? CVarGetColor24("gCosmetics.Link_KokiriTunic.Value", kokiriColor)
+                                ? CVarGetColor24(CVAR_COSMETIC("Link.KokiriTunic.Value"), kokiriColor)
                                 : kokiriColor;
                     break;
                 case EQUIP_VALUE_TUNIC_GORON:
                     color = source == LED_SOURCE_TUNIC_COSMETICS
-                                ? CVarGetColor24("gCosmetics.Link_GoronTunic.Value", goronColor)
+                                ? CVarGetColor24(CVAR_COSMETIC("Link.GoronTunic.Value"), goronColor)
                                 : goronColor;
                     break;
                 case EQUIP_VALUE_TUNIC_ZORA:
                     color = source == LED_SOURCE_TUNIC_COSMETICS
-                                ? CVarGetColor24("gCosmetics.Link_ZoraTunic.Value", zoraColor)
+                                ? CVarGetColor24(CVAR_COSMETIC("Link.ZoraTunic.Value"), zoraColor)
                                 : zoraColor;
                     break;
             }
@@ -2145,16 +2145,16 @@ Color_RGB8 GetColorForControllerLED() {
                 switch (category) {
                     case ACTORCAT_PLAYER:
                         if (source == LED_SOURCE_NAVI_COSMETICS &&
-                            CVarGetInteger("gCosmetics.Navi_IdlePrimary.Changed", 0)) {
-                            color = CVarGetColor24("gCosmetics.Navi_IdlePrimary.Value", defaultIdleColor.inner);
+                            CVarGetInteger(CVAR_COSMETIC("Navi.IdlePrimary.Changed"), 0)) {
+                            color = CVarGetColor24(CVAR_COSMETIC("Navi.IdlePrimary.Value"), defaultIdleColor.inner);
                             break;
                         }
                         color = LEDColorDefaultNaviColorList[category].inner;
                         break;
                     case ACTORCAT_NPC:
                         if (source == LED_SOURCE_NAVI_COSMETICS &&
-                            CVarGetInteger("gCosmetics.Navi_NPCPrimary.Changed", 0)) {
-                            color = CVarGetColor24("gCosmetics.Navi_NPCPrimary.Value", defaultNPCColor.inner);
+                            CVarGetInteger(CVAR_COSMETIC("Navi.NPCPrimary.Changed"), 0)) {
+                            color = CVarGetColor24(CVAR_COSMETIC("Navi.NPCPrimary.Value"), defaultNPCColor.inner);
                             break;
                         }
                         color = LEDColorDefaultNaviColorList[category].inner;
@@ -2162,23 +2162,23 @@ Color_RGB8 GetColorForControllerLED() {
                     case ACTORCAT_ENEMY:
                     case ACTORCAT_BOSS:
                         if (source == LED_SOURCE_NAVI_COSMETICS &&
-                            CVarGetInteger("gCosmetics.Navi_EnemyPrimary.Changed", 0)) {
-                            color = CVarGetColor24("gCosmetics.Navi_EnemyPrimary.Value", defaultEnemyColor.inner);
+                            CVarGetInteger(CVAR_COSMETIC("Navi.EnemyPrimary.Changed"), 0)) {
+                            color = CVarGetColor24(CVAR_COSMETIC("Navi.EnemyPrimary.Value"), defaultEnemyColor.inner);
                             break;
                         }
                         color = LEDColorDefaultNaviColorList[category].inner;
                         break;
                     default:
                         if (source == LED_SOURCE_NAVI_COSMETICS &&
-                            CVarGetInteger("gCosmetics.Navi_PropsPrimary.Changed", 0)) {
-                            color = CVarGetColor24("gCosmetics.Navi_PropsPrimary.Value", defaultPropsColor.inner);
+                            CVarGetInteger(CVAR_COSMETIC("Navi.PropsPrimary.Changed"), 0)) {
+                            color = CVarGetColor24(CVAR_COSMETIC("Navi.PropsPrimary.Value"), defaultPropsColor.inner);
                             break;
                         }
                         color = LEDColorDefaultNaviColorList[category].inner;
                 }
             } else { // No target actor.
-                if (source == LED_SOURCE_NAVI_COSMETICS && CVarGetInteger("gCosmetics.Navi_IdlePrimary.Changed", 0)) {
-                    color = CVarGetColor24("gCosmetics.Navi_IdlePrimary.Value", defaultIdleColor.inner);
+                if (source == LED_SOURCE_NAVI_COSMETICS && CVarGetInteger(CVAR_COSMETIC("Navi.IdlePrimary.Changed"), 0)) {
+                    color = CVarGetColor24(CVAR_COSMETIC("Navi.IdlePrimary.Value"), defaultIdleColor.inner);
                 } else {
                     color = LEDColorDefaultNaviColorList[ACTORCAT_PLAYER].inner;
                 }

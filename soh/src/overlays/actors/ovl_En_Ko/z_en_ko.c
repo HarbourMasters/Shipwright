@@ -1379,9 +1379,9 @@ void EnKo_Draw(Actor* thisx, PlayState* play) {
     Color_RGBA8 tunicColor = sModelInfo[ENKO_TYPE].tunicColor;
     Color_RGBA8 bootsColor = sModelInfo[ENKO_TYPE].bootsColor;
 
-    if (CVarGetInteger("gCosmetics.NPC_Kokiri.Changed", 0)) {
-        tunicColor = CVarGetColor("gCosmetics.NPC_Kokiri.Value", sModelInfo[ENKO_TYPE].tunicColor);
-        bootsColor = CVarGetColor("gCosmetics.NPC_Kokiri.Value", sModelInfo[ENKO_TYPE].bootsColor);
+    if (CVarGetInteger(CVAR_COSMETIC("NPC.Kokiri.Changed"), 0)) {
+        tunicColor = CVarGetColor(CVAR_COSMETIC("NPC.Kokiri.Value"), sModelInfo[ENKO_TYPE].tunicColor);
+        bootsColor = CVarGetColor(CVAR_COSMETIC("NPC.Kokiri.Value"), sModelInfo[ENKO_TYPE].bootsColor);
     }
 
     this->actor.shape.shadowAlpha = this->modelAlpha;
