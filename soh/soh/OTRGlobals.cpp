@@ -377,7 +377,7 @@ OTRGlobals::OTRGlobals() {
 #if defined(__SWITCH__)
             SPDLOG_ERROR("Invalid OTR File!");
 #elif defined(__WIIU__)
-            LUS::WiiU::ThrowInvalidOTR();
+            ShipDK::WiiU::ThrowInvalidOTR();
 #else
             SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Invalid OTR File",
                                      "Attempted to load an invalid OTR file. Try regenerating.", nullptr);
@@ -1014,7 +1014,7 @@ extern "C" void InitOTR() {
 #ifdef __SWITCH__
     ShipDK::Switch::Init(ShipDK::PreInitPhase);
 #elif defined(__WIIU__)
-    LUS::WiiU::Init(appShortName);
+    ShipDK::WiiU::Init(appShortName);
 #endif
 
 #ifdef _WIN32
