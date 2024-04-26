@@ -139,7 +139,7 @@ void EnBomChu_UpdateFloorPoly(EnBomChu* this, CollisionPoly* floorPoly, PlayStat
     f32 normDotUp;
     MtxF mf;
 
-    if (CVarGetInteger("gBombchusOOB", 0) && floorPoly == NULL) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("BombchusOOB"), 0) && floorPoly == NULL) {
         EnBomChu_Explode(this, play);
         return;
     }

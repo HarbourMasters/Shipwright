@@ -918,14 +918,14 @@ void Minimap_Draw(PlayState* play) {
                         // or hide them entirely if the fix is applied
                         if (gMapData->owEntranceIconPosY[sEntranceIconMapIndex] == 0) {
                             entranceY = 0;
-                            entranceX = CVarGetInteger("gFixDungeonMinimapIcon", 0) ? -9999 : OTRGetRectDimensionFromLeftEdge(0);
+                            entranceX = CVarGetInteger(CVAR_ENHANCEMENT("FixDungeonMinimapIcon"), 0) ? -9999 : OTRGetRectDimensionFromLeftEdge(0);
                         }
 
                         //! @bug UB: sEntranceIconMapIndex can be up to 23 and is accessing owEntranceFlag which is size 20
                         if ((gMapData->owEntranceFlag[sEntranceIconMapIndex] == 0xFFFF) ||
                             ((gMapData->owEntranceFlag[sEntranceIconMapIndex] != 0xFFFF) &&
                               ((gSaveContext.infTable[26] & gBitFlags[gMapData->owEntranceFlag[mapIndex]]) ||
-                               CVarGetInteger("gAlwaysShowDungeonMinimapIcon", 0)))) {
+                               CVarGetInteger(CVAR_ENHANCEMENT("AlwaysShowDungeonMinimapIcon"), 0)))) {
                             gDPLoadTextureBlock(OVERLAY_DISP++, gMapDungeonEntranceIconTex, G_IM_FMT_RGBA, G_IM_SIZ_16b,
                                                 iconSize, iconSize, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
                                                 G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
@@ -952,7 +952,7 @@ void Minimap_Draw(PlayState* play) {
 
                     // Ice Cavern entrance icon
                     if ((play->sceneNum == SCENE_ZORAS_FOUNTAIN) && ((gSaveContext.infTable[26] & gBitFlags[9]) ||
-                        CVarGetInteger("gAlwaysShowDungeonMinimapIcon", 0))) {
+                        CVarGetInteger(CVAR_ENHANCEMENT("AlwaysShowDungeonMinimapIcon"), 0))) {
                         gDPLoadTextureBlock(OVERLAY_DISP++, gMapDungeonEntranceIconTex, G_IM_FMT_RGBA, G_IM_SIZ_16b, iconSize,
                                             iconSize, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
                                             G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);

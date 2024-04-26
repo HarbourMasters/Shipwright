@@ -602,7 +602,7 @@ void HealthMeter_Draw(PlayState* play) {
             {
                 Mtx* matrix = Graph_Alloc(gfxCtx, sizeof(Mtx));
                 
-                if (CVarGetInteger("gNoHUDHeartAnimation", 0)) {
+                if (CVarGetInteger(CVAR_ENHANCEMENT("NoHUDHeartAnimation"), 0)) {
                     Matrix_SetTranslateScaleMtx2(matrix,
                         HeartsScale,          // Scale X
                         HeartsScale,          // Scale Y
@@ -646,7 +646,7 @@ void HealthMeter_HandleCriticalAlarm(PlayState* play) {
         if (interfaceCtx->unk_22A <= 0) {
             interfaceCtx->unk_22A = 0;
             interfaceCtx->unk_22C = 0;
-            if (CVarGetInteger("gLowHpAlarm", 0) == 0 && !Player_InCsMode(play) && (play->pauseCtx.state == 0) &&
+            if (CVarGetInteger(CVAR_ENHANCEMENT("LowHpAlarm"), 0) == 0 && !Player_InCsMode(play) && (play->pauseCtx.state == 0) &&
             (play->pauseCtx.debugState == 0) && HealthMeter_IsCritical() && !Play_InCsMode(play)) {
                 func_80078884(NA_SE_SY_HITPOINT_ALARM);
             }

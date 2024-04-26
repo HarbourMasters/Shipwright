@@ -1170,7 +1170,7 @@ void func_80083108(PlayState* play) {
 
                 if (interfaceCtx->restrictions.tradeItems != 0) {
                     for (i = 1; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
-                        if ((CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA)
+                        if ((CVarGetInteger(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA)
                             && (gSaveContext.equips.buttonItems[i] >= ITEM_MASK_KEATON)
                             && (gSaveContext.equips.buttonItems[i] <= ITEM_MASK_TRUTH)) {
                             gSaveContext.buttonStatus[BUTTON_STATUS_INDEX(i)] = BTN_ENABLED;
@@ -1401,7 +1401,7 @@ void Interface_SetSceneRestrictions(PlayState* play) {
                          interfaceCtx->restrictions.farores, interfaceCtx->restrictions.dinsNayrus,
                          interfaceCtx->restrictions.all);
             osSyncPrintf(VT_RST);
-            if (CVarGetInteger("gBetterFW", 0)) {
+            if (CVarGetInteger(CVAR_ENHANCEMENT("BetterFarore"), 0)) {
                 if (currentScene == SCENE_GERUDO_TRAINING_GROUND || currentScene == SCENE_INSIDE_GANONS_CASTLE) {
                     interfaceCtx->restrictions.farores = 0;
                 }
@@ -2278,7 +2278,7 @@ u8 Item_Give(PlayState* play, u8 item) {
         gSaveContext.sohStats.heartPieces++;
         return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_HEART_CONTAINER) {
-        if (!CVarGetInteger("gHurtContainer", 0)) {
+        if (!CVarGetInteger(CVAR_ENHANCEMENT("HurtContainer"), 0)) {
             gSaveContext.healthCapacity += 0x10;
             gSaveContext.health += 0x10;
         } else {
@@ -2379,7 +2379,7 @@ u8 Item_Give(PlayState* play, u8 item) {
         }
         return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if ((item >= ITEM_WEIRD_EGG) && (item <= ITEM_CLAIM_CHECK)) {
-        if ((item == ITEM_SAW) && CVarGetInteger("gDekuNutUpgradeFix", 0) == 0) {
+        if ((item == ITEM_SAW) && CVarGetInteger(CVAR_ENHANCEMENT("DekuNutUpgradeFix"), 0) == 0) {
             Flags_SetItemGetInf(ITEMGETINF_OBTAINED_NUT_UPGRADE_FROM_STAGE);
         }
 
@@ -2905,7 +2905,7 @@ void Inventory_UpdateBottleItem(PlayState* play, u8 item, u8 button) {
         item = ITEM_MILK_HALF;
     }
 
-    if (CVarGetInteger("gRestoreRBAValues",0)) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("RestoreRBAValues"),0)) {
         byteSwapInventory();
         gSaveContext.inventory.items[gSaveContext.equips.cButtonSlots[button - 1]] = item;
         byteSwapInventory();
@@ -3016,7 +3016,7 @@ void Interface_SetNaviCall(PlayState* play, u16 naviCallState) {
 
     if (((naviCallState == 0x1D) || (naviCallState == 0x1E)) && !interfaceCtx->naviCalling &&
         (play->csCtx.state == CS_STATE_IDLE)) {
-        if (!CVarGetInteger("gDisableNaviCallAudio", 0)) {
+        if (!CVarGetInteger(CVAR_ENHANCEMENT("DisableNaviCallAudio"), 0)) {
             // clang-format off
             if (naviCallState == 0x1E) { Audio_PlaySoundGeneral(NA_SE_VO_NAVY_CALL, &D_801333D4, 4,
                                                                 &D_801333E0, &D_801333E0, &D_801333E8); }
@@ -4132,7 +4132,7 @@ void Interface_DrawItemButtons(PlayState* play) {
     const s16 C_Right_BTN_Pos_ori[] = { C_RIGHT_BUTTON_X+X_Margins_CR, C_RIGHT_BUTTON_Y+Y_Margins_CR };
     const s16 C_Up_BTN_Pos_ori[]    = { C_UP_BUTTON_X+X_Margins_CU, C_UP_BUTTON_Y+Y_Margins_CU };
     const s16 C_Down_BTN_Pos_ori[]  = { C_DOWN_BUTTON_X+X_Margins_CD, C_DOWN_BUTTON_Y+Y_Margins_CD };
-    s16 LabelX_Navi=7 + !!CVarGetInteger("gNaviTextFix", 0);
+    s16 LabelX_Navi=7 + !!CVarGetInteger(CVAR_ENHANCEMENT("NaviTextFix"), 0);
     s16 LabelY_Navi=4;
     s16 C_Left_BTN_Pos[2]; //(X,Y)
     s16 C_Right_BTN_Pos[2];
@@ -5119,7 +5119,7 @@ void Interface_Draw(PlayState* play) {
     s16 svar4;
     s16 svar5;
     s16 svar6;
-    bool fullUi = !CVarGetInteger("gMinimalUI", 0) || !R_MINIMAP_DISABLED || play->pauseCtx.state != 0;
+    bool fullUi = !CVarGetInteger(CVAR_ENHANCEMENT("MinimalUI"), 0) || !R_MINIMAP_DISABLED || play->pauseCtx.state != 0;
 
     if (GameInteractor_NoUIActive()) {
         return;
@@ -5143,7 +5143,7 @@ void Interface_Draw(PlayState* play) {
 
         if (fullUi) {
             // Rupee Icon
-            if (CVarGetInteger("gDynamicWalletIcon", 0)) {
+            if (CVarGetInteger(CVAR_ENHANCEMENT("DynamicWalletIcon"), 0)) {
                 switch (CUR_UPG_VALUE(UPG_WALLET)) {
                     case 0:
                         if (CVarGetInteger(CVAR_COSMETIC("Consumable.GreenRupee.Changed"), 0)) {
@@ -5346,7 +5346,7 @@ void Interface_Draw(PlayState* play) {
             gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 0);
         }
 
-        if (CVarGetInteger("gDrawLineupTick", 0)) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("DrawLineupTick"), 0)) {
             Interface_DrawLineupTick(play);
         }
 
@@ -5366,7 +5366,7 @@ void Interface_Draw(PlayState* play) {
             }
 
             // Render enemy health bar after Z-target to leverage set variables
-            if (CVarGetInteger("gEnemyHealthBar", 0)) {
+            if (CVarGetInteger(CVAR_ENHANCEMENT("EnemyHealthBar"), 0)) {
                 Interface_DrawEnemyHealthBar(&play->actorCtx.targetCtx, play);
             }
         }

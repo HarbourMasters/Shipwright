@@ -459,7 +459,7 @@ bool HasItemBeenCollected(RandomizerCheck rc) {
     case SpoilerCollectionCheckType::SPOILER_CHK_GRAVEDIGGER:
         // Gravedigger has a fix in place that means one of two save locations. Check both.
         return (gSaveContext.itemGetInf[1] & 0x1000) || // vanilla flag
-            ((IS_RANDO || CVarGetInteger("gGravediggingTourFix", 0)) &&
+            ((IS_RANDO || CVarGetInteger(CVAR_ENHANCEMENT("GravediggingTourFix"), 0)) &&
                 gSaveContext.sceneFlags[scene].collect & (1 << flag) || (gPlayState->actorCtx.flags.collect & (1 << flag))); // rando/fix flag
     default:
         return false;

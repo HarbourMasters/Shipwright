@@ -638,7 +638,7 @@ void func_80AAB5A4(EnMd* this, PlayState* play) {
     f32 temp;
 
     if (play->sceneNum != SCENE_MIDOS_HOUSE) {
-        if (CVarGetInteger("gDisableKokiriDrawDistance", 0) != 0) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("DisableKokiriDrawDistance"), 0) != 0) {
             temp = (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) && !Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_AFTER_DEKU_TREES_DEATH) &&
                     (play->sceneNum == SCENE_KOKIRI_FOREST))
                        ? 100.0f

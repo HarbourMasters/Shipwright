@@ -150,7 +150,7 @@ void Message_UpdateOcarinaGame(PlayState* play) {
 u8 Message_ShouldAdvance(PlayState* play) {
     Input* input = &play->state.input[0];
 
-    bool isB_Held = CVarGetInteger("gSkipText", 0) != 0 ? CHECK_BTN_ALL(input->cur.button, BTN_B)
+    bool isB_Held = CVarGetInteger(CVAR_ENHANCEMENT("SkipText"), 0) != 0 ? CHECK_BTN_ALL(input->cur.button, BTN_B)
                                                      : CHECK_BTN_ALL(input->press.button, BTN_B);
 
     if (CHECK_BTN_ALL(input->press.button, BTN_A) || isB_Held || CHECK_BTN_ALL(input->press.button, BTN_CUP)) {
@@ -162,7 +162,7 @@ u8 Message_ShouldAdvance(PlayState* play) {
 u8 Message_ShouldAdvanceSilent(PlayState* play) {
     Input* input = &play->state.input[0];
 
-    bool isB_Held = CVarGetInteger("gSkipText", 0) != 0 ? CHECK_BTN_ALL(input->cur.button, BTN_B)
+    bool isB_Held = CVarGetInteger(CVAR_ENHANCEMENT("SkipText"), 0) != 0 ? CHECK_BTN_ALL(input->cur.button, BTN_B)
                                                      : CHECK_BTN_ALL(input->press.button, BTN_B);
 
     return CHECK_BTN_ALL(input->press.button, BTN_A) || isB_Held || CHECK_BTN_ALL(input->press.button, BTN_CUP);
@@ -291,7 +291,7 @@ void Message_FindMessage(PlayState* play, u16 textId) {
     const char* seg;
     u16 bufferId = textId;
     // Use the better owl message if better owl is enabled
-    if (CVarGetInteger("gBetterOwl", 0) != 0 && (bufferId == 0x2066 || bufferId == 0x607B ||
+    if (CVarGetInteger(CVAR_ENHANCEMENT("BetterOwl"), 0) != 0 && (bufferId == 0x2066 || bufferId == 0x607B ||
         bufferId == 0x10C2 || bufferId == 0x10C6 || bufferId == 0x206A))
     {
         bufferId = 0x71B3;
@@ -873,7 +873,7 @@ void Message_DrawText(PlayState* play, Gfx** gfxP) {
                 Message_SetTextColor(msgCtx, msgCtx->msgBufDecoded[++i] & 0xF);
                 break;
             case ' ':
-                msgCtx->textPosX += CVarGetInteger("gTextSpacing", 6);
+                msgCtx->textPosX += CVarGetInteger(CVAR_ENHANCEMENT("TextSpacing"), 6);
                 break;
             case MESSAGE_BOX_BREAK:
                 if (msgCtx->msgMode == MSGMODE_TEXT_DISPLAYING) {
@@ -1032,7 +1032,7 @@ void Message_DrawText(PlayState* play, Gfx** gfxP) {
                 msgCtx->textDelay = msgCtx->msgBufDecoded[++i];
                 break;
             case MESSAGE_UNSKIPPABLE:
-                msgCtx->textUnskippable = CVarGetInteger("gSkipText", 0) != 1;
+                msgCtx->textUnskippable = CVarGetInteger(CVAR_ENHANCEMENT("SkipText"), 0) != 1;
                 break;
             case MESSAGE_TWO_CHOICE:
                 msgCtx->textboxEndType = TEXTBOX_ENDTYPE_2_CHOICE;
@@ -1116,7 +1116,7 @@ void Message_DrawText(PlayState* play, Gfx** gfxP) {
         }
     }
     if (msgCtx->textDelayTimer == 0) {
-        msgCtx->textDrawPos = i + CVarGetInteger("gTextSpeed", 2);
+        msgCtx->textDrawPos = i + CVarGetInteger(CVAR_ENHANCEMENT("TextSpeed"), 2);
         msgCtx->textDelayTimer = msgCtx->textDelay;
     } else {
         msgCtx->textDelayTimer--;
@@ -1189,7 +1189,7 @@ void Message_Decode(PlayState* play) {
         phi_s1 = temp_s2 = msgCtx->msgBufDecoded[decodedBufPos] = font->msgBuf[msgCtx->msgBufPos];
 
         // Don't require input for credits textboxes in randomizer
-        if (CVarGetInteger("gNoInputForCredits", 0) && (
+        if (CVarGetInteger(CVAR_ENHANCEMENT("NoInputForCredits"), 0) && (
             msgCtx->textId == 0x706F ||
             msgCtx->textId == 0x7091 ||
             msgCtx->textId == 0x7092 ||
@@ -1654,7 +1654,7 @@ void Message_OpenText(PlayState* play, u16 textId) {
         //DmaMgr_SendRequest1(font->msgBuf, (uintptr_t)(_staff_message_data_staticSegmentRomStart + 4 + font->msgOffset),
                             //font->msgLength, __FILE__, __LINE__);
 
-    } else if (CVarGetInteger("gAskToEquip", 0) &&
+    } else if (CVarGetInteger(CVAR_ENHANCEMENT("AskToEquip"), 0) &&
                (((LINK_IS_ADULT || CVarGetInteger(CVAR_CHEAT("TimelessEquipment"), 0)) &&
                  // 0C = Biggoron, 4B = Giant's, 4E = Mirror Shield, 50-51 = Tunics
                  (textId == 0x0C || textId == 0x4B || textId == 0x4E ||
@@ -2155,7 +2155,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
         gDPSetCombineLERP(gfx++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE,
                           0);
 
-            bool isB_Held = CVarGetInteger("gSkipText", 0) != 0 ? CHECK_BTN_ALL(play->state.input[0].cur.button, BTN_B)
+            bool isB_Held = CVarGetInteger(CVAR_ENHANCEMENT("SkipText"), 0) != 0 ? CHECK_BTN_ALL(play->state.input[0].cur.button, BTN_B)
                                                          : CHECK_BTN_ALL(play->state.input[0].press.button, BTN_B);
 
         switch (msgCtx->msgMode) {
@@ -2436,7 +2436,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                 }
                 break;
             case MSGMODE_SETUP_DISPLAY_SONG_PLAYED:
-                if (CVarGetInteger("gFastOcarinaPlayback", 0) == 0 ||
+                if (CVarGetInteger(CVAR_ENHANCEMENT("FastOcarinaPlayback"), 0) == 0 ||
                     play->msgCtx.lastPlayedSong == OCARINA_SONG_TIME ||
                     play->msgCtx.lastPlayedSong == OCARINA_SONG_STORMS ||
                     play->msgCtx.lastPlayedSong == OCARINA_SONG_SUNS) {
@@ -2491,7 +2491,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                 Message_Decode(play);
                 msgCtx->msgMode = MSGMODE_DISPLAY_SONG_PLAYED_TEXT;
 
-                if (CVarGetInteger("gFastOcarinaPlayback", 0) == 0 || play->msgCtx.lastPlayedSong == OCARINA_SONG_TIME
+                if (CVarGetInteger(CVAR_ENHANCEMENT("FastOcarinaPlayback"), 0) == 0 || play->msgCtx.lastPlayedSong == OCARINA_SONG_TIME
                     || play->msgCtx.lastPlayedSong == OCARINA_SONG_STORMS ||
                     play->msgCtx.lastPlayedSong == OCARINA_SONG_SUNS) {
                     msgCtx->stateTimer = 20;
@@ -3148,7 +3148,7 @@ void Message_Update(PlayState* play) {
     
     GameInteractor_ExecuteOnDialogMessage();
 
-    bool isB_Held = CVarGetInteger("gSkipText", 0) != 0 ? CHECK_BTN_ALL(input->cur.button, BTN_B) && !sTextboxSkipped
+    bool isB_Held = CVarGetInteger(CVAR_ENHANCEMENT("SkipText"), 0) != 0 ? CHECK_BTN_ALL(input->cur.button, BTN_B) && !sTextboxSkipped
                                                      : CHECK_BTN_ALL(input->press.button, BTN_B);
 
     switch (msgCtx->msgMode) {
@@ -3367,7 +3367,7 @@ void Message_Update(PlayState* play) {
             }
             if ((s32)(gSaveContext.inventory.questItems & 0xF0000000) == 0x40000000) {
                 gSaveContext.inventory.questItems ^= 0x40000000;
-                if (!CVarGetInteger("gHurtContainer", 0)) {
+                if (!CVarGetInteger(CVAR_ENHANCEMENT("HurtContainer"), 0)) {
                     gSaveContext.healthCapacity += 0x10;
                     gSaveContext.health += 0x10;
                 } else {

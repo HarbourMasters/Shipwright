@@ -118,7 +118,6 @@ GameInteractorSail* GameInteractorSail::Instance;
 #include "soh/resource/importer/SkeletonLimbFactory.h"
 #include "soh/resource/importer/TextFactory.h"
 #include "soh/resource/importer/BackgroundFactory.h"
-#include "soh/resource/importer/RawJsonFactory.h"
 
 #include "soh/config/ConfigUpdaters.h"
 
@@ -321,6 +320,12 @@ OTRGlobals::OTRGlobals() {
 
     auto sohInputEditorWindow = std::make_shared<SohInputEditorWindow>("gControllerConfigurationEnabled", "Input Editor");
     context->InitWindow(sohInputEditorWindow);
+
+    auto overlay = context->GetInstance()->GetWindow()->GetGui()->GetGameOverlay();
+    overlay->LoadFont("Press Start 2P", "fonts/PressStart2P-Regular.ttf", 12.0f);
+    overlay->LoadFont("Fipps", "fonts/Fipps-Regular.otf", 32.0f);
+    overlay->SetCurrentFont(CVarGetString(CVAR_GAME_OVERLAY_FONT, "Press Start 2P"));
+
     context->InitAudio();
 
     SPDLOG_INFO("Starting Ship of Harkinian version {}", (char*)gBuildVersion);
@@ -343,7 +348,6 @@ OTRGlobals::OTRGlobals() {
     loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryAudioSoundFontV2>(), RESOURCE_FORMAT_BINARY, "AudioSoundFont", static_cast<uint32_t>(SOH::ResourceType::SOH_AudioSoundFont), 2);
     loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryAudioSequenceV2>(), RESOURCE_FORMAT_BINARY, "AudioSequence", static_cast<uint32_t>(SOH::ResourceType::SOH_AudioSequence), 2);
     loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryBackgroundV0>(), RESOURCE_FORMAT_BINARY, "Background", static_cast<uint32_t>(SOH::ResourceType::SOH_Background), 0);
-    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryRawJsonV0>(), RESOURCE_FORMAT_BINARY, "RawJson", static_cast<uint32_t>(SOH::ResourceType::SOH_RawJson), 0);
 
     gSaveStateMgr = std::make_shared<SaveStateMgr>();
     gRandomizer = std::make_shared<Randomizer>();
@@ -2593,7 +2597,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
         }
     }
     if (textId == TEXT_GS_NO_FREEZE || textId == TEXT_GS_FREEZE) {
-        if (CVarGetInteger("gInjectItemCounts", 0) != 0) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("InjectItemCounts"), 0) != 0) {
             // The freeze text cannot be manually dismissed and must be auto-dismissed.
             // This is fine and even wanted when skull tokens are not shuffled, but when
             // when they are shuffled we don't want to be able to manually dismiss the box.
@@ -2601,7 +2605,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             // animation until the text box auto-dismisses.
             // RANDOTODO: Implement a way to determine if an item came from a skulltula and
             // inject the auto-dismiss control code if it did.
-            if (CVarGetInteger("gSkulltulaFreeze", 0) != 0 &&
+            if (CVarGetInteger(CVAR_ENHANCEMENT("SkulltulaFreeze"), 0) != 0 &&
                 !(IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_TOKENS) != RO_TOKENSANITY_OFF)) {
                 textId = TEXT_GS_NO_FREEZE;
             } else {
@@ -2614,18 +2618,18 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             messageEntry.Replace("{{gsCount}}", std::to_string(gsCount));
         }
     }
-    if (textId == TEXT_HEART_CONTAINER && CVarGetInteger("gInjectItemCounts", 0)) {
+    if (textId == TEXT_HEART_CONTAINER && CVarGetInteger(CVAR_ENHANCEMENT("InjectItemCounts"), 0)) {
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_HEART_CONTAINER);
         messageEntry.Replace("{{heartContainerCount}}", std::to_string(gSaveContext.sohStats.heartContainers + 1));
     }
-    if (textId == TEXT_HEART_PIECE && CVarGetInteger("gInjectItemCounts", 0)) {
+    if (textId == TEXT_HEART_PIECE && CVarGetInteger(CVAR_ENHANCEMENT("InjectItemCounts"), 0)) {
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_HEART_PIECE);
         messageEntry.Replace("{{heartPieceCount}}", std::to_string(gSaveContext.sohStats.heartPieces + 1));
     }
-    if (textId == TEXT_MARKET_GUARD_NIGHT && CVarGetInteger("gMarketSneak", 0) && play->sceneNum == SCENE_MARKET_ENTRANCE_NIGHT) {
+    if (textId == TEXT_MARKET_GUARD_NIGHT && CVarGetInteger(CVAR_ENHANCEMENT("MarketSneak"), 0) && play->sceneNum == SCENE_MARKET_ENTRANCE_NIGHT) {
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_MARKET_GUARD_NIGHT);
     }
-    if (textId == TEXT_FISHERMAN_LEAVE && CVarGetInteger("gQuitFishingAtDoor", 0)) {
+    if (textId == TEXT_FISHERMAN_LEAVE && CVarGetInteger(CVAR_ENHANCEMENT("QuitFishingAtDoor"), 0)) {
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_FISHERMAN_LEAVE);
     }
     font->charTexBuf[0] = (messageEntry.GetTextBoxType() << 4) | messageEntry.GetTextBoxPosition();
