@@ -494,7 +494,7 @@ void CustomMessage::InsertNames(std::vector<CustomMessage> toInsert){
         if ((capital.size() > a) && (capital[a] = true)){
             temp.Capitalize();
         } 
-        Replace(std::move("[[" + std::to_string(a+1) + "]]"), temp); 
+        Replace("[[" + std::to_string(a+1) + "]]", temp); 
     }
 }
 

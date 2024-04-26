@@ -2408,7 +2408,7 @@ CustomMessage Randomizer::GetSheikMessage(s16 scene, u16 originalTextId) {
             break;
         case SCENE_INSIDE_GANONS_CASTLE:
             if (ctx->GetOption(RSK_SHEIK_LA_HINT) && INV_CONTENT(ITEM_ARROW_LIGHT) != ITEM_ARROW_LIGHT) {
-                messageEntry = ctx->GetHint(RH_SHEIK_HINT)->GetMessage(MF_AUTO_FORMAT);
+                messageEntry = ctx->GetHint(RH_SHEIK_HINT)->GetHintMessage(MF_AUTO_FORMAT);
             } else if (!(CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER) && INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT &&
                        CUR_CAPACITY(UPG_QUIVER) >= 30 && gSaveContext.isMagicAcquired)) {
                 messageEntry = CustomMessage("You are still ill-equipped to&face %rGanondorf%w."
@@ -2441,7 +2441,7 @@ CustomMessage Randomizer::GetFishingPondOwnerMessage(u16 originalTextId) {
     );
 
     if (Rando::Context::GetInstance()->GetOption(RSK_FISHING_POLE_HINT)) {
-        messageEntry = messageEntry + CustomMessage(ctx->GetHint(RH_FISHING_POLE)->GetMessage());
+        messageEntry = messageEntry + CustomMessage(ctx->GetHint(RH_FISHING_POLE)->GetHintMessage());
     }
 
     // if the fishing pond guy doesnt remember me i will cry :(
@@ -2465,7 +2465,7 @@ CustomMessage Randomizer::GetMerchantMessage(RandomizerInf randomizerInf, u16 te
     RandomizerGet shopItemGet = ctx->GetItemLocation(rc)->GetPlacedRandomizerGet();
     CustomMessage shopItemName;
     if (mysterious) {
-        shopItemName = Rando::StaticData::hintTextTable[RHT_MYSTERIOUS_ITEM].GetMessage(); 
+        shopItemName = Rando::StaticData::hintTextTable[RHT_MYSTERIOUS_ITEM].GetHintMessage(); 
     // TODO: This should eventually be replaced with a full fledged trick model & trick name system
     } else if (shopItemGet == RG_ICE_TRAP) {
         shopItemGet = ctx->overrides[rc].LooksLike();
@@ -2527,9 +2527,9 @@ CustomMessage Randomizer::GetMapGetItemMessageWithHint(GetItemEntry itemEntry) {
        ) {
         messageEntry.Replace("[[typeHint]]", "");
     } else if (ResourceMgr_IsSceneMasterQuest(sceneNum)) {
-        messageEntry.Replace("[[typeHint]]", Rando::StaticData::hintTextTable[RHT_DUNGEON_MASTERFUL].GetMessage());
+        messageEntry.Replace("[[typeHint]]", Rando::StaticData::hintTextTable[RHT_DUNGEON_MASTERFUL].GetHintMessage());
     } else {
-        messageEntry.Replace("[[typeHint]]", Rando::StaticData::hintTextTable[RHT_DUNGEON_ORDINARY].GetMessage());
+        messageEntry.Replace("[[typeHint]]", Rando::StaticData::hintTextTable[RHT_DUNGEON_ORDINARY].GetHintMessage());
     }
 
     return messageEntry;

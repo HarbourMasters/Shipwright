@@ -73,7 +73,7 @@ uint8_t HintText::GetObscureSize() const{
     return obscureText.size();
 }
 
-const CustomMessage& HintText::GetMessage(uint8_t selection) const {
+const CustomMessage& HintText::GetHintMessage(uint8_t selection) const {
     auto ctx = Rando::Context::GetInstance();
     if (ctx->GetOption(RSK_HINT_CLARITY).Is(RO_HINT_CLARITY_OBSCURE)) {
         return GetObscure(selection);

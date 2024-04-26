@@ -174,7 +174,7 @@ std::vector<RandomizerCheck> Context::GetLocations(const std::vector<RandomizerC
 }
 
 void Context::ClearItemLocations() {
-    for (uint i = 0; i < itemLocationTable.size(); i++) {
+    for (size_t i = 0; i < itemLocationTable.size(); i++) {
         GetItemLocation(static_cast<RandomizerCheck>(i))->ResetVariables();
     }
 }
