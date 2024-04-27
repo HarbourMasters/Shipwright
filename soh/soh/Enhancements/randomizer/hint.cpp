@@ -292,7 +292,7 @@ const HintText Hint::GetHintText(uint8_t id) const {
 
 const CustomMessage Hint::GetHintMessage(MessageFormat format, uint8_t id) const {
   auto ctx = Rando::Context::GetInstance();
-  CustomMessage hintText = CustomMessage("ERROR:NO MESSAGE FOUND");
+  CustomMessage hintText = CustomMessage("");
 
   uint8_t chosenMessage = 0;
   if (hintTextsChosen.size() > id){
