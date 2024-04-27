@@ -2705,10 +2705,10 @@ void StaticData::HintTable_Init() {
                                                 /*spanish*/ // ¿Me compras #[[1]]# por #200 rupias#?&" + TWO_WAY_CHOICE() + "#Comprar&No comprar#
 
     hintTextTable[RHT_CARPET_SALESMAN_DIALOG_FIRST] = HintText(CustomMessage("Welcome!^I am selling stuff, strange and rare, from all over the world to everybody. Today's special is...^",
-                                                                  /*german*/ "Sei gegrüßt!^Ich verkaufe allerlei Kuriorisäten.&Stets sonderliche und seltene Ware&aus "
-                                                                             "aller Welt für jedermann.&Das heutige Angebot bleibt...^#",
-                                                                  /*french*/ "Bienvenue!^Je vends des objets rares et merveilleux du&monde entier. En spécial aujourd'hui...^"));
-                                                              /*spanish*/ // ¡Acércate!^Vendo productos extraños y difíciles de&encontrar... De todo el mundo a todo el&mundo. La oferta de hoy es...^#¡
+                                                                  /*german*/ "Sei gegrüßt!^Ich verkaufe allerlei Kuriorisäten. Stets sonderliche und seltene Ware aus "
+                                                                             "aller Welt für jedermann. Das heutige Angebot bleibt...^#",
+                                                                  /*french*/ "Bienvenue!^Je vends des objets rares et merveilleux du monde entier. En spécial aujourd'hui...^"));
+                                                              /*spanish*/ // ¡Acércate!^Vendo productos extraños y difíciles de encontrar... De todo el mundo a todo el mundo. La oferta de hoy es...^#¡
 
     hintTextTable[RHT_CARPET_SALESMAN_DIALOG_MYSTERIOUS] = HintText(CustomMessage("Terrifying! I won't tell you what it is until I see the #money#...^How about #200 Rupees#?&&" +
                                                                                   TWO_WAY_CHOICE() + "#Buy&Don't buy#",
@@ -2728,11 +2728,11 @@ void StaticData::HintTable_Init() {
                                                                              "rubis#?&&" + TWO_WAY_CHOICE() + "#Acheter&Ne pas acheter#",
                                                                              {QM_GREEN, QM_YELLOW, QM_GREEN}));
 
-    hintTextTable[RHT_BEAN_SALESMAN_HINT] = HintText(CustomMessage("I tried to be a #magic bean#&salesman, but it turns out my&marketing skills weren't worth&"
+    hintTextTable[RHT_BEAN_SALESMAN_HINT] = HintText(CustomMessage("I tried to be a #magic bean# salesman, but it turns out my marketing skills weren't worth "
                                                                    "beans!^Anyway, want to buy #[[1]]# for #60 Rupees#?&" + TWO_WAY_CHOICE() + "#Yes&No#",
                                                         /*german*/ "Möchten Sie #[[1]]# für #60 Rubine#?&" + TWO_WAY_CHOICE() + "#Ja&Nein#",
-                                                        /*french*/ "J'ai essayé d'être un vendeur&de #haricots magiques#, mais&j'étais mauvais au niveau du&marketing et ça "
-                                                                   "me courait sur&le haricot...^Enfin bref, ça te dirait de m'acheter #[[1]]# pour #60 Rubis#?&" + TWO_WAY_CHOICE() + "#Oui&Non#",
+                                                        /*french*/ "J'ai essayé d'être un vendeur de #haricots magiques#, mais j'étais mauvais au niveau du marketing et ça "
+                                                                   "me courait sur le haricot...^Enfin bref, ça te dirait de m'acheter #[[1]]# pour #60 Rubis#?&" + TWO_WAY_CHOICE() + "#Oui&Non#",
                                                                    {QM_RED, QM_GREEN, QM_YELLOW, QM_GREEN}));
 
     hintTextTable[RHT_GRANNY_HINT] = HintText(CustomMessage("#[[1]]#! How about #100 Rupees#?&" + TWO_WAY_CHOICE() + "#Buy&Don't buy#",
@@ -2752,30 +2752,30 @@ void StaticData::HintTable_Init() {
                                                                  "Impress me with a high score of 1000 to win a #[[1]]# or score 1500 for my #[[2]]#!\x0B",
                                                                  {QM_RED, QM_GREEN, QM_GREEN}));
 
-    hintTextTable[RHT_HBA_HINT_HAVE_1000] = HintText(CustomMessage("Hey, newcomer!&Want to take on the&#Horseback Archery# challenge?^"
+    hintTextTable[RHT_HBA_HINT_HAVE_1000] = HintText(CustomMessage("Hey, newcomer!&Want to take on the #Horseback Archery# challenge?^"
                                                                    "Prove yourself to be a horsemaster by scoring 1500 points to win  my #[[1]]#!\x0B",
                                                                    {QM_RED, QM_GREEN}));
 
-    hintTextTable[RHT_MALON_HINT_HOW_IS_EPONA] = HintText(CustomMessage("@! You should come back &with Epona and try to beat my time&on the #Obsticle Course#!^"
-                                                                        "If you beat my time, I'll give you&my favourite #cow# Elsie and&her toy #[[1]]#!",
+    hintTextTable[RHT_MALON_HINT_HOW_IS_EPONA] = HintText(CustomMessage("@! You should come back with Epona and try to beat my time on the #Obsticle Course#!^"
+                                                                        "If you beat my time, I'll give you my favourite #cow# Elsie and her toy #[[1]]#!",
                                                                         {QM_RED, QM_BLUE, QM_GREEN}));
 
-    hintTextTable[RHT_MALON_HINT_OBSTICLE_COURSE] = HintText(CustomMessage("How about trying the #Obsticle Course?#&If you beat my time I'll let you keep&my favourite #cow# Elsie and&her toy #[[1]]#!^"
+    hintTextTable[RHT_MALON_HINT_OBSTICLE_COURSE] = HintText(CustomMessage("How about trying the #Obsticle Course?# If you beat my time I'll let you keep my favourite #cow# Elsie and her toy #[[1]]#!^"
                                                                            "Challenge the #Obsticle Course?#&\x1B&#Let's go&No thanks#",
                                                                            {QM_RED, QM_BLUE, QM_GREEN, QM_RED, QM_GREEN}));
 
-    hintTextTable[RHT_MALON_HINT_TURNING_EVIL] = HintText(CustomMessage("@? Is that you? ^If I ran the ranch, I'd build an &#Obsticle Course#, and whoever gets&the best time would win a #cow#!^"
-                                                                        "Elsie loves sharing her #[[1]]#&with new people, It'll be fun!^...But Ingo won't let me...",
+    hintTextTable[RHT_MALON_HINT_TURNING_EVIL] = HintText(CustomMessage("@? Is that you? ^If I ran the ranch, I'd build an #Obsticle Course#, and whoever gets the best time would win a #cow#!^"
+                                                                        "Elsie loves sharing her #[[1]]# with new people, It'll be fun!^...But Ingo won't let me...",
                                                                         {QM_RED, QM_BLUE, QM_GREEN}));
 
-    hintTextTable[RHT_MALON_HINT_INGO_TEMPTED] = HintText(CustomMessage("@! You should come back in&the morning and try to beat my time&on the #Obsticle Course#!^"
-                                                                        "If you beat my time, I'll give you&my favourite #cow# Elsie and&her toy #[[1]]#!",
+    hintTextTable[RHT_MALON_HINT_INGO_TEMPTED] = HintText(CustomMessage("@! You should come back in the morning and try to beat my time on the #Obsticle Course#!^"
+                                                                        "If you beat my time, I'll give you my favourite #cow# Elsie and her toy #[[1]]#!",
                                                                         {QM_RED, QM_BLUE, QM_GREEN}));
 
     hintTextTable[RHT_CHICKENS_HINT] = HintText(CustomMessage("You! Please!&Bring my Cucco's back to my pen!&I'll give you my #[[1]]#!",
                                                               {QM_GREEN}));
 
-    hintTextTable[RHT_BIG_POES_HINT] = HintText(CustomMessage("You have #\x1E\x01 Poe Points#!&Reach 1000 and you'll get a&#[[1]]#!",
+    hintTextTable[RHT_BIG_POES_HINT] = HintText(CustomMessage("You have #\x1E\x01 Poe Points#! Reach 1000 and you'll get a #[[1]]#!",
                                                               {QM_YELLOW, QM_GREEN}));
 
     hintTextTable[RHT_BIGGORON_HINT] = HintText(CustomMessage("Arrrrrre you here to claim my finest #[[1]]#? Shoooooow me your #Claim Check#.",
@@ -2786,9 +2786,9 @@ void StaticData::HintTable_Init() {
                                                 /*french*/ "Des grenouilles se trouvant sous l'eau vous fixent attentivement, tenant fermement #[[1]]#.",
                                                            {QM_GREEN}));
 
-    hintTextTable[RHT_SKULLS_HINT] = HintText(CustomMessage("Yeaaarrgh! I'm cursed!!^Please save me by destroying&#[[d]] Spiders of the Curse#&and I will give you my&#[[1]]#!",
-                                                 /*german*/ "Yeaaarrgh! Ich bin verflucht!^Bitte rette mich, indem du #[[d]] Skulltulas#&zerstörst und ich werde dir dafür&#[[1]]# geben!",
-                                                 /*french*/ "Yeaaarrgh! Je suis maudit!^Détruit encore #[[d]] Araignées de&la Malédiction# et j'aurai quelque&chose à te donner!&#([[1]])#",
+    hintTextTable[RHT_SKULLS_HINT] = HintText(CustomMessage("Yeaaarrgh! I'm cursed!!^Please save me by destroying #[[d]] Spiders of the Curse# and I will give you my #[[1]]#!",
+                                                 /*german*/ "Yeaaarrgh! Ich bin verflucht!^Bitte rette mich, indem du #[[d]] Skulltulas# zerstörst und ich werde dir dafür #[[1]]# geben!",
+                                                 /*french*/ "Yeaaarrgh! Je suis maudit!^Détruit encore #[[d]] Araignées de la Malédiction# et j'aurai quelque chose à te donner! #([[1]])#",
                                                             {QM_YELLOW, QM_GREEN}));
 
     /*--------------------------
