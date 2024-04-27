@@ -565,7 +565,7 @@ CustomMessage Hint::GetBridgeReqsText() {
     return StaticData::hintTextTable[RHT_BRIDGE_VANILLA_HINT].GetHintMessage();
   } 
   else if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_STONES)) {
-    bridgeMessage = StaticData::hintTextTable[RHT_BRIDGE_VANILLA_HINT].GetHintMessage();
+    bridgeMessage = StaticData::hintTextTable[RHT_BRIDGE_STONES_HINT].GetHintMessage();
     bridgeMessage.InsertNumber(ctx->GetOption(RSK_RAINBOW_BRIDGE_STONE_COUNT).Value<uint8_t>());
   } 
   else if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_MEDALLIONS)) {

@@ -2423,7 +2423,7 @@ void StaticData::HintTable_Init() {
                                                                        {QM_RED}));
                                                          // /*spanish*/$8Los sabios aguardarán a que el héroe&obtenga #[[d]] |medallón|medallones|#.^
 
-    hintTextTable[RHT_BRIDGE_MEDALLIONS_HINT] = HintText(CustomMessage("$CThe awakened ones will await for the Hero to collect #[[d]]# |#Spiritual Stone# or #Medallion#|"
+    hintTextTable[RHT_BRIDGE_REWARDS_HINT] = HintText(CustomMessage("$CThe awakened ones will await for the Hero to collect #[[d]]# |#Spiritual Stone# or #Medallion#|"
                                                                        "#Spiritual Stones# and #Medallions#|.^",
                                                             /*german*/ "$CDie Weisen werden darauf warten, dass der Held #[[d]]# |#Heiligen Stein# oder #Amulett#|"
                                                                        "#Heilige Steine# oder #Amulette#| sammelt.^",
