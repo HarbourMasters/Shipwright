@@ -1041,19 +1041,19 @@ void InitTTSBank() {
 
     auto initData = std::make_shared<Ship::ResourceInitData>();
     initData->Format = RESOURCE_FORMAT_BINARY;
-    initData->Type = static_cast<uint32_t>(LUS::ResourceType::Json);
+    initData->Type = static_cast<uint32_t>(Ship::ResourceType::Json);
     initData->ResourceVersion = 0;
     
-    sceneMap = std::static_pointer_cast<LUS::Json>(
+    sceneMap = std::static_pointer_cast<Ship::Json>(
         Ship::Context::GetInstance()->GetResourceManager()->LoadResource("accessibility/texts/scenes" + languageSuffix, true, initData))->Data;
 
-    miscMap = std::static_pointer_cast<LUS::Json>(
+    miscMap = std::static_pointer_cast<Ship::Json>(
         Ship::Context::GetInstance()->GetResourceManager()->LoadResource("accessibility/texts/misc" + languageSuffix, true, initData))->Data;
 
-    kaleidoMap = std::static_pointer_cast<LUS::Json>(
+    kaleidoMap = std::static_pointer_cast<Ship::Json>(
         Ship::Context::GetInstance()->GetResourceManager()->LoadResource("accessibility/texts/kaleidoscope" + languageSuffix, true, initData))->Data;
 
-    fileChooseMap = std::static_pointer_cast<LUS::Json>(
+    fileChooseMap = std::static_pointer_cast<Ship::Json>(
         Ship::Context::GetInstance()->GetResourceManager()->LoadResource("accessibility/texts/filechoose" + languageSuffix, true, initData))->Data;
 }
 
