@@ -4,14 +4,14 @@
 #include "spdlog/spdlog.h"
 
 namespace SOH {
-std::shared_ptr<ShipDK::IResource>
-SetCutscenesFactory::ReadResource(std::shared_ptr<ShipDK::ResourceInitData> initData, std::shared_ptr<ShipDK::BinaryReader> reader) {
+std::shared_ptr<Ship::IResource>
+SetCutscenesFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData, std::shared_ptr<Ship::BinaryReader> reader) {
     auto setCutscenes = std::make_shared<SetCutscenes>(initData);
 
     ReadCommandId(setCutscenes, reader);
     
     setCutscenes->fileName = reader->ReadString();
-    setCutscenes->cutscene = std::static_pointer_cast<Cutscene>(ShipDK::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(setCutscenes->fileName.c_str()));
+    setCutscenes->cutscene = std::static_pointer_cast<Cutscene>(Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(setCutscenes->fileName.c_str()));
 
     return setCutscenes;
 }

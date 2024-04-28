@@ -47,10 +47,10 @@ enum class SceneCommandID : uint8_t {
     Error = 0xFF
 };
 
-class ISceneCommand : public ShipDK::IResource {
+class ISceneCommand : public Ship::IResource {
 public:
     using IResource::IResource;
-    ISceneCommand() : IResource(std::shared_ptr<ShipDK::ResourceInitData>()) {}
+    ISceneCommand() : IResource(std::shared_ptr<Ship::ResourceInitData>()) {}
     SceneCommandID cmdId;
 };
 

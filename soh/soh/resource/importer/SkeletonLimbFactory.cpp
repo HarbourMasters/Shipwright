@@ -4,13 +4,13 @@
 #include "libultraship/libultraship.h"
 
 namespace SOH {
-std::shared_ptr<ShipDK::IResource> ResourceFactoryBinarySkeletonLimbV0::ReadResource(std::shared_ptr<ShipDK::File> file) {
+std::shared_ptr<Ship::IResource> ResourceFactoryBinarySkeletonLimbV0::ReadResource(std::shared_ptr<Ship::File> file) {
     if (!FileHasValidFormatAndReader(file)) {
         return nullptr;
     }
 
     auto skeletonLimb = std::make_shared<SkeletonLimb>(file->InitData);
-    auto reader = std::get<std::shared_ptr<ShipDK::BinaryReader>>(file->Reader);
+    auto reader = std::get<std::shared_ptr<Ship::BinaryReader>>(file->Reader);
 
     skeletonLimb->limbType = (LimbType)reader->ReadInt8();
     skeletonLimb->skinSegmentType = (ZLimbSkinType)reader->ReadInt8();
@@ -184,7 +184,7 @@ std::shared_ptr<ShipDK::IResource> ResourceFactoryBinarySkeletonLimbV0::ReadReso
     return skeletonLimb;
 }
 
-std::shared_ptr<ShipDK::IResource> ResourceFactoryXMLSkeletonLimbV0::ReadResource(std::shared_ptr<ShipDK::File> file) {
+std::shared_ptr<Ship::IResource> ResourceFactoryXMLSkeletonLimbV0::ReadResource(std::shared_ptr<Ship::File> file) {
     if (!FileHasValidFormatAndReader(file)) {
         return nullptr;
     }

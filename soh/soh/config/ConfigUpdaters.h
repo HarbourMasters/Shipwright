@@ -1,15 +1,15 @@
 #include "libultraship/libultraship.h"
 
 namespace SOH {
-    class ConfigVersion1Updater : public ShipDK::ConfigVersionUpdater {
+    class ConfigVersion1Updater : public Ship::ConfigVersionUpdater {
         public:
         ConfigVersion1Updater();
-        void Update(ShipDK::Config* conf);
+        void Update(Ship::Config* conf);
     };
 
-    class ConfigVersion2Updater : public ShipDK::ConfigVersionUpdater {
+    class ConfigVersion2Updater : public Ship::ConfigVersionUpdater {
         public:
         ConfigVersion2Updater();
-        void Update(ShipDK::Config* conf);
+        void Update(Ship::Config* conf);
     };
 }

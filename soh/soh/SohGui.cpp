@@ -112,9 +112,9 @@ namespace SohGui {
 
     std::shared_ptr<SohMenuBar> mSohMenuBar;
 
-    std::shared_ptr<ShipDK::GuiWindow> mConsoleWindow;
-    std::shared_ptr<ShipDK::GuiWindow> mStatsWindow;
-    std::shared_ptr<ShipDK::GuiWindow> mInputEditorWindow;
+    std::shared_ptr<Ship::GuiWindow> mConsoleWindow;
+    std::shared_ptr<Ship::GuiWindow> mStatsWindow;
+    std::shared_ptr<Ship::GuiWindow> mInputEditorWindow;
 
     std::shared_ptr<AudioEditor> mAudioEditorWindow;
     std::shared_ptr<InputViewer> mInputViewer;
@@ -137,10 +137,10 @@ namespace SohGui {
     std::shared_ptr<SohModalWindow> mModalWindow;
 
     void SetupGuiElements() {
-        auto gui = ShipDK::Context::GetInstance()->GetWindow()->GetGui();
+        auto gui = Ship::Context::GetInstance()->GetWindow()->GetGui();
 
         mSohMenuBar = std::make_shared<SohMenuBar>("gOpenMenuBar", CVarGetInteger("gOpenMenuBar", 0));
-        gui->SetMenuBar(std::reinterpret_pointer_cast<ShipDK::GuiMenuBar>(mSohMenuBar));
+        gui->SetMenuBar(std::reinterpret_pointer_cast<Ship::GuiMenuBar>(mSohMenuBar));
 
         if (gui->GetMenuBar() && !gui->GetMenuBar()->IsVisible()) {
 #if defined(__SWITCH__) || defined(__WIIU__)

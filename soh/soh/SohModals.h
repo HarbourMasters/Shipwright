@@ -4,7 +4,7 @@
 #include "window/gui/GuiMenuBar.h"
 #include "window/gui/GuiElement.h"
 
-class SohModalWindow : public ShipDK::GuiWindow {
+class SohModalWindow : public Ship::GuiWindow {
   public:
     using GuiWindow::GuiWindow;
 

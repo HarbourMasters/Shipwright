@@ -2,7 +2,7 @@
 #include <libultraship/libultraship.h>
 
 namespace AdvancedResolutionSettings {
-class AdvancedResolutionSettingsWindow : public ShipDK::GuiWindow {
+class AdvancedResolutionSettingsWindow : public Ship::GuiWindow {
   private:
     bool IsDroppingFrames();
 

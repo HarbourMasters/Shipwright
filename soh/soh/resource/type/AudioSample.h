@@ -39,11 +39,11 @@ namespace SOH {
         s32 sampleRate;           // For wav samples only...
     } Sample; // size = 0x10
 
-    class AudioSample : public ShipDK::Resource<Sample> {
+    class AudioSample : public Ship::Resource<Sample> {
         public:
             using Resource::Resource;
 
-        AudioSample() : Resource(std::shared_ptr<ShipDK::ResourceInitData>()) {}
+        AudioSample() : Resource(std::shared_ptr<Ship::ResourceInitData>()) {}
 
             Sample* GetPointer();
             size_t GetPointerSize();

@@ -106,11 +106,11 @@ namespace SohGui {
 void DrawMenuBarIcon() {
     static bool gameIconLoaded = false;
     if (!gameIconLoaded) {
-        ShipDK::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Game_Icon", "textures/icons/gIcon.png");
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Game_Icon", "textures/icons/gIcon.png");
         gameIconLoaded = true;
     }
 
-    if (ShipDK::Context::GetInstance()->GetWindow()->GetGui()->HasTextureByName("Game_Icon")) {
+    if (Ship::Context::GetInstance()->GetWindow()->GetGui()->HasTextureByName("Game_Icon")) {
 #ifdef __SWITCH__
         ImVec2 iconSize = ImVec2(20.0f, 20.0f);
         float posScale = 1.0f;
@@ -122,7 +122,7 @@ void DrawMenuBarIcon() {
         float posScale = 1.0f;
 #endif
         ImGui::SetCursorPos(ImVec2(5, 2.5f) * posScale);
-        ImGui::Image(ShipDK::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("Game_Icon"), iconSize);
+        ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("Game_Icon"), iconSize);
         ImGui::SameLine();
         ImGui::SetCursorPos(ImVec2(25, 0) * posScale);
     }
@@ -137,12 +137,12 @@ void DrawShipMenu() {
          "[-]"
 #endif
         )) {
-            ShipDK::Context::GetInstance()->GetWindow()->GetGui()->GetMenuBar()->ToggleVisibility();
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->GetMenuBar()->ToggleVisibility();
         }
         UIWidgets::Spacer(0);
 #if !defined(__SWITCH__) && !defined(__WIIU__)
         if (ImGui::MenuItem("Toggle Fullscreen", "F11")) {
-            ShipDK::Context::GetInstance()->GetWindow()->ToggleFullscreen();
+            Ship::Context::GetInstance()->GetWindow()->ToggleFullscreen();
         }
         UIWidgets::Spacer(0);
 #endif
@@ -155,25 +155,25 @@ void DrawShipMenu() {
                             ""
 #endif
                             )) {
-            std::reinterpret_pointer_cast<ShipDK::ConsoleWindow>(ShipDK::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->Dispatch("reset");
+            std::reinterpret_pointer_cast<Ship::ConsoleWindow>(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->Dispatch("reset");
         }
 #if !defined(__SWITCH__) && !defined(__WIIU__)
         UIWidgets::Spacer(0);
         if (ImGui::MenuItem("Open App Files Folder")) {
-            std::string filesPath = ShipDK::Context::GetInstance()->GetAppDirectoryPath();
+            std::string filesPath = Ship::Context::GetInstance()->GetAppDirectoryPath();
             SDL_OpenURL(std::string("file:///" + std::filesystem::absolute(filesPath).string()).c_str());
         }
         UIWidgets::Spacer(0);
 
         if (ImGui::MenuItem("Quit")) {
-            ShipDK::Context::GetInstance()->GetWindow()->Close();
+            Ship::Context::GetInstance()->GetWindow()->Close();
         }
 #endif
         ImGui::EndMenu();
     }
 }
 
-extern std::shared_ptr<ShipDK::GuiWindow> mInputEditorWindow;
+extern std::shared_ptr<Ship::GuiWindow> mInputEditorWindow;
 extern std::shared_ptr<InputViewer> mInputViewer;
 extern std::shared_ptr<InputViewerSettingsWindow> mInputViewerSettings;
 extern std::shared_ptr<AdvancedResolutionSettings::AdvancedResolutionSettingsWindow> mAdvancedResolutionSettingsWindow;
@@ -196,27 +196,27 @@ void DrawSettingsMenu() {
                 Audio_SetGameVolume(SEQ_PLAYER_FANFARE, CVarGetFloat("gFanfareVolume", 1.0f));
             }
 
-            static std::unordered_map<ShipDK::AudioBackend, const char*> audioBackendNames = {
-                { ShipDK::AudioBackend::WASAPI, "Windows Audio Session API" },
-                { ShipDK::AudioBackend::SDL, "SDL" }
+            static std::unordered_map<Ship::AudioBackend, const char*> audioBackendNames = {
+                { Ship::AudioBackend::WASAPI, "Windows Audio Session API" },
+                { Ship::AudioBackend::SDL, "SDL" }
             };
 
             ImGui::Text("Audio API (Needs reload)");
-            auto currentAudioBackend = ShipDK::Context::GetInstance()->GetAudio()->GetAudioBackend();
+            auto currentAudioBackend = Ship::Context::GetInstance()->GetAudio()->GetAudioBackend();
 
-            if (ShipDK::Context::GetInstance()->GetAudio()->GetAvailableAudioBackends()->size() <= 1) {
+            if (Ship::Context::GetInstance()->GetAudio()->GetAvailableAudioBackends()->size() <= 1) {
                 UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
             }
             if (ImGui::BeginCombo("##AApi", audioBackendNames[currentAudioBackend])) {
-                for (uint8_t i = 0; i < ShipDK::Context::GetInstance()->GetAudio()->GetAvailableAudioBackends()->size(); i++) {
-                    auto backend = ShipDK::Context::GetInstance()->GetAudio()->GetAvailableAudioBackends()->data()[i];
+                for (uint8_t i = 0; i < Ship::Context::GetInstance()->GetAudio()->GetAvailableAudioBackends()->size(); i++) {
+                    auto backend = Ship::Context::GetInstance()->GetAudio()->GetAvailableAudioBackends()->data()[i];
                     if (ImGui::Selectable(audioBackendNames[backend], backend == currentAudioBackend)) {
-                        ShipDK::Context::GetInstance()->GetAudio()->SetAudioBackend(backend);
+                        Ship::Context::GetInstance()->GetAudio()->SetAudioBackend(backend);
                     }
                 }
                 ImGui::EndCombo();
             }
-            if (ShipDK::Context::GetInstance()->GetAudio()->GetAvailableAudioBackends()->size() <= 1) {
+            if (Ship::Context::GetInstance()->GetAudio()->GetAvailableAudioBackends()->size() <= 1) {
                 UIWidgets::ReEnableComponent("");
             }
 
@@ -274,7 +274,7 @@ void DrawSettingsMenu() {
                                                    CVarGetInteger("gAdvancedResolution.Enabled", 0);
             if (UIWidgets::EnhancementSliderFloat("Internal Resolution: %.1f %%", "##IMul", "gInternalResolution", 0.5f,
                                                   2.0f, "", 1.0f, true, true, disabled_resolutionSlider)) {
-                ShipDK::Context::GetInstance()->GetWindow()->SetResolutionMultiplier(CVarGetFloat("gInternalResolution", 1));
+                Ship::Context::GetInstance()->GetWindow()->SetResolutionMultiplier(CVarGetFloat("gInternalResolution", 1));
             }
             UIWidgets::Tooltip("Resolution scale. Multiplies output resolution by this value, on each axis relative to window size.\n"
                                "Lower values may improve performance.\n"
@@ -307,7 +307,7 @@ void DrawSettingsMenu() {
             if (UIWidgets::PaddedEnhancementSliderInt(
                     (CVarGetInteger("gMSAAValue", 1) == 1) ? "Anti-aliasing (MSAA): Off" : "Anti-aliasing (MSAA): %d",
                     "##IMSAA", "gMSAAValue", 1, 8, "", 1, true, true, false)) {
-                ShipDK::Context::GetInstance()->GetWindow()->SetMsaaLevel(CVarGetInteger("gMSAAValue", 1));
+                Ship::Context::GetInstance()->GetWindow()->SetMsaaLevel(CVarGetInteger("gMSAAValue", 1));
             }
             UIWidgets::Tooltip("Activates MSAA (multi-sample anti-aliasing) from 2x up to 8x, to smooth the edges of rendered geometry.\n"
                                "Higher sample count will result in smoother edges on models, but may reduce performance.\n\n"
@@ -318,10 +318,10 @@ void DrawSettingsMenu() {
             { // FPS Slider
                 const int minFps = 20;
                 static int maxFps;
-                if (ShipDK::Context::GetInstance()->GetWindow()->GetWindowBackend() == ShipDK::WindowBackend::DX11) {
+                if (Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() == Ship::WindowBackend::DX11) {
                     maxFps = 360;
                 } else {
-                    maxFps = ShipDK::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate();
+                    maxFps = Ship::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate();
                 }
                 int currentFps = fmax(fmin(OTRGlobals::Instance->GetInterpolationFPS(), maxFps), minFps);
             #ifdef __WIIU__
@@ -383,15 +383,15 @@ void DrawSettingsMenu() {
                     currentFps = 60;
                 }
                 CVarSetInteger("gInterpolationFPS", currentFps);
-                ShipDK::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
             #else
                 bool matchingRefreshRate =
-                    CVarGetInteger("gMatchRefreshRate", 0) && ShipDK::Context::GetInstance()->GetWindow()->GetWindowBackend() != ShipDK::WindowBackend::DX11;
+                    CVarGetInteger("gMatchRefreshRate", 0) && Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() != Ship::WindowBackend::DX11;
                 UIWidgets::PaddedEnhancementSliderInt(
                     (currentFps == 20) ? "Frame Rate: Original (20 fps)" : "Frame Rate: %d fps",
                     "##FPSInterpolation", "gInterpolationFPS", minFps, maxFps, "", 20, true, true, false, matchingRefreshRate);
             #endif
-                if (ShipDK::Context::GetInstance()->GetWindow()->GetWindowBackend() == ShipDK::WindowBackend::DX11) {
+                if (Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() == Ship::WindowBackend::DX11) {
                     UIWidgets::Tooltip(
                         "Uses Matrix Interpolation to create extra frames, resulting in smoother graphics.\n"
                         "This is purely visual and does not impact game logic, execution of glitches etc.\n"
@@ -406,13 +406,13 @@ void DrawSettingsMenu() {
                 }
             } // END FPS Slider
 
-            if (ShipDK::Context::GetInstance()->GetWindow()->GetWindowBackend() == ShipDK::WindowBackend::DX11) {
+            if (Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() == Ship::WindowBackend::DX11) {
                 UIWidgets::Spacer(0);
                 if (ImGui::Button("Match Frame Rate to Refresh Rate")) {
-                    int hz = ShipDK::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate();
+                    int hz = Ship::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate();
                     if (hz >= 20 && hz <= 360) {
                         CVarSetInteger("gInterpolationFPS", hz);
-                        ShipDK::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                     }
                 }
             } else {
@@ -420,7 +420,7 @@ void DrawSettingsMenu() {
             }
             UIWidgets::Tooltip("Matches interpolation value to the game window's current refresh rate.");
 
-            if (ShipDK::Context::GetInstance()->GetWindow()->GetWindowBackend() == ShipDK::WindowBackend::DX11) {
+            if (Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() == Ship::WindowBackend::DX11) {
                 UIWidgets::PaddedEnhancementSliderInt(CVarGetInteger("gExtraLatencyThreshold", 80) == 0 ? "Jitter fix: Off" : "Jitter fix: >= %d FPS",
                     "##ExtraLatencyThreshold", "gExtraLatencyThreshold", 0, 360, "", 80, true, true, false);
                 UIWidgets::Tooltip(
@@ -442,52 +442,52 @@ void DrawSettingsMenu() {
 
             UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
             
-            static std::unordered_map<ShipDK::WindowBackend, const char*> windowBackendNames = {
-                { ShipDK::WindowBackend::DX11, "DirectX" },
-                { ShipDK::WindowBackend::SDL_OPENGL, "OpenGL"},
-                { ShipDK::WindowBackend::SDL_METAL, "Metal" },
-                { ShipDK::WindowBackend::GX2, "GX2"}
+            static std::unordered_map<Ship::WindowBackend, const char*> windowBackendNames = {
+                { Ship::WindowBackend::DX11, "DirectX" },
+                { Ship::WindowBackend::SDL_OPENGL, "OpenGL"},
+                { Ship::WindowBackend::SDL_METAL, "Metal" },
+                { Ship::WindowBackend::GX2, "GX2"}
             };
 
             ImGui::Text("Renderer API (Needs reload)");
-            ShipDK::WindowBackend runningWindowBackend = ShipDK::Context::GetInstance()->GetWindow()->GetWindowBackend();
-            ShipDK::WindowBackend configWindowBackend;
-            int configWindowBackendId = ShipDK::Context::GetInstance()->GetConfig()->GetInt("Window.Backend.Id", -1);
-            if (configWindowBackendId != -1 && configWindowBackendId < static_cast<int>(ShipDK::WindowBackend::BACKEND_COUNT)) {
-                configWindowBackend = static_cast<ShipDK::WindowBackend>(configWindowBackendId);
+            Ship::WindowBackend runningWindowBackend = Ship::Context::GetInstance()->GetWindow()->GetWindowBackend();
+            Ship::WindowBackend configWindowBackend;
+            int configWindowBackendId = Ship::Context::GetInstance()->GetConfig()->GetInt("Window.Backend.Id", -1);
+            if (configWindowBackendId != -1 && configWindowBackendId < static_cast<int>(Ship::WindowBackend::BACKEND_COUNT)) {
+                configWindowBackend = static_cast<Ship::WindowBackend>(configWindowBackendId);
             } else {
                 configWindowBackend = runningWindowBackend;
             }
 
-            if (ShipDK::Context::GetInstance()->GetWindow()->GetAvailableWindowBackends()->size() <= 1) {
+            if (Ship::Context::GetInstance()->GetWindow()->GetAvailableWindowBackends()->size() <= 1) {
                 UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
             }
             if (ImGui::BeginCombo("##RApi", windowBackendNames[configWindowBackend])) {
-                for (size_t i = 0; i < ShipDK::Context::GetInstance()->GetWindow()->GetAvailableWindowBackends()->size(); i++) {
-                    auto backend = ShipDK::Context::GetInstance()->GetWindow()->GetAvailableWindowBackends()->data()[i];
+                for (size_t i = 0; i < Ship::Context::GetInstance()->GetWindow()->GetAvailableWindowBackends()->size(); i++) {
+                    auto backend = Ship::Context::GetInstance()->GetWindow()->GetAvailableWindowBackends()->data()[i];
                     if (ImGui::Selectable(windowBackendNames[backend], backend == configWindowBackend)) {
-                        ShipDK::Context::GetInstance()->GetConfig()->SetInt("Window.Backend.Id", static_cast<int>(backend));
-                        ShipDK::Context::GetInstance()->GetConfig()->SetString("Window.Backend.Name",
+                        Ship::Context::GetInstance()->GetConfig()->SetInt("Window.Backend.Id", static_cast<int>(backend));
+                        Ship::Context::GetInstance()->GetConfig()->SetString("Window.Backend.Name",
                                                                             windowBackendNames[backend]);
-                        ShipDK::Context::GetInstance()->GetConfig()->Save();
+                        Ship::Context::GetInstance()->GetConfig()->Save();
                     }
                 }
                 ImGui::EndCombo();
             }
-            if (ShipDK::Context::GetInstance()->GetWindow()->GetAvailableWindowBackends()->size() <= 1) {
+            if (Ship::Context::GetInstance()->GetWindow()->GetAvailableWindowBackends()->size() <= 1) {
                 UIWidgets::ReEnableComponent("");
             }
 
-            if (ShipDK::Context::GetInstance()->GetWindow()->CanDisableVerticalSync()) {
+            if (Ship::Context::GetInstance()->GetWindow()->CanDisableVerticalSync()) {
                 UIWidgets::PaddedEnhancementCheckbox("Enable Vsync", "gVsyncEnabled", true, false);
                 UIWidgets::Tooltip("Activate vertical sync, to prevent screen tearing.");
             }
 
-            if (ShipDK::Context::GetInstance()->GetWindow()->SupportsWindowedFullscreen()) {
+            if (Ship::Context::GetInstance()->GetWindow()->SupportsWindowedFullscreen()) {
                 UIWidgets::PaddedEnhancementCheckbox("Windowed fullscreen", "gSdlWindowedFullscreen", true, false);
             }
 
-            if (ShipDK::Context::GetInstance()->GetWindow()->GetGui()->SupportsViewports()) {
+            if (Ship::Context::GetInstance()->GetWindow()->GetGui()->SupportsViewports()) {
                 UIWidgets::PaddedEnhancementCheckbox("Allow multi-windows (Needs reload)", "gEnableMultiViewports", true, false, false, "", UIWidgets::CheckboxGraphics::Cross, true);
                 UIWidgets::Tooltip("Allows windows to be able to be dragged off of the main game window. Requires a reload to take effect.");
             }
@@ -503,7 +503,7 @@ void DrawSettingsMenu() {
             UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
 
             // Draw LUS settings menu (such as Overlays Text Font)
-            ShipDK::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->DrawSettings();
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->DrawSettings();
 
             ImGui::EndMenu();
         }
@@ -1417,9 +1417,9 @@ void DrawEnhancementsMenu() {
         #ifdef __SWITCH__
         UIWidgets::Spacer(0);
         ImGui::Text("Switch performance mode");
-        if (UIWidgets::EnhancementCombobox(CVAR_ENHANCEMENT("SwitchPerfMode"), SWITCH_CPU_PROFILES, (int)ShipDK::SwitchProfiles::STOCK)) {
-            SPDLOG_INFO("Profile:: %s", SWITCH_CPU_PROFILES[CVarGetInteger(CVAR_ENHANCEMENT("SwitchPerfMode"), (int)ShipDK::SwitchProfiles::STOCK)]);
-            ShipDK::Switch::ApplyOverclock();
+        if (UIWidgets::EnhancementCombobox(CVAR_ENHANCEMENT("SwitchPerfMode"), SWITCH_CPU_PROFILES, (int)Ship::SwitchProfiles::STOCK)) {
+            SPDLOG_INFO("Profile:: %s", SWITCH_CPU_PROFILES[CVarGetInteger(CVAR_ENHANCEMENT("SwitchPerfMode"), (int)Ship::SwitchProfiles::STOCK)]);
+            Ship::Switch::ApplyOverclock();
         }
         #endif
 
@@ -1504,7 +1504,7 @@ void DrawCheatsMenu() {
             if (UIWidgets::PaddedEnhancementCheckbox("I promise I have read the warning", CVAR_CHEAT("SaveStatePromise"), true,
                                                      false)) {
                 CVarSetInteger(CVAR_CHEAT("SaveStatesEnabled"), 0);
-                ShipDK::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
             }
             if (CVarGetInteger(CVAR_CHEAT("SaveStatePromise"), 0) == 1) {
                 UIWidgets::PaddedEnhancementCheckbox("I understand, enable save states", CVAR_CHEAT("SaveStatesEnabled"), true,
@@ -1598,8 +1598,8 @@ void DrawCheatsMenu() {
                 CVarSetInteger(CVAR_CHEAT("EnableBetaQuest"), betaQuestEnabled);
                 CVarSetInteger(CVAR_CHEAT("BetaQuestWorld"), betaQuestWorld);
 
-                std::reinterpret_pointer_cast<ShipDK::ConsoleWindow>(ShipDK::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->Dispatch("reset");
-                ShipDK::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                std::reinterpret_pointer_cast<Ship::ConsoleWindow>(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->Dispatch("reset");
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
             }
 
             if (!isBetaQuestEnabled) {
@@ -1613,8 +1613,8 @@ void DrawCheatsMenu() {
     }
 }
 
-extern std::shared_ptr<ShipDK::GuiWindow> mStatsWindow;
-extern std::shared_ptr<ShipDK::GuiWindow> mConsoleWindow;
+extern std::shared_ptr<Ship::GuiWindow> mStatsWindow;
+extern std::shared_ptr<Ship::GuiWindow> mConsoleWindow;
 extern std::shared_ptr<SaveEditorWindow> mSaveEditorWindow;
 extern std::shared_ptr<ColViewerWindow> mColViewerWindow;
 extern std::shared_ptr<ActorViewerWindow> mActorViewerWindow;
@@ -1770,7 +1770,7 @@ void DrawRemoteControlMenu() {
                     port = 43384;
                     break;
             }
-            ShipDK::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         }
         switch (CVarGetInteger(CVAR_REMOTE("Scheme"), GI_SCHEME_SAIL)) {
             case GI_SCHEME_SAIL:
@@ -1806,14 +1806,14 @@ void DrawRemoteControlMenu() {
         ImGui::Text("Remote IP & Port");
         if (ImGui::InputText("##gRemote.IP", (char*)ip.c_str(), ip.capacity() + 1)) {
             CVarSetString(CVAR_REMOTE("IP"), ip.c_str());
-            ShipDK::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         }
 
         ImGui::SameLine();
         ImGui::PushItemWidth(ImGui::GetFontSize() * 5);
         if (ImGui::InputScalar("##gRemote.Port", ImGuiDataType_U16, &port)) {
             CVarSetInteger(CVAR_REMOTE("Port"), port);
-            ShipDK::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         }
 
         ImGui::PopItemWidth();
@@ -1826,7 +1826,7 @@ void DrawRemoteControlMenu() {
         if (ImGui::Button(buttonLabel, ImVec2(-1.0f, 0.0f))) {
             if (GameInteractor::Instance->isRemoteInteractorEnabled) {
                 CVarSetInteger(CVAR_REMOTE("Enabled"), 0);
-                ShipDK::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                 switch (CVarGetInteger(CVAR_REMOTE("Scheme"), GI_SCHEME_SAIL)) {
                     case GI_SCHEME_SAIL:
                         GameInteractorSail::Instance->Disable();
@@ -1837,7 +1837,7 @@ void DrawRemoteControlMenu() {
                 }
             } else {
                 CVarSetInteger(CVAR_REMOTE("Enabled"), 1);
-                ShipDK::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                 switch (CVarGetInteger(CVAR_REMOTE("Scheme"), GI_SCHEME_SAIL)) {
                     case GI_SCHEME_SAIL:
                         GameInteractorSail::Instance->Enable();

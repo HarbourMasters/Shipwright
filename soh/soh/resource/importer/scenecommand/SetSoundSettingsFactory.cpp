@@ -3,8 +3,8 @@
 #include "spdlog/spdlog.h"
 
 namespace SOH {
-std::shared_ptr<ShipDK::IResource> SetSoundSettingsFactory::ReadResource(std::shared_ptr<ShipDK::ResourceInitData> initData,
-                                                                std::shared_ptr<ShipDK::BinaryReader> reader) {
+std::shared_ptr<Ship::IResource> SetSoundSettingsFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
+                                                                std::shared_ptr<Ship::BinaryReader> reader) {
     auto setSoundSettings = std::make_shared<SetSoundSettings>(initData);
 
     ReadCommandId(setSoundSettings, reader);

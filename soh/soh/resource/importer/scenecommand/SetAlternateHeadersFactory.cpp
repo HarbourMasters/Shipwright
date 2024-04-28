@@ -4,8 +4,8 @@
 #include "libultraship/libultraship.h"
 
 namespace SOH {
-std::shared_ptr<ShipDK::IResource> SetAlternateHeadersFactory::ReadResource(std::shared_ptr<ShipDK::ResourceInitData> initData,
-                                                                   std::shared_ptr<ShipDK::BinaryReader> reader) {
+std::shared_ptr<Ship::IResource> SetAlternateHeadersFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
+                                                                   std::shared_ptr<Ship::BinaryReader> reader) {
     auto setAlternateHeaders = std::make_shared<SetAlternateHeaders>(initData);
 
     ReadCommandId(setAlternateHeaders, reader);
@@ -15,7 +15,7 @@ std::shared_ptr<ShipDK::IResource> SetAlternateHeadersFactory::ReadResource(std:
     for (uint32_t i = 0; i < setAlternateHeaders->numHeaders; i++) {
         auto headerName = reader->ReadString();
         if (!headerName.empty()) {
-            setAlternateHeaders->headers.push_back(std::static_pointer_cast<Scene>(ShipDK::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(headerName.c_str())));
+            setAlternateHeaders->headers.push_back(std::static_pointer_cast<Scene>(Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(headerName.c_str())));
         } else {
             setAlternateHeaders->headers.push_back(nullptr);
         }

@@ -85,7 +85,7 @@ s16 GetLastEntranceOverride();
 s16 GetCurrentGrottoId();
 const EntranceData* GetEntranceData(s16);
 
-class EntranceTrackerWindow : public ShipDK::GuiWindow {
+class EntranceTrackerWindow : public Ship::GuiWindow {
   public:
     using GuiWindow::GuiWindow;
 

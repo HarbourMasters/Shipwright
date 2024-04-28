@@ -7,7 +7,7 @@
 
 namespace CheckTracker {
 
-class CheckTrackerSettingsWindow : public ShipDK::GuiWindow {
+class CheckTrackerSettingsWindow : public Ship::GuiWindow {
   public:
     using GuiWindow::GuiWindow;
     ~CheckTrackerSettingsWindow() {};
@@ -18,7 +18,7 @@ class CheckTrackerSettingsWindow : public ShipDK::GuiWindow {
     void UpdateElement() override {};
 };
 
-class CheckTrackerWindow : public ShipDK::GuiWindow {
+class CheckTrackerWindow : public Ship::GuiWindow {
   public:
     using GuiWindow::GuiWindow;
     ~CheckTrackerWindow() {};

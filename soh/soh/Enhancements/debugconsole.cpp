@@ -36,12 +36,12 @@ extern PlayState* gPlayState;
 #include <libultraship/bridge.h>
 #include <libultraship/libultraship.h>
 
-#define CMD_REGISTER ShipDK::Context::GetInstance()->GetConsole()->AddCommand
+#define CMD_REGISTER Ship::Context::GetInstance()->GetConsole()->AddCommand
 // TODO: Commands should be using the output passed in.
-#define ERROR_MESSAGE std::reinterpret_pointer_cast<ShipDK::ConsoleWindow>(ShipDK::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->SendErrorMessage
-#define INFO_MESSAGE std::reinterpret_pointer_cast<ShipDK::ConsoleWindow>(ShipDK::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->SendInfoMessage
+#define ERROR_MESSAGE std::reinterpret_pointer_cast<Ship::ConsoleWindow>(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->SendErrorMessage
+#define INFO_MESSAGE std::reinterpret_pointer_cast<Ship::ConsoleWindow>(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->SendInfoMessage
 
-static bool ActorSpawnHandler(std::shared_ptr<ShipDK::Console> Console, const std::vector<std::string>& args, std::string* output) {
+static bool ActorSpawnHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if ((args.size() != 9) && (args.size() != 3) && (args.size() != 6)) {
         ERROR_MESSAGE("Not enough arguments passed to actorspawn");
         return 1;
@@ -101,7 +101,7 @@ static bool ActorSpawnHandler(std::shared_ptr<ShipDK::Console> Console, const st
     return 0;
 }
 
-static bool KillPlayerHandler(std::shared_ptr<ShipDK::Console> Console, const std::vector<std::string>&, std::string* output) {
+static bool KillPlayerHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>&, std::string* output) {
     GameInteractionEffectBase* effect = new GameInteractionEffect::SetPlayerHealth();
     dynamic_cast<ParameterizedGameInteractionEffect*>(effect)->parameters[0] = 0;
     GameInteractionEffectQueryResult result = GameInteractor::ApplyEffect(effect);
@@ -114,7 +114,7 @@ static bool KillPlayerHandler(std::shared_ptr<ShipDK::Console> Console, const st
     }
 }
 
-static bool SetPlayerHealthHandler(std::shared_ptr<ShipDK::Console> Console, const std::vector<std::string>& args, std::string* output) {
+static bool SetPlayerHealthHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
         ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
@@ -145,7 +145,7 @@ static bool SetPlayerHealthHandler(std::shared_ptr<ShipDK::Console> Console, con
     }
 }
 
-static bool LoadSceneHandler(std::shared_ptr<ShipDK::Console> Console, const std::vector<std::string>&, std::string* output) {
+static bool LoadSceneHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>&, std::string* output) {
     gSaveContext.respawnFlag = 0;
     gSaveContext.seqId = 0xFF;
     gSaveContext.gameMode = 0;
@@ -153,7 +153,7 @@ static bool LoadSceneHandler(std::shared_ptr<ShipDK::Console> Console, const std
     return 0;
 }
 
-static bool RupeeHandler(std::shared_ptr<ShipDK::Console> Console, const std::vector<std::string>& args, std::string* output) {
+static bool RupeeHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
         return 1;
     }
@@ -178,7 +178,7 @@ static bool RupeeHandler(std::shared_ptr<ShipDK::Console> Console, const std::ve
     return 0;
 }
 
-static bool SetPosHandler(std::shared_ptr<ShipDK::Console> Console, const std::vector<std::string> args, std::string* output) {
+static bool SetPosHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string> args, std::string* output) {
     if (gPlayState == nullptr) {
         ERROR_MESSAGE("PlayState == nullptr");
         return 1;
@@ -205,7 +205,7 @@ static bool SetPosHandler(std::shared_ptr<ShipDK::Console> Console, const std::v
     return 0;
 }
 
-static bool ResetHandler(std::shared_ptr<ShipDK::Console> Console, std::vector<std::string> args, std::string* output) {
+static bool ResetHandler(std::shared_ptr<Ship::Console> Console, std::vector<std::string> args, std::string* output) {
     if (gPlayState == nullptr) {
         ERROR_MESSAGE("PlayState == nullptr");
         return 1;
@@ -225,7 +225,7 @@ const static std::map<std::string, uint16_t> ammoItems{
     { "beans", ITEM_BEAN }
 };
 
-static bool AddAmmoHandler(std::shared_ptr<ShipDK::Console> Console, const std::vector<std::string>& args, std::string* output) {
+static bool AddAmmoHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 3) {
         ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
@@ -264,7 +264,7 @@ static bool AddAmmoHandler(std::shared_ptr<ShipDK::Console> Console, const std::
     }
 }
 
-static bool TakeAmmoHandler(std::shared_ptr<ShipDK::Console> Console, const std::vector<std::string>& args, std::string* output) {
+static bool TakeAmmoHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 3) {
         ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
@@ -311,7 +311,7 @@ const static std::map<std::string, uint16_t> bottleItems{
     { "big_poe", ITEM_BIG_POE },           { "blue_fire", ITEM_BLUE_FIRE },   { "rutos_letter", ITEM_LETTER_RUTO },
 };
 
-static bool BottleHandler(std::shared_ptr<ShipDK::Console> Console, const std::vector<std::string>& args, std::string* output) {
+static bool BottleHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 3) {
         ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
@@ -343,7 +343,7 @@ static bool BottleHandler(std::shared_ptr<ShipDK::Console> Console, const std::v
     return 0;
 }
 
-static bool BHandler(std::shared_ptr<ShipDK::Console> Console, const std::vector<std::string>& args, std::string* output) {
+static bool BHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
         ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
@@ -353,7 +353,7 @@ static bool BHandler(std::shared_ptr<ShipDK::Console> Console, const std::vector
     return 0;
 }
 
-static bool ItemHandler(std::shared_ptr<ShipDK::Console> Console, const std::vector<std::string>& args, std::string* output) {
+static bool ItemHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 3) {
         ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
@@ -364,7 +364,7 @@ static bool ItemHandler(std::shared_ptr<ShipDK::Console> Console, const std::vec
     return 0;
 }
 
-static bool GiveItemHandler(std::shared_ptr<ShipDK::Console> Console, const std::vector<std::string> args, std::string* output) {
+static bool GiveItemHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string> args, std::string* output) {
     if (args.size() < 3) {
         ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
@@ -385,7 +385,7 @@ static bool GiveItemHandler(std::shared_ptr<ShipDK::Console> Console, const std:
     return 0;
 }
 
-static bool EntranceHandler(std::shared_ptr<ShipDK::Console> Console, const std::vector<std::string>& args, std::string* output) {
+static bool EntranceHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
         ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
@@ -406,7 +406,7 @@ static bool EntranceHandler(std::shared_ptr<ShipDK::Console> Console, const std:
     gSaveContext.nextTransitionType = TRANS_TYPE_INSTANT;
 }
 
-static bool VoidHandler(std::shared_ptr<ShipDK::Console> Console, const std::vector<std::string>& args, std::string* output) {
+static bool VoidHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (gPlayState != nullptr) {
             gSaveContext.respawn[RESPAWN_MODE_DOWN].tempSwchFlags = gPlayState->actorCtx.flags.tempSwch;
             gSaveContext.respawn[RESPAWN_MODE_DOWN].tempCollectFlags = gPlayState->actorCtx.flags.tempCollect;
@@ -422,7 +422,7 @@ static bool VoidHandler(std::shared_ptr<ShipDK::Console> Console, const std::vec
     return 0;
 }
 
-static bool ReloadHandler(std::shared_ptr<ShipDK::Console> Console, const std::vector<std::string>& args, std::string* output) {
+static bool ReloadHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (gPlayState != nullptr) {
         gPlayState->nextEntranceIndex = gSaveContext.entranceIndex;
         gPlayState->transitionTrigger = TRANS_TRIGGER_START;
@@ -439,7 +439,7 @@ const static std::map<std::string, uint16_t> fw_options {
     { "clear", 0}, {"warp", 1}, {"backup", 2}
 };
 
-static bool FWHandler(std::shared_ptr<ShipDK::Console> Console, const std::vector<std::string>& args, std::string* output) {
+static bool FWHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
         ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
@@ -491,7 +491,7 @@ static bool FWHandler(std::shared_ptr<ShipDK::Console> Console, const std::vecto
     return 0;
 }
 
-static bool FileSelectHandler(std::shared_ptr<ShipDK::Console> Console, const std::vector<std::string>& args, std::string* output) {
+static bool FileSelectHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (gPlayState != nullptr) {
         SET_NEXT_GAMESTATE(&gPlayState->state, FileChoose_Init, FileChooseContext);
         gPlayState->state.running = 0;
@@ -502,12 +502,12 @@ static bool FileSelectHandler(std::shared_ptr<ShipDK::Console> Console, const st
     return 0;
 }
 
-static bool QuitHandler(std::shared_ptr<ShipDK::Console> Console, const std::vector<std::string>& args, std::string* output) {
-    ShipDK::Context::GetInstance()->GetWindow()->Close();
+static bool QuitHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
+    Ship::Context::GetInstance()->GetWindow()->Close();
     return 0;
 }
 
-static bool SaveStateHandler(std::shared_ptr<ShipDK::Console> Console, const std::vector<std::string>& args, std::string* output) {
+static bool SaveStateHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
     unsigned int slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
     const SaveStateReturn rtn = OTRGlobals::Instance->gSaveStateMgr->AddRequest({ slot, RequestType::SAVE });
 
@@ -521,7 +521,7 @@ static bool SaveStateHandler(std::shared_ptr<ShipDK::Console> Console, const std
     }
 }
 
-static bool LoadStateHandler(std::shared_ptr<ShipDK::Console> Console, const std::vector<std::string>& args, std::string* output) {
+static bool LoadStateHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
     unsigned int slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
     const SaveStateReturn rtn = OTRGlobals::Instance->gSaveStateMgr->AddRequest({ slot, RequestType::LOAD });
 
@@ -542,7 +542,7 @@ static bool LoadStateHandler(std::shared_ptr<ShipDK::Console> Console, const std
 
 }
 
-static bool StateSlotSelectHandler(std::shared_ptr<ShipDK::Console> Console, const std::vector<std::string>& args, std::string* output) {
+static bool StateSlotSelectHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
         ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
@@ -567,7 +567,7 @@ static bool StateSlotSelectHandler(std::shared_ptr<ShipDK::Console> Console, con
     return 0;
 }
 
-static bool InvisibleHandler(std::shared_ptr<ShipDK::Console> Console, const std::vector<std::string>& args, std::string* output) {
+static bool InvisibleHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
         ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
@@ -594,7 +594,7 @@ static bool InvisibleHandler(std::shared_ptr<ShipDK::Console> Console, const std
     }
 }
 
-static bool GiantLinkHandler(std::shared_ptr<ShipDK::Console> Console, const std::vector<std::string>& args, std::string* output) {
+static bool GiantLinkHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
         ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
@@ -622,7 +622,7 @@ static bool GiantLinkHandler(std::shared_ptr<ShipDK::Console> Console, const std
     }
 }
 
-static bool MinishLinkHandler(std::shared_ptr<ShipDK::Console> Console, const std::vector<std::string>& args, std::string* output) {
+static bool MinishLinkHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
         ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
@@ -650,7 +650,7 @@ static bool MinishLinkHandler(std::shared_ptr<ShipDK::Console> Console, const st
     }
 }
 
-static bool AddHeartContainerHandler(std::shared_ptr<ShipDK::Console> Console, const std::vector<std::string>& args, std::string* output) {
+static bool AddHeartContainerHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
         ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
@@ -681,7 +681,7 @@ static bool AddHeartContainerHandler(std::shared_ptr<ShipDK::Console> Console, c
     }
 }
 
-static bool RemoveHeartContainerHandler(std::shared_ptr<ShipDK::Console> Console, const std::vector<std::string>& args, std::string* output) {
+static bool RemoveHeartContainerHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
         ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
@@ -712,7 +712,7 @@ static bool RemoveHeartContainerHandler(std::shared_ptr<ShipDK::Console> Console
     }
 }
 
-static bool GravityHandler(std::shared_ptr<ShipDK::Console> Console, const std::vector<std::string>& args, std::string* output) {
+static bool GravityHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
         ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
@@ -721,7 +721,7 @@ static bool GravityHandler(std::shared_ptr<ShipDK::Console> Console, const std::
     GameInteractionEffectBase* effect = new GameInteractionEffect::ModifyGravity();
 
     try {
-        dynamic_cast<ParameterizedGameInteractionEffect*>(effect)->parameters[0] = ShipDK::Math::clamp(std::stoi(args[1], nullptr, 10), GI_GRAVITY_LEVEL_LIGHT, GI_GRAVITY_LEVEL_HEAVY);
+        dynamic_cast<ParameterizedGameInteractionEffect*>(effect)->parameters[0] = Ship::Math::clamp(std::stoi(args[1], nullptr, 10), GI_GRAVITY_LEVEL_LIGHT, GI_GRAVITY_LEVEL_HEAVY);
     } catch (std::invalid_argument const& ex) {
         ERROR_MESSAGE("[SOH] Gravity value must be a number.");
         return 1;
@@ -737,7 +737,7 @@ static bool GravityHandler(std::shared_ptr<ShipDK::Console> Console, const std::
     }
 }
 
-static bool NoUIHandler(std::shared_ptr<ShipDK::Console> Console, const std::vector<std::string>& args, std::string* output) {
+static bool NoUIHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
         ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
@@ -765,7 +765,7 @@ static bool NoUIHandler(std::shared_ptr<ShipDK::Console> Console, const std::vec
     }
 }
 
-static bool FreezeHandler(std::shared_ptr<ShipDK::Console> Console, const std::vector<std::string>& args, std::string* output) {
+static bool FreezeHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
     GameInteractionEffectBase* effect = new GameInteractionEffect::FreezePlayer();
     GameInteractionEffectQueryResult result = GameInteractor::ApplyEffect(effect);
 
@@ -778,7 +778,7 @@ static bool FreezeHandler(std::shared_ptr<ShipDK::Console> Console, const std::v
     }
 }
 
-static bool DefenseModifierHandler(std::shared_ptr<ShipDK::Console> Console, const std::vector<std::string>& args, std::string* output) {
+static bool DefenseModifierHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
         ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
@@ -802,7 +802,7 @@ static bool DefenseModifierHandler(std::shared_ptr<ShipDK::Console> Console, con
     }
 }
 
-static bool DamageHandler(std::shared_ptr<ShipDK::Console> Console, const std::vector<std::string>& args, std::string* output) {
+static bool DamageHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
         ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
@@ -832,7 +832,7 @@ static bool DamageHandler(std::shared_ptr<ShipDK::Console> Console, const std::v
     }
 }
 
-static bool HealHandler(std::shared_ptr<ShipDK::Console> Console, const std::vector<std::string>& args, std::string* output) {
+static bool HealHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
         ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
@@ -862,7 +862,7 @@ static bool HealHandler(std::shared_ptr<ShipDK::Console> Console, const std::vec
     }
 }
 
-static bool FillMagicHandler(std::shared_ptr<ShipDK::Console> Console, const std::vector<std::string>& args, std::string* output) {
+static bool FillMagicHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
     GameInteractionEffectBase* effect = new GameInteractionEffect::FillMagic();
     GameInteractionEffectQueryResult result = GameInteractor::ApplyEffect(effect);
 
@@ -875,7 +875,7 @@ static bool FillMagicHandler(std::shared_ptr<ShipDK::Console> Console, const std
     }
 }
 
-static bool EmptyMagicHandler(std::shared_ptr<ShipDK::Console> Console, const std::vector<std::string>& args, std::string* output) {
+static bool EmptyMagicHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
     GameInteractionEffectBase* effect = new GameInteractionEffect::EmptyMagic();
     GameInteractionEffectQueryResult result = GameInteractor::ApplyEffect(effect);
 
@@ -888,7 +888,7 @@ static bool EmptyMagicHandler(std::shared_ptr<ShipDK::Console> Console, const st
     }
 }
 
-static bool NoZHandler(std::shared_ptr<ShipDK::Console> Console, const std::vector<std::string>& args, std::string* output) {
+static bool NoZHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
      if (args.size() < 2) {
         ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
@@ -916,7 +916,7 @@ static bool NoZHandler(std::shared_ptr<ShipDK::Console> Console, const std::vect
     }
 }
 
-static bool OneHitKOHandler(std::shared_ptr<ShipDK::Console> Console, const std::vector<std::string>& args, std::string* output) {
+static bool OneHitKOHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
         ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
@@ -944,7 +944,7 @@ static bool OneHitKOHandler(std::shared_ptr<ShipDK::Console> Console, const std:
     }
 }
 
-static bool PacifistHandler(std::shared_ptr<ShipDK::Console> Console, const std::vector<std::string>& args, std::string* output) {
+static bool PacifistHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
         ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
@@ -972,7 +972,7 @@ static bool PacifistHandler(std::shared_ptr<ShipDK::Console> Console, const std:
     }
 }
 
-static bool PaperLinkHandler(std::shared_ptr<ShipDK::Console> Console, const std::vector<std::string>& args, std::string* output) {
+static bool PaperLinkHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
         ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
@@ -1001,7 +1001,7 @@ static bool PaperLinkHandler(std::shared_ptr<ShipDK::Console> Console, const std
     }
 }
 
-static bool RainstormHandler(std::shared_ptr<ShipDK::Console> Console, const std::vector<std::string>& args, std::string* output) {
+static bool RainstormHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
         ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
@@ -1029,7 +1029,7 @@ static bool RainstormHandler(std::shared_ptr<ShipDK::Console> Console, const std
     }
 }
 
-static bool ReverseControlsHandler(std::shared_ptr<ShipDK::Console> Console, const std::vector<std::string>& args, std::string* output) {
+static bool ReverseControlsHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
         ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
@@ -1058,7 +1058,7 @@ static bool ReverseControlsHandler(std::shared_ptr<ShipDK::Console> Console, con
     }
 }
 
-static bool UpdateRupeesHandler(std::shared_ptr<ShipDK::Console> Console, const std::vector<std::string>& args, std::string* output) {
+static bool UpdateRupeesHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
         ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
@@ -1082,7 +1082,7 @@ static bool UpdateRupeesHandler(std::shared_ptr<ShipDK::Console> Console, const 
     }
 }
 
-static bool SpeedModifierHandler(std::shared_ptr<ShipDK::Console> Console, const std::vector<std::string>& args, std::string* output) {
+static bool SpeedModifierHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
         ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
@@ -1112,7 +1112,7 @@ const static std::map<std::string, uint16_t> boots {
     { "hover", EQUIP_VALUE_BOOTS_HOVER },
 };
 
-static bool BootsHandler(std::shared_ptr<ShipDK::Console> Console, const std::vector<std::string>& args, std::string* output) {
+static bool BootsHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
         ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
@@ -1143,7 +1143,7 @@ const static std::map<std::string, uint16_t> shields {
     { "mirror", ITEM_SHIELD_MIRROR },
 };
 
-static bool GiveShieldHandler(std::shared_ptr<ShipDK::Console> Console, const std::vector<std::string>& args, std::string* output) {
+static bool GiveShieldHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
         ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
@@ -1168,7 +1168,7 @@ static bool GiveShieldHandler(std::shared_ptr<ShipDK::Console> Console, const st
     }
 }
 
-static bool TakeShieldHandler(std::shared_ptr<ShipDK::Console> Console, const std::vector<std::string>& args, std::string* output) {
+static bool TakeShieldHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
         ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
@@ -1193,7 +1193,7 @@ static bool TakeShieldHandler(std::shared_ptr<ShipDK::Console> Console, const st
     }
 }
 
-static bool KnockbackHandler(std::shared_ptr<ShipDK::Console> Console, const std::vector<std::string>& args, std::string* output) {
+static bool KnockbackHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
         ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
@@ -1223,7 +1223,7 @@ static bool KnockbackHandler(std::shared_ptr<ShipDK::Console> Console, const std
     }
 }
 
-static bool ElectrocuteHandler(std::shared_ptr<ShipDK::Console> Console, const std::vector<std::string>& args, std::string* output) {
+static bool ElectrocuteHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
     GameInteractionEffectBase* effect = new GameInteractionEffect::ElectrocutePlayer();
     GameInteractionEffectQueryResult result = GameInteractor::ApplyEffect(effect);
 
@@ -1236,7 +1236,7 @@ static bool ElectrocuteHandler(std::shared_ptr<ShipDK::Console> Console, const s
     }
 }
 
-static bool BurnHandler(std::shared_ptr<ShipDK::Console> Console, const std::vector<std::string>& args, std::string* output) {
+static bool BurnHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
     GameInteractionEffectBase* effect = new GameInteractionEffect::BurnPlayer();
     GameInteractionEffectQueryResult result = GameInteractor::ApplyEffect(effect);
 
@@ -1249,7 +1249,7 @@ static bool BurnHandler(std::shared_ptr<ShipDK::Console> Console, const std::vec
     }
 }
 
-static bool CuccoStormHandler(std::shared_ptr<ShipDK::Console> Console, const std::vector<std::string>& args, std::string* output) {
+static bool CuccoStormHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
     GameInteractionEffectQueryResult result = GameInteractor::RawAction::SpawnActor(ACTOR_EN_NIW, 0);
 
     if (result == GameInteractionEffectQueryResult::Possible) {
@@ -1261,7 +1261,7 @@ static bool CuccoStormHandler(std::shared_ptr<ShipDK::Console> Console, const st
     }
 }
 
-static bool GenerateRandoHandler(std::shared_ptr<ShipDK::Console> Console, const std::vector<std::string>& args, std::string* output) {
+static bool GenerateRandoHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() == 1) {
         if (GenerateRandomizer()) {
             return 0;
@@ -1309,7 +1309,7 @@ static constexpr std::array<std::pair<const char*, CosmeticGroup>, COSMETICS_GRO
     {"ivan", COSMETICS_GROUP_IVAN},
 }};
 
-static bool CosmeticsHandler(std::shared_ptr<ShipDK::Console> Console, const std::vector<std::string>& args, std::string* output) {
+static bool CosmeticsHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
         ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
@@ -1361,7 +1361,7 @@ static std::map<std::string, SeqType> sfx_groups = {
     {"custom", SEQ_BGM_CUSTOM},
 };
 
-static bool SfxHandler(std::shared_ptr<ShipDK::Console> Console, const std::vector<std::string>& args, std::string* output) {
+static bool SfxHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
         ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
@@ -1411,17 +1411,17 @@ void DebugConsole_Init(void) {
     CMD_REGISTER("save_state", {SaveStateHandler, "Save a state."});
     CMD_REGISTER("load_state", {LoadStateHandler, "Load a state."});
     CMD_REGISTER("set_slot", {StateSlotSelectHandler, "Selects a SaveState slot", {
-            {"Slot number", ShipDK::ArgumentType::NUMBER,}
+            {"Slot number", Ship::ArgumentType::NUMBER,}
     }});
 
     // Map & Location
     CMD_REGISTER("void", {VoidHandler, "Voids out of the current map."});
     CMD_REGISTER("reload", {ReloadHandler, "Reloads the current map."});
     CMD_REGISTER("fw", {FWHandler, "Spawns the player where Farore's Wind is set.", {
-            {"clear|warp|backup", ShipDK::ArgumentType::TEXT}
+            {"clear|warp|backup", Ship::ArgumentType::TEXT}
     }});
     CMD_REGISTER("entrance", {EntranceHandler, "Sends player to the entered entrance (hex)", {
-            {"entrance", ShipDK::ArgumentType::NUMBER}
+            {"entrance", Ship::ArgumentType::NUMBER}
     }});
 
     // Gameplay
@@ -1430,64 +1430,64 @@ void DebugConsole_Init(void) {
     CMD_REGISTER("map", {LoadSceneHandler, "Load up kak?"});
 
     CMD_REGISTER("rupee", {RupeeHandler, "Set your rupee counter.", {
-            {"amount", ShipDK::ArgumentType::NUMBER}
+            {"amount", Ship::ArgumentType::NUMBER}
     }});
 
     CMD_REGISTER("bItem", {BHandler, "Set an item to the B button.", {
-            {"Item ID", ShipDK::ArgumentType::NUMBER}
+            {"Item ID", Ship::ArgumentType::NUMBER}
     }});
 
-    CMD_REGISTER("spawn", { ActorSpawnHandler, "Spawn an actor.", { { "actor name/id", ShipDK::ArgumentType::NUMBER }, // TODO there should be an actor_id arg type
-                                                                  {"data", ShipDK::ArgumentType::NUMBER},
-                                                                  {"x", ShipDK::ArgumentType::NUMBER, true},
-                                                                  {"y", ShipDK::ArgumentType::NUMBER, true},
-                                                                  {"z", ShipDK::ArgumentType::NUMBER, true},
-                                                                  {"rx", ShipDK::ArgumentType::NUMBER, true},
-                                                                  {"ry", ShipDK::ArgumentType::NUMBER, true},
-                                                                  {"rz", ShipDK::ArgumentType::NUMBER, true}
+    CMD_REGISTER("spawn", { ActorSpawnHandler, "Spawn an actor.", { { "actor name/id", Ship::ArgumentType::NUMBER }, // TODO there should be an actor_id arg type
+                                                                  {"data", Ship::ArgumentType::NUMBER},
+                                                                  {"x", Ship::ArgumentType::NUMBER, true},
+                                                                  {"y", Ship::ArgumentType::NUMBER, true},
+                                                                  {"z", Ship::ArgumentType::NUMBER, true},
+                                                                  {"rx", Ship::ArgumentType::NUMBER, true},
+                                                                  {"ry", Ship::ArgumentType::NUMBER, true},
+                                                                  {"rz", Ship::ArgumentType::NUMBER, true}
     }});
 
     CMD_REGISTER("pos", {SetPosHandler, "Sets the position of the player.", {
-            {"x", ShipDK::ArgumentType::NUMBER, true},
-            {"y", ShipDK::ArgumentType::NUMBER, true},
-            {"z", ShipDK::ArgumentType::NUMBER, true}
+            {"x", Ship::ArgumentType::NUMBER, true},
+            {"y", Ship::ArgumentType::NUMBER, true},
+            {"z", Ship::ArgumentType::NUMBER, true}
     }});
 
     CMD_REGISTER("addammo", {AddAmmoHandler, "Adds ammo of an item.", {
-            {"sticks|nuts|bombs|seeds|arrows|bombchus|beans", ShipDK::ArgumentType::TEXT},
-            {"count", ShipDK::ArgumentType::NUMBER}
+            {"sticks|nuts|bombs|seeds|arrows|bombchus|beans", Ship::ArgumentType::TEXT},
+            {"count", Ship::ArgumentType::NUMBER}
     }});
 
     CMD_REGISTER("takeammo", {TakeAmmoHandler, "Removes ammo of an item.", {
-            {"sticks|nuts|bombs|seeds|arrows|bombchus|beans", ShipDK::ArgumentType::TEXT},
-            {"count", ShipDK::ArgumentType::NUMBER}
+            {"sticks|nuts|bombs|seeds|arrows|bombchus|beans", Ship::ArgumentType::TEXT},
+            {"count", Ship::ArgumentType::NUMBER}
     }});
 
     CMD_REGISTER("bottle", {BottleHandler, "Changes item in a bottle slot.", {
-            {"item", ShipDK::ArgumentType::TEXT},
-            {"slot", ShipDK::ArgumentType::NUMBER}
+            {"item", Ship::ArgumentType::TEXT},
+            {"slot", Ship::ArgumentType::NUMBER}
     }});
 
     CMD_REGISTER("give_item", {GiveItemHandler, "Gives an item to the player as if it was given from an actor", {
-            {"vanilla|randomizer", ShipDK::ArgumentType::TEXT},
-            {"giveItemID", ShipDK::ArgumentType::NUMBER}
+            {"vanilla|randomizer", Ship::ArgumentType::TEXT},
+            {"giveItemID", Ship::ArgumentType::NUMBER}
     }});
 
     CMD_REGISTER("item", {ItemHandler, "Sets item ID in arg 1 into slot arg 2. No boundary checks. Use with caution.", {
-            {"slot", ShipDK::ArgumentType::NUMBER},
-            {"item id", ShipDK::ArgumentType::NUMBER}
+            {"slot", Ship::ArgumentType::NUMBER},
+            {"item id", Ship::ArgumentType::NUMBER}
     }});
 
     CMD_REGISTER("invisible", {InvisibleHandler, "Activate Link's Elvish cloak, making him appear invisible.", {
-            {"value", ShipDK::ArgumentType::NUMBER}
+            {"value", Ship::ArgumentType::NUMBER}
     }});
 
     CMD_REGISTER("giant_link", {GiantLinkHandler, "Turn Link into a giant Lonky boi.", {
-            {"value", ShipDK::ArgumentType::NUMBER}
+            {"value", Ship::ArgumentType::NUMBER}
     }});
 
     CMD_REGISTER("minish_link", {MinishLinkHandler, "Turn Link into a minish boi.", {
-            {"value", ShipDK::ArgumentType::NUMBER}
+            {"value", Ship::ArgumentType::NUMBER}
     }});
 
     CMD_REGISTER("add_heart_container",
@@ -1497,25 +1497,25 @@ void DebugConsole_Init(void) {
                  {RemoveHeartContainerHandler, "Remove a heart from Link. The minimal amount of hearts is 3."});
 
     CMD_REGISTER("gravity", {GravityHandler, "Set gravity level.", {
-            {"value", ShipDK::ArgumentType::NUMBER}
+            {"value", Ship::ArgumentType::NUMBER}
     }});
 
     CMD_REGISTER("no_ui", {NoUIHandler, "Disables the UI.", {
-            {"value", ShipDK::ArgumentType::NUMBER}
+            {"value", Ship::ArgumentType::NUMBER}
     }});
 
     CMD_REGISTER("freeze", {FreezeHandler, "Freezes Link in place"});
 
     CMD_REGISTER("defense_modifier", {DefenseModifierHandler, "Sets the defense modifier.", {
-            {"value", ShipDK::ArgumentType::NUMBER}
+            {"value", Ship::ArgumentType::NUMBER}
     }});
 
     CMD_REGISTER("damage", {DamageHandler, "Deal damage to Link.", {
-            {"value", ShipDK::ArgumentType::NUMBER}
+            {"value", Ship::ArgumentType::NUMBER}
     }});
 
     CMD_REGISTER("heal", {HealHandler, "Heals Link.", {
-            {"value", ShipDK::ArgumentType::NUMBER}
+            {"value", Ship::ArgumentType::NUMBER}
     }});
 
     CMD_REGISTER("fill_magic", {FillMagicHandler, "Fills magic."});
@@ -1523,50 +1523,50 @@ void DebugConsole_Init(void) {
     CMD_REGISTER("empty_magic", {EmptyMagicHandler, "Empties magic."});
 
     CMD_REGISTER("no_z", {NoZHandler, "Disables Z-button presses.", {
-            {"value", ShipDK::ArgumentType::NUMBER}
+            {"value", Ship::ArgumentType::NUMBER}
     }});
 
     CMD_REGISTER("ohko", {OneHitKOHandler,
                           "Activates one hit KO. Any damage kills Link and he cannot gain health in this mode.", {
-                                  {"value", ShipDK::ArgumentType::NUMBER}
+                                  {"value", Ship::ArgumentType::NUMBER}
                           }});
 
     CMD_REGISTER("pacifist", {PacifistHandler, "Activates pacifist mode. Prevents Link from using his weapon.", {
-            {"value", ShipDK::ArgumentType::NUMBER}
+            {"value", Ship::ArgumentType::NUMBER}
     }});
 
     CMD_REGISTER("paper_link", {PaperLinkHandler, "Link but made out of paper.", {
-            {"value", ShipDK::ArgumentType::NUMBER}
+            {"value", Ship::ArgumentType::NUMBER}
     }});
 
     CMD_REGISTER("rainstorm", {RainstormHandler, "Activates rainstorm."});
 
     CMD_REGISTER("reverse_controls", {ReverseControlsHandler, "Reverses the controls.", {
-            {"value", ShipDK::ArgumentType::NUMBER}
+            {"value", Ship::ArgumentType::NUMBER}
     }});
 
     CMD_REGISTER("update_rupees", {UpdateRupeesHandler, "Adds rupees.", {
-            {"value", ShipDK::ArgumentType::NUMBER}
+            {"value", Ship::ArgumentType::NUMBER}
     }});
 
     CMD_REGISTER("speed_modifier", {SpeedModifierHandler, "Sets the speed modifier.", {
-            {"value", ShipDK::ArgumentType::NUMBER}
+            {"value", Ship::ArgumentType::NUMBER}
     }});
 
     CMD_REGISTER("boots", {BootsHandler, "Activates boots.", {
-            {"kokiri|iron|hover", ShipDK::ArgumentType::TEXT},
+            {"kokiri|iron|hover", Ship::ArgumentType::TEXT},
     }});
 
     CMD_REGISTER("giveshield", {GiveShieldHandler, "Gives a shield and equips it when Link is the right age for it.", {
-            {"deku|hylian|mirror", ShipDK::ArgumentType::TEXT},
+            {"deku|hylian|mirror", Ship::ArgumentType::TEXT},
     }});
 
     CMD_REGISTER("takeshield", {TakeShieldHandler, "Takes a shield and unequips it if Link is wearing it.", {
-            {"deku|hylian|mirror", ShipDK::ArgumentType::TEXT},
+            {"deku|hylian|mirror", Ship::ArgumentType::TEXT},
     }});
 
     CMD_REGISTER("knockback", {KnockbackHandler, "Knocks Link back.", {
-            {"value", ShipDK::ArgumentType::NUMBER}
+            {"value", Ship::ArgumentType::NUMBER}
     }});
 
     CMD_REGISTER("electrocute", {ElectrocuteHandler, "Electrocutes Link."});
@@ -1576,18 +1576,18 @@ void DebugConsole_Init(void) {
     CMD_REGISTER("cucco_storm", {CuccoStormHandler, "Cucco Storm"});
 
     CMD_REGISTER("gen_rando", {GenerateRandoHandler, "Generate a randomizer seed", {
-            {"seed|count", ShipDK::ArgumentType::NUMBER, true},
-            {"testing", ShipDK::ArgumentType::NUMBER, true},
+            {"seed|count", Ship::ArgumentType::NUMBER, true},
+            {"testing", Ship::ArgumentType::NUMBER, true},
     }});
 
     CMD_REGISTER("cosmetics", {CosmeticsHandler, "Change cosmetics.", {
-            {"reset|randomize", ShipDK::ArgumentType::TEXT},
-            {"group name", ShipDK::ArgumentType::TEXT, true},
+            {"reset|randomize", Ship::ArgumentType::TEXT},
+            {"group name", Ship::ArgumentType::TEXT, true},
     }});
 
     CMD_REGISTER("sfx", {SfxHandler, "Change SFX.", {
-            {"reset|randomize", ShipDK::ArgumentType::TEXT},
-            {"group_name", ShipDK::ArgumentType::TEXT, true},
+            {"reset|randomize", Ship::ArgumentType::TEXT},
+            {"group_name", Ship::ArgumentType::TEXT, true},
     }});
 
     CVarSave();

@@ -1,6 +1,6 @@
 #include <libultraship/libultraship.h>
 
-class RandomizerSettingsWindow : public ShipDK::GuiWindow {
+class RandomizerSettingsWindow : public Ship::GuiWindow {
   public:
     using GuiWindow::GuiWindow;
 

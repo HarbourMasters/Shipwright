@@ -5,7 +5,7 @@
 namespace SOH {
 class SetPathwaysFactory : public SceneCommandFactoryBinaryV0 {
   public:
-    std::shared_ptr<ShipDK::IResource>
-    ReadResource(std::shared_ptr<ShipDK::ResourceInitData> initData, std::shared_ptr<ShipDK::BinaryReader> reader) override;
+    std::shared_ptr<Ship::IResource>
+    ReadResource(std::shared_ptr<Ship::ResourceInitData> initData, std::shared_ptr<Ship::BinaryReader> reader) override;
 };
 } // namespace SOH

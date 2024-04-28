@@ -15,7 +15,7 @@ typedef enum {
     STICK_MODE_ALWAYS_HIDDEN,
 } StickMode;
 
-class InputViewer : public ShipDK::GuiWindow {
+class InputViewer : public Ship::GuiWindow {
 public:
     using GuiWindow::GuiWindow;
 
@@ -32,7 +32,7 @@ public:
         void RenderButton(std::string btn, std::string btnOutline, int state, ImVec2 size, int outlineMode);
 };
 
-class InputViewerSettingsWindow : public ShipDK::GuiWindow {
+class InputViewerSettingsWindow : public Ship::GuiWindow {
 public:
     using GuiWindow::GuiWindow;
 

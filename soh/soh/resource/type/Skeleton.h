@@ -50,11 +50,11 @@ union SkeletonData {
     SkelCurveLimbList skelCurveLimbList;
 };
 
-class Skeleton : public ShipDK::Resource<SkeletonData> {
+class Skeleton : public Ship::Resource<SkeletonData> {
   public:
     using Resource::Resource;
 
-    Skeleton() : Resource(std::shared_ptr<ShipDK::ResourceInitData>()) {}
+    Skeleton() : Resource(std::shared_ptr<Ship::ResourceInitData>()) {}
 
     SkeletonData* GetPointer();
     size_t GetPointerSize();

@@ -7,12 +7,12 @@
 #include "ResourceFactoryBinary.h"
 
 namespace SOH {
-class ResourceFactoryBinarySceneV0 : public ShipDK::ResourceFactoryBinary {
+class ResourceFactoryBinarySceneV0 : public Ship::ResourceFactoryBinary {
   public:
     ResourceFactoryBinarySceneV0();
 
-    std::shared_ptr<ShipDK::IResource> ReadResource(std::shared_ptr<ShipDK::File> file) override;
-    void ParseSceneCommands(std::shared_ptr<Scene> scene, std::shared_ptr<ShipDK::BinaryReader> reader);
+    std::shared_ptr<Ship::IResource> ReadResource(std::shared_ptr<Ship::File> file) override;
+    void ParseSceneCommands(std::shared_ptr<Scene> scene, std::shared_ptr<Ship::BinaryReader> reader);
 
     // Doing something very similar to what we do on the ResourceLoader.
     // Eventually, scene commands should be moved up to the ResourceLoader as well.
@@ -20,6 +20,6 @@ class ResourceFactoryBinarySceneV0 : public ShipDK::ResourceFactoryBinary {
     // and the exporter does not export the commands with a proper OTR header.
     static inline std::unordered_map<SceneCommandID, std::shared_ptr<SceneCommandFactoryBinaryV0>> sceneCommandFactories;
 protected:
-    std::shared_ptr<ISceneCommand> ParseSceneCommand(std::shared_ptr<Scene> scene, std::shared_ptr<ShipDK::BinaryReader> reader, uint32_t index);
+    std::shared_ptr<ISceneCommand> ParseSceneCommand(std::shared_ptr<Scene> scene, std::shared_ptr<Ship::BinaryReader> reader, uint32_t index);
 };
 } // namespace SOH

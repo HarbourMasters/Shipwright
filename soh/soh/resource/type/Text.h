@@ -16,11 +16,11 @@ public:
 	std::string msg;
 };
 
-class Text : public ShipDK::Resource<MessageEntry> {
+class Text : public Ship::Resource<MessageEntry> {
 public:
   using Resource::Resource;
 
-    Text() : Resource(std::shared_ptr<ShipDK::ResourceInitData>()) {}
+    Text() : Resource(std::shared_ptr<Ship::ResourceInitData>()) {}
 
     MessageEntry* GetPointer();
     size_t GetPointerSize();

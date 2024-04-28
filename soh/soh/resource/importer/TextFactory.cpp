@@ -3,13 +3,13 @@
 #include "spdlog/spdlog.h"
 
 namespace SOH {
-std::shared_ptr<ShipDK::IResource> ResourceFactoryBinaryTextV0::ReadResource(std::shared_ptr<ShipDK::File> file) {
+std::shared_ptr<Ship::IResource> ResourceFactoryBinaryTextV0::ReadResource(std::shared_ptr<Ship::File> file) {
     if (!FileHasValidFormatAndReader(file)) {
         return nullptr;
     }
 
     auto text = std::make_shared<Text>(file->InitData);
-    auto reader = std::get<std::shared_ptr<ShipDK::BinaryReader>>(file->Reader);
+    auto reader = std::get<std::shared_ptr<Ship::BinaryReader>>(file->Reader);
 
     uint32_t msgCount = reader->ReadUInt32();
     text->messages.reserve(msgCount);
@@ -27,7 +27,7 @@ std::shared_ptr<ShipDK::IResource> ResourceFactoryBinaryTextV0::ReadResource(std
     return text;
 }
 
-std::shared_ptr<ShipDK::IResource> ResourceFactoryXMLTextV0::ReadResource(std::shared_ptr<ShipDK::File> file) {
+std::shared_ptr<Ship::IResource> ResourceFactoryXMLTextV0::ReadResource(std::shared_ptr<Ship::File> file) {
     if (!FileHasValidFormatAndReader(file)) {
         return nullptr;
     }

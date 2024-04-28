@@ -65,7 +65,7 @@ std::map<int, std::string> cmdMap = {
 };
 
 void PerformDisplayListSearch() {
-    auto result = ShipDK::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->ListFiles("*" + std::string(searchString) + "*DL*");
+    auto result = Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->ListFiles("*" + std::string(searchString) + "*DL*");
 
     displayListSearchResults.clear();
 
@@ -127,7 +127,7 @@ void DLViewerWindow::DrawElement() {
     }
 
     try {
-        auto res = std::static_pointer_cast<LUS::DisplayList>(ShipDK::Context::GetInstance()->GetResourceManager()->LoadResource(activeDisplayList));
+        auto res = std::static_pointer_cast<LUS::DisplayList>(Ship::Context::GetInstance()->GetResourceManager()->LoadResource(activeDisplayList));
 
         if (res->GetInitData()->Type != static_cast<uint32_t>(LUS::ResourceType::DisplayList)) {
             ImGui::Text("Resource type is not a Display List. Please choose another.");

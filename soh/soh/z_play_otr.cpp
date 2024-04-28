@@ -13,9 +13,9 @@ void OTRPlay_InitScene(PlayState* play, s32 spawn);
 s32 OTRScene_ExecuteCommands(PlayState* play, SOH::Scene* scene);
 
 //LUS::OTRResource* OTRPlay_LoadFile(PlayState* play, RomFile* file) {
-ShipDK::IResource* OTRPlay_LoadFile(PlayState* play, const char* fileName)
+Ship::IResource* OTRPlay_LoadFile(PlayState* play, const char* fileName)
 {
-    auto res = ShipDK::Context::GetInstance()->GetResourceManager()->LoadResource(fileName);
+    auto res = Ship::Context::GetInstance()->GetResourceManager()->LoadResource(fileName);
     return res.get();
 }
 
@@ -81,7 +81,7 @@ void OTRPlay_InitScene(PlayState* play, s32 spawn) {
     if (IS_BOSS_RUSH && play->sceneNum != SCENE_CHAMBER_OF_THE_SAGES) {
         gSaveContext.isBossRushPaused = 0;
     }
-    /* auto data = static_cast<LUS::Vertex*>(ShipDK::Context::GetInstance()
+    /* auto data = static_cast<LUS::Vertex*>(Ship::Context::GetInstance()
                                                ->GetResourceManager()
                                                ->ResourceLoad("object_link_child\\object_link_childVtx_01FE08")
                                                .get());

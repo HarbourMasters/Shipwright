@@ -3,8 +3,8 @@
 #include "spdlog/spdlog.h"
 
 namespace SOH {
-std::shared_ptr<ShipDK::IResource> SetSpecialObjectsFactory::ReadResource(std::shared_ptr<ShipDK::ResourceInitData> initData,
-                                                                 std::shared_ptr<ShipDK::BinaryReader> reader) {
+std::shared_ptr<Ship::IResource> SetSpecialObjectsFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
+                                                                 std::shared_ptr<Ship::BinaryReader> reader) {
     auto setSpecialObjects = std::make_shared<SetSpecialObjects>(initData);
 
     ReadCommandId(setSpecialObjects, reader);

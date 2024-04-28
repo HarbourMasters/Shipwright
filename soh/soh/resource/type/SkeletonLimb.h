@@ -97,11 +97,11 @@ union SkeletonLimbData {
   SkinLimb skinLimb;
 };
 
-class SkeletonLimb : public ShipDK::Resource<SkeletonLimbData> {
+class SkeletonLimb : public Ship::Resource<SkeletonLimbData> {
 public:
   using Resource::Resource;
 
-    SkeletonLimb() : Resource(std::shared_ptr<ShipDK::ResourceInitData>()) {}
+    SkeletonLimb() : Resource(std::shared_ptr<Ship::ResourceInitData>()) {}
 
     SkeletonLimbData* GetPointer();
     size_t GetPointerSize();

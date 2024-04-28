@@ -2,7 +2,7 @@
 
 #include <libultraship/libultraship.h>
 
-class DLViewerWindow : public ShipDK::GuiWindow {
+class DLViewerWindow : public Ship::GuiWindow {
   public:
     using GuiWindow::GuiWindow;
 

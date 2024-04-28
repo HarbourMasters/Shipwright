@@ -4,8 +4,8 @@
 #include "libultraship/libultraship.h"
 
 namespace SOH {
-std::shared_ptr<ShipDK::IResource>
-SetMeshFactory::ReadResource(std::shared_ptr<ShipDK::ResourceInitData> initData, std::shared_ptr<ShipDK::BinaryReader> reader) {
+std::shared_ptr<Ship::IResource>
+SetMeshFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData, std::shared_ptr<Ship::BinaryReader> reader) {
     auto setMesh = std::make_shared<SetMesh>(initData);
 
     ReadCommandId(setMesh, reader);
@@ -40,8 +40,8 @@ SetMeshFactory::ReadResource(std::shared_ptr<ShipDK::ResourceInitData> initData,
             std::string meshOpa = reader->ReadString();
             std::string meshXlu = reader->ReadString();
 
-            auto opaRes = ShipDK::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(meshOpa.c_str());
-            auto xluRes = ShipDK::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(meshXlu.c_str());
+            auto opaRes = Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(meshOpa.c_str());
+            auto xluRes = Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(meshXlu.c_str());
             dlist.opa = meshOpa != "" ? (Gfx*)(opaRes ? opaRes->GetRawPointer() : nullptr) : 0;
             dlist.xlu = meshXlu != "" ? (Gfx*)(xluRes ? xluRes->GetRawPointer() : nullptr) : 0;
 
@@ -53,8 +53,8 @@ SetMeshFactory::ReadResource(std::shared_ptr<ShipDK::ResourceInitData> initData,
             std::string imgOpa = reader->ReadString();
             std::string imgXlu = reader->ReadString();
 
-            auto opaRes = ShipDK::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(imgOpa.c_str());
-            auto xluRes = ShipDK::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(imgXlu.c_str());
+            auto opaRes = Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(imgOpa.c_str());
+            auto xluRes = Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(imgXlu.c_str());
             pType.opa = imgOpa != "" ? (Gfx*)(opaRes ? opaRes->GetRawPointer() : nullptr) : 0;
             pType.xlu = imgXlu != "" ? (Gfx*)(xluRes ? xluRes->GetRawPointer() : nullptr) : 0;
 
@@ -101,8 +101,8 @@ SetMeshFactory::ReadResource(std::shared_ptr<ShipDK::ResourceInitData> initData,
             std::string meshOpa = reader->ReadString();
             std::string meshXlu = reader->ReadString();
 
-            opaRes = ShipDK::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(meshOpa.c_str());
-            xluRes = ShipDK::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(meshXlu.c_str());
+            opaRes = Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(meshOpa.c_str());
+            xluRes = Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(meshXlu.c_str());
             pType.opa = meshOpa != "" ? (Gfx*)(opaRes ? opaRes->GetRawPointer() : nullptr) : 0;
             pType.xlu = meshXlu != "" ? (Gfx*)(xluRes ? xluRes->GetRawPointer() : nullptr) : 0;
 
@@ -119,8 +119,8 @@ SetMeshFactory::ReadResource(std::shared_ptr<ShipDK::ResourceInitData> initData,
             std::string meshOpa = reader->ReadString();
             std::string meshXlu = reader->ReadString();
 
-            auto opaRes = meshOpa != "" ? ShipDK::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(meshOpa.c_str()) : nullptr;
-            auto xluRes = meshXlu != "" ? ShipDK::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(meshXlu.c_str()) : nullptr;
+            auto opaRes = meshOpa != "" ? Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(meshOpa.c_str()) : nullptr;
+            auto xluRes = meshXlu != "" ? Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(meshXlu.c_str()) : nullptr;
             dlist.opa = (Gfx*)(opaRes ? opaRes->GetRawPointer() : nullptr);
             dlist.xlu = (Gfx*)(xluRes ? xluRes->GetRawPointer() : nullptr);
 

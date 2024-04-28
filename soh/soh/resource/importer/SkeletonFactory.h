@@ -5,13 +5,13 @@
 #include "ResourceFactoryXML.h"
 
 namespace SOH {
-class ResourceFactoryBinarySkeletonV0 : public ShipDK::ResourceFactoryBinary {
+class ResourceFactoryBinarySkeletonV0 : public Ship::ResourceFactoryBinary {
   public:
-    std::shared_ptr<ShipDK::IResource> ReadResource(std::shared_ptr<ShipDK::File> file) override;
+    std::shared_ptr<Ship::IResource> ReadResource(std::shared_ptr<Ship::File> file) override;
 };
 
-class ResourceFactoryXMLSkeletonV0 : public ShipDK::ResourceFactoryXML {
+class ResourceFactoryXMLSkeletonV0 : public Ship::ResourceFactoryXML {
   public:
-    std::shared_ptr<ShipDK::IResource> ReadResource(std::shared_ptr<ShipDK::File> file) override;  
+    std::shared_ptr<Ship::IResource> ReadResource(std::shared_ptr<Ship::File> file) override;  
 };
 } // namespace SOH

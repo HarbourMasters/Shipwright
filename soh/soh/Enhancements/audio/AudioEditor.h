@@ -10,7 +10,7 @@
 #include <ImGui/imgui.h>
 #include "AudioCollection.h"
 
-class AudioEditor : public ShipDK::GuiWindow {
+class AudioEditor : public Ship::GuiWindow {
     public:
         using GuiWindow::GuiWindow;
 

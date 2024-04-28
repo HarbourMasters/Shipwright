@@ -4,8 +4,8 @@
 #include <libultraship/libultraship.h>
 
 namespace SOH {
-std::shared_ptr<ShipDK::IResource>
-SetPathwaysFactory::ReadResource(std::shared_ptr<ShipDK::ResourceInitData> initData, std::shared_ptr<ShipDK::BinaryReader> reader) {
+std::shared_ptr<Ship::IResource>
+SetPathwaysFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData, std::shared_ptr<Ship::BinaryReader> reader) {
     auto setPathways = std::make_shared<SetPathways>(initData);
 
     ReadCommandId(setPathways, reader);
@@ -14,7 +14,7 @@ SetPathwaysFactory::ReadResource(std::shared_ptr<ShipDK::ResourceInitData> initD
     setPathways->paths.reserve(setPathways->numPaths);
     for (uint32_t i = 0; i < setPathways->numPaths; i++) {
         std::string pathFileName = reader->ReadString();
-        auto path = std::static_pointer_cast<Path>(ShipDK::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(pathFileName.c_str()));
+        auto path = std::static_pointer_cast<Path>(Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(pathFileName.c_str()));
         setPathways->paths.push_back(path->GetPointer());
     }
 
