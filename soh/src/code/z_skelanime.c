@@ -78,6 +78,10 @@ void SkelAnime_DrawLod(PlayState* play, void** skeleton, Vec3s* jointTable,
     Vec3f pos;
     Vec3s rot;
 
+    if (CVarGetInteger("gDisableLOD", 0)) {
+        lod = 0;
+    }
+
     if (skeleton == NULL) {
         osSyncPrintf(VT_FGCOL(RED));
         osSyncPrintf("Si2_Lod_draw():skelがNULLです。\n"); // "skel is NULL."
@@ -190,6 +194,10 @@ void SkelAnime_DrawFlexLod(PlayState* play, void** skeleton, Vec3s* jointTable, 
     Vec3f pos;
     Vec3s rot;
     Mtx* mtx = Graph_Alloc(play->state.gfxCtx, dListCount * sizeof(Mtx));
+
+    if (CVarGetInteger("gDisableLOD", 0)) {
+        lod = 0;
+    }
 
     if (skeleton == NULL) {
         osSyncPrintf(VT_FGCOL(RED));

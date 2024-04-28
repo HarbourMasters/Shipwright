@@ -251,6 +251,7 @@ namespace Areas {
 void  AreaTable_Init();
 Area* AreaTable(const RandomizerRegion areaKey);
 std::vector<Rando::Entrance*> GetShuffleableEntrances(Rando::EntranceType type, bool onlyPrimary = true);
+Rando::Entrance* GetEntrance(const std::string name);
 
 // Overworld
 void AreaTable_Init_LostWoods();

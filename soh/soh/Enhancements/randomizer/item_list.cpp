@@ -8,6 +8,7 @@
 using namespace Rando;
 
 std::array<Item, RG_MAX> Rando::StaticData::itemTable;
+std::unordered_map<std::string, RandomizerGet> Rando::StaticData::SpoilerfileItemNameToEnum;
 
 void Rando::StaticData::InitItemTable() {
     auto logic = Context::GetInstance()->GetLogic();
@@ -107,15 +108,25 @@ void Rando::StaticData::InitItemTable() {
     itemTable[RG_BOTTOM_OF_THE_WELL_MAP] =              Item(RG_BOTTOM_OF_THE_WELL_MAP,           Text{ "Bottom of the Well Map", "Carte du Puits", "Boden des Brunnens Karte" },                                   ITEMTYPE_MAP,               0xAD,               false, &logic->noVariable,          RHT_BOTTOM_OF_THE_WELL_MAP, RG_BOTTOM_OF_THE_WELL_MAP,      OBJECT_GI_MAP,          GID_DUNGEON_MAP,    TEXT_ITEM_DUNGEON_MAP,       0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
     itemTable[RG_ICE_CAVERN_MAP] =                      Item(RG_ICE_CAVERN_MAP,                   Text{ "Ice Cavern Map", "Carte de la Caverne Polaire", "Eishöhle Karte" },                                        ITEMTYPE_MAP,               0xAE,               false, &logic->noVariable,          RHT_ICE_CAVERN_MAP,         RG_ICE_CAVERN_MAP,              OBJECT_GI_MAP,          GID_DUNGEON_MAP,    TEXT_ITEM_DUNGEON_MAP,       0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
     itemTable[RG_DEKU_TREE_COMPASS] =                   Item(RG_DEKU_TREE_COMPASS,                Text{ "Great Deku Tree Compass", "Boussole de l'Arbre Mojo", "Kompass des Deku-Baums" },                          ITEMTYPE_COMPASS,           0x9B,               false, &logic->noVariable,          RHT_DEKU_TREE_COMPASS,      RG_DEKU_TREE_COMPASS,           OBJECT_GI_COMPASS,      GID_COMPASS,        TEXT_ITEM_DUNGEON_MAP,       0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
+    itemTable[RG_DEKU_TREE_COMPASS].SetCustomDrawFunc(Randomizer_DrawCompass);
     itemTable[RG_DODONGOS_CAVERN_COMPASS] =             Item(RG_DODONGOS_CAVERN_COMPASS,          Text{ "Dodongo's Cavern Compass", "Boussole de la Caverne Dodongo", "Kompass der Dodongo-Höhle" },                ITEMTYPE_COMPASS,           0x9C,               false, &logic->noVariable,          RHT_DODONGOS_CAVERN_COMPASS,RG_DODONGOS_CAVERN_COMPASS,     OBJECT_GI_COMPASS,      GID_COMPASS,        TEXT_ITEM_COMPASS,           0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
+    itemTable[RG_DODONGOS_CAVERN_COMPASS].SetCustomDrawFunc(Randomizer_DrawCompass);
     itemTable[RG_JABU_JABUS_BELLY_COMPASS] =            Item(RG_JABU_JABUS_BELLY_COMPASS,         Text{ "Jabu-Jabu's Belly Compass", "Boussole du Ventre de Jabu-Jabu", "Kompass des Jabu-Jabu-Bauchs" },           ITEMTYPE_COMPASS,           0x9D,               false, &logic->noVariable,          RHT_JABU_JABUS_BELLY_COMPASS,RG_JABU_JABUS_BELLY_COMPASS,   OBJECT_GI_COMPASS,      GID_COMPASS,        TEXT_ITEM_COMPASS,           0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
+    itemTable[RG_JABU_JABUS_BELLY_COMPASS].SetCustomDrawFunc(Randomizer_DrawCompass);
     itemTable[RG_FOREST_TEMPLE_COMPASS] =               Item(RG_FOREST_TEMPLE_COMPASS,            Text{ "Forest Temple Compass", "Boussole du Temple de la Forêt", "Waldtempel-Kompass" },                          ITEMTYPE_COMPASS,           0x9E,               false, &logic->noVariable,          RHT_FOREST_TEMPLE_COMPASS,  RG_FOREST_TEMPLE_COMPASS,       OBJECT_GI_COMPASS,      GID_COMPASS,        TEXT_ITEM_COMPASS,           0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
+    itemTable[RG_FOREST_TEMPLE_COMPASS].SetCustomDrawFunc(Randomizer_DrawCompass);
     itemTable[RG_FIRE_TEMPLE_COMPASS] =                 Item(RG_FIRE_TEMPLE_COMPASS,              Text{ "Fire Temple Compass", "Boussole du Temple du Feu", "Feuertempel-Kompass" },                                ITEMTYPE_COMPASS,           0x9F,               false, &logic->noVariable,          RHT_FIRE_TEMPLE_COMPASS,    RG_FIRE_TEMPLE_COMPASS,         OBJECT_GI_COMPASS,      GID_COMPASS,        TEXT_ITEM_COMPASS,           0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
+    itemTable[RG_FIRE_TEMPLE_COMPASS].SetCustomDrawFunc(Randomizer_DrawCompass);
     itemTable[RG_WATER_TEMPLE_COMPASS] =                Item(RG_WATER_TEMPLE_COMPASS,             Text{ "Water Temple Compass", "Boussole du Temple de l'Eau", "Wassertempel-Kompass" },                            ITEMTYPE_COMPASS,           0xA0,               false, &logic->noVariable,          RHT_WATER_TEMPLE_COMPASS,   RG_WATER_TEMPLE_COMPASS,        OBJECT_GI_COMPASS,      GID_COMPASS,        TEXT_ITEM_COMPASS,           0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
+    itemTable[RG_WATER_TEMPLE_COMPASS].SetCustomDrawFunc(Randomizer_DrawCompass);
     itemTable[RG_SPIRIT_TEMPLE_COMPASS] =               Item(RG_SPIRIT_TEMPLE_COMPASS,            Text{ "Spirit Temple Compass", "Boussole due Temple de l'Esprit", "Geistiger Tempelkompass" },                    ITEMTYPE_COMPASS,           0xA1,               false, &logic->noVariable,          RHT_SPIRIT_TEMPLE_COMPASS,  RG_SPIRIT_TEMPLE_COMPASS,       OBJECT_GI_COMPASS,      GID_COMPASS,        TEXT_ITEM_COMPASS,           0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
+    itemTable[RG_SPIRIT_TEMPLE_COMPASS].SetCustomDrawFunc(Randomizer_DrawCompass);
     itemTable[RG_SHADOW_TEMPLE_COMPASS] =               Item(RG_SHADOW_TEMPLE_COMPASS,            Text{ "Shadow Temple Compass", "Boussole du Temple de l'Ombre", "Kompass des Schattentempels" },                  ITEMTYPE_COMPASS,           0xA2,               false, &logic->noVariable,          RHT_SHADOW_TEMPLE_COMPASS,  RG_SHADOW_TEMPLE_COMPASS,       OBJECT_GI_COMPASS,      GID_COMPASS,        TEXT_ITEM_COMPASS,           0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
+    itemTable[RG_SHADOW_TEMPLE_COMPASS].SetCustomDrawFunc(Randomizer_DrawCompass);
     itemTable[RG_BOTTOM_OF_THE_WELL_COMPASS] =          Item(RG_BOTTOM_OF_THE_WELL_COMPASS,       Text{ "Bottom of the Well Compass", "Boussole du Puits", "Boden des Brunnenkompasses" },                          ITEMTYPE_COMPASS,           0xA3,               false, &logic->noVariable,          RHT_BOTTOM_OF_THE_WELL_COMPASS,RG_BOTTOM_OF_THE_WELL_COMPASS,OBJECT_GI_COMPASS,     GID_COMPASS,        TEXT_ITEM_COMPASS,           0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
+    itemTable[RG_BOTTOM_OF_THE_WELL_COMPASS].SetCustomDrawFunc(Randomizer_DrawCompass);
     itemTable[RG_ICE_CAVERN_COMPASS] =                  Item(RG_ICE_CAVERN_COMPASS,               Text{ "Ice Cavern Compass", "Boussole de la Caverne Polaire", "Eishöhlenkompass" },                               ITEMTYPE_COMPASS,           0xA4,               false, &logic->noVariable,          RHT_ICE_CAVERN_COMPASS,     RG_ICE_CAVERN_COMPASS,          OBJECT_GI_COMPASS,      GID_COMPASS,        TEXT_ITEM_COMPASS,           0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
+    itemTable[RG_ICE_CAVERN_COMPASS].SetCustomDrawFunc(Randomizer_DrawCompass);
     // Boss Keys
     itemTable[RG_FOREST_TEMPLE_BOSS_KEY] =              Item(RG_FOREST_TEMPLE_BOSS_KEY,           Text{ "Forest Temple Boss Key", "Clé d'Or du Temple de la Forêt", "Waldtempel-Boss-Schlüssel" },                  ITEMTYPE_BOSSKEY,           0x95,               true,  &logic->BossKeyForestTemple, RHT_FOREST_TEMPLE_BOSS_KEY, RG_FOREST_TEMPLE_BOSS_KEY,      OBJECT_GI_BOSSKEY,      GID_KEY_BOSS,       TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_BOSS_KEY,MOD_RANDOMIZER);
     itemTable[RG_FOREST_TEMPLE_BOSS_KEY].SetCustomDrawFunc(Randomizer_DrawBossKey);
@@ -309,6 +320,17 @@ void Rando::StaticData::InitItemTable() {
     itemTable[RG_MAGIC_SINGLE] =                        Item(RG_MAGIC_SINGLE,                     Text{ "Magic Meter", "Jauge de Magie", "Magisches Messgerät" },                                                   ITEMTYPE_ITEM,              0x8A,               true,  &logic->ProgressiveMagic,    RHT_MAGIC_SINGLE,           RG_MAGIC_SINGLE,                OBJECT_GI_MAGICPOT,     GID_MAGIC_SMALL,    0xE4,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,  MOD_RANDOMIZER);
     itemTable[RG_MAGIC_DOUBLE] =                        Item(RG_MAGIC_DOUBLE,                     Text{ "Enhanced Magic Meter", "Jauge de Magie améliorée", "Verbesserte Magieanzeige" },                           ITEMTYPE_ITEM,              0x8A,               true,  &logic->ProgressiveMagic,    RHT_MAGIC_DOUBLE,           RG_MAGIC_DOUBLE,                OBJECT_GI_MAGICPOT,     GID_MAGIC_LARGE,    0xE8,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
     itemTable[RG_TRIFORCE_PIECE] =                      Item(RG_TRIFORCE_PIECE,                   Text{ "Triforce Piece", "Triforce Piece", "Triforce Piece" },                                                     ITEMTYPE_ITEM,              0xDF,               true,  &logic->TriforcePieces,      RHT_TRIFORCE_PIECE,         RG_TRIFORCE_PIECE,              OBJECT_GI_BOMB_2,       GID_TRIFORCE_PIECE, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,  MOD_RANDOMIZER);
+
+    // Init SpoilerfileItemNameToEnum
+    for (auto& item : itemTable) {
+        // Easiest way to filter out all the empty values from the array, since we still technically want the 0/RG_NONE
+        // entry
+        if (item.GetName().english.empty()) {
+            continue;
+        }
+        SpoilerfileItemNameToEnum[item.GetName().english] = item.GetRandomizerGet();
+        SpoilerfileItemNameToEnum[item.GetName().french] = item.GetRandomizerGet();
+    }
 }
 
 Item& Rando::StaticData::RetrieveItem(const RandomizerGet rgid) {

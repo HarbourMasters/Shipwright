@@ -47,6 +47,10 @@ const std::string& Hint::GetDistribution() {
 
 void Hint::ResetVariables() {
     hintedLocation = RC_UNKNOWN_CHECK;
+    text = Text{};
+    distribution = "";
+    hintedArea = RA_NONE;
+    hintType = HINT_TYPE_STATIC;
     addedToPool = false;
 }
 }

@@ -3,7 +3,7 @@
 #include "soh/OTRGlobals.h"
 #include "libultraship/libultraship.h"
 
-namespace LUS {
+namespace SOH {
 SkeletonData* Skeleton::GetPointer() {
     return &skeletonData;
 }
@@ -79,4 +79,4 @@ void SkeletonPatcher::UpdateSkeletons() {
         }
     }
 }
-} // namespace LUS
+} // namespace SOH

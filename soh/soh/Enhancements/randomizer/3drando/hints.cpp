@@ -287,7 +287,7 @@ Text AutoFormatHintText(const Text& unformattedHintText, const std::vector<std::
         strings[i] = textStr;
     }
 
-    return {strings[0], strings[1], ""/*spanish*/, strings[2]};
+    return {strings[0], strings[2], ""/*spanish*/, strings[1]};
 }
 
 std::array<DungeonHintInfo, 10> dungeonInfoData;
@@ -615,6 +615,7 @@ void CreateGanonAndSheikText() {
     }
 
     ctx->AddHint(RH_GANONDORF_HINT, AutoFormatHintText(ganonHintText), lightArrowLocation[0], HINT_TYPE_STATIC, "Static", lightArrowArea);
+    ctx->AddHint(RH_GANONDORF_NOHINT, AutoFormatHintText(ganonText), lightArrowLocation[0], HINT_TYPE_STATIC, "Static", lightArrowArea);
 
     if (!ctx->GetOption(RSK_TRIAL_COUNT).Is(0)) {
       sheikText = ::Hint(RHT_SHEIK_LIGHT_ARROW_HINT).GetText() + LightArrowAreaText + "%w.";
@@ -963,6 +964,11 @@ static void DistributeHints(std::vector<uint8_t>& selected, size_t stoneCount, s
     for (uint8_t distribution = 0; distribution < distTable.size(); distribution++){
       currentWeight -= distTable[distribution].weight;
       if (currentWeight <= 0){
+        if (distTable[distribution].copies == 0) {
+          // This should only happen if we ran out of locations to place hints of a certain distribution earlier. Skip
+          // to the next distribution.
+          break;
+        }
         if (stoneCount >= distTable[distribution].copies){
           selected[distribution] += 1;
           stoneCount -= distTable[distribution].copies;
@@ -1074,8 +1080,9 @@ void CreateStoneHints() {
 
   while(totalStones != 0){
     totalStones = PlaceHints(selectedHints, distTable);
-    if (totalStones != 0){
+    while (totalStones != 0){
       DistributeHints(selectedHints, totalStones, distTable, hintSetting.junkWeight, false);
+      totalStones = PlaceHints(selectedHints, distTable);
     }
   }
 
@@ -1114,8 +1121,8 @@ void CreateAllHints(){
     CreateFrogsHint();
   }
   if (ctx->GetOption(RSK_GOSSIP_STONE_HINTS).IsNot(RO_GOSSIP_STONES_NONE)) {
-    printf("\x1b[10;10HCreating Hints...");
+    SPDLOG_INFO("Creating Hints...");
     CreateStoneHints();
-    printf("Done");
+    SPDLOG_INFO("Creating Hints Done");
   }
 }
