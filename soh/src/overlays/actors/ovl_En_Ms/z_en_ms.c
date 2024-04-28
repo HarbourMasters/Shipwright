@@ -191,17 +191,7 @@ void EnMs_Sell(EnMs* this, PlayState* play) {
         this->actor.parent = NULL;
         this->actionFunc = EnMs_TalkAfterPurchase;
     } else {
-        func_8002F434(&this->actor, play, GI_BEAN, 90.0f, 10.0f);
-    }
-}
-
-void EnMs_Sell(EnMs* this, PlayState* play) {
-    if (Actor_HasParent(&this->actor, play)) {
-        Rupees_ChangeBy(-sPrices[BEANS_BOUGHT]);
-        this->actor.parent = NULL;
-        this->actionFunc = EnMs_TalkAfterPurchase;
-    } else {
-        func_8002F434(&this->actor, play, GI_BEAN, 90.0f, 10.0f);
+        Actor_OfferGetItem(&this->actor, play, GI_BEAN, 90.0f, 10.0f);
     }
 }
 

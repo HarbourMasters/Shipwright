@@ -177,7 +177,8 @@ void AreaTable_Init_JabuJabusBelly() {
                   //Locations
                   LocationAccess(RC_JABU_JABUS_BELLY_MQ_SECOND_ROOM_LOWER_CHEST,      {[]{return true;}}),
                   LocationAccess(RC_JABU_JABUS_BELLY_MQ_SECOND_ROOM_UPPER_CHEST,      {[]{return (logic->IsAdult && (logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_HOOKSHOT))) || ChildCanAccess(RR_JABU_JABUS_BELLY_MQ_BOSS_AREA);}}),
-                  LocationAccess(RC_JABU_JABUS_BELLY_MQ_COMPASS_CHEST,                {[]{return (logic->IsChild || logic->CanDive || logic->CanUse(RG_IRON_BOOTS) || randoCtx->GetTrickOption(RT_JABU_ALCOVE_JUMP_DIVE)) && (logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT) || logic->HasBombchus || (randoCtx->GetTrickOption(RT_JABU_MQ_RANG_JUMP) && logic->CanUse(RG_BOOMERANG)));}}),
+                  LocationAccess(RC_JABU_JABUS_BELLY_MQ_COMPASS_CHEST,                {[]{return (logic->IsChild || logic->CanDive || logic->CanUse(RG_IRON_BOOTS) ||
+                                                                                                  randoCtx->GetTrickOption(RT_JABU_ALCOVE_JUMP_DIVE)) && (logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT) || logic->Bombchus || (randoCtx->GetTrickOption(RT_JABU_MQ_RANG_JUMP) && logic->CanUse(RG_BOOMERANG)));}}),
                   LocationAccess(RC_JABU_JABUS_BELLY_MQ_BASEMENT_NEAR_VINES_CHEST,    {[]{return logic->CanUse(RG_FAIRY_SLINGSHOT);}}),
                   LocationAccess(RC_JABU_JABUS_BELLY_MQ_BASEMENT_NEAR_SWITCHES_CHEST, {[]{return logic->CanUse(RG_FAIRY_SLINGSHOT);}}),
                   LocationAccess(RC_JABU_JABUS_BELLY_MQ_BOOMERANG_ROOM_SMALL_CHEST,   {[]{return true;}}),
