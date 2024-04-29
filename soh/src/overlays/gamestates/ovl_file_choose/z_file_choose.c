@@ -1025,7 +1025,7 @@ void FileChoose_UpdateRandomizer() {
             return;
     }
 
-    if (!SpoilerFileExists(CVarGetString("gSpoilerLog", "")) && !CVarGetInteger(CVAR_RANDOMIZER_SETTING("DontGenerateSpoiler"), 0)) {
+    if (!SpoilerFileExists(CVarGetString("gSpoilerLog", "")) && !CVarGetInteger(CVAR_RANDOMIZER_SETTING_DONT_GENERATE_SPOILER, 0)) {
             CVarSetString("gSpoilerLog", "");
             fileSelectSpoilerFileLoaded = false;
     }
@@ -1053,7 +1053,7 @@ void FileChoose_UpdateRandomizer() {
             Randomizer_LoadEntranceOverrides(fileLoc, silent);
             fileSelectSpoilerFileLoaded = true;
 
-            if (SpoilerFileExists(CVarGetString("gSpoilerLog", "")) && CVarGetInteger(CVAR_RANDOMIZER_SETTING("DontGenerateSpoiler"), 0)) {
+            if (SpoilerFileExists(CVarGetString("gSpoilerLog", "")) && CVarGetInteger(CVAR_RANDOMIZER_SETTING_DONT_GENERATE_SPOILER, 0)) {
                 remove(fileLoc);
             }
     }

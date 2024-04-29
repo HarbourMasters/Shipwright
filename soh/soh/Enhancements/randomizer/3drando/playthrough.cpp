@@ -42,7 +42,7 @@ int Playthrough_Init(uint32_t seed, std::unordered_map<RandomizerSettingKey, uin
         }
     }
 
-    if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("DontGenerateSpoiler"), 0)) {
+    if (CVarGetInteger(CVAR_RANDOMIZER_SETTING_DONT_GENERATE_SPOILER, 0)) {
         settingsStr += (char*)gBuildVersion;
     }
 
