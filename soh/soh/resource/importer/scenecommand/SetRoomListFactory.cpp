@@ -4,8 +4,8 @@
 #include "spdlog/spdlog.h"
 
 namespace SOH {
-std::shared_ptr<LUS::IResource>
-SetRoomListFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<LUS::BinaryReader> reader) {
+std::shared_ptr<Ship::IResource>
+SetRoomListFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData, std::shared_ptr<Ship::BinaryReader> reader) {
     auto setRoomList = std::make_shared<SetRoomList>(initData);
 
     ReadCommandId(setRoomList, reader);
@@ -31,7 +31,7 @@ SetRoomListFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData
     return setRoomList;
 }
 
-std::shared_ptr<LUS::IResource> SetRoomListFactoryXML::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData,
+std::shared_ptr<Ship::IResource> SetRoomListFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
                                                                    tinyxml2::XMLElement* reader) {
     auto setRoomList = std::make_shared<SetRoomList>(initData);
 

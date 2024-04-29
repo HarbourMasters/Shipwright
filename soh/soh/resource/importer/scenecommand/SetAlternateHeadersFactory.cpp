@@ -5,8 +5,8 @@
 #include "libultraship/libultraship.h"
 
 namespace SOH {
-std::shared_ptr<LUS::IResource> SetAlternateHeadersFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData,
-                                                                   std::shared_ptr<LUS::BinaryReader> reader) {
+std::shared_ptr<Ship::IResource> SetAlternateHeadersFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
+                                                                   std::shared_ptr<Ship::BinaryReader> reader) {
     auto setAlternateHeaders = std::make_shared<SetAlternateHeaders>(initData);
 
     ReadCommandId(setAlternateHeaders, reader);
@@ -16,7 +16,7 @@ std::shared_ptr<LUS::IResource> SetAlternateHeadersFactory::ReadResource(std::sh
     for (uint32_t i = 0; i < setAlternateHeaders->numHeaders; i++) {
         auto headerName = reader->ReadString();
         if (!headerName.empty()) {
-            setAlternateHeaders->headers.push_back(std::static_pointer_cast<Scene>(LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(headerName.c_str())));
+            setAlternateHeaders->headers.push_back(std::static_pointer_cast<Scene>(Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(headerName.c_str())));
         } else {
             setAlternateHeaders->headers.push_back(nullptr);
         }
@@ -29,7 +29,7 @@ std::shared_ptr<LUS::IResource> SetAlternateHeadersFactory::ReadResource(std::sh
     return setAlternateHeaders;
 }
 
-std::shared_ptr<LUS::IResource> SetAlternateHeadersFactoryXML::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData,
+std::shared_ptr<Ship::IResource> SetAlternateHeadersFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
                                                                    tinyxml2::XMLElement* reader) {
     auto setAlternateHeaders = std::make_shared<SetAlternateHeaders>(initData);
 
@@ -43,7 +43,7 @@ std::shared_ptr<LUS::IResource> SetAlternateHeadersFactoryXML::ReadResource(std:
             for (uint32_t i = 0; i < setAlternateHeaders->numHeaders; i++) {
 	            auto headerName = std::string(child->Attribute("HeaderName"));
 	            if (!headerName.empty()) {
-	            	setAlternateHeaders->headers.push_back(std::static_pointer_cast<Scene>(LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(headerName.c_str())));
+	            	setAlternateHeaders->headers.push_back(std::static_pointer_cast<Scene>(Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(headerName.c_str())));
 	            } else {
 	            	setAlternateHeaders->headers.push_back(nullptr);
 	            }

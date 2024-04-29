@@ -4,8 +4,8 @@
 #include "spdlog/spdlog.h"
 
 namespace SOH {
-std::shared_ptr<LUS::IResource>
-SetExitListFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<LUS::BinaryReader> reader) {
+std::shared_ptr<Ship::IResource>
+SetExitListFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData, std::shared_ptr<Ship::BinaryReader> reader) {
     auto setExitList = std::make_shared<SetExitList>( initData);
 
     ReadCommandId(setExitList, reader);
@@ -23,7 +23,7 @@ SetExitListFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData
     return setExitList;
 }
 
-std::shared_ptr<LUS::IResource> SetExitListFactoryXML::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData,
+std::shared_ptr<Ship::IResource> SetExitListFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
                                                                    tinyxml2::XMLElement* reader) {
     auto setExitList = std::make_shared<SetExitList>(initData);
 

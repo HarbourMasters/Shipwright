@@ -4,8 +4,8 @@
 #include "spdlog/spdlog.h"
 
 namespace SOH {
-std::shared_ptr<LUS::IResource>
-SetEchoSettingsFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<LUS::BinaryReader> reader) {
+std::shared_ptr<Ship::IResource>
+SetEchoSettingsFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData, std::shared_ptr<Ship::BinaryReader> reader) {
     auto setEchoSettings = std::make_shared<SetEchoSettings>(initData);
 
     ReadCommandId(setEchoSettings, reader);
@@ -19,7 +19,7 @@ SetEchoSettingsFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> init
     return setEchoSettings;
 }
 
-std::shared_ptr<LUS::IResource> SetEchoSettingsFactoryXML::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData,
+std::shared_ptr<Ship::IResource> SetEchoSettingsFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
                                                                    tinyxml2::XMLElement* reader) {
     auto setEchoSettings = std::make_shared<SetEchoSettings>(initData);
 

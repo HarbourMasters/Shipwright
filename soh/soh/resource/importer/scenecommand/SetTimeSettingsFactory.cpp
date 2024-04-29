@@ -4,8 +4,8 @@
 #include "spdlog/spdlog.h"
 
 namespace SOH {
-std::shared_ptr<LUS::IResource>
-SetTimeSettingsFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<LUS::BinaryReader> reader) {
+std::shared_ptr<Ship::IResource>
+SetTimeSettingsFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData, std::shared_ptr<Ship::BinaryReader> reader) {
     auto setTimeSettings = std::make_shared<SetTimeSettings>(initData);
 
     ReadCommandId(setTimeSettings, reader);
@@ -21,7 +21,7 @@ SetTimeSettingsFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> init
     return setTimeSettings;
 }
 
-std::shared_ptr<LUS::IResource> SetTimeSettingsFactoryXML::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData,
+std::shared_ptr<Ship::IResource> SetTimeSettingsFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
                                                                    tinyxml2::XMLElement* reader) {
     auto setTimeSettings = std::make_shared<SetTimeSettings>(initData);
 

@@ -4,8 +4,8 @@
 #include "spdlog/spdlog.h"
 
 namespace SOH {
-std::shared_ptr<LUS::IResource> SetSkyboxModifierFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData,
-                                                                 std::shared_ptr<LUS::BinaryReader> reader) {
+std::shared_ptr<Ship::IResource> SetSkyboxModifierFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
+                                                                 std::shared_ptr<Ship::BinaryReader> reader) {
     auto setSkyboxModifier = std::make_shared<SetSkyboxModifier>(initData);
 
 	ReadCommandId(setSkyboxModifier, reader);
@@ -20,7 +20,7 @@ std::shared_ptr<LUS::IResource> SetSkyboxModifierFactory::ReadResource(std::shar
     return setSkyboxModifier;
 }
 
-std::shared_ptr<LUS::IResource> SetSkyboxModifierFactoryXML::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData,
+std::shared_ptr<Ship::IResource> SetSkyboxModifierFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
                                                                    tinyxml2::XMLElement* reader) {
     auto setSkyboxModifier = std::make_shared<SetSkyboxModifier>(initData);
 

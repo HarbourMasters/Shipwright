@@ -4,8 +4,8 @@
 #include "spdlog/spdlog.h"
 
 namespace SOH {
-std::shared_ptr<LUS::IResource> SetStartPositionListFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData,
-                                                                    std::shared_ptr<LUS::BinaryReader> reader) {
+std::shared_ptr<Ship::IResource> SetStartPositionListFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
+                                                                    std::shared_ptr<Ship::BinaryReader> reader) {
     auto setStartPositionList = std::make_shared<SetStartPositionList>(initData);
 
     ReadCommandId(setStartPositionList, reader);
@@ -34,7 +34,7 @@ std::shared_ptr<LUS::IResource> SetStartPositionListFactory::ReadResource(std::s
     return setStartPositionList;
 }
 
-std::shared_ptr<LUS::IResource> SetStartPositionListFactoryXML::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData,
+std::shared_ptr<Ship::IResource> SetStartPositionListFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
                                                                    tinyxml2::XMLElement* reader) {
     auto setStartPositionList = std::make_shared<SetStartPositionList>(initData);
 

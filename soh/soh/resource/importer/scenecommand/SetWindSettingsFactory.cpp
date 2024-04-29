@@ -4,8 +4,8 @@
 #include "spdlog/spdlog.h"
 
 namespace SOH {
-std::shared_ptr<LUS::IResource>
-SetWindSettingsFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<LUS::BinaryReader> reader) {
+std::shared_ptr<Ship::IResource>
+SetWindSettingsFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData, std::shared_ptr<Ship::BinaryReader> reader) {
     auto setWind = std::make_shared<SetWindSettings>(initData);
 
     ReadCommandId(setWind, reader);
@@ -22,7 +22,7 @@ SetWindSettingsFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> init
     return setWind;
 }
 
-std::shared_ptr<LUS::IResource> SetWindSettingsFactoryXML::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData,
+std::shared_ptr<Ship::IResource> SetWindSettingsFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
                                                                    tinyxml2::XMLElement* reader) {
     auto setWind = std::make_shared<SetWindSettings>(initData);
 

@@ -27,7 +27,7 @@
 
 namespace SOH {
 
-void LogEndMarkerAsXML(std::shared_ptr<LUS::IResource> resource) {
+void LogEndMarkerAsXML(std::shared_ptr<Ship::IResource> resource) {
     std::shared_ptr<EndMarker> endMarker = std::static_pointer_cast<EndMarker>(resource);
 
     tinyxml2::XMLDocument doc;
@@ -40,7 +40,7 @@ void LogEndMarkerAsXML(std::shared_ptr<LUS::IResource> resource) {
     SPDLOG_INFO("{}: {}", resource->GetInitData()->Path, printer.CStr());
 }
 
-void LogActorListAsXML(std::shared_ptr<LUS::IResource> resource) {
+void LogActorListAsXML(std::shared_ptr<Ship::IResource> resource) {
     std::shared_ptr<SetActorList> setActorList = std::static_pointer_cast<SetActorList>(resource);
 
     tinyxml2::XMLDocument doc;
@@ -66,7 +66,7 @@ void LogActorListAsXML(std::shared_ptr<LUS::IResource> resource) {
     SPDLOG_INFO("{}: {}", resource->GetInitData()->Path, printer.CStr());
 }
 
-void LogAlternateHeadersAsXML(std::shared_ptr<LUS::IResource> resource) {
+void LogAlternateHeadersAsXML(std::shared_ptr<Ship::IResource> resource) {
     std::shared_ptr<SetAlternateHeaders> setAlternateHeaders = std::static_pointer_cast<SetAlternateHeaders>(resource);
 
     tinyxml2::XMLDocument doc;
@@ -79,7 +79,7 @@ void LogAlternateHeadersAsXML(std::shared_ptr<LUS::IResource> resource) {
     SPDLOG_INFO("{}: {}", resource->GetInitData()->Path, printer.CStr());
 }
 
-void LogCameraSettingsAsXML(std::shared_ptr<LUS::IResource> resource) {
+void LogCameraSettingsAsXML(std::shared_ptr<Ship::IResource> resource) {
     std::shared_ptr<SetCameraSettings> setCameraSettings = std::static_pointer_cast<SetCameraSettings>(resource);
 
     tinyxml2::XMLDocument doc;
@@ -95,7 +95,7 @@ void LogCameraSettingsAsXML(std::shared_ptr<LUS::IResource> resource) {
     SPDLOG_INFO("{}: {}", resource->GetInitData()->Path, printer.CStr());
 }
 
-void LogSetCollisionHeaderAsXML(std::shared_ptr<LUS::IResource> resource) {
+void LogSetCollisionHeaderAsXML(std::shared_ptr<Ship::IResource> resource) {
     std::shared_ptr<SetCollisionHeader> setCollisionHeader = std::static_pointer_cast<SetCollisionHeader>(resource);
 
     tinyxml2::XMLDocument doc;
@@ -110,7 +110,7 @@ void LogSetCollisionHeaderAsXML(std::shared_ptr<LUS::IResource> resource) {
     SPDLOG_INFO("{}: {}", resource->GetInitData()->Path, printer.CStr());
 }
 
-void LogCsCameraAsXML(std::shared_ptr<LUS::IResource> resource) {
+void LogCsCameraAsXML(std::shared_ptr<Ship::IResource> resource) {
     std::shared_ptr<SetCsCamera> setCsCamera = std::static_pointer_cast<SetCsCamera>(resource);
 
     tinyxml2::XMLDocument doc;
@@ -123,7 +123,7 @@ void LogCsCameraAsXML(std::shared_ptr<LUS::IResource> resource) {
     SPDLOG_INFO("{}: {}", resource->GetInitData()->Path, printer.CStr());
 }
 
-void LogCutscenesAsXML(std::shared_ptr<LUS::IResource> resource) {
+void LogCutscenesAsXML(std::shared_ptr<Ship::IResource> resource) {
     std::shared_ptr<SetCutscenes> setCutscenes = std::static_pointer_cast<SetCutscenes>(resource);
 
     tinyxml2::XMLDocument doc;
@@ -138,7 +138,7 @@ void LogCutscenesAsXML(std::shared_ptr<LUS::IResource> resource) {
     SPDLOG_INFO("{}: {}", resource->GetInitData()->Path, printer.CStr());
 }
 
-void LogEchoSettingsAsXML(std::shared_ptr<LUS::IResource> resource) {
+void LogEchoSettingsAsXML(std::shared_ptr<Ship::IResource> resource) {
     std::shared_ptr<SetEchoSettings> setEchoSettings = std::static_pointer_cast<SetEchoSettings>(resource);
 
     tinyxml2::XMLDocument doc;
@@ -153,7 +153,7 @@ void LogEchoSettingsAsXML(std::shared_ptr<LUS::IResource> resource) {
     SPDLOG_INFO("{}: {}", resource->GetInitData()->Path, printer.CStr());
 }
 
-void LogEntranceListAsXML(std::shared_ptr<LUS::IResource> resource) {
+void LogEntranceListAsXML(std::shared_ptr<Ship::IResource> resource) {
     std::shared_ptr<SetEntranceList> setEntranceList = std::static_pointer_cast<SetEntranceList>(resource);
 
     tinyxml2::XMLDocument doc;
@@ -173,7 +173,7 @@ void LogEntranceListAsXML(std::shared_ptr<LUS::IResource> resource) {
     SPDLOG_INFO("{}: {}", resource->GetInitData()->Path, printer.CStr());
 }
 
-void LogExitListAsXML(std::shared_ptr<LUS::IResource> resource) {
+void LogExitListAsXML(std::shared_ptr<Ship::IResource> resource) {
     std::shared_ptr<SetExitList> setExitList = std::static_pointer_cast<SetExitList>(resource);
 
     tinyxml2::XMLDocument doc;
@@ -192,7 +192,7 @@ void LogExitListAsXML(std::shared_ptr<LUS::IResource> resource) {
     SPDLOG_INFO("{}: {}", resource->GetInitData()->Path, printer.CStr());
 }
 
-void LogLightingSettingsAsXML(std::shared_ptr<LUS::IResource> resource) {
+void LogLightingSettingsAsXML(std::shared_ptr<Ship::IResource> resource) {
     std::shared_ptr<SetLightingSettings> setLightingSettings = std::static_pointer_cast<SetLightingSettings>(resource);
 
     tinyxml2::XMLDocument doc;
@@ -234,7 +234,7 @@ void LogLightingSettingsAsXML(std::shared_ptr<LUS::IResource> resource) {
     SPDLOG_INFO("{}: {}", resource->GetInitData()->Path, printer.CStr());
 }
 
-void LogLightListAsXML(std::shared_ptr<LUS::IResource> resource) {
+void LogLightListAsXML(std::shared_ptr<Ship::IResource> resource) {
     std::shared_ptr<SetLightList> setLightList = std::static_pointer_cast<SetLightList>(resource);
 
     tinyxml2::XMLDocument doc;
@@ -270,7 +270,7 @@ void LogLightListAsXML(std::shared_ptr<LUS::IResource> resource) {
     SPDLOG_INFO("{}: {}", resource->GetInitData()->Path, printer.CStr());
 }
 
-void LogMeshAsXML(std::shared_ptr<LUS::IResource> resource) {
+void LogMeshAsXML(std::shared_ptr<Ship::IResource> resource) {
     std::shared_ptr<SetMesh> setMesh = std::static_pointer_cast<SetMesh>(resource);
 
     tinyxml2::XMLDocument doc;
@@ -371,7 +371,7 @@ void LogMeshAsXML(std::shared_ptr<LUS::IResource> resource) {
     SPDLOG_INFO("{}: {}", resource->GetInitData()->Path, printer.CStr());
 }
 
-void LogObjectListAsXML(std::shared_ptr<LUS::IResource> resource) {
+void LogObjectListAsXML(std::shared_ptr<Ship::IResource> resource) {
     std::shared_ptr<SetObjectList> setObjectList = std::static_pointer_cast<SetObjectList>(resource);
 
     tinyxml2::XMLDocument doc;
@@ -390,7 +390,7 @@ void LogObjectListAsXML(std::shared_ptr<LUS::IResource> resource) {
     SPDLOG_INFO("{}: {}", resource->GetInitData()->Path, printer.CStr());
 }
 
-void LogPathwaysAsXML(std::shared_ptr<LUS::IResource> resource) {
+void LogPathwaysAsXML(std::shared_ptr<Ship::IResource> resource) {
     std::shared_ptr<SetPathways> setPathways = std::static_pointer_cast<SetPathways>(resource);
 
     tinyxml2::XMLDocument doc;
@@ -409,7 +409,7 @@ void LogPathwaysAsXML(std::shared_ptr<LUS::IResource> resource) {
     SPDLOG_INFO("{}: {}", resource->GetInitData()->Path, printer.CStr());
 }
 
-void LogRoomBehaviorAsXML(std::shared_ptr<LUS::IResource> resource) {
+void LogRoomBehaviorAsXML(std::shared_ptr<Ship::IResource> resource) {
     std::shared_ptr<SetRoomBehavior> setRoomBehavior = std::static_pointer_cast<SetRoomBehavior>(resource);
 
     tinyxml2::XMLDocument doc;
@@ -425,7 +425,7 @@ void LogRoomBehaviorAsXML(std::shared_ptr<LUS::IResource> resource) {
     SPDLOG_INFO("{}: {}", resource->GetInitData()->Path, printer.CStr());
 }
 
-void LogRoomListAsXML(std::shared_ptr<LUS::IResource> resource) {
+void LogRoomListAsXML(std::shared_ptr<Ship::IResource> resource) {
     std::shared_ptr<SetRoomList> setRoomList = std::static_pointer_cast<SetRoomList>(resource);
 
     tinyxml2::XMLDocument doc;
@@ -444,7 +444,7 @@ void LogRoomListAsXML(std::shared_ptr<LUS::IResource> resource) {
     SPDLOG_INFO("{}: {}", resource->GetInitData()->Path, printer.CStr());
 }
 
-void LogSkyboxModifierAsXML(std::shared_ptr<LUS::IResource> resource) {
+void LogSkyboxModifierAsXML(std::shared_ptr<Ship::IResource> resource) {
     std::shared_ptr<SetSkyboxModifier> setSkyboxModifier = std::static_pointer_cast<SetSkyboxModifier>(resource);
 
     tinyxml2::XMLDocument doc;
@@ -460,7 +460,7 @@ void LogSkyboxModifierAsXML(std::shared_ptr<LUS::IResource> resource) {
     SPDLOG_INFO("{}: {}", resource->GetInitData()->Path, printer.CStr());
 }
 
-void LogSkyboxSettingsAsXML(std::shared_ptr<LUS::IResource> resource) {
+void LogSkyboxSettingsAsXML(std::shared_ptr<Ship::IResource> resource) {
     std::shared_ptr<SetSkyboxSettings> setSkyboxSettings = std::static_pointer_cast<SetSkyboxSettings>(resource);
 
     tinyxml2::XMLDocument doc;
@@ -478,7 +478,7 @@ void LogSkyboxSettingsAsXML(std::shared_ptr<LUS::IResource> resource) {
     SPDLOG_INFO("{}: {}", resource->GetInitData()->Path, printer.CStr());
 }
 
-void LogSoundSettingsAsXML(std::shared_ptr<LUS::IResource> resource) {
+void LogSoundSettingsAsXML(std::shared_ptr<Ship::IResource> resource) {
     std::shared_ptr<SetSoundSettings> setSoundSettings = std::static_pointer_cast<SetSoundSettings>(resource);
 
     tinyxml2::XMLDocument doc;
@@ -495,7 +495,7 @@ void LogSoundSettingsAsXML(std::shared_ptr<LUS::IResource> resource) {
     SPDLOG_INFO("{}: {}", resource->GetInitData()->Path, printer.CStr());
 }
 
-void LogSpecialObjectsAsXML(std::shared_ptr<LUS::IResource> resource) {
+void LogSpecialObjectsAsXML(std::shared_ptr<Ship::IResource> resource) {
     std::shared_ptr<SetSpecialObjects> setSpecialObjects = std::static_pointer_cast<SetSpecialObjects>(resource);
 
     tinyxml2::XMLDocument doc;
@@ -511,7 +511,7 @@ void LogSpecialObjectsAsXML(std::shared_ptr<LUS::IResource> resource) {
     SPDLOG_INFO("{}: {}", resource->GetInitData()->Path, printer.CStr());
 }
 
-void LogStartPositionListAsXML(std::shared_ptr<LUS::IResource> resource) {
+void LogStartPositionListAsXML(std::shared_ptr<Ship::IResource> resource) {
     std::shared_ptr<SetStartPositionList> setStartPositionList = std::static_pointer_cast<SetStartPositionList>(resource);
 
     tinyxml2::XMLDocument doc;
@@ -537,7 +537,7 @@ void LogStartPositionListAsXML(std::shared_ptr<LUS::IResource> resource) {
     SPDLOG_INFO("{}: {}", resource->GetInitData()->Path, printer.CStr());
 }
 
-void LogTimeSettingsAsXML(std::shared_ptr<LUS::IResource> resource) {
+void LogTimeSettingsAsXML(std::shared_ptr<Ship::IResource> resource) {
     std::shared_ptr<SetTimeSettings> setTimeSettings = std::static_pointer_cast<SetTimeSettings>(resource);
 
     tinyxml2::XMLDocument doc;
@@ -554,7 +554,7 @@ void LogTimeSettingsAsXML(std::shared_ptr<LUS::IResource> resource) {
     SPDLOG_INFO("{}: {}", resource->GetInitData()->Path, printer.CStr());
 }
 
-void LogTransitionActorListAsXML(std::shared_ptr<LUS::IResource> resource) {
+void LogTransitionActorListAsXML(std::shared_ptr<Ship::IResource> resource) {
     std::shared_ptr<SetTransitionActorList> setTransitionActorList = std::static_pointer_cast<SetTransitionActorList>(resource);
 
     tinyxml2::XMLDocument doc;
@@ -582,7 +582,7 @@ void LogTransitionActorListAsXML(std::shared_ptr<LUS::IResource> resource) {
     SPDLOG_INFO("{}: {}", resource->GetInitData()->Path, printer.CStr());
 }
 
-void LogWindSettingsAsXML(std::shared_ptr<LUS::IResource> resource) {
+void LogWindSettingsAsXML(std::shared_ptr<Ship::IResource> resource) {
     std::shared_ptr<SetWindSettings> setWindSettings = std::static_pointer_cast<SetWindSettings>(resource);
 
     tinyxml2::XMLDocument doc;

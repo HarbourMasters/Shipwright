@@ -4,8 +4,8 @@
 #include "spdlog/spdlog.h"
 
 namespace SOH {
-std::shared_ptr<LUS::IResource> SetSoundSettingsFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData,
-                                                                std::shared_ptr<LUS::BinaryReader> reader) {
+std::shared_ptr<Ship::IResource> SetSoundSettingsFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
+                                                                std::shared_ptr<Ship::BinaryReader> reader) {
     auto setSoundSettings = std::make_shared<SetSoundSettings>(initData);
 
     ReadCommandId(setSoundSettings, reader);
@@ -21,7 +21,7 @@ std::shared_ptr<LUS::IResource> SetSoundSettingsFactory::ReadResource(std::share
     return setSoundSettings;
 }
 
-std::shared_ptr<LUS::IResource> SetSoundSettingsFactoryXML::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData,
+std::shared_ptr<Ship::IResource> SetSoundSettingsFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
                                                                    tinyxml2::XMLElement* reader) {
     auto setSoundSettings = std::make_shared<SetSoundSettings>(initData);
 

@@ -4,8 +4,8 @@
 #include "spdlog/spdlog.h"
 
 namespace SOH {
-std::shared_ptr<LUS::IResource> SetLightingSettingsFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData,
-                                                                   std::shared_ptr<LUS::BinaryReader> reader) {
+std::shared_ptr<Ship::IResource> SetLightingSettingsFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
+                                                                   std::shared_ptr<Ship::BinaryReader> reader) {
     auto setLightingSettings = std::make_shared<SetLightingSettings>(initData);
 
     ReadCommandId(setLightingSettings, reader);
@@ -51,7 +51,7 @@ std::shared_ptr<LUS::IResource> SetLightingSettingsFactory::ReadResource(std::sh
     return setLightingSettings;
 }
 
-std::shared_ptr<LUS::IResource> SetLightingSettingsFactoryXML::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData,
+std::shared_ptr<Ship::IResource> SetLightingSettingsFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
                                                                    tinyxml2::XMLElement* reader) {
     auto setLightingSettings = std::make_shared<SetLightingSettings>(initData);
 

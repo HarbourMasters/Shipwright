@@ -2,7 +2,7 @@
 
 #include <libultraship/libultraship.h>
 
-class ActorViewerWindow : public LUS::GuiWindow {
+class ActorViewerWindow : public Ship::GuiWindow {
   public:
     using GuiWindow::GuiWindow;
 

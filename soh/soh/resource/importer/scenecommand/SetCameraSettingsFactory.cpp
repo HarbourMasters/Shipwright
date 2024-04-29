@@ -4,8 +4,8 @@
 #include "spdlog/spdlog.h"
 
 namespace SOH {
-std::shared_ptr<LUS::IResource> SetCameraSettingsFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData,
-                                                                 std::shared_ptr<LUS::BinaryReader> reader) {
+std::shared_ptr<Ship::IResource> SetCameraSettingsFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
+                                                                 std::shared_ptr<Ship::BinaryReader> reader) {
     auto setCameraSettings = std::make_shared<SetCameraSettings>(initData);
 
     ReadCommandId(setCameraSettings, reader);
@@ -20,7 +20,7 @@ std::shared_ptr<LUS::IResource> SetCameraSettingsFactory::ReadResource(std::shar
     return setCameraSettings;
 }
 
-std::shared_ptr<LUS::IResource> SetCameraSettingsFactoryXML::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData,
+std::shared_ptr<Ship::IResource> SetCameraSettingsFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
                                                                    tinyxml2::XMLElement* reader) {
     auto setCameraSettings = std::make_shared<SetCameraSettings>(initData);
 

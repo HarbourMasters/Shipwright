@@ -4,8 +4,8 @@
 #include "spdlog/spdlog.h"
 
 namespace SOH {
-std::shared_ptr<LUS::IResource> SetSpecialObjectsFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData,
-                                                                 std::shared_ptr<LUS::BinaryReader> reader) {
+std::shared_ptr<Ship::IResource> SetSpecialObjectsFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
+                                                                 std::shared_ptr<Ship::BinaryReader> reader) {
     auto setSpecialObjects = std::make_shared<SetSpecialObjects>(initData);
 
     ReadCommandId(setSpecialObjects, reader);
@@ -20,7 +20,7 @@ std::shared_ptr<LUS::IResource> SetSpecialObjectsFactory::ReadResource(std::shar
     return setSpecialObjects;
 }
 
-std::shared_ptr<LUS::IResource> SetSpecialObjectsFactoryXML::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData,
+std::shared_ptr<Ship::IResource> SetSpecialObjectsFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
                                                                    tinyxml2::XMLElement* reader) {
     auto setSpecialObjects = std::make_shared<SetSpecialObjects>(initData);
 
