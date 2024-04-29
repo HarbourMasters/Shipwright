@@ -6,6 +6,8 @@
 #include "Enhancements/randomizer/dungeon.h"
 #include "Enhancements/randomizer/trial.h"
 #include "soh/util.h"
+#include "Enhancements/randomizer/hint.h"
+#include "Enhancements/randomizer/item.h"
 
 #include "z64.h"
 #include "functions.h"
@@ -57,6 +59,51 @@ std::filesystem::path SaveManager::GetFileTempName(int fileNum) {
     return sSavePath / ("file" + std::to_string(fileNum + 1) + ".temp");
 }
 
+std::vector<RandomizerHint> Rando::StaticData::oldVerHintOrder {
+    RH_COLOSSUS_GOSSIP_STONE,
+    RH_DMC_GOSSIP_STONE,
+    RH_DMC_UPPER_GROTTO_GOSSIP_STONE,
+    RH_DMT_GOSSIP_STONE,
+    RH_DMT_STORMS_GROTTO_GOSSIP_STONE,
+    RH_DODONGOS_CAVERN_GOSSIP_STONE,
+    RH_ZF_FAIRY_GOSSIP_STONE,
+    RH_GC_MAZE_GOSSIP_STONE,
+    RH_GC_MEDIGORON_GOSSIP_STONE,
+    RH_GV_GOSSIP_STONE,
+    RH_GRAVEYARD_GOSSIP_STONE,
+    RH_HC_MALON_GOSSIP_STONE,
+    RH_HC_ROCK_WALL_GOSSIP_STONE,
+    RH_HC_STORMS_GROTTO_GOSSIP_STONE,
+    RH_HF_COW_GROTTO_GOSSIP_STONE,
+    RH_HF_NEAR_MARKET_GROTTO_GOSSIP_STONE,
+    RH_HF_OPEN_GROTTO_GOSSIP_STONE,
+    RH_HF_SOUTHEAST_GROTTO_GOSSIP_STONE,
+    RH_ZF_JABU_GOSSIP_STONE,
+    RH_KF_DEKU_TREE_LEFT_GOSSIP_STONE,
+    RH_KF_DEKU_TREE_RIGHT_GOSSIP_STONE,
+    RH_KF_GOSSIP_STONE,
+    RH_KF_STORMS_GROTTO_GOSSIP_STONE,
+    RH_KAK_OPEN_GROTTO_GOSSIP_STONE,
+    RH_LH_LAB_GOSSIP_STONE,
+    RH_LH_SOUTHEAST_GOSSIP_STONE,
+    RH_LH_SOUTHWEST_GOSSIP_STONE,
+    RH_LW_GOSSIP_STONE,
+    RH_LW_NEAR_SHORTCUTS_GROTTO_GOSSIP_STONE,
+    RH_SFM_MAZE_NEAR_LW_GOSSIP_STONE,
+    RH_SFM_MAZE_CENTER_GOSSIP_STONE,
+    RH_SFM_SARIA_GOSSIP_STONE,
+    RH_TOT_LEFT_CENTER_GOSSIP_STONE,
+    RH_TOT_LEFTMOST_GOSSIP_STONE,
+    RH_TOT_RIGHT_CENTER_GOSSIP_STONE,
+    RH_TOT_RIGHTMOST_GOSSIP_STONE,
+    RH_ZD_GOSSIP_STONE,
+    RH_ZR_NEAR_DOMAIN_GOSSIP_STONE,
+    RH_ZR_NEAR_GROTTOS_GOSSIP_STONE,
+    RH_ZR_OPEN_GROTTO_GOSSIP_STONE,
+};
+
+uint16_t Rando::StaticData::oldVerGossipStoneStart = 740;
+
 SaveManager::SaveManager() {
     coreSectionIDsByName["base"] = SECTION_ID_BASE;
     coreSectionIDsByName["randomizer"] = SECTION_ID_RANDOMIZER;
@@ -106,6 +153,7 @@ SaveManager::SaveManager() {
     }
 }
 
+// RANDOTODO should we just have dummy functions that raise warnings instead if these aren't supported?
 void SaveManager::LoadRandomizerVersion1() {
     auto randoContext = Rando::Context::GetInstance();
     RandomizerCheck location = RC_UNKNOWN_CHECK;
@@ -140,32 +188,33 @@ void SaveManager::LoadRandomizerVersion1() {
         for (int j = 0; j < ARRAY_COUNT(hintText); j++) {
             SaveManager::Instance->LoadData("ht" + std::to_string(i) + "-" + std::to_string(j), hintText[j]);
         }
-        randoContext->AddHint(RandomizerHintKey(check - RC_COLOSSUS_GOSSIP_STONE + 1), Text(hintText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static");
+        RandomizerHint stoneHint = Rando::StaticData::oldVerHintOrder[Rando::StaticData::oldVerGossipStoneStart];
+        randoContext->AddHint(stoneHint, Rando::Hint(stoneHint, {CustomMessage(hintText)}));
     }
 
     char childAltarText[250];
     for (int i = 0; i < ARRAY_COUNT(childAltarText); i++) {
         SaveManager::Instance->LoadData("cat" + std::to_string(i), childAltarText[i]);
     }
-    randoContext->AddHint(RH_ALTAR_CHILD, Text(childAltarText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static");
+    randoContext->AddHint(RH_ALTAR_CHILD, Rando::Hint(RH_ALTAR_CHILD, {CustomMessage(childAltarText)}));
 
     char adultAltarText[750];
     for (int i = 0; i < ARRAY_COUNT(adultAltarText); i++) {
         SaveManager::Instance->LoadData("aat" + std::to_string(i), adultAltarText[i]);
     }
-    randoContext->AddHint(RH_ALTAR_ADULT, Text(adultAltarText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static");
+    randoContext->AddHint(RH_ALTAR_ADULT, Rando::Hint(RH_ALTAR_ADULT, {CustomMessage(adultAltarText)}));
 
     char ganonHintText[150];
     for (int i = 0; i < ARRAY_COUNT(ganonHintText); i++) {
         SaveManager::Instance->LoadData("ght" + std::to_string(i), ganonHintText[i]);
     }
-    randoContext->AddHint(RH_GANONDORF_HINT, Text(ganonHintText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static");
+    randoContext->AddHint(RH_GANONDORF_HINT, Rando::Hint(RH_GANONDORF_HINT, {CustomMessage(ganonHintText)}));
 
     char ganonText[250];
     for (int i = 0; i < ARRAY_COUNT(ganonText); i++) {
         SaveManager::Instance->LoadData("gt" + std::to_string(i), ganonText[i]);
     }
-    randoContext->AddHint(RH_GANONDORF_NOHINT, Text(ganonText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static");
+    randoContext->AddHint(RH_GANONDORF_JOKE, Rando::Hint(RH_GANONDORF_JOKE, {CustomMessage(ganonText)}));
 
     SaveManager::Instance->LoadData("adultTradeItems", gSaveContext.adultTradeItems);
 
@@ -193,6 +242,7 @@ void SaveManager::LoadRandomizerVersion1() {
     });
 }
 
+//RANDOTODO if we actually support this, be less lazy
 void SaveManager::LoadRandomizerVersion2() {
     auto randoContext = Rando::Context::GetInstance();
     SaveManager::Instance->LoadArray("itemLocations", RC_MAX, [&](size_t i) {
@@ -244,56 +294,57 @@ void SaveManager::LoadRandomizerVersion2() {
             if (rc != RC_UNKNOWN_CHECK) {
                 std::string hintText;
                 SaveManager::Instance->LoadData("hintText", hintText);
-                randoContext->AddHint(RandomizerHintKey(rc - RC_COLOSSUS_GOSSIP_STONE + 1), Text(hintText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static");
+                RandomizerHint stoneHint = Rando::StaticData::oldVerHintOrder[Rando::StaticData::oldVerGossipStoneStart];
+                randoContext->AddHint(stoneHint, Rando::Hint(stoneHint, {CustomMessage(hintText)}));
             }
         });
     });
 
     std::string childAltarText;
     SaveManager::Instance->LoadData("childAltarText", childAltarText);
-    randoContext->AddHint(RH_ALTAR_CHILD, Text(childAltarText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static");
+    randoContext->AddHint(RH_ALTAR_CHILD, Rando::Hint(RH_ALTAR_CHILD, {CustomMessage(childAltarText)}));
     std::string adultAltarText;
     SaveManager::Instance->LoadData("adultAltarText", adultAltarText);
-    randoContext->AddHint(RH_ALTAR_ADULT, Text(adultAltarText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static");
+    randoContext->AddHint(RH_ALTAR_ADULT, Rando::Hint(RH_ALTAR_ADULT, {CustomMessage(adultAltarText)}));
     std::string ganonHintText;
     SaveManager::Instance->LoadData("ganonHintText", ganonHintText);
-    randoContext->AddHint(RH_GANONDORF_HINT, Text(ganonHintText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static");
+    randoContext->AddHint(RH_GANONDORF_HINT, Rando::Hint(RH_GANONDORF_HINT, {CustomMessage(ganonHintText)}));
     std::string ganonText;
     SaveManager::Instance->LoadData("ganonText", ganonText);
-    randoContext->AddHint(RH_GANONDORF_NOHINT, Text(ganonText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static");
+    randoContext->AddHint(RH_GANONDORF_JOKE, Rando::Hint(RH_GANONDORF_JOKE, {CustomMessage(ganonText)}));
     std::string dampeText;
     SaveManager::Instance->LoadData("dampeText", dampeText);
-    randoContext->AddHint(RH_DAMPES_DIARY, Text(dampeText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static");
+    randoContext->AddHint(RH_DAMPES_DIARY, Rando::Hint(RH_DAMPES_DIARY, {CustomMessage(dampeText)}));
     std::string gregHintText;
     SaveManager::Instance->LoadData("gregHintText", gregHintText);
-    randoContext->AddHint(RH_GREG_RUPEE, Text(gregHintText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static");
+    randoContext->AddHint(RH_GREG_RUPEE, Rando::Hint(RH_GREG_RUPEE, {CustomMessage(gregHintText)}));
     std::string sheikText;
     SaveManager::Instance->LoadData("sheikText", sheikText);
-    randoContext->AddHint(RH_SHEIK_LIGHT_ARROWS, Text(sheikText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static");
+    randoContext->AddHint(RH_SHEIK_HINT, Rando::Hint(RH_SHEIK_HINT, {CustomMessage(sheikText)}));
     std::string sariaText;
     SaveManager::Instance->LoadData("sariaText", sariaText);
-    randoContext->AddHint(RH_SARIA, Text(sariaText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static");
+    randoContext->AddHint(RH_SARIA_HINT, Rando::Hint(RH_SARIA_HINT, {CustomMessage(sariaText)}));
     std::string fishingPoleText;
     SaveManager::Instance->LoadData("fishingPoleText", fishingPoleText);
-    randoContext->AddHint(RH_FISHING_POLE, Text(fishingPoleText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static");
+    randoContext->AddHint(RH_FISHING_POLE, Rando::Hint(RH_FISHING_POLE, {CustomMessage(fishingPoleText)}));
     std::string warpMinuetText;
     SaveManager::Instance->LoadData("warpMinuetText", warpMinuetText);
-    randoContext->AddHint(RH_MINUET_WARP_LOC, Text(warpMinuetText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static", randoContext->GetAreaFromString(warpMinuetText));
+    randoContext->AddHint(RH_MINUET_WARP_LOC, Rando::Hint(RH_MINUET_WARP_LOC, {CustomMessage(warpMinuetText)}));
     std::string warpBoleroText;
     SaveManager::Instance->LoadData("warpBoleroText", warpBoleroText);
-    randoContext->AddHint(RH_BOLERO_WARP_LOC, Text(warpBoleroText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static", randoContext->GetAreaFromString(warpBoleroText));
+    randoContext->AddHint(RH_BOLERO_WARP_LOC, Rando::Hint(RH_BOLERO_WARP_LOC, {CustomMessage(warpBoleroText)}));
     std::string warpSerenadeText;
     SaveManager::Instance->LoadData("warpSerenadeText", warpSerenadeText);
-    randoContext->AddHint(RH_SERENADE_WARP_LOC, Text(warpSerenadeText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static", randoContext->GetAreaFromString(warpSerenadeText));
+    randoContext->AddHint(RH_SERENADE_WARP_LOC, Rando::Hint(RH_SERENADE_WARP_LOC, {CustomMessage(warpSerenadeText)}));
     std::string warpRequiemText;
     SaveManager::Instance->LoadData("warpRequiemText", warpRequiemText);
-    randoContext->AddHint(RH_REQUIEM_WARP_LOC, Text(warpRequiemText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static", randoContext->GetAreaFromString(warpRequiemText));
+    randoContext->AddHint(RH_REQUIEM_WARP_LOC, Rando::Hint(RH_REQUIEM_WARP_LOC, {CustomMessage(warpRequiemText)}));
     std::string warpNocturneText;
     SaveManager::Instance->LoadData("warpNocturneText", warpNocturneText);
-    randoContext->AddHint(RH_NOCTURNE_WARP_LOC, Text(warpNocturneText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static", randoContext->GetAreaFromString(warpNocturneText));
+    randoContext->AddHint(RH_NOCTURNE_WARP_LOC, Rando::Hint(RH_NOCTURNE_WARP_LOC, {CustomMessage(warpNocturneText)}));
     std::string warpPreludeText;
     SaveManager::Instance->LoadData("warpPreludeText", warpPreludeText);
-    randoContext->AddHint(RH_PRELUDE_WARP_LOC, Text(warpPreludeText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static", randoContext->GetAreaFromString(warpPreludeText));
+    randoContext->AddHint(RH_PRELUDE_WARP_LOC, Rando::Hint(RH_PRELUDE_WARP_LOC, {CustomMessage(warpPreludeText)}));
 
     SaveManager::Instance->LoadData("adultTradeItems", gSaveContext.adultTradeItems);
 
@@ -386,23 +437,10 @@ void SaveManager::LoadRandomizerVersion3() {
     });
 
     SaveManager::Instance->LoadArray("hintLocations", RH_MAX, [&](size_t i) {
-        SaveManager::Instance->LoadStruct("", [&]() {
-            RandomizerHintKey rhk = RH_NONE;
-            SaveManager::Instance->LoadData("hintKey", rhk);
-            std::string english, french, german;
-            SaveManager::Instance->LoadStruct("hintText", [&]() {
-                SaveManager::Instance->LoadData("english", english);
-                SaveManager::Instance->LoadData("french", french);
-                SaveManager::Instance->LoadData("german", german);
-            });
-            RandomizerCheck rc = RC_UNKNOWN_CHECK;
-            SaveManager::Instance->LoadData("hintedCheck", rc);
-            HintType ht = HINT_TYPE_STATIC;
-            SaveManager::Instance->LoadData("hintType", ht);
-            RandomizerArea savedArea;
-            SaveManager::Instance->LoadData("hintedArea", savedArea);
-            randoContext->AddHint(rhk, Text(english, french, /*spanish*/"", german), rc, ht, "Unknown", savedArea);//RANDOTODO, maybe store and load distrabution, but it's a string...
-        });
+        auto hint = RandomizerHint(i);
+        nlohmann::ordered_json json;
+        SaveManager::Instance->LoadData("", json);
+        randoContext->AddHint(hint, Rando::Hint(hint, json));
     });
 
     SaveManager::Instance->LoadData("adultTradeItems", gSaveContext.adultTradeItems);
@@ -477,17 +515,68 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool f
     });
 
     SaveManager::Instance->SaveArray("hintLocations", RH_MAX, [&](size_t i) {
+        auto hint = randoContext->GetHint(RandomizerHint(i));
+        // RANDOTODO a way for saveData to accept a raw JSON would make maintaining hint code nicer.
+        // save manager forces code rewrites between the spoiler log and internal saves, when the code needs to do the exact same thing
+        // in cases where data needs to be loaded in from the spoiler log for plando mode.
+        // fails as push_back is ambiguous
+        // SaveManager::Instance->SaveData(Rando::StaticData::hintNames[(uint32_t)hint].GetEnglish(), hint->toJSON());
         SaveManager::Instance->SaveStruct("", [&]() {
-            auto hint = randoContext->GetHint(RandomizerHintKey(i));
-            SaveManager::Instance->SaveData("hintKey", RandomizerHintKey(i));
-            SaveManager::Instance->SaveStruct("hintText", [&]() {
-                SaveManager::Instance->SaveData("english", hint->GetText().GetEnglish());
-                SaveManager::Instance->SaveData("french", hint->GetText().GetFrench());
-                SaveManager::Instance->SaveData("german", hint->GetText().GetGerman());
-            });
-            SaveManager::Instance->SaveData("hintedCheck", hint->GetHintedLocation());
-            SaveManager::Instance->SaveData("hintType", hint->GetHintType());
-            SaveManager::Instance->SaveData("hintedArea", hint->GetHintedArea());
+            bool enabled = hint->IsEnabled();
+            SaveManager::Instance->SaveData("enabled", enabled);
+            if (enabled){
+                std::vector<std::string> messages = hint->GetAllMessageStrings(MF_RAW);
+                SaveManager::Instance->SaveArray("messages", messages.size(), [&](size_t i) {
+                    SaveManager::Instance->SaveData("", messages[i]);
+                });
+
+                SaveManager::Instance->SaveData("distribution", hint->GetDistribution());
+                SaveManager::Instance->SaveData("type", Rando::StaticData::hintTypeNames[hint->GetHintType()].GetEnglish(MF_CLEAN));
+                
+                std::vector<RandomizerHintTextKey> hintKeys = hint->GetHintTextKeys();
+                SaveManager::Instance->SaveArray("hintKeys", hintKeys.size(), [&](size_t i) {
+                    SaveManager::Instance->SaveData("", hintKeys[i]);
+                });
+
+                std::vector<RandomizerCheck> locations = hint->GetHintedLocations();
+                SaveManager::Instance->SaveArray("locations", locations.size(), [&](size_t i) {
+                    SaveManager::Instance->SaveData("", Rando::StaticData::GetLocation(locations[i])->GetName());
+                });
+
+                std::vector<RandomizerGet> items = hint->GetHintedItems();
+                SaveManager::Instance->SaveArray("items", items.size(), [&](size_t i) {
+                    SaveManager::Instance->SaveData("", Rando::StaticData::GetItemTable()[items[i]].GetName().GetEnglish());
+                });
+                
+                std::vector<uint8_t> itemNamesChosen = hint->GetItemNamesChosen();
+                SaveManager::Instance->SaveArray("itemNamesChosen", itemNamesChosen.size(), [&](size_t i) {
+                    SaveManager::Instance->SaveData("", itemNamesChosen[i]);
+                });
+                
+                std::vector<uint8_t> hintTextsChosen = hint->GetHintTextsChosen();
+                SaveManager::Instance->SaveArray("hintTextsChosen", hintTextsChosen.size(), [&](size_t i) {
+                    SaveManager::Instance->SaveData("", hintTextsChosen[i]);
+                });
+
+                std::vector<uint8_t> areaTextsChosen = hint->GetAreaTextsChosen();
+                SaveManager::Instance->SaveArray("areaTextsChosen", areaTextsChosen.size(), [&](size_t i) {
+                    SaveManager::Instance->SaveData("", areaTextsChosen[i]);
+                });
+                
+                std::vector<RandomizerArea> areas = hint->GetHintedAreas();
+                SaveManager::Instance->SaveArray("areas", areas.size(), [&](size_t i) {
+                    SaveManager::Instance->SaveData("", Rando::StaticData::hintTextTable[Rando::StaticData::areaNames[areas[i]]].GetClear().GetForCurrentLanguage(MF_CLEAN));
+                });
+                
+                std::vector<TrialKey> trials = hint->GetHintedTrials();
+                SaveManager::Instance->SaveArray("trials", trials.size(), [&](size_t i) {
+                    SaveManager::Instance->SaveData("", randoContext->GetTrial(trials[i])->GetName().GetForCurrentLanguage(MF_CLEAN));
+                });
+
+                SaveManager::Instance->SaveData("num", hint->GetNum());
+
+
+            }
         });
     });
 

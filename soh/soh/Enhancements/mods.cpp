@@ -1161,9 +1161,7 @@ void RegisterAltTrapTypes() {
 void RegisterRandomizerSheikSpawn() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneSpawnActors>([]() {
         if (!gPlayState) return;
-        bool canSheik = (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIAL_COUNT) != 0 &&
-          OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LIGHT_ARROWS_HINT));
-        if (!IS_RANDO || !LINK_IS_ADULT || !canSheik) return;
+        if (!IS_RANDO || !LINK_IS_ADULT || !OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHEIK_LA_HINT)) return;
         switch (gPlayState->sceneNum) {
             case SCENE_TEMPLE_OF_TIME:
                 if (gPlayState->roomCtx.curRoom.num == 1) {

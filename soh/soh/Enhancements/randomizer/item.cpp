@@ -378,7 +378,7 @@ RandomizerHintTextKey Item::GetHintKey() const {
 }
 
 const HintText& Item::GetHint() const {
-    return ::Hint(hintKey);
+    return StaticData::hintTextTable[hintKey];
 }
 
 bool Item::operator==(const Item& right) const {

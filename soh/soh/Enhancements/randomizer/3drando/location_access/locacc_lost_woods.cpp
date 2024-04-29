@@ -98,7 +98,7 @@ void AreaTable_Init_LostWoods() {
                   //Locations
                   LocationAccess(RC_KF_STORMS_GROTTO_CHEST,         {[]{return true;}}),
                   LocationAccess(RC_KF_STORMS_GROTTO_FISH,          {[]{return logic->HasBottle;}}),
-                  LocationAccess(RC_KF_STORMS_GOSSIP_STONE,         {[]{return true;}}),
+                  LocationAccess(RC_KF_STORMS_GROTTO_GOSSIP_STONE,         {[]{return true;}}),
                   LocationAccess(RC_KF_STORMS_GROTTO_BEEHIVE_LEFT,  {[]{return logic->CanBreakLowerBeehives;}}),
                   LocationAccess(RC_KF_STORMS_GROTTO_BEEHIVE_RIGHT, {[]{return logic->CanBreakLowerBeehives;}}),
                 }, {
@@ -168,7 +168,7 @@ void AreaTable_Init_LostWoods() {
                   //Locations
                   LocationAccess(RC_LW_NEAR_SHORTCUTS_GROTTO_CHEST,         {[]{return true;}}),
                   LocationAccess(RC_LW_NEAR_SHORTCUTS_GROTTO_FISH,          {[]{return logic->HasBottle;}}),
-                  LocationAccess(RC_LW_NEAR_SHORTCUTS_GOSSIP_STONE,         {[]{return true;}}),
+                  LocationAccess(RC_LW_NEAR_SHORTCUTS_GROTTO_GOSSIP_STONE,         {[]{return true;}}),
                   LocationAccess(RC_LW_NEAR_SHORTCUTS_GROTTO_BEEHIVE_LEFT,  {[]{return logic->CanBreakLowerBeehives;}}),
                   LocationAccess(RC_LW_NEAR_SHORTCUTS_GROTTO_BEEHIVE_RIGHT, {[]{return logic->CanBreakLowerBeehives;}}),
                 }, {
