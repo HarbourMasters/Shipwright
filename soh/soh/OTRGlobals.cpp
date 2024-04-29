@@ -2708,6 +2708,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
         } 
         else if (textId == TEXT_CARPET_SALESMAN_CUSTOM_FAIL_TO_BUY){
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId);
+        }
     }
     if (textId == TEXT_GS_NO_FREEZE || textId == TEXT_GS_FREEZE) {
         if (CVarGetInteger("gInjectItemCounts", 0) != 0) {
