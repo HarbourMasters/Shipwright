@@ -1,5 +1,6 @@
 #include "soh/resource/importer/scenecommand/SetCsCameraFactory.h"
 #include "soh/resource/type/scenecommand/SetCsCamera.h"
+#include "soh/resource/logging/SceneCommandLoggers.h"
 #include "spdlog/spdlog.h"
 
 namespace SOH {
@@ -13,6 +14,19 @@ SetCsCameraFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData
     reader->ReadInt32(); // segOffset
 
     // OTRTODO: FINISH!
+
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ResourceLogging"), 0)) {
+        LogCsCameraAsXML(setCsCamera);
+    }
+
+    return setCsCamera;
+}
+
+std::shared_ptr<LUS::IResource> SetCsCameraFactoryXML::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData,
+                                                                   tinyxml2::XMLElement* reader) {
+    auto setCsCamera = std::make_shared<SetCsCamera>(initData);
+
+    setCsCamera->cmdId = SceneCommandID::SetCsCamera;
 
     return setCsCamera;
 }
