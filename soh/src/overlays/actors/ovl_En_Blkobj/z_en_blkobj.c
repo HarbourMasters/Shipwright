@@ -84,7 +84,7 @@ void EnBlkobj_Wait(EnBlkobj* this, PlayState* play) {
     if (this->dyna.actor.xzDistToPlayer < 120.0f) {
         EnBlkobj_SetupAction(this, EnBlkobj_SpawnDarkLink);
     }
-    player->stateFlags2 |= 0x04000000;
+    player->stateFlags2 |= PLAYER_STATE2_REFLECTION;
 }
 
 void EnBlkobj_SpawnDarkLink(EnBlkobj* this, PlayState* play) {
@@ -104,8 +104,8 @@ void EnBlkobj_DarkLinkFight(EnBlkobj* this, PlayState* play) {
         // Check for if Dark Link is defeated in authentic gameplay.
         // Check for if all enemies are defeated with enemy randomizer or crowd control on.
         uint8_t roomCleared = 
-            (!CVarGetInteger("gRandomizedEnemies", 0) && !CVarGetInteger("gCrowdControl", 0) && Actor_Find(&play->actorCtx, ACTOR_EN_TORCH2, ACTORCAT_BOSS) == NULL) ||
-            ((CVarGetInteger("gRandomizedEnemies", 0) || CVarGetInteger("gCrowdControl", 0)) && Flags_GetTempClear(play, this->dyna.actor.room));
+            (!CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) && !CVarGetInteger("gCrowdControl", 0) && Actor_Find(&play->actorCtx, ACTOR_EN_TORCH2, ACTORCAT_BOSS) == NULL) ||
+            ((CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) || CVarGetInteger("gCrowdControl", 0)) && Flags_GetTempClear(play, this->dyna.actor.room));
         if (roomCleared) {
             Flags_SetClear(play, this->dyna.actor.room);
             this->timer++;

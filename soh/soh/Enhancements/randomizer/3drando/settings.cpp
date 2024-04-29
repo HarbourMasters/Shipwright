@@ -94,6 +94,7 @@ namespace Settings {
   Option ShuffleOverworldSpawns    = Option::Bool("Overworld Spawns",       {"Off", "On"});
   Option MixedEntrancePools        = Option::Bool("Mixed Entrance Pools",   {"Off", "On"});
   Option MixDungeons               = Option::Bool("Mix Dungeons",           {"Off", "On"});
+  Option MixBosses                 = Option::Bool("Mix Bosses",             {"Off", "On"});
   Option MixOverworld              = Option::Bool("Mix Overworld",          {"Off", "On"});
   Option MixInteriors              = Option::Bool("Mix Interiors",          {"Off", "On"});
   Option MixGrottos                = Option::Bool("Mix Grottos",            {"Off", "On"});
@@ -135,6 +136,7 @@ namespace Settings {
     &ShuffleOverworldSpawns,
     &MixedEntrancePools,
     &MixDungeons,
+    &MixBosses,
     &MixOverworld,
     &MixInteriors,
     &MixGrottos,
@@ -1298,6 +1300,7 @@ namespace Settings {
     ctx.shuffleOverworldSpawns  = (ShuffleOverworldSpawns) ? 1 : 0;
     ctx.mixedEntrancePools      = (MixedEntrancePools) ? 1 : 0;
     ctx.mixDungeons             = (MixDungeons) ? 1 : 0;
+    ctx.mixBosses               = (MixBosses) ? 1 : 0;
     ctx.mixOverworld            = (MixOverworld) ? 1 : 0;
     ctx.mixInteriors            = (MixInteriors) ? 1 : 0;
     ctx.mixGrottos              = (MixGrottos) ? 1 : 0;
@@ -1891,6 +1894,13 @@ namespace Settings {
           MixDungeons.SetSelectedIndex(OFF);
         }
 
+        if (ShuffleBossEntrances.Is(SHUFFLEBOSSES_FULL)) {
+          MixBosses.Unhide();
+        } else {
+          MixBosses.Hide();
+          MixBosses.SetSelectedIndex(OFF);
+        }
+
         if (ShuffleOverworldEntrances) {
           MixOverworld.Unhide();
         } else {
@@ -1914,6 +1924,8 @@ namespace Settings {
       } else {
         MixDungeons.Hide();
         MixDungeons.SetSelectedIndex(OFF);
+        MixBosses.Hide();
+        MixBosses.SetSelectedIndex(OFF);
         MixOverworld.Hide();
         MixOverworld.SetSelectedIndex(OFF);
         MixInteriors.Hide();
@@ -2190,6 +2202,7 @@ namespace Settings {
 
     if (!MixedEntrancePools) {
       MixDungeons.SetSelectedIndex(OFF);
+      MixBosses.SetSelectedIndex(OFF);
       MixOverworld.SetSelectedIndex(OFF);
       MixInteriors.SetSelectedIndex(OFF);
       MixGrottos.SetSelectedIndex(OFF);
@@ -2344,6 +2357,7 @@ namespace Settings {
     ShuffleOverworldSpawns.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_OVERWORLD_SPAWNS]);
     MixedEntrancePools.SetSelectedIndex(cvarSettings[RSK_MIXED_ENTRANCE_POOLS]);
     MixDungeons.SetSelectedIndex(cvarSettings[RSK_MIX_DUNGEON_ENTRANCES]);
+    MixBosses.SetSelectedIndex(cvarSettings[RSK_MIX_BOSS_ENTRANCES]);
     MixOverworld.SetSelectedIndex(cvarSettings[RSK_MIX_OVERWORLD_ENTRANCES]);
     MixInteriors.SetSelectedIndex(cvarSettings[RSK_MIX_INTERIOR_ENTRANCES]);
     MixGrottos.SetSelectedIndex(cvarSettings[RSK_MIX_GROTTO_ENTRANCES]);

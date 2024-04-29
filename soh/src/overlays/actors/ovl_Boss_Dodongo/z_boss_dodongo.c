@@ -10,10 +10,6 @@
 #include <stdlib.h> // malloc
 #include <string.h> // memcpy
 
-// OTRTODO: Replace usage of this method when we can clear the cache
-// for a single texture without the need of a DL opcode in the render code
-void gfx_texture_cache_clear();
-
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 #define LAVA_TEX_WIDTH 32
@@ -123,7 +119,9 @@ void BossDodongo_RegisterBlendedLavaTextureUpdate() {
                     sMaskTexLava[i] = maskVal;
                 }
             }
+
             Gfx_RegisterBlendedTexture(gDodongosCavernBossLavaFloorTex, sMaskTexLava, NULL);
+            Gfx_TextureCacheDelete(sMaskTexLava);
             return;
         }
 
@@ -165,7 +163,9 @@ void BossDodongo_RegisterBlendedLavaTextureUpdate() {
         }
     }
 
-    gfx_texture_cache_clear();
+    Gfx_TextureCacheDelete(sMaskTexLava);
+    Gfx_TextureCacheDelete(sLavaWavyTex);
+    Gfx_TextureCacheDelete(sLavaFloorModifiedTex);
 }
 
 void func_808C12C4(u8* arg1, s16 arg2) {
@@ -228,6 +228,7 @@ void func_808C1554_Raw(void* arg0, void* floorTex, s32 arg2, f32 arg3) {
     }
 
     free(sp54);
+    Gfx_TextureCacheDelete(sLavaWavyTexRaw);
 }
 
 // Modified to support CPU modified texture with the resource system
@@ -255,6 +256,8 @@ void func_808C1554(void* arg0, void* floorTex, s32 arg2, f32 arg3) {
             temp_s3[i + temp2] = sp54[i + i2];
         }
     }
+
+    Gfx_TextureCacheDelete(sLavaWavyTex);
 }
 
 void func_808C17C8(PlayState* play, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3, f32 arg4, s16 arg5) {
@@ -372,6 +375,13 @@ void BossDodongo_Init(Actor* thisx, PlayState* play) {
     Gfx_RegisterBlendedTexture(object_kingdodongo_Tex_015F90, sMaskTex16x32, NULL);
     Gfx_RegisterBlendedTexture(object_kingdodongo_Tex_016990, sMaskTex32x16, NULL);
     Gfx_RegisterBlendedTexture(object_kingdodongo_Tex_016E10, sMaskTex32x16, NULL);
+
+    // Clear cache for masks
+    Gfx_TextureCacheDelete(sMaskTex8x16);
+    Gfx_TextureCacheDelete(sMaskTex8x32);
+    Gfx_TextureCacheDelete(sMaskTex16x16);
+    Gfx_TextureCacheDelete(sMaskTex16x32);
+    Gfx_TextureCacheDelete(sMaskTex32x16);
 
     BossDodongo_RegisterBlendedLavaTextureUpdate();
 
@@ -1206,6 +1216,7 @@ void BossDodongo_Update(Actor* thisx, PlayState* play2) {
                     }
                 } else {
                     sMaskTexLava[new_var] = 1;
+                    Gfx_TextureCacheDelete(sMaskTexLava);
                 }
 
                 this->unk_1C2 += 37;
@@ -1343,18 +1354,6 @@ void BossDodongo_Draw(Actor* thisx, PlayState* play) {
         gSPInvalidateTexCache(POLY_OPA_DISP++, sMaskTex16x16);
         gSPInvalidateTexCache(POLY_OPA_DISP++, sMaskTex16x32);
         gSPInvalidateTexCache(POLY_OPA_DISP++, sMaskTex32x16);
-    }
-
-    gSPInvalidateTexCache(POLY_OPA_DISP++, sMaskTexLava);
-
-    // Using WORK_DISP to invalidate these textures as they are used in drawing the scene textures which happens
-    // before actors are drawn. WORK_DISP comes before POLAY_OPA_DISP. It is probably not meant for this, but it
-    // at least works for now.
-    // Alternatively, having a way to invalidate just these pointers from the Update func should be sufficient.
-    if (sLavaFloorModifiedTexRaw != NULL) {
-        gSPInvalidateTexCache(WORK_DISP++, sLavaWavyTexRaw);
-    } else {
-        gSPInvalidateTexCache(WORK_DISP++, sLavaWavyTex);
     }
 
     if ((this->unk_1C0 >= 2) && (this->unk_1C0 & 1)) {

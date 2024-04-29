@@ -1025,7 +1025,7 @@ void FileChoose_UpdateRandomizer() {
             return;
     }
 
-    if (!SpoilerFileExists(CVarGetString("gSpoilerLog", "")) && !CVarGetInteger("gRandomizerDontGenerateSpoiler", 0)) {
+    if (!SpoilerFileExists(CVarGetString("gSpoilerLog", "")) && !CVarGetInteger(CVAR_RANDOMIZER_SETTING("DontGenerateSpoiler"), 0)) {
             CVarSetString("gSpoilerLog", "");
             fileSelectSpoilerFileLoaded = false;
     }
@@ -1053,7 +1053,7 @@ void FileChoose_UpdateRandomizer() {
             Randomizer_LoadEntranceOverrides(fileLoc, silent);
             fileSelectSpoilerFileLoaded = true;
 
-            if (SpoilerFileExists(CVarGetString("gSpoilerLog", "")) && CVarGetInteger("gRandomizerDontGenerateSpoiler", 0)) {
+            if (SpoilerFileExists(CVarGetString("gSpoilerLog", "")) && CVarGetInteger(CVAR_RANDOMIZER_SETTING("DontGenerateSpoiler"), 0)) {
                 remove(fileLoc);
             }
     }
@@ -1318,10 +1318,10 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
             this->kbdY = 0;
             this->charIndex = 0;
             this->charBgAlpha = 0;
-            this->newFileNameCharCount = CVarGetInteger("gLinkDefaultName", 0) ? 4 : 0;
+            this->newFileNameCharCount = CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) ? 4 : 0;
             this->nameEntryBoxPosX = 120;
             this->nameEntryBoxAlpha = 0;
-            memcpy(Save_GetSaveMetaInfo(this->buttonIndex)->playerName, CVarGetInteger("gLinkDefaultName", 0) ? &linkName : &emptyName, 8);
+            memcpy(Save_GetSaveMetaInfo(this->buttonIndex)->playerName, CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) ? &linkName : &emptyName, 8);
             return;
         }
     }
@@ -1959,20 +1959,20 @@ void FileChoose_DrawFileInfo(GameState* thisx, s16 fileIndex, s16 isActive) {
     s16 deathCountSplit[3];
 
     Color_RGB8 heartColor = {HEARTS_PRIM_R, HEARTS_PRIM_G, HEARTS_PRIM_B};
-    if (CVarGetInteger("gCosmetics.Consumable_Hearts.Changed", 0)) {
-        heartColor = CVarGetColor24("gCosmetics.Consumable_Hearts.Value", heartColor);
+    if (CVarGetInteger(CVAR_COSMETIC("Consumable.Hearts.Changed"), 0)) {
+        heartColor = CVarGetColor24(CVAR_COSMETIC("Consumable.Hearts.Value"), heartColor);
     }
     Color_RGB8 heartBorder = {HEARTS_ENV_R, HEARTS_ENV_G, HEARTS_ENV_B};
-    if (CVarGetInteger("gCosmetics.Consumable_HeartBorder.Changed", 0)) {
-        heartBorder = CVarGetColor24("gCosmetics.Consumable_HeartBorder.Value", heartBorder);
+    if (CVarGetInteger(CVAR_COSMETIC("Consumable.HeartBorder.Changed"), 0)) {
+        heartBorder = CVarGetColor24(CVAR_COSMETIC("Consumable.HeartBorder.Value"), heartBorder);
     }
     Color_RGB8 ddColor = {HEARTS_DD_ENV_R, HEARTS_DD_ENV_G, HEARTS_DD_ENV_B};
-    if (CVarGetInteger("gCosmetics.Consumable_DDHearts.Changed", 0)) {
-        ddColor = CVarGetColor24("gCosmetics.Consumable_DDHearts.Value", ddColor);
+    if (CVarGetInteger(CVAR_COSMETIC("Consumable.DDHearts.Changed"), 0)) {
+        ddColor = CVarGetColor24(CVAR_COSMETIC("Consumable.DDHearts.Value"), ddColor);
     }
     Color_RGB8 ddBorder = {HEARTS_DD_PRIM_R, HEARTS_DD_PRIM_G, HEARTS_DD_PRIM_B};
-    if (CVarGetInteger("gCosmetics.Consumable_DDHeartBorder.Changed", 0)) {
-        ddBorder = CVarGetColor24("gCosmetics.Consumable_DDHeartBorder.Value", ddBorder);
+    if (CVarGetInteger(CVAR_COSMETIC("Consumable.DDHeartBorder.Changed"), 0)) {
+        ddBorder = CVarGetColor24(CVAR_COSMETIC("Consumable.DDHeartBorder.Value"), ddBorder);
     }
 
     OPEN_DISPS(this->state.gfxCtx);
@@ -2005,7 +2005,7 @@ void FileChoose_DrawFileInfo(GameState* thisx, s16 fileIndex, s16 isActive) {
                                &deathCountSplit[2]);
 
         // draw death count
-        if (CVarGetInteger("gFileSelectMoreInfo", 0) == 0 || this->menuMode != FS_MENU_MODE_SELECT) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("FileSelectMoreInfo"), 0) == 0 || this->menuMode != FS_MENU_MODE_SELECT) {
             for (i = 0, vtxOffset = 0; i < 3; i++, vtxOffset += 4) {
                 FileChoose_DrawCharacter(this->state.gfxCtx, sp54->fontBuf + deathCountSplit[i] * FONT_CHAR_TEX_SIZE,
                                          vtxOffset);
@@ -2029,7 +2029,7 @@ void FileChoose_DrawFileInfo(GameState* thisx, s16 fileIndex, s16 isActive) {
 
         i = Save_GetSaveMetaInfo(fileIndex)->healthCapacity / 0x10;
 
-        if (CVarGetInteger("gFileSelectMoreInfo", 0) == 0 || this->menuMode != FS_MENU_MODE_SELECT) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("FileSelectMoreInfo"), 0) == 0 || this->menuMode != FS_MENU_MODE_SELECT) {
             // draw hearts
             for (vtxOffset = 0, j = 0; j < i; j++, vtxOffset += 4) {
                 gSPVertex(POLY_OPA_DISP++, &this->windowContentVtx[D_8081284C[fileIndex] + vtxOffset] + 0x30, 4, 0);
@@ -2046,7 +2046,7 @@ void FileChoose_DrawFileInfo(GameState* thisx, s16 fileIndex, s16 isActive) {
             textAlpha = 255;
         }
 
-        if (CVarGetInteger("gFileSelectMoreInfo", 0) != 0 && this->menuMode == FS_MENU_MODE_SELECT) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("FileSelectMoreInfo"), 0) != 0 && this->menuMode == FS_MENU_MODE_SELECT) {
             DrawMoreInfo(this, fileIndex, textAlpha);
         } else {
             // draw quest items
@@ -2336,7 +2336,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
                             this->fileInfoAlpha[fileIndex]);
 
             // Draw the small file name box instead when more meta info is enabled
-            if (CVarGetInteger("gFileSelectMoreInfo", 0) != 0 && this->menuMode == FS_MENU_MODE_SELECT) {
+            if (CVarGetInteger(CVAR_ENHANCEMENT("FileSelectMoreInfo"), 0) != 0 && this->menuMode == FS_MENU_MODE_SELECT) {
                 // Location of file 1 small name box vertices
                 gSPVertex(POLY_OPA_DISP++, &this->windowContentVtx[68], 4, 0);
 
@@ -2945,7 +2945,7 @@ void FileChoose_LoadGame(GameState* thisx) {
     gSaveContext.fileNum = this->buttonIndex;
     gSaveContext.gameMode = 0;
 
-    if ((this->buttonIndex == FS_BTN_SELECT_FILE_1 && CVarGetInteger("gDebugEnabled", 0)) || this->buttonIndex == 0xFF) {
+    if ((this->buttonIndex == FS_BTN_SELECT_FILE_1 && CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0)) || this->buttonIndex == 0xFF) {
         if (this->buttonIndex == 0xFF) {
             Sram_InitDebugSave();
         } else {
@@ -2976,7 +2976,7 @@ void FileChoose_LoadGame(GameState* thisx) {
     gSaveContext.seqId = (u8)NA_BGM_DISABLED;
     gSaveContext.natureAmbienceId = 0xFF;
     gSaveContext.showTitleCard = true;
-    if (!CVarGetInteger("gDogFollowsEverywhere", 0)) {
+    if (!CVarGetInteger(CVAR_ENHANCEMENT("DogFollowsEverywhere"), 0)) {
         gSaveContext.dogParams = 0;
     }
     gSaveContext.timer1State = 0;
@@ -3036,11 +3036,7 @@ void FileChoose_LoadGame(GameState* thisx) {
         Entrance_Init();
 
         // Handle randomized spawn positions after the save context has been setup from load
-        // When remeber save location is on, set save warp if the save was in an a grotto, or
-        // the entrance index is -1 from shuffle overwarld spawn
-        if (Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES) && ((!CVarGetInteger("gRememberSaveLocation", 0) ||
-            gSaveContext.savedSceneNum == SCENE_FAIRYS_FOUNTAIN || gSaveContext.savedSceneNum == SCENE_GROTTOS) ||
-            (CVarGetInteger("gRememberSaveLocation", 0) && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_SPAWNS) && gSaveContext.entranceIndex == ENTR_LOAD_OPENING))) {
+        if (Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
             Entrance_SetSavewarpEntrance();
         }
     }
@@ -3260,8 +3256,8 @@ void FileChoose_Main(GameState* thisx) {
     Input* input = &this->state.input[0];
 
     Color_RGB8 helpTextColor = { 100, 255, 255 };
-    if (CVarGetInteger("gCosmetics.Title_FileChoose.Changed", 0)) {
-        Color_RGB8 backgroundColor = CVarGetColor24("gCosmetics.Title_FileChoose.Value", (Color_RGB8){ 100, 150, 255 });
+    if (CVarGetInteger(CVAR_COSMETIC("Title.FileChoose.Changed"), 0)) {
+        Color_RGB8 backgroundColor = CVarGetColor24(CVAR_COSMETIC("Title.FileChoose.Value"), (Color_RGB8){ 100, 150, 255 });
         this->windowColor[0] = backgroundColor.r;
         this->windowColor[1] = backgroundColor.g;
         this->windowColor[2] = backgroundColor.b;
@@ -3286,19 +3282,19 @@ void FileChoose_Main(GameState* thisx) {
         sWindowContentColors[0][2] = 255;
     }
 
-    if (CVarGetInteger("gTimeFlowFileSelect", 0) != 0) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("TimeFlowFileSelect"), 0) != 0) {
         gSaveContext.skyboxTime += 0x10;
     }
 
-    if (CVarGetInteger("gSkipLogoTitle", 0) && CVarGetInteger("gSaveFileID", FASTFILE_1) <= FASTFILE_3 && !isFastFileIdIncompatible) {
-        if (Save_Exist(CVarGetInteger("gSaveFileID", FASTFILE_1)) && FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(CVarGetInteger("gSaveFileID", FASTFILE_1)))) {
-            this->buttonIndex = CVarGetInteger("gSaveFileID", FASTFILE_1);
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("SkipLogoTitle"), 0) && CVarGetInteger(CVAR_DEVELOPER_TOOLS("SaveFileID"), FASTFILE_1) <= FASTFILE_3 && !isFastFileIdIncompatible) {
+        if (Save_Exist(CVarGetInteger(CVAR_DEVELOPER_TOOLS("SaveFileID"), FASTFILE_1)) && FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(CVarGetInteger(CVAR_DEVELOPER_TOOLS("SaveFileID"), FASTFILE_1)))) {
+            this->buttonIndex = CVarGetInteger(CVAR_DEVELOPER_TOOLS("SaveFileID"), FASTFILE_1);
             this->menuMode = FS_MENU_MODE_SELECT;
             this->selectMode = SM_LOAD_GAME;
         } else {
             isFastFileIdIncompatible = 1;
         }
-    } else if (CVarGetInteger("gSkipLogoTitle", 0) && CVarGetInteger("gSaveFileID", FASTFILE_1) == FASTFILE_MAP_SELECT) {
+    } else if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("SkipLogoTitle"), 0) && CVarGetInteger(CVAR_DEVELOPER_TOOLS("SaveFileID"), FASTFILE_1) == FASTFILE_MAP_SELECT) {
         this->buttonIndex = 0xFF;
         this->menuMode = FS_MENU_MODE_SELECT;
         this->selectMode = SM_LOAD_GAME;

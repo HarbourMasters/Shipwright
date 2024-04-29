@@ -84,41 +84,66 @@ cd "build/x64"
 ```
 
 ## Linux
-Requires `gcc >= 10, x11, curl, python3, sdl2 >= 2.0.22, libpng, glew >= 2.2, ninja, cmake, lld, pulseaudio-libs`
+### Install dependencies
+#### Debian/Ubuntu
+```sh
+# using gcc
+apt-get install gcc g++ git cmake ninja-build lsb-release libsdl2-dev libpng-dev libsdl2-net-dev libzip-dev zipcmp zipmerge ziptool libboost-dev libopengl-dev
 
-**Important: For maximum performance make sure you have ninja build tools installed!**
+# or using clang
+apt-get install clang git cmake ninja-build lsb-release libsdl2-dev libpng-dev libsdl2-net-dev libzip-dev zipcmp zipmerge ziptool libboost-dev libopengl-dev
+```
+#### Arch
+```sh
+# using gcc
+pacman -S gcc git cmake ninja lsb-release sdl2 libpng libzip sdl2_net boost
 
-_Note: If you're using Visual Studio Code, the [cpack plugin](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools) makes it very easy to just press run and debug._
+# or using clang
+pacman -S clang git cmake ninja lsb-release sdl2 libpng libzip sdl2_net boost
+```
+#### Fedora
+```sh
+# using gcc
+dnf install gcc gcc-c++ git cmake ninja-build lsb_release SDL2-devel libpng-devel libzip-devel libzip-tools boost-devel
+
+# or using clang
+dnf install clang git cmake ninja-build lsb_release SDL2-devel libpng-devel libzip-devel libzip-tools boost-devel
+```
+#### openSUSE
+```sh
+# using gcc
+zypper in gcc gcc-c++ git cmake ninja SDL2-devel libpng16-devel libzip-devel libzip-tools
+
+# or using clang
+zypper in clang libstdc++-devel git cmake ninja SDL2-devel libpng16-devel libzip-devel libzip-tools
+```
+
+### Build
+
+_Note: If you're using Visual Studio Code, the [CMake Tools plugin](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools) makes it very easy to just press run and debug._
 
 ```bash
-# Clone the repo
+# Clone the repo and enter the directory
 git clone https://github.com/HarbourMasters/Shipwright.git
 cd Shipwright
-# Clone the submodule libultraship
+
+# Clone the submodules
 git submodule update --init
-# Copy the baserom to the OTRExporter folder
-cp <path to your ROM> OTRExporter
+
 # Generate Ninja project
 cmake -H. -Bbuild-cmake -GNinja # -DCMAKE_BUILD_TYPE:STRING=Release (if you're packaging) -DPython3_EXECUTABLE=$(which python3) (if you are using non-standard Python installations such as PyEnv)
-# Extract assets & generate OTR (run this anytime you need to regenerate OTR)
-cmake --build build-cmake --target ExtractAssets
+
+# Generate soh.otr
+cmake --build build-cmake --target GenerateSohOtr
+
 # Compile the project
 cmake --build build-cmake # --config Release (if you're packaging)
 
 # Now you can run the executable in ./build-cmake/soh/soh.elf
 # To develop the project open the repository in VSCode (or your preferred editor)
-
-# If you need to clean the project you can run
-cmake --build build-cmake --target clean
-
-# If you need to regenerate the asset headers to check them into source
-cmake --build build-cmake --target ExtractAssetHeaders
-
-# If you need a newer soh.otr only
-cmake --build build-cmake --target GenerateSohOtr
 ```
 
-### Generating a distributable
+### Generate a distributable
 After compiling the project you can generate a distributable by running of the following:
 ```bash
 # Go to build folder
@@ -127,6 +152,20 @@ cd build-cmake
 cpack -G DEB
 cpack -G ZIP
 cpack -G External (creates appimage)
+```
+
+### Additional CMake Targets
+#### Clean
+```bash
+# If you need to clean the project you can run
+cmake --build build-cmake --target clean
+```
+
+#### Regenerate Asset Headers
+```bash
+# If you need to regenerate the asset headers to check them into source
+cp <path to your ROM> OTRExporter
+cmake --build build-cmake --target ExtractAssetHeaders
 ```
 
 ## macOS

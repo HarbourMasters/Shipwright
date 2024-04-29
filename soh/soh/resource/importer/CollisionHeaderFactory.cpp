@@ -2,54 +2,14 @@
 #include "soh/resource/type/CollisionHeader.h"
 #include "spdlog/spdlog.h"
 
-namespace LUS {
-std::shared_ptr<IResource>
-CollisionHeaderFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
-    auto resource = std::make_shared<CollisionHeader>(initData);
-    std::shared_ptr<ResourceVersionFactory> factory = nullptr;
-
-    switch (resource->GetInitData()->ResourceVersion) {
-    case 0:
-        factory = std::make_shared<CollisionHeaderFactoryV0>();
-        break;
-    }
-
-    if (factory == nullptr) {
-        SPDLOG_ERROR("Failed to load Collision Header with version {}", resource->GetInitData()->ResourceVersion);
+namespace SOH {
+std::shared_ptr<Ship::IResource> ResourceFactoryBinaryCollisionHeaderV0::ReadResource(std::shared_ptr<Ship::File> file) {
+    if (!FileHasValidFormatAndReader(file)) {
         return nullptr;
     }
 
-    factory->ParseFileBinary(reader, resource);
-
-    return resource;
-}
-
-std::shared_ptr<IResource>
-CollisionHeaderFactory::ReadResourceXML(std::shared_ptr<ResourceInitData> initData, tinyxml2::XMLElement *reader) {
-    auto resource = std::make_shared<CollisionHeader>(initData);
-    std::shared_ptr<ResourceVersionFactory> factory = nullptr;
-
-    switch (resource->GetInitData()->ResourceVersion) {
-        case 0:
-            factory = std::make_shared<CollisionHeaderFactoryV0>();
-            break;
-    }
-
-    if (factory == nullptr) {
-        SPDLOG_ERROR("Failed to load Collision Header with version {}", resource->GetInitData()->ResourceVersion);
-        return nullptr;
-    }
-
-    factory->ParseFileXML(reader, resource);
-
-    return resource;
-}
-
-void LUS::CollisionHeaderFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
-                                                     std::shared_ptr<IResource> resource)
-{
-    std::shared_ptr<CollisionHeader> collisionHeader = std::static_pointer_cast<CollisionHeader>(resource);
-    ResourceVersionFactory::ParseFileBinary(reader, collisionHeader);
+    auto collisionHeader = std::make_shared<CollisionHeader>(file->InitData);
+    auto reader = std::get<std::shared_ptr<Ship::BinaryReader>>(file->Reader);
 
     collisionHeader->collisionHeaderData.minBounds.x = reader->ReadInt16();
     collisionHeader->collisionHeaderData.minBounds.y = reader->ReadInt16();
@@ -159,10 +119,19 @@ void LUS::CollisionHeaderFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader
         collisionHeader->waterBoxes.push_back(waterBox);
     }
     collisionHeader->collisionHeaderData.waterBoxes = collisionHeader->waterBoxes.data();
+
+    return collisionHeader;
 }
 
-void LUS::CollisionHeaderFactoryV0::ParseFileXML(tinyxml2::XMLElement* reader, std::shared_ptr<IResource> resource) {
-    std::shared_ptr<CollisionHeader> collisionHeader = std::static_pointer_cast<CollisionHeader>(resource);
+std::shared_ptr<Ship::IResource> ResourceFactoryXMLCollisionHeaderV0::ReadResource(std::shared_ptr<Ship::File> file) {
+    if (!FileHasValidFormatAndReader(file)) {
+        return nullptr;
+    }
+
+    auto collisionHeader = std::make_shared<CollisionHeader>(file->InitData);
+
+    auto reader = std::get<std::shared_ptr<tinyxml2::XMLDocument>>(file->Reader)->FirstChildElement();
+    auto child = reader->FirstChildElement();
 
     collisionHeader->collisionHeaderData.minBounds.x = reader->IntAttribute("MinBoundsX");
     collisionHeader->collisionHeaderData.minBounds.y = reader->IntAttribute("MinBoundsY");
@@ -177,8 +146,6 @@ void LUS::CollisionHeaderFactoryV0::ParseFileXML(tinyxml2::XMLElement* reader, s
     zero.y = 0;
     zero.z = 0;
     collisionHeader->camPosDataZero = zero;
-
-    auto child = reader->FirstChildElement();
 
     while (child != nullptr) {
         std::string childName = child->Name();
@@ -274,5 +241,7 @@ void LUS::CollisionHeaderFactoryV0::ParseFileXML(tinyxml2::XMLElement* reader, s
     collisionHeader->collisionHeaderData.cameraDataList = collisionHeader->camData.data();
     collisionHeader->collisionHeaderData.cameraDataListLen = collisionHeader->camDataCount;
     collisionHeader->collisionHeaderData.waterBoxes = collisionHeader->waterBoxes.data();
+
+    return collisionHeader;
 }
-}
+} // namespace SOH

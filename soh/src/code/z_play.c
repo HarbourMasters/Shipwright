@@ -675,7 +675,7 @@ void Play_Init(GameState* thisx) {
 
     Fault_AddClient(&D_801614B8, ZeldaArena_Display, NULL, NULL);
     // In order to keep bunny hood equipped on first load, we need to pre-set the age reqs for the item and slot
-    if ((CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA && CVarGetInteger("gAdultBunnyHood", 0)) || CVarGetInteger("gTimelessEquipment", 0)) {
+    if ((CVarGetInteger(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA && CVarGetInteger(CVAR_ENHANCEMENT("AdultBunnyHood"), 0)) || CVarGetInteger(CVAR_CHEAT("TimelessEquipment"), 0)) {
         gItemAgeReqs[ITEM_MASK_BUNNY] = AGE_REQ_NONE;
         if(INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_MASK_BUNNY)
             gSlotAgeReqs[SLOT_TRADE_CHILD] = AGE_REQ_NONE;
@@ -762,7 +762,7 @@ void Play_Init(GameState* thisx) {
     }
     #endif
 
-    if (CVarGetInteger("gIvanCoopModeEnabled", 0)) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("IvanCoopModeEnabled"), 0)) {
         Actor_Spawn(&play->actorCtx, play, gEnPartnerId, GET_PLAYER(play)->actor.world.pos.x,
                     GET_PLAYER(play)->actor.world.pos.y + Player_GetHeight(GET_PLAYER(play)) + 5.0f,
                     GET_PLAYER(play)->actor.world.pos.z, 0, 0, 0, 1, true);
@@ -1216,7 +1216,7 @@ void Play_Update(PlayState* play) {
                       gSaveContext.sohStats.sceneTimer++;
                       gSaveContext.sohStats.roomTimer++;
 
-                      if (CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA && Player_GetMask(play) == PLAYER_MASK_BUNNY) {
+                      if (CVarGetInteger(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA && Player_GetMask(play) == PLAYER_MASK_BUNNY) {
                           gSaveContext.sohStats.count[COUNT_TIME_BUNNY_HOOD]++;
                       }
                 }
@@ -1846,7 +1846,7 @@ void Play_Main(GameState* thisx) {
         LOG_NUM("1", 1);
     }
     
-    if (CVarGetInteger("gTimeSync", 0)) {
+    if (CVarGetInteger(CVAR_CHEAT("TimeSync"), 0)) {
         const int maxRealDaySeconds = 86400;
         const int maxInGameDayTicks = 65536;
 
@@ -2364,7 +2364,7 @@ void Play_PerformSave(PlayState* play) {
             IS_RANDO &&
             gSaveContext.triforcePiecesCollected == Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED) &&
             Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT);
-        if (CVarGetInteger("gAutosave", AUTOSAVE_OFF) != AUTOSAVE_OFF || triforceHuntCompleted) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("Autosave"), AUTOSAVE_OFF) != AUTOSAVE_OFF || triforceHuntCompleted) {
             Overlay_DisplayText(3.0f, "Game Saved");
         }
     }

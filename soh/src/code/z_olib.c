@@ -80,7 +80,7 @@ Vec3f* OLib_VecSphToVec3f(Vec3f* dest, VecSph* sph) {
     f32 sinYaw;
     f32 cosYaw;
 
-    if (CVarGetInteger("gFixCameraDrift", 0)) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("FixCameraDrift"), 0)) {
         cosPitch = Math_AccurateCosS(sph->pitch);
         cosYaw = Math_AccurateCosS(sph->yaw);
         sinPitch = Math_AccurateSinS(sph->pitch);

@@ -42,7 +42,7 @@ void EnRiverSound_Init(Actor* thisx, PlayState* play) {
     } else if (this->actor.params == RS_SARIAS_SONG) {
         // Always have leading music in rando
         if (
-            CVarGetInteger("gLostWoodsConsistentVolume", 0) ||
+            CVarGetInteger(CVAR_AUDIO("LostWoodsConsistentVolume"), 0) ||
             ((!CHECK_QUEST_ITEM(QUEST_SONG_LULLABY) || CHECK_QUEST_ITEM(QUEST_SONG_SARIA)) && !IS_RANDO)
         ) {
             Actor_Kill(&this->actor);

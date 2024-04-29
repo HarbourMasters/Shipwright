@@ -98,7 +98,7 @@ u16 func_80AA2AA0(PlayState* play, Actor* thisx) {
             return 0x2004;
         }
     }
-    if ((!(player->stateFlags1 & 0x800000)) &&
+    if ((!(player->stateFlags1 & PLAYER_STATE1_ON_HORSE)) &&
         (Actor_FindNearby(play, thisx, ACTOR_EN_HORSE, 1, 1200.0f) == NULL)) {
         return 0x2001;
     }

@@ -105,8 +105,8 @@ set(PROJECT_NAME soh)
 ################################################################################
 # Sources
 ################################################################################
-configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/src/boot/build.c.in ${CMAKE_BINARY_DIR}/build.c @ONLY)
-configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/src/boot/properties.h.in ${CMAKE_CURRENT_SOURCE_DIR}/properties.h @ONLY)
+configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/src/boot/build.c.in ${CMAKE_CURRENT_SOURCE_DIR}/src/boot/build.c @ONLY)
+configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/properties.h.in ${CMAKE_CURRENT_SOURCE_DIR}/properties.h @ONLY)
 
 set(Header_Files "resource.h")
 source_group("headers" FILES ${Header_Files})
@@ -217,8 +217,6 @@ source_group("soh\\resource\\importer\\scenecommand" REGULAR_EXPRESSION "soh/res
 # src (decomp) {{{
 file(GLOB_RECURSE src__ RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "src/*.c" "src/*.h")
 
-list(APPEND src__ ${CMAKE_BINARY_DIR}/build.c)
-list(APPEND src__ ${CMAKE_CURRENT_SOURCE_DIR}/properties.h)
 list(APPEND src__ ${CMAKE_CURRENT_SOURCE_DIR}/Resource.rc)
 list(FILTER src__ EXCLUDE REGEX "src/dmadata/*")
 list(FILTER src__ EXCLUDE REGEX "src/elf_message/*")
@@ -238,7 +236,6 @@ list(REMOVE_ITEM src__ "src/libultra/gu/sqrtf.c")
 list(REMOVE_ITEM src__ "src/libultra/gu/us2dex.c")
 
 source_group("src" REGULAR_EXPRESSION "src/*")
-source_group("src\\build" FILES ${CMAKE_BINARY_DIR}/build.c ${CMAKE_CURRENT_SOURCE_DIR}/properties.h ${CMAKE_CURRENT_SOURCE_DIR}/Resource.rc)
 source_group("src\\boot" REGULAR_EXPRESSION "src/boot/*")
 source_group("src\\buffers" REGULAR_EXPRESSION "src/buffers/*")
 source_group("src\\code" REGULAR_EXPRESSION "src/code/*")
@@ -328,7 +325,7 @@ endif()
 include(FetchContent)
 FetchContent_Declare(
     Boost
-    URL      https://sourceforge.net/projects/boost/files/boost/1.81.0/boost_1_81_0.tar.gz
+    URL      https://archives.boost.io/release/1.81.0/source/boost_1_81_0.tar.gz
     URL_HASH SHA256=205666dea9f6a7cfed87c7a6dfbeb52a2c1b9de55712c9c1a87735d7181452b6
     SOURCE_SUBDIR "null" # Set to a nonexistent directory so boost is not built (we don't need to build it)
     DOWNLOAD_EXTRACT_TIMESTAMP false # supress timestamp warning, not needed since the url wont change
@@ -356,7 +353,13 @@ set(SDL2-INCLUDE ${SDL2_INCLUDE_DIRS})
 
 if (BUILD_REMOTE_CONTROL)
     find_package(SDL2_net)
-    set(SDL2-NET-INCLUDE ${SDL_NET_INCLUDE_DIRS})
+
+    if(NOT SDL2_net_FOUND)
+        message(STATUS "SDL2_net not found (it's possible the version installed is too old). Disabling BUILD_REMOTE_CONTROL.")
+        set(BUILD_REMOTE_CONTROL 0)
+    else()
+        set(SDL2-NET-INCLUDE ${SDL_NET_INCLUDE_DIRS})
+    endif()
 endif()
 
 target_include_directories(${PROJECT_NAME} PRIVATE assets
@@ -623,6 +626,8 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
             -Wno-parentheses
             -Wno-narrowing
             -Wno-missing-braces
+            -Wno-int-conversion
+            -Wno-implicit-int
             $<$<COMPILE_LANGUAGE:C>:
                 -Werror-implicit-function-declaration
                 -Wno-incompatible-pointer-types
@@ -642,15 +647,6 @@ endif()
 ################################################################################
 # Pre build events
 ################################################################################
-if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
-	add_custom_command_if(
-		TARGET ${PROJECT_NAME}
-		PRE_BUILD
-		COMMANDS
-		COMMAND   $<CONFIG:Debug> copy /b $<SHELL_PATH:${CMAKE_BINARY_DIR}/>build.c +,,
-	)
-endif()
-
 if(NOT CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch|CafeOS")
     add_custom_command(
 		TARGET ${PROJECT_NAME}
