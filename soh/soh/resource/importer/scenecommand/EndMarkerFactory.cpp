@@ -17,7 +17,7 @@ EndMarkerFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
     return endMarker;
 }
 
-std::shared_ptr<LUS::IResource> EndMarkerFactoryXML::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData,
+std::shared_ptr<Ship::IResource> EndMarkerFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
                                                                    tinyxml2::XMLElement* reader) {
     auto endMarker = std::make_shared<EndMarker>(initData);
 

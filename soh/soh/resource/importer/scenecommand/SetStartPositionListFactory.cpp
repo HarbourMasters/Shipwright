@@ -34,7 +34,7 @@ std::shared_ptr<Ship::IResource> SetStartPositionListFactory::ReadResource(std::
     return setStartPositionList;
 }
 
-std::shared_ptr<LUS::IResource> SetStartPositionListFactoryXML::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData,
+std::shared_ptr<Ship::IResource> SetStartPositionListFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
                                                                    tinyxml2::XMLElement* reader) {
     auto setStartPositionList = std::make_shared<SetStartPositionList>(initData);
 

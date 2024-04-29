@@ -28,7 +28,7 @@ SetEntranceListFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> ini
     return setEntranceList;
 }
 
-std::shared_ptr<LUS::IResource> SetEntranceListFactoryXML::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData,
+std::shared_ptr<Ship::IResource> SetEntranceListFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
                                                                    tinyxml2::XMLElement* reader) {
     auto setEntranceList = std::make_shared<SetEntranceList>(initData);
 

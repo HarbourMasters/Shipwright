@@ -20,7 +20,7 @@ std::shared_ptr<Ship::IResource> SetSpecialObjectsFactory::ReadResource(std::sha
     return setSpecialObjects;
 }
 
-std::shared_ptr<LUS::IResource> SetSpecialObjectsFactoryXML::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData,
+std::shared_ptr<Ship::IResource> SetSpecialObjectsFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
                                                                    tinyxml2::XMLElement* reader) {
     auto setSpecialObjects = std::make_shared<SetSpecialObjects>(initData);
 

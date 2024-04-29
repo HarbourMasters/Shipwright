@@ -24,11 +24,11 @@ protected:
     std::shared_ptr<ISceneCommand> ParseSceneCommand(std::shared_ptr<Scene> scene, std::shared_ptr<Ship::BinaryReader> reader, uint32_t index);
 };
 
-class ResourceFactoryXMLSceneV0 : public LUS::ResourceFactoryXML {
+class ResourceFactoryXMLSceneV0 : public Ship::ResourceFactoryXML {
   public:
     ResourceFactoryXMLSceneV0();
 
-    std::shared_ptr<LUS::IResource> ReadResource(std::shared_ptr<LUS::File> file) override;
+    std::shared_ptr<Ship::IResource> ReadResource(std::shared_ptr<Ship::File> file) override;
     void ParseSceneCommands(std::shared_ptr<Scene> scene, std::shared_ptr<tinyxml2::XMLDocument> reader);
 
     // Doing something very similar to what we do on the ResourceLoader.

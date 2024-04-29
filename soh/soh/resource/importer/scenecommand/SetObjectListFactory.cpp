@@ -23,7 +23,7 @@ SetObjectListFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initD
     return setObjectList;
 }
 
-std::shared_ptr<LUS::IResource> SetObjectListFactoryXML::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData,
+std::shared_ptr<Ship::IResource> SetObjectListFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
                                                                    tinyxml2::XMLElement* reader) {
     auto setObjectList = std::make_shared<SetObjectList>(initData);
 

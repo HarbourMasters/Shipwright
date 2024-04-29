@@ -22,7 +22,7 @@ SetCsCameraFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initDat
     return setCsCamera;
 }
 
-std::shared_ptr<LUS::IResource> SetCsCameraFactoryXML::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData,
+std::shared_ptr<Ship::IResource> SetCsCameraFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
                                                                    tinyxml2::XMLElement* reader) {
     auto setCsCamera = std::make_shared<SetCsCamera>(initData);
 

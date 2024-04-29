@@ -20,7 +20,7 @@ std::shared_ptr<Ship::IResource> SetCameraSettingsFactory::ReadResource(std::sha
     return setCameraSettings;
 }
 
-std::shared_ptr<LUS::IResource> SetCameraSettingsFactoryXML::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData,
+std::shared_ptr<Ship::IResource> SetCameraSettingsFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
                                                                    tinyxml2::XMLElement* reader) {
     auto setCameraSettings = std::make_shared<SetCameraSettings>(initData);
 

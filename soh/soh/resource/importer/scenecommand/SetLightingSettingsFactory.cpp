@@ -51,7 +51,7 @@ std::shared_ptr<Ship::IResource> SetLightingSettingsFactory::ReadResource(std::s
     return setLightingSettings;
 }
 
-std::shared_ptr<LUS::IResource> SetLightingSettingsFactoryXML::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData,
+std::shared_ptr<Ship::IResource> SetLightingSettingsFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
                                                                    tinyxml2::XMLElement* reader) {
     auto setLightingSettings = std::make_shared<SetLightingSettings>(initData);
 

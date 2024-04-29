@@ -21,14 +21,14 @@ SetCutscenesFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initDa
     return setCutscenes;
 }
 
-std::shared_ptr<LUS::IResource> SetCutscenesFactoryXML::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData,
+std::shared_ptr<Ship::IResource> SetCutscenesFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
                                                                    tinyxml2::XMLElement* reader) {
     auto setCutscenes = std::make_shared<SetCutscenes>(initData);
 
     setCutscenes->cmdId = SceneCommandID::SetCutscenes;
 
     setCutscenes->fileName = reader->Attribute("FileName");
-    setCutscenes->cutscene = std::static_pointer_cast<Cutscene>(LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(setCutscenes->fileName.c_str()));
+    setCutscenes->cutscene = std::static_pointer_cast<Cutscene>(Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(setCutscenes->fileName.c_str()));
 
     return setCutscenes;
 }

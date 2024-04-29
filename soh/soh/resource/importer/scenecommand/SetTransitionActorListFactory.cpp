@@ -36,7 +36,7 @@ std::shared_ptr<Ship::IResource> SetTransitionActorListFactory::ReadResource(std
     return setTransitionActorList;
 }
 
-std::shared_ptr<LUS::IResource> SetTransitionActorListFactoryXML::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData,
+std::shared_ptr<Ship::IResource> SetTransitionActorListFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
                                                                    tinyxml2::XMLElement* reader) {
     auto setTransitionActorList = std::make_shared<SetTransitionActorList>(initData);
 

@@ -34,7 +34,7 @@ SetActorListFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initDa
     return setActorList;
 }
 
-std::shared_ptr<LUS::IResource> SetActorListFactoryXML::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData,
+std::shared_ptr<Ship::IResource> SetActorListFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
                                                                    tinyxml2::XMLElement* reader) {
     auto setActorList = std::make_shared<SetActorList>(initData);
 

@@ -20,7 +20,7 @@ std::shared_ptr<Ship::IResource> SetSkyboxModifierFactory::ReadResource(std::sha
     return setSkyboxModifier;
 }
 
-std::shared_ptr<LUS::IResource> SetSkyboxModifierFactoryXML::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData,
+std::shared_ptr<Ship::IResource> SetSkyboxModifierFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
                                                                    tinyxml2::XMLElement* reader) {
     auto setSkyboxModifier = std::make_shared<SetSkyboxModifier>(initData);
 

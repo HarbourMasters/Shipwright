@@ -31,7 +31,7 @@ SetRoomListFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initDat
     return setRoomList;
 }
 
-std::shared_ptr<LUS::IResource> SetRoomListFactoryXML::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData,
+std::shared_ptr<Ship::IResource> SetRoomListFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
                                                                    tinyxml2::XMLElement* reader) {
     auto setRoomList = std::make_shared<SetRoomList>(initData);
 

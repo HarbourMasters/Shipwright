@@ -20,7 +20,7 @@ SetRoomBehaviorFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> ini
     return setRoomBehavior;
 }
 
-std::shared_ptr<LUS::IResource> SetRoomBehaviorFactoryXML::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData,
+std::shared_ptr<Ship::IResource> SetRoomBehaviorFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
                                                                    tinyxml2::XMLElement* reader) {
     auto setRoomBehavior = std::make_shared<SetRoomBehavior>(initData);
 

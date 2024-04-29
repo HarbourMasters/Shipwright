@@ -21,14 +21,14 @@ std::shared_ptr<Ship::IResource> SetCollisionHeaderFactory::ReadResource(std::sh
     return setCollisionHeader;
 }
 
-std::shared_ptr<LUS::IResource> SetCollisionHeaderFactoryXML::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData,
+std::shared_ptr<Ship::IResource> SetCollisionHeaderFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
                                                                    tinyxml2::XMLElement* reader) {
     auto setCollisionHeader = std::make_shared<SetCollisionHeader>(initData);
 
     setCollisionHeader->cmdId = SceneCommandID::SetCollisionHeader;
 
     setCollisionHeader->fileName = reader->Attribute("FileName");
-    setCollisionHeader->collisionHeader = std::static_pointer_cast<CollisionHeader>(LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(setCollisionHeader->fileName.c_str()));
+    setCollisionHeader->collisionHeader = std::static_pointer_cast<CollisionHeader>(Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(setCollisionHeader->fileName.c_str()));
 
     return setCollisionHeader;
 }

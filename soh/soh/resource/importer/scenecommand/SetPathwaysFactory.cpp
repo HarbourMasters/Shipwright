@@ -26,7 +26,7 @@ SetPathwaysFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initDat
     return setPathways;
 }
 
-std::shared_ptr<LUS::IResource> SetPathwaysFactoryXML::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData,
+std::shared_ptr<Ship::IResource> SetPathwaysFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
                                                                    tinyxml2::XMLElement* reader) {
     auto setPathways = std::make_shared<SetPathways>(initData);
 
@@ -38,7 +38,7 @@ std::shared_ptr<LUS::IResource> SetPathwaysFactoryXML::ReadResource(std::shared_
         std::string childName = child->Name();
         if (childName == "Pathway") {
             std::string pathFileName = child->Attribute("FilePath");
-            auto path = std::static_pointer_cast<Path>(LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(pathFileName.c_str()));
+            auto path = std::static_pointer_cast<Path>(Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(pathFileName.c_str()));
             setPathways->paths.push_back(path->GetPointer());
             setPathways->pathFileNames.push_back(pathFileName);
         }

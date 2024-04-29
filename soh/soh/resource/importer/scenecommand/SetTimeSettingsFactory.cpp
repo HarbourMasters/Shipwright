@@ -21,7 +21,7 @@ SetTimeSettingsFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> ini
     return setTimeSettings;
 }
 
-std::shared_ptr<LUS::IResource> SetTimeSettingsFactoryXML::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData,
+std::shared_ptr<Ship::IResource> SetTimeSettingsFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
                                                                    tinyxml2::XMLElement* reader) {
     auto setTimeSettings = std::make_shared<SetTimeSettings>(initData);
 

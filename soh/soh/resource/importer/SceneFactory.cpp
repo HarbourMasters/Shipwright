@@ -200,7 +200,7 @@ std::shared_ptr<ISceneCommand> ResourceFactoryXMLSceneV0::ParseSceneCommand(std:
     auto commandFactory = ResourceFactoryXMLSceneV0::sceneCommandFactories[cmdID];
 
     if (commandFactory != nullptr) {
-        auto initData = std::make_shared<LUS::ResourceInitData>();
+        auto initData = std::make_shared<Ship::ResourceInitData>();
         initData->Id = scene->GetInitData()->Id;
         initData->Type = static_cast<uint32_t>(ResourceType::SOH_SceneCommand);
         initData->Path = scene->GetInitData()->Path + "/SceneCommand" + std::to_string(index);
@@ -216,7 +216,7 @@ std::shared_ptr<ISceneCommand> ResourceFactoryXMLSceneV0::ParseSceneCommand(std:
     return result;
 }
 
-std::shared_ptr<LUS::IResource> ResourceFactoryXMLSceneV0::ReadResource(std::shared_ptr<LUS::File> file) {
+std::shared_ptr<Ship::IResource> ResourceFactoryXMLSceneV0::ReadResource(std::shared_ptr<Ship::File> file) {
     if (!FileHasValidFormatAndReader(file)) {
         return nullptr;
     }

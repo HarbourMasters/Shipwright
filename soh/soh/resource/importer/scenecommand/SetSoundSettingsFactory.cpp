@@ -21,7 +21,7 @@ std::shared_ptr<Ship::IResource> SetSoundSettingsFactory::ReadResource(std::shar
     return setSoundSettings;
 }
 
-std::shared_ptr<LUS::IResource> SetSoundSettingsFactoryXML::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData,
+std::shared_ptr<Ship::IResource> SetSoundSettingsFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
                                                                    tinyxml2::XMLElement* reader) {
     auto setSoundSettings = std::make_shared<SetSoundSettings>(initData);
 

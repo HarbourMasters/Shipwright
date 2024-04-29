@@ -22,7 +22,7 @@ SetWindSettingsFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> ini
     return setWind;
 }
 
-std::shared_ptr<LUS::IResource> SetWindSettingsFactoryXML::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData,
+std::shared_ptr<Ship::IResource> SetWindSettingsFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
                                                                    tinyxml2::XMLElement* reader) {
     auto setWind = std::make_shared<SetWindSettings>(initData);
 
