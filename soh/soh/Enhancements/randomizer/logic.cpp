@@ -291,13 +291,13 @@ namespace Rando {
         Slingshot = (BuySeed || AmmoCanDrop) && BulletBag;
         Magic     = (AmmoCanDrop || (HasBottle && (BuyMagicPotion))) && MagicMeter;
         Bombs     = (BuyBomb || AmmoCanDrop) && BombBag;
-        Bombchus  = BombchuRefill && BombchuBag && (ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) || BombBag);
+        Bombchus  = BombchuRefill && ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) ? BombchuBag : BombBag;
         Bow       = (BuyArrow || AmmoCanDrop) && Quiver;
         Nuts      = ((NutPot  || NutCrate || DekuBabaNuts) && AmmoCanDrop) || Nuts; //RANDOTODO BuyNuts currently mixed in with Nuts, should be seperate as BuyNuts are also a Nuts source
         Sticks    = (StickPot || DekuBabaSticks) || Sticks;
         Bugs      = HasBottle && (BugShrub || WanderingBugs || BugRock || BuyBugs);
         BlueFire  = (HasBottle && BlueFireAccess) || (ctx->GetOption(RSK_BLUE_FIRE_ARROWS) && CanUse(RG_ICE_ARROWS));
-        Fish      = HasBottle && (LoneFish || FishGroup || BuyFish); //RANDOTODO is there any need to care about lone vs group?
+        Fish      = HasBottle && (LoneFish || FishGroup || BuyFish); //is there any need to care about lone vs group?
         Fairy     = HasBottle && FairyAccess;
 
         // TODO: Implement Ammo Drop Setting in place of bombchu drops
