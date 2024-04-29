@@ -1929,11 +1929,11 @@ void DrawRandomizerMenu() {
 
         if (ImGui::BeginMenu("Rando Enhancements"))
         {
-            UIWidgets::EnhancementCheckbox("Rando-Relevant Navi Hints", CVAR_RANDOMIZER_ENHANCEMENT("RandoRelevantNavi"), false, "", UIWidgets::CheckboxGraphics::Cross, true);
+            UIWidgets::EnhancementCheckbox("Rando-Relevant Navi Hints", CVAR_RANDOMIZER_ENHANCEMENT_RELEVANT_NAVI, false, "", UIWidgets::CheckboxGraphics::Cross, true);
             UIWidgets::Tooltip(
                 "Replace Navi's overworld quest hints with rando-related gameplay hints."
             );
-            UIWidgets::PaddedEnhancementCheckbox("Random Rupee Names", CVAR_RANDOMIZER_ENHANCEMENT("RandomizeRupeeNames"), true, false, false, "", UIWidgets::CheckboxGraphics::Cross, true);
+            UIWidgets::PaddedEnhancementCheckbox("Random Rupee Names", CVAR_RANDOMIZER_ENHANCEMENT_RUPEE_NAMES, true, false, false, "", UIWidgets::CheckboxGraphics::Cross, true);
             UIWidgets::Tooltip(
                 "When obtaining rupees, randomize what the rupee is called in the textbox."
             );
@@ -1959,13 +1959,13 @@ void DrawRandomizerMenu() {
                 "This setting is disabled because a savefile is loaded without any key\n"
                 "shuffle settings set to \"Any Dungeon\", \"Overworld\" or \"Anywhere\"";
 
-            UIWidgets::PaddedEnhancementCheckbox("Key Colors Match Dungeon", CVAR_RANDOMIZER_ENHANCEMENT("MatchKeyColors"), true, false,
+            UIWidgets::PaddedEnhancementCheckbox("Key Colors Match Dungeon", CVAR_RANDOMIZER_ENHANCEMENT_MATCH_KEY_COLORS, true, false,
                                                   disableKeyColors, disableKeyColorsText, UIWidgets::CheckboxGraphics::Cross, true);
             UIWidgets::Tooltip(
                 "Matches the color of small keys and boss keys to the dungeon they belong to. "
                 "This helps identify keys from afar and adds a little bit of flair.\n\nThis only "
                 "applies to seeds with keys and boss keys shuffled to Any Dungeon, Overworld, or Anywhere.");
-            UIWidgets::PaddedEnhancementCheckbox("Quest Item Fanfares", CVAR_RANDOMIZER_ENHANCEMENT("QuestItemFanfares"), true, false);
+            UIWidgets::PaddedEnhancementCheckbox("Quest Item Fanfares", CVAR_RANDOMIZER_ENHANCEMENT_QUEST_ITEM_FANFARES, true, false);
             UIWidgets::Tooltip(
                 "Play unique fanfares when obtaining quest items "
                 "(medallions/stones/songs). Note that these fanfares are longer than usual."

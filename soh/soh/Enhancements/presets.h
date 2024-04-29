@@ -485,10 +485,10 @@ const std::vector<const char*> randomizerCvars = {
     CVAR_RANDOMIZER_SETTING("TriforceHunt"),
     CVAR_RANDOMIZER_SETTING("ShuffleMasterSword"),
     CVAR_RANDOMIZER_SETTING("SariaHint"),
-    CVAR_RANDOMIZER_ENHANCEMENT("RandomizeRupeeNames"),
+    CVAR_RANDOMIZER_ENHANCEMENT_RUPEE_NAMES,
     CVAR_RANDOMIZER_SETTING("FrogsHint"),
-    CVAR_RANDOMIZER_ENHANCEMENT("RandoRelevantNavi"),
-    CVAR_RANDOMIZER_ENHANCEMENT("QuestItemFanfares"),
+    CVAR_RANDOMIZER_ENHANCEMENT_RELEVANT_NAVI,
+    CVAR_RANDOMIZER_ENHANCEMENT_QUEST_ITEM_FANFARES,
 };
 
 const std::vector<PresetEntry> vanillaPlusPresetEntries = {
