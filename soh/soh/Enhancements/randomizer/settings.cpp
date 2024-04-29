@@ -158,7 +158,8 @@ void Settings::CreateOptions() {
     mOptions[RSK_HINT_CLARITY] = Option::U8("Hint Clarity", {"Obscure", "Ambiguous", "Clear"}, OptionCategory::Setting, "gRandomizeHintClarity", mOptionDescriptions[RSK_HINT_CLARITY], WidgetType::Combobox, RO_HINT_CLARITY_CLEAR, true, IMFLAG_INDENT);
     mOptions[RSK_HINT_DISTRIBUTION] = Option::U8("Hint Distribution", {"Useless", "Balanced", "Strong", "Very Strong"}, OptionCategory::Setting, "gRandomizeHintDistribution", mOptionDescriptions[RSK_HINT_DISTRIBUTION], WidgetType::Combobox, RO_HINT_DIST_BALANCED, true, IMFLAG_UNINDENT);
     mOptions[RSK_TOT_ALTAR_HINT] = Option::Bool("ToT Altar Hint", {"Off", "On"}, OptionCategory::Setting, "gRandomizeAltarHint", mOptionDescriptions[RSK_TOT_ALTAR_HINT], WidgetType::Checkbox, RO_GENERIC_ON, false, IMFLAG_INDENT);
-    mOptions[RSK_LIGHT_ARROWS_HINT] = Option::Bool("Light Arrow Hint", {"Off", "On"}, OptionCategory::Setting, "gRandomizeLAHint", mOptionDescriptions[RSK_LIGHT_ARROWS_HINT], WidgetType::Checkbox, RO_GENERIC_ON, false, IMFLAG_NONE);
+    mOptions[RSK_GANONDORF_HINT] = Option::Bool("Ganondorf Hint", {"Off", "On"}, OptionCategory::Setting, "gRandomizeGanondorfHint", mOptionDescriptions[RSK_GANONDORF_HINT], WidgetType::Checkbox, RO_GENERIC_ON, false, IMFLAG_NONE);
+    mOptions[RSK_SHEIK_LA_HINT] = Option::Bool("Sheik Light Arrow Hint", {"Off", "On"}, OptionCategory::Setting, "gRandomizeSheikLAHint", mOptionDescriptions[RSK_SHEIK_LA_HINT], WidgetType::Checkbox, RO_GENERIC_ON, false, IMFLAG_NONE);
     mOptions[RSK_DAMPES_DIARY_HINT] = Option::Bool("Dampe's Diary Hint", "gRandomizeDampeHint", mOptionDescriptions[RSK_DAMPES_DIARY_HINT], IMFLAG_NONE);
     mOptions[RSK_GREG_HINT] = Option::Bool("Greg the Green Rupee Hint", "gRandomizeGregHint", mOptionDescriptions[RSK_GREG_HINT], IMFLAG_NONE);
     mOptions[RSK_SARIA_HINT] = Option::Bool("Saria's Hint", "gRandomizeSariaHint", mOptionDescriptions[RSK_SARIA_HINT], IMFLAG_NONE);
@@ -208,8 +209,6 @@ void Settings::CreateOptions() {
     mOptions[RSK_ALL_LOCATIONS_REACHABLE] = Option::Bool("All Locations Reachable", {"Off", "On"}, OptionCategory::Setting, "gRandomizeAllLocationsReachable", mOptionDescriptions[RSK_ALL_LOCATIONS_REACHABLE], WidgetType::Checkbox, RO_GENERIC_ON);
     mOptions[RSK_SKULLS_SUNS_SONG] = Option::Bool("Night Skulltula's Expect Sun's Song", "gRandomizeGsExpectSunsSong", mOptionDescriptions[RSK_SKULLS_SUNS_SONG]);
     mOptions[RSK_DAMAGE_MULTIPLIER] = Option::U8("Damage Multiplier", {"x1/2", "x1", "x2", "x4", "x8", "x16", "OHKO"}, OptionCategory::Setting, "", "", WidgetType::Slider, RO_DAMAGE_MULTIPLIER_DEFAULT);
-
-    mOptions[RSK_LANGUAGE] = Option::U8("Language", {"English", "German", "French"}, OptionCategory::Setting, "gLanguages", "", WidgetType::Combobox, LANGUAGE_ENG);
     // clang-format on
 
     mExcludeLocationsOptionsGroups.reserve(SPOILER_COLLECTION_GROUP_COUNT);
@@ -729,7 +728,8 @@ void Settings::CreateOptions() {
     }, false, WidgetContainerType::SECTION);
     mOptionGroups[RSG_EXTRA_HINTS_IMGUI] = OptionGroup::SubGroup("Extra Hints", {
         &mOptions[RSK_TOT_ALTAR_HINT],
-        &mOptions[RSK_LIGHT_ARROWS_HINT],
+        &mOptions[RSK_GANONDORF_HINT],
+        &mOptions[RSK_SHEIK_LA_HINT],
         &mOptions[RSK_DAMPES_DIARY_HINT],
         &mOptions[RSK_GREG_HINT],
         &mOptions[RSK_SARIA_HINT],
@@ -956,7 +956,8 @@ void Settings::CreateOptions() {
         &mOptions[RSK_HINT_CLARITY],
         &mOptions[RSK_HINT_DISTRIBUTION],
         &mOptions[RSK_TOT_ALTAR_HINT],
-        &mOptions[RSK_LIGHT_ARROWS_HINT],
+        &mOptions[RSK_GANONDORF_HINT],
+        &mOptions[RSK_SHEIK_LA_HINT],
         &mOptions[RSK_DAMPES_DIARY_HINT],
         &mOptions[RSK_GREG_HINT],
         &mOptions[RSK_SARIA_HINT],
@@ -1173,7 +1174,8 @@ void Settings::CreateOptions() {
         { "Miscellaneous Settings:Gossip Stone Hints", RSK_GOSSIP_STONE_HINTS },
         { "Miscellaneous Settings:Hint Clarity", RSK_HINT_CLARITY },
         { "Miscellaneous Settings:ToT Altar Hint", RSK_TOT_ALTAR_HINT },
-        { "Miscellaneous Settings:Light Arrow Hint", RSK_LIGHT_ARROWS_HINT },
+        { "Miscellaneous Settings:Ganondorf Hint", RSK_GANONDORF_HINT },
+        { "Miscellaneous Settings:Sheik Light Arrow Hint", RSK_SHEIK_LA_HINT },
         { "Miscellaneous Settings:Dampe's Diary Hint", RSK_DAMPES_DIARY_HINT },
         { "Miscellaneous Settings:Greg the Rupee Hint", RSK_GREG_HINT },
         { "Miscellaneous Settings:Saria's Hint", RSK_SARIA_HINT },
@@ -2280,7 +2282,8 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
                 case RSK_SUNLIGHT_ARROWS:
                 case RSK_BOMBCHUS_IN_LOGIC:
                 case RSK_TOT_ALTAR_HINT:
-                case RSK_LIGHT_ARROWS_HINT:
+                case RSK_GANONDORF_HINT:
+                case RSK_SHEIK_LA_HINT:
                 case RSK_DAMPES_DIARY_HINT:
                 case RSK_GREG_HINT:
                 case RSK_SARIA_HINT:
@@ -2644,7 +2647,7 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
 
     ctx->AddExcludedOptions();
     for (auto it = jsonExcludedLocations.begin(); it != jsonExcludedLocations.end(); ++it) {
-        const RandomizerCheck rc = StaticData::SpoilerfileCheckNameToEnum[it.value()];
+        const RandomizerCheck rc = Rando::StaticData::locationNameToEnum[it.value()];
         ctx->GetItemLocation(rc)->GetExcludedOption()->SetSelectedIndex(RO_GENERIC_ON);
     }
 

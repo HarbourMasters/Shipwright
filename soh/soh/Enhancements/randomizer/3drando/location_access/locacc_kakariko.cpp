@@ -281,7 +281,7 @@ void AreaTable_Init_Kakariko() {
                   EventAccess(&logic->GossipStoneFairy, {[]{return logic->GossipStoneFairy || logic->CanSummonGossipFairyWithoutSuns;}}),
                 }, {
                   //Locations
-                  LocationAccess(RC_GY_GOSSIP_STONE, {[]{return true;}}),
+                  LocationAccess(RC_GRAVEYARD_GOSSIP_STONE, {[]{return true;}}),
                 }, {
                   //Exits
                   Entrance(RR_THE_GRAVEYARD,             {[]{return true;}}),
