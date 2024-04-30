@@ -139,7 +139,7 @@ namespace SohGui {
     void SetupGuiElements() {
         auto gui = Ship::Context::GetInstance()->GetWindow()->GetGui();
 
-        mSohMenuBar = std::make_shared<SohMenuBar>("gOpenMenuBar", CVarGetInteger("gOpenMenuBar", 0));
+        mSohMenuBar = std::make_shared<SohMenuBar>(CVAR_MENU_BAR_OPEN, CVarGetInteger(CVAR_MENU_BAR_OPEN, 0));
         gui->SetMenuBar(std::reinterpret_pointer_cast<Ship::GuiMenuBar>(mSohMenuBar));
 
         if (gui->GetMenuBar() && !gui->GetMenuBar()->IsVisible()) {

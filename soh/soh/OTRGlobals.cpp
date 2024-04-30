@@ -318,13 +318,13 @@ OTRGlobals::OTRGlobals() {
     context->InitCrashHandler();
     context->InitConsole();
 
-    auto sohInputEditorWindow = std::make_shared<SohInputEditorWindow>("gControllerConfigurationEnabled", "Input Editor");
+    auto sohInputEditorWindow = std::make_shared<SohInputEditorWindow>(CVAR_CONTROLLER_CONFIGURATION_WINDOW_OPEN, "Input Editor");
     context->InitWindow(sohInputEditorWindow);
 
     auto overlay = context->GetInstance()->GetWindow()->GetGui()->GetGameOverlay();
     overlay->LoadFont("Press Start 2P", "fonts/PressStart2P-Regular.ttf", 12.0f);
     overlay->LoadFont("Fipps", "fonts/Fipps-Regular.otf", 32.0f);
-    overlay->SetCurrentFont(CVarGetString("gOverlayFont", "Press Start 2P"));
+    overlay->SetCurrentFont(CVarGetString(CVAR_GAME_OVERLAY_FONT, "Press Start 2P"));
 
     context->InitAudio();
 
@@ -1330,13 +1330,13 @@ extern "C" void Graph_StartFrame() {
     }
 #endif
 
-    if (CVarGetInteger("gNewFileDropped", 0)) {
-        std::string filePath = SohUtils::Sanitize(CVarGetString("gDroppedFile", ""));
+    if (CVarGetInteger(CVAR_NEW_FILE_DROPPED, 0)) {
+        std::string filePath = SohUtils::Sanitize(CVarGetString(CVAR_DROPPED_FILE, ""));
         if (!filePath.empty()) {
             GameInteractor::Instance->ExecuteHooks<GameInteractor::OnFileDropped>(filePath);
         }
-        CVarClear("gNewFileDropped");
-        CVarClear("gDroppedFile");
+        CVarClear(CVAR_NEW_FILE_DROPPED);
+        CVarClear(CVAR_DROPPED_FILE);
     }
 
     OTRGlobals::Instance->context->GetWindow()->StartFrame();
@@ -1408,7 +1408,7 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
         ToggleAltAssetsAtEndOfFrame = false;
 
         // Actually update the CVar now before runing the alt asset update listeners
-        CVarSetInteger("gAltAssets", !CVarGetInteger("gAltAssets", 0));
+        CVarSetInteger(CVAR_ALT_ASSETS, !CVarGetInteger(CVAR_ALT_ASSETS, 0));
         gfx_texture_cache_clear();
         SOH::SkeletonPatcher::UpdateSkeletons();
         GameInteractor::Instance->ExecuteHooks<GameInteractor::OnAssetAltChange>();
@@ -1587,7 +1587,7 @@ extern "C" uint8_t ResourceMgr_FileAltExists(const char* filePath) {
 // Unloads a resource if an alternate version exists when alt assets are enabled
 // The resource is only removed from the internal cache to prevent it from used in the next resource lookup
 extern "C" void ResourceMgr_UnloadOriginalWhenAltExists(const char* resName) {
-    if (CVarGetInteger("gAltAssets", 0) && ResourceMgr_FileAltExists((char*) resName)) {
+    if (CVarGetInteger(CVAR_ALT_ASSETS, 0) && ResourceMgr_FileAltExists((char*) resName)) {
         ResourceMgr_UnloadResource((char*) resName);
     }
 }
@@ -1938,7 +1938,7 @@ extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path, Skel
         pathStr = pathStr.substr(sOtr.length());
     }
 
-    bool isAlt = CVarGetInteger("gAltAssets", 0);
+    bool isAlt = CVarGetInteger(CVAR_ALT_ASSETS, 0);
 
     if (isAlt) {
         pathStr = Ship::IResource::gAltAssetPrefix + pathStr;

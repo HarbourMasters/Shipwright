@@ -231,7 +231,7 @@ void DrawSettingsMenu() {
             ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
             ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
             if (mInputEditorWindow) {
-                if (ImGui::Button(GetWindowButtonText("Controller Mapping", CVarGetInteger("gControllerConfigurationEnabled", 0)).c_str(), ImVec2 (-1.0f, 0.0f))) {
+                if (ImGui::Button(GetWindowButtonText("Controller Mapping", CVarGetInteger(CVAR_CONTROLLER_CONFIGURATION_WINDOW_OPEN, 0)).c_str(), ImVec2 (-1.0f, 0.0f))) {
                     mInputEditorWindow->ToggleVisibility();
                 }
             }
@@ -239,7 +239,7 @@ void DrawSettingsMenu() {
             ImGui::PopStyleColor(1);
             ImGui::PopStyleVar(3);
         #ifndef __SWITCH__
-            UIWidgets::EnhancementCheckbox("Menubar Controller Navigation", "gControlNav");
+            UIWidgets::EnhancementCheckbox("Menubar Controller Navigation", CVAR_IMGUI_CONTROLLER_NAV);
             UIWidgets::Tooltip("Allows controller navigation of the SOH menu bar (Settings, Enhancements,...)\nCAUTION: This will disable game inputs while the menubar is visible.\n\nD-pad to move between items, A to select, and X to grab focus on the menu bar");
             UIWidgets::PaddedSeparator();
         #endif
@@ -260,7 +260,7 @@ void DrawSettingsMenu() {
             ImGui::PopStyleColor(1);
             ImGui::PopStyleVar(3);
 
-            UIWidgets::PaddedEnhancementSliderInt("Simulated Input Lag: %d frames", "##SimulatedInputLag", "gSimulatedInputLag", 0, 6, "", 0, true, true, false);
+            UIWidgets::PaddedEnhancementSliderInt("Simulated Input Lag: %d frames", "##SimulatedInputLag", CVAR_SIMULATED_INPUT_LAG, 0, 6, "", 0, true, true, false);
             UIWidgets::Tooltip("Buffers your inputs to be executed a specified amount of frames later");
 
             ImGui::EndMenu();
@@ -272,9 +272,9 @@ void DrawSettingsMenu() {
         #ifndef __APPLE__
             const bool disabled_resolutionSlider = CVarGetInteger("gAdvancedResolution.VerticalResolutionToggle", 0) &&
                                                    CVarGetInteger("gAdvancedResolution.Enabled", 0);
-            if (UIWidgets::EnhancementSliderFloat("Internal Resolution: %.1f %%", "##IMul", "gInternalResolution", 0.5f,
+            if (UIWidgets::EnhancementSliderFloat("Internal Resolution: %.1f %%", "##IMul", CVAR_INTERNAL_RESOLUTION, 0.5f,
                                                   2.0f, "", 1.0f, true, true, disabled_resolutionSlider)) {
-                Ship::Context::GetInstance()->GetWindow()->SetResolutionMultiplier(CVarGetFloat("gInternalResolution", 1));
+                Ship::Context::GetInstance()->GetWindow()->SetResolutionMultiplier(CVarGetFloat(CVAR_INTERNAL_RESOLUTION, 1));
             }
             UIWidgets::Tooltip("Resolution scale. Multiplies output resolution by this value, on each axis relative to window size.\n"
                                "Lower values may improve performance.\n"
@@ -305,9 +305,9 @@ void DrawSettingsMenu() {
 
         #ifndef __WIIU__
             if (UIWidgets::PaddedEnhancementSliderInt(
-                    (CVarGetInteger("gMSAAValue", 1) == 1) ? "Anti-aliasing (MSAA): Off" : "Anti-aliasing (MSAA): %d",
-                    "##IMSAA", "gMSAAValue", 1, 8, "", 1, true, true, false)) {
-                Ship::Context::GetInstance()->GetWindow()->SetMsaaLevel(CVarGetInteger("gMSAAValue", 1));
+                    (CVarGetInteger(CVAR_MSAA_VALUE, 1) == 1) ? "Anti-aliasing (MSAA): Off" : "Anti-aliasing (MSAA): %d",
+                    "##IMSAA", CVAR_MSAA_VALUE, 1, 8, "", 1, true, true, false)) {
+                Ship::Context::GetInstance()->GetWindow()->SetMsaaLevel(CVarGetInteger(CVAR_MSAA_VALUE, 1));
             }
             UIWidgets::Tooltip("Activates MSAA (multi-sample anti-aliasing) from 2x up to 8x, to smooth the edges of rendered geometry.\n"
                                "Higher sample count will result in smoother edges on models, but may reduce performance.\n\n"
@@ -479,22 +479,22 @@ void DrawSettingsMenu() {
             }
 
             if (Ship::Context::GetInstance()->GetWindow()->CanDisableVerticalSync()) {
-                UIWidgets::PaddedEnhancementCheckbox("Enable Vsync", "gVsyncEnabled", true, false);
+                UIWidgets::PaddedEnhancementCheckbox("Enable Vsync", CVAR_VSYNC_ENABLED, true, false);
                 UIWidgets::Tooltip("Activate vertical sync, to prevent screen tearing.");
             }
 
             if (Ship::Context::GetInstance()->GetWindow()->SupportsWindowedFullscreen()) {
-                UIWidgets::PaddedEnhancementCheckbox("Windowed fullscreen", "gSdlWindowedFullscreen", true, false);
+                UIWidgets::PaddedEnhancementCheckbox("Windowed fullscreen", CVAR_SDL_WINDOWED_FULLSCREEN, true, false);
             }
 
             if (Ship::Context::GetInstance()->GetWindow()->GetGui()->SupportsViewports()) {
-                UIWidgets::PaddedEnhancementCheckbox("Allow multi-windows (Needs reload)", "gEnableMultiViewports", true, false, false, "", UIWidgets::CheckboxGraphics::Cross, true);
+                UIWidgets::PaddedEnhancementCheckbox("Allow multi-windows (Needs reload)", CVAR_ENABLE_MULTI_VIEWPORTS, true, false, false, "", UIWidgets::CheckboxGraphics::Cross, true);
                 UIWidgets::Tooltip("Allows windows to be able to be dragged off of the main game window. Requires a reload to take effect.");
             }
 
             // If more filters are added to LUS, make sure to add them to the filters list here
             ImGui::Text("Texture Filtering (Needs reload)");
-            UIWidgets::EnhancementCombobox("gTextureFilter", filters, FILTER_THREE_POINT);
+            UIWidgets::EnhancementCombobox(CVAR_TEXTURE_FILTER, filters, FILTER_THREE_POINT);
             UIWidgets::Tooltip("Texture filtering, aka texture smoothing. Requires a reload to take effect.\n\n"
                                "Three-Point: Replicates real N64 texture filtering.\n"
                                "Bilinear: If Three-Point causes poor performance, try this.\n"
@@ -1059,10 +1059,10 @@ void DrawEnhancementsMenu() {
         if (ImGui::BeginMenu("Graphics"))
         {
             if (ImGui::BeginMenu("Mods")) {
-                if (UIWidgets::PaddedEnhancementCheckbox("Use Alternate Assets", "gAltAssets", false, false)) {
+                if (UIWidgets::PaddedEnhancementCheckbox("Use Alternate Assets", CVAR_ALT_ASSETS, false, false)) {
                     // The checkbox will flip the alt asset CVar, but we instead want it to change at the end of the game frame
                     // We toggle it back while setting the flag to update the CVar later
-                    CVarSetInteger("gAltAssets", !CVarGetInteger("gAltAssets", 0));
+                    CVarSetInteger(CVAR_ALT_ASSETS, !CVarGetInteger(CVAR_ALT_ASSETS, 0));
                     ToggleAltAssetsAtEndOfFrame = true;
                 }
                 UIWidgets::Tooltip("Toggle between standard assets and alternate assets. Usually mods will indicate if this setting has to be used or not.");
@@ -1147,7 +1147,7 @@ void DrawEnhancementsMenu() {
 				UIWidgets::PaddedEnhancementCheckbox("Scale Adult Equipment as Child", CVAR_ENHANCEMENT("ScaleAdultEquimentAsChild"), true, false);
 				UIWidgets::Tooltip("Scales all of the Adult Equipment, as well and moving some a bit, to fit on Child Link Better. May not work properly with some mods.");
 			}
-            UIWidgets::PaddedEnhancementCheckbox("N64 Mode", "gLowResMode", true, false);
+            UIWidgets::PaddedEnhancementCheckbox("N64 Mode", CVAR_LOW_RES_MODE, true, false);
             UIWidgets::Tooltip("Sets aspect ratio to 4:3 and lowers resolution to 240p, the N64's native resolution");
             UIWidgets::PaddedEnhancementCheckbox("Glitch line-up tick", CVAR_ENHANCEMENT("DrawLineupTick"), true, false);
             UIWidgets::Tooltip("Displays a tick in the top center of the screen to help with glitch line-ups in SoH, as traditional UI based line-ups do not work outside of 4:3");
@@ -1680,14 +1680,14 @@ void DrawDeveloperToolsMenu() {
         ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
         ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
         if (mStatsWindow) {
-            if (ImGui::Button(GetWindowButtonText("Stats", CVarGetInteger("gStatsEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
+            if (ImGui::Button(GetWindowButtonText("Stats", CVarGetInteger(CVAR_STATS_WINDOW_OPEN, 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
                 mStatsWindow->ToggleVisibility();
             }
             UIWidgets::Tooltip("Shows the stats window, with your FPS and frametimes, and the OS you're playing on");
         }
         UIWidgets::Spacer(0);
         if (mConsoleWindow) {
-            if (ImGui::Button(GetWindowButtonText("Console", CVarGetInteger("gConsoleEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
+            if (ImGui::Button(GetWindowButtonText("Console", CVarGetInteger(CVAR_CONSOLE_WINDOW_OPEN, 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
                 mConsoleWindow->ToggleVisibility();
             }
             UIWidgets::Tooltip("Enables the console window, allowing you to input commands, type help for some examples");

@@ -29,7 +29,7 @@ void BootCommands_Init()
     CVarClear("gCheatEasyPauseBufferLastInputs");
     CVarClear("gCheatEasyPauseBufferTimer");
 #if defined(__SWITCH__) || defined(__WIIU__)
-    CVarRegisterInteger("gControlNav", 1); // always enable controller nav on switch/wii u
+    CVarRegisterInteger(CVAR_IMGUI_CONTROLLER_NAV, 1); // always enable controller nav on switch/wii u
 #endif
 }
 
