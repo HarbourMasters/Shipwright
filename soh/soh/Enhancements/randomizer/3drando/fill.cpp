@@ -459,7 +459,11 @@ void GeneratePlaythrough() {
       }
       for (auto& exit : region->exits) {
         ProcessExit(exit, gals);
-        if(exit.IsShuffled() && !exit.IsAddedToPool() && !ctx->GetEntranceShuffler()->HasNoRandomEntrances()) {
+        // Add shuffled entrances to the entrance playthrough
+        // Include bluewarps when unshuffled but dungeon or boss shuffle is on
+        if((exit.IsShuffled() || (exit.GetType() == Rando::EntranceType::BlueWarp && 
+            (ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES) || ctx->GetOption(RSK_SHUFFLE_BOSS_ENTRANCES)))) &&
+           !exit.IsAddedToPool() && !ctx->GetEntranceShuffler()->HasNoRandomEntrances()) {
           gals.entranceSphere.push_back(&exit);
           exit.AddToPool();
           // Don't list a two-way coupled entrance from both directions
