@@ -503,10 +503,13 @@ void Settings::CreateOptionDescriptions() {
         "Reading the Temple of Time altar as child will tell you the locations of the Spiritual Stones.\n"
         "Reading the Temple of Time altar as adult will tell you the locations of the Medallions, as well as the "
         "conditions for building the Rainbow Bridge and getting the Boss Key for Ganon's Castle.";
-    mOptionDescriptions[RSK_LIGHT_ARROWS_HINT] =
-        "Talking to Ganondorf in his boss room or Sheik inside Ganon's Castle (when trials are enabled) will tell you "
-        "the location of the Light Arrows."
-        "If this option is enabled and Ganondorf is reachable without Light Arrows, Gossip Stones will never hint the "
+    mOptionDescriptions[RSK_GANONDORF_HINT] =
+        "Talking to Ganondorf in his boss room will tell you the location of the Light Arrows and Master Sword."
+        "If this option is enabled and Ganondorf is reachable without these items, Gossip Stones will never hint the "
+        "appropriote items.";//RANDOTODO make this hint text about no dupe hints a global hint for static hints. Add to navi?
+    mOptionDescriptions[RSK_SHEIK_LA_HINT] =
+        "Talking to Sheik inside Ganon's Castle will tell you the location of the Light Arrows."
+        "If this option is enabled and Sheik is reachable without Light Arrows, Gossip Stones will never hint the "
         "Light Arrows.";
     mOptionDescriptions[RSK_DAMPES_DIARY_HINT] =
         "Reading the diary of Dampé the gravekeeper as adult will tell you the location of one of the Hookshots.";
@@ -546,7 +549,7 @@ void Settings::CreateOptionDescriptions() {
     mOptionDescriptions[RSK_BLUE_FIRE_ARROWS] =
         "Ice Arrows act like Blue Fire, making them able to melt red ice. "
         "Item placement logic will respect this option, so it might be required to use this to progress.";
-    mOptionDescriptions[RSK_LIGHT_ARROWS_HINT] =
+    mOptionDescriptions[RSK_SUNLIGHT_ARROWS] =
         "Light Arrows can be used to light up the sun switches instead of using the Mirror Shield. "
         "Item placement logic will respect this option, so it might be required to use this to progress.";
     mOptionDescriptions[RSK_LOGIC_RULES] =

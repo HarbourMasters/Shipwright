@@ -38,10 +38,10 @@ void AreaTable_Init_CastleTown() {
                   EventAccess(&logic->GossipStoneFairy, {[]{return logic->GossipStoneFairy || logic->CanSummonGossipFairyWithoutSuns;}}),
                 }, {
                   //Locations
-                  LocationAccess(RC_TOT_LEFT_GOSSIP_STONE,         {[]{return true;}}),
+                  LocationAccess(RC_TOT_LEFTMOST_GOSSIP_STONE,         {[]{return true;}}),
                   LocationAccess(RC_TOT_LEFT_CENTER_GOSSIP_STONE,  {[]{return true;}}),
                   LocationAccess(RC_TOT_RIGHT_CENTER_GOSSIP_STONE, {[]{return true;}}),
-                  LocationAccess(RC_TOT_RIGHT_GOSSIP_STONE,        {[]{return true;}}),
+                  LocationAccess(RC_TOT_RIGHTMOST_GOSSIP_STONE,        {[]{return true;}}),
                 }, {
                   //Exits
                   Entrance(RR_THE_MARKET,  {[]{return true;}}),
