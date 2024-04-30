@@ -158,8 +158,8 @@ void AreaTable_Init_ZorasDomain() {
                   LocationAccess(RC_ZF_GS_TREE,                  {[]{return logic->IsChild;}}),
                   LocationAccess(RC_ZF_GS_ABOVE_THE_LOG,         {[]{return logic->IsChild && logic->HookshotOrBoomerang && logic->AtNight && logic->CanGetNightTimeGS;}}),
                   LocationAccess(RC_ZF_GS_HIDDEN_CAVE,           {[]{return logic->CanUse(RG_SILVER_GAUNTLETS) && logic->CanBlastOrSmash && logic->HookshotOrBoomerang && logic->IsAdult && logic->AtNight && logic->CanGetNightTimeGS;}}),
-                  LocationAccess(RC_FAIRY_GOSSIP_STONE,       {[]{return true;}}),
-                  LocationAccess(RC_JABU_GOSSIP_STONE,        {[]{return true;}}),
+                  LocationAccess(RC_ZF_FAIRY_GOSSIP_STONE,       {[]{return true;}}),
+                  LocationAccess(RC_ZF_JABU_GOSSIP_STONE,        {[]{return true;}}),
                 }, {
                   //Exits
                   Entrance(RR_ZD_BEHIND_KING_ZORA,       {[]{return true;}}),

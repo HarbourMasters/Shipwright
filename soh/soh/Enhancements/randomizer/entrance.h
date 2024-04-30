@@ -15,12 +15,16 @@ enum class EntranceType {
     OwlDrop,
     Spawn,
     WarpSong,
+    BlueWarp,
     Dungeon,
     GanonDungeon,
     DungeonReverse,
     Boss,
+    BossReverse,
     ChildBoss,
+    ChildBossReverse,
     AdultBoss,
+    AdultBossReverse,
     Interior,
     InteriorReverse,
     SpecialInterior,
@@ -45,6 +49,7 @@ class Entrance {
     uint32_t Getuint32_t() const;
     bool CheckConditionAtAgeTime(bool& age, bool& time, bool passAnyway = false) const;
     RandomizerRegion GetConnectedRegionKey() const;
+    RandomizerRegion GetOriginalConnectedRegionKey() const;
     Area* GetConnectedRegion() const;
     void SetParentRegion(RandomizerRegion newParent);
     RandomizerRegion GetParentRegionKey() const;
@@ -61,8 +66,6 @@ class Entrance {
     void SetDecoupled();
     int16_t GetIndex() const;
     void SetIndex(int16_t newIndex);
-    int16_t GetBlueWarp() const;
-    void SetBlueWarp(int16_t newBlueWarp);
     Entrance* GetAssumed() const;
     void SetReplacement(Entrance* newReplacement);
     Entrance* GetReplacement() const;
@@ -78,6 +81,7 @@ class Entrance {
   private:
     RandomizerRegion parentRegion;
     RandomizerRegion connectedRegion;
+    RandomizerRegion originalConnectedRegion;
     std::vector<ConditionFn> conditions_met;
 
     EntranceType type = EntranceType::None;
@@ -86,7 +90,6 @@ class Entrance {
     Entrance* assumed = nullptr;
     Entrance* replacement = nullptr;
     int16_t index = 0xFFFF;
-    int16_t blueWarp = 0;
     bool shuffled = false;
     bool primary = false;
     bool addedToPool = false;
@@ -99,7 +102,6 @@ typedef struct {
     RandomizerRegion parentRegion;
     RandomizerRegion connectedRegion;
     int16_t index;
-    int16_t blueWarp;
 } EntranceLinkInfo;
 
 typedef struct {

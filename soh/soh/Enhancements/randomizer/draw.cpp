@@ -9,6 +9,7 @@
 #include <array>
 #include "objects/object_gi_key/object_gi_key.h"
 #include "objects/object_gi_bosskey/object_gi_bosskey.h"
+#include "objects/object_gi_compass/object_gi_compass.h"
 #include "objects/object_gi_hearts/object_gi_hearts.h"
 #include "objects/object_gi_scale/object_gi_scale.h"
 #include "objects/object_gi_fire/object_gi_fire.h"
@@ -59,6 +60,49 @@ extern "C" void Randomizer_DrawSmallKey(PlayState* play, GetItemEntry* getItemEn
     if (isColoredKeysEnabled) {
         gSPGrayscale(POLY_OPA_DISP++, false);
     }
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
+extern "C" {
+    void GetItem_DrawCompass(PlayState* play, s16 drawId);
+    void ResourceMgr_PatchGfxByName(const char* path, const char* patchName, int index, Gfx instruction);
+    void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName);
+}
+
+extern "C" void Randomizer_DrawCompass(PlayState* play, GetItemEntry* getItemEntry) {
+
+    s16 color_slot = getItemEntry->getItemId - RG_DEKU_TREE_COMPASS;
+    s16 colors[12][3] = {
+        { 4, 100, 46 },    // Deku Tree
+        { 140, 30, 30 },   // Dodongo's Cavern
+        { 30, 60, 255 },   // Jabu Jabu's Belly
+        { 4, 195, 46 },    // Forest Temple
+        { 237, 95, 95 },   // Fire Temple
+        { 85, 180, 223 },  // Water Temple
+        { 222, 158, 47 },  // Spirit Temple
+        { 126, 16, 177 },  // Shadow Temple
+        { 227, 110, 255 }, // Bottom of the Well
+        { 221, 212, 60 },  // Gerudo Training Grounds
+        { 255, 255, 255 }, // Thieves' Hideout
+        { 80, 80, 80 }     // Ganon's Castle
+    };
+
+    OPEN_DISPS(play->state.gfxCtx);
+
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
+
+    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, colors[color_slot][0], colors[color_slot][1], colors[color_slot][2], 255);
+    gDPSetEnvColor(POLY_OPA_DISP++, colors[color_slot][0] / 2, colors[color_slot][1] / 2, colors[color_slot][2] / 2, 255);
+
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiCompassDL);
+
+    POLY_XLU_DISP = Gfx_SetupDL(POLY_XLU_DISP, 5);
+    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
+    gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiCompassGlassDL);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

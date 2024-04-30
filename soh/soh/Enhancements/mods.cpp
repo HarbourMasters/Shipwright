@@ -10,6 +10,7 @@
 #include "soh/Enhancements/cosmetics/authenticGfxPatches.h"
 #include <soh/Enhancements/item-tables/ItemTableManager.h>
 #include "soh/Enhancements/nametag.h"
+#include "objects/object_gi_compass/object_gi_compass.h"
 
 #include "src/overlays/actors/ovl_En_Bb/z_en_bb.h"
 #include "src/overlays/actors/ovl_En_Dekubaba/z_en_dekubaba.h"
@@ -25,6 +26,9 @@
 #include "src/overlays/actors/ovl_En_Firefly/z_en_firefly.h"
 #include "src/overlays/actors/ovl_En_Xc/z_en_xc.h"
 #include "src/overlays//actors/ovl_Fishing/z_fishing.h"
+#include "src/overlays/actors/ovl_Obj_Switch/z_obj_switch.h"
+#include "objects/object_link_boy/object_link_boy.h"
+#include "objects/object_link_child/object_link_child.h"
 
 extern "C" {
 #include <z64.h>
@@ -33,6 +37,7 @@ extern "C" {
 #include "functions.h"
 #include "variables.h"
 #include "functions.h"
+#include "src/overlays/actors/ovl_En_Door/z_en_door.h"
 void ResourceMgr_PatchGfxByName(const char* path, const char* patchName, int index, Gfx instruction);
 void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName);
 
@@ -63,7 +68,7 @@ void ReloadSceneTogglingLinkAge() {
 
 void RegisterInfiniteMoney() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!GameInteractor::IsSaveLoaded()) return;
+        if (!GameInteractor::IsSaveLoaded(true)) return;
         if (CVarGetInteger("gInfiniteMoney", 0) != 0 && (!IS_RANDO || Flags_GetRandomizerInf(RAND_INF_HAS_WALLET))) {
             if (gSaveContext.rupees < CUR_CAPACITY(UPG_WALLET)) {
                 gSaveContext.rupees = CUR_CAPACITY(UPG_WALLET);
@@ -74,7 +79,7 @@ void RegisterInfiniteMoney() {
 
 void RegisterInfiniteHealth() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!GameInteractor::IsSaveLoaded()) return;
+        if (!GameInteractor::IsSaveLoaded(true)) return;
         if (CVarGetInteger("gInfiniteHealth", 0) != 0) {
             if (gSaveContext.health < gSaveContext.healthCapacity) {
                 gSaveContext.health = gSaveContext.healthCapacity;
@@ -85,7 +90,7 @@ void RegisterInfiniteHealth() {
 
 void RegisterInfiniteAmmo() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!GameInteractor::IsSaveLoaded()) return;
+        if (!GameInteractor::IsSaveLoaded(true)) return;
         if (CVarGetInteger("gInfiniteAmmo", 0) != 0) {
             // Deku Sticks
             if (AMMO(ITEM_STICK) < CUR_CAPACITY(UPG_STICKS)) {
@@ -122,7 +127,7 @@ void RegisterInfiniteAmmo() {
 
 void RegisterInfiniteMagic() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!GameInteractor::IsSaveLoaded()) return;
+        if (!GameInteractor::IsSaveLoaded(true)) return;
         if (CVarGetInteger("gInfiniteMagic", 0) != 0) {
             if (gSaveContext.isMagicAcquired && gSaveContext.magic != (gSaveContext.isDoubleMagicAcquired + 1) * 0x30) {
                 gSaveContext.magic = (gSaveContext.isDoubleMagicAcquired + 1) * 0x30;
@@ -133,7 +138,7 @@ void RegisterInfiniteMagic() {
 
 void RegisterInfiniteNayrusLove() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!GameInteractor::IsSaveLoaded()) return;
+        if (!GameInteractor::IsSaveLoaded(true)) return;
         if (CVarGetInteger("gInfiniteNayru", 0) != 0) {
             gSaveContext.nayrusLoveTimer = 0x44B;
         }
@@ -142,7 +147,7 @@ void RegisterInfiniteNayrusLove() {
 
 void RegisterMoonJumpOnL() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!GameInteractor::IsSaveLoaded()) return;
+        if (!GameInteractor::IsSaveLoaded(true)) return;
         
         if (CVarGetInteger("gMoonJumpOnL", 0) != 0) {
             Player* player = GET_PLAYER(gPlayState);
@@ -157,7 +162,7 @@ void RegisterMoonJumpOnL() {
 
 void RegisterInfiniteISG() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!GameInteractor::IsSaveLoaded()) return;
+        if (!GameInteractor::IsSaveLoaded(true)) return;
 
         if (CVarGetInteger("gEzISG", 0) != 0) {
             Player* player = GET_PLAYER(gPlayState);
@@ -169,7 +174,7 @@ void RegisterInfiniteISG() {
 //Permanent quick put away (QPA) glitched damage value
 void RegisterEzQPA() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!GameInteractor::IsSaveLoaded()) return;
+        if (!GameInteractor::IsSaveLoaded(true)) return;
 
         if (CVarGetInteger("gEzQPA", 0) != 0) {
             Player* player = GET_PLAYER(gPlayState);
@@ -181,7 +186,7 @@ void RegisterEzQPA() {
 
 void RegisterUnrestrictedItems() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!GameInteractor::IsSaveLoaded()) return;
+        if (!GameInteractor::IsSaveLoaded(true)) return;
 
         if (CVarGetInteger("gNoRestrictItems", 0) != 0) {
             u8 sunsBackup = gPlayState->interfaceCtx.restrictions.sunsSong;
@@ -209,11 +214,14 @@ void RegisterFreezeTime() {
 /// Switches Link's age and respawns him at the last entrance he entered.
 void RegisterSwitchAge() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!GameInteractor::IsSaveLoaded()) {
+        static bool warped = false;
+
+        if (!GameInteractor::IsSaveLoaded(true)) {
             CVarClear("gSwitchAge");
+            warped = false;
             return;
         }
-        static bool warped = false;
+
         static Vec3f playerPos;
         static int16_t playerYaw;
         static RoomContext* roomCtx;
@@ -247,7 +255,7 @@ void RegisterSwitchAge() {
 void RegisterOcarinaTimeTravel() {
 
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnOcarinaSongAction>([]() {
-        if (!GameInteractor::IsSaveLoaded()) {
+        if (!GameInteractor::IsSaveLoaded(true)) {
             CVarClear("gTimeTravel");
             return;
         }
@@ -518,70 +526,93 @@ void RegisterDaytimeGoldSkultullas() {
     });
 }
 
-void RegisterHyperBosses() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* refActor) {
-        // Run the update function a second time to make bosses move and act twice as fast.
+bool IsHyperBossesActive() {
+    return CVarGetInteger("gHyperBosses", 0) ||
+           (IS_BOSS_RUSH && gSaveContext.bossRushOptions[BR_OPTIONS_HYPERBOSSES] == BR_CHOICE_HYPERBOSSES_YES);
+}
 
-        Player* player = GET_PLAYER(gPlayState);
-        Actor* actor = static_cast<Actor*>(refActor);
+void UpdateHyperBossesState() {
+    static uint32_t actorUpdateHookId = 0;
+    if (actorUpdateHookId != 0) {
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(actorUpdateHookId);
+        actorUpdateHookId = 0;
+    }
 
-        uint8_t isBossActor =
-            actor->id == ACTOR_BOSS_GOMA ||                              // Gohma
-            actor->id == ACTOR_BOSS_DODONGO ||                           // King Dodongo
-            actor->id == ACTOR_EN_BDFIRE ||                              // King Dodongo Fire Breath
-            actor->id == ACTOR_BOSS_VA ||                                // Barinade
-            actor->id == ACTOR_BOSS_GANONDROF ||                         // Phantom Ganon
-            actor->id == ACTOR_EN_FHG_FIRE ||                            // Phantom Ganon/Ganondorf Energy Ball/Thunder
-            actor->id == ACTOR_EN_FHG ||                                 // Phantom Ganon's Horse
-            actor->id == ACTOR_BOSS_FD || actor->id == ACTOR_BOSS_FD2 || // Volvagia (grounded/flying)
-            actor->id == ACTOR_EN_VB_BALL ||                             // Volvagia Rocks
-            actor->id == ACTOR_BOSS_MO ||                                // Morpha
-            actor->id == ACTOR_BOSS_SST ||                               // Bongo Bongo
-            actor->id == ACTOR_BOSS_TW ||                                // Twinrova
-            actor->id == ACTOR_BOSS_GANON ||                             // Ganondorf
-            actor->id == ACTOR_BOSS_GANON2;                              // Ganon
+    if (IsHyperBossesActive()) {
+        actorUpdateHookId = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* refActor) {
+            // Run the update function a second time to make bosses move and act twice as fast.
 
-        uint8_t hyperBossesActive =
-            CVarGetInteger("gHyperBosses", 0) ||
-            (IS_BOSS_RUSH &&
-             gSaveContext.bossRushOptions[BR_OPTIONS_HYPERBOSSES] == BR_CHOICE_HYPERBOSSES_YES);
+            Player* player = GET_PLAYER(gPlayState);
+            Actor* actor = static_cast<Actor*>(refActor);
 
-        // Don't apply during cutscenes because it causes weird behaviour and/or crashes on some bosses.
-        if (hyperBossesActive && isBossActor && !Player_InBlockingCsMode(gPlayState, player)) {
-            // Barinade needs to be updated in sequence to avoid unintended behaviour.
-            if (actor->id == ACTOR_BOSS_VA) {
-                // params -1 is BOSSVA_BODY
-                if (actor->params == -1) {
-                    Actor* actorList = gPlayState->actorCtx.actorLists[ACTORCAT_BOSS].head;
-                    while (actorList != NULL) {
-                        GameInteractor::RawAction::UpdateActor(actorList);
-                        actorList = actorList->next;
+            uint8_t isBossActor =
+                actor->id == ACTOR_BOSS_GOMA ||                              // Gohma
+                actor->id == ACTOR_BOSS_DODONGO ||                           // King Dodongo
+                actor->id == ACTOR_EN_BDFIRE ||                              // King Dodongo Fire Breath
+                actor->id == ACTOR_BOSS_VA ||                                // Barinade
+                actor->id == ACTOR_BOSS_GANONDROF ||                         // Phantom Ganon
+                actor->id == ACTOR_EN_FHG_FIRE ||                            // Phantom Ganon/Ganondorf Energy Ball/Thunder
+                actor->id == ACTOR_EN_FHG ||                                 // Phantom Ganon's Horse
+                actor->id == ACTOR_BOSS_FD || actor->id == ACTOR_BOSS_FD2 || // Volvagia (grounded/flying)
+                actor->id == ACTOR_EN_VB_BALL ||                             // Volvagia Rocks
+                actor->id == ACTOR_BOSS_MO ||                                // Morpha
+                actor->id == ACTOR_BOSS_SST ||                               // Bongo Bongo
+                actor->id == ACTOR_BOSS_TW ||                                // Twinrova
+                actor->id == ACTOR_BOSS_GANON ||                             // Ganondorf
+                actor->id == ACTOR_BOSS_GANON2;                              // Ganon
+
+            // Don't apply during cutscenes because it causes weird behaviour and/or crashes on some bosses.
+            if (IsHyperBossesActive() && isBossActor && !Player_InBlockingCsMode(gPlayState, player)) {
+                // Barinade needs to be updated in sequence to avoid unintended behaviour.
+                if (actor->id == ACTOR_BOSS_VA) {
+                    // params -1 is BOSSVA_BODY
+                    if (actor->params == -1) {
+                        Actor* actorList = gPlayState->actorCtx.actorLists[ACTORCAT_BOSS].head;
+                        while (actorList != NULL) {
+                            GameInteractor::RawAction::UpdateActor(actorList);
+                            actorList = actorList->next;
+                        }
                     }
+                } else {
+                    GameInteractor::RawAction::UpdateActor(actor);
                 }
-            } else {
-                GameInteractor::RawAction::UpdateActor(actor);
             }
-        }
+        });
+    }
+}
+
+void RegisterHyperBosses() {
+    UpdateHyperBossesState();
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int16_t fileNum) {
+        UpdateHyperBossesState();
     });
 }
 
-void RegisterHyperEnemies() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* refActor) {
-        // Run the update function a second time to make enemies and minibosses move and act twice as fast.
+void UpdateHyperEnemiesState() {
+    static uint32_t actorUpdateHookId = 0;
+    if (actorUpdateHookId != 0) {
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(actorUpdateHookId);
+        actorUpdateHookId = 0;
+    }
 
-        Player* player = GET_PLAYER(gPlayState);
-        Actor* actor = static_cast<Actor*>(refActor);
+    if (CVarGetInteger("gHyperEnemies", 0)) {
+        actorUpdateHookId = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* refActor) {
+            // Run the update function a second time to make enemies and minibosses move and act twice as fast.
 
-        // Some enemies are not in the ACTORCAT_ENEMY category, and some are that aren't really enemies.
-        bool isEnemy = actor->category == ACTORCAT_ENEMY || actor->id == ACTOR_EN_TORCH2;
-        bool isExcludedEnemy = actor->id == ACTOR_EN_FIRE_ROCK || actor->id == ACTOR_EN_ENCOUNT2;
+            Player* player = GET_PLAYER(gPlayState);
+            Actor* actor = static_cast<Actor*>(refActor);
 
-        // Don't apply during cutscenes because it causes weird behaviour and/or crashes on some cutscenes.
-        if (CVarGetInteger("gHyperEnemies", 0) && isEnemy && !isExcludedEnemy &&
-            !Player_InBlockingCsMode(gPlayState, player)) {
-            GameInteractor::RawAction::UpdateActor(actor);
-        }
-    });
+            // Some enemies are not in the ACTORCAT_ENEMY category, and some are that aren't really enemies.
+            bool isEnemy = actor->category == ACTORCAT_ENEMY || actor->id == ACTOR_EN_TORCH2;
+            bool isExcludedEnemy = actor->id == ACTOR_EN_FIRE_ROCK || actor->id == ACTOR_EN_ENCOUNT2;
+
+            // Don't apply during cutscenes because it causes weird behaviour and/or crashes on some cutscenes.
+            if (CVarGetInteger("gHyperEnemies", 0) && isEnemy && !isExcludedEnemy &&
+                !Player_InBlockingCsMode(gPlayState, player)) {
+                GameInteractor::RawAction::UpdateActor(actor);
+            }
+        });
+    }
 }
 
 void RegisterBonkDamage() {
@@ -688,6 +719,62 @@ void RegisterMirrorModeHandler() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int32_t sceneNum) {
         UpdateMirrorModeState(sceneNum);
     });
+}
+
+void UpdatePatchHand() {
+    if ((CVarGetInteger("gEnhancements.EquimentAlwaysVisible", 0)) && LINK_IS_CHILD) {
+        ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "childHammer1", 92, gsSPDisplayListOTRFilePath(gLinkChildLeftFistNearDL));
+        ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "childHammer2", 93, gsSPEndDisplayList());
+        ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingHookshotNearDL, "childHookshot1", 84, gsSPDisplayListOTRFilePath(gLinkChildRightHandClosedNearDL));
+        ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingHookshotNearDL, "childHookshot2", 85, gsSPEndDisplayList());
+        ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingBowNearDL, "childBow1", 51, gsSPDisplayListOTRFilePath(gLinkChildRightHandClosedNearDL));
+        ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingBowNearDL, "childBow2", 52, gsSPEndDisplayList());
+        ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingMasterSwordNearDL, "childMasterSword1", 104, gsSPDisplayListOTRFilePath(gLinkChildLeftFistNearDL));
+        ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingMasterSwordNearDL, "childMasterSword2", 105, gsSPEndDisplayList());
+        ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingBgsNearDL, "childBiggoronSword1", 79, gsSPDisplayListOTRFilePath(gLinkChildLeftFistNearDL));
+        ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingBgsNearDL, "childBiggoronSword2", 80, gsSPEndDisplayList());
+        ResourceMgr_PatchGfxByName(gLinkAdultHandHoldingBrokenGiantsKnifeDL, "childBrokenGiantsKnife1", 76, gsSPDisplayListOTRFilePath(gLinkChildLeftFistNearDL));
+        ResourceMgr_PatchGfxByName(gLinkAdultHandHoldingBrokenGiantsKnifeDL, "childBrokenGiantsKnife2", 77, gsSPEndDisplayList());
+
+    } else {
+        ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "childHammer1");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "childHammer2");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingHookshotNearDL, "childHookshot1");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingHookshotNearDL, "childHookshot2");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingBowNearDL, "childBow1");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingBowNearDL, "childBow2");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingMasterSwordNearDL, "childMasterSword1");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingMasterSwordNearDL, "childMasterSword2");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingBgsNearDL, "childBiggoronSword1");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingBgsNearDL, "childBiggoronSword2");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultHandHoldingBrokenGiantsKnifeDL, "childBrokenGiantsKnife1");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultHandHoldingBrokenGiantsKnifeDL, "childBrokenGiantsKnife2");
+	}
+    if ((CVarGetInteger("gEnhancements.EquimentAlwaysVisible", 0)) && LINK_IS_ADULT) {
+        ResourceMgr_PatchGfxByName(gLinkChildLeftFistAndKokiriSwordNearDL, "adultKokiriSword", 13, gsSPDisplayListOTRFilePath(gLinkAdultLeftHandClosedNearDL));
+        ResourceMgr_PatchGfxByName(gLinkChildRightHandHoldingSlingshotNearDL, "adultSlingshot", 13, gsSPDisplayListOTRFilePath(gLinkAdultRightHandClosedNearDL));
+        ResourceMgr_PatchGfxByName(gLinkChildLeftFistAndBoomerangNearDL, "adultBoomerang", 50, gsSPDisplayListOTRFilePath(gLinkAdultLeftHandClosedNearDL));
+        ResourceMgr_PatchGfxByName(gLinkChildRightFistAndDekuShieldNearDL, "adultDekuShield", 49, gsSPDisplayListOTRFilePath(gLinkAdultRightHandClosedNearDL));
+    } else {
+        ResourceMgr_UnpatchGfxByName(gLinkChildLeftFistAndKokiriSwordNearDL, "adultKokiriSword");
+        ResourceMgr_UnpatchGfxByName(gLinkChildRightHandHoldingSlingshotNearDL, "adultSlingshot");
+        ResourceMgr_UnpatchGfxByName(gLinkChildLeftFistAndBoomerangNearDL, "adultBoomerang");
+        ResourceMgr_UnpatchGfxByName(gLinkChildRightFistAndDekuShieldNearDL, "adultDekuShield");
+    }
+}
+
+void RegisterPatchHandHandler() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int32_t sceneNum) { 
+        UpdatePatchHand(); 
+    });
+}
+
+void RegisterResetNaviTimer() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int32_t sceneNum) {
+		if (CVarGetInteger("gEnhancements.ResetNaviTimer", 0)) {
+			gSaveContext.naviTimer = 0;
+		}
+	});
 }
 
 f32 triforcePieceScale;
@@ -1074,9 +1161,7 @@ void RegisterAltTrapTypes() {
 void RegisterRandomizerSheikSpawn() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneSpawnActors>([]() {
         if (!gPlayState) return;
-        bool canSheik = (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIAL_COUNT) != 0 &&
-          OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LIGHT_ARROWS_HINT));
-        if (!IS_RANDO || !LINK_IS_ADULT || !canSheik) return;
+        if (!IS_RANDO || !LINK_IS_ADULT || !OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHEIK_LA_HINT)) return;
         switch (gPlayState->sceneNum) {
             case SCENE_TEMPLE_OF_TIME:
                 if (gPlayState->roomCtx.curRoom.num == 1) {
@@ -1134,21 +1219,43 @@ void RegisterBossSouls() {
             default: break;
         }
 
-    //Deletes all actors in the boss category if the soul isn't found.
-    //Some actors, like Dark Link, Arwings, and Zora's Sapphire...?, are in this category despite not being actual bosses,
-    //so ignore any "boss" if `rand_inf` doesn't change from RAND_INF_MAX.
-    if (rand_inf != RAND_INF_MAX) {
-         if (!Flags_GetRandomizerInf(rand_inf) && actual->category == ACTORCAT_BOSS) {
-            Actor_Delete(&gPlayState->actorCtx, actual, gPlayState);
+        //Deletes all actors in the boss category if the soul isn't found.
+        //Some actors, like Dark Link, Arwings, and Zora's Sapphire...?, are in this category despite not being actual bosses,
+        //so ignore any "boss" if `rand_inf` doesn't change from RAND_INF_MAX.
+        if (rand_inf != RAND_INF_MAX) {
+            if (!Flags_GetRandomizerInf(rand_inf) && actual->category == ACTORCAT_BOSS) {
+                Actor_Delete(&gPlayState->actorCtx, actual, gPlayState);
+            }
+            //Special case for Phantom Ganon's horse (and fake), as they're considered "background actors",
+            //but still control the boss fight flow.
+            if (!Flags_GetRandomizerInf(RAND_INF_PHANTOM_GANON_SOUL) && actual->id == ACTOR_EN_FHG) {
+                Actor_Delete(&gPlayState->actorCtx, actual, gPlayState);
+            }
         }
-        //Special case for Phantom Ganon's horse (and fake), as they're considered "background actors",
-        //but still control the boss fight flow.
-        if (!Flags_GetRandomizerInf(RAND_INF_PHANTOM_GANON_SOUL) && actual->id == ACTOR_EN_FHG) {
-            Actor_Delete(&gPlayState->actorCtx, actual, gPlayState);
-        }
-    }
     });
+}
 
+void UpdateHurtContainerModeState(bool newState) {
+        static bool hurtEnabled = false;
+        if (hurtEnabled == newState) {
+            return;
+        }
+
+        hurtEnabled = newState;
+        uint16_t getHeartPieces = gSaveContext.sohStats.heartPieces / 4;
+        uint16_t getHeartContainers = gSaveContext.sohStats.heartContainers;
+        
+        if (hurtEnabled) {        
+            gSaveContext.healthCapacity = 320 - ((getHeartPieces + getHeartContainers) * 16);
+        } else {
+            gSaveContext.healthCapacity = 48 + ((getHeartPieces + getHeartContainers) * 16);
+        }
+}
+
+void RegisterHurtContainerModeHandler() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) {
+        UpdateHurtContainerModeState(CVarGetInteger("gHurtContainer", 0));
+    });
 }
 
 void RegisterRandomizedEnemySizes() {
@@ -1198,6 +1305,34 @@ void RegisterRandomizedEnemySizes() {
             actor->colChkInfo.health = fmax(scaledHealth, 1.0f);
         } else {
             return;
+        }
+    });
+}
+
+void RegisterOpenAllHours() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>([](void* refActor) {
+        Actor* actor = static_cast<Actor*>(refActor);
+
+        if (CVarGetInteger("gEnhancements.OpenAllHours", 0) && (actor->id == ACTOR_EN_DOOR)) {
+            switch (actor->params) {
+                case 4753: // Night Market Bazaar
+                case 1678: // Night Potion Shop
+                case 2689: // Day Bombchu Shop
+                case 2703: // Night Slingshot Game
+                case 653:  // Day Chest Game
+                case 6801: // Night Kak Bazaar
+                case 7822: // Night Kak Potion Shop
+                case 4751: // Night Kak Archery Game
+                case 3728: // Night Mask Shop
+                {
+                    actor->params = (actor->params & 0xFC00) | (DOOR_SCENEEXIT << 7) | 0x3F;
+                    EnDoor* enDoor = static_cast<EnDoor*>(refActor);
+                    EnDoor_SetupType(enDoor, gPlayState);
+                    break;
+                }
+                default:
+                    break;
+            }
         }
     });
 }
@@ -1284,6 +1419,40 @@ void RegisterToTMedallions() {
     });
 }
 
+
+void RegisterFloorSwitchesHook() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>([](void* refActor) {
+        Actor* actor = static_cast<Actor*>(refActor);
+        if (actor->id != ACTOR_OBJ_SWITCH || !CVarGetInteger("gEnhancements.FixFloorSwitches", 0)) {
+            return;
+        }
+
+        ObjSwitch* switchActor = reinterpret_cast<ObjSwitch*>(actor);
+        s32 type = (switchActor->dyna.actor.params & 7);
+
+        if (switchActor->dyna.actor.params == 0x1200 || switchActor->dyna.actor.params == 0x3A00) {
+            switchActor->dyna.actor.world.pos.y -= 1;
+        }
+    });
+}
+
+void RegisterPauseMenuHooks() {
+    static bool pauseWarpHooksRegistered = false;
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([&]() {
+        if (!GameInteractor::IsSaveLoaded() || !CVarGetInteger("gPauseWarp", 0)) {
+            pauseWarpHooksRegistered = false;
+            return;
+        }
+        if (!pauseWarpHooksRegistered) {
+            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnKaleidoUpdate>([]() {PauseWarp_HandleSelection();});
+            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
+                    PauseWarp_Execute();
+            });
+            pauseWarpHooksRegistered = true;
+        }
+    });
+}
+
 //from z_player.c
 typedef struct {
     /* 0x00 */ Vec3f pos;
@@ -1293,40 +1462,44 @@ typedef struct {
 //special respawns used when voided out without swim to prevent infinite loops
 std::map<s32, SpecialRespawnInfo> swimSpecialRespawnInfo = {
     {
-        0x1D9,//hf to zr in water
+        ENTR_ZORAS_RIVER_3,//hf to zr in water
         { { -1455.443, -20, 1384.826 }, 28761 }
     },
     {
-        0x311,//zr to hf in water
+        ENTR_HYRULE_FIELD_14,//zr to hf in water
         { { 5830.209, -92.16, 3925.911 }, -20025 }
     },
     {
-        0x4DA,//zr to lw
+        ENTR_LOST_WOODS_7,//zr to lw
         { { 1978.718, -36.908, -855 }, -16384 }
     },
     {
-        0x1DD,//lw to zr
+        ENTR_ZORAS_RIVER_4,//lw to zr
         { { 4082.366, 860.442, -1018.949 }, -32768 }
     },
     {
-        0x219,//gv to lh
+        ENTR_LAKE_HYLIA_1,//gv to lh
         { { -3276.416, -1033, 2908.421 }, 11228 }
     },
     {
-        0x10,//lh to water temple
+        ENTR_WATER_TEMPLE_0,//lh to water temple
         { { -182, 780, 759.5 }, -32768 }
     },
     {
-        0x21D,//water temple to lh
+        ENTR_LAKE_HYLIA_2,//water temple to lh
         { { -955.028, -1306.9, 6768.954 }, -32768 }
     },
     {
-        0x328,//lh to zd
+        ENTR_ZORAS_DOMAIN_4,//lh to zd
         { { -109.86, 11.396, -9.933 }, -29131 }
     },
     {
-        0x560,//zd to lh
+        ENTR_LAKE_HYLIA_7,//zd to lh
         { { -912, -1326.967, 3391 }, 0 }
+    },
+    {
+        ENTR_GERUDO_VALLEY_1,//caught by gerudos as child
+        { { -424, -2051, -74 }, 16384 }
     }
 };
 
@@ -1515,6 +1688,26 @@ void RegisterFishsanity() {
     });
 }
 
+extern "C" u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
+
+void PatchCompasses() {
+    s8 compassesCanBeOutsideDungeon = IS_RANDO && DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_SHUFFLE_MAPANDCOMPASS);
+    s8 isColoredCompassesEnabled = compassesCanBeOutsideDungeon && CVarGetInteger("gRandoEnhancement.MatchCompassColors", 1);
+    if (isColoredCompassesEnabled) {
+        ResourceMgr_PatchGfxByName(gGiCompassDL, "Compass_PrimColor", 5, gsDPNoOp());
+        ResourceMgr_PatchGfxByName(gGiCompassDL, "Compass_EnvColor", 6, gsDPNoOp());
+    } else {
+        ResourceMgr_UnpatchGfxByName(gGiCompassDL, "Compass_PrimColor");
+        ResourceMgr_UnpatchGfxByName(gGiCompassDL, "Compass_EnvColor");
+    }
+}
+
+void RegisterRandomizerCompasses() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadFile>([](int32_t _unused) {
+        PatchCompasses();
+    });
+}
+
 void InitMods() {
     RegisterTTS();
     RegisterInfiniteMoney();
@@ -1536,10 +1729,11 @@ void InitMods() {
     RegisterPermanentHeartLoss();
     RegisterDeleteFileOnDeath();
     RegisterHyperBosses();
-    RegisterHyperEnemies();
+    UpdateHyperEnemiesState();
     RegisterBonkDamage();
     RegisterMenuPathFix();
     RegisterMirrorModeHandler();
+    RegisterResetNaviTimer();
     RegisterTriforceHunt();
     RegisterGrantGanonsBossKey();
     RegisterEnemyDefeatCounts();
@@ -1547,9 +1741,15 @@ void InitMods() {
     RegisterRandomizerSheikSpawn();
     RegisterBossSouls();
     RegisterRandomizedEnemySizes();
+    RegisterOpenAllHours();
     RegisterToTMedallions();
     RegisterNoSwim();
     RegisterNoWallet();
     RegisterFishsanity();
+    RegisterRandomizerCompasses();
     NameTag_RegisterHooks();
+    RegisterFloorSwitchesHook();
+    RegisterPatchHandHandler();
+    RegisterHurtContainerModeHandler();
+    RegisterPauseMenuHooks();
 }

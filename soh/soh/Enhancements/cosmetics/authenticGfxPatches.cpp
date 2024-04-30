@@ -8,6 +8,7 @@ extern "C" {
 #include "objects/object_gi_soldout/object_gi_soldout.h"
 #include "objects/object_ik/object_ik.h"
 #include "objects/object_link_child/object_link_child.h"
+#include "objects/object_ru2/object_ru2.h"
 
 uint32_t ResourceMgr_GameHasMasterQuest();
 uint32_t ResourceMgr_GameHasOriginal();
@@ -187,10 +188,25 @@ void PatchIronKnuckleTextureOverflow() {
     }
 }
 
+void PatchPrincessRutoEaring() {
+    // FAST3D: This is a hack for the issue of both TEXEL0 and TEXEL1 using the same texture with different settings.
+    // Ruto's earring uses both TEXEL0 and TEXEL1 to render. The issue is that it never loads anything into TEXEL1, so
+    // it reuses whatever happens to be there, which is the water temple brick texture. It just so happens that the
+    // earring texture loads into the same place in TMEM as the brick texture, so when it comes to rendering, TEXEL1
+    // uses the earring texture with different clamp settings, and it displays without noticeable error. However, both
+    // texel samplers are not intended to be used for the same texture with different settings, so this misuse confuses
+    // our texture cache, and we load the wrong settings for the earrings texture. This patch is a hack that replaces
+    // TEXEL1 with TEXEL0, which is most likely the original intention, and all is well.
+    ResourceMgr_PatchGfxByName(gAdultRutoHeadDL, "RutoEaringTileFix", 162,
+                               gsDPSetCombineLERP(TEXEL0, 0, PRIMITIVE, 0, TEXEL0, 0, ENVIRONMENT, 0, 0, 0, 0, COMBINED,
+                                                  TEXEL0, 0, PRIM_LOD_FRAC, COMBINED));
+}
+
 void ApplyAuthenticGfxPatches() {
     PatchDekuStickTextureOverflow();
     PatchFreezardTextureOverflow();
     PatchIronKnuckleTextureOverflow();
+    PatchPrincessRutoEaring();
 }
 
 // Patches the Sold Out GI DL to render the texture in the mirror boundary

@@ -9,6 +9,7 @@
 #define UIWidgets_hpp
 
 #include <string>
+#include <sstream>
 #include <vector>
 #include <span>
 #include <stdint.h>

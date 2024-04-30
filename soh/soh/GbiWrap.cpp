@@ -14,8 +14,6 @@ void OTRGetPixelDepthPrepare(float x, float y);
 uint16_t OTRGetPixelDepth(float x, float y);
 int32_t OTRGetLastScancode();
 void ResourceMgr_LoadDirectory(const char* resName);
-void ResourceMgr_LoadFile(const char* resName);
-char* ResourceMgr_LoadFileFromDisk(const char* filePath);
 uint16_t ResourceMgr_LoadTexWidthByName(char* texPath);
 uint16_t ResourceMgr_LoadTexHeightByName(char* texPath);
 size_t ResourceGetTexSizeByName(const char* name);

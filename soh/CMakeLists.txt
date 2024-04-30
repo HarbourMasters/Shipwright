@@ -328,7 +328,7 @@ endif()
 include(FetchContent)
 FetchContent_Declare(
     Boost
-    URL      https://sourceforge.net/projects/boost/files/boost/1.81.0/boost_1_81_0.tar.gz
+    URL      https://archives.boost.io/release/1.81.0/source/boost_1_81_0.tar.gz
     URL_HASH SHA256=205666dea9f6a7cfed87c7a6dfbeb52a2c1b9de55712c9c1a87735d7181452b6
     SOURCE_SUBDIR "null" # Set to a nonexistent directory so boost is not built (we don't need to build it)
     DOWNLOAD_EXTRACT_TIMESTAMP false # supress timestamp warning, not needed since the url wont change
@@ -356,7 +356,13 @@ set(SDL2-INCLUDE ${SDL2_INCLUDE_DIRS})
 
 if (BUILD_REMOTE_CONTROL)
     find_package(SDL2_net)
-    set(SDL2-NET-INCLUDE ${SDL_NET_INCLUDE_DIRS})
+
+    if(NOT SDL2_net_FOUND)
+        message(STATUS "SDL2_net not found (it's possible the version installed is too old). Disabling BUILD_REMOTE_CONTROL.")
+        set(BUILD_REMOTE_CONTROL 0)
+    else()
+        set(SDL2-NET-INCLUDE ${SDL_NET_INCLUDE_DIRS})
+    endif()
 endif()
 
 target_include_directories(${PROJECT_NAME} PRIVATE assets
@@ -623,6 +629,8 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
             -Wno-parentheses
             -Wno-narrowing
             -Wno-missing-braces
+            -Wno-int-conversion
+            -Wno-implicit-int
             $<$<COMPILE_LANGUAGE:C>:
                 -Werror-implicit-function-declaration
                 -Wno-incompatible-pointer-types

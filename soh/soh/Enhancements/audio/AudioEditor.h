@@ -14,13 +14,15 @@ class AudioEditor : public LUS::GuiWindow {
         using LUS::GuiWindow::GuiWindow;
 
         void DrawElement() override;
-        void InitElement() override {};
+        void InitElement() override;
         void UpdateElement() override {};
         ~AudioEditor() {};
 };
 
 void AudioEditor_RandomizeAll();
 void AudioEditor_ResetAll();
+void AudioEditor_LockAll();
+void AudioEditor_UnlockAll();
 
 extern "C" {
 #endif

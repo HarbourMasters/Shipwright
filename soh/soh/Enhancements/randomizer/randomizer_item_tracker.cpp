@@ -9,6 +9,7 @@
 #include <vector>
 #include <libultraship/libultraship.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "randomizer_check_tracker.h"
 #include <algorithm>
 
 extern "C" {
@@ -29,6 +30,8 @@ void DrawDungeonItem(ItemTrackerItem item);
 void DrawBottle(ItemTrackerItem item);
 void DrawQuest(ItemTrackerItem item);
 void DrawSong(ItemTrackerItem item);
+
+int itemTrackerSectionId;
 
 bool shouldUpdateVectors = true;
 
@@ -330,26 +333,21 @@ void ItemTrackerOnFrame() {
     }
 }
 
-void SaveNotes(uint32_t fileNum) {
-    CVarSetString(("gItemTrackerNotes" + std::to_string(fileNum)).c_str(), std::string(std::begin(itemTrackerNotes), std::end(itemTrackerNotes)).c_str());
-    LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-}
-
 bool IsValidSaveFile() {
     bool validSave = gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2;
     return validSave;
 }
 
 bool HasSong(ItemTrackerItem item) {
-    return (1 << item.id) & gSaveContext.inventory.questItems;
+    return GameInteractor::IsSaveLoaded() ? ((1 << item.id) & gSaveContext.inventory.questItems) : false;
 }
 
 bool HasQuestItem(ItemTrackerItem item) {
-    return (item.data & gSaveContext.inventory.questItems) != 0;
+    return GameInteractor::IsSaveLoaded() ? (item.data & gSaveContext.inventory.questItems) : false;
 }
 
 bool HasEquipment(ItemTrackerItem item) {
-    return (item.data & gSaveContext.inventory.equipment) != 0;
+    return GameInteractor::IsSaveLoaded() ? (item.data & gSaveContext.inventory.equipment) : false;
 }
 
 ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
@@ -457,17 +455,42 @@ ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
 #define IM_COL_GREEN IM_COL32(0, 255, 0, 255)
 #define IM_COL_GRAY IM_COL32(155, 155, 155, 255)
 #define IM_COL_PURPLE IM_COL32(180, 90, 200, 255)
+#define IM_COL_LIGHT_YELLOW IM_COL32(255, 255, 130, 255)
 
-void DrawItemCount(ItemTrackerItem item) {
+void DrawItemCount(ItemTrackerItem item, bool hideMax) {
+    if (!GameInteractor::IsSaveLoaded()) {
+        return;
+    }
     int iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
+    int textSize = CVarGetInteger("gTrackers.ItemTracker.ItemTrackerTextSize", 13);
     ItemTrackerNumbers currentAndMax = GetItemCurrentAndMax(item);
     ImVec2 p = ImGui::GetCursorScreenPos();
     int32_t trackerNumberDisplayMode = CVarGetInteger("gItemTrackerCapacityTrack", ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY);
     int32_t trackerKeyNumberDisplayMode = CVarGetInteger("gItemTrackerKeyTrack", KEYS_COLLECTED_MAX);
+    float textScalingFactor = static_cast<float>(iconSize) / 36.0f;
+    uint32_t actualItemId = INV_CONTENT(item.id);
+    bool hasItem = actualItemId != ITEM_NONE;
+
+    if (CVarGetInteger("gTrackers.ItemTracker.HookshotIdentifier", 0)) {
+        if ((actualItemId == ITEM_HOOKSHOT || actualItemId == ITEM_LONGSHOT) && hasItem) {
+
+            // Calculate the scaled position for the text
+            ImVec2 textPos = ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(item.id == ITEM_HOOKSHOT ? "H" : "L").x * 
+            textScalingFactor / 2) + 8 * textScalingFactor, p.y - 22 * textScalingFactor);
+
+            ImGui::SetCursorScreenPos(textPos);
+            ImGui::SetWindowFontScale(textScalingFactor);
+
+            ImGui::Text(item.id == ITEM_HOOKSHOT ? "H" : "L");
+            ImGui::SetWindowFontScale(1.0f); // Reset font scale to the original state
+        }
+    }
+
+    ImGui::SetWindowFontScale(textSize / 13.0f);
 
     if (item.id == ITEM_KEY_SMALL && IsValidSaveFile()) {
         std::string currentString = "";
-        std::string maxString = std::to_string(currentAndMax.maxCapacity);
+        std::string maxString = hideMax ? "???" : std::to_string(currentAndMax.maxCapacity);
         ImU32 currentColor = IM_COL_WHITE;
         ImU32 maxColor = IM_COL_GREEN;
         // "Collected / Max", "Current / Collected / Max", "Current / Max"
@@ -599,7 +622,7 @@ void DrawQuest(ItemTrackerItem item) {
                  ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
     if (item.id == QUEST_SKULL_TOKEN) {
-        DrawItemCount(item);
+        DrawItemCount(item, false);
     }
 
     ImGui::EndGroup();
@@ -609,7 +632,7 @@ void DrawQuest(ItemTrackerItem item) {
 
 void DrawItem(ItemTrackerItem item) {
 
-    uint32_t actualItemId = INV_CONTENT(item.id);
+    uint32_t actualItemId = GameInteractor::IsSaveLoaded() ? INV_CONTENT(item.id) : ITEM_NONE;
     int iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
     bool hasItem = actualItemId != ITEM_NONE;
     std::string itemName = "";
@@ -746,7 +769,7 @@ void DrawItem(ItemTrackerItem item) {
     ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(hasItem && IsValidSaveFile() ? item.name : item.nameFaded),
                  ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
     
-    DrawItemCount(item);
+    DrawItemCount(item, false);
 
     if (item.id >= RG_GOHMA_SOUL && item.id <= RG_GANON_SOUL) {
         ImVec2 p = ImGui::GetCursorScreenPos();
@@ -776,7 +799,7 @@ void DrawItem(ItemTrackerItem item) {
 }
 
 void DrawBottle(ItemTrackerItem item) {
-    uint32_t actualItemId = gSaveContext.inventory.items[SLOT(item.id) + item.data];
+    uint32_t actualItemId = GameInteractor::IsSaveLoaded() ? (gSaveContext.inventory.items[SLOT(item.id) + item.data]) : false;
     bool hasItem = actualItemId != ITEM_NONE;
 
     if (GameInteractor::IsSaveLoaded() && (hasItem && item.id != actualItemId && actualItemTrackerItemMap.find(actualItemId) != actualItemTrackerItemMap.end())) {
@@ -795,8 +818,8 @@ void DrawDungeonItem(ItemTrackerItem item) {
     ImU32 dungeonColor = IM_COL_WHITE;
     uint32_t bitMask = 1 << (item.id - ITEM_KEY_BOSS); // Bitset starts at ITEM_KEY_BOSS == 0. the rest are sequential
     int iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
-    bool hasItem = (bitMask & gSaveContext.inventory.dungeonItems[item.data]) != 0;
-    bool hasSmallKey = (gSaveContext.inventory.dungeonKeys[item.data]) >= 0;
+    bool hasItem = GameInteractor::IsSaveLoaded() ? (bitMask & gSaveContext.inventory.dungeonItems[item.data]) : false;
+    bool hasSmallKey = GameInteractor::IsSaveLoaded() ? ((gSaveContext.inventory.dungeonKeys[item.data]) >= 0)  : false;
     ImGui::BeginGroup();
     if (itemId == ITEM_KEY_SMALL) {
         ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(hasSmallKey && IsValidSaveFile() ? item.name : item.nameFaded),
@@ -807,16 +830,18 @@ void DrawDungeonItem(ItemTrackerItem item) {
                      ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
     }
 
-    if (ResourceMgr_IsSceneMasterQuest(item.data) && (CHECK_DUNGEON_ITEM(DUNGEON_MAP, item.data) || item.data == SCENE_GERUDO_TRAINING_GROUND || item.data == SCENE_INSIDE_GANONS_CASTLE)) {
-        dungeonColor = IM_COL_PURPLE;
+    if (CheckTracker::IsAreaSpoiled(RandomizerCheckObjects::GetRCAreaBySceneID(static_cast<SceneID>(item.data))) && GameInteractor::IsSaveLoaded()) {
+        dungeonColor = (ResourceMgr_IsSceneMasterQuest(item.data) ? IM_COL_PURPLE : IM_COL_LIGHT_YELLOW);
     }
 
     if (itemId == ITEM_KEY_SMALL) {
-        DrawItemCount(item);
+        DrawItemCount(item, !CheckTracker::IsAreaSpoiled(RandomizerCheckObjects::GetRCAreaBySceneID(static_cast<SceneID>(item.data))));
 
         ImVec2 p = ImGui::GetCursorScreenPos();
+        // offset puts the text at the correct level. for some reason, if the save is loaded, the margin is 3 pixels higher only for small keys, so we use 16 then. Otherwise, 13 is where everything else is
+        int offset = GameInteractor::IsSaveLoaded() ? 16 : 13;
         std::string dungeonName = itemTrackerDungeonShortNames[item.data];
-        ImGui::SetCursorScreenPos(ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(dungeonName.c_str()).x / 2), p.y - (iconSize + 16)));
+        ImGui::SetCursorScreenPos(ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(dungeonName.c_str()).x / 2), p.y - (iconSize + offset)));
         ImGui::PushStyleColor(ImGuiCol_Text, dungeonColor);
         ImGui::Text("%s", dungeonName.c_str());
         ImGui::PopStyleColor();
@@ -873,13 +898,15 @@ void DrawNotes(bool resizeable = false) {
         }
     };
     ImVec2 size = resizeable ? ImVec2(-FLT_MIN, ImGui::GetContentRegionAvail().y) : ImVec2(((iconSize + iconSpacing) * 6) - 8, 200);
-    if (ItemTrackerNotes::TrackerNotesInputTextMultiline("##ItemTrackerNotes", &itemTrackerNotes, size, ImGuiInputTextFlags_AllowTabInput)) {
-        notesNeedSave = true;
-        notesIdleFrames = 0;
-    }
-    if ((ImGui::IsItemDeactivatedAfterEdit() || (notesNeedSave && notesIdleFrames > notesMaxIdleFrames)) && IsValidSaveFile()) {
-        notesNeedSave = false;
-        SaveNotes(gSaveContext.fileNum);
+    if (GameInteractor::IsSaveLoaded()) {
+        if (ItemTrackerNotes::TrackerNotesInputTextMultiline("##ItemTrackerNotes", &itemTrackerNotes, size, ImGuiInputTextFlags_AllowTabInput)) {
+            notesNeedSave = true;
+            notesIdleFrames = 0;
+        }
+        if ((ImGui::IsItemDeactivatedAfterEdit() || (notesNeedSave && notesIdleFrames > notesMaxIdleFrames)) && IsValidSaveFile()) {
+            notesNeedSave = false;
+            SaveManager::Instance->SaveSection(gSaveContext.fileNum, itemTrackerSectionId, true);
+        }
     }
     ImGui::EndGroup();
 }
@@ -945,7 +972,7 @@ void DrawItemsInACircle(std::vector<ItemTrackerItem> items) {
         float angle = (float)i / items.size() * 2.0f * M_PI;
         float x = (radius / 2.0f) * cos(angle) + max.x / 2.0f;
         float y = (radius / 2.0f) * sin(angle) + max.y / 2.0f;
-        ImGui::SetCursorPos(ImVec2(x - 14, y + 4));
+        ImGui::SetCursorPos(ImVec2(x - (CVarGetInteger("gItemTrackerIconSize", 36) - 8) / 2.0f, y + 4));
         items[i].drawFunc(items[i]);
     }
 }
@@ -1144,6 +1171,26 @@ void UpdateVectors() {
     shouldUpdateVectors = false;
 }
 
+void ItemTrackerInitFile(bool isDebug) {
+    itemTrackerNotes.clear();
+    itemTrackerNotes.push_back(0);
+}
+
+void ItemTrackerSaveFile(SaveContext* saveContext, int sectionID, bool fullSave) {
+    SaveManager::Instance->SaveData("personalNotes", std::string(std::begin(itemTrackerNotes), std::end(itemTrackerNotes)).c_str());
+}
+
+void ItemTrackerLoadFile() {
+    std::string initialTrackerNotes = "";
+    SaveManager::Instance->LoadData("personalNotes", initialTrackerNotes);
+    itemTrackerNotes.resize(initialTrackerNotes.length() + 1);
+    if (initialTrackerNotes != "") {
+        SohUtils::CopyStringToCharArray(itemTrackerNotes.Data, initialTrackerNotes.c_str(), itemTrackerNotes.size());
+    } else {
+        itemTrackerNotes.push_back(0);
+    }
+}
+
 void ItemTrackerWindow::DrawElement() {
     UpdateVectors();
 
@@ -1331,6 +1378,7 @@ void ItemTrackerSettingsWindow::DrawElement() {
     UIWidgets::PaddedSeparator();
     UIWidgets::EnhancementSliderInt("Icon size : %dpx", "##ITEMTRACKERICONSIZE", "gItemTrackerIconSize", 25, 128, "", 36);
     UIWidgets::EnhancementSliderInt("Icon margins : %dpx", "##ITEMTRACKERSPACING", "gItemTrackerIconSpacing", -5, 50, "", 12);
+    UIWidgets::EnhancementSliderInt("Text size : %dpx", "##ITEMTRACKERTEXTSIZE", "gTrackers.ItemTracker.ItemTrackerTextSize", 1, 30, "", 13);
     
     UIWidgets::Spacer(0);
 
@@ -1371,7 +1419,7 @@ void ItemTrackerSettingsWindow::DrawElement() {
         shouldUpdateVectors = true;
     }
     if (CVarGetInteger("gItemTrackerDungeonRewardsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) == SECTION_DISPLAY_SEPARATE) {
-        if (UIWidgets::PaddedEnhancementCheckbox("Circle display", "gItemTrackerDungeonRewardsCircle", true, true, false, "", UIWidgets::CheckboxGraphics::Cross, true)) {
+        if (UIWidgets::PaddedEnhancementCheckbox("Circle display", "gItemTrackerDungeonRewardsCircle", true, true, false, "", UIWidgets::CheckboxGraphics::Cross, false)) {
             shouldUpdateVectors = true;
         }
     }
@@ -1416,6 +1464,10 @@ void ItemTrackerSettingsWindow::DrawElement() {
             shouldUpdateVectors = true;
         }
     }
+    UIWidgets::EnhancementCheckbox("Show Hookshot Identifiers", "gTrackers.ItemTracker.HookshotIdentifier");
+    UIWidgets::InsertHelpHoverText("Shows an 'H' or an 'L' to more easiely distinguish between Hookshot and Longshot.");
+
+    UIWidgets::Spacer(0);
 
     ImGui::PopStyleVar(1);
     ImGui::EndTable();
@@ -1439,14 +1491,9 @@ void ItemTrackerWindow::InitElement() {
         itemTrackerNotes.push_back(0);
     }
 
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadFile>([](uint32_t fileNum) {
-        const char* initialTrackerNotes = CVarGetString(("gItemTrackerNotes" + std::to_string(fileNum)).c_str(), "");
-        itemTrackerNotes.resize(strlen(initialTrackerNotes) + 1);
-        strcpy(itemTrackerNotes.Data, initialTrackerNotes);
-    });
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnDeleteFile>([](uint32_t fileNum) {
-        CVarSetString(("gItemTrackerNotes" + std::to_string(fileNum)).c_str(), "");
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-    });
+    SaveManager::Instance->AddInitFunction(ItemTrackerInitFile);
+    itemTrackerSectionId = SaveManager::Instance->AddSaveFunction("itemTrackerData", 1, ItemTrackerSaveFile, true, -1);
+    SaveManager::Instance->AddLoadFunction("itemTrackerData", 1, ItemTrackerLoadFile);
+
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>(ItemTrackerOnFrame);
 }

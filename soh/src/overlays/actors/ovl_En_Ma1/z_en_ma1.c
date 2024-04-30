@@ -420,8 +420,8 @@ void func_80AA0F44(EnMa1* this, PlayState* play) {
 
     if (Flags_GetEventChkInf(EVENTCHKINF_INVITED_TO_SING_WITH_CHILD_MALON)) {
         // When the player pulls out the Ocarina while close to Malon
-        if (player->stateFlags2 & 0x1000000) {
-            player->stateFlags2 |= 0x2000000;
+        if (player->stateFlags2 & PLAYER_STATE2_ATTEMPT_PLAY_FOR_ACTOR) {
+            player->stateFlags2 |= PLAYER_STATE2_PLAY_FOR_ACTOR;
             player->unk_6A8 = &this->actor;
             this->actor.textId = 0x2061;
             Message_StartTextbox(play, this->actor.textId, NULL);
@@ -432,7 +432,7 @@ void func_80AA0F44(EnMa1* this, PlayState* play) {
         } else if (this->actor.xzDistToPlayer < 30.0f + (f32)this->collider.dim.radius) {
             // somehow flags that the player is close to malon so that pulling out the Ocarina
             // triggers the code above this.
-            player->stateFlags2 |= 0x800000;
+            player->stateFlags2 |= PLAYER_STATE2_NEAR_OCARINA_ACTOR;
         }
         // If rando'ed, a textbox is closing, it's malon's 'my mom wrote this song' text, AND we do have an ocarina
         // in our inventory. This allows us to grant the check when talking to malon with the ocarina in our inventory.
@@ -444,7 +444,7 @@ void func_80AA0F44(EnMa1* this, PlayState* play) {
 }
 
 void func_80AA106C(EnMa1* this, PlayState* play) {
-    GET_PLAYER(play)->stateFlags2 |= 0x800000;
+    GET_PLAYER(play)->stateFlags2 |= PLAYER_STATE2_NEAR_OCARINA_ACTOR;
     if (this->interactInfo.talkState == NPC_TALK_STATE_ACTION) {
         Audio_OcaSetInstrument(2);
         func_8010BD58(play, OCARINA_ACTION_TEACH_EPONA);
@@ -454,7 +454,7 @@ void func_80AA106C(EnMa1* this, PlayState* play) {
 }
 
 void func_80AA10EC(EnMa1* this, PlayState* play) {
-    GET_PLAYER(play)->stateFlags2 |= 0x800000;
+    GET_PLAYER(play)->stateFlags2 |= PLAYER_STATE2_NEAR_OCARINA_ACTOR;
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_SONG_DEMO_DONE) {
         func_8010BD58(play, OCARINA_ACTION_PLAYBACK_EPONA);
         this->actionFunc = func_80AA1150;
@@ -481,7 +481,7 @@ void EnMa1_EndTeachSong(EnMa1* this, PlayState* play) {
 }
 
 void func_80AA1150(EnMa1* this, PlayState* play) {
-    GET_PLAYER(play)->stateFlags2 |= 0x800000;
+    GET_PLAYER(play)->stateFlags2 |= PLAYER_STATE2_NEAR_OCARINA_ACTOR;
 
     // When rando'ed, trigger the "song learned" Ocarina mode.
     if (IS_RANDO && (Message_GetState(&play->msgCtx) == TEXT_STATE_CLOSING)) {

@@ -12,6 +12,7 @@
 #include <Utils/StringHelper.h>
 #include "../../UIWidgets.hpp"
 #include "AudioCollection.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 Vec3f pos = { 0.0f, 0.0f, 0.0f };
 f32 freqScale = 1.0f;
@@ -78,7 +79,12 @@ void UpdateCurrentBGM(u16 seqKey, SeqType seqType) {
 
 void RandomizeGroup(SeqType type) {
     std::vector<u16> values;
-    
+
+    // An empty IncludedSequences set means that the AudioEditor window has never been drawn
+    if (AudioCollection::Instance->GetIncludedSequences().empty()) {
+        AudioCollection::Instance->InitializeShufflePool();
+    }
+
     // use a while loop to add duplicates if we don't have enough included sequences
     while (values.size() < AuthenticCountBySequenceType(type)) {
         for (const auto& seqData : AudioCollection::Instance->GetIncludedSequences()) {
@@ -123,6 +129,34 @@ void ResetGroup(const std::map<u16, SequenceInfo>& map, SeqType type) {
     }
 }
 
+void LockGroup(const std::map<u16, SequenceInfo>& map, SeqType type) {
+    for (const auto& [defaultValue, seqData] : map) {
+        if (seqData.category == type) {
+            // Only save authentic sequence CVars
+            if (seqData.category == SEQ_FANFARE && defaultValue >= MAX_AUTHENTIC_SEQID) {
+                continue;
+            }
+            const std::string cvarKey = AudioCollection::Instance->GetCvarKey(seqData.sfxKey);
+            const std::string cvarLockKey = AudioCollection::Instance->GetCvarLockKey(seqData.sfxKey);
+            CVarSetInteger(cvarLockKey.c_str(), 1);
+        }
+    }
+}
+
+void UnlockGroup(const std::map<u16, SequenceInfo>& map, SeqType type) {
+    for (const auto& [defaultValue, seqData] : map) {
+        if (seqData.category == type) {
+            // Only save authentic sequence CVars
+            if (seqData.category == SEQ_FANFARE && defaultValue >= MAX_AUTHENTIC_SEQID) {
+                continue;
+            }
+            const std::string cvarKey = AudioCollection::Instance->GetCvarKey(seqData.sfxKey);
+            const std::string cvarLockKey = AudioCollection::Instance->GetCvarLockKey(seqData.sfxKey);
+            CVarSetInteger(cvarLockKey.c_str(), 0);
+        }
+    }
+}
+
 void DrawPreviewButton(uint16_t sequenceId, std::string sfxKey, SeqType sequenceType) {
     const std::string cvarKey = AudioCollection::Instance->GetCvarKey(sfxKey);
     const std::string hiddenKey = "##" + cvarKey;
@@ -163,6 +197,8 @@ void Draw_SfxTab(const std::string& tabId, SeqType type) {
     const std::string hiddenTabId = "##" + tabId;
     const std::string resetAllButton = "Reset All" + hiddenTabId;
     const std::string randomizeAllButton = "Randomize All" + hiddenTabId;
+    const std::string lockAllButton = "Lock All" + hiddenTabId;
+    const std::string unlockAllButton = "Unlock All" + hiddenTabId;
     if (ImGui::Button(resetAllButton.c_str())) {
         auto currentBGM = func_800FA0B4(SEQ_PLAYER_BGM_MAIN);
         auto prevReplacement = AudioCollection::Instance->GetReplacementSequence(currentBGM);
@@ -178,6 +214,28 @@ void Draw_SfxTab(const std::string& tabId, SeqType type) {
         auto currentBGM = func_800FA0B4(SEQ_PLAYER_BGM_MAIN);
         auto prevReplacement = AudioCollection::Instance->GetReplacementSequence(currentBGM);
         RandomizeGroup(type);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        auto curReplacement = AudioCollection::Instance->GetReplacementSequence(currentBGM);
+        if (type == SEQ_BGM_WORLD && prevReplacement != curReplacement) {
+            ReplayCurrentBGM();
+        }
+    }
+    ImGui::SameLine();
+    if (ImGui::Button(lockAllButton.c_str())) {
+        auto currentBGM = func_800FA0B4(SEQ_PLAYER_BGM_MAIN);
+        auto prevReplacement = AudioCollection::Instance->GetReplacementSequence(currentBGM);
+        LockGroup(map, type);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        auto curReplacement = AudioCollection::Instance->GetReplacementSequence(currentBGM);
+        if (type == SEQ_BGM_WORLD && prevReplacement != curReplacement) {
+            ReplayCurrentBGM();
+        }
+    }
+    ImGui::SameLine();
+    if (ImGui::Button(unlockAllButton.c_str())) {
+        auto currentBGM = func_800FA0B4(SEQ_PLAYER_BGM_MAIN);
+        auto prevReplacement = AudioCollection::Instance->GetReplacementSequence(currentBGM);
+        UnlockGroup(map, type);
         LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         auto curReplacement = AudioCollection::Instance->GetReplacementSequence(currentBGM);
         if (type == SEQ_BGM_WORLD && prevReplacement != curReplacement) {
@@ -350,6 +408,19 @@ void DrawTypeChip(SeqType type) {
     ImGui::EndDisabled();
 }
 
+
+void AudioEditorRegisterOnSceneInitHook() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) {
+        if (CVarGetInteger("gAudioEditor.RandomizeAllOnNewScene", 0)) {
+            AudioEditor_RandomizeAll();
+        }
+    });
+}
+
+void AudioEditor::InitElement() {
+    AudioEditorRegisterOnSceneInitHook();
+}
+
 void AudioEditor::DrawElement() {
     AudioCollection::Instance->InitializeShufflePool();
 
@@ -358,6 +429,28 @@ void AudioEditor::DrawElement() {
         ImGui::End();
         return;
     }
+
+    float buttonSegments = ImGui::GetContentRegionAvail().x / 4;
+    if (ImGui::Button("Randomize All Groups", ImVec2(buttonSegments, 30.0f))) {
+        AudioEditor_RandomizeAll();
+    }
+    UIWidgets::Tooltip("Randomizes all unlocked music and sound effects across tab groups");
+    ImGui::SameLine();
+    if (ImGui::Button("Reset All Groups", ImVec2(buttonSegments, 30.0f))) {
+        AudioEditor_ResetAll();
+    }
+    UIWidgets::Tooltip("Resets all unlocked music and sound effects across tab groups");
+    ImGui::SameLine();
+    if (ImGui::Button("Lock All Groups", ImVec2(buttonSegments, 30.0f))) {
+        AudioEditor_LockAll();
+    }
+    UIWidgets::Tooltip("Locks all music and sound effects across tab groups");
+    ImGui::SameLine();
+    if (ImGui::Button("Unlock All Groups", ImVec2(buttonSegments, 30.0f))) {
+        AudioEditor_UnlockAll();
+    }
+    UIWidgets::Tooltip("Unlocks all music and sound effects across tab groups");
+
 
     if (ImGui::BeginTabBar("SfxContextTabBar", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
         if (ImGui::BeginTabItem("Background Music")) {
@@ -422,14 +515,18 @@ void AudioEditor::DrawElement() {
                 ImGui::PopItemWidth();
                 ImGui::NewLine();
                 ImGui::PopItemWidth();
-                UIWidgets::EnhancementSliderFloat("Link's voice pitch multiplier: %f", "##linkVoiceFreqMultiplier",
-                        "gLinkVoiceFreqMultiplier", 0.4, 2.5, "", 1.0, false, false);
+                UIWidgets::EnhancementSliderFloat("Link's voice pitch multiplier: %.1f %%", "##linkVoiceFreqMultiplier",
+                        "gLinkVoiceFreqMultiplier", 0.4, 2.5, "", 1.0, true, true);
                 ImGui::SameLine();
                 const std::string resetButton = "Reset##linkVoiceFreqMultiplier";
                 if (ImGui::Button(resetButton.c_str())) {
                     CVarSetFloat("gLinkVoiceFreqMultiplier", 1.0f);
                     LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                 }
+
+                ImGui::NewLine();
+                UIWidgets::EnhancementCheckbox("Randomize All Music and Sound Effects on New Scene", "gAudioEditor.RandomizeAllOnNewScene");
+                UIWidgets::Tooltip("Enables randomizing all unlocked music and sound effects when you enter a new scene.");
 
                 ImGui::NewLine();
                 ImGui::PushItemWidth(-FLT_MIN);
@@ -624,4 +721,20 @@ void AudioEditor_ResetAll() {
 
     LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     ReplayCurrentBGM();
+}
+
+void AudioEditor_LockAll() {
+    for (auto type : allTypes) {
+        LockGroup(AudioCollection::Instance->GetAllSequences(), type);
+    }
+
+    LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+}
+
+void AudioEditor_UnlockAll() {
+    for (auto type : allTypes) {
+        UnlockGroup(AudioCollection::Instance->GetAllSequences(), type);
+    }
+
+    LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
 }

@@ -10,6 +10,7 @@ EntranceLinkInfo NO_RETURN_ENTRANCE = { EntranceType::None, RR_NONE, RR_NONE, -1
 
 Entrance::Entrance(RandomizerRegion connectedRegion_, std::vector<ConditionFn> conditions_met_)
     : connectedRegion(connectedRegion_) {
+    originalConnectedRegion = connectedRegion_;
     conditions_met.resize(2);
     for (size_t i = 0; i < conditions_met_.size(); i++) {
         conditions_met[i] = conditions_met_[i];
@@ -109,6 +110,10 @@ RandomizerRegion Entrance::GetConnectedRegionKey() const {
     return connectedRegion;
 }
 
+RandomizerRegion Entrance::GetOriginalConnectedRegionKey() const {
+    return originalConnectedRegion;
+}
+
 Area* Entrance::GetConnectedRegion() const {
     return AreaTable(connectedRegion);
 }
@@ -173,14 +178,6 @@ void Entrance::SetIndex(int16_t newIndex) {
     index = newIndex;
 }
 
-int16_t Entrance::GetBlueWarp() const {
-    return blueWarp;
-}
-
-void Entrance::SetBlueWarp(int16_t newBlueWarp) {
-    blueWarp = newBlueWarp;
-}
-
 Entrance* Entrance::GetAssumed() const {
     return assumed;
 }
@@ -226,7 +223,7 @@ Entrance* Entrance::GetNewTarget() {
     AreaTable(RR_ROOT)->AddExit(RR_ROOT, connectedRegion, [] { return true; });
     Entrance* targetEntrance = AreaTable(RR_ROOT)->GetExit(connectedRegion);
     targetEntrance->SetReplacement(this);
-    targetEntrance->SetName(GetParentRegion()->regionName + " -> " + GetConnectedRegion()->regionName);
+    targetEntrance->SetName(AreaTable(RR_ROOT)->regionName + " -> " + GetConnectedRegion()->regionName);
     return targetEntrance;
 }
 
@@ -246,6 +243,11 @@ void EntranceShuffler::SetNoRandomEntrances(bool noRandomEntrances) {
     mNoRandomEntrances = noRandomEntrances;
 }
 
+// Construct entrance name from parent and connected region keys
+std::string EntranceNameByRegions(RandomizerRegion parentRegion, RandomizerRegion connectedRegion) {
+    return AreaTable(parentRegion)->regionName + " -> " + AreaTable(connectedRegion)->regionName;
+}
+
 void SetAllEntrancesData(std::vector<EntranceInfoPair>& entranceShuffleTable) {
     auto ctx = Rando::Context::GetInstance();
     for (auto& entrancePair : entranceShuffleTable) {
@@ -256,26 +258,22 @@ void SetAllEntrancesData(std::vector<EntranceInfoPair>& entranceShuffleTable) {
         // set data
         Entrance* forwardEntrance = AreaTable(forwardEntry.parentRegion)->GetExit(forwardEntry.connectedRegion);
         forwardEntrance->SetIndex(forwardEntry.index);
-        forwardEntrance->SetBlueWarp(forwardEntry.blueWarp);
         forwardEntrance->SetType(forwardEntry.type);
         forwardEntrance->SetAsPrimary();
 
-        // When decouple entrances is on, mark it for entrances except boss rooms
-        if (ctx->GetOption(RSK_DECOUPLED_ENTRANCES) && forwardEntry.type != EntranceType::ChildBoss &&
-            forwardEntry.type != EntranceType::AdultBoss) {
+        // When decouple entrances is on, mark the forward entrance
+        if (ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
             forwardEntrance->SetDecoupled();
         }
 
         if (returnEntry.parentRegion != RR_NONE) {
             Entrance* returnEntrance = AreaTable(returnEntry.parentRegion)->GetExit(returnEntry.connectedRegion);
             returnEntrance->SetIndex(returnEntry.index);
-            returnEntrance->SetBlueWarp(returnEntry.blueWarp);
             returnEntrance->SetType(returnEntry.type);
             forwardEntrance->BindTwoWay(returnEntrance);
 
             // Mark reverse entrance as decoupled
-            if (ctx->GetOption(RSK_DECOUPLED_ENTRANCES) && returnEntry.type != EntranceType::ChildBoss &&
-                returnEntry.type != EntranceType::AdultBoss) {
+            if (ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
                 returnEntrance->SetDecoupled();
             }
         }
@@ -925,24 +923,23 @@ int EntranceShuffler::ShuffleAllEntrances() {
     mCurNumRandomizedEntrances = 0;
 
     std::vector<EntranceInfoPair> entranceShuffleTable = {
-        // Parent Region                     Connected Region                      index   blue warp
+        // Type                    Parent Region            Connected Region       Index
         { { EntranceType::Dungeon, RR_KF_OUTSIDE_DEKU_TREE, RR_DEKU_TREE_ENTRYWAY, 0x0000 },
-          { EntranceType::Dungeon, RR_DEKU_TREE_ENTRYWAY, RR_KF_OUTSIDE_DEKU_TREE, 0x0209, 0x0457 } },
+          { EntranceType::Dungeon, RR_DEKU_TREE_ENTRYWAY, RR_KF_OUTSIDE_DEKU_TREE, 0x0209 } },
         { { EntranceType::Dungeon, RR_DEATH_MOUNTAIN_TRAIL, RR_DODONGOS_CAVERN_ENTRYWAY, 0x0004 },
-          { EntranceType::Dungeon, RR_DODONGOS_CAVERN_ENTRYWAY, RR_DEATH_MOUNTAIN_TRAIL, 0x0242, 0x047A } },
+          { EntranceType::Dungeon, RR_DODONGOS_CAVERN_ENTRYWAY, RR_DEATH_MOUNTAIN_TRAIL, 0x0242 } },
         { { EntranceType::Dungeon, RR_ZORAS_FOUNTAIN, RR_JABU_JABUS_BELLY_ENTRYWAY, 0x0028 },
-          { EntranceType::Dungeon, RR_JABU_JABUS_BELLY_ENTRYWAY, RR_ZORAS_FOUNTAIN, 0x0221, 0x010E } },
+          { EntranceType::Dungeon, RR_JABU_JABUS_BELLY_ENTRYWAY, RR_ZORAS_FOUNTAIN, 0x0221 } },
         { { EntranceType::Dungeon, RR_SACRED_FOREST_MEADOW, RR_FOREST_TEMPLE_ENTRYWAY, 0x0169 },
-          { EntranceType::Dungeon, RR_FOREST_TEMPLE_ENTRYWAY, RR_SACRED_FOREST_MEADOW, 0x0215, 0x0608 } },
+          { EntranceType::Dungeon, RR_FOREST_TEMPLE_ENTRYWAY, RR_SACRED_FOREST_MEADOW, 0x0215 } },
         { { EntranceType::Dungeon, RR_DMC_CENTRAL_LOCAL, RR_FIRE_TEMPLE_ENTRYWAY, 0x0165 },
-          { EntranceType::Dungeon, RR_FIRE_TEMPLE_ENTRYWAY, RR_DMC_CENTRAL_LOCAL, 0x024A, 0x0564 } },
+          { EntranceType::Dungeon, RR_FIRE_TEMPLE_ENTRYWAY, RR_DMC_CENTRAL_LOCAL, 0x024A } },
         { { EntranceType::Dungeon, RR_LAKE_HYLIA, RR_WATER_TEMPLE_ENTRYWAY, 0x0010 },
-          { EntranceType::Dungeon, RR_WATER_TEMPLE_ENTRYWAY, RR_LAKE_HYLIA, 0x021D, 0x060C } },
+          { EntranceType::Dungeon, RR_WATER_TEMPLE_ENTRYWAY, RR_LAKE_HYLIA, 0x021D } },
         { { EntranceType::Dungeon, RR_DESERT_COLOSSUS, RR_SPIRIT_TEMPLE_ENTRYWAY, 0x0082 },
-          { EntranceType::Dungeon, RR_SPIRIT_TEMPLE_ENTRYWAY, RR_DESERT_COLOSSUS_FROM_SPIRIT_ENTRYWAY, 0x01E1,
-            0x0610 } },
+          { EntranceType::Dungeon, RR_SPIRIT_TEMPLE_ENTRYWAY, RR_DESERT_COLOSSUS_FROM_SPIRIT_ENTRYWAY, 0x01E1 } },
         { { EntranceType::Dungeon, RR_GRAVEYARD_WARP_PAD_REGION, RR_SHADOW_TEMPLE_ENTRYWAY, 0x0037 },
-          { EntranceType::Dungeon, RR_SHADOW_TEMPLE_ENTRYWAY, RR_GRAVEYARD_WARP_PAD_REGION, 0x0205, 0x0580 } },
+          { EntranceType::Dungeon, RR_SHADOW_TEMPLE_ENTRYWAY, RR_GRAVEYARD_WARP_PAD_REGION, 0x0205 } },
         { { EntranceType::Dungeon, RR_KAKARIKO_VILLAGE, RR_BOTTOM_OF_THE_WELL_ENTRYWAY, 0x0098 },
           { EntranceType::Dungeon, RR_BOTTOM_OF_THE_WELL_ENTRYWAY, RR_KAKARIKO_VILLAGE, 0x02A6 } },
         { { EntranceType::Dungeon, RR_ZORAS_FOUNTAIN, RR_ICE_CAVERN_ENTRYWAY, 0x0088 },
@@ -1190,22 +1187,32 @@ int EntranceShuffler::ShuffleAllEntrances() {
         { { EntranceType::WarpSong, RR_PRELUDE_OF_LIGHT_WARP, RR_TEMPLE_OF_TIME, 0x05F4 }, NO_RETURN_ENTRANCE },
 
         { { EntranceType::ChildBoss, RR_DEKU_TREE_BOSS_ENTRYWAY, RR_DEKU_TREE_BOSS_ROOM, 0x040F },
-          { EntranceType::ChildBoss, RR_DEKU_TREE_BOSS_ROOM, RR_DEKU_TREE_BOSS_ENTRYWAY, 0x0252, 0x0457 } },
+          { EntranceType::ChildBoss, RR_DEKU_TREE_BOSS_ROOM, RR_DEKU_TREE_BOSS_ENTRYWAY, 0x0252 } },
         { { EntranceType::ChildBoss, RR_DODONGOS_CAVERN_BOSS_ENTRYWAY, RR_DODONGOS_CAVERN_BOSS_ROOM, 0x040B },
-          { EntranceType::ChildBoss, RR_DODONGOS_CAVERN_BOSS_ROOM, RR_DODONGOS_CAVERN_BOSS_ENTRYWAY, 0x00C5, 0x047A } },
+          { EntranceType::ChildBoss, RR_DODONGOS_CAVERN_BOSS_ROOM, RR_DODONGOS_CAVERN_BOSS_ENTRYWAY, 0x00C5 } },
         { { EntranceType::ChildBoss, RR_JABU_JABUS_BELLY_BOSS_ENTRYWAY, RR_JABU_JABUS_BELLY_BOSS_ROOM, 0x0301 },
-          { EntranceType::ChildBoss, RR_JABU_JABUS_BELLY_BOSS_ROOM, RR_JABU_JABUS_BELLY_BOSS_ENTRYWAY, 0x0407,
-            0x010E } },
+          { EntranceType::ChildBoss, RR_JABU_JABUS_BELLY_BOSS_ROOM, RR_JABU_JABUS_BELLY_BOSS_ENTRYWAY, 0x0407 } },
         { { EntranceType::AdultBoss, RR_FOREST_TEMPLE_BOSS_ENTRYWAY, RR_FOREST_TEMPLE_BOSS_ROOM, 0x000C },
-          { EntranceType::AdultBoss, RR_FOREST_TEMPLE_BOSS_ROOM, RR_FOREST_TEMPLE_BOSS_ENTRYWAY, 0x024E, 0x0608 } },
+          { EntranceType::AdultBoss, RR_FOREST_TEMPLE_BOSS_ROOM, RR_FOREST_TEMPLE_BOSS_ENTRYWAY, 0x024E } },
         { { EntranceType::AdultBoss, RR_FIRE_TEMPLE_BOSS_ENTRYWAY, RR_FIRE_TEMPLE_BOSS_ROOM, 0x0305 },
-          { EntranceType::AdultBoss, RR_FIRE_TEMPLE_BOSS_ROOM, RR_FIRE_TEMPLE_BOSS_ENTRYWAY, 0x0175, 0x0564 } },
+          { EntranceType::AdultBoss, RR_FIRE_TEMPLE_BOSS_ROOM, RR_FIRE_TEMPLE_BOSS_ENTRYWAY, 0x0175 } },
         { { EntranceType::AdultBoss, RR_WATER_TEMPLE_BOSS_ENTRYWAY, RR_WATER_TEMPLE_BOSS_ROOM, 0x0417 },
-          { EntranceType::AdultBoss, RR_WATER_TEMPLE_BOSS_ROOM, RR_WATER_TEMPLE_BOSS_ENTRYWAY, 0x0423, 0x060C } },
+          { EntranceType::AdultBoss, RR_WATER_TEMPLE_BOSS_ROOM, RR_WATER_TEMPLE_BOSS_ENTRYWAY, 0x0423 } },
         { { EntranceType::AdultBoss, RR_SPIRIT_TEMPLE_BOSS_ENTRYWAY, RR_SPIRIT_TEMPLE_BOSS_ROOM, 0x008D },
-          { EntranceType::AdultBoss, RR_SPIRIT_TEMPLE_BOSS_ROOM, RR_SPIRIT_TEMPLE_BOSS_ENTRYWAY, 0x02F5, 0x0610 } },
+          { EntranceType::AdultBoss, RR_SPIRIT_TEMPLE_BOSS_ROOM, RR_SPIRIT_TEMPLE_BOSS_ENTRYWAY, 0x02F5 } },
         { { EntranceType::AdultBoss, RR_SHADOW_TEMPLE_BOSS_ENTRYWAY, RR_SHADOW_TEMPLE_BOSS_ROOM, 0x0413 },
-          { EntranceType::AdultBoss, RR_SHADOW_TEMPLE_BOSS_ROOM, RR_SHADOW_TEMPLE_BOSS_ENTRYWAY, 0x02B2, 0x0580 } },
+          { EntranceType::AdultBoss, RR_SHADOW_TEMPLE_BOSS_ROOM, RR_SHADOW_TEMPLE_BOSS_ENTRYWAY, 0x02B2 } },
+
+        { { EntranceType::BlueWarp, RR_DEKU_TREE_BOSS_ROOM, RR_KF_OUTSIDE_DEKU_TREE, 0x0457 }, NO_RETURN_ENTRANCE },
+        { { EntranceType::BlueWarp, RR_DODONGOS_CAVERN_BOSS_ROOM, RR_DEATH_MOUNTAIN_TRAIL, 0x047A },
+          NO_RETURN_ENTRANCE },
+        { { EntranceType::BlueWarp, RR_JABU_JABUS_BELLY_BOSS_ROOM, RR_ZORAS_FOUNTAIN, 0x010E }, NO_RETURN_ENTRANCE },
+        { { EntranceType::BlueWarp, RR_FOREST_TEMPLE_BOSS_ROOM, RR_SACRED_FOREST_MEADOW, 0x0608 }, NO_RETURN_ENTRANCE },
+        { { EntranceType::BlueWarp, RR_FIRE_TEMPLE_BOSS_ROOM, RR_DMC_CENTRAL_LOCAL, 0x0564 }, NO_RETURN_ENTRANCE },
+        { { EntranceType::BlueWarp, RR_WATER_TEMPLE_BOSS_ROOM, RR_LAKE_HYLIA, 0x060C }, NO_RETURN_ENTRANCE },
+        { { EntranceType::BlueWarp, RR_SPIRIT_TEMPLE_BOSS_ROOM, RR_DESERT_COLOSSUS, 0x0610 }, NO_RETURN_ENTRANCE },
+        { { EntranceType::BlueWarp, RR_SHADOW_TEMPLE_BOSS_ROOM, RR_GRAVEYARD_WARP_PAD_REGION, 0x0580 },
+          NO_RETURN_ENTRANCE },
     };
 
     std::map<std::string, PriorityEntrance> priorityEntranceTable = {
@@ -1262,6 +1269,11 @@ int EntranceShuffler::ShuffleAllEntrances() {
                            entrance->GetConnectedRegionKey() == RR_DEKU_TREE_BOSS_ROOM;
                 });
             }
+            if (ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
+                for (Entrance* entrance : entrancePools[EntranceType::Boss]) {
+                    entrancePools[EntranceType::BossReverse].push_back(entrance->GetReverse());
+                }
+            }
         } else {
             entrancePools[EntranceType::ChildBoss] = GetShuffleableEntrances(EntranceType::ChildBoss);
             entrancePools[EntranceType::AdultBoss] = GetShuffleableEntrances(EntranceType::AdultBoss);
@@ -1272,6 +1284,14 @@ int EntranceShuffler::ShuffleAllEntrances() {
                     return entrance->GetParentRegionKey() == RR_DEKU_TREE_BOSS_ENTRYWAY &&
                            entrance->GetConnectedRegionKey() == RR_DEKU_TREE_BOSS_ROOM;
                 });
+            }
+            if (ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
+                for (Entrance* entrance : entrancePools[EntranceType::ChildBoss]) {
+                    entrancePools[EntranceType::ChildBossReverse].push_back(entrance->GetReverse());
+                }
+                for (Entrance* entrance : entrancePools[EntranceType::AdultBoss]) {
+                    entrancePools[EntranceType::AdultBossReverse].push_back(entrance->GetReverse());
+                }
             }
         }
     }
@@ -1346,11 +1366,13 @@ int EntranceShuffler::ShuffleAllEntrances() {
 
     // combine entrance pools if mixing pools. Only continue if more than one pool is selected.
     int totalMixedPools =
-        (ctx->GetOption(RSK_MIX_DUNGEON_ENTRANCES) ? 1 : 0) + (ctx->GetOption(RSK_MIX_OVERWORLD_ENTRANCES) ? 1 : 0) +
-        (ctx->GetOption(RSK_MIX_INTERIOR_ENTRANCES) ? 1 : 0) + (ctx->GetOption(RSK_MIX_GROTTO_ENTRANCES) ? 1 : 0);
+        (ctx->GetOption(RSK_MIX_DUNGEON_ENTRANCES) ? 1 : 0) + (ctx->GetOption(RSK_MIX_BOSS_ENTRANCES) ? 1 : 0) +
+        (ctx->GetOption(RSK_MIX_OVERWORLD_ENTRANCES) ? 1 : 0) + (ctx->GetOption(RSK_MIX_INTERIOR_ENTRANCES) ? 1 : 0) +
+        (ctx->GetOption(RSK_MIX_GROTTO_ENTRANCES) ? 1 : 0);
     if (totalMixedPools < 2) {
         ctx->GetOption(RSK_MIXED_ENTRANCE_POOLS).SetSelectedIndex(RO_GENERIC_OFF);
         ctx->GetOption(RSK_MIX_DUNGEON_ENTRANCES).SetSelectedIndex(RO_GENERIC_OFF);
+        ctx->GetOption(RSK_MIX_BOSS_ENTRANCES).SetSelectedIndex(RO_GENERIC_OFF);
         ctx->GetOption(RSK_MIX_OVERWORLD_ENTRANCES).SetSelectedIndex(RO_GENERIC_OFF);
         ctx->GetOption(RSK_MIX_INTERIOR_ENTRANCES).SetSelectedIndex(RO_GENERIC_OFF);
         ctx->GetOption(RSK_MIX_GROTTO_ENTRANCES).SetSelectedIndex(RO_GENERIC_OFF);
@@ -1362,6 +1384,12 @@ int EntranceShuffler::ShuffleAllEntrances() {
             // Insert reverse entrances when decoupled entrances is on
             if (ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
                 poolsToMix.insert(EntranceType::DungeonReverse);
+            }
+        }
+        if (ctx->GetOption(RSK_MIX_DUNGEON_ENTRANCES)) {
+            poolsToMix.insert(EntranceType::Boss);
+            if (ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
+                poolsToMix.insert(EntranceType::BossReverse);
             }
         }
         if (ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {
@@ -1503,6 +1531,94 @@ int EntranceShuffler::ShuffleAllEntrances() {
         }
     }
 
+    // Determine blue warp targets
+    // RANDOTODO: add bluewarp shuffle
+    if (true /* ctx->GetOption(RSK_SHUFFLE_BLUEWARP_ENTRANCES).Is(RO_BLUEWARP_ENTRANCE_SHUFFLE_DUNGEON) */) {
+        // If a boss room is inside a boss door, make the blue warp go outside the dungeon's entrance
+        std::map<std::string, Entrance*> bossExits = {
+            { EntranceNameByRegions(RR_DEKU_TREE_BOSS_ROOM, RR_DEKU_TREE_BOSS_ENTRYWAY),
+              GetEntrance(EntranceNameByRegions(RR_DEKU_TREE_ENTRYWAY, RR_KF_OUTSIDE_DEKU_TREE)) },
+            { EntranceNameByRegions(RR_DODONGOS_CAVERN_BOSS_ROOM, RR_DODONGOS_CAVERN_BOSS_ENTRYWAY),
+              GetEntrance(EntranceNameByRegions(RR_DODONGOS_CAVERN_ENTRYWAY, RR_DEATH_MOUNTAIN_TRAIL)) },
+            { EntranceNameByRegions(RR_JABU_JABUS_BELLY_BOSS_ROOM, RR_JABU_JABUS_BELLY_BOSS_ENTRYWAY),
+              GetEntrance(EntranceNameByRegions(RR_JABU_JABUS_BELLY_ENTRYWAY, RR_ZORAS_FOUNTAIN)) },
+            { EntranceNameByRegions(RR_FOREST_TEMPLE_BOSS_ROOM, RR_FOREST_TEMPLE_BOSS_ENTRYWAY),
+              GetEntrance(EntranceNameByRegions(RR_FOREST_TEMPLE_ENTRYWAY, RR_SACRED_FOREST_MEADOW)) },
+            { EntranceNameByRegions(RR_FIRE_TEMPLE_BOSS_ROOM, RR_FIRE_TEMPLE_BOSS_ENTRYWAY),
+              GetEntrance(EntranceNameByRegions(RR_FIRE_TEMPLE_ENTRYWAY, RR_DMC_CENTRAL_LOCAL)) },
+            { EntranceNameByRegions(RR_WATER_TEMPLE_BOSS_ROOM, RR_WATER_TEMPLE_BOSS_ENTRYWAY),
+              GetEntrance(EntranceNameByRegions(RR_WATER_TEMPLE_ENTRYWAY, RR_LAKE_HYLIA)) },
+            { EntranceNameByRegions(RR_SPIRIT_TEMPLE_BOSS_ROOM, RR_SPIRIT_TEMPLE_BOSS_ENTRYWAY),
+              GetEntrance(EntranceNameByRegions(RR_SPIRIT_TEMPLE_ENTRYWAY, RR_DESERT_COLOSSUS_FROM_SPIRIT_ENTRYWAY)) },
+            { EntranceNameByRegions(RR_SHADOW_TEMPLE_BOSS_ROOM, RR_SHADOW_TEMPLE_BOSS_ENTRYWAY),
+              GetEntrance(EntranceNameByRegions(RR_SHADOW_TEMPLE_ENTRYWAY, RR_GRAVEYARD_WARP_PAD_REGION)) },
+        };
+
+        // If a boss room is inside a dungeon entrance (or inside a dungeon which is inside a dungeon entrance), make
+        // the blue warp go to that dungeon's blue warp target
+        std::map<std::string, Entrance*> dungeonExits = {
+            { EntranceNameByRegions(RR_DEKU_TREE_ENTRYWAY, RR_KF_OUTSIDE_DEKU_TREE),
+              GetEntrance(EntranceNameByRegions(RR_DEKU_TREE_BOSS_ROOM, RR_KF_OUTSIDE_DEKU_TREE)) },
+            { EntranceNameByRegions(RR_DODONGOS_CAVERN_ENTRYWAY, RR_DEATH_MOUNTAIN_TRAIL),
+              GetEntrance(EntranceNameByRegions(RR_DODONGOS_CAVERN_BOSS_ROOM, RR_DEATH_MOUNTAIN_TRAIL)) },
+            { EntranceNameByRegions(RR_JABU_JABUS_BELLY_ENTRYWAY, RR_ZORAS_FOUNTAIN),
+              GetEntrance(EntranceNameByRegions(RR_JABU_JABUS_BELLY_BOSS_ROOM, RR_ZORAS_FOUNTAIN)) },
+            { EntranceNameByRegions(RR_FOREST_TEMPLE_ENTRYWAY, RR_SACRED_FOREST_MEADOW),
+              GetEntrance(EntranceNameByRegions(RR_FOREST_TEMPLE_BOSS_ROOM, RR_SACRED_FOREST_MEADOW)) },
+            { EntranceNameByRegions(RR_FIRE_TEMPLE_ENTRYWAY, RR_DMC_CENTRAL_LOCAL),
+              GetEntrance(EntranceNameByRegions(RR_FIRE_TEMPLE_BOSS_ROOM, RR_DMC_CENTRAL_LOCAL)) },
+            { EntranceNameByRegions(RR_WATER_TEMPLE_ENTRYWAY, RR_LAKE_HYLIA),
+              GetEntrance(EntranceNameByRegions(RR_WATER_TEMPLE_BOSS_ROOM, RR_LAKE_HYLIA)) },
+            { EntranceNameByRegions(RR_SPIRIT_TEMPLE_ENTRYWAY, RR_DESERT_COLOSSUS_FROM_SPIRIT_ENTRYWAY),
+              GetEntrance(EntranceNameByRegions(RR_SPIRIT_TEMPLE_BOSS_ROOM, RR_DESERT_COLOSSUS)) },
+            { EntranceNameByRegions(RR_SHADOW_TEMPLE_ENTRYWAY, RR_GRAVEYARD_WARP_PAD_REGION),
+              GetEntrance(EntranceNameByRegions(RR_SHADOW_TEMPLE_BOSS_ROOM, RR_GRAVEYARD_WARP_PAD_REGION)) },
+        };
+
+        // Pair <BlueWarp exit, BossRoom reverse exit>
+        std::vector<EntrancePair> bossRoomExitPairs = {
+            { GetEntrance(EntranceNameByRegions(RR_DEKU_TREE_BOSS_ROOM, RR_KF_OUTSIDE_DEKU_TREE)),
+              GetEntrance(EntranceNameByRegions(RR_DEKU_TREE_BOSS_ROOM, RR_DEKU_TREE_BOSS_ENTRYWAY)) },
+            { GetEntrance(EntranceNameByRegions(RR_DODONGOS_CAVERN_BOSS_ROOM, RR_DEATH_MOUNTAIN_TRAIL)),
+              GetEntrance(EntranceNameByRegions(RR_DODONGOS_CAVERN_BOSS_ROOM, RR_DODONGOS_CAVERN_BOSS_ENTRYWAY)) },
+            { GetEntrance(EntranceNameByRegions(RR_JABU_JABUS_BELLY_BOSS_ROOM, RR_ZORAS_FOUNTAIN)),
+              GetEntrance(EntranceNameByRegions(RR_JABU_JABUS_BELLY_BOSS_ROOM, RR_JABU_JABUS_BELLY_BOSS_ENTRYWAY)) },
+            { GetEntrance(EntranceNameByRegions(RR_FOREST_TEMPLE_BOSS_ROOM, RR_SACRED_FOREST_MEADOW)),
+              GetEntrance(EntranceNameByRegions(RR_FOREST_TEMPLE_BOSS_ROOM, RR_FOREST_TEMPLE_BOSS_ENTRYWAY)) },
+            { GetEntrance(EntranceNameByRegions(RR_FIRE_TEMPLE_BOSS_ROOM, RR_DMC_CENTRAL_LOCAL)),
+              GetEntrance(EntranceNameByRegions(RR_FIRE_TEMPLE_BOSS_ROOM, RR_FIRE_TEMPLE_BOSS_ENTRYWAY)) },
+            { GetEntrance(EntranceNameByRegions(RR_WATER_TEMPLE_BOSS_ROOM, RR_LAKE_HYLIA)),
+              GetEntrance(EntranceNameByRegions(RR_WATER_TEMPLE_BOSS_ROOM, RR_WATER_TEMPLE_BOSS_ENTRYWAY)) },
+            { GetEntrance(EntranceNameByRegions(RR_SPIRIT_TEMPLE_BOSS_ROOM, RR_DESERT_COLOSSUS)),
+              GetEntrance(EntranceNameByRegions(RR_SPIRIT_TEMPLE_BOSS_ROOM, RR_SPIRIT_TEMPLE_BOSS_ENTRYWAY)) },
+            { GetEntrance(EntranceNameByRegions(RR_SHADOW_TEMPLE_BOSS_ROOM, RR_GRAVEYARD_WARP_PAD_REGION)),
+              GetEntrance(EntranceNameByRegions(RR_SHADOW_TEMPLE_BOSS_ROOM, RR_SHADOW_TEMPLE_BOSS_ENTRYWAY)) },
+        };
+
+        for (EntrancePair pair : bossRoomExitPairs) {
+            Entrance* target = pair.second->GetReplacement() != nullptr ? pair.second->GetReplacement() : pair.second;
+
+            if (!ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
+                while (bossExits.find(target->GetName()) != bossExits.end()) {
+                    Entrance* next = bossExits.at(target->GetName());
+                    target = next->GetReplacement() != nullptr ? next->GetReplacement() : next;
+                }
+
+                if (dungeonExits.find(target->GetName()) != dungeonExits.end()) {
+                    target = dungeonExits.at(target->GetName());
+                }
+            }
+
+            pair.first->Connect(target->GetOriginalConnectedRegionKey());
+            pair.first->SetReplacement(target);
+        }
+    }
+
+    // Validate the world one last time to ensure all special conditions are still valid
+    if (!ValidateWorld(nullptr)) {
+        return ENTRANCE_SHUFFLE_FAILURE;
+    }
+
     return ENTRANCE_SHUFFLE_SUCCESS;
 }
 
@@ -1518,16 +1634,21 @@ void EntranceShuffler::CreateEntranceOverrides() {
     int i = 0;
     for (Entrance* entrance : allShuffleableEntrances) {
 
+        // Include blue warps when dungeons or bosses are shuffled
+        bool includeBluewarps =
+            entrance->GetType() == Rando::EntranceType::BlueWarp &&
+            (ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES) || ctx->GetOption(RSK_SHUFFLE_BOSS_ENTRANCES));
+
         // Double-check to make sure the entrance is actually shuffled
-        if (!entrance->IsShuffled()) {
+        if (!entrance->IsShuffled() && !includeBluewarps) {
             continue;
         }
 
         auto message = "Setting " + entrance->to_string() + "\n";
         SPDLOG_DEBUG(message);
 
+        uint8_t type = (uint8_t)entrance->GetType();
         int16_t originalIndex = entrance->GetIndex();
-        int16_t originalBlueWarp = entrance->GetBlueWarp();
         int16_t replacementIndex = entrance->GetReplacement()->GetIndex();
 
         int16_t destinationIndex = -1;
@@ -1541,9 +1662,9 @@ void EntranceShuffler::CreateEntranceOverrides() {
         }
 
         entranceOverrides[i] = {
+            .type = type,
             .index = originalIndex,
             .destination = destinationIndex,
-            .blueWarp = originalBlueWarp,
             .override = replacementIndex,
             .overrideDestination = replacementDestinationIndex,
         };
@@ -1559,9 +1680,9 @@ void EntranceShuffler::CreateEntranceOverrides() {
 /// @brief set all the entrances to be 0 to indicate an unshuffled entrance
 void EntranceShuffler::UnshuffleAllEntrances() {
     for (auto& entranceOveride : entranceOverrides) {
+        entranceOveride.type = 0;
         entranceOveride.index = 0;
         entranceOveride.destination = 0;
-        entranceOveride.blueWarp = 0;
         entranceOveride.override = 0;
         entranceOveride.overrideDestination = 0;
     }
@@ -1575,12 +1696,12 @@ void EntranceShuffler::ParseJson(nlohmann::json spoilerFileJson) {
         for (auto it = entrancesJson.begin(); it != entrancesJson.end(); ++it, i++) {
             nlohmann::json entranceJson = *it;
             for (auto entranceIt = entranceJson.begin(); entranceIt != entranceJson.end(); ++entranceIt) {
-                if (entranceIt.key() == "index") {
+                if (entranceIt.key() == "type") {
+                    entranceOverrides[i].type = entranceIt.value();
+                } else if (entranceIt.key() == "index") {
                     entranceOverrides[i].index = entranceIt.value();
                 } else if (entranceIt.key() == "destination") {
                     entranceOverrides[i].destination = entranceIt.value();
-                } else if (entranceIt.key() == "blueWarp") {
-                    entranceOverrides[i].blueWarp = entranceIt.value();
                 } else if (entranceIt.key() == "override") {
                     entranceOverrides[i].override = entranceIt.value();
                 } else if (entranceIt.key() == "overrideDestination") {
@@ -1593,5 +1714,5 @@ void EntranceShuffler::ParseJson(nlohmann::json spoilerFileJson) {
 } // namespace Rando
 
 extern "C" EntranceOverride* Randomizer_GetEntranceOverrides() {
-  return Rando::Context::GetInstance()->GetEntranceShuffler()->entranceOverrides.data();
+    return Rando::Context::GetInstance()->GetEntranceShuffler()->entranceOverrides.data();
 }

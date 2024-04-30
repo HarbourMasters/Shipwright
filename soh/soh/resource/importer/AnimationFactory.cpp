@@ -2,32 +2,14 @@
 #include "soh/resource/type/Animation.h"
 #include "spdlog/spdlog.h"
 
-namespace LUS {
-std::shared_ptr<IResource>
-AnimationFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
-    auto resource = std::make_shared<Animation>(initData);
-    std::shared_ptr<ResourceVersionFactory> factory = nullptr;
-
-    switch (resource->GetInitData()->ResourceVersion) {
-        case 0:
-            factory = std::make_shared<AnimationFactoryV0>();
-            break;
-    }
-
-    if (factory == nullptr) {
-        SPDLOG_ERROR("Failed to load Animation with version {}", resource->GetInitData()->ResourceVersion);
+namespace SOH {
+std::shared_ptr<LUS::IResource> ResourceFactoryBinaryAnimationV0::ReadResource(std::shared_ptr<LUS::File> file) {
+    if (!FileHasValidFormatAndReader(file)) {
         return nullptr;
     }
 
-    factory->ParseFileBinary(reader, resource);
-
-    return resource;
-}
-
-void LUS::AnimationFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader, std::shared_ptr<IResource> resource) {
-    std::shared_ptr<Animation> animation = std::static_pointer_cast<Animation>(resource);
-
-    ResourceVersionFactory::ParseFileBinary(reader, animation);
+    auto animation = std::make_shared<Animation>(file->InitData);
+    auto reader = std::get<std::shared_ptr<LUS::BinaryReader>>(file->Reader);
 
     AnimationType animType = (AnimationType)reader->ReadUInt32();
     animation->type = animType;
@@ -100,5 +82,7 @@ void LUS::AnimationFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> read
     } else if (animType == AnimationType::Legacy) {
         SPDLOG_DEBUG("BEYTAH ANIMATION?!");
     }
+
+    return animation;
 }
-} // namespace LUS
+} // namespace SOH
