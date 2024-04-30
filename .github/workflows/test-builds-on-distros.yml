@@ -1,5 +1,6 @@
 # todo:
 # nlohmann
+# tinyxml2
 
 name: test-builds-on-distros
 on:
