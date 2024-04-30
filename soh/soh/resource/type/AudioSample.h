@@ -39,11 +39,11 @@ namespace SOH {
         s32 sampleRate;           // For wav samples only...
     } Sample; // size = 0x10
 
-    class AudioSample : public LUS::Resource<Sample> {
+    class AudioSample : public Ship::Resource<Sample> {
         public:
             using Resource::Resource;
 
-        AudioSample() : Resource(std::shared_ptr<LUS::ResourceInitData>()) {}
+        AudioSample() : Resource(std::shared_ptr<Ship::ResourceInitData>()) {}
 
             Sample* GetPointer();
             size_t GetPointerSize();

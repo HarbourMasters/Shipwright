@@ -1413,7 +1413,7 @@ void EnSkj_StartOcarinaMinigame(EnSkj* this, PlayState* play) {
 
     if (dialogState == TEXT_STATE_CLOSING) {
         // #region SOH [Enhancement]
-        if (CVarGetInteger("gInstantOcarinaGameWin", 0) && CVarGetInteger("gCustomizeOcarinaGame", 0)) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("InstantOcarinaGameWin"), 0) && CVarGetInteger(CVAR_ENHANCEMENT("CustomizeOcarinaGame"), 0)) {
             play->msgCtx.ocarinaMode = OCARINA_MODE_0F;
             this->songFailTimer = 160;
             this->actionFunc = EnSkj_WaitForPlayback;
@@ -1475,8 +1475,8 @@ void EnSkj_WaitForPlayback(EnSkj* this, PlayState* play) {
             case MSGMODE_MEMORY_GAME_PLAYER_PLAYING:
                 if (this->songFailTimer != 0) {
                     // #region SOH [Enhancement]
-                    if (CVarGetInteger("gOcarinaUnlimitedFailTime", 0) == 1 &&
-                        CVarGetInteger("gCustomizeOcarinaGame", 0) == 1) { 
+                    if (CVarGetInteger(CVAR_ENHANCEMENT("OcarinaUnlimitedFailTime"), 0) == 1 &&
+                        CVarGetInteger(CVAR_ENHANCEMENT("CustomizeOcarinaGame"), 0) == 1) { 
                         // don't decrement timer
                     // #endregion
                     } else {                      

@@ -606,17 +606,17 @@ void Minimap_DrawCompassIcons(PlayState* play) {
     Player* player = GET_PLAYER(play);
     s16 tempX, tempZ;
     Color_RGB8 lastEntranceColor = { 200, 0, 0 };
-    if (CVarGetInteger("gCosmetics.Hud_MinimapEntrance.Changed", 0)) {
-        lastEntranceColor = CVarGetColor24("gCosmetics.Hud_MinimapEntrance.Value", lastEntranceColor);
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.MinimapEntrance.Changed"), 0)) {
+        lastEntranceColor = CVarGetColor24(CVAR_COSMETIC("HUD.MinimapEntrance.Value"), lastEntranceColor);
     }
     Color_RGB8 currentPositionColor = { 200, 255, 0 };
-    if (CVarGetInteger("gCosmetics.Hud_MinimapPosition.Changed", 0)) {
-        currentPositionColor = CVarGetColor24("gCosmetics.Hud_MinimapPosition.Value", currentPositionColor);
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.MinimapPosition.Changed"), 0)) {
+        currentPositionColor = CVarGetColor24(CVAR_COSMETIC("HUD.MinimapPosition.Value"), currentPositionColor);
     }
     s16 X_Margins_Minimap;
     s16 Y_Margins_Minimap;
-    if (CVarGetInteger("gMinimapUseMargins", 0) != 0) {
-        if (CVarGetInteger("gMinimapPosType", 0) == 0) {X_Margins_Minimap = Right_MM_Margin;};
+    if (CVarGetInteger(CVAR_COSMETIC("Minimap.UseMargins"), 0) != 0) {
+        if (CVarGetInteger(CVAR_COSMETIC("Minimap.PosType"), 0) == 0) {X_Margins_Minimap = Right_MM_Margin;};
         Y_Margins_Minimap = Bottom_MM_Margin;
     } else {
         X_Margins_Minimap = 0;
@@ -656,21 +656,21 @@ void Minimap_DrawCompassIcons(PlayState* play) {
         tempZ /= R_COMPASS_SCALE_Y;
 
         s16 tempXOffset = R_COMPASS_OFFSET_X + (CVarGetInteger("gMirroredWorld", 0) ? mirrorOffset : 0);
-        if (CVarGetInteger("gMinimapPosType", 0) != 0) {
-            if (CVarGetInteger("gMinimapPosType", 0) == 1) {//Anchor Left
-                if (CVarGetInteger("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap = Left_MM_Margin;};
+        if (CVarGetInteger(CVAR_COSMETIC("Minimap.PosType"), 0) != 0) {
+            if (CVarGetInteger(CVAR_COSMETIC("Minimap.PosType"), 0) == 1) {//Anchor Left
+                if (CVarGetInteger(CVAR_COSMETIC("Minimap.UseMargins"), 0) != 0) {X_Margins_Minimap = Left_MM_Margin;};
                 Matrix_Translate(
-                    OTRGetDimensionFromLeftEdge((tempXOffset + (X_Margins_Minimap*10) + tempX + (CVarGetInteger("gMinimapPosX", 0)*10)) / 10.0f),
-                    (R_COMPASS_OFFSET_Y + ((Y_Margins_Minimap*10)*-1) - tempZ + ((CVarGetInteger("gMinimapPosY", 0)*10)*-1)) / 10.0f, 0.0f, MTXMODE_NEW);
-            } else if (CVarGetInteger("gMinimapPosType", 0) == 2) {//Anchor Right
-                if (CVarGetInteger("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap = Right_MM_Margin;};
+                    OTRGetDimensionFromLeftEdge((tempXOffset + (X_Margins_Minimap*10) + tempX + (CVarGetInteger(CVAR_COSMETIC("Minimap.PosX"), 0)*10)) / 10.0f),
+                    (R_COMPASS_OFFSET_Y + ((Y_Margins_Minimap*10)*-1) - tempZ + ((CVarGetInteger(CVAR_COSMETIC("Minimap.PosY"), 0)*10)*-1)) / 10.0f, 0.0f, MTXMODE_NEW);
+            } else if (CVarGetInteger(CVAR_COSMETIC("Minimap.PosType"), 0) == 2) {//Anchor Right
+                if (CVarGetInteger(CVAR_COSMETIC("Minimap.UseMargins"), 0) != 0) {X_Margins_Minimap = Right_MM_Margin;};
                 Matrix_Translate(
-                    OTRGetDimensionFromRightEdge((tempXOffset + (X_Margins_Minimap*10) + tempX + (CVarGetInteger("gMinimapPosX", 0)*10)) / 10.0f),
-                    (R_COMPASS_OFFSET_Y +((Y_Margins_Minimap*10)*-1) - tempZ + ((CVarGetInteger("gMinimapPosY", 0)*10)*-1)) / 10.0f, 0.0f, MTXMODE_NEW);
-            } else if (CVarGetInteger("gMinimapPosType", 0) == 3) {//Anchor None
+                    OTRGetDimensionFromRightEdge((tempXOffset + (X_Margins_Minimap*10) + tempX + (CVarGetInteger(CVAR_COSMETIC("Minimap.PosX"), 0)*10)) / 10.0f),
+                    (R_COMPASS_OFFSET_Y +((Y_Margins_Minimap*10)*-1) - tempZ + ((CVarGetInteger(CVAR_COSMETIC("Minimap.PosY"), 0)*10)*-1)) / 10.0f, 0.0f, MTXMODE_NEW);
+            } else if (CVarGetInteger(CVAR_COSMETIC("Minimap.PosType"), 0) == 3) {//Anchor None
                 Matrix_Translate(
-                    (tempXOffset + tempX + (CVarGetInteger("gMinimapPosX", 0)*10) / 10.0f),
-                    (R_COMPASS_OFFSET_Y + ((Y_Margins_Minimap*10)*-1) - tempZ + ((CVarGetInteger("gMinimapPosY", 0)*10)*-1)) / 10.0f, 0.0f, MTXMODE_NEW);
+                    (tempXOffset + tempX + (CVarGetInteger(CVAR_COSMETIC("Minimap.PosX"), 0)*10) / 10.0f),
+                    (R_COMPASS_OFFSET_Y + ((Y_Margins_Minimap*10)*-1) - tempZ + ((CVarGetInteger(CVAR_COSMETIC("Minimap.PosY"), 0)*10)*-1)) / 10.0f, 0.0f, MTXMODE_NEW);
             }
         } else {
             Matrix_Translate(OTRGetDimensionFromRightEdge((tempXOffset+(X_Margins_Minimap*10) + tempX) / 10.0f), (R_COMPASS_OFFSET_Y+((Y_Margins_Minimap*10)*-1) - tempZ) / 10.0f, 0.0f, MTXMODE_NEW);
@@ -690,21 +690,21 @@ void Minimap_DrawCompassIcons(PlayState* play) {
         tempZ = sPlayerInitialPosZ;
         tempX /= R_COMPASS_SCALE_X * (CVarGetInteger("gMirroredWorld", 0) ? -1 : 1);
         tempZ /= R_COMPASS_SCALE_Y;
-        if (CVarGetInteger("gMinimapPosType", 0) != 0) {
-            if (CVarGetInteger("gMinimapPosType", 0) == 1) {//Anchor Left
-                if (CVarGetInteger("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap = Left_MM_Margin;};
+        if (CVarGetInteger(CVAR_COSMETIC("Minimap.PosType"), 0) != 0) {
+            if (CVarGetInteger(CVAR_COSMETIC("Minimap.PosType"), 0) == 1) {//Anchor Left
+                if (CVarGetInteger(CVAR_COSMETIC("Minimap.UseMargins"), 0) != 0) {X_Margins_Minimap = Left_MM_Margin;};
                 Matrix_Translate(
-                    OTRGetDimensionFromLeftEdge((tempXOffset + (X_Margins_Minimap*10) + tempX + (CVarGetInteger("gMinimapPosX", 0)*10)) / 10.0f),
-                    (R_COMPASS_OFFSET_Y + ((Y_Margins_Minimap*10)*-1) - tempZ + ((CVarGetInteger("gMinimapPosY", 0)*10)*-1)) / 10.0f, 0.0f, MTXMODE_NEW);
-            } else if (CVarGetInteger("gMinimapPosType", 0) == 2) {//Anchor Right
-                if (CVarGetInteger("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap = Right_MM_Margin;};
+                    OTRGetDimensionFromLeftEdge((tempXOffset + (X_Margins_Minimap*10) + tempX + (CVarGetInteger(CVAR_COSMETIC("Minimap.PosX"), 0)*10)) / 10.0f),
+                    (R_COMPASS_OFFSET_Y + ((Y_Margins_Minimap*10)*-1) - tempZ + ((CVarGetInteger(CVAR_COSMETIC("Minimap.PosY"), 0)*10)*-1)) / 10.0f, 0.0f, MTXMODE_NEW);
+            } else if (CVarGetInteger(CVAR_COSMETIC("Minimap.PosType"), 0) == 2) {//Anchor Right
+                if (CVarGetInteger(CVAR_COSMETIC("Minimap.UseMargins"), 0) != 0) {X_Margins_Minimap = Right_MM_Margin;};
                 Matrix_Translate(
-                    OTRGetDimensionFromRightEdge((tempXOffset + (X_Margins_Minimap*10) + tempX + (CVarGetInteger("gMinimapPosX", 0)*10)) / 10.0f),
-                    (R_COMPASS_OFFSET_Y +((Y_Margins_Minimap*10)*-1) - tempZ + ((CVarGetInteger("gMinimapPosY", 0)*10)*-1)) / 10.0f, 0.0f, MTXMODE_NEW);
-            } else if (CVarGetInteger("gMinimapPosType", 0) == 3) {//Anchor None
+                    OTRGetDimensionFromRightEdge((tempXOffset + (X_Margins_Minimap*10) + tempX + (CVarGetInteger(CVAR_COSMETIC("Minimap.PosX"), 0)*10)) / 10.0f),
+                    (R_COMPASS_OFFSET_Y +((Y_Margins_Minimap*10)*-1) - tempZ + ((CVarGetInteger(CVAR_COSMETIC("Minimap.PosY"), 0)*10)*-1)) / 10.0f, 0.0f, MTXMODE_NEW);
+            } else if (CVarGetInteger(CVAR_COSMETIC("Minimap.PosType"), 0) == 3) {//Anchor None
                 Matrix_Translate(
-                    (tempXOffset + tempX + (CVarGetInteger("gMinimapPosX", 0)*10) / 10.0f),
-                    (R_COMPASS_OFFSET_Y - tempZ + ((CVarGetInteger("gMinimapPosY", 0)*10)*-1)) / 10.0f, 0.0f, MTXMODE_NEW);
+                    (tempXOffset + tempX + (CVarGetInteger(CVAR_COSMETIC("Minimap.PosX"), 0)*10) / 10.0f),
+                    (R_COMPASS_OFFSET_Y - tempZ + ((CVarGetInteger(CVAR_COSMETIC("Minimap.PosY"), 0)*10)*-1)) / 10.0f, 0.0f, MTXMODE_NEW);
             }
         } else {
             Matrix_Translate(OTRGetDimensionFromRightEdge((tempXOffset+(X_Margins_Minimap*10) + tempX) / 10.0f), (R_COMPASS_OFFSET_Y+((Y_Margins_Minimap*10)*-1) - tempZ) / 10.0f, 0.0f, MTXMODE_NEW);
@@ -727,8 +727,8 @@ void Minimap_Draw(PlayState* play) {
     InterfaceContext* interfaceCtx = &play->interfaceCtx;
     s32 mapIndex = gSaveContext.mapIndex;
     Color_RGB8 minimapColor = {0, 255, 255};
-    if (CVarGetInteger("gCosmetics.Hud_Minimap.Changed", 0)) {
-        minimapColor = CVarGetColor24("gCosmetics.Hud_Minimap.Value", minimapColor);
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.Changed"), 0)) {
+        minimapColor = CVarGetColor24(CVAR_COSMETIC("HUD.Minimap.Value"), minimapColor);
     }
 
     OPEN_DISPS(play->state.gfxCtx);
@@ -742,8 +742,8 @@ void Minimap_Draw(PlayState* play) {
         //Minimap margins
         s16 X_Margins_Minimap;
         s16 Y_Margins_Minimap;
-        if (CVarGetInteger("gMinimapUseMargins", 0) != 0) {
-            if (CVarGetInteger("gMinimapPosType", 0) == 0) {X_Margins_Minimap = Right_MM_Margin;};
+        if (CVarGetInteger(CVAR_COSMETIC("Minimap.UseMargins"), 0) != 0) {
+            if (CVarGetInteger(CVAR_COSMETIC("Minimap.PosType"), 0) == 0) {X_Margins_Minimap = Right_MM_Margin;};
             Y_Margins_Minimap = Bottom_MM_Margin;
         } else {
             X_Margins_Minimap = 0;
@@ -761,7 +761,7 @@ void Minimap_Draw(PlayState* play) {
             case SCENE_SHADOW_TEMPLE:
             case SCENE_BOTTOM_OF_THE_WELL:
             case SCENE_ICE_CAVERN:
-                if (!R_MINIMAP_DISABLED && CVarGetInteger("gMinimapPosType", 0) != 4) { // Not Hidden
+                if (!R_MINIMAP_DISABLED && CVarGetInteger(CVAR_COSMETIC("Minimap.PosType"), 0) != 4) { // Not Hidden
                     Gfx_SetupDL_39Overlay(play->state.gfxCtx);
                     gDPSetCombineLERP(OVERLAY_DISP++, 1, 0, PRIMITIVE, 0, TEXEL0, 0, PRIMITIVE, 0, 1, 0, PRIMITIVE, 0,
                                       TEXEL0, 0, PRIMITIVE, 0);
@@ -776,16 +776,16 @@ void Minimap_Draw(PlayState* play) {
 
                         s16 dgnMiniMapX = OTRGetRectDimensionFromRightEdge(R_DGN_MINIMAP_X + X_Margins_Minimap);
                         s16 dgnMiniMapY = R_DGN_MINIMAP_Y + Y_Margins_Minimap;
-                        if (CVarGetInteger("gMinimapPosType", 0) != 0) {
-                            dgnMiniMapY = R_DGN_MINIMAP_Y+CVarGetInteger("gMinimapPosY", 0)+Y_Margins_Minimap;
-                            if (CVarGetInteger("gMinimapPosType", 0) == 1) {//Anchor Left
-                                if (CVarGetInteger("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap = Left_MM_Margin;};
-                                dgnMiniMapX = OTRGetDimensionFromLeftEdge(R_DGN_MINIMAP_X+CVarGetInteger("gMinimapPosX", 0)+X_Margins_Minimap);
-                            } else if (CVarGetInteger("gMinimapPosType", 0) == 2) {//Anchor Right
-                                if (CVarGetInteger("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap = Right_MM_Margin;};
-                                dgnMiniMapX = OTRGetDimensionFromRightEdge(R_DGN_MINIMAP_X+CVarGetInteger("gMinimapPosX", 0)+X_Margins_Minimap);
-                            } else if (CVarGetInteger("gMinimapPosType", 0) == 3) {//Anchor None
-                                dgnMiniMapX = CVarGetInteger("gMinimapPosX", 0);
+                        if (CVarGetInteger(CVAR_COSMETIC("Minimap.PosType"), 0) != 0) {
+                            dgnMiniMapY = R_DGN_MINIMAP_Y+CVarGetInteger(CVAR_COSMETIC("Minimap.PosY"), 0)+Y_Margins_Minimap;
+                            if (CVarGetInteger(CVAR_COSMETIC("Minimap.PosType"), 0) == 1) {//Anchor Left
+                                if (CVarGetInteger(CVAR_COSMETIC("Minimap.UseMargins"), 0) != 0) {X_Margins_Minimap = Left_MM_Margin;};
+                                dgnMiniMapX = OTRGetDimensionFromLeftEdge(R_DGN_MINIMAP_X+CVarGetInteger(CVAR_COSMETIC("Minimap.PosX"), 0)+X_Margins_Minimap);
+                            } else if (CVarGetInteger(CVAR_COSMETIC("Minimap.PosType"), 0) == 2) {//Anchor Right
+                                if (CVarGetInteger(CVAR_COSMETIC("Minimap.UseMargins"), 0) != 0) {X_Margins_Minimap = Right_MM_Margin;};
+                                dgnMiniMapX = OTRGetDimensionFromRightEdge(R_DGN_MINIMAP_X+CVarGetInteger(CVAR_COSMETIC("Minimap.PosX"), 0)+X_Margins_Minimap);
+                            } else if (CVarGetInteger(CVAR_COSMETIC("Minimap.PosType"), 0) == 3) {//Anchor None
+                                dgnMiniMapX = CVarGetInteger(CVAR_COSMETIC("Minimap.PosX"), 0);
                             }
                         }
 
@@ -839,7 +839,7 @@ void Minimap_Draw(PlayState* play) {
             case SCENE_GORON_CITY:
             case SCENE_LON_LON_RANCH:
             case SCENE_OUTSIDE_GANONS_CASTLE:
-                if (!R_MINIMAP_DISABLED && CVarGetInteger("gMinimapPosType", 0) != 4) { // Not Hidden
+                if (!R_MINIMAP_DISABLED && CVarGetInteger(CVAR_COSMETIC("Minimap.PosType"), 0) != 4) { // Not Hidden
                     Gfx_SetupDL_39Overlay(play->state.gfxCtx);
 
                     gDPSetCombineMode(OVERLAY_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
@@ -853,16 +853,16 @@ void Minimap_Draw(PlayState* play) {
 
                     s16 oWMiniMapX = OTRGetRectDimensionFromRightEdge(R_OW_MINIMAP_X + X_Margins_Minimap);
                     s16 oWMiniMapY = R_OW_MINIMAP_Y + Y_Margins_Minimap;
-                    if (CVarGetInteger("gMinimapPosType", 0) != 0) {
-                        oWMiniMapY = R_OW_MINIMAP_Y+CVarGetInteger("gMinimapPosY", 0)+Y_Margins_Minimap;
-                        if (CVarGetInteger("gMinimapPosType", 0) == 1) {//Anchor Left
-                            if (CVarGetInteger("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap = Left_MM_Margin;};
-                            oWMiniMapX = OTRGetDimensionFromLeftEdge(R_OW_MINIMAP_X+CVarGetInteger("gMinimapPosX", 0)+X_Margins_Minimap);
-                        } else if (CVarGetInteger("gMinimapPosType", 0) == 2) {//Anchor Right
-                            if (CVarGetInteger("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap = Right_MM_Margin;};
-                            oWMiniMapX = OTRGetDimensionFromRightEdge(R_OW_MINIMAP_X+CVarGetInteger("gMinimapPosX", 0)+X_Margins_Minimap);
-                        } else if (CVarGetInteger("gMinimapPosType", 0) == 3) {//Anchor None
-                            oWMiniMapX = CVarGetInteger("gMinimapPosX", 0);
+                    if (CVarGetInteger(CVAR_COSMETIC("Minimap.PosType"), 0) != 0) {
+                        oWMiniMapY = R_OW_MINIMAP_Y+CVarGetInteger(CVAR_COSMETIC("Minimap.PosY"), 0)+Y_Margins_Minimap;
+                        if (CVarGetInteger(CVAR_COSMETIC("Minimap.PosType"), 0) == 1) {//Anchor Left
+                            if (CVarGetInteger(CVAR_COSMETIC("Minimap.UseMargins"), 0) != 0) {X_Margins_Minimap = Left_MM_Margin;};
+                            oWMiniMapX = OTRGetDimensionFromLeftEdge(R_OW_MINIMAP_X+CVarGetInteger(CVAR_COSMETIC("Minimap.PosX"), 0)+X_Margins_Minimap);
+                        } else if (CVarGetInteger(CVAR_COSMETIC("Minimap.PosType"), 0) == 2) {//Anchor Right
+                            if (CVarGetInteger(CVAR_COSMETIC("Minimap.UseMargins"), 0) != 0) {X_Margins_Minimap = Right_MM_Margin;};
+                            oWMiniMapX = OTRGetDimensionFromRightEdge(R_OW_MINIMAP_X+CVarGetInteger(CVAR_COSMETIC("Minimap.PosX"), 0)+X_Margins_Minimap);
+                        } else if (CVarGetInteger(CVAR_COSMETIC("Minimap.PosType"), 0) == 3) {//Anchor None
+                            oWMiniMapX = CVarGetInteger(CVAR_COSMETIC("Minimap.PosX"), 0);
                         }
                     }
 
@@ -901,16 +901,16 @@ void Minimap_Draw(PlayState* play) {
 
                         s16 entranceX = OTRGetRectDimensionFromRightEdge(newX + X_Margins_Minimap);
                         s16 entranceY = newY + Y_Margins_Minimap;
-                        if (CVarGetInteger("gMinimapPosType", 0) != 0) {
-                            entranceY = newY + CVarGetInteger("gMinimapPosY", 0) + Y_Margins_Minimap;
-                            if (CVarGetInteger("gMinimapPosType", 0) == 1) { // Anchor Left
-                                if (CVarGetInteger("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap = Left_MM_Margin;};
-                                entranceX = OTRGetRectDimensionFromLeftEdge(newX + X_Margins_Minimap + CVarGetInteger("gMinimapPosX", 0));
-                            } else if (CVarGetInteger("gMinimapPosType", 0) == 2) { // Anchor Right
-                                if (CVarGetInteger("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap = Right_MM_Margin;};
-                                entranceX = OTRGetRectDimensionFromRightEdge(newX + X_Margins_Minimap + CVarGetInteger("gMinimapPosX", 0));
-                            } else if (CVarGetInteger("gMinimapPosType", 0) == 3) { // Anchor None
-                                entranceX = newX + X_Margins_Minimap + CVarGetInteger("gMinimapPosX", 0);
+                        if (CVarGetInteger(CVAR_COSMETIC("Minimap.PosType"), 0) != 0) {
+                            entranceY = newY + CVarGetInteger(CVAR_COSMETIC("Minimap.PosY"), 0) + Y_Margins_Minimap;
+                            if (CVarGetInteger(CVAR_COSMETIC("Minimap.PosType"), 0) == 1) { // Anchor Left
+                                if (CVarGetInteger(CVAR_COSMETIC("Minimap.UseMargins"), 0) != 0) {X_Margins_Minimap = Left_MM_Margin;};
+                                entranceX = OTRGetRectDimensionFromLeftEdge(newX + X_Margins_Minimap + CVarGetInteger(CVAR_COSMETIC("Minimap.PosX"), 0));
+                            } else if (CVarGetInteger(CVAR_COSMETIC("Minimap.PosType"), 0) == 2) { // Anchor Right
+                                if (CVarGetInteger(CVAR_COSMETIC("Minimap.UseMargins"), 0) != 0) {X_Margins_Minimap = Right_MM_Margin;};
+                                entranceX = OTRGetRectDimensionFromRightEdge(newX + X_Margins_Minimap + CVarGetInteger(CVAR_COSMETIC("Minimap.PosX"), 0));
+                            } else if (CVarGetInteger(CVAR_COSMETIC("Minimap.PosType"), 0) == 3) { // Anchor None
+                                entranceX = newX + X_Margins_Minimap + CVarGetInteger(CVAR_COSMETIC("Minimap.PosX"), 0);
                             }
                         }
 
@@ -918,14 +918,14 @@ void Minimap_Draw(PlayState* play) {
                         // or hide them entirely if the fix is applied
                         if (gMapData->owEntranceIconPosY[sEntranceIconMapIndex] == 0) {
                             entranceY = 0;
-                            entranceX = CVarGetInteger("gFixDungeonMinimapIcon", 0) ? -9999 : OTRGetRectDimensionFromLeftEdge(0);
+                            entranceX = CVarGetInteger(CVAR_ENHANCEMENT("FixDungeonMinimapIcon"), 0) ? -9999 : OTRGetRectDimensionFromLeftEdge(0);
                         }
 
                         //! @bug UB: sEntranceIconMapIndex can be up to 23 and is accessing owEntranceFlag which is size 20
                         if ((gMapData->owEntranceFlag[sEntranceIconMapIndex] == 0xFFFF) ||
                             ((gMapData->owEntranceFlag[sEntranceIconMapIndex] != 0xFFFF) &&
                               ((gSaveContext.infTable[26] & gBitFlags[gMapData->owEntranceFlag[mapIndex]]) ||
-                               CVarGetInteger("gAlwaysShowDungeonMinimapIcon", 0)))) {
+                               CVarGetInteger(CVAR_ENHANCEMENT("AlwaysShowDungeonMinimapIcon"), 0)))) {
                             gDPLoadTextureBlock(OVERLAY_DISP++, gMapDungeonEntranceIconTex, G_IM_FMT_RGBA, G_IM_SIZ_16b,
                                                 iconSize, iconSize, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
                                                 G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
@@ -937,22 +937,22 @@ void Minimap_Draw(PlayState* play) {
                     s16 origX = CVarGetInteger("gMirroredWorld", 0) ? 256 : 270;
                     s16 entranceX = OTRGetRectDimensionFromRightEdge(origX + X_Margins_Minimap);
                     s16 entranceY = 154 + Y_Margins_Minimap;
-                    if (CVarGetInteger("gMinimapPosType", 0) != 0) {
-                        entranceY = 154 + Y_Margins_Minimap + CVarGetInteger("gMinimapPosY", 0);
-                        if (CVarGetInteger("gMinimapPosType", 0) == 1) {//Anchor Left
-                            if (CVarGetInteger("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap = Left_MM_Margin;};
-                            entranceX = OTRGetRectDimensionFromLeftEdge(origX + X_Margins_Minimap + CVarGetInteger("gMinimapPosX", 0));
-                        } else if (CVarGetInteger("gMinimapPosType", 0) == 2) {//Anchor Right
-                            if (CVarGetInteger("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap = Right_MM_Margin;};
-                            entranceX = OTRGetRectDimensionFromRightEdge(origX + X_Margins_Minimap + CVarGetInteger("gMinimapPosX", 0));
-                        } else if (CVarGetInteger("gMinimapPosType", 0) == 3) {//Anchor None
-                            entranceX = origX + X_Margins_Minimap + CVarGetInteger("gMinimapPosX", 0);
+                    if (CVarGetInteger(CVAR_COSMETIC("Minimap.PosType"), 0) != 0) {
+                        entranceY = 154 + Y_Margins_Minimap + CVarGetInteger(CVAR_COSMETIC("Minimap.PosY"), 0);
+                        if (CVarGetInteger(CVAR_COSMETIC("Minimap.PosType"), 0) == 1) {//Anchor Left
+                            if (CVarGetInteger(CVAR_COSMETIC("Minimap.UseMargins"), 0) != 0) {X_Margins_Minimap = Left_MM_Margin;};
+                            entranceX = OTRGetRectDimensionFromLeftEdge(origX + X_Margins_Minimap + CVarGetInteger(CVAR_COSMETIC("Minimap.PosX"), 0));
+                        } else if (CVarGetInteger(CVAR_COSMETIC("Minimap.PosType"), 0) == 2) {//Anchor Right
+                            if (CVarGetInteger(CVAR_COSMETIC("Minimap.UseMargins"), 0) != 0) {X_Margins_Minimap = Right_MM_Margin;};
+                            entranceX = OTRGetRectDimensionFromRightEdge(origX + X_Margins_Minimap + CVarGetInteger(CVAR_COSMETIC("Minimap.PosX"), 0));
+                        } else if (CVarGetInteger(CVAR_COSMETIC("Minimap.PosType"), 0) == 3) {//Anchor None
+                            entranceX = origX + X_Margins_Minimap + CVarGetInteger(CVAR_COSMETIC("Minimap.PosX"), 0);
                         }
                     }
 
                     // Ice Cavern entrance icon
                     if ((play->sceneNum == SCENE_ZORAS_FOUNTAIN) && ((gSaveContext.infTable[26] & gBitFlags[9]) ||
-                        CVarGetInteger("gAlwaysShowDungeonMinimapIcon", 0))) {
+                        CVarGetInteger(CVAR_ENHANCEMENT("AlwaysShowDungeonMinimapIcon"), 0))) {
                         gDPLoadTextureBlock(OVERLAY_DISP++, gMapDungeonEntranceIconTex, G_IM_FMT_RGBA, G_IM_SIZ_16b, iconSize,
                                             iconSize, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
                                             G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
