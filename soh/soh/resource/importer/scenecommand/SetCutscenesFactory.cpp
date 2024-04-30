@@ -14,7 +14,7 @@ SetCutscenesFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initDa
     setCutscenes->fileName = reader->ReadString();
     setCutscenes->cutscene = std::static_pointer_cast<Cutscene>(Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(setCutscenes->fileName.c_str()));
 
-    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ResourceLogging"), 0)) {
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS_RESOURCE_LOGGING, 0)) {
         LogCutscenesAsXML(setCutscenes);
     }
 

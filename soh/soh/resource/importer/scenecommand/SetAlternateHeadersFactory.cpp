@@ -22,7 +22,7 @@ std::shared_ptr<Ship::IResource> SetAlternateHeadersFactory::ReadResource(std::s
         }
     }
 
-    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ResourceLogging"), 0)) {
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS_RESOURCE_LOGGING, 0)) {
         LogAlternateHeadersAsXML(setAlternateHeaders);
     }
 

@@ -2945,7 +2945,7 @@ void FileChoose_LoadGame(GameState* thisx) {
     gSaveContext.fileNum = this->buttonIndex;
     gSaveContext.gameMode = 0;
 
-    if ((this->buttonIndex == FS_BTN_SELECT_FILE_1 && CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0)) || this->buttonIndex == 0xFF) {
+    if ((this->buttonIndex == FS_BTN_SELECT_FILE_1 && CVarGetInteger(CVAR_DEVELOPER_TOOLS_DEBUG_ENABLED, 0)) || this->buttonIndex == 0xFF) {
         if (this->buttonIndex == 0xFF) {
             Sram_InitDebugSave();
         } else {
@@ -3286,15 +3286,15 @@ void FileChoose_Main(GameState* thisx) {
         gSaveContext.skyboxTime += 0x10;
     }
 
-    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("SkipLogoTitle"), 0) && CVarGetInteger(CVAR_DEVELOPER_TOOLS("SaveFileID"), FASTFILE_1) <= FASTFILE_3 && !isFastFileIdIncompatible) {
-        if (Save_Exist(CVarGetInteger(CVAR_DEVELOPER_TOOLS("SaveFileID"), FASTFILE_1)) && FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(CVarGetInteger(CVAR_DEVELOPER_TOOLS("SaveFileID"), FASTFILE_1)))) {
-            this->buttonIndex = CVarGetInteger(CVAR_DEVELOPER_TOOLS("SaveFileID"), FASTFILE_1);
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS_SKIP_LOGO_TITLE, 0) && CVarGetInteger(CVAR_DEVELOPER_TOOLS_SAVE_FILE_ID, FASTFILE_1) <= FASTFILE_3 && !isFastFileIdIncompatible) {
+        if (Save_Exist(CVarGetInteger(CVAR_DEVELOPER_TOOLS_SAVE_FILE_ID, FASTFILE_1)) && FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(CVarGetInteger(CVAR_DEVELOPER_TOOLS_SAVE_FILE_ID, FASTFILE_1)))) {
+            this->buttonIndex = CVarGetInteger(CVAR_DEVELOPER_TOOLS_SAVE_FILE_ID, FASTFILE_1);
             this->menuMode = FS_MENU_MODE_SELECT;
             this->selectMode = SM_LOAD_GAME;
         } else {
             isFastFileIdIncompatible = 1;
         }
-    } else if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("SkipLogoTitle"), 0) && CVarGetInteger(CVAR_DEVELOPER_TOOLS("SaveFileID"), FASTFILE_1) == FASTFILE_MAP_SELECT) {
+    } else if (CVarGetInteger(CVAR_DEVELOPER_TOOLS_SKIP_LOGO_TITLE, 0) && CVarGetInteger(CVAR_DEVELOPER_TOOLS_SAVE_FILE_ID, FASTFILE_1) == FASTFILE_MAP_SELECT) {
         this->buttonIndex = 0xFF;
         this->menuMode = FS_MENU_MODE_SELECT;
         this->selectMode = SM_LOAD_GAME;

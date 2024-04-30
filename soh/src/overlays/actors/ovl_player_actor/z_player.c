@@ -14374,7 +14374,7 @@ void Player_Action_8084FBF4(Player* this, PlayState* play) {
 s32 func_8084FCAC(Player* this, PlayState* play) {
     sControlInput = &play->state.input[0];
 
-    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0) &&
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS_DEBUG_ENABLED, 0) &&
         ((CHECK_BTN_ALL(sControlInput->cur.button, BTN_A | BTN_L | BTN_R) &&
           CHECK_BTN_ALL(sControlInput->press.button, BTN_B)) ||
          (CHECK_BTN_ALL(sControlInput->cur.button, BTN_L) && CHECK_BTN_ALL(sControlInput->press.button, BTN_DRIGHT)))) {

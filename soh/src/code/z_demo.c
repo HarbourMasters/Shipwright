@@ -154,14 +154,14 @@ void func_80064558(PlayState* play, CutsceneContext* csCtx) {
 void func_800645A0(PlayState* play, CutsceneContext* csCtx) {
     Input* input = &play->state.input[0];
 
-    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0) && CHECK_BTN_ALL(input->press.button, BTN_DLEFT) &&
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS_DEBUG_ENABLED, 0) && CHECK_BTN_ALL(input->press.button, BTN_DLEFT) &&
         (csCtx->state == CS_STATE_IDLE) && (gSaveContext.sceneSetupIndex >= 4)) {
         D_8015FCC8 = 0;
         gSaveContext.cutsceneIndex = 0xFFFD;
         gSaveContext.cutsceneTrigger = 1;
     }
 
-    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0) && CHECK_BTN_ALL(input->press.button, BTN_DUP) &&
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS_DEBUG_ENABLED, 0) && CHECK_BTN_ALL(input->press.button, BTN_DUP) &&
         (csCtx->state == CS_STATE_IDLE) && (gSaveContext.sceneSetupIndex >= 4) && !gDbgCamEnabled) {
         D_8015FCC8 = 1;
         gSaveContext.cutsceneIndex = 0xFFFD;
@@ -499,7 +499,7 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
     // cmd->base == 33: Zelda escaping with impa cutscene
     bool randoCsSkip = (IS_RANDO && (cmd->base == 8 || cmd->base == 24 || cmd->base == 33));
     bool debugCsSkip = (CHECK_BTN_ALL(play->state.input[0].press.button, BTN_START) &&
-                        (gSaveContext.fileNum != 0xFEDC) && CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0));
+                        (gSaveContext.fileNum != 0xFEDC) && CVarGetInteger(CVAR_DEVELOPER_TOOLS_DEBUG_ENABLED, 0));
 
     if ((gSaveContext.gameMode != 0) && (gSaveContext.gameMode != 3) && (play->sceneNum != SCENE_HYRULE_FIELD) &&
         (csCtx->frames > 20) &&
@@ -1643,7 +1643,7 @@ void Cutscene_ProcessCommands(PlayState* play, CutsceneContext* csCtx, u8* cutsc
         return;
     }
 
-    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0) && CHECK_BTN_ALL(play->state.input[0].press.button, BTN_DRIGHT)) {
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS_DEBUG_ENABLED, 0) && CHECK_BTN_ALL(play->state.input[0].press.button, BTN_DRIGHT)) {
         csCtx->state = CS_STATE_UNSKIPPABLE_INIT;
         return;
     }

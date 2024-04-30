@@ -14,7 +14,7 @@ SetTimeSettingsFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> ini
     setTimeSettings->settings.minute = reader->ReadInt8();
     setTimeSettings->settings.timeIncrement = reader->ReadInt8();
 
-    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ResourceLogging"), 0)) {
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS_RESOURCE_LOGGING, 0)) {
         LogTimeSettingsAsXML(setTimeSettings);
     }
 

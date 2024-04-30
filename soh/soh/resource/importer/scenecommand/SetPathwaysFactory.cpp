@@ -19,7 +19,7 @@ SetPathwaysFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initDat
         setPathways->paths.push_back(path->GetPointer());
     }
 
-    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ResourceLogging"), 0)) {
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS_RESOURCE_LOGGING, 0)) {
         LogPathwaysAsXML(setPathways);
     }
 

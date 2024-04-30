@@ -13,7 +13,7 @@ std::shared_ptr<Ship::IResource> SetSkyboxModifierFactory::ReadResource(std::sha
     setSkyboxModifier->modifier.skyboxDisabled = reader->ReadInt8();
     setSkyboxModifier->modifier.sunMoonDisabled = reader->ReadInt8();
 
-    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ResourceLogging"), 0)) {
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS_RESOURCE_LOGGING, 0)) {
         LogSkyboxModifierAsXML(setSkyboxModifier);
     }
 

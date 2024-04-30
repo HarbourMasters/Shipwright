@@ -31,7 +31,7 @@ SetLightListFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initDa
         setLightList->lightList.push_back(light);
     }
 
-    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ResourceLogging"), 0)) {
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS_RESOURCE_LOGGING, 0)) {
         LogLightListAsXML(setLightList);
     }
 

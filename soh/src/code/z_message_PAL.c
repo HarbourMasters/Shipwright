@@ -3007,7 +3007,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
  * the last value being saved in a static variable.
  */
 void Message_DrawDebugVariableChanged(s16* var, GraphicsContext* gfxCtx) {
-    if (!CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0)) { return; }
+    if (!CVarGetInteger(CVAR_DEVELOPER_TOOLS_DEBUG_ENABLED, 0)) { return; }
 
     static s16 sVarLastValue = 0;
     static s16 sFillTimer = 0;

@@ -12,7 +12,7 @@ SetEchoSettingsFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> ini
 	
     setEchoSettings->settings.echo = reader->ReadInt8();
 
-    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ResourceLogging"), 0)) {
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS_RESOURCE_LOGGING, 0)) {
         LogEchoSettingsAsXML(setEchoSettings);
     }
 

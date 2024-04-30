@@ -14,7 +14,7 @@ std::shared_ptr<Ship::IResource> SetCollisionHeaderFactory::ReadResource(std::sh
     setCollisionHeader->fileName = reader->ReadString();
     setCollisionHeader->collisionHeader = std::static_pointer_cast<CollisionHeader>(Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(setCollisionHeader->fileName.c_str()));
 
-    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ResourceLogging"), 0)) {
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS_RESOURCE_LOGGING, 0)) {
         LogSetCollisionHeaderAsXML(setCollisionHeader);
     }
 

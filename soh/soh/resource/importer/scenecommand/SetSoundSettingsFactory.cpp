@@ -14,7 +14,7 @@ std::shared_ptr<Ship::IResource> SetSoundSettingsFactory::ReadResource(std::shar
     setSoundSettings->settings.natureAmbienceId = reader->ReadInt8();
     setSoundSettings->settings.seqId = reader->ReadInt8();
 
-    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ResourceLogging"), 0)) {
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS_RESOURCE_LOGGING, 0)) {
         LogSoundSettingsAsXML(setSoundSettings);
     }
 

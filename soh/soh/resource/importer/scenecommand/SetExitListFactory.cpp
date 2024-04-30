@@ -16,7 +16,7 @@ SetExitListFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initDat
         setExitList->exits.push_back(reader->ReadUInt16());
     }
 
-    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ResourceLogging"), 0)) {
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS_RESOURCE_LOGGING, 0)) {
         LogExitListAsXML(setExitList);
     }
 

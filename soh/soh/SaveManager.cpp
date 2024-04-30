@@ -628,10 +628,10 @@ void SaveManager::InitFileDebug() {
 
     //don't apply gDebugSaveFileMode on the title screen
     if (gSaveContext.fileNum != 0xFF) {
-        if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugSaveFileMode"), 1) == 2) {
+        if (CVarGetInteger(CVAR_DEVELOPER_TOOLS_DEBUG_SAVE_FILE_MODE, 1) == 2) {
             InitFileMaxed();
             return;
-        } else if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugSaveFileMode"), 1) == 0) {
+        } else if (CVarGetInteger(CVAR_DEVELOPER_TOOLS_DEBUG_SAVE_FILE_MODE, 1) == 0) {
             return;
         }
     }

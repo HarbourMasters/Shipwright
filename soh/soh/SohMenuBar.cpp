@@ -1626,13 +1626,13 @@ void DrawDeveloperToolsMenu() {
     if (ImGui::BeginMenu("Developer Tools")) {
         ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
 
-        UIWidgets::EnhancementCheckbox("OoT Debug Mode", CVAR_DEVELOPER_TOOLS("DebugEnabled"));
+        UIWidgets::EnhancementCheckbox("OoT Debug Mode", CVAR_DEVELOPER_TOOLS_DEBUG_ENABLED);
         UIWidgets::Tooltip("Enables Debug Mode, allowing you to select maps with L + R + Z, noclip with L + D-pad Right, and open the debug menu with L on the pause screen");
-        if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0)) {
-            UIWidgets::EnhancementCheckbox("OoT Registry Editor", CVAR_DEVELOPER_TOOLS("RegEditEnabled"));
+        if (CVarGetInteger(CVAR_DEVELOPER_TOOLS_DEBUG_ENABLED, 0)) {
+            UIWidgets::EnhancementCheckbox("OoT Registry Editor", CVAR_DEVELOPER_TOOLS_REGEDIT_ENABLED);
             UIWidgets::Tooltip("Enables the registry editor");
             ImGui::Text("Debug Save File Mode:");
-            UIWidgets::EnhancementCombobox(CVAR_DEVELOPER_TOOLS("DebugSaveFileMode"), DebugSaveFileModes, 1);
+            UIWidgets::EnhancementCombobox(CVAR_DEVELOPER_TOOLS_DEBUG_SAVE_FILE_MODE, DebugSaveFileModes, 1);
             UIWidgets::Tooltip(
                 "Changes the behaviour of debug file select creation (creating a save file on slot 1 with debug mode on)\n"
                 "- Off: The debug save file will be a normal savefile\n"
@@ -1640,19 +1640,19 @@ void DrawDeveloperToolsMenu() {
                 "- Maxed: The debug save file will be a save file with all of the items & upgrades"
             );
         }
-        UIWidgets::PaddedEnhancementCheckbox("OoT Skulltula Debug", CVAR_DEVELOPER_TOOLS("SkulltulaDebugEnabled"), true, false);
+        UIWidgets::PaddedEnhancementCheckbox("OoT Skulltula Debug", CVAR_DEVELOPER_TOOLS_DEBUG_ENABLED_SKULLTULA, true, false);
         UIWidgets::Tooltip("Enables Skulltula Debug, when moving the cursor in the menu above various map icons (boss key, compass, map screen locations, etc) will set the GS bits in that area.\nUSE WITH CAUTION AS IT DOES NOT UPDATE THE GS COUNT.");
-        UIWidgets::PaddedEnhancementCheckbox("Fast File Select", CVAR_DEVELOPER_TOOLS("SkipLogoTitle"), true, false);
+        UIWidgets::PaddedEnhancementCheckbox("Fast File Select", CVAR_DEVELOPER_TOOLS_SKIP_LOGO_TITLE, true, false);
         UIWidgets::Tooltip("Load the game to the selected menu or file\n\"Zelda Map Select\" require debug mode else you will fallback to File choose menu\nUsing a file number that don't have save will create a save file only if you toggle on \"Create a new save if none ?\" else it will bring you to the File choose menu");
-        if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("SkipLogoTitle"), 0)) {
+        if (CVarGetInteger(CVAR_DEVELOPER_TOOLS_SKIP_LOGO_TITLE, 0)) {
             ImGui::Text("Loading:");
-            UIWidgets::EnhancementCombobox(CVAR_DEVELOPER_TOOLS("SaveFileID"), FastFileSelect, 0);
+            UIWidgets::EnhancementCombobox(CVAR_DEVELOPER_TOOLS_SAVE_FILE_ID, FastFileSelect, 0);
         };
-        UIWidgets::PaddedEnhancementCheckbox("Better Debug Warp Screen", CVAR_DEVELOPER_TOOLS("BetterDebugWarpScreen"), true, false);
+        UIWidgets::PaddedEnhancementCheckbox("Better Debug Warp Screen", CVAR_DEVELOPER_TOOLS_BETTER_DEBUG_WARP_SCREEN, true, false);
         UIWidgets::Tooltip("Optimized debug warp screen, with the added ability to chose entrances and time of day");
-        UIWidgets::PaddedEnhancementCheckbox("Debug Warp Screen Translation", CVAR_DEVELOPER_TOOLS("DebugWarpScreenTranslation"), true, false, false, "", UIWidgets::CheckboxGraphics::Cross, true);
+        UIWidgets::PaddedEnhancementCheckbox("Debug Warp Screen Translation", CVAR_DEVELOPER_TOOLS_DEBUG_WARP_SCREEN_TRANSLATION, true, false, false, "", UIWidgets::CheckboxGraphics::Cross, true);
         UIWidgets::Tooltip("Translate the Debug Warp Screen based on the game language");
-        UIWidgets::PaddedEnhancementCheckbox("Resource logging", CVAR_DEVELOPER_TOOLS("ResourceLogging"), true, false);
+        UIWidgets::PaddedEnhancementCheckbox("Resource logging", CVAR_DEVELOPER_TOOLS_RESOURCE_LOGGING, true, false);
         UIWidgets::Tooltip("Logs some resources as XML when they're loaded in binary format");
         if (gPlayState != NULL) {
             UIWidgets::PaddedSeparator();

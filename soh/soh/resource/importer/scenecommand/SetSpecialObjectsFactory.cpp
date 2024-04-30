@@ -13,7 +13,7 @@ std::shared_ptr<Ship::IResource> SetSpecialObjectsFactory::ReadResource(std::sha
     setSpecialObjects->specialObjects.elfMessage = reader->ReadInt8();
     setSpecialObjects->specialObjects.globalObject = reader->ReadInt16();
 
-    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ResourceLogging"), 0)) {
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS_RESOURCE_LOGGING, 0)) {
         LogSpecialObjectsAsXML(setSpecialObjects);
     }
 

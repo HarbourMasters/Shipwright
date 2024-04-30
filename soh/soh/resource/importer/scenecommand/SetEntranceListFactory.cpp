@@ -21,7 +21,7 @@ SetEntranceListFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> ini
         setEntranceList->entrances.push_back(entranceEntry);
     }
 
-    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ResourceLogging"), 0)) {
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS_RESOURCE_LOGGING, 0)) {
         LogEntranceListAsXML(setEntranceList);
     }
 
