@@ -1465,7 +1465,7 @@ void DrawCheatsMenu() {
         UIWidgets::EnhancementSliderFloat("Hookshot Reach Multiplier: %.2fx", "##gCheatHookshotReachMultiplier", CVAR_CHEAT("HookshotReachMultiplier"), 1.0f, 5.0f, "", 1.0f, false);
         UIWidgets::Spacer(2.0f);
         if (ImGui::Button("Change Age")) {
-            CVarSetInteger(CVAR_GENERAL("SwitchAge"), 1);
+            CVarSetInteger(CVAR_GENERAL_SWITCH_AGE, 1);
         }
         UIWidgets::Tooltip("Switches Link's age and reloads the area.");  
         UIWidgets::Spacer(2.0f);
@@ -1663,12 +1663,12 @@ void DrawDeveloperToolsMenu() {
                 ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
                 ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
                 if (ImGui::Button("Advance 1", ImVec2(ImGui::GetContentRegionAvail().x / 2.0f, 0.0f))) {
-                    CVarSetInteger(CVAR_GENERAL("FrameAdvance"), 1);
+                    CVarSetInteger(CVAR_GENERAL_FRAME_ADVANCE, 1);
                 }
                 ImGui::SameLine();
                 ImGui::Button("Advance (Hold)");
                 if (ImGui::IsItemActive()) {
-                    CVarSetInteger(CVAR_GENERAL("FrameAdvance"), 1);
+                    CVarSetInteger(CVAR_GENERAL_FRAME_ADVANCE, 1);
                 }
                 ImGui::PopStyleVar(3);
                 ImGui::PopStyleColor(1);

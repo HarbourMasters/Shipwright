@@ -79,6 +79,9 @@ uint32_t IsGameMasterQuest();
 #define CVAR_TRACKER_ENTRANCE(var) CVAR_TRACKER("EntranceTracker." var)
 #define CVAR_DEVELOPER_TOOLS(var) "gDeveloperTools." var
 #define CVAR_GENERAL(var) "gGeneral." var
+#define CVAR_GENERAL_SWITCH_AGE CVAR_GENERAL("SwitchAge")
+#define CVAR_GENERAL_FRAME_ADVANCE CVAR_GENERAL("FrameAdvance")
+
 #define CVAR_REMOTE(var) "gRemote." var
 
 #ifndef __cplusplus

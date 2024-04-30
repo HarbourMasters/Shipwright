@@ -214,7 +214,7 @@ void RegisterSwitchAge() {
         static bool warped = false;
 
         if (!GameInteractor::IsSaveLoaded(true)) {
-            CVarClear(CVAR_GENERAL("SwitchAge"));
+            CVarClear(CVAR_GENERAL_SWITCH_AGE);
             warped = false;
             return;
         }
@@ -224,7 +224,7 @@ void RegisterSwitchAge() {
         static RoomContext* roomCtx;
         static s32 roomNum;
 
-        if (CVarGetInteger(CVAR_GENERAL("SwitchAge"), 0) && !warped) {
+        if (CVarGetInteger(CVAR_GENERAL_SWITCH_AGE, 0) && !warped) {
             playerPos = GET_PLAYER(gPlayState)->actor.world.pos;
             playerYaw = GET_PLAYER(gPlayState)->actor.shape.rot.y;
             roomCtx = &gPlayState->roomCtx;
@@ -243,7 +243,7 @@ void RegisterSwitchAge() {
                 func_80097534(gPlayState, roomCtx);  // load map for new room (unloading the previous room)
             }
             warped = false;
-            CVarClear(CVAR_GENERAL("SwitchAge"));
+            CVarClear(CVAR_GENERAL_SWITCH_AGE);
         }
     });
 }
