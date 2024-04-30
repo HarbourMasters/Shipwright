@@ -1,5 +1,6 @@
 #include <libultraship/bridge.h>
 #include <string>
+#include "soh/OTRGlobals.h"
 
 extern "C" {
 #include <libultraship/libultra.h>
@@ -81,7 +82,7 @@ void PatchDekuStickTextureOverflow() {
     const char* dlist = gLinkChildLinkDekuStickDL;
     int start = 5;
 
-    if (!CVarGetInteger("gFixTexturesOOB", 0)) {
+    if (!CVarGetInteger(CVAR_ENHANCEMENT("FixTexturesOOB"), 0)) {
         // Unpatch the other texture fix
         for (size_t i = 0; i < 7; i++) {
             int instruction = start + (i == 0 ? 0 : i + 1);
@@ -121,7 +122,7 @@ void PatchFreezardTextureOverflow() {
         char patchNameBuf[24];
 
         // Patch using custom overflowed texture
-        if (!CVarGetInteger("gFixTexturesOOB", 0)) {
+        if (!CVarGetInteger(CVAR_ENHANCEMENT("FixTexturesOOB"), 0)) {
             // Unpatch the other texture fix
             for (size_t i = 0; i < 7; i++) {
                 int instruction = start + (i == 0 ? 0 : i + 1);
@@ -163,7 +164,7 @@ void PatchIronKnuckleTextureOverflow() {
         // Until this is solved, Iron Knuckle will be hardcoded to always display with the "authentic" texture fix
 
         // Patch using custom overflowed texture
-        // if (!CVarGetInteger("gFixTexturesOOB", 0)) {
+        // if (!CVarGetInteger(CVAR_ENHANCEMENT("FixTexturesOOB"), 0)) {
             // Unpatch the other texture fix
             for (size_t i = 0; i < 7; i++) {
                 int instruction = start + (i == 0 ? 0 : i + 1);

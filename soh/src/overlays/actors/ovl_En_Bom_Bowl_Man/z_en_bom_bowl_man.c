@@ -69,7 +69,7 @@ void EnBomBowlMan_Init(Actor* thisx, PlayState* play2) {
     Actor_SetScale(&this->actor, 0.013f);
 
     for (i = 0; i < 2; i++) {
-        if(CVarGetInteger("gCustomizeBombchuBowling", 0) && CVarGetInteger(i == 0 ? "gBombchuBowlingNoSmallCucco" : "gBombchuBowlingNoBigCucco", 0)) {
+        if(CVarGetInteger(CVAR_ENHANCEMENT("CustomizeBombchuBowling"), 0) && CVarGetInteger(i == 0 ? CVAR_ENHANCEMENT("BombchuBowlingNoSmallCucco") : CVAR_ENHANCEMENT("BombchuBowlingNoBigCucco"), 0)) {
             continue;
         }
 
@@ -327,8 +327,8 @@ void EnBomBowlMan_HandlePlayChoice(EnBomBowlMan* this, PlayState* play) {
                     Rupees_ChangeBy(-30);
                     this->minigamePlayStatus = 1;
                     this->wallStatus[0] = this->wallStatus[1] = 0;
-                    if(CVarGetInteger("gCustomizeBombchuBowling", 0)) {
-                        play->bombchuBowlingStatus = CVarGetInteger("gBombchuBowlingAmmunition", 10);
+                    if(CVarGetInteger(CVAR_ENHANCEMENT("CustomizeBombchuBowling"), 0)) {
+                        play->bombchuBowlingStatus = CVarGetInteger(CVAR_ENHANCEMENT("BombchuBowlingAmmo"), 10);
                     }
                     else {
                         play->bombchuBowlingStatus = 10;

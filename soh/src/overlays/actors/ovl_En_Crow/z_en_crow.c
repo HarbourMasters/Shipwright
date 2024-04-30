@@ -364,7 +364,7 @@ void EnCrow_Die(EnCrow* this, PlayState* play) {
         } else {
             Item_DropCollectible(play, &this->actor.world.pos, ITEM00_RUPEE_RED);
         }
-        if (!CVarGetInteger("gRandomizedEnemies", 0)) {
+        if (!CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0)) {
             EnCrow_SetupRespawn(this);
         } else {
             Actor_Kill(this);

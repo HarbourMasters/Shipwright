@@ -4,13 +4,13 @@
 #include <libultraship/libultraship.h>
 
 namespace SOH {
-std::shared_ptr<LUS::IResource> ResourceFactoryBinarySkeletonV0::ReadResource(std::shared_ptr<LUS::File> file) {
+std::shared_ptr<Ship::IResource> ResourceFactoryBinarySkeletonV0::ReadResource(std::shared_ptr<Ship::File> file) {
     if (!FileHasValidFormatAndReader(file)) {
         return nullptr;
     }
 
     auto skeleton = std::make_shared<Skeleton>(file->InitData);
-    auto reader = std::get<std::shared_ptr<LUS::BinaryReader>>(file->Reader);
+    auto reader = std::get<std::shared_ptr<Ship::BinaryReader>>(file->Reader);
 
     skeleton->type = (SkeletonType)reader->ReadInt8();
     skeleton->limbType = (LimbType)reader->ReadInt8();
@@ -43,7 +43,7 @@ std::shared_ptr<LUS::IResource> ResourceFactoryBinarySkeletonV0::ReadResource(st
 
     for (size_t i = 0; i < skeleton->limbTable.size(); i++) {
         std::string limbStr = skeleton->limbTable[i];
-        auto limb = LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(limbStr.c_str());
+        auto limb = Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(limbStr.c_str());
         skeleton->skeletonHeaderSegments.push_back(limb ? limb->GetRawPointer() : nullptr);
     }
 
@@ -62,7 +62,7 @@ std::shared_ptr<LUS::IResource> ResourceFactoryBinarySkeletonV0::ReadResource(st
     return skeleton;
 }
 
-std::shared_ptr<LUS::IResource> ResourceFactoryXMLSkeletonV0::ReadResource(std::shared_ptr<LUS::File> file) {
+std::shared_ptr<Ship::IResource> ResourceFactoryXMLSkeletonV0::ReadResource(std::shared_ptr<Ship::File> file) {
     if (!FileHasValidFormatAndReader(file)) {
         return nullptr;
     }
@@ -112,7 +112,7 @@ std::shared_ptr<LUS::IResource> ResourceFactoryXMLSkeletonV0::ReadResource(std::
             std::string limbName = child->Attribute("Path");
             skel->limbTable.push_back(limbName);
 
-            auto limb = LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(limbName.c_str());
+            auto limb = Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(limbName.c_str());
             skel->skeletonHeaderSegments.push_back(limb ? limb->GetRawPointer() : nullptr);
         }
 

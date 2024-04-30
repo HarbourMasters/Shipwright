@@ -1239,7 +1239,7 @@ f32 Camera_LERPClampDist(Camera* camera, f32 dist, f32 min, f32 max) {
 
     camera->rUpdateRateInv = Camera_LERPCeilF(rUpdateRateInvTarget, camera->rUpdateRateInv, PCT(OREG(25)), 0.1f);
     return Camera_LERPCeilF(distTarget, camera->dist, 1.0f / camera->rUpdateRateInv,
-                            CVarGetInteger("gFixCameraDrift", 0) ? 0.0f : 0.2f);
+                            CVarGetInteger(CVAR_ENHANCEMENT("FixCameraDrift"), 0) ? 0.0f : 0.2f);
 }
 
 f32 Camera_ClampDist(Camera* camera, f32 dist, f32 minDist, f32 maxDist, s16 timer) {
@@ -1262,7 +1262,7 @@ f32 Camera_ClampDist(Camera* camera, f32 dist, f32 minDist, f32 maxDist, s16 tim
 
     camera->rUpdateRateInv = Camera_LERPCeilF(rUpdateRateInvTarget, camera->rUpdateRateInv, PCT(OREG(25)), 0.1f);
     return Camera_LERPCeilF(distTarget, camera->dist, 1.0f / camera->rUpdateRateInv,
-                            CVarGetInteger("gFixCameraDrift", 0) ? 0.0f : 0.2f);
+                            CVarGetInteger(CVAR_ENHANCEMENT("FixCameraDrift"), 0) ? 0.0f : 0.2f);
 }
 
 s16 Camera_CalcDefaultPitch(Camera* camera, s16 arg1, s16 arg2, s16 arg3) {
@@ -1710,7 +1710,7 @@ s32 Camera_Normal1(Camera* camera) {
     Camera_Vec3fVecSphGeoAdd(eyeNext, at, &eyeAdjustment);
     if ((camera->status == CAM_STAT_ACTIVE) && (!(norm1->interfaceFlags & 0x10))) {
         anim->swingYawTarget = BINANG_ROT180(camera->playerPosRot.rot.y);
-        if (!CVarGetInteger("gFixCameraSwing", 0)) {
+        if (!CVarGetInteger(CVAR_ENHANCEMENT("FixCameraSwing"), 0)) {
             if (anim->startSwingTimer > 0) {
                 func_80046E20(camera, &eyeAdjustment, norm1->distMin, norm1->unk_0C, &sp98, &anim->swing);
             } else {
@@ -1749,7 +1749,7 @@ s32 Camera_Normal1(Camera* camera) {
         }
 
         // crit wiggle
-        if(!CVarGetInteger("gDisableCritWiggle",0)) {
+        if(!CVarGetInteger(CVAR_ENHANCEMENT("DisableCritWiggle"),0)) {
             if (gSaveContext.health <= 16 && ((camera->play->state.frames % 256) == 0)) {
                 wiggleAdj = Rand_ZeroOne() * 10000.0f;
                 camera->inputDir.y = wiggleAdj + camera->inputDir.y;
@@ -4726,7 +4726,7 @@ s32 Camera_Unique1(Camera* camera) {
         anim->timer--;
     }
 
-    sp8C.yaw = Camera_LERPFloorS(anim->yawTarget, eyeNextAtOffset.yaw, 0.5f, CVarGetInteger("gFixHangingLedgeSwingRate", 0) ? 0xA : 0x2710);
+    sp8C.yaw = Camera_LERPFloorS(anim->yawTarget, eyeNextAtOffset.yaw, 0.5f, CVarGetInteger(CVAR_ENHANCEMENT("FixHangingLedgeSwingRate"), 0) ? 0xA : 0x2710);
     Camera_Vec3fVecSphGeoAdd(eyeNext, at, &sp8C);
     *eye = *eyeNext;
     Camera_BGCheck(camera, at, eye);
