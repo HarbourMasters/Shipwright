@@ -254,7 +254,7 @@ void func_80AE2744(EnRd* this, PlayState* play) {
             // Add a height check to redeads/gibdos freeze when Enemy Randomizer is on.
             // Without the height check, redeads/gibdos can freeze the player from insane distances in
             // vertical rooms (like the first room in Deku Tree), making these rooms nearly unplayable.
-            s8 enemyRandoCCActive = CVarGetInteger("gRandomizedEnemies", 0) || CVarGetInteger("gCrowdControl", 0);
+            s8 enemyRandoCCActive = CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) || CVarGetInteger("gCrowdControl", 0);
             if (!enemyRandoCCActive || (enemyRandoCCActive && this->actor.yDistToPlayer <= 100.0f && this->actor.yDistToPlayer >= -100.0f)) {
                 if ((this->actor.params != 2) && (this->unk_305 == 0)) {
                     func_80AE37BC(this);
@@ -338,7 +338,7 @@ void func_80AE2C1C(EnRd* this, PlayState* play) {
              PLAYER_STATE1_JUMPING | PLAYER_STATE1_FREEFALL | PLAYER_STATE1_CLIMBING_LADDER)) && 
              !(player->stateFlags2 & PLAYER_STATE2_GRABBED_BY_ENEMY)) {
             if (this->unk_306 == 0) {
-                if (!(this->unk_312 & PLAYER_STATE2_GRABBED_BY_ENEMY) && !CVarGetInteger("gNoRedeadFreeze", 0)) {
+                if (!(this->unk_312 & PLAYER_STATE2_GRABBED_BY_ENEMY) && !CVarGetInteger(CVAR_CHEAT("NoRedeadFreeze"), 0)) {
                     player->actor.freezeTimer = 40;
                     func_8008EEAC(play, &this->actor);
                     GET_PLAYER(play)->unk_684 = &this->actor;
@@ -570,7 +570,7 @@ void func_80AE3834(EnRd* this, PlayState* play) {
     s16 temp_v0 = this->actor.yawTowardsPlayer - this->actor.shape.rot.y - this->unk_30E - this->unk_310;
 
     if (ABS(temp_v0) < 0x2008) {
-        if (!(this->unk_312 & 0x80) && !CVarGetInteger("gNoRedeadFreeze", 0)) {
+        if (!(this->unk_312 & 0x80) && !CVarGetInteger(CVAR_CHEAT("NoRedeadFreeze"), 0)) {
             player->actor.freezeTimer = 60;
             func_800AA000(this->actor.xzDistToPlayer, 0xFF, 0x14, 0x96);
             func_8008EEAC(play, &this->actor);
@@ -668,7 +668,7 @@ void func_80AE3C98(EnRd* this, PlayState* play) {
 
     if (SkelAnime_Update(&this->skelAnime)) {
         if (this->unk_30C == 0) {
-            s8 enemyRandoCCActive = CVarGetInteger("gRandomizedEnemies", 0) || CVarGetInteger("gCrowdControl", 0);
+            s8 enemyRandoCCActive = CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) || CVarGetInteger("gCrowdControl", 0);
             // Don't set this flag in Enemy Rando as it can overlap with other objects using the same flag.
             if (!Flags_GetSwitch(play, this->unk_312 & 0x7F) && !enemyRandoCCActive) {
                 Flags_SetSwitch(play, this->unk_312 & 0x7F);

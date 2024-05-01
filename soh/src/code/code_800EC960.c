@@ -1608,7 +1608,7 @@ void func_800ED458(s32 arg0) {
 
     if (D_80130F3C != 0 && sOcarinaDropInputTimer != 0) {
         sOcarinaDropInputTimer--;
-        if (!CVarGetInteger("gDpadNoDropOcarinaInput", 0)) {
+        if (!CVarGetInteger(CVAR_ENHANCEMENT("DpadNoDropOcarinaInput"), 0)) {
             return;
         }
     }
@@ -2067,15 +2067,15 @@ void Audio_OcaMemoryGameStart(u8 minigameRound) {
     u8 i;
     
     // #region SOH [Enhancement]
-    if (CVarGetInteger("gCustomizeOcarinaGame", 0)) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("CustomizeOcarinaGame"), 0)) {
         u8 startingNotes = 3;
-        u8 roundOneCount = CVarGetInteger("gOcarinaGameRoundOneNotes", 5);
-        u8 roundTwoCount = CVarGetInteger("gOcarinaGameRoundTwoNotes", 6);
-        u8 roundThreeCount = CVarGetInteger("gOcarinaGameRoundThreeNotes", 8);
+        u8 roundOneCount = CVarGetInteger(CVAR_ENHANCEMENT("OcarinaGame.RoundOneNotes"), 5);
+        u8 roundTwoCount = CVarGetInteger(CVAR_ENHANCEMENT("OcarinaGame.RoundTwoNotes"), 6);
+        u8 roundThreeCount = CVarGetInteger(CVAR_ENHANCEMENT("OcarinaGame.RoundThreeNotes"), 8);
         u8 modMinigameNoteCnts[] = { roundOneCount, roundTwoCount, roundThreeCount };
 
 
-        startingNotes = CVarGetInteger("gOcarinaGameStartingNotes", 3);
+        startingNotes = CVarGetInteger(CVAR_ENHANCEMENT("OcarinaGame.StartingNotes"), 3);
 
         if (minigameRound > 2) {
             minigameRound = 2;
@@ -2118,9 +2118,9 @@ s32 Audio_OcaMemoryGameGenNote(void) {
     }
 
     // #region SOH [Enhancement]
-    if (CVarGetInteger("gCustomizeOcarinaGame", 0)) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("CustomizeOcarinaGame"), 0)) {
         int noteSpeed = 0x2D;
-        noteSpeed = noteSpeed / CVarGetInteger("gOcarinaGameNoteSpeed", 1);
+        noteSpeed = noteSpeed / CVarGetInteger(CVAR_ENHANCEMENT("OcarinaGame.NoteSpeed"), 1);
 
         sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].noteIdx = rndNote;
         sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].unk_02 = noteSpeed;
@@ -4025,7 +4025,7 @@ void Audio_PlayFanfare_Rando(GetItemEntry getItem) {
                 temp1 = NA_BGM_SMALL_ITEM_GET | 0x900;
             }
             // If the setting is toggled on and we get special quest items (longer fanfares):
-            if (CVarGetInteger("gRandoQuestItemFanfares", 0) != 0) {
+            if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("QuestItemFanfares"), 0) != 0) {
                 // If we get a medallion, play the "get a medallion" fanfare
                 if ((itemId >= ITEM_MEDALLION_FOREST) && (itemId <= ITEM_MEDALLION_LIGHT)) {
                     temp1 = NA_BGM_MEDALLION_GET | 0x900;
