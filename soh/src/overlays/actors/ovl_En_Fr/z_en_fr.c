@@ -820,9 +820,9 @@ void EnFr_SetupFrogSong(EnFr* this, PlayState* play) {
         this->frogSongTimer--;
     } else {
         // #region SOH [Enhancement]
-        if (CVarGetInteger("gCustomizeFrogsOcarinaGame", 0) == 1) {
-            this->frogSongTimer = 40 * CVarGetInteger("gFrogsModifyFailTime", 1);
-            if (CVarGetInteger("gInstantFrogsGameWin", 0) == 1) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFrogsOcarinaGame"), 0) == 1) {
+            this->frogSongTimer = 40 * CVarGetInteger(CVAR_ENHANCEMENT("FrogsModifyFailTime"), 1);
+            if (CVarGetInteger(CVAR_ENHANCEMENT("InstantFrogsGameWin"), 0) == 1) {
                 this->actor.textId = 0x40AC;
                 EnFr_SetupReward(this, play, false);
             } else {
@@ -863,8 +863,8 @@ s32 EnFr_IsFrogSongComplete(EnFr* this, PlayState* play) {
         this->ocarinaNote = ocarinaNote;
         EnFr_CheckOcarinaInputFrogSong(ocarinaNote);
         // #region SOH [Enhancement]
-        if (CVarGetInteger("gCustomizeFrogsOcarinaGame", 0)) {
-            this->frogSongTimer = sTimerFrogSong[index] * CVarGetInteger("gFrogsModifyFailTime", 1);
+        if (CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFrogsOcarinaGame"), 0)) {
+            this->frogSongTimer = sTimerFrogSong[index] * CVarGetInteger(CVAR_ENHANCEMENT("FrogsModifyFailTime"), 1);
         // #endregion
         } else {
             this->frogSongTimer = sTimerFrogSong[index];
@@ -893,7 +893,7 @@ void EnFr_ContinueFrogSong(EnFr* this, PlayState* play) {
         EnFr_OcarinaMistake(this, play);
     } else {
         // #region SOH [Enhancement]
-        if (CVarGetInteger("gCustomizeFrogsOcarinaGame", 0) == 1 && CVarGetInteger("gFrogsUnlimitedFailTime", 0) == 1) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFrogsOcarinaGame"), 0) == 1 && CVarGetInteger(CVAR_ENHANCEMENT("FrogsUnlimitedFailTime"), 0) == 1) {
             // Don't decrement timer
         // #endregion
         } else {
