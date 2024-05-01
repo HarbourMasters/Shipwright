@@ -491,9 +491,9 @@ namespace UIWidgets {
         Second is the cvar name where MyID will be saved.
         Note: the CVar name should be the same to each Buddies.
         Example :
-            EnhancementRadioButton("English", "gLanguages", LANGUAGE_ENG);
-            EnhancementRadioButton("German", "gLanguages", LANGUAGE_GER);
-            EnhancementRadioButton("French", "gLanguages", LANGUAGE_FRA);
+            EnhancementRadioButton("English", CVAR_SETTING("Languages"), LANGUAGE_ENG);
+            EnhancementRadioButton("German", CVAR_SETTING("Languages"), LANGUAGE_GER);
+            EnhancementRadioButton("French", CVAR_SETTING("Languages"), LANGUAGE_FRA);
         */
         std::string make_invisible = "##" + std::string(text) + std::string(cvarName);
 

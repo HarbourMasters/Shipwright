@@ -1008,11 +1008,11 @@ void DrawSeedHashSprites(FileChooseContext* this) {
 u8 generating;
 
 void FileChoose_UpdateRandomizer() {
-    if (CVarGetInteger("gRandoGenerating", 0) != 0 && generating == 0) {
+    if (CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0) != 0 && generating == 0) {
             generating = 1;
             func_800F5E18(SEQ_PLAYER_BGM_MAIN, NA_BGM_HORSE, 0, 7, 1);
             return;
-    } else if (CVarGetInteger("gRandoGenerating", 0) == 0 && generating) {
+    } else if (CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0) == 0 && generating) {
             if (SpoilerFileExists(CVarGetString("gSpoilerLog", ""))) {
                 Audio_PlayFanfare(NA_BGM_HORSE_GOAL);
             } else {
@@ -1030,18 +1030,18 @@ void FileChoose_UpdateRandomizer() {
             fileSelectSpoilerFileLoaded = false;
     }
 
-    if ((CVarGetInteger("gRandomizerNewFileDropped", 0) != 0) || (CVarGetInteger("gNewSeedGenerated", 0) != 0) ||
+    if ((CVarGetInteger(CVAR_GENERAL("RandomizerNewFileDropped"), 0) != 0) || (CVarGetInteger(CVAR_GENERAL("NewSeedGenerated"), 0) != 0) ||
         (!fileSelectSpoilerFileLoaded && SpoilerFileExists(CVarGetString("gSpoilerLog", "")))) {
-            if (CVarGetInteger("gRandomizerNewFileDropped", 0) != 0) {
-            CVarSetString("gSpoilerLog", CVarGetString("gRandomizerDroppedFile", "None"));
+            if (CVarGetInteger(CVAR_GENERAL("RandomizerNewFileDropped"), 0) != 0) {
+            CVarSetString("gSpoilerLog", CVarGetString(CVAR_GENERAL("RandomizerDroppedFile"), "None"));
             }
             bool silent = true;
-            if ((CVarGetInteger("gRandomizerNewFileDropped", 0) != 0) || (CVarGetInteger("gNewSeedGenerated", 0) != 0)) {
+            if ((CVarGetInteger(CVAR_GENERAL("RandomizerNewFileDropped"), 0) != 0) || (CVarGetInteger(CVAR_GENERAL("NewSeedGenerated"), 0) != 0)) {
             silent = false;
             }
-            CVarSetInteger("gNewSeedGenerated", 0);
-            CVarSetInteger("gRandomizerNewFileDropped", 0);
-            CVarSetString("gRandomizerDroppedFile", "");
+            CVarSetInteger(CVAR_GENERAL("NewSeedGenerated"), 0);
+            CVarSetInteger(CVAR_GENERAL("RandomizerNewFileDropped"), 0);
+            CVarSetString(CVAR_GENERAL("RandomizerDroppedFile"), "");
             fileSelectSpoilerFileLoaded = false;
             const char* fileLoc = CVarGetString("gSpoilerLog", "");
             Randomizer_LoadSettings(fileLoc);
@@ -1074,7 +1074,7 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
     static u8 linkName[] = { 0x15, 0x2C, 0x31, 0x2E, 0x3E, 0x3E, 0x3E, 0x3E };
     FileChooseContext* this = (FileChooseContext*)thisx;
     Input* input = &this->state.input[0];
-    bool dpad = CVarGetInteger("gDpadText", 0);
+    bool dpad = CVarGetInteger(CVAR_SETTING("DPadInText"), 0);
 
     FileChoose_UpdateRandomizer();
 
@@ -1264,7 +1264,7 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
     Input* input = &this->state.input[0];
     s8 i = 0;
-    bool dpad = CVarGetInteger("gDpadText", 0);
+    bool dpad = CVarGetInteger(CVAR_SETTING("DPadInText"), 0);
 
     FileChoose_UpdateRandomizer();
 
@@ -1311,7 +1311,7 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
             this->prevConfigMode = this->configMode;
             this->configMode = CM_ROTATE_TO_NAME_ENTRY;
             this->logoAlpha = 0;
-            CVarSetInteger("gOnFileSelectNameEntry", 1);
+            CVarSetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 1);
             this->kbdButton = FS_KBD_BTN_NONE;
             this->charPage = FS_CHAR_PAGE_ENG;
             this->kbdX = 0;
@@ -1340,7 +1340,7 @@ void FileChoose_UpdateBossRushMenu(GameState* thisx) {
     FileChoose_UpdateStickDirectionPromptAnim(thisx);
     FileChooseContext* this = (FileChooseContext*)thisx;
     Input* input = &this->state.input[0];
-    bool dpad = CVarGetInteger("gDpadText", 0);
+    bool dpad = CVarGetInteger(CVAR_SETTING("DPadInText"), 0);
 
     // Fade in elements after opening Boss Rush options menu
     this->bossRushUIAlpha += 25;
@@ -2816,7 +2816,7 @@ void FileChoose_FadeInFileInfo(GameState* thisx) {
 void FileChoose_ConfirmFile(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
     Input* input = &this->state.input[0];
-    bool dpad = CVarGetInteger("gDpadText", 0);
+    bool dpad = CVarGetInteger(CVAR_SETTING("DPadInText"), 0);
 
     if (CHECK_BTN_ALL(input->press.button, BTN_START) || (CHECK_BTN_ALL(input->press.button, BTN_A))) {
         if (this->confirmButtonIndex == FS_BTN_CONFIRM_YES) {
@@ -3313,7 +3313,7 @@ void FileChoose_Main(GameState* thisx) {
     this->stickRelX = input->rel.stick_x;
     this->stickRelY = input->rel.stick_y;
 
-    if (CVarGetInteger("gDpadHoldChange", 1) && CVarGetInteger("gDpadText", 0)) {
+    if (CVarGetInteger("gDpadHoldChange", 1) && CVarGetInteger(CVAR_SETTING("DPadInText"), 0)) {
         if (CHECK_BTN_ALL(input->cur.button, BTN_DLEFT)) {
             if (CHECK_BTN_ALL(input->press.button, BTN_DLEFT)) {
                 this->inputTimerX = 10;
@@ -3661,7 +3661,7 @@ void FileChoose_Init(GameState* thisx) {
     this->questType[2] = MIN_QUEST;
     fileSelectSpoilerFileLoaded = false;
     isFastFileIdIncompatible = 0;
-    CVarSetInteger("gOnFileSelectNameEntry", 0);
+    CVarSetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 0);
 
     SREG(30) = 1;
     osSyncPrintf("SIZE=%x\n", size);

@@ -57,11 +57,11 @@ void Select_LoadGame(SelectContext* this, s32 entranceIndex) {
                 s16 scene = gEntranceTable[entrancePair.entranceIndex].scene;
                 u8 isEntranceDefaultMQ = ResourceMgr_IsSceneMasterQuest(scene);
                 if (!isEntranceDefaultMQ && this->opt) { // Force vanilla for default MQ scene
-                    CVarSetInteger("gBetterDebugWarpScreenMQMode", WARP_MODE_OVERRIDE_MQ_AS_VANILLA);
-                    CVarSetInteger("gBetterDebugWarpScreenMQModeScene", scene);
+                    CVarSetInteger(CVAR_GENERAL("BetterDebugWarpScreenMQMode"), WARP_MODE_OVERRIDE_MQ_AS_VANILLA);
+                    CVarSetInteger(CVAR_GENERAL("BetterDebugWarpScreenMQModeScene"), scene);
                 } else if (isEntranceDefaultMQ && !this->opt) { // Force MQ for default vanilla scene
-                    CVarSetInteger("gBetterDebugWarpScreenMQMode", WARP_MODE_OVERRIDE_VANILLA_AS_MQ);
-                    CVarSetInteger("gBetterDebugWarpScreenMQModeScene", scene);
+                    CVarSetInteger(CVAR_GENERAL("BetterDebugWarpScreenMQMode"), WARP_MODE_OVERRIDE_VANILLA_AS_MQ);
+                    CVarSetInteger(CVAR_GENERAL("BetterDebugWarpScreenMQModeScene"), scene);
                 }
             }
         }
@@ -1637,7 +1637,7 @@ void Select_Init(GameState* thisx) {
     gSaveContext.nightFlag = 0;
     gSaveContext.dayTime = 0x8000;
 
-    CVarClear("gBetterDebugWarpScreenMQMode");
-    CVarClear("gBetterDebugWarpScreenMQModeScene");
+    CVarClear(CVAR_GENERAL("BetterDebugWarpScreenMQMode"));
+    CVarClear(CVAR_GENERAL("BetterDebugWarpScreenMQModeScene"));
     Select_SwitchBetterWarpMode(this, CVarGetInteger(CVAR_DEVELOPER_TOOLS("BetterDebugWarpScreen"), 0));
 }

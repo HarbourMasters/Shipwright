@@ -416,7 +416,7 @@ OTRGlobals::~OTRGlobals() {
 }
 
 void OTRGlobals::ScaleImGui() {
-    float scale = imguiScaleOptionToValue[CVarGetInteger("gImGuiScale", defaultImGuiScale)];
+    float scale = imguiScaleOptionToValue[CVarGetInteger(CVAR_SETTING("ImGuiScale"), defaultImGuiScale)];
     float newScale = scale / previousImGuiScale;
     ImGui::GetStyle().ScaleAllSizes(newScale);
     ImGui::GetIO().FontGlobalScale = scale;
@@ -451,14 +451,14 @@ bool OTRGlobals::HasOriginal() {
 
 uint32_t OTRGlobals::GetInterpolationFPS() {
     if (Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() == Ship::WindowBackend::DX11) {
-        return CVarGetInteger("gInterpolationFPS", 20);
+        return CVarGetInteger(CVAR_SETTING("InterpolationFPS"), 20);
     }
 
-    if (CVarGetInteger("gMatchRefreshRate", 0)) {
+    if (CVarGetInteger(CVAR_SETTING("MatchRefreshRate"), 0)) {
         return Ship::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate();
     }
 
-    return std::min<uint32_t>(Ship::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate(), CVarGetInteger("gInterpolationFPS", 20));
+    return std::min<uint32_t>(Ship::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate(), CVarGetInteger(CVAR_SETTING("InterpolationFPS"), 20));
 }
 
 struct ExtensionEntry {
@@ -1137,17 +1137,17 @@ extern "C" void InitOTR() {
     InitMods();
     ActorDB::AddBuiltInCustomActors();
     // #region SOH [Randomizer] TODO: Remove these and refactor spoiler file handling for randomizer
-    CVarClear("gRandomizerNewFileDropped");
-    CVarClear("gRandomizerDroppedFile");
+    CVarClear(CVAR_GENERAL("RandomizerNewFileDropped"));
+    CVarClear(CVAR_GENERAL("RandomizerDroppedFile"));
     // #endregion
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnFileDropped>(SoH_ProcessDroppedFiles);
 
     time_t now = time(NULL);
     tm *tm_now = localtime(&now);
     if (tm_now->tm_mon == 11 && tm_now->tm_mday >= 24 && tm_now->tm_mday <= 25) {
-        CVarRegisterInteger("gLetItSnow", 1);
+        CVarRegisterInteger(CVAR_GENERAL("LetItSnow"), 1);
     } else {
-        CVarClear("gLetItSnow");
+        CVarClear(CVAR_GENERAL("LetItSnow"));
     }
 
     srand(now);
@@ -1319,7 +1319,7 @@ extern "C" void Graph_StartFrame() {
 #if defined(_WIN32) || defined(__APPLE__)
         case KbScancode::LUS_KB_F9: {
             // Toggle TTS
-            CVarSetInteger("gA11yTTS", !CVarGetInteger("gA11yTTS", 0));
+            CVarSetInteger(CVAR_SETTING("A11yTTS"), !CVarGetInteger(CVAR_SETTING("A11yTTS"), 0));
             break;
         }
 #endif
@@ -1389,7 +1389,7 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
 
     OTRGlobals::Instance->context->GetWindow()->SetTargetFps(fps);
 
-    int threshold = CVarGetInteger("gExtraLatencyThreshold", 80);
+    int threshold = CVarGetInteger(CVAR_SETTING("ExtraLatencyThreshold"), 80);
     OTRGlobals::Instance->context->GetWindow()->SetMaximumFrameLatency(threshold > 0 && target_fps >= threshold ? 2 : 1);
 
     RunCommands(commands, mtx_replacements);
@@ -1486,7 +1486,7 @@ extern "C" uint32_t ResourceMgr_GetGameRegion(int index) {
 
 uint32_t IsSceneMasterQuest(s16 sceneNum) {
     uint32_t value = 0;
-    uint8_t mqMode = CVarGetInteger("gBetterDebugWarpScreenMQMode", WARP_MODE_OVERRIDE_OFF);
+    uint8_t mqMode = CVarGetInteger(CVAR_GENERAL("BetterDebugWarpScreenMQMode"), WARP_MODE_OVERRIDE_OFF);
     if (mqMode == WARP_MODE_OVERRIDE_MQ_AS_VANILLA) {
         return 1;
     } else if (mqMode == WARP_MODE_OVERRIDE_VANILLA_AS_MQ) {
@@ -2115,11 +2115,11 @@ extern "C" uint32_t OTRGetCurrentHeight() {
 }
 
 Color_RGB8 GetColorForControllerLED() {
-    auto brightness = CVarGetFloat("gLedBrightness", 1.0f) / 1.0f;
+    auto brightness = CVarGetFloat(CVAR_SETTING("LEDBrightness"), 1.0f) / 1.0f;
     Color_RGB8 color = { 0, 0, 0 };
     if (brightness > 0.0f) {
-        LEDColorSource source = static_cast<LEDColorSource>(CVarGetInteger("gLedColorSource", LED_SOURCE_TUNIC_ORIGINAL));
-        bool criticalOverride = CVarGetInteger("gLedCriticalOverride", 1);
+        LEDColorSource source = static_cast<LEDColorSource>(CVarGetInteger(CVAR_SETTING("LEDColorSource"), LED_SOURCE_TUNIC_ORIGINAL));
+        bool criticalOverride = CVarGetInteger(CVAR_SETTING("LEDCriticalOverride"), 1);
         if (gPlayState && (source == LED_SOURCE_TUNIC_ORIGINAL || source == LED_SOURCE_TUNIC_COSMETICS)) {
             switch (CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC)) {
                 case EQUIP_VALUE_TUNIC_KOKIRI:
@@ -2186,7 +2186,7 @@ Color_RGB8 GetColorForControllerLED() {
             }
         }
         if (source == LED_SOURCE_CUSTOM) {
-            color = CVarGetColor24("gLedPort1Color", { 255, 255, 255 });
+            color = CVarGetColor24(CVAR_SETTING("LEDPort1Color"), { 255, 255, 255 });
         }
         if (gPlayState && (criticalOverride || source == LED_SOURCE_HEALTH)) {
             if (HealthMeter_IsCritical()) {
@@ -2446,7 +2446,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             if (player->getItemEntry.getItemId == RG_ICE_TRAP) {
                 u16 iceTrapTextId = Random(0, NUM_ICE_TRAP_MESSAGES);
                 messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::IceTrapRandoMessageTableID, iceTrapTextId);
-                if (CVarGetInteger("gLetItSnow", 0)) {
+                if (CVarGetInteger(CVAR_GENERAL("LetItSnow"), 0)) {
                     messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::IceTrapRandoMessageTableID, NUM_ICE_TRAP_MESSAGES + 1);
                 }
             } else if (player->getItemEntry.getItemId == RG_TRIFORCE_PIECE) {
@@ -2708,8 +2708,8 @@ void SoH_ProcessDroppedFiles(std::string filePath) {
 
         // #region SOH [Randomizer] TODO: Refactor spoiler file handling for randomizer 
         if (configJson.contains("version") && configJson.contains("finalSeed")) {
-            CVarSetString("gRandomizerDroppedFile", filePath.c_str());
-            CVarSetInteger("gRandomizerNewFileDropped", 1);
+            CVarSetString(CVAR_GENERAL("RandomizerDroppedFile"), filePath.c_str());
+            CVarSetInteger(CVAR_GENERAL("RandomizerNewFileDropped"), 1);
             return;
         }
         // #endregion

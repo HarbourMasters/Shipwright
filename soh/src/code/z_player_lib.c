@@ -1558,7 +1558,7 @@ void func_800906D4(PlayState* play, Player* this, Vec3f* newTipPos) {
 void Player_DrawGetItemIceTrap(PlayState* play, Player* this, Vec3f* refPos, s32 drawIdPlusOne, f32 height) {
     OPEN_DISPS(play->state.gfxCtx);
 
-    if (CVarGetInteger("gLetItSnow", 0)) {
+    if (CVarGetInteger(CVAR_GENERAL("LetItSnow"), 0)) {
         Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
         Matrix_Scale(0.2f, 0.2f, 0.2f, MTXMODE_APPLY);
@@ -2124,7 +2124,7 @@ void Player_DrawPauseImpl(PlayState* play, void* seg04, void* seg06, SkelAnime* 
 
     Matrix_SetTranslateRotateYXZ(pos->x - ((CVarGetInteger(CVAR_ENHANCEMENT("PauseLiveLink"), 0) && LINK_AGE_IN_YEARS == YEARS_ADULT) ? 25 : 0),
                                  pos->y - (CVarGetInteger("gPauseTriforce", 0) ? 16 : 0), pos->z, rot);
-    Matrix_Scale(scale * (CVarGetInteger("gMirroredWorld", 0) ? -1 : 1), scale, scale, MTXMODE_APPLY);
+    Matrix_Scale(scale * (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0) ? -1 : 1), scale, scale, MTXMODE_APPLY);
 
     gSPSegment(POLY_OPA_DISP++, 0x04, seg04);
     gSPSegment(POLY_OPA_DISP++, 0x06, seg06);
@@ -2146,7 +2146,7 @@ void Player_DrawPauseImpl(PlayState* play, void* seg04, void* seg06, SkelAnime* 
 
         Matrix_SetTranslateRotateYXZ(pos->x - (LINK_AGE_IN_YEARS == YEARS_ADULT ? 25 : 0),
                                       pos->y + 280 + (LINK_AGE_IN_YEARS == YEARS_ADULT ? 48 : 0), pos->z, rot);
-        Matrix_Scale(scale * (CVarGetInteger("gMirroredWorld", 0) ? -1 : 1), scale * 1, scale * 1, MTXMODE_APPLY);
+        Matrix_Scale(scale * (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0) ? -1 : 1), scale * 1, scale * 1, MTXMODE_APPLY);
 
         Gfx* ohNo = POLY_XLU_DISP;
         POLY_XLU_DISP = POLY_OPA_DISP;

@@ -8,6 +8,7 @@
 #include <libultraship/bridge.h>
 #include <Context.h>
 #include <libultraship/libultra/types.h>
+#include "soh/OTRGlobals.h"
 
 void RandoMain::GenerateRando(std::unordered_map<RandomizerSettingKey, u8> cvarSettings, std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks,
     std::string seedString) {
@@ -23,7 +24,7 @@ void RandoMain::GenerateRando(std::unordered_map<RandomizerSettingKey, u8> cvarS
 
     CVarSave();
     CVarLoad();
-    CVarSetInteger("gNewSeedGenerated", 1);
+    CVarSetInteger(CVAR_GENERAL("NewSeedGenerated"), 1);
 }
 
 std::array<Item, KEY_ENUM_MAX>* RandoMain::GetFullItemTable() {

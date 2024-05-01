@@ -2827,7 +2827,7 @@ RandomizerCheck Randomizer::GetCheckFromRandomizerInf(RandomizerInf randomizerIn
 std::thread randoThread;
 
 void GenerateRandomizerImgui(std::string seed = "") {
-    CVarSetInteger("gRandoGenerating", 1);
+    CVarSetInteger(CVAR_GENERAL("RandoGenerating"), 1);
     CVarSave();
 
     std::unordered_map<RandomizerSettingKey, u8> cvarSettings;
@@ -2945,7 +2945,7 @@ void GenerateRandomizerImgui(std::string seed = "") {
     // RANDOTODO implement chest minigame shuffle with keysanity
     cvarSettings[RSK_SHUFFLE_CHEST_MINIGAME] = false;
 
-    cvarSettings[RSK_LANGUAGE] = CVarGetInteger("gLanguages", 0);
+    cvarSettings[RSK_LANGUAGE] = CVarGetInteger(CVAR_SETTING("Languages"), 0);
 
     cvarSettings[RSK_CUCCO_COUNT] = CVarGetInteger(CVAR_RANDOMIZER_SETTING("CuccosToReturn"), 7);
     cvarSettings[RSK_BIG_POE_COUNT] = CVarGetInteger(CVAR_RANDOMIZER_SETTING("BigPoeTargetCount"), 10);
@@ -3052,7 +3052,7 @@ void GenerateRandomizerImgui(std::string seed = "") {
 
     RandoMain::GenerateRando(cvarSettings, excludedLocations, enabledTricks, seed);
 
-    CVarSetInteger("gRandoGenerating", 0);
+    CVarSetInteger(CVAR_GENERAL("RandoGenerating"), 0);
     CVarSave();
     CVarLoad();
 
@@ -3060,7 +3060,7 @@ void GenerateRandomizerImgui(std::string seed = "") {
 }
 
 bool GenerateRandomizer(std::string seed /*= ""*/) {
-    if (CVarGetInteger("gRandoGenerating", 0) == 0) {
+    if (CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0) == 0) {
         randoThread = std::thread(&GenerateRandomizerImgui, seed);
         return true;
     }
@@ -3144,7 +3144,7 @@ void RandomizerSettingsWindow::DrawElement() {
         return;
     }
 
-    bool disableEditingRandoSettings = CVarGetInteger("gRandoGenerating", 0) || CVarGetInteger("gOnFileSelectNameEntry", 0);
+    bool disableEditingRandoSettings = CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0) || CVarGetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 0);
     if (disableEditingRandoSettings) {
         UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
     }

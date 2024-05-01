@@ -275,7 +275,7 @@ void Room_DrawBackground2D(Gfx** gfxP, void* tex, void* tlut, u16 width, u16 hei
     bg->b.imageFmt = fmt;
     bg->b.imageSiz = siz;
     bg->b.imagePal = 0;
-    bg->b.imageFlip = CVarGetInteger("gMirroredWorld", 0) ? G_BG_FLAG_FLIPS : 0;
+    bg->b.imageFlip = CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0) ? G_BG_FLAG_FLIPS : 0;
 
     // When an alt resource exists for the background, we need to unload the original asset
     // to clear the cache so the alt asset will be loaded instead

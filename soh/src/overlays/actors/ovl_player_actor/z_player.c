@@ -2213,7 +2213,7 @@ s32 Player_ItemIsItemAction(s32 item1, s32 itemAction) {
 }
 
 s32 Player_GetItemOnButton(PlayState* play, s32 index) {
-    if (index >= ((CVarGetInteger("gDpadEquips", 0) != 0) ? 8 : 4)) {
+    if (index >= ((CVarGetInteger(CVAR_SETTING("DPadEquips"), 0) != 0) ? 8 : 4)) {
         return ITEM_NONE;
     } else if (play->bombchuBowlingStatus != 0) {
         return (play->bombchuBowlingStatus > 0) ? ITEM_BOMBCHU : ITEM_NONE;
@@ -2254,7 +2254,7 @@ void Player_ProcessItemButtons(Player* this, PlayState* play) {
         if (CVarGetInteger(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA) {
             s32 maskItem = this->currentMask - PLAYER_MASK_KEATON + ITEM_MASK_KEATON;
             bool hasOnDpad = false;
-            if (CVarGetInteger("gDpadEquips", 0) != 0) {
+            if (CVarGetInteger(CVAR_SETTING("DPadEquips"), 0) != 0) {
                 for (int buttonIndex = 4; buttonIndex < 8; buttonIndex++) {
                     hasOnDpad |= gSaveContext.equips.buttonItems[buttonIndex] == maskItem;
                 }
@@ -2270,7 +2270,7 @@ void Player_ProcessItemButtons(Player* this, PlayState* play) {
             maskItemAction = this->currentMask - 1 + PLAYER_IA_MASK_KEATON;
 
             bool hasOnDpad = false;
-            if (CVarGetInteger("gDpadEquips", 0) != 0) {
+            if (CVarGetInteger(CVAR_SETTING("DPadEquips"), 0) != 0) {
                 for (int buttonIndex = 0; buttonIndex < 4; buttonIndex++) {
                     hasOnDpad |= Player_ItemIsItemAction(DPAD_ITEM(buttonIndex), maskItemAction);
                 }
@@ -2286,7 +2286,7 @@ void Player_ProcessItemButtons(Player* this, PlayState* play) {
     if (!(this->stateFlags1 & (PLAYER_STATE1_ITEM_OVER_HEAD | PLAYER_STATE1_IN_CUTSCENE)) && !func_8008F128(this)) {
         if (this->itemAction >= PLAYER_IA_FISHING_POLE) {
             bool hasOnDpad = false;
-            if (CVarGetInteger("gDpadEquips", 0) != 0) {
+            if (CVarGetInteger(CVAR_SETTING("DPadEquips"), 0) != 0) {
                 for (int buttonIndex = 0; buttonIndex < 4; buttonIndex++) {
                     hasOnDpad |= Player_ItemIsInUse(this, DPAD_ITEM(buttonIndex));
                 }
@@ -2677,7 +2677,7 @@ int func_80834E44(PlayState* play) {
 
 int func_80834E7C(PlayState* play) {
     u16 buttonsToCheck = BTN_A | BTN_B | BTN_CUP | BTN_CLEFT | BTN_CRIGHT | BTN_CDOWN;
-    if (CVarGetInteger("gDpadEquips", 0) != 0) {
+    if (CVarGetInteger(CVAR_SETTING("DPadEquips"), 0) != 0) {
         buttonsToCheck |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
     }
     return (play->shootingGalleryStatus != 0) &&
@@ -5653,7 +5653,7 @@ s32 Player_ActionChange_4(Player* this, PlayState* play) {
                             this->stateFlags2 |= PLAYER_STATE2_NAVI_ALERT;
                         }
 
-                        if (!CHECK_BTN_ALL(sControlInput->press.button, CVarGetInteger("gNaviOnL", 0) ? BTN_L : BTN_CUP) && !sp28) {
+                        if (!CHECK_BTN_ALL(sControlInput->press.button, CVarGetInteger(CVAR_SETTING("NaviOnL"), 0) ? BTN_L : BTN_CUP) && !sp28) {
                             return 0;
                         }
 
@@ -5702,7 +5702,7 @@ s32 Player_ActionChange_0(Player* this, PlayState* play) {
     if ((this->unk_664 != NULL) && (CHECK_FLAG_ALL(this->unk_664->flags, ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_NAVI_HAS_INFO) ||
                                     (this->unk_664->naviEnemyId != 0xFF))) {
         this->stateFlags2 |= PLAYER_STATE2_NAVI_ALERT;
-    } else if ((this->naviTextId == 0 || CVarGetInteger("gNaviOnL", 0)) && !func_8008E9C4(this) && CHECK_BTN_ALL(sControlInput->press.button, BTN_CUP) &&
+    } else if ((this->naviTextId == 0 || CVarGetInteger(CVAR_SETTING("NaviOnL"), 0)) && !func_8008E9C4(this) && CHECK_BTN_ALL(sControlInput->press.button, BTN_CUP) &&
                (YREG(15) != 0x10) &&
                (YREG(15) != 0x20) && !func_8083B8F4(this, play)) {
         func_80078884(NA_SE_SY_ERROR);
@@ -6551,18 +6551,18 @@ void func_8083DFE0(Player* this, f32* arg1, s16* arg2) {
             maxSpeed *= 1.5f;
         } 
         
-        if (CVarGetInteger("gEnableWalkModify", 0) && !CVarGetInteger("gWalkModifierDoesntChangeJump", 0)) {
-            if (CVarGetInteger("gWalkSpeedToggle", 0)) {
+        if (CVarGetInteger(CVAR_SETTING("WalkModifier.Enabled"), 0) && !CVarGetInteger(CVAR_SETTING("WalkModifier.DoesntChangeJump"), 0)) {
+            if (CVarGetInteger(CVAR_SETTING("WalkModifier.SpeedToggle"), 0)) {
                 if (gWalkSpeedToggle1) {
-                    maxSpeed *= CVarGetFloat("gWalkModifierOne", 1.0f);
+                    maxSpeed *= CVarGetFloat(CVAR_SETTING("WalkModifier.Mapping1"), 1.0f);
                 } else if (gWalkSpeedToggle2) {
-                    maxSpeed *= CVarGetFloat("gWalkModifierTwo", 1.0f);
+                    maxSpeed *= CVarGetFloat(CVAR_SETTING("WalkModifier.Mapping2"), 1.0f);
                 }
             } else {
                 if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_MODIFIER1)) {
-                    maxSpeed *= CVarGetFloat("gWalkModifierOne", 1.0f);
+                    maxSpeed *= CVarGetFloat(CVAR_SETTING("WalkModifier.Mapping1"), 1.0f);
                 } else if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_MODIFIER2)) {
-                    maxSpeed *= CVarGetFloat("gWalkModifierTwo", 1.0f);
+                    maxSpeed *= CVarGetFloat(CVAR_SETTING("WalkModifier.Mapping2"), 1.0f);
                 }
             }
         }
@@ -6932,7 +6932,7 @@ s32 func_8083EAF0(Player* this, Actor* actor) {
 
 s32 Player_ActionChange_9(Player* this, PlayState* play) {
     u16 buttonsToCheck = BTN_A | BTN_B | BTN_CLEFT | BTN_CRIGHT | BTN_CDOWN;
-    if (CVarGetInteger("gDpadEquips", 0) != 0) {
+    if (CVarGetInteger(CVAR_SETTING("DPadEquips"), 0) != 0) {
         buttonsToCheck |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
     }
     if ((this->stateFlags1 & PLAYER_STATE1_ITEM_OVER_HEAD) && (this->heldActor != NULL) &&
@@ -7415,7 +7415,7 @@ s32 func_8083FD78(Player* this, f32* arg1, s16* arg2, PlayState* play) {
         }
 
         // #region SOH [Enhancement]
-        if (CVarGetInteger("gRightStickAiming", 0) || !CVarGetInteger("gInvertZAimingYAxis", 1)) {
+        if (CVarGetInteger(CVAR_SETTING("Controls.RightStickAim"), 0) || !CVarGetInteger(CVAR_SETTING("Controls.InvertZAimingYAxis"), 1)) {
             
             if (this->unk_664 != NULL) {
                 func_8083DB98(this, 1);
@@ -7423,7 +7423,7 @@ s32 func_8083FD78(Player* this, f32* arg1, s16* arg2, PlayState* play) {
                 int8_t relStickY;
 
                 // preserves simultaneous left/right-stick aiming
-                if (CVarGetInteger("gRightStickAiming", 0)) {
+                if (CVarGetInteger(CVAR_SETTING("Controls.RightStickAim"), 0)) {
                     if ((sControlInput->rel.stick_y + sControlInput->rel.right_stick_y) >= 0) {
                         relStickY = (((sControlInput->rel.stick_y) > (sControlInput->rel.right_stick_y))
                                          ? (sControlInput->rel.stick_y)
@@ -7438,7 +7438,7 @@ s32 func_8083FD78(Player* this, f32* arg1, s16* arg2, PlayState* play) {
                 }
 
                 Math_SmoothStepToS(&this->actor.focus.rot.x,
-                                   relStickY * (CVarGetInteger("gInvertZAimingYAxis", 1) ? 1 : -1) * 240.0f, 14, 4000, 30);
+                                   relStickY * (CVarGetInteger(CVAR_SETTING("Controls.InvertZAimingYAxis"), 1) ? 1 : -1) * 240.0f, 14, 4000, 30);
                 func_80836AB8(this, 1);
             }
         // #endregion
@@ -8289,18 +8289,18 @@ void Player_Action_80842180(Player* this, PlayState* play) {
                 sp2C *= 1.5f;
             }
             
-            if (CVarGetInteger("gEnableWalkModify", 0)) {
-                if (CVarGetInteger("gWalkSpeedToggle", 0)) {
+            if (CVarGetInteger(CVAR_SETTING("WalkModifier.Enabled"), 0)) {
+                if (CVarGetInteger(CVAR_SETTING("WalkModifier.SpeedToggle"), 0)) {
                     if (gWalkSpeedToggle1) {
-                        sp2C *= CVarGetFloat("gWalkModifierOne", 1.0f);
+                        sp2C *= CVarGetFloat(CVAR_SETTING("WalkModifier.Mapping1"), 1.0f);
                     } else if (gWalkSpeedToggle2) {
-                        sp2C *= CVarGetFloat("gWalkModifierTwo", 1.0f);
+                        sp2C *= CVarGetFloat(CVAR_SETTING("WalkModifier.Mapping2"), 1.0f);
                     }
                 } else {
                     if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_MODIFIER1)) {
-                        sp2C *= CVarGetFloat("gWalkModifierOne", 1.0f);
+                        sp2C *= CVarGetFloat(CVAR_SETTING("WalkModifier.Mapping1"), 1.0f);
                     } else if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_MODIFIER2)) {
-                        sp2C *= CVarGetFloat("gWalkModifierTwo", 1.0f);
+                        sp2C *= CVarGetFloat(CVAR_SETTING("WalkModifier.Mapping2"), 1.0f);
                     }
                 }
             }
@@ -8694,8 +8694,8 @@ void Player_Action_80843188(Player* this, PlayState* play) {
     func_8083721C(this);
 
     if (this->av2.actionVar2 != 0) {
-        sp54 = sControlInput->rel.stick_y * 100 * (CVarGetInteger("gInvertShieldAimingYAxis", 1) ? 1 : -1);
-        sp50 = sControlInput->rel.stick_x * (CVarGetInteger("gMirroredWorld", 0) ? 120 : -120) * (CVarGetInteger("gInvertShieldAimingXAxis", 0) ? -1 : 1);
+        sp54 = sControlInput->rel.stick_y * 100 * (CVarGetInteger(CVAR_SETTING("Controls.InvertShieldAimingYAxis"), 1) ? 1 : -1);
+        sp50 = sControlInput->rel.stick_x * (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0) ? 120 : -120) * (CVarGetInteger(CVAR_SETTING("Controls.InvertShieldAimingYAxis"), 0) ? -1 : 1);
         sp4E = this->actor.shape.rot.y - Camera_GetInputDirYaw(GET_ACTIVE_CAM(play));
 
         sp40 = Math_CosS(sp4E);
@@ -9076,7 +9076,7 @@ void Player_Action_8084411C(Player* this, PlayState* play) {
             Actor* heldActor = this->heldActor;
 
             u16 buttonsToCheck = BTN_A | BTN_B | BTN_CLEFT | BTN_CRIGHT | BTN_CDOWN;
-            if (CVarGetInteger("gDpadEquips", 0) != 0) {
+            if (CVarGetInteger(CVAR_SETTING("DPadEquips"), 0) != 0) {
                 buttonsToCheck |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
             }
             if (!func_80835644(play, this, heldActor) && (heldActor->id == ACTOR_EN_NIW) &&
@@ -9858,7 +9858,7 @@ void Player_Action_80846260(Player* this, PlayState* play) {
     }
 
     u16 buttonsToCheck = BTN_A | BTN_B | BTN_CLEFT | BTN_CRIGHT | BTN_CDOWN;
-    if (CVarGetInteger("gDpadEquips", 0) != 0) {
+    if (CVarGetInteger(CVAR_SETTING("DPadEquips"), 0) != 0) {
         buttonsToCheck |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
     }
     if (this->av2.actionVar2 == 0) {
@@ -11074,13 +11074,13 @@ void func_80848EF8(Player* this, PlayState* play) {
             stoneOfAgonyColor = CVarGetColor24(CVAR_COSMETIC("HUD.StoneOfAgony.Value"), stoneOfAgonyColor);
         }
         if (CVarGetInteger(CVAR_ENHANCEMENT("VisualAgony"), 0) && !this->stateFlags1 && !GameInteractor_NoUIActive()) {
-            s16 Top_Margins = (CVarGetInteger("gHUDMargin_T", 0) * -1);
-            s16 Left_Margins = CVarGetInteger("gHUDMargin_L", 0);
-            s16 Right_Margins = CVarGetInteger("gHUDMargin_R", 0);
+            s16 Top_Margins = (CVarGetInteger(CVAR_COSMETIC("HUD.Margin.T"), 0) * -1);
+            s16 Left_Margins = CVarGetInteger(CVAR_COSMETIC("HUD.Margin.L"), 0);
+            s16 Right_Margins = CVarGetInteger(CVAR_COSMETIC("HUD.Margin.R"), 0);
             s16 X_Margins_VSOA;
             s16 Y_Margins_VSOA;
-            if (CVarGetInteger(CVAR_COSMETIC("VisualSoA.UseMargins"), 0) != 0) {
-                if (CVarGetInteger(CVAR_COSMETIC("VisualSoA.PosType"), 0) == 0) {
+            if (CVarGetInteger(CVAR_COSMETIC("HUD.VisualSoA.UseMargins"), 0) != 0) {
+                if (CVarGetInteger(CVAR_COSMETIC("HUD.VisualSoA.PosType"), 0) == 0) {
                     X_Margins_VSOA = Left_Margins;
                 };
                 Y_Margins_VSOA = Top_Margins;
@@ -11092,21 +11092,21 @@ void func_80848EF8(Player* this, PlayState* play) {
             s16 PosY_VSOA_ori = 60 + Y_Margins_VSOA;
             s16 PosX_VSOA;
             s16 PosY_VSOA;
-            if (CVarGetInteger(CVAR_COSMETIC("VisualSoA.PosType"), 0) != 0) {
-                PosY_VSOA = CVarGetInteger(CVAR_COSMETIC("VisualSoA.PosY"), 0) + Y_Margins_VSOA;
-                if (CVarGetInteger(CVAR_COSMETIC("VisualSoA.PosType"), 0) == 1) { // Anchor Left
-                    if (CVarGetInteger(CVAR_COSMETIC("VisualSoA.UseMargins"), 0) != 0) {
+            if (CVarGetInteger(CVAR_COSMETIC("HUD.VisualSoA.PosType"), 0) != 0) {
+                PosY_VSOA = CVarGetInteger(CVAR_COSMETIC("HUD.VisualSoA.PosY"), 0) + Y_Margins_VSOA;
+                if (CVarGetInteger(CVAR_COSMETIC("HUD.VisualSoA.PosType"), 0) == 1) { // Anchor Left
+                    if (CVarGetInteger(CVAR_COSMETIC("HUD.VisualSoA.UseMargins"), 0) != 0) {
                         X_Margins_VSOA = Left_Margins;
                     };
-                    PosX_VSOA = OTRGetDimensionFromLeftEdge(CVarGetInteger(CVAR_COSMETIC("VisualSoA.PosX"), 0) + X_Margins_VSOA);
-                } else if (CVarGetInteger(CVAR_COSMETIC("VisualSoA.PosType"), 0) == 2) { // Anchor Right
-                    if (CVarGetInteger(CVAR_COSMETIC("VisualSoA.UseMargins"), 0) != 0) {
+                    PosX_VSOA = OTRGetDimensionFromLeftEdge(CVarGetInteger(CVAR_COSMETIC("HUD.VisualSoA.PosX"), 0) + X_Margins_VSOA);
+                } else if (CVarGetInteger(CVAR_COSMETIC("HUD.VisualSoA.PosType"), 0) == 2) { // Anchor Right
+                    if (CVarGetInteger(CVAR_COSMETIC("HUD.VisualSoA.UseMargins"), 0) != 0) {
                         X_Margins_VSOA = Right_Margins;
                     };
-                    PosX_VSOA = OTRGetDimensionFromRightEdge(CVarGetInteger(CVAR_COSMETIC("VisualSoA.PosX"), 0) + X_Margins_VSOA);
-                } else if (CVarGetInteger(CVAR_COSMETIC("VisualSoA.PosType"), 0) == 3) { // Anchor None
-                    PosX_VSOA = CVarGetInteger(CVAR_COSMETIC("VisualSoA.PosX"), 0);
-                } else if (CVarGetInteger(CVAR_COSMETIC("VisualSoA.PosType"), 0) == 4) { // Hidden
+                    PosX_VSOA = OTRGetDimensionFromRightEdge(CVarGetInteger(CVAR_COSMETIC("HUD.VisualSoA.PosX"), 0) + X_Margins_VSOA);
+                } else if (CVarGetInteger(CVAR_COSMETIC("HUD.VisualSoA.PosType"), 0) == 3) { // Anchor None
+                    PosX_VSOA = CVarGetInteger(CVAR_COSMETIC("HUD.VisualSoA.PosX"), 0);
+                } else if (CVarGetInteger(CVAR_COSMETIC("HUD.VisualSoA.PosType"), 0) == 4) { // Hidden
                     PosX_VSOA = -9999;
                 }
             } else {
@@ -11661,7 +11661,7 @@ void Player_Update(Actor* thisx, PlayState* play) {
             }
         }
 
-        if (CVarGetInteger("gEnableWalkModify", 0) && CVarGetInteger("gWalkSpeedToggle", 0)) {
+        if (CVarGetInteger(CVAR_SETTING("WalkModifier.Enabled"), 0) && CVarGetInteger(CVAR_SETTING("WalkModifier.SpeedToggle"), 0)) {
             if (CHECK_BTN_ALL(sControlInput->press.button, BTN_MODIFIER1)) {
                 gWalkSpeedToggle1 = !gWalkSpeedToggle1;
             }
@@ -11997,23 +11997,23 @@ s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
     s32 temp1 = 0;
     s16 temp2 = 0;
     s16 temp3 = 0;
-    s8 invertXAxisMulti = ((CVarGetInteger("gInvertAimingXAxis", 0) && !CVarGetInteger("gMirroredWorld", 0)) || (!CVarGetInteger("gInvertAimingXAxis", 0) && CVarGetInteger("gMirroredWorld", 0))) ? -1 : 1;
-    s8 invertYAxisMulti = CVarGetInteger("gInvertAimingYAxis", 1) ? 1 : -1;
-    f32 xAxisMulti = CVarGetFloat("gFirstPersonCameraSensitivityX", 1.0f);
-    f32 yAxisMulti = CVarGetFloat("gFirstPersonCameraSensitivityY", 1.0f);
+    s8 invertXAxisMulti = ((CVarGetInteger(CVAR_SETTING("Controls.InvertAimingXAxis"), 0) && !CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0)) || (!CVarGetInteger(CVAR_SETTING("Controls.InvertAimingXAxis"), 0) && CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0))) ? -1 : 1;
+    s8 invertYAxisMulti = CVarGetInteger(CVAR_SETTING("Controls.InvertAimingYAxis"), 1) ? 1 : -1;
+    f32 xAxisMulti = CVarGetFloat(CVAR_SETTING("FirstPersonCameraSensitivity.X"), 1.0f);
+    f32 yAxisMulti = CVarGetFloat(CVAR_SETTING("FirstPersonCameraSensitivity.Y"), 1.0f);
 
     if (!func_8002DD78(this) && !func_808334B4(this) && (arg2 == 0)) { // First person without weapon
         // Y Axis
-        if (!CVarGetInteger("gMoveWhileFirstPerson", 0)) {
+        if (!CVarGetInteger(CVAR_SETTING("MoveInFirstPerson"), 0)) {
             temp2 += sControlInput->rel.stick_y * 240.0f * invertYAxisMulti * yAxisMulti;
         }
-        if (CVarGetInteger("gRightStickAiming", 0) && fabsf(sControlInput->cur.right_stick_y) > 15.0f) {
+        if (CVarGetInteger(CVAR_SETTING("Controls.RightStickAim"), 0) && fabsf(sControlInput->cur.right_stick_y) > 15.0f) {
             temp2 += sControlInput->cur.right_stick_y * 240.0f * invertYAxisMulti * yAxisMulti;
         }
         if (fabsf(sControlInput->cur.gyro_x) > 0.01f) {
             temp2 += (-sControlInput->cur.gyro_x) * 750.0f;
         }
-        if (CVarGetInteger("gDisableAutoCenterViewFirstPerson", 0)) {
+        if (CVarGetInteger(CVAR_SETTING("DisableFirstPersonAutoCenterView"), 0)) {
             this->actor.focus.rot.x += temp2 * 0.1f;
             this->actor.focus.rot.x = CLAMP(this->actor.focus.rot.x, -14000, 14000);
         } else {
@@ -12022,10 +12022,10 @@ s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
 
         // X Axis
         temp2 = 0;
-        if (!CVarGetInteger("gMoveWhileFirstPerson", 0)) {
+        if (!CVarGetInteger(CVAR_SETTING("MoveInFirstPerson"), 0)) {
             temp2 += sControlInput->rel.stick_x * -16.0f * invertXAxisMulti * xAxisMulti;
         }
-        if (CVarGetInteger("gRightStickAiming", 0) && fabsf(sControlInput->cur.right_stick_x) > 15.0f) {
+        if (CVarGetInteger(CVAR_SETTING("Controls.RightStickAim"), 0) && fabsf(sControlInput->cur.right_stick_x) > 15.0f) {
             temp2 += sControlInput->cur.right_stick_x * -16.0f * invertXAxisMulti * xAxisMulti;
         }
         if (fabsf(sControlInput->cur.gyro_y) > 0.01f) {
@@ -12037,11 +12037,11 @@ s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
         // Y Axis
         temp1 = (this->stateFlags1 & PLAYER_STATE1_ON_HORSE) ? 3500 : 14000;
         
-        if (!CVarGetInteger("gMoveWhileFirstPerson", 0)) {
+        if (!CVarGetInteger(CVAR_SETTING("MoveInFirstPerson"), 0)) {
             temp3 += ((sControlInput->rel.stick_y >= 0) ? 1 : -1) *
                     (s32)((1.0f - Math_CosS(sControlInput->rel.stick_y * 200)) * 1500.0f) * invertYAxisMulti * yAxisMulti;
         }
-        if (CVarGetInteger("gRightStickAiming", 0) && fabsf(sControlInput->cur.right_stick_y) > 15.0f) {
+        if (CVarGetInteger(CVAR_SETTING("Controls.RightStickAim"), 0) && fabsf(sControlInput->cur.right_stick_y) > 15.0f) {
             temp3 += ((sControlInput->cur.right_stick_y >= 0) ? 1 : -1) *
                     (s32)((1.0f - Math_CosS(sControlInput->cur.right_stick_y * 200)) * 1500.0f) * invertYAxisMulti * yAxisMulti;
         }
@@ -12055,11 +12055,11 @@ s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
         temp1 = 19114;
         temp2 = this->actor.focus.rot.y - this->actor.shape.rot.y;
         temp3 = 0;
-        if (!CVarGetInteger("gMoveWhileFirstPerson", 0)) {
+        if (!CVarGetInteger(CVAR_SETTING("MoveInFirstPerson"), 0)) {
             temp3 = ((sControlInput->rel.stick_x >= 0) ? 1 : -1) *
                     (s32)((1.0f - Math_CosS(sControlInput->rel.stick_x * 200)) * -1500.0f) * invertXAxisMulti * xAxisMulti;
         }
-        if (CVarGetInteger("gRightStickAiming", 0) && fabsf(sControlInput->cur.right_stick_x) > 15.0f) {
+        if (CVarGetInteger(CVAR_SETTING("Controls.RightStickAim"), 0) && fabsf(sControlInput->cur.right_stick_x) > 15.0f) {
             temp3 += ((sControlInput->cur.right_stick_x >= 0) ? 1 : -1) *
                     (s32)((1.0f - Math_CosS(sControlInput->cur.right_stick_x * 200)) * -1500.0f) * invertXAxisMulti * xAxisMulti;
         }
@@ -12070,7 +12070,7 @@ s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
         this->actor.focus.rot.y = CLAMP(temp2, -temp1, temp1) + this->actor.shape.rot.y;
     }
 
-    if (CVarGetInteger("gMoveWhileFirstPerson", 0)) {
+    if (CVarGetInteger(CVAR_SETTING("MoveInFirstPerson"), 0)) {
         f32 movementSpeed = LINK_IS_ADULT ? 9.0f : 8.25f;
         if (CVarGetInteger(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA && this->currentMask == PLAYER_MASK_BUNNY) {
             movementSpeed *= 1.5f;
@@ -12109,18 +12109,18 @@ void func_8084AEEC(Player* this, f32* arg1, f32 arg2, s16 arg3) {
     // #region SOH [Enhancement]
     f32 swimMod = 1.0f;
 
-    if (CVarGetInteger("gEnableWalkModify", 0) == 1) {
-        if (CVarGetInteger("gWalkSpeedToggle", 0) == 1) {
+    if (CVarGetInteger(CVAR_SETTING("WalkModifier.Enabled"), 0) == 1) {
+        if (CVarGetInteger(CVAR_SETTING("WalkModifier.SpeedToggle"), 0) == 1) {
             if (gWalkSpeedToggle1) {
-                swimMod *= CVarGetFloat("gSwimModifierOne", 1.0f);
+                swimMod *= CVarGetFloat(CVAR_SETTING("WalkModifier.SwimMapping1"), 1.0f);
             } else if (gWalkSpeedToggle2) {
-                swimMod *= CVarGetFloat("gSwimModifierTwo", 1.0f);
+                swimMod *= CVarGetFloat(CVAR_SETTING("WalkModifier.SwimMapping2"), 1.0f);
             }
         } else {
             if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_MODIFIER1)) {
-                swimMod *= CVarGetFloat("gSwimModifierOne", 1.0f);
+                swimMod *= CVarGetFloat(CVAR_SETTING("WalkModifier.SwimMapping1"), 1.0f);
             } else if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_MODIFIER2)) {
-                swimMod *= CVarGetFloat("gSwimModifierTwo", 1.0f);
+                swimMod *= CVarGetFloat(CVAR_SETTING("WalkModifier.SwimMapping2"), 1.0f);
             }
         }
         temp1 = this->skelAnime.curFrame - 10.0f;
@@ -12268,7 +12268,7 @@ void Player_Action_8084B1D8(Player* this, PlayState* play) {
     }
 
     u16 buttonsToCheck = BTN_A | BTN_B | BTN_R | BTN_CUP | BTN_CLEFT | BTN_CRIGHT | BTN_CDOWN;
-    if (CVarGetInteger("gDpadEquips", 0) != 0) {
+    if (CVarGetInteger(CVAR_SETTING("DPadEquips"), 0) != 0) {
         buttonsToCheck |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
     }
     if ((this->csAction != 0) || (this->unk_6AD == 0) || (this->unk_6AD >= 4) || func_80833B54(this) ||
@@ -12707,7 +12707,7 @@ void Player_Action_8084BF1C(Player* this, PlayState* play) {
                 if ((this->av1.actionVar1 != 0) && (sp80 != 0)) {
                     anim2 = this->ageProperties->unk_BC[this->av2.actionVar2];
 
-                    if (CVarGetInteger("gMirroredWorld", 0) ? (sp80 < 0) : (sp80 > 0)) {
+                    if (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0) ? (sp80 < 0) : (sp80 > 0)) {
                         this->skelAnime.prevTransl = this->ageProperties->unk_7A[this->av2.actionVar2];
                         Player_AnimPlayOnce(play, this, anim2);
                     } else {
@@ -13356,7 +13356,7 @@ void func_8084DBC4(PlayState* play, Player* this, f32 arg2) {
     func_8084AEEC(this, &this->linearVelocity, sp2C * 0.5f, sp2A);
     // Original implementation of func_8084AEEC (SurfaceWithoutSwimMod) to prevent velocity increases via swim mod which push Link into the air
     // #region SOH [Enhancement]
-    if (CVarGetInteger("gEnableWalkModify", 0)) {
+    if (CVarGetInteger(CVAR_SETTING("WalkModifier.Enabled"), 0)) {
         SurfaceWithoutSwimMod(this, &this->actor.velocity.y, arg2, this->yaw);
     // #endregion
     } else {
@@ -14413,9 +14413,9 @@ s32 func_8084FCAC(Player* this, PlayState* play) {
                 if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_DDOWN)) {
                     angle = temp + 0x8000;
                 } else if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_DLEFT)) {
-                    angle = temp + (0x4000 * (CVarGetInteger("gMirroredWorld", 0) ? -1 : 1));
+                    angle = temp + (0x4000 * (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0) ? -1 : 1));
                 } else if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_DRIGHT)) {
-                    angle = temp - (0x4000 * (CVarGetInteger("gMirroredWorld", 0) ? -1 : 1));
+                    angle = temp - (0x4000 * (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0) ? -1 : 1));
                 }
 
                 this->actor.world.pos.x += speed * Math_SinS(angle);
