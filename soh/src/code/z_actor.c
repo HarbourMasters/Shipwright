@@ -3599,11 +3599,11 @@ s32 BodyBreak_SpawnParts(Actor* actor, BodyBreak* bodyBreak, PlayState* play, s1
         spawnedEnPart = (EnPart*)Actor_SpawnAsChild(&play->actorCtx, actor, play, ACTOR_EN_PART, mtx->xw,
                                                     mtx->yw, mtx->zw, 0, 0, objBankIndex, type);
 
-        if (spawnedEnPart != NULL) 
-        {
-            if (!isFlex)
+        if (spawnedEnPart != NULL) {
+            if (!isFlex) {
                 Matrix_MtxFToYXZRotS(&bodyBreak->matrices[bodyBreak->count], &spawnedEnPart->actor.shape.rot, 0);
-            
+            }
+
             spawnedEnPart->displayList = bodyBreak->dLists[bodyBreak->count];
             spawnedEnPart->actor.scale = actor->scale;
         }
