@@ -2978,7 +2978,7 @@ s32 func_808358F0(Player* this, PlayState* play) {
                                     this->skelAnime.jointTable);
     } else {
         // #region SOH [Enhancement]
-        if (CVarGetInteger("gBoomerangReticle", 0) == 1) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("BoomerangReticle"), 0) == 1) {
             // don't play animation
         // #endregion
         }
@@ -5369,7 +5369,7 @@ s32 func_8083AD4C(PlayState* play, Player* this) {
             cameraMode = shouldUseBowCamera ? CAM_MODE_BOWARROW : CAM_MODE_SLINGSHOT;
         } else {
             // #region SOH [Enhancement]
-            if (CVarGetInteger("gBoomerangFirstPerson", 0)) {
+            if (CVarGetInteger(CVAR_ENHANCEMENT("BoomerangFirstPerson"), 0)) {
                 cameraMode = CAM_MODE_FIRSTPERSON;
             // #endregion
             } else {
@@ -10875,7 +10875,7 @@ void Player_UpdateCamAndSeqModes(PlayState* play, Player* this) {
                 } else if (this->stateFlags1 & PLAYER_STATE1_TARGET_LOCKED) {
                     if (this->stateFlags1 & PLAYER_STATE1_THREW_BOOMERANG) {
                         // #region SOH [Enhancement]
-                        if (CVarGetInteger("gBoomerangFirstPerson", 0) == 1) {
+                        if (CVarGetInteger(CVAR_ENHANCEMENT("BoomerangFirstPerson"), 0) == 1) {
                             camMode = CAM_MODE_TARGET;
                         // #endregion
                         } else {
@@ -10892,7 +10892,7 @@ void Player_UpdateCamAndSeqModes(PlayState* play, Player* this) {
                 camMode = CAM_MODE_CHARGE;
             } else if (this->stateFlags1 & PLAYER_STATE1_THREW_BOOMERANG) {
                 // #region SOH [Enhancement]
-                if (CVarGetInteger("gBoomerangFirstPerson", 0)) {
+                if (CVarGetInteger(CVAR_ENHANCEMENT("BoomerangFirstPerson"), 0)) {
                     camMode = CAM_MODE_TARGET;
                     Camera_SetParam(Play_GetCamera(play, 0), 8, this->boomerangActor);
                 // #endregion

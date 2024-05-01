@@ -1947,7 +1947,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                         Player_DrawHookshotReticle(play, this, RETICLE_MAX);
                     }
                 }
-            } else if (CVarGetInteger("gBoomerangReticle", 0) && (this->heldItemAction == PLAYER_IA_BOOMERANG)) {
+            } else if (CVarGetInteger(CVAR_ENHANCEMENT("BoomerangReticle"), 0) && (this->heldItemAction == PLAYER_IA_BOOMERANG)) {
                 if (Player_HoldsBoomerang(this) != 0) {
                     MtxF sp44;
                     s32 pad;
