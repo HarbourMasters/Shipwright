@@ -223,12 +223,12 @@ const std::vector<const char*> enhancementsCvars = {
     CVAR_ENHANCEMENT("DisableLOD"),
     CVAR_ENHANCEMENT("DisableDrawDistance"),
     CVAR_ENHANCEMENT("DisableKokiriDrawDistance"),
-    "gLowResMode",
+    CVAR_LOW_RES_MODE,
     CVAR_ENHANCEMENT("DrawLineupTick"),
     CVAR_ENHANCEMENT("QuickBongoKill"),
     CVAR_ENHANCEMENT("FirstPersonGauntlets"),
     CVAR_ENHANCEMENT("SceneSpecificDirtPathFix"),
-    "gZFightingMode",
+    CVAR_Z_FIGHTING_MODE,
     CVAR_ENHANCEMENT("AuthenticLogo"),
     CVAR_ENHANCEMENT("PauseLiveLinkRotationSpeed"),
     CVAR_ENHANCEMENT("BowReticle"),
@@ -282,7 +282,7 @@ const std::vector<const char*> enhancementsCvars = {
 };
 
 const std::vector<const char*> cheatCvars = {
-    "gConsoleEnabled",
+    CVAR_CONSOLE_WINDOW_OPEN,
     CVAR_WINDOW("ActorViewer"),
     CVAR_WINDOW("CollisionViewer"),
     CVAR_WINDOW("DLViewer"),
@@ -336,7 +336,7 @@ const std::vector<const char*> cheatCvars = {
     CVAR_CHEAT("NoFishDespawn"),
     CVAR_CHEAT("NoBugsDespawn"),
     "gWalkModifierDoesntChangeJump",
-    "gStatsEnabled",
+    CVAR_STATS_WINDOW_OPEN,
     CVAR_CHEAT("SaveStatesEnabled"),
     CVAR_CHEAT("SaveStatePromise"),
     CVAR_DEVELOPER_TOOLS("RegEditEnabled"),

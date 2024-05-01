@@ -660,10 +660,10 @@ void UpdateDirtPathFixState(int32_t sceneNum) {
         case SCENE_HYRULE_FIELD:
         case SCENE_KOKIRI_FOREST:
         case SCENE_HYRULE_CASTLE:
-            CVarSetInteger("gZFightingMode", CVarGetInteger(CVAR_ENHANCEMENT("SceneSpecificDirtPathFix"), ZFIGHT_FIX_DISABLED));
+            CVarSetInteger(CVAR_Z_FIGHTING_MODE, CVarGetInteger(CVAR_ENHANCEMENT("SceneSpecificDirtPathFix"), ZFIGHT_FIX_DISABLED));
             return;
         default:
-            CVarClear("gZFightingMode");
+            CVarClear(CVAR_Z_FIGHTING_MODE);
     }
 }
 
