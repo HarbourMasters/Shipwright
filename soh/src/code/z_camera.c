@@ -1679,7 +1679,7 @@ s32 Camera_Normal1(Camera* camera) {
 
     if (anim->startSwingTimer <= 0) {
         // idle camera re-center
-        if (CVarGetInteger("gA11yDisableIdleCam", 0)) {
+        if (CVarGetInteger(CVAR_SETTING("A11yDisableIdleCam"), 0)) {
             return 1;
         }
         eyeAdjustment.pitch = atEyeNextGeo.pitch;

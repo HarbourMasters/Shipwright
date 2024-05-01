@@ -562,13 +562,13 @@ void DrawColCheckCollision() {
     dl.push_back(gsSPMatrix(&gMtxClear, G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_NOPUSH));
 
     CollisionCheckContext& col = gPlayState->colChkCtx;
-    Color_RGBA8 color = CVarGetColor("gColViewerColorOC", { 255, 255, 255, 255 });
+    Color_RGBA8 color = CVarGetColor(CVAR_DEVELOPER_TOOLS("ColViewer.ColorOC"), { 255, 255, 255, 255 });
     dl.push_back(gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
     DrawColCheckList(dl, col.colOC, col.colOCCount);
-    color = CVarGetColor("gColViewerColorAC", { 0, 0, 255, 255 });
+    color = CVarGetColor(CVAR_DEVELOPER_TOOLS("ColViewer.ColorAC"), { 0, 0, 255, 255 });
     dl.push_back(gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
     DrawColCheckList(dl, col.colAC, col.colACCount);
-    color = CVarGetColor("gColViewerColorAT", { 0, 0, 255, 255 });
+    color = CVarGetColor(CVAR_DEVELOPER_TOOLS("ColViewer.ColorAT"), { 0, 0, 255, 255 });
     dl.push_back(gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
 
     DrawColCheckList(dl, col.colAT, col.colATCount);
@@ -613,7 +613,7 @@ void DrawWaterboxList() {
     InitGfx(dl, showWaterboxSetting);
     dl.push_back(gsSPMatrix(&gMtxClear, G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_NOPUSH));
 
-    Color_RGBA8 color = CVarGetColor("gColViewerColorWaterbox", { 0, 0, 255, 255 });
+    Color_RGBA8 color = CVarGetColor(CVAR_DEVELOPER_TOOLS("ColViewer.ColorWaterbox"), { 0, 0, 255, 255 });
 
     dl.push_back(gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
 

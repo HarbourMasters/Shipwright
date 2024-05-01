@@ -673,7 +673,7 @@ void Sram_InitDebugSave(void);
 void Sram_InitBossRushSave();
 
 u8 hasRandomizerQuest() {
-    if (strnlen(CVarGetString("gSpoilerLog", ""), 1) != 0) {
+    if (strnlen(CVarGetString(CVAR_GENERAL("SpoilerLog"), ""), 1) != 0) {
         return 1;
     }
     return 0;
@@ -991,7 +991,7 @@ void DrawSeedHashSprites(FileChooseContext* this) {
 
         // Draw Seed Icons for spoiler log
         if (this->configMode == CM_QUEST_MENU && this->questType[this->buttonIndex] == QUEST_RANDOMIZER &&
-            strnlen(CVarGetString("gSpoilerLog", ""), 1) != 0 && fileSelectSpoilerFileLoaded) {
+            strnlen(CVarGetString(CVAR_GENERAL("SpoilerLog"), ""), 1) != 0 && fileSelectSpoilerFileLoaded) {
             u16 xStart = 64;
             for (unsigned int i = 0; i < 5; i++) {
                 SpriteLoad(this, GetSeedTexture(gSaveContext.seedIcons[i]));
@@ -1013,7 +1013,7 @@ void FileChoose_UpdateRandomizer() {
             func_800F5E18(SEQ_PLAYER_BGM_MAIN, NA_BGM_HORSE, 0, 7, 1);
             return;
     } else if (CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0) == 0 && generating) {
-            if (SpoilerFileExists(CVarGetString("gSpoilerLog", ""))) {
+            if (SpoilerFileExists(CVarGetString(CVAR_GENERAL("SpoilerLog"), ""))) {
                 Audio_PlayFanfare(NA_BGM_HORSE_GOAL);
             } else {
                 func_80078884(NA_SE_SY_OCARINA_ERROR);
@@ -1025,15 +1025,15 @@ void FileChoose_UpdateRandomizer() {
             return;
     }
 
-    if (!SpoilerFileExists(CVarGetString("gSpoilerLog", "")) && !CVarGetInteger(CVAR_RANDOMIZER_SETTING("DontGenerateSpoiler"), 0)) {
-            CVarSetString("gSpoilerLog", "");
+    if (!SpoilerFileExists(CVarGetString(CVAR_GENERAL("SpoilerLog"), "")) && !CVarGetInteger(CVAR_RANDOMIZER_SETTING("DontGenerateSpoiler"), 0)) {
+            CVarSetString(CVAR_GENERAL("SpoilerLog"), "");
             fileSelectSpoilerFileLoaded = false;
     }
 
     if ((CVarGetInteger(CVAR_GENERAL("RandomizerNewFileDropped"), 0) != 0) || (CVarGetInteger(CVAR_GENERAL("NewSeedGenerated"), 0) != 0) ||
-        (!fileSelectSpoilerFileLoaded && SpoilerFileExists(CVarGetString("gSpoilerLog", "")))) {
+        (!fileSelectSpoilerFileLoaded && SpoilerFileExists(CVarGetString(CVAR_GENERAL("SpoilerLog"), "")))) {
             if (CVarGetInteger(CVAR_GENERAL("RandomizerNewFileDropped"), 0) != 0) {
-            CVarSetString("gSpoilerLog", CVarGetString(CVAR_GENERAL("RandomizerDroppedFile"), "None"));
+            CVarSetString(CVAR_GENERAL("SpoilerLog"), CVarGetString(CVAR_GENERAL("RandomizerDroppedFile"), "None"));
             }
             bool silent = true;
             if ((CVarGetInteger(CVAR_GENERAL("RandomizerNewFileDropped"), 0) != 0) || (CVarGetInteger(CVAR_GENERAL("NewSeedGenerated"), 0) != 0)) {
@@ -1043,7 +1043,7 @@ void FileChoose_UpdateRandomizer() {
             CVarSetInteger(CVAR_GENERAL("RandomizerNewFileDropped"), 0);
             CVarSetString(CVAR_GENERAL("RandomizerDroppedFile"), "");
             fileSelectSpoilerFileLoaded = false;
-            const char* fileLoc = CVarGetString("gSpoilerLog", "");
+            const char* fileLoc = CVarGetString(CVAR_GENERAL("SpoilerLog"), "");
             Randomizer_LoadSettings(fileLoc);
             Randomizer_LoadHintLocations(fileLoc);
             Randomizer_LoadRequiredTrials(fileLoc);
@@ -1053,7 +1053,7 @@ void FileChoose_UpdateRandomizer() {
             Randomizer_LoadEntranceOverrides(fileLoc, silent);
             fileSelectSpoilerFileLoaded = true;
 
-            if (SpoilerFileExists(CVarGetString("gSpoilerLog", "")) && CVarGetInteger(CVAR_RANDOMIZER_SETTING("DontGenerateSpoiler"), 0)) {
+            if (SpoilerFileExists(CVarGetString(CVAR_GENERAL("SpoilerLog"), "")) && CVarGetInteger(CVAR_RANDOMIZER_SETTING("DontGenerateSpoiler"), 0)) {
                 remove(fileLoc);
             }
     }
