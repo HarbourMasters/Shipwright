@@ -201,7 +201,7 @@ const std::vector<const char*> enhancementsCvars = {
     CVAR_ENHANCEMENT("OcarinaGame.RoundOneNotes"),
     CVAR_ENHANCEMENT("OcarinaGame.RoundTwoNotes"),
     CVAR_ENHANCEMENT("OcarinaGame.RoundThreeNotes"),
-	CVAR_ENHANCEMENT("CustomizeFrogsOcarinaGame"),
+    CVAR_ENHANCEMENT("CustomizeFrogsOcarinaGame"),
     CVAR_ENHANCEMENT("InstantFrogsGameWin"),
     CVAR_ENHANCEMENT("FrogsUnlimitedFailTime"),
     CVAR_ENHANCEMENT("FrogsModifyFailTime"),
