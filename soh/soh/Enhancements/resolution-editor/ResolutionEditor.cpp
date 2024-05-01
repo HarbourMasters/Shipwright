@@ -1,5 +1,5 @@
 #include "ResolutionEditor.h"
-#include <ImGui/imgui.h>
+#include <imgui.h>
 #include <libultraship/libultraship.h>
 
 #include <soh/UIWidgets.hpp>
