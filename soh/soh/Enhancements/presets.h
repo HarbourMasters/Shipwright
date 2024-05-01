@@ -146,7 +146,7 @@ const std::vector<const char*> enhancementsCvars = {
     CVAR_ENHANCEMENT("DampeAllNight"),
     CVAR_ENHANCEMENT("QuitFishingAtDoor"),
     CVAR_ENHANCEMENT("SkipSwimDeepEndAnim"),
-	CVAR_ENHANCEMENT("BridgeOpenAtNight"),
+    CVAR_ENHANCEMENT("BridgeOpenAtNight"),
     CVAR_ENHANCEMENT("InstantScarecrow"),
     CVAR_ENHANCEMENT("BlueFireArrows"),
     CVAR_ENHANCEMENT("SunlightArrows"),
