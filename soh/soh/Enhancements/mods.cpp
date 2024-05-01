@@ -1398,7 +1398,7 @@ void RegisterBridgeDownAllNight() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* refActor) {
         Actor* actor = static_cast<Actor*>(refActor);
 
-        if (CVarGetInteger("gEnhancements.BridgeOpenAtNight", 0) && (actor->id == ACTOR_BG_SPOT00_HANEBASI) &&
+        if (CVarGetInteger(CVAR_ENHANCEMENT("BridgeOpenAtNight"), 0) && (actor->id == ACTOR_BG_SPOT00_HANEBASI) &&
             gSaveContext.cutsceneIndex != 0xFFF1) {
             BgSpot00Hanebasi* bgSpot00Hanebasi = static_cast<BgSpot00Hanebasi*>(refActor);
 
