@@ -376,6 +376,10 @@ typedef enum {
     /*** Fixes ***/
     // Vanilla condition: false
     GI_VB_FIX_SAW_SOFTLOCK,
+
+    /*** Quick Boss Deaths ***/
+    // Vanilla condition: true
+    GI_VB_PHANTOM_GANON_DEATH_SCENE,
 } GIVanillaBehavior;
 
 #ifdef __cplusplus

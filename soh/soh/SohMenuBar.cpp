@@ -581,6 +581,7 @@ void DrawEnhancementsMenu() {
                     CVarGetInteger("gTimeSavers.SkipCutscene.Story", IS_RANDO) &&
                     CVarGetInteger("gTimeSavers.SkipCutscene.LearnSong", IS_RANDO) &&
                     CVarGetInteger("gTimeSavers.SkipCutscene.BossIntro", IS_RANDO) &&
+                    CVarGetInteger("gTimeSavers.SkipCutscene.QuickBossDeaths", IS_RANDO) &&
                     CVarGetInteger("gTimeSavers.SkipCutscene.OnePoint", IS_RANDO) &&
                     CVarGetInteger("gTimeSavers.NoForcedDialog", IS_RANDO) &&
                     CVarGetInteger("gTimeSavers.SkipOwlInteractions", IS_RANDO) &&
@@ -592,6 +593,7 @@ void DrawEnhancementsMenu() {
                     CVarGetInteger("gTimeSavers.SkipCutscene.Story", IS_RANDO) ||
                     CVarGetInteger("gTimeSavers.SkipCutscene.LearnSong", IS_RANDO) ||
                     CVarGetInteger("gTimeSavers.SkipCutscene.BossIntro", IS_RANDO) ||
+                    CVarGetInteger("gTimeSavers.SkipCutscene.QuickBossDeaths", IS_RANDO) ||
                     CVarGetInteger("gTimeSavers.SkipCutscene.OnePoint", IS_RANDO) ||
                     CVarGetInteger("gTimeSavers.NoForcedDialog", IS_RANDO) ||
                     CVarGetInteger("gTimeSavers.SkipOwlInteractions", IS_RANDO) ||
@@ -608,6 +610,7 @@ void DrawEnhancementsMenu() {
                         CVarSetInteger("gTimeSavers.SkipCutscene.Story", 1);
                         CVarSetInteger("gTimeSavers.SkipCutscene.LearnSong", 1);
                         CVarSetInteger("gTimeSavers.SkipCutscene.BossIntro", 1);
+                        CVarSetInteger("gTimeSavers.SkipCutscene.QuickBossDeaths", 1);
                         CVarSetInteger("gTimeSavers.SkipCutscene.OnePoint", 1);
                         CVarSetInteger("gTimeSavers.NoForcedDialog", 1);
                         CVarSetInteger("gTimeSavers.SkipOwlInteractions", 1);
@@ -619,6 +622,7 @@ void DrawEnhancementsMenu() {
                         CVarSetInteger("gTimeSavers.SkipCutscene.Story", 0);
                         CVarSetInteger("gTimeSavers.SkipCutscene.LearnSong", 0);
                         CVarSetInteger("gTimeSavers.SkipCutscene.BossIntro", 0);
+                        CVarSetInteger("gTimeSavers.SkipCutscene.QuickBossDeaths", 0);
                         CVarSetInteger("gTimeSavers.SkipCutscene.OnePoint", 0);
                         CVarSetInteger("gTimeSavers.NoForcedDialog", 0);
                         CVarSetInteger("gTimeSavers.SkipOwlInteractions", 0);
@@ -633,6 +637,7 @@ void DrawEnhancementsMenu() {
                 UIWidgets::PaddedEnhancementCheckbox("Skip Story Cutscenes", "gTimeSavers.SkipCutscene.Story", false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
                 UIWidgets::PaddedEnhancementCheckbox("Skip Song Cutscenes", "gTimeSavers.SkipCutscene.LearnSong", false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
                 UIWidgets::PaddedEnhancementCheckbox("Skip Boss Introductions", "gTimeSavers.SkipCutscene.BossIntro", false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
+                UIWidgets::PaddedEnhancementCheckbox("Quick Boss Deaths", "gTimeSavers.SkipCutscene.QuickBossDeaths", false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
                 UIWidgets::PaddedEnhancementCheckbox("Skip One Point Cutscenes (Chests, Door Unlocks, etc)", "gTimeSavers.SkipCutscene.OnePoint", false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
                 UIWidgets::PaddedEnhancementCheckbox("No Forced Dialog", "gTimeSavers.NoForcedDialog", false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
                 UIWidgets::Tooltip("Prevent forced conversations with Navi or other NPCs");

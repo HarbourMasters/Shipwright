@@ -24,6 +24,8 @@ extern "C" {
 #include "src/overlays/actors/ovl_Bg_Dy_Yoseizo/z_bg_dy_yoseizo.h"
 #include "src/overlays/actors/ovl_En_Dnt_Demo/z_en_dnt_demo.h"
 #include "src/overlays/actors/ovl_En_Po_Sisters/z_en_po_sisters.h"
+#include <overlays/actors/ovl_Boss_Ganondrof/z_boss_ganondrof.h>
+#include <objects/object_gnd/object_gnd.h>
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 extern int32_t D_8011D3AC;
@@ -716,6 +718,31 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
             if (CVarGetInteger("gTimeSavers.SkipCutscene.Story", IS_RANDO)) {
                 *should = false;
                 func_800F595C(NA_BGM_BRIDGE_TO_GANONS);
+            }
+            break;
+        }
+        case GI_VB_PHANTOM_GANON_DEATH_SCENE: {
+            if (CVarGetInteger("gTimeSavers.SkipCutscene.QuickBossDeaths", IS_RANDO || IS_BOSS_RUSH)) {
+                *should = false;
+                BossGanondrof* pg = static_cast<BossGanondrof*>(opt);
+                Player* player = GET_PLAYER(gPlayState);
+                if (pg != nullptr && pg->work[GND_ACTION_STATE] == DEATH_SPASM) {
+                    // Skip to death scream animation and move ganondrof to middle
+                    pg->deathState = DEATH_SCREAM;
+                    pg->timers[0] = 50;
+                    AnimationHeader* screamAnim = (AnimationHeader*)gPhantomGanonScreamAnim;
+                    Animation_MorphToLoop(&pg->skelAnime, screamAnim, -10.0f);
+                    pg->actor.world.pos.x = GND_BOSSROOM_CENTER_X;
+                    pg->actor.world.pos.y = GND_BOSSROOM_CENTER_Y + 83.0f;
+                    pg->actor.world.pos.z = GND_BOSSROOM_CENTER_Z;
+                    pg->actor.shape.rot.y = 0;
+                    pg->work[GND_BODY_DECAY_INDEX] = 0;
+                    Audio_PlayActorSound2(&pg->actor, NA_SE_EN_FANTOM_LAST);
+
+                    // Move Player out of the center of the room
+                    player->actor.world.pos.x = GND_BOSSROOM_CENTER_X - 200.0f;
+                    player->actor.world.pos.z = GND_BOSSROOM_CENTER_Z;
+                }
             }
             break;
         }
