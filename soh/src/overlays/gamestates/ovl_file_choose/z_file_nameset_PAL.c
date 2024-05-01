@@ -692,6 +692,7 @@ void FileChoose_UpdateOptionsMenu(GameState* thisx) {
         sLastOptionButtonIndex = -1;
         osSyncPrintf("ＳＡＶＥ");
         Save_SaveGlobal();
+        CVarSave();
         osSyncPrintf(VT_FGCOL(YELLOW));
         osSyncPrintf("Na_SetSoundOutputMode = %d\n", gSaveContext.audioSetting);
         osSyncPrintf("Na_SetSoundOutputMode = %d\n", gSaveContext.audioSetting);
@@ -910,8 +911,8 @@ void FileChoose_DrawOptionsImpl(GameState* thisx) {
         { 0, 150, 150 },
     };
 
-    if (CVarGetInteger("gCosmetics.Title_FileChoose.Changed", 0)) {
-        Color_RGB8 backgroundColor = CVarGetColor24("gCosmetics.Title_FileChoose.Value", (Color_RGB8){ 100, 150, 255 });
+    if (CVarGetInteger(CVAR_COSMETIC("Title.FileChoose.Changed"), 0)) {
+        Color_RGB8 backgroundColor = CVarGetColor24(CVAR_COSMETIC("Title.FileChoose.Value"), (Color_RGB8){ 100, 150, 255 });
         cursorPrimColors[1][0] = MIN(backgroundColor.r + 100, 255);
         cursorPrimColors[1][1] = MIN(backgroundColor.g + 100, 255);
         cursorPrimColors[1][2] = MIN(backgroundColor.b + 100, 255);

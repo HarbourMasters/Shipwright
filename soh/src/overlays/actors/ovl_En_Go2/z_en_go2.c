@@ -1082,7 +1082,7 @@ void EnGo2_BiggoronSetTextId(EnGo2* this, PlayState* play, Player* player) {
             if (func_8002F368(play) == EXCH_ITEM_CLAIM_CHECK) {
                 if (IS_RANDO && Flags_GetTreasure(play, 0x1F)) {
                     textId = 0x3003;
-                } else if (Environment_GetBgsDayCount() >= CVarGetInteger("gForgeTime", 3)) {
+                } else if (Environment_GetBgsDayCount() >= CVarGetInteger(CVAR_ENHANCEMENT("ForgeTime"), 3)) {
                     textId = 0x305E;
                 } else {
                     textId = 0x305D;
@@ -1091,7 +1091,7 @@ void EnGo2_BiggoronSetTextId(EnGo2* this, PlayState* play, Player* player) {
             } else {
                 if (IS_RANDO && Flags_GetTreasure(play, 0x1F)) {
                     textId = 0x305E;
-                } else if (Environment_GetBgsDayCount() >= CVarGetInteger("gForgeTime", 3)) {
+                } else if (Environment_GetBgsDayCount() >= CVarGetInteger(CVAR_ENHANCEMENT("ForgeTime"), 3)) {
                     textId = 0x3002;
                 } else {
                     textId = 0x305D;
@@ -2134,7 +2134,7 @@ s32 EnGo2_OverrideLimbDraw(PlayState* play, s32 limb, Gfx** dList, Vec3f* pos, V
     f32 float1;
 
     if (limb == 17) {
-        Matrix_Translate(2800.0f + CVarGetFloat("gCosmetics.Goron_NeckLength", 0.0f), 0.0f, 0.0f, MTXMODE_APPLY);
+        Matrix_Translate(2800.0f + CVarGetFloat(CVAR_COSMETIC("Goron.NeckLength"), 0.0f), 0.0f, 0.0f, MTXMODE_APPLY);
         vec1 = this->interactInfo.headRot;
         float1 = (vec1.y / (f32)0x8000) * M_PI;
         Matrix_RotateX(float1, MTXMODE_APPLY);

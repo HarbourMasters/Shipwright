@@ -179,7 +179,7 @@ CrowdControl::EffectResult CrowdControl::TranslateGiEnum(GameInteractionEffectQu
 
 CrowdControl::Effect* CrowdControl::ParseMessage(nlohmann::json dataReceived) {
     if (!dataReceived.contains("id") || !dataReceived.contains("type")) {
-        SPDLOG_ERROR("[CrowdControl] Invalid payload received:\n{}", dataReceived);
+        SPDLOG_ERROR("[CrowdControl] Invalid payload received:\n{}", dataReceived.dump());
         return nullptr;
     }
 
