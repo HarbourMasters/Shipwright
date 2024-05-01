@@ -85,7 +85,8 @@ void PauseWarp_HandleSelection() {
     if (gSaveContext.inventory.items[SLOT_OCARINA] != ITEM_NONE) {
         int aButtonPressed = CHECK_BTN_ALL(gPlayState->state.input->press.button, BTN_A);
         int song = gPlayState->pauseCtx.cursorPoint[PAUSE_QUEST];
-        if (aButtonPressed && CHECK_QUEST_ITEM(song) && song >= QUEST_SONG_MINUET && song <= QUEST_SONG_PRELUDE) {
+        if (aButtonPressed && CHECK_QUEST_ITEM(song) && song >= QUEST_SONG_MINUET && song <= QUEST_SONG_PRELUDE &&
+            gPlayState->pauseCtx.pageIndex == PAUSE_QUEST && gPlayState->pauseCtx.state == 6) {
             ActivateWarp(&gPlayState->pauseCtx, song);
         }
     }

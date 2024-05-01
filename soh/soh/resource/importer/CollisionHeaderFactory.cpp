@@ -3,13 +3,13 @@
 #include "spdlog/spdlog.h"
 
 namespace SOH {
-std::shared_ptr<LUS::IResource> ResourceFactoryBinaryCollisionHeaderV0::ReadResource(std::shared_ptr<LUS::File> file) {
+std::shared_ptr<Ship::IResource> ResourceFactoryBinaryCollisionHeaderV0::ReadResource(std::shared_ptr<Ship::File> file) {
     if (!FileHasValidFormatAndReader(file)) {
         return nullptr;
     }
 
     auto collisionHeader = std::make_shared<CollisionHeader>(file->InitData);
-    auto reader = std::get<std::shared_ptr<LUS::BinaryReader>>(file->Reader);
+    auto reader = std::get<std::shared_ptr<Ship::BinaryReader>>(file->Reader);
 
     collisionHeader->collisionHeaderData.minBounds.x = reader->ReadInt16();
     collisionHeader->collisionHeaderData.minBounds.y = reader->ReadInt16();
@@ -123,7 +123,7 @@ std::shared_ptr<LUS::IResource> ResourceFactoryBinaryCollisionHeaderV0::ReadReso
     return collisionHeader;
 }
 
-std::shared_ptr<LUS::IResource> ResourceFactoryXMLCollisionHeaderV0::ReadResource(std::shared_ptr<LUS::File> file) {
+std::shared_ptr<Ship::IResource> ResourceFactoryXMLCollisionHeaderV0::ReadResource(std::shared_ptr<Ship::File> file) {
     if (!FileHasValidFormatAndReader(file)) {
         return nullptr;
     }
