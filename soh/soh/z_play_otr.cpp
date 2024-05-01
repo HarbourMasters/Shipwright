@@ -1,7 +1,7 @@
 #include "OTRGlobals.h"
 #include <libultraship/libultraship.h>
 #include "soh/resource/type/Scene.h"
-#include <Utils/StringHelper.h>
+#include <utils/StringHelper.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "global.h"
 #include "vt.h"
