@@ -377,6 +377,13 @@ typedef enum {
     // Vanilla condition: false
     GI_VB_FIX_SAW_SOFTLOCK,
 
+    /*** Cheats? ***/
+    GI_VB_DEKU_STICK_BE_ON_FIRE,
+    GI_VB_DEKU_STICK_BREAK,
+    GI_VB_DEKU_STICK_BURN_DOWN,
+    GI_VB_DEKU_STICK_BURN_OUT,
+    GI_VB_DEKU_UPDATE_BURNING_DEKU_STICK,
+
     /*** Quick Boss Deaths ***/
     // Vanilla condition: true
     GI_VB_PHANTOM_GANON_DEATH_SCENE,
