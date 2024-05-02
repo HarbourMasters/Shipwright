@@ -735,7 +735,7 @@ void Minimap_Draw(PlayState* play) {
 
     // If any of these CVars are enabled, disable toggling the minimap with L, unless gEnableMapToggle is set
     bool enableMapToggle =
-        !(CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0) || CVarGetInteger(CVAR_CHEAT("MoonJumpOnL"), 0) || CVarGetInteger("gTurboOnL", 0)) ||
+        !(CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0) || CVarGetInteger(CVAR_CHEAT("MoonJumpOnL"), 0)) ||
         CVarGetInteger("gEnableMapToggle", 0);
 
     if (play->pauseCtx.state < 4) {

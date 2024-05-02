@@ -627,12 +627,6 @@ void Play_Init(GameState* thisx) {
     gTrnsnUnkState = 0;
     play->transitionMode = TRANS_MODE_OFF;
 
-    if (CVarGetInteger("gSceneTransitions", 255)!= 255){
-        play->transitionMode = CVarGetInteger("gSceneTransitions", 0);
-        gSaveContext.nextTransitionType = CVarGetInteger("gSceneTransitions", 0);
-        play->transitionType = CVarGetInteger("gSceneTransitions", 0);
-    }
-
     FrameAdvance_Init(&play->frameAdvCtx);
     Rand_Seed((u32)osGetTime());
     Matrix_Init(&play->state);

@@ -1273,7 +1273,7 @@ void KaleidoScope_DrawPages(PlayState* play, GraphicsContext* gfxCtx) {
                 }
             }
 
-            if (CVarGetInteger("gDpadHoldChange", 1) && CVarGetInteger(CVAR_SETTING("DPadOnPause"), 0)) {
+            if (CVarGetInteger(CVAR_SETTING("DpadHoldChange"), 1) && CVarGetInteger(CVAR_SETTING("DPadOnPause"), 0)) {
                 if (CHECK_BTN_ALL(input->cur.button, BTN_DLEFT)) {
                     if (CHECK_BTN_ALL(input->press.button, BTN_DLEFT)) {
                         D_8082AD44 = XREG(8);
@@ -2868,7 +2868,7 @@ void KaleidoScope_InitVertices(PlayState* play, GraphicsContext* gfxCtx) {
 
     for (phi_t3 = 1; phi_t3 < ARRAY_COUNT(gSaveContext.equips.buttonItems); phi_t3++, phi_t2 += 4) {
         if (gSaveContext.equips.cButtonSlots[phi_t3 - 1] != ITEM_NONE &&
-            ((phi_t3 < 4) || CVarGetInteger(CVAR_SETTING("DPadEquips"), 0))) {
+            ((phi_t3 < 4) || CVarGetInteger(CVAR_SETTING("DpadEquips), 0))) {
             phi_t4 = gSaveContext.equips.cButtonSlots[phi_t3 - 1] * 4;
 
             pauseCtx->itemVtx[phi_t2 + 0].v.ob[0] = pauseCtx->itemVtx[phi_t2 + 2].v.ob[0] =
@@ -4560,7 +4560,7 @@ void KaleidoScope_Update(PlayState* play)
             R_UPDATE_RATE = 3;
             R_PAUSE_MENU_MODE = 0;
 
-            CVarSetInteger("gPauseTriforce", 0);
+            CVarSetInteger(CVAR_GENERAL("PauseTriforce"), 0);
 
             func_800981B8(&play->objectCtx);
             func_800418D0(&play->colCtx, play);

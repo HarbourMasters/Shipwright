@@ -1814,7 +1814,7 @@ void DrawRemoteControlMenu() {
         ImGui::SameLine();
         ImGui::PushItemWidth(ImGui::GetFontSize() * 5);
         if (ImGui::InputScalar("##gRemote.Port", ImGuiDataType_U16, &port)) {
-            CVarSetInteger(CVAR_REMOTE("Port"), port);
+            CVarSetInteger(CVAR_REMOTE("Port"), port);f
             Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         }
 

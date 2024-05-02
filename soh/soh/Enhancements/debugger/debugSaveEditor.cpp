@@ -1705,7 +1705,7 @@ void DrawPlayerTab() {
             ImGui::SameLine();
             ImGui::InputScalar("C Right", ImGuiDataType_U8, &gSaveContext.equips.buttonItems[3], &one, NULL);
 
-            if (CVarGetInteger(CVAR_SETTING("DPadEquips"), 0)) {
+            if (CVarGetInteger(CVAR_SETTING("DpadEquips), 0)) {
                 ImGui::NewLine();
                 ImGui::Text("Current D-pad Equips");
                 ImGui::InputScalar("D-pad Up  ", ImGuiDataType_U8, &gSaveContext.equips.buttonItems[4], &one, NULL); // Two spaces at the end for aligning, not elegant but it's working

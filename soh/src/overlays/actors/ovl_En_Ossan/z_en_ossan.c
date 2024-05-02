@@ -981,7 +981,7 @@ s32 EnOssan_FacingShopkeeperDialogResult(EnOssan* this, PlayState* play) {
 void EnOssan_State_FacingShopkeeper(EnOssan* this, PlayState* play, Player* player) {
     Input* input = &play->state.input[0];
     u8 nextIndex;
-    bool dpad = CVarGetInteger(CVAR_SETTING("DPadInText"), 0);
+    bool dpad = CVarGetInteger(CVAR_SETTING("DpadInText"), 0);
 
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE) &&
         !EnOssan_TestEndInteraction(this, play, &play->state.input[0])) {
@@ -1070,7 +1070,7 @@ void EnOssan_CursorUpDown(EnOssan* this, PlayState* play) {
     Input* input = &play->state.input[0];
     u8 curTemp = this->cursorIndex;
     u8 curScanTemp;
-    bool dpad = CVarGetInteger(CVAR_SETTING("DPadInText"), 0);
+    bool dpad = CVarGetInteger(CVAR_SETTING("DpadInText"), 0);
 
     if ((this->stickAccumY < 0) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DDOWN))) {
         curTemp &= 0xFE;
@@ -1223,7 +1223,7 @@ void EnOssan_State_BrowseLeftShelf(EnOssan* this, PlayState* play, Player* playe
     u8 prevIndex = this->cursorIndex;
     s32 c;
     s32 d;
-    bool dpad = CVarGetInteger(CVAR_SETTING("DPadInText"), 0);
+    bool dpad = CVarGetInteger(CVAR_SETTING("DpadInText"), 0);
 
     if (!EnOssan_ReturnItemToShelf(this)) {
         osSyncPrintf("%s[%d]:" VT_FGCOL(GREEN) "ズーム中！！" VT_RST "\n", __FILE__, __LINE__);
@@ -1292,7 +1292,7 @@ void EnOssan_State_BrowseRightShelf(EnOssan* this, PlayState* play, Player* play
     s32 pad[2];
     u8 prevIndex;
     u8 nextIndex;
-    bool dpad = CVarGetInteger(CVAR_SETTING("DPadInText"), 0);
+    bool dpad = CVarGetInteger(CVAR_SETTING("DpadInText"), 0);
 
     prevIndex = this->cursorIndex;
     if (!EnOssan_ReturnItemToShelf(this)) {

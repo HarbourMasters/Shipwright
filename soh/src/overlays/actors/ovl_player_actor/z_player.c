@@ -2213,7 +2213,7 @@ s32 Player_ItemIsItemAction(s32 item1, s32 itemAction) {
 }
 
 s32 Player_GetItemOnButton(PlayState* play, s32 index) {
-    if (index >= ((CVarGetInteger(CVAR_SETTING("DPadEquips"), 0) != 0) ? 8 : 4)) {
+    if (index >= ((CVarGetInteger(CVAR_SETTING("DpadEquips), 0) != 0) ? 8 : 4)) {
         return ITEM_NONE;
     } else if (play->bombchuBowlingStatus != 0) {
         return (play->bombchuBowlingStatus > 0) ? ITEM_BOMBCHU : ITEM_NONE;
@@ -2254,7 +2254,7 @@ void Player_ProcessItemButtons(Player* this, PlayState* play) {
         if (CVarGetInteger(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA) {
             s32 maskItem = this->currentMask - PLAYER_MASK_KEATON + ITEM_MASK_KEATON;
             bool hasOnDpad = false;
-            if (CVarGetInteger(CVAR_SETTING("DPadEquips"), 0) != 0) {
+            if (CVarGetInteger(CVAR_SETTING("DpadEquips), 0) != 0) {
                 for (int buttonIndex = 4; buttonIndex < 8; buttonIndex++) {
                     hasOnDpad |= gSaveContext.equips.buttonItems[buttonIndex] == maskItem;
                 }
@@ -2270,7 +2270,7 @@ void Player_ProcessItemButtons(Player* this, PlayState* play) {
             maskItemAction = this->currentMask - 1 + PLAYER_IA_MASK_KEATON;
 
             bool hasOnDpad = false;
-            if (CVarGetInteger(CVAR_SETTING("DPadEquips"), 0) != 0) {
+            if (CVarGetInteger(CVAR_SETTING("DpadEquips), 0) != 0) {
                 for (int buttonIndex = 0; buttonIndex < 4; buttonIndex++) {
                     hasOnDpad |= Player_ItemIsItemAction(DPAD_ITEM(buttonIndex), maskItemAction);
                 }
@@ -2286,7 +2286,7 @@ void Player_ProcessItemButtons(Player* this, PlayState* play) {
     if (!(this->stateFlags1 & (PLAYER_STATE1_ITEM_OVER_HEAD | PLAYER_STATE1_IN_CUTSCENE)) && !func_8008F128(this)) {
         if (this->itemAction >= PLAYER_IA_FISHING_POLE) {
             bool hasOnDpad = false;
-            if (CVarGetInteger(CVAR_SETTING("DPadEquips"), 0) != 0) {
+            if (CVarGetInteger(CVAR_SETTING("DpadEquips), 0) != 0) {
                 for (int buttonIndex = 0; buttonIndex < 4; buttonIndex++) {
                     hasOnDpad |= Player_ItemIsInUse(this, DPAD_ITEM(buttonIndex));
                 }
@@ -2677,7 +2677,7 @@ int func_80834E44(PlayState* play) {
 
 int func_80834E7C(PlayState* play) {
     u16 buttonsToCheck = BTN_A | BTN_B | BTN_CUP | BTN_CLEFT | BTN_CRIGHT | BTN_CDOWN;
-    if (CVarGetInteger(CVAR_SETTING("DPadEquips"), 0) != 0) {
+    if (CVarGetInteger(CVAR_SETTING("DpadEquips), 0) != 0) {
         buttonsToCheck |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
     }
     return (play->shootingGalleryStatus != 0) &&
@@ -4003,7 +4003,7 @@ void func_80837948(PlayState* play, Player* this, s32 arg2) {
     }
 
     if ((arg2 >= PLAYER_MWA_FLIPSLASH_START) && (arg2 <= PLAYER_MWA_JUMPSLASH_FINISH)) {
-        if (CVarGetInteger("gRestoreQPA", 1) && temp == -1) {
+        if (CVarGetInteger(CVAR_GENERAL("RestoreQPA"), 1) && temp == -1) {
             dmgFlags = 0x16171617;
         }
         else {
@@ -6932,7 +6932,7 @@ s32 func_8083EAF0(Player* this, Actor* actor) {
 
 s32 Player_ActionChange_9(Player* this, PlayState* play) {
     u16 buttonsToCheck = BTN_A | BTN_B | BTN_CLEFT | BTN_CRIGHT | BTN_CDOWN;
-    if (CVarGetInteger(CVAR_SETTING("DPadEquips"), 0) != 0) {
+    if (CVarGetInteger(CVAR_SETTING("DpadEquips), 0) != 0) {
         buttonsToCheck |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
     }
     if ((this->stateFlags1 & PLAYER_STATE1_ITEM_OVER_HEAD) && (this->heldActor != NULL) &&
@@ -9076,7 +9076,7 @@ void Player_Action_8084411C(Player* this, PlayState* play) {
             Actor* heldActor = this->heldActor;
 
             u16 buttonsToCheck = BTN_A | BTN_B | BTN_CLEFT | BTN_CRIGHT | BTN_CDOWN;
-            if (CVarGetInteger(CVAR_SETTING("DPadEquips"), 0) != 0) {
+            if (CVarGetInteger(CVAR_SETTING("DpadEquips), 0) != 0) {
                 buttonsToCheck |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
             }
             if (!func_80835644(play, this, heldActor) && (heldActor->id == ACTOR_EN_NIW) &&
@@ -9858,7 +9858,7 @@ void Player_Action_80846260(Player* this, PlayState* play) {
     }
 
     u16 buttonsToCheck = BTN_A | BTN_B | BTN_CLEFT | BTN_CRIGHT | BTN_CDOWN;
-    if (CVarGetInteger(CVAR_SETTING("DPadEquips"), 0) != 0) {
+    if (CVarGetInteger(CVAR_SETTING("DpadEquips), 0) != 0) {
         buttonsToCheck |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
     }
     if (this->av2.actionVar2 == 0) {
@@ -11774,7 +11774,7 @@ void Player_DrawGameplay(PlayState* play, Player* this, s32 lod, Gfx* cullDList,
 
     if ((overrideLimbDraw == Player_OverrideLimbDrawGameplayDefault) && (this->currentMask != PLAYER_MASK_NONE)) {
         // Fixes a bug in vanilla where ice traps are rendered extremely large while wearing a bunny hood
-        if (CVarGetInteger("gFixIceTrapWithBunnyHood", 1)) Matrix_Push();
+        if (CVarGetInteger(CVAR_GENERAL("FixIceTrapWithBunnyHood"), 1)) Matrix_Push();
         Mtx* bunnyEarMtx = Graph_Alloc(play->state.gfxCtx, 2 * sizeof(Mtx));
 
         if (this->currentMask == PLAYER_MASK_BUNNY) {
@@ -11803,7 +11803,7 @@ void Player_DrawGameplay(PlayState* play, Player* this, s32 lod, Gfx* cullDList,
             gSPDisplayList(POLY_OPA_DISP++, sMaskDlists[this->currentMask - 1]);
         }
 
-        if (CVarGetInteger("gFixIceTrapWithBunnyHood", 1)) Matrix_Pop();
+        if (CVarGetInteger(CVAR_GENERAL("FixIceTrapWithBunnyHood"), 1)) Matrix_Pop();
     }
 
     if ((this->currentBoots == PLAYER_BOOTS_HOVER ||
@@ -12268,7 +12268,7 @@ void Player_Action_8084B1D8(Player* this, PlayState* play) {
     }
 
     u16 buttonsToCheck = BTN_A | BTN_B | BTN_R | BTN_CUP | BTN_CLEFT | BTN_CRIGHT | BTN_CDOWN;
-    if (CVarGetInteger(CVAR_SETTING("DPadEquips"), 0) != 0) {
+    if (CVarGetInteger(CVAR_SETTING("DpadEquips), 0) != 0) {
         buttonsToCheck |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
     }
     if ((this->csAction != 0) || (this->unk_6AD == 0) || (this->unk_6AD >= 4) || func_80833B54(this) ||

@@ -298,12 +298,12 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Arrows.LightPrimary",           "Light Primary",        COSMETICS_GROUP_ARROWS,       ImVec4(255, 255,   0, 255), false, true, false),
     COSMETIC_OPTION("Arrows.LightSecondary",         "Light Secondary",      COSMETICS_GROUP_ARROWS,       ImVec4(255, 255, 170,   0), false, true, true),
 
-    // COSMETIC_OPTION("Magic.DinsPrimary",             "Din's Primary",        COSMETICS_GROUP_MAGIC,        ImVec4(255, 255, 255, 255), false, true, false), // Todo (Cosmetics): Replace gDF_Col
-    // COSMETIC_OPTION("Magic.DinsSecondary",           "Din's Secondary",      COSMETICS_GROUP_MAGIC,        ImVec4(255, 255, 255, 255), false, true, true), // Todo (Cosmetics): Replace gDF_Env
+    // COSMETIC_OPTION("Magic.DinsPrimary",             "Din's Primary",        COSMETICS_GROUP_MAGIC,        ImVec4(255, 255, 255, 255), false, true, false),
+    // COSMETIC_OPTION("Magic.DinsSecondary",           "Din's Secondary",      COSMETICS_GROUP_MAGIC,        ImVec4(255, 255, 255, 255), false, true, true),
     // COSMETIC_OPTION("Magic.FaroresPrimary",          "Farore's Primary",     COSMETICS_GROUP_MAGIC,        ImVec4(255, 255, 255, 255), false, true, false), // Todo (Cosmetics): Implement
     // COSMETIC_OPTION("Magic.FaroresSecondary",        "Farore's Secondary",   COSMETICS_GROUP_MAGIC,        ImVec4(255, 255, 255, 255), false, true, true), // Todo (Cosmetics): Implement
-    // COSMETIC_OPTION("Magic.NayrusPrimary",           "Nayru's Primary",      COSMETICS_GROUP_MAGIC,        ImVec4(255, 255, 255, 255), false, true, false), // Todo (Cosmetics): Replace gNL_Diamond_Col / gNL_Orb_Col
-    // COSMETIC_OPTION("Magic.NayrusSecondary",         "Nayru's Secondary",    COSMETICS_GROUP_MAGIC,        ImVec4(255, 255, 255, 255), false, true, true), // Todo (Cosmetics): Replace gNL_Diamond_Env / gNL_Orb_Env
+    // COSMETIC_OPTION("Magic.NayrusPrimary",           "Nayru's Primary",      COSMETICS_GROUP_MAGIC,        ImVec4(255, 255, 255, 255), false, true, false),
+    // COSMETIC_OPTION("Magic.NayrusSecondary",         "Nayru's Secondary",    COSMETICS_GROUP_MAGIC,        ImVec4(255, 255, 255, 255), false, true, true),
 
     COSMETIC_OPTION("SpinAttack.Level1Primary",      "Level 1 Primary",      COSMETICS_GROUP_SPIN_ATTACK,  ImVec4(170, 255, 255, 255), false, true, true),
     COSMETIC_OPTION("SpinAttack.Level1Secondary",    "Level 1 Secondary",    COSMETICS_GROUP_SPIN_ATTACK,  ImVec4(  0, 100, 255, 255), false, true, false),
@@ -1274,7 +1274,7 @@ void Draw_Placements(){
     C_Button_Dropdown("C Button Down position", "tablecdbtn", "C Button Down settings", "C Button Down", CVAR_COSMETIC("HUD.CDownButton"), CVAR_COSMETIC("HUD.CDownButton.PosType"), 0.87f);
     C_Button_Dropdown("C Button Left position", "tableclbtn", "C Button Left settings", "C Button Left", CVAR_COSMETIC("HUD.CLeftButton"), CVAR_COSMETIC("HUD.CLeftButton.PosType"), 0.87f);
     C_Button_Dropdown("C Button Right position", "tablecrbtn", "C Button Right settings", "C Button Right", CVAR_COSMETIC("HUD.CRightButton"), CVAR_COSMETIC("HUD.CRightButton.PosType"), 0.87f);
-    if (CVarGetInteger(CVAR_SETTING("DPadEquips"),0) && ImGui::CollapsingHeader("DPad items position")) {
+    if (CVarGetInteger(CVAR_SETTING("DpadEquips),0) && ImGui::CollapsingHeader("DPad items position")) {
         if (ImGui::BeginTable("tabledpaditems", 1, FlagsTable)) {
             ImGui::TableSetupColumn("DPad items settings", FlagsCell, TablesCellsWidth);
             Table_InitHeader(false);

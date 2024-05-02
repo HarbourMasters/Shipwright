@@ -143,7 +143,7 @@ void KaleidoScope_DrawPlayerWork(PlayState* play) {
         pos.y = -130.0f;
         pos.z = -150.0f;
         scale = 0.046f;
-    } else if (CUR_EQUIP_VALUE(EQUIP_TYPE_SWORD) != EQUIP_VALUE_SWORD_MASTER && !CVarGetInteger("gPauseTriforce", 0)) {
+    } else if (CUR_EQUIP_VALUE(EQUIP_TYPE_SWORD) != EQUIP_VALUE_SWORD_MASTER && !CVarGetInteger(CVAR_GENERAL("PauseTriforce"), 0)) {
         pos.x = 25.0f;
         pos.y = -228.0f;
         pos.z = 60.0f;
@@ -552,7 +552,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
         }
 
         u16 buttonsToCheck = BTN_A | BTN_CLEFT | BTN_CDOWN | BTN_CRIGHT;
-        if (CVarGetInteger(CVAR_SETTING("DPadEquips"), 0) && (!CVarGetInteger(CVAR_SETTING("DPadOnPause"), 0) || CHECK_BTN_ALL(input->cur.button, BTN_CUP))) {
+        if (CVarGetInteger(CVAR_SETTING("DpadEquips), 0) && (!CVarGetInteger(CVAR_SETTING("DPadOnPause"), 0) || CHECK_BTN_ALL(input->cur.button, BTN_CUP))) {
             buttonsToCheck |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
         }
 

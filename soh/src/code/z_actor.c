@@ -2214,7 +2214,7 @@ void Player_PlaySfx(Actor* actor, u16 sfxId) {
     if (actor->id != ACTOR_PLAYER || sfxId < NA_SE_VO_LI_SWORD_N || sfxId > NA_SE_VO_LI_ELECTRIC_SHOCK_LV_KID) {
         Audio_PlaySoundGeneral(sfxId, &actor->projectedPos, 4, &D_801333E0 , &D_801333E0, &D_801333E8);
     } else {
-        freqMultiplier = CVarGetFloat("gLinkVoiceFreqMultiplier", 1.0);
+        freqMultiplier = CVarGetFloat(CVAR_AUDIO("LinkVoiceFreqMultiplier"), 1.0);
         if (freqMultiplier <= 0) { 
             freqMultiplier = 1;
         }
@@ -2911,7 +2911,7 @@ s32 func_800314D4(PlayState* play, Actor* actor, Vec3f* arg2, f32 arg3) {
         // #region SoH [Widescreen support]
         // Doors will cull quite noticeably on wider screens. For these actors the zone is increased
         f32 limit = 1.0f;
-        if (((actor->id == ACTOR_EN_DOOR) || (actor->id == ACTOR_DOOR_SHUTTER)) && CVarGetInteger("gIncreaseDoorUncullZones", 1)) {
+        if (((actor->id == ACTOR_EN_DOOR) || (actor->id == ACTOR_DOOR_SHUTTER)) && CVarGetInteger(CVAR_GENERAL("IncreaseDoorUncullZones"), 1)) {
             limit = 2.0f;
         }
 

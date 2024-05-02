@@ -39,9 +39,9 @@ void KaleidoSetup_Update(PlayState* play) {
             gSaveContext.unk_13EE = gSaveContext.unk_13EA;
 
             if (CHECK_BTN_ALL(input->cur.button, BTN_L))
-                CVarSetInteger("gPauseTriforce", 1);
+                CVarSetInteger(CVAR_GENERAL("PauseTriforce"), 1);
             else
-                CVarSetInteger("gPauseTriforce", 0);
+                CVarSetInteger(CVAR_GENERAL("PauseTriforce"), 0);
 
 
             WREG(16) = -175;

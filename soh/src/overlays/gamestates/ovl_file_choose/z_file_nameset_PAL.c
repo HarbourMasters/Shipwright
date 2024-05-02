@@ -527,7 +527,7 @@ void FileChoose_UpdateKeyboardCursor(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
     Input* input = &this->state.input[0];
     s16 prevKbdX;
-    bool dpad = CVarGetInteger(CVAR_SETTING("DPadInText"), 0);
+    bool dpad = CVarGetInteger(CVAR_SETTING("DpadInText"), 0);
 
     this->kbdButton = 99;
 
@@ -683,7 +683,7 @@ static s8 sLastOptionButtonIndex = -1;
 void FileChoose_UpdateOptionsMenu(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
     Input* input = &this->state.input[0];
-    bool dpad = CVarGetInteger(CVAR_SETTING("DPadInText"), 0);
+    bool dpad = CVarGetInteger(CVAR_SETTING("DpadInText"), 0);
 
     if (CHECK_BTN_ALL(input->press.button, BTN_B)) {
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);

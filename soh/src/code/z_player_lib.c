@@ -2123,7 +2123,7 @@ void Player_DrawPauseImpl(PlayState* play, void* seg04, void* seg06, SkelAnime* 
     playerSwordAndShield[1] = shield;
 
     Matrix_SetTranslateRotateYXZ(pos->x - ((CVarGetInteger(CVAR_ENHANCEMENT("PauseLiveLink"), 0) && LINK_AGE_IN_YEARS == YEARS_ADULT) ? 25 : 0),
-                                 pos->y - (CVarGetInteger("gPauseTriforce", 0) ? 16 : 0), pos->z, rot);
+                                 pos->y - (CVarGetInteger(CVAR_GENERAL("PauseTriforce"), 0) ? 16 : 0), pos->z, rot);
     Matrix_Scale(scale * (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0) ? -1 : 1), scale, scale, MTXMODE_APPLY);
 
     gSPSegment(POLY_OPA_DISP++, 0x04, seg04);
@@ -2142,7 +2142,7 @@ void Player_DrawPauseImpl(PlayState* play, void* seg04, void* seg06, SkelAnime* 
     Player_DrawImpl(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount, 0, tunic, boots, 0,
                   Player_OverrideLimbDrawPause, NULL, &playerSwordAndShield);
 
-     if (CVarGetInteger("gPauseTriforce", 0)) {
+     if (CVarGetInteger(CVAR_GENERAL("PauseTriforce"), 0)) {
 
         Matrix_SetTranslateRotateYXZ(pos->x - (LINK_AGE_IN_YEARS == YEARS_ADULT ? 25 : 0),
                                       pos->y + 280 + (LINK_AGE_IN_YEARS == YEARS_ADULT ? 48 : 0), pos->z, rot);
@@ -2202,7 +2202,7 @@ void Player_DrawPause(PlayState* play, u8* segment, SkelAnime* skelAnime, Vec3f*
     };
     s16 AnimArraySize = ARRAY_COUNT(PauseMenuAnimSet);
 
-    if (CVarGetInteger(CVAR_ENHANCEMENT("PauseLiveLink"), 0) || CVarGetInteger("gPauseTriforce", 0)) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("PauseLiveLink"), 0) || CVarGetInteger(CVAR_GENERAL("PauseTriforce"), 0)) {
         uintptr_t anim = 0; // Initialise anim
 
         if (CUR_EQUIP_VALUE(EQUIP_TYPE_SWORD) >= EQUIP_VALUE_SWORD_BIGGORON) {
@@ -2359,7 +2359,7 @@ void Player_DrawPause(PlayState* play, u8* segment, SkelAnime* skelAnime, Vec3f*
 
         //anim = gPlayerAnim_link_wait_itemD2_20f; // Use for biggoron sword?
 
-        if (CVarGetInteger("gPauseTriforce", 0)) {
+        if (CVarGetInteger(CVAR_GENERAL("PauseTriforce"), 0)) {
             anim = gPlayerAnim_link_magic_kaze2;
             sword = 0;
             shield = 0;

@@ -486,7 +486,7 @@ namespace UIWidgets {
 
     bool EnhancementRadioButton(const char* text, const char* cvarName, int id) {
         /*Usage :
-        EnhancementRadioButton("My Visible Name","gMyCVarName", MyID);
+        EnhancementRadioButton("My Visible Name",CVAR_GROUP("MyCVarName"), MyID);
         First arg is the visible name of the Radio button
         Second is the cvar name where MyID will be saved.
         Note: the CVar name should be the same to each Buddies.

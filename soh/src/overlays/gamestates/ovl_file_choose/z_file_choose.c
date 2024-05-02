@@ -1074,7 +1074,7 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
     static u8 linkName[] = { 0x15, 0x2C, 0x31, 0x2E, 0x3E, 0x3E, 0x3E, 0x3E };
     FileChooseContext* this = (FileChooseContext*)thisx;
     Input* input = &this->state.input[0];
-    bool dpad = CVarGetInteger(CVAR_SETTING("DPadInText"), 0);
+    bool dpad = CVarGetInteger(CVAR_SETTING("DpadInText"), 0);
 
     FileChoose_UpdateRandomizer();
 
@@ -1264,7 +1264,7 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
     Input* input = &this->state.input[0];
     s8 i = 0;
-    bool dpad = CVarGetInteger(CVAR_SETTING("DPadInText"), 0);
+    bool dpad = CVarGetInteger(CVAR_SETTING("DpadInText"), 0);
 
     FileChoose_UpdateRandomizer();
 
@@ -1340,7 +1340,7 @@ void FileChoose_UpdateBossRushMenu(GameState* thisx) {
     FileChoose_UpdateStickDirectionPromptAnim(thisx);
     FileChooseContext* this = (FileChooseContext*)thisx;
     Input* input = &this->state.input[0];
-    bool dpad = CVarGetInteger(CVAR_SETTING("DPadInText"), 0);
+    bool dpad = CVarGetInteger(CVAR_SETTING("DpadInText"), 0);
 
     // Fade in elements after opening Boss Rush options menu
     this->bossRushUIAlpha += 25;
@@ -2816,7 +2816,7 @@ void FileChoose_FadeInFileInfo(GameState* thisx) {
 void FileChoose_ConfirmFile(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
     Input* input = &this->state.input[0];
-    bool dpad = CVarGetInteger(CVAR_SETTING("DPadInText"), 0);
+    bool dpad = CVarGetInteger(CVAR_SETTING("DpadInText"), 0);
 
     if (CHECK_BTN_ALL(input->press.button, BTN_START) || (CHECK_BTN_ALL(input->press.button, BTN_A))) {
         if (this->confirmButtonIndex == FS_BTN_CONFIRM_YES) {
@@ -3313,7 +3313,7 @@ void FileChoose_Main(GameState* thisx) {
     this->stickRelX = input->rel.stick_x;
     this->stickRelY = input->rel.stick_y;
 
-    if (CVarGetInteger("gDpadHoldChange", 1) && CVarGetInteger(CVAR_SETTING("DPadInText"), 0)) {
+    if (CVarGetInteger(CVAR_SETTING("DpadHoldChange"), 1) && CVarGetInteger(CVAR_SETTING("DpadInText"), 0)) {
         if (CHECK_BTN_ALL(input->cur.button, BTN_DLEFT)) {
             if (CHECK_BTN_ALL(input->press.button, BTN_DLEFT)) {
                 this->inputTimerX = 10;

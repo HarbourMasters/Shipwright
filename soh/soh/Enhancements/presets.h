@@ -61,10 +61,10 @@ void applyPreset(std::vector<PresetEntry> entries);
 
 const std::vector<const char*> enhancementsCvars = {
     CVAR_SETTING("DPadOnPause"),
-    CVAR_SETTING("DPadInText"),
+    CVAR_SETTING("DpadInText"),
     CVAR_SETTING("OcarinaControl.Dpad"),
     CVAR_SETTING("OcarinaControl.RStick"),
-    CVAR_SETTING("DPadEquips"),
+    CVAR_SETTING("DpadEquips),
     CVAR_SETTING("PauseAnyCursor"),
     CVAR_ENHANCEMENT("DpadNoDropOcarinaInput"),
     CVAR_SETTING("NaviOnL"),
@@ -490,13 +490,13 @@ const std::vector<const char*> randomizerCvars = {
 
 const std::vector<PresetEntry> vanillaPlusPresetEntries = {
     // D-pad Support in text and file select
-    PRESET_ENTRY_S32(CVAR_SETTING("DPadInText"), 1),
+    PRESET_ENTRY_S32(CVAR_SETTING("DpadInText"), 1),
     // Play Ocarina with D-pad
     PRESET_ENTRY_S32(CVAR_SETTING("OcarinaControl.Dpad"), 1),
     // Play Ocarina with Right Stick
     PRESET_ENTRY_S32(CVAR_SETTING("OcarinaControl.RStick"), 1),
     // D-pad as Equip Items
-    PRESET_ENTRY_S32(CVAR_SETTING("DPadEquips"), 1),
+    PRESET_ENTRY_S32(CVAR_SETTING("DpadEquips), 1),
     // Prevent Dropped Ocarina Inputs
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DpadNoDropOcarinaInput"), 1),
     // Right Stick Aiming
@@ -561,13 +561,13 @@ const std::vector<PresetEntry> vanillaPlusPresetEntries = {
 
 const std::vector<PresetEntry> enhancedPresetEntries = {
     // D-pad Support in text and file select
-    PRESET_ENTRY_S32(CVAR_SETTING("DPadInText"), 1),
+    PRESET_ENTRY_S32(CVAR_SETTING("DpadInText"), 1),
     // Play Ocarina with D-pad
     PRESET_ENTRY_S32(CVAR_SETTING("OcarinaControl.Dpad"), 1),
     // Play Ocarina with Right Stick
     PRESET_ENTRY_S32(CVAR_SETTING("OcarinaControl.RStick"), 1),
     // D-pad as Equip Items
-    PRESET_ENTRY_S32(CVAR_SETTING("DPadEquips"), 1),
+    PRESET_ENTRY_S32(CVAR_SETTING("DpadEquips), 1),
     // Prevent Dropped Ocarina Inputs
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DpadNoDropOcarinaInput"), 1),
     // Right Stick Aiming
@@ -690,13 +690,13 @@ const std::vector<PresetEntry> enhancedPresetEntries = {
 
 const std::vector<PresetEntry> randomizerPresetEntries = {
     // D-pad Support in text and file select
-    PRESET_ENTRY_S32(CVAR_SETTING("DPadInText"), 1),
+    PRESET_ENTRY_S32(CVAR_SETTING("DpadInText"), 1),
     // Play Ocarina with D-pad
     PRESET_ENTRY_S32(CVAR_SETTING("OcarinaControl.Dpad"), 1),
     // Play Ocarina with Right Stick
     PRESET_ENTRY_S32(CVAR_SETTING("OcarinaControl.RStick"), 1),
     // D-pad as Equip Items
-    PRESET_ENTRY_S32(CVAR_SETTING("DPadEquips"), 1),
+    PRESET_ENTRY_S32(CVAR_SETTING("DpadEquips), 1),
     // Prevent Dropped Ocarina Inputs
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DpadNoDropOcarinaInput"), 1),
     // Right Stick Aiming
@@ -864,10 +864,10 @@ const std::vector<PresetEntry> spockRacePresetEntries = {
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DisableNaviCallAudio"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FastChests"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FastDrops"), 1),
-    PRESET_ENTRY_S32(CVAR_SETTING("DPadInText"), 1),
+    PRESET_ENTRY_S32(CVAR_SETTING("DpadInText"), 1),
     PRESET_ENTRY_S32(CVAR_SETTING("OcarinaControl.Dpad"), 1),
     PRESET_ENTRY_S32(CVAR_SETTING("OcarinaControl.RStick"), 1),
-    PRESET_ENTRY_S32(CVAR_SETTING("DPadEquips"), 1),
+    PRESET_ENTRY_S32(CVAR_SETTING("DpadEquips), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FastOcarinaPlayback"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InstantScarecrow"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MarketSneak"), 1),
