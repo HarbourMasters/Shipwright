@@ -64,7 +64,7 @@ const std::vector<const char*> enhancementsCvars = {
     CVAR_SETTING("DpadInText"),
     CVAR_SETTING("OcarinaControl.Dpad"),
     CVAR_SETTING("OcarinaControl.RStick"),
-    CVAR_SETTING("DpadEquips),
+    CVAR_SETTING("DpadEquips"),
     CVAR_SETTING("PauseAnyCursor"),
     CVAR_ENHANCEMENT("DpadNoDropOcarinaInput"),
     CVAR_SETTING("NaviOnL"),
@@ -496,7 +496,7 @@ const std::vector<PresetEntry> vanillaPlusPresetEntries = {
     // Play Ocarina with Right Stick
     PRESET_ENTRY_S32(CVAR_SETTING("OcarinaControl.RStick"), 1),
     // D-pad as Equip Items
-    PRESET_ENTRY_S32(CVAR_SETTING("DpadEquips), 1),
+    PRESET_ENTRY_S32(CVAR_SETTING("DpadEquips"), 1),
     // Prevent Dropped Ocarina Inputs
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DpadNoDropOcarinaInput"), 1),
     // Right Stick Aiming
@@ -567,7 +567,7 @@ const std::vector<PresetEntry> enhancedPresetEntries = {
     // Play Ocarina with Right Stick
     PRESET_ENTRY_S32(CVAR_SETTING("OcarinaControl.RStick"), 1),
     // D-pad as Equip Items
-    PRESET_ENTRY_S32(CVAR_SETTING("DpadEquips), 1),
+    PRESET_ENTRY_S32(CVAR_SETTING("DpadEquips"), 1),
     // Prevent Dropped Ocarina Inputs
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DpadNoDropOcarinaInput"), 1),
     // Right Stick Aiming
@@ -696,7 +696,7 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     // Play Ocarina with Right Stick
     PRESET_ENTRY_S32(CVAR_SETTING("OcarinaControl.RStick"), 1),
     // D-pad as Equip Items
-    PRESET_ENTRY_S32(CVAR_SETTING("DpadEquips), 1),
+    PRESET_ENTRY_S32(CVAR_SETTING("DpadEquips"), 1),
     // Prevent Dropped Ocarina Inputs
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DpadNoDropOcarinaInput"), 1),
     // Right Stick Aiming
@@ -867,7 +867,7 @@ const std::vector<PresetEntry> spockRacePresetEntries = {
     PRESET_ENTRY_S32(CVAR_SETTING("DpadInText"), 1),
     PRESET_ENTRY_S32(CVAR_SETTING("OcarinaControl.Dpad"), 1),
     PRESET_ENTRY_S32(CVAR_SETTING("OcarinaControl.RStick"), 1),
-    PRESET_ENTRY_S32(CVAR_SETTING("DpadEquips), 1),
+    PRESET_ENTRY_S32(CVAR_SETTING("DpadEquips"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FastOcarinaPlayback"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InstantScarecrow"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MarketSneak"), 1),

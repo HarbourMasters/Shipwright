@@ -247,6 +247,7 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("HUD.EnemyHealthBorder",         "Enemy Health Border",  COSMETICS_GROUP_HUD,          ImVec4(255, 255, 255, 255), true, false, true),
     COSMETIC_OPTION("HUD.NameTagActorText",          "Nametag Text",         COSMETICS_GROUP_HUD,          ImVec4(255, 255, 255, 255), true, true, false),
     COSMETIC_OPTION("HUD.NameTagActorBackground",    "Nametag Background",   COSMETICS_GROUP_HUD,          ImVec4(0,     0,   0,  80), true, false, true),
+    // Todo (Cosmetics): re-implement title card colors
 
     COSMETIC_OPTION("Kaleido.ItemSelA",                  "Item Select Color",    COSMETICS_GROUP_KALEIDO,      ImVec4(10,   50,  80, 255), false, true, false),
     COSMETIC_OPTION("Kaleido.ItemSelB",                  "Item Select Color B",  COSMETICS_GROUP_KALEIDO,      ImVec4(70,  100, 130, 255), false, true, true),
@@ -1274,7 +1275,7 @@ void Draw_Placements(){
     C_Button_Dropdown("C Button Down position", "tablecdbtn", "C Button Down settings", "C Button Down", CVAR_COSMETIC("HUD.CDownButton"), CVAR_COSMETIC("HUD.CDownButton.PosType"), 0.87f);
     C_Button_Dropdown("C Button Left position", "tableclbtn", "C Button Left settings", "C Button Left", CVAR_COSMETIC("HUD.CLeftButton"), CVAR_COSMETIC("HUD.CLeftButton.PosType"), 0.87f);
     C_Button_Dropdown("C Button Right position", "tablecrbtn", "C Button Right settings", "C Button Right", CVAR_COSMETIC("HUD.CRightButton"), CVAR_COSMETIC("HUD.CRightButton.PosType"), 0.87f);
-    if (CVarGetInteger(CVAR_SETTING("DpadEquips),0) && ImGui::CollapsingHeader("DPad items position")) {
+    if (CVarGetInteger(CVAR_SETTING("DpadEquips"),0) && ImGui::CollapsingHeader("DPad items position")) {
         if (ImGui::BeginTable("tabledpaditems", 1, FlagsTable)) {
             ImGui::TableSetupColumn("DPad items settings", FlagsCell, TablesCellsWidth);
             Table_InitHeader(false);

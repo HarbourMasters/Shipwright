@@ -1665,7 +1665,7 @@ void SohInputEditorWindow::DrawDpadControlPanel() {
     UIWidgets::PaddedEnhancementCheckbox("D-pad Support in Text Boxes", CVAR_SETTING("DpadInText"));
     UIWidgets::Tooltip("Navigate choices in text boxes, shop item selection, and the file select / name entry screens with the D-pad\n"
                 "To make the cursor only move a single space during name entry no matter how long a direction is held, manually set gSettings.DpadHoldChange to 0");
-    UIWidgets::PaddedEnhancementCheckbox("D-pad as Equip Items", CVAR_SETTING("DpadEquips));
+    UIWidgets::PaddedEnhancementCheckbox("D-pad as Equip Items", CVAR_SETTING("DpadEquips"));
     UIWidgets::Tooltip("Equip items and equipment on the D-pad\nIf used with D-pad on Pause Screen, you must hold C-Up to equip instead of navigate");
     Ship::GuiWindow::EndGroupPanel(0);
 }
