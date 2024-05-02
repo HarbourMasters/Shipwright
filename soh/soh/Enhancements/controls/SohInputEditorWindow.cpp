@@ -1,5 +1,5 @@
 #include "SohInputEditorWindow.h"
-#include <Utils/StringHelper.h>
+#include <utils/StringHelper.h>
 #include "soh/OTRGlobals.h"
 #include "../../UIWidgets.hpp"
 #include "z64.h"

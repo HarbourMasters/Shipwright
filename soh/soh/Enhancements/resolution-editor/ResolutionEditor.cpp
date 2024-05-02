@@ -1,5 +1,5 @@
 #include "ResolutionEditor.h"
-#include <ImGui/imgui.h>
+#include <imgui.h>
 #include <libultraship/libultraship.h>
 
 #include <soh/UIWidgets.hpp>
@@ -114,19 +114,19 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
             // The original resolution slider (for convenience)
             const bool disabled_resolutionSlider = (CVarGetInteger("gAdvancedResolution.VerticalResolutionToggle", 0) &&
                                                     CVarGetInteger("gAdvancedResolution.Enabled", 0)) ||
-                                                   CVarGetInteger("gLowResMode", 0);
-            if (UIWidgets::EnhancementSliderFloat("Internal Resolution: %.1f%%", "##IMul", "gInternalResolution", 0.5f,
+                                                   CVarGetInteger(CVAR_LOW_RES_MODE, 0);
+            if (UIWidgets::EnhancementSliderFloat("Internal Resolution: %.1f%%", "##IMul", CVAR_INTERNAL_RESOLUTION, 0.5f,
                                                   2.0f, "", 1.0f, true, true, disabled_resolutionSlider)) {
                 Ship::Context::GetInstance()->GetWindow()->SetResolutionMultiplier(
-                    CVarGetFloat("gInternalResolution", 1));
+                    CVarGetFloat(CVAR_INTERNAL_RESOLUTION, 1));
             }
             UIWidgets::Tooltip("Multiplies your output resolution by the value entered.");
 
             // The original MSAA slider (also for convenience)
 #ifndef __WIIU__
-            if (UIWidgets::PaddedEnhancementSliderInt("MSAA: %d", "##IMSAA", "gMSAAValue", 1, 8, "", 1, true, true,
+            if (UIWidgets::PaddedEnhancementSliderInt("MSAA: %d", "##IMSAA", CVAR_MSAA_VALUE, 1, 8, "", 1, true, true,
                                                       false)) {
-                Ship::Context::GetInstance()->GetWindow()->SetMsaaLevel(CVarGetInteger("gMSAAValue", 1));
+                Ship::Context::GetInstance()->GetWindow()->SetMsaaLevel(CVarGetInteger(CVAR_MSAA_VALUE, 1));
             };
             UIWidgets::Tooltip(
                 "Activates multi-sample anti-aliasing when above 1x, up to 8x for 8 samples for every pixel.\n\n"
@@ -135,7 +135,7 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
 #endif
 
             // N64 Mode toggle (again for convenience)
-            // UIWidgets::PaddedEnhancementCheckbox("(Enhancements>Graphics) N64 Mode", "gLowResMode", false, false, false, "", UIWidgets::CheckboxGraphics::Cross, false);
+            // UIWidgets::PaddedEnhancementCheckbox("(Enhancements>Graphics) N64 Mode", CVAR_LOW_RES_MODE, false, false, false, "", UIWidgets::CheckboxGraphics::Cross, false);
         }
 
         UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
@@ -143,7 +143,7 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
         UIWidgets::PaddedEnhancementCheckbox("Enable advanced settings.", "gAdvancedResolution.Enabled", false, false,
                                              false, "", UIWidgets::CheckboxGraphics::Cross, false);
         // Error/Warning display
-        if (!CVarGetInteger("gLowResMode", 0)) {
+        if (!CVarGetInteger(CVAR_LOW_RES_MODE, 0)) {
             if (IsDroppingFrames()) { // Significant frame drop warning
                 ImGui::TextColored(messageColor[MESSAGE_WARNING],
                                    ICON_FA_EXCLAMATION_TRIANGLE " Significant frame rate (FPS) drops may be occuring.");
@@ -156,7 +156,7 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
                                ICON_FA_QUESTION_CIRCLE " \"N64 Mode\" is overriding these settings.");
             ImGui::SameLine();
             if (ImGui::Button("Click to disable")) {
-                CVarSetInteger("gLowResMode", 0);
+                CVarSetInteger(CVAR_LOW_RES_MODE, 0);
                 CVarSave();
             }
         }

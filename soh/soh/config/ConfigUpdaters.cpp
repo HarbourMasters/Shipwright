@@ -52,7 +52,7 @@ namespace SOH {
             conf->Erase("Game.Patches Archive");
         }
         if (CVarGetInteger("gDirtPathFix", 0) != 0) {
-            CVarSetInteger("gZFightingMode", CVarGetInteger("gDirtPathFix", 0));
+            CVarSetInteger(CVAR_Z_FIGHTING_MODE, CVarGetInteger("gDirtPathFix", 0));
             CVarClear("gDirtPathFix");
         }
         if (CVarGetInteger("gRandomizedEnemies", 0) != 0) {

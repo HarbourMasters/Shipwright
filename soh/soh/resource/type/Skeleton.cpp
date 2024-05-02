@@ -65,7 +65,7 @@ void SkeletonPatcher::ClearSkeletons()
 }
 
 void SkeletonPatcher::UpdateSkeletons() {
-    bool isHD = CVarGetInteger("gAltAssets", 0);
+    bool isHD = CVarGetInteger(CVAR_ALT_ASSETS, 0);
     for (auto skel : skeletons) {
         Skeleton* newSkel =
             (Skeleton*)Ship::Context::GetInstance()->GetResourceManager()
