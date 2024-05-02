@@ -47,7 +47,7 @@
 #include "z64.h"
 #include "macros.h"
 #include "Fonts.h"
-#include <Utils/StringHelper.h>
+#include <utils/StringHelper.h>
 #include "Enhancements/custom-message/CustomMessageManager.h"
 #include "Enhancements/presets.h"
 #include "util.h"

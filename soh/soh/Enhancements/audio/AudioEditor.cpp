@@ -9,7 +9,7 @@
 #include <functions.h>
 #include "../randomizer/3drando/random.hpp"
 #include "../../OTRGlobals.h"
-#include <Utils/StringHelper.h>
+#include <utils/StringHelper.h>
 #include "../../UIWidgets.hpp"
 #include "AudioCollection.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
