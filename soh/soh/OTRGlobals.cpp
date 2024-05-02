@@ -92,6 +92,12 @@ GameInteractorSail* GameInteractorSail::Instance;
 #include <libultraship/libultraship.h>
 
 // Resource Types/Factories
+#include "resource/type/Array.h"
+#include "resource/type/Blob.h"
+#include "resource/type/DisplayList.h"
+#include "resource/type/Matrix.h"
+#include "resource/type/Texture.h"
+#include "resource/type/Vertex.h"
 #include "soh/resource/type/SohResourceType.h"
 #include "soh/resource/type/Animation.h"
 #include "soh/resource/type/AudioSample.h"
@@ -105,6 +111,12 @@ GameInteractorSail* GameInteractorSail::Instance;
 #include "soh/resource/type/Skeleton.h"
 #include "soh/resource/type/SkeletonLimb.h"
 #include "soh/resource/type/Text.h"
+#include "resource/factory/ArrayFactory.h"
+#include "resource/factory/BlobFactory.h"
+#include "resource/factory/DisplayListFactory.h"
+#include "resource/factory/MatrixFactory.h"
+#include "resource/factory/TextureFactory.h"
+#include "resource/factory/VertexFactory.h"
 #include "soh/resource/importer/AnimationFactory.h"
 #include "soh/resource/importer/AudioSampleFactory.h"
 #include "soh/resource/importer/AudioSequenceFactory.h"
@@ -331,6 +343,15 @@ OTRGlobals::OTRGlobals() {
     SPDLOG_INFO("Starting Ship of Harkinian version {}", (char*)gBuildVersion);
 
     auto loader = context->GetResourceManager()->GetResourceLoader();
+    loader->RegisterResourceFactory(std::make_shared<LUS::ResourceFactoryBinaryTextureV0>(), RESOURCE_FORMAT_BINARY, "Texture", static_cast<uint32_t>(LUS::ResourceType::Texture), 0);
+    loader->RegisterResourceFactory(std::make_shared<LUS::ResourceFactoryBinaryTextureV1>(), RESOURCE_FORMAT_BINARY, "Texture", static_cast<uint32_t>(LUS::ResourceType::Texture), 1);
+    loader->RegisterResourceFactory(std::make_shared<LUS::ResourceFactoryBinaryVertexV0>(), RESOURCE_FORMAT_BINARY, "Vertex", static_cast<uint32_t>(LUS::ResourceType::Vertex), 0);
+    loader->RegisterResourceFactory(std::make_shared<LUS::ResourceFactoryXMLVertexV0>(), RESOURCE_FORMAT_XML, "Vertex", static_cast<uint32_t>(LUS::ResourceType::Vertex), 0);
+    loader->RegisterResourceFactory(std::make_shared<LUS::ResourceFactoryBinaryDisplayListV0>(), RESOURCE_FORMAT_BINARY, "DisplayList", static_cast<uint32_t>(LUS::ResourceType::DisplayList), 0);
+    loader->RegisterResourceFactory(std::make_shared<LUS::ResourceFactoryXMLDisplayListV0>(), RESOURCE_FORMAT_XML, "DisplayList", static_cast<uint32_t>(LUS::ResourceType::DisplayList), 0);
+    loader->RegisterResourceFactory(std::make_shared<LUS::ResourceFactoryBinaryMatrixV0>(), RESOURCE_FORMAT_BINARY, "Matrix", static_cast<uint32_t>(LUS::ResourceType::Matrix), 0);
+    loader->RegisterResourceFactory(std::make_shared<LUS::ResourceFactoryBinaryArrayV0>(), RESOURCE_FORMAT_BINARY, "Array", static_cast<uint32_t>(LUS::ResourceType::Array), 0);
+    loader->RegisterResourceFactory(std::make_shared<LUS::ResourceFactoryBinaryBlobV0>(), RESOURCE_FORMAT_BINARY, "Blob", static_cast<uint32_t>(LUS::ResourceType::Blob), 0);
     loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryAnimationV0>(), RESOURCE_FORMAT_BINARY, "Animation", static_cast<uint32_t>(SOH::ResourceType::SOH_Animation), 0);
     loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryPlayerAnimationV0>(), RESOURCE_FORMAT_BINARY, "PlayerAnimation", static_cast<uint32_t>(SOH::ResourceType::SOH_PlayerAnimation), 0);
     loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinarySceneV0>(), RESOURCE_FORMAT_BINARY, "Room", static_cast<uint32_t>(SOH::ResourceType::SOH_Room), 0); // Is room scene? maybe?
