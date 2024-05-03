@@ -22,7 +22,6 @@
 #include <time.h>
 #endif
 #include <Array.h>
-#include <stb/stb_image.h>
 #define DRMP3_IMPLEMENTATION
 #include <dr_libs/mp3.h>
 #define DRWAV_IMPLEMENTATION
