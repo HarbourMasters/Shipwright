@@ -6,6 +6,16 @@
 #include <libultraship/libultra/types.h>
 
 namespace SOH {
+
+    typedef enum {
+        /* 0 */ CODEC_ADPCM,
+        /* 1 */ CODEC_S8,
+        /* 2 */ CODEC_S16_INMEMORY,
+        /* 3 */ CODEC_SMALL_ADPCM,
+        /* 4 */ CODEC_REVERB,
+        /* 5 */ CODEC_S16
+    } SampleCodec;
+
     typedef struct {
         /* 0x00 */ uintptr_t start;
         /* 0x04 */ uintptr_t end;
@@ -19,6 +29,12 @@ namespace SOH {
         /* 0x04 */ s32 npredictors;
         /* 0x08 */ s16* book; // size 8 * order * npredictors. 8-byte aligned
     } AdpcmBook; // s
+
+    enum class AudioFormat {
+        WAV = 0,
+        MP3 = 1,
+        FLAC = 2
+    };
 
     typedef struct {
         union {
