@@ -2448,7 +2448,7 @@ extern "C" bool Randomizer_IsCheckShuffled(RandomizerCheck randomizerCheck) {
 }
 
 extern "C" GetItemEntry GetItemMystery() {
-    return { ITEM_NONE_FE, 0, 0, 0, 0, 0, 0, 0, 0, false, ITEM_FROM_NPC, ITEM_CATEGORY_JUNK, NULL, MOD_RANDOMIZER, (CustomDrawFunc)Randomizer_DrawMysteryItem };
+    return { ITEM_NONE_FE, 0, 0, 0, 0, 0, 0, ITEM_NONE_FE, 0, false, ITEM_FROM_NPC, ITEM_CATEGORY_JUNK, NULL, MOD_RANDOMIZER, (CustomDrawFunc)Randomizer_DrawMysteryItem };
 }
 
 CustomMessage Randomizer_GetCustomGetItemMessage(Player* player) {
