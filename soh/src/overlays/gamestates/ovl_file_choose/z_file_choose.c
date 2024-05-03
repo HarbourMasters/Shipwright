@@ -3016,21 +3016,6 @@ void FileChoose_LoadGame(GameState* thisx) {
 
     gSaveContext.naviTimer = 0;
 
-    // SWORDLESS LINK IS BACK BABY
-    if (CVarGetInteger("gSwordlessLink", 0) != 0)
-    {
-        if ((gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KOKIRI) &&
-            (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_MASTER) &&
-            (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_BGS) &&
-            (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KNIFE)) {
-
-            gSaveContext.equips.buttonItems[0] = ITEM_NONE;
-            swordEquipValue = (BOMSWAP16(gEquipMasks[EQUIP_TYPE_SWORD]) & gSaveContext.equips.equipment) >> (EQUIP_TYPE_SWORD * 4);
-            gSaveContext.equips.equipment &= gEquipNegMasks[EQUIP_TYPE_SWORD];
-            gSaveContext.inventory.equipment ^= (gBitFlags[swordEquipValue - 1] << BOMSWAP16(gEquipShifts[EQUIP_TYPE_SWORD]));
-        }
-    }
-
     if (IS_RANDO) {
         // Setup the modified entrance table and entrance shuffle table for rando
         Entrance_Init();
