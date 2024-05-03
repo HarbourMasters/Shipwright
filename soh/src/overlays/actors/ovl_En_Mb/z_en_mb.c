@@ -1439,7 +1439,7 @@ void EnMb_CheckColliding(EnMb* this, PlayState* play) {
                 }
             } else {
                 Actor_ApplyDamage(&this->actor);
-                if (!CVar_GetS32("gPhotosensitiveMode", 0)) {
+                if (!CVarGetInteger("gPhotosensitiveMode", 0)) {
                     Actor_SetColorFilter(&this->actor, 0x4000, 0xFA, 0, 0xC);
                 }
                 if (this->actor.params == ENMB_TYPE_CLUB) {

@@ -1376,7 +1376,7 @@ void EnGeldB_CollisionCheck(EnGeldB* this, PlayState* play) {
                     EnGeldB_SetupStunned(this);
                 }
             } else {
-                if (!CVar_GetS32("gPhotosensitiveMode", 0)) {
+                if (!CVarGetInteger("gPhotosensitiveMode", 0)) {
                     Actor_SetColorFilter(&this->actor, 0x4000, 0xFF, 0, 8);
                 }
                 if (Actor_ApplyDamage(&this->actor) == 0) {

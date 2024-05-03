@@ -1276,14 +1276,14 @@ void EnWf_UpdateDamage(EnWf* this, PlayState* play) {
                 if ((this->actor.colChkInfo.damageEffect == ENWF_DMGEFF_STUN) ||
                     (this->actor.colChkInfo.damageEffect == ENWF_DMGEFF_UNDEF)) {
                     if (this->action != WOLFOS_ACTION_STUNNED) {
-                        if (!CVar_GetS32("gPhotosensitiveMode", 0)) {
+                        if (!CVarGetInteger("gPhotosensitiveMode", 0)) {
                             Actor_SetColorFilter(&this->actor, 0, 120, 0, 80);
                         }
                         Actor_ApplyDamage(&this->actor);
                         EnWf_SetupStunned(this);
                     }
                 } else { // LIGHT_MAGIC, FIRE, NONE
-                    if (!CVar_GetS32("gPhotosensitiveMode", 0)) {
+                    if (!CVarGetInteger("gPhotosensitiveMode", 0)) {
                         Actor_SetColorFilter(&this->actor, 0x4000, 255, 0, 8);
                     }
 

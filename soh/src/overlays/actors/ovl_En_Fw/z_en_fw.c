@@ -254,7 +254,7 @@ void EnFw_Run(EnFw* this, PlayState* play) {
         Math_SmoothStepToF(&this->actor.scale.x, 0.024999999f, 0.08f, 0.6f, 0.0f);
         Actor_SetScale(&this->actor, this->actor.scale.x);
         if (this->actor.colorFilterTimer == 0) {
-            if (!CVar_GetS32("gPhotosensitiveMode", 0)) {
+            if (!CVarGetInteger("gPhotosensitiveMode", 0)) {
                 Actor_SetColorFilter(&this->actor, 0x4000, 0xC8, 0, this->explosionTimer);
             } else {
                 Actor_SetColorFilter(&this->actor, 0, 0, 0, this->explosionTimer); // Note: the explosion timer is also related to their blinking...
@@ -276,7 +276,7 @@ void EnFw_Run(EnFw* this, PlayState* play) {
         }
     } else {
         if (!(this->actor.bgCheckFlags & 1) || this->actor.velocity.y > 0.0f) {
-            if (!CVar_GetS32("gPhotosensitiveMode", 0)) {
+            if (!CVarGetInteger("gPhotosensitiveMode", 0)) {
                 Actor_SetColorFilter(&this->actor, 0x4000, 0xC8, 0, this->damageTimer);
             } else {
                 Actor_SetColorFilter(&this->actor, 0, 0, 0, this->damageTimer); // Note: the damage timer is also related to their blinking...

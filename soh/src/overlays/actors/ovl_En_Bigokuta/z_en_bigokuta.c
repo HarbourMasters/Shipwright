@@ -353,7 +353,7 @@ void func_809BD5E0(EnBigokuta* this) {
     this->unk_196 = 24;
     this->unk_19A = 0;
     this->cylinder[0].base.atFlags &= ~AT_ON;
-    if (!CVar_GetS32("gPhotosensitiveMode", 0)) {
+    if (!CVarGetInteger("gPhotosensitiveMode", 0)) {
         Actor_SetColorFilter(&this->actor, 0x4000, 255, 0, 24);
     }
     this->actionFunc = func_809BE180;

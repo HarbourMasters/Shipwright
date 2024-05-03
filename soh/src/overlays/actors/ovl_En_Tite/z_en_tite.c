@@ -861,7 +861,7 @@ void EnTite_CheckDamage(Actor* thisx, PlayState* play) {
                 // Otherwise apply damage and handle death where necessary
             } else {
                 if ((thisx->colorFilterTimer == 0) || ((thisx->colorFilterParams & 0x4000) == 0)) {
-                    if (!CVar_GetS32("gPhotosensitiveMode", 0)) {
+                    if (!CVarGetInteger("gPhotosensitiveMode", 0)) {
                         Actor_SetColorFilter(thisx, 0x4000, 0xFF, 0, 8);
                     }
                     Actor_ApplyDamage(thisx);

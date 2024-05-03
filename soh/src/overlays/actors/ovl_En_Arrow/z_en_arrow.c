@@ -315,7 +315,7 @@ void EnArrow_Fly(EnArrow* this, PlayState* play) {
             }
 
             if (this->actor.params == ARROW_NUT) {
-                if (!CVar_GetS32("gPhotosensitiveMode", 0)) {
+                if (!CVarGetInteger("gPhotosensitiveMode", 0)) {
                     iREG(50) = -1;
                 }
                 Actor_Spawn(&play->actorCtx, play, ACTOR_EN_M_FIRE1, this->actor.world.pos.x,

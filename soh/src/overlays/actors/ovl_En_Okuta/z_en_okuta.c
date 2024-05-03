@@ -247,7 +247,7 @@ void EnOkuta_SetupShoot(EnOkuta* this, PlayState* play) {
 
 void EnOkuta_SetupWaitToDie(EnOkuta* this) {
     Animation_MorphToPlayOnce(&this->skelAnime, &gOctorokHitAnim, -5.0f);
-    if (!CVar_GetS32("gPhotosensitiveMode", 0)) {
+    if (!CVarGetInteger("gPhotosensitiveMode", 0)) {
         Actor_SetColorFilter(&this->actor, 0x4000, 0xFF, 0, 0xB);
     }
     this->collider.base.acFlags &= ~AC_HIT;

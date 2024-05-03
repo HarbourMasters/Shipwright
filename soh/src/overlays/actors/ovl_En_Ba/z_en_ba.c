@@ -329,7 +329,7 @@ void func_809B7174(EnBa* this) {
     this->actor.colChkInfo.mass = MASS_IMMOVABLE;
     this->actor.speedXZ = 10.0f;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_BALINADE_HAND_DAMAGE);
-    if (!CVar_GetS32("gPhotosensitiveMode", 0)) {
+    if (!CVarGetInteger("gPhotosensitiveMode", 0)) {
         Actor_SetColorFilter(&this->actor, 0x4000, 255, 0, 12);
     }
     EnBa_SetupAction(this, EnBa_RecoilFromDamage);

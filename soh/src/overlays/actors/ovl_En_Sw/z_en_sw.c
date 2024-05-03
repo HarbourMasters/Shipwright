@@ -347,7 +347,7 @@ s32 func_80B0C9F0(EnSw* this, PlayState* play) {
         if ((this->collider.base.acFlags & 2) || phi_v1) {
             this->collider.base.acFlags &= ~2;
             this->unk_392 = 0x10;
-            if (!CVar_GetS32("gPhotosensitiveMode", 0)) {
+            if (!CVarGetInteger("gPhotosensitiveMode", 0)) {
                 Actor_SetColorFilter(&this->actor, 0x4000, 0xC8, 0, this->unk_392);
             }
 			

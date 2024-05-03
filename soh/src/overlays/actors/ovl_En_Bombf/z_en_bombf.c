@@ -397,7 +397,7 @@ void EnBombf_Update(Actor* thisx, PlayState* play) {
             }
 
             if ((this->timer < 100) && ((this->timer & (this->flashSpeedScale + 1)) != 0)) {
-                if (!CVar_GetS32("gPhotosensitiveMode", 0)) {
+                if (!CVarGetInteger("gPhotosensitiveMode", 0)) {
                     Math_SmoothStepToF(&this->flashIntensity, 150.0f, 1.0f, 150.0f / this->flashSpeedScale, 0.0f);
                 } else {
                     Math_SmoothStepToF(&this->flashIntensity, 50.0f, 1.0f, 50.0f / this->flashSpeedScale, 0.0f);

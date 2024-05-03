@@ -579,7 +579,7 @@ void func_809F7B3C(EnDodojr* this, PlayState* play) {
 
     if (this->unk_1FC != 0) {
         if (this->actor.colorFilterTimer == 0) {
-            if (CVar_GetS32("gPhotosensitiveMode", 0)) {
+            if (CVarGetInteger("gPhotosensitiveMode", 0)) {
                 Actor_SetColorFilter(&this->actor, 0x4000, 0, 0, 0); // Note: the explosion timer is also related to their blinking...
             } else {
                 Actor_SetColorFilter(&this->actor, 0x4000, 200, 0, this->unk_1FC);

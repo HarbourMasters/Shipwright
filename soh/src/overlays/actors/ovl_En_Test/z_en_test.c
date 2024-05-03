@@ -1215,7 +1215,7 @@ void func_80862154(EnTest* this) {
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_STAL_DAMAGE);
     this->unk_7C8 = 8;
     this->actor.speedXZ = -2.0f;
-    if (!CVar_GetS32("gPhotosensitiveMode", 0)) {
+    if (!CVarGetInteger("gPhotosensitiveMode", 0)) {
         Actor_SetColorFilter(&this->actor, 0x4000, 0xFF, 0, 8);
     }
     EnTest_SetupAction(this, func_808621D4);
@@ -1259,7 +1259,7 @@ void func_80862398(EnTest* this) {
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_STAL_DAMAGE);
     this->unk_7C8 = 9;
     this->actor.speedXZ = -2.0f;
-    if (!CVar_GetS32("gPhotosensitiveMode", 0)) {
+    if (!CVarGetInteger("gPhotosensitiveMode", 0)) {
         Actor_SetColorFilter(&this->actor, 0x4000, 0xFF, 0, 8);
     }
     EnTest_SetupAction(this, func_80862418);
@@ -1303,11 +1303,11 @@ void EnTest_SetupStunned(EnTest* this) {
     this->actor.speedXZ = -4.0f;
 
     if (this->lastDamageEffect == STALFOS_DMGEFF_LIGHT) {
-        if (!CVar_GetS32("gPhotosensitiveMode", 0)) {
+        if (!CVarGetInteger("gPhotosensitiveMode", 0)) {
             Actor_SetColorFilter(&this->actor, -0x8000, 0x78, 0, 0x50);
         }
     } else {
-        if (!CVar_GetS32("gPhotosensitiveMode", 0)) {
+        if (!CVarGetInteger("gPhotosensitiveMode", 0)) {
             Actor_SetColorFilter(&this->actor, 0, 0x78, 0, 0x50);
         }
 

@@ -218,7 +218,7 @@ void EnDekunuts_SetupBeDamaged(EnDekunuts* this) {
     this->actor.speedXZ = 10.0f;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_NUTS_DAMAGE);
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_NUTS_CUTBODY);
-    if (!CVar_GetS32("gPhotosensitiveMode", 0)) {
+    if (!CVarGetInteger("gPhotosensitiveMode", 0)) {
         Actor_SetColorFilter(&this->actor, 0x4000, 0xFF, 0, Animation_GetLastFrame(&gDekuNutsDamageAnim));
     } else {
         Actor_SetColorFilter(&this->actor, 0, 0, 0, Animation_GetLastFrame(&gDekuNutsDamageAnim));
