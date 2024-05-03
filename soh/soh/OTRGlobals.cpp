@@ -22,10 +22,6 @@
 #include <time.h>
 #endif
 #include <Array.h>
-#define DRMP3_IMPLEMENTATION
-#include <dr_libs/mp3.h>
-#define DRWAV_IMPLEMENTATION
-#include <dr_libs/wav.h>
 #include <AudioPlayer.h>
 #include "Enhancements/speechsynthesizer/SpeechSynthesizer.h"
 #include "Enhancements/controls/SohInputEditorWindow.h"
