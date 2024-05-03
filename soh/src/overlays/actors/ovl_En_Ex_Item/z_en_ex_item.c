@@ -521,8 +521,7 @@ void EnExItem_DrawItems(EnExItem* this, PlayState* play) {
                 break;
             case EXITEM_BOMBCHUS_BOWLING:
             case EXITEM_BOMBCHUS_COUNTER:
-                randoGetItem = (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0) && Randomizer_IsCheckShuffled(RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS))
-                                ? GetItemMystery() : Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS, GI_BOMBCHUS_10);
+                randoGetItem = Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS, GI_BOMBCHUS_10);
                 break;
             case EXITEM_BULLET_BAG:
                 randoGetItem = (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0) && Randomizer_IsCheckShuffled(RC_LW_TARGET_IN_WOODS))
