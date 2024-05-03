@@ -1,6 +1,6 @@
 #include "valueViewer.h"
 #include "../../UIWidgets.hpp"
-#include "soh/OTRglobals.h"
+#include "soh/OTRGlobals.h"
 
 extern "C" {
 #include <z64.h>
