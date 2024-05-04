@@ -1439,28 +1439,10 @@ void func_80A781CC(Actor* thisx, PlayState* play) {
     if (!Play_InCsMode(play)) {
         this->actor.update = EnIk_Update;
         this->actor.draw = EnIk_Draw;
-        // Don't initiate nabooru defeat CS in rando
-        if (!(IS_RANDO)) {
+        if (GameInteractor_Should(GI_VB_NABOORU_KNUCKLE_DEATH_SCENE, true, this)) {
             Cutscene_SetSegment(play, gSpiritBossNabooruKnuckleDefeatCs);
             gSaveContext.cutsceneTrigger = 1;
             Actor_SetScale(&this->actor, 0.01f);
-        } else {
-        // Because no CS in rando, we hide the death of the knuckle by spawning flames and kill the actor
-            if ((this->actor.colChkInfo.health <= 10)) {
-                s32 i;
-                Vec3f pos;
-                Vec3f sp7C = { 0.0f, 0.5f, 0.0f };
-                int flameAmount = 100;
-
-                for (i = flameAmount; i >= 0; i--) {
-                    pos.x = this->actor.world.pos.x + Rand_CenteredFloat(120.0f);
-                    pos.z = this->actor.world.pos.z + Rand_CenteredFloat(120.0f);
-                    pos.y = this->actor.world.pos.y + 20.0f + Rand_CenteredFloat(120.0f);
-                    EffectSsDeadDb_Spawn(play, &pos, &sp7C, &sp7C, 100, 0, 255, 255, 255, 255, 0, 0, 255, 1, 9,
-                                            true);
-                }
-                Actor_Kill(&this->actor);
-            }
         }
         Flags_SetEventChkInf(EVENTCHKINF_FINISHED_NABOORU_BATTLE);
         func_80A7735C(this, play);
