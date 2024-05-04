@@ -420,6 +420,7 @@ void GameInteractor_SetTriforceHuntCreditsWarpActive(uint8_t state);
 
 #ifdef __cplusplus
 #include <thread>
+#include <unordered_map>
 #include <vector>
 #include <functional>
 #include <string>
