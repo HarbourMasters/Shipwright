@@ -109,7 +109,7 @@ namespace SohGui {
 
 
     // MARK: - Delegates
-
+    
     std::shared_ptr<SohMenuBar> mSohMenuBar;
 
     std::shared_ptr<Ship::GuiWindow> mConsoleWindow;
@@ -133,6 +133,7 @@ namespace SohGui {
     std::shared_ptr<ItemTrackerSettingsWindow> mItemTrackerSettingsWindow;
     std::shared_ptr<ItemTrackerWindow> mItemTrackerWindow;
     std::shared_ptr<RandomizerSettingsWindow> mRandomizerSettingsWindow;
+    std::shared_ptr<TimeSplitWindow> mTimeSplitWindow;
     std::shared_ptr<AdvancedResolutionSettings::AdvancedResolutionSettingsWindow> mAdvancedResolutionSettingsWindow;
     std::shared_ptr<SohModalWindow> mModalWindow;
 
@@ -201,6 +202,8 @@ namespace SohGui {
         gui->AddGuiWindow(mRandomizerSettingsWindow);
         mAdvancedResolutionSettingsWindow = std::make_shared<AdvancedResolutionSettings::AdvancedResolutionSettingsWindow>(CVAR_WINDOW("AdvancedResolutionEditor"), "Advanced Resolution Settings");
         gui->AddGuiWindow(mAdvancedResolutionSettingsWindow);
+        mTimeSplitWindow = std::make_shared<TimeSplitWindow>(CVAR_WINDOW("TimeSplitEnabled"), "Time Splits");
+        gui->AddGuiWindow(mTimeSplitWindow);
         mModalWindow = std::make_shared<SohModalWindow>("gOpenWindows.modalWindowEnabled", "Modal Window");
         gui->AddGuiWindow(mModalWindow);
         mModalWindow->Show();
@@ -228,6 +231,7 @@ namespace SohGui {
         mStatsWindow = nullptr;
         mConsoleWindow = nullptr;
         mSohMenuBar = nullptr;
+        mTimeSplitWindow = nullptr;
         mInputViewer = nullptr;
         mInputViewerSettings = nullptr;
     }
