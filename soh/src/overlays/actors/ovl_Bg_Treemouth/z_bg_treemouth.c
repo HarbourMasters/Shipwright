@@ -154,7 +154,7 @@ void func_808BC8B8(BgTreemouth* this, PlayState* play) {
                 }
             } else if (Actor_IsFacingAndNearPlayer(&this->dyna.actor, 1658.0f, 0x4E20)) {
                 Flags_SetEventChkInf(EVENTCHKINF_MET_DEKU_TREE);
-                if (GameInteractor_Should(GI_VB_PLAY_DEKU_TREE_INTRO_CS, true, this)) {
+                if (GameInteractor_Should(VB_PLAY_DEKU_TREE_INTRO_CS, true, this)) {
                     play->csCtx.segment = D_808BCE20;
                     gSaveContext.cutsceneTrigger = 1;
                     BgTreemouth_SetupAction(this, func_808BC9EC);

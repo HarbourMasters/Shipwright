@@ -386,7 +386,7 @@ void EnSyatekiMan_EndGame(EnSyatekiMan* this, PlayState* play) {
                             this->getItemId = GI_RUPEE_PURPLE;
                         }
                     }
-                    if (GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_SHOOTING_GALLERY, true, this)) {
+                    if (GameInteractor_Should(VB_GIVE_ITEM_FROM_SHOOTING_GALLERY, true, this)) {
                         Actor_OfferGetItem(&this->actor, play, this->getItemId, 2000.0f, 1000.0f);
                     }
                     this->actionFunc = EnSyatekiMan_GivePrize;
@@ -418,7 +418,7 @@ void EnSyatekiMan_EndGame(EnSyatekiMan* this, PlayState* play) {
 
 void EnSyatekiMan_GivePrize(EnSyatekiMan* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
-    if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_SHOOTING_GALLERY, true, this)) {
+    if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(VB_GIVE_ITEM_FROM_SHOOTING_GALLERY, true, this)) {
         this->actionFunc = EnSyatekiMan_FinishPrize;
     } else { 
         Actor_OfferGetItem(&this->actor, play, this->getItemId, 2000.0f, 1000.0f);
@@ -427,12 +427,12 @@ void EnSyatekiMan_GivePrize(EnSyatekiMan* this, PlayState* play) {
 
 void EnSyatekiMan_FinishPrize(EnSyatekiMan* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
-    if (((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) || !GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_SHOOTING_GALLERY, true, this)) {
+    if (((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) || !GameInteractor_Should(VB_GIVE_ITEM_FROM_SHOOTING_GALLERY, true, this)) {
         // "Successful completion"
         osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ 正常終了 ☆☆☆☆☆ \n" VT_RST);
         if (!LINK_IS_ADULT) {
             Flags_SetItemGetInf(ITEMGETINF_0D);
-        } else if (GameInteractor_Should(GI_VB_BE_ELIGIBLE_FOR_ADULT_SHOOTING_GAME_REWARD, (this->getItemId == GI_QUIVER_40) || (this->getItemId == GI_QUIVER_50), this)) {
+        } else if (GameInteractor_Should(VB_BE_ELIGIBLE_FOR_ADULT_SHOOTING_GAME_REWARD, (this->getItemId == GI_QUIVER_40) || (this->getItemId == GI_QUIVER_50), this)) {
             Flags_SetItemGetInf(ITEMGETINF_0E);
         }
         this->gameResult = SYATEKI_RESULT_NONE;

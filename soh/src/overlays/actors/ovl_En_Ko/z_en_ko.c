@@ -1027,7 +1027,7 @@ s32 EnKo_CanSpawn(EnKo* this, PlayState* play) {
             }
 
         case SCENE_LOST_WOODS:
-            return GameInteractor_Should(GI_VB_SPAWN_LW_FADO, (
+            return GameInteractor_Should(VB_SPAWN_LW_FADO, (
                 (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_ODD_POTION) ? true : false
             ), this);
         default:
@@ -1175,7 +1175,7 @@ void func_80A99048(EnKo* this, PlayState* play) {
         Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_ELF, this->actor.world.pos.x,
                            this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 3);
         if (ENKO_TYPE == ENKO_TYPE_CHILD_3) {
-            if (!GameInteractor_Should(GI_VB_OPEN_KOKIRI_FOREST, CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD), this)) {
+            if (!GameInteractor_Should(VB_OPEN_KOKIRI_FOREST, CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD), this)) {
                 this->collider.dim.height += 200;
                 this->actionFunc = func_80A995CC;
                 return;
@@ -1211,7 +1211,7 @@ void func_80A99438(EnKo* this, PlayState* play) {
 }
 
 void func_80A99504(EnKo* this, PlayState* play) {
-    if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(GI_VB_TRADE_ODD_POTION, true, this)) {
+    if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(VB_TRADE_ODD_POTION, true, this)) {
         this->actor.parent = NULL;
         this->actionFunc = func_80A99560;
     } else {

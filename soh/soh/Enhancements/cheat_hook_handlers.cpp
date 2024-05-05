@@ -14,13 +14,13 @@ extern PlayState* gPlayState;
 
 void CheatsOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void* opt) {
     switch (id) {
-        case GI_VB_DEKU_STICK_BREAK: {
+        case VB_DEKU_STICK_BREAK: {
             if (CVarGetInteger("gDekuStickCheat", DEKU_STICK_NORMAL) != DEKU_STICK_NORMAL) {
                 *should = false;
             }
             break;
         }
-        case GI_VB_DEKU_STICK_BE_ON_FIRE: {
+        case VB_DEKU_STICK_BE_ON_FIRE: {
             if (CVarGetInteger("gDekuStickCheat", DEKU_STICK_NORMAL) == DEKU_STICK_UNBREAKABLE_AND_ALWAYS_ON_FIRE) {
                 Player* player = GET_PLAYER(gPlayState);
                 player->unk_860 = 200;    // Keeps the stick's flame lit
@@ -29,13 +29,13 @@ void CheatsOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void* op
             }
             break;
         }
-        case GI_VB_DEKU_STICK_BURN_OUT: {
+        case VB_DEKU_STICK_BURN_OUT: {
             if (CVarGetInteger("gDekuStickCheat", DEKU_STICK_NORMAL) != DEKU_STICK_NORMAL) {
                 *should = false;
             }
             break;
         }
-        case GI_VB_DEKU_STICK_BURN_DOWN: {
+        case VB_DEKU_STICK_BURN_DOWN: {
             if (CVarGetInteger("gDekuStickCheat", DEKU_STICK_NORMAL) != DEKU_STICK_NORMAL) {
                 *should = false;
             }

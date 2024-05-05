@@ -1108,7 +1108,7 @@ s32 EnZl4_CsMakePlan(EnZl4* this, PlayState* play) {
                 Camera_ChangeSetting(GET_ACTIVE_CAM(play), 1);
                 this->talkState = 7;
                 play->talkWithPlayer(play, &this->actor);
-                if (GameInteractor_Should(GI_VB_GIVE_ITEM_ZELDAS_LETTER, true, NULL)) {
+                if (GameInteractor_Should(VB_GIVE_ITEM_ZELDAS_LETTER, true, NULL)) {
                     Actor_OfferGetItem(&this->actor, play, GI_LETTER_ZELDA, fabsf(this->actor.xzDistToPlayer) + 1.0f,
                                 fabsf(this->actor.yDistToPlayer) + 1.0f);
                 }
@@ -1117,7 +1117,7 @@ s32 EnZl4_CsMakePlan(EnZl4* this, PlayState* play) {
             }
             break;
         case 7:
-            if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(GI_VB_GIVE_ITEM_ZELDAS_LETTER, true, NULL)) {
+            if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(VB_GIVE_ITEM_ZELDAS_LETTER, true, NULL)) {
                 Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ZL4_ANIM_0);
                 this->talkState++;
             } else {

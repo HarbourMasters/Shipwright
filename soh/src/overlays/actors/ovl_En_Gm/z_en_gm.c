@@ -97,7 +97,7 @@ void EnGm_Destroy(Actor* thisx, PlayState* play) {
 s32 func_80A3D7C8(void) {
     if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
         return 0;
-    } else if (GameInteractor_Should(GI_VB_BE_ELIGIBLE_FOR_GIANTS_KNIFE_PURCHASE, (
+    } else if (GameInteractor_Should(VB_BE_ELIGIBLE_FOR_GIANTS_KNIFE_PURCHASE, (
         !CHECK_OWNED_EQUIP_ALT(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_BIGGORON) // Don't have giant's knife
     ), NULL)) {
         return 1;
@@ -249,7 +249,7 @@ void EnGm_ProcessChoiceIndex(EnGm* this, PlayState* play) {
                     Message_ContinueTextbox(play, 0xC8);
                     this->actionFunc = func_80A3DD7C;
                 } else {
-                    if (GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_MEDIGORON, true, this)) {
+                    if (GameInteractor_Should(VB_GIVE_ITEM_FROM_MEDIGORON, true, this)) {
                         Actor_OfferGetItem(&this->actor, play, GI_SWORD_KNIFE, 415.0f, 10.0f);
                     }
 
@@ -265,7 +265,7 @@ void EnGm_ProcessChoiceIndex(EnGm* this, PlayState* play) {
 }
 
 void func_80A3DF00(EnGm* this, PlayState* play) {
-    if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_MEDIGORON, true, this)) {
+    if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(VB_GIVE_ITEM_FROM_MEDIGORON, true, this)) {
         Flags_SetRandomizerInf(RAND_INF_MERCHANTS_MEDIGORON);
         this->actor.parent = NULL;
         this->actionFunc = func_80A3DF60;

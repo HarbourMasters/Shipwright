@@ -283,7 +283,7 @@ s32 EnOwl_CheckInitTalk(EnOwl* this, PlayState* play, u16 textId, f32 targetDist
     } else {
         this->actor.textId = textId;
         distCheck = (flags & 2) ? 200.0f : 1000.0f;
-        if (GameInteractor_Should(GI_VB_OWL_INTERACTION, this->actor.xzDistToPlayer < targetDist, this)) {
+        if (GameInteractor_Should(VB_OWL_INTERACTION, this->actor.xzDistToPlayer < targetDist, this)) {
             this->actor.flags |= ACTOR_FLAG_WILL_TALK;
             func_8002F1C4(&this->actor, play, targetDist, distCheck, 0);
         }

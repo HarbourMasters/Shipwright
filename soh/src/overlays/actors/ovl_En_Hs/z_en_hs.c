@@ -79,7 +79,7 @@ void EnHs_Init(Actor* thisx, PlayState* play) {
         // "chicken shop (adult era)"
         osSyncPrintf(VT_FGCOL(CYAN) " ヒヨコの店(大人の時) \n" VT_RST);
         func_80A6E3A0(this, func_80A6E9AC);
-        if (GameInteractor_Should(GI_VB_DESPAWN_GROG, Flags_GetItemGetInf(ITEMGETINF_30), this)) {
+        if (GameInteractor_Should(VB_DESPAWN_GROG, Flags_GetItemGetInf(ITEMGETINF_30), this)) {
             // "chicken shop closed"
             osSyncPrintf(VT_FGCOL(CYAN) " ヒヨコ屋閉店 \n" VT_RST);
             Actor_Kill(&this->actor);
@@ -130,7 +130,7 @@ void func_80A6E5EC(EnHs* this, PlayState* play) {
 
 void func_80A6E630(EnHs* this, PlayState* play) {
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) {
-        if (GameInteractor_Should(GI_VB_TRADE_TIMER_ODD_MUSHROOM, true, NULL)) {
+        if (GameInteractor_Should(VB_TRADE_TIMER_ODD_MUSHROOM, true, NULL)) {
             func_80088AA0(180);
             gSaveContext.eventInf[1] &= ~1;
         }
@@ -157,7 +157,7 @@ void func_80A6E70C(EnHs* this, PlayState* play) {
 }
 
 void func_80A6E740(EnHs* this, PlayState* play) {
-    if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(GI_VB_TRADE_COJIRO, true, this)) {
+    if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(VB_TRADE_COJIRO, true, this)) {
         this->actor.parent = NULL;
         Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_LW_TRADE_COJIRO);
         func_80A6E3A0(this, func_80A6E630);
@@ -173,7 +173,7 @@ void func_80A6E7BC(EnHs* this, PlayState* play) {
         switch (play->msgCtx.choiceIndex) {
             case 0:
                 func_80A6E3A0(this, func_80A6E740);
-                if (GameInteractor_Should(GI_VB_TRADE_COJIRO, true, this)) {
+                if (GameInteractor_Should(VB_TRADE_COJIRO, true, this)) {
                     Actor_OfferGetItem(&this->actor, play, GI_ODD_MUSHROOM, 10000.0f, 50.0f);
                 }
                 break;

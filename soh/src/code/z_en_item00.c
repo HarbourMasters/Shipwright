@@ -360,7 +360,7 @@ void EnItem00_Init(Actor* thisx, PlayState* play) {
 
     this->actor.params &= 0xFF;
 
-    if (GameInteractor_Should(GI_VB_ITEM00_DESPAWN, Flags_GetCollectible(play, this->collectibleFlag), this)) {
+    if (GameInteractor_Should(VB_ITEM00_DESPAWN, Flags_GetCollectible(play, this->collectibleFlag), this)) {
         Actor_Kill(&this->actor);
         return;
     }
@@ -512,7 +512,7 @@ void EnItem00_Init(Actor* thisx, PlayState* play) {
     this->actor.velocity.y = 0.0f;
     this->actor.gravity = 0.0f;
 
-    if (!GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_ITEM_00, true, this)) {
+    if (!GameInteractor_Should(VB_GIVE_ITEM_FROM_ITEM_00, true, this)) {
         return;
     }
 
@@ -866,7 +866,7 @@ void EnItem00_Update(Actor* thisx, PlayState* play) {
         return;
     }
 
-    if (!GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_ITEM_00, true, this)) {
+    if (!GameInteractor_Should(VB_GIVE_ITEM_FROM_ITEM_00, true, this)) {
         return;
     }
 

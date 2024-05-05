@@ -195,7 +195,7 @@ void func_80B3A3D4(EnWonderTalk2* this, PlayState* play) {
                 this->unk_15A = true;
             }
             this->actor.flags &= ~(ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_UPDATE_WHILE_CULLED);
-            if (GameInteractor_Should(GI_VB_WONDER_TALK, true, this)) {
+            if (GameInteractor_Should(VB_WONDER_TALK, true, this)) {
                 Player_SetCsActionWithHaltedActors(play, NULL, 7);
             }
             this->unk_156 = true;
@@ -255,7 +255,7 @@ void func_80B3A4F8(EnWonderTalk2* this, PlayState* play) {
             }
             this->unk_158 = 0;
             if (!this->unk_156) {
-                if (GameInteractor_Should(GI_VB_WONDER_TALK, true, this)) {
+                if (GameInteractor_Should(VB_WONDER_TALK, true, this)) {
                     Message_StartTextbox(play, this->actor.textId, NULL);
                     Player_SetCsActionWithHaltedActors(play, NULL, 8);
                 }

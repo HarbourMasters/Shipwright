@@ -198,7 +198,7 @@ void BgDyYoseizo_CheckMagicAcquired(BgDyYoseizo* this, PlayState* play) {
             }
         }
 
-        if (!GameInteractor_Should(GI_VB_BE_ELIGIBLE_FOR_GREAT_FAIRY_REWARD, isEligible, this)) {
+        if (!GameInteractor_Should(VB_BE_ELIGIBLE_FOR_GREAT_FAIRY_REWARD, isEligible, this)) {
             Actor_Kill(&this->actor);
             return;
         }

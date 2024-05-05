@@ -117,7 +117,7 @@ void func_808BAF40(BgTokiSwd* this, PlayState* play) {
         Actor_IsFacingAndNearPlayer(&this->actor, 800.0f, 0x7530) && !Play_InCsMode(play)) {
         Flags_SetEventChkInf(EVENTCHKINF_ENTERED_MASTER_SWORD_CHAMBER);
         s32 flag = EVENTCHKINF_ENTERED_MASTER_SWORD_CHAMBER;
-        if (GameInteractor_Should(GI_VB_PLAY_ENTRANCE_CS, true, &flag)) {
+        if (GameInteractor_Should(VB_PLAY_ENTRANCE_CS, true, &flag)) {
             play->csCtx.segment = D_808BBD90;
             gSaveContext.cutsceneTrigger = 1;
         }
@@ -126,7 +126,7 @@ void func_808BAF40(BgTokiSwd* this, PlayState* play) {
     if (!LINK_IS_ADULT || (Flags_GetEventChkInf(EVENTCHKINF_LEARNED_PRELUDE_OF_LIGHT) && !IS_RANDO) || IS_RANDO) {
         if (Actor_HasParent(&this->actor, play)) {
             if (!LINK_IS_ADULT) {
-                 if (GameInteractor_Should(GI_VB_GIVE_ITEM_MASTER_SWORD, true, NULL)) {
+                 if (GameInteractor_Should(VB_GIVE_ITEM_MASTER_SWORD, true, NULL)) {
                     Item_Give(play, ITEM_SWORD_MASTER);
                  }
                 play->csCtx.segment = D_808BB2F0;
