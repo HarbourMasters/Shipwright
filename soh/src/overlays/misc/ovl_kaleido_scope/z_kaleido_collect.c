@@ -103,7 +103,7 @@ void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
     s16 pad2;
     s16 phi_s0_2;
     s16 sp208[3];
-    bool dpad = CVarGetInteger("gDpadPause", 0);
+    bool dpad = CVarGetInteger(CVAR_SETTING("DPadOnPause"), 0);
 
     OPEN_DISPS(gfxCtx);
 

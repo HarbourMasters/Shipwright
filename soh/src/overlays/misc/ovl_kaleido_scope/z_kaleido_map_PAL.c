@@ -54,7 +54,7 @@ void KaleidoScope_DrawDungeonMap(PlayState* play, GraphicsContext* gfxCtx) {
     s16 stepG;
     s16 stepB;
     u16 rgba16;
-    bool dpad = CVarGetInteger("gDpadPause", 0);
+    bool dpad = CVarGetInteger(CVAR_SETTING("DPadOnPause"), 0);
 
     OPEN_DISPS(gfxCtx);
 
@@ -347,7 +347,7 @@ void KaleidoScope_DrawDungeonMap(PlayState* play, GraphicsContext* gfxCtx) {
     gDPLoadTLUT_pal16(POLY_KAL_DISP++, 0, interfaceCtx->mapPalettesPulse[palettePulseIdx]);
     gDPSetTextureLUT(POLY_KAL_DISP++, G_TT_RGBA16);
 
-    u8 mirroredWorld = CVarGetInteger("gMirroredWorld", 0);
+    u8 mirroredWorld = CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0);
     u8 mirrorMode = mirroredWorld ? G_TX_MIRROR : G_TX_NOMIRROR;
     // Offset the U value of each vertex to be in the mirror boundary for the map textures
     if (mirroredWorld) {
@@ -443,8 +443,8 @@ void KaleidoScope_DrawWorldMap(PlayState* play, GraphicsContext* gfxCtx) {
     s16 stepR;
     s16 stepG;
     s16 stepB;
-    bool dpad = CVarGetInteger("gDpadPause", 0);
-    u8 mirroredWorld = CVarGetInteger("gMirroredWorld", 0);
+    bool dpad = CVarGetInteger(CVAR_SETTING("DPadOnPause"), 0);
+    u8 mirroredWorld = CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0);
     u8 mirrorMode = mirroredWorld ? G_TX_MIRROR : G_TX_NOMIRROR;
 
     OPEN_DISPS(gfxCtx);

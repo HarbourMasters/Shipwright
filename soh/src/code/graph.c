@@ -290,7 +290,7 @@ void Graph_Update(GraphicsContext* gfxCtx, GameState* gameState) {
 
     OPEN_DISPS(gfxCtx);
 
-    if (CVarGetInteger("gValueViewer.EnablePrinting", 0)) {
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ValueViewerEnablePrinting"), 0)) {
         Gfx* gfx;
         Gfx* polyOpa;
         GfxPrint printer;

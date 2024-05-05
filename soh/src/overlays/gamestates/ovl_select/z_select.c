@@ -45,9 +45,9 @@ void Select_LoadGame(SelectContext* this, s32 entranceIndex) {
     }
 
     if (this->isBetterWarp) {
-        CVarSetInteger("gBetterDebugWarpScreenCurrentScene", this->currentScene);
-        CVarSetInteger("gBetterDebugWarpScreenTopDisplayedScene", this->topDisplayedScene);
-        CVarSetInteger("gBetterDebugWarpScreenPageDownIndex", this->pageDownIndex);
+        CVarSetInteger(CVAR_GENERAL("BetterDebugWarpScreenCurrentScene"), this->currentScene);
+        CVarSetInteger(CVAR_GENERAL("BetterDebugWarpScreenTopDisplayedScene"), this->topDisplayedScene);
+        CVarSetInteger(CVAR_GENERAL("BetterDebugWarpScreenPageDownIndex"), this->pageDownIndex);
         CVarSave();
 
         if (ResourceMgr_GameHasMasterQuest() && ResourceMgr_GameHasOriginal()) {
@@ -57,11 +57,11 @@ void Select_LoadGame(SelectContext* this, s32 entranceIndex) {
                 s16 scene = gEntranceTable[entrancePair.entranceIndex].scene;
                 u8 isEntranceDefaultMQ = ResourceMgr_IsSceneMasterQuest(scene);
                 if (!isEntranceDefaultMQ && this->opt) { // Force vanilla for default MQ scene
-                    CVarSetInteger("gBetterDebugWarpScreenMQMode", WARP_MODE_OVERRIDE_MQ_AS_VANILLA);
-                    CVarSetInteger("gBetterDebugWarpScreenMQModeScene", scene);
+                    CVarSetInteger(CVAR_GENERAL("BetterDebugWarpScreenMQMode"), WARP_MODE_OVERRIDE_MQ_AS_VANILLA);
+                    CVarSetInteger(CVAR_GENERAL("BetterDebugWarpScreenMQModeScene"), scene);
                 } else if (isEntranceDefaultMQ && !this->opt) { // Force MQ for default vanilla scene
-                    CVarSetInteger("gBetterDebugWarpScreenMQMode", WARP_MODE_OVERRIDE_VANILLA_AS_MQ);
-                    CVarSetInteger("gBetterDebugWarpScreenMQModeScene", scene);
+                    CVarSetInteger(CVAR_GENERAL("BetterDebugWarpScreenMQMode"), WARP_MODE_OVERRIDE_VANILLA_AS_MQ);
+                    CVarSetInteger(CVAR_GENERAL("BetterDebugWarpScreenMQModeScene"), scene);
                 }
             }
         }
@@ -111,9 +111,9 @@ void Select_Grotto_LoadGame(SelectContext* this, s32 grottoIndex) {
     }
 
     if (this->isBetterWarp) {
-        CVarSetInteger("gBetterDebugWarpScreenCurrentScene", this->currentScene);
-        CVarSetInteger("gBetterDebugWarpScreenTopDisplayedScene", this->topDisplayedScene);
-        CVarSetInteger("gBetterDebugWarpScreenPageDownIndex", this->pageDownIndex);
+        CVarSetInteger(CVAR_GENERAL("BetterDebugWarpScreenCurrentScene"), this->currentScene);
+        CVarSetInteger(CVAR_GENERAL("BetterDebugWarpScreenTopDisplayedScene"), this->topDisplayedScene);
+        CVarSetInteger(CVAR_GENERAL("BetterDebugWarpScreenPageDownIndex"), this->pageDownIndex);
         CVarSave();
     }
 
@@ -1564,13 +1564,13 @@ void Select_SwitchBetterWarpMode(SelectContext* this, u8 isBetterWarpMode) {
     gSaveContext.dayTime = 0x8000;
 
     if (isBetterWarpMode) {
-        s32 currScene = CVarGetInteger("gBetterDebugWarpScreenCurrentScene", 0);
+        s32 currScene = CVarGetInteger(CVAR_GENERAL("BetterDebugWarpScreenCurrentScene"), 0);
         this->count = ARRAY_COUNT(sBetterScenes);
 
         if (currScene >= 0 && currScene < this->count) {
             this->currentScene = currScene;
-            this->topDisplayedScene = CVarGetInteger("gBetterDebugWarpScreenTopDisplayedScene", 0);
-            this->pageDownIndex = CVarGetInteger("gBetterDebugWarpScreenPageDownIndex", 0);
+            this->topDisplayedScene = CVarGetInteger(CVAR_GENERAL("BetterDebugWarpScreenTopDisplayedScene"), 0);
+            this->pageDownIndex = CVarGetInteger(CVAR_GENERAL("BetterDebugWarpScreenPageDownIndex"), 0);
 
             BetterSceneSelectEntrancePair entrancePair = this->betterScenes[this->currentScene].entrancePairs[this->pageDownIndex];
             if (entrancePair.canBeMQ && ResourceMgr_IsSceneMasterQuest(gEntranceTable[entrancePair.entranceIndex].scene)) {
@@ -1637,7 +1637,7 @@ void Select_Init(GameState* thisx) {
     gSaveContext.nightFlag = 0;
     gSaveContext.dayTime = 0x8000;
 
-    CVarClear("gBetterDebugWarpScreenMQMode");
-    CVarClear("gBetterDebugWarpScreenMQModeScene");
+    CVarClear(CVAR_GENERAL("BetterDebugWarpScreenMQMode"));
+    CVarClear(CVAR_GENERAL("BetterDebugWarpScreenMQModeScene"));
     Select_SwitchBetterWarpMode(this, CVarGetInteger(CVAR_DEVELOPER_TOOLS("BetterDebugWarpScreen"), 0));
 }

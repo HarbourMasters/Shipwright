@@ -91,7 +91,7 @@ void DrawNameTag(PlayState* play, const NameTag* nameTag) {
     // Set position, billboard effect, scale (with mirror mode), then center nametag
     Matrix_Translate(nameTag->actor->world.pos.x, posY, nameTag->actor->world.pos.z, MTXMODE_NEW);
     Matrix_ReplaceRotation(&play->billboardMtxF);
-    Matrix_Scale(scale * (CVarGetInteger("gMirroredWorld", 0) ? -1 : 1), -scale, 1.0f, MTXMODE_APPLY);
+    Matrix_Scale(scale * (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0) ? -1 : 1), -scale, 1.0f, MTXMODE_APPLY);
     Matrix_Translate(-(float)nameTag->width / 2, -nameTag->height, 0, MTXMODE_APPLY);
     Matrix_ToMtx(nameTag->mtx, (char*)__FILE__, __LINE__);
 

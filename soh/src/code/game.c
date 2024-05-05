@@ -329,7 +329,7 @@ void GameState_Update(GameState* gameState) {
         func_800C49F4(gfxCtx);
     }
 
-    gSaveContext.language = CVarGetInteger("gLanguages", LANGUAGE_ENG);
+    gSaveContext.language = CVarGetInteger(CVAR_SETTING("Languages"), LANGUAGE_ENG);
 
     GameInteractor_ExecuteOnGameFrameUpdate();
     gameState->frames++;
