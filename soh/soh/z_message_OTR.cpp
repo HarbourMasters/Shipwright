@@ -137,19 +137,19 @@ extern "C" void OTRMessage_Init()
     CustomMessageManager::Instance->AddCustomMessageTable(customMessageTableID);
     CustomMessageManager::Instance->CreateGetItemMessage(
         customMessageTableID, (GetItemID)TEXT_GS_NO_FREEZE, ITEM_SKULL_TOKEN,
-        CustomMessage("You got a %rGold Skulltula Token%w!&You've collected %r{{gsCount}}%w tokens&in total!\x0E\x3C",
-                      "Ein %rGoldenes Skulltula-Symbol%w!&Du hast nun insgesamt %r{{gsCount}}&%wGoldene "
+        CustomMessage("You got a %rGold Skulltula Token%w!&You've collected %r[[gsCount]]%w tokens&in total!\x0E\x3C",
+                      "Ein %rGoldenes Skulltula-Symbol%w!&Du hast nun insgesamt %r[[gsCount]]&%wGoldene "
                       "Skulltula-Symbole&gesammelt!\x0E\x3C",
-                      "Vous obtenez un %rSymbole de&Skulltula d'or%w! Vous avez&collecté %r{{gsCount}}%w symboles en "
+                      "Vous obtenez un %rSymbole de&Skulltula d'or%w! Vous avez&collecté %r[[gsCount]]%w symboles en "
                       "tout!\x0E\x3C",
                       TEXTBOX_TYPE_BLUE));
     CustomMessageManager::Instance->CreateGetItemMessage(
         customMessageTableID, (GetItemID)TEXT_GS_FREEZE, ITEM_SKULL_TOKEN,
         CustomMessage(
-            "You got a %rGold Skulltula Token%w!&You've collected %r{{gsCount}}%w tokens&in total!",
-            "Ein %rGoldenes Skulltula-Symbol%w!&Du hast nun insgesamt %r{{gsCount}}&%wGoldene "
+            "You got a %rGold Skulltula Token%w!&You've collected %r[[gsCount]]%w tokens&in total!",
+            "Ein %rGoldenes Skulltula-Symbol%w!&Du hast nun insgesamt %r[[gsCount]]&%wGoldene "
             "Skulltula-Symbole&gesammelt!",
-            "Vous obtenez un %rSymbole de&Skulltula d'or%w! Vous avez&collecté %r{{gsCount}}%w symboles en tout!",
+            "Vous obtenez un %rSymbole de&Skulltula d'or%w! Vous avez&collecté %r[[gsCount]]%w symboles en tout!",
             TEXTBOX_TYPE_BLUE));
     CustomMessageManager::Instance->CreateMessage(
         customMessageTableID, TEXT_BUY_BOMBCHU_10_DESC,
@@ -168,14 +168,14 @@ extern "C" void OTRMessage_Init()
     CustomMessageManager::Instance->CreateGetItemMessage(
         customMessageTableID, (GetItemID)TEXT_HEART_CONTAINER, ITEM_HEART_CONTAINER,
         CustomMessage(
-            "You got a %rHeart Container%w!&You've collected %r{{heartContainerCount}}%w containers&in total!",
-            "Ein %rHerzcontainer%w!&Du hast nun insgesamt %r{{heartContainerCount}}%w&Herzcontainer gesammelt!",
-            "Vous obtenez un %rCoeur&d'Energie%w! Vous en avez&collecté %r{{heartContainerCount}}%w en tout!"));
+            "You got a %rHeart Container%w!&You've collected %r[[heartContainerCount]]%w containers&in total!",
+            "Ein %rHerzcontainer%w!&Du hast nun insgesamt %r[[heartContainerCount]]%w&Herzcontainer gesammelt!",
+            "Vous obtenez un %rCoeur&d'Energie%w! Vous en avez&collecté %r[[heartContainerCount]]%w en tout!"));
     CustomMessageManager::Instance->CreateGetItemMessage(
         customMessageTableID, (GetItemID)TEXT_HEART_PIECE, ITEM_HEART_PIECE,
-        CustomMessage("You got a %rHeart Piece%w!&You've collected %r{{heartPieceCount}}%w pieces&in total!",
-                      "Ein %rHerzteil%w!&Du hast nun insgesamt %r{{heartPieceCount}}%w&Herteile gesammelt!",
-                      "Vous obtenez un %rQuart de&Coeur%w! Vous en avez collecté&%r{{heartPieceCount}}%w en tout!",
+        CustomMessage("You got a %rHeart Piece%w!&You've collected %r[[heartPieceCount]]%w pieces&in total!",
+                      "Ein %rHerzteil%w!&Du hast nun insgesamt %r[[heartPieceCount]]%w&Herteile gesammelt!",
+                      "Vous obtenez un %rQuart de&Coeur%w! Vous en avez collecté&%r[[heartPieceCount]]%w en tout!",
                       TEXTBOX_TYPE_BLUE));
     CustomMessageManager::Instance->CreateMessage(
         customMessageTableID, TEXT_MARKET_GUARD_NIGHT,

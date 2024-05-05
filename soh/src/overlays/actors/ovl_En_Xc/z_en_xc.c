@@ -17,9 +17,6 @@
 
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
-#define TEXT_SHEIK_NEED_HOOK 0x700F
-#define TEXT_SHEIK_HAVE_HOOK 0x7010
-
 void EnXc_Init(Actor* thisx, PlayState* play);
 void EnXc_Destroy(Actor* thisx, PlayState* play);
 void EnXc_Update(Actor* thisx, PlayState* play);
@@ -2217,27 +2214,11 @@ void EnXc_SetupDialogueAction(EnXc* this, PlayState* play) {
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
         this->action = SHEIK_ACTION_IN_DIALOGUE;
     } else {
-         this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY;
-        if (IS_RANDO && gPlayState->sceneNum == SCENE_TEMPLE_OF_TIME) {
-            if (!CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_GANONS_TOWER)) {
-                this->actor.textId = TEXT_SHEIK_NEED_HOOK;
-            } else {
-                this->actor.textId = TEXT_SHEIK_HAVE_HOOK;
-            }
-        } else if (IS_RANDO && gPlayState->sceneNum == SCENE_INSIDE_GANONS_CASTLE) {
-            if (CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER) && INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT &&
-            CUR_CAPACITY(UPG_QUIVER) >= 30 && gSaveContext.isMagicAcquired) {
-                this->actor.textId = TEXT_SHEIK_HAVE_HOOK;
-            } else {
-                this->actor.textId = TEXT_SHEIK_NEED_HOOK;
-            }
-        }
-        else {
-            if (INV_CONTENT(ITEM_HOOKSHOT) != ITEM_NONE) {
-                this->actor.textId = 0x7010; //"You have what you need"
-            } else {
-                this->actor.textId = 0x700F; //"You need another skill"
-            }
+         this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY; //this arrangment is cute but I would rather handle all message selection in ship code
+        if (INV_CONTENT(ITEM_HOOKSHOT) != ITEM_NONE) {
+            this->actor.textId = 0x7010; //"You have what you need"
+        } else {
+            this->actor.textId = 0x700F; //"You need another skill"
         }
         func_8002F2F4(&this->actor, play);
     }

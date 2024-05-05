@@ -9,7 +9,6 @@
 #include "spoiler_log.hpp"
 #include "starting_inventory.hpp"
 #include "hints.hpp"
-#include "hint_list.hpp"
 #include "../entrance.h"
 #include "shops.hpp"
 #include "pool_functions.hpp"
@@ -1156,13 +1155,6 @@ int Fill() {
       SPDLOG_INFO("Calculating Playthrough Done");
       ctx->CreateItemOverrides();
       ctx->GetEntranceShuffler()->CreateEntranceOverrides();
-      
-      SPDLOG_INFO("Creating Other Hint Texts...");
-      //funny ganon line
-      Text ganonText = RandomElement(GetHintCategory(HintCategory::GanonLine)).GetText();
-      CreateMessageFromTextObject(0x70CB, 0, 2, 3, AddColorsAndFormat(ganonText));
-      SetGanonText(ganonText);
-      SPDLOG_INFO("Creating Other Hint Texts Done");
       
       CreateAllHints();
       CreateWarpSongTexts();
