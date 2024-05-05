@@ -1,4 +1,5 @@
 #include "static_data.h"
+#include "z64save.h"
 
 #define TWO_ACTOR_PARAMS(a, b) (abs(a) << 16) | abs(b)
 

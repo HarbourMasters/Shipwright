@@ -329,13 +329,13 @@ void Randomizer::LoadMerchantMessages() {
                       "Je te vends mon dernier %rHaricot&magique%w pour %r99 Rubis%w.\x1B&%gAcheter&Ne pas acheter%w"));
 }
 
-std::map<s32, Rando::TrialKey> trialFlagToTrialKey = {
-    { EVENTCHKINF_COMPLETED_LIGHT_TRIAL, Rando::TrialKey::LIGHT_TRIAL, },
-    { EVENTCHKINF_COMPLETED_FOREST_TRIAL, Rando::TrialKey::FOREST_TRIAL, },
-    { EVENTCHKINF_COMPLETED_FIRE_TRIAL, Rando::TrialKey::FIRE_TRIAL, },
-    { EVENTCHKINF_COMPLETED_WATER_TRIAL, Rando::TrialKey::WATER_TRIAL, },
-    { EVENTCHKINF_COMPLETED_SPIRIT_TRIAL, Rando::TrialKey::SPIRIT_TRIAL, },
-    { EVENTCHKINF_COMPLETED_SHADOW_TRIAL, Rando::TrialKey::SHADOW_TRIAL, }
+std::map<s32, TrialKey> trialFlagToTrialKey = {
+    { EVENTCHKINF_COMPLETED_LIGHT_TRIAL, TK_LIGHT_TRIAL, },
+    { EVENTCHKINF_COMPLETED_FOREST_TRIAL, TK_FOREST_TRIAL, },
+    { EVENTCHKINF_COMPLETED_FIRE_TRIAL, TK_FIRE_TRIAL, },
+    { EVENTCHKINF_COMPLETED_WATER_TRIAL, TK_WATER_TRIAL, },
+    { EVENTCHKINF_COMPLETED_SPIRIT_TRIAL, TK_SPIRIT_TRIAL, },
+    { EVENTCHKINF_COMPLETED_SHADOW_TRIAL, TK_SHADOW_TRIAL, }
 };
 
 bool Randomizer::IsTrialRequired(s32 trialFlag) {
