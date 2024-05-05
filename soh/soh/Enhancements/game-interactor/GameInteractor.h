@@ -431,10 +431,16 @@ void GameInteractor_SetTriforceHuntCreditsWarpActive(uint8_t state);
 #include <nlohmann/json.hpp>
 #endif
 
-#define DEFINE_HOOK(name, type)         \
-    struct name {                       \
-        typedef std::function<type> fn; \
+typedef uint32_t HOOK_ID;
+
+#define DEFINE_HOOK(name, args)                  \
+    struct name {                                \
+        typedef std::function<void args> fn;     \
+        typedef std::function<bool args> filter; \
     }
+
+#define REGISTER_VB_SHOULD(flag, body) \
+    GameInteractor::Instance->RegisterGameHookForID<GameInteractor::ShouldVanillaBehavior>(flag, [](GIVanillaBehavior _, bool* should, void* opt) body)
 
 class GameInteractor {
 public:
@@ -487,11 +493,22 @@ public:
     static GameInteractionEffectQueryResult RemoveEffect(RemovableGameInteractionEffect* effect);
 
     // Game Hooks
-    uint32_t nextHookId = 1;
-    template <typename H> struct RegisteredGameHooks { inline static std::unordered_map<uint32_t, typename H::fn> functions; };
-    template <typename H> struct HooksToUnregister { inline static std::vector<uint32_t> hooks; };
-    template <typename H> uint32_t RegisterGameHook(typename H::fn h) {
-        // Ensure hook id is unique and not 0, which is reserved for invalid hooks
+    HOOK_ID nextHookId = 1;
+    template <typename H> struct RegisteredGameHooks {
+        inline static std::unordered_map<HOOK_ID, typename H::fn> functions;
+        inline static std::unordered_map<int32_t, std::unordered_map<HOOK_ID, typename H::fn>> functionsForID;
+        inline static std::unordered_map<uintptr_t, std::unordered_map<HOOK_ID, typename H::fn>> functionsForPtr;
+        inline static std::unordered_map<HOOK_ID, std::pair<typename H::filter, typename H::fn>> functionsForFilter;
+    };
+    template <typename H> struct HooksToUnregister {
+        inline static std::vector<HOOK_ID> hooks;
+        inline static std::vector<HOOK_ID> hooksForID;
+        inline static std::vector<HOOK_ID> hooksForPtr;
+        inline static std::vector<HOOK_ID> hooksForFilter;
+    };
+
+    // General Hooks
+    template <typename H> HOOK_ID RegisterGameHook(typename H::fn h) {
         if (this->nextHookId == 0 || this->nextHookId >= UINT32_MAX) this->nextHookId = 1;
         while (RegisteredGameHooks<H>::functions.find(this->nextHookId) != RegisteredGameHooks<H>::functions.end()) {
             this->nextHookId++;
@@ -500,10 +517,10 @@ public:
         RegisteredGameHooks<H>::functions[this->nextHookId] = h;
         return this->nextHookId++;
     }
-    template <typename H> void UnregisterGameHook(uint32_t id) {
-        HooksToUnregister<H>::hooks.push_back(id);
+    template <typename H> void UnregisterGameHook(HOOK_ID hookId) {
+        if (hookId == 0) return;
+        HooksToUnregister<H>::hooks.push_back(hookId);
     }
-
     template <typename H, typename... Args> void ExecuteHooks(Args&&... args) {
         for (auto& hookId : HooksToUnregister<H>::hooks) {
             RegisteredGameHooks<H>::functions.erase(hookId);
@@ -514,59 +531,167 @@ public:
         }
     }
 
-    DEFINE_HOOK(OnLoadGame, void(int32_t fileNum));
-    DEFINE_HOOK(OnExitGame, void(int32_t fileNum));
-    DEFINE_HOOK(OnGameFrameUpdate, void());
-    DEFINE_HOOK(OnItemReceive, void(GetItemEntry itemEntry));
-    DEFINE_HOOK(OnSaleEnd, void(GetItemEntry itemEntry));
-    DEFINE_HOOK(OnTransitionEnd, void(int16_t sceneNum));
-    DEFINE_HOOK(OnSceneInit, void(int16_t sceneNum));
-    DEFINE_HOOK(OnSceneFlagSet, void(int16_t sceneNum, int16_t flagType, int16_t flag));
-    DEFINE_HOOK(OnSceneFlagUnset, void(int16_t sceneNum, int16_t flagType, int16_t flag));
-    DEFINE_HOOK(OnFlagSet, void(int16_t flagType, int16_t flag));
-    DEFINE_HOOK(OnFlagUnset, void(int16_t flagType, int16_t flag));
-    DEFINE_HOOK(OnSceneSpawnActors, void());
-    DEFINE_HOOK(OnPlayerUpdate, void());
-    DEFINE_HOOK(OnOcarinaSongAction, void());
-    DEFINE_HOOK(OnShopSlotChange, void(uint8_t cursorIndex, int16_t price));
-    DEFINE_HOOK(OnActorInit, void(void* actor));
-    DEFINE_HOOK(OnActorUpdate, void(void* actor));
-    DEFINE_HOOK(OnActorKill, void(void* actor));
-    DEFINE_HOOK(OnEnemyDefeat, void(void* actor));
-    DEFINE_HOOK(OnPlayerBonk, void());
-    DEFINE_HOOK(OnPlayDestroy, void());
-    DEFINE_HOOK(OnPlayDrawEnd, void());
+    // ID based Hooks
+    template <typename H> HOOK_ID RegisterGameHookForID(int32_t id, typename H::fn h) {
+        if (this->nextHookId == 0 || this->nextHookId >= UINT32_MAX) this->nextHookId = 1;
+        while (RegisteredGameHooks<H>::functionsForID[id].find(this->nextHookId) != RegisteredGameHooks<H>::functionsForID[id].end()) {
+            this->nextHookId++;
+        }
 
-    DEFINE_HOOK(OnVanillaBehavior, void(GIVanillaBehavior flag, bool* result, void* opt));
+        RegisteredGameHooks<H>::functionsForID[id][this->nextHookId] = h;
+        return this->nextHookId++;
+    }
+    template <typename H> void UnregisterGameHookForID(HOOK_ID hookId) {
+        if (hookId == 0) return;
+        HooksToUnregister<H>::hooksForID.push_back(hookId);
+    }
+    template <typename H, typename... Args> void ExecuteHooksForID(int32_t id, Args&&... args) {
+        for (auto& hookId : HooksToUnregister<H>::hooksForID) {
+            for (auto it = RegisteredGameHooks<H>::functionsForID[id].begin(); it != RegisteredGameHooks<H>::functionsForID[id].end(); ) {
+                if (it->first == hookId) {
+                    it = RegisteredGameHooks<H>::functionsForID[id].erase(it);
+                    HooksToUnregister<H>::hooksForID.erase(std::remove(HooksToUnregister<H>::hooksForID.begin(), HooksToUnregister<H>::hooksForID.end(), hookId), HooksToUnregister<H>::hooksForID.end());
+                } else {
+                    ++it;
+                }
+            }
+        }
+        for (auto& hook : RegisteredGameHooks<H>::functionsForID[id]) {
+            hook.second(std::forward<Args>(args)...);
+        }
+    }
 
-    DEFINE_HOOK(OnSaveFile, void(int32_t fileNum));
-    DEFINE_HOOK(OnLoadFile, void(int32_t fileNum));
-    DEFINE_HOOK(OnDeleteFile, void(int32_t fileNum));
-    
-    DEFINE_HOOK(OnDialogMessage, void());
-    DEFINE_HOOK(OnPresentTitleCard, void());
-    DEFINE_HOOK(OnInterfaceUpdate, void());
-    DEFINE_HOOK(OnKaleidoscopeUpdate, void(int16_t inDungeonScene));
-    
-    DEFINE_HOOK(OnPresentFileSelect, void());
-    DEFINE_HOOK(OnUpdateFileSelectSelection, void(uint16_t optionIndex));
-    DEFINE_HOOK(OnUpdateFileSelectConfirmationSelection, void(uint16_t optionIndex));
-    DEFINE_HOOK(OnUpdateFileCopySelection, void(uint16_t optionIndex));
-    DEFINE_HOOK(OnUpdateFileCopyConfirmationSelection, void(uint16_t optionIndex));
-    DEFINE_HOOK(OnUpdateFileEraseSelection, void(uint16_t optionIndex));
-    DEFINE_HOOK(OnUpdateFileEraseConfirmationSelection, void(uint16_t optionIndex));
-    DEFINE_HOOK(OnUpdateFileAudioSelection, void(uint8_t optionIndex));
-    DEFINE_HOOK(OnUpdateFileTargetSelection, void(uint8_t optionIndex));
-    DEFINE_HOOK(OnUpdateFileLanguageSelection, void(uint8_t optionIndex));
-    DEFINE_HOOK(OnUpdateFileQuestSelection, void(uint8_t questIndex));
-    DEFINE_HOOK(OnUpdateFileBossRushOptionSelection, void(uint8_t optionIndex, uint8_t optionValue));
-    DEFINE_HOOK(OnUpdateFileNameSelection, void(int16_t charCode));
-    
-    DEFINE_HOOK(OnSetGameLanguage, void());
+    // PTR based Hooks
+    template <typename H> HOOK_ID RegisterGameHookForPtr(uintptr_t ptr, typename H::fn h) {
+        if (this->nextHookId == 0 || this->nextHookId >= UINT32_MAX) this->nextHookId = 1;
+        while (RegisteredGameHooks<H>::functionsForPtr[ptr].find(this->nextHookId) != RegisteredGameHooks<H>::functionsForPtr[ptr].end()) {
+            this->nextHookId++;
+        }
 
-    DEFINE_HOOK(OnFileDropped, void(std::string filePath));
-    DEFINE_HOOK(OnAssetAltChange, void());
-    DEFINE_HOOK(OnKaleidoUpdate, void());
+        RegisteredGameHooks<H>::functionsForPtr[ptr][this->nextHookId] = h;
+        return this->nextHookId++;
+    }
+    template <typename H> void UnregisterGameHookForPtr(HOOK_ID hookId) {
+        if (hookId == 0) return;
+        HooksToUnregister<H>::hooksForPtr.push_back(hookId);
+    }
+    template <typename H, typename... Args> void ExecuteHooksForPtr(uintptr_t ptr, Args&&... args) {
+        for (auto& hookId : HooksToUnregister<H>::hooksForPtr) {
+            for (auto it = RegisteredGameHooks<H>::functionsForPtr[ptr].begin(); it != RegisteredGameHooks<H>::functionsForPtr[ptr].end(); ) {
+                if (it->first == hookId) {
+                    it = RegisteredGameHooks<H>::functionsForPtr[ptr].erase(it);
+                    HooksToUnregister<H>::hooksForPtr.erase(std::remove(HooksToUnregister<H>::hooksForPtr.begin(), HooksToUnregister<H>::hooksForPtr.end(), hookId), HooksToUnregister<H>::hooksForPtr.end());
+                } else {
+                    ++it;
+                }
+            }
+        }
+        for (auto& hook : RegisteredGameHooks<H>::functionsForPtr[ptr]) {
+            hook.second(std::forward<Args>(args)...);
+        }
+    }
+
+    // Filter based Hooks
+    template <typename H> HOOK_ID RegisterGameHookForFilter(typename H::filter f, typename H::fn h) {
+        if (this->nextHookId == 0 || this->nextHookId >= UINT32_MAX) this->nextHookId = 1;
+        while (RegisteredGameHooks<H>::functionsForFilter.find(this->nextHookId) != RegisteredGameHooks<H>::functionsForFilter.end()) {
+            this->nextHookId++;
+        }
+
+        RegisteredGameHooks<H>::functionsForFilter[this->nextHookId] = std::make_pair(f, h);
+        return this->nextHookId++;
+    }
+    template <typename H> void UnregisterGameHookForFilter(HOOK_ID hookId) {
+        if (hookId == 0) return;
+        HooksToUnregister<H>::hooksForFilter.push_back(hookId);
+    }
+    template <typename H, typename... Args> void ExecuteHooksForFilter(Args&&... args) {
+        for (auto& hookId : HooksToUnregister<H>::hooksForFilter) {
+            RegisteredGameHooks<H>::functionsForFilter.erase(hookId);
+        }
+        HooksToUnregister<H>::hooksForFilter.clear();
+        for (auto& hook : RegisteredGameHooks<H>::functionsForFilter) {
+            if (hook.second.first(std::forward<Args>(args)...)) {
+                hook.second.second(std::forward<Args>(args)...);
+            }
+        }
+    }
+
+    class HookFilter {
+    public:
+        static auto ActorNotPlayer(Actor* actor) {
+            return actor->id != ACTOR_PLAYER;
+        }
+        // For use with Should hooks
+        static auto SActorNotPlayer(Actor* actor, bool* result) {
+            return actor->id != ACTOR_PLAYER;
+        }
+        static auto ActorMatchIdAndParams(int16_t id, int16_t params) {
+            return [id, params](Actor* actor) {
+                return actor->id == id && actor->params == params;
+            };
+        }
+        // For use with Should hooks
+        static auto SActorMatchIdAndParams(int16_t id, int16_t params) {
+            return [id, params](Actor* actor, bool* result) {
+                return actor->id == id && actor->params == params;
+            };
+        }
+    };
+
+    DEFINE_HOOK(OnLoadGame, (int32_t fileNum));
+    DEFINE_HOOK(OnExitGame, (int32_t fileNum));
+    DEFINE_HOOK(OnGameFrameUpdate, ());
+    DEFINE_HOOK(OnItemReceive, (GetItemEntry itemEntry));
+    DEFINE_HOOK(OnSaleEnd, (GetItemEntry itemEntry));
+    DEFINE_HOOK(OnTransitionEnd, (int16_t sceneNum));
+    DEFINE_HOOK(OnSceneInit, (int16_t sceneNum));
+    DEFINE_HOOK(OnSceneFlagSet, (int16_t sceneNum, int16_t flagType, int16_t flag));
+    DEFINE_HOOK(OnSceneFlagUnset, (int16_t sceneNum, int16_t flagType, int16_t flag));
+    DEFINE_HOOK(OnFlagSet, (int16_t flagType, int16_t flag));
+    DEFINE_HOOK(OnFlagUnset, (int16_t flagType, int16_t flag));
+    DEFINE_HOOK(OnSceneSpawnActors, ());
+    DEFINE_HOOK(OnPlayerUpdate, ());
+    DEFINE_HOOK(OnOcarinaSongAction, ());
+    DEFINE_HOOK(OnShopSlotChange, (uint8_t cursorIndex, int16_t price));
+    DEFINE_HOOK(OnActorInit, (void* actor));
+    DEFINE_HOOK(OnActorUpdate, (void* actor));
+    DEFINE_HOOK(OnActorKill, (void* actor));
+    DEFINE_HOOK(OnEnemyDefeat, (void* actor));
+    DEFINE_HOOK(OnPlayerBonk, ());
+    DEFINE_HOOK(OnPlayDestroy, ());
+    DEFINE_HOOK(OnPlayDrawEnd, ());
+
+    DEFINE_HOOK(OnVanillaBehavior, (GIVanillaBehavior flag, bool* result, void* opt));
+
+    DEFINE_HOOK(OnSaveFile, (int32_t fileNum));
+    DEFINE_HOOK(OnLoadFile, (int32_t fileNum));
+    DEFINE_HOOK(OnDeleteFile, (int32_t fileNum));
+    
+    DEFINE_HOOK(OnDialogMessage, ());
+    DEFINE_HOOK(OnPresentTitleCard, ());
+    DEFINE_HOOK(OnInterfaceUpdate, ());
+    DEFINE_HOOK(OnKaleidoscopeUpdate, (int16_t inDungeonScene));
+    
+    DEFINE_HOOK(OnPresentFileSelect, ());
+    DEFINE_HOOK(OnUpdateFileSelectSelection, (uint16_t optionIndex));
+    DEFINE_HOOK(OnUpdateFileSelectConfirmationSelection, (uint16_t optionIndex));
+    DEFINE_HOOK(OnUpdateFileCopySelection, (uint16_t optionIndex));
+    DEFINE_HOOK(OnUpdateFileCopyConfirmationSelection, (uint16_t optionIndex));
+    DEFINE_HOOK(OnUpdateFileEraseSelection, (uint16_t optionIndex));
+    DEFINE_HOOK(OnUpdateFileEraseConfirmationSelection, (uint16_t optionIndex));
+    DEFINE_HOOK(OnUpdateFileAudioSelection, (uint8_t optionIndex));
+    DEFINE_HOOK(OnUpdateFileTargetSelection, (uint8_t optionIndex));
+    DEFINE_HOOK(OnUpdateFileLanguageSelection, (uint8_t optionIndex));
+    DEFINE_HOOK(OnUpdateFileQuestSelection, (uint8_t questIndex));
+    DEFINE_HOOK(OnUpdateFileBossRushOptionSelection, (uint8_t optionIndex, uint8_t optionValue));
+    DEFINE_HOOK(OnUpdateFileNameSelection, (int16_t charCode));
+    
+    DEFINE_HOOK(OnSetGameLanguage, ());
+
+    DEFINE_HOOK(OnFileDropped, (std::string filePath));
+    DEFINE_HOOK(OnAssetAltChange, ());
+    DEFINE_HOOK(OnKaleidoUpdate, ());
 
     // Helpers
     static bool IsSaveLoaded(bool allowDbgSave = false);
