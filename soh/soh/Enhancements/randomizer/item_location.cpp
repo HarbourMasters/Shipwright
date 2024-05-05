@@ -101,6 +101,18 @@ void ItemLocation::SetCustomPrice(const uint16_t price_) {
     hasCustomPrice = true;
 }
 
+bool ItemLocation::HasObtained() const {
+    return obtained;
+}
+
+void ItemLocation::MarkAsObtained() {
+    obtained = true;
+}
+
+void ItemLocation::MarkAsNotObtained() {
+    obtained = false;
+}
+
 bool ItemLocation::IsHintable() const {
     return isHintable;
 }
@@ -201,5 +213,6 @@ void ItemLocation::ResetVariables() {
     wothCandidate = false;
     barrenCandidate = false;
     area = RA_NONE;
+    obtained = false;
 }
 }

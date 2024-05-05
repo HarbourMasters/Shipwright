@@ -5160,7 +5160,7 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
 
                 this->actor.parent = NULL;
                 if (!IS_RANDO || getItemEntry.getItemId == GI_NONE) {
-                    func_8002F434(&this->actor, play, getItemId, 2000.0f, 1000.0f);
+                    Actor_OfferGetItem(&this->actor, play, getItemId, 2000.0f, 1000.0f);
                 } else {
                     GiveItemEntryFromActor(&this->actor, play, getItemEntry, 2000.0f, 1000.0f);
                 }
@@ -5215,7 +5215,7 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
                 this->stateAndTimer = 24;
             } else {
                 if (!IS_RANDO) {
-                    func_8002F434(&this->actor, play, GI_SCALE_GOLD, 2000.0f, 1000.0f);
+                    Actor_OfferGetItem(&this->actor, play, GI_SCALE_GOLD, 2000.0f, 1000.0f);
                 } else {
                     GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_ADULT_FISHING, GI_SCALE_GOLD);
                     GiveItemEntryFromActor(&this->actor, play, getItemEntry, 2000.0f, 1000.0f);
@@ -5572,7 +5572,7 @@ void Fishing_UpdateOwner(Actor* thisx, PlayState* play2) {
             sSubCamId = Play_CreateSubCamera(play);
             Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
             Play_ChangeCameraStatus(play, sSubCamId, CAM_STAT_ACTIVE);
-            func_8002DF54(play, &this->actor, 5);
+            Player_SetCsActionWithHaltedActors(play, &this->actor, 5);
             mainCam = Play_GetCamera(play, MAIN_CAM);
             sCameraEye.x = mainCam->eye.x;
             sCameraEye.y = mainCam->eye.y;
@@ -5604,7 +5604,7 @@ void Fishing_UpdateOwner(Actor* thisx, PlayState* play2) {
                 mainCam->at = sCameraAt;
                 func_800C08AC(play, sSubCamId, 0);
                 func_80064534(play, &play->csCtx);
-                func_8002DF54(play, &this->actor, 7);
+                Player_SetCsActionWithHaltedActors(play, &this->actor, 7);
                 sFishingPlayerCinematicState = 0;
                 sSubCamId = 0;
                 sFishingCinematicTimer = 30;
@@ -5620,7 +5620,7 @@ void Fishing_UpdateOwner(Actor* thisx, PlayState* play2) {
             sSubCamId = Play_CreateSubCamera(play);
             Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
             Play_ChangeCameraStatus(play, sSubCamId, CAM_STAT_ACTIVE);
-            func_8002DF54(play, &this->actor, 5);
+            Player_SetCsActionWithHaltedActors(play, &this->actor, 5);
             mainCam = Play_GetCamera(play, MAIN_CAM);
             sCameraEye.x = mainCam->eye.x;
             sCameraEye.y = mainCam->eye.y;
@@ -5639,7 +5639,7 @@ void Fishing_UpdateOwner(Actor* thisx, PlayState* play2) {
             if ((sFishingCinematicTimer == 0) && Message_ShouldAdvance(play)) {
                 sFishingPlayerCinematicState = 22;
                 sFishingCinematicTimer = 40;
-                func_8002DF54(play, &this->actor, 0x1C);
+                Player_SetCsActionWithHaltedActors(play, &this->actor, 0x1C);
                 sSinkingLureHeldY = 0.0f;
             }
             break;
@@ -5708,7 +5708,7 @@ void Fishing_UpdateOwner(Actor* thisx, PlayState* play2) {
                         mainCam->at = sCameraAt;
                         func_800C08AC(play, sSubCamId, 0);
                         func_80064534(play, &play->csCtx);
-                        func_8002DF54(play, &this->actor, 7);
+                        Player_SetCsActionWithHaltedActors(play, &this->actor, 7);
                         sFishingPlayerCinematicState = 0;
                         sSubCamId = 0;
                         player->unk_860 = -5;

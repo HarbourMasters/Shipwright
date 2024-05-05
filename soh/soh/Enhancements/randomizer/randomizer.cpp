@@ -145,21 +145,6 @@ Randomizer::Randomizer() {
 Randomizer::~Randomizer() {
 }
 
-std::unordered_map<std::string, RandomizerInf> spoilerFileTrialToEnum = {
-    { "the Forest Trial", RAND_INF_TRIALS_DONE_FOREST_TRIAL },
-    { "l'épreuve de la Forêt", RAND_INF_TRIALS_DONE_FOREST_TRIAL },
-    { "the Fire Trial", RAND_INF_TRIALS_DONE_FIRE_TRIAL },
-    { "l'épreuve du Feu", RAND_INF_TRIALS_DONE_FIRE_TRIAL },
-    { "the Water Trial", RAND_INF_TRIALS_DONE_WATER_TRIAL },
-    { "l'épreuve de l'Eau", RAND_INF_TRIALS_DONE_WATER_TRIAL },
-    { "the Spirit Trial", RAND_INF_TRIALS_DONE_SPIRIT_TRIAL },
-    { "l'épreuve de l'Esprit", RAND_INF_TRIALS_DONE_SPIRIT_TRIAL },
-    { "the Shadow Trial", RAND_INF_TRIALS_DONE_SHADOW_TRIAL },
-    { "l'épreuve de l'Ombre", RAND_INF_TRIALS_DONE_SHADOW_TRIAL },
-    { "the Light Trial", RAND_INF_TRIALS_DONE_LIGHT_TRIAL },
-    { "l'épreuve de la Lumière", RAND_INF_TRIALS_DONE_LIGHT_TRIAL }
-};
-
 std::unordered_map<std::string, SceneID> spoilerFileDungeonToScene = {
     { "Deku Tree", SCENE_DEKU_TREE },
     { "Dodongo's Cavern", SCENE_DODONGOS_CAVERN },
@@ -344,8 +329,17 @@ void Randomizer::LoadMerchantMessages() {
                       "Je te vends mon dernier %rHaricot&magique%w pour %r99 Rubis%w.\x1B&%gAcheter&Ne pas acheter%w"));
 }
 
-bool Randomizer::IsTrialRequired(RandomizerInf trial) {
-    return Rando::Context::GetInstance()->GetTrial(trial - RAND_INF_TRIALS_DONE_LIGHT_TRIAL)->IsRequired();
+std::map<s32, TrialKey> trialFlagToTrialKey = {
+    { EVENTCHKINF_COMPLETED_LIGHT_TRIAL, TK_LIGHT_TRIAL, },
+    { EVENTCHKINF_COMPLETED_FOREST_TRIAL, TK_FOREST_TRIAL, },
+    { EVENTCHKINF_COMPLETED_FIRE_TRIAL, TK_FIRE_TRIAL, },
+    { EVENTCHKINF_COMPLETED_WATER_TRIAL, TK_WATER_TRIAL, },
+    { EVENTCHKINF_COMPLETED_SPIRIT_TRIAL, TK_SPIRIT_TRIAL, },
+    { EVENTCHKINF_COMPLETED_SHADOW_TRIAL, TK_SHADOW_TRIAL, }
+};
+
+bool Randomizer::IsTrialRequired(s32 trialFlag) {
+    return Rando::Context::GetInstance()->GetTrial(trialFlagToTrialKey[trialFlag])->IsRequired();
 }
 
 GetItemEntry Randomizer::GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogItemId,
@@ -1417,21 +1411,28 @@ Rando::Location* Randomizer::GetCheckObjectFromActor(s16 actorId, s16 sceneNum, 
     RandomizerCheck specialRc = RC_UNKNOWN_CHECK;
     // TODO: Migrate these special cases into table, or at least document why they are special
     switch(sceneNum) {
-        case SCENE_TREASURE_BOX_SHOP:
-            if(actorParams == 20170) specialRc = RC_MARKET_TREASURE_CHEST_GAME_REWARD;
+        case SCENE_TREASURE_BOX_SHOP: {
+            if ((actorId == ACTOR_EN_BOX && actorParams == 20170) || (actorId == ACTOR_ITEM_ETCETERA && actorParams == 2572)) {
+                specialRc = RC_MARKET_TREASURE_CHEST_GAME_REWARD;
+            }
 
-            // RANDOTODO update logic to match 3ds rando when we implement keysanity
-            // keep keys og
-            if ((actorParams & 0x60) == 0x20) break;
-
-            if (GetRandoSettingValue(RSK_SHUFFLE_CHEST_MINIGAME)) {
-                if((actorParams & 0xF) < 2) specialRc = RC_MARKET_TREASURE_CHEST_GAME_ITEM_1;
-                if((actorParams & 0xF) < 4) specialRc = RC_MARKET_TREASURE_CHEST_GAME_ITEM_2;
-                if((actorParams & 0xF) < 6) specialRc = RC_MARKET_TREASURE_CHEST_GAME_ITEM_3;
-                if((actorParams & 0xF) < 8) specialRc = RC_MARKET_TREASURE_CHEST_GAME_ITEM_4;
-                if((actorParams & 0xF) < 10) specialRc = RC_MARKET_TREASURE_CHEST_GAME_ITEM_5;
+            // todo: handle the itemetc part of this so drawing works when we implement shuffle
+            if (actorId == ACTOR_EN_BOX) {
+                bool isAKey = (actorParams & 0x60) == 0x20;
+                if ((actorParams & 0xF) < 2) {
+                    specialRc = isAKey ? RC_MARKET_TREASURE_CHEST_GAME_KEY_1 : RC_MARKET_TREASURE_CHEST_GAME_ITEM_1;
+                } else if ((actorParams & 0xF) < 4) {
+                    specialRc = isAKey ? RC_MARKET_TREASURE_CHEST_GAME_KEY_2 : RC_MARKET_TREASURE_CHEST_GAME_ITEM_2;
+                } else if ((actorParams & 0xF) < 6) {
+                    specialRc = isAKey ? RC_MARKET_TREASURE_CHEST_GAME_KEY_3 : RC_MARKET_TREASURE_CHEST_GAME_ITEM_3;
+                } else if ((actorParams & 0xF) < 8) {
+                    specialRc = isAKey ? RC_MARKET_TREASURE_CHEST_GAME_KEY_4 : RC_MARKET_TREASURE_CHEST_GAME_ITEM_4;
+                } else if ((actorParams & 0xF) < 10) {
+                    specialRc = isAKey ? RC_MARKET_TREASURE_CHEST_GAME_KEY_5 : RC_MARKET_TREASURE_CHEST_GAME_ITEM_5;
+                }
             }
             break;
+        }
         case SCENE_SACRED_FOREST_MEADOW:
             if (actorId == ACTOR_EN_SA) {
                 specialRc = RC_SONG_FROM_SARIA;

@@ -3,6 +3,7 @@
 
 #include <cassert>
 #include <File.h>
+#include <Json.h>
 #include <libultraship/classes.h>
 #include <nlohmann/json.hpp>
 #include <spdlog/fmt/fmt.h>
@@ -12,7 +13,6 @@
 #include "overlays/gamestates/ovl_file_choose/file_choose.h"
 #include "soh/Enhancements/boss-rush/BossRush.h"
 #include "soh/resource/type/SohResourceType.h"
-#include "soh/resource/type/RawJson.h"
 
 extern "C" {
 extern MapData* gMapData;
@@ -1041,19 +1041,19 @@ void InitTTSBank() {
 
     auto initData = std::make_shared<LUS::ResourceInitData>();
     initData->Format = RESOURCE_FORMAT_BINARY;
-    initData->Type = static_cast<uint32_t>(SOH::ResourceType::SOH_RawJson);
+    initData->Type = static_cast<uint32_t>(LUS::ResourceType::Json);
     initData->ResourceVersion = 0;
     
-    sceneMap = std::static_pointer_cast<SOH::RawJson>(
+    sceneMap = std::static_pointer_cast<LUS::Json>(
         LUS::Context::GetInstance()->GetResourceManager()->LoadResource("accessibility/texts/scenes" + languageSuffix, true, initData))->Data;
 
-    miscMap = std::static_pointer_cast<SOH::RawJson>(
+    miscMap = std::static_pointer_cast<LUS::Json>(
         LUS::Context::GetInstance()->GetResourceManager()->LoadResource("accessibility/texts/misc" + languageSuffix, true, initData))->Data;
 
-    kaleidoMap = std::static_pointer_cast<SOH::RawJson>(
+    kaleidoMap = std::static_pointer_cast<LUS::Json>(
         LUS::Context::GetInstance()->GetResourceManager()->LoadResource("accessibility/texts/kaleidoscope" + languageSuffix, true, initData))->Data;
 
-    fileChooseMap = std::static_pointer_cast<SOH::RawJson>(
+    fileChooseMap = std::static_pointer_cast<LUS::Json>(
         LUS::Context::GetInstance()->GetResourceManager()->LoadResource("accessibility/texts/filechoose" + languageSuffix, true, initData))->Data;
 }
 

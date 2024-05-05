@@ -7,6 +7,7 @@
 #include "z_bg_treemouth.h"
 #include "objects/object_spot04_objects/object_spot04_objects.h"
 #include "overlays/effects/ovl_Effect_Ss_Hahen/z_eff_ss_hahen.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
@@ -73,11 +74,7 @@ void BgTreemouth_Init(Actor* thisx, PlayState* play) {
 
     if ((gSaveContext.sceneSetupIndex < 4) && !LINK_IS_ADULT) {
         BgTreemouth_SetupAction(this, func_808BC8B8);
-    // If dungeon entrance randomizer is on, keep the tree mouth open
-    // when Link is adult and sword & shield have been shown to Mido
-    } else if ((LINK_IS_ADULT && (!IS_RANDO ||
-        Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES) == RO_DUNGEON_ENTRANCE_SHUFFLE_OFF) ||
-        !Flags_GetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD)) || (gSaveContext.sceneSetupIndex == 7)) {
+    } else if (LINK_IS_ADULT || (gSaveContext.sceneSetupIndex == 7)) {
         this->unk_168 = 0.0f;
         BgTreemouth_SetupAction(this, BgTreemouth_DoNothing);
     } else {
@@ -157,9 +154,11 @@ void func_808BC8B8(BgTreemouth* this, PlayState* play) {
                 }
             } else if (Actor_IsFacingAndNearPlayer(&this->dyna.actor, 1658.0f, 0x4E20)) {
                 Flags_SetEventChkInf(EVENTCHKINF_MET_DEKU_TREE);
-                play->csCtx.segment = D_808BCE20;
-                gSaveContext.cutsceneTrigger = 1;
-                BgTreemouth_SetupAction(this, func_808BC9EC);
+                if (GameInteractor_Should(GI_VB_PLAY_DEKU_TREE_INTRO_CS, true, this)) {
+                    play->csCtx.segment = D_808BCE20;
+                    gSaveContext.cutsceneTrigger = 1;
+                    BgTreemouth_SetupAction(this, func_808BC9EC);
+                }
             }
         }
     } else {

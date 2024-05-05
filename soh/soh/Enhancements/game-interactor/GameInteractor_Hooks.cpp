@@ -90,6 +90,11 @@ void GameInteractor_ExecuteOnPlayDrawEnd() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayDrawEnd>();
 }
 
+bool GameInteractor_Should(GIVanillaBehavior flag, bool result, void* opt) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnVanillaBehavior>(flag, &result, opt);
+    return result;
+}
+
 // MARK: -  Save Files
 
 void GameInteractor_ExecuteOnSaveFile(int32_t fileNum) {

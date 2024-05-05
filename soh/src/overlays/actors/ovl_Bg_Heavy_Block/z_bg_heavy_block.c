@@ -370,7 +370,7 @@ void BgHeavyBlock_LiftedUp(BgHeavyBlock* this, PlayState* play) {
     this->timer++;
 
     if (!CVarGetInteger("gFasterHeavyBlockLift", 0)) {
-        func_8002DF54(play, &player->actor, 8);
+        Player_SetCsActionWithHaltedActors(play, &player->actor, 8);
     }
 
     // if parent is NULL, link threw it

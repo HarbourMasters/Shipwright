@@ -438,8 +438,6 @@ void Settings::CreateOptionDescriptions() {
         "Start with Zelda's Letter and the item Impa would normally give you and skip the sequence up "
         "until after meeting Zelda. Disables the ability to shuffle Weird Egg.";
     mOptionDescriptions[RSK_SKIP_EPONA_RACE] = "Epona can be summoned with Epona's Song without needing to race Ingo.";
-    mOptionDescriptions[RSK_SKIP_TOWER_ESCAPE] =
-        "The tower escape sequence between Ganondorf and Ganon will be skipped.";
     mOptionDescriptions[RSK_COMPLETE_MASK_QUEST] =
         "Once the happy mask shop is opened, all masks will be available to be borrowed.";
     mOptionDescriptions[RSK_SKIP_SCARECROWS_SONG] =

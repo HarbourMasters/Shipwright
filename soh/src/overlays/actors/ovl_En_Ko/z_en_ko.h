@@ -57,4 +57,8 @@ typedef enum {
     ENKO_FQS_ADULT_SAVED
 } KokiriForestQuestState;
 
+void func_80A995CC(EnKo* actor, PlayState* play);
+void func_80A99384(EnKo* actor, PlayState* play);
+void func_80A99560(EnKo* actor, PlayState* play);
+
 #endif

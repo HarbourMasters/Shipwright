@@ -8,6 +8,7 @@
 #include "objects/object_ru2/object_ru2.h"
 #include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
 #include "vt.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
@@ -260,7 +261,9 @@ void func_80AF2A38(EnRu2* this, PlayState* play) {
     f32 posZ = player->actor.world.pos.z;
 
     Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DEMO_EFFECT, posX, posY, posZ, 0, 0, 0, 10);
-    Item_Give(play, ITEM_MEDALLION_WATER);
+    if (GameInteractor_Should(GI_VB_GIVE_ITEM_WATER_MEDALLION, true, NULL)) {
+        Item_Give(play, ITEM_MEDALLION_WATER);
+    }
 }
 
 void func_80AF2AB4(EnRu2* this, PlayState* play) {
@@ -273,7 +276,9 @@ void func_80AF2AB4(EnRu2* this, PlayState* play) {
         this->action = 1;
         play->csCtx.segment = &D_80AF411C;
         gSaveContext.cutsceneTrigger = 2;
-        Item_Give(play, ITEM_MEDALLION_WATER);
+        if (GameInteractor_Should(GI_VB_GIVE_ITEM_WATER_MEDALLION, true, NULL)) {
+            Item_Give(play, ITEM_MEDALLION_WATER);
+        }
         temp = this->actor.world.rot.y + 0x8000;
         player->actor.shape.rot.y = temp;
         player->actor.world.rot.y = temp;
