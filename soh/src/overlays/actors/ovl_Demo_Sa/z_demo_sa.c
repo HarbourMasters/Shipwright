@@ -242,7 +242,7 @@ void func_8098E8C8(DemoSa* this, PlayState* play) {
 
     Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DEMO_EFFECT, posX, posY, posZ, 0, 0, 0,
                        0xB);
-    if (GameInteractor_Should(GI_VB_GIVE_ITEM_FOREST_MEDALLION, true, NULL)) {
+    if (GameInteractor_Should(VB_GIVE_ITEM_FOREST_MEDALLION, true, NULL)) {
         Item_Give(play, ITEM_MEDALLION_FOREST);
     }
 }
@@ -261,7 +261,7 @@ void func_8098E960(DemoSa* this, PlayState* play) {
             this->action = 1;
             play->csCtx.segment = D_8099010C;
             gSaveContext.cutsceneTrigger = 2;
-            if (GameInteractor_Should(GI_VB_GIVE_ITEM_FOREST_MEDALLION, true, NULL)) {
+            if (GameInteractor_Should(VB_GIVE_ITEM_FOREST_MEDALLION, true, NULL)) {
                 Item_Give(play, ITEM_MEDALLION_FOREST);
             }
             player->actor.world.rot.y = player->actor.shape.rot.y = this->actor.world.rot.y + 0x8000;

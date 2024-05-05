@@ -495,7 +495,7 @@ void EnTk_Init(Actor* thisx, PlayState* play) {
 
     CollisionCheck_SetInfo2(&this->actor.colChkInfo, NULL, &sColChkInfoInit);
 
-    if (GameInteractor_Should(GI_VB_DAMPE_IN_GRAVEYARD_DESPAWN, gSaveContext.dayTime <= 0xC000 || gSaveContext.dayTime >= 0xE000 || LINK_IS_ADULT || play->sceneNum != SCENE_GRAVEYARD, this)) {
+    if (GameInteractor_Should(VB_DAMPE_IN_GRAVEYARD_DESPAWN, gSaveContext.dayTime <= 0xC000 || gSaveContext.dayTime >= 0xE000 || LINK_IS_ADULT || play->sceneNum != SCENE_GRAVEYARD, this)) {
         Actor_Kill(&this->actor);
         return;
     }
@@ -601,7 +601,7 @@ void EnTk_Dig(EnTk* this, PlayState* play) {
 
         this->rewardTimer = 0;
 
-        if (GameInteractor_Should(GI_VB_BE_VALID_GRAVEDIGGING_SPOT, this->validDigHere == 1, this)) {
+        if (GameInteractor_Should(VB_BE_VALID_GRAVEDIGGING_SPOT, this->validDigHere == 1, this)) {
             rewardOrigin.x = 0.0f;
             rewardOrigin.y = 0.0f;
             rewardOrigin.z = -40.0f;
@@ -615,12 +615,12 @@ void EnTk_Dig(EnTk* this, PlayState* play) {
 
             this->currentReward = EnTk_ChooseReward(this);
 
-            if (GameInteractor_Should(GI_VB_BE_DAMPE_GRAVEDIGGING_GRAND_PRIZE, this->currentReward == 3, this)) {
+            if (GameInteractor_Should(VB_BE_DAMPE_GRAVEDIGGING_GRAND_PRIZE, this->currentReward == 3, this)) {
                 /*
                  * Upgrade the purple rupee reward to the heart piece if this
                  * is the first grand prize dig.
                  */
-                if (GameInteractor_Should(GI_VB_DAMPE_GRAVEDIGGING_GRAND_PRIZE_BE_HEART_PIECE, !Flags_GetItemGetInf(ITEMGETINF_1C), this)) {
+                if (GameInteractor_Should(VB_DAMPE_GRAVEDIGGING_GRAND_PRIZE_BE_HEART_PIECE, !Flags_GetItemGetInf(ITEMGETINF_1C), this)) {
                     Flags_SetItemGetInf(ITEMGETINF_1C);
                     this->currentReward = 4;
                 }

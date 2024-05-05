@@ -660,7 +660,7 @@ s16 func_80A70058(PlayState* play, Actor* thisx) {
                     gSaveContext.dogParams = 0;
                     break;
                 case 0x709F:
-                    if (GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_LOST_DOG, true, this)) {
+                    if (GameInteractor_Should(VB_GIVE_ITEM_FROM_LOST_DOG, true, this)) {
                         func_80A6F7CC(this, play, Flags_GetInfTable(INFTABLE_191) ? GI_RUPEE_BLUE : GI_HEART_PIECE);
                         this->actionFunc = func_80A714C4;
                     }

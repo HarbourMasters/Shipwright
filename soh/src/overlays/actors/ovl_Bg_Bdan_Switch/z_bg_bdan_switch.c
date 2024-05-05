@@ -225,7 +225,7 @@ void func_8086D4B4(BgBdanSwitch* this, PlayState* play) {
     if (!Flags_GetSwitch(play, (this->dyna.actor.params >> 8) & 0x3F)) {
         type = this->dyna.actor.params & 0xFF;
         Flags_SetSwitch(play, (this->dyna.actor.params >> 8) & 0x3F);
-        if (GameInteractor_Should(GI_VB_PLAY_ONEPOINT_ACTOR_CS, true, this)) {
+        if (GameInteractor_Should(VB_PLAY_ONEPOINT_ACTOR_CS, true, this)) {
             if (type == BLUE || type == YELLOW_TALL_2) {
                 OnePointCutscene_AttentionSetSfx(play, &this->dyna.actor, NA_SE_SY_TRE_BOX_APPEAR);
             } else {
@@ -239,7 +239,7 @@ void func_8086D548(BgBdanSwitch* this, PlayState* play) {
     if (Flags_GetSwitch(play, (this->dyna.actor.params >> 8) & 0x3F)) {
         Flags_UnsetSwitch(play, (this->dyna.actor.params >> 8) & 0x3F);
         if ((this->dyna.actor.params & 0xFF) == YELLOW_TALL_2) {
-            if (GameInteractor_Should(GI_VB_PLAY_ONEPOINT_ACTOR_CS, true, this)) {
+            if (GameInteractor_Should(VB_PLAY_ONEPOINT_ACTOR_CS, true, this)) {
                 OnePointCutscene_AttentionSetSfx(play, &this->dyna.actor, NA_SE_SY_TRE_BOX_APPEAR);
             }
         }

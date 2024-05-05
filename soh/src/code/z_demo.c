@@ -497,11 +497,11 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
 
     bool shouldSkipCommand = false;
 
-    if (cmd->base == 8 && !GameInteractor_Should(GI_VB_PLAY_PULL_MASTER_SWORD_CS, true, NULL)) {
+    if (cmd->base == 8 && !GameInteractor_Should(VB_PLAY_PULL_MASTER_SWORD_CS, true, NULL)) {
         shouldSkipCommand = true;
     }
 
-    if (cmd->base == 24 && !GameInteractor_Should(GI_VB_PLAY_DROP_FISH_FOR_JABU_CS, true, NULL)) {
+    if (cmd->base == 24 && !GameInteractor_Should(VB_PLAY_DROP_FISH_FOR_JABU_CS, true, NULL)) {
         shouldSkipCommand = true;
     }
 
@@ -631,7 +631,7 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                     gSaveContext.fw.set = 0;
                     gSaveContext.respawn[RESPAWN_MODE_TOP].data = 0;
                 }
-                if (GameInteractor_Should(GI_VB_PLAY_PULL_MASTER_SWORD_CS, !Flags_GetEventChkInf(EVENTCHKINF_PULLED_MASTER_SWORD_FROM_PEDESTAL), NULL)) {
+                if (GameInteractor_Should(VB_PLAY_PULL_MASTER_SWORD_CS, !Flags_GetEventChkInf(EVENTCHKINF_PULLED_MASTER_SWORD_FROM_PEDESTAL), NULL)) {
                     Flags_SetEventChkInf(EVENTCHKINF_PULLED_MASTER_SWORD_FROM_PEDESTAL);
                     play->nextEntranceIndex = ENTR_CUTSCENE_MAP_0;
                     play->transitionTrigger = TRANS_TRIGGER_START;
@@ -723,7 +723,7 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                 play->transitionType = TRANS_TYPE_FADE_WHITE;
                 break;
             case 22:
-                if (GameInteractor_Should(GI_VB_GIVE_ITEM_REQUIEM_OF_SPIRIT, true, NULL)) {
+                if (GameInteractor_Should(VB_GIVE_ITEM_REQUIEM_OF_SPIRIT, true, NULL)) {
                     Item_Give(play, ITEM_SONG_REQUIEM);
                 }
                 play->nextEntranceIndex = ENTR_DESERT_COLOSSUS_0;
@@ -777,7 +777,7 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                 play->nextEntranceIndex = ENTR_CHAMBER_OF_THE_SAGES_0;
                 play->transitionTrigger = TRANS_TRIGGER_START;
                 play->transitionType = TRANS_TYPE_FADE_WHITE;
-                if (GameInteractor_Should(GI_VB_GIVE_ITEM_FIRE_MEDALLION, true, NULL)) {
+                if (GameInteractor_Should(VB_GIVE_ITEM_FIRE_MEDALLION, true, NULL)) {
                     Item_Give(play, ITEM_MEDALLION_FIRE);
                 }
                 gSaveContext.chamberCutsceneNum = 1;
@@ -859,7 +859,7 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                 play->transitionType = TRANS_TYPE_FADE_BLACK_FAST;
                 break;
             case 47:
-                if (GameInteractor_Should(GI_VB_GIVE_ITEM_NOCTURNE_OF_SHADOW, true, NULL)) {
+                if (GameInteractor_Should(VB_GIVE_ITEM_NOCTURNE_OF_SHADOW, true, NULL)) {
                     Item_Give(play, ITEM_SONG_NOCTURNE);
                 }
                 Flags_SetEventChkInf(EVENTCHKINF_LEARNED_NOCTURNE_OF_SHADOW);
@@ -2183,7 +2183,7 @@ void Cutscene_HandleEntranceTriggers(PlayState* play) {
             (gSaveContext.cutsceneIndex < 0xFFF0) && ((u8)gSaveContext.linkAge == requiredAge) &&
             (gSaveContext.respawnFlag <= 0)) {
             Flags_SetEventChkInf(entranceCutscene->flag);
-            if (GameInteractor_Should(GI_VB_PLAY_ENTRANCE_CS, true, &entranceCutscene->flag)) {
+            if (GameInteractor_Should(VB_PLAY_ENTRANCE_CS, true, &entranceCutscene->flag)) {
                 Cutscene_SetSegment(play, entranceCutscene->segAddr);
                 gSaveContext.cutsceneTrigger = 2;
                 gSaveContext.showTitleCard = false;
@@ -2197,7 +2197,7 @@ void Cutscene_HandleConditionalTriggers(PlayState* play) {
     osSyncPrintf("\ngame_info.mode=[%d] restart_flag", ((void)0, gSaveContext.respawnFlag));
     LUSLOG_INFO("Cutscene_HandleConditionalTriggers - entranceIndex: %#x cutsceneIndex: %#x", gSaveContext.entranceIndex, gSaveContext.cutsceneIndex);
 
-    if (!GameInteractor_Should(GI_VB_PLAY_TRANSITION_CS, true, NULL)) {
+    if (!GameInteractor_Should(VB_PLAY_TRANSITION_CS, true, NULL)) {
         return;
     }
 
@@ -2206,7 +2206,7 @@ void Cutscene_HandleConditionalTriggers(PlayState* play) {
             Flags_SetEventChkInf(EVENTCHKINF_LEARNED_REQUIEM_OF_SPIRIT);
             gSaveContext.entranceIndex = ENTR_DESERT_COLOSSUS_0;
             gSaveContext.cutsceneIndex = 0xFFF0;
-        } else if (GameInteractor_Should(GI_VB_BE_ELIGIBLE_FOR_NOCTURNE_OF_SHADOW, (
+        } else if (GameInteractor_Should(VB_BE_ELIGIBLE_FOR_NOCTURNE_OF_SHADOW, (
             (gSaveContext.entranceIndex == ENTR_KAKARIKO_VILLAGE_0) && 
             LINK_IS_ADULT &&
             Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP) && 
@@ -2218,12 +2218,12 @@ void Cutscene_HandleConditionalTriggers(PlayState* play) {
             gSaveContext.cutsceneIndex = 0xFFF0;
         } else if ((gSaveContext.entranceIndex == ENTR_LOST_WOODS_9) && !Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_SARIA_ON_BRIDGE)) {
             Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_SARIA_ON_BRIDGE);
-            if (GameInteractor_Should(GI_VB_GIVE_ITEM_FAIRY_OCARINA, true, NULL)) {
+            if (GameInteractor_Should(VB_GIVE_ITEM_FAIRY_OCARINA, true, NULL)) {
                 Item_Give(play, ITEM_OCARINA_FAIRY);
             }
             gSaveContext.entranceIndex = ENTR_LOST_WOODS_0;
             gSaveContext.cutsceneIndex = 0xFFF0;
-        } else if (GameInteractor_Should(GI_VB_BE_ELIGIBLE_FOR_LIGHT_ARROWS, (
+        } else if (GameInteractor_Should(VB_BE_ELIGIBLE_FOR_LIGHT_ARROWS, (
             CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && 
             CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) &&
             LINK_IS_ADULT &&

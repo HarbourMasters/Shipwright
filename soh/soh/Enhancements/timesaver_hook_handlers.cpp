@@ -40,7 +40,7 @@ void EnKo_MoveWhenReady(EnKo* enKo, PlayState* play) {
     if ((enKo->actor.params & 0xFF) == ENKO_TYPE_CHILD_3) {
         // Typically this doesn't get get live updated in vanilla, but we need to
         // live update it if we're skipping a certain cutscene or in randomizer
-        if (GameInteractor_Should(GI_VB_OPEN_KOKIRI_FOREST, CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD), NULL)) {
+        if (GameInteractor_Should(VB_OPEN_KOKIRI_FOREST, CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD), NULL)) {
             enKo->collider.dim.height -= 200;
             Path_CopyLastPoint(enKo->path, &enKo->actor.world.pos);
             enKo->actionFunc = func_80A99384;
@@ -140,7 +140,7 @@ void TimeSaverOnGameFrameUpdateHandler() {
 
 void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void* opt) {
     switch (id) {
-        case GI_VB_PLAY_TRANSITION_CS: {
+        case VB_PLAY_TRANSITION_CS: {
             if (CVarGetInteger("gTimeSavers.SkipCutscene.Intro", IS_RANDO) && gSaveContext.entranceIndex == ENTR_LINKS_HOUSE_0 && gSaveContext.cutsceneIndex == 0xFFF1) {
                 gSaveContext.cutsceneIndex = 0;
                 *should = false;
@@ -160,7 +160,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
                     Flags_SetEventChkInf(EVENTCHKINF_LEARNED_REQUIEM_OF_SPIRIT);
                     // Normally happens in the cutscene
                     gSaveContext.dayTime = gSaveContext.skyboxTime = 0xAC60;
-                    if (GameInteractor_Should(GI_VB_GIVE_ITEM_REQUIEM_OF_SPIRIT, true, NULL)) {
+                    if (GameInteractor_Should(VB_GIVE_ITEM_REQUIEM_OF_SPIRIT, true, NULL)) {
                         Item_Give(gPlayState, ITEM_SONG_REQUIEM);
                     }
                     *should = false;
@@ -173,11 +173,11 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
                     Flags_GetEventChkInf(EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP) &&
                     Flags_GetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP) &&
                     !Flags_GetEventChkInf(EVENTCHKINF_BONGO_BONGO_ESCAPED_FROM_WELL);
-                if (GameInteractor_Should(GI_VB_BE_ELIGIBLE_FOR_NOCTURNE_OF_SHADOW, meetsBurningKakRequirements, NULL)) {
+                if (GameInteractor_Should(VB_BE_ELIGIBLE_FOR_NOCTURNE_OF_SHADOW, meetsBurningKakRequirements, NULL)) {
                     Flags_SetEventChkInf(EVENTCHKINF_BONGO_BONGO_ESCAPED_FROM_WELL);
                     // Normally happens in the cutscene
                     Flags_SetEventChkInf(EVENTCHKINF_LEARNED_NOCTURNE_OF_SHADOW);
-                    if (GameInteractor_Should(GI_VB_GIVE_ITEM_NOCTURNE_OF_SHADOW, true, NULL)) {
+                    if (GameInteractor_Should(VB_GIVE_ITEM_NOCTURNE_OF_SHADOW, true, NULL)) {
                         Item_Give(gPlayState, ITEM_SONG_NOCTURNE);
                     }
                     *should = false;
@@ -255,7 +255,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
                 // Lost Woods Bridge
                 if ((gSaveContext.entranceIndex == ENTR_LOST_WOODS_9) && !Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_SARIA_ON_BRIDGE)) {
                     Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_SARIA_ON_BRIDGE);
-                    if (GameInteractor_Should(GI_VB_GIVE_ITEM_FAIRY_OCARINA, true, NULL)) {
+                    if (GameInteractor_Should(VB_GIVE_ITEM_FAIRY_OCARINA, true, NULL)) {
                         Item_Give(gPlayState, ITEM_OCARINA_FAIRY);
                     }
                     *should = false;
@@ -268,9 +268,9 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
                     CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) &&
                     CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) &&
                     !Flags_GetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS);
-                if (GameInteractor_Should(GI_VB_BE_ELIGIBLE_FOR_LIGHT_ARROWS, meetsLACSRequirements, NULL)) {
+                if (GameInteractor_Should(VB_BE_ELIGIBLE_FOR_LIGHT_ARROWS, meetsLACSRequirements, NULL)) {
                     Flags_SetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS);
-                    if (GameInteractor_Should(GI_VB_GIVE_ITEM_LIGHT_ARROW, true, NULL)) {
+                    if (GameInteractor_Should(VB_GIVE_ITEM_LIGHT_ARROW, true, NULL)) {
                         Item_Give(gPlayState, ITEM_ARROW_LIGHT);
                     }
                     *should = false;
@@ -293,14 +293,14 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
             }
             break;
         }
-        case GI_VB_PLAY_ENTRANCE_CS: {
+        case VB_PLAY_ENTRANCE_CS: {
             s32* entranceFlag = static_cast<s32*>(opt);
             if (CVarGetInteger("gTimeSavers.SkipCutscene.Entrances", IS_RANDO) && (*entranceFlag != EVENTCHKINF_EPONA_OBTAINED)) {
                 *should = false;
             }
             break;
         }
-        case GI_VB_PLAY_ONEPOINT_CS: {
+        case VB_PLAY_ONEPOINT_CS: {
             if (CVarGetInteger("gTimeSavers.SkipCutscene.OnePoint", IS_RANDO)) {
                 s16* csId = static_cast<s16*>(opt);
                 switch (*csId) {
@@ -310,13 +310,13 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
                         RateLimitedSuccessChime();
                         break;
                     default:
-                        SPDLOG_INFO("GI_VB_PLAY_ONEPOINT_CS {}", *csId);
+                        SPDLOG_INFO("VB_PLAY_ONEPOINT_CS {}", *csId);
                         break;
                 }
             }
             break;
         }
-        case GI_VB_PLAY_ONEPOINT_ACTOR_CS: {
+        case VB_PLAY_ONEPOINT_ACTOR_CS: {
             if (CVarGetInteger("gTimeSavers.SkipCutscene.OnePoint", IS_RANDO)) {
                 Actor* actor = static_cast<Actor*>(opt);
 
@@ -398,23 +398,23 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
                         break;
                 }
                 if (*should) {
-                    SPDLOG_INFO("GI_VB_PLAY_ONEPOINT_ACTOR_CS ID:{} Cat:{}", actor->id, actor->category);
+                    SPDLOG_INFO("VB_PLAY_ONEPOINT_ACTOR_CS ID:{} Cat:{}", actor->id, actor->category);
                 }
             }
             break;
         }
-        case GI_VB_SHOW_TITLE_CARD:
+        case VB_SHOW_TITLE_CARD:
             if (CVarGetInteger("gTimeSavers.DisableTitleCard", IS_RANDO)) {
                 *should = false;
             }
             break;
-        case GI_VB_WONDER_TALK: {
+        case VB_WONDER_TALK: {
             if (CVarGetInteger("gTimeSavers.NoForcedDialog", IS_RANDO)) {
                 *should = false;
             }
             break;
         }
-        case GI_VB_NAVI_TALK: {
+        case VB_NAVI_TALK: {
             if (CVarGetInteger("gTimeSavers.NoForcedDialog", IS_RANDO)) {
                 ElfMsg* naviTalk = static_cast<ElfMsg*>(opt);
                 Flags_SetSwitch(gPlayState, (naviTalk->actor.params >> 8) & 0x3F);
@@ -423,13 +423,13 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
             }
             break;
         }
-        case GI_VB_NOT_BE_GREETED_BY_SARIA:
+        case VB_NOT_BE_GREETED_BY_SARIA:
             if (CVarGetInteger("gTimeSavers.SkipCutscene.Entrances", IS_RANDO) && !Flags_GetInfTable(INFTABLE_GREETED_BY_SARIA)) {
                 Flags_SetInfTable(INFTABLE_GREETED_BY_SARIA);
                 *should = true;
             }
             break;
-        case GI_VB_MOVE_MIDO_IN_KOKIRI_FOREST:
+        case VB_MOVE_MIDO_IN_KOKIRI_FOREST:
             if (
                 CVarGetInteger("gTimeSavers.SkipMiscInteractions", IS_RANDO) &&
                 !Flags_GetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD) &&
@@ -440,7 +440,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
                 *should = true;
             }
             break;
-        case GI_VB_PLAY_DEKU_TREE_INTRO_CS: {
+        case VB_PLAY_DEKU_TREE_INTRO_CS: {
             if (CVarGetInteger("gTimeSavers.SkipCutscene.Story", IS_RANDO)) {
                 BgTreemouth* treeMouth = static_cast<BgTreemouth*>(opt);
                 Flags_SetEventChkInf(EVENTCHKINF_DEKU_TREE_OPENED_MOUTH);
@@ -450,7 +450,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
             }
             break;
         }
-        case GI_VB_DEKU_JR_CONSIDER_FOREST_TEMPLE_FINISHED: {
+        case VB_DEKU_JR_CONSIDER_FOREST_TEMPLE_FINISHED: {
             // We're overriding this so that the Deku JR doesn't despawn after skipping the forest temple blue warp cutscene.
             // It typically relies on the forest medallion being obtained, but that isn't given yet until after scene init
             if (CVarGetInteger("gTimeSavers.SkipCutscene.Story", IS_RANDO)) {
@@ -458,21 +458,21 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
             }
             break;
         }
-        case GI_VB_GIVE_ITEM_FROM_BLUE_WARP:
-        case GI_VB_PLAY_SHIEK_BLOCK_MASTER_SWORD_CS:
-        case GI_VB_GIVE_ITEM_FAIRY_OCARINA:
-        case GI_VB_GIVE_ITEM_LIGHT_ARROW:
+        case VB_GIVE_ITEM_FROM_BLUE_WARP:
+        case VB_PLAY_SHIEK_BLOCK_MASTER_SWORD_CS:
+        case VB_GIVE_ITEM_FAIRY_OCARINA:
+        case VB_GIVE_ITEM_LIGHT_ARROW:
             if (CVarGetInteger("gTimeSavers.SkipCutscene.Story", IS_RANDO)) {
                 *should = false;
             }
             break;
-        case GI_VB_PLAY_NABOORU_CAPTURED_CS:
+        case VB_PLAY_NABOORU_CAPTURED_CS:
             if (*should == true && CVarGetInteger("gTimeSavers.SkipCutscene.Story", IS_RANDO)) {
                 Flags_SetEventChkInf(EVENTCHKINF_NABOORU_CAPTURED_BY_TWINROVA);
                 *should = false;
             }
             break;
-        case GI_VB_PLAY_PULL_MASTER_SWORD_CS:
+        case VB_PLAY_PULL_MASTER_SWORD_CS:
             if (CVarGetInteger("gTimeSavers.SkipCutscene.Story", IS_RANDO)) {
                 if (!Flags_GetEventChkInf(EVENTCHKINF_PULLED_MASTER_SWORD_FROM_PEDESTAL)) {
                     // Normally, these would be done in the cutscene, but we're skipping it
@@ -480,14 +480,14 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
                     Flags_SetEventChkInf(EVENTCHKINF_ENTERED_MASTER_SWORD_CHAMBER);
                     Flags_SetEventChkInf(EVENTCHKINF_SHEIK_SPAWNED_AT_MASTER_SWORD_PEDESTAL);
                     Flags_SetEventChkInf(EVENTCHKINF_TIME_TRAVELED_TO_ADULT);
-                    if (GameInteractor_Should(GI_VB_GIVE_ITEM_LIGHT_MEDALLION, true, NULL)) {
+                    if (GameInteractor_Should(VB_GIVE_ITEM_LIGHT_MEDALLION, true, NULL)) {
                         Item_Give(gPlayState, ITEM_MEDALLION_LIGHT);
                     }
                 }
                 *should = false;
             }
             break;
-        case GI_VB_OWL_INTERACTION: {
+        case VB_OWL_INTERACTION: {
             if (CVarGetInteger("gTimeSavers.SkipOwlInteractions", IS_RANDO) && *should) {
                 EnOwl* enOwl = static_cast<EnOwl*>(opt);
                 s32 owlType = (enOwl->actor.params & 0xFC0) >> 6;
@@ -501,7 +501,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
             }
             break;
         }
-        case GI_VB_OVERRIDE_LINK_THE_GORON_DIALOGUE: {
+        case VB_OVERRIDE_LINK_THE_GORON_DIALOGUE: {
             if (CVarGetInteger("gTimeSavers.SkipMiscInteractions", IS_RANDO)) {
                 u16* textId = static_cast<u16*>(opt);
                 // If the doors are not open yet, prioritize opening them
@@ -512,15 +512,15 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
             }
             break;
         }
-        case GI_VB_PLAY_EYEDROP_CREATION_ANIM:
-        case GI_VB_PLAY_EYEDROPS_CS:
-        case GI_VB_PLAY_DROP_FISH_FOR_JABU_CS:
-        case GI_VB_PLAY_DARUNIAS_JOY_CS:
+        case VB_PLAY_EYEDROP_CREATION_ANIM:
+        case VB_PLAY_EYEDROPS_CS:
+        case VB_PLAY_DROP_FISH_FOR_JABU_CS:
+        case VB_PLAY_DARUNIAS_JOY_CS:
             if (CVarGetInteger("gTimeSavers.SkipMiscInteractions", IS_RANDO)) {
                 *should = false;
             }
             break;
-        case GI_VB_PLAY_ZELDAS_LULLABY_CS: {
+        case VB_PLAY_ZELDAS_LULLABY_CS: {
             if (CVarGetInteger("gTimeSavers.SkipCutscene.LearnSong", IS_RANDO) || IS_RANDO) {
                 DemoIm* demoIm = static_cast<DemoIm*>(opt);
                 Player* player = GET_PLAYER(gPlayState);
@@ -570,7 +570,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
             }
             break;
         }
-        case GI_VB_PLAY_SARIAS_SONG_CS: {
+        case VB_PLAY_SARIAS_SONG_CS: {
             if (CVarGetInteger("gTimeSavers.SkipCutscene.LearnSong", IS_RANDO) || IS_RANDO) {
                 EnSa* enSa = static_cast<EnSa*>(opt);
                 enSa->actionFunc = func_80AF6B20;
@@ -578,13 +578,13 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
             }
             break;
         }
-        case GI_VB_DESPAWN_HORSE_RACE_COW: {
+        case VB_DESPAWN_HORSE_RACE_COW: {
             if (Flags_GetEventChkInf(EVENTCHKINF_WON_COW_IN_MALONS_RACE) && CVarGetInteger("gCowOfTime", 0)) {
                 *should = false;
             }
             break;
         }
-        case GI_VB_PLAY_DRAIN_WELL_CS: {
+        case VB_PLAY_DRAIN_WELL_CS: {
             if (CVarGetInteger("gTimeSavers.SkipCutscene.Story", IS_RANDO)) {
                 *should = false;
                 Flags_SetSwitch(gPlayState, 0x2);
@@ -593,7 +593,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
             }
             break;
         }
-        case GI_VB_PLAY_SUNS_SONG_CS:
+        case VB_PLAY_SUNS_SONG_CS:
             if (CVarGetInteger("gTimeSavers.SkipCutscene.LearnSong", IS_RANDO) || IS_RANDO) {
                 *should = false;
                 Flags_SetEventChkInf(EVENTCHKINF_LEARNED_SUNS_SONG);
@@ -602,19 +602,19 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
                 // When it's 0x8000, it's changed to 0xC090
             }
             break;
-        case GI_VB_PLAY_ROYAL_FAMILY_TOMB_CS: {
+        case VB_PLAY_ROYAL_FAMILY_TOMB_CS: {
             if (CVarGetInteger("gTimeSavers.SkipMiscInteractions", IS_RANDO)) {
                 *should = false;
             }
             break;
         }
-        case GI_VB_PLAY_ROYAL_FAMILY_TOMB_EXPLODE: {
+        case VB_PLAY_ROYAL_FAMILY_TOMB_EXPLODE: {
             if (CVarGetInteger("gTimeSavers.SkipMiscInteractions", IS_RANDO)) {
                 *should = Flags_GetEventChkInf(EVENTCHKINF_DESTROYED_ROYAL_FAMILY_TOMB);
             }
             break;
         }
-        case GI_VB_PLAY_DOOR_OF_TIME_CS: {
+        case VB_PLAY_DOOR_OF_TIME_CS: {
             if (CVarGetInteger("gTimeSavers.SkipMiscInteractions", IS_RANDO)) {
                 *should = false;
                 Flags_SetEnv(gPlayState, 2);
@@ -622,59 +622,59 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
             }
             break;
         }
-        case GI_VB_GIVE_ITEM_MINUET_OF_FOREST:
-        case GI_VB_GIVE_ITEM_BOLERO_OF_FIRE:
-        case GI_VB_GIVE_ITEM_SERENADE_OF_WATER:
-        case GI_VB_GIVE_ITEM_REQUIEM_OF_SPIRIT:
-        case GI_VB_GIVE_ITEM_NOCTURNE_OF_SHADOW:
-        case GI_VB_GIVE_ITEM_PRELUDE_OF_LIGHT:
-        case GI_VB_GIVE_ITEM_ZELDAS_LULLABY:
-        case GI_VB_GIVE_ITEM_EPONAS_SONG:
-        case GI_VB_GIVE_ITEM_SARIAS_SONG:
-        case GI_VB_GIVE_ITEM_SUNS_SONG:
-        case GI_VB_GIVE_ITEM_SONG_OF_TIME:
-        case GI_VB_GIVE_ITEM_SONG_OF_STORMS:
-        case GI_VB_PLAY_MINUET_OF_FOREST_CS:
-        case GI_VB_PLAY_BOLERO_OF_FIRE_CS:
-        case GI_VB_PLAY_SERENADE_OF_WATER_CS:
-        case GI_VB_PLAY_PRELUDE_OF_LIGHT_CS:
+        case VB_GIVE_ITEM_MINUET_OF_FOREST:
+        case VB_GIVE_ITEM_BOLERO_OF_FIRE:
+        case VB_GIVE_ITEM_SERENADE_OF_WATER:
+        case VB_GIVE_ITEM_REQUIEM_OF_SPIRIT:
+        case VB_GIVE_ITEM_NOCTURNE_OF_SHADOW:
+        case VB_GIVE_ITEM_PRELUDE_OF_LIGHT:
+        case VB_GIVE_ITEM_ZELDAS_LULLABY:
+        case VB_GIVE_ITEM_EPONAS_SONG:
+        case VB_GIVE_ITEM_SARIAS_SONG:
+        case VB_GIVE_ITEM_SUNS_SONG:
+        case VB_GIVE_ITEM_SONG_OF_TIME:
+        case VB_GIVE_ITEM_SONG_OF_STORMS:
+        case VB_PLAY_MINUET_OF_FOREST_CS:
+        case VB_PLAY_BOLERO_OF_FIRE_CS:
+        case VB_PLAY_SERENADE_OF_WATER_CS:
+        case VB_PLAY_PRELUDE_OF_LIGHT_CS:
             if (CVarGetInteger("gTimeSavers.SkipCutscene.LearnSong", IS_RANDO) || IS_RANDO) {
                 *should = false;
             }
             break;
-        case GI_VB_DAMPE_IN_GRAVEYARD_DESPAWN:
+        case VB_DAMPE_IN_GRAVEYARD_DESPAWN:
             if (CVarGetInteger("gDampeAllNight", 0)) {
                 *should = LINK_IS_ADULT || gPlayState->sceneNum != SCENE_GRAVEYARD;
             }
             break;
-        case GI_VB_BE_VALID_GRAVEDIGGING_SPOT:
+        case VB_BE_VALID_GRAVEDIGGING_SPOT:
             if (CVarGetInteger("gDampeWin", 0)) {
                 EnTk *enTk = static_cast<EnTk*>(opt);
                 enTk->validDigHere = true;
                 *should = true;
             }
             break;
-        case GI_VB_BE_DAMPE_GRAVEDIGGING_GRAND_PRIZE:
+        case VB_BE_DAMPE_GRAVEDIGGING_GRAND_PRIZE:
             if (CVarGetInteger("gDampeWin", 0)) {
                 EnTk *enTk = static_cast<EnTk*>(opt);
                 enTk->currentReward = 3;
                 *should = true;
             }
             break;
-        case GI_VB_DAMPE_GRAVEDIGGING_GRAND_PRIZE_BE_HEART_PIECE:
+        case VB_DAMPE_GRAVEDIGGING_GRAND_PRIZE_BE_HEART_PIECE:
             if (CVarGetInteger("gGravediggingTourFix", 0) || IS_RANDO) {
                 *should = !Flags_GetCollectible(gPlayState, COLLECTFLAG_GRAVEDIGGING_HEART_PIECE);
             }
             break;
-        case GI_VB_FIX_SAW_SOFTLOCK:
+        case VB_FIX_SAW_SOFTLOCK:
             // Animation Count should be no more than 1 to guarantee putaway is complete after giving the saw
             // As this is vanilla behavior, it only applies with the Fix toggle or Skip Text enabled.
             *should = (CVarGetInteger("gFixSawSoftlock", 0) != 0 || CVarGetInteger("gSkipText", 0) != 0) ? gPlayState->animationCtx.animationCount > 1 : *should;
             break;
-        case GI_VB_BIGGORON_CONSIDER_SWORD_FORGED:
+        case VB_BIGGORON_CONSIDER_SWORD_FORGED:
             *should = Environment_GetBgsDayCount() >= CVarGetInteger("gForgeTime", 3);
             break;
-        case GI_VB_BE_ELIGIBLE_FOR_GREAT_FAIRY_REWARD: {
+        case VB_BE_ELIGIBLE_FOR_GREAT_FAIRY_REWARD: {
             BgDyYoseizo* bgDyYoseizo = static_cast<BgDyYoseizo*>(opt);
             RandomizerInf flag = RAND_INF_MAX;
 
@@ -715,14 +715,14 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
 
             break;
         }
-        case GI_VB_PLAY_RAINBOW_BRIDGE_CS: {
+        case VB_PLAY_RAINBOW_BRIDGE_CS: {
             if (CVarGetInteger("gTimeSavers.SkipCutscene.Story", IS_RANDO)) {
                 *should = false;
                 func_800F595C(NA_BGM_BRIDGE_TO_GANONS);
             }
             break;
         }
-        case GI_VB_PHANTOM_GANON_DEATH_SCENE: {
+        case VB_PHANTOM_GANON_DEATH_SCENE: {
             if (CVarGetInteger("gTimeSavers.SkipCutscene.QuickBossDeaths", IS_RANDO || IS_BOSS_RUSH)) {
                 *should = false;
                 BossGanondrof* pg = static_cast<BossGanondrof*>(opt);
@@ -747,7 +747,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
             }
             break;
         }
-        case GI_VB_NABOORU_KNUCKLE_DEATH_SCENE: {
+        case VB_NABOORU_KNUCKLE_DEATH_SCENE: {
             EnIk* ik = static_cast<EnIk*>(opt);
             if (CVarGetInteger("gTimeSavers.SkipCutscene.QuickBossDeaths", IS_RANDO)) {
                 // Because no CS in rando, we hide the death of the knuckle by spawning flames and kill the actor
@@ -964,7 +964,7 @@ void TimeSaverOnSceneInitHandler(int16_t sceneNum) {
             }
             break;
         case SCENE_LON_LON_RANCH:
-            if (CVarGetInteger("gTimeSavers.SkipMiscInteractions", IS_RANDO) && GameInteractor_Should(GI_VB_MALON_RETURN_FROM_CASTLE, Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE), NULL)) {
+            if (CVarGetInteger("gTimeSavers.SkipMiscInteractions", IS_RANDO) && GameInteractor_Should(VB_MALON_RETURN_FROM_CASTLE, Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE), NULL)) {
                 Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_CHILD_MALON_AT_RANCH);
                 Flags_SetInfTable(INFTABLE_CHILD_MALON_SAID_EPONA_WAS_AFRAID_OF_YOU);
                 Flags_SetEventChkInf(EVENTCHKINF_INVITED_TO_SING_WITH_CHILD_MALON);

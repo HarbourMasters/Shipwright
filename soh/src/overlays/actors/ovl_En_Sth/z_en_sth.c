@@ -277,14 +277,14 @@ void EnSth_GivePlayerItem(EnSth* this, PlayState* play) {
 }
 
 void EnSth_GiveReward(EnSth* this, PlayState* play) {
-    if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_SKULLTULA_REWARD, true, this)) {
+    if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(VB_GIVE_ITEM_FROM_SKULLTULA_REWARD, true, this)) {
         this->actor.parent = NULL;
         EnSth_SetupAction(this, EnSth_RewardObtainedTalk);
         gSaveContext.eventChkInf[EVENTCHKINF_SKULLTULA_REWARD_INDEX] |= this->eventFlag;
         if (this->eventFlag != 0) {
             GameInteractor_ExecuteOnFlagSet(FLAG_EVENT_CHECK_INF, (EVENTCHKINF_SKULLTULA_REWARD_INDEX << 4) + sEventFlagsShift[this->actor.params]);
         }
-    } else if (GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_SKULLTULA_REWARD, true, this)) {
+    } else if (GameInteractor_Should(VB_GIVE_ITEM_FROM_SKULLTULA_REWARD, true, this)) {
         EnSth_GivePlayerItem(this, play);
     }
     EnSth_FacePlayer(this, play);
@@ -294,7 +294,7 @@ void EnSth_RewardUnobtainedTalk(EnSth* this, PlayState* play) {
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(play)) {
         Message_CloseTextbox(play);
         EnSth_SetupAction(this, EnSth_GiveReward);
-        if (GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_SKULLTULA_REWARD, true, this)) {
+        if (GameInteractor_Should(VB_GIVE_ITEM_FROM_SKULLTULA_REWARD, true, this)) {
             EnSth_GivePlayerItem(this, play);
         }
     }

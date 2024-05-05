@@ -1439,7 +1439,7 @@ void func_80A781CC(Actor* thisx, PlayState* play) {
     if (!Play_InCsMode(play)) {
         this->actor.update = EnIk_Update;
         this->actor.draw = EnIk_Draw;
-        if (GameInteractor_Should(GI_VB_NABOORU_KNUCKLE_DEATH_SCENE, true, this)) {
+        if (GameInteractor_Should(VB_NABOORU_KNUCKLE_DEATH_SCENE, true, this)) {
             Cutscene_SetSegment(play, gSpiritBossNabooruKnuckleDefeatCs);
             gSaveContext.cutsceneTrigger = 1;
             Actor_SetScale(&this->actor, 0.01f);

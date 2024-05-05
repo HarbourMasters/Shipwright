@@ -130,7 +130,7 @@ void func_808AC908(BgSpot02Objects* this, PlayState* play) {
     static Vec3f zeroVec = { 0.0f, 0.0f, 0.0f };
     Vec3f pos;
 
-    if (GameInteractor_Should(GI_VB_PLAY_ROYAL_FAMILY_TOMB_EXPLODE, play->csCtx.state != 0 && play->csCtx.npcActions[3] != NULL && play->csCtx.npcActions[3]->action == 2, this)) {
+    if (GameInteractor_Should(VB_PLAY_ROYAL_FAMILY_TOMB_EXPLODE, play->csCtx.state != 0 && play->csCtx.npcActions[3] != NULL && play->csCtx.npcActions[3]->action == 2, this)) {
             Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_GRAVE_EXPLOSION);
             Flags_SetEventChkInf(EVENTCHKINF_DESTROYED_ROYAL_FAMILY_TOMB);
             this->timer = 25;

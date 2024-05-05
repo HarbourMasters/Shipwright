@@ -528,9 +528,9 @@ void DoorWarp1_ChildWarpOut(DoorWarp1* this, PlayState* play) {
         osSyncPrintf("\n\n\nじかんがきたからおーしまい fade_direction=[%d]", play->transitionTrigger, TRANS_TRIGGER_START);
 
         if (play->sceneNum == SCENE_DODONGOS_CAVERN_BOSS) {
-            if (GameInteractor_Should(GI_VB_PLAY_BLUE_WARP_CS, !Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP), EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP)) {
+            if (GameInteractor_Should(VB_PLAY_BLUE_WARP_CS, !Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP), EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP)) {
                 Flags_SetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP);
-                if (GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_BLUE_WARP, true, ITEM_GORON_RUBY)) {
+                if (GameInteractor_Should(VB_GIVE_ITEM_FROM_BLUE_WARP, true, ITEM_GORON_RUBY)) {
                     Item_Give(play, ITEM_GORON_RUBY);
                 }
                 play->nextEntranceIndex = ENTR_DEATH_MOUNTAIN_TRAIL_0;
@@ -540,10 +540,10 @@ void DoorWarp1_ChildWarpOut(DoorWarp1* this, PlayState* play) {
                 gSaveContext.nextCutsceneIndex = 0;
             }
         } else if (play->sceneNum == SCENE_DEKU_TREE_BOSS) {
-            if (GameInteractor_Should(GI_VB_PLAY_BLUE_WARP_CS, !Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD), EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD)) {
+            if (GameInteractor_Should(VB_PLAY_BLUE_WARP_CS, !Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD), EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD)) {
                 Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD);
                 Flags_SetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP);
-                if (GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_BLUE_WARP, true, ITEM_KOKIRI_EMERALD)) {
+                if (GameInteractor_Should(VB_GIVE_ITEM_FROM_BLUE_WARP, true, ITEM_KOKIRI_EMERALD)) {
                     Item_Give(play, ITEM_KOKIRI_EMERALD);
                 }
                 play->nextEntranceIndex = ENTR_KOKIRI_FOREST_0;
@@ -645,9 +645,9 @@ void DoorWarp1_RutoWarpOut(DoorWarp1* this, PlayState* play) {
     this->warpTimer++;
 
     if (this->warpTimer > sWarpTimerTarget && gSaveContext.nextCutsceneIndex == 0xFFEF) {
-        if (GameInteractor_Should(GI_VB_PLAY_BLUE_WARP_CS, true, EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP)) {
+        if (GameInteractor_Should(VB_PLAY_BLUE_WARP_CS, true, EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP)) {
             Flags_SetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP);
-            if (GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_BLUE_WARP, true, ITEM_ZORA_SAPPHIRE)) {
+            if (GameInteractor_Should(VB_GIVE_ITEM_FROM_BLUE_WARP, true, ITEM_ZORA_SAPPHIRE)) {
                 Item_Give(play, ITEM_ZORA_SAPPHIRE);
             }
             gSaveContext.nextCutsceneIndex = 0xFFF0;
@@ -762,9 +762,9 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, PlayState* play) {
         if (IS_BOSS_RUSH) {
             BossRush_HandleBlueWarp(play, this->actor.world.pos.x, this->actor.world.pos.z);
         } else if (play->sceneNum == SCENE_FOREST_TEMPLE_BOSS) {
-            if (GameInteractor_Should(GI_VB_PLAY_BLUE_WARP_CS, !Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP), EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP)) {
+            if (GameInteractor_Should(VB_PLAY_BLUE_WARP_CS, !Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP), EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP)) {
                 Flags_SetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP);
-                if (GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_BLUE_WARP, true, ITEM_MEDALLION_FOREST)) {
+                if (GameInteractor_Should(VB_GIVE_ITEM_FROM_BLUE_WARP, true, ITEM_MEDALLION_FOREST)) {
                     Item_Give(play, ITEM_MEDALLION_FOREST);
                 }
                 play->nextEntranceIndex = ENTR_CHAMBER_OF_THE_SAGES_0;
@@ -779,9 +779,9 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, PlayState* play) {
                 gSaveContext.nextCutsceneIndex = 0;
             }
         } else if (play->sceneNum == SCENE_FIRE_TEMPLE_BOSS) {
-            if (GameInteractor_Should(GI_VB_PLAY_BLUE_WARP_CS, !Flags_GetEventChkInf(EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP), EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP)) {
+            if (GameInteractor_Should(VB_PLAY_BLUE_WARP_CS, !Flags_GetEventChkInf(EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP), EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP)) {
                 Flags_SetEventChkInf(EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP);
-                if (GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_BLUE_WARP, true, ITEM_MEDALLION_FIRE)) {
+                if (GameInteractor_Should(VB_GIVE_ITEM_FROM_BLUE_WARP, true, ITEM_MEDALLION_FIRE)) {
                     Item_Give(play, ITEM_MEDALLION_FIRE);
                 }
                 play->nextEntranceIndex = ENTR_KAKARIKO_VILLAGE_0;
@@ -795,9 +795,9 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, PlayState* play) {
                 gSaveContext.nextCutsceneIndex = 0;
             }
         } else if (play->sceneNum == SCENE_WATER_TEMPLE_BOSS) {
-            if (GameInteractor_Should(GI_VB_PLAY_BLUE_WARP_CS, !Flags_GetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP), EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP)) {
+            if (GameInteractor_Should(VB_PLAY_BLUE_WARP_CS, !Flags_GetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP), EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP)) {
                 Flags_SetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP);
-                if (GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_BLUE_WARP, true, ITEM_MEDALLION_WATER)) {
+                if (GameInteractor_Should(VB_GIVE_ITEM_FROM_BLUE_WARP, true, ITEM_MEDALLION_WATER)) {
                     Item_Give(play, ITEM_MEDALLION_WATER);
                 }
                 play->nextEntranceIndex = ENTR_CHAMBER_OF_THE_SAGES_0;
@@ -812,9 +812,9 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, PlayState* play) {
                 gSaveContext.nextCutsceneIndex = 0;
             }
         } else if (play->sceneNum == SCENE_SPIRIT_TEMPLE_BOSS) {
-            if (GameInteractor_Should(GI_VB_PLAY_BLUE_WARP_CS, !CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT), RAND_INF_DUNGEONS_DONE_SPIRIT_TEMPLE)) {
+            if (GameInteractor_Should(VB_PLAY_BLUE_WARP_CS, !CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT), RAND_INF_DUNGEONS_DONE_SPIRIT_TEMPLE)) {
                 Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_SPIRIT_TEMPLE);
-                if (GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_BLUE_WARP, true, ITEM_MEDALLION_SPIRIT)) {
+                if (GameInteractor_Should(VB_GIVE_ITEM_FROM_BLUE_WARP, true, ITEM_MEDALLION_SPIRIT)) {
                     Item_Give(play, ITEM_MEDALLION_SPIRIT);
                 }
                 play->nextEntranceIndex = ENTR_CHAMBER_OF_THE_SAGES_0;
@@ -829,9 +829,9 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, PlayState* play) {
                 gSaveContext.nextCutsceneIndex = 0;
             }
         } else if (play->sceneNum == SCENE_SHADOW_TEMPLE_BOSS) {
-            if (GameInteractor_Should(GI_VB_PLAY_BLUE_WARP_CS, !CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW), RAND_INF_DUNGEONS_DONE_SHADOW_TEMPLE)) {
+            if (GameInteractor_Should(VB_PLAY_BLUE_WARP_CS, !CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW), RAND_INF_DUNGEONS_DONE_SHADOW_TEMPLE)) {
                 Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_SHADOW_TEMPLE);
-                if (GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_BLUE_WARP, true, ITEM_MEDALLION_SHADOW)) {
+                if (GameInteractor_Should(VB_GIVE_ITEM_FROM_BLUE_WARP, true, ITEM_MEDALLION_SHADOW)) {
                     Item_Give(play, ITEM_MEDALLION_SHADOW);
                 }
                 play->nextEntranceIndex = ENTR_CHAMBER_OF_THE_SAGES_0;

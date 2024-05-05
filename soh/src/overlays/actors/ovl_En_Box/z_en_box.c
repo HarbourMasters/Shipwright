@@ -278,7 +278,7 @@ void EnBox_Fall(EnBox* this, PlayState* play) {
             this->dyna.actor.shape.rot.z = 0;
             this->dyna.actor.world.pos.y = this->dyna.actor.floorHeight;
             EnBox_SetupAction(this, EnBox_WaitOpen);
-            if (GameInteractor_Should(GI_VB_PLAY_ONEPOINT_ACTOR_CS, true, this)) {
+            if (GameInteractor_Should(VB_PLAY_ONEPOINT_ACTOR_CS, true, this)) {
                 OnePointCutscene_EndCutscene(play, this->unk_1AC);
             }
         }
