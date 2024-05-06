@@ -60,18 +60,18 @@ void applyPreset(std::vector<PresetEntry> entries);
 // TODO: Ideally everything below this point will come from one/many JSON files
 
 const std::vector<const char*> enhancementsCvars = {
-    "gDpadPause",
-    "gDpadText",
-    "gDpadOcarina",
-    "gRStickOcarina",
-    "gDpadEquips",
-    "gPauseAnyCursor",
+    CVAR_SETTING("DPadOnPause"),
+    CVAR_SETTING("DpadInText"),
+    CVAR_SETTING("OcarinaControl.Dpad"),
+    CVAR_SETTING("OcarinaControl.RStick"),
+    CVAR_SETTING("DpadEquips"),
+    CVAR_SETTING("PauseAnyCursor"),
     CVAR_ENHANCEMENT("DpadNoDropOcarinaInput"),
-    "gNaviOnL",
-    "gInvertXAxis",
-    "gInvertYAxis",
-    "gRightStickAiming",
-    "gDisableAutoCenterViewFirstPerson",
+    CVAR_SETTING("NaviOnL"),
+    CVAR_SETTING("FreeLook.InvertXAxis"),
+    CVAR_SETTING("FreeLook.InvertYAxis"),
+    CVAR_SETTING("Controls.RightStickAim"),
+    CVAR_SETTING("DisableFirstPersonAutoCenterView"),
     CVAR_ENHANCEMENT("TextSpeed"),
     CVAR_ENHANCEMENT("MweepSpeed"),
     CVAR_ENHANCEMENT("ForgeTime"),
@@ -152,7 +152,6 @@ const std::vector<const char*> enhancementsCvars = {
     CVAR_ENHANCEMENT("PauseLiveLinkRotation"),
     CVAR_ENHANCEMENT("PauseLiveLink"),
     CVAR_ENHANCEMENT("MinFrameCount"),
-    "gN64Mode",
     CVAR_ENHANCEMENT("NewDrops"),
     CVAR_ENHANCEMENT("DisableBlackBars"),
     CVAR_ENHANCEMENT("DynamicWalletIcon"),
@@ -240,7 +239,7 @@ const std::vector<const char*> enhancementsCvars = {
     CVAR_ENHANCEMENT("RandomizedEnemySizes"),
     CVAR_ENHANCEMENT("RandomizedEnemies"),
     CVAR_ENHANCEMENT("MirroredWorldMode"),
-    "gMirroredWorld",
+    CVAR_ENHANCEMENT("MirroredWorld"),
     CVAR_ENHANCEMENT("HyperEnemies"),
     CVAR_ENHANCEMENT("HookshotableReticle"),
     CVAR_ENHANCEMENT("HideBunnyHood"),
@@ -287,12 +286,12 @@ const std::vector<const char*> cheatCvars = {
     CVAR_WINDOW("CollisionViewer"),
     CVAR_WINDOW("DLViewer"),
     CVAR_WINDOW("SaveEditor"),
-    "gEnableWalkModify",
-    "gWalkSpeedToggle",
-    "gWalkModifierOne",
-    "gWalkModifierTwo",
-    "gSwimModifierOne",
-    "gSwimModifierTwo",
+    CVAR_SETTING("WalkModifier.Enabled"),
+    CVAR_SETTING("WalkModifier.SpeedToggle"),
+    CVAR_SETTING("WalkModifier.Mapping1"),
+    CVAR_SETTING("WalkModifier.Mapping2"),
+    CVAR_SETTING("WalkModifier.SwimMapping1"),
+    CVAR_SETTING("WalkModifier.SwimMapping2"),
     CVAR_ENHANCEMENT("GoronPot"),
     CVAR_ENHANCEMENT("DampeWin"),
     CVAR_ENHANCEMENT("CustomizeShootingGallery"),
@@ -317,7 +316,7 @@ const std::vector<const char*> cheatCvars = {
     CVAR_CHEAT("EasyInputBuffer"),
     CVAR_CHEAT("NoRestrictItems"),
     CVAR_CHEAT("FreezeTime"),
-    "gPrevTime",
+    CVAR_GENERAL("PrevTime"),
     CVAR_CHEAT("DropsDontDie"),
     CVAR_CHEAT("FireproofDekuShield"),
     CVAR_CHEAT("ShieldTwoHanded"),
@@ -329,19 +328,17 @@ const std::vector<const char*> cheatCvars = {
     CVAR_CHEAT("EnableBetaQuest"),
     CVAR_DEVELOPER_TOOLS("BetterDebugWarpScreen"),
     CVAR_GENERAL("SwitchAge"),
-    "gSwitchTimeline",
+    CVAR_GENERAL("SwitchTimeline"),
     CVAR_CHEAT("NoRedeadFreeze"),
     CVAR_CHEAT("NoKeeseGuayTarget"),
     CVAR_CHEAT("BombTimerMultiplier"),
     CVAR_CHEAT("NoFishDespawn"),
     CVAR_CHEAT("NoBugsDespawn"),
-    "gWalkModifierDoesntChangeJump",
+    CVAR_SETTING("WalkModifier.DoesntChangeJump"),
     CVAR_STATS_WINDOW_OPEN,
     CVAR_CHEAT("SaveStatesEnabled"),
     CVAR_CHEAT("SaveStatePromise"),
     CVAR_DEVELOPER_TOOLS("RegEditEnabled"),
-    "gPreset0",
-    "gPreset1",
     CVAR_CHEAT("DekuStick"),
     CVAR_DEVELOPER_TOOLS("DebugWarpScreenTranslation"),
     CVAR_DEVELOPER_TOOLS("DebugSaveFileMode"),
@@ -493,17 +490,17 @@ const std::vector<const char*> randomizerCvars = {
 
 const std::vector<PresetEntry> vanillaPlusPresetEntries = {
     // D-pad Support in text and file select
-    PRESET_ENTRY_S32("gDpadText", 1),
+    PRESET_ENTRY_S32(CVAR_SETTING("DpadInText"), 1),
     // Play Ocarina with D-pad
-    PRESET_ENTRY_S32("gDpadOcarina", 1),
+    PRESET_ENTRY_S32(CVAR_SETTING("OcarinaControl.Dpad"), 1),
     // Play Ocarina with Right Stick
-    PRESET_ENTRY_S32("gRStickOcarina", 1),
+    PRESET_ENTRY_S32(CVAR_SETTING("OcarinaControl.RStick"), 1),
     // D-pad as Equip Items
-    PRESET_ENTRY_S32("gDpadEquips", 1),
+    PRESET_ENTRY_S32(CVAR_SETTING("DpadEquips"), 1),
     // Prevent Dropped Ocarina Inputs
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DpadNoDropOcarinaInput"), 1),
     // Right Stick Aiming
-    PRESET_ENTRY_S32("gRightStickAiming", 1),
+    PRESET_ENTRY_S32(CVAR_SETTING("Controls.RightStickAim"), 1),
 
     // Text Speed (1 to 5)
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("TextSpeed"), 5),
@@ -564,17 +561,17 @@ const std::vector<PresetEntry> vanillaPlusPresetEntries = {
 
 const std::vector<PresetEntry> enhancedPresetEntries = {
     // D-pad Support in text and file select
-    PRESET_ENTRY_S32("gDpadText", 1),
+    PRESET_ENTRY_S32(CVAR_SETTING("DpadInText"), 1),
     // Play Ocarina with D-pad
-    PRESET_ENTRY_S32("gDpadOcarina", 1),
+    PRESET_ENTRY_S32(CVAR_SETTING("OcarinaControl.Dpad"), 1),
     // Play Ocarina with Right Stick
-    PRESET_ENTRY_S32("gRStickOcarina", 1),
+    PRESET_ENTRY_S32(CVAR_SETTING("OcarinaControl.RStick"), 1),
     // D-pad as Equip Items
-    PRESET_ENTRY_S32("gDpadEquips", 1),
+    PRESET_ENTRY_S32(CVAR_SETTING("DpadEquips"), 1),
     // Prevent Dropped Ocarina Inputs
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DpadNoDropOcarinaInput"), 1),
     // Right Stick Aiming
-    PRESET_ENTRY_S32("gRightStickAiming", 1),
+    PRESET_ENTRY_S32(CVAR_SETTING("Controls.RightStickAim"), 1),
 
     // Text Speed (1 to 5)
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("TextSpeed"), 5),
@@ -693,17 +690,17 @@ const std::vector<PresetEntry> enhancedPresetEntries = {
 
 const std::vector<PresetEntry> randomizerPresetEntries = {
     // D-pad Support in text and file select
-    PRESET_ENTRY_S32("gDpadText", 1),
+    PRESET_ENTRY_S32(CVAR_SETTING("DpadInText"), 1),
     // Play Ocarina with D-pad
-    PRESET_ENTRY_S32("gDpadOcarina", 1),
+    PRESET_ENTRY_S32(CVAR_SETTING("OcarinaControl.Dpad"), 1),
     // Play Ocarina with Right Stick
-    PRESET_ENTRY_S32("gRStickOcarina", 1),
+    PRESET_ENTRY_S32(CVAR_SETTING("OcarinaControl.RStick"), 1),
     // D-pad as Equip Items
-    PRESET_ENTRY_S32("gDpadEquips", 1),
+    PRESET_ENTRY_S32(CVAR_SETTING("DpadEquips"), 1),
     // Prevent Dropped Ocarina Inputs
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DpadNoDropOcarinaInput"), 1),
     // Right Stick Aiming
-    PRESET_ENTRY_S32("gRightStickAiming", 1),
+    PRESET_ENTRY_S32(CVAR_SETTING("Controls.RightStickAim"), 1),
 
     // Text Speed (1 to 5)
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("TextSpeed"), 5),
@@ -867,10 +864,10 @@ const std::vector<PresetEntry> spockRacePresetEntries = {
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DisableNaviCallAudio"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FastChests"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FastDrops"), 1),
-    PRESET_ENTRY_S32("gDpadText", 1),
-    PRESET_ENTRY_S32("gDpadOcarina", 1),
-    PRESET_ENTRY_S32("gRStickOcarina", 1),
-    PRESET_ENTRY_S32("gDpadEquips", 1),
+    PRESET_ENTRY_S32(CVAR_SETTING("DpadInText"), 1),
+    PRESET_ENTRY_S32(CVAR_SETTING("OcarinaControl.Dpad"), 1),
+    PRESET_ENTRY_S32(CVAR_SETTING("OcarinaControl.RStick"), 1),
+    PRESET_ENTRY_S32(CVAR_SETTING("DpadEquips"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FastOcarinaPlayback"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InstantScarecrow"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MarketSneak"), 1),
@@ -886,7 +883,7 @@ const std::vector<PresetEntry> spockRacePresetEntries = {
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("CreditsFix"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("SkipText"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("SkulltulaFreeze"), 1),
-    PRESET_ENTRY_S32("gPauseAnyCursor", 1),
+    PRESET_ENTRY_S32(CVAR_SETTING("PauseAnyCursor"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FastFarores"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("NoInputForCredits"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MaskSelect"), 1),
@@ -969,7 +966,6 @@ const std::vector<PresetEntry> spockRaceNoLogicPresetEntries = {
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("ForgeTime"), 0),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("GoronPot"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("GuaranteeFishingBite"), 1),
-    PRESET_ENTRY_S32("gHideBuildInfo", 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InstantFishing"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InstantPutaway"), 1),
@@ -979,7 +975,7 @@ const std::vector<PresetEntry> spockRaceNoLogicPresetEntries = {
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MweepSpeed"), 5),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("NoForcedNavi"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("NoInputForCredits"), 1),
-    PRESET_ENTRY_S32("gPauseAnyCursor", 1),
+    PRESET_ENTRY_S32(CVAR_SETTING("PauseAnyCursor"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("10GSHint"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("20GSHint"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("30GSHint"), 1),

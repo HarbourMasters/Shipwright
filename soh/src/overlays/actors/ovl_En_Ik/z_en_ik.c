@@ -233,7 +233,8 @@ void func_80A74398(Actor* thisx, PlayState* play) {
     Effect_Add(play, &this->blureIdx, EFFECT_BLURE1, 0, 0, &blureInit);
     func_80A74714(this);
 
-    uint8_t enemyRandoCCActive = CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) || CVarGetInteger("gCrowdControl", 0);
+    uint8_t enemyRandoCCActive = CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) ||
+                                 (CVarGetInteger(CVAR_REMOTE("Scheme"), GI_SCHEME_SAIL) == GI_SCHEME_CROWD_CONTROL && CVarGetInteger(CVAR_REMOTE("Enabled"), 0));
 
     if (this->switchFlags != 0xFF) {
         // In vanilla gameplay, Iron Knuckles are despawned based on specific flags in specific scenarios.
@@ -663,7 +664,8 @@ void func_80A75A38(EnIk* this, PlayState* play) {
                 Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos, 0xB0);
                 // Don't set flag when Enemy Rando or CrowdControl are on.
                 // Instead Iron Knuckles rely on the "clear room" flag.
-                if (this->switchFlags != 0xFF && !CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) && !CVarGetInteger("gCrowdControl", 0)) {
+                if (this->switchFlags != 0xFF && !CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) &&
+                    !(CVarGetInteger(CVAR_REMOTE("Scheme"), GI_SCHEME_SAIL) == GI_SCHEME_CROWD_CONTROL && CVarGetInteger(CVAR_REMOTE("Enabled"), 0))) {
                     Flags_SetSwitch(play, this->switchFlags);
                 }
                 Actor_Kill(&this->actor);
@@ -1484,7 +1486,8 @@ void EnIk_Init(Actor* thisx, PlayState* play) {
     }
 
     // Immediately trigger Iron Knuckle for Enemy Rando and Crowd Control
-    if ((CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) || CVarGetInteger("gCrowdControl", 0)) && (thisx->params == 2 || thisx->params == 3)) {
+    if ((CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) || (CVarGetInteger(CVAR_REMOTE("Scheme"), GI_SCHEME_SAIL) == GI_SCHEME_CROWD_CONTROL && CVarGetInteger(CVAR_REMOTE("Enabled"), 0)))
+                        && (thisx->params == 2 || thisx->params == 3)) {
         this->skelAnime.playSpeed = 1.0f;
     }
 }

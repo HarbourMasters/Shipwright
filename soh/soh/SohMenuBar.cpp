@@ -182,18 +182,18 @@ void DrawSettingsMenu() {
     if (ImGui::BeginMenu("Settings"))
     {
         if (ImGui::BeginMenu("Audio")) {
-            UIWidgets::PaddedEnhancementSliderFloat("Master Volume: %.1f %%", "##Master_Vol", "gGameMasterVolume", 0.0f, 1.0f, "", 1.0f, true, true, false, true);
-            if (UIWidgets::PaddedEnhancementSliderFloat("Main Music Volume: %.1f %%", "##Main_Music_Vol", "gMainMusicVolume", 0.0f, 1.0f, "", 1.0f, true, true, false, true)) {
-                Audio_SetGameVolume(SEQ_PLAYER_BGM_MAIN, CVarGetFloat("gMainMusicVolume", 1.0f));
+            UIWidgets::PaddedEnhancementSliderFloat("Master Volume: %.1f %%", "##Master_Vol", CVAR_SETTING("Volume.Master"), 0.0f, 1.0f, "", 1.0f, true, true, false, true);
+            if (UIWidgets::PaddedEnhancementSliderFloat("Main Music Volume: %.1f %%", "##Main_Music_Vol", CVAR_SETTING("Volume.MainMusic"), 0.0f, 1.0f, "", 1.0f, true, true, false, true)) {
+                Audio_SetGameVolume(SEQ_PLAYER_BGM_MAIN, CVarGetFloat(CVAR_SETTING("Volume.MainMusic"), 1.0f));
             }
-            if (UIWidgets::PaddedEnhancementSliderFloat("Sub Music Volume: %.1f %%", "##Sub_Music_Vol", "gSubMusicVolume", 0.0f, 1.0f, "", 1.0f, true, true, false, true)) {
-                Audio_SetGameVolume(SEQ_PLAYER_BGM_SUB, CVarGetFloat("gSubMusicVolume", 1.0f));
+            if (UIWidgets::PaddedEnhancementSliderFloat("Sub Music Volume: %.1f %%", "##Sub_Music_Vol", CVAR_SETTING("Volume.SubMusic"), 0.0f, 1.0f, "", 1.0f, true, true, false, true)) {
+                Audio_SetGameVolume(SEQ_PLAYER_BGM_SUB, CVarGetFloat(CVAR_SETTING("Volume.SubMusic"), 1.0f));
             }
-            if (UIWidgets::PaddedEnhancementSliderFloat("Sound Effects Volume: %.1f %%", "##Sound_Effect_Vol", "gSFXMusicVolume", 0.0f, 1.0f, "", 1.0f, true, true, false, true)) {
-                Audio_SetGameVolume(SEQ_PLAYER_SFX, CVarGetFloat("gSFXMusicVolume", 1.0f));
+            if (UIWidgets::PaddedEnhancementSliderFloat("Sound Effects Volume: %.1f %%", "##Sound_Effect_Vol", CVAR_SETTING("Volume.SFX"), 0.0f, 1.0f, "", 1.0f, true, true, false, true)) {
+                Audio_SetGameVolume(SEQ_PLAYER_SFX, CVarGetFloat(CVAR_SETTING("Volume.SFX"), 1.0f));
             }
-            if (UIWidgets::PaddedEnhancementSliderFloat("Fanfare Volume: %.1f %%", "##Fanfare_Vol", "gFanfareVolume", 0.0f, 1.0f, "", 1.0f, true, true, false, true)) {
-                Audio_SetGameVolume(SEQ_PLAYER_FANFARE, CVarGetFloat("gFanfareVolume", 1.0f));
+            if (UIWidgets::PaddedEnhancementSliderFloat("Fanfare Volume: %.1f %%", "##Fanfare_Vol", CVAR_SETTING("Volume.Fanfare"), 0.0f, 1.0f, "", 1.0f, true, true, false, true)) {
+                Audio_SetGameVolume(SEQ_PLAYER_FANFARE, CVarGetFloat(CVAR_SETTING("Volume.Fanfare"), 1.0f));
             }
 
             static std::unordered_map<Ship::AudioBackend, const char*> audioBackendNames = {
@@ -270,8 +270,8 @@ void DrawSettingsMenu() {
 
         if (ImGui::BeginMenu("Graphics")) {
         #ifndef __APPLE__
-            const bool disabled_resolutionSlider = CVarGetInteger("gAdvancedResolution.VerticalResolutionToggle", 0) &&
-                                                   CVarGetInteger("gAdvancedResolution.Enabled", 0);
+            const bool disabled_resolutionSlider = CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".VerticalResolutionToggle", 0) &&
+                                                   CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".Enabled", 0);
             if (UIWidgets::EnhancementSliderFloat("Internal Resolution: %.1f %%", "##IMul", CVAR_INTERNAL_RESOLUTION, 0.5f,
                                                   2.0f, "", 1.0f, true, true, disabled_resolutionSlider)) {
                 Ship::Context::GetInstance()->GetWindow()->SetResolutionMultiplier(CVarGetFloat(CVAR_INTERNAL_RESOLUTION, 1));
@@ -344,7 +344,7 @@ void DrawSettingsMenu() {
                         fpsSlider = 3;
                     }
                 }
-                if (CVarGetInteger("gMatchRefreshRate", 0)) {
+                if (CVarGetInteger(CVAR_SETTING("MatchRefreshRate"), 0)) {
                     UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
                 }
 
@@ -366,7 +366,7 @@ void DrawSettingsMenu() {
                     fpsSlider++;
                 }
 
-                if (CVarGetInteger("gMatchRefreshRate", 0)) {
+                if (CVarGetInteger(CVAR_SETTING("MatchRefreshRate"), 0)) {
                     UIWidgets::ReEnableComponent("");
                 }
                 if (fpsSlider > 3) {
@@ -382,14 +382,14 @@ void DrawSettingsMenu() {
                 } else if (fpsSlider == 3) {
                     currentFps = 60;
                 }
-                CVarSetInteger("gInterpolationFPS", currentFps);
+                CVarSetInteger(CVAR_SETTING("InterpolationFPS"), currentFps);
                 Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
             #else
                 bool matchingRefreshRate =
-                    CVarGetInteger("gMatchRefreshRate", 0) && Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() != Ship::WindowBackend::DX11;
+                    CVarGetInteger(CVAR_SETTING("MatchRefreshRate"), 0) && Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() != Ship::WindowBackend::DX11;
                 UIWidgets::PaddedEnhancementSliderInt(
                     (currentFps == 20) ? "Frame Rate: Original (20 fps)" : "Frame Rate: %d fps",
-                    "##FPSInterpolation", "gInterpolationFPS", minFps, maxFps, "", 20, true, true, false, matchingRefreshRate);
+                    "##FPSInterpolation", CVAR_SETTING("InterpolationFPS"), minFps, maxFps, "", 20, true, true, false, matchingRefreshRate);
             #endif
                 if (Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() == Ship::WindowBackend::DX11) {
                     UIWidgets::Tooltip(
@@ -411,18 +411,18 @@ void DrawSettingsMenu() {
                 if (ImGui::Button("Match Frame Rate to Refresh Rate")) {
                     int hz = Ship::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate();
                     if (hz >= 20 && hz <= 360) {
-                        CVarSetInteger("gInterpolationFPS", hz);
+                        CVarSetInteger(CVAR_SETTING("InterpolationFPS"), hz);
                         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                     }
                 }
             } else {
-                UIWidgets::PaddedEnhancementCheckbox("Match Frame Rate to Refresh Rate", "gMatchRefreshRate", true, false);
+                UIWidgets::PaddedEnhancementCheckbox("Match Frame Rate to Refresh Rate", CVAR_SETTING("MatchRefreshRate"), true, false);
             }
             UIWidgets::Tooltip("Matches interpolation value to the game window's current refresh rate.");
 
             if (Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() == Ship::WindowBackend::DX11) {
-                UIWidgets::PaddedEnhancementSliderInt(CVarGetInteger("gExtraLatencyThreshold", 80) == 0 ? "Jitter fix: Off" : "Jitter fix: >= %d FPS",
-                    "##ExtraLatencyThreshold", "gExtraLatencyThreshold", 0, 360, "", 80, true, true, false);
+                UIWidgets::PaddedEnhancementSliderInt(CVarGetInteger(CVAR_SETTING("ExtraLatencyThreshold"), 80) == 0 ? "Jitter fix: Off" : "Jitter fix: >= %d FPS",
+                    "##ExtraLatencyThreshold", CVAR_SETTING("ExtraLatencyThreshold"), 0, 360, "", 80, true, true, false);
                 UIWidgets::Tooltip(
                     "(For DirectX backend only)\n\n"
                     "When Interpolation FPS (Frame Rate) setting is at least this threshold, add one frame of delay (e.g. 16.6 ms for 60 FPS) in order to avoid jitter."
@@ -435,7 +435,7 @@ void DrawSettingsMenu() {
             ImGui::Text("ImGui Menu Scale");
             ImGui::SameLine();
             ImGui::TextColored({ 0.85f, 0.35f, 0.0f, 1.0f }, "(Experimental)");
-            if (UIWidgets::EnhancementCombobox("gImGuiScale", imguiScaleOptions, 1)) {
+            if (UIWidgets::EnhancementCombobox(CVAR_SETTING("ImGuiScale"), imguiScaleOptions, 1)) {
                 OTRGlobals::Instance->ScaleImGui();
             }
             UIWidgets::Tooltip("Changes the scaling of the ImGui menu elements.");
@@ -511,14 +511,14 @@ void DrawSettingsMenu() {
         UIWidgets::Spacer(0);
 
         if (ImGui::BeginMenu("Languages")) {
-            UIWidgets::PaddedEnhancementCheckbox("Translate Title Screen", "gTitleScreenTranslation");
-            if (UIWidgets::EnhancementRadioButton("English", "gLanguages", LANGUAGE_ENG)) {
+            UIWidgets::PaddedEnhancementCheckbox("Translate Title Screen", CVAR_SETTING("TitleScreenTranslation"));
+            if (UIWidgets::EnhancementRadioButton("English", CVAR_SETTING("Languages"), LANGUAGE_ENG)) {
                 GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSetGameLanguage>();
             }
-            if (UIWidgets::EnhancementRadioButton("German", "gLanguages", LANGUAGE_GER)) {
+            if (UIWidgets::EnhancementRadioButton("German", CVAR_SETTING("Languages"), LANGUAGE_GER)) {
                 GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSetGameLanguage>();
             }
-            if (UIWidgets::EnhancementRadioButton("French", "gLanguages", LANGUAGE_FRA)) {
+            if (UIWidgets::EnhancementRadioButton("French", CVAR_SETTING("Languages"), LANGUAGE_FRA)) {
                 GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSetGameLanguage>();
             }
             ImGui::EndMenu();
@@ -528,10 +528,10 @@ void DrawSettingsMenu() {
         
         if (ImGui::BeginMenu("Accessibility")) {
         #if defined(_WIN32) || defined(__APPLE__)
-            UIWidgets::PaddedEnhancementCheckbox("Text to Speech", "gA11yTTS");
+            UIWidgets::PaddedEnhancementCheckbox("Text to Speech", CVAR_SETTING("A11yTTS"));
             UIWidgets::Tooltip("Enables text to speech for in game dialog");
         #endif
-            UIWidgets::PaddedEnhancementCheckbox("Disable Idle Camera Re-Centering", "gA11yDisableIdleCam");
+            UIWidgets::PaddedEnhancementCheckbox("Disable Idle Camera Re-Centering", CVAR_SETTING("A11yDisableIdleCam"));
             UIWidgets::Tooltip("Disables the automatic re-centering of the camera when idle.");
             
             ImGui::EndMenu();
@@ -572,7 +572,7 @@ void DrawEnhancementsMenu() {
                 UIWidgets::PaddedEnhancementSliderInt("King Zora Speed: %dx", "##MWEEPSPEED", CVAR_ENHANCEMENT("MweepSpeed"), 1, 5, "", 1, true, false, true);
                 UIWidgets::PaddedEnhancementSliderInt("Vine/Ladder Climb speed +%d", "##CLIMBSPEED", CVAR_ENHANCEMENT("ClimbSpeed"), 0, 12, "", 0, true, false, true);
                 UIWidgets::PaddedEnhancementSliderInt("Block pushing speed +%d", "##BLOCKSPEED", CVAR_ENHANCEMENT("FasterBlockPush"), 0, 5, "", 0, true, false, true);
-                UIWidgets::PaddedEnhancementSliderInt("Crawl speed %dx", "##CRAWLSPEED", CVAR_ENHANCEMENT("CrawlSpeed"), 1, 5, "", 1, true, false, true);
+                UIWidgets::PaddedEnhancementSliderInt("Crawl speed %dx", "##CRAWLSPEED", CVAR_ENHANCEMENT("CrawlSpeed"), 1, 4, "", 1, true, false, true);
                 UIWidgets::PaddedEnhancementCheckbox("Faster Heavy Block Lift", CVAR_ENHANCEMENT("FasterHeavyBlockLift"), false, false);
                 UIWidgets::Tooltip("Speeds up lifting silver rocks and obelisks");
                 UIWidgets::PaddedEnhancementCheckbox("Skip Pickup Messages", CVAR_ENHANCEMENT("FastDrops"), true, false);
@@ -1763,7 +1763,8 @@ void DrawRemoteControlMenu() {
         ImGui::BeginDisabled(GameInteractor::Instance->isRemoteInteractorEnabled);
         ImGui::Text("Remote Interaction Scheme");
         if (UIWidgets::EnhancementCombobox(CVAR_REMOTE("Scheme"), remoteOptions, GI_SCHEME_SAIL)) {
-            switch (CVarGetInteger(CVAR_REMOTE("Scheme"), GI_SCHEME_SAIL)) {
+            auto scheme = CVarGetInteger(CVAR_REMOTE("Scheme"), GI_SCHEME_SAIL);
+            switch (scheme) {
                 case GI_SCHEME_SAIL:
                 case GI_SCHEME_CROWD_CONTROL:
                     CVarSetString(CVAR_REMOTE("IP"), "127.0.0.1");
@@ -1827,7 +1828,8 @@ void DrawRemoteControlMenu() {
         const char* buttonLabel = GameInteractor::Instance->isRemoteInteractorEnabled ? "Disable" : "Enable";
         if (ImGui::Button(buttonLabel, ImVec2(-1.0f, 0.0f))) {
             if (GameInteractor::Instance->isRemoteInteractorEnabled) {
-                CVarSetInteger(CVAR_REMOTE("Enabled"), 0);
+                CVarClear(CVAR_REMOTE("Enabled"));
+                CVarClear(CVAR_REMOTE("CrowdControl"));
                 Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                 switch (CVarGetInteger(CVAR_REMOTE("Scheme"), GI_SCHEME_SAIL)) {
                     case GI_SCHEME_SAIL:

@@ -12,6 +12,7 @@
 #include <string>
 #include <libultraship/bridge.h>
 #include <libultraship/libultraship.h>
+#include "soh/OTRGlobals.h"
 
 extern "C" {
 #include <z64.h>
@@ -887,7 +888,7 @@ std::vector<u16> GetActorsWithDescriptionContainingString(std::string s) {
 }
 
 void ActorViewer_AddTagForActor(Actor* actor) {
-    int val = CVarGetInteger("gDebugActorViewerNameTags", ACTORVIEWER_NAMETAGS_NONE);
+    int val = CVarGetInteger(CVAR_DEVELOPER_TOOLS("ActorViewer.NameTags"), ACTORVIEWER_NAMETAGS_NONE);
     auto entry = ActorDB::Instance->RetrieveEntry(actor->id);
     std::string tag;
 
@@ -1129,10 +1130,10 @@ void ActorViewerWindow::DrawElement() {
                 newActor.params = 0;
             }
 
-            UIWidgets::EnhancementCheckbox("Advanced mode", "gActorViewerAdvancedParams");
+            UIWidgets::EnhancementCheckbox("Advanced mode", CVAR_DEVELOPER_TOOLS("ActorViewer.AdvancedParams"));
             UIWidgets::InsertHelpHoverText("Changes the actor specific param menus with a direct input");
 
-            if (CVarGetInteger("gActorViewerAdvancedParams", 0)) {
+            if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ActorViewer.AdvancedParams"), 0)) {
                 ImGui::InputScalar("params", ImGuiDataType_S16, &newActor.params, &one);
             } else if (std::find(noParamsActors.begin(), noParamsActors.end(), newActor.id) == noParamsActors.end()) {
                 CreateActorSpecificData();
@@ -1214,7 +1215,7 @@ void ActorViewerWindow::DrawElement() {
         UIWidgets::Spacer(0);
 
         ImGui::Text("Actor Name Tags");
-        if (UIWidgets::EnhancementCombobox("gDebugActorViewerNameTags", nameTagOptions, ACTORVIEWER_NAMETAGS_NONE)) {
+        if (UIWidgets::EnhancementCombobox(CVAR_DEVELOPER_TOOLS("ActorViewer.NameTags"), nameTagOptions, ACTORVIEWER_NAMETAGS_NONE)) {
             NameTag_RemoveAllByTag(DEBUG_ACTOR_NAMETAG_TAG);
             ActorViewer_AddTagForAllActors();
         }

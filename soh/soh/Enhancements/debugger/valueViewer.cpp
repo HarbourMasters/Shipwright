@@ -1,5 +1,6 @@
 #include "valueViewer.h"
 #include "../../UIWidgets.hpp"
+#include "soh/OTRGlobals.h"
 
 extern "C" {
 #include <z64.h>
@@ -107,7 +108,7 @@ void ValueViewerWindow::DrawElement() {
         return;
     }
 
-    UIWidgets::PaddedEnhancementCheckbox("Enable Printing", "gValueViewer.EnablePrinting");
+    UIWidgets::PaddedEnhancementCheckbox("Enable Printing", CVAR_DEVELOPER_TOOLS("ValueViewerEnablePrinting"));
 
     ImGui::BeginGroup();
     static int selectedElement = -1;
@@ -187,7 +188,7 @@ void ValueViewerWindow::DrawElement() {
         }
 
         ImGui::BeginGroup();
-        if (CVarGetInteger("gValueViewer.EnablePrinting", 0)) {
+        if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ValueViewerEnablePrinting"), 0)) {
             ImGui::Checkbox(("Print##" + std::string(element.name)).c_str(), &element.isPrinted);
             if (element.isPrinted) {
                 char* prefix = (char*)element.prefix.c_str();

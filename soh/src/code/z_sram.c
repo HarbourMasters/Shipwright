@@ -232,7 +232,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
     gSaveContext.dayTime = 0x6AAB;
     gSaveContext.cutsceneIndex = 0xFFF1;
 
-    if ((fileChooseCtx->buttonIndex == 0 && CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0)) || CVarGetInteger("gNaviSkipCutscene", 0)) {
+    if ((fileChooseCtx->buttonIndex == 0 && CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0))) {
         gSaveContext.cutsceneIndex = 0;
     }
 
@@ -245,7 +245,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
     u8 currentQuest = fileChooseCtx->questType[fileChooseCtx->buttonIndex];
 
     if (currentQuest == QUEST_RANDOMIZER &&
-        strnlen(CVarGetString("gSpoilerLog", ""), 1) != 0) {
+        strnlen(CVarGetString(CVAR_GENERAL("SpoilerLog"), ""), 1) != 0) {
         gSaveContext.questId = QUEST_RANDOMIZER;
 
         Randomizer_InitSaveFile();

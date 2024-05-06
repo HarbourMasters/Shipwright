@@ -1070,15 +1070,15 @@ void SohInputEditorWindow::DrawLEDSection(uint8_t port) {
                     "Original Navi Targeting Colors", "Cosmetics Navi Targeting Colors", "Custom"
                 };
                 UIWidgets::PaddedText("Source");
-                UIWidgets::EnhancementCombobox("gLedColorSource", ledSources, LED_SOURCE_TUNIC_ORIGINAL);
+                UIWidgets::EnhancementCombobox(CVAR_SETTING("LEDColorSource"), ledSources, LED_SOURCE_TUNIC_ORIGINAL);
                 UIWidgets::Tooltip("Health\n- Red when health critical (13-20% depending on max health)\n- Yellow when "
                                    "health < 40%. Green otherwise.\n\n"
                                    "Tunics: colors will mirror currently equipped tunic, whether original or the current "
                                    "values in Cosmetics Editor.\n\n"
                                    "Custom: single, solid color");
-                if (CVarGetInteger("gLedColorSource", 1) == LED_SOURCE_CUSTOM) {
+                if (CVarGetInteger(CVAR_SETTING("LEDColorSource"), 1) == LED_SOURCE_CUSTOM) {
                     UIWidgets::Spacer(3);
-                    auto port1Color = CVarGetColor24("gLedPort1Color", { 255, 255, 255 });
+                    auto port1Color = CVarGetColor24(CVAR_SETTING("LEDPort1Color"), { 255, 255, 255 });
                     ImVec4 colorVec = { port1Color.r / 255.0f, port1Color.g / 255.0f, port1Color.b / 255.0f, 1.0f };
                     if (ImGui::ColorEdit3("", (float*)&colorVec,
                                           ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoLabel)) {
@@ -1087,18 +1087,18 @@ void SohInputEditorWindow::DrawLEDSection(uint8_t port) {
                         color.g = colorVec.y * 255.0;
                         color.b = colorVec.z * 255.0;
 
-                        CVarSetColor24("gLedPort1Color", color);
+                        CVarSetColor24(CVAR_SETTING("LEDPort1Color"), color);
                         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                     }
                     ImGui::SameLine();
                     ImGui::Text("Custom Color");
                 }
-                UIWidgets::PaddedEnhancementSliderFloat("Brightness: %.1f %%", "##LED_Brightness", "gLedBrightness", 0.0f,
+                UIWidgets::PaddedEnhancementSliderFloat("Brightness: %.1f %%", "##LED_Brightness", CVAR_SETTING("LEDBrightness"), 0.0f,
                                                         1.0f, "", 1.0f, true, true);
                 UIWidgets::Tooltip("Sets the brightness of controller LEDs. 0% brightness = LEDs off.");
                 UIWidgets::PaddedEnhancementCheckbox(
-                    "Critical Health Override", "gLedCriticalOverride", true, true,
-                    CVarGetInteger("gLedColorSource", LED_SOURCE_TUNIC_ORIGINAL) == LED_SOURCE_HEALTH,
+                    "Critical Health Override", CVAR_SETTING("LEDCriticalOverride"), true, true,
+                    CVarGetInteger(CVAR_SETTING("LEDColorSource"), LED_SOURCE_TUNIC_ORIGINAL) == LED_SOURCE_HEALTH,
                     "Override redundant for health source.", UIWidgets::CheckboxGraphics::Cross, true);
                 UIWidgets::Tooltip("Shows red color when health is critical, otherwise displays according to color source.");
             }
@@ -1478,14 +1478,14 @@ void SohInputEditorWindow::addButtonName(N64ButtonMask mask, const char* name) {
 }
 
 // Ocarina button maps
-static CustomButtonMap ocarinaD5 = {"D5", "gOcarinaD5BtnMap", BTN_CUP};
-static CustomButtonMap ocarinaB4 = {"B4", "gOcarinaB4BtnMap", BTN_CLEFT};
-static CustomButtonMap ocarinaA4 = {"A4", "gOcarinaA4BtnMap", BTN_CRIGHT};
-static CustomButtonMap ocarinaF4 = {"F4", "gOcarinaF4BtnMap", BTN_CDOWN};
-static CustomButtonMap ocarinaD4 = {"D4", "gOcarinaD4BtnMap", BTN_A};
-static CustomButtonMap ocarinaSongDisable = {"Disable songs", "gOcarinaDisableBtnMap", BTN_L};
-static CustomButtonMap ocarinaSharp = {"Pitch up", "gOcarinaSharpBtnMap", BTN_R};
-static CustomButtonMap ocarinaFlat = {"Pitch down", "gOcarinaFlatBtnMap", BTN_Z};
+static CustomButtonMap ocarinaD5 = {"D5", CVAR_SETTING("CustomOcarina.D5Button"), BTN_CUP};
+static CustomButtonMap ocarinaB4 = {"B4", CVAR_SETTING("CustomOcarina.B4Button"), BTN_CLEFT};
+static CustomButtonMap ocarinaA4 = {"A4", CVAR_SETTING("CustomOcarina.A4Button"), BTN_CRIGHT};
+static CustomButtonMap ocarinaF4 = {"F4", CVAR_SETTING("CustomOcarina.F4Button"), BTN_CDOWN};
+static CustomButtonMap ocarinaD4 = {"D4", CVAR_SETTING("CustomOcarina.D4Button"), BTN_A};
+static CustomButtonMap ocarinaSongDisable = {"Disable songs", CVAR_SETTING("CustomOcarina.DisableButton"), BTN_L};
+static CustomButtonMap ocarinaSharp = {"Pitch up", CVAR_SETTING("CustomOcarina.SharpButton"), BTN_R};
+static CustomButtonMap ocarinaFlat = {"Pitch down", CVAR_SETTING("CustomOcarina.FlatButton"), BTN_Z};
 
 // Draw a button mapping setting consisting of a padded label and button dropdown.
 // excludedButtons indicates which buttons are unavailable to choose from.
@@ -1534,13 +1534,13 @@ void SohInputEditorWindow::DrawOcarinaControlPanel() {
 
     ImVec2 cursor = ImGui::GetCursorPos();
     ImGui::SetCursorPos(ImVec2(cursor.x + 5, cursor.y + 5));
-    UIWidgets::EnhancementCheckbox("Customize Ocarina Controls", "gCustomOcarinaControls");
+    UIWidgets::EnhancementCheckbox("Customize Ocarina Controls", CVAR_SETTING("CustomOcarina.Enabled"));
 
-    if (CVarGetInteger("gCustomOcarinaControls", 0) == 1) {
+    if (CVarGetInteger(CVAR_SETTING("CustomOcarina.Enabled"), 0) == 1) {
         if (ImGui::BeginTable("tableCustomMainOcarinaControls", 2, ImGuiTableFlags_SizingStretchProp)) {
             float labelWidth;
             N64ButtonMask disableMask = BTN_B;
-            if (CVarGetInteger("gDpadOcarina", 0)) {
+            if (CVarGetInteger(CVAR_SETTING("OcarinaControl.Dpad"), 0)) {
                 disableMask |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
             }
 
@@ -1583,9 +1583,9 @@ void SohInputEditorWindow::DrawOcarinaControlPanel() {
         ImGui::TableSetupColumn("Right stick", PANEL_TABLE_COLUMN_FLAGS);
         TableHelper::InitHeader(false);
         ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
-        UIWidgets::EnhancementCheckbox("Play with D-pad", "gDpadOcarina");
+        UIWidgets::EnhancementCheckbox("Play with D-pad", CVAR_SETTING("OcarinaControl.Dpad"));
         TableHelper::NextCol();
-        UIWidgets::EnhancementCheckbox("Play with camera stick", "gRStickOcarina");
+        UIWidgets::EnhancementCheckbox("Play with camera stick", CVAR_SETTING("OcarinaControl.RStick"));
         UIWidgets::Spacer(0);
         ImGui::EndTable();
     }
@@ -1598,35 +1598,35 @@ void SohInputEditorWindow::DrawCameraControlPanel() {
     ImVec2 cursor = ImGui::GetCursorPos();
     ImGui::SetCursorPos(ImVec2(cursor.x + 5, cursor.y + 5));
     Ship::GuiWindow::BeginGroupPanel("Aiming/First-Person Camera", ImGui::GetContentRegionAvail());
-    UIWidgets::PaddedEnhancementCheckbox("Right Stick Aiming", "gRightStickAiming");
+    UIWidgets::PaddedEnhancementCheckbox("Right Stick Aiming", CVAR_SETTING("Controls.RightStickAim"));
     UIWidgets::Tooltip("Allows for aiming with the right stick in:\n-First-Person/C-Up view\n-Weapon Aiming");
-    if (CVarGetInteger("gRightStickAiming", 0)) {
-        UIWidgets::PaddedEnhancementCheckbox("Allow moving while in first person mode", "gMoveWhileFirstPerson");
+    if (CVarGetInteger(CVAR_SETTING("Controls.RightStickAim"), 0)) {
+        UIWidgets::PaddedEnhancementCheckbox("Allow moving while in first person mode", CVAR_SETTING("MoveInFirstPerson"));
         UIWidgets::Tooltip("Changes the left stick to move the player while in first person mode");
     }
-    UIWidgets::PaddedEnhancementCheckbox("Invert Aiming X Axis", "gInvertAimingXAxis");
+    UIWidgets::PaddedEnhancementCheckbox("Invert Aiming X Axis", CVAR_SETTING("Controls.InvertAimingXAxis"));
     UIWidgets::Tooltip("Inverts the Camera X Axis in:\n-First-Person/C-Up view\n-Weapon Aiming");
-    UIWidgets::PaddedEnhancementCheckbox("Invert Aiming Y Axis", "gInvertAimingYAxis", true, true, false, "", UIWidgets::CheckboxGraphics::Cross, true);
+    UIWidgets::PaddedEnhancementCheckbox("Invert Aiming Y Axis", CVAR_SETTING("Controls.InvertAimingYAxis"), true, true, false, "", UIWidgets::CheckboxGraphics::Cross, true);
     UIWidgets::Tooltip("Inverts the Camera Y Axis in:\n-First-Person/C-Up view\n-Weapon Aiming");
-    UIWidgets::PaddedEnhancementCheckbox("Invert Shield Aiming Y Axis", "gInvertShieldAimingYAxis", true, true, false, "", UIWidgets::CheckboxGraphics::Cross, true);
+    UIWidgets::PaddedEnhancementCheckbox("Invert Shield Aiming Y Axis", CVAR_SETTING("Controls.InvertShieldAimingYAxis"), true, true, false, "", UIWidgets::CheckboxGraphics::Cross, true);
     UIWidgets::Tooltip("Inverts the Shield Aiming Y Axis");
-    UIWidgets::PaddedEnhancementCheckbox("Invert Shield Aiming X Axis", "gInvertShieldAimingXAxis");
+    UIWidgets::PaddedEnhancementCheckbox("Invert Shield Aiming X Axis", CVAR_SETTING("Controls.InvertShieldAimingYAxis"));
     UIWidgets::Tooltip("Inverts the Shield Aiming X Axis");
-    UIWidgets::PaddedEnhancementCheckbox("Invert Z-Weapon Aiming Y Axis", "gInvertZAimingYAxis", true, true, false, "", UIWidgets::CheckboxGraphics::Cross, true);
+    UIWidgets::PaddedEnhancementCheckbox("Invert Z-Weapon Aiming Y Axis", CVAR_SETTING("Controls.InvertZAimingYAxis"), true, true, false, "", UIWidgets::CheckboxGraphics::Cross, true);
     UIWidgets::Tooltip("Inverts the Camera Y Axis in:\n-Z-Weapon Aiming");
-    UIWidgets::PaddedEnhancementCheckbox("Disable Auto-Centering in First-Person View", "gDisableAutoCenterViewFirstPerson");
+    UIWidgets::PaddedEnhancementCheckbox("Disable Auto-Centering in First-Person View", CVAR_SETTING("DisableFirstPersonAutoCenterView"));
     UIWidgets::Tooltip("Prevents the C-Up view from auto-centering, allowing for Gyro Aiming");
-    if (UIWidgets::PaddedEnhancementCheckbox("Enable Custom Aiming/First-Person sensitivity", "gEnableFirstPersonSensitivity", true, false)) {
-        if (!CVarGetInteger("gEnableFirstPersonSensitivity", 0)) {
-            CVarClear("gFirstPersonCameraSensitivityX");
-            CVarClear("gFirstPersonCameraSensitivityY");
+    if (UIWidgets::PaddedEnhancementCheckbox("Enable Custom Aiming/First-Person sensitivity", CVAR_SETTING("FirstPersonCameraSensitivity.Enabled"), true, false)) {
+        if (!CVarGetInteger(CVAR_SETTING("FirstPersonCameraSensitivity.Enabled"), 0)) {
+            CVarClear(CVAR_SETTING("FirstPersonCameraSensitivity.X"));
+            CVarClear(CVAR_SETTING("FirstPersonCameraSensitivity.Y"));
         }
     }
-    if (CVarGetInteger("gEnableFirstPersonSensitivity", 0)) {
+    if (CVarGetInteger(CVAR_SETTING("FirstPersonCameraSensitivity.Enabled"), 0)) {
         UIWidgets::EnhancementSliderFloat("Aiming/First-Person Horizontal Sensitivity: %.0f %%", "##FirstPersonSensitivity Horizontal",
-                                            "gFirstPersonCameraSensitivityX", 0.01f, 5.0f, "", 1.0f, true);
+                                            CVAR_SETTING("FirstPersonCameraSensitivity.X"), 0.01f, 5.0f, "", 1.0f, true);
         UIWidgets::EnhancementSliderFloat("Aiming/First-Person Vertical Sensitivity: %.0f %%", "##FirstPersonSensitivity Vertical",
-                                          "gFirstPersonCameraSensitivityY", 0.01f, 5.0f, "", 1.0f, true);
+                                          CVAR_SETTING("FirstPersonCameraSensitivity.Y"), 0.01f, 5.0f, "", 1.0f, true);
     }
     UIWidgets::Spacer(0);
     Ship::GuiWindow::EndGroupPanel(0);
@@ -1636,22 +1636,22 @@ void SohInputEditorWindow::DrawCameraControlPanel() {
     ImGui::SetCursorPos(ImVec2(cursor.x + 5, cursor.y + 5));
     Ship::GuiWindow::BeginGroupPanel("Third-Person Camera", ImGui::GetContentRegionAvail());
 
-    UIWidgets::PaddedEnhancementCheckbox("Free Camera", "gFreeCamera");
-    UIWidgets::Tooltip("Enables free camera control\nNote: You must remap C buttons off of the right stick in the "
+    UIWidgets::PaddedEnhancementCheckbox("Free Look", CVAR_SETTING("FreeLook.Enabled"));
+    UIWidgets::Tooltip("Enables free look camera control\nNote: You must remap C buttons off of the right stick in the "
                             "controller config menu, and map the camera stick to the right stick.");
-    UIWidgets::PaddedEnhancementCheckbox("Invert Camera X Axis", "gInvertXAxis");
-    UIWidgets::Tooltip("Inverts the Camera X Axis in:\n-Free camera");
-    UIWidgets::PaddedEnhancementCheckbox("Invert Camera Y Axis", "gInvertYAxis", true, true, false, "", UIWidgets::CheckboxGraphics::Cross, true);
-    UIWidgets::Tooltip("Inverts the Camera Y Axis in:\n-Free camera");
+    UIWidgets::PaddedEnhancementCheckbox("Invert Camera X Axis", CVAR_SETTING("FreeLook.InvertXAxis"));
+    UIWidgets::Tooltip("Inverts the Camera X Axis in:\n-Free look");
+    UIWidgets::PaddedEnhancementCheckbox("Invert Camera Y Axis", CVAR_SETTING("FreeLook.InvertYAxis"), true, true, false, "", UIWidgets::CheckboxGraphics::Cross, true);
+    UIWidgets::Tooltip("Inverts the Camera Y Axis in:\n-Free look");
     UIWidgets::Spacer(0);
     UIWidgets::PaddedEnhancementSliderFloat("Third-Person Horizontal Sensitivity: %.0f %%", "##ThirdPersonSensitivity Horizontal",
-                                            "gThirdPersonCameraSensitivityX", 0.01f, 5.0f, "", 1.0f, true, true, false, true);
+                                            CVAR_SETTING("FreeLook.CameraSensitivity.X"), 0.01f, 5.0f, "", 1.0f, true, true, false, true);
     UIWidgets::PaddedEnhancementSliderFloat("Third-Person Vertical Sensitivity: %.0f %%", "##ThirdPersonSensitivity Vertical",
-                                            "gThirdPersonCameraSensitivityY", 0.01f, 5.0f, "", 1.0f, true, true, false, true);
+                                            CVAR_SETTING("FreeLook.CameraSensitivity.Y"), 0.01f, 5.0f, "", 1.0f, true, true, false, true);
     UIWidgets::PaddedEnhancementSliderInt("Camera Distance: %d", "##CamDist",
-                                    "gFreeCameraDistMax", 100, 900, "", 185, true, false, true);
+                                    CVAR_SETTING("FreeLook.MaxCameraDistance"), 100, 900, "", 185, true, false, true);
     UIWidgets::PaddedEnhancementSliderInt("Camera Transition Speed: %d", "##CamTranSpeed",
-                                    "gFreeCameraTransitionSpeed", 0, 900, "", 25, true, false, true);
+                                    CVAR_SETTING("FreeLook.TransitionSpeed"), 0, 900, "", 25, true, false, true);
     Ship::GuiWindow::EndGroupPanel(0);
 }
 
@@ -1659,13 +1659,13 @@ void SohInputEditorWindow::DrawDpadControlPanel() {
     ImVec2 cursor = ImGui::GetCursorPos();
     ImGui::SetCursorPos(ImVec2(cursor.x + 5, cursor.y + 5));
     Ship::GuiWindow::BeginGroupPanel("D-Pad Options", ImGui::GetContentRegionAvail());
-    UIWidgets::PaddedEnhancementCheckbox("D-pad Support on Pause Screen", "gDpadPause");
+    UIWidgets::PaddedEnhancementCheckbox("D-pad Support on Pause Screen", CVAR_SETTING("DPadOnPause"));
     UIWidgets::Tooltip("Navigate Pause with the D-pad\nIf used with D-pad as Equip Items, you must hold C-Up to equip instead of navigate\n"
-                "To make the cursor only move a single space no matter how long a direction is held, manually set gDpadHoldChange to 0");
-    UIWidgets::PaddedEnhancementCheckbox("D-pad Support in Text Boxes", "gDpadText");
+                "To make the cursor only move a single space no matter how long a direction is held, manually set gSettings.DpadHoldChange to 0");
+    UIWidgets::PaddedEnhancementCheckbox("D-pad Support in Text Boxes", CVAR_SETTING("DpadInText"));
     UIWidgets::Tooltip("Navigate choices in text boxes, shop item selection, and the file select / name entry screens with the D-pad\n"
-                "To make the cursor only move a single space during name entry no matter how long a direction is held, manually set gDpadHoldChange to 0");
-    UIWidgets::PaddedEnhancementCheckbox("D-pad as Equip Items", "gDpadEquips");
+                "To make the cursor only move a single space during name entry no matter how long a direction is held, manually set gSettings.DpadHoldChange to 0");
+    UIWidgets::PaddedEnhancementCheckbox("D-pad as Equip Items", CVAR_SETTING("DpadEquips"));
     UIWidgets::Tooltip("Equip items and equipment on the D-pad\nIf used with D-pad on Pause Screen, you must hold C-Up to equip instead of navigate");
     Ship::GuiWindow::EndGroupPanel(0);
 }
@@ -1676,31 +1676,31 @@ void SohInputEditorWindow::DrawMiscControlPanel() {
     Ship::GuiWindow::BeginGroupPanel("Misc Controls", ImGui::GetContentRegionAvail());
     UIWidgets::PaddedText("Allow the cursor to be on any slot");
     static const char* cursorOnAnySlot[3] = { "Only in Rando", "Always", "Never" };
-    UIWidgets::EnhancementCombobox("gPauseAnyCursor", cursorOnAnySlot, PAUSE_ANY_CURSOR_RANDO_ONLY);
+    UIWidgets::EnhancementCombobox(CVAR_SETTING("PauseAnyCursor"), cursorOnAnySlot, PAUSE_ANY_CURSOR_RANDO_ONLY);
     UIWidgets::Tooltip("Allows the cursor on the pause menu to be over any slot. Sometimes required in rando to select "
                  "certain items.");
     UIWidgets::Spacer(0);
     ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
-    UIWidgets::PaddedEnhancementCheckbox("Enable speed modifiers", "gEnableWalkModify", true, false);
+    UIWidgets::PaddedEnhancementCheckbox("Enable speed modifiers", CVAR_SETTING("WalkModifier.Enabled"), true, false);
     UIWidgets::Tooltip("Hold the assigned button to change the maximum walking or swimming speed");
-     if (CVarGetInteger("gEnableWalkModify", 0)) {
+     if (CVarGetInteger(CVAR_SETTING("WalkModifier.Enabled"), 0)) {
         UIWidgets::Spacer(5);
         Ship::GuiWindow::BeginGroupPanel("Speed Modifier", ImGui::GetContentRegionAvail());
-        UIWidgets::PaddedEnhancementCheckbox("Toggle modifier instead of holding", "gWalkSpeedToggle", true, false);
+        UIWidgets::PaddedEnhancementCheckbox("Toggle modifier instead of holding", CVAR_SETTING("WalkModifier.SpeedToggle"), true, false);
         Ship::GuiWindow::BeginGroupPanel("Walk Modifier", ImGui::GetContentRegionAvail());
-        UIWidgets::PaddedEnhancementCheckbox("Don't affect jump distance/velocity", "gWalkModifierDoesntChangeJump", true, false);
-        UIWidgets::PaddedEnhancementSliderFloat("Walk Modifier 1: %.0f %%", "##WalkMod1", "gWalkModifierOne", 0.0f, 5.0f, "", 1.0f, true, true, false, true);
-        UIWidgets::PaddedEnhancementSliderFloat("Walk Modifier 2: %.0f %%", "##WalkMod2", "gWalkModifierTwo", 0.0f, 5.0f, "", 1.0f, true, true, false, true);
+        UIWidgets::PaddedEnhancementCheckbox("Don't affect jump distance/velocity", CVAR_SETTING("WalkModifier.DoesntChangeJump"), true, false);
+        UIWidgets::PaddedEnhancementSliderFloat("Walk Modifier 1: %.0f %%", "##WalkMod1", CVAR_SETTING("WalkModifier.Mapping1"), 0.0f, 5.0f, "", 1.0f, true, true, false, true);
+        UIWidgets::PaddedEnhancementSliderFloat("Walk Modifier 2: %.0f %%", "##WalkMod2", CVAR_SETTING("WalkModifier.Mapping2"), 0.0f, 5.0f, "", 1.0f, true, true, false, true);
         Ship::GuiWindow::EndGroupPanel(0);
         Ship::GuiWindow::BeginGroupPanel("Swim Modifier", ImGui::GetContentRegionAvail());
-        UIWidgets::PaddedEnhancementSliderFloat("Swim Modifier 1: %.0f %%", "##SwimMod1", "gSwimModifierOne", 0.0f, 5.0f, "", 1.0f, true, true, false, true);
-        UIWidgets::PaddedEnhancementSliderFloat("Swim Modifier 2: %.0f %%", "##SwimMod2", "gSwimModifierTwo", 0.0f, 5.0f, "", 1.0f, true, true, false, true);
+        UIWidgets::PaddedEnhancementSliderFloat("Swim Modifier 1: %.0f %%", "##SwimMod1", CVAR_SETTING("WalkModifier.SwimMapping1"), 0.0f, 5.0f, "", 1.0f, true, true, false, true);
+        UIWidgets::PaddedEnhancementSliderFloat("Swim Modifier 2: %.0f %%", "##SwimMod2", CVAR_SETTING("WalkModifier.SwimMapping2"), 0.0f, 5.0f, "", 1.0f, true, true, false, true);
         Ship::GuiWindow::EndGroupPanel(0);
         Ship::GuiWindow::EndGroupPanel(0);
     }
     ImGui::EndDisabled();
     UIWidgets::Spacer(0);
-    UIWidgets::PaddedEnhancementCheckbox("Answer Navi Prompt with L Button", "gNaviOnL");
+    UIWidgets::PaddedEnhancementCheckbox("Answer Navi Prompt with L Button", CVAR_SETTING("NaviOnL"));
     UIWidgets::Tooltip("Speak to Navi with L but enter first-person camera with C-Up");
     Ship::GuiWindow::EndGroupPanel(0);
 }
