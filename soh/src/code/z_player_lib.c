@@ -1948,18 +1948,14 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                     }
                 }
             } else if (CVarGetInteger(CVAR_ENHANCEMENT("BoomerangReticle"), 0) && (this->heldItemAction == PLAYER_IA_BOOMERANG)) {
-                if (Player_HoldsBoomerang(this) != 0) {
-                    MtxF sp44;
-                    s32 pad;
-
-                    if (LINK_AGE_IN_YEARS == YEARS_ADULT) {
+                if (Player_HoldsBoomerang(this)) {
+                    if (LINK_IS_ADULT) {
                         Matrix_RotateZYX(-31200, -9200, 17000, MTXMODE_APPLY);
                     } else {
                         Matrix_RotateZYX(-31200, -8700, 17000, MTXMODE_APPLY);
                     }
-                    Matrix_Get(&sp44);
 
-                    if (Player_AimsBoomerang(this) != 0) {
+                    if (Player_AimsBoomerang(this)) {
                         Matrix_Translate(500.0f, 300.0f, 0.0f, MTXMODE_APPLY);
                         Player_DrawHookshotReticle(play, this, 37000.0f);
                     }
