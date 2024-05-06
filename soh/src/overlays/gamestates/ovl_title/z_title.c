@@ -204,7 +204,7 @@ void Title_Draw(TitleContext* this) {
     }
 
     // Draw ice cube around N64 logo.
-    if (CVarGetInteger("gLetItSnow", 0)) {
+    if (CVarGetInteger(CVAR_GENERAL("LetItSnow"), 0)) {
         f32 scale = 0.4f;
 
         gSPSegment(POLY_OPA_DISP++, 0x08,

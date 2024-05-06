@@ -200,8 +200,8 @@ void MagicDark_DiamondDraw(Actor* thisx, PlayState* play) {
     u16 gameplayFrames = play->gameplayFrames;
     Color_RGB8 Spell_env_ori = {0, 100, 255};
     Color_RGB8 Spell_col_ori = {170, 255, 255};
-    Color_RGB8 Spell_env = CVarGetColor24("gNL_Diamond_Env", Spell_env_ori);
-    Color_RGB8 Spell_col = CVarGetColor24("gNL_Diamond_Col", Spell_col_ori);
+    Color_RGB8 Spell_env = CVarGetColor24(CVAR_COSMETIC("Magic.NayrusSecondary.Value"), Spell_env_ori);
+    Color_RGB8 Spell_col = CVarGetColor24(CVAR_COSMETIC("Magic.NayrusPrimary.Value"), Spell_col_ori);
 
     OPEN_DISPS(play->state.gfxCtx);
 
@@ -224,7 +224,7 @@ void MagicDark_DiamondDraw(Actor* thisx, PlayState* play) {
         Matrix_RotateY(this->actor.shape.rot.y * (M_PI / 0x8000), MTXMODE_APPLY);
         gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        if (CVarGetInteger("gUseSpellsCol",0)) {
+        if (CVarGetInteger(CVAR_COSMETIC("UseSpellsColors"),0)) {
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, Spell_col.r, Spell_col.g, Spell_col.b, (s32)(this->primAlpha * 0.6f) & 0xFF);
             gDPSetEnvColor(POLY_XLU_DISP++, Spell_env.r, Spell_env.g, Spell_env.b, 128);
         } else {

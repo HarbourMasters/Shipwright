@@ -733,7 +733,7 @@ void EnBox_UpdateSizeAndTexture(EnBox* this, PlayState* play) {
         }
     }
 
-    if (CVarGetInteger("gLetItSnow", 0) && hasChristmasChestTexturesAvailable && hasCreatedRandoChestTextures && !hasCustomChestDLs) {
+    if (CVarGetInteger(CVAR_GENERAL("LetItSnow"), 0) && hasChristmasChestTexturesAvailable && hasCreatedRandoChestTextures && !hasCustomChestDLs) {
         if (this->dyna.actor.scale.x == 0.01f) {
             this->boxBodyDL = gChristmasRedTreasureChestChestFrontDL;
             this->boxLidDL = gChristmasRedTreasureChestChestSideAndLidDL;

@@ -353,19 +353,19 @@ void GameInteractor::RawAction::SetTimeOfDay(uint32_t time) {
 }
 
 void GameInteractor::RawAction::SetCollisionViewer(bool active) {
-    CVarSetInteger("gColViewerEnabled", active);
-    CVarSetInteger("gColViewerDecal", active);
+    CVarSetInteger(CVAR_DEVELOPER_TOOLS("ColViewer.Enabled"), active);
+    CVarSetInteger(CVAR_DEVELOPER_TOOLS("ColViewer.Decal"), active);
     
     if (active) {
-        CVarSetInteger("gColViewerScene", COLVIEW_TRANSPARENT);
-        CVarSetInteger("gColViewerBgActors", COLVIEW_TRANSPARENT);
-        CVarSetInteger("gColViewerColCheck", COLVIEW_TRANSPARENT);
-        CVarSetInteger("gColViewerWaterbox", COLVIEW_TRANSPARENT);
+        CVarSetInteger(CVAR_DEVELOPER_TOOLS("ColViewer.Scene"), COLVIEW_TRANSPARENT);
+        CVarSetInteger(CVAR_DEVELOPER_TOOLS("ColViewer.BGActors"), COLVIEW_TRANSPARENT);
+        CVarSetInteger(CVAR_DEVELOPER_TOOLS("ColViewer.ColCheck"), COLVIEW_TRANSPARENT);
+        CVarSetInteger(CVAR_DEVELOPER_TOOLS("ColViewer.Waterbox"), COLVIEW_TRANSPARENT);
     } else {
-        CVarSetInteger("gColViewerScene", COLVIEW_DISABLED);
-        CVarSetInteger("gColViewerBgActors", COLVIEW_DISABLED);
-        CVarSetInteger("gColViewerColCheck", COLVIEW_DISABLED);
-        CVarSetInteger("gColViewerWaterbox", COLVIEW_DISABLED);
+        CVarSetInteger(CVAR_DEVELOPER_TOOLS("ColViewer.Scene"), COLVIEW_DISABLED);
+        CVarSetInteger(CVAR_DEVELOPER_TOOLS("ColViewer.BGActors"), COLVIEW_DISABLED);
+        CVarSetInteger(CVAR_DEVELOPER_TOOLS("ColViewer.ColCheck"), COLVIEW_DISABLED);
+        CVarSetInteger(CVAR_DEVELOPER_TOOLS("ColViewer.Waterbox"), COLVIEW_DISABLED);
     }
 }
 

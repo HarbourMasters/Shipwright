@@ -196,14 +196,14 @@ void RegisterUnrestrictedItems() {
 void RegisterFreezeTime() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
         if (CVarGetInteger(CVAR_CHEAT("FreezeTime"), 0) != 0) {
-            if (CVarGetInteger("gPrevTime", -1) == -1) {
-                CVarSetInteger("gPrevTime", gSaveContext.dayTime);
+            if (CVarGetInteger(CVAR_GENERAL("PrevTime"), -1) == -1) {
+                CVarSetInteger(CVAR_GENERAL("PrevTime"), gSaveContext.dayTime);
             }
 
-            int32_t prevTime = CVarGetInteger("gPrevTime", gSaveContext.dayTime);
+            int32_t prevTime = CVarGetInteger(CVAR_GENERAL("PrevTime"), gSaveContext.dayTime);
             gSaveContext.dayTime = prevTime;
         } else {
-            CVarClear("gPrevTime");
+            CVarClear(CVAR_GENERAL("PrevTime"));
         }
     });
 }
@@ -272,11 +272,11 @@ void RegisterOcarinaTimeTravel() {
             !nearbyOcarinaSpot && !nearbyFrogs) {
 
             if (IS_RANDO) {
-                CVarSetInteger("gSwitchTimeline", 1);
+                CVarSetInteger(CVAR_GENERAL("SwitchTimeline"), 1);
             } else if (!IS_RANDO && !nearbyDoorOfTime) {
                 // This check is made for when Link is learning the Song Of Time in a vanilla save file that load a
                 // Temple of Time scene where the only object present is the Door of Time
-                CVarSetInteger("gSwitchTimeline", 1);
+                CVarSetInteger(CVAR_GENERAL("SwitchTimeline"), 1);
             }
             ReloadSceneTogglingLinkAge();
         }
@@ -699,10 +699,10 @@ void UpdateMirrorModeState(int32_t sceneNum) {
          ((mirroredMode == MIRRORED_WORLD_DUNGEONS_RANDOM || mirroredMode == MIRRORED_WORLD_DUNGEONS_RANDOM_SEEDED) && randomMirror)))
     ) {
         nextMirroredWorld = true;
-        CVarSetInteger("gMirroredWorld", 1);
+        CVarSetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 1);
     } else {
         nextMirroredWorld = false;
-        CVarClear("gMirroredWorld");
+        CVarClear(CVAR_ENHANCEMENT("MirroredWorld"));
     }
 
     if (prevMirroredWorld != nextMirroredWorld) {

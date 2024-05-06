@@ -223,7 +223,7 @@ void PatchMirroredSoldOutGI() {
                              G_TX_NOMIRROR | G_TX_CLAMP, 5, 5, G_TX_NOLOD, G_TX_NOLOD),
     };
 
-    if (CVarGetInteger("gMirroredWorld", 0)) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0)) {
         if (mirroredSoldOutVtx == nullptr) {
             // Copy the original vertices that we want to modify (4 at the beginning of the resource)
             mirroredSoldOutVtx = (Vtx*)malloc(sizeof(Vtx) * 4);
@@ -270,7 +270,7 @@ void PatchMirroredSunSongEtching() {
                              G_TX_NOMIRROR | G_TX_CLAMP, 7, 5, G_TX_NOLOD, G_TX_NOLOD)
     };
 
-    if (CVarGetInteger("gMirroredWorld", 0)) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0)) {
         if (mirroredSunSongVtx == nullptr) {
             // Copy the original vertices that we want to modify (4 at the beginning of the resource)
             mirroredSunSongVtx = (Vtx*)malloc(sizeof(Vtx) * 4);
