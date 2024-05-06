@@ -1,7 +1,7 @@
 #include "OTRGlobals.h"
 #include <libultraship/libultraship.h>
 #include "soh/resource/type/Scene.h"
-#include <Utils/StringHelper.h>
+#include <utils/StringHelper.h>
 #include "global.h"
 #include "vt.h"
 #include "soh/resource/type/CollisionHeader.h"
@@ -34,24 +34,13 @@
 #include "soh/resource/type/scenecommand/SetEchoSettings.h"
 #include "soh/resource/type/scenecommand/SetAlternateHeaders.h"
 
-extern LUS::IResource* OTRPlay_LoadFile(PlayState* play, const char* fileName);
+extern Ship::IResource* OTRPlay_LoadFile(PlayState* play, const char* fileName);
 extern "C" s32 Object_Spawn(ObjectContext* objectCtx, s16 objectId);
 extern "C" RomFile sNaviMsgFiles[];
 s32 OTRScene_ExecuteCommands(PlayState* play, SOH::Scene* scene);
 
-std::shared_ptr<LUS::File> ResourceMgr_LoadFile(const char* path) {
-    std::string Path = path;
-    if (IsGameMasterQuest()) {
-        size_t pos = 0;
-        if ((pos = Path.find("/nonmq/", 0)) != std::string::npos) {
-            Path.replace(pos, 7, "/mq/");
-        }
-    }
-    return LUS::Context::GetInstance()->GetResourceManager()->LoadFile(Path.c_str());
-}
-
 // Forward Declaration of function declared in OTRGlobals.cpp
-std::shared_ptr<LUS::IResource> GetResourceByNameHandlingMQ(const char* path);
+std::shared_ptr<Ship::IResource> GetResourceByNameHandlingMQ(const char* path);
 
 bool Scene_CommandSpawnList(PlayState* play, SOH::ISceneCommand* cmd) {
     // SOH::SetStartPositionList* cmdStartPos = std::static_pointer_cast<SOH::SetStartPositionList>(cmd);
@@ -178,7 +167,7 @@ bool Scene_CommandObjectList(PlayState* play, SOH::ISceneCommand* cmd) {
     // Loop until a mismatch in the object lists
     // Then clear all object ids past that in the context object list and kill actors for those objects
     for (i = play->objectCtx.unk_09, k = 0; i < play->objectCtx.num; i++, k++) {
-        if (i >= cmdObj->objects.size() || play->objectCtx.status[i].id != cmdObj->objects[k]) {
+        if (k >= cmdObj->objects.size() || play->objectCtx.status[i].id != cmdObj->objects[k]) {
             for (j = i; j < play->objectCtx.num; j++) {
                 play->objectCtx.status[j].id = OBJECT_INVALID;
             }

@@ -293,7 +293,7 @@ void func_80B20768(EnToryo* this, PlayState* play) {
 
     // Animation Count should be no more than 1 to guarantee putaway is complete after giving the saw
     // As this is vanilla behavior, it only applies with the Fix toggle or Skip Text enabled.
-    bool checkAnim = (CVarGetInteger("gFixSawSoftlock", 0) != 0 || CVarGetInteger("gSkipText", 0) != 0) ? play->animationCtx.animationCount <= 1 : true;
+    bool checkAnim = (CVarGetInteger(CVAR_ENHANCEMENT("FixSawSoftlock"), 0) != 0 || CVarGetInteger(CVAR_ENHANCEMENT("SkipText"), 0) != 0) ? play->animationCtx.animationCount <= 1 : true;
     if (this->unk_1E4 == 3 && checkAnim) {
         Actor_ProcessTalkRequest(&this->actor, play);
         Message_ContinueTextbox(play, this->actor.textId);

@@ -9,6 +9,7 @@
 #include <variables.h>
 #include "soh/Enhancements/boss-rush/BossRush.h"
 #include <libultraship/libultraship.h>
+#include "SohGui.hpp"
 
 #define NOGDI // avoid various windows defines that conflict with things in z64.h
 #include <spdlog/spdlog.h>
@@ -43,12 +44,12 @@ void SaveManager::ReadSaveFile(std::filesystem::path savePath, uintptr_t addr, v
 }
 
 std::filesystem::path SaveManager::GetFileName(int fileNum) {
-    const std::filesystem::path sSavePath(LUS::Context::GetPathRelativeToAppDirectory("Save"));
+    const std::filesystem::path sSavePath(Ship::Context::GetPathRelativeToAppDirectory("Save"));
     return sSavePath / ("file" + std::to_string(fileNum + 1) + ".sav");
 }
 
 std::filesystem::path SaveManager::GetFileTempName(int fileNum) {
-    const std::filesystem::path sSavePath(LUS::Context::GetPathRelativeToAppDirectory("Save"));
+    const std::filesystem::path sSavePath(Ship::Context::GetPathRelativeToAppDirectory("Save"));
     return sSavePath / ("file" + std::to_string(fileNum + 1) + ".temp");
 }
 
@@ -370,10 +371,10 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool f
 void SaveManager::Init() {
     // Wait on saves that snuck through the Wait in OnExitGame
     ThreadPoolWait();
-    const std::filesystem::path sSavePath(LUS::Context::GetPathRelativeToAppDirectory("Save"));
+    const std::filesystem::path sSavePath(Ship::Context::GetPathRelativeToAppDirectory("Save"));
     const std::filesystem::path sGlobalPath = sSavePath / std::string("global.sav");
-    auto sOldSavePath = LUS::Context::GetPathRelativeToAppDirectory("oot_save.sav");
-    auto sOldBackupSavePath = LUS::Context::GetPathRelativeToAppDirectory("oot_save.bak");
+    auto sOldSavePath = Ship::Context::GetPathRelativeToAppDirectory("oot_save.sav");
+    auto sOldBackupSavePath = Ship::Context::GetPathRelativeToAppDirectory("oot_save.bak");
 
     // If the save directory does not exist, create it
     if (!std::filesystem::exists(sSavePath)) {
@@ -628,10 +629,10 @@ void SaveManager::InitFileDebug() {
 
     //don't apply gDebugSaveFileMode on the title screen
     if (gSaveContext.fileNum != 0xFF) {
-        if (CVarGetInteger("gDebugSaveFileMode", 1) == 2) {
+        if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugSaveFileMode"), 1) == 2) {
             InitFileMaxed();
             return;
-        } else if (CVarGetInteger("gDebugSaveFileMode", 1) == 0) {
+        } else if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugSaveFileMode"), 1) == 0) {
             return;
         }
     }
@@ -1017,7 +1018,7 @@ void SaveManager::SaveGlobal() {
     globalBlock["zTargetSetting"] = gSaveContext.zTargetSetting;
     globalBlock["language"] = gSaveContext.language;
 
-    const std::filesystem::path sSavePath(LUS::Context::GetPathRelativeToAppDirectory("Save"));
+    const std::filesystem::path sSavePath(Ship::Context::GetPathRelativeToAppDirectory("Save"));
     const std::filesystem::path sGlobalPath = sSavePath / std::string("global.sav");
 
     std::ofstream output(sGlobalPath);
@@ -1026,51 +1027,67 @@ void SaveManager::SaveGlobal() {
 
 void SaveManager::LoadFile(int fileNum) {
     SPDLOG_INFO("Load File - fileNum: {}", fileNum);
-    assert(std::filesystem::exists(GetFileName(fileNum)));
+    std::filesystem::path fileName = GetFileName(fileNum);
+    assert(std::filesystem::exists(fileName));
     InitFile(false);
 
-    std::ifstream input(GetFileName(fileNum));
-
-    saveBlock = nlohmann::json::object();
-    input >> saveBlock;
-    if (!saveBlock.contains("version")) {
-        SPDLOG_ERROR("Save at " + GetFileName(fileNum).string() + " contains no version");
-        assert(false);
-    }
-    switch (saveBlock["version"].get<int>()) {
-        case 1:
-            for (auto& block : saveBlock["sections"].items()) {
-                int sectionVersion = block.value()["version"];
-                std::string sectionName = block.key();
-                if (!sectionLoadHandlers.contains(sectionName)) {
-                    // Unloadable sections aren't necessarily errors, they are probably mods that were unloaded
-                    // TODO report in a more noticeable manner
-                    SPDLOG_WARN("Save " + GetFileName(fileNum).string() + " contains unloadable section " + sectionName);
-                    continue;
-                }
-                SectionLoadHandler& handler = sectionLoadHandlers[sectionName];
-                if (!handler.contains(sectionVersion)) {
-                    // A section that has a loader without a handler for the specific version means that the user has a mod
-                    // at an earlier version than the save has. In this case, the user probably wants to load the save.
-                    // Report the error so that the user can rectify the error.
-                    // TODO report in a more noticeable manner
-                    SPDLOG_ERROR("Save " + GetFileName(fileNum).string() + " contains section " + sectionName +
-                                 " with an unloadable version " + std::to_string(sectionVersion));
-                    assert(false);
-                    continue;
-                }
-                currentJsonContext = &block.value()["data"];
-                handler[sectionVersion]();
-            }
-            break;
-        default:
-            SPDLOG_ERROR("Unrecognized save version " + std::to_string(saveBlock["version"].get<int>()) + " in " +
-                         GetFileName(fileNum).string());
+    std::ifstream input(fileName);
+    
+    try {
+        saveBlock = nlohmann::json::object();
+        input >> saveBlock;
+        if (!saveBlock.contains("version")) {
+            SPDLOG_ERROR("Save at " + fileName.string() + " contains no version");
             assert(false);
-            break;
+        }
+        switch (saveBlock["version"].get<int>()) {
+            case 1:
+                for (auto& block : saveBlock["sections"].items()) {
+                    int sectionVersion = block.value()["version"];
+                    std::string sectionName = block.key();
+                    if (!sectionLoadHandlers.contains(sectionName)) {
+                        // Unloadable sections aren't necessarily errors, they are probably mods that were unloaded
+                        // TODO report in a more noticeable manner
+                        SPDLOG_WARN("Save " + GetFileName(fileNum).string() + " contains unloadable section " +
+                                    sectionName);
+                        continue;
+                    }
+                    SectionLoadHandler& handler = sectionLoadHandlers[sectionName];
+                    if (!handler.contains(sectionVersion)) {
+                        // A section that has a loader without a handler for the specific version means that the user
+                        // has a mod at an earlier version than the save has. In this case, the user probably wants to
+                        // load the save. Report the error so that the user can rectify the error.
+                        // TODO report in a more noticeable manner
+                        SPDLOG_ERROR("Save " + GetFileName(fileNum).string() + " contains section " + sectionName +
+                                     " with an unloadable version " + std::to_string(sectionVersion));
+                        assert(false);
+                        continue;
+                    }
+                    currentJsonContext = &block.value()["data"];
+                    handler[sectionVersion]();
+                }
+                break;
+            default:
+                SPDLOG_ERROR("Unrecognized save version " + std::to_string(saveBlock["version"].get<int>()) + " in " +
+                             GetFileName(fileNum).string());
+                assert(false);
+                break;
+        }
+        InitMeta(fileNum);
+        GameInteractor::Instance->ExecuteHooks<GameInteractor::OnLoadFile>(fileNum);
+    } catch (const std::exception& e) {
+        input.close();
+        std::filesystem::path newFile(Ship::Context::GetPathRelativeToAppDirectory("Save") + ("/file" + std::to_string(fileNum + 1) + "-" + std::to_string(GetUnixTimestamp()) + ".bak"));
+#if defined(__SWITCH__) || defined(__WIIU__)
+        copy_file(fileName.c_str(), newFile.c_str());
+#else
+        std::filesystem::copy_file(fileName, newFile);
+#endif
+    
+        std::filesystem::remove(fileName);
+        SohGui::RegisterPopup("Error loading save file", "A problem occurred loading the save in slot " + std::to_string(fileNum + 1) + ".\nSave file corruption is suspected.\n" +
+            "The file has been renamed to prevent further issues.");
     }
-    InitMeta(fileNum);
-    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnLoadFile>(fileNum);
 }
 
 void SaveManager::ThreadPoolWait() {
@@ -1150,7 +1167,7 @@ int SaveManager::GetSaveSectionID(std::string& sectionName) {
 void SaveManager::CreateDefaultGlobal() {
     gSaveContext.audioSetting = 0;
     gSaveContext.zTargetSetting = 0;
-    gSaveContext.language = CVarGetInteger("gLanguages", LANGUAGE_ENG);
+    gSaveContext.language = CVarGetInteger(CVAR_SETTING("Languages"), LANGUAGE_ENG);
 
     SaveGlobal();
 }
@@ -2532,7 +2549,7 @@ void SaveManager::ConvertFromUnversioned() {
     gSaveContext.zTargetSetting = data[SRAM_HEADER_ZTARGET] & 1;
     gSaveContext.language = data[SRAM_HEADER_LANGUAGE];
     if (gSaveContext.language >= LANGUAGE_MAX) {
-        gSaveContext.language = CVarGetInteger("gLanguages", LANGUAGE_ENG);
+        gSaveContext.language = CVarGetInteger(CVAR_SETTING("Languages"), LANGUAGE_ENG);
     }
     SaveGlobal();
 

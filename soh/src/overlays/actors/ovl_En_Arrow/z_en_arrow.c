@@ -84,46 +84,46 @@ void EnArrow_Init(Actor* thisx, PlayState* play) {
     };
     EnArrow* this = (EnArrow*)thisx;
 
-    if (CVarGetInteger("gCosmetics.Arrows_NormalPrimary.Changed", 0)) {
-        blureNormal.altEnvColor = CVarGetColor("gCosmetics.Arrows_NormalPrimary.Value", (Color_RGBA8){ 0, 150, 0, 0 });
+    if (CVarGetInteger(CVAR_COSMETIC("Arrows.NormalPrimary.Changed"), 0)) {
+        blureNormal.altEnvColor = CVarGetColor(CVAR_COSMETIC("Arrows.NormalPrimary.Value"), (Color_RGBA8){ 0, 150, 0, 0 });
     } else {
         blureNormal.altEnvColor = (Color_RGBA8){ 0, 150, 0, 0 };
     }
-    if (CVarGetInteger("gCosmetics.Arrows_NormalSecondary.Changed", 0)) {
-        blureNormal.altPrimColor = CVarGetColor("gCosmetics.Arrows_NormalSecondary.Value", (Color_RGBA8){ 255, 255, 170, 255 });
+    if (CVarGetInteger(CVAR_COSMETIC("Arrows.NormalSecondary.Changed"), 0)) {
+        blureNormal.altPrimColor = CVarGetColor(CVAR_COSMETIC("Arrows.NormalSecondary.Value"), (Color_RGBA8){ 255, 255, 170, 255 });
     } else {
         blureNormal.altPrimColor = (Color_RGBA8){ 255, 255, 170, 255 };
     }
 
-    if (CVarGetInteger("gCosmetics.Arrows_FirePrimary.Changed", 0)) {
-        blureFire.altEnvColor = CVarGetColor("gCosmetics.Arrows_FirePrimary.Value", (Color_RGBA8){ 255, 200, 0, 0 });
+    if (CVarGetInteger(CVAR_COSMETIC("Arrows.FirePrimary.Changed"), 0)) {
+        blureFire.altEnvColor = CVarGetColor(CVAR_COSMETIC("Arrows.FirePrimary.Value"), (Color_RGBA8){ 255, 200, 0, 0 });
     } else {
         blureFire.altEnvColor = (Color_RGBA8){ 255, 200, 0, 0 };
     }
-    if (CVarGetInteger("gCosmetics.Arrows_FireSecondary.Changed", 0)) {
-        blureFire.altPrimColor = CVarGetColor("gCosmetics.Arrows_FireSecondary.Value", (Color_RGBA8){ 255, 0, 0, 255 });
+    if (CVarGetInteger(CVAR_COSMETIC("Arrows.FireSecondary.Changed"), 0)) {
+        blureFire.altPrimColor = CVarGetColor(CVAR_COSMETIC("Arrows.FireSecondary.Value"), (Color_RGBA8){ 255, 0, 0, 255 });
     } else {
         blureFire.altPrimColor = (Color_RGBA8){ 255, 0, 0, 255 };
     }
 
-    if (CVarGetInteger("gCosmetics.Arrows_IcePrimary.Changed", 0)) {
-        blureIce.altEnvColor = CVarGetColor("gCosmetics.Arrows_IcePrimary.Value", (Color_RGBA8){ 0, 0, 255, 255 });
+    if (CVarGetInteger(CVAR_COSMETIC("Arrows.IcePrimary.Changed"), 0)) {
+        blureIce.altEnvColor = CVarGetColor(CVAR_COSMETIC("Arrows.IcePrimary.Value"), (Color_RGBA8){ 0, 0, 255, 255 });
     } else {
         blureIce.altEnvColor = (Color_RGBA8){ 0, 0, 255, 255 };
     }
-    if (CVarGetInteger("gCosmetics.Arrows_IceSecondary.Changed", 0)) {
-        blureIce.altPrimColor = CVarGetColor("gCosmetics.Arrows_IceSecondary.Value", (Color_RGBA8){ 170, 255, 255, 0 });
+    if (CVarGetInteger(CVAR_COSMETIC("Arrows.IceSecondary.Changed"), 0)) {
+        blureIce.altPrimColor = CVarGetColor(CVAR_COSMETIC("Arrows.IceSecondary.Value"), (Color_RGBA8){ 170, 255, 255, 0 });
     } else {
         blureIce.altPrimColor = (Color_RGBA8){ 170, 255, 255, 0 };
     }
 
-    if (CVarGetInteger("gCosmetics.Arrows_LightPrimary.Changed", 0)) {
-        blureLight.altEnvColor = CVarGetColor("gCosmetics.Arrows_LightPrimary.Value", (Color_RGBA8){ 255, 255, 0, 255 });
+    if (CVarGetInteger(CVAR_COSMETIC("Arrows.LightPrimary.Changed"), 0)) {
+        blureLight.altEnvColor = CVarGetColor(CVAR_COSMETIC("Arrows.LightPrimary.Value"), (Color_RGBA8){ 255, 255, 0, 255 });
     } else {
         blureLight.altEnvColor = (Color_RGBA8){ 255, 255, 0, 255 };
     }
-    if (CVarGetInteger("gCosmetics.Arrows_LightSecondary.Changed", 0)) {
-        blureLight.altPrimColor = CVarGetColor("gCosmetics.Arrows_LightSecondary.Value", (Color_RGBA8){ 255, 255, 170, 0 });
+    if (CVarGetInteger(CVAR_COSMETIC("Arrows.LightSecondary.Changed"), 0)) {
+        blureLight.altPrimColor = CVarGetColor(CVAR_COSMETIC("Arrows.LightSecondary.Value"), (Color_RGBA8){ 255, 255, 170, 0 });
     } else {
         blureLight.altPrimColor = (Color_RGBA8){ 255, 255, 170, 0 };
     }
