@@ -1808,7 +1808,7 @@ extern "C" void ResourceMgr_PatchGfxCopyCommandByName(const char* path, const ch
     }
 
     Gfx* destinationGfx = (Gfx*)&res->Instructions[destinationIndex];
-    Gfx sourceGfx = res->Instructions[sourceIndex];
+    Gfx sourceGfx = *(Gfx*)&res->Instructions[sourceIndex];
 
     if (!originalGfx.contains(path) || !originalGfx[path].contains(patchName)) {
         originalGfx[path][patchName] = {
