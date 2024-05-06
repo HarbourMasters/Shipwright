@@ -102,7 +102,7 @@ std::vector<RandomizerHint> Rando::StaticData::oldVerHintOrder {
     RH_ZR_OPEN_GROTTO_GOSSIP_STONE,
 };
 
-uint16_t Rando::StaticData::oldVerGossipStoneStart = 740;
+uint16_t Rando::StaticData::oldVerGossipStoneStart = 706;
 
 SaveManager::SaveManager() {
     coreSectionIDsByName["base"] = SECTION_ID_BASE;
@@ -188,7 +188,7 @@ void SaveManager::LoadRandomizerVersion1() {
         for (int j = 0; j < ARRAY_COUNT(hintText); j++) {
             SaveManager::Instance->LoadData("ht" + std::to_string(i) + "-" + std::to_string(j), hintText[j]);
         }
-        RandomizerHint stoneHint = Rando::StaticData::oldVerHintOrder[Rando::StaticData::oldVerGossipStoneStart];
+        RandomizerHint stoneHint = Rando::StaticData::oldVerHintOrder[i - Rando::StaticData::oldVerGossipStoneStart];
         randoContext->AddHint(stoneHint, Rando::Hint(stoneHint, {CustomMessage(hintText)}));
     }
 
@@ -294,7 +294,7 @@ void SaveManager::LoadRandomizerVersion2() {
             if (rc != RC_UNKNOWN_CHECK) {
                 std::string hintText;
                 SaveManager::Instance->LoadData("hintText", hintText);
-                RandomizerHint stoneHint = Rando::StaticData::oldVerHintOrder[Rando::StaticData::oldVerGossipStoneStart];
+                RandomizerHint stoneHint = Rando::StaticData::oldVerHintOrder[rc - Rando::StaticData::oldVerGossipStoneStart];
                 randoContext->AddHint(stoneHint, Rando::Hint(stoneHint, {CustomMessage(hintText)}));
             }
         });
