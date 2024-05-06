@@ -163,7 +163,7 @@ const std::vector<const char*> enhancementsCvars = {
     CVAR_ENHANCEMENT("GravediggingTourFix"),
     CVAR_ENHANCEMENT("DekuNutUpgradeFix"),
     CVAR_ENHANCEMENT("NaviTextFix"),
-    CVAR_ENHANCEMENT("AnubixFix"),
+    CVAR_ENHANCEMENT("AnubisFix"),
     CVAR_ENHANCEMENT("CrouchStabHammerFix"),
     CVAR_ENHANCEMENT("CrouchStabFix"),
     CVAR_ENHANCEMENT("GerudoWarriorClothingFix"),
@@ -682,7 +682,7 @@ const std::vector<PresetEntry> enhancedPresetEntries = {
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("NewDrops"), 1),
 
     // Fix Anubis fireballs
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("AnubixFix"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("AnubisFix"), 1),
 
     // Autosave
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("Autosave"), AUTOSAVE_LOCATION_AND_MAJOR_ITEMS),
@@ -808,7 +808,7 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("NewDrops"), 1),
 
     // Fix Anubis fireballs
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("AnubixFix"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("AnubisFix"), 1),
 
     // Autosave
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("Autosave"), AUTOSAVE_LOCATION_AND_MAJOR_ITEMS),
