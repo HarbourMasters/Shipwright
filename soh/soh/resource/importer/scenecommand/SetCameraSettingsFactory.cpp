@@ -1,39 +1,34 @@
 #include "soh/resource/importer/scenecommand/SetCameraSettingsFactory.h"
 #include "soh/resource/type/scenecommand/SetCameraSettings.h"
+#include "soh/resource/logging/SceneCommandLoggers.h"
 #include "spdlog/spdlog.h"
 
-namespace LUS {
-std::shared_ptr<IResource> SetCameraSettingsFactory::ReadResource(std::shared_ptr<ResourceInitData> initData,
-                                                                 std::shared_ptr<BinaryReader> reader) {
-    auto resource = std::make_shared<SetCameraSettings>(initData);
-    std::shared_ptr<ResourceVersionFactory> factory = nullptr;
-
-    switch (resource->GetInitData()->ResourceVersion) {
-    case 0:
-	    factory = std::make_shared<SetCameraSettingsFactoryV0>();
-	    break;
-    }
-
-    if (factory == nullptr) {
-        SPDLOG_ERROR("Failed to load SetCameraSettings with version {}", resource->GetInitData()->ResourceVersion);
-	return nullptr;
-    }
-
-    factory->ParseFileBinary(reader, resource);
-
-    return resource;
-}
-
-void LUS::SetCameraSettingsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
-                                        std::shared_ptr<IResource> resource)
-{
-    std::shared_ptr<SetCameraSettings> setCameraSettings = std::static_pointer_cast<SetCameraSettings>(resource);
-    ResourceVersionFactory::ParseFileBinary(reader, setCameraSettings);
+namespace SOH {
+std::shared_ptr<Ship::IResource> SetCameraSettingsFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
+                                                                 std::shared_ptr<Ship::BinaryReader> reader) {
+    auto setCameraSettings = std::make_shared<SetCameraSettings>(initData);
 
     ReadCommandId(setCameraSettings, reader);
 	
     setCameraSettings->settings.cameraMovement = reader->ReadInt8();
     setCameraSettings->settings.worldMapArea = reader->ReadInt32();
+
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ResourceLogging"), 0)) {
+        LogCameraSettingsAsXML(setCameraSettings);
+    }
+
+    return setCameraSettings;
 }
 
-} // namespace LUS
+std::shared_ptr<Ship::IResource> SetCameraSettingsFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
+                                                                   tinyxml2::XMLElement* reader) {
+    auto setCameraSettings = std::make_shared<SetCameraSettings>(initData);
+
+    setCameraSettings->cmdId = SceneCommandID::SetCameraSettings;
+
+    setCameraSettings->settings.cameraMovement = reader->IntAttribute("CameraMovement");
+    setCameraSettings->settings.worldMapArea = reader->IntAttribute("WorldMapArea");
+
+    return setCameraSettings;
+}
+} // namespace SOH

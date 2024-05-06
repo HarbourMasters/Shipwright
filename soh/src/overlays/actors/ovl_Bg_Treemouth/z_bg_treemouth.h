@@ -15,4 +15,7 @@ typedef struct BgTreemouth {
     /* 0x016C */ BgTreemouthActionFunc actionFunc;
 } BgTreemouth; // size = 0x0170
 
+void BgTreemouth_SetupAction(BgTreemouth* actor, BgTreemouthActionFunc actionFunc);
+void func_808BC6F8(BgTreemouth* actor, PlayState* play);
+
 #endif

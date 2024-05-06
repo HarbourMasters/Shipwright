@@ -945,7 +945,7 @@ Gfx* KaleidoScope_QuadTextureIA4(Gfx* gfx, void* texture, s16 width, s16 height,
 }
 
 Gfx* KaleidoScope_QuadTextureIA8(Gfx* gfx, void* texture, s16 width, s16 height, u16 point) {
-    u8 mirrorMode = CVarGetInteger("gMirroredWorld", 0) ? G_TX_MIRROR : G_TX_NOMIRROR;
+    u8 mirrorMode = CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0) ? G_TX_MIRROR : G_TX_NOMIRROR;
     gDPLoadTextureBlock(gfx++, texture, G_IM_FMT_IA, G_IM_SIZ_8b, width, height, 0, mirrorMode | G_TX_WRAP,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
     gSP1Quadrangle(gfx++, point, point + 2, point + 3, point + 1, 0);
@@ -1057,7 +1057,7 @@ void KaleidoScope_SwitchPage(PauseContext* pauseCtx, u8 pt) {
         gSaveContext.buttonStatus[buttonIndex] = D_8082AB6C[pauseCtx->pageIndex + pt][buttonIndex];
     }
 
-    if ((CVarGetInteger("gAssignableTunicsAndBoots", 0) != 0) && (D_8082ABEC[pauseCtx->mode] == PAUSE_EQUIP)) {
+    if ((CVarGetInteger(CVAR_ENHANCEMENT("AssignableTunicsAndBoots"), 0) != 0) && (D_8082ABEC[pauseCtx->mode] == PAUSE_EQUIP)) {
         gSaveContext.buttonStatus[1] = BTN_ENABLED;
         gSaveContext.buttonStatus[2] = BTN_ENABLED;
         gSaveContext.buttonStatus[3] = BTN_ENABLED;
@@ -1079,12 +1079,12 @@ void KaleidoScope_SwitchPage(PauseContext* pauseCtx, u8 pt) {
 void KaleidoScope_HandlePageToggles(PauseContext* pauseCtx, Input* input) {
     s16 Debug_BTN = BTN_L;
     s16 PageLeft_BTN = BTN_Z;
-    if (CVarGetInteger("gNGCKaleidoSwitcher", 0) != 0) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("NGCKaleidoSwitcher"), 0) != 0) {
         Debug_BTN = BTN_Z;
         PageLeft_BTN = BTN_L;
     }
 
-    if (CVarGetInteger("gDebugEnabled", 0) && (pauseCtx->debugState == 0) && CHECK_BTN_ALL(input->press.button, Debug_BTN)) {
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0) && (pauseCtx->debugState == 0) && CHECK_BTN_ALL(input->press.button, Debug_BTN)) {
         pauseCtx->debugState = 1;
         return;
     }
@@ -1099,7 +1099,7 @@ void KaleidoScope_HandlePageToggles(PauseContext* pauseCtx, Input* input) {
         return;
     }
 
-    bool dpad = CVarGetInteger("gDpadPause", 0);
+    bool dpad = CVarGetInteger(CVAR_SETTING("DPadOnPause"), 0);
     if (pauseCtx->cursorSpecialPos == PAUSE_CURSOR_PAGE_LEFT) {
         if ((pauseCtx->stickRelX < -30) || (dpad && CHECK_BTN_ALL(input->cur.button, BTN_DLEFT))) {
             pauseCtx->pageSwitchTimer++;
@@ -1129,14 +1129,14 @@ void KaleidoScope_DrawCursor(PlayState* play, u16 pageIndex) {
 
     temp = pauseCtx->unk_1E4;
 
-    if (CVarGetInteger("gCosmetics.Hud_AButton.Changed", 0)) {
-        sCursorColors[2] = CVarGetColor24("gCosmetics.Hud_AButton.Value", sCursorColors[2]);
-    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.AButton.Changed"), 0)) {
+        sCursorColors[2] = CVarGetColor24(CVAR_COSMETIC("HUD.AButton.Value"), sCursorColors[2]);
+    } else if (CVarGetInteger(CVAR_COSMETIC("DefaultColorScheme"), COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
         sCursorColors[2] = (Color_RGB8){ 0, 255, 50 };
     }
 
-    if (CVarGetInteger("gCosmetics.Hud_CButtons.Changed", 0)) {
-        sCursorColors[1] = CVarGetColor24("gCosmetics.Hud_CButtons.Value", sCursorColors[1]);
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.CButtons.Changed"), 0)) {
+        sCursorColors[1] = CVarGetColor24(CVAR_COSMETIC("HUD.CButtons.Value"), sCursorColors[1]);
     }
 
     if ((((pauseCtx->unk_1E4 == 0) || (temp == 8)) && (pauseCtx->state == 6)) ||
@@ -1204,27 +1204,25 @@ Gfx* KaleidoScope_DrawPageSections(Gfx* gfx, Vtx* vertices, void** textures) {
     return gfx;
 }
 
-static uint8_t mapBlendMask[MAP_48x85_TEX_WIDTH * MAP_48x85_TEX_HEIGHT];
-
 void KaleidoScope_DrawPages(PlayState* play, GraphicsContext* gfxCtx) {
     static Color_RGB8 D_8082ACF4[12] = {
         { 0, 0, 0 }, { 0, 0, 0 },     { 0, 0, 0 },    { 0, 0, 0 }, { 255, 255, 0 }, { 0, 0, 0 },
         { 0, 0, 0 }, { 255, 255, 0 }, { 0, 50, 255 }, { 0, 0, 0 }, { 0, 0, 0 },     { 0, 50, 255 },
     };
     Color_RGB8 aButtonColor = { 100, 100, 255 };
-    if (CVarGetInteger("gCosmetics.Hud_AButton.Changed", 0)) {
-        aButtonColor = CVarGetColor24("gCosmetics.Hud_AButton.Value", aButtonColor);
-        D_8082ACF4[8] = CVarGetColor24("gCosmetics.Hud_AButton.Value", D_8082ACF4[8]);
-        D_8082ACF4[11] = CVarGetColor24("gCosmetics.Hud_AButton.Value", D_8082ACF4[11]);
-    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.AButton.Changed"), 0)) {
+        aButtonColor = CVarGetColor24(CVAR_COSMETIC("HUD.AButton.Value"), aButtonColor);
+        D_8082ACF4[8] = CVarGetColor24(CVAR_COSMETIC("HUD.AButton.Value"), D_8082ACF4[8]);
+        D_8082ACF4[11] = CVarGetColor24(CVAR_COSMETIC("HUD.AButton.Value"), D_8082ACF4[11]);
+    } else if (CVarGetInteger(CVAR_COSMETIC("DefaultColorScheme"), COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
         aButtonColor = (Color_RGB8){ 100, 255, 100 };
         D_8082ACF4[8] = (Color_RGB8){ 0, 255, 50 };
         D_8082ACF4[11] = (Color_RGB8){ 0, 255, 50 };
     }
 
-    if (CVarGetInteger("gCosmetics.Hud_CButtons.Changed", 0)) {
-        D_8082ACF4[4] = CVarGetColor24("gCosmetics.Hud_CButtons.Value", D_8082ACF4[4]);
-        D_8082ACF4[7] = CVarGetColor24("gCosmetics.Hud_CButtons.Value", D_8082ACF4[7]);
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.CButtons.Changed"), 0)) {
+        D_8082ACF4[4] = CVarGetColor24(CVAR_COSMETIC("HUD.CButtons.Value"), D_8082ACF4[4]);
+        D_8082ACF4[7] = CVarGetColor24(CVAR_COSMETIC("HUD.CButtons.Value"), D_8082ACF4[7]);
     }
 
     static s16 D_8082AD3C = 20;
@@ -1275,7 +1273,7 @@ void KaleidoScope_DrawPages(PlayState* play, GraphicsContext* gfxCtx) {
                 }
             }
 
-            if (CVarGetInteger("gDpadHoldChange", 1) && CVarGetInteger("gDpadPause", 0)) {
+            if (CVarGetInteger(CVAR_SETTING("DpadHoldChange"), 1) && CVarGetInteger(CVAR_SETTING("DPadOnPause"), 0)) {
                 if (CHECK_BTN_ALL(input->cur.button, BTN_DLEFT)) {
                     if (CHECK_BTN_ALL(input->press.button, BTN_DLEFT)) {
                         D_8082AD44 = XREG(8);
@@ -1373,10 +1371,6 @@ void KaleidoScope_DrawPages(PlayState* play, GraphicsContext* gfxCtx) {
                 D_8082AD50 = 0;
             }
         }
-
-        // Need to invalidate the blend mask every frame. Ideally this would be done in KaleidoScope_DrawDungeonMap
-        // but the reference is not shared between files
-        gSPInvalidateTexCache(POLY_KAL_DISP++, mapBlendMask);
 
         if (pauseCtx->pageIndex) { // pageIndex != PAUSE_ITEM
             gDPPipeSync(OVERLAY_DISP++);
@@ -1624,7 +1618,7 @@ void KaleidoScope_DrawPages(PlayState* play, GraphicsContext* gfxCtx) {
             POLY_KAL_DISP =
                 KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, sPromptChoiceTexs[gSaveContext.language][1], 48, 16, 16);
         } else if (((pauseCtx->state == 7 && pauseCtx->unk_1EC >= 4) || pauseCtx->state == 0xF) &&
-                   !CVarGetInteger("gSkipSaveConfirmation", 0)) {
+                   !CVarGetInteger(CVAR_ENHANCEMENT("SkipSaveConfirmation"), 0)) {
             POLY_KAL_DISP =
                 KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, sSaveConfirmationTexs[gSaveContext.language], 152, 16, 0);
         } else if ((pauseCtx->state != 7) || (pauseCtx->unk_1EC < 4)) {
@@ -1676,31 +1670,31 @@ void KaleidoScope_DrawPages(PlayState* play, GraphicsContext* gfxCtx) {
 
 void KaleidoScope_DrawInfoPanel(PlayState* play) {
     Color_RGB8 aButtonColor = { 0, 100, 255 };
-    if (CVarGetInteger("gCosmetics.Hud_AButton.Changed", 0)) {
-        aButtonColor = CVarGetColor24("gCosmetics.Hud_AButton.Value", aButtonColor);
-    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.AButton.Changed"), 0)) {
+        aButtonColor = CVarGetColor24(CVAR_COSMETIC("HUD.AButton.Value"), aButtonColor);
+    } else if (CVarGetInteger(CVAR_COSMETIC("DefaultColorScheme"), COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
         aButtonColor = (Color_RGB8){ 0, 255, 100 };
     }
 
     Color_RGB8 cButtonsColor = {255, 160, 0};
-    if (CVarGetInteger("gCosmetics.Hud_CButtons.Changed", 0)) {
-        cButtonsColor = CVarGetColor24("gCosmetics.Hud_CButtons.Value", cButtonsColor);
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.CButtons.Changed"), 0)) {
+        cButtonsColor = CVarGetColor24(CVAR_COSMETIC("HUD.CButtons.Value"), cButtonsColor);
     }
     Color_RGB8 cUpButtonColor = cButtonsColor;
-    if (CVarGetInteger("gCosmetics.Hud_CUpButton.Changed", 0)) {
-        cUpButtonColor = CVarGetColor24("gCosmetics.Hud_CUpButton.Value", cUpButtonColor);
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.CUpButton.Changed"), 0)) {
+        cUpButtonColor = CVarGetColor24(CVAR_COSMETIC("HUD.CUpButton.Value"), cUpButtonColor);
     }
     Color_RGB8 cDownButtonColor = cButtonsColor;
-    if (CVarGetInteger("gCosmetics.Hud_CDownButton.Changed", 0)) {
-        cDownButtonColor = CVarGetColor24("gCosmetics.Hud_CDownButton.Value", cDownButtonColor);
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.CDownButton.Changed"), 0)) {
+        cDownButtonColor = CVarGetColor24(CVAR_COSMETIC("HUD.CDownButton.Value"), cDownButtonColor);
     }
     Color_RGB8 cLeftButtonColor = cButtonsColor;
-    if (CVarGetInteger("gCosmetics.Hud_CLeftButton.Changed", 0)) {
-        cLeftButtonColor = CVarGetColor24("gCosmetics.Hud_CLeftButton.Value", cLeftButtonColor);
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.CLeftButton.Changed"), 0)) {
+        cLeftButtonColor = CVarGetColor24(CVAR_COSMETIC("HUD.CLeftButton.Value"), cLeftButtonColor);
     }
     Color_RGB8 cRightButtonColor = cButtonsColor;
-    if (CVarGetInteger("gCosmetics.Hud_CRightButton.Changed", 0)) {
-        cRightButtonColor = CVarGetColor24("gCosmetics.Hud_CRightButton.Value", cRightButtonColor);
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.CRightButton.Changed"), 0)) {
+        cRightButtonColor = CVarGetColor24(CVAR_COSMETIC("HUD.CRightButton.Value"), cRightButtonColor);
     }
 
     static const void* sToEquipTextures[3] = {
@@ -1889,29 +1883,36 @@ void KaleidoScope_DrawInfoPanel(PlayState* play) {
     gSPMatrix(POLY_KAL_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 90, 100, 130, 255);
+    const Color_RGBA8 namePanelColor = CVarGetColor(CVAR_COSMETIC("Kaleido.NamePanel.Value"), (Color_RGBA8){90,100,130,255});
+    
+    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, namePanelColor.r, namePanelColor.g, namePanelColor.b, namePanelColor.a);
     gSPVertex(POLY_KAL_DISP++, &pauseCtx->infoPanelVtx[0], 16, 0);
 
     gSPDisplayList(POLY_KAL_DISP++, gItemNamePanelDL);
 
+    if (CVarGetInteger(CVAR_ENHANCEMENT("FixMenuLR"), 0) == 0) { // Restore the misplace gDPSetPrimColor
+        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 90, 100, 130, 255);
+    }
+
     if ((pauseCtx->cursorSpecialPos == PAUSE_CURSOR_PAGE_LEFT) && (pauseCtx->unk_1E4 == 0)) {
         gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, D_808321A0, D_808321A2, D_808321A4, D_808321A6);
     } else {
-      if (CVarGetInteger("gUniformLR", 0) != 0) {
+      if (CVarGetInteger(CVAR_ENHANCEMENT("FixMenuLR"), 0) != 0) {
         gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 180, 210, 255, 255);
       }
     }
+    
 
     gSPDisplayList(POLY_KAL_DISP++, gLButtonIconDL);
 
-    if (CVarGetInteger("gUniformLR", 0) == 0) { //Restore the misplace gDPSetPrimColor
+    if (CVarGetInteger(CVAR_ENHANCEMENT("FixMenuLR"), 0) == 0) { //Restore the misplace gDPSetPrimColor
       gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 180, 210, 255, 255);
     }
 
     if ((pauseCtx->cursorSpecialPos == PAUSE_CURSOR_PAGE_RIGHT) && (pauseCtx->unk_1E4 == 0)) {
         gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, D_808321A0, D_808321A2, D_808321A4, D_808321A6);
     } else {
-      if (CVarGetInteger("gUniformLR", 0) != 0) {
+      if (CVarGetInteger(CVAR_ENHANCEMENT("FixMenuLR"), 0) != 0) {
         gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 180, 210, 255, 255);
       }
     }
@@ -1962,7 +1963,7 @@ void KaleidoScope_DrawInfoPanel(PlayState* play) {
             POLY_KAL_DISP = KaleidoScope_QuadTextureIA4(POLY_KAL_DISP, pauseCtx->nameSegment, 128, 16, 0);
         }
 
-        if (pauseCtx->pageIndex == PAUSE_MAP && CVarGetInteger("gSkulltulaDebugEnabled", 0) != 0) {
+        if (pauseCtx->pageIndex == PAUSE_MAP && CVarGetInteger(CVAR_DEVELOPER_TOOLS("SkulltulaDebugEnabled"), 0) != 0) {
             if (YREG(7) != 0) {
                 osSyncPrintf(VT_FGCOL(YELLOW));
                 osSyncPrintf("キンスタ数(%d) Get_KIN_STA=%x (%x)  (%x)\n", YREG(6), GET_GS_FLAGS(YREG(6)),
@@ -2060,8 +2061,8 @@ void KaleidoScope_DrawInfoPanel(PlayState* play) {
             }
         } else {
             bool pauseAnyCursor =
-                (CVarGetInteger("gPauseAnyCursor", 0) == PAUSE_ANY_CURSOR_RANDO_ONLY && IS_RANDO) ||
-                (CVarGetInteger("gPauseAnyCursor", 0) == PAUSE_ANY_CURSOR_ALWAYS_ON);
+                (CVarGetInteger(CVAR_SETTING("PauseAnyCursor"), 0) == PAUSE_ANY_CURSOR_RANDO_ONLY && IS_RANDO) ||
+                (CVarGetInteger(CVAR_SETTING("PauseAnyCursor"), 0) == PAUSE_ANY_CURSOR_ALWAYS_ON);
             if (!pauseCtx->pageIndex && (!pauseAnyCursor || (gSaveContext.inventory.items[pauseCtx->cursorPoint[PAUSE_ITEM]] != ITEM_NONE))) { // pageIndex == PAUSE_ITEM
                 pauseCtx->infoPanelVtx[16].v.ob[0] = pauseCtx->infoPanelVtx[18].v.ob[0] =
                     WREG(49 + gSaveContext.language);
@@ -2198,8 +2199,8 @@ void KaleidoScope_DrawInfoPanel(PlayState* play) {
 void KaleidoScope_UpdateNamePanel(PlayState* play) {
     PauseContext* pauseCtx = &play->pauseCtx;
     u16 sp2A;
-    bool pauseAnyCursor = (CVarGetInteger("gPauseAnyCursor", 0) == PAUSE_ANY_CURSOR_RANDO_ONLY && IS_RANDO) ||
-                          (CVarGetInteger("gPauseAnyCursor", 0) == PAUSE_ANY_CURSOR_ALWAYS_ON);
+    bool pauseAnyCursor = (CVarGetInteger(CVAR_SETTING("PauseAnyCursor"), 0) == PAUSE_ANY_CURSOR_RANDO_ONLY && IS_RANDO) ||
+                          (CVarGetInteger(CVAR_SETTING("PauseAnyCursor"), 0) == PAUSE_ANY_CURSOR_ALWAYS_ON);
 
     if ((pauseCtx->namedItem != pauseCtx->cursorItem[pauseCtx->pageIndex]) ||
         ((pauseCtx->pageIndex == PAUSE_MAP) && (pauseCtx->cursorSpecialPos != 0))) {
@@ -2311,15 +2312,15 @@ void KaleidoScope_SetView(PauseContext* pauseCtx, f32 x, f32 y, f32 z) {
     func_800AAA50(&pauseCtx->view, 127);
 }
 
-static u8 D_8082AE48[][4] = {
+static u8 sPageVtxColorR[][4] = {
     { 10, 70, 70, 10 },   { 10, 90, 90, 10 },   { 80, 140, 140, 80 },
     { 80, 120, 120, 80 }, { 80, 140, 140, 80 }, { 50, 110, 110, 50 },
 };
-static u8 D_8082AE60[][4] = {
+static u8 sPageVtxColorG[][4] = {
     { 50, 100, 100, 50 }, { 50, 100, 100, 50 }, { 40, 60, 60, 40 },
     { 80, 120, 120, 80 }, { 40, 60, 60, 40 },   { 50, 110, 110, 50 },
 };
-static u8 D_8082AE78[][4] = {
+static u8 sPageVtxColorB[][4] = {
     { 80, 130, 130, 80 }, { 40, 60, 60, 40 }, { 30, 60, 60, 30 },
     { 50, 70, 70, 50 },   { 30, 60, 60, 30 }, { 50, 110, 110, 50 },
 };
@@ -2447,10 +2448,87 @@ static s16 D_8082B0E4[] = {
     0x0019, 0x000D, 0x0001, 0x0001, 0x000D, 0x0015, 0x000F, 0x000D, 0x000C, 0x0001, 0x0000,
 };
 
-s16 func_80823A0C(PlayState* play, Vtx* vtx, s16 arg2, s16 arg3) {
+static const char* gPageVtxColorCvars[][4] = {
+    {
+        CVAR_COSMETIC("Kaleido.ItemSelA.Value"),
+        CVAR_COSMETIC("Kaleido.ItemSelB.Value"),
+        CVAR_COSMETIC("Kaleido.ItemSelC.Value"),
+        CVAR_COSMETIC("Kaleido.ItemSelD.Value"),
+    },
+    {
+        CVAR_COSMETIC("Kaleido.EquipSelA.Value"),
+        CVAR_COSMETIC("Kaleido.EquipSelB.Value"),
+        CVAR_COSMETIC("Kaleido.EquipSelC.Value"),
+        CVAR_COSMETIC("Kaleido.EquipSelD.Value"),
+    },
+    {
+        CVAR_COSMETIC("Kaleido.MapSelDunA.Value"),
+        CVAR_COSMETIC("Kaleido.MapSelDunB.Value"),
+        CVAR_COSMETIC("Kaleido.MapSelDunC.Value"),
+        CVAR_COSMETIC("Kaleido.MapSelDunD.Value"),
+    },
+    {
+        CVAR_COSMETIC("Kaleido.QuestStatusA.Value"),
+        CVAR_COSMETIC("Kaleido.QuestStatusB.Value"),
+        CVAR_COSMETIC("Kaleido.QuestStatusC.Value"),
+        CVAR_COSMETIC("Kaleido.QuestStatusD.Value"),
+    },
+    {
+        CVAR_COSMETIC("Kaleido.MapSelectA.Value"),
+        CVAR_COSMETIC("Kaleido.MapSelectB.Value"),
+        CVAR_COSMETIC("Kaleido.MapSelectC.Value"),
+        CVAR_COSMETIC("Kaleido.MapSelectD.Value"),
+    },
+    {
+        CVAR_COSMETIC("Kaleido.SaveA.Value"),
+        CVAR_COSMETIC("Kaleido.SaveB.Value"),
+        CVAR_COSMETIC("Kaleido.SaveC.Value"),
+        CVAR_COSMETIC("Kaleido.SaveD.Value"),
+    },
+};
+
+s16 func_80823A0C(PlayState* play, Vtx* vtx, s16 pageIndex, s16 arg3) {
     static s16 D_8082B110 = 0;
     static s16 D_8082B114 = 1;
     static s16 D_8082B118 = 0;
+    static const Color_RGBA8 pageColors[][4] = {
+        {
+            { 10, 50, 80, 255 },
+            { 70, 100, 130, 255 },
+            { 70, 100, 130, 255 },
+            { 10, 50, 80, 255 },
+        },
+        {
+            { 10, 50, 40, 255 },
+            { 90, 100, 60, 255 },
+            { 90, 100, 60, 255 },
+            { 10, 50, 40, 255 },
+        },
+        {
+            { 80,40,30, 255},
+            { 140,60,60,255 },
+            { 140,60,60,255 },
+            { 80, 40, 30, 255 },
+        },
+        {
+            { 80,80,50,255 },
+            { 120,120,70,255 },
+            { 120,120,70,255 },
+            { 80, 80, 50, 255 },
+        },
+        {
+            { 80, 40, 30, 255 },
+            { 140,60,60,255 },
+            { 140,60,60,255 },
+            { 80, 40, 30, 255 },
+        },
+        {
+            { 50,50,50,255 },
+            { 110,110,110,255 },
+            { 110,110,110,255 },
+            { 50,50,50,255 },
+        },
+    };
     PauseContext* pauseCtx = &play->pauseCtx;
     s16* ptr1;
     s16* ptr2;
@@ -2460,109 +2538,114 @@ s16 func_80823A0C(PlayState* play, Vtx* vtx, s16 arg2, s16 arg3) {
     s16 phi_t0;
     s16 phi_a1;
     s16 phi_a2;
-    s16 phi_t3;
-    s16 phi_t1;
+    s16 colorIndex; // Also used for other things.
+    s16 vtxIndex;
 
     phi_t0 = -200;
 
-    for (phi_t1 = 0, phi_t3 = 0; phi_t3 < 3; phi_t3++) {
+    for (vtxIndex = 0, colorIndex = 0; colorIndex < 3; colorIndex++) {
         phi_t0 += 80;
 
-        for (phi_a1 = 80, phi_a2 = 0; phi_a2 < 5; phi_a2++, phi_t1 += 4, phi_a1 -= 32) {
-            vtx[phi_t1 + 0].v.ob[0] = vtx[phi_t1 + 2].v.ob[0] = phi_t0;
+        for (phi_a1 = 80, phi_a2 = 0; phi_a2 < 5; phi_a2++, vtxIndex += 4, phi_a1 -= 32) {
+            vtx[vtxIndex + 0].v.ob[0] = vtx[vtxIndex + 2].v.ob[0] = phi_t0;
 
-            vtx[phi_t1 + 1].v.ob[0] = vtx[phi_t1 + 3].v.ob[0] = vtx[phi_t1 + 0].v.ob[0] + 80;
+            vtx[vtxIndex + 1].v.ob[0] = vtx[vtxIndex + 3].v.ob[0] = vtx[vtxIndex + 0].v.ob[0] + 80;
 
-            vtx[phi_t1 + 0].v.ob[1] = vtx[phi_t1 + 1].v.ob[1] = phi_a1 + pauseCtx->offsetY;
+            vtx[vtxIndex + 0].v.ob[1] = vtx[vtxIndex + 1].v.ob[1] = phi_a1 + pauseCtx->offsetY;
 
-            vtx[phi_t1 + 2].v.ob[1] = vtx[phi_t1 + 3].v.ob[1] = vtx[phi_t1 + 0].v.ob[1] - 32;
+            vtx[vtxIndex + 2].v.ob[1] = vtx[vtxIndex + 3].v.ob[1] = vtx[vtxIndex + 0].v.ob[1] - 32;
 
-            vtx[phi_t1 + 0].v.ob[2] = vtx[phi_t1 + 1].v.ob[2] = vtx[phi_t1 + 2].v.ob[2] = vtx[phi_t1 + 3].v.ob[2] = 0;
+            vtx[vtxIndex + 0].v.ob[2] = vtx[vtxIndex + 1].v.ob[2] = vtx[vtxIndex + 2].v.ob[2] = vtx[vtxIndex + 3].v.ob[2] = 0;
 
-            vtx[phi_t1 + 0].v.flag = 0;
-            vtx[phi_t1 + 1].v.flag = 0;
-            vtx[phi_t1 + 2].v.flag = 0;
-            vtx[phi_t1 + 3].v.flag = 0;
+            vtx[vtxIndex + 0].v.flag = 0;
+            vtx[vtxIndex + 1].v.flag = 0;
+            vtx[vtxIndex + 2].v.flag = 0;
+            vtx[vtxIndex + 3].v.flag = 0;
 
-            vtx[phi_t1 + 0].v.tc[0] = vtx[phi_t1 + 0].v.tc[1] = vtx[phi_t1 + 1].v.tc[1] = vtx[phi_t1 + 2].v.tc[0] = 0;
+            vtx[vtxIndex + 0].v.tc[0] = vtx[vtxIndex + 0].v.tc[1] = vtx[vtxIndex + 1].v.tc[1] = vtx[vtxIndex + 2].v.tc[0] = 0;
 
-            vtx[phi_t1 + 1].v.tc[0] = vtx[phi_t1 + 3].v.tc[0] = 0xA00;
+            vtx[vtxIndex + 1].v.tc[0] = vtx[vtxIndex + 3].v.tc[0] = 0xA00;
 
-            vtx[phi_t1 + 2].v.tc[1] = vtx[phi_t1 + 3].v.tc[1] = 0x400;
+            vtx[vtxIndex + 2].v.tc[1] = vtx[vtxIndex + 3].v.tc[1] = 0x400;
 
-            vtx[phi_t1 + 0].v.cn[0] = vtx[phi_t1 + 2].v.cn[0] = D_8082AE48[arg2][phi_t3 + 0];
+            //Color in the pages. Pages are drawn in groups. Each group is faded to the next. There are 4 total colors, 1/4 and 2/3 are the same creating a mirrored color set.
+            // TODO, go from 0,1,2,3 to 0,1,1,0 to only use two colors instead of 4.
+            Color_RGBA8 color = CVarGetColor(gPageVtxColorCvars[pageIndex][colorIndex], pageColors[pageIndex][colorIndex]);
+            Color_RGBA8 colorb =
+                CVarGetColor(gPageVtxColorCvars[pageIndex][colorIndex + 1], pageColors[pageIndex][colorIndex+1]);
+            vtx[vtxIndex + 0].v.cn[0] = vtx[vtxIndex + 2].v.cn[0] = color.r; // sPageVtxColorR[pageIndex][colorIndex + 0];
 
-            vtx[phi_t1 + 0].v.cn[1] = vtx[phi_t1 + 2].v.cn[1] = D_8082AE60[arg2][phi_t3 + 0];
+            vtx[vtxIndex + 0].v.cn[1] = vtx[vtxIndex + 2].v.cn[1] = color.g;// sPageVtxColorG[pageIndex][colorIndex + 0];
 
-            vtx[phi_t1 + 0].v.cn[2] = vtx[phi_t1 + 2].v.cn[2] = D_8082AE78[arg2][phi_t3 + 0];
+            vtx[vtxIndex + 0].v.cn[2] = vtx[vtxIndex + 2].v.cn[2] = color.b; // sPageVtxColorB[pageIndex][colorIndex + 0];
 
-            vtx[phi_t1 + 1].v.cn[0] = vtx[phi_t1 + 3].v.cn[0] = D_8082AE48[arg2][phi_t3 + 1];
+            vtx[vtxIndex + 1].v.cn[0] = vtx[vtxIndex + 3].v.cn[0] = colorb.r;//sPageVtxColorR[pageIndex][colorIndex + 1];
 
-            vtx[phi_t1 + 1].v.cn[1] = vtx[phi_t1 + 3].v.cn[1] = D_8082AE60[arg2][phi_t3 + 1];
+            vtx[vtxIndex + 1].v.cn[1] = vtx[vtxIndex + 3].v.cn[1] = colorb.g; // sPageVtxColorG[pageIndex][colorIndex + 1];
 
-            vtx[phi_t1 + 1].v.cn[2] = vtx[phi_t1 + 3].v.cn[2] = D_8082AE78[arg2][phi_t3 + 1];
+            vtx[vtxIndex + 1].v.cn[2] = vtx[vtxIndex + 3].v.cn[2] = colorb.b; // sPageVtxColorB[pageIndex][colorIndex + 1];
 
-            vtx[phi_t1 + 0].v.cn[3] = vtx[phi_t1 + 2].v.cn[3] = vtx[phi_t1 + 1].v.cn[3] = vtx[phi_t1 + 3].v.cn[3] =
+            vtx[vtxIndex + 0].v.cn[3] = vtx[vtxIndex + 2].v.cn[3] = vtx[vtxIndex + 1].v.cn[3] = vtx[vtxIndex + 3].v.cn[3] =
                 pauseCtx->alpha;
         }
     }
 
-    phi_s2 = phi_t1;
+    phi_s2 = vtxIndex;
 
     if (arg3 != 0) {
-        ptr1 = D_8082B000[arg2];
-        ptr2 = D_8082B018[arg2];
-        ptr3 = D_8082B030[arg2];
-        ptr4 = D_8082B048[arg2];
+        ptr1 = D_8082B000[pageIndex];
+        ptr2 = D_8082B018[pageIndex];
+        ptr3 = D_8082B030[pageIndex];
+        ptr4 = D_8082B048[pageIndex];
 
-        for (phi_t3 = 0; phi_t3 < arg3; phi_t3++, phi_t1 += 4) {
-            vtx[phi_t1 + 2].v.ob[0] = vtx[phi_t1 + 0].v.ob[0] = ptr1[phi_t3];
+        for (colorIndex = 0; colorIndex < arg3; colorIndex++, vtxIndex += 4) {
+            vtx[vtxIndex + 2].v.ob[0] = vtx[vtxIndex + 0].v.ob[0] = ptr1[colorIndex];
 
-            vtx[phi_t1 + 1].v.ob[0] = vtx[phi_t1 + 3].v.ob[0] = vtx[phi_t1 + 0].v.ob[0] + ptr2[phi_t3];
+            vtx[vtxIndex + 1].v.ob[0] = vtx[vtxIndex + 3].v.ob[0] = vtx[vtxIndex + 0].v.ob[0] + ptr2[colorIndex];
 
             if (!((pauseCtx->state >= 8) && (pauseCtx->state <= 0x11))) {
-                vtx[phi_t1 + 0].v.ob[1] = vtx[phi_t1 + 1].v.ob[1] = ptr3[phi_t3] + pauseCtx->offsetY;
+                vtx[vtxIndex + 0].v.ob[1] = vtx[vtxIndex + 1].v.ob[1] = ptr3[colorIndex] + pauseCtx->offsetY;
             } else {
-                vtx[phi_t1 + 0].v.ob[1] = vtx[phi_t1 + 1].v.ob[1] = YREG(60 + phi_t3) + pauseCtx->offsetY;
+                vtx[vtxIndex + 0].v.ob[1] = vtx[vtxIndex + 1].v.ob[1] = YREG(60 + colorIndex) + pauseCtx->offsetY;
             }
 
-            vtx[phi_t1 + 2].v.ob[1] = vtx[phi_t1 + 3].v.ob[1] = vtx[phi_t1 + 0].v.ob[1] - ptr4[phi_t3];
+            vtx[vtxIndex + 2].v.ob[1] = vtx[vtxIndex + 3].v.ob[1] = vtx[vtxIndex + 0].v.ob[1] - ptr4[colorIndex];
 
-            vtx[phi_t1 + 0].v.ob[2] = vtx[phi_t1 + 1].v.ob[2] = vtx[phi_t1 + 2].v.ob[2] = vtx[phi_t1 + 3].v.ob[2] = 0;
+            vtx[vtxIndex + 0].v.ob[2] = vtx[vtxIndex + 1].v.ob[2] = vtx[vtxIndex + 2].v.ob[2] = vtx[vtxIndex + 3].v.ob[2] = 0;
 
-            vtx[phi_t1 + 0].v.flag = vtx[phi_t1 + 1].v.flag = vtx[phi_t1 + 2].v.flag = vtx[phi_t1 + 3].v.flag = 0;
+            vtx[vtxIndex + 0].v.flag = vtx[vtxIndex + 1].v.flag = vtx[vtxIndex + 2].v.flag = vtx[vtxIndex + 3].v.flag = 0;
 
-            vtx[phi_t1 + 0].v.tc[0] = vtx[phi_t1 + 0].v.tc[1] = vtx[phi_t1 + 1].v.tc[1] = vtx[phi_t1 + 2].v.tc[0] = 0;
+            vtx[vtxIndex + 0].v.tc[0] = vtx[vtxIndex + 0].v.tc[1] = vtx[vtxIndex + 1].v.tc[1] = vtx[vtxIndex + 2].v.tc[0] = 0;
 
-            vtx[phi_t1 + 1].v.tc[0] = vtx[phi_t1 + 3].v.tc[0] = ptr2[phi_t3] << 5;
+            vtx[vtxIndex + 1].v.tc[0] = vtx[vtxIndex + 3].v.tc[0] = ptr2[colorIndex] << 5;
 
-            vtx[phi_t1 + 2].v.tc[1] = vtx[phi_t1 + 3].v.tc[1] = ptr4[phi_t3] << 5;
+            vtx[vtxIndex + 2].v.tc[1] = vtx[vtxIndex + 3].v.tc[1] = ptr4[colorIndex] << 5;
 
-            vtx[phi_t1 + 0].v.cn[0] = vtx[phi_t1 + 2].v.cn[0] = vtx[phi_t1 + 0].v.cn[1] = vtx[phi_t1 + 2].v.cn[1] =
-                vtx[phi_t1 + 0].v.cn[2] = vtx[phi_t1 + 2].v.cn[2] = vtx[phi_t1 + 1].v.cn[0] = vtx[phi_t1 + 3].v.cn[0] =
-                    vtx[phi_t1 + 1].v.cn[1] = vtx[phi_t1 + 3].v.cn[1] = vtx[phi_t1 + 1].v.cn[2] =
-                        vtx[phi_t1 + 3].v.cn[2] = 255;
+            vtx[vtxIndex + 0].v.cn[0] = vtx[vtxIndex + 2].v.cn[0] = vtx[vtxIndex + 0].v.cn[1] = vtx[vtxIndex + 2].v.cn[1] =
+                vtx[vtxIndex + 0].v.cn[2] = vtx[vtxIndex + 2].v.cn[2] = vtx[vtxIndex + 1].v.cn[0] = vtx[vtxIndex + 3].v.cn[0] =
+                    vtx[vtxIndex + 1].v.cn[1] = vtx[vtxIndex + 3].v.cn[1] = vtx[vtxIndex + 1].v.cn[2] =
+                        vtx[vtxIndex + 3].v.cn[2] = 255;
 
-            vtx[phi_t1 + 0].v.cn[3] = vtx[phi_t1 + 2].v.cn[3] = vtx[phi_t1 + 1].v.cn[3] = vtx[phi_t1 + 3].v.cn[3] =
+            vtx[vtxIndex + 0].v.cn[3] = vtx[vtxIndex + 2].v.cn[3] = vtx[vtxIndex + 1].v.cn[3] = vtx[vtxIndex + 3].v.cn[3] =
                 pauseCtx->alpha;
         }
 
-        if (arg2 == 4) {
-            phi_t1 -= 12;
+        if (pageIndex == 4) {
+            vtxIndex -= 12;
 
-            phi_t3 = gSaveContext.worldMapArea;
+            colorIndex = gSaveContext.worldMapArea;
 
-            vtx[phi_t1 + 0].v.ob[0] = vtx[phi_t1 + 2].v.ob[0] = D_8082B060[phi_t3];
+            vtx[vtxIndex + 0].v.ob[0] = vtx[vtxIndex + 2].v.ob[0] = D_8082B060[colorIndex];
 
-            if (phi_t3) {}
+            if (colorIndex) {}
 
-            vtx[phi_t1 + 1].v.ob[0] = vtx[phi_t1 + 3].v.ob[0] = vtx[phi_t1 + 0].v.ob[0] + D_8082B08C[phi_t3];
+            vtx[vtxIndex + 1].v.ob[0] = vtx[vtxIndex + 3].v.ob[0] = vtx[vtxIndex + 0].v.ob[0] + D_8082B08C[colorIndex];
 
-            vtx[phi_t1 + 0].v.ob[1] = vtx[phi_t1 + 1].v.ob[1] = D_8082B0B8[phi_t3] + pauseCtx->offsetY;
+            vtx[vtxIndex + 0].v.ob[1] = vtx[vtxIndex + 1].v.ob[1] = D_8082B0B8[colorIndex] + pauseCtx->offsetY;
 
-            vtx[phi_t1 + 2].v.ob[1] = vtx[phi_t1 + 3].v.ob[1] = vtx[phi_t1 + 0].v.ob[1] - D_8082B0E4[phi_t3];
+            vtx[vtxIndex + 2].v.ob[1] = vtx[vtxIndex + 3].v.ob[1] = vtx[vtxIndex + 0].v.ob[1] - D_8082B0E4[colorIndex];
 
-            phi_t1 += 12;
+            vtxIndex += 12;
 
             if (pauseCtx->tradeQuestLocation != 0xFF) {
                 if (D_8082B114 == 0) {
@@ -2582,14 +2665,14 @@ s16 func_80823A0C(PlayState* play, Vtx* vtx, s16 arg2, s16 arg3) {
                     D_8082B114--;
                 }
 
-                phi_t3 = phi_s2 + (pauseCtx->tradeQuestLocation * 4) + 64;
+                colorIndex = phi_s2 + (pauseCtx->tradeQuestLocation * 4) + 64;
                 phi_a2 = phi_s2 + 116;
 
-                vtx[phi_a2 + 0].v.ob[0] = vtx[phi_a2 + 2].v.ob[0] = vtx[phi_t3 + 0].v.ob[0];
+                vtx[phi_a2 + 0].v.ob[0] = vtx[phi_a2 + 2].v.ob[0] = vtx[colorIndex + 0].v.ob[0];
 
                 vtx[phi_a2 + 1].v.ob[0] = vtx[phi_a2 + 3].v.ob[0] = vtx[phi_a2 + 0].v.ob[0] + 8;
 
-                vtx[phi_a2 + 0].v.ob[1] = vtx[phi_a2 + 1].v.ob[1] = vtx[phi_t3 + 0].v.ob[1] - D_8082B110 + 10;
+                vtx[phi_a2 + 0].v.ob[1] = vtx[phi_a2 + 1].v.ob[1] = vtx[colorIndex + 0].v.ob[1] - D_8082B110 + 10;
 
                 vtx[phi_a2 + 0].v.ob[2] = vtx[phi_a2 + 1].v.ob[2] = vtx[phi_a2 + 2].v.ob[2] = vtx[phi_a2 + 3].v.ob[2] =
                     0;
@@ -2598,7 +2681,7 @@ s16 func_80823A0C(PlayState* play, Vtx* vtx, s16 arg2, s16 arg3) {
 
                 vtx[phi_a2 + 0].v.flag = vtx[phi_a2 + 1].v.flag = vtx[phi_a2 + 2].v.flag = vtx[phi_a2 + 3].v.flag = 0;
 
-                vtx[phi_t1].v.tc[0] = vtx[phi_t1].v.tc[1] = vtx[phi_a2 + 1].v.tc[1] = vtx[phi_a2 + 2].v.tc[0] = 0;
+                vtx[vtxIndex].v.tc[0] = vtx[vtxIndex].v.tc[1] = vtx[phi_a2 + 1].v.tc[1] = vtx[phi_a2 + 2].v.tc[0] = 0;
 
                 vtx[phi_a2 + 1].v.tc[0] = vtx[phi_a2 + 3].v.tc[0] = 0x100;
 
@@ -2615,10 +2698,12 @@ s16 func_80823A0C(PlayState* play, Vtx* vtx, s16 arg2, s16 arg3) {
         }
     }
 
-    return phi_t1;
+    return vtxIndex;
 }
 
 static s16 D_8082B11C[] = { 0, 4, 8, 12, 24, 32, 56 };
+
+static s16 D_8082B11C_all[] = { 0, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64, 68, 72, 76, 80, 84, 88, 96 };
 
 static s16 D_8082B12C[] = { -114, 12, 44, 76 };
 
@@ -2742,7 +2827,7 @@ void KaleidoScope_InitVertices(PlayState* play, GraphicsContext* gfxCtx) {
         pauseCtx->cursorVtx[19].v.tc[1] = 0x400;
 
     // 24 items, 7 "item selected" backgrounds, 14 ammo digits (2 each for 7 items) -- then 4 vertices for each
-    pauseCtx->itemVtx = Graph_Alloc(gfxCtx, (24 + 7 + 14) * 4 * sizeof(Vtx));
+    pauseCtx->itemVtx = Graph_Alloc(gfxCtx, (24 + 7 + 2 * (CVarGetInteger(CVAR_ENHANCEMENT("BetterAmmoRendering"), 0) ? ARRAY_COUNT(D_8082B11C_all) : ARRAY_COUNT(D_8082B11C))) * 4 * sizeof(Vtx));
 
     for (phi_t4 = 0, phi_t2 = 0, phi_t5 = 58; phi_t4 < 4; phi_t4++, phi_t5 -= 32) {
         for (phi_t1 = -96, phi_t3 = 0; phi_t3 < 6; phi_t3++, phi_t2 += 4, phi_t1 += 32) {
@@ -2783,7 +2868,7 @@ void KaleidoScope_InitVertices(PlayState* play, GraphicsContext* gfxCtx) {
 
     for (phi_t3 = 1; phi_t3 < ARRAY_COUNT(gSaveContext.equips.buttonItems); phi_t3++, phi_t2 += 4) {
         if (gSaveContext.equips.cButtonSlots[phi_t3 - 1] != ITEM_NONE &&
-            ((phi_t3 < 4) || CVarGetInteger("gDpadEquips", 0))) {
+            ((phi_t3 < 4) || CVarGetInteger(CVAR_SETTING("DpadEquips"), 0))) {
             phi_t4 = gSaveContext.equips.cButtonSlots[phi_t3 - 1] * 4;
 
             pauseCtx->itemVtx[phi_t2 + 0].v.ob[0] = pauseCtx->itemVtx[phi_t2 + 2].v.ob[0] =
@@ -2832,8 +2917,10 @@ void KaleidoScope_InitVertices(PlayState* play, GraphicsContext* gfxCtx) {
         }
     }
 
-    for (phi_t3 = 0; phi_t3 < 7; phi_t3++) {
-        phi_t4 = D_8082B11C[phi_t3];
+    u8 gBetterAmmoRendering = CVarGetInteger(CVAR_ENHANCEMENT("BetterAmmoRendering"), 0);
+
+    for (phi_t3 = 0; phi_t3 < (gBetterAmmoRendering ? ARRAY_COUNT(D_8082B11C_all) : ARRAY_COUNT(D_8082B11C)); phi_t3++) {
+        phi_t4 = gBetterAmmoRendering ? D_8082B11C_all[phi_t3] : D_8082B11C[phi_t3];
 
         pauseCtx->itemVtx[phi_t2 + 0].v.ob[0] = pauseCtx->itemVtx[phi_t2 + 2].v.ob[0] =
             pauseCtx->itemVtx[phi_t4].v.ob[0];
@@ -3180,7 +3267,7 @@ void KaleidoScope_Draw(PlayState* play) {
     func_800AAA50(&play->view, 15);
 
     // Flip the OPA and XLU projections again as the set view call above reset the original flips from z_play
-    if (CVarGetInteger("gMirroredWorld", 0)) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0)) {
         gSPMatrix(POLY_OPA_DISP++, play->view.projectionFlippedPtr, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
         gSPMatrix(POLY_XLU_DISP++, play->view.projectionFlippedPtr, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
         gSPMatrix(POLY_OPA_DISP++, play->view.viewingPtr, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
@@ -3215,7 +3302,7 @@ void func_808265BC(PlayState* play) {
 
         pauseCtx->pageIndex = D_8082ABEC[pauseCtx->mode];
 
-        if ((CVarGetInteger("gAssignableTunicsAndBoots", 0) != 0) && (pauseCtx->pageIndex == PAUSE_EQUIP)) {
+        if ((CVarGetInteger(CVAR_ENHANCEMENT("AssignableTunicsAndBoots"), 0) != 0) && (pauseCtx->pageIndex == PAUSE_EQUIP)) {
             gSaveContext.buttonStatus[1] = BTN_ENABLED;
             gSaveContext.buttonStatus[2] = BTN_ENABLED;
             gSaveContext.buttonStatus[3] = BTN_ENABLED;
@@ -3325,6 +3412,7 @@ static uint8_t mapLeftTexModified[MAP_48x85_TEX_SIZE];
 static uint8_t mapRightTexModified[MAP_48x85_TEX_SIZE];
 static uint8_t* mapLeftTexModifiedRaw = NULL;
 static uint8_t* mapRightTexModifiedRaw = NULL;
+static uint8_t mapBlendMask[MAP_48x85_TEX_WIDTH * MAP_48x85_TEX_HEIGHT];
 
 // Load dungeon maps into the interface context
 // SoH [General] - Modified to account for our resource system and HD textures
@@ -3356,19 +3444,16 @@ void KaleidoScope_LoadDungeonMap(PlayState* play) {
         size_t size = (width * height) / 2; // account for CI4 size
 
         // Resource size being larger than the calculated CI size means it is most likely not a CI4 texture
-        // Abort early end undo the blended effect by clearing the mask to avoid crashing
+        // Abort early and unregister the blended effect to avoid crashing
         if (size < ResourceGetTexSizeByName(interfaceCtx->mapSegmentName[0])) {
-            if (mapBlendMask[0] != 0) {
-                for (size_t i = 0; i < ARRAY_COUNT(mapBlendMask); i++) {
-                    mapBlendMask[i] = 0;
-                }
-            }
-
             interfaceCtx->mapSegment[0] = NULL;
             interfaceCtx->mapSegment[1] = NULL;
 
-            Gfx_RegisterBlendedTexture(interfaceCtx->mapSegmentName[0], mapBlendMask, NULL);
-            Gfx_RegisterBlendedTexture(interfaceCtx->mapSegmentName[1], mapBlendMask, NULL);
+            Gfx_UnregisterBlendedTexture(interfaceCtx->mapSegmentName[0]);
+            Gfx_UnregisterBlendedTexture(interfaceCtx->mapSegmentName[1]);
+
+            Gfx_TextureCacheDelete(interfaceCtx->mapSegmentName[0]);
+            Gfx_TextureCacheDelete(interfaceCtx->mapSegmentName[1]);
             return;
         }
 
@@ -3403,6 +3488,11 @@ void KaleidoScope_LoadDungeonMap(PlayState* play) {
 
     Gfx_RegisterBlendedTexture(interfaceCtx->mapSegmentName[0], mapBlendMask, interfaceCtx->mapSegment[0]);
     Gfx_RegisterBlendedTexture(interfaceCtx->mapSegmentName[1], mapBlendMask, interfaceCtx->mapSegment[1]);
+
+    Gfx_TextureCacheDelete(interfaceCtx->mapSegmentName[0]);
+    Gfx_TextureCacheDelete(interfaceCtx->mapSegmentName[1]);
+    Gfx_TextureCacheDelete(interfaceCtx->mapSegment[0]);
+    Gfx_TextureCacheDelete(interfaceCtx->mapSegment[1]);
 }
 
 static uint8_t registeredDungeonMapTextureHook = false;
@@ -3442,6 +3532,11 @@ void KaleidoScope_UpdateDungeonMap(PlayState* play) {
 
     KaleidoScope_LoadDungeonMap(play);
     Map_SetFloorPalettesData(play, pauseCtx->dungeonMapSlot - 3);
+
+    // Copy the map palette values to all pulse palettes
+    for (uint8_t i = 0; i < ARRAY_COUNT(interfaceCtx->mapPalettesPulse); i++) {
+        memcpy(interfaceCtx->mapPalettesPulse[i], interfaceCtx->mapPalette, sizeof(interfaceCtx->mapPalette));
+    }
 
     s32 size = MAP_48x85_TEX_SIZE;
 
@@ -3899,9 +3994,9 @@ void KaleidoScope_Update(PlayState* play)
                     // Boss Rush skips past the "Save?" window when pressing B while paused.
                     if (CHECK_BTN_ALL(input->press.button, BTN_START) ||
                         (CHECK_BTN_ALL(input->press.button, BTN_B) && IS_BOSS_RUSH)) {
-                        if (CVarGetInteger("gCheatEasyPauseBufferEnabled", 0) || CVarGetInteger("gCheatEasyInputBufferingEnabled", 0)) {
+                        if (CVarGetInteger(CVAR_CHEAT("EasyPauseBuffer"), 0) || CVarGetInteger(CVAR_CHEAT("EasyInputBuffer"), 0)) {
                             // Easy pause buffer is 13 frames, 12 for kaledio to end, and one more to advance a single frame
-                            CVarSetInteger("gCheatEasyPauseBufferTimer", 13);
+                            CVarSetInteger(CVAR_GENERAL("CheatEasyPauseBufferTimer"), 13);
                         }
                         Interface_SetDoAction(play, DO_ACTION_NONE);
                         pauseCtx->state = 0x12;
@@ -4062,7 +4157,7 @@ void KaleidoScope_Update(PlayState* play)
                                                    &D_801333E8);
                             Play_PerformSave(play);
                             pauseCtx->unk_1EC = 4;
-                            D_8082B25C = CVarGetInteger("gSkipSaveConfirmation", 0) ? 3 /* 0.1 sec */ : 90 /* 3 secs */;
+                            D_8082B25C = CVarGetInteger(CVAR_ENHANCEMENT("SkipSaveConfirmation"), 0) ? 3 /* 0.1 sec */ : 90 /* 3 secs */;
                         }
                     } else if (CHECK_BTN_ALL(input->press.button, BTN_START) ||
                                CHECK_BTN_ALL(input->press.button, BTN_B)) {
@@ -4310,7 +4405,7 @@ void KaleidoScope_Update(PlayState* play)
                     gSaveContext.savedSceneNum = play->sceneNum;
                     Save_SaveFile();
                     pauseCtx->state = 0xF;
-                    D_8082B25C = CVarGetInteger("gSkipSaveConfirmation", 0) ? 3 /* 0.1 sec */ : 90 /* 3 secs */;
+                    D_8082B25C = CVarGetInteger(CVAR_ENHANCEMENT("SkipSaveConfirmation"), 0) ? 3 /* 0.1 sec */ : 90 /* 3 secs */;
                 }
             }
             break;
@@ -4413,7 +4508,7 @@ void KaleidoScope_Update(PlayState* play)
                         // Reset frame counter to prevent autosave on respawn
                         play->gameplayFrames = 0;
                         gSaveContext.nextTransitionType = TRANS_TYPE_FADE_BLACK;
-                        gSaveContext.health = CVarGetInteger("gFullHealthSpawn", 0) ? gSaveContext.healthCapacity : 0x30;
+                        gSaveContext.health = CVarGetInteger(CVAR_ENHANCEMENT("FullHealthSpawn"), 0) ? gSaveContext.healthCapacity : 0x30;
                         Audio_QueueSeqCmd(0xF << 28 | SEQ_PLAYER_BGM_MAIN << 24 | 0xA);
                         gSaveContext.healthAccumulator = 0;
                         gSaveContext.magicState = MAGIC_STATE_IDLE;
@@ -4465,7 +4560,7 @@ void KaleidoScope_Update(PlayState* play)
             R_UPDATE_RATE = 3;
             R_PAUSE_MENU_MODE = 0;
 
-            CVarSetInteger("gPauseTriforce", 0);
+            CVarSetInteger(CVAR_GENERAL("PauseTriforce"), 0);
 
             func_800981B8(&play->objectCtx);
             func_800418D0(&play->colCtx, play);

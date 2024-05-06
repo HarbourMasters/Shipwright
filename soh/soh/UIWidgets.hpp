@@ -9,13 +9,14 @@
 #define UIWidgets_hpp
 
 #include <string>
+#include <sstream>
 #include <vector>
 #include <span>
 #include <stdint.h>
 #ifndef IMGUI_DEFINE_MATH_OPERATORS
 #define IMGUI_DEFINE_MATH_OPERATORS
 #endif
-#include <ImGui/imgui.h>
+#include <imgui.h>
 
 namespace UIWidgets {
 

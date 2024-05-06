@@ -1,33 +1,12 @@
 #include "soh/resource/importer/scenecommand/SetEntranceListFactory.h"
 #include "soh/resource/type/scenecommand/SetEntranceList.h"
+#include "soh/resource/logging/SceneCommandLoggers.h"
 #include "spdlog/spdlog.h"
 
-namespace LUS {
-std::shared_ptr<IResource>
-SetEntranceListFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
-    auto resource = std::make_shared<SetEntranceList>(initData);
-    std::shared_ptr<ResourceVersionFactory> factory = nullptr;
-
-    switch (resource->GetInitData()->ResourceVersion) {
-    case 0:
-	factory = std::make_shared<SetEntranceListFactoryV0>();
-	break;
-    }
-
-    if (factory == nullptr) {
-        SPDLOG_ERROR("Failed to load SetEntranceListList with version {}", resource->GetInitData()->ResourceVersion);
-	return nullptr;
-    }
-
-    factory->ParseFileBinary(reader, resource);
-
-    return resource;
-}
-
-void LUS::SetEntranceListFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
-                                        std::shared_ptr<IResource> resource) {
-    std::shared_ptr<SetEntranceList> setEntranceList = std::static_pointer_cast<SetEntranceList>(resource);
-    ResourceVersionFactory::ParseFileBinary(reader, setEntranceList);
+namespace SOH {
+std::shared_ptr<Ship::IResource>
+SetEntranceListFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData, std::shared_ptr<Ship::BinaryReader> reader) {
+    auto setEntranceList = std::make_shared<SetEntranceList>(initData);
 
     ReadCommandId(setEntranceList, reader);
 	
@@ -41,6 +20,36 @@ void LUS::SetEntranceListFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader
 		
         setEntranceList->entrances.push_back(entranceEntry);
     }
+
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ResourceLogging"), 0)) {
+        LogEntranceListAsXML(setEntranceList);
+    }
+
+    return setEntranceList;
 }
 
-} // namespace LUS
+std::shared_ptr<Ship::IResource> SetEntranceListFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
+                                                                   tinyxml2::XMLElement* reader) {
+    auto setEntranceList = std::make_shared<SetEntranceList>(initData);
+
+    setEntranceList->cmdId = SceneCommandID::SetEntranceList;
+
+    auto child = reader->FirstChildElement();
+
+    while (child != nullptr) {
+        std::string childName = child->Name();
+        if (childName == "EntranceEntry") {
+            EntranceEntry entry;
+            entry.spawn = child->IntAttribute("Spawn");
+            entry.room = child->IntAttribute("Room");
+            setEntranceList->entrances.push_back(entry);
+        }
+
+        child = child->NextSiblingElement();
+    }
+
+    setEntranceList->numEntrances = setEntranceList->entrances.size();
+
+    return setEntranceList;
+}
+} // namespace SOH
