@@ -250,9 +250,9 @@ void RandomizerOnPlayerUpdateForRCQueueHandler() {
             // Always show ItemGet animation for ice traps
             !(getItemEntry.modIndex == MOD_RANDOMIZER && getItemEntry.getItemId == RG_ICE_TRAP) &&
             (
-                CVarGetInteger("gTimeSavers.SkipGetItemAnimation", SGIA_DISABLED) == SGIA_ALL ||
+                CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"), SGIA_DISABLED) == SGIA_ALL ||
                 (
-                    CVarGetInteger("gTimeSavers.SkipGetItemAnimation", SGIA_DISABLED) == SGIA_JUNK &&
+                    CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"), SGIA_DISABLED) == SGIA_JUNK &&
                     (
                         getItemEntry.getItemCategory == ITEM_CATEGORY_JUNK ||
                         getItemEntry.getItemCategory == ITEM_CATEGORY_SKULLTULA_TOKEN ||
@@ -311,7 +311,7 @@ void RandomizerOnItemReceiveHandler(GetItemEntry receivedItemEntry) {
         }
     }
 
-    if (loc->GetRandomizerCheck() == RC_SPIRIT_TEMPLE_SILVER_GAUNTLETS_CHEST && !CVarGetInteger("gTimeSavers.SkipCutscene.Story", IS_RANDO)) {
+    if (loc->GetRandomizerCheck() == RC_SPIRIT_TEMPLE_SILVER_GAUNTLETS_CHEST && !CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO)) {
         static uint32_t updateHook;
         updateHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
             Player* player = GET_PLAYER(gPlayState);
@@ -355,7 +355,7 @@ void EnExItem_WaitForObjectRandomized(EnExItem* enExItem, PlayState* play) {
 }
 
 void EnItem00_DrawRandomizedItem(EnItem00* enItem00, PlayState* play) {
-    f32 mtxScale = CVarGetFloat("gTimeSavers.SkipGetItemAnimationScale", 10.0f);
+    f32 mtxScale = CVarGetFloat(CVAR_ENHANCEMENT("TimeSavers.SkipGetItemAnimationScale"), 10.0f);
     Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
     EnItem00_CustomItemsParticles(&enItem00->actor, play, enItem00->itemEntry);
     GetItemEntry_Draw(play, enItem00->itemEntry);
@@ -1205,7 +1205,7 @@ void ObjComb_RandomizerChooseItemDrop(ObjComb* objComb, PlayState* play) {
         } else if (Rand_ZeroOne() < 0.5f) {
             params = -1;
         }
-        if (params >= 0 && !CVarGetInteger("gNoRandomDrops", 0)) {
+        if (params >= 0 && !CVarGetInteger(CVAR_ENHANCEMENT("NoRandomDrops"), 0)) {
             Item_DropCollectible(play, &objComb->actor.world.pos, params);
         }
     }

@@ -1025,7 +1025,7 @@ void FileChoose_UpdateRandomizer() {
             return;
     }
 
-    if (!SpoilerFileExists(CVarGetString(CVAR_GENERAL("SpoilerLog"), "")) && !CVarGetInteger("gRandomizerDontGenerateSpoiler", 0)) {
+    if (!SpoilerFileExists(CVarGetString(CVAR_GENERAL("SpoilerLog"), "")) && !CVarGetInteger(CVAR_RANDOMIZER_SETTING("DontGenerateSpoiler"), 0)) {
             CVarSetString(CVAR_GENERAL("SpoilerLog"), "");
     }
 
@@ -1343,18 +1343,18 @@ void FileChoose_GenerateRandoSeed(GameState* thisx) {
         this->prevConfigMode = this->configMode;
         this->configMode = CM_ROTATE_TO_NAME_ENTRY;
         this->logoAlpha = 0;
-        CVarSetInteger("gOnFileSelectNameEntry", 1);
+        CVarSetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 1);
         this->kbdButton = FS_KBD_BTN_NONE;
         this->charPage = FS_CHAR_PAGE_ENG;
         this->kbdX = 0;
         this->kbdY = 0;
         this->charIndex = 0;
         this->charBgAlpha = 0;
-        this->newFileNameCharCount = CVarGetInteger("gLinkDefaultName", 0) ? 4 : 0;
+        this->newFileNameCharCount = CVarGetInteger(CVAR_GENERAL("LinkDefaultName"), 0) ? 4 : 0;
         this->nameEntryBoxPosX = 120;
         this->nameEntryBoxAlpha = 0;
         memcpy(Save_GetSaveMetaInfo(this->buttonIndex)->playerName,
-               CVarGetInteger("gLinkDefaultName", 0) ? &linkName : &emptyName, 8);
+               CVarGetInteger(CVAR_GENERAL("LinkDefaultName"), 0) ? &linkName : &emptyName, 8);
         return;
     }
     if (!generating) {

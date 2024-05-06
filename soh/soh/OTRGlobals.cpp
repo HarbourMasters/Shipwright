@@ -2362,7 +2362,7 @@ extern "C" int GetEquipNowMessage(char* buffer, char* src, const int maxBufferSi
 }
 
 extern "C" void Randomizer_ParseSpoiler(const char* fileLoc) {
-    OTRGlobals::Instance->gRandoContext->ParseSpoiler(fileLoc, CVarGetInteger("gPlandoMode", 0));
+    OTRGlobals::Instance->gRandoContext->ParseSpoiler(fileLoc, CVarGetInteger(CVAR_GENERAL("PlandoMode"), 0));
 }
 
 extern "C" void Randomizer_LoadHintMessages() {

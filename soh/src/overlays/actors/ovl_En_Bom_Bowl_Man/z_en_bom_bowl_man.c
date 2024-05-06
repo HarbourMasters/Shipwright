@@ -69,7 +69,7 @@ void EnBomBowlMan_Init(Actor* thisx, PlayState* play2) {
     Actor_SetScale(&this->actor, 0.013f);
 
     for (i = 0; i < 2; i++) {
-        if(CVarGetInteger(CVAR_ENHANCEMENT("CustomizeBombchuBowling"), 0) && CVarGetInteger(i == 0 ? CVAR_ENHANCEMENT("BombchuBowlingNoSmallCucco") : CVAR_ENHANCEMENT("BombchuBowlingNoBigCucco"), 0)) {
+        if(CVarGetInteger(CVAR_ENHANCEMENT("CustomizeBombchuBowling"), 0) && CVarGetInteger(i == 0 ? CVAR_ENHANCEMENT("BombchuBowlingNoSmallCucco"), : CVAR_ENHANCEMENT("BombchuBowlingNoBigCucco"), 0)) {
             continue;
         }
 

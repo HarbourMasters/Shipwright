@@ -112,7 +112,7 @@ void EnSyatekiItm_Idle(EnSyatekiItm* this, PlayState* play) {
             0;
         s32 ammunition = 15;
         if(CVarGetInteger(CVAR_ENHANCEMENT("CustomizeShootingGallery"), 0)) {
-            ammunition = CVarGetInteger(LINK_IS_ADULT ? CVAR_ENHANCEMENT("ShootingGalleryAmmoAdult") : CVAR_ENHANCEMENT("ShootingGalleryAmmoChild"), 15);
+            ammunition = CVarGetInteger(LINK_IS_ADULT ? CVAR_ENHANCEMENT("ShootingGalleryAmmoAdult"), : CVAR_ENHANCEMENT("ShootingGalleryAmmoChild"), 15);
         }
         func_8008EF44(play, ammunition);
         this->roundNum = this->hitCount = 0;

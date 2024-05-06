@@ -2943,12 +2943,12 @@ bool getFishNeverEscape() {
 }
 
 bool getShouldSpawnLoaches() {
-    return (CVarGetInteger("gCustomizeFishing", 0) && CVarGetInteger("gLoachesAlwaysAppear", 0))
+    return (CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFishing"), 0) && CVarGetInteger(CVAR_ENHANCEMENT("LoachesAlwaysAppear"), 0))
         || ((KREG(1) == 1) || ((sFishGameNumber & 3) == 3));
 }
 
 bool getShouldConfirmKeep() {
-    return !CVarGetInteger("gCustomizeFishing", 0) || !CVarGetInteger("gSkipKeepConfirmation", 0);
+    return !CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFishing"), 0) || !CVarGetInteger(CVAR_ENHANCEMENT("SkipKeepConfirmation"), 0);
 }
 
 void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {

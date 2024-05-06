@@ -1127,15 +1127,15 @@ void UpdateVectors() {
     }
 
     // if misc is separate and fishing pole isn't added, add fishing pole to misc
-    if (CVarGetInteger("gItemTrackerFishingPoleDisplayType", SECTION_DISPLAY_EXTENDED_HIDDEN) == SECTION_DISPLAY_EXTENDED_MISC_WINDOW &&
-        CVarGetInteger("gItemTrackerMiscItemsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) != SECTION_DISPLAY_MAIN_WINDOW) {
+    if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.FishingPole"), SECTION_DISPLAY_EXTENDED_HIDDEN) == SECTION_DISPLAY_EXTENDED_MISC_WINDOW &&
+        CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Misc"), SECTION_DISPLAY_MAIN_WINDOW) != SECTION_DISPLAY_MAIN_WINDOW) {
         if (std::none_of(miscItems.begin(), miscItems.end(), [](ItemTrackerItem item) { return item.id == ITEM_FISHING_POLE; }))
             miscItems.insert(miscItems.end(), fishingPoleItems.begin(), fishingPoleItems.end());
     } else {
         miscItems.erase(std::remove_if(miscItems.begin(), miscItems.end(), [](ItemTrackerItem i) { return i.id == ITEM_FISHING_POLE; }), miscItems.end());
     }
     // add fishing pole to main window
-    if (CVarGetInteger("gItemTrackerFishingPoleDisplayType", SECTION_DISPLAY_EXTENDED_HIDDEN) == SECTION_DISPLAY_EXTENDED_MAIN_WINDOW) {
+    if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.FishingPole"), SECTION_DISPLAY_EXTENDED_HIDDEN) == SECTION_DISPLAY_EXTENDED_MAIN_WINDOW) {
         if (!newRowAdded) {
             while (mainWindowItems.size() % 6) {
                 mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
@@ -1147,7 +1147,7 @@ void UpdateVectors() {
     }
 
     //If we're adding boss souls to the main window...
-    if (CVarGetInteger("gItemTrackerBossSoulsDisplayType", SECTION_DISPLAY_HIDDEN) == SECTION_DISPLAY_MAIN_WINDOW) {
+    if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.BossSouls"), SECTION_DISPLAY_HIDDEN) == SECTION_DISPLAY_MAIN_WINDOW) {
         //...add empty items on the main window to get the souls on their own row. (Too many to sit with Greg/Triforce pieces)
         while (mainWindowItems.size() % 6) {
             mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
@@ -1158,7 +1158,7 @@ void UpdateVectors() {
     }
 
     //If we're adding ocarina buttons to the main window...
-    if (CVarGetInteger("gItemTrackerOcarinaButtonsDisplayType", SECTION_DISPLAY_HIDDEN) == SECTION_DISPLAY_MAIN_WINDOW) {
+    if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.OcarinaButtons"), SECTION_DISPLAY_HIDDEN) == SECTION_DISPLAY_MAIN_WINDOW) {
         //...add empty items on the main window to get the buttons on their own row. (Too many to sit with Greg/Triforce pieces/boss souls)
         while (mainWindowItems.size() % 6) {
             mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
@@ -1212,7 +1212,7 @@ void ItemTrackerWindow::DrawElement() {
             (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.DungeonItems"), SECTION_DISPLAY_HIDDEN) == SECTION_DISPLAY_MAIN_WINDOW) ||
             (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Greg"), SECTION_DISPLAY_EXTENDED_HIDDEN) == SECTION_DISPLAY_EXTENDED_MAIN_WINDOW) ||
             (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.TriforcePieces"), SECTION_DISPLAY_HIDDEN) == SECTION_DISPLAY_MAIN_WINDOW) ||
-            (CVarGetInteger("gItemTrackerFishingPoleDisplayType", SECTION_DISPLAY_EXTENDED_HIDDEN) == SECTION_DISPLAY_EXTENDED_MAIN_WINDOW) ||
+            (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.FishingPole"), SECTION_DISPLAY_EXTENDED_HIDDEN) == SECTION_DISPLAY_EXTENDED_MAIN_WINDOW) ||
             (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Notes"), SECTION_DISPLAY_HIDDEN) == SECTION_DISPLAY_MAIN_WINDOW)
         ) {
             BeginFloatingWindows("Item Tracker##main window");
@@ -1289,19 +1289,19 @@ void ItemTrackerWindow::DrawElement() {
             EndFloatingWindows();
         }
 
-        if (CVarGetInteger("gItemTrackerBossSoulsDisplayType", SECTION_DISPLAY_HIDDEN) == SECTION_DISPLAY_SEPARATE) {
+        if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.BossSouls"), SECTION_DISPLAY_HIDDEN) == SECTION_DISPLAY_SEPARATE) {
             BeginFloatingWindows("Boss Soul Tracker");
             DrawItemsInRows(bossSoulItems);
             EndFloatingWindows();
         }
 
-        if (CVarGetInteger("gItemTrackerOcarinaButtonsDisplayType", SECTION_DISPLAY_HIDDEN) == SECTION_DISPLAY_SEPARATE) {
+        if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.OcarinaButtons"), SECTION_DISPLAY_HIDDEN) == SECTION_DISPLAY_SEPARATE) {
             BeginFloatingWindows("Ocarina Button Tracker");
             DrawItemsInRows(ocarinaButtonItems);
             EndFloatingWindows();
         }
 
-        if (CVarGetInteger("gItemTrackerFishingPoleDisplayType", SECTION_DISPLAY_EXTENDED_HIDDEN) == SECTION_DISPLAY_EXTENDED_SEPARATE) {
+        if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.FishingPole"), SECTION_DISPLAY_EXTENDED_HIDDEN) == SECTION_DISPLAY_EXTENDED_SEPARATE) {
             BeginFloatingWindows("Fishing Pole Tracker");
             DrawItemsInRows(fishingPoleItems);
             EndFloatingWindows();
@@ -1443,19 +1443,19 @@ void ItemTrackerSettingsWindow::DrawElement() {
         shouldUpdateVectors = true;
     }
 
-    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Triforce Pieces", "gItemTrackerTriforcePiecesDisplayType", displayTypes, SECTION_DISPLAY_HIDDEN)) {
+    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Triforce Pieces", CVAR_TRACKER_ITEM("DisplayType.TriforcePieces"), displayTypes, SECTION_DISPLAY_HIDDEN)) {
         shouldUpdateVectors = true;
     }
 
-    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Boss Souls", "gItemTrackerBossSoulsDisplayType", displayTypes, SECTION_DISPLAY_HIDDEN)) {
+    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Boss Souls", CVAR_TRACKER_ITEM("DisplayType.BossSouls"), displayTypes, SECTION_DISPLAY_HIDDEN)) {
         shouldUpdateVectors = true;
     }
 
-    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Ocarina Buttons", "gItemTrackerOcarinaButtonsDisplayType", displayTypes, SECTION_DISPLAY_HIDDEN)) {
+    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Ocarina Buttons", CVAR_TRACKER_ITEM("DisplayType.OcarinaButtons"), displayTypes, SECTION_DISPLAY_HIDDEN)) {
         shouldUpdateVectors = true;
     }
 
-    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Fishing Pole", "gItemTrackerFishingPoleDisplayType", extendedDisplayTypes, SECTION_DISPLAY_EXTENDED_HIDDEN)) {
+    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Fishing Pole", CVAR_TRACKER_ITEM("DisplayType.FishingPole"), extendedDisplayTypes, SECTION_DISPLAY_EXTENDED_HIDDEN)) {
         shouldUpdateVectors = true;
     }
 

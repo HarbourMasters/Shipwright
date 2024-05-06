@@ -1695,7 +1695,7 @@ extern "C" u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 
 void PatchCompasses() {
     s8 compassesCanBeOutsideDungeon = IS_RANDO && DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_SHUFFLE_MAPANDCOMPASS);
-    s8 isColoredCompassesEnabled = compassesCanBeOutsideDungeon && CVarGetInteger("gRandoEnhancement.MatchCompassColors", 1);
+    s8 isColoredCompassesEnabled = compassesCanBeOutsideDungeon && CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MatchCompassColors"), 1);
     if (isColoredCompassesEnabled) {
         ResourceMgr_PatchGfxByName(gGiCompassDL, "Compass_PrimColor", 5, gsDPNoOp());
         ResourceMgr_PatchGfxByName(gGiCompassDL, "Compass_EnvColor", 6, gsDPNoOp());

@@ -568,85 +568,85 @@ void DrawEnhancementsMenu() {
                 ImGui::Text("Speed-ups:");
                 UIWidgets::PaddedSeparator();
                 bool allChecked =
-                    CVarGetInteger("gTimeSavers.SkipCutscene.Intro", IS_RANDO) &&
-                    CVarGetInteger("gTimeSavers.SkipCutscene.Entrances", IS_RANDO) &&
-                    CVarGetInteger("gTimeSavers.SkipCutscene.Story", IS_RANDO) &&
-                    CVarGetInteger("gTimeSavers.SkipCutscene.LearnSong", IS_RANDO) &&
-                    CVarGetInteger("gTimeSavers.SkipCutscene.BossIntro", IS_RANDO) &&
-                    CVarGetInteger("gTimeSavers.SkipCutscene.QuickBossDeaths", IS_RANDO) &&
-                    CVarGetInteger("gTimeSavers.SkipCutscene.OnePoint", IS_RANDO) &&
-                    CVarGetInteger("gTimeSavers.NoForcedDialog", IS_RANDO) &&
-                    CVarGetInteger("gTimeSavers.SkipOwlInteractions", IS_RANDO) &&
-                    CVarGetInteger("gTimeSavers.SkipMiscInteractions", IS_RANDO) &&
-                    CVarGetInteger("gTimeSavers.DisableTitleCard", IS_RANDO);
+                    CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Intro"), IS_RANDO) &&
+                    CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Entrances"), IS_RANDO) &&
+                    CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO) &&
+                    CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.LearnSong"), IS_RANDO) &&
+                    CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.BossIntro"), IS_RANDO) &&
+                    CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.QuickBossDeaths"), IS_RANDO) &&
+                    CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint"), IS_RANDO) &&
+                    CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.NoForcedDialog"), IS_RANDO) &&
+                    CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipOwlInteractions"), IS_RANDO) &&
+                    CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO) &&
+                    CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.DisableTitleCard"), IS_RANDO);
                 bool someChecked =
-                    CVarGetInteger("gTimeSavers.SkipCutscene.Intro", IS_RANDO) ||
-                    CVarGetInteger("gTimeSavers.SkipCutscene.Entrances", IS_RANDO) ||
-                    CVarGetInteger("gTimeSavers.SkipCutscene.Story", IS_RANDO) ||
-                    CVarGetInteger("gTimeSavers.SkipCutscene.LearnSong", IS_RANDO) ||
-                    CVarGetInteger("gTimeSavers.SkipCutscene.BossIntro", IS_RANDO) ||
-                    CVarGetInteger("gTimeSavers.SkipCutscene.QuickBossDeaths", IS_RANDO) ||
-                    CVarGetInteger("gTimeSavers.SkipCutscene.OnePoint", IS_RANDO) ||
-                    CVarGetInteger("gTimeSavers.NoForcedDialog", IS_RANDO) ||
-                    CVarGetInteger("gTimeSavers.SkipOwlInteractions", IS_RANDO) ||
-                    CVarGetInteger("gTimeSavers.SkipMiscInteractions", IS_RANDO) ||
-                    CVarGetInteger("gTimeSavers.DisableTitleCard", IS_RANDO);
+                    CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Intro"), IS_RANDO) ||
+                    CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Entrances"), IS_RANDO) ||
+                    CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO) ||
+                    CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.LearnSong"), IS_RANDO) ||
+                    CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.BossIntro"), IS_RANDO) ||
+                    CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.QuickBossDeaths"), IS_RANDO) ||
+                    CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint"), IS_RANDO) ||
+                    CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.NoForcedDialog"), IS_RANDO) ||
+                    CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipOwlInteractions"), IS_RANDO) ||
+                    CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO) ||
+                    CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.DisableTitleCard"), IS_RANDO);
 
                 ImGuiContext* g = ImGui::GetCurrentContext();
                 ImGuiItemFlags backup_item_flags = g->CurrentItemFlags;
                 if (!allChecked && someChecked) g->CurrentItemFlags |= ImGuiItemFlags_MixedValue;
                 if (ImGui::Checkbox("All", &allChecked)) {
                     if (allChecked) {
-                        CVarSetInteger("gTimeSavers.SkipCutscene.Intro", 1);
-                        CVarSetInteger("gTimeSavers.SkipCutscene.Entrances", 1);
-                        CVarSetInteger("gTimeSavers.SkipCutscene.Story", 1);
-                        CVarSetInteger("gTimeSavers.SkipCutscene.LearnSong", 1);
-                        CVarSetInteger("gTimeSavers.SkipCutscene.BossIntro", 1);
-                        CVarSetInteger("gTimeSavers.SkipCutscene.QuickBossDeaths", 1);
-                        CVarSetInteger("gTimeSavers.SkipCutscene.OnePoint", 1);
-                        CVarSetInteger("gTimeSavers.NoForcedDialog", 1);
-                        CVarSetInteger("gTimeSavers.SkipOwlInteractions", 1);
-                        CVarSetInteger("gTimeSavers.SkipMiscInteractions", 1);
-                        CVarSetInteger("gTimeSavers.DisableTitleCard", 1);
+                        CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Intro"), 1);
+                        CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Entrances"), 1);
+                        CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), 1);
+                        CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.LearnSong"), 1);
+                        CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.BossIntro"), 1);
+                        CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.QuickBossDeaths"), 1);
+                        CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint"), 1);
+                        CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.NoForcedDialog"), 1);
+                        CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipOwlInteractions"), 1);
+                        CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), 1);
+                        CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.DisableTitleCard"), 1);
                     } else {
-                        CVarSetInteger("gTimeSavers.SkipCutscene.Intro", 0);
-                        CVarSetInteger("gTimeSavers.SkipCutscene.Entrances", 0);
-                        CVarSetInteger("gTimeSavers.SkipCutscene.Story", 0);
-                        CVarSetInteger("gTimeSavers.SkipCutscene.LearnSong", 0);
-                        CVarSetInteger("gTimeSavers.SkipCutscene.BossIntro", 0);
-                        CVarSetInteger("gTimeSavers.SkipCutscene.QuickBossDeaths", 0);
-                        CVarSetInteger("gTimeSavers.SkipCutscene.OnePoint", 0);
-                        CVarSetInteger("gTimeSavers.NoForcedDialog", 0);
-                        CVarSetInteger("gTimeSavers.SkipOwlInteractions", 0);
-                        CVarSetInteger("gTimeSavers.SkipMiscInteractions", 0);
-                        CVarSetInteger("gTimeSavers.DisableTitleCard", 0);
+                        CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Intro"), 0);
+                        CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Entrances"), 0);
+                        CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), 0);
+                        CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.LearnSong"), 0);
+                        CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.BossIntro"), 0);
+                        CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.QuickBossDeaths"), 0);
+                        CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint"), 0);
+                        CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.NoForcedDialog"), 0);
+                        CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipOwlInteractions"), 0);
+                        CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), 0);
+                        CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.DisableTitleCard"), 0);
                     }
-                    LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                 }
                 g->CurrentItemFlags = backup_item_flags;
-                UIWidgets::PaddedEnhancementCheckbox("Skip Intro", "gTimeSavers.SkipCutscene.Intro", false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
-                UIWidgets::PaddedEnhancementCheckbox("Skip Entrance Cutscenes", "gTimeSavers.SkipCutscene.Entrances", false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
-                UIWidgets::PaddedEnhancementCheckbox("Skip Story Cutscenes", "gTimeSavers.SkipCutscene.Story", false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
-                UIWidgets::PaddedEnhancementCheckbox("Skip Song Cutscenes", "gTimeSavers.SkipCutscene.LearnSong", false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
-                UIWidgets::PaddedEnhancementCheckbox("Skip Boss Introductions", "gTimeSavers.SkipCutscene.BossIntro", false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
-                UIWidgets::PaddedEnhancementCheckbox("Quick Boss Deaths", "gTimeSavers.SkipCutscene.QuickBossDeaths", false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
-                UIWidgets::PaddedEnhancementCheckbox("Skip One Point Cutscenes (Chests, Door Unlocks, etc)", "gTimeSavers.SkipCutscene.OnePoint", false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
-                UIWidgets::PaddedEnhancementCheckbox("No Forced Dialog", "gTimeSavers.NoForcedDialog", false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
+                UIWidgets::PaddedEnhancementCheckbox("Skip Intro", CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Intro"), false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
+                UIWidgets::PaddedEnhancementCheckbox("Skip Entrance Cutscenes", CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Entrances"), false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
+                UIWidgets::PaddedEnhancementCheckbox("Skip Story Cutscenes", CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
+                UIWidgets::PaddedEnhancementCheckbox("Skip Song Cutscenes", CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.LearnSong"), false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
+                UIWidgets::PaddedEnhancementCheckbox("Skip Boss Introductions", CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.BossIntro"), false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
+                UIWidgets::PaddedEnhancementCheckbox("Quick Boss Deaths", CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.QuickBossDeaths"), false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
+                UIWidgets::PaddedEnhancementCheckbox("Skip One Point Cutscenes (Chests, Door Unlocks, etc)", CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint"), false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
+                UIWidgets::PaddedEnhancementCheckbox("No Forced Dialog", CVAR_ENHANCEMENT("TimeSavers.NoForcedDialog"), false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
                 UIWidgets::Tooltip("Prevent forced conversations with Navi or other NPCs");
-                UIWidgets::PaddedEnhancementCheckbox("Skip Owl Interactions", "gTimeSavers.SkipOwlInteractions", false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
-                UIWidgets::PaddedEnhancementCheckbox("Skip Misc Interactions", "gTimeSavers.SkipMiscInteractions", false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
-                UIWidgets::PaddedEnhancementCheckbox("Disable Title Card", "gTimeSavers.DisableTitleCard", false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
-                UIWidgets::PaddedEnhancementCheckbox("Skip Glitch-Aiding Cutscenes", "gTimeSavers.SkipCutscene.GlitchAiding", false, false, false, "", UIWidgets::CheckboxGraphics::Cross, 0);
+                UIWidgets::PaddedEnhancementCheckbox("Skip Owl Interactions", CVAR_ENHANCEMENT("TimeSavers.SkipOwlInteractions"), false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
+                UIWidgets::PaddedEnhancementCheckbox("Skip Misc Interactions", CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
+                UIWidgets::PaddedEnhancementCheckbox("Disable Title Card", CVAR_ENHANCEMENT("TimeSavers.DisableTitleCard"), false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
+                UIWidgets::PaddedEnhancementCheckbox("Skip Glitch-Aiding Cutscenes", CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.GlitchAiding"), false, false, false, "", UIWidgets::CheckboxGraphics::Cross, 0);
                 UIWidgets::Tooltip("Skip cutscenes that are associated with useful glitches, currently this is only the Fire Temple Darunia CS and Forest Temple Poe Sisters CS");
-                UIWidgets::PaddedEnhancementCheckbox("Skip Child Stealth", "gTimeSavers.SkipChildStealth", false, false, false, "", UIWidgets::CheckboxGraphics::Cross, false);
+                UIWidgets::PaddedEnhancementCheckbox("Skip Child Stealth", CVAR_ENHANCEMENT("TimeSavers.SkipChildStealth"), false, false, false, "", UIWidgets::CheckboxGraphics::Cross, false);
                 UIWidgets::Tooltip("The crawlspace into Hyrule Castle goes straight to Zelda, skipping the guards.");
-                UIWidgets::PaddedEnhancementCheckbox("Skip Tower Escape", "gTimeSavers.SkipTowerEscape", false, false, false, "", UIWidgets::CheckboxGraphics::Cross, false);
+                UIWidgets::PaddedEnhancementCheckbox("Skip Tower Escape", CVAR_ENHANCEMENT("TimeSavers.SkipTowerEscape"), false, false, false, "", UIWidgets::CheckboxGraphics::Cross, false);
                 UIWidgets::Tooltip("Skip the tower escape sequence between Ganondorf and Ganon.");
 
                 UIWidgets::PaddedText("Skip Get Item Animations", true, false);
-                UIWidgets::EnhancementCombobox("gTimeSavers.SkipGetItemAnimation", skipGetItemAnimationOptions, SGIA_DISABLED);
-                if (CVarGetInteger("gTimeSavers.SkipGetItemAnimation", SGIA_DISABLED) != SGIA_DISABLED) {
-                    UIWidgets::EnhancementSliderFloat("Item Scale: %f", "##ItemScale", "gTimeSavers.SkipGetItemAnimationScale", 5.0f, 15.0f, "", 10.0f, false);
+                UIWidgets::EnhancementCombobox(CVAR_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"), skipGetItemAnimationOptions, SGIA_DISABLED);
+                if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"), SGIA_DISABLED) != SGIA_DISABLED) {
+                    UIWidgets::EnhancementSliderFloat("Item Scale: %f", "##ItemScale", CVAR_ENHANCEMENT("TimeSavers.SkipGetItemAnimationScale"), 5.0f, 15.0f, "", 10.0f, false);
                     UIWidgets::Tooltip("The size of the item when it is picked up");
                 }
 
@@ -931,9 +931,9 @@ void DrawEnhancementsMenu() {
                     UIWidgets::Tooltip("When a line is stable, guarantee bite. Otherwise use default logic");
                     UIWidgets::PaddedEnhancementCheckbox("Fish Never Escape", CVAR_ENHANCEMENT("FishNeverEscape"), true, false, disabled, disabledTooltip);
                     UIWidgets::Tooltip("Once a hook has been set, fish will never let go while being reeled in.");
-                    UIWidgets::PaddedEnhancementCheckbox("Loaches Always Appear", "gLoachesAlwaysAppear", true, false, disabled, disabledTooltip);
+                    UIWidgets::PaddedEnhancementCheckbox("Loaches Always Appear", CVAR_ENHANCEMENT("LoachesAlwaysAppear"), true, false, disabled, disabledTooltip);
                     UIWidgets::Tooltip("Loaches will always appear in the fishing pond instead of every four visits.");
-                    UIWidgets::PaddedEnhancementCheckbox("Skip Keep Confirmation", "gSkipKeepConfirmation", true, false, disabled, disabledTooltip);
+                    UIWidgets::PaddedEnhancementCheckbox("Skip Keep Confirmation", CVAR_ENHANCEMENT("SkipKeepConfirmation"), true, false, disabled, disabledTooltip);
                     UIWidgets::Tooltip("The pond owner will not ask to confirm if you want to keep a smaller fish.");
                     UIWidgets::PaddedEnhancementSliderInt("Child Minimum Weight: %d", "##cMinimumWeight", CVAR_ENHANCEMENT("MinimumFishWeightChild"), 3, 10, "", 10, true, true, false, disabled, disabledTooltip);
                     UIWidgets::Tooltip("The minimum weight for the unique fishing reward as a child");
@@ -1968,7 +1968,7 @@ extern "C" u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 
 void DrawRandomizerMenu() {
     if (ImGui::BeginMenu("Randomizer")) {
-        UIWidgets::EnhancementCheckbox("Plando Mode", "gPlandoMode");
+        UIWidgets::EnhancementCheckbox("Plando Mode", CVAR_GENERAL("PlandoMode"));
         UIWidgets::Tooltip(
             "When dropping a spoiler file on the game window, parse the full spoiler file instead of just the "
             "necessary "
@@ -2072,7 +2072,7 @@ void DrawRandomizerMenu() {
                 "This setting is disabled because a savefile is loaded without the compass\n"
                 "shuffle settings set to \"Any Dungeon\", \"Overworld\" or \"Anywhere\"";
 
-            if (UIWidgets::PaddedEnhancementCheckbox("Compass Colors Match Dungeon", "gRandoEnhancement.MatchCompassColors", true, false,
+            if (UIWidgets::PaddedEnhancementCheckbox("Compass Colors Match Dungeon", CVAR_RANDOMIZER_ENHANCEMENT("MatchCompassColors"), true, false,
                                                   disableCompassColors, disableCompassColorsText, UIWidgets::CheckboxGraphics::Cross, true)) {
                 PatchCompasses();
             }
