@@ -1316,7 +1316,7 @@ void EnGo2_RollingAnimation(EnGo2* this, PlayState* play) {
 }
 
 void EnGo2_WakeUp(EnGo2* this, PlayState* play) {
-    if (CVarGetInteger("gUnfixGoronSpin", 0)) {
+    if (CVarGetInteger(CVAR_COSMETIC("UnfixGoronSpin"), 0)) {
         // Trick SkelAnime into thinking the current animation is changing so that it morphs between the same position,
         // making the goron do a spin
         this->skelAnime.animation = NULL;
@@ -2039,7 +2039,7 @@ s32 EnGo2_OverrideLimbDraw(PlayState* play, s32 limb, Gfx** dList, Vec3f* pos, V
     f32 float1;
 
     if (limb == 17) {
-        Matrix_Translate(2800.0f + CVarGetFloat("gCosmetics.Goron_NeckLength", 0.0f), 0.0f, 0.0f, MTXMODE_APPLY);
+        Matrix_Translate(2800.0f + CVarGetFloat(CVAR_COSMETIC("Goron.NeckLength"), 0.0f), 0.0f, 0.0f, MTXMODE_APPLY);
         vec1 = this->interactInfo.headRot;
         float1 = (vec1.y / (f32)0x8000) * M_PI;
         Matrix_RotateX(float1, MTXMODE_APPLY);

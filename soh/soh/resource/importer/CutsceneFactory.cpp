@@ -2,19 +2,19 @@
 #include "soh/resource/type/Cutscene.h"
 #include "spdlog/spdlog.h"
 
-static inline uint32_t read_CMD_BBBB(std::shared_ptr<LUS::BinaryReader> reader) {
+static inline uint32_t read_CMD_BBBB(std::shared_ptr<Ship::BinaryReader> reader) {
     uint32_t v;
     reader->Read((char*)&v, sizeof(uint32_t));
 
     return v;
 }
 
-static inline uint32_t read_CMD_BBH(std::shared_ptr<LUS::BinaryReader> reader) {
+static inline uint32_t read_CMD_BBH(std::shared_ptr<Ship::BinaryReader> reader) {
     uint32_t v;
     reader->Read((char*)&v, sizeof(uint32_t));
 
     // swap the half word to match endianness
-    if (reader->GetEndianness() != LUS::Endianness::Native) {
+    if (reader->GetEndianness() != Ship::Endianness::Native) {
         uint8_t* b = (uint8_t*)&v;
         uint8_t tmp = b[2];
         b[2] = b[3];
@@ -24,12 +24,12 @@ static inline uint32_t read_CMD_BBH(std::shared_ptr<LUS::BinaryReader> reader) {
     return v;
 }
 
-static inline uint32_t read_CMD_HBB(std::shared_ptr<LUS::BinaryReader> reader) {
+static inline uint32_t read_CMD_HBB(std::shared_ptr<Ship::BinaryReader> reader) {
     uint32_t v;
     reader->Read((char*)&v, sizeof(uint32_t));
 
     // swap the half word to match endianness
-    if (reader->GetEndianness() != LUS::Endianness::Native) {
+    if (reader->GetEndianness() != Ship::Endianness::Native) {
         uint8_t* b = (uint8_t*)&v;
         uint8_t tmp = b[0];
         b[0] = b[1];
@@ -39,12 +39,12 @@ static inline uint32_t read_CMD_HBB(std::shared_ptr<LUS::BinaryReader> reader) {
     return v;
 }
 
-static inline uint32_t read_CMD_HH(std::shared_ptr<LUS::BinaryReader> reader) {
+static inline uint32_t read_CMD_HH(std::shared_ptr<Ship::BinaryReader> reader) {
     uint32_t v;
     reader->Read((char*)&v, sizeof(uint32_t));
 
     // swap the half words to match endianness
-    if (reader->GetEndianness() != LUS::Endianness::Native) {
+    if (reader->GetEndianness() != Ship::Endianness::Native) {
         uint8_t* b = (uint8_t*)&v;
         uint8_t tmp = b[0];
         b[0] = b[1];
@@ -58,13 +58,13 @@ static inline uint32_t read_CMD_HH(std::shared_ptr<LUS::BinaryReader> reader) {
 }
 
 namespace SOH {
-std::shared_ptr<LUS::IResource> ResourceFactoryBinaryCutsceneV0::ReadResource(std::shared_ptr<LUS::File> file) {
+std::shared_ptr<Ship::IResource> ResourceFactoryBinaryCutsceneV0::ReadResource(std::shared_ptr<Ship::File> file) {
     if (!FileHasValidFormatAndReader(file)) {
         return nullptr;
     }
 
     auto cutscene = std::make_shared<Cutscene>(file->InitData);
-    auto reader = std::get<std::shared_ptr<LUS::BinaryReader>>(file->Reader);
+    auto reader = std::get<std::shared_ptr<Ship::BinaryReader>>(file->Reader);
 
     uint32_t numEntries = reader->ReadUInt32();
     cutscene->commands.reserve(numEntries);

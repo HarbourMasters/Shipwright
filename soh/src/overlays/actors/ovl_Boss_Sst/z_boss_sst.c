@@ -360,7 +360,7 @@ void BossSst_HeadSetupLurk(BossSst* this) {
 }
 
 void BossSst_HeadLurk(BossSst* this, PlayState* play) {
-    if (CVarGetInteger("gQuickBongoKill", 0)) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("QuickBongoKill"), 0)) {
         this->colliderCyl.base.acFlags |= AC_ON;
     }
 
@@ -371,7 +371,7 @@ void BossSst_HeadLurk(BossSst* this, PlayState* play) {
 
 void BossSst_HeadSetupIntro(BossSst* this, PlayState* play) {
     //Make sure to restore original behavior if the quick kill didn't happen
-    if (CVarGetInteger("gQuickBongoKill", 0)) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("QuickBongoKill"), 0)) {
         this->colliderCyl.base.acFlags &= ~AC_ON;
     }
 
@@ -2665,7 +2665,7 @@ void BossSst_UpdateHead(Actor* thisx, PlayState* play) {
         CollisionCheck_SetAT(play, &play->colChkCtx, &this->colliderJntSph.base);
     }
 
-    if ((this->actionFunc != BossSst_HeadLurk || CVarGetInteger("gQuickBongoKill", 0)) && (this->actionFunc != BossSst_HeadIntro)) {
+    if ((this->actionFunc != BossSst_HeadLurk || CVarGetInteger(CVAR_ENHANCEMENT("QuickBongoKill"), 0)) && (this->actionFunc != BossSst_HeadIntro)) {
         if (this->colliderCyl.base.acFlags & AC_ON) {
             CollisionCheck_SetAC(play, &play->colChkCtx, &this->colliderCyl.base);
         }
