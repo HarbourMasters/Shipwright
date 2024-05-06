@@ -395,7 +395,7 @@ void EnSyatekiMan_EndGame(EnSyatekiMan* this, PlayState* play) {
                     this->timer = 20;
                     s32 ammunition = 15;
                     if(CVarGetInteger(CVAR_ENHANCEMENT("CustomizeShootingGallery"), 0)) {
-                        ammunition = CVarGetInteger(LINK_IS_ADULT ? CVAR_ENHANCEMENT("ShootingGalleryAmmoAdult"), : CVAR_ENHANCEMENT("ShootingGalleryAmmoChild"), 15);
+                        ammunition = CVarGetInteger(LINK_IS_ADULT ? CVAR_ENHANCEMENT("ShootingGalleryAmmoAdult") : CVAR_ENHANCEMENT("ShootingGalleryAmmoChild"), 15);
                     }
                     func_8008EF44(play, ammunition);
                     this->actionFunc = EnSyatekiMan_RestartGame;

@@ -144,8 +144,8 @@ RandomizerCheckArea currentArea = RCAREA_INVALID;
 OSContPad* trackerButtonsPressed;
 std::unordered_map<RandomizerCheck, std::string> checkNameOverrides;
 
-bool passesTextFilter(ImGuiTextFilter& checkSearch, const RandomizerCheckObject rcObject);
-bool shouldHideArea(ImGuiTextFilter& checkSearch, std::map<RandomizerCheckArea, std::vector<RandomizerCheckObject>> checksByArea, const RandomizerCheckArea rcArea);
+bool passesTextFilter(ImGuiTextFilter& checkSearch, const RandomizerCheck check);
+bool shouldHideArea(ImGuiTextFilter& checkSearch, std::map<RandomizerCheckArea, std::vector<RandomizerCheck>> checksByArea, const RandomizerCheckArea rcArea);
 void BeginFloatWindows(std::string UniqueName, bool& open, ImGuiWindowFlags flags = 0);
 bool CompareChecks(RandomizerCheck, RandomizerCheck);
 bool CheckByArea(RandomizerCheckArea);
@@ -1056,7 +1056,7 @@ void CheckTrackerWindow::DrawElement() {
                 doAreaScroll = false;
             }
             for (auto rc : checks) {
-                if (doDraw && isThisAreaSpoiled && IsVisibleInCheckTracker(rc) && passesTextFilter(checkSearch, rcObject)) {
+                if (doDraw && isThisAreaSpoiled && IsVisibleInCheckTracker(rc) && passesTextFilter(checkSearch, rc)) {
                     DrawLocation(rc);
                 }
             }
@@ -1076,7 +1076,7 @@ void CheckTrackerWindow::DrawElement() {
     }
 }
 
-bool shouldHideArea(ImGuiTextFilter& checkSearch, std::map<RandomizerCheckArea, std::vector<RandomizerCheckObject>> checksByArea, RandomizerCheckArea rcArea) {
+bool shouldHideArea(ImGuiTextFilter& checkSearch, std::map<RandomizerCheckArea, std::vector<RandomizerCheck>> checksByArea, RandomizerCheckArea rcArea) {
     bool shouldHideFilteredAreas = CVarGetInteger(CVAR_TRACKER_CHECK("HideFilteredAreas"), 1);
     if (!shouldHideFilteredAreas) {
         return false;
@@ -1091,10 +1091,10 @@ bool shouldHideArea(ImGuiTextFilter& checkSearch, std::map<RandomizerCheckArea, 
     return true;
 }
 
-bool passesTextFilter(ImGuiTextFilter& checkSearch, RandomizerCheckObject check) {
+bool passesTextFilter(ImGuiTextFilter& checkSearch, RandomizerCheck check) {
     return (
-        checkSearch.PassFilter(RandomizerCheckObjects::GetRCAreaName(check.rcArea).c_str()) ||
-        checkSearch.PassFilter(check.rcShortName.c_str())
+        checkSearch.PassFilter(RandomizerCheckObjects::GetRCAreaName(Rando::StaticData::GetLocation(check)->GetArea()).c_str()) ||
+        checkSearch.PassFilter(Rando::StaticData::GetLocation(check)->GetShortName().c_str())
     );
 }
 
@@ -1425,7 +1425,7 @@ void DrawLocation(RandomizerCheck rc) {
         mainColor =
             !IsHeartPiece((GetItemID)Rando::StaticData::RetrieveItem(loc->GetVanillaItem()).GetItemID()) && !IS_RANDO
                 ? CVarGetColor(CVAR_TRACKER_CHECK("Skipped.ExtraColor"), Color_Skipped_Extra_Default)
-                : CVarGetColor(CVAR_TRACKER_CHECK("Skipped.MainColor", Color_Main_Default);
+                : CVarGetColor(CVAR_TRACKER_CHECK("Skipped.MainColor"), Color_Main_Default);
         extraColor = CVarGetColor(CVAR_TRACKER_CHECK("Skipped.ExtraColor"), Color_Skipped_Extra_Default);
     } else if (status == RCSHOW_SEEN || status == RCSHOW_IDENTIFIED) {
         if (!showHidden && CVarGetInteger(CVAR_TRACKER_CHECK("Seen.Hide"), 0)) {

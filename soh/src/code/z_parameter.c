@@ -5178,83 +5178,84 @@ void Interface_Draw(PlayState* play) {
         Gfx_SetupDL_39Overlay(play->state.gfxCtx);
 
         if (fullUi) {
-            //when not having a wallet in rando, don't calculate the ruppe icon
-            if (!IS_RANDO || Flags_GetRandomizerInf(RAND_INF_HAS_WALLET)) {
-            // Rupee Icon
-            if (CVarGetInteger(CVAR_ENHANCEMENT("DynamicWalletIcon"), 0)) {
-                switch (CUR_UPG_VALUE(UPG_WALLET)) {
-                    case 0:
-                        if (CVarGetInteger(CVAR_COSMETIC("Consumable.GreenRupee.Changed"), 0)) {
-                            rColor = CVarGetColor24(CVAR_COSMETIC("Consumable.GreenRupee.Value"), rupeeWalletColors[0]);
-                        } else {
-                            rColor = rupeeWalletColors[0];
-                        }
-                        break;
-                    case 1:
-                        if (CVarGetInteger(CVAR_COSMETIC("Consumable.BlueRupee.Changed"), 0)) {
-                            rColor = CVarGetColor24(CVAR_COSMETIC("Consumable.BlueRupee.Value"), rupeeWalletColors[1]);
-                        } else {
-                            rColor = rupeeWalletColors[1];
-                        }
-                        break;
-                    case 2:
-                        if (CVarGetInteger(CVAR_COSMETIC("Consumable.RedRupee.Changed"), 0)) {
-                            rColor = CVarGetColor24(CVAR_COSMETIC("Consumable.RedRupee.Value"), rupeeWalletColors[2]);
-                        } else {
-                            rColor = rupeeWalletColors[2];
-                        }
-                        break;
-                    case 3:
-                        if (CVarGetInteger(CVAR_COSMETIC("Consumable.PurpleRupee.Changed"), 0)) {
-                            rColor = CVarGetColor24(CVAR_COSMETIC("Consumable.PurpleRupee.Value"), rupeeWalletColors[3]);
-                        } else {
-                            rColor = rupeeWalletColors[3];
-                        }
-                        break;
-                }
-            } else {
-                if (CVarGetInteger(CVAR_COSMETIC("Consumable.GreenRupee.Changed"), rupeeWalletColors)) {
-                     rColor = CVarGetColor24(CVAR_COSMETIC("Consumable.GreenRupee.Value"), rupeeWalletColors[0]);
-                } else {
-                     rColor = rupeeWalletColors[0];
-                }
-
-            //Rupee icon & counter
-            s16 X_Margins_RC;
-            s16 Y_Margins_RC;
-            if (CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.UseMargins"), 0) != 0) {
-                if (CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosType"), 0) == 0) {X_Margins_RC = Left_HUD_Margin;};
-                Y_Margins_RC = Bottom_HUD_Margin;
-            } else {
-                X_Margins_RC = 0;
-                Y_Margins_RC = 0;
-            }
-            s16 PosX_RC_ori = OTRGetRectDimensionFromLeftEdge(26+X_Margins_RC);
-            s16 PosY_RC_ori = 206+Y_Margins_RC;
             s16 PosX_RC;
             s16 PosY_RC;
-            if (CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosType"), 0) != 0) {
-                PosY_RC = CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosY"), 0)+Y_Margins_RC;
-                if (CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosType"), 0) == 1) {//Anchor Left
-                    if (CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.UseMargins"), 0) != 0) {X_Margins_RC = Left_HUD_Margin;};
-                    PosX_RC = OTRGetDimensionFromLeftEdge(CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosX"), 0)+X_Margins_RC);
-                } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosType"), 0) == 2) {//Anchor Right
-                    if (CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.UseMargins"), 0) != 0) {X_Margins_RC = Right_HUD_Margin;};
-                    PosX_RC = OTRGetDimensionFromRightEdge(CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosX"), 0)+X_Margins_RC);
-                } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosType"), 0) == 3) {//Anchor None
-                    PosX_RC = CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosX"), 0);
-                } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosType"), 0) == 4) {//Hidden
-                PosX_RC = -9999;
+            //when not having a wallet in rando, don't calculate the ruppe icon
+            if (!IS_RANDO || Flags_GetRandomizerInf(RAND_INF_HAS_WALLET)) {
+                // Rupee Icon
+                if (CVarGetInteger(CVAR_ENHANCEMENT("DynamicWalletIcon"), 0)) {
+                    switch (CUR_UPG_VALUE(UPG_WALLET)) {
+                        case 0:
+                            if (CVarGetInteger(CVAR_COSMETIC("Consumable.GreenRupee.Changed"), 0)) {
+                                rColor = CVarGetColor24(CVAR_COSMETIC("Consumable.GreenRupee.Value"), rupeeWalletColors[0]);
+                            } else {
+                                rColor = rupeeWalletColors[0];
+                            }
+                            break;
+                        case 1:
+                            if (CVarGetInteger(CVAR_COSMETIC("Consumable.BlueRupee.Changed"), 0)) {
+                                rColor = CVarGetColor24(CVAR_COSMETIC("Consumable.BlueRupee.Value"), rupeeWalletColors[1]);
+                            } else {
+                                rColor = rupeeWalletColors[1];
+                            }
+                            break;
+                        case 2:
+                            if (CVarGetInteger(CVAR_COSMETIC("Consumable.RedRupee.Changed"), 0)) {
+                                rColor = CVarGetColor24(CVAR_COSMETIC("Consumable.RedRupee.Value"), rupeeWalletColors[2]);
+                            } else {
+                                rColor = rupeeWalletColors[2];
+                            }
+                            break;
+                        case 3:
+                            if (CVarGetInteger(CVAR_COSMETIC("Consumable.PurpleRupee.Changed"), 0)) {
+                                rColor = CVarGetColor24(CVAR_COSMETIC("Consumable.PurpleRupee.Value"), rupeeWalletColors[3]);
+                            } else {
+                                rColor = rupeeWalletColors[3];
+                            }
+                            break;
+                    }
+                } else {
+                    if (CVarGetInteger(CVAR_COSMETIC("Consumable.GreenRupee.Changed"), rupeeWalletColors)) {
+                        rColor = CVarGetColor24(CVAR_COSMETIC("Consumable.GreenRupee.Value"), rupeeWalletColors[0]);
+                    } else {
+                        rColor = rupeeWalletColors[0];
+                    }
                 }
-            } else {
-                PosY_RC = PosY_RC_ori;
-                PosX_RC = PosX_RC_ori;
-            }
-            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, rColor.r, rColor.g, rColor.b, interfaceCtx->magicAlpha);
-            // Draw Rupee icon. Hide in Boss Rush.
-            if (!IS_BOSS_RUSH) {
-                OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gRupeeCounterIconTex, 16, 16, PosX_RC, PosY_RC, 16, 16, 1 << 10, 1 << 10);
-            }
+
+                //Rupee icon & counter
+                s16 X_Margins_RC;
+                s16 Y_Margins_RC;
+                if (CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.UseMargins"), 0) != 0) {
+                    if (CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosType"), 0) == 0) {X_Margins_RC = Left_HUD_Margin;};
+                    Y_Margins_RC = Bottom_HUD_Margin;
+                } else {
+                    X_Margins_RC = 0;
+                    Y_Margins_RC = 0;
+                }
+                s16 PosX_RC_ori = OTRGetRectDimensionFromLeftEdge(26+X_Margins_RC);
+                s16 PosY_RC_ori = 206+Y_Margins_RC;
+                if (CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosType"), 0) != 0) {
+                    PosY_RC = CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosY"), 0)+Y_Margins_RC;
+                    if (CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosType"), 0) == 1) {//Anchor Left
+                        if (CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.UseMargins"), 0) != 0) {X_Margins_RC = Left_HUD_Margin;};
+                        PosX_RC = OTRGetDimensionFromLeftEdge(CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosX"), 0)+X_Margins_RC);
+                    } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosType"), 0) == 2) {//Anchor Right
+                        if (CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.UseMargins"), 0) != 0) {X_Margins_RC = Right_HUD_Margin;};
+                        PosX_RC = OTRGetDimensionFromRightEdge(CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosX"), 0)+X_Margins_RC);
+                    } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosType"), 0) == 3) {//Anchor None
+                        PosX_RC = CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosX"), 0);
+                    } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosType"), 0) == 4) {//Hidden
+                        PosX_RC = -9999;
+                    }
+                } else {
+                    PosY_RC = PosY_RC_ori;
+                    PosX_RC = PosX_RC_ori;
+                }
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, rColor.r, rColor.g, rColor.b, interfaceCtx->magicAlpha);
+                // Draw Rupee icon. Hide in Boss Rush.
+                if (!IS_BOSS_RUSH) {
+                    OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gRupeeCounterIconTex, 16, 16, PosX_RC, PosY_RC, 16, 16, 1 << 10, 1 << 10);
+                }
             }
 
             switch (play->sceneNum) {

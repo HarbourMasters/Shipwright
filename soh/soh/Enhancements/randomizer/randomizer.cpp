@@ -2321,11 +2321,11 @@ void RandomizerSettingsWindow::DrawElement() {
                                                 enabledTrickString += ",";
                                         }
                                         if (enabledTrickString == "") {
-                                            CVarClear(CVarClear(CVAR_RANDOMIZER_SETTING("EnabledTricks"));
+                                            CVarClear(CVAR_RANDOMIZER_SETTING("EnabledTricks"));
                                         } else {
-                                            CVarSetString(CVarSetString(CVAR_RANDOMIZER_SETTING("EnabledTricks"), enabledTrickString.c_str());
+                                            CVarSetString(CVAR_RANDOMIZER_SETTING("EnabledTricks"), enabledTrickString.c_str());
                                         }
-                                        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                                        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                                     }
                                     Rando::Tricks::DrawTagChips(option.GetTags());
                                     ImGui::SameLine();
