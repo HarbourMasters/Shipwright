@@ -903,7 +903,7 @@ void DrawEnhancementsMenu() {
                     bool disabledFrog = 0;
                     static const char* disabledFrogTooltip =
                         "This option is disabled because \"Customize Behavior\" is turned off or \"Unlimited Playback Time\" is on";
-                    if (CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFrogsOcarinaGame"), 0) == 0 || CVarGetInteger(CVAR_ENHANCEMENT("FrogsUnlimitedFailTime"), 0) == 1) {
+                    if (!CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFrogsOcarinaGame"), 0) == 0 || CVarGetInteger(CVAR_ENHANCEMENT("FrogsUnlimitedFailTime"), 0)) {
                         disabledFrog = 1;
                     } else {
                         disabledFrog = 0;
