@@ -445,7 +445,7 @@ void SaveManager::LoadRandomizerVersion3() {
 
     SaveManager::Instance->LoadArray("hintLocations", RH_MAX, [&](size_t i) {
         auto hint = RandomizerHint(i);
-        nlohmann::ordered_json json;
+        nlohmann::json json;
         SaveManager::Instance->LoadData("", json);
         randoContext->AddHint(hint, Rando::Hint(hint, json));
     });
