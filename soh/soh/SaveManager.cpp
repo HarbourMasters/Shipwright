@@ -188,7 +188,7 @@ void SaveManager::LoadRandomizerVersion1() {
         for (int j = 0; j < ARRAY_COUNT(hintText); j++) {
             SaveManager::Instance->LoadData("ht" + std::to_string(i) + "-" + std::to_string(j), hintText[j]);
         }
-        RandomizerHint stoneHint = Rando::StaticData::oldVerHintOrder[rc - Rando::StaticData::oldVerGossipStoneStart];
+        RandomizerHint stoneHint = Rando::StaticData::oldVerHintOrder[i - Rando::StaticData::oldVerGossipStoneStart];
         randoContext->AddHint(stoneHint, Rando::Hint(stoneHint, {CustomMessage(hintText)}));
     }
 
