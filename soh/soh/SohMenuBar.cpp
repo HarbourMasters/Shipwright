@@ -72,6 +72,7 @@ static const char* imguiScaleOptions[4] = { "Small", "Normal", "Large", "X-Large
     };
 
     static const char* chestStyleMatchesContentsOptions[4] = { "Disabled", "Both", "Texture Only", "Size Only" };
+    static const char* skipGetItemAnimationOptions[3] = { "Disabled", "Junk Items", "All Items" };
     static const char* bunnyHoodOptions[3] = { "Disabled", "Faster Run & Longer Jump", "Faster Run" };
     static const char* mirroredWorldModes[9] = {
         "Disabled",           "Always",        "Random",          "Random (Seeded)",          "Dungeons",
@@ -574,6 +575,88 @@ void DrawEnhancementsMenu() {
                 UIWidgets::Spacer(0);
                 ImGui::Text("Speed-ups:");
                 UIWidgets::PaddedSeparator();
+                bool allChecked =
+                    CVarGetInteger("gTimeSavers.SkipCutscene.Intro", IS_RANDO) &&
+                    CVarGetInteger("gTimeSavers.SkipCutscene.Entrances", IS_RANDO) &&
+                    CVarGetInteger("gTimeSavers.SkipCutscene.Story", IS_RANDO) &&
+                    CVarGetInteger("gTimeSavers.SkipCutscene.LearnSong", IS_RANDO) &&
+                    CVarGetInteger("gTimeSavers.SkipCutscene.BossIntro", IS_RANDO) &&
+                    CVarGetInteger("gTimeSavers.SkipCutscene.QuickBossDeaths", IS_RANDO) &&
+                    CVarGetInteger("gTimeSavers.SkipCutscene.OnePoint", IS_RANDO) &&
+                    CVarGetInteger("gTimeSavers.NoForcedDialog", IS_RANDO) &&
+                    CVarGetInteger("gTimeSavers.SkipOwlInteractions", IS_RANDO) &&
+                    CVarGetInteger("gTimeSavers.SkipMiscInteractions", IS_RANDO) &&
+                    CVarGetInteger("gTimeSavers.DisableTitleCard", IS_RANDO);
+                bool someChecked =
+                    CVarGetInteger("gTimeSavers.SkipCutscene.Intro", IS_RANDO) ||
+                    CVarGetInteger("gTimeSavers.SkipCutscene.Entrances", IS_RANDO) ||
+                    CVarGetInteger("gTimeSavers.SkipCutscene.Story", IS_RANDO) ||
+                    CVarGetInteger("gTimeSavers.SkipCutscene.LearnSong", IS_RANDO) ||
+                    CVarGetInteger("gTimeSavers.SkipCutscene.BossIntro", IS_RANDO) ||
+                    CVarGetInteger("gTimeSavers.SkipCutscene.QuickBossDeaths", IS_RANDO) ||
+                    CVarGetInteger("gTimeSavers.SkipCutscene.OnePoint", IS_RANDO) ||
+                    CVarGetInteger("gTimeSavers.NoForcedDialog", IS_RANDO) ||
+                    CVarGetInteger("gTimeSavers.SkipOwlInteractions", IS_RANDO) ||
+                    CVarGetInteger("gTimeSavers.SkipMiscInteractions", IS_RANDO) ||
+                    CVarGetInteger("gTimeSavers.DisableTitleCard", IS_RANDO);
+
+                ImGuiContext* g = ImGui::GetCurrentContext();
+                ImGuiItemFlags backup_item_flags = g->CurrentItemFlags;
+                if (!allChecked && someChecked) g->CurrentItemFlags |= ImGuiItemFlags_MixedValue;
+                if (ImGui::Checkbox("All", &allChecked)) {
+                    if (allChecked) {
+                        CVarSetInteger("gTimeSavers.SkipCutscene.Intro", 1);
+                        CVarSetInteger("gTimeSavers.SkipCutscene.Entrances", 1);
+                        CVarSetInteger("gTimeSavers.SkipCutscene.Story", 1);
+                        CVarSetInteger("gTimeSavers.SkipCutscene.LearnSong", 1);
+                        CVarSetInteger("gTimeSavers.SkipCutscene.BossIntro", 1);
+                        CVarSetInteger("gTimeSavers.SkipCutscene.QuickBossDeaths", 1);
+                        CVarSetInteger("gTimeSavers.SkipCutscene.OnePoint", 1);
+                        CVarSetInteger("gTimeSavers.NoForcedDialog", 1);
+                        CVarSetInteger("gTimeSavers.SkipOwlInteractions", 1);
+                        CVarSetInteger("gTimeSavers.SkipMiscInteractions", 1);
+                        CVarSetInteger("gTimeSavers.DisableTitleCard", 1);
+                    } else {
+                        CVarSetInteger("gTimeSavers.SkipCutscene.Intro", 0);
+                        CVarSetInteger("gTimeSavers.SkipCutscene.Entrances", 0);
+                        CVarSetInteger("gTimeSavers.SkipCutscene.Story", 0);
+                        CVarSetInteger("gTimeSavers.SkipCutscene.LearnSong", 0);
+                        CVarSetInteger("gTimeSavers.SkipCutscene.BossIntro", 0);
+                        CVarSetInteger("gTimeSavers.SkipCutscene.QuickBossDeaths", 0);
+                        CVarSetInteger("gTimeSavers.SkipCutscene.OnePoint", 0);
+                        CVarSetInteger("gTimeSavers.NoForcedDialog", 0);
+                        CVarSetInteger("gTimeSavers.SkipOwlInteractions", 0);
+                        CVarSetInteger("gTimeSavers.SkipMiscInteractions", 0);
+                        CVarSetInteger("gTimeSavers.DisableTitleCard", 0);
+                    }
+                    LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                }
+                g->CurrentItemFlags = backup_item_flags;
+                UIWidgets::PaddedEnhancementCheckbox("Skip Intro", "gTimeSavers.SkipCutscene.Intro", false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
+                UIWidgets::PaddedEnhancementCheckbox("Skip Entrance Cutscenes", "gTimeSavers.SkipCutscene.Entrances", false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
+                UIWidgets::PaddedEnhancementCheckbox("Skip Story Cutscenes", "gTimeSavers.SkipCutscene.Story", false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
+                UIWidgets::PaddedEnhancementCheckbox("Skip Song Cutscenes", "gTimeSavers.SkipCutscene.LearnSong", false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
+                UIWidgets::PaddedEnhancementCheckbox("Skip Boss Introductions", "gTimeSavers.SkipCutscene.BossIntro", false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
+                UIWidgets::PaddedEnhancementCheckbox("Quick Boss Deaths", "gTimeSavers.SkipCutscene.QuickBossDeaths", false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
+                UIWidgets::PaddedEnhancementCheckbox("Skip One Point Cutscenes (Chests, Door Unlocks, etc)", "gTimeSavers.SkipCutscene.OnePoint", false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
+                UIWidgets::PaddedEnhancementCheckbox("No Forced Dialog", "gTimeSavers.NoForcedDialog", false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
+                UIWidgets::Tooltip("Prevent forced conversations with Navi or other NPCs");
+                UIWidgets::PaddedEnhancementCheckbox("Skip Owl Interactions", "gTimeSavers.SkipOwlInteractions", false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
+                UIWidgets::PaddedEnhancementCheckbox("Skip Misc Interactions", "gTimeSavers.SkipMiscInteractions", false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
+                UIWidgets::PaddedEnhancementCheckbox("Disable Title Card", "gTimeSavers.DisableTitleCard", false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
+                UIWidgets::PaddedEnhancementCheckbox("Skip Glitch-Aiding Cutscenes", "gTimeSavers.SkipCutscene.GlitchAiding", false, false, false, "", UIWidgets::CheckboxGraphics::Cross, 0);
+                UIWidgets::Tooltip("Skip cutscenes that are associated with useful glitches, currently this is only the Fire Temple Darunia CS and Forest Temple Poe Sisters CS");
+                UIWidgets::PaddedEnhancementCheckbox("Skip Child Stealth", "gTimeSavers.SkipChildStealth", false, false, false, "", UIWidgets::CheckboxGraphics::Cross, false);
+                UIWidgets::Tooltip("The crawlspace into Hyrule Castle goes straight to Zelda, skipping the guards.");
+                UIWidgets::PaddedEnhancementCheckbox("Skip Tower Escape", "gTimeSavers.SkipTowerEscape", false, false, false, "", UIWidgets::CheckboxGraphics::Cross, false);
+                UIWidgets::Tooltip("Skip the tower escape sequence between Ganondorf and Ganon.");
+
+                UIWidgets::PaddedText("Skip Get Item Animations", true, false);
+                UIWidgets::EnhancementCombobox("gTimeSavers.SkipGetItemAnimation", skipGetItemAnimationOptions, SGIA_DISABLED);
+                if (CVarGetInteger("gTimeSavers.SkipGetItemAnimation", SGIA_DISABLED) != SGIA_DISABLED) {
+                    UIWidgets::EnhancementSliderFloat("Item Scale: %f", "##ItemScale", "gTimeSavers.SkipGetItemAnimationScale", 5.0f, 15.0f, "", 10.0f, false);
+                    UIWidgets::Tooltip("The size of the item when it is picked up");
+                }
 
                 UIWidgets::PaddedEnhancementSliderInt("Text Speed: %dx", "##TEXTSPEED", "gTextSpeed", 1, 5, "", 1, true, false, true);
                 UIWidgets::PaddedEnhancementCheckbox("Skip Text", "gSkipText", false, true);
@@ -605,7 +688,7 @@ void DrawEnhancementsMenu() {
                 UIWidgets::Spacer(0);
                 ImGui::Text("Changes:");
                 UIWidgets::PaddedSeparator();
-                
+
                 UIWidgets::PaddedEnhancementSliderInt("Biggoron Forge Time: %d days", "##FORGETIME", "gForgeTime", 0, 3, "", 3, true, false, true);
                 UIWidgets::Tooltip("Allows you to change the number of days it takes for Biggoron to forge the Biggoron Sword");
                 UIWidgets::PaddedEnhancementCheckbox("Remember Save Location", "gRememberSaveLocation", false, false);
@@ -1213,7 +1296,8 @@ void DrawEnhancementsMenu() {
             UIWidgets::Tooltip("Removes the dungeon entrance icon on the top-left corner of the screen when no dungeon is present on the current map");
             UIWidgets::PaddedEnhancementCheckbox("Fix Two Handed idle animations", "gTwoHandedIdle", true, false);
             UIWidgets::Tooltip("Re-enables the two-handed idle animation, a seemingly finished animation that was disabled on accident in the original game");
-            UIWidgets::PaddedEnhancementCheckbox("Fix the Gravedigging Tour Glitch", "gGravediggingTourFix", true, false);
+            UIWidgets::PaddedEnhancementCheckbox("Fix the Gravedigging Tour Glitch", "gGravediggingTourFix", true, false, SaveManager::Instance->IsRandoFile(),
+                                                        "This setting is always enabled in randomizer files", UIWidgets::CheckboxGraphics::Checkmark);
             UIWidgets::Tooltip("Fixes a bug where the Gravedigging Tour Heart Piece disappears if the area reloads");
             UIWidgets::PaddedEnhancementCheckbox("Fix Deku Nut upgrade", "gDekuNutUpgradeFix", true, false);
             UIWidgets::Tooltip("Prevents the Forest Stage Deku Nut upgrade from becoming unobtainable after receiving the Poacher's Saw");

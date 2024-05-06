@@ -10,6 +10,7 @@
 #include "scenes/overworld/spot16/spot16_scene.h"
 #include "vt.h"
 #include <assert.h>
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
@@ -42,6 +43,7 @@ void func_80ACAF74(EnOwl* this, PlayState* play);
 void func_80ACC30C(EnOwl* this, PlayState* play);
 void func_80ACB4FC(EnOwl* this, PlayState* play);
 void func_80ACB680(EnOwl* this, PlayState* play);
+void func_80ACA62C(EnOwl* this, PlayState* play);
 void func_80ACC460(EnOwl* this);
 void func_80ACBEA0(EnOwl*, PlayState*);
 
@@ -137,9 +139,7 @@ void EnOwl_Init(Actor* thisx, PlayState* play) {
     // "conversation owl %4x no = %d, sv = %d"
     osSyncPrintf(VT_FGCOL(CYAN) " 会話フクロウ %4x no = %d, sv = %d\n" VT_RST, this->actor.params, owlType, switchFlag);
 
-    if (((owlType != OWL_DEFAULT) && (switchFlag < 0x20) && Flags_GetSwitch(play, switchFlag)) ||
-        // Owl shortcuts at SPOT06: Lake Hylia and SPOT16: Death Mountain Trail
-        (IS_RANDO && !(play->sceneNum == SCENE_LAKE_HYLIA || play->sceneNum == SCENE_DEATH_MOUNTAIN_TRAIL))) {
+    if ((owlType != OWL_DEFAULT) && (switchFlag < 0x20) && Flags_GetSwitch(play, switchFlag)) {
         osSyncPrintf("savebitでフクロウ退避\n"); // "Save owl with savebit"
         Actor_Kill(&this->actor);
         return;
@@ -283,7 +283,7 @@ s32 EnOwl_CheckInitTalk(EnOwl* this, PlayState* play, u16 textId, f32 targetDist
     } else {
         this->actor.textId = textId;
         distCheck = (flags & 2) ? 200.0f : 1000.0f;
-        if (this->actor.xzDistToPlayer < targetDist) {
+        if (GameInteractor_Should(VB_OWL_INTERACTION, this->actor.xzDistToPlayer < targetDist, this)) {
             this->actor.flags |= ACTOR_FLAG_WILL_TALK;
             func_8002F1C4(&this->actor, play, targetDist, distCheck, 0);
         }
@@ -345,7 +345,7 @@ void func_80ACA71C(EnOwl* this) {
 }
 
 void func_80ACA76C(EnOwl* this, PlayState* play) {
-    func_8002DF54(play, &this->actor, 8);
+    Player_SetCsActionWithHaltedActors(play, &this->actor, 8);
 
     if (Actor_TextboxIsClosing(&this->actor, play)) {
         Audio_QueueSeqCmd(0x1 << 28 | SEQ_PLAYER_FANFARE << 24 | 0xFF);
@@ -355,7 +355,7 @@ void func_80ACA76C(EnOwl* this, PlayState* play) {
 }
 
 void func_80ACA7E0(EnOwl* this, PlayState* play) {
-    func_8002DF54(play, &this->actor, 8);
+    Player_SetCsActionWithHaltedActors(play, &this->actor, 8);
 
     if (Actor_TextboxIsClosing(&this->actor, play)) {
         Audio_QueueSeqCmd(0x1 << 28 | SEQ_PLAYER_FANFARE << 24 | 0xFF);
@@ -565,7 +565,7 @@ void EnOwl_WaitLakeHylia(EnOwl* this, PlayState* play) {
 }
 
 void func_80ACB03C(EnOwl* this, PlayState* play) {
-    func_8002DF54(play, &this->actor, 8);
+    Player_SetCsActionWithHaltedActors(play, &this->actor, 8);
 
     if (Actor_TextboxIsClosing(&this->actor, play)) {
         Audio_QueueSeqCmd(0x1 << 28 | SEQ_PLAYER_FANFARE << 24 | 0xFF);

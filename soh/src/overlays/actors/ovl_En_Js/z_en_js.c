@@ -6,6 +6,7 @@
 
 #include "z_en_js.h"
 #include "objects/object_js/object_js.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
 
@@ -127,10 +128,14 @@ void func_80A8910C(EnJs* this, PlayState* play) {
 }
 
 void func_80A89160(EnJs* this, PlayState* play) {
-    if (Actor_HasParent(&this->actor, play)) {
+    if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(VB_GIVE_ITEM_FROM_CARPET_SALESMAN, true, this)) {
         this->actor.parent = NULL;
         En_Js_SetupAction(this, func_80A8910C);
+        Flags_SetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN); //not sure about this resolution
     } else {
+        GetItemEntry itemEntry = ItemTable_Retrieve(GI_BOMBCHUS_10);
+        gSaveContext.pendingSale = itemEntry.itemId;
+        gSaveContext.pendingSaleMod = itemEntry.modIndex;
         Actor_OfferGetItem(&this->actor, play, GI_BOMBCHUS_10, 10000.0f, 50.0f);
     }
 }

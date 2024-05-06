@@ -120,9 +120,12 @@ GameInteractorSail* GameInteractorSail::Instance;
 #include "soh/resource/importer/SkeletonLimbFactory.h"
 #include "soh/resource/importer/TextFactory.h"
 #include "soh/resource/importer/BackgroundFactory.h"
-#include "soh/resource/importer/RawJsonFactory.h"
 
 #include "soh/config/ConfigUpdaters.h"
+
+extern "C" {
+#include "src/overlays/actors/ovl_En_Dns/z_en_dns.h"
+}
 
 void SoH_ProcessDroppedFiles(std::string filePath);
 
@@ -345,7 +348,6 @@ OTRGlobals::OTRGlobals() {
     loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryAudioSoundFontV2>(), RESOURCE_FORMAT_BINARY, "AudioSoundFont", static_cast<uint32_t>(SOH::ResourceType::SOH_AudioSoundFont), 2);
     loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryAudioSequenceV2>(), RESOURCE_FORMAT_BINARY, "AudioSequence", static_cast<uint32_t>(SOH::ResourceType::SOH_AudioSequence), 2);
     loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryBackgroundV0>(), RESOURCE_FORMAT_BINARY, "Background", static_cast<uint32_t>(SOH::ResourceType::SOH_Background), 0);
-    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryRawJsonV0>(), RESOURCE_FORMAT_BINARY, "RawJson", static_cast<uint32_t>(SOH::ResourceType::SOH_RawJson), 0);
 
     gSaveStateMgr = std::make_shared<SaveStateMgr>();
     gRandoContext->InitStaticData();
@@ -2348,8 +2350,8 @@ extern "C" void Randomizer_LoadMerchantMessages() {
     OTRGlobals::Instance->gRandomizer->LoadMerchantMessages();
 }
 
-extern "C" bool Randomizer_IsTrialRequired(RandomizerInf trial) {
-    return OTRGlobals::Instance->gRandomizer->IsTrialRequired(trial);
+extern "C" bool Randomizer_IsTrialRequired(s32 trialFlag) {
+    return OTRGlobals::Instance->gRandomizer->IsTrialRequired(trialFlag);
 }
 
 extern "C" u32 SpoilerFileExists(const char* spoilerFileName) {
@@ -2563,9 +2565,9 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
         } else if (textId == TEXT_SHEIK_NEED_HOOK || textId == TEXT_SHEIK_HAVE_HOOK) {
             messageEntry = OTRGlobals::Instance->gRandomizer->GetSheikMessage(gPlayState->sceneNum, textId);            
         // textId: TEXT_SCRUB_RANDOM + (randomizerInf - RAND_INF_SCRUBS_PURCHASED_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_LEFT)
-        } else if (textId >= TEXT_SCRUB_RANDOM && textId <= TEXT_SCRUB_RANDOM + NUM_SCRUBS) {
-            RandomizerInf randoInf = (RandomizerInf)((textId - TEXT_SCRUB_RANDOM) + RAND_INF_SCRUBS_PURCHASED_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_LEFT);
-            messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(randoInf, TEXT_SCRUB_RANDOM, Randomizer_GetSettingValue(RSK_SCRUB_TEXT_HINT) == RO_GENERIC_OFF);
+        } else if (textId == TEXT_SCRUB_RANDOM) {
+            EnDns* enDns = (EnDns*)GET_PLAYER(play)->targetActor;
+            messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(enDns->sohScrubIdentity.randomizerInf, TEXT_SCRUB_RANDOM, Randomizer_GetSettingValue(RSK_SCRUB_TEXT_HINT) == RO_GENERIC_OFF);
         // Shop items each have two message entries, second one offset by NUM_SHOP_ITEMS
         // textId: TEXT_SHOP_ITEM_RANDOM + (randomizerInf - RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1)
         // textId: TEXT_SHOP_ITEM_RANDOM + ((randomizerInf - RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1) + NUM_SHOP_ITEMS)
