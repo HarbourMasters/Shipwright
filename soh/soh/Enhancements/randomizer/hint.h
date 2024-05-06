@@ -27,7 +27,7 @@ class Hint {
           std::vector<TrialKey> trials_ = {},
           bool yourPocket_ = false, 
           int num_ = 0);
-     explicit Hint(RandomizerHint ownKey_, std::vector<CustomMessage> messages_);
+     Hint(RandomizerHint ownKey_, std::vector<CustomMessage> messages_);
      Hint(RandomizerHint ownKey_, nlohmann::json json_);
      void FillGapsInData();
      void SetLocationsAsHinted() const;
