@@ -8,12 +8,13 @@
 #include <libultraship/bridge.h>
 #include <Context.h>
 #include <libultraship/libultra/types.h>
+#include "soh/OTRGlobals.h"
 
 void RandoMain::GenerateRando(std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks,
     std::string seedString) {
 
     // std::string settingsFileName = "./randomizer/latest_settings.json";
-    // CVarSetString("gLoadedPreset", settingsFileName.c_str());
+    // CVarSetString(CVAR_RANDOMIZER_SETTING("LoadedPreset"), settingsFileName.c_str());
 
     Rando::Context::GetInstance()->SetSeedGenerated(GenerateRandomizer(excludedLocations, enabledTricks, seedString));
 

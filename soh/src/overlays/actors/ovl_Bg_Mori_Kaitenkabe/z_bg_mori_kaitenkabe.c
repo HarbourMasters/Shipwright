@@ -94,7 +94,7 @@ void BgMoriKaitenkabe_Wait(BgMoriKaitenkabe* this, PlayState* play) {
 
     if (this->dyna.unk_150 > 0.001f) {
         this->timer++;
-        if ((this->timer > (28 - CVarGetInteger("gFasterBlockPush", 0) * 4)) && !Player_InCsMode(play)) {
+        if ((this->timer > (28 - CVarGetInteger(CVAR_ENHANCEMENT("FasterBlockPush"), 0) * 4)) && !Player_InCsMode(play)) {
             BgMoriKaitenkabe_SetupRotate(this);
             Player_SetCsActionWithHaltedActors(play, &this->dyna.actor, 8);
             Math_Vec3f_Copy(&this->lockedPlayerPos, &player->actor.world.pos);
@@ -118,7 +118,7 @@ void BgMoriKaitenkabe_Wait(BgMoriKaitenkabe* this, PlayState* play) {
 
 void BgMoriKaitenkabe_SetupRotate(BgMoriKaitenkabe* this) {
     this->actionFunc = BgMoriKaitenkabe_Rotate;
-    this->rotSpeed = CVarGetInteger("gFasterBlockPush", 0) * 0.1f;
+    this->rotSpeed = CVarGetInteger(CVAR_ENHANCEMENT("FasterBlockPush"), 0) * 0.1f;
     this->rotYdeg = 0.0f;
 }
 

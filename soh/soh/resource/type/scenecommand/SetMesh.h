@@ -94,6 +94,8 @@ class SetMesh : public SceneCommand<MeshHeader> {
     uint8_t data;
     uint8_t meshHeaderType;
 
+    std::vector<std::string> opaPaths;
+    std::vector<std::string> xluPaths;
     std::vector<PolygonDlist> dlists;
     std::vector<PolygonDlist2> dlists2;
     std::vector<std::string> imagePaths;

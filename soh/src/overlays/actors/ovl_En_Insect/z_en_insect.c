@@ -213,7 +213,7 @@ void EnInsect_Init(Actor* thisx, PlayState* play2) {
 
         // For bugs that aren't linked to a soil patch, we remove the "short lived" flag to prevent them from despawning
         // And exit early to not increment the "bugs dropped count"
-        if (CVarGetInteger("gNoBugsDespawn", 0) && this->soilActor == NULL) {
+        if (CVarGetInteger(CVAR_CHEAT("NoBugsDespawn"), 0) && this->soilActor == NULL) {
             this->unk_314 &= ~4;
             return;
         }

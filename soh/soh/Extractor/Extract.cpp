@@ -6,7 +6,7 @@
 #endif
 #include "Extract.h"
 #include "portable-file-dialogs.h"
-#include <Utils/BitConverter.h>
+#include <utils/binarytools/BitConverter.h>
 #include "variables.h"
 
 #ifdef unix

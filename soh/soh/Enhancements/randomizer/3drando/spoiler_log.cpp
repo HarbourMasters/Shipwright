@@ -29,6 +29,7 @@
 #include <variables.h>
 
 #include <Context.h>
+#include <soh/OTRGlobals.h>
 
 #include "consolevariablebridge.h"
 
@@ -638,8 +639,8 @@ const char* SpoilerLog_Write() {
     WriteShuffledEntrances();
     WriteAllLocations();
 
-    if (!std::filesystem::exists(LUS::Context::GetPathRelativeToAppDirectory("Randomizer"))) {
-        std::filesystem::create_directory(LUS::Context::GetPathRelativeToAppDirectory("Randomizer"));
+    if (!std::filesystem::exists(Ship::Context::GetPathRelativeToAppDirectory("Randomizer"))) {
+        std::filesystem::create_directory(Ship::Context::GetPathRelativeToAppDirectory("Randomizer"));
     }
 
     std::string jsonString = jsonData.dump(4);
@@ -654,12 +655,12 @@ const char* SpoilerLog_Write() {
         fileNameStream << std::to_string(ctx->hashIconIndexes[i]);
     }
     std::string fileName = fileNameStream.str();
-    std::ofstream jsonFile(LUS::Context::GetPathRelativeToAppDirectory(
+    std::ofstream jsonFile(Ship::Context::GetPathRelativeToAppDirectory(
         (std::string("Randomizer/") + fileName + std::string(".json")).c_str()));
     jsonFile << std::setw(4) << jsonString << std::endl;
     jsonFile.close();
 
-    CVarSetString("gSpoilerLog", (std::string("./Randomizer/") + fileName + std::string(".json")).c_str());
+    CVarSetString(CVAR_GENERAL("SpoilerLog"), (std::string("./Randomizer/") + fileName + std::string(".json")).c_str());
 
     // Note: probably shouldn't return this without making sure this string is stored somewhere, but
     // this return value is currently only used in playthrough.cpp as a true/false. Even if the pointer
