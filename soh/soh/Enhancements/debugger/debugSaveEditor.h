@@ -505,6 +505,7 @@ const std::vector<FlagTable> flagTables = {
         { RAND_INF_CHILD_FISHING, "RAND_INF_CHILD_FISHING" },
         { RAND_INF_ADULT_FISHING, "RAND_INF_ADULT_FISHING" },
         { RAND_INF_10_BIG_POES, "RAND_INF_10_BIG_POES" },
+        { RAND_INF_GRANT_GANONS_BOSSKEY, "RAND_INF_GRANT_GANONS_BOSSKEY" },
     } },
 };
 
@@ -589,7 +590,7 @@ const std::vector<std::string> state3 = {
     "Travelling to Hook Target"
 };
 
-class SaveEditorWindow : public LUS::GuiWindow {
+class SaveEditorWindow : public Ship::GuiWindow {
   public:
     using GuiWindow::GuiWindow;
 

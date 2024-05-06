@@ -336,3 +336,16 @@ std::string SohUtils::Sanitize(std::string stringValue) {
 
     return stringValue;
 }
+
+size_t SohUtils::CopyStringToCharBuffer(char* buffer, const std::string& source, const size_t maxBufferSize) {
+    if (!source.empty()) {
+        // Prevent potential horrible overflow due to implicit conversion of maxBufferSize to an unsigned. Prevents negatives.
+        memset(buffer, 0, std::max<size_t>(0, maxBufferSize));
+        // Gaurentee that this value will be greater than 0, regardless of passed variables.
+        const size_t copiedCharLen = std::min<size_t>(std::max<size_t>(0, maxBufferSize - 1), source.length());
+        memcpy(buffer, source.c_str(), copiedCharLen);
+        return copiedCharLen;
+    }
+
+    return 0;
+}

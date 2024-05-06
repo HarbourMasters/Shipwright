@@ -73,7 +73,7 @@ void EnOkarinaEffect_ManageStorm(EnOkarinaEffect* this, PlayState* play) {
     Flags_UnsetEnv(play, 5); // clear storms env flag
     if (((play->pauseCtx.state == 0) && (play->gameOverCtx.state == GAMEOVER_INACTIVE) &&
          (play->msgCtx.msgLength == 0) && (!FrameAdvance_IsEnabled(play)) &&
-         ((play->transitionMode == 0) || (gSaveContext.gameMode != 0))) ||
+         ((play->transitionMode == TRANS_MODE_OFF) || (gSaveContext.gameMode != 0))) ||
         (this->timer >= 250)) {
         if (play->envCtx.indoors || play->envCtx.unk_1F != 1) {
             this->timer--;

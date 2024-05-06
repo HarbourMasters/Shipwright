@@ -2025,7 +2025,7 @@ void Fishing_DrawRod(PlayState* play) {
         spC8 = player->unk_85C - spC8;
 
         spC4 = player->unk_858;
-        Math_SmoothStepToF(&player->unk_858, input->rel.stick_x * 0.02f * (CVarGetInteger("gMirroredWorld", 0) ? -1 : 1), 0.3f, 5.0f, 0.0f);
+        Math_SmoothStepToF(&player->unk_858, input->rel.stick_x * 0.02f * (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0) ? -1 : 1), 0.3f, 5.0f, 0.0f);
         spC4 = player->unk_858 - spC4;
 
         if (player->unk_858 > 1.0f) {
@@ -2233,7 +2233,7 @@ void Fishing_UpdateLure(Fishing* this, PlayState* play) {
 
             Math_ApproachF(&D_80B7E144, 195.0f, 1.0f, 1.0f);
 
-            if (player->stateFlags1 & 0x8000000) {
+            if (player->stateFlags1 & PLAYER_STATE1_IN_WATER) {
                 D_80B7E0B4 = 0;
                 player->unk_860 = 0;
             }
@@ -2901,24 +2901,24 @@ f32 Fishing_GetMinimumRequiredScore() {
     // RANDOTODO: update the enhancement sliders to not allow
     // values above rando fish weight values when rando'd
     if(sLinkAge == 1) {
-        weight = CVarGetInteger("gCustomizeFishing", 0) ? CVarGetInteger("gChildMinimumWeightFish", 10) : 10;
+        weight = CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFishing"), 0) ? CVarGetInteger(CVAR_ENHANCEMENT("MinimumFishWeightChild"), 10) : 10;
     } else {
-        weight = CVarGetInteger("gCustomizeFishing", 0) ? CVarGetInteger("gAdultMinimumWeightFish", 13) : 13;     
+        weight = CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFishing"), 0) ? CVarGetInteger(CVAR_ENHANCEMENT("MinimumFishWeightAdult"), 13) : 13;     
     }
 
     return sqrt(((f32)weight - 0.5f) / 0.0036f);
 }
 
 bool getInstantFish() {
-    return CVarGetInteger("gCustomizeFishing", 0) && CVarGetInteger("gInstantFishing", 0);
+    return CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFishing"), 0) && CVarGetInteger(CVAR_ENHANCEMENT("InstantFishing"), 0);
 }
 
 bool getGuaranteeBite() {
-    return CVarGetInteger("gCustomizeFishing", 0) && CVarGetInteger("gGuaranteeFishingBite", 0);
+    return CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFishing"), 0) && CVarGetInteger(CVAR_ENHANCEMENT("GuaranteeFishingBite"), 0);
 }
 
 bool getFishNeverEscape() {
-    return CVarGetInteger("gCustomizeFishing", 0) && CVarGetInteger("gFishNeverEscape", 0);
+    return CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFishing"), 0) && CVarGetInteger(CVAR_ENHANCEMENT("FishNeverEscape"), 0);
 }
 
 void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
@@ -5174,6 +5174,37 @@ static Vec3s sSinkingLureLocationPos[] = {
     { 553, -48, -508 },
 };
 
+// #region SOH [Enhancement]
+void Fishing_QuitAtDoor(Fishing* this, PlayState* play) {
+    if ((Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE) && Message_ShouldAdvance(play)) {
+        Message_CloseTextbox(play);
+
+        switch (play->msgCtx.choiceIndex) {
+            case 0:
+                if (D_80B7E084 == 0) {
+                    Message_ContinueTextbox(play, 0x4085);
+                } else if (sLinkAge == 1) {
+                    Message_ContinueTextbox(play, 0x4092);
+                }
+
+                if (Message_GetState(&play->msgCtx) == TEXT_STATE_DONE_FADING) {
+                    
+                    if (D_80B7A68C != 0) {
+                        D_80B7A688 = 1;
+                        D_80B7A68C = 0;
+                    }
+                    D_80B7E0AC = 0;
+                    play->interfaceCtx.unk_260 = 0;
+                }
+                break;
+            case 1:
+                func_800A9F6C(0.0f, 150, 10, 10);
+                break;
+        }
+    }
+}
+// #endregion
+
 void Fishing_UpdateOwner(Actor* thisx, PlayState* play2) {
     PlayState* play = play2;
     Fishing* this = (Fishing*)thisx;
@@ -5480,6 +5511,12 @@ void Fishing_UpdateOwner(Actor* thisx, PlayState* play2) {
         case 11:
             player->actor.world.pos.z = 1360.0f;
             player->actor.speedXZ = 0.0f;
+            
+            // #region SOH [Enhancement]
+            if (CVarGetInteger(CVAR_ENHANCEMENT("QuitFishingAtDoor"), 0)) {
+                Fishing_QuitAtDoor(this, play);
+            }
+            // #endregion
 
             if (Message_GetState(&play->msgCtx) == TEXT_STATE_NONE) {
                 Camera* camera = Play_GetCamera(play, MAIN_CAM);

@@ -24,7 +24,7 @@ extern "C" void Randomizer_DrawSmallKey(PlayState* play, GetItemEntry* getItemEn
     s8 keysCanBeOutsideDungeon = getItemEntry->getItemId == RG_GERUDO_FORTRESS_SMALL_KEY ?
         Randomizer_GetSettingValue(RSK_GERUDO_KEYS) != RO_GERUDO_KEYS_VANILLA :
         DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_KEYSANITY);
-    s8 isColoredKeysEnabled = keysCanBeOutsideDungeon && CVarGetInteger("gRandoMatchKeyColors", 1);
+    s8 isColoredKeysEnabled = keysCanBeOutsideDungeon && CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MatchKeyColors"), 1);
     s16 color_slot = getItemEntry->getItemId - RG_FOREST_TEMPLE_SMALL_KEY;
     s16 colors[9][3] = {
         { 4, 195, 46 },    // Forest Temple
@@ -63,7 +63,7 @@ extern "C" void Randomizer_DrawBossKey(PlayState* play, GetItemEntry* getItemEnt
     s8 keysCanBeOutsideDungeon = getItemEntry->getItemId == RG_GANONS_CASTLE_BOSS_KEY ?
         DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_GANONS_BOSS_KEY) :
         DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_BOSS_KEYSANITY);
-    s8 isColoredKeysEnabled = keysCanBeOutsideDungeon && CVarGetInteger("gRandoMatchKeyColors", 1);
+    s8 isColoredKeysEnabled = keysCanBeOutsideDungeon && CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MatchKeyColors"), 1);
     s16 color_slot;
     color_slot = getItemEntry->getItemId - RG_FOREST_TEMPLE_BOSS_KEY;
     s16 colors[6][3] = {
@@ -214,7 +214,7 @@ extern "C" void Randomizer_DrawTriforcePiece(PlayState* play, GetItemEntry getIt
 
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
-    uint16_t current = gSaveContext.triforcePiecesCollected;
+    uint8_t current = gSaveContext.triforcePiecesCollected;
 
     Matrix_Scale(0.035f, 0.035f, 0.035f, MTXMODE_APPLY);
 
@@ -238,8 +238,8 @@ extern "C" void Randomizer_DrawTriforcePieceGI(PlayState* play, GetItemEntry get
 
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
-    uint16_t current = gSaveContext.triforcePiecesCollected;
-    uint16_t required = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED);
+    uint8_t current = gSaveContext.triforcePiecesCollected;
+    uint8_t required = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED);
 
     Matrix_Scale(triforcePieceScale, triforcePieceScale, triforcePieceScale, MTXMODE_APPLY);
 

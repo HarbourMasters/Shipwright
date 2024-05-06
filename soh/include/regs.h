@@ -86,6 +86,8 @@
 #define R_ITEM_ICON_X(i)            ZREG(82 + i)
 #define R_ITEM_ICON_Y(i)            ZREG(86 + i)
 #define R_ITEM_ICON_DD(i)           ZREG(90 + i)
+#define R_TRANS_DBG_ENABLED         CREG(11)
+#define R_TRANS_DBG_TYPE            CREG(12)
 #define R_ENV_WIND_DIR(i)           CREG(16 + i)
 #define R_ENV_WIND_SPEED            CREG(19)
 #define R_A_BTN_Y                   XREG(16)

@@ -92,10 +92,6 @@ if (NOT TARGET libultraship)
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../libultraship ${CMAKE_BINARY_DIR}/libultraship)
 endif()
 
-if (NOT TARGET ZAPDUtils)
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../ZAPDTR/ZAPDUtils ${CMAKE_BINARY_DIR}/ZAPDUtils)
-endif()
-
 if (NOT TARGET ZAPDLib)
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../ZAPDTR/ZAPD ${CMAKE_BINARY_DIR}/ZAPD)
 endif()
@@ -105,8 +101,8 @@ set(PROJECT_NAME soh)
 ################################################################################
 # Sources
 ################################################################################
-configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/src/boot/build.c.in ${CMAKE_BINARY_DIR}/build.c @ONLY)
-configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/src/boot/properties.h.in ${CMAKE_CURRENT_SOURCE_DIR}/properties.h @ONLY)
+configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/src/boot/build.c.in ${CMAKE_CURRENT_SOURCE_DIR}/src/boot/build.c @ONLY)
+configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/properties.h.in ${CMAKE_CURRENT_SOURCE_DIR}/properties.h @ONLY)
 
 set(Header_Files "resource.h")
 source_group("headers" FILES ${Header_Files})
@@ -154,7 +150,7 @@ list(FILTER soh__Enhancements EXCLUDE REGEX "soh/Enhancements/gfx.*")
 # handle crowd control removals
 list(REMOVE_ITEM soh__Enhancements "soh/Enhancements/crowd-control/soh.cs")
 list(REMOVE_ITEM soh__Enhancements "soh/Enhancements/crowd-control/soh.ccpak")
-if (!BUILD_CROWD_CONTROL)
+if (!BUILD_REMOTE_CONTROL)
     list(FILTER soh__Enhancements EXCLUDE REGEX "soh/Enhancements/crowd-control/*")
 endif()
 
@@ -217,8 +213,6 @@ source_group("soh\\resource\\importer\\scenecommand" REGULAR_EXPRESSION "soh/res
 # src (decomp) {{{
 file(GLOB_RECURSE src__ RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "src/*.c" "src/*.h")
 
-list(APPEND src__ ${CMAKE_BINARY_DIR}/build.c)
-list(APPEND src__ ${CMAKE_CURRENT_SOURCE_DIR}/properties.h)
 list(APPEND src__ ${CMAKE_CURRENT_SOURCE_DIR}/Resource.rc)
 list(FILTER src__ EXCLUDE REGEX "src/dmadata/*")
 list(FILTER src__ EXCLUDE REGEX "src/elf_message/*")
@@ -238,7 +232,6 @@ list(REMOVE_ITEM src__ "src/libultra/gu/sqrtf.c")
 list(REMOVE_ITEM src__ "src/libultra/gu/us2dex.c")
 
 source_group("src" REGULAR_EXPRESSION "src/*")
-source_group("src\\build" FILES ${CMAKE_BINARY_DIR}/build.c ${CMAKE_CURRENT_SOURCE_DIR}/properties.h ${CMAKE_CURRENT_SOURCE_DIR}/Resource.rc)
 source_group("src\\boot" REGULAR_EXPRESSION "src/boot/*")
 source_group("src\\buffers" REGULAR_EXPRESSION "src/buffers/*")
 source_group("src\\code" REGULAR_EXPRESSION "src/code/*")
@@ -354,9 +347,15 @@ endif()
 find_package(SDL2)
 set(SDL2-INCLUDE ${SDL2_INCLUDE_DIRS})
 
-if (BUILD_CROWD_CONTROL)
+if (BUILD_REMOTE_CONTROL)
     find_package(SDL2_net)
-    set(SDL2-NET-INCLUDE ${SDL_NET_INCLUDE_DIRS})
+
+    if(NOT SDL2_net_FOUND)
+        message(STATUS "SDL2_net not found (it's possible the version installed is too old). Disabling BUILD_REMOTE_CONTROL.")
+        set(BUILD_REMOTE_CONTROL 0)
+    else()
+        set(SDL2-NET-INCLUDE ${SDL_NET_INCLUDE_DIRS})
+    endif()
 endif()
 
 target_include_directories(${PROJECT_NAME} PRIVATE assets
@@ -385,10 +384,8 @@ target_include_directories(${PROJECT_NAME} PRIVATE assets
     ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/extern/tinyxml2
     ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/Lib/
 	${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/Lib/libjpeg/include/
-	${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/Lib/spdlog/include/
     ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/graphic/Fast3D/U64/PR
     ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/graphic
-	${CMAKE_CURRENT_SOURCE_DIR}/../ZAPDTR/ZAPDUtils
     ${CMAKE_CURRENT_SOURCE_DIR}/../ZAPDTR/ZAPD/resource/type
 	${SDL2-INCLUDE}
     ${SDL2-NET-INCLUDE}
@@ -408,13 +405,13 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			"$<$<CONFIG:Release>:"
 				"NDEBUG"
 			">"
-            "$<$<BOOL:${BUILD_CROWD_CONTROL}>:ENABLE_CROWD_CONTROL>"
+            "$<$<BOOL:${BUILD_REMOTE_CONTROL}>:ENABLE_REMOTE_CONTROL>"
 			"INCLUDE_GAME_PRINTF;"
-            "ENABLE_CROWD_CONTROL;"
 			"UNICODE;"
 			"_UNICODE"
 			STORMLIB_NO_AUTO_LINK
 			"_CRT_SECURE_NO_WARNINGS;"
+            NOMINMAX
 		)
 	elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
 		target_compile_definitions(${PROJECT_NAME} PRIVATE
@@ -432,6 +429,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			"UNICODE;"
 			"_UNICODE"
 			STORMLIB_NO_AUTO_LINK
+            NOMINMAX
 		)
 	endif()
 elseif (CMAKE_SYSTEM_NAME STREQUAL "CafeOS")
@@ -455,7 +453,7 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU|Clang|AppleClang")
 		"$<$<CONFIG:Release>:"
 			"NDEBUG"
 		">"
-        "$<$<BOOL:${BUILD_CROWD_CONTROL}>:ENABLE_CROWD_CONTROL>"
+        "$<$<BOOL:${BUILD_REMOTE_CONTROL}>:ENABLE_REMOTE_CONTROL>"
 		"SPDLOG_ACTIVE_LEVEL=0;"
 		"_CONSOLE;"
 		"_CRT_SECURE_NO_WARNINGS;"
@@ -624,6 +622,8 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
             -Wno-parentheses
             -Wno-narrowing
             -Wno-missing-braces
+            -Wno-int-conversion
+            -Wno-implicit-int
             $<$<COMPILE_LANGUAGE:C>:
                 -Werror-implicit-function-declaration
                 -Wno-incompatible-pointer-types
@@ -643,15 +643,6 @@ endif()
 ################################################################################
 # Pre build events
 ################################################################################
-if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
-	add_custom_command_if(
-		TARGET ${PROJECT_NAME}
-		PRE_BUILD
-		COMMANDS
-		COMMAND   $<CONFIG:Debug> copy /b $<SHELL_PATH:${CMAKE_BINARY_DIR}/>build.c +,,
-	)
-endif()
-
 if(NOT CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch|CafeOS")
     add_custom_command(
 		TARGET ${PROJECT_NAME}
@@ -670,7 +661,6 @@ endif()
 # Dependencies
 ################################################################################
 add_dependencies(${PROJECT_NAME}
-    ZAPDUtils
     libultraship
 )
 if(NOT CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch|CafeOS")
@@ -684,12 +674,11 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
 		set(ADDITIONAL_LIBRARY_DEPENDENCIES
 			"libultraship;"
-			"ZAPDUtils;"
 			"ZAPDLib;"
 			"glu32;"
 			"SDL2::SDL2;"
 			"SDL2::SDL2main;"
-            "$<$<BOOL:${BUILD_CROWD_CONTROL}>:SDL2_net::SDL2_net-static>"
+            "$<$<BOOL:${BUILD_REMOTE_CONTROL}>:SDL2_net::SDL2_net-static>"
 			"glfw;"
 			"winmm;"
 			"imm32;"
@@ -699,7 +688,6 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
 		set(ADDITIONAL_LIBRARY_DEPENDENCIES
 			"libultraship;"
-			"ZAPDUtils;"
 			"ZAPDLib;"
 			"glu32;"
 			"SDL2::SDL2;"
@@ -717,7 +705,6 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "NintendoSwitch")
     find_package(Threads REQUIRED)
     set(ADDITIONAL_LIBRARY_DEPENDENCIES
         "libultraship;"
-        "ZAPDUtils;"
         SDL2::SDL2
         -lglad
         Threads::Threads
@@ -739,10 +726,9 @@ else()
     find_package(Threads REQUIRED)
  	set(ADDITIONAL_LIBRARY_DEPENDENCIES
         "libultraship;"
-        "ZAPDUtils;"
 		"ZAPDLib;"
 		SDL2::SDL2
-        "$<$<BOOL:${BUILD_CROWD_CONTROL}>:SDL2_net::SDL2_net>"
+        "$<$<BOOL:${BUILD_REMOTE_CONTROL}>:SDL2_net::SDL2_net>"
 		${CMAKE_DL_LIBS}
 		Threads::Threads
 	)

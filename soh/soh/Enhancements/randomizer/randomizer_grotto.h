@@ -3,7 +3,7 @@
 
 #include "z64math.h"
 
-#define NUM_GROTTOS 33
+#define NUM_GROTTOS GROTTO_OFFSET_MAX
 #define NOT_GROTTO 0
 #define GROTTO_LOAD 1
 #define GROTTO_RETURN 2

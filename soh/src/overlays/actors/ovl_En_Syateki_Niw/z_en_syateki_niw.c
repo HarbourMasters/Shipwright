@@ -468,7 +468,7 @@ void func_80B12460(EnSyatekiNiw* this, PlayState* play) {
 
         case 6:
             if (this->unk_25E == 1) {
-                play->sceneLoadFlag = 0x14;
+                play->transitionTrigger = TRANS_TRIGGER_START;
                 play->nextEntranceIndex = gSaveContext.entranceIndex;
                 play->shootingGalleryStatus = 0;
                 player->actor.freezeTimer = 20;

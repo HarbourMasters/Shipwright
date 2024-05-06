@@ -229,7 +229,7 @@ void ItemEtcetera_DrawThroughLens(Actor* thisx, PlayState* play) {
         func_8002EBCC(&this->actor, play, 0);
         func_8002ED80(&this->actor, play, 0);
 
-        if(IS_RANDO && play->sceneNum == 16) {
+        if(IS_RANDO && play->sceneNum == SCENE_TREASURE_BOX_SHOP) {
             GetItemEntry randoGetItem = GetChestGameRandoGetItem(this->actor.room, this->giDrawId, play);
             EnItem00_CustomItemsParticles(&this->actor, play, randoGetItem);
             if (randoGetItem.itemId != ITEM_NONE) {
