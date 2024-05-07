@@ -1201,7 +1201,7 @@ void DrawEnhancementsMenu() {
             UIWidgets::Tooltip("Prevents the Forest Stage Deku Nut upgrade from becoming unobtainable after receiving the Poacher's Saw");
             UIWidgets::PaddedEnhancementCheckbox("Fix Navi text HUD position", CVAR_ENHANCEMENT("NaviTextFix"), true, false);
             UIWidgets::Tooltip("Correctly centers the Navi text prompt on the HUD's C-Up button");
-            UIWidgets::PaddedEnhancementCheckbox("Fix Anubis fireballs", CVAR_ENHANCEMENT("AnubixFix"), true, false);
+            UIWidgets::PaddedEnhancementCheckbox("Fix Anubis fireballs", CVAR_ENHANCEMENT("AnubisFix"), true, false);
             UIWidgets::Tooltip("Make Anubis fireballs do fire damage when reflected back at them with the Mirror Shield");
             if (UIWidgets::PaddedEnhancementCheckbox("Fix Megaton Hammer crouch stab", CVAR_ENHANCEMENT("CrouchStabHammerFix"), true, false)) {
                 if (!CVarGetInteger(CVAR_ENHANCEMENT("CrouchStabHammerFix"), 0)) {
@@ -1972,6 +1972,11 @@ void DrawRandomizerMenu() {
                 "Play unique fanfares when obtaining quest items "
                 "(medallions/stones/songs). Note that these fanfares are longer than usual."
             );
+            UIWidgets::PaddedEnhancementCheckbox("Mysterious Shuffled Items", CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), true, false);
+            UIWidgets::Tooltip(
+                "Displays a \"Mystery Item\" model in place of any freestanding/GS/shop items that were shuffled, "
+                "and replaces item names for them and scrubs and merchants, regardless of hint settings, "
+                "so you never know what you're getting.");
             ImGui::EndMenu();
         }
 
