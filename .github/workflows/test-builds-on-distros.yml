@@ -35,9 +35,9 @@ jobs:
       if: ${{ matrix.image == 'fedora:39' }}
       run: |
         echo fedora
-        echo dnf install ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'gcc-c++') || '' }} git cmake ninja-build lsb_release SDL2-devel libpng-devel libzip-devel libzip-tools tinyxml2-devel spdlog-devel boost-devel
+        echo dnf install ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'gcc-c++') || '' }} wget git cmake ninja-build lsb_release SDL2-devel libpng-devel libzip-devel libzip-tools tinyxml2-devel spdlog-devel boost-devel
         dnf -y upgrade
-        dnf -y install ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'gcc-c++') || '' }} git cmake ninja-build lsb_release SDL2-devel libpng-devel libzip-devel libzip-tools tinyxml2-devel spdlog-devel boost-devel
+        dnf -y install ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'gcc-c++') || '' }} wget git cmake ninja-build lsb_release SDL2-devel libpng-devel libzip-devel libzip-tools tinyxml2-devel spdlog-devel boost-devel
     - name: Install dependencies (apt)
       if: ${{ matrix.image == 'ubuntu:mantic' || matrix.image == 'debian:bookworm' }}
       run: |
@@ -53,9 +53,6 @@ jobs:
         echo zypper in ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'gcc-c++') || '' }} ${{ matrix.cc == 'clang' && 'libstdc++-devel' || '' }} git cmake ninja SDL2-devel libpng16-devel libzip-devel libzip-tools nlohmann_json-devel tinyxml2-devel spdlog-devel
         zypper --non-interactive dup
         zypper --non-interactive in ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'gcc-c++') || '' }} ${{ matrix.cc == 'clang' && 'libstdc++-devel' || '' }} git cmake ninja SDL2-devel libpng16-devel libzip-devel libzip-tools nlohmann_json-devel tinyxml2-devel spdlog-devel
-    - uses: actions/checkout@v3
-      with:
-        submodules: true
     - name: Install latest nlohmann
       if: ${{ matrix.image == 'fedora:39' }}
       run: |
@@ -67,6 +64,9 @@ jobs:
         cmake ..
         make
         sudo make install
+    - uses: actions/checkout@v3
+      with:
+        submodules: true
     - name: Build SoH
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
