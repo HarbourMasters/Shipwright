@@ -83,11 +83,11 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-ccache-${{ github.ref }}
           ${{ runner.os }}-ccache-
-    - name: Install gtar wrapper
-      run: |
-        sudo mv /usr/local/bin/gtar /usr/local/bin/gtar.orig
-        sudo cp .github/workflows//gtar /usr/local/bin/gtar
-        sudo chmod +x /usr/local/bin/gtar
+    # - name: Install gtar wrapper
+    #   run: |
+    #     sudo mv /usr/local/bin/gtar /usr/local/bin/gtar.orig
+    #     sudo cp .github/workflows//gtar /usr/local/bin/gtar
+    #     sudo chmod +x /usr/local/bin/gtar
     - name: Cache MacPorts
       id: cache-macports
       uses: actions/cache@v2
