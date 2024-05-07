@@ -133,8 +133,8 @@ RandomizerCheckArea previousArea = RCAREA_INVALID;
 RandomizerCheckArea currentArea = RCAREA_INVALID;
 OSContPad* trackerButtonsPressed;
 
-bool passesTextFilter(ImGuiTextFilter& checkSearch, const RandomizerCheckObject rcObject);
-bool shouldHideArea(ImGuiTextFilter& checkSearch, std::map<RandomizerCheckArea, std::vector<RandomizerCheckObject>> checksByArea, const RandomizerCheckArea rcArea);
+bool ShouldShowCheck(RandomizerCheckObject rcObject);
+bool ShouldHideArea(RandomizerCheckArea rcArea);
 void BeginFloatWindows(std::string UniqueName, bool& open, ImGuiWindowFlags flags = 0);
 bool CompareChecks(RandomizerCheckObject, RandomizerCheckObject);
 bool CheckByArea(RandomizerCheckArea);
@@ -202,6 +202,7 @@ Color_RGBA8 Color_Saved_Extra           = {   0, 185,   0, 255 }; // Green
 
 std::vector<uint32_t> buttons = { BTN_A, BTN_B, BTN_CUP,   BTN_CDOWN, BTN_CLEFT, BTN_CRIGHT, BTN_L,
                                   BTN_Z, BTN_R, BTN_START, BTN_DUP,   BTN_DDOWN, BTN_DLEFT,  BTN_DRIGHT };
+static ImGuiTextFilter checkSearch;
 
 void DefaultCheckData(RandomizerCheck rc) {
     gSaveContext.checkTrackerData[rc].status = RCSHOW_UNCHECKED;
@@ -930,9 +931,9 @@ void CheckTrackerWindow::DrawElement() {
         optCollapseAll = true;
     }
     ImGui::SameLine();
-    static ImGuiTextFilter checkSearch;
     if (ImGui::Button("Clear")) {
         checkSearch.Clear();
+        doAreaScroll = true;
     }
     UIWidgets::Tooltip("Clear the search field");
     checkSearch.Draw();
@@ -970,6 +971,8 @@ void CheckTrackerWindow::DrawElement() {
     Color_RGBA8 extraColor;
     std::string stemp;
 
+    bool shouldHideFilteredAreas = CVarGetInteger(CVAR_TRACKER_CHECK("HideFilteredAreas"), 1);
+
     for (auto& [rcArea, objs] : checksByArea) {
         RandomizerCheckArea thisArea = currentArea;
 
@@ -983,7 +986,7 @@ void CheckTrackerWindow::DrawElement() {
             previousShowHidden = showHidden;
             doAreaScroll = true;
         }
-        if (shouldHideArea(checkSearch, checksByArea, rcArea) ||
+        if ((shouldHideFilteredAreas && ShouldHideArea(rcArea)) ||
             (!showHidden && ((hideComplete && thisAreaFullyChecked) || (hideIncomplete && !thisAreaFullyChecked)))
         ) {
             doDraw = false;
@@ -1046,7 +1049,8 @@ void CheckTrackerWindow::DrawElement() {
             }
 
             for (auto rcObject : objs) {
-                if (IsVisibleInCheckTracker(rcObject) && passesTextFilter(checkSearch, rcObject) && doDraw &&
+                if (ShouldShowCheck(rcObject) &&
+                    doDraw &&
                     isThisAreaSpoiled) {
                     DrawLocation(rcObject);
                 }
@@ -1067,14 +1071,12 @@ void CheckTrackerWindow::DrawElement() {
     }
 }
 
-bool shouldHideArea(ImGuiTextFilter& checkSearch, std::map<RandomizerCheckArea, std::vector<RandomizerCheckObject>> checksByArea, RandomizerCheckArea rcArea) {
-    bool shouldHideFilteredAreas = CVarGetInteger(CVAR_TRACKER_CHECK("HideFilteredAreas"), 1);
-    if (!shouldHideFilteredAreas) {
+bool ShouldHideArea(RandomizerCheckArea rcArea) {
+    if (checkSearch.Filters.Size == 0 || checkSearch.PassFilter(RandomizerCheckObjects::GetRCAreaName(rcArea).c_str())) {
         return false;
     }
-
     for (auto check : checksByArea[rcArea]) {
-        if (IsVisibleInCheckTracker(check) && passesTextFilter(checkSearch, check)) {
+        if (ShouldShowCheck(check)) {
             return false;
         }
     }
@@ -1082,10 +1084,12 @@ bool shouldHideArea(ImGuiTextFilter& checkSearch, std::map<RandomizerCheckArea, 
     return true;
 }
 
-bool passesTextFilter(ImGuiTextFilter& checkSearch, RandomizerCheckObject check) {
+bool ShouldShowCheck(RandomizerCheckObject check) {
     return (
+        IsVisibleInCheckTracker(check) && 
+        (checkSearch.Filters.Size == 0 ||
         checkSearch.PassFilter(RandomizerCheckObjects::GetRCAreaName(check.rcArea).c_str()) ||
-        checkSearch.PassFilter(check.rcShortName.c_str())
+        checkSearch.PassFilter(check.rcShortName.c_str()))
     );
 }
 
