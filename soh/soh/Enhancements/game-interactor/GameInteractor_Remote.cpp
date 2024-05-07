@@ -2,8 +2,8 @@
 
 #include "GameInteractor.h"
 #include <spdlog/spdlog.h>
-#include <ImGui/imgui.h>
-#include <ImGui/imgui_internal.h>
+#include <imgui.h>
+#include <imgui_internal.h>
 #include <unordered_map>
 #include <tuple>
 #include <type_traits>

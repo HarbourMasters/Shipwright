@@ -1259,11 +1259,11 @@ void Audio_PlayFanfare_Rando(GetItemEntry getItem);
 // Function originally not called, so repurposing for control mapping
 void Audio_OcaUpdateBtnMap(bool customControls, bool dpad, bool rStick) {
     if (customControls) {
-        sOcarinaD5BtnMap = CVarGetInteger("gOcarinaD5BtnMap", BTN_CUP);
-        sOcarinaB4BtnMap = CVarGetInteger("gOcarinaB4BtnMap", BTN_CLEFT);
-        sOcarinaA4BtnMap = CVarGetInteger("gOcarinaA4BtnMap", BTN_CRIGHT);
-        sOcarinaF4BtnMap = CVarGetInteger("gOcarinaF4BtnMap", BTN_CDOWN);
-        sOcarinaD4BtnMap = CVarGetInteger("gOcarinaD4BtnMap", BTN_A);
+        sOcarinaD5BtnMap = CVarGetInteger(CVAR_SETTING("CustomOcarina.D5Button"), BTN_CUP);
+        sOcarinaB4BtnMap = CVarGetInteger(CVAR_SETTING("CustomOcarina.B4Button"), BTN_CLEFT);
+        sOcarinaA4BtnMap = CVarGetInteger(CVAR_SETTING("CustomOcarina.A4Button"), BTN_CRIGHT);
+        sOcarinaF4BtnMap = CVarGetInteger(CVAR_SETTING("CustomOcarina.F4Button"), BTN_CDOWN);
+        sOcarinaD4BtnMap = CVarGetInteger(CVAR_SETTING("CustomOcarina.D4Button"), BTN_A);
     } else {
         sOcarinaD5BtnMap = BTN_CUP;
         sOcarinaB4BtnMap = BTN_CLEFT;
@@ -1540,8 +1540,8 @@ void func_800ED200(void) {
     u8 k;
 
     u32 disableSongBtnMap;
-    if (CVarGetInteger("gCustomOcarinaControls", 0)) {
-        disableSongBtnMap = CVarGetInteger("gOcarinaDisableBtnMap", BTN_L);
+    if (CVarGetInteger(CVAR_SETTING("CustomOcarina.Enabled"), 0)) {
+        disableSongBtnMap = CVarGetInteger(CVAR_SETTING("CustomOcarina.DisableButton"), BTN_L);
     } else {
         disableSongBtnMap = BTN_L;
     }
@@ -1602,9 +1602,9 @@ void func_800ED200(void) {
 
 void func_800ED458(s32 arg0) {
     u32 phi_v1_2;
-    bool customControls = CVarGetInteger("gCustomOcarinaControls", 0);
-    bool dpad = CVarGetInteger("gDpadOcarina", 0);
-    bool rStick = CVarGetInteger("gRStickOcarina", 0);
+    bool customControls = CVarGetInteger(CVAR_SETTING("CustomOcarina.Enabled"), 0);
+    bool dpad = CVarGetInteger(CVAR_SETTING("OcarinaControl.Dpad"), 0);
+    bool rStick = CVarGetInteger(CVAR_SETTING("OcarinaControl.RStick"), 0);
 
     if (D_80130F3C != 0 && sOcarinaDropInputTimer != 0) {
         sOcarinaDropInputTimer--;
@@ -1650,7 +1650,7 @@ void func_800ED458(s32 arg0) {
 
         u32 noteSharpBtnMap;
         if (customControls) {
-            noteSharpBtnMap = CVarGetInteger("gOcarinaSharpBtnMap", BTN_R);
+            noteSharpBtnMap = CVarGetInteger(CVAR_SETTING("CustomOcarina.SharpButton"), BTN_R);
         } else {
             noteSharpBtnMap = BTN_R;
         }
@@ -1661,7 +1661,7 @@ void func_800ED458(s32 arg0) {
 
         u32 noteFlatBtnMap;
         if (customControls) {
-            noteFlatBtnMap = CVarGetInteger("gOcarinaFlatBtnMap", BTN_Z);
+            noteFlatBtnMap = CVarGetInteger(CVAR_SETTING("CustomOcarina.FlatButton"), BTN_Z);
         } else {
             noteFlatBtnMap = BTN_Z;
         }

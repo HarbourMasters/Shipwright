@@ -329,7 +329,7 @@ void GameState_Update(GameState* gameState) {
         func_800C49F4(gfxCtx);
     }
 
-    gSaveContext.language = CVarGetInteger("gLanguages", LANGUAGE_ENG);
+    gSaveContext.language = CVarGetInteger(CVAR_SETTING("Languages"), LANGUAGE_ENG);
 
     GameInteractor_ExecuteOnGameFrameUpdate();
     gameState->frames++;
@@ -467,7 +467,7 @@ void GameState_Destroy(GameState* gameState) {
     // Performing clear skeletons before unload resources fixes an actor heap corruption crash due to the skeleton patching system.
     ResourceMgr_ClearSkeletons();
 
-    if (CVarGetInteger("gAltAssets", 0)) {
+    if (CVarGetInteger(CVAR_ALT_ASSETS, 0)) {
         ResourceUnloadDirectory("alt/*");
         gfx_texture_cache_clear();
     }

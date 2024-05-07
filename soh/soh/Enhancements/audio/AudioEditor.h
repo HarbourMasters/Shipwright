@@ -7,12 +7,12 @@
 #ifndef IMGUI_DEFINE_MATH_OPERATORS
 #define IMGUI_DEFINE_MATH_OPERATORS
 #endif
-#include <ImGui/imgui.h>
+#include <imgui.h>
 #include "AudioCollection.h"
 
-class AudioEditor : public LUS::GuiWindow {
+class AudioEditor : public Ship::GuiWindow {
     public:
-        using LUS::GuiWindow::GuiWindow;
+        using GuiWindow::GuiWindow;
 
         void DrawElement() override;
         void InitElement() override;

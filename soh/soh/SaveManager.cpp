@@ -44,12 +44,12 @@ void SaveManager::ReadSaveFile(std::filesystem::path savePath, uintptr_t addr, v
 }
 
 std::filesystem::path SaveManager::GetFileName(int fileNum) {
-    const std::filesystem::path sSavePath(LUS::Context::GetPathRelativeToAppDirectory("Save"));
+    const std::filesystem::path sSavePath(Ship::Context::GetPathRelativeToAppDirectory("Save"));
     return sSavePath / ("file" + std::to_string(fileNum + 1) + ".sav");
 }
 
 std::filesystem::path SaveManager::GetFileTempName(int fileNum) {
-    const std::filesystem::path sSavePath(LUS::Context::GetPathRelativeToAppDirectory("Save"));
+    const std::filesystem::path sSavePath(Ship::Context::GetPathRelativeToAppDirectory("Save"));
     return sSavePath / ("file" + std::to_string(fileNum + 1) + ".temp");
 }
 
@@ -371,10 +371,10 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool f
 void SaveManager::Init() {
     // Wait on saves that snuck through the Wait in OnExitGame
     ThreadPoolWait();
-    const std::filesystem::path sSavePath(LUS::Context::GetPathRelativeToAppDirectory("Save"));
+    const std::filesystem::path sSavePath(Ship::Context::GetPathRelativeToAppDirectory("Save"));
     const std::filesystem::path sGlobalPath = sSavePath / std::string("global.sav");
-    auto sOldSavePath = LUS::Context::GetPathRelativeToAppDirectory("oot_save.sav");
-    auto sOldBackupSavePath = LUS::Context::GetPathRelativeToAppDirectory("oot_save.bak");
+    auto sOldSavePath = Ship::Context::GetPathRelativeToAppDirectory("oot_save.sav");
+    auto sOldBackupSavePath = Ship::Context::GetPathRelativeToAppDirectory("oot_save.bak");
 
     // If the save directory does not exist, create it
     if (!std::filesystem::exists(sSavePath)) {
@@ -1000,7 +1000,7 @@ void SaveManager::SaveSection(int fileNum, int sectionID, bool threaded) {
     auto saveContext = new SaveContext;
     memcpy(saveContext, &gSaveContext, sizeof(gSaveContext));
     if (threaded) {
-        smThreadPool->push_task_back(&SaveManager::SaveFileThreaded, this, fileNum, saveContext, sectionID);
+        smThreadPool->detach_task(std::bind(&SaveManager::SaveFileThreaded, this, fileNum, saveContext, sectionID));
     } else {
         SaveFileThreaded(fileNum, saveContext, sectionID);
     }
@@ -1017,7 +1017,7 @@ void SaveManager::SaveGlobal() {
     globalBlock["zTargetSetting"] = gSaveContext.zTargetSetting;
     globalBlock["language"] = gSaveContext.language;
 
-    const std::filesystem::path sSavePath(LUS::Context::GetPathRelativeToAppDirectory("Save"));
+    const std::filesystem::path sSavePath(Ship::Context::GetPathRelativeToAppDirectory("Save"));
     const std::filesystem::path sGlobalPath = sSavePath / std::string("global.sav");
 
     std::ofstream output(sGlobalPath);
@@ -1076,7 +1076,7 @@ void SaveManager::LoadFile(int fileNum) {
         GameInteractor::Instance->ExecuteHooks<GameInteractor::OnLoadFile>(fileNum);
     } catch (const std::exception& e) {
         input.close();
-        std::filesystem::path newFile(LUS::Context::GetPathRelativeToAppDirectory("Save") + ("/file" + std::to_string(fileNum + 1) + "-" + std::to_string(GetUnixTimestamp()) + ".bak"));
+        std::filesystem::path newFile(Ship::Context::GetPathRelativeToAppDirectory("Save") + ("/file" + std::to_string(fileNum + 1) + "-" + std::to_string(GetUnixTimestamp()) + ".bak"));
 #if defined(__SWITCH__) || defined(__WIIU__)
         copy_file(fileName.c_str(), newFile.c_str());
 #else
@@ -1091,7 +1091,7 @@ void SaveManager::LoadFile(int fileNum) {
 
 void SaveManager::ThreadPoolWait() {
     if (smThreadPool) {
-        smThreadPool->wait_for_tasks();
+        smThreadPool->wait();
     }
 }
 
@@ -1166,7 +1166,7 @@ int SaveManager::GetSaveSectionID(std::string& sectionName) {
 void SaveManager::CreateDefaultGlobal() {
     gSaveContext.audioSetting = 0;
     gSaveContext.zTargetSetting = 0;
-    gSaveContext.language = CVarGetInteger("gLanguages", LANGUAGE_ENG);
+    gSaveContext.language = CVarGetInteger(CVAR_SETTING("Languages"), LANGUAGE_ENG);
 
     SaveGlobal();
 }
@@ -2546,7 +2546,7 @@ void SaveManager::ConvertFromUnversioned() {
     gSaveContext.zTargetSetting = data[SRAM_HEADER_ZTARGET] & 1;
     gSaveContext.language = data[SRAM_HEADER_LANGUAGE];
     if (gSaveContext.language >= LANGUAGE_MAX) {
-        gSaveContext.language = CVarGetInteger("gLanguages", LANGUAGE_ENG);
+        gSaveContext.language = CVarGetInteger(CVAR_SETTING("Languages"), LANGUAGE_ENG);
     }
     SaveGlobal();
 

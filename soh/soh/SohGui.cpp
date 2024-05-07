@@ -11,8 +11,8 @@
 #ifndef IMGUI_DEFINE_MATH_OPERATORS
 #define IMGUI_DEFINE_MATH_OPERATORS
 #endif
-#include <ImGui/imgui.h>
-#include <ImGui/imgui_internal.h>
+#include <imgui.h>
+#include <imgui_internal.h>
 #include <libultraship/libultraship.h>
 #include <Fast3D/gfx_pc.h>
 
@@ -112,9 +112,9 @@ namespace SohGui {
 
     std::shared_ptr<SohMenuBar> mSohMenuBar;
 
-    std::shared_ptr<LUS::GuiWindow> mConsoleWindow;
-    std::shared_ptr<LUS::GuiWindow> mStatsWindow;
-    std::shared_ptr<LUS::GuiWindow> mInputEditorWindow;
+    std::shared_ptr<Ship::GuiWindow> mConsoleWindow;
+    std::shared_ptr<Ship::GuiWindow> mStatsWindow;
+    std::shared_ptr<Ship::GuiWindow> mInputEditorWindow;
 
     std::shared_ptr<AudioEditor> mAudioEditorWindow;
     std::shared_ptr<InputViewer> mInputViewer;
@@ -137,10 +137,10 @@ namespace SohGui {
     std::shared_ptr<SohModalWindow> mModalWindow;
 
     void SetupGuiElements() {
-        auto gui = LUS::Context::GetInstance()->GetWindow()->GetGui();
+        auto gui = Ship::Context::GetInstance()->GetWindow()->GetGui();
 
-        mSohMenuBar = std::make_shared<SohMenuBar>("gOpenMenuBar", CVarGetInteger("gOpenMenuBar", 0));
-        gui->SetMenuBar(std::reinterpret_pointer_cast<LUS::GuiMenuBar>(mSohMenuBar));
+        mSohMenuBar = std::make_shared<SohMenuBar>(CVAR_MENU_BAR_OPEN, CVarGetInteger(CVAR_MENU_BAR_OPEN, 0));
+        gui->SetMenuBar(std::reinterpret_pointer_cast<Ship::GuiMenuBar>(mSohMenuBar));
 
         if (gui->GetMenuBar() && !gui->GetMenuBar()->IsVisible()) {
 #if defined(__SWITCH__) || defined(__WIIU__)
@@ -201,7 +201,7 @@ namespace SohGui {
         gui->AddGuiWindow(mRandomizerSettingsWindow);
         mAdvancedResolutionSettingsWindow = std::make_shared<AdvancedResolutionSettings::AdvancedResolutionSettingsWindow>(CVAR_WINDOW("AdvancedResolutionEditor"), "Advanced Resolution Settings");
         gui->AddGuiWindow(mAdvancedResolutionSettingsWindow);
-        mModalWindow = std::make_shared<SohModalWindow>("gOpenWindows.modalWindowEnabled", "Modal Window");
+        mModalWindow = std::make_shared<SohModalWindow>(CVAR_WINDOW("ModalWindow"), "Modal Window");
         gui->AddGuiWindow(mModalWindow);
         mModalWindow->Show();
     }

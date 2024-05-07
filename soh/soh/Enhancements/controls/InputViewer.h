@@ -2,6 +2,8 @@
 
 #include <libultraship/libultraship.h>
 
+#define CVAR_INPUT_VIEWER(var) "gInputViewer." var
+
 typedef enum {
     BUTTON_OUTLINE_ALWAYS_SHOWN,
     BUTTON_OUTLINE_NOT_PRESSED,
@@ -15,9 +17,9 @@ typedef enum {
     STICK_MODE_ALWAYS_HIDDEN,
 } StickMode;
 
-class InputViewer : public LUS::GuiWindow {
+class InputViewer : public Ship::GuiWindow {
 public:
-    using LUS::GuiWindow::GuiWindow;
+    using GuiWindow::GuiWindow;
 
     void InitElement() override {};
     void DrawElement() override;
@@ -32,9 +34,9 @@ public:
         void RenderButton(std::string btn, std::string btnOutline, int state, ImVec2 size, int outlineMode);
 };
 
-class InputViewerSettingsWindow : public LUS::GuiWindow {
+class InputViewerSettingsWindow : public Ship::GuiWindow {
 public:
-    using LUS::GuiWindow::GuiWindow;
+    using GuiWindow::GuiWindow;
 
     void InitElement() override {};
     void DrawElement() override;

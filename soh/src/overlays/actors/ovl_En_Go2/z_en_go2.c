@@ -1363,7 +1363,7 @@ void EnGo2_RollingAnimation(EnGo2* this, PlayState* play) {
 }
 
 void EnGo2_WakeUp(EnGo2* this, PlayState* play) {
-    if (CVarGetInteger("gUnfixGoronSpin", 0)) {
+    if (CVarGetInteger(CVAR_COSMETIC("UnfixGoronSpin"), 0)) {
         // Trick SkelAnime into thinking the current animation is changing so that it morphs between the same position,
         // making the goron do a spin
         this->skelAnime.animation = NULL;
@@ -1384,14 +1384,14 @@ void EnGo2_WakeUp(EnGo2* this, PlayState* play) {
         // which uses the same frame data as ANIM_1/10 but no morph frames, but only when the
         // current animation frame is at 0, meaning no morphing is necessary anyway.
         // ANIM_13 is ANIM_0 but with the startFrame and mode adjusted for biggoron.
-        if (this->skelAnime.curFrame == 0.0f && !CVarGetInteger("gUnfixGoronSpin", 0)) {
+        if (this->skelAnime.curFrame == 0.0f && !CVarGetInteger(CVAR_COSMETIC("UnfixGoronSpin"), 0)) {
             Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENGO2_ANIM_13);
         } else {
             Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENGO2_ANIM_10);
         }
         this->skelAnime.playSpeed = 0.5f;
     } else {
-        if (this->skelAnime.curFrame == 0.0f && !CVarGetInteger("gUnfixGoronSpin", 0)) {
+        if (this->skelAnime.curFrame == 0.0f && !CVarGetInteger(CVAR_COSMETIC("UnfixGoronSpin"), 0)) {
             Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENGO2_ANIM_0);
         } else {
             Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENGO2_ANIM_1);

@@ -4,13 +4,13 @@
 #include "libultraship/libultraship.h"
 
 namespace SOH {
-std::shared_ptr<LUS::IResource> ResourceFactoryBinaryAudioSoundFontV2::ReadResource(std::shared_ptr<LUS::File> file) {
+std::shared_ptr<Ship::IResource> ResourceFactoryBinaryAudioSoundFontV2::ReadResource(std::shared_ptr<Ship::File> file) {
     if (!FileHasValidFormatAndReader(file)) {
         return nullptr;
     }
 
     auto audioSoundFont = std::make_shared<AudioSoundFont>(file->InitData);
-    auto reader = std::get<std::shared_ptr<LUS::BinaryReader>>(file->Reader);
+    auto reader = std::get<std::shared_ptr<Ship::BinaryReader>>(file->Reader);
 
     audioSoundFont->soundFont.fntIndex = reader->ReadInt32();
     audioSoundFont->medium = reader->ReadInt8();
@@ -67,7 +67,7 @@ std::shared_ptr<LUS::IResource> ResourceFactoryBinaryAudioSoundFontV2::ReadResou
         if (sampleFileName.empty()) {
             drum.sound.sample = nullptr;
         } else {
-            auto res = LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(sampleFileName.c_str());
+            auto res = Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(sampleFileName.c_str());
             drum.sound.sample = static_cast<Sample*>(res ? res->GetRawPointer() : nullptr);
         }
 
@@ -111,7 +111,7 @@ std::shared_ptr<LUS::IResource> ResourceFactoryBinaryAudioSoundFontV2::ReadResou
             bool hasSampleRef = reader->ReadInt8();
             std::string sampleFileName = reader->ReadString();
             instrument.lowNotesSound.tuning = reader->ReadFloat();
-            auto res = LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(sampleFileName.c_str());
+            auto res = Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(sampleFileName.c_str());
             instrument.lowNotesSound.sample = static_cast<Sample*>(res ? res->GetRawPointer() : nullptr);
         } else {
             instrument.lowNotesSound.sample = nullptr;
@@ -123,7 +123,7 @@ std::shared_ptr<LUS::IResource> ResourceFactoryBinaryAudioSoundFontV2::ReadResou
             bool hasSampleRef = reader->ReadInt8();
             std::string sampleFileName = reader->ReadString();
             instrument.normalNotesSound.tuning = reader->ReadFloat();
-            auto res = LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(sampleFileName.c_str());
+            auto res = Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(sampleFileName.c_str());
             instrument.normalNotesSound.sample = static_cast<Sample*>(res ? res->GetRawPointer() : nullptr);
         } else {
             instrument.normalNotesSound.sample = nullptr;
@@ -135,7 +135,7 @@ std::shared_ptr<LUS::IResource> ResourceFactoryBinaryAudioSoundFontV2::ReadResou
             bool hasSampleRef = reader->ReadInt8();
             std::string sampleFileName = reader->ReadString();
             instrument.highNotesSound.tuning = reader->ReadFloat();
-            auto res = LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(sampleFileName.c_str());
+            auto res = Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(sampleFileName.c_str());
             instrument.highNotesSound.sample = static_cast<Sample*>(res ? res->GetRawPointer() : nullptr);
         } else {
             instrument.highNotesSound.sample = nullptr;
@@ -160,7 +160,7 @@ std::shared_ptr<LUS::IResource> ResourceFactoryBinaryAudioSoundFontV2::ReadResou
             bool hasSampleRef = reader->ReadInt8();
             std::string sampleFileName = reader->ReadString();
             soundEffect.tuning = reader->ReadFloat();
-            auto res = LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(sampleFileName.c_str());
+            auto res = Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(sampleFileName.c_str());
             soundEffect.sample = static_cast<Sample*>(res ? res->GetRawPointer() : nullptr);
         }
         

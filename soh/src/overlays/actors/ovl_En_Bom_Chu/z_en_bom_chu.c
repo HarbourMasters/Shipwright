@@ -491,7 +491,7 @@ void EnBomChu_Draw(Actor* thisx, PlayState* play) {
     f32 colorIntensity;
     s32 blinkHalfPeriod;
     s32 blinkTime;
-    Color_RGB8 BombchuCol = CVarGetColor24("gBombTrailCol", BombchuColorOriginal);
+    Color_RGB8 BombchuCol = CVarGetColor24(CVAR_COSMETIC("Trails.Bombchu.Value"), BombchuColorOriginal);
 
     OPEN_DISPS(play->state.gfxCtx);
 

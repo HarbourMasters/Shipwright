@@ -2,7 +2,7 @@
 #ifndef IMGUI_DEFINE_MATH_OPERATORS
 #define IMGUI_DEFINE_MATH_OPERATORS
 #endif
-#include "ImGui/imgui.h"
+#include <imgui.h>
 #include "regex"
 #include "public/bridge/consolevariablebridge.h"
 #include <libultraship/libultraship.h>
@@ -106,11 +106,11 @@ namespace SohGui {
 void DrawMenuBarIcon() {
     static bool gameIconLoaded = false;
     if (!gameIconLoaded) {
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Game_Icon", "textures/icons/gIcon.png");
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Game_Icon", "textures/icons/gIcon.png");
         gameIconLoaded = true;
     }
 
-    if (LUS::Context::GetInstance()->GetWindow()->GetGui()->HasTextureByName("Game_Icon")) {
+    if (Ship::Context::GetInstance()->GetWindow()->GetGui()->HasTextureByName("Game_Icon")) {
 #ifdef __SWITCH__
         ImVec2 iconSize = ImVec2(20.0f, 20.0f);
         float posScale = 1.0f;
@@ -122,7 +122,7 @@ void DrawMenuBarIcon() {
         float posScale = 1.0f;
 #endif
         ImGui::SetCursorPos(ImVec2(5, 2.5f) * posScale);
-        ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("Game_Icon"), iconSize);
+        ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("Game_Icon"), iconSize);
         ImGui::SameLine();
         ImGui::SetCursorPos(ImVec2(25, 0) * posScale);
     }
@@ -137,12 +137,12 @@ void DrawShipMenu() {
          "[-]"
 #endif
         )) {
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->GetMenuBar()->ToggleVisibility();
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->GetMenuBar()->ToggleVisibility();
         }
         UIWidgets::Spacer(0);
 #if !defined(__SWITCH__) && !defined(__WIIU__)
         if (ImGui::MenuItem("Toggle Fullscreen", "F11")) {
-            LUS::Context::GetInstance()->GetWindow()->ToggleFullscreen();
+            Ship::Context::GetInstance()->GetWindow()->ToggleFullscreen();
         }
         UIWidgets::Spacer(0);
 #endif
@@ -155,25 +155,25 @@ void DrawShipMenu() {
                             ""
 #endif
                             )) {
-            std::reinterpret_pointer_cast<LUS::ConsoleWindow>(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->Dispatch("reset");
+            std::reinterpret_pointer_cast<Ship::ConsoleWindow>(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->Dispatch("reset");
         }
 #if !defined(__SWITCH__) && !defined(__WIIU__)
         UIWidgets::Spacer(0);
         if (ImGui::MenuItem("Open App Files Folder")) {
-            std::string filesPath = LUS::Context::GetInstance()->GetAppDirectoryPath();
+            std::string filesPath = Ship::Context::GetInstance()->GetAppDirectoryPath();
             SDL_OpenURL(std::string("file:///" + std::filesystem::absolute(filesPath).string()).c_str());
         }
         UIWidgets::Spacer(0);
 
         if (ImGui::MenuItem("Quit")) {
-            LUS::Context::GetInstance()->GetWindow()->Close();
+            Ship::Context::GetInstance()->GetWindow()->Close();
         }
 #endif
         ImGui::EndMenu();
     }
 }
 
-extern std::shared_ptr<LUS::GuiWindow> mInputEditorWindow;
+extern std::shared_ptr<Ship::GuiWindow> mInputEditorWindow;
 extern std::shared_ptr<InputViewer> mInputViewer;
 extern std::shared_ptr<InputViewerSettingsWindow> mInputViewerSettings;
 extern std::shared_ptr<AdvancedResolutionSettings::AdvancedResolutionSettingsWindow> mAdvancedResolutionSettingsWindow;
@@ -182,41 +182,41 @@ void DrawSettingsMenu() {
     if (ImGui::BeginMenu("Settings"))
     {
         if (ImGui::BeginMenu("Audio")) {
-            UIWidgets::PaddedEnhancementSliderFloat("Master Volume: %.1f %%", "##Master_Vol", "gGameMasterVolume", 0.0f, 1.0f, "", 1.0f, true, true, false, true);
-            if (UIWidgets::PaddedEnhancementSliderFloat("Main Music Volume: %.1f %%", "##Main_Music_Vol", "gMainMusicVolume", 0.0f, 1.0f, "", 1.0f, true, true, false, true)) {
-                Audio_SetGameVolume(SEQ_PLAYER_BGM_MAIN, CVarGetFloat("gMainMusicVolume", 1.0f));
+            UIWidgets::PaddedEnhancementSliderFloat("Master Volume: %.1f %%", "##Master_Vol", CVAR_SETTING("Volume.Master"), 0.0f, 1.0f, "", 1.0f, true, true, false, true);
+            if (UIWidgets::PaddedEnhancementSliderFloat("Main Music Volume: %.1f %%", "##Main_Music_Vol", CVAR_SETTING("Volume.MainMusic"), 0.0f, 1.0f, "", 1.0f, true, true, false, true)) {
+                Audio_SetGameVolume(SEQ_PLAYER_BGM_MAIN, CVarGetFloat(CVAR_SETTING("Volume.MainMusic"), 1.0f));
             }
-            if (UIWidgets::PaddedEnhancementSliderFloat("Sub Music Volume: %.1f %%", "##Sub_Music_Vol", "gSubMusicVolume", 0.0f, 1.0f, "", 1.0f, true, true, false, true)) {
-                Audio_SetGameVolume(SEQ_PLAYER_BGM_SUB, CVarGetFloat("gSubMusicVolume", 1.0f));
+            if (UIWidgets::PaddedEnhancementSliderFloat("Sub Music Volume: %.1f %%", "##Sub_Music_Vol", CVAR_SETTING("Volume.SubMusic"), 0.0f, 1.0f, "", 1.0f, true, true, false, true)) {
+                Audio_SetGameVolume(SEQ_PLAYER_BGM_SUB, CVarGetFloat(CVAR_SETTING("Volume.SubMusic"), 1.0f));
             }
-            if (UIWidgets::PaddedEnhancementSliderFloat("Sound Effects Volume: %.1f %%", "##Sound_Effect_Vol", "gSFXMusicVolume", 0.0f, 1.0f, "", 1.0f, true, true, false, true)) {
-                Audio_SetGameVolume(SEQ_PLAYER_SFX, CVarGetFloat("gSFXMusicVolume", 1.0f));
+            if (UIWidgets::PaddedEnhancementSliderFloat("Sound Effects Volume: %.1f %%", "##Sound_Effect_Vol", CVAR_SETTING("Volume.SFX"), 0.0f, 1.0f, "", 1.0f, true, true, false, true)) {
+                Audio_SetGameVolume(SEQ_PLAYER_SFX, CVarGetFloat(CVAR_SETTING("Volume.SFX"), 1.0f));
             }
-            if (UIWidgets::PaddedEnhancementSliderFloat("Fanfare Volume: %.1f %%", "##Fanfare_Vol", "gFanfareVolume", 0.0f, 1.0f, "", 1.0f, true, true, false, true)) {
-                Audio_SetGameVolume(SEQ_PLAYER_FANFARE, CVarGetFloat("gFanfareVolume", 1.0f));
+            if (UIWidgets::PaddedEnhancementSliderFloat("Fanfare Volume: %.1f %%", "##Fanfare_Vol", CVAR_SETTING("Volume.Fanfare"), 0.0f, 1.0f, "", 1.0f, true, true, false, true)) {
+                Audio_SetGameVolume(SEQ_PLAYER_FANFARE, CVarGetFloat(CVAR_SETTING("Volume.Fanfare"), 1.0f));
             }
 
-            static std::unordered_map<LUS::AudioBackend, const char*> audioBackendNames = {
-                { LUS::AudioBackend::WASAPI, "Windows Audio Session API" },
-                { LUS::AudioBackend::SDL, "SDL" }
+            static std::unordered_map<Ship::AudioBackend, const char*> audioBackendNames = {
+                { Ship::AudioBackend::WASAPI, "Windows Audio Session API" },
+                { Ship::AudioBackend::SDL, "SDL" }
             };
 
             ImGui::Text("Audio API (Needs reload)");
-            auto currentAudioBackend = LUS::Context::GetInstance()->GetAudio()->GetAudioBackend();
+            auto currentAudioBackend = Ship::Context::GetInstance()->GetAudio()->GetAudioBackend();
 
-            if (LUS::Context::GetInstance()->GetAudio()->GetAvailableAudioBackends()->size() <= 1) {
+            if (Ship::Context::GetInstance()->GetAudio()->GetAvailableAudioBackends()->size() <= 1) {
                 UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
             }
             if (ImGui::BeginCombo("##AApi", audioBackendNames[currentAudioBackend])) {
-                for (uint8_t i = 0; i < LUS::Context::GetInstance()->GetAudio()->GetAvailableAudioBackends()->size(); i++) {
-                    auto backend = LUS::Context::GetInstance()->GetAudio()->GetAvailableAudioBackends()->data()[i];
+                for (uint8_t i = 0; i < Ship::Context::GetInstance()->GetAudio()->GetAvailableAudioBackends()->size(); i++) {
+                    auto backend = Ship::Context::GetInstance()->GetAudio()->GetAvailableAudioBackends()->data()[i];
                     if (ImGui::Selectable(audioBackendNames[backend], backend == currentAudioBackend)) {
-                        LUS::Context::GetInstance()->GetAudio()->SetAudioBackend(backend);
+                        Ship::Context::GetInstance()->GetAudio()->SetAudioBackend(backend);
                     }
                 }
                 ImGui::EndCombo();
             }
-            if (LUS::Context::GetInstance()->GetAudio()->GetAvailableAudioBackends()->size() <= 1) {
+            if (Ship::Context::GetInstance()->GetAudio()->GetAvailableAudioBackends()->size() <= 1) {
                 UIWidgets::ReEnableComponent("");
             }
 
@@ -231,7 +231,7 @@ void DrawSettingsMenu() {
             ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
             ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
             if (mInputEditorWindow) {
-                if (ImGui::Button(GetWindowButtonText("Controller Mapping", CVarGetInteger("gControllerConfigurationEnabled", 0)).c_str(), ImVec2 (-1.0f, 0.0f))) {
+                if (ImGui::Button(GetWindowButtonText("Controller Mapping", CVarGetInteger(CVAR_CONTROLLER_CONFIGURATION_WINDOW_OPEN, 0)).c_str(), ImVec2 (-1.0f, 0.0f))) {
                     mInputEditorWindow->ToggleVisibility();
                 }
             }
@@ -239,7 +239,7 @@ void DrawSettingsMenu() {
             ImGui::PopStyleColor(1);
             ImGui::PopStyleVar(3);
         #ifndef __SWITCH__
-            UIWidgets::EnhancementCheckbox("Menubar Controller Navigation", "gControlNav");
+            UIWidgets::EnhancementCheckbox("Menubar Controller Navigation", CVAR_IMGUI_CONTROLLER_NAV);
             UIWidgets::Tooltip("Allows controller navigation of the SOH menu bar (Settings, Enhancements,...)\nCAUTION: This will disable game inputs while the menubar is visible.\n\nD-pad to move between items, A to select, and X to grab focus on the menu bar");
             UIWidgets::PaddedSeparator();
         #endif
@@ -260,7 +260,7 @@ void DrawSettingsMenu() {
             ImGui::PopStyleColor(1);
             ImGui::PopStyleVar(3);
 
-            UIWidgets::PaddedEnhancementSliderInt("Simulated Input Lag: %d frames", "##SimulatedInputLag", "gSimulatedInputLag", 0, 6, "", 0, true, true, false);
+            UIWidgets::PaddedEnhancementSliderInt("Simulated Input Lag: %d frames", "##SimulatedInputLag", CVAR_SIMULATED_INPUT_LAG, 0, 6, "", 0, true, true, false);
             UIWidgets::Tooltip("Buffers your inputs to be executed a specified amount of frames later");
 
             ImGui::EndMenu();
@@ -270,11 +270,11 @@ void DrawSettingsMenu() {
 
         if (ImGui::BeginMenu("Graphics")) {
         #ifndef __APPLE__
-            const bool disabled_resolutionSlider = CVarGetInteger("gAdvancedResolution.VerticalResolutionToggle", 0) &&
-                                                   CVarGetInteger("gAdvancedResolution.Enabled", 0);
-            if (UIWidgets::EnhancementSliderFloat("Internal Resolution: %.1f %%", "##IMul", "gInternalResolution", 0.5f,
+            const bool disabled_resolutionSlider = CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".VerticalResolutionToggle", 0) &&
+                                                   CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".Enabled", 0);
+            if (UIWidgets::EnhancementSliderFloat("Internal Resolution: %.1f %%", "##IMul", CVAR_INTERNAL_RESOLUTION, 0.5f,
                                                   2.0f, "", 1.0f, true, true, disabled_resolutionSlider)) {
-                LUS::Context::GetInstance()->GetWindow()->SetResolutionMultiplier(CVarGetFloat("gInternalResolution", 1));
+                Ship::Context::GetInstance()->GetWindow()->SetResolutionMultiplier(CVarGetFloat(CVAR_INTERNAL_RESOLUTION, 1));
             }
             UIWidgets::Tooltip("Resolution scale. Multiplies output resolution by this value, on each axis relative to window size.\n"
                                "Lower values may improve performance.\n"
@@ -305,9 +305,9 @@ void DrawSettingsMenu() {
 
         #ifndef __WIIU__
             if (UIWidgets::PaddedEnhancementSliderInt(
-                    (CVarGetInteger("gMSAAValue", 1) == 1) ? "Anti-aliasing (MSAA): Off" : "Anti-aliasing (MSAA): %d",
-                    "##IMSAA", "gMSAAValue", 1, 8, "", 1, true, true, false)) {
-                LUS::Context::GetInstance()->GetWindow()->SetMsaaLevel(CVarGetInteger("gMSAAValue", 1));
+                    (CVarGetInteger(CVAR_MSAA_VALUE, 1) == 1) ? "Anti-aliasing (MSAA): Off" : "Anti-aliasing (MSAA): %d",
+                    "##IMSAA", CVAR_MSAA_VALUE, 1, 8, "", 1, true, true, false)) {
+                Ship::Context::GetInstance()->GetWindow()->SetMsaaLevel(CVarGetInteger(CVAR_MSAA_VALUE, 1));
             }
             UIWidgets::Tooltip("Activates MSAA (multi-sample anti-aliasing) from 2x up to 8x, to smooth the edges of rendered geometry.\n"
                                "Higher sample count will result in smoother edges on models, but may reduce performance.\n\n"
@@ -318,10 +318,10 @@ void DrawSettingsMenu() {
             { // FPS Slider
                 const int minFps = 20;
                 static int maxFps;
-                if (LUS::Context::GetInstance()->GetWindow()->GetWindowBackend() == LUS::WindowBackend::DX11) {
+                if (Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() == Ship::WindowBackend::DX11) {
                     maxFps = 360;
                 } else {
-                    maxFps = LUS::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate();
+                    maxFps = Ship::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate();
                 }
                 int currentFps = fmax(fmin(OTRGlobals::Instance->GetInterpolationFPS(), maxFps), minFps);
             #ifdef __WIIU__
@@ -344,7 +344,7 @@ void DrawSettingsMenu() {
                         fpsSlider = 3;
                     }
                 }
-                if (CVarGetInteger("gMatchRefreshRate", 0)) {
+                if (CVarGetInteger(CVAR_SETTING("MatchRefreshRate"), 0)) {
                     UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
                 }
 
@@ -366,7 +366,7 @@ void DrawSettingsMenu() {
                     fpsSlider++;
                 }
 
-                if (CVarGetInteger("gMatchRefreshRate", 0)) {
+                if (CVarGetInteger(CVAR_SETTING("MatchRefreshRate"), 0)) {
                     UIWidgets::ReEnableComponent("");
                 }
                 if (fpsSlider > 3) {
@@ -382,16 +382,16 @@ void DrawSettingsMenu() {
                 } else if (fpsSlider == 3) {
                     currentFps = 60;
                 }
-                CVarSetInteger("gInterpolationFPS", currentFps);
-                LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                CVarSetInteger(CVAR_SETTING("InterpolationFPS"), currentFps);
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
             #else
                 bool matchingRefreshRate =
-                    CVarGetInteger("gMatchRefreshRate", 0) && LUS::Context::GetInstance()->GetWindow()->GetWindowBackend() != LUS::WindowBackend::DX11;
+                    CVarGetInteger(CVAR_SETTING("MatchRefreshRate"), 0) && Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() != Ship::WindowBackend::DX11;
                 UIWidgets::PaddedEnhancementSliderInt(
                     (currentFps == 20) ? "Frame Rate: Original (20 fps)" : "Frame Rate: %d fps",
-                    "##FPSInterpolation", "gInterpolationFPS", minFps, maxFps, "", 20, true, true, false, matchingRefreshRate);
+                    "##FPSInterpolation", CVAR_SETTING("InterpolationFPS"), minFps, maxFps, "", 20, true, true, false, matchingRefreshRate);
             #endif
-                if (LUS::Context::GetInstance()->GetWindow()->GetWindowBackend() == LUS::WindowBackend::DX11) {
+                if (Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() == Ship::WindowBackend::DX11) {
                     UIWidgets::Tooltip(
                         "Uses Matrix Interpolation to create extra frames, resulting in smoother graphics.\n"
                         "This is purely visual and does not impact game logic, execution of glitches etc.\n"
@@ -406,23 +406,23 @@ void DrawSettingsMenu() {
                 }
             } // END FPS Slider
 
-            if (LUS::Context::GetInstance()->GetWindow()->GetWindowBackend() == LUS::WindowBackend::DX11) {
+            if (Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() == Ship::WindowBackend::DX11) {
                 UIWidgets::Spacer(0);
                 if (ImGui::Button("Match Frame Rate to Refresh Rate")) {
-                    int hz = LUS::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate();
+                    int hz = Ship::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate();
                     if (hz >= 20 && hz <= 360) {
-                        CVarSetInteger("gInterpolationFPS", hz);
-                        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                        CVarSetInteger(CVAR_SETTING("InterpolationFPS"), hz);
+                        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                     }
                 }
             } else {
-                UIWidgets::PaddedEnhancementCheckbox("Match Frame Rate to Refresh Rate", "gMatchRefreshRate", true, false);
+                UIWidgets::PaddedEnhancementCheckbox("Match Frame Rate to Refresh Rate", CVAR_SETTING("MatchRefreshRate"), true, false);
             }
             UIWidgets::Tooltip("Matches interpolation value to the game window's current refresh rate.");
 
-            if (LUS::Context::GetInstance()->GetWindow()->GetWindowBackend() == LUS::WindowBackend::DX11) {
-                UIWidgets::PaddedEnhancementSliderInt(CVarGetInteger("gExtraLatencyThreshold", 80) == 0 ? "Jitter fix: Off" : "Jitter fix: >= %d FPS",
-                    "##ExtraLatencyThreshold", "gExtraLatencyThreshold", 0, 360, "", 80, true, true, false);
+            if (Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() == Ship::WindowBackend::DX11) {
+                UIWidgets::PaddedEnhancementSliderInt(CVarGetInteger(CVAR_SETTING("ExtraLatencyThreshold"), 80) == 0 ? "Jitter fix: Off" : "Jitter fix: >= %d FPS",
+                    "##ExtraLatencyThreshold", CVAR_SETTING("ExtraLatencyThreshold"), 0, 360, "", 80, true, true, false);
                 UIWidgets::Tooltip(
                     "(For DirectX backend only)\n\n"
                     "When Interpolation FPS (Frame Rate) setting is at least this threshold, add one frame of delay (e.g. 16.6 ms for 60 FPS) in order to avoid jitter."
@@ -435,66 +435,66 @@ void DrawSettingsMenu() {
             ImGui::Text("ImGui Menu Scale");
             ImGui::SameLine();
             ImGui::TextColored({ 0.85f, 0.35f, 0.0f, 1.0f }, "(Experimental)");
-            if (UIWidgets::EnhancementCombobox("gImGuiScale", imguiScaleOptions, 1)) {
+            if (UIWidgets::EnhancementCombobox(CVAR_SETTING("ImGuiScale"), imguiScaleOptions, 1)) {
                 OTRGlobals::Instance->ScaleImGui();
             }
             UIWidgets::Tooltip("Changes the scaling of the ImGui menu elements.");
 
             UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
             
-            static std::unordered_map<LUS::WindowBackend, const char*> windowBackendNames = {
-                { LUS::WindowBackend::DX11, "DirectX" },
-                { LUS::WindowBackend::SDL_OPENGL, "OpenGL"},
-                { LUS::WindowBackend::SDL_METAL, "Metal" },
-                { LUS::WindowBackend::GX2, "GX2"}
+            static std::unordered_map<Ship::WindowBackend, const char*> windowBackendNames = {
+                { Ship::WindowBackend::DX11, "DirectX" },
+                { Ship::WindowBackend::SDL_OPENGL, "OpenGL"},
+                { Ship::WindowBackend::SDL_METAL, "Metal" },
+                { Ship::WindowBackend::GX2, "GX2"}
             };
 
             ImGui::Text("Renderer API (Needs reload)");
-            LUS::WindowBackend runningWindowBackend = LUS::Context::GetInstance()->GetWindow()->GetWindowBackend();
-            LUS::WindowBackend configWindowBackend;
-            int configWindowBackendId = LUS::Context::GetInstance()->GetConfig()->GetInt("Window.Backend.Id", -1);
-            if (configWindowBackendId != -1 && configWindowBackendId < static_cast<int>(LUS::WindowBackend::BACKEND_COUNT)) {
-                configWindowBackend = static_cast<LUS::WindowBackend>(configWindowBackendId);
+            Ship::WindowBackend runningWindowBackend = Ship::Context::GetInstance()->GetWindow()->GetWindowBackend();
+            Ship::WindowBackend configWindowBackend;
+            int configWindowBackendId = Ship::Context::GetInstance()->GetConfig()->GetInt("Window.Backend.Id", -1);
+            if (configWindowBackendId != -1 && configWindowBackendId < static_cast<int>(Ship::WindowBackend::BACKEND_COUNT)) {
+                configWindowBackend = static_cast<Ship::WindowBackend>(configWindowBackendId);
             } else {
                 configWindowBackend = runningWindowBackend;
             }
 
-            if (LUS::Context::GetInstance()->GetWindow()->GetAvailableWindowBackends()->size() <= 1) {
+            if (Ship::Context::GetInstance()->GetWindow()->GetAvailableWindowBackends()->size() <= 1) {
                 UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
             }
             if (ImGui::BeginCombo("##RApi", windowBackendNames[configWindowBackend])) {
-                for (size_t i = 0; i < LUS::Context::GetInstance()->GetWindow()->GetAvailableWindowBackends()->size(); i++) {
-                    auto backend = LUS::Context::GetInstance()->GetWindow()->GetAvailableWindowBackends()->data()[i];
+                for (size_t i = 0; i < Ship::Context::GetInstance()->GetWindow()->GetAvailableWindowBackends()->size(); i++) {
+                    auto backend = Ship::Context::GetInstance()->GetWindow()->GetAvailableWindowBackends()->data()[i];
                     if (ImGui::Selectable(windowBackendNames[backend], backend == configWindowBackend)) {
-                        LUS::Context::GetInstance()->GetConfig()->SetInt("Window.Backend.Id", static_cast<int>(backend));
-                        LUS::Context::GetInstance()->GetConfig()->SetString("Window.Backend.Name",
+                        Ship::Context::GetInstance()->GetConfig()->SetInt("Window.Backend.Id", static_cast<int>(backend));
+                        Ship::Context::GetInstance()->GetConfig()->SetString("Window.Backend.Name",
                                                                             windowBackendNames[backend]);
-                        LUS::Context::GetInstance()->GetConfig()->Save();
+                        Ship::Context::GetInstance()->GetConfig()->Save();
                     }
                 }
                 ImGui::EndCombo();
             }
-            if (LUS::Context::GetInstance()->GetWindow()->GetAvailableWindowBackends()->size() <= 1) {
+            if (Ship::Context::GetInstance()->GetWindow()->GetAvailableWindowBackends()->size() <= 1) {
                 UIWidgets::ReEnableComponent("");
             }
 
-            if (LUS::Context::GetInstance()->GetWindow()->CanDisableVerticalSync()) {
-                UIWidgets::PaddedEnhancementCheckbox("Enable Vsync", "gVsyncEnabled", true, false);
+            if (Ship::Context::GetInstance()->GetWindow()->CanDisableVerticalSync()) {
+                UIWidgets::PaddedEnhancementCheckbox("Enable Vsync", CVAR_VSYNC_ENABLED, true, false);
                 UIWidgets::Tooltip("Activate vertical sync, to prevent screen tearing.");
             }
 
-            if (LUS::Context::GetInstance()->GetWindow()->SupportsWindowedFullscreen()) {
-                UIWidgets::PaddedEnhancementCheckbox("Windowed fullscreen", "gSdlWindowedFullscreen", true, false);
+            if (Ship::Context::GetInstance()->GetWindow()->SupportsWindowedFullscreen()) {
+                UIWidgets::PaddedEnhancementCheckbox("Windowed fullscreen", CVAR_SDL_WINDOWED_FULLSCREEN, true, false);
             }
 
-            if (LUS::Context::GetInstance()->GetWindow()->GetGui()->SupportsViewports()) {
-                UIWidgets::PaddedEnhancementCheckbox("Allow multi-windows (Needs reload)", "gEnableMultiViewports", true, false, false, "", UIWidgets::CheckboxGraphics::Cross, true);
+            if (Ship::Context::GetInstance()->GetWindow()->GetGui()->SupportsViewports()) {
+                UIWidgets::PaddedEnhancementCheckbox("Allow multi-windows (Needs reload)", CVAR_ENABLE_MULTI_VIEWPORTS, true, false, false, "", UIWidgets::CheckboxGraphics::Cross, true);
                 UIWidgets::Tooltip("Allows windows to be able to be dragged off of the main game window. Requires a reload to take effect.");
             }
 
             // If more filters are added to LUS, make sure to add them to the filters list here
             ImGui::Text("Texture Filtering (Needs reload)");
-            UIWidgets::EnhancementCombobox("gTextureFilter", filters, FILTER_THREE_POINT);
+            UIWidgets::EnhancementCombobox(CVAR_TEXTURE_FILTER, filters, FILTER_THREE_POINT);
             UIWidgets::Tooltip("Texture filtering, aka texture smoothing. Requires a reload to take effect.\n\n"
                                "Three-Point: Replicates real N64 texture filtering.\n"
                                "Bilinear: If Three-Point causes poor performance, try this.\n"
@@ -503,7 +503,7 @@ void DrawSettingsMenu() {
             UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
 
             // Draw LUS settings menu (such as Overlays Text Font)
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->DrawSettings();
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->DrawSettings();
 
             ImGui::EndMenu();
         }
@@ -511,14 +511,14 @@ void DrawSettingsMenu() {
         UIWidgets::Spacer(0);
 
         if (ImGui::BeginMenu("Languages")) {
-            UIWidgets::PaddedEnhancementCheckbox("Translate Title Screen", "gTitleScreenTranslation");
-            if (UIWidgets::EnhancementRadioButton("English", "gLanguages", LANGUAGE_ENG)) {
+            UIWidgets::PaddedEnhancementCheckbox("Translate Title Screen", CVAR_SETTING("TitleScreenTranslation"));
+            if (UIWidgets::EnhancementRadioButton("English", CVAR_SETTING("Languages"), LANGUAGE_ENG)) {
                 GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSetGameLanguage>();
             }
-            if (UIWidgets::EnhancementRadioButton("German", "gLanguages", LANGUAGE_GER)) {
+            if (UIWidgets::EnhancementRadioButton("German", CVAR_SETTING("Languages"), LANGUAGE_GER)) {
                 GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSetGameLanguage>();
             }
-            if (UIWidgets::EnhancementRadioButton("French", "gLanguages", LANGUAGE_FRA)) {
+            if (UIWidgets::EnhancementRadioButton("French", CVAR_SETTING("Languages"), LANGUAGE_FRA)) {
                 GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSetGameLanguage>();
             }
             ImGui::EndMenu();
@@ -528,10 +528,10 @@ void DrawSettingsMenu() {
         
         if (ImGui::BeginMenu("Accessibility")) {
         #if defined(_WIN32) || defined(__APPLE__)
-            UIWidgets::PaddedEnhancementCheckbox("Text to Speech", "gA11yTTS");
+            UIWidgets::PaddedEnhancementCheckbox("Text to Speech", CVAR_SETTING("A11yTTS"));
             UIWidgets::Tooltip("Enables text to speech for in game dialog");
         #endif
-            UIWidgets::PaddedEnhancementCheckbox("Disable Idle Camera Re-Centering", "gA11yDisableIdleCam");
+            UIWidgets::PaddedEnhancementCheckbox("Disable Idle Camera Re-Centering", CVAR_SETTING("A11yDisableIdleCam"));
             UIWidgets::Tooltip("Disables the automatic re-centering of the camera when idle.");
             
             ImGui::EndMenu();
@@ -572,7 +572,7 @@ void DrawEnhancementsMenu() {
                 UIWidgets::PaddedEnhancementSliderInt("King Zora Speed: %dx", "##MWEEPSPEED", CVAR_ENHANCEMENT("MweepSpeed"), 1, 5, "", 1, true, false, true);
                 UIWidgets::PaddedEnhancementSliderInt("Vine/Ladder Climb speed +%d", "##CLIMBSPEED", CVAR_ENHANCEMENT("ClimbSpeed"), 0, 12, "", 0, true, false, true);
                 UIWidgets::PaddedEnhancementSliderInt("Block pushing speed +%d", "##BLOCKSPEED", CVAR_ENHANCEMENT("FasterBlockPush"), 0, 5, "", 0, true, false, true);
-                UIWidgets::PaddedEnhancementSliderInt("Crawl speed %dx", "##CRAWLSPEED", CVAR_ENHANCEMENT("CrawlSpeed"), 1, 5, "", 1, true, false, true);
+                UIWidgets::PaddedEnhancementSliderInt("Crawl speed %dx", "##CRAWLSPEED", CVAR_ENHANCEMENT("CrawlSpeed"), 1, 4, "", 1, true, false, true);
                 UIWidgets::PaddedEnhancementCheckbox("Faster Heavy Block Lift", CVAR_ENHANCEMENT("FasterHeavyBlockLift"), false, false);
                 UIWidgets::Tooltip("Speeds up lifting silver rocks and obelisks");
                 UIWidgets::PaddedEnhancementCheckbox("Skip Pickup Messages", CVAR_ENHANCEMENT("FastDrops"), true, false);
@@ -1059,10 +1059,10 @@ void DrawEnhancementsMenu() {
         if (ImGui::BeginMenu("Graphics"))
         {
             if (ImGui::BeginMenu("Mods")) {
-                if (UIWidgets::PaddedEnhancementCheckbox("Use Alternate Assets", "gAltAssets", false, false)) {
+                if (UIWidgets::PaddedEnhancementCheckbox("Use Alternate Assets", CVAR_ALT_ASSETS, false, false)) {
                     // The checkbox will flip the alt asset CVar, but we instead want it to change at the end of the game frame
                     // We toggle it back while setting the flag to update the CVar later
-                    CVarSetInteger("gAltAssets", !CVarGetInteger("gAltAssets", 0));
+                    CVarSetInteger(CVAR_ALT_ASSETS, !CVarGetInteger(CVAR_ALT_ASSETS, 0));
                     ToggleAltAssetsAtEndOfFrame = true;
                 }
                 UIWidgets::Tooltip("Toggle between standard assets and alternate assets. Usually mods will indicate if this setting has to be used or not.");
@@ -1147,7 +1147,7 @@ void DrawEnhancementsMenu() {
 				UIWidgets::PaddedEnhancementCheckbox("Scale Adult Equipment as Child", CVAR_ENHANCEMENT("ScaleAdultEquimentAsChild"), true, false);
 				UIWidgets::Tooltip("Scales all of the Adult Equipment, as well and moving some a bit, to fit on Child Link Better. May not work properly with some mods.");
 			}
-            UIWidgets::PaddedEnhancementCheckbox("N64 Mode", "gLowResMode", true, false);
+            UIWidgets::PaddedEnhancementCheckbox("N64 Mode", CVAR_LOW_RES_MODE, true, false);
             UIWidgets::Tooltip("Sets aspect ratio to 4:3 and lowers resolution to 240p, the N64's native resolution");
             UIWidgets::PaddedEnhancementCheckbox("Glitch line-up tick", CVAR_ENHANCEMENT("DrawLineupTick"), true, false);
             UIWidgets::Tooltip("Displays a tick in the top center of the screen to help with glitch line-ups in SoH, as traditional UI based line-ups do not work outside of 4:3");
@@ -1201,7 +1201,7 @@ void DrawEnhancementsMenu() {
             UIWidgets::Tooltip("Prevents the Forest Stage Deku Nut upgrade from becoming unobtainable after receiving the Poacher's Saw");
             UIWidgets::PaddedEnhancementCheckbox("Fix Navi text HUD position", CVAR_ENHANCEMENT("NaviTextFix"), true, false);
             UIWidgets::Tooltip("Correctly centers the Navi text prompt on the HUD's C-Up button");
-            UIWidgets::PaddedEnhancementCheckbox("Fix Anubis fireballs", CVAR_ENHANCEMENT("AnubixFix"), true, false);
+            UIWidgets::PaddedEnhancementCheckbox("Fix Anubis fireballs", CVAR_ENHANCEMENT("AnubisFix"), true, false);
             UIWidgets::Tooltip("Make Anubis fireballs do fire damage when reflected back at them with the Mirror Shield");
             if (UIWidgets::PaddedEnhancementCheckbox("Fix Megaton Hammer crouch stab", CVAR_ENHANCEMENT("CrouchStabHammerFix"), true, false)) {
                 if (!CVarGetInteger(CVAR_ENHANCEMENT("CrouchStabHammerFix"), 0)) {
@@ -1417,9 +1417,9 @@ void DrawEnhancementsMenu() {
         #ifdef __SWITCH__
         UIWidgets::Spacer(0);
         ImGui::Text("Switch performance mode");
-        if (UIWidgets::EnhancementCombobox(CVAR_ENHANCEMENT("SwitchPerfMode"), SWITCH_CPU_PROFILES, (int)LUS::SwitchProfiles::STOCK)) {
-            SPDLOG_INFO("Profile:: %s", SWITCH_CPU_PROFILES[CVarGetInteger(CVAR_ENHANCEMENT("SwitchPerfMode"), (int)LUS::SwitchProfiles::STOCK)]);
-            LUS::Switch::ApplyOverclock();
+        if (UIWidgets::EnhancementCombobox(CVAR_ENHANCEMENT("SwitchPerfMode"), SWITCH_CPU_PROFILES, (int)Ship::SwitchProfiles::STOCK)) {
+            SPDLOG_INFO("Profile:: %s", SWITCH_CPU_PROFILES[CVarGetInteger(CVAR_ENHANCEMENT("SwitchPerfMode"), (int)Ship::SwitchProfiles::STOCK)]);
+            Ship::Switch::ApplyOverclock();
         }
         #endif
 
@@ -1504,7 +1504,7 @@ void DrawCheatsMenu() {
             if (UIWidgets::PaddedEnhancementCheckbox("I promise I have read the warning", CVAR_CHEAT("SaveStatePromise"), true,
                                                      false)) {
                 CVarSetInteger(CVAR_CHEAT("SaveStatesEnabled"), 0);
-                LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
             }
             if (CVarGetInteger(CVAR_CHEAT("SaveStatePromise"), 0) == 1) {
                 UIWidgets::PaddedEnhancementCheckbox("I understand, enable save states", CVAR_CHEAT("SaveStatesEnabled"), true,
@@ -1598,8 +1598,8 @@ void DrawCheatsMenu() {
                 CVarSetInteger(CVAR_CHEAT("EnableBetaQuest"), betaQuestEnabled);
                 CVarSetInteger(CVAR_CHEAT("BetaQuestWorld"), betaQuestWorld);
 
-                std::reinterpret_pointer_cast<LUS::ConsoleWindow>(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->Dispatch("reset");
-                LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                std::reinterpret_pointer_cast<Ship::ConsoleWindow>(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->Dispatch("reset");
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
             }
 
             if (!isBetaQuestEnabled) {
@@ -1613,8 +1613,8 @@ void DrawCheatsMenu() {
     }
 }
 
-extern std::shared_ptr<LUS::GuiWindow> mStatsWindow;
-extern std::shared_ptr<LUS::GuiWindow> mConsoleWindow;
+extern std::shared_ptr<Ship::GuiWindow> mStatsWindow;
+extern std::shared_ptr<Ship::GuiWindow> mConsoleWindow;
 extern std::shared_ptr<SaveEditorWindow> mSaveEditorWindow;
 extern std::shared_ptr<ColViewerWindow> mColViewerWindow;
 extern std::shared_ptr<ActorViewerWindow> mActorViewerWindow;
@@ -1652,6 +1652,8 @@ void DrawDeveloperToolsMenu() {
         UIWidgets::Tooltip("Optimized debug warp screen, with the added ability to chose entrances and time of day");
         UIWidgets::PaddedEnhancementCheckbox("Debug Warp Screen Translation", CVAR_DEVELOPER_TOOLS("DebugWarpScreenTranslation"), true, false, false, "", UIWidgets::CheckboxGraphics::Cross, true);
         UIWidgets::Tooltip("Translate the Debug Warp Screen based on the game language");
+        UIWidgets::PaddedEnhancementCheckbox("Resource logging", CVAR_DEVELOPER_TOOLS("ResourceLogging"), true, false);
+        UIWidgets::Tooltip("Logs some resources as XML when they're loaded in binary format");
         if (gPlayState != NULL) {
             UIWidgets::PaddedSeparator();
             ImGui::Checkbox("Frame Advance##frameAdvance", (bool*)&gPlayState->frameAdvCtx.enabled);
@@ -1678,14 +1680,14 @@ void DrawDeveloperToolsMenu() {
         ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
         ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
         if (mStatsWindow) {
-            if (ImGui::Button(GetWindowButtonText("Stats", CVarGetInteger("gStatsEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
+            if (ImGui::Button(GetWindowButtonText("Stats", CVarGetInteger(CVAR_STATS_WINDOW_OPEN, 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
                 mStatsWindow->ToggleVisibility();
             }
             UIWidgets::Tooltip("Shows the stats window, with your FPS and frametimes, and the OS you're playing on");
         }
         UIWidgets::Spacer(0);
         if (mConsoleWindow) {
-            if (ImGui::Button(GetWindowButtonText("Console", CVarGetInteger("gConsoleEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
+            if (ImGui::Button(GetWindowButtonText("Console", CVarGetInteger(CVAR_CONSOLE_WINDOW_OPEN, 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
                 mConsoleWindow->ToggleVisibility();
             }
             UIWidgets::Tooltip("Enables the console window, allowing you to input commands, type help for some examples");
@@ -1761,7 +1763,8 @@ void DrawRemoteControlMenu() {
         ImGui::BeginDisabled(GameInteractor::Instance->isRemoteInteractorEnabled);
         ImGui::Text("Remote Interaction Scheme");
         if (UIWidgets::EnhancementCombobox(CVAR_REMOTE("Scheme"), remoteOptions, GI_SCHEME_SAIL)) {
-            switch (CVarGetInteger(CVAR_REMOTE("Scheme"), GI_SCHEME_SAIL)) {
+            auto scheme = CVarGetInteger(CVAR_REMOTE("Scheme"), GI_SCHEME_SAIL);
+            switch (scheme) {
                 case GI_SCHEME_SAIL:
                 case GI_SCHEME_CROWD_CONTROL:
                     CVarSetString(CVAR_REMOTE("IP"), "127.0.0.1");
@@ -1770,7 +1773,7 @@ void DrawRemoteControlMenu() {
                     port = 43384;
                     break;
             }
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         }
         switch (CVarGetInteger(CVAR_REMOTE("Scheme"), GI_SCHEME_SAIL)) {
             case GI_SCHEME_SAIL:
@@ -1806,14 +1809,14 @@ void DrawRemoteControlMenu() {
         ImGui::Text("Remote IP & Port");
         if (ImGui::InputText("##gRemote.IP", (char*)ip.c_str(), ip.capacity() + 1)) {
             CVarSetString(CVAR_REMOTE("IP"), ip.c_str());
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         }
 
         ImGui::SameLine();
         ImGui::PushItemWidth(ImGui::GetFontSize() * 5);
         if (ImGui::InputScalar("##gRemote.Port", ImGuiDataType_U16, &port)) {
             CVarSetInteger(CVAR_REMOTE("Port"), port);
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         }
 
         ImGui::PopItemWidth();
@@ -1825,8 +1828,9 @@ void DrawRemoteControlMenu() {
         const char* buttonLabel = GameInteractor::Instance->isRemoteInteractorEnabled ? "Disable" : "Enable";
         if (ImGui::Button(buttonLabel, ImVec2(-1.0f, 0.0f))) {
             if (GameInteractor::Instance->isRemoteInteractorEnabled) {
-                CVarSetInteger(CVAR_REMOTE("Enabled"), 0);
-                LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                CVarClear(CVAR_REMOTE("Enabled"));
+                CVarClear(CVAR_REMOTE("CrowdControl"));
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                 switch (CVarGetInteger(CVAR_REMOTE("Scheme"), GI_SCHEME_SAIL)) {
                     case GI_SCHEME_SAIL:
                         GameInteractorSail::Instance->Disable();
@@ -1837,7 +1841,7 @@ void DrawRemoteControlMenu() {
                 }
             } else {
                 CVarSetInteger(CVAR_REMOTE("Enabled"), 1);
-                LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                 switch (CVarGetInteger(CVAR_REMOTE("Scheme"), GI_SCHEME_SAIL)) {
                     case GI_SCHEME_SAIL:
                         GameInteractorSail::Instance->Enable();
@@ -1968,6 +1972,11 @@ void DrawRandomizerMenu() {
                 "Play unique fanfares when obtaining quest items "
                 "(medallions/stones/songs). Note that these fanfares are longer than usual."
             );
+            UIWidgets::PaddedEnhancementCheckbox("Mysterious Shuffled Items", CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), true, false);
+            UIWidgets::Tooltip(
+                "Displays a \"Mystery Item\" model in place of any freestanding/GS/shop items that were shuffled, "
+                "and replaces item names for them and scrubs and merchants, regardless of hint settings, "
+                "so you never know what you're getting.");
             ImGui::EndMenu();
         }
 

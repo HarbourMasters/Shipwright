@@ -229,24 +229,25 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Consumable.GoldRupee",          "Gold Rupee",           COSMETICS_GROUP_CONSUMABLE,   ImVec4(255, 190,  55, 255), false, true, true),
     COSMETIC_OPTION("Consumable.SilverRupee",        "Silver Rupee",         COSMETICS_GROUP_CONSUMABLE,   ImVec4(255, 255, 255, 255), false, true, true),
 
-    COSMETIC_OPTION("Hud.AButton",                   "A Button",             COSMETICS_GROUP_HUD,          ImVec4( 90,  90, 255, 255), false, true, false),
-    COSMETIC_OPTION("Hud.BButton",                   "B Button",             COSMETICS_GROUP_HUD,          ImVec4(  0, 150,   0, 255), false, true, false),
-    COSMETIC_OPTION("Hud.CButtons",                  "C Buttons",            COSMETICS_GROUP_HUD,          ImVec4(255, 160,   0, 255), false, true, false),
-    COSMETIC_OPTION("Hud.CUpButton",                 "C Up Button",          COSMETICS_GROUP_HUD,          ImVec4(255, 160,   0, 255), false, true, true),
-    COSMETIC_OPTION("Hud.CDownButton",               "C Down Button",        COSMETICS_GROUP_HUD,          ImVec4(255, 160,   0, 255), false, true, true),
-    COSMETIC_OPTION("Hud.CLeftButton",               "C Left Button",        COSMETICS_GROUP_HUD,          ImVec4(255, 160,   0, 255), false, true, true),
-    COSMETIC_OPTION("Hud.CRightButton",              "C Right Button",       COSMETICS_GROUP_HUD,          ImVec4(255, 160,   0, 255), false, true, true),
-    COSMETIC_OPTION("Hud.StartButton",               "Start Button",         COSMETICS_GROUP_HUD,          ImVec4(200,   0,   0, 255), false, true, false),
-    COSMETIC_OPTION("Hud.Dpad",                      "Dpad",                 COSMETICS_GROUP_HUD,          ImVec4(255, 255, 255, 255), false, true, false),
-    COSMETIC_OPTION("Hud.KeyCount",                  "Key Count",            COSMETICS_GROUP_HUD,          ImVec4(200, 230, 255, 255), false, true, true),
-    COSMETIC_OPTION("Hud.StoneOfAgony",              "Stone of Agony",       COSMETICS_GROUP_HUD,          ImVec4(255, 255, 255, 255), false, true, true),
-    COSMETIC_OPTION("Hud.Minimap",                   "Minimap",              COSMETICS_GROUP_HUD,          ImVec4(  0, 255, 255, 255), false, true, false),
-    COSMETIC_OPTION("Hud.MinimapPosition",           "Minimap Position",     COSMETICS_GROUP_HUD,          ImVec4(200, 255,   0, 255), false, true, true),
-    COSMETIC_OPTION("Hud.MinimapEntrance",           "Minimap Entrance",     COSMETICS_GROUP_HUD,          ImVec4(200,   0,   0, 255), false, true, true),
-    COSMETIC_OPTION("Hud.EnemyHealthBar",            "Enemy Health Bar",     COSMETICS_GROUP_HUD,          ImVec4(255,   0,   0, 255), true, true, false),
-    COSMETIC_OPTION("Hud.EnemyHealthBorder",         "Enemy Health Border",  COSMETICS_GROUP_HUD,          ImVec4(255, 255, 255, 255), true, false, true),
-    COSMETIC_OPTION("Hud.NameTagActorText",          "Nametag Text",         COSMETICS_GROUP_HUD,          ImVec4(255, 255, 255, 255), true, true, false),
-    COSMETIC_OPTION("Hud.NameTagActorBackground",    "Nametag Background",   COSMETICS_GROUP_HUD,          ImVec4(0,     0,   0,  80), true, false, true),
+    COSMETIC_OPTION("HUD.AButton",                   "A Button",             COSMETICS_GROUP_HUD,          ImVec4( 90,  90, 255, 255), false, true, false),
+    COSMETIC_OPTION("HUD.BButton",                   "B Button",             COSMETICS_GROUP_HUD,          ImVec4(  0, 150,   0, 255), false, true, false),
+    COSMETIC_OPTION("HUD.CButtons",                  "C Buttons",            COSMETICS_GROUP_HUD,          ImVec4(255, 160,   0, 255), false, true, false),
+    COSMETIC_OPTION("HUD.CUpButton",                 "C Up Button",          COSMETICS_GROUP_HUD,          ImVec4(255, 160,   0, 255), false, true, true),
+    COSMETIC_OPTION("HUD.CDownButton",               "C Down Button",        COSMETICS_GROUP_HUD,          ImVec4(255, 160,   0, 255), false, true, true),
+    COSMETIC_OPTION("HUD.CLeftButton",               "C Left Button",        COSMETICS_GROUP_HUD,          ImVec4(255, 160,   0, 255), false, true, true),
+    COSMETIC_OPTION("HUD.CRightButton",              "C Right Button",       COSMETICS_GROUP_HUD,          ImVec4(255, 160,   0, 255), false, true, true),
+    COSMETIC_OPTION("HUD.StartButton",               "Start Button",         COSMETICS_GROUP_HUD,          ImVec4(200,   0,   0, 255), false, true, false),
+    COSMETIC_OPTION("HUD.Dpad",                      "Dpad",                 COSMETICS_GROUP_HUD,          ImVec4(255, 255, 255, 255), false, true, false),
+    COSMETIC_OPTION("HUD.KeyCount",                  "Key Count",            COSMETICS_GROUP_HUD,          ImVec4(200, 230, 255, 255), false, true, true),
+    COSMETIC_OPTION("HUD.StoneOfAgony",              "Stone of Agony",       COSMETICS_GROUP_HUD,          ImVec4(255, 255, 255, 255), false, true, true),
+    COSMETIC_OPTION("HUD.Minimap",                   "Minimap",              COSMETICS_GROUP_HUD,          ImVec4(  0, 255, 255, 255), false, true, false),
+    COSMETIC_OPTION("HUD.MinimapPosition",           "Minimap Position",     COSMETICS_GROUP_HUD,          ImVec4(200, 255,   0, 255), false, true, true),
+    COSMETIC_OPTION("HUD.MinimapEntrance",           "Minimap Entrance",     COSMETICS_GROUP_HUD,          ImVec4(200,   0,   0, 255), false, true, true),
+    COSMETIC_OPTION("HUD.EnemyHealthBar",            "Enemy Health Bar",     COSMETICS_GROUP_HUD,          ImVec4(255,   0,   0, 255), true, true, false),
+    COSMETIC_OPTION("HUD.EnemyHealthBorder",         "Enemy Health Border",  COSMETICS_GROUP_HUD,          ImVec4(255, 255, 255, 255), true, false, true),
+    COSMETIC_OPTION("HUD.NameTagActorText",          "Nametag Text",         COSMETICS_GROUP_HUD,          ImVec4(255, 255, 255, 255), true, true, false),
+    COSMETIC_OPTION("HUD.NameTagActorBackground",    "Nametag Background",   COSMETICS_GROUP_HUD,          ImVec4(0,     0,   0,  80), true, false, true),
+    // Todo (Cosmetics): re-implement title card colors
 
     COSMETIC_OPTION("Kaleido.ItemSelA",                  "Item Select Color",    COSMETICS_GROUP_KALEIDO,      ImVec4(10,   50,  80, 255), false, true, false),
     COSMETIC_OPTION("Kaleido.ItemSelB",                  "Item Select Color B",  COSMETICS_GROUP_KALEIDO,      ImVec4(70,  100, 130, 255), false, true, true),
@@ -298,12 +299,12 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Arrows.LightPrimary",           "Light Primary",        COSMETICS_GROUP_ARROWS,       ImVec4(255, 255,   0, 255), false, true, false),
     COSMETIC_OPTION("Arrows.LightSecondary",         "Light Secondary",      COSMETICS_GROUP_ARROWS,       ImVec4(255, 255, 170,   0), false, true, true),
 
-    // COSMETIC_OPTION("Magic.DinsPrimary",             "Din's Primary",        COSMETICS_GROUP_MAGIC,        ImVec4(255, 255, 255, 255), false, true, false), // Todo (Cosmetics): Replace gDF_Col
-    // COSMETIC_OPTION("Magic.DinsSecondary",           "Din's Secondary",      COSMETICS_GROUP_MAGIC,        ImVec4(255, 255, 255, 255), false, true, true), // Todo (Cosmetics): Replace gDF_Env
+    // COSMETIC_OPTION("Magic.DinsPrimary",             "Din's Primary",        COSMETICS_GROUP_MAGIC,        ImVec4(255, 255, 255, 255), false, true, false),
+    // COSMETIC_OPTION("Magic.DinsSecondary",           "Din's Secondary",      COSMETICS_GROUP_MAGIC,        ImVec4(255, 255, 255, 255), false, true, true),
     // COSMETIC_OPTION("Magic.FaroresPrimary",          "Farore's Primary",     COSMETICS_GROUP_MAGIC,        ImVec4(255, 255, 255, 255), false, true, false), // Todo (Cosmetics): Implement
     // COSMETIC_OPTION("Magic.FaroresSecondary",        "Farore's Secondary",   COSMETICS_GROUP_MAGIC,        ImVec4(255, 255, 255, 255), false, true, true), // Todo (Cosmetics): Implement
-    // COSMETIC_OPTION("Magic.NayrusPrimary",           "Nayru's Primary",      COSMETICS_GROUP_MAGIC,        ImVec4(255, 255, 255, 255), false, true, false), // Todo (Cosmetics): Replace gNL_Diamond_Col / gNL_Orb_Col
-    // COSMETIC_OPTION("Magic.NayrusSecondary",         "Nayru's Secondary",    COSMETICS_GROUP_MAGIC,        ImVec4(255, 255, 255, 255), false, true, true), // Todo (Cosmetics): Replace gNL_Diamond_Env / gNL_Orb_Env
+    // COSMETIC_OPTION("Magic.NayrusPrimary",           "Nayru's Primary",      COSMETICS_GROUP_MAGIC,        ImVec4(255, 255, 255, 255), false, true, false),
+    // COSMETIC_OPTION("Magic.NayrusSecondary",         "Nayru's Secondary",    COSMETICS_GROUP_MAGIC,        ImVec4(255, 255, 255, 255), false, true, true),
 
     COSMETIC_OPTION("SpinAttack.Level1Primary",      "Level 1 Primary",      COSMETICS_GROUP_SPIN_ATTACK,  ImVec4(170, 255, 255, 255), false, true, true),
     COSMETIC_OPTION("SpinAttack.Level1Secondary",    "Level 1 Secondary",    COSMETICS_GROUP_SPIN_ATTACK,  ImVec4(  0, 100, 255, 255), false, true, false),
@@ -322,6 +323,7 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("World.Moon",                    "Moon",                 COSMETICS_GROUP_WORLD,        ImVec4(240, 255, 180, 255), false, true, true),
     COSMETIC_OPTION("World.GossipStone",             "Gossip Stone",         COSMETICS_GROUP_WORLD,        ImVec4(200, 200, 200, 255), false, true, true),
     COSMETIC_OPTION("World.RedIce",                  "Red Ice",              COSMETICS_GROUP_WORLD,        ImVec4(255,   0,   0, 255), false, true, false),
+    COSMETIC_OPTION("World.MysteryItem",             "Mystery Item",         COSMETICS_GROUP_WORLD,        ImVec4(0,    60, 100, 255), false, true, false),
 
     COSMETIC_OPTION("Navi.IdlePrimary",              "Idle Primary",         COSMETICS_GROUP_NAVI,         ImVec4(255, 255, 255, 255), false, true, false),
     COSMETIC_OPTION("Navi.IdleSecondary",            "Idle Secondary",       COSMETICS_GROUP_NAVI,         ImVec4(  0,   0, 255,   0), false, true, true),
@@ -350,11 +352,11 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
 };
 
 static const char* MarginCvarList[] {
-    CVAR_COSMETIC("Hearts"), CVAR_COSMETIC("HeartsCount"), CVAR_COSMETIC("MagicBar"), CVAR_COSMETIC("VisualSoA"), CVAR_COSMETIC("BButton"), CVAR_COSMETIC("AButton"), CVAR_COSMETIC("StartButton"), 
-    CVAR_COSMETIC("CUpButton"), CVAR_COSMETIC("CDownButton"), CVAR_COSMETIC("CLeftButton"), CVAR_COSMETIC("CRightButton"), CVAR_COSMETIC("Dpad"), CVAR_COSMETIC("Minimap"), 
-    CVAR_COSMETIC("SmallKey"), CVAR_COSMETIC("Rupees"), CVAR_COSMETIC("Carrots"),  CVAR_COSMETIC("Timers"), CVAR_COSMETIC("ArcheryScore"), CVAR_COSMETIC("TitleCard.Map"), CVAR_COSMETIC("TitleCard.Boss"), CVAR_COSMETIC("IGT")
+    CVAR_COSMETIC("HUD.Hearts"), CVAR_COSMETIC("HUD.HeartsCount"), CVAR_COSMETIC("HUD.MagicBar"), CVAR_COSMETIC("HUD.VisualSoA"), CVAR_COSMETIC("HUD.BButton"), CVAR_COSMETIC("HUD.AButton"), CVAR_COSMETIC("HUD.StartButton"), 
+    CVAR_COSMETIC("HUD.CUpButton"), CVAR_COSMETIC("HUD.CDownButton"), CVAR_COSMETIC("HUD.CLeftButton"), CVAR_COSMETIC("HUD.CRightButton"), CVAR_COSMETIC("HUD.Dpad"), CVAR_COSMETIC("HUD.Minimap"), 
+    CVAR_COSMETIC("HUD.SmallKey"), CVAR_COSMETIC("HUD.Rupees"), CVAR_COSMETIC("HUD.Carrots"),  CVAR_COSMETIC("HUD.Timers"), CVAR_COSMETIC("HUD.ArcheryScore"), CVAR_COSMETIC("HUD.TitleCard.Map"), CVAR_COSMETIC("HUD.TitleCard.Boss"), CVAR_COSMETIC("HUD.IGT")
 };
-static const char* MarginCvarNonAnchor[]{ CVAR_COSMETIC("Carrots"), CVAR_COSMETIC("Timers"), CVAR_COSMETIC("ArcheryScore"), CVAR_COSMETIC("TitleCard.Map"),CVAR_COSMETIC("TitleCard.Boss") };
+static const char* MarginCvarNonAnchor[]{ CVAR_COSMETIC("HUD.Carrots"), CVAR_COSMETIC("HUD.Timers"), CVAR_COSMETIC("HUD.ArcheryScore"), CVAR_COSMETIC("HUD.TitleCard.Map"),CVAR_COSMETIC("HUD.TitleCard.Boss") };
 
 ImVec4 GetRandomValue(int MaximumPossible){
     ImVec4 NewColor;
@@ -1205,10 +1207,10 @@ void Draw_Placements(){
     if (ImGui::BeginTable("tableMargins", 1, FlagsTable)) {
         ImGui::TableSetupColumn("General margins settings", FlagsCell, TablesCellsWidth);
         Table_InitHeader();
-        UIWidgets::EnhancementSliderInt("Top : %dx", "##UIMARGINT", "gHUDMargin_T", (ImGui::GetWindowViewport()->Size.y/2)*-1, 25, "", 0);
-        UIWidgets::EnhancementSliderInt("Left: %dx", "##UIMARGINL", "gHUDMargin_L", -25, ImGui::GetWindowViewport()->Size.x, "", 0);
-        UIWidgets::EnhancementSliderInt("Right: %dx", "##UIMARGINR", "gHUDMargin_R", (ImGui::GetWindowViewport()->Size.x)*-1, 25, "", 0);
-        UIWidgets::EnhancementSliderInt("Bottom: %dx", "##UIMARGINB", "gHUDMargin_B", (ImGui::GetWindowViewport()->Size.y/2)*-1, 25, "", 0);
+        UIWidgets::EnhancementSliderInt("Top : %dx", "##UIMARGINT", CVAR_COSMETIC("HUD.Margin.T"), (ImGui::GetWindowViewport()->Size.y/2)*-1, 25, "", 0);
+        UIWidgets::EnhancementSliderInt("Left: %dx", "##UIMARGINL", CVAR_COSMETIC("HUD.Margin.L"), -25, ImGui::GetWindowViewport()->Size.x, "", 0);
+        UIWidgets::EnhancementSliderInt("Right: %dx", "##UIMARGINR", CVAR_COSMETIC("HUD.Margin.R"), (ImGui::GetWindowViewport()->Size.x)*-1, 25, "", 0);
+        UIWidgets::EnhancementSliderInt("Bottom: %dx", "##UIMARGINB", CVAR_COSMETIC("HUD.Margin.B"), (ImGui::GetWindowViewport()->Size.y/2)*-1, 25, "", 0);
         SetMarginAll("All margins on",true);
         UIWidgets::Tooltip("Set most of the elements to use margins\nSome elements with default position will not be affected\nElements without Anchor or Hidden will not be turned on");
         ImGui::SameLine();
@@ -1224,11 +1226,11 @@ void Draw_Placements(){
         if (ImGui::BeginTable("tableHeartsCounts", 1, FlagsTable)) {
             ImGui::TableSetupColumn("Hearts counts settings", FlagsCell, TablesCellsWidth);
             Table_InitHeader(false);
-            DrawUseMarginsSlider("Hearts counts", CVAR_COSMETIC("Hearts"));
-            DrawPositionsRadioBoxes(CVAR_COSMETIC("HeartsCount"));
-            DrawPositionSlider(CVAR_COSMETIC("HeartsCount"),-22,ImGui::GetWindowViewport()->Size.y,-125,ImGui::GetWindowViewport()->Size.x);
-            DrawScaleSlider(CVAR_COSMETIC("HeartsCount"),0.7f);
-            UIWidgets::EnhancementSliderInt("Heart line length : %d", "##HeartLineLength", CVAR_COSMETIC("Hearts.LineLength"), 0, 20, "", 10);
+            DrawUseMarginsSlider("Hearts counts", CVAR_COSMETIC("HUD.Hearts"));
+            DrawPositionsRadioBoxes(CVAR_COSMETIC("HUD.HeartsCount"));
+            DrawPositionSlider(CVAR_COSMETIC("HUD.HeartsCount"),-22,ImGui::GetWindowViewport()->Size.y,-125,ImGui::GetWindowViewport()->Size.x);
+            DrawScaleSlider(CVAR_COSMETIC("HUD.HeartsCount"),0.7f);
+            UIWidgets::EnhancementSliderInt("Heart line length : %d", "##HeartLineLength", CVAR_COSMETIC("HUD.Hearts.LineLength"), 0, 20, "", 10);
             UIWidgets::Tooltip("This will set the length of a row of hearts. Set to 0 for unlimited length.");
             ImGui::NewLine();
             ImGui::EndTable();
@@ -1238,12 +1240,12 @@ void Draw_Placements(){
         if (ImGui::BeginTable("tablemmpos", 1, FlagsTable)) {
             ImGui::TableSetupColumn("Magic meter settings", FlagsCell, TablesCellsWidth);
             Table_InitHeader(false);
-            DrawUseMarginsSlider("Magic meter", CVAR_COSMETIC("MagicBar"));
-            DrawPositionsRadioBoxes(CVAR_COSMETIC("MagicBar"));
-            UIWidgets::EnhancementRadioButton("Anchor to life bar", CVAR_COSMETIC("MagicBar.PosType"), 5);
+            DrawUseMarginsSlider("Magic meter", CVAR_COSMETIC("HUD.MagicBar"));
+            DrawPositionsRadioBoxes(CVAR_COSMETIC("HUD.MagicBar"));
+            UIWidgets::EnhancementRadioButton("Anchor to life bar", CVAR_COSMETIC("HUD.MagicBar.PosType"), 5);
             UIWidgets::Tooltip("This will make your elements follow the bottom of the life meter");
-            DrawPositionSlider(CVAR_COSMETIC("MagicBar"), 0, ImGui::GetWindowViewport()->Size.y/2, -5, ImGui::GetWindowViewport()->Size.x/2);
-            DrawScaleSlider(CVAR_COSMETIC("MagicBar"),1.0f);
+            DrawPositionSlider(CVAR_COSMETIC("HUD.MagicBar"), 0, ImGui::GetWindowViewport()->Size.y/2, -5, ImGui::GetWindowViewport()->Size.x/2);
+            DrawScaleSlider(CVAR_COSMETIC("HUD.MagicBar"),1.0f);
             ImGui::NewLine();
             ImGui::EndTable();
         }
@@ -1252,77 +1254,77 @@ void Draw_Placements(){
         if (ImGui::BeginTable("tabledvisualstoneofagony", 1, FlagsTable)) {
             ImGui::TableSetupColumn("Visual stone of agony settings", FlagsCell, TablesCellsWidth);
             Table_InitHeader(false);
-            DrawUseMarginsSlider("Visual stone of agony", CVAR_COSMETIC("VisualSoA"));
-            DrawPositionsRadioBoxes(CVAR_COSMETIC("VisualSoA"));
+            DrawUseMarginsSlider("Visual stone of agony", CVAR_COSMETIC("HUD.VisualSoA"));
+            DrawPositionsRadioBoxes(CVAR_COSMETIC("HUD.VisualSoA"));
             s16 Min_X_VSOA = 0;
             s16 Max_X_VSOA = ImGui::GetWindowViewport()->Size.x/2;
-            if(CVarGetInteger(CVAR_COSMETIC("VisualSoA.PosType"),0) == 2){
+            if(CVarGetInteger(CVAR_COSMETIC("HUD.VisualSoA.PosType"),0) == 2){
                 Max_X_VSOA = 290;
-            } else if(CVarGetInteger(CVAR_COSMETIC("VisualSoA.PosType"),0) == 4){
+            } else if(CVarGetInteger(CVAR_COSMETIC("HUD.VisualSoA.PosType"),0) == 4){
                 Min_X_VSOA = (ImGui::GetWindowViewport()->Size.x/2)*-1;
             }
-            DrawPositionSlider(CVAR_COSMETIC("VisualSoA"), 0, ImGui::GetWindowViewport()->Size.y/2, Min_X_VSOA, Max_X_VSOA);
-            DrawScaleSlider(CVAR_COSMETIC("VisualSoA"),1.0f);
+            DrawPositionSlider(CVAR_COSMETIC("HUD.VisualSoA"), 0, ImGui::GetWindowViewport()->Size.y/2, Min_X_VSOA, Max_X_VSOA);
+            DrawScaleSlider(CVAR_COSMETIC("HUD.VisualSoA"),1.0f);
             ImGui::NewLine();
             ImGui::EndTable();
         }
     }
-    Draw_Table_Dropdown("B Button position", "tablebbtn", "B Button settings", "B Button", CVAR_COSMETIC("BButton"), 0, ImGui::GetWindowViewport()->Size.y/4+50, -1, ImGui::GetWindowViewport()->Size.x-50, 0.95f);
-    Draw_Table_Dropdown("A Button position", "tableabtn", "A Button settings", "A Button", CVAR_COSMETIC("AButton"), -10, ImGui::GetWindowViewport()->Size.y/4+50, -20, ImGui::GetWindowViewport()->Size.x-50, 0.95f);
-    Draw_Table_Dropdown("Start Button position", "tablestartbtn", "Start Button settings", "Start Button", CVAR_COSMETIC("StartButton"), 0, ImGui::GetWindowViewport()->Size.y/2, 0, ImGui::GetWindowViewport()->Size.x/2+70, 0.75f);
-    C_Button_Dropdown("C Button Up position", "tablecubtn", "C Button Up settings", "C Button Up", CVAR_COSMETIC("CUpButton"), CVAR_COSMETIC("CUpButton.PosType"), 0.5f);
-    C_Button_Dropdown("C Button Down position", "tablecdbtn", "C Button Down settings", "C Button Down", CVAR_COSMETIC("CDownButton"), CVAR_COSMETIC("CDownButton.PosType"), 0.87f);
-    C_Button_Dropdown("C Button Left position", "tableclbtn", "C Button Left settings", "C Button Left", CVAR_COSMETIC("CLeftButton"), CVAR_COSMETIC("CLeftButton.PosType"), 0.87f);
-    C_Button_Dropdown("C Button Right position", "tablecrbtn", "C Button Right settings", "C Button Right", CVAR_COSMETIC("CRightButton"), CVAR_COSMETIC("CRightButton.PosType"), 0.87f);
-    if (CVarGetInteger("gDpadEquips",0) && ImGui::CollapsingHeader("DPad items position")) {
+    Draw_Table_Dropdown("B Button position", "tablebbtn", "B Button settings", "B Button", CVAR_COSMETIC("HUD.BButton"), 0, ImGui::GetWindowViewport()->Size.y/4+50, -1, ImGui::GetWindowViewport()->Size.x-50, 0.95f);
+    Draw_Table_Dropdown("A Button position", "tableabtn", "A Button settings", "A Button", CVAR_COSMETIC("HUD.AButton"), -10, ImGui::GetWindowViewport()->Size.y/4+50, -20, ImGui::GetWindowViewport()->Size.x-50, 0.95f);
+    Draw_Table_Dropdown("Start Button position", "tablestartbtn", "Start Button settings", "Start Button", CVAR_COSMETIC("HUD.StartButton"), 0, ImGui::GetWindowViewport()->Size.y/2, 0, ImGui::GetWindowViewport()->Size.x/2+70, 0.75f);
+    C_Button_Dropdown("C Button Up position", "tablecubtn", "C Button Up settings", "C Button Up", CVAR_COSMETIC("HUD.CUpButton"), CVAR_COSMETIC("HUD.CUpButton.PosType"), 0.5f);
+    C_Button_Dropdown("C Button Down position", "tablecdbtn", "C Button Down settings", "C Button Down", CVAR_COSMETIC("HUD.CDownButton"), CVAR_COSMETIC("HUD.CDownButton.PosType"), 0.87f);
+    C_Button_Dropdown("C Button Left position", "tableclbtn", "C Button Left settings", "C Button Left", CVAR_COSMETIC("HUD.CLeftButton"), CVAR_COSMETIC("HUD.CLeftButton.PosType"), 0.87f);
+    C_Button_Dropdown("C Button Right position", "tablecrbtn", "C Button Right settings", "C Button Right", CVAR_COSMETIC("HUD.CRightButton"), CVAR_COSMETIC("HUD.CRightButton.PosType"), 0.87f);
+    if (CVarGetInteger(CVAR_SETTING("DpadEquips"),0) && ImGui::CollapsingHeader("DPad items position")) {
         if (ImGui::BeginTable("tabledpaditems", 1, FlagsTable)) {
             ImGui::TableSetupColumn("DPad items settings", FlagsCell, TablesCellsWidth);
             Table_InitHeader(false);
-            DrawUseMarginsSlider("DPad items", CVAR_COSMETIC("Dpad"));
-            DrawPositionsRadioBoxes(CVAR_COSMETIC("Dpad"));
+            DrawUseMarginsSlider("DPad items", CVAR_COSMETIC("HUD.Dpad"));
+            DrawPositionsRadioBoxes(CVAR_COSMETIC("HUD.Dpad"));
             s16 Min_X_Dpad = 0;
             s16 Max_X_Dpad = ImGui::GetWindowViewport()->Size.x/2;
-            if(CVarGetInteger("gDPadPosType",0) == 2){
+            if(CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosType"),0) == 2){
                 Max_X_Dpad = 290;
-            } else if(CVarGetInteger("gDPadPosType",0) == 4){
+            } else if(CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosType"),0) == 4){
                 Min_X_Dpad = (ImGui::GetWindowViewport()->Size.x/2)*-1;
             }
-            DrawPositionSlider(CVAR_COSMETIC("Dpad"), 0, ImGui::GetWindowViewport()->Size.y/2, Min_X_Dpad, Max_X_Dpad);
-            DrawScaleSlider(CVAR_COSMETIC("Dpad"),1.0f);
+            DrawPositionSlider(CVAR_COSMETIC("HUD.Dpad"), 0, ImGui::GetWindowViewport()->Size.y/2, Min_X_Dpad, Max_X_Dpad);
+            DrawScaleSlider(CVAR_COSMETIC("HUD.Dpad"),1.0f);
             ImGui::NewLine();
             ImGui::EndTable();
         }
     }
-    Draw_Table_Dropdown("Minimaps position", "tableminimapspos", "minimaps settings", "Minimap", CVAR_COSMETIC("Minimap"), (ImGui::GetWindowViewport()->Size.y/3)*-1, ImGui::GetWindowViewport()->Size.y/3, ImGui::GetWindowViewport()->Size.x*-1, ImGui::GetWindowViewport()->Size.x/2, 1.0f);
-    Draw_Table_Dropdown("Small Keys counter position", "tablesmolekeys", "Small Keys counter settings", "Small Keys counter", CVAR_COSMETIC("SmallKey"), 0, ImGui::GetWindowViewport()->Size.y/3, -1, ImGui::GetWindowViewport()->Size.x/2, 1.0f);
-    Draw_Table_Dropdown("Rupee counter position", "tablerupeecount", "Rupee counter settings", "Rupee counter", CVAR_COSMETIC("Rupees"), -2, ImGui::GetWindowViewport()->Size.y/3, -3, ImGui::GetWindowViewport()->Size.x/2, 1.0f);
-    Draw_Table_Dropdown("Carrots position", "tableCarrots", "Carrots settings", "Carrots", CVAR_COSMETIC("Carrots"), 0, ImGui::GetWindowViewport()->Size.y/2, -50, ImGui::GetWindowViewport()->Size.x/2+25, 1.0f);
-    Draw_Table_Dropdown("Timers position", "tabletimers", "Timers settings", "Timers", CVAR_COSMETIC("Timers"), 0, ImGui::GetWindowViewport()->Size.y/2, -50, ImGui::GetWindowViewport()->Size.x/2-50, 1.0f);
-    Draw_Table_Dropdown("Archery Scores position", "tablearchery", "Archery Scores settings", "Archery scores", CVAR_COSMETIC("ArcheryScore"), 0, ImGui::GetWindowViewport()->Size.y/2, -50, ImGui::GetWindowViewport()->Size.x/2-50, 1.0f);
-    Draw_Table_Dropdown("Title cards (Maps) position", "tabletcmaps", "Titlecard maps settings", "Title cards (overworld)", CVAR_COSMETIC("TitleCard.Map"), 0, ImGui::GetWindowViewport()->Size.y/2, -50, ImGui::GetWindowViewport()->Size.x/2+10, 1.0f);
-    Draw_Table_Dropdown("Title cards (Bosses) position", "tabletcbosses", "Title cards (Bosses) settings", "Title cards (Bosses)", CVAR_COSMETIC("TitleCard.Boss"), 0, ImGui::GetWindowViewport()->Size.y/2, -50, ImGui::GetWindowViewport()->Size.x/2+10, 1.0f);
-    Draw_Table_Dropdown("In-game Gameplay Timer position", "tablegameplaytimer", "In-game Gameplay Timer settings", "In-game Gameplay Timer", CVAR_COSMETIC("IGT"), 0, ImGui::GetWindowViewport()->Size.y / 2, -50, ImGui::GetWindowViewport()->Size.x / 2 + 10, 1.0f);
+    Draw_Table_Dropdown("Minimaps position", "tableminimapspos", "minimaps settings", "Minimap", CVAR_COSMETIC("HUD.Minimap"), (ImGui::GetWindowViewport()->Size.y/3)*-1, ImGui::GetWindowViewport()->Size.y/3, ImGui::GetWindowViewport()->Size.x*-1, ImGui::GetWindowViewport()->Size.x/2, 1.0f);
+    Draw_Table_Dropdown("Small Keys counter position", "tablesmolekeys", "Small Keys counter settings", "Small Keys counter", CVAR_COSMETIC("HUD.SmallKey"), 0, ImGui::GetWindowViewport()->Size.y/3, -1, ImGui::GetWindowViewport()->Size.x/2, 1.0f);
+    Draw_Table_Dropdown("Rupee counter position", "tablerupeecount", "Rupee counter settings", "Rupee counter", CVAR_COSMETIC("HUD.Rupees"), -2, ImGui::GetWindowViewport()->Size.y/3, -3, ImGui::GetWindowViewport()->Size.x/2, 1.0f);
+    Draw_Table_Dropdown("Carrots position", "tableCarrots", "Carrots settings", "Carrots", CVAR_COSMETIC("HUD.Carrots"), 0, ImGui::GetWindowViewport()->Size.y/2, -50, ImGui::GetWindowViewport()->Size.x/2+25, 1.0f);
+    Draw_Table_Dropdown("Timers position", "tabletimers", "Timers settings", "Timers", CVAR_COSMETIC("HUD.Timers"), 0, ImGui::GetWindowViewport()->Size.y/2, -50, ImGui::GetWindowViewport()->Size.x/2-50, 1.0f);
+    Draw_Table_Dropdown("Archery Scores position", "tablearchery", "Archery Scores settings", "Archery scores", CVAR_COSMETIC("HUD.ArcheryScore"), 0, ImGui::GetWindowViewport()->Size.y/2, -50, ImGui::GetWindowViewport()->Size.x/2-50, 1.0f);
+    Draw_Table_Dropdown("Title cards (Maps) position", "tabletcmaps", "Titlecard maps settings", "Title cards (overworld)", CVAR_COSMETIC("HUD.TitleCard.Map"), 0, ImGui::GetWindowViewport()->Size.y/2, -50, ImGui::GetWindowViewport()->Size.x/2+10, 1.0f);
+    Draw_Table_Dropdown("Title cards (Bosses) position", "tabletcbosses", "Title cards (Bosses) settings", "Title cards (Bosses)", CVAR_COSMETIC("HUD.TitleCard.Boss"), 0, ImGui::GetWindowViewport()->Size.y/2, -50, ImGui::GetWindowViewport()->Size.x/2+10, 1.0f);
+    Draw_Table_Dropdown("In-game Gameplay Timer position", "tablegameplaytimer", "In-game Gameplay Timer settings", "In-game Gameplay Timer", CVAR_COSMETIC("HUD.IGT"), 0, ImGui::GetWindowViewport()->Size.y / 2, -50, ImGui::GetWindowViewport()->Size.x / 2 + 10, 1.0f);
     if (ImGui::CollapsingHeader("Enemy Health Bar position")) {
         if (ImGui::BeginTable("enemyhealthbar", 1, FlagsTable)) {
             ImGui::TableSetupColumn("Enemy Health Bar settings", FlagsCell, TablesCellsWidth);
             Table_InitHeader(false);
-            std::string posTypeCVar = CVAR_COSMETIC("HUD.EnemyHealthBarPosType");
+            std::string posTypeCVar = CVAR_COSMETIC("HUD.EnemyHealthBar.PosType");
             UIWidgets::EnhancementRadioButton("Anchor to Enemy", posTypeCVar.c_str(), ENEMYHEALTH_ANCHOR_ACTOR);
             UIWidgets::Tooltip("This will use enemy on screen position");
             UIWidgets::EnhancementRadioButton("Anchor to the top", posTypeCVar.c_str(), ENEMYHEALTH_ANCHOR_TOP);
             UIWidgets::Tooltip("This will make your elements follow the top edge of your game window");
             UIWidgets::EnhancementRadioButton("Anchor to the bottom", posTypeCVar.c_str(), ENEMYHEALTH_ANCHOR_BOTTOM);
             UIWidgets::Tooltip("This will make your elements follow the bottom edge of your game window");
-            DrawPositionSlider(CVAR_COSMETIC("HUD.EnemyHealthBar"), -SCREEN_HEIGHT, SCREEN_HEIGHT, -ImGui::GetWindowViewport()->Size.x / 2, ImGui::GetWindowViewport()->Size.x / 2);
-            if (UIWidgets::EnhancementSliderInt("Health Bar Width: %d", "##EnemyHealthBarWidth", CVAR_COSMETIC("HUD.EnemyHealthBarWidth.Value"), 32, 128, "", 64)) {
-                CVarSetInteger(CVAR_COSMETIC("HUD.EnemyHealthBarWidth.Changed"), 1);
+            DrawPositionSlider(CVAR_COSMETIC("HUD.EnemyHealthBar."), -SCREEN_HEIGHT, SCREEN_HEIGHT, -ImGui::GetWindowViewport()->Size.x / 2, ImGui::GetWindowViewport()->Size.x / 2);
+            if (UIWidgets::EnhancementSliderInt("Health Bar Width: %d", "##EnemyHealthBarWidth", CVAR_COSMETIC("HUD.EnemyHealthBar.Width.Value"), 32, 128, "", 64)) {
+                CVarSetInteger(CVAR_COSMETIC("HUD.EnemyHealthBar.Width.Changed"), 1);
             }
             UIWidgets::Tooltip("This will change the width of the health bar");
             ImGui::SameLine();
             if (ImGui::Button("Reset##EnemyHealthBarWidth")) {
-                CVarClear(CVAR_COSMETIC("HUD.EnemyHealthBarWidth.Value"));
-                CVarClear(CVAR_COSMETIC("HUD.EnemyHealthBarWidth.Changed"));
-                LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                CVarClear(CVAR_COSMETIC("HUD.EnemyHealthBar.Width.Value"));
+                CVarClear(CVAR_COSMETIC("HUD.EnemyHealthBar.Width.Changed"));
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
             }
             ImGui::NewLine();
             ImGui::EndTable();
@@ -1333,7 +1335,7 @@ void Reset_Option_Single(const char* Button_Title, const char* name) {
     ImGui::SameLine();
     if (ImGui::Button(Button_Title)) {
         CVarClear(name);
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
 }
 void Reset_Option_Double(const char* Button_Title, const char* name) {
@@ -1341,14 +1343,14 @@ void Reset_Option_Double(const char* Button_Title, const char* name) {
     if (ImGui::Button(Button_Title)) {
         CVarClear((std::string(name) + ".Value").c_str());
         CVarClear((std::string(name) + ".Changed").c_str());
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
 }
 void DrawSillyTab() {
     ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
-    if (CVarGetInteger("gLetItSnow", 0)) {
-        if (UIWidgets::EnhancementCheckbox("Let It Snow", "gLetItSnow")) {
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    if (CVarGetInteger(CVAR_GENERAL("LetItSnow"), 0)) {
+        if (UIWidgets::EnhancementCheckbox("Let It Snow", CVAR_GENERAL("LetItSnow"))) {
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         }
     }
     if (UIWidgets::EnhancementSliderFloat("Link Body Scale: %.3fx", "##Link_BodyScale", CVAR_COSMETIC("Link.BodyScale.Value"), 0.001f, 0.025f, "", 0.01f, true)) {
@@ -1358,7 +1360,7 @@ void DrawSillyTab() {
     if (ImGui::Button("Reset##Link_BodyScale")) {
         CVarClear(CVAR_COSMETIC("Link.BodyScale.Value"));
         CVarClear(CVAR_COSMETIC("Link.BodyScale.Changed"));
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         if (gPlayState != nullptr) {
             static Player* player = GET_PLAYER(gPlayState);
             player->actor.scale.x = 0.01f;
@@ -1380,7 +1382,7 @@ void DrawSillyTab() {
     Reset_Option_Single("Reset##BunnyHood_EarSpread", CVAR_COSMETIC("BunnyHood.EarSpread"));
     UIWidgets::EnhancementSliderFloat("Goron Neck Length: %f", "##Goron_NeckLength", CVAR_COSMETIC("Goron.NeckLength"), 0.0f, 1000.0f, "", 0.0f, false);
     Reset_Option_Single("Reset##Goron_NeckLength", CVAR_COSMETIC("Goron.NeckLength"));
-    UIWidgets::EnhancementCheckbox("Unfix Goron Spin", "gUnfixGoronSpin");
+    UIWidgets::EnhancementCheckbox("Unfix Goron Spin", CVAR_COSMETIC("UnfixGoronSpin"));
     UIWidgets::EnhancementSliderFloat("Fairies Size: %f", "##Fairies_Size", CVAR_COSMETIC("Fairies.Size"), 0.25f, 5.0f, "", 1.0f, false);
     Reset_Option_Single("Reset##Fairies_Size", CVAR_COSMETIC("Fairies.Size"));
     UIWidgets::EnhancementSliderFloat("N64 Logo Spin Speed: %f", "##N64Logo_SpinSpeed", CVAR_COSMETIC("N64Logo.SpinSpeed"), 0.25f, 5.0f, "", 1.0f, false);
@@ -1612,7 +1614,7 @@ void DrawCosmeticRow(CosmeticOption& cosmeticOption) {
         CVarSetInteger((cosmeticOption.changedCvar), 1);
         ApplySideEffects(cosmeticOption);
         ApplyOrResetCustomGfxPatches();
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
     ImGui::SameLine();
     ImGui::Text("%s", cosmeticOption.label.c_str());
@@ -1620,7 +1622,7 @@ void DrawCosmeticRow(CosmeticOption& cosmeticOption) {
     if (ImGui::Button(("Random##" + cosmeticOption.label).c_str())) {
         RandomizeColor(cosmeticOption);
         ApplyOrResetCustomGfxPatches();
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
     if (cosmeticOption.supportsRainbow) {
         ImGui::SameLine();
@@ -1630,21 +1632,21 @@ void DrawCosmeticRow(CosmeticOption& cosmeticOption) {
             CVarSetInteger((cosmeticOption.changedCvar), 1);
             ApplySideEffects(cosmeticOption);
             ApplyOrResetCustomGfxPatches();
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         }
     }
     ImGui::SameLine();
     bool isLocked = (bool)CVarGetInteger((cosmeticOption.lockedCvar), 0);
     if (ImGui::Checkbox(("Locked##" + cosmeticOption.label).c_str(), &isLocked)) {
         CVarSetInteger((cosmeticOption.lockedCvar), isLocked);
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
     if (CVarGetInteger((cosmeticOption.changedCvar), 0)) {
         ImGui::SameLine();
         if (ImGui::Button(("Reset##" + cosmeticOption.label).c_str())) {
             ResetColor(cosmeticOption);
             ApplyOrResetCustomGfxPatches();
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         }
     }
 }
@@ -1660,7 +1662,7 @@ void DrawCosmeticGroup(CosmeticGroup cosmeticGroup) {
             }
         }
         ApplyOrResetCustomGfxPatches();
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
     ImGui::SameLine();
     if (ImGui::Button(("Reset##" + label).c_str())) {
@@ -1670,7 +1672,7 @@ void DrawCosmeticGroup(CosmeticGroup cosmeticGroup) {
             }
         }
         ApplyOrResetCustomGfxPatches();
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
     for (auto& [id, cosmeticOption] : cosmeticOptions) {
         if (cosmeticOption.group == cosmeticGroup && (!cosmeticOption.advancedOption || CVarGetInteger(CVAR_COSMETIC("AdvancedMode"), 0))) {
@@ -1706,7 +1708,7 @@ void CosmeticsEditorWindow::DrawElement() {
                     CVarSetInteger(cosmeticOption.lockedCvar, 1);
                 }
             }
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         }
         ImGui::SameLine();
         if (ImGui::Button("Unlock All Advanced", ImVec2(ImGui::GetContentRegionAvail().x, 30.0f))) {
@@ -1715,7 +1717,7 @@ void CosmeticsEditorWindow::DrawElement() {
                     CVarSetInteger(cosmeticOption.lockedCvar, 0);
                 }
             }
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         }
     }
     UIWidgets::EnhancementCheckbox("Sync Rainbow colors", CVAR_COSMETIC("RainbowSync"));
@@ -1734,7 +1736,7 @@ void CosmeticsEditorWindow::DrawElement() {
             }
         }
         ApplyOrResetCustomGfxPatches();
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
 
     if (ImGui::Button("Lock All", ImVec2(ImGui::GetContentRegionAvail().x / 2, 30.0f))) {
@@ -1743,7 +1745,7 @@ void CosmeticsEditorWindow::DrawElement() {
                 CVarSetInteger(cosmeticOption.lockedCvar, 1);
             }
         }
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
     ImGui::SameLine();
     if (ImGui::Button("Unlock All", ImVec2(ImGui::GetContentRegionAvail().x, 30.0f))) {
@@ -1752,7 +1754,7 @@ void CosmeticsEditorWindow::DrawElement() {
                 CVarSetInteger(cosmeticOption.lockedCvar, 0);
             }
         }
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
 
     if (ImGui::BeginTabBar("CosmeticsContextTabBar", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
@@ -1777,7 +1779,7 @@ void CosmeticsEditorWindow::DrawElement() {
             if (ImGui::Button("Reset##Trails_Duration")) {
                 CVarClear(CVAR_COSMETIC("Trails.Duration.Value"));
                 CVarClear(CVAR_COSMETIC("Trails.Duration.Changed"));
-                LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
             }
             ImGui::EndTabItem();
         }
@@ -1843,7 +1845,7 @@ void CosmeticsEditorWindow::InitElement() {
         cosmeticOption.currentColor.z = cvarColor.b / 255.0;
         cosmeticOption.currentColor.w = cvarColor.a / 255.0;
     }
-    LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     ApplyOrResetCustomGfxPatches();
     ApplyAuthenticGfxPatches();
 
@@ -1860,7 +1862,7 @@ void CosmeticsEditor_RandomizeAll() {
         }
     }
 
-    LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     ApplyOrResetCustomGfxPatches();
 }
 
@@ -1873,7 +1875,7 @@ void CosmeticsEditor_RandomizeGroup(CosmeticGroup group) {
         }
     }
 
-    LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     ApplyOrResetCustomGfxPatches();
 }
 
@@ -1884,7 +1886,7 @@ void CosmeticsEditor_ResetAll() {
         }
     }
 
-    LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     ApplyOrResetCustomGfxPatches();
 }
 
@@ -1895,6 +1897,6 @@ void CosmeticsEditor_ResetGroup(CosmeticGroup group) {
         }
     }
 
-    LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     ApplyOrResetCustomGfxPatches();
 }

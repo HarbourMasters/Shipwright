@@ -1,5 +1,7 @@
 # todo:
 # nlohmann
+# tinyxml2
+# spdlog
 
 name: test-builds-on-distros
 on:
