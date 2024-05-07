@@ -86,6 +86,7 @@ GameInteractorSail* GameInteractorSail::Instance;
 
 #include "Enhancements/mods.h"
 #include "Enhancements/game-interactor/GameInteractor.h"
+#include "Enhancements/randomizer/draw.h"
 #include <libultraship/libultraship.h>
 
 // Resource Types/Factories
@@ -1808,7 +1809,7 @@ extern "C" void ResourceMgr_PatchGfxCopyCommandByName(const char* path, const ch
     }
 
     Gfx* destinationGfx = (Gfx*)&res->Instructions[destinationIndex];
-    Gfx sourceGfx = res->Instructions[sourceIndex];
+    Gfx sourceGfx = *(Gfx*)&res->Instructions[sourceIndex];
 
     if (!originalGfx.contains(path) || !originalGfx[path].contains(patchName)) {
         originalGfx[path][patchName] = {
@@ -2442,6 +2443,14 @@ extern "C" RandomizerInf Randomizer_GetRandomizerInfFromCheck(RandomizerCheck ra
 
 extern "C" ItemObtainability Randomizer_GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck) {
     return OTRGlobals::Instance->gRandomizer->GetItemObtainabilityFromRandomizerCheck(randomizerCheck);
+}
+
+extern "C" bool Randomizer_IsCheckShuffled(RandomizerCheck randomizerCheck) {
+    return CheckTracker::IsCheckShuffled(RandomizerCheckObjects::GetAllRCObjects().find(randomizerCheck)->second);
+}
+
+extern "C" GetItemEntry GetItemMystery() {
+    return { ITEM_NONE_FE, 0, 0, 0, 0, 0, 0, ITEM_NONE_FE, 0, false, ITEM_FROM_NPC, ITEM_CATEGORY_JUNK, NULL, MOD_RANDOMIZER, (CustomDrawFunc)Randomizer_DrawMysteryItem };
 }
 
 extern "C" void Randomizer_GenerateSeed() {

@@ -2089,6 +2089,8 @@ void DemoEffect_DrawGetItem(Actor* thisx, PlayState* play) {
         }
         if (IS_RANDO && (play->sceneNum != SCENE_TEMPLE_OF_TIME || this->actor.params == DEMO_EFFECT_LIGHTARROW)) {
             GetItemEntry getItemEntry = GET_ITEM_NONE;
+            if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0) && Randomizer_IsCheckShuffled(RC_BARINADE))
+                getItemEntry = GetItemMystery();
 
             switch (this->actor.params) {
                 case DEMO_EFFECT_JEWEL_KOKIRI:

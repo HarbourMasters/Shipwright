@@ -93,18 +93,23 @@ void ItemBHeart_Draw(Actor* thisx, PlayState* play) {
         actorIt = actorIt->next;
     }
 
-    if (flag) {
-        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
-        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        gSPDisplayList(POLY_XLU_DISP++, gGiHeartBorderDL);
-        gSPDisplayList(POLY_XLU_DISP++, gGiHeartContainerDL);
+    if (IS_RANDO) {
+        RandomizerCheck check = Randomizer_GetCheckFromActor(this->actor.id, play->sceneNum, this->actor.params);
+        GetItemEntry_Draw(play, (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0) && Randomizer_IsCheckShuffled(check)) ? GetItemMystery() : Randomizer_GetItemFromKnownCheck(check, GI_HEART_CONTAINER_2));
     } else {
-        Gfx_SetupDL_25Opa(play->state.gfxCtx);
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        gSPDisplayList(POLY_OPA_DISP++, gGiHeartBorderDL);
-        gSPDisplayList(POLY_OPA_DISP++, gGiHeartContainerDL);
+        if (flag) {
+            Gfx_SetupDL_25Xlu(play->state.gfxCtx);
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPDisplayList(POLY_XLU_DISP++, gGiHeartBorderDL);
+            gSPDisplayList(POLY_XLU_DISP++, gGiHeartContainerDL);
+        } else {
+            Gfx_SetupDL_25Opa(play->state.gfxCtx);
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPDisplayList(POLY_OPA_DISP++, gGiHeartBorderDL);
+            gSPDisplayList(POLY_OPA_DISP++, gGiHeartContainerDL);
+        }
     }
 
     CLOSE_DISPS(play->state.gfxCtx);
