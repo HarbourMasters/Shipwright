@@ -7,7 +7,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   generate-soh-otr:
-    runs-on: ${{ (vars.LINUX_RUNNER && fromJSON(vars.LINUX_RUNNER)) || 'ubuntu-latest' }}
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
       with:
@@ -20,7 +20,6 @@ jobs:
           ${{ runner.os }}-otr-ccache-${{ github.ref }}
           ${{ runner.os }}-otr-ccache-
     - name: Install dependencies
-      if: ${{ !vars.LINUX_RUNNER }}
       run: |
         sudo apt-get update
         sudo apt-get install -y $(cat .github/workflows/apt-deps.txt)
@@ -35,7 +34,6 @@ jobs:
           build-cmake
           SDL2-2.28.5
     - name: Install latest SDL
-      if: ${{ !vars.LINUX_RUNNER }}
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
         if [ ! -d "SDL2-2.28.5" ]; then
@@ -73,7 +71,7 @@ jobs:
         retention-days: 1
   build-macos:
     needs: generate-soh-otr
-    runs-on: ${{ (vars.MAC_RUNNER && fromJSON(vars.MAC_RUNNER)) || 'macos-12' }}
+    runs-on: macos-14
     steps:
     - uses: actions/checkout@v3
       with:
@@ -86,14 +84,12 @@ jobs:
           ${{ runner.os }}-ccache-${{ github.ref }}
           ${{ runner.os }}-ccache-
     - name: Install gtar wrapper
-      if: ${{ !vars.MAC_RUNNER }}
       run: |
         sudo mv /usr/local/bin/gtar /usr/local/bin/gtar.orig
         sudo cp .github/workflows//gtar /usr/local/bin/gtar
         sudo chmod +x /usr/local/bin/gtar
     - name: Cache MacPorts
       id: cache-macports
-      if: ${{ !vars.MAC_RUNNER }}
       uses: actions/cache@v2
       with:
         path: /opt/local/
@@ -101,7 +97,6 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-macports-
     - name: Install MacPorts (if necessary)
-      if: ${{ !vars.MAC_RUNNER }}
       run: |
         if [ -d /opt/local/ ]; then
           echo "MacPorts already installed"
@@ -111,7 +106,6 @@ jobs:
         fi
         echo "/opt/local/bin:/opt/local/sbin" >> $GITHUB_PATH
     - name: Install dependencies
-      if: ${{ !vars.MAC_RUNNER }}
       run: |
         brew uninstall --ignore-dependencies libpng libzip
         sudo port install $(cat .github/workflows/macports-deps.txt)
@@ -139,45 +133,33 @@ jobs:
           readme.txt
   build-linux:
     needs: generate-soh-otr
-    strategy:
-      fail-fast: true
-      matrix:
-        include:
-        - os: ubuntu-20.04
-          gcc: 10
-          archive-suffix: compatibility
-        - os: ubuntu-22.04
-          gcc: 12
-          archive-suffix: performance
-    runs-on: ${{ (matrix.os == 'ubuntu-20.04' && ((vars.LINUX_COMPATIBILITY_RUNNER && fromJSON(vars.LINUX_COMPATIBILITY_RUNNER)) || matrix.os)) || (matrix.os == 'ubuntu-22.04' && ((vars.LINUX_PERFORMANCE_RUNNER && fromJSON(vars.LINUX_PERFORMANCE_RUNNER)) || matrix.os)) }}
+    runs-on: ubuntu-22.04
     steps:
     - uses: actions/checkout@v3
       with:
         submodules: true
     - name: Install dependencies
-      if: ${{ (matrix.os == 'ubuntu-20.04' && !vars.LINUX_COMPATIBILITY_RUNNER) || (matrix.os == 'ubuntu-22.04' && !vars.LINUX_PERFORMANCE_RUNNER) }}
       run: |
         sudo apt-get update
         sudo apt-get install -y $(cat .github/workflows/apt-deps.txt)
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2.11
       with:
-        key: ${{ matrix.os }}-ccache-${{ github.ref }}-${{ github.sha }}
+        key: linux-ccache-${{ github.ref }}-${{ github.sha }}
         restore-keys: |
-          ${{ matrix.os }}-ccache-${{ github.ref }}
-          ${{ matrix.os }}-ccache-
+          linux-ccache-${{ github.ref }}
+          linux-ccache-
     - name: Cache build folders
       uses: actions/cache@v4
       with:
-        key: ${{ matrix.os }}-build-${{ github.ref }}-${{ github.sha }}
+        key: linux-build-${{ github.ref }}-${{ github.sha }}
         restore-keys: |
-          ${{ matrix.os }}-build-${{ github.ref }}
-          ${{ matrix.os }}-build-
+          linux-build-${{ github.ref }}
+          linux-build-
         path: |
           SDL2-2.28.5
           SDL2_net-2.2.0
     - name: Install latest SDL
-      if: ${{ (matrix.os == 'ubuntu-20.04' && !vars.LINUX_COMPATIBILITY_RUNNER) || (matrix.os == 'ubuntu-22.04' && !vars.LINUX_PERFORMANCE_RUNNER) }}
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
         if [ ! -d "SDL2-2.28.5" ]; then
@@ -189,38 +171,7 @@ jobs:
         make -j 10
         sudo make install
         sudo cp -av /usr/local/lib/libSDL* /lib/x86_64-linux-gnu/
-    - name: Install latest libzip
-      if: ${{ (matrix.os == 'ubuntu-20.04' && !vars.LINUX_COMPATIBILITY_RUNNER) }}
-      run: |
-        sudo apt-get remove libzip-dev zipcmp zipmerge ziptool
-        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
-        if [ ! -d "libzip-1.10.1" ]; then
-          wget https://libzip.org/download/libzip-1.10.1.tar.gz
-          tar -xzvf libzip-1.10.1.tar.gz
-        fi
-        cd libzip-1.10.1
-        mkdir build
-        cd build
-        cmake ..
-        make
-        sudo make install
-    - name: Install latest nlohmann
-      if: ${{ (matrix.os == 'ubuntu-20.04' && !vars.LINUX_COMPATIBILITY_RUNNER) }}
-      run: |
-        sudo apt-get remove nlohmann-json3-dev
-        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
-        if [ ! -d "json-3.11.3" ]; then
-          wget https://github.com/nlohmann/json/archive/refs/tags/v3.11.3.tar.gz
-          tar -xzvf v3.11.3.tar.gz
-        fi
-        cd json-3.11.3
-        mkdir build
-        cd build
-        cmake ..
-        make
-        sudo make install
     - name: Install latest tinyxml2
-      if: ${{ (matrix.os == 'ubuntu-20.04' && !vars.LINUX_COMPATIBILITY_RUNNER) || (matrix.os == 'ubuntu-22.04' && !vars.LINUX_PERFORMANCE_RUNNER) }}
       run: |
         sudo apt-get remove libtinyxml2-dev
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
@@ -235,7 +186,6 @@ jobs:
         make
         sudo make install
     - name: Install latest SDL_net
-      if: ${{ (matrix.os == 'ubuntu-20.04' && !vars.LINUX_COMPATIBILITY_RUNNER) || (matrix.os == 'ubuntu-22.04' && !vars.LINUX_PERFORMANCE_RUNNER) }}
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
         if [ ! -d "SDL2_net-2.2.0" ]; then
@@ -261,12 +211,12 @@ jobs:
         mv README.md readme.txt
         mv build-cmake/*.appimage soh.appimage
       env:
-        CC: gcc-${{ matrix.gcc }}
-        CXX: g++-${{ matrix.gcc }}
+        CC: gcc-12
+        CXX: g++-12
     - name: Upload build
       uses: actions/upload-artifact@v4
       with:
-        name: soh-linux-${{ matrix.archive-suffix }}
+        name: soh-linux
         path: |
           soh.appimage
           readme.txt
