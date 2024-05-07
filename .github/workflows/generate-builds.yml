@@ -89,22 +89,22 @@ jobs:
         sudo mv /opt/homebrew/bin/gtar /opt/homebrew/bin/gtar.orig
         sudo cp .github/workflows//gtar /opt/homebrew/bin/gtar
         sudo chmod +x /opt/homebrew/bin/gtar
-    - name: Cache MacPorts
-      id: cache-macports
-      uses: actions/cache@v2
-      with:
-        path: /opt/local/
-        key: ${{ runner.os }}-macports-${{ hashFiles('.github/workflows/macports-deps.txt') }}
-        restore-keys: |
-          ${{ runner.os }}-macports-
+    # - name: Cache MacPorts
+    #   id: cache-macports
+    #   uses: actions/cache@v2
+    #   with:
+    #     path: /opt/local/
+    #     key: ${{ runner.os }}-macports-${{ hashFiles('.github/workflows/macports-deps.txt') }}
+    #     restore-keys: |
+    #       ${{ runner.os }}-macports-
     - name: Install MacPorts (if necessary)
       run: |
-        if [ -d /opt/local/ ]; then
-          echo "MacPorts already installed"
-        else
-          wget https://github.com/macports/macports-base/releases/download/v2.9.3/MacPorts-2.9.3-14-Sonoma.pkg
-          sudo installer -pkg ./MacPorts-2.9.3-14-Sonoma.pkg -target /
-        fi
+        # if [ -d /opt/local/ ]; then
+        #   echo "MacPorts already installed"
+        # else
+        wget https://github.com/macports/macports-base/releases/download/v2.9.3/MacPorts-2.9.3-14-Sonoma.pkg
+        sudo installer -pkg ./MacPorts-2.9.3-14-Sonoma.pkg -target /
+        # fi
         echo "/opt/local/bin:/opt/local/sbin" >> $GITHUB_PATH
     - name: Install dependencies
       run: |
