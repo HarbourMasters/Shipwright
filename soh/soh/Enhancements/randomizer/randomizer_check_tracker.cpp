@@ -1092,12 +1092,12 @@ bool ShouldHideArea(RandomizerCheckArea rcArea) {
     return true;
 }
 
-bool ShouldShowCheck(RandomizerCheckObject check) {
+bool ShouldShowCheck(RandomizerCheck check) {
     return (
         IsVisibleInCheckTracker(check) && 
         (checkSearch.Filters.Size == 0 ||
         checkSearch.PassFilter(RandomizerCheckObjects::GetRCAreaName(Rando::StaticData::GetLocation(check)->GetArea()).c_str()) ||
-        checkSearch.PassFilter(Rando::StaticData::GetLocation(check)->GetShortName().c_str())
+        checkSearch.PassFilter(Rando::StaticData::GetLocation(check)->GetShortName().c_str()))
     );
 }
 
@@ -1244,7 +1244,7 @@ void LoadSettings() {
     fishsanityAgeSplit = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY_AGE_SPLIT);
 }
 
-bool IsCheckShuffled(RandomizerCheckObject rcObj) {
+bool IsCheckShuffled(RandomizerCheck rc) {
     Rando::Location* loc = Rando::StaticData::GetLocation(rc);
     if (IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LOGIC_RULES) != RO_LOGIC_VANILLA) {
         return
@@ -1307,8 +1307,10 @@ bool IsCheckShuffled(RandomizerCheckObject rcObj) {
     return false;
 }
 
-bool IsVisibleInCheckTracker(RandomizerCheckObject rcObj) {
-    return IsCheckShuffled(rcObj) || (rcObj.rcType == RCTYPE_SKULL_TOKEN && alwaysShowGS) || (rcObj.rcType == RCTYPE_SHOP && (showShops && (!hideShopRightChecks)));
+bool IsVisibleInCheckTracker(RandomizerCheck rc) {
+    auto loc = Rando::StaticData::GetLocation(rc);
+    return IsCheckShuffled(rc) || (loc->GetRCType() == RCTYPE_SKULL_TOKEN && alwaysShowGS) ||
+           (loc->GetRCType() == RCTYPE_SHOP && (showShops && (!hideShopRightChecks)));
 }
 
 void UpdateInventoryChecks() {
@@ -1501,7 +1503,7 @@ void DrawLocation(RandomizerCheck rc) {
     //Draw the extra info
     txt = "";
 
-    bool mystery = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0) && OTRGlobals::Instance->gRandomizer->merchantPrices.contains(rcObj.rc);
+    bool mystery = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0) && itemLoc->IsAddedToPool();
 
     if (checkData.hintItem != 0) {
         // TODO hints
@@ -1534,7 +1536,7 @@ void DrawLocation(RandomizerCheck rc) {
                     } else if (!mystery) {
                         txt = itemLoc->GetPlacedItem().GetName().GetForLanguage(gSaveContext.language);
                     }
-                    if (!IsVisibleInCheckTracker(rcObj) && status == RCSHOW_IDENTIFIED && !mystery) {
+                    if (!IsVisibleInCheckTracker(rc) && status == RCSHOW_IDENTIFIED && !mystery) {
                         txt += fmt::format(" - {}", gSaveContext.checkTrackerData[rc].price);
                     }
                 } else {

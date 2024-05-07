@@ -206,16 +206,6 @@ void ItemEtcetera_DrawThroughLens(Actor* thisx, PlayState* play) {
     if (play->actorCtx.lensActive) {
         func_8002EBCC(&this->actor, play, 0);
         func_8002ED80(&this->actor, play, 0);
-
-        if(IS_RANDO && play->sceneNum == SCENE_TREASURE_BOX_SHOP) {
-            RandomizerCheck check = RC_MAX;
-            GetItemEntry randoGetItem = GetChestGameRandoGetItem(this->actor.room, this->giDrawId, play); //TODO Rando: add mysterious shuffle when chest minigame keys get shuffled
-            EnItem00_CustomItemsParticles(&this->actor, play, randoGetItem);
-            if (randoGetItem.itemId != ITEM_NONE) {
-                GetItemEntry_Draw(play, randoGetItem);
-                return;
-            }
-        }
         
         GetItem_Draw(play, this->giDrawId);
     }
@@ -224,24 +214,6 @@ void ItemEtcetera_DrawThroughLens(Actor* thisx, PlayState* play) {
 void ItemEtcetera_Draw(Actor* thisx, PlayState* play) {
     ItemEtcetera* this = (ItemEtcetera*)thisx;
     s32 type = this->actor.params & 0xFF;
-
-    if (IS_RANDO) {
-        GetItemEntry randoGetItem = (GetItemEntry)GET_ITEM_NONE;
-        if (type == ITEM_ETC_ARROW_FIRE) {
-            randoGetItem = (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0) && Randomizer_IsCheckShuffled(RC_LH_SUN)) ? GetItemMystery() : Randomizer_GetItemFromKnownCheck(RC_LH_SUN, GI_ARROW_FIRE);
-        } else if (type == ITEM_ETC_LETTER) {
-            randoGetItem = (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0) && Randomizer_IsCheckShuffled(RC_LH_UNDERWATER_ITEM)) ? GetItemMystery() : Randomizer_GetItemFromKnownCheck(RC_LH_UNDERWATER_ITEM, GI_LETTER_RUTO);
-        }
-
-        EnItem00_CustomItemsParticles(&this->actor, play, randoGetItem);
-
-        if (randoGetItem.itemId != ITEM_NONE) {
-            func_8002EBCC(&this->actor, play, 0);
-            func_8002ED80(&this->actor, play, 0);
-            GetItemEntry_Draw(play, randoGetItem);
-            return;
-        }
-    }
 
     func_8002EBCC(&this->actor, play, 0);
     func_8002ED80(&this->actor, play, 0);

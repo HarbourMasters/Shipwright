@@ -33,6 +33,8 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Bom_Bowl_Pit/z_en_bom_bowl_pit.h"
 #include "src/overlays/actors/ovl_En_Ge1/z_en_ge1.h"
 #include "adult_trade_shuffle.h"
+#include "draw.h"
+
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 }
@@ -357,13 +359,21 @@ void EnExItem_WaitForObjectRandomized(EnExItem* enExItem, PlayState* play) {
 void EnItem00_DrawRandomizedItem(EnItem00* enItem00, PlayState* play) {
     f32 mtxScale = CVarGetFloat(CVAR_ENHANCEMENT("TimeSavers.SkipGetItemAnimationScale"), 10.0f);
     Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
-    EnItem00_CustomItemsParticles(&enItem00->actor, play, enItem00->itemEntry);
-    GetItemEntry_Draw(play, enItem00->itemEntry);
+    GetItemEntry randoItem = enItem00->itemEntry;
+    if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0)) {
+        randoItem = GET_ITEM_MYSTERY;
+    }
+    EnItem00_CustomItemsParticles(&enItem00->actor, play, randoItem);
+    GetItemEntry_Draw(play, randoItem);
 }
 
 void ItemBHeart_DrawRandomizedItem(ItemBHeart* itemBHeart, PlayState* play) {
-    EnItem00_CustomItemsParticles(&itemBHeart->actor, play, itemBHeart->sohItemEntry);
-    GetItemEntry_Draw(play, itemBHeart->sohItemEntry);
+    GetItemEntry randoItem = itemBHeart->sohItemEntry;
+    if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0)) {
+        randoItem = GET_ITEM_MYSTERY;
+    }
+    EnItem00_CustomItemsParticles(&itemBHeart->actor, play, randoItem);
+    GetItemEntry_Draw(play, randoItem);
 }
 
 void ItemBHeart_UpdateRandomizedItem(Actor* actor, PlayState* play) {
@@ -378,14 +388,18 @@ void ItemBHeart_UpdateRandomizedItem(Actor* actor, PlayState* play) {
 }
 
 void ItemEtcetera_DrawRandomizedItem(ItemEtcetera* itemEtcetera, PlayState* play) {
-    EnItem00_CustomItemsParticles(&itemEtcetera->actor, play, itemEtcetera->sohItemEntry);
+    GetItemEntry randoItem = itemEtcetera->sohItemEntry;
+    if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0)) {
+        randoItem = GET_ITEM_MYSTERY;
+    }
+    EnItem00_CustomItemsParticles(&itemEtcetera->actor, play, randoItem);
     func_8002EBCC(&itemEtcetera->actor, play, 0);
     func_8002ED80(&itemEtcetera->actor, play, 0);
-    GetItemEntry_Draw(play, itemEtcetera->sohItemEntry);
+    GetItemEntry_Draw(play, randoItem);
 }
 
 void ItemEtcetera_DrawRandomizedItemThroughLens(ItemEtcetera* itemEtcetera, PlayState* play) {
-    if (play->actorCtx.lensActive) {
+    if (play->actorCtx.lensActive) { // todo [Rando] mysterious shuffle for chest minigame key shuffle
         ItemEtcetera_DrawRandomizedItem(itemEtcetera, play);
     }
 }
@@ -1160,10 +1174,14 @@ void RandomizerOnSceneInitHandler(int16_t sceneNum) {
 }
 
 void EnSi_DrawRandomizedItem(EnSi* enSi, PlayState* play) {
+    GetItemEntry randoItem = enSi->sohGetItemEntry;
+    if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0)) {
+        randoItem = GET_ITEM_MYSTERY;
+    }
     func_8002ED80(&enSi->actor, play, 0);
     func_8002EBCC(&enSi->actor, play, 0);
-    EnItem00_CustomItemsParticles(&enSi->actor, play, enSi->sohGetItemEntry);
-    GetItemEntry_Draw(play, enSi->sohGetItemEntry);
+    EnItem00_CustomItemsParticles(&enSi->actor, play, randoItem);
+    GetItemEntry_Draw(play, randoItem);
 }
 
 u32 EnDns_RandomizerPurchaseableCheck(EnDns* enDns) {

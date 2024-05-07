@@ -2089,42 +2089,56 @@ void DemoEffect_DrawGetItem(Actor* thisx, PlayState* play) {
         }
         if (IS_RANDO && (play->sceneNum != SCENE_TEMPLE_OF_TIME || this->actor.params == DEMO_EFFECT_LIGHTARROW)) {
             GetItemEntry getItemEntry = GET_ITEM_NONE;
-            if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0) && Randomizer_IsCheckShuffled(RC_BARINADE))
-                getItemEntry = GetItemMystery();
+            RandomizerCheck rc = RC_MAX;
+            RandomizerGet rg = RG_NONE;
 
             switch (this->actor.params) {
                 case DEMO_EFFECT_JEWEL_KOKIRI:
-                    getItemEntry = Randomizer_GetItemFromKnownCheck(RC_QUEEN_GOHMA, RG_KOKIRI_EMERALD);
+                    rc = RC_QUEEN_GOHMA;
+                    rg = RG_KOKIRI_EMERALD;
                     break;
                 case DEMO_EFFECT_JEWEL_GORON:
-                    getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KING_DODONGO, RG_GORON_RUBY);
+                    rc = RC_KING_DODONGO;
+                    rg = RG_GORON_RUBY;
                     break;
                 case DEMO_EFFECT_JEWEL_ZORA:
-                    getItemEntry = Randomizer_GetItemFromKnownCheck(RC_BARINADE, RG_ZORA_SAPPHIRE);
+                    rc = RC_BARINADE;
+                    rg = RG_ZORA_SAPPHIRE;
                     break;
                 case DEMO_EFFECT_MEDAL_FOREST:
-                    getItemEntry = Randomizer_GetItemFromKnownCheck(RC_PHANTOM_GANON, RG_FOREST_MEDALLION);
+                    rc = RC_PHANTOM_GANON;
+                    rg = RG_FOREST_MEDALLION;
                     break;
                 case DEMO_EFFECT_MEDAL_FIRE:
-                    getItemEntry = Randomizer_GetItemFromKnownCheck(RC_VOLVAGIA, RG_FIRE_MEDALLION);
+                    rc = RC_VOLVAGIA;
+                    rg = RG_FIRE_MEDALLION;
                     break;
                 case DEMO_EFFECT_MEDAL_WATER:
-                    getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MORPHA, RG_WATER_MEDALLION);
+                    rc = RC_MORPHA;
+                    rg = RG_WATER_MEDALLION;
                     break;
                 case DEMO_EFFECT_MEDAL_SPIRIT:
-                    getItemEntry = Randomizer_GetItemFromKnownCheck(RC_TWINROVA, RG_SPIRIT_MEDALLION);
+                    rc = RC_TWINROVA;
+                    rg = RG_SPIRIT_MEDALLION;
                     break;
                 case DEMO_EFFECT_MEDAL_SHADOW:
-                    getItemEntry = Randomizer_GetItemFromKnownCheck(RC_BONGO_BONGO, RG_SHADOW_MEDALLION);
+                    rc = RC_BONGO_BONGO;
+                    rg = RG_SHADOW_MEDALLION;
                     break;
                 case DEMO_EFFECT_MEDAL_LIGHT:
-                    getItemEntry = Randomizer_GetItemFromKnownCheck(RC_GIFT_FROM_SAGES, RG_LIGHT_MEDALLION);
+                    rc = RC_GIFT_FROM_SAGES;
+                    rg = RG_LIGHT_MEDALLION;
                     break;
                 case DEMO_EFFECT_LIGHTARROW:
-                    getItemEntry = Randomizer_GetItemFromKnownCheck(RC_TOT_LIGHT_ARROWS_CUTSCENE, RG_LIGHT_ARROWS);
+                    rc = RC_TOT_LIGHT_ARROWS_CUTSCENE;
+                    rg = RG_LIGHT_ARROWS;
                     break;
             }
+            getItemEntry = Randomizer_GetItemFromKnownCheck(rc, rg);
             if (getItemEntry.getItemId != GI_NONE) {
+                if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0) && Randomizer_IsCheckShuffled(rc)) {
+                    getItemEntry = GetItemMystery();
+                }
                 this->getItem.drawId = getItemEntry.gid;
                 func_8002EBCC(thisx, play, 0);
                 func_8002ED80(thisx, play, 0);

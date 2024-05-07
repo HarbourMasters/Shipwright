@@ -2445,8 +2445,8 @@ extern "C" ItemObtainability Randomizer_GetItemObtainabilityFromRandomizerCheck(
     return OTRGlobals::Instance->gRandomizer->GetItemObtainabilityFromRandomizerCheck(randomizerCheck);
 }
 
-extern "C" bool Randomizer_IsCheckShuffled(RandomizerCheck randomizerCheck) {
-    return CheckTracker::IsCheckShuffled(RandomizerCheckObjects::GetAllRCObjects().find(randomizerCheck)->second);
+extern "C" bool Randomizer_IsCheckShuffled(RandomizerCheck rc) {
+    return CheckTracker::IsCheckShuffled(rc);
 }
 
 extern "C" GetItemEntry GetItemMystery() {

@@ -155,50 +155,6 @@ void EnSi_Draw(Actor* thisx, PlayState* play) {
     if (this->actionFunc != func_80AFB950) {
         func_8002ED80(&this->actor, play, 0);
         func_8002EBCC(&this->actor, play, 0);
-        if (!IS_RANDO) {
-            GetItem_Draw(play, GID_SKULL_TOKEN_2);
-        } else {
-            RandomizerCheck check = Randomizer_GetCheckFromActor(this->actor.id, play->sceneNum, this->actor.params);
-            getItem = (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0) && Randomizer_IsCheckShuffled(check)) ? GetItemMystery() : Randomizer_GetItemFromKnownCheck(check, GI_SKULL_TOKEN);
-            EnItem00_CustomItemsParticles(&this->actor, play, getItem);
-            if (getItem.itemId != ITEM_SKULL_TOKEN) {
-                f32 mtxScale = 1.5f;
-                Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
-            }
-            GetItemEntry_Draw(play, getItem);
-        }
-    }
-}
-
-void EnSi_Reset() {
-    textId = 0xB4;
-    giveItemId = ITEM_SKULL_TOKEN;
-}
-
-void Randomizer_UpdateSkullReward(EnSi* this, PlayState* play) {
-    Player* player = GET_PLAYER(play);
-
-    getItem = Randomizer_GetItemFromActor(this->actor.id, play->sceneNum, this->actor.params, GI_SKULL_TOKEN);
-    getItemId = getItem.getItemId;
-    if (getItemId == RG_ICE_TRAP) {
-        textId = 0xF8;
-    } else {
-        textId = getItem.textId;
-        giveItemId = getItem.itemId;
-    }
-    player->getItemEntry = getItem;
-}
-
-void Randomizer_GiveSkullReward(EnSi* this, PlayState* play) {
-    Player* player = GET_PLAYER(play);
-
-    if (getItem.modIndex == MOD_NONE) {
-        // RANDOTOD: Move this into Item_Give() or some other more central location
-        if (getItem.getItemId == GI_SWORD_BGS) {
-            gSaveContext.bgsFlag = true;
-        }
-        Item_Give(play, giveItemId);
-    } else if (getItem.modIndex == MOD_RANDOMIZER) {
-        Randomizer_Item_Give(play, getItem);
+        GetItem_Draw(play, GID_SKULL_TOKEN_2);
     }
 }
