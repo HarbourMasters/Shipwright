@@ -1223,7 +1223,7 @@ void LoadSettings() {
     }
 }
 
-bool IsVisibleInCheckTracker(RandomizerCheckObject rcObj) {
+bool IsCheckShuffled(RandomizerCheckObject rcObj) {
     if (IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LOGIC_RULES) != RO_LOGIC_VANILLA) {
         return
             (rcObj.rcArea != RCAREA_INVALID) &&         // don't show Invalid locations
@@ -1236,7 +1236,7 @@ bool IsVisibleInCheckTracker(RandomizerCheckObject rcObj) {
                 rcObj.vOrMQ == RCVORMQ_MQ && OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(rcObj.sceneId) ||
                 rcObj.vOrMQ == RCVORMQ_VANILLA && !OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(rcObj.sceneId)
                 ) &&
-            (rcObj.rcType != RCTYPE_SHOP || (showShops && (!hideShopRightChecks || hideShopRightChecks && rcObj.actorParams > 0x03))) &&
+            (rcObj.rcType != RCTYPE_SHOP || (showShops && rcObj.actorParams > 0x03)) &&
             (rcObj.rcType != RCTYPE_SCRUB ||
                 showScrubs ||
                 rcObj.rc == RC_LW_DEKU_SCRUB_NEAR_BRIDGE || // The 3 scrubs that are always randomized
@@ -1245,7 +1245,7 @@ bool IsVisibleInCheckTracker(RandomizerCheckObject rcObj) {
                 ) &&
             (rcObj.rcType != RCTYPE_MERCHANT || showMerchants) &&
             (rcObj.rcType != RCTYPE_OCARINA || showOcarinas) &&
-            (rcObj.rcType != RCTYPE_SKULL_TOKEN || alwaysShowGS ||
+            (rcObj.rcType != RCTYPE_SKULL_TOKEN ||
                 (showOverworldTokens && RandomizerCheckObjects::AreaIsOverworld(rcObj.rcArea)) ||
                 (showDungeonTokens && RandomizerCheckObjects::AreaIsDungeon(rcObj.rcArea))
                 ) &&
@@ -1265,6 +1265,7 @@ bool IsVisibleInCheckTracker(RandomizerCheckObject rcObj) {
             (rcObj.rcType != RCTYPE_BOSS_KEY || showBossKeysanity) &&
             (rcObj.rcType != RCTYPE_GANON_BOSS_KEY || showGanonBossKey) &&
             (rcObj.rc != RC_KAK_100_GOLD_SKULLTULA_REWARD || show100SkullReward) &&
+            (rcObj.rc != RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS) &&
             (rcObj.rcType != RCTYPE_GF_KEY && rcObj.rc != RC_GF_GERUDO_MEMBERSHIP_CARD ||
                 (showGerudoCard && rcObj.rc == RC_GF_GERUDO_MEMBERSHIP_CARD) ||
                 (fortressNormal && showGerudoFortressKeys && rcObj.rcType == RCTYPE_GF_KEY) ||
@@ -1278,6 +1279,10 @@ bool IsVisibleInCheckTracker(RandomizerCheckObject rcObj) {
             rcObj.rc == RC_GIFT_FROM_SAGES) && rcObj.rc != RC_LINKS_POCKET;
     }
     return false;
+}
+
+bool IsVisibleInCheckTracker(RandomizerCheckObject rcObj) {
+    return IsCheckShuffled(rcObj) || (rcObj.rcType == RCTYPE_SKULL_TOKEN && alwaysShowGS) || (rcObj.rcType == RCTYPE_SHOP && (showShops && (!hideShopRightChecks)));
 }
 
 void UpdateInventoryChecks() {
@@ -1444,6 +1449,8 @@ void DrawLocation(RandomizerCheckObject rcObj) {
     //Draw the extra info
     txt = "";
 
+    bool mystery = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0) && OTRGlobals::Instance->gRandomizer->merchantPrices.contains(rcObj.rc);
+
     if (checkData.hintItem != 0) {
         // TODO hints
     } else if (status != RCSHOW_UNCHECKED) {
@@ -1466,16 +1473,16 @@ void DrawLocation(RandomizerCheckObject rcObj) {
             case RCSHOW_IDENTIFIED:
             case RCSHOW_SEEN:
                 if (IS_RANDO) {
-                    if (gSaveContext.itemLocations[rcObj.rc].get.rgID == RG_ICE_TRAP) {
+                    if (gSaveContext.itemLocations[rcObj.rc].get.rgID == RG_ICE_TRAP && !mystery) {
                         if (status == RCSHOW_IDENTIFIED) {
                             txt = gSaveContext.itemLocations[rcObj.rc].get.trickName;
                         } else {
                             txt = OTRGlobals::Instance->gRandomizer->EnumToSpoilerfileGetName[gSaveContext.itemLocations[rcObj.rc].get.fakeRgID][gSaveContext.language];
                         }
-                    } else {
+                    } else if (!mystery) {
                         txt = OTRGlobals::Instance->gRandomizer->EnumToSpoilerfileGetName[gSaveContext.itemLocations[rcObj.rc].get.rgID][gSaveContext.language];
                     }
-                    if (status == RCSHOW_IDENTIFIED) {
+                    if (!IsVisibleInCheckTracker(rcObj) && status == RCSHOW_IDENTIFIED && !mystery) {
                         txt += fmt::format(" - {}", gSaveContext.checkTrackerData[rcObj.rc].price);
                     }
                 } else {
