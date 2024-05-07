@@ -85,7 +85,7 @@ jobs:
           ${{ runner.os }}-ccache-
     - name: Install gtar wrapper
       run: |
-        brew install gnu-tar
+        which gtar
         sudo mv /usr/local/bin/gtar /usr/local/bin/gtar.orig
         sudo cp .github/workflows//gtar /usr/local/bin/gtar
         sudo chmod +x /usr/local/bin/gtar
