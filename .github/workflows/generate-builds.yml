@@ -102,8 +102,8 @@ jobs:
         if [ -d /opt/local/ ]; then
           echo "MacPorts already installed"
         else
-          wget https://github.com/macports/macports-base/releases/download/v2.9.3/MacPorts-2.9.3-12-Monterey.pkg
-          sudo installer -pkg ./MacPorts-2.9.3-12-Monterey.pkg -target /
+          wget https://github.com/macports/macports-base/releases/download/v2.9.3/MacPorts-2.9.3-14-Sonoma.pkg
+          sudo installer -pkg ./MacPorts-2.9.3-14-Sonoma.pkg -target /
         fi
         echo "/opt/local/bin:/opt/local/sbin" >> $GITHUB_PATH
     - name: Install dependencies
