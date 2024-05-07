@@ -86,7 +86,6 @@ jobs:
           ${{ runner.os }}-14-ccache-
     - name: Install gtar wrapper
       run: |
-        which gtar
         sudo mv /opt/homebrew/bin/gtar /opt/homebrew/bin/gtar.orig
         sudo cp .github/workflows//gtar /opt/homebrew/bin/gtar
         sudo chmod +x /opt/homebrew/bin/gtar
