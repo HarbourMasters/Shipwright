@@ -86,9 +86,9 @@ jobs:
     - name: Install gtar wrapper
       run: |
         which gtar
-        sudo mv /usr/local/bin/gtar /usr/local/bin/gtar.orig
-        sudo cp .github/workflows//gtar /usr/local/bin/gtar
-        sudo chmod +x /usr/local/bin/gtar
+        sudo mv /opt/homebrew/bin/gtar /opt/homebrew/bin/gtar.orig
+        sudo cp .github/workflows//gtar /opt/homebrew/bin/gtar
+        sudo chmod +x /opt/homebrew/bin/gtar
     - name: Cache MacPorts
       id: cache-macports
       uses: actions/cache@v2
