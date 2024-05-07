@@ -35,9 +35,9 @@ jobs:
       if: ${{ matrix.image == 'fedora:39' }}
       run: |
         echo fedora
-        echo dnf install ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'gcc-c++') || '' }} git cmake ninja-build lsb_release SDL2-devel libpng-devel libzip-devel libzip-tools nlohmann-json-devel tinyxml2-devel spdlog-devel boost-devel
+        echo dnf install ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'gcc-c++') || '' }} git cmake ninja-build lsb_release SDL2-devel libpng-devel libzip-devel libzip-tools tinyxml2-devel spdlog-devel boost-devel
         dnf -y upgrade
-        dnf -y install ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'gcc-c++') || '' }} git cmake ninja-build lsb_release SDL2-devel libpng-devel libzip-devel libzip-tools nlohmann-json-devel tinyxml2-devel spdlog-devel boost-devel
+        dnf -y install ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'gcc-c++') || '' }} git cmake ninja-build lsb_release SDL2-devel libpng-devel libzip-devel libzip-tools tinyxml2-devel spdlog-devel boost-devel
     - name: Install dependencies (apt)
       if: ${{ matrix.image == 'ubuntu:mantic' || matrix.image == 'debian:bookworm' }}
       run: |
@@ -56,6 +56,17 @@ jobs:
     - uses: actions/checkout@v3
       with:
         submodules: true
+    - name: Install latest nlohmann
+      if: ${{ matrix.image == 'fedora:39' }}
+      run: |
+        wget https://github.com/nlohmann/json/archive/refs/tags/v3.11.3.tar.gz
+        tar -xzvf v3.11.3.tar.gz
+        cd json-3.11.3
+        mkdir build
+        cd build
+        cmake ..
+        make
+        sudo make install
     - name: Build SoH
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
