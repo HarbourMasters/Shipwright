@@ -79,10 +79,10 @@ jobs:
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2.11
       with:
-        key: ${{ runner.os }}-ccache-${{ github.ref }}-${{ github.sha }}
+        key: ${{ runner.os }}-14-ccache-${{ github.ref }}-${{ github.sha }}
         restore-keys: |
-          ${{ runner.os }}-ccache-${{ github.ref }}
-          ${{ runner.os }}-ccache-
+          ${{ runner.os }}-14-ccache-${{ github.ref }}
+          ${{ runner.os }}-14-ccache-
     - name: Install gtar wrapper
       run: |
         which gtar
