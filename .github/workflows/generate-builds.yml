@@ -77,8 +77,9 @@ jobs:
       with:
         submodules: true
     - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2.11
+      uses: hendrikmuhs/ccache-action@v1.2.13
       with:
+        create-symlink: true
         key: ${{ runner.os }}-14-ccache-${{ github.ref }}-${{ github.sha }}
         restore-keys: |
           ${{ runner.os }}-14-ccache-${{ github.ref }}
@@ -117,8 +118,6 @@ jobs:
         name: soh.otr
     - name: Build SoH
       run: |
-        which ccache
-        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
         cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" -DBUILD_REMOTE_CONTROL=1
         cmake --build build-cmake --config Release --parallel 10
         mv soh.otr build-cmake/soh
