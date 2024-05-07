@@ -9,6 +9,7 @@
 #include <string.h>
 #include <stdarg.h>
 #include <z64.h>
+#include "soh/OTRGlobals.h"
 
 uint8_t gLoadFileSelect = 0, gSkipLogoTest = 0;
 
@@ -21,15 +22,15 @@ static BootCommand sCommands[] = { { "--skiplogo", BootCommands_Command_SkipLogo
 void BootCommands_Init()
 {
     // Clears vars to prevent randomizer menu from being disabled
-    CVarClear("gRandoGenerating"); // Clear when a crash happened during rando seed generation
-    CVarClear("gNewSeedGenerated");
-    CVarClear("gOnFileSelectNameEntry"); // Clear when soh is killed on the file name entry page
-    CVarClear("gBetterDebugWarpScreenMQMode");
-    CVarClear("gBetterDebugWarpScreenMQModeScene");
-    CVarClear("gCheatEasyPauseBufferLastInputs");
-    CVarClear("gCheatEasyPauseBufferTimer");
+    CVarClear(CVAR_GENERAL("RandoGenerating")); // Clear when a crash happened during rando seed generation
+    CVarClear(CVAR_GENERAL("NewSeedGenerated"));
+    CVarClear(CVAR_GENERAL("OnFileSelectNameEntry")); // Clear when soh is killed on the file name entry page
+    CVarClear(CVAR_GENERAL("BetterDebugWarpScreenMQMode"));
+    CVarClear(CVAR_GENERAL("BetterDebugWarpScreenMQModeScene"));
+    CVarClear(CVAR_GENERAL("CheatEasyPauseBufferLastInputs"));
+    CVarClear(CVAR_GENERAL("CheatEasyPauseBufferTimer"));
 #if defined(__SWITCH__) || defined(__WIIU__)
-    CVarRegisterInteger("gControlNav", 1); // always enable controller nav on switch/wii u
+    CVarRegisterInteger(CVAR_IMGUI_CONTROLLER_NAV, 1); // always enable controller nav on switch/wii u
 #endif
 }
 

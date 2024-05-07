@@ -50,12 +50,12 @@ void SaveManager::ReadSaveFile(std::filesystem::path savePath, uintptr_t addr, v
 }
 
 std::filesystem::path SaveManager::GetFileName(int fileNum) {
-    const std::filesystem::path sSavePath(LUS::Context::GetPathRelativeToAppDirectory("Save"));
+    const std::filesystem::path sSavePath(Ship::Context::GetPathRelativeToAppDirectory("Save"));
     return sSavePath / ("file" + std::to_string(fileNum + 1) + ".sav");
 }
 
 std::filesystem::path SaveManager::GetFileTempName(int fileNum) {
-    const std::filesystem::path sSavePath(LUS::Context::GetPathRelativeToAppDirectory("Save"));
+    const std::filesystem::path sSavePath(Ship::Context::GetPathRelativeToAppDirectory("Save"));
     return sSavePath / ("file" + std::to_string(fileNum + 1) + ".temp");
 }
 
@@ -102,7 +102,7 @@ std::vector<RandomizerHint> Rando::StaticData::oldVerHintOrder {
     RH_ZR_OPEN_GROTTO_GOSSIP_STONE,
 };
 
-uint16_t Rando::StaticData::oldVerGossipStoneStart = 740;
+uint16_t Rando::StaticData::oldVerGossipStoneStart = 706;
 
 SaveManager::SaveManager() {
     coreSectionIDsByName["base"] = SECTION_ID_BASE;
@@ -188,7 +188,7 @@ void SaveManager::LoadRandomizerVersion1() {
         for (int j = 0; j < ARRAY_COUNT(hintText); j++) {
             SaveManager::Instance->LoadData("ht" + std::to_string(i) + "-" + std::to_string(j), hintText[j]);
         }
-        RandomizerHint stoneHint = Rando::StaticData::oldVerHintOrder[Rando::StaticData::oldVerGossipStoneStart];
+        RandomizerHint stoneHint = Rando::StaticData::oldVerHintOrder[i - Rando::StaticData::oldVerGossipStoneStart];
         randoContext->AddHint(stoneHint, Rando::Hint(stoneHint, {CustomMessage(hintText)}));
     }
 
@@ -294,7 +294,7 @@ void SaveManager::LoadRandomizerVersion2() {
             if (rc != RC_UNKNOWN_CHECK) {
                 std::string hintText;
                 SaveManager::Instance->LoadData("hintText", hintText);
-                RandomizerHint stoneHint = Rando::StaticData::oldVerHintOrder[Rando::StaticData::oldVerGossipStoneStart];
+                RandomizerHint stoneHint = Rando::StaticData::oldVerHintOrder[rc - Rando::StaticData::oldVerGossipStoneStart];
                 randoContext->AddHint(stoneHint, Rando::Hint(stoneHint, {CustomMessage(hintText)}));
             }
         });
@@ -445,7 +445,7 @@ void SaveManager::LoadRandomizerVersion3() {
 
     SaveManager::Instance->LoadArray("hintLocations", RH_MAX, [&](size_t i) {
         auto hint = RandomizerHint(i);
-        nlohmann::ordered_json json;
+        nlohmann::json json;
         SaveManager::Instance->LoadData("", json);
         randoContext->AddHint(hint, Rando::Hint(hint, json));
     });
@@ -615,10 +615,10 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool f
 void SaveManager::Init() {
     // Wait on saves that snuck through the Wait in OnExitGame
     ThreadPoolWait();
-    const std::filesystem::path sSavePath(LUS::Context::GetPathRelativeToAppDirectory("Save"));
+    const std::filesystem::path sSavePath(Ship::Context::GetPathRelativeToAppDirectory("Save"));
     const std::filesystem::path sGlobalPath = sSavePath / std::string("global.sav");
-    auto sOldSavePath = LUS::Context::GetPathRelativeToAppDirectory("oot_save.sav");
-    auto sOldBackupSavePath = LUS::Context::GetPathRelativeToAppDirectory("oot_save.bak");
+    auto sOldSavePath = Ship::Context::GetPathRelativeToAppDirectory("oot_save.sav");
+    auto sOldBackupSavePath = Ship::Context::GetPathRelativeToAppDirectory("oot_save.bak");
 
     // If the save directory does not exist, create it
     if (!std::filesystem::exists(sSavePath)) {
@@ -877,10 +877,10 @@ void SaveManager::InitFileDebug() {
 
     //don't apply gDebugSaveFileMode on the title screen
     if (gSaveContext.fileNum != 0xFF) {
-        if (CVarGetInteger("gDebugSaveFileMode", 1) == 2) {
+        if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugSaveFileMode"), 1) == 2) {
             InitFileMaxed();
             return;
-        } else if (CVarGetInteger("gDebugSaveFileMode", 1) == 0) {
+        } else if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugSaveFileMode"), 1) == 0) {
             return;
         }
     }
@@ -1266,7 +1266,7 @@ void SaveManager::SaveGlobal() {
     globalBlock["zTargetSetting"] = gSaveContext.zTargetSetting;
     globalBlock["language"] = gSaveContext.language;
 
-    const std::filesystem::path sSavePath(LUS::Context::GetPathRelativeToAppDirectory("Save"));
+    const std::filesystem::path sSavePath(Ship::Context::GetPathRelativeToAppDirectory("Save"));
     const std::filesystem::path sGlobalPath = sSavePath / std::string("global.sav");
 
     std::ofstream output(sGlobalPath);
@@ -1325,7 +1325,7 @@ void SaveManager::LoadFile(int fileNum) {
         GameInteractor::Instance->ExecuteHooks<GameInteractor::OnLoadFile>(fileNum);
     } catch (const std::exception& e) {
         input.close();
-        std::filesystem::path newFile(LUS::Context::GetPathRelativeToAppDirectory("Save") + ("/file" + std::to_string(fileNum + 1) + "-" + std::to_string(GetUnixTimestamp()) + ".bak"));
+        std::filesystem::path newFile(Ship::Context::GetPathRelativeToAppDirectory("Save") + ("/file" + std::to_string(fileNum + 1) + "-" + std::to_string(GetUnixTimestamp()) + ".bak"));
 #if defined(__SWITCH__) || defined(__WIIU__)
         copy_file(fileName.c_str(), newFile.c_str());
 #else
@@ -1415,7 +1415,7 @@ int SaveManager::GetSaveSectionID(std::string& sectionName) {
 void SaveManager::CreateDefaultGlobal() {
     gSaveContext.audioSetting = 0;
     gSaveContext.zTargetSetting = 0;
-    gSaveContext.language = CVarGetInteger("gLanguages", LANGUAGE_ENG);
+    gSaveContext.language = CVarGetInteger(CVAR_SETTING("Languages"), LANGUAGE_ENG);
 
     SaveGlobal();
 }
@@ -2795,7 +2795,7 @@ void SaveManager::ConvertFromUnversioned() {
     gSaveContext.zTargetSetting = data[SRAM_HEADER_ZTARGET] & 1;
     gSaveContext.language = data[SRAM_HEADER_LANGUAGE];
     if (gSaveContext.language >= LANGUAGE_MAX) {
-        gSaveContext.language = CVarGetInteger("gLanguages", LANGUAGE_ENG);
+        gSaveContext.language = CVarGetInteger(CVAR_SETTING("Languages"), LANGUAGE_ENG);
     }
     SaveGlobal();
 

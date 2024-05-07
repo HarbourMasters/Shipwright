@@ -3,7 +3,7 @@
 #include "spdlog/spdlog.h"
 
 namespace SOH {
-void SceneCommandFactoryBinaryV0::ReadCommandId(std::shared_ptr<ISceneCommand> command, std::shared_ptr<LUS::BinaryReader> reader) {
+void SceneCommandFactoryBinaryV0::ReadCommandId(std::shared_ptr<ISceneCommand> command, std::shared_ptr<Ship::BinaryReader> reader) {
     command->cmdId = (SceneCommandID)reader->ReadInt32();
 }
 } // namespace SOH

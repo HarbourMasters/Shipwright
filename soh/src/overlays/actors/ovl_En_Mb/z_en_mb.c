@@ -512,7 +512,7 @@ void EnMb_SetupClubAttack(EnMb* this) {
 
     // Rotate Club Moblin towards player in Enemy Randomizer because they're
     // borderline useless otherwise in most scenarios.
-    if (CVarGetInteger("gRandomizedEnemies", 0)) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0)) {
         Math_SmoothStepToS(&this->actor.shape.rot.y, this->actor.yawTowardsPlayer, 3, 100.0f, 0);
         Math_SmoothStepToS(&this->actor.world.rot.y, this->actor.yawTowardsPlayer, 3, 100.0f, 0);
     }
@@ -717,7 +717,7 @@ void EnMb_ClubWaitAfterAttack(EnMb* this, PlayState* play) {
 
     // Rotate Club Moblin towards player in Enemy Randomizer because they're
     // borderline useless otherwise in most scenarios.
-    if (CVarGetInteger("gRandomizedEnemies", 0)) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0)) {
         Math_SmoothStepToS(&this->actor.shape.rot.y, this->actor.yawTowardsPlayer, 3, 100.0f, 0);
         Math_SmoothStepToS(&this->actor.world.rot.y, this->actor.yawTowardsPlayer, 3, 100.0f, 0);
     }
@@ -844,7 +844,7 @@ void EnMb_ClubAttack(EnMb* this, PlayState* play) {
 
     // Rotate Club Moblin towards player in Enemy Randomizer because they're
     // borderline useless otherwise in most scenarios.
-    if (!CVarGetInteger("gRandomizedEnemies", 0)) {
+    if (!CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0)) {
         Math_SmoothStepToS(&this->actor.shape.rot.y, relYawTarget[this->attack - 1] + this->actor.world.rot.y, 1, 0x2EE, 0);
     } else {
         Math_SmoothStepToS(&this->actor.shape.rot.y, this->actor.yawTowardsPlayer, 3, 100.0f, 0);
@@ -891,7 +891,7 @@ void EnMb_ClubAttack(EnMb* this, PlayState* play) {
             // Disable camera shake when the Moblin attacks with Enemy Randomizer enabled.
             // This camera shake gets very annoying as these Moblins can spawn in many rooms,
             // and also often (initially) out of reach for the player.
-            if (!CVarGetInteger("gRandomizedEnemies", 0)) {
+            if (!CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0)) {
                 Camera_AddQuake(&play->mainCamera, 2, 0x19, 5);
             }
             func_800358DC(&this->actor, &effSpawnPos, &this->actor.world.rot, flamesParams, 20, flamesUnused, play,
@@ -1267,7 +1267,7 @@ void EnMb_ClubWaitPlayerNear(EnMb* this, PlayState* play) {
 
     // Rotate Club Moblin towards player in Enemy Randomizer because they're
     // borderline useless otherwise in most scenarios.
-    if (CVarGetInteger("gRandomizedEnemies", 0)) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0)) {
         Math_SmoothStepToS(&this->actor.shape.rot.y, this->actor.yawTowardsPlayer, 3, 100.0f, 0);
         Math_SmoothStepToS(&this->actor.world.rot.y, this->actor.yawTowardsPlayer, 3, 100.0f, 0);
     }
@@ -1278,7 +1278,7 @@ void EnMb_ClubWaitPlayerNear(EnMb* this, PlayState* play) {
         // Add a height check to the Moblin's Club attack when Enemy Randomizer is on.
         // Without the height check, the Moblin will attack (and play the sound effect) a lot even though
         // the Moblin is very far away from the player in vertical rooms (like the first room in Deku Tree).
-        s8 enemyRando = CVarGetInteger("gRandomizedEnemies", 0);
+        s8 enemyRando = CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0);
         if (!enemyRando || (enemyRando && this->actor.yDistToPlayer <= 100.0f && this->actor.yDistToPlayer >= -100.0f)) {
             EnMb_SetupClubAttack(this);
         }

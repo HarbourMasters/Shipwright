@@ -139,7 +139,7 @@ void EnBomChu_UpdateFloorPoly(EnBomChu* this, CollisionPoly* floorPoly, PlayStat
     f32 normDotUp;
     MtxF mf;
 
-    if (CVarGetInteger("gBombchusOOB", 0) && floorPoly == NULL) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("BombchusOOB"), 0) && floorPoly == NULL) {
         EnBomChu_Explode(this, play);
         return;
     }
@@ -491,7 +491,7 @@ void EnBomChu_Draw(Actor* thisx, PlayState* play) {
     f32 colorIntensity;
     s32 blinkHalfPeriod;
     s32 blinkTime;
-    Color_RGB8 BombchuCol = CVarGetColor24("gBombTrailCol", BombchuColorOriginal);
+    Color_RGB8 BombchuCol = CVarGetColor24(CVAR_COSMETIC("Trails.Bombchu.Value"), BombchuColorOriginal);
 
     OPEN_DISPS(play->state.gfxCtx);
 
@@ -515,8 +515,8 @@ void EnBomChu_Draw(Actor* thisx, PlayState* play) {
 
     colorIntensity = blinkTime / (f32)blinkHalfPeriod;
 
-    if (CVarGetInteger("gCosmetics.Equipment_ChuBody.Changed", 0)) {
-        Color_RGB8 color = CVarGetColor24("gCosmetics.Equipment_ChuBody.Value", (Color_RGB8){ 209.0f, 34.0f, -35.0f });
+    if (CVarGetInteger(CVAR_COSMETIC("Equipment.ChuBody.Changed"), 0)) {
+        Color_RGB8 color = CVarGetColor24(CVAR_COSMETIC("Equipment.ChuBody.Value"), (Color_RGB8){ 209.0f, 34.0f, -35.0f });
         gDPSetEnvColor(POLY_OPA_DISP++, (colorIntensity * color.r), (colorIntensity * color.g),
                    (colorIntensity * color.b), 255);
     } else {

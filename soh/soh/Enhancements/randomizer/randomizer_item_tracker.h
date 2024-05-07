@@ -34,7 +34,7 @@ typedef struct ItemTrackerDungeon {
     std::vector<uint32_t> items;
 } ItemTrackerDungeon;
 
-class ItemTrackerSettingsWindow : public LUS::GuiWindow {
+class ItemTrackerSettingsWindow : public Ship::GuiWindow {
   public:
     using GuiWindow::GuiWindow;
 
@@ -44,7 +44,7 @@ class ItemTrackerSettingsWindow : public LUS::GuiWindow {
     void UpdateElement() override {};
 };
 
-class ItemTrackerWindow : public LUS::GuiWindow {
+class ItemTrackerWindow : public Ship::GuiWindow {
   public:
     using GuiWindow::GuiWindow;
 

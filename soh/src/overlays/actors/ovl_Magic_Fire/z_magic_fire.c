@@ -218,8 +218,8 @@ void MagicFire_Draw(Actor* thisx, PlayState* play) {
     u8 alpha;
     Color_RGB8 Spell_env_ori = {255, 0, 0};
     Color_RGB8 Spell_col_ori = {255, 200, 0};
-    Color_RGB8 Spell_env = CVarGetColor24("gDF_Env", Spell_env_ori);
-    Color_RGB8 Spell_col = CVarGetColor24("gDF_Col", Spell_col_ori);
+    Color_RGB8 Spell_env = CVarGetColor24(CVAR_COSMETIC("Magic.DinsSecondary.Value"), Spell_env_ori);
+    Color_RGB8 Spell_col = CVarGetColor24(CVAR_COSMETIC("Magic.DinsPrimaryary.Value"), Spell_col_ori);
 
     if (this->action > 0) {
         OPEN_DISPS(play->state.gfxCtx);
@@ -231,7 +231,7 @@ void MagicFire_Draw(Actor* thisx, PlayState* play) {
         gDPSetColorDither(POLY_XLU_DISP++, G_CD_DISABLE);
         gDPFillRectangle(POLY_XLU_DISP++, 0, 0, 319, 239);
         Gfx_SetupDL_25Xlu(play->state.gfxCtx);
-        if (CVarGetInteger("gUseSpellsCol",0)) {
+        if (CVarGetInteger(CVAR_COSMETIC("UseSpellsColors"),0)) {
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, Spell_col.r, Spell_col.g, Spell_col.b, (u8)(this->alphaMultiplier * 255));
             gDPSetEnvColor(POLY_XLU_DISP++, Spell_env.r, Spell_env.g, Spell_env.b, (u8)(this->alphaMultiplier * 255));
         } else {
