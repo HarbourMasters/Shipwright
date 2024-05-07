@@ -1000,7 +1000,7 @@ void SaveManager::SaveSection(int fileNum, int sectionID, bool threaded) {
     auto saveContext = new SaveContext;
     memcpy(saveContext, &gSaveContext, sizeof(gSaveContext));
     if (threaded) {
-        smThreadPool->push_task_back(&SaveManager::SaveFileThreaded, this, fileNum, saveContext, sectionID);
+        smThreadPool->detach_task(std::bind(&SaveManager::SaveFileThreaded, this, fileNum, saveContext, sectionID));
     } else {
         SaveFileThreaded(fileNum, saveContext, sectionID);
     }
@@ -1091,7 +1091,7 @@ void SaveManager::LoadFile(int fileNum) {
 
 void SaveManager::ThreadPoolWait() {
     if (smThreadPool) {
-        smThreadPool->wait_for_tasks();
+        smThreadPool->wait();
     }
 }
 
