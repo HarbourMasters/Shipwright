@@ -34,20 +34,6 @@ extern int32_t D_8011D3AC;
 
 #define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).GetSelectedOptionIndex()
 
-void EnKo_MoveWhenReady(EnKo* enKo, PlayState* play) {
-    func_80A995CC(enKo, play);
-
-    if ((enKo->actor.params & 0xFF) == ENKO_TYPE_CHILD_3) {
-        // Typically this doesn't get get live updated in vanilla, but we need to
-        // live update it if we're skipping a certain cutscene or in randomizer
-        if (GameInteractor_Should(VB_OPEN_KOKIRI_FOREST, CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD), NULL)) {
-            enKo->collider.dim.height -= 200;
-            Path_CopyLastPoint(enKo->path, &enKo->actor.world.pos);
-            enKo->actionFunc = func_80A99384;
-        }
-    }
-}
-
 void EnMa1_EndTeachSong(EnMa1* enMa1, PlayState* play) {
     if (Message_GetState(&gPlayState->msgCtx) == TEXT_STATE_CLOSING) {
         Flags_SetRandomizerInf(RAND_INF_LEARNED_EPONA_SONG);
@@ -71,25 +57,6 @@ void EnFu_EndTeachSong(EnFu* enFu, PlayState* play) {
         Flags_SetEventChkInf(EVENTCHKINF_PLAYED_SONG_OF_STORMS_IN_WINDMILL);
         Flags_SetEventChkInf(EVENTCHKINF_LEARNED_SONG_OF_STORMS);
         return;
-    }
-}
-
-u16 EnZl4_GiveItemTextId(PlayState* play, Actor* actor) {
-    return 0x207D;
-}
-
-void EnZl4_SkipToGivingZeldasLetter(EnZl4* enZl4, PlayState* play) {
-    if (enZl4->csState == 0 && enZl4->actor.xzDistToPlayer < 600.0f && EnZl4_SetNextAnim(enZl4, 3)) {
-        Audio_PlayFanfare(NA_BGM_APPEAR);
-        enZl4->csState = 8; // ZL4_CS_PLAN
-    } else {
-        Npc_UpdateTalking(play, &enZl4->actor, &enZl4->interactInfo.talkState, enZl4->collider.dim.radius + 60.0f, EnZl4_GiveItemTextId, func_80B5B9B0);
-        func_80B5BB78(enZl4, play);
-
-        if (enZl4->interactInfo.talkState != NPC_TALK_STATE_IDLE) {
-            enZl4->talkState = 6;
-            enZl4->actionFunc = EnZl4_Cutscene;
-        }
     }
 }
 
@@ -141,11 +108,6 @@ void TimeSaverOnGameFrameUpdateHandler() {
 void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void* opt) {
     switch (id) {
         case VB_PLAY_TRANSITION_CS: {
-            if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Intro"), IS_RANDO) && gSaveContext.entranceIndex == ENTR_LINKS_HOUSE_0 && gSaveContext.cutsceneIndex == 0xFFF1) {
-                gSaveContext.cutsceneIndex = 0;
-                *should = false;
-            }
-
             if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.LearnSong"), IS_RANDO) || IS_RANDO) {
                 // Song of Time
                 if (gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_0 && gSaveContext.cutsceneIndex == 0xFFF7) {
@@ -185,82 +147,6 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
             }
 
             if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO)) {
-                uint8_t isBlueWarp = 0;
-                // Deku Tree Blue warp
-                if (gSaveContext.entranceIndex == ENTR_KOKIRI_FOREST_0 && gSaveContext.cutsceneIndex == 0xFFF1) {
-                    gSaveContext.entranceIndex = ENTR_KOKIRI_FOREST_11;
-                    isBlueWarp = 1;
-                // Dodongo's Cavern Blue warp
-                } else if (gSaveContext.entranceIndex == ENTR_DEATH_MOUNTAIN_TRAIL_0 && gSaveContext.cutsceneIndex == 0xFFF1) {
-                    gSaveContext.entranceIndex = ENTR_DEATH_MOUNTAIN_TRAIL_5;
-                    isBlueWarp = 1;
-                // Jabu Jabu's Blue warp
-                } else if (gSaveContext.entranceIndex == ENTR_ZORAS_FOUNTAIN_0 && gSaveContext.cutsceneIndex == 0xFFF0) {
-                    gSaveContext.entranceIndex = ENTR_ZORAS_FOUNTAIN_0;
-                    isBlueWarp = 1;
-                // Forest Temple Blue warp
-                } else if (gSaveContext.entranceIndex == ENTR_CHAMBER_OF_THE_SAGES_0 && gSaveContext.cutsceneIndex == 0x0 && gSaveContext.chamberCutsceneNum == CHAMBER_CS_FOREST) {
-                    // Normally set in the blue warp cutscene
-                    Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_DEKU_TREE_SPROUT);
-
-                    if (IS_RANDO) {
-                        gSaveContext.entranceIndex = ENTR_SACRED_FOREST_MEADOW_3;
-                    } else {
-                        gSaveContext.entranceIndex = ENTR_KOKIRI_FOREST_12;
-                    }
-
-                    isBlueWarp = 1;
-                // Fire Temple Blue warp
-                } else if (gSaveContext.entranceIndex == ENTR_KAKARIKO_VILLAGE_0 && gSaveContext.cutsceneIndex == 0xFFF3) {
-                    gSaveContext.entranceIndex = ENTR_DEATH_MOUNTAIN_CRATER_5;
-                    isBlueWarp = 1;
-                // Water Temple Blue warp
-                } else if (gSaveContext.entranceIndex == ENTR_CHAMBER_OF_THE_SAGES_0 && gSaveContext.cutsceneIndex == 0x0 && gSaveContext.chamberCutsceneNum == CHAMBER_CS_WATER) {
-                    // Normally set in the blue warp cutscene
-                    gSaveContext.dayTime = gSaveContext.skyboxTime = 0x4800;
-
-                    gSaveContext.entranceIndex = ENTR_LAKE_HYLIA_9;
-                    isBlueWarp = 1;
-                // Spirit Temple Blue warp
-                } else if (gSaveContext.entranceIndex == ENTR_CHAMBER_OF_THE_SAGES_0 && gSaveContext.cutsceneIndex == 0x0 && gSaveContext.chamberCutsceneNum == CHAMBER_CS_SPIRIT) {
-                    gSaveContext.entranceIndex = ENTR_DESERT_COLOSSUS_8;
-                    isBlueWarp = 1;
-                // Shadow Temple Blue warp
-                } else if (gSaveContext.entranceIndex == ENTR_CHAMBER_OF_THE_SAGES_0 && gSaveContext.cutsceneIndex == 0x0 && gSaveContext.chamberCutsceneNum == CHAMBER_CS_SHADOW) {
-                    gSaveContext.entranceIndex = ENTR_GRAVEYARD_8;
-                    isBlueWarp = 1;
-                }
-
-                if (isBlueWarp) {
-                    // Normally set in the blue warp cutscene
-                    gSaveContext.dayTime = gSaveContext.skyboxTime = 0x8000;
-
-                    *should = false;
-                    gSaveContext.cutsceneIndex = 0;
-
-                    if (IS_RANDO && (RAND_GET_OPTION(RSK_SHUFFLE_DUNGEON_ENTRANCES) != RO_DUNGEON_ENTRANCE_SHUFFLE_OFF || RAND_GET_OPTION(RSK_SHUFFLE_BOSS_ENTRANCES) != RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF)) {
-                        Entrance_OverrideBlueWarp();
-                    }
-                }
-
-                // Flee hyrule castle cutscene
-                if (gSaveContext.entranceIndex == ENTR_HYRULE_FIELD_0 && gSaveContext.cutsceneIndex == 0xFFF1) {
-                    // Normally set in the blue warp cutscene
-                    gSaveContext.dayTime = gSaveContext.skyboxTime = 0x4AAA;
-
-                    gSaveContext.cutsceneIndex = 0;
-                    *should = false;
-                }
-
-                // Lost Woods Bridge
-                if ((gSaveContext.entranceIndex == ENTR_LOST_WOODS_9) && !Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_SARIA_ON_BRIDGE)) {
-                    Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_SARIA_ON_BRIDGE);
-                    if (GameInteractor_Should(VB_GIVE_ITEM_FAIRY_OCARINA, true, NULL)) {
-                        Item_Give(gPlayState, ITEM_OCARINA_FAIRY);
-                    }
-                    *should = false;
-                }
-
                 // LACS
                 u8 meetsLACSRequirements =
                     LINK_IS_ADULT &&
@@ -429,38 +315,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
                 *should = true;
             }
             break;
-        case VB_MOVE_MIDO_IN_KOKIRI_FOREST:
-            if (
-                CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO) &&
-                !Flags_GetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD) &&
-                (CUR_EQUIP_VALUE(EQUIP_TYPE_SHIELD) == EQUIP_VALUE_SHIELD_DEKU) && 
-                (CUR_EQUIP_VALUE(EQUIP_TYPE_SWORD) == EQUIP_VALUE_SWORD_KOKIRI)
-            ) {
-                Flags_SetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD);
-                *should = true;
-            }
-            break;
-        case VB_PLAY_DEKU_TREE_INTRO_CS: {
-            if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO)) {
-                BgTreemouth* treeMouth = static_cast<BgTreemouth*>(opt);
-                Flags_SetEventChkInf(EVENTCHKINF_DEKU_TREE_OPENED_MOUTH);
-                Audio_PlaySoundGeneral(NA_SE_EV_WOODDOOR_OPEN, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-                BgTreemouth_SetupAction(treeMouth, func_808BC6F8);
-                *should = false;
-            }
-            break;
-        }
-        case VB_DEKU_JR_CONSIDER_FOREST_TEMPLE_FINISHED: {
-            // We're overriding this so that the Deku JR doesn't despawn after skipping the forest temple blue warp cutscene.
-            // It typically relies on the forest medallion being obtained, but that isn't given yet until after scene init
-            if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO)) {
-                *should = Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP);
-            }
-            break;
-        }
-        case VB_GIVE_ITEM_FROM_BLUE_WARP:
         case VB_PLAY_SHIEK_BLOCK_MASTER_SWORD_CS:
-        case VB_GIVE_ITEM_FAIRY_OCARINA:
         case VB_GIVE_ITEM_LIGHT_ARROW:
             if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO)) {
                 *should = false;
@@ -773,10 +628,6 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
     }
 }
 
-static uint32_t enKoUpdateHook = 0;
-static uint32_t enKoKillHook = 0;
-static uint32_t itemOcarinaUpdateHook = 0;
-static uint32_t itemOcarinaframesSinceSpawn = 0;
 static uint32_t enMa1UpdateHook = 0;
 static uint32_t enMa1KillHook = 0;
 static uint32_t enFuUpdateHook = 0;
@@ -787,50 +638,6 @@ static uint32_t enPoSistersUpdateHook = 0;
 static uint32_t enPoSistersKillHook = 0;
 void TimeSaverOnActorInitHandler(void* actorRef) {
     Actor* actor = static_cast<Actor*>(actorRef);
-
-    if (actor->id == ACTOR_EN_KO && (actor->params & 0xFF) == ENKO_TYPE_CHILD_3) {
-        enKoUpdateHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* innerActorRef) mutable {
-            Actor* innerActor = static_cast<Actor*>(innerActorRef);
-            if (innerActor->id == ACTOR_EN_KO && (innerActor->params & 0xFF) == ENKO_TYPE_CHILD_3 && (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO) || IS_RANDO)) {
-                EnKo* enKo = static_cast<EnKo*>(innerActorRef);
-                // They haven't moved yet, wrap their update function so we check every frame
-                if (enKo->actionFunc == func_80A995CC) {
-                    enKo->actionFunc = EnKo_MoveWhenReady;
-                    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(enKoUpdateHook);
-                    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(enKoKillHook);
-                    enKoUpdateHook = 0;
-                    enKoKillHook = 0;
-                // They have already moved
-                } else if (enKo->actionFunc == func_80A99384) {
-                    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(enKoUpdateHook);
-                    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(enKoKillHook);
-                    enKoUpdateHook = 0;
-                    enKoKillHook = 0;
-                }
-            }
-        });
-        enKoKillHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) mutable {
-            GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(enKoUpdateHook);
-            GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(enKoKillHook);
-            enKoUpdateHook = 0;
-            enKoKillHook = 0;
-        });
-    }
-
-    if (actor->id == ACTOR_ITEM_OCARINA && actor->params == 3 && CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO)) {
-        itemOcarinaframesSinceSpawn = 0;
-        itemOcarinaUpdateHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* innerActorRef) mutable {
-            Actor* innerActor = static_cast<Actor*>(innerActorRef);
-            if (innerActor->id != ACTOR_ITEM_OCARINA || innerActor->params != 3) return;
-            itemOcarinaframesSinceSpawn++;
-            if (itemOcarinaframesSinceSpawn > 20) {
-                Audio_PlayActorSound2(innerActor, NA_SE_EV_BOMB_DROP_WATER);
-
-                GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(itemOcarinaUpdateHook);
-                itemOcarinaUpdateHook = 0;
-            }
-        });
-    }
 
     if (actor->id == ACTOR_EN_MA1 && gPlayState->sceneNum == SCENE_LON_LON_RANCH) {
         enMa1UpdateHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* innerActorRef) mutable {
@@ -902,13 +709,6 @@ void TimeSaverOnActorInitHandler(void* actorRef) {
             bgSpot02UpdateHook = 0;
             bgSpot02KillHook = 0;
         });
-    }
-
-    if (actor->id == ACTOR_EN_ZL4 && CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO)) {
-        EnZl4* enZl4 = static_cast<EnZl4*>(actorRef);
-        if (enZl4->actionFunc != EnZl4_Cutscene || enZl4->csState != 0) return;
-
-        enZl4->actionFunc = EnZl4_SkipToGivingZeldasLetter;
     }
 
     if (actor->id == ACTOR_EN_DNT_DEMO && (IS_RANDO || CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO))) {

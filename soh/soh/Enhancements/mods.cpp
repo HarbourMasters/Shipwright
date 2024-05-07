@@ -11,6 +11,7 @@
 #include <soh/Enhancements/item-tables/ItemTableManager.h>
 #include "soh/Enhancements/nametag.h"
 #include "soh/Enhancements/timesaver_hook_handlers.h"
+#include "soh/Enhancements/TimeSavers/TimeSavers.h"
 #include "soh/Enhancements/cheat_hook_handlers.h"
 #include "soh/Enhancements/randomizer/hook_handlers.h"
 #include "objects/object_gi_compass/object_gi_compass.h"
@@ -1715,6 +1716,7 @@ void InitMods() {
     RandomizerRegisterHooks();
     TimeSaverRegisterHooks();
     CheatsRegisterHooks();
+    TimeSavers_Register();
     RegisterTTS();
     RegisterInfiniteMoney();
     RegisterInfiniteHealth();
