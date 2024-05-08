@@ -201,7 +201,7 @@ void func_80077D10(f32* arg0, s16* arg1, Input* input) {
     f32 relX = input->rel.stick_x;
     f32 relY = input->rel.stick_y;
 
-    if (CVarGetInteger("gMirroredWorld", 0)) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0)) {
         relX = -input->rel.stick_x;
     }
 

@@ -1485,12 +1485,12 @@ s32 Camera_Free(Camera* camera) {
 
     camera->animState = 0;
 
-    f32 newCamX = -D_8015BD7C->state.input[0].cur.right_stick_x * 10.0f * (CVarGetFloat("gThirdPersonCameraSensitivityX", 1.0f));
-    f32 newCamY = D_8015BD7C->state.input[0].cur.right_stick_y * 10.0f * (CVarGetFloat("gThirdPersonCameraSensitivityY", 1.0f));
-    bool invertXAxis = (CVarGetInteger("gInvertXAxis", 0) && !CVarGetInteger("gMirroredWorld", 0)) || (!CVarGetInteger("gInvertXAxis", 0) && CVarGetInteger("gMirroredWorld", 0));
+    f32 newCamX = -D_8015BD7C->state.input[0].cur.right_stick_x * 10.0f * (CVarGetFloat(CVAR_SETTING("FreeLook.CameraSensitivity.X"), 1.0f));
+    f32 newCamY = D_8015BD7C->state.input[0].cur.right_stick_y * 10.0f * (CVarGetFloat(CVAR_SETTING("FreeLook.CameraSensitivity.Y"), 1.0f));
+    bool invertXAxis = (CVarGetInteger(CVAR_SETTING("FreeLook.InvertXAxis"), 0) && !CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0)) || (!CVarGetInteger(CVAR_SETTING("FreeLook.InvertXAxis"), 0) && CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0));
 
     camera->play->camX += newCamX * (invertXAxis ? -1 : 1);
-    camera->play->camY += newCamY * (CVarGetInteger("gInvertYAxis", 1) ? 1 : -1);
+    camera->play->camY += newCamY * (CVarGetInteger(CVAR_SETTING("FreeLook.InvertYAxis"), 1) ? 1 : -1);
 
     if (camera->play->camY > 0x32A4) {
         camera->play->camY = 0x32A4;
@@ -1499,8 +1499,8 @@ s32 Camera_Free(Camera* camera) {
         camera->play->camY = -0x228C;
     }
 
-    f32 distTarget = CVarGetInteger("gFreeCameraDistMax", para1->distTarget);
-    f32 speedScaler = CVarGetInteger("gFreeCameraTransitionSpeed", 25);
+    f32 distTarget = CVarGetInteger(CVAR_SETTING("FreeLook.MaxCameraDistance"), para1->distTarget);
+    f32 speedScaler = CVarGetInteger(CVAR_SETTING("FreeLook.TransitionSpeed"), 25);
     f32 distDiff = ABS(distTarget - camera->dist);
     if (distDiff > 0)
         camera->dist = Camera_LERPCeilF(distTarget, camera->dist, speedScaler / (distDiff + speedScaler), 0.0f);
@@ -1524,7 +1524,7 @@ s32 Camera_Free(Camera* camera) {
 }
 
 s32 Camera_Normal1(Camera* camera) {
-    if (CVarGetInteger("gFreeCamera", 0) && SetCameraManual(camera) == 1) {
+    if (CVarGetInteger(CVAR_SETTING("FreeLook.Enabled"), 0) && SetCameraManual(camera) == 1) {
         Camera_Free(camera);
         return 1;
     }
@@ -1679,7 +1679,7 @@ s32 Camera_Normal1(Camera* camera) {
 
     if (anim->startSwingTimer <= 0) {
         // idle camera re-center
-        if (CVarGetInteger("gA11yDisableIdleCam", 0)) {
+        if (CVarGetInteger(CVAR_SETTING("A11yDisableIdleCam"), 0)) {
             return 1;
         }
         eyeAdjustment.pitch = atEyeNextGeo.pitch;
@@ -1770,7 +1770,7 @@ s32 Camera_Normal1(Camera* camera) {
 }
 
 s32 Camera_Normal2(Camera* camera) {
-    if (CVarGetInteger("gFreeCamera", 0) && SetCameraManual(camera) == 1) {
+    if (CVarGetInteger(CVAR_SETTING("FreeLook.Enabled"), 0) && SetCameraManual(camera) == 1) {
         Camera_Free(camera);
         return 1;
     }
@@ -1941,7 +1941,7 @@ s32 Camera_Normal2(Camera* camera) {
 
 // riding epona
 s32 Camera_Normal3(Camera* camera) {
-    if (CVarGetInteger("gFreeCamera", 0) && SetCameraManual(camera) == 1) {
+    if (CVarGetInteger(CVAR_SETTING("FreeLook.Enabled"), 0) && SetCameraManual(camera) == 1) {
         Camera_Free(camera);
         return 1;
     }
@@ -2305,7 +2305,7 @@ s32 Camera_Parallel0(Camera* camera) {
  * Generic jump, jumping off ledges
  */
 s32 Camera_Jump1(Camera* camera) {
-    if (CVarGetInteger("gFreeCamera", 0) && SetCameraManual(camera) == 1) {
+    if (CVarGetInteger(CVAR_SETTING("FreeLook.Enabled"), 0) && SetCameraManual(camera) == 1) {
         Camera_Free(camera);
         return 1;
     }
@@ -2455,7 +2455,7 @@ s32 Camera_Jump1(Camera* camera) {
 
 // Climbing ladders/vines
 s32 Camera_Jump2(Camera* camera) {
-    if (CVarGetInteger("gFreeCamera", 0) && SetCameraManual(camera) == 1) {
+    if (CVarGetInteger(CVAR_SETTING("FreeLook.Enabled"), 0) && SetCameraManual(camera) == 1) {
         Camera_Free(camera);
         return 1;
     }
@@ -2642,7 +2642,7 @@ s32 Camera_Jump2(Camera* camera) {
 
 // swimming
 s32 Camera_Jump3(Camera* camera) {
-    if (CVarGetInteger("gFreeCamera", 0) && SetCameraManual(camera) == 1) {
+    if (CVarGetInteger(CVAR_SETTING("FreeLook.Enabled"), 0) && SetCameraManual(camera) == 1) {
         Camera_Free(camera);
         return 1;
     }
@@ -3104,7 +3104,7 @@ s32 Camera_Battle3(Camera* camera) {
  * setting value.
  */
 s32 Camera_Battle4(Camera* camera) {
-    if (CVarGetInteger("gFreeCamera", 0) && SetCameraManual(camera) == 1) {
+    if (CVarGetInteger(CVAR_SETTING("FreeLook.Enabled"), 0) && SetCameraManual(camera) == 1) {
         Camera_Free(camera);
         return 1;
     }
@@ -4639,7 +4639,7 @@ s32 Camera_Data4(Camera* camera) {
  * Hanging off of a ledge
  */
 s32 Camera_Unique1(Camera* camera) {
-    if (CVarGetInteger("gFreeCamera", 0) && SetCameraManual(camera) == 1) {
+    if (CVarGetInteger(CVAR_SETTING("FreeLook.Enabled"), 0) && SetCameraManual(camera) == 1) {
         Camera_Free(camera);
         return 1;
     }
@@ -7890,7 +7890,7 @@ s32 Camera_ChangeModeFlags(Camera* camera, s16 mode, u8 flags) {
         }
 
         // Clear free look if an action is performed that would move the camera (targeting, first person, talking)
-        if (CVarGetInteger("gFreeCamera", 0) && SetCameraManual(camera) == 1 &&
+        if (CVarGetInteger(CVAR_SETTING("FreeLook.Enabled"), 0) && SetCameraManual(camera) == 1 &&
             ((mode >= CAM_MODE_TARGET && mode <= CAM_MODE_BATTLE) ||
              (mode >= CAM_MODE_FIRSTPERSON && mode <= CAM_MODE_CLIMBZ) || mode == CAM_MODE_HANGZ ||
              mode == CAM_MODE_FOLLOWBOOMERANG)) {

@@ -1082,10 +1082,10 @@ void TitleCard_InitPlaceName(PlayState* play, TitleCardContext* titleCtx, void* 
 void TitleCard_Update(PlayState* play, TitleCardContext* titleCtx) {
     const Color_RGB8 TitleCard_Colors_ori = {255,255,255};
     Color_RGB8 TitleCard_Colors = {255,255,255};
-    if (titleCtx->isBossCard && CVarGetInteger("gHudColors", 1) == 2) {//Bosses cards.
-        TitleCard_Colors = CVarGetColor24("gCCTC_B_U_Prim", TitleCard_Colors_ori);
-    } else if (!titleCtx->isBossCard && CVarGetInteger("gHudColors", 1) == 2) {
-        TitleCard_Colors = CVarGetColor24("gCCTC_OW_U_Prim", TitleCard_Colors_ori);
+    if (titleCtx->isBossCard && CVarGetInteger(CVAR_COSMETIC("HUD.TitleCard.Boss.Changed"), 1) == 2) {
+        TitleCard_Colors = CVarGetColor24(CVAR_COSMETIC("HUD.TitleCard.Boss.Value"), TitleCard_Colors_ori);
+    } else if (!titleCtx->isBossCard && CVarGetInteger(CVAR_COSMETIC("HUD.TitleCard.Map.Changed"), 1) == 2) {
+        TitleCard_Colors = CVarGetColor24(CVAR_COSMETIC("HUD.TitleCard.Map.Value"), TitleCard_Colors_ori);
     } else {
         TitleCard_Colors = TitleCard_Colors_ori;
     }
@@ -1129,10 +1129,10 @@ void TitleCard_Draw(PlayState* play, TitleCardContext* titleCtx) {
         if (TitleCard_PosType_Checker != 0) {
             TitleCard_PosY = TitleCard_PosY_Modifier;
             if (TitleCard_PosType_Checker == 1) {//Anchor Left
-                if (TitleCard_Margin_Checker != 0) {TitleCard_MarginX = CVarGetInteger("gHUDMargin_L", 0)*-1;};
+                if (TitleCard_Margin_Checker != 0) {TitleCard_MarginX = CVarGetInteger(CVAR_COSMETIC("HUD.Margin.L"), 0)*-1;};
                 TitleCard_PosX = OTRGetDimensionFromLeftEdge(TitleCard_PosX_Modifier+TitleCard_MarginX)-11;            
             } else if (TitleCard_PosType_Checker == 2) {//Anchor Right
-                if (TitleCard_Margin_Checker != 0) {TitleCard_MarginX = CVarGetInteger("gHUDMargin_R", 0);};
+                if (TitleCard_Margin_Checker != 0) {TitleCard_MarginX = CVarGetInteger(CVAR_COSMETIC("HUD.Margin.R"), 0);};
                 TitleCard_PosX = OTRGetDimensionFromRightEdge(TitleCard_PosX_Modifier+TitleCard_MarginX);
             } else if (TitleCard_PosType_Checker == 3) {//Anchor None
                 TitleCard_PosX = TitleCard_PosX_Modifier;
@@ -2214,7 +2214,7 @@ void Player_PlaySfx(Actor* actor, u16 sfxId) {
     if (actor->id != ACTOR_PLAYER || sfxId < NA_SE_VO_LI_SWORD_N || sfxId > NA_SE_VO_LI_ELECTRIC_SHOCK_LV_KID) {
         Audio_PlaySoundGeneral(sfxId, &actor->projectedPos, 4, &D_801333E0 , &D_801333E0, &D_801333E8);
     } else {
-        freqMultiplier = CVarGetFloat("gLinkVoiceFreqMultiplier", 1.0);
+        freqMultiplier = CVarGetFloat(CVAR_AUDIO("LinkVoiceFreqMultiplier"), 1.0);
         if (freqMultiplier <= 0) { 
             freqMultiplier = 1;
         }
@@ -2911,7 +2911,7 @@ s32 func_800314D4(PlayState* play, Actor* actor, Vec3f* arg2, f32 arg3) {
         // #region SoH [Widescreen support]
         // Doors will cull quite noticeably on wider screens. For these actors the zone is increased
         f32 limit = 1.0f;
-        if (((actor->id == ACTOR_EN_DOOR) || (actor->id == ACTOR_DOOR_SHUTTER)) && CVarGetInteger("gIncreaseDoorUncullZones", 1)) {
+        if (((actor->id == ACTOR_EN_DOOR) || (actor->id == ACTOR_DOOR_SHUTTER)) && CVarGetInteger(CVAR_GENERAL("IncreaseDoorUncullZones"), 1)) {
             limit = 2.0f;
         }
 

@@ -2,6 +2,8 @@
 
 #include <libultraship/libultraship.h>
 
+#define CVAR_INPUT_VIEWER(var) "gInputViewer." var
+
 typedef enum {
     BUTTON_OUTLINE_ALWAYS_SHOWN,
     BUTTON_OUTLINE_NOT_PRESSED,

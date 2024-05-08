@@ -1000,7 +1000,7 @@ void SaveManager::SaveSection(int fileNum, int sectionID, bool threaded) {
     auto saveContext = new SaveContext;
     memcpy(saveContext, &gSaveContext, sizeof(gSaveContext));
     if (threaded) {
-        smThreadPool->push_task_back(&SaveManager::SaveFileThreaded, this, fileNum, saveContext, sectionID);
+        smThreadPool->detach_task(std::bind(&SaveManager::SaveFileThreaded, this, fileNum, saveContext, sectionID));
     } else {
         SaveFileThreaded(fileNum, saveContext, sectionID);
     }
@@ -1091,7 +1091,7 @@ void SaveManager::LoadFile(int fileNum) {
 
 void SaveManager::ThreadPoolWait() {
     if (smThreadPool) {
-        smThreadPool->wait_for_tasks();
+        smThreadPool->wait();
     }
 }
 
@@ -1166,7 +1166,7 @@ int SaveManager::GetSaveSectionID(std::string& sectionName) {
 void SaveManager::CreateDefaultGlobal() {
     gSaveContext.audioSetting = 0;
     gSaveContext.zTargetSetting = 0;
-    gSaveContext.language = CVarGetInteger("gLanguages", LANGUAGE_ENG);
+    gSaveContext.language = CVarGetInteger(CVAR_SETTING("Languages"), LANGUAGE_ENG);
 
     SaveGlobal();
 }
@@ -2546,7 +2546,7 @@ void SaveManager::ConvertFromUnversioned() {
     gSaveContext.zTargetSetting = data[SRAM_HEADER_ZTARGET] & 1;
     gSaveContext.language = data[SRAM_HEADER_LANGUAGE];
     if (gSaveContext.language >= LANGUAGE_MAX) {
-        gSaveContext.language = CVarGetInteger("gLanguages", LANGUAGE_ENG);
+        gSaveContext.language = CVarGetInteger(CVAR_SETTING("Languages"), LANGUAGE_ENG);
     }
     SaveGlobal();
 

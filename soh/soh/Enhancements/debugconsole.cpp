@@ -13,7 +13,7 @@
 
 #define Path _Path
 #define PATH_HACK
-#include <Utils/StringHelper.h>
+#include <utils/StringHelper.h>
 
 #include <Window.h>
 #include <Context.h>

@@ -2827,7 +2827,7 @@ RandomizerCheck Randomizer::GetCheckFromRandomizerInf(RandomizerInf randomizerIn
 std::thread randoThread;
 
 void GenerateRandomizerImgui(std::string seed = "") {
-    CVarSetInteger("gRandoGenerating", 1);
+    CVarSetInteger(CVAR_GENERAL("RandoGenerating"), 1);
     CVarSave();
 
     std::unordered_map<RandomizerSettingKey, u8> cvarSettings;
@@ -2945,7 +2945,7 @@ void GenerateRandomizerImgui(std::string seed = "") {
     // RANDOTODO implement chest minigame shuffle with keysanity
     cvarSettings[RSK_SHUFFLE_CHEST_MINIGAME] = false;
 
-    cvarSettings[RSK_LANGUAGE] = CVarGetInteger("gLanguages", 0);
+    cvarSettings[RSK_LANGUAGE] = CVarGetInteger(CVAR_SETTING("Languages"), 0);
 
     cvarSettings[RSK_CUCCO_COUNT] = CVarGetInteger(CVAR_RANDOMIZER_SETTING("CuccosToReturn"), 7);
     cvarSettings[RSK_BIG_POE_COUNT] = CVarGetInteger(CVAR_RANDOMIZER_SETTING("BigPoeTargetCount"), 10);
@@ -3052,7 +3052,7 @@ void GenerateRandomizerImgui(std::string seed = "") {
 
     RandoMain::GenerateRando(cvarSettings, excludedLocations, enabledTricks, seed);
 
-    CVarSetInteger("gRandoGenerating", 0);
+    CVarSetInteger(CVAR_GENERAL("RandoGenerating"), 0);
     CVarSave();
     CVarLoad();
 
@@ -3060,7 +3060,7 @@ void GenerateRandomizerImgui(std::string seed = "") {
 }
 
 bool GenerateRandomizer(std::string seed /*= ""*/) {
-    if (CVarGetInteger("gRandoGenerating", 0) == 0) {
+    if (CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0) == 0) {
         randoThread = std::thread(&GenerateRandomizerImgui, seed);
         return true;
     }
@@ -3144,7 +3144,7 @@ void RandomizerSettingsWindow::DrawElement() {
         return;
     }
 
-    bool disableEditingRandoSettings = CVarGetInteger("gRandoGenerating", 0) || CVarGetInteger("gOnFileSelectNameEntry", 0);
+    bool disableEditingRandoSettings = CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0) || CVarGetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 0);
     if (disableEditingRandoSettings) {
         UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
     }
@@ -3182,12 +3182,12 @@ void RandomizerSettingsWindow::DrawElement() {
 
     UIWidgets::Spacer(0);
     if (!CVarGetInteger(CVAR_RANDOMIZER_SETTING("DontGenerateSpoiler"), 0)) {
-        std::string spoilerfilepath = CVarGetString("gSpoilerLog", "");
+        std::string spoilerfilepath = CVarGetString(CVAR_GENERAL("SpoilerLog"), "");
         ImGui::Text("Spoiler File: %s", spoilerfilepath.c_str());
     }
 
     // RANDOTODO settings presets
-    // std::string presetfilepath = CVarGetString("gLoadedPreset", "");
+    // std::string presetfilepath = CVarGetString(CVAR_RANDOMIZER_SETTING("LoadedPreset"), "");
     // ImGui::Text("Settings File: %s", presetfilepath.c_str());
 
     UIWidgets::PaddedSeparator();
@@ -5412,12 +5412,20 @@ CustomMessage Randomizer::GetMerchantMessage(RandomizerInf randomizerInf, u16 te
     RandomizerCheck rc = GetCheckFromRandomizerInf(randomizerInf);
     RandomizerGet shopItemGet = this->itemLocations[rc].rgID;
     std::array<std::string, LANGUAGE_MAX> shopItemName;
-    if (mysterious) {
-        shopItemName = {
-            "mysterious item",
-            "mysteriösen Gegenstand",
-            "objet mystérieux"
-        };
+    if (mysterious || CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0)) {
+        if (randomizerInf >= RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1 && randomizerInf <= RAND_INF_SHOP_ITEMS_MARKET_BOMBCHU_SHOP_ITEM_8) {
+            shopItemName = {
+                "Mysterious Item",
+                "Mysteriösen Gegenstand",
+                "Objet Mystérieux"
+            };
+        } else {
+            shopItemName = {
+                "mysterious item",
+                "mysteriösen Gegenstand",
+                "objet mystérieux"
+            };
+        }
     // TODO: This should eventually be replaced with a full fledged trick model & trick name system
     } else if (shopItemGet == RG_ICE_TRAP) {
         shopItemGet = this->itemLocations[rc].fakeRgID;

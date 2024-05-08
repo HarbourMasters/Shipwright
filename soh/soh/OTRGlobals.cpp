@@ -23,11 +23,6 @@
 #include <time.h>
 #endif
 #include <Array.h>
-#include <stb/stb_image.h>
-#define DRMP3_IMPLEMENTATION
-#include <dr_libs/mp3.h>
-#define DRWAV_IMPLEMENTATION
-#include <dr_libs/wav.h>
 #include <AudioPlayer.h>
 #include "Enhancements/speechsynthesizer/SpeechSynthesizer.h"
 #include "Enhancements/controls/SohInputEditorWindow.h"
@@ -48,7 +43,7 @@
 #include "z64.h"
 #include "macros.h"
 #include "Fonts.h"
-#include <Utils/StringHelper.h>
+#include <utils/StringHelper.h>
 #include "Enhancements/custom-message/CustomMessageManager.h"
 #include "Enhancements/presets.h"
 #include "util.h"
@@ -90,9 +85,16 @@ GameInteractorSail* GameInteractorSail::Instance;
 
 #include "Enhancements/mods.h"
 #include "Enhancements/game-interactor/GameInteractor.h"
+#include "Enhancements/randomizer/draw.h"
 #include <libultraship/libultraship.h>
 
 // Resource Types/Factories
+#include "resource/type/Array.h"
+#include "resource/type/Blob.h"
+#include "resource/type/DisplayList.h"
+#include "resource/type/Matrix.h"
+#include "resource/type/Texture.h"
+#include "resource/type/Vertex.h"
 #include "soh/resource/type/SohResourceType.h"
 #include "soh/resource/type/Animation.h"
 #include "soh/resource/type/AudioSample.h"
@@ -106,6 +108,12 @@ GameInteractorSail* GameInteractorSail::Instance;
 #include "soh/resource/type/Skeleton.h"
 #include "soh/resource/type/SkeletonLimb.h"
 #include "soh/resource/type/Text.h"
+#include "resource/factory/ArrayFactory.h"
+#include "resource/factory/BlobFactory.h"
+#include "resource/factory/DisplayListFactory.h"
+#include "resource/factory/MatrixFactory.h"
+#include "resource/factory/TextureFactory.h"
+#include "resource/factory/VertexFactory.h"
 #include "soh/resource/importer/AnimationFactory.h"
 #include "soh/resource/importer/AudioSampleFactory.h"
 #include "soh/resource/importer/AudioSequenceFactory.h"
@@ -319,19 +327,28 @@ OTRGlobals::OTRGlobals() {
     context->InitCrashHandler();
     context->InitConsole();
 
-    auto sohInputEditorWindow = std::make_shared<SohInputEditorWindow>("gControllerConfigurationEnabled", "Input Editor");
+    auto sohInputEditorWindow = std::make_shared<SohInputEditorWindow>(CVAR_CONTROLLER_CONFIGURATION_WINDOW_OPEN, "Input Editor");
     context->InitWindow({ sohInputEditorWindow });
 
     auto overlay = context->GetInstance()->GetWindow()->GetGui()->GetGameOverlay();
     overlay->LoadFont("Press Start 2P", "fonts/PressStart2P-Regular.ttf", 12.0f);
     overlay->LoadFont("Fipps", "fonts/Fipps-Regular.otf", 32.0f);
-    overlay->SetCurrentFont(CVarGetString("gOverlayFont", "Press Start 2P"));
+    overlay->SetCurrentFont(CVarGetString(CVAR_GAME_OVERLAY_FONT, "Press Start 2P"));
 
     context->InitAudio();
 
     SPDLOG_INFO("Starting Ship of Harkinian version {}", (char*)gBuildVersion);
 
     auto loader = context->GetResourceManager()->GetResourceLoader();
+    loader->RegisterResourceFactory(std::make_shared<LUS::ResourceFactoryBinaryTextureV0>(), RESOURCE_FORMAT_BINARY, "Texture", static_cast<uint32_t>(LUS::ResourceType::Texture), 0);
+    loader->RegisterResourceFactory(std::make_shared<LUS::ResourceFactoryBinaryTextureV1>(), RESOURCE_FORMAT_BINARY, "Texture", static_cast<uint32_t>(LUS::ResourceType::Texture), 1);
+    loader->RegisterResourceFactory(std::make_shared<LUS::ResourceFactoryBinaryVertexV0>(), RESOURCE_FORMAT_BINARY, "Vertex", static_cast<uint32_t>(LUS::ResourceType::Vertex), 0);
+    loader->RegisterResourceFactory(std::make_shared<LUS::ResourceFactoryXMLVertexV0>(), RESOURCE_FORMAT_XML, "Vertex", static_cast<uint32_t>(LUS::ResourceType::Vertex), 0);
+    loader->RegisterResourceFactory(std::make_shared<LUS::ResourceFactoryBinaryDisplayListV0>(), RESOURCE_FORMAT_BINARY, "DisplayList", static_cast<uint32_t>(LUS::ResourceType::DisplayList), 0);
+    loader->RegisterResourceFactory(std::make_shared<LUS::ResourceFactoryXMLDisplayListV0>(), RESOURCE_FORMAT_XML, "DisplayList", static_cast<uint32_t>(LUS::ResourceType::DisplayList), 0);
+    loader->RegisterResourceFactory(std::make_shared<LUS::ResourceFactoryBinaryMatrixV0>(), RESOURCE_FORMAT_BINARY, "Matrix", static_cast<uint32_t>(LUS::ResourceType::Matrix), 0);
+    loader->RegisterResourceFactory(std::make_shared<LUS::ResourceFactoryBinaryArrayV0>(), RESOURCE_FORMAT_BINARY, "Array", static_cast<uint32_t>(LUS::ResourceType::Array), 0);
+    loader->RegisterResourceFactory(std::make_shared<LUS::ResourceFactoryBinaryBlobV0>(), RESOURCE_FORMAT_BINARY, "Blob", static_cast<uint32_t>(LUS::ResourceType::Blob), 0);
     loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryAnimationV0>(), RESOURCE_FORMAT_BINARY, "Animation", static_cast<uint32_t>(SOH::ResourceType::SOH_Animation), 0);
     loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryPlayerAnimationV0>(), RESOURCE_FORMAT_BINARY, "PlayerAnimation", static_cast<uint32_t>(SOH::ResourceType::SOH_PlayerAnimation), 0);
     loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinarySceneV0>(), RESOURCE_FORMAT_BINARY, "Room", static_cast<uint32_t>(SOH::ResourceType::SOH_Room), 0); // Is room scene? maybe?
@@ -417,7 +434,7 @@ OTRGlobals::~OTRGlobals() {
 }
 
 void OTRGlobals::ScaleImGui() {
-    float scale = imguiScaleOptionToValue[CVarGetInteger("gImGuiScale", defaultImGuiScale)];
+    float scale = imguiScaleOptionToValue[CVarGetInteger(CVAR_SETTING("ImGuiScale"), defaultImGuiScale)];
     float newScale = scale / previousImGuiScale;
     ImGui::GetStyle().ScaleAllSizes(newScale);
     ImGui::GetIO().FontGlobalScale = scale;
@@ -451,21 +468,15 @@ bool OTRGlobals::HasOriginal() {
 }
 
 uint32_t OTRGlobals::GetInterpolationFPS() {
-    auto wnd = std::dynamic_pointer_cast<Fast::Fast3dWindow>(Ship::Context::GetInstance()->GetWindow());
-
-    if (wnd == nullptr) {
-        return 20;
+    if (Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() == Ship::WindowBackend::DX11) {
+        return CVarGetInteger(CVAR_SETTING("InterpolationFPS"), 20);
     }
 
-    if (wnd->GetWindowBackend() == Ship::WindowBackend::DX11) {
-        return CVarGetInteger("gInterpolationFPS", 20);
-    }
-
-    if (CVarGetInteger("gMatchRefreshRate", 0)) {
+    if (CVarGetInteger(CVAR_SETTING("MatchRefreshRate"), 0)) {
         return Ship::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate();
     }
 
-    return std::min<uint32_t>(Ship::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate(), CVarGetInteger("gInterpolationFPS", 20));
+    return std::min<uint32_t>(Ship::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate(), CVarGetInteger(CVAR_SETTING("InterpolationFPS"), 20));
 }
 
 struct ExtensionEntry {
@@ -1144,17 +1155,17 @@ extern "C" void InitOTR() {
     InitMods();
     ActorDB::AddBuiltInCustomActors();
     // #region SOH [Randomizer] TODO: Remove these and refactor spoiler file handling for randomizer
-    CVarClear("gRandomizerNewFileDropped");
-    CVarClear("gRandomizerDroppedFile");
+    CVarClear(CVAR_GENERAL("RandomizerNewFileDropped"));
+    CVarClear(CVAR_GENERAL("RandomizerDroppedFile"));
     // #endregion
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnFileDropped>(SoH_ProcessDroppedFiles);
 
     time_t now = time(NULL);
     tm *tm_now = localtime(&now);
     if (tm_now->tm_mon == 11 && tm_now->tm_mday >= 24 && tm_now->tm_mday <= 25) {
-        CVarRegisterInteger("gLetItSnow", 1);
+        CVarRegisterInteger(CVAR_GENERAL("LetItSnow"), 1);
     } else {
-        CVarClear("gLetItSnow");
+        CVarClear(CVAR_GENERAL("LetItSnow"));
     }
 
     srand(now);
@@ -1321,7 +1332,7 @@ extern "C" void Graph_StartFrame() {
 #if defined(_WIN32) || defined(__APPLE__)
         case KbScancode::LUS_KB_F9: {
             // Toggle TTS
-            CVarSetInteger("gA11yTTS", !CVarGetInteger("gA11yTTS", 0));
+            CVarSetInteger(CVAR_SETTING("A11yTTS"), !CVarGetInteger(CVAR_SETTING("A11yTTS"), 0));
             break;
         }
 #endif
@@ -1332,13 +1343,13 @@ extern "C" void Graph_StartFrame() {
     }
 #endif
 
-    if (CVarGetInteger("gNewFileDropped", 0)) {
-        std::string filePath = SohUtils::Sanitize(CVarGetString("gDroppedFile", ""));
+    if (CVarGetInteger(CVAR_NEW_FILE_DROPPED, 0)) {
+        std::string filePath = SohUtils::Sanitize(CVarGetString(CVAR_DROPPED_FILE, ""));
         if (!filePath.empty()) {
             GameInteractor::Instance->ExecuteHooks<GameInteractor::OnFileDropped>(filePath);
         }
-        CVarClear("gNewFileDropped");
-        CVarClear("gDroppedFile");
+        CVarClear(CVAR_NEW_FILE_DROPPED);
+        CVarClear(CVAR_DROPPED_FILE);
     }
 
     OTRGlobals::Instance->context->GetWindow()->StartFrame();
@@ -1394,11 +1405,8 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
         wnd->SetTargetFps(fps);
     }
 
-    int threshold = CVarGetInteger("gExtraLatencyThreshold", 80);
-
-    if (wnd != nullptr) {
-        wnd->SetMaximumFrameLatency(threshold > 0 && target_fps >= threshold ? 2 : 1);
-    }
+    int threshold = CVarGetInteger(CVAR_SETTING("ExtraLatencyThreshold"), 80);
+    OTRGlobals::Instance->context->GetWindow()->SetMaximumFrameLatency(threshold > 0 && target_fps >= threshold ? 2 : 1);
 
     RunCommands(commands, mtx_replacements);
 
@@ -1416,7 +1424,7 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
         ToggleAltAssetsAtEndOfFrame = false;
 
         // Actually update the CVar now before runing the alt asset update listeners
-        CVarSetInteger("gAltAssets", !CVarGetInteger("gAltAssets", 0));
+        CVarSetInteger(CVAR_ALT_ASSETS, !CVarGetInteger(CVAR_ALT_ASSETS, 0));
         gfx_texture_cache_clear();
         SOH::SkeletonPatcher::UpdateSkeletons();
         GameInteractor::Instance->ExecuteHooks<GameInteractor::OnAssetAltChange>();
@@ -1504,7 +1512,7 @@ extern "C" uint32_t ResourceMgr_GetGameRegion(int index) {
 
 uint32_t IsSceneMasterQuest(s16 sceneNum) {
     uint32_t value = 0;
-    uint8_t mqMode = CVarGetInteger("gBetterDebugWarpScreenMQMode", WARP_MODE_OVERRIDE_OFF);
+    uint8_t mqMode = CVarGetInteger(CVAR_GENERAL("BetterDebugWarpScreenMQMode"), WARP_MODE_OVERRIDE_OFF);
     if (mqMode == WARP_MODE_OVERRIDE_MQ_AS_VANILLA) {
         return 1;
     } else if (mqMode == WARP_MODE_OVERRIDE_VANILLA_AS_MQ) {
@@ -1605,7 +1613,7 @@ extern "C" uint8_t ResourceMgr_FileAltExists(const char* filePath) {
 // Unloads a resource if an alternate version exists when alt assets are enabled
 // The resource is only removed from the internal cache to prevent it from used in the next resource lookup
 extern "C" void ResourceMgr_UnloadOriginalWhenAltExists(const char* resName) {
-    if (CVarGetInteger("gAltAssets", 0) && ResourceMgr_FileAltExists((char*) resName)) {
+    if (CVarGetInteger(CVAR_ALT_ASSETS, 0) && ResourceMgr_FileAltExists((char*) resName)) {
         ResourceMgr_UnloadResource((char*) resName);
     }
 }
@@ -1793,7 +1801,7 @@ extern "C" void ResourceMgr_PatchGfxCopyCommandByName(const char* path, const ch
     }
 
     Gfx* destinationGfx = (Gfx*)&res->Instructions[destinationIndex];
-    Gfx sourceGfx = res->Instructions[sourceIndex];
+    Gfx sourceGfx = *(Gfx*)&res->Instructions[sourceIndex];
 
     if (!originalGfx.contains(path) || !originalGfx[path].contains(patchName)) {
         originalGfx[path][patchName] = {
@@ -1956,7 +1964,7 @@ extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path, Skel
         pathStr = pathStr.substr(sOtr.length());
     }
 
-    bool isAlt = CVarGetInteger("gAltAssets", 0);
+    bool isAlt = CVarGetInteger(CVAR_ALT_ASSETS, 0);
 
     if (isAlt) {
         pathStr = Ship::IResource::gAltAssetPrefix + pathStr;
@@ -2133,11 +2141,11 @@ extern "C" uint32_t OTRGetCurrentHeight() {
 }
 
 Color_RGB8 GetColorForControllerLED() {
-    auto brightness = CVarGetFloat("gLedBrightness", 1.0f) / 1.0f;
+    auto brightness = CVarGetFloat(CVAR_SETTING("LEDBrightness"), 1.0f) / 1.0f;
     Color_RGB8 color = { 0, 0, 0 };
     if (brightness > 0.0f) {
-        LEDColorSource source = static_cast<LEDColorSource>(CVarGetInteger("gLedColorSource", LED_SOURCE_TUNIC_ORIGINAL));
-        bool criticalOverride = CVarGetInteger("gLedCriticalOverride", 1);
+        LEDColorSource source = static_cast<LEDColorSource>(CVarGetInteger(CVAR_SETTING("LEDColorSource"), LED_SOURCE_TUNIC_ORIGINAL));
+        bool criticalOverride = CVarGetInteger(CVAR_SETTING("LEDCriticalOverride"), 1);
         if (gPlayState && (source == LED_SOURCE_TUNIC_ORIGINAL || source == LED_SOURCE_TUNIC_COSMETICS)) {
             switch (CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC)) {
                 case EQUIP_VALUE_TUNIC_KOKIRI:
@@ -2204,7 +2212,7 @@ Color_RGB8 GetColorForControllerLED() {
             }
         }
         if (source == LED_SOURCE_CUSTOM) {
-            color = CVarGetColor24("gLedPort1Color", { 255, 255, 255 });
+            color = CVarGetColor24(CVAR_SETTING("LEDPort1Color"), { 255, 255, 255 });
         }
         if (gPlayState && (criticalOverride || source == LED_SOURCE_HEALTH)) {
             if (HealthMeter_IsCritical()) {
@@ -2439,6 +2447,14 @@ extern "C" ItemObtainability Randomizer_GetItemObtainabilityFromRandomizerCheck(
     return OTRGlobals::Instance->gRandomizer->GetItemObtainabilityFromRandomizerCheck(randomizerCheck);
 }
 
+extern "C" bool Randomizer_IsCheckShuffled(RandomizerCheck randomizerCheck) {
+    return CheckTracker::IsCheckShuffled(RandomizerCheckObjects::GetAllRCObjects().find(randomizerCheck)->second);
+}
+
+extern "C" GetItemEntry GetItemMystery() {
+    return { ITEM_NONE_FE, 0, 0, 0, 0, 0, 0, ITEM_NONE_FE, 0, false, ITEM_FROM_NPC, ITEM_CATEGORY_JUNK, NULL, MOD_RANDOMIZER, (CustomDrawFunc)Randomizer_DrawMysteryItem };
+}
+
 CustomMessage Randomizer_GetCustomGetItemMessage(Player* player) {
     s16 giid;
     if (player->getItemEntry.objectId != OBJECT_INVALID) {
@@ -2464,7 +2480,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             if (player->getItemEntry.getItemId == RG_ICE_TRAP) {
                 u16 iceTrapTextId = Random(0, NUM_ICE_TRAP_MESSAGES);
                 messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::IceTrapRandoMessageTableID, iceTrapTextId);
-                if (CVarGetInteger("gLetItSnow", 0)) {
+                if (CVarGetInteger(CVAR_GENERAL("LetItSnow"), 0)) {
                     messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::IceTrapRandoMessageTableID, NUM_ICE_TRAP_MESSAGES + 1);
                 }
             } else if (player->getItemEntry.getItemId == RG_TRIFORCE_PIECE) {
@@ -2726,8 +2742,8 @@ void SoH_ProcessDroppedFiles(std::string filePath) {
 
         // #region SOH [Randomizer] TODO: Refactor spoiler file handling for randomizer 
         if (configJson.contains("version") && configJson.contains("finalSeed")) {
-            CVarSetString("gRandomizerDroppedFile", filePath.c_str());
-            CVarSetInteger("gRandomizerNewFileDropped", 1);
+            CVarSetString(CVAR_GENERAL("RandomizerDroppedFile"), filePath.c_str());
+            CVarSetInteger(CVAR_GENERAL("RandomizerNewFileDropped"), 1);
             return;
         }
         // #endregion

@@ -664,7 +664,7 @@ void EnOssan_UpdateCursorPos(PlayState* play, EnOssan* this) {
     this->cursorX = x;
     this->cursorY = y;
 
-    if (CVarGetInteger("gMirroredWorld", 0)) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0)) {
         this->cursorX = SCREEN_WIDTH - x;
     }
 }
@@ -775,7 +775,7 @@ void EnOssan_UpdateJoystickInputState(PlayState* play, EnOssan* this) {
     s8 stickX = input->rel.stick_x;
     s8 stickY = input->rel.stick_y;
 
-    if (CVarGetInteger("gMirroredWorld", 0)) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0)) {
         stickX = -input->rel.stick_x;
     }
 
@@ -981,7 +981,7 @@ s32 EnOssan_FacingShopkeeperDialogResult(EnOssan* this, PlayState* play) {
 void EnOssan_State_FacingShopkeeper(EnOssan* this, PlayState* play, Player* player) {
     Input* input = &play->state.input[0];
     u8 nextIndex;
-    bool dpad = CVarGetInteger("gDpadText", 0);
+    bool dpad = CVarGetInteger(CVAR_SETTING("DpadInText"), 0);
 
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE) &&
         !EnOssan_TestEndInteraction(this, play, &play->state.input[0])) {
@@ -992,7 +992,7 @@ void EnOssan_State_FacingShopkeeper(EnOssan* this, PlayState* play, Player* play
 
         u16 dLeft = BTN_DLEFT;
         u16 dRight = BTN_DRIGHT;
-        if (CVarGetInteger("gMirroredWorld", 0)) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0)) {
             dLeft = BTN_DRIGHT;
             dRight = BTN_DLEFT;
         }
@@ -1070,7 +1070,7 @@ void EnOssan_CursorUpDown(EnOssan* this, PlayState* play) {
     Input* input = &play->state.input[0];
     u8 curTemp = this->cursorIndex;
     u8 curScanTemp;
-    bool dpad = CVarGetInteger("gDpadText", 0);
+    bool dpad = CVarGetInteger(CVAR_SETTING("DpadInText"), 0);
 
     if ((this->stickAccumY < 0) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DDOWN))) {
         curTemp &= 0xFE;
@@ -1223,7 +1223,7 @@ void EnOssan_State_BrowseLeftShelf(EnOssan* this, PlayState* play, Player* playe
     u8 prevIndex = this->cursorIndex;
     s32 c;
     s32 d;
-    bool dpad = CVarGetInteger("gDpadText", 0);
+    bool dpad = CVarGetInteger(CVAR_SETTING("DpadInText"), 0);
 
     if (!EnOssan_ReturnItemToShelf(this)) {
         osSyncPrintf("%s[%d]:" VT_FGCOL(GREEN) "ズーム中！！" VT_RST "\n", __FILE__, __LINE__);
@@ -1242,7 +1242,7 @@ void EnOssan_State_BrowseLeftShelf(EnOssan* this, PlayState* play, Player* playe
 
         u16 dLeft = BTN_DLEFT;
         u16 dRight = BTN_DRIGHT;
-        if (CVarGetInteger("gMirroredWorld", 0)) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0)) {
             dLeft = BTN_DRIGHT;
             dRight = BTN_DLEFT;
         }
@@ -1292,7 +1292,7 @@ void EnOssan_State_BrowseRightShelf(EnOssan* this, PlayState* play, Player* play
     s32 pad[2];
     u8 prevIndex;
     u8 nextIndex;
-    bool dpad = CVarGetInteger("gDpadText", 0);
+    bool dpad = CVarGetInteger(CVAR_SETTING("DpadInText"), 0);
 
     prevIndex = this->cursorIndex;
     if (!EnOssan_ReturnItemToShelf(this)) {
@@ -1312,7 +1312,7 @@ void EnOssan_State_BrowseRightShelf(EnOssan* this, PlayState* play, Player* play
 
         u16 dLeft = BTN_DLEFT;
         u16 dRight = BTN_DRIGHT;
-        if (CVarGetInteger("gMirroredWorld", 0)) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0)) {
             dLeft = BTN_DRIGHT;
             dRight = BTN_DLEFT;
         }
@@ -2414,7 +2414,7 @@ void EnOssan_DrawStickDirectionPrompts(PlayState* play, EnOssan* this) {
     s32 drawStickRightPrompt = this->stickRightPrompt.isEnabled;
 
     // Invert which stick prompt is active when only one is active
-    if (CVarGetInteger("gMirroredWorld", 0) && (drawStickLeftPrompt != drawStickRightPrompt)) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0) && (drawStickLeftPrompt != drawStickRightPrompt)) {
         drawStickLeftPrompt = !drawStickLeftPrompt;
         drawStickRightPrompt = !drawStickRightPrompt;
     }

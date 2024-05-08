@@ -133,8 +133,8 @@ RandomizerCheckArea previousArea = RCAREA_INVALID;
 RandomizerCheckArea currentArea = RCAREA_INVALID;
 OSContPad* trackerButtonsPressed;
 
-bool passesTextFilter(ImGuiTextFilter& checkSearch, const RandomizerCheckObject rcObject);
-bool shouldHideArea(ImGuiTextFilter& checkSearch, std::map<RandomizerCheckArea, std::vector<RandomizerCheckObject>> checksByArea, const RandomizerCheckArea rcArea);
+bool ShouldShowCheck(RandomizerCheckObject rcObject);
+bool ShouldHideArea(RandomizerCheckArea rcArea);
 void BeginFloatWindows(std::string UniqueName, bool& open, ImGuiWindowFlags flags = 0);
 bool CompareChecks(RandomizerCheckObject, RandomizerCheckObject);
 bool CheckByArea(RandomizerCheckArea);
@@ -202,6 +202,7 @@ Color_RGBA8 Color_Saved_Extra           = {   0, 185,   0, 255 }; // Green
 
 std::vector<uint32_t> buttons = { BTN_A, BTN_B, BTN_CUP,   BTN_CDOWN, BTN_CLEFT, BTN_CRIGHT, BTN_L,
                                   BTN_Z, BTN_R, BTN_START, BTN_DUP,   BTN_DDOWN, BTN_DLEFT,  BTN_DRIGHT };
+static ImGuiTextFilter checkSearch;
 
 void DefaultCheckData(RandomizerCheck rc) {
     gSaveContext.checkTrackerData[rc].status = RCSHOW_UNCHECKED;
@@ -930,9 +931,9 @@ void CheckTrackerWindow::DrawElement() {
         optCollapseAll = true;
     }
     ImGui::SameLine();
-    static ImGuiTextFilter checkSearch;
     if (ImGui::Button("Clear")) {
         checkSearch.Clear();
+        doAreaScroll = true;
     }
     UIWidgets::Tooltip("Clear the search field");
     checkSearch.Draw();
@@ -970,6 +971,8 @@ void CheckTrackerWindow::DrawElement() {
     Color_RGBA8 extraColor;
     std::string stemp;
 
+    bool shouldHideFilteredAreas = CVarGetInteger(CVAR_TRACKER_CHECK("HideFilteredAreas"), 1);
+
     for (auto& [rcArea, objs] : checksByArea) {
         RandomizerCheckArea thisArea = currentArea;
 
@@ -983,7 +986,7 @@ void CheckTrackerWindow::DrawElement() {
             previousShowHidden = showHidden;
             doAreaScroll = true;
         }
-        if (shouldHideArea(checkSearch, checksByArea, rcArea) ||
+        if ((shouldHideFilteredAreas && ShouldHideArea(rcArea)) ||
             (!showHidden && ((hideComplete && thisAreaFullyChecked) || (hideIncomplete && !thisAreaFullyChecked)))
         ) {
             doDraw = false;
@@ -1046,7 +1049,8 @@ void CheckTrackerWindow::DrawElement() {
             }
 
             for (auto rcObject : objs) {
-                if (IsVisibleInCheckTracker(rcObject) && passesTextFilter(checkSearch, rcObject) && doDraw &&
+                if (ShouldShowCheck(rcObject) &&
+                    doDraw &&
                     isThisAreaSpoiled) {
                     DrawLocation(rcObject);
                 }
@@ -1067,14 +1071,12 @@ void CheckTrackerWindow::DrawElement() {
     }
 }
 
-bool shouldHideArea(ImGuiTextFilter& checkSearch, std::map<RandomizerCheckArea, std::vector<RandomizerCheckObject>> checksByArea, RandomizerCheckArea rcArea) {
-    bool shouldHideFilteredAreas = CVarGetInteger("gTrackers.CheckTracker.HideFilteredAreas", 1);
-    if (!shouldHideFilteredAreas) {
+bool ShouldHideArea(RandomizerCheckArea rcArea) {
+    if (checkSearch.Filters.Size == 0 || checkSearch.PassFilter(RandomizerCheckObjects::GetRCAreaName(rcArea).c_str())) {
         return false;
     }
-
     for (auto check : checksByArea[rcArea]) {
-        if (IsVisibleInCheckTracker(check) && passesTextFilter(checkSearch, check)) {
+        if (ShouldShowCheck(check)) {
             return false;
         }
     }
@@ -1082,10 +1084,12 @@ bool shouldHideArea(ImGuiTextFilter& checkSearch, std::map<RandomizerCheckArea, 
     return true;
 }
 
-bool passesTextFilter(ImGuiTextFilter& checkSearch, RandomizerCheckObject check) {
+bool ShouldShowCheck(RandomizerCheckObject check) {
     return (
+        IsVisibleInCheckTracker(check) && 
+        (checkSearch.Filters.Size == 0 ||
         checkSearch.PassFilter(RandomizerCheckObjects::GetRCAreaName(check.rcArea).c_str()) ||
-        checkSearch.PassFilter(check.rcShortName.c_str())
+        checkSearch.PassFilter(check.rcShortName.c_str()))
     );
 }
 
@@ -1223,7 +1227,7 @@ void LoadSettings() {
     }
 }
 
-bool IsVisibleInCheckTracker(RandomizerCheckObject rcObj) {
+bool IsCheckShuffled(RandomizerCheckObject rcObj) {
     if (IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LOGIC_RULES) != RO_LOGIC_VANILLA) {
         return
             (rcObj.rcArea != RCAREA_INVALID) &&         // don't show Invalid locations
@@ -1236,7 +1240,7 @@ bool IsVisibleInCheckTracker(RandomizerCheckObject rcObj) {
                 rcObj.vOrMQ == RCVORMQ_MQ && OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(rcObj.sceneId) ||
                 rcObj.vOrMQ == RCVORMQ_VANILLA && !OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(rcObj.sceneId)
                 ) &&
-            (rcObj.rcType != RCTYPE_SHOP || (showShops && (!hideShopRightChecks || hideShopRightChecks && rcObj.actorParams > 0x03))) &&
+            (rcObj.rcType != RCTYPE_SHOP || (showShops && rcObj.actorParams > 0x03)) &&
             (rcObj.rcType != RCTYPE_SCRUB ||
                 showScrubs ||
                 rcObj.rc == RC_LW_DEKU_SCRUB_NEAR_BRIDGE || // The 3 scrubs that are always randomized
@@ -1245,7 +1249,7 @@ bool IsVisibleInCheckTracker(RandomizerCheckObject rcObj) {
                 ) &&
             (rcObj.rcType != RCTYPE_MERCHANT || showMerchants) &&
             (rcObj.rcType != RCTYPE_OCARINA || showOcarinas) &&
-            (rcObj.rcType != RCTYPE_SKULL_TOKEN || alwaysShowGS ||
+            (rcObj.rcType != RCTYPE_SKULL_TOKEN ||
                 (showOverworldTokens && RandomizerCheckObjects::AreaIsOverworld(rcObj.rcArea)) ||
                 (showDungeonTokens && RandomizerCheckObjects::AreaIsDungeon(rcObj.rcArea))
                 ) &&
@@ -1265,6 +1269,7 @@ bool IsVisibleInCheckTracker(RandomizerCheckObject rcObj) {
             (rcObj.rcType != RCTYPE_BOSS_KEY || showBossKeysanity) &&
             (rcObj.rcType != RCTYPE_GANON_BOSS_KEY || showGanonBossKey) &&
             (rcObj.rc != RC_KAK_100_GOLD_SKULLTULA_REWARD || show100SkullReward) &&
+            (rcObj.rc != RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS) &&
             (rcObj.rcType != RCTYPE_GF_KEY && rcObj.rc != RC_GF_GERUDO_MEMBERSHIP_CARD ||
                 (showGerudoCard && rcObj.rc == RC_GF_GERUDO_MEMBERSHIP_CARD) ||
                 (fortressNormal && showGerudoFortressKeys && rcObj.rcType == RCTYPE_GF_KEY) ||
@@ -1278,6 +1283,10 @@ bool IsVisibleInCheckTracker(RandomizerCheckObject rcObj) {
             rcObj.rc == RC_GIFT_FROM_SAGES) && rcObj.rc != RC_LINKS_POCKET;
     }
     return false;
+}
+
+bool IsVisibleInCheckTracker(RandomizerCheckObject rcObj) {
+    return IsCheckShuffled(rcObj) || (rcObj.rcType == RCTYPE_SKULL_TOKEN && alwaysShowGS) || (rcObj.rcType == RCTYPE_SHOP && (showShops && (!hideShopRightChecks)));
 }
 
 void UpdateInventoryChecks() {
@@ -1444,6 +1453,8 @@ void DrawLocation(RandomizerCheckObject rcObj) {
     //Draw the extra info
     txt = "";
 
+    bool mystery = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0) && OTRGlobals::Instance->gRandomizer->merchantPrices.contains(rcObj.rc);
+
     if (checkData.hintItem != 0) {
         // TODO hints
     } else if (status != RCSHOW_UNCHECKED) {
@@ -1466,16 +1477,16 @@ void DrawLocation(RandomizerCheckObject rcObj) {
             case RCSHOW_IDENTIFIED:
             case RCSHOW_SEEN:
                 if (IS_RANDO) {
-                    if (gSaveContext.itemLocations[rcObj.rc].get.rgID == RG_ICE_TRAP) {
+                    if (gSaveContext.itemLocations[rcObj.rc].get.rgID == RG_ICE_TRAP && !mystery) {
                         if (status == RCSHOW_IDENTIFIED) {
                             txt = gSaveContext.itemLocations[rcObj.rc].get.trickName;
                         } else {
                             txt = OTRGlobals::Instance->gRandomizer->EnumToSpoilerfileGetName[gSaveContext.itemLocations[rcObj.rc].get.fakeRgID][gSaveContext.language];
                         }
-                    } else {
+                    } else if (!mystery) {
                         txt = OTRGlobals::Instance->gRandomizer->EnumToSpoilerfileGetName[gSaveContext.itemLocations[rcObj.rc].get.rgID][gSaveContext.language];
                     }
-                    if (status == RCSHOW_IDENTIFIED) {
+                    if (!IsVisibleInCheckTracker(rcObj) && status == RCSHOW_IDENTIFIED && !mystery) {
                         txt += fmt::format(" - {}", gSaveContext.checkTrackerData[rcObj.rc].price);
                     }
                 } else {
@@ -1640,7 +1651,7 @@ void CheckTrackerSettingsWindow::DrawElement() {
 
     // Filtering settings
     UIWidgets::PaddedSeparator();
-    UIWidgets::EnhancementCheckbox("Filter Empty Areas", "gTrackers.CheckTracker.HideFilteredAreas", false, "", UIWidgets::CheckboxGraphics::Checkmark, true);
+    UIWidgets::EnhancementCheckbox("Filter Empty Areas", CVAR_TRACKER_CHECK("HideFilteredAreas"), false, "", UIWidgets::CheckboxGraphics::Checkmark, true);
     UIWidgets::Tooltip("If enabled, will hide area headers that have no locations matching filter");
 
     ImGui::TableNextColumn();
@@ -1650,7 +1661,7 @@ void CheckTrackerSettingsWindow::DrawElement() {
     CheckTracker::ImGuiDrawTwoColorPickerSection("Unchecked",        CVAR_TRACKER_CHECK("Unchecked.MainColor"),        CVAR_TRACKER_CHECK("Unchecked.ExtraColor"),       Color_Unchecked_Main,         Color_Unchecked_Extra,        Color_Main_Default, Color_Unchecked_Extra_Default,       CVAR_TRACKER_CHECK("Unchecked.Hide"),      "Checks you have not interacted with at all.");
     CheckTracker::ImGuiDrawTwoColorPickerSection("Skipped",          CVAR_TRACKER_CHECK("Skipped.MainColor"),          CVAR_TRACKER_CHECK("Skipped.ExtraColor"),         Color_Skipped_Main,           Color_Skipped_Extra,          Color_Main_Default, Color_Skipped_Extra_Default,         CVAR_TRACKER_CHECK("Skipped.Hide"),        "");
     CheckTracker::ImGuiDrawTwoColorPickerSection("Seen",             CVAR_TRACKER_CHECK("Seen.MainColor"),             CVAR_TRACKER_CHECK("Seen.ExtraColor"),            Color_Seen_Main,              Color_Seen_Extra,             Color_Main_Default, Color_Seen_Extra_Default,            CVAR_TRACKER_CHECK("Seen.Hide"),           "Used for shops. Shows item names for shop slots when walking in, and prices when highlighting them in buy mode.");
-    CheckTracker::ImGuiDrawTwoColorPickerSection("Scummed",          CVAR_TRACKER_CHECK("Scummed.MainColor"),          CVAR_TRACKER_CHECK("Scummed.ExtraColor"),         Color_Scummed_Main,           Color_Scummed_Extra,          Color_Main_Default, Color_Scummed_Extra_Default,         "gCheckTrackerScummedHide",        "Checks you collect, but then reload before saving so you no longer have them.");
+    CheckTracker::ImGuiDrawTwoColorPickerSection("Scummed",          CVAR_TRACKER_CHECK("Scummed.MainColor"),          CVAR_TRACKER_CHECK("Scummed.ExtraColor"),         Color_Scummed_Main,           Color_Scummed_Extra,          Color_Main_Default, Color_Scummed_Extra_Default,         CVAR_TRACKER_CHECK("Scummed.Hide"),        "Checks you collect, but then reload before saving so you no longer have them.");
     //CheckTracker::ImGuiDrawTwoColorPickerSection("Hinted (WIP)",     CVAR_TRACKER_CHECK("Hinted.MainColor"),           CVAR_TRACKER_CHECK("Hinted.ExtraColor"),          Color_Hinted_Main,            Color_Hinted_Extra,           Color_Main_Default, Color_Hinted_Extra_Default,          CVAR_TRACKER_CHECK("Hinted.Hide"),         "");
     CheckTracker::ImGuiDrawTwoColorPickerSection("Collected",        CVAR_TRACKER_CHECK("Collected.MainColor"),        CVAR_TRACKER_CHECK("Collected.ExtraColor"),       Color_Collected_Main,         Color_Collected_Extra,        Color_Main_Default, Color_Collected_Extra_Default,       CVAR_TRACKER_CHECK("Collected.Hide"),      "Checks you have collected without saving or reloading yet.");
     CheckTracker::ImGuiDrawTwoColorPickerSection("Saved",            CVAR_TRACKER_CHECK("Saved.MainColor"),            CVAR_TRACKER_CHECK("Saved.ExtraColor"),           Color_Saved_Main,             Color_Saved_Extra,            Color_Main_Default, Color_Saved_Extra_Default,           CVAR_TRACKER_CHECK("Saved.Hide"),          "Checks that you saved the game while having collected.");

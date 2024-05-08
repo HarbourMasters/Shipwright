@@ -2,7 +2,7 @@
 #include "sequence.h"
 #include "sfx.h"
 #include <vector>
-#include <Utils/StringHelper.h>
+#include <utils/StringHelper.h>
 #include <libultraship/bridge.h>
 #include <libultraship/classes.h>
 #include <soh/OTRGlobals.h>

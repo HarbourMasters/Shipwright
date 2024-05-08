@@ -139,7 +139,7 @@ namespace SohGui {
     void SetupGuiElements() {
         auto gui = Ship::Context::GetInstance()->GetWindow()->GetGui();
 
-        mSohMenuBar = std::make_shared<SohMenuBar>("gOpenMenuBar", CVarGetInteger("gOpenMenuBar", 0));
+        mSohMenuBar = std::make_shared<SohMenuBar>(CVAR_MENU_BAR_OPEN, CVarGetInteger(CVAR_MENU_BAR_OPEN, 0));
         gui->SetMenuBar(std::reinterpret_pointer_cast<Ship::GuiMenuBar>(mSohMenuBar));
 
         if (gui->GetMenuBar() && !gui->GetMenuBar()->IsVisible()) {
@@ -201,7 +201,7 @@ namespace SohGui {
         gui->AddGuiWindow(mRandomizerSettingsWindow);
         mAdvancedResolutionSettingsWindow = std::make_shared<AdvancedResolutionSettings::AdvancedResolutionSettingsWindow>(CVAR_WINDOW("AdvancedResolutionEditor"), "Advanced Resolution Settings");
         gui->AddGuiWindow(mAdvancedResolutionSettingsWindow);
-        mModalWindow = std::make_shared<SohModalWindow>("gOpenWindows.modalWindowEnabled", "Modal Window");
+        mModalWindow = std::make_shared<SohModalWindow>(CVAR_WINDOW("ModalWindow"), "Modal Window");
         gui->AddGuiWindow(mModalWindow);
         mModalWindow->Show();
     }
