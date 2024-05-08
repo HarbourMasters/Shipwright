@@ -4965,14 +4965,23 @@ void Interface_DrawAmmoCount(PlayState* play, s16 button, s16 alpha) {
     i = gSaveContext.equips.buttonItems[button];
 
     if (
-        (i == ITEM_STICK && !Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_STICK_UPGRADE)) ||
-        (i == ITEM_NUT && !Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_NUT_UPGRADE)) ||
-        (i == ITEM_BOMB && !Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_BOMB_BAG)) ||
-        (i == ITEM_BOW && !Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_QUIVER)) ||
-        ((i >= ITEM_BOW_ARROW_FIRE) && (i <= ITEM_BOW_ARROW_LIGHT) && !Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_QUIVER)) ||
-        (i == ITEM_SLINGSHOT && !Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_BULLET_BAG)) ||
-        (i == ITEM_BOMBCHU && !Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_BOMBCHUS)) ||
-        (i == ITEM_BEAN)
+        GameInteractor_Should(
+            VB_DRAW_AMMO_COUNT,
+            (
+                (i == ITEM_STICK) ||
+                (i == ITEM_NUT) ||
+                (i == ITEM_BOMB) ||
+                (i == ITEM_BOW) ||
+                (
+                    (i >= ITEM_BOW_ARROW_FIRE) &&
+                    (i <= ITEM_BOW_ARROW_LIGHT)
+                ) ||
+                (i == ITEM_SLINGSHOT) ||
+                (i == ITEM_BOMBCHU) ||
+                (i == ITEM_BEAN)
+            ),
+            &i
+        )
     ) {
         if ((i >= ITEM_BOW_ARROW_FIRE) && (i <= ITEM_BOW_ARROW_LIGHT)) {
             i = ITEM_BOW;

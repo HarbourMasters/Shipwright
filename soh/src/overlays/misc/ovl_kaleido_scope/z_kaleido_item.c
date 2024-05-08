@@ -6,6 +6,9 @@
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+
 u8 gAmmoItems[] = {
     ITEM_STICK,   ITEM_NUT,  ITEM_BOMB, ITEM_BOW,  ITEM_NONE, ITEM_NONE, ITEM_SLINGSHOT, ITEM_NONE,
     ITEM_BOMBCHU, ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_BEAN,      ITEM_NONE,
@@ -37,18 +40,7 @@ s8 ItemInSlotUsesAmmo(s16 slot) {
 }
 
 void KaleidoScope_DrawAmmoCount(PauseContext* pauseCtx, GraphicsContext* gfxCtx, s16 item, int slot) {
-    // don't draw ammo count if you have the infinite upgrade
-    if (
-        (item == ITEM_NUT && Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_NUT_UPGRADE)) ||
-        (item == ITEM_STICK && Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_STICK_UPGRADE)) ||
-        (item == ITEM_BOMB && Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_BOMB_BAG)) ||
-        (
-            (item == ITEM_BOW || item == ITEM_BOW_ARROW_FIRE || item == ITEM_BOW_ARROW_ICE || item == ITEM_BOW_ARROW_LIGHT) &&
-            Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_QUIVER)
-        ) ||
-        (item == ITEM_SLINGSHOT && Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_BULLET_BAG)) ||
-        (item == ITEM_BOMBCHU && Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_BOMBCHUS))
-    ) {
+    if (!GameInteractor_Should(VB_DRAW_AMMO_COUNT, true, &item)) {
         return;
     }
 

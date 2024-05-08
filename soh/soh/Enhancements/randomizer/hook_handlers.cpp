@@ -1065,6 +1065,24 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
             }
             break;
         }
+        case VB_DRAW_AMMO_COUNT: {
+            s16 item = *static_cast<s16*>(optionalArg);
+            // don't draw ammo count if you have the infinite upgrade
+            if (
+                (item == ITEM_NUT && Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_NUT_UPGRADE)) ||
+                (item == ITEM_STICK && Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_STICK_UPGRADE)) ||
+                (item == ITEM_BOMB && Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_BOMB_BAG)) ||
+                (
+                    (item == ITEM_BOW || item == ITEM_BOW_ARROW_FIRE || item == ITEM_BOW_ARROW_ICE || item == ITEM_BOW_ARROW_LIGHT) &&
+                    Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_QUIVER)
+                ) ||
+                (item == ITEM_SLINGSHOT && Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_BULLET_BAG)) ||
+                (item == ITEM_BOMBCHU && Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_BOMBCHUS))
+            ) {
+                *should = false;
+            }
+            break;
+        }
         case VB_TRADE_TIMER_ODD_MUSHROOM:
         case VB_TRADE_TIMER_EYEDROPS:
         case VB_TRADE_TIMER_FROG:
