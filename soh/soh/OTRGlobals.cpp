@@ -1406,7 +1406,7 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
     }
 
     int threshold = CVarGetInteger(CVAR_SETTING("ExtraLatencyThreshold"), 80);
-    OTRGlobals::Instance->context->GetWindow()->SetMaximumFrameLatency(threshold > 0 && target_fps >= threshold ? 2 : 1);
+    wnd->SetMaximumFrameLatency(threshold > 0 && target_fps >= threshold ? 2 : 1);
 
     RunCommands(commands, mtx_replacements);
 
