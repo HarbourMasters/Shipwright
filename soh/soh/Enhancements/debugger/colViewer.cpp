@@ -445,7 +445,7 @@ void DrawBgActorCollision() {
                                                   bg.curTransform.scale.z, bg.curTransform.rot.x, bg.curTransform.rot.y,
                                                   bg.curTransform.rot.z, bg.curTransform.pos.x, bg.curTransform.pos.y,
                                                   bg.curTransform.pos.z);
-            // guMtxF2L(mf, &m);
+            guMtxF2L(mf.mf, &m);
             mtxDl.push_back(m);
             dl.push_back(gsSPMatrix(&mtxDl.back(), G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_PUSH));
 
@@ -493,7 +493,7 @@ void DrawColCheckList(std::vector<Gfx>& dl, Collider** objects, int32_t count) {
                     SkinMatrix_SetScale(&ms, radius / 128.0f, radius / 128.0f, radius / 128.0f);
                     MtxF dest;
                     SkinMatrix_MtxFMtxFMult(&mf, &ms, &dest);
-                    // guMtxF2L(&dest, &m);
+                    guMtxF2L(dest.mf, &m);
                     mtxDl.push_back(m);
 
                     dl.push_back(gsSPMatrix(&mtxDl.back(), G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_PUSH));
@@ -512,7 +512,7 @@ void DrawColCheckList(std::vector<Gfx>& dl, Collider** objects, int32_t count) {
                 SkinMatrix_SetScale(&ms, radius / 128.0f, cyl->dim.height / 128.0f, radius / 128.0f);
                 MtxF dest;
                 SkinMatrix_MtxFMtxFMult(&mt, &ms, &dest);
-                // guMtxF2L(&dest, &m);
+                guMtxF2L(dest.mf, &m);
                 mtxDl.push_back(m);
 
                 dl.push_back(gsSPMatrix(&mtxDl.back(), G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_PUSH));
