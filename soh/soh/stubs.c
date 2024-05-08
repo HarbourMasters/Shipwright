@@ -308,6 +308,16 @@ void osSpTaskYield(void)
 {
 }
 
+s32 osStopTimer(OSTimer* timer)
+{
+
+}
+
+OSYieldResult osSpTaskYielded(OSTask* task)
+{
+
+}
+
 void osViExtendVStart(u32 arg0)
 {
 
