@@ -7,6 +7,7 @@
 #include "z_elf_msg.h"
 #include "vt.h"
 #include "overlays/actors/ovl_En_Elf/z_en_elf.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
@@ -110,7 +111,7 @@ void ElfMsg_Destroy(Actor* thisx, PlayState* play) {
 
 s32 ElfMsg_GetMessageId(ElfMsg* this) {
     // Negative message ID forces link to talk to Navi
-    if (this->actor.params & 0x8000 || CVarGetInteger("gNoForcedNavi", 0) != 0) {
+    if (this->actor.params & 0x8000) {
         return (this->actor.params & 0xFF) + 0x100;
     } else {
         return -((this->actor.params & 0xFF) + 0x100);
@@ -125,8 +126,10 @@ void ElfMsg_CallNaviCuboid(ElfMsg* this, PlayState* play) {
         (this->actor.world.pos.y <= player->actor.world.pos.y) &&
         ((player->actor.world.pos.y - this->actor.world.pos.y) < (100.0f * this->actor.scale.y)) &&
         (fabsf(player->actor.world.pos.z - this->actor.world.pos.z) < (100.0f * this->actor.scale.z))) {
-        player->naviTextId = ElfMsg_GetMessageId(this);
-        navi->elfMsg = this;
+        if (GameInteractor_Should(VB_NAVI_TALK, true, this)) {
+            player->naviTextId = ElfMsg_GetMessageId(this);
+            navi->elfMsg = this;
+        }
     }
 }
 
@@ -145,8 +148,10 @@ void ElfMsg_CallNaviCylinder(ElfMsg* this, PlayState* play) {
     if (ElfMsg_WithinXZDistance(&player->actor.world.pos, &this->actor.world.pos, this->actor.scale.x * 100.0f) &&
         (this->actor.world.pos.y <= player->actor.world.pos.y) &&
         ((player->actor.world.pos.y - this->actor.world.pos.y) < (100.0f * this->actor.scale.y))) {
-        player->naviTextId = ElfMsg_GetMessageId(this);
-        navi->elfMsg = this;
+        if (GameInteractor_Should(VB_NAVI_TALK, true, this)) {
+            player->naviTextId = ElfMsg_GetMessageId(this);
+            navi->elfMsg = this;
+        }
     }
 }
 

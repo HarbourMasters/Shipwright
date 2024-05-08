@@ -50,12 +50,10 @@ bool GenerateRandomizer(std::set<RandomizerCheck> excludedLocations, std::set<Ra
     int ret = Playthrough::Playthrough_Init(ctx->GetSettings()->GetSeed(), excludedLocations, enabledTricks);
     if (ret < 0) {
         if (ret == -1) { // Failed to generate after 5 tries
-            printf("\n\nFailed to generate after 5 tries.\nPress B to go back to the menu.\nA different seed might be "
-                   "successful.");
-            SPDLOG_DEBUG("\nRANDOMIZATION FAILED COMPLETELY. PLZ FIX\n");//RANDOTODO print seed for reproduction purposes
+            SPDLOG_ERROR("Failed to generate after 5 tries.");
             return false;
         } else {
-            printf("\n\nError %d with fill.\nPress Select to exit or B to go back to the menu.\n", ret);
+            SPDLOG_ERROR("Error {} with fill.", ret);
             return false;
         }
     }

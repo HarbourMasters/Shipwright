@@ -918,7 +918,7 @@ void EnGeldB_SpinAttack(EnGeldB* this, PlayState* play) {
             if (&player->actor == this->swordCollider.base.at) {
                 func_8002F71C(play, &this->actor, 6.0f, this->actor.yawTowardsPlayer, 6.0f);
                 this->spinAttackState = 2;
-                func_8002DF54(play, &this->actor, 0x18);
+                Player_SetCsActionWithHaltedActors(play, &this->actor, 0x18);
                 Message_StartTextbox(play, 0x6003, &this->actor);
                 this->timer = 30;
                 this->actor.speedXZ = 0.0f;

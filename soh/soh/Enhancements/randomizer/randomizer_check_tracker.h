@@ -7,9 +7,9 @@
 
 namespace CheckTracker {
 
-class CheckTrackerSettingsWindow : public LUS::GuiWindow {
+class CheckTrackerSettingsWindow : public Ship::GuiWindow {
   public:
-    using LUS::GuiWindow::GuiWindow;
+    using GuiWindow::GuiWindow;
     ~CheckTrackerSettingsWindow() {};
 
   protected:
@@ -18,9 +18,9 @@ class CheckTrackerSettingsWindow : public LUS::GuiWindow {
     void UpdateElement() override {};
 };
 
-class CheckTrackerWindow : public LUS::GuiWindow {
+class CheckTrackerWindow : public Ship::GuiWindow {
   public:
-    using LUS::GuiWindow::GuiWindow;
+    using GuiWindow::GuiWindow;
     ~CheckTrackerWindow() {};
 
   protected:
@@ -50,6 +50,8 @@ bool IsVisibleInCheckTracker(RandomizerCheck rc);
 void InitTrackerData(bool isDebug);
 RandomizerCheckArea GetCheckArea();
 void UpdateCheck(uint32_t, RandomizerCheckTrackerData);
+bool IsAreaSpoiled(RandomizerCheckArea rcArea);
+void SetAreaSpoiled(RandomizerCheckArea rcArea);
 } // namespace CheckTracker
 
 

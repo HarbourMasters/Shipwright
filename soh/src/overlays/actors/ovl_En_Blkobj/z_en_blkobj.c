@@ -6,6 +6,7 @@
 
 #include "z_en_blkobj.h"
 #include "objects/object_blkobj/object_blkobj.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
@@ -104,8 +105,11 @@ void EnBlkobj_DarkLinkFight(EnBlkobj* this, PlayState* play) {
         // Check for if Dark Link is defeated in authentic gameplay.
         // Check for if all enemies are defeated with enemy randomizer or crowd control on.
         uint8_t roomCleared = 
-            (!CVarGetInteger("gRandomizedEnemies", 0) && !CVarGetInteger("gCrowdControl", 0) && Actor_Find(&play->actorCtx, ACTOR_EN_TORCH2, ACTORCAT_BOSS) == NULL) ||
-            ((CVarGetInteger("gRandomizedEnemies", 0) || CVarGetInteger("gCrowdControl", 0)) && Flags_GetTempClear(play, this->dyna.actor.room));
+            (!CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) && 
+                !(CVarGetInteger(CVAR_REMOTE("Scheme"), GI_SCHEME_SAIL) == GI_SCHEME_CROWD_CONTROL && CVarGetInteger(CVAR_REMOTE("Enabled"), 0)) && 
+                Actor_Find(&play->actorCtx, ACTOR_EN_TORCH2, ACTORCAT_BOSS) == NULL) ||
+            ((CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) || (CVarGetInteger(CVAR_REMOTE("Scheme"), GI_SCHEME_SAIL) == GI_SCHEME_CROWD_CONTROL && CVarGetInteger(CVAR_REMOTE("Enabled"), 0))) && 
+                Flags_GetTempClear(play, this->dyna.actor.room));
         if (roomCleared) {
             Flags_SetClear(play, this->dyna.actor.room);
             this->timer++;

@@ -38,7 +38,7 @@ class OTRGlobals
 public:
     static OTRGlobals* Instance;
 
-    std::shared_ptr<LUS::Context> context;
+    std::shared_ptr<Ship::Context> context;
     std::shared_ptr<SaveStateMgr> gSaveStateMgr;
     std::shared_ptr<Randomizer> gRandomizer;
     std::shared_ptr<Rando::Context> gRandoContext;
@@ -66,6 +66,22 @@ private:
 
 uint32_t IsGameMasterQuest();
 #endif
+
+#define CVAR_RANDOMIZER_ENHANCEMENT(var) CVAR_PREFIX_RANDOMIZER_ENHANCEMENT "." var
+#define CVAR_RANDOMIZER_SETTING(var) CVAR_PREFIX_RANDOMIZER_SETTING "." var
+#define CVAR_COSMETIC(var) CVAR_PREFIX_COSMETIC "." var
+#define CVAR_AUDIO(var) CVAR_PREFIX_AUDIO "." var
+#define CVAR_CHEAT(var) CVAR_PREFIX_CHEAT "." var
+#define CVAR_ENHANCEMENT(var) CVAR_PREFIX_ENHANCEMENT "." var
+#define CVAR_SETTING(var) CVAR_PREFIX_SETTING "." var
+#define CVAR_WINDOW(var) CVAR_PREFIX_WINDOW "." var
+#define CVAR_TRACKER(var) CVAR_PREFIX_TRACKER "." var
+#define CVAR_TRACKER_ITEM(var) CVAR_TRACKER(".ItemTracker." var)
+#define CVAR_TRACKER_CHECK(var) CVAR_TRACKER(".CheckTracker." var)
+#define CVAR_TRACKER_ENTRANCE(var) CVAR_TRACKER(".EntranceTracker." var)
+#define CVAR_DEVELOPER_TOOLS(var) CVAR_PREFIX_DEVELOPER_TOOLS "." var
+#define CVAR_GENERAL(var) CVAR_PREFIX_GENERAL "." var
+#define CVAR_REMOTE(var) CVAR_PREFIX_REMOTE "." var
 
 #ifndef __cplusplus
     void InitOTR(void);
@@ -159,7 +175,7 @@ FishIdentity Randomizer_IdentifyFish(s32 sceneNum, s32 actorParams);
 void Randomizer_ParseSpoiler(const char* fileLoc);
 void Randomizer_LoadHintMessages();
 void Randomizer_LoadMerchantMessages();
-bool Randomizer_IsTrialRequired(RandomizerInf trial);
+bool Randomizer_IsTrialRequired(s32 trialFlag);
 GetItemEntry Randomizer_GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogId);
 GetItemEntry Randomizer_GetItemFromActorWithoutObtainabilityCheck(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogId);
 GetItemEntry Randomizer_GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
