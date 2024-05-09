@@ -7,6 +7,7 @@
 #include <chrono>
 
 #include <ResourceManager.h>
+#include "graphic/Fast3D/Fast3dWindow.h"
 #include <File.h>
 #include <DisplayList.h>
 #include <Window.h>
@@ -1264,11 +1265,6 @@ extern "C" uint64_t GetUnixTimestamp() {
     return (uint64_t)millis.count();
 }
 
-// C->C++ Bridge
-extern "C" void Graph_ProcessFrame(void (*run_one_game_iter)(void)) {
-    OTRGlobals::Instance->context->GetWindow()->MainLoop(run_one_game_iter);
-}
-
 extern bool ToggleAltAssetsAtEndOfFrame;
 
 extern "C" void Graph_StartFrame() {
@@ -1392,6 +1388,7 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
     static int time;
     int fps = target_fps;
     int original_fps = 60 / R_UPDATE_RATE;
+    auto wnd = std::dynamic_pointer_cast<Fast::Fast3dWindow>(Ship::Context::GetInstance()->GetWindow());
 
     if (target_fps == 20 || original_fps > target_fps) {
         fps = original_fps;
@@ -1415,10 +1412,12 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
 
     time -= fps;
 
-    OTRGlobals::Instance->context->GetWindow()->SetTargetFps(fps);
+    if (wnd != nullptr) {
+        wnd->SetTargetFps(fps);
+    }
 
     int threshold = CVarGetInteger(CVAR_SETTING("ExtraLatencyThreshold"), 80);
-    OTRGlobals::Instance->context->GetWindow()->SetMaximumFrameLatency(threshold > 0 && target_fps >= threshold ? 2 : 1);
+    wnd->SetMaximumFrameLatency(threshold > 0 && target_fps >= threshold ? 2 : 1);
 
     RunCommands(commands, mtx_replacements);
 
@@ -1451,11 +1450,21 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
 float divisor_num = 0.0f;
 
 extern "C" void OTRGetPixelDepthPrepare(float x, float y) {
-    OTRGlobals::Instance->context->GetWindow()->GetPixelDepthPrepare(x, y);
+    auto wnd = std::dynamic_pointer_cast<Fast::Fast3dWindow>(Ship::Context::GetInstance()->GetWindow());
+    if (wnd == nullptr) {
+        return;
+    }
+
+    wnd->GetPixelDepthPrepare(x, y);
 }
 
 extern "C" uint16_t OTRGetPixelDepth(float x, float y) {
-    return OTRGlobals::Instance->context->GetWindow()->GetPixelDepth(x, y);
+    auto wnd = std::dynamic_pointer_cast<Fast::Fast3dWindow>(Ship::Context::GetInstance()->GetWindow());
+    if (wnd == nullptr) {
+        return 0;
+    }
+
+    return wnd->GetPixelDepth(x, y);
 }
 
 extern "C" uint32_t ResourceMgr_GetNumGameVersions() {
