@@ -2487,7 +2487,9 @@ extern "C" void Randomizer_SetPlandoLoaded(bool plandoLoaded) {
 }
 
 extern "C" bool Randomizer_IsCheckShuffled(RandomizerCheck randomizerCheck) {
-    return CheckTracker::IsCheckShuffled(RandomizerCheckObjects::GetAllRCObjects().find(randomizerCheck)->second);
+    return true;
+    // TODO: figure out what this is supposed to be now
+    // return CheckTracker::IsCheckShuffled(RandomizerCheckObjects::GetAllRCObjects().find(randomizerCheck)->second);
 }
 
 extern "C" GetItemEntry GetItemMystery() {

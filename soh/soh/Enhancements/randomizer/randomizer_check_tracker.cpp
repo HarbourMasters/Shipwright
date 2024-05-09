@@ -144,7 +144,7 @@ RandomizerCheckArea currentArea = RCAREA_INVALID;
 OSContPad* trackerButtonsPressed;
 std::unordered_map<RandomizerCheck, std::string> checkNameOverrides;
 
-bool ShouldShowCheck(RandomizerCheckObject rcObject);
+bool ShouldShowCheck(RandomizerCheck rc);
 bool ShouldHideArea(RandomizerCheckArea rcArea);
 void BeginFloatWindows(std::string UniqueName, bool& open, ImGuiWindowFlags flags = 0);
 bool CompareChecks(RandomizerCheck, RandomizerCheck);
@@ -1096,13 +1096,15 @@ bool ShouldHideArea(RandomizerCheckArea rcArea) {
     return true;
 }
 
-bool ShouldShowCheck(RandomizerCheckObject check) {
-    return (
-        IsVisibleInCheckTracker(check) && 
-        (checkSearch.Filters.Size == 0 ||
-        checkSearch.PassFilter(RandomizerCheckObjects::GetRCAreaName(check.rcArea).c_str()) ||
-        checkSearch.PassFilter(check.rcShortName.c_str()))
-    );
+bool ShouldShowCheck(RandomizerCheck check) {
+    return true;
+    // TODO: figure out how this is supposed to work now
+    // return (
+    //     IsVisibleInCheckTracker(check) && 
+    //     (checkSearch.Filters.Size == 0 ||
+    //     checkSearch.PassFilter(RandomizerCheckObjects::GetRCAreaName(check.rcArea).c_str()) ||
+    //     checkSearch.PassFilter(check.rcShortName.c_str()))
+    // );
 }
 
 // Windowing stuff
@@ -1312,7 +1314,9 @@ bool IsCheckShuffled(RandomizerCheck rc) {
 }
 
 bool IsVisibleInCheckTracker(RandomizerCheck rc) {
-    return IsCheckShuffled(rc) || (rc.rcType == RCTYPE_SKULL_TOKEN && alwaysShowGS) || (rc.rcType == RCTYPE_SHOP && (showShops && (!hideShopRightChecks)));
+    return IsCheckShuffled(rc);
+    // TODO: figure out how this is supposed to work now
+    // return IsCheckShuffled(rc) || (rc.rcType == RCTYPE_SKULL_TOKEN && alwaysShowGS) || (rc.rcType == RCTYPE_SHOP && (showShops && (!hideShopRightChecks)));
 }
 
 void UpdateInventoryChecks() {
@@ -1505,7 +1509,9 @@ void DrawLocation(RandomizerCheck rc) {
     //Draw the extra info
     txt = "";
 
-    bool mystery = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0) && OTRGlobals::Instance->gRandomizer->merchantPrices.contains(rc);
+    // TODO: figure out how this is supposed to work
+    // bool mystery = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0) && OTRGlobals::Instance->gRandomizer->merchantPrices.contains(rc);
+    bool mystery = false;
 
     if (checkData.hintItem != 0) {
         // TODO hints
