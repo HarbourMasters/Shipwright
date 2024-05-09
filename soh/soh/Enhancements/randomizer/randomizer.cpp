@@ -2467,6 +2467,22 @@ CustomMessage Randomizer::GetMerchantMessage(RandomizerInf randomizerInf, u16 te
     RandomizerGet shopItemGet = ctx->GetItemLocation(rc)->GetPlacedRandomizerGet();
     CustomMessage shopItemName;
     if (mysterious) {
+/* TODO: Bring these changes back
+    if (mysterious || CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0)) {
+        if (randomizerInf >= RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1 && randomizerInf <= RAND_INF_SHOP_ITEMS_MARKET_BOMBCHU_SHOP_ITEM_8) {
+            shopItemName = {
+                "Mysterious Item",
+                "Mysteriösen Gegenstand",
+                "Objet Mystérieux"
+            };
+        } else {
+            shopItemName = {
+                "mysterious item",
+                "mysteriösen Gegenstand",
+                "objet mystérieux"
+            };
+        }
+*/
         shopItemName = Rando::StaticData::hintTextTable[RHT_MYSTERIOUS_ITEM].GetHintMessage(); 
     // TODO: This should eventually be replaced with a full fledged trick model & trick name system
     } else if (shopItemGet == RG_ICE_TRAP) {

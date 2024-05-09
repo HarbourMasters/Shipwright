@@ -10,6 +10,9 @@
 #include "context.h"
 #include <soh/Enhancements/randomizer/randomizerTypes.h>
 #include "soh/Enhancements/randomizer/randomizer_check_objects.h"
+// TODO: figure out why this was added
+// i think it has something to do with IsCheckShuffled
+// #include "soh/Enhancements/randomizer/randomizer_check_tracker.h"
 #include <soh/Enhancements/custom-message/CustomMessageManager.h>
 #include "soh/Enhancements/item-tables/ItemTableTypes.h"
 #include "../custom-message/CustomMessageTypes.h"

@@ -2123,6 +2123,9 @@ void DemoEffect_DrawGetItem(Actor* thisx, PlayState* play) {
                     break;
             }
             if (getItemEntry.getItemId != GI_NONE) {
+                if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0)) {
+                    getItemEntry = GetItemMystery();
+                }
                 this->getItem.drawId = getItemEntry.gid;
                 func_8002EBCC(thisx, play, 0);
                 func_8002ED80(thisx, play, 0);
