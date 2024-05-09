@@ -2621,7 +2621,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             (ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) || INV_CONTENT(ITEM_CLAIM_CHECK) == ITEM_CLAIM_CHECK)){
             messageEntry = messageEntry = ctx->GetHint(RH_GRANNY)->GetHintMessage(MF_AUTO_FORMAT);
         } 
-        else if (textId == TEXT_MEDIGORON && !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN) && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF){
+        else if (textId == TEXT_MEDIGORON && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF){
             messageEntry = messageEntry = ctx->GetHint(RH_MEDIGORON)->GetHintMessage(MF_AUTO_FORMAT);
         } 
         else if (textId == TEXT_CARPET_SALESMAN_1 && !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN) && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF){
