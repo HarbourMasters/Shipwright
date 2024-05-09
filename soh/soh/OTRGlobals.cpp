@@ -2625,9 +2625,9 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             messageEntry = messageEntry = ctx->GetHint(RH_MEDIGORON)->GetHintMessage(MF_AUTO_FORMAT);
         } 
         else if (textId == TEXT_CARPET_SALESMAN_1 && !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN) && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF){
-            messageEntry = messageEntry = ctx->GetHint(RH_CARPET_SALESMAN)->GetHintMessage(MF_AUTO_FORMAT);
+            messageEntry = ctx->GetHint(RH_CARPET_SALESMAN)->GetHintMessage(MF_AUTO_FORMAT);
         } 
-        else if (textId == TEXT_CARPET_SALESMAN_2 && !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN) && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF){
+        else if (textId == TEXT_CARPET_SALESMAN_2 && !ctx->GetItemLocation(RC_WASTELAND_BOMBCHU_SALESMAN)->HasObtained() && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF){
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, textId);//KNOWN BUG does not play due to I assume a change in when RAND_INF_MERCHANTS_CARPET_SALESMAN gets set.
         } else if (textId == TEXT_SKULLTULA_PEOPLE_IM_CURSED) {
             actorParams = GET_PLAYER(play)->targetActor->params;

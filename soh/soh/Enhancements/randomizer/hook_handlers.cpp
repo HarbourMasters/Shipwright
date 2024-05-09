@@ -786,6 +786,10 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
                       Flags_GetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN);
             break;
         }
+        case VB_GIVE_BOMBCHUS_FROM_CARPET_SALESMAN: {
+            *should = RAND_GET_OPTION(RSK_BOMBCHUS_IN_LOGIC) == false || INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU;
+            break;
+        }
         case VB_GIVE_ITEM_FROM_MEDIGORON: {
             // fallthrough
         case VB_BE_ELIGIBLE_FOR_GIANTS_KNIFE_PURCHASE:

@@ -148,8 +148,14 @@ void func_80A891C4(EnJs* this, PlayState* play) {
                     Message_ContinueTextbox(play, 0x6075);
                     func_80A89008(this);
                 } else {
-                    Rupees_ChangeBy(-200);
-                    En_Js_SetupAction(this, func_80A89160);
+                    if (GameInteractor_Should(VB_GIVE_BOMBCHUS_FROM_CARPET_SALESMAN, true, this) || 
+                       (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(VB_GIVE_ITEM_FROM_CARPET_SALESMAN, true, this))){
+                        Rupees_ChangeBy(-200);
+                        En_Js_SetupAction(this, func_80A89160);
+                    } else{
+                        Message_ContinueTextbox(play, 0x6073);
+                        func_80A89008(this);
+                    }
                 }
                 break;
             case 1: // no
@@ -158,57 +164,9 @@ void func_80A891C4(EnJs* this, PlayState* play) {
         }
     }
 }
-
-// #region [Randomizer]
-void func_80A89160Rando(EnJs* this, PlayState* play) {
-    if (Actor_HasParent(&this->actor, play)) {
-        this->actor.parent = NULL;
-        En_Js_SetupAction(this, func_80A8910C);
-    } else {
-        GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_WASTELAND_BOMBCHU_SALESMAN, GI_BOMBCHUS_10);
-        gSaveContext.pendingSale = itemEntry.itemId;
-        gSaveContext.pendingSaleMod = itemEntry.modIndex;
-        GiveItemEntryFromActor(&this->actor, play, itemEntry, 10000.0f, 50.0f);
-        Flags_SetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN);
-    }
-}
-
-void func_80A891C4Rando(EnJs* this, PlayState* play) {
-    if (Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE && Message_ShouldAdvance(play)) {
-        switch (play->msgCtx.choiceIndex) {
-            case 0: // yes
-                if (gSaveContext.rupees < 200) {
-                    Message_ContinueTextbox(play, 0x6075);
-                    func_80A89008(this);
-                } else if (Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF && 
-                    !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN)){
-                    Rupees_ChangeBy(-200);
-                    En_Js_SetupAction(this, func_80A89160Rando);
-                } else if (Randomizer_GetSettingValue(RSK_BOMBCHUS_IN_LOGIC) && INV_CONTENT(ITEM_BOMBCHU) == ITEM_NONE){
-                    Message_ContinueTextbox(play, 0x6073);
-                    func_80A89008(this);
-                } else {
-                    Rupees_ChangeBy(-200);
-                    En_Js_SetupAction(this, func_80A89160);
-                }
-                break;
-            case 1: // no
-                Message_ContinueTextbox(play, 0x6074);
-                func_80A89008(this);
-        }
-    }
-}
-// #endregion
 
 void func_80A89294(EnJs* this) {
-    // #region [Randomizer]
-    if (IS_RANDO){
-        En_Js_SetupAction(this, func_80A891C4Rando);
-    }
-    //#endregion
-    else{
-        En_Js_SetupAction(this, func_80A891C4);
-    }
+    En_Js_SetupAction(this, func_80A891C4);
     Animation_Change(&this->skelAnime, &gCarpetMerchantIdleAnim, 1.0f, 0.0f,
                      Animation_GetLastFrame(&gCarpetMerchantIdleAnim), ANIMMODE_ONCE, -4.0f);
 }
