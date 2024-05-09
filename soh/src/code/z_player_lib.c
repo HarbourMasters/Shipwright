@@ -2307,10 +2307,12 @@ void Player_DrawPause(PlayState* play, u8* segment, SkelAnime* skelAnime, Vec3f*
         }
 
         srcTable = ResourceMgr_LoadArrayByNameAsVec3s(srcTable);
+        Vec3s* ogSrcTable = srcTable;
         destTable = skelAnime->jointTable;
         for (i = 0; i < skelAnime->limbCount; i++) {
             *destTable++ = *srcTable++;
         }
+        free(ogSrcTable);
     }
 
 
