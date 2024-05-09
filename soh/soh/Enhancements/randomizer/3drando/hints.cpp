@@ -533,7 +533,7 @@ int32_t getRandomWeight(int32_t totalWeight){
 static void DistributeHints(std::vector<uint8_t>& selected, size_t stoneCount, std::vector<HintDistributionSetting> distTable, uint8_t junkWieght, bool addFixed = true){
   int32_t totalWeight = junkWieght; //Start with our Junk Weight, the natural chance of a junk hint
 
-  for (uint8_t c=0; c < distTable.size(); c++){ //Gather the wieghts of each distribution and, if it's the first pass, apply fixed hints
+  for (size_t c=0; c < distTable.size(); c++){ //Gather the wieghts of each distribution and, if it's the first pass, apply fixed hints
     totalWeight += distTable[c].weight;         //Note that PlaceHints will set weights of distributions to zero if it can't place anything from them
     if (addFixed){
       selected[c] += distTable[c].fixed;
@@ -543,7 +543,7 @@ static void DistributeHints(std::vector<uint8_t>& selected, size_t stoneCount, s
   int32_t currentWeight = getRandomWeight(totalWeight); //Initialise with the first random weight from 1 to the total. 
   while(stoneCount > 0 && totalWeight > 0){//Loop until we run out of stones or have no TotalWeight. 0 totalWeight means junkWeight is 0
                                            //and that all weights have been 0'd out for another reason, and skips to placing all junk hints
-    for (uint8_t distribution = 0; distribution < distTable.size(); distribution++){
+    for (size_t distribution = 0; distribution < distTable.size(); distribution++){
       currentWeight -= distTable[distribution].weight; //go over each distribution, subtracting the weight each time. Once we reach zero or less,
       if (currentWeight <= 0){                         //tell the system to make 1 of that hint, unless not enough stones remain
         if (stoneCount >= distTable[distribution].copies && distTable[distribution].copies > 0){
@@ -650,7 +650,7 @@ void CreateStoneHints() {
 
   size_t totalStones = GetEmptyGossipStones().size();
   std::vector<uint8_t> selectedHints = {};
-  for (uint8_t c=0; c < distTable.size(); c++){
+  for (size_t c=0; c < distTable.size(); c++){
     selectedHints.push_back(0);
   }
   selectedHints.push_back(0);
@@ -672,7 +672,7 @@ void CreateStoneHints() {
 std::vector<RandomizerCheck> FindItemsAndMarkHinted(std::vector<RandomizerGet> items, std::vector<RandomizerCheck> hintChecks){
   std::vector<RandomizerCheck> locations = {};
   auto ctx = Rando::Context::GetInstance();
-  for (uint8_t c = 0; c < items.size(); c++){
+  for (size_t c = 0; c < items.size(); c++){
     std::vector<RandomizerCheck> found = FilterFromPool(ctx->allLocations, [items, ctx, c](const RandomizerCheck loc) {
       return ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() == items[c];});
     if (found.size() > 0){
