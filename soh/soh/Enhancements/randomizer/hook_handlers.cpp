@@ -333,9 +333,13 @@ void RandomizerOnItemReceiveHandler(GetItemEntry receivedItemEntry) {
 }
 
 void EnExItem_DrawRandomizedItem(EnExItem* enExItem, PlayState* play) {
+    GetItemEntry randoGetItem = enExItem->sohItemEntry;
+    if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0)) {
+        randoGetItem = GET_ITEM_MYSTERY;
+    }
     func_8002ED80(&enExItem->actor, play, 0);
-    EnItem00_CustomItemsParticles(&enExItem->actor, play, enExItem->sohItemEntry);
-    GetItemEntry_Draw(play, enExItem->sohItemEntry);
+    EnItem00_CustomItemsParticles(&enExItem->actor, play, randoGetItem);
+    GetItemEntry_Draw(play, randoGetItem);
 }
 
 void EnExItem_WaitForObjectRandomized(EnExItem* enExItem, PlayState* play) {

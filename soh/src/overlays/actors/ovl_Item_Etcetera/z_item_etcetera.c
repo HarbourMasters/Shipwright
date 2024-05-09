@@ -206,14 +206,12 @@ void ItemEtcetera_DrawThroughLens(Actor* thisx, PlayState* play) {
     if (play->actorCtx.lensActive) {
         func_8002EBCC(&this->actor, play, 0);
         func_8002ED80(&this->actor, play, 0);
-        
         GetItem_Draw(play, this->giDrawId);
     }
 }
 
 void ItemEtcetera_Draw(Actor* thisx, PlayState* play) {
     ItemEtcetera* this = (ItemEtcetera*)thisx;
-    s32 type = this->actor.params & 0xFF;
 
     func_8002EBCC(&this->actor, play, 0);
     func_8002ED80(&this->actor, play, 0);
