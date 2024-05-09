@@ -533,11 +533,11 @@ int32_t getRandomWeight(int32_t totalWeight){
 static void DistributeHints(std::vector<uint8_t>& selected, size_t stoneCount, std::vector<HintDistributionSetting> distTable, uint8_t junkWieght, bool addFixed = true){
   int32_t totalWeight = junkWieght; //Start with our Junk Weight, the natural chance of a junk hint
 
-  for (HintDistributionSetting setting: distTable){ //Gather the wieghts of each distribution and, if it's the first pass, apply fixed hints
-    totalWeight += setting.weight;                  //Note that PlaceHints will set weights of distributions to zero if it can't place anything from them
+  for (uint8_t c=0; c < distTable.size(); c++){ //Gather the wieghts of each distribution and, if it's the first pass, apply fixed hints
+    totalWeight += distTable[c].weight;         //Note that PlaceHints will set weights of distributions to zero if it can't place anything from them
     if (addFixed){
-      selected[setting.type] += setting.fixed;
-      stoneCount -= setting.fixed * setting.copies;
+      selected[c] += distTable[c].fixed;
+      stoneCount -= distTable[c].fixed * distTable[c].copies;
     }
   }
   int32_t currentWeight = getRandomWeight(totalWeight); //Initialise with the first random weight from 1 to the total. 
