@@ -3,6 +3,7 @@
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/enhancementTypes.h"
 
 extern "C" {
 #include "src/overlays/actors/ovl_En_Wonder_Talk2/z_en_wonder_talk2.h"
@@ -14,6 +15,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Ko/z_en_ko.h"
 #include "src/overlays/actors/ovl_En_Ma1/z_en_ma1.h"
 #include "src/overlays/actors/ovl_En_Zl4/z_en_zl4.h"
+#include "src/overlays/actors/ovl_En_Box/z_en_box.h"
 #include "src/overlays/actors/ovl_Demo_Im/z_demo_im.h"
 #include "src/overlays/actors/ovl_En_Sa/z_en_sa.h"
 #include "src/overlays/actors/ovl_Bg_Ddan_Kd/z_bg_ddan_kd.h"
@@ -622,6 +624,15 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
                     Actor_Kill(&ik->actor);
                 }
                 *should = false;
+            }
+            break;
+        }
+        case VB_PLAY_SLOW_CHEST_CS: {
+            if (CVarGetInteger(CVAR_ENHANCEMENT("FastChests"), 0)) {
+                *should = false;
+            } else if (CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), CSMC_DISABLED) && *should) {
+                EnBox* enBox = static_cast<EnBox*>(opt);
+                *should = enBox->dyna.actor.scale.x != 0.005f;
             }
             break;
         }
