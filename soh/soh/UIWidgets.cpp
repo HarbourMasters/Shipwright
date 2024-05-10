@@ -21,7 +21,7 @@ namespace UIWidgets {
     // Automatically adds newlines to break up text longer than a specified number of characters
     // Manually included newlines will still be respected and reset the line length
     // If line is midword when it hits the limit, text should break at the last encountered space
-    char* WrappedText(const char* text, unsigned int charactersPerLine) {
+    std::string WrappedText(const char* text, unsigned int charactersPerLine) {
         std::string newText(text);
         const size_t tipLength = newText.length();
         int lastSpace = -1;
@@ -43,17 +43,17 @@ namespace UIWidgets {
             currentLineLength++;
         }
 
-        return strdup(newText.c_str());
+        return newText;
     }
 
-    char* WrappedText(const std::string& text, unsigned int charactersPerLine) {
+    std::string WrappedText(const std::string& text, unsigned int charactersPerLine) {
         return WrappedText(text.c_str(), charactersPerLine);
     }
 
     void SetLastItemHoverText(const std::string& text) {
         if (ImGui::IsItemHovered()) {
             ImGui::BeginTooltip();
-            ImGui::Text("%s", WrappedText(text, 60));
+            ImGui::Text("%s", WrappedText(text, 60).c_str());
             ImGui::EndTooltip();
         }
     }
@@ -61,7 +61,7 @@ namespace UIWidgets {
     void SetLastItemHoverText(const char* text) {
         if (ImGui::IsItemHovered()) {
             ImGui::BeginTooltip();
-            ImGui::Text("%s", WrappedText(text, 60));
+            ImGui::Text("%s", WrappedText(text, 60).c_str());
             ImGui::EndTooltip();
         }
     }
@@ -72,7 +72,7 @@ namespace UIWidgets {
         ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "?");
         if (ImGui::IsItemHovered()) {
             ImGui::BeginTooltip();
-            ImGui::Text("%s", WrappedText(text, 60));
+            ImGui::Text("%s", WrappedText(text, 60).c_str());
             ImGui::EndTooltip();
         }
     }
@@ -82,7 +82,7 @@ namespace UIWidgets {
         ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "?");
         if (ImGui::IsItemHovered()) {
             ImGui::BeginTooltip();
-            ImGui::Text("%s", WrappedText(text, 60));
+            ImGui::Text("%s", WrappedText(text, 60).c_str());
             ImGui::EndTooltip();
         }
     }
@@ -92,7 +92,7 @@ namespace UIWidgets {
 
     void Tooltip(const char* text) {
         if (ImGui::IsItemHovered()) {
-            ImGui::SetTooltip("%s", WrappedText(text));
+            ImGui::SetTooltip("%s", WrappedText(text).c_str());
         }
     }
 
