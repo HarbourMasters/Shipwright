@@ -891,6 +891,32 @@ void DrawEnhancementsMenu() {
 
                 UIWidgets::Spacer(0);
 
+                if (ImGui::BeginMenu("Frogs Ocarina Game")) {
+                    UIWidgets::EnhancementCheckbox("Customize Behavior", CVAR_ENHANCEMENT("CustomizeFrogsOcarinaGame"));
+                    UIWidgets::Tooltip("Turn on/off changes to the frogs ocarina game behavior");
+                    bool disabled = !CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFrogsOcarinaGame"), 0);
+                    static const char* disabledTooltip =
+                        "This option is disabled because \"Customize Behavior\" is turned off";
+                    UIWidgets::PaddedEnhancementCheckbox("Instant Win", CVAR_ENHANCEMENT("InstantFrogsGameWin"), true, false, disabled, disabledTooltip);
+                    UIWidgets::Tooltip("Skips the frogs ocarina game");
+                    UIWidgets::PaddedEnhancementCheckbox("Unlimited Playback Time", CVAR_ENHANCEMENT("FrogsUnlimitedFailTime"), true, false, disabled, disabledTooltip);
+                    UIWidgets::Tooltip("Removes the timer to play back the song");
+                    bool disabledFrog = 0;
+                    static const char* disabledFrogTooltip =
+                        "This option is disabled because \"Customize Behavior\" is turned off or \"Unlimited Playback Time\" is on";
+                    if (!CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFrogsOcarinaGame"), 0) || CVarGetInteger(CVAR_ENHANCEMENT("FrogsUnlimitedFailTime"), 0)) {
+                        disabledFrog = 1;
+                    } else {
+                        disabledFrog = 0;
+                    }
+                    UIWidgets::PaddedEnhancementSliderInt("Modify note timer: %dx", "##FrogsFailTimer", CVAR_ENHANCEMENT("FrogsModifyFailTime"), 1, 5, "", 1, true, true, false,
+                                                          disabledFrog, disabledFrogTooltip);
+                    UIWidgets::Tooltip("Adjusts the time allowed for playback before failing");
+                    ImGui::EndMenu();
+                }
+
+                UIWidgets::Spacer(0);
+
                 UIWidgets::PaddedEnhancementCheckbox("Delete File On Death", CVAR_ENHANCEMENT("DeleteFileOnDeath"), true, false);
                 ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
                 UIWidgets::Tooltip("Dying will delete your file\n\n     " ICON_FA_EXCLAMATION_TRIANGLE " WARNING " ICON_FA_EXCLAMATION_TRIANGLE "\nTHIS IS NOT REVERSABLE\nUSE AT YOUR OWN RISK!");
