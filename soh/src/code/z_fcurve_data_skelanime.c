@@ -131,6 +131,10 @@ void SkelCurve_DrawLimb(PlayState* play, s32 limbIndex, SkelAnimeCurve* skelCurv
         Matrix_TranslateRotateZYX(&pos, &rot);
         Matrix_Scale(scale.x, scale.y, scale.z, MTXMODE_APPLY);
 
+        if (CVarGetInteger(CVAR_ENHANCEMENT("DisableLOD"), 0)) {
+            lod = 0;
+        }
+
         if (lod == 0) {
             s32 pad1;
 

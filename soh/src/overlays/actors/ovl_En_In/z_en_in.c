@@ -145,7 +145,7 @@ u16 func_80A79010(PlayState* play) {
     }
     switch (gSaveContext.eventInf[0] & 0xF) {
         case 1:
-            if (!(player->stateFlags1 & 0x800000)) {
+            if (!(player->stateFlags1 & PLAYER_STATE1_ON_HORSE)) {
                 return 0x2036;
             } else if (Flags_GetEventChkInf(EVENTCHKINF_RENTED_HORSE_FROM_INGO)) {
                 if (Flags_GetInfTable(INFTABLE_A2)) {
@@ -434,7 +434,7 @@ void func_80A79BAC(EnIn* this, PlayState* play, s32 index, u32 transitionType) {
     }
     play->transitionType = transitionType;
     play->transitionTrigger = TRANS_TRIGGER_START;
-    func_8002DF54(play, &this->actor, 8);
+    Player_SetCsActionWithHaltedActors(play, &this->actor, 8);
     Interface_ChangeAlpha(1);
     if (index == 0) {
         AREG(6) = 0;
@@ -657,7 +657,7 @@ void func_80A7A568(EnIn* this, PlayState* play) {
     s32 phi_a2;
     s32 transitionType;
 
-    if (!Flags_GetEventChkInf(EVENTCHKINF_RENTED_HORSE_FROM_INGO) && (player->stateFlags1 & 0x800000)) {
+    if (!Flags_GetEventChkInf(EVENTCHKINF_RENTED_HORSE_FROM_INGO) && (player->stateFlags1 & PLAYER_STATE1_ON_HORSE)) {
         Flags_SetInfTable(INFTABLE_AB);
     }
     if (gSaveContext.timer1State == 10) {
@@ -856,7 +856,7 @@ void func_80A7ABD4(EnIn* this, PlayState* play) {
 void func_80A7AE84(EnIn* this, PlayState* play) {
     Play_ChangeCameraStatus(play, this->activeCamId, CAM_STAT_ACTIVE);
     Play_ClearCamera(play, this->camId);
-    func_8002DF54(play, &this->actor, 7);
+    Player_SetCsActionWithHaltedActors(play, &this->actor, 7);
     Interface_ChangeAlpha(0x32);
     this->actionFunc = func_80A7AEF0;
 }

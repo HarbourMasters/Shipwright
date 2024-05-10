@@ -307,5 +307,6 @@ void AreaTable_Init_DodongosCavern() {
              {
                  // Exits
                  Entrance(RR_DODONGOS_CAVERN_BOSS_ENTRYWAY, { [] { return true; } }),
+                 Entrance(RR_DEATH_MOUNTAIN_TRAIL, { [] { return logic->DodongosCavernClear; } }),
              });
 }

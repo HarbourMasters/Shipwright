@@ -1,35 +1,30 @@
 #pragma once
 
-#include "3drando/text.hpp"
-
-#include <array>
+#include "randomizerTypes.h"
+#include "../custom-message/CustomMessageManager.h"
 #include <nlohmann/json.hpp>
+#include "static_data.h"
+#include <unordered_map>
 
 namespace Rando {
 class TrialInfo {
   public:
-    explicit TrialInfo(Text name_);
+    explicit TrialInfo(RandomizerHintTextKey nameKey_, TrialKey key_);
     TrialInfo();
     ~TrialInfo();
 
-    Text GetName() const;
+    CustomMessage GetName() const;
+    RandomizerHintTextKey GetNameKey() const;
+    TrialKey GetTrialKey() const;
     bool IsSkipped() const;
     bool IsRequired() const;
     void SetAsRequired();
     void SetAsSkipped();
   private:
-    Text name;
+    RandomizerHintTextKey nameKey;
+    TrialKey trialKey;
     bool skipped = true;
 };
-
-typedef enum {
-    LIGHT_TRIAL,
-    FOREST_TRIAL,
-    FIRE_TRIAL,
-    WATER_TRIAL,
-    SPIRIT_TRIAL,
-    SHADOW_TRIAL,
-} TrialKey;
 
 class Trials {
   public:
@@ -38,10 +33,11 @@ class Trials {
     TrialInfo* GetTrial(TrialKey key);
     void SkipAll();
     void RequireAll();
-    std::array<TrialInfo*, 6> GetTrialList();
+    std::vector<TrialInfo*> GetTrialList();
     size_t GetTrialListSize() const;
     void ParseJson(nlohmann::json spoilerFileJson);
+    std::unordered_map<uint32_t, RandomizerHintTextKey> GetAllTrialHintHeys() const;
   private:
-    std::array<TrialInfo, 6> mTrials;
+    std::array<TrialInfo, TK_MAX> mTrials;
 };
 }

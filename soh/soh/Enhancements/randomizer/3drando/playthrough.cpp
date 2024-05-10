@@ -8,7 +8,8 @@
 #include "random.hpp"
 #include "spoiler_log.hpp"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
-#include <variables.h>
+#include "variables.h"
+#include "soh/OTRGlobals.h"
 #include "../option.h"
 
 namespace Playthrough {
@@ -44,7 +45,7 @@ int Playthrough_Init(uint32_t seed, std::set<RandomizerCheck> excludedLocations,
         }
     }
 
-    if (CVarGetInteger("gRandomizerDontGenerateSpoiler", 0)) {
+    if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("DontGenerateSpoiler"), 0)) {
         settingsStr += (char*)gBuildVersion;
     }
 
@@ -69,18 +70,18 @@ int Playthrough_Init(uint32_t seed, std::set<RandomizerCheck> excludedLocations,
     if (true) {
         //TODO: Handle different types of file output (i.e. Spoiler Log, Plando Template, Patch Files, Race Files, etc.)
         // write logs
-        printf("\x1b[11;10HWriting Spoiler Log...");
+        SPDLOG_INFO("Writing Spoiler Log...");
         if (SpoilerLog_Write()) {
-            printf("Done");
+            SPDLOG_INFO("Writing Spoiler Log Done");
         } else {
-            printf("Failed");
+            SPDLOG_ERROR("Writing Spoiler Log Failed");
         }
 #ifdef ENABLE_DEBUG
-        printf("\x1b[11;10HWriting Placement Log...");
+        SPDLOG_INFO("Writing Placement Log...");
         if (PlacementLog_Write()) {
-            printf("Done\n");
+            SPDLOG_INFO("Writing Placement Log Done");
         } else {
-            printf("Failed\n");
+            SPDLOG_ERROR("Writing Placement Log Failed");
         }
 #endif
     }
@@ -93,7 +94,7 @@ int Playthrough_Init(uint32_t seed, std::set<RandomizerCheck> excludedLocations,
 
 // used for generating a lot of seeds at once
 int Playthrough_Repeat(std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks, int count /*= 1*/) {
-    printf("\x1b[0;0HGENERATING %d SEEDS", count);
+    SPDLOG_INFO("GENERATING {} SEEDS", count);
     auto ctx = Rando::Context::GetInstance();
     uint32_t repeatedSeed = 0;
     for (int i = 0; i < count; i++) {
@@ -103,7 +104,7 @@ int Playthrough_Repeat(std::set<RandomizerCheck> excludedLocations, std::set<Ran
         //CitraPrint("testing seed: " + std::to_string(Settings::seed));
         ClearProgress();
         Playthrough_Init(ctx->GetSettings()->GetSeed(), excludedLocations, enabledTricks);
-        printf("\x1b[15;15HSeeds Generated: %d\n", i + 1);
+        SPDLOG_INFO("Seeds Generated: {}", i + 1);
     }
 
     return 1;

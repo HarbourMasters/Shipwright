@@ -7,9 +7,9 @@ extern const char* digitTextures[];
 
 void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
     Color_RGB8 aButtonColor = { 80, 150, 255 };
-    if (CVarGetInteger("gCosmetics.Hud_AButton.Changed", 0)) {
-        aButtonColor = CVarGetColor24("gCosmetics.Hud_AButton.Value", aButtonColor);
-    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.AButton.Changed"), 0)) {
+        aButtonColor = CVarGetColor24(CVAR_COSMETIC("HUD.AButton.Value"), aButtonColor);
+    } else if (CVarGetInteger(CVAR_COSMETIC("DefaultColorScheme"), COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
         aButtonColor = (Color_RGB8){ 80, 255, 150 };
     }
     if (IS_RANDO && !Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_A)) {
@@ -17,36 +17,36 @@ void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
     }
 
     Color_RGB8 cButtonsColor = {255, 255, 50};
-    if (CVarGetInteger("gCosmetics.Hud_CButtons.Changed", 0)) {
-        cButtonsColor = CVarGetColor24("gCosmetics.Hud_CButtons.Value", cButtonsColor);
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.CButtons.Changed"), 0)) {
+        cButtonsColor = CVarGetColor24(CVAR_COSMETIC("HUD.CButtons.Value"), cButtonsColor);
     }
     Color_RGB8 cUpButtonColor = cButtonsColor;
-    if (CVarGetInteger("gCosmetics.Hud_CUpButton.Changed", 0)) {
-        cUpButtonColor = CVarGetColor24("gCosmetics.Hud_CUpButton.Value", cUpButtonColor);
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.CUpButton.Changed"), 0)) {
+        cUpButtonColor = CVarGetColor24(CVAR_COSMETIC("HUD.CUpButton.Value"), cUpButtonColor);
     }
     if (IS_RANDO && !Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_UP)) {
         cUpButtonColor = (Color_RGB8){ 191, 191, 191 };
     }
 
     Color_RGB8 cDownButtonColor = cButtonsColor;
-    if (CVarGetInteger("gCosmetics.Hud_CDownButton.Changed", 0)) {
-        cDownButtonColor = CVarGetColor24("gCosmetics.Hud_CDownButton.Value", cDownButtonColor);
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.CDownButton.Changed"), 0)) {
+        cDownButtonColor = CVarGetColor24(CVAR_COSMETIC("HUD.CDownButton.Value"), cDownButtonColor);
     }
     if (IS_RANDO && !Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_DOWN)) {
         cDownButtonColor = (Color_RGB8){ 191, 191, 191 };
     }
 
     Color_RGB8 cLeftButtonColor = cButtonsColor;
-    if (CVarGetInteger("gCosmetics.Hud_CLeftButton.Changed", 0)) {
-        cLeftButtonColor = CVarGetColor24("gCosmetics.Hud_CLeftButton.Value", cLeftButtonColor);
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.CLeftButton.Changed"), 0)) {
+        cLeftButtonColor = CVarGetColor24(CVAR_COSMETIC("HUD.CLeftButton.Value"), cLeftButtonColor);
     }
     if (IS_RANDO && !Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_LEFT)) {
         cLeftButtonColor = (Color_RGB8){ 191, 191, 191 };
     }
 
     Color_RGB8 cRightButtonColor = cButtonsColor;
-    if (CVarGetInteger("gCosmetics.Hud_CRightButton.Changed", 0)) {
-        cRightButtonColor = CVarGetColor24("gCosmetics.Hud_CRightButton.Value", cRightButtonColor);
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.CRightButton.Changed"), 0)) {
+        cRightButtonColor = CVarGetColor24(CVAR_COSMETIC("HUD.CRightButton.Value"), cRightButtonColor);
     }
     if (IS_RANDO && !Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_RIGHT)) {
         cRightButtonColor = (Color_RGB8){ 191, 191, 191 };
@@ -121,7 +121,7 @@ void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
     s16 pad2;
     s16 phi_s0_2;
     s16 sp208[3];
-    bool dpad = CVarGetInteger("gDpadPause", 0);
+    bool dpad = CVarGetInteger(CVAR_SETTING("DPadOnPause"), 0);
 
     OPEN_DISPS(gfxCtx);
 

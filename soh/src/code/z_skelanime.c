@@ -78,6 +78,10 @@ void SkelAnime_DrawLod(PlayState* play, void** skeleton, Vec3s* jointTable,
     Vec3f pos;
     Vec3s rot;
 
+    if (CVarGetInteger(CVAR_ENHANCEMENT("DisableLOD"), 0)) {
+        lod = 0;
+    }
+
     if (skeleton == NULL) {
         osSyncPrintf(VT_FGCOL(RED));
         osSyncPrintf("Si2_Lod_draw():skelがNULLです。\n"); // "skel is NULL."
@@ -190,6 +194,10 @@ void SkelAnime_DrawFlexLod(PlayState* play, void** skeleton, Vec3s* jointTable, 
     Vec3f pos;
     Vec3s rot;
     Mtx* mtx = Graph_Alloc(play->state.gfxCtx, dListCount * sizeof(Mtx));
+
+    if (CVarGetInteger(CVAR_ENHANCEMENT("DisableLOD"), 0)) {
+        lod = 0;
+    }
 
     if (skeleton == NULL) {
         osSyncPrintf(VT_FGCOL(RED));
@@ -862,7 +870,7 @@ AnimationEntry* AnimationContext_AddEntry(AnimationContext* animationCtx, Animat
  */
 void AnimationContext_SetLoadFrame(PlayState* play, LinkAnimationHeader* animation, s32 frame, s32 limbCount,
                                    Vec3s* frameTable) {
-    if (CVarGetInteger("gN64WeirdFrames", 0) && frame < 0) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("N64WeirdFrames"), 0) && frame < 0) {
         Vec3s* src = (Vec3s*)getN64WeirdFrame((sizeof(Vec3s) * limbCount + 2) * frame);
         memcpy(frameTable, src, sizeof(Vec3s) * limbCount + 2);
         return;

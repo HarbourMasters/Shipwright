@@ -170,12 +170,14 @@ void Settings::CreateOptionDescriptions() {
         "This also adds the one-way entrance from Gerudo Valley to Lake Hylia in the pool of "
         "overworld entrances when they are shuffled.";
     mOptionDescriptions[RSK_MIXED_ENTRANCE_POOLS] =
-        "Shuffle entrances into a mixed pool instead of separate ones.\n"
+        "Shuffle entrances into a mixed pool instead of separate ones. Has no affect on pools whose "
+        "entrances aren't shuffled, and \"Shuffle Boss Entrances\" must be set to \"Full\" to include them.\n"
         "\n"
         "For example, enabling the settings to shuffle grotto, dungeon, and overworld entrances and "
         "selecting grotto and dungeon entrances here will allow a dungeon to be inside a grotto or "
         "vice versa, while overworld entrances are shuffled in their own separate pool and indoors stay vanilla.";
     mOptionDescriptions[RSK_MIX_DUNGEON_ENTRANCES] = "Dungeon entrances will be part of the mixed pool";
+    mOptionDescriptions[RSK_MIX_BOSS_ENTRANCES] = "Boss entrances will be part of the mixed pool";
     mOptionDescriptions[RSK_MIX_OVERWORLD_ENTRANCES] = "Overworld entrances will be part of the mixed pool";
     mOptionDescriptions[RSK_MIX_INTERIOR_ENTRANCES] = "Interior entrances will be part of the mixed pool";
     mOptionDescriptions[RSK_MIX_GROTTO_ENTRANCES] = "Grotto entrances will be part of the mixed pool";
@@ -436,8 +438,6 @@ void Settings::CreateOptionDescriptions() {
         "Start with Zelda's Letter and the item Impa would normally give you and skip the sequence up "
         "until after meeting Zelda. Disables the ability to shuffle Weird Egg.";
     mOptionDescriptions[RSK_SKIP_EPONA_RACE] = "Epona can be summoned with Epona's Song without needing to race Ingo.";
-    mOptionDescriptions[RSK_SKIP_TOWER_ESCAPE] =
-        "The tower escape sequence between Ganondorf and Ganon will be skipped.";
     mOptionDescriptions[RSK_COMPLETE_MASK_QUEST] =
         "Once the happy mask shop is opened, all masks will be available to be borrowed.";
     mOptionDescriptions[RSK_SKIP_SCARECROWS_SONG] =
@@ -501,10 +501,13 @@ void Settings::CreateOptionDescriptions() {
         "Reading the Temple of Time altar as child will tell you the locations of the Spiritual Stones.\n"
         "Reading the Temple of Time altar as adult will tell you the locations of the Medallions, as well as the "
         "conditions for building the Rainbow Bridge and getting the Boss Key for Ganon's Castle.";
-    mOptionDescriptions[RSK_LIGHT_ARROWS_HINT] =
-        "Talking to Ganondorf in his boss room or Sheik inside Ganon's Castle (when trials are enabled) will tell you "
-        "the location of the Light Arrows."
-        "If this option is enabled and Ganondorf is reachable without Light Arrows, Gossip Stones will never hint the "
+    mOptionDescriptions[RSK_GANONDORF_HINT] =
+        "Talking to Ganondorf in his boss room will tell you the location of the Light Arrows and Master Sword."
+        "If this option is enabled and Ganondorf is reachable without these items, Gossip Stones will never hint the "
+        "appropriote items.";//RANDOTODO make this hint text about no dupe hints a global hint for static hints. Add to navi?
+    mOptionDescriptions[RSK_SHEIK_LA_HINT] =
+        "Talking to Sheik inside Ganon's Castle will tell you the location of the Light Arrows."
+        "If this option is enabled and Sheik is reachable without Light Arrows, Gossip Stones will never hint the "
         "Light Arrows.";
     mOptionDescriptions[RSK_DAMPES_DIARY_HINT] =
         "Reading the diary of Dampé the gravekeeper as adult will tell you the location of one of the Hookshots.";
@@ -544,7 +547,7 @@ void Settings::CreateOptionDescriptions() {
     mOptionDescriptions[RSK_BLUE_FIRE_ARROWS] =
         "Ice Arrows act like Blue Fire, making them able to melt red ice. "
         "Item placement logic will respect this option, so it might be required to use this to progress.";
-    mOptionDescriptions[RSK_LIGHT_ARROWS_HINT] =
+    mOptionDescriptions[RSK_SUNLIGHT_ARROWS] =
         "Light Arrows can be used to light up the sun switches instead of using the Mirror Shield. "
         "Item placement logic will respect this option, so it might be required to use this to progress.";
     mOptionDescriptions[RSK_LOGIC_RULES] =

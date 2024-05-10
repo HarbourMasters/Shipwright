@@ -8,6 +8,7 @@
 using namespace Rando;
 
 std::array<Item, RG_MAX> Rando::StaticData::itemTable;
+std::unordered_map<std::string, RandomizerGet> Rando::StaticData::itemNameToEnum;
 
 void Rando::StaticData::InitItemTable() {
     auto logic = Context::GetInstance()->GetLogic();
@@ -320,6 +321,17 @@ void Rando::StaticData::InitItemTable() {
     itemTable[RG_MAGIC_SINGLE] =                        Item(RG_MAGIC_SINGLE,                     Text{ "Magic Meter", "Jauge de Magie", "Magisches Messgerät" },                                                   ITEMTYPE_ITEM,              0x8A,               true,  &logic->ProgressiveMagic,    RHT_MAGIC_SINGLE,           RG_MAGIC_SINGLE,                OBJECT_GI_MAGICPOT,     GID_MAGIC_SMALL,    0xE4,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,  MOD_RANDOMIZER);
     itemTable[RG_MAGIC_DOUBLE] =                        Item(RG_MAGIC_DOUBLE,                     Text{ "Enhanced Magic Meter", "Jauge de Magie améliorée", "Verbesserte Magieanzeige" },                           ITEMTYPE_ITEM,              0x8A,               true,  &logic->ProgressiveMagic,    RHT_MAGIC_DOUBLE,           RG_MAGIC_DOUBLE,                OBJECT_GI_MAGICPOT,     GID_MAGIC_LARGE,    0xE8,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
     itemTable[RG_TRIFORCE_PIECE] =                      Item(RG_TRIFORCE_PIECE,                   Text{ "Triforce Piece", "Triforce Piece", "Triforce Piece" },                                                     ITEMTYPE_ITEM,              0xDF,               true,  &logic->TriforcePieces,      RHT_TRIFORCE_PIECE,         RG_TRIFORCE_PIECE,              OBJECT_GI_BOMB_2,       GID_TRIFORCE_PIECE, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,  MOD_RANDOMIZER);
+
+    // Init itemNameToEnum
+    for (auto& item : itemTable) {
+        // Easiest way to filter out all the empty values from the array, since we still technically want the 0/RG_NONE
+        // entry
+        if (item.GetName().english.empty()) {
+            continue;
+        }
+        itemNameToEnum[item.GetName().english] = item.GetRandomizerGet();
+        itemNameToEnum[item.GetName().french] = item.GetRandomizerGet();
+    }
 }
 
 Item& Rando::StaticData::RetrieveItem(const RandomizerGet rgid) {

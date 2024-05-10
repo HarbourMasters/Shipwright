@@ -45,9 +45,9 @@ void Select_LoadGame(SelectContext* this, s32 entranceIndex) {
     }
 
     if (this->isBetterWarp) {
-        CVarSetInteger("gBetterDebugWarpScreenCurrentScene", this->currentScene);
-        CVarSetInteger("gBetterDebugWarpScreenTopDisplayedScene", this->topDisplayedScene);
-        CVarSetInteger("gBetterDebugWarpScreenPageDownIndex", this->pageDownIndex);
+        CVarSetInteger(CVAR_GENERAL("BetterDebugWarpScreenCurrentScene"), this->currentScene);
+        CVarSetInteger(CVAR_GENERAL("BetterDebugWarpScreenTopDisplayedScene"), this->topDisplayedScene);
+        CVarSetInteger(CVAR_GENERAL("BetterDebugWarpScreenPageDownIndex"), this->pageDownIndex);
         CVarSave();
 
         if (ResourceMgr_GameHasMasterQuest() && ResourceMgr_GameHasOriginal()) {
@@ -57,11 +57,11 @@ void Select_LoadGame(SelectContext* this, s32 entranceIndex) {
                 s16 scene = gEntranceTable[entrancePair.entranceIndex].scene;
                 u8 isEntranceDefaultMQ = ResourceMgr_IsSceneMasterQuest(scene);
                 if (!isEntranceDefaultMQ && this->opt) { // Force vanilla for default MQ scene
-                    CVarSetInteger("gBetterDebugWarpScreenMQMode", WARP_MODE_OVERRIDE_MQ_AS_VANILLA);
-                    CVarSetInteger("gBetterDebugWarpScreenMQModeScene", scene);
+                    CVarSetInteger(CVAR_GENERAL("BetterDebugWarpScreenMQMode"), WARP_MODE_OVERRIDE_MQ_AS_VANILLA);
+                    CVarSetInteger(CVAR_GENERAL("BetterDebugWarpScreenMQModeScene"), scene);
                 } else if (isEntranceDefaultMQ && !this->opt) { // Force MQ for default vanilla scene
-                    CVarSetInteger("gBetterDebugWarpScreenMQMode", WARP_MODE_OVERRIDE_VANILLA_AS_MQ);
-                    CVarSetInteger("gBetterDebugWarpScreenMQModeScene", scene);
+                    CVarSetInteger(CVAR_GENERAL("BetterDebugWarpScreenMQMode"), WARP_MODE_OVERRIDE_VANILLA_AS_MQ);
+                    CVarSetInteger(CVAR_GENERAL("BetterDebugWarpScreenMQModeScene"), scene);
                 }
             }
         }
@@ -111,9 +111,9 @@ void Select_Grotto_LoadGame(SelectContext* this, s32 grottoIndex) {
     }
 
     if (this->isBetterWarp) {
-        CVarSetInteger("gBetterDebugWarpScreenCurrentScene", this->currentScene);
-        CVarSetInteger("gBetterDebugWarpScreenTopDisplayedScene", this->topDisplayedScene);
-        CVarSetInteger("gBetterDebugWarpScreenPageDownIndex", this->pageDownIndex);
+        CVarSetInteger(CVAR_GENERAL("BetterDebugWarpScreenCurrentScene"), this->currentScene);
+        CVarSetInteger(CVAR_GENERAL("BetterDebugWarpScreenTopDisplayedScene"), this->topDisplayedScene);
+        CVarSetInteger(CVAR_GENERAL("BetterDebugWarpScreenPageDownIndex"), this->pageDownIndex);
         CVarSave();
     }
 
@@ -1078,7 +1078,7 @@ void Select_PrintMenu(SelectContext* this, GfxPrint* printer) {
             GfxPrint_SetColor(printer, 200, 200, 55, 255);
         }
 
-        if (CVarGetInteger("gDebugWarpScreenTranslation", 1)) {
+        if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugWarpScreenTranslation"), 1)) {
             switch (gSaveContext.language) {
                 case LANGUAGE_ENG:
                 default:
@@ -1105,7 +1105,7 @@ void Select_PrintMenu(SelectContext* this, GfxPrint* printer) {
     GfxPrint_SetColor(printer, 155, 55, 150, 255);
 
     // Small position hack of the OPT=X text since german Link's Age overlap if translated
-    if (CVarGetInteger("gDebugWarpScreenTranslation", 1) && gSaveContext.language == LANGUAGE_GER) {
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugWarpScreenTranslation"), 1) && gSaveContext.language == LANGUAGE_GER) {
         GfxPrint_SetPos(printer, 26, 26);
     } else {
         GfxPrint_SetPos(printer, 20, 26);
@@ -1134,7 +1134,7 @@ void Better_Select_PrintMenu(SelectContext* this, GfxPrint* printer) {
             GfxPrint_SetColor(printer, 175, 175, 175, 255);
         }
         
-        if (CVarGetInteger("gDebugWarpScreenTranslation", 1)) {
+        if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugWarpScreenTranslation"), 1)) {
             switch (gSaveContext.language) {
                 case LANGUAGE_ENG:
                 default:
@@ -1160,7 +1160,7 @@ void Better_Select_PrintMenu(SelectContext* this, GfxPrint* printer) {
     GfxPrint_SetColor(printer, 205, 100, 200, 255);
     GfxPrint_SetPos(printer, 3, 26);
 
-    if (CVarGetInteger("gDebugWarpScreenTranslation", 1)) {
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugWarpScreenTranslation"), 1)) {
         switch (gSaveContext.language) {
             case LANGUAGE_ENG:
             default:
@@ -1200,7 +1200,7 @@ void Select_PrintLoadingMessage(SelectContext* this, GfxPrint* printer) {
     GfxPrint_SetPos(printer, 10, 15);
     GfxPrint_SetColor(printer, 255, 255, 255, 255);
     randomMsg = Rand_ZeroOne() * ARRAY_COUNT(sLoadingMessages);
-    if (CVarGetInteger("gDebugWarpScreenTranslation", 1)) {
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugWarpScreenTranslation"), 1)) {
         switch (gSaveContext.language) {
             case LANGUAGE_ENG:
             default:
@@ -1231,7 +1231,7 @@ static BetterSceneSelectAgeLabels sBetterAgeLabels[] = {
 void Select_PrintAgeSetting(SelectContext* this, GfxPrint* printer, s32 age) {
     GfxPrint_SetPos(printer, 4, 26);
     GfxPrint_SetColor(printer, 255, 255, 55, 255);
-    if (CVarGetInteger("gDebugWarpScreenTranslation", 1)) {
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugWarpScreenTranslation"), 1)) {
         switch (gSaveContext.language) {
             case LANGUAGE_ENG:
             default:
@@ -1252,7 +1252,7 @@ void Select_PrintAgeSetting(SelectContext* this, GfxPrint* printer, s32 age) {
 void Better_Select_PrintAgeSetting(SelectContext* this, GfxPrint* printer, s32 age) {
     GfxPrint_SetPos(printer, 25, 25);
     GfxPrint_SetColor(printer, 100, 100, 100, 255);
-    if (CVarGetInteger("gDebugWarpScreenTranslation", 1)) {
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugWarpScreenTranslation"), 1)) {
         switch (gSaveContext.language) {
             case LANGUAGE_ENG:
             case LANGUAGE_FRA:
@@ -1268,7 +1268,7 @@ void Better_Select_PrintAgeSetting(SelectContext* this, GfxPrint* printer, s32 a
     }
     
     GfxPrint_SetColor(printer, 55, 200, 50, 255);
-    if (CVarGetInteger("gDebugWarpScreenTranslation", 1)) {
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugWarpScreenTranslation"), 1)) {
         switch (gSaveContext.language) {
             case LANGUAGE_ENG:
             default:
@@ -1304,7 +1304,7 @@ void Select_PrintCutsceneSetting(SelectContext* this, GfxPrint* printer, u16 csI
     };
     
     char* label;
-    int lang = CVarGetInteger("gDebugWarpScreenTranslation", 1) ? gSaveContext.language + 1 : 0;
+    int lang = CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugWarpScreenTranslation"), 1) ? gSaveContext.language + 1 : 0;
 
     GfxPrint_SetPos(printer, 4, 25);
     GfxPrint_SetColor(printer, 255, 255, 55, 255);
@@ -1367,7 +1367,7 @@ void Better_Select_PrintTimeSetting(SelectContext* this, GfxPrint* printer) {
     GfxPrint_SetColor(printer, 100, 100, 100, 255);
 
     if (gSaveContext.dayTime > 0xC000 || gSaveContext.dayTime < 0x4555) {
-        if (CVarGetInteger("gDebugWarpScreenTranslation", 1)) {
+        if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugWarpScreenTranslation"), 1)) {
             switch (gSaveContext.language) {
                 case LANGUAGE_ENG:
                 default:
@@ -1384,7 +1384,7 @@ void Better_Select_PrintTimeSetting(SelectContext* this, GfxPrint* printer) {
             label = "Night";
         }
     } else {
-        if (CVarGetInteger("gDebugWarpScreenTranslation", 1)) {
+        if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugWarpScreenTranslation"), 1)) {
             switch (gSaveContext.language) {
                 case LANGUAGE_ENG:
                 default:
@@ -1401,7 +1401,7 @@ void Better_Select_PrintTimeSetting(SelectContext* this, GfxPrint* printer) {
             label = "Day";
         }
     }
-    if (CVarGetInteger("gDebugWarpScreenTranslation", 1)) {
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugWarpScreenTranslation"), 1)) {
         switch (gSaveContext.language) {
             case LANGUAGE_ENG:
             default:
@@ -1436,7 +1436,7 @@ void Better_Select_PrintMQSetting(SelectContext* this, GfxPrint* printer) {
             GfxPrint_Printf(printer, "MQ:");
         }
 
-        if (CVarGetInteger("gDebugWarpScreenTranslation", 1)) {
+        if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugWarpScreenTranslation"), 1)) {
             switch (gSaveContext.language) {
                 case LANGUAGE_ENG:
                 default:
@@ -1533,7 +1533,7 @@ void Select_Draw(SelectContext* this) {
 void Select_Main(GameState* thisx) {
     SelectContext* this = (SelectContext*)thisx;
 
-    if (this->isBetterWarp != CVarGetInteger("gBetterDebugWarpScreen", 0)) {
+    if (this->isBetterWarp != CVarGetInteger(CVAR_DEVELOPER_TOOLS("BetterDebugWarpScreen"), 0)) {
         Select_SwitchBetterWarpMode(this, !this->isBetterWarp);
     }
 
@@ -1564,13 +1564,13 @@ void Select_SwitchBetterWarpMode(SelectContext* this, u8 isBetterWarpMode) {
     gSaveContext.dayTime = 0x8000;
 
     if (isBetterWarpMode) {
-        s32 currScene = CVarGetInteger("gBetterDebugWarpScreenCurrentScene", 0);
+        s32 currScene = CVarGetInteger(CVAR_GENERAL("BetterDebugWarpScreenCurrentScene"), 0);
         this->count = ARRAY_COUNT(sBetterScenes);
 
         if (currScene >= 0 && currScene < this->count) {
             this->currentScene = currScene;
-            this->topDisplayedScene = CVarGetInteger("gBetterDebugWarpScreenTopDisplayedScene", 0);
-            this->pageDownIndex = CVarGetInteger("gBetterDebugWarpScreenPageDownIndex", 0);
+            this->topDisplayedScene = CVarGetInteger(CVAR_GENERAL("BetterDebugWarpScreenTopDisplayedScene"), 0);
+            this->pageDownIndex = CVarGetInteger(CVAR_GENERAL("BetterDebugWarpScreenPageDownIndex"), 0);
 
             BetterSceneSelectEntrancePair entrancePair = this->betterScenes[this->currentScene].entrancePairs[this->pageDownIndex];
             if (entrancePair.canBeMQ && ResourceMgr_IsSceneMasterQuest(gEntranceTable[entrancePair.entranceIndex].scene)) {
@@ -1637,7 +1637,7 @@ void Select_Init(GameState* thisx) {
     gSaveContext.nightFlag = 0;
     gSaveContext.dayTime = 0x8000;
 
-    CVarClear("gBetterDebugWarpScreenMQMode");
-    CVarClear("gBetterDebugWarpScreenMQModeScene");
-    Select_SwitchBetterWarpMode(this, CVarGetInteger("gBetterDebugWarpScreen", 0));
+    CVarClear(CVAR_GENERAL("BetterDebugWarpScreenMQMode"));
+    CVarClear(CVAR_GENERAL("BetterDebugWarpScreenMQModeScene"));
+    Select_SwitchBetterWarpMode(this, CVarGetInteger(CVAR_DEVELOPER_TOOLS("BetterDebugWarpScreen"), 0));
 }

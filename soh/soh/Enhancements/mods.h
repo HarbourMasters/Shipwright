@@ -13,6 +13,8 @@ void UpdateHurtContainerModeState(bool newState);
 void PatchToTMedallions();
 void PatchCompasses();
 void UpdatePermanentHeartLossState();
+void UpdateHyperEnemiesState();
+void UpdateHyperBossesState();
 void InitMods();
 void UpdatePatchHand(); 
 

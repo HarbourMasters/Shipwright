@@ -116,7 +116,7 @@ void func_809B27D8(EnAnubiceFire* this, PlayState* play) {
             Audio_PlayActorSound2(&this->actor, NA_SE_IT_SHIELD_REFLECT_SW);
             this->cylinder.base.atFlags &= 0xFFE9;
             this->cylinder.base.atFlags |= 8;
-            this->cylinder.info.toucher.dmgFlags = CVarGetInteger("gAnubisFix", 0) ? 0x800 : 2;
+            this->cylinder.info.toucher.dmgFlags = CVarGetInteger(CVAR_ENHANCEMENT("AnubisFix"), 0) ? 0x800 : 2;
             this->unk_15A = 30;
             this->actor.params = 1;
             this->actor.velocity.x *= -1.0f;
