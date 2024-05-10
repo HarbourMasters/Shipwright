@@ -128,7 +128,7 @@ void EnTorch2_Init(Actor* thisx, PlayState* play2) {
 
     // Change Dark Link to regular enemy instead of boss with enemy randomizer and crowd control.
     // This way Dark Link will be considered for "clear enemy" rooms properly.
-    if (CVarGetInteger("gRandomizedEnemies", 0) || CVarGetInteger("gCrowdControl", 0)) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) || (CVarGetInteger(CVAR_REMOTE("Scheme"), GI_SCHEME_SAIL) == GI_SCHEME_CROWD_CONTROL && CVarGetInteger(CVAR_REMOTE("Enabled"), 0))) {
         Actor_ChangeCategory(play, &play->actorCtx, thisx, ACTORCAT_ENEMY);
     }
 
@@ -279,7 +279,7 @@ void EnTorch2_Update(Actor* thisx, PlayState* play2) {
                 }
                 // Disable miniboss music with Enemy Randomizer because the music would keep
                 // playing if the enemy was never defeated, which is common with Enemy Randomizer.
-                if (!CVarGetInteger("gRandomizedEnemies", 0)) {
+                if (!CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0)) {
                     func_800F5ACC(NA_BGM_MINI_BOSS);
                 }
                 sActionState = ENTORCH2_ATTACK;
@@ -592,7 +592,7 @@ void EnTorch2_Update(Actor* thisx, PlayState* play2) {
     input->prev.button = input->cur.button & (u16) ~(BTN_A | BTN_B);
     PadUtils_UpdateRelXY(input);
 
-    if (CVarGetInteger("gMirroredWorld", 0)) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0)) {
         input->rel.stick_x *= -1;
     }
 

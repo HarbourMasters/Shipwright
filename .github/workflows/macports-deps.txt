@@ -1,1 +1,1 @@
-libsdl2 +universal libsdl2_net +universal libpng +universal glew +universal
+libsdl2 +universal libsdl2_net +universal libpng +universal glew +universal libzip +universal nlohmann-json +universal tinyxml2 +universal

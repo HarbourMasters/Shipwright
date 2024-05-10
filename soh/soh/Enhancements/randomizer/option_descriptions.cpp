@@ -438,8 +438,6 @@ void Settings::CreateOptionDescriptions() {
         "Start with Zelda's Letter and the item Impa would normally give you and skip the sequence up "
         "until after meeting Zelda. Disables the ability to shuffle Weird Egg.";
     mOptionDescriptions[RSK_SKIP_EPONA_RACE] = "Epona can be summoned with Epona's Song without needing to race Ingo.";
-    mOptionDescriptions[RSK_SKIP_TOWER_ESCAPE] =
-        "The tower escape sequence between Ganondorf and Ganon will be skipped.";
     mOptionDescriptions[RSK_COMPLETE_MASK_QUEST] =
         "Once the happy mask shop is opened, all masks will be available to be borrowed.";
     mOptionDescriptions[RSK_SKIP_SCARECROWS_SONG] =
@@ -503,10 +501,13 @@ void Settings::CreateOptionDescriptions() {
         "Reading the Temple of Time altar as child will tell you the locations of the Spiritual Stones.\n"
         "Reading the Temple of Time altar as adult will tell you the locations of the Medallions, as well as the "
         "conditions for building the Rainbow Bridge and getting the Boss Key for Ganon's Castle.";
-    mOptionDescriptions[RSK_LIGHT_ARROWS_HINT] =
-        "Talking to Ganondorf in his boss room or Sheik inside Ganon's Castle (when trials are enabled) will tell you "
-        "the location of the Light Arrows."
-        "If this option is enabled and Ganondorf is reachable without Light Arrows, Gossip Stones will never hint the "
+    mOptionDescriptions[RSK_GANONDORF_HINT] =
+        "Talking to Ganondorf in his boss room will tell you the location of the Light Arrows and Master Sword."
+        "If this option is enabled and Ganondorf is reachable without these items, Gossip Stones will never hint the "
+        "appropriote items.";//RANDOTODO make this hint text about no dupe hints a global hint for static hints. Add to navi?
+    mOptionDescriptions[RSK_SHEIK_LA_HINT] =
+        "Talking to Sheik inside Ganon's Castle will tell you the location of the Light Arrows."
+        "If this option is enabled and Sheik is reachable without Light Arrows, Gossip Stones will never hint the "
         "Light Arrows.";
     mOptionDescriptions[RSK_DAMPES_DIARY_HINT] =
         "Reading the diary of Dampé the gravekeeper as adult will tell you the location of one of the Hookshots.";
@@ -531,7 +532,7 @@ void Settings::CreateOptionDescriptions() {
     mOptionDescriptions[RSK_KAK_40_SKULLS_HINT] = "Talking to the Cursed Resident in the Skultulla House who is saved after 40 tokens will tell you the reward";
     mOptionDescriptions[RSK_KAK_50_SKULLS_HINT] = "Talking to the Cursed Resident in the Skultulla House who is saved after 50 tokens will tell you the reward";
     mOptionDescriptions[RSK_KAK_100_SKULLS_HINT] = "Talking to the Cursed Resident in the Skultulla House who is saved after 100 tokens will tell you the reward";
-    
+
     mOptionDescriptions[RSK_FULL_WALLETS] = "Start with a full wallet. All wallet upgrades come filled with rupees.";
     mOptionDescriptions[RSK_BOMBCHUS_IN_LOGIC] =
         "Bombchus are properly considered in logic.\n"
@@ -547,7 +548,7 @@ void Settings::CreateOptionDescriptions() {
         "Ice Arrows act like Blue Fire, making them able to melt red ice. "
         "Item placement logic will respect this option, so it might be required to use this to progress.";
     mOptionDescriptions[RSK_SKELETON_KEY] = "Adds a new item called the \"Skeleton Key\", it unlocks every dungeon door locked by a small key.";
-    mOptionDescriptions[RSK_LIGHT_ARROWS_HINT] =
+    mOptionDescriptions[RSK_SUNLIGHT_ARROWS] =
         "Light Arrows can be used to light up the sun switches instead of using the Mirror Shield. "
         "Item placement logic will respect this option, so it might be required to use this to progress.";
     mOptionDescriptions[RSK_LOGIC_RULES] =

@@ -211,9 +211,9 @@ void BgHakaGate_StatueTurn(BgHakaGate* this, PlayState* play) {
     if (turnFinished) {
         player->stateFlags2 &= ~PLAYER_STATE2_MOVING_DYNAPOLY;
         this->vRotYDeg10 = (this->vRotYDeg10 + turnAngle) % 3600;
-        this->vTurnRateDeg10 = CVarGetInteger("gFasterBlockPush", 0) * 2;
+        this->vTurnRateDeg10 = CVarGetInteger(CVAR_ENHANCEMENT("FasterBlockPush"), 0) * 2;
         this->vTurnAngleDeg10 = 0;
-        this->vTimer = 5 - ((CVarGetInteger("gFasterBlockPush", 0) * 3) / 5);
+        this->vTimer = 5 - ((CVarGetInteger(CVAR_ENHANCEMENT("FasterBlockPush"), 0) * 3) / 5);
         this->actionFunc = BgHakaGate_StatueIdle;
         this->dyna.unk_150 = 0.0f;
     }

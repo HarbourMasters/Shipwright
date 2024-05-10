@@ -381,7 +381,7 @@ void FileChoose_DrawNameEntry(GameState* thisx) {
                     }
                     this->prevConfigMode = CM_NAME_ENTRY;
                     sLastCharIndex = -1;
-                    CVarSetInteger("gOnFileSelectNameEntry", 0);
+                    CVarSetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 0);
                 } else {
                     for (i = this->newFileNameCharCount; i < 7; i++) {
                         filename[i] = filename[i + 1];
@@ -456,7 +456,7 @@ void FileChoose_DrawNameEntry(GameState* thisx) {
                             gSaveContext.dayTime = dayTime;
                             this->prevConfigMode = CM_MAIN_MENU;
                             this->configMode = CM_NAME_ENTRY_TO_MAIN;
-                            CVarSetInteger("gOnFileSelectNameEntry", 0);
+                            CVarSetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 0);
                             Randomizer_SetSeedGenerated(false);
                             this->nameBoxAlpha[this->buttonIndex] = this->nameAlpha[this->buttonIndex] = 200;
                             this->connectorAlpha[this->buttonIndex] = 255;
@@ -529,7 +529,7 @@ void FileChoose_UpdateKeyboardCursor(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
     Input* input = &this->state.input[0];
     s16 prevKbdX;
-    bool dpad = CVarGetInteger("gDpadText", 0);
+    bool dpad = CVarGetInteger(CVAR_SETTING("DpadInText"), 0);
 
     this->kbdButton = 99;
 
@@ -685,7 +685,7 @@ static s8 sLastOptionButtonIndex = -1;
 void FileChoose_UpdateOptionsMenu(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
     Input* input = &this->state.input[0];
-    bool dpad = CVarGetInteger("gDpadText", 0);
+    bool dpad = CVarGetInteger(CVAR_SETTING("DpadInText"), 0);
 
     if (CHECK_BTN_ALL(input->press.button, BTN_B)) {
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
@@ -694,6 +694,7 @@ void FileChoose_UpdateOptionsMenu(GameState* thisx) {
         sLastOptionButtonIndex = -1;
         osSyncPrintf("ＳＡＶＥ");
         Save_SaveGlobal();
+        CVarSave();
         osSyncPrintf(VT_FGCOL(YELLOW));
         osSyncPrintf("Na_SetSoundOutputMode = %d\n", gSaveContext.audioSetting);
         osSyncPrintf("Na_SetSoundOutputMode = %d\n", gSaveContext.audioSetting);
@@ -754,7 +755,7 @@ void FileChoose_UpdateOptionsMenu(GameState* thisx) {
 
     // Persist the new language so it is not overridden on the next frame
     if (languageChanged) {
-        CVarSetInteger("gLanguages", gSaveContext.language);
+        CVarSetInteger(CVAR_SETTING("Languages"), gSaveContext.language);
         GameInteractor_ExecuteOnSetGameLanguage();
     }
 
@@ -912,8 +913,8 @@ void FileChoose_DrawOptionsImpl(GameState* thisx) {
         { 0, 150, 150 },
     };
 
-    if (CVarGetInteger("gCosmetics.Title_FileChoose.Changed", 0)) {
-        Color_RGB8 backgroundColor = CVarGetColor24("gCosmetics.Title_FileChoose.Value", (Color_RGB8){ 100, 150, 255 });
+    if (CVarGetInteger(CVAR_COSMETIC("Title.FileChoose.Changed"), 0)) {
+        Color_RGB8 backgroundColor = CVarGetColor24(CVAR_COSMETIC("Title.FileChoose.Value"), (Color_RGB8){ 100, 150, 255 });
         cursorPrimColors[1][0] = MIN(backgroundColor.r + 100, 255);
         cursorPrimColors[1][1] = MIN(backgroundColor.g + 100, 255);
         cursorPrimColors[1][2] = MIN(backgroundColor.b + 100, 255);

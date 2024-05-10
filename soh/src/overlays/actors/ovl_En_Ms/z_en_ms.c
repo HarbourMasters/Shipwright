@@ -6,6 +6,7 @@
 
 #include "z_en_ms.h"
 #include "objects/object_ms/object_ms.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
 
@@ -18,7 +19,6 @@ void EnMs_SetOfferText(EnMs* this, PlayState* play);
 void EnMs_Wait(EnMs* this, PlayState* play);
 void EnMs_Talk(EnMs* this, PlayState* play);
 void EnMs_Sell(EnMs* this, PlayState* play);
-void EnMs_Sell_Rando(EnMs* this, PlayState* play);
 void EnMs_TalkAfterPurchase(EnMs* this, PlayState* play);
 
 const ActorInit En_Ms_InitVars = {
@@ -48,10 +48,6 @@ static ColliderCylinderInitType1 sCylinderInit = {
 
 static s16 sPrices[] = {
     10, 20, 30, 40, 50, 60, 70, 80, 90, 100,
-};
-
-static s16 sRandoPrices[] = {
-    10, 20, 30, 40, 50, 60, 70, 80, 90, 99,
 };
 
 static u16 sOfferTextIDs[] = {
@@ -132,55 +128,20 @@ void EnMs_Talk(EnMs* this, PlayState* play) {
     } else if (Message_ShouldAdvance(play)) {
         switch (play->msgCtx.choiceIndex) {
             case 0: // yes
-                //Randomizer Mechanic: Magic bean salesman
-                if (IS_RANDO){
-                    if (gSaveContext.rupees < ((Randomizer_GetSettingValue(RSK_SHUFFLE_MAGIC_BEANS)) ? 60 : sRandoPrices[BEANS_BOUGHT])) {
-                        Message_ContinueTextbox(play, 0x4069); // TEXT_BEAN_SALESMAN_NOT_ENOUGH_MONEY
-                        return;
-                    }
-                    if (Randomizer_GetSettingValue(RSK_SHUFFLE_MAGIC_BEANS)){
-                        GiveItemEntryFromActor(&this->actor, play, 
-                            Randomizer_GetItemFromKnownCheck(RC_ZR_MAGIC_BEAN_SALESMAN, GI_BEAN), 90.0f, 10.0f);
-                    } else {
-                        func_8002F434(&this->actor, play, GI_BEAN, 90.0f, 10.0f);
-                    }
-                    this->actionFunc = EnMs_Sell_Rando;
-                    return;
-                } else { // vanilla code
-                    if(gSaveContext.rupees < sPrices[BEANS_BOUGHT]){
-                        Message_ContinueTextbox(play, 0x4069); // TEXT_BEAN_SALESMAN_NOT_ENOUGH_MONEY
-                        return;
-                    }
-                    func_8002F434(&this->actor, play, GI_BEAN, 90.0f, 10.0f);
-                    this->actionFunc = EnMs_Sell;
+                if (!GameInteractor_Should(VB_BE_ELIGIBLE_FOR_MAGIC_BEANS_PURCHASE, (gSaveContext.rupees >= sPrices[BEANS_BOUGHT]), this)) {
+                    Message_ContinueTextbox(play, 0x4069); // not enough rupees text
                     return;
                 }
-                //Randomizer Mechanic end
+    
+                if (GameInteractor_Should(VB_GIVE_ITEM_FROM_MAGIC_BEAN_SALESMAN, true, this)) {
+                    Actor_OfferGetItem(&this->actor, play, GI_BEAN, 90.0f, 10.0f);
+                    this->actionFunc = EnMs_Sell;
+                }
+                return;
             case 1: // no
                 Message_ContinueTextbox(play, 0x4068);
             default:
                 return;
-        }
-    }
-}
-
-void EnMs_Sell_Rando(EnMs* this, PlayState* play) {
-    if (Actor_HasParent(&this->actor, play)) {
-        Rupees_ChangeBy((Randomizer_GetSettingValue(RSK_SHUFFLE_MAGIC_BEANS)) ? -60 : -sRandoPrices[BEANS_BOUGHT]);
-        this->actor.parent = NULL;
-        this->actionFunc = (Randomizer_GetSettingValue(RSK_SHUFFLE_MAGIC_BEANS)) ? EnMs_Wait : EnMs_TalkAfterPurchase;
-    } else {
-        if (Randomizer_GetSettingValue(RSK_SHUFFLE_MAGIC_BEANS)) {
-            GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_ZR_MAGIC_BEAN_SALESMAN, GI_BEAN);
-            gSaveContext.pendingSale = itemEntry.itemId;
-            gSaveContext.pendingSaleMod = itemEntry.modIndex;
-            GiveItemEntryFromActor(&this->actor, play, itemEntry, 90.0f, 10.0f);
-            BEANS_BOUGHT = 10;
-        } else {
-            GetItemEntry entry = ItemTable_Retrieve(GI_BEAN);
-            gSaveContext.pendingSaleMod = entry.modIndex;
-            gSaveContext.pendingSale = entry.itemId;
-            func_8002F434(&this->actor, play, GI_BEAN, 90.0f, 10.0f);
         }
     }
 }
@@ -191,7 +152,7 @@ void EnMs_Sell(EnMs* this, PlayState* play) {
         this->actor.parent = NULL;
         this->actionFunc = EnMs_TalkAfterPurchase;
     } else {
-        func_8002F434(&this->actor, play, GI_BEAN, 90.0f, 10.0f);
+        Actor_OfferGetItem(&this->actor, play, GI_BEAN, 90.0f, 10.0f);
     }
 }
 
