@@ -329,7 +329,7 @@ void EnGirlA_SetupAction(EnGirlA* this, EnGirlAActionFunc func) {
 
 // #region SOH [Enhancement] [Randomizer]
 s32 EnGirlA_TryChangeShopItemShip(EnGirlA* this, PlayState* play) {
-    if (!(IS_RANDO || CVarGetInteger("gBetterBombchuShopping", 0))){
+    if (!(IS_RANDO || CVarGetInteger(CVAR_ENHANCEMENT("gBetterBombchuShopping"), 0))){
         switch (this->actor.params) {
             case SI_BOMBCHU_10_2:
                 if (Flags_GetItemGetInf(ITEMGETINF_06)) {
@@ -516,7 +516,7 @@ void EnGirlA_InitItem(EnGirlA* this, PlayState* play) {
 
 void EnGirlA_Init(Actor* thisx, PlayState* play) {
     // #region [Randomizer] [Enhancment]
-    if (IS_RANDO || CVarGetInteger("gBetterBombchuShopping", 0)){
+    if (IS_RANDO || CVarGetInteger(CVAR_ENHANCEMENT("gBetterBombchuShopping"), 0)){
         EnGirlA* this = (EnGirlA*)thisx;
 
         EnGirlA_TryChangeShopItemShip(this, play);
@@ -1105,7 +1105,7 @@ void EnGirlA_BuyEvent_ObtainBombchuPack(PlayState* play, EnGirlA* this) {
 	// Normally, buying a bombchu pack sets a flag indicating the pack is now sold out
     // If they're in logic for rando, skip setting that flag so they can be purchased repeatedly
     // #region [Enhancment]
-    if (IS_RANDO || CVarGetInteger("gBetterBombchuShopping", 0)) {
+    if (IS_RANDO || CVarGetInteger(CVAR_ENHANCEMENT("gBetterBombchuShopping"), 0)) {
         return;
     }
     // #endregion
@@ -1224,7 +1224,7 @@ void EnGirlA_SetItemOutOfStock(PlayState* play, EnGirlA* this) {
 
 void EnGirlA_UpdateStockedItem(PlayState* play, EnGirlA* this) {
     // #region [Randomizer] [Enhancment]
-    if (IS_RANDO || CVarGetInteger("gBetterBombchuShopping", 0)){
+    if (IS_RANDO || CVarGetInteger(CVAR_ENHANCEMENT("gBetterBombchuShopping"), 0)){
         ShopItemEntry* itemEntry;
         if (EnGirlA_TryChangeShopItemShip(this, play)) {
             EnGirlA_InitItem(this, play);
@@ -1340,7 +1340,7 @@ void EnGirlA_WaitForObject(EnGirlA* this, PlayState* play) {
             EnGirlA_SetItemDescription(play, this);
         }
         // #region [Enhancment] [Randomizer]
-        if (IS_RANDO || CVarGetInteger("gBetterBombchuShopping", 0)) { 
+        if (IS_RANDO || CVarGetInteger(CVAR_ENHANCEMENT("gBetterBombchuShopping"), 0)) { 
             this->setOutOfStockFunc = EnGirlA_SetItemOutOfStock;
             this->updateStockedItemFunc = EnGirlA_UpdateStockedItem;
             this->getItemId = itemEntry->getItemId;

@@ -2775,7 +2775,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId);
             messageEntry.Replace("[[gsCount]]", std::to_string(gsCount));
         } 
-    } else if ((IS_RANDO || CVarGetInteger("gBetterBombchuShopping", 0)) &&
+    } else if ((IS_RANDO || CVarGetInteger(CVAR_ENHANCEMENT("gBetterBombchuShopping"), 0)) &&
                 (textId == TEXT_BUY_BOMBCHUS_10_DESC || textId == TEXT_BUY_BOMBCHUS_10_PROMPT)) {
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId);
     } else if (textId == TEXT_HEART_CONTAINER && CVarGetInteger(CVAR_ENHANCEMENT("InjectItemCounts"), 0)) {
