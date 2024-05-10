@@ -1,7 +1,7 @@
 #include <libultraship/libultraship.h>
 #include "gameplaystats.h"
 
-class GameplayStatsWindow : public LUS::GuiWindow {
+class GameplayStatsWindow : public Ship::GuiWindow {
   public:
     using GuiWindow::GuiWindow;
 

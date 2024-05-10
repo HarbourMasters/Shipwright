@@ -3,6 +3,7 @@
 
 #include <cassert>
 #include <File.h>
+#include <Json.h>
 #include <libultraship/classes.h>
 #include <nlohmann/json.hpp>
 #include <spdlog/fmt/fmt.h>
@@ -11,6 +12,7 @@
 #include "message_data_static.h"
 #include "overlays/gamestates/ovl_file_choose/file_choose.h"
 #include "soh/Enhancements/boss-rush/BossRush.h"
+#include "soh/resource/type/SohResourceType.h"
 
 extern "C" {
 extern MapData* gMapData;
@@ -90,7 +92,7 @@ std::string GetParameritizedText(std::string key, TextBank bank, const char* arg
 }
 
 const char* GetLanguageCode() {
-    switch (CVarGetInteger("gLanguages", 0)) {
+    switch (CVarGetInteger(CVAR_SETTING("Languages"), 0)) {
         case LANGUAGE_FRA:
             return "fr-FR";
             break;
@@ -114,7 +116,7 @@ static std::string titleCardText;
 
 void RegisterOnSceneInitHook() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) {
-        if (!CVarGetInteger("gA11yTTS", 0)) return;
+        if (!CVarGetInteger(CVAR_SETTING("A11yTTS"), 0)) return;
         
         titleCardText = NameForSceneId(sceneNum);
     });
@@ -122,7 +124,7 @@ void RegisterOnSceneInitHook() {
 
 void RegisterOnPresentTitleCardHook() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPresentTitleCard>([]() {
-        if (!CVarGetInteger("gA11yTTS", 0)) return;
+        if (!CVarGetInteger(CVAR_SETTING("A11yTTS"), 0)) return;
         
         SpeechSynthesizer::Instance->Speak(titleCardText.c_str(), GetLanguageCode());
     });
@@ -132,7 +134,7 @@ void RegisterOnPresentTitleCardHook() {
 
 void RegisterOnInterfaceUpdateHook() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnInterfaceUpdate>([]() {
-        if (!CVarGetInteger("gA11yTTS", 0)) return;
+        if (!CVarGetInteger(CVAR_SETTING("A11yTTS"), 0)) return;
         
         static uint32_t prevTimer = 0;
         static char ttsAnnounceBuf[32];
@@ -191,7 +193,7 @@ void RegisterOnInterfaceUpdateHook() {
 
 void RegisterOnKaleidoscopeUpdateHook() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnKaleidoscopeUpdate>([](int16_t inDungeonScene) {
-        if (!CVarGetInteger("gA11yTTS", 0)) return;
+        if (!CVarGetInteger(CVAR_SETTING("A11yTTS"), 0)) return;
 
         static int16_t prevCursorIndex = 0;
         static uint16_t prevCursorSpecialPos = 0;
@@ -548,14 +550,14 @@ void RegisterOnKaleidoscopeUpdateHook() {
 
 void RegisterOnUpdateMainMenuSelection() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPresentFileSelect>([]() {
-        if (!CVarGetInteger("gA11yTTS", 0)) return;
+        if (!CVarGetInteger(CVAR_SETTING("A11yTTS"), 0)) return;
         
         auto translation = GetParameritizedText("file1", TEXT_BANK_FILECHOOSE, nullptr);
         SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
     });
     
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnUpdateFileSelectSelection>([](uint16_t optionIndex) {
-        if (!CVarGetInteger("gA11yTTS", 0)) return;
+        if (!CVarGetInteger(CVAR_SETTING("A11yTTS"), 0)) return;
         
         switch (optionIndex) {
             case FS_BTN_MAIN_FILE_1: {
@@ -594,7 +596,7 @@ void RegisterOnUpdateMainMenuSelection() {
     });
 
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnUpdateFileSelectConfirmationSelection>([](uint16_t optionIndex) {
-        if (!CVarGetInteger("gA11yTTS", 0)) return;
+        if (!CVarGetInteger(CVAR_SETTING("A11yTTS"), 0)) return;
 
         switch (optionIndex) {
             case FS_BTN_CONFIRM_YES: {
@@ -613,7 +615,7 @@ void RegisterOnUpdateMainMenuSelection() {
     });
 
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnUpdateFileCopySelection>([](uint16_t optionIndex) {
-        if (!CVarGetInteger("gA11yTTS", 0)) return;
+        if (!CVarGetInteger(CVAR_SETTING("A11yTTS"), 0)) return;
         
         switch (optionIndex) {
             case FS_BTN_COPY_FILE_1: {
@@ -642,7 +644,7 @@ void RegisterOnUpdateMainMenuSelection() {
     });
     
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnUpdateFileCopyConfirmationSelection>([](uint16_t optionIndex) {
-        if (!CVarGetInteger("gA11yTTS", 0)) return;
+        if (!CVarGetInteger(CVAR_SETTING("A11yTTS"), 0)) return;
         
         switch (optionIndex) {
             case FS_BTN_CONFIRM_YES: {
@@ -661,7 +663,7 @@ void RegisterOnUpdateMainMenuSelection() {
     });
     
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnUpdateFileEraseSelection>([](uint16_t optionIndex) {
-        if (!CVarGetInteger("gA11yTTS", 0)) return;
+        if (!CVarGetInteger(CVAR_SETTING("A11yTTS"), 0)) return;
         
         switch (optionIndex) {
             case FS_BTN_ERASE_FILE_1: {
@@ -690,7 +692,7 @@ void RegisterOnUpdateMainMenuSelection() {
     });
     
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnUpdateFileEraseConfirmationSelection>([](uint16_t optionIndex) {
-        if (!CVarGetInteger("gA11yTTS", 0)) return;
+        if (!CVarGetInteger(CVAR_SETTING("A11yTTS"), 0)) return;
         
         switch (optionIndex) {
             case FS_BTN_CONFIRM_YES: {
@@ -709,7 +711,7 @@ void RegisterOnUpdateMainMenuSelection() {
     });
     
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnUpdateFileAudioSelection>([](uint8_t optionIndex) {
-        if (!CVarGetInteger("gA11yTTS", 0)) return;
+        if (!CVarGetInteger(CVAR_SETTING("A11yTTS"), 0)) return;
         
         switch (optionIndex) {
             case FS_AUDIO_STEREO: {
@@ -738,7 +740,7 @@ void RegisterOnUpdateMainMenuSelection() {
     });
 
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnUpdateFileTargetSelection>([](uint8_t optionIndex) {
-        if (!CVarGetInteger("gA11yTTS", 0)) return;
+        if (!CVarGetInteger(CVAR_SETTING("A11yTTS"), 0)) return;
         
         switch (optionIndex) {
             case FS_TARGET_SWITCH: {
@@ -757,7 +759,7 @@ void RegisterOnUpdateMainMenuSelection() {
     });
 
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnUpdateFileLanguageSelection>([](uint8_t optionIndex) {
-        if (!CVarGetInteger("gA11yTTS", 0)) return;
+        if (!CVarGetInteger(CVAR_SETTING("A11yTTS"), 0)) return;
         
         switch (optionIndex) {
             case LANGUAGE_ENG: {
@@ -781,7 +783,7 @@ void RegisterOnUpdateMainMenuSelection() {
     });
 
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnUpdateFileQuestSelection>([](uint8_t questIndex) {
-        if (!CVarGetInteger("gA11yTTS", 0)) return;
+        if (!CVarGetInteger(CVAR_SETTING("A11yTTS"), 0)) return;
 
         switch (questIndex) {
             case QUEST_NORMAL: {
@@ -810,7 +812,7 @@ void RegisterOnUpdateMainMenuSelection() {
     });
 
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnUpdateFileBossRushOptionSelection>([](uint8_t optionIndex, uint8_t optionValue) {
-        if (!CVarGetInteger("gA11yTTS", 0)) return;
+        if (!CVarGetInteger(CVAR_SETTING("A11yTTS"), 0)) return;
 
         auto optionName = BossRush_GetSettingName(optionIndex, gSaveContext.language);
         auto optionValueName = BossRush_GetSettingChoiceName(optionIndex, optionValue, gSaveContext.language);
@@ -819,7 +821,7 @@ void RegisterOnUpdateMainMenuSelection() {
     });
 
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnUpdateFileNameSelection>([](int16_t charCode) {
-        if (!CVarGetInteger("gA11yTTS", 0)) return;
+        if (!CVarGetInteger(CVAR_SETTING("A11yTTS"), 0)) return;
 
         char charVal[2];
         std::string translation;
@@ -956,7 +958,7 @@ std::string Message_TTS_Decode(uint8_t* sourceBuf, uint16_t startOfset, uint16_t
 
 void RegisterOnDialogMessageHook() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnDialogMessage>([]() {
-        if (!CVarGetInteger("gA11yTTS", 0)) return;
+        if (!CVarGetInteger(CVAR_SETTING("A11yTTS"), 0)) return;
         
         MessageContext *msgCtx = &gPlayState->msgCtx;
         
@@ -1028,7 +1030,7 @@ void RegisterOnDialogMessageHook() {
 
 void InitTTSBank() {
     std::string languageSuffix = "_eng.json";
-    switch (CVarGetInteger("gLanguages", 0)) {
+    switch (CVarGetInteger(CVAR_SETTING("Languages"), 0)) {
         case LANGUAGE_FRA:
             languageSuffix = "_fra.json";
             break;
@@ -1037,25 +1039,22 @@ void InitTTSBank() {
             break;
     }
 
-    auto sceneFile = LUS::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->LoadFileRaw("accessibility/texts/scenes" + languageSuffix);
-    if (sceneFile != nullptr) {
-        sceneMap = nlohmann::json::parse(*sceneFile->Buffer.get(), nullptr, true, true);
-    }
+    auto initData = std::make_shared<Ship::ResourceInitData>();
+    initData->Format = RESOURCE_FORMAT_BINARY;
+    initData->Type = static_cast<uint32_t>(Ship::ResourceType::Json);
+    initData->ResourceVersion = 0;
     
-    auto miscFile = LUS::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->LoadFileRaw("accessibility/texts/misc" + languageSuffix);
-    if (miscFile != nullptr) {
-        miscMap = nlohmann::json::parse(*miscFile->Buffer.get(), nullptr, true, true);
-    }
-    
-    auto kaleidoFile = LUS::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->LoadFileRaw("accessibility/texts/kaleidoscope" + languageSuffix);
-    if (kaleidoFile != nullptr) {
-        kaleidoMap = nlohmann::json::parse(*kaleidoFile->Buffer.get(), nullptr, true, true);
-    }
-    
-    auto fileChooseFile = LUS::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->LoadFileRaw("accessibility/texts/filechoose" + languageSuffix);
-    if (fileChooseFile != nullptr) {
-        fileChooseMap = nlohmann::json::parse(*fileChooseFile->Buffer.get(), nullptr, true, true);
-    }
+    sceneMap = std::static_pointer_cast<Ship::Json>(
+        Ship::Context::GetInstance()->GetResourceManager()->LoadResource("accessibility/texts/scenes" + languageSuffix, true, initData))->Data;
+
+    miscMap = std::static_pointer_cast<Ship::Json>(
+        Ship::Context::GetInstance()->GetResourceManager()->LoadResource("accessibility/texts/misc" + languageSuffix, true, initData))->Data;
+
+    kaleidoMap = std::static_pointer_cast<Ship::Json>(
+        Ship::Context::GetInstance()->GetResourceManager()->LoadResource("accessibility/texts/kaleidoscope" + languageSuffix, true, initData))->Data;
+
+    fileChooseMap = std::static_pointer_cast<Ship::Json>(
+        Ship::Context::GetInstance()->GetResourceManager()->LoadResource("accessibility/texts/filechoose" + languageSuffix, true, initData))->Data;
 }
 
 void RegisterOnSetGameLanguageHook() {

@@ -222,7 +222,7 @@ static void draw_ico_sphere(Gfx** p_gfx_p, f32 x, f32 y, f32 z, f32 radius, Grap
 }
 
 void EffectSsSolderSrchBall_Draw(PlayState* play, u32 index, EffectSs* this) {
-    if (CVarGetInteger("gGuardVision", 0) == 0) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("GuardVision"), 0) == 0) {
         return;
     }
     

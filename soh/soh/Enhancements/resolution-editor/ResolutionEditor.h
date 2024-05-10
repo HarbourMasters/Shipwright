@@ -2,12 +2,12 @@
 #include <libultraship/libultraship.h>
 
 namespace AdvancedResolutionSettings {
-class AdvancedResolutionSettingsWindow : public LUS::GuiWindow {
+class AdvancedResolutionSettingsWindow : public Ship::GuiWindow {
   private:
     bool IsDroppingFrames();
 
   public:
-    using LUS::GuiWindow::GuiWindow;
+    using GuiWindow::GuiWindow;
 
     void InitElement() override;
     void DrawElement() override;

@@ -1,15 +1,15 @@
 #include "libultraship/libultraship.h"
 
-namespace LUS {
-    class ConfigVersion1Updater : public ConfigVersionUpdater {
+namespace SOH {
+    class ConfigVersion1Updater : public Ship::ConfigVersionUpdater {
         public:
         ConfigVersion1Updater();
-        void Update(Config* conf);
+        void Update(Ship::Config* conf);
     };
 
-    class ConfigVersion2Updater : public ConfigVersionUpdater {
+    class ConfigVersion2Updater : public Ship::ConfigVersionUpdater {
         public:
         ConfigVersion2Updater();
-        void Update(Config* conf);
+        void Update(Ship::Config* conf);
     };
 }

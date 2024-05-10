@@ -66,7 +66,7 @@ void ReloadSceneTogglingLinkAge() {
 void RegisterInfiniteMoney() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
         if (!GameInteractor::IsSaveLoaded(true)) return;
-        if (CVarGetInteger("gInfiniteMoney", 0) != 0) {
+        if (CVarGetInteger(CVAR_CHEAT("InfiniteMoney"), 0) != 0) {
             if (gSaveContext.rupees < CUR_CAPACITY(UPG_WALLET)) {
                 gSaveContext.rupees = CUR_CAPACITY(UPG_WALLET);
             }
@@ -77,7 +77,7 @@ void RegisterInfiniteMoney() {
 void RegisterInfiniteHealth() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
         if (!GameInteractor::IsSaveLoaded(true)) return;
-        if (CVarGetInteger("gInfiniteHealth", 0) != 0) {
+        if (CVarGetInteger(CVAR_CHEAT("InfiniteHealth"), 0) != 0) {
             if (gSaveContext.health < gSaveContext.healthCapacity) {
                 gSaveContext.health = gSaveContext.healthCapacity;
             }
@@ -88,7 +88,7 @@ void RegisterInfiniteHealth() {
 void RegisterInfiniteAmmo() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
         if (!GameInteractor::IsSaveLoaded(true)) return;
-        if (CVarGetInteger("gInfiniteAmmo", 0) != 0) {
+        if (CVarGetInteger(CVAR_CHEAT("InfiniteAmmo"), 0) != 0) {
             // Deku Sticks
             if (AMMO(ITEM_STICK) < CUR_CAPACITY(UPG_STICKS)) {
                 AMMO(ITEM_STICK) = CUR_CAPACITY(UPG_STICKS);
@@ -125,7 +125,7 @@ void RegisterInfiniteAmmo() {
 void RegisterInfiniteMagic() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
         if (!GameInteractor::IsSaveLoaded(true)) return;
-        if (CVarGetInteger("gInfiniteMagic", 0) != 0) {
+        if (CVarGetInteger(CVAR_CHEAT("InfiniteMagic"), 0) != 0) {
             if (gSaveContext.isMagicAcquired && gSaveContext.magic != (gSaveContext.isDoubleMagicAcquired + 1) * 0x30) {
                 gSaveContext.magic = (gSaveContext.isDoubleMagicAcquired + 1) * 0x30;
             }
@@ -136,7 +136,7 @@ void RegisterInfiniteMagic() {
 void RegisterInfiniteNayrusLove() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
         if (!GameInteractor::IsSaveLoaded(true)) return;
-        if (CVarGetInteger("gInfiniteNayru", 0) != 0) {
+        if (CVarGetInteger(CVAR_CHEAT("InfiniteNayru"), 0) != 0) {
             gSaveContext.nayrusLoveTimer = 0x44B;
         }
     });
@@ -146,7 +146,7 @@ void RegisterMoonJumpOnL() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
         if (!GameInteractor::IsSaveLoaded(true)) return;
         
-        if (CVarGetInteger("gMoonJumpOnL", 0) != 0) {
+        if (CVarGetInteger(CVAR_CHEAT("MoonJumpOnL"), 0) != 0) {
             Player* player = GET_PLAYER(gPlayState);
 
             if (CHECK_BTN_ANY(gPlayState->state.input[0].cur.button, BTN_L)) {
@@ -161,7 +161,7 @@ void RegisterInfiniteISG() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
         if (!GameInteractor::IsSaveLoaded(true)) return;
 
-        if (CVarGetInteger("gEzISG", 0) != 0) {
+        if (CVarGetInteger(CVAR_CHEAT("EasyISG"), 0) != 0) {
             Player* player = GET_PLAYER(gPlayState);
             player->meleeWeaponState = 1;
         }
@@ -173,7 +173,7 @@ void RegisterEzQPA() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
         if (!GameInteractor::IsSaveLoaded(true)) return;
 
-        if (CVarGetInteger("gEzQPA", 0) != 0) {
+        if (CVarGetInteger(CVAR_CHEAT("EasyQPA"), 0) != 0) {
             Player* player = GET_PLAYER(gPlayState);
             player->meleeWeaponQuads[0].info.toucher.dmgFlags = 0x16171617;
             player->meleeWeaponQuads[1].info.toucher.dmgFlags = 0x16171617;
@@ -185,7 +185,7 @@ void RegisterUnrestrictedItems() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
         if (!GameInteractor::IsSaveLoaded(true)) return;
 
-        if (CVarGetInteger("gNoRestrictItems", 0) != 0) {
+        if (CVarGetInteger(CVAR_CHEAT("NoRestrictItems"), 0) != 0) {
             u8 sunsBackup = gPlayState->interfaceCtx.restrictions.sunsSong;
             memset(&gPlayState->interfaceCtx.restrictions, 0, sizeof(gPlayState->interfaceCtx.restrictions));
             gPlayState->interfaceCtx.restrictions.sunsSong = sunsBackup;
@@ -195,15 +195,15 @@ void RegisterUnrestrictedItems() {
 
 void RegisterFreezeTime() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (CVarGetInteger("gFreezeTime", 0) != 0) {
-            if (CVarGetInteger("gPrevTime", -1) == -1) {
-                CVarSetInteger("gPrevTime", gSaveContext.dayTime);
+        if (CVarGetInteger(CVAR_CHEAT("FreezeTime"), 0) != 0) {
+            if (CVarGetInteger(CVAR_GENERAL("PrevTime"), -1) == -1) {
+                CVarSetInteger(CVAR_GENERAL("PrevTime"), gSaveContext.dayTime);
             }
 
-            int32_t prevTime = CVarGetInteger("gPrevTime", gSaveContext.dayTime);
+            int32_t prevTime = CVarGetInteger(CVAR_GENERAL("PrevTime"), gSaveContext.dayTime);
             gSaveContext.dayTime = prevTime;
         } else {
-            CVarClear("gPrevTime");
+            CVarClear(CVAR_GENERAL("PrevTime"));
         }
     });
 }
@@ -214,7 +214,7 @@ void RegisterSwitchAge() {
         static bool warped = false;
 
         if (!GameInteractor::IsSaveLoaded(true)) {
-            CVarClear("gSwitchAge");
+            CVarClear(CVAR_GENERAL("SwitchAge"));
             warped = false;
             return;
         }
@@ -224,7 +224,7 @@ void RegisterSwitchAge() {
         static RoomContext* roomCtx;
         static s32 roomNum;
 
-        if (CVarGetInteger("gSwitchAge", 0) && !warped) {
+        if (CVarGetInteger(CVAR_GENERAL("SwitchAge"), 0) && !warped) {
             playerPos = GET_PLAYER(gPlayState)->actor.world.pos;
             playerYaw = GET_PLAYER(gPlayState)->actor.shape.rot.y;
             roomCtx = &gPlayState->roomCtx;
@@ -243,7 +243,7 @@ void RegisterSwitchAge() {
                 func_80097534(gPlayState, roomCtx);  // load map for new room (unloading the previous room)
             }
             warped = false;
-            CVarClear("gSwitchAge");
+            CVarClear(CVAR_GENERAL("SwitchAge"));
         }
     });
 }
@@ -253,7 +253,7 @@ void RegisterOcarinaTimeTravel() {
 
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnOcarinaSongAction>([]() {
         if (!GameInteractor::IsSaveLoaded(true)) {
-            CVarClear("gTimeTravel");
+            CVarClear(CVAR_ENHANCEMENT("TimeTravel"));
             return;
         }
 
@@ -267,16 +267,16 @@ void RegisterOcarinaTimeTravel() {
         uint8_t hasOcarinaOfTime = (INV_CONTENT(ITEM_OCARINA_TIME) == ITEM_OCARINA_TIME);
         // If TimeTravel + Player have the Ocarina of Time + Have Master Sword + is in proper range
         // TODO: Once Swordless Adult is fixed: Remove the Master Sword check
-        if (((CVarGetInteger("gTimeTravel", 0) == 1 && hasOcarinaOfTime) || CVarGetInteger("gTimeTravel", 0) == 2) && hasMasterSword &&
+        if (((CVarGetInteger(CVAR_ENHANCEMENT("TimeTravel"), 0) == 1 && hasOcarinaOfTime) || CVarGetInteger(CVAR_ENHANCEMENT("TimeTravel"), 0) == 2) && hasMasterSword &&
             gPlayState->msgCtx.lastPlayedSong == OCARINA_SONG_TIME && !nearbyTimeBlockEmpty && !nearbyTimeBlock &&
             !nearbyOcarinaSpot && !nearbyFrogs) {
 
             if (IS_RANDO) {
-                CVarSetInteger("gSwitchTimeline", 1);
+                CVarSetInteger(CVAR_GENERAL("SwitchTimeline"), 1);
             } else if (!IS_RANDO && !nearbyDoorOfTime) {
                 // This check is made for when Link is learning the Song Of Time in a vanilla save file that load a
                 // Temple of Time scene where the only object present is the Door of Time
-                CVarSetInteger("gSwitchTimeline", 1);
+                CVarSetInteger(CVAR_GENERAL("SwitchTimeline"), 1);
             }
             ReloadSceneTogglingLinkAge();
         }
@@ -289,13 +289,13 @@ void AutoSave(GetItemEntry itemEntry) {
     // Don't autosave immediately after buying items from shops to prevent getting them for free!
     // Don't autosave in the Chamber of Sages since resuming from that map breaks the game
     // Don't autosave during the Ganon fight when picking up the Master Sword
-    if ((CVarGetInteger("gAutosave", AUTOSAVE_OFF) != AUTOSAVE_OFF) && (gPlayState != NULL) && (gSaveContext.pendingSale == ITEM_NONE) &&
+    if ((CVarGetInteger(CVAR_ENHANCEMENT("Autosave"), AUTOSAVE_OFF) != AUTOSAVE_OFF) && (gPlayState != NULL) && (gSaveContext.pendingSale == ITEM_NONE) &&
         (gPlayState->gameplayFrames > 60 && gSaveContext.cutsceneIndex < 0xFFF0) && (gPlayState->sceneNum != SCENE_GANON_BOSS) && (gPlayState->sceneNum != SCENE_CHAMBER_OF_THE_SAGES)) {
-        if (((CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_LOCATION_AND_ALL_ITEMS) || (CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_ALL_ITEMS)) && (item != ITEM_NONE)) {
+        if (((CVarGetInteger(CVAR_ENHANCEMENT("Autosave"), AUTOSAVE_OFF) == AUTOSAVE_LOCATION_AND_ALL_ITEMS) || (CVarGetInteger(CVAR_ENHANCEMENT("Autosave"), AUTOSAVE_OFF) == AUTOSAVE_ALL_ITEMS)) && (item != ITEM_NONE)) {
             // Autosave for all items
             performSave = true;
 
-        } else if (((CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_LOCATION_AND_MAJOR_ITEMS) || (CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_MAJOR_ITEMS)) && (item != ITEM_NONE)) {
+        } else if (((CVarGetInteger(CVAR_ENHANCEMENT("Autosave"), AUTOSAVE_OFF) == AUTOSAVE_LOCATION_AND_MAJOR_ITEMS) || (CVarGetInteger(CVAR_ENHANCEMENT("Autosave"), AUTOSAVE_OFF) == AUTOSAVE_MAJOR_ITEMS)) && (item != ITEM_NONE)) {
             // Autosave for major items
             if (itemEntry.modIndex == 0) {
                 switch (item) {
@@ -335,7 +335,7 @@ void AutoSave(GetItemEntry itemEntry) {
                     case ITEM_BOMBCHU:
                     case ITEM_BOMBCHUS_5:
                     case ITEM_BOMBCHUS_20:
-                        if (!CVarGetInteger("gBombchuDrops", 0)) {
+                        if (!CVarGetInteger(CVAR_ENHANCEMENT("BombchuDrops"), 0)) {
                             performSave = true;
                         }
                         break;
@@ -346,9 +346,9 @@ void AutoSave(GetItemEntry itemEntry) {
             } else if (itemEntry.modIndex == 1 && item != RG_ICE_TRAP) {
                 performSave = true;
             }
-        } else if (CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_LOCATION_AND_MAJOR_ITEMS ||
-                   CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_LOCATION_AND_ALL_ITEMS ||
-                   CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_LOCATION) {
+        } else if (CVarGetInteger(CVAR_ENHANCEMENT("Autosave"), AUTOSAVE_OFF) == AUTOSAVE_LOCATION_AND_MAJOR_ITEMS ||
+                   CVarGetInteger(CVAR_ENHANCEMENT("Autosave"), AUTOSAVE_OFF) == AUTOSAVE_LOCATION_AND_ALL_ITEMS ||
+                   CVarGetInteger(CVAR_ENHANCEMENT("Autosave"), AUTOSAVE_OFF) == AUTOSAVE_LOCATION) {
             performSave = true;
         }
         if (performSave) {
@@ -366,13 +366,13 @@ void RegisterAutoSave() {
 
 void RegisterRupeeDash() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
-        if (!CVarGetInteger("gRupeeDash", 0)) {
+        if (!CVarGetInteger(CVAR_ENHANCEMENT("RupeeDash"), 0)) {
             return;
         }
         
         // Initialize Timer
         static uint16_t rupeeDashTimer = 0;
-        uint16_t rdmTime = CVarGetInteger("gDashInterval", 5) * 20;
+        uint16_t rdmTime = CVarGetInteger(CVAR_ENHANCEMENT("RupeeDashInterval"), 5) * 20;
         
         // Did time change by DashInterval?
         if (rupeeDashTimer >= rdmTime) {
@@ -394,7 +394,7 @@ void RegisterShadowTag() {
     static uint16_t delayTimer = 60;
 
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
-        if (!CVarGetInteger("gShadowTag", 0)) {
+        if (!CVarGetInteger(CVAR_ENHANCEMENT("ShadowTag"), 0)) {
             return;
         }
         if (gPlayState->sceneNum == SCENE_FOREST_TEMPLE &&  // Forest Temple Scene
@@ -425,7 +425,7 @@ static bool hasAffectedHealth = false;
 void UpdatePermanentHeartLossState() {
     if (!GameInteractor::IsSaveLoaded()) return;
 
-    if (!CVarGetInteger("gPermanentHeartLoss", 0) && hasAffectedHealth) {
+    if (!CVarGetInteger(CVAR_ENHANCEMENT("PermanentHeartLoss"), 0) && hasAffectedHealth) {
         uint8_t heartContainers = gSaveContext.sohStats.heartContainers; // each worth 16 health
         uint8_t heartPieces = gSaveContext.sohStats.heartPieces; // each worth 4 health, but only in groups of 4
         uint8_t startingHealth = 16 * 3;
@@ -445,7 +445,7 @@ void RegisterPermanentHeartLoss() {
     });
 
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
-        if (!CVarGetInteger("gPermanentHeartLoss", 0) || !GameInteractor::IsSaveLoaded()) return;
+        if (!CVarGetInteger(CVAR_ENHANCEMENT("PermanentHeartLoss"), 0) || !GameInteractor::IsSaveLoaded()) return;
 
         if (gSaveContext.healthCapacity > 16 && gSaveContext.healthCapacity - gSaveContext.health >= 16) {
             gSaveContext.healthCapacity -= 16;
@@ -457,12 +457,12 @@ void RegisterPermanentHeartLoss() {
 
 void RegisterDeleteFileOnDeath() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!CVarGetInteger("gDeleteFileOnDeath", 0) || !GameInteractor::IsSaveLoaded() || &gPlayState->gameOverCtx == NULL || &gPlayState->pauseCtx == NULL) return;
+        if (!CVarGetInteger(CVAR_ENHANCEMENT("DeleteFileOnDeath"), 0) || !GameInteractor::IsSaveLoaded() || &gPlayState->gameOverCtx == NULL || &gPlayState->pauseCtx == NULL) return;
 
         if (gPlayState->gameOverCtx.state == GAMEOVER_DEATH_MENU && gPlayState->pauseCtx.state == 9) {
             SaveManager::Instance->DeleteZeldaFile(gSaveContext.fileNum);
             hasAffectedHealth = false;
-            std::reinterpret_pointer_cast<LUS::ConsoleWindow>(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->Dispatch("reset");
+            std::reinterpret_pointer_cast<Ship::ConsoleWindow>(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->Dispatch("reset");
         }
     });
 }
@@ -478,7 +478,7 @@ using DayTimeGoldSkulltulasList = std::vector<DayTimeGoldSkulltulas>;
 
 void RegisterDaytimeGoldSkultullas() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneSpawnActors>([]() {
-        if (!CVarGetInteger("gNightGSAlwaysSpawn", 0)) {
+        if (!CVarGetInteger(CVAR_ENHANCEMENT("NightGSAlwaysSpawn"), 0)) {
             return;
         }
 
@@ -524,7 +524,7 @@ void RegisterDaytimeGoldSkultullas() {
 }
 
 bool IsHyperBossesActive() {
-    return CVarGetInteger("gHyperBosses", 0) ||
+    return CVarGetInteger(CVAR_ENHANCEMENT("HyperBosses"), 0) ||
            (IS_BOSS_RUSH && gSaveContext.bossRushOptions[BR_OPTIONS_HYPERBOSSES] == BR_CHOICE_HYPERBOSSES_YES);
 }
 
@@ -592,7 +592,7 @@ void UpdateHyperEnemiesState() {
         actorUpdateHookId = 0;
     }
 
-    if (CVarGetInteger("gHyperEnemies", 0)) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("HyperEnemies"), 0)) {
         actorUpdateHookId = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* refActor) {
             // Run the update function a second time to make enemies and minibosses move and act twice as fast.
 
@@ -604,7 +604,7 @@ void UpdateHyperEnemiesState() {
             bool isExcludedEnemy = actor->id == ACTOR_EN_FIRE_ROCK || actor->id == ACTOR_EN_ENCOUNT2;
 
             // Don't apply during cutscenes because it causes weird behaviour and/or crashes on some cutscenes.
-            if (CVarGetInteger("gHyperEnemies", 0) && isEnemy && !isExcludedEnemy &&
+            if (CVarGetInteger(CVAR_ENHANCEMENT("HyperEnemies"), 0) && isEnemy && !isExcludedEnemy &&
                 !Player_InBlockingCsMode(gPlayState, player)) {
                 GameInteractor::RawAction::UpdateActor(actor);
             }
@@ -614,7 +614,7 @@ void UpdateHyperEnemiesState() {
 
 void RegisterBonkDamage() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerBonk>([]() {
-        uint8_t bonkOption = CVarGetInteger("gBonkDamageMul", BONK_DAMAGE_NONE);
+        uint8_t bonkOption = CVarGetInteger(CVAR_ENHANCEMENT("BonkDamageMult"), BONK_DAMAGE_NONE);
         if (bonkOption == BONK_DAMAGE_NONE) {
             return;
         }
@@ -660,10 +660,10 @@ void UpdateDirtPathFixState(int32_t sceneNum) {
         case SCENE_HYRULE_FIELD:
         case SCENE_KOKIRI_FOREST:
         case SCENE_HYRULE_CASTLE:
-            CVarSetInteger("gZFightingMode", CVarGetInteger("gSceneSpecificDirtPathFix", ZFIGHT_FIX_DISABLED));
+            CVarSetInteger(CVAR_Z_FIGHTING_MODE, CVarGetInteger(CVAR_ENHANCEMENT("SceneSpecificDirtPathFix"), ZFIGHT_FIX_DISABLED));
             return;
         default:
-            CVarClear("gZFightingMode");
+            CVarClear(CVAR_Z_FIGHTING_MODE);
     }
 }
 
@@ -677,7 +677,7 @@ void UpdateMirrorModeState(int32_t sceneNum) {
     static bool prevMirroredWorld = false;
     bool nextMirroredWorld = false;
 
-    int16_t mirroredMode = CVarGetInteger("gMirroredWorldMode", MIRRORED_WORLD_OFF);
+    int16_t mirroredMode = CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorldMode"), MIRRORED_WORLD_OFF);
     int16_t inDungeon = (sceneNum >= SCENE_DEKU_TREE && sceneNum <= SCENE_INSIDE_GANONS_CASTLE_COLLAPSE && sceneNum != SCENE_THIEVES_HIDEOUT) ||
                         (sceneNum >= SCENE_DEKU_TREE_BOSS && sceneNum <= SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR) ||
                         (sceneNum == SCENE_GANON_BOSS);
@@ -699,10 +699,10 @@ void UpdateMirrorModeState(int32_t sceneNum) {
          ((mirroredMode == MIRRORED_WORLD_DUNGEONS_RANDOM || mirroredMode == MIRRORED_WORLD_DUNGEONS_RANDOM_SEEDED) && randomMirror)))
     ) {
         nextMirroredWorld = true;
-        CVarSetInteger("gMirroredWorld", 1);
+        CVarSetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 1);
     } else {
         nextMirroredWorld = false;
-        CVarClear("gMirroredWorld");
+        CVarClear(CVAR_ENHANCEMENT("MirroredWorld"));
     }
 
     if (prevMirroredWorld != nextMirroredWorld) {
@@ -718,7 +718,7 @@ void RegisterMirrorModeHandler() {
 }
 
 void UpdatePatchHand() {
-    if ((CVarGetInteger("gEnhancements.EquimentAlwaysVisible", 0)) && LINK_IS_CHILD) {
+    if ((CVarGetInteger(CVAR_ENHANCEMENT("EquimentAlwaysVisible"), 0)) && LINK_IS_CHILD) {
         ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "childHammer1", 92, gsSPDisplayListOTRFilePath(gLinkChildLeftFistNearDL));
         ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "childHammer2", 93, gsSPEndDisplayList());
         ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingHookshotNearDL, "childHookshot1", 84, gsSPDisplayListOTRFilePath(gLinkChildRightHandClosedNearDL));
@@ -746,7 +746,7 @@ void UpdatePatchHand() {
         ResourceMgr_UnpatchGfxByName(gLinkAdultHandHoldingBrokenGiantsKnifeDL, "childBrokenGiantsKnife1");
         ResourceMgr_UnpatchGfxByName(gLinkAdultHandHoldingBrokenGiantsKnifeDL, "childBrokenGiantsKnife2");
 	}
-    if ((CVarGetInteger("gEnhancements.EquimentAlwaysVisible", 0)) && LINK_IS_ADULT) {
+    if ((CVarGetInteger(CVAR_ENHANCEMENT("EquimentAlwaysVisible"), 0)) && LINK_IS_ADULT) {
         ResourceMgr_PatchGfxByName(gLinkChildLeftFistAndKokiriSwordNearDL, "adultKokiriSword", 13, gsSPDisplayListOTRFilePath(gLinkAdultLeftHandClosedNearDL));
         ResourceMgr_PatchGfxByName(gLinkChildRightHandHoldingSlingshotNearDL, "adultSlingshot", 13, gsSPDisplayListOTRFilePath(gLinkAdultRightHandClosedNearDL));
         ResourceMgr_PatchGfxByName(gLinkChildLeftFistAndBoomerangNearDL, "adultBoomerang", 50, gsSPDisplayListOTRFilePath(gLinkAdultLeftHandClosedNearDL));
@@ -767,7 +767,7 @@ void RegisterPatchHandHandler() {
 
 void RegisterResetNaviTimer() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int32_t sceneNum) {
-		if (CVarGetInteger("gEnhancements.ResetNaviTimer", 0)) {
+		if (CVarGetInteger(CVAR_ENHANCEMENT("ResetNaviTimer"), 0)) {
 			gSaveContext.naviTimer = 0;
 		}
 	});
@@ -1021,16 +1021,16 @@ typedef enum {
 } AltTrapType;
 
 const char* altTrapTypeCvars[] = {
-    "gAddTraps.Ice",
-    "gAddTraps.Burn",
-    "gAddTraps.Shock",
-    "gAddTraps.Knock",
-    "gAddTraps.Speed",
-    "gAddTraps.Bomb",
-    "gAddTraps.Void",
-    "gAddTraps.Ammo",
-    "gAddTraps.Kill",
-    "gAddTraps.Tele"
+    CVAR_ENHANCEMENT("ExtraTraps.Ice"),
+    CVAR_ENHANCEMENT("ExtraTraps.Burn"),
+    CVAR_ENHANCEMENT("ExtraTraps.Shock"),
+    CVAR_ENHANCEMENT("ExtraTraps.Knockback"),
+    CVAR_ENHANCEMENT("ExtraTraps.Speed"),
+    CVAR_ENHANCEMENT("ExtraTraps.Bomb"),
+    CVAR_ENHANCEMENT("ExtraTraps.Void"),
+    CVAR_ENHANCEMENT("ExtraTraps.Ammo"),
+    CVAR_ENHANCEMENT("ExtraTraps.Kill"),
+    CVAR_ENHANCEMENT("ExtraTraps.Teleport")
 };
 
 std::vector<AltTrapType> getEnabledAddTraps () {
@@ -1052,7 +1052,7 @@ void RegisterAltTrapTypes() {
     static int eventTimer = -1;
 
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>([](GetItemEntry itemEntry) {
-        if (!CVarGetInteger("gAddTraps.enabled", 0) || itemEntry.modIndex != MOD_RANDOMIZER || itemEntry.getItemId != RG_ICE_TRAP) {
+        if (!CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) || itemEntry.modIndex != MOD_RANDOMIZER || itemEntry.getItemId != RG_ICE_TRAP) {
             return;
         }
         roll = RandomElement(getEnabledAddTraps());
@@ -1195,7 +1195,7 @@ void UpdateHurtContainerModeState(bool newState) {
 
 void RegisterHurtContainerModeHandler() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) {
-        UpdateHurtContainerModeState(CVarGetInteger("gHurtContainer", 0));
+        UpdateHurtContainerModeState(CVarGetInteger(CVAR_ENHANCEMENT("HurtContainer"), 0));
     });
 }
 
@@ -1214,7 +1214,7 @@ void RegisterRandomizedEnemySizes() {
                                  actor->id == ACTOR_BOSS_FD2 || actor->id == ACTOR_EN_DH;
 
         // Only apply to enemies and bosses.
-        if (!CVarGetInteger("gRandomizedEnemySizes", 0) || (actor->category != ACTORCAT_ENEMY && actor->category != ACTORCAT_BOSS) || excludedEnemy) {
+        if (!CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemySizes"), 0) || (actor->category != ACTORCAT_ENEMY && actor->category != ACTORCAT_BOSS) || excludedEnemy) {
             return;
         }
 
@@ -1237,7 +1237,7 @@ void RegisterRandomizedEnemySizes() {
 
         Actor_SetScale(actor, actor->scale.z * randomScale);
 
-        if (CVarGetInteger("gEnemySizeScalesHealth", 0) && (actor->category == ACTORCAT_ENEMY)) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("EnemySizeScalesHealth"), 0) && (actor->category == ACTORCAT_ENEMY)) {
             // Scale the health based on a smaller factor than randomScale
             float healthScalingFactor = 0.8f; // Adjust this factor as needed
             float scaledHealth = actor->colChkInfo.health * (randomScale * healthScalingFactor);
@@ -1254,7 +1254,7 @@ void RegisterOpenAllHours() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>([](void* refActor) {
         Actor* actor = static_cast<Actor*>(refActor);
 
-        if (CVarGetInteger("gEnhancements.OpenAllHours", 0) && (actor->id == ACTOR_EN_DOOR)) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("OpenAllHours"), 0) && (actor->id == ACTOR_EN_DOOR)) {
             switch (actor->params) {
                 case 4753: // Night Market Bazaar
                 case 1678: // Night Potion Shop
@@ -1281,7 +1281,7 @@ void RegisterOpenAllHours() {
 void PatchToTMedallions() {
     // TODO: Refactor the DemoEffect_UpdateJewelAdult and DemoEffect_UpdateJewelChild from z_demo_effect
     // effects to take effect in there
-    if (CVarGetInteger("gToTMedallionsColors", 0)) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("ToTMedallionsColors"), 0)) {
         ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_StartGrayscale", 7, gsSPGrayscale(true));
         ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_StartGrayscale", 7, gsSPGrayscale(true));
 
@@ -1347,13 +1347,13 @@ void PatchToTMedallions() {
 
 void RegisterToTMedallions() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>([](GetItemEntry _unused) {
-        if (!CVarGetInteger("gToTMedallionsColors", 0) || !gPlayState || gPlayState->sceneNum != SCENE_TEMPLE_OF_TIME) {
+        if (!CVarGetInteger(CVAR_ENHANCEMENT("ToTMedallionsColors"), 0) || !gPlayState || gPlayState->sceneNum != SCENE_TEMPLE_OF_TIME) {
             return;
         }
         PatchToTMedallions();
     });
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) {
-        if (!CVarGetInteger("gToTMedallionsColors", 0) || sceneNum != SCENE_TEMPLE_OF_TIME) {
+        if (!CVarGetInteger(CVAR_ENHANCEMENT("ToTMedallionsColors"), 0) || sceneNum != SCENE_TEMPLE_OF_TIME) {
             return;
         }
         PatchToTMedallions();
@@ -1364,7 +1364,7 @@ void RegisterToTMedallions() {
 void RegisterFloorSwitchesHook() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>([](void* refActor) {
         Actor* actor = static_cast<Actor*>(refActor);
-        if (actor->id != ACTOR_OBJ_SWITCH || !CVarGetInteger("gEnhancements.FixFloorSwitches", 0)) {
+        if (actor->id != ACTOR_OBJ_SWITCH || !CVarGetInteger(CVAR_ENHANCEMENT("FixFloorSwitches"), 0)) {
             return;
         }
 
@@ -1380,7 +1380,7 @@ void RegisterFloorSwitchesHook() {
 void RegisterPauseMenuHooks() {
     static bool pauseWarpHooksRegistered = false;
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([&]() {
-        if (!GameInteractor::IsSaveLoaded() || !CVarGetInteger("gPauseWarp", 0)) {
+        if (!GameInteractor::IsSaveLoaded() || !CVarGetInteger(CVAR_ENHANCEMENT("PauseWarp"), 0)) {
             pauseWarpHooksRegistered = false;
             return;
         }
