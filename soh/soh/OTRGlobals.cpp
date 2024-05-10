@@ -2627,8 +2627,9 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
         else if (textId == TEXT_CARPET_SALESMAN_1 && !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN) && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF){
             messageEntry = ctx->GetHint(RH_CARPET_SALESMAN)->GetHintMessage(MF_AUTO_FORMAT);
         } 
-        else if (textId == TEXT_CARPET_SALESMAN_2 && !ctx->GetItemLocation(RC_WASTELAND_BOMBCHU_SALESMAN)->HasObtained() && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF){
-            messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, textId);//KNOWN BUG does not play due to I assume a change in when RAND_INF_MERCHANTS_CARPET_SALESMAN gets set.
+        else if (textId == TEXT_CARPET_SALESMAN_2 && !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN) && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF){
+            messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, textId);
+            Flags_SetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN);//set here so we can actually check if the text is run, not a good solution
         } else if (textId == TEXT_SKULLTULA_PEOPLE_IM_CURSED) {
             actorParams = GET_PLAYER(play)->targetActor->params;
             if (actorParams == 1 && ctx->GetOption(RSK_KAK_10_SKULLS_HINT)){
