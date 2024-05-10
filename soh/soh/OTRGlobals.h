@@ -181,6 +181,8 @@ GetItemEntry Randomizer_GetItemFromActorWithoutObtainabilityCheck(s16 actorId, s
 GetItemEntry Randomizer_GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
 GetItemEntry Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
 RandomizerInf Randomizer_GetRandomizerInfFromCheck(RandomizerCheck randomizerCheck);
+bool Randomizer_IsCheckShuffled(RandomizerCheck check);
+GetItemEntry GetItemMystery();
 ItemObtainability Randomizer_GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck);
 void Randomizer_GenerateSeed();
 uint8_t Randomizer_IsSeedGenerated();

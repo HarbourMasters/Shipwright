@@ -11,6 +11,7 @@
 #include <soh/Enhancements/item-tables/ItemTableManager.h>
 #include "soh/Enhancements/nametag.h"
 #include "soh/Enhancements/timesaver_hook_handlers.h"
+#include "soh/Enhancements/TimeSavers/TimeSavers.h"
 #include "soh/Enhancements/cheat_hook_handlers.h"
 #include "soh/Enhancements/randomizer/hook_handlers.h"
 #include "objects/object_gi_compass/object_gi_compass.h"
@@ -434,7 +435,7 @@ void UpdatePermanentHeartLossState() {
     if (!CVarGetInteger(CVAR_ENHANCEMENT("PermanentHeartLoss"), 0) && hasAffectedHealth) {
         uint8_t heartContainers = gSaveContext.sohStats.heartContainers; // each worth 16 health
         uint8_t heartPieces = gSaveContext.sohStats.heartPieces; // each worth 4 health, but only in groups of 4
-        uint8_t startingHealth = 16 * 3;
+        uint8_t startingHealth = 16 * (IS_RANDO ? (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_STARTING_HEARTS) + 1) : 3);
 
 
         uint8_t newCapacity = startingHealth + (heartContainers * 16) + ((heartPieces - (heartPieces % 4)) * 4);
@@ -1715,6 +1716,7 @@ void InitMods() {
     RandomizerRegisterHooks();
     TimeSaverRegisterHooks();
     CheatsRegisterHooks();
+    TimeSavers_Register();
     RegisterTTS();
     RegisterInfiniteMoney();
     RegisterInfiniteHealth();
