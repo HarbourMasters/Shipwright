@@ -616,7 +616,7 @@ void Player_SetModelsForHoldingShield(Player* this) {
             if ((CVarGetInteger(CVAR_ENHANCEMENT("EquimentAlwaysVisible"), 0)) && LINK_IS_CHILD &&
                 gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KOKIRI) {
                 this->sheathDLists = &sPlayerDListGroups[this->sheathType][0]; 
-            } else if ((CVarGetInteger("gEnhancements.EquimentAlwaysVisible", 0)) && LINK_IS_ADULT &&
+            } else if ((CVarGetInteger(CVAR_ENHANCEMENT("EquimentAlwaysVisible"), 0)) && LINK_IS_ADULT &&
                 gSaveContext.equips.buttonItems[0] == ITEM_SWORD_KOKIRI) {
                 this->sheathDLists = &sPlayerDListGroups[this->sheathType][1]; 
             }
