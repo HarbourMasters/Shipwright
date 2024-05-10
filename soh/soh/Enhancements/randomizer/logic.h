@@ -204,6 +204,7 @@ class Logic {
     bool FairyPond = false;
     bool AmmoCanDrop = false;
     bool BombchuRefill = false;
+    bool BombchuIcon = false;
 
     bool BuyBombchus = false;
     bool BuySeed = false;

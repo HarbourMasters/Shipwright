@@ -283,8 +283,9 @@ namespace Rando {
         BiggoronSword   = BiggoronSword || ProgressiveGiantKnife >= 2;
 
         // TODO: Implement Ammo Drop Setting in place of bombchu drops
-        BombchuRefill   = (AmmoCanDrop && ctx->GetOption(RSK_ENABLE_BOMBCHU_DROPS).Is(RO_AMMO_DROPS_ON/*_PLUS_BOMBCHU*/)) || 
-                        CanPlayBowling || BombchuSalesman || BuyBombchus;
+        BombchuRefill   = (AmmoCanDrop && (ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) || BombchuIcon) && 
+                           ctx->GetOption(RSK_ENABLE_BOMBCHU_DROPS).Is(RO_AMMO_DROPS_ON/*_PLUS_BOMBCHU*/)) || 
+                           CanPlayBowling || BombchuSalesman || BuyBombchus;
         FairyAccess     = FairyPot || GossipStoneFairy || BeanPlantFairy || ButterflyFairy || FreeFairies || FairyPond || BuyFairy;
 
         //Usage
@@ -695,6 +696,7 @@ namespace Rando {
         FreeFairies      = false;
         FairyPond        = false;
         BombchuRefill    = false;
+        BombchuIcon      = false;
 
         BuyBombchus      = false;
         BuySeed          = false;
