@@ -487,6 +487,7 @@ void EnExItem_DrawItems(EnExItem* this, PlayState* play) {
     }
     if (this) {}
     func_8002ED80(&this->actor, play, 0);
+
     GetItem_Draw(play, this->giDrawId);
 }
 

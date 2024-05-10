@@ -6268,7 +6268,7 @@ s32 func_8083D12C(PlayState* play, Player* this, Input* arg2) {
                 func_80832340(play, this);
                 // Skip take breath animation on surface if Link didn't grab an item while underwater and the setting is enabled
                 if (CVarGetInteger(CVAR_ENHANCEMENT("SkipSwimDeepEndAnim"), 0) && !(this->stateFlags1 & PLAYER_STATE1_ITEM_OVER_HEAD)) {
-                    auto lastAnimFrame = Animation_GetLastFrame(&gPlayerAnim_link_swimer_swim_deep_end);
+                    int lastAnimFrame = Animation_GetLastFrame(&gPlayerAnim_link_swimer_swim_deep_end);
                     LinkAnimation_Change(play, &this->skelAnime, &gPlayerAnim_link_swimer_swim_deep_end, 1.0f,
                         lastAnimFrame, lastAnimFrame, ANIMMODE_ONCE, -6.0f);
                 } else {
