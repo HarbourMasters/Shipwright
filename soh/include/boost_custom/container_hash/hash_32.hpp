@@ -23,6 +23,18 @@
 
 #endif // #if !BOOST_VERSION_HAS_HASH_RANGE
 
+#if BOOST_USE_STD_TYPES
+#define BOOST_ENABLE_IF std::enable_if
+#define BOOST_IS_INTEGRAL hash_detail::is_integral
+#define BOOST_IS_UNSIGNED is_unsigned
+#define BOOST_MAKE_UNSIGNED make_unsigned
+#else
+#define BOOST_ENABLE_IF boost::enable_if_
+#define BOOST_IS_INTEGRAL boost::is_integral
+#define BOOST_IS_UNSIGNED boost::is_unsigned
+#define BOOST_MAKE_UNSIGNED boost::make_unsigned
+#endif
+
 namespace boost
 {
 
@@ -36,7 +48,7 @@ namespace boost
     {
         template<class T,
             bool bigger_than_size_t = (sizeof(T) > sizeof(uint32_t)),
-            bool is_unsigned = boost::is_unsigned<T>::value,
+            bool is_unsigned = BOOST_IS_UNSIGNED<T>::value,
             std::size_t size_t_bits = sizeof(uint32_t) * CHAR_BIT,
             std::size_t type_bits = sizeof(T) * CHAR_BIT>
         struct hash_integral_impl_32;
@@ -53,7 +65,7 @@ namespace boost
         {
             static uint32_t fn( T v )
             {
-                typedef typename boost::make_unsigned<T>::type U;
+                typedef typename BOOST_MAKE_UNSIGNED<T>::type U;
 
                 if( v >= 0 )
                 {
@@ -97,7 +109,7 @@ namespace boost
     } // namespace hash_detail
 
     template <typename T>
-    typename boost::enable_if_<boost::is_integral<T>::value, uint32_t>::type
+    typename BOOST_ENABLE_IF<BOOST_IS_INTEGRAL<T>::value, uint32_t>::type
         hash_value_32( T v )
     {
         return hash_detail::hash_integral_impl_32<T>::fn( v );
@@ -106,7 +118,7 @@ namespace boost
     // contiguous ranges (string, vector, array)
 #if BOOST_VERSION_HAS_HASH_RANGE
     template <typename T>
-    typename boost::enable_if_<container_hash::is_contiguous_range<T>::value, uint32_t>::type
+    typename BOOST_ENABLE_IF<container_hash::is_contiguous_range<T>::value, uint32_t>::type
         hash_value_32( T const& v )
     {
         return boost::hash_range_32( v.data(), v.data() + v.size() );
@@ -168,5 +180,9 @@ namespace boost
 } // namespace boost
 
 #undef BOOST_HASH_CHAR_TRAITS
+#undef BOOST_ENABLE_IF
+#undef BOOST_IS_INTEGRAL
+#undef BOOST_IS_UNSIGNED
+#undef BOOST_MAKE_UNSIGNED
 
 #endif // #ifndef BOOST_FUNCTIONAL_HASH_HASH_32_HPP

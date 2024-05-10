@@ -627,12 +627,6 @@ void Play_Init(GameState* thisx) {
     gTrnsnUnkState = 0;
     play->transitionMode = TRANS_MODE_OFF;
 
-    if (CVarGetInteger("gSceneTransitions", 255)!= 255){
-        play->transitionMode = CVarGetInteger("gSceneTransitions", 0);
-        gSaveContext.nextTransitionType = CVarGetInteger("gSceneTransitions", 0);
-        play->transitionType = CVarGetInteger("gSceneTransitions", 0);
-    }
-
     FrameAdvance_Init(&play->frameAdvCtx);
     Rand_Seed((u32)osGetTime());
     Matrix_Init(&play->state);
@@ -675,7 +669,7 @@ void Play_Init(GameState* thisx) {
 
     Fault_AddClient(&D_801614B8, ZeldaArena_Display, NULL, NULL);
     // In order to keep bunny hood equipped on first load, we need to pre-set the age reqs for the item and slot
-    if ((CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA && CVarGetInteger("gAdultBunnyHood", 0)) || CVarGetInteger("gTimelessEquipment", 0)) {
+    if ((CVarGetInteger(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA && CVarGetInteger(CVAR_ENHANCEMENT("AdultBunnyHood"), 0)) || CVarGetInteger(CVAR_CHEAT("TimelessEquipment"), 0)) {
         gItemAgeReqs[ITEM_MASK_BUNNY] = AGE_REQ_NONE;
         if(INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_MASK_BUNNY)
             gSlotAgeReqs[SLOT_TRADE_CHILD] = AGE_REQ_NONE;
@@ -762,7 +756,7 @@ void Play_Init(GameState* thisx) {
     }
     #endif
 
-    if (CVarGetInteger("gIvanCoopModeEnabled", 0)) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("IvanCoopModeEnabled"), 0)) {
         Actor_Spawn(&play->actorCtx, play, gEnPartnerId, GET_PLAYER(play)->actor.world.pos.x,
                     GET_PLAYER(play)->actor.world.pos.y + Player_GetHeight(GET_PLAYER(play)) + 5.0f,
                     GET_PLAYER(play)->actor.world.pos.z, 0, 0, 0, 1, true);
@@ -800,7 +794,7 @@ void Play_Update(PlayState* play) {
         HREG(82) = 0;
     }
 
-    if (CVarGetInteger("gFreeCamera", 0) && Player_InCsMode(play)) {
+    if (CVarGetInteger(CVAR_SETTING("FreeLook.Enabled"), 0) && Player_InCsMode(play)) {
         play->manualCamera = false;
     }
 
@@ -1216,7 +1210,7 @@ void Play_Update(PlayState* play) {
                       gSaveContext.sohStats.sceneTimer++;
                       gSaveContext.sohStats.roomTimer++;
 
-                      if (CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA && Player_GetMask(play) == PLAYER_MASK_BUNNY) {
+                      if (CVarGetInteger(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA && Player_GetMask(play) == PLAYER_MASK_BUNNY) {
                           gSaveContext.sohStats.count[COUNT_TIME_BUNNY_HOOD]++;
                       }
                 }
@@ -1514,7 +1508,7 @@ void Play_Draw(PlayState* play) {
 
         // Flip the projections and invert culling for the OPA and XLU display buffers
         // These manage the world and effects
-        if (CVarGetInteger("gMirroredWorld", 0)) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0)) {
             gSPSetExtraGeometryMode(POLY_OPA_DISP++, G_EX_INVERT_CULLING);
             gSPSetExtraGeometryMode(POLY_XLU_DISP++, G_EX_INVERT_CULLING);
             gSPMatrix(POLY_OPA_DISP++, play->view.projectionFlippedPtr, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
@@ -1748,7 +1742,7 @@ void Play_Draw(PlayState* play) {
         GameInteractor_ExecuteOnPlayDrawEnd();
 
         // Reset the inverted culling
-        if (CVarGetInteger("gMirroredWorld", 0)) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0)) {
             gSPClearExtraGeometryMode(POLY_OPA_DISP++, G_EX_INVERT_CULLING);
             gSPClearExtraGeometryMode(POLY_XLU_DISP++, G_EX_INVERT_CULLING);
         }
@@ -1796,11 +1790,11 @@ void Play_Main(GameState* thisx) {
     PlayState* play = (PlayState*)thisx;
 
     // Decrease the easy pause buffer timer every frame
-    if (CVarGetInteger("gCheatEasyPauseBufferTimer", 0) > 0) {
-        CVarSetInteger("gCheatEasyPauseBufferTimer", CVarGetInteger("gCheatEasyPauseBufferTimer", 0) - 1);
+    if (CVarGetInteger(CVAR_GENERAL("CheatEasyPauseBufferTimer"), 0) > 0) {
+        CVarSetInteger(CVAR_GENERAL("CheatEasyPauseBufferTimer"), CVarGetInteger(CVAR_GENERAL("CheatEasyPauseBufferTimer"), 0) - 1);
     }
 
-    if (play->envCtx.unk_EE[2] == 0 && CVarGetInteger("gLetItSnow", 0)) {
+    if (play->envCtx.unk_EE[2] == 0 && CVarGetInteger(CVAR_GENERAL("LetItSnow"), 0)) {
         play->envCtx.unk_EE[3] = 64;
         Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_OBJECT_KANKYO, 0, 0, 0, 0, 0, 0, 3, 0);
     }
@@ -1846,7 +1840,7 @@ void Play_Main(GameState* thisx) {
         LOG_NUM("1", 1);
     }
     
-    if (CVarGetInteger("gTimeSync", 0)) {
+    if (CVarGetInteger(CVAR_CHEAT("TimeSync"), 0)) {
         const int maxRealDaySeconds = 86400;
         const int maxInGameDayTicks = 65536;
 
@@ -1977,11 +1971,11 @@ void Play_InitScene(PlayState* play, s32 spawn)
 }
 
 void Play_SpawnScene(PlayState* play, s32 sceneNum, s32 spawn) {
-    uint8_t mqMode = CVarGetInteger("gBetterDebugWarpScreenMQMode", WARP_MODE_OVERRIDE_OFF);
-    int16_t mqModeScene = CVarGetInteger("gBetterDebugWarpScreenMQModeScene", -1);
+    uint8_t mqMode = CVarGetInteger(CVAR_GENERAL("BetterDebugWarpScreenMQMode"), WARP_MODE_OVERRIDE_OFF);
+    int16_t mqModeScene = CVarGetInteger(CVAR_GENERAL("BetterDebugWarpScreenMQModeScene"), -1);
     if (mqMode != WARP_MODE_OVERRIDE_OFF && sceneNum != mqModeScene) {
-        CVarClear("gBetterDebugWarpScreenMQMode");
-        CVarClear("gBetterDebugWarpScreenMQModeScene");
+        CVarClear(CVAR_GENERAL("BetterDebugWarpScreenMQMode"));
+        CVarClear(CVAR_GENERAL("BetterDebugWarpScreenMQModeScene"));
     }
 
     OTRPlay_SpawnScene(play, sceneNum, spawn);
@@ -2364,7 +2358,7 @@ void Play_PerformSave(PlayState* play) {
             IS_RANDO &&
             gSaveContext.triforcePiecesCollected == Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED) &&
             Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT);
-        if (CVarGetInteger("gAutosave", AUTOSAVE_OFF) != AUTOSAVE_OFF || triforceHuntCompleted) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("Autosave"), AUTOSAVE_OFF) != AUTOSAVE_OFF || triforceHuntCompleted) {
             Overlay_DisplayText(3.0f, "Game Saved");
         }
     }

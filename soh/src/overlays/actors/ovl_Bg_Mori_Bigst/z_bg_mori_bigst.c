@@ -6,6 +6,7 @@
 
 #include "z_bg_mori_bigst.h"
 #include "objects/object_mori_objects/object_mori_objects.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
@@ -216,8 +217,8 @@ void BgMoriBigst_SetupStalfosPairFight(BgMoriBigst* this, PlayState* play) {
 void BgMoriBigst_StalfosPairFight(BgMoriBigst* this, PlayState* play) {
     if ((this->dyna.actor.home.rot.z == 0 || 
         // Check if all enemies are defeated instead of the regular stalfos when enemy randomizer or crowd control is on.
-        (Flags_GetTempClear(play, this->dyna.actor.room) && (CVarGetInteger("gRandomizedEnemies", 0) || (CVarGetInteger("gCrowdControl", 0))))) && 
-        !Player_InCsMode(play)) {
+        (Flags_GetTempClear(play, this->dyna.actor.room) && (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) || 
+            ((CVarGetInteger(CVAR_REMOTE("Scheme"), GI_SCHEME_SAIL) == GI_SCHEME_CROWD_CONTROL && CVarGetInteger(CVAR_REMOTE("Enabled"), 0)))))) && !Player_InCsMode(play)) {
         Flags_SetSwitch(play, (this->dyna.actor.params >> 8) & 0x3F);
         BgMoriBigst_SetupDone(this, play);
     }

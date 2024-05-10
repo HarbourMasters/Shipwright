@@ -515,14 +515,17 @@ void EnExItem_DrawItems(EnExItem* this, PlayState* play) {
         switch (this->type) {
             case EXITEM_BOMB_BAG_BOWLING:
             case EXITEM_BOMB_BAG_COUNTER:
-                randoGetItem = Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_FIRST_PRIZE, GI_BOMB_BAG_20);
+                randoGetItem = (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0) && Randomizer_IsCheckShuffled(RC_MARKET_BOMBCHU_BOWLING_FIRST_PRIZE))
+                        ? GetItemMystery()
+                        : Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_FIRST_PRIZE, GI_BOMB_BAG_20);
                 break;
             case EXITEM_BOMBCHUS_BOWLING:
             case EXITEM_BOMBCHUS_COUNTER:
                 randoGetItem = Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS, GI_BOMBCHUS_10);
                 break;
             case EXITEM_BULLET_BAG:
-                randoGetItem = Randomizer_GetItemFromKnownCheck(RC_LW_TARGET_IN_WOODS, GI_BULLET_BAG_50);
+                randoGetItem = (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0) && Randomizer_IsCheckShuffled(RC_LW_TARGET_IN_WOODS))
+                                ? GetItemMystery() : Randomizer_GetItemFromKnownCheck(RC_LW_TARGET_IN_WOODS, GI_BULLET_BAG_50);
                 break;
         }
 
@@ -540,8 +543,8 @@ void EnExItem_DrawHeartPiece(EnExItem* this, PlayState* play) {
     func_8002ED80(&this->actor, play, 0);
 
     if (IS_RANDO) {
-        GetItemEntry randoGetItem =
-            Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE, GI_HEART_PIECE);
+        GetItemEntry randoGetItem = (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0) && Randomizer_IsCheckShuffled(RC_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE))
+                                    ? GetItemMystery() : Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE, GI_HEART_PIECE);
         EnItem00_CustomItemsParticles(&this->actor, play, randoGetItem);
         GetItemEntry_Draw(play, randoGetItem);
     } else {
