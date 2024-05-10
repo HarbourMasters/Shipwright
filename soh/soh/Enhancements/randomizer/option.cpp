@@ -1,7 +1,7 @@
 #include "option.h"
 #include "libultraship/bridge.h"
 #include <Context.h>
-#include <ImGui/imgui.h>
+#include <imgui.h>
 #include "soh/UIWidgets.hpp"
 
 namespace Rando {
@@ -198,7 +198,7 @@ bool Option::RenderCheckbox() const {
     if (CustomCheckbox(name.c_str(), &val, disabled, disabledGraphic)) {
         CVarSetInteger(cvarName.c_str(), val);
         changed = true;
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
     if (!description.empty()) {
         UIWidgets::InsertHelpHoverText(description.c_str());
@@ -220,7 +220,7 @@ bool Option::RenderCombobox() const {
         selected--;
         CVarSetInteger(cvarName.c_str(), selected);
         changed = true;
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
     if (!description.empty()) {
         UIWidgets::InsertHelpHoverText(description.c_str());
@@ -233,7 +233,7 @@ bool Option::RenderCombobox() const {
                     CVarSetInteger(cvarName.c_str(), static_cast<int>(i));
                     changed = true;
                     selected = i;
-                    LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                 }
             }
         }
@@ -296,7 +296,7 @@ bool Option::RenderSlider() const {
     }
     if (changed) {
         CVarSetInteger(cvarName.c_str(), val);
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
     return changed;
 }

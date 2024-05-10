@@ -2045,7 +2045,7 @@ void Fishing_DrawRod(PlayState* play) {
         lureXZLen = player->unk_85C - lureXZLen;
 
         spC4 = player->unk_858;
-        Math_SmoothStepToF(&player->unk_858, input->rel.stick_x * 0.02f * (CVarGetInteger("gMirroredWorld", 0) ? -1 : 1), 0.3f, 5.0f, 0.0f);
+        Math_SmoothStepToF(&player->unk_858, input->rel.stick_x * 0.02f * (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0) ? -1 : 1), 0.3f, 5.0f, 0.0f);
         spC4 = player->unk_858 - spC4;
 
         if (player->unk_858 > 1.0f) {
@@ -2254,7 +2254,7 @@ void Fishing_UpdateLure(Fishing* this, PlayState* play) {
 
             Math_ApproachF(&sRodLineSpooled, 195.0f, 1.0f, 1.0f);
 
-            if (player->stateFlags1 & 0x8000000) {
+            if (player->stateFlags1 & PLAYER_STATE1_IN_WATER) {
                 sRodCastTimer = 0;
                 player->unk_860 = 0;
             }
@@ -2922,33 +2922,33 @@ f32 Fishing_GetMinimumRequiredScore() {
     // RANDOTODO: update the enhancement sliders to not allow
     // values above rando fish weight values when rando'd
     if(sLinkAge == 1) {
-        weight = CVarGetInteger("gCustomizeFishing", 0) ? CVarGetInteger("gChildMinimumWeightFish", 10) : 10;
+        weight = CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFishing"), 0) ? CVarGetInteger(CVAR_ENHANCEMENT("MinimumFishWeightChild"), 10) : 10;
     } else {
-        weight = CVarGetInteger("gCustomizeFishing", 0) ? CVarGetInteger("gAdultMinimumWeightFish", 13) : 13;     
+        weight = CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFishing"), 0) ? CVarGetInteger(CVAR_ENHANCEMENT("MinimumFishWeightAdult"), 13) : 13;     
     }
 
     return sqrt(((f32)weight - 0.5f) / 0.0036f);
 }
 
 bool getInstantFish() {
-    return CVarGetInteger("gCustomizeFishing", 0) && CVarGetInteger("gInstantFishing", 0);
+    return CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFishing"), 0) && CVarGetInteger(CVAR_ENHANCEMENT("InstantFishing"), 0);
 }
 
 bool getGuaranteeBite() {
-    return CVarGetInteger("gCustomizeFishing", 0) && CVarGetInteger("gGuaranteeFishingBite", 0);
+    return CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFishing"), 0) && CVarGetInteger(CVAR_ENHANCEMENT("GuaranteeFishingBite"), 0);
 }
 
 bool getFishNeverEscape() {
-    return CVarGetInteger("gCustomizeFishing", 0) && CVarGetInteger("gFishNeverEscape", 0);
+    return CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFishing"), 0) && CVarGetInteger(CVAR_ENHANCEMENT("FishNeverEscape"), 0);
 }
 
 bool getShouldSpawnLoaches() {
-    return (CVarGetInteger("gCustomizeFishing", 0) && CVarGetInteger("gLoachesAlwaysAppear", 0))
+    return (CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFishing"), 0) && CVarGetInteger(CVAR_ENHANCEMENT("LoachesAlwaysAppear"), 0))
         || ((KREG(1) == 1) || ((sFishGameNumber & 3) == 3));
 }
 
 bool getShouldConfirmKeep() {
-    return !CVarGetInteger("gCustomizeFishing", 0) || !CVarGetInteger("gSkipKeepConfirmation", 0);
+    return !CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFishing"), 0) || !CVarGetInteger(CVAR_ENHANCEMENT("SkipKeepConfirmation"), 0);
 }
 
 void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
@@ -5160,7 +5160,7 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
 
                 this->actor.parent = NULL;
                 if (!IS_RANDO || getItemEntry.getItemId == GI_NONE) {
-                    func_8002F434(&this->actor, play, getItemId, 2000.0f, 1000.0f);
+                    Actor_OfferGetItem(&this->actor, play, getItemId, 2000.0f, 1000.0f);
                 } else {
                     GiveItemEntryFromActor(&this->actor, play, getItemEntry, 2000.0f, 1000.0f);
                 }
@@ -5215,7 +5215,7 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
                 this->stateAndTimer = 24;
             } else {
                 if (!IS_RANDO) {
-                    func_8002F434(&this->actor, play, GI_SCALE_GOLD, 2000.0f, 1000.0f);
+                    Actor_OfferGetItem(&this->actor, play, GI_SCALE_GOLD, 2000.0f, 1000.0f);
                 } else {
                     GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_ADULT_FISHING, GI_SCALE_GOLD);
                     GiveItemEntryFromActor(&this->actor, play, getItemEntry, 2000.0f, 1000.0f);
@@ -5572,7 +5572,7 @@ void Fishing_UpdateOwner(Actor* thisx, PlayState* play2) {
             sSubCamId = Play_CreateSubCamera(play);
             Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
             Play_ChangeCameraStatus(play, sSubCamId, CAM_STAT_ACTIVE);
-            func_8002DF54(play, &this->actor, 5);
+            Player_SetCsActionWithHaltedActors(play, &this->actor, 5);
             mainCam = Play_GetCamera(play, MAIN_CAM);
             sCameraEye.x = mainCam->eye.x;
             sCameraEye.y = mainCam->eye.y;
@@ -5591,7 +5591,7 @@ void Fishing_UpdateOwner(Actor* thisx, PlayState* play2) {
             player->actor.speedXZ = 0.0f;
             
             // #region SOH [Enhancement]
-            if (CVarGetInteger("gQuitFishingAtDoor", 0)) {
+            if (CVarGetInteger(CVAR_ENHANCEMENT("QuitFishingAtDoor"), 0)) {
                 Fishing_QuitAtDoor(this, play);
             }
             // #endregion
@@ -5604,7 +5604,7 @@ void Fishing_UpdateOwner(Actor* thisx, PlayState* play2) {
                 mainCam->at = sCameraAt;
                 func_800C08AC(play, sSubCamId, 0);
                 func_80064534(play, &play->csCtx);
-                func_8002DF54(play, &this->actor, 7);
+                Player_SetCsActionWithHaltedActors(play, &this->actor, 7);
                 sFishingPlayerCinematicState = 0;
                 sSubCamId = 0;
                 sFishingCinematicTimer = 30;
@@ -5620,7 +5620,7 @@ void Fishing_UpdateOwner(Actor* thisx, PlayState* play2) {
             sSubCamId = Play_CreateSubCamera(play);
             Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
             Play_ChangeCameraStatus(play, sSubCamId, CAM_STAT_ACTIVE);
-            func_8002DF54(play, &this->actor, 5);
+            Player_SetCsActionWithHaltedActors(play, &this->actor, 5);
             mainCam = Play_GetCamera(play, MAIN_CAM);
             sCameraEye.x = mainCam->eye.x;
             sCameraEye.y = mainCam->eye.y;
@@ -5639,7 +5639,7 @@ void Fishing_UpdateOwner(Actor* thisx, PlayState* play2) {
             if ((sFishingCinematicTimer == 0) && Message_ShouldAdvance(play)) {
                 sFishingPlayerCinematicState = 22;
                 sFishingCinematicTimer = 40;
-                func_8002DF54(play, &this->actor, 0x1C);
+                Player_SetCsActionWithHaltedActors(play, &this->actor, 0x1C);
                 sSinkingLureHeldY = 0.0f;
             }
             break;
@@ -5708,7 +5708,7 @@ void Fishing_UpdateOwner(Actor* thisx, PlayState* play2) {
                         mainCam->at = sCameraAt;
                         func_800C08AC(play, sSubCamId, 0);
                         func_80064534(play, &play->csCtx);
-                        func_8002DF54(play, &this->actor, 7);
+                        Player_SetCsActionWithHaltedActors(play, &this->actor, 7);
                         sFishingPlayerCinematicState = 0;
                         sSubCamId = 0;
                         player->unk_860 = -5;

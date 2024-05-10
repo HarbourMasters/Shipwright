@@ -5,6 +5,7 @@
 #include "soh/Enhancements/randomizer/context.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include "variables.h"
+#include "soh/OTRGlobals.h"
 
 extern "C" {
 #include <z64.h>
@@ -234,7 +235,7 @@ extern "C" uint8_t GetRandomizedEnemy(PlayState* play, int16_t *actorId, f32 *po
 }
 
 EnemyEntry GetRandomizedEnemyEntry(uint32_t seed) {
-    if (CVarGetInteger("gRandomizedEnemies", ENEMY_RANDOMIZER_OFF) == ENEMY_RANDOMIZER_RANDOM_SEEDED) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), ENEMY_RANDOMIZER_OFF) == ENEMY_RANDOMIZER_RANDOM_SEEDED) {
         uint32_t finalSeed = seed + (IS_RANDO ? Rando::Context::GetInstance()->GetSettings()->GetSeed() : gSaveContext.sohStats.fileCreatedAt);
         Random_Init(finalSeed);
     }

@@ -18,4 +18,6 @@ typedef struct ObjComb {
     /*        */ BeehiveIdentity beehiveIdentity;
 } ObjComb; // size = 0x01B4
 
+void ObjComb_Break(ObjComb* objComb, PlayState* play);
+
 #endif

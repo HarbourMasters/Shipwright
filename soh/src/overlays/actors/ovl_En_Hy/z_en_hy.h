@@ -62,4 +62,6 @@ typedef struct EnHy {
     /*        */ GetItemEntry getItemEntry;
 } EnHy; // size = 0x0334
 
+void func_80A7127C(EnHy* enHy, PlayState* play);
+
 #endif

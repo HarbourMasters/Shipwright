@@ -144,8 +144,8 @@ void func_80A4E470(EnGs* this, PlayState* play) {
     if (this->actor.xzDistToPlayer <= 100.0f) {
         bREG(15) = 1;
         if (this->unk_19D == 0) {
-            player->stateFlags2 |= 0x800000;
-            if (player->stateFlags2 & 0x1000000) {
+            player->stateFlags2 |= PLAYER_STATE2_NEAR_OCARINA_ACTOR;
+            if (player->stateFlags2 & PLAYER_STATE2_ATTEMPT_PLAY_FOR_ACTOR) {
                 func_8010BD58(play, OCARINA_ACTION_FREE_PLAY);
                 this->unk_19D |= 1;
             }
@@ -168,7 +168,7 @@ void func_80A4E470(EnGs* this, PlayState* play) {
                 this->unk_19D = 0;
                 Flags_SetSwitch(play, (this->actor.params >> 8) & 0x3F);
             } else if (play->msgCtx.ocarinaMode == OCARINA_MODE_01) {
-                player->stateFlags2 |= 0x800000;
+                player->stateFlags2 |= PLAYER_STATE2_NEAR_OCARINA_ACTOR;
             }
         }
     }
@@ -594,8 +594,8 @@ void EnGs_Draw(Actor* thisx, PlayState* play) {
             gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->flashColor.r, this->flashColor.g, this->flashColor.b,
                             this->flashColor.a);
         } else {
-            if (CVarGetInteger("gCosmetics.World_GossipStone.Changed", 0)) {
-                Color_RGB8 color = CVarGetColor24("gCosmetics.World_GossipStone.Value", (Color_RGB8){255, 255, 255});
+            if (CVarGetInteger(CVAR_COSMETIC("World.GossipStone.Changed"), 0)) {
+                Color_RGB8 color = CVarGetColor24(CVAR_COSMETIC("World.GossipStone.Value"), (Color_RGB8){255, 255, 255});
                 gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, color.r, color.g, color.b, 255);
             } else {
                 gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, 255);

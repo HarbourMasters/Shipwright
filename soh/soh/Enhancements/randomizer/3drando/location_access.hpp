@@ -4,7 +4,6 @@
 #include <vector>
 #include <list>
 
-#include "hint_list.hpp"
 #include "fill.hpp"
 #include "../randomizerTypes.h"
 #include "../context.h"
@@ -251,6 +250,7 @@ namespace Areas {
 void  AreaTable_Init();
 Area* AreaTable(const RandomizerRegion areaKey);
 std::vector<Rando::Entrance*> GetShuffleableEntrances(Rando::EntranceType type, bool onlyPrimary = true);
+Rando::Entrance* GetEntrance(const std::string name);
 
 // Overworld
 void AreaTable_Init_LostWoods();

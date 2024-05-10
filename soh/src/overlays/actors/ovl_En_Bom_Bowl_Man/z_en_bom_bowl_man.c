@@ -69,7 +69,7 @@ void EnBomBowlMan_Init(Actor* thisx, PlayState* play2) {
     Actor_SetScale(&this->actor, 0.013f);
 
     for (i = 0; i < 2; i++) {
-        if(CVarGetInteger("gCustomizeBombchuBowling", 0) && CVarGetInteger(i == 0 ? "gBombchuBowlingNoSmallCucco" : "gBombchuBowlingNoBigCucco", 0)) {
+        if(CVarGetInteger(CVAR_ENHANCEMENT("CustomizeBombchuBowling"), 0) && CVarGetInteger(i == 0 ? CVAR_ENHANCEMENT("BombchuBowlingNoSmallCucco") : CVAR_ENHANCEMENT("BombchuBowlingNoBigCucco"), 0)) {
             continue;
         }
 
@@ -295,7 +295,7 @@ void EnBomBowMan_RunGame(EnBomBowlMan* this, PlayState* play) {
         Message_StartTextbox(play, this->actor.textId, NULL);
 
         if (this->gameResult == 2) {
-            func_8002DF54(play, NULL, 8);
+            Player_SetCsActionWithHaltedActors(play, NULL, 8);
         }
         this->actionFunc = EnBomBowlMan_HandlePlayChoice;
     } else {
@@ -327,8 +327,8 @@ void EnBomBowlMan_HandlePlayChoice(EnBomBowlMan* this, PlayState* play) {
                     Rupees_ChangeBy(-30);
                     this->minigamePlayStatus = 1;
                     this->wallStatus[0] = this->wallStatus[1] = 0;
-                    if(CVarGetInteger("gCustomizeBombchuBowling", 0)) {
-                        play->bombchuBowlingStatus = CVarGetInteger("gBombchuBowlingAmmunition", 10);
+                    if(CVarGetInteger(CVAR_ENHANCEMENT("CustomizeBombchuBowling"), 0)) {
+                        play->bombchuBowlingStatus = CVarGetInteger(CVAR_ENHANCEMENT("BombchuBowlingAmmo"), 10);
                     }
                     else {
                         play->bombchuBowlingStatus = 10;
@@ -345,7 +345,7 @@ void EnBomBowlMan_HandlePlayChoice(EnBomBowlMan* this, PlayState* play) {
                         Message_ContinueTextbox(play, this->actor.textId);
                         this->dialogState = TEXT_STATE_EVENT;
                         OnePointCutscene_Init(play, 8010, -99, NULL, MAIN_CAM);
-                        func_8002DF54(play, NULL, 8);
+                        Player_SetCsActionWithHaltedActors(play, NULL, 8);
                         this->actionFunc = EnBomBowMan_SetupChooseShowPrize;
                     }
                 } else {
@@ -381,11 +381,11 @@ void func_809C41FC(EnBomBowlMan* this, PlayState* play) {
             Message_ContinueTextbox(play, this->actor.textId);
             this->dialogState = TEXT_STATE_EVENT;
             OnePointCutscene_Init(play, 8010, -99, NULL, MAIN_CAM);
-            func_8002DF54(play, NULL, 8);
+            Player_SetCsActionWithHaltedActors(play, NULL, 8);
             this->actionFunc = EnBomBowMan_SetupChooseShowPrize;
         } else {
             if (this->gameResult == 2) {
-                func_8002DF54(play, NULL, 7);
+                Player_SetCsActionWithHaltedActors(play, NULL, 7);
             }
             this->actionFunc = EnBomBowMan_SetupRunGame;
         }
@@ -509,7 +509,7 @@ void EnBomBowlMan_BeginPlayGame(EnBomBowlMan* this, PlayState* play) {
 
         // "Wow"
         osSyncPrintf(VT_FGCOL(YELLOW) "☆ わー ☆ %d\n" VT_RST, play->bombchuBowlingStatus);
-        func_8002DF54(play, NULL, 7);
+        Player_SetCsActionWithHaltedActors(play, NULL, 7);
         this->actionFunc = EnBomBowMan_SetupRunGame;
     }
 }

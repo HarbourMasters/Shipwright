@@ -126,7 +126,7 @@ void BgIceObjects_CheckPits(BgIceObjects* this, PlayState* play) {
             thisx->world.pos.y = thisx->home.pos.y - 60.0f;
             thisx->world.pos.z = thisx->home.pos.z;
             if (thisx->params != 0) {
-                func_8002DF54(play, thisx, 7);
+                Player_SetCsActionWithHaltedActors(play, thisx, 7);
             }
             this->actionFunc = BgIceObjects_Reset;
         }
@@ -138,12 +138,12 @@ void BgIceObjects_Idle(BgIceObjects* this, PlayState* play) {
     Actor* thisx = &this->dyna.actor;
 
     if (this->dyna.unk_150 != 0.0f) {
-        player->stateFlags2 &= ~0x10;
+        player->stateFlags2 &= ~PLAYER_STATE2_MOVING_DYNAPOLY;
         if ((this->dyna.unk_150 > 0.0f) && !Player_InCsMode(play)) {
             BgIceObjects_SetNextTarget(this, play);
             if (Actor_WorldDistXZToPoint(thisx, &this->targetPos) > 1.0f) {
                 thisx->flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
-                func_8002DF54(play, thisx, 8);
+                Player_SetCsActionWithHaltedActors(play, thisx, 8);
                 thisx->params = 1;
                 this->actionFunc = BgIceObjects_Slide;
             }
@@ -173,7 +173,7 @@ void BgIceObjects_Slide(BgIceObjects* this, PlayState* play) {
             thisx->flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED;
         }
         thisx->params = 0;
-        func_8002DF54(play, thisx, 7);
+        Player_SetCsActionWithHaltedActors(play, thisx, 7);
         Audio_PlayActorSound2(thisx, NA_SE_EV_BLOCK_BOUND);
         if ((fabsf(thisx->world.pos.x + 1387.0f) < 1.0f) && (fabsf(thisx->world.pos.z + 260.0f) < 1.0f)) {
             this->actionFunc = BgIceObjects_Stuck;
@@ -203,7 +203,7 @@ void BgIceObjects_Reset(BgIceObjects* this, PlayState* play) {
     Actor* thisx = &this->dyna.actor;
 
     if (this->dyna.unk_150 != 0.0f) {
-        player->stateFlags2 &= ~0x10;
+        player->stateFlags2 &= ~PLAYER_STATE2_MOVING_DYNAPOLY;
         this->dyna.unk_150 = 0.0f;
     }
     if (Math_StepToF(&thisx->world.pos.y, thisx->home.pos.y, 1.0f)) {
@@ -218,7 +218,7 @@ void BgIceObjects_Stuck(BgIceObjects* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     if (this->dyna.unk_150 != 0.0f) {
-        player->stateFlags2 &= ~0x10;
+        player->stateFlags2 &= ~PLAYER_STATE2_MOVING_DYNAPOLY;
         this->dyna.unk_150 = 0.0f;
     }
 }

@@ -64,64 +64,21 @@ static u8 sEnergyColors[] = {
     /* Forest  prim */ 255, 255, 170, /* env */ 0,   200, 0,
 };
 
-// Translates from the barrier's actor params to their corresponding randInf flags.
-RandomizerInf trialParamToRandInf(u16 params) {
-    switch (params) {
-        case KEKKAI_LIGHT:
-            return RAND_INF_TRIALS_DONE_LIGHT_TRIAL;
-        case KEKKAI_FOREST:
-            return RAND_INF_TRIALS_DONE_FOREST_TRIAL;
-        case KEKKAI_FIRE:
-            return RAND_INF_TRIALS_DONE_FIRE_TRIAL;
-        case KEKKAI_WATER:
-            return RAND_INF_TRIALS_DONE_WATER_TRIAL;
-        case KEKKAI_SPIRIT:
-            return RAND_INF_TRIALS_DONE_SPIRIT_TRIAL;
-        case KEKKAI_SHADOW:
-            return RAND_INF_TRIALS_DONE_SHADOW_TRIAL;
-    }
-}
-
 s32 DemoKekkai_CheckEventFlag(s32 params) {
-    static s32 eventFlags[] = { 0xC3, 0xBC, 0xBF, 0xBE, 0xBD, 0xAD, 0xBB };
+    static s32 eventFlags[] = {
+        EVENTCHKINF_DISPELLED_GANONS_TOWER_BARRIER,
+        EVENTCHKINF_COMPLETED_WATER_TRIAL,
+        EVENTCHKINF_COMPLETED_LIGHT_TRIAL,
+        EVENTCHKINF_COMPLETED_FIRE_TRIAL,
+        EVENTCHKINF_COMPLETED_SHADOW_TRIAL,
+        EVENTCHKINF_COMPLETED_SPIRIT_TRIAL,
+        EVENTCHKINF_COMPLETED_FOREST_TRIAL,
+    };
 
     if ((params < KEKKAI_TOWER) || (params > KEKKAI_FOREST)) {
         return true;
     }
-    if (IS_RANDO && params > KEKKAI_TOWER) {
-        return Flags_GetRandomizerInf(trialParamToRandInf(params));
-    }
     return Flags_GetEventChkInf(eventFlags[params]);
-}
-
-u32 TrialsDoneCount() {
-    u8 trialCount = 0;
-
-    if (Flags_GetRandomizerInf(RAND_INF_TRIALS_DONE_LIGHT_TRIAL)) {
-        trialCount++;
-    }
-
-    if (Flags_GetRandomizerInf(RAND_INF_TRIALS_DONE_FOREST_TRIAL)) {
-        trialCount++;
-    }
-
-    if (Flags_GetRandomizerInf(RAND_INF_TRIALS_DONE_FIRE_TRIAL)) {
-        trialCount++;
-    }
-
-    if (Flags_GetRandomizerInf(RAND_INF_TRIALS_DONE_WATER_TRIAL)) {
-        trialCount++;
-    }
-
-    if (Flags_GetRandomizerInf(RAND_INF_TRIALS_DONE_SPIRIT_TRIAL)) {
-        trialCount++;
-    }
-
-    if (Flags_GetRandomizerInf(RAND_INF_TRIALS_DONE_SHADOW_TRIAL)) {
-        trialCount++;
-    }
-
-    return trialCount;
 }
 
 void DemoKekkai_Init(Actor* thisx, PlayState* play) {
@@ -147,13 +104,6 @@ void DemoKekkai_Init(Actor* thisx, PlayState* play) {
             this->collider2.dim.radius = thisx->scale.x * 6100.0f;
             this->collider2.dim.height = thisx->scale.y * 5000.0f;
             this->collider2.dim.yShift = 300;
-
-            if (IS_RANDO) {
-                if (TrialsDoneCount() == NUM_TRIALS) {
-                    Actor_Kill(thisx);
-                    return;
-                }
-            }
             break;
         case KEKKAI_WATER:
         case KEKKAI_LIGHT:
@@ -161,10 +111,6 @@ void DemoKekkai_Init(Actor* thisx, PlayState* play) {
         case KEKKAI_SHADOW:
         case KEKKAI_SPIRIT:
         case KEKKAI_FOREST:
-            if (IS_RANDO && Flags_GetRandomizerInf(trialParamToRandInf(thisx->params))) {
-                Actor_Kill(thisx);
-                return;
-            }
             this->energyAlpha = 1.0f;
             this->orbScale = 1.0f;
             Actor_SetScale(thisx, 0.1f);
@@ -265,17 +211,9 @@ void DemoKekkai_Update(Actor* thisx, PlayState* play2) {
 }
 
 void DemoKekkai_TrialBarrierDispel(Actor* thisx, PlayState* play) {
-    static s32 eventFlags[] = { 0xC3, 0xBC, 0xBF, 0xBE, 0xBD, 0xAD, 0xBB };
     static u16 csFrames[] = { 0, 280, 280, 280, 280, 280, 280 };
     s32 pad;
     DemoKekkai* this = (DemoKekkai*)thisx;
-
-    if (IS_RANDO) {
-        Flags_SetRandomizerInf(trialParamToRandInf(thisx->params));
-        // May or may not be needed. Not sure if needed for anything
-        // that randoInf isn't already covering. Leaving it for safety.
-        Flags_SetEventChkInf(eventFlags[thisx->params]); 
-    }
 
     if (play->csCtx.frames == csFrames[this->actor.params]) {
         func_800F3F3C(0xA);

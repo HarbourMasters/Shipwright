@@ -3,6 +3,7 @@
 #include "soh_assets.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include <assert.h>
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS 0
 
@@ -192,10 +193,12 @@ void EnBox_Init(Actor* thisx, PlayState* play2) {
     SkelAnime_Init(play, &this->skelanime, &gTreasureChestSkel, anim, this->jointTable, this->morphTable, 5);
     Animation_Change(&this->skelanime, anim, 1.5f, animFrameStart, endFrame, ANIMMODE_ONCE, 0.0f);
 
+    this->getItemEntry = ItemTable_RetrieveEntry(MOD_NONE, this->dyna.actor.params >> 5 & 0x7F);
     if (IS_RANDO) {
-        this->getItemEntry = Randomizer_GetItemFromActor(this->dyna.actor.id, play->sceneNum, this->dyna.actor.params, this->dyna.actor.params >> 5 & 0x7F);
-    } else {
-        this->getItemEntry = ItemTable_RetrieveEntry(MOD_NONE, this->dyna.actor.params >> 5 & 0x7F);
+        RandomizerCheck rc = Randomizer_GetCheckFromActor(this->dyna.actor.id, play->sceneNum, this->dyna.actor.params);
+        if (rc != RC_UNKNOWN_CHECK) {
+            this->getItemEntry = Randomizer_GetItemFromKnownCheck(rc, this->dyna.actor.params >> 5 & 0x7F);
+        }
     }
 
     EnBox_UpdateSizeAndTexture(this, play);
@@ -275,7 +278,9 @@ void EnBox_Fall(EnBox* this, PlayState* play) {
             this->dyna.actor.shape.rot.z = 0;
             this->dyna.actor.world.pos.y = this->dyna.actor.floorHeight;
             EnBox_SetupAction(this, EnBox_WaitOpen);
-            OnePointCutscene_EndCutscene(play, this->unk_1AC);
+            if (GameInteractor_Should(VB_PLAY_ONEPOINT_ACTOR_CS, true, this)) {
+                OnePointCutscene_EndCutscene(play, this->unk_1AC);
+            }
         }
         Audio_PlaySoundGeneral(NA_SE_EV_COFFIN_CAP_BOUND, &this->dyna.actor.projectedPos, 4, &D_801333E0, &D_801333E0,
                                &D_801333E8);
@@ -320,8 +325,8 @@ void func_809C9700(EnBox* this, PlayState* play) {
         this->unk_1FB = ENBOX_STATE_0;
     } else {
         if (this->unk_1FB == ENBOX_STATE_0) {
-            if (!(player->stateFlags2 & 0x1000000)) {
-                player->stateFlags2 |= 0x800000;
+            if (!(player->stateFlags2 & PLAYER_STATE2_ATTEMPT_PLAY_FOR_ACTOR)) {
+                player->stateFlags2 |= PLAYER_STATE2_NEAR_OCARINA_ACTOR;
                 return;
             }
             this->unk_1FB = ENBOX_STATE_1;
@@ -445,74 +450,12 @@ void EnBox_WaitOpen(EnBox* this, PlayState* play) {
         }
         osSyncPrintf("Actor_Environment_Tbox_On() %d\n", this->dyna.actor.params & 0x1F);
         Flags_SetTreasure(play, this->dyna.actor.params & 0x1F);
-
-        // treasure chest game rando
-        if (Randomizer_GetSettingValue(RSK_SHUFFLE_CHEST_MINIGAME)) {
-            if (IS_RANDO && play->sceneNum == SCENE_TREASURE_BOX_SHOP && (this->dyna.actor.params & 0x60) != 0x20) {
-                if((this->dyna.actor.params & 0xF) < 2) {
-                    Flags_SetCollectible(play, 0x1B);
-                }
-                if((this->dyna.actor.params & 0xF) >= 2 && (this->dyna.actor.params & 0xF) < 4) {
-                    Flags_SetCollectible(play, 0x1C);
-                }
-                if((this->dyna.actor.params & 0xF) >= 4 && (this->dyna.actor.params & 0xF) < 6) {
-                    Flags_SetCollectible(play, 0x1D);
-                }
-                if((this->dyna.actor.params & 0xF) >= 6 && (this->dyna.actor.params & 0xF) < 8) {
-                    Flags_SetCollectible(play, 0x1E);
-                }
-                if((this->dyna.actor.params & 0xF) >= 8 && (this->dyna.actor.params & 0xF) < 10) {
-                    Flags_SetCollectible(play, 0x1F);
-                }
-            }
-        }
     } else {
         player = GET_PLAYER(play);
         func_8002DBD0(&this->dyna.actor, &sp4C, &player->actor.world.pos);
         if (sp4C.z > -50.0f && sp4C.z < 0.0f && fabsf(sp4C.y) < 10.0f && fabsf(sp4C.x) < 20.0f &&
             Player_IsFacingActor(&this->dyna.actor, 0x3000, play)) {
-            GetItemEntry sItem = Randomizer_GetItemFromActor(this->dyna.actor.id, play->sceneNum, this->dyna.actor.params, this->dyna.actor.params >> 5 & 0x7F);
-            GetItemEntry blueRupee = ItemTable_RetrieveEntry(MOD_NONE, GI_RUPEE_BLUE);
-            
-            // RANDOTODO treasure chest game rando
-            if (Randomizer_GetSettingValue(RSK_SHUFFLE_CHEST_MINIGAME)) {
-                if (IS_RANDO && play->sceneNum == SCENE_TREASURE_BOX_SHOP && (this->dyna.actor.params & 0x60) != 0x20) {
-                    if((this->dyna.actor.params & 0xF) < 2) {
-                        if(Flags_GetCollectible(play, 0x1B)) {
-                            sItem = blueRupee;
-                        }
-                    }
-                    if((this->dyna.actor.params & 0xF) >= 2 && (this->dyna.actor.params & 0xF) < 4) {
-                        if(Flags_GetCollectible(play, 0x1C)) {
-                            sItem = blueRupee;
-                        }
-                    }
-                    if((this->dyna.actor.params & 0xF) >= 4 && (this->dyna.actor.params & 0xF) < 6) {
-                        if(Flags_GetCollectible(play, 0x1D)) {
-                            sItem = blueRupee;
-                        }
-                    }
-                    if((this->dyna.actor.params & 0xF) >= 6 && (this->dyna.actor.params & 0xF) < 8) {
-                        if(Flags_GetCollectible(play, 0x1E)) {
-                            sItem = blueRupee;
-                        }
-                    }
-                    if((this->dyna.actor.params & 0xF) >= 8 && (this->dyna.actor.params & 0xF) < 10) {
-                        if(Flags_GetCollectible(play, 0x1F)) {
-                            sItem = blueRupee;
-                        }
-                    }
-                }
-            }
-            // Chests need to have a negative getItemId in order to not immediately give their item
-            // when approaching.
-            if (IS_RANDO) {
-                sItem.getItemId = 0 - sItem.getItemId;
-                sItem.getItemFrom = ITEM_FROM_CHEST;
-                GiveItemEntryFromActorWithFixedRange(&this->dyna.actor, play, sItem);
-            } else {
                 func_8002F554(&this->dyna.actor, play, -(this->dyna.actor.params >> 5 & 0x7F));
-            }
         }
         if (Flags_GetTreasure(play, this->dyna.actor.params & 0x1F)) {
             EnBox_SetupAction(this, EnBox_Open);
@@ -626,19 +569,16 @@ void EnBox_Update(Actor* thisx, PlayState* play) {
             Actor_SetFocus(&this->dyna.actor, 40.0f);
     }
 
-    if (((!IS_RANDO && ((this->dyna.actor.params >> 5 & 0x7F) == 0x7C)) ||
-        (IS_RANDO && this->getItemEntry.getItemId == RG_ICE_TRAP)) &&
-        this->actionFunc == EnBox_Open && this->skelanime.curFrame > 45 && this->iceSmokeTimer < 100) {
-        if (!CVarGetInteger("gAddTraps.enabled", 0)) {
-            EnBox_SpawnIceSmoke(this, play);
-        }
+    if ((this->dyna.actor.params >> 5 & 0x7F) == GI_ICE_TRAP && this->actionFunc == EnBox_Open &&
+        this->skelanime.curFrame > 45 && this->iceSmokeTimer < 100) {
+        EnBox_SpawnIceSmoke(this, play);
     }
 }
 
 void EnBox_UpdateSizeAndTexture(EnBox* this, PlayState* play) {
     EnBox_CreateExtraChestTextures();
-    int csmc = CVarGetInteger("gChestSizeAndTextureMatchesContents", CSMC_DISABLED);
-    int requiresStoneAgony = CVarGetInteger("gChestSizeDependsStoneOfAgony", 0);
+    int csmc = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), CSMC_DISABLED);
+    int requiresStoneAgony = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeDependsStoneOfAgony"), 0);
     GetItemCategory getItemCategory;
 
     int isVanilla = csmc == CSMC_DISABLED || (requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)) ||
@@ -646,9 +586,17 @@ void EnBox_UpdateSizeAndTexture(EnBox* this, PlayState* play) {
 
     if (!isVanilla) {
         getItemCategory = this->getItemEntry.getItemCategory;
-        // If they don't have bombchu's yet consider the bombchu item major
-        if (this->getItemEntry.gid == GID_BOMBCHU && INV_CONTENT(ITEM_BOMBCHU) != ITEM_BOMBCHU) {
-            getItemCategory = ITEM_CATEGORY_MAJOR;
+        // If they have bombchus, don't consider the bombchu item major
+        if (
+            INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU &&
+            ((this->getItemEntry.modIndex == MOD_RANDOMIZER && this->getItemEntry.getItemId == RG_PROGRESSIVE_BOMBCHUS) || 
+            (this->getItemEntry.modIndex == MOD_NONE && (
+                this->getItemEntry.getItemId == GI_BOMBCHUS_5 ||
+                this->getItemEntry.getItemId == GI_BOMBCHUS_10 ||
+                this->getItemEntry.getItemId == GI_BOMBCHUS_20
+            )))
+        ) {
+            getItemCategory = ITEM_CATEGORY_JUNK;
         // If it's a bottle and they already have one, consider the item lesser
         } else if (
             (this->getItemEntry.modIndex == MOD_RANDOMIZER && this->getItemEntry.getItemId >= RG_BOTTLE_WITH_RED_POTION && this->getItemEntry.getItemId <= RG_BOTTLE_WITH_BIG_POE) ||
@@ -725,7 +673,7 @@ void EnBox_UpdateSizeAndTexture(EnBox* this, PlayState* play) {
         }
     }
 
-    if (CVarGetInteger("gLetItSnow", 0) && hasChristmasChestTexturesAvailable && hasCreatedRandoChestTextures && !hasCustomChestDLs) {
+    if (CVarGetInteger(CVAR_GENERAL("LetItSnow"), 0) && hasChristmasChestTexturesAvailable && hasCreatedRandoChestTextures && !hasCustomChestDLs) {
         if (this->dyna.actor.scale.x == 0.01f) {
             this->boxBodyDL = gChristmasRedTreasureChestChestFrontDL;
             this->boxLidDL = gChristmasRedTreasureChestChestSideAndLidDL;

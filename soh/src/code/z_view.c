@@ -432,7 +432,7 @@ s32 func_800AAA9C(View* view) {
         }
         osSyncPrintf("\n");
     }
-    if (CVarGetInteger("gMirroredWorld", 0)) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0)) {
         MtxF flipF;
         SkinMatrix_Clear(&flipF);
         flipF.xx = -1.0;
@@ -553,7 +553,7 @@ s32 func_800AB2C4(View* view) {
             (f32)gScreenHeight * 0.5f, -30, view->zFar, view->scale);
 
     // This is for z-targeting
-    if (CVarGetInteger("gMirroredWorld", 0)) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0)) {
         MtxF flipF;
         SkinMatrix_Clear(&flipF);
         flipF.xx = -1.0;
