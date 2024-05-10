@@ -202,7 +202,7 @@ void Settings::CreateOptions() {
     mOptions[RSK_STARTING_NOCTURNE_OF_SHADOW] = Option::Bool("Start with Nocturne of Shadow", CVAR_RANDOMIZER_SETTING("StartingNocturneOfShadow"), "", IMFLAG_NONE);
     mOptions[RSK_STARTING_PRELUDE_OF_LIGHT] = Option::Bool("Start with Prelude of Light", CVAR_RANDOMIZER_SETTING("StartingPreludeOfLight"));
     mOptions[RSK_STARTING_SKULLTULA_TOKEN] = Option::U8("Gold Skulltula Tokens", {NumOpts(0, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("StartingSkulltulaToken"), "", WidgetType::Slider);
-    mOptions[RSK_STARTING_HEARTS] = Option::U8("Hearts", {NumOpts(1, 20)}, OptionCategory::Setting, "", "", WidgetType::Slider, 2);
+    mOptions[RSK_STARTING_HEARTS] = Option::U8("Hearts", {NumOpts(1, 20)}, OptionCategory::Setting, "gRandomizeStartingHearts", "", WidgetType::Slider, 2);
     // TODO: Remainder of Starting Items
     mOptions[RSK_LOGIC_RULES] = Option::U8("Logic", {"Glitchless", "Glitched", "No Logic", "Vanilla"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("LogicRules"), mOptionDescriptions[RSK_LOGIC_RULES], WidgetType::Combobox, RO_LOGIC_GLITCHLESS);
     mOptions[RSK_ALL_LOCATIONS_REACHABLE] = Option::Bool("All Locations Reachable", {"Off", "On"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("AllLocationsReachable"), mOptionDescriptions[RSK_ALL_LOCATIONS_REACHABLE], WidgetType::Checkbox, RO_GENERIC_ON);
@@ -773,6 +773,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_STARTING_OCARINA],
         &mOptions[RSK_STARTING_CONSUMABLES],
         &mOptions[RSK_STARTING_SKULLTULA_TOKEN],
+        &mOptions[RSK_STARTING_HEARTS],
     }, false, WidgetContainerType::COLUMN);
     mOptionGroups[RSG_STARTING_NORMAL_SONGS_IMGUI] = OptionGroup::SubGroup("Normal Songs", {
         &mOptions[RSK_STARTING_ZELDAS_LULLABY],
@@ -933,6 +934,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_STARTING_CONSUMABLES],
         &mOptions[RSK_FULL_WALLETS],
         &mOptions[RSK_STARTING_SKULLTULA_TOKEN],
+        &mOptions[RSK_STARTING_HEARTS],
     }, false);
     mOptionGroups[RSG_STARTING_INVENTORY] = OptionGroup("Starting Inventory", {
         &mOptionGroups[RSG_STARTING_ITEMS],
@@ -1196,6 +1198,7 @@ void Settings::CreateOptions() {
         { "Start with Consumables", RSK_STARTING_CONSUMABLES },
         { "Full Wallets", RSK_FULL_WALLETS },
         { "Gold Skulltula Tokens", RSK_STARTING_SKULLTULA_TOKEN },
+        { "Hearts", RSK_STARTING_HEARTS },
         { "Timesaver Settings:Cuccos to return", RSK_CUCCO_COUNT },
         { "Timesaver Settings:Big Poe Target Count", RSK_BIG_POE_COUNT },
         { "Timesaver Settings:Skip Child Stealth", RSK_SKIP_CHILD_STEALTH },
