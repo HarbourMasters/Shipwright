@@ -99,7 +99,7 @@ const std::vector<const char*> enhancementsCvars = {
     CVAR_ENHANCEMENT("BonkDamageMult"),
     CVAR_ENHANCEMENT("NoRandomDrops"),
     CVAR_ENHANCEMENT("NoHeartDrops"),
-    CVAR_ENHANCEMENT("BombchuDrops"),
+    CVAR_ENHANCEMENT("EnableBombchuDrops"),
     CVAR_ENHANCEMENT("GoronPot"),
     CVAR_ENHANCEMENT("FullHealthSpawn"),
     CVAR_ENHANCEMENT("DampeWin"),
