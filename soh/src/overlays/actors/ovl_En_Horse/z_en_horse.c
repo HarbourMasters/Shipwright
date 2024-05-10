@@ -3042,7 +3042,7 @@ void EnHorse_StickDirection(Vec2f* curStick, f32* stickMag, s16* angle) {
 
 void EnHorse_UpdateStick(EnHorse* this, PlayState* play) {
     this->lastStick = this->curStick;
-    this->curStick.x = play->state.input[0].rel.stick_x * (CVarGetInteger("gMirroredWorld", 0) ? -1 : 1);
+    this->curStick.x = play->state.input[0].rel.stick_x * (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0) ? -1 : 1);
     this->curStick.y = play->state.input[0].rel.stick_y;
 }
 
@@ -3312,7 +3312,7 @@ void EnHorse_CheckBoost(EnHorse* thisx, PlayState* play2) {
                     this->stateFlags |= ENHORSE_BOOST;
                     this->stateFlags |= ENHORSE_FIRST_BOOST_REGEN;
                     this->stateFlags |= ENHORSE_FLAG_8;
-                    if (!CVarGetInteger("gInfiniteEpona", 0)) { this->numBoosts--; }
+                    if (!CVarGetInteger(CVAR_CHEAT("InfiniteEponaBoost"), 0)) { this->numBoosts--; }
                     this->boostTimer = 0;
                     if (this->numBoosts == 0) {
                         this->boostRegenTime = 140;
