@@ -269,7 +269,7 @@ const std::vector<const char*> enhancementsCvars = {
     CVAR_ENHANCEMENT("EnemySizeScalesHealth"),
     CVAR_ENHANCEMENT("BetterAmmoRendering"),
     CVAR_ENHANCEMENT("EquimentAlwaysVisible"),
-	CVAR_ENHANCEMENT("ChildHoldsHylianShield"),
+    CVAR_ENHANCEMENT("ChildHoldsHylianShield"),
     CVAR_ENHANCEMENT("FixDaruniaDanceSpeed"),
     CVAR_ENHANCEMENT("OpenAllHours"),
     CVAR_ENHANCEMENT("ResetNaviTimer"),
