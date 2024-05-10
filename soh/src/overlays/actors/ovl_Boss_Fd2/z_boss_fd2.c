@@ -661,7 +661,7 @@ void BossFd2_Death(BossFd2* this, PlayState* play) {
         case DEATH_START:
             this->deathState = DEATH_RETREAT;
             func_80064520(play, &play->csCtx);
-            func_8002DF54(play, &this->actor, 1);
+            Player_SetCsActionWithHaltedActors(play, &this->actor, 1);
             this->deathCamera = Play_CreateSubCamera(play);
             Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
             Play_ChangeCameraStatus(play, this->deathCamera, CAM_STAT_ACTIVE);
@@ -754,7 +754,7 @@ void BossFd2_Death(BossFd2* this, PlayState* play) {
                     this->work[FD2_ACTION_STATE]++;
                     this->camData.speedMod = 0.0f;
                     this->camData.accel = 0.02f;
-                    func_8002DF54(play, &bossFd->actor, 1);
+                    Player_SetCsActionWithHaltedActors(play, &bossFd->actor, 1);
                 }
             }
             if ((bossFd->work[BFD_ACTION_STATE] == BOSSFD_BONES_FALL) && (bossFd->timers[0] == 5)) {
@@ -788,7 +788,7 @@ void BossFd2_Death(BossFd2* this, PlayState* play) {
                 func_800C08AC(play, this->deathCamera, 0);
                 this->deathCamera = 0;
                 func_80064534(play, &play->csCtx);
-                func_8002DF54(play, &this->actor, 7);
+                Player_SetCsActionWithHaltedActors(play, &this->actor, 7);
                 if (!IS_BOSS_RUSH) {
                     Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, 0.0f, 100.0f, 0.0f, 0, 0,
                                        0, WARP_DUNGEON_ADULT);

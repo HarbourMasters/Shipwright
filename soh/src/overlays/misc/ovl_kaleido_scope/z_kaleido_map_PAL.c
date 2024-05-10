@@ -7,6 +7,8 @@
 #include "textures/icon_item_dungeon_static/icon_item_dungeon_static.h"
 #include "textures/icon_item_nes_static/icon_item_nes_static.h"
 
+#include "public/bridge/gfxbridge.h"
+
 void KaleidoScope_DrawDungeonMap(PlayState* play, GraphicsContext* gfxCtx) {
     static void* dungeonItemTexs[] = {
         gQuestIconDungeonBossKeyTex,
@@ -52,7 +54,7 @@ void KaleidoScope_DrawDungeonMap(PlayState* play, GraphicsContext* gfxCtx) {
     s16 stepG;
     s16 stepB;
     u16 rgba16;
-    bool dpad = CVarGetInteger("gDpadPause", 0);
+    bool dpad = CVarGetInteger(CVAR_SETTING("DPadOnPause"), 0);
 
     OPEN_DISPS(gfxCtx);
 
@@ -345,7 +347,7 @@ void KaleidoScope_DrawDungeonMap(PlayState* play, GraphicsContext* gfxCtx) {
     gDPLoadTLUT_pal16(POLY_KAL_DISP++, 0, interfaceCtx->mapPalettesPulse[palettePulseIdx]);
     gDPSetTextureLUT(POLY_KAL_DISP++, G_TT_RGBA16);
 
-    u8 mirroredWorld = CVarGetInteger("gMirroredWorld", 0);
+    u8 mirroredWorld = CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0);
     u8 mirrorMode = mirroredWorld ? G_TX_MIRROR : G_TX_NOMIRROR;
     // Offset the U value of each vertex to be in the mirror boundary for the map textures
     if (mirroredWorld) {
@@ -441,8 +443,8 @@ void KaleidoScope_DrawWorldMap(PlayState* play, GraphicsContext* gfxCtx) {
     s16 stepR;
     s16 stepG;
     s16 stepB;
-    bool dpad = CVarGetInteger("gDpadPause", 0);
-    u8 mirroredWorld = CVarGetInteger("gMirroredWorld", 0);
+    bool dpad = CVarGetInteger(CVAR_SETTING("DPadOnPause"), 0);
+    u8 mirroredWorld = CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0);
     u8 mirrorMode = mirroredWorld ? G_TX_MIRROR : G_TX_NOMIRROR;
 
     OPEN_DISPS(gfxCtx);
@@ -592,19 +594,16 @@ void KaleidoScope_DrawWorldMap(PlayState* play, GraphicsContext* gfxCtx) {
 
         gSP1Quadrangle(POLY_KAL_DISP++, j, j + 2, j + 3, j + 1, 0);
     } else if (HREG(15) == 1) {
-        Gfx* sp1CC = POLY_KAL_DISP;
-        void* mapImage = gWorldMapImageTex;
+        Gfx* gfx = POLY_KAL_DISP;
 
-        // gSPLoadUcodeL(sp1CC++, rspS2DEX)?
-        //gSPLoadUcodeEx(sp1CC++, OS_K0_TO_PHYSICAL(D_80113070), OS_K0_TO_PHYSICAL(D_801579A0), 0x800);
+        gSPLoadUcodeL(gfx++, ucode_s2dex);
 
-        func_8009638C(&sp1CC, mapImage, gWorldMapImageTLUT, 216, 128, G_IM_FMT_CI, G_IM_SIZ_8b, 0x8000, 256,
-                      HREG(13) / 100.0f, HREG(14) / 100.0f);
+        Room_DrawBackground2D(&gfx, gWorldMapImageTex, gWorldMapImageTLUT, 216, 128, G_IM_FMT_CI, G_IM_SIZ_8b,
+                              G_TT_RGBA16, 256, HREG(13) / 100.0f, HREG(14) / 100.0f);
 
-        // gSPLoadUcode(sp1CC++, SysUcode_GetUCode(), SysUcode_GetUCodeData())?
-        gSPLoadUcodeEx(sp1CC++, SysUcode_GetUCode(), SysUcode_GetUCodeData(), 0x800);
+        gSPLoadUcode(gfx++, SysUcode_GetUCode());
 
-        POLY_KAL_DISP = sp1CC;
+        POLY_KAL_DISP = gfx;
     }
 
     if (HREG(15) == 2) {

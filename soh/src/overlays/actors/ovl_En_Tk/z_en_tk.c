@@ -8,12 +8,9 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_tk/object_tk.h"
 #include "soh/frame_interpolation.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
-#define COLLECTFLAG_GRAVEDIGGING_HEART_PIECE 0x19
-#define ITEMGETINFFLAG_GRAVEDIGGING_HEART_PIECE 0x1000
-
-bool heartPieceSpawned;
 
 void EnTk_Init(Actor* thisx, PlayState* play);
 void EnTk_Destroy(Actor* thisx, PlayState* play);
@@ -408,10 +405,6 @@ s32 EnTk_ChooseReward(EnTk* this) {
     f32 luck;
     s32 reward;
 
-    if ((IS_RANDO || CVarGetInteger("gDampeWin", 0)) && !Flags_GetCollectible(gPlayState, COLLECTFLAG_GRAVEDIGGING_HEART_PIECE) && this->heartPieceSpawned == 0) {
-        return 3;
-    }
-
     luck = Rand_ZeroOne();
 
     if (luck < 0.4f) {
@@ -502,12 +495,7 @@ void EnTk_Init(Actor* thisx, PlayState* play) {
 
     CollisionCheck_SetInfo2(&this->actor.colChkInfo, NULL, &sColChkInfoInit);
 
-    if (CVarGetInteger("gDampeAllNight", 0)) {
-        if (!!LINK_IS_ADULT || play->sceneNum != SCENE_GRAVEYARD) {
-            Actor_Kill(&this->actor);
-            return;
-        }
-    } else if (gSaveContext.dayTime <= 0xC000 || gSaveContext.dayTime >= 0xE000 || !!LINK_IS_ADULT || play->sceneNum != SCENE_GRAVEYARD) {
+    if (GameInteractor_Should(VB_DAMPE_IN_GRAVEYARD_DESPAWN, gSaveContext.dayTime <= 0xC000 || gSaveContext.dayTime >= 0xE000 || LINK_IS_ADULT || play->sceneNum != SCENE_GRAVEYARD, this)) {
         Actor_Kill(&this->actor);
         return;
     }
@@ -519,7 +507,6 @@ void EnTk_Init(Actor* thisx, PlayState* play) {
     this->currentReward = -1;
     this->currentSpot = NULL;
     this->actionFunc = EnTk_Rest;
-    heartPieceSpawned = false;
 }
 
 void EnTk_Destroy(Actor* thisx, PlayState* play) {
@@ -599,7 +586,11 @@ void EnTk_Dig(EnTk* this, PlayState* play) {
     Vec3f rewardOrigin;
     Vec3f rewardPos;
     s32 rewardParams[] = {
-        ITEM00_RUPEE_GREEN, ITEM00_RUPEE_BLUE, ITEM00_RUPEE_RED, ITEM00_RUPEE_PURPLE, ITEM00_HEART_PIECE,
+        ITEM00_RUPEE_GREEN, ITEM00_RUPEE_BLUE, ITEM00_RUPEE_RED, ITEM00_RUPEE_PURPLE,
+        // #region SOH [General] Typically this heart piece would have no collectible flag set when it's picked up, but for both randomizer
+        // and gGravediggingTourFix we want to set one, and rely on it instead of the ItemGetInf flag that is set when the heart is spawned
+        ((COLLECTFLAG_GRAVEDIGGING_HEART_PIECE & 0x3F) << 8) | ITEM00_HEART_PIECE,
+        // #endregion
     };
 
     EnTk_DigEff(this);
@@ -610,7 +601,7 @@ void EnTk_Dig(EnTk* this, PlayState* play) {
 
         this->rewardTimer = 0;
 
-        if (this->validDigHere == 1 || IS_RANDO || CVarGetInteger("gDampeWin", 0)) {
+        if (GameInteractor_Should(VB_BE_VALID_GRAVEDIGGING_SPOT, this->validDigHere == 1, this)) {
             rewardOrigin.x = 0.0f;
             rewardOrigin.y = 0.0f;
             rewardOrigin.z = -40.0f;
@@ -624,51 +615,24 @@ void EnTk_Dig(EnTk* this, PlayState* play) {
 
             this->currentReward = EnTk_ChooseReward(this);
 
-            if (this->currentReward == 3) {
-                if (IS_RANDO || CVarGetInteger("gDampeWin", 0)) {
-                    /*
-                    * Upgrade the purple rupee reward to the heart piece if this
-                    * is the first grand prize dig.
-                    */
-                    if (!Flags_GetItemGetInf(ITEMGETINF_1C) && !(IS_RANDO || CVarGetInteger("gDampeWin", 0))) {
-                        Flags_SetItemGetInf(ITEMGETINF_1C);
-                        this->currentReward = 4;
-                    } else if ((IS_RANDO || CVarGetInteger("gDampeWin", 0)) && !Flags_GetCollectible(gPlayState, COLLECTFLAG_GRAVEDIGGING_HEART_PIECE) && this->heartPieceSpawned == 0) {
-                        this->currentReward = 4;
-                    }
-                }
+            if (GameInteractor_Should(VB_BE_DAMPE_GRAVEDIGGING_GRAND_PRIZE, this->currentReward == 3, this)) {
                 /*
-                * Upgrade the purple rupee reward to the heart piece if this
-                * is the first grand prize dig.
-                */
-                // If vanilla itemGetInf flag is not set, it's impossible for the new flag to be set, so return true.
-                // Otherwise if the gGravediggingTourFix is enabled and the new flag hasn't been set, return true.
-                // If true, spawn the heart piece and set the vanilla itemGetInf flag and new temp clear flag.
-                if (!heartPieceSpawned &&
-                    (!(gSaveContext.itemGetInf[1] & ITEMGETINFFLAG_GRAVEDIGGING_HEART_PIECE) ||
-                    CVarGetInteger("gGravediggingTourFix", 0) &&
-                        !Flags_GetCollectible(play, COLLECTFLAG_GRAVEDIGGING_HEART_PIECE))) {
+                 * Upgrade the purple rupee reward to the heart piece if this
+                 * is the first grand prize dig.
+                 */
+                if (GameInteractor_Should(VB_DAMPE_GRAVEDIGGING_GRAND_PRIZE_BE_HEART_PIECE, !Flags_GetItemGetInf(ITEMGETINF_1C), this)) {
+                    Flags_SetItemGetInf(ITEMGETINF_1C);
                     this->currentReward = 4;
-                    gSaveContext.itemGetInf[1] |= ITEMGETINFFLAG_GRAVEDIGGING_HEART_PIECE;
-                    heartPieceSpawned = true;
                 }
             }
 
-            if (IS_RANDO && this->currentReward == 4) {
-                Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ITEM00, rewardPos.x, rewardPos.y, rewardPos.z, 0, 0, 0, 0x1906, true);
-                this->heartPieceSpawned = 1;
-            } else {
-                EnItem00* reward = Item_DropCollectible(play, &rewardPos, rewardParams[this->currentReward]);
-                if (this->currentReward == 4) {
-                    reward->collectibleFlag = COLLECTFLAG_GRAVEDIGGING_HEART_PIECE;
-                }
-            }
+            Item_DropCollectible(play, &rewardPos, rewardParams[this->currentReward]);
         }
     }
 
     if (this->skelAnime.curFrame >= 32.0f && this->rewardTimer == 10) {
         /* Play a reward sound shortly after digging */
-        if (!(IS_RANDO || CVarGetInteger("gDampeWin", 0)) && this->validDigHere == 0) {
+        if (this->validDigHere == 0) {
             /* Bad dig spot */
             Audio_PlayActorSound2(&this->actor, NA_SE_SY_ERROR);
         } else if (this->currentReward == 4) {
