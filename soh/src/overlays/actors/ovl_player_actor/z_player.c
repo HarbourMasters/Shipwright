@@ -12116,7 +12116,8 @@ void func_8084AEEC(Player* this, f32* arg1, f32 arg2, s16 arg3) {
             } else if (gWalkSpeedToggle2) {
                 swimMod *= CVarGetFloat(CVAR_SETTING("WalkModifier.SwimMapping2"), 1.0f);
             }
-        } else {
+        // sControlInput is NULL to prevent inputs while surfacing after obtaining an underwater item so we want to ignore it for that case
+        } else if (sControlInput != NULL) {
             if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_MODIFIER1)) {
                 swimMod *= CVarGetFloat(CVAR_SETTING("WalkModifier.SwimMapping1"), 1.0f);
             } else if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_MODIFIER2)) {
