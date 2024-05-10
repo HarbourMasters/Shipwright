@@ -257,7 +257,7 @@ namespace UIWidgets {
         int val = CVarGetInteger(cvarName, defaultValue);
         if (CustomCheckboxTristate(text, &val, disabled, disabledGraphic)) {
             CVarSetInteger(cvarName, val);
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
             changed = true;
         }
 
