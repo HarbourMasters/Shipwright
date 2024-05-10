@@ -132,21 +132,6 @@ void ObjComb_Break(ObjComb* this, PlayState* play) {
 void ObjComb_ChooseItemDrop(ObjComb* this, PlayState* play) {
     s16 params = this->actor.params & 0x1F;
 
-    if (
-        IS_RANDO &&
-        Randomizer_GetSettingValue(RSK_SHUFFLE_BEEHIVES) &&
-        !Flags_GetRandomizerInf(this->beehiveIdentity.randomizerInf)
-    ) {
-        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(this->beehiveIdentity.randomizerCheck, GI_NONE);
-
-        EnItem00* actor = (EnItem00*)Item_DropCollectible2(play, &this->actor.world.pos, ITEM00_SMALL_KEY);
-        actor->randoCheck = this->beehiveIdentity.randomizerCheck;
-        actor->randoGiEntry = getItemEntry;
-        actor->randoGiEntry.getItemFrom = ITEM_FROM_FREESTANDING;
-        actor->randoInf = this->beehiveIdentity.randomizerInf;
-        return;
-    }
-
     if ((params > 0) || (params < 0x1A)) {
         if (params == 6) {
             if (Flags_GetCollectible(play, (this->actor.params >> 8) & 0x3F)) {
@@ -157,7 +142,7 @@ void ObjComb_ChooseItemDrop(ObjComb* this, PlayState* play) {
         } else if (Rand_ZeroOne() < 0.5f) {
             params = -1;
         }
-        if (params >= 0 && !CVarGetInteger("gNoRandomDrops", 0)) {
+        if (params >= 0 && !CVarGetInteger(CVAR_ENHANCEMENT("NoRandomDrops"), 0)) {
             Item_DropCollectible(play, &this->actor.world.pos, params);
         }
     }
@@ -170,10 +155,6 @@ void ObjComb_Init(Actor* thisx, PlayState* play) {
     Collider_InitJntSph(play, &this->collider);
     Collider_SetJntSph(play, &this->collider, &this->actor, &sJntSphInit, this->colliderItems);
     ObjComb_SetupWait(this);
-    if (IS_RANDO) {
-        s16 respawnData = gSaveContext.respawn[RESPAWN_MODE_RETURN].data & ((1 << 8) - 1);
-        this->beehiveIdentity = Randomizer_IdentifyBeehive(play->sceneNum, (s16)this->actor.world.pos.x, respawnData);
-    }
 }
 
 void ObjComb_Destroy(Actor* thisx, PlayState* play2) {
@@ -191,15 +172,7 @@ void ObjComb_Wait(ObjComb* this, PlayState* play) {
     s32 dmgFlags;
 
     this->unk_1B0 -= 50;
-    if (
-        IS_RANDO &&
-        Randomizer_GetSettingValue(RSK_SHUFFLE_BEEHIVES) &&
-        !Flags_GetRandomizerInf(this->beehiveIdentity.randomizerInf)
-    ) {
-        if (this->unk_1B0 <= -5000) {
-            this->unk_1B0 = 1500;
-        }
-    } else if (this->unk_1B0 < 0) {
+    if (this->unk_1B0 < 0) {
         this->unk_1B0 = 0;
     }
 

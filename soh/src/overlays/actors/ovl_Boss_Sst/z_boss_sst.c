@@ -360,7 +360,7 @@ void BossSst_HeadSetupLurk(BossSst* this) {
 }
 
 void BossSst_HeadLurk(BossSst* this, PlayState* play) {
-    if (CVarGetInteger("gQuickBongoKill", 0)) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("QuickBongoKill"), 0)) {
         this->colliderCyl.base.acFlags |= AC_ON;
     }
 
@@ -371,7 +371,7 @@ void BossSst_HeadLurk(BossSst* this, PlayState* play) {
 
 void BossSst_HeadSetupIntro(BossSst* this, PlayState* play) {
     //Make sure to restore original behavior if the quick kill didn't happen
-    if (CVarGetInteger("gQuickBongoKill", 0)) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("QuickBongoKill"), 0)) {
         this->colliderCyl.base.acFlags &= ~AC_ON;
     }
 
@@ -390,7 +390,7 @@ void BossSst_HeadSetupIntro(BossSst* this, PlayState* play) {
     player->stateFlags1 |= PLAYER_STATE1_INPUT_DISABLED;
 
     func_80064520(play, &play->csCtx);
-    func_8002DF54(play, &this->actor, 8);
+    Player_SetCsActionWithHaltedActors(play, &this->actor, 8);
     sCutsceneCamera = Play_CreateSubCamera(play);
     Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
     Play_ChangeCameraStatus(play, sCutsceneCamera, CAM_STAT_ACTIVE);
@@ -423,7 +423,7 @@ void BossSst_HeadIntro(BossSst* this, PlayState* play) {
         sHands[LEFT]->actor.flags |= ACTOR_FLAG_TARGETABLE;
         player->stateFlags1 &= ~PLAYER_STATE1_INPUT_DISABLED;
         func_80064534(play, &play->csCtx);
-        func_8002DF54(play, &this->actor, 7);
+        Player_SetCsActionWithHaltedActors(play, &this->actor, 7);
         sCameraAt.y += 30.0f;
         sCameraAt.z += 300.0f;
         Play_CameraSetAtEye(play, sCutsceneCamera, &sCameraAt, &sCameraEye);
@@ -1032,7 +1032,7 @@ void BossSst_HeadSetupDeath(BossSst* this, PlayState* play) {
     Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
     Play_ChangeCameraStatus(play, sCutsceneCamera, CAM_STAT_ACTIVE);
     Play_CopyCamera(play, sCutsceneCamera, MAIN_CAM);
-    func_8002DF54(play, &player->actor, 8);
+    Player_SetCsActionWithHaltedActors(play, &player->actor, 8);
     func_80064520(play, &play->csCtx);
     Math_Vec3f_Copy(&sCameraEye, &GET_ACTIVE_CAM(play)->eye);
     this->actionFunc = BossSst_HeadDeath;
@@ -1194,7 +1194,7 @@ void BossSst_HeadFinish(BossSst* this, PlayState* play) {
             Play_ChangeCameraStatus(play, sCutsceneCamera, CAM_STAT_WAIT);
             Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_ACTIVE);
             Play_ClearCamera(play, sCutsceneCamera);
-            func_8002DF54(play, &GET_PLAYER(play)->actor, 7);
+            Player_SetCsActionWithHaltedActors(play, &GET_PLAYER(play)->actor, 7);
             func_80064534(play, &play->csCtx);
             Actor_Kill(&this->actor);
             Actor_Kill(&sHands[LEFT]->actor);
@@ -2665,7 +2665,7 @@ void BossSst_UpdateHead(Actor* thisx, PlayState* play) {
         CollisionCheck_SetAT(play, &play->colChkCtx, &this->colliderJntSph.base);
     }
 
-    if ((this->actionFunc != BossSst_HeadLurk || CVarGetInteger("gQuickBongoKill", 0)) && (this->actionFunc != BossSst_HeadIntro)) {
+    if ((this->actionFunc != BossSst_HeadLurk || CVarGetInteger(CVAR_ENHANCEMENT("QuickBongoKill"), 0)) && (this->actionFunc != BossSst_HeadIntro)) {
         if (this->colliderCyl.base.acFlags & AC_ON) {
             CollisionCheck_SetAC(play, &play->colChkCtx, &this->colliderCyl.base);
         }

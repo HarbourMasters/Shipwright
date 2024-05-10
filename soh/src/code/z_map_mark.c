@@ -113,15 +113,15 @@ void MapMark_DrawForDungeon(PlayState* play) {
         gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, interfaceCtx->minimapAlpha);
         gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, interfaceCtx->minimapAlpha);
 
-        s32 Top_MC_Margin = CVarGetInteger("gHUDMargin_T", 0);
-        s32 Left_MC_Margin = CVarGetInteger("gHUDMargin_L", 0);
-        s32 Right_MC_Margin = CVarGetInteger("gHUDMargin_R", 0);
-        s32 Bottom_MC_Margin = CVarGetInteger("gHUDMargin_B", 0);
+        s32 Top_MC_Margin = CVarGetInteger(CVAR_COSMETIC("HUD.Margin.T"), 0);
+        s32 Left_MC_Margin = CVarGetInteger(CVAR_COSMETIC("HUD.Margin.L"), 0);
+        s32 Right_MC_Margin = CVarGetInteger(CVAR_COSMETIC("HUD.Margin.R"), 0);
+        s32 Bottom_MC_Margin = CVarGetInteger(CVAR_COSMETIC("HUD.Margin.B"), 0);
 
         s32 X_Margins_Minimap_ic;
         s32 Y_Margins_Minimap_ic;
-        if (CVarGetInteger("gMinimapUseMargins", 0) != 0) {
-            if (CVarGetInteger("gMinimapPosType", 0) == 0) {X_Margins_Minimap_ic = Right_MC_Margin;};
+        if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.UseMargins"), 0) != 0) {
+            if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) == 0) {X_Margins_Minimap_ic = Right_MC_Margin;};
             Y_Margins_Minimap_ic = Bottom_MC_Margin;
         } else {
             X_Margins_Minimap_ic = 0;
@@ -141,29 +141,29 @@ void MapMark_DrawForDungeon(PlayState* play) {
                 // The original mark point X originates from the left edge of the map
                 // For mirror mode, we compute the new mark point X by subtracting it from the right side of the
                 // dungeon map and the textures width
-                s16 markPointX = CVarGetInteger("gMirroredWorld", 0) ? 96 - markPoint->x - width : markPoint->x;
+                s16 markPointX = CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0) ? 96 - markPoint->x - width : markPoint->x;
 
                 //Minimap chest / boss icon 
                 const s32 PosX_Minimap_ori = GREG(94) + OTRGetRectDimensionFromRightEdge(markPointX+X_Margins_Minimap_ic) + 204;
                 const s32 PosY_Minimap_ori = GREG(95) + markPoint->y + Y_Margins_Minimap_ic + 140;
-                if (CVarGetInteger("gMinimapPosType", 0) != 0) {
-                    rectTop = (markPoint->y + Y_Margins_Minimap_ic + 140 + CVarGetInteger("gMinimapPosY", 0));
-                    if (CVarGetInteger("gMinimapPosType", 0) == 1) {//Anchor Left
-                        if (CVarGetInteger("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap_ic = Left_MC_Margin;};
+                if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) != 0) {
+                    rectTop = (markPoint->y + Y_Margins_Minimap_ic + 140 + CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosY"), 0));
+                    if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) == 1) {//Anchor Left
+                        if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.UseMargins"), 0) != 0) {X_Margins_Minimap_ic = Left_MC_Margin;};
                         if (play->sceneNum == SCENE_DEKU_TREE || play->sceneNum == SCENE_DODONGOS_CAVERN || play->sceneNum == SCENE_JABU_JABU || 
                             play->sceneNum == SCENE_FOREST_TEMPLE || play->sceneNum == SCENE_FIRE_TEMPLE || play->sceneNum == SCENE_WATER_TEMPLE || 
                             play->sceneNum == SCENE_SPIRIT_TEMPLE || play->sceneNum == SCENE_SHADOW_TEMPLE || play->sceneNum == SCENE_BOTTOM_OF_THE_WELL || 
                             play->sceneNum == SCENE_ICE_CAVERN) {
-                            rectLeft = OTRGetRectDimensionFromLeftEdge(markPointX+CVarGetInteger("gMinimapPosX", 0)+204+X_Margins_Minimap_ic);
+                            rectLeft = OTRGetRectDimensionFromLeftEdge(markPointX+CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0)+204+X_Margins_Minimap_ic);
                         } else {
-                            rectLeft = OTRGetRectDimensionFromLeftEdge(markPointX+CVarGetInteger("gMinimapPosX", 0)+204+X_Margins_Minimap_ic);
+                            rectLeft = OTRGetRectDimensionFromLeftEdge(markPointX+CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0)+204+X_Margins_Minimap_ic);
                         }
-                    } else if (CVarGetInteger("gMinimapPosType", 0) == 2) {//Anchor Right
-                        if (CVarGetInteger("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap_ic = Right_MC_Margin;};
-                        rectLeft = OTRGetRectDimensionFromRightEdge(markPointX+CVarGetInteger("gMinimapPosX", 0)+204+X_Margins_Minimap_ic);
-                    } else if (CVarGetInteger("gMinimapPosType", 0) == 3) {//Anchor None
-                        rectLeft = markPointX+CVarGetInteger("gMinimapPosX", 0)+204+X_Margins_Minimap_ic;
-                    } else if (CVarGetInteger("gMinimapPosType", 0) == 4) {//Hidden
+                    } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) == 2) {//Anchor Right
+                        if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.UseMargins"), 0) != 0) {X_Margins_Minimap_ic = Right_MC_Margin;};
+                        rectLeft = OTRGetRectDimensionFromRightEdge(markPointX+CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0)+204+X_Margins_Minimap_ic);
+                    } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) == 3) {//Anchor None
+                        rectLeft = markPointX+CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0)+204+X_Margins_Minimap_ic;
+                    } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) == 4) {//Hidden
                         rectLeft = -9999;
                     }
                 } else {
