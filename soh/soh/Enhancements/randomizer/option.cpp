@@ -221,7 +221,7 @@ bool Option::RenderTristateCheckbox() const {
     if (CustomCheckboxTristate(name.c_str(), &val, disabled, disabledGraphic)) {
         CVarSetInteger(cvarName.c_str(), val);
         changed = true;
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
     if (!description.empty()) {
         UIWidgets::InsertHelpHoverText(description.c_str());
