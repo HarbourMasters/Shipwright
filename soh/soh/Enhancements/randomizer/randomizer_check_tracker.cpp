@@ -38,9 +38,9 @@ using json = nlohmann::json;
 
 void to_json(json& j, const RandomizerCheckTrackerData& rctd) {
     j = json {
-        { "status", rctd.status == RCSHOW_COLLECTED ? RCSHOW_SAVED : rctd.status }, 
-        { "skipped", rctd.skipped }, 
-        { "price", rctd.price }, 
+        { "status", rctd.status == RCSHOW_COLLECTED ? RCSHOW_SAVED : rctd.status },
+        { "skipped", rctd.skipped },
+        { "price", rctd.price },
         { "hintItem", rctd.hintItem }};
     }
 
@@ -114,6 +114,23 @@ std::map<SceneID, RandomizerCheckArea> DungeonRCAreasBySceneID = {
     {SCENE_INSIDE_GANONS_CASTLE,   RCAREA_GANONS_CASTLE},
 };
 
+// Dungeon entrances with obvious visual differences between MQ and vanilla qualifying as spoiling on sight
+std::vector<uint32_t> spoilingEntrances = {
+    0x0000, // ENTR_DEKU_TREE_0
+    0x0467, // ENTR_DODONGOS_CAVERN_1
+    0x0028, // ENTR_JABU_JABU_0
+    0x0407, // ENTR_JABU_JABU_1
+    0x0169, // ENTR_FOREST_TEMPLE_0
+    0x0165, // ENTR_FIRE_TEMPLE_0
+    0x0175, // ENTR_FIRE_TEMPLE_1
+    0x0423, // ENTR_WATER_TEMPLE_1
+    0x0082, // ENTR_SPIRIT_TEMPLE_0
+    0x02B2, // ENTR_SHADOW_TEMPLE_1
+    0x0088, // ENTR_ICE_CAVERN_0
+    0x0008, // ENTR_GERUDO_TRAINING_GROUNDS_0
+    0x0467  // ENTR_INSIDE_GANONS_CASTLE_0
+};
+
 std::map<RandomizerCheckArea, std::vector<RandomizerCheck>> checksByArea;
 bool areasFullyChecked[RCAREA_INVALID];
 u32 areasSpoiled = 0;
@@ -128,6 +145,8 @@ RandomizerCheckArea currentArea = RCAREA_INVALID;
 OSContPad* trackerButtonsPressed;
 std::unordered_map<RandomizerCheck, std::string> checkNameOverrides;
 
+bool ShouldShowCheck(RandomizerCheck rc);
+bool ShouldHideArea(RandomizerCheckArea rcArea);
 void BeginFloatWindows(std::string UniqueName, bool& open, ImGuiWindowFlags flags = 0);
 bool CompareChecks(RandomizerCheck, RandomizerCheck);
 bool CheckByArea(RandomizerCheckArea);
@@ -196,6 +215,7 @@ Color_RGBA8 Color_Saved_Extra           = {   0, 185,   0, 255 }; // Green
 
 std::vector<uint32_t> buttons = { BTN_A, BTN_B, BTN_CUP,   BTN_CDOWN, BTN_CLEFT, BTN_CRIGHT, BTN_L,
                                   BTN_Z, BTN_R, BTN_START, BTN_DUP,   BTN_DDOWN, BTN_DLEFT,  BTN_DRIGHT };
+static ImGuiTextFilter checkSearch;
 
 void DefaultCheckData(RandomizerCheck rc) {
     gSaveContext.checkTrackerData[rc].status = RCSHOW_UNCHECKED;
@@ -270,6 +290,10 @@ void SetCheckCollected(RandomizerCheck rc) {
         }
     }
     SaveManager::Instance->SaveSection(gSaveContext.fileNum, sectionId, true);
+
+    if (!IsAreaSpoiled(loc->GetArea())) {
+        SetAreaSpoiled(loc->GetArea());
+    }
 
     doAreaScroll = true;
     UpdateOrdering(loc->GetArea());
@@ -420,32 +444,25 @@ bool HasItemBeenCollected(RandomizerCheck rc) {
     case SpoilerCollectionCheckType::SPOILER_CHK_COLLECTABLE:
         return (gPlayState->sceneNum == scene && gPlayState->actorCtx.flags.collect & (1 << flag)) ||
                gSaveContext.sceneFlags[scene].collect & (1 << flag);
-    case SpoilerCollectionCheckType::SPOILER_CHK_MERCHANT:
     case SpoilerCollectionCheckType::SPOILER_CHK_SHOP_ITEM:
-    case SpoilerCollectionCheckType::SPOILER_CHK_COW:
     case SpoilerCollectionCheckType::SPOILER_CHK_FISH:
-    case SpoilerCollectionCheckType::SPOILER_CHK_SCRUB:
     case SpoilerCollectionCheckType::SPOILER_CHK_RANDOMIZER_INF:
     case SpoilerCollectionCheckType::SPOILER_CHK_MASTER_SWORD:
         return Flags_GetRandomizerInf(OTRGlobals::Instance->gRandomizer->GetRandomizerInfFromCheck(rc));
     case SpoilerCollectionCheckType::SPOILER_CHK_EVENT_CHK_INF:
         return gSaveContext.eventChkInf[flag / 16] & (0x01 << flag % 16);
-    case SpoilerCollectionCheckType::SPOILER_CHK_GERUDO_MEMBERSHIP_CARD:
-        return CHECK_FLAG_ALL(gSaveContext.eventChkInf[0x09], 0x0F);
     case SpoilerCollectionCheckType::SPOILER_CHK_GOLD_SKULLTULA:
         return GET_GS_FLAGS(scene) & flag;
     case SpoilerCollectionCheckType::SPOILER_CHK_INF_TABLE:
         return gSaveContext.infTable[scene] & INDEX_TO_16BIT_LITTLE_ENDIAN_BITMASK(flag);
     case SpoilerCollectionCheckType::SPOILER_CHK_ITEM_GET_INF:
         return gSaveContext.itemGetInf[flag / 16] & INDEX_TO_16BIT_LITTLE_ENDIAN_BITMASK(flag);
-    case SpoilerCollectionCheckType::SPOILER_CHK_MAGIC_BEANS:
-        return BEANS_BOUGHT >= 10;
     case SpoilerCollectionCheckType::SPOILER_CHK_NONE:
         return false;
     case SpoilerCollectionCheckType::SPOILER_CHK_GRAVEDIGGER:
         // Gravedigger has a fix in place that means one of two save locations. Check both.
         return (gSaveContext.itemGetInf[1] & 0x1000) || // vanilla flag
-            ((IS_RANDO || CVarGetInteger("gGravediggingTourFix", 0)) &&
+            ((IS_RANDO || CVarGetInteger(CVAR_ENHANCEMENT("GravediggingTourFix"), 0)) &&
                 gSaveContext.sceneFlags[scene].collect & (1 << flag) || (gPlayState->actorCtx.flags.collect & (1 << flag))); // rando/fix flag
     default:
         return false;
@@ -489,6 +506,15 @@ void CheckTrackerLoadGame(int32_t fileNum) {
             if (entry.GetShortName().starts_with("Child")) {
                 checkNameOverrides[rc] = entry.GetShortName().substr(6);
             }
+        }
+    }
+    for (int i = RCAREA_KOKIRI_FOREST; i < RCAREA_INVALID; i++) {
+        if (!IsAreaSpoiled(static_cast<RandomizerCheckArea>(i)) && (RandomizerCheckObjects::AreaIsOverworld(static_cast<RandomizerCheckArea>(i)) || !IS_RANDO ||
+            OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_RANDOM) == RO_MQ_DUNGEONS_NONE ||
+            OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_RANDOM) == RO_MQ_DUNGEONS_SELECTION ||
+            (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_RANDOM) == RO_MQ_DUNGEONS_SET_NUMBER &&
+            OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_COUNT) == 12))) {
+            SetAreaSpoiled(static_cast<RandomizerCheckArea>(i));
         }
     }
     if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LINKS_POCKET) != RO_LINKS_POCKET_NOTHING && IS_RANDO) {
@@ -556,6 +582,9 @@ void CheckTrackerTransition(uint32_t sceneNum) {
         case SCENE_ZORA_SHOP:
             SetShopSeen(sceneNum, false);
             break;
+    }
+    if (!IsAreaSpoiled(currentArea) && (RandomizerCheckObjects::AreaIsOverworld(currentArea) || std::find(spoilingEntrances.begin(), spoilingEntrances.end(), gPlayState->nextEntranceIndex) != spoilingEntrances.end())) {
+        SetAreaSpoiled(currentArea);
     }
 }
 
@@ -750,11 +779,8 @@ void CheckTrackerFlagSet(int16_t flagType, int32_t flag) {
         Rando::SpoilerCollectionCheck scCheck = loc.GetCollectionCheck();
         SpoilerCollectionCheckType scCheckType = scCheck.type;
         if (checkMatchType == SpoilerCollectionCheckType::SPOILER_CHK_RANDOMIZER_INF &&
-              (scCheckType == SpoilerCollectionCheckType::SPOILER_CHK_MERCHANT ||
-               scCheckType == SpoilerCollectionCheckType::SPOILER_CHK_SHOP_ITEM ||
-               scCheckType == SpoilerCollectionCheckType::SPOILER_CHK_COW ||
+               (scCheckType == SpoilerCollectionCheckType::SPOILER_CHK_SHOP_ITEM ||
                scCheckType == SpoilerCollectionCheckType::SPOILER_CHK_FISH ||
-               scCheckType == SpoilerCollectionCheckType::SPOILER_CHK_SCRUB ||
                scCheckType == SpoilerCollectionCheckType::SPOILER_CHK_MASTER_SWORD ||
                scCheckType == SpoilerCollectionCheckType::SPOILER_CHK_RANDOMIZER_INF)) {
             if (flag == OTRGlobals::Instance->gRandomizer->GetRandomizerInfFromCheck(loc.GetRandomizerCheck())) {
@@ -776,6 +802,7 @@ void CheckTrackerFlagSet(int16_t flagType, int32_t flag) {
 
 void InitTrackerData(bool isDebug) {
     TrySetAreas();
+    areasSpoiled = 0;
     for (auto& loc : Rando::StaticData::GetLocationTable()) {
         if (loc.GetRandomizerCheck() != RC_UNKNOWN_CHECK && loc.GetRandomizerCheck() != RC_MAX) {
             DefaultCheckData(loc.GetRandomizerCheck());
@@ -802,6 +829,7 @@ void SaveTrackerData(SaveContext* saveContext, int sectionID, bool gameSave) {
             SaveManager::Instance->SaveData("hintItem", saveContext->checkTrackerData[i].hintItem);
         });
     });
+    SaveManager::Instance->SaveData("areasSpoiled", areasSpoiled);
 }
 
 void SaveFile(SaveContext* saveContext, int sectionID, bool fullSave) {
@@ -817,6 +845,7 @@ void LoadFile() {
             SaveManager::Instance->LoadData("hintItem", gSaveContext.checkTrackerData[i].hintItem);
         });
     });
+    SaveManager::Instance->LoadData("areasSpoiled", areasSpoiled);
 }
 
 void Teardown() {
@@ -828,14 +857,23 @@ void Teardown() {
     lastLocationChecked = RC_UNKNOWN_CHECK;
 }
 
+bool IsAreaSpoiled(RandomizerCheckArea rcArea) {
+    return areasSpoiled & (1 << rcArea);
+}
+
+void SetAreaSpoiled(RandomizerCheckArea rcArea) {
+    areasSpoiled |= (1 << rcArea);
+    SaveManager::Instance->SaveSection(gSaveContext.fileNum, sectionId, true);
+}
+
 void UpdateCheck(uint32_t check, RandomizerCheckTrackerData data) {
     auto area = Rando::StaticData::GetLocation(static_cast<RandomizerCheck>(check))->GetArea();
-    if ((!gSaveContext.checkTrackerData[check].skipped && data.skipped) || 
-        ((gSaveContext.checkTrackerData[check].status != RCSHOW_COLLECTED && gSaveContext.checkTrackerData[check].status != RCSHOW_SAVED) && 
+    if ((!gSaveContext.checkTrackerData[check].skipped && data.skipped) ||
+        ((gSaveContext.checkTrackerData[check].status != RCSHOW_COLLECTED && gSaveContext.checkTrackerData[check].status != RCSHOW_SAVED) &&
             (data.status == RCSHOW_COLLECTED || data.status == RCSHOW_SAVED))) {
         areaChecksGotten[area]++;
-    } else if ((gSaveContext.checkTrackerData[check].skipped && !data.skipped) || 
-        ((gSaveContext.checkTrackerData[check].status == RCSHOW_COLLECTED || gSaveContext.checkTrackerData[check].status == RCSHOW_SAVED) && 
+    } else if ((gSaveContext.checkTrackerData[check].skipped && !data.skipped) ||
+        ((gSaveContext.checkTrackerData[check].status == RCSHOW_COLLECTED || gSaveContext.checkTrackerData[check].status == RCSHOW_SAVED) &&
             (data.status != RCSHOW_COLLECTED && data.status != RCSHOW_SAVED))) {
         areaChecksGotten[area]--;
     }
@@ -846,19 +884,15 @@ void UpdateCheck(uint32_t check, RandomizerCheckTrackerData data) {
 void CheckTrackerWindow::DrawElement() {
     ImGui::SetNextWindowSize(ImVec2(400, 540), ImGuiCond_FirstUseEver);
 
-    if (!initialized && (gPlayState == nullptr || gSaveContext.fileNum < 0 || gSaveContext.fileNum > 2)) {
-        return;
-    }
-
-    if (CVarGetInteger("gCheckTrackerWindowType", TRACKER_WINDOW_WINDOW) == TRACKER_WINDOW_FLOATING) {
-        if (CVarGetInteger("gCheckTrackerShowOnlyPaused", 0) && (gPlayState == nullptr || gPlayState->pauseCtx.state == 0)) {
+    if (CVarGetInteger(CVAR_TRACKER_CHECK("WindowType"), TRACKER_WINDOW_WINDOW) == TRACKER_WINDOW_FLOATING) {
+        if (CVarGetInteger(CVAR_TRACKER_CHECK("ShowOnlyPaused"), 0) && (gPlayState == nullptr || gPlayState->pauseCtx.state == 0)) {
             return;
         }
 
-        if (CVarGetInteger("gCheckTrackerDisplayType", TRACKER_DISPLAY_ALWAYS) == TRACKER_DISPLAY_COMBO_BUTTON) {
-            int comboButton1Mask = buttons[CVarGetInteger("gCheckTrackerComboButton1", TRACKER_COMBO_BUTTON_L)];
-            int comboButton2Mask = buttons[CVarGetInteger("gCheckTrackerComboButton2", TRACKER_COMBO_BUTTON_R)];
-            OSContPad* trackerButtonsPressed = LUS::Context::GetInstance()->GetControlDeck()->GetPads();
+        if (CVarGetInteger(CVAR_TRACKER_CHECK("DisplayType"), TRACKER_DISPLAY_ALWAYS) == TRACKER_DISPLAY_COMBO_BUTTON) {
+            int comboButton1Mask = buttons[CVarGetInteger(CVAR_TRACKER_CHECK("ComboButton1"), TRACKER_COMBO_BUTTON_L)];
+            int comboButton2Mask = buttons[CVarGetInteger(CVAR_TRACKER_CHECK("ComboButton2"), TRACKER_COMBO_BUTTON_R)];
+            OSContPad* trackerButtonsPressed = Ship::Context::GetInstance()->GetControlDeck()->GetPads();
             bool comboButtonsHeld = trackerButtonsPressed != nullptr &&
                                     trackerButtonsPressed[0].button & comboButton1Mask &&
                                     trackerButtonsPressed[0].button & comboButton2Mask;
@@ -870,7 +904,7 @@ void CheckTrackerWindow::DrawElement() {
 
     BeginFloatWindows("Check Tracker", mIsVisible, ImGuiWindowFlags_NoScrollbar);
 
-    if (!GameInteractor::IsSaveLoaded()) {
+    if (!GameInteractor::IsSaveLoaded() || !initialized) {
         ImGui::Text("Waiting for file load..."); //TODO Language
         EndFloatWindows();
         return;
@@ -880,8 +914,6 @@ void CheckTrackerWindow::DrawElement() {
     if (gPlayState != nullptr) {
         sceneId = (SceneID)gPlayState->sceneNum;
     }
-
-    areasSpoiled |= (1 << currentArea);
 
     //Quick Options
 #ifdef __WIIU__
@@ -901,7 +933,7 @@ void CheckTrackerWindow::DrawElement() {
     ImGui::TableNextRow(0, headerHeight);
     ImGui::TableNextColumn();
     UIWidgets::EnhancementCheckbox(
-        "Show Hidden Items", "gCheckTrackerOptionShowHidden", false,
+        "Show Hidden Items", CVAR_TRACKER_CHECK("ShowHidden"), false,
         "When active, items will show hidden checks by default when updated to this state.");
     UIWidgets::PaddedSeparator();
     if (ImGui::Button("Expand All")) {
@@ -914,6 +946,14 @@ void CheckTrackerWindow::DrawElement() {
         optExpandAll = false;
         optCollapseAll = true;
     }
+    ImGui::SameLine();
+    if (ImGui::Button("Clear")) {
+        checkSearch.Clear();
+        doAreaScroll = true;
+    }
+    UIWidgets::Tooltip("Clear the search field");
+    checkSearch.Draw();
+
     UIWidgets::PaddedSeparator();
 
     //Checks Section Lead-in
@@ -932,21 +972,22 @@ void CheckTrackerWindow::DrawElement() {
     RainbowTick();
     bool doDraw = false;
     bool thisAreaFullyChecked = false;
-    bool showHidden = CVarGetInteger("gCheckTrackerOptionShowHidden", 0);
-    bool hideIncomplete = CVarGetInteger("gCheckTrackerAreaIncompleteHide", 0);
-    bool hideComplete = CVarGetInteger("gCheckTrackerAreaCompleteHide", 0);
+    bool showHidden = CVarGetInteger(CVAR_TRACKER_CHECK("ShowHidden"), 0);
+    bool hideIncomplete = CVarGetInteger(CVAR_TRACKER_CHECK("AreaIncomplete.Hide"), 0);
+    bool hideComplete = CVarGetInteger(CVAR_TRACKER_CHECK("AreaComplete.Hide"), 0);
     bool collapseLogic;
     bool doingCollapseOrExpand = optExpandAll || optCollapseAll;
     bool isThisAreaSpoiled;
     RandomizerCheckArea lastArea = RCAREA_INVALID;
-    Color_RGBA8 areaCompleteColor = CVarGetColor("gCheckTrackerAreaMainCompleteColor", Color_Main_Default);
-    Color_RGBA8 areaIncompleteColor = CVarGetColor("gCheckTrackerAreaMainIncompleteColor", Color_Main_Default);
-    Color_RGBA8 extraCompleteColor = CVarGetColor("gCheckTrackerAreaExtraCompleteColor", Color_Area_Complete_Extra_Default);
-    Color_RGBA8 extraIncompleteColor = CVarGetColor("gCheckTrackerAreaExtraIncompleteColor", Color_Area_Incomplete_Extra_Default);
+    Color_RGBA8 areaCompleteColor = CVarGetColor(CVAR_TRACKER_CHECK("AreaComplete.MainColor"), Color_Main_Default);
+    Color_RGBA8 areaIncompleteColor = CVarGetColor(CVAR_TRACKER_CHECK("AreaIncomplete.MainColor"), Color_Main_Default);
+    Color_RGBA8 extraCompleteColor = CVarGetColor(CVAR_TRACKER_CHECK("AreaComplete.ExtraColor"), Color_Area_Complete_Extra_Default);
+    Color_RGBA8 extraIncompleteColor = CVarGetColor(CVAR_TRACKER_CHECK("AreaIncomplete.ExtraColor"), Color_Area_Incomplete_Extra_Default);
     Color_RGBA8 mainColor;
     Color_RGBA8 extraColor;
     std::string stemp;
-    s32 areaMask = 1;
+
+    bool shouldHideFilteredAreas = CVarGetInteger(CVAR_TRACKER_CHECK("HideFilteredAreas"), 1);
 
     for (auto& [rcArea, checks] : checksByArea) {
         RandomizerCheckArea thisArea = currentArea;
@@ -961,10 +1002,9 @@ void CheckTrackerWindow::DrawElement() {
             previousShowHidden = showHidden;
             doAreaScroll = true;
         }
-        if (!showHidden && (
-            hideComplete && thisAreaFullyChecked || 
-            hideIncomplete && !thisAreaFullyChecked
-        )) {
+        if ((shouldHideFilteredAreas && ShouldHideArea(rcArea)) ||
+            (!showHidden && ((hideComplete && thisAreaFullyChecked) || (hideIncomplete && !thisAreaFullyChecked)))
+        ) {
             doDraw = false;
         } else {
             //Get the colour for the area
@@ -999,11 +1039,7 @@ void CheckTrackerWindow::DrawElement() {
             ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(extraColor.r / 255.0f, extraColor.g / 255.0f,
                                                         extraColor.b / 255.0f, extraColor.a / 255.0f));
 
-            isThisAreaSpoiled = areasSpoiled & areaMask || CVarGetInteger("gCheckTrackerOptionMQSpoilers", 0) || !IS_RANDO ||
-                                OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_RANDOM) == RO_MQ_DUNGEONS_NONE ||
-                                OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_RANDOM) == RO_MQ_DUNGEONS_SELECTION ||
-                               (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_RANDOM) == RO_MQ_DUNGEONS_SET_NUMBER &&
-                                OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_COUNT) == 12);
+            isThisAreaSpoiled = IsAreaSpoiled(rcArea) || CVarGetInteger(CVAR_TRACKER_CHECK("MQSpoilers"), 0);
 
             if (isThisAreaSpoiled) {
                 if (showVOrMQ && RandomizerCheckObjects::AreaIsDungeon(rcArea)) {
@@ -1026,15 +1062,15 @@ void CheckTrackerWindow::DrawElement() {
                 doAreaScroll = false;
             }
             for (auto rc : checks) {
-                if (doDraw && isThisAreaSpoiled && IsVisibleInCheckTracker(rc)) {
+                if (doDraw && isThisAreaSpoiled && ShouldShowCheck(rc)) {
                     DrawLocation(rc);
                 }
             }
+
             if (doDraw) {
                 ImGui::TreePop();
             }
         }
-        areaMask <<= 1;
     }
 
     ImGui::EndTable(); //Checks Lead-out
@@ -1046,6 +1082,28 @@ void CheckTrackerWindow::DrawElement() {
     }
 }
 
+bool ShouldHideArea(RandomizerCheckArea rcArea) {
+    if (checkSearch.Filters.Size == 0 || checkSearch.PassFilter(RandomizerCheckObjects::GetRCAreaName(rcArea).c_str())) {
+        return false;
+    }
+    for (auto check : checksByArea[rcArea]) {
+        if (ShouldShowCheck(check)) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+bool ShouldShowCheck(RandomizerCheck check) {
+    return (
+        IsVisibleInCheckTracker(check) && 
+        (checkSearch.Filters.Size == 0 ||
+        checkSearch.PassFilter(RandomizerCheckObjects::GetRCAreaName(Rando::StaticData::GetLocation(check)->GetArea()).c_str()) ||
+        checkSearch.PassFilter(Rando::StaticData::GetLocation(check)->GetShortName().c_str()))
+    );
+}
+
 // Windowing stuff
 void BeginFloatWindows(std::string UniqueName, bool& open, ImGuiWindowFlags flags) {
     ImGuiWindowFlags windowFlags = flags;
@@ -1055,12 +1113,12 @@ void BeginFloatWindows(std::string UniqueName, bool& open, ImGuiWindowFlags flag
             ImGuiWindowFlags_AlwaysVerticalScrollbar | ImGuiWindowFlags_NoFocusOnAppearing;
     }
 
-    if (CVarGetInteger("gCheckTrackerWindowType", TRACKER_WINDOW_WINDOW) == TRACKER_WINDOW_FLOATING) {
+    if (CVarGetInteger(CVAR_TRACKER_CHECK("WindowType"), TRACKER_WINDOW_WINDOW) == TRACKER_WINDOW_FLOATING) {
         ImGui::SetNextWindowViewport(ImGui::GetMainViewport()->ID);
         windowFlags |= ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoTitleBar |
                        ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoScrollbar;
 
-        if (!CVarGetInteger("gCheckTrackerHudEditMode", 0)) {
+        if (!CVarGetInteger(CVAR_TRACKER_CHECK("Draggable"), 0)) {
             windowFlags |= ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoMove;
         }
     }
@@ -1189,7 +1247,7 @@ void LoadSettings() {
     fishsanityAgeSplit = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY_AGE_SPLIT);
 }
 
-bool IsVisibleInCheckTracker(RandomizerCheck rc) {
+bool IsCheckShuffled(RandomizerCheck rc) {
     Rando::Location* loc = Rando::StaticData::GetLocation(rc);
     if (IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LOGIC_RULES) != RO_LOGIC_VANILLA) {
         return
@@ -1203,7 +1261,7 @@ bool IsVisibleInCheckTracker(RandomizerCheck rc) {
                 loc->GetQuest() == RCQUEST_MQ && OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(loc->GetScene())->IsMQ() ||
                 loc->GetQuest() == RCQUEST_VANILLA && OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(loc->GetScene())->IsVanilla()
                 ) &&
-            (loc->GetRCType() != RCTYPE_SHOP || (showShops && (!hideShopRightChecks || hideShopRightChecks && loc->GetActorParams() > 0x03))) &&
+            (loc->GetRCType() != RCTYPE_SHOP || (showShops && loc->GetActorParams() > 0x03)) &&
             (loc->GetRandomizerCheck() != RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS) &&
             (rc != RC_TRIFORCE_COMPLETED || !hideTriforceCompleted) &&
             (rc != RC_GIFT_FROM_SAGES || !IS_RANDO) &&
@@ -1252,11 +1310,17 @@ bool IsVisibleInCheckTracker(RandomizerCheck rc) {
     return false;
 }
 
+bool IsVisibleInCheckTracker(RandomizerCheck rc) {
+    auto loc = Rando::StaticData::GetLocation(rc);
+    return IsCheckShuffled(rc) || (loc->GetRCType() == RCTYPE_SKULL_TOKEN && alwaysShowGS) ||
+           (loc->GetRCType() == RCTYPE_SHOP && (showShops && (!hideShopRightChecks)));
+}
+
 void UpdateInventoryChecks() {
-    //For all the areas with compasses, if you have one, spoil the area
+    //For all the areas with maps, if you have one, spoil the area
     for (auto [scene, area] : DungeonRCAreasBySceneID) {
         if (CHECK_DUNGEON_ITEM(DUNGEON_MAP, scene)) {
-            areasSpoiled |= (1 << area);
+            SetAreaSpoiled(area);
         }
     }
 }
@@ -1266,9 +1330,6 @@ void UpdateAreaFullyChecked(RandomizerCheckArea area) {
 
 void UpdateAreas(RandomizerCheckArea area) {
     areasFullyChecked[area] = areaChecksGotten[area] == checksByArea.find(area)->second.size();
-    if (areaChecksGotten[area] != 0 || RandomizerCheckObjects::AreaIsOverworld(area)) {
-        areasSpoiled |= (1 << area);
-    }
 }
 
 void UpdateAllOrdering() {
@@ -1337,71 +1398,76 @@ bool IsHeartPiece(GetItemID giid) {
 }
 
 void DrawLocation(RandomizerCheck rc) {
-    Color_RGBA8 mainColor; 
+    Color_RGBA8 mainColor;
     Color_RGBA8 extraColor;
     std::string txt;
-    bool showHidden = CVarGetInteger("gCheckTrackerOptionShowHidden", 0);
+    bool showHidden = CVarGetInteger(CVAR_TRACKER_CHECK("ShowHidden"), 0);
     Rando::Location* loc = Rando::StaticData::GetLocation(rc);
     Rando::ItemLocation* itemLoc = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
     RandomizerCheckTrackerData checkData = gSaveContext.checkTrackerData[rc];
     RandomizerCheckStatus status = checkData.status;
+
+    if (itemLoc->HasObtained()) {
+        status = RCSHOW_COLLECTED;
+    }
+
     bool skipped = checkData.skipped;
     if (status == RCSHOW_COLLECTED) {
-        if (!showHidden && CVarGetInteger("gCheckTrackerCollectedHide", 0)) {
+        if (!showHidden && CVarGetInteger(CVAR_TRACKER_CHECK("Collected.Hide"), 0)) {
             return;
         }
         mainColor =
             !IsHeartPiece((GetItemID)Rando::StaticData::RetrieveItem(loc->GetVanillaItem()).GetItemID()) && !IS_RANDO
-                ? CVarGetColor("gCheckTrackerCollectedExtraColor", Color_Collected_Extra_Default)
-                : CVarGetColor("gCheckTrackerCollectedMainColor", Color_Main_Default);
-        extraColor = CVarGetColor("gCheckTrackerCollectedExtraColor", Color_Collected_Extra_Default);
+                ? CVarGetColor(CVAR_TRACKER_CHECK("Collected.ExtraColor"), Color_Collected_Extra_Default)
+                : CVarGetColor(CVAR_TRACKER_CHECK("Collected.MainColor"), Color_Main_Default);
+        extraColor = CVarGetColor(CVAR_TRACKER_CHECK("Collected.ExtraColor"), Color_Collected_Extra_Default);
     } else if (status == RCSHOW_SAVED) {
-        if (!showHidden && CVarGetInteger("gCheckTrackerSavedHide", 0)) {
+        if (!showHidden && CVarGetInteger(CVAR_TRACKER_CHECK("Saved.Hide"), 0)) {
             return;
         }
         mainColor =
             !IsHeartPiece((GetItemID)Rando::StaticData::RetrieveItem(loc->GetVanillaItem()).GetItemID()) && !IS_RANDO
-                ? CVarGetColor("gCheckTrackerSavedExtraColor", Color_Saved_Extra_Default)
-                : CVarGetColor("gCheckTrackerSavedMainColor", Color_Main_Default);
-        extraColor = CVarGetColor("gCheckTrackerSavedExtraColor", Color_Saved_Extra_Default);
+                ? CVarGetColor(CVAR_TRACKER_CHECK("Saved.ExtraColor"), Color_Saved_Extra_Default)
+                : CVarGetColor(CVAR_TRACKER_CHECK("Saved.MainColor"), Color_Main_Default);
+        extraColor = CVarGetColor(CVAR_TRACKER_CHECK("Saved.ExtraColor"), Color_Saved_Extra_Default);
     } else if (skipped) {
-        if (!showHidden && CVarGetInteger("gCheckTrackerSkippedHide", 0)) {
+        if (!showHidden && CVarGetInteger(CVAR_TRACKER_CHECK("Skipped.Hide"), 0)) {
             return;
         }
         mainColor =
             !IsHeartPiece((GetItemID)Rando::StaticData::RetrieveItem(loc->GetVanillaItem()).GetItemID()) && !IS_RANDO
-                ? CVarGetColor("gCheckTrackerSkippedExtraColor", Color_Skipped_Extra_Default)
-                : CVarGetColor("gCheckTrackerSkippedMainColor", Color_Main_Default);
-        extraColor = CVarGetColor("gCheckTrackerSkippedExtraColor", Color_Skipped_Extra_Default);
+                ? CVarGetColor(CVAR_TRACKER_CHECK("Skipped.ExtraColor"), Color_Skipped_Extra_Default)
+                : CVarGetColor(CVAR_TRACKER_CHECK("Skipped.MainColor"), Color_Main_Default);
+        extraColor = CVarGetColor(CVAR_TRACKER_CHECK("Skipped.ExtraColor"), Color_Skipped_Extra_Default);
     } else if (status == RCSHOW_SEEN || status == RCSHOW_IDENTIFIED) {
-        if (!showHidden && CVarGetInteger("gCheckTrackerSeenHide", 0)) {
+        if (!showHidden && CVarGetInteger(CVAR_TRACKER_CHECK("Seen.Hide"), 0)) {
             return;
         }
         mainColor =
             !IsHeartPiece((GetItemID)Rando::StaticData::RetrieveItem(loc->GetVanillaItem()).GetItemID()) && !IS_RANDO
-                ? CVarGetColor("gCheckTrackerSeenExtraColor", Color_Seen_Extra_Default)
-                : CVarGetColor("gCheckTrackerSeenMainColor", Color_Main_Default);
-        extraColor = CVarGetColor("gCheckTrackerSeenExtraColor", Color_Seen_Extra_Default);
+                ? CVarGetColor(CVAR_TRACKER_CHECK("Seen.ExtraColor"), Color_Seen_Extra_Default)
+                : CVarGetColor(CVAR_TRACKER_CHECK("Seen.MainColor"), Color_Main_Default);
+        extraColor = CVarGetColor(CVAR_TRACKER_CHECK("Seen.ExtraColor"), Color_Seen_Extra_Default);
     } else if (status == RCSHOW_SCUMMED) {
-        if (!showHidden && CVarGetInteger("gCheckTrackerKnownHide", 0)) {
+        if (!showHidden && CVarGetInteger(CVAR_TRACKER_CHECK("Scummed.Hide"), 0)) {
             return;
         }
         mainColor =
             !IsHeartPiece((GetItemID)Rando::StaticData::RetrieveItem(loc->GetVanillaItem()).GetItemID()) && !IS_RANDO
-                ? CVarGetColor("gCheckTrackerScummedExtraColor", Color_Scummed_Extra_Default)
-                : CVarGetColor("gCheckTrackerScummedMainColor", Color_Main_Default);
-        extraColor = CVarGetColor("gCheckTrackerScummedExtraColor", Color_Scummed_Extra_Default);
+                ? CVarGetColor(CVAR_TRACKER_CHECK("Scummed.ExtraColor"), Color_Scummed_Extra_Default)
+                : CVarGetColor(CVAR_TRACKER_CHECK("Scummed.MainColor"), Color_Main_Default);
+        extraColor = CVarGetColor(CVAR_TRACKER_CHECK("Scummed.ExtraColor"), Color_Scummed_Extra_Default);
     } else if (status == RCSHOW_UNCHECKED) {
-        if (!showHidden && CVarGetInteger("gCheckTrackerUncheckedHide", 0)) {
+        if (!showHidden && CVarGetInteger(CVAR_TRACKER_CHECK("Unchecked.Hide"), 0)) {
             return;
         }
         mainColor =
             !IsHeartPiece((GetItemID)Rando::StaticData::RetrieveItem(loc->GetVanillaItem()).GetItemID()) && !IS_RANDO
-                ? CVarGetColor("gCheckTrackerUncheckedExtraColor", Color_Unchecked_Extra_Default)
-                : CVarGetColor("gCheckTrackerUncheckedMainColor", Color_Main_Default);
-        extraColor = CVarGetColor("gCheckTrackerUncheckedExtraColor",  Color_Unchecked_Extra_Default);
+                ? CVarGetColor(CVAR_TRACKER_CHECK("Unchecked.ExtraColor"), Color_Unchecked_Extra_Default)
+                : CVarGetColor(CVAR_TRACKER_CHECK("Unchecked.MainColor"), Color_Main_Default);
+        extraColor = CVarGetColor(CVAR_TRACKER_CHECK("Unchecked.ExtraColor"),  Color_Unchecked_Extra_Default);
     }
- 
+
     //Main Text
     if (checkNameOverrides.contains(loc->GetRandomizerCheck())) {
         txt = checkNameOverrides[loc->GetRandomizerCheck()];
@@ -1412,7 +1478,7 @@ void DrawLocation(RandomizerCheck rc) {
     if (lastLocationChecked == loc->GetRandomizerCheck()) {
         txt = "* " + txt;
     }
- 
+
     // Draw button - for Skipped/Seen/Scummed/Unchecked only
     if (status == RCSHOW_UNCHECKED || status == RCSHOW_SEEN || status == RCSHOW_IDENTIFIED || status == RCSHOW_SCUMMED || skipped) {
         if (UIWidgets::StateButton(std::to_string(rc).c_str(), skipped ? ICON_FA_PLUS : ICON_FA_TIMES)) {
@@ -1440,6 +1506,8 @@ void DrawLocation(RandomizerCheck rc) {
     //Draw the extra info
     txt = "";
 
+    bool mystery = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0) && itemLoc->IsAddedToPool();
+
     if (checkData.hintItem != 0) {
         // TODO hints
     } else if (status != RCSHOW_UNCHECKED) {
@@ -1462,16 +1530,16 @@ void DrawLocation(RandomizerCheck rc) {
             case RCSHOW_IDENTIFIED:
             case RCSHOW_SEEN:
                 if (IS_RANDO) {
-                    if (itemLoc->GetPlacedRandomizerGet() == RG_ICE_TRAP) {
+                    if (itemLoc->GetPlacedRandomizerGet() == RG_ICE_TRAP && !mystery) {
                         if (status == RCSHOW_IDENTIFIED) {
                             txt = OTRGlobals::Instance->gRandoContext->overrides[rc].GetTrickName().GetForLanguage(gSaveContext.language);
                         } else {
                             txt = Rando::StaticData::RetrieveItem(OTRGlobals::Instance->gRandoContext->overrides[rc].LooksLike()).GetName().GetForLanguage(gSaveContext.language);
                         }
-                    } else {
+                    } else if (!mystery) {
                         txt = itemLoc->GetPlacedItem().GetName().GetForLanguage(gSaveContext.language);
                     }
-                    if (status == RCSHOW_IDENTIFIED) {
+                    if (!IsVisibleInCheckTracker(rc) && status == RCSHOW_IDENTIFIED && !mystery) {
                         txt += fmt::format(" - {}", gSaveContext.checkTrackerData[rc].price);
                     }
                 } else {
@@ -1512,31 +1580,31 @@ void DrawLocation(RandomizerCheck rc) {
 }
 
 static std::set<std::string> rainbowCVars = {
-    "gCheckTrackerAreaMainIncompleteColor", "gCheckTrackerAreaExtraIncompleteColor",
-    "gCheckTrackerAreaMainCompleteColor",   "gCheckTrackerAreaExtraCompleteColor",
-    "gCheckTrackerUncheckedMainColor",      "gCheckTrackerUncheckedExtraColor",
-    "gCheckTrackerSkippedMainColor",        "gCheckTrackerSkippedExtraColor",
-    "gCheckTrackerSeenMainColor",           "gCheckTrackerSeenExtraColor",
-    "gCheckTrackerHintedMainColor",         "gCheckTrackerHintedExtraColor",
-    "gCheckTrackerCollectedMainColor",      "gCheckTrackerCollectedExtraColor",
-    "gCheckTrackerScummedMainColor",        "gCheckTrackerScummedExtraColor",
-    "gCheckTrackerSavedMainColor",          "gCheckTrackerSavedExtraColor",
+    CVAR_TRACKER_CHECK("AreaIncomplete.MainColor"), CVAR_TRACKER_CHECK("AreaIncomplete.ExtraColor"),
+    CVAR_TRACKER_CHECK("AreaComplete.MainColor"),   CVAR_TRACKER_CHECK("AreaComplete.ExtraColor"),
+    CVAR_TRACKER_CHECK("Unchecked.MainColor"),      CVAR_TRACKER_CHECK("Unchecked.ExtraColor"),
+    CVAR_TRACKER_CHECK("Skipped.MainColor"),        CVAR_TRACKER_CHECK("Skipped.ExtraColor"),
+    CVAR_TRACKER_CHECK("Seen.MainColor"),           CVAR_TRACKER_CHECK("Seen.ExtraColor"),
+    CVAR_TRACKER_CHECK("Hinted.MainColor"),         CVAR_TRACKER_CHECK("Hinted.ExtraColor"),
+    CVAR_TRACKER_CHECK("Collected.MainColor"),      CVAR_TRACKER_CHECK("Collected.ExtraColor"),
+    CVAR_TRACKER_CHECK("Scummed.MainColor"),        CVAR_TRACKER_CHECK("Scummed.ExtraColor"),
+    CVAR_TRACKER_CHECK("Saved.MainColor"),          CVAR_TRACKER_CHECK("Saved.ExtraColor"),
 };
 
 int hue = 0;
 void RainbowTick() {
-    float freqHue = hue * 2 * M_PI / (360 * CVarGetFloat("gCosmetics.RainbowSpeed", 0.6f));
+    float freqHue = hue * 2 * M_PI / (360 * CVarGetFloat(CVAR_COSMETIC("RainbowSpeed"), 0.6f));
     for (auto& cvar : rainbowCVars) {
         if (CVarGetInteger((cvar + "RBM").c_str(), 0) == 0) {
             continue;
         }
-     
+
         Color_RGBA8 newColor;
         newColor.r = sin(freqHue +              0) * 127 + 128;
         newColor.g = sin(freqHue + (2 * M_PI / 3)) * 127 + 128;
         newColor.b = sin(freqHue + (4 * M_PI / 3)) * 127 + 128;
         newColor.a = 255;
-         
+
         CVarSetColor(cvar.c_str(), newColor);
     }
 
@@ -1573,7 +1641,7 @@ void ImGuiDrawTwoColorPickerSection(const char* text, const char* cvarMainName, 
                 main_color = CVarGetColor(cvarMainName, main_default_color);
             };
             ImGui::PopItemWidth();
-         
+
             ImGui::TableNextColumn();
             ImGui::AlignTextToFramePadding();
             ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
@@ -1615,33 +1683,33 @@ void CheckTrackerSettingsWindow::DrawElement() {
     ImGui::TableNextRow();
     ImGui::TableNextColumn();
     ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
-    if (UIWidgets::EnhancementColor("BG Color", "gCheckTrackerBgColor",
+    if (UIWidgets::EnhancementColor("BG Color", CVAR_TRACKER_CHECK("BgColor"),
         ImVec4(Color_Background.r, Color_Background.g, Color_Background.b, Color_Background.a),
         ImVec4(Color_Bg_Default.r, Color_Bg_Default.g, Color_Bg_Default.b, Color_Bg_Default.a),
         false, true))
     {
-        Color_Background = CVarGetColor("gCheckTrackerBgColor", Color_Bg_Default);
+        Color_Background = CVarGetColor(CVAR_TRACKER_CHECK("BgColor"), Color_Bg_Default);
     }
     ImGui::PopItemWidth();
 
-    UIWidgets::LabeledRightAlignedEnhancementCombobox("Window Type", "gCheckTrackerWindowType", windowType, TRACKER_WINDOW_WINDOW);
-    if (CVarGetInteger("gCheckTrackerWindowType", TRACKER_WINDOW_WINDOW) == TRACKER_WINDOW_FLOATING) {
-        UIWidgets::EnhancementCheckbox("Enable Dragging", "gCheckTrackerHudEditMode");
-        UIWidgets::EnhancementCheckbox("Only enable while paused", "gCheckTrackerShowOnlyPaused");
-        UIWidgets::LabeledRightAlignedEnhancementCombobox("Display Mode", "gCheckTrackerDisplayType", displayType, 0);
-        if (CVarGetInteger("gCheckTrackerDisplayType", TRACKER_DISPLAY_ALWAYS) == TRACKER_DISPLAY_COMBO_BUTTON) {
-            UIWidgets::LabeledRightAlignedEnhancementCombobox("Combo Button 1", "gCheckTrackerComboButton1", buttonStrings, TRACKER_COMBO_BUTTON_L);
-            UIWidgets::LabeledRightAlignedEnhancementCombobox("Combo Button 2", "gCheckTrackerComboButton2", buttonStrings, TRACKER_COMBO_BUTTON_R);
+    UIWidgets::LabeledRightAlignedEnhancementCombobox("Window Type", CVAR_TRACKER_CHECK("WindowType"), windowType, TRACKER_WINDOW_WINDOW);
+    if (CVarGetInteger(CVAR_TRACKER_CHECK("WindowType"), TRACKER_WINDOW_WINDOW) == TRACKER_WINDOW_FLOATING) {
+        UIWidgets::EnhancementCheckbox("Enable Dragging", CVAR_TRACKER_CHECK("Draggable"));
+        UIWidgets::EnhancementCheckbox("Only enable while paused", CVAR_TRACKER_CHECK("ShowOnlyPaused"));
+        UIWidgets::LabeledRightAlignedEnhancementCombobox("Display Mode", CVAR_TRACKER_CHECK("DisplayType"), displayType, 0);
+        if (CVarGetInteger(CVAR_TRACKER_CHECK("DisplayType"), TRACKER_DISPLAY_ALWAYS) == TRACKER_DISPLAY_COMBO_BUTTON) {
+            UIWidgets::LabeledRightAlignedEnhancementCombobox("Combo Button 1", CVAR_TRACKER_CHECK("ComboButton1"), buttonStrings, TRACKER_COMBO_BUTTON_L);
+            UIWidgets::LabeledRightAlignedEnhancementCombobox("Combo Button 2", CVAR_TRACKER_CHECK("ComboButton2"), buttonStrings, TRACKER_COMBO_BUTTON_R);
         }
     }
-    UIWidgets::EnhancementCheckbox("Vanilla/MQ Dungeon Spoilers", "gCheckTrackerOptionMQSpoilers");
+    UIWidgets::EnhancementCheckbox("Vanilla/MQ Dungeon Spoilers", CVAR_TRACKER_CHECK("MQSpoilers"));
     UIWidgets::Tooltip("If enabled, Vanilla/MQ dungeons will show on the tracker immediately. Otherwise, Vanilla/MQ dungeon locations must be unlocked.");
-    if (UIWidgets::EnhancementCheckbox("Hide right-side shop item checks", "gCheckTrackerOptionHideRightShopChecks", false, "", UIWidgets::CheckboxGraphics::Cross, true)) {
+    if (UIWidgets::EnhancementCheckbox("Hide right-side shop item checks", CVAR_TRACKER_CHECK("HideRightShopChecks"), false, "", UIWidgets::CheckboxGraphics::Cross, true)) {
         hideShopRightChecks = !hideShopRightChecks;
         RecalculateAreaTotals();
     }
     UIWidgets::Tooltip("If enabled, will prevent the tracker from displaying slots 1-4 in all shops.");
-    if (UIWidgets::EnhancementCheckbox("Always show gold skulltulas", "gCheckTrackerOptionAlwaysShowGSLocs", false, "")) {
+    if (UIWidgets::EnhancementCheckbox("Always show gold skulltulas", CVAR_TRACKER_CHECK("AlwaysShowGSLocs"), false, "")) {
         alwaysShowGS = !alwaysShowGS;
         RecalculateAreaTotals();
     }
@@ -1649,17 +1717,22 @@ void CheckTrackerSettingsWindow::DrawElement() {
     UIWidgets::EnhancementCheckbox("Show Logic", "gCheckTrackerOptionShowLogic");
     UIWidgets::Tooltip("If enabled, will show a check's logic when hovering over it.");
 
+    // Filtering settings
+    UIWidgets::PaddedSeparator();
+    UIWidgets::EnhancementCheckbox("Filter Empty Areas", CVAR_TRACKER_CHECK("HideFilteredAreas"), false, "", UIWidgets::CheckboxGraphics::Checkmark, true);
+    UIWidgets::Tooltip("If enabled, will hide area headers that have no locations matching filter");
+
     ImGui::TableNextColumn();
 
-    CheckTracker::ImGuiDrawTwoColorPickerSection("Area Incomplete",  "gCheckTrackerAreaMainIncompleteColor",   "gCheckTrackerAreaExtraIncompleteColor",  Color_Area_Incomplete_Main,   Color_Area_Incomplete_Extra,  Color_Main_Default, Color_Area_Incomplete_Extra_Default, "gCheckTrackerAreaIncompleteHide", "");
-    CheckTracker::ImGuiDrawTwoColorPickerSection("Area Complete",    "gCheckTrackerAreaMainCompleteColor",     "gCheckTrackerAreaExtraCompleteColor",    Color_Area_Complete_Main,     Color_Area_Complete_Extra,    Color_Main_Default, Color_Area_Complete_Extra_Default,   "gCheckTrackerAreaCompleteHide",   "");
-    CheckTracker::ImGuiDrawTwoColorPickerSection("Unchecked",        "gCheckTrackerUncheckedMainColor",        "gCheckTrackerUncheckedExtraColor",       Color_Unchecked_Main,         Color_Unchecked_Extra,        Color_Main_Default, Color_Unchecked_Extra_Default,       "gCheckTrackerUncheckedHide",      "Checks you have not interacted with at all.");
-    CheckTracker::ImGuiDrawTwoColorPickerSection("Skipped",          "gCheckTrackerSkippedMainColor",          "gCheckTrackerSkippedExtraColor",         Color_Skipped_Main,           Color_Skipped_Extra,          Color_Main_Default, Color_Skipped_Extra_Default,         "gCheckTrackerSkippedHide",        "");
-    CheckTracker::ImGuiDrawTwoColorPickerSection("Seen",             "gCheckTrackerSeenMainColor",             "gCheckTrackerSeenExtraColor",            Color_Seen_Main,              Color_Seen_Extra,             Color_Main_Default, Color_Seen_Extra_Default,            "gCheckTrackerSeenHide",           "Used for shops. Shows item names for shop slots when walking in, and prices when highlighting them in buy mode.");
-    CheckTracker::ImGuiDrawTwoColorPickerSection("Scummed",          "gCheckTrackerScummedMainColor",          "gCheckTrackerScummedExtraColor",         Color_Scummed_Main,           Color_Scummed_Extra,          Color_Main_Default, Color_Scummed_Extra_Default,         "gCheckTrackerScummedHide",        "Checks you collect, but then reload before saving so you no longer have them.");
-    //CheckTracker::ImGuiDrawTwoColorPickerSection("Hinted (WIP)",     "gCheckTrackerHintedMainColor",           "gCheckTrackerHintedExtraColor",          Color_Hinted_Main,            Color_Hinted_Extra,           Color_Main_Default, Color_Hinted_Extra_Default,          "gCheckTrackerHintedHide",         "");
-    CheckTracker::ImGuiDrawTwoColorPickerSection("Collected",        "gCheckTrackerCollectedMainColor",        "gCheckTrackerCollectedExtraColor",       Color_Collected_Main,         Color_Collected_Extra,        Color_Main_Default, Color_Collected_Extra_Default,       "gCheckTrackerCollectedHide",      "Checks you have collected without saving or reloading yet.");
-    CheckTracker::ImGuiDrawTwoColorPickerSection("Saved",            "gCheckTrackerSavedMainColor",            "gCheckTrackerSavedExtraColor",           Color_Saved_Main,             Color_Saved_Extra,            Color_Main_Default, Color_Saved_Extra_Default,           "gCheckTrackerSavedHide",          "Checks that you saved the game while having collected.");
+    CheckTracker::ImGuiDrawTwoColorPickerSection("Area Incomplete",  CVAR_TRACKER_CHECK("AreaIncomplete.MainColor"),   CVAR_TRACKER_CHECK("AreaIncomplete.ExtraColor"),  Color_Area_Incomplete_Main,   Color_Area_Incomplete_Extra,  Color_Main_Default, Color_Area_Incomplete_Extra_Default, CVAR_TRACKER_CHECK("AreaIncomplete.Hide"), "");
+    CheckTracker::ImGuiDrawTwoColorPickerSection("Area Complete",    CVAR_TRACKER_CHECK("AreaComplete.MainColor"),     CVAR_TRACKER_CHECK("AreaComplete.ExtraColor"),    Color_Area_Complete_Main,     Color_Area_Complete_Extra,    Color_Main_Default, Color_Area_Complete_Extra_Default,   CVAR_TRACKER_CHECK("AreaComplete.Hide"),   "");
+    CheckTracker::ImGuiDrawTwoColorPickerSection("Unchecked",        CVAR_TRACKER_CHECK("Unchecked.MainColor"),        CVAR_TRACKER_CHECK("Unchecked.ExtraColor"),       Color_Unchecked_Main,         Color_Unchecked_Extra,        Color_Main_Default, Color_Unchecked_Extra_Default,       CVAR_TRACKER_CHECK("Unchecked.Hide"),      "Checks you have not interacted with at all.");
+    CheckTracker::ImGuiDrawTwoColorPickerSection("Skipped",          CVAR_TRACKER_CHECK("Skipped.MainColor"),          CVAR_TRACKER_CHECK("Skipped.ExtraColor"),         Color_Skipped_Main,           Color_Skipped_Extra,          Color_Main_Default, Color_Skipped_Extra_Default,         CVAR_TRACKER_CHECK("Skipped.Hide"),        "");
+    CheckTracker::ImGuiDrawTwoColorPickerSection("Seen",             CVAR_TRACKER_CHECK("Seen.MainColor"),             CVAR_TRACKER_CHECK("Seen.ExtraColor"),            Color_Seen_Main,              Color_Seen_Extra,             Color_Main_Default, Color_Seen_Extra_Default,            CVAR_TRACKER_CHECK("Seen.Hide"),           "Used for shops. Shows item names for shop slots when walking in, and prices when highlighting them in buy mode.");
+    CheckTracker::ImGuiDrawTwoColorPickerSection("Scummed",          CVAR_TRACKER_CHECK("Scummed.MainColor"),          CVAR_TRACKER_CHECK("Scummed.ExtraColor"),         Color_Scummed_Main,           Color_Scummed_Extra,          Color_Main_Default, Color_Scummed_Extra_Default,         CVAR_TRACKER_CHECK("Scummed.Hide"),        "Checks you collect, but then reload before saving so you no longer have them.");
+    //CheckTracker::ImGuiDrawTwoColorPickerSection("Hinted (WIP)",     CVAR_TRACKER_CHECK("Hinted.MainColor"),           CVAR_TRACKER_CHECK("Hinted.ExtraColor"),          Color_Hinted_Main,            Color_Hinted_Extra,           Color_Main_Default, Color_Hinted_Extra_Default,          CVAR_TRACKER_CHECK("Hinted.Hide"),         "");
+    CheckTracker::ImGuiDrawTwoColorPickerSection("Collected",        CVAR_TRACKER_CHECK("Collected.MainColor"),        CVAR_TRACKER_CHECK("Collected.ExtraColor"),       Color_Collected_Main,         Color_Collected_Extra,        Color_Main_Default, Color_Collected_Extra_Default,       CVAR_TRACKER_CHECK("Collected.Hide"),      "Checks you have collected without saving or reloading yet.");
+    CheckTracker::ImGuiDrawTwoColorPickerSection("Saved",            CVAR_TRACKER_CHECK("Saved.MainColor"),            CVAR_TRACKER_CHECK("Saved.ExtraColor"),           Color_Saved_Main,             Color_Saved_Extra,            Color_Main_Default, Color_Saved_Extra_Default,           CVAR_TRACKER_CHECK("Saved.Hide"),          "Checks that you saved the game while having collected.");
 
     ImGui::PopStyleVar(1);
     ImGui::EndTable();
@@ -1667,25 +1740,25 @@ void CheckTrackerSettingsWindow::DrawElement() {
 }
 
 void CheckTrackerWindow::InitElement() {
-    Color_Background            = CVarGetColor("gCheckTrackerBgColor",                    Color_Bg_Default);
-    Color_Area_Incomplete_Main  = CVarGetColor("gCheckTrackerAreaMainIncompleteColor",    Color_Main_Default);
-    Color_Area_Incomplete_Extra = CVarGetColor("gCheckTrackerAreaExtraIncompleteColor",   Color_Area_Incomplete_Extra_Default);
-    Color_Area_Complete_Main    = CVarGetColor("gCheckTrackerAreaMainCompleteColor",      Color_Main_Default);
-    Color_Area_Complete_Extra   = CVarGetColor("gCheckTrackerAreaExtraCompleteColor",     Color_Area_Complete_Extra_Default);
-    Color_Unchecked_Main        = CVarGetColor("gCheckTrackerUncheckedMainColor",         Color_Main_Default);
-    Color_Unchecked_Extra       = CVarGetColor("gCheckTrackerUncheckedExtraColor",        Color_Unchecked_Extra_Default);
-    Color_Skipped_Main          = CVarGetColor("gCheckTrackerSkippedMainColor",           Color_Main_Default);
-    Color_Skipped_Extra         = CVarGetColor("gCheckTrackerSkippedExtraColor",          Color_Skipped_Extra_Default);
-    Color_Seen_Main             = CVarGetColor("gCheckTrackerSeenMainColor",              Color_Main_Default);
-    Color_Seen_Extra            = CVarGetColor("gCheckTrackerSeenExtraColor",             Color_Seen_Extra_Default);
-    Color_Hinted_Main           = CVarGetColor("gCheckTrackerHintedMainColor",            Color_Main_Default);
-    Color_Hinted_Extra          = CVarGetColor("gCheckTrackerHintedExtraColor",           Color_Hinted_Extra_Default);
-    Color_Collected_Main        = CVarGetColor("gCheckTrackerCollectedMainColor",         Color_Main_Default);
-    Color_Collected_Extra       = CVarGetColor("gCheckTrackerCollectedExtraColor",        Color_Collected_Extra_Default);
-    Color_Scummed_Main          = CVarGetColor("gCheckTrackerScummedMainColor",           Color_Main_Default);
-    Color_Scummed_Extra         = CVarGetColor("gCheckTrackerScummedExtraColor",          Color_Scummed_Extra_Default);
-    Color_Saved_Main            = CVarGetColor("gCheckTrackerSavedMainColor",             Color_Main_Default);
-    Color_Saved_Extra           = CVarGetColor("gCheckTrackerSavedExtraColor",            Color_Saved_Extra_Default);
+    Color_Background            = CVarGetColor(CVAR_TRACKER_CHECK("BgColor"),                    Color_Bg_Default);
+    Color_Area_Incomplete_Main  = CVarGetColor(CVAR_TRACKER_CHECK("AreaIncomplete.MainColor"),    Color_Main_Default);
+    Color_Area_Incomplete_Extra = CVarGetColor(CVAR_TRACKER_CHECK("AreaIncomplete.ExtraColor"),   Color_Area_Incomplete_Extra_Default);
+    Color_Area_Complete_Main    = CVarGetColor(CVAR_TRACKER_CHECK("AreaComplete.MainColor"),      Color_Main_Default);
+    Color_Area_Complete_Extra   = CVarGetColor(CVAR_TRACKER_CHECK("AreaComplete.ExtraColor"),     Color_Area_Complete_Extra_Default);
+    Color_Unchecked_Main        = CVarGetColor(CVAR_TRACKER_CHECK("Unchecked.MainColor"),         Color_Main_Default);
+    Color_Unchecked_Extra       = CVarGetColor(CVAR_TRACKER_CHECK("Unchecked.ExtraColor"),        Color_Unchecked_Extra_Default);
+    Color_Skipped_Main          = CVarGetColor(CVAR_TRACKER_CHECK("Skipped.MainColor"),           Color_Main_Default);
+    Color_Skipped_Extra         = CVarGetColor(CVAR_TRACKER_CHECK("Skipped.ExtraColor"),          Color_Skipped_Extra_Default);
+    Color_Seen_Main             = CVarGetColor(CVAR_TRACKER_CHECK("Seen.MainColor"),              Color_Main_Default);
+    Color_Seen_Extra            = CVarGetColor(CVAR_TRACKER_CHECK("Seen.ExtraColor"),             Color_Seen_Extra_Default);
+    Color_Hinted_Main           = CVarGetColor(CVAR_TRACKER_CHECK("Hinted.MainColor"),            Color_Main_Default);
+    Color_Hinted_Extra          = CVarGetColor(CVAR_TRACKER_CHECK("Hinted.ExtraColor"),           Color_Hinted_Extra_Default);
+    Color_Collected_Main        = CVarGetColor(CVAR_TRACKER_CHECK("Collected.MainColor"),         Color_Main_Default);
+    Color_Collected_Extra       = CVarGetColor(CVAR_TRACKER_CHECK("Collected.ExtraColor"),        Color_Collected_Extra_Default);
+    Color_Scummed_Main          = CVarGetColor(CVAR_TRACKER_CHECK("Scummed.MainColor"),           Color_Main_Default);
+    Color_Scummed_Extra         = CVarGetColor(CVAR_TRACKER_CHECK("Scummed.ExtraColor"),          Color_Scummed_Extra_Default);
+    Color_Saved_Main            = CVarGetColor(CVAR_TRACKER_CHECK("Saved.MainColor"),             Color_Main_Default);
+    Color_Saved_Extra           = CVarGetColor(CVAR_TRACKER_CHECK("Saved.ExtraColor"),            Color_Saved_Extra_Default);
 
     SaveManager::Instance->AddInitFunction(InitTrackerData);
     sectionId = SaveManager::Instance->AddSaveFunction("trackerData", 1, SaveFile, true, -1);
@@ -1694,15 +1767,15 @@ void CheckTrackerWindow::InitElement() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnExitGame>([](uint32_t fileNum) {
         Teardown();
     });
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>(CheckTrackerItemReceive);
+    // GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>(CheckTrackerItemReceive);
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>(CheckTrackerFrame);
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnTransitionEnd>(CheckTrackerTransition);
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnShopSlotChange>(CheckTrackerShopSlotChange);
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneFlagSet>(CheckTrackerSceneFlagSet);
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnFlagSet>(CheckTrackerFlagSet);
+    // GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneFlagSet>(CheckTrackerSceneFlagSet);
+    // GameInteractor::Instance->RegisterGameHook<GameInteractor::OnFlagSet>(CheckTrackerFlagSet);
 
-    hideShopRightChecks = CVarGetInteger("gCheckTrackerOptionHideRightShopChecks", 1);
-    alwaysShowGS = CVarGetInteger("gCheckTrackerOptionAlwaysShowGSLocs", 0);
+    hideShopRightChecks = CVarGetInteger(CVAR_TRACKER_CHECK("HideRightShopChecks"), 1);
+    alwaysShowGS = CVarGetInteger(CVAR_TRACKER_CHECK("AlwaysShowGSLocs"), 0);
 
     //LocationTable_Init();
 }

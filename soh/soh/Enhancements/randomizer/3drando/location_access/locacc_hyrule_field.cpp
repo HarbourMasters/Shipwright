@@ -34,7 +34,7 @@ void AreaTable_Init_HyruleField() {
                   //Locations
                   LOCATION(RC_HF_SOUTHEAST_GROTTO_CHEST,         true),
                   LOCATION(RC_HF_SOUTHEAST_GROTTO_FISH,          logic->HasBottle),
-                  LOCATION(RC_HF_SOUTHEAST_GOSSIP_STONE,         true),
+                  LOCATION(RC_HF_SOUTHEAST_GROTTO_GOSSIP_STONE,  true),
                   LOCATION(RC_HF_SOUTHEAST_GROTTO_BEEHIVE_LEFT,  logic->CanBreakLowerBeehives),
                   LOCATION(RC_HF_SOUTHEAST_GROTTO_BEEHIVE_RIGHT, logic->CanBreakLowerBeehives),
                 }, {
@@ -77,7 +77,7 @@ void AreaTable_Init_HyruleField() {
                   //Locations
                   LOCATION(RC_HF_NEAR_MARKET_GROTTO_CHEST,         true),
                   LOCATION(RC_HF_NEAR_MARKET_GROTTO_FISH,          logic->HasBottle),
-                  LOCATION(RC_HF_NEAR_MARKET_GOSSIP_STONE,         true),
+                  LOCATION(RC_HF_NEAR_MARKET_GROTTO_GOSSIP_STONE,  true),
                   LOCATION(RC_HF_NEAR_MARKET_GROTTO_BEEHIVE_LEFT,  logic->CanBreakLowerBeehives),
                   LOCATION(RC_HF_NEAR_MARKET_GROTTO_BEEHIVE_RIGHT, logic->CanBreakLowerBeehives),
                 }, {

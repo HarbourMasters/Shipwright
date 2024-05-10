@@ -98,7 +98,7 @@ void AreaTable_Init_LostWoods() {
                   //Locations
                   LOCATION(RC_KF_STORMS_GROTTO_CHEST,         true),
                   LOCATION(RC_KF_STORMS_GROTTO_FISH,          logic->HasBottle),
-                  LOCATION(RC_KF_STORMS_GOSSIP_STONE,         true),
+                  LOCATION(RC_KF_STORMS_GROTTO_GOSSIP_STONE,  true),
                   LOCATION(RC_KF_STORMS_GROTTO_BEEHIVE_LEFT,  logic->CanBreakLowerBeehives),
                   LOCATION(RC_KF_STORMS_GROTTO_BEEHIVE_RIGHT, logic->CanBreakLowerBeehives),
                 }, {
@@ -168,7 +168,7 @@ void AreaTable_Init_LostWoods() {
                   //Locations
                   LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_CHEST,         true),
                   LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_FISH,          logic->HasBottle),
-                  LOCATION(RC_LW_NEAR_SHORTCUTS_GOSSIP_STONE,         true),
+                  LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_GOSSIP_STONE,  true),
                   LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_BEEHIVE_LEFT,  logic->CanBreakLowerBeehives),
                   LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_BEEHIVE_RIGHT, logic->CanBreakLowerBeehives),
                 }, {

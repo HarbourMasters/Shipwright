@@ -158,8 +158,8 @@ void AreaTable_Init_ZorasDomain() {
                   LOCATION(RC_ZF_GS_TREE,                  logic->IsChild),
                   LOCATION(RC_ZF_GS_ABOVE_THE_LOG,         logic->IsChild && logic->HookshotOrBoomerang && logic->AtNight && logic->CanGetNightTimeGS),
                   LOCATION(RC_ZF_GS_HIDDEN_CAVE,           logic->CanUse(RG_SILVER_GAUNTLETS) && logic->CanBlastOrSmash && logic->HookshotOrBoomerang && logic->IsAdult && logic->AtNight && logic->CanGetNightTimeGS),
-                  LOCATION(RC_FAIRY_GOSSIP_STONE,       true),
-                  LOCATION(RC_JABU_GOSSIP_STONE,        true),
+                  LOCATION(RC_ZF_FAIRY_GOSSIP_STONE,       true),
+                  LOCATION(RC_ZF_JABU_GOSSIP_STONE,        true),
                 }, {
                   //Exits
                   Entrance(RR_ZD_BEHIND_KING_ZORA,       {[]{return true;}}),

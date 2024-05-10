@@ -1,5 +1,6 @@
 #include "valueViewer.h"
 #include "../../UIWidgets.hpp"
+#include "soh/OTRGlobals.h"
 
 extern "C" {
 #include <z64.h>
@@ -34,6 +35,8 @@ std::vector<ValueTableElement> valueTable = {
     { "Text ID",            "play->msgCtx.textId",                  "TEXTID:", TYPE_U16,   true,  []() -> void* { return &gPlayState->msgCtx.textId; },                 WHITE },
     { "Analog Stick X",     "play->state.input->cur.stick_x",       "AX:",     TYPE_S8,    true,  []() -> void* { return &gPlayState->state.input->cur.stick_x; },      WHITE },
     { "Analog Stick Y",     "play->state.input->cur.stick_y",       "AY:",     TYPE_S8,    true,  []() -> void* { return &gPlayState->state.input->cur.stick_y; },      WHITE },
+    { "getItemID",          "Player->getItemId",                    "ITEM:",   TYPE_S16,   true,  []() -> void* { return &GET_PLAYER(gPlayState)->getItemId; },         WHITE },
+    { "getItemEntry",       "Player->getItemEntry",                 "IE:",     TYPE_S16,   true,  []() -> void* { return &GET_PLAYER(gPlayState)->getItemEntry.itemId; }, WHITE },
     /* TODO: Find these (from GZ)
     "XZ Units Traveled (Camera based speed variable)" f32 0x801C9018
     "Movement Angle" x16 0x801DBB1C
@@ -107,7 +110,7 @@ void ValueViewerWindow::DrawElement() {
         return;
     }
 
-    UIWidgets::PaddedEnhancementCheckbox("Enable Printing", "gValueViewer.EnablePrinting");
+    UIWidgets::PaddedEnhancementCheckbox("Enable Printing", CVAR_DEVELOPER_TOOLS("ValueViewerEnablePrinting"));
 
     ImGui::BeginGroup();
     static int selectedElement = -1;
@@ -187,7 +190,7 @@ void ValueViewerWindow::DrawElement() {
         }
 
         ImGui::BeginGroup();
-        if (CVarGetInteger("gValueViewer.EnablePrinting", 0)) {
+        if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ValueViewerEnablePrinting"), 0)) {
             ImGui::Checkbox(("Print##" + std::string(element.name)).c_str(), &element.isPrinted);
             if (element.isPrinted) {
                 char* prefix = (char*)element.prefix.c_str();
