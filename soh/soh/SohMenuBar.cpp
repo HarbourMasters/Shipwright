@@ -783,7 +783,7 @@ void DrawEnhancementsMenu() {
                 UIWidgets::Tooltip("Explosions are now a static size, like in Majora's Mask and OoT3D. Makes bombchu hovering much easier.");
                 UIWidgets::PaddedEnhancementCheckbox("Prevent Bombchus Forcing First-Person", CVAR_ENHANCEMENT("DisableFirstPersonChus"), true, false);
                 UIWidgets::Tooltip("Prevent bombchus from forcing the camera into first-person mode when released.");
-                UIWidgets::PaddedEnhancementCheckbox("Better Bombchu Shopping", CVAR_ENHANCEMENT("gBetterBombchuShopping"), true, false,
+                UIWidgets::PaddedEnhancementCheckbox("Better Bombchu Shopping", CVAR_ENHANCEMENT("BetterBombchuShopping"), true, false,
                                                         IS_RANDO, "This setting is forcefully enabled when you are playing a randomizer.", UIWidgets::CheckboxGraphics::Checkmark);
                 UIWidgets::Tooltip("Bombchus do not sell out when bought, and a 10 pack of bombchus costs 99 rupees instead of 100."
                 "\n"
