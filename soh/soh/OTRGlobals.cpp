@@ -1186,6 +1186,7 @@ extern "C" void InitOTR() {
     std::shared_ptr<Ship::Config> conf = OTRGlobals::Instance->context->GetConfig(); 
     conf->RegisterConfigVersionUpdater(std::make_shared<SOH::ConfigVersion1Updater>());
     conf->RegisterConfigVersionUpdater(std::make_shared<SOH::ConfigVersion2Updater>());
+    conf->RegisterConfigVersionUpdater(std::make_shared<SOH::ConfigVersion3Updater>());
     conf->RunVersionUpdates();
 }
 
