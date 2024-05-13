@@ -2396,7 +2396,9 @@ CustomMessage Randomizer::GetSheikMessage(s16 scene, u16 originalTextId) {
     CustomMessage messageEntry;
     switch (scene) {
         case SCENE_TEMPLE_OF_TIME:
-            if (!CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_GANONS_TOWER)) {
+            if (ctx->GetOption(RSK_OOT_HINT) && !ctx->GetItemLocation(RC_SONG_FROM_OCARINA_OF_TIME)->HasObtained()){
+                messageEntry = ctx->GetHint(RH_OOT_HINT)->GetHintMessage(MF_AUTO_FORMAT);
+            } else if (!CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_GANONS_TOWER)) {
                 messageEntry = CustomMessage(
                 "@,&meet me at %gGanon's Castle%w&once you obtain the %rkey to his lair%w.",
                 "@, wir treffen uns bei %gGanons Schloß%w,&sobald Du den %rSchlüssel zu&seinem Verließ%w hast.",

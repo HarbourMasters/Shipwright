@@ -2856,6 +2856,9 @@ void StaticData::HintTable_Init() {
                                                 /*french*/ "Des grenouilles se trouvant sous l'eau vous fixent attentivement, tenant fermement #[[1]]#.",
                                                            {QM_GREEN}));
 
+    hintTextTable[RHT_OOT_HINT] = HintText(CustomMessage("@! Remember to gather the #Spiritual Stones# so you can recieve #[[1]]# from Zelda in the past and learn #[[2]]#!",
+                                                         {QM_BLUE, QM_GREEN, QM_GREEN}));
+
     hintTextTable[RHT_SKULLS_HINT] = HintText(CustomMessage("Yeaaarrgh! I'm cursed!!^Please save me by destroying #[[d]] Spiders of the Curse# and I will give you my #[[1]]#!",
                                                  /*german*/ "Yeaaarrgh! Ich bin verflucht!^Bitte rette mich, indem du #[[d]] Skulltulas# zerstörst und ich werde dir dafür #[[1]]# geben!",
                                                  /*french*/ "Yeaaarrgh! Je suis maudit!^Détruit encore #[[d]] Araignées de la Malédiction# et j'aurai quelque chose à te donner! #([[1]])#",

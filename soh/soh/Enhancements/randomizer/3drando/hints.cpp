@@ -279,7 +279,10 @@ std::vector<std::pair<RandomizerCheck, std::function<bool()>>> conditionalAlways
                        auto ctx = Rando::Context::GetInstance();
                        return !ctx->GetOption(RSK_COMPLETE_MASK_QUEST);
                    }),
-    std::make_pair(RC_SONG_FROM_OCARINA_OF_TIME, []() { return StonesRequiredBySettings() < 2; }),
+    std::make_pair(RC_SONG_FROM_OCARINA_OF_TIME, []() { 
+                        auto ctx = Rando::Context::GetInstance();
+                        return StonesRequiredBySettings() < 2 && !ctx->GetOption(RSK_OOT_HINT);
+                   }),
     std::make_pair(RC_HF_OCARINA_OF_TIME_ITEM, []() { return StonesRequiredBySettings() < 2; }),
     std::make_pair(RC_SHEIK_IN_KAKARIKO, []() { return MedallionsRequiredBySettings() < 5; }),
     std::make_pair(RC_DMT_TRADE_CLAIM_CHECK, []() {

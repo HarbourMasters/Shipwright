@@ -516,6 +516,7 @@ void Settings::CreateOptionDescriptions() {
     mOptionDescriptions[RSK_SARIA_HINT] = "Talking to Saria either in person or through Saria's Song will tell you the "
                                           "location of a progressive magic meter.";
     mOptionDescriptions[RSK_FISHING_POLE_HINT] = "Talking to the fishing pond owner without the fishing pole will tell you its location.";
+    mOptionDescriptions[RSK_OOT_HINT] = "Sheik in the Temple of Time will tell you the item and song on the Ocarina of Time.";
     mOptionDescriptions[RSK_FROGS_HINT] = "Standing near the pedestal for the frogs in Zora's River will tell you the "
                                           "reward for the frogs' ocarina game.";
     mOptionDescriptions[RSK_BIGGORON_HINT] = "Talking to Biggoron will tell you the item he will give you in exchange for the Claim Check.";

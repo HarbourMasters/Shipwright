@@ -53,6 +53,7 @@ void AreaTable_Init_CastleTown() {
                   LocationAccess(RC_TOT_LIGHT_ARROWS_CUTSCENE, {[]{return logic->IsAdult && logic->CanTriggerLACS;}}),
                   LocationAccess(RC_ALTAR_HINT_CHILD, {[]{return logic->IsChild;}}),
                   LocationAccess(RC_ALTAR_HINT_ADULT, {[]{return logic->IsAdult;}}),
+                  LocationAccess(RC_TOT_SHEIK_HINT, {[]{return logic->IsAdult;}}),
                 }, {
                   //Exits
                   Entrance(RR_TOT_ENTRANCE,            {[]{return true;}}),
