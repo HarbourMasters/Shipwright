@@ -277,7 +277,7 @@ std::vector<std::pair<RandomizerCheck, std::function<bool()>>> conditionalAlways
                    }), // Remember, the option's value being 3 means 4 are required
     std::make_pair(RC_DEKU_THEATER_MASK_OF_TRUTH, []() {
                        auto ctx = Rando::Context::GetInstance();
-                       return !ctx->GetOption(RSK_COMPLETE_MASK_QUEST);
+                       return !ctx->GetOption(RSK_MASK_SHOP_HINT) && !ctx->GetOption(RSK_COMPLETE_MASK_QUEST);
                    }),
     std::make_pair(RC_SONG_FROM_OCARINA_OF_TIME, []() { return StonesRequiredBySettings() < 2; }),
     std::make_pair(RC_HF_OCARINA_OF_TIME_ITEM, []() { return StonesRequiredBySettings() < 2; }),

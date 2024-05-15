@@ -2861,6 +2861,10 @@ void StaticData::HintTable_Init() {
                                                  /*french*/ "Yeaaarrgh! Je suis maudit!^Détruit encore #[[d]] Araignées de la Malédiction# et j'aurai quelque chose à te donner! #([[1]])#",
                                                             {QM_YELLOW, QM_GREEN}));
 
+    hintTextTable[RHT_MASK_SHOP_HINT] = HintText(CustomMessage("Some young scrubs in the #Deku Theatre# love seeing Masks!^"
+                                                               "They'll give you #[[1]]# if you show them the #Skull Mask#, and #[[2]]# if you show them the #Mask of Truth#!",
+                                                               {QM_GREEN, QM_GREEN, QM_RED, QM_GREEN, QM_RED}));
+
     /*--------------------------
     |      GANON LINE TEXT     |
     ---------------------------*/
