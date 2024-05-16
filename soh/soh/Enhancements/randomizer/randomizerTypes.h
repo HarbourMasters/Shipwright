@@ -2064,6 +2064,7 @@ typedef enum {
     RH_ALTAR_CHILD,
     RH_ALTAR_ADULT,
     RH_SARIA_HINT,
+    RH_LOACH_HINT,
     RH_FISHING_POLE,
     RH_MINUET_WARP_LOC,
     RH_BOLERO_WARP_LOC,
@@ -3425,6 +3426,7 @@ typedef enum {
     RHT_GREG_HINT,
     RHT_SARIA_TALK_HINT,
     RHT_SARIA_SONG_HINT,
+    RHT_LOACH_HINT,
     RHT_FISHING_POLE_HINT,
     // Static Entrance Hints
     RHT_WARP_SONG,

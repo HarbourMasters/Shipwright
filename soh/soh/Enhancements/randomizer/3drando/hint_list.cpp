@@ -2752,6 +2752,9 @@ void StaticData::HintTable_Init() {
                                                 /*french*/ "As-tu récemment ressenti une vague de #puissance magique#? Un mystérieux hibou m'a dit  qu'elle provenait du #[[1]]#. Tu devrais aller y jeter un coup d'oeil, @!\x0B",
                                                            {QM_GREEN, QM_RED}, {}, TEXTBOX_TYPE_BLUE));
 
+    hintTextTable[RHT_LOACH_HINT] = HintText(CustomMessage("What?^You wanna know about the&%rHyrule Loach%w?^It's a big fish, but it's so rare that&I'll give my %g[[1]]%w&to anyone who catches it. Seriously!",
+                                                                  {QM_RED}));
+
     hintTextTable[RHT_FISHING_POLE_HINT] = HintText(CustomMessage("^If I remember correctly, I lost it somewhere in #[[1]]#...&Let me know if you find it!",
                                                                   {QM_RED}));
 
