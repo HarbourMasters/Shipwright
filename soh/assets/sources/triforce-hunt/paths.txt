@@ -1,0 +1,15 @@
+Complete triforce:
+    DL name: gTriforcePieceCompletedDL
+    Export Path: objects/object_triforce_completed
+
+Shard 0:
+    DL name: gTriforcePiece0DL
+    Export Path: objects/object_triforce_piece_0
+
+Shard 1:
+    DL name: gTriforcePiece1DL
+    Export Path: objects/object_triforce_piece_1
+
+Shard 2:
+    DL name: gTriforcePiece2DL
+    Export Path: objects/object_triforce_piece_2

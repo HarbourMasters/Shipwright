@@ -22,6 +22,14 @@ std::vector<std::string> presetEntries;
 Option* currentSetting;
 } // namespace
 
+static void RestoreOverrides() {
+    if (Settings::Logic.Is(LOGIC_VANILLA)) {
+        for (auto overridePair : Settings::vanillaLogicOverrides) {
+            overridePair.first->RestoreDelayedOption();
+        }
+    }
+}
+
 std::string GenerateRandomizer(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings, std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks,
     std::string seedString) {
 
@@ -52,20 +60,17 @@ std::string GenerateRandomizer(std::unordered_map<RandomizerSettingKey, uint8_t>
             printf("\n\nFailed to generate after 5 tries.\nPress B to go back to the menu.\nA different seed might be "
                    "successful.");
             SPDLOG_DEBUG("\nRANDOMIZATION FAILED COMPLETELY. PLZ FIX\n");
+            RestoreOverrides();
             return "";
         } else {
             printf("\n\nError %d with fill.\nPress Select to exit or B to go back to the menu.\n", ret);
+            RestoreOverrides();
             return "";
         }
     }
 
-    // Restore settings that were set to a specific value for vanilla logic
-    if (Settings::Logic.Is(LOGIC_VANILLA)) {
-        for (Option* setting : Settings::vanillaLogicDefaults) {
-            setting->RestoreDelayedOption();
-        }
-        Settings::Keysanity.RestoreDelayedOption();
-    }
+    RestoreOverrides();
+
     std::ostringstream fileNameStream;
     for (int i = 0; i < Settings::hashIconIndexes.size(); i++) {
         if (i) {

@@ -761,13 +761,13 @@ void GetItem_DrawRecoveryHeart(PlayState* play, s16 drawId) {
                                 1 * -(play->state.frames * 2), 32, 32));
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_MODELVIEW | G_MTX_LOAD);
-    if (CVarGetInteger("gCosmetics.Consumable_Hearts.Changed", 0)) {
-        Color_RGB8 color = CVarGetColor24("gCosmetics.Consumable_Hearts.Value", (Color_RGB8) { 255, 70, 50 });
+    if (CVarGetInteger(CVAR_COSMETIC("Consumable.Hearts.Changed"), 0)) {
+        Color_RGB8 color = CVarGetColor24(CVAR_COSMETIC("Consumable.Hearts.Value"), (Color_RGB8) { 255, 70, 50 });
         gDPSetGrayscaleColor(POLY_XLU_DISP++, color.r, color.g, color.b, 255);
         gSPGrayscale(POLY_XLU_DISP++, true);
     }
     gSPDisplayList(POLY_XLU_DISP++, sDrawItemTable[drawId].dlists[0]);
-    if (CVarGetInteger("gCosmetics.Consumable_Hearts.Changed", 0)) {
+    if (CVarGetInteger(CVAR_COSMETIC("Consumable.Hearts.Changed"), 0)) {
         gSPGrayscale(POLY_XLU_DISP++, false);
     }
     CLOSE_DISPS(play->state.gfxCtx);
@@ -1043,7 +1043,7 @@ void GetItem_DrawTriforcePiece(PlayState* play, s16 drawId) {
 
     Matrix_Scale(0.035f, 0.035f, 0.035f, MTXMODE_APPLY);
 
-    uint16_t index = gSaveContext.triforcePiecesCollected % 3;
+    uint8_t index = gSaveContext.triforcePiecesCollected % 3;
     Gfx* triforcePieceDL;
 
     switch (index) {

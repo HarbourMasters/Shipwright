@@ -64,7 +64,7 @@ typedef struct SaveStateInfo {
     int16_t blueWarpTimerCopy; /* From door_warp_1 */
 
     SeqScriptState seqScriptStateCopy[4];// Unrelocated
-    unk_D_8016E750 unk_D_8016E750Copy[4];
+    ActiveSequence gActiveSeqsCopy[4];
 
     ActiveSound gActiveSoundsCopy[7][MAX_CHANNELS_PER_BANK];
     uint8_t gSoundBankMutedCopy[7];
@@ -837,7 +837,7 @@ extern "C" void ProcessSaveStateRequests(void) {
 }
 
 void SaveStateMgr::SetCurrentSlot(unsigned int slot) {
-    LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(1.0f, true, "slot %u set", slot);
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(1.0f, true, "slot %u set", slot);
     this->currentSlot = slot;
 }
 
@@ -855,12 +855,12 @@ void SaveStateMgr::ProcessSaveStateRequests(void) {
                     this->states[request.slot] = std::make_shared<SaveState>(OTRGlobals::Instance->gSaveStateMgr, request.slot);
                 }
                 this->states[request.slot]->Save();
-                LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(1.0f, true, "saved state %u", request.slot);
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(1.0f, true, "saved state %u", request.slot);
                 break;
             case RequestType::LOAD:
                 if (this->states.contains(request.slot)) {
                     this->states[request.slot]->Load();
-                    LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(1.0f, true, "loaded state %u", request.slot);
+                    Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(1.0f, true, "loaded state %u", request.slot);
                 } else {
                     SPDLOG_ERROR("Invalid SaveState slot: {}", request.type);
                 }
@@ -876,7 +876,7 @@ void SaveStateMgr::ProcessSaveStateRequests(void) {
 SaveStateReturn SaveStateMgr::AddRequest(const SaveStateRequest request) {
     if (gPlayState == nullptr) {
         SPDLOG_ERROR("[SOH] Can not save or load a state outside of \"GamePlay\"");
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(1.0f, true, "states not available here", request.slot);
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(1.0f, true, "states not available here", request.slot);
         return SaveStateReturn::FAIL_WRONG_GAMESTATE;
     }
 
@@ -890,7 +890,7 @@ SaveStateReturn SaveStateMgr::AddRequest(const SaveStateRequest request) {
                 return SaveStateReturn::SUCCESS;
             } else {
                 SPDLOG_ERROR("Invalid SaveState slot: {}", request.type);
-                LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(1.0f, true, "state slot %u empty", request.slot);
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(1.0f, true, "state slot %u empty", request.slot);
                 return SaveStateReturn::FAIL_INVALID_SLOT;
             }
         [[unlikely]] default: 
@@ -905,7 +905,7 @@ void SaveState::Save(void) {
     memcpy(&info->audioHeapCopy, gAudioHeap, AUDIO_HEAP_SIZE /* sizeof(gAudioContext) */);
 
     memcpy(&info->audioContextCopy, &gAudioContext, sizeof(AudioContext));
-    memcpy(&info->unk_D_8016E750Copy, D_8016E750, sizeof(info->unk_D_8016E750Copy));
+    memcpy(&info->gActiveSeqsCopy, gActiveSeqs, sizeof(info->gActiveSeqsCopy));
     BackupSeqScriptState();
 
     memcpy(info->gActiveSoundsCopy, gActiveSounds, sizeof(gActiveSounds));
@@ -944,7 +944,7 @@ void SaveState::Load(void) {
     memcpy(gAudioHeap, &info->audioHeapCopy, AUDIO_HEAP_SIZE);
 
     memcpy(&gAudioContext, &info->audioContextCopy, sizeof(AudioContext));
-    memcpy(D_8016E750, &info->unk_D_8016E750Copy, sizeof(info->unk_D_8016E750Copy));
+    memcpy(gActiveSeqs, &info->gActiveSeqsCopy, sizeof(info->gActiveSeqsCopy));
     LoadSeqScriptState();
 
     memcpy(&gSaveContext, &info->saveContextCopy, sizeof(gSaveContext));

@@ -39,16 +39,16 @@ Gfx __sCircleDList[] = {
 void TransitionCircle_Start(void* thisx) {
     TransitionCircle* this = (TransitionCircle*)thisx;
 
-    this->isDone = 0;
+    this->isDone = false;
 
-    switch (this->effect) {
-        case 1:
+    switch (this->appearanceType) {
+        case TCA_WAVE:
             this->texture = sTransCircleWaveTex;
             break;
-        case 2:
+        case TCA_RIPPLE:
             this->texture = sTransCircleRippleTex;
             break;
-        case 3:
+        case TCA_STARBURST:
             this->texture = sTransCircleStarburstTex;
             break;
         default:
@@ -56,34 +56,34 @@ void TransitionCircle_Start(void* thisx) {
             break;
     }
 
-    if (this->speed == 0) {
-        this->step = 0x14;
+    if (this->speedType == TCS_FAST) {
+        this->speed = 20;
     } else {
-        this->step = 0xA;
+        this->speed = 10;
     }
 
-    if (this->typeColor == 0) {
+    if (this->colorType == TCC_BLACK) {
         this->color.rgba = RGBA8(0, 0, 0, 255);
-    } else if (this->typeColor == 1) {
+    } else if (this->colorType == TCC_WHITE) {
         this->color.rgba = RGBA8(160, 160, 160, 255);
-    } else if (this->typeColor == 2) {
+    } else if (this->colorType == TCC_GRAY) {
         // yes, really.
         this->color.r = 100;
         this->color.g = 100;
         this->color.b = 100;
         this->color.a = 255;
     } else {
-        this->step = 0x28;
-        this->color.rgba = this->effect == 1 ? RGBA8(0, 0, 0, 255) : RGBA8(160, 160, 160, 255);
+        this->speed = 40;
+        this->color.rgba = this->appearanceType == TCA_WAVE ? RGBA8(0, 0, 0, 255) : RGBA8(160, 160, 160, 255);
     }
-    if (this->unk_14 != 0) {
+    if (this->direction != 0) {
         this->texY = 0;
-        if (this->typeColor == 3) {
+        if (this->colorType == TCC_SPECIAL) {
             this->texY = 0xFA;
         }
     } else {
         this->texY = 0x1F4;
-        if (this->effect == 2) {
+        if (this->appearanceType == TCA_RIPPLE) {
             Audio_PlaySoundGeneral(NA_SE_OC_SECRET_WARP_OUT, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
         }
     }
@@ -106,28 +106,28 @@ void TransitionCircle_Update(void* thisx, s32 updateRate) {
     s32 temp_t2;
     s32 temp_t3;
 
-    if (this->unk_14 != 0) {
+    if (this->direction != 0) {
         if (this->texY == 0) {
-            if (this->effect == 2) {
+            if (this->appearanceType == TCA_RIPPLE) {
                 Audio_PlaySoundGeneral(NA_SE_OC_SECRET_WARP_IN, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
             }
         }
-        this->texY += this->step * 3 / updateRate;
+        this->texY += this->speed * 3 / updateRate;
         if (this->texY >= 0x1F4) {
             this->texY = 0x1F4;
-            this->isDone = 1;
+            this->isDone = true;
         }
     } else {
-        this->texY -= this->step * 3 / updateRate;
-        if (this->typeColor != 3) {
+        this->texY -= this->speed * 3 / updateRate;
+        if (this->colorType != TCC_SPECIAL) {
             if (this->texY <= 0) {
                 this->texY = 0;
-                this->isDone = 1;
+                this->isDone = true;
             }
         } else {
             if (this->texY < 0xFB) {
                 this->texY = 0xFA;
-                this->isDone = 1;
+                this->isDone = true;
             }
         }
     }
@@ -194,15 +194,17 @@ s32 TransitionCircle_IsDone(void* thisx) {
 void TransitionCircle_SetType(void* thisx, s32 type) {
     TransitionCircle* this = (TransitionCircle*)thisx;
 
-    if (type & 0x80) {
-        this->unk_14 = (type >> 5) & 0x1;
-        this->typeColor = (type >> 3) & 0x3;
-        this->speed = type & 0x1;
-        this->effect = (type >> 1) & 0x3;
+    if (type & TC_SET_PARAMS) {
+        // SetType is called twice for circles, the actual direction value will be set on the second call.
+        // The direction set here will be overwritten on that second call.
+        this->direction = (type >> 5) & 0x1;
+        this->colorType = (type >> 3) & 0x3;
+        this->speedType = type & 0x1;
+        this->appearanceType = (type >> 1) & 0x3;
     } else if (type == 1) {
-        this->unk_14 = 1;
+        this->direction = 1;
     } else {
-        this->unk_14 = 0;
+        this->direction = 0;
     }
 }
 

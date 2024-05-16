@@ -92,18 +92,18 @@ void EnStream_SuckPlayer(EnStream* this, PlayState* play) {
     if (func_80B0B81C(&this->actor.world.pos, &player->actor.world.pos, &posDifference, this->actor.scale.y) != 0) {
         xzDist = sqrtf(SQ(posDifference.x) + SQ(posDifference.z));
         yDistWithOffset = player->actor.world.pos.y - (this->actor.world.pos.y - 90.0f);
-        player->windDirection = Math_FAtan2F(-posDifference.x, -posDifference.z) * (0x8000 / M_PI);
+        player->pushedYaw = Math_FAtan2F(-posDifference.x, -posDifference.z) * (0x8000 / M_PI);
         if (xzDist > 3.0f) {
-            Math_SmoothStepToF(&player->windSpeed, 3.0f, 0.5f, xzDist, 0.0f);
+            Math_SmoothStepToF(&player->pushedSpeed, 3.0f, 0.5f, xzDist, 0.0f);
         } else {
-            player->windSpeed = 0.0f;
+            player->pushedSpeed = 0.0f;
             Math_SmoothStepToF(&player->actor.world.pos.x, this->actor.world.pos.x, 0.5f, 3.0f, 0.0f);
             Math_SmoothStepToF(&player->actor.world.pos.z, this->actor.world.pos.z, 0.5f, 3.0f, 0.0f);
         }
         if (yDistWithOffset > 0.0f) {
             Math_SmoothStepToF(&player->actor.velocity.y, -3.0f, 0.7f, yDistWithOffset, 0.0f);
             if (posDifference.y < -70.0f) {
-                player->stateFlags2 |= 0x80000000;
+                player->stateFlags2 |= PLAYER_STATE2_FORCED_VOID_OUT;
             }
         }
     } else {

@@ -244,15 +244,15 @@ void EnMag_UpdateMq(Actor* thisx, PlayState* play) {
                     CHECK_BTN_ALL(play->state.input[0].press.button, BTN_A) ||
                     CHECK_BTN_ALL(play->state.input[0].press.button, BTN_B)) {
 
-                    if (play->sceneLoadFlag != 20) {
+                    if (play->transitionTrigger != TRANS_TRIGGER_START) {
                         Audio_SetCutsceneFlag(0);
 
                         Audio_PlaySoundGeneral(NA_SE_SY_PIECE_OF_HEART, &D_801333D4, 4, &D_801333E0, &D_801333E0,
                                                &D_801333E8);
 
                         gSaveContext.gameMode = 2;
-                        play->sceneLoadFlag = 20;
-                        play->fadeTransition = 2;
+                        play->transitionTrigger = TRANS_TRIGGER_START;
+                        play->transitionType = TRANS_TYPE_FADE_BLACK;
                     }
 
                     this->copyrightAlphaStep = 15;
@@ -404,15 +404,15 @@ void EnMag_UpdateVanilla(Actor* thisx, PlayState* play) {
                     CHECK_BTN_ALL(play->state.input[0].press.button, BTN_A) ||
                     CHECK_BTN_ALL(play->state.input[0].press.button, BTN_B)) {
 
-                    if (play->sceneLoadFlag != 20) {
+                    if (play->transitionTrigger != TRANS_TRIGGER_START) {
                         Audio_SetCutsceneFlag(0);
 
                         Audio_PlaySoundGeneral(NA_SE_SY_PIECE_OF_HEART, &D_801333D4, 4, &D_801333E0, &D_801333E0,
                                                &D_801333E8);
 
                         gSaveContext.gameMode = 2;
-                        play->sceneLoadFlag = 20;
-                        play->fadeTransition = 2;
+                        play->transitionTrigger = TRANS_TRIGGER_START;
+                        play->transitionType = TRANS_TYPE_FADE_BLACK;
                     }
 
                     this->copyrightAlphaStep = 15;
@@ -655,7 +655,7 @@ void EnMag_DrawInnerMq(Actor* thisx, PlayState* play, Gfx** gfxp) {
     u16 rectTop;
     u16 length;
     int lang = LANGUAGE_ENG;
-    if (CVarGetInteger("gTitleScreenTranslation", 0)) {
+    if (CVarGetInteger(CVAR_SETTING("TitleScreenTranslation"), 0)) {
         lang = gSaveContext.language;
     }
 
@@ -855,7 +855,7 @@ void EnMag_DrawInnerVanilla(Actor* thisx, PlayState* play, Gfx** gfxp) {
     u16 rectTop;
     u16 length;
     int lang = LANGUAGE_ENG;
-    if (CVarGetInteger("gTitleScreenTranslation", 0)) {
+    if (CVarGetInteger(CVAR_SETTING("TitleScreenTranslation"), 0)) {
         lang = gSaveContext.language;
     }
 

@@ -1230,8 +1230,8 @@ Gfx* Gfx_EnvColor(GraphicsContext* gfxCtx, s32 r, s32 g, s32 b, s32 a);
 void Gfx_SetupFrame(GraphicsContext* gfxCtx, u8 r, u8 g, u8 b);
 void func_80095974(GraphicsContext* gfxCtx);
 void func_80095AA0(PlayState* play, Room* room, Input* arg2, UNK_TYPE arg3);
-void func_8009638C(Gfx** displayList, void* source, void* tlut, u16 width, u16 height, u8 fmt, u8 siz, u16 mode0,
-                   u16 tlutCount, f32 frameX, f32 frameY);
+void Room_DrawBackground2D(Gfx** gfxP, void* tex, void* tlut, u16 width, u16 height, u8 fmt, u8 siz, u16 tlutMode,
+                           u16 tlutCount, f32 offsetX, f32 offsetY);
 void func_80096FD4(PlayState* play, Room* room);
 u32 func_80096FE8(PlayState* play, RoomContext* roomCtx);
 s32 func_8009728C(PlayState* play, RoomContext* roomCtx, s32 roomNum);
@@ -1250,7 +1250,7 @@ s32 Object_IsLoaded(ObjectContext* objectCtx, s32 bankIndex);
 void func_800981B8(ObjectContext* objectCtx);
 s32 Scene_ExecuteCommands(PlayState* play, SceneCmd* sceneCmd);
 void TransitionActor_InitContext(GameState* state, TransitionActorContext* transiActorCtx);
-void func_800994A0(PlayState* play);
+void Scene_SetTransitionForNextEntrance(PlayState* play);
 void Scene_Draw(PlayState* play);
 void SkelAnime_DrawLod(PlayState* play, void** skeleton, Vec3s* jointTable,
                        OverrideLimbDrawOpa overrideLimbDraw, PostLimbDrawOpa postLimbDraw, void* arg, s32 dListIndex);
@@ -1537,7 +1537,7 @@ void KaleidoScopeCall_Draw(PlayState* play);
 void func_800BC490(PlayState* play, s16 point);
 s32 func_800BC56C(PlayState* play, s16 arg1);
 void func_800BC590(PlayState* play);
-void func_800BC5E0(PlayState* play, s32 arg1);
+void Gameplay_SetupTransition(PlayState* play, s32 arg1);
 Gfx* Play_SetFog(PlayState* play, Gfx* gfx);
 void Play_Destroy(GameState* thisx);
 void Play_Init(GameState* thisx);
@@ -1828,8 +1828,8 @@ MtxF* Matrix_CheckFloats(MtxF* mf, char* file, s32 line);
 void Matrix_SetTranslateScaleMtx2(Mtx* mtx, f32 scaleX, f32 scaleY, f32 scaleZ, f32 translateX, f32 translateY,
                                   f32 translateZ);
 uintptr_t SysUcode_GetUCodeBoot(void);
-uintptr_t SysUcode_GetUCodeBootSize(void);
-uintptr_t SysUcode_GetUCode(void);
+size_t SysUcode_GetUCodeBootSize(void);
+uint32_t SysUcode_GetUCode(void);
 uintptr_t SysUcode_GetUCodeData(void);
 void func_800D2E30(UnkRumbleStruct* arg0);
 void func_800D3140(UnkRumbleStruct* arg0);
@@ -2171,7 +2171,7 @@ void func_800FA18C(u8, u8);
 void Audio_SetVolScale(u8 playerIdx, u8 scaleIdx, u8 targetVol, u8 volFadeTimer);
 void func_800FA3DC(void);
 u8 func_800FAD34(void);
-void func_800FADF8(void);
+void Audio_ResetActiveSequences(void);
 void func_800FAEB4(void);
 void GfxPrint_SetColor(GfxPrint* this, u32 r, u32 g, u32 b, u32 a);
 void GfxPrint_SetPosPx(GfxPrint* this, s32 x, s32 y);
@@ -2210,6 +2210,14 @@ s8 PadUtils_GetRelYImpl(Input* input);
 s8 PadUtils_GetRelX(Input* input);
 s8 PadUtils_GetRelY(Input* input);
 void PadUtils_UpdateRelXY(Input* input);
+s8 PadUtils_GetCurRX(Input* input);
+s8 PadUtils_GetCurRY(Input* input);
+void PadUtils_SetRelRXY(Input* input, s32 x, s32 y);
+s8 PadUtils_GetRelRXImpl(Input* input);
+s8 PadUtils_GetRelRYImpl(Input* input);
+s8 PadUtils_GetRelRX(Input* input);
+s8 PadUtils_GetRelRY(Input* input);
+void PadUtils_UpdateRelRXY(Input* input);
 s32 PadSetup_Init(OSMesgQueue* mq, u8* outMask, OSContStatus* status);
 f32 Math_FTanF(f32 x);
 f32 Math_FFloorF(f32 x);
@@ -2346,7 +2354,6 @@ s32 __osCheckPackId(OSPfs* pfs, __OSPackId* check);
 s32 __osGetId(OSPfs* pfs);
 s32 __osCheckId(OSPfs* pfs);
 s32 __osPfsRWInode(OSPfs* pfs, __OSInode* inode, u8 flag, u8 bank);
-void guMtxL2F(MtxF* m1, Mtx* m2);
 s32 osPfsFindFile(OSPfs* pfs, u16 companyCode, u32 gameCode, u8* gameName, u8* extName, s32* fileNo);
 s32 osAfterPreNMI(void);
 s32 osContStartQuery(OSMesgQueue* mq);
@@ -2400,7 +2407,6 @@ u32 __osSpGetStatus(void);
 void __osSpSetStatus(u32 status);
 void osWritebackDCacheAll(void);
 OSThread* __osGetCurrFaultedThread(void);
-void guMtxF2L(MtxF* m1, Mtx* m2);
 // ? __d_to_ll(?);
 // ? __f_to_ll(?);
 // ? __d_to_ull(?);
@@ -2458,6 +2464,10 @@ void Message_DrawText(PlayState* play, Gfx** gfxP);
 
 void Interface_CreateQuadVertexGroup(Vtx* vtxList, s32 xStart, s32 yStart, s32 width, s32 height, u8 flippedH);
 void Interface_RandoRestoreSwordless(void);
+
+//Pause Warp
+void PauseWarp_HandleSelection();
+void PauseWarp_Execute();
 
 // #endregion
 

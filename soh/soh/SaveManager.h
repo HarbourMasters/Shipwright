@@ -39,7 +39,10 @@ typedef struct {
 #include <functional>
 #include <vector>
 #include <filesystem>
-#include "thread-pool/BS_thread_pool.hpp"
+
+#define BS_THREAD_POOL_ENABLE_PRIORITY
+#define BS_THREAD_POOL_ENABLE_PAUSE
+#include <BS_thread_pool.hpp>
 
 #include "z64save.h"
 

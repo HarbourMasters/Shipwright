@@ -638,7 +638,7 @@ void func_80AAB5A4(EnMd* this, PlayState* play) {
     f32 temp;
 
     if (play->sceneNum != SCENE_MIDOS_HOUSE) {
-        if (CVarGetInteger("gDisableKokiriDrawDistance", 0) != 0) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("DisableKokiriDrawDistance"), 0) != 0) {
             temp = (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) && !Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_AFTER_DEKU_TREES_DEATH) &&
                     (play->sceneNum == SCENE_KOKIRI_FOREST))
                        ? 100.0f
@@ -774,8 +774,8 @@ void func_80AAB948(EnMd* this, PlayState* play) {
     }
 
     if ((this->interactInfo.talkState == NPC_TALK_STATE_IDLE) && (play->sceneNum == SCENE_LOST_WOODS)) {
-        if (player->stateFlags2 & 0x1000000) {
-            player->stateFlags2 |= 0x2000000;
+        if (player->stateFlags2 & PLAYER_STATE2_ATTEMPT_PLAY_FOR_ACTOR) {
+            player->stateFlags2 |= PLAYER_STATE2_PLAY_FOR_ACTOR;
             player->unk_6A8 = &this->actor;
             func_8010BD58(play, OCARINA_ACTION_CHECK_SARIA);
             this->actionFunc = func_80AABC10;
@@ -783,7 +783,7 @@ void func_80AAB948(EnMd* this, PlayState* play) {
         }
 
         if (this->actor.xzDistToPlayer < (30.0f + this->collider.dim.radius)) {
-            player->stateFlags2 |= 0x800000;
+            player->stateFlags2 |= PLAYER_STATE2_NEAR_OCARINA_ACTOR;
         }
     }
 }
@@ -802,7 +802,7 @@ void func_80AABC10(EnMd* this, PlayState* play) {
         this->actionFunc = func_80AAB948;
         play->msgCtx.ocarinaMode = OCARINA_MODE_04;
     } else {
-        player->stateFlags2 |= 0x800000;
+        player->stateFlags2 |= PLAYER_STATE2_NEAR_OCARINA_ACTOR;
     }
 }
 
