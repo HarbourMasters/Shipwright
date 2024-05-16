@@ -2856,7 +2856,7 @@ void StaticData::HintTable_Init() {
                                                 /*french*/ "Des grenouilles se trouvant sous l'eau vous fixent attentivement, tenant fermement #[[1]]#.",
                                                            {QM_GREEN}));
 
-    hintTextTable[RHT_OOT_HINT] = HintText(CustomMessage("Bring the& #Spiritual Stones# to the past so you can recieve #[[1]]# from Zelda and learn #[[2]]#!",
+    hintTextTable[RHT_OOT_HINT] = HintText(CustomMessage("Bring the #Spiritual Stones# to the past so you can recieve #[[1]]# from Zelda and learn #[[2]]#!",
                                                          {QM_BLUE, QM_GREEN, QM_GREEN}));
 
     hintTextTable[RHT_SKULLS_HINT] = HintText(CustomMessage("Yeaaarrgh! I'm cursed!!^Please save me by destroying #[[d]] Spiders of the Curse# and I will give you my #[[1]]#!",
