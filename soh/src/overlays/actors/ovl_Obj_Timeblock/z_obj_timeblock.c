@@ -171,11 +171,11 @@ s32 ObjTimeblock_WaitForOcarina(ObjTimeblock* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     if (ObjTimeblock_PlayerIsInRange(this, play)) {
-        if (player->stateFlags2 & 0x1000000) {
+        if (player->stateFlags2 & PLAYER_STATE2_ATTEMPT_PLAY_FOR_ACTOR) {
             func_8010BD58(play, OCARINA_ACTION_FREE_PLAY);
             this->songObserverFunc = ObjTimeblock_WaitForSong;
         } else {
-            player->stateFlags2 |= 0x800000;
+            player->stateFlags2 |= PLAYER_STATE2_NEAR_OCARINA_ACTOR;
         }
     }
     return false;
@@ -340,8 +340,8 @@ void ObjTimeblock_Draw(Actor* thisx, PlayState* play) {
         Gfx_SetupDL_25Opa(play->state.gfxCtx);
         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        if (CVarGetInteger("gCosmetics.World_BlockOfTime.Changed", 0)) {
-            Color_RGB8 color = CVarGetColor24("gCosmetics.World_BlockOfTime.Value", *primColor);
+        if (CVarGetInteger(CVAR_COSMETIC("World.BlockOfTime.Changed"), 0)) {
+            Color_RGB8 color = CVarGetColor24(CVAR_COSMETIC("World.BlockOfTime.Value"), *primColor);
             gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, color.r, color.g, color.b, 255);
         } else {
             gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, primColor->r, primColor->g, primColor->b, 255);

@@ -10,6 +10,8 @@
 #include "context.h"
 #include <soh/Enhancements/randomizer/randomizerTypes.h>
 #include "soh/Enhancements/randomizer/randomizer_check_objects.h"
+#include "soh/Enhancements/randomizer/randomizer_check_tracker.h"
+#include "soh/Enhancements/randomizer/tricks.h"
 #include <soh/Enhancements/custom-message/CustomMessageManager.h>
 #include "soh/Enhancements/item-tables/ItemTableTypes.h"
 #include "../custom-message/CustomMessageTypes.h"
@@ -39,14 +41,11 @@ class Randomizer {
     static const std::string IceTrapRandoMessageTableID;
     static const std::string randoMiscHintsTableID;
 
-    // Public for now to be accessed by SaveManager, will be made private again soon :tm:
-    std::unordered_map<RandomizerGet, std::array<std::string, 3>> EnumToSpoilerfileGetName;
-
     static Sprite* GetSeedTexture(uint8_t index);
     bool SpoilerFileExists(const char* spoilerFileName);
     void LoadMerchantMessages();
     void LoadHintMessages();
-    bool IsTrialRequired(RandomizerInf trial);
+    bool IsTrialRequired(s32 trialFlag);
     u8 GetRandoSettingValue(RandomizerSettingKey randoSettingKey);
     RandomizerCheck GetCheckFromRandomizerInf(RandomizerInf randomizerInf);
     RandomizerInf GetRandomizerInfFromCheck(RandomizerCheck rc);
@@ -62,14 +61,9 @@ class Randomizer {
     ItemObtainability GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck);
     ItemObtainability GetItemObtainabilityFromRandomizerGet(RandomizerGet randomizerCheck);
     CustomMessage GetSheikMessage(s16 scene, u16 originalTextId);
-    CustomMessage ReplaceWithItemName(CustomMessage message, std::string&& toReplace, RandomizerCheck hintedCheck);
-    CustomMessage GetLoachMessage();
-    CustomMessage GetMiscHintMessage(TextIDs textToGet, RandomizerCheck hintedCheck, RandomizerCheck otherCheck = RC_UNKNOWN_CHECK);
-    CustomMessage GetSariaMessage(u16 originalTextId);
     CustomMessage GetFishingPondOwnerMessage(u16 originalTextId);
     CustomMessage GetMerchantMessage(RandomizerInf randomizerInf, u16 textId, bool mysterious = false);
     RandomizerCheck GetCheckFromActor(s16 actorId, s16 sceneNum, s16 actorParams);
-    CustomMessage GetCursedSkullMessage(s16 params, RandomizerCheck hintedCheck);
     CustomMessage GetGoronMessage(u16 index);
     CustomMessage GetMapGetItemMessageWithHint(GetItemEntry itemEntry);
     static void CreateCustomMessages();

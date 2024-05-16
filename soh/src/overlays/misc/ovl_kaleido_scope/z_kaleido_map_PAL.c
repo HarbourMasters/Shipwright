@@ -7,6 +7,8 @@
 #include "textures/icon_item_dungeon_static/icon_item_dungeon_static.h"
 #include "textures/icon_item_nes_static/icon_item_nes_static.h"
 
+#include "public/bridge/gfxbridge.h"
+
 void KaleidoScope_DrawDungeonMap(PlayState* play, GraphicsContext* gfxCtx) {
     static void* dungeonItemTexs[] = {
         gQuestIconDungeonBossKeyTex,
@@ -52,7 +54,7 @@ void KaleidoScope_DrawDungeonMap(PlayState* play, GraphicsContext* gfxCtx) {
     s16 stepG;
     s16 stepB;
     u16 rgba16;
-    bool dpad = CVarGetInteger("gDpadPause", 0);
+    bool dpad = CVarGetInteger(CVAR_SETTING("DPadOnPause"), 0);
 
     OPEN_DISPS(gfxCtx);
 
@@ -312,6 +314,9 @@ void KaleidoScope_DrawDungeonMap(PlayState* play, GraphicsContext* gfxCtx) {
         KaleidoScope_DrawQuadTextureRGBA32(gfxCtx, gQuestIconGoldSkulltulaTex, 24, 24, 8);
     }
 
+    // Unique index for both pulse phases
+    uint8_t palettePulseIdx = (mapBgPulseStage ? 40 : 20) - mapBgPulseTimer;
+
     if ((play->sceneNum >= SCENE_DEKU_TREE) && (play->sceneNum <= SCENE_TREASURE_BOX_SHOP)) {
         stepR = (mapBgPulseR - mapBgPulseColors[mapBgPulseStage][0]) / mapBgPulseTimer;
         stepG = (mapBgPulseG - mapBgPulseColors[mapBgPulseStage][1]) / mapBgPulseTimer;
@@ -324,6 +329,9 @@ void KaleidoScope_DrawDungeonMap(PlayState* play, GraphicsContext* gfxCtx) {
         interfaceCtx->mapPalette[28] = (rgba16 & 0xFF00) >> 8;
         interfaceCtx->mapPalette[29] = rgba16 & 0xFF;
 
+        interfaceCtx->mapPalettesPulse[palettePulseIdx][28] = (rgba16 & 0xFF00) >> 8;
+        interfaceCtx->mapPalettesPulse[palettePulseIdx][29] = rgba16 & 0xFF;
+
         mapBgPulseTimer--;
         if (mapBgPulseTimer == 0) {
             mapBgPulseStage ^= 1;
@@ -335,10 +343,11 @@ void KaleidoScope_DrawDungeonMap(PlayState* play, GraphicsContext* gfxCtx) {
     gDPSetTextureFilter(POLY_KAL_DISP++, G_TF_POINT);
     gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, pauseCtx->alpha);
 
-    gDPLoadTLUT_pal16(POLY_KAL_DISP++, 0, interfaceCtx->mapPalette);
+    // Use a unique palette address per frame so the renderer/shader can cache all variations
+    gDPLoadTLUT_pal16(POLY_KAL_DISP++, 0, interfaceCtx->mapPalettesPulse[palettePulseIdx]);
     gDPSetTextureLUT(POLY_KAL_DISP++, G_TT_RGBA16);
 
-    u8 mirroredWorld = CVarGetInteger("gMirroredWorld", 0);
+    u8 mirroredWorld = CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0);
     u8 mirrorMode = mirroredWorld ? G_TX_MIRROR : G_TX_NOMIRROR;
     // Offset the U value of each vertex to be in the mirror boundary for the map textures
     if (mirroredWorld) {
@@ -348,10 +357,6 @@ void KaleidoScope_DrawDungeonMap(PlayState* play, GraphicsContext* gfxCtx) {
     }
 
     gSPVertex(POLY_KAL_DISP++, &pauseCtx->mapPageVtx[60], 8, 0);
-
-    // The dungeon map textures are recreated each frame, so always invalidate them
-    gSPInvalidateTexCache(POLY_KAL_DISP++, interfaceCtx->mapSegment[0]);
-    gSPInvalidateTexCache(POLY_KAL_DISP++, interfaceCtx->mapSegment[1]);
 
     gDPLoadTextureBlock_4b(POLY_KAL_DISP++, interfaceCtx->mapSegmentName[0], G_IM_FMT_CI, MAP_48x85_TEX_WIDTH,
                            MAP_48x85_TEX_HEIGHT, 0, G_TX_WRAP | mirrorMode, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK,
@@ -438,8 +443,8 @@ void KaleidoScope_DrawWorldMap(PlayState* play, GraphicsContext* gfxCtx) {
     s16 stepR;
     s16 stepG;
     s16 stepB;
-    bool dpad = CVarGetInteger("gDpadPause", 0);
-    u8 mirroredWorld = CVarGetInteger("gMirroredWorld", 0);
+    bool dpad = CVarGetInteger(CVAR_SETTING("DPadOnPause"), 0);
+    u8 mirroredWorld = CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0);
     u8 mirrorMode = mirroredWorld ? G_TX_MIRROR : G_TX_NOMIRROR;
 
     OPEN_DISPS(gfxCtx);
@@ -589,19 +594,16 @@ void KaleidoScope_DrawWorldMap(PlayState* play, GraphicsContext* gfxCtx) {
 
         gSP1Quadrangle(POLY_KAL_DISP++, j, j + 2, j + 3, j + 1, 0);
     } else if (HREG(15) == 1) {
-        Gfx* sp1CC = POLY_KAL_DISP;
-        void* mapImage = gWorldMapImageTex;
+        Gfx* gfx = POLY_KAL_DISP;
 
-        // gSPLoadUcodeL(sp1CC++, rspS2DEX)?
-        //gSPLoadUcodeEx(sp1CC++, OS_K0_TO_PHYSICAL(D_80113070), OS_K0_TO_PHYSICAL(D_801579A0), 0x800);
+        gSPLoadUcodeL(gfx++, ucode_s2dex);
 
-        func_8009638C(&sp1CC, mapImage, gWorldMapImageTLUT, 216, 128, G_IM_FMT_CI, G_IM_SIZ_8b, 0x8000, 256,
-                      HREG(13) / 100.0f, HREG(14) / 100.0f);
+        Room_DrawBackground2D(&gfx, gWorldMapImageTex, gWorldMapImageTLUT, 216, 128, G_IM_FMT_CI, G_IM_SIZ_8b,
+                              G_TT_RGBA16, 256, HREG(13) / 100.0f, HREG(14) / 100.0f);
 
-        // gSPLoadUcode(sp1CC++, SysUcode_GetUCode(), SysUcode_GetUCodeData())?
-        gSPLoadUcodeEx(sp1CC++, SysUcode_GetUCode(), SysUcode_GetUCodeData(), 0x800);
+        gSPLoadUcode(gfx++, SysUcode_GetUCode());
 
-        POLY_KAL_DISP = sp1CC;
+        POLY_KAL_DISP = gfx;
     }
 
     if (HREG(15) == 2) {

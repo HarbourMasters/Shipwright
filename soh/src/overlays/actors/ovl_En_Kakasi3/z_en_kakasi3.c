@@ -232,33 +232,33 @@ void func_80A91348(EnKakasi3* this, PlayState* play) {
             if (absAngleTowardsLink < 0x4300) {
                 if (!this->unk_194) {
 
-                    if (player->stateFlags2 & 0x1000000) {
+                    if (player->stateFlags2 & PLAYER_STATE2_ATTEMPT_PLAY_FOR_ACTOR) {
                         this->camId = OnePointCutscene_Init(play, 2260, -99, &this->actor, MAIN_CAM);
                         play->msgCtx.msgMode = MSGMODE_PAUSED;
                         this->dialogState = TEXT_STATE_EVENT;
                         this->unk_1B8 = 0.0f;
                         Message_StartTextbox(play, 0x40A4, NULL);
-                        player->stateFlags2 |= 0x800000;
+                        player->stateFlags2 |= PLAYER_STATE2_NEAR_OCARINA_ACTOR;
                         this->actionFunc = func_80A915B8;
                         return;
                     }
                     if (this->actor.xzDistToPlayer < 80.0f) {
-                        player->stateFlags2 |= 0x800000;
+                        player->stateFlags2 |= PLAYER_STATE2_NEAR_OCARINA_ACTOR;
                     }
                 } else if (gSaveContext.scarecrowSpawnSongSet && !this->unk_195) {
 
-                    if (player->stateFlags2 & 0x1000000) {
+                    if (player->stateFlags2 & PLAYER_STATE2_ATTEMPT_PLAY_FOR_ACTOR) {
                         this->camId = OnePointCutscene_Init(play, 2260, -99, &this->actor, MAIN_CAM);
                         play->msgCtx.msgMode = MSGMODE_PAUSED;
                         this->dialogState = TEXT_STATE_EVENT;
                         this->unk_1B8 = 0.0f;
                         Message_StartTextbox(play, 0x40A8, NULL);
-                        player->stateFlags2 |= 0x800000;
+                        player->stateFlags2 |= PLAYER_STATE2_NEAR_OCARINA_ACTOR;
                         this->actionFunc = func_80A9187C;
                         return;
                     }
                     if (this->actor.xzDistToPlayer < 80.0f) {
-                        player->stateFlags2 |= 0x800000;
+                        player->stateFlags2 |= PLAYER_STATE2_NEAR_OCARINA_ACTOR;
                     }
                 }
                 func_8002F2CC(&this->actor, play, 100.0f);
@@ -296,14 +296,14 @@ void func_80A91620(EnKakasi3* this, PlayState* play) {
     if (play->msgCtx.ocarinaMode == OCARINA_MODE_03 && play->msgCtx.msgMode == MSGMODE_NONE) {
         this->dialogState = TEXT_STATE_EVENT;
         Message_StartTextbox(play, 0x40A5, NULL);
-        func_8002DF54(play, NULL, 8);
+        Player_SetCsActionWithHaltedActors(play, NULL, 8);
         this->actionFunc = func_80A91A90;
         return;
     }
 
     if (play->msgCtx.ocarinaMode == OCARINA_MODE_01) {
         func_80A90EBC(this, play, 0);
-        player->stateFlags2 |= 0x800000;
+        player->stateFlags2 |= PLAYER_STATE2_NEAR_OCARINA_ACTOR;
     }
 }
 
@@ -354,7 +354,7 @@ void func_80A918E4(EnKakasi3* this, PlayState* play) {
         this->dialogState = TEXT_STATE_EVENT;
         OnePointCutscene_EndCutscene(play, this->camId);
         this->camId = SUBCAM_NONE;
-        func_8002DF54(play, NULL, 8);
+        Player_SetCsActionWithHaltedActors(play, NULL, 8);
         this->actionFunc = func_80A91A90;
         return;
     }
@@ -370,21 +370,21 @@ void func_80A918E4(EnKakasi3* this, PlayState* play) {
         this->unk_195 = true;
         Message_StartTextbox(play, 0x40A7, NULL);
         this->dialogState = TEXT_STATE_EVENT;
-        func_8002DF54(play, NULL, 8);
+        Player_SetCsActionWithHaltedActors(play, NULL, 8);
         this->actionFunc = func_80A91A90;
         return;
     }
 
     if (play->msgCtx.ocarinaMode == OCARINA_MODE_01) {
         func_80A90EBC(this, play, 0);
-        player->stateFlags2 |= 0x800000;
+        player->stateFlags2 |= PLAYER_STATE2_NEAR_OCARINA_ACTOR;
     }
 }
 
 void func_80A91A90(EnKakasi3* this, PlayState* play) {
     func_80A90E28(this);
     SkelAnime_Update(&this->skelAnime);
-    func_8002DF54(play, NULL, 8);
+    Player_SetCsActionWithHaltedActors(play, NULL, 8);
 
     if (this->dialogState == Message_GetState(&play->msgCtx) && Message_ShouldAdvance(play)) {
         if (this->unk_195) {
@@ -400,7 +400,7 @@ void func_80A91A90(EnKakasi3* this, PlayState* play) {
         }
         Message_CloseTextbox(play);
         play->msgCtx.ocarinaMode = OCARINA_MODE_04;
-        func_8002DF54(play, NULL, 7);
+        Player_SetCsActionWithHaltedActors(play, NULL, 7);
         this->actionFunc = func_80A911F0;
     }
 }

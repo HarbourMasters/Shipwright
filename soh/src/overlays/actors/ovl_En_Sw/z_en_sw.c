@@ -354,7 +354,7 @@ s32 func_80B0C9F0(EnSw* this, PlayState* play) {
             }
             Enemy_StartFinishingBlow(play, &this->actor);
             if (((this->actor.params & 0xE000) >> 0xD) != 0) {
-                if (CVarGetInteger("gGsCutscene", 0)) {
+                if (CVarGetInteger(CVAR_ENHANCEMENT("GSCutscene"), 0)) {
                     OnePointCutscene_Init(play, 2200, 90, &this->actor, MAIN_CAM);
                 }
                 this->skelAnime.playSpeed = 8.0f;
@@ -571,7 +571,7 @@ void func_80B0D590(EnSw* this, PlayState* play) {
             this->collider.elements[0].info.ocElemFlags = 1;
         }
 
-        Math_ApproachF(&this->actor.scale.x, !IS_DAY || CVarGetInteger("gNightGSAlwaysSpawn", 0) ? 0.02f : 0.0f, 0.2f, 0.01f);
+        Math_ApproachF(&this->actor.scale.x, !IS_DAY || CVarGetInteger(CVAR_ENHANCEMENT("NightGSAlwaysSpawn"), 0) ? 0.02f : 0.0f, 0.2f, 0.01f);
         Actor_SetScale(&this->actor, this->actor.scale.x);
     }
 
@@ -718,7 +718,7 @@ s32 func_80B0DEA8(EnSw* this, PlayState* play, s32 arg2) {
     s32 sp54;
     Vec3f sp48;
 
-    if (!(player->stateFlags1 & 0x200000) && arg2) {
+    if (!(player->stateFlags1 & PLAYER_STATE1_CLIMBING_LADDER) && arg2) {
         return false;
     } else if (func_8002DDF4(play) && arg2) {
         return false;

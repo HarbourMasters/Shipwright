@@ -34,7 +34,7 @@ void AreaTable_Init_HyruleField() {
                   //Locations
                   LocationAccess(RC_HF_SOUTHEAST_GROTTO_CHEST,         {[]{return true;}}),
                   LocationAccess(RC_HF_SOUTHEAST_GROTTO_FISH,          {[]{return logic->HasBottle;}}),
-                  LocationAccess(RC_HF_SOUTHEAST_GOSSIP_STONE,         {[]{return true;}}),
+                  LocationAccess(RC_HF_SOUTHEAST_GROTTO_GOSSIP_STONE,         {[]{return true;}}),
                   LocationAccess(RC_HF_SOUTHEAST_GROTTO_BEEHIVE_LEFT,  {[]{return logic->CanBreakLowerBeehives;}}),
                   LocationAccess(RC_HF_SOUTHEAST_GROTTO_BEEHIVE_RIGHT, {[]{return logic->CanBreakLowerBeehives;}}),
                 }, {
@@ -77,7 +77,7 @@ void AreaTable_Init_HyruleField() {
                   //Locations
                   LocationAccess(RC_HF_NEAR_MARKET_GROTTO_CHEST,         {[]{return true;}}),
                   LocationAccess(RC_HF_NEAR_MARKET_GROTTO_FISH,          {[]{return logic->HasBottle;}}),
-                  LocationAccess(RC_HF_NEAR_MARKET_GOSSIP_STONE,         {[]{return true;}}),
+                  LocationAccess(RC_HF_NEAR_MARKET_GROTTO_GOSSIP_STONE,         {[]{return true;}}),
                   LocationAccess(RC_HF_NEAR_MARKET_GROTTO_BEEHIVE_LEFT,  {[]{return logic->CanBreakLowerBeehives;}}),
                   LocationAccess(RC_HF_NEAR_MARKET_GROTTO_BEEHIVE_RIGHT, {[]{return logic->CanBreakLowerBeehives;}}),
                 }, {

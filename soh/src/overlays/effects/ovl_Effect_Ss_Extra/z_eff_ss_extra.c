@@ -62,7 +62,7 @@ void EffectSsExtra_Draw(PlayState* play, u32 index, EffectSs* this) {
     s32 pad;
     f32 scale = this->rScale / 100.0f;
     void* object = play->objectCtx.status[this->rObjBankIdx].segment;
-    u8 mirroredWorld = CVarGetInteger("gMirroredWorld", 0);
+    u8 mirroredWorld = CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0);
 
     OPEN_DISPS(play->state.gfxCtx);
 

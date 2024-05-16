@@ -101,6 +101,18 @@ void ItemLocation::SetCustomPrice(const uint16_t price_) {
     hasCustomPrice = true;
 }
 
+bool ItemLocation::HasObtained() const {
+    return obtained;
+}
+
+void ItemLocation::MarkAsObtained() {
+    obtained = true;
+}
+
+void ItemLocation::MarkAsNotObtained() {
+    obtained = false;
+}
+
 bool ItemLocation::IsHintable() const {
     return isHintable;
 }
@@ -109,19 +121,19 @@ void ItemLocation::SetAsHintable() {
     isHintable = true;
 }
 
-bool ItemLocation::IsHintedAt() const {
-    return hintedAt;
+bool ItemLocation::IsAHintAccessible() const {
+    return hintAccesible;
 }
 
-void ItemLocation::SetAsHinted() {
-    hintedAt = true;
+void ItemLocation::SetHintAccesible() {
+    hintAccesible = true;
 }
 
-const std::vector<RandomizerHintKey>& ItemLocation::GetHintedBy() const {
+const std::vector<RandomizerHint>& ItemLocation::GetHintedBy() const {
     return hintedBy;
 }
 
-void ItemLocation::AddHintedBy(const RandomizerHintKey hintKey) {
+void ItemLocation::AddHintedBy(const RandomizerHint hintKey) {
     hintedBy.push_back(hintKey);
 } 
 
@@ -193,7 +205,7 @@ void ItemLocation::ResetVariables() {
     placedItem = RG_NONE;
     delayedItem = RG_NONE;
     isHintable = false;
-    hintedAt = false;
+    hintAccesible = false;
     hintedBy = {};
     price = 0;
     hasCustomPrice = false;
@@ -201,5 +213,6 @@ void ItemLocation::ResetVariables() {
     wothCandidate = false;
     barrenCandidate = false;
     area = RA_NONE;
+    obtained = false;
 }
 }

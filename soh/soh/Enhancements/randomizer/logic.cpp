@@ -230,6 +230,26 @@ namespace Rando {
         return false;
     }
 
+    bool Logic::CanKillEnemy(std::string enemy) {
+        //switch(enemy) {} RANDOTODO implement enemies enum
+        if (enemy == "Big Skulltula"){
+            return CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT) || CanJumpslash || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_HOOKSHOT) || CanUse(RG_DINS_FIRE) || HasExplosives;
+        }
+        //Shouldn't be reached
+        return false;
+    }
+
+    bool Logic::CanPassEnemy(std::string enemy) {
+        //switch(enemy) {} RANDOTODO implement enemies enum
+        if (CanKillEnemy(enemy)){
+            return true;
+        }
+        if (enemy == "Big Skulltula"){
+            return Nuts || CanUse(RG_BOOMERANG);
+        }
+        return false;
+    }
+
     Logic::Logic() {
         
     }
@@ -284,7 +304,7 @@ namespace Rando {
         Fish         = HasBottle && FishAccess;
         Fairy        = HasBottle && FairyAccess;
 
-        FoundBombchus   = (BombchuDrop || Bombchus || Bombchus5 || Bombchus10 || Bombchus20);
+        FoundBombchus   = (BombchuDrop || Bombchus || Bombchus5 || Bombchus10 || Bombchus20) && (BombBag || ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC));
         CanPlayBowling  = ChildsWallet && ((ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && FoundBombchus) || (!ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && BombBag));
         // TODO: Implement Ammo Drop Setting in place of bombchu drops
         HasBombchus = (BuyBombchus || (ctx->GetOption(RSK_ENABLE_BOMBCHU_DROPS).Is(RO_AMMO_DROPS_ON/*_PLUS_BOMBCHU*/) && FoundBombchus));
