@@ -1394,6 +1394,37 @@ void RegisterPauseMenuHooks() {
     });
 }
 
+void RegisterUnequipCItems() {
+    static int timer = 45;
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnKaleidoUpdate>([](){
+        if (!CVarGetInteger(CVAR_ENHANCEMENT("UnequipCItems"),0)) return;
+        int8_t itemButton = -1;
+
+        PauseContext* pauseCtx = &gPlayState->pauseCtx;
+        Input* input = &gPlayState->state.input[0];
+
+        switch (pauseCtx->pageIndex) {
+            case PAUSE_ITEM:
+        {
+                if (pauseCtx->cursorItem[PAUSE_ITEM] != PAUSE_ITEM_NONE){
+                    //item is on a C-Button check from tts.cpp
+                    for (size_t i = 0; i < ARRAY_COUNT(gSaveContext.equips.cButtonSlots); i++) {
+                        if (gSaveContext.equips.buttonItems[i + 1] == pauseCtx->cursorItem[PAUSE_ITEM]) {
+                            itemButton = i + 1;
+                            break;
+                        }
+                    }
+
+                    if (itemButton != -1 && CHECK_BTN_ANY(input->press.button, BTN_A)) {
+                        gSaveContext.equips.buttonItems[itemButton] = 255;
+                    }
+                }
+            }
+        }
+    });
+};
+
+
 void InitMods() {
     RegisterTTS();
     RegisterInfiniteMoney();
@@ -1433,4 +1464,5 @@ void InitMods() {
     RegisterPatchHandHandler();
     RegisterHurtContainerModeHandler();
     RegisterPauseMenuHooks();
+    RegisterUnequipCItems();
 }

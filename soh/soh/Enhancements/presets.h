@@ -282,6 +282,7 @@ const std::vector<const char*> enhancementsCvars = {
     CVAR_ENHANCEMENT("PermanentHeartLoss"),
     CVAR_ENHANCEMENT("RemoveExplosiveLimit"),
     CVAR_ENHANCEMENT("ToggleStrength"),
+    CVAR_ENHANCEMENT("UnequipCItems"),
 };
 
 const std::vector<const char*> cheatCvars = {

@@ -707,6 +707,8 @@ void DrawEnhancementsMenu() {
                     }
                 }
                 UIWidgets::Tooltip("Allows strength to be toggled on and off by pressing A on the strength upgrade in the equipment subscreen of the pause menu (This allows performing some glitches that require the player to not have strength).");
+                UIWidgets::PaddedEnhancementCheckbox("Allow unequipping C-Items", CVAR_ENHANCEMENT("UnequipCItems"), true, false);
+                UIWidgets::Tooltip("Allows unequipping C-items by selecting them and pressing the A button");
                 ImGui::EndMenu();
             }
 
