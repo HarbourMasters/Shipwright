@@ -1,0 +1,12 @@
+<Root>
+    <File Name="object_gi_bombpouch" Segment="6">
+        <DList Name="gGiBombBag20BagColorDL" Offset="0x0AD0"/>
+        <DList Name="gGiBombBag30BagColorDL" Offset="0x0AF0"/>
+        <DList Name="gGiBombBag40BagColorDL" Offset="0x0B10"/>
+        <DList Name="gGiBombBag20RingColorDL" Offset="0x0B30"/>
+        <DList Name="gGiBombBag30RingColorDL" Offset="0x0B50"/>
+        <DList Name="gGiBombBag40RingColorDL" Offset="0x0B70"/>
+        <DList Name="gGiBombBagDL" Offset="0x0B90"/>
+        <DList Name="gGiBombBagRingDL" Offset="0x0D98"/>
+    </File>
+</Root>

@@ -1,0 +1,8 @@
+<Root>
+    <File Name="drag_scene" Segment="2">
+        <Scene Name="drag_scene" Offset="0x0"/>
+    </File>
+    <File Name="drag_room_0" Segment="3">
+        <Room Name="drag_room_0" Offset="0x0"/>
+    </File>
+</Root>

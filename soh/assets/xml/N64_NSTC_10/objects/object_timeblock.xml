@@ -1,0 +1,7 @@
+<Root>
+    <File Name="object_timeblock" Segment="6">
+        <DList Name="gSongOfTimeBlockDL" Offset="0x980"/>
+        <Texture Name="gSongOfTimeBlockTex" OutName="block" Format="i4" Width="64" Height="64" Offset="0x0"/>
+        <Collision Name="gSongOfTimeBlockCol" Offset="0xB30"/>
+    </File>
+</Root>

@@ -1,0 +1,38 @@
+<Root>
+    <File Name="object_ds" Segment="6">
+        <!-- Potion Shop Lady Skeleton -->
+        <Skeleton Name="gPotionShopLadySkel" Type="Flex" LimbType="Standard" Offset="0x4768"/>
+
+        <!-- Potion Shop Lady Limbs -->
+        <Limb Name="gPotionShopLadyRootLimb" LimbType="Standard" Offset="0x4718"/>
+        <Limb Name="gPotionShopLadyCatLimb" LimbType="Standard" Offset="0x4724"/>
+        <Limb Name="gPotionShopLadyTorsoLimb" LimbType="Standard" Offset="0x4730"/>
+        <Limb Name="gPotionShopLadyArmLimb" LimbType="Standard" Offset="0x473C"/>
+        <Limb Name="gPotionShopLadyHeadLimb" LimbType="Standard" Offset="0x4748"/>
+
+        <!-- Potion Shop Lady Limb DisplayLists -->
+        <DList Name="gPotionShopLadyCatDL" Offset="0x36C0"/>
+        <DList Name="gPotionShopLadyTorsoDL" Offset="0x2A40"/>
+        <DList Name="gPotionShopLadyArmDL" Offset="0x3440"/>
+        <DList Name="gPotionShopLadyHeadDL" Offset="0x2C00"/>
+
+        <!-- Potion Shop Lady Palettes -->
+        <Texture Name="gPotionShopLadyTLUT" OutName="potion_shop_lady_tlut" Format="rgba16" Width="16" Height="16" Offset="0x3918"/>
+
+        <!-- Potion Shop Lady DisplayList Textures -->
+        <Texture Name="gPotionShopLadySkinGradientTex" OutName="skin_gradient" Format="ci8" Width="8" Height="8" Offset="0x3B18" TlutOffset="0x3918"/>
+        <Texture Name="gPotionShopLadyEyelashBottomTex" OutName="eyelash_bottom" Format="ci8" Width="16" Height="8" Offset="0x3B58" TlutOffset="0x3918"/>
+        <Texture Name="gPotionShopLadyEyelashTopTex" OutName="eyelash_top" Format="ci8" Width="16" Height="8" Offset="0x3BD8" TlutOffset="0x3918"/>
+        <Texture Name="gPotionShopLadyEar1Tex" OutName="ear_1" Format="ci8" Width="16" Height="16" Offset="0x3C58" TlutOffset="0x3918"/>
+        <Texture Name="gPotionShopLadyHairTex" OutName="hair" Format="ci8" Width="16" Height="32" Offset="0x3D58" TlutOffset="0x3918"/>
+        <Texture Name="gPotionShopLadyEyeTex" OutName="eye" Format="ci8" Width="16" Height="8" Offset="0x3F58" TlutOffset="0x3918"/>
+        <Texture Name="gPotionShopLadyEar2Tex" OutName="ear_2" Format="ci8" Width="16" Height="16" Offset="0x3FD8" TlutOffset="0x3918"/>
+        <Texture Name="gPotionShopLadyArmGradientTex" OutName="arm_gradient" Format="ci8" Width="8" Height="8" Offset="0x40D8" TlutOffset="0x3918"/>
+        <Texture Name="gPotionShopLadyShirtPatternTex" OutName="shirt_pattern" Format="ci8" Width="16" Height="16" Offset="0x4118" TlutOffset="0x3918"/>
+        <Texture Name="gPotionShopLadyCatPattern1Tex" OutName="cat_pattern_1" Format="ci8" Width="32" Height="32" Offset="0x4218" TlutOffset="0x3918"/>
+        <Texture Name="gPotionShopLadyCatPattern2Tex" OutName="cat_pattern_2" Format="ci8" Width="16" Height="16" Offset="0x4618" TlutOffset="0x3918"/>
+        
+        <!-- Potion Shop Lady Animations-->
+        <Animation Name="gPotionShopLadyAnim" Offset="0x39C"/>
+    </File>
+</Root>

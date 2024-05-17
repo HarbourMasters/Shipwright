@@ -1,0 +1,19 @@
+<Root>
+    <File Name="ovl_En_Ganon_Organ" BaseAddress="0x80AC9140" RangeStart="0x328" RangeEnd="0x6F70">
+        <Texture Name="sRoomCarpetTex" OutName="room_carpet" Format="rgba16" Width="64" Height="16" Offset="0x328"/>
+        <Texture Name="sRoomOrganPipeTex" OutName="room_organ_pipe" Format="i4" Width="16" Height="64" Offset="0xB28"/>
+        <Texture Name="sRoomOrganCorbelsTex" OutName="room_organ_corbels" Format="i4" Width="16" Height="16" Offset="0xD28"/>
+        <Texture Name="sRoomOrganGrillTex" OutName="room_organ_grill" Format="rgba16" Width="16" Height="16" Offset="0xDA8"/>
+        <Texture Name="sRoomCrestFriezeTex" OutName="room_crest_frieze" Format="i4" Width="32" Height="32" Offset="0xFA8"/>
+        <Texture Name="sRoomColumnFriezeAndCanopyTex" OutName="room_column_frieze_and_canopy" Format="i4" Width="16" Height="16" Offset="0x11A8"/>
+        <Texture Name="sRoomColumnMetalEdgingTex" OutName="room_metal_edging" Format="rgba16" Width="16" Height="16" Offset="0x1228"/>
+        <Texture Name="sRoomStatueWingTex" OutName="room_statue_wing" Format="rgba16" Width="16" Height="16" Offset="0x1428"/>
+        <Texture Name="sRoomPillarTex" OutName="room_pillar" Format="i8" Width="8" Height="32" Offset="0x1628"/>
+        <Texture Name="sRoomOrganKeyboardTex" OutName="room_organ_keyboard" Format="rgba16" Width="32" Height="8" Offset="0x1728"/>
+        <Texture Name="sRoomOrganKeyEndTex" OutName="room_organ_key_end" Format="rgba16" Width="4" Height="8" Offset="0x1928"/>
+        <Texture Name="sRoomStepTex" OutName="room_step" Format="i4" Width="16" Height="16" Offset="0x1968"/>
+
+        <DList Name="sRoomOrganAndFloorDL" Offset="0x4BE8"/>
+        <DList Name="sRoomStatuesDL" Offset="0x69F0"/>
+    </File>
+</Root>

@@ -1,0 +1,55 @@
+<Root>
+    <File Name="object_js" Segment="6">
+        <!-- Carpet Merchant Skeleton -->
+        <Skeleton Name="gCarpetMerchantSkel" Type="Flex" LimbType="Standard" Offset="0x5EA0"/>
+
+        <!-- Carpet Merchant Limbs -->
+        <Limb Name="gCarpetMerchantRootLimb" LimbType="Standard" Offset="0x5DE0"/>
+        <Limb Name="gCarpetMerchantTopRootLimb" LimbType="Standard" Offset="0x5DEC"/>
+        <Limb Name="gCarpetMerchantLowerHairLimb" LimbType="Standard" Offset="0x5DF8"/>
+        <Limb Name="gCarpetMerchantUpperHairLimb" LimbType="Standard" Offset="0x5E04"/>
+        <Limb Name="gCarpetMerchantTorsoLimb" LimbType="Standard" Offset="0x5E10"/>
+        <Limb Name="gCarpetMerchantUpperArmLeftLimb" LimbType="Standard" Offset="0x5E1C"/>
+        <Limb Name="gCarpetMerchantForearmLeftLimb" LimbType="Standard" Offset="0x5E28"/>
+        <Limb Name="gCarpetMerchantLeftHandLimb" LimbType="Standard" Offset="0x5E34"/>
+        <Limb Name="gCarpetMerchantUpperArmRightLimb" LimbType="Standard" Offset="0x5E40"/>
+        <Limb Name="gCarpetMerchantForearmRightLimb" LimbType="Standard" Offset="0x5E4C"/>
+        <Limb Name="gCarpetMerchantRightHandLimb" LimbType="Standard" Offset="0x5E58"/>
+        <Limb Name="gCarpetMerchantHeadLimb" LimbType="Standard" Offset="0x5E64"/>
+
+        <!-- Carpet Merchant Limb DisplayLists -->
+        <DList Name="gCarpetMerchantBlanketAndLowerBodyDL" Offset="0x3440"/>
+        <DList Name="gCarpetMerchantLowerHairDL" Offset="0x3B98"/>
+        <DList Name="gCarpetMerchantUpperHairDL" Offset="0x3A20"/>
+        <DList Name="gCarpetMerchantTorsoDL" Offset="0x3D78"/>
+        <DList Name="gCarpetMerchantUpperArmLeftDL" Offset="0x47E8"/>
+        <DList Name="gCarpetMerchantForearmLeftDL" Offset="0x4918"/>
+        <DList Name="gCarpetMerchantLeftHandDL" Offset="0x4AC0"/>
+        <DList Name="gCarpetMerchantUpperArmRightDL" Offset="0x43B0"/>
+        <DList Name="gCarpetMerchantForearmRightDL" Offset="0x44E0"/>
+        <DList Name="gCarpetMerchantRightHandDL" Offset="0x4688"/>
+        <DList Name="gCarpetMerchantHeadDL" Offset="0x4070"/>
+
+        <!-- Carpet Merchant Palettes -->
+        <Texture Name="gCarpetMerchantTLUT" OutName="tlut" Format="rgba16" Width="16" Height="16" Offset="0x4C20"/>
+
+        <!-- Carpet Merchant DisplayList Textures -->
+        <Texture Name="gCarpetMerchantPantsTex" OutName="pants" Format="ci8" Width="8" Height="16" Offset="0x4E20" TlutOffset="0x4C20"/>
+        <Texture Name="gCarpetMerchantHairTex" OutName="hair" Format="ci8" Width="16" Height="16" Offset="0x4EA0" TlutOffset="0x4C20"/>
+        <Texture Name="gCarpetMerchantFootTex" OutName="foot" Format="ci8" Width="32" Height="16" Offset="0x4FA0" TlutOffset="0x4C20"/>
+        <Texture Name="gCarpetMerchantSkinGradientTex" OutName="skin_gradient" Format="ci8" Width="8" Height="8" Offset="0x51A0" TlutOffset="0x4C20"/>
+        <Texture Name="gCarpetMerchantFootSoleTex" OutName="foot_sole" Format="ci8" Width="32" Height="32" Offset="0x51E0" TlutOffset="0x4C20"/>
+        <Texture Name="gCarpetMerchantHandTex" OutName="hand" Format="ci8" Width="16" Height="16" Offset="0x55E0" TlutOffset="0x4C20"/>
+        <Texture Name="gCarpetMerchantBraceletTex" OutName="bracelet" Format="ci8" Width="16" Height="32" Offset="0x56E0" TlutOffset="0x4C20"/>
+        <Texture Name="gCarpetMerchantShirtTex" OutName="shirt" Format="ci8" Width="16" Height="32" Offset="0x58E0" TlutOffset="0x4C20"/>
+        <Texture Name="gCarpetMerchantChestTex" OutName="chest" Format="ci8" Width="16" Height="32" Offset="0x5AE0" TlutOffset="0x4C20"/>
+        <Texture Name="gCarpetMerchantHatTex" OutName="hat" Format="ci8" Width="16" Height="16" Offset="0x5CE0" TlutOffset="0x4C20"/>
+
+        <!-- Carpet Merchant Animations -->
+        <Animation Name="gCarpetMerchantSlappingKneeAnim" Offset="0x45C"/>
+        <Animation Name="gCarpetMerchantIdleAnim" Offset="0x18C"/>
+
+        <!-- Carpet Merchant Collision -->
+        <Collision Name="gCarpetMerchantCol" Offset="0x5EF8"/>
+    </File>
+</Root>

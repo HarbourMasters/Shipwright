@@ -1,0 +1,130 @@
+﻿<Root>
+    <File Name="object_sk2" Segment="6">
+        <!-- Stalfos DLists -->
+        <DList Name="gStalfosSkullDL" Offset="0x53D0"/>
+        <DList Name="gStalfosUpperCoreDL" Offset="0x5720"/>
+        <DList Name="gStalfosRightUpperArmDL" Offset="0x57B8"/>
+        <DList Name="gStalfosLowerCoreDL" Offset="0x5890"/>
+        <DList Name="gStalfosRightThighDL" Offset="0x5970"/>
+        <DList Name="gStalfosRightHandDL" Offset="0x5A18"/>
+        <DList Name="gStalfosChestDL" Offset="0x5AD8"/>
+        <DList Name="gStalfosJawDL" Offset="0x5B90"/>
+        <DList Name="gStalfosUpperNeckDL" Offset="0x5C78"/>
+        <DList Name="gStalfosLowerNeckDL" Offset="0x5D08"/>
+        <DList Name="gStalfosShieldDL" Offset="0x5DA0"/>
+        <DList Name="gStalfosWaistDL" Offset="0x5EA0"/>
+        <DList Name="gStalfosRightLowerLegDL" Offset="0x5FA8"/>
+        <DList Name="gStalfosRightForearmDL" Offset="0x6110"/>
+        <DList Name="gStalfosRightFootDL" Offset="0x6208"/>
+        <DList Name="gStalfosRightShoulderArmorDL" Offset="0x6308"/>
+        <DList Name="gStalfosLeftUpperArmDL" Offset="0x63D8"/>
+        <DList Name="gStalfosLeftShoulderArmorDL" Offset="0x64B0"/>
+        <DList Name="gStalfosLeftFootDL" Offset="0x6580"/>
+        <DList Name="gStalfosLeftForearmDL" Offset="0x6680"/>
+        <DList Name="gStalfosLeftLowerLegDL" Offset="0x6778"/>
+        <DList Name="gStalfosLeftThighDL" Offset="0x68E0"/>
+        <DList Name="gStalfosLeftHandDL" Offset="0x6988"/>
+        <DList Name="gStalfosSwordDL" Offset="0x6A48"/>
+
+        <!-- Stalfos textures -->
+        <Texture Name="gStalfosEyeSocketTex" OutName="stalfos_eye_socket" Format="rgba16" Width="16" Height="16" Offset="0x6BA8"/>
+        <Texture Name="gStalfosEyeTex" OutName="stalfos_eye" Format="rgba16" Width="8" Height="8" Offset="0x6DA8"/>
+        <Texture Name="gStalfosBoneGradientTex" OutName="stalfos_bone_gradient" Format="rgba16" Width="4" Height="4" Offset="0x6E28"/>
+        <Texture Name="gStalfosNostrilTex" OutName="stalfos_nostril" Format="rgba16" Width="8" Height="8" Offset="0x6E48"/>
+        <Texture Name="gStalfosBoneDetailTex" OutName="stalfos_bone_detail" Format="rgba16" Width="8" Height="8" Offset="0x6EC8"/>
+        <Texture Name="gStalfosRibTex" OutName="stalfos_rib" Format="rgba16" Width="16" Height="16" Offset="0x6F48"/>
+        <Texture Name="gStalfosTrousersSideTex" OutName="stalfos_trousers_side" Format="rgba16" Width="16" Height="16" Offset="0x7148"/>
+        <Texture Name="gStalfosShieldTex" OutName="stalfos_shield_tex" Format="rgba16" Width="16" Height="16" Offset="0x7348"/>
+        <!-- Also used for shoulder armor, helm and sword hilt -->
+        <Texture Name="gStalfosLimbArmorTex" OutName="stalfos_limb_armor_tex" Format="rgba16" Width="16" Height="16" Offset="0x7548"/>
+        <Texture Name="gStalfosArmorBackTex" OutName="stalfos_armor_back" Format="rgba16" Width="8" Height="8" Offset="0x7748"/>
+        <Texture Name="gStalfosSwordBladeTex" OutName="stalfos_sword_blade" Format="rgba16" Width="4" Height="4" Offset="0x77C8"/>
+        <Texture Name="gStalfosTrousersTopTex" OutName="stalfos_trousers_top" Format="rgba16" Width="8" Height="8" Offset="0x77E8"/>
+
+        <!-- Stalfos limbs and skeleton -->
+        <Limb Name="gStalfosRootLimb" LimbType="Standard" Offset="0x7868"/>
+        <Limb Name="gStalfosUpperBodyRootLimb" LimbType="Standard" Offset="0x7874"/>
+        <Limb Name="gStalfosLowerCoreRootLimb" LimbType="Standard" Offset="0x7880"/>
+        <Limb Name="gStalfosUpperCoreRootLimb" LimbType="Standard" Offset="0x788C"/>
+        <Limb Name="gStalfosLowerNeckRootLimb" LimbType="Standard" Offset="0x7898"/>
+        <Limb Name="gStalfosSkullRootLimb" LimbType="Standard" Offset="0x78A4"/>
+        <Limb Name="gStalfosLimb7Limb" LimbType="Standard" Offset="0x78B0"/>
+        <Limb Name="gStalfosLimb8Limb" LimbType="Standard" Offset="0x78BC"/>
+        <Limb Name="gStalfosJawRootLimb" LimbType="Standard" Offset="0x78C8"/>
+        <Limb Name="gStalfosJawLimb" LimbType="Standard" Offset="0x78D4"/>
+        <Limb Name="gStalfosSkullLimb" LimbType="Standard" Offset="0x78E0"/>
+        <Limb Name="gStalfosUpperNeckLimb" LimbType="Standard" Offset="0x78EC"/>
+        <Limb Name="gStalfosLowerNeckLimb" LimbType="Standard" Offset="0x78F8"/>
+        <Limb Name="gStalfosUpperCoreLimb" LimbType="Standard" Offset="0x7904"/>
+        <Limb Name="gStalfosChestLimb" LimbType="Standard" Offset="0x7910"/>
+        <Limb Name="gStalfosRightShoulderRootLimb" LimbType="Standard" Offset="0x791C"/>
+        <Limb Name="gStalfosRightShoulderArmorRootLimb" LimbType="Standard" Offset="0x7928"/>
+        <Limb Name="gStalfosRightShoulderArmorLimb" LimbType="Standard" Offset="0x7934"/>
+        <Limb Name="gStalfosLeftShoulderRootLimb" LimbType="Standard" Offset="0x7940"/>
+        <Limb Name="gStalfosLeftShoulderArmorRootLimb" LimbType="Standard" Offset="0x794C"/>
+        <Limb Name="gStalfosLeftShoulderArmorLimb" LimbType="Standard" Offset="0x7958"/>
+        <Limb Name="gStalfosLeftArmRootLimb" LimbType="Standard" Offset="0x7964"/>
+        <Limb Name="gStalfosLeftUpperArmRootLimb" LimbType="Standard" Offset="0x7970"/>
+        <Limb Name="gStalfosLeftForearmRootLimb" LimbType="Standard" Offset="0x797C"/>
+        <Limb Name="gStalfosLeftHandRootLimb" LimbType="Standard" Offset="0x7988"/>
+        <Limb Name="gStalfosLeftHandLimb" LimbType="Standard" Offset="0x7994"/>
+        <Limb Name="gStalfosShieldLimb" LimbType="Standard" Offset="0x79A0"/>
+        <Limb Name="gStalfosLeftForearmLimb" LimbType="Standard" Offset="0x79AC"/>
+        <Limb Name="gStalfosLeftUpperArmLimb" LimbType="Standard" Offset="0x79B8"/>
+        <Limb Name="gStalfosRightArmRootLimb" LimbType="Standard" Offset="0x79C4"/>
+        <Limb Name="gStalfosRightUpperArmRootLimb" LimbType="Standard" Offset="0x79D0"/>
+        <Limb Name="gStalfosRightForearmRootLimb" LimbType="Standard" Offset="0x79DC"/>
+        <Limb Name="gStalfosRightHandRootLimb" LimbType="Standard" Offset="0x79E8"/>
+        <Limb Name="gStalfosSwordLimb" LimbType="Standard" Offset="0x79F4"/>
+        <Limb Name="gStalfosRightHandLimb" LimbType="Standard" Offset="0x7A00"/>
+        <Limb Name="gStalfosRightForearmLimb" LimbType="Standard" Offset="0x7A0C"/>
+        <Limb Name="gStalfosRightUpperArmLimb" LimbType="Standard" Offset="0x7A18"/>
+        <Limb Name="gStalfosLowerCoreLimb" LimbType="Standard" Offset="0x7A24"/>
+        <Limb Name="gStalfosLowerBodyRootLimb" LimbType="Standard" Offset="0x7A30"/>
+        <Limb Name="gStalfosWaistRootLimb" LimbType="Standard" Offset="0x7A3C"/>
+        <Limb Name="gStalfosLegsRootLimb" LimbType="Standard" Offset="0x7A48"/>
+        <Limb Name="gStalfosLeftLegRootLimb" LimbType="Standard" Offset="0x7A54"/>
+        <Limb Name="gStalfosLeftThighRootLimb" LimbType="Standard" Offset="0x7A60"/>
+        <Limb Name="gStalfosLeftLowerLegRootLimb" LimbType="Standard" Offset="0x7A6C"/>
+        <Limb Name="gStalfosLeftAnkleRootLimb" LimbType="Standard" Offset="0x7A78"/>
+        <Limb Name="gStalfosLeftAnkleLimb" LimbType="Standard" Offset="0x7A84"/>
+        <Limb Name="gStalfosLeftFootRootLimb" LimbType="Standard" Offset="0x7A90"/>
+        <Limb Name="gStalfosLeftFootLimb" LimbType="Standard" Offset="0x7A9C"/>
+        <Limb Name="gStalfosLeftLowerLegLimb" LimbType="Standard" Offset="0x7AA8"/>
+        <Limb Name="gStalfosLeftThighLimb" LimbType="Standard" Offset="0x7AB4"/>
+        <Limb Name="gStalfosRightLegRootLimb" LimbType="Standard" Offset="0x7AC0"/>
+        <Limb Name="gStalfosRightThighRootLimb" LimbType="Standard" Offset="0x7ACC"/>
+        <Limb Name="gStalfosRightLowerLegRootLimb" LimbType="Standard" Offset="0x7AD8"/>
+        <Limb Name="gStalfosRightAnkleRootLimb" LimbType="Standard" Offset="0x7AE4"/>
+        <Limb Name="gStalfosRightAnkleLimb" LimbType="Standard" Offset="0x7AF0"/>
+        <Limb Name="gStalfosRightFootRootLimb" LimbType="Standard" Offset="0x7AFC"/>
+        <Limb Name="gStalfosRightFootLimb" LimbType="Standard" Offset="0x7B08"/>
+        <Limb Name="gStalfosRightLowerLegLimb" LimbType="Standard" Offset="0x7B14"/>
+        <Limb Name="gStalfosRightThighLimb" LimbType="Standard" Offset="0x7B20"/>
+        <Limb Name="gStalfosWaistLimb" LimbType="Standard" Offset="0x7B2C"/>
+        <Skeleton Name="gStalfosSkel" Type="Normal" LimbType="Standard" Offset="0x7C28"/>
+
+        <!-- Stalfos Animations -->
+        <Animation Name="gStalfosFlinchFromHitBehindAnim" Offset="0x444"/>
+        <Animation Name="gStalfosFallOverBackwardsAnim" Offset="0x1420"/>
+        <Animation Name="gStalfosJumpBackwardsAnim" Offset="0x1978"/>
+        <Animation Name="gStalfosBlockWithShieldAnim" Offset="0x1C20"/>
+        <Animation Name="gStalfosStandAttentionAnim" Offset="0x2188"/><!-- Unused -->
+        <Animation Name="gStalfosFastAdvanceAnim" Offset="0x26D4"/>
+        <Animation Name="gStalfosMiddleGuardAnim" Offset="0x316C"/>
+        <Animation Name="gStalfosSlowAdvanceAnim" Offset="0x81B4"/>
+        <Animation Name="gStalfosFlinchFromHitFrontAnim" Offset="0x8604"/>
+        <Animation Name="gStalfosFallOverForwardsAnim" Offset="0x9A90"/>
+        <Animation Name="gStalfosLeapAnim" Offset="0x9E50"/><!-- Unused -->
+        <Animation Name="gStalfosJumpAnim" Offset="0xA324"/>
+        <Animation Name="gStalfosJumpslashAnim" Offset="0xA99C"/>
+        <Animation Name="gStalfosDownSlashAnim" Offset="0xB00C"/>
+        <Animation Name="gStalfosRecoverFromDownSlashAnim" Offset="0xB4E4"/>
+        <Animation Name="gStalfosUpSlashAnim" Offset="0xBE4C"/>
+        <Animation Name="gStalfosLandFromLeapAnim" Offset="0xC438"/>
+        <Animation Name="gStalfosLaughAnim" Offset="0xC8A0"/><!-- Unused -->
+        <Animation Name="gStalfosLookAroundAnim" Offset="0xDCF0"/><!-- Unused -->
+        <Animation Name="gStalfosSidestepAnim" Offset="0xE2B0"/>
+        <Animation Name="gStalfosReleaseAttentionAnim" Offset="0xE7E4"/><!-- Unused -->
+    </File>
+</Root>

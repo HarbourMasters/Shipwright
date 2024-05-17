@@ -1,0 +1,23 @@
+<Root>
+    <File Name="object_spot07_object" Segment="6">
+        <DList Name="object_spot07_object_DL_000460" Offset="0x460"/>
+        <DList Name="object_spot07_object_DL_000BE0" Offset="0xBE0"/>
+        <Texture Name="object_spot07_object_TLUT_000EC0" OutName="tlut_00000EC0" Format="rgba16" Width="4" Height="4" Offset="0xEC0"/>
+        <Texture Name="object_spot07_object_Tex_000EE0" OutName="tex_00000EE0" Format="ci4" Width="32" Height="128" Offset="0xEE0" TlutOffset="0xEC0"/>
+        <DList Name="object_spot07_object_DL_001CF0" Offset="0x1CF0"/>
+        <DList Name="object_spot07_object_DL_001F68" Offset="0x1F68"/>
+        <Collision Name="object_spot07_object_Col_002590" Offset="0x2590"/>
+        <Texture Name="object_spot07_object_TLUT_0025C0" OutName="tlut_000025C0" Format="rgba16" Width="4" Height="4" Offset="0x25C0"/>
+        <Texture Name="object_spot07_object_Tex_0025E0" OutName="tex_000025E0" Format="ci4" Width="32" Height="128" Offset="0x25E0" TlutOffset="0x25C0"/>
+        <DList Name="object_spot07_object_DL_003210" Offset="0x3210"/>
+        <DList Name="object_spot07_object_DL_0032D8" Offset="0x32D8"/>
+        <Collision Name="object_spot07_object_Col_0038FC" Offset="0x38FC"/>
+        <Texture Name="object_spot07_object_Tex_003930" OutName="tex_00003930" Format="rgba16" Width="32" Height="32" Offset="0x3930"/>
+        <Texture Name="object_spot07_object_Tex_004130" OutName="tex_00004130" Format="i4" Width="64" Height="64" Offset="0x4130"/>
+        <Texture Name="object_spot07_object_Tex_004930" OutName="tex_00004930" Format="i4" Width="32" Height="128" Offset="0x4930"/>
+        <Texture Name="object_spot07_object_Tex_005130" OutName="tex_00005130" Format="i8" Width="32" Height="32" Offset="0x5130"/>
+        <Texture Name="object_spot07_object_Tex_005530" OutName="tex_00005530" Format="rgba16" Width="32" Height="32" Offset="0x5530"/>
+        <Texture Name="object_spot07_object_Tex_005D30" OutName="tex_00005D30" Format="rgba16" Width="32" Height="32" Offset="0x5D30"/>
+        <Texture Name="object_spot07_object_Tex_006530" OutName="tex_00006530" Format="i4" Width="64" Height="64" Offset="0x6530"/>
+    </File>
+</Root>

@@ -1,0 +1,19 @@
+<Root>
+    <File Name="object_kibako2" Segment="6">
+        <!-- DisplayLists -->
+        <DList Name="gLargeCrateDL" Offset="0x960"/>
+        <DList Name="gLargeCrateFragmentDL" Offset="0x1000"/>
+
+        <!-- Palettes -->
+        <Texture Name="gLargeCrate1TLUT" OutName="tlut_1" Format="rgba16" Width="4" Height="4" Offset="0x0"/>
+        <Texture Name="gLargeCrate2TLUT" OutName="tlut_2" Format="rgba16" Width="4" Height="4" Offset="0xBA0"/>
+
+        <!-- Textures -->
+        <Texture Name="gLargeCrateTex" OutName="crate_tex" Format="ci4" Width="32" Height="64" Offset="0x20" TlutOffset="0x0"/>
+        <Texture Name="gLargeCrateFragment1Tex" OutName="fragment_1" Format="ci4" Width="32" Height="64" Offset="0x420" TlutOffset="0x0"/>
+        <Texture Name="gLargeCrateFragment2Tex" OutName="fragment_2" Format="ci4" Width="32" Height="64" Offset="0xBC0" TlutOffset="0xBA0"/>
+
+        <!-- Collision -->
+        <Collision Name="gLargeCrateCol" Offset="0xB70"/>
+    </File>
+</Root>

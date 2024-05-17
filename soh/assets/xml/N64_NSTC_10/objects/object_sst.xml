@@ -1,0 +1,71 @@
+<Root>
+    <File Name="object_sst" Segment="6">
+        <Texture Name="object_sstTex_017FE0" OutName="object_sstTex_017FE0" Format="rgba16" Width="32" Height="64" Offset="0x17FE0" AddedByScript="true"/>
+        <Texture Name="object_sstTex_019530" OutName="object_sstTex_019530" Format="rgba16" Width="4" Height="8" Offset="0x19530" AddedByScript="true"/>
+        <Texture Name="object_sstTex_019570" OutName="object_sstTex_019570" Format="rgba16" Width="8" Height="16" Offset="0x19570" AddedByScript="true"/>
+        <Texture Name="object_sstTex_019670" OutName="object_sstTex_019670" Format="rgba16" Width="8" Height="16" Offset="0x19670" AddedByScript="true"/>
+        <Texture Name="object_sstTex_019770" OutName="object_sstTex_019770" Format="rgba16" Width="4" Height="8" Offset="0x19770" AddedByScript="true"/>
+        <Texture Name="object_sstTex_0197B0" OutName="object_sstTex_0197B0" Format="rgba16" Width="16" Height="16" Offset="0x197B0" AddedByScript="true"/>
+        <Texture Name="object_sstTex_0199B0" OutName="object_sstTex_0199B0" Format="rgba16" Width="8" Height="16" Offset="0x199B0" AddedByScript="true"/>
+        <Texture Name="object_sstTex_019AB0" OutName="object_sstTex_019AB0" Format="rgba16" Width="8" Height="16" Offset="0x19AB0" AddedByScript="true"/>
+        <Texture Name="object_sstTex_019BB0" OutName="object_sstTex_019BB0" Format="rgba16" Width="16" Height="32" Offset="0x19BB0" AddedByScript="true"/>
+        <Texture Name="object_sstTex_019FB0" OutName="object_sstTex_019FB0" Format="rgba16" Width="8" Height="16" Offset="0x19FB0" AddedByScript="true"/>
+        <Texture Name="object_sstTex_01A0B0" OutName="object_sstTex_01A0B0" Format="rgba16" Width="8" Height="16" Offset="0x1A0B0" AddedByScript="true"/>
+        <Texture Name="object_sstTex_01A1B0" OutName="object_sstTex_01A1B0" Format="rgba16" Width="8" Height="32" Offset="0x1A1B0" AddedByScript="true"/>
+        <Texture Name="object_sstTex_01A3B0" OutName="object_sstTex_01A3B0" Format="rgba16" Width="16" Height="16" Offset="0x1A3B0" AddedByScript="true"/>
+        <Texture Name="object_sstTex_01A5B0" OutName="object_sstTex_01A5B0" Format="rgba16" Width="8" Height="16" Offset="0x1A5B0" AddedByScript="true"/>
+        <Texture Name="object_sstTex_01A730" OutName="object_sstTex_01A730" Format="rgba16" Width="4" Height="16" Offset="0x1A730" AddedByScript="true"/>
+        <Texture Name="object_sstTex_01A7B0" OutName="object_sstTex_01A7B0" Format="rgba16" Width="16" Height="16" Offset="0x1A7B0" AddedByScript="true"/>
+        <!-- Boss Title Card -->
+        <Texture Name="gBongoTitleCardTex" OutName="bongo_title_card" Format="i8" Width="128" Height="120" Offset="0x13D80"/>
+        
+        <!-- Skeletons -->
+        <Skeleton Name="gBongoLeftHandSkel" Type="Flex" LimbType="Standard" Offset="0x04DE0"/>
+        <Skeleton Name="gBongoRightHandSkel" Type="Flex" LimbType="Standard" Offset="0x0A350"/>
+        <Skeleton Name="gBongoHeadSkel" Type="Flex" LimbType="Standard" Offset="0x17C40"/>
+
+        <!-- Left hand animations -->
+        <Animation Name="gBongoLeftHandIdleAnim" Offset="0x002E8"/>
+        <Animation Name="gBongoLeftHandFlatPoseAnim" Offset="0x04EC4"/>
+        <Animation Name="gBongoLeftHandOpenPoseAnim" Offset="0x04FB4"/>
+        <Animation Name="gBongoLeftHandFistPoseAnim" Offset="0x050A8"/>
+        <Animation Name="gBongoLeftHandClenchAnim" Offset="0x0529C"/>
+        <Animation Name="gBongoLeftHandDamagePoseAnim" Offset="0x0539C"/>
+        <Animation Name="gBongoLeftHandPushoffPoseAnim" Offset="0x0549C"/>
+        <Animation Name="gBongoLeftHandHangPoseAnim" Offset="0x05588"/>
+
+        <!-- Right hand animations -->
+        <Animation Name="gBongoRightHandIdleAnim" Offset="0x05860"/>
+        <Animation Name="gBongoRightHandFlatPoseAnim" Offset="0x0A434"/>
+        <Animation Name="gBongoRightHandOpenPoseAnim" Offset="0x0A524"/>
+        <Animation Name="gBongoRightHandFistPoseAnim" Offset="0x0A618"/>
+        <Animation Name="gBongoRightHandClenchAnim" Offset="0x0A848"/>
+        <Animation Name="gBongoRightHandDamagePoseAnim" Offset="0x0A948"/>
+        <Animation Name="gBongoRightHandPushoffPoseAnim" Offset="0x0AA4C"/>
+        <Animation Name="gBongoRightHandHangPoseAnim" Offset="0x0AB38"/>
+
+        <!-- Head animations -->
+        <Animation Name="gBongoHeadStunnedAnim" Offset="0x0ACD4"/>
+        <Animation Name="gBongoHeadChargeAnim" Offset="0x0B0D8"/>
+        <Animation Name="gBongoHeadKnockoutAnim" Offset="0x0B6FC"/>
+        <Animation Name="gBongoHeadEyeCloseAnim" Offset="0x0C288"/>
+        <Animation Name="gBongoHeadDamagedHandAnim" Offset="0x0C5B0"/>
+        <Animation Name="gBongoHeadEyeOpenAnim" Offset="0x0C9BC"/>
+        <Animation Name="gBongoHeadDamageAnim" Offset="0x0CC6C"/>
+        <Animation Name="gBongoHeadRecoverAnim" Offset="0x0D458"/>
+        <Animation Name="gBongoHeadEyeCloseIdleAnim" Offset="0x0DC2C"/>
+        <Animation Name="gBongoHeadEyeOpenIdleAnim" Offset="0x0E7B8"/>
+
+        <!-- Ice effect display lists -->
+        <DList Name="gBongoIceCrystalDL" Offset="0x17EE0"/>
+        <DList Name="gBongoIceShardDL" Offset="0x17F80"/>
+
+        <!-- Drum head data -->
+        <DList Name="gBongoDrumDL" Offset="0x19210"/>
+        <Collision Name="gBongoDrumCol" Offset="0x194F8"/>
+
+        <!-- Unused textures -->
+        <Texture Name="gBongoUnused1Tex" OutName="bongo_unused_1" Format="rgba16" Width="8" Height="8" Offset="0x01A6B0"/>
+        <Texture Name="gBongoUnused2Tex" OutName="bongo_unused_2" Format="rgba16" Width="16" Height="16" Offset="0x01A9B0"/>
+    </File>
+</Root>

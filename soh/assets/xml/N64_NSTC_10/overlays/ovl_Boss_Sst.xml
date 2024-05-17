@@ -1,0 +1,10 @@
+<Root>
+    <File Name="ovl_Boss_Sst" BaseAddress="0x80A18930" RangeStart="0xA330" RangeEnd="0xACE0">
+        <Texture Name="ovl_Boss_SstTex_00A438" OutName="ovl_Boss_SstTex_00A438" Format="i8" Width="16" Height="64" Offset="0xA3A8" AddedByScript="true"/>
+        <Texture Name="ovl_Boss_SstTex_00A8F0" OutName="ovl_Boss_SstTex_00A8F0" Format="i8" Width="32" Height="32" Offset="0xA860" AddedByScript="true"/>
+        <DList Name="sBodyStaticDList" Offset="0xA330"/>
+        <DList Name="sHandTrailDList" Offset="0xA348"/>
+        <DList Name="sIntroVanishDList" Offset="0xA7A8"/>
+        <DList Name="sShadowDList" Offset="0xAC60"/>
+    </File>
+</Root>

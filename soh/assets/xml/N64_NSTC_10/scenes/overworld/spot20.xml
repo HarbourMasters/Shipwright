@@ -1,0 +1,36 @@
+<Root>
+    <File Name="spot20_scene" Segment="2">
+        <Texture Name="spot20_sceneTex_005FE0" OutName="spot20_sceneTex_005FE0" Format="ci8" Width="32" Height="64" Offset="0x5FE0" TlutOffset="0x5DB0" AddedByScript="true"/>
+        <Texture Name="spot20_sceneTex_0067E0" OutName="spot20_sceneTex_0067E0" Format="ci8" Width="16" Height="32" Offset="0x67E0" TlutOffset="0x5DB0" AddedByScript="true"/>
+        <Texture Name="spot20_sceneTex_0069E0" OutName="spot20_sceneTex_0069E0" Format="ci8" Width="64" Height="32" Offset="0x69E0" TlutOffset="0x5DB0" AddedByScript="true"/>
+        <Texture Name="spot20_sceneTex_0071E0" OutName="spot20_sceneTex_0071E0" Format="rgba16" Width="64" Height="32" Offset="0x71E0" AddedByScript="true"/>
+        <Texture Name="spot20_sceneTex_0091E0" OutName="spot20_sceneTex_0091E0" Format="ci8" Width="16" Height="32" Offset="0x91E0" TlutOffset="0x5DB0" AddedByScript="true"/>
+        <Texture Name="spot20_sceneTex_0093E0" OutName="spot20_sceneTex_0093E0" Format="rgba16" Width="16" Height="64" Offset="0x93E0" AddedByScript="true"/>
+        <Texture Name="spot20_sceneTex_009BE0" OutName="spot20_sceneTex_009BE0" Format="rgba16" Width="64" Height="32" Offset="0x9BE0" AddedByScript="true"/>
+        <Texture Name="spot20_sceneTex_00ABE0" OutName="spot20_sceneTex_00ABE0" Format="rgba16" Width="32" Height="64" Offset="0xABE0" AddedByScript="true"/>
+        <Texture Name="spot20_sceneTex_00BBE0" OutName="spot20_sceneTex_00BBE0" Format="ci8" Width="32" Height="16" Offset="0xBBE0" TlutOffset="0x5DB0" AddedByScript="true"/>
+        <Texture Name="spot20_sceneTex_00BDE0" OutName="spot20_sceneTex_00BDE0" Format="ci8" Width="32" Height="32" Offset="0xBDE0" TlutOffset="0x5DB0" AddedByScript="true"/>
+        <Texture Name="spot20_sceneTex_00C1E0" OutName="spot20_sceneTex_00C1E0" Format="ci4" Width="64" Height="64" Offset="0xC1E0" TlutOffset="0x5FB8" AddedByScript="true"/>
+        <Texture Name="spot20_sceneTex_00C9E0" OutName="spot20_sceneTex_00C9E0" Format="ci8" Width="32" Height="64" Offset="0xC9E0" TlutOffset="0x5DB0" AddedByScript="true"/>
+        <Texture Name="spot20_sceneTex_00D1E0" OutName="spot20_sceneTex_00D1E0" Format="rgba16" Width="32" Height="32" Offset="0xD1E0" AddedByScript="true"/>
+        <Texture Name="spot20_sceneTex_00D9E0" OutName="spot20_sceneTex_00D9E0" Format="rgba16" Width="32" Height="32" Offset="0xD9E0" AddedByScript="true"/>
+        <Texture Name="spot20_sceneTex_00E1E0" OutName="spot20_sceneTex_00E1E0" Format="i4" Width="64" Height="64" Offset="0xE1E0" AddedByScript="true"/>
+        <Texture Name="spot20_sceneTex_00E9E0" OutName="spot20_sceneTex_00E9E0" Format="i4" Width="64" Height="64" Offset="0xE9E0" AddedByScript="true"/>
+        <Texture Name="spot20_sceneTex_00F1E0" OutName="spot20_sceneTex_00F1E0" Format="i4" Width="64" Height="64" Offset="0xF1E0" AddedByScript="true"/>
+        <Texture Name="spot20_sceneTex_00F9E0" OutName="spot20_sceneTex_00F9E0" Format="ci8" Width="8" Height="64" Offset="0xF9E0" TlutOffset="0x5DB0" AddedByScript="true"/>
+        <Texture Name="spot20_sceneTex_010BE0" OutName="spot20_sceneTex_010BE0" Format="i4" Width="64" Height="18" Offset="0x10BE0" AddedByScript="true"/>
+        <Texture Name="spot20_sceneTex_010E20" OutName="spot20_sceneTex_010E20" Format="ia8" Width="64" Height="64" Offset="0x10E20" AddedByScript="true"/>
+        <Texture Name="spot20_sceneTLUT_005DB0" OutName="spot20_sceneTLUT_005DB0" Format="rgba16" Width="16" Height="16" Offset="0x5DB0" AddedByScript="true"/>
+        <Texture Name="spot20_sceneTLUT_005FB8" OutName="spot20_sceneTLUT_005FB8" Format="rgba16" Width="4" Height="4" Offset="0x5FB8" AddedByScript="true"/>
+        <Path Name="gLonLonPath_05844" Offset="0x5844" NumPaths="3"/>
+        <Cutscene Name="gLonLonRanchIntroCs" Offset="0x5BD0"/>
+        <Texture Name="gLonLonRanchDayWindowTex" OutName="day_window" Format="rgba16" Width="32" Height="64" Offset="0x81E0"/>
+        <Texture Name="gLonLonRangeNightWindowsTex" OutName="night_window" Format="rgba16" Width="32" Height="64" Offset="0xFBE0"/>
+        <Scene Name="spot20_scene" Offset="0x0"/>
+    </File>
+    <File Name="spot20_room_0" Segment="3">
+        <DList Name="gSpot20DL_005E50" Offset="0x5E50"/>
+        <DList Name="gSpot20DL_0066B8" Offset="0x66B8"/>
+        <Room Name="spot20_room_0" Offset="0x0"/>
+    </File>
+</Root>

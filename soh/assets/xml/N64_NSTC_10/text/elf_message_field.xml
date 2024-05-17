@@ -1,0 +1,5 @@
+<Root>
+  <File Name="elf_message_field">
+    <Blob Name="elf_message_field" Size="70"/>
+  </File>
+</Root>

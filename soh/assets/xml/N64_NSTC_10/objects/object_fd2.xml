@@ -1,0 +1,52 @@
+<Root>
+    <File Name="object_fd2" Segment="6">
+        <Texture Name="object_fd2Tex_003308" OutName="object_fd2Tex_003308" Format="rgba16" Width="32" Height="32" Offset="0x3308" AddedByScript="true"/>
+        <Texture Name="object_fd2Tex_003B08" OutName="object_fd2Tex_003B08" Format="rgba16" Width="32" Height="32" Offset="0x3B08" AddedByScript="true"/>
+        <Texture Name="object_fd2Tex_004308" OutName="object_fd2Tex_004308" Format="rgba16" Width="16" Height="16" Offset="0x4308" AddedByScript="true"/>
+        <Texture Name="object_fd2Tex_004508" OutName="object_fd2Tex_004508" Format="rgba16" Width="16" Height="16" Offset="0x4508" AddedByScript="true"/>
+        <Texture Name="object_fd2Tex_004708" OutName="object_fd2Tex_004708" Format="rgba16" Width="16" Height="16" Offset="0x4708" AddedByScript="true"/>
+        <Texture Name="object_fd2Tex_004908" OutName="object_fd2Tex_004908" Format="rgba16" Width="16" Height="16" Offset="0x4908" AddedByScript="true"/>
+        <Texture Name="object_fd2Tex_004BE8" OutName="object_fd2Tex_004BE8" Format="i8" Width="16" Height="16" Offset="0x4BE8" AddedByScript="true"/>
+        <Texture Name="object_fd2Tex_004FA0" OutName="object_fd2Tex_004FA0" Format="rgba16" Width="16" Height="16" Offset="0x4FA0" AddedByScript="true"/>
+        <Texture Name="object_fd2Tex_0051A0" OutName="object_fd2Tex_0051A0" Format="rgba16" Width="16" Height="16" Offset="0x51A0" AddedByScript="true"/>
+        <Texture Name="object_fd2Tex_0053A0" OutName="object_fd2Tex_0053A0" Format="rgba16" Width="16" Height="16" Offset="0x53A0" AddedByScript="true"/>
+        <Texture Name="object_fd2TLUT_002508" OutName="object_fd2TLUT_002508" Format="rgba16" Width="16" Height="16" Offset="0x2508" AddedByScript="true"/>
+        <!-- Skeleton -->
+        <Skeleton Name="gHoleVolvagiaSkel" Type="Flex" LimbType="Standard" Offset="0x11A78"/>
+
+        <!-- Display lists -->
+        <DList Name="gHoleVolvagiaManeMaterialDL" Offset="0x4B48"/>
+        <DList Name="gHoleVolvagiaManeModelDL" Offset="0x4BC8"/>
+        <DList Name="gHoleVolvagiaBrokenFaceDL" Offset="0x4E38"/>
+
+        <!-- Animations -->
+        <Animation Name="gHoleVolvagiaBreatheFireAnim" Offset="0x73CC"/>
+        <Animation Name="gHoleVolvagiaHitAnim" Offset="0x7850"/>
+        <Animation Name="gHoleVolvagiaDamagedAnim" Offset="0x89DC"/>
+        <Animation Name="gHoleVolvagiaBurrowAnim" Offset="0x9194"/>
+        <Animation Name="gHoleVolvagiaKnockoutAnim" Offset="0xA31C"/>
+        <Animation Name="gHoleVolvagiaVulnerableAnim" Offset="0xA86C"/>
+        <Animation Name="gHoleVolvagiaTurnAnim" Offset="0xAE90"/>
+        <Animation Name="gHoleVolvagiaClawSwipeAnim" Offset="0xB7A4"/>
+        <Animation Name="gHoleVolvagiaEmergeAnim" Offset="0xC1D0"/>
+        <Animation Name="gHoleVolvagiaIdleAnim" Offset="0xC8EC"/>
+
+        <!-- Eye textures -->
+        <Texture Name="gHoleVolvagiaEyeHalfTex" OutName="hole_volvagia_eye_half" Format="i8" Width="32" Height="32" Offset="0x2708"/>
+        <Texture Name="gHoleVolvagiaEyeOpenTex" OutName="hole_volvagia_eye_open" Format="i8" Width="32" Height="32" Offset="0x2B08"/>
+        <Texture Name="gHoleVolvagiaEyeClosedTex" OutName="hole_volvagia_eye_closed" Format="i8" Width="32" Height="32" Offset="0x2F08"/>
+        
+        <!-- Unused animation -->
+        <Animation Name="gHoleVolvagiaAnim_00CDAC" Offset="0xCDAC"/> <!-- Looks tired. Low health animation? -->
+
+        <!-- <Array Name="gHoleVolvagiaSkelVtx" Count="795" Offset="0xCDC0">
+            <Vtx/>
+        </Array> -->
+        <Array Name="gHoleVolvagiaVtx_00DD80" Count="154" Offset="0xDD80">
+            <Vtx/>
+        </Array>
+        <Array Name="gHoleVolvagiaVtx_00D000" Count="150" Offset="0xD000">
+            <Vtx/>
+        </Array>
+    </File>
+</Root>
