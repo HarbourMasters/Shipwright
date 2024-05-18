@@ -1406,10 +1406,11 @@ int ButtonsToCheck[] = {
 
 void RegisterUnequipCItems() {
     static bool canUnequip = false;
-    static int8_t timer = 13;
+    static int8_t unequipTimer = 13;
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnKaleidoUpdate>([](){
         if (!CVarGetInteger(CVAR_ENHANCEMENT("UnequipCItems"),0)) return;
         int8_t buttonIndex = -1;
+        uint8_t slotIndex;
 
         PauseContext* pauseCtx = &gPlayState->pauseCtx;
         Input* input = &gPlayState->state.input[0];
@@ -1418,7 +1419,7 @@ void RegisterUnequipCItems() {
             case PAUSE_ITEM:
             {
                 if (pauseCtx->cursorItem[PAUSE_ITEM] != PAUSE_ITEM_NONE){
-                    for (uint8_t slotIndex = 0; slotIndex < ARRAY_COUNT(gSaveContext.equips.cButtonSlots); slotIndex++) {
+                    for (slotIndex = 0; slotIndex < ARRAY_COUNT(gSaveContext.equips.cButtonSlots); slotIndex++) {
                         if (gSaveContext.equips.buttonItems[slotIndex + 1] == pauseCtx->cursorItem[PAUSE_ITEM]) {
                             buttonIndex = slotIndex + 1;
                             break;
@@ -1431,7 +1432,7 @@ void RegisterUnequipCItems() {
             {
                 if (CVarGetInteger(CVAR_ENHANCEMENT("AssignableTunicsAndBoots"),0) != 0) {
                     if (pauseCtx->cursorY[PAUSE_EQUIP] > 1){
-                        for (uint8_t slotIndex = 0; slotIndex < ARRAY_COUNT(gSaveContext.equips.cButtonSlots); slotIndex++) {
+                        for (slotIndex = 0; slotIndex < ARRAY_COUNT(gSaveContext.equips.cButtonSlots); slotIndex++) {
                             if (gSaveContext.equips.buttonItems[slotIndex + 1] == pauseCtx->cursorItem[PAUSE_EQUIP]) {
                                 buttonIndex = slotIndex + 1;
                                 break;
@@ -1448,11 +1449,12 @@ void RegisterUnequipCItems() {
         }
 
         if (canUnequip){
-            if (timer == 0){
+            if (unequipTimer == 0){
                 gSaveContext.equips.buttonItems[buttonIndex] = ITEM_NONE;
+                gSaveContext.equips.cButtonSlots[slotIndex] = SLOT_NONE;
                 canUnequip = false;
-                timer = 13;
-            } else { timer--; }
+                unequipTimer = 13;
+            } else { unequipTimer--; }
         }
     });
 }
