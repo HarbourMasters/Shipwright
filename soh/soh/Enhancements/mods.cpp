@@ -1394,35 +1394,68 @@ void RegisterPauseMenuHooks() {
     });
 }
 
+int ButtonsToCheck[] = {
+    BTN_CLEFT, 
+    BTN_CDOWN,
+    BTN_CRIGHT,
+    BTN_DUP,
+    BTN_DDOWN,
+    BTN_DLEFT,
+    BTN_DRIGHT
+};
+
 void RegisterUnequipCItems() {
-    static int timer = 45;
+    static bool canUnequip = false;
+    static int8_t timer = 13;
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnKaleidoUpdate>([](){
         if (!CVarGetInteger(CVAR_ENHANCEMENT("UnequipCItems"),0)) return;
-        int8_t itemButton = -1;
+        int8_t buttonIndex = -1;
 
         PauseContext* pauseCtx = &gPlayState->pauseCtx;
         Input* input = &gPlayState->state.input[0];
 
         switch (pauseCtx->pageIndex) {
             case PAUSE_ITEM:
-        {
+            {
                 if (pauseCtx->cursorItem[PAUSE_ITEM] != PAUSE_ITEM_NONE){
-                    //item is on a C-Button check from tts.cpp
-                    for (size_t i = 0; i < ARRAY_COUNT(gSaveContext.equips.cButtonSlots); i++) {
-                        if (gSaveContext.equips.buttonItems[i + 1] == pauseCtx->cursorItem[PAUSE_ITEM]) {
-                            itemButton = i + 1;
+                    for (uint8_t slotIndex = 0; slotIndex < ARRAY_COUNT(gSaveContext.equips.cButtonSlots); slotIndex++) {
+                        if (gSaveContext.equips.buttonItems[slotIndex + 1] == pauseCtx->cursorItem[PAUSE_ITEM]) {
+                            buttonIndex = slotIndex + 1;
                             break;
                         }
                     }
-
-                    if (itemButton != -1 && CHECK_BTN_ANY(input->press.button, BTN_A)) {
-                        gSaveContext.equips.buttonItems[itemButton] = 255;
+                }
+                break;
+            }
+            case PAUSE_EQUIP:
+            {
+                if (CVarGetInteger(CVAR_ENHANCEMENT("AssignableTunicsAndBoots"),0) != 0) {
+                    if (pauseCtx->cursorY[PAUSE_EQUIP] > 1){
+                        for (uint8_t slotIndex = 0; slotIndex < ARRAY_COUNT(gSaveContext.equips.cButtonSlots); slotIndex++) {
+                            if (gSaveContext.equips.buttonItems[slotIndex + 1] == pauseCtx->cursorItem[PAUSE_EQUIP]) {
+                                buttonIndex = slotIndex + 1;
+                                break;
+                            }
+                        }
                     }
                 }
+                break;
             }
         }
+
+        if (buttonIndex != -1 && CHECK_BTN_ANY(input->press.button, ButtonsToCheck[buttonIndex-1])) {
+            canUnequip = true;
+        }
+
+        if (canUnequip){
+            if (timer == 0){
+                gSaveContext.equips.buttonItems[buttonIndex] = ITEM_NONE;
+                canUnequip = false;
+                timer = 13;
+            } else { timer--; }
+        }
     });
-};
+}
 
 
 void InitMods() {
