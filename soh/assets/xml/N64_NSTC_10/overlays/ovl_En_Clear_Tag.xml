@@ -1,5 +1,5 @@
 <Root>
-    <File Name="ovl_En_Clear_Tag" BaseAddress="0x80A93810" RangeStart="0x2600" RangeEnd="0x89F0">
+    <File Name="ovl_En_Clear_Tag" BaseAddress="0x80A929D0" RangeStart="0x2600" RangeEnd="0x89F0">
         <Texture Name="ovl_En_Clear_TagTex_003308" OutName="ovl_En_Clear_TagTex_003308" Format="rgba16" Width="8" Height="8" Offset="0x3218" AddedByScript="true"/>
         <Texture Name="ovl_En_Clear_TagTex_003388" OutName="ovl_En_Clear_TagTex_003388" Format="rgba16" Width="32" Height="32" Offset="0x3298" AddedByScript="true"/>
         <Texture Name="ovl_En_Clear_TagTex_003B88" OutName="ovl_En_Clear_TagTex_003B88" Format="rgba16" Width="64" Height="32" Offset="0x3A98" AddedByScript="true"/>
