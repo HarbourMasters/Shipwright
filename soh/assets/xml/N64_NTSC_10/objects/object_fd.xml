@@ -31,14 +31,14 @@
         <Texture Name="gVolvagiaTitleCardTex" OutName="volvagia_boss_title_card" Format="i8" Width="128" Height="120" Offset="0xD700"/>
 
         <!-- Skeletons -->
-        <Skeleton Name="gVolvagiaLeftArmSkel" Type="Normal" LimbType="Standard" Offset="0x114E0"/>
-        <Skeleton Name="gVolvagiaRightArmSkel" Type="Normal" LimbType="Standard" Offset="0x115A0"/>
-        <Skeleton Name="gVolvagiaHeadSkel" Type="Normal" LimbType="Standard" Offset="0x11660"/>
+        <Skeleton Name="gVolvagiaLeftArmSkel" Type="Normal" LimbType="Standard" Offset="0x100E0"/>
+        <Skeleton Name="gVolvagiaRightArmSkel" Type="Normal" LimbType="Standard" Offset="0x101A0"/>
+        <Skeleton Name="gVolvagiaHeadSkel" Type="Normal" LimbType="Standard" Offset="0x10260"/>
 
         <!-- Animations -->
-        <Animation Name="gVolvagiaLeftArmEmergeAnim" Offset="0x11464"/>
-        <Animation Name="gVolvagiaRightArmEmergeAnim" Offset="0x11524"/>
-        <Animation Name="gVolvagiaHeadEmergeAnim" Offset="0x115E4"/>
+        <Animation Name="gVolvagiaLeftArmEmergeAnim" Offset="0x10064"/>
+        <Animation Name="gVolvagiaRightArmEmergeAnim" Offset="0x10124"/>
+        <Animation Name="gVolvagiaHeadEmergeAnim" Offset="0x101E4"/>
 
         <!-- Head display lists -->
         <DList Name="gVolvagiaBrokenFaceDL" Offset="0x59F8"/>
@@ -86,7 +86,7 @@
         <DList Name="gVolvagiaSkullPieceModelDL" Offset="0xD6E8"/>
 
         <!-- Unused body skeleton assets -->
-        <Skeleton Name="gVolvagiaBodySkel" Type="Flex" LimbType="Standard" Offset="0x11420"/>
+        <Skeleton Name="gVolvagiaBodySkel" Type="Flex" LimbType="Standard" Offset="0x10020"/>
         <Animation Name="gVolvagiaBodyStaticAnim" Offset="0x61D8"/>
         <Texture Name="gVolvagiaBodyTex" OutName="volvagia_body" Format="rgba16" Width="32" Height="64" Offset="0x8128"/>
 

@@ -71,36 +71,36 @@
         <Texture Name="gGanondorfTitleCardTex" OutName="ganondorf_title_card" Format="i8" Width="128" Height="120" Offset="0xCF00"/>
 
         <!-- Ganondorf Animation -->
-        <Animation Name="gGanondorfEndingFloatAnim" Offset="0x11348"/> <!-- Original name is "ONOLEE" (lit. "Curse you!" from his in-game dialogue) -->
+        <Animation Name="gGanondorfEndingFloatAnim" Offset="0xFF48"/> <!-- Original name is "ONOLEE" (lit. "Curse you!" from his in-game dialogue) -->
 
         <!-- Ganondorf Limbs -->
-        <Limb Name="gGanondorfRootLimb" LimbType="Standard" Offset="0x11358"/>
-        <Limb Name="gGanondorfTorsoLimb" LimbType="Standard" Offset="0x11364"/>
-        <Limb Name="gGanondorfLeftShoulderLimb" LimbType="Standard" Offset="0x11370"/>
-        <Limb Name="gGanondorfLeftUpperArmLimb" LimbType="Standard" Offset="0x1137C"/>
-        <Limb Name="gGanondorfLeftForearmLimb" LimbType="Standard" Offset="0x11388"/>
-        <Limb Name="gGanondorfLeftHandLimb" LimbType="Standard" Offset="0x11394"/>
-        <Limb Name="gGanondorfRightShoulderLimb" LimbType="Standard" Offset="0x113A0"/>
-        <Limb Name="gGanondorfRightUpperArmLimb" LimbType="Standard" Offset="0x113AC"/>
-        <Limb Name="gGanondorfRightForearmLimb" LimbType="Standard" Offset="0x113B8"/>
-        <Limb Name="gGanondorfRightHandLimb" LimbType="Standard" Offset="0x113C4"/>
-        <Limb Name="gGanondorfJewelLimb" LimbType="Standard" Offset="0x113D0"/>
-        <Limb Name="gGanondorfLeftUpperLipLimb" LimbType="Standard" Offset="0x113DC"/>
-        <Limb Name="gGanondorfMouthLimb" LimbType="Standard" Offset="0x113E8"/>
-        <Limb Name="gGanondorfJawLimb" LimbType="Standard" Offset="0x113F4"/>
-        <Limb Name="gGanondorfUpperHairEndLimb" LimbType="Standard" Offset="0x11400"/>
-        <Limb Name="gGanondorfLowerHairEndLimb" LimbType="Standard" Offset="0x1140C"/>
-        <Limb Name="gGanondorfRightUpperLipLimb" LimbType="Standard" Offset="0x11418"/>
-        <Limb Name="gGanondorfHeadLimb" LimbType="Standard" Offset="0x11424"/>
-        <Limb Name="gGanondorfPelvisLimb" LimbType="Standard" Offset="0x11430"/>
-        <Limb Name="gGanondorfLeftThighLimb" LimbType="Standard" Offset="0x1143C"/>
-        <Limb Name="gGanondorfLeftShinLimb" LimbType="Standard" Offset="0x11448"/>
-        <Limb Name="gGanondorfLeftFootLimb" LimbType="Standard" Offset="0x11454"/>
-        <Limb Name="gGanondorfRightThighLimb" LimbType="Standard" Offset="0x11460"/>
-        <Limb Name="gGanondorfRightShinLimb" LimbType="Standard" Offset="0x1146C"/>
-        <Limb Name="gGanondorfRightFootLimb" LimbType="Standard" Offset="0x11478"/>
+        <Limb Name="gGanondorfRootLimb" LimbType="Standard" Offset="0xFF58"/>
+        <Limb Name="gGanondorfTorsoLimb" LimbType="Standard" Offset="0xFF64"/>
+        <Limb Name="gGanondorfLeftShoulderLimb" LimbType="Standard" Offset="0xFF70"/>
+        <Limb Name="gGanondorfLeftUpperArmLimb" LimbType="Standard" Offset="0xFF7C"/>
+        <Limb Name="gGanondorfLeftForearmLimb" LimbType="Standard" Offset="0xFF88"/>
+        <Limb Name="gGanondorfLeftHandLimb" LimbType="Standard" Offset="0xFF94"/>
+        <Limb Name="gGanondorfRightShoulderLimb" LimbType="Standard" Offset="0xFFA0"/>
+        <Limb Name="gGanondorfRightUpperArmLimb" LimbType="Standard" Offset="0xFFAC"/>
+        <Limb Name="gGanondorfRightForearmLimb" LimbType="Standard" Offset="0xFFB8"/>
+        <Limb Name="gGanondorfRightHandLimb" LimbType="Standard" Offset="0xFFC4"/>
+        <Limb Name="gGanondorfJewelLimb" LimbType="Standard" Offset="0xFFD0"/>
+        <Limb Name="gGanondorfLeftUpperLipLimb" LimbType="Standard" Offset="0xFFDC"/>
+        <Limb Name="gGanondorfMouthLimb" LimbType="Standard" Offset="0xFFE8"/>
+        <Limb Name="gGanondorfJawLimb" LimbType="Standard" Offset="0xFFF4"/>
+        <Limb Name="gGanondorfUpperHairEndLimb" LimbType="Standard" Offset="0x10000"/>
+        <Limb Name="gGanondorfLowerHairEndLimb" LimbType="Standard" Offset="0x1000C"/>
+        <Limb Name="gGanondorfRightUpperLipLimb" LimbType="Standard" Offset="0x10018"/>
+        <Limb Name="gGanondorfHeadLimb" LimbType="Standard" Offset="0x10024"/>
+        <Limb Name="gGanondorfPelvisLimb" LimbType="Standard" Offset="0x10030"/>
+        <Limb Name="gGanondorfLeftThighLimb" LimbType="Standard" Offset="0x1003C"/>
+        <Limb Name="gGanondorfLeftShinLimb" LimbType="Standard" Offset="0x10048"/>
+        <Limb Name="gGanondorfLeftFootLimb" LimbType="Standard" Offset="0x10054"/>
+        <Limb Name="gGanondorfRightThighLimb" LimbType="Standard" Offset="0x10060"/>
+        <Limb Name="gGanondorfRightShinLimb" LimbType="Standard" Offset="0x1006C"/>
+        <Limb Name="gGanondorfRightFootLimb" LimbType="Standard" Offset="0x10078"/>
 
         <!-- Ganondorf Skeleton -->
-        <Skeleton Name="gGanondorfSkel" Type="Flex" LimbType="Standard" Offset="0x114E8"/>
+        <Skeleton Name="gGanondorfSkel" Type="Flex" LimbType="Standard" Offset="0x100E8"/>
     </File>
 </Root>

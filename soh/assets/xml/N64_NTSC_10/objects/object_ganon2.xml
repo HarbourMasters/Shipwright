@@ -108,67 +108,67 @@
         <Texture Name="gGanonTitleCardTex" OutName="ganon_title_card" Format="ia8" Width="128" Height="120" Offset="0x21A90"/>
 
         <!-- Ganon Limbs -->
-        <Limb Name="gGanonRootLimb" LimbType="Standard" Offset="0x25690"/>
-        <Limb Name="gGanonTorsoLimb" LimbType="Standard" Offset="0x2569C"/>
-        <Limb Name="gGanonLeftShoulderLimb" LimbType="Standard" Offset="0x256A8"/>
-        <Limb Name="gGanonLeftUpperArmLimb" LimbType="Standard" Offset="0x256B4"/>
-        <Limb Name="gGanonLeftForearmLimb" LimbType="Standard" Offset="0x256C0"/>
-        <Limb Name="gGanonLeftWristLimb" LimbType="Standard" Offset="0x256CC"/>
-        <Limb Name="gGanonLeftSwordLimb" LimbType="Standard" Offset="0x256D8"/>
-        <Limb Name="gGanonLeftHandLimb" LimbType="Standard" Offset="0x256E4"/>
-        <Limb Name="gGanonRightShoulderLimb" LimbType="Standard" Offset="0x256F0"/>
-        <Limb Name="gGanonRightUpperArmLimb" LimbType="Standard" Offset="0x256FC"/>
-        <Limb Name="gGanonRightForearmLimb" LimbType="Standard" Offset="0x25708"/>
-        <Limb Name="gGanonRightWristLimb" LimbType="Standard" Offset="0x25714"/>
-        <Limb Name="gGanonRightSwordLimb" LimbType="Standard" Offset="0x25720"/>
-        <Limb Name="gGanonRightHandLimb" LimbType="Standard" Offset="0x2572C"/>
-        <Limb Name="gGanonNeckLimb" LimbType="Standard" Offset="0x25738"/>
-        <Limb Name="gGanonJewelLimb" LimbType="Standard" Offset="0x25744"/>
-        <Limb Name="gGanonSnoutLimb" LimbType="Standard" Offset="0x25750"/>
-        <Limb Name="gGanonOuterTeethLimb" LimbType="Standard" Offset="0x2575C"/>
-        <Limb Name="gGanonMouthLimb" LimbType="Standard" Offset="0x25768"/>
-        <Limb Name="gGanonInnerTeethLimb" LimbType="Standard" Offset="0x25774"/>
-        <Limb Name="gGanonJawLimb" LimbType="Standard" Offset="0x25780"/>
-        <Limb Name="gGanonMiddleHair1Limb" LimbType="Standard" Offset="0x2578C"/>
-        <Limb Name="gGanonMiddleHair2Limb" LimbType="Standard" Offset="0x25798"/>
-        <Limb Name="gGanonMiddleHair3Limb" LimbType="Standard" Offset="0x257A4"/>
-        <Limb Name="gGanonLeftHair1Limb" LimbType="Standard" Offset="0x257B0"/>
-        <Limb Name="gGanonLeftHair2Limb" LimbType="Standard" Offset="0x257BC"/>
-        <Limb Name="gGanonLeftHair3Limb" LimbType="Standard" Offset="0x257C8"/>
-        <Limb Name="gGanonRightHair1Limb" LimbType="Standard" Offset="0x257D4"/>
-        <Limb Name="gGanonRightHair2Limb" LimbType="Standard" Offset="0x257E0"/>
-        <Limb Name="gGanonRightHair3Limb" LimbType="Standard" Offset="0x257EC"/>
-        <Limb Name="gGanonEyesLimb" LimbType="Standard" Offset="0x257F8"/>
-        <Limb Name="gGanonHeadLimb" LimbType="Standard" Offset="0x25804"/>
-        <Limb Name="gGanonLeftHornLimb" LimbType="Standard" Offset="0x25810"/>
-        <Limb Name="gGanonRightHornLimb" LimbType="Standard" Offset="0x2581C"/>
-        <Limb Name="gGanonPelvisLimb" LimbType="Standard" Offset="0x25828"/>
-        <Limb Name="gGanonLeftThighLimb" LimbType="Standard" Offset="0x25834"/>
-        <Limb Name="gGanonLeftShinLimb" LimbType="Standard" Offset="0x25840"/>
-        <Limb Name="gGanonLeftFootLimb" LimbType="Standard" Offset="0x2584C"/>
-        <Limb Name="gGanonRightThighLimb" LimbType="Standard" Offset="0x25858"/>
-        <Limb Name="gGanonRightShinLimb" LimbType="Standard" Offset="0x25864"/>
-        <Limb Name="gGanonRightFootLimb" LimbType="Standard" Offset="0x25870"/>
-        <Limb Name="gGanonTail1Limb" LimbType="Standard" Offset="0x2587C"/>
-        <Limb Name="gGanonTail2Limb" LimbType="Standard" Offset="0x25888"/>
-        <Limb Name="gGanonTail3Limb" LimbType="Standard" Offset="0x25894"/>
-        <Limb Name="gGanonTail4Limb" LimbType="Standard" Offset="0x258A0"/>
-        <Limb Name="gGanonTail5Limb" LimbType="Standard" Offset="0x258AC"/>
+        <Limb Name="gGanonRootLimb" LimbType="Standard" Offset="0x24290"/>
+        <Limb Name="gGanonTorsoLimb" LimbType="Standard" Offset="0x2429C"/>
+        <Limb Name="gGanonLeftShoulderLimb" LimbType="Standard" Offset="0x242A8"/>
+        <Limb Name="gGanonLeftUpperArmLimb" LimbType="Standard" Offset="0x242B4"/>
+        <Limb Name="gGanonLeftForearmLimb" LimbType="Standard" Offset="0x242C0"/>
+        <Limb Name="gGanonLeftWristLimb" LimbType="Standard" Offset="0x242CC"/>
+        <Limb Name="gGanonLeftSwordLimb" LimbType="Standard" Offset="0x242D8"/>
+        <Limb Name="gGanonLeftHandLimb" LimbType="Standard" Offset="0x242E4"/>
+        <Limb Name="gGanonRightShoulderLimb" LimbType="Standard" Offset="0x242F0"/>
+        <Limb Name="gGanonRightUpperArmLimb" LimbType="Standard" Offset="0x242FC"/>
+        <Limb Name="gGanonRightForearmLimb" LimbType="Standard" Offset="0x24308"/>
+        <Limb Name="gGanonRightWristLimb" LimbType="Standard" Offset="0x24314"/>
+        <Limb Name="gGanonRightSwordLimb" LimbType="Standard" Offset="0x24320"/>
+        <Limb Name="gGanonRightHandLimb" LimbType="Standard" Offset="0x2432C"/>
+        <Limb Name="gGanonNeckLimb" LimbType="Standard" Offset="0x24338"/>
+        <Limb Name="gGanonJewelLimb" LimbType="Standard" Offset="0x24344"/>
+        <Limb Name="gGanonSnoutLimb" LimbType="Standard" Offset="0x24350"/>
+        <Limb Name="gGanonOuterTeethLimb" LimbType="Standard" Offset="0x2435C"/>
+        <Limb Name="gGanonMouthLimb" LimbType="Standard" Offset="0x24368"/>
+        <Limb Name="gGanonInnerTeethLimb" LimbType="Standard" Offset="0x24374"/>
+        <Limb Name="gGanonJawLimb" LimbType="Standard" Offset="0x24380"/>
+        <Limb Name="gGanonMiddleHair1Limb" LimbType="Standard" Offset="0x2438C"/>
+        <Limb Name="gGanonMiddleHair2Limb" LimbType="Standard" Offset="0x24398"/>
+        <Limb Name="gGanonMiddleHair3Limb" LimbType="Standard" Offset="0x243A4"/>
+        <Limb Name="gGanonLeftHair1Limb" LimbType="Standard" Offset="0x243B0"/>
+        <Limb Name="gGanonLeftHair2Limb" LimbType="Standard" Offset="0x243BC"/>
+        <Limb Name="gGanonLeftHair3Limb" LimbType="Standard" Offset="0x243C8"/>
+        <Limb Name="gGanonRightHair1Limb" LimbType="Standard" Offset="0x243D4"/>
+        <Limb Name="gGanonRightHair2Limb" LimbType="Standard" Offset="0x243E0"/>
+        <Limb Name="gGanonRightHair3Limb" LimbType="Standard" Offset="0x243EC"/>
+        <Limb Name="gGanonEyesLimb" LimbType="Standard" Offset="0x243F8"/>
+        <Limb Name="gGanonHeadLimb" LimbType="Standard" Offset="0x24404"/>
+        <Limb Name="gGanonLeftHornLimb" LimbType="Standard" Offset="0x24410"/>
+        <Limb Name="gGanonRightHornLimb" LimbType="Standard" Offset="0x2441C"/>
+        <Limb Name="gGanonPelvisLimb" LimbType="Standard" Offset="0x24428"/>
+        <Limb Name="gGanonLeftThighLimb" LimbType="Standard" Offset="0x24434"/>
+        <Limb Name="gGanonLeftShinLimb" LimbType="Standard" Offset="0x24440"/>
+        <Limb Name="gGanonLeftFootLimb" LimbType="Standard" Offset="0x2444C"/>
+        <Limb Name="gGanonRightThighLimb" LimbType="Standard" Offset="0x24458"/>
+        <Limb Name="gGanonRightShinLimb" LimbType="Standard" Offset="0x24464"/>
+        <Limb Name="gGanonRightFootLimb" LimbType="Standard" Offset="0x24470"/>
+        <Limb Name="gGanonTail1Limb" LimbType="Standard" Offset="0x2447C"/>
+        <Limb Name="gGanonTail2Limb" LimbType="Standard" Offset="0x24488"/>
+        <Limb Name="gGanonTail3Limb" LimbType="Standard" Offset="0x24494"/>
+        <Limb Name="gGanonTail4Limb" LimbType="Standard" Offset="0x244A0"/>
+        <Limb Name="gGanonTail5Limb" LimbType="Standard" Offset="0x244AC"/>
 
         <!-- Ganon Skeleton -->
-        <Skeleton Name="gGanonSkel" Type="Flex" LimbType="Standard" Offset="0x25970"/>
+        <Skeleton Name="gGanonSkel" Type="Flex" LimbType="Standard" Offset="0x24570"/>
 
         <!-- Ganon Animations -->
-        <Animation Name="gGanonStunStartAnim" Offset="0x26510"/> <!-- Original name is "gn2_Lhit" -->
-        <Animation Name="gGanonStunLoopAnim" Offset="0x26AF4"/> <!-- Original name is "gn2_Lmahi" ("paralysis, stupor") -->
-        <Animation Name="gGanonStunEndAnim" Offset="0x27824"/> <!-- Original name is "gn2_Lmahi_to_K" -->
-        <Animation Name="gGanonDownedStartAnim" Offset="0x2A848"/> <!-- Original name is "gn2_downDEMO" -->
-        <Animation Name="gGanonStunEndToWalkAnim" Offset="0x2B528"/> <!-- Unused, similar to gGanonStunEndAnim. Transitions into walk instead of guard. -->
-        <Animation Name="gGanonDuplicateStunStartAnim" Offset="0x2C0D0"/> <!-- Unused duplicate of gGanonStunStartAnim -->
-        <Animation Name="gGanonDuplicateStunLoopAnim" Offset="0x2C6B4"/> <!-- Unused duplicate of gGanonStunLoopAnim -->
-        <Animation Name="gGanonGetUpAnim" Offset="0x334F8"/> <!-- Original name is "gn2_hukkiDEMO" ("return, comeback") -->
-        <Animation Name="gGanonDownedLoopAnim" Offset="0x34278"/> <!-- Original name is "gn2_mahiDEMO" -->
-        <Animation Name="gGanonWalkAnim" Offset="0x353C0"/> <!-- Original name is "gn2_walk" -->
-        <Animation Name="gGanonWalkToGuardAnim" Offset="0x35BDC"/> <!-- Unused. Original name is "gn2_walk_to_K" -->
+        <Animation Name="gGanonStunStartAnim" Offset="0x25110"/> <!-- Original name is "gn2_Lhit" -->
+        <Animation Name="gGanonStunLoopAnim" Offset="0x256F4"/> <!-- Original name is "gn2_Lmahi" ("paralysis, stupor") -->
+        <Animation Name="gGanonStunEndAnim" Offset="0x26424"/> <!-- Original name is "gn2_Lmahi_to_K" -->
+        <Animation Name="gGanonDownedStartAnim" Offset="0x29448"/> <!-- Original name is "gn2_downDEMO" -->
+        <Animation Name="gGanonStunEndToWalkAnim" Offset="0x2A128"/> <!-- Unused, similar to gGanonStunEndAnim. Transitions into walk instead of guard. -->
+        <Animation Name="gGanonDuplicateStunStartAnim" Offset="0x2ACD0"/> <!-- Unused duplicate of gGanonStunStartAnim -->
+        <Animation Name="gGanonDuplicateStunLoopAnim" Offset="0x2B2B4"/> <!-- Unused duplicate of gGanonStunLoopAnim -->
+        <Animation Name="gGanonGetUpAnim" Offset="0x320F8"/> <!-- Original name is "gn2_hukkiDEMO" ("return, comeback") -->
+        <Animation Name="gGanonDownedLoopAnim" Offset="0x32E78"/> <!-- Original name is "gn2_mahiDEMO" -->
+        <Animation Name="gGanonWalkAnim" Offset="0x33FC0"/> <!-- Original name is "gn2_walk" -->
+        <Animation Name="gGanonWalkToGuardAnim" Offset="0x347DC"/> <!-- Unused. Original name is "gn2_walk_to_K" -->
     </File>
 </Root>
