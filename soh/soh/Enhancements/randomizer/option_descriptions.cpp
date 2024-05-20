@@ -520,7 +520,7 @@ void Settings::CreateOptionDescriptions() {
     mOptionDescriptions[RSK_FROGS_HINT] = "Standing near the pedestal for the frogs in Zora's River will tell you the "
                                           "reward for the frogs' ocarina game.";
     mOptionDescriptions[RSK_BIGGORON_HINT] = "Talking to Biggoron will tell you the item he will give you in exchange for the Claim Check.";
-    mOptionDescriptions[RSK_BIG_POES_HINT] = "Talking to the Poe Collector in the Market Guardhouse while adult will tell you what you recieve for handing in Big Poes.";
+    mOptionDescriptions[RSK_BIG_POES_HINT] = "Talking to the Poe Collector in the Market Guardhouse while adult will tell you what you receive for handing in Big Poes.";
     mOptionDescriptions[RSK_CHICKENS_HINT] = "Talking to Anju as a child will tell you the item she will give you for delivering her Cuccos to the pen";
     mOptionDescriptions[RSK_MALON_HINT] = "Talking to Malon as adult will tell you the item on \"Link's cow\", the cow you win from beating her time on the Lon Lon Obsticle Course.";
     mOptionDescriptions[RSK_HBA_HINT] = "Talking to the Horseback Archery gerudo in Gerudo Fortress, or the nearby sign, will tell you what you win for scoring 1000 and 1500 points on Horseback Archery.";
