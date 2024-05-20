@@ -177,7 +177,7 @@ void Settings::CreateOptions() {
     mOptions[RSK_KAK_40_SKULLS_HINT] = Option::Bool("40 GS Hint", CVAR_RANDOMIZER_SETTING("40GSHint"), mOptionDescriptions[RSK_KAK_40_SKULLS_HINT], IMFLAG_NONE);
     mOptions[RSK_KAK_50_SKULLS_HINT] = Option::Bool("50 GS Hint", CVAR_RANDOMIZER_SETTING("50GSHint"), mOptionDescriptions[RSK_KAK_50_SKULLS_HINT], IMFLAG_NONE);
     mOptions[RSK_KAK_100_SKULLS_HINT] = Option::Bool("100 GS Hint", CVAR_RANDOMIZER_SETTING("100GSHint"), mOptionDescriptions[RSK_KAK_100_SKULLS_HINT], IMFLAG_NONE);
-    mOptions[RSK_MASK_SHOP_HINT] = Option::Bool("Mask Shop Hint", CVAR_RANDOMIZER_SETTING("MaksShopHint"), mOptionDescriptions[RSK_MASK_SHOP_HINT]);
+    mOptions[RSK_MASK_SHOP_HINT] = Option::Bool("Mask Shop Hint", CVAR_RANDOMIZER_SETTING("MaskShopHint"), mOptionDescriptions[RSK_MASK_SHOP_HINT]);
     // TODO: Compasses show rewards/woth, maps show dungeon mode
     mOptions[RSK_BLUE_FIRE_ARROWS] = Option::Bool("Blue Fire Arrows", CVAR_RANDOMIZER_SETTING("BlueFireArrows"), mOptionDescriptions[RSK_BLUE_FIRE_ARROWS]);
     mOptions[RSK_SUNLIGHT_ARROWS] = Option::Bool("Sunlight Arrows", CVAR_RANDOMIZER_SETTING("SunlightArrows"), mOptionDescriptions[RSK_SUNLIGHT_ARROWS]);
