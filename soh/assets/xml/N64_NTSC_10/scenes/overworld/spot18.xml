@@ -1,16 +1,16 @@
 <Root>
     <File Name="spot18_scene" Segment="2">
-        <Texture Name="spot18_sceneTex_0087C8" OutName="spot18_sceneTex_0087C8" Format="rgba16" Width="32" Height="32" Offset="0x8748" AddedByScript="true"/>
-        <Texture Name="spot18_sceneTex_009008" OutName="spot18_sceneTex_009008" Format="ci8" Width="64" Height="32" Offset="0x8F88" TlutOffset="0x8540" AddedByScript="true"/>
-        <Texture Name="spot18_sceneTex_009848" OutName="spot18_sceneTex_009848" Format="rgba16" Width="16" Height="32" Offset="0x97C8" AddedByScript="true"/>
-        <Texture Name="spot18_sceneTex_009C48" OutName="spot18_sceneTex_009C48" Format="ci8" Width="64" Height="32" Offset="0x9BC8" TlutOffset="0x8540" AddedByScript="true"/>
-        <Texture Name="spot18_sceneTLUT_0085C0" OutName="spot18_sceneTLUT_0085C0" Format="rgba16" Width="16" Height="16" Offset="0x8540" AddedByScript="true"/>
+        <Texture Name="spot18_sceneTex_0087C8" OutName="spot18_sceneTex_0087C8" Format="rgba16" Width="32" Height="32" Offset="0x87C8" AddedByScript="true"/>
+        <Texture Name="spot18_sceneTex_009008" OutName="spot18_sceneTex_009008" Format="ci8" Width="64" Height="32" Offset="0x9008" TlutOffset="0x85C0" AddedByScript="true"/>
+        <Texture Name="spot18_sceneTex_009848" OutName="spot18_sceneTex_009848" Format="rgba16" Width="16" Height="32" Offset="0x9848" AddedByScript="true"/>
+        <Texture Name="spot18_sceneTex_009C48" OutName="spot18_sceneTex_009C48" Format="ci8" Width="64" Height="32" Offset="0x9C48" TlutOffset="0x85C0" AddedByScript="true"/>
+        <Texture Name="spot18_sceneTLUT_0085C0" OutName="spot18_sceneTLUT_0085C0" Format="rgba16" Width="16" Height="16" Offset="0x85C0" AddedByScript="true"/>
         <Cutscene Name="gGoronCityDaruniaCorrectCs" Offset="0x59E0"/>
         <Cutscene Name="gGoronCityDarunia01Cs" Offset="0x6930"/>
-        <Cutscene Name="gGoronCityDaruniaWrongCs" Offset="0x7DF4"/>
-        <Cutscene Name="gGoronCityIntroCs" Offset="0x8380"/>
-        <Texture Name="gGoronCityNightEntranceTex" OutName="night_entrance" Format="ia8" Width="8" Height="8" Offset="0x8F48"/>
-        <Texture Name="gGoronCityDayEntranceTex" OutName="day_entrance" Format="ia8" Width="8" Height="8" Offset="0x9788"/>
+        <Cutscene Name="gGoronCityDaruniaWrongCs" Offset="0x7DE0"/>
+        <Cutscene Name="gGoronCityIntroCs" Offset="0x8400"/>
+        <Texture Name="gGoronCityNightEntranceTex" OutName="night_entrance" Format="ia8" Width="8" Height="8" Offset="0x8FC8"/>
+        <Texture Name="gGoronCityDayEntranceTex" OutName="day_entrance" Format="ia8" Width="8" Height="8" Offset="0x9808"/>
         <Scene Name="spot18_scene" Offset="0x0"/>
     </File>
     <File Name="spot18_room_0" Segment="3">

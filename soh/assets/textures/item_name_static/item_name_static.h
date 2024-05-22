@@ -1278,15 +1278,6 @@ static const ALIGN_ASSET(2) char gEyeDropsItemNameJPNTex[] = dgEyeDropsItemNameJ
 #define dgClaimCheckItemNameJPNTex "__OTR__textures/item_name_static/gClaimCheckItemNameJPNTex"
 static const ALIGN_ASSET(2) char gClaimCheckItemNameJPNTex[] = dgClaimCheckItemNameJPNTex;
 
-#define dgUnusedWindMedallionItemName1JPNTex "__OTR__textures/item_name_static/gUnusedWindMedallionItemName1JPNTex"
-static const ALIGN_ASSET(2) char gUnusedWindMedallionItemName1JPNTex[] = dgUnusedWindMedallionItemName1JPNTex;
-
-#define dgUnusedFireMedallionItemName1JPNTex "__OTR__textures/item_name_static/gUnusedFireMedallionItemName1JPNTex"
-static const ALIGN_ASSET(2) char gUnusedFireMedallionItemName1JPNTex[] = dgUnusedFireMedallionItemName1JPNTex;
-
-#define dgUnusedIceMedallionItemName1JPNTex "__OTR__textures/item_name_static/gUnusedIceMedallionItemName1JPNTex"
-static const ALIGN_ASSET(2) char gUnusedIceMedallionItemName1JPNTex[] = dgUnusedIceMedallionItemName1JPNTex;
-
 #define dgKokiriSwordItemNameJPNTex "__OTR__textures/item_name_static/gKokiriSwordItemNameJPNTex"
 static const ALIGN_ASSET(2) char gKokiriSwordItemNameJPNTex[] = dgKokiriSwordItemNameJPNTex;
 
@@ -1368,18 +1359,6 @@ static const ALIGN_ASSET(2) char gGoldenScaleItemNameJPNTex[] = dgGoldenScaleIte
 #define dgBrokenGiantsKnifeItemNameJPNTex "__OTR__textures/item_name_static/gBrokenGiantsKnifeItemNameJPNTex"
 static const ALIGN_ASSET(2) char gBrokenGiantsKnifeItemNameJPNTex[] = dgBrokenGiantsKnifeItemNameJPNTex;
 
-#define dgUnusedBossKeyItemName1JPNTex "__OTR__textures/item_name_static/gUnusedBossKeyItemName1JPNTex"
-static const ALIGN_ASSET(2) char gUnusedBossKeyItemName1JPNTex[] = dgUnusedBossKeyItemName1JPNTex;
-
-#define dgUnusedBossKeyItemName2JPNTex "__OTR__textures/item_name_static/gUnusedBossKeyItemName2JPNTex"
-static const ALIGN_ASSET(2) char gUnusedBossKeyItemName2JPNTex[] = dgUnusedBossKeyItemName2JPNTex;
-
-#define dgUnusedBossKeyItemName3JPNTex "__OTR__textures/item_name_static/gUnusedBossKeyItemName3JPNTex"
-static const ALIGN_ASSET(2) char gUnusedBossKeyItemName3JPNTex[] = dgUnusedBossKeyItemName3JPNTex;
-
-#define dgUnusedBossKeyItemName4JPNTex "__OTR__textures/item_name_static/gUnusedBossKeyItemName4JPNTex"
-static const ALIGN_ASSET(2) char gUnusedBossKeyItemName4JPNTex[] = dgUnusedBossKeyItemName4JPNTex;
-
 #define dgMinuetOfForestItemNameJPNTex "__OTR__textures/item_name_static/gMinuetOfForestItemNameJPNTex"
 static const ALIGN_ASSET(2) char gMinuetOfForestItemNameJPNTex[] = dgMinuetOfForestItemNameJPNTex;
 
@@ -1454,9 +1433,6 @@ static const ALIGN_ASSET(2) char gGoldSkulltulaItemNameJPNTex[] = dgGoldSkulltul
 
 #define dgPieceOfHeartItemNameJPNTex "__OTR__textures/item_name_static/gPieceOfHeartItemNameJPNTex"
 static const ALIGN_ASSET(2) char gPieceOfHeartItemNameJPNTex[] = dgPieceOfHeartItemNameJPNTex;
-
-#define dgUnusedPieceOfHeartItemName1JPNTex "__OTR__textures/item_name_static/gUnusedPieceOfHeartItemName1JPNTex"
-static const ALIGN_ASSET(2) char gUnusedPieceOfHeartItemName1JPNTex[] = dgUnusedPieceOfHeartItemName1JPNTex;
 
 #define dgUnusedBigKeyItemNameJPNTex "__OTR__textures/item_name_static/gUnusedBigKeyItemNameJPNTex"
 static const ALIGN_ASSET(2) char gUnusedBigKeyItemNameJPNTex[] = dgUnusedBigKeyItemNameJPNTex;

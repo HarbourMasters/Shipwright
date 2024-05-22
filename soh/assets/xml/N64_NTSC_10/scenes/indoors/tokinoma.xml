@@ -1,17 +1,17 @@
 <Root>
     <File Name="tokinoma_scene" Segment="2">
-        <Texture Name="tokinoma_sceneTex_00CFA0" OutName="tokinoma_sceneTex_00CFA0" Format="rgba16" Width="32" Height="32" Offset="0xCFC0" AddedByScript="true"/>
-        <Texture Name="tokinoma_sceneTex_00D7A0" OutName="tokinoma_sceneTex_00D7A0" Format="rgba16" Width="32" Height="32" Offset="0xD7C0" AddedByScript="true"/>
-        <Texture Name="tokinoma_sceneTex_00DFA0" OutName="tokinoma_sceneTex_00DFA0" Format="rgba16" Width="32" Height="64" Offset="0xDFC0" AddedByScript="true"/>
-        <Texture Name="tokinoma_sceneTex_00EFA0" OutName="tokinoma_sceneTex_00EFA0" Format="rgba16" Width="32" Height="64" Offset="0xEFC0" AddedByScript="true"/>
-        <Texture Name="tokinoma_sceneTex_00FFA0" OutName="tokinoma_sceneTex_00FFA0" Format="rgba16" Width="32" Height="32" Offset="0xFFC0" AddedByScript="true"/>
-        <Texture Name="tokinoma_sceneTex_0107A0" OutName="tokinoma_sceneTex_0107A0" Format="rgba16" Width="32" Height="32" Offset="0x107C0" AddedByScript="true"/>
-        <Texture Name="tokinoma_sceneTex_010FA0" OutName="tokinoma_sceneTex_010FA0" Format="rgba16" Width="32" Height="32" Offset="0x10FC0" AddedByScript="true"/>
-        <Texture Name="tokinoma_sceneTex_0117A0" OutName="tokinoma_sceneTex_0117A0" Format="rgba16" Width="32" Height="32" Offset="0x117C0" AddedByScript="true"/>
-        <Texture Name="tokinoma_sceneTex_011FA0" OutName="tokinoma_sceneTex_011FA0" Format="rgba16" Width="32" Height="32" Offset="0x11FC0" AddedByScript="true"/>
-        <Cutscene Name="gTempleOfTimeFirstAdultCs" Offset="0x4700"/>
-        <Cutscene Name="gTempleOfTimePreludeCs" Offset="0x6D34"/>
-        <Cutscene Name="gTempleOfTimeIntroCs" Offset="0xCE20"/>
+        <Texture Name="tokinoma_sceneTex_00CFA0" OutName="tokinoma_sceneTex_00CFA0" Format="rgba16" Width="32" Height="32" Offset="0xCFA0" AddedByScript="true"/>
+        <Texture Name="tokinoma_sceneTex_00D7A0" OutName="tokinoma_sceneTex_00D7A0" Format="rgba16" Width="32" Height="32" Offset="0xD7A0" AddedByScript="true"/>
+        <Texture Name="tokinoma_sceneTex_00DFA0" OutName="tokinoma_sceneTex_00DFA0" Format="rgba16" Width="32" Height="64" Offset="0xDFA0" AddedByScript="true"/>
+        <Texture Name="tokinoma_sceneTex_00EFA0" OutName="tokinoma_sceneTex_00EFA0" Format="rgba16" Width="32" Height="64" Offset="0xEFA0" AddedByScript="true"/>
+        <Texture Name="tokinoma_sceneTex_00FFA0" OutName="tokinoma_sceneTex_00FFA0" Format="rgba16" Width="32" Height="32" Offset="0xFFA0" AddedByScript="true"/>
+        <Texture Name="tokinoma_sceneTex_0107A0" OutName="tokinoma_sceneTex_0107A0" Format="rgba16" Width="32" Height="32" Offset="0x107A0" AddedByScript="true"/>
+        <Texture Name="tokinoma_sceneTex_010FA0" OutName="tokinoma_sceneTex_010FA0" Format="rgba16" Width="32" Height="32" Offset="0x10FA0" AddedByScript="true"/>
+        <Texture Name="tokinoma_sceneTex_0117A0" OutName="tokinoma_sceneTex_0117A0" Format="rgba16" Width="32" Height="32" Offset="0x117A0" AddedByScript="true"/>
+        <Texture Name="tokinoma_sceneTex_011FA0" OutName="tokinoma_sceneTex_011FA0" Format="rgba16" Width="32" Height="32" Offset="0x11FA0" AddedByScript="true"/>
+        <Cutscene Name="gTempleOfTimeFirstAdultCs" Offset="0x46F0"/>
+        <Cutscene Name="gTempleOfTimePreludeCs" Offset="0x6D20"/>
+        <Cutscene Name="gTempleOfTimeIntroCs" Offset="0xCE00"/>
         <Scene Name="tokinoma_scene" Offset="0x0"/>
     </File>
     <File Name="tokinoma_room_0" Segment="3">

@@ -308,16 +308,16 @@
         <Limb Name="gTwinrovaBroomIceJetLimb" LimbType="Standard" Offset="0x30AE4"/>
         <Limb Name="gTwinrovaLeftHandLimb" LimbType="Standard" Offset="0x30AF0"/>
         <Limb Name="gTwinrovaLeftBroomLimb" LimbType="Standard" Offset="0x30AFC"/>
-        <Limb Name="gTwinrovaRightShoulderLimb" LimbType="Standard" Offset="0x31B08"/>
-        <Limb Name="gTwinrovaRightUpperArmLimb" LimbType="Standard" Offset="0x31B14"/>
-        <Limb Name="gTwinrovaRightForearmLimb" LimbType="Standard" Offset="0x31B20"/>
-        <Limb Name="gTwinrovaRightSleeveStartLimb" LimbType="Standard" Offset="0x31B2C"/>
-        <Limb Name="gTwinrovaRightSleeveEndLimb" LimbType="Standard" Offset="0x31B38"/>
-        <Limb Name="gTwinrovaRightBroomLimb" LimbType="Standard" Offset="0x31B44"/>
-        <Limb Name="gTwinrovaBroomFireJetLimb" LimbType="Standard" Offset="0x31B50"/>
-        <Limb Name="gTwinrovaBroomFireTrailLimb" LimbType="Standard" Offset="0x31B5C"/>
-        <Limb Name="gTwinrovaRightHandLimb" LimbType="Standard" Offset="0x31B68"/>
-        <Skeleton Name="gTwinrovaSkel" Type="Flex" LimbType="Standard" Offset="0x31C20"/>
+        <Limb Name="gTwinrovaRightShoulderLimb" LimbType="Standard" Offset="0x30B08"/>
+        <Limb Name="gTwinrovaRightUpperArmLimb" LimbType="Standard" Offset="0x30B14"/>
+        <Limb Name="gTwinrovaRightForearmLimb" LimbType="Standard" Offset="0x30B20"/>
+        <Limb Name="gTwinrovaRightSleeveStartLimb" LimbType="Standard" Offset="0x30B2C"/>
+        <Limb Name="gTwinrovaRightSleeveEndLimb" LimbType="Standard" Offset="0x30B38"/>
+        <Limb Name="gTwinrovaRightBroomLimb" LimbType="Standard" Offset="0x30B44"/>
+        <Limb Name="gTwinrovaBroomFireJetLimb" LimbType="Standard" Offset="0x30B50"/>
+        <Limb Name="gTwinrovaBroomFireTrailLimb" LimbType="Standard" Offset="0x30B5C"/>
+        <Limb Name="gTwinrovaRightHandLimb" LimbType="Standard" Offset="0x30B68"/>
+        <Skeleton Name="gTwinrovaSkel" Type="Flex" LimbType="Standard" Offset="0x30C20"/>
         <Animation Name="gTwinrovaHoverAnim" Offset="0x317F8"/>
         <Animation Name="gTwinrovaChargedAttackHitAnim" Offset="0x324F0"/>
         <Animation Name="gTwinrovaStunStartAnim" Offset="0x32FB4"/>

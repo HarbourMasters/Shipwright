@@ -1,26 +1,26 @@
 <Root>
     <File Name="spot07_scene" Segment="2">
-        <Texture Name="spot07_sceneTex_003F98" OutName="spot07_sceneTex_003F98" Format="rgba16" Width="32" Height="64" Offset="0x3FA8" AddedByScript="true"/>
-        <Texture Name="spot07_sceneTex_004F98" OutName="spot07_sceneTex_004F98" Format="ci4" Width="64" Height="32" Offset="0x4FA8" TlutOffset="0x3F80" AddedByScript="true"/>
-        <Texture Name="spot07_sceneTex_005398" OutName="spot07_sceneTex_005398" Format="ci4" Width="64" Height="32" Offset="0x53A8" TlutOffset="0x3F80" AddedByScript="true"/>
-        <Texture Name="spot07_sceneTex_005798" OutName="spot07_sceneTex_005798" Format="ci4" Width="64" Height="32" Offset="0x57A8" TlutOffset="0x3F80" AddedByScript="true"/>
-        <Texture Name="spot07_sceneTex_005B98" OutName="spot07_sceneTex_005B98" Format="ci4" Width="64" Height="32" Offset="0x5BA8" TlutOffset="0x3F80" AddedByScript="true"/>
-        <Texture Name="spot07_sceneTex_005F98" OutName="spot07_sceneTex_005F98" Format="ci4" Width="64" Height="32" Offset="0x5FA8" TlutOffset="0x3F80" AddedByScript="true"/>
-        <Texture Name="spot07_sceneTex_006398" OutName="spot07_sceneTex_006398" Format="ci4" Width="64" Height="32" Offset="0x63A8" TlutOffset="0x3F80" AddedByScript="true"/>
-        <Texture Name="spot07_sceneTex_006798" OutName="spot07_sceneTex_006798" Format="ci4" Width="64" Height="32" Offset="0x67A8" TlutOffset="0x3F80" AddedByScript="true"/>
-        <Texture Name="spot07_sceneTex_006B98" OutName="spot07_sceneTex_006B98" Format="ci4" Width="64" Height="32" Offset="0x6BA8" TlutOffset="0x3F80" AddedByScript="true"/>
-        <Texture Name="spot07_sceneTex_006F98" OutName="spot07_sceneTex_006F98" Format="rgba16" Width="32" Height="32" Offset="0x6FA8" AddedByScript="true"/>
-        <Texture Name="spot07_sceneTex_007798" OutName="spot07_sceneTex_007798" Format="ci4" Width="64" Height="32" Offset="0x77A8" TlutOffset="0x3F80" AddedByScript="true"/>
-        <Texture Name="spot07_sceneTex_007B98" OutName="spot07_sceneTex_007B98" Format="ci4" Width="64" Height="32" Offset="0x7BA8" TlutOffset="0x3F80" AddedByScript="true"/>
-        <Texture Name="spot07_sceneTex_007F98" OutName="spot07_sceneTex_007F98" Format="rgba16" Width="32" Height="32" Offset="0x7FA8" AddedByScript="true"/>
-        <Texture Name="spot07_sceneTex_008798" OutName="spot07_sceneTex_008798" Format="ia4" Width="64" Height="64" Offset="0x87A8" AddedByScript="true"/>
-        <Texture Name="spot07_sceneTex_009018" OutName="spot07_sceneTex_009018" Format="ci4" Width="64" Height="32" Offset="0x9028" TlutOffset="0x3F80" AddedByScript="true"/>
-        <Texture Name="spot07_sceneTex_009418" OutName="spot07_sceneTex_009418" Format="ci4" Width="64" Height="32" Offset="0x9428" TlutOffset="0x3F80" AddedByScript="true"/>
-        <Texture Name="spot07_sceneTLUT_003F70" OutName="spot07_sceneTLUT_003F70" Format="rgba16" Width="4" Height="4" Offset="0x3F80" AddedByScript="true"/>
+        <Texture Name="spot07_sceneTex_003F98" OutName="spot07_sceneTex_003F98" Format="rgba16" Width="32" Height="64" Offset="0x3F98" AddedByScript="true"/>
+        <Texture Name="spot07_sceneTex_004F98" OutName="spot07_sceneTex_004F98" Format="ci4" Width="64" Height="32" Offset="0x4F98" TlutOffset="0x3F70" AddedByScript="true"/>
+        <Texture Name="spot07_sceneTex_005398" OutName="spot07_sceneTex_005398" Format="ci4" Width="64" Height="32" Offset="0x5398" TlutOffset="0x3F70" AddedByScript="true"/>
+        <Texture Name="spot07_sceneTex_005798" OutName="spot07_sceneTex_005798" Format="ci4" Width="64" Height="32" Offset="0x5798" TlutOffset="0x3F70" AddedByScript="true"/>
+        <Texture Name="spot07_sceneTex_005B98" OutName="spot07_sceneTex_005B98" Format="ci4" Width="64" Height="32" Offset="0x5B98" TlutOffset="0x3F70" AddedByScript="true"/>
+        <Texture Name="spot07_sceneTex_005F98" OutName="spot07_sceneTex_005F98" Format="ci4" Width="64" Height="32" Offset="0x5F98" TlutOffset="0x3F70" AddedByScript="true"/>
+        <Texture Name="spot07_sceneTex_006398" OutName="spot07_sceneTex_006398" Format="ci4" Width="64" Height="32" Offset="0x6398" TlutOffset="0x3F70" AddedByScript="true"/>
+        <Texture Name="spot07_sceneTex_006798" OutName="spot07_sceneTex_006798" Format="ci4" Width="64" Height="32" Offset="0x6798" TlutOffset="0x3F70" AddedByScript="true"/>
+        <Texture Name="spot07_sceneTex_006B98" OutName="spot07_sceneTex_006B98" Format="ci4" Width="64" Height="32" Offset="0x6B98" TlutOffset="0x3F70" AddedByScript="true"/>
+        <Texture Name="spot07_sceneTex_006F98" OutName="spot07_sceneTex_006F98" Format="rgba16" Width="32" Height="32" Offset="0x6F98" AddedByScript="true"/>
+        <Texture Name="spot07_sceneTex_007798" OutName="spot07_sceneTex_007798" Format="ci4" Width="64" Height="32" Offset="0x7798" TlutOffset="0x3F70" AddedByScript="true"/>
+        <Texture Name="spot07_sceneTex_007B98" OutName="spot07_sceneTex_007B98" Format="ci4" Width="64" Height="32" Offset="0x7B98" TlutOffset="0x3F70" AddedByScript="true"/>
+        <Texture Name="spot07_sceneTex_007F98" OutName="spot07_sceneTex_007F98" Format="rgba16" Width="32" Height="32" Offset="0x7F98" AddedByScript="true"/>
+        <Texture Name="spot07_sceneTex_008798" OutName="spot07_sceneTex_008798" Format="ia4" Width="64" Height="64" Offset="0x8798" AddedByScript="true"/>
+        <Texture Name="spot07_sceneTex_009018" OutName="spot07_sceneTex_009018" Format="ci4" Width="64" Height="32" Offset="0x9018" TlutOffset="0x3F70" AddedByScript="true"/>
+        <Texture Name="spot07_sceneTex_009418" OutName="spot07_sceneTex_009418" Format="ci4" Width="64" Height="32" Offset="0x9418" TlutOffset="0x3F70" AddedByScript="true"/>
+        <Texture Name="spot07_sceneTLUT_003F70" OutName="spot07_sceneTLUT_003F70" Format="rgba16" Width="4" Height="4" Offset="0x3F70" AddedByScript="true"/>
         <Path Name="gZorasDomainPath_0234" Offset="0x234" NumPaths="3"/>
-        <Cutscene Name="gZorasDomainIntroCs" Offset="0x3D80"/>
-        <Texture Name="gZorasDomainDayEntranceTex" OutName="day_entrance" Format="ia8" Width="8" Height="8" Offset="0x8FA8"/>
-        <Texture Name="gZorasDomainNightEntranceTex" OutName="night_entrance" Format="ia8" Width="8" Height="8" Offset="0x8FE8"/>
+        <Cutscene Name="gZorasDomainIntroCs" Offset="0x3D70"/>
+        <Texture Name="gZorasDomainDayEntranceTex" OutName="day_entrance" Format="ia8" Width="8" Height="8" Offset="0x8F98"/>
+        <Texture Name="gZorasDomainNightEntranceTex" OutName="night_entrance" Format="ia8" Width="8" Height="8" Offset="0x8FD8"/>
         <Scene Name="spot07_scene" Offset="0x0"/>
     </File>
     <File Name="spot07_room_0" Segment="3">
