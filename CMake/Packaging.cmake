@@ -73,6 +73,7 @@ execute_process(
     ${CMAKE_COMMAND} -E env
       OUTPUT=${CPACK_PACKAGE_FILE_NAME}.appimage
       VERSION=$<IF:$<BOOL:${CPACK_PACKAGE_VERSION}>,${CPACK_PACKAGE_VERSION},0.1.0>
+      NO_STRIP=true
     ${LINUXDEPLOY_EXECUTABLE}
     --appimage-extract-and-run
     --appdir=${CPACK_TEMPORARY_DIRECTORY}
