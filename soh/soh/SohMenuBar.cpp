@@ -685,6 +685,7 @@ void DrawEnhancementsMenu() {
                 UIWidgets::PaddedEnhancementCheckbox("Persistent masks", CVAR_ENHANCEMENT("PersistentMasks"), true, false);
                 UIWidgets::Tooltip(
                     "Stops masks from automatically unequipping on certain situations:\n"
+                    "- When entering a new scene\n"
                     "- When not in any C button or the D-Pad\n"
                     "- When saving and quitting\n"
                     "- When dying\n"
