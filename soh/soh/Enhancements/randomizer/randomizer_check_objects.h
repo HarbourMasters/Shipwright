@@ -22,8 +22,8 @@ typedef struct {
     int32_t actorParams;
     GetItemID ogItemId;
     bool visibleInImgui;
-    std::string rcShortName;
-    std::string rcSpoilerName;
+    const char* rcShortName;
+    const char* rcSpoilerName;
     bool vanillaCompletion;
 } RandomizerCheckObject;
 
