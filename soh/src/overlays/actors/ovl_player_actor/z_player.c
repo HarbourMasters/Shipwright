@@ -2261,7 +2261,7 @@ void Player_ProcessItemButtons(Player* this, PlayState* play) {
 
             if (gSaveContext.equips.buttonItems[0] != maskItem && gSaveContext.equips.buttonItems[1] != maskItem &&
                 gSaveContext.equips.buttonItems[2] != maskItem && gSaveContext.equips.buttonItems[3] != maskItem &&
-                !hasOnDpad && !CVarGetInteger("gEnhancements.KeepMasks", 0)) {
+                !hasOnDpad && !CVarGetInteger(CVAR_ENHANCEMENT("PersistentMasks"), 0)) {
                 this->currentMask = gSaveContext.maskMemory = PLAYER_MASK_NONE;
                 func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
             }
@@ -5069,7 +5069,7 @@ void func_8083A0F4(PlayState* play, Player* this) {
             this->interactRangeActor->parent = &this->actor;
             Player_SetupAction(play, this, Player_Action_8084F608, 0);
             this->stateFlags1 |= PLAYER_STATE1_IN_CUTSCENE;
-            if (!CVarGetInteger(CVAR_ENHANCEMENT("KeepMasksThroughTime"), 0) || !CVarGetInteger(CVAR_ENHANCEMENT("AdultMasks"), 0)) {
+            if (!CVarGetInteger(CVAR_ENHANCEMENT("PersistentMasks"), 0) || !CVarGetInteger(CVAR_ENHANCEMENT("AdultMasks"), 0)) {
                 gSaveContext.maskMemory = PLAYER_MASK_NONE;
             }
         } else {
@@ -8939,7 +8939,7 @@ void func_80843AE8(PlayState* play, Player* this) {
         OnePointCutscene_Init(play, 9908, 125, &this->actor, MAIN_CAM);
     } else if (play->gameOverCtx.state == GAMEOVER_DEATH_WAIT_GROUND) {
         play->gameOverCtx.state = GAMEOVER_DEATH_DELAY_MENU;
-        if (!CVarGetInteger("gEnhancements.KeepMasksOnDeath", 0)) {
+        if (!CVarGetInteger(CVAR_ENHANCEMENT("PersistentMasks"), 0)) {
             gSaveContext.maskMemory = PLAYER_MASK_NONE;
         }
     }

@@ -681,15 +681,15 @@ void DrawEnhancementsMenu() {
                     "Also disables NPC's reactions to wearing the Bunny Hood."
                 );
                 UIWidgets::PaddedEnhancementCheckbox("Masks Equippable as Adult", CVAR_ENHANCEMENT("AdultMasks"), true, false);
-                UIWidgets::Tooltip("Allows the masks to be equipped normally from the pause menu as adult.");
-                UIWidgets::PaddedEnhancementCheckbox("Keep Masks through time", CVAR_ENHANCEMENT("KeepMasksThroughTime"), true, false, !CVarGetInteger(CVAR_ENHANCEMENT("AdultMasks"), 0), "Only available with \"Masks Equippable as Adult\"", UIWidgets::CheckboxGraphics::Cross, false);
-                UIWidgets::Tooltip("Stops the masks from automatically unequipping when travelling through time.");
-                UIWidgets::PaddedEnhancementCheckbox("Stop automatic mask unequipping", CVAR_ENHANCEMENT("KeepMasksOnUnequip"), true, false);
-                UIWidgets::Tooltip("Stops masks from automatically unequipping when not in any C button or the dpad.");
-                UIWidgets::PaddedEnhancementCheckbox("Save equipped mask to file", CVAR_ENHANCEMENT("SaveMasksToFile"), true, false);
-                UIWidgets::Tooltip("If you save and quit with a mask on, it'll still be on when you load back in.");
-                UIWidgets::PaddedEnhancementCheckbox("Keep mask on death", CVAR_ENHANCEMENT("KeepMasksOnDeath"), true, false);
-                UIWidgets::Tooltip("Stops masks from automatically unequipping when dying.");
+                UIWidgets::Tooltip("Allows masks to be equipped normally from the pause menu as adult.");
+                UIWidgets::PaddedEnhancementCheckbox("Persistent masks", CVAR_ENHANCEMENT("PersistentMasks"), true, false);
+                UIWidgets::Tooltip(
+                    "Stops masks from automatically unequipping on certain situations:\n"
+                    "- When not in any C button or the D-Pad\n"
+                    "- When saving and quitting\n"
+                    "- When dying\n"
+                    "- When traveling thru time (if \"Masks Equippable as Adult\" is activated)"
+                );
                 UIWidgets::PaddedEnhancementCheckbox("Mask Select in Inventory", CVAR_ENHANCEMENT("MaskSelect"), true, false);
                 UIWidgets::Tooltip("After completing the mask trading sub-quest, press A and any direction on the mask slot to change masks");
                 UIWidgets::PaddedEnhancementCheckbox("Nuts explode bombs", CVAR_ENHANCEMENT("NutsExplodeBombs"), true, false);
