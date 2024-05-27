@@ -680,10 +680,10 @@ void DrawEnhancementsMenu() {
                     "Wearing the Bunny Hood grants a speed increase like in Majora's Mask. The longer jump option is not accounted for in randomizer logic.\n\n"
                     "Also disables NPC's reactions to wearing the Bunny Hood."
                 );
-                UIWidgets::PaddedEnhancementCheckbox("Bunny Hood Equippable as Adult", CVAR_ENHANCEMENT("AdultBunnyHood"), true, false, (CVarGetInteger(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_VANILLA) == BUNNY_HOOD_VANILLA), "Only available with increased bunny hood speed", UIWidgets::CheckboxGraphics::Cross, false);
-                UIWidgets::Tooltip("Allows the bunny hood to be equipped normally from the pause menu as adult.");
-                UIWidgets::PaddedEnhancementCheckbox("Keep Bunny Hood through time", CVAR_ENHANCEMENT("KeepBunnyHoodThroughTime"), true, false, !CVarGetInteger("gAdultBunnyHood", 0), "Only available with \"Bunny Hood Equippable as Adult\"", UIWidgets::CheckboxGraphics::Cross, false);
-                UIWidgets::Tooltip("Stops the bunny hood from automatically unequipping when travelling through time.");
+                UIWidgets::PaddedEnhancementCheckbox("Masks Equippable as Adult", CVAR_ENHANCEMENT("AdultMasks"), true, false);
+                UIWidgets::Tooltip("Allows the masks to be equipped normally from the pause menu as adult.");
+                UIWidgets::PaddedEnhancementCheckbox("Keep Masks through time", CVAR_ENHANCEMENT("KeepMasksThroughTime"), true, false, !CVarGetInteger(CVAR_ENHANCEMENT("AdultMasks"), 0), "Only available with \"Masks Equippable as Adult\"", UIWidgets::CheckboxGraphics::Cross, false);
+                UIWidgets::Tooltip("Stops the masks from automatically unequipping when travelling through time.");
                 UIWidgets::PaddedEnhancementCheckbox("Stop automatic mask unequipping", CVAR_ENHANCEMENT("KeepMasksOnUnequip"), true, false);
                 UIWidgets::Tooltip("Stops masks from automatically unequipping when not in any C button or the dpad.");
                 UIWidgets::PaddedEnhancementCheckbox("Save equipped mask to file", CVAR_ENHANCEMENT("SaveMasksToFile"), true, false);

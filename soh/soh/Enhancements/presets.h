@@ -82,7 +82,7 @@ const std::vector<const char*> enhancementsCvars = {
     CVAR_ENHANCEMENT("NoForcedNavi"),
     CVAR_ENHANCEMENT("SkulltulaFreeze"),
     CVAR_ENHANCEMENT("MMBunnyHood"),
-    CVAR_ENHANCEMENT("AdultBunnyHood"),
+    CVAR_ENHANCEMENT("AdultMasks"),
     CVAR_ENHANCEMENT("FastChests"),
     CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"),
     CVAR_ENHANCEMENT("FastDrops"),
@@ -643,7 +643,7 @@ const std::vector<PresetEntry> enhancedPresetEntries = {
     // MM Bunny Hood
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_FAST_AND_JUMP),
     // Adult Bunny Hood
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("AdultBunnyHood"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("AdultMasks"), 1),
     // Fast Chests
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FastChests"), 1),
     // Fast Drops
@@ -767,7 +767,7 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     // MM Bunny Hood
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_FAST_AND_JUMP),
     // Adult Bunny Hood
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("AdultBunnyHood"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("AdultMasks"), 1),
     // Fast Chests
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FastChests"), 1),
     // Fast Drops
@@ -873,7 +873,7 @@ const std::vector<PresetEntry> spockRacePresetEntries = {
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MarketSneak"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InstantPutaway"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FastBoomerang"), 1),
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("AdultBunnyHood"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("AdultMasks"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_FAST),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("SeparateArrows"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("AssignableTunicsAndBoots"), 1),
@@ -941,7 +941,7 @@ const std::vector<PresetEntry> spockRacePresetEntries = {
 };
 
 const std::vector<PresetEntry> spockRaceNoLogicPresetEntries = {
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("AdultBunnyHood"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("AdultMasks"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MinimumFishWeightAdult"), 6),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("AssignableTunicsAndBoots"), 1),
     PRESET_ENTRY_S32(CVAR_CHEAT("EasyPauseBuffer"), 1),
@@ -1034,7 +1034,7 @@ const std::vector<PresetEntry> s6PresetEntries = {
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), CSMC_BOTH),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FastChests"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_FAST),
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("AdultBunnyHood"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("AdultMasks"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("BigPoeTargetCount"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("CuccosToReturn"), 4),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("DoorOfTime"), RO_DOOROFTIME_OPEN),
@@ -1068,7 +1068,7 @@ const std::vector<PresetEntry> hellModePresetEntries = {
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), CSMC_BOTH),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FastChests"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_FAST),
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("AdultBunnyHood"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("AdultMasks"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("BigPoeTargetCount"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("BlueFireArrows"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("BossKeysanity"), RO_DUNGEON_ITEM_LOC_ANYWHERE),

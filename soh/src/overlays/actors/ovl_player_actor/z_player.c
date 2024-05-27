@@ -5069,7 +5069,7 @@ void func_8083A0F4(PlayState* play, Player* this) {
             this->interactRangeActor->parent = &this->actor;
             Player_SetupAction(play, this, Player_Action_8084F608, 0);
             this->stateFlags1 |= PLAYER_STATE1_IN_CUTSCENE;
-            if (!CVarGetInteger("gEnhancements.KeepBunnyHoodThroughTime", 0) || !CVarGetInteger("gAdultBunnyHood", 0) || gSaveContext.maskMemory != PLAYER_MASK_BUNNY) {
+            if (!CVarGetInteger(CVAR_ENHANCEMENT("KeepMasksThroughTime"), 0) || !CVarGetInteger(CVAR_ENHANCEMENT("AdultMasks"), 0)) {
                 gSaveContext.maskMemory = PLAYER_MASK_NONE;
             }
         } else {
