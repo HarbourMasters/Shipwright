@@ -400,7 +400,7 @@ oJson Hint::toJSON() {
       log["distribution"] = distribution;
     }
     
-    if (hintType != HINT_TYPE_FOOLISH){
+    //if (hintType != HINT_TYPE_FOOLISH){
       if (!(StaticData::staticHintInfoMap.contains(ownKey) && 
           StaticData::staticHintInfoMap[ownKey].targetChecks.size() > 0)){
         if (locations.size() == 1){
@@ -413,7 +413,7 @@ oJson Hint::toJSON() {
           }
           log["locations"] = locStrings;
         }
-      }
+      //}
       
       if (!(StaticData::staticHintInfoMap.contains(ownKey) &&
           StaticData::staticHintInfoMap[ownKey].targetItems.size() > 0)){
