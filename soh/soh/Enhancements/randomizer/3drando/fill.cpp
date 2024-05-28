@@ -488,14 +488,16 @@ static void GeneratePlaythrough() {
 RandomizerArea LookForExternalArea(Area* curRegion, std::vector<RandomizerRegion> alreadyChecked){//RANDOTODO curREGION
   for (auto& entrance : curRegion->entrances) {
     RandomizerArea otherArea = entrance->GetParentRegion()->GetArea();
-    if(otherArea != RA_NONE){
-      return otherArea;
-      //if the area hasn't already been checked, check it
-    } else if (std::find(alreadyChecked.begin(), alreadyChecked.end(), entrance->GetParentRegionKey()) == alreadyChecked.end()) {
-      alreadyChecked.push_back(entrance->GetParentRegionKey());
-      RandomizerArea passdown = LookForExternalArea(entrance->GetParentRegion(), alreadyChecked);
-      if(passdown != RA_NONE){
-        return passdown;
+    if (otherArea != RA_LINKS_POCKET){ //if it's links pocket, do not propogate this, link's pocket is not a real Area
+      if(otherArea != RA_NONE){
+        return otherArea;
+        //if the area hasn't already been checked, check it
+      } else if (std::find(alreadyChecked.begin(), alreadyChecked.end(), entrance->GetParentRegionKey()) == alreadyChecked.end()) {
+        alreadyChecked.push_back(entrance->GetParentRegionKey());
+        RandomizerArea passdown = LookForExternalArea(entrance->GetParentRegion(), alreadyChecked);
+        if(passdown != RA_NONE){
+          return passdown;
+        }
       }
     }
   }
@@ -515,6 +517,7 @@ void SetAreas(){
     for (auto& loc : region.locations){
       ctx->GetItemLocation(loc.GetLocation())->SetArea(area);
     }
+    areaTable[c].SetArea(area);
   }
 }
 
