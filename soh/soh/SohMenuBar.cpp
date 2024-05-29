@@ -570,7 +570,8 @@ void DrawEnhancementsMenu() {
                 UIWidgets::PaddedEnhancementSliderInt("Text Speed: %dx", "##TEXTSPEED", CVAR_ENHANCEMENT("TextSpeed"), 1, 5, "", 1, true, false, true);
                 UIWidgets::PaddedEnhancementCheckbox("Skip Text", CVAR_ENHANCEMENT("SkipText"), false, true);
                 UIWidgets::Tooltip("Holding down B skips text");
-                UIWidgets::PaddedEnhancementSliderInt("King Zora Speed: %dx", "##MWEEPSPEED", CVAR_ENHANCEMENT("MweepSpeed"), 1, 5, "", 1, true, false, true);
+                //UIWidgets::PaddedEnhancementSliderInt("King Zora Speed: %dx", "##MWEEPSPEED", CVAR_ENHANCEMENT("MweepSpeed"), 1, 5, "", 1, true, false, true);
+                UIWidgets::PaddedEnhancementSliderFloat("King Zora Speed: %.2fx %%", "##MWEEPSPEED", CVAR_ENHANCEMENT("MweepSpeed"), 0.1f, 5.0f, "", 1.0f, true, false, true);
                 UIWidgets::PaddedEnhancementSliderInt("Vine/Ladder Climb speed +%d", "##CLIMBSPEED", CVAR_ENHANCEMENT("ClimbSpeed"), 0, 12, "", 0, true, false, true);
                 UIWidgets::PaddedEnhancementSliderInt("Block pushing speed +%d", "##BLOCKSPEED", CVAR_ENHANCEMENT("FasterBlockPush"), 0, 5, "", 0, true, false, true);
                 UIWidgets::PaddedEnhancementSliderInt("Crawl speed %dx", "##CRAWLSPEED", CVAR_ENHANCEMENT("CrawlSpeed"), 1, 4, "", 1, true, false, true);
