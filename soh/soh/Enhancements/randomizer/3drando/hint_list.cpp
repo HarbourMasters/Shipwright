@@ -2475,27 +2475,27 @@ void StaticData::HintTable_Init() {
 
 
     hintTextTable[RHT_BRIDGE_VANILLA_HINT] = HintText(CustomMessage("$6The awakened ones require the #Shadow and Spirit Medallions# as well as the #Light Arrows#.^",
-                                                        /*german*/ "$6Die Weisen werden darauf warten, dass der Held das #Amulett des Schattens, Amulett der Geister# und die #Licht-Pfeile# sammelt.^",
+                                                        /*german*/ "$6Die Weisen werden darauf warten, daß der Held das #Amulett des Schattens, Amulett der Geister# und die #Licht-Pfeile# sammelt.^",
                                                         /*french*/ "$6Les êtres de sagesse attendront le héros muni des #Médaillons de l'Ombre et l'Esprit# et des #Flèches de Lumière#.^",
                                                                    {QM_RED, QM_YELLOW}));
                                                      // /*spanish*/$6Los sabios aguardarán a que el héroe obtenga tanto el #Medallón de las Sombras y el del Espíritu# junto
                                                                 // a la #flecha de luz#.^
 
     hintTextTable[RHT_BRIDGE_STONES_HINT] = HintText(CustomMessage("$0The awakened ones will await for the Hero to collect #[[d]] Spiritual Stone||s|#.^",
-                                                        /*german*/ "$0Die Weisen werden darauf warten, dass der Held #[[d]] |Heiligen Stein|Heilige Steine|# sammelt.^",
+                                                        /*german*/ "$0Die Weisen werden darauf warten, daß der Held #[[d]] |Heiligen Stein|Heilige Steine|# sammelt.^",
                                                         /*french*/ "$0Les êtres de sagesse attendront le héros muni de #[[d]] |Pierre Ancestrale|Pierres Ancestrales|#.^",
                                                                    {QM_BLUE}));
                                                      // /*spanish*/$0Los sabios aguardarán a que el héroe&obtenga #[[d]] |piedra espiritual|piedras espirituales|#.^
 
     hintTextTable[RHT_BRIDGE_MEDALLIONS_HINT] = HintText(CustomMessage("$8The awakened ones will await for the Hero to collect #[[d]] Medallion||s|#.^",
-                                                            /*german*/ "$8Die Weisen werden darauf warten, dass der Held #[[d]] Amulett||e|# sammelt.^",
+                                                            /*german*/ "$8Die Weisen werden darauf warten, daß der Held #[[d]] Amulett||e|# sammelt.^",
                                                             /*french*/ "$8Les êtres de sagesse attendront le héros muni de #[[d]] Médaillon||s|#.^",
                                                                        {QM_RED}));
                                                          // /*spanish*/$8Los sabios aguardarán a que el héroe&obtenga #[[d]] |medallón|medallones|#.^
 
     hintTextTable[RHT_BRIDGE_REWARDS_HINT] = HintText(CustomMessage("$CThe awakened ones will await for the Hero to collect #[[d]]# |#Spiritual Stone# or #Medallion#|"
                                                                        "#Spiritual Stones# and #Medallions#|.^",
-                                                            /*german*/ "$CDie Weisen werden darauf warten, dass der Held #[[d]]# |#Heiligen Stein# oder #Amulett#|"
+                                                            /*german*/ "$CDie Weisen werden darauf warten, daß der Held #[[d]]# |#Heiligen Stein# oder #Amulett#|"
                                                                        "#Heilige Steine# oder #Amulette#| sammelt.^",
                                                             /*french*/ "$CLes êtres de sagesse attendront le héros muni de #[[d]]# |#Pierre Ancestrale# ou #Médaillon#"
                                                                        "|#Pierres Ancestrales# ou #Médaillons#|.^",
@@ -2504,13 +2504,13 @@ void StaticData::HintTable_Init() {
                                                                     //#piedras espirtuales# y #medallones#|.^
 
     hintTextTable[RHT_BRIDGE_DUNGEONS_HINT] = HintText(CustomMessage("$mThe awakened ones will await for the Hero to conquer #[[d]] Dungeon||s|#.^",
-                                                          /*german*/ "$mDie Weisen werden darauf warten, dass der Held #[[d]] Labyrinth||e|# abschließt.^",
+                                                          /*german*/ "$mDie Weisen werden darauf warten, daß der Held #[[d]] Labyrinth||e|# abschließt.^",
                                                           /*french*/ "$mLes êtres de sagesse attendront la conquête de #[[d]] Donjon||s|#.^",
                                                                      {QM_PINK}));
                                                        // /*spanish*/$mLos sabios aguardarán a que el héroe complete #[[d]] mazmorra||s|#.^
 
     hintTextTable[RHT_BRIDGE_TOKENS_HINT] = HintText(CustomMessage("$sThe awakened ones will await for the Hero to collect #[[d]] Gold Skulltula Token||s|#.^",
-                                                        /*german*/ "$sDie Weisen werden darauf warten, dass der Held #[[d]] Skulltula-Symbol||e|# sammelt.^",
+                                                        /*german*/ "$sDie Weisen werden darauf warten, daß der Held #[[d]] Skulltula-Symbol||e|# sammelt.^",
                                                         /*french*/ "$sLes êtres de sagesse attendront le héros muni de #[[d]] Symbole||s| de Skulltula d'or#.^",
                                                                    {QM_YELLOW}));
                                                      // /*spanish*/$sLos sabios aguardarán a que el héroe obtenga #[[d]] símbolo||s| de skulltula dorada#.^
@@ -2536,7 +2536,7 @@ void StaticData::HintTable_Init() {
                                                         // /*spanish*/$bY la llave del #señor del mal# aguardará en un gran cofre de #su torre#.^
 
     hintTextTable[RHT_GANON_BK_OWN_DUNGEON_HINT] = HintText(CustomMessage("$bAnd the #evil one#'s key will be hidden somewhere #inside its castle#.^",
-                                                               /*german*/ "$bUnd der #Schlüssel des Bösen#, wird irgendwo #in Ganons Schloss# zu finden sein.^",
+                                                               /*german*/ "$bUnd der #Schlüssel des Bösen#, wird irgendwo #in Ganons Schloß# zu finden sein.^",
                                                                /*french*/ "$bAussi, la #clé du Malin# sera cachée #dans son vaste château#.^",
                                                                           {QM_PINK, QM_PINK}));
                                                             // /*spanish*/$bY la llave del #señor del mal# aguardará en #algún lugar de su castillo#.^
@@ -2775,14 +2775,14 @@ void StaticData::HintTable_Init() {
                                                 /*spanish*/ // ¿Me compras #[[1]]# por #200 rupias#?&" + TWO_WAY_CHOICE() + "#Comprar&No comprar#
 
     hintTextTable[RHT_CARPET_SALESMAN_DIALOG_FIRST] = HintText(CustomMessage("Welcome!^I am selling stuff, strange and rare, from all over the world to everybody. Today's special is...^",
-                                                                  /*german*/ "Sei gegrüßt!^Ich verkaufe allerlei Kuriorisäten. Stets sonderliche und seltene Ware aus "
+                                                                  /*german*/ "Sei gegrüßt!^Ich verkaufe allerlei Kuriositäten. Stets sonderliche und seltene Ware aus "
                                                                              "aller Welt für jedermann. Das heutige Angebot bleibt...^#",
                                                                   /*french*/ "Bienvenue!^Je vends des objets rares et merveilleux du monde entier. En spécial aujourd'hui...^"));
                                                               /*spanish*/ // ¡Acércate!^Vendo productos extraños y difíciles de encontrar... De todo el mundo a todo el mundo. La oferta de hoy es...^#¡
 
     hintTextTable[RHT_CARPET_SALESMAN_DIALOG_MYSTERIOUS] = HintText(CustomMessage("Terrifying! I won't tell you what it is until I see the #money#...^How about #200 Rupees#?&&" +
                                                                                   TWO_WAY_CHOICE() + "#Buy&Don't buy#",
-                                                                       /*german*/ "Furchterregend oder? Ich erzähle Euch mehr, wenn ich #Geld# sehe...^Wie wär's mit #200 Rubinen#?&&" +
+                                                                       /*german*/ "Furchterregend, oder? Ich erzähle Euch mehr, wenn ich #Geld# sehe...^Wie wär's mit #200 Rubinen#?&&" +
                                                                                   TWO_WAY_CHOICE() + "#Aber sicher!&Ich bin weg!#",
                                                                        /*french*/ "Un concentré de puissance! Mais montre tes #rubis# avant que je te dise ce que c'est...^Disons #200 "
                                                                                   "rubis#?&&" + TWO_WAY_CHOICE() + "#Acheter&Ne pas acheter#",
@@ -2792,7 +2792,7 @@ void StaticData::HintTable_Init() {
 
     hintTextTable[RHT_CARPET_SALESMAN_DIALOG_HINTED] = HintText(CustomMessage("#[[1]]!# It's real, I promise! A lonely man such as myself wouldn't #lie# to you, hmm?^"
                                                                               "How about #200 Rupees#?&&" + TWO_WAY_CHOICE() + "#Buy&Don't buy#",
-                                                                  /*german*/ "#[[1]]#! Ich kann versichern es ist ein aufrichtiges Angebot!^Ein einsamer Mann wie ich würde dich doch "
+                                                                  /*german*/ "#[[1]]#! Ich kann versichern, es ist ein aufrichtiges Angebot!^Ein einsamer Mann wie ich würde dich doch "
                                                                              "nicht #anlügen#, oder?^Wie wär's mit #200 Rubinen#?&&" + TWO_WAY_CHOICE() + "#Aber sicher!&Ich bin weg!#",
                                                                   /*french*/ "#[[1]]!# C'est vrai! J'te jure! Un gars comme moi ne te #mentirai# pas tu ne crois pas?^Disons #200 "
                                                                              "rubis#?&&" + TWO_WAY_CHOICE() + "#Acheter&Ne pas acheter#",
@@ -2806,7 +2806,7 @@ void StaticData::HintTable_Init() {
                                                                    {QM_RED, QM_GREEN, QM_YELLOW, QM_GREEN}));
 
     hintTextTable[RHT_GRANNY_HINT] = HintText(CustomMessage("#[[1]]#! How about #100 Rupees#?&" + TWO_WAY_CHOICE() + "#Buy&Don't buy#",
-                                                /*german*/ "#[[1]]#! Sagen wir #100 Rubine#!&" + TWO_WAY_CHOICE() + "#Gerne!&Auf keinen Fall!#",
+                                                /*german*/ "#[[1]]#! Sagen wir #100 Rubine#?&" + TWO_WAY_CHOICE() + "#Gerne!&Auf keinen Fall!#",
                                                 /*french*/ "#[[1]]#! Que dis-tu de #100 rubis#?&" + TWO_WAY_CHOICE() + "#Acheter&Ne pas acheter#",
                                                            {QM_GREEN, QM_YELLOW, QM_GREEN}, {true}));
                                              // /*spanish*/#[[1]]#. Vendo por #100 rupias#.&" + TWO_WAY_CHOICE() + "#Comprar&No comprar#
