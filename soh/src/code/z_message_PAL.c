@@ -1115,7 +1115,7 @@ void Message_DrawText(PlayState* play, Gfx** gfxP) {
         }
     }
     if (msgCtx->textDelayTimer == 0) {
-        msgCtx->textDrawPos = i + CVarGetInteger("gTextSpeed", 2);
+        msgCtx->textDrawPos = i + CVarGetInteger("gTextSpeed", 1);
         msgCtx->textDelayTimer = msgCtx->textDelay;
     } else {
         msgCtx->textDelayTimer--;
