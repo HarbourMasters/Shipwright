@@ -1071,7 +1071,9 @@ static s16 sLastFileChooseButtonIndex;
  */
 void FileChoose_UpdateMainMenu(GameState* thisx) {
     static u8 emptyName[] = { 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E };
+    static u8 emptyNameNES[] = { 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF };
     static u8 linkName[] = { 0x15, 0x2C, 0x31, 0x2E, 0x3E, 0x3E, 0x3E, 0x3E };
+    static u8 linkNameNES[] = { 0xB6, 0xB3, 0xB8, 0xB5, 0xDF, 0xDF, 0xDF, 0xDF };
     FileChooseContext* this = (FileChooseContext*)thisx;
     Input* input = &this->state.input[0];
     bool dpad = CVarGetInteger(CVAR_SETTING("DpadInText"), 0);
@@ -1259,12 +1261,15 @@ void FileChoose_StartBossRushMenu(GameState* thisx) {
 
 void FileChoose_UpdateQuestMenu(GameState* thisx) {
     static u8 emptyName[] = { 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E };
+    static u8 emptyNameNES[] = { 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF };
     static u8 linkName[] = { 0x15, 0x2C, 0x31, 0x2E, 0x3E, 0x3E, 0x3E, 0x3E };
+    static u8 linkNameNES[] = { 0xB6, 0xB3, 0xB8, 0xB5, 0xDF, 0xDF, 0xDF, 0xDF };
     FileChoose_UpdateStickDirectionPromptAnim(thisx);
     FileChooseContext* this = (FileChooseContext*)thisx;
     Input* input = &this->state.input[0];
     s8 i = 0;
     bool dpad = CVarGetInteger(CVAR_SETTING("DpadInText"), 0);
+    void* defaultName;
 
     FileChoose_UpdateRandomizer();
 
@@ -1321,7 +1326,12 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
             this->newFileNameCharCount = CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) ? 4 : 0;
             this->nameEntryBoxPosX = 120;
             this->nameEntryBoxAlpha = 0;
-            memcpy(Save_GetSaveMetaInfo(this->buttonIndex)->playerName, CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) ? &linkName : &emptyName, 8);
+            if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL) {
+                defaultName = CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) ? &linkName : &emptyName;
+            } else { // GAME_REGION_NTSC
+                defaultName = CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) ? &linkNameNES : &emptyNameNES;
+            }
+            memcpy(Save_GetSaveMetaInfo(this->buttonIndex)->playerName, defaultName, 8);
             return;
         }
     }
@@ -1567,6 +1577,34 @@ static void (*gConfigModeUpdateFuncs[])(GameState*) = {
     FileChoose_StartBossRushMenu,  FileChoose_RotateToQuest,
 };
 
+static void (*gConfigModeUpdateFuncsNES[])(GameState*) = {
+    FileChoose_StartFadeIn,        FileChoose_FinishFadeIn,
+    FileChoose_UpdateMainMenu,     FileChoose_SetupCopySource,
+    FileChoose_SelectCopySource,   FileChoose_SetupCopyDest1,
+    FileChoose_SetupCopyDest2,     FileChoose_SelectCopyDest,
+    FileChoose_ExitToCopySource1,  FileChoose_ExitToCopySource2,
+    FileChoose_SetupCopyConfirm1,  FileChoose_SetupCopyConfirm2,
+    FileChoose_CopyConfirm,        FileChoose_ReturnToCopyDest,
+    FileChoose_CopyAnim1,          FileChoose_CopyAnim2,
+    FileChoose_CopyAnim3,          FileChoose_CopyAnim4,
+    FileChoose_CopyAnim5,          FileChoose_ExitCopyToMain,
+    FileChoose_SetupEraseSelect,   FileChoose_EraseSelect,
+    FileChoose_SetupEraseConfirm1, FileChoose_SetupEraseConfirm2,
+    FileChoose_EraseConfirm,       FileChoose_ExitToEraseSelect1,
+    FileChoose_ExitToEraseSelect2, FileChoose_EraseAnim1,
+    FileChoose_EraseAnim2,         FileChoose_EraseAnim3,
+    FileChoose_ExitEraseToMain,    FileChoose_UnusedCM31,
+    FileChoose_RotateToNameEntry,  FileChoose_UpdateKeyboardCursorNES,
+    FileChoose_StartNameEntryNES,  FileChoose_RotateToMain,
+    FileChoose_RotateToOptions,    FileChoose_UpdateOptionsMenuNES,
+    FileChoose_StartOptionsNES,    FileChoose_RotateToMain,
+    FileChoose_UnusedCMDelay,      FileChoose_RotateToQuest,
+    FileChoose_UpdateQuestMenu,    FileChoose_StartQuestMenu,
+    FileChoose_RotateToMain,       FileChoose_RotateToQuest,
+    FileChoose_RotateToBossRush,   FileChoose_UpdateBossRushMenu,
+    FileChoose_StartBossRushMenu,  FileChoose_RotateToQuest,
+};
+
 /**
  * Updates the alpha of the cursor to make it pulsate.
  * On the debug rom, this function also handles switching languages with controller 3.
@@ -1596,7 +1634,11 @@ void FileChoose_PulsateCursor(GameState* thisx) {
 void FileChoose_ConfigModeUpdate(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
 
-    gConfigModeUpdateFuncs[this->configMode](&this->state);
+    if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL) {
+        gConfigModeUpdateFuncs[this->configMode](&this->state);
+    } else { // GAME_REGION_NTSC
+        gConfigModeUpdateFuncsNES[this->configMode](&this->state);
+    }
 }
 
 void FileChoose_SetWindowVtx(GameState* thisx) {
@@ -2080,7 +2122,7 @@ static void* sFileInfoBoxTextures[] = {
     gFileSelFileInfoBox4Tex, gFileSelFileInfoBox5Tex,
 };
 
-static void* sTitleLabels[3][9] = {
+static void* sTitleLabels[4][9] = {
     { gFileSelPleaseSelectAFileENGTex, gFileSelOpenThisFileENGTex, gFileSelCopyWhichFileENGTex,
       gFileSelCopyToWhichFileENGTex, gFileSelAreYouSureENGTex, gFileSelFileCopiedENGTex, gFileSelEraseWhichFileENGTex,
       gFileSelAreYouSure2ENGTex, gFileSelFileErasedENGTex },
@@ -2089,34 +2131,42 @@ static void* sTitleLabels[3][9] = {
       gFileSelAreYouSure2GERTex, gFileSelFileErasedGERTex },
     { gFileSelPleaseSelectAFileFRATex, gFileSelOpenThisFileFRATex, gFileSelCopyWhichFileFRATex,
       gFileSelCopyToWhichFileFRATex, gFileSelAreYouSureFRATex, gFileSelFileCopiedFRATex, gFileSelEraseWhichFileFRATex,
-      gFileSelAreYouSure2FRATex, gFileSelFileErasedFRATex }
+      gFileSelAreYouSure2FRATex, gFileSelFileErasedFRATex },
+    { gFileSelPleaseSelectAFileJPNTex, gFileSelOpenThisFileJPNTex, gFileSelWhichFile1JPNTex,
+      gFileSelCopyToWhichFileJPNTex, gFileSelAreYouSureJPNTex, gFileSelFileCopiedJPNTex, gFileSelEraseWhichFileJPNTex,
+      gFileSelAreYouSure2JPNTex, gFileSelFileErasedJPNTex },
 };
 
-static void* sWarningLabels[3][5] = {
+static void* sWarningLabels[4][5] = {
     { gFileSelNoFileToCopyENGTex, gFileSelNoFileToEraseENGTex, gFileSelNoEmptyFileENGTex, gFileSelFileEmptyENGTex,
       gFileSelFileInUseENGTex },
     { gFileSelNoFileToCopyGERTex, gFileSelNoFileToEraseGERTex, gFileSelNoEmptyFileGERTex, gFileSelFileEmptyGERTex,
       gFileSelFileInUseGERTex },
     { gFileSelNoFileToCopyFRATex, gFileSelNoFileToEraseFRATex, gFileSelNoEmptyFileFRATex, gFileSelFileEmptyFRATex,
       gFileSelFileInUseFRATex },
+    { gFileSelNoFileToCopyJPNTex, gFileSelNoFileToEraseJPNTex, gFileSelNoEmptyFileJPNTex, gFileSelFileEmptyJPNTex,
+      gFileSelFileInUseJPNTex },
 };
 
-static void* sFileButtonTextures[3][3] = {
+static void* sFileButtonTextures[4][3] = {
     { gFileSelFile1ButtonENGTex, gFileSelFile2ButtonENGTex, gFileSelFile3ButtonENGTex },
     { gFileSelFile1ButtonGERTex, gFileSelFile2ButtonGERTex, gFileSelFile3ButtonGERTex },
     { gFileSelFile1ButtonFRATex, gFileSelFile2ButtonFRATex, gFileSelFile3ButtonFRATex },
+    { gFileSelFile1ButtonJPNTex, gFileSelFile2ButtonJPNTex, gFileSelFile3ButtonJPNTex },
 };
 
-static void* sActionButtonTextures[3][4] = {
+static void* sActionButtonTextures[4][4] = {
     { gFileSelCopyButtonENGTex, gFileSelEraseButtonENGTex, gFileSelYesButtonENGTex, gFileSelQuitButtonENGTex },
     { gFileSelCopyButtonGERTex, gFileSelEraseButtonGERTex, gFileSelYesButtonGERTex, gFileSelQuitButtonGERTex },
     { gFileSelCopyButtonFRATex, gFileSelEraseButtonFRATex, gFileSelYesButtonFRATex, gFileSelQuitButtonFRATex },
+    { gFileSelCopyButtonJPNTex, gFileSelEraseButtonJPNTex, gFileSelYesButtonJPNTex, gFileSelQuitButtonJPNTex },
 };
 
 static void* sOptionsButtonTextures[] = {
     gFileSelOptionsButtonENGTex,
     gFileSelOptionsButtonGERTex,
     gFileSelOptionsButtonENGTex,
+    gFileSelOptionsButtonJPNTex,
 };
 
 const char* FileChoose_GetQuestChooseTitleTexName(Language lang) {
@@ -2626,7 +2676,11 @@ void FileChoose_ConfigModeDraw(GameState* thisx) {
 
         gDPPipeSync(POLY_OPA_DISP++);
 
-        FileChoose_DrawNameEntry(&this->state);
+        if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL) {
+            FileChoose_DrawNameEntry(&this->state);
+        } else { // GAME_REGION_NTSC
+            FileChoose_DrawNameEntryNES(&this->state);
+        }
     }
 
     // draw options menu
@@ -2655,7 +2709,11 @@ void FileChoose_ConfigModeDraw(GameState* thisx) {
 
         gDPPipeSync(POLY_OPA_DISP++);
 
-        FileChoose_DrawOptions(&this->state);
+        if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL) {
+            FileChoose_DrawOptions(&this->state);
+        } else { // GAME_REGION_NTSC
+            FileChoose_DrawOptionsNES(&this->state);
+        }
     }
 
     // draw quest menu
@@ -3134,7 +3192,8 @@ void FileChoose_DrawRandoSaveVersionWarning(GameState* thisx) {
             }
 
             // Compute the height for a "squished" textbox texture
-            s16 height = gSaveContext.language == LANGUAGE_ENG ? 32 : 40; // English is only 2 lines
+            // NTSC TODO: Check if this is correct for japanese
+            s16 height = ((gSaveContext.language == LANGUAGE_ENG) || (gSaveContext.language == LANGUAGE_JPN)) ? 32 : 40; // English is only 2 lines
             // float math to get a S5.10 number that will squish the texture
             f32 texCoordinateHeightF = 512 / ((f32)height / 64);
             s16 texCoordinateHeightScale = texCoordinateHeightF + 0.5f;
@@ -3236,6 +3295,7 @@ void FileChoose_Main(GameState* thisx) {
         gFileSelControlsENGTex,
         gFileSelControlsGERTex,
         gFileSelControlsFRATex,
+        gFileSelControlsJPNTex,
     };
     FileChooseContext* this = (FileChooseContext*)thisx;
     Input* input = &this->state.input[0];

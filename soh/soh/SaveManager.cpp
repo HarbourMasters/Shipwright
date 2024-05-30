@@ -485,8 +485,14 @@ void SaveManager::InitFileNormal() {
     gSaveContext.bgsDayCount = 0;
 
     gSaveContext.deaths = 0;
-    for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
-        gSaveContext.playerName[i] = 0x3E;
+    if (Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->GetGameVersions()[0] == GAME_REGION_PAL) {
+        for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
+            gSaveContext.playerName[i] = 0x3E;
+        }
+    } else { // GAME_REGION_NTSC
+        for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
+            gSaveContext.playerName[i] = 0xDF;
+        }
     }
     gSaveContext.n64ddFlag = 0;
     gSaveContext.healthCapacity = 0x30;
@@ -640,9 +646,16 @@ void SaveManager::InitFileDebug() {
     gSaveContext.bgsDayCount = 0;
 
     gSaveContext.deaths = 0;
-    static std::array<char, 8> sPlayerName = { 0x15, 0x12, 0x17, 0x14, 0x3E, 0x3E, 0x3E, 0x3E };
-    for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
-        gSaveContext.playerName[i] = sPlayerName[i];
+    if (Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->GetGameVersions()[0] == GAME_REGION_PAL) {
+        const static std::array<char, 8> sPlayerName = { 0x15, 0x12, 0x17, 0x14, 0x3E, 0x3E, 0x3E, 0x3E };
+        for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
+            gSaveContext.playerName[i] = sPlayerName[i];
+        }
+    } else { // GAME_REGION_NTSC
+        const static std::array<char, 8> sPlayerName = { 0xB6, 0xB3, 0xB8, 0xB5, 0xDF, 0xDF, 0xDF, 0xDF };
+        for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
+            gSaveContext.playerName[i] = sPlayerName[i];
+        }
     }
     gSaveContext.n64ddFlag = 0;
     gSaveContext.healthCapacity = 0xE0;
@@ -743,9 +756,16 @@ void SaveManager::InitFileMaxed() {
     gSaveContext.bgsDayCount = 0;
 
     gSaveContext.deaths = 0;
-    static std::array<char, 8> sPlayerName = { 0x15, 0x12, 0x17, 0x14, 0x3E, 0x3E, 0x3E, 0x3E };
-    for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
-        gSaveContext.playerName[i] = sPlayerName[i];
+    if (Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->GetGameVersions()[0] == GAME_REGION_PAL) {
+        const static std::array<char, 8> sPlayerName = { 0x15, 0x12, 0x17, 0x14, 0x3E, 0x3E, 0x3E, 0x3E };
+        for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
+            gSaveContext.playerName[i] = sPlayerName[i];
+        }
+    } else { // GAME_REGION_NTSC
+        const static std::array<char, 8> sPlayerName = { 0xB6, 0xB3, 0xB8, 0xB5, 0xDF, 0xDF, 0xDF, 0xDF };
+        for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
+            gSaveContext.playerName[i] = sPlayerName[i];
+        }
     }
     gSaveContext.n64ddFlag = 0;
     gSaveContext.healthCapacity = 0x140;
@@ -2545,7 +2565,7 @@ void SaveManager::ConvertFromUnversioned() {
     gSaveContext.audioSetting = data[SRAM_HEADER_SOUND] & 3;
     gSaveContext.zTargetSetting = data[SRAM_HEADER_ZTARGET] & 1;
     gSaveContext.language = data[SRAM_HEADER_LANGUAGE];
-    if (gSaveContext.language >= LANGUAGE_MAX) {
+    if (gSaveContext.language > LANGUAGE_JPN) {
         gSaveContext.language = CVarGetInteger(CVAR_SETTING("Languages"), LANGUAGE_ENG);
     }
     SaveGlobal();

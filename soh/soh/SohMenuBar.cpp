@@ -512,15 +512,24 @@ void DrawSettingsMenu() {
         UIWidgets::Spacer(0);
 
         if (ImGui::BeginMenu("Languages")) {
-            UIWidgets::PaddedEnhancementCheckbox("Translate Title Screen", CVAR_SETTING("TitleScreenTranslation"));
-            if (UIWidgets::EnhancementRadioButton("English", CVAR_SETTING("Languages"), LANGUAGE_ENG)) {
-                GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSetGameLanguage>();
-            }
-            if (UIWidgets::EnhancementRadioButton("German", CVAR_SETTING("Languages"), LANGUAGE_GER)) {
-                GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSetGameLanguage>();
-            }
-            if (UIWidgets::EnhancementRadioButton("French", CVAR_SETTING("Languages"), LANGUAGE_FRA)) {
-                GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSetGameLanguage>();
+            if (Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->GetGameVersions()[0] == GAME_REGION_PAL) {
+                UIWidgets::PaddedEnhancementCheckbox("Translate Title Screen", CVAR_SETTING("TitleScreenTranslation"));
+                if (UIWidgets::EnhancementRadioButton("English", CVAR_SETTING("Languages"), LANGUAGE_ENG)) {
+                    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSetGameLanguage>();
+                }
+                if (UIWidgets::EnhancementRadioButton("German", CVAR_SETTING("Languages"), LANGUAGE_GER)) {
+                    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSetGameLanguage>();
+                }
+                if (UIWidgets::EnhancementRadioButton("French", CVAR_SETTING("Languages"), LANGUAGE_FRA)) {
+                    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSetGameLanguage>();
+                }
+            } else { // GAME_REGION_NTSC
+                if (UIWidgets::EnhancementRadioButton("Japanese", CVAR_SETTING("Languages"), LANGUAGE_JPN)) {
+                    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSetGameLanguage>();
+                }
+                if (UIWidgets::EnhancementRadioButton("English", CVAR_SETTING("Languages"), LANGUAGE_ENG)) {
+                    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSetGameLanguage>();
+                }
             }
             ImGui::EndMenu();
         }

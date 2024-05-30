@@ -6,7 +6,7 @@
 typedef struct {
     u8 valid;
     u16 deaths;
-    char playerName[8];
+    u8 playerName[8];
     u16 healthCapacity;
     u32 questItems;
     s8 defense;
