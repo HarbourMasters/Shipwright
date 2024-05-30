@@ -21,6 +21,8 @@ void EnMag_UpdateVanilla(Actor* thisx, PlayState* play);
 void EnMag_Draw(Actor* thisx, PlayState* play);
 void EnMag_DrawInnerVanilla(Actor* thisx, PlayState* play, Gfx** gfxp);
 void EnMag_DrawInnerMq(Actor* thisx, PlayState* play, Gfx** gfxp);
+void EnMag_DrawInnerVanillaNtsc(Actor* thisx, PlayState* play, Gfx** gfxp);
+void EnMag_DrawInnerMqNtsc(Actor* thisx, PlayState* play, Gfx** gfxp);
 
 typedef void (*EnMagDrawInnerFunc)(struct Actor*, PlayState*, Gfx**);
 
@@ -54,12 +56,20 @@ const char* pressStartMsg[] = {
 void EnMag_Init(Actor* thisx, PlayState* play) {
     if (ResourceMgr_IsGameMasterQuest()) {
         EnMag_InitMq(thisx, play);
-        drawInnerFunc = EnMag_DrawInnerMq;
+        if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL) {
+            drawInnerFunc = EnMag_DrawInnerMq;
+        } else {
+            drawInnerFunc = EnMag_DrawInnerMqNtsc;
+        }
         thisx->update = EnMag_UpdateMq;
     } else {
         EnMag_InitVanilla(thisx, play);
         thisx->update = EnMag_UpdateVanilla;
-        drawInnerFunc = EnMag_DrawInnerVanilla;
+        if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL) {
+            drawInnerFunc = EnMag_DrawInnerVanilla;
+        } else {
+            drawInnerFunc = EnMag_DrawInnerVanillaNtsc;
+        }
     }
 }
 
@@ -126,7 +136,11 @@ void EnMag_InitMq(Actor* thisx, PlayState* play) {
         gSaveContext.transWipeSpeed = 255;
     }
 
-    Font_LoadOrderedFont(&this->font);
+    if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL) {
+        Font_LoadOrderedFont(&this->font);
+    } else { // GAME_REGION_NTSC
+        Font_LoadOrderedFontNTSC(&this->font);
+    }
 
     this->unk_E316 = 0;
     this->unk_E318 = 0;
@@ -196,7 +210,11 @@ void EnMag_InitVanilla(Actor* thisx, PlayState* play) {
         gSaveContext.transWipeSpeed = 255;
     }
 
-    Font_LoadOrderedFont(&this->font);
+    if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL) {
+        Font_LoadOrderedFont(&this->font);
+    } else { // GAME_REGION_NTSC
+        Font_LoadOrderedFontNTSC(&this->font);
+    }
 
     this->unk_E316 = 0;
     this->unk_E318 = 0;
@@ -1016,6 +1034,231 @@ void EnMag_DrawInnerVanilla(Actor* thisx, PlayState* play, Gfx** gfxp) {
                 rectLeft += YREG(9);
             } else {
                 rectLeft += YREG(8);
+            }
+        }
+    }
+
+    if (textFadeDirection != 0) {
+        if (--textFadeTimer == 0) {
+            textFadeDirection = 0;
+        }
+    } else {
+        if (++textFadeTimer >= 26) {
+            textFadeDirection = 1;
+        }
+    }
+
+    *gfxp = gfx;
+}
+
+void EnMag_DrawInnerMqNtsc(Actor* thisx, PlayState* play, Gfx** gfxp) {
+    // TODO: Implement MQ NTSC
+    EnMag_DrawInnerMq(thisx, play, gfxp);
+}
+
+void EnMag_DrawInnerVanillaNtsc(Actor* thisx, PlayState* play, Gfx** gfxp) {
+    static s16 textAlpha = 0;
+    static s16 textFadeDirection = 0;
+    static s16 textFadeTimer = 0;
+    static u8 noControllerFontIndices[12] = {
+        0xB8, 0xB9, 0xAD, 0xB9, 0xB8, 0xBE, 0xBC, 0xB9, 0xB6, 0xB6, 0xAF, 0xBC
+    };
+    
+    static u8 pressStartFontIndices[10] = {
+        0xBA, 0xBC, 0xAF, 0xBD, 0xBD, 0xBD, 0xBE, 0xAB, 0xBC, 0xBE,
+    };
+    static void* effectMaskTextures[] = {
+        gTitleEffectMask00Tex, gTitleEffectMask01Tex, gTitleEffectMask02Tex,
+        gTitleEffectMask10Tex, gTitleEffectMask11Tex, gTitleEffectMask12Tex,
+        gTitleEffectMask20Tex, gTitleEffectMask21Tex, gTitleEffectMask22Tex,
+    };
+    EnMag* this = (EnMag*)thisx;
+    Font* font = &this->font;
+    // s32 pad;
+    s32 textLocalAlpha;
+    Gfx* gfx = *gfxp;
+    u16 i, j, k;
+    u16 rectLeft;
+    u16 rectTop;
+
+    const char* copy_tex = NULL;
+    u16 copy_width;
+    u16 copy_xl;
+    u16 copy_xh;
+    EnMag_SetCopyValues(&copy_tex, &copy_width, &copy_xl, &copy_xh);
+
+    gSPSegment(gfx++, 0x06, play->objectCtx.status[this->actor.objBankIndex].segment);
+
+    Gfx_SetupDL_39Ptr(&gfx);
+
+    this->effectScroll -= 2;
+
+    gDPSetCycleType(gfx++, G_CYC_2CYCLE);
+    gDPSetAlphaCompare(gfx++, G_AC_THRESHOLD);
+    gDPSetRenderMode(gfx++, G_RM_PASS, G_RM_CLD_SURF2);
+    gDPSetCombineLERP(gfx++, TEXEL1, PRIMITIVE, PRIM_LOD_FRAC, TEXEL0, TEXEL1, 1, PRIM_LOD_FRAC, TEXEL0, PRIMITIVE,
+                      ENVIRONMENT, COMBINED, ENVIRONMENT, COMBINED, 0, PRIMITIVE, 0);
+
+    gDPSetPrimColor(gfx++, 0, (s16)this->effectPrimLodFrac, (s16)this->effectPrimColor[0],
+                    (s16)this->effectPrimColor[1], (s16)this->effectPrimColor[2], (s16)this->effectAlpha);
+    gDPSetEnvColor(gfx++, (s16)this->effectEnvColor[0], (s16)this->effectEnvColor[1], (s16)this->effectEnvColor[2],
+                   255);
+
+    if ((s16)this->effectPrimLodFrac != 0) {
+        for (k = 0, i = 0, rectTop = 0; i < 3; i++, rectTop += 64) {
+            for (j = 0, rectLeft = 64; j < 3; j++, k++, rectLeft += 64) {
+                EnMag_DrawEffectTextures(&gfx, effectMaskTextures[k], gTitleFlameEffectTex, 64, 64, 32, 32, rectLeft,
+                                         rectTop, 64, 64, 1024, 1024, 1, 1, k, this);
+            }
+        }
+    }
+
+    gDPSetPrimColor(gfx++, 0, 0, 255, 255, 255, (s16)this->mainAlpha);
+
+    if ((s16)this->mainAlpha != 0) {
+        EnMag_DrawImageRGBA32(&gfx, 160, 100, (u8*)gTitleZeldaShieldLogoTex, 160, 160);
+        // #region [SoH] Function below would display `disk` if the n64dd was used
+        // EnMag_DrawTitleDisk(&gfx, 160, 100, (u32)this->mainAlpha);
+    }
+
+    Gfx_SetupDL_39Ptr(&gfx);
+
+    gDPPipeSync(gfx++);
+    gDPSetAlphaCompare(gfx++, G_AC_NONE);
+    gDPSetCombineLERP(gfx++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0, PRIMITIVE,
+                      ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
+
+    if ((s16)this->mainAlpha < 100) {
+        gDPSetRenderMode(gfx++, G_RM_CLD_SURF, G_RM_CLD_SURF2);
+    } else {
+        gDPSetRenderMode(gfx++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
+    }
+
+    gDPSetPrimColor(gfx++, 0, 0, 0, 0, 0, (s16)this->mainAlpha);
+
+    gDPSetEnvColor(gfx++, 100, 0, 100, 255);
+
+    if ((s16)this->mainAlpha != 0) {
+        EnMag_DrawTextureI8(&gfx, gTitleTheLegendOfTextTex, 72, 8, 154, 73, 72, 8, 1024, 1024);
+        EnMag_DrawTextureI8(&gfx, gTitleOcarinaOfTimeTMTextTex, 96, 8, 152, 127, 96, 8, 1024, 1024);
+
+        gDPPipeSync(gfx++);
+
+        gDPSetPrimColor(gfx++, 0, 0, 200, 200, 150, (s16)this->mainAlpha);
+        gDPSetEnvColor(gfx++, 100, 100, 50, 255);
+
+        EnMag_DrawTextureI8(&gfx, gTitleTheLegendOfTextTex, 72, 8, 153, 72, 72, 8, 1024, 1024);
+        EnMag_DrawTextureI8(&gfx, gTitleOcarinaOfTimeTMTextTex, 96, 8, 151, 126, 96, 8, 1024, 1024);
+    }
+
+    if (gSaveContext.language == LANGUAGE_JPN) {
+        this->unk_E30C++;
+        gDPPipeSync(gfx++);
+        gDPSetCycleType(gfx++, G_CYC_2CYCLE);
+        if ((s16)this->subAlpha < 100) {
+            gDPSetRenderMode(gfx++, G_RM_PASS, G_RM_CLD_SURF2);
+        } else {
+            gDPSetRenderMode(gfx++, G_RM_PASS, G_RM_XLU_SURF2);
+        }
+        gDPSetCombineLERP(gfx++, TEXEL1, PRIMITIVE, PRIM_LOD_FRAC, TEXEL0, 0, 0, 0, TEXEL0, PRIMITIVE, ENVIRONMENT, COMBINED, ENVIRONMENT, COMBINED, 0, PRIMITIVE, 0);
+        gDPSetPrimColor(gfx++, 0, 0x80, 255, 255, 170, (s16)this->subAlpha);
+        gDPSetEnvColor(gfx++, 255, 150, 0, 255);
+        if ((s16)this->subAlpha != 0) {
+            gDPLoadTextureBlock(gfx++, gTitleTitleJPNTex, G_IM_FMT_I, G_IM_SIZ_8b, 128, 16, 0,
+                        G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD);
+            gDPLoadMultiBlock(gfx++, gTitleFlameEffectTex, 0x100, 1, G_IM_FMT_I, G_IM_SIZ_8b, 32, 32, 0,
+                          G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, 2, 1);
+            gDPSetTileSize(gfx++, 1, this->unk_E30C & 0x7F, this->effectScroll & 0x7F, (this->unk_E30C & 0x7F) + ((32 - 1) << 2), (this->effectScroll & 0x7F) + ((32 - 1) << 2));
+            gSPTextureRectangle(gfx++, 424, 576, 424 + 512, 576 + 64, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+        }
+    }
+
+    Gfx_SetupDL_39Ptr(&gfx);
+
+    gDPSetAlphaCompare(gfx++, G_AC_NONE);
+    gDPSetCombineMode(gfx++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
+
+    gDPSetPrimColor(gfx++, 0, 0, (s16)this->copyrightAlpha, (s16)this->copyrightAlpha, (s16)this->copyrightAlpha,
+                    (s16)this->copyrightAlpha);
+
+    if ((s16)this->copyrightAlpha != 0) {
+        gDPLoadTextureBlock(gfx++, copy_tex, G_IM_FMT_IA, G_IM_SIZ_8b, copy_width, 16, 0,
+                            G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
+                            G_TX_NOLOD, G_TX_NOLOD);
+
+        gSPTextureRectangle(gfx++, copy_xl, 198 << 2, copy_xh, 214 << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+    }
+
+    if (gSaveContext.fileNum == 0xFEDC) {
+        // Draw "NO CONTROLLER" Text
+        textAlpha = textFadeTimer * 10;
+        if (textAlpha >= 255) {
+            textAlpha = 255;
+        }
+
+        // Text Shadow
+        gDPPipeSync(gfx++);
+        gDPSetCombineLERP(gfx++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE,
+                          0);
+        gDPSetPrimColor(gfx++, 0, 0, 0, 0, 0, textAlpha);
+
+        rectLeft = VREG(19) + 1;
+        for (i = 0; i < ARRAY_COUNT(noControllerFontIndices); i++) {
+            EnMag_DrawCharTexture(&gfx, font->fontBuf + noControllerFontIndices[i] * FONT_CHAR_TEX_SIZE, rectLeft,
+                                  YREG(10) + 172);
+            rectLeft += VREG(21);
+            if (i == 1) {
+                rectLeft += VREG(23);
+            }
+        }
+
+        // Actual Text
+        gDPPipeSync(gfx++);
+        gDPSetPrimColor(gfx++, 0, 0, 100, 255, 255, textAlpha);
+
+        rectLeft = VREG(19);
+        for (i = 0; i < ARRAY_COUNT(noControllerFontIndices); i++) {
+            EnMag_DrawCharTexture(&gfx, font->fontBuf + noControllerFontIndices[i] * FONT_CHAR_TEX_SIZE, rectLeft,
+                                  YREG(10) + 171);
+            rectLeft += VREG(21);
+            if (i == 1) {
+                rectLeft += VREG(23);
+            }
+        }
+    } else if (this->copyrightAlpha >= 200.0f) {
+        // Draw "PRESS START" Text
+        textAlpha = textFadeTimer * 10;
+        if (textAlpha >= 255) {
+            textAlpha = 255;
+        }
+
+        // Text Shadow
+        gDPPipeSync(gfx++);
+        gDPSetCombineLERP(gfx++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE,
+                          0);
+        gDPSetPrimColor(gfx++, 0, 0, 0, 0, 0, textAlpha);
+
+        rectLeft = YREG(7) + 1;
+        for (i = 0; i < ARRAY_COUNT(pressStartFontIndices); i++) {
+            EnMag_DrawCharTexture(&gfx, font->fontBuf + pressStartFontIndices[i] * FONT_CHAR_TEX_SIZE, rectLeft,
+                                  YREG(10) + 172);
+            rectLeft += YREG(8);
+            if (i == 4) {
+                rectLeft += YREG(9);
+            }
+        }
+
+        // Actual Text
+        gDPPipeSync(gfx++);
+        gDPSetPrimColor(gfx++, 0, 0, YREG(4), YREG(5), YREG(6), textAlpha);
+
+        rectLeft = YREG(7);
+        for (i = 0; i < ARRAY_COUNT(pressStartFontIndices); i++) {
+            EnMag_DrawCharTexture(&gfx, font->fontBuf + pressStartFontIndices[i] * FONT_CHAR_TEX_SIZE, rectLeft,
+                                  YREG(10) + 171);
+            rectLeft += YREG(8);
+            if (i == 4) {
+                rectLeft += YREG(9);
             }
         }
     }

@@ -3669,7 +3669,11 @@ void FileChoose_Init(GameState* thisx) {
     this->state.main = FileChoose_Main;
     this->state.destroy = FileChoose_Destroy;
     FileChoose_InitContext(&this->state);
-    Font_LoadOrderedFont(&this->font);
+    if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL) {
+        Font_LoadOrderedFont(&this->font);
+    } else { // GAME_REGION_NTSC
+        Font_LoadOrderedFontNTSC(&this->font);
+    }
     Audio_QueueSeqCmd(0xF << 28 | SEQ_PLAYER_BGM_MAIN << 24 | 0xA);
     func_800F5E18(SEQ_PLAYER_BGM_MAIN, NA_BGM_FILE_SELECT, 0, 7, 1);
     

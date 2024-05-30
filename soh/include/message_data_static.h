@@ -34,6 +34,7 @@ extern const char _message_##textId##_fra[];
 
 //#include "text/message_data.h"
 extern char* _message_0xFFFC_nes;
+extern char* _message_0xFFFC_jpn;
 
 #undef DEFINE_MESSAGE
 

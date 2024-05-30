@@ -4206,3 +4206,44 @@ void Font_LoadOrderedFont(Font* font) {
         }
     }
 }
+
+extern MessageTableEntry* sJpnMessageEntryTablePtr;
+
+void Font_LoadOrderedFontNTSC(Font* font) {
+    s32 len;
+    s32 size;
+    s32 codePointIndex;
+    s32 fontBufIndex;
+    s32 offset;
+
+    // font->msgOffset = _message_0xFFFC_jpn - (const char*)_jpn_message_data_staticSegmentStart;
+    // size = font->msgLength = _message_0xFFFD_jpn - _message_0xFFFC_jpn;
+    // len = (u32)size / 2;
+    // DmaMgr_RequestSync(font->msgBufWide, (uintptr_t)_jpn_message_data_staticSegmentRomStart + font->msgOffset, size);
+    MessageTableEntry* msgEntry = sJpnMessageEntryTablePtr;
+
+    while (msgEntry->textId != 0xFFFC) {
+        msgEntry++;
+    }
+
+    size = msgEntry->msgSize;
+    len = (u32)size / 2;
+    memcpy(font->msgBuf, msgEntry->segment, size);
+
+
+    fontBufIndex = 0;
+    for (codePointIndex = 0; font->msgBufWide[codePointIndex] != 0x8170; codePointIndex++) {
+        if (len < codePointIndex) {
+            osSyncPrintf("ＥＲＲＯＲ！！  エラー！！！  error───！！！！\n");
+            break;
+        }
+
+        if (font->msgBufWide[codePointIndex] != 0xA) {
+            offset = Kanji_OffsetFromShiftJIS(font->msgBufWide[codePointIndex]);
+            offset /= FONT_CHAR_TEX_SIZE;
+            memcpy(&font->fontBuf[fontBufIndex * 8], kanjiFontTbl[offset], strlen(kanjiFontTbl[offset]) + 1);
+            // DmaMgr_RequestSync(&font->fontBuf[fontBufIndex * 8], (uintptr_t)_kanjiSegmentStart + offset, FONT_CHAR_TEX_SIZE);
+            fontBufIndex += FONT_CHAR_TEX_SIZE / 8;
+        }
+    }
+}

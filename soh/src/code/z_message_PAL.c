@@ -39,6 +39,7 @@ u16 sOcarinaSongBitFlags = 0; // ocarina bit flags
 MessageTableEntry* sNesMessageEntryTablePtr = NULL;
 MessageTableEntry* sGerMessageEntryTablePtr = NULL;
 MessageTableEntry* sFraMessageEntryTablePtr = NULL;
+MessageTableEntry* sJpnMessageEntryTablePtr = NULL;
 MessageTableEntry* sStaffMessageEntryTablePtr = NULL;
 
 char* _message_0xFFFC_nes;
@@ -3406,7 +3407,7 @@ void Message_Update(PlayState* play) {
 }
 
 void Message_SetTables(void) {
-    OTRMessage_Init();
+    OTRMessage_Init(ResourceMgr_GetGameVersion(0) == GAME_REGION_PAL);
 
     // OTRTODO
     //sNesMessageEntryTablePtr = sNesMessageEntryTable;

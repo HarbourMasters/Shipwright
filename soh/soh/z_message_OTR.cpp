@@ -12,6 +12,7 @@
 extern "C" MessageTableEntry* sNesMessageEntryTablePtr;
 extern "C" MessageTableEntry* sGerMessageEntryTablePtr;
 extern "C" MessageTableEntry* sFraMessageEntryTablePtr;
+extern "C" MessageTableEntry* sJpnMessageEntryTablePtr;
 extern "C" MessageTableEntry* sStaffMessageEntryTablePtr;
 //extern "C" MessageTableEntry* _message_0xFFFC_nes;	
 
@@ -103,19 +104,53 @@ MessageTableEntry* OTRMessage_LoadTable(const std::string& filePath, bool isNES)
     return table;
 }
 
-extern "C" void OTRMessage_Init()
+MessageTableEntry* OTRMessage_LoadTableJPN(const std::string& filePath) {
+ auto file = std::static_pointer_cast<SOH::Text>(Ship::Context::GetInstance()->GetResourceManager()->LoadResource(filePath));
+
+    if (file == nullptr)
+        return nullptr;
+    
+    // Allocate room for an additional message
+    // OTRTODO: Should not be malloc'ing here. It's fine for now since we check elsewhere that the message table is
+    // already null.
+    MessageTableEntry* table = (MessageTableEntry*)malloc(sizeof(MessageTableEntry) * (file->messages.size() + 1));
+
+    for (size_t i = 0; i < file->messages.size(); i++) {
+        SetMessageEntry(table[i], file->messages[i]);
+
+        if (file->messages[i].id == 0xFFFC)
+            _message_0xFFFC_nes = (char*)file->messages[i].msg.c_str();
+    }
+    OTRMessage_LoadCustom("override/" + filePath.substr(0, filePath.find_last_of('/')) + "/*", table, file->messages.size() + 1);
+
+    // Assert that the first message starts at the first text ID
+    assert(table[0].textId == 0x0001);
+
+    return table;
+}
+
+extern "C" void OTRMessage_Init(bool isPal)
 {
     // OTRTODO: Added a lot of null checks here so that we don't malloc the table multiple times causing a memory leak.
     // We really ought to fix the implementation such that we aren't malloc'ing new tables.
     // Once we fix the implementation, remove these NULL checks.
-    if (sNesMessageEntryTablePtr == NULL) {
-        sNesMessageEntryTablePtr = OTRMessage_LoadTable("text/nes_message_data_static/nes_message_data_static", true);
-    }
-    if (sGerMessageEntryTablePtr == NULL) {
-        sGerMessageEntryTablePtr = OTRMessage_LoadTable("text/ger_message_data_static/ger_message_data_static", false);
-    }
-    if (sFraMessageEntryTablePtr == NULL) {
-        sFraMessageEntryTablePtr = OTRMessage_LoadTable("text/fra_message_data_static/fra_message_data_static", false);
+    if (isPal) {
+        if (sNesMessageEntryTablePtr == NULL) {
+            sNesMessageEntryTablePtr = OTRMessage_LoadTable("text/nes_message_data_static/nes_message_data_static", true);
+        }
+        if (sGerMessageEntryTablePtr == NULL) {
+            sGerMessageEntryTablePtr = OTRMessage_LoadTable("text/ger_message_data_static/ger_message_data_static", false);
+        }
+        if (sFraMessageEntryTablePtr == NULL) {
+            sFraMessageEntryTablePtr = OTRMessage_LoadTable("text/fra_message_data_static/fra_message_data_static", false);
+        }
+    } else {
+        if (sJpnMessageEntryTablePtr == NULL) {
+            sJpnMessageEntryTablePtr = OTRMessage_LoadTableJPN("text/jpn_message_data_static/jpn_message_data_static");
+        }
+        if (sNesMessageEntryTablePtr == NULL) {
+            sNesMessageEntryTablePtr = OTRMessage_LoadTable("text/nes_message_data_static/nes_message_data_static", false);
+        }
     }
 
     if (sStaffMessageEntryTablePtr == NULL) {

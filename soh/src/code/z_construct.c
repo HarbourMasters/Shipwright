@@ -157,7 +157,11 @@ void Message_Init(PlayState* play) {
     osSyncPrintf("吹き出しgame_alloc=%x\n", 0x2200); // "Textbox game_alloc=%x"
     assert(msgCtx->textboxSegment != NULL);
 
-    Font_LoadOrderedFont(&play->msgCtx.font);
+    if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL) {
+        Font_LoadOrderedFont(&play->msgCtx.font);
+    } else { // GAME_REGION_NTSC
+        Font_LoadOrderedFontNTSC(&play->msgCtx.font);
+    }
 
     YREG(31) = 0;
 }

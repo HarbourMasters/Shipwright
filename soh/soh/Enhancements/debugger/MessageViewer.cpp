@@ -112,6 +112,7 @@ void MessageViewer::DisplayCustomMessage() const {
 extern "C" MessageTableEntry* sNesMessageEntryTablePtr;
 extern "C" MessageTableEntry* sGerMessageEntryTablePtr;
 extern "C" MessageTableEntry* sFraMessageEntryTablePtr;
+extern "C" MessageTableEntry* sJpnMessageEntryTablePtr;
 extern "C" MessageTableEntry* sStaffMessageEntryTablePtr;
 
 void FindMessage(PlayState* play, const uint16_t textId, const uint8_t language) {
@@ -131,6 +132,8 @@ void FindMessage(PlayState* play, const uint16_t textId, const uint8_t language)
         messageTableEntry = sGerMessageEntryTablePtr;
     else if (language == LANGUAGE_FRA)
         messageTableEntry = sFraMessageEntryTablePtr;
+    else if (language == LANGUAGE_JPN)
+        messageTableEntry = sJpnMessageEntryTablePtr;
 
     // If PAL languages are not present in the OTR file, default to English
     if (messageTableEntry == nullptr)

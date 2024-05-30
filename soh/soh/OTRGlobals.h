@@ -86,7 +86,7 @@ uint32_t IsGameMasterQuest();
 void DeinitOTR(void);
 void VanillaItemTable_Init();
 void OTRAudio_Init();
-void OTRMessage_Init();
+void OTRMessage_Init(bool isPal);
 void InitAudio();
 void Graph_StartFrame();
 void Graph_ProcessGfxCommands(Gfx* commands);
