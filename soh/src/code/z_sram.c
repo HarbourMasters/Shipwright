@@ -231,6 +231,11 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
     gSaveContext.linkAge = 1;
     gSaveContext.dayTime = 0x6AAB;
     gSaveContext.cutsceneIndex = 0xFFF1;
+    if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL) {
+        gSaveContext.filenameLanguage = NAME_LANGUAGE_PAL;
+    } else { // GAME_REGION_NTSC
+        gSaveContext.filenameLanguage = (gSaveContext.language == LANGUAGE_JPN) ? NAME_LANGUAGE_NTSC_JPN : NAME_LANGUAGE_NTSC_ENG;
+    }
 
     if ((fileChooseCtx->buttonIndex == 0 && CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0))) {
         gSaveContext.cutsceneIndex = 0;

@@ -2029,9 +2029,45 @@ void FileChoose_DrawFileInfo(GameState* thisx, s16 fileIndex, s16 isActive) {
         gDPSetPrimColor(POLY_OPA_DISP++, 0x00, 0x00, sNamePrimColors[isActive][0], sNamePrimColors[isActive][1],
                         sNamePrimColors[isActive][2], this->nameAlpha[fileIndex]);
 
+        // #region SOH [NTSC] - Convert playerName to display appropriately
+        u8 filenameLanguage = Save_GetSaveMetaInfo(this->buttonIndex)->filenameLanguage;
         for (i = 0, vtxOffset = 0; vtxOffset < 0x20; i++, vtxOffset += 4) {
+            u8 curChar = Save_GetSaveMetaInfo(fileIndex)->playerName[i];
+            if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL) {
+                if (filenameLanguage != NAME_LANGUAGE_PAL) {
+                    // Remove JPN Characters from the pool (set them to ' ')
+                    if (curChar >= 0x0A && curChar <= 0x40) {
+                        curChar = 0xDF;
+                    } else if (curChar >= 0x5A && curChar <= 0x90) {
+                        curChar = 0xDF;
+                    } else if (curChar == 0xE7 || curChar == 0xE8) {
+                        curChar = 0xDF;
+                    }
+
+                    // Convert NTSC char to PAL
+                    if (curChar >= 0xAB && curChar <= 0xDF) {
+                        curChar -= 0xA1;
+                    } else if (curChar == 0xE4) {
+                        curChar -= 0xA5;
+                    } else if (curChar == 0xEA) {
+                        curChar -= 0xAA;
+                    }
+                }
+            } else { // GAME_REGION_NTSC
+                if (filenameLanguage == NAME_LANGUAGE_PAL) {
+                    // Convert PAL char to NTSC
+                    if (curChar >= 0xA && curChar <= 0x3E) {
+                        curChar += 0xA1;
+                    } else if (curChar == 0x3F) {
+                        curChar += 0xA5;
+                    } else if (curChar == 0x40) {
+                        curChar += 0xAA;
+                    }
+                }
+            }
+            // #endregion
             FileChoose_DrawCharacter(
-                this->state.gfxCtx, sp54->fontBuf + Save_GetSaveMetaInfo(fileIndex)->playerName[i] * FONT_CHAR_TEX_SIZE,
+                this->state.gfxCtx, sp54->fontBuf + curChar * FONT_CHAR_TEX_SIZE,
                 vtxOffset);
         }
     }

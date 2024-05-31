@@ -29,7 +29,14 @@ typedef struct {
     s16 gsTokens;
     u8 isDoubleDefenseAcquired;
     u8 gregFound;
+    u8 filenameLanguage;
 } SaveFileMetaInfo;
+
+typedef enum {
+    /* 0 */ NAME_LANGUAGE_PAL,
+    /* 1 */ NAME_LANGUAGE_NTSC_JPN,
+    /* 2 */ NAME_LANGUAGE_NTSC_ENG,
+} FilenameLanguage;
 
 #ifdef __cplusplus
 

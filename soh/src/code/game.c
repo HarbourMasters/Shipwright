@@ -330,6 +330,15 @@ void GameState_Update(GameState* gameState) {
     }
 
     gSaveContext.language = CVarGetInteger(CVAR_SETTING("Languages"), LANGUAGE_ENG);
+    if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL) {
+        if (gSaveContext.language == LANGUAGE_JPN) {
+            gSaveContext.language = LANGUAGE_ENG;
+        }
+    } else { // GAME_REGION_NTSC
+        if (gSaveContext.language == LANGUAGE_GER || gSaveContext.language == LANGUAGE_FRA) {
+            gSaveContext.language = LANGUAGE_ENG;
+        }
+    }
 
     GameInteractor_ExecuteOnGameFrameUpdate();
     gameState->frames++;

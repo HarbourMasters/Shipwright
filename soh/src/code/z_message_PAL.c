@@ -1464,6 +1464,21 @@ void Message_DrawText(PlayState* play, Gfx** gfxP) {
                 }
                 *gfxP = gfx;
                 return;
+            // #region SOH [NTSC] - support multiple file name languages
+            case MESSAGE_NAME:
+                if (ResourceMgr_GetGameRegion(0) == GAME_REGION_NTSC && gSaveContext.filenameLanguage == NAME_LANGUAGE_NTSC_JPN) {
+                    if (msgCtx->msgMode == MSGMODE_TEXT_DISPLAYING && i + 1 == msgCtx->textDrawPos &&
+                        msgCtx->textDelayTimer == msgCtx->textDelay) {
+                        Audio_PlaySoundGeneral(0, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                    }
+                    Message_DrawTextChar(play, &font->charTexBuf[charTexIdx], &gfx);
+                    charTexIdx += FONT_CHAR_TEX_SIZE;
+
+                    msgCtx->textPosX += (s32)(16.0f * (R_TEXT_CHAR_SCALE / 100.0f));
+                    break;
+                }
+                /* fallthrough */
+            // #endregion
             default:
                 if (msgCtx->msgMode == MSGMODE_TEXT_DISPLAYING && i + 1 == msgCtx->textDrawPos &&
                     msgCtx->textDelayTimer == msgCtx->textDelay) {
@@ -1514,6 +1529,251 @@ void Message_LoadItemIcon(PlayState* play, u16 itemId, s16 y) {
     }
     msgCtx->msgBufPos++;
     msgCtx->choiceNum = 1;
+}
+
+bool Message_DecodeName(PlayState* play, s16* decodedBufPosPtr, s32* charTexIdxPtr) {
+    s32 i;
+    s32 j;
+    s32 playerNameLen;
+    u8 curChar2;
+    MessageContext* msgCtx = &play->msgCtx;
+    Font* font = &play->msgCtx.font;
+    u8 emptyChar = (gSaveContext.filenameLanguage == NAME_LANGUAGE_PAL) ? 0x3E : 0xDF;
+
+    for (playerNameLen = ARRAY_COUNT(gSaveContext.playerName); playerNameLen > 0; playerNameLen--) {
+        if (gSaveContext.playerName[playerNameLen - 1] != emptyChar) {
+            break;
+        }
+    }
+
+    if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL) {
+        if (gSaveContext.filenameLanguage == NAME_LANGUAGE_PAL) {
+            for (i = 0; i < playerNameLen; i++) {
+                curChar2 = gSaveContext.playerName[i];
+                if (curChar2 == 0x3E) {
+                    curChar2 = ' ';
+                } else if (curChar2 == 0x40) {
+                    curChar2 = '.';
+                } else if (curChar2 == 0x3F) {
+                    curChar2 = '-';
+                } else if (curChar2 < 0xA) {
+                    curChar2 += 0;
+                    curChar2 += '0';
+                } else if (curChar2 < 0x24) {
+                    curChar2 += 0;
+                    curChar2 += '7';
+                } else if (curChar2 < 0x3E) {
+                    curChar2 += 0;
+                    curChar2 += '=';
+                }
+                if (curChar2 != ' ') {
+                    Font_LoadChar(font, curChar2 - ' ', *charTexIdxPtr);
+                    *charTexIdxPtr += FONT_CHAR_TEX_SIZE;
+                }
+
+                msgCtx->msgBufDecoded[*decodedBufPosPtr] = curChar2;
+                (*decodedBufPosPtr)++;
+            }
+            (*decodedBufPosPtr)--;
+        } else if (gSaveContext.filenameLanguage == NAME_LANGUAGE_NTSC_ENG) { 
+            for (i = 0; i < playerNameLen; i++) {
+                curChar2 = gSaveContext.playerName[i];
+                if (curChar2 == 0xDF) {
+                    curChar2 = ' ';
+                } else if (curChar2 == 0xEA) {
+                    curChar2 = '.';
+                } else if (curChar2 == 0xE4) {
+                    curChar2 = '-';
+                } else if (curChar2 < 0xA) {
+                    curChar2 += 0;
+                    curChar2 += '0';
+                } else if (curChar2 < 0xC5) {
+                    curChar2 += 0;
+                    curChar2 -= 0x6A;
+                } else if (curChar2 < 0xDF) {
+                    curChar2 += 0;
+                    curChar2 -= 0x64;
+                }
+                if (curChar2 != ' ') {
+                    Font_LoadChar(font, curChar2 - ' ', *charTexIdxPtr);
+                    *charTexIdxPtr += FONT_CHAR_TEX_SIZE;
+                }
+
+                msgCtx->msgBufDecoded[(*decodedBufPosPtr)] = curChar2;
+                (*decodedBufPosPtr)++;
+            }
+            (*decodedBufPosPtr)--;
+        } else {
+            for (i = 0; i < playerNameLen; i++) {
+                curChar2 = gSaveContext.playerName[i];
+
+                // Remove JPN Characters from the pool (set them to ' ')
+                if (curChar2 >= 0x0A && curChar2 <= 0x40) {
+                    curChar2 = 0xDF;
+                } else if (curChar2 >= 0x5A && curChar2 <= 0x90) {
+                    curChar2 = 0xDF;
+                } else if (curChar2 == 0xE7 || curChar2 == 0xE8) {
+                    curChar2 = 0xDF;
+                }
+
+                if (curChar2 == 0xDF) {
+                    curChar2 = ' ';
+                } else if (curChar2 == 0xEA) {
+                    curChar2 = '.';
+                } else if (curChar2 == 0xE4) {
+                    curChar2 = '-';
+                } else if (curChar2 < 0xA) {
+                    curChar2 += 0;
+                    curChar2 += '0';
+                } else if (curChar2 < 0xC5) {
+                    curChar2 += 0;
+                    curChar2 -= 0x6A;
+                } else if (curChar2 < 0xDF) {
+                    curChar2 += 0;
+                    curChar2 -= 0x64;
+                }
+
+                if (curChar2 != ' ') {
+                    Font_LoadChar(font, curChar2 - ' ', *charTexIdxPtr);
+                    *charTexIdxPtr += FONT_CHAR_TEX_SIZE;
+                }
+
+                msgCtx->msgBufDecoded[(*decodedBufPosPtr)] = curChar2;
+                (*decodedBufPosPtr)++;
+            }
+            (*decodedBufPosPtr)--;
+        }
+    } else { // GAME_REGION_NTSC
+
+        if (gSaveContext.filenameLanguage == NAME_LANGUAGE_NTSC_JPN) {
+            if (gSaveContext.language == LANGUAGE_JPN) {
+                for (i = 0; i < playerNameLen; i++) {
+                    curChar2 = gSaveContext.playerName[i];
+                    u8* fontBuf = &font->fontBuf[(curChar2 * 32) << 2];
+                    msgCtx->msgBufDecodedWide[(*decodedBufPosPtr)++] = MESSAGE_NAME_JPN;
+                    for (j = 0; j < FONT_CHAR_TEX_SIZE; j += 4) {
+                        font->charTexBuf[*charTexIdxPtr + j + 0] = fontBuf[j + 0];
+                        font->charTexBuf[*charTexIdxPtr + j + 1] = fontBuf[j + 1];
+                        font->charTexBuf[*charTexIdxPtr + j + 2] = fontBuf[j + 2];
+                        font->charTexBuf[*charTexIdxPtr + j + 3] = fontBuf[j + 3];
+                    }
+                    *charTexIdxPtr += FONT_CHAR_TEX_SIZE;
+                }
+            } else { // LANGUAGE_ENG
+                for (i = 0; i < playerNameLen; i++) {
+                    curChar2 = gSaveContext.playerName[i];
+                    u8* fontBuf = &font->fontBuf[(curChar2 * 32) << 2];
+                    msgCtx->msgBufDecoded[(*decodedBufPosPtr)++] = MESSAGE_NAME;
+                    for (j = 0; j < FONT_CHAR_TEX_SIZE; j += 4) {
+                        font->charTexBuf[*charTexIdxPtr + j + 0] = fontBuf[j + 0];
+                        font->charTexBuf[*charTexIdxPtr + j + 1] = fontBuf[j + 1];
+                        font->charTexBuf[*charTexIdxPtr + j + 2] = fontBuf[j + 2];
+                        font->charTexBuf[*charTexIdxPtr + j + 3] = fontBuf[j + 3];
+                    }
+                    *charTexIdxPtr += FONT_CHAR_TEX_SIZE;
+                }
+            }
+        } else if (gSaveContext.filenameLanguage == NAME_LANGUAGE_NTSC_ENG) {
+            if (gSaveContext.language == LANGUAGE_JPN) {
+                for (i = 0; i < playerNameLen; i++) {
+                    curChar2 = gSaveContext.playerName[i];
+                    u8* fontBuf = &font->fontBuf[(curChar2 * 32) << 2];
+                    msgCtx->msgBufDecodedWide[(*decodedBufPosPtr)++] = MESSAGE_NAME_JPN;
+                    for (j = 0; j < FONT_CHAR_TEX_SIZE; j += 4) {
+                        font->charTexBuf[*charTexIdxPtr + j + 0] = fontBuf[j + 0];
+                        font->charTexBuf[*charTexIdxPtr + j + 1] = fontBuf[j + 1];
+                        font->charTexBuf[*charTexIdxPtr + j + 2] = fontBuf[j + 2];
+                        font->charTexBuf[*charTexIdxPtr + j + 3] = fontBuf[j + 3];
+                    }
+                    *charTexIdxPtr += FONT_CHAR_TEX_SIZE;
+                }
+            } else { // LANGUAGE_ENG
+                for (i = 0; i < playerNameLen; i++) {
+                    curChar2 = gSaveContext.playerName[i];
+                    if (curChar2 == 0xDF) {
+                        curChar2 = ' ';
+                    } else if (curChar2 == 0xEA) {
+                        curChar2 = '.';
+                    } else if (curChar2 == 0xE4) {
+                        curChar2 = '-';
+                    } else if (curChar2 < 0xA) {
+                        curChar2 += 0;
+                        curChar2 += '0';
+                    } else if (curChar2 < 0xC5) {
+                        curChar2 += 0;
+                        curChar2 -= 0x6A;
+                    } else if (curChar2 < 0xDF) {
+                        curChar2 += 0;
+                        curChar2 -= 0x64;
+                    }
+                    if (curChar2 != ' ') {
+                        Font_LoadChar(font, curChar2 - ' ', *charTexIdxPtr);
+                        *charTexIdxPtr += FONT_CHAR_TEX_SIZE;
+                    }
+
+                    msgCtx->msgBufDecoded[(*decodedBufPosPtr)] = curChar2;
+                    (*decodedBufPosPtr)++;
+                }
+                (*decodedBufPosPtr)--;
+            }
+        } else if (gSaveContext.filenameLanguage == NAME_LANGUAGE_PAL) {
+            if (gSaveContext.language == LANGUAGE_JPN) {
+                for (i = 0; i < playerNameLen; i++) {
+                    curChar2 = gSaveContext.playerName[i];
+
+                    // Convert PAL char to NTSC
+                    if (curChar2 >= 0xA && curChar2 <= 0x3E) {
+                        curChar2 += 0xA1;
+                    } else if (curChar2 == 0x3F) {
+                        curChar2 += 0xA5;
+                    } else if (curChar2 == 0x40) {
+                        curChar2 += 0xAA;
+                    }
+
+                    u8* fontBuf = &font->fontBuf[(curChar2 * 32) << 2];
+                    msgCtx->msgBufDecoded[(*decodedBufPosPtr)++] = MESSAGE_NAME;
+                    for (j = 0; j < FONT_CHAR_TEX_SIZE; j += 4) {
+                        font->charTexBuf[*charTexIdxPtr + j + 0] = fontBuf[j + 0];
+                        font->charTexBuf[*charTexIdxPtr + j + 1] = fontBuf[j + 1];
+                        font->charTexBuf[*charTexIdxPtr + j + 2] = fontBuf[j + 2];
+                        font->charTexBuf[*charTexIdxPtr + j + 3] = fontBuf[j + 3];
+                    }
+                    *charTexIdxPtr += FONT_CHAR_TEX_SIZE;
+                }
+            } else { // LANGUAGE_ENG
+                for (i = 0; i < playerNameLen; i++) {
+                    curChar2 = gSaveContext.playerName[i];
+                    if (curChar2 == 0x3E) {
+                        curChar2 = ' ';
+                    } else if (curChar2 == 0x40) {
+                        curChar2 = '.';
+                    } else if (curChar2 == 0x3F) {
+                        curChar2 = '-';
+                    } else if (curChar2 < 0xA) {
+                        curChar2 += 0;
+                        curChar2 += '0';
+                    } else if (curChar2 < 0x24) {
+                        curChar2 += 0;
+                        curChar2 += '7';
+                    } else if (curChar2 < 0x3E) {
+                        curChar2 += 0;
+                        curChar2 += '=';
+                    }
+                    if (curChar2 != ' ') {
+                        Font_LoadChar(font, curChar2 - ' ', *charTexIdxPtr);
+                        *charTexIdxPtr += FONT_CHAR_TEX_SIZE;
+                    }
+
+                    msgCtx->msgBufDecoded[*decodedBufPosPtr] = curChar2;
+                    (*decodedBufPosPtr)++;
+                }
+                (*decodedBufPosPtr)--;
+            }
+        }
+
+    }
+     
+    return true;
 }
 
 // Taken from decomped N64 1.0 z_message https://decomp.me/scratch/462bn
@@ -1582,26 +1842,29 @@ void Message_DecodeJPN(PlayState* play) {
             break;
         }
         if (curChar == MESSAGE_NAME_JPN) {
-            for (playerNameLen = 8; playerNameLen > 0; playerNameLen--) {
-                if (gSaveContext.playerName[playerNameLen - 1] != 0xDF) {
-                    break;
+            // #region SOH [NTSC] - Support multiple names
+            if (!Message_DecodeName(play, &decodedBufPos, &charTexIdx)) {
+                for (playerNameLen = 8; playerNameLen > 0; playerNameLen--) {
+                    if (gSaveContext.playerName[playerNameLen - 1] != 0xDF) {
+                        break;
+                    }
                 }
-            }
-            for (i = 0; i < playerNameLen; i++) {
-                curChar = gSaveContext.playerName[i];
-                // FAKE? Figure out what best way to match is
-                fontBuf = &font->fontBuf[(curChar * 32) << 2];
-                msgCtx->msgBufDecodedWide[decodedBufPos + i] = MESSAGE_NAME_JPN;
+                for (i = 0; i < playerNameLen; i++) {
+                    curChar = gSaveContext.playerName[i];
+                    // FAKE? Figure out what best way to match is
+                    fontBuf = &font->fontBuf[(curChar * 32) << 2];
+                    msgCtx->msgBufDecodedWide[decodedBufPos + i] = MESSAGE_NAME_JPN;
 
-                for (j = 0; j < FONT_CHAR_TEX_SIZE; j += 4) {
-                    font->charTexBuf[charTexIdx + j + 0] = fontBuf[j + 0];
-                    font->charTexBuf[charTexIdx + j + 1] = fontBuf[j + 1];
-                    font->charTexBuf[charTexIdx + j + 2] = fontBuf[j + 2];
-                    font->charTexBuf[charTexIdx + j + 3] = fontBuf[j + 3];
+                    for (j = 0; j < FONT_CHAR_TEX_SIZE; j += 4) {
+                        font->charTexBuf[charTexIdx + j + 0] = fontBuf[j + 0];
+                        font->charTexBuf[charTexIdx + j + 1] = fontBuf[j + 1];
+                        font->charTexBuf[charTexIdx + j + 2] = fontBuf[j + 2];
+                        font->charTexBuf[charTexIdx + j + 3] = fontBuf[j + 3];
+                    }
+                    charTexIdx += FONT_CHAR_TEX_SIZE;
                 }
-                charTexIdx += FONT_CHAR_TEX_SIZE;
+                decodedBufPos += playerNameLen - 1;
             }
-            decodedBufPos += playerNameLen - 1;
         } else if (curChar == MESSAGE_MARATHON_TIME_JPN || curChar == MESSAGE_RACE_TIME_JPN) {
             digits[0] = digits[1] = digits[2] = 0;
             if (curChar == MESSAGE_RACE_TIME_JPN) {
@@ -1960,16 +2223,17 @@ void Message_Decode(PlayState* play) {
             break;
         } else if (temp_s2 == MESSAGE_NAME) {
             // Substitute the player name control character for the file's player name.
-            u8 emptyChar = (ResourceMgr_GetGameVersion(0) == GAME_REGION_PAL) ? 0x3E : 0xDF;
-            for (playerNameLen = ARRAY_COUNT(gSaveContext.playerName); playerNameLen > 0; playerNameLen--) {
-                if (gSaveContext.playerName[playerNameLen - 1] != emptyChar) {
-                    break;
+            // #region SOH [NTSC] - Support PAL and NTSC with either language
+            //                      Function always returns true, so block is not entered
+            if (!Message_DecodeName(play, &decodedBufPos, &charTexIdx)) {
+                for (playerNameLen = ARRAY_COUNT(gSaveContext.playerName); playerNameLen > 0; playerNameLen--) {
+                    if (gSaveContext.playerName[playerNameLen - 1] != 0x3E) {
+                        break;
+                    }
                 }
-            }
-            // "Name"
-            osSyncPrintf("\n名前 ＝ ");
-            // NTSC TODO: Handle files created on JP
-            if (ResourceMgr_GetGameVersion(0) == GAME_REGION_PAL) {
+                // "Name"
+                osSyncPrintf("\n名前 ＝ ");
+
                 for (i = 0; i < playerNameLen; i++) {
                     phi_s1 = gSaveContext.playerName[i];
                     if (phi_s1 == 0x3E) {
@@ -1996,35 +2260,9 @@ void Message_Decode(PlayState* play) {
                     msgCtx->msgBufDecoded[decodedBufPos] = phi_s1;
                     decodedBufPos++;
                 }
-            } else { // GAME_REGION_NTSC
-                for (i = 0; i < playerNameLen; i++) {
-                    phi_s1 = gSaveContext.playerName[i];
-                    if (phi_s1 == 0xDF) {
-                        phi_s1 = ' ';
-                    } else if (phi_s1 == 0xEA) {
-                        phi_s1 = '.';
-                    } else if (phi_s1 == 0xE4) {
-                        phi_s1 = '-';
-                    } else if (phi_s1 < 0xA) {
-                        phi_s1 += 0;
-                        phi_s1 += '0';
-                    } else if (phi_s1 < 0xC5) {
-                        phi_s1 += 0;
-                        phi_s1 -= 0x6A;
-                    } else if (phi_s1 < 0xDF) {
-                        phi_s1 += 0;
-                        phi_s1 -= 0x64;
-                    }
-                    if (phi_s1 != ' ') {
-                        Font_LoadChar(font, phi_s1 - ' ', charTexIdx);
-                        charTexIdx += FONT_CHAR_TEX_SIZE;
-                    }
-                    osSyncPrintf("%x ", phi_s1);
-                    msgCtx->msgBufDecoded[decodedBufPos] = phi_s1;
-                    decodedBufPos++;
-                }
+                decodedBufPos--;
             }
-            decodedBufPos--;
+            // #endregion
         } else if (temp_s2 == MESSAGE_MARATHON_TIME || temp_s2 == MESSAGE_RACE_TIME) {
             // Convert the values of the appropriate timer to digits and add the
             //  digits to the decoded buffer in place of the control character.

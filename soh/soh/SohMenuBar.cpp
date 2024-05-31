@@ -41,6 +41,7 @@ extern bool ToggleAltAssetsAtEndOfFrame;
 extern bool isBetaQuestEnabled;
 
 extern "C" PlayState* gPlayState;
+extern "C" uint32_t ResourceMgr_GetGameRegion(int index);
 
 std::string GetWindowButtonText(const char* text, bool menuOpen) {
     char buttonText[100] = "";
@@ -512,7 +513,7 @@ void DrawSettingsMenu() {
         UIWidgets::Spacer(0);
 
         if (ImGui::BeginMenu("Languages")) {
-            if (Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->GetGameVersions()[0] == GAME_REGION_PAL) {
+            if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL) {
                 UIWidgets::PaddedEnhancementCheckbox("Translate Title Screen", CVAR_SETTING("TitleScreenTranslation"));
                 if (UIWidgets::EnhancementRadioButton("English", CVAR_SETTING("Languages"), LANGUAGE_ENG)) {
                     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSetGameLanguage>();

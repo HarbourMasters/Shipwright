@@ -19,6 +19,7 @@
 #include <array>
 
 extern "C" SaveContext gSaveContext;
+extern "C" uint32_t ResourceMgr_GetGameRegion(int index);
 using namespace std::string_literals;
 
 void SaveManager::WriteSaveFile(const std::filesystem::path& savePath, const uintptr_t addr, void* dramAddr,
@@ -445,6 +446,7 @@ void SaveManager::InitMeta(int fileNum) {
     fileMetaInfo[fileNum].gsTokens = gSaveContext.inventory.gsTokens;
     fileMetaInfo[fileNum].isDoubleDefenseAcquired = gSaveContext.isDoubleDefenseAcquired;
     fileMetaInfo[fileNum].gregFound = Flags_GetRandomizerInf(RAND_INF_GREG_FOUND);
+    fileMetaInfo[fileNum].filenameLanguage = gSaveContext.filenameLanguage;
     fileMetaInfo[fileNum].defense = gSaveContext.inventory.defenseHearts;
     fileMetaInfo[fileNum].health = gSaveContext.health;
 
@@ -485,7 +487,7 @@ void SaveManager::InitFileNormal() {
     gSaveContext.bgsDayCount = 0;
 
     gSaveContext.deaths = 0;
-    if (Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->GetGameVersions()[0] == GAME_REGION_PAL) {
+    if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL) {
         for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
             gSaveContext.playerName[i] = 0x3E;
         }
@@ -646,7 +648,7 @@ void SaveManager::InitFileDebug() {
     gSaveContext.bgsDayCount = 0;
 
     gSaveContext.deaths = 0;
-    if (Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->GetGameVersions()[0] == GAME_REGION_PAL) {
+    if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL) {
         const static std::array<char, 8> sPlayerName = { 0x15, 0x12, 0x17, 0x14, 0x3E, 0x3E, 0x3E, 0x3E };
         for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
             gSaveContext.playerName[i] = sPlayerName[i];
@@ -756,7 +758,7 @@ void SaveManager::InitFileMaxed() {
     gSaveContext.bgsDayCount = 0;
 
     gSaveContext.deaths = 0;
-    if (Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->GetGameVersions()[0] == GAME_REGION_PAL) {
+    if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL) {
         const static std::array<char, 8> sPlayerName = { 0x15, 0x12, 0x17, 0x14, 0x3E, 0x3E, 0x3E, 0x3E };
         for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
             gSaveContext.playerName[i] = sPlayerName[i];
@@ -1187,6 +1189,15 @@ void SaveManager::CreateDefaultGlobal() {
     gSaveContext.audioSetting = 0;
     gSaveContext.zTargetSetting = 0;
     gSaveContext.language = CVarGetInteger(CVAR_SETTING("Languages"), LANGUAGE_ENG);
+    if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL) {
+        if (gSaveContext.language == LANGUAGE_JPN) {
+            gSaveContext.language = LANGUAGE_ENG;
+        }
+    } else { // GAME_REGION_NTSC
+        if (gSaveContext.language == LANGUAGE_GER || gSaveContext.language == LANGUAGE_FRA) {
+            gSaveContext.language = LANGUAGE_ENG;
+        }
+    }
 
     SaveGlobal();
 }
@@ -1952,6 +1963,7 @@ void SaveManager::LoadBaseVersion4() {
         SaveManager::Instance->LoadData("tempCollectFlags", gSaveContext.backupFW.tempCollectFlags);
     });
     SaveManager::Instance->LoadData("dogParams", gSaveContext.dogParams);
+    SaveManager::Instance->LoadData("filenameLanguage", gSaveContext.filenameLanguage);
 }
 
 void SaveManager::SaveBase(SaveContext* saveContext, int sectionID, bool fullSave) {
@@ -2121,6 +2133,7 @@ void SaveManager::SaveBase(SaveContext* saveContext, int sectionID, bool fullSav
         SaveManager::Instance->SaveData("tempCollectFlags", saveContext->backupFW.tempCollectFlags);
     });
     SaveManager::Instance->SaveData("dogParams", saveContext->dogParams);
+    SaveManager::Instance->SaveData("filenameLanguage", saveContext->filenameLanguage);
 }
 
 // Load a string into a char array based on size and ensuring it is null terminated when overflowed
@@ -2227,6 +2240,7 @@ void SaveManager::CopyZeldaFile(int from, int to) {
     fileMetaInfo[to].buildVersionMajor = fileMetaInfo[from].buildVersionMajor;
     fileMetaInfo[to].buildVersionMinor = fileMetaInfo[from].buildVersionMinor;
     fileMetaInfo[to].buildVersionPatch = fileMetaInfo[from].buildVersionPatch;
+    fileMetaInfo[to].filenameLanguage = fileMetaInfo[from].filenameLanguage;
     SohUtils::CopyStringToCharArray(fileMetaInfo[to].buildVersion, fileMetaInfo[from].buildVersion,
                                     ARRAY_COUNT(fileMetaInfo[to].buildVersion));
 }
@@ -2565,8 +2579,17 @@ void SaveManager::ConvertFromUnversioned() {
     gSaveContext.audioSetting = data[SRAM_HEADER_SOUND] & 3;
     gSaveContext.zTargetSetting = data[SRAM_HEADER_ZTARGET] & 1;
     gSaveContext.language = data[SRAM_HEADER_LANGUAGE];
-    if (gSaveContext.language > LANGUAGE_JPN) {
+    if (gSaveContext.language >= LANGUAGE_MAX) {
         gSaveContext.language = CVarGetInteger(CVAR_SETTING("Languages"), LANGUAGE_ENG);
+        if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL) {
+            if (gSaveContext.language == LANGUAGE_JPN) {
+                gSaveContext.language = LANGUAGE_ENG;
+            }
+        } else { // GAME_REGION_NTSC
+            if (gSaveContext.language == LANGUAGE_GER || gSaveContext.language == LANGUAGE_FRA) {
+                gSaveContext.language = LANGUAGE_ENG;
+            }
+        }
     }
     SaveGlobal();
 
