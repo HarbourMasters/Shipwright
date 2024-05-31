@@ -140,6 +140,7 @@ Randomizer::Randomizer() {
             item.GetName().english,
             item.GetName().english,
             item.GetName().french,
+            item.GetName().english,
         };
     }
 }
@@ -5337,6 +5338,7 @@ CustomMessage Randomizer::GetFrogsMessage(u16 originalTextId) {
             frogItemName = {
                 this->itemLocations[RC_ZR_FROGS_OCARINA_GAME].trickName,
                 this->itemLocations[RC_ZR_FROGS_OCARINA_GAME].trickName,
+                this->itemLocations[RC_ZR_FROGS_OCARINA_GAME].trickName,
                 this->itemLocations[RC_ZR_FROGS_OCARINA_GAME].trickName
             };
         } else {
@@ -5432,6 +5434,7 @@ CustomMessage Randomizer::GetMerchantMessage(RandomizerInf randomizerInf, u16 te
         shopItemName = {
             std::string(this->itemLocations[rc].trickName),
             std::string(this->itemLocations[rc].trickName),
+            std::string(this->itemLocations[rc].trickName),
             std::string(this->itemLocations[rc].trickName)
         };
     } else { 
@@ -5461,6 +5464,7 @@ CustomMessage Randomizer::GetCursedSkullMessage(s16 params) {
     if (itemGet == RG_ICE_TRAP) {
         itemGet = this->itemLocations[rc].fakeRgID;
         itemName = {
+            std::string(this->itemLocations[rc].trickName),
             std::string(this->itemLocations[rc].trickName),
             std::string(this->itemLocations[rc].trickName),
             std::string(this->itemLocations[rc].trickName)

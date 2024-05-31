@@ -813,9 +813,10 @@ void RegisterOnUpdateMainMenuSelection() {
 
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnUpdateFileBossRushOptionSelection>([](uint8_t optionIndex, uint8_t optionValue) {
         if (!CVarGetInteger(CVAR_SETTING("A11yTTS"), 0)) return;
+        uint8_t language = (gSaveContext.language == LANGUAGE_JPN) ? LANGUAGE_ENG : gSaveContext.language;
 
-        auto optionName = BossRush_GetSettingName(optionIndex, gSaveContext.language);
-        auto optionValueName = BossRush_GetSettingChoiceName(optionIndex, optionValue, gSaveContext.language);
+        auto optionName = BossRush_GetSettingName(optionIndex, language);
+        auto optionValueName = BossRush_GetSettingChoiceName(optionIndex, optionValue, language);
         auto translation = optionName + std::string(" - ") + optionValueName;
         SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
     });

@@ -1256,6 +1256,7 @@ extern "C" uint64_t GetUnixTimestamp() {
 }
 
 extern bool ToggleAltAssetsAtEndOfFrame;
+extern bool gDisplayNextMessageAsEnglish;
 
 extern "C" void Graph_StartFrame() {
 #ifndef __WIIU__

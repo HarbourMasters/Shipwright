@@ -58,7 +58,7 @@ class Randomizer {
     std::unordered_map<RandomizerInf, bool> trialsRequired;
     std::unordered_set<uint16_t> masterQuestDungeons;
     std::unordered_map<RandomizerCheck, u16> merchantPrices;
-    std::unordered_map<RandomizerGet, std::array<std::string, 3>> EnumToSpoilerfileGetName;
+    std::unordered_map<RandomizerGet, std::array<std::string, 4>> EnumToSpoilerfileGetName;
 
     static Sprite* GetSeedTexture(uint8_t index);
     s16 GetItemModelFromId(s16 itemId);

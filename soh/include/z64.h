@@ -541,11 +541,9 @@ typedef enum {
     LANGUAGE_ENG,
     LANGUAGE_GER,
     LANGUAGE_FRA,
+    LANGUAGE_JPN,
     LANGUAGE_MAX
 } Language;
-
-// hacky fix to get rando to work
-#define LANGUAGE_JPN 3
 
 // TODO get these properties from the textures themselves
 #define FONT_CHAR_TEX_WIDTH  16
