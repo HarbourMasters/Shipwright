@@ -1,5 +1,5 @@
 <Root>
-    <File Name="ovl_Boss_Ganon" BaseAddress="0x809F1D00" RangeStart="0xE398" RangeEnd="0x20EB4">
+    <File Name="ovl_Boss_Ganon" BaseAddress="0x809F1E60" RangeStart="0xE398" RangeEnd="0x20EB4">
         <Texture Name="ovl_Boss_GanonTex_00E748" OutName="ovl_Boss_GanonTex_00E748" Format="i8" Width="64" Height="64" Offset="0xE428" AddedByScript="true"/>
         <Texture Name="ovl_Boss_GanonTex_00F848" OutName="ovl_Boss_GanonTex_00F848" Format="ci8" Width="32" Height="32" Offset="0xF528" TlutOffset="0xF4E8" AddedByScript="true"/>
         <Texture Name="ovl_Boss_GanonTex_010538" OutName="ovl_Boss_GanonTex_010538" Format="i8" Width="64" Height="64" Offset="0x10218" AddedByScript="true"/>

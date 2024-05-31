@@ -1,7 +1,7 @@
 <Root>
-    <File Name="code" OutName="z_fbdemo_triforce" RangeStart="0xEB530" RangeEnd="0xEB600">
-        <DList Name="sTransTriforceDL" Offset="0xEB530"/>
-        <Array Name="sTransTriforceVtx" Count="10" Offset="0xEB560">
+    <File Name="code" OutName="z_fbdemo_triforce" RangeStart="0xEB6F0" RangeEnd="0xEB7C0">
+        <DList Name="sTransTriforceDL" Offset="0xEB6F0"/>
+        <Array Name="sTransTriforceVtx" Count="10" Offset="0xEB720">
             <Vtx/>
         </Array>
     </File>
