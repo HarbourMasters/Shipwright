@@ -1,0 +1,6 @@
+<Root>
+    <File Name="object_gi_bosskey" Segment="6">
+        <DList Name="gGiBossKeyDL" Offset="0x0CA0"/>
+        <DList Name="gGiBossKeyGemDL" Offset="0x0F08"/>
+    </File>
+</Root>

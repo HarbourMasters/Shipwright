@@ -1,0 +1,26 @@
+<Root>
+    <File Name="hakaana2_scene" Segment="2">
+        <Texture Name="hakaana2_sceneTex_003090" OutName="hakaana2_sceneTex_003090" Format="rgba16" Width="32" Height="32" Offset="0x3090" AddedByScript="true"/>
+        <Texture Name="hakaana2_sceneTex_003890" OutName="hakaana2_sceneTex_003890" Format="rgba16" Width="32" Height="32" Offset="0x3890" AddedByScript="true"/>
+        <Texture Name="hakaana2_sceneTex_004090" OutName="hakaana2_sceneTex_004090" Format="rgba16" Width="32" Height="16" Offset="0x4090" AddedByScript="true"/>
+        <Texture Name="hakaana2_sceneTex_004490" OutName="hakaana2_sceneTex_004490" Format="rgba16" Width="32" Height="16" Offset="0x4490" AddedByScript="true"/>
+        <Texture Name="hakaana2_sceneTex_004890" OutName="hakaana2_sceneTex_004890" Format="i4" Width="64" Height="64" Offset="0x4890" AddedByScript="true"/>
+        <Texture Name="hakaana2_sceneTex_005090" OutName="hakaana2_sceneTex_005090" Format="i4" Width="64" Height="64" Offset="0x5090" AddedByScript="true"/>
+        <Texture Name="hakaana2_sceneTex_005890" OutName="hakaana2_sceneTex_005890" Format="i4" Width="128" Height="32" Offset="0x5890" AddedByScript="true"/>
+        <Texture Name="hakaana2_sceneTex_006090" OutName="hakaana2_sceneTex_006090" Format="i4" Width="64" Height="64" Offset="0x6090" AddedByScript="true"/>
+        <Texture Name="hakaana2_sceneTex_006890" OutName="hakaana2_sceneTex_006890" Format="ia8" Width="64" Height="32" Offset="0x6890" AddedByScript="true"/>
+        <Texture Name="hakaana2_sceneTex_007090" OutName="hakaana2_sceneTex_007090" Format="i8" Width="16" Height="256" Offset="0x7090" AddedByScript="true"/>
+        <Texture Name="hakaana2_sceneTex_008090" OutName="hakaana2_sceneTex_008090" Format="ia16" Width="128" Height="16" Offset="0x8090" AddedByScript="true"/>
+        <Texture Name="hakaana2_sceneTex_009090" OutName="hakaana2_sceneTex_009090" Format="i8" Width="32" Height="64" Offset="0x9090" AddedByScript="true"/>
+        <Texture Name="hakaana2_sceneTex_009890" OutName="hakaana2_sceneTex_009890" Format="i8" Width="32" Height="64" Offset="0x9890" AddedByScript="true"/>
+        <Texture Name="hakaana2_sceneTex_00A090" OutName="hakaana2_sceneTex_00A090" Format="rgba16" Width="32" Height="32" Offset="0xA090" AddedByScript="true"/>
+        <Texture Name="hakaana2_sceneTex_00A890" OutName="hakaana2_sceneTex_00A890" Format="i4" Width="64" Height="128" Offset="0xA890" AddedByScript="true"/>
+        <Texture Name="hakaana2_sceneTex_00B890" OutName="hakaana2_sceneTex_00B890" Format="rgba16" Width="32" Height="32" Offset="0xB890" AddedByScript="true"/>
+        <Texture Name="hakaana2_sceneTex_00C090" OutName="hakaana2_sceneTex_00C090" Format="rgba16" Width="32" Height="32" Offset="0xC090" AddedByScript="true"/>
+        <Texture Name="hakaana2_sceneTex_00C890" OutName="hakaana2_sceneTex_00C890" Format="rgba16" Width="32" Height="32" Offset="0xC890" AddedByScript="true"/>
+        <Scene Name="hakaana2_scene" Offset="0x0"/>
+    </File>
+    <File Name="hakaana2_room_0" Segment="3">
+        <Room Name="hakaana2_room_0" Offset="0x0"/>
+    </File>
+</Root>
