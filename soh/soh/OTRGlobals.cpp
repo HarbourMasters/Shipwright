@@ -322,8 +322,8 @@ OTRGlobals::OTRGlobals() {
 
     // tell LUS to reserve 3 SoH specific threads (Game, Audio, Save)
     context->InitResourceManager(OTRFiles, {}, 3);
-    context->GetResourceManager()->SetAltAssetsEnabled(CVarGetInteger(CVAR_ENHANCEMENT("AltAssets"), 0));
     prevAltAssets = CVarGetInteger(CVAR_ENHANCEMENT("AltAssets"), 0);
+    context->GetResourceManager()->SetAltAssetsEnabled(prevAltAssets);
 
     context->InitControlDeck({BTN_MODIFIER1, BTN_MODIFIER2});
     context->GetControlDeck()->SetSinglePlayerMappingMode(true);
