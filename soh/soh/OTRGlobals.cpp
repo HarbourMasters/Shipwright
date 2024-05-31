@@ -1255,7 +1255,7 @@ extern "C" uint64_t GetUnixTimestamp() {
     return (uint64_t)millis.count();
 }
 
-extern bool ToggleAltAssetsAtEndOfFrame;
+extern bool prevAltAssets;
 
 extern "C" void Graph_StartFrame() {
 #ifndef __WIIU__
@@ -1338,7 +1338,7 @@ extern "C" void Graph_StartFrame() {
         }
 #endif
         case KbScancode::LUS_KB_TAB: {
-            ToggleAltAssetsAtEndOfFrame = true;
+            CVarSetInteger(CVAR_ENHANCEMENT("AltAssets"), !CVarGetInteger(CVAR_ENHANCEMENT("AltAssets"), 0));
             break;
         }
     }
@@ -1421,13 +1421,10 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
         }
     }
 
-    if (ToggleAltAssetsAtEndOfFrame) {
-        ToggleAltAssetsAtEndOfFrame = false;
-        auto newAltValue = !CVarGetInteger(CVAR_ENHANCEMENT("AltAssets"), 0);
-
-        // Actually update the CVar now before runing the alt asset update listeners
-        CVarSetInteger(CVAR_ENHANCEMENT("AltAssets"), newAltValue);
-        Ship::Context::GetInstance()->GetResourceManager()->SetAltAssetsEnabled(newAltValue);
+    bool curAltAssets = CVarGetInteger(CVAR_ENHANCEMENT("AltAssets"), 0);
+    if (prevAltAssets != curAltAssets) {
+        prevAltAssets = curAltAssets;
+        Ship::Context::GetInstance()->GetResourceManager()->SetAltAssetsEnabled(curAltAssets);
         gfx_texture_cache_clear();
         SOH::SkeletonPatcher::UpdateSkeletons();
         GameInteractor::Instance->ExecuteHooks<GameInteractor::OnAssetAltChange>();
