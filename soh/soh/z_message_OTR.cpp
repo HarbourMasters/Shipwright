@@ -174,7 +174,7 @@ extern "C" void OTRMessage_Init()
     CustomMessageManager::Instance->CreateGetItemMessage(
         customMessageTableID, (GetItemID)TEXT_HEART_PIECE, ITEM_HEART_PIECE,
         CustomMessage("You got a %rHeart Piece%w!&You've collected %r[[heartPieceCount]]%w pieces&in total!",
-                      "Ein %rHerzteil%w!&Du hast nun insgesamt %r[[heartPieceCount]]%w&Herteile gesammelt!",
+                      "Ein %rHerzteil%w!&Du hast nun insgesamt %r[[heartPieceCount]]%w&Herzteile gesammelt!",
                       "Vous obtenez un %rQuart de&Coeur%w! Vous en avez collecté&%r[[heartPieceCount]]%w en tout!",
                       TEXTBOX_TYPE_BLUE));
     CustomMessageManager::Instance->CreateMessage(
