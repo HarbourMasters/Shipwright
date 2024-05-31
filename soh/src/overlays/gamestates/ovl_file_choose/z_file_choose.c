@@ -2339,13 +2339,14 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
         // color and has arrows surrounding the option.
         for (uint8_t i = listOffset; i - listOffset < BOSSRUSH_MAX_OPTIONS_ON_SCREEN; i++) {
             uint16_t textYOffset = (i - listOffset) * 16;
+            uint8_t language = (gSaveContext.language == LANGUAGE_JPN) ? LANGUAGE_ENG : gSaveContext.language;
 
             // Option name.
-            Interface_DrawTextLine(this->state.gfxCtx, BossRush_GetSettingName(i, gSaveContext.language), 
+            Interface_DrawTextLine(this->state.gfxCtx, BossRush_GetSettingName(i, language), 
                 65, (87 + textYOffset), 255, 255, 80, textAlpha, 0.8f, true);
 
             // Selected choice for option.
-            uint16_t finalKerning = Interface_DrawTextLine(this->state.gfxCtx, BossRush_GetSettingChoiceName(i, gSaveContext.bossRushOptions[i], gSaveContext.language), 
+            uint16_t finalKerning = Interface_DrawTextLine(this->state.gfxCtx, BossRush_GetSettingChoiceName(i, gSaveContext.bossRushOptions[i], language), 
                 165, (87 + textYOffset), 255, 255, 255, textAlpha, 0.8f, true);
 
             // Draw arrows around selected option.
@@ -3037,8 +3038,8 @@ void FileChoose_LoadGame(GameState* thisx) {
     if (!CVarGetInteger(CVAR_ENHANCEMENT("DogFollowsEverywhere"), 0)) {
         gSaveContext.dogParams = 0;
     }
-    gSaveContext.timer1State = 0;
-    gSaveContext.timer2State = 0;
+    gSaveContext.timerState = 0;
+    gSaveContext.subTimerState = 0;
     gSaveContext.eventInf[0] = 0;
     gSaveContext.eventInf[1] = 0;
     gSaveContext.eventInf[2] = 0;
@@ -3170,7 +3171,9 @@ static const char* randoVersionWarningText[] = {
     // German
     "Dieser Spielstand wurde auf einer anderen Version\nvon SoH erstellt.\nEs könnten Fehler auftreten.",
     // French
-    "Cette sauvegarde a été créée sur une version\ndifférente de SoH.\nCertaines fonctionnalités peuvent être corrompues."
+    "Cette sauvegarde a été créée sur une version\ndifférente de SoH.\nCertaines fonctionnalités peuvent être corrompues.",
+    // Japanese NTSC TODO:
+    "This save was created on a different version of SoH.\nThings may be broken. Play at your own risk.",
 };
 
 void FileChoose_DrawRandoSaveVersionWarning(GameState* thisx) {
@@ -3239,7 +3242,14 @@ static const char* noRandoGeneratedText[] = {
 #if (defined(__WIIU__) || defined(__SWITCH__))
     "."
 #else
-    "\nou glissez un spoilerlog sur la fenêtre du jeu."
+    "\nou glissez un spoilerlog sur la fenêtre du jeu.",
+#endif
+    // Japanese NTSC TODO:
+    "No Randomizer seed currently available.\nGenerate one in the Randomizer Settings"
+#if defined(__WIIU__) || defined(__SWITCH__)
+    ".",
+#else
+    ",\nor drop a spoiler log on the game window.",
 #endif
 };
 

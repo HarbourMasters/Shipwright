@@ -4139,7 +4139,14 @@ const char* msgStaticTbl[] =
     gMessageArrowTex
 };
 
-void func_8006EE50(Font* font, u16 arg1, u16 arg2) {
+void func_8006EE50(Font* font, u16 character, u16 codePointIndex) {
+    // #region SOH [NTSC]
+    // DmaMgr_RequestSync(&font->charTexBuf[codePointIndex], _kanjiSegmentStart + Kanji_OffsetFromShiftJIS(character), 0x80);
+    s32 charIndex = Kanji_OffsetFromShiftJIS(character);
+    charIndex /= FONT_CHAR_TEX_SIZE;
+    if (charIndex < ARRAY_COUNT(kanjiFontTbl))
+        memcpy(&font->charTexBuf[codePointIndex], kanjiFontTbl[charIndex], strlen(kanjiFontTbl[charIndex]) + 1);
+    // #endregion
 }
 
 /**
@@ -4207,6 +4214,7 @@ void Font_LoadOrderedFont(Font* font) {
     }
 }
 
+// #region SOH [NTSC]
 extern MessageTableEntry* sJpnMessageEntryTablePtr;
 
 void Font_LoadOrderedFontNTSC(Font* font) {
@@ -4247,3 +4255,4 @@ void Font_LoadOrderedFontNTSC(Font* font) {
         }
     }
 }
+// #endregion

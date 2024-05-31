@@ -80,21 +80,21 @@ void func_801109B0(PlayState* play) {
         }
     }
 
-    osSyncPrintf("ＥＶＥＮＴ＝%d\n", ((void)0, gSaveContext.timer1State));
+    osSyncPrintf("ＥＶＥＮＴ＝%d\n", ((void)0, gSaveContext.timerState));
 
-    if ((gSaveContext.timer1State == 4) || (gSaveContext.timer1State == 8) || (gSaveContext.timer2State == 4) ||
-        (gSaveContext.timer2State == 10)) {
+    if ((gSaveContext.timerState == 4) || (gSaveContext.timerState == 8) || (gSaveContext.subTimerState == 4) ||
+        (gSaveContext.subTimerState == 10)) {
         osSyncPrintf("restart_flag=%d\n", ((void)0, gSaveContext.respawnFlag));
 
         if ((gSaveContext.respawnFlag == -1) || (gSaveContext.respawnFlag == 1)) {
-            if (gSaveContext.timer1State == 4) {
-                gSaveContext.timer1State = 1;
+            if (gSaveContext.timerState == 4) {
+                gSaveContext.timerState = 1;
                 gSaveContext.timerX[0] = 140;
                 gSaveContext.timerY[0] = 80;
             }
         }
 
-        if ((gSaveContext.timer1State == 4) || (gSaveContext.timer1State == 8)) {
+        if ((gSaveContext.timerState == 4) || (gSaveContext.timerState == 8)) {
             temp = 0;
         } else {
             temp = 1;
@@ -109,10 +109,10 @@ void func_801109B0(PlayState* play) {
         }
     }
 
-    if ((gSaveContext.timer1State >= 11) && (gSaveContext.timer1State < 16)) {
-        gSaveContext.timer1State = 0;
+    if ((gSaveContext.timerState >= 11) && (gSaveContext.timerState < 16)) {
+        gSaveContext.timerState = 0;
         // "Timer Stop!!!!!!!!!!!!!!!!!!!!!!"
-        osSyncPrintf("タイマー停止！！！！！！！！！！！！！！！！！！！！！  = %d\n", gSaveContext.timer1State);
+        osSyncPrintf("タイマー停止！！！！！！！！！！！！！！！！！！！！！  = %d\n", gSaveContext.timerState);
     }
 
     osSyncPrintf("ＰＡＲＡＭＥＴＥＲ領域＝%x\n", parameterSize + 0x5300); // "Parameter Area = %x"

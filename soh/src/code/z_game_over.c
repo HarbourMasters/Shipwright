@@ -28,8 +28,8 @@ void GameOver_Update(PlayState* play) {
         case GAMEOVER_DEATH_START:
             Message_CloseTextbox(play);
 
-            gSaveContext.timer1State = 0;
-            gSaveContext.timer2State = 0;
+            gSaveContext.timerState = 0;
+            gSaveContext.subTimerState = 0;
             gSaveContext.eventInf[1] &= ~1;
 
             // search inventory for spoiling items and revert if necessary

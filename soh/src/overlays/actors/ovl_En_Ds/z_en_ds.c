@@ -93,7 +93,7 @@ void EnDs_GiveOddPotion(EnDs* this, PlayState* play) {
     if (Actor_HasParent(&this->actor, play)) {
         this->actor.parent = NULL;
         this->actionFunc = EnDs_DisplayOddPotionText;
-        gSaveContext.timer2State = 0;
+        gSaveContext.subTimerState = 0;
     } else {
         u32 itemId = GI_ODD_POTION;
         if (IS_RANDO) {

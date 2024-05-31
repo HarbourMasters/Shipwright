@@ -114,7 +114,7 @@ s32 Kanji_OffsetFromShiftJIS(u32 arg0) {
         var_a3--;
     }
 
-    // #Region 2S2H
+    // #Region SOH
     int index = var_a3 + (0xBC * ((arg0 >> 8) - 0x81));
     if (index < 0 || index >= ARRAY_COUNT(T_800AF828_ne0)) {
         // Invalid font char found
