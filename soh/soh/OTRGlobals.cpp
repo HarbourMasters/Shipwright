@@ -149,6 +149,8 @@ Color_RGB8 zoraColor = { 0x00, 0xEC, 0x64 };
 
 float previousImGuiScale;
 
+bool prevAltAssets = false;
+
 // Same as NaviColor type from OoT src (z_actor.c), but modified to be sans alpha channel for Controller LED.
 typedef struct {
     Color_RGB8 inner;
@@ -321,6 +323,7 @@ OTRGlobals::OTRGlobals() {
     // tell LUS to reserve 3 SoH specific threads (Game, Audio, Save)
     context->InitResourceManager(OTRFiles, {}, 3);
     context->GetResourceManager()->SetAltAssetsEnabled(CVarGetInteger(CVAR_ENHANCEMENT("AltAssets"), 0));
+    prevAltAssets = CVarGetInteger(CVAR_ENHANCEMENT("AltAssets"), 0);
 
     context->InitControlDeck({BTN_MODIFIER1, BTN_MODIFIER2});
     context->GetControlDeck()->SetSinglePlayerMappingMode(true);
@@ -1254,8 +1257,6 @@ extern "C" uint64_t GetUnixTimestamp() {
     auto millis = std::chrono::duration_cast<std::chrono::milliseconds>(since_epoch);
     return (uint64_t)millis.count();
 }
-
-extern bool prevAltAssets;
 
 extern "C" void Graph_StartFrame() {
 #ifndef __WIIU__

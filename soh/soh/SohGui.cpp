@@ -43,7 +43,6 @@
 #include "Enhancements/resolution-editor/ResolutionEditor.h"
 #include "Enhancements/debugger/MessageViewer.h"
 
-bool prevAltAssets = false;
 bool isBetaQuestEnabled = false;
 
 extern "C" {
@@ -137,7 +136,6 @@ namespace SohGui {
     std::shared_ptr<SohModalWindow> mModalWindow;
 
     void SetupGuiElements() {
-        prevAltAssets = CVarGetInteger(CVAR_ENHANCEMENT("AltAssets"), 0);
         auto gui = Ship::Context::GetInstance()->GetWindow()->GetGui();
 
         mSohMenuBar = std::make_shared<SohMenuBar>(CVAR_MENU_BAR_OPEN, CVarGetInteger(CVAR_MENU_BAR_OPEN, 0));
