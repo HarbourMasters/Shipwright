@@ -1,0 +1,34 @@
+<Root>
+    <File Name="object_ds2" Segment="6">
+        <Animation Name="object_ds2_Anim_0002E4" Offset="0x2E4"/>
+        <DList Name="object_ds2_DL_001990" Offset="0x1990"/>
+        <DList Name="object_ds2_DL_001C98" Offset="0x1C98"/>
+        <DList Name="object_ds2_DL_002188" Offset="0x2188"/>
+        <DList Name="object_ds2_DL_0022B0" Offset="0x22B0"/>
+        <DList Name="object_ds2_DL_002480" Offset="0x2480"/>
+        <DList Name="object_ds2_DL_002610" Offset="0x2610"/>
+        <DList Name="object_ds2_DL_002738" Offset="0x2738"/>
+        <DList Name="object_ds2_DL_002908" Offset="0x2908"/>
+        <Texture Name="object_ds2_TLUT_002A98" OutName="tlut_00002A98" Format="rgba16" Width="16" Height="16" Offset="0x2A98"/>
+        <Texture Name="object_ds2_Tex_002C98" OutName="tex_00002C98" Format="ci8" Width="16" Height="16" Offset="0x2C98" TlutOffset="0x2A98"/>
+        <Texture Name="object_ds2_Tex_002D98" OutName="tex_00002D98" Format="ci8" Width="8" Height="8" Offset="0x2D98" TlutOffset="0x2A98"/>
+        <Texture Name="object_ds2_Tex_002DD8" OutName="tex_00002DD8" Format="ci8" Width="16" Height="16" Offset="0x2DD8" TlutOffset="0x2A98"/>
+        <Texture Name="object_ds2_Tex_002ED8" OutName="tex_00002ED8" Format="ci8" Width="32" Height="16" Offset="0x2ED8" TlutOffset="0x2A98"/>
+        <Texture Name="gPotionShopkeeperEyeOpenTex" OutName="eye_open" Format="ci8" Width="32" Height="32" Offset="0x30D8" TlutOffset="0x2A98"/>
+        <Texture Name="gPotionShopkeeperEyeHalfTex" OutName="eye_half" Format="ci8" Width="32" Height="32" Offset="0x34D8" TlutOffset="0x2A98"/>
+        <Texture Name="gPotionShopkeeperEyeClosedTex" OutName="eye_closed" Format="ci8" Width="32" Height="32" Offset="0x38D8" TlutOffset="0x2A98"/>
+        <Texture Name="object_ds2_Tex_003CD8" OutName="tex_00003CD8" Format="ci8" Width="16" Height="16" Offset="0x3CD8" TlutOffset="0x2A98"/>
+        <Texture Name="object_ds2_Tex_003DD8" OutName="tex_00003DD8" Format="ci8" Width="16" Height="16" Offset="0x3DD8" TlutOffset="0x2A98"/>
+        <Texture Name="object_ds2_Tex_003ED8" OutName="tex_00003ED8" Format="ci8" Width="16" Height="16" Offset="0x3ED8" TlutOffset="0x2A98"/>
+        <Texture Name="object_ds2_Tex_003FD8" OutName="tex_00003FD8" Format="ci8" Width="16" Height="32" Offset="0x3FD8" TlutOffset="0x2A98"/>
+        <Limb Name="object_ds2_Limb_0041D8" LimbType="Standard" Offset="0x41D8"/>
+        <Limb Name="object_ds2_Limb_0041E4" LimbType="Standard" Offset="0x41E4"/>
+        <Limb Name="object_ds2_Limb_0041F0" LimbType="Standard" Offset="0x41F0"/>
+        <Limb Name="object_ds2_Limb_0041FC" LimbType="Standard" Offset="0x41FC"/>
+        <Limb Name="object_ds2_Limb_004208" LimbType="Standard" Offset="0x4208"/>
+        <Limb Name="object_ds2_Limb_004214" LimbType="Standard" Offset="0x4214"/>
+        <Limb Name="object_ds2_Limb_004220" LimbType="Standard" Offset="0x4220"/>
+        <Limb Name="object_ds2_Limb_00422C" LimbType="Standard" Offset="0x422C"/>
+        <Skeleton Name="object_ds2_Skel_004258" Type="Flex" LimbType="Standard" Offset="0x4258"/>
+    </File>
+</Root>

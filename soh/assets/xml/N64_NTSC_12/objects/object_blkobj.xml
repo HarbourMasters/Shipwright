@@ -1,0 +1,37 @@
+<Root>
+    <File Name="object_blkobj" Segment="6">
+        <Texture Name="object_blkobjTex_008090" OutName="object_blkobjTex_008090" Format="rgba16" Width="32" Height="32" Offset="0x8090" AddedByScript="true"/>
+        <Texture Name="object_blkobjTex_008890" OutName="object_blkobjTex_008890" Format="rgba16" Width="32" Height="32" Offset="0x8890" AddedByScript="true"/>
+        <Texture Name="object_blkobjTex_009090" OutName="object_blkobjTex_009090" Format="rgba16" Width="32" Height="32" Offset="0x9090" AddedByScript="true"/>
+        <Texture Name="object_blkobjTex_009890" OutName="object_blkobjTex_009890" Format="rgba16" Width="32" Height="32" Offset="0x9890" AddedByScript="true"/>
+        <Texture Name="object_blkobjTex_00A090" OutName="object_blkobjTex_00A090" Format="ia16" Width="32" Height="32" Offset="0xA090" AddedByScript="true"/>
+        <Texture Name="object_blkobjTex_00A890" OutName="object_blkobjTex_00A890" Format="rgba16" Width="32" Height="32" Offset="0xA890" AddedByScript="true"/>
+        <Texture Name="object_blkobjTex_00B090" OutName="object_blkobjTex_00B090" Format="rgba16" Width="32" Height="32" Offset="0xB090" AddedByScript="true"/>
+        <Texture Name="object_blkobjTex_00B890" OutName="object_blkobjTex_00B890" Format="rgba16" Width="32" Height="32" Offset="0xB890" AddedByScript="true"/>
+        <Texture Name="object_blkobjTex_00C090" OutName="object_blkobjTex_00C090" Format="rgba16" Width="32" Height="32" Offset="0xC090" AddedByScript="true"/>
+        <Texture Name="object_blkobjTex_00C890" OutName="object_blkobjTex_00C890" Format="rgba16" Width="32" Height="32" Offset="0xC890" AddedByScript="true"/>
+        <Texture Name="object_blkobjTex_00D090" OutName="object_blkobjTex_00D090" Format="rgba16" Width="32" Height="32" Offset="0xD090" AddedByScript="true"/>
+        <Texture Name="object_blkobjTex_00D890" OutName="object_blkobjTex_00D890" Format="rgba16" Width="32" Height="32" Offset="0xD890" AddedByScript="true"/>
+        <Texture Name="object_blkobjTex_00E090" OutName="object_blkobjTex_00E090" Format="rgba16" Width="32" Height="32" Offset="0xE090" AddedByScript="true"/>
+        <Texture Name="object_blkobjTex_00E890" OutName="object_blkobjTex_00E890" Format="rgba16" Width="32" Height="64" Offset="0xE890" AddedByScript="true"/>
+        <Texture Name="object_blkobjTex_00F890" OutName="object_blkobjTex_00F890" Format="rgba16" Width="32" Height="32" Offset="0xF890" AddedByScript="true"/>
+        <Texture Name="object_blkobjTex_010090" OutName="object_blkobjTex_010090" Format="rgba16" Width="32" Height="32" Offset="0x10090" AddedByScript="true"/>
+        <Texture Name="object_blkobjTex_010890" OutName="object_blkobjTex_010890" Format="rgba16" Width="32" Height="32" Offset="0x10890" AddedByScript="true"/>
+        <Texture Name="object_blkobjTex_011090" OutName="object_blkobjTex_011090" Format="rgba16" Width="32" Height="32" Offset="0x11090" AddedByScript="true"/>
+        <Texture Name="object_blkobjTex_011890" OutName="object_blkobjTex_011890" Format="rgba16" Width="32" Height="32" Offset="0x11890" AddedByScript="true"/>
+        <Texture Name="object_blkobjTex_012090" OutName="object_blkobjTex_012090" Format="rgba16" Width="32" Height="32" Offset="0x12090" AddedByScript="true"/>
+        <Texture Name="object_blkobjTex_012890" OutName="object_blkobjTex_012890" Format="rgba16" Width="32" Height="32" Offset="0x12890" AddedByScript="true"/>
+        <Texture Name="object_blkobjTex_013090" OutName="object_blkobjTex_013090" Format="rgba16" Width="32" Height="32" Offset="0x13090" AddedByScript="true"/>
+        <!-- Illusion Room Collision -->
+        <Collision Name="gIllusionRoomCol" Offset="0x7564"/>
+
+        <!-- Illusion Room DLists -->
+        <DList Name="gIllusionRoomNormalDL" Offset="0x14E0"/>
+        <DList Name="gIllusionRoomIllusionDL" Offset="0x53D0"/>
+        
+        <!-- Unused Content -->
+
+        <!-- Illusion room DLists -->
+        <DList Name="gIllusionRoomTreeDL" Offset="0x7EB0"/>
+    </File>
+</Root>

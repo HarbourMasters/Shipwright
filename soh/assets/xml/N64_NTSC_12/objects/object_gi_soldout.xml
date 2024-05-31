@@ -1,0 +1,6 @@
+<Root>
+    <File Name="object_gi_soldout" Segment="6">
+        <Texture Name="object_gi_soldoutTex_000000" OutName="object_gi_soldoutTex_000000" Format="ia8" Width="32" Height="32" Offset="0x0" AddedByScript="true"/>
+        <DList Name="gGiSoldOutDL" Offset="0x0440"/>
+    </File>
+</Root>
