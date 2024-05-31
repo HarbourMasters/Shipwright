@@ -51,11 +51,11 @@ const char* GetGameVersionString(s32 index) {
     uint32_t gameVersion = ResourceMgr_GetGameVersion(index);
     switch (gameVersion) {
         case OOT_NTSC_US_10:
-            return "NTSC-U 1.0";
+            return "NTSC 1.0";
         case OOT_NTSC_US_11:
-            return "NTSC-U 1.1";
+            return "NTSC 1.1";
         case OOT_NTSC_US_12:
-            return "NTSC-U 1.2";
+            return "NTSC 1.2";
         case OOT_PAL_10:
             return "PAL 1.0";
         case OOT_PAL_11:
