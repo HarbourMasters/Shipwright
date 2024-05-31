@@ -60,6 +60,7 @@ static constexpr uint32_t OOT_PAL_10 = 0xB044B569;
 static constexpr uint32_t OOT_PAL_11 = 0xB2055FBD;
 static constexpr uint32_t OOT_NTSC_10 = 0xEC7011B7;
 static constexpr uint32_t OOT_NTSC_11 = 0xD43DA81F;
+static constexpr uint32_t OOT_NTSC_12 = 0x693BA2AE;
 
 static const std::unordered_map<uint32_t, const char*> verMap = {
     { OOT_PAL_GC, "PAL Gamecube" },
@@ -71,10 +72,11 @@ static const std::unordered_map<uint32_t, const char*> verMap = {
     { OOT_PAL_11, "PAL N64 1.1" },
     { OOT_NTSC_10, "NTSC N64 1.0" },
     { OOT_NTSC_11, "NTSC N64 1.1" },
+    { OOT_NTSC_12, "NTSC N64 1.2" },
 };
 
 // TODO only check the first 54MB of the rom.
-static constexpr std::array<const uint32_t, 14> goodCrcs = {
+static constexpr std::array<const uint32_t, 16> goodCrcs = {
     0xfa8c0555, // MQ DBG 64MB (Original overdump)
     0x8652ac4c, // MQ DBG 64MB
     0x5B8A1EB7, // MQ DBG 64MB (Empty overdump)
@@ -89,6 +91,8 @@ static constexpr std::array<const uint32_t, 14> goodCrcs = {
     0xD0C76FA9, // N64 NTSC JP 1.0
     0x3496EE47, // N64 NTSC US 1.1
     0xA25D1262, // N64 NTSC JP 1.1
+    0x15736A58, // N64 NTSC US 1.2
+    0x83B8967D, // N64 NTSC JP 1.2
 };
 
 enum class ButtonId : int {
@@ -544,6 +548,8 @@ const char* Extractor::GetZapdVerStr() const {
             return "N64_NTSC_10";
         case OOT_NTSC_11:
             return "N64_NTSC_11";
+        case OOT_NTSC_12:
+            return "N64_NTSC_12";
         default:
             // We should never be in a state where this path happens.
             UNREACHABLE;

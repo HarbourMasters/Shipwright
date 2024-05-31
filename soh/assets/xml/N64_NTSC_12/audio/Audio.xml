@@ -1,6 +1,6 @@
 <Root>
 	<File Name="code" OutName="audio" RangeStart="0x0" RangeEnd="0x12CBB0">
-		<Audio Name="audio" Offset="0x00" SoundFontTableOffset="0x102860" SequenceTableOffset="0x102C90" SampleBankTableOffset="0x103380" SequenceFontTableOffset="0x102AD0">
+		<Audio Name="audio" Offset="0x00" SoundFontTableOffset="0x102710" SequenceTableOffset="0x102B40" SampleBankTableOffset="0x103230" SequenceFontTableOffset="0x102980">
 		<Sequences>
 				<Sequence Name="000_Sound_Effects"/>
 				<Sequence Name="001_Ambient_Effects"/>
@@ -1304,137 +1304,125 @@
 				<Sample Name="Clap" SampleRate="24000">
 					<Offset Version="MQDebug" At="0x35C900"/>
 				</Sample>
-				<!-- ntsc start -->
-				<!-- todo: document sample names -->
-				<Sample Name="Sample_590">
+				<Sample Name="Resonant Bass Marimba" SampleRate="18541">
 					<Offset Version="MQDebug" At="0x35D100"/>
 				</Sample>
-				<Sample Name="Sample_591">
-					<Offset Version="MQDebug" At="0x365DB0"/>
-				</Sample>
-				<Sample Name="Islamic Chant">
-					<Offset Version="MQDebug" At="0x36C840"/>
-				</Sample>
-				<!-- ntsc end -->
-				<Sample Name="Resonant Bass Marimba" SampleRate="18541">
-					<Offset Version="MQDebug" At="0x37A4B0"/>
-				</Sample>
 				<Sample Name="Haunting Wind">
-					<Offset Version="MQDebug" At="0x381930"/>
+					<Offset Version="MQDebug" At="0x364580"/>
 				</Sample>
 				<Sample Name="Off Hi-Hat" SampleRate="26000">
-					<Offset Version="MQDebug" At="0x38D230"/>
+					<Offset Version="MQDebug" At="0x36FE80"/>
 				</Sample>
 				<Sample Name="Drum and Sitar" SampleRate="20000">
-					<Offset Version="MQDebug" At="0x391FD0"/>
+					<Offset Version="MQDebug" At="0x374C20"/>
 				</Sample>
 				<Sample Name="Percussive Resonance" SampleRate="23973">
-					<Offset Version="MQDebug" At="0x395710"/>
+					<Offset Version="MQDebug" At="0x378360"/>
 				</Sample>
 				<Sample Name="Clarinet">
-					<Offset Version="MQDebug" At="0x397A60"/>
+					<Offset Version="MQDebug" At="0x37A6B0"/>
 				</Sample>
 				<Sample Name="Harpsichord (High)" SampleRate="42714">
-					<Offset Version="MQDebug" At="0x398650"/>
+					<Offset Version="MQDebug" At="0x37B2A0"/>
 				</Sample>
 				<Sample Name="Marimba 1" SampleRate="28508">
-					<Offset Version="MQDebug" At="0x39FBE0"/>
+					<Offset Version="MQDebug" At="0x382830"/>
 				</Sample>
 				<Sample Name="Marimba 2" SampleRate="14254">
-					<Offset Version="MQDebug" At="0x3A2280"/>
+					<Offset Version="MQDebug" At="0x384ED0"/>
 				</Sample>
 				<Sample Name="Crystal Synth" SampleRate="26939">
-					<Offset Version="MQDebug" At="0x3A4410"/>
+					<Offset Version="MQDebug" At="0x387060"/>
 				</Sample>
 				<Sample Name="Sitar" SampleRate="57017">
-					<Offset Version="MQDebug" At="0x3AC3B0"/>
+					<Offset Version="MQDebug" At="0x38F000"/>
 				</Sample>
 				<Sample Name="Koto" SampleRate="28508">
-					<Offset Version="MQDebug" At="0x3AFA80"/>
+					<Offset Version="MQDebug" At="0x3926D0"/>
 				</Sample>
 				<Sample Name="Some Manner of Drum" SampleRate="32000">
-					<Offset Version="MQDebug" At="0x3B4330"/>
+					<Offset Version="MQDebug" At="0x396F80"/>
 				</Sample>
 				<Sample Name="Another Type of Drum" SampleRate="32000">
-					<Offset Version="MQDebug" At="0x3B5350"/>
+					<Offset Version="MQDebug" At="0x397FA0"/>
 				</Sample>
 				<Sample Name="Quick Drum" SampleRate="32000">
-					<Offset Version="MQDebug" At="0x3B6B40"/>
+					<Offset Version="MQDebug" At="0x399790"/>
 				</Sample>
 				<Sample Name="Gong" SampleRate="32000">
-					<Offset Version="MQDebug" At="0x3B7A60"/>
+					<Offset Version="MQDebug" At="0x39A6B0"/>
 				</Sample>
 				<Sample Name="Windchimes">
-					<Offset Version="MQDebug" At="0x3C1F90"/>
+					<Offset Version="MQDebug" At="0x3A4BE0"/>
 				</Sample>
 				<Sample Name="Goron Drum">
-					<Offset Version="MQDebug" At="0x3C7A90"/>
+					<Offset Version="MQDebug" At="0x3AA6E0"/>
 				</Sample>
 				<Sample Name="Melodic Wooden Clacking" SampleRate="32000">
-					<Offset Version="MQDebug" At="0x3C9FD0"/>
+					<Offset Version="MQDebug" At="0x3ACC20"/>
 				</Sample>
 				<Sample Name="Vocal Ohs">
-					<Offset Version="MQDebug" At="0x3CB570"/>
+					<Offset Version="MQDebug" At="0x3AE1C0"/>
 				</Sample>
 				<Sample Name="Flute and Voice" SampleRate="32000">
-					<Offset Version="MQDebug" At="0x3D1980"/>
+					<Offset Version="MQDebug" At="0x3B45D0"/>
 				</Sample>
 				<Sample Name="Off-Kilter Flute" SampleRate="32000">
-					<Offset Version="MQDebug" At="0x3D2840"/>
+					<Offset Version="MQDebug" At="0x3B5490"/>
 				</Sample>
 				<Sample Name="Voice" SampleRate="32000">
-					<Offset Version="MQDebug" At="0x3D37A0"/>
+					<Offset Version="MQDebug" At="0x3B63F0"/>
 				</Sample>
 				<Sample Name="Drum 1" SampleRate="32000">
-					<Offset Version="MQDebug" At="0x3D45A0"/>
+					<Offset Version="MQDebug" At="0x3B71F0"/>
 				</Sample>
 				<Sample Name="Drum 2" SampleRate="32000">
-					<Offset Version="MQDebug" At="0x3D6860"/>
+					<Offset Version="MQDebug" At="0x3B94B0"/>
 				</Sample>
 				<Sample Name="Slap Bass" SampleRate="32000">
-					<Offset Version="MQDebug" At="0x3D9030"/>
+					<Offset Version="MQDebug" At="0x3BBC80"/>
 				</Sample>
 				<Sample Name="Shaker">
-					<Offset Version="MQDebug" At="0x3DBB00"/>
+					<Offset Version="MQDebug" At="0x3BE750"/>
 				</Sample>
 				<Sample Name="Cowbell" SampleRate="32000">
-					<Offset Version="MQDebug" At="0x3DCA50"/>
+					<Offset Version="MQDebug" At="0x3BF6A0"/>
 				</Sample>
 				<Sample Name="Guitar (Low)" SampleRate="19000">
-					<Offset Version="MQDebug" At="0x3DD710"/>
+					<Offset Version="MQDebug" At="0x3C0360"/>
 				</Sample>
 				<Sample Name="Guitar">
-					<Offset Version="MQDebug" At="0x3DFEF0"/>
+					<Offset Version="MQDebug" At="0x3C2B40"/>
 				</Sample>
 				<Sample Name="Guitar (High)" SampleRate="10690">
-					<Offset Version="MQDebug" At="0x3E20B0"/>
+					<Offset Version="MQDebug" At="0x3C4D00"/>
 				</Sample>
 				<Sample Name="Viola" SampleRate="19027">
-					<Offset Version="MQDebug" At="0x3E3F80"/>
+					<Offset Version="MQDebug" At="0x3C6BD0"/>
 				</Sample>
 				<Sample Name="Church Bell">
-					<Offset Version="MQDebug" At="0x3E8000"/>
+					<Offset Version="MQDebug" At="0x3CAC50"/>
 				</Sample>
 				<Sample Name="Goron Oh (High)">
-					<Offset Version="MQDebug" At="0x3ECC50"/>
+					<Offset Version="MQDebug" At="0x3CF8A0"/>
 				</Sample>
 				<Sample Name="Goron Oh">
-					<Offset Version="MQDebug" At="0x3ED4F0"/>
+					<Offset Version="MQDebug" At="0x3D0140"/>
 				</Sample>
 				<Sample Name="Banjo (Low)" SampleRate="57017">
-					<Offset Version="MQDebug" At="0x3EDFB0"/>
+					<Offset Version="MQDebug" At="0x3D0C00"/>
 				</Sample>
 				<Sample Name="Banjo" SampleRate="38054">
-					<Offset Version="MQDebug" At="0x3F0DF0"/>
+					<Offset Version="MQDebug" At="0x3D3A40"/>
 				</Sample>
-				<!-- ntsc start -->
-				<!-- Islamic Chant offset moved to earlier block in ntsc -->
-				<!-- ntsc end -->
+				<Sample Name="Islamic Chant">
+					<Offset Version="MQDebug" At="0x3D62E0"/>
+				</Sample>
 				<Sample Name="Steel Drum">
-					<Offset Version="MQDebug" At="0x3F3690"/>
+					<Offset Version="MQDebug" At="0x3E3F50"/>
 				</Sample>
 				<Sample Name="Steel Drum (High)" SampleRate="14254">
-					<Offset Version="MQDebug" At="0x3F82F0"/>
+					<Offset Version="MQDebug" At="0x3E8BB0"/>
 				</Sample>
 			</Samples>
 

@@ -45,6 +45,6 @@
     </File>
     <File Name="spot16_room_0" Segment="3">
         <Room Name="spot16_room_0" Offset="0x0"/>
-        <DList Name="spot16_room_0DL_00AA48" Offset="0xA9C8"/>
+        <DList Name="spot16_room_0DL_00AA48" Offset="0xAA48"/>
     </File>
 </Root>

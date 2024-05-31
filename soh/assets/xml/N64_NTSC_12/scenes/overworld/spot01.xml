@@ -45,7 +45,7 @@
         <Scene Name="spot01_scene" Offset="0x0"/>
     </File>
     <File Name="spot01_room_0" Segment="3">
-        <DList Name="gSpot01DL_009E38" Offset="0x9E78"/>
+        <DList Name="gSpot01DL_009E38" Offset="0x9E38"/>
         <Room Name="spot01_room_0" Offset="0x0"/>
     </File>
 </Root>
