@@ -1960,38 +1960,69 @@ void Message_Decode(PlayState* play) {
             break;
         } else if (temp_s2 == MESSAGE_NAME) {
             // Substitute the player name control character for the file's player name.
+            u8 emptyChar = (ResourceMgr_GetGameVersion(0) == GAME_REGION_PAL) ? 0x3E : 0xDF;
             for (playerNameLen = ARRAY_COUNT(gSaveContext.playerName); playerNameLen > 0; playerNameLen--) {
-                if (gSaveContext.playerName[playerNameLen - 1] != 0x3E) {
+                if (gSaveContext.playerName[playerNameLen - 1] != emptyChar) {
                     break;
                 }
             }
             // "Name"
             osSyncPrintf("\n名前 ＝ ");
-            for (i = 0; i < playerNameLen; i++) {
-                phi_s1 = gSaveContext.playerName[i];
-                if (phi_s1 == 0x3E) {
-                    phi_s1 = ' ';
-                } else if (phi_s1 == 0x40) {
-                    phi_s1 = '.';
-                } else if (phi_s1 == 0x3F) {
-                    phi_s1 = '-';
-                } else if (phi_s1 < 0xA) {
-                    phi_s1 += 0;
-                    phi_s1 += '0';
-                } else if (phi_s1 < 0x24) {
-                    phi_s1 += 0;
-                    phi_s1 += '7';
-                } else if (phi_s1 < 0x3E) {
-                    phi_s1 += 0;
-                    phi_s1 += '=';
+            // NTSC TODO: Handle files created on JP
+            if (ResourceMgr_GetGameVersion(0) == GAME_REGION_PAL) {
+                for (i = 0; i < playerNameLen; i++) {
+                    phi_s1 = gSaveContext.playerName[i];
+                    if (phi_s1 == 0x3E) {
+                        phi_s1 = ' ';
+                    } else if (phi_s1 == 0x40) {
+                        phi_s1 = '.';
+                    } else if (phi_s1 == 0x3F) {
+                        phi_s1 = '-';
+                    } else if (phi_s1 < 0xA) {
+                        phi_s1 += 0;
+                        phi_s1 += '0';
+                    } else if (phi_s1 < 0x24) {
+                        phi_s1 += 0;
+                        phi_s1 += '7';
+                    } else if (phi_s1 < 0x3E) {
+                        phi_s1 += 0;
+                        phi_s1 += '=';
+                    }
+                    if (phi_s1 != ' ') {
+                        Font_LoadChar(font, phi_s1 - ' ', charTexIdx);
+                        charTexIdx += FONT_CHAR_TEX_SIZE;
+                    }
+                    osSyncPrintf("%x ", phi_s1);
+                    msgCtx->msgBufDecoded[decodedBufPos] = phi_s1;
+                    decodedBufPos++;
                 }
-                if (phi_s1 != ' ') {
-                    Font_LoadChar(font, phi_s1 - ' ', charTexIdx);
-                    charTexIdx += FONT_CHAR_TEX_SIZE;
+            } else { // GAME_REGION_NTSC
+                for (i = 0; i < playerNameLen; i++) {
+                    phi_s1 = gSaveContext.playerName[i];
+                    if (phi_s1 == 0xDF) {
+                        phi_s1 = ' ';
+                    } else if (phi_s1 == 0xEA) {
+                        phi_s1 = '.';
+                    } else if (phi_s1 == 0xE4) {
+                        phi_s1 = '-';
+                    } else if (phi_s1 < 0xA) {
+                        phi_s1 += 0;
+                        phi_s1 += '0';
+                    } else if (phi_s1 < 0xC5) {
+                        phi_s1 += 0;
+                        phi_s1 -= 0x6A;
+                    } else if (phi_s1 < 0xDF) {
+                        phi_s1 += 0;
+                        phi_s1 -= 0x64;
+                    }
+                    if (phi_s1 != ' ') {
+                        Font_LoadChar(font, phi_s1 - ' ', charTexIdx);
+                        charTexIdx += FONT_CHAR_TEX_SIZE;
+                    }
+                    osSyncPrintf("%x ", phi_s1);
+                    msgCtx->msgBufDecoded[decodedBufPos] = phi_s1;
+                    decodedBufPos++;
                 }
-                osSyncPrintf("%x ", phi_s1);
-                msgCtx->msgBufDecoded[decodedBufPos] = phi_s1;
-                decodedBufPos++;
             }
             decodedBufPos--;
         } else if (temp_s2 == MESSAGE_MARATHON_TIME || temp_s2 == MESSAGE_RACE_TIME) {
