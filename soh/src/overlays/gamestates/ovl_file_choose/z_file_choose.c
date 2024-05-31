@@ -3195,7 +3195,6 @@ void FileChoose_DrawRandoSaveVersionWarning(GameState* thisx) {
             }
 
             // Compute the height for a "squished" textbox texture
-            // NTSC TODO: Check if this is correct for japanese
             s16 height = ((gSaveContext.language == LANGUAGE_ENG) || (gSaveContext.language == LANGUAGE_JPN)) ? 32 : 40; // English is only 2 lines
             // float math to get a S5.10 number that will squish the texture
             f32 texCoordinateHeightF = 512 / ((f32)height / 64);

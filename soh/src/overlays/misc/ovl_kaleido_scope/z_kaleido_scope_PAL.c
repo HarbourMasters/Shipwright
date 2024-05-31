@@ -1933,7 +1933,6 @@ void KaleidoScope_DrawInfoPanel(PlayState* play) {
         { gPauseToEquipmentENGTex, gPauseToEquipmentGERTex, gPauseToEquipmentFRATex, gPauseToEquipmentJPNTex },
         { gPauseToSelectItemENGTex, gPauseToSelectItemGERTex, gPauseToSelectItemFRATex, gPauseToSelectItemJPNTex },
     };
-    // NTSC TODO: check what these offsets should really be for jpn
     static u16 D_8082ADD8[4] = { 56, 88, 80, 56 };
     static u16 D_8082ADE0[4] = { 64, 88, 72, 48 };
     static u16 D_8082ADE8[4] = { 80, 104, 112, 80 };
@@ -2448,20 +2447,8 @@ void KaleidoScope_UpdateNamePanel(PlayState* play) {
                     sp2A += 12;
                 }
 
-                // bool canUseTextureName = true;
-                // Values above 48 shouldnt happen, but possibly can?
-                // Other alternative is to do sp2A % 12 before this sequence?
-                // if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL) {
-                //     canUseTextureName = (((sp2A >= 0) && (sp2A < 36)) || ((sp2A >= 48) && (sp2A < 114)));
-                // } else { // GAME_REGION_NTSC
-                //     canUseTextureName = (((sp2A >= 0) && (sp2A < 12)) || ((sp2A >= 36) && (sp2A < 70)) || ((sp2A >= 114) && (sp2A < 136)));
-                // }
-
-                // NTSC TODO: Is it safe to not copy anything?
-                // if (canUseTextureName) {
                 const char* textureName = mapNameTextures[sp2A];
                 memcpy(pauseCtx->nameSegment, textureName, strlen(textureName) + 1);
-                // }
             } else {
                 // #region SOH [NTSC] - There's a lot of OOB/Incorrect accesses that can occur so make sure sp2A selects something valid
                 sp2A %= 123;

@@ -893,13 +893,13 @@ void FileChoose_UpdateKeyboardCursorNES(GameState* thisx) {
                 this->kbdButton = this->kbdX;
 
                 if (sLastKbdX != this->kbdX) {
-                    // NTSC TODO: Figure out multi-language TTS
+                    // NTSC TODO: Figure out japanese TTS
                     // GameInteractor_ExecuteOnUpdateFileNameSelection(0xF0 + this->kbdX);
                     sLastKbdX = this->kbdX;
                     sLastCharIndex = -1;
                 }
             } else if (sLastCharIndex != this->charIndex && this->charIndex < 65) {
-                // NTSC TODO: Figure out multi-language TTS
+                // NTSC TODO: Figure out japanese TTS
                 // GameInteractor_ExecuteOnUpdateFileNameSelection(D_808123F0[this->charIndex]);
                 sLastCharIndex = this->charIndex;
                 sLastKbdX = -1;
