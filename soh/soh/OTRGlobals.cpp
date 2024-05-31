@@ -320,6 +320,7 @@ OTRGlobals::OTRGlobals() {
 
     // tell LUS to reserve 3 SoH specific threads (Game, Audio, Save)
     context->InitResourceManager(OTRFiles, {}, 3);
+    context->GetResourceManager()->SetAltAssetsEnabled(CVarGetInteger(CVAR_ENHANCEMENT("AltAssets"), 0));
 
     context->InitControlDeck({BTN_MODIFIER1, BTN_MODIFIER2});
     context->GetControlDeck()->SetSinglePlayerMappingMode(true);
@@ -1422,10 +1423,10 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
 
     if (ToggleAltAssetsAtEndOfFrame) {
         ToggleAltAssetsAtEndOfFrame = false;
-        auto newAltValue = !CVarGetInteger(CVAR_ALT_ASSETS, 0);
+        auto newAltValue = !CVarGetInteger(CVAR_ENHANCEMENT("AltAssets"), 0);
 
         // Actually update the CVar now before runing the alt asset update listeners
-        CVarSetInteger(CVAR_ALT_ASSETS, newAltValue);
+        CVarSetInteger(CVAR_ENHANCEMENT("AltAssets"), newAltValue);
         Ship::Context::GetInstance()->GetResourceManager()->SetAltAssetsEnabled(newAltValue);
         gfx_texture_cache_clear();
         SOH::SkeletonPatcher::UpdateSkeletons();

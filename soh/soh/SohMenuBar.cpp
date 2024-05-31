@@ -1086,10 +1086,10 @@ void DrawEnhancementsMenu() {
         if (ImGui::BeginMenu("Graphics"))
         {
             if (ImGui::BeginMenu("Mods")) {
-                if (UIWidgets::PaddedEnhancementCheckbox("Use Alternate Assets", CVAR_ALT_ASSETS, false, false)) {
+                if (UIWidgets::PaddedEnhancementCheckbox("Use Alternate Assets", CVAR_ENHANCEMENT("AltAssets"), false, false)) {
                     // The checkbox will flip the alt asset CVar, but we instead want it to change at the end of the game frame
                     // We toggle it back while setting the flag to update the CVar later
-                    CVarSetInteger(CVAR_ALT_ASSETS, !CVarGetInteger(CVAR_ALT_ASSETS, 0));
+                    CVarSetInteger(CVAR_ENHANCEMENT("AltAssets"), !CVarGetInteger(CVAR_ENHANCEMENT("AltAssets"), 0));
                     ToggleAltAssetsAtEndOfFrame = true;
                 }
                 UIWidgets::Tooltip("Toggle between standard assets and alternate assets. Usually mods will indicate if this setting has to be used or not.");
