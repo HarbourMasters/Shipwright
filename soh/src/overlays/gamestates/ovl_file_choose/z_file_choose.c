@@ -2030,7 +2030,7 @@ void FileChoose_DrawFileInfo(GameState* thisx, s16 fileIndex, s16 isActive) {
                         sNamePrimColors[isActive][2], this->nameAlpha[fileIndex]);
 
         // #region SOH [NTSC] - Convert playerName to display appropriately
-        u8 filenameLanguage = Save_GetSaveMetaInfo(this->buttonIndex)->filenameLanguage;
+        u8 filenameLanguage = Save_GetSaveMetaInfo(fileIndex)->filenameLanguage;
         for (i = 0, vtxOffset = 0; vtxOffset < 0x20; i++, vtxOffset += 4) {
             u8 curChar = Save_GetSaveMetaInfo(fileIndex)->playerName[i];
             if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL) {
