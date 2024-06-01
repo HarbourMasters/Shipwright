@@ -520,6 +520,9 @@ bool Extractor::IsMasterQuest() const {
         case OOT_PAL_MQ:
         case OOT_PAL_GC_MQ_DBG:
             return true;
+        case OOT_NTSC_10:
+        case OOT_NTSC_11:
+        case OOT_NTSC_12:
         case OOT_PAL_10:
         case OOT_PAL_11:
         case OOT_PAL_GC:
