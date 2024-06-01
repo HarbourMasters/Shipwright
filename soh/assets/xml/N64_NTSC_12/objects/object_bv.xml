@@ -19,7 +19,7 @@
         <Texture Name="object_bvTex_0170D8" OutName="object_bvTex_0170D8" Format="rgba16" Width="16" Height="8" Offset="0x15CD8" AddedByScript="true"/>
         <Texture Name="object_bvTex_0171D8" OutName="object_bvTex_0171D8" Format="rgba16" Width="16" Height="16" Offset="0x15DD8" AddedByScript="true"/>
         <Texture Name="object_bvTex_018770" OutName="object_bvTex_018770" Format="rgba16" Width="8" Height="8" Offset="0x17370" AddedByScript="true"/>
-        <Texture Name="object_bvTex_018D30" OutName="object_bvTex_018D30" Format="rgba16" Width="16" Height="8" Offset="0x17730" AddedByScript="true"/>
+        <Texture Name="object_bvTex_018D30" OutName="object_bvTex_018D30" Format="rgba16" Width="16" Height="8" Offset="0x17930" AddedByScript="true"/>
         <Texture Name="object_bvTex_018E30" OutName="object_bvTex_018E30" Format="rgba16" Width="16" Height="16" Offset="0x17A30" AddedByScript="true"/>
         <Texture Name="object_bvTex_019BB8" OutName="object_bvTex_019BB8" Format="ci8" Width="32" Height="64" Offset="0x187B8" TlutOffset="0x185B0" AddedByScript="true"/>
         <Texture Name="object_bvTex_01A6B8" OutName="object_bvTex_01A6B8" Format="ci8" Width="32" Height="64" Offset="0x192B8" TlutOffset="0x190B0" AddedByScript="true"/>
@@ -50,7 +50,7 @@
         <Animation Name="gBarinadeBodyAnim" Offset="0x3D84"/> <!-- Body anim 1-->
         <Animation Name="gBarinadeSupportAttachedAnim" Offset="0x152A8"/> <!-- Support anim 1 -->
         <Animation Name="gBarinadeZapperIdleAnim" Offset="0x17918"/> <!-- Zapper anim 1 -->
-        <Animation Name="gBarinadeStumpAnim" Offset="0x17D50"/> <!-- Stump anim 1 -->
+        <Animation Name="gBarinadeStumpAnim" Offset="0x16D50"/> <!-- Stump anim 1 -->
         <Animation Name="gBarinadeBariAnim" Offset="0x24"/> <!-- Bari anim -->
         <Animation Name="gBarinadeSupportDamage1Anim" Offset="0x14EAC"/> <!-- Support damaged anim 1 -->
         <Animation Name="gBarinadeSupportDamage2Anim" Offset="0x150B0"/> <!-- Support damaged anim 2 -->
