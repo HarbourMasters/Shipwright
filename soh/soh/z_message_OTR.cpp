@@ -149,7 +149,7 @@ extern "C" void OTRMessage_Init(bool isPal)
             sJpnMessageEntryTablePtr = OTRMessage_LoadTableJPN("text/jpn_message_data_static/jpn_message_data_static");
         }
         if (sNesMessageEntryTablePtr == NULL) {
-            sNesMessageEntryTablePtr = OTRMessage_LoadTable("text/ntsc_nes_message_data_static/ntsc_nes_message_data_static", false);
+            sNesMessageEntryTablePtr = OTRMessage_LoadTable("text/nes_message_data_static/ntsc_nes_message_data_static", false);
         }
     }
 
