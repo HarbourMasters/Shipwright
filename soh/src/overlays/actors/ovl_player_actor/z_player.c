@@ -2249,36 +2249,19 @@ void Player_ProcessItemButtons(Player* this, PlayState* play) {
     s32 item;
     s32 i;
 
-    if (this->currentMask != PLAYER_MASK_NONE) {
-        if (CVarGetInteger(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA) {
-            s32 maskItem = this->currentMask - PLAYER_MASK_KEATON + ITEM_MASK_KEATON;
-            bool hasOnDpad = false;
-            if (CVarGetInteger(CVAR_SETTING("DpadEquips"), 0) != 0) {
-                for (int buttonIndex = 4; buttonIndex < 8; buttonIndex++) {
-                    hasOnDpad |= gSaveContext.equips.buttonItems[buttonIndex] == maskItem;
-                }
-            }
+    if (this->currentMask != PLAYER_MASK_NONE && !CVarGetInteger(CVAR_ENHANCEMENT("PersistentMasks"), 0)) {
+        maskItemAction = this->currentMask - 1 + PLAYER_IA_MASK_KEATON;
 
-            if (gSaveContext.equips.buttonItems[0] != maskItem && gSaveContext.equips.buttonItems[1] != maskItem &&
-                gSaveContext.equips.buttonItems[2] != maskItem && gSaveContext.equips.buttonItems[3] != maskItem &&
-                !hasOnDpad && !CVarGetInteger(CVAR_ENHANCEMENT("PersistentMasks"), 0)) {
-                this->currentMask = gSaveContext.maskMemory = PLAYER_MASK_NONE;
-                func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
+        bool hasOnDpad = false;
+        if (CVarGetInteger(CVAR_SETTING("DpadEquips"), 0) != 0) {
+            for (int buttonIndex = 0; buttonIndex < 4; buttonIndex++) {
+                hasOnDpad |= Player_ItemIsItemAction(DPAD_ITEM(buttonIndex), maskItemAction);
             }
-        } else {
-            maskItemAction = this->currentMask - 1 + PLAYER_IA_MASK_KEATON;
-
-            bool hasOnDpad = false;
-            if (CVarGetInteger(CVAR_SETTING("DpadEquips"), 0) != 0) {
-                for (int buttonIndex = 0; buttonIndex < 4; buttonIndex++) {
-                    hasOnDpad |= Player_ItemIsItemAction(DPAD_ITEM(buttonIndex), maskItemAction);
-                }
-            }
-            if (!Player_ItemIsItemAction(C_BTN_ITEM(0), maskItemAction) &&
-                !Player_ItemIsItemAction(C_BTN_ITEM(1), maskItemAction) &&
-                !Player_ItemIsItemAction(C_BTN_ITEM(2), maskItemAction) && !hasOnDpad) {
-                this->currentMask = PLAYER_MASK_NONE;
-            }
+        }
+        if (!Player_ItemIsItemAction(C_BTN_ITEM(0), maskItemAction) &&
+            !Player_ItemIsItemAction(C_BTN_ITEM(1), maskItemAction) &&
+            !Player_ItemIsItemAction(C_BTN_ITEM(2), maskItemAction) && !hasOnDpad) {
+            this->currentMask = PLAYER_MASK_NONE;
         }
     }
 
