@@ -52,45 +52,9 @@ MessageTableEntry* OTRMessage_LoadTable(const std::string& filePath, bool isNES)
     // Allocate room for an additional message
     // OTRTODO: Should not be malloc'ing here. It's fine for now since we check elsewhere that the message table is
     // already null.
-    MessageTableEntry* table = (MessageTableEntry*)malloc(sizeof(MessageTableEntry) * (file->messages.size() + 1));
+    MessageTableEntry* table = (MessageTableEntry*)malloc(sizeof(MessageTableEntry) * file->messages.size());
 
     for (size_t i = 0; i < file->messages.size(); i++) {
-        // Look for Owl Text
-        if (file->messages[i].id == 0x2066) {
-            // Create a new message based on the Owl Text
-            uint32_t kaeporaMsgSize = file->messages[i].msg.size();
-            // OTRTODO: Should not be malloc'ing here. It's fine for now since we check elsewhere that the message table
-            // is already null.
-            char* kaeporaOg = (char*)malloc(sizeof(char) * kaeporaMsgSize);
-            char* kaeporaPatch = (char*)malloc(sizeof(char) * kaeporaMsgSize);
-            file->messages[i].msg.copy(kaeporaOg, kaeporaMsgSize, 0);
-            file->messages[i].msg.copy(kaeporaPatch, kaeporaMsgSize, 0);
-
-            size_t colorPos = file->messages[i].msg.find(QM_GREEN);
-            size_t newLinePos = colorPos + file->messages[i].msg.substr(colorPos + 1).find(CTRL_NEWLINE) + 1;
-            size_t endColorPos = newLinePos + file->messages[i].msg.substr(newLinePos).find(CTRL_COLOR);
-            size_t NoLength = newLinePos - (colorPos + 1);
-            size_t YesLength = endColorPos - (newLinePos + 1);
-            // Swap the order of yes and no in this new message
-            size_t yes = 0;
-            while (yes < YesLength) {
-                kaeporaPatch[colorPos + yes + 1] = kaeporaOg[newLinePos + yes + 1];
-                yes++;
-            }
-            kaeporaPatch[colorPos + yes + 1] = CTRL_NEWLINE;
-            size_t no = 0;
-            while (no < NoLength) {
-                kaeporaPatch[colorPos + yes + 2 + no] = kaeporaOg[colorPos + 1 + no];
-                no++;
-            }
-
-            // load data into message
-            table[file->messages.size()].textId = 0x71B3;
-            table[file->messages.size()].typePos = (file->messages[i].textboxType << 4) | file->messages[i].textboxYPos;
-            table[file->messages.size()].segment = kaeporaPatch;
-            table[file->messages.size()].msgSize = kaeporaMsgSize;
-        }
-
         SetMessageEntry(table[i], file->messages[i]);
 
         if (isNES && file->messages[i].id == 0xFFFC)
@@ -113,7 +77,7 @@ MessageTableEntry* OTRMessage_LoadTableJPN(const std::string& filePath) {
     // Allocate room for an additional message
     // OTRTODO: Should not be malloc'ing here. It's fine for now since we check elsewhere that the message table is
     // already null.
-    MessageTableEntry* table = (MessageTableEntry*)malloc(sizeof(MessageTableEntry) * (file->messages.size() + 1));
+    MessageTableEntry* table = (MessageTableEntry*)malloc(sizeof(MessageTableEntry) * file->messages.size());
 
     for (size_t i = 0; i < file->messages.size(); i++) {
         SetMessageEntry(table[i], file->messages[i]);

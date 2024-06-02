@@ -295,13 +295,6 @@ void Message_FindMessageJPN(PlayState* play, u16 textId) {
     Font* font = &play->msgCtx.font;
     MessageTableEntry* messageTableEntry = sJpnMessageEntryTablePtr;
 
-    // Use the better owl message if better owl is enabled
-    if (CVarGetInteger(CVAR_ENHANCEMENT("BetterOwl"), 0) != 0 && (textId == 0x2066 || textId == 0x607B ||
-        textId == 0x10C2 || textId == 0x10C6 || textId == 0x206A))
-    {
-        textId = 0x71B3;
-    }
-
     seg = messageTableEntry->segment;
 
     while (messageTableEntry->textId != 0xFFFF) {
@@ -340,13 +333,6 @@ void Message_FindMessage(PlayState* play, u16 textId) {
     const char** languageSegmentTable;
     Font* font;
     const char* seg;
-    u16 bufferId = textId;
-    // Use the better owl message if better owl is enabled
-    if (CVarGetInteger(CVAR_ENHANCEMENT("BetterOwl"), 0) != 0 && (bufferId == 0x2066 || bufferId == 0x607B ||
-        bufferId == 0x10C2 || bufferId == 0x10C6 || bufferId == 0x206A))
-    {
-        bufferId = 0x71B3;
-    }
 
     if (gSaveContext.language == LANGUAGE_GER)
         messageTableEntry = sGerMessageEntryTablePtr;
@@ -362,7 +348,7 @@ void Message_FindMessage(PlayState* play, u16 textId) {
     while (messageTableEntry->textId != 0xFFFF) {
         font = &play->msgCtx.font;
 
-        if (messageTableEntry->textId == bufferId) {
+        if (messageTableEntry->textId == textId) {
             foundSeg = messageTableEntry->segment;
             font->charTexBuf[0] = messageTableEntry->typePos;
 
@@ -373,14 +359,14 @@ void Message_FindMessage(PlayState* play, u16 textId) {
             // "Message found!!!"
             osSyncPrintf(" メッセージが,見つかった！！！ = %x  "
                          "(data=%x) (data0=%x) (data1=%x) (data2=%x) (data3=%x)\n",
-                         bufferId, font->msgOffset, font->msgLength, foundSeg, seg, nextSeg);
+                         textId, font->msgOffset, font->msgLength, foundSeg, seg, nextSeg);
             return;
         }
         messageTableEntry++;
     }
 
     // "Message not found!!!"
-    osSyncPrintf(" メッセージが,見つからなかった！！！ = %x\n", bufferId);
+    osSyncPrintf(" メッセージが,見つからなかった！！！ = %x\n", textId);
     font = &play->msgCtx.font;
     messageTableEntry = sNesMessageEntryTablePtr;
 
@@ -1062,6 +1048,12 @@ void Message_DrawTextJPN(PlayState* play, Gfx** gfxP) {
                     msgCtx->choiceTextId = msgCtx->textId;
                     msgCtx->stateTimer = 4;
                     msgCtx->choiceIndex = 0;
+                    if (CVarGetInteger(CVAR_ENHANCEMENT("BetterOwl"), 0)) {
+                        if ((msgCtx->textId == 0x2066 || msgCtx->textId == 0x607B || msgCtx->textId == 0x10C2 ||
+                             msgCtx->textId == 0x10C6 || msgCtx->textId == 0x206A)) {
+                            msgCtx->choiceIndex = 1;
+                        }
+                    }
                     Font_LoadMessageBoxIcon(font, TEXTBOX_ICON_ARROW);
                 }
                 break;
@@ -1401,6 +1393,12 @@ void Message_DrawText(PlayState* play, Gfx** gfxP) {
                     msgCtx->choiceTextId = msgCtx->textId;
                     msgCtx->stateTimer = 4;
                     msgCtx->choiceIndex = 0;
+                    if (CVarGetInteger(CVAR_ENHANCEMENT("BetterOwl"), 0)) {
+                        if ((msgCtx->textId == 0x2066 || msgCtx->textId == 0x607B || msgCtx->textId == 0x10C2 ||
+                             msgCtx->textId == 0x10C6 || msgCtx->textId == 0x206A)) {
+                            msgCtx->choiceIndex = 1;
+                        }
+                    }
                     Font_LoadMessageBoxIcon(font, TEXTBOX_ICON_ARROW);
                 }
                 break;
