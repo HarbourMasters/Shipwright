@@ -13,7 +13,9 @@
 #include "soh/OTRGlobals.h"
 
 // #region SOH [NTSC] - Allows custom messages to work on japanese
-bool gDisplayNextMessageAsEnglish = false;
+static bool sDisplayNextMessageAsEnglish = false;
+static u8 sLastLanguage = LANGUAGE_ENG;
+static u16 sTextBoxNum = 0;
 // #endregion
 
 s16 sTextFade = false; // original name: key_off_flag ?
@@ -2140,6 +2142,10 @@ void Message_Decode(PlayState* play) {
     MessageContext* msgCtx = &play->msgCtx;
     Font* font = &play->msgCtx.font;
 
+    // #region SOH [NTSC] - allow switching languages mid text
+    sTextBoxNum++;
+    // #endregion
+
     if ((msgCtx->msgMode >= MSGMODE_OCARINA_STARTING && msgCtx->msgMode <= MSGMODE_OCARINA_AWAIT_INPUT) || msgCtx->textBoxType == TEXTBOX_TYPE_OCARINA) {
         // TODO: Figure out what specific textures to invalidate to prevent the ocarina textboxes from flashing
         gSPInvalidateTexCache(play->state.gfxCtx->polyOpa.p++, NULL);
@@ -2156,7 +2162,7 @@ void Message_Decode(PlayState* play) {
     sTextFade = false;
 
     // #region SOH [NTSC] - Originally this is all in one function, but for ease of reading, the JP decoding will be separated out
-    if (gSaveContext.language == LANGUAGE_JPN && !sTextIsCredits && !gDisplayNextMessageAsEnglish) {
+    if (gSaveContext.language == LANGUAGE_JPN && !sTextIsCredits && !sDisplayNextMessageAsEnglish) {
         Message_DecodeJPN(play);
         return;
     }
@@ -2617,6 +2623,11 @@ void Message_OpenText(PlayState* play, u16 textId) {
     }
     msgCtx->textId = textId;
 
+    // #region SOH [NTSC] - allow for switching languages mid textbox
+    sLastLanguage = gSaveContext.language;
+    sTextBoxNum = 0;
+    // #endregion
+
     if (textId == 0x2030) { // Talking to Ingo as adult in Lon Lon Ranch for the first time before freeing Epona
         osSyncPrintf(VT_FGCOL(YELLOW));
         osSyncPrintf("？？？？？？？？？？？？？？？？  z_message.c  ？？？？？？？？？？？？？？？？？？\n");
@@ -2628,7 +2639,7 @@ void Message_OpenText(PlayState* play, u16 textId) {
     if (CustomMessage_RetrieveIfExists(play)) {
         osSyncPrintf("Found custom message");
         if (gSaveContext.language == LANGUAGE_JPN) {
-            gDisplayNextMessageAsEnglish = true;
+            sDisplayNextMessageAsEnglish = true;
         }
     } else if (sTextIsCredits) {
         Message_FindCreditsMessage(play, textId);
@@ -3135,6 +3146,32 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
     gSPSegment(gfx++, 0x07, msgCtx->textboxSegment);
 
     if (msgCtx->msgLength != 0) {
+        // #region SOH [NTSC] - allow switching languages mid text
+        if (gSaveContext.language != sLastLanguage) {
+            u16 drawPos = msgCtx->textDrawPos;
+            u16 choiceNum = msgCtx->choiceNum;
+            u16 textUnskippable = msgCtx->textUnskippable;
+            u16 textboxEndType = msgCtx->textboxEndType;
+            u8 msgMode = msgCtx->msgMode;
+            s16 textboxColorAlphaCurrent = msgCtx->textboxColorAlphaCurrent;
+            s32 textBoxNum;
+            s32 textBoxMax = sTextBoxNum - 1;
+            Message_OpenText(play, msgCtx->textId);
+            Message_Decode(play);
+            // Move to correct textbox
+            for (textBoxNum = 0; textBoxNum < textBoxMax; textBoxNum++) {
+                msgCtx->msgBufPos++;
+                Message_Decode(play);
+            }
+            msgCtx->textDrawPos = (drawPos > msgCtx->decodedTextLen) ? msgCtx->decodedTextLen : drawPos;
+            msgCtx->choiceNum = choiceNum;
+            msgCtx->textUnskippable = textUnskippable;
+            msgCtx->textboxEndType = textboxEndType;
+            msgCtx->msgMode = msgMode;
+            msgCtx->textboxColorAlphaCurrent = textboxColorAlphaCurrent;
+        }
+        // #endregion
+
         if (msgCtx->ocarinaAction != OCARINA_ACTION_FROGS && msgCtx->msgMode != MSGMODE_SONG_PLAYED_ACT &&
             msgCtx->msgMode >= MSGMODE_TEXT_BOX_GROWING && msgCtx->msgMode < MSGMODE_TEXT_CLOSING &&
             msgCtx->textBoxType < TEXTBOX_TYPE_NONE_BOTTOM) {
@@ -3163,7 +3200,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                     for (j = 0, i = 0; i < 48; i++, j += 0x80) {
                         func_8006EE50(&play->msgCtx.font, 0x8140, j);
                     }
-                    if (gSaveContext.language == LANGUAGE_JPN && !sTextIsCredits && !gDisplayNextMessageAsEnglish) {
+                    if (gSaveContext.language == LANGUAGE_JPN && !sTextIsCredits && !sDisplayNextMessageAsEnglish) {
                         Message_DrawTextJPN(play, &gfx);
                     } else {
                         Message_DrawText(play, &gfx);
@@ -3172,7 +3209,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                 break;
             case MSGMODE_TEXT_DISPLAYING:
             case MSGMODE_TEXT_DELAYED_BREAK:
-                if (gSaveContext.language == LANGUAGE_JPN && !sTextIsCredits && !gDisplayNextMessageAsEnglish) {
+                if (gSaveContext.language == LANGUAGE_JPN && !sTextIsCredits && !sDisplayNextMessageAsEnglish) {
                     Message_DrawTextJPN(play, &gfx);
                 } else {
                     Message_DrawText(play, &gfx);
@@ -3180,7 +3217,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                 break;
             case MSGMODE_TEXT_AWAIT_INPUT:
             case MSGMODE_TEXT_AWAIT_NEXT:
-                if (gSaveContext.language == LANGUAGE_JPN && !sTextIsCredits && !gDisplayNextMessageAsEnglish) {
+                if (gSaveContext.language == LANGUAGE_JPN && !sTextIsCredits && !sDisplayNextMessageAsEnglish) {
                     Message_DrawTextJPN(play, &gfx);
                 } else {
                     Message_DrawText(play, &gfx);
@@ -3227,7 +3264,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                 }
                 if (msgCtx->ocarinaAction != OCARINA_ACTION_FREE_PLAY &&
                     msgCtx->ocarinaAction != OCARINA_ACTION_CHECK_NOWARP) {
-                    if (gSaveContext.language == LANGUAGE_JPN && !sTextIsCredits && !gDisplayNextMessageAsEnglish) {
+                    if (gSaveContext.language == LANGUAGE_JPN && !sTextIsCredits && !sDisplayNextMessageAsEnglish) {
                         Message_DrawTextJPN(play, &gfx);
                     } else {
                         Message_DrawText(play, &gfx);
@@ -3324,7 +3361,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                 }
                 if (msgCtx->ocarinaAction != OCARINA_ACTION_FREE_PLAY &&
                     msgCtx->ocarinaAction != OCARINA_ACTION_CHECK_NOWARP) {
-                    if (gSaveContext.language == LANGUAGE_JPN && !sTextIsCredits && !gDisplayNextMessageAsEnglish) {
+                    if (gSaveContext.language == LANGUAGE_JPN && !sTextIsCredits && !sDisplayNextMessageAsEnglish) {
                         Message_DrawTextJPN(play, &gfx);
                     } else {
                         Message_DrawText(play, &gfx);
@@ -3386,7 +3423,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                         play->msgCtx.ocarinaMode = OCARINA_MODE_03;
                     }
                 }
-                if (gSaveContext.language == LANGUAGE_JPN && !gDisplayNextMessageAsEnglish) {
+                if (gSaveContext.language == LANGUAGE_JPN && !sDisplayNextMessageAsEnglish) {
                     Message_DrawTextJPN(play, &gfx);
                 } else {
                     Message_DrawText(play, &gfx);
@@ -3394,7 +3431,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                 break;
             case MSGMODE_OCARINA_FAIL:
             case MSGMODE_SONG_PLAYBACK_FAIL:
-                if (gSaveContext.language == LANGUAGE_JPN && !gDisplayNextMessageAsEnglish) {
+                if (gSaveContext.language == LANGUAGE_JPN && !sDisplayNextMessageAsEnglish) {
                     Message_DrawTextJPN(play, &gfx);
                 } else {
                     Message_DrawText(play, &gfx);
@@ -3462,7 +3499,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                     play->msgCtx.lastPlayedSong == OCARINA_SONG_TIME ||
                     play->msgCtx.lastPlayedSong == OCARINA_SONG_STORMS ||
                     play->msgCtx.lastPlayedSong == OCARINA_SONG_SUNS) {
-                    if (gSaveContext.language == LANGUAGE_JPN && !gDisplayNextMessageAsEnglish) {
+                    if (gSaveContext.language == LANGUAGE_JPN && !sDisplayNextMessageAsEnglish) {
                         Message_DrawTextJPN(play, &gfx);
                     } else {
                         Message_DrawText(play, &gfx);
@@ -3510,7 +3547,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                     sOcarinaNoteBufPos = 0;
                     msgCtx->msgMode = MSGMODE_SONG_DEMONSTRATION;
                 }
-                if (gSaveContext.language == LANGUAGE_JPN && !gDisplayNextMessageAsEnglish) {
+                if (gSaveContext.language == LANGUAGE_JPN && !sDisplayNextMessageAsEnglish) {
                     Message_DrawTextJPN(play, &gfx);
                 } else {
                     Message_DrawText(play, &gfx);
@@ -3529,7 +3566,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                     msgCtx->stateTimer = 1;
                 }
 
-                if (gSaveContext.language == LANGUAGE_JPN && !gDisplayNextMessageAsEnglish) {
+                if (gSaveContext.language == LANGUAGE_JPN && !sDisplayNextMessageAsEnglish) {
                     Message_DrawTextJPN(play, &gfx);
                 } else {
                     Message_DrawText(play, &gfx);
@@ -3540,7 +3577,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                 if (msgCtx->stateTimer == 0) {
                     msgCtx->msgMode = MSGMODE_SONG_PLAYED_ACT_BEGIN;
                 }
-                if (gSaveContext.language == LANGUAGE_JPN && !gDisplayNextMessageAsEnglish) {
+                if (gSaveContext.language == LANGUAGE_JPN && !sDisplayNextMessageAsEnglish) {
                     Message_DrawTextJPN(play, &gfx);
                 } else {
                     Message_DrawText(play, &gfx);
@@ -3551,7 +3588,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                 Message_ResetOcarinaNoteState();
                 msgCtx->msgMode = MSGMODE_SONG_PLAYED_ACT;
                 msgCtx->stateTimer = 2;
-                if (gSaveContext.language == LANGUAGE_JPN && !gDisplayNextMessageAsEnglish) {
+                if (gSaveContext.language == LANGUAGE_JPN && !sDisplayNextMessageAsEnglish) {
                     Message_DrawTextJPN(play, &gfx);
                 } else {
                     Message_DrawText(play, &gfx);
@@ -3634,7 +3671,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                     }
                 }
             case MSGMODE_SONG_DEMONSTRATION_DONE:
-                if (gSaveContext.language == LANGUAGE_JPN && !gDisplayNextMessageAsEnglish) {
+                if (gSaveContext.language == LANGUAGE_JPN && !sDisplayNextMessageAsEnglish) {
                     Message_DrawTextJPN(play, &gfx);
                 } else {
                     Message_DrawText(play, &gfx);
@@ -3670,14 +3707,14 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                     msgCtx->stateTimer = 10;
                     msgCtx->msgMode = MSGMODE_SONG_PLAYBACK_FAIL;
                 }
-                if (gSaveContext.language == LANGUAGE_JPN && !gDisplayNextMessageAsEnglish) {
+                if (gSaveContext.language == LANGUAGE_JPN && !sDisplayNextMessageAsEnglish) {
                     Message_DrawTextJPN(play, &gfx);
                 } else {
                     Message_DrawText(play, &gfx);
                 }
                 break;
             case MSGMODE_OCARINA_AWAIT_INPUT:
-                if (gSaveContext.language == LANGUAGE_JPN && !gDisplayNextMessageAsEnglish) {
+                if (gSaveContext.language == LANGUAGE_JPN && !sDisplayNextMessageAsEnglish) {
                     Message_DrawTextJPN(play, &gfx);
                 } else {
                     Message_DrawText(play, &gfx);
@@ -3696,7 +3733,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                 sOcarinaNoteBufLen = 0;
                 Message_ResetOcarinaNoteState();
                 msgCtx->msgMode = MSGMODE_SCARECROW_LONG_RECORDING_ONGOING;
-                if (gSaveContext.language == LANGUAGE_JPN && !gDisplayNextMessageAsEnglish) {
+                if (gSaveContext.language == LANGUAGE_JPN && !sDisplayNextMessageAsEnglish) {
                     Message_DrawTextJPN(play, &gfx);
                 } else {
                     Message_DrawText(play, &gfx);
@@ -3748,7 +3785,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                     osSyncPrintf(VT_RST);
                     osSyncPrintf("\n====================================================================\n");
                 }
-                if (gSaveContext.language == LANGUAGE_JPN && !gDisplayNextMessageAsEnglish) {
+                if (gSaveContext.language == LANGUAGE_JPN && !sDisplayNextMessageAsEnglish) {
                     Message_DrawTextJPN(play, &gfx);
                 } else {
                     Message_DrawText(play, &gfx);
@@ -3788,7 +3825,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                 Audio_OcaSetRecordingState(2);
                 Audio_OcaSetInstrument(1);
                 msgCtx->msgMode = MSGMODE_SCARECROW_RECORDING_ONGOING;
-                if (gSaveContext.language == LANGUAGE_JPN && !gDisplayNextMessageAsEnglish) {
+                if (gSaveContext.language == LANGUAGE_JPN && !sDisplayNextMessageAsEnglish) {
                     Message_DrawTextJPN(play, &gfx);
                 } else {
                     Message_DrawText(play, &gfx);
@@ -3827,7 +3864,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                     Message_CloseTextbox(play);
                     msgCtx->msgMode = MSGMODE_SCARECROW_RECORDING_FAILED;
                 }
-                if (gSaveContext.language == LANGUAGE_JPN && !gDisplayNextMessageAsEnglish) {
+                if (gSaveContext.language == LANGUAGE_JPN && !sDisplayNextMessageAsEnglish) {
                     Message_DrawTextJPN(play, &gfx);
                 } else {
                     Message_DrawText(play, &gfx);
@@ -3908,7 +3945,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                     msgCtx->msgMode = MSGMODE_MEMORY_GAME_ROUND_SUCCESS;
                     msgCtx->stateTimer = 30;
                 }
-                if (gSaveContext.language == LANGUAGE_JPN && !gDisplayNextMessageAsEnglish) {
+                if (gSaveContext.language == LANGUAGE_JPN && !sDisplayNextMessageAsEnglish) {
                     Message_DrawTextJPN(play, &gfx);
                 } else {
                     Message_DrawText(play, &gfx);
@@ -3934,7 +3971,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                         play->msgCtx.ocarinaMode = OCARINA_MODE_0F;
                     }
                 }
-                if (gSaveContext.language == LANGUAGE_JPN && !gDisplayNextMessageAsEnglish) {
+                if (gSaveContext.language == LANGUAGE_JPN && !sDisplayNextMessageAsEnglish) {
                     Message_DrawTextJPN(play, &gfx);
                 } else {
                     Message_DrawText(play, &gfx);
@@ -3968,7 +4005,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
             case MSGMODE_FROGS_WAITING:
                 break;
             case MSGMODE_TEXT_DONE:
-                if (gSaveContext.language == LANGUAGE_JPN && !sTextIsCredits && !gDisplayNextMessageAsEnglish) {
+                if (gSaveContext.language == LANGUAGE_JPN && !sTextIsCredits && !sDisplayNextMessageAsEnglish) {
                     Message_DrawTextJPN(play, &gfx);
                 } else {
                     Message_DrawText(play, &gfx);
@@ -4000,8 +4037,8 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                 }
                 break;
             case MSGMODE_TEXT_CLOSING:
-                if (gDisplayNextMessageAsEnglish) {
-                    gDisplayNextMessageAsEnglish = false;
+                if (sDisplayNextMessageAsEnglish) {
+                    sDisplayNextMessageAsEnglish = false;
                 }
                 /* fallthrough */
             case MSGMODE_PAUSED:
