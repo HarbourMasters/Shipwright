@@ -512,7 +512,7 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
     }
 
     bool playCutscene = false;
-    if (!CVarGetInteger(CVAR_ENHANCEMENT("CreditsFix"), 1) && (cmd->startFrame == csCtx->frames)) {
+    if ((!CVarGetInteger(CVAR_ENHANCEMENT("CreditsFix"), 1) || ResourceMgr_GetGameRegion(0) == GAME_REGION_NTSC) && (cmd->startFrame == csCtx->frames)) {
         playCutscene = true;
     } else if (CVarGetInteger(CVAR_ENHANCEMENT("CreditsFix"), 1)) {
         u16 delay = 0;
