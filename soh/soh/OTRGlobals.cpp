@@ -149,6 +149,8 @@ Color_RGB8 zoraColor = { 0x00, 0xEC, 0x64 };
 
 float previousImGuiScale;
 
+bool prevAltAssets = false;
+
 // Same as NaviColor type from OoT src (z_actor.c), but modified to be sans alpha channel for Controller LED.
 typedef struct {
     Color_RGB8 inner;
@@ -320,6 +322,8 @@ OTRGlobals::OTRGlobals() {
 
     // tell LUS to reserve 3 SoH specific threads (Game, Audio, Save)
     context->InitResourceManager(OTRFiles, {}, 3);
+    prevAltAssets = CVarGetInteger(CVAR_ENHANCEMENT("AltAssets"), 0);
+    context->GetResourceManager()->SetAltAssetsEnabled(prevAltAssets);
 
     context->InitControlDeck({BTN_MODIFIER1, BTN_MODIFIER2});
     context->GetControlDeck()->SetSinglePlayerMappingMode(true);
@@ -1254,8 +1258,6 @@ extern "C" uint64_t GetUnixTimestamp() {
     return (uint64_t)millis.count();
 }
 
-extern bool ToggleAltAssetsAtEndOfFrame;
-
 extern "C" void Graph_StartFrame() {
 #ifndef __WIIU__
     using Ship::KbScancode;
@@ -1337,7 +1339,7 @@ extern "C" void Graph_StartFrame() {
         }
 #endif
         case KbScancode::LUS_KB_TAB: {
-            ToggleAltAssetsAtEndOfFrame = true;
+            CVarSetInteger(CVAR_ENHANCEMENT("AltAssets"), !CVarGetInteger(CVAR_ENHANCEMENT("AltAssets"), 0));
             break;
         }
     }
@@ -1420,11 +1422,10 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
         }
     }
 
-    if (ToggleAltAssetsAtEndOfFrame) {
-        ToggleAltAssetsAtEndOfFrame = false;
-
-        // Actually update the CVar now before runing the alt asset update listeners
-        CVarSetInteger(CVAR_ALT_ASSETS, !CVarGetInteger(CVAR_ALT_ASSETS, 0));
+    bool curAltAssets = CVarGetInteger(CVAR_ENHANCEMENT("AltAssets"), 0);
+    if (prevAltAssets != curAltAssets) {
+        prevAltAssets = curAltAssets;
+        Ship::Context::GetInstance()->GetResourceManager()->SetAltAssetsEnabled(curAltAssets);
         gfx_texture_cache_clear();
         SOH::SkeletonPatcher::UpdateSkeletons();
         GameInteractor::Instance->ExecuteHooks<GameInteractor::OnAssetAltChange>();
@@ -1610,10 +1611,14 @@ extern "C" uint8_t ResourceMgr_FileAltExists(const char* filePath) {
     return ExtensionCache.contains(path);
 }
 
+extern "C" bool ResourceMgr_IsAltAssetsEnabled() {
+    return Ship::Context::GetInstance()->GetResourceManager()->IsAltAssetsEnabled();
+}
+
 // Unloads a resource if an alternate version exists when alt assets are enabled
 // The resource is only removed from the internal cache to prevent it from used in the next resource lookup
 extern "C" void ResourceMgr_UnloadOriginalWhenAltExists(const char* resName) {
-    if (CVarGetInteger(CVAR_ALT_ASSETS, 0) && ResourceMgr_FileAltExists((char*) resName)) {
+    if (ResourceMgr_IsAltAssetsEnabled() && ResourceMgr_FileAltExists((char*)resName)) {
         ResourceMgr_UnloadResource((char*) resName);
     }
 }
@@ -1964,7 +1969,7 @@ extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path, Skel
         pathStr = pathStr.substr(sOtr.length());
     }
 
-    bool isAlt = CVarGetInteger(CVAR_ALT_ASSETS, 0);
+    bool isAlt = ResourceMgr_IsAltAssetsEnabled();
 
     if (isAlt) {
         pathStr = Ship::IResource::gAltAssetPrefix + pathStr;
