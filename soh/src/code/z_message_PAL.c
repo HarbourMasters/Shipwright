@@ -1572,7 +1572,6 @@ bool Message_DecodeName(PlayState* play, s16* decodedBufPosPtr, s32* charTexIdxP
                 msgCtx->msgBufDecoded[*decodedBufPosPtr] = curChar2;
                 (*decodedBufPosPtr)++;
             }
-            (*decodedBufPosPtr)--;
         } else if (gSaveContext.filenameLanguage == NAME_LANGUAGE_NTSC_ENG) { 
             for (i = 0; i < playerNameLen; i++) {
                 curChar2 = gSaveContext.playerName[i];
@@ -1600,7 +1599,6 @@ bool Message_DecodeName(PlayState* play, s16* decodedBufPosPtr, s32* charTexIdxP
                 msgCtx->msgBufDecoded[(*decodedBufPosPtr)] = curChar2;
                 (*decodedBufPosPtr)++;
             }
-            (*decodedBufPosPtr)--;
         } else {
             for (i = 0; i < playerNameLen; i++) {
                 curChar2 = gSaveContext.playerName[i];
@@ -1639,7 +1637,6 @@ bool Message_DecodeName(PlayState* play, s16* decodedBufPosPtr, s32* charTexIdxP
                 msgCtx->msgBufDecoded[(*decodedBufPosPtr)] = curChar2;
                 (*decodedBufPosPtr)++;
             }
-            (*decodedBufPosPtr)--;
         }
     } else { // GAME_REGION_NTSC
 
@@ -1712,7 +1709,6 @@ bool Message_DecodeName(PlayState* play, s16* decodedBufPosPtr, s32* charTexIdxP
                     msgCtx->msgBufDecoded[(*decodedBufPosPtr)] = curChar2;
                     (*decodedBufPosPtr)++;
                 }
-                (*decodedBufPosPtr)--;
             }
         } else if (gSaveContext.filenameLanguage == NAME_LANGUAGE_PAL) {
             if (gSaveContext.language == LANGUAGE_JPN) {
@@ -1765,9 +1761,9 @@ bool Message_DecodeName(PlayState* play, s16* decodedBufPosPtr, s32* charTexIdxP
                     msgCtx->msgBufDecoded[*decodedBufPosPtr] = curChar2;
                     (*decodedBufPosPtr)++;
                 }
-                (*decodedBufPosPtr)--;
             }
         }
+        (*decodedBufPosPtr)--;
 
     }
      
