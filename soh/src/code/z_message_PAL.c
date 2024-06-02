@@ -2661,11 +2661,9 @@ void Message_OpenText(PlayState* play, u16 textId) {
                  (textId == 0x4C || textId == 0xA4)) ||
                 // 4D == Hylian Shield
                 textId == 0x4D)) {
-        if (gSaveContext.language == LANGUAGE_JPN) {
-            Message_FindMessageJPN(play, textId);
-        } else {
-            Message_FindMessage(play, textId);
-        }
+        // NTSC TODO: Translate EquipNow Message
+        Message_FindMessage(play, textId);
+        sDisplayNextMessageAsEnglish = true;
         msgCtx->msgLength = font->msgLength = GetEquipNowMessage(font->msgBuf, font->msgOffset, sizeof(font->msgBuf));
     } else {
         if (gSaveContext.language == LANGUAGE_JPN) {
