@@ -1531,6 +1531,7 @@ void Message_LoadItemIcon(PlayState* play, u16 itemId, s16 y) {
     msgCtx->choiceNum = 1;
 }
 
+// #region SOH [NTSC] - Add support for filenames on different versions
 bool Message_DecodeName(PlayState* play, s16* decodedBufPosPtr, s32* charTexIdxPtr) {
     s32 i;
     s32 j;
@@ -1606,9 +1607,7 @@ bool Message_DecodeName(PlayState* play, s16* decodedBufPosPtr, s32* charTexIdxP
                 curChar2 = gSaveContext.playerName[i];
 
                 // Remove JPN Characters from the pool (set them to ' ')
-                if (curChar2 >= 0x0A && curChar2 <= 0x40) {
-                    curChar2 = 0xDF;
-                } else if (curChar2 >= 0x5A && curChar2 <= 0x90) {
+                if (curChar2 >= 0x0A && curChar2 < 0xAB) {
                     curChar2 = 0xDF;
                 } else if (curChar2 == 0xE7 || curChar2 == 0xE8) {
                     curChar2 = 0xDF;
@@ -1771,6 +1770,7 @@ bool Message_DecodeName(PlayState* play, s16* decodedBufPosPtr, s32* charTexIdxP
      
     return true;
 }
+// #endregion
 
 // Taken from decomped N64 1.0 z_message https://decomp.me/scratch/462bn
 void Message_DecodeJPN(PlayState* play) {
