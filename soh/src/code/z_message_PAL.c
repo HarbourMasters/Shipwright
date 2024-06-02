@@ -1501,17 +1501,18 @@ void Message_DrawText(PlayState* play, Gfx** gfxP) {
 }
 
 void Message_LoadItemIcon(PlayState* play, u16 itemId, s16 y) {
-    static s16 sIconItem32XOffsets[] = { 74, 74, 74, 74 };
-    static s16 sIconItem24XOffsets[] = { 72, 72, 72, 72 };
+    static s16 sIconItem32XOffsets[] = { 74, 74, 74, 54 };
+    static s16 sIconItem24XOffsets[] = { 72, 72, 72, 50 };
     MessageContext* msgCtx = &play->msgCtx;
     InterfaceContext* interfaceCtx = &play->interfaceCtx;
+    u8 language = sDisplayNextMessageAsEnglish ? LANGUAGE_ENG : gSaveContext.language;
 
     if (itemId == ITEM_DUNGEON_MAP) {
         interfaceCtx->mapPalette[30] = 0xFF;
         interfaceCtx->mapPalette[31] = 0xFF;
     }
     if (itemId < ITEM_MEDALLION_FOREST) {
-        R_TEXTBOX_ICON_XPOS = R_TEXT_INIT_XPOS - sIconItem32XOffsets[gSaveContext.language];
+        R_TEXTBOX_ICON_XPOS = R_TEXT_INIT_XPOS - sIconItem32XOffsets[language];
         R_TEXTBOX_ICON_YPOS = y + 6;
         R_TEXTBOX_ICON_SIZE = 32;
         memcpy((uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE,
@@ -1519,7 +1520,7 @@ void Message_LoadItemIcon(PlayState* play, u16 itemId, s16 y) {
         // "Item 32-0"
         osSyncPrintf("アイテム32-0\n");
     } else {
-        R_TEXTBOX_ICON_XPOS = R_TEXT_INIT_XPOS - sIconItem24XOffsets[gSaveContext.language];
+        R_TEXTBOX_ICON_XPOS = R_TEXT_INIT_XPOS - sIconItem24XOffsets[language];
         R_TEXTBOX_ICON_YPOS = y + 10;
         R_TEXTBOX_ICON_SIZE = 24;
         memcpy((uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE,
@@ -2599,6 +2600,10 @@ void Message_OpenText(PlayState* play, u16 textId) {
         R_TEXT_LINE_SPACING = 6;
         R_TEXT_INIT_XPOS = 20;
         YREG(1) = 48;
+    } else if (gSaveContext.language == LANGUAGE_JPN && !sDisplayNextMessageAsEnglish) {
+        R_TEXT_CHAR_SCALE = 88;
+        R_TEXT_LINE_SPACING = 18;
+        R_TEXT_INIT_XPOS = 50;
     } else {
         R_TEXT_CHAR_SCALE = 75;
         R_TEXT_LINE_SPACING = 12;
@@ -2640,6 +2645,11 @@ void Message_OpenText(PlayState* play, u16 textId) {
         osSyncPrintf("Found custom message");
         if (gSaveContext.language == LANGUAGE_JPN) {
             sDisplayNextMessageAsEnglish = true;
+            if (!sTextIsCredits) {
+                R_TEXT_CHAR_SCALE = 75;
+                R_TEXT_LINE_SPACING = 12;
+                R_TEXT_INIT_XPOS = 65;
+            }
         }
     } else if (sTextIsCredits) {
         Message_FindCreditsMessage(play, textId);
@@ -2663,7 +2673,14 @@ void Message_OpenText(PlayState* play, u16 textId) {
                 textId == 0x4D)) {
         // NTSC TODO: Translate EquipNow Message
         Message_FindMessage(play, textId);
-        sDisplayNextMessageAsEnglish = true;
+        if (gSaveContext.language == LANGUAGE_JPN) {
+            sDisplayNextMessageAsEnglish = true;
+            if (!sTextIsCredits) {
+                R_TEXT_CHAR_SCALE = 75;
+                R_TEXT_LINE_SPACING = 12;
+                R_TEXT_INIT_XPOS = 65;
+            }
+        }
         msgCtx->msgLength = font->msgLength = GetEquipNowMessage(font->msgBuf, font->msgOffset, sizeof(font->msgBuf));
     } else {
         if (gSaveContext.language == LANGUAGE_JPN) {
@@ -4340,7 +4357,7 @@ void Message_Update(PlayState* play) {
 
                 R_TEXTBOX_X_TARGET = sTextboxXPositions[var];
                 R_TEXTBOX_END_YPOS = sTextboxEndIconYOffset[var] + R_TEXTBOX_Y_TARGET;
-                if (gSaveContext.language == LANGUAGE_JPN && !sTextIsCredits) {
+                if (gSaveContext.language == LANGUAGE_JPN && !sTextIsCredits && !sDisplayNextMessageAsEnglish) {
                     R_TEXT_CHOICE_YPOS(0) = R_TEXTBOX_Y_TARGET + 7;
                     R_TEXT_CHOICE_YPOS(1) = R_TEXTBOX_Y_TARGET + 25;
                     R_TEXT_CHOICE_YPOS(2) = R_TEXTBOX_Y_TARGET + 43;
@@ -4441,7 +4458,7 @@ void Message_Update(PlayState* play) {
                     if (msgCtx->textboxEndType == TEXTBOX_ENDTYPE_HAS_NEXT) {
                         Audio_PlaySoundGeneral(NA_SE_SY_MESSAGE_PASS, &D_801333D4, 4, &D_801333E0, &D_801333E0,
                                                &D_801333E8);
-                        if (gSaveContext.language == LANGUAGE_JPN && !sTextIsCredits) {
+                        if (gSaveContext.language == LANGUAGE_JPN && !sTextIsCredits && !sDisplayNextMessageAsEnglish) {
                             Message_ContinueTextbox(play, msgCtx->msgBufDecodedWide[msgCtx->textDrawPos]);
                         } else {
                             Message_ContinueTextbox(play, sNextTextId);
