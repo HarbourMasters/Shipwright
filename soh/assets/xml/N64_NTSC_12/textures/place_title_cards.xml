@@ -40,8 +40,8 @@
         <Texture Name="gIceCavernTitleCardENGTex" OutName="ice_cavern_eng" Format="ia8" Width="144" Height="24" Offset="0xD80"/>
     </File>
     <File Name="g_pn_11">
-        <Texture Name="gENGudoTrainingGroundTitleCardJPNTex" OutName="engudo_training_ground_jpn" Format="ia8" Width="144" Height="24" Offset="0x0"/>
-        <Texture Name="gENGudoTrainingGroundTitleCardENGTex" OutName="engudo_training_ground_eng" Format="ia8" Width="144" Height="24" Offset="0xD80"/>
+        <Texture Name="gGERudoTrainingGroundTitleCardJPNTex" OutName="gerudo_training_ground_jpn" Format="ia8" Width="144" Height="24" Offset="0x0"/>
+        <Texture Name="gGERudoTrainingGroundTitleCardENGTex" OutName="gerudo_training_ground_eng" Format="ia8" Width="144" Height="24" Offset="0xD80"/>
     </File>
     <File Name="g_pn_12">
         <Texture Name="gCastleCourtyardTitleCardJPNTex" OutName="castle_courtyard_ground_jpn" Format="ia8" Width="144" Height="24" Offset="0x0"/>
@@ -136,8 +136,8 @@
         <Texture Name="gZorasFountainTitleCardENGTex" OutName="zoras_fountain_eng" Format="ia8" Width="144" Height="24" Offset="0xD80"/>
     </File>
     <File Name="g_pn_35">
-        <Texture Name="gENGudoValleyTitleCardJPNTex" OutName="engudo_valley_jpn" Format="ia8" Width="144" Height="24" Offset="0x0"/>
-        <Texture Name="gENGudoValleyTitleCardENGTex" OutName="engudo_valley_eng" Format="ia8" Width="144" Height="24" Offset="0xD80"/>
+        <Texture Name="gGERudoValleyTitleCardJPNTex" OutName="gerudo_valley_jpn" Format="ia8" Width="144" Height="24" Offset="0x0"/>
+        <Texture Name="gGERudoValleyTitleCardENGTex" OutName="gerudo_valley_eng" Format="ia8" Width="144" Height="24" Offset="0xD80"/>
     </File>
     <File Name="g_pn_36">
         <Texture Name="gLostWoodsTitleCardJPNTex" OutName="lost_woods_jpn" Format="ia8" Width="144" Height="24" Offset="0x0"/>
@@ -208,8 +208,8 @@
         <Texture Name="gSacredForestMeadowTitleCardENGTex" OutName="sacred_forest_meadow_eng" Format="ia8" Width="144" Height="24" Offset="0xD80"/>
     </File>
     <File Name="g_pn_53">
-        <Texture Name="gENGudosFortressTitleCardJPNTex" OutName="engudos_fortress_jpn" Format="ia8" Width="144" Height="24" Offset="0x0"/>
-        <Texture Name="gENGudosFortressTitleCardENGTex" OutName="engudos_fortress_eng" Format="ia8" Width="144" Height="24" Offset="0xD80"/>
+        <Texture Name="gGERudosFortressTitleCardJPNTex" OutName="gerudos_fortress_jpn" Format="ia8" Width="144" Height="24" Offset="0x0"/>
+        <Texture Name="gGERudosFortressTitleCardENGTex" OutName="gerudos_fortress_eng" Format="ia8" Width="144" Height="24" Offset="0xD80"/>
     </File>
     <File Name="g_pn_54">
         <Texture Name="gBottomOfTheWellTitleCardJPNTex" OutName="bottom_of_the_well_jpn" Format="ia8" Width="144" Height="24" Offset="0x0"/>
