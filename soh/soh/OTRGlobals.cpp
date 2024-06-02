@@ -488,9 +488,6 @@ struct ExtensionEntry {
     std::string ext;
 };
 
-extern uintptr_t clearMtx;
-extern "C" Mtx gMtxClear;
-extern "C" MtxF gMtxFClear;
 extern "C" void OTRMessage_Init();
 extern "C" void AudioMgr_CreateNextAudioBuffer(s16* samples, u32 num_samples);
 extern "C" void AudioPlayer_Play(const uint8_t* buf, uint32_t len);
@@ -1149,7 +1146,6 @@ extern "C" void InitOTR() {
     GameInteractorSail::Instance = new GameInteractorSail();
 #endif
 
-    clearMtx = (uintptr_t)&gMtxClear;
     OTRMessage_Init();
     OTRAudio_Init();
     OTRExtScanner();
