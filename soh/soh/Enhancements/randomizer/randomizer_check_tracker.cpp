@@ -497,7 +497,7 @@ void CheckTrackerLoadGame(int32_t fileNum) {
             OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_RANDOM_MQ_DUNGEONS) == RO_MQ_DUNGEONS_NONE ||
             OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_RANDOM_MQ_DUNGEONS) == RO_MQ_DUNGEONS_SELECTION ||
             (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_RANDOM_MQ_DUNGEONS) == RO_MQ_DUNGEONS_SET_NUMBER &&
-            OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_COUNT) == 12))) {
+            OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_COUNT) == RSK_MQ_DUNGEON_COUNT_VALUE))) {
             SetAreaSpoiled(static_cast<RandomizerCheckArea>(i));
         }
     }
@@ -524,7 +524,7 @@ void CheckTrackerLoadGame(int32_t fileNum) {
 
     showVOrMQ = (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_RANDOM_MQ_DUNGEONS) == RO_MQ_DUNGEONS_RANDOM_NUMBER ||
                 (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_RANDOM_MQ_DUNGEONS) == RO_MQ_DUNGEONS_SET_NUMBER &&
-                OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_COUNT) < 12));
+                OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_COUNT) < RSK_MQ_DUNGEON_COUNT_VALUE));
     LinksPocket();
     SongFromImpa();
     GiftFromSages();

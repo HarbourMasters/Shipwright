@@ -5,6 +5,7 @@
 #include "randomizer_inf.h"
 
 #define MAX_TRICK_NAME_SIZE 50
+#define RSK_MQ_DUNGEON_COUNT 12
 
 // This should probably go in a less rando-specific location
 // but the best location will probably be in the modding engine
