@@ -1468,6 +1468,7 @@ namespace SOH {
         { MigrationAction::Rename, "gControlNav", "gSettings.ControlNav" },
         { MigrationAction::Rename, "gEnableMultiViewports", "gSettings.EnableMultiViewports" },
         { MigrationAction::Rename, "gOverlayFont", "gSettings.OverlayFont" },
+        { MigrationAction::Rename, "gCrowdControl", "gRemote.CrowdControl" },
         { MigrationAction::Remove, "gItemTrackerNotes0" },
         { MigrationAction::Remove, "gItemTrackerNotes1" },
         { MigrationAction::Remove, "gItemTrackerNotes2" },
