@@ -1127,6 +1127,13 @@ extern "C" void InitOTR() {
     ItemTableManager::Instance = new ItemTableManager();
     GameInteractor::Instance = new GameInteractor();
     SaveManager::Instance = new SaveManager();
+
+    std::shared_ptr<Ship::Config> conf = OTRGlobals::Instance->context->GetConfig();
+    conf->RegisterConfigVersionUpdater(std::make_shared<SOH::ConfigVersion1Updater>());
+    conf->RegisterConfigVersionUpdater(std::make_shared<SOH::ConfigVersion2Updater>());
+    conf->RegisterConfigVersionUpdater(std::make_shared<SOH::ConfigVersion3Updater>());
+    conf->RunVersionUpdates();
+
     SohGui::SetupGuiElements();
     AudioCollection::Instance = new AudioCollection();
     ActorDB::Instance = new ActorDB();
@@ -1182,12 +1189,6 @@ extern "C" void InitOTR() {
         }
     }
 #endif
-
-    std::shared_ptr<Ship::Config> conf = OTRGlobals::Instance->context->GetConfig(); 
-    conf->RegisterConfigVersionUpdater(std::make_shared<SOH::ConfigVersion1Updater>());
-    conf->RegisterConfigVersionUpdater(std::make_shared<SOH::ConfigVersion2Updater>());
-    conf->RegisterConfigVersionUpdater(std::make_shared<SOH::ConfigVersion3Updater>());
-    conf->RunVersionUpdates();
 }
 
 extern "C" void SaveManager_ThreadPoolWait() {
