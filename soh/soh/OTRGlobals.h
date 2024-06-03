@@ -104,6 +104,8 @@ uint32_t ResourceMgr_GetNumGameVersions();
 uint32_t ResourceMgr_GetGameVersion(int index);
 uint32_t ResourceMgr_GetGamePlatform(int index);
 uint32_t ResourceMgr_GetGameRegion(int index);
+bool ResourceMgr_IsPalLoaded(void);
+bool ResourceMgr_IsNtscLoaded(void);
 void ResourceMgr_LoadDirectory(const char* resName);
 void ResourceMgr_UnloadResource(const char* resName);
 char** ResourceMgr_ListFiles(const char* searchMask, int* resultSize);

@@ -42,6 +42,8 @@ extern bool isBetaQuestEnabled;
 
 extern "C" PlayState* gPlayState;
 extern "C" uint32_t ResourceMgr_GetGameRegion(int index);
+extern "C" bool ResourceMgr_IsPalLoaded(void);
+extern "C" bool ResourceMgr_IsNtscLoaded(void);
 #include "message_data_static.h"
 extern "C" MessageTableEntry* sNesMessageEntryTablePtr;
 extern "C" MessageTableEntry* sGerMessageEntryTablePtr;
@@ -518,7 +520,7 @@ void DrawSettingsMenu() {
         UIWidgets::Spacer(0);
 
         if (ImGui::BeginMenu("Languages")) {
-            if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL) {
+            if (ResourceMgr_IsPalLoaded()) {
                 UIWidgets::PaddedEnhancementCheckbox("Translate Title Screen", CVAR_SETTING("TitleScreenTranslation"));
             }
             if (sNesMessageEntryTablePtr != NULL) {
