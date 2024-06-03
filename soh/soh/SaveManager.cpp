@@ -20,6 +20,11 @@
 
 extern "C" SaveContext gSaveContext;
 extern "C" uint32_t ResourceMgr_GetGameRegion(int index);
+#include "message_data_static.h"
+extern "C" MessageTableEntry* sNesMessageEntryTablePtr;
+extern "C" MessageTableEntry* sGerMessageEntryTablePtr;
+extern "C" MessageTableEntry* sFraMessageEntryTablePtr;
+extern "C" MessageTableEntry* sJpnMessageEntryTablePtr;
 using namespace std::string_literals;
 
 void SaveManager::WriteSaveFile(const std::filesystem::path& savePath, const uintptr_t addr, void* dramAddr,
@@ -1189,15 +1194,6 @@ void SaveManager::CreateDefaultGlobal() {
     gSaveContext.audioSetting = 0;
     gSaveContext.zTargetSetting = 0;
     gSaveContext.language = CVarGetInteger(CVAR_SETTING("Languages"), LANGUAGE_ENG);
-    if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL) {
-        if (gSaveContext.language == LANGUAGE_JPN) {
-            gSaveContext.language = LANGUAGE_ENG;
-        }
-    } else { // GAME_REGION_NTSC
-        if (gSaveContext.language == LANGUAGE_GER || gSaveContext.language == LANGUAGE_FRA) {
-            gSaveContext.language = LANGUAGE_ENG;
-        }
-    }
 
     SaveGlobal();
 }
@@ -2411,7 +2407,7 @@ typedef struct {
     /* 0x13E0 */ u8 seqId;
     /* 0x13E1 */ u8 natureAmbienceId;
     /* 0x13E2 */ u8 buttonStatus[5];
-    /* 0x13E7 */ u8 unk_13E7;     // alpha related
+    /* 0x13E7 */ u8 forceRisingButtonAlphas;     // alpha related
     /* 0x13E8 */ u16 unk_13E8;    // alpha type?
     /* 0x13EA */ u16 unk_13EA;    // also alpha type?
     /* 0x13EC */ u16 unk_13EC;    // alpha type counter?
@@ -2581,15 +2577,6 @@ void SaveManager::ConvertFromUnversioned() {
     gSaveContext.language = data[SRAM_HEADER_LANGUAGE];
     if (gSaveContext.language >= LANGUAGE_MAX) {
         gSaveContext.language = CVarGetInteger(CVAR_SETTING("Languages"), LANGUAGE_ENG);
-        if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL) {
-            if (gSaveContext.language == LANGUAGE_JPN) {
-                gSaveContext.language = LANGUAGE_ENG;
-            }
-        } else { // GAME_REGION_NTSC
-            if (gSaveContext.language == LANGUAGE_GER || gSaveContext.language == LANGUAGE_FRA) {
-                gSaveContext.language = LANGUAGE_ENG;
-            }
-        }
     }
     SaveGlobal();
 

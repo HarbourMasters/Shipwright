@@ -22,6 +22,12 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/randomizer/randomizer_grotto.h"
 
+#include "message_data_static.h"
+extern MessageTableEntry* sNesMessageEntryTablePtr;
+extern MessageTableEntry* sGerMessageEntryTablePtr;
+extern MessageTableEntry* sFraMessageEntryTablePtr;
+extern MessageTableEntry* sJpnMessageEntryTablePtr;
+
 #define DO_ACTION_TEX_WIDTH() 48
 #define DO_ACTION_TEX_HEIGHT() 16
 #define DO_ACTION_TEX_SIZE() ((DO_ACTION_TEX_WIDTH() * DO_ACTION_TEX_HEIGHT()) / 2)
@@ -316,7 +322,7 @@ void func_80082644(PlayState* play, s16 alpha) {
 void func_8008277C(PlayState* play, s16 maxAlpha, s16 alpha) {
     InterfaceContext* interfaceCtx = &play->interfaceCtx;
 
-    if (gSaveContext.unk_13E7 != 0) {
+    if (gSaveContext.forceRisingButtonAlphas != 0) {
         func_80082644(play, alpha);
         return;
     }
@@ -841,12 +847,12 @@ void func_80083108(PlayState* play) {
 
     if ((gSaveContext.cutsceneIndex < 0xFFF0) ||
         ((play->sceneNum == SCENE_LON_LON_RANCH) && (gSaveContext.cutsceneIndex == 0xFFF0))) {
-        gSaveContext.unk_13E7 = 0;
+        gSaveContext.forceRisingButtonAlphas = 0;
 
         if ((player->stateFlags1 & PLAYER_STATE1_ON_HORSE) || (play->shootingGalleryStatus > 1) ||
             ((play->sceneNum == SCENE_BOMBCHU_BOWLING_ALLEY) && Flags_GetSwitch(play, 0x38))) {
             if (gSaveContext.equips.buttonItems[0] != ITEM_NONE || randoCanTrackSwordless) {
-                gSaveContext.unk_13E7 = 1;
+                gSaveContext.forceRisingButtonAlphas = 1;
 
                 if (gSaveContext.buttonStatus[0] == BTN_DISABLED) {
                     gSaveContext.buttonStatus[0] = gSaveContext.buttonStatus[1] = gSaveContext.buttonStatus[2] =
@@ -913,7 +919,7 @@ void func_80083108(PlayState* play) {
         } else if (play->sceneNum == SCENE_CHAMBER_OF_THE_SAGES && !IS_BOSS_RUSH) {
             Interface_ChangeAlpha(1);
         } else if (play->sceneNum == SCENE_FISHING_POND) {
-            gSaveContext.unk_13E7 = 2;
+            gSaveContext.forceRisingButtonAlphas = 2;
             if (play->interfaceCtx.unk_260 != 0) {
                 if (gSaveContext.equips.buttonItems[0] != ITEM_FISHING_POLE) {
                     gSaveContext.buttonStatus[0] = gSaveContext.equips.buttonItems[0];
@@ -6489,13 +6495,13 @@ void Interface_Update(PlayState* play) {
     if (CHECK_BTN_ALL(debugInput->press.button, BTN_DLEFT)) {
         gSaveContext.language = LANGUAGE_ENG;
         osSyncPrintf("J_N=%x J_N=%x\n", gSaveContext.language, &gSaveContext.language);
-    } else if (CHECK_BTN_ALL(debugInput->press.button, BTN_DUP) && isPal) {
+    } else if (CHECK_BTN_ALL(debugInput->press.button, BTN_DUP) && sGerMessageEntryTablePtr != NULL) {
         gSaveContext.language = LANGUAGE_GER;
         osSyncPrintf("J_N=%x J_N=%x\n", gSaveContext.language, &gSaveContext.language);
-    } else if (CHECK_BTN_ALL(debugInput->press.button, BTN_DRIGHT) && isPal) {
+    } else if (CHECK_BTN_ALL(debugInput->press.button, BTN_DRIGHT) && sFraMessageEntryTablePtr != NULL) {
         gSaveContext.language = LANGUAGE_FRA;
         osSyncPrintf("J_N=%x J_N=%x\n", gSaveContext.language, &gSaveContext.language);
-    } else if (CHECK_BTN_ALL(debugInput->press.button, BTN_DDOWN) && !isPal) {
+    } else if (CHECK_BTN_ALL(debugInput->press.button, BTN_DDOWN) && sJpnMessageEntryTablePtr != NULL) {
         // Add this in to have an equivalent ntsc language debugging feature
         gSaveContext.language = LANGUAGE_JPN;
         osSyncPrintf("J_N=%x J_N=%x\n", gSaveContext.language, &gSaveContext.language);

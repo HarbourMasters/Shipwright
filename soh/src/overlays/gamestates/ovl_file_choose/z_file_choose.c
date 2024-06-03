@@ -3096,7 +3096,7 @@ void FileChoose_LoadGame(GameState* thisx) {
         gSaveContext.buttonStatus[buttonIndex] = BTN_ENABLED;
     }
 
-    gSaveContext.unk_13E7 = gSaveContext.unk_13E8 = gSaveContext.unk_13EA = gSaveContext.unk_13EC =
+    gSaveContext.forceRisingButtonAlphas = gSaveContext.unk_13E8 = gSaveContext.unk_13EA = gSaveContext.unk_13EC =
         gSaveContext.magicCapacity = 0;
 
     gSaveContext.magicFillTarget = gSaveContext.magic;

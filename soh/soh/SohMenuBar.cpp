@@ -42,6 +42,11 @@ extern bool isBetaQuestEnabled;
 
 extern "C" PlayState* gPlayState;
 extern "C" uint32_t ResourceMgr_GetGameRegion(int index);
+#include "message_data_static.h"
+extern "C" MessageTableEntry* sNesMessageEntryTablePtr;
+extern "C" MessageTableEntry* sGerMessageEntryTablePtr;
+extern "C" MessageTableEntry* sFraMessageEntryTablePtr;
+extern "C" MessageTableEntry* sJpnMessageEntryTablePtr;
 
 std::string GetWindowButtonText(const char* text, bool menuOpen) {
     char buttonText[100] = "";
@@ -515,20 +520,24 @@ void DrawSettingsMenu() {
         if (ImGui::BeginMenu("Languages")) {
             if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL) {
                 UIWidgets::PaddedEnhancementCheckbox("Translate Title Screen", CVAR_SETTING("TitleScreenTranslation"));
+            }
+            if (sNesMessageEntryTablePtr != NULL) {
                 if (UIWidgets::EnhancementRadioButton("English", CVAR_SETTING("Languages"), LANGUAGE_ENG)) {
                     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSetGameLanguage>();
                 }
+            }
+            if (sGerMessageEntryTablePtr != NULL) {
                 if (UIWidgets::EnhancementRadioButton("German", CVAR_SETTING("Languages"), LANGUAGE_GER)) {
                     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSetGameLanguage>();
                 }
+            }
+            if (sFraMessageEntryTablePtr != NULL) {
                 if (UIWidgets::EnhancementRadioButton("French", CVAR_SETTING("Languages"), LANGUAGE_FRA)) {
                     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSetGameLanguage>();
                 }
-            } else { // GAME_REGION_NTSC
+            }
+            if (sJpnMessageEntryTablePtr != NULL) {
                 if (UIWidgets::EnhancementRadioButton("Japanese", CVAR_SETTING("Languages"), LANGUAGE_JPN)) {
-                    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSetGameLanguage>();
-                }
-                if (UIWidgets::EnhancementRadioButton("English", CVAR_SETTING("Languages"), LANGUAGE_ENG)) {
                     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSetGameLanguage>();
                 }
             }

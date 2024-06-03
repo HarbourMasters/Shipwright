@@ -74,7 +74,7 @@ void GameOver_Update(PlayState* play) {
             for (int buttonIndex = 0; buttonIndex < ARRAY_COUNT(gSaveContext.buttonStatus); buttonIndex++) {
                 gSaveContext.buttonStatus[buttonIndex] = BTN_ENABLED;
             }
-            gSaveContext.unk_13E7 = gSaveContext.unk_13E8 = gSaveContext.unk_13EA = gSaveContext.unk_13EC = 0;
+            gSaveContext.forceRisingButtonAlphas = gSaveContext.unk_13E8 = gSaveContext.unk_13EA = gSaveContext.unk_13EC = 0;
 
             Environment_InitGameOverLights(play);
             gGameOverTimer = 20;

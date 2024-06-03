@@ -4554,7 +4554,7 @@ void Message_Update(PlayState* play) {
 }
 
 void Message_SetTables(void) {
-    OTRMessage_Init(ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL);
+    OTRMessage_Init();
 
     // OTRTODO
     //sNesMessageEntryTablePtr = sNesMessageEntryTable;

@@ -34,7 +34,7 @@ void Select_LoadGame(SelectContext* this, s32 entranceIndex) {
     for (int buttonIndex = 0; buttonIndex < ARRAY_COUNT(gSaveContext.buttonStatus); buttonIndex++) {
         gSaveContext.buttonStatus[buttonIndex] = BTN_ENABLED;
     }
-    gSaveContext.unk_13E7 = gSaveContext.unk_13E8 = gSaveContext.unk_13EA = gSaveContext.unk_13EC = 0;
+    gSaveContext.forceRisingButtonAlphas = gSaveContext.unk_13E8 = gSaveContext.unk_13EA = gSaveContext.unk_13EC = 0;
     Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_STOP);
     gSaveContext.entranceIndex = entranceIndex;
 
@@ -91,7 +91,7 @@ void Select_Grotto_LoadGame(SelectContext* this, s32 grottoIndex) {
     for (int buttonIndex = 0; buttonIndex < ARRAY_COUNT(gSaveContext.buttonStatus); buttonIndex++) {
         gSaveContext.buttonStatus[buttonIndex] = BTN_ENABLED;
     }
-    gSaveContext.unk_13E7 = gSaveContext.unk_13E8 = gSaveContext.unk_13EA = gSaveContext.unk_13EC = 0;
+    gSaveContext.forceRisingButtonAlphas = gSaveContext.unk_13E8 = gSaveContext.unk_13EA = gSaveContext.unk_13EC = 0;
     Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_STOP);
     // Entrance index and grotto content data to load the correct grotto and actors
     gSaveContext.entranceIndex = this->betterGrottos[grottoIndex].entranceIndex;

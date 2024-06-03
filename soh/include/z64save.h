@@ -244,7 +244,7 @@ typedef struct {
     /* 0x13E0 */ u8 seqId;
     /* 0x13E1 */ u8 natureAmbienceId;
     /* 0x13E2 */ u8 buttonStatus[9]; // SOH [Enhancements] Changed from 5 to 9 to support Dpad equips
-    /* 0x13E7 */ u8 unk_13E7; // alpha related
+    /* 0x13E7 */ u8 forceRisingButtonAlphas; // alpha related
     /* 0x13E8 */ u16 unk_13E8; // alpha type?
     /* 0x13EA */ u16 unk_13EA; // also alpha type?
     /* 0x13EC */ u16 unk_13EC; // alpha type counter?
