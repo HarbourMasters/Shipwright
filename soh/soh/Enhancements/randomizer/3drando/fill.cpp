@@ -18,6 +18,7 @@
 #include <vector>
 #include <list>
 #include <spdlog/spdlog.h>
+#include <ranges>
 
 using namespace CustomMessages;
 using namespace Rando;
@@ -488,13 +489,14 @@ static void GeneratePlaythrough() {
 RandomizerArea LookForExternalArea(const Area* const currentRegion, std::vector<RandomizerRegion> &alreadyChecked){
   for (const auto& entrance : currentRegion->entrances) {
     RandomizerArea otherArea = entrance->GetParentRegion()->GetArea();
-    if(otherArea == RA_NONE && std::find(alreadyChecked.begin(), alreadyChecked.end(), entrance->GetParentRegionKey()) == alreadyChecked.end()){
-        //if the region is in RA_NONE and hasn't already been checked, check it
-        alreadyChecked.push_back(entrance->GetParentRegionKey());
-        const RandomizerArea passdown = LookForExternalArea(entrance->GetParentRegion(), alreadyChecked);
-        if(passdown != RA_NONE){
-          return passdown;
-        }
+    const bool isAreaUnchecked = std::ranges::find(alreadyChecked, entrance->GetParentRegionKey()) == alreadyChecked.end();
+    if (otherArea == RA_NONE && isAreaUnchecked) {
+      //if the region is in RA_NONE and hasn't already been checked, check it
+      alreadyChecked.push_back(entrance->GetParentRegionKey());
+      const RandomizerArea passdown = LookForExternalArea(entrance->GetParentRegion(), alreadyChecked);
+      if(passdown != RA_NONE){
+        return passdown;
+      }
     } else if (otherArea != RA_LINKS_POCKET){ //if it's links pocket, do not propogate this, Link's Pocket is not a real Area
       return otherArea;
     }
