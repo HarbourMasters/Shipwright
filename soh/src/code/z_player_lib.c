@@ -1766,6 +1766,9 @@ Vec3f sLeftRightFootLimbModelFootPos[] = {
 void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
     Player* this = (Player*)thisx;
 
+    const Vec3s BoomerangViewAdult = { -31200, -9200, 17000 };
+    const Vec3s BoomerangViewChild = { -31200, -8700, 17000 };
+
     if (*dList != NULL) {
         Matrix_MultVec3f(&sZeroVec, D_80160000);
     }
@@ -1950,9 +1953,10 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
             } else if (CVarGetInteger(CVAR_ENHANCEMENT("BoomerangReticle"), 0) && (this->heldItemAction == PLAYER_IA_BOOMERANG)) {
                 if (Player_HoldsBoomerang(this)) {
                     if (LINK_IS_ADULT) {
-                        Matrix_RotateZYX(-31200, -9200, 17000, MTXMODE_APPLY);
+                        Matrix_RotateZYX(BoomerangViewAdult.x, BoomerangViewAdult.y, BoomerangViewAdult.z,
+                                         MTXMODE_APPLY);
                     } else {
-                        Matrix_RotateZYX(-31200, -8700, 17000, MTXMODE_APPLY);
+                        Matrix_RotateZYX(BoomerangViewChild.x, BoomerangViewChild.y, BoomerangViewChild.z, MTXMODE_APPLY);
                     }
 
                     if (Player_AimsBoomerang(this)) {
