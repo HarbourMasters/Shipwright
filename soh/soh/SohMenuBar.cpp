@@ -1394,6 +1394,10 @@ void DrawEnhancementsMenu() {
                 "- Each Heart Container or full Heart Piece reduces Links hearts by 1.\n"
                 "- Can be enabled retroactively after a File has already started.");
 
+            if (UIWidgets::PaddedEnhancementCheckbox("Invisible Enemies", CVAR_ENHANCEMENT("InvisibleEnemies"), true, false)) {
+                RegisterInvisibleEnemies();
+            }
+            UIWidgets::Tooltip("Enemies will appear invisible without using the Lens of Truth. Requires scene reload to take effect.");
             ImGui::EndMenu();
         }
 

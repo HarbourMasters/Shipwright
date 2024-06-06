@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include "modes/InvisibleEnemies.h"
 
 #ifndef MODS_H
 #define MODS_H

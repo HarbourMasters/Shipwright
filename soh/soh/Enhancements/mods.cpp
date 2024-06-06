@@ -1433,4 +1433,5 @@ void InitMods() {
     RegisterPatchHandHandler();
     RegisterHurtContainerModeHandler();
     RegisterPauseMenuHooks();
+    RegisterInvisibleEnemies();
 }
