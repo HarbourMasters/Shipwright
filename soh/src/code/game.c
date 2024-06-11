@@ -245,10 +245,8 @@ int fbTest = -1;
 void GameState_Update(GameState* gameState) {
     GraphicsContext* gfxCtx = gameState->gfxCtx;
 
-    if (fbTest == -1)
-    {
-        fbTest = gfx_create_framebuffer(64, 112, SCREEN_WIDTH, SCREEN_HEIGHT, true);
-        //fbTest = gfx_create_framebuffer(256, 512);
+    if (fbTest == -1) {
+        fbTest = gfx_create_framebuffer(64, 112, 64, 112, true);
     }
 
     GameState_SetFrameBuffer(gfxCtx);
