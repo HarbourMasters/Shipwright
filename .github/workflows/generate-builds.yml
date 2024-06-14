@@ -237,18 +237,18 @@ jobs:
       with:
         variant: sccache
         max-size: "1G"
-        key: ${{ runner.os }}-ccache2-${{ github.ref }}-${{ github.sha }}
+        key: ${{ runner.os }}-ccache-${{ github.ref }}-${{ github.sha }}
         restore-keys: |
-          ${{ runner.os }}-ccache2-${{ github.ref }}
-          ${{ runner.os }}-ccache2-
+          ${{ runner.os }}-ccache-${{ github.ref }}
+          ${{ runner.os }}-ccache-
     - name: Cache build folder
       uses: actions/cache@v4
       with:
         save-always: true
-        key: ${{ runner.os }}-build2-${{ github.ref }}-${{ github.sha }}
+        key: ${{ runner.os }}-build-${{ github.ref }}-${{ github.sha }}
         restore-keys: |
-          ${{ runner.os }}-build2-${{ github.ref }}
-          ${{ runner.os }}-build2-
+          ${{ runner.os }}-build-${{ github.ref }}
+          ${{ runner.os }}-build-
         path: |
           build-windows
           vcpkg
