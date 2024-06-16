@@ -59,4 +59,4 @@ typedef struct GetItemEntry {
     /* 0x10 */ uint16_t drawItemId; // Will be a copy of itemId unless the item is an ice trap. Needed for particles to function on ice traps.
     /* 0x11 */ uint16_t drawModIndex; // Will be a copy of modIndex unless the item is an ice trap. Needed for particles to function on ice traps.
     CustomDrawFunc drawFunc;
-}; // size = 0x11
+} GetItemEntry; // size = 0x11
