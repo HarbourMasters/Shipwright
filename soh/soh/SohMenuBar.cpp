@@ -37,7 +37,6 @@
 #include "Enhancements/randomizer/randomizer_settings_window.h"
 #include "Enhancements/resolution-editor/ResolutionEditor.h"
 
-extern bool ToggleAltAssetsAtEndOfFrame;
 extern bool isBetaQuestEnabled;
 
 extern "C" PlayState* gPlayState;
@@ -327,7 +326,7 @@ void DrawSettingsMenu() {
             { // FPS Slider
                 const int minFps = 20;
                 static int maxFps;
-                if (Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() == Ship::WindowBackend::DX11) {
+                if (Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() == Ship::WindowBackend::FAST3D_DXGI_DX11) {
                     maxFps = 360;
                 } else {
                     maxFps = Ship::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate();
@@ -395,12 +394,12 @@ void DrawSettingsMenu() {
                 Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
             #else
                 bool matchingRefreshRate =
-                    CVarGetInteger(CVAR_SETTING("MatchRefreshRate"), 0) && Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() != Ship::WindowBackend::DX11;
+                    CVarGetInteger(CVAR_SETTING("MatchRefreshRate"), 0) && Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() != Ship::WindowBackend::FAST3D_DXGI_DX11;
                 UIWidgets::PaddedEnhancementSliderInt(
                     (currentFps == 20) ? "Frame Rate: Original (20 fps)" : "Frame Rate: %d fps",
                     "##FPSInterpolation", CVAR_SETTING("InterpolationFPS"), minFps, maxFps, "", 20, true, true, false, matchingRefreshRate);
             #endif
-                if (Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() == Ship::WindowBackend::DX11) {
+                if (Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() == Ship::WindowBackend::FAST3D_DXGI_DX11) {
                     UIWidgets::Tooltip(
                         "Uses Matrix Interpolation to create extra frames, resulting in smoother graphics.\n"
                         "This is purely visual and does not impact game logic, execution of glitches etc.\n"
@@ -415,7 +414,7 @@ void DrawSettingsMenu() {
                 }
             } // END FPS Slider
 
-            if (Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() == Ship::WindowBackend::DX11) {
+            if (Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() == Ship::WindowBackend::FAST3D_DXGI_DX11) {
                 UIWidgets::Spacer(0);
                 if (ImGui::Button("Match Frame Rate to Refresh Rate")) {
                     int hz = Ship::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate();
@@ -429,7 +428,7 @@ void DrawSettingsMenu() {
             }
             UIWidgets::Tooltip("Matches interpolation value to the game window's current refresh rate.");
 
-            if (Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() == Ship::WindowBackend::DX11) {
+            if (Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() == Ship::WindowBackend::FAST3D_DXGI_DX11) {
                 UIWidgets::PaddedEnhancementSliderInt(CVarGetInteger(CVAR_SETTING("ExtraLatencyThreshold"), 80) == 0 ? "Jitter fix: Off" : "Jitter fix: >= %d FPS",
                     "##ExtraLatencyThreshold", CVAR_SETTING("ExtraLatencyThreshold"), 0, 360, "", 80, true, true, false);
                 UIWidgets::Tooltip(
@@ -452,17 +451,16 @@ void DrawSettingsMenu() {
             UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
             
             static std::unordered_map<Ship::WindowBackend, const char*> windowBackendNames = {
-                { Ship::WindowBackend::DX11, "DirectX" },
-                { Ship::WindowBackend::SDL_OPENGL, "OpenGL"},
-                { Ship::WindowBackend::SDL_METAL, "Metal" },
-                { Ship::WindowBackend::GX2, "GX2"}
+                { Ship::WindowBackend::FAST3D_DXGI_DX11, "DirectX" },
+                { Ship::WindowBackend::FAST3D_SDL_OPENGL, "OpenGL"},
+                { Ship::WindowBackend::FAST3D_SDL_METAL, "Metal" }
             };
 
             ImGui::Text("Renderer API (Needs reload)");
             Ship::WindowBackend runningWindowBackend = Ship::Context::GetInstance()->GetWindow()->GetWindowBackend();
             Ship::WindowBackend configWindowBackend;
             int configWindowBackendId = Ship::Context::GetInstance()->GetConfig()->GetInt("Window.Backend.Id", -1);
-            if (configWindowBackendId != -1 && configWindowBackendId < static_cast<int>(Ship::WindowBackend::BACKEND_COUNT)) {
+            if (Ship::Context::GetInstance()->GetWindow()->IsAvailableWindowBackend(configWindowBackendId)) {
                 configWindowBackend = static_cast<Ship::WindowBackend>(configWindowBackendId);
             } else {
                 configWindowBackend = runningWindowBackend;
@@ -1107,12 +1105,7 @@ void DrawEnhancementsMenu() {
         if (ImGui::BeginMenu("Graphics"))
         {
             if (ImGui::BeginMenu("Mods")) {
-                if (UIWidgets::PaddedEnhancementCheckbox("Use Alternate Assets", CVAR_ALT_ASSETS, false, false)) {
-                    // The checkbox will flip the alt asset CVar, but we instead want it to change at the end of the game frame
-                    // We toggle it back while setting the flag to update the CVar later
-                    CVarSetInteger(CVAR_ALT_ASSETS, !CVarGetInteger(CVAR_ALT_ASSETS, 0));
-                    ToggleAltAssetsAtEndOfFrame = true;
-                }
+                UIWidgets::PaddedEnhancementCheckbox("Use Alternate Assets", CVAR_ENHANCEMENT("AltAssets"), false, false);
                 UIWidgets::Tooltip("Toggle between standard assets and alternate assets. Usually mods will indicate if this setting has to be used or not.");
                 UIWidgets::PaddedEnhancementCheckbox("Disable Bomb Billboarding", CVAR_ENHANCEMENT("DisableBombBillboarding"), true, false);
                 UIWidgets::Tooltip("Disables bombs always rotating to face the camera. To be used in conjunction with mods that want to replace bombs with 3D objects.");

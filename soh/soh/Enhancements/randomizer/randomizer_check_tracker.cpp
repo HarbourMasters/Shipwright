@@ -1089,7 +1089,7 @@ bool ShouldShowCheck(RandomizerCheckObject check) {
         IsVisibleInCheckTracker(check) && 
         (checkSearch.Filters.Size == 0 ||
         checkSearch.PassFilter(RandomizerCheckObjects::GetRCAreaName(check.rcArea).c_str()) ||
-        checkSearch.PassFilter(check.rcShortName.c_str()))
+        checkSearch.PassFilter(check.rcShortName))
     );
 }
 
