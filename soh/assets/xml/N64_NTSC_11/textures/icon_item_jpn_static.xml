@@ -11,7 +11,7 @@
         <Texture Name="gPauseBotWTitleJPNTex" OutName="pause_botw_title_jpn" Format="ia8" Width="96" Height="16" Offset="0x3000"/>
         <Texture Name="gPauseIceCavernTitleJPNTex" OutName="pause_ice_cavern_title_jpn" Format="ia8" Width="96" Height="16" Offset="0x3600"/>
         <Texture Name="gPauseToEquipJPNTex" OutName="pause_to_equip_jpn" Format="ia8" Width="56" Height="16" Offset="0x3C00"/>
-        <Texture Name="gPauseToDecideJPNTex" OutName="pause_to_decide_jpn" Format="ia8" Width="48" Height="16" Offset="0x4180"/>
+        <Texture Name="gPauseToDecideJPNTex" OutName="pause_to_decide_jpn" Format="ia8" Width="48" Height="16" Offset="0x3F80"/>
         <Texture Name="gPauseToPlayMelodyJPNTex" OutName="pause_to_play_melody_jpn" Format="ia8" Width="96" Height="16" Offset="0x4280"/>
         <Texture Name="gPauseToSelectItemJPNTex" OutName="pause_to_select_item_jpn" Format="ia8" Width="128" Height="16" Offset="0x4880"/>
         <Texture Name="gPauseToMapJPNTex" OutName="pause_to_map_jpn" Format="ia8" Width="128" Height="16" Offset="0x5080"/>
