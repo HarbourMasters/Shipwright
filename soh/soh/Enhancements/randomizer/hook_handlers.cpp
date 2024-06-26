@@ -37,6 +37,9 @@ extern "C" {
 
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
+extern void func_8084DFAC(PlayState* play, Player* player);
+extern void func_80835DAC(PlayState* play, Player* player, PlayerActionFunc actionFunc, s32 flags);
+extern s32 func_80836898(PlayState* play, Player* player, PlayerFuncA74 func);
 }
 
 #define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).GetSelectedOptionIndex()
@@ -555,8 +558,26 @@ void RandomizerSetChestGameRandomizerInf(RandomizerCheck rc) {
     }
 }
 
+void Player_Action_8084E6D4_override(Player* player, PlayState* play) {
+    if (LinkAnimation_Update(play, &player->skelAnime)) {
+        func_8084DFAC(play, player);
+    }
+}
+
+void func_8083A434_override(PlayState* play, Player* player) {
+    func_80835DAC(play, player, Player_Action_8084E6D4_override, 0);
+    player->stateFlags1 |= PLAYER_STATE1_GETTING_ITEM | PLAYER_STATE1_IN_CUTSCENE;
+}
+
 void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void* optionalArg) {
     switch (id) {
+        case VB_PLAY_SLOW_CHEST_CS: {
+            // We force fast chests if SkipGetItemAnimation is enabled because the camera in the CS looks pretty wonky otherwise
+            if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"), SGIA_DISABLED)) {
+                *should = false;
+            }
+            break;
+        }
         case VB_GIVE_ITEM_FROM_CHEST: {
             EnBox* chest = static_cast<EnBox*>(optionalArg);
             RandomizerCheck rc = OTRGlobals::Instance->gRandomizer->GetCheckFromActor(chest->dyna.actor.id, gPlayState->sceneNum, chest->dyna.actor.params);
@@ -565,9 +586,8 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
             RandomizerSetChestGameRandomizerInf(rc);
 
             Player* player = GET_PLAYER(gPlayState);
-            player->av2.actionVar2 = 1;
-            player->getItemId = GI_NONE;
-            player->getItemEntry = GetItemEntry(GET_ITEM_NONE);
+            func_80836898(gPlayState, player, func_8083A434_override);
+
             *should = false;
             break;
         }
