@@ -289,11 +289,9 @@ void Rando::StaticData::InitItemTable() {
     itemTable[RG_BRONZE_SCALE] = Item(RG_BRONZE_SCALE, Text{ "Bronze Scale", "!!!", "!!!" }, ITEMTYPE_ITEM, GI_SCALE_SILVER, true, &logic->ProgressiveWallet, RHT_BRONZE_SCALE, RG_BRONZE_SCALE, OBJECT_GI_SCALE, GID_SCALE_SILVER, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_RANDOMIZER);
     itemTable[RG_BRONZE_SCALE].SetCustomDrawFunc(Randomizer_DrawBronzeScale);
 
-    itemTable[RG_DEKU_STICK_BAG] = Item(RG_DEKU_STICK_BAG, Text{ "Deku Stick Bag", "!!!", "!!!" }, ITEMTYPE_ITEM, GI_NUT_UPGRADE_30, true, &logic->ProgressiveStickBag, RHT_BRONZE_SCALE, RG_DEKU_STICK_BAG, OBJECT_GI_STICK, GID_STICK, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_RANDOMIZER);
-    //itemTable[RG_DEKU_STICK_BAG].SetCustomDrawFunc(Randomizer_DrawDekuStickBag);
+    itemTable[RG_DEKU_STICK_BAG] = Item(RG_DEKU_STICK_BAG, Text{ "Deku Stick Bag", "!!!", "!!!" }, ITEMTYPE_ITEM, GI_STICK_UPGRADE_30, true, &logic->ProgressiveStickBag, RHT_NONE, RG_DEKU_STICK_BAG, OBJECT_GI_STICK, GID_STICK, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_RANDOMIZER);
 
-    itemTable[RG_DEKU_NUT_BAG] = Item(RG_DEKU_NUT_BAG, Text{ "Deku Nut Bag", "!!!", "!!!" }, ITEMTYPE_ITEM, GI_STICK_UPGRADE_30, true, &logic->ProgressiveNutBag, RHT_BRONZE_SCALE, RG_DEKU_NUT_BAG, OBJECT_GI_NUTS, GID_NUTS, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_RANDOMIZER);
-    //itemTable[RG_DEKU_NUT_BAG].SetCustomDrawFunc(Randomizer_DrawDekuNutBag);
+    itemTable[RG_DEKU_NUT_BAG] = Item(RG_DEKU_NUT_BAG, Text{ "Deku Nut Bag", "!!!", "!!!" }, ITEMTYPE_ITEM, GI_NUT_UPGRADE_30, true, &logic->ProgressiveNutBag, RHT_NONE, RG_DEKU_NUT_BAG, OBJECT_GI_NUTS, GID_NUTS, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_RANDOMIZER);
 
     itemTable[RG_TRIFORCE] =                            Item(RG_TRIFORCE,                         Text{ "Triforce", "Triforce", "Triforce" },                                                                       ITEMTYPE_EVENT,             RG_TRIFORCE,        false, &logic->noVariable,          RHT_NONE);
     itemTable[RG_HINT] =                                Item(RG_HINT,                             Text{ "Hint", "Indice", "Hinweis" },                                                                              ITEMTYPE_EVENT,             RG_HINT,            false, &logic->noVariable,          RHT_NONE);
