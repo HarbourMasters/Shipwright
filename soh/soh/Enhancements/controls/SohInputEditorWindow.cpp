@@ -1630,27 +1630,11 @@ void SohInputEditorWindow::DrawDpadControlPanel() {
     ImGui::SetCursorPos(ImVec2(cursor.x + 5, cursor.y + 5));
     Ship::GuiWindow::BeginGroupPanel("D-Pad Options", ImGui::GetContentRegionAvail());
     UIWidgets::PaddedEnhancementCheckbox("D-pad Support on Pause Screen", CVAR_SETTING("DPadOnPause"));
-    UIWidgets::Tooltip("Navigate Pause with the D-pad\nIf used with D-pad as Equip Items, you must hold C-Up to equip instead of navigate\n"
+    UIWidgets::Tooltip("Navigate Pause with the D-pad\nIf used with \"D-pad as Equip Items\", you must hold C-Up to equip instead of navigate\n"
                 "To make the cursor only move a single space no matter how long a direction is held, manually set gSettings.DpadHoldChange to 0");
     UIWidgets::PaddedEnhancementCheckbox("D-pad Support in Text Boxes", CVAR_SETTING("DpadInText"));
     UIWidgets::Tooltip("Navigate choices in text boxes, shop item selection, and the file select / name entry screens with the D-pad\n"
                 "To make the cursor only move a single space during name entry no matter how long a direction is held, manually set gSettings.DpadHoldChange to 0");
-    UIWidgets::PaddedEnhancementCheckbox("D-pad as Equip Items", CVAR_SETTING("DpadEquips"));
-    UIWidgets::Tooltip("Equip items and equipment on the D-pad\nIf used with D-pad on Pause Screen, you must hold C-Up to equip instead of navigate");
-    Ship::GuiWindow::EndGroupPanel(0);
-}
-
-void SohInputEditorWindow::DrawMiscControlPanel() {
-    ImVec2 cursor = ImGui::GetCursorPos();
-    ImGui::SetCursorPos(ImVec2(cursor.x + 5, cursor.y + 5));
-    Ship::GuiWindow::BeginGroupPanel("Misc Controls", ImGui::GetContentRegionAvail());
-    UIWidgets::PaddedText("Allow the cursor to be on any slot");
-    static const char* cursorOnAnySlot[3] = { "Only in Rando", "Always", "Never" };
-    UIWidgets::EnhancementCombobox(CVAR_SETTING("PauseAnyCursor"), cursorOnAnySlot, PAUSE_ANY_CURSOR_RANDO_ONLY);
-    UIWidgets::Tooltip("Allows the cursor on the pause menu to be over any slot. Sometimes required in rando to select certain items.");
-    UIWidgets::Spacer(0);
-    UIWidgets::PaddedEnhancementCheckbox("Answer Navi Prompt with L Button", CVAR_SETTING("NaviOnL"));
-    UIWidgets::Tooltip("Speak to Navi with L but enter first-person camera with C-Up");
     Ship::GuiWindow::EndGroupPanel(0);
 }
 
@@ -1856,16 +1840,6 @@ void SohInputEditorWindow::DrawLinkTab() {
             ImGui::PopStyleColor();
             ImGui::PopStyleColor();
             DrawDpadControlPanel();
-            ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(0.133f, 0.133f, 0.133f, 1.0f));
-            ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
-            ImGui::PushStyleColor(ImGuiCol_HeaderActive, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
-        }
-
-        if (ImGui::CollapsingHeader("Miscellaneous Controls")) {
-            ImGui::PopStyleColor();
-            ImGui::PopStyleColor();
-            ImGui::PopStyleColor();
-            DrawMiscControlPanel();
             ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(0.133f, 0.133f, 0.133f, 1.0f));
             ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
             ImGui::PushStyleColor(ImGuiCol_HeaderActive, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
