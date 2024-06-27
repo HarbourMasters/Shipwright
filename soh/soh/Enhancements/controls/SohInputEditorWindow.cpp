@@ -1647,28 +1647,7 @@ void SohInputEditorWindow::DrawMiscControlPanel() {
     UIWidgets::PaddedText("Allow the cursor to be on any slot");
     static const char* cursorOnAnySlot[3] = { "Only in Rando", "Always", "Never" };
     UIWidgets::EnhancementCombobox(CVAR_SETTING("PauseAnyCursor"), cursorOnAnySlot, PAUSE_ANY_CURSOR_RANDO_ONLY);
-    UIWidgets::Tooltip("Allows the cursor on the pause menu to be over any slot. Sometimes required in rando to select "
-                 "certain items.");
-    UIWidgets::Spacer(0);
-    ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
-    UIWidgets::PaddedEnhancementCheckbox("Enable speed modifiers", CVAR_SETTING("WalkModifier.Enabled"), true, false);
-    UIWidgets::Tooltip("Hold the assigned button to change the maximum walking or swimming speed");
-     if (CVarGetInteger(CVAR_SETTING("WalkModifier.Enabled"), 0)) {
-        UIWidgets::Spacer(5);
-        Ship::GuiWindow::BeginGroupPanel("Speed Modifier", ImGui::GetContentRegionAvail());
-        UIWidgets::PaddedEnhancementCheckbox("Toggle modifier instead of holding", CVAR_SETTING("WalkModifier.SpeedToggle"), true, false);
-        Ship::GuiWindow::BeginGroupPanel("Walk Modifier", ImGui::GetContentRegionAvail());
-        UIWidgets::PaddedEnhancementCheckbox("Don't affect jump distance/velocity", CVAR_SETTING("WalkModifier.DoesntChangeJump"), true, false);
-        UIWidgets::PaddedEnhancementSliderFloat("Walk Modifier 1: %.0f %%", "##WalkMod1", CVAR_SETTING("WalkModifier.Mapping1"), 0.0f, 5.0f, "", 1.0f, true, true, false, true);
-        UIWidgets::PaddedEnhancementSliderFloat("Walk Modifier 2: %.0f %%", "##WalkMod2", CVAR_SETTING("WalkModifier.Mapping2"), 0.0f, 5.0f, "", 1.0f, true, true, false, true);
-        Ship::GuiWindow::EndGroupPanel(0);
-        Ship::GuiWindow::BeginGroupPanel("Swim Modifier", ImGui::GetContentRegionAvail());
-        UIWidgets::PaddedEnhancementSliderFloat("Swim Modifier 1: %.0f %%", "##SwimMod1", CVAR_SETTING("WalkModifier.SwimMapping1"), 0.0f, 5.0f, "", 1.0f, true, true, false, true);
-        UIWidgets::PaddedEnhancementSliderFloat("Swim Modifier 2: %.0f %%", "##SwimMod2", CVAR_SETTING("WalkModifier.SwimMapping2"), 0.0f, 5.0f, "", 1.0f, true, true, false, true);
-        Ship::GuiWindow::EndGroupPanel(0);
-        Ship::GuiWindow::EndGroupPanel(0);
-    }
-    ImGui::EndDisabled();
+    UIWidgets::Tooltip("Allows the cursor on the pause menu to be over any slot. Sometimes required in rando to select certain items.");
     UIWidgets::Spacer(0);
     UIWidgets::PaddedEnhancementCheckbox("Answer Navi Prompt with L Button", CVAR_SETTING("NaviOnL"));
     UIWidgets::Tooltip("Speak to Navi with L but enter first-person camera with C-Up");
@@ -1821,6 +1800,36 @@ void SohInputEditorWindow::DrawLinkTab() {
             DrawButtonDeviceIcons(portIndex, mModifierButtonsBitmasks);
             DrawButtonLine("M1", portIndex, BTN_CUSTOM_MODIFIER1);
             DrawButtonLine("M2", portIndex, BTN_CUSTOM_MODIFIER2);
+
+            ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
+            UIWidgets::PaddedEnhancementCheckbox("Enable speed modifiers", CVAR_SETTING("WalkModifier.Enabled"), true, false);
+            UIWidgets::Tooltip("Hold the assigned button to change the maximum walking or swimming speed");
+            if (CVarGetInteger(CVAR_SETTING("WalkModifier.Enabled"), 0)) {
+                UIWidgets::Spacer(5);
+                Ship::GuiWindow::BeginGroupPanel("Speed Modifier", ImGui::GetContentRegionAvail());
+                UIWidgets::PaddedEnhancementCheckbox("Toggle modifier instead of holding",
+                                                     CVAR_SETTING("WalkModifier.SpeedToggle"), true, false);
+                Ship::GuiWindow::BeginGroupPanel("Walk Modifier", ImGui::GetContentRegionAvail());
+                UIWidgets::PaddedEnhancementCheckbox("Don't affect jump distance/velocity",
+                                                     CVAR_SETTING("WalkModifier.DoesntChangeJump"), true, false);
+                UIWidgets::PaddedEnhancementSliderFloat("Walk Modifier 1: %.0f %%", "##WalkMod1",
+                                                        CVAR_SETTING("WalkModifier.Mapping1"), 0.0f, 5.0f, "", 1.0f,
+                                                        true, true, false, true);
+                UIWidgets::PaddedEnhancementSliderFloat("Walk Modifier 2: %.0f %%", "##WalkMod2",
+                                                        CVAR_SETTING("WalkModifier.Mapping2"), 0.0f, 5.0f, "", 1.0f,
+                                                        true, true, false, true);
+                Ship::GuiWindow::EndGroupPanel(0);
+                Ship::GuiWindow::BeginGroupPanel("Swim Modifier", ImGui::GetContentRegionAvail());
+                UIWidgets::PaddedEnhancementSliderFloat("Swim Modifier 1: %.0f %%", "##SwimMod1",
+                                                        CVAR_SETTING("WalkModifier.SwimMapping1"), 0.0f, 5.0f, "", 1.0f,
+                                                        true, true, false, true);
+                UIWidgets::PaddedEnhancementSliderFloat("Swim Modifier 2: %.0f %%", "##SwimMod2",
+                                                        CVAR_SETTING("WalkModifier.SwimMapping2"), 0.0f, 5.0f, "", 1.0f,
+                                                        true, true, false, true);
+                Ship::GuiWindow::EndGroupPanel(0);
+                Ship::GuiWindow::EndGroupPanel(0);
+            }
+            ImGui::EndDisabled();
         } else {
             DrawButtonDeviceIcons(portIndex, mModifierButtonsBitmasks);
         }
