@@ -21,7 +21,14 @@ void SohInputEditorWindow::InitElement() {
 
     mButtonsBitmasks = { BTN_A, BTN_B, BTN_START, BTN_L, BTN_R, BTN_Z, BTN_CUP, BTN_CDOWN, BTN_CLEFT, BTN_CRIGHT };
     mDpadBitmasks = { BTN_DUP, BTN_DDOWN, BTN_DLEFT, BTN_DRIGHT };
-    mModifierButtonsBitmasks = { BTN_MODIFIER1, BTN_MODIFIER2 };
+    mModifierButtonsBitmasks = { BTN_CUSTOM_MODIFIER1, BTN_CUSTOM_MODIFIER2 };
+    mCustomOcarinaButtonsBitmasks = {
+        BTN_CUSTOM_OCARINA_NOTE_D4,
+        BTN_CUSTOM_OCARINA_NOTE_F4,
+        BTN_CUSTOM_OCARINA_NOTE_A4,
+        BTN_CUSTOM_OCARINA_NOTE_B4,
+        BTN_CUSTOM_OCARINA_NOTE_D5
+    };
 
     addButtonName(BTN_A,		"A");
     addButtonName(BTN_B,		"B");
@@ -220,7 +227,7 @@ void SohInputEditorWindow::DrawInputChip(const char* buttonName, ImVec4 color = 
     ImGui::EndDisabled();
 }
 
-void SohInputEditorWindow::DrawButtonLineAddMappingButton(uint8_t port, uint16_t bitmask) {
+void SohInputEditorWindow::DrawButtonLineAddMappingButton(uint8_t port, N64ButtonMask bitmask) {
     ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(1.0f, 0.5f));
     auto popupId = StringHelper::Sprintf("addButtonMappingPopup##%d-%d", port, bitmask);
     if (ImGui::Button(StringHelper::Sprintf("%s###addButtonMappingButton%d-%d", ICON_FA_PLUS, port, bitmask).c_str(),
@@ -249,7 +256,7 @@ void SohInputEditorWindow::DrawButtonLineAddMappingButton(uint8_t port, uint16_t
     }
 }
 
-void SohInputEditorWindow::DrawButtonLineEditMappingButton(uint8_t port, uint16_t bitmask, std::string id) {
+void SohInputEditorWindow::DrawButtonLineEditMappingButton(uint8_t port, N64ButtonMask bitmask, std::string id) {
     auto mapping = Ship::Context::GetInstance()
                        ->GetControlDeck()
                        ->GetControllerByPort(port)
@@ -456,7 +463,7 @@ void SohInputEditorWindow::DrawButtonLineEditMappingButton(uint8_t port, uint16_
     ImGui::SameLine(0, SCALE_IMGUI_SIZE(4.0f));
 }
 
-void SohInputEditorWindow::DrawButtonLine(const char* buttonName, uint8_t port, uint16_t bitmask,
+void SohInputEditorWindow::DrawButtonLine(const char* buttonName, uint8_t port, N64ButtonMask bitmask,
                                           ImVec4 color = CHIP_COLOR_N64_GREY) {
     ImGui::NewLine();
     ImGui::SameLine(SCALE_IMGUI_SIZE(32.0f));
@@ -1248,7 +1255,7 @@ void SohInputEditorWindow::DrawGyroSection(uint8_t port) {
     }
 }
 
-void SohInputEditorWindow::DrawButtonDeviceIcons(uint8_t portIndex, std::set<uint16_t> bitmasks) {
+void SohInputEditorWindow::DrawButtonDeviceIcons(uint8_t portIndex, std::set<N64ButtonMask> bitmasks) {
     std::set<Ship::ShipDeviceIndex> allLusDeviceIndices;
     allLusDeviceIndices.insert(Ship::ShipDeviceIndex::Keyboard);
     for (auto [lusIndex, mapping] : Ship::Context::GetInstance()
@@ -1483,22 +1490,10 @@ namespace TableHelper {
     }
 }
 
-typedef uint32_t N64ButtonMask;
-
 void SohInputEditorWindow::addButtonName(N64ButtonMask mask, const char* name) {
     buttons.push_back(std::make_pair(mask, name));
     buttonNames[mask] = std::prev(buttons.end());
 }
-
-// Ocarina button maps
-static CustomButtonMap ocarinaD5 = {"D5", CVAR_SETTING("CustomOcarina.D5Button"), BTN_CUP};
-static CustomButtonMap ocarinaB4 = {"B4", CVAR_SETTING("CustomOcarina.B4Button"), BTN_CLEFT};
-static CustomButtonMap ocarinaA4 = {"A4", CVAR_SETTING("CustomOcarina.A4Button"), BTN_CRIGHT};
-static CustomButtonMap ocarinaF4 = {"F4", CVAR_SETTING("CustomOcarina.F4Button"), BTN_CDOWN};
-static CustomButtonMap ocarinaD4 = {"D4", CVAR_SETTING("CustomOcarina.D4Button"), BTN_A};
-static CustomButtonMap ocarinaSongDisable = {"Disable songs", CVAR_SETTING("CustomOcarina.DisableButton"), BTN_L};
-static CustomButtonMap ocarinaSharp = {"Pitch up", CVAR_SETTING("CustomOcarina.SharpButton"), BTN_R};
-static CustomButtonMap ocarinaFlat = {"Pitch down", CVAR_SETTING("CustomOcarina.FlatButton"), BTN_Z};
 
 // Draw a button mapping setting consisting of a padded label and button dropdown.
 // excludedButtons indicates which buttons are unavailable to choose from.
@@ -1538,73 +1533,35 @@ void SohInputEditorWindow::DrawMapping(CustomButtonMap& mapping, float labelWidt
 }
 
 void SohInputEditorWindow::DrawOcarinaControlPanel() {
-    if (!ImGui::BeginTable("tableCustomOcarinaControls", 1, PANEL_TABLE_FLAGS)) {
-        return;
-    }
-
-    ImGui::TableSetupColumn("Custom Ocarina Controls", PANEL_TABLE_COLUMN_FLAGS | ImGuiTableColumnFlags_WidthStretch);
-    TableHelper::InitHeader(false);
-
     ImVec2 cursor = ImGui::GetCursorPos();
-    ImGui::SetCursorPos(ImVec2(cursor.x + 5, cursor.y + 5));
+    ImGui::SetCursorPos(ImVec2(cursor.x + 24, cursor.y + 5));
+
     UIWidgets::EnhancementCheckbox("Customize Ocarina Controls", CVAR_SETTING("CustomOcarina.Enabled"));
 
-    if (CVarGetInteger(CVAR_SETTING("CustomOcarina.Enabled"), 0) == 1) {
-        if (ImGui::BeginTable("tableCustomMainOcarinaControls", 2, ImGuiTableFlags_SizingStretchProp)) {
-            float labelWidth;
-            N64ButtonMask disableMask = BTN_B;
-            if (CVarGetInteger(CVAR_SETTING("OcarinaControl.Dpad"), 0)) {
-                disableMask |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
-            }
-
-            ImGui::TableSetupColumn("Notes##CustomOcarinaNotes", PANEL_TABLE_COLUMN_FLAGS);
-            ImGui::TableSetupColumn("Modifiers##CustomOcaranaModifiers", PANEL_TABLE_COLUMN_FLAGS);
-            TableHelper::InitHeader(false);
-
-            Ship::GuiWindow::BeginGroupPanel("Notes", ImGui::GetContentRegionAvail());
-            labelWidth = ImGui::CalcTextSize("D5").x + 10;
-            DrawMapping(ocarinaD5, labelWidth, disableMask);
-            DrawMapping(ocarinaB4, labelWidth, disableMask);
-            DrawMapping(ocarinaA4, labelWidth, disableMask);
-            DrawMapping(ocarinaF4, labelWidth, disableMask);
-            DrawMapping(ocarinaD4, labelWidth, disableMask);
-            ImGui::Dummy(ImVec2(0, 5));
-            float cursorY = ImGui::GetCursorPosY();
-            Ship::GuiWindow::EndGroupPanel(0);
-
-            TableHelper::NextCol();
-
-            Ship::GuiWindow::BeginGroupPanel("Modifiers", ImGui::GetContentRegionAvail());
-            labelWidth = ImGui::CalcTextSize(ocarinaSongDisable.label).x + 10;
-            DrawMapping(ocarinaSongDisable, labelWidth, disableMask);
-            DrawMapping(ocarinaSharp, labelWidth, disableMask);
-            DrawMapping(ocarinaFlat, labelWidth, disableMask);
-            Ship::GuiWindow::EndGroupPanel(cursorY - ImGui::GetCursorPosY() + 2);
-
-            ImGui::EndTable();
-        }
-    } else {
-        UIWidgets::Spacer(0);
-        ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
-        ImGui::TextWrapped("To modify the main ocarina controls, select the \"Customize Ocarina Controls\" checkbox.");
-        UIWidgets::Spacer(0);
+    if (!CVarGetInteger(CVAR_SETTING("CustomOcarina.Enabled"), 0)) {
+        ImGui::BeginDisabled();
     }
 
-    Ship::GuiWindow::BeginGroupPanel("Alternate controls", ImGui::GetContentRegionAvail());
-    if (ImGui::BeginTable("tableOcarinaAlternateControls", 2, ImGuiTableFlags_SizingFixedSame)) {
-        ImGui::TableSetupColumn("D-pad", PANEL_TABLE_COLUMN_FLAGS);
-        ImGui::TableSetupColumn("Right stick", PANEL_TABLE_COLUMN_FLAGS);
-        TableHelper::InitHeader(false);
-        ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
-        UIWidgets::EnhancementCheckbox("Play with D-pad", CVAR_SETTING("OcarinaControl.Dpad"));
-        TableHelper::NextCol();
-        UIWidgets::EnhancementCheckbox("Play with camera stick", CVAR_SETTING("OcarinaControl.RStick"));
-        UIWidgets::Spacer(0);
-        ImGui::EndTable();
-    }
-    Ship::GuiWindow::EndGroupPanel(0);
+    ImGui::AlignTextToFramePadding();
+    ImGui::BulletText("Notes");
+    DrawButtonLine("A (D4)", 0, BTN_CUSTOM_OCARINA_NOTE_D4);
+    DrawButtonLine(ICON_FA_ARROW_DOWN " (F4)", 0, BTN_CUSTOM_OCARINA_NOTE_F4);
+    DrawButtonLine(ICON_FA_ARROW_RIGHT " (A4)", 0, BTN_CUSTOM_OCARINA_NOTE_A4);
+    DrawButtonLine(ICON_FA_ARROW_LEFT " (B4)", 0, BTN_CUSTOM_OCARINA_NOTE_B4);
+    DrawButtonLine(ICON_FA_ARROW_UP " (D5)", 0, BTN_CUSTOM_OCARINA_NOTE_D5);
 
-    ImGui::EndTable();
+    ImGui::AlignTextToFramePadding();
+    ImGui::BulletText("Disable song detection");
+    DrawButtonLine(ICON_FA_BAN, 0, BTN_CUSTOM_OCARINA_DISABLE_SONGS);
+
+    ImGui::AlignTextToFramePadding();
+    ImGui::BulletText("Pitch");
+    DrawButtonLine(ICON_FA_ARROW_UP, 0, BTN_CUSTOM_OCARINA_PITCH_UP);
+    DrawButtonLine(ICON_FA_ARROW_DOWN, 0, BTN_CUSTOM_OCARINA_PITCH_DOWN);
+
+    if (!CVarGetInteger(CVAR_SETTING("CustomOcarina.Enabled"), 0)) {
+        ImGui::EndDisabled();
+    }
 }
 
 void SohInputEditorWindow::DrawCameraControlPanel() {
@@ -1862,20 +1819,17 @@ void SohInputEditorWindow::DrawLinkTab() {
 
         if (ImGui::CollapsingHeader("Modifier Buttons")) {
             DrawButtonDeviceIcons(portIndex, mModifierButtonsBitmasks);
-            DrawButtonLine("M1", portIndex, BTN_MODIFIER1);
-            DrawButtonLine("M2", portIndex, BTN_MODIFIER2);
+            DrawButtonLine("M1", portIndex, BTN_CUSTOM_MODIFIER1);
+            DrawButtonLine("M2", portIndex, BTN_CUSTOM_MODIFIER2);
         } else {
             DrawButtonDeviceIcons(portIndex, mModifierButtonsBitmasks);
         }
 
         if (ImGui::CollapsingHeader("Ocarina Controls")) {
-            ImGui::PopStyleColor();
-            ImGui::PopStyleColor();
-            ImGui::PopStyleColor();
+            DrawButtonDeviceIcons(portIndex, mCustomOcarinaButtonsBitmasks);
             DrawOcarinaControlPanel();
-            ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(0.133f, 0.133f, 0.133f, 1.0f));
-            ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
-            ImGui::PushStyleColor(ImGuiCol_HeaderActive, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
+        } else {
+            DrawButtonDeviceIcons(portIndex, mCustomOcarinaButtonsBitmasks);
         }
 
         if (ImGui::CollapsingHeader("Camera Controls")) {

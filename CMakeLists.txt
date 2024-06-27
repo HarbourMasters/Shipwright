@@ -91,6 +91,11 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 add_compile_definitions(F3DEX_GBI_2)
 
 ################################################################################
+# Set CONTROLLERBUTTONS_T
+################################################################################
+add_compile_definitions(CONTROLLERBUTTONS_T=uint32_t)
+
+################################################################################
 # Sub-projects
 ################################################################################
 add_subdirectory(libultraship ${CMAKE_BINARY_DIR}/libultraship)
