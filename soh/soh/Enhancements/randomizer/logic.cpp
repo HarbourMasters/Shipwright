@@ -97,13 +97,16 @@ namespace Rando {
                 (itemName == RG_BIGGORON_SWORD         && ctx->CheckEquipment(EQUIP_FLAG_SWORD_BGS) && ctx->GetSaveContext()->bgsFlag)       ||
                 (itemName == RG_FAIRY_SLINGSHOT        && ctx->CheckInventory(ITEM_SLINGSHOT, true))           ||
                 (itemName == RG_BOOMERANG              && ctx->CheckInventory(ITEM_BOOMERANG, true))           ||
+                (itemName == RG_BOMB_BAG               && ctx->CurrentUpgrade(UPG_BOMB_BAG) >= 1)           ||
+                (itemName == RG_MAGIC_SINGLE           && ctx->GetSaveContext()->magicLevel >= 1)           ||
                 (itemName == RG_KOKIRI_SWORD           && ctx->CheckEquipment(EQUIP_FLAG_SWORD_KOKIRI))         ||
                 (itemName == RG_STICKS                 && ctx->CheckInventory(ITEM_STICK, true))              ||
                 (itemName == RG_DEKU_SHIELD            && ctx->CheckEquipment(EQUIP_FLAG_SHIELD_DEKU))          ||
                 (itemName == RG_FIRE_ARROWS            && ctx->CheckInventory(ITEM_ARROW_FIRE, true))          ||
                 (itemName == RG_ICE_ARROWS             && ctx->CheckInventory(ITEM_ARROW_ICE, true))           ||
                 (itemName == RG_LIGHT_ARROWS           && ctx->CheckInventory(ITEM_ARROW_LIGHT, true))         ||
-                (itemName == RG_FISHING_POLE           && FishingPole)         ||
+                (itemName == RG_PROGRESSIVE_BOMBCHUS   && ctx->CheckInventory(ITEM_BOMBCHU, true))         ||
+                (itemName == RG_FISHING_POLE           && ctx->CheckRandoInf(RAND_INF_FISHING_POLE_FOUND))         ||
                 (itemName == RG_ZELDAS_LULLABY         && ctx->CheckQuestItem(QUEST_SONG_LULLABY))       ||
                 (itemName == RG_EPONAS_SONG            && ctx->CheckQuestItem(QUEST_SONG_EPONA))          ||
                 (itemName == RG_SARIAS_SONG            && ctx->CheckQuestItem(QUEST_SONG_SARIA))          ||
@@ -214,6 +217,10 @@ namespace Rando {
                 return IsChild;// || StickAsAdult;
             case RG_DEKU_SHIELD:
                 return IsChild;// || DekuShieldAsAdult;
+            case RG_WEIRD_EGG:
+                return IsChild;
+            case RG_RUTOS_LETTER:
+                return IsChild;
 
             // Songs
             case RG_ZELDAS_LULLABY:
@@ -242,9 +249,8 @@ namespace Rando {
                 return Ocarina && OcarinaCLeftButton && OcarinaCRightButton && OcarinaCUpButton;
 
             // Misc. Items
-            // TODO: Once child wallet shuffle is added, this will need to be updated to account for the fishing pond entry fee.
             case RG_FISHING_POLE:
-                return true; // as long as you have enough rubies
+                return HasItem(RG_CHILD_WALLET); // as long as you have enough rubies
 
             // Magic items
             default:
@@ -344,6 +350,18 @@ namespace Rando {
         
     }
 
+    uint8_t Logic::BottleCount() {
+        auto ctx = Rando::Context::GetInstance();
+        uint8_t count = 0;
+        for (int i = SLOT_BOTTLE_1; i <= SLOT_BOTTLE_4; i++) {
+            uint8_t item = ctx->GetSaveContext()->inventory.items[i];
+            if (item != ITEM_NONE && item != ITEM_LETTER_RUTO && item != ITEM_BIG_POE) {
+                count++;
+            }
+        }
+        return count;
+    }
+
     // Updates all logic helpers. Should be called whenever a non-helper is changed
     void Logic::UpdateHelpers() {
         auto ctx = Rando::Context::GetInstance();
@@ -352,27 +370,26 @@ namespace Rando {
                            (OcarinaCRightButton ? 1 : 0) +
                            (OcarinaCUpButton ? 1 : 0) +
                            (OcarinaCDownButton ? 1 : 0);
-        //ZeldasLetter  = false;
-        //WeirdEgg      = false;
-        //HasBottle     = false;
-        //Bombchus      = false;
-        //Bombchus5     = false;
-        //Bombchus10    = false;
-        //Bombchus20    = false;
-        //MagicBean     = false;
-        //MagicBeanPack = false;
-        //RutosLetter   = false;
-        //Boomerang     = false;
-        //DinsFire      = false;
-        //FaroresWind   = false;
-        //NayrusLove    = false;
-        //LensOfTruth   = false;
-        //ShardOfAgony  = false;
+        ZeldasLetter  = HasItem(RG_ZELDAS_LETTER);
+        WeirdEgg      = CanUse(RG_WEIRD_EGG);
+        Bombchus      = HasItem(RG_PROGRESSIVE_BOMBCHUS);
+        Bombchus5     = false;
+        Bombchus10    = false;
+        Bombchus20    = false;
+        MagicBean     = false;
+        MagicBeanPack = false;
+        RutosLetter   = CanUse(RG_RUTOS_LETTER);
+        Boomerang     = CanUse(RG_BOOMERANG);
+        DinsFire      = CanUse(RG_DINS_FIRE);
+        FaroresWind   = CanUse(RG_FARORES_WIND);
+        NayrusLove    = CanUse(RG_NAYRUS_LOVE);
+        LensOfTruth   = CanUse(RG_LENS_OF_TRUTH);
+        ShardOfAgony  = HasItem(RG_STONE_OF_AGONY);
         //SkullMask     = false;
         //MaskOfTruth   = false;
 
         //Adult logic
-        //Hammer        = false;
+        Hammer          = CanUse(RG_MEGATON_HAMMER);
         IronBoots       = CanUse(RG_IRON_BOOTS);
         HoverBoots      = CanUse(RG_HOVER_BOOTS);
         MirrorShield    = CanUse(RG_MIRROR_SHIELD);
@@ -380,20 +397,20 @@ namespace Rando {
         ZoraTunic       = CanUse(RG_ZORA_TUNIC);
         //Epona         = false;
         //BigPoe        = false;
-        //GerudoToken   = false;
-        //FireArrows    = false;
-        //IceArrows     = false;
+        GerudoToken     = HasItem(RG_GERUDO_MEMBERSHIP_CARD);
+        FireArrows      = CanUse(RG_FIRE_ARROWS);
+        IceArrows       = CanUse(RG_ICE_ARROWS);
         LightArrows     = CanUse(RG_LIGHT_ARROWS);
         KokiriSword     = CanUse(RG_KOKIRI_SWORD);
         MasterSword     = CanUse(RG_MASTER_SWORD);
         BiggoronSword   = CanUse(RG_MASTER_SWORD);
-        NumBottles      = ((NoBottles) ? 0 : (Bottles + ((DeliverLetter) ? 1 : 0)));
+        NumBottles      = ((NoBottles) ? 0 : BottleCount());
         HasBottle       = NumBottles >= 1;
-        Slingshot       = (ProgressiveBulletBag >= 1) && (BuySeed || AmmoCanDrop);
+        Slingshot       = CanUse(RG_FAIRY_SLINGSHOT) && (BuySeed || AmmoCanDrop);
         Ocarina         = HasItem(RG_FAIRY_OCARINA);
         OcarinaOfTime   = HasItem(RG_OCARINA_OF_TIME);
-        MagicMeter      = (ProgressiveMagic     >= 1) && (AmmoCanDrop || (HasBottle && BuyMagicPotion));
-        BombBag         = (ProgressiveBombBag   >= 1) && (BuyBomb || AmmoCanDrop);
+        MagicMeter      = HasItem(RG_MAGIC_SINGLE) && (AmmoCanDrop || (HasBottle && BuyMagicPotion));
+        BombBag         = HasItem(RG_BOMB_BAG) && (BuyBomb || AmmoCanDrop);
         Hookshot        = CanUse(RG_HOOKSHOT);
         Longshot        = CanUse(RG_LONGSHOT);
         Bow             = CanUse(RG_FAIRY_BOW) && (BuyArrow || AmmoCanDrop);
@@ -664,7 +681,7 @@ namespace Rando {
         GoronTunic    = false;
         ZoraTunic     = false;
         Epona         = false;
-        BigPoe        = false;
+        //BigPoe        = false;
         GerudoToken   = false;
         FireArrows    = false;
         IceArrows     = false;

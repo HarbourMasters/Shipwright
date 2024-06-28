@@ -59,7 +59,7 @@ class Logic {
     bool GoronTunic = false;
     bool ZoraTunic = false;
     bool Epona = false;
-    bool BigPoe = false;
+    //bool BigPoe = false; //unused
     bool GerudoToken = false;
     bool FireArrows = false;
     bool IceArrows = false;
@@ -426,6 +426,7 @@ class Logic {
     bool CanKillEnemy(std::string enemy);
     bool CanPassEnemy(std::string enemy);
     bool EventsUpdated();
+    uint8_t BottleCount();
     void Reset();
 
   private:
