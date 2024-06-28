@@ -1630,11 +1630,21 @@ void SohInputEditorWindow::DrawDpadControlPanel() {
     ImGui::SetCursorPos(ImVec2(cursor.x + 5, cursor.y + 5));
     Ship::GuiWindow::BeginGroupPanel("D-Pad Options", ImGui::GetContentRegionAvail());
     UIWidgets::PaddedEnhancementCheckbox("D-pad Support on Pause Screen", CVAR_SETTING("DPadOnPause"));
-    UIWidgets::Tooltip("Navigate Pause with the D-pad\nIf used with \"D-pad as Equip Items\", you must hold C-Up to equip instead of navigate\n"
-                "To make the cursor only move a single space no matter how long a direction is held, manually set gSettings.DpadHoldChange to 0");
+    UIWidgets::Tooltip("Navigate Pause with the D-pad\nIf used with \"D-pad as Equip Items\", you must hold C-Up to equip instead of navigate");
     UIWidgets::PaddedEnhancementCheckbox("D-pad Support in Text Boxes", CVAR_SETTING("DpadInText"));
-    UIWidgets::Tooltip("Navigate choices in text boxes, shop item selection, and the file select / name entry screens with the D-pad\n"
-                "To make the cursor only move a single space during name entry no matter how long a direction is held, manually set gSettings.DpadHoldChange to 0");
+    UIWidgets::Tooltip("Navigate choices in text boxes, shop item selection, and the file select / name entry screens with the D-pad");
+
+    if (!CVarGetInteger(CVAR_SETTING("DPadOnPause"), 0) && !CVarGetInteger(CVAR_SETTING("DpadInText"), 0)) {
+        ImGui::BeginDisabled();
+    }
+
+    UIWidgets::PaddedEnhancementCheckbox("D-pad hold change", CVAR_SETTING("DpadHoldChange"));
+    UIWidgets::Tooltip("The cursor will only move a single space no matter how long a D-pad direction is held");
+
+    if (!CVarGetInteger(CVAR_SETTING("DPadOnPause"), 0) && !CVarGetInteger(CVAR_SETTING("DpadInText"), 0)) {
+        ImGui::EndDisabled();
+    }
+
     Ship::GuiWindow::EndGroupPanel(0);
 }
 
