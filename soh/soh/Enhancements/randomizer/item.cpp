@@ -59,6 +59,7 @@ Item::Item(const RandomizerGet randomizerGet_, Text name_, const ItemType type_,
 
 void Item::ApplyEffect() const {
     // If this is a key ring, logically add as many keys as we could need
+    Rando::Context::GetInstance()->ApplyItemEffect(StaticData::RetrieveItem(this->randomizerGet), false);
     if (RHT_FOREST_TEMPLE_KEY_RING <= hintKey && hintKey <= RHT_GANONS_CASTLE_KEY_RING) {
         *std::get<uint8_t*>(logicVar) += 10;
     } else {

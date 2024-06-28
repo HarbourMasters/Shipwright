@@ -23,7 +23,7 @@ namespace Rando {
                 item == RG_LIGHT_ARROWS;
     }
 
-    bool Logic::HasItem(RandomizerGet itemName) {
+    /*bool Logic::HasItem(RandomizerGet itemName) {
         return  (itemName == RG_DINS_FIRE              && DinsFire)            ||
                 (itemName == RG_FARORES_WIND           && FaroresWind)         ||
                 (itemName == RG_NAYRUS_LOVE            && NayrusLove)          ||
@@ -70,6 +70,96 @@ namespace Rando {
                 (itemName == RG_REQUIEM_OF_SPIRIT      && RequiemOfSpirit)     ||
                 (itemName == RG_NOCTURNE_OF_SHADOW     && NocturneOfShadow)    ||
                 (itemName == RG_PRELUDE_OF_LIGHT       && PreludeOfLight);
+    }*/
+
+    bool Logic::HasItem(RandomizerGet itemName) {
+        auto ctx = Rando::Context::GetInstance();
+        return  (itemName == RG_DINS_FIRE              && ctx->CheckInventory(ITEM_DINS_FIRE, true))            ||
+                (itemName == RG_FARORES_WIND           && ctx->CheckInventory(ITEM_FARORES_WIND, true))         ||
+                (itemName == RG_NAYRUS_LOVE            && ctx->CheckInventory(ITEM_NAYRUS_LOVE, true))          ||
+                (itemName == RG_LENS_OF_TRUTH          && ctx->CheckInventory(ITEM_LENS, true))         ||
+                (itemName == RG_FAIRY_BOW              && ctx->CheckInventory(ITEM_BOW, true))                 ||
+                (itemName == RG_MEGATON_HAMMER         && ctx->CheckInventory(ITEM_HAMMER, true))              ||
+                (itemName == RG_IRON_BOOTS             && ctx->CheckEquipment(EQUIP_FLAG_BOOTS_IRON))           ||
+                (itemName == RG_HOVER_BOOTS            && ctx->CheckEquipment(EQUIP_FLAG_BOOTS_HOVER))          ||
+                (itemName == RG_HOOKSHOT               && ctx->CheckInventory(ITEM_HOOKSHOT, false))            ||
+                (itemName == RG_LONGSHOT               && ctx->CheckInventory(ITEM_LONGSHOT, true))            ||
+                (itemName == RG_GORONS_BRACELET        && ctx->CurrentUpgrade(UPG_STRENGTH) >= 1) || 
+                (itemName == RG_SILVER_GAUNTLETS       && ctx->CurrentUpgrade(UPG_STRENGTH) >= 2) || 
+                (itemName == RG_GOLDEN_GAUNTLETS       && ctx->CurrentUpgrade(UPG_STRENGTH) == 3)     ||
+                (itemName == RG_GORON_TUNIC            && ctx->CheckEquipment(EQUIP_FLAG_TUNIC_GORON))          ||
+                (itemName == RG_ZORA_TUNIC             && ctx->CheckEquipment(EQUIP_FLAG_TUNIC_ZORA))           ||
+                (itemName == RG_SCARECROW              && Scarecrow)           ||
+                (itemName == RG_DISTANT_SCARECROW      && DistantScarecrow)    ||
+                (itemName == RG_HYLIAN_SHIELD          && ctx->CheckEquipment(EQUIP_FLAG_SHIELD_HYLIAN))        ||
+                (itemName == RG_MIRROR_SHIELD          && ctx->CheckEquipment(EQUIP_FLAG_SHIELD_MIRROR))        ||
+                (itemName == RG_MASTER_SWORD           && ctx->CheckEquipment(EQUIP_FLAG_SWORD_MASTER))         ||
+                (itemName == RG_BIGGORON_SWORD         && ctx->CheckEquipment(EQUIP_FLAG_SWORD_BGS) && ctx->GetSaveContext()->bgsFlag)       ||
+                (itemName == RG_FAIRY_SLINGSHOT        && ctx->CheckInventory(ITEM_SLINGSHOT, true))           ||
+                (itemName == RG_BOOMERANG              && ctx->CheckInventory(ITEM_BOOMERANG, true))           ||
+                (itemName == RG_KOKIRI_SWORD           && ctx->CheckEquipment(EQUIP_FLAG_SWORD_KOKIRI))         ||
+                (itemName == RG_STICKS                 && ctx->CheckInventory(ITEM_STICK, true))              ||
+                (itemName == RG_DEKU_SHIELD            && ctx->CheckEquipment(EQUIP_FLAG_SHIELD_DEKU))          ||
+                (itemName == RG_FIRE_ARROWS            && ctx->CheckInventory(ITEM_ARROW_FIRE, true))          ||
+                (itemName == RG_ICE_ARROWS             && ctx->CheckInventory(ITEM_ARROW_ICE, true))           ||
+                (itemName == RG_LIGHT_ARROWS           && ctx->CheckInventory(ITEM_ARROW_LIGHT, true))         ||
+                (itemName == RG_FISHING_POLE           && FishingPole)         ||
+                (itemName == RG_ZELDAS_LULLABY         && ctx->CheckQuestItem(QUEST_SONG_LULLABY))       ||
+                (itemName == RG_EPONAS_SONG            && ctx->CheckQuestItem(QUEST_SONG_EPONA))          ||
+                (itemName == RG_SARIAS_SONG            && ctx->CheckQuestItem(QUEST_SONG_SARIA))          ||
+                (itemName == RG_SUNS_SONG              && ctx->CheckQuestItem(QUEST_SONG_SUN))            ||
+                (itemName == RG_SONG_OF_TIME           && ctx->CheckQuestItem(QUEST_SONG_TIME))          ||
+                (itemName == RG_SONG_OF_STORMS         && ctx->CheckQuestItem(QUEST_SONG_STORMS))        ||
+                (itemName == RG_MINUET_OF_FOREST       && ctx->CheckQuestItem(QUEST_SONG_MINUET))      ||
+                (itemName == RG_BOLERO_OF_FIRE         && ctx->CheckQuestItem(QUEST_SONG_BOLERO))        ||
+                (itemName == RG_SERENADE_OF_WATER      && ctx->CheckQuestItem(QUEST_SONG_SERENADE))     ||
+                (itemName == RG_REQUIEM_OF_SPIRIT      && ctx->CheckQuestItem(QUEST_SONG_REQUIEM))     ||
+                (itemName == RG_NOCTURNE_OF_SHADOW     && ctx->CheckQuestItem(QUEST_SONG_NOCTURNE))    ||
+                (itemName == RG_PRELUDE_OF_LIGHT       && ctx->CheckQuestItem(QUEST_SONG_PRELUDE))     ||
+                (itemName == RG_ZELDAS_LETTER          && ctx->CheckRandoInf(RAND_INF_ZELDAS_LETTER))     ||
+                (itemName == RG_RUTOS_LETTER           && ctx->CheckEventChkInf(EVENTCHKINF_OBTAINED_RUTOS_LETTER))     ||
+                (itemName == RG_WEIRD_EGG              && ctx->CheckRandoInf(RAND_INF_WEIRD_EGG))                   ||
+                (itemName == RG_STONE_OF_AGONY         && ctx->CheckQuestItem(QUEST_STONE_OF_AGONY))    ||
+                (itemName == RG_FAIRY_OCARINA          && ctx->CheckInventory(ITEM_OCARINA_FAIRY, false)) ||
+                (itemName == RG_OCARINA_OF_TIME        && ctx->CheckInventory(ITEM_OCARINA_TIME, true)) ||
+                (itemName == RG_GREG_RUPEE             && ctx->CheckRandoInf(RAND_INF_GREG_FOUND))    ||
+                // Dungeon Rewards
+                (itemName == RG_KOKIRI_EMERALD         && ctx->CheckQuestItem(QUEST_KOKIRI_EMERALD)) ||
+                (itemName == RG_GORON_RUBY             && ctx->CheckQuestItem(QUEST_GORON_RUBY)) ||
+                (itemName == RG_ZORA_SAPPHIRE          && ctx->CheckQuestItem(QUEST_ZORA_SAPPHIRE)) ||
+                (itemName == RG_FOREST_MEDALLION       && ctx->CheckQuestItem(QUEST_MEDALLION_FOREST)) ||
+                (itemName == RG_FIRE_MEDALLION         && ctx->CheckQuestItem(QUEST_MEDALLION_FIRE)) ||
+                (itemName == RG_WATER_MEDALLION        && ctx->CheckQuestItem(QUEST_MEDALLION_WATER)) ||
+                (itemName == RG_SPIRIT_MEDALLION       && ctx->CheckQuestItem(QUEST_MEDALLION_SPIRIT)) ||
+                (itemName == RG_SHADOW_MEDALLION       && ctx->CheckQuestItem(QUEST_MEDALLION_SHADOW)) ||
+                // Ocarina Buttons
+                (itemName == RG_OCARINA_A_BUTTON       && ctx->CheckRandoInf(RAND_INF_HAS_OCARINA_A))      ||
+                (itemName == RG_OCARINA_C_LEFT_BUTTON  && ctx->CheckRandoInf(RAND_INF_HAS_OCARINA_C_LEFT))  ||
+                (itemName == RG_OCARINA_C_RIGHT_BUTTON && ctx->CheckRandoInf(RAND_INF_HAS_OCARINA_C_RIGHT)) ||
+                (itemName == RG_OCARINA_C_DOWN_BUTTON  && ctx->CheckRandoInf(RAND_INF_HAS_OCARINA_C_DOWN))  ||
+                (itemName == RG_OCARINA_C_UP_BUTTON    && ctx->CheckRandoInf(RAND_INF_HAS_OCARINA_C_UP))  ||
+                // Boss Souls
+                (itemName == RG_GOHMA_SOUL             && (ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS).IsNot(RO_BOSS_SOULS_OFF) ? HasItem(RG_GOHMA_SOUL) : true)) ||
+                (itemName == RG_KING_DODONGO_SOUL      && (ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS).IsNot(RO_BOSS_SOULS_OFF) ? HasItem(RG_KING_DODONGO_SOUL) : true))  ||
+                (itemName == RG_BARINADE_SOUL          && (ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS).IsNot(RO_BOSS_SOULS_OFF) ? HasItem(RG_BARINADE_SOUL) : true))  ||
+                (itemName == RG_PHANTOM_GANON_SOUL     && (ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS).IsNot(RO_BOSS_SOULS_OFF) ? HasItem(RG_PHANTOM_GANON_SOUL) : true))  ||
+                (itemName == RG_VOLVAGIA_SOUL          && (ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS).IsNot(RO_BOSS_SOULS_OFF) ? HasItem(RG_VOLVAGIA_SOUL) : true))  ||
+                (itemName == RG_MORPHA_SOUL            && (ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS).IsNot(RO_BOSS_SOULS_OFF) ? HasItem(RG_MORPHA_SOUL) : true))  ||
+                (itemName == RG_BONGO_BONGO_SOUL       && (ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS).IsNot(RO_BOSS_SOULS_OFF) ? HasItem(RG_BONGO_BONGO_SOUL) : true))  ||
+                (itemName == RG_TWINROVA_SOUL          && (ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS).IsNot(RO_BOSS_SOULS_OFF) ? HasItem(RG_TWINROVA_SOUL) : true))  ||
+                (itemName == RG_GANON_SOUL             && (ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS).Is(RO_BOSS_SOULS_ON_PLUS_GANON) ? HasItem(RG_GANON_SOUL) : true)) ||
+                // Boss Keys
+                (itemName == RG_FOREST_TEMPLE_BOSS_KEY && ctx->CheckDungeonItem(DUNGEON_KEY_BOSS, SCENE_FOREST_TEMPLE)) ||
+                (itemName == RG_FIRE_TEMPLE_BOSS_KEY   && ctx->CheckDungeonItem(DUNGEON_KEY_BOSS, SCENE_FIRE_TEMPLE)) ||
+                (itemName == RG_WATER_TEMPLE_BOSS_KEY  && ctx->CheckDungeonItem(DUNGEON_KEY_BOSS, SCENE_WATER_TEMPLE)) ||
+                (itemName == RG_SPIRIT_TEMPLE_BOSS_KEY && ctx->CheckDungeonItem(DUNGEON_KEY_BOSS, SCENE_SPIRIT_TEMPLE)) ||
+                (itemName == RG_SHADOW_TEMPLE_BOSS_KEY && ctx->CheckDungeonItem(DUNGEON_KEY_BOSS, SCENE_SHADOW_TEMPLE)) ||
+                (itemName == RG_GANONS_CASTLE_BOSS_KEY && ctx->CheckDungeonItem(DUNGEON_KEY_BOSS, SCENE_INSIDE_GANONS_CASTLE)) ||
+                // Wallets
+                (itemName == RG_CHILD_WALLET           && ctx->CheckRandoInf(RAND_INF_HAS_WALLET)) ||
+                (itemName == RG_ADULT_WALLET           && ctx->CurrentUpgrade(UPG_WALLET) >= 1) ||
+                (itemName == RG_GIANT_WALLET           && ctx->CurrentUpgrade(UPG_WALLET) >= 2) ||
+                (itemName == RG_TYCOON_WALLET          && ctx->CurrentUpgrade(UPG_WALLET) >= 3);
     }
 
     //Can the passed in item be used?
@@ -262,25 +352,60 @@ namespace Rando {
                            (OcarinaCRightButton ? 1 : 0) +
                            (OcarinaCUpButton ? 1 : 0) +
                            (OcarinaCDownButton ? 1 : 0);
+        //ZeldasLetter  = false;
+        //WeirdEgg      = false;
+        //HasBottle     = false;
+        //Bombchus      = false;
+        //Bombchus5     = false;
+        //Bombchus10    = false;
+        //Bombchus20    = false;
+        //MagicBean     = false;
+        //MagicBeanPack = false;
+        //RutosLetter   = false;
+        //Boomerang     = false;
+        //DinsFire      = false;
+        //FaroresWind   = false;
+        //NayrusLove    = false;
+        //LensOfTruth   = false;
+        //ShardOfAgony  = false;
+        //SkullMask     = false;
+        //MaskOfTruth   = false;
+
+        //Adult logic
+        //Hammer        = false;
+        IronBoots       = CanUse(RG_IRON_BOOTS);
+        HoverBoots      = CanUse(RG_HOVER_BOOTS);
+        MirrorShield    = CanUse(RG_MIRROR_SHIELD);
+        GoronTunic      = CanUse(RG_GORON_TUNIC);
+        ZoraTunic       = CanUse(RG_ZORA_TUNIC);
+        //Epona         = false;
+        //BigPoe        = false;
+        //GerudoToken   = false;
+        //FireArrows    = false;
+        //IceArrows     = false;
+        LightArrows     = CanUse(RG_LIGHT_ARROWS);
+        KokiriSword     = CanUse(RG_KOKIRI_SWORD);
+        MasterSword     = CanUse(RG_MASTER_SWORD);
+        BiggoronSword   = CanUse(RG_MASTER_SWORD);
         NumBottles      = ((NoBottles) ? 0 : (Bottles + ((DeliverLetter) ? 1 : 0)));
         HasBottle       = NumBottles >= 1;
         Slingshot       = (ProgressiveBulletBag >= 1) && (BuySeed || AmmoCanDrop);
-        Ocarina         = ProgressiveOcarina    >= 1;
-        OcarinaOfTime   = ProgressiveOcarina    >= 2;
+        Ocarina         = HasItem(RG_FAIRY_OCARINA);
+        OcarinaOfTime   = HasItem(RG_OCARINA_OF_TIME);
         MagicMeter      = (ProgressiveMagic     >= 1) && (AmmoCanDrop || (HasBottle && BuyMagicPotion));
         BombBag         = (ProgressiveBombBag   >= 1) && (BuyBomb || AmmoCanDrop);
-        Hookshot        = ProgressiveHookshot   >= 1;
-        Longshot        = ProgressiveHookshot   >= 2;
-        Bow             = (ProgressiveBow       >= 1) && (BuyArrow || AmmoCanDrop);
-        GoronBracelet   = ProgressiveStrength   >= 1;
-        SilverGauntlets = ProgressiveStrength   >= 2;
-        GoldenGauntlets = ProgressiveStrength   >= 3;
-        Swim            = ProgressiveScale      >= 1;
-        SilverScale     = ProgressiveScale      >= 2;
-        GoldScale       = ProgressiveScale      >= 3;
-        ChildsWallet    = ProgressiveWallet     >= 1;
-        AdultsWallet    = ProgressiveWallet     >= 2;
-        BiggoronSword   = BiggoronSword || ProgressiveGiantKnife >= 2;
+        Hookshot        = CanUse(RG_HOOKSHOT);
+        Longshot        = CanUse(RG_LONGSHOT);
+        Bow             = CanUse(RG_FAIRY_BOW) && (BuyArrow || AmmoCanDrop);
+        GoronBracelet   = HasItem(RG_GORONS_BRACELET);
+        SilverGauntlets = HasItem(RG_SILVER_GAUNTLETS);
+        GoldenGauntlets = HasItem(RG_GOLDEN_GAUNTLETS);
+        Swim            = HasItem(RG_BRONZE_SCALE);
+        SilverScale     = HasItem(RG_SILVER_SCALE);
+        GoldScale       = HasItem(RG_GOLDEN_SCALE);
+        ChildsWallet    = HasItem(RG_CHILD_WALLET);
+        AdultsWallet    = HasItem(RG_ADULT_WALLET);
+        BiggoronSword   = HasItem(RG_BIGGORON_SWORD);
 
         //you need at least 2 buttons for scarecrow song
         ScarecrowSong    = ScarecrowSong || (ctx->GetOption(RSK_SKIP_SCARECROWS_SONG) && Ocarina && OcarinaButtons >= 2) || (ChildScarecrow && AdultScarecrow);
@@ -503,6 +628,7 @@ namespace Rando {
 
     void Logic::Reset() {
         auto ctx = Rando::Context::GetInstance();
+        ctx->NewSaveContext();
         //Settings-dependent variables
         IsKeysanity = ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_ANYWHERE) || 
                     ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_ANYWHERE) || 

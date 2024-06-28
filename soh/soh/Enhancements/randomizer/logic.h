@@ -417,6 +417,7 @@ class Logic {
     void UpdateHelpers();
     bool CanUse(RandomizerGet itemName);
     bool HasProjectile(HasProjectileAge age);
+    bool HasItem(RandomizerGet itemName);
     bool HasBossSoul(RandomizerGet itemName);
     bool SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmount);
     bool SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmountGlitchless, uint8_t requiredAmountGlitched);
@@ -430,6 +431,5 @@ class Logic {
   private:
     static bool IsMagicItem(RandomizerGet item);
     static bool IsMagicArrow(RandomizerGet item);
-    bool HasItem(RandomizerGet itemName);
 }; // class Logic
 } // namespace Rando

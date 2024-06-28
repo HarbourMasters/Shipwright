@@ -64,12 +64,17 @@ class Context {
     void SetSpoilerLoaded(bool spoilerLoaded = true);
     bool IsPlandoLoaded() const;
     void SetPlandoLoaded(bool plandoLoaded = true);
+    void ApplyItemEffect(Item& item, bool remove);
     std::shared_ptr<Settings> GetSettings();
     std::shared_ptr<EntranceShuffler> GetEntranceShuffler();
     std::shared_ptr<Dungeons> GetDungeons();
     std::shared_ptr<Fishsanity> GetFishsanity();
     DungeonInfo* GetDungeon(size_t key) const;
     std::shared_ptr<Logic> GetLogic();
+    std::shared_ptr<SaveContext> GetSaveContext();
+    void SetSaveContext(SaveContext* context);
+    void InitSaveContext();
+    void NewSaveContext();
     void ResetLogic();
     std::shared_ptr<Trials> GetTrials();
     TrialInfo* GetTrial(size_t key) const;
@@ -92,6 +97,27 @@ class Context {
     bool playthroughBeatable = false;
     bool allLocationsReachable = false;
     RandomizerArea GetAreaFromString(std::string str);
+    uint8_t InventorySlot(uint32_t item);
+    void SetUpgrade(uint32_t upgrade, uint8_t level);
+    uint32_t CurrentUpgrade(uint32_t upgrade);
+    bool CheckInventory(uint32_t item, bool exact);
+    void SetInventory(uint32_t itemSlot, uint32_t item);
+    bool CheckEquipment(uint32_t item);
+    bool CheckQuestItem(uint32_t item);
+    void SetQuestItem(uint32_t item, bool remove);
+    bool HasAdultTrade(uint32_t item);
+    void SetAdultTrade(uint32_t item, bool remove);
+    uint8_t GetSmallKeyCount(uint32_t dungeonIndex);
+    void SetSmallKeyCount(uint32_t dungeonIndex, uint8_t count);
+    bool CheckDungeonItem(uint32_t item, uint32_t dungeonIndex);
+    void SetDungeonItem(uint32_t item, uint32_t dungeonIndex, bool remove);
+    bool CheckRandoInf(uint32_t flag);
+    void SetRandoInf(uint32_t flag, bool disable);
+    bool CheckEventChkInf(int32_t flag);
+    uint8_t GetGSCount();
+    void SetEventChkInf(int32_t flag, bool disable);
+    uint8_t GetAmmo(uint32_t item);
+    void SetAmmo(uint32_t item, uint8_t count);
 
   private:
     static std::weak_ptr<Context> mContext;
@@ -101,6 +127,7 @@ class Context {
     std::shared_ptr<EntranceShuffler> mEntranceShuffler;
     std::shared_ptr<Dungeons> mDungeons;
     std::shared_ptr<Logic> mLogic;
+    std::shared_ptr<SaveContext> mSaveContext;
     std::shared_ptr<Trials> mTrials;
     std::shared_ptr<Fishsanity> mFishsanity;
     bool mSeedGenerated = false;
