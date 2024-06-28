@@ -2213,7 +2213,7 @@ s32 Player_ItemIsItemAction(s32 item1, s32 itemAction) {
 }
 
 s32 Player_GetItemOnButton(PlayState* play, s32 index) {
-    if (index >= ((CVarGetInteger(CVAR_SETTING("DpadEquips"), 0) != 0) ? 8 : 4)) {
+    if (index >= ((CVarGetInteger(CVAR_ENHANCEMENT("DpadEquips"), 0) != 0) ? 8 : 4)) {
         return ITEM_NONE;
     } else if (play->bombchuBowlingStatus != 0) {
         return (play->bombchuBowlingStatus > 0) ? ITEM_BOMBCHU : ITEM_NONE;
@@ -2254,7 +2254,7 @@ void Player_ProcessItemButtons(Player* this, PlayState* play) {
         if (CVarGetInteger(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA) {
             s32 maskItem = this->currentMask - PLAYER_MASK_KEATON + ITEM_MASK_KEATON;
             bool hasOnDpad = false;
-            if (CVarGetInteger(CVAR_SETTING("DpadEquips"), 0) != 0) {
+            if (CVarGetInteger(CVAR_ENHANCEMENT("DpadEquips"), 0) != 0) {
                 for (int buttonIndex = 4; buttonIndex < 8; buttonIndex++) {
                     hasOnDpad |= gSaveContext.equips.buttonItems[buttonIndex] == maskItem;
                 }
@@ -2270,7 +2270,7 @@ void Player_ProcessItemButtons(Player* this, PlayState* play) {
             maskItemAction = this->currentMask - 1 + PLAYER_IA_MASK_KEATON;
 
             bool hasOnDpad = false;
-            if (CVarGetInteger(CVAR_SETTING("DpadEquips"), 0) != 0) {
+            if (CVarGetInteger(CVAR_ENHANCEMENT("DpadEquips"), 0) != 0) {
                 for (int buttonIndex = 0; buttonIndex < 4; buttonIndex++) {
                     hasOnDpad |= Player_ItemIsItemAction(DPAD_ITEM(buttonIndex), maskItemAction);
                 }
@@ -2286,7 +2286,7 @@ void Player_ProcessItemButtons(Player* this, PlayState* play) {
     if (!(this->stateFlags1 & (PLAYER_STATE1_ITEM_OVER_HEAD | PLAYER_STATE1_IN_CUTSCENE)) && !func_8008F128(this)) {
         if (this->itemAction >= PLAYER_IA_FISHING_POLE) {
             bool hasOnDpad = false;
-            if (CVarGetInteger(CVAR_SETTING("DpadEquips"), 0) != 0) {
+            if (CVarGetInteger(CVAR_ENHANCEMENT("DpadEquips"), 0) != 0) {
                 for (int buttonIndex = 0; buttonIndex < 4; buttonIndex++) {
                     hasOnDpad |= Player_ItemIsInUse(this, DPAD_ITEM(buttonIndex));
                 }
@@ -2677,7 +2677,7 @@ int func_80834E44(PlayState* play) {
 
 int func_80834E7C(PlayState* play) {
     u16 buttonsToCheck = BTN_A | BTN_B | BTN_CUP | BTN_CLEFT | BTN_CRIGHT | BTN_CDOWN;
-    if (CVarGetInteger(CVAR_SETTING("DpadEquips"), 0) != 0) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("DpadEquips"), 0) != 0) {
         buttonsToCheck |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
     }
     return (play->shootingGalleryStatus != 0) &&
@@ -5653,7 +5653,7 @@ s32 Player_ActionChange_4(Player* this, PlayState* play) {
                             this->stateFlags2 |= PLAYER_STATE2_NAVI_ALERT;
                         }
 
-                        if (!CHECK_BTN_ALL(sControlInput->press.button, CVarGetInteger(CVAR_SETTING("NaviOnL"), 0) ? BTN_L : BTN_CUP) && !sp28) {
+                        if (!CHECK_BTN_ALL(sControlInput->press.button, CVarGetInteger(CVAR_ENHANCEMENT("NaviOnL"), 0) ? BTN_L : BTN_CUP) && !sp28) {
                             return 0;
                         }
 
@@ -5702,7 +5702,7 @@ s32 Player_ActionChange_0(Player* this, PlayState* play) {
     if ((this->unk_664 != NULL) && (CHECK_FLAG_ALL(this->unk_664->flags, ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_NAVI_HAS_INFO) ||
                                     (this->unk_664->naviEnemyId != 0xFF))) {
         this->stateFlags2 |= PLAYER_STATE2_NAVI_ALERT;
-    } else if ((this->naviTextId == 0 || CVarGetInteger(CVAR_SETTING("NaviOnL"), 0)) && !func_8008E9C4(this) && CHECK_BTN_ALL(sControlInput->press.button, BTN_CUP) &&
+    } else if ((this->naviTextId == 0 || CVarGetInteger(CVAR_ENHANCEMENT("NaviOnL"), 0)) && !func_8008E9C4(this) && CHECK_BTN_ALL(sControlInput->press.button, BTN_CUP) &&
                (YREG(15) != 0x10) &&
                (YREG(15) != 0x20) && !func_8083B8F4(this, play)) {
         func_80078884(NA_SE_SY_ERROR);
@@ -6932,7 +6932,7 @@ s32 func_8083EAF0(Player* this, Actor* actor) {
 
 s32 Player_ActionChange_9(Player* this, PlayState* play) {
     u16 buttonsToCheck = BTN_A | BTN_B | BTN_CLEFT | BTN_CRIGHT | BTN_CDOWN;
-    if (CVarGetInteger(CVAR_SETTING("DpadEquips"), 0) != 0) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("DpadEquips"), 0) != 0) {
         buttonsToCheck |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
     }
     if ((this->stateFlags1 & PLAYER_STATE1_ITEM_OVER_HEAD) && (this->heldActor != NULL) &&
@@ -9076,7 +9076,7 @@ void Player_Action_8084411C(Player* this, PlayState* play) {
             Actor* heldActor = this->heldActor;
 
             u16 buttonsToCheck = BTN_A | BTN_B | BTN_CLEFT | BTN_CRIGHT | BTN_CDOWN;
-            if (CVarGetInteger(CVAR_SETTING("DpadEquips"), 0) != 0) {
+            if (CVarGetInteger(CVAR_ENHANCEMENT("DpadEquips"), 0) != 0) {
                 buttonsToCheck |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
             }
             if (!func_80835644(play, this, heldActor) && (heldActor->id == ACTOR_EN_NIW) &&
@@ -9858,7 +9858,7 @@ void Player_Action_80846260(Player* this, PlayState* play) {
     }
 
     u16 buttonsToCheck = BTN_A | BTN_B | BTN_CLEFT | BTN_CRIGHT | BTN_CDOWN;
-    if (CVarGetInteger(CVAR_SETTING("DpadEquips"), 0) != 0) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("DpadEquips"), 0) != 0) {
         buttonsToCheck |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
     }
     if (this->av2.actionVar2 == 0) {
@@ -12269,7 +12269,7 @@ void Player_Action_8084B1D8(Player* this, PlayState* play) {
     }
 
     u16 buttonsToCheck = BTN_A | BTN_B | BTN_R | BTN_CUP | BTN_CLEFT | BTN_CRIGHT | BTN_CDOWN;
-    if (CVarGetInteger(CVAR_SETTING("DpadEquips"), 0) != 0) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("DpadEquips"), 0) != 0) {
         buttonsToCheck |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
     }
     if ((this->csAction != 0) || (this->unk_6AD == 0) || (this->unk_6AD >= 4) || func_80833B54(this) ||

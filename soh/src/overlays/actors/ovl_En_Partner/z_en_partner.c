@@ -689,7 +689,7 @@ void EnPartner_Update(Actor* thisx, PlayState* play) {
 
         uint16_t partnerButtons[7] = { BTN_CLEFT, BTN_CDOWN, BTN_CRIGHT, BTN_DUP, BTN_DDOWN, BTN_DLEFT, BTN_DRIGHT};
         uint8_t buttonMax = 3;
-        if (CVarGetInteger(CVAR_SETTING("DpadEquips"), 0) != 0) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("DpadEquips"), 0) != 0) {
             buttonMax = ARRAY_COUNT(gSaveContext.equips.cButtonSlots);
         }
 
