@@ -1638,7 +1638,7 @@ void SohInputEditorWindow::DrawDpadControlPanel() {
         ImGui::BeginDisabled();
     }
 
-    UIWidgets::PaddedEnhancementCheckbox("D-pad hold change", CVAR_SETTING("DpadHoldChange"));
+    UIWidgets::PaddedEnhancementCheckbox("D-pad hold change", CVAR_SETTING("DpadHoldChange"), true, true, false, "", UIWidgets::CheckboxGraphics::Cross, true);
     UIWidgets::Tooltip("The cursor will only move a single space no matter how long a D-pad direction is held");
 
     if (!CVarGetInteger(CVAR_SETTING("DPadOnPause"), 0) && !CVarGetInteger(CVAR_SETTING("DpadInText"), 0)) {
