@@ -428,9 +428,11 @@ class Logic {
     bool EventsUpdated();
     uint8_t BottleCount();
     void Reset();
+    void SetContext(std::shared_ptr<Context> _ctx);
 
   private:
     static bool IsMagicItem(RandomizerGet item);
     static bool IsMagicArrow(RandomizerGet item);
+    std::shared_ptr<Context> ctx;
 }; // class Logic
 } // namespace Rando

@@ -73,7 +73,6 @@ namespace Rando {
     }*/
 
     bool Logic::HasItem(RandomizerGet itemName) {
-        auto ctx = Rando::Context::GetInstance();
         return  (itemName == RG_DINS_FIRE              && ctx->CheckInventory(ITEM_DINS_FIRE, true))            ||
                 (itemName == RG_FARORES_WIND           && ctx->CheckInventory(ITEM_FARORES_WIND, true))         ||
                 (itemName == RG_NAYRUS_LOVE            && ctx->CheckInventory(ITEM_NAYRUS_LOVE, true))          ||
@@ -142,15 +141,15 @@ namespace Rando {
                 (itemName == RG_OCARINA_C_DOWN_BUTTON  && ctx->CheckRandoInf(RAND_INF_HAS_OCARINA_C_DOWN))  ||
                 (itemName == RG_OCARINA_C_UP_BUTTON    && ctx->CheckRandoInf(RAND_INF_HAS_OCARINA_C_UP))  ||
                 // Boss Souls
-                (itemName == RG_GOHMA_SOUL             && (ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS).IsNot(RO_BOSS_SOULS_OFF) ? HasItem(RG_GOHMA_SOUL) : true)) ||
-                (itemName == RG_KING_DODONGO_SOUL      && (ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS).IsNot(RO_BOSS_SOULS_OFF) ? HasItem(RG_KING_DODONGO_SOUL) : true))  ||
-                (itemName == RG_BARINADE_SOUL          && (ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS).IsNot(RO_BOSS_SOULS_OFF) ? HasItem(RG_BARINADE_SOUL) : true))  ||
-                (itemName == RG_PHANTOM_GANON_SOUL     && (ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS).IsNot(RO_BOSS_SOULS_OFF) ? HasItem(RG_PHANTOM_GANON_SOUL) : true))  ||
-                (itemName == RG_VOLVAGIA_SOUL          && (ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS).IsNot(RO_BOSS_SOULS_OFF) ? HasItem(RG_VOLVAGIA_SOUL) : true))  ||
-                (itemName == RG_MORPHA_SOUL            && (ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS).IsNot(RO_BOSS_SOULS_OFF) ? HasItem(RG_MORPHA_SOUL) : true))  ||
-                (itemName == RG_BONGO_BONGO_SOUL       && (ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS).IsNot(RO_BOSS_SOULS_OFF) ? HasItem(RG_BONGO_BONGO_SOUL) : true))  ||
-                (itemName == RG_TWINROVA_SOUL          && (ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS).IsNot(RO_BOSS_SOULS_OFF) ? HasItem(RG_TWINROVA_SOUL) : true))  ||
-                (itemName == RG_GANON_SOUL             && (ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS).Is(RO_BOSS_SOULS_ON_PLUS_GANON) ? HasItem(RG_GANON_SOUL) : true)) ||
+                (itemName == RG_GOHMA_SOUL             && (ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS).IsNot(RO_BOSS_SOULS_OFF) ? ctx->CheckRandoInf(RAND_INF_GOHMA_SOUL) : true)) ||
+                (itemName == RG_KING_DODONGO_SOUL      && (ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS).IsNot(RO_BOSS_SOULS_OFF) ? ctx->CheckRandoInf(RAND_INF_KING_DODONGO_SOUL) : true))  ||
+                (itemName == RG_BARINADE_SOUL          && (ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS).IsNot(RO_BOSS_SOULS_OFF) ? ctx->CheckRandoInf(RAND_INF_BARINADE_SOUL) : true))  ||
+                (itemName == RG_PHANTOM_GANON_SOUL     && (ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS).IsNot(RO_BOSS_SOULS_OFF) ? ctx->CheckRandoInf(RAND_INF_PHANTOM_GANON_SOUL) : true))  ||
+                (itemName == RG_VOLVAGIA_SOUL          && (ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS).IsNot(RO_BOSS_SOULS_OFF) ? ctx->CheckRandoInf(RAND_INF_VOLVAGIA_SOUL) : true))  ||
+                (itemName == RG_MORPHA_SOUL            && (ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS).IsNot(RO_BOSS_SOULS_OFF) ? ctx->CheckRandoInf(RAND_INF_MORPHA_SOUL) : true))  ||
+                (itemName == RG_BONGO_BONGO_SOUL       && (ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS).IsNot(RO_BOSS_SOULS_OFF) ? ctx->CheckRandoInf(RAND_INF_BONGO_BONGO_SOUL) : true))  ||
+                (itemName == RG_TWINROVA_SOUL          && (ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS).IsNot(RO_BOSS_SOULS_OFF) ? ctx->CheckRandoInf(RAND_INF_TWINROVA_SOUL) : true))  ||
+                (itemName == RG_GANON_SOUL             && (ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS).Is(RO_BOSS_SOULS_ON_PLUS_GANON) ? ctx->CheckRandoInf(RAND_INF_GANON_SOUL) : true)) ||
                 // Boss Keys
                 (itemName == RG_FOREST_TEMPLE_BOSS_KEY && ctx->CheckDungeonItem(DUNGEON_KEY_BOSS, SCENE_FOREST_TEMPLE)) ||
                 (itemName == RG_FIRE_TEMPLE_BOSS_KEY   && ctx->CheckDungeonItem(DUNGEON_KEY_BOSS, SCENE_FIRE_TEMPLE)) ||
@@ -267,7 +266,6 @@ namespace Rando {
     }
 
     bool Logic::HasBossSoul(RandomizerGet itemName) {
-        auto ctx = Rando::Context::GetInstance();
         if (!ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS)) {
             return true;
         }
@@ -351,11 +349,10 @@ namespace Rando {
     }
 
     uint8_t Logic::BottleCount() {
-        auto ctx = Rando::Context::GetInstance();
         uint8_t count = 0;
         for (int i = SLOT_BOTTLE_1; i <= SLOT_BOTTLE_4; i++) {
             uint8_t item = ctx->GetSaveContext()->inventory.items[i];
-            if (item != ITEM_NONE && item != ITEM_LETTER_RUTO && item != ITEM_BIG_POE) {
+            if (item != ITEM_NONE && (item == ITEM_LETTER_RUTO && DeliverLetter) && item != ITEM_BIG_POE) {
                 count++;
             }
         }
@@ -364,12 +361,11 @@ namespace Rando {
 
     // Updates all logic helpers. Should be called whenever a non-helper is changed
     void Logic::UpdateHelpers() {
-        auto ctx = Rando::Context::GetInstance();
-        OcarinaButtons  =  (OcarinaAButton ? 1 : 0) +
-                           (OcarinaCLeftButton ? 1 : 0) +
-                           (OcarinaCRightButton ? 1 : 0) +
-                           (OcarinaCUpButton ? 1 : 0) +
-                           (OcarinaCDownButton ? 1 : 0);
+        OcarinaButtons  =  (HasItem(RG_OCARINA_A_BUTTON) ? 1 : 0) +
+                           (HasItem(RG_OCARINA_C_LEFT_BUTTON) ? 1 : 0) +
+                           (HasItem(RG_OCARINA_C_RIGHT_BUTTON) ? 1 : 0) +
+                           (HasItem(RG_OCARINA_C_UP_BUTTON) ? 1 : 0) +
+                           (HasItem(RG_OCARINA_C_DOWN_BUTTON) ? 1 : 0);
         ZeldasLetter  = HasItem(RG_ZELDAS_LETTER);
         WeirdEgg      = CanUse(RG_WEIRD_EGG);
         Bombchus      = HasItem(RG_PROGRESSIVE_BOMBCHUS);
@@ -423,6 +419,44 @@ namespace Rando {
         ChildsWallet    = HasItem(RG_CHILD_WALLET);
         AdultsWallet    = HasItem(RG_ADULT_WALLET);
         BiggoronSword   = HasItem(RG_BIGGORON_SWORD);
+
+        CanSummonGohma        = HasItem(RG_GOHMA_SOUL);
+        CanSummonKingDodongo  = HasItem(RG_KING_DODONGO_SOUL);
+        CanSummonBarinade     = HasItem(RG_BARINADE_SOUL);
+        CanSummonPhantomGanon = HasItem(RG_PHANTOM_GANON_SOUL);
+        CanSummonVolvagia     = HasItem(RG_VOLVAGIA_SOUL);
+        CanSummonMorpha       = HasItem(RG_MORPHA_SOUL);
+        CanSummonBongoBongo   = HasItem(RG_BONGO_BONGO_SOUL);
+        CanSummonTwinrova     = HasItem(RG_TWINROVA_SOUL);
+        CanSummonGanon        = HasItem(RG_GANON_SOUL);
+
+        // Boss Keys
+        BossKeyForestTemple = HasItem(RG_FOREST_TEMPLE_BOSS_KEY);
+        BossKeyFireTemple   = HasItem(RG_FIRE_TEMPLE_BOSS_KEY);
+        BossKeyWaterTemple  = HasItem(RG_WATER_TEMPLE_BOSS_KEY);
+        BossKeySpiritTemple = HasItem(RG_SPIRIT_TEMPLE_BOSS_KEY);
+        BossKeyShadowTemple = HasItem(RG_SHADOW_TEMPLE_BOSS_KEY);
+        BossKeyGanonsCastle = HasItem(RG_GANONS_CASTLE_BOSS_KEY);
+
+        //TODO: need flags somewhere for 
+        //Eyedrops = Eyedrops || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && ClaimCheck);
+        //EyeballFrog = EyeballFrog || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && Eyedrops);
+        //Prescription = Prescription || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && EyeballFrog);
+        //BrokenSword = BrokenSword || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && Prescription);
+        //PoachersSaw = PoachersSaw || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && BrokenSword);
+        //OddPoultice = OddPoultice || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && PoachersSaw);
+        //OddMushroom = OddMushroom || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && OddPoultice);
+        //Cojiro = Cojiro || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && OddMushroom);
+        //PocketEgg = PocketEgg || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && Cojiro);
+
+        //BaseHearts + HeartContainer + (PieceOfHeart >> 2); "Hearts"
+        //all keys
+        //medallions
+        //stones
+        //DoubleDefense = ;
+        //TriforcePieces = ;
+        //Greg = ;
+        //GoldSkulltulaTokens = ;
 
         //you need at least 2 buttons for scarecrow song
         ScarecrowSong    = ScarecrowSong || (ctx->GetOption(RSK_SKIP_SCARECROWS_SONG) && Ocarina && OcarinaButtons >= 2) || (ChildScarecrow && AdultScarecrow);
@@ -643,8 +677,11 @@ namespace Rando {
         return false;
     }
 
+    void Logic::SetContext(std::shared_ptr<Context> _ctx) {
+        ctx = _ctx;
+    }
+
     void Logic::Reset() {
-        auto ctx = Rando::Context::GetInstance();
         ctx->NewSaveContext();
         //Settings-dependent variables
         IsKeysanity = ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_ANYWHERE) || 

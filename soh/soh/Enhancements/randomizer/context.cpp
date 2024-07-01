@@ -50,6 +50,7 @@ std::shared_ptr<Context> Context::CreateInstance() {
     if (mContext.expired()) {
         auto instance = std::make_shared<Context>();
         mContext = instance;
+        GetInstance()->GetLogic()->SetContext(GetInstance());
         return instance;
     }
     return GetInstance();
