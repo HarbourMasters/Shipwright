@@ -511,13 +511,13 @@ void Context::ApplyItemEffect(Item& item, bool remove) {
         if (item.GetGIEntry()->getItemCategory == ITEM_CATEGORY_MAJOR || item.GetGIEntry()->getItemCategory == ITEM_CATEGORY_LESSER) {
             switch (randoGet) {
             case RG_GERUDO_MEMBERSHIP_CARD:
-                SetQuestItem(QUEST_GERUDO_CARD, remove);
+                SetQuestItem(QUEST_GERUDO_CARD, !remove);
                 break;
             case RG_WEIRD_EGG:
-                SetRandoInf(RAND_INF_WEIRD_EGG, remove);
+                SetRandoInf(RAND_INF_WEIRD_EGG, !remove);
                 break;
             case RG_ZELDAS_LETTER:
-                SetRandoInf(RAND_INF_ZELDAS_LETTER, remove);
+                SetRandoInf(RAND_INF_ZELDAS_LETTER, !remove);
                 break;
             case RG_POCKET_EGG:
             case RG_COJIRO:
@@ -658,7 +658,7 @@ void Context::ApplyItemEffect(Item& item, bool remove) {
                 SetInventory(item.GetItemID(), (remove ? ITEM_NONE : item.GetItemID()));
                 break;
             case RG_STONE_OF_AGONY:
-                SetQuestItem(QUEST_STONE_OF_AGONY, remove);
+                SetQuestItem(QUEST_STONE_OF_AGONY, !remove);
                 break;
             case RG_MAGIC_BEAN:
             case RG_MAGIC_BEAN_PACK:
@@ -668,7 +668,7 @@ void Context::ApplyItemEffect(Item& item, bool remove) {
                 SetAmmo(ITEM_BEAN, current + (remove ? -change : change));
             }   break;
             case RG_DOUBLE_DEFENSE:
-                mSaveContext->isDoubleDefenseAcquired = 1;
+                mSaveContext->isDoubleDefenseAcquired = (remove ? 0 : 1);
                 break;
             case RG_EMPTY_BOTTLE:
             case RG_BOTTLE_WITH_MILK:
@@ -692,7 +692,7 @@ void Context::ApplyItemEffect(Item& item, bool remove) {
                 mSaveContext->inventory.items[slot] = item.GetItemID();
             }   break;
             case RG_RUTOS_LETTER:
-                SetEventChkInf(EVENTCHKINF_OBTAINED_RUTOS_LETTER, remove);
+                SetEventChkInf(EVENTCHKINF_OBTAINED_RUTOS_LETTER, !remove);
                 break;
             case RG_GOHMA_SOUL:
             case RG_KING_DODONGO_SOUL:
@@ -708,7 +708,7 @@ void Context::ApplyItemEffect(Item& item, bool remove) {
             case RG_OCARINA_C_DOWN_BUTTON:
             case RG_OCARINA_C_LEFT_BUTTON:
             case RG_OCARINA_C_RIGHT_BUTTON:
-                SetRandoInf(RandoGetToFlag.at(randoGet), remove);
+                SetRandoInf(RandoGetToFlag.at(randoGet), !remove);
                 break;
             case RG_TRIFORCE_PIECE:
                 mSaveContext->triforcePiecesCollected += (remove ? -1 : 1);
@@ -740,16 +740,16 @@ void Context::ApplyItemEffect(Item& item, bool remove) {
     break;
     case ITEMTYPE_DUNGEONREWARD:
     case ITEMTYPE_SONG:
-        SetQuestItem(RandoGetToQuestItem.find(item.GetRandomizerGet())->second, remove);
+        SetQuestItem(RandoGetToQuestItem.find(item.GetRandomizerGet())->second, !remove);
         break;
     case ITEMTYPE_MAP:
-        SetDungeonItem(DUNGEON_MAP, RandoGetToDungeonScene.find(item.GetRandomizerGet())->second, remove);
+        SetDungeonItem(DUNGEON_MAP, RandoGetToDungeonScene.find(item.GetRandomizerGet())->second, !remove);
         break;
     case ITEMTYPE_COMPASS:
-        SetDungeonItem(DUNGEON_COMPASS, RandoGetToDungeonScene.find(item.GetRandomizerGet())->second, remove);
+        SetDungeonItem(DUNGEON_COMPASS, RandoGetToDungeonScene.find(item.GetRandomizerGet())->second, !remove);
         break;
     case ITEMTYPE_BOSSKEY:
-        SetDungeonItem(DUNGEON_KEY_BOSS, RandoGetToDungeonScene.find(item.GetRandomizerGet())->second, remove);
+        SetDungeonItem(DUNGEON_KEY_BOSS, RandoGetToDungeonScene.find(item.GetRandomizerGet())->second, !remove);
         break;
     case ITEMTYPE_FORTRESS_SMALLKEY:
     case ITEMTYPE_SMALLKEY:

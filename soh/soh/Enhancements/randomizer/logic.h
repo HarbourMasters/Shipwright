@@ -418,6 +418,8 @@ class Logic {
     bool CanUse(RandomizerGet itemName);
     bool HasProjectile(HasProjectileAge age);
     bool HasItem(RandomizerGet itemName);
+    bool HasItem2(RandomizerGet itemName);
+    bool HasItem3(RandomizerGet itemName);
     bool HasBossSoul(RandomizerGet itemName);
     bool SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmount);
     bool SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmountGlitchless, uint8_t requiredAmountGlitched);

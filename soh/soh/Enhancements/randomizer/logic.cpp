@@ -8,6 +8,7 @@
 
 #include "dungeon.h"
 #include "context.h"
+#include "luslog.h"
 
 namespace Rando {
     bool Logic::IsMagicItem(RandomizerGet item) {
@@ -23,7 +24,7 @@ namespace Rando {
                 item == RG_LIGHT_ARROWS;
     }
 
-    /*bool Logic::HasItem(RandomizerGet itemName) {
+    bool Logic::HasItem2(RandomizerGet itemName) {
         return  (itemName == RG_DINS_FIRE              && DinsFire)            ||
                 (itemName == RG_FARORES_WIND           && FaroresWind)         ||
                 (itemName == RG_NAYRUS_LOVE            && NayrusLove)          ||
@@ -70,9 +71,17 @@ namespace Rando {
                 (itemName == RG_REQUIEM_OF_SPIRIT      && RequiemOfSpirit)     ||
                 (itemName == RG_NOCTURNE_OF_SHADOW     && NocturneOfShadow)    ||
                 (itemName == RG_PRELUDE_OF_LIGHT       && PreludeOfLight);
-    }*/
+    }
 
     bool Logic::HasItem(RandomizerGet itemName) {
+        bool has2 = HasItem2(itemName), has3 = HasItem3(itemName);
+        if (has2 != has3) {
+            LUSLOG_ERROR("Mismatch on %d. 2: %d, 3: %d", itemName, has2, has3);
+        }
+        return has2;
+    }
+
+    bool Logic::HasItem3(RandomizerGet itemName) {
         return  (itemName == RG_DINS_FIRE              && ctx->CheckInventory(ITEM_DINS_FIRE, true))            ||
                 (itemName == RG_FARORES_WIND           && ctx->CheckInventory(ITEM_FARORES_WIND, true))         ||
                 (itemName == RG_NAYRUS_LOVE            && ctx->CheckInventory(ITEM_NAYRUS_LOVE, true))          ||
@@ -369,11 +378,11 @@ namespace Rando {
         ZeldasLetter  = HasItem(RG_ZELDAS_LETTER);
         WeirdEgg      = CanUse(RG_WEIRD_EGG);
         Bombchus      = HasItem(RG_PROGRESSIVE_BOMBCHUS);
-        Bombchus5     = false;
-        Bombchus10    = false;
-        Bombchus20    = false;
-        MagicBean     = false;
-        MagicBeanPack = false;
+        //Bombchus5     = false;
+        //Bombchus10    = false;
+        //Bombchus20    = false;
+        //MagicBean     = false;
+        //MagicBeanPack = false;
         RutosLetter   = CanUse(RG_RUTOS_LETTER);
         Boomerang     = CanUse(RG_BOOMERANG);
         DinsFire      = CanUse(RG_DINS_FIRE);
