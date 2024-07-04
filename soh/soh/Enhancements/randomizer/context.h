@@ -7,6 +7,7 @@
 #include "3drando/text.hpp"
 #include "hint.h"
 #include "fishsanity.h"
+#include "trial.h"
 #include "silver_rupee.h"
 
 #include <memory>
@@ -37,9 +38,8 @@ class Context {
     static std::shared_ptr<Context> CreateInstance();
     static std::shared_ptr<Context> GetInstance();
     void InitStaticData();
-    Hint* GetHint(RandomizerHintKey hintKey);
-    void AddHint(RandomizerHintKey hintId, const Text& text, RandomizerCheck hintedLocation, HintType hintType, std::string distributionName,
-                 RandomizerArea hintedArea = RA_NONE);
+    Hint* GetHint(RandomizerHint hintKey);
+    void AddHint(const RandomizerHint hintId, const Hint hint);
     ItemLocation* GetItemLocation(RandomizerCheck locKey);
     ItemLocation* GetItemLocation(size_t locKey);
     ItemOverride& GetItemOverride(RandomizerCheck locKey);
@@ -76,6 +76,7 @@ class Context {
     void ResetLogic();
     std::shared_ptr<Trials> GetTrials();
     TrialInfo* GetTrial(size_t key) const;
+    TrialInfo* GetTrial(TrialKey key) const;
     static Sprite* GetSeedTexture(uint8_t index);
     Option& GetOption(RandomizerSettingKey key) const;
     TrickOption& GetTrickOption(RandomizerTrick key) const;
@@ -83,6 +84,7 @@ class Context {
     void ParseSpoiler(const char* spoilerFileName, bool plandoMode);
     void ParseHashIconIndexesJson(nlohmann::json spoilerFileJson);
     void ParseItemLocationsJson(nlohmann::json spoilerFileJson);
+    void WriteHintJson(nlohmann::ordered_json& spoilerFileJson);
     void ParseHintJson(nlohmann::json spoilerFileJson);
     std::map<RandomizerCheck, ItemOverride> overrides = {};
     std::vector<std::vector<RandomizerCheck>> playthroughLocations = {};
@@ -90,26 +92,13 @@ class Context {
     std::vector<RandomizerGet> possibleIceTrapModels = {};
     std::unordered_map<RandomizerCheck, RandomizerGet> iceTrapModels = {};
     std::array<uint8_t, 5> hashIconIndexes = {};
-    std::unordered_map<std::string, RandomizerCheck> mSpoilerfileCheckNameToEnum;
     bool playthroughBeatable = false;
     bool allLocationsReachable = false;
     RandomizerArea GetAreaFromString(std::string str);
 
   private:
     static std::weak_ptr<Context> mContext;
-    std::unordered_map<std::string, RandomizerGet> mSpoilerfileGetNameToEnum;
-    std::unordered_map<std::string, HintType> mSpoilerfileHintTypeNameToEnum;
-    std::unordered_map<std::string, RandomizerArea> mSpoilerfileAreaNameToEnum;
     std::array<Hint, RH_MAX> hintTable = {};
-    RandomizerCheck mEmeraldLoc = RC_UNKNOWN_CHECK;
-    RandomizerCheck mRubyLoc = RC_UNKNOWN_CHECK;
-    RandomizerCheck mSapphireLoc = RC_UNKNOWN_CHECK;
-    RandomizerCheck mForestMedallionLoc = RC_UNKNOWN_CHECK;
-    RandomizerCheck mFireMedallionLoc = RC_UNKNOWN_CHECK;
-    RandomizerCheck mWaterMedallionLoc = RC_UNKNOWN_CHECK;
-    RandomizerCheck mShadowMedallionLoc = RC_UNKNOWN_CHECK;
-    RandomizerCheck mSpiritMedallionLoc = RC_UNKNOWN_CHECK;
-    RandomizerCheck mLightMedallionLoc = RC_UNKNOWN_CHECK;
     std::array<ItemLocation, RC_MAX> itemLocationTable = {};
     std::shared_ptr<Settings> mSettings;
     std::shared_ptr<EntranceShuffler> mEntranceShuffler;

@@ -32,12 +32,12 @@ void AreaTable_Init_GanonsCastle() {
                   Entrance(RR_GANONS_CASTLE_SHADOW_TRIAL, {[]{return true;}}),
                   Entrance(RR_GANONS_CASTLE_SPIRIT_TRIAL, {[]{return true;}}),
                   Entrance(RR_GANONS_CASTLE_LIGHT_TRIAL,  {[]{return logic->CanUse(RG_GOLDEN_GAUNTLETS);}}),
-                  Entrance(RR_GANONS_CASTLE_TOWER,        {[]{return (logic->ForestTrialClear || randoCtx->GetTrial(Rando::FOREST_TRIAL)->IsSkipped()) &&
-                                                                         (logic->FireTrialClear   || randoCtx->GetTrial(Rando::FIRE_TRIAL)->IsSkipped())   &&
-                                                                         (logic->WaterTrialClear  || randoCtx->GetTrial(Rando::WATER_TRIAL)->IsSkipped())  &&
-                                                                         (logic->ShadowTrialClear || randoCtx->GetTrial(Rando::SHADOW_TRIAL)->IsSkipped()) &&
-                                                                         (logic->SpiritTrialClear || randoCtx->GetTrial(Rando::SPIRIT_TRIAL)->IsSkipped()) &&
-                                                                         (logic->LightTrialClear  || randoCtx->GetTrial(Rando::LIGHT_TRIAL)->IsSkipped());}}),
+                  Entrance(RR_GANONS_CASTLE_TOWER,        {[]{return (logic->ForestTrialClear || randoCtx->GetTrial(TK_FOREST_TRIAL)->IsSkipped()) &&
+                                                                         (logic->FireTrialClear   || randoCtx->GetTrial(TK_FIRE_TRIAL)->IsSkipped())   &&
+                                                                         (logic->WaterTrialClear  || randoCtx->GetTrial(TK_WATER_TRIAL)->IsSkipped())  &&
+                                                                         (logic->ShadowTrialClear || randoCtx->GetTrial(TK_SHADOW_TRIAL)->IsSkipped()) &&
+                                                                         (logic->SpiritTrialClear || randoCtx->GetTrial(TK_SPIRIT_TRIAL)->IsSkipped()) &&
+                                                                         (logic->LightTrialClear  || randoCtx->GetTrial(TK_LIGHT_TRIAL)->IsSkipped());}}),
                   Entrance(RR_GANONS_CASTLE_DEKU_SCRUBS,  {[]{return randoCtx->GetTrickOption(RT_LENS_GANON) || logic->CanUse(RG_LENS_OF_TRUTH);}}),
   });
 
@@ -155,12 +155,12 @@ void AreaTable_Init_GanonsCastle() {
                   Entrance(RR_GANONS_CASTLE_MQ_SHADOW_TRIAL, {[]{return true;}}),
                   Entrance(RR_GANONS_CASTLE_MQ_SPIRIT_TRIAL, {[]{return true;}}),
                   Entrance(RR_GANONS_CASTLE_MQ_LIGHT_TRIAL,  {[]{return logic->CanUse(RG_GOLDEN_GAUNTLETS);}}),
-                  Entrance(RR_GANONS_CASTLE_TOWER,           {[]{return (logic->ForestTrialClear || randoCtx->GetTrial(Rando::FOREST_TRIAL)->IsSkipped()) &&
-                                                                            (logic->FireTrialClear   || randoCtx->GetTrial(Rando::FIRE_TRIAL)->IsSkipped())   &&
-                                                                            (logic->WaterTrialClear  || randoCtx->GetTrial(Rando::WATER_TRIAL)->IsSkipped())  &&
-                                                                            (logic->ShadowTrialClear || randoCtx->GetTrial(Rando::SHADOW_TRIAL)->IsSkipped()) &&
-                                                                            (logic->SpiritTrialClear || randoCtx->GetTrial(Rando::SPIRIT_TRIAL)->IsSkipped()) &&
-                                                                            (logic->LightTrialClear  || randoCtx->GetTrial(Rando::LIGHT_TRIAL)->IsSkipped());}}),
+                  Entrance(RR_GANONS_CASTLE_TOWER,           {[]{return (logic->ForestTrialClear || randoCtx->GetTrial(TK_FOREST_TRIAL)->IsSkipped()) &&
+                                                                            (logic->FireTrialClear   || randoCtx->GetTrial(TK_FIRE_TRIAL)->IsSkipped())   &&
+                                                                            (logic->WaterTrialClear  || randoCtx->GetTrial(TK_WATER_TRIAL)->IsSkipped())  &&
+                                                                            (logic->ShadowTrialClear || randoCtx->GetTrial(TK_SHADOW_TRIAL)->IsSkipped()) &&
+                                                                            (logic->SpiritTrialClear || randoCtx->GetTrial(TK_SPIRIT_TRIAL)->IsSkipped()) &&
+                                                                            (logic->LightTrialClear  || randoCtx->GetTrial(TK_LIGHT_TRIAL)->IsSkipped());}}),
                   Entrance(RR_GANONS_CASTLE_MQ_DEKU_SCRUBS,  {[]{return randoCtx->GetTrickOption(RT_LENS_GANON_MQ) || logic->CanUse(RG_LENS_OF_TRUTH);}}),
   });
 

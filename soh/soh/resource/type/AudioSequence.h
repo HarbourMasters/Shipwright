@@ -17,11 +17,11 @@ typedef struct {
     uint8_t fonts[16];
 } Sequence;
 
-class AudioSequence : public LUS::Resource<Sequence> {
+class AudioSequence : public Ship::Resource<Sequence> {
 public:
     using Resource::Resource;
 
-    AudioSequence() : Resource(std::shared_ptr<LUS::ResourceInitData>()) {}
+    AudioSequence() : Resource(std::shared_ptr<Ship::ResourceInitData>()) {}
 
     Sequence* GetPointer();
     size_t GetPointerSize();

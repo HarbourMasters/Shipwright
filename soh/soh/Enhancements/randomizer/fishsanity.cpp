@@ -167,9 +167,9 @@ namespace Rando {
         switch (optionsSource) {
             // Used in check tracker
             case FSO_SOURCE_CVARS:
-                options.mode = CVarGetInteger("gRandomizeFishsanity", RO_FISHSANITY_OFF);
-                options.numFish = CVarGetInteger("gRandomizeFishsanityPondCount", 0);
-                options.ageSplit = CVarGetInteger("gRandomizeFishsanityAgeSplit", 0) == 1;
+                options.mode = CVarGetInteger(CVAR_RANDOMIZER_SETTING("Fishsanity"), RO_FISHSANITY_OFF);
+                options.numFish = CVarGetInteger(CVAR_RANDOMIZER_SETTING("FishsanityPondCount"), 0);
+                options.ageSplit = CVarGetInteger(CVAR_RANDOMIZER_SETTING("FishsanityAgeSplit"), 0) == 1;
                 break;
             case FSO_SOURCE_RANDO:
             default:

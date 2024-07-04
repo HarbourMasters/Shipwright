@@ -233,7 +233,8 @@ void func_80A74398(Actor* thisx, PlayState* play) {
     Effect_Add(play, &this->blureIdx, EFFECT_BLURE1, 0, 0, &blureInit);
     func_80A74714(this);
 
-    uint8_t enemyRandoCCActive = CVarGetInteger("gRandomizedEnemies", 0) || CVarGetInteger("gCrowdControl", 0);
+    uint8_t enemyRandoCCActive = CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) ||
+                                 (CVarGetInteger(CVAR_REMOTE("Scheme"), GI_SCHEME_SAIL) == GI_SCHEME_CROWD_CONTROL && CVarGetInteger(CVAR_REMOTE("Enabled"), 0));
 
     if (this->switchFlags != 0xFF) {
         // In vanilla gameplay, Iron Knuckles are despawned based on specific flags in specific scenarios.
@@ -303,7 +304,7 @@ void func_80A747C0(EnIk* this, PlayState* play) {
         this->skelAnime.playSpeed = 1.0f;
         // Disable miniboss music with Enemy Randomizer because the music would keep
         // playing if the enemy was never defeated, which is common with Enemy Randomizer.
-        if (!CVarGetInteger("gRandomizedEnemies", 0)) {
+        if (!CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0)) {
             func_800F5ACC(NA_BGM_MINI_BOSS);
         }
     }
@@ -663,7 +664,8 @@ void func_80A75A38(EnIk* this, PlayState* play) {
                 Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos, 0xB0);
                 // Don't set flag when Enemy Rando or CrowdControl are on.
                 // Instead Iron Knuckles rely on the "clear room" flag.
-                if (this->switchFlags != 0xFF && !CVarGetInteger("gRandomizedEnemies", 0) && !CVarGetInteger("gCrowdControl", 0)) {
+                if (this->switchFlags != 0xFF && !CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) &&
+                    !(CVarGetInteger(CVAR_REMOTE("Scheme"), GI_SCHEME_SAIL) == GI_SCHEME_CROWD_CONTROL && CVarGetInteger(CVAR_REMOTE("Enabled"), 0))) {
                     Flags_SetSwitch(play, this->switchFlags);
                 }
                 Actor_Kill(&this->actor);
@@ -810,8 +812,8 @@ Gfx* func_80A761B0(GraphicsContext* gfxCtx, u8 primR, u8 primG, u8 primB, u8 env
     displayListHead = displayList;
 
     gDPPipeSync(displayListHead++);
-    if (CVarGetInteger("gCosmetics.NPC_IronKnuckles.Changed", 0)) {
-        Color_RGB8 color = CVarGetColor24("gCosmetics.NPC_IronKnuckles.Value", (Color_RGB8){primR, primG, primB});
+    if (CVarGetInteger(CVAR_COSMETIC("NPC.IronKnuckles.Changed"), 0)) {
+        Color_RGB8 color = CVarGetColor24(CVAR_COSMETIC("NPC.IronKnuckles.Value"), (Color_RGB8){primR, primG, primB});
         gDPSetPrimColor(displayListHead++, 0, 0, color.r, color.g, color.b, 255);
     } else {
         gDPSetPrimColor(displayListHead++, 0, 0, primR, primG, primB, 255);
@@ -1439,28 +1441,10 @@ void func_80A781CC(Actor* thisx, PlayState* play) {
     if (!Play_InCsMode(play)) {
         this->actor.update = EnIk_Update;
         this->actor.draw = EnIk_Draw;
-        // Don't initiate nabooru defeat CS in rando
-        if (!(IS_RANDO)) {
+        if (GameInteractor_Should(VB_NABOORU_KNUCKLE_DEATH_SCENE, true, this)) {
             Cutscene_SetSegment(play, gSpiritBossNabooruKnuckleDefeatCs);
             gSaveContext.cutsceneTrigger = 1;
             Actor_SetScale(&this->actor, 0.01f);
-        } else {
-        // Because no CS in rando, we hide the death of the knuckle by spawning flames and kill the actor
-            if ((this->actor.colChkInfo.health <= 10)) {
-                s32 i;
-                Vec3f pos;
-                Vec3f sp7C = { 0.0f, 0.5f, 0.0f };
-                int flameAmount = 100;
-
-                for (i = flameAmount; i >= 0; i--) {
-                    pos.x = this->actor.world.pos.x + Rand_CenteredFloat(120.0f);
-                    pos.z = this->actor.world.pos.z + Rand_CenteredFloat(120.0f);
-                    pos.y = this->actor.world.pos.y + 20.0f + Rand_CenteredFloat(120.0f);
-                    EffectSsDeadDb_Spawn(play, &pos, &sp7C, &sp7C, 100, 0, 255, 255, 255, 255, 0, 0, 255, 1, 9,
-                                            true);
-                }
-                Actor_Kill(&this->actor);
-            }
         }
         Flags_SetEventChkInf(EVENTCHKINF_FINISHED_NABOORU_BATTLE);
         func_80A7735C(this, play);
@@ -1484,7 +1468,8 @@ void EnIk_Init(Actor* thisx, PlayState* play) {
     }
 
     // Immediately trigger Iron Knuckle for Enemy Rando and Crowd Control
-    if ((CVarGetInteger("gRandomizedEnemies", 0) || CVarGetInteger("gCrowdControl", 0)) && (thisx->params == 2 || thisx->params == 3)) {
+    if ((CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) || (CVarGetInteger(CVAR_REMOTE("Scheme"), GI_SCHEME_SAIL) == GI_SCHEME_CROWD_CONTROL && CVarGetInteger(CVAR_REMOTE("Enabled"), 0)))
+                        && (thisx->params == 2 || thisx->params == 3)) {
         this->skelAnime.playSpeed = 1.0f;
     }
 }

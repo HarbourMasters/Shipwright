@@ -20,7 +20,6 @@ void DoorAna_WaitClosed(DoorAna* this, PlayState* play);
 void DoorAna_WaitOpen(DoorAna* this, PlayState* play);
 void DoorAna_GrabPlayer(DoorAna* this, PlayState* play);
 
-s16 GetChestGameRandoGiDrawId(s8 room, s16 ogDrawId, PlayState* play);
 void Grotto_OverrideActorEntrance(Actor* thisx);
 
 const ActorInit Door_Ana_InitVars = {
@@ -182,7 +181,7 @@ void DoorAna_Update(Actor* thisx, PlayState* play) {
 
     this->actionFunc(this, play);
     // Changes the grottos facing angle based on camera angle
-    if (!CVarGetInteger("gDisableGrottoRotation", 0)) {
+    if (!CVarGetInteger(CVAR_ENHANCEMENT("DisableGrottoRotation"), 0)) {
         this->actor.shape.rot.y = Camera_GetCamDirYaw(GET_ACTIVE_CAM(play)) + 0x8000;
     }
 }

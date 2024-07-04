@@ -5,9 +5,9 @@
 #include <memory>
 
 #include "3drando/text.hpp"
-#include "3drando/hint_list.hpp"
 #include "randomizerTypes.h"
 #include "soh/Enhancements/item-tables/ItemTableTypes.h"
+#include "3drando/hints.hpp"
 
 enum ItemType {
     ITEMTYPE_ITEM,

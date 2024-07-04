@@ -8,7 +8,8 @@
 #include "random.hpp"
 #include "spoiler_log.hpp"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
-#include <variables.h>
+#include "variables.h"
+#include "soh/OTRGlobals.h"
 #include "../option.h"
 
 namespace Playthrough {
@@ -45,7 +46,7 @@ int Playthrough_Init(uint32_t seed, std::set<RandomizerCheck> excludedLocations,
         }
     }
 
-    if (CVarGetInteger("gRandomizerDontGenerateSpoiler", 0)) {
+    if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("DontGenerateSpoiler"), 0)) {
         settingsStr += (char*)gBuildVersion;
     }
 

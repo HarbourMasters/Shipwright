@@ -467,7 +467,7 @@ void func_80AB6450(EnNiw* this, PlayState* play) {
         this->actionFunc = func_80AB6BF8;
     } else {
         // GI_NONE in this case allows the player to lift the actor
-        func_8002F434(&this->actor, play, GI_NONE, 25.0f, 10.0f);
+        Actor_OfferGetItem(&this->actor, play, GI_NONE, 25.0f, 10.0f);
         func_80AB5BF8(this, play, 1);
     }
 }
@@ -666,7 +666,7 @@ void func_80AB6D08(EnNiw* this, PlayState* play) {
         }
 
         this->path = 1;
-        this->timer5 = 80 * CVarGetInteger("gCuccoStayDurationMultiplier", 1);
+        this->timer5 = 80 * CVarGetInteger(CVAR_ENHANCEMENT("CuccoStayDurationMult"), 1);
         this->actor.speedXZ = 0.0f;
         this->actor.velocity.y = 4.0f;
     } else {

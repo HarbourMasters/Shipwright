@@ -4,7 +4,6 @@
 #include <vector>
 #include <list>
 
-#include "hint_list.hpp"
 #include "fill.hpp"
 #include "../randomizerTypes.h"
 #include "../context.h"

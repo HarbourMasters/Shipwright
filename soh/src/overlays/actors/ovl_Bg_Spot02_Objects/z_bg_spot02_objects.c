@@ -6,6 +6,7 @@
 
 #include "z_bg_spot02_objects.h"
 #include "objects/object_spot02_objects/object_spot02_objects.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
@@ -129,20 +130,7 @@ void func_808AC908(BgSpot02Objects* this, PlayState* play) {
     static Vec3f zeroVec = { 0.0f, 0.0f, 0.0f };
     Vec3f pos;
 
-    // We want to do most of the same things in rando, but we're not in a cutscene and the flag for
-    // destroying the royal tombstone is already set.
-    if (IS_RANDO && Flags_GetEventChkInf(EVENTCHKINF_DESTROYED_ROYAL_FAMILY_TOMB)) {
-        Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_GRAVE_EXPLOSION);
-        this->timer = 25;
-        pos.x = (Math_SinS(this->dyna.actor.shape.rot.y) * 50.0f) + this->dyna.actor.world.pos.x;
-        pos.y = this->dyna.actor.world.pos.y + 30.0f;
-        pos.z = (Math_CosS(this->dyna.actor.shape.rot.y) * 50.0f) + this->dyna.actor.world.pos.z;
-        EffectSsBomb2_SpawnLayered(play, &pos, &zeroVec, &zeroVec, 70, 30);
-        this->actionFunc = func_808ACA08;
-    }
-
-    if (play->csCtx.state != 0) {
-        if (play->csCtx.npcActions[3] != NULL && play->csCtx.npcActions[3]->action == 2) {
+    if (GameInteractor_Should(VB_PLAY_ROYAL_FAMILY_TOMB_EXPLODE, play->csCtx.state != 0 && play->csCtx.npcActions[3] != NULL && play->csCtx.npcActions[3]->action == 2, this)) {
             Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_GRAVE_EXPLOSION);
             Flags_SetEventChkInf(EVENTCHKINF_DESTROYED_ROYAL_FAMILY_TOMB);
             this->timer = 25;
@@ -151,7 +139,6 @@ void func_808AC908(BgSpot02Objects* this, PlayState* play) {
             pos.z = (Math_CosS(this->dyna.actor.shape.rot.y) * 50.0f) + this->dyna.actor.world.pos.z;
             EffectSsBomb2_SpawnLayered(play, &pos, &zeroVec, &zeroVec, 70, 30);
             this->actionFunc = func_808ACA08;
-        }
     }
 }
 
@@ -174,7 +161,7 @@ void func_808ACA08(BgSpot02Objects* this, PlayState* play) {
 
     // This shouldn't execute in rando even without the check since we never
     // enter the cutscene context.
-    if (play->csCtx.frames == 402 && !(IS_RANDO)) {
+    if (play->csCtx.frames == 402) {
         if (!LINK_IS_ADULT) {
             Player_PlaySfx(&player->actor, NA_SE_VO_LI_DEMO_DAMAGE_KID);
         } else {
@@ -217,13 +204,6 @@ void BgSpot02Objects_Draw(Actor* thisx, PlayState* play) {
 }
 
 void func_808ACC34(BgSpot02Objects* this, PlayState* play) {
-    // This is the actionFunc that the game settles on when you load the Graveyard
-    // When we're in rando and the flag for the gravestone being destroyed gets set,
-    // set the actionFunc to the function where the gravestone explodes.
-    if (IS_RANDO && Flags_GetEventChkInf(EVENTCHKINF_DESTROYED_ROYAL_FAMILY_TOMB)) {
-        this->actionFunc = func_808AC908;
-    }
-
     if (play->csCtx.state != 0 && play->csCtx.npcActions[0] != NULL &&
         play->csCtx.npcActions[0]->action == 2) {
         this->unk_16A++;

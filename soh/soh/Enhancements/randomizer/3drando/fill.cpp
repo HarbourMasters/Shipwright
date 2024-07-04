@@ -9,7 +9,6 @@
 #include "spoiler_log.hpp"
 #include "starting_inventory.hpp"
 #include "hints.hpp"
-#include "hint_list.hpp"
 #include "../entrance.h"
 #include "shops.hpp"
 #include "pool_functions.hpp"
@@ -1135,7 +1134,19 @@ int Fill() {
     std::vector<RandomizerGet> remainingPool = FilterAndEraseFromPool(ItemPool, [](const auto i) { return true; });
     FastFill(remainingPool, GetAllEmptyLocations(), false);
 
-    //Add prices for scrubsanity, this is unique to SoH because we write/read scrub prices to/from the spoilerfile.
+    //Add default prices to scrubs
+    for (size_t i = 0; i < Rando::StaticData::scrubLocations.size(); i++) {
+      if (Rando::StaticData::scrubLocations[i] == RC_LW_DEKU_SCRUB_NEAR_BRIDGE || Rando::StaticData::scrubLocations[i] == RC_LW_DEKU_SCRUB_GROTTO_FRONT) {
+        ctx->GetItemLocation(Rando::StaticData::scrubLocations[i])->SetCustomPrice(40);
+      } else if (Rando::StaticData::scrubLocations[i] == RC_HF_DEKU_SCRUB_GROTTO) {
+        ctx->GetItemLocation(Rando::StaticData::scrubLocations[i])->SetCustomPrice(10);
+      } else {
+        auto loc = Rando::StaticData::GetLocation(Rando::StaticData::scrubLocations[i]);
+        auto item = Rando::StaticData::RetrieveItem(loc->GetVanillaItem());
+        ctx->GetItemLocation(Rando::StaticData::scrubLocations[i])->SetCustomPrice(item.GetPrice());
+      }
+    }
+
     if (ctx->GetOption(RSK_SHUFFLE_SCRUBS).Is(RO_SCRUBS_AFFORDABLE)) {
       for (size_t i = 0; i < Rando::StaticData::scrubLocations.size(); i++) {
         ctx->GetItemLocation(Rando::StaticData::scrubLocations[i])->SetCustomPrice(10);
@@ -1157,13 +1168,6 @@ int Fill() {
       SPDLOG_INFO("Calculating Playthrough Done");
       ctx->CreateItemOverrides();
       ctx->GetEntranceShuffler()->CreateEntranceOverrides();
-      
-      SPDLOG_INFO("Creating Other Hint Texts...");
-      //funny ganon line
-      Text ganonText = RandomElement(GetHintCategory(HintCategory::GanonLine)).GetText();
-      CreateMessageFromTextObject(0x70CB, 0, 2, 3, AddColorsAndFormat(ganonText));
-      SetGanonText(ganonText);
-      SPDLOG_INFO("Creating Other Hint Texts Done");
       
       CreateAllHints();
       CreateWarpSongTexts();

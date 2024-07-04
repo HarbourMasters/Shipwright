@@ -5,6 +5,7 @@
 #include "global.h"
 #include "vt.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include <string.h>
 #include <assert.h>
 
@@ -275,7 +276,7 @@ void Room_DrawBackground2D(Gfx** gfxP, void* tex, void* tlut, u16 width, u16 hei
     bg->b.imageFmt = fmt;
     bg->b.imageSiz = siz;
     bg->b.imagePal = 0;
-    bg->b.imageFlip = CVarGetInteger("gMirroredWorld", 0) ? G_BG_FLAG_FLIPS : 0;
+    bg->b.imageFlip = CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0) ? G_BG_FLAG_FLIPS : 0;
 
     // When an alt resource exists for the background, we need to unload the original asset
     // to clear the cache so the alt asset will be loaded instead
@@ -412,7 +413,7 @@ BgImage* func_80096A74(PolygonType1* polygon1, PlayState* play) {
 
     camera = GET_ACTIVE_CAM(play);
     camId = camera->camDataIdx;
-    if (camId == -1 && (CVarGetInteger("gNoRestrictItems", 0) || CVarGetInteger("gCrowdControl", 0))) {
+    if (camId == -1 && (CVarGetInteger(CVAR_CHEAT("NoRestrictItems"), 0) || (CVarGetInteger(CVAR_REMOTE("Scheme"), GI_SCHEME_SAIL) == GI_SCHEME_CROWD_CONTROL && CVarGetInteger(CVAR_REMOTE("Enabled"), 0)))) {
         // This prevents a crash when using items that change the
         // camera (such as din's fire), voiding out or dying on 
         // scenes with prerendered backgrounds.
