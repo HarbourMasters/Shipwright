@@ -504,6 +504,7 @@ uint32_t HookshotLookup[3] = { ITEM_NONE, ITEM_HOOKSHOT, ITEM_LONGSHOT };
 uint32_t OcarinaLookup[3] = { ITEM_NONE, ITEM_OCARINA_FAIRY, ITEM_OCARINA_TIME };
 
 void Context::ApplyItemEffect(Item& item, bool remove) {
+    LUSLOG_INFO("Applying item effect for item %s", StaticData::RetrieveItem(item.GetRandomizerGet()).GetName().GetEnglish().c_str());
     switch (item.GetItemType()) {
     case ITEMTYPE_ITEM:
     {
@@ -511,13 +512,13 @@ void Context::ApplyItemEffect(Item& item, bool remove) {
         if (item.GetGIEntry()->getItemCategory == ITEM_CATEGORY_MAJOR || item.GetGIEntry()->getItemCategory == ITEM_CATEGORY_LESSER) {
             switch (randoGet) {
             case RG_GERUDO_MEMBERSHIP_CARD:
-                SetQuestItem(QUEST_GERUDO_CARD, !remove);
+                SetQuestItem(QUEST_GERUDO_CARD, remove);
                 break;
             case RG_WEIRD_EGG:
-                SetRandoInf(RAND_INF_WEIRD_EGG, !remove);
+                SetRandoInf(RAND_INF_WEIRD_EGG, remove);
                 break;
             case RG_ZELDAS_LETTER:
-                SetRandoInf(RAND_INF_ZELDAS_LETTER, !remove);
+                SetRandoInf(RAND_INF_ZELDAS_LETTER, remove);
                 break;
             case RG_POCKET_EGG:
             case RG_COJIRO:
@@ -589,14 +590,26 @@ void Context::ApplyItemEffect(Item& item, bool remove) {
             case RG_PROGRESSIVE_WALLET:
             {
                 auto currentLevel = CurrentUpgrade(UPG_WALLET);
-                auto newLevel = currentLevel + (remove ? -1 : 1);
-                SetUpgrade(UPG_WALLET, newLevel);
+                if (!CheckRandoInf(RAND_INF_HAS_WALLET) && !remove) {
+                    SetRandoInf(RAND_INF_HAS_WALLET, false);
+                } else if (currentLevel == 0 && remove) {
+                    SetRandoInf(RAND_INF_HAS_WALLET, true);
+                } else {
+                    auto newLevel = currentLevel + (remove ? -1 : 1);
+                    SetUpgrade(UPG_WALLET, newLevel);
+                }
             }   break;
             case RG_PROGRESSIVE_SCALE:
             {
                 auto currentLevel = CurrentUpgrade(UPG_SCALE);
-                auto newLevel = currentLevel + (remove ? -1 : 1);
-                SetUpgrade(UPG_SCALE, newLevel);
+                if (!CheckRandoInf(RAND_INF_CAN_SWIM) && !remove) {
+                    SetRandoInf(RAND_INF_CAN_SWIM, false);
+                } else if (currentLevel == 0 && remove) {
+                    SetRandoInf(RAND_INF_CAN_SWIM, true);
+                } else {
+                    auto newLevel = currentLevel + (remove ? -1 : 1);
+                    SetUpgrade(UPG_SCALE, newLevel);
+                }
             }   break;
             case RG_PROGRESSIVE_NUT_UPGRADE:
             {
@@ -692,7 +705,7 @@ void Context::ApplyItemEffect(Item& item, bool remove) {
                 mSaveContext->inventory.items[slot] = item.GetItemID();
             }   break;
             case RG_RUTOS_LETTER:
-                SetEventChkInf(EVENTCHKINF_OBTAINED_RUTOS_LETTER, !remove);
+                SetEventChkInf(EVENTCHKINF_OBTAINED_RUTOS_LETTER, remove);
                 break;
             case RG_GOHMA_SOUL:
             case RG_KING_DODONGO_SOUL:
@@ -708,7 +721,7 @@ void Context::ApplyItemEffect(Item& item, bool remove) {
             case RG_OCARINA_C_DOWN_BUTTON:
             case RG_OCARINA_C_LEFT_BUTTON:
             case RG_OCARINA_C_RIGHT_BUTTON:
-                SetRandoInf(RandoGetToFlag.at(randoGet), !remove);
+                SetRandoInf(RandoGetToFlag.at(randoGet), remove);
                 break;
             case RG_TRIFORCE_PIECE:
                 mSaveContext->triforcePiecesCollected += (remove ? -1 : 1);
@@ -740,16 +753,16 @@ void Context::ApplyItemEffect(Item& item, bool remove) {
     break;
     case ITEMTYPE_DUNGEONREWARD:
     case ITEMTYPE_SONG:
-        SetQuestItem(RandoGetToQuestItem.find(item.GetRandomizerGet())->second, !remove);
+        SetQuestItem(RandoGetToQuestItem.find(item.GetRandomizerGet())->second, remove);
         break;
     case ITEMTYPE_MAP:
-        SetDungeonItem(DUNGEON_MAP, RandoGetToDungeonScene.find(item.GetRandomizerGet())->second, !remove);
+        SetDungeonItem(DUNGEON_MAP, RandoGetToDungeonScene.find(item.GetRandomizerGet())->second, remove);
         break;
     case ITEMTYPE_COMPASS:
-        SetDungeonItem(DUNGEON_COMPASS, RandoGetToDungeonScene.find(item.GetRandomizerGet())->second, !remove);
+        SetDungeonItem(DUNGEON_COMPASS, RandoGetToDungeonScene.find(item.GetRandomizerGet())->second, remove);
         break;
     case ITEMTYPE_BOSSKEY:
-        SetDungeonItem(DUNGEON_KEY_BOSS, RandoGetToDungeonScene.find(item.GetRandomizerGet())->second, !remove);
+        SetDungeonItem(DUNGEON_KEY_BOSS, RandoGetToDungeonScene.find(item.GetRandomizerGet())->second, remove);
         break;
     case ITEMTYPE_FORTRESS_SMALLKEY:
     case ITEMTYPE_SMALLKEY:
@@ -876,7 +889,7 @@ void Context::InitSaveContext() {
     for (int button = 0; button < ARRAY_COUNT(mSaveContext->equips.cButtonSlots); button++) {
         mSaveContext->equips.cButtonSlots[button] = SLOT_NONE;
     }
-    mSaveContext->equips.equipment = 0x1100;
+    mSaveContext->equips.equipment = 0;
 
     // Inventory
     for (int item = 0; item < ARRAY_COUNT(mSaveContext->inventory.items); item++) {
@@ -885,7 +898,7 @@ void Context::InitSaveContext() {
     for (int ammo = 0; ammo < ARRAY_COUNT(mSaveContext->inventory.ammo); ammo++) {
         mSaveContext->inventory.ammo[ammo] = 0;
     }
-    mSaveContext->inventory.equipment = 0x1100;
+    mSaveContext->inventory.equipment = 0;
     mSaveContext->inventory.upgrades = 0;
     mSaveContext->inventory.questItems = 0;
     for (int dungeon = 0; dungeon < ARRAY_COUNT(mSaveContext->inventory.dungeonItems); dungeon++) {
