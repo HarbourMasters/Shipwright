@@ -559,7 +559,7 @@ std::vector<RandomizerCheck> Rando::StaticData::staticHintLocations = {
     RC_ALTAR_HINT_CHILD,
     RC_ALTAR_HINT_ADULT,
     RC_FISHING_POLE_HINT,
-    RC_TOT_SHEIK_HINT,,
+    RC_TOT_SHEIK_HINT,
     RC_MASK_SHOP_HINT,
 };
 
