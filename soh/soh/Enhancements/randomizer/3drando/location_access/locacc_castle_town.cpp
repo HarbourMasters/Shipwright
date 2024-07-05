@@ -193,7 +193,7 @@ void AreaTable_Init_CastleTown() {
                   EventAccess(&logic->SkullMask,   {[]{return logic->SkullMask   || (logic->ZeldasLetter && (randoCtx->GetOption(RSK_COMPLETE_MASK_QUEST) ||  ChildCanAccess(RR_KAKARIKO_VILLAGE)));}}), //RANDOTODO Complete mask quest does not need this location, so should be tied to link'd pocket
                   EventAccess(&logic->MaskOfTruth, {[]{return logic->MaskOfTruth || (logic->SkullMask && (randoCtx->GetOption(RSK_COMPLETE_MASK_QUEST) || (ChildCanAccess(RR_THE_LOST_WOODS) && logic->CanUse(RG_SARIAS_SONG) && AreaTable(RR_THE_GRAVEYARD)->childDay && ChildCanAccess(RR_HYRULE_FIELD) && logic->HasAllStones)));}}),
                 }, {
-                  LocationAccess(RC_MASK_SHOP_HINT, {[]{return true;}}),
+                  LOCATION(RC_MASK_SHOP_HINT, true),
                 }, {
                   //Exits
                   Entrance(RR_THE_MARKET, {[]{return true;}}),
