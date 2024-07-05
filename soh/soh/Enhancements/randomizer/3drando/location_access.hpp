@@ -186,6 +186,10 @@ public:
         return area;
     }
 
+    void SetArea(RandomizerArea newArea) {
+        area = newArea;
+    }
+
     //Here checks conditional access based on whether or not both ages have
     //access to this area. For example: if there are rocks that block a path
     //which both child and adult can access, adult having hammer can give
@@ -222,7 +226,6 @@ public:
                      "Child Night: " + std::to_string(childNight) + "\t"
                      "Adult Day:   " + std::to_string(adultDay)   + "\t"
                      "Adult Night: " + std::to_string(adultNight);
-      //CitraPrint(message);
     }
 };
 
