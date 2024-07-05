@@ -260,6 +260,8 @@ typedef enum {
     // Opt: *EnOkarinaTag
     VB_PLAY_DOOR_OF_TIME_CS,
     VB_PLAY_RAINBOW_BRIDGE_CS,
+    // Opt: *EnBox
+    VB_PLAY_SLOW_CHEST_CS,
 
     /*** Give Items ***/
 

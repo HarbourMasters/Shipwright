@@ -129,9 +129,9 @@ bool FilterWotHLocations(RandomizerCheck loc){
   return ctx->GetItemLocation(loc)->IsWothCandidate();
 }
 
-bool FilterBarrenLocations(RandomizerCheck loc){
+bool FilterFoolishLocations(RandomizerCheck loc){
   auto ctx = Rando::Context::GetInstance();
-  return ctx->GetItemLocation(loc)->IsBarrenCandidate();
+  return ctx->GetItemLocation(loc)->IsFoolishCandidate();
 }
 
 bool FilterSongLocations(RandomizerCheck loc){
@@ -176,7 +176,7 @@ const std::array<HintSetting, 4> hintSettingTable{{
     .junkWeight = 6,
     .distTable = {
       {"WotH",       HINT_TYPE_WOTH,      7,   0, 1, FilterWotHLocations,      2},
-      {"Barren",     HINT_TYPE_FOOLISH,   4,   0, 1, FilterBarrenLocations,    1},
+      {"Foolish",    HINT_TYPE_FOOLISH,   4,   0, 1, FilterFoolishLocations,   1},
       //("Entrance",   HINT_TYPE_ENTRANCE,      6,  0, 1), //not yet implemented
       {"Song",       HINT_TYPE_ITEM,      2,   0, 1, FilterSongLocations},
       {"Overworld",  HINT_TYPE_ITEM,      4,   0, 1, FilterOverworldLocations},
@@ -192,7 +192,7 @@ const std::array<HintSetting, 4> hintSettingTable{{
     .junkWeight = 0,
     .distTable = {
       {"WotH",       HINT_TYPE_WOTH,      12, 0, 2, FilterWotHLocations,      2},
-      {"Barren",     HINT_TYPE_FOOLISH,   12, 0, 1, FilterBarrenLocations,    1},
+      {"Foolish",    HINT_TYPE_FOOLISH,   12, 0, 1, FilterFoolishLocations,   1},
       //{"Entrance",   HINT_TYPE_ENTRANCE,      4, 0, 1}, //not yet implemented
       {"Song",       HINT_TYPE_ITEM,      4,  0, 1, FilterSongLocations},
       {"Overworld",  HINT_TYPE_ITEM,      6,  0, 1, FilterOverworldLocations},
@@ -208,7 +208,7 @@ const std::array<HintSetting, 4> hintSettingTable{{
     .junkWeight = 0,
     .distTable = {
       {"WotH",       HINT_TYPE_WOTH,      15, 0, 2, FilterWotHLocations},
-      {"Barren",     HINT_TYPE_FOOLISH,   15, 0, 1, FilterBarrenLocations},
+      {"Foolish",    HINT_TYPE_FOOLISH,   15, 0, 1, FilterFoolishLocations},
       //{"Entrance",   HINT_TYPE_ENTRANCE,     10, 0, 1}, //not yet implemented
       {"Song",       HINT_TYPE_ITEM,      2,  0, 1, FilterSongLocations},
       {"Overworld",  HINT_TYPE_ITEM,      7,  0, 1, FilterOverworldLocations},
@@ -277,7 +277,7 @@ std::vector<std::pair<RandomizerCheck, std::function<bool()>>> conditionalAlways
                    }), // Remember, the option's value being 3 means 4 are required
     std::make_pair(RC_DEKU_THEATER_MASK_OF_TRUTH, []() {
                        auto ctx = Rando::Context::GetInstance();
-                       return !ctx->GetOption(RSK_COMPLETE_MASK_QUEST);
+                       return !ctx->GetOption(RSK_MASK_SHOP_HINT) && !ctx->GetOption(RSK_COMPLETE_MASK_QUEST);
                    }),
     std::make_pair(RC_SONG_FROM_OCARINA_OF_TIME, []() { return StonesRequiredBySettings() < 2; }),
     std::make_pair(RC_HF_OCARINA_OF_TIME_ITEM, []() { return StonesRequiredBySettings() < 2; }),
@@ -448,9 +448,6 @@ static RandomizerCheck CreateRandomHint(std::vector<RandomizerCheck>& possibleHi
 
     placed = CreateHint(hintedLocation, copies, type, distributionName);
   }
-  if (type == HINT_TYPE_FOOLISH){
-     SetAllInRegionAsHinted(ctx->GetItemLocation(hintedLocation)->GetArea(), possibleHintLocations);
-  }
   return hintedLocation;
 }
 
@@ -496,7 +493,7 @@ void CreateWarpSongTexts() {
   if (ctx->GetOption(RSK_WARP_SONG_HINTS)){
     auto warpSongEntrances = GetShuffleableEntrances(EntranceType::WarpSong, false);
     for (auto entrance : warpSongEntrances) {
-      auto destination = entrance->GetConnectedRegion()->GetArea();//KNOWN ISSUE: says links pocket sometimes, putting off as this will need rewriting when entrance hits are added anyway
+      const auto destination = entrance->GetConnectedRegion()->GetArea();
       switch (entrance->GetIndex()) {
         case 0x0600: // minuet RANDOTODO make into entrance hints when they are added
           ctx->AddHint(RH_MINUET_WARP_LOC, Hint(RH_MINUET_WARP_LOC, HINT_TYPE_AREA, "", {RHT_WARP_SONG}, {}, {destination}));
@@ -582,6 +579,10 @@ uint8_t PlaceHints(std::vector<uint8_t>& selectedHints,
       RandomizerCheck hintedLocation = RC_UNKNOWN_CHECK;
 
       hintedLocation = CreateRandomHint(hintTypePool, distribution.copies, distribution.type, distribution.name);
+      if (distribution.type == HINT_TYPE_FOOLISH){
+        SetAllInRegionAsHinted(ctx->GetItemLocation(hintedLocation)->GetArea(), hintTypePool);
+        hintTypePool = FilterHintability(hintTypePool);
+      }
       if (hintedLocation == RC_UNKNOWN_CHECK){ //if hint failed to place, remove all wieght and copies then return the number of stones to redistribute
         uint8_t hintsToRemove = (selectedHints[curSlot] - numHint) * distribution.copies;
         selectedHints[curSlot] = 0;   //as distTable is passed by refernce here, these changes stick for the rest of this seed generation
