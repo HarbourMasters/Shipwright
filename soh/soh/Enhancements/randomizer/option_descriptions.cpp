@@ -533,6 +533,7 @@ void Settings::CreateOptionDescriptions() {
     mOptionDescriptions[RSK_KAK_40_SKULLS_HINT] = "Talking to the Cursed Resident in the Skultulla House who is saved after 40 tokens will tell you the reward";
     mOptionDescriptions[RSK_KAK_50_SKULLS_HINT] = "Talking to the Cursed Resident in the Skultulla House who is saved after 50 tokens will tell you the reward";
     mOptionDescriptions[RSK_KAK_100_SKULLS_HINT] = "Talking to the Cursed Resident in the Skultulla House who is saved after 100 tokens will tell you the reward";
+    mOptionDescriptions[RSK_MASK_SHOP_HINT] = "Reading the mask shop sign will tell you rewards from showing masks at the Deku Theatre.";
     
     mOptionDescriptions[RSK_FULL_WALLETS] = "Start with a full wallet. All wallet upgrades come filled with rupees.";
     mOptionDescriptions[RSK_BOMBCHUS_IN_LOGIC] =

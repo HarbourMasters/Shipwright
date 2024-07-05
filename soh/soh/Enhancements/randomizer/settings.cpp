@@ -177,7 +177,8 @@ void Settings::CreateOptions() {
     mOptions[RSK_KAK_30_SKULLS_HINT] = Option::Bool("30 GS Hint", CVAR_RANDOMIZER_SETTING("30GSHint"), mOptionDescriptions[RSK_KAK_30_SKULLS_HINT], IMFLAG_NONE);
     mOptions[RSK_KAK_40_SKULLS_HINT] = Option::Bool("40 GS Hint", CVAR_RANDOMIZER_SETTING("40GSHint"), mOptionDescriptions[RSK_KAK_40_SKULLS_HINT], IMFLAG_NONE);
     mOptions[RSK_KAK_50_SKULLS_HINT] = Option::Bool("50 GS Hint", CVAR_RANDOMIZER_SETTING("50GSHint"), mOptionDescriptions[RSK_KAK_50_SKULLS_HINT], IMFLAG_NONE);
-    mOptions[RSK_KAK_100_SKULLS_HINT] = Option::Bool("100 GS Hint", CVAR_RANDOMIZER_SETTING("100GSHint"), mOptionDescriptions[RSK_KAK_100_SKULLS_HINT]);
+    mOptions[RSK_KAK_100_SKULLS_HINT] = Option::Bool("100 GS Hint", CVAR_RANDOMIZER_SETTING("100GSHint"), mOptionDescriptions[RSK_KAK_100_SKULLS_HINT], IMFLAG_NONE);
+    mOptions[RSK_MASK_SHOP_HINT] = Option::Bool("Mask Shop Hint", CVAR_RANDOMIZER_SETTING("MaskShopHint"), mOptionDescriptions[RSK_MASK_SHOP_HINT]);
     // TODO: Compasses show rewards/woth, maps show dungeon mode
     mOptions[RSK_BLUE_FIRE_ARROWS] = Option::Bool("Blue Fire Arrows", CVAR_RANDOMIZER_SETTING("BlueFireArrows"), mOptionDescriptions[RSK_BLUE_FIRE_ARROWS]);
     mOptions[RSK_SUNLIGHT_ARROWS] = Option::Bool("Sunlight Arrows", CVAR_RANDOMIZER_SETTING("SunlightArrows"), mOptionDescriptions[RSK_SUNLIGHT_ARROWS]);
@@ -747,7 +748,8 @@ void Settings::CreateOptions() {
         &mOptions[RSK_KAK_30_SKULLS_HINT],
         &mOptions[RSK_KAK_40_SKULLS_HINT],
         &mOptions[RSK_KAK_50_SKULLS_HINT],
-        &mOptions[RSK_KAK_100_SKULLS_HINT]
+        &mOptions[RSK_KAK_100_SKULLS_HINT],
+        &mOptions[RSK_MASK_SHOP_HINT]
     }, false, WidgetContainerType::SECTION, "This setting adds some hints at locations other than Gossip Stones.");
     mOptionGroups[RSG_ITEM_POOL_HINTS_IMGUI_COLUMN] = OptionGroup::SubGroup("Item Pool & Hints", std::initializer_list<OptionGroup*>{
         &mOptionGroups[RSG_ITEM_POOL_HINTS_IMGUI],
@@ -977,6 +979,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_KAK_40_SKULLS_HINT],
         &mOptions[RSK_KAK_50_SKULLS_HINT],
         &mOptions[RSK_KAK_100_SKULLS_HINT],
+        &mOptions[RSK_MASK_SHOP_HINT],
         &mOptions[RSK_SCRUB_TEXT_HINT],
         &mOptions[RSK_FISHING_POLE_HINT],
         // TODO: Compasses show Reward/WOTH, Maps show Dungeon Mode, Starting Time
@@ -1189,7 +1192,8 @@ void Settings::CreateOptions() {
         { "Miscellaneous Settings:30 GS Hint", RSK_KAK_30_SKULLS_HINT },
         { "Miscellaneous Settings:40 GS Hint", RSK_KAK_40_SKULLS_HINT },
         { "Miscellaneous Settings:50 GS Hint", RSK_KAK_50_SKULLS_HINT },
-        { "Miscellaneous Settings:50 GS Hint", RSK_KAK_100_SKULLS_HINT },
+        { "Miscellaneous Settings:100 GS Hint", RSK_KAK_100_SKULLS_HINT },
+        { "Miscellaneous Settings:Mask Shop Hint", RSK_MASK_SHOP_HINT },
         { "Miscellaneous Settings:Biggoron's Hint", RSK_BIGGORON_HINT },
         { "Miscellaneous Settings:Big Poes Hint", RSK_BIG_POES_HINT },
         { "Miscellaneous Settings:Warp Song Hints", RSK_WARP_SONG_HINTS },
@@ -1852,6 +1856,7 @@ void Settings::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocatio
 
     // RANDOTODO implement chest shuffle with keysanity
     // ShuffleChestMinigame.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_CHEST_MINIGAME]);
+    mOptions[RSK_SHUFFLE_CHEST_MINIGAME].SetSelectedIndex(RO_CHEST_GAME_OFF);
     //TODO: RandomizeAllSettings(true) when implementing the ability to randomize the options themselves.
     std::array<DungeonInfo*, 12> dungeons = ctx->GetDungeons()->GetDungeonList();
     std::array<bool, 12> dungeonModesKnown{};
@@ -2299,6 +2304,7 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
                 case RSK_KAK_40_SKULLS_HINT:
                 case RSK_KAK_50_SKULLS_HINT:
                 case RSK_KAK_100_SKULLS_HINT:
+                case RSK_MASK_SHOP_HINT:
                 case RSK_BIGGORON_HINT:
                 case RSK_BIG_POES_HINT:
                 case RSK_CHICKENS_HINT:
