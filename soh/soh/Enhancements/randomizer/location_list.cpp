@@ -559,6 +559,7 @@ std::vector<RandomizerCheck> Rando::StaticData::staticHintLocations = {
     RC_ALTAR_HINT_CHILD,
     RC_ALTAR_HINT_ADULT,
     RC_FISHING_POLE_HINT,
+    RC_TOT_SHEIK_HINT,
     RC_MASK_SHOP_HINT,
 };
 
@@ -1565,7 +1566,8 @@ void Rando::StaticData::InitLocationTable() { //                                
     locationTable[RC_ALTAR_HINT_CHILD]  =                                         Location::OtherHint(RC_ALTAR_HINT_CHILD,                                             RCQUEST_BOTH,    RCTYPE_GOSSIP_STONE,                RCAREA_MARKET,                       ACTOR_ID_MAX,         SCENE_TEMPLE_OF_TIME,       "ToT Child Altar Hint");
     locationTable[RC_ALTAR_HINT_ADULT]  =                                         Location::OtherHint(RC_ALTAR_HINT_ADULT,                                             RCQUEST_BOTH,    RCTYPE_GOSSIP_STONE,                RCAREA_MARKET,                       ACTOR_ID_MAX,         SCENE_TEMPLE_OF_TIME,       "ToT Adult Altar Hint");
     locationTable[RC_FISHING_POLE_HINT] =                                         Location::OtherHint(RC_FISHING_POLE_HINT,                                            RCQUEST_BOTH,    RCTYPE_GOSSIP_STONE,                RCAREA_LAKE_HYLIA,                   ACTOR_FISHING,        SCENE_FISHING_POND,         "Fishing Pole Hint");
-    locationTable[RC_MASK_SHOP_HINT] =                                            Location::OtherHint(RC_MASK_SHOP_HINT,                                               RCQUEST_BOTH,    RCTYPE_GOSSIP_STONE,                RCAREA_MARKET,                       ACTOR_ID_MAX,         SCENE_HAPPY_MASK_SHOP,      "Mask Shop Hint");
+    locationTable[RC_TOT_SHEIK_HINT] =                                            Location::OtherHint(RC_TOT_SHEIK_HINT,                                               RCQUEST_BOTH,    RCTYPE_GOSSIP_STONE,                RCAREA_MARKET,                       ACTOR_EN_XC,          SCENE_TEMPLE_OF_TIME,       "Ocarina of Time Hint");
+        locationTable[RC_MASK_SHOP_HINT] =                                            Location::OtherHint(RC_MASK_SHOP_HINT,                                               RCQUEST_BOTH,    RCTYPE_GOSSIP_STONE,                RCAREA_MARKET,                       ACTOR_ID_MAX,         SCENE_HAPPY_MASK_SHOP,      "Mask Shop Hint");
 
     locationTable[RC_TRIFORCE_COMPLETED] =                                           Location::Reward(RC_TRIFORCE_COMPLETED,                                           RCQUEST_BOTH,    RCTYPE_STANDARD,                    RCAREA_MARKET,                       ACTOR_ID_MAX,         SCENE_ID_MAX,                       0x00,                                              0x00, "Completed Triforce", "Completed Triforce",    RHT_NONE,                                                        RG_NONE,                              {},                                                     SpoilerCollectionCheck::None(),                                                                                               SpoilerCollectionCheckGroup::GROUP_NO_GROUP);
     // clang-format on
