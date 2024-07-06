@@ -43,8 +43,8 @@ void AreaTable_Init_JabuJabusBelly() {
 
   areaTable[RR_JABU_JABUS_BELLY_MAIN_LOWER] = Area("Jabu Jabus Belly Main Lower", "Jabu Jabus Belly", RA_JABU_JABUS_BELLY, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_JABU_JABUS_BELLY_GS_LOBBY_BASEMENT_LOWER, {[]{return logic->HookshotOrBoomerang;}}),
-                  LocationAccess(RC_JABU_JABUS_BELLY_GS_LOBBY_BASEMENT_UPPER, {[]{return logic->HookshotOrBoomerang;}}),
+                  LOCATION(RC_JABU_JABUS_BELLY_GS_LOBBY_BASEMENT_LOWER, logic->HookshotOrBoomerang),
+                  LOCATION(RC_JABU_JABUS_BELLY_GS_LOBBY_BASEMENT_UPPER, logic->HookshotOrBoomerang),
                 }, {
                   //Exits
                   Entrance(RR_JABU_JABUS_BELLY_MAIN_UPPER,       {[]{return true;}}),
@@ -57,7 +57,7 @@ void AreaTable_Init_JabuJabusBelly() {
                   EventAccess(&logic->FairyPot, {[]{return true;}}),
                 }, {
                   //Locations
-                  LocationAccess(RC_JABU_JABUS_BELLY_GS_WATER_SWITCH_ROOM, {[]{return true;}}),
+                  LOCATION(RC_JABU_JABUS_BELLY_GS_WATER_SWITCH_ROOM, true),
                 }, {
                   //Exits
                   Entrance(RR_JABU_JABUS_BELLY_MAIN_LOWER, {[]{return logic->Swim;}}),
@@ -74,7 +74,7 @@ void AreaTable_Init_JabuJabusBelly() {
 
   areaTable[RR_JABU_JABUS_BELLY_LIFT_LOWER] = Area("Jabu Jabus Belly Lift Lower", "Jabu Jabus Belly", RA_JABU_JABUS_BELLY, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_JABU_JABUS_BELLY_DEKU_SCRUB, {[]{return logic->Swim && (logic->IsChild || logic->CanDive || randoCtx->GetTrickOption(RT_JABU_ALCOVE_JUMP_DIVE) || logic->CanUse(RG_IRON_BOOTS)) && logic->CanStunDeku;}}),
+                  LOCATION(RC_JABU_JABUS_BELLY_DEKU_SCRUB, logic->Swim && (logic->IsChild || logic->CanDive || randoCtx->GetTrickOption(RT_JABU_ALCOVE_JUMP_DIVE) || logic->CanUse(RG_IRON_BOOTS)) && logic->CanStunDeku),
                 }, {
                   //Exits
                   Entrance(RR_JABU_JABUS_BELLY_SHABOMB_CORRIDOR, {[]{return true;}}),
@@ -93,7 +93,7 @@ void AreaTable_Init_JabuJabusBelly() {
 
   areaTable[RR_JABU_JABUS_BELLY_BOOMERANG_ROOM] = Area("Jabu Jabus Belly Boomerang Room", "Jabu Jabus Belly", RA_JABU_JABUS_BELLY, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_JABU_JABUS_BELLY_BOOMERANG_CHEST, {[]{return true;}}),
+                  LOCATION(RC_JABU_JABUS_BELLY_BOOMERANG_CHEST, true),
                 }, {
                   //Exits
                   Entrance(RR_JABU_JABUS_BELLY_FORKED_CORRIDOR, {[]{return true;}}),
@@ -101,7 +101,7 @@ void AreaTable_Init_JabuJabusBelly() {
 
   areaTable[RR_JABU_JABUS_BELLY_MAP_ROOM] = Area("Jabu Jabus Belly Map Room", "Jabu Jabus Belly", RA_JABU_JABUS_BELLY, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_JABU_JABUS_BELLY_MAP_CHEST, {[]{return logic->CanUse(RG_BOOMERANG);}}),
+                  LOCATION(RC_JABU_JABUS_BELLY_MAP_CHEST, logic->CanUse(RG_BOOMERANG)),
                 }, {
                   //Exits
                   Entrance(RR_JABU_JABUS_BELLY_FORKED_CORRIDOR, {[]{return true;}}),
@@ -109,7 +109,7 @@ void AreaTable_Init_JabuJabusBelly() {
 
   areaTable[RR_JABU_JABUS_BELLY_COMPASS_ROOM] = Area("Jabu Jabus Belly Compass Room", "Jabu Jabus Belly", RA_JABU_JABUS_BELLY, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_JABU_JABUS_BELLY_COMPASS_CHEST, {[]{return logic->CanAdultAttack || logic->CanChildAttack;}}),
+                  LOCATION(RC_JABU_JABUS_BELLY_COMPASS_CHEST, logic->CanAdultAttack || logic->CanChildAttack),
                 }, {
                   //Exits
                   Entrance(RR_JABU_JABUS_BELLY_FORKED_CORRIDOR, {[]{return true;}}),
@@ -148,7 +148,7 @@ void AreaTable_Init_JabuJabusBelly() {
 
   areaTable[RR_JABU_JABUS_BELLY_NEAR_BOSS_ROOM] = Area("Jabu Jabus Belly Near Boss Room", "Jabu Jabus Belly", RA_JABU_JABUS_BELLY, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_JABU_JABUS_BELLY_GS_NEAR_BOSS, {[]{return logic->CanAdultAttack || logic->CanChildAttack;}}),
+                  LOCATION(RC_JABU_JABUS_BELLY_GS_NEAR_BOSS, logic->CanAdultAttack || logic->CanChildAttack),
                 }, {
                   //Exits
                   Entrance(RR_JABU_JABUS_BELLY_LIFT_MIDDLE, {[]{return true;}}),
@@ -165,8 +165,8 @@ void AreaTable_Init_JabuJabusBelly() {
                   EventAccess(&logic->NutPot, {[]{return true;}}),
   }, {
                   //Locations
-                  LocationAccess(RC_JABU_JABUS_BELLY_MQ_MAP_CHEST,             {[]{return logic->CanBlastOrSmash;}}),
-                  LocationAccess(RC_JABU_JABUS_BELLY_MQ_FIRST_ROOM_SIDE_CHEST, {[]{return logic->IsChild && logic->CanUse(RG_FAIRY_SLINGSHOT);}}),
+                  LOCATION(RC_JABU_JABUS_BELLY_MQ_MAP_CHEST,             logic->CanBlastOrSmash),
+                  LOCATION(RC_JABU_JABUS_BELLY_MQ_FIRST_ROOM_SIDE_CHEST, logic->IsChild && logic->CanUse(RG_FAIRY_SLINGSHOT)),
   }, {
                   //Exits
                   Entrance(RR_JABU_JABUS_BELLY_ENTRYWAY, {[]{return true;}}),
@@ -175,14 +175,14 @@ void AreaTable_Init_JabuJabusBelly() {
 
   areaTable[RR_JABU_JABUS_BELLY_MQ_MAIN] = Area("Jabu Jabus Belly MQ Main", "Jabu Jabus Belly", RA_JABU_JABUS_BELLY, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_JABU_JABUS_BELLY_MQ_SECOND_ROOM_LOWER_CHEST,      {[]{return true;}}),
-                  LocationAccess(RC_JABU_JABUS_BELLY_MQ_SECOND_ROOM_UPPER_CHEST,      {[]{return (logic->IsAdult && (logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_HOOKSHOT))) || ChildCanAccess(RR_JABU_JABUS_BELLY_MQ_BOSS_AREA);}}),
-                  LocationAccess(RC_JABU_JABUS_BELLY_MQ_COMPASS_CHEST,                {[]{return (logic->IsChild || logic->CanDive || logic->CanUse(RG_IRON_BOOTS) || randoCtx->GetTrickOption(RT_JABU_ALCOVE_JUMP_DIVE)) && (logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT) || logic->HasBombchus || (randoCtx->GetTrickOption(RT_JABU_MQ_RANG_JUMP) && logic->CanUse(RG_BOOMERANG)));}}),
-                  LocationAccess(RC_JABU_JABUS_BELLY_MQ_BASEMENT_NEAR_VINES_CHEST,    {[]{return logic->CanUse(RG_FAIRY_SLINGSHOT);}}),
-                  LocationAccess(RC_JABU_JABUS_BELLY_MQ_BASEMENT_NEAR_SWITCHES_CHEST, {[]{return logic->CanUse(RG_FAIRY_SLINGSHOT);}}),
-                  LocationAccess(RC_JABU_JABUS_BELLY_MQ_BOOMERANG_ROOM_SMALL_CHEST,   {[]{return true;}}),
-                  LocationAccess(RC_JABU_JABUS_BELLY_MQ_BOOMERANG_CHEST,              {[]{return logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD) || logic->CanUse(RG_MEGATON_HAMMER) || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_STICKS) || logic->Bombs;}}),
-                  LocationAccess(RC_JABU_JABUS_BELLY_MQ_GS_BOOMERANG_CHEST_ROOM,      {[]{return logic->CanUse(RG_SONG_OF_TIME) || (randoCtx->GetTrickOption(RT_JABU_MQ_SOT_GS) && logic->IsChild && logic->CanUse(RG_BOOMERANG));}}),
+                  LOCATION(RC_JABU_JABUS_BELLY_MQ_SECOND_ROOM_LOWER_CHEST,      true),
+                  LOCATION(RC_JABU_JABUS_BELLY_MQ_SECOND_ROOM_UPPER_CHEST,      (logic->IsAdult && (logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_HOOKSHOT))) || ChildCanAccess(RR_JABU_JABUS_BELLY_MQ_BOSS_AREA)),
+                  LOCATION(RC_JABU_JABUS_BELLY_MQ_COMPASS_CHEST,                (logic->IsChild || logic->CanDive || logic->CanUse(RG_IRON_BOOTS) || randoCtx->GetTrickOption(RT_JABU_ALCOVE_JUMP_DIVE)) && (logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT) || logic->HasBombchus || (randoCtx->GetTrickOption(RT_JABU_MQ_RANG_JUMP) && logic->CanUse(RG_BOOMERANG)))),
+                  LOCATION(RC_JABU_JABUS_BELLY_MQ_BASEMENT_NEAR_VINES_CHEST,    logic->CanUse(RG_FAIRY_SLINGSHOT)),
+                  LOCATION(RC_JABU_JABUS_BELLY_MQ_BASEMENT_NEAR_SWITCHES_CHEST, logic->CanUse(RG_FAIRY_SLINGSHOT)),
+                  LOCATION(RC_JABU_JABUS_BELLY_MQ_BOOMERANG_ROOM_SMALL_CHEST,   true),
+                  LOCATION(RC_JABU_JABUS_BELLY_MQ_BOOMERANG_CHEST,              logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD) || logic->CanUse(RG_MEGATON_HAMMER) || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_STICKS) || logic->Bombs),
+                  LOCATION(RC_JABU_JABUS_BELLY_MQ_GS_BOOMERANG_CHEST_ROOM,      logic->CanUse(RG_SONG_OF_TIME) || (randoCtx->GetTrickOption(RT_JABU_MQ_SOT_GS) && logic->IsChild && logic->CanUse(RG_BOOMERANG))),
                     //Trick: logic->CanUse(RG_SONG_OF_TIME) || (LogicJabuMQSoTGS && logic->IsChild && logic->CanUse(RG_BOOMERANG))
   }, {
                   //Exits
@@ -192,9 +192,9 @@ void AreaTable_Init_JabuJabusBelly() {
 
   areaTable[RR_JABU_JABUS_BELLY_MQ_DEPTHS] = Area("Jabu Jabus Belly MQ Depths", "Jabu Jabus Belly", RA_JABU_JABUS_BELLY, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_JABU_JABUS_BELLY_MQ_FALLING_LIKE_LIKE_ROOM_CHEST, {[]{return true;}}),
-                  LocationAccess(RC_JABU_JABUS_BELLY_MQ_GS_TAILPASARAN_ROOM,          {[]{return logic->Swim && (logic->Sticks || logic->CanUse(RG_DINS_FIRE));}}),
-                  LocationAccess(RC_JABU_JABUS_BELLY_MQ_GS_INVISIBLE_ENEMIES_ROOM,    {[]{return (randoCtx->GetTrickOption(RT_LENS_JABU_MQ) || logic->CanUse(RG_LENS_OF_TRUTH)) || Here(RR_JABU_JABUS_BELLY_MQ_MAIN, []{return logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS) && logic->CanUse(RG_HOOKSHOT);});}}),
+                  LOCATION(RC_JABU_JABUS_BELLY_MQ_FALLING_LIKE_LIKE_ROOM_CHEST, true),
+                  LOCATION(RC_JABU_JABUS_BELLY_MQ_GS_TAILPASARAN_ROOM,          logic->Swim && (logic->Sticks || logic->CanUse(RG_DINS_FIRE))),
+                  LOCATION(RC_JABU_JABUS_BELLY_MQ_GS_INVISIBLE_ENEMIES_ROOM,    (randoCtx->GetTrickOption(RT_LENS_JABU_MQ) || logic->CanUse(RG_LENS_OF_TRUTH)) || Here(RR_JABU_JABUS_BELLY_MQ_MAIN, []{return logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS) && logic->CanUse(RG_HOOKSHOT);})),
   }, {
                   //Exits
                   Entrance(RR_JABU_JABUS_BELLY_MQ_MAIN,      {[]{return true;}}),
@@ -206,9 +206,9 @@ void AreaTable_Init_JabuJabusBelly() {
                   EventAccess(&logic->FairyPot, {[]{return true;}}),
   }, {
                   //Locations
-                  LocationAccess(RC_JABU_JABUS_BELLY_MQ_COW,             {[]{return logic->CanUse(RG_EPONAS_SONG);}}),
-                  LocationAccess(RC_JABU_JABUS_BELLY_MQ_NEAR_BOSS_CHEST, {[]{return logic->CanUse(RG_FAIRY_SLINGSHOT);}}),
-                  LocationAccess(RC_JABU_JABUS_BELLY_MQ_GS_NEAR_BOSS,    {[]{return logic->CanUse(RG_BOOMERANG) || (randoCtx->GetTrickOption(RT_JABU_NEAR_BOSS_RANGED) && logic->CanUse(RG_HOOKSHOT));}}),
+                  LOCATION(RC_JABU_JABUS_BELLY_MQ_COW,             logic->CanUse(RG_EPONAS_SONG)),
+                  LOCATION(RC_JABU_JABUS_BELLY_MQ_NEAR_BOSS_CHEST, logic->CanUse(RG_FAIRY_SLINGSHOT)),
+                  LOCATION(RC_JABU_JABUS_BELLY_MQ_GS_NEAR_BOSS,    logic->CanUse(RG_BOOMERANG) || (randoCtx->GetTrickOption(RT_JABU_NEAR_BOSS_RANGED) && logic->CanUse(RG_HOOKSHOT))),
   }, {
                   //Exits
                   Entrance(RR_JABU_JABUS_BELLY_MQ_MAIN, {[]{return true;}}),
@@ -237,8 +237,8 @@ void AreaTable_Init_JabuJabusBelly() {
              },
              {
                  // Locations
-                 LocationAccess(RC_JABU_JABUS_BELLY_BARINADE_HEART, { [] { return logic->JabuJabusBellyClear; } }),
-                 LocationAccess(RC_BARINADE, { [] { return logic->JabuJabusBellyClear; } }),
+                 LOCATION(RC_JABU_JABUS_BELLY_BARINADE_HEART, logic->JabuJabusBellyClear),
+                 LOCATION(RC_BARINADE, logic->JabuJabusBellyClear),
              },
              {
                  // Exits

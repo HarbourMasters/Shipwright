@@ -2396,11 +2396,13 @@ CustomMessage Randomizer::GetSheikMessage(s16 scene, u16 originalTextId) {
     CustomMessage messageEntry;
     switch (scene) {
         case SCENE_TEMPLE_OF_TIME:
-            if (!CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_GANONS_TOWER)) {
+            if (ctx->GetOption(RSK_OOT_HINT) && !ctx->GetItemLocation(RC_SONG_FROM_OCARINA_OF_TIME)->HasObtained()){
+                messageEntry = ctx->GetHint(RH_OOT_HINT)->GetHintMessage(MF_RAW);
+            } else if (!CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_GANONS_TOWER)) {
                 messageEntry = CustomMessage(
-                "@,&meet me at %gGanon's Castle%w&once you obtain the %rkey to his lair%w.",
-                "@, wir treffen uns bei %gGanons Schloß%w,&sobald Du den %rSchlüssel zu&seinem Verlies%w hast.",
-                "Retrouve-moi au %gChâteau de Ganon%w une&fois que tu auras obtenu la&Mrclé de son repaire%w.");
+                "@, meet me at %gGanon's Castle%w once you obtain the %rkey to his lair%w.",
+                "@, wir treffen uns bei %gGanons Schloß%w, sobald Du den %rSchlüssel zu seinem Verlies%w hast.",
+                "Retrouve-moi au %gChâteau de Ganon%w une fois que tu auras obtenu la Mrclé de son repaire%w.");
             } else {
                 messageEntry = CustomMessage(
                 "The time has come. Prepare yourself.",
@@ -2410,18 +2412,18 @@ CustomMessage Randomizer::GetSheikMessage(s16 scene, u16 originalTextId) {
             break;
         case SCENE_INSIDE_GANONS_CASTLE:
             if (ctx->GetOption(RSK_SHEIK_LA_HINT) && INV_CONTENT(ITEM_ARROW_LIGHT) != ITEM_ARROW_LIGHT) {
-                messageEntry = ctx->GetHint(RH_SHEIK_HINT)->GetHintMessage(MF_AUTO_FORMAT);
+                messageEntry = ctx->GetHint(RH_SHEIK_HINT)->GetHintMessage(MF_RAW);
             } else if (!(CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER) && INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT &&
                        CUR_CAPACITY(UPG_QUIVER) >= 30 && gSaveContext.isMagicAcquired)) {
-                messageEntry = CustomMessage("You are still ill-equipped to&face %rGanondorf%w."
-                    "^Seek out the %cMaster Sword%w,&%rsomething to hold your arrows%w,&and %gmagic%w to summon the %ylight%w.",
-                    "Du bist noch nicht gewappnet um Dich&%rGanondorf%w stellen zu können.^"
-                    "Begib Dich auf die Suche nach dem&%cMaster-Schwert%w, %retwas um deinen Pfeilen&einen Sinn zu geben%w,^sowie %gdie Magie%w, um das %yLicht%w&herauf beschwören zu können.",
-                    "@, tu n'es toujours pas prêt à affronter&%rGanondorf%w.^"
-                    "Cherche l'%cÉpée de Légende%w,&%rquelque chose pour ranger tes flèches%w&et de la %gmagie%w pour invoquer la&%ylumière%w.");
-            } else if (!Flags_GetEventChkInf(EVENTCHKINF_DISPELLED_GANONS_TOWER_BARRIER)){
+                messageEntry = CustomMessage("You are still ill-equipped to face %rGanondorf%w."
+                    "^Seek out the %cMaster Sword%w, %rsomething to hold your arrows%w, and %gmagic%w to summon the %ylight%w.",
+                    "Du bist noch nicht gewappnet um Dich %rGanondorf%w stellen zu können.^"
+                    "Begib Dich auf die Suche nach dem %cMaster-Schwert%w, %retwas um deinen Pfeilen einen Sinn zu geben%w,^sowie %gdie Magie%w, um das %yLicht%w herauf beschwören zu können.",
+                    "@, tu n'es toujours pas prêt à affronter %rGanondorf%w.^"
+                    "Cherche l'%cÉpée de Légende%w, %rquelque chose pour ranger tes flèches%w et de la %gmagie%w pour invoquer la %ylumière%w.");
+            } else if (!Flags_GetEventChkInf(EVENTCHKINF_DISPELLED_GANONS_TOWER_BARRIER) && !ctx->GetOption(RSK_TRIAL_COUNT).Is(0)){
                 messageEntry = CustomMessage(
-                    "You may have what you need to defeat&%rthe Evil King%w, but the %cbarrier%w still&stands.^Complete the remaining %gtrials%w&to destroy it."
+                    "You may have what you need to defeat %rthe Evil King%w, but the %cbarrier%w still stands.^Complete the remaining %gtrials%w to destroy it."
                 );
             } else {
                 messageEntry = CustomMessage(
@@ -2431,7 +2433,8 @@ CustomMessage Randomizer::GetSheikMessage(s16 scene, u16 originalTextId) {
             }
             break;
     }
-        return messageEntry;
+    messageEntry.AutoFormat();
+    return messageEntry;
 }
 
 CustomMessage Randomizer::GetFishingPondOwnerMessage(u16 originalTextId) {
