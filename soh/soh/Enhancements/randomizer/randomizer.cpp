@@ -241,7 +241,7 @@ void Randomizer::LoadHintMessages() {
     // Warp Song Mysterious text
     CustomMessageManager::Instance->CreateMessage(Randomizer::hintMessageTableID, TEXT_WARP_MINUET_OF_FOREST,
         CustomMessage("Warp to&#a mysterious place?#&" + CustomMessages::TWO_WAY_CHOICE() + "#OK&No#",
-            "Zu&#ein mysteriöser Ort#?&" + CustomMessages::TWO_WAY_CHOICE() + "#OK&No#",
+            "Zu&#einem mysteriösen Ort#?&" + CustomMessages::TWO_WAY_CHOICE() + "#OK&No#",
             "Se téléporter vers&#un endroit mystérieux#?&" + CustomMessages::TWO_WAY_CHOICE() + "#OK!&Non#",
             {QM_RED, QM_GREEN}));
 
@@ -297,11 +297,11 @@ void Randomizer::LoadMerchantMessages() {
     // Prices have a chance of being 0, and the "sell" message below doesn't really make sense for a free item, so adding a "free" variation here
     CustomMessageManager::Instance->CreateMessage(Randomizer::merchantMessageTableID, TEXT_SCRUB_RANDOM_FREE,
         CustomMessage("\x12\x38\x82" "All right! You win! In return for&sparing me, I will give you a&%g[[item]]%w!&Please, take it!\x07\x10\xA3",
-            "\x12\x38\x82" "In Ordnung! Du gewinnst! Im Austausch&dafür, dass du mich verschont hast,&werde ich dir einen &%g[[item]]%w geben!\x07\x10\xA3",
+            "\x12\x38\x82" "In Ordnung! Du gewinnst! Im Austausch&dafür, dass Du mich verschont hast,&werde ich Dir einen &%g[[item]]%w geben!\x07\x10\xA3",
             "\x12\x38\x82" "J'me rends! Laisse-moi partir et en&échange, je te donne un &%g[[item]]%w! Vas-y prends le!\x07\x10\xA3"));
     CustomMessageManager::Instance->CreateMessage(Randomizer::merchantMessageTableID, TEXT_SCRUB_RANDOM,
         CustomMessage("\x12\x38\x82" "All right! You win! In return for&sparing me, I will sell you a&%g[[item]]%w!&%r[[price]] Rupees%w it is!\x07\x10\xA3",
-            "\x12\x38\x82" "Ich gebe auf! Ich verkaufe dir einen&%g[[item]]%w&für %r[[price]] Rubine%w!\x07\x10\xA3",
+            "\x12\x38\x82" "Ich gebe auf! Ich verkaufe Dir einen&%g[[item]]%w&für %r[[price]] Rubine%w!\x07\x10\xA3",
             "\x12\x38\x82" "J'abandonne! Tu veux bien m'acheter&un %g[[item]]%w?&Ça fera %r[[price]] Rubis%w!\x07\x10\xA3"));
 
     //Carpet Salesman
@@ -2473,7 +2473,7 @@ CustomMessage Randomizer::GetMerchantMessage(RandomizerInf randomizerInf, u16 te
         if (randomizerInf >= RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1 && randomizerInf <= RAND_INF_SHOP_ITEMS_MARKET_BOMBCHU_SHOP_ITEM_8) {
             shopItemName = {
                 "Mysterious Item",
-                "Mysteriösen Gegenstand",
+                "Mysteriöser Gegenstand",
                 "Objet Mystérieux"
             };
         } else {
@@ -2663,24 +2663,24 @@ void CreateNaviRandoMessages() {
     CustomMessage NaviMessages[NUM_NAVI_MESSAGES] = {
 
         { "%cMissing a small key in a dungeon?&Maybe the %rboss %chas it!",
-          "%cFehlt dir ein kleiner Schlüssel in &einem Labyrinth? Vielleicht hat ihn&ja der %rEndgegner%c!",
+          "%cFehlt Dir ein kleiner Schlüssel in &einem Labyrinth? Vielleicht hat ihn&ja der %rEndgegner%c!",
           "%cIl te manque une %wPetite Clé %cdans&un donjon? C'est peut-être le %rboss&%cqui l'a!" },
 
         { "%cSometimes you can use the %rMegaton&Hammer %cinstead of bombs!",
-          "%cManchmal kannst du den %rStahlhammer&%cstatt Bomben verwenden!",
+          "%cManchmal kannst Du den %rStahlhammer&%cstatt Bomben verwenden!",
           "%cParfois, tu peux utiliser la %rMasse&des Titans %cau lieu de tes bombes!" },
 
         { "%cThere are three %gbusiness scrubs %cin &Hyrule who sell %wmysterious items%c. Do&you know where they are?",
-          "%cEs gibt drei %gDeku-Händler %cin Hyrule&die mysteriöse Gegenstände&verkaufen. Weißt du wo sie sind?",
+          "%cEs gibt drei %gDeku-Händler %cin Hyrule&die mysteriöse Gegenstände&verkaufen. Weißt Du wo sie sind?",
           "%cIl y a trois %gPestes Marchandes%c en&Hyrule qui vendent des %wobjets&mystérieux%c. Tu sais où elles "
           "sont?" },
 
         { "%cStuck on this seed? You could &throw in the towel and check the&%wspoiler log%c...",
-          "%cHängst du bei diesem Seed fest?&Du könntest die Flinte ins Korn&werfen und ins %wSpoiler Log %cschauen...",
+          "%cHängst Du bei diesem Seed fest?&Du könntest die Flinte ins Korn&werfen und ins %wSpoiler Log %cschauen...",
           "%cSi tu es coincé sur cette seed,&tu peux toujours jeter l'éponge&et regader le %wSpoiler log%c..." },
 
         { "%cDid you know that the %yHover&Boots %ccan be used to cross&%wquicksand%c?",
-          "%cWußtest du, daß du mit den&%yGleitstiefeln %cTreibsand %wüberqueren&kannst%c?",
+          "%cWußtest Du, daß Du mit den&%yGleitstiefeln %cTreibsand %wüberqueren&kannst%c?",
           "%cEst-ce que tu savais que les %rBottes&des airs %cpouvaient être utilisées&pour traverser les %wsables "
           "mouvants%c?" },
 
@@ -2703,20 +2703,20 @@ void CreateNaviRandoMessages() {
           "intéréssant?" },
 
         { "%cHave you been using %wDeku Nuts&%cenough? I've seen them blow up&a %rBombchu%c!",
-          "%cBenutzt du auch genügend %wDeku&Nüsse%c? Ich habe mal gesehen, daß&man damit %rKrabbelminen "
+          "%cBenutzt Du auch genügend %wDeku-Nüsse%c? Ich habe mal gesehen, daß&man damit %rKrabbelminen "
           "%cdetonieren& lassen kann!",
           "%cTu es sûr d'utiliser tes %wNoix Mojo &%ccorrectement? J'en ai déjà vu&exploser des %rChoux-Péteurs%c!" },
 
         { "%cYou might end up with an %wextra&key %cfor the %bWater Temple %cor the&%rFire Temple%c. It's for your "
           "safety!",
-          "%cVielleicht verbleibt dir im&%bWassertempel %coder %rFeuertempel %cein&%wzusätzlicher Schlüssel%c. "
+          "%cVielleicht verbleibt Dir im&%bWassertempel %coder %rFeuertempel %cein&%wzusätzlicher Schlüssel%c. "
           "Dies&ist zu deiner Sicherheit!",
           "%cIl se peut que tu aies une %wPetite&Clé %cen trop dans le %bTemple de l'Eau&%cou le %rTemple du Feu%c. "
           "C'est pour ta&propre sécurité!" },
 
         { "%cIf you can't pick up a %rbomb&flower %cwith your hands, you can&still detonate it with %rfire %cor&with "
           "%warrows%c!",
-          "%cNur weil du eine %rDonnerblume&%cnicht hochheben kannst, so kannst&du sie immernoch mit %rFeuer "
+          "%cNur weil Du eine %rDonnerblume&%cnicht hochheben kannst, so kannst&Du sie noch immer mit %rFeuer "
           "%coder&%wPfeilen %cdetonieren lassen!",
           "%cSi tu ne peux pas ramasser&un %rChoux-Péteur %cavec tes mains, tu&peux toujours le faire exploser&avec du "
           "%rFeu %cou avec des %wflèches%c!" },
@@ -2726,13 +2726,13 @@ void CreateNaviRandoMessages() {
           "%cMême un adulte ne peut pas pousser&de grands blocs sans un petit %wgain&de force%c!" },
 
         { "%cI've heard that %rFlare Dancer&%cis weak to the %wMaster Sword%c!&Have you tried it?",
-          "%cIch habe gehört, daß der&%rFlammenderwisch %ceine Schwäche für&das %wMasterschwert %caufweist. Hast du&es "
+          "%cIch habe gehört, daß der&%rFlammenderwisch %ceine Schwäche für&das %wMaster-Schwert %caufweist. Hast Du&es "
           "schon einmal versucht einzusetzen?",
           "%cJ'ai entendu dire que les %rDanse-&Flammes %csont faîbles face à l'%wÉpée de&Légende%c! Est-ce que tu as "
           "essayé?" },
 
         { "%cDon't have a weapon to kill a&%rspider%c? Try throwing a %wpot&%cat it!",
-          "%cFehlt dir die Waffe um gegen&eine %rSkulltula %czu kämpfen? Versuch&Sie mit einem %wKrug %cabzuwerfen!",
+          "%cFehlt Dir die Waffe um gegen&eine %rSkulltula %czu kämpfen? Versuche&Sie mit einem %wKrug %cabzuwerfen!",
           "%cSi tu n'as pas d'arme pour tuer&une %raraignée%c, pourquoi n'essayerais&-tu pas de lui jetter une "
           "%wjarre&%cà la figure?" },
 
@@ -2744,13 +2744,13 @@ void CreateNaviRandoMessages() {
 
         { "%cThe people of Hyrule sometimes&have %witems %cfor you, but they won't&like it if you're %wwearing a "
           "mask%c!",
-          "%cDie Bewohner Hyrules haben manchmal&%wGegenstände %cfür dich, aber sie mögen&es nicht wenn du %wMasken "
+          "%cDie Bewohner Hyrules haben manchmal&%wGegenstände %cfür Dich, aber sie mögen&es nicht, wenn du %wMasken "
           "trägst%c!",
           "%cIl se peut que les habitants d'Hyrule&aient des %wobjets %cpour toi. Par contre,&ils risquent de ne pas "
           "trop apprécier&le fait que tu %wportes un masque%c!" },
 
         { "%cIf you get trapped somewhere, you&might have to %wsave your game %cand&%wreset%c!",
-          "%cSolltest du irgendwo eingeschlossen&sein, mußt du vielleicht dein %wSpiel&speichern %cund %wneustarten%c!",
+          "%cSolltest du irgendwo eingeschlossen&sein, mußt du vielleicht dein %wSpiel&speichern %cund %wneu starten%c!",
           "%cSi tu es coincé quelque part, tu&devrais %wsauvegarder ta partie %cet&faire un %wreset%c!" },
 
         { "%cSheik will meet you in a %rburning&village %conce you have %gForest%c,&%rFire%c, and %bWater "
@@ -2762,7 +2762,7 @@ void CreateNaviRandoMessages() {
 
         { "%cIf you don't have a %wsword %cas a&child, try buying %wDeku Sticks%c!&They're effective against your "
           "foes!",
-          "%cSolltest du als Kind kein %wSchwert&%cbesitzen, empfehle ich %wDeku Stäbe&%czu kaufen! Diese sind "
+          "%cSolltest du als Kind kein %wSchwert&%cbesitzen, empfehle ich %wDeku-Stäbe&%czu kaufen! Diese sind "
           "effektiv gegen&Widersacher!",
           "%cSi tu n'as pas d'%wépée %cen tant&qu'enfant, pourquoi n'irais-tu pas&acheter quelques %wBâtons Mojo%c? "
           "Ils&sont efficaces contre tes ennemis!" }
@@ -2800,7 +2800,7 @@ void CreateIceTrapRandoMessages() {
         { "It's a %bcold day%w in the Evil Realm.", "Es ist ein %kalter%w Tag im Herzen&von Hyrule.",
           "Est-ce que tu as déjà eu des sueurs&%bfroides%w?" },
 
-        { "Getting %bcold feet%w?", "Bekommst du etwa %bkalte%w Füße?",
+        { "Getting %bcold feet%w?", "Bekommst Du etwa %bkalte%w Füße?",
           "La vengeance est un plat qui se mange&%bfroid%w!" },
 
         { "Say hello to the %bZoras%w for me!", "Sag den %bZoras%w viele Grüße von mir!",
@@ -2819,7 +2819,7 @@ void CreateIceTrapRandoMessages() {
         { "%bCold pun%w.", "%bEiskalt%w lässt du meine Seele&erfrier'n.",
           "Balance man...,&Cadence man...,&Trace la %bglace%w...,&c'est le Cooooolllll Rasta!" },
 
-        { "The %bTitanic%w would be scared of you,&@.", "Die %bTitanic%w hätte Angst vor dir,&@.",
+        { "The %bTitanic%w would be scared of you,&@.", "Die %bTitanic%w hätte Angst vor Dir,&@.",
           "Le %bTitanic%w aurait peur de toi,&@." },
 
         { "Oh no!", "Oh nein!", "Oh non!" },
@@ -2864,7 +2864,7 @@ void CreateFireTempleGoronMessages() {
     CustomMessage FireTempleGoronMessages[NUM_GORON_MESSAGES] = {
         {
             "Are you the one they call %g@%w?^You look really weird for %rDarunia's kid.%w&Are you adopted?",
-            "Du bist also der, den sie @ nennen?^Du siehst nicht aus als wärst du&%rDarunias Kind.%w Bist du "
+            "Du bist also der, den sie @ nennen?^Du siehst nicht aus als wärst Du&%rDarunias Kind.%w Bist Du "
             "adoptiert?",
             "C'est toi qu'on appelle %g@%w?^Tu es vraiment bizarre pour être&le %rfils du Chef%w. Tu as été adopté?",
         },
@@ -2872,14 +2872,14 @@ void CreateFireTempleGoronMessages() {
             "Thank Hylia! I was so worried about&when my teacher would let me get&out of detention.^I gotta go home "
             "and see my parents.",
             "Ich wollte nur dieses Ding hier wieder&in seine Truhe zurücklegen, weil...^...gehört mir ja eigentlich "
-            "nicht,&weißt du?^Doch dann ging plötzlich dieses&Tor hinter mir zu.&Danke für die Rettung.",
+            "nicht,&weißt Du?^Doch dann ging plötzlich dieses&Tor hinter mir zu.&Danke für die Rettung.",
             "Par les déesses!&Mon Frère?!&C'est bien toi?&Comment ça on ne se connaît pas?^Tu trouves vraiment que "
             "je&ressemble à n'importe quel Goron?",
         },
         {
             "How long has it been, do you know?^%r[[days]]%w days!?^Oh no, and it's %r\x1F%w?&I have to check on my "
             "cake!!",
-            "Weißt du zufällig, wie viele Tage&vergangen sind?^%r[[days]]%w Tage!?^Oh je, und es ist %r\x1F%w Uhr? "
+            "Weißt Du zufällig, wie viele Tage&vergangen sind?^%r[[days]]%w Tage!?^Oh je, und es ist %r\x1F%w Uhr? "
             "Ich&muss dringend nach meinem Kuchen&sehen!!!",
             "Cela fait combien de temps que&je suis enfermé ici?&Non mais je ne vais pas crier.^COMBIEN?! %r[[days]]%w "
             "JOURS!?^En plus il est %r\x1F%w...&Il faut vraiment que je rentre...",
@@ -2905,7 +2905,7 @@ void CreateFireTempleGoronMessages() {
         { "Do you know about %b\x9f%w?&It's this weird symbol that's been&in my dreams lately...^Apparently, you "
           "pressed it %b[[a_btn]]%w times.^Wow.",
           "Weißt du über %b\x9f%w Bescheid?&Es sind Symbole, die mir&in letzter Zeit öfter in&meinen Träumen "
-          "erschienen sind...^Es scheint, dass du sie schon&%b[[a_btn]]%w mal betätigt hast.^Faszinierend...",
+          "erschienen sind...^Es scheint, dass Du sie schon&%b[[a_btn]]%w mal betätigt hast.^Faszinierend...",
           "Tu as déjà entendu parler du&symbole %b\x9f%w?&C'est un symbole bizarre qui est&apparu dans mes rêves "
           "dernièrement...^Apparemment, tu as appuyé dessus&%b[[a_btn]]%w fois.^Wow..." },
         {
@@ -2913,8 +2913,8 @@ void CreateFireTempleGoronMessages() {
             "Boy, you must be hot!&Get yourself a bottle of&%rLon Lon Milk%w right away and cool&down, for only %g30%w "
             "rupees!",
             "\x13\x1A"
-            "Hey, ist dir nicht zu warm?&Besorg dir doch eine Flasche&%rLon Lon-Milch%w, um dich&abzukühlen.^Kostet "
-            "dich auch nur %g30%w Rubine!",
+            "Hey, ist dir nicht zu warm?&Besorge Dir doch eine Flasche&%rLon Lon-Milch%w, um dich&abzukühlen.^Kostet "
+            "Dich auch nur %g30%w Rubine!",
             "\x13\x1A"
             "Woah! Tu dois avoir chaud!&Tu savais que tu pouvais acheter&du %rLait de Lon Lon%w pour&seulement %g30 "
             "rubis%w?^Il n'y a rien de mieux pour s'hydrater!",
@@ -2922,7 +2922,7 @@ void CreateFireTempleGoronMessages() {
         {
             "In that case, I'll help you out!^They say that %rthe thing you're&looking for%w can only be found%g "
             "when&you're not looking for it.%w^Hope that helps!",
-            "Pass auf, ich geb dir einen Tipp!^Man sagt, man findet %rdas was&man sucht%w nur, und wirklich nur&dann, "
+            "Pass auf, ich gebe Dir einen Tipp!^Man sagt, man findet %rdas was&man sucht%w nur, und wirklich nur&dann, "
             "%gwenn man gerade nicht danach&sucht%w.^Du kannst mich jederzeit wieder für&mehr hilfreiche Tipps "
             "aufsuchen!",
             "Dans ce cas, je vais t'aider!&On dit que l'objet que tu cherches&ne peut être trouvé que lorsque&tu ne le "
@@ -3028,7 +3028,7 @@ void Randomizer::CreateCustomMessages() {
 			"Vous obtenez une %rPetite Clé %w&du %pPuits%w!"),
         GIMESSAGE(RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY, ITEM_KEY_SMALL,
 			"You found a %yGerudo Training &Grounds %wSmall Key!",
-			"Du erhältst einen %rKleinen&Schlüssel%w für die %yGerudo&Trainingsarena%w!",
+			"Du erhältst einen %rKleinen&Schlüssel%w für die %yGerudo-Trainingsarena%w!",
 			"Vous obtenez une %rPetite Clé %w&du %yGymnase Gerudo%w!"),
         GIMESSAGE(RG_GANONS_CASTLE_SMALL_KEY, ITEM_KEY_SMALL,
 			"You found a %rGanon's Castle &%wSmall Key!",
@@ -3065,7 +3065,7 @@ void Randomizer::CreateCustomMessages() {
 			"Vous obtenez un trousseau de&clés du %pPuits%w!"),
         GIMESSAGE(RG_GERUDO_TRAINING_GROUNDS_KEY_RING, ITEM_KEY_SMALL,
 			"You found a %yGerudo Training &Grounds %wKeyring!",
-			"Du erhältst ein %rSchlüsselbund%w&für die %yGerudo Trainingsarena%w!",
+			"Du erhältst ein %rSchlüsselbund%w&für die %yGerudo-Trainingsarena%w!",
 			"Vous obtenez un trousseau de&clés du %yGymnase Gerudo%w!"),
         GIMESSAGE(RG_GANONS_CASTLE_KEY_RING, ITEM_KEY_SMALL, 
 			"You found a %rGanon's Castle &%wKeyring!",
@@ -3185,11 +3185,11 @@ void Randomizer::CreateCustomMessages() {
 			"Vous obtenez un %rPaquet de&Haricots Magiques%w! Trouvez&un endroit approprié pour un&jardin et plantez-les.^Attendez ensuite que quelque&chose d'amusant se produise!"),
         GIMESSAGE(RG_TYCOON_WALLET, ITEM_WALLET_GIANT,
 			"You got a %rTycoon's Wallet%w!&It's gigantic! Now you can carry&up to %y999 rupees%w!",
-			"Du erhältst die %rGoldene&Geldbörse%w! Die größte aller&Geldbörsen! Jetzt kannst Du bis&zu %y999 Rubine%w mit dir führen!",
+			"Du erhältst die %rGoldene&Geldbörse%w! Die größte aller&Geldbörsen! Jetzt kannst Du bis&zu %y999 Rubine%w mit Dir führen!",
 			"Vous obtenez la %rBourse de Magnat%w!&Elle peut contenir jusqu'à %y999 rubis%w!&C'est gigantesque!"),
         GIMESSAGE(RG_CHILD_WALLET, ITEM_WALLET_ADULT,
 			"You got a %rChild's Wallet%w!&Now you can carry&up to %y99 rupees%w!",
-			"Du erhältst die %rGoldene&Geldbörse%w! Jetzt kannst Du bis&zu %y99 Rubine%w mit dir führen!",//FIXME: still says tycoon
+			"Du erhältst die %rGoldene&Geldbörse%w! Jetzt kannst Du bis&zu %y99 Rubine%w mit Dir führen!",//FIXME: still says tycoon
 			"Vous obtenez la %rBourse de Magnat%w!&Elle peut contenir jusqu'à %y99 rubis%w!"),//FIXME: still says tycoon
 
         GIMESSAGE_UNTRANSLATED(RG_GOHMA_SOUL, ITEM_BIG_POE, "You found the soul for %gGohma%w!"),
