@@ -504,6 +504,7 @@ const std::vector<const char*> randomizerCvars = {
     CVAR_RANDOMIZER_SETTING("SariaHint"),
     CVAR_RANDOMIZER_ENHANCEMENT("RandomizeRupeeNames"),
     CVAR_RANDOMIZER_SETTING("FrogsHint"),
+    CVAR_RANDOMIZER_SETTING("OoTHint"),
     CVAR_RANDOMIZER_ENHANCEMENT("RandoRelevantNavi"),
     CVAR_RANDOMIZER_ENHANCEMENT("QuestItemFanfares"),
 };

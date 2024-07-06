@@ -164,6 +164,7 @@ void Settings::CreateOptions() {
     mOptions[RSK_SARIA_HINT] = Option::Bool("Saria's Hint", CVAR_RANDOMIZER_SETTING("SariaHint"), mOptionDescriptions[RSK_SARIA_HINT], IMFLAG_NONE);
     mOptions[RSK_FISHING_POLE_HINT] = Option::Bool("Fishing Pole Hint", CVAR_RANDOMIZER_SETTING("FishingPoleHint"), mOptionDescriptions[RSK_FISHING_POLE_HINT], IMFLAG_NONE);
     mOptions[RSK_FROGS_HINT] = Option::Bool("Frog Ocarina Game Hint", CVAR_RANDOMIZER_SETTING("FrogsHint"), mOptionDescriptions[RSK_FROGS_HINT], IMFLAG_NONE);
+    mOptions[RSK_OOT_HINT] = Option::Bool("Ocarina of Time Hint", CVAR_RANDOMIZER_SETTING("OoTHint"), mOptionDescriptions[RSK_OOT_HINT], IMFLAG_NONE);
     mOptions[RSK_BIGGORON_HINT] = Option::Bool("Biggoron's Hint", CVAR_RANDOMIZER_SETTING("BiggoronHint"), mOptionDescriptions[RSK_BIGGORON_HINT], IMFLAG_NONE);
     mOptions[RSK_BIG_POES_HINT] = Option::Bool("Big Poes Hint", CVAR_RANDOMIZER_SETTING("BigPoesHint"), mOptionDescriptions[RSK_BIG_POES_HINT], IMFLAG_NONE);
     mOptions[RSK_CHICKENS_HINT] = Option::Bool("Chickens Hint", CVAR_RANDOMIZER_SETTING("ChickensHint"), mOptionDescriptions[RSK_CHICKENS_HINT], IMFLAG_NONE);
@@ -733,6 +734,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_GREG_HINT],
         &mOptions[RSK_SARIA_HINT],
         &mOptions[RSK_FROGS_HINT],
+        &mOptions[RSK_OOT_HINT],
         &mOptions[RSK_BIGGORON_HINT],
         &mOptions[RSK_BIG_POES_HINT],
         &mOptions[RSK_CHICKENS_HINT],
@@ -964,6 +966,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_GREG_HINT],
         &mOptions[RSK_SARIA_HINT],
         &mOptions[RSK_FROGS_HINT],
+        &mOptions[RSK_OOT_HINT],
         &mOptions[RSK_WARP_SONG_HINTS],
         &mOptions[RSK_BIGGORON_HINT],
         &mOptions[RSK_BIG_POES_HINT],
@@ -1183,6 +1186,7 @@ void Settings::CreateOptions() {
         { "Miscellaneous Settings:Greg the Rupee Hint", RSK_GREG_HINT },
         { "Miscellaneous Settings:Saria's Hint", RSK_SARIA_HINT },
         { "Miscellaneous Settings:Frog Ocarina Game Hint", RSK_FROGS_HINT },
+        { "Miscellaneous Settings:Ocarina of Time Hint", RSK_OOT_HINT },
         { "Miscellaneous Settings:10 GS Hint", RSK_KAK_10_SKULLS_HINT },
         { "Miscellaneous Settings:20 GS Hint", RSK_KAK_20_SKULLS_HINT },
         { "Miscellaneous Settings:30 GS Hint", RSK_KAK_30_SKULLS_HINT },
@@ -2293,6 +2297,7 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
                 case RSK_GREG_HINT:
                 case RSK_SARIA_HINT:
                 case RSK_FROGS_HINT:
+                case RSK_OOT_HINT:
                 case RSK_KAK_10_SKULLS_HINT:
                 case RSK_KAK_20_SKULLS_HINT:
                 case RSK_KAK_30_SKULLS_HINT:
