@@ -162,6 +162,15 @@ static void ValidateOtherEntrance(GetAccessableLocationsStruct& gals) {
   }
 }
 
+// Apply all items that are necessary for checking all location access
+static void ApplyAllAdvancmentItems(){
+  std::vector<RandomizerGet> itemsToPlace =
+      FilterFromPool(ItemPool, [](const auto i) { return Rando::StaticData::RetrieveItem(i).IsAdvancement(); });
+  for (RandomizerGet unplacedItem : itemsToPlace) {
+      Rando::StaticData::RetrieveItem(unplacedItem).ApplyEffect();
+  }
+}
+
 // Check if everything in an entrence rando seed that needs to be avalible without items, is,
 // and if so allow obtaining items in logic
 static void ValidateSphereZero(GetAccessableLocationsStruct& gals){
@@ -169,11 +178,7 @@ static void ValidateSphereZero(GetAccessableLocationsStruct& gals){
   // Condition for verifying everything required for sphere 0, expanding search to all locations
   if (logic->CanEmptyBigPoes && gals.validatedStartingRegion && gals.foundTempleofTime && gals.haveTimeAccess) {
     // Apply all items that are necessary for checking all location access
-    std::vector<RandomizerGet> itemsToPlace =
-        FilterFromPool(ItemPool, [](const auto i) { return Rando::StaticData::RetrieveItem(i).IsAdvancement(); });
-    for (RandomizerGet unplacedItem : itemsToPlace) {
-       Rando::StaticData::RetrieveItem(unplacedItem).ApplyEffect();
-    }
+    ApplyAllAdvancmentItems();
     // Reset access as the non-starting age
     if (ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_CHILD) {
       for (RandomizerRegion regionKey : gals.regionPool) {
@@ -519,10 +524,6 @@ void ValidateEntrances(bool checkPoeCollectorAccess, bool checkOtherEntranceAcce
   auto ctx = Rando::Context::GetInstance();
   GetAccessableLocationsStruct gals(0);
   ResetLogic(ctx, !checkOtherEntranceAccess);
-  AreaTable(RR_ROOT)->childNight = true;
-  AreaTable(RR_ROOT)->adultNight = true;
-  AreaTable(RR_ROOT)->childDay = true;
-  AreaTable(RR_ROOT)->adultDay = true;
 
   //Variables for Time Pass access
   bool timePassChildDay = false;
@@ -539,6 +540,24 @@ void ValidateEntrances(bool checkPoeCollectorAccess, bool checkOtherEntranceAcce
     gals.validatedStartingRegion = true;
     gals.haveTimeAccess = true;
     gals.sphereZeroComplete = true;
+    ApplyAllAdvancmentItems();
+    //if we assume valid sphere zero, we only want starting age access
+    if (ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_CHILD) {
+      for (RandomizerRegion regionKey : gals.regionPool) {
+        AreaTable(RR_ROOT)->childNight = true;
+        AreaTable(RR_ROOT)->childDay = true;
+      }
+    } else {
+      for (RandomizerRegion regionKey : gals.regionPool) {
+        AreaTable(RR_ROOT)->adultNight = true;
+        AreaTable(RR_ROOT)->adultDay = true;
+      }
+    }
+  } else {
+    AreaTable(RR_ROOT)->childNight = true;
+    AreaTable(RR_ROOT)->adultNight = true;
+    AreaTable(RR_ROOT)->childDay = true;
+    AreaTable(RR_ROOT)->adultDay = true;
   }
 
   while (gals.newItemLocations.size() > 0 || gals.updatedEvents || gals.ageTimePropogated || gals.firstIteration) {
@@ -604,13 +623,12 @@ void ValidateEntrances(bool checkPoeCollectorAccess, bool checkOtherEntranceAcce
   }
 }
 
-RandomizerArea LookForExternalArea(const Area* const currentRegion, std::vector<RandomizerRegion> alreadyChecked){
-  for (auto& entrance : curRegion->entrances) {
+RandomizerArea LookForExternalArea(const Area* const currentRegion, std::vector<RandomizerRegion> &alreadyChecked){
+  for (const auto& entrance : currentRegion->entrances) {
     RandomizerArea otherArea = entrance->GetParentRegion()->GetArea();
-    if(otherArea != RA_NONE){
-      return otherArea;
-      //if the region hasn't already been checked, check it
-    } else if (std::find(alreadyChecked.begin(), alreadyChecked.end(), entrance->GetParentRegionKey()) == alreadyChecked.end()) {
+    const bool isAreaUnchecked = std::find(alreadyChecked.begin(), alreadyChecked.end(), entrance->GetParentRegionKey()) == alreadyChecked.end();
+    if (otherArea == RA_NONE && isAreaUnchecked) {
+      //if the region is in RA_NONE and hasn't already been checked, check it
       alreadyChecked.push_back(entrance->GetParentRegionKey());
       const RandomizerArea passdown = LookForExternalArea(entrance->GetParentRegion(), alreadyChecked);
       if(passdown != RA_NONE){
