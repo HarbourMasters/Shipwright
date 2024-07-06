@@ -31,6 +31,9 @@ class ItemLocation {
     void SetPrice(uint16_t price_);
     bool HasCustomPrice() const;
     void SetCustomPrice(uint16_t price_);
+    bool HasObtained() const;
+    void MarkAsObtained();
+    void MarkAsNotObtained();
     bool IsHintable() const;
     void SetAsHintable();
     bool IsAHintAccessible() const;
@@ -46,7 +49,7 @@ class ItemLocation {
     void SetVisible(bool visibleInImGui_);
     bool IsWothCandidate() const;
     void SetWothCandidate();
-    bool IsBarrenCandidate() const;
+    bool IsFoolishCandidate() const;
     void SetBarrenCandidate();
     void ResetVariables();
 
@@ -67,5 +70,6 @@ class ItemLocation {
     bool visibleInImGui = false;
     bool wothCandidate = false;
     bool barrenCandidate = false;
+    bool obtained = false;
 };
 } // namespace Rando

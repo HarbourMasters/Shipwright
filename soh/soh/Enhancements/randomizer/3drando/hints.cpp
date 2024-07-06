@@ -129,9 +129,9 @@ bool FilterWotHLocations(RandomizerCheck loc){
   return ctx->GetItemLocation(loc)->IsWothCandidate();
 }
 
-bool FilterBarrenLocations(RandomizerCheck loc){
+bool FilterFoolishLocations(RandomizerCheck loc){
   auto ctx = Rando::Context::GetInstance();
-  return ctx->GetItemLocation(loc)->IsBarrenCandidate();
+  return ctx->GetItemLocation(loc)->IsFoolishCandidate();
 }
 
 bool FilterSongLocations(RandomizerCheck loc){
@@ -176,7 +176,7 @@ const std::array<HintSetting, 4> hintSettingTable{{
     .junkWeight = 6,
     .distTable = {
       {"WotH",       HINT_TYPE_WOTH,      7,   0, 1, FilterWotHLocations,      2},
-      {"Barren",     HINT_TYPE_FOOLISH,   4,   0, 1, FilterBarrenLocations,    1},
+      {"Foolish",    HINT_TYPE_FOOLISH,   4,   0, 1, FilterFoolishLocations,   1},
       //("Entrance",   HINT_TYPE_ENTRANCE,      6,  0, 1), //not yet implemented
       {"Song",       HINT_TYPE_ITEM,      2,   0, 1, FilterSongLocations},
       {"Overworld",  HINT_TYPE_ITEM,      4,   0, 1, FilterOverworldLocations},
@@ -192,7 +192,7 @@ const std::array<HintSetting, 4> hintSettingTable{{
     .junkWeight = 0,
     .distTable = {
       {"WotH",       HINT_TYPE_WOTH,      12, 0, 2, FilterWotHLocations,      2},
-      {"Barren",     HINT_TYPE_FOOLISH,   12, 0, 1, FilterBarrenLocations,    1},
+      {"Foolish",    HINT_TYPE_FOOLISH,   12, 0, 1, FilterFoolishLocations,   1},
       //{"Entrance",   HINT_TYPE_ENTRANCE,      4, 0, 1}, //not yet implemented
       {"Song",       HINT_TYPE_ITEM,      4,  0, 1, FilterSongLocations},
       {"Overworld",  HINT_TYPE_ITEM,      6,  0, 1, FilterOverworldLocations},
@@ -208,7 +208,7 @@ const std::array<HintSetting, 4> hintSettingTable{{
     .junkWeight = 0,
     .distTable = {
       {"WotH",       HINT_TYPE_WOTH,      15, 0, 2, FilterWotHLocations},
-      {"Barren",     HINT_TYPE_FOOLISH,   15, 0, 1, FilterBarrenLocations},
+      {"Foolish",    HINT_TYPE_FOOLISH,   15, 0, 1, FilterFoolishLocations},
       //{"Entrance",   HINT_TYPE_ENTRANCE,     10, 0, 1}, //not yet implemented
       {"Song",       HINT_TYPE_ITEM,      2,  0, 1, FilterSongLocations},
       {"Overworld",  HINT_TYPE_ITEM,      7,  0, 1, FilterOverworldLocations},
@@ -277,9 +277,12 @@ std::vector<std::pair<RandomizerCheck, std::function<bool()>>> conditionalAlways
                    }), // Remember, the option's value being 3 means 4 are required
     std::make_pair(RC_DEKU_THEATER_MASK_OF_TRUTH, []() {
                        auto ctx = Rando::Context::GetInstance();
-                       return !ctx->GetOption(RSK_COMPLETE_MASK_QUEST);
+                       return !ctx->GetOption(RSK_MASK_SHOP_HINT) && !ctx->GetOption(RSK_COMPLETE_MASK_QUEST);
                    }),
-    std::make_pair(RC_SONG_FROM_OCARINA_OF_TIME, []() { return StonesRequiredBySettings() < 2; }),
+    std::make_pair(RC_SONG_FROM_OCARINA_OF_TIME, []() { 
+                        auto ctx = Rando::Context::GetInstance();
+                        return StonesRequiredBySettings() < 2 && !ctx->GetOption(RSK_OOT_HINT);
+                   }),
     std::make_pair(RC_HF_OCARINA_OF_TIME_ITEM, []() { return StonesRequiredBySettings() < 2; }),
     std::make_pair(RC_SHEIK_IN_KAKARIKO, []() { return MedallionsRequiredBySettings() < 5; }),
     std::make_pair(RC_DMT_TRADE_CLAIM_CHECK, []() {
@@ -448,9 +451,6 @@ static RandomizerCheck CreateRandomHint(std::vector<RandomizerCheck>& possibleHi
 
     placed = CreateHint(hintedLocation, copies, type, distributionName);
   }
-  if (type == HINT_TYPE_FOOLISH){
-     SetAllInRegionAsHinted(ctx->GetItemLocation(hintedLocation)->GetArea(), possibleHintLocations);
-  }
   return hintedLocation;
 }
 
@@ -496,7 +496,7 @@ void CreateWarpSongTexts() {
   if (ctx->GetOption(RSK_WARP_SONG_HINTS)){
     auto warpSongEntrances = GetShuffleableEntrances(EntranceType::WarpSong, false);
     for (auto entrance : warpSongEntrances) {
-      auto destination = entrance->GetConnectedRegion()->GetArea();//KNOWN ISSUE: says links pocket sometimes, putting off as this will need rewriting when entrance hits are added anyway
+      const auto destination = entrance->GetConnectedRegion()->GetArea();
       switch (entrance->GetIndex()) {
         case 0x0600: // minuet RANDOTODO make into entrance hints when they are added
           ctx->AddHint(RH_MINUET_WARP_LOC, Hint(RH_MINUET_WARP_LOC, HINT_TYPE_AREA, "", {RHT_WARP_SONG}, {}, {destination}));
@@ -531,44 +531,40 @@ int32_t getRandomWeight(int32_t totalWeight){
 }
 
 static void DistributeHints(std::vector<uint8_t>& selected, size_t stoneCount, std::vector<HintDistributionSetting> distTable, uint8_t junkWieght, bool addFixed = true){
-  int32_t totalWeight = junkWieght;
+  int32_t totalWeight = junkWieght; //Start with our Junk Weight, the natural chance of a junk hint
 
-  for (HintDistributionSetting setting: distTable){
-    totalWeight += setting.weight;
+  for (size_t c=0; c < distTable.size(); c++){ //Gather the wieghts of each distribution and, if it's the first pass, apply fixed hints
+    totalWeight += distTable[c].weight;         //Note that PlaceHints will set weights of distributions to zero if it can't place anything from them
     if (addFixed){
-      selected[setting.type] += setting.fixed;
-      stoneCount -= setting.fixed * setting.copies;
+      selected[c] += distTable[c].fixed;
+      stoneCount -= distTable[c].fixed * distTable[c].copies;
     }
   }
-  int32_t currentWeight = getRandomWeight(totalWeight);
-  while(stoneCount > 0 && totalWeight > 0){
-    for (uint8_t distribution = 0; distribution < distTable.size(); distribution++){
-      currentWeight -= distTable[distribution].weight;
-      if (currentWeight <= 0){
-        if (distTable[distribution].copies == 0) {
-          // This should only happen if we ran out of locations to place hints of a certain distribution earlier. Skip
-          // to the next distribution.
-          break;
-        }
-        if (stoneCount >= distTable[distribution].copies){
-          selected[distribution] += 1;
+  int32_t currentWeight = getRandomWeight(totalWeight); //Initialise with the first random weight from 1 to the total. 
+  while(stoneCount > 0 && totalWeight > 0){//Loop until we run out of stones or have no TotalWeight. 0 totalWeight means junkWeight is 0
+                                           //and that all weights have been 0'd out for another reason, and skips to placing all junk hints
+    for (size_t distribution = 0; distribution < distTable.size(); distribution++){
+      currentWeight -= distTable[distribution].weight; //go over each distribution, subtracting the weight each time. Once we reach zero or less,
+      if (currentWeight <= 0){                         //tell the system to make 1 of that hint, unless not enough stones remain
+        if (stoneCount >= distTable[distribution].copies && distTable[distribution].copies > 0){
+          selected[distribution] += 1; //if we have enough stones, and copies are not zero, assign 1 to this hint type, remove the stones, and break
           stoneCount -= distTable[distribution].copies;
-          break;
-        } else {
-          totalWeight -= distTable[distribution].weight;
-          distTable[distribution].weight = 0;
+          break; //This leaves the whole for loop
+        } else { //If we don't have the stones, or copies is 0 despite there being the wieght to trigger a hit, temporerally set wieght to zero
+          totalWeight -= distTable[distribution].weight; //Unlike PlaceHint, distTable is passed by value here, making this temporary
+          distTable[distribution].weight = 0;            //this is so we can still roll this hint type if more stones free up later 
           break;
         }
       }
     }
-    //if there's still weight, then it's junk
-    if (currentWeight > 0){
+    //if there's still weight then it's junk, as the leftover weight is junkWeight
+    if (currentWeight > 0){ //zero TotalWeight breaks the while loop and hits the fallback, so skipping this is fine in that case
       selected[selected.size()-1] += 1;
       stoneCount -= 1;
     }
     currentWeight = getRandomWeight(totalWeight);
   }
-  //if stones are left, assign junk
+  //if stones are left, assign junk to every remaining stone as a fallback.
   if (stoneCount > 0){
     selected[selected.size()-1] += stoneCount;
   }
@@ -586,10 +582,15 @@ uint8_t PlaceHints(std::vector<uint8_t>& selectedHints,
       RandomizerCheck hintedLocation = RC_UNKNOWN_CHECK;
 
       hintedLocation = CreateRandomHint(hintTypePool, distribution.copies, distribution.type, distribution.name);
-      if (hintedLocation == RC_UNKNOWN_CHECK){ //if hint failed to place
+      if (distribution.type == HINT_TYPE_FOOLISH){
+        SetAllInRegionAsHinted(ctx->GetItemLocation(hintedLocation)->GetArea(), hintTypePool);
+        hintTypePool = FilterHintability(hintTypePool);
+      }
+      if (hintedLocation == RC_UNKNOWN_CHECK){ //if hint failed to place, remove all wieght and copies then return the number of stones to redistribute
         uint8_t hintsToRemove = (selectedHints[curSlot] - numHint) * distribution.copies;
-        selectedHints[curSlot] = 0;
-        distTable[curSlot].copies = 0;
+        selectedHints[curSlot] = 0;   //as distTable is passed by refernce here, these changes stick for the rest of this seed generation
+        distTable[curSlot].copies = 0;//and prevent future distribution from choosing this slot
+        distTable[curSlot].weight = 0;
         return hintsToRemove;
       }
       if(Rando::StaticData::GetLocation(hintedLocation)->IsDungeon()){
@@ -653,7 +654,7 @@ void CreateStoneHints() {
 
   size_t totalStones = GetEmptyGossipStones().size();
   std::vector<uint8_t> selectedHints = {};
-  for (uint8_t c=0; c < distTable.size(); c++){
+  for (size_t c=0; c < distTable.size(); c++){
     selectedHints.push_back(0);
   }
   selectedHints.push_back(0);
@@ -661,9 +662,8 @@ void CreateStoneHints() {
   
   while(totalStones != 0){
     totalStones = PlaceHints(selectedHints, distTable);
-    while (totalStones != 0){
+    if (totalStones != 0){
       DistributeHints(selectedHints, totalStones, distTable, hintSetting.junkWeight, false);
-      totalStones = PlaceHints(selectedHints, distTable);
     }
   }
 
@@ -676,7 +676,7 @@ void CreateStoneHints() {
 std::vector<RandomizerCheck> FindItemsAndMarkHinted(std::vector<RandomizerGet> items, std::vector<RandomizerCheck> hintChecks){
   std::vector<RandomizerCheck> locations = {};
   auto ctx = Rando::Context::GetInstance();
-  for (uint8_t c = 0; c < items.size(); c++){
+  for (size_t c = 0; c < items.size(); c++){
     std::vector<RandomizerCheck> found = FilterFromPool(ctx->allLocations, [items, ctx, c](const RandomizerCheck loc) {
       return ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() == items[c];});
     if (found.size() > 0){

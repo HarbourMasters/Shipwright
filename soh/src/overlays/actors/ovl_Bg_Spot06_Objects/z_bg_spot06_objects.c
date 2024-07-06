@@ -217,7 +217,7 @@ void BgSpot06Objects_Destroy(Actor* thisx, PlayState* play) {
     // Due to Ships resource caching, the water box collisions for the river have to be manually reset
     play->colCtx.colHeader->waterBoxes[LHWB_GERUDO_VALLEY_RIVER_LOWER].zMin = WATER_LEVEL_RIVER_LOWER_Z;
 
-    if (IS_RANDO && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_WATER_TEMPLE)) {
+    if (IS_RANDO && Flags_GetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP)) {
         // For randomizer when leaving lake hylia while the water level is lowered,
         // reset the "raise lake hylia water" flag back to on if the water temple is cleared
         Flags_SetEventChkInf(EVENTCHKINF_RAISED_LAKE_HYLIA_WATER);
@@ -251,7 +251,7 @@ void BgSpot06Objects_GateSpawnBubbles(BgSpot06Objects* this, PlayState* play) {
 void BgSpot06Objects_GateWaitForSwitch(BgSpot06Objects* this, PlayState* play) {
     s32 i;
 
-    if ((CVarGetInteger("gWaterTempleGateFix", 0) == 0 || LINK_IS_ADULT) && Flags_GetSwitch(play, this->switchFlag)) {
+    if (Flags_GetSwitch(play, this->switchFlag)) {
         this->timer = 100;
         this->dyna.actor.world.pos.y += 3.0f;
         this->actionFunc = BgSpot06Objects_GateWaitToOpen;
@@ -461,7 +461,7 @@ void BgSpot06Objects_Update(Actor* thisx, PlayState* play) {
         Object_Spawn(&play->objectCtx, OBJECT_GAMEPLAY_DANGEON_KEEP);
 
         s16 switchParams;
-        if (Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_WATER_TEMPLE)) {
+        if (Flags_GetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP)) {
             // Toggle-able floor switch,
             // linked to temp_switch 0x1E (room temporary, cleared when room unloads)
             switchParams = 0x3E10;
@@ -477,7 +477,7 @@ void BgSpot06Objects_Update(Actor* thisx, PlayState* play) {
             0x0000 | (TEXT_LAKE_HYLIA_WATER_SWITCH_SIGN & 0xFF), false);
 
         // Spawn a Navi check spot when Water Temple isn't cleared
-        if (!Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_WATER_TEMPLE)) {
+        if (!Flags_GetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP)) {
             Actor_Spawn(&play->actorCtx, play, ACTOR_ELF_MSG2, -896.0f, -1243.0f, 6953.0f, 0, 0, 0,
                 0x3D00 | (TEXT_LAKE_HYLIA_WATER_SWITCH_NAVI & 0xFF), false);
         }
@@ -485,7 +485,7 @@ void BgSpot06Objects_Update(Actor* thisx, PlayState* play) {
         actionCounter++;
         return;
     } else if (actionCounter == 1) {
-        if (!Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_WATER_TEMPLE)) {
+        if (!Flags_GetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP)) {
             // Remove the link to ice block so melting it doesn't set the flag
             lakeControlFloorSwitch->params = 0x3E01;
         }

@@ -15,8 +15,9 @@
 #ifndef IMGUI_DEFINE_MATH_OPERATORS
 #define IMGUI_DEFINE_MATH_OPERATORS
 #endif
-#include <ImGui/imgui.h>
-#include <ImGui/imgui_internal.h>
+#include <imgui.h>
+#include <imgui_internal.h>
+#include "../custom-message/CustomMessageTypes.h"
 #include "../item-tables/ItemTableManager.h"
 #include "../presets.h"
 #include "../../../src/overlays/actors/ovl_En_GirlA/z_en_girla.h"
@@ -144,21 +145,6 @@ Randomizer::Randomizer() {
 
 Randomizer::~Randomizer() {
 }
-
-std::unordered_map<std::string, RandomizerInf> spoilerFileTrialToEnum = {
-    { "the Forest Trial", RAND_INF_TRIALS_DONE_FOREST_TRIAL },
-    { "l'épreuve de la Forêt", RAND_INF_TRIALS_DONE_FOREST_TRIAL },
-    { "the Fire Trial", RAND_INF_TRIALS_DONE_FIRE_TRIAL },
-    { "l'épreuve du Feu", RAND_INF_TRIALS_DONE_FIRE_TRIAL },
-    { "the Water Trial", RAND_INF_TRIALS_DONE_WATER_TRIAL },
-    { "l'épreuve de l'Eau", RAND_INF_TRIALS_DONE_WATER_TRIAL },
-    { "the Spirit Trial", RAND_INF_TRIALS_DONE_SPIRIT_TRIAL },
-    { "l'épreuve de l'Esprit", RAND_INF_TRIALS_DONE_SPIRIT_TRIAL },
-    { "the Shadow Trial", RAND_INF_TRIALS_DONE_SHADOW_TRIAL },
-    { "l'épreuve de l'Ombre", RAND_INF_TRIALS_DONE_SHADOW_TRIAL },
-    { "the Light Trial", RAND_INF_TRIALS_DONE_LIGHT_TRIAL },
-    { "l'épreuve de la Lumière", RAND_INF_TRIALS_DONE_LIGHT_TRIAL }
-};
 
 std::unordered_map<std::string, SceneID> spoilerFileDungeonToScene = {
     { "Deku Tree", SCENE_DEKU_TREE },
@@ -344,8 +330,17 @@ void Randomizer::LoadMerchantMessages() {
                       "Je te vends mon dernier %rHaricot&magique%w pour %r99 Rubis%w.\x1B&%gAcheter&Ne pas acheter%w"));
 }
 
-bool Randomizer::IsTrialRequired(RandomizerInf trial) {
-    return Rando::Context::GetInstance()->GetTrial(trial - RAND_INF_TRIALS_DONE_LIGHT_TRIAL)->IsRequired();
+std::map<s32, TrialKey> trialFlagToTrialKey = {
+    { EVENTCHKINF_COMPLETED_LIGHT_TRIAL, TK_LIGHT_TRIAL, },
+    { EVENTCHKINF_COMPLETED_FOREST_TRIAL, TK_FOREST_TRIAL, },
+    { EVENTCHKINF_COMPLETED_FIRE_TRIAL, TK_FIRE_TRIAL, },
+    { EVENTCHKINF_COMPLETED_WATER_TRIAL, TK_WATER_TRIAL, },
+    { EVENTCHKINF_COMPLETED_SPIRIT_TRIAL, TK_SPIRIT_TRIAL, },
+    { EVENTCHKINF_COMPLETED_SHADOW_TRIAL, TK_SHADOW_TRIAL, }
+};
+
+bool Randomizer::IsTrialRequired(s32 trialFlag) {
+    return Rando::Context::GetInstance()->GetTrial(trialFlagToTrialKey[trialFlag])->IsRequired();
 }
 
 GetItemEntry Randomizer::GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogItemId,
@@ -1417,21 +1412,28 @@ Rando::Location* Randomizer::GetCheckObjectFromActor(s16 actorId, s16 sceneNum, 
     RandomizerCheck specialRc = RC_UNKNOWN_CHECK;
     // TODO: Migrate these special cases into table, or at least document why they are special
     switch(sceneNum) {
-        case SCENE_TREASURE_BOX_SHOP:
-            if(actorParams == 20170) specialRc = RC_MARKET_TREASURE_CHEST_GAME_REWARD;
+        case SCENE_TREASURE_BOX_SHOP: {
+            if ((actorId == ACTOR_EN_BOX && actorParams == 20170) || (actorId == ACTOR_ITEM_ETCETERA && actorParams == 2572)) {
+                specialRc = RC_MARKET_TREASURE_CHEST_GAME_REWARD;
+            }
 
-            // RANDOTODO update logic to match 3ds rando when we implement keysanity
-            // keep keys og
-            if ((actorParams & 0x60) == 0x20) break;
-
-            if (GetRandoSettingValue(RSK_SHUFFLE_CHEST_MINIGAME)) {
-                if((actorParams & 0xF) < 2) specialRc = RC_MARKET_TREASURE_CHEST_GAME_ITEM_1;
-                if((actorParams & 0xF) < 4) specialRc = RC_MARKET_TREASURE_CHEST_GAME_ITEM_2;
-                if((actorParams & 0xF) < 6) specialRc = RC_MARKET_TREASURE_CHEST_GAME_ITEM_3;
-                if((actorParams & 0xF) < 8) specialRc = RC_MARKET_TREASURE_CHEST_GAME_ITEM_4;
-                if((actorParams & 0xF) < 10) specialRc = RC_MARKET_TREASURE_CHEST_GAME_ITEM_5;
+            // todo: handle the itemetc part of this so drawing works when we implement shuffle
+            if (actorId == ACTOR_EN_BOX) {
+                bool isAKey = (actorParams & 0x60) == 0x20;
+                if ((actorParams & 0xF) < 2) {
+                    specialRc = isAKey ? RC_MARKET_TREASURE_CHEST_GAME_KEY_1 : RC_MARKET_TREASURE_CHEST_GAME_ITEM_1;
+                } else if ((actorParams & 0xF) < 4) {
+                    specialRc = isAKey ? RC_MARKET_TREASURE_CHEST_GAME_KEY_2 : RC_MARKET_TREASURE_CHEST_GAME_ITEM_2;
+                } else if ((actorParams & 0xF) < 6) {
+                    specialRc = isAKey ? RC_MARKET_TREASURE_CHEST_GAME_KEY_3 : RC_MARKET_TREASURE_CHEST_GAME_ITEM_3;
+                } else if ((actorParams & 0xF) < 8) {
+                    specialRc = isAKey ? RC_MARKET_TREASURE_CHEST_GAME_KEY_4 : RC_MARKET_TREASURE_CHEST_GAME_ITEM_4;
+                } else if ((actorParams & 0xF) < 10) {
+                    specialRc = isAKey ? RC_MARKET_TREASURE_CHEST_GAME_KEY_5 : RC_MARKET_TREASURE_CHEST_GAME_ITEM_5;
+                }
             }
             break;
+        }
         case SCENE_SACRED_FOREST_MEADOW:
             if (actorId == ACTOR_EN_SA) {
                 specialRc = RC_SONG_FROM_SARIA;
@@ -1679,7 +1681,7 @@ RandomizerCheck Randomizer::GetCheckFromRandomizerInf(RandomizerInf randomizerIn
 std::thread randoThread;
 
 void GenerateRandomizerImgui(std::string seed = "") {
-    CVarSetInteger("gRandoGenerating", 1);
+    CVarSetInteger(CVAR_GENERAL("RandoGenerating"), 1);
     CVarSave();
     auto ctx = Rando::Context::GetInstance();
     if (!ctx->IsSpoilerLoaded()) {
@@ -1688,7 +1690,7 @@ void GenerateRandomizerImgui(std::string seed = "") {
     }
     // todo: this efficently when we build out cvar array support
     std::set<RandomizerCheck> excludedLocations;
-    std::stringstream excludedLocationStringStream(CVarGetString("gRandomizeExcludedLocations", ""));
+    std::stringstream excludedLocationStringStream(CVarGetString(CVAR_RANDOMIZER_SETTING("ExcludedLocations"), ""));
     std::string excludedLocationString;
     while (getline(excludedLocationStringStream, excludedLocationString, ',')) {
         excludedLocations.insert((RandomizerCheck)std::stoi(excludedLocationString));
@@ -1697,7 +1699,7 @@ void GenerateRandomizerImgui(std::string seed = "") {
     // todo: better way to sort out linking tricks rather than name
     
     std::set<RandomizerTrick> enabledTricks;
-    std::stringstream enabledTrickStringStream(CVarGetString("gRandomizeEnabledTricks", ""));
+    std::stringstream enabledTrickStringStream(CVarGetString(CVAR_RANDOMIZER_SETTING("EnabledTricks"), ""));
     std::string enabledTrickString;
     while (getline(enabledTrickStringStream, enabledTrickString, ',')) {
         enabledTricks.insert((RandomizerTrick)std::stoi(enabledTrickString));
@@ -1717,7 +1719,7 @@ void GenerateRandomizerImgui(std::string seed = "") {
 
     RandoMain::GenerateRando(excludedLocations, enabledTricks, seed);
 
-    CVarSetInteger("gRandoGenerating", 0);
+    CVarSetInteger(CVAR_GENERAL("RandoGenerating"), 0);
     CVarSave();
     CVarLoad();
 
@@ -1729,7 +1731,7 @@ bool GenerateRandomizer(std::string seed /*= ""*/) {
         generated = 0;
         randoThread.join();
     }
-    if (CVarGetInteger("gRandoGenerating", 0) == 0) {
+    if (CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0) == 0) {
         randoThread = std::thread(&GenerateRandomizerImgui, seed);
         return true;
     }
@@ -1749,18 +1751,18 @@ void RandomizerSettingsWindow::DrawElement() {
         return;
     }
 
-    bool disableEditingRandoSettings = CVarGetInteger("gRandoGenerating", 0) || CVarGetInteger("gOnFileSelectNameEntry", 0);
+    bool disableEditingRandoSettings = CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0) || CVarGetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 0);
     if (disableEditingRandoSettings) {
         UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
     }
 
-    ImGui::BeginDisabled(CVarGetInteger("gDisableChangingSettings", 0));
+    ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
     DrawPresetSelector(PRESET_TYPE_RANDOMIZER);
     ImGui::EndDisabled();
 
     UIWidgets::Spacer(0);
-    UIWidgets::EnhancementCheckbox("Manual seed entry", "gRandoManualSeedEntry", false, "");
-    if (CVarGetInteger("gRandoManualSeedEntry", 0)) {
+    UIWidgets::EnhancementCheckbox("Manual seed entry", CVAR_RANDOMIZER_SETTING("ManualSeedEntry"), false, "");
+    if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ManualSeedEntry"), 0)) {
         ImGui::Text("Seed");
         ImGui::InputText("##RandomizerSeed", seedString, MAX_SEED_STRING_SIZE, ImGuiInputTextFlags_CallbackCharFilter, UIWidgets::TextFilters::FilterAlphaNum);
         UIWidgets::Tooltip(
@@ -1779,27 +1781,27 @@ void RandomizerSettingsWindow::DrawElement() {
     }
 
     UIWidgets::Spacer(0);
-    ImGui::BeginDisabled(CVarGetInteger("gRandomizerDontGenerateSpoiler", 0) && gSaveContext.gameMode != GAMEMODE_FILE_SELECT);
+    ImGui::BeginDisabled(CVarGetInteger(CVAR_RANDOMIZER_SETTING("DontGenerateSpoiler"), 0) && gSaveContext.gameMode != GAMEMODE_FILE_SELECT);
     if (ImGui::Button("Generate Randomizer")) {
         ctx->SetSpoilerLoaded(false);
-        GenerateRandomizer(CVarGetInteger("gRandoManualSeedEntry", 0) ? seedString : "");
+        GenerateRandomizer(CVarGetInteger(CVAR_RANDOMIZER_SETTING("ManualSeedEntry"), 0) ? seedString : "");
     }
     UIWidgets::Tooltip("You can also press L on the Quest Select screen to generate a new seed");
     ImGui::EndDisabled();
 
     UIWidgets::Spacer(0);
-    if (!CVarGetInteger("gRandomizerDontGenerateSpoiler", 0)) {
-        std::string spoilerfilepath = CVarGetString("gSpoilerLog", "");
+    if (!CVarGetInteger(CVAR_RANDOMIZER_SETTING("DontGenerateSpoiler"), 0)) {
+        std::string spoilerfilepath = CVarGetString(CVAR_GENERAL("SpoilerLog"), "");
         ImGui::Text("Spoiler File: %s", spoilerfilepath.c_str());
     }
 
     // RANDOTODO settings presets
-    // std::string presetfilepath = CVarGetString("gLoadedPreset", "");
+    // std::string presetfilepath = CVarGetString(CVAR_RANDOMIZER_SETTING("LoadedPreset"), "");
     // ImGui::Text("Settings File: %s", presetfilepath.c_str());
 
     UIWidgets::PaddedSeparator();
 
-    ImGui::BeginDisabled(CVarGetInteger("gDisableChangingSettings", 0));
+    ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
 
     ImGuiWindow* window = ImGui::GetCurrentWindow();
     static ImVec2 cellPadding(8.0f, 8.0f);
@@ -1814,10 +1816,10 @@ void RandomizerSettingsWindow::DrawElement() {
             ImGui::EndTabItem();
         }
 
-        ImGui::BeginDisabled(CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) == RO_LOGIC_VANILLA);
+        ImGui::BeginDisabled(CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) == RO_LOGIC_VANILLA);
         if (ImGui::BeginTabItem("Items")) {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
-            ImGui::BeginDisabled(CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) == RO_LOGIC_VANILLA);
+            ImGui::BeginDisabled(CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) == RO_LOGIC_VANILLA);
             if (mSettings->GetOptionGroup(RSG_ITEMS_IMGUI_TABLE).RenderImGui()) {
                 mNeedsUpdate = true;
             }
@@ -1827,7 +1829,7 @@ void RandomizerSettingsWindow::DrawElement() {
         }
         ImGui::EndDisabled();
 
-        ImGui::BeginDisabled(CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) == RO_LOGIC_VANILLA);
+        ImGui::BeginDisabled(CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) == RO_LOGIC_VANILLA);
         if (ImGui::BeginTabItem("Gameplay")) {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
             if (mSettings->GetOptionGroup(RSG_GAMEPLAY_IMGUI_TABLE).RenderImGui()) {
@@ -1838,7 +1840,7 @@ void RandomizerSettingsWindow::DrawElement() {
         }
         ImGui::EndDisabled();
 
-        ImGui::BeginDisabled(CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) == RO_LOGIC_VANILLA);
+        ImGui::BeginDisabled(CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) == RO_LOGIC_VANILLA);
         static bool locationsTabOpen = false;
         if (ImGui::BeginTabItem("Locations")) {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
@@ -1846,7 +1848,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 locationsTabOpen = true;
                 RandomizerCheckObjects::UpdateImGuiVisibility();
                 // todo: this efficently when we build out cvar array support
-                std::stringstream excludedLocationStringStream(CVarGetString("gRandomizeExcludedLocations", ""));
+                std::stringstream excludedLocationStringStream(CVarGetString(CVAR_RANDOMIZER_SETTING("ExcludedLocations"), ""));
                 std::string excludedLocationString;
                 excludedLocations.clear();
                 while (getline(excludedLocationStringStream, excludedLocationString, ',')) {
@@ -1896,8 +1898,8 @@ void RandomizerSettingsWindow::DrawElement() {
                                             excludedLocationString += std::to_string(excludedLocationIt);
                                             excludedLocationString += ",";
                                         }
-                                        CVarSetString("gRandomizeExcludedLocations", excludedLocationString.c_str());
-                                        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                                        CVarSetString(CVAR_RANDOMIZER_SETTING("ExcludedLocations"), excludedLocationString.c_str());
+                                        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                                     }
                                     ImGui::SameLine();
                                     ImGui::Text("%s", Rando::StaticData::GetLocation(location)->GetShortName().c_str());
@@ -1938,11 +1940,11 @@ void RandomizerSettingsWindow::DrawElement() {
                                             excludedLocationString += ",";
                                         }
                                         if (excludedLocationString == "") {
-                                            CVarClear("gRandomizeExcludedLocations");
+                                            CVarClear(CVAR_RANDOMIZER_SETTING("ExcludedLocations"));
                                         } else {
-                                            CVarSetString("gRandomizeExcludedLocations", excludedLocationString.c_str());
+                                            CVarSetString(CVAR_RANDOMIZER_SETTING("ExcludedLocations"), excludedLocationString.c_str());
                                         }
-                                        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                                        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                                     }
                                     ImGui::SameLine();
                                     ImGui::Text("%s", Rando::StaticData::GetLocation(location)->GetShortName().c_str());
@@ -1969,13 +1971,13 @@ void RandomizerSettingsWindow::DrawElement() {
                 tricksTabOpen = true;
                 //RandomizerTricks::UpdateImGuiVisibility();
                 // todo: this efficently when we build out cvar array support
-                std::stringstream enabledTrickStringStream(CVarGetString("gRandomizeEnabledTricks", ""));
+                std::stringstream enabledTrickStringStream(CVarGetString(CVAR_RANDOMIZER_SETTING("EnabledTricks"), ""));
                 std::string enabledTrickString;
                 enabledTricks.clear();
                 while (getline(enabledTrickStringStream, enabledTrickString, ',')) {
                     enabledTricks.insert((RandomizerTrick)std::stoi(enabledTrickString));
                 }
-                std::stringstream enabledGlitchStringStream(CVarGetString("gRandomizeEnabledGlitches", ""));
+                std::stringstream enabledGlitchStringStream(CVarGetString(CVAR_RANDOMIZER_SETTING("EnabledGlitches"), ""));
                 std::string enabledGlitchString;
                 enabledGlitches.clear();
                 while (getline(enabledGlitchStringStream, enabledGlitchString, ',')) {
@@ -1993,13 +1995,13 @@ void RandomizerSettingsWindow::DrawElement() {
                     mNeedsUpdate = true;
                 }
                 // RANDOTODO: Implement Disalbling of Options for Vanilla Logic
-                if (CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) == RO_LOGIC_GLITCHLESS) {
+                if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) == RO_LOGIC_GLITCHLESS) {
                     ImGui::SameLine();
                     if (mSettings->GetOption(RSK_ALL_LOCATIONS_REACHABLE).RenderImGui()) {
                         mNeedsUpdate = true;
                     }
                 }
-                if (CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) == RO_LOGIC_VANILLA) {
+                if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) == RO_LOGIC_VANILLA) {
                     ImGui::SameLine();
                     ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Heads up! This will disable all rando settings except for entrance shuffle and starter items");
                 }
@@ -2014,7 +2016,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 ImGui::EndTable();
             }
 
-            ImGui::BeginDisabled(CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) == RO_LOGIC_VANILLA);
+            ImGui::BeginDisabled(CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) == RO_LOGIC_VANILLA);
 
             // Tricks
             static std::unordered_map<RandomizerArea, bool> areaTreeDisabled {
@@ -2097,7 +2099,7 @@ void RandomizerSettingsWindow::DrawElement() {
             };
             static ImGuiTextFilter trickSearch;
             trickSearch.Draw("Filter (inc,-exc)", 490.0f);
-            if (CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) != RO_LOGIC_NO_LOGIC) {
+            if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) != RO_LOGIC_NO_LOGIC) {
                 ImGui::SameLine();
                 if (ImGui::Button("Disable All")) {
                     for (int i = 0; i < RT_MAX; i++) {
@@ -2111,8 +2113,8 @@ void RandomizerSettingsWindow::DrawElement() {
                         enabledTrickString += std::to_string(enabledTrickIt);
                         enabledTrickString += ",";
                     }
-                    CVarClear("gRandomizeEnabledTricks");
-                    LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                    CVarClear(CVAR_RANDOMIZER_SETTING("EnabledTricks"));
+                    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                 }
                 ImGui::SameLine();
                 if (ImGui::Button("Enable All")) {
@@ -2126,8 +2128,8 @@ void RandomizerSettingsWindow::DrawElement() {
                         enabledTrickString += std::to_string(enabledTrickIt);
                         enabledTrickString += ",";
                     }
-                    CVarSetString("gRandomizeEnabledTricks", enabledTrickString.c_str());
-                    LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                    CVarSetString(CVAR_RANDOMIZER_SETTING("EnabledTricks"), enabledTrickString.c_str());
+                    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                 }
             }
             if (ImGui::BeginTable("trickTags", showTag.size(), ImGuiTableFlags_Resizable | ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_Borders)) {  
@@ -2148,7 +2150,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 ImGui::PopItemFlag();
                 ImGui::TableNextRow();
                 
-                if (CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) != RO_LOGIC_NO_LOGIC) {
+                if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) != RO_LOGIC_NO_LOGIC) {
 
                     // COLUMN 1 - DISABLED TRICKS
                     ImGui::TableNextColumn();
@@ -2189,8 +2191,8 @@ void RandomizerSettingsWindow::DrawElement() {
                             enabledTrickString += std::to_string(enabledTrickIt);
                             enabledTrickString += ",";
                         }
-                        CVarSetString("gRandomizeEnabledTricks", enabledTrickString.c_str());
-                        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                        CVarSetString(CVAR_RANDOMIZER_SETTING("EnabledTricks"), enabledTrickString.c_str());
+                        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                     }
                     
                     ImGui::BeginChild("ChildTricksDisabled", ImVec2(0, -8), false, ImGuiWindowFlags_HorizontalScrollbar);
@@ -2224,8 +2226,8 @@ void RandomizerSettingsWindow::DrawElement() {
                                                 enabledTrickString += std::to_string(enabledTrickIt);
                                                 enabledTrickString += ",";
                                             }
-                                            CVarSetString("gRandomizeEnabledTricks", enabledTrickString.c_str());
-                                            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                                            CVarSetString(CVAR_RANDOMIZER_SETTING("EnabledTricks"), enabledTrickString.c_str());
+                                            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                                         }
                                         Rando::Tricks::DrawTagChips(option.GetTags());
                                         ImGui::SameLine();
@@ -2283,8 +2285,8 @@ void RandomizerSettingsWindow::DrawElement() {
                             enabledTrickString += std::to_string(enabledTrickIt);
                             enabledTrickString += ",";
                         }
-                        CVarClear("gRandomizeEnabledTricks");
-                        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                        CVarClear(CVAR_RANDOMIZER_SETTING("EnabledTricks"));
+                        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                     }
                     
                     ImGui::BeginChild("ChildTricksEnabled", ImVec2(0, -8), false, ImGuiWindowFlags_HorizontalScrollbar);
@@ -2319,11 +2321,11 @@ void RandomizerSettingsWindow::DrawElement() {
                                                 enabledTrickString += ",";
                                         }
                                         if (enabledTrickString == "") {
-                                            CVarClear("gRandomizeEnabledTricks");
+                                            CVarClear(CVAR_RANDOMIZER_SETTING("EnabledTricks"));
                                         } else {
-                                            CVarSetString("gRandomizeEnabledTricks", enabledTrickString.c_str());
+                                            CVarSetString(CVAR_RANDOMIZER_SETTING("EnabledTricks"), enabledTrickString.c_str());
                                         }
-                                        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                                        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                                     }
                                     Rando::Tricks::DrawTagChips(option.GetTags());
                                     ImGui::SameLine();
@@ -2394,11 +2396,13 @@ CustomMessage Randomizer::GetSheikMessage(s16 scene, u16 originalTextId) {
     CustomMessage messageEntry;
     switch (scene) {
         case SCENE_TEMPLE_OF_TIME:
-            if (!CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_GANONS_TOWER)) {
+            if (ctx->GetOption(RSK_OOT_HINT) && !ctx->GetItemLocation(RC_SONG_FROM_OCARINA_OF_TIME)->HasObtained()){
+                messageEntry = ctx->GetHint(RH_OOT_HINT)->GetHintMessage(MF_RAW);
+            } else if (!CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_GANONS_TOWER)) {
                 messageEntry = CustomMessage(
-                "@,&meet me at %gGanon's Castle%w&once you obtain the %rkey to his lair%w.",
-                "@, wir treffen uns bei %gGanons Schloß%w,&sobald Du den %rSchlüssel zu&seinem Verließ%w hast.",
-                "Retrouve-moi au %gChâteau de Ganon%w une&fois que tu auras obtenu la&Mrclé de son repaire%w.");
+                "@, meet me at %gGanon's Castle%w once you obtain the %rkey to his lair%w.",
+                "@, wir treffen uns bei %gGanons Schloß%w, sobald Du den %rSchlüssel zu seinem Verließ%w hast.",
+                "Retrouve-moi au %gChâteau de Ganon%w une fois que tu auras obtenu la Mrclé de son repaire%w.");
             } else {
                 messageEntry = CustomMessage(
                 "The time has come. Prepare yourself.",
@@ -2408,18 +2412,18 @@ CustomMessage Randomizer::GetSheikMessage(s16 scene, u16 originalTextId) {
             break;
         case SCENE_INSIDE_GANONS_CASTLE:
             if (ctx->GetOption(RSK_SHEIK_LA_HINT) && INV_CONTENT(ITEM_ARROW_LIGHT) != ITEM_ARROW_LIGHT) {
-                messageEntry = ctx->GetHint(RH_SHEIK_HINT)->GetHintMessage(MF_AUTO_FORMAT);
+                messageEntry = ctx->GetHint(RH_SHEIK_HINT)->GetHintMessage(MF_RAW);
             } else if (!(CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER) && INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT &&
                        CUR_CAPACITY(UPG_QUIVER) >= 30 && gSaveContext.isMagicAcquired)) {
-                messageEntry = CustomMessage("You are still ill-equipped to&face %rGanondorf%w."
-                    "^Seek out the %cMaster Sword%w,&%rsomething to hold your arrows%w,&and %gmagic%w to summon the %ylight%w.",
-                    "Du bist noch nicht gewappnet um Dich&%rGanondorf%w stellen zu können.^"
-                    "Begib Dich auf die Suche nach dem&%cMaster-Schwert%w, %retwas um deine Pfeilen&einen Sinn zu geben%w,^sowie %gdie Magie%w, um das %yLicht%w&herauf beschwören zu können.",
-                    "@, tu n'es toujours pas prêt à affronter&%rGanondorf%w.^"
-                    "Cherche l'%cÉpée de Légende%w,&%rquelque chose pour ranger tes flèches%w&et de la %gmagie%w pour invoquer la&%ylumière%w.");
-            } else if (!Flags_GetEventChkInf(EVENTCHKINF_DISPELLED_GANONS_TOWER_BARRIER)){
+                messageEntry = CustomMessage("You are still ill-equipped to face %rGanondorf%w."
+                    "^Seek out the %cMaster Sword%w, %rsomething to hold your arrows%w, and %gmagic%w to summon the %ylight%w.",
+                    "Du bist noch nicht gewappnet um Dich %rGanondorf%w stellen zu können.^"
+                    "Begib Dich auf die Suche nach dem %cMaster-Schwert%w, %retwas um deine Pfeilen einen Sinn zu geben%w,^sowie %gdie Magie%w, um das %yLicht%w herauf beschwören zu können.",
+                    "@, tu n'es toujours pas prêt à affronter %rGanondorf%w.^"
+                    "Cherche l'%cÉpée de Légende%w, %rquelque chose pour ranger tes flèches%w et de la %gmagie%w pour invoquer la %ylumière%w.");
+            } else if (!Flags_GetEventChkInf(EVENTCHKINF_DISPELLED_GANONS_TOWER_BARRIER) && !ctx->GetOption(RSK_TRIAL_COUNT).Is(0)){
                 messageEntry = CustomMessage(
-                    "You may have what you need to defeat&%rthe Evil King%w, but the %cbarrier%w still&stands.^Complete the remaining %gtrials%w&to destroy it."
+                    "You may have what you need to defeat %rthe Evil King%w, but the %cbarrier%w still stands.^Complete the remaining %gtrials%w to destroy it."
                 );
             } else {
                 messageEntry = CustomMessage(
@@ -2429,7 +2433,8 @@ CustomMessage Randomizer::GetSheikMessage(s16 scene, u16 originalTextId) {
             }
             break;
     }
-        return messageEntry;
+    messageEntry.AutoFormat();
+    return messageEntry;
 }
 
 CustomMessage Randomizer::GetFishingPondOwnerMessage(u16 originalTextId) {
@@ -2464,8 +2469,16 @@ CustomMessage Randomizer::GetMerchantMessage(RandomizerInf randomizerInf, u16 te
     RandomizerCheck rc = GetCheckFromRandomizerInf(randomizerInf);
     RandomizerGet shopItemGet = ctx->GetItemLocation(rc)->GetPlacedRandomizerGet();
     CustomMessage shopItemName;
-    if (mysterious) {
-        shopItemName = Rando::StaticData::hintTextTable[RHT_MYSTERIOUS_ITEM].GetHintMessage(); 
+    if (mysterious|| CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0)) {
+        if (randomizerInf >= RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1 && randomizerInf <= RAND_INF_SHOP_ITEMS_MARKET_BOMBCHU_SHOP_ITEM_8) {
+            shopItemName = {
+                "Mysterious Item",
+                "Mysteriösen Gegenstand",
+                "Objet Mystérieux"
+            };
+        } else {
+            shopItemName = Rando::StaticData::hintTextTable[RHT_MYSTERIOUS_ITEM].GetHintMessage(); 
+        }
     // TODO: This should eventually be replaced with a full fledged trick model & trick name system
     } else if (shopItemGet == RG_ICE_TRAP) {
         shopItemGet = ctx->overrides[rc].LooksLike();

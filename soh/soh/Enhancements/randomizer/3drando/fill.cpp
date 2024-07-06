@@ -604,7 +604,7 @@ void ValidateEntrances(bool checkPoeCollectorAccess, bool checkOtherEntranceAcce
   }
 }
 
-RandomizerArea LookForExternalArea(Area* curRegion, std::vector<RandomizerRegion> alreadyChecked){
+RandomizerArea LookForExternalArea(const Area* const currentRegion, std::vector<RandomizerRegion> alreadyChecked){
   for (auto& entrance : curRegion->entrances) {
     RandomizerArea otherArea = entrance->GetParentRegion()->GetArea();
     if(otherArea != RA_NONE){
@@ -612,10 +612,12 @@ RandomizerArea LookForExternalArea(Area* curRegion, std::vector<RandomizerRegion
       //if the region hasn't already been checked, check it
     } else if (std::find(alreadyChecked.begin(), alreadyChecked.end(), entrance->GetParentRegionKey()) == alreadyChecked.end()) {
       alreadyChecked.push_back(entrance->GetParentRegionKey());
-      RandomizerArea passdown = LookForExternalArea(entrance->GetParentRegion(), alreadyChecked);
+      const RandomizerArea passdown = LookForExternalArea(entrance->GetParentRegion(), alreadyChecked);
       if(passdown != RA_NONE){
         return passdown;
       }
+    } else if (otherArea != RA_LINKS_POCKET){ //if it's links pocket, do not propogate this, Link's Pocket is not a real Area
+      return otherArea;
     }
   }
   return RA_NONE;
@@ -624,16 +626,17 @@ RandomizerArea LookForExternalArea(Area* curRegion, std::vector<RandomizerRegion
 void SetAreas(){
   auto ctx = Rando::Context::GetInstance();
 //RANDOTODO give entrances an enum like RandomizerCheck, the give them all areas here, the use those areas to not need to recursivly find ItemLocation areas
-  for (int c = 0; c < RR_MARKER_AREAS_END; c++) {
-    Area region = areaTable[c];
+  for (int regionType = 0; regionType < RR_MARKER_AREAS_END; regionType++) {
+    Area region = areaTable[regionType];
     RandomizerArea area = region.GetArea();
     if (area == RA_NONE) {
-      std::vector<RandomizerRegion> alreadyChecked = {(RandomizerRegion)c};
+      std::vector<RandomizerRegion> alreadyChecked = {static_cast<RandomizerRegion>(regionType)};
       area = LookForExternalArea(&region, alreadyChecked);
     }
     for (auto& loc : region.locations){
       ctx->GetItemLocation(loc.GetLocation())->SetArea(area);
     }
+    areaTable[regionType].SetArea(area);
   }
 }
 
@@ -1240,7 +1243,19 @@ int Fill() {
     std::vector<RandomizerGet> remainingPool = FilterAndEraseFromPool(ItemPool, [](const auto i) { return true; });
     FastFill(remainingPool, GetAllEmptyLocations(), false);
 
-    //Add prices for scrubsanity, this is unique to SoH because we write/read scrub prices to/from the spoilerfile.
+    //Add default prices to scrubs
+    for (size_t i = 0; i < Rando::StaticData::scrubLocations.size(); i++) {
+      if (Rando::StaticData::scrubLocations[i] == RC_LW_DEKU_SCRUB_NEAR_BRIDGE || Rando::StaticData::scrubLocations[i] == RC_LW_DEKU_SCRUB_GROTTO_FRONT) {
+        ctx->GetItemLocation(Rando::StaticData::scrubLocations[i])->SetCustomPrice(40);
+      } else if (Rando::StaticData::scrubLocations[i] == RC_HF_DEKU_SCRUB_GROTTO) {
+        ctx->GetItemLocation(Rando::StaticData::scrubLocations[i])->SetCustomPrice(10);
+      } else {
+        auto loc = Rando::StaticData::GetLocation(Rando::StaticData::scrubLocations[i]);
+        auto item = Rando::StaticData::RetrieveItem(loc->GetVanillaItem());
+        ctx->GetItemLocation(Rando::StaticData::scrubLocations[i])->SetCustomPrice(item.GetPrice());
+      }
+    }
+
     if (ctx->GetOption(RSK_SHUFFLE_SCRUBS).Is(RO_SCRUBS_AFFORDABLE)) {
       for (size_t i = 0; i < Rando::StaticData::scrubLocations.size(); i++) {
         ctx->GetItemLocation(Rando::StaticData::scrubLocations[i])->SetCustomPrice(10);

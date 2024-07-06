@@ -389,6 +389,76 @@ void StaticData::HintTable_Init() {
                                                                         /*french*/ "Selon moi, le #neuvième ou dixième coffre à jeu# contient #[[1]]#.", {QM_RED, QM_GREEN})});
                                                                      // /*spanish*/#el noveno o décimo cofre del azar# revela #[[1]]#.
 
+   hintTextTable[RHT_MARKET_TREASURE_CHEST_GAME_KEY_1] = HintText(CustomMessage("They say that the #first locked room# in the chest game contains #[[1]]#.",
+                                                                       /*german*/ "",
+                                                                       /*french*/ "Selon moi, la #première salle# de la Chasse-aux-Trésors contient #[[1]]#.", {QM_RED, QM_GREEN}),
+                                                                    // /*spanish*/#en la primera sala del Cofre del Tesoro# aguarda #[[1]]#.
+                                                                    {},
+                                                                    {CustomMessage("They say that #gambling once# grants #[[1]]#.",
+                                                                        /*german*/ "",
+                                                                        /*french*/ "Selon moi, #parier une fois# donne #[[1]]#.", {QM_RED, QM_GREEN}),
+                                                                     // /*spanish*/#apostar solo una vez# revelará #[[1]]#.
+                                                                     CustomMessage("They say that the #first or second game chest# contains #[[1]]#.",
+                                                                        /*german*/ "",
+                                                                        /*french*/ "Selon moi, le #premier ou deuxième coffre à jeu# contient #[[1]]#.", {QM_RED, QM_GREEN})});
+                                                                     // /*spanish*/#el primer o segundo cofre del azar# revela #[[1]]#.
+
+    hintTextTable[RHT_MARKET_TREASURE_CHEST_GAME_KEY_2] = HintText(CustomMessage("They say that the #second locked room# in the chest game contains #[[1]]#.",
+                                                                       /*german*/ "",
+                                                                       /*french*/ "Selon moi, la #deuxième salle# de la Chasse-aux-Trésors contient #[[1]]#.", {QM_RED, QM_GREEN}),
+                                                                    // /*spanish*/#en la segunda sala del Cofre del Tesoro# aguarda #[[1]]#.
+                                                                    {},
+                                                                    {CustomMessage("They say that #gambling twice# grants #[[1]]#.",
+                                                                        /*german*/ "",
+                                                                        /*french*/ "Selon moi, #parier deux fois# donne #[[1]]#.", {QM_RED, QM_GREEN}),
+                                                                     // /*spanish*/#apostar dos veces# revelará #[[1]]#.
+                                                                     CustomMessage("They say that the #third or fourth game chest# contains #[[1]]#.",
+                                                                        /*german*/ "",
+                                                                        /*french*/ "Selon moi, le #troisième ou quatrième coffre à jeu# contient #[[1]]#.", {QM_RED, QM_GREEN})});
+                                                                     // /*spanish*/#el tercer o cuarto cofre del azar# revela #[[1]]#.
+
+    hintTextTable[RHT_MARKET_TREASURE_CHEST_GAME_KEY_3] = HintText(CustomMessage("They say that the #third locked room# in the chest game contains #[[1]]#.",
+                                                                       /*german*/ "",
+                                                                       /*french*/ "Selon moi, la #troisième salle# de la Chasse-aux-Trésors contient #[[1]]#.", {QM_RED, QM_GREEN}),
+                                                                    // /*spanish*/#en la tercera sala del Cofre del Tesoro# aguarda #[[1]]#.
+                                                                    {},
+                                                                    {CustomMessage("They say that #gambling 3 times# grants #[[1]]#.",
+                                                                        /*german*/ "",
+                                                                        /*french*/ "Selon moi, #parier trois fois# donne #[[1]]#.", {QM_RED, QM_GREEN}),
+                                                                     // /*spanish*/#apostar tres veces# revelará #[[1]]#.
+                                                                     CustomMessage("They say that the #fifth or sixth game chest# contains #[[1]]#.",
+                                                                        /*german*/ "",
+                                                                        /*french*/ "Selon moi, le #cinquième ou sixième coffre à jeu# contient #[[1]]#.", {QM_RED, QM_GREEN})});
+                                                                     // /*spanish*/#el quinto o sexto cofre del azar# revela #[[1]]#.
+
+    hintTextTable[RHT_MARKET_TREASURE_CHEST_GAME_KEY_4] = HintText(CustomMessage("They say that the #fourth locked room# in the chest game contains #[[1]]#.",
+                                                                       /*german*/ "",
+                                                                       /*french*/ "Selon moi, la #quatrième salle# de la Chasse-aux-Trésors contient #[[1]]#.", {QM_RED, QM_GREEN}),
+                                                                    // /*spanish*/#en la cuarta sala del Cofre del Tesoro# aguarda #[[1]]#.
+                                                                    {},
+                                                                    {CustomMessage("They say that #gambling 4 times# grants #[[1]]#.",
+                                                                        /*german*/ "",
+                                                                        /*french*/ "Selon moi, #parier quatre fois# donne #[[1]]#.", {QM_RED, QM_GREEN}),
+                                                                     // /*spanish*/#apostar cuatro veces# revelará #[[1]]#.
+                                                                     CustomMessage("They say that the #seventh or eighth game chest# contains #[[1]]#.",
+                                                                        /*german*/ "",
+                                                                        /*french*/ "Selon moi, le #septième ou huitième coffre à jeu# contient #[[1]]#.", {QM_RED, QM_GREEN})});
+                                                                     // /*spanish*/#el séptimo u octavo cofre del azar# revela #[[1]]#.
+
+    hintTextTable[RHT_MARKET_TREASURE_CHEST_GAME_KEY_5] = HintText(CustomMessage("They say that the #fifth locked room# in the chest game contains #[[1]]#.",
+                                                                       /*german*/ "",
+                                                                       /*french*/ "Selon moi, la #cinquième salle# de la Chasse-aux-Trésors contient #[[1]]#.", {QM_RED, QM_GREEN}),
+                                                                    // /*spanish*/#en la quinta sala del Cofre del Tesoro# aguarda #[[1]]#.
+                                                                    {},
+                                                                    {CustomMessage("They say that #gambling 5 times# grants #[[1]]#.",
+                                                                        /*german*/ "",
+                                                                        /*french*/ "Selon moi, #parier cinq fois# donne #[[1]]#.", {QM_RED, QM_GREEN}),
+                                                                     // /*spanish*/#apostar cinco veces# revelará #[[1]]#.
+                                                                     CustomMessage("They say that the #ninth or tenth game chest# contains #[[1]]#.",
+                                                                        /*german*/ "",
+                                                                        /*french*/ "Selon moi, le #neuvième ou dixième coffre à jeu# contient #[[1]]#.", {QM_RED, QM_GREEN})});
+                                                                     // /*spanish*/#el noveno o décimo cofre del azar# revela #[[1]]#.
+
     hintTextTable[RHT_GF_HBA_1500_POINTS] = HintText(CustomMessage("They say that scoring 1500 in #horseback archery# grants #[[1]]#.",
                                                         /*german*/ "",
                                                         /*french*/ "Selon moi, obtenir 1500 points dans l'#archerie équestre# donne #[[1]]#.", {QM_RED, QM_GREEN}),
@@ -2786,10 +2856,17 @@ void StaticData::HintTable_Init() {
                                                 /*french*/ "Des grenouilles se trouvant sous l'eau vous fixent attentivement, tenant fermement #[[1]]#.",
                                                            {QM_GREEN}));
 
+    hintTextTable[RHT_OOT_HINT] = HintText(CustomMessage("Bring the #Spiritual Stones# to the past so you can receive #[[1]]# from Zelda and learn #[[2]]#!",
+                                                         {QM_BLUE, QM_GREEN, QM_GREEN}));
+
     hintTextTable[RHT_SKULLS_HINT] = HintText(CustomMessage("Yeaaarrgh! I'm cursed!!^Please save me by destroying #[[d]] Spiders of the Curse# and I will give you my #[[1]]#!",
                                                  /*german*/ "Yeaaarrgh! Ich bin verflucht!^Bitte rette mich, indem du #[[d]] Skulltulas# zerstörst und ich werde dir dafür #[[1]]# geben!",
                                                  /*french*/ "Yeaaarrgh! Je suis maudit!^Détruit encore #[[d]] Araignées de la Malédiction# et j'aurai quelque chose à te donner! #([[1]])#",
                                                             {QM_YELLOW, QM_GREEN}));
+
+    hintTextTable[RHT_MASK_SHOP_HINT] = HintText(CustomMessage("Some young scrubs in the #Deku Theatre# love seeing Masks!^"
+                                                               "They'll give you #[[1]]# if you show them the #Skull Mask#, and #[[2]]# if you show them the #Mask of Truth#!",
+                                                               {QM_GREEN, QM_GREEN, QM_RED, QM_GREEN, QM_RED}));
 
     /*--------------------------
     |      GANON LINE TEXT     |

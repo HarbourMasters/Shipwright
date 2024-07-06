@@ -10,6 +10,8 @@
 #include "context.h"
 #include <soh/Enhancements/randomizer/randomizerTypes.h>
 #include "soh/Enhancements/randomizer/randomizer_check_objects.h"
+#include "soh/Enhancements/randomizer/randomizer_check_tracker.h"
+#include "soh/Enhancements/randomizer/tricks.h"
 #include <soh/Enhancements/custom-message/CustomMessageManager.h>
 #include "soh/Enhancements/item-tables/ItemTableTypes.h"
 #include "../custom-message/CustomMessageTypes.h"
@@ -43,7 +45,7 @@ class Randomizer {
     bool SpoilerFileExists(const char* spoilerFileName);
     void LoadMerchantMessages();
     void LoadHintMessages();
-    bool IsTrialRequired(RandomizerInf trial);
+    bool IsTrialRequired(s32 trialFlag);
     u8 GetRandoSettingValue(RandomizerSettingKey randoSettingKey);
     RandomizerCheck GetCheckFromRandomizerInf(RandomizerInf randomizerInf);
     RandomizerInf GetRandomizerInfFromCheck(RandomizerCheck rc);

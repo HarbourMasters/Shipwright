@@ -5,6 +5,7 @@
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/custom-message/CustomMessageInterfaceAddon.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/OTRGlobals.h"
 
 extern "C" {
 #include "z64.h"
@@ -70,11 +71,11 @@ void DrawNameTag(PlayState* play, const NameTag* nameTag) {
     Color_RGBA8 textboxColor = { 0, 0, 0, 80};
     Color_RGBA8 textColor = { 255, 255, 255, 255 };
 
-    if (CVarGetInteger("gCosmetics.Hud_NameTagActorBackground.Changed", 0)) {
-        textboxColor = CVarGetColor("gCosmetics.Hud_NameTagActorBackground.Value", textboxColor);
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.NameTagActorBackground.Changed"), 0)) {
+        textboxColor = CVarGetColor(CVAR_COSMETIC("HUD.NameTagActorBackground.Value"), textboxColor);
     }
-    if (CVarGetInteger("gCosmetics.Hud_NameTagActorText.Changed", 0)) {
-        textColor = CVarGetColor("gCosmetics.Hud_NameTagActorText.Value", textColor);
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.NameTagActorText.Changed"), 0)) {
+        textColor = CVarGetColor(CVAR_COSMETIC("HUD.NameTagActorText.Value"), textColor);
     }
 
     FrameInterpolation_RecordOpenChild(nameTag->actor, 10);
@@ -90,7 +91,7 @@ void DrawNameTag(PlayState* play, const NameTag* nameTag) {
     // Set position, billboard effect, scale (with mirror mode), then center nametag
     Matrix_Translate(nameTag->actor->world.pos.x, posY, nameTag->actor->world.pos.z, MTXMODE_NEW);
     Matrix_ReplaceRotation(&play->billboardMtxF);
-    Matrix_Scale(scale * (CVarGetInteger("gMirroredWorld", 0) ? -1 : 1), -scale, 1.0f, MTXMODE_APPLY);
+    Matrix_Scale(scale * (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0) ? -1 : 1), -scale, 1.0f, MTXMODE_APPLY);
     Matrix_Translate(-(float)nameTag->width / 2, -nameTag->height, 0, MTXMODE_APPLY);
     Matrix_ToMtx(nameTag->mtx, (char*)__FILE__, __LINE__);
 

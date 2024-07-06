@@ -46,10 +46,18 @@ template<> struct is_char_type<std::byte>: public boost::true_type {};
 
 #endif // #if !BOOST_VERSION_HAS_HASH_RANGE
 
+#if BOOST_USE_STD_TYPES
+#define BOOST_ENABLE_IF std::enable_if
+#define BOOST_IS_SAME std::is_same
+#else
+#define BOOST_ENABLE_IF boost::enable_if_
+#define BOOST_IS_SAME is_same
+#endif
+
 template<class It>
-inline typename boost::enable_if_<
+inline typename BOOST_ENABLE_IF<
     is_char_type<typename std::iterator_traits<It>::value_type>::value &&
-    is_same<typename std::iterator_traits<It>::iterator_category, std::random_access_iterator_tag>::value,
+    BOOST_IS_SAME<typename std::iterator_traits<It>::iterator_category, std::random_access_iterator_tag>::value,
 std::size_t>::type
     hash_range_32( uint32_t seed, It first, It last )
 {
@@ -113,5 +121,8 @@ std::size_t>::type
 
 } // namespace hash_detail
 } // namespace boost
+
+#undef BOOST_ENABLE_IF
+#undef BOOST_IS_SAME
 
 #endif // #ifndef BOOST_HASH_DETAIL_HASH_RANGE_32_HPP

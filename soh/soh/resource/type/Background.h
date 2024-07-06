@@ -3,11 +3,11 @@
 #include "resource/Resource.h"
 
 namespace SOH {
-class Background : public LUS::Resource<uint8_t> {
+class Background : public Ship::Resource<uint8_t> {
   public:
     using Resource::Resource;
 
-    Background() : Resource(std::shared_ptr<LUS::ResourceInitData>()) {}
+    Background() : Resource(std::shared_ptr<Ship::ResourceInitData>()) {}
 
     uint8_t* GetPointer();
     size_t GetPointerSize();
