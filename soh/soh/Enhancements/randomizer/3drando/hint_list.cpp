@@ -2859,10 +2859,17 @@ void StaticData::HintTable_Init() {
                                                 /*french*/ "Des grenouilles se trouvant sous l'eau vous fixent attentivement, tenant fermement #[[1]]#.",
                                                            {QM_GREEN}));
 
+    hintTextTable[RHT_OOT_HINT] = HintText(CustomMessage("Bring the #Spiritual Stones# to the past so you can receive #[[1]]# from Zelda and learn #[[2]]#!",
+                                                         {QM_BLUE, QM_GREEN, QM_GREEN}));
+
     hintTextTable[RHT_SKULLS_HINT] = HintText(CustomMessage("Yeaaarrgh! I'm cursed!!^Please save me by destroying #[[d]] Spiders of the Curse# and I will give you my #[[1]]#!",
                                                  /*german*/ "Yeaaarrgh! Ich bin verflucht!^Bitte rette mich, indem du #[[d]] Skulltulas# zerstörst und ich werde dir dafür #[[1]]# geben!",
                                                  /*french*/ "Yeaaarrgh! Je suis maudit!^Détruit encore #[[d]] Araignées de la Malédiction# et j'aurai quelque chose à te donner! #([[1]])#",
                                                             {QM_YELLOW, QM_GREEN}));
+
+    hintTextTable[RHT_MASK_SHOP_HINT] = HintText(CustomMessage("Some young scrubs in the #Deku Theatre# love seeing Masks!^"
+                                                               "They'll give you #[[1]]# if you show them the #Skull Mask#, and #[[2]]# if you show them the #Mask of Truth#!",
+                                                               {QM_GREEN, QM_GREEN, QM_RED, QM_GREEN, QM_RED}));
 
     /*--------------------------
     |      GANON LINE TEXT     |

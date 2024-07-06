@@ -2768,6 +2768,9 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
         else if (textId == TEXT_HBA_ALREADY_HAVE_1000 && ctx->GetOption(RSK_HBA_HINT)) {
             messageEntry = ctx->GetHint(RH_HBA_HINT)->GetHintMessage(MF_AUTO_FORMAT, 3);
         }
+        else if (textId == TEXT_MASK_SHOP_SIGN && ctx->GetOption(RSK_MASK_SHOP_HINT)) {
+            messageEntry = ctx->GetHint(RH_MASK_SHOP_HINT)->GetHintMessage(MF_AUTO_FORMAT);
+        }
     }
     if (textId == TEXT_GS_NO_FREEZE || textId == TEXT_GS_FREEZE) {
         if (CVarGetInteger(CVAR_ENHANCEMENT("InjectItemCounts"), 0) != 0) {
