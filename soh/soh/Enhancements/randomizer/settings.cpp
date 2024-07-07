@@ -1950,11 +1950,16 @@ void Settings::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocatio
             auto keyrings = keyRingOptions;
             if (mOptions[RSK_GERUDO_FORTRESS].Is(RO_GF_NORMAL) && mOptions[RSK_GERUDO_KEYS].IsNot(RO_GERUDO_KEYS_VANILLA)) {
                 keyrings.push_back(&mOptions[RSK_KEYRINGS_GERUDO_FORTRESS]);
+            } else {
+                mOptions[RSK_KEYRINGS_GERUDO_FORTRESS].SetSelectedIndex(RO_KEYRING_FOR_DUNGEON_OFF);
             }
             const uint32_t keyRingCount = mOptions[RSK_KEYRINGS].Is(RO_KEYRINGS_COUNT) ? mOptions[RSK_KEYRINGS_RANDOM_COUNT].Value<uint8_t>() : Random(0, static_cast<int>(keyrings.size()));
             Shuffle(keyrings);
             for (size_t i = 0; i < keyRingCount; i++) {
                 keyrings[i]->SetSelectedIndex(RO_KEYRING_FOR_DUNGEON_ON);
+            }
+            for (size_t i = keyRingCount; i < keyrings.size(); i++) {
+                keyrings[i]->SetSelectedIndex(RO_KEYRING_FOR_DUNGEON_OFF);
             }
         }
         if (mOptions[RSK_KEYRINGS_BOTTOM_OF_THE_WELL].Is(RO_KEYRING_FOR_DUNGEON_ON) || (mOptions[RSK_KEYRINGS_BOTTOM_OF_THE_WELL].Is(RO_KEYRING_FOR_DUNGEON_RANDOM) && Random(0, 2) == 1)) {
