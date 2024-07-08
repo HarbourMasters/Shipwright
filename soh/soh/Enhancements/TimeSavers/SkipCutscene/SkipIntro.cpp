@@ -12,7 +12,7 @@ extern "C" {
 void SkipIntro_Register() {
     REGISTER_VB_SHOULD(VB_PLAY_TRANSITION_CS, {
         if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Intro"), IS_RANDO)) {
-            if (gSaveContext.entranceIndex == ENTR_LINKS_HOUSE_0 && gSaveContext.cutsceneIndex == 0xFFF1) {
+            if (gSaveContext.entranceIndex == IS_RANDO ? Entrance_GetOverride(ENTR_LINKS_HOUSE_0) : ENTR_LINKS_HOUSE_0 && gSaveContext.cutsceneIndex == 0xFFF1) {
                 gSaveContext.cutsceneIndex = 0;
                 *should = false;
             }
