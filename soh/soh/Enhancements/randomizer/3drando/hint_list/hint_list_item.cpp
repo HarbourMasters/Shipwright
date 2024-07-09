@@ -746,7 +746,7 @@ void StaticData::HintTable_Init_Item() {
                                                    CustomMessage("Skulltula finders", /*german*/"Skulltula-Finder", /*french*/"une poignée de trouve-Skulltula")});
                                                     // /*spanish*/unos rastreadores de skulltulas
 
-    hintTextTable[RHT_BOTTLE_WITH_POE] = HintText(CustomMessage("a Poe Bottle", /*german*/"eine Geisterflasche", /*french*/"un Esprit en flacon"),
+    hintTextTable[RHT_BOTTLE_WITH_POE] = HintText(CustomMessage("a Poe Bottle", /*german*/"eine Irrlichtflasche", /*french*/"un Esprit en flacon"),
                                                   // /*spanish*/un Poe en una botella
                                                   {
                                                   CustomMessage("a bottle", /*german*/"eine Flasche", /*french*/"un flacon")
@@ -757,408 +757,408 @@ void StaticData::HintTable_Init_Item() {
                                                   CustomMessage("a face in the jar", /*german*/"ein Gesicht im Krug", /*french*/"un visage dans un bocal")});
                                                    // /*spanish*/una expresión enfrascada
 
-    hintTextTable[RHT_BOTTLE_WITH_BIG_POE] = HintText(CustomMessage("a Big Poe Bottle", /*german*/"", /*french*/"une Ame en flacon"),
+    hintTextTable[RHT_BOTTLE_WITH_BIG_POE] = HintText(CustomMessage("a Big Poe Bottle", /*german*/"eine Nachtschwärmerflasche", /*french*/"une Ame en flacon"),
                                                       // /*spanish*/un Gran Poe en una botella
                                                       {
-                                                      CustomMessage("a bottle", /*german*/"", /*french*/"un flacon")
+                                                      CustomMessage("a bottle", /*german*/"eine Flasche", /*french*/"un flacon")
                                                        // /*spanish*/una botella
                                                       }, {
-                                                      CustomMessage("the spookiest ghost", /*german*/"", /*french*/"un épouvantable spectre"),
+                                                      CustomMessage("the spookiest ghost", /*german*/"der spukhafteste Geist", /*french*/"un épouvantable spectre"),
                                                        // /*spanish*/el espectro más espeluznante
-                                                      CustomMessage("a sidequest spirit", /*german*/"", /*french*/"un précieux esprit")});
+                                                      CustomMessage("a sidequest spirit", /*german*/"ein Nebenmissionsgeist", /*french*/"un précieux esprit")});
                                                        // /*spanish*/un buen valorado espíritu
 
-    hintTextTable[RHT_RUTOS_LETTER] = HintText(CustomMessage("Ruto's Letter", /*german*/"", /*french*/"la lettre de Ruto"),
+    hintTextTable[RHT_RUTOS_LETTER] = HintText(CustomMessage("Ruto's Letter", /*german*/"Rutos Brief", /*french*/"la lettre de Ruto"),
                                                // /*spanish*/la carta de Ruto
                                                {
-                                               CustomMessage("a bottle", /*german*/"", /*french*/"un flacon")
+                                               CustomMessage("a bottle", /*german*/"eine Flasche", /*french*/"un flacon")
                                                 // /*spanish*/una botella
                                                }, {
-                                               CustomMessage("a call for help", /*german*/"", /*french*/"un appel au secours"),
+                                               CustomMessage("a call for help", /*german*/"ein Hilferuf", /*french*/"un appel au secours"),
                                                 // /*spanish*/una llamada de auxilio
-                                               CustomMessage("the note that Mweeps", /*german*/"", /*french*/"un message qui fait mwip"),
+                                               CustomMessage("the note that Mweeps", /*german*/"eine Notiz, die Mweeps", /*french*/"un message qui fait mwip"),
                                                 // /*spanish*/un escrito mweep
-                                               CustomMessage("an RHT_SOS call", /*german*/"", /*french*/"un signal RHT_SOS"),
+                                               CustomMessage("an RHT_SOS call", /*german*/"ein RHT_SOS Signal", /*french*/"un signal RHT_SOS"),
                                                 // /*spanish*/una nota de socorro
-                                               CustomMessage("a fishy stationery", /*german*/"", /*french*/"un papier mouillé")});
+                                               CustomMessage("a fishy stationery", /*german*/"ein nasses Papier", /*french*/"un papier mouillé")});
                                                 // /*spanish*/un mensaje de ayuda
 
-    hintTextTable[RHT_ZELDAS_LULLABY] = HintText(CustomMessage("Zelda's Lullaby", /*german*/"", /*french*/"la berceuse de Zelda"),
+    hintTextTable[RHT_ZELDAS_LULLABY] = HintText(CustomMessage("Zelda's Lullaby", /*german*/"Zeldas Wiegenlied", /*french*/"la berceuse de Zelda"),
                                                  // /*spanish*/la Nana de Zelda
                                                  {
-                                                 CustomMessage("a regular song", /*german*/"", /*french*/"une chanson normale"),
+                                                 CustomMessage("a regular song", /*german*/"ein normales Lied", /*french*/"une chanson normale"),
                                                   // /*spanish*/una cancion normal
-                                                 CustomMessage("something kept by the royal family", /*german*/"", /*french*/"une chose qui paralyse")
+                                                 CustomMessage("something kept by the royal family", /*german*/"etwas, das von der royalen Familie bewahrt wird", /*french*/"une chose qui paralyse")
                                                   // /*spanish*/algo guardado por la familia real
                                                  }, {
-                                                 CustomMessage("a song of royal slumber", /*german*/"", /*french*/"une chanson royale"),
+                                                 CustomMessage("a song of royal slumber", /*german*/"ein royales Lied", /*french*/"une chanson royale"),
                                                   // /*spanish*/la canción real
-                                                 CustomMessage("a triforce tune", /*german*/"", /*french*/"la musique sacrée")});
+                                                 CustomMessage("a triforce tune", /*german*/"eine heilige Musik", /*french*/"la musique sacrée")});
                                                   // /*spanish*/la melodía de la trifuerza
 
-    hintTextTable[RHT_EPONAS_SONG] = HintText(CustomMessage("Epona's Song", /*german*/"", /*french*/"le chant d'Epona"),
+    hintTextTable[RHT_EPONAS_SONG] = HintText(CustomMessage("Epona's Song", /*german*/"Eponas Lied", /*french*/"le chant d'Epona"),
                                               // /*spanish*/la Canción de Epona
                                               {
-                                              CustomMessage("a regular song", /*german*/"", /*french*/"une chanson normale")
+                                              CustomMessage("a regular song", /*german*/"ein normales Lied", /*french*/"une chanson normale")
                                                // /*spanish*/una cancion normal
                                               }, {
-                                              CustomMessage("an equestrian etude", /*german*/"", /*french*/"une hymne équestre"),
+                                              CustomMessage("an equestrian etude", /*german*/"eine Reiterhymne", /*french*/"une hymne équestre"),
                                                // /*spanish*/una copla ecuestre
-                                              CustomMessage("Malon's melody", /*german*/"", /*french*/"la mélodie des vaches"),
+                                              CustomMessage("Malon's melody", /*german*/"Malons Melodie", /*french*/"la mélodie des vaches"),
                                                // /*spanish*/la sonata de Malon
-                                              CustomMessage("a ranch song", /*german*/"", /*french*/"le chant des champs")});
+                                              CustomMessage("a ranch song", /*german*/"ein Lied des Ackers", /*french*/"le chant des champs")});
                                                // /*spanish*/un canto rupestre
 
-    hintTextTable[RHT_SARIAS_SONG] = HintText(CustomMessage("Saria's Song", /*german*/"", /*french*/"le chant de Saria"),
+    hintTextTable[RHT_SARIAS_SONG] = HintText(CustomMessage("Saria's Song", /*german*/"Salias Lied", /*french*/"le chant de Saria"),
                                               // /*spanish*/la Canción de Saria
                                               {
-                                              CustomMessage("a regular song", /*german*/"", /*french*/"une chanson normale"),
+                                              CustomMessage("a regular song", /*german*/"ein normales Lied", /*french*/"une chanson normale"),
                                                // /*spanish*/una cancion normal
-                                              CustomMessage("something given by Saria", /*german*/"", /*french*/"un cadeau de Saria")
+                                              CustomMessage("something given by Saria", /*german*/"ein Geschenk von Salia", /*french*/"un cadeau de Saria")
                                                // /*spanish*/un obsequio de Saria
                                               }, {
-                                              CustomMessage("a song of dancing Gorons", /*german*/"", /*french*/"une chanson danceuse"),
+                                              CustomMessage("a song of dancing Gorons", /*german*/"ein Lied der tanzenden Goronen", /*french*/"une chanson danceuse"),
                                                // /*spanish*/un pegadizo tono goron
-                                              CustomMessage("Saria's phone number", /*german*/"", /*french*/"le téléphone d'une amie")});
+                                              CustomMessage("Saria's phone number", /*german*/"Salias Telefonnummer", /*french*/"le téléphone d'une amie")});
                                                // /*spanish*/una consulta de asistencia
 
-    hintTextTable[RHT_SUNS_SONG] = HintText(CustomMessage("the Sun's Song", /*german*/"", /*french*/"le chant du soleil"),
+    hintTextTable[RHT_SUNS_SONG] = HintText(CustomMessage("the Sun's Song", /*german*/"Hymne der Sonne", /*french*/"le chant du soleil"),
                                             // /*spanish*/la Canción del Sol
                                             {
-                                            CustomMessage("a regular song", /*german*/"", /*french*/"une chanson normale"),
+                                            CustomMessage("a regular song", /*german*/"ein normales Lied", /*french*/"une chanson normale"),
                                              // /*spanish*/una cancion normal
-                                            CustomMessage("something that can stun", /*german*/"", /*french*/"une chose qui peut paralyser")
+                                            CustomMessage("something that can stun", /*german*/"etwas, das paralysieren kann", /*french*/"une chose qui peut paralyser")
                                              // /*spanish*/algo que pueda paralizar
                                             }, {
-                                            CustomMessage("Sunny Day", /*german*/"", /*french*/"Zénith"),
+                                            CustomMessage("Sunny Day", /*german*/"sonniger Tag", /*french*/"Zénith"),
                                              // /*spanish*/un día soleado
-                                            CustomMessage("the ReDead's bane", /*german*/"", /*french*/"le fléau des Éffrois"),
+                                            CustomMessage("the ReDead's bane", /*german*/"das Verderben der Remorts", /*french*/"le fléau des Éffrois"),
                                              // /*spanish*/la destructora de Redeads
-                                            CustomMessage("the Gibdo's bane", /*german*/"", /*french*/"le fléau des Gibdo")});
+                                            CustomMessage("the Gibdo's bane", /*german*/"das Verderben der Gibdos", /*french*/"le fléau des Gibdo")});
                                              // /*spanish*/la destructora de Gibdos
 
-    hintTextTable[RHT_SONG_OF_TIME] = HintText(CustomMessage("the Song of Time", /*german*/"", /*french*/"le chant du temps"),
+    hintTextTable[RHT_SONG_OF_TIME] = HintText(CustomMessage("the Song of Time", /*german*/"Hymne der Zeit", /*french*/"le chant du temps"),
                                                // /*spanish*/la Canción del tiempo
                                                {
-                                               CustomMessage("a regular song", /*german*/"", /*french*/"une chanson normale")
+                                               CustomMessage("a regular song", /*german*/"ein normales Lied", /*french*/"une chanson normale")
                                                 // /*spanish*/una cancion normal
                                                }, {
-                                               CustomMessage("a song 7 years long", /*german*/"", /*french*/"le flot du temps"),
+                                               CustomMessage("a song 7 years long", /*german*/"ein sieben Jahre langes Lied", /*french*/"le flot du temps"),
                                                 // /*spanish*/la setenada canción
-                                               CustomMessage("the tune of ages", /*german*/"", /*french*/"le Chant des Âges")});
+                                               CustomMessage("the tune of ages", /*german*/"Hymne des Äons", /*french*/"le Chant des Âges")});
                                                 // /*spanish*/la melodía eónica
 
-    hintTextTable[RHT_SONG_OF_STORMS] = HintText(CustomMessage("the Song of Storms", /*german*/"", /*french*/"le chant des tempêtes"),
+    hintTextTable[RHT_SONG_OF_STORMS] = HintText(CustomMessage("the Song of Storms", /*german*/"Hymne des Sturms", /*french*/"le chant des tempêtes"),
                                                  // /*spanish*/la Canción de la Tormenta
                                                  {
-                                                 CustomMessage("a regular song", /*german*/"", /*french*/"une chanson normale")
+                                                 CustomMessage("a regular song", /*german*/"ein normales Lied", /*french*/"une chanson normale")
                                                   // /*spanish*/una cancion normal
                                                  }, {
-                                                 CustomMessage("Rain Dance", /*german*/"", /*french*/"Danse Pluie"),
+                                                 CustomMessage("Rain Dance", /*german*/"Regentanz", /*french*/"Danse Pluie"),
                                                   // /*spanish*/la danza de la lluvia
-                                                 CustomMessage("a thunderstorm tune", /*german*/"", /*french*/"une hymne foudroyante"),
+                                                 CustomMessage("a thunderstorm tune", /*german*/"eine Gewitterhymne", /*french*/"une hymne foudroyante"),
                                                   // /*spanish*/una sonata tormentosa
-                                                 CustomMessage("windmill acceleration", /*german*/"", /*french*/"l'accélérateur de moulins")});
+                                                 CustomMessage("windmill acceleration", /*german*/"Windmühlenbeschleunigung", /*french*/"l'accélérateur de moulins")});
                                                   // /*spanish*/el arranque de molinos
 
-    hintTextTable[RHT_MINUET_OF_FOREST] = HintText(CustomMessage("the Minuet of Forest", /*german*/"", /*french*/"le menuet de la forêt"),
+    hintTextTable[RHT_MINUET_OF_FOREST] = HintText(CustomMessage("the Minuet of Forest", /*german*/"Menuett des Waldess", /*french*/"le menuet de la forêt"),
                                                    // /*spanish*/el Minueto del bosque
                                                    {
-                                                   CustomMessage("a warp song", /*german*/"", /*french*/"une chanson de téléportation")
+                                                   CustomMessage("a warp song", /*german*/"ein Teleportationslied", /*french*/"une chanson de téléportation")
                                                     // /*spanish*/una canción de teletransportación
                                                    }, {
-                                                   CustomMessage("the song of tall trees", /*german*/"", /*french*/"le bruit des arbres"),
+                                                   CustomMessage("the song of tall trees", /*german*/"Lied der großen Bäume", /*french*/"le bruit des arbres"),
                                                     // /*spanish*/la canción de las copas
-                                                   CustomMessage("an arboreal anthem", /*german*/"", /*french*/"l'hymne sylvestre"),
+                                                   CustomMessage("an arboreal anthem", /*german*/"eine baumartige Hymne", /*french*/"l'hymne sylvestre"),
                                                     // /*spanish*/el himno forestal
-                                                   CustomMessage("a green spark trail", /*german*/"", /*french*/"une comète verte")});
+                                                   CustomMessage("a green spark trail", /*german*/"ein grüner Komet", /*french*/"une comète verte")});
                                                     // /*spanish*/el sendero esmeralda
 
-    hintTextTable[RHT_BOLERO_OF_FIRE] = HintText(CustomMessage("the Bolero of Fire", /*german*/"", /*french*/"le boléro du feu"),
+    hintTextTable[RHT_BOLERO_OF_FIRE] = HintText(CustomMessage("the Bolero of Fire", /*german*/"Bolero des Feuers", /*french*/"le boléro du feu"),
                                                  // /*spanish*/el Bolero del fuego
                                                  {
-                                                 CustomMessage("a warp song", /*german*/"", /*french*/"une chanson de téléportation")
+                                                 CustomMessage("a warp song", /*german*/"ein Teleportationslied", /*french*/"une chanson de téléportation")
                                                   // /*spanish*/una canción de teletransportación
                                                  }, {
-                                                 CustomMessage("a song of lethal lava", /*german*/"", /*french*/"une musique enflammée"),
+                                                 CustomMessage("a song of lethal lava", /*german*/"Lied der tödlichen Lava", /*french*/"une musique enflammée"),
                                                   // /*spanish*/la canción de la lava
-                                                 CustomMessage("a red spark trail", /*german*/"", /*french*/"une comète rouge"),
+                                                 CustomMessage("a red spark trail", /*german*/"ein roter Komet", /*french*/"une comète rouge"),
                                                   // /*spanish*/el sendero rubí
-                                                 CustomMessage("a volcanic verse", /*german*/"", /*french*/"le souffle du volcan")});
+                                                 CustomMessage("a volcanic verse", /*german*/"ein vulkanischer Vers", /*french*/"le souffle du volcan")});
                                                   // /*spanish*/el verso volcánico
 
-    hintTextTable[RHT_SERENADE_OF_WATER] = HintText(CustomMessage("the Serenade of Water", /*german*/"", /*french*/"la sérénade de l'eau"),
+    hintTextTable[RHT_SERENADE_OF_WATER] = HintText(CustomMessage("the Serenade of Water", /*german*/"Serenade des Wassers", /*french*/"la sérénade de l'eau"),
                                                     // /*spanish*/la Serenata del agua
                                                     {
-                                                    CustomMessage("a warp song", /*german*/"", /*french*/"une chanson de téléportation")
+                                                    CustomMessage("a warp song", /*german*/"ein Teleportationslied", /*french*/"une chanson de téléportation")
                                                      // /*spanish*/una canción de teletransportación
                                                     }, {
-                                                    CustomMessage("a song of a damp ditch", /*german*/"", /*french*/"le calme de l'eau"),
+                                                    CustomMessage("a song of a damp ditch", /*german*/"die Stille des Wassers", /*french*/"le calme de l'eau"),
                                                      // /*spanish*/la canción del estanque
-                                                    CustomMessage("a blue spark trail", /*german*/"", /*french*/"une comète bleue"),
+                                                    CustomMessage("a blue spark trail", /*german*/"ein blauer Komet", /*french*/"une comète bleue"),
                                                      // /*spanish*/el sendero zafiro
-                                                    CustomMessage("the lake's lyric", /*german*/"", /*french*/"la voix du lac")});
+                                                    CustomMessage("the lake's lyric", /*german*/"die Lyrik des Sees", /*french*/"la voix du lac")});
                                                      // /*spanish*/la letra del lago
 
-    hintTextTable[RHT_REQUIEM_OF_SPIRIT] = HintText(CustomMessage("the Requiem of Spirit", /*german*/"", /*french*/"le requiem des esprits"),
+    hintTextTable[RHT_REQUIEM_OF_SPIRIT] = HintText(CustomMessage("the Requiem of Spirit", /*german*/"Requiem der Geister", /*french*/"le requiem des esprits"),
                                                     // /*spanish*/el Réquiem del espíritu
                                                     {
-                                                    CustomMessage("a warp song", /*german*/"", /*french*/"une chanson de téléportation")
+                                                    CustomMessage("a warp song", /*german*/"ein Teleportationslied", /*french*/"une chanson de téléportation")
                                                      // /*spanish*/una canción de teletransportación
                                                     }, {
-                                                    CustomMessage("a song of sandy statues", /*german*/"", /*french*/"la mélodie d'une grande statue"),
+                                                    CustomMessage("a song of sandy statues", /*german*/"Lied der sandigen Statuen", /*french*/"la mélodie d'une grande statue"),
                                                      // /*spanish*/la canción de la gran estatua
-                                                    CustomMessage("an orange spark trail", /*german*/"", /*french*/"une comète orange"),
+                                                    CustomMessage("an orange spark trail", /*german*/"ein oranger Komet", /*french*/"une comète orange"),
                                                      // /*spanish*/el sendero ámbar
-                                                    CustomMessage("the desert ditty", /*german*/"", /*french*/"le vent du désert")});
+                                                    CustomMessage("the desert ditty", /*german*/"der Wind der Wüste", /*french*/"le vent du désert")});
                                                      // /*spanish*/la estrofa del desierto
 
-    hintTextTable[RHT_NOCTURNE_OF_SHADOW] = HintText(CustomMessage("the Nocturne of Shadow", /*german*/"", /*french*/"le nocturne de l'ombre"),
+    hintTextTable[RHT_NOCTURNE_OF_SHADOW] = HintText(CustomMessage("the Nocturne of Shadow", /*german*/"Nocturne des Schattens", /*french*/"le nocturne de l'ombre"),
                                                      // /*spanish*/el Nocturno de la sombra
                                                      {
-                                                     CustomMessage("a warp song", /*german*/"", /*french*/"une chanson de téléportation")
+                                                     CustomMessage("a warp song", /*german*/"ein Teleportationslied", /*french*/"une chanson de téléportation")
                                                       // /*spanish*/una canción de teletransportación
                                                      }, {
-                                                     CustomMessage("a song of spooky spirits", /*german*/"", /*french*/"une hymne de chair de poule"),
+                                                     CustomMessage("a song of spooky spirits", /*german*/"Lied der spukhaften Geister", /*french*/"une hymne de chair de poule"),
                                                       // /*spanish*/la canción de los espectros
-                                                     CustomMessage("a graveyard boogie", /*german*/"", /*french*/"un boogie de fantômes"),
+                                                     CustomMessage("a graveyard boogie", /*german*/"ein Friedhofsboogie", /*french*/"un boogie de fantômes"),
                                                       // /*spanish*/una honra fúnebre
-                                                     CustomMessage("a haunted hymn", /*german*/"", /*french*/"une chanson lugubre"),
+                                                     CustomMessage("a haunted hymn", /*german*/"eine Spukhymne", /*french*/"une chanson lugubre"),
                                                       // /*spanish*/una estrofa encantada
-                                                     CustomMessage("a purple spark trail", /*german*/"", /*french*/"une comète mauve")});
+                                                     CustomMessage("a purple spark trail", /*german*/"ein violetter Komet", /*french*/"une comète mauve")});
                                                       // /*spanish*/el sendero malva
 
-    hintTextTable[RHT_PRELUDE_OF_LIGHT] = HintText(CustomMessage("the Prelude of Light", /*german*/"", /*french*/"le prélude de la lumière"),
+    hintTextTable[RHT_PRELUDE_OF_LIGHT] = HintText(CustomMessage("the Prelude of Light", /*german*/"Kantate des Lichts", /*french*/"le prélude de la lumière"),
                                                    // /*spanish*/el Preludio de la luz
                                                    {
-                                                   CustomMessage("a warp song", /*german*/"", /*french*/"une chanson de téléportation")
+                                                   CustomMessage("a warp song", /*german*/"ein Teleportationslied", /*french*/"une chanson de téléportation")
                                                     // /*spanish*/una canción de teletransportación
                                                    }, {
-                                                   CustomMessage("a luminous prologue melody", /*german*/"", /*french*/"une matine illuminée"),
+                                                   CustomMessage("a luminous prologue melody", /*german*/"eine leuchtende Melodie", /*french*/"une matine illuminée"),
                                                     // /*spanish*/la melodía refulgente
-                                                   CustomMessage("a yellow spark trail", /*german*/"", /*french*/"une comète jaune"),
+                                                   CustomMessage("a yellow spark trail", /*german*/"ein gelber Komet", /*french*/"une comète jaune"),
                                                     // /*spanish*/el sendero resplandeciente
-                                                   CustomMessage("the temple traveler", /*german*/"", /*french*/"un chant de sanctuaire")});
+                                                   CustomMessage("the temple traveler", /*german*/"ein Tempelreisender", /*french*/"un chant de sanctuaire")});
                                                     // /*spanish*/la ruta del templo
 
-    hintTextTable[RHT_DEKU_TREE_MAP] = HintText(CustomMessage("the Deku Tree Map", /*german*/"", /*french*/"la carte de l'Arbre Mojo"),
+    hintTextTable[RHT_DEKU_TREE_MAP] = HintText(CustomMessage("the Deku Tree Map", /*german*/"die Karte des Deku-Baums", /*french*/"la carte de l'Arbre Mojo"),
                                                 // /*spanish*/el mapa del Gran Árbol Deku
                                                 {
-                                                CustomMessage("a dungeon map", /*german*/"", /*french*/"une carte")
+                                                CustomMessage("a dungeon map", /*german*/"eine Karte", /*french*/"une carte")
                                                  // /*spanish*/un mapa
                                                 }, {
-                                                CustomMessage("a mossy atlas", /*german*/"", /*french*/"un atlas boisé"),
+                                                CustomMessage("a mossy atlas", /*german*/"ein moosiger Atlas", /*french*/"un atlas boisé"),
                                                  // /*spanish*/un atlas musgoso
-                                                CustomMessage("some mossy blueprints", /*german*/"", /*french*/"un plan boisé")});
+                                                CustomMessage("some mossy blueprints", /*german*/"einige moosige Blaupausen", /*french*/"un plan boisé")});
                                                  // /*spanish*/unos planos musgosos
 
-    hintTextTable[RHT_DODONGOS_CAVERN_MAP] = HintText(CustomMessage("the Dodongo's Cavern Map", /*german*/"", /*french*/"la carte de la Caverne Dodongo"),
+    hintTextTable[RHT_DODONGOS_CAVERN_MAP] = HintText(CustomMessage("the Dodongo's Cavern Map", /*german*/"die Karte der Dodongo-Höhle", /*french*/"la carte de la Caverne Dodongo"),
                                                       // /*spanish*/el mapa de la Cueva de los Dodongos
                                                       {
-                                                      CustomMessage("a dungeon map", /*german*/"", /*french*/"une carte")
+                                                      CustomMessage("a dungeon map", /*german*/"eine Karte", /*french*/"une carte")
                                                        // /*spanish*/un mapa
                                                       }, {
-                                                      CustomMessage("a rocky atlas", /*german*/"", /*french*/"un atlas rocheux"),
+                                                      CustomMessage("a rocky atlas", /*german*/"eine felsiger Atlas", /*french*/"un atlas rocheux"),
                                                        // /*spanish*/un atlas rocoso
-                                                      CustomMessage("some rocky blueprints", /*german*/"", /*french*/"un plan rocheux")});
+                                                      CustomMessage("some rocky blueprints", /*german*/"einige felsige Blaupausen", /*french*/"un plan rocheux")});
                                                        // /*spanish*/unos planos rocosos
 
-    hintTextTable[RHT_JABU_JABUS_BELLY_MAP] = HintText(CustomMessage("the Jabu-Jabu's Belly Map", /*german*/"", /*french*/"la carte de Jabu-Jabu"),
+    hintTextTable[RHT_JABU_JABUS_BELLY_MAP] = HintText(CustomMessage("the Jabu-Jabu's Belly Map", /*german*/"die Karte des Jabu-Jabu-Bauchs", /*french*/"la carte de Jabu-Jabu"),
                                                        // /*spanish*/el mapa de la Tripa de Jabu-Jabu
                                                        {
-                                                       CustomMessage("a dungeon map", /*german*/"", /*french*/"une carte")
+                                                       CustomMessage("a dungeon map", /*german*/"eine Karte", /*french*/"une carte")
                                                         // /*spanish*/un mapa
                                                        }, {
-                                                       CustomMessage("a fishy atlas", /*german*/"", /*french*/"un atlas digéré"),
+                                                       CustomMessage("a fishy atlas", /*german*/"ein fischiger Atlas", /*french*/"un atlas digéré"),
                                                         // /*spanish*/un atlas digesto
-                                                       CustomMessage("some fishy blueprints", /*german*/"", /*french*/"un plan digéré")});
+                                                       CustomMessage("some fishy blueprints", /*german*/"einige fischige Blaupausen", /*french*/"un plan digéré")});
                                                         // /*spanish*/unos planos digestos
 
-    hintTextTable[RHT_FOREST_TEMPLE_MAP] = HintText(CustomMessage("the Forest Temple Map", /*german*/"", /*french*/"la carte du Temple de la Forêt"),
+    hintTextTable[RHT_FOREST_TEMPLE_MAP] = HintText(CustomMessage("the Forest Temple Map", /*german*/"die Karte des Waldtempels", /*french*/"la carte du Temple de la Forêt"),
                                                     // /*spanish*/el mapa del Templo del Bosque
                                                     {
-                                                    CustomMessage("a dungeon map", /*german*/"", /*french*/"une carte")
+                                                    CustomMessage("a dungeon map", /*german*/"eine Karte", /*french*/"une carte")
                                                      // /*spanish*/un mapa
                                                     }, {
-                                                    CustomMessage("a sylvan atlas", /*german*/"", /*french*/"un atlas sylvestre"),
+                                                    CustomMessage("a sylvan atlas", /*german*/"ein waldiger Atlas", /*french*/"un atlas sylvestre"),
                                                      // /*spanish*/un atlas enselvado
-                                                    CustomMessage("some sylvan blueprints", /*german*/"", /*french*/"un plan sylvestre")});
+                                                    CustomMessage("some sylvan blueprints", /*german*/"einige waldige Blaupausen", /*french*/"un plan sylvestre")});
                                                      // /*spanish*/unos planos enselvados
 
-    hintTextTable[RHT_FIRE_TEMPLE_MAP] = HintText(CustomMessage("the Fire Temple Map", /*german*/"", /*french*/"la carte du Temple du Feu"),
+    hintTextTable[RHT_FIRE_TEMPLE_MAP] = HintText(CustomMessage("the Fire Temple Map", /*german*/"die Karte des Feuertempels", /*french*/"la carte du Temple du Feu"),
                                                   // /*spanish*/el mapa del Templo del Fuego
                                                   {
-                                                  CustomMessage("a dungeon map", /*german*/"", /*french*/"une carte")
+                                                  CustomMessage("a dungeon map", /*german*/"eine Karte", /*french*/"une carte")
                                                    // /*spanish*/un mapa
                                                   }, {
-                                                  CustomMessage("a molten atlas", /*german*/"", /*french*/"un atlas fondu"),
+                                                  CustomMessage("a molten atlas", /*german*/"ein geschmolzener Atlas", /*french*/"un atlas fondu"),
                                                    // /*spanish*/un atlas fundido
-                                                  CustomMessage("some molten blueprints", /*german*/"", /*french*/"un plan fondu")});
+                                                  CustomMessage("some molten blueprints", /*german*/"einige geschmolzene Blaupausen", /*french*/"un plan fondu")});
                                                    // /*spanish*/unos planos fundidos
 
-    hintTextTable[RHT_WATER_TEMPLE_MAP] = HintText(CustomMessage("the Water Temple Map", /*german*/"", /*french*/"la carte du Temple de l'Eau"),
+    hintTextTable[RHT_WATER_TEMPLE_MAP] = HintText(CustomMessage("the Water Temple Map", /*german*/"die Karte des Wassertempels", /*french*/"la carte du Temple de l'Eau"),
                                                    // /*spanish*/el mapa del Templo del Agua
                                                    {
-                                                   CustomMessage("a dungeon map", /*german*/"", /*french*/"une carte")
+                                                   CustomMessage("a dungeon map", /*german*/"eine Karte", /*french*/"une carte")
                                                     // /*spanish*/un mapa
                                                    }, {
-                                                   CustomMessage("a wet atlas", /*german*/"", /*french*/"un atlas humide"),
+                                                   CustomMessage("a wet atlas", /*german*/"ein nasser Atlas", /*french*/"un atlas humide"),
                                                     // /*spanish*/un atlas mojado
-                                                   CustomMessage("some wet blueprints", /*german*/"", /*french*/"un plan humide")});
+                                                   CustomMessage("some wet blueprints", /*german*/"einige nasse Blaupausen", /*french*/"un plan humide")});
                                                     // /*spanish*/unos planos mojados
 
-    hintTextTable[RHT_SPIRIT_TEMPLE_MAP] = HintText(CustomMessage("the Spirit Temple Map", /*german*/"", /*french*/"la carte du Temple de l'Esprit"),
+    hintTextTable[RHT_SPIRIT_TEMPLE_MAP] = HintText(CustomMessage("the Spirit Temple Map", /*german*/"die Karte des Geistertempels", /*french*/"la carte du Temple de l'Esprit"),
                                                     // /*spanish*/el mapa del Templo del Espíritu
                                                     {
-                                                    CustomMessage("a dungeon map", /*german*/"", /*french*/"une carte")
+                                                    CustomMessage("a dungeon map", /*german*/"eine Karte", /*french*/"une carte")
                                                      // /*spanish*/un mapa
                                                     }, {
-                                                    CustomMessage("a sandy atlas", /*german*/"", /*french*/"un atlas sableux"),
+                                                    CustomMessage("a sandy atlas", /*german*/"ein sandiger Atlas", /*french*/"un atlas sableux"),
                                                      // /*spanish*/un atlas arenoso
-                                                    CustomMessage("some sandy blueprints", /*german*/"", /*french*/"un plan sableux")});
+                                                    CustomMessage("some sandy blueprints", /*german*/"einige sandige Blaupausen", /*french*/"un plan sableux")});
                                                      // /*spanish*/unos planos arenosos
 
-    hintTextTable[RHT_SHADOW_TEMPLE_MAP] = HintText(CustomMessage("the Shadow Temple Map", /*german*/"", /*french*/"la carte du Temple de l'Ombre"),
+    hintTextTable[RHT_SHADOW_TEMPLE_MAP] = HintText(CustomMessage("the Shadow Temple Map", /*german*/"die Karte des Schattentempels", /*french*/"la carte du Temple de l'Ombre"),
                                                     // /*spanish*/el mapa del Templo de las Sombras
                                                     {
-                                                    CustomMessage("a dungeon map", /*german*/"", /*french*/"une carte")
+                                                    CustomMessage("a dungeon map", /*german*/"eine Karte", /*french*/"une carte")
                                                      // /*spanish*/un mapa
                                                     }, {
-                                                    CustomMessage("a creepy atlas", /*german*/"", /*french*/"un atlas sinistre"),
+                                                    CustomMessage("a creepy atlas", /*german*/"eine gruseliger Atlas", /*french*/"un atlas sinistre"),
                                                      // /*spanish*/un atlas siniestra
-                                                    CustomMessage("some creepy blueprints", /*german*/"", /*french*/"un plan sinistre")});
+                                                    CustomMessage("some creepy blueprints", /*german*/"einige gruselige Blaupausen", /*french*/"un plan sinistre")});
                                                      // /*spanish*/unos planos siniestras
 
-    hintTextTable[RHT_BOTTOM_OF_THE_WELL_MAP] = HintText(CustomMessage("the Bottom of the Well Map", /*german*/"", /*french*/"la carte du fond du Puits"),
+    hintTextTable[RHT_BOTTOM_OF_THE_WELL_MAP] = HintText(CustomMessage("the Bottom of the Well Map", /*german*/"die Karte des Brunnenbodens", /*french*/"la carte du fond du Puits"),
                                                          // /*spanish*/el mapa del Fondo del pozo
                                                          {
-                                                         CustomMessage("a dungeon map", /*german*/"", /*french*/"une carte")
+                                                         CustomMessage("a dungeon map", /*german*/"eine Karte", /*french*/"une carte")
                                                           // /*spanish*/un mapa
                                                          }, {
-                                                         CustomMessage("a moldy atlas", /*german*/"", /*french*/"un atlas moisi"),
+                                                         CustomMessage("a moldy atlas", /*german*/"ein schimmeliger Atlas", /*french*/"un atlas moisi"),
                                                           // /*spanish*/un atlas mohoso
-                                                         CustomMessage("some moldy blueprints", /*german*/"", /*french*/"un plan moisi")});
+                                                         CustomMessage("some moldy blueprints", /*german*/"einige schimmelige Blaupausen", /*french*/"un plan moisi")});
                                                           // /*spanish*/unos planos mohosos
 
-    hintTextTable[RHT_ICE_CAVERN_MAP] = HintText(CustomMessage("the Ice Cavern Map", /*german*/"", /*french*/"la carte de la Caverne Polaire"),
+    hintTextTable[RHT_ICE_CAVERN_MAP] = HintText(CustomMessage("the Ice Cavern Map", /*german*/"die Karte der Eishöhle", /*french*/"la carte de la Caverne Polaire"),
                                                  // /*spanish*/el mapa de la Caverna de hielo
                                                  {
-                                                 CustomMessage("a dungeon map", /*german*/"", /*french*/"une carte")
+                                                 CustomMessage("a dungeon map", /*german*/"eine Karte", /*french*/"une carte")
                                                   // /*spanish*/un mapa
                                                  }, {
-                                                 CustomMessage("a polar atlas", /*german*/"", /*french*/"un atlas polaire"),
+                                                 CustomMessage("a polar atlas", /*german*/"ein polarer Atlas", /*french*/"un atlas polaire"),
                                                   // /*spanish*/un atlas polar
-                                                 CustomMessage("some polar blueprints", /*german*/"", /*french*/"un plan polaire")});
+                                                 CustomMessage("some polar blueprints", /*german*/"einige polare Blaupausen", /*french*/"un plan polaire")});
                                                   // /*spanish*/unos planos polars
 
-    hintTextTable[RHT_DEKU_TREE_COMPASS] = HintText(CustomMessage("the Deku Tree Compass", /*german*/"", /*french*/"la boussole de l'Arbre Mojo"),
+    hintTextTable[RHT_DEKU_TREE_COMPASS] = HintText(CustomMessage("the Deku Tree Compass", /*german*/"der Kompaß des Deku-Baums", /*french*/"la boussole de l'Arbre Mojo"),
                                                     // /*spanish*/la brújula del Gran Árbol Deku
                                                     {
-                                                    CustomMessage("a compass", /*german*/"", /*french*/"une boussole")
+                                                    CustomMessage("a compass", /*german*/"ein Kompaß", /*french*/"une boussole")
                                                      // /*spanish*/una brújula
                                                     }, {
-                                                    CustomMessage("a mossy treasure tracker", /*german*/"", /*french*/"un cherche-trésor boisé"),
+                                                    CustomMessage("a mossy treasure tracker", /*german*/"ein moosiger Schatzfinder", /*french*/"un cherche-trésor boisé"),
                                                      // /*spanish*/un zahorí musgoso
-                                                    CustomMessage("a mossy magnetic needle", /*german*/"", /*french*/"une aimant boisée")});
+                                                    CustomMessage("a mossy magnetic needle", /*german*/"eine moosige Magnetnadel", /*french*/"une aimant boisée")});
                                                      // /*spanish*/un imán musgoso
 
-    hintTextTable[RHT_DODONGOS_CAVERN_COMPASS] = HintText(CustomMessage("the Dodongo's Cavern Compass", /*german*/"", /*french*/"la boussole de la Caverne Dodongo"),
+    hintTextTable[RHT_DODONGOS_CAVERN_COMPASS] = HintText(CustomMessage("the Dodongo's Cavern Compass", /*german*/"der Kompaß der Dodongo-Höhle", /*french*/"la boussole de la Caverne Dodongo"),
                                                           // /*spanish*/la brújula de la Cueva de los Dodongos
                                                           {
-                                                          CustomMessage("a compass", /*german*/"", /*french*/"une boussole")
+                                                          CustomMessage("a compass", /*german*/"ein Kompaß", /*french*/"une boussole")
                                                            // /*spanish*/una brújula
                                                           }, {
-                                                          CustomMessage("a rocky treasure tracker", /*german*/"", /*french*/"un cherche-trésor rocheux"),
+                                                          CustomMessage("a rocky treasure tracker", /*german*/"ein felsiger Schatzfinder", /*french*/"un cherche-trésor rocheux"),
                                                            // /*spanish*/un zahorí rocoso
-                                                          CustomMessage("a rocky magnetic needle", /*german*/"", /*french*/"une aimant rocheux")});
+                                                          CustomMessage("a rocky magnetic needle", /*german*/"eine felsige Magnetnadel", /*french*/"une aimant rocheux")});
                                                            // /*spanish*/un imán rocoso
 
-    hintTextTable[RHT_JABU_JABUS_BELLY_COMPASS] = HintText(CustomMessage("the Jabu-Jabu's Belly Compass", /*german*/"", /*french*/"la boussole de Jabu-Jabu"),
+    hintTextTable[RHT_JABU_JABUS_BELLY_COMPASS] = HintText(CustomMessage("the Jabu-Jabu's Belly Compass", /*german*/"der Kompaß des Jabu-Jabu-Bauchs", /*french*/"la boussole de Jabu-Jabu"),
                                                            // /*spanish*/la brújula de la Tripa de Jabu-Jabu
                                                            {
-                                                           CustomMessage("a compass", /*german*/"", /*french*/"une boussole")
+                                                           CustomMessage("a compass", /*german*/"ein Kompaß", /*french*/"une boussole")
                                                             // /*spanish*/una brújula
                                                            }, {
-                                                           CustomMessage("a fishy treasure tracker", /*german*/"", /*french*/"un cherche-trésor digéré"),
+                                                           CustomMessage("a fishy treasure tracker", /*german*/"ein fischiger Schatzfinder", /*french*/"un cherche-trésor digéré"),
                                                             // /*spanish*/un zahorí digesto
-                                                           CustomMessage("a fishy magnetic needle", /*german*/"", /*french*/"une aimant digéré")});
+                                                           CustomMessage("a fishy magnetic needle", /*german*/"eine fischige Magnetnadel", /*french*/"une aimant digéré")});
                                                             // /*spanish*/un imán digesto
 
-    hintTextTable[RHT_FOREST_TEMPLE_COMPASS] = HintText(CustomMessage("the Forest Temple Compass", /*german*/"", /*french*/"la boussole du Temple de la Forêt"),
+    hintTextTable[RHT_FOREST_TEMPLE_COMPASS] = HintText(CustomMessage("the Forest Temple Compass", /*german*/"der Kompaß des Waldtempels", /*french*/"la boussole du Temple de la Forêt"),
                                                         // /*spanish*/la brújula del Templo del Bosque
                                                         {
-                                                        CustomMessage("a compass", /*german*/"", /*french*/"une boussole")
+                                                        CustomMessage("a compass", /*german*/"ein Kompaß", /*french*/"une boussole")
                                                          // /*spanish*/una brújula
                                                         }, {
-                                                        CustomMessage("a sylvan treasure tracker", /*german*/"", /*french*/"un cherche-trésor sylvestre"),
+                                                        CustomMessage("a sylvan treasure tracker", /*german*/"ein waldiger Schatzfinder", /*french*/"un cherche-trésor sylvestre"),
                                                          // /*spanish*/un zahorí enselvado
-                                                        CustomMessage("a sylvan magnetic needle", /*german*/"", /*french*/"une aimant sylvestre")});
+                                                        CustomMessage("a sylvan magnetic needle", /*german*/"eine waldige Magnetnadel", /*french*/"une aimant sylvestre")});
                                                          // /*spanish*/un imán enselvado
 
-    hintTextTable[RHT_FIRE_TEMPLE_COMPASS] = HintText(CustomMessage("the Fire Temple Compass", /*german*/"", /*french*/"la boussole du Temple du Feu"),
+    hintTextTable[RHT_FIRE_TEMPLE_COMPASS] = HintText(CustomMessage("the Fire Temple Compass", /*german*/"der Kompaß des Feuertempels", /*french*/"la boussole du Temple du Feu"),
                                                       // /*spanish*/la brújula del Templo del Fuego
                                                       {
-                                                      CustomMessage("a compass", /*german*/"", /*french*/"une boussole")
+                                                      CustomMessage("a compass", /*german*/"ein Kompaß", /*french*/"une boussole")
                                                        // /*spanish*/una brújula
                                                       }, {
-                                                      CustomMessage("a molten treasure tracker", /*german*/"", /*french*/"un cherche-trésor fondu"),
+                                                      CustomMessage("a molten treasure tracker", /*german*/"ein geschmolzener Schatzfinder", /*french*/"un cherche-trésor fondu"),
                                                        // /*spanish*/un zahorí fundido
-                                                      CustomMessage("a molten magnetic needle", /*german*/"", /*french*/"une aimant fondu")});
+                                                      CustomMessage("a molten magnetic needle", /*german*/"eine geschmolzene Magnetnadel", /*french*/"une aimant fondu")});
                                                        // /*spanish*/un imán fundido
 
-    hintTextTable[RHT_WATER_TEMPLE_COMPASS] = HintText(CustomMessage("the Water Temple Compass", /*german*/"", /*french*/"la boussole du Temple de l'Eau"),
+    hintTextTable[RHT_WATER_TEMPLE_COMPASS] = HintText(CustomMessage("the Water Temple Compass", /*german*/"der Kompaß des Wassertempels", /*french*/"la boussole du Temple de l'Eau"),
                                                        // /*spanish*/la brújula del Templo del Agua
                                                        {
-                                                       CustomMessage("a compass", /*german*/"", /*french*/"une boussole")
+                                                       CustomMessage("a compass", /*german*/"ein Kompaß", /*french*/"une boussole")
                                                         // /*spanish*/una brújula
                                                        }, {
-                                                       CustomMessage("a wet treasure tracker", /*german*/"", /*french*/"un cherche-trésor humide"),
+                                                       CustomMessage("a wet treasure tracker", /*german*/"ein nasser Schatzfinder", /*french*/"un cherche-trésor humide"),
                                                         // /*spanish*/un zahorí mojado
-                                                       CustomMessage("a wet magnetic needle", /*german*/"", /*french*/"une aimant humide")});
+                                                       CustomMessage("a wet magnetic needle", /*german*/"eine nasse Magnetnadel", /*french*/"une aimant humide")});
                                                         // /*spanish*/un imán mojado
 
-    hintTextTable[RHT_SPIRIT_TEMPLE_COMPASS] = HintText(CustomMessage("the Spirit Temple Compass", /*german*/"", /*french*/"la boussole du Temple de l'Esprit"),
+    hintTextTable[RHT_SPIRIT_TEMPLE_COMPASS] = HintText(CustomMessage("the Spirit Temple Compass", /*german*/"der Kompaß des Geistertempels", /*french*/"la boussole du Temple de l'Esprit"),
                                                         // /*spanish*/la brújula del Templo del Espíritu
                                                         {
-                                                        CustomMessage("a compass", /*german*/"", /*french*/"une boussole")
+                                                        CustomMessage("a compass", /*german*/"ein Kompaß", /*french*/"une boussole")
                                                          // /*spanish*/una brújula
                                                         }, {
-                                                        CustomMessage("a sandy treasure tracker", /*german*/"", /*french*/"un cherche-trésor sableux"),
+                                                        CustomMessage("a sandy treasure tracker", /*german*/"ein sandiger Schatzfinder", /*french*/"un cherche-trésor sableux"),
                                                          // /*spanish*/un zahorí arenoso
-                                                        CustomMessage("a sandy magnetic needle", /*german*/"", /*french*/"une aimant sableux")});
+                                                        CustomMessage("a sandy magnetic needle", /*german*/"eine sandige Magnetnadel", /*french*/"une aimant sableux")});
                                                          // /*spanish*/un imán arenoso
 
-    hintTextTable[RHT_SHADOW_TEMPLE_COMPASS] = HintText(CustomMessage("the Shadow Temple Compass", /*german*/"", /*french*/"la boussole du Temple de l'Ombre"),
+    hintTextTable[RHT_SHADOW_TEMPLE_COMPASS] = HintText(CustomMessage("the Shadow Temple Compass", /*german*/"der Kompaß des Schattentempels", /*french*/"la boussole du Temple de l'Ombre"),
                                                         // /*spanish*/la brújula del Templo de las Sombras
                                                         {
-                                                        CustomMessage("a compass", /*german*/"", /*french*/"une boussole")
+                                                        CustomMessage("a compass", /*german*/"ein Kompaß", /*french*/"une boussole")
                                                          // /*spanish*/una brújula
                                                         }, {
-                                                        CustomMessage("a creepy treasure tracker", /*german*/"", /*french*/"un cherche-trésor sinistre"),
+                                                        CustomMessage("a creepy treasure tracker", /*german*/"ein gruseliger Schatzfinder", /*french*/"un cherche-trésor sinistre"),
                                                          // /*spanish*/un zahorí siniestra
-                                                        CustomMessage("a creepy magnetic needle", /*german*/"", /*french*/"une aimant sinistre")});
+                                                        CustomMessage("a creepy magnetic needle", /*german*/"eine gruselige Magnetnadel", /*french*/"une aimant sinistre")});
                                                          // /*spanish*/un imán siniestra
 
-    hintTextTable[RHT_BOTTOM_OF_THE_WELL_COMPASS] = HintText(CustomMessage("the Bottom of the Well Compass", /*german*/"", /*french*/"la boussole du fond du Puits"),
+    hintTextTable[RHT_BOTTOM_OF_THE_WELL_COMPASS] = HintText(CustomMessage("the Bottom of the Well Compass", /*german*/"der Kompaß des Brunnenbodens", /*french*/"la boussole du fond du Puits"),
                                                              // /*spanish*/la brújula del Fondo del pozo
                                                              {
-                                                             CustomMessage("a compass", /*german*/"", /*french*/"une boussole")
+                                                             CustomMessage("a compass", /*german*/"ein Kompaß", /*french*/"une boussole")
                                                               // /*spanish*/una brújula
                                                              }, {
-                                                             CustomMessage("a dank treasure tracker", /*german*/"", /*french*/"un cherche-trésor moisi"),
+                                                             CustomMessage("a dank treasure tracker", /*german*/"ein feuchter Schatzfinder", /*french*/"un cherche-trésor moisi"),
                                                               // /*spanish*/un zahorí mohoso
-                                                             CustomMessage("a dank magnetic needle", /*german*/"", /*french*/"une aimant moisi")});
+                                                             CustomMessage("a dank magnetic needle", /*german*/"eine feuchte Magnetnadel", /*french*/"une aimant moisi")});
                                                               // /*spanish*/un imán mohoso
 
-    hintTextTable[RHT_ICE_CAVERN_COMPASS] = HintText(CustomMessage("the Ice Cavern Compass", /*german*/"", /*french*/"la Boussole de la Caverne Polaire"),
+    hintTextTable[RHT_ICE_CAVERN_COMPASS] = HintText(CustomMessage("the Ice Cavern Compass", /*german*/"der Kompaß der Eishöhle", /*french*/"la Boussole de la Caverne Polaire"),
                                                      // /*spanish*/la brújula de la Caverna de hielo
                                                      {
-                                                     CustomMessage("a compass", /*german*/"", /*french*/"une boussole")
+                                                     CustomMessage("a compass", /*german*/"ein Kompaß", /*french*/"une boussole")
                                                       // /*spanish*/una brújula
                                                      }, {
-                                                     CustomMessage("a polar treasure tracker", /*german*/"", /*french*/"un cherche-trésor polaire"),
+                                                     CustomMessage("a polar treasure tracker", /*german*/"ein polarer Schatzfinder", /*french*/"un cherche-trésor polaire"),
                                                       // /*spanish*/un zahorí polar
-                                                     CustomMessage("a polar magnetic needle", /*german*/"", /*french*/"une aimant polaire")});
+                                                     CustomMessage("a polar magnetic needle", /*german*/"eine polare Magnetnadel", /*french*/"une aimant polaire")});
                                                       // /*spanish*/un imán polar
 
     hintTextTable[RHT_FOREST_TEMPLE_BOSS_KEY] = HintText(CustomMessage("the Forest Temple Boss Key", /*german*/"", /*french*/"la Clé d'Or du Temple de la Forêt"),
