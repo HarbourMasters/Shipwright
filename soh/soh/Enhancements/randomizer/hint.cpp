@@ -240,7 +240,7 @@ const std::vector<std::string> Hint::GetAllMessageStrings(MessageFormat format) 
   std::vector<std::string> hintMessages = {};
   uint8_t numMessages = GetNumberOfMessages();
   for (int c = 0; c < numMessages; c++){
-//    hintMessages.push_back(GetHintMessage(format, c).GetForCurrentLanguage(format));
+    hintMessages.push_back(GetHintMessage(format, c).GetForCurrentLanguage(format));
   }
   return hintMessages;
 }
