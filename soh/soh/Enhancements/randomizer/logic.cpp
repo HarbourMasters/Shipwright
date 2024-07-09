@@ -75,8 +75,8 @@ namespace Rando {
 
     bool Logic::HasItem(RandomizerGet itemName) {
         bool has3 = HasItem3(itemName);
-        if (itemName >= RG_BOOMERANG && itemName <= RG_CLAIM_CHECK)
-            SPDLOG_INFO("HasItem for {} evaluated as {}", StaticData::RetrieveItem(itemName).GetName().GetEnglish().c_str(), has3 ? "true" : "false");
+        //if (itemName >= RG_BOOMERANG && itemName <= RG_CLAIM_CHECK)
+        //    SPDLOG_INFO("HasItem for {} evaluated as {}", StaticData::RetrieveItem(itemName).GetName().GetEnglish().c_str(), has3 ? "true" : "false");
         return has3;
     }
 
@@ -134,6 +134,7 @@ namespace Rando {
                 (itemName == RG_OCARINA_OF_TIME        && ctx->CheckInventory(ITEM_OCARINA_TIME, true)) ||
                 (itemName == RG_GREG_RUPEE             && ctx->CheckRandoInf(RAND_INF_GREG_FOUND))    ||
                 (itemName == RG_GERUDO_MEMBERSHIP_CARD && ctx->CheckQuestItem(QUEST_GERUDO_CARD))    ||
+                (itemName == RG_DOUBLE_DEFENSE         && ctx->GetSaveContext()->isDoubleDefenseAcquired) ||
                 // Dungeon Rewards
                 (itemName == RG_KOKIRI_EMERALD         && ctx->CheckQuestItem(QUEST_KOKIRI_EMERALD)) ||
                 (itemName == RG_GORON_RUBY             && ctx->CheckQuestItem(QUEST_GORON_RUBY)) ||
@@ -468,7 +469,7 @@ namespace Rando {
 
         //BaseHearts + HeartContainer + (PieceOfHeart >> 2); "Hearts"
         //all keys
-        //DoubleDefense = ;
+        DoubleDefense = HasItem(RG_DOUBLE_DEFENSE);
         //TriforcePieces = ;
         //Greg = ;
         //GoldSkulltulaTokens = ;
@@ -737,7 +738,7 @@ namespace Rando {
     }
 
     void Logic::Reset() {
-        SPDLOG_INFO("Logic reset.");
+        //SPDLOG_INFO("Logic reset.");
         ctx->NewSaveContext();
         //Settings-dependent variables
         IsKeysanity = ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_ANYWHERE) || 

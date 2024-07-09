@@ -507,8 +507,8 @@ uint32_t OcarinaLookup[3] = { ITEM_NONE, ITEM_OCARINA_FAIRY, ITEM_OCARINA_TIME }
 
 void Context::ApplyItemEffect(Item& item, bool remove) {
     auto randoGet = item.GetRandomizerGet();
-    if (randoGet >= RG_BOOMERANG && randoGet <= RG_CLAIM_CHECK)
-        SPDLOG_INFO("Applying item effect for {}", item.GetName().GetEnglish().c_str());
+    //if (randoGet >= RG_BOOMERANG && randoGet <= RG_CLAIM_CHECK)
+    //    SPDLOG_INFO("Applying item effect for {}", item.GetName().GetEnglish().c_str());
     if (item.GetGIEntry()->objectId == OBJECT_GI_STICK) {
         SetInventory(ITEM_STICK, (remove ? ITEM_NONE : ITEM_STICK));
     }
@@ -529,6 +529,9 @@ void Context::ApplyItemEffect(Item& item, bool remove) {
                 break;
             case RG_ZELDAS_LETTER:
                 SetRandoInf(RAND_INF_ZELDAS_LETTER, remove);
+                break;
+            case RG_DOUBLE_DEFENSE:
+                mSaveContext->isDoubleDefenseAcquired = !remove;
                 break;
             case RG_POCKET_EGG:
             case RG_COJIRO:
@@ -691,9 +694,6 @@ void Context::ApplyItemEffect(Item& item, bool remove) {
                 auto current = GetAmmo(ITEM_BEAN);
                 SetAmmo(ITEM_BEAN, current + (remove ? -change : change));
             }   break;
-            case RG_DOUBLE_DEFENSE:
-                mSaveContext->isDoubleDefenseAcquired = (remove ? 0 : 1);
-                break;
             case RG_EMPTY_BOTTLE:
             case RG_BOTTLE_WITH_MILK:
             case RG_BOTTLE_WITH_RED_POTION:
