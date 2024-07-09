@@ -15,8 +15,6 @@
 #include <fstream>
 #include <spdlog/spdlog.h>
 
-#include "luslog.h"
-
 namespace Rando {
 std::weak_ptr<Context> Context::mContext;
 
@@ -408,6 +406,10 @@ std::map<RandomizerGet, uint32_t> RandoGetToFlag = {
     { RG_MIRROR_SHIELD,          EQUIP_FLAG_SHIELD_MIRROR },
     { RG_GORON_TUNIC,            EQUIP_FLAG_TUNIC_GORON },
     { RG_ZORA_TUNIC,             EQUIP_FLAG_TUNIC_ZORA },
+    { RG_BUY_DEKU_SHIELD,        EQUIP_FLAG_SHIELD_DEKU },
+    { RG_BUY_HYLIAN_SHIELD,      EQUIP_FLAG_SHIELD_HYLIAN },
+    { RG_BUY_GORON_TUNIC,        EQUIP_FLAG_TUNIC_GORON },
+    { RG_BUY_ZORA_TUNIC,         EQUIP_FLAG_TUNIC_ZORA },
     { RG_IRON_BOOTS,             EQUIP_FLAG_BOOTS_IRON },
     { RG_HOVER_BOOTS,            EQUIP_FLAG_BOOTS_HOVER },
     { RG_GOHMA_SOUL,             RAND_INF_GOHMA_SOUL },
@@ -504,15 +506,23 @@ uint32_t HookshotLookup[3] = { ITEM_NONE, ITEM_HOOKSHOT, ITEM_LONGSHOT };
 uint32_t OcarinaLookup[3] = { ITEM_NONE, ITEM_OCARINA_FAIRY, ITEM_OCARINA_TIME };
 
 void Context::ApplyItemEffect(Item& item, bool remove) {
-    LUSLOG_INFO("Applying item effect for item %s", StaticData::RetrieveItem(item.GetRandomizerGet()).GetName().GetEnglish().c_str());
+    auto randoGet = item.GetRandomizerGet();
+    if (randoGet >= RG_BOOMERANG && randoGet <= RG_CLAIM_CHECK)
+        SPDLOG_INFO("Applying item effect for {}", item.GetName().GetEnglish().c_str());
+    if (item.GetGIEntry()->objectId == OBJECT_GI_STICK) {
+        SetInventory(ITEM_STICK, (remove ? ITEM_NONE : ITEM_STICK));
+    }
+    if (item.GetGIEntry()->objectId == OBJECT_GI_NUTS) {
+        SetInventory(ITEM_NUT, (remove ? ITEM_NONE : ITEM_NUT));
+    }
     switch (item.GetItemType()) {
     case ITEMTYPE_ITEM:
     {
-        auto randoGet = item.GetRandomizerGet();
         if (item.GetGIEntry()->getItemCategory == ITEM_CATEGORY_MAJOR || item.GetGIEntry()->getItemCategory == ITEM_CATEGORY_LESSER) {
             switch (randoGet) {
+            case RG_STONE_OF_AGONY:
             case RG_GERUDO_MEMBERSHIP_CARD:
-                SetQuestItem(QUEST_GERUDO_CARD, remove);
+                SetQuestItem(RandoGetToQuestItem.at(randoGet), remove);
                 break;
             case RG_WEIRD_EGG:
                 SetRandoInf(RAND_INF_WEIRD_EGG, remove);
@@ -592,9 +602,11 @@ void Context::ApplyItemEffect(Item& item, bool remove) {
                 auto currentLevel = CurrentUpgrade(UPG_WALLET);
                 if (!CheckRandoInf(RAND_INF_HAS_WALLET) && !remove) {
                     SetRandoInf(RAND_INF_HAS_WALLET, false);
-                } else if (currentLevel == 0 && remove) {
+                }
+                else if (currentLevel == 0 && remove) {
                     SetRandoInf(RAND_INF_HAS_WALLET, true);
-                } else {
+                }
+                else {
                     auto newLevel = currentLevel + (remove ? -1 : 1);
                     SetUpgrade(UPG_WALLET, newLevel);
                 }
@@ -604,9 +616,11 @@ void Context::ApplyItemEffect(Item& item, bool remove) {
                 auto currentLevel = CurrentUpgrade(UPG_SCALE);
                 if (!CheckRandoInf(RAND_INF_CAN_SWIM) && !remove) {
                     SetRandoInf(RAND_INF_CAN_SWIM, false);
-                } else if (currentLevel == 0 && remove) {
+                }
+                else if (currentLevel == 0 && remove) {
                     SetRandoInf(RAND_INF_CAN_SWIM, true);
-                } else {
+                }
+                else {
                     auto newLevel = currentLevel + (remove ? -1 : 1);
                     SetUpgrade(UPG_SCALE, newLevel);
                 }
@@ -668,10 +682,7 @@ void Context::ApplyItemEffect(Item& item, bool remove) {
             case RG_FIRE_ARROWS:
             case RG_ICE_ARROWS:
             case RG_LIGHT_ARROWS:
-                SetInventory(item.GetItemID(), (remove ? ITEM_NONE : item.GetItemID()));
-                break;
-            case RG_STONE_OF_AGONY:
-                SetQuestItem(QUEST_STONE_OF_AGONY, !remove);
+                SetInventory(item.GetGIEntry()->itemId, (remove ? ITEM_NONE : item.GetGIEntry()->itemId));
                 break;
             case RG_MAGIC_BEAN:
             case RG_MAGIC_BEAN_PACK:
@@ -702,7 +713,7 @@ void Context::ApplyItemEffect(Item& item, bool remove) {
                     }
                     slot++;
                 }
-                mSaveContext->inventory.items[slot] = item.GetItemID();
+                mSaveContext->inventory.items[slot] = item.GetGIEntry()->itemId;
             }   break;
             case RG_RUTOS_LETTER:
                 SetEventChkInf(EVENTCHKINF_OBTAINED_RUTOS_LETTER, remove);
@@ -788,8 +799,7 @@ void Context::ApplyItemEffect(Item& item, bool remove) {
             }
         }
         SetSmallKeyCount(dungeonIndex, count);
-    }
-    break;
+    } break;
     case ITEMTYPE_TOKEN:
         mSaveContext->inventory.gsTokens += (remove ? -1 : 1);
         break;
@@ -801,7 +811,18 @@ void Context::ApplyItemEffect(Item& item, bool remove) {
     case ITEMTYPE_REFILL:
         break;
     case ITEMTYPE_SHOP:
-        break;
+    {
+        RandomizerGet itemRG = item.GetRandomizerGet();
+        if (itemRG == RG_BUY_HYLIAN_SHIELD || itemRG == RG_BUY_DEKU_SHIELD || itemRG == RG_BUY_GORON_TUNIC || itemRG == RG_BUY_ZORA_TUNIC) {
+            uint32_t equipId = RandoGetToFlag.find(itemRG)->second;
+            if (remove) {
+                mSaveContext->inventory.equipment &= ~equipId;
+            }
+            else {
+                mSaveContext->inventory.equipment |= equipId;
+            }
+        }
+    } break;
     }
     mLogic->UpdateHelpers();
 }
@@ -905,7 +926,7 @@ void Context::InitSaveContext() {
         mSaveContext->inventory.dungeonItems[dungeon] = 0;
     }
     for (int dungeon = 0; dungeon < ARRAY_COUNT(mSaveContext->inventory.dungeonKeys); dungeon++) {
-        mSaveContext->inventory.dungeonKeys[dungeon] = 0xFF;
+        mSaveContext->inventory.dungeonKeys[dungeon] = 0x0;
     }
     mSaveContext->inventory.defenseHearts = 0;
     mSaveContext->inventory.gsTokens = 0;
@@ -1102,10 +1123,10 @@ bool Context::CheckRandoInf(uint32_t flag) {
 
 void Context::SetRandoInf(uint32_t flag, bool disable) {
     if (disable) {
-        mSaveContext->randomizerInf[flag >> 4] |= (1 << (flag & 0xF));
+        mSaveContext->randomizerInf[flag >> 4] &= ~(1 << (flag & 0xF));
     }
     else {
-        mSaveContext->randomizerInf[flag >> 4] &= ~(1 << (flag & 0xF));
+        mSaveContext->randomizerInf[flag >> 4] |= (1 << (flag & 0xF));
     }
 }
 

@@ -8,7 +8,7 @@
 
 #include "dungeon.h"
 #include "context.h"
-#include "luslog.h"
+#include <spdlog/spdlog.h>
 
 namespace Rando {
     bool Logic::IsMagicItem(RandomizerGet item) {
@@ -75,7 +75,8 @@ namespace Rando {
 
     bool Logic::HasItem(RandomizerGet itemName) {
         bool has3 = HasItem3(itemName);
-        LUSLOG_INFO("HasItem for %s evaluated as %s", StaticData::RetrieveItem(itemName).GetName().GetEnglish().c_str(), has3 ? "true" : "false");
+        if (itemName >= RG_BOOMERANG && itemName <= RG_CLAIM_CHECK)
+            SPDLOG_INFO("HasItem for {} evaluated as {}", StaticData::RetrieveItem(itemName).GetName().GetEnglish().c_str(), has3 ? "true" : "false");
         return has3;
     }
 
@@ -132,6 +133,7 @@ namespace Rando {
                 (itemName == RG_FAIRY_OCARINA          && ctx->CheckInventory(ITEM_OCARINA_FAIRY, false)) ||
                 (itemName == RG_OCARINA_OF_TIME        && ctx->CheckInventory(ITEM_OCARINA_TIME, true)) ||
                 (itemName == RG_GREG_RUPEE             && ctx->CheckRandoInf(RAND_INF_GREG_FOUND))    ||
+                (itemName == RG_GERUDO_MEMBERSHIP_CARD && ctx->CheckQuestItem(QUEST_GERUDO_CARD))    ||
                 // Dungeon Rewards
                 (itemName == RG_KOKIRI_EMERALD         && ctx->CheckQuestItem(QUEST_KOKIRI_EMERALD)) ||
                 (itemName == RG_GORON_RUBY             && ctx->CheckQuestItem(QUEST_GORON_RUBY)) ||
@@ -141,6 +143,7 @@ namespace Rando {
                 (itemName == RG_WATER_MEDALLION        && ctx->CheckQuestItem(QUEST_MEDALLION_WATER)) ||
                 (itemName == RG_SPIRIT_MEDALLION       && ctx->CheckQuestItem(QUEST_MEDALLION_SPIRIT)) ||
                 (itemName == RG_SHADOW_MEDALLION       && ctx->CheckQuestItem(QUEST_MEDALLION_SHADOW)) ||
+                (itemName == RG_LIGHT_MEDALLION        && ctx->CheckQuestItem(QUEST_MEDALLION_LIGHT)) ||
                 // Ocarina Buttons
                 (itemName == RG_OCARINA_A_BUTTON       && ctx->CheckRandoInf(RAND_INF_HAS_OCARINA_A))      ||
                 (itemName == RG_OCARINA_C_LEFT_BUTTON  && ctx->CheckRandoInf(RAND_INF_HAS_OCARINA_C_LEFT))  ||
@@ -442,6 +445,16 @@ namespace Rando {
         BossKeyShadowTemple = HasItem(RG_SHADOW_TEMPLE_BOSS_KEY);
         BossKeyGanonsCastle = HasItem(RG_GANONS_CASTLE_BOSS_KEY);
 
+        KokiriEmerald   = HasItem(RG_KOKIRI_EMERALD);
+        GoronRuby       = HasItem(RG_GORON_RUBY);
+        ZoraSapphire    = HasItem(RG_ZORA_SAPPHIRE);
+        ForestMedallion = HasItem(RG_FOREST_MEDALLION);
+        FireMedallion   = HasItem(RG_FIRE_MEDALLION);
+        WaterMedallion  = HasItem(RG_WATER_MEDALLION);
+        SpiritMedallion = HasItem(RG_SPIRIT_MEDALLION);
+        ShadowMedallion = HasItem(RG_SHADOW_MEDALLION);
+        LightMedallion  = HasItem(RG_LIGHT_MEDALLION);
+
         //TODO: need flags somewhere for 
         //Eyedrops = Eyedrops || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && ClaimCheck);
         //EyeballFrog = EyeballFrog || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && Eyedrops);
@@ -455,8 +468,6 @@ namespace Rando {
 
         //BaseHearts + HeartContainer + (PieceOfHeart >> 2); "Hearts"
         //all keys
-        //medallions
-        //stones
         //DoubleDefense = ;
         //TriforcePieces = ;
         //Greg = ;
@@ -597,48 +608,88 @@ namespace Rando {
                                     (GetDifficultyValueFromString(GlitchHover) >= static_cast<uint8_t>(GlitchDifficulty::NOVICE) && GetDifficultyValueFromString(GlitchISG) >= static_cast<uint8_t>(GlitchDifficulty::INTERMEDIATE)))) {
                     return ForestTempleKeys >= requiredAmountGlitched;
                 }*/
+                {
+                    auto smallKeys = ctx->GetSmallKeyCount(SCENE_FOREST_TEMPLE);
+                    if (ForestTempleKeys != smallKeys)
+                        SPDLOG_ERROR("Forest temple small key count mismatch: logicVar {}, saveContext {}", ForestTempleKeys, smallKeys);
+                }
                 return ForestTempleKeys >= requiredAmountGlitchless;
 
             case RR_FIRE_TEMPLE:
                 /*if (IsGlitched && (GetDifficultyValueFromString(GlitchLedgeClip) >= static_cast<uint8_t>(GlitchDifficulty::INTERMEDIATE) || GetDifficultyValueFromString(GlitchHover) >= static_cast<uint8_t>(GlitchDifficulty::INTERMEDIATE))) {
                     return FireTempleKeys >= requiredAmountGlitched;
                 }*/
+                {
+                    auto smallKeys = ctx->GetSmallKeyCount(SCENE_FIRE_TEMPLE);
+                    if (FireTempleKeys != smallKeys)
+                        SPDLOG_ERROR("Fire temple small key count mismatch: logicVar {}, saveContext {}", FireTempleKeys, smallKeys);
+                }
                 return FireTempleKeys >= requiredAmountGlitchless;
 
             case RR_WATER_TEMPLE:
                 /*if (IsGlitched && (false)) {
                     return WaterTempleKeys >= requiredAmountGlitched;
                 }*/
+                {
+                    auto smallKeys = ctx->GetSmallKeyCount(SCENE_WATER_TEMPLE);
+                    if (WaterTempleKeys != smallKeys)
+                        SPDLOG_ERROR("Water temple small key count mismatch: logicVar {}, saveContext {}", WaterTempleKeys, smallKeys);
+                }
                 return WaterTempleKeys >= requiredAmountGlitchless;
 
             case RR_SPIRIT_TEMPLE:
                 /*if (IsGlitched && (false)) {
                     return SpiritTempleKeys >= requiredAmountGlitched;
                 }*/
+                {
+                    auto smallKeys = ctx->GetSmallKeyCount(SCENE_SPIRIT_TEMPLE);
+                    if (SpiritTempleKeys != smallKeys)
+                        SPDLOG_ERROR("Spirit temple small key count mismatch: logicVar {}, saveContext {}", SpiritTempleKeys, smallKeys);
+                }
                 return SpiritTempleKeys >= requiredAmountGlitchless;
 
             case RR_SHADOW_TEMPLE:
                 /*if (IsGlitched && (GetDifficultyValueFromString(GlitchHookshotClip) >= static_cast<uint8_t>(GlitchDifficulty::NOVICE))) {
                     return ShadowTempleKeys >= requiredAmountGlitched;
                 }*/
+                {
+                    auto smallKeys = ctx->GetSmallKeyCount(SCENE_SHADOW_TEMPLE);
+                    if (ShadowTempleKeys != smallKeys)
+                        SPDLOG_ERROR("Shadow temple small key count mismatch: logicVar {}, saveContext {}", ShadowTempleKeys, smallKeys);
+                }
                 return ShadowTempleKeys >= requiredAmountGlitchless;
 
             case RR_BOTTOM_OF_THE_WELL:
                 /*if (IsGlitched && (false)) {
                     return BottomOfTheWellKeys >= requiredAmountGlitched;
                 }*/
+                {
+                    auto smallKeys = ctx->GetSmallKeyCount(SCENE_BOTTOM_OF_THE_WELL);
+                    if (BottomOfTheWellKeys != smallKeys)
+                        SPDLOG_ERROR("BotW temple small key count mismatch: logicVar {}, saveContext {}", BottomOfTheWellKeys, smallKeys);
+                }
                 return BottomOfTheWellKeys >= requiredAmountGlitchless;
 
             case RR_GERUDO_TRAINING_GROUNDS:
                 /*if (IsGlitched && (false)) {
                     return GerudoTrainingGroundsKeys >= requiredAmountGlitched;
                 }*/
+                {
+                    auto smallKeys = ctx->GetSmallKeyCount(SCENE_GERUDO_TRAINING_GROUND);
+                    if (GerudoTrainingGroundsKeys != smallKeys)
+                        SPDLOG_ERROR("GTG small key count mismatch: logicVar {}, saveContext {}", GerudoTrainingGroundsKeys, smallKeys);
+                }
                 return GerudoTrainingGroundsKeys >= requiredAmountGlitchless;
 
             case RR_GANONS_CASTLE:
                 /*if (IsGlitched && (false)) {
                     return GanonsCastleKeys >= requiredAmountGlitched;
                 }*/
+                {
+                    auto smallKeys = ctx->GetSmallKeyCount(SCENE_INSIDE_GANONS_CASTLE);
+                    if (GanonsCastleKeys != smallKeys)
+                        SPDLOG_ERROR("Ganon's Castle small key count mismatch: logicVar {}, saveContext {}", GanonsCastleKeys, smallKeys);
+                }
                 return GanonsCastleKeys >= requiredAmountGlitchless;
 
             case RR_MARKET_TREASURE_CHEST_GAME:
@@ -686,7 +737,7 @@ namespace Rando {
     }
 
     void Logic::Reset() {
-        LUSLOG_INFO("Logic reset.");
+        SPDLOG_INFO("Logic reset.");
         ctx->NewSaveContext();
         //Settings-dependent variables
         IsKeysanity = ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_ANYWHERE) || 
@@ -810,11 +861,11 @@ namespace Rando {
         OcarinaCRightButton = !ocBtnShuffle;
         OcarinaCUpButton = !ocBtnShuffle;
         OcarinaCDownButton = !ocBtnShuffle;
-        ctx->SetRandoInf(RAND_INF_HAS_OCARINA_A, !ocBtnShuffle);
-        ctx->SetRandoInf(RAND_INF_HAS_OCARINA_C_UP, !ocBtnShuffle);
-        ctx->SetRandoInf(RAND_INF_HAS_OCARINA_C_DOWN, !ocBtnShuffle);
-        ctx->SetRandoInf(RAND_INF_HAS_OCARINA_C_LEFT, !ocBtnShuffle);
-        ctx->SetRandoInf(RAND_INF_HAS_OCARINA_C_RIGHT, !ocBtnShuffle);
+        ctx->SetRandoInf(RAND_INF_HAS_OCARINA_A, ocBtnShuffle);
+        ctx->SetRandoInf(RAND_INF_HAS_OCARINA_C_UP, ocBtnShuffle);
+        ctx->SetRandoInf(RAND_INF_HAS_OCARINA_C_DOWN, ocBtnShuffle);
+        ctx->SetRandoInf(RAND_INF_HAS_OCARINA_C_LEFT, ocBtnShuffle);
+        ctx->SetRandoInf(RAND_INF_HAS_OCARINA_C_RIGHT, ocBtnShuffle);
 
         //Progressive Items
         ProgressiveBulletBag  = 0;
