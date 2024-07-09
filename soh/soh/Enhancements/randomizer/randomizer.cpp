@@ -326,7 +326,7 @@ void Randomizer::LoadMerchantMessages() {
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN_BUY_FOR_100,
         CustomMessage("I never thought I'd say this, but I'm &selling the last %rMagic Bean%w. %r99%w Rupees...\x1B&%gYes&No%w",
-                      "\x1B&%gJa&Nein%w",
+                      "Ich hätte nie gedacht, daß ich das sage, aber ich &verkaufe die letzte %rWundererbse%w für %r99%w Rubine.\x1B&%gJa&Nein%w",
                       "Je te vends mon dernier %rHaricot&magique%w pour %r99 Rubis%w.\x1B&%gAcheter&Ne pas acheter%w"));
 }
 
@@ -2423,7 +2423,8 @@ CustomMessage Randomizer::GetSheikMessage(s16 scene, u16 originalTextId) {
                     "Cherche l'%cÉpée de Légende%w, %rquelque chose pour ranger tes flèches%w et de la %gmagie%w pour invoquer la %ylumière%w.");
             } else if (!Flags_GetEventChkInf(EVENTCHKINF_DISPELLED_GANONS_TOWER_BARRIER) && !ctx->GetOption(RSK_TRIAL_COUNT).Is(0)){
                 messageEntry = CustomMessage(
-                    "You may have what you need to defeat %rthe Evil King%w, but the %cbarrier%w still stands.^Complete the remaining %gtrials%w to destroy it."
+                    "You may have what you need to defeat %rthe Evil King%w, but the %cbarrier%w still stands.^Complete the remaining %gtrials%w to destroy it.",
+                    "Du magst das haben, was Du brauchst um %rden bösen König%w zu besiegen, aber die %cBarriere%w steht noch.^Absolviere die verbleibenden %gPrüfungen%w um sie zu zerstören."
                 );
             } else {
                 messageEntry = CustomMessage(
@@ -2441,7 +2442,7 @@ CustomMessage Randomizer::GetFishingPondOwnerMessage(u16 originalTextId) {
     auto ctx = Rando::Context::GetInstance();
     CustomMessage messageEntry = CustomMessage(
       "Sorry, but the pond is closed.&I've lost my good %rfishing pole%w...&Can't go fishing without it!",
-      "",
+      "Entschuldigung, aber der Teich ist geschlossen.&Ich habe meine gute %rAngelrute%w verloren...&Ohne kann ich nicht fischen!",
       ""
     );
 
@@ -2453,7 +2454,7 @@ CustomMessage Randomizer::GetFishingPondOwnerMessage(u16 originalTextId) {
     if (originalTextId == TEXT_FISHING_POND_START_MET) {
         messageEntry = CustomMessage(
             "Hey, mister! I remember you!&It's been a long time!^",
-            "",
+            "Hallo, mein Herr! Ich erinnere mich an Sie!&Lang ist's her!",
             ""
         ) + messageEntry;
     }
@@ -2691,13 +2692,13 @@ void CreateNaviRandoMessages() {
           "une&%rcocotte%c!" },
 
         { "%cThe %ySpirit Trial %cin %pGanon's Castle&%chas a %whidden chest %csomewhere.&Did you already know that?",
-          "%cDie %yGeister-Prüfung %cin %pGanons&Schloß %chat irgendwo eine&%wversteckte Kiste%c. Weißt du schon&wo?",
+          "%cDie %yGeister-Prüfung %cin %pGanons&Schloß %chat irgendwo eine&%wversteckte Kiste%c. Weißt Du schon&wo?",
           "%cL'%yÉpreuve de l'Esprit%c dans le %pChâteau&de Ganon %ca un coffre caché quelque&part. Je suppose que tu "
           "le savais&déjà?" },
 
         { "%cYou know the %wBombchu Bowling&Alley%c? I heard %wonly two of the &prizes %care worthwhile. The rest &is "
           "junk!",
-          "%cKennst du die %wMinenbowlingbahn%c?&Ich habe gehört, daß sich nur &%wzwei der Preise%c lohnen. Der "
+          "%cKennst Du die %wMinenbowlingbahn%c?&Ich habe gehört, daß sich nur &%wzwei der Preise%c lohnen. Der "
           "Rest&ist Krimskrams!",
           "%cEst-ce que tu savais qu'au %wBowling&Teigneux%c, il n'y a que les %wdeux&premiers prix %cqui sont "
           "intéréssant?" },
@@ -2732,7 +2733,7 @@ void CreateNaviRandoMessages() {
           "essayé?" },
 
         { "%cDon't have a weapon to kill a&%rspider%c? Try throwing a %wpot&%cat it!",
-          "%cFehlt Dir die Waffe um gegen&eine %rSkulltula %czu kämpfen? Versuche&Sie mit einem %wKrug %cabzuwerfen!",
+          "%cFehlt Dir die Waffe um gegen&eine %rSkulltula %czu kämpfen? Versuche&sie mit einem %wKrug %cabzuwerfen!",
           "%cSi tu n'as pas d'arme pour tuer&une %raraignée%c, pourquoi n'essayerais&-tu pas de lui jetter une "
           "%wjarre&%cà la figure?" },
 
@@ -2744,25 +2745,25 @@ void CreateNaviRandoMessages() {
 
         { "%cThe people of Hyrule sometimes&have %witems %cfor you, but they won't&like it if you're %wwearing a "
           "mask%c!",
-          "%cDie Bewohner Hyrules haben manchmal&%wGegenstände %cfür Dich, aber sie mögen&es nicht, wenn du %wMasken "
+          "%cDie Bewohner Hyrules haben manchmal&%wGegenstände %cfür Dich, aber sie mögen&es nicht, wenn Du %wMasken "
           "trägst%c!",
           "%cIl se peut que les habitants d'Hyrule&aient des %wobjets %cpour toi. Par contre,&ils risquent de ne pas "
           "trop apprécier&le fait que tu %wportes un masque%c!" },
 
         { "%cIf you get trapped somewhere, you&might have to %wsave your game %cand&%wreset%c!",
-          "%cSolltest du irgendwo eingeschlossen&sein, mußt du vielleicht dein %wSpiel&speichern %cund %wneu starten%c!",
+          "%cSolltest Du irgendwo eingeschlossen&sein, mußt Du vielleicht Dein %wSpiel&speichern %cund %wneu starten%c!",
           "%cSi tu es coincé quelque part, tu&devrais %wsauvegarder ta partie %cet&faire un %wreset%c!" },
 
         { "%cSheik will meet you in a %rburning&village %conce you have %gForest%c,&%rFire%c, and %bWater "
           "%cMedallions!",
-          "%cShiek wird dich in einem %rbrennenden&Dorf %ctreffen, sobald du das Amulett&des %gWaldes%c, %rFeuers %cund "
+          "%cShiek wird Dich in einem %rbrennenden&Dorf %ctreffen, sobald Du das Amulett&des %gWaldes%c, %rFeuers %cund "
           "%bWassers&%cbesitzt.",
           "%cSheik t'attendra dans un %rvillage&en feu %clorsque tu auras récupéré&les médaillons de la %gForêt%c, du "
           "%rFeu&%cet de l'%bEau%c!" },
 
         { "%cIf you don't have a %wsword %cas a&child, try buying %wDeku Sticks%c!&They're effective against your "
           "foes!",
-          "%cSolltest du als Kind kein %wSchwert&%cbesitzen, empfehle ich %wDeku-Stäbe&%czu kaufen! Diese sind "
+          "%cSolltest Du als Kind kein %wSchwert&%cbesitzen, empfehle ich %wDeku-Stäbe&%czu kaufen! Diese sind "
           "effektiv gegen&Widersacher!",
           "%cSi tu n'as pas d'%wépée %cen tant&qu'enfant, pourquoi n'irais-tu pas&acheter quelques %wBâtons Mojo%c? "
           "Ils&sont efficaces contre tes ennemis!" }
@@ -2913,7 +2914,7 @@ void CreateFireTempleGoronMessages() {
             "Boy, you must be hot!&Get yourself a bottle of&%rLon Lon Milk%w right away and cool&down, for only %g30%w "
             "rupees!",
             "\x13\x1A"
-            "Hey, ist dir nicht zu warm?&Besorge Dir doch eine Flasche&%rLon Lon-Milch%w, um dich&abzukühlen.^Kostet "
+            "Hey, ist Dir nicht zu warm?&Besorge Dir doch eine Flasche&%rLon Lon-Milch%w, um Dich&abzukühlen.^Kostet "
             "Dich auch nur %g30%w Rubine!",
             "\x13\x1A"
             "Woah! Tu dois avoir chaud!&Tu savais que tu pouvais acheter&du %rLait de Lon Lon%w pour&seulement %g30 "
@@ -2971,7 +2972,7 @@ void Randomizer::CreateCustomMessages() {
 			"Vous obtenez une %rBouteille avec&une Âme%w! Vendez-la au Marchand&d'Âme"),
         GIMESSAGE(RG_BOTTLE_WITH_BLUE_POTION, ITEM_POTION_BLUE,
 			"You got a %rBottle of Blue Potion%w!&Drink it to replenish your&%ghealth%w and %bmagic%w!",
-			"Du erhältst ein %rBlaues Elixier%w!&Nutze es, um deine %rMagie- und&Energieleiste%w komplett&aufzufüllen!",
+			"Du erhältst ein %rBlaues Elixier%w!&Nutze es, um Deine %rMagie- und&Energieleiste%w komplett&aufzufüllen!",
 			"Vous obtenez une %rBouteille avec&une Potion Bleue%w! Buvez-la pour&restaurer votre %rénergie vitale%w&ainsi que votre %gmagie%w!"),
         GIMESSAGE(RG_BOTTLE_WITH_FISH, ITEM_FISH,
             "You got a %rFish in a Bottle%w!&It looks fresh and delicious!&They say Jabu-Jabu loves them!",
@@ -2987,11 +2988,11 @@ void Randomizer::CreateCustomMessages() {
 			"Vous obtenez une %rBouteille avec&une Fée%w! Faites-en bon usage!"),
         GIMESSAGE(RG_BOTTLE_WITH_RED_POTION, ITEM_POTION_RED,
             "You got a %rBottle of Red Potion%w!&Drink it to replenish your&%ghealth%w!",
-			"Du erhältst ein %rRotes Elixier%w!&Nutze es, um deine %rEnergieleiste&%weinmalig komplett aufzufüllen!",
+			"Du erhältst ein %rRotes Elixier%w!&Nutze es, um Deine %rEnergieleiste&%weinmalig komplett aufzufüllen!",
             "Vous obtenez une %rBouteille avec&une Potion Rouge%w! Buvez-la pour&restaurer votre %rénergie vitale%w!"),
         GIMESSAGE(RG_BOTTLE_WITH_GREEN_POTION, ITEM_POTION_GREEN,
             "You got a %rBottle of Green Potion%w!&Drink it to replenish your&%bmagic%w!",
-			"Du erhältst ein %rGrünes Elixier%w!&Nutze es, um deine %bMagieleiste&%weinmalig komplett aufzufüllen!",
+			"Du erhältst ein %rGrünes Elixier%w!&Nutze es, um Deine %bMagieleiste&%weinmalig komplett aufzufüllen!",
             "Vous obtenez une %rBouteille avec&une Potion Verte%w! Buvez-la pour&restaurer votre %gmagie%w!"),
         GIMESSAGE(RG_BOTTLE_WITH_POE, ITEM_POE,
             "You got a %rPoe in a Bottle%w!&That creepy Ghost Shop might&be interested in this...",
