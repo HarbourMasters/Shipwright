@@ -205,7 +205,7 @@ void StaticData::HintTable_Init_Item() {
                                                  CustomMessage("the heavy hitter", /*german*/"ein schwerer Schläger", /*french*/"un poids lourd")});
                                                   // /*spanish*/un machacador
 
-    hintTextTable[RHT_STONE_OF_AGONY] = HintText(CustomMessage("the Stone of Agony", /*german*/"der Stein der Agonie", /*french*/"la Pierre de Souffrance"),
+    hintTextTable[RHT_STONE_OF_AGONY] = HintText(CustomMessage("the Stone of Agony", /*german*/"der Stein des Wissens", /*french*/"la Pierre de Souffrance"),
                                                  // /*spanish*/la Piedra de la Agonía
                                                  {
                                                  CustomMessage("a prize of the House of Skulltulas", /*german*/"ein Preis des Skulltula-Hauses", /*french*/"un prix de la maison des Skulltulas"),
@@ -376,7 +376,7 @@ void StaticData::HintTable_Init_Item() {
                                              CustomMessage("a fowl youth", /*german*/"ein junges Geflügel", /*french*/"une omelette crue")});
                                               // /*spanish*/una dulce juventud
 
-    hintTextTable[RHT_POCKET_CUCCO] = HintText(CustomMessage("the Pocket Cucco", /*german*/"ein Taschenhuhn", /*french*/"la Cocotte de Poche"),
+    hintTextTable[RHT_POCKET_CUCCO] = HintText(CustomMessage("the Pocket Cucco", /*german*/"das Taschenhuhn", /*french*/"la Cocotte de Poche"),
                                                // /*spanish*/el cuco de bolsillo
                                                {
                                                CustomMessage("a trade quest item", /*german*/"ein Gegenstand einer Handelsmission", /*french*/"un objet de quête d'échanges")
@@ -400,7 +400,7 @@ void StaticData::HintTable_Init_Item() {
                                                CustomMessage("a trade quest item", /*german*/"ein Gegenstand einer Handelsmission", /*french*/"un objet de quête d'échanges")
                                                 // /*spanish*/un objeto de una misión secundaria
                                                }, {
-                                               CustomMessage("a powder ingredient", /*german*/"eine Puderingredenzie", /*french*/"un ingrédient à poudre")});
+                                               CustomMessage("a powder ingredient", /*german*/"eine Puderingredienz", /*french*/"un ingrédient à poudre")});
                                                 // /*spanish*/un oloroso ingrediente
 
     hintTextTable[RHT_ODD_POTION] = HintText(CustomMessage("an Odd Potion", /*german*/"ein Modertrank", /*french*/"une Mixture Suspecte"),
