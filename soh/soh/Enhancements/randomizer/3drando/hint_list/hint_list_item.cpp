@@ -30,7 +30,7 @@ void StaticData::HintTable_Init_Item() {
                                                CustomMessage("a seven year limbo", /*german*/"eine siebenjährige Erwartung", /*french*/"une stase de sept ans")});
                                                 // /*spanish*/unos siete años de espera
 
-    hintTextTable[RHT_GIANTS_KNIFE] = HintText(CustomMessage("the Giant's Knife", /*german*/"das Messer des Riesen", /*french*/"la Lame des Géants"),
+    hintTextTable[RHT_GIANTS_KNIFE] = HintText(CustomMessage("the Giant's Knife", /*german*/"das Langschwert", /*french*/"la Lame des Géants"),
                                                // /*spanish*/la daga gigante
                                                {
                                                CustomMessage("a sword", /*german*/"ein Schwert", /*french*/"une épée")
@@ -153,7 +153,7 @@ void StaticData::HintTable_Init_Item() {
                                                 CustomMessage("royal snail mail", /*german*/"ein royaler Umschlag", /*french*/"une enveloppe royale")});
                                                  // /*spanish*/correo de la realeza
 
-    hintTextTable[RHT_WEIRD_EGG] = HintText(CustomMessage("the Weird Egg", /*german*/"ein eigenartiges Ei", /*french*/"l'Oeuf Curieux"),
+    hintTextTable[RHT_WEIRD_EGG] = HintText(CustomMessage("the Weird Egg", /*german*/"ein seltsames Ei", /*french*/"l'Oeuf Curieux"),
                                             // /*spanish*/el huevo extraño
                                             {
                                             CustomMessage("an egg", /*german*/"ein Ei", /*french*/"un oeuf")
@@ -361,7 +361,7 @@ void StaticData::HintTable_Init_Item() {
                                                        CustomMessage("one percent of a curse", /*german*/"ein Prozent eines Fluchs", /*french*/"un centième de malédiction")});
                                                         // /*spanish*/una centésima de una maldición
 
-    hintTextTable[RHT_POCKET_EGG] = HintText(CustomMessage("the Pocket Egg", /*german*/"das Taschenei", /*french*/"l'Oeuf de Poche"),
+    hintTextTable[RHT_POCKET_EGG] = HintText(CustomMessage("the Pocket Egg", /*german*/"das Ei", /*french*/"l'Oeuf de Poche"),
                                              // /*spanish*/el huevo de bolsillo
                                              {
                                              CustomMessage("a trade quest item", /*german*/"ein Gegenstand einer Handelsmission", /*french*/"un objet de quête d'échanges"),
@@ -376,7 +376,7 @@ void StaticData::HintTable_Init_Item() {
                                              CustomMessage("a fowl youth", /*german*/"ein junges Geflügel", /*french*/"une omelette crue")});
                                               // /*spanish*/una dulce juventud
 
-    hintTextTable[RHT_POCKET_CUCCO] = HintText(CustomMessage("the Pocket Cucco", /*german*/"das Taschenhuhn", /*french*/"la Cocotte de Poche"),
+    hintTextTable[RHT_POCKET_CUCCO] = HintText(CustomMessage("the Pocket Cucco", /*german*/"Kiki", /*french*/"la Cocotte de Poche"),
                                                // /*spanish*/el cuco de bolsillo
                                                {
                                                CustomMessage("a trade quest item", /*german*/"ein Gegenstand einer Handelsmission", /*french*/"un objet de quête d'échanges")
