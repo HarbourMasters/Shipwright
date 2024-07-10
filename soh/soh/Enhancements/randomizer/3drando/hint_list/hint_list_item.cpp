@@ -644,7 +644,7 @@ void StaticData::HintTable_Init_Item() {
     hintTextTable[RHT_EMPTY_BOTTLE] = HintText(CustomMessage("a bottle", /*german*/"eine Flasche", /*french*/"un flacon vide"),
                                                // /*spanish*/una botella
                                                {
-                                               CustomMessage("a bottle", /*german*/"eine Flashce", /*french*/"un flacon")
+                                               CustomMessage("a bottle", /*german*/"eine Flasche", /*french*/"un flacon")
                                                 // /*spanish*/una botella
                                                }, {
                                                CustomMessage("a glass container", /*german*/"ein Glasbehälter", /*french*/"un cylindre de cristal"),
@@ -1890,7 +1890,7 @@ void StaticData::HintTable_Init_Item() {
                                                CustomMessage("plenty of scrub spit", /*german*/"einige Buschspucke", /*french*/"un paquet de crachats Mojo")});
                                                 // /*spanish*/unos cuantos escupitajos deku
 
-    hintTextTable[RHT_DEKU_SEEDS_30] = HintText(CustomMessage("Deku Seeds (30 pieces)", /*german*/"Deku-Nüsse (30 Stück)", /*french*/"une trentaine de graines Mojo"),
+    hintTextTable[RHT_DEKU_SEEDS_30] = HintText(CustomMessage("Deku Seeds (30 pieces)", /*german*/"Deku-Samen (30 Stück)", /*french*/"une trentaine de graines Mojo"),
                                                 // /*spanish*/unas (30) semillas deku
                                                 {
                                                 CustomMessage("a projectile", /*german*/"ein Projektil", /*french*/"un projectile"),
@@ -1900,7 +1900,7 @@ void StaticData::HintTable_Init_Item() {
                                                 }, {
                                                 CustomMessage("catapult ammo", /*german*/"Katapultmunition", /*french*/"un paquet de délicieuses munitions"),
                                                  // /*spanish*/un par de munición infantil
-                                                CustomMessage("lots-o-seeds", /*german*/"viele Nüsse", /*french*/"un paquet de germes séchés")});
+                                                CustomMessage("lots-o-seeds", /*german*/"viele Samen", /*french*/"un paquet de germes séchés")});
                                                  // /*spanish*/un puñado de semillas
 
     hintTextTable[RHT_DEKU_STICK_1] = HintText(CustomMessage("a Deku Stick", /*german*/"ein Deku-Stab", /*french*/"un bâton Mojo"),
