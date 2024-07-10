@@ -329,7 +329,7 @@ void StaticData::HintTable_Init_Item() {
                                                   CustomMessage("wizardly legumes", /*german*/"zauberhafte Hülsen", /*french*/"un paquet de légumes ensorcelés")});
                                                    // /*spanish*/unas legumbres hechizadas
 
-    hintTextTable[RHT_DOUBLE_DEFENSE] = HintText(CustomMessage("Double Defense", /*german*/"Doppelverteidigung", /*french*/"la Double Défence"),
+    hintTextTable[RHT_DOUBLE_DEFENSE] = HintText(CustomMessage("Double Defense", /*german*/"Doppelte Verteidigung", /*french*/"la Double Défence"),
                                                  // /*spanish*/la doble defensa
                                                  {
                                                  CustomMessage("a Great Fairy's power", /*german*/"eine Kraft einer großen Fee", /*french*/"le pouvoir d'une grande fée"),
@@ -394,7 +394,7 @@ void StaticData::HintTable_Init_Item() {
                                          CustomMessage("a cerulean capon", /*german*/"ein coelinblaues Kapaun", /*french*/"un paon azur")});
                                           // /*spanish*/un cerúleo capón
 
-    hintTextTable[RHT_ODD_MUSHROOM] = HintText(CustomMessage("an Odd Mushroom", /*german*/"ein eigenartiger Pilz", /*french*/"un Champignon Suspect"),
+    hintTextTable[RHT_ODD_MUSHROOM] = HintText(CustomMessage("an Odd Mushroom", /*german*/"ein Schimmelpilz", /*french*/"un Champignon Suspect"),
                                                // /*spanish*/un champiñón extraño
                                                {
                                                CustomMessage("a trade quest item", /*german*/"ein Gegenstand einer Handelsmission", /*french*/"un objet de quête d'échanges")
@@ -403,7 +403,7 @@ void StaticData::HintTable_Init_Item() {
                                                CustomMessage("a powder ingredient", /*german*/"eine Puderingredenzie", /*french*/"un ingrédient à poudre")});
                                                 // /*spanish*/un oloroso ingrediente
 
-    hintTextTable[RHT_ODD_POTION] = HintText(CustomMessage("an Odd Potion", /*german*/"eine eigenartige Mixtur", /*french*/"une Mixture Suspecte"),
+    hintTextTable[RHT_ODD_POTION] = HintText(CustomMessage("an Odd Potion", /*german*/"ein Modertrank", /*french*/"une Mixture Suspecte"),
                                              // /*spanish*/una medicina rara
                                              {
                                              CustomMessage("something that contains medicine", /*german*/"etwas, das Medizin enthält", /*french*/"une chose médicamenteuse"),
@@ -416,13 +416,13 @@ void StaticData::HintTable_Init_Item() {
                                              CustomMessage("Granny's goodies", /*german*/"Omas Zuckerwerk", /*french*/"la confiserie de mamie")});
                                               // /*spanish*/la especialidad de la abuela
 
-    hintTextTable[RHT_POACHERS_SAW] = HintText(CustomMessage("the Poacher's Saw", /*german*/"", /*french*/"la Scie du Chasseur"),
+    hintTextTable[RHT_POACHERS_SAW] = HintText(CustomMessage("the Poacher's Saw", /*german*/"eine Säge", /*french*/"la Scie du Chasseur"),
                                                // /*spanish*/la sierra del furtivo
                                                {
                                                CustomMessage("a trade quest item", /*german*/"ein Gegenstand einer Handelsmission", /*french*/"un objet de quête d'échanges")
                                                 // /*spanish*/un objeto de una misión secundaria
                                                }, {
-                                               CustomMessage("a tree killer", /*german*/"", /*french*/"un coupeur d'arbres")});
+                                               CustomMessage("a tree killer", /*german*/"ein Baumtöter", /*french*/"un coupeur d'arbres")});
                                                 // /*spanish*/un destructor de árboles
 
     hintTextTable[RHT_BROKEN_SWORD] = HintText(CustomMessage("the Broken Goron's Sword", /*german*/"das zerbrochene Goronen-Schwert", /*french*/"l'Épée Brisée de Goron"),
@@ -526,7 +526,7 @@ void StaticData::HintTable_Init_Item() {
                                                   CustomMessage("a danger dart launcher", /*german*/"ein Pfeilwerfer", /*french*/"un tire-fléchette")});
                                                    // /*spanish*/un peligroso lanzadardos
 
-    hintTextTable[RHT_PROGRESSIVE_SLINGSHOT] = HintText(CustomMessage("a Slingshot", /*german*/"", /*french*/"un Lance-Pierre"),
+    hintTextTable[RHT_PROGRESSIVE_SLINGSHOT] = HintText(CustomMessage("a Slingshot", /*german*/"eine Schleuder", /*french*/"un Lance-Pierre"),
                                                         // /*spanish*/una resortera de las hadas
                                                         {
                                                         CustomMessage("a projectile shooter", /*german*/"ein Projektilwerfer", /*french*/"un tire-projectile")
@@ -558,7 +558,7 @@ void StaticData::HintTable_Init_Item() {
                                                     CustomMessage("a diving tool", /*german*/"ein Tauchwerkzeug", /*french*/"un outil de plongée")
                                                      // /*spanish*/un instrumento de buceo
                                                     }, {
-                                                    CustomMessage("a deeper dive", /*german*/"", /*french*/"une bulle de plongée"),
+                                                    CustomMessage("a deeper dive", /*german*/"eine Tauchblase", /*french*/"une bulle de plongée"),
                                                      // /*spanish*/un profundo buceo
                                                     CustomMessage("a piece of Zora", /*german*/"ein Zora-Fragment", /*french*/"un morceau de Zora")});
                                                      // /*spanish*/un fragmento de Zora
@@ -1930,7 +1930,7 @@ void StaticData::HintTable_Init_Item() {
                                                             CustomMessage("the dollar of defeat", /*german*/"der Rubin der Niederlage", /*french*/"le rubis de la défaite")});
                                                              // /*spanish*/el peso de la derrota
 
-    hintTextTable[RHT_TRIFORCE_PIECE] = HintText(CustomMessage("a Piece of the Triforce", /*german*/"ein Teil des Triforce", /*french*/"un fragment de la Triforce"),
+    hintTextTable[RHT_TRIFORCE_PIECE] = HintText(CustomMessage("a Piece of the Triforce", /*german*/"ein Triforce-Fragment", /*french*/"un fragment de la Triforce"),
                                                  // /*spanish*/un fragmento de la Trifuerza
                                                  {}, {
                                                  CustomMessage("a triumph fork", /*german*/"ein Dreieck des Triumphs", /*french*/"la Tribosse"),
