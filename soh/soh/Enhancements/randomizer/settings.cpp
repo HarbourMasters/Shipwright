@@ -1751,14 +1751,20 @@ void Settings::UpdateOptionProperties() {
 
     if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleCows"), RO_GENERIC_OFF)) {
         mOptions[RSK_MALON_HINT].Enable();
-        } else {
+    } else {
         mOptions[RSK_MALON_HINT].Disable("Malon's hint points to a cow, so requires cows to be shuffled.");
     }
 
     if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("Shuffle100GSReward"), RO_GENERIC_OFF)) {
         mOptions[RSK_KAK_100_SKULLS_HINT].Enable();
-        } else {
+    } else {
         mOptions[RSK_KAK_100_SKULLS_HINT].Disable("There is no point to hinting 100 skulls if it is not shuffled");
+    }
+
+    if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("Fishsanity"), RO_FISHSANITY_OFF) == RO_FISHSANITY_HYRULE_LOACH) {
+        mOptions[RSK_LOACH_HINT].Enable();
+    } else {
+        mOptions[RSK_LOACH_HINT].Disable("Loach hint is only avaliable with \"Fishsanity\" set to \"Shuffle only Hyrule Loach\"\nas that's the only setting where you present the loach to the fishing pond owner");
     }
 
     if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("CuccosToReturn"), 7) == 0) {
