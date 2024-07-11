@@ -1739,6 +1739,12 @@ void Settings::UpdateOptionProperties() {
         mOptions[RSK_HINT_DISTRIBUTION].Unhide();
     }
 
+    if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleWarpSongs"), RO_GENERIC_ON)) {
+        mOptions[RSK_WARP_SONG_HINTS].Enable();
+    } else {
+        mOptions[RSK_WARP_SONG_HINTS].Disable("This option is disabled since warp song locations not shuffled.");
+    }
+
     if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleCows"), RO_GENERIC_OFF)) {
         mOptions[RSK_MALON_HINT].Enable();
         } else {
@@ -2037,6 +2043,10 @@ void Settings::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocatio
         }
         mOptions[RSK_KEYSANITY].SetDelayedOption();
         mOptions[RSK_KEYSANITY].SetSelectedIndex(3);
+    }
+
+    if (!mOptions[RSK_SHUFFLE_WARP_SONGS]) {
+        mOptions[RSK_WARP_SONG_HINTS].SetSelectedIndex(RO_GENERIC_OFF);
     }
 
     if (!mOptions[RSK_SHUFFLE_COWS]) {
