@@ -13,10 +13,18 @@ void SkipIntro_Register() {
     REGISTER_VB_SHOULD(VB_PLAY_TRANSITION_CS, {
         if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Intro"), IS_RANDO) ||
             IS_RANDO && OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_OVERWORLD_SPAWNS).Is(true)) {
-            if (gSaveContext.entranceIndex == (IS_RANDO ? Entrance_GetOverride(ENTR_LINKS_HOUSE_0) : ENTR_LINKS_HOUSE_0) && gSaveContext.cutsceneIndex == 0xFFF1) {
-                gSaveContext.cutsceneIndex = 0;
-                *should = false;
-            }
+                int32_t spawnEntrance = ENTR_LINKS_HOUSE_0;
+                if (IS_RANDO && OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_OVERWORLD_SPAWNS).Is(true)) {
+                    if (OTRGlobals::Instance->gRandoContext->GetSettings()->ResolvedStartingAge() == RO_AGE_ADULT) {
+                        spawnEntrance = Entrance_GetOverride(ENTR_TEMPLE_OF_TIME_7);
+                    } else {
+                        spawnEntrance = Entrance_GetOverride(ENTR_LINKS_HOUSE_0);
+                    }
+                }
+                if (gSaveContext.entranceIndex == spawnEntrance && gSaveContext.cutsceneIndex == 0xFFF1) {
+                    gSaveContext.cutsceneIndex = 0;
+                    *should = false;
+                }
         }
     });
 }
