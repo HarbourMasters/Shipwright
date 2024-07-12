@@ -2067,6 +2067,10 @@ void Settings::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocatio
         mOptions[RSK_KAK_100_SKULLS_HINT].SetSelectedIndex(RO_GENERIC_OFF);
     }
 
+    if (mOptions[RSK_FISHSANITY].IsNot(RO_FISHSANITY_HYRULE_LOACH)) {
+        mOptions[RSK_LOACH_HINT].SetSelectedIndex(RO_FISHSANITY_OFF);
+    }
+
     if (mOptions[RSK_CUCCO_COUNT].Is(0)) {
         mOptions[RSK_CHICKENS_HINT].SetSelectedIndex(RO_GENERIC_OFF);
     }
