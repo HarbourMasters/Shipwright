@@ -192,7 +192,7 @@ void ItemLocation::SetWothCandidate() {
     wothCandidate = true;
 }
 
-bool ItemLocation::IsBarrenCandidate() const {
+bool ItemLocation::IsFoolishCandidate() const {
     return barrenCandidate;
 }
 

@@ -65,7 +65,7 @@ void Settings::CreateOptions() {
     mOptions[RSK_SHUFFLE_GROTTO_ENTRANCES] = Option::Bool("Grottos Entrances", CVAR_RANDOMIZER_SETTING("ShuffleGrottosEntrances"), mOptionDescriptions[RSK_SHUFFLE_GROTTO_ENTRANCES]);
     mOptions[RSK_SHUFFLE_OWL_DROPS] = Option::Bool("Owl Drops", CVAR_RANDOMIZER_SETTING("ShuffleOwlDrops"), mOptionDescriptions[RSK_SHUFFLE_OWL_DROPS]);
     mOptions[RSK_SHUFFLE_WARP_SONGS] = Option::Bool("Warp Songs", CVAR_RANDOMIZER_SETTING("ShuffleWarpSongs"), mOptionDescriptions[RSK_SHUFFLE_WARP_SONGS]);
-    mOptions[RSK_SHUFFLE_OVERWORLD_SPAWNS] = Option::Bool("Overworld Spawns", CVAR_RANDOMIZER_SETTING("ShuffleOverworldSpanws"), mOptionDescriptions[RSK_SHUFFLE_OVERWORLD_SPAWNS]);
+    mOptions[RSK_SHUFFLE_OVERWORLD_SPAWNS] = Option::Bool("Overworld Spawns", CVAR_RANDOMIZER_SETTING("ShuffleOverworldSpawns"), mOptionDescriptions[RSK_SHUFFLE_OVERWORLD_SPAWNS]);
     mOptions[RSK_MIXED_ENTRANCE_POOLS] = Option::Bool("Mixed Entrance Pools", CVAR_RANDOMIZER_SETTING("MixedEntrances"), mOptionDescriptions[RSK_MIXED_ENTRANCE_POOLS]);
     mOptions[RSK_MIX_DUNGEON_ENTRANCES] = Option::Bool("Mix Dungeons", CVAR_RANDOMIZER_SETTING("MixDungeons"), mOptionDescriptions[RSK_MIX_DUNGEON_ENTRANCES], IMFLAG_NONE);
     mOptions[RSK_MIX_BOSS_ENTRANCES] = Option::Bool("Mix Bosses", CVAR_RANDOMIZER_SETTING("MixBosses"), mOptionDescriptions[RSK_MIX_BOSS_ENTRANCES], IMFLAG_NONE);
@@ -164,6 +164,7 @@ void Settings::CreateOptions() {
     mOptions[RSK_SARIA_HINT] = Option::Bool("Saria's Hint", CVAR_RANDOMIZER_SETTING("SariaHint"), mOptionDescriptions[RSK_SARIA_HINT], IMFLAG_NONE);
     mOptions[RSK_FISHING_POLE_HINT] = Option::Bool("Fishing Pole Hint", CVAR_RANDOMIZER_SETTING("FishingPoleHint"), mOptionDescriptions[RSK_FISHING_POLE_HINT], IMFLAG_NONE);
     mOptions[RSK_FROGS_HINT] = Option::Bool("Frog Ocarina Game Hint", CVAR_RANDOMIZER_SETTING("FrogsHint"), mOptionDescriptions[RSK_FROGS_HINT], IMFLAG_NONE);
+    mOptions[RSK_OOT_HINT] = Option::Bool("Ocarina of Time Hint", CVAR_RANDOMIZER_SETTING("OoTHint"), mOptionDescriptions[RSK_OOT_HINT], IMFLAG_NONE);
     mOptions[RSK_BIGGORON_HINT] = Option::Bool("Biggoron's Hint", CVAR_RANDOMIZER_SETTING("BiggoronHint"), mOptionDescriptions[RSK_BIGGORON_HINT], IMFLAG_NONE);
     mOptions[RSK_BIG_POES_HINT] = Option::Bool("Big Poes Hint", CVAR_RANDOMIZER_SETTING("BigPoesHint"), mOptionDescriptions[RSK_BIG_POES_HINT], IMFLAG_NONE);
     mOptions[RSK_CHICKENS_HINT] = Option::Bool("Chickens Hint", CVAR_RANDOMIZER_SETTING("ChickensHint"), mOptionDescriptions[RSK_CHICKENS_HINT], IMFLAG_NONE);
@@ -176,7 +177,8 @@ void Settings::CreateOptions() {
     mOptions[RSK_KAK_30_SKULLS_HINT] = Option::Bool("30 GS Hint", CVAR_RANDOMIZER_SETTING("30GSHint"), mOptionDescriptions[RSK_KAK_30_SKULLS_HINT], IMFLAG_NONE);
     mOptions[RSK_KAK_40_SKULLS_HINT] = Option::Bool("40 GS Hint", CVAR_RANDOMIZER_SETTING("40GSHint"), mOptionDescriptions[RSK_KAK_40_SKULLS_HINT], IMFLAG_NONE);
     mOptions[RSK_KAK_50_SKULLS_HINT] = Option::Bool("50 GS Hint", CVAR_RANDOMIZER_SETTING("50GSHint"), mOptionDescriptions[RSK_KAK_50_SKULLS_HINT], IMFLAG_NONE);
-    mOptions[RSK_KAK_100_SKULLS_HINT] = Option::Bool("100 GS Hint", CVAR_RANDOMIZER_SETTING("100GSHint"), mOptionDescriptions[RSK_KAK_100_SKULLS_HINT]);
+    mOptions[RSK_KAK_100_SKULLS_HINT] = Option::Bool("100 GS Hint", CVAR_RANDOMIZER_SETTING("100GSHint"), mOptionDescriptions[RSK_KAK_100_SKULLS_HINT], IMFLAG_NONE);
+    mOptions[RSK_MASK_SHOP_HINT] = Option::Bool("Mask Shop Hint", CVAR_RANDOMIZER_SETTING("MaskShopHint"), mOptionDescriptions[RSK_MASK_SHOP_HINT]);
     // TODO: Compasses show rewards/woth, maps show dungeon mode
     mOptions[RSK_BLUE_FIRE_ARROWS] = Option::Bool("Blue Fire Arrows", CVAR_RANDOMIZER_SETTING("BlueFireArrows"), mOptionDescriptions[RSK_BLUE_FIRE_ARROWS]);
     mOptions[RSK_SUNLIGHT_ARROWS] = Option::Bool("Sunlight Arrows", CVAR_RANDOMIZER_SETTING("SunlightArrows"), mOptionDescriptions[RSK_SUNLIGHT_ARROWS]);
@@ -733,6 +735,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_GREG_HINT],
         &mOptions[RSK_SARIA_HINT],
         &mOptions[RSK_FROGS_HINT],
+        &mOptions[RSK_OOT_HINT],
         &mOptions[RSK_BIGGORON_HINT],
         &mOptions[RSK_BIG_POES_HINT],
         &mOptions[RSK_CHICKENS_HINT],
@@ -746,7 +749,8 @@ void Settings::CreateOptions() {
         &mOptions[RSK_KAK_30_SKULLS_HINT],
         &mOptions[RSK_KAK_40_SKULLS_HINT],
         &mOptions[RSK_KAK_50_SKULLS_HINT],
-        &mOptions[RSK_KAK_100_SKULLS_HINT]
+        &mOptions[RSK_KAK_100_SKULLS_HINT],
+        &mOptions[RSK_MASK_SHOP_HINT]
     }, false, WidgetContainerType::SECTION, "This setting adds some hints at locations other than Gossip Stones.");
     mOptionGroups[RSG_ITEM_POOL_HINTS_IMGUI_COLUMN] = OptionGroup::SubGroup("Item Pool & Hints", std::initializer_list<OptionGroup*>{
         &mOptionGroups[RSG_ITEM_POOL_HINTS_IMGUI],
@@ -964,6 +968,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_GREG_HINT],
         &mOptions[RSK_SARIA_HINT],
         &mOptions[RSK_FROGS_HINT],
+        &mOptions[RSK_OOT_HINT],
         &mOptions[RSK_WARP_SONG_HINTS],
         &mOptions[RSK_BIGGORON_HINT],
         &mOptions[RSK_BIG_POES_HINT],
@@ -976,6 +981,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_KAK_40_SKULLS_HINT],
         &mOptions[RSK_KAK_50_SKULLS_HINT],
         &mOptions[RSK_KAK_100_SKULLS_HINT],
+        &mOptions[RSK_MASK_SHOP_HINT],
         &mOptions[RSK_SCRUB_TEXT_HINT],
         &mOptions[RSK_FISHING_POLE_HINT],
         // TODO: Compasses show Reward/WOTH, Maps show Dungeon Mode, Starting Time
@@ -1183,12 +1189,14 @@ void Settings::CreateOptions() {
         { "Miscellaneous Settings:Greg the Rupee Hint", RSK_GREG_HINT },
         { "Miscellaneous Settings:Saria's Hint", RSK_SARIA_HINT },
         { "Miscellaneous Settings:Frog Ocarina Game Hint", RSK_FROGS_HINT },
+        { "Miscellaneous Settings:Ocarina of Time Hint", RSK_OOT_HINT },
         { "Miscellaneous Settings:10 GS Hint", RSK_KAK_10_SKULLS_HINT },
         { "Miscellaneous Settings:20 GS Hint", RSK_KAK_20_SKULLS_HINT },
         { "Miscellaneous Settings:30 GS Hint", RSK_KAK_30_SKULLS_HINT },
         { "Miscellaneous Settings:40 GS Hint", RSK_KAK_40_SKULLS_HINT },
         { "Miscellaneous Settings:50 GS Hint", RSK_KAK_50_SKULLS_HINT },
-        { "Miscellaneous Settings:50 GS Hint", RSK_KAK_100_SKULLS_HINT },
+        { "Miscellaneous Settings:100 GS Hint", RSK_KAK_100_SKULLS_HINT },
+        { "Miscellaneous Settings:Mask Shop Hint", RSK_MASK_SHOP_HINT },
         { "Miscellaneous Settings:Biggoron's Hint", RSK_BIGGORON_HINT },
         { "Miscellaneous Settings:Big Poes Hint", RSK_BIG_POES_HINT },
         { "Miscellaneous Settings:Warp Song Hints", RSK_WARP_SONG_HINTS },
@@ -1735,6 +1743,12 @@ void Settings::UpdateOptionProperties() {
         mOptions[RSK_HINT_DISTRIBUTION].Unhide();
     }
 
+    if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleWarpSongs"), RO_GENERIC_ON)) {
+        mOptions[RSK_WARP_SONG_HINTS].Enable();
+    } else {
+        mOptions[RSK_WARP_SONG_HINTS].Disable("This option is disabled since warp song locations not shuffled.");
+    }
+
     if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleCows"), RO_GENERIC_OFF)) {
         mOptions[RSK_MALON_HINT].Enable();
         } else {
@@ -1852,6 +1866,7 @@ void Settings::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocatio
 
     // RANDOTODO implement chest shuffle with keysanity
     // ShuffleChestMinigame.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_CHEST_MINIGAME]);
+    mOptions[RSK_SHUFFLE_CHEST_MINIGAME].SetSelectedIndex(RO_CHEST_GAME_OFF);
     //TODO: RandomizeAllSettings(true) when implementing the ability to randomize the options themselves.
     std::array<DungeonInfo*, 12> dungeons = ctx->GetDungeons()->GetDungeonList();
     std::array<bool, 12> dungeonModesKnown{};
@@ -2032,6 +2047,10 @@ void Settings::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocatio
         }
         mOptions[RSK_KEYSANITY].SetDelayedOption();
         mOptions[RSK_KEYSANITY].SetSelectedIndex(3);
+    }
+
+    if (!mOptions[RSK_SHUFFLE_WARP_SONGS]) {
+        mOptions[RSK_WARP_SONG_HINTS].SetSelectedIndex(RO_GENERIC_OFF);
     }
 
     if (!mOptions[RSK_SHUFFLE_COWS]) {
@@ -2293,12 +2312,14 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
                 case RSK_GREG_HINT:
                 case RSK_SARIA_HINT:
                 case RSK_FROGS_HINT:
+                case RSK_OOT_HINT:
                 case RSK_KAK_10_SKULLS_HINT:
                 case RSK_KAK_20_SKULLS_HINT:
                 case RSK_KAK_30_SKULLS_HINT:
                 case RSK_KAK_40_SKULLS_HINT:
                 case RSK_KAK_50_SKULLS_HINT:
                 case RSK_KAK_100_SKULLS_HINT:
+                case RSK_MASK_SHOP_HINT:
                 case RSK_BIGGORON_HINT:
                 case RSK_BIG_POES_HINT:
                 case RSK_CHICKENS_HINT:
