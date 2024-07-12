@@ -324,9 +324,6 @@ void SaveManager::LoadRandomizerVersion2() {
     std::string sariaText;
     SaveManager::Instance->LoadData("sariaText", sariaText);
     randoContext->AddHint(RH_SARIA_HINT, Rando::Hint(RH_SARIA_HINT, {CustomMessage(sariaText)}));
-    std::string loachText;
-    SaveManager::Instance->LoadData("loachText", loachText);
-    randoContext->AddHint(RH_LOACH_HINT, Rando::Hint(RH_LOACH_HINT, {CustomMessage(loachText)}));
     std::string fishingPoleText;
     SaveManager::Instance->LoadData("fishingPoleText", fishingPoleText);
     randoContext->AddHint(RH_FISHING_POLE, Rando::Hint(RH_FISHING_POLE, {CustomMessage(fishingPoleText)}));
