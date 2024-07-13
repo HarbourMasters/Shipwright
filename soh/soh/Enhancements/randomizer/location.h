@@ -80,40 +80,28 @@ class SpoilerCollectionCheck {
     }
 };
 
-enum class LocationType {
-    Base,
-    Chest,
-    Collectable,
-    GSToken,
-    GrottoScrub,
-    Delayed,
-    TempleReward,
-    HintStone,
-    OtherHint,
-};
-
 class Location {
   public:
     Location() : rc(RC_UNKNOWN_CHECK), quest(RCQUEST_BOTH), checkType(RCTYPE_STANDARD), area(RCAREA_INVALID),
-                 locationType(LocationType::Base), actorId(ACTOR_ID_MAX), scene(SCENE_ID_MAX), actorParams(0),
+                 actorId(ACTOR_ID_MAX), scene(SCENE_ID_MAX), actorParams(0),
                  flag(0), hintKey(RHT_NONE), vanillaItem(RG_NONE), isVanillaCompletion(false),
                  collectionCheck(SpoilerCollectionCheck()) {}
     Location(const RandomizerCheck rc_, const RandomizerCheckQuest quest_, const RandomizerCheckType checkType_,
-             const RandomizerCheckArea area_, const LocationType locationType_, const ActorID actorId_, const uint8_t scene_,
+             const RandomizerCheckArea area_, const const ActorID actorId_, const uint8_t scene_,
              const int32_t actorParams_, const uint8_t flag_, std::string shortName_, std::string spoilerName_,
              const RandomizerHintTextKey hintKey_, const RandomizerGet vanillaItem_,
              const bool isVanillaCompletion_ = false, const SpoilerCollectionCheck collectionCheck_ = SpoilerCollectionCheck())
-        : rc(rc_), quest(quest_), checkType(checkType_), area(area_), locationType(locationType_), actorId(actorId_),
+        : rc(rc_), quest(quest_), checkType(checkType_), area(area_), actorId(actorId_),
           scene(scene_), actorParams(actorParams_), flag(flag_), shortName(std::move(shortName_)),
           spoilerName(std::move(spoilerName_)), hintKey(hintKey_), vanillaItem(vanillaItem_),
           isVanillaCompletion(isVanillaCompletion_), collectionCheck(collectionCheck_) {
     }
     Location(const RandomizerCheck rc_, const RandomizerCheckQuest quest_, const RandomizerCheckType checkType_,
-             const RandomizerCheckArea area_, const LocationType locationType_, const ActorID actorId_, const uint8_t scene_,
+             const RandomizerCheckArea area_, const ActorID actorId_, const uint8_t scene_,
              const int32_t actorParams_, const uint8_t flag_, std::string shortName_,
              const RandomizerHintTextKey hintKey_, const RandomizerGet vanillaItem_,
              const bool isVanillaCompletion_ = false, const SpoilerCollectionCheck collectionCheck_ = SpoilerCollectionCheck())
-        : rc(rc_), quest(quest_), checkType(checkType_), area(area_), locationType(locationType_), actorId(actorId_),
+        : rc(rc_), quest(quest_), checkType(checkType_), area(area_), actorId(actorId_),
           scene(scene_), actorParams(actorParams_), flag(flag_), shortName(shortName_),
           spoilerName(SpoilerNameFromShortName(shortName_, area_)), hintKey(hintKey_), vanillaItem(vanillaItem_),
           isVanillaCompletion(isVanillaCompletion_), collectionCheck(collectionCheck_) {}
@@ -138,7 +126,6 @@ class Location {
     HintText* GetHint();
     const std::string& GetName() const;
     const std::string& GetShortName() const;
-    LocationType GetLocationType() const;
     bool IsDungeon() const;
     bool IsOverworld() const;
     bool IsShop() const;
@@ -262,7 +249,6 @@ class Location {
     RandomizerCheckQuest quest;
     RandomizerCheckType checkType;
     RandomizerCheckArea area;
-    LocationType locationType;
     ActorID actorId;
     uint8_t scene;
     int32_t actorParams;
