@@ -111,14 +111,15 @@ typedef enum {
     RCTYPE_COW,                        // Cows
     RCTYPE_ADULT_TRADE,                // Adult trade quest checks
     RCTYPE_FROG_SONG,                  // Frog song purple rupee checks
-    RCTYPE_MAP_COMPASS,                // Maps/Compasses
+    RCTYPE_MAP,                        // Maps
+    RCTYPE_COMPASS,                    // Compasses
     RCTYPE_SMALL_KEY,                  // Small Keys
     RCTYPE_GF_KEY,                     // Gerudo Fortress Keys
     RCTYPE_BOSS_KEY,                   // Boss Keys
     RCTYPE_GANON_BOSS_KEY,             // Ganon's boss key
-    RCTYPE_SHOP,                       // shops
-    RCTYPE_SCRUB,                      // scrubs
-    RCTYPE_MERCHANT,                   // merchants
+    RCTYPE_SHOP,                       // Shops
+    RCTYPE_SCRUB,                      // Scrubs
+    RCTYPE_MERCHANT,                   // Merchants
     RCTYPE_CHEST_GAME,                 // RANDOTODO replace this once we implement it, just using it to exclude for now
     RCTYPE_LINKS_POCKET,               // RANDOTODO this feels hacky, replace with better starting items
     RCTYPE_GOSSIP_STONE,               // RANDOTODO make these into event access
@@ -127,7 +128,7 @@ typedef enum {
     RCTYPE_DUNGEON_REWARD,             // Dungeon rewards (blue warps)
     RCTYPE_OCARINA,                    // Ocarina locations
     RCTYPE_BEEHIVE,                    // Beehives
-    RCTYPE_FISH,
+    RCTYPE_FISH,                       // Fishes
 } RandomizerCheckType;
 
 typedef enum { RCQUEST_VANILLA, RCQUEST_MQ, RCQUEST_BOTH } RandomizerCheckQuest;

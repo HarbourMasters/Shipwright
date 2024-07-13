@@ -844,10 +844,7 @@ static void RandomizeOwnDungeon(const Rando::DungeonInfo* dungeon) {
   //filter out locations that may be required to have songs placed at them
   dungeonLocations = FilterFromPool(dungeonLocations, [ctx](const auto loc){
     if (ctx->GetOption(RSK_SHUFFLE_SONGS).Is(RO_SONG_SHUFFLE_SONG_LOCATIONS)) {
-      return !(Rando::StaticData::GetLocation(loc)->IsCategory(Category::cSong));
-    }
-    if (ctx->GetOption(RSK_SHUFFLE_SONGS).Is(RO_SONG_SHUFFLE_SONG_LOCATIONS)) {
-      return !(Rando::StaticData::GetLocation(loc)->IsCategory(Category::cSongDungeonReward));
+      return !(Rando::StaticData::GetLocation(loc)->GetRCType() == RCTYPE_SONG_LOCATION);
     }
     return true;
   });
@@ -1098,11 +1095,24 @@ int Fill() {
       std::vector<RandomizerCheck> songLocations;
       if (ctx->GetOption(RSK_SHUFFLE_SONGS).Is(RO_SONG_SHUFFLE_SONG_LOCATIONS)) {
           songLocations = FilterFromPool(
-              ctx->allLocations, [](const auto loc) { return Rando::StaticData::GetLocation(loc)->IsCategory(Category::cSong); });
+              ctx->allLocations, [](const auto loc) { return Rando::StaticData::GetLocation(loc)->GetRCType() == RCTYPE_SONG_LOCATION; });
 
       } else if (ctx->GetOption(RSK_SHUFFLE_SONGS).Is(RO_SONG_SHUFFLE_DUNGEON_REWARDS)) {
           songLocations = FilterFromPool(ctx->allLocations, [](const auto loc) {
-              return Rando::StaticData::GetLocation(loc)->IsCategory(Category::cSongDungeonReward);
+            return loc == RC_BOTTOM_OF_THE_WELL_LENS_OF_TRUTH_CHEST ||
+                   loc == RC_BOTTOM_OF_THE_WELL_MQ_LENS_OF_TRUTH_CHEST ||
+                   loc == RC_GERUDO_TRAINING_GROUND_MAZE_PATH_FINAL_CHEST ||
+                   loc == RC_GERUDO_TRAINING_GROUND_MQ_ICE_ARROWS_CHEST ||
+                   loc == RC_DEKU_TREE_QUEEN_GOHMA_HEART ||
+                   loc == RC_DODONGOS_CAVERN_KING_DODONGO_HEART ||
+                   loc == RC_JABU_JABUS_BELLY_BARINADE_HEART ||
+                   loc == RC_FOREST_TEMPLE_PHANTOM_GANON_HEART ||
+                   loc == RC_FIRE_TEMPLE_VOLVAGIA_HEART ||
+                   loc == RC_WATER_TEMPLE_MORPHA_HEART ||
+                   loc == RC_SPIRIT_TEMPLE_TWINROVA_HEART ||
+                   loc == RC_SHADOW_TEMPLE_BONGO_BONGO_HEART ||
+                   loc == RC_SHEIK_IN_ICE_CAVERN ||
+                   loc == RC_SONG_FROM_IMPA;
           });
       }
 

@@ -50,8 +50,7 @@ class Context {
     template <typename Container>
     void AddLocations(const Container& locations, std::vector<RandomizerCheck>* destination = nullptr);
     void GenerateLocationPool();
-    static std::vector<RandomizerCheck> GetLocations(const std::vector<RandomizerCheck>& locationPool,
-                                              Category categoryInclude, Category categoryExclude = Category::cNull);
+    static std::vector<RandomizerCheck> GetLocations(const std::vector<RandomizerCheck>& locationPool, const RandomizerCheckType checkType);
     void AddExcludedOptions();
     void LocationReset();
     void ClearItemLocations();

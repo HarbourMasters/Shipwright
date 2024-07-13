@@ -917,11 +917,11 @@ void GenerateItemPool() {
   };
 
   if (ctx->GetOption(RSK_SHUFFLE_TOKENS).Is(RO_TOKENSANITY_OFF)) {
-    for (RandomizerCheck loc : ctx->GetLocations(ctx->allLocations, Category::cSkulltula)) {
+    for (RandomizerCheck loc : ctx->GetLocations(ctx->allLocations, RCTYPE_SKULL_TOKEN)) {
       ctx->PlaceItemInLocation(loc, RG_GOLD_SKULLTULA_TOKEN, false, true);
     }
   } else if (ctx->GetOption(RSK_SHUFFLE_TOKENS).Is(RO_TOKENSANITY_DUNGEONS)) {
-    for (RandomizerCheck loc : ctx->GetLocations(ctx->allLocations, Category::cSkulltula)) {
+    for (RandomizerCheck loc : ctx->GetLocations(ctx->allLocations, RCTYPE_SKULL_TOKEN)) {
       if (Rando::StaticData::GetLocation(loc)->IsOverworld()) {
           ctx->PlaceItemInLocation((RandomizerCheck)loc, RG_GOLD_SKULLTULA_TOKEN, false, true);
       } else {
@@ -929,7 +929,7 @@ void GenerateItemPool() {
       }
     }
   } else if (ctx->GetOption(RSK_SHUFFLE_TOKENS).Is(RO_TOKENSANITY_OVERWORLD)) {
-    for (RandomizerCheck loc : ctx->GetLocations(ctx->allLocations, Category::cSkulltula)) {
+    for (RandomizerCheck loc : ctx->GetLocations(ctx->allLocations, RCTYPE_SKULL_TOKEN)) {
       if (Rando::StaticData::GetLocation(loc)->IsDungeon()) {
           ctx->PlaceItemInLocation((RandomizerCheck)loc, RG_GOLD_SKULLTULA_TOKEN, false, true);
       } else {

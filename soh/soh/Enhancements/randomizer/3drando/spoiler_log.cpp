@@ -116,30 +116,29 @@ void WriteIngameSpoilerLog() {
         //     continue;
         // }
         // Beehives
-        if (!ctx->GetOption(RSK_SHUFFLE_BEEHIVES) && loc->IsCategory(Category::cBeehive)) {
+        if (!ctx->GetOption(RSK_SHUFFLE_BEEHIVES) && loc->GetRCType() == RCTYPE_BEEHIVE) {
             continue;
         }
         // Cows
-        else if (!ctx->GetOption(RSK_SHUFFLE_COWS) && loc->IsCategory(Category::cCow)) {
+        else if (!ctx->GetOption(RSK_SHUFFLE_COWS) && loc->GetRCType() == RCTYPE_COW) {
             continue;
         }
         // Merchants
-        else if (ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_OFF) && loc->IsCategory(Category::cMerchant)) {
+        else if (ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_OFF) && loc->GetRCType() == RCTYPE_MERCHANT) {
             continue;
         }
         // Adult Trade
-        else if (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && loc->IsCategory(Category::cAdultTrade)) {
+        else if (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && loc->GetRCType() == RCTYPE_ADULT_TRADE) {
             continue;
         }
         // Chest Minigame
-        else if (ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_GENERIC_OFF) &&
-                 loc->IsCategory(Category::cChestMinigame)) {
+        else if (ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_GENERIC_OFF) && loc->GetRCType() == RCTYPE_CHEST_GAME) {
             continue;
         }
         // Gerudo Fortress
         else if ((ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_NORMAL) &&
-                  (loc->IsCategory(Category::cVanillaGFSmallKey) || loc->GetHintKey() == RHT_GF_GERUDO_MEMBERSHIP_CARD)) ||
-                 (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_FAST) && loc->IsCategory(Category::cVanillaGFSmallKey) &&
+                  (loc->GetRCType() == RCTYPE_GF_KEY || loc->GetHintKey() == RHT_GF_GERUDO_MEMBERSHIP_CARD)) ||
+                 (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_FAST) && loc->GetRCType() == RCTYPE_GF_KEY &&
                   loc->GetHintKey() != RHT_GF_NORTH_F1_CARPENTER)) {
             continue;
         }
@@ -160,7 +159,7 @@ void WriteIngameSpoilerLog() {
         }
         // PURPLE TODO: LOCALIZATION
         auto locItem = itemLocation->GetPlacedItemName().GetEnglish();
-        if (itemLocation->GetPlacedRandomizerGet() == RG_ICE_TRAP && loc->IsCategory(Category::cShop)) {
+        if (itemLocation->GetPlacedRandomizerGet() == RG_ICE_TRAP && loc->GetRCType() == RCTYPE_SHOP) {
             locItem = NonShopItems[TransformShopIndex(GetShopIndex(key))].Name.GetEnglish();
         }
         if (stringOffsetMap.find(locItem) == stringOffsetMap.end()) {
@@ -204,15 +203,23 @@ void WriteIngameSpoilerLog() {
             }
         }
         // Gold Skulltulas
-        else if (loc->IsCategory(Category::cSkulltula) &&
+        else if (loc->GetRCType() == RCTYPE_SKULL_TOKEN &&
                  ((ctx->GetOption(RSK_SHUFFLE_TOKENS).Is(RO_TOKENSANITY_OFF)) ||
                   (ctx->GetOption(RSK_SHUFFLE_TOKENS).Is(RO_TOKENSANITY_DUNGEONS) && !loc->IsDungeon()) ||
                   (ctx->GetOption(RSK_SHUFFLE_TOKENS).Is(RO_TOKENSANITY_OVERWORLD) && loc->IsDungeon()))) {
             spoilerData.ItemLocations[spoilerItemIndex].RevealType = REVEALTYPE_ALWAYS;
         }
         // Deku Scrubs
-        else if (loc->IsCategory(Category::cDekuScrub) && !loc->IsCategory(Category::cDekuScrubUpgrades) &&
-                 ctx->GetOption(RSK_SHUFFLE_SCRUBS).Is(RO_SCRUBS_OFF)) {
+        else if (
+            loc->GetRCType() == RCTYPE_SCRUB &&
+            // these 3 scrubs are always randomized
+            !(
+                loc->GetRandomizerCheck() == RC_LW_DEKU_SCRUB_NEAR_BRIDGE ||
+                loc->GetRandomizerCheck() == RC_LW_DEKU_SCRUB_GROTTO_FRONT ||
+                loc->GetRandomizerCheck() == RC_HF_DEKU_SCRUB_GROTTO
+            ) &&
+            ctx->GetOption(RSK_SHUFFLE_SCRUBS).Is(RO_SCRUBS_OFF)
+        ) {
             spoilerData.ItemLocations[spoilerItemIndex].CollectType = COLLECTTYPE_REPEATABLE;
             spoilerData.ItemLocations[spoilerItemIndex].RevealType = REVEALTYPE_ALWAYS;
         }
@@ -290,7 +297,7 @@ static void WriteLocation(
 
   //   // Insert a padding so we get a kind of table in the XML document.
   //   int16_t requiredPadding = LONGEST_NAME - location->GetName().length();
-  //   if (location->IsCategory(Category::cShop)) {
+  //   if (location->GetRCType() == RCTYPE_SHOP) {
   //     // Shop items have short location names, but come with an additional price attribute.
   //     requiredPadding -= PRICE_ATTRIBUTE;
   //   }
@@ -300,7 +307,7 @@ static void WriteLocation(
   //   }
   // }
 
-  // if (location->IsCategory(Category::cShop)) {
+  // if (location->GetRCType() == RCTYPE_SHOP) {
   //   char price[6];
   //   sprintf(price, "%03d", location->GetPrice());
   //   node->SetAttribute("price", price);

@@ -1290,7 +1290,7 @@ bool IsCheckShuffled(RandomizerCheck rc) {
             (rc != RC_ZR_MAGIC_BEAN_SALESMAN || showBeans) &&
             (rc != RC_HC_MALON_EGG || showWeirdEgg) &&
             (loc->GetRCType() != RCTYPE_FROG_SONG || showFrogSongRupees) &&
-            (loc->GetRCType() != RCTYPE_MAP_COMPASS || showStartingMapsCompasses) &&
+            ((loc->GetRCType() != RCTYPE_MAP && loc->GetRCType() != RCTYPE_COMPASS) || showStartingMapsCompasses) &&
             (loc->GetRCType() != RCTYPE_SMALL_KEY || showKeysanity) &&
             (loc->GetRCType() != RCTYPE_BOSS_KEY || showBossKeysanity) &&
             (loc->GetRCType() != RCTYPE_GANON_BOSS_KEY || showGanonBossKey) &&

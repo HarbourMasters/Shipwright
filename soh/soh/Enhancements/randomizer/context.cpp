@@ -105,7 +105,7 @@ void Context::PlaceItemInLocation(const RandomizerCheck locKey, const Randomizer
 
     // If we're placing a non-shop item in a shop location, we want to record it for custom messages
     if (StaticData::RetrieveItem(item).GetItemType() != ITEMTYPE_SHOP &&
-        StaticData::GetLocation(locKey)->IsCategory(Category::cShop)) {
+        StaticData::GetLocation(locKey)->GetRCType() == RCTYPE_SHOP) {
         const int index = TransformShopIndex(GetShopIndex(locKey));
         NonShopItems[index].Name = StaticData::RetrieveItem(item).GetName();
         NonShopItems[index].Repurchaseable =
@@ -161,16 +161,14 @@ void Context::AddExcludedOptions() {
     }
 }
 
-std::vector<RandomizerCheck> Context::GetLocations(const std::vector<RandomizerCheck>& locationPool,
-                                                   const Category categoryInclude, const Category categoryExclude) {
-    std::vector<RandomizerCheck> locationsInCategory;
+std::vector<RandomizerCheck> Context::GetLocations(const std::vector<RandomizerCheck>& locationPool, const RandomizerCheckType checkType) {
+    std::vector<RandomizerCheck> locationsOfType;
     for (RandomizerCheck locKey : locationPool) {
-        if (StaticData::GetLocation(locKey)->IsCategory(categoryInclude) &&
-            !StaticData::GetLocation(locKey)->IsCategory(categoryExclude)) {
-            locationsInCategory.push_back(locKey);
+        if (StaticData::GetLocation(locKey)->GetRCType() == checkType) {
+            locationsOfType.push_back(locKey);
         }
     }
-    return locationsInCategory;
+    return locationsOfType;
 }
 
 void Context::ClearItemLocations() {
@@ -227,7 +225,7 @@ void Context::CreateItemOverrides() {
             iceTrapModels[locKey] = val.LooksLike();
             val.SetTrickName(GetIceTrapName(val.LooksLike()));
             // If this is ice trap is in a shop, change the name based on what the model will look like
-            if (loc->IsCategory(Category::cShop)) {
+            if (loc->GetRCType() == RCTYPE_SHOP) {
                 NonShopItems[TransformShopIndex(GetShopIndex(locKey))].Name = val.GetTrickName();
             }
             overrides[locKey] = val;

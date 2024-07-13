@@ -46,7 +46,7 @@ bool LocationAccess::ConditionsMet() const {
 bool LocationAccess::CanBuy() const {
   auto ctx = Rando::Context::GetInstance();
   //Not a shop or scrub location, don't need to check if buyable
-  if (!(Rando::StaticData::GetLocation(location)->IsCategory(Category::cShop)) && !(Rando::StaticData::GetLocation(location)->IsCategory(Category::cDekuScrub))) {
+  if (!Rando::StaticData::GetLocation(location)->GetRCType() == RCTYPE_SHOP && !Rando::StaticData::GetLocation(location)->GetRCType() == RCTYPE_SCRUB) {
     return true;
   }
 

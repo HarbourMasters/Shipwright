@@ -136,7 +136,7 @@ bool FilterFoolishLocations(RandomizerCheck loc){
 
 bool FilterSongLocations(RandomizerCheck loc){
   auto ctx = Rando::Context::GetInstance();
-  return Rando::StaticData::GetLocation(loc)->IsCategory(Category::cSong);
+  return Rando::StaticData::GetLocation(loc)->GetRCType() == RCTYPE_SONG_LOCATION;
 }
 
 bool FilterOverworldLocations(RandomizerCheck loc){
