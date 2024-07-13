@@ -85,9 +85,9 @@ void WriteIngameSpoilerLog() {
     uint16_t spoilerItemIndex = 0;
     uint32_t spoilerStringOffset = 0;
     uint16_t spoilerSphereItemoffset = 0;
-    uint16_t spoilerGroupOffset = 0;
-    // Intentionally junk value so we trigger the 'new group, record some stuff' code
-    uint8_t currentGroup = SpoilerCollectionCheckGroup::SPOILER_COLLECTION_GROUP_COUNT;
+    uint16_t spoilerAreaOffset = 0;
+    // Intentionally junk value so we trigger the 'new area, record some stuff' code
+    RandomizerCheckArea currentArea = RandomizerCheckArea::RCAREA_INVALID;
     bool spoilerOutOfSpace = false;
 
     // Create map of string data offsets for all _unique_ item locations and names in the playthrough
@@ -99,12 +99,12 @@ void WriteIngameSpoilerLog() {
         stringOffsetMap; // Map of strings to their offset into spoiler string data array
     stringOffsetMap.reserve(ctx->allLocations.size() * 2);
 
-    // Sort all locations by their group, so the in-game log can show a group of items by simply starting/ending at
+    // Sort all locations by their area, so the in-game log can show a area of items by simply starting/ending at
     // certain indices
     std::stable_sort(ctx->allLocations.begin(), ctx->allLocations.end(), [](const RandomizerCheck& a, const RandomizerCheck& b) {
-        auto groupA = Rando::StaticData::GetLocation(a)->GetCollectionCheckGroup();
-        auto groupB = Rando::StaticData::GetLocation(b)->GetCollectionCheckGroup();
-        return groupA < groupB;
+        RandomizerCheckArea areaA = Rando::StaticData::GetLocation(a)->GetArea();
+        RandomizerCheckArea areaB = Rando::StaticData::GetLocation(b)->GetArea();
+        return areaA < areaB;
     });
 
     for (const RandomizerCheck key : ctx->allLocations) {
@@ -224,16 +224,16 @@ void WriteIngameSpoilerLog() {
             spoilerData.ItemLocations[spoilerItemIndex].RevealType = REVEALTYPE_ALWAYS;
         }
 
-        auto checkGroup = loc->GetCollectionCheckGroup();
-        spoilerData.ItemLocations[spoilerItemIndex].Group = checkGroup;
+        RandomizerCheckArea checkArea = loc->GetArea();
+        spoilerData.ItemLocations[spoilerItemIndex].Area = checkArea;
 
-        // Group setup
-        if (checkGroup != currentGroup) {
-            currentGroup = checkGroup;
-            spoilerData.GroupOffsets[currentGroup] = spoilerGroupOffset;
+        // Area setup
+        if (checkArea != currentArea) {
+            currentArea = checkArea;
+            spoilerData.AreaOffsets[currentArea] = spoilerAreaOffset;
         }
-        ++spoilerData.GroupItemCounts[currentGroup];
-        ++spoilerGroupOffset;
+        ++spoilerData.AreaItemCounts[currentArea];
+        ++spoilerAreaOffset;
 
         itemLocationsMap[key] = spoilerItemIndex++;
     }

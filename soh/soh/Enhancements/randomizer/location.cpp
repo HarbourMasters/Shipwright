@@ -10,10 +10,6 @@ Rando::SpoilerCollectionCheck Rando::Location::GetCollectionCheck() const {
     return collectionCheck;
 }
 
-SpoilerCollectionCheckGroup Rando::Location::GetCollectionCheckGroup() const {
-    return collectionCheckGroup;
-}
-
 RandomizerCheckQuest Rando::Location::GetQuest() const {
     return quest;
 }
@@ -97,88 +93,57 @@ Rando::Location Rando::Location::Base(RandomizerCheck rc, RandomizerCheckQuest q
                                       RandomizerCheckArea area_, ActorID actorId_, uint8_t scene_, int32_t actorParams_,
                                       uint8_t flag_, std::string&& shortName_, std::string&& spoilerName_,
                                       const RandomizerHintTextKey hintKey, const RandomizerGet vanillaItem,
-                                      SpoilerCollectionCheck collectionCheck,
-                                      SpoilerCollectionCheckGroup collectionCheckGroup, bool isVanillaCompletion_) {
+                                      SpoilerCollectionCheck collectionCheck, bool isVanillaCompletion_) {
     return {rc, quest_, checkType_, area_, LocationType::Base, actorId_, scene_, actorParams_, flag_,
-                    std::move(shortName_), std::move(spoilerName_), hintKey, vanillaItem,
-                    isVanillaCompletion_, collectionCheck, collectionCheckGroup};
+                    std::move(shortName_), std::move(spoilerName_), hintKey, vanillaItem, isVanillaCompletion_, collectionCheck};
 }
 
 Rando::Location Rando::Location::Base(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckType checkType_,
                                       RandomizerCheckArea area_, ActorID actorId_, uint8_t scene_, int32_t actorParams_,
                                       uint8_t flag_, std::string&& shortName_,
                                       const RandomizerHintTextKey hintKey, const RandomizerGet vanillaItem,
-                                      SpoilerCollectionCheck collectionCheck,
-                                      SpoilerCollectionCheckGroup collectionCheckGroup, bool isVanillaCompletion_) {
+                                      SpoilerCollectionCheck collectionCheck, bool isVanillaCompletion_) {
     return {rc, quest_, checkType_, area_, LocationType::Base, actorId_, scene_, actorParams_, flag_,
-                    std::move(shortName_), hintKey, vanillaItem,
-                    isVanillaCompletion_, collectionCheck, collectionCheckGroup};
-}
-
-Rando::Location Rando::Location::Chest(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckType checkType_,
-                                       RandomizerCheckArea area_, ActorID actorId_, uint8_t scene_,
-                                       int32_t actorParams_, uint8_t flag_, std::string&& shortName_,
-                                       std::string&& spoilerName_, const RandomizerHintTextKey hintKey,
-                                       const RandomizerGet vanillaItem,
-                                       SpoilerCollectionCheckGroup collectionCheckGroup, bool isVanillaCompletion_) {
-    return {rc, quest_, checkType_, area_, LocationType::Chest, actorId_, scene_, actorParams_, flag_,
-                    std::move(shortName_), std::move(spoilerName_), hintKey, vanillaItem, isVanillaCompletion_,
-                    SpoilerCollectionCheck(SPOILER_CHK_CHEST, scene_, flag_), collectionCheckGroup};
+                    std::move(shortName_), hintKey, vanillaItem, isVanillaCompletion_, collectionCheck};
 }
 
 Rando::Location Rando::Location::Chest(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckType checkType_,
                                        RandomizerCheckArea area_, ActorID actorId_, uint8_t scene_,
                                        int32_t actorParams_, uint8_t flag_, std::string&& shortName_,
                                        const RandomizerHintTextKey hintKey,
-                                       const RandomizerGet vanillaItem,
-                                       SpoilerCollectionCheckGroup collectionCheckGroup, bool isVanillaCompletion_) {
+                                       const RandomizerGet vanillaItem, bool isVanillaCompletion_) {
     return {rc, quest_, checkType_, area_, LocationType::Chest, actorId_, scene_, actorParams_, flag_,
                     std::move(shortName_), hintKey, vanillaItem, isVanillaCompletion_,
-                    SpoilerCollectionCheck(SPOILER_CHK_CHEST, scene_, flag_), collectionCheckGroup};
+                    SpoilerCollectionCheck(SPOILER_CHK_CHEST, scene_, flag_)};
 }
 
 Rando::Location Rando::Location::Chest(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckType checkType_,
                                        RandomizerCheckArea area_, ActorID actorId_, uint8_t scene_,
                                        int32_t actorParams_, uint8_t flag_, std::string&& shortName_,
-                                       std::string&& spoilerName_, const RandomizerHintTextKey hintKey,
-                                       const RandomizerGet vanillaItem,
-                                       SpoilerCollectionCheck collectionCheck,
-                                       SpoilerCollectionCheckGroup collectionCheckGroup, bool isVanillaCompletion_) {
+                                       const RandomizerHintTextKey hintKey, const RandomizerGet vanillaItem,
+                                       SpoilerCollectionCheck collectionCheck, bool isVanillaCompletion_) {
     return {rc, quest_, checkType_, area_, LocationType::Chest, actorId_, scene_, actorParams_, flag_,
-                    std::move(shortName_), std::move(spoilerName_), hintKey, vanillaItem,
-                    isVanillaCompletion_, collectionCheck, collectionCheckGroup};
-}
-
-Rando::Location Rando::Location::Chest(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckType checkType_,
-                                       RandomizerCheckArea area_, ActorID actorId_, uint8_t scene_,
-                                       int32_t actorParams_, uint8_t flag_, std::string&& shortName_,
-                                       const RandomizerHintTextKey hintKey,
-                                       const RandomizerGet vanillaItem,
-                                       SpoilerCollectionCheck collectionCheck,
-                                       SpoilerCollectionCheckGroup collectionCheckGroup, bool isVanillaCompletion_) {
-    return {rc, quest_, checkType_, area_, LocationType::Chest, actorId_, scene_, actorParams_, flag_,
-                    std::move(shortName_), hintKey, vanillaItem,
-                    isVanillaCompletion_, collectionCheck, collectionCheckGroup};
+                    std::move(shortName_), hintKey, vanillaItem, isVanillaCompletion_, collectionCheck};
 }
 
 Rando::Location Rando::Location::Collectable(
     RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckType checkType_, RandomizerCheckArea area_,
     ActorID actorId_, uint8_t scene_, int32_t actorParams_, uint8_t flag_, std::string&& shortName_,
     std::string&& spoilerName_, const RandomizerHintTextKey hintKey, const RandomizerGet vanillaItem,
-    SpoilerCollectionCheckGroup collectionCheckGroup, bool isVanillaCompletion_) {
+    bool isVanillaCompletion_) {
     return {rc, quest_, checkType_, area_, LocationType::Collectable, actorId_, scene_, actorParams_, flag_,
                     std::move(shortName_), std::move(spoilerName_), hintKey, vanillaItem, isVanillaCompletion_,
-                    SpoilerCollectionCheck(SPOILER_CHK_COLLECTABLE, scene_, flag_), collectionCheckGroup};
+                    SpoilerCollectionCheck(SPOILER_CHK_COLLECTABLE, scene_, flag_)};
 }
 
 Rando::Location Rando::Location::Collectable(
     RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckType checkType_, RandomizerCheckArea area_,
     ActorID actorId_, uint8_t scene_, int32_t actorParams_, uint8_t flag_, std::string&& shortName_,
     const RandomizerHintTextKey hintKey, const RandomizerGet vanillaItem,
-    SpoilerCollectionCheckGroup collectionCheckGroup, bool isVanillaCompletion_) {
+    bool isVanillaCompletion_) {
     return {rc, quest_, checkType_, area_, LocationType::Collectable, actorId_, scene_, actorParams_, flag_,
                     std::move(shortName_), hintKey, vanillaItem, isVanillaCompletion_,
-                    SpoilerCollectionCheck(SPOILER_CHK_COLLECTABLE, scene_, flag_), collectionCheckGroup};
+                    SpoilerCollectionCheck(SPOILER_CHK_COLLECTABLE, scene_, flag_)};
 }
 
 Rando::Location Rando::Location::Collectable(RandomizerCheck rc, RandomizerCheckQuest quest_,
@@ -186,12 +151,10 @@ Rando::Location Rando::Location::Collectable(RandomizerCheck rc, RandomizerCheck
                                              ActorID actorId_, uint8_t scene_, int32_t actorParams_, uint8_t flag_,
                                              std::string&& shortName_, std::string&& spoilerName_,
                                              const RandomizerHintTextKey hintKey, const RandomizerGet vanillaItem,
-                                             const uint8_t collectFlag_,
-                                             SpoilerCollectionCheckGroup collectionCheckGroup,
-                                             bool isVanillaCompletion_) {
+                                             const uint8_t collectFlag_, bool isVanillaCompletion_) {
     return {rc, quest_, checkType_, area_, LocationType::Collectable, actorId_, scene_, actorParams_, flag_,
                     std::move(shortName_), std::move(spoilerName_), hintKey, vanillaItem, isVanillaCompletion_,
-                    SpoilerCollectionCheck(SPOILER_CHK_COLLECTABLE, scene_, collectFlag_), collectionCheckGroup};
+                    SpoilerCollectionCheck(SPOILER_CHK_COLLECTABLE, scene_, collectFlag_)};
 }
 
 Rando::Location Rando::Location::Collectable(RandomizerCheck rc, RandomizerCheckQuest quest_,
@@ -199,12 +162,10 @@ Rando::Location Rando::Location::Collectable(RandomizerCheck rc, RandomizerCheck
                                              ActorID actorId_, uint8_t scene_, int32_t actorParams_, uint8_t flag_,
                                              std::string&& shortName_,
                                              const RandomizerHintTextKey hintKey, const RandomizerGet vanillaItem,
-                                             const uint8_t collectFlag_,
-                                             SpoilerCollectionCheckGroup collectionCheckGroup,
-                                             bool isVanillaCompletion_) {
+                                             const uint8_t collectFlag_, bool isVanillaCompletion_) {
     return {rc, quest_, checkType_, area_, LocationType::Collectable, actorId_, scene_, actorParams_, flag_,
                     std::move(shortName_), hintKey, vanillaItem, isVanillaCompletion_,
-                    SpoilerCollectionCheck(SPOILER_CHK_COLLECTABLE, scene_, collectFlag_), collectionCheckGroup};
+                    SpoilerCollectionCheck(SPOILER_CHK_COLLECTABLE, scene_, collectFlag_)};
 }
 
 Rando::Location Rando::Location::Collectable(RandomizerCheck rc, RandomizerCheckQuest quest_,
@@ -212,12 +173,10 @@ Rando::Location Rando::Location::Collectable(RandomizerCheck rc, RandomizerCheck
                                              ActorID actorId_, uint8_t scene_, int32_t actorParams_, uint8_t flag_,
                                              std::string&& shortName_, std::string&& spoilerName_,
                                              const RandomizerHintTextKey hintKey, const RandomizerGet vanillaItem,
-                                             SpoilerCollectionCheck collectionCheck,
-                                             SpoilerCollectionCheckGroup collectionCheckGroup,
-                                             bool isVanillaCompletion_) {
+                                             SpoilerCollectionCheck collectionCheck, bool isVanillaCompletion_) {
     return {rc, quest_, checkType_, area_, LocationType::Collectable, actorId_, scene_, actorParams_, flag_,
                     std::move(shortName_), std::move(spoilerName_), hintKey, vanillaItem,
-                    isVanillaCompletion_, collectionCheck, collectionCheckGroup};
+                    isVanillaCompletion_, collectionCheck};
 }
 
 Rando::Location Rando::Location::Collectable(RandomizerCheck rc, RandomizerCheckQuest quest_,
@@ -225,51 +184,25 @@ Rando::Location Rando::Location::Collectable(RandomizerCheck rc, RandomizerCheck
                                              ActorID actorId_, uint8_t scene_, int32_t actorParams_, uint8_t flag_,
                                              std::string&& shortName_,
                                              const RandomizerHintTextKey hintKey, const RandomizerGet vanillaItem,
-                                             SpoilerCollectionCheck collectionCheck,
-                                             SpoilerCollectionCheckGroup collectionCheckGroup,
-                                             bool isVanillaCompletion_) {
+                                             SpoilerCollectionCheck collectionCheck, bool isVanillaCompletion_) {
     return {rc, quest_, checkType_, area_, LocationType::Collectable, actorId_, scene_, actorParams_, flag_,
-                    std::move(shortName_), hintKey, vanillaItem, isVanillaCompletion_, collectionCheck, collectionCheckGroup};
+                    std::move(shortName_), hintKey, vanillaItem, isVanillaCompletion_, collectionCheck};
 }
 
 Rando::Location Rando::Location::GSToken(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_,
                                          uint8_t scene_, int32_t actorParams_, uint8_t flag_, std::string&& shortName_,
-                                         std::string&& spoilerName_, const RandomizerHintTextKey hintKey,
-                                         SpoilerCollectionCheckGroup collectionCheckGroup, bool isVanillaCompletion_) {
+                                         const RandomizerHintTextKey hintKey) {
     return {rc, quest_, RCTYPE_SKULL_TOKEN, area_, LocationType::GSToken, ACTOR_EN_SI, scene_, actorParams_,
-                    flag_, std::move(shortName_), std::move(spoilerName_), hintKey, RG_GOLD_SKULLTULA_TOKEN,
-                    isVanillaCompletion_, SpoilerCollectionCheck(SPOILER_CHK_GOLD_SKULLTULA, scene_, flag_),
-                    collectionCheckGroup};
+                    flag_, std::move(shortName_), hintKey, RG_GOLD_SKULLTULA_TOKEN, true,
+                    SpoilerCollectionCheck(SPOILER_CHK_GOLD_SKULLTULA, scene_, flag_)};
 }
 
 Rando::Location Rando::Location::GSToken(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_,
                                          uint8_t scene_, int32_t actorParams_, uint8_t flag_, std::string&& shortName_,
-                                         const RandomizerHintTextKey hintKey,
-                                         SpoilerCollectionCheckGroup collectionCheckGroup, bool isVanillaCompletion_) {
+                                         const RandomizerHintTextKey hintKey, const uint8_t skullScene_) {
     return {rc, quest_, RCTYPE_SKULL_TOKEN, area_, LocationType::GSToken, ACTOR_EN_SI, scene_, actorParams_,
-                    flag_, std::move(shortName_), hintKey, RG_GOLD_SKULLTULA_TOKEN, isVanillaCompletion_,
-                    SpoilerCollectionCheck(SPOILER_CHK_GOLD_SKULLTULA, scene_, flag_), collectionCheckGroup};
-}
-
-Rando::Location Rando::Location::GSToken(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_,
-                                         uint8_t scene_, int32_t actorParams_, uint8_t flag_, std::string&& shortName_,
-                                         std::string&& spoilerName_, const RandomizerHintTextKey hintKey,
-                                         const uint8_t skullScene_,
-                                         SpoilerCollectionCheckGroup collectionCheckGroup, bool isVanillaCompletion_) {
-    return {rc, quest_, RCTYPE_SKULL_TOKEN, area_, LocationType::GSToken, ACTOR_EN_SI, scene_, actorParams_,
-                    flag_, std::move(shortName_), std::move(spoilerName_), hintKey, RG_GOLD_SKULLTULA_TOKEN,
-                    isVanillaCompletion_, SpoilerCollectionCheck(SPOILER_CHK_GOLD_SKULLTULA, skullScene_, flag_),
-                    collectionCheckGroup};
-}
-
-Rando::Location Rando::Location::GSToken(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_,
-                                         uint8_t scene_, int32_t actorParams_, uint8_t flag_, std::string&& shortName_,
-                                         const RandomizerHintTextKey hintKey,
-                                         const uint8_t skullScene_,
-                                         SpoilerCollectionCheckGroup collectionCheckGroup, bool isVanillaCompletion_) {
-    return {rc, quest_, RCTYPE_SKULL_TOKEN, area_, LocationType::GSToken, ACTOR_EN_SI, scene_, actorParams_,
-                    flag_, std::move(shortName_), hintKey, RG_GOLD_SKULLTULA_TOKEN, isVanillaCompletion_,
-                    SpoilerCollectionCheck(SPOILER_CHK_GOLD_SKULLTULA, skullScene_, flag_), collectionCheckGroup};
+                    flag_, std::move(shortName_), hintKey, RG_GOLD_SKULLTULA_TOKEN, true,
+                    SpoilerCollectionCheck(SPOILER_CHK_GOLD_SKULLTULA, skullScene_, flag_)};
 }
 
 Rando::Location Rando::Location::GrottoScrub(RandomizerCheck rc, RandomizerCheckQuest quest_,
@@ -277,12 +210,10 @@ Rando::Location Rando::Location::GrottoScrub(RandomizerCheck rc, RandomizerCheck
                                              ActorID actorId_, uint8_t scene_, int32_t actorParams_, uint8_t flag_,
                                              std::string&& shortName_, std::string&& spoilerName_,
                                              const RandomizerHintTextKey hintKey, const RandomizerGet vanillaItem,
-                                             SpoilerCollectionCheck collectionCheck,
-                                             SpoilerCollectionCheckGroup collectionCheckGroup,
-                                             bool isVanillaCompletion_) {
+                                             SpoilerCollectionCheck collectionCheck, bool isVanillaCompletion_) {
     return {rc, quest_, checkType_, area_, LocationType::GrottoScrub, actorId_, scene_, actorParams_, flag_,
                     std::move(shortName_), std::move(spoilerName_), hintKey, vanillaItem,
-                    isVanillaCompletion_, collectionCheck, collectionCheckGroup};
+                    isVanillaCompletion_, collectionCheck};
 }
 
 Rando::Location Rando::Location::GrottoScrub(RandomizerCheck rc, RandomizerCheckQuest quest_,
@@ -290,11 +221,9 @@ Rando::Location Rando::Location::GrottoScrub(RandomizerCheck rc, RandomizerCheck
                                              ActorID actorId_, uint8_t scene_, int32_t actorParams_, uint8_t flag_,
                                              std::string&& shortName_,
                                              const RandomizerHintTextKey hintKey, const RandomizerGet vanillaItem,
-                                             SpoilerCollectionCheck collectionCheck,
-                                             SpoilerCollectionCheckGroup collectionCheckGroup,
-                                             bool isVanillaCompletion_) {
+                                             SpoilerCollectionCheck collectionCheck, bool isVanillaCompletion_) {
     return {rc, quest_, checkType_, area_, LocationType::GrottoScrub, actorId_, scene_, actorParams_, flag_,
-                    std::move(shortName_), hintKey, vanillaItem, isVanillaCompletion_, collectionCheck, collectionCheckGroup};
+                    std::move(shortName_), hintKey, vanillaItem, isVanillaCompletion_, collectionCheck};
 }
 
 Rando::Location Rando::Location::Delayed(RandomizerCheck rc, RandomizerCheckQuest quest_,
@@ -302,45 +231,39 @@ Rando::Location Rando::Location::Delayed(RandomizerCheck rc, RandomizerCheckQues
                                          uint8_t scene_, int32_t actorParams_, uint8_t flag_, std::string&& shortName_,
                                          std::string&& spoilerName_, const RandomizerHintTextKey hintKey,
                                          const RandomizerGet vanillaItem,
-                                         SpoilerCollectionCheck collectionCheck,
-                                         SpoilerCollectionCheckGroup collectionCheckGroup, bool isVanillaCompletion_) {
+                                         SpoilerCollectionCheck collectionCheck, bool isVanillaCompletion_) {
     return {rc, quest_, checkType_, area_, LocationType::Delayed, actorId_, scene_, actorParams_, flag_,
                     std::move(shortName_), std::move(spoilerName_), hintKey, vanillaItem,
-                    isVanillaCompletion_, collectionCheck, collectionCheckGroup};
+                    isVanillaCompletion_, collectionCheck};
 }
 
 Rando::Location Rando::Location::Delayed(RandomizerCheck rc, RandomizerCheckQuest quest_,
                                          RandomizerCheckType checkType_, RandomizerCheckArea area_, ActorID actorId_,
                                          uint8_t scene_, int32_t actorParams_, uint8_t flag_, std::string&& shortName_,
-                                         const RandomizerHintTextKey hintKey,
-                                         const RandomizerGet vanillaItem,
-                                         SpoilerCollectionCheck collectionCheck,
-                                         SpoilerCollectionCheckGroup collectionCheckGroup, bool isVanillaCompletion_) {
+                                         const RandomizerHintTextKey hintKey, const RandomizerGet vanillaItem,
+                                         SpoilerCollectionCheck collectionCheck, bool isVanillaCompletion_) {
     return {rc, quest_, checkType_, area_, LocationType::Delayed, actorId_, scene_, actorParams_, flag_,
-                    std::move(shortName_), hintKey, vanillaItem, isVanillaCompletion_, collectionCheck, collectionCheckGroup};
+                    std::move(shortName_), hintKey, vanillaItem, isVanillaCompletion_, collectionCheck};
 }
 
 Rando::Location Rando::Location::Reward(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckType checkType_,
                                         RandomizerCheckArea area_, ActorID actorId_, uint8_t scene_,
                                         int32_t actorParams_, uint8_t flag_, std::string&& shortName_,
                                         std::string&& spoilerName_, const RandomizerHintTextKey hintKey,
-                                        const RandomizerGet vanillaItem,
-                                        SpoilerCollectionCheck collectionCheck,
-                                        SpoilerCollectionCheckGroup collectionCheckGroup, bool isVanillaCompletion_) {
+                                        const RandomizerGet vanillaItem, SpoilerCollectionCheck collectionCheck,
+                                        bool isVanillaCompletion_) {
     return {rc, quest_, checkType_, area_, LocationType::TempleReward, actorId_, scene_, actorParams_, flag_,
                     std::move(shortName_), std::move(spoilerName_), hintKey, vanillaItem,
-                    isVanillaCompletion_, collectionCheck, collectionCheckGroup};
+                    isVanillaCompletion_, collectionCheck};
 }
 
 Rando::Location Rando::Location::Reward(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckType checkType_,
                                         RandomizerCheckArea area_, ActorID actorId_, uint8_t scene_,
                                         int32_t actorParams_, uint8_t flag_, std::string&& shortName_,
-                                        const RandomizerHintTextKey hintKey,
-                                        const RandomizerGet vanillaItem,
-                                        SpoilerCollectionCheck collectionCheck,
-                                        SpoilerCollectionCheckGroup collectionCheckGroup, bool isVanillaCompletion_) {
+                                        const RandomizerHintTextKey hintKey, const RandomizerGet vanillaItem,
+                                        SpoilerCollectionCheck collectionCheck, bool isVanillaCompletion_) {
     return {rc, quest_, checkType_, area_, LocationType::TempleReward, actorId_, scene_, actorParams_, flag_,
-                    std::move(shortName_), hintKey, vanillaItem, isVanillaCompletion_, collectionCheck, collectionCheckGroup};
+                    std::move(shortName_), hintKey, vanillaItem, isVanillaCompletion_, collectionCheck};
 }
 
 Rando::Location Rando::Location::OtherHint(RandomizerCheck rc, RandomizerCheckQuest quest_,
