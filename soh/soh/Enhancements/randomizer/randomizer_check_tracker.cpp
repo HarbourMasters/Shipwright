@@ -436,18 +436,13 @@ bool HasItemBeenCollected(RandomizerCheck rc) {
     auto type = check.type;
 
     switch (type) {
-    case SpoilerCollectionCheckType::SPOILER_CHK_ALWAYS_COLLECTED:
-        return true;
     case SpoilerCollectionCheckType::SPOILER_CHK_CHEST:
         return (gPlayState->sceneNum == scene && gPlayState->actorCtx.flags.chest & (1 << flag)) ||
                gSaveContext.sceneFlags[scene].chest & (1 << flag);
     case SpoilerCollectionCheckType::SPOILER_CHK_COLLECTABLE:
         return (gPlayState->sceneNum == scene && gPlayState->actorCtx.flags.collect & (1 << flag)) ||
                gSaveContext.sceneFlags[scene].collect & (1 << flag);
-    case SpoilerCollectionCheckType::SPOILER_CHK_SHOP_ITEM:
-    case SpoilerCollectionCheckType::SPOILER_CHK_FISH:
     case SpoilerCollectionCheckType::SPOILER_CHK_RANDOMIZER_INF:
-    case SpoilerCollectionCheckType::SPOILER_CHK_MASTER_SWORD:
         return Flags_GetRandomizerInf(OTRGlobals::Instance->gRandomizer->GetRandomizerInfFromCheck(rc));
     case SpoilerCollectionCheckType::SPOILER_CHK_EVENT_CHK_INF:
         return gSaveContext.eventChkInf[flag / 16] & (0x01 << flag % 16);
@@ -778,11 +773,7 @@ void CheckTrackerFlagSet(int16_t flagType, int32_t flag) {
         }
         Rando::SpoilerCollectionCheck scCheck = loc.GetCollectionCheck();
         SpoilerCollectionCheckType scCheckType = scCheck.type;
-        if (checkMatchType == SpoilerCollectionCheckType::SPOILER_CHK_RANDOMIZER_INF &&
-               (scCheckType == SpoilerCollectionCheckType::SPOILER_CHK_SHOP_ITEM ||
-               scCheckType == SpoilerCollectionCheckType::SPOILER_CHK_FISH ||
-               scCheckType == SpoilerCollectionCheckType::SPOILER_CHK_MASTER_SWORD ||
-               scCheckType == SpoilerCollectionCheckType::SPOILER_CHK_RANDOMIZER_INF)) {
+        if (checkMatchType == SpoilerCollectionCheckType::SPOILER_CHK_RANDOMIZER_INF && scCheckType == SpoilerCollectionCheckType::SPOILER_CHK_RANDOMIZER_INF) {
             if (flag == OTRGlobals::Instance->gRandomizer->GetRandomizerInfFromCheck(loc.GetRandomizerCheck())) {
                 SetCheckCollected(loc.GetRandomizerCheck());
                 return;

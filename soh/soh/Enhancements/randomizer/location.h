@@ -27,10 +27,6 @@ class SpoilerCollectionCheck {
         return SpoilerCollectionCheck(SPOILER_CHK_NONE, 0x00, 0x00);
     }
 
-    static auto AlwaysCollected() {
-        return SpoilerCollectionCheck(SPOILER_CHK_ALWAYS_COLLECTED, 0x00, 0x00);
-    }
-
     static auto ItemGetInf(const uint8_t slot) {
         return SpoilerCollectionCheck(SPOILER_CHK_ITEM_GET_INF, 0x00, slot);
     }
@@ -49,30 +45,6 @@ class SpoilerCollectionCheck {
 
     static auto Chest(const uint8_t scene, const uint8_t flag) {
         return SpoilerCollectionCheck(SPOILER_CHK_CHEST, scene, flag);
-    }
-
-    static auto Fish(const uint8_t flag, const uint8_t scene = SCENE_FISHING_POND) {
-        return SpoilerCollectionCheck(SPOILER_CHK_FISH, scene, flag);
-    }
-
-    static auto Fishing(const uint8_t bit) {
-        return SpoilerCollectionCheck(SPOILER_CHK_MINIGAME, 0x00, bit);
-    }
-
-    static auto BigPoePoints() {
-        return SpoilerCollectionCheck(SPOILER_CHK_POE_POINTS, 0x00, 0x00);
-    }
-
-    static auto Gravedigger(const uint8_t scene, const uint8_t flag) {
-        return SpoilerCollectionCheck(SPOILER_CHK_GRAVEDIGGER, scene, flag);
-    }
-
-    static auto ShopItem(const uint8_t scene, const uint8_t itemSlot) {
-        return SpoilerCollectionCheck(SPOILER_CHK_SHOP_ITEM, scene, itemSlot);
-    }
-
-    static auto MasterSword() {
-        return SpoilerCollectionCheck(SPOILER_CHK_MASTER_SWORD, 0x00, 0x00);
     }
 
     static auto RandomizerInf(const uint16_t flag) {
