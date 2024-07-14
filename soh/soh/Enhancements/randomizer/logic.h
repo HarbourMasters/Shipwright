@@ -40,7 +40,6 @@ class Logic {
     bool Bombchus10 = false;
     bool Bombchus20 = false;
     bool MagicBean = false;
-    bool MagicBeanPack = false;
     bool RutosLetter = false;
     bool Boomerang = false;
     bool DinsFire = false;
@@ -418,8 +417,6 @@ class Logic {
     bool CanUse(RandomizerGet itemName);
     bool HasProjectile(HasProjectileAge age);
     bool HasItem(RandomizerGet itemName);
-    bool HasItem2(RandomizerGet itemName);
-    bool HasItem3(RandomizerGet itemName);
     bool HasBossSoul(RandomizerGet itemName);
     bool SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmount);
     bool SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmountGlitchless, uint8_t requiredAmountGlitched);
@@ -431,10 +428,13 @@ class Logic {
     uint8_t BottleCount();
     void Reset();
     void SetContext(std::shared_ptr<Context> _ctx);
+    bool GetInLogic(ItemLogic logicVar);
+    void SetInLogic(ItemLogic logicVar, bool remove);
 
   private:
     static bool IsMagicItem(RandomizerGet item);
     static bool IsMagicArrow(RandomizerGet item);
     std::shared_ptr<Context> ctx;
+    std::vector<ItemLogic> inLogic;
 }; // class Logic
 } // namespace Rando

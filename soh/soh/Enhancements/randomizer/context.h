@@ -52,6 +52,9 @@ class Context {
     void GenerateLocationPool();
     static std::vector<RandomizerCheck> GetLocations(const std::vector<RandomizerCheck>& locationPool,
                                               Category categoryInclude, Category categoryExclude = Category::cNull);
+    static std::map<uint32_t, uint32_t> RandoGetToQuestItem;
+    static std::map<uint32_t, uint32_t> RandoGetToDungeonScene;
+    static std::map<RandomizerGet, uint32_t> RandoGetToFlag;
     void AddExcludedOptions();
     void LocationReset();
     void ClearItemLocations();

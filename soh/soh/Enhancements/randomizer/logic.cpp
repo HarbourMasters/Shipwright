@@ -24,159 +24,208 @@ namespace Rando {
                 item == RG_LIGHT_ARROWS;
     }
 
-    bool Logic::HasItem2(RandomizerGet itemName) {
-        return  (itemName == RG_DINS_FIRE              && DinsFire)            ||
-                (itemName == RG_FARORES_WIND           && FaroresWind)         ||
-                (itemName == RG_NAYRUS_LOVE            && NayrusLove)          ||
-                (itemName == RG_LENS_OF_TRUTH          && LensOfTruth)         ||
-                (itemName == RG_FAIRY_BOW              && Bow)                 ||
-                (itemName == RG_MEGATON_HAMMER         && Hammer)              ||
-                (itemName == RG_IRON_BOOTS             && IronBoots)           ||
-                (itemName == RG_HOVER_BOOTS            && HoverBoots)          ||
-                (itemName == RG_HOOKSHOT               && Hookshot)            ||
-                (itemName == RG_LONGSHOT               && Longshot)            ||
-                (itemName == RG_SILVER_GAUNTLETS       && SilverGauntlets)     ||
-                (itemName == RG_GOLDEN_GAUNTLETS       && GoldenGauntlets)     ||
-                (itemName == RG_GORON_TUNIC            && GoronTunic)          ||
-                (itemName == RG_ZORA_TUNIC             && ZoraTunic)           ||
-                (itemName == RG_SCARECROW              && Scarecrow)           ||
-                (itemName == RG_DISTANT_SCARECROW      && DistantScarecrow)    ||
-                (itemName == RG_HYLIAN_SHIELD          && HylianShield)        ||
-                (itemName == RG_MIRROR_SHIELD          && MirrorShield)        ||
-                (itemName == RG_MASTER_SWORD           && MasterSword)         ||
-                (itemName == RG_BIGGORON_SWORD         && BiggoronSword)       ||
-                (itemName == RG_FAIRY_SLINGSHOT        && Slingshot)           ||
-                (itemName == RG_BOOMERANG              && Boomerang)           ||
-                (itemName == RG_KOKIRI_SWORD           && KokiriSword)         ||
-                (itemName == RG_STICKS                 && Sticks)              ||
-                (itemName == RG_DEKU_SHIELD            && DekuShield)          ||
-                (itemName == RG_FIRE_ARROWS            && FireArrows)          ||
-                (itemName == RG_ICE_ARROWS             && IceArrows)           ||
-                (itemName == RG_LIGHT_ARROWS           && LightArrows)         ||
-                (itemName == RG_OCARINA_A_BUTTON       && OcarinaAButton)      ||
-                (itemName == RG_OCARINA_C_LEFT_BUTTON  && OcarinaCLeftButton)  ||
-                (itemName == RG_OCARINA_C_RIGHT_BUTTON && OcarinaCRightButton) ||
-                (itemName == RG_OCARINA_C_DOWN_BUTTON  && OcarinaCDownButton)  ||
-                (itemName == RG_OCARINA_C_UP_BUTTON    && OcarinaCUpButton)    ||
-                (itemName == RG_FISHING_POLE           && FishingPole)         ||
-                (itemName == RG_ZELDAS_LULLABY         && ZeldasLullaby)       ||
-                (itemName == RG_EPONAS_SONG            && EponasSong)          ||
-                (itemName == RG_SARIAS_SONG            && SariasSong)          ||
-                (itemName == RG_SUNS_SONG              && SunsSong)            ||
-                (itemName == RG_SONG_OF_TIME           && SongOfTime)          ||
-                (itemName == RG_SONG_OF_STORMS         && SongOfStorms)        ||
-                (itemName == RG_MINUET_OF_FOREST       && MinuetOfForest)      ||
-                (itemName == RG_BOLERO_OF_FIRE         && BoleroOfFire)        ||
-                (itemName == RG_SERENADE_OF_WATER      && SerenadeOfWater)     ||
-                (itemName == RG_REQUIEM_OF_SPIRIT      && RequiemOfSpirit)     ||
-                (itemName == RG_NOCTURNE_OF_SHADOW     && NocturneOfShadow)    ||
-                (itemName == RG_PRELUDE_OF_LIGHT       && PreludeOfLight);
-    }
-
     bool Logic::HasItem(RandomizerGet itemName) {
-        bool has3 = HasItem3(itemName);
-        //if (itemName >= RG_BOOMERANG && itemName <= RG_CLAIM_CHECK)
-        //    SPDLOG_INFO("HasItem for {} evaluated as {}", StaticData::RetrieveItem(itemName).GetName().GetEnglish().c_str(), has3 ? "true" : "false");
-        return has3;
-    }
-
-    bool Logic::HasItem3(RandomizerGet itemName) {
-        return  (itemName == RG_DINS_FIRE              && ctx->CheckInventory(ITEM_DINS_FIRE, true))            ||
-                (itemName == RG_FARORES_WIND           && ctx->CheckInventory(ITEM_FARORES_WIND, true))         ||
-                (itemName == RG_NAYRUS_LOVE            && ctx->CheckInventory(ITEM_NAYRUS_LOVE, true))          ||
-                (itemName == RG_LENS_OF_TRUTH          && ctx->CheckInventory(ITEM_LENS, true))         ||
-                (itemName == RG_FAIRY_BOW              && ctx->CheckInventory(ITEM_BOW, true))                 ||
-                (itemName == RG_MEGATON_HAMMER         && ctx->CheckInventory(ITEM_HAMMER, true))              ||
-                (itemName == RG_IRON_BOOTS             && ctx->CheckEquipment(EQUIP_FLAG_BOOTS_IRON))           ||
-                (itemName == RG_HOVER_BOOTS            && ctx->CheckEquipment(EQUIP_FLAG_BOOTS_HOVER))          ||
-                (itemName == RG_HOOKSHOT               && ctx->CheckInventory(ITEM_HOOKSHOT, false))            ||
-                (itemName == RG_LONGSHOT               && ctx->CheckInventory(ITEM_LONGSHOT, true))            ||
-                (itemName == RG_GORONS_BRACELET        && ctx->CurrentUpgrade(UPG_STRENGTH) >= 1) || 
-                (itemName == RG_SILVER_GAUNTLETS       && ctx->CurrentUpgrade(UPG_STRENGTH) >= 2) || 
-                (itemName == RG_GOLDEN_GAUNTLETS       && ctx->CurrentUpgrade(UPG_STRENGTH) == 3)     ||
-                (itemName == RG_GORON_TUNIC            && ctx->CheckEquipment(EQUIP_FLAG_TUNIC_GORON))          ||
-                (itemName == RG_ZORA_TUNIC             && ctx->CheckEquipment(EQUIP_FLAG_TUNIC_ZORA))           ||
-                (itemName == RG_SCARECROW              && Scarecrow)           ||
-                (itemName == RG_DISTANT_SCARECROW      && DistantScarecrow)    ||
-                (itemName == RG_HYLIAN_SHIELD          && ctx->CheckEquipment(EQUIP_FLAG_SHIELD_HYLIAN))        ||
-                (itemName == RG_MIRROR_SHIELD          && ctx->CheckEquipment(EQUIP_FLAG_SHIELD_MIRROR))        ||
-                (itemName == RG_MASTER_SWORD           && ctx->CheckEquipment(EQUIP_FLAG_SWORD_MASTER))         ||
-                (itemName == RG_BIGGORON_SWORD         && ctx->CheckEquipment(EQUIP_FLAG_SWORD_BGS) && ctx->GetSaveContext()->bgsFlag)       ||
-                (itemName == RG_FAIRY_SLINGSHOT        && ctx->CheckInventory(ITEM_SLINGSHOT, true))           ||
-                (itemName == RG_BOOMERANG              && ctx->CheckInventory(ITEM_BOOMERANG, true))           ||
-                (itemName == RG_BOMB_BAG               && ctx->CurrentUpgrade(UPG_BOMB_BAG) >= 1)           ||
-                (itemName == RG_MAGIC_SINGLE           && ctx->GetSaveContext()->magicLevel >= 1)           ||
-                (itemName == RG_KOKIRI_SWORD           && ctx->CheckEquipment(EQUIP_FLAG_SWORD_KOKIRI))         ||
-                (itemName == RG_STICKS                 && ctx->CheckInventory(ITEM_STICK, true))              ||
-                (itemName == RG_DEKU_SHIELD            && ctx->CheckEquipment(EQUIP_FLAG_SHIELD_DEKU))          ||
-                (itemName == RG_FIRE_ARROWS            && ctx->CheckInventory(ITEM_ARROW_FIRE, true))          ||
-                (itemName == RG_ICE_ARROWS             && ctx->CheckInventory(ITEM_ARROW_ICE, true))           ||
-                (itemName == RG_LIGHT_ARROWS           && ctx->CheckInventory(ITEM_ARROW_LIGHT, true))         ||
-                (itemName == RG_PROGRESSIVE_BOMBCHUS   && ctx->CheckInventory(ITEM_BOMBCHU, true))         ||
-                (itemName == RG_FISHING_POLE           && ctx->CheckRandoInf(RAND_INF_FISHING_POLE_FOUND))         ||
-                (itemName == RG_ZELDAS_LULLABY         && ctx->CheckQuestItem(QUEST_SONG_LULLABY))       ||
-                (itemName == RG_EPONAS_SONG            && ctx->CheckQuestItem(QUEST_SONG_EPONA))          ||
-                (itemName == RG_SARIAS_SONG            && ctx->CheckQuestItem(QUEST_SONG_SARIA))          ||
-                (itemName == RG_SUNS_SONG              && ctx->CheckQuestItem(QUEST_SONG_SUN))            ||
-                (itemName == RG_SONG_OF_TIME           && ctx->CheckQuestItem(QUEST_SONG_TIME))          ||
-                (itemName == RG_SONG_OF_STORMS         && ctx->CheckQuestItem(QUEST_SONG_STORMS))        ||
-                (itemName == RG_MINUET_OF_FOREST       && ctx->CheckQuestItem(QUEST_SONG_MINUET))      ||
-                (itemName == RG_BOLERO_OF_FIRE         && ctx->CheckQuestItem(QUEST_SONG_BOLERO))        ||
-                (itemName == RG_SERENADE_OF_WATER      && ctx->CheckQuestItem(QUEST_SONG_SERENADE))     ||
-                (itemName == RG_REQUIEM_OF_SPIRIT      && ctx->CheckQuestItem(QUEST_SONG_REQUIEM))     ||
-                (itemName == RG_NOCTURNE_OF_SHADOW     && ctx->CheckQuestItem(QUEST_SONG_NOCTURNE))    ||
-                (itemName == RG_PRELUDE_OF_LIGHT       && ctx->CheckQuestItem(QUEST_SONG_PRELUDE))     ||
-                (itemName == RG_ZELDAS_LETTER          && ctx->CheckRandoInf(RAND_INF_ZELDAS_LETTER))     ||
-                (itemName == RG_RUTOS_LETTER           && ctx->CheckEventChkInf(EVENTCHKINF_OBTAINED_RUTOS_LETTER))     ||
-                (itemName == RG_WEIRD_EGG              && ctx->CheckRandoInf(RAND_INF_WEIRD_EGG))                   ||
-                (itemName == RG_STONE_OF_AGONY         && ctx->CheckQuestItem(QUEST_STONE_OF_AGONY))    ||
-                (itemName == RG_FAIRY_OCARINA          && ctx->CheckInventory(ITEM_OCARINA_FAIRY, false)) ||
-                (itemName == RG_OCARINA_OF_TIME        && ctx->CheckInventory(ITEM_OCARINA_TIME, true)) ||
-                (itemName == RG_GREG_RUPEE             && ctx->CheckRandoInf(RAND_INF_GREG_FOUND))    ||
-                (itemName == RG_GERUDO_MEMBERSHIP_CARD && ctx->CheckQuestItem(QUEST_GERUDO_CARD))    ||
-                (itemName == RG_DOUBLE_DEFENSE         && ctx->GetSaveContext()->isDoubleDefenseAcquired) ||
+        switch (itemName) {
+            case RG_FAIRY_OCARINA:
+                return ctx->CheckInventory(ITEM_OCARINA_FAIRY, false);
+            case RG_OCARINA_OF_TIME:
+                return ctx->CheckInventory(ITEM_OCARINA_TIME, true);
+            case RG_DINS_FIRE:
+                return ctx->CheckInventory(ITEM_DINS_FIRE, true);
+            case RG_FARORES_WIND:
+                return ctx->CheckInventory(ITEM_FARORES_WIND, true);
+            case RG_NAYRUS_LOVE:
+                return ctx->CheckInventory(ITEM_NAYRUS_LOVE, true);
+            case RG_LENS_OF_TRUTH:
+                return ctx->CheckInventory(ITEM_LENS, true);
+            case RG_FAIRY_BOW:
+                return ctx->CheckInventory(ITEM_BOW, true);
+            case RG_MEGATON_HAMMER:
+                return ctx->CheckInventory(ITEM_HAMMER, true);
+            case RG_HOOKSHOT:
+                return ctx->CheckInventory(ITEM_HOOKSHOT, false);
+            case RG_LONGSHOT:
+                return ctx->CheckInventory(ITEM_LONGSHOT, true);
+            case RG_STICKS:
+                return ctx->CheckInventory(ITEM_STICK, true);
+            case RG_FIRE_ARROWS:
+                return ctx->CheckInventory(ITEM_ARROW_FIRE, true);
+            case RG_ICE_ARROWS:
+                return ctx->CheckInventory(ITEM_ARROW_ICE, true);
+            case RG_LIGHT_ARROWS:
+                return ctx->CheckInventory(ITEM_ARROW_LIGHT, true);
+            case RG_PROGRESSIVE_BOMBCHUS:
+                return ctx->CheckInventory(ITEM_BOMBCHU, true);
+            case RG_FAIRY_SLINGSHOT:
+                return ctx->CheckInventory(ITEM_SLINGSHOT, true);
+            case RG_BOOMERANG:
+                return ctx->CheckInventory(ITEM_BOOMERANG, true);
+            case RG_NUTS:
+                return ctx->CheckInventory(ITEM_NUT, true);
+            case RG_SCARECROW:
+                return Scarecrow;
+            case RG_DISTANT_SCARECROW:
+                return DistantScarecrow;
+            case RG_KOKIRI_SWORD:
+                return ctx->CheckEquipment(EQUIP_FLAG_SWORD_KOKIRI);
+            case RG_DEKU_SHIELD:
+                return ctx->CheckEquipment(EQUIP_FLAG_SHIELD_DEKU);
+            case RG_GORON_TUNIC:
+                return ctx->CheckEquipment(EQUIP_FLAG_TUNIC_GORON);
+            case RG_ZORA_TUNIC:
+                return ctx->CheckEquipment(EQUIP_FLAG_TUNIC_ZORA);
+            case RG_HYLIAN_SHIELD:
+                return ctx->CheckEquipment(EQUIP_FLAG_SHIELD_HYLIAN);
+            case RG_MIRROR_SHIELD:
+                return ctx->CheckEquipment(EQUIP_FLAG_SHIELD_MIRROR);
+            case RG_MASTER_SWORD:
+                return ctx->CheckEquipment(EQUIP_FLAG_SWORD_MASTER);
+            case RG_BIGGORON_SWORD:
+                return ctx->CheckEquipment(EQUIP_FLAG_SWORD_BGS);
+            case RG_IRON_BOOTS:
+                return ctx->CheckEquipment(EQUIP_FLAG_BOOTS_IRON);
+            case RG_HOVER_BOOTS:
+                return ctx->CheckEquipment(EQUIP_FLAG_BOOTS_HOVER);
+            case RG_GORONS_BRACELET:
+                return ctx->CurrentUpgrade(UPG_STRENGTH);
+            case RG_SILVER_GAUNTLETS:
+                return ctx->CurrentUpgrade(UPG_STRENGTH);
+            case RG_GOLDEN_GAUNTLETS:
+                return ctx->CurrentUpgrade(UPG_STRENGTH);
+            case RG_BOMB_BAG:
+                return ctx->CurrentUpgrade(UPG_BOMB_BAG);
+            case RG_MAGIC_SINGLE:
+                return ctx->GetSaveContext()->magicLevel >= 1;
+                // Songs
+            case RG_ZELDAS_LULLABY:
+            case RG_EPONAS_SONG:
+            case RG_SARIAS_SONG:
+            case RG_SUNS_SONG:
+            case RG_SONG_OF_TIME:
+            case RG_SONG_OF_STORMS:
+            case RG_MINUET_OF_FOREST:
+            case RG_BOLERO_OF_FIRE:
+            case RG_SERENADE_OF_WATER:
+            case RG_REQUIEM_OF_SPIRIT:
+            case RG_NOCTURNE_OF_SHADOW:
+            case RG_PRELUDE_OF_LIGHT:
                 // Dungeon Rewards
-                (itemName == RG_KOKIRI_EMERALD         && ctx->CheckQuestItem(QUEST_KOKIRI_EMERALD)) ||
-                (itemName == RG_GORON_RUBY             && ctx->CheckQuestItem(QUEST_GORON_RUBY)) ||
-                (itemName == RG_ZORA_SAPPHIRE          && ctx->CheckQuestItem(QUEST_ZORA_SAPPHIRE)) ||
-                (itemName == RG_FOREST_MEDALLION       && ctx->CheckQuestItem(QUEST_MEDALLION_FOREST)) ||
-                (itemName == RG_FIRE_MEDALLION         && ctx->CheckQuestItem(QUEST_MEDALLION_FIRE)) ||
-                (itemName == RG_WATER_MEDALLION        && ctx->CheckQuestItem(QUEST_MEDALLION_WATER)) ||
-                (itemName == RG_SPIRIT_MEDALLION       && ctx->CheckQuestItem(QUEST_MEDALLION_SPIRIT)) ||
-                (itemName == RG_SHADOW_MEDALLION       && ctx->CheckQuestItem(QUEST_MEDALLION_SHADOW)) ||
-                (itemName == RG_LIGHT_MEDALLION        && ctx->CheckQuestItem(QUEST_MEDALLION_LIGHT)) ||
+            case RG_KOKIRI_EMERALD:
+            case RG_GORON_RUBY:
+            case RG_ZORA_SAPPHIRE:
+            case RG_FOREST_MEDALLION:
+            case RG_FIRE_MEDALLION:
+            case RG_WATER_MEDALLION:
+            case RG_SPIRIT_MEDALLION:
+            case RG_SHADOW_MEDALLION:
+            case RG_LIGHT_MEDALLION:
+                // Misc Quest Items
+            case RG_STONE_OF_AGONY:
+            case RG_GERUDO_MEMBERSHIP_CARD:
+                return ctx->CheckQuestItem(Context::RandoGetToQuestItem.at(itemName));
+            case RG_FISHING_POLE:
+                return ctx->CheckRandoInf(RAND_INF_FISHING_POLE_FOUND);
+            case RG_ZELDAS_LETTER:
+                return ctx->CheckRandoInf(RAND_INF_ZELDAS_LETTER);
+            case RG_WEIRD_EGG:
+                return ctx->CheckRandoInf(RAND_INF_WEIRD_EGG);
+            case RG_GREG_RUPEE:
+                return ctx->CheckRandoInf(RAND_INF_GREG_FOUND);
+            case RG_RUTOS_LETTER:
+                return ctx->CheckEventChkInf(EVENTCHKINF_OBTAINED_RUTOS_LETTER);
+            case RG_DOUBLE_DEFENSE:
+                return ctx->GetSaveContext()->isDoubleDefenseAcquired;
                 // Ocarina Buttons
-                (itemName == RG_OCARINA_A_BUTTON       && ctx->CheckRandoInf(RAND_INF_HAS_OCARINA_A))      ||
-                (itemName == RG_OCARINA_C_LEFT_BUTTON  && ctx->CheckRandoInf(RAND_INF_HAS_OCARINA_C_LEFT))  ||
-                (itemName == RG_OCARINA_C_RIGHT_BUTTON && ctx->CheckRandoInf(RAND_INF_HAS_OCARINA_C_RIGHT)) ||
-                (itemName == RG_OCARINA_C_DOWN_BUTTON  && ctx->CheckRandoInf(RAND_INF_HAS_OCARINA_C_DOWN))  ||
-                (itemName == RG_OCARINA_C_UP_BUTTON    && ctx->CheckRandoInf(RAND_INF_HAS_OCARINA_C_UP))  ||
+            case RG_OCARINA_A_BUTTON:
+                return ctx->CheckRandoInf(RAND_INF_HAS_OCARINA_A);
+            case RG_OCARINA_C_LEFT_BUTTON:
+                return ctx->CheckRandoInf(RAND_INF_HAS_OCARINA_C_LEFT);
+            case RG_OCARINA_C_RIGHT_BUTTON:
+                return ctx->CheckRandoInf(RAND_INF_HAS_OCARINA_C_RIGHT);
+            case RG_OCARINA_C_DOWN_BUTTON:
+                return ctx->CheckRandoInf(RAND_INF_HAS_OCARINA_C_DOWN);
+            case RG_OCARINA_C_UP_BUTTON:
+                return ctx->CheckRandoInf(RAND_INF_HAS_OCARINA_C_UP);
                 // Boss Souls
-                (itemName == RG_GOHMA_SOUL             && ctx->CheckRandoInf(RAND_INF_GOHMA_SOUL)) ||
-                (itemName == RG_KING_DODONGO_SOUL      && ctx->CheckRandoInf(RAND_INF_KING_DODONGO_SOUL))  ||
-                (itemName == RG_BARINADE_SOUL          && ctx->CheckRandoInf(RAND_INF_BARINADE_SOUL))  ||
-                (itemName == RG_PHANTOM_GANON_SOUL     && ctx->CheckRandoInf(RAND_INF_PHANTOM_GANON_SOUL))  ||
-                (itemName == RG_VOLVAGIA_SOUL          && ctx->CheckRandoInf(RAND_INF_VOLVAGIA_SOUL))  ||
-                (itemName == RG_MORPHA_SOUL            && ctx->CheckRandoInf(RAND_INF_MORPHA_SOUL))  ||
-                (itemName == RG_BONGO_BONGO_SOUL       && ctx->CheckRandoInf(RAND_INF_BONGO_BONGO_SOUL))  ||
-                (itemName == RG_TWINROVA_SOUL          && ctx->CheckRandoInf(RAND_INF_TWINROVA_SOUL))  ||
-                (itemName == RG_GANON_SOUL             && ctx->CheckRandoInf(RAND_INF_GANON_SOUL)) ||
+            case RG_GOHMA_SOUL:
+                return ctx->CheckRandoInf(RAND_INF_GOHMA_SOUL);
+            case RG_KING_DODONGO_SOUL:
+                return ctx->CheckRandoInf(RAND_INF_KING_DODONGO_SOUL);
+            case RG_BARINADE_SOUL:
+                return ctx->CheckRandoInf(RAND_INF_BARINADE_SOUL);
+            case RG_PHANTOM_GANON_SOUL:
+                return ctx->CheckRandoInf(RAND_INF_PHANTOM_GANON_SOUL);
+            case RG_VOLVAGIA_SOUL:
+                return ctx->CheckRandoInf(RAND_INF_VOLVAGIA_SOUL);
+            case RG_MORPHA_SOUL:
+                return ctx->CheckRandoInf(RAND_INF_MORPHA_SOUL);
+            case RG_BONGO_BONGO_SOUL:
+                return ctx->CheckRandoInf(RAND_INF_BONGO_BONGO_SOUL);
+            case RG_TWINROVA_SOUL:
+                return ctx->CheckRandoInf(RAND_INF_TWINROVA_SOUL);
+            case RG_GANON_SOUL:
+                return ctx->CheckRandoInf(RAND_INF_GANON_SOUL);
                 // Boss Keys
-                (itemName == RG_FOREST_TEMPLE_BOSS_KEY && ctx->CheckDungeonItem(DUNGEON_KEY_BOSS, SCENE_FOREST_TEMPLE)) ||
-                (itemName == RG_FIRE_TEMPLE_BOSS_KEY   && ctx->CheckDungeonItem(DUNGEON_KEY_BOSS, SCENE_FIRE_TEMPLE)) ||
-                (itemName == RG_WATER_TEMPLE_BOSS_KEY  && ctx->CheckDungeonItem(DUNGEON_KEY_BOSS, SCENE_WATER_TEMPLE)) ||
-                (itemName == RG_SPIRIT_TEMPLE_BOSS_KEY && ctx->CheckDungeonItem(DUNGEON_KEY_BOSS, SCENE_SPIRIT_TEMPLE)) ||
-                (itemName == RG_SHADOW_TEMPLE_BOSS_KEY && ctx->CheckDungeonItem(DUNGEON_KEY_BOSS, SCENE_SHADOW_TEMPLE)) ||
-                (itemName == RG_GANONS_CASTLE_BOSS_KEY && ctx->CheckDungeonItem(DUNGEON_KEY_BOSS, SCENE_INSIDE_GANONS_CASTLE)) ||
+            case RG_FOREST_TEMPLE_BOSS_KEY:
+            case RG_FIRE_TEMPLE_BOSS_KEY:
+            case RG_WATER_TEMPLE_BOSS_KEY:
+            case RG_SPIRIT_TEMPLE_BOSS_KEY:
+            case RG_SHADOW_TEMPLE_BOSS_KEY:
+            case RG_GANONS_CASTLE_BOSS_KEY:
+                return ctx->CheckDungeonItem(DUNGEON_KEY_BOSS, ctx->RandoGetToDungeonScene.at(itemName));
+                // Maps
+            case RG_DEKU_TREE_MAP:
+            case RG_DODONGOS_CAVERN_MAP:
+            case RG_JABU_JABUS_BELLY_MAP:
+            case RG_FOREST_TEMPLE_MAP:
+            case RG_FIRE_TEMPLE_MAP:
+            case RG_WATER_TEMPLE_MAP:
+            case RG_SPIRIT_TEMPLE_MAP:
+            case RG_SHADOW_TEMPLE_MAP:
+            case RG_BOTTOM_OF_THE_WELL_MAP:
+            case RG_ICE_CAVERN_MAP:
+                return ctx->CheckDungeonItem(DUNGEON_MAP, ctx->RandoGetToDungeonScene.at(itemName));
+                // Compasses
+            case RG_DEKU_TREE_COMPASS:
+            case RG_DODONGOS_CAVERN_COMPASS:
+            case RG_JABU_JABUS_BELLY_COMPASS:
+            case RG_FOREST_TEMPLE_COMPASS:
+            case RG_FIRE_TEMPLE_COMPASS:
+            case RG_WATER_TEMPLE_COMPASS:
+            case RG_SPIRIT_TEMPLE_COMPASS:
+            case RG_SHADOW_TEMPLE_COMPASS:
+            case RG_BOTTOM_OF_THE_WELL_COMPASS:
+            case RG_ICE_CAVERN_COMPASS:
+                return ctx->CheckDungeonItem(DUNGEON_COMPASS, ctx->RandoGetToDungeonScene.at(itemName));
                 // Wallets
-                (itemName == RG_CHILD_WALLET           && ctx->CheckRandoInf(RAND_INF_HAS_WALLET)) ||
-                (itemName == RG_ADULT_WALLET           && ctx->CurrentUpgrade(UPG_WALLET) >= 1) ||
-                (itemName == RG_GIANT_WALLET           && ctx->CurrentUpgrade(UPG_WALLET) >= 2) ||
-                (itemName == RG_TYCOON_WALLET          && ctx->CurrentUpgrade(UPG_WALLET) >= 3) ||
+            case RG_CHILD_WALLET:
+                return ctx->CheckRandoInf(RAND_INF_HAS_WALLET);
+            case RG_ADULT_WALLET:
+                return ctx->CurrentUpgrade(UPG_WALLET) >= 1;
+            case RG_GIANT_WALLET:
+                return ctx->CurrentUpgrade(UPG_WALLET) >= 2;
+            case RG_TYCOON_WALLET:
+                return ctx->CurrentUpgrade(UPG_WALLET) >= 3;
                 // Scales
-                (itemName == RG_BRONZE_SCALE           && ctx->CheckRandoInf(RAND_INF_CAN_SWIM)) ||
-                (itemName == RG_SILVER_SCALE           && ctx->CurrentUpgrade(UPG_SCALE) >= 1) ||
-                (itemName == RG_GOLDEN_SCALE           && ctx->CurrentUpgrade(UPG_SCALE) >= 2);
+            case RG_BRONZE_SCALE:
+                return ctx->CheckRandoInf(RAND_INF_CAN_SWIM);
+            case RG_SILVER_SCALE:
+                return ctx->CurrentUpgrade(UPG_SCALE) >= 1;
+            case RG_GOLDEN_SCALE:
+                return ctx->CurrentUpgrade(UPG_SCALE) >= 2;
+            case RG_POCKET_EGG:
+            case RG_COJIRO:
+            case RG_ODD_MUSHROOM:
+            case RG_ODD_POTION:
+            case RG_POACHERS_SAW:
+            case RG_BROKEN_SWORD:
+            case RG_PRESCRIPTION:
+            case RG_EYEBALL_FROG:
+            case RG_EYEDROPS:
+            case RG_CLAIM_CHECK:
+                return ctx->HasAdultTrade(StaticData::RetrieveItem(itemName).GetGIEntry()->itemId);
+        }
+        return false;
     }
 
     //Can the passed in item be used?
@@ -236,31 +285,53 @@ namespace Rando {
             case RG_RUTOS_LETTER:
                 return IsChild;
 
+                // Adult Trade
+            case RG_POCKET_EGG:
+                return IsAdult;
+            case RG_COJIRO:
+                return IsAdult;
+            case RG_ODD_MUSHROOM:
+                return IsAdult;
+            case RG_ODD_POTION:
+                return IsAdult;
+            case RG_POACHERS_SAW:
+                return IsAdult;
+            case RG_BROKEN_SWORD:
+                return IsAdult;
+            case RG_PRESCRIPTION:
+                return IsAdult;
+            case RG_EYEBALL_FROG:
+                return IsAdult;
+            case RG_EYEDROPS:
+                return IsAdult;
+            case RG_CLAIM_CHECK:
+                return IsAdult;
+
             // Songs
             case RG_ZELDAS_LULLABY:
-                return Ocarina && OcarinaCLeftButton && OcarinaCRightButton && OcarinaCUpButton;
+                return Ocarina && HasItem(RG_OCARINA_C_LEFT_BUTTON) && HasItem(RG_OCARINA_C_RIGHT_BUTTON) && HasItem(RG_OCARINA_C_UP_BUTTON);
             case RG_EPONAS_SONG:
-                return Ocarina && OcarinaCLeftButton && OcarinaCRightButton && OcarinaCUpButton;
+                return Ocarina && HasItem(RG_OCARINA_C_LEFT_BUTTON) && HasItem(RG_OCARINA_C_RIGHT_BUTTON) && HasItem(RG_OCARINA_C_UP_BUTTON);
             case RG_SARIAS_SONG:
-                return Ocarina && OcarinaCLeftButton && OcarinaCRightButton && OcarinaCDownButton;
+                return Ocarina && HasItem(RG_OCARINA_C_LEFT_BUTTON) && HasItem(RG_OCARINA_C_RIGHT_BUTTON) && HasItem(RG_OCARINA_C_DOWN_BUTTON);
             case RG_SUNS_SONG:
-                return Ocarina && OcarinaCRightButton && OcarinaCUpButton && OcarinaCDownButton;
+                return Ocarina && HasItem(RG_OCARINA_C_RIGHT_BUTTON) && HasItem(RG_OCARINA_C_UP_BUTTON) && HasItem(RG_OCARINA_C_DOWN_BUTTON);
             case RG_SONG_OF_TIME:
-                return Ocarina && OcarinaAButton && OcarinaCRightButton && OcarinaCDownButton;
+                return Ocarina && HasItem(RG_OCARINA_A_BUTTON) && HasItem(RG_OCARINA_C_RIGHT_BUTTON) && HasItem(RG_OCARINA_C_DOWN_BUTTON);
             case RG_SONG_OF_STORMS:
-                return Ocarina && OcarinaAButton && OcarinaCUpButton && OcarinaCDownButton;
+                return Ocarina && HasItem(RG_OCARINA_A_BUTTON) && HasItem(RG_OCARINA_C_UP_BUTTON) && HasItem(RG_OCARINA_C_DOWN_BUTTON);
             case RG_MINUET_OF_FOREST:
-                return Ocarina && OcarinaAButton && OcarinaCLeftButton && OcarinaCRightButton && OcarinaCUpButton;
+                return Ocarina && HasItem(RG_OCARINA_A_BUTTON) && HasItem(RG_OCARINA_C_LEFT_BUTTON) && HasItem(RG_OCARINA_C_RIGHT_BUTTON) && HasItem(RG_OCARINA_C_UP_BUTTON);
             case RG_BOLERO_OF_FIRE:
-                return Ocarina && OcarinaAButton && OcarinaCRightButton && OcarinaCDownButton;
+                return Ocarina && HasItem(RG_OCARINA_A_BUTTON) && HasItem(RG_OCARINA_C_RIGHT_BUTTON) && HasItem(RG_OCARINA_C_DOWN_BUTTON);
             case RG_SERENADE_OF_WATER:
-                return Ocarina && OcarinaAButton && OcarinaCLeftButton && OcarinaCRightButton && OcarinaCDownButton;
+                return Ocarina && HasItem(RG_OCARINA_A_BUTTON) && HasItem(RG_OCARINA_C_LEFT_BUTTON) && HasItem(RG_OCARINA_C_RIGHT_BUTTON) && HasItem(RG_OCARINA_C_DOWN_BUTTON);
             case RG_REQUIEM_OF_SPIRIT:
-                return Ocarina && OcarinaAButton && OcarinaCRightButton && OcarinaCDownButton;
+                return Ocarina && HasItem(RG_OCARINA_A_BUTTON) && HasItem(RG_OCARINA_C_RIGHT_BUTTON) && HasItem(RG_OCARINA_C_DOWN_BUTTON);
             case RG_NOCTURNE_OF_SHADOW:
-                return Ocarina && OcarinaAButton && OcarinaCLeftButton && OcarinaCRightButton && OcarinaCDownButton;
+                return Ocarina && HasItem(RG_OCARINA_A_BUTTON) && HasItem(RG_OCARINA_C_LEFT_BUTTON) && HasItem(RG_OCARINA_C_RIGHT_BUTTON) && HasItem(RG_OCARINA_C_DOWN_BUTTON);
             case RG_PRELUDE_OF_LIGHT:
-                return Ocarina && OcarinaCLeftButton && OcarinaCRightButton && OcarinaCUpButton;
+                return Ocarina && HasItem(RG_OCARINA_C_LEFT_BUTTON) && HasItem(RG_OCARINA_C_RIGHT_BUTTON) && HasItem(RG_OCARINA_C_UP_BUTTON);
 
             // Misc. Items
             case RG_FISHING_POLE:
@@ -325,7 +396,7 @@ namespace Rando {
             case GlitchType::EquipSwap: // todo: add bunny hood to adult item equippable list and child trade item to child item equippable list
                 return ((IsAdult && (HasItem(RG_DINS_FIRE) || HasItem(RG_FARORES_WIND) || HasItem(RG_NAYRUS_LOVE))) || (IsChild && (HasItem(RG_STICKS) || 
                     HasItem(RG_FAIRY_SLINGSHOT) || HasItem(RG_BOOMERANG) || HasBottle || Nuts || Ocarina || HasItem(RG_LENS_OF_TRUTH) || HasExplosives ||
-                    (MagicBean || MagicBeanPack) || HasItem(RG_DINS_FIRE) || HasItem(RG_FARORES_WIND) || HasItem(RG_NAYRUS_LOVE)))) && false; //GlitchEquipSwap;
+                    ctx->GetAmmo(ITEM_BEAN) > 0 || HasItem(RG_DINS_FIRE) || HasItem(RG_FARORES_WIND) || HasItem(RG_NAYRUS_LOVE)))) && false; //GlitchEquipSwap;
         }
 
         //Shouldn't be reached
@@ -374,28 +445,31 @@ namespace Rando {
                            (HasItem(RG_OCARINA_C_RIGHT_BUTTON) ? 1 : 0) +
                            (HasItem(RG_OCARINA_C_UP_BUTTON) ? 1 : 0) +
                            (HasItem(RG_OCARINA_C_DOWN_BUTTON) ? 1 : 0);
-        ZeldasLetter  = HasItem(RG_ZELDAS_LETTER);
-        WeirdEgg      = CanUse(RG_WEIRD_EGG);
-        Bombchus      = HasItem(RG_PROGRESSIVE_BOMBCHUS);
-        //Bombchus5     = false;
-        //Bombchus10    = false;
-        //Bombchus20    = false;
-        //MagicBean     = false;
-        //MagicBeanPack = false;
-        RutosLetter   = CanUse(RG_RUTOS_LETTER);
-        Boomerang     = CanUse(RG_BOOMERANG);
-        DinsFire      = CanUse(RG_DINS_FIRE);
-        FaroresWind   = CanUse(RG_FARORES_WIND);
-        NayrusLove    = CanUse(RG_NAYRUS_LOVE);
-        LensOfTruth   = CanUse(RG_LENS_OF_TRUTH);
-        ShardOfAgony  = HasItem(RG_STONE_OF_AGONY);
-        //SkullMask     = false;
-        //MaskOfTruth   = false;
+        ZeldasLetter   = HasItem(RG_ZELDAS_LETTER);
+        WeirdEgg       = CanUse(RG_WEIRD_EGG);
+        Bombchus       = HasItem(RG_PROGRESSIVE_BOMBCHUS);
+        BuySeed        = GetInLogic(ITEMLOGIC_BUYSEED);
+        BuyArrow       = GetInLogic(ITEMLOGIC_BUYARROW);
+        BuyBomb        = GetInLogic(ITEMLOGIC_BUYBOMB);
+        BuyMagicPotion = GetInLogic(ITEMLOGIC_BUYMAGICPOTION);
+        BuyBombchus    = GetInLogic(ITEMLOGIC_BUYBOMBCHUS);
+        MagicBean      = ctx->GetAmmo(ITEM_BEAN) > 0;
+        RutosLetter    = CanUse(RG_RUTOS_LETTER);
+        Boomerang      = CanUse(RG_BOOMERANG);
+        DinsFire       = CanUse(RG_DINS_FIRE);
+        FaroresWind    = CanUse(RG_FARORES_WIND);
+        NayrusLove     = CanUse(RG_NAYRUS_LOVE);
+        LensOfTruth    = CanUse(RG_LENS_OF_TRUTH);
+        ShardOfAgony   = HasItem(RG_STONE_OF_AGONY);
+        //SkullMask      = false;
+        //MaskOfTruth    = false;
 
         //Adult logic
         Hammer          = CanUse(RG_MEGATON_HAMMER);
         IronBoots       = CanUse(RG_IRON_BOOTS);
         HoverBoots      = CanUse(RG_HOVER_BOOTS);
+        DekuShield      = CanUse(RG_DEKU_SHIELD);
+        HylianShield    = CanUse(RG_HYLIAN_SHIELD);
         MirrorShield    = CanUse(RG_MIRROR_SHIELD);
         GoronTunic      = CanUse(RG_GORON_TUNIC);
         ZoraTunic       = CanUse(RG_ZORA_TUNIC);
@@ -428,6 +502,9 @@ namespace Rando {
         AdultsWallet    = HasItem(RG_ADULT_WALLET);
         BiggoronSword   = HasItem(RG_BIGGORON_SWORD);
 
+        ProgressiveScale  = ctx->CurrentUpgrade(UPG_SCALE) + HasItem(RG_BRONZE_SCALE);
+        ProgressiveWallet = ctx->CurrentUpgrade(UPG_WALLET) + HasItem(RG_CHILD_WALLET);
+
         CanSummonGohma        = HasBossSoul(RG_GOHMA_SOUL);
         CanSummonKingDodongo  = HasBossSoul(RG_KING_DODONGO_SOUL);
         CanSummonBarinade     = HasBossSoul(RG_BARINADE_SOUL);
@@ -456,23 +533,10 @@ namespace Rando {
         ShadowMedallion = HasItem(RG_SHADOW_MEDALLION);
         LightMedallion  = HasItem(RG_LIGHT_MEDALLION);
 
-        //TODO: need flags somewhere for 
-        //Eyedrops = Eyedrops || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && ClaimCheck);
-        //EyeballFrog = EyeballFrog || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && Eyedrops);
-        //Prescription = Prescription || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && EyeballFrog);
-        //BrokenSword = BrokenSword || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && Prescription);
-        //PoachersSaw = PoachersSaw || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && BrokenSword);
-        //OddPoultice = OddPoultice || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && PoachersSaw);
-        //OddMushroom = OddMushroom || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && OddPoultice);
-        //Cojiro = Cojiro || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && OddMushroom);
-        //PocketEgg = PocketEgg || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && Cojiro);
-
-        //BaseHearts + HeartContainer + (PieceOfHeart >> 2); "Hearts"
-        //all keys
         DoubleDefense = HasItem(RG_DOUBLE_DEFENSE);
-        //TriforcePieces = ;
-        //Greg = ;
-        //GoldSkulltulaTokens = ;
+        TriforcePieces = ctx->GetSaveContext()->triforcePiecesCollected;
+        Greg = HasItem(RG_GREG_RUPEE);
+        GoldSkulltulaTokens = ctx->GetGSCount();
 
         //you need at least 2 buttons for scarecrow song
         ScarecrowSong    = ScarecrowSong || (ctx->GetOption(RSK_SKIP_SCARECROWS_SONG) && Ocarina && OcarinaButtons >= 2) || (ChildScarecrow && AdultScarecrow);
@@ -482,21 +546,22 @@ namespace Rando {
         //Drop Access
         DekuStickDrop = StickPot || DekuBabaSticks;
         DekuNutDrop   = (NutPot  || NutCrate         || DekuBabaNuts) && AmmoCanDrop;
-        BugsAccess    = BugShrub || WanderingBugs    || BugRock;
-        FishAccess    = LoneFish || FishGroup;
-        FairyAccess   = FairyPot || GossipStoneFairy || BeanPlantFairy || ButterflyFairy || FreeFairies || FairyPond;
+        BugsAccess    = BugShrub || WanderingBugs    || BugRock || GetInLogic(ITEMLOGIC_BUGSACCESS);
+        FishAccess    = LoneFish || FishGroup || GetInLogic(ITEMLOGIC_FISHACCESS);
+        FairyAccess   = FairyPot || GossipStoneFairy || BeanPlantFairy || ButterflyFairy || FreeFairies || FairyPond || GetInLogic(ITEMLOGIC_FAIRYACCESS);
 
 
         //refills
-        Bombs        = BombBag;
-        Nuts         = DekuNutDrop || Nuts;
-        Sticks       = DekuStickDrop || Sticks;
+        Bombs        = HasItem(RG_PROGRESSIVE_BOMB_BAG);
+        Nuts         = DekuNutDrop || HasItem(RG_NUTS);
+        Sticks       = DekuStickDrop || HasItem(RG_STICKS);
         Bugs         = HasBottle && BugsAccess;
+        BlueFireAccess = BlueFireAccess || GetInLogic(ITEMLOGIC_BLUEFIREACCESS);
         BlueFire     = (HasBottle && BlueFireAccess) || (ctx->GetOption(RSK_BLUE_FIRE_ARROWS) && CanUse(RG_ICE_ARROWS));
         Fish         = HasBottle && FishAccess;
         Fairy        = HasBottle && FairyAccess;
 
-        FoundBombchus   = (BombchuDrop || Bombchus || Bombchus5 || Bombchus10 || Bombchus20) && (BombBag || ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC));
+        FoundBombchus   = Bombchus && (BombBag || ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC));
         CanPlayBowling  = ChildsWallet && ((ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && FoundBombchus) || (!ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && BombBag));
         // TODO: Implement Ammo Drop Setting in place of bombchu drops
         HasBombchus = (BuyBombchus || (ctx->GetOption(RSK_ENABLE_BOMBCHU_DROPS).Is(RO_AMMO_DROPS_ON/*_PLUS_BOMBCHU*/) && FoundBombchus));
@@ -506,15 +571,16 @@ namespace Rando {
         HasBoots = IronBoots || HoverBoots;
 
         //Unshuffled adult trade quest
-        Eyedrops     = Eyedrops     || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && ClaimCheck);
-        EyeballFrog  = EyeballFrog  || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && Eyedrops);
-        Prescription = Prescription || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && EyeballFrog);
-        BrokenSword  = BrokenSword  || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && Prescription);
-        PoachersSaw  = PoachersSaw  || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && BrokenSword);
-        OddPoultice  = OddPoultice  || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && PoachersSaw);
-        OddMushroom  = OddMushroom  || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && OddPoultice);
-        Cojiro       = Cojiro       || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && OddMushroom);
-        PocketEgg    = PocketEgg    || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && Cojiro);
+        ClaimCheck = CanUse(RG_CLAIM_CHECK);
+        Eyedrops = CanUse(RG_EYEDROPS) || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && ClaimCheck);
+        EyeballFrog = CanUse(RG_EYEBALL_FROG) || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && Eyedrops);
+        Prescription = CanUse(RG_PRESCRIPTION) || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && EyeballFrog);
+        BrokenSword = CanUse(RG_BROKEN_SWORD) || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && Prescription);
+        PoachersSaw = CanUse(RG_POACHERS_SAW) || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && BrokenSword);
+        OddPoultice = CanUse(RG_ODD_POTION) || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && PoachersSaw);
+        OddMushroom = CanUse(RG_ODD_MUSHROOM) || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && OddPoultice);
+        Cojiro = CanUse(RG_COJIRO) || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && OddMushroom);
+        PocketEgg = CanUse(RG_POCKET_EGG) || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && Cojiro);
 
         // IsChild = Age == AGE_CHILD;
         // IsAdult = Age == AGE_ADULT;
@@ -532,7 +598,7 @@ namespace Rando {
         CanRideEpona    = IsAdult && Epona && CanUse(RG_EPONAS_SONG);
         CanSummonGossipFairyWithoutSuns = CanUse(RG_ZELDAS_LULLABY) || CanUse(RG_EPONAS_SONG) || CanUse(RG_SONG_OF_TIME);
         CanSummonGossipFairy            = CanSummonGossipFairyWithoutSuns || CanUse(RG_SUNS_SONG);
-        Hearts          = BaseHearts + HeartContainer + (PieceOfHeart >> 2);
+        Hearts          = Hearts = ctx->GetSaveContext()->healthCapacity / 16;
         EffectiveHealth = ((Hearts << (2 + DoubleDefense)) >> Multiplier) + ((Hearts << (2 + DoubleDefense)) % (1 << Multiplier) > 0); //Number of half heart hits to die, ranges from 1 to 160
         FireTimer       = CanUse(RG_GORON_TUNIC) ? 255 : (ctx->GetTrickOption(RT_FEWER_TUNIC_REQUIREMENTS)) ? (Hearts * 8) : 0;
         WaterTimer      = CanUse(RG_ZORA_TUNIC) ? 255 : (ctx->GetTrickOption(RT_FEWER_TUNIC_REQUIREMENTS)) ? (Hearts * 8) : 0;
@@ -540,7 +606,6 @@ namespace Rando {
         CanSurviveDamage    = !NeedNayrusLove || CanUse(RG_NAYRUS_LOVE);
         CanTakeDamage       = Fairy || CanSurviveDamage;
         CanTakeDamageTwice  = (Fairy && NumBottles >= 2) || ((EffectiveHealth == 2) && (CanUse(RG_NAYRUS_LOVE) || Fairy)) || (EffectiveHealth > 2);
-        //CanPlantBean        = IsChild && (MagicBean || MagicBeanPack);
         CanOpenBombGrotto   = CanBlastOrSmash       && (ShardOfAgony || ctx->GetTrickOption(RT_GROTTOS_WITHOUT_AGONY));
         CanOpenStormGrotto  = CanUse(RG_SONG_OF_STORMS) && (ShardOfAgony || ctx->GetTrickOption(RT_GROTTOS_WITHOUT_AGONY));
         HookshotOrBoomerang = CanUse(RG_HOOKSHOT) || CanUse(RG_BOOMERANG);
@@ -557,8 +622,8 @@ namespace Rando {
         HasFireSourceWithTorch = HasFireSource || CanUse(RG_STICKS);
 
         //Gerudo Fortress
-        CanFinishGerudoFortress = (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_NORMAL)    && GerudoFortressKeys >= 4 && (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD)) && (GerudoToken || CanUse(RG_FAIRY_BOW) || CanUse(RG_HOOKSHOT) || CanUse(RG_HOVER_BOOTS) || ctx->GetTrickOption(RT_GF_KITCHEN))) ||
-                                    (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_FAST)      && GerudoFortressKeys >= 1 && (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD))) ||
+        CanFinishGerudoFortress = (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_NORMAL)      && SmallKeys(RR_GERUDO_TRAINING_GROUNDS, 4) && (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD)) && (GerudoToken || CanUse(RG_FAIRY_BOW) || CanUse(RG_HOOKSHOT) || CanUse(RG_HOVER_BOOTS) || ctx->GetTrickOption(RT_GF_KITCHEN))) ||
+                                    (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_FAST)      && SmallKeys(RR_GERUDO_TRAINING_GROUNDS, 1) && (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD))) ||
                                     (ctx->GetOption(RSK_GERUDO_FORTRESS).IsNot(RO_GF_NORMAL) && ctx->GetOption(RSK_GERUDO_FORTRESS).IsNot(RO_GF_FAST));
 
         HasShield          = CanUse(RG_HYLIAN_SHIELD) || CanUse(RG_DEKU_SHIELD); //Mirror shield can't reflect attacks
@@ -609,95 +674,55 @@ namespace Rando {
                                     (GetDifficultyValueFromString(GlitchHover) >= static_cast<uint8_t>(GlitchDifficulty::NOVICE) && GetDifficultyValueFromString(GlitchISG) >= static_cast<uint8_t>(GlitchDifficulty::INTERMEDIATE)))) {
                     return ForestTempleKeys >= requiredAmountGlitched;
                 }*/
-                {
-                    auto smallKeys = ctx->GetSmallKeyCount(SCENE_FOREST_TEMPLE);
-                    if (ForestTempleKeys != smallKeys)
-                        SPDLOG_ERROR("Forest temple small key count mismatch: logicVar {}, saveContext {}", ForestTempleKeys, smallKeys);
-                }
-                return ForestTempleKeys >= requiredAmountGlitchless;
+                return ctx->GetSmallKeyCount(SCENE_FOREST_TEMPLE) >= requiredAmountGlitchless;
 
             case RR_FIRE_TEMPLE:
                 /*if (IsGlitched && (GetDifficultyValueFromString(GlitchLedgeClip) >= static_cast<uint8_t>(GlitchDifficulty::INTERMEDIATE) || GetDifficultyValueFromString(GlitchHover) >= static_cast<uint8_t>(GlitchDifficulty::INTERMEDIATE))) {
                     return FireTempleKeys >= requiredAmountGlitched;
                 }*/
-                {
-                    auto smallKeys = ctx->GetSmallKeyCount(SCENE_FIRE_TEMPLE);
-                    if (FireTempleKeys != smallKeys)
-                        SPDLOG_ERROR("Fire temple small key count mismatch: logicVar {}, saveContext {}", FireTempleKeys, smallKeys);
-                }
-                return FireTempleKeys >= requiredAmountGlitchless;
+                return ctx->GetSmallKeyCount(SCENE_FIRE_TEMPLE) >= requiredAmountGlitchless;
 
             case RR_WATER_TEMPLE:
                 /*if (IsGlitched && (false)) {
                     return WaterTempleKeys >= requiredAmountGlitched;
                 }*/
-                {
-                    auto smallKeys = ctx->GetSmallKeyCount(SCENE_WATER_TEMPLE);
-                    if (WaterTempleKeys != smallKeys)
-                        SPDLOG_ERROR("Water temple small key count mismatch: logicVar {}, saveContext {}", WaterTempleKeys, smallKeys);
-                }
-                return WaterTempleKeys >= requiredAmountGlitchless;
+                return ctx->GetSmallKeyCount(SCENE_WATER_TEMPLE) >= requiredAmountGlitchless;
 
             case RR_SPIRIT_TEMPLE:
                 /*if (IsGlitched && (false)) {
                     return SpiritTempleKeys >= requiredAmountGlitched;
                 }*/
-                {
-                    auto smallKeys = ctx->GetSmallKeyCount(SCENE_SPIRIT_TEMPLE);
-                    if (SpiritTempleKeys != smallKeys)
-                        SPDLOG_ERROR("Spirit temple small key count mismatch: logicVar {}, saveContext {}", SpiritTempleKeys, smallKeys);
-                }
-                return SpiritTempleKeys >= requiredAmountGlitchless;
+                return ctx->GetSmallKeyCount(SCENE_SPIRIT_TEMPLE) >= requiredAmountGlitchless;
 
             case RR_SHADOW_TEMPLE:
                 /*if (IsGlitched && (GetDifficultyValueFromString(GlitchHookshotClip) >= static_cast<uint8_t>(GlitchDifficulty::NOVICE))) {
                     return ShadowTempleKeys >= requiredAmountGlitched;
                 }*/
-                {
-                    auto smallKeys = ctx->GetSmallKeyCount(SCENE_SHADOW_TEMPLE);
-                    if (ShadowTempleKeys != smallKeys)
-                        SPDLOG_ERROR("Shadow temple small key count mismatch: logicVar {}, saveContext {}", ShadowTempleKeys, smallKeys);
-                }
-                return ShadowTempleKeys >= requiredAmountGlitchless;
+                return ctx->GetSmallKeyCount(SCENE_SHADOW_TEMPLE) >= requiredAmountGlitchless;
 
             case RR_BOTTOM_OF_THE_WELL:
                 /*if (IsGlitched && (false)) {
                     return BottomOfTheWellKeys >= requiredAmountGlitched;
                 }*/
-                {
-                    auto smallKeys = ctx->GetSmallKeyCount(SCENE_BOTTOM_OF_THE_WELL);
-                    if (BottomOfTheWellKeys != smallKeys)
-                        SPDLOG_ERROR("BotW temple small key count mismatch: logicVar {}, saveContext {}", BottomOfTheWellKeys, smallKeys);
-                }
-                return BottomOfTheWellKeys >= requiredAmountGlitchless;
+                return ctx->GetSmallKeyCount(SCENE_BOTTOM_OF_THE_WELL) >= requiredAmountGlitchless;
 
             case RR_GERUDO_TRAINING_GROUNDS:
                 /*if (IsGlitched && (false)) {
                     return GerudoTrainingGroundsKeys >= requiredAmountGlitched;
                 }*/
-                {
-                    auto smallKeys = ctx->GetSmallKeyCount(SCENE_GERUDO_TRAINING_GROUND);
-                    if (GerudoTrainingGroundsKeys != smallKeys)
-                        SPDLOG_ERROR("GTG small key count mismatch: logicVar {}, saveContext {}", GerudoTrainingGroundsKeys, smallKeys);
-                }
-                return GerudoTrainingGroundsKeys >= requiredAmountGlitchless;
+                return ctx->GetSmallKeyCount(SCENE_GERUDO_TRAINING_GROUND) >= requiredAmountGlitchless;
 
             case RR_GANONS_CASTLE:
                 /*if (IsGlitched && (false)) {
                     return GanonsCastleKeys >= requiredAmountGlitched;
                 }*/
-                {
-                    auto smallKeys = ctx->GetSmallKeyCount(SCENE_INSIDE_GANONS_CASTLE);
-                    if (GanonsCastleKeys != smallKeys)
-                        SPDLOG_ERROR("Ganon's Castle small key count mismatch: logicVar {}, saveContext {}", GanonsCastleKeys, smallKeys);
-                }
-                return GanonsCastleKeys >= requiredAmountGlitchless;
+                return ctx->GetSmallKeyCount(SCENE_INSIDE_GANONS_CASTLE_COLLAPSE) >= requiredAmountGlitchless;
 
             case RR_MARKET_TREASURE_CHEST_GAME:
                 /*if (IsGlitched && (false)) {
                     return TreasureGameKeys >= requiredAmountGlitched;
                 }*/
-                return TreasureGameKeys >= requiredAmountGlitchless;
+                return ctx->GetSmallKeyCount(SCENE_TREASURE_BOX_SHOP) >= requiredAmountGlitchless;
 
             default:
                 return false;
@@ -737,6 +762,20 @@ namespace Rando {
         ctx = _ctx;
     }
 
+    bool Logic::GetInLogic(ItemLogic logicVar) {
+        return std::find(inLogic.begin(), inLogic.end(), logicVar) != inLogic.end();
+    }
+
+    void Logic::SetInLogic(ItemLogic logicVar, bool remove) {
+        auto it = std::find(inLogic.begin(), inLogic.end(), logicVar);
+        if (it == inLogic.end() && !remove) {
+            inLogic.push_back(logicVar);
+        }
+        else if (it != inLogic.end() && remove) {
+            inLogic.erase(it);
+        }
+    }
+
     void Logic::Reset() {
         //SPDLOG_INFO("Logic reset.");
         ctx->NewSaveContext();
@@ -756,7 +795,6 @@ namespace Rando {
         Bombchus10    = false;
         Bombchus20    = false;
         MagicBean     = false;
-        MagicBeanPack = false;
         RutosLetter   = false;
         Boomerang     = false;
         DinsFire      = false;
@@ -857,11 +895,6 @@ namespace Rando {
 
         //Ocarina C Buttons
         bool ocBtnShuffle = ctx->GetOption(RSK_SHUFFLE_OCARINA_BUTTONS).Is(true);
-        OcarinaAButton = !ocBtnShuffle;
-        OcarinaCLeftButton = !ocBtnShuffle;
-        OcarinaCRightButton = !ocBtnShuffle;
-        OcarinaCUpButton = !ocBtnShuffle;
-        OcarinaCDownButton = !ocBtnShuffle;
         ctx->SetRandoInf(RAND_INF_HAS_OCARINA_A, ocBtnShuffle);
         ctx->SetRandoInf(RAND_INF_HAS_OCARINA_C_UP, ocBtnShuffle);
         ctx->SetRandoInf(RAND_INF_HAS_OCARINA_C_DOWN, ocBtnShuffle);
@@ -873,30 +906,27 @@ namespace Rando {
         ProgressiveBombBag    = 0;
         ProgressiveMagic      = 0;
         //If we're not shuffling swim, we start with it (scale 1)
-        ProgressiveScale      = ctx->GetOption(RSK_SHUFFLE_SWIM).Is(true) ? 0 : 1;
-        ctx->SetUpgrade(UPG_SCALE, ProgressiveScale);
+        ProgressiveScale = 0;
+        if (ctx->GetOption(RSK_SHUFFLE_SWIM).Is(false)) {
+            ProgressiveScale = 1;
+            ctx->SetRandoInf(RAND_INF_CAN_SWIM, false);
+        }
         ProgressiveHookshot   = 0;
         ProgressiveBow        = 0;
         //If we're not shuffling child's wallet, we start with it (wallet 1)
-        ProgressiveWallet     = ctx->GetOption(RSK_SHUFFLE_CHILD_WALLET).Is(true) ? 0 : 1;
-        ctx->SetUpgrade(UPG_WALLET, ProgressiveWallet);
+        ProgressiveWallet = 0;
+        if (ctx->GetOption(RSK_SHUFFLE_CHILD_WALLET).Is(false)) {
+            ProgressiveWallet = 1;
+            ctx->SetRandoInf(RAND_INF_HAS_WALLET, false);
+        }
         ProgressiveStrength   = 0;
         ProgressiveOcarina    = 0;
         ProgressiveGiantKnife = 0;
 
-        //Keys
-        ForestTempleKeys          = 0;
         //If not keysanity, start with 1 logical key to account for automatically unlocking the basement door in vanilla FiT
-        FireTempleKeys            = IsKeysanity || ctx->GetDungeon(Rando::FIRE_TEMPLE)->IsMQ() ? 0 : 1;
-        ctx->SetSmallKeyCount(SCENE_FIRE_TEMPLE, FireTempleKeys);
-        WaterTempleKeys           = 0;
-        SpiritTempleKeys          = 0;
-        ShadowTempleKeys          = 0;
-        GanonsCastleKeys          = 0;
-        GerudoFortressKeys        = 0;
-        GerudoTrainingGroundsKeys = 0;
-        BottomOfTheWellKeys       = 0;
-        TreasureGameKeys          = 0;
+        if (IsKeysanity || ctx->GetDungeon(Rando::FIRE_TEMPLE)->IsMQ()) {
+            ctx->SetSmallKeyCount(SCENE_FIRE_TEMPLE, 1);
+        }
 
         //Boss Keys
         BossKeyForestTemple = 0;

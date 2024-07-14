@@ -395,9 +395,7 @@ void Context::ParseHintJson(nlohmann::json spoilerFileJson) {
     CreateStaticHints();
 }
 
-
-
-std::map<RandomizerGet, uint32_t> RandoGetToFlag = {
+std::map<RandomizerGet, uint32_t> Context::RandoGetToFlag = {
     { RG_KOKIRI_SWORD,           EQUIP_FLAG_SWORD_KOKIRI },
     { RG_MASTER_SWORD,           EQUIP_FLAG_SWORD_MASTER },
     { RG_BIGGORON_SWORD,         EQUIP_FLAG_SWORD_BGS },
@@ -425,10 +423,11 @@ std::map<RandomizerGet, uint32_t> RandoGetToFlag = {
     { RG_OCARINA_C_UP_BUTTON,    RAND_INF_HAS_OCARINA_C_UP },
     { RG_OCARINA_C_DOWN_BUTTON,  RAND_INF_HAS_OCARINA_C_DOWN },
     { RG_OCARINA_C_LEFT_BUTTON,  RAND_INF_HAS_OCARINA_C_LEFT },
-    { RG_OCARINA_C_RIGHT_BUTTON, RAND_INF_HAS_OCARINA_C_RIGHT }
+    { RG_OCARINA_C_RIGHT_BUTTON, RAND_INF_HAS_OCARINA_C_RIGHT },
+    { RG_GREG_RUPEE,             RAND_INF_GREG_FOUND }
 };
 
-std::map<uint32_t, uint32_t> RandoGetToDungeonScene = {
+std::map<uint32_t, uint32_t> Context::RandoGetToDungeonScene = {
     { RG_FOREST_TEMPLE_SMALL_KEY,           SCENE_FOREST_TEMPLE },
     { RG_FIRE_TEMPLE_SMALL_KEY,             SCENE_FIRE_TEMPLE },
     { RG_WATER_TEMPLE_SMALL_KEY,            SCENE_WATER_TEMPLE },
@@ -476,7 +475,7 @@ std::map<uint32_t, uint32_t> RandoGetToDungeonScene = {
     { RG_TREASURE_GAME_SMALL_KEY,           SCENE_TREASURE_BOX_SHOP }
 };
 
-std::map<uint32_t, uint32_t> RandoGetToQuestItem = {
+std::map<uint32_t, uint32_t> Context::RandoGetToQuestItem = {
     { RG_FOREST_MEDALLION,       QUEST_MEDALLION_FOREST },
     { RG_FIRE_MEDALLION,         QUEST_MEDALLION_FIRE },
     { RG_WATER_MEDALLION,        QUEST_MEDALLION_WATER },
@@ -518,8 +517,8 @@ void Context::ApplyItemEffect(Item& item, bool remove) {
     switch (item.GetItemType()) {
     case ITEMTYPE_ITEM:
     {
-        if (item.GetGIEntry()->getItemCategory == ITEM_CATEGORY_MAJOR || item.GetGIEntry()->getItemCategory == ITEM_CATEGORY_LESSER) {
-            switch (randoGet) {
+        //if (item.GetGIEntry()->getItemCategory == ITEM_CATEGORY_MAJOR || item.GetGIEntry()->getItemCategory == ITEM_CATEGORY_LESSER) {
+        switch (randoGet) {
             case RG_STONE_OF_AGONY:
             case RG_GERUDO_MEMBERSHIP_CARD:
                 SetQuestItem(RandoGetToQuestItem.at(randoGet), remove);
@@ -669,12 +668,11 @@ void Context::ApplyItemEffect(Item& item, bool remove) {
                 }
                 SetInventory(ITEM_OCARINA_FAIRY, OcarinaLookup[i]);
             }   break;
-            case ITEM_HEART_CONTAINER:
-                mSaveContext->health += (remove ? -4 : 4);
+            case RG_HEART_CONTAINER:
+                mSaveContext->healthCapacity += (remove ? -16 : 16);
                 break;
-            case ITEM_HEART_PIECE:
-            case ITEM_HEART_PIECE_2:
-                mSaveContext->health += (remove ? -1 : 1);
+            case RG_PIECE_OF_HEART:
+                mSaveContext->healthCapacity += (remove ? -4 : 4);
                 break;
             case RG_BOOMERANG:
             case RG_LENS_OF_TRUTH:
@@ -732,13 +730,34 @@ void Context::ApplyItemEffect(Item& item, bool remove) {
             case RG_OCARINA_C_DOWN_BUTTON:
             case RG_OCARINA_C_LEFT_BUTTON:
             case RG_OCARINA_C_RIGHT_BUTTON:
+            case RG_GREG_RUPEE:
                 SetRandoInf(RandoGetToFlag.at(randoGet), remove);
                 break;
             case RG_TRIFORCE_PIECE:
                 mSaveContext->triforcePiecesCollected += (remove ? -1 : 1);
                 break;
-            }
-        } // junk items don't have variables, so we can skip them
+            //}
+        //} else if (item.GetGIEntry()->getItemCategory == ITEM_CATEGORY_JUNK) {
+            //switch (randoGet) {
+            case RG_DEKU_NUTS_5:
+            case RG_DEKU_NUTS_10:
+            case RG_BUY_DEKU_NUTS_5:
+            case RG_BUY_DEKU_NUTS_10:
+                SetInventory(ITEM_NUT, (remove ? ITEM_NONE : ITEM_NUT));
+                break;
+            case RG_DEKU_STICK_1:
+            case RG_BUY_DEKU_STICK_1:
+            case RG_STICKS:
+                SetInventory(ITEM_STICK, (remove ? ITEM_NONE : ITEM_STICK));
+                break;
+            case RG_BOMBCHU_5:
+            case RG_BOMBCHU_10:
+            case RG_BOMBCHU_20:
+            case RG_BOMBCHU_DROP:
+                SetInventory(ITEM_BOMBCHU, (remove ? ITEM_NONE : ITEM_BOMBCHU));
+                break;
+            //}
+        }
     }
     break;
     case ITEMTYPE_EQUIP:
@@ -803,13 +822,10 @@ void Context::ApplyItemEffect(Item& item, bool remove) {
     case ITEMTYPE_TOKEN:
         mSaveContext->inventory.gsTokens += (remove ? -1 : 1);
         break;
-        // currently noVariable pointers in Logic, so nothing to do here
     case ITEMTYPE_EVENT:
         break;
     case ITEMTYPE_DROP:
-        break;
     case ITEMTYPE_REFILL:
-        break;
     case ITEMTYPE_SHOP:
     {
         RandomizerGet itemRG = item.GetRandomizerGet();
@@ -821,6 +837,25 @@ void Context::ApplyItemEffect(Item& item, bool remove) {
             else {
                 mSaveContext->inventory.equipment |= equipId;
             }
+        }
+        switch (itemRG) {
+        case RG_DEKU_NUTS_5:
+        case RG_DEKU_NUTS_10:
+        case RG_BUY_DEKU_NUTS_5:
+        case RG_BUY_DEKU_NUTS_10:
+            SetInventory(ITEM_NUT, (remove ? ITEM_NONE : ITEM_NUT));
+            break;
+        case RG_DEKU_STICK_1:
+        case RG_BUY_DEKU_STICK_1:
+        case RG_STICKS:
+            SetInventory(ITEM_STICK, (remove ? ITEM_NONE : ITEM_STICK));
+            break;
+        case RG_BOMBCHU_5:
+        case RG_BOMBCHU_10:
+        case RG_BOMBCHU_20:
+        case RG_BOMBCHU_DROP:
+            SetInventory(ITEM_BOMBCHU, (remove ? ITEM_NONE : ITEM_BOMBCHU));
+            break;
         }
     } break;
     }

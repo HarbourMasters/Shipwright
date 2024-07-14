@@ -14,75 +14,60 @@ namespace Rando {
 Item::Item() : randomizerGet(RG_NONE), type(ITEMTYPE_ITEM), getItemId(GI_NONE), advancement(false), hintKey(RHT_NONE),
                progressive(false), price(0) {}
 Item::Item(const RandomizerGet randomizerGet_, Text name_, const ItemType type_, const int16_t getItemId_,
-           const bool advancement_, bool* logicVar_, const RandomizerHintTextKey hintKey_, const uint16_t itemId_,
-           const uint16_t objectId_, const uint16_t gid_, const uint16_t textId_, const uint16_t field_,
-           const int16_t chestAnimation_, const GetItemCategory category_, const uint16_t modIndex_,
-           const bool progressive_, const uint16_t price_)
+    const bool advancement_, ItemLogic logicVar_, const RandomizerHintTextKey hintKey_, const uint16_t itemId_,
+    const uint16_t objectId_, const uint16_t gid_, const uint16_t textId_, const uint16_t field_,
+    const int16_t chestAnimation_, const GetItemCategory category_, const uint16_t modIndex_,
+    const bool progressive_, const uint16_t price_)
     : randomizerGet(randomizerGet_), name(std::move(name_)), type(type_), getItemId(getItemId_),
-      advancement(advancement_), logicVar(logicVar_), hintKey(hintKey_), progressive(progressive_), price(price_) {
+    advancement(advancement_), logicVar(logicVar_), hintKey(hintKey_), progressive(progressive_), price(price_) {
     if (modIndex_ == MOD_RANDOMIZER || getItemId > 0x7D) {
-        giEntry = std::make_shared<GetItemEntry>(GetItemEntry{itemId_, field_, static_cast<int16_t>((chestAnimation_ != CHEST_ANIM_SHORT ? 1 : -1) * (gid_ + 1)), textId_, objectId_, modIndex_, TABLE_RANDOMIZER, static_cast<int16_t>(randomizerGet_), gid_, true, ITEM_FROM_NPC, category_, static_cast<uint16_t>(randomizerGet_), MOD_RANDOMIZER, NULL});
-    } else {
-        giEntry = std::make_shared<GetItemEntry>(GetItemEntry{itemId_, field_, static_cast<int16_t>((chestAnimation_ != CHEST_ANIM_SHORT ? 1 : -1) * (gid_ + 1)), textId_, objectId_, modIndex_, TABLE_VANILLA, getItemId_, gid_, true, ITEM_FROM_NPC, category_, itemId_, modIndex_, NULL});
+        giEntry = std::make_shared<GetItemEntry>(GetItemEntry{ itemId_, field_, static_cast<int16_t>((chestAnimation_ != CHEST_ANIM_SHORT ? 1 : -1) * (gid_ + 1)), textId_, objectId_, modIndex_, TABLE_RANDOMIZER, static_cast<int16_t>(randomizerGet_), gid_, true, ITEM_FROM_NPC, category_, static_cast<uint16_t>(randomizerGet_), MOD_RANDOMIZER, NULL });
+    }
+    else {
+        giEntry = std::make_shared<GetItemEntry>(GetItemEntry{ itemId_, field_, static_cast<int16_t>((chestAnimation_ != CHEST_ANIM_SHORT ? 1 : -1) * (gid_ + 1)), textId_, objectId_, modIndex_, TABLE_VANILLA, getItemId_, gid_, true, ITEM_FROM_NPC, category_, itemId_, modIndex_, NULL });
     }
 }
 
 Item::Item(const RandomizerGet randomizerGet_, Text name_, const ItemType type_, const int16_t getItemId_,
-           const bool advancement_, uint8_t* logicVar_, const RandomizerHintTextKey hintKey_, const uint16_t itemId_,
-           const uint16_t objectId_, const uint16_t gid_, const uint16_t textId_, const uint16_t field_,
-           const int16_t chestAnimation_, const GetItemCategory category_, const uint16_t modIndex_,
-           const bool progressive_, const uint16_t price_)
+    const bool advancement_, ItemLogic logicVar_, const RandomizerHintTextKey hintKey_, const bool progressive_,
+    const uint16_t price_)
     : randomizerGet(randomizerGet_), name(std::move(name_)), type(type_), getItemId(getItemId_),
-      advancement(advancement_), logicVar(logicVar_), hintKey(hintKey_), progressive(progressive_), price(price_) {
-    if (modIndex_ == MOD_RANDOMIZER || getItemId > 0x7D) {
-        giEntry = std::make_shared<GetItemEntry>(GetItemEntry{itemId_, field_, static_cast<int16_t>((chestAnimation_ != CHEST_ANIM_SHORT ? 1 : -1) * (gid_ + 1)), textId_, objectId_, modIndex_, TABLE_RANDOMIZER, static_cast<int16_t>(randomizerGet_), gid_, true, ITEM_FROM_NPC, category_, static_cast<uint16_t>(randomizerGet_), modIndex_, NULL});
-    } else {
-        giEntry = std::make_shared<GetItemEntry>(GetItemEntry{itemId_, field_, static_cast<int16_t>((chestAnimation_ != CHEST_ANIM_SHORT ? 1 : -1) * (gid_ + 1)), textId_, objectId_, modIndex_, TABLE_VANILLA, getItemId_, gid_, true, ITEM_FROM_NPC, category_, itemId_, modIndex_, NULL});
-    }
-}
-
-Item::Item(const RandomizerGet randomizerGet_, Text name_, const ItemType type_, const int16_t getItemId_,
-           const bool advancement_, bool* logicVar_, const RandomizerHintTextKey hintKey_, const bool progressive_,
-           const uint16_t price_)
-    : randomizerGet(randomizerGet_), name(std::move(name_)), type(type_), getItemId(getItemId_),
-      advancement(advancement_), logicVar(logicVar_), hintKey(hintKey_), progressive(progressive_), price(price_) {
-}
-
-Item::Item(const RandomizerGet randomizerGet_, Text name_, const ItemType type_, const int16_t getItemId_,
-           const bool advancement_, uint8_t* logicVar_, const RandomizerHintTextKey hintKey_, const bool progressive_,
-           const uint16_t price_)
-    : randomizerGet(randomizerGet_), name(std::move(name_)), type(type_), getItemId(getItemId_),
-      advancement(advancement_), logicVar(logicVar_), hintKey(hintKey_), progressive(progressive_), price(price_) {
+    advancement(advancement_), logicVar(logicVar_), hintKey(hintKey_), progressive(progressive_), price(price_) {
 }
 
     Item::~Item() = default;
 
 void Item::ApplyEffect() const {
     // If this is a key ring, logically add as many keys as we could need
-    if (RHT_FOREST_TEMPLE_KEY_RING <= hintKey && hintKey <= RHT_GANONS_CASTLE_KEY_RING) {
-        *std::get<uint8_t*>(logicVar) += 10;
-    } else {
-        if (std::holds_alternative<bool*>(logicVar)) {
-            *std::get<bool*>(logicVar) = true;
-        } else {
-            *std::get<uint8_t*>(logicVar) += 1;
-        }
-    }
-    Rando::Context::GetInstance()->ApplyItemEffect(StaticData::RetrieveItem(this->randomizerGet), false);
-    Rando::Context::GetInstance()->GetLogic()->UpdateHelpers();
+    //if (RHT_FOREST_TEMPLE_KEY_RING <= hintKey && hintKey <= RHT_GANONS_CASTLE_KEY_RING) {
+    //    *std::get<uint8_t*>(logicVar) += 10;
+    //} else {
+    //    if (std::holds_alternative<bool*>(logicVar)) {
+    //        *std::get<bool*>(logicVar) = true;
+    //    } else {
+    //        *std::get<uint8_t*>(logicVar) += 1;
+    //    }
+    //}
+    auto ctx = Rando::Context::GetInstance();
+    ctx->ApplyItemEffect(StaticData::RetrieveItem(randomizerGet), false);
+    ctx->GetLogic()->SetInLogic(logicVar, false);
+    ctx->GetLogic()->UpdateHelpers();
 }
 
 void Item::UndoEffect() const {
-    if (RHT_FOREST_TEMPLE_KEY_RING <= hintKey && hintKey <= RHT_GANONS_CASTLE_KEY_RING) {
-        *std::get<uint8_t*>(logicVar) -= 10;
-    } else {
-        if (std::holds_alternative<bool*>(logicVar)) {
-            *std::get<bool*>(logicVar) = false;
-        } else {
-            *std::get<uint8_t*>(logicVar) -= 1;
-        }
-    }
-    Rando::Context::GetInstance()->GetLogic()->UpdateHelpers();
+    //if (RHT_FOREST_TEMPLE_KEY_RING <= hintKey && hintKey <= RHT_GANONS_CASTLE_KEY_RING) {
+    //    *std::get<uint8_t*>(logicVar) -= 10;
+    //} else {
+    //    if (std::holds_alternative<bool*>(logicVar)) {
+    //        *std::get<bool*>(logicVar) = false;
+    //    } else {
+    //        *std::get<uint8_t*>(logicVar) -= 1;
+    //    }
+    //}
+    auto ctx = Rando::Context::GetInstance();
+    ctx->ApplyItemEffect(StaticData::RetrieveItem(randomizerGet), true);
+    ctx->GetLogic()->SetInLogic(logicVar, true);
+    ctx->GetLogic()->UpdateHelpers();
 }
 
 const Text& Item::GetName() const {
@@ -101,7 +86,7 @@ ItemType Item::GetItemType() const {
     return type;
 }
 
-std::variant<bool*, uint8_t*> Item::GetLogicVar() const {
+ItemLogic Item::GetLogicVar() const {
     return logicVar;
 }
 
