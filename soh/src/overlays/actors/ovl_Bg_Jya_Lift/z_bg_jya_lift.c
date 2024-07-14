@@ -99,7 +99,7 @@ void BgJyaLift_DelayMove(BgJyaLift* this, PlayState* play) {
             // The cutscene of the platform lowering will show the central room in an unloaded state if
             // Link is not standing on the platform as it lowers. Therefore check for the Sunlight arrows
             // enhancement and if it's enabled, check that Link is on the platform. Otherwise skip it.
-            if (!(CVarGetInteger("gSunlightArrows", 0) || Randomizer_GetSettingValue(RSK_SUNLIGHT_ARROWS)) || 
+            if (!(CVarGetInteger(CVAR_ENHANCEMENT("SunlightArrows"), 0) || Randomizer_GetSettingValue(RSK_SUNLIGHT_ARROWS)) || 
                                                       (GET_PLAYER(play)->actor.world.pos.x >   -19.0f &&
                                                        GET_PLAYER(play)->actor.world.pos.x <   139.0f &&
                                                        GET_PLAYER(play)->actor.world.pos.z > -1172.0f &&

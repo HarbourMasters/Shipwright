@@ -120,20 +120,20 @@ s16 sHeartsDDEnv[2][3];
 void HealthMeter_Init(PlayState* play) {
     InterfaceContext* interfaceCtx = &play->interfaceCtx;
     Color_RGB8 mainColor = {HEARTS_PRIM_R, HEARTS_PRIM_G, HEARTS_PRIM_B};
-    if (CVarGetInteger("gCosmetics.Consumable_Hearts.Changed", 0)) {
-        mainColor = CVarGetColor24("gCosmetics.Consumable_Hearts.Value", mainColor);
+    if (CVarGetInteger(CVAR_COSMETIC("Consumable.Hearts.Changed"), 0)) {
+        mainColor = CVarGetColor24(CVAR_COSMETIC("Consumable.Hearts.Value"), mainColor);
     }
     Color_RGB8 mainBorder = {HEARTS_ENV_R, HEARTS_ENV_G, HEARTS_ENV_B};
-    if (CVarGetInteger("gCosmetics.Consumable_HeartBorder.Changed", 0)) {
-        mainBorder = CVarGetColor24("gCosmetics.Consumable_HeartBorder.Value", mainBorder);
+    if (CVarGetInteger(CVAR_COSMETIC("Consumable.HeartBorder.Changed"), 0)) {
+        mainBorder = CVarGetColor24(CVAR_COSMETIC("Consumable.HeartBorder.Value"), mainBorder);
     }
     Color_RGB8 ddColor = {HEARTS_DD_ENV_R, HEARTS_DD_ENV_G, HEARTS_DD_ENV_B};
-    if (CVarGetInteger("gCosmetics.Consumable_DDHearts.Changed", 0)) {
-        ddColor = CVarGetColor24("gCosmetics.Consumable_DDHearts.Value", ddColor);
+    if (CVarGetInteger(CVAR_COSMETIC("Consumable.DDHearts.Changed"), 0)) {
+        ddColor = CVarGetColor24(CVAR_COSMETIC("Consumable.DDHearts.Value"), ddColor);
     }
     Color_RGB8 ddBorder = {HEARTS_DD_PRIM_R, HEARTS_DD_PRIM_G, HEARTS_DD_PRIM_B};
-    if (CVarGetInteger("gCosmetics.Consumable_DDHeartBorder.Changed", 0)) {
-        ddBorder = CVarGetColor24("gCosmetics.Consumable_DDHeartBorder.Value", ddBorder);
+    if (CVarGetInteger(CVAR_COSMETIC("Consumable.DDHeartBorder.Changed"), 0)) {
+        ddBorder = CVarGetColor24(CVAR_COSMETIC("Consumable.DDHeartBorder.Value"), ddBorder);
     }
 
     interfaceCtx->unk_228 = 0x140;
@@ -176,26 +176,26 @@ void HealthMeter_Update(PlayState* play) {
     s16 gFactor;
     s16 bFactor;
 
-    Top_LM_Margin = CVarGetInteger("gHUDMargin_T", 0);
-    Left_LM_Margin = CVarGetInteger("gHUDMargin_L", 0);
-    Right_LM_Margin = CVarGetInteger("gHUDMargin_R", 0);
-    Bottom_LM_Margin = CVarGetInteger("gHUDMargin_B", 0);
+    Top_LM_Margin = CVarGetInteger(CVAR_COSMETIC("HUD.Margin.T"), 0);
+    Left_LM_Margin = CVarGetInteger(CVAR_COSMETIC("HUD.Margin.L"), 0);
+    Right_LM_Margin = CVarGetInteger(CVAR_COSMETIC("HUD.Margin.R"), 0);
+    Bottom_LM_Margin = CVarGetInteger(CVAR_COSMETIC("HUD.Margin.B"), 0);
 
     Color_RGB8 mainColor = {HEARTS_PRIM_R, HEARTS_PRIM_G, HEARTS_PRIM_B};
-    if (CVarGetInteger("gCosmetics.Consumable_Hearts.Changed", 0)) {
-        mainColor = CVarGetColor24("gCosmetics.Consumable_Hearts.Value", mainColor);
+    if (CVarGetInteger(CVAR_COSMETIC("Consumable.Hearts.Changed"), 0)) {
+        mainColor = CVarGetColor24(CVAR_COSMETIC("Consumable.Hearts.Value"), mainColor);
     }
     Color_RGB8 mainBorder = {HEARTS_ENV_R, HEARTS_ENV_G, HEARTS_ENV_B};
-    if (CVarGetInteger("gCosmetics.Consumable_HeartBorder.Changed", 0)) {
-        mainBorder = CVarGetColor24("gCosmetics.Consumable_HeartBorder.Value", mainBorder);
+    if (CVarGetInteger(CVAR_COSMETIC("Consumable.HeartBorder.Changed"), 0)) {
+        mainBorder = CVarGetColor24(CVAR_COSMETIC("Consumable.HeartBorder.Value"), mainBorder);
     }
     Color_RGB8 ddColor = {HEARTS_DD_ENV_R, HEARTS_DD_ENV_G, HEARTS_DD_ENV_B};
-    if (CVarGetInteger("gCosmetics.Consumable_DDHearts.Changed", 0)) {
-        ddColor = CVarGetColor24("gCosmetics.Consumable_DDHearts.Value", ddColor);
+    if (CVarGetInteger(CVAR_COSMETIC("Consumable.DDHearts.Changed"), 0)) {
+        ddColor = CVarGetColor24(CVAR_COSMETIC("Consumable.DDHearts.Value"), ddColor);
     }
     Color_RGB8 ddBorder = {HEARTS_DD_PRIM_R, HEARTS_DD_PRIM_G, HEARTS_DD_PRIM_B};
-    if (CVarGetInteger("gCosmetics.Consumable_DDHeartBorder.Changed", 0)) {
-        ddBorder = CVarGetColor24("gCosmetics.Consumable_DDHeartBorder.Value", ddBorder);
+    if (CVarGetInteger(CVAR_COSMETIC("Consumable.DDHeartBorder.Changed"), 0)) {
+        ddBorder = CVarGetColor24(CVAR_COSMETIC("Consumable.DDHeartBorder.Value"), ddBorder);
     }
 
     if (interfaceCtx->unk_200 != 0) {
@@ -336,20 +336,20 @@ static void* sHeartDDTextures[] = {
 
 s16 getHealthMeterXOffset() {
     s16 X_Margins;
-    if (CVarGetInteger("gHeartsUseMargins", 0) != 0)
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.Hearts.UseMargins"), 0) != 0)
         X_Margins = Left_LM_Margin;
     else
         X_Margins = 0;
 
-    if (CVarGetInteger("gHeartsCountPosType", 0) != 0) {
-        if (CVarGetInteger("gHeartsCountPosType", 0) == 1) {//Anchor Left
-            return OTRGetDimensionFromLeftEdge(CVarGetInteger("gHeartsCountPosX", 0)+X_Margins+70.0f);
-        } else if (CVarGetInteger("gHeartsCountPosType", 0) == 2) {//Anchor Right
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosType"), 0) != 0) {
+        if (CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosType"), 0) == 1) {//Anchor Left
+            return OTRGetDimensionFromLeftEdge(CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosX"), 0)+X_Margins+70.0f);
+        } else if (CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosType"), 0) == 2) {//Anchor Right
             X_Margins = Right_LM_Margin;
-            return OTRGetDimensionFromRightEdge(CVarGetInteger("gHeartsCountPosX", 0)+X_Margins+70.0f);
-        } else if (CVarGetInteger("gHeartsCountPosType", 0) == 3) {//Anchor None
-            return CVarGetInteger("gHeartsCountPosX", 0)+70.0f;;
-        } else if (CVarGetInteger("gHeartsCountPosType", 0) == 4) {//Hidden
+            return OTRGetDimensionFromRightEdge(CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosX"), 0)+X_Margins+70.0f);
+        } else if (CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosType"), 0) == 3) {//Anchor None
+            return CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosX"), 0)+70.0f;;
+        } else if (CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosType"), 0) == 4) {//Hidden
             return -9999;
         }
     } else {
@@ -359,15 +359,15 @@ s16 getHealthMeterXOffset() {
 
 s16 getHealthMeterYOffset() {
     s16 Y_Margins;
-    if (CVarGetInteger("gHeartsUseMargins", 0) != 0)
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.Hearts.UseMargins"), 0) != 0)
         Y_Margins = (Top_LM_Margin*-1);
     else
         Y_Margins = 0;
 
     f32 HeartsScale = 0.7f; 
-    if (CVarGetInteger("gHeartsCountPosType", 0) != 0) {
-        HeartsScale = CVarGetFloat("gHeartsCountScale", 0.7f);
-        return CVarGetInteger("gHeartsCountPosY", 0)+Y_Margins+(HeartsScale*15);
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosType"), 0) != 0) {
+        HeartsScale = CVarGetFloat(CVAR_COSMETIC("HUD.HeartsCount.Scale"), 0.7f);
+        return CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosY"), 0)+Y_Margins+(HeartsScale*15);
     } else {
         return 0.0f+Y_Margins;
     }
@@ -397,8 +397,8 @@ void HealthMeter_Draw(PlayState* play) {
     u8* curBgImgLoaded = NULL;
     s32 ddHeartCountMinusOne = gSaveContext.isDoubleDefenseAcquired ? totalHeartCount - 1 : -1;
     f32 HeartsScale = 0.7f; 
-    if (CVarGetInteger("gHeartsCountPosType", 0) != 0) {
-        HeartsScale = CVarGetFloat("gHeartsCountScale", 0.7f);
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosType"), 0) != 0) {
+        HeartsScale = CVarGetFloat(CVAR_COSMETIC("HUD.HeartsCount.Scale"), 0.7f);
     }
     static u32 epoch = 0;
     epoch++;
@@ -413,7 +413,7 @@ void HealthMeter_Draw(PlayState* play) {
 /*
     s16 X_Margins;
     s16 Y_Margins;
-    if (CVarGetInteger("gHeartsUseMargins", 0) != 0) {
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.Hearts.UseMargins"), 0) != 0) {
         X_Margins = Left_LM_Margin;
         Y_Margins = (Top_LM_Margin*-1);
     } else {
@@ -422,16 +422,16 @@ void HealthMeter_Draw(PlayState* play) {
     }
     s16 PosX_original = OTRGetDimensionFromLeftEdge(0.0f)+X_Margins;
     s16 PosY_original = 0.0f+Y_Margins;
-    if (CVarGetInteger("gHeartsCountPosType", 0) != 0) {
-        offsetY = CVarGetInteger("gHeartsCountPosY", 0)+Y_Margins+(HeartsScale*15);
-        if (CVarGetInteger("gHeartsCountPosType", 0) == 1) {//Anchor Left
-            offsetX = OTRGetDimensionFromLeftEdge(CVarGetInteger("gHeartsCountPosX", 0)+X_Margins+70.0f);
-        } else if (CVarGetInteger("gHeartsCountPosType", 0) == 2) {//Anchor Right
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosType"), 0) != 0) {
+        offsetY = CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosY"), 0)+Y_Margins+(HeartsScale*15);
+        if (CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosType"), 0) == 1) {//Anchor Left
+            offsetX = OTRGetDimensionFromLeftEdge(CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosX"), 0)+X_Margins+70.0f);
+        } else if (CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosType"), 0) == 2) {//Anchor Right
             X_Margins = Right_LM_Margin;
-            offsetX = OTRGetDimensionFromRightEdge(CVarGetInteger("gHeartsCountPosX", 0)+X_Margins+70.0f);
-        } else if (CVarGetInteger("gHeartsCountPosType", 0) == 3) {//Anchor None
-            offsetX = CVarGetInteger("gHeartsCountPosX", 0)+70.0f;
-        } else if (CVarGetInteger("gHeartsCountPosType", 0) == 4) {//Hidden
+            offsetX = OTRGetDimensionFromRightEdge(CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosX"), 0)+X_Margins+70.0f);
+        } else if (CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosType"), 0) == 3) {//Anchor None
+            offsetX = CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosX"), 0)+70.0f;
+        } else if (CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosType"), 0) == 4) {//Hidden
             offsetX = -9999;
         }
     } else {
@@ -602,7 +602,7 @@ void HealthMeter_Draw(PlayState* play) {
             {
                 Mtx* matrix = Graph_Alloc(gfxCtx, sizeof(Mtx));
                 
-                if (CVarGetInteger("gNoHUDHeartAnimation", 0)) {
+                if (CVarGetInteger(CVAR_ENHANCEMENT("NoHUDHeartAnimation"), 0)) {
                     Matrix_SetTranslateScaleMtx2(matrix,
                         HeartsScale,          // Scale X
                         HeartsScale,          // Scale Y
@@ -626,7 +626,7 @@ void HealthMeter_Draw(PlayState* play) {
         }
 
         offsetX += 10.0f;
-        s32 lineLength = CVarGetInteger("gHeartsLineLength", 10);
+        s32 lineLength = CVarGetInteger(CVAR_COSMETIC("HUD.Hearts.LineLength"), 10);
         if (lineLength != 0 && (i+1)%lineLength == 0) {
             offsetX = PosX_anchor;
             offsetY += 10.0f;
@@ -646,7 +646,7 @@ void HealthMeter_HandleCriticalAlarm(PlayState* play) {
         if (interfaceCtx->unk_22A <= 0) {
             interfaceCtx->unk_22A = 0;
             interfaceCtx->unk_22C = 0;
-            if (CVarGetInteger("gLowHpAlarm", 0) == 0 && !Player_InCsMode(play) && (play->pauseCtx.state == 0) &&
+            if (CVarGetInteger(CVAR_ENHANCEMENT("LowHpAlarm"), 0) == 0 && !Player_InCsMode(play) && (play->pauseCtx.state == 0) &&
             (play->pauseCtx.debugState == 0) && HealthMeter_IsCritical() && !Play_InCsMode(play)) {
                 func_80078884(NA_SE_SY_HITPOINT_ALARM);
             }

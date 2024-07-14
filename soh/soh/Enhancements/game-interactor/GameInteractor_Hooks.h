@@ -65,6 +65,8 @@ void GameInteractor_ExecuteOnGameStillFrozen();
 // MARK: - System
 void GameInteractor_RegisterOnAssetAltChange(void (*fn)(void));
 
+//Mark: - Pause Menu
+void GameInteractor_ExecuteOnKaleidoUpdate();
 
 #ifdef __cplusplus
 }

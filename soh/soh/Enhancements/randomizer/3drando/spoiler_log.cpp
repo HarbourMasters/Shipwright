@@ -307,35 +307,36 @@ static void WriteLocation(
 static void WriteShuffledEntrance(std::string sphereString, Entrance* entrance) {
   int16_t originalIndex = entrance->GetIndex();
   int16_t destinationIndex = -1;
-  int16_t originalBlueWarp = entrance->GetBlueWarp();
-  int16_t replacementBlueWarp = -1;
   int16_t replacementIndex = entrance->GetReplacement()->GetIndex();
   int16_t replacementDestinationIndex = -1;
   std::string name = entrance->GetName();
   std::string text = entrance->GetConnectedRegion()->regionName + " from " + entrance->GetReplacement()->GetParentRegion()->regionName;
 
-  if (entrance->GetReverse() != nullptr && !entrance->IsDecoupled()) {
+  // Track the reverse destination, useful for savewarp handling
+  if (entrance->GetReverse() != nullptr) {
     destinationIndex = entrance->GetReverse()->GetIndex();
-    replacementDestinationIndex = entrance->GetReplacement()->GetReverse()->GetIndex();
-    replacementBlueWarp = entrance->GetReplacement()->GetReverse()->GetBlueWarp();
+    // When decouple is off we track the replacement's reverse destination, useful for recording visited entrances
+    if (!entrance->IsDecoupled()) {
+      replacementDestinationIndex = entrance->GetReplacement()->GetReverse()->GetIndex();
+    }
   }
 
   json entranceJson = json::object({
+    {"type", entrance->GetType()},
     {"index", originalIndex},
     {"destination", destinationIndex},
-    {"blueWarp", originalBlueWarp},
     {"override", replacementIndex},
     {"overrideDestination", replacementDestinationIndex},
   });
 
   jsonData["entrances"].push_back(entranceJson);
 
-  // When decoupled entrances is off, handle saving reverse entrances with blue warps
+  // When decoupled entrances is off, handle saving reverse entrances
   if (entrance->GetReverse() != nullptr && !entrance->IsDecoupled()) {
     json reverseEntranceJson = json::object({
+      {"type", entrance->GetReverse()->GetType()},
       {"index", replacementDestinationIndex},
       {"destination", replacementIndex},
-      {"blueWarp", replacementBlueWarp},
       {"override", destinationIndex},
       {"overrideDestination", originalIndex},
     });
@@ -894,8 +895,8 @@ const char* SpoilerLog_Write(int language) {
     WriteAllLocations(language);
     //WriteHintData(language);
 
-    if (!std::filesystem::exists(LUS::Context::GetPathRelativeToAppDirectory("Randomizer"))) {
-        std::filesystem::create_directory(LUS::Context::GetPathRelativeToAppDirectory("Randomizer"));
+    if (!std::filesystem::exists(Ship::Context::GetPathRelativeToAppDirectory("Randomizer"))) {
+        std::filesystem::create_directory(Ship::Context::GetPathRelativeToAppDirectory("Randomizer"));
     }
 
     std::string jsonString = jsonData.dump(4);
@@ -910,7 +911,7 @@ const char* SpoilerLog_Write(int language) {
         fileNameStream << std::to_string(Settings::hashIconIndexes[i]);
     }
     std::string fileName = fileNameStream.str();
-    std::ofstream jsonFile(LUS::Context::GetPathRelativeToAppDirectory(
+    std::ofstream jsonFile(Ship::Context::GetPathRelativeToAppDirectory(
         (std::string("Randomizer/") + fileName + std::string(".json")).c_str()));
     jsonFile << std::setw(4) << jsonString << std::endl;
     jsonFile.close();

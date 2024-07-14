@@ -9,7 +9,7 @@
 #include "soh/resource/type/Cutscene.h"
 // #include <libultraship/libultra.h>
 
-namespace LUS {
+namespace SOH {
 class SetCutscenes : public SceneCommand<uint32_t> {
   public:
     using SceneCommand::SceneCommand;

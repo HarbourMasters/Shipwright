@@ -744,7 +744,6 @@ typedef struct {
     /* 0x0134 */ char** doActionSegment;
     /* 0x0138 */ u8*    iconItemSegment;
     /* 0x013C */ char** mapSegment;
-    char** mapSegmentName;
     /* 0x0140 */ u8     mapPalette[32];
     /* 0x0160 */ DmaRequest dmaRequest_160;
     /* 0x0180 */ DmaRequest dmaRequest_180;
@@ -815,6 +814,10 @@ typedef struct {
         /* 0x026C */ u8    dinsNayrus; // "m_magic"; din's fire and nayru's love
         /* 0x026D */ u8    all;        // "another"; enables all item restrictions
     }                   restrictions;
+    // #region SOH [General]
+    /*        */ char* mapSegmentName[2]; // Tracks the map segment texture by OTR sig name
+    /*        */ u8 mapPalettesPulse[40][32]; // Used to have unique pointers per map pulse color for the shader backend. 40 for map pulse timer x2
+    // #endregion
 } InterfaceContext; // size = 0x270
 
 typedef struct {
@@ -837,6 +840,9 @@ typedef enum {
 
 #define PAUSE_CURSOR_PAGE_LEFT 10
 #define PAUSE_CURSOR_PAGE_RIGHT 11
+
+#define PAUSE_EQUIP_PLAYER_WIDTH 64
+#define PAUSE_EQUIP_PLAYER_HEIGHT 112
 
 typedef enum {
     /* 0x00 */ PAUSE_ITEM,

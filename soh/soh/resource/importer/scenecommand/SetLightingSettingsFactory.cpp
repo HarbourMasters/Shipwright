@@ -1,34 +1,12 @@
 #include "soh/resource/importer/scenecommand/SetLightingSettingsFactory.h"
 #include "soh/resource/type/scenecommand/SetLightingSettings.h"
+#include "soh/resource/logging/SceneCommandLoggers.h"
 #include "spdlog/spdlog.h"
 
-namespace LUS {
-std::shared_ptr<IResource> SetLightingSettingsFactory::ReadResource(std::shared_ptr<ResourceInitData> initData,
-                                                                   std::shared_ptr<BinaryReader> reader) {
-    auto resource = std::make_shared<SetLightingSettings>(initData);
-    std::shared_ptr<ResourceVersionFactory> factory = nullptr;
-
-    switch (resource->GetInitData()->ResourceVersion) {
-    case 0:
-	factory = std::make_shared<SetLightingSettingsFactoryV0>();
-	break;
-    }
-
-    if (factory == nullptr) {
-        SPDLOG_ERROR("Failed to load SetLightingSettings with version {}", resource->GetInitData()->ResourceVersion);
-	return nullptr;
-    }
-
-    factory->ParseFileBinary(reader, resource);
-
-    return resource;
-}
-
-void LUS::SetLightingSettingsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
-                                        std::shared_ptr<IResource> resource)
-{
-    std::shared_ptr<SetLightingSettings> setLightingSettings = std::static_pointer_cast<SetLightingSettings>(resource);
-    ResourceVersionFactory::ParseFileBinary(reader, setLightingSettings);
+namespace SOH {
+std::shared_ptr<Ship::IResource> SetLightingSettingsFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
+                                                                   std::shared_ptr<Ship::BinaryReader> reader) {
+    auto setLightingSettings = std::make_shared<SetLightingSettings>(initData);
 
     ReadCommandId(setLightingSettings, reader);
 
@@ -65,6 +43,55 @@ void LUS::SetLightingSettingsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryRe
         lightSettings.fogFar = reader->ReadUInt16();
         setLightingSettings->settings.push_back(lightSettings);
     }
+
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ResourceLogging"), 0)) {
+        LogLightingSettingsAsXML(setLightingSettings);
+    }
+
+    return setLightingSettings;
 }
 
-} // namespace LUS
+std::shared_ptr<Ship::IResource> SetLightingSettingsFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
+                                                                   tinyxml2::XMLElement* reader) {
+    auto setLightingSettings = std::make_shared<SetLightingSettings>(initData);
+
+    setLightingSettings->cmdId = SceneCommandID::SetLightingSettings;
+
+    auto child = reader->FirstChildElement();
+
+    while (child != nullptr) {
+        std::string childName = child->Name();
+        if (childName == "LightingSetting") {
+            EnvLightSettings lightSettings;
+            lightSettings.ambientColor[0] = child->IntAttribute("AmbientColorR");
+            lightSettings.ambientColor[1] = child->IntAttribute("AmbientColorG");
+            lightSettings.ambientColor[2] = child->IntAttribute("AmbientColorB");
+
+            lightSettings.light1Dir[0] = child->IntAttribute("Light1DirX");
+            lightSettings.light1Dir[1] = child->IntAttribute("Light1DirY");
+            lightSettings.light1Dir[2] = child->IntAttribute("Light1DirZ");
+            lightSettings.light1Color[0] = child->IntAttribute("Light1ColorR");
+            lightSettings.light1Color[1] = child->IntAttribute("Light1ColorG");
+            lightSettings.light1Color[2] = child->IntAttribute("Light1ColorB");
+
+            lightSettings.light2Dir[0] = child->IntAttribute("Light2DirX");
+            lightSettings.light2Dir[1] = child->IntAttribute("Light2DirY");
+            lightSettings.light2Dir[2] = child->IntAttribute("Light2DirZ");
+            lightSettings.light2Color[0] = child->IntAttribute("Light2ColorR");
+            lightSettings.light2Color[1] = child->IntAttribute("Light2ColorG");
+            lightSettings.light2Color[2] = child->IntAttribute("Light2ColorB");
+
+            lightSettings.fogColor[0] = child->IntAttribute("FogColorR");
+            lightSettings.fogColor[1] = child->IntAttribute("FogColorG");
+            lightSettings.fogColor[2] = child->IntAttribute("FogColorB");
+            lightSettings.fogNear = child->IntAttribute("FogNear");
+            lightSettings.fogFar = child->IntAttribute("FogFar");
+            setLightingSettings->settings.push_back(lightSettings);
+        }
+
+        child = child->NextSiblingElement();
+    }
+
+    return setLightingSettings;
+}
+} // namespace SOH

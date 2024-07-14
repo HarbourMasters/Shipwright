@@ -66,7 +66,7 @@ void GameInteractorSail::HandleRemoteJson(nlohmann::json payload) {
             }
 
             std::string command = payload["command"].get<std::string>();
-            std::reinterpret_pointer_cast<LUS::ConsoleWindow>(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->Dispatch(command);
+            std::reinterpret_pointer_cast<Ship::ConsoleWindow>(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->Dispatch(command);
             responsePayload["status"] = "success";
             GameInteractor::Instance->TransmitJsonToRemote(responsePayload);
             return;
@@ -88,7 +88,7 @@ void GameInteractorSail::HandleRemoteJson(nlohmann::json payload) {
                 }
 
                 std::string command = payload["effect"]["command"].get<std::string>();
-                std::reinterpret_pointer_cast<LUS::ConsoleWindow>(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->Dispatch(command);
+                std::reinterpret_pointer_cast<Ship::ConsoleWindow>(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->Dispatch(command);
                 responsePayload["status"] = "success";
                 GameInteractor::Instance->TransmitJsonToRemote(responsePayload);
                 return;
