@@ -196,3 +196,8 @@ void GameInteractor_RegisterOnAssetAltChange(void (*fn)(void)) {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnAssetAltChange>(fn);
 }
 
+//MARK: Pause Menu
+
+void GameInteractor_ExecuteOnKaleidoUpdate() {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnKaleidoUpdate>();
+}

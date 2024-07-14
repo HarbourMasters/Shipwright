@@ -200,14 +200,14 @@ void EnBomBowlPit_GivePrize(EnBomBowlPit* this, PlayState* play) {
         }
     }
 
-    player->stateFlags1 &= ~0x20000000;
+    player->stateFlags1 &= ~PLAYER_STATE1_IN_CUTSCENE;
     this->actor.parent = NULL;
     if (!IS_RANDO || this->getItemEntry.getItemId == GI_NONE) {
         func_8002F434(&this->actor, play, this->getItemId, 2000.0f, 1000.0f);
     } else {
         GiveItemEntryFromActor(&this->actor, play, this->getItemEntry, 2000.0f, 1000.0f);
     }
-    player->stateFlags1 |= 0x20000000;
+    player->stateFlags1 |= PLAYER_STATE1_IN_CUTSCENE;
     this->actionFunc = EnBomBowlPit_WaitTillPrizeGiven;
 }
 

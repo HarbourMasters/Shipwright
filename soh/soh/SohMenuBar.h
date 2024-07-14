@@ -5,9 +5,9 @@
 #include "window/gui/GuiElement.h"
 
 namespace SohGui {
-class SohMenuBar : public LUS::GuiMenuBar {
+class SohMenuBar : public Ship::GuiMenuBar {
   public:
-    using LUS::GuiMenuBar::GuiMenuBar;
+    using Ship::GuiMenuBar::GuiMenuBar;
   protected:
     void DrawElement() override;
     void InitElement() override {};

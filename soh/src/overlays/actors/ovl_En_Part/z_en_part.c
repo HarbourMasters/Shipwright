@@ -8,6 +8,8 @@
 #include "objects/object_tite/object_tite.h"
 #include "objects/object_ik/object_ik.h"
 
+#include <string.h> // strcmp
+
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 void EnPart_Init(Actor* thisx, PlayState* play);
@@ -297,11 +299,11 @@ void EnPart_Draw(Actor* thisx, PlayState* play) {
         gSPSegment(POLY_OPA_DISP++, 0x08, func_80ACEAC0(play->state.gfxCtx, 255, 255, 255, 180, 180, 180));
         gSPSegment(POLY_OPA_DISP++, 0x09, func_80ACEAC0(play->state.gfxCtx, 225, 205, 115, 25, 20, 0));
         gSPSegment(POLY_OPA_DISP++, 0x0A, func_80ACEAC0(play->state.gfxCtx, 225, 205, 115, 25, 20, 0));
-    } else if ((thisx->params == 9) && (this->displayList == ResourceMgr_LoadGfxByName(object_tite_DL_002FF0))) {
+    } else if ((thisx->params == 9) && (strcmp((const char*)this->displayList, object_tite_DL_002FF0) == 0)) {
         gSPSegment(POLY_OPA_DISP++, 0x08, object_tite_Tex_001300);
         gSPSegment(POLY_OPA_DISP++, 0x09, object_tite_Tex_001700);
         gSPSegment(POLY_OPA_DISP++, 0x0A, object_tite_Tex_001900);
-    } else if ((thisx->params == 10) && (this->displayList == ResourceMgr_LoadGfxByName(object_tite_DL_002FF0))) {
+    } else if ((thisx->params == 10) && (strcmp((const char*)this->displayList, object_tite_DL_002FF0) == 0)) {
         gSPSegment(POLY_OPA_DISP++, 0x08, object_tite_Tex_001B00);
         gSPSegment(POLY_OPA_DISP++, 0x09, object_tite_Tex_001F00);
         gSPSegment(POLY_OPA_DISP++, 0x0A, object_tite_Tex_002100);

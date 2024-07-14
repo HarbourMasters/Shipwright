@@ -493,7 +493,7 @@ s32 EnGirlA_CanBuy_DekuNuts(PlayState* play, EnGirlA* this) {
     if (gSaveContext.rupees < this->basePrice) {
         return CANBUY_RESULT_NEED_RUPEES;
     }
-    if ((Item_CheckObtainability(ITEM_NUT) == ITEM_NONE) && !CVarGetInteger("gFastDrops", 0)) {
+    if ((Item_CheckObtainability(ITEM_NUT) == ITEM_NONE) && !CVarGetInteger(CVAR_ENHANCEMENT("FastDrops"), 0)) {
         return CANBUY_RESULT_SUCCESS_FANFARE;
     }
     return CANBUY_RESULT_SUCCESS;
@@ -506,7 +506,7 @@ s32 EnGirlA_CanBuy_DekuSticks(PlayState* play, EnGirlA* this) {
     if (gSaveContext.rupees < this->basePrice) {
         return CANBUY_RESULT_NEED_RUPEES;
     }
-    if ((Item_CheckObtainability(ITEM_STICK) == ITEM_NONE) && !CVarGetInteger("gFastDrops", 0)) {
+    if ((Item_CheckObtainability(ITEM_STICK) == ITEM_NONE) && !CVarGetInteger(CVAR_ENHANCEMENT("FastDrops"), 0)) {
         return CANBUY_RESULT_SUCCESS_FANFARE;
     }
     return CANBUY_RESULT_SUCCESS;
@@ -705,7 +705,7 @@ s32 EnGirlA_CanBuy_DekuSeeds(PlayState* play, EnGirlA* this) {
     if (gSaveContext.rupees < this->basePrice) {
         return CANBUY_RESULT_NEED_RUPEES;
     }
-    if ((Item_CheckObtainability(ITEM_SEEDS) == ITEM_NONE) && !CVarGetInteger("gFastDrops", 0)) {
+    if ((Item_CheckObtainability(ITEM_SEEDS) == ITEM_NONE) && !CVarGetInteger(CVAR_ENHANCEMENT("FastDrops"), 0)) {
         return CANBUY_RESULT_SUCCESS_FANFARE;
     }
     return CANBUY_RESULT_SUCCESS;
@@ -1027,8 +1027,8 @@ void EnGirlA_BuyEvent_ObtainBombchuPack(PlayState* play, EnGirlA* this) {
     Rupees_ChangeBy(-this->basePrice);
 
 	// Normally, buying a bombchu pack sets a flag indicating the pack is now sold out
-    // If they're in logic for rando, skip setting that flag so they can be purchased repeatedly
-    if (IS_RANDO && Randomizer_GetSettingValue(RSK_BOMBCHUS_IN_LOGIC)) {
+    // If we're in rando, skip setting that flag so they can be purchased repeatedly
+    if (IS_RANDO) {
         return;
     }
 
@@ -1255,8 +1255,7 @@ void EnGirlA_InitializeItemAction(EnGirlA* this, PlayState* play) {
         this->itemGiveFunc = itemEntry->itemGiveFunc;
         this->buyEventFunc = itemEntry->buyEventFunc;
         // If chus are in logic, make the 10 pack affordable without a wallet upgrade
-        if (IS_RANDO && Randomizer_GetSettingValue(RSK_BOMBCHUS_IN_LOGIC) &&
-            this->getItemId == GI_BOMBCHUS_10) {
+        if (IS_RANDO && this->getItemId == GI_BOMBCHUS_10) {
             this->basePrice = 99;
         } else {
             this->basePrice = itemEntry->price;
@@ -1287,8 +1286,8 @@ void EnGirlA_InitializeItemAction(EnGirlA* this, PlayState* play) {
             this->basePrice = shopItemIdentity.itemPrice;
             this->giDrawId = getItemEntry.gid;
 
-            // Correct the rotation for spiritual stones
-            if (getItemEntry.getItemId >= RG_KOKIRI_EMERALD && getItemEntry.getItemId <= RG_ZORA_SAPPHIRE) {
+            // Correct the rotation for spiritual stones, but only if mysterious shuffle isn't on, else it's obvious what's there in shops
+            if (!CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0) && (getItemEntry.getItemId >= RG_KOKIRI_EMERALD && getItemEntry.getItemId <= RG_ZORA_SAPPHIRE)) {
                 this->actor.shape.rot.y = this->actor.shape.rot.y + 20000;
             }
         }
@@ -1333,7 +1332,8 @@ void EnGirlA_Draw(Actor* thisx, PlayState* play) {
 
     if (this->actor.params == SI_RANDOMIZED_ITEM) {
         ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(play->sceneNum, this->randoSlotIndex);
-        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
+        GetItemEntry getItemEntry = (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0) && this->actor.params == SI_RANDOMIZED_ITEM) ? GetItemMystery() : 
+                                    Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
 
         EnItem00_CustomItemsParticles(&this->actor, play, getItemEntry);
         GetItemEntry_Draw(play, getItemEntry);

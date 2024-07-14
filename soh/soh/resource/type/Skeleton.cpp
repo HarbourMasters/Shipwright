@@ -3,7 +3,7 @@
 #include "soh/OTRGlobals.h"
 #include "libultraship/libultraship.h"
 
-namespace LUS {
+namespace SOH {
 SkeletonData* Skeleton::GetPointer() {
     return &skeletonData;
 }
@@ -36,9 +36,9 @@ void SkeletonPatcher::RegisterSkeleton(std::string& path, SkelAnime* skelAnime) 
     }
 
     // Determine if we're using an alternate skeleton
-    if (path.starts_with(LUS::IResource::gAltAssetPrefix)) {
-        info.vanillaSkeletonPath = path.substr(LUS::IResource::gAltAssetPrefix.length(),
-                                               path.size() - LUS::IResource::gAltAssetPrefix.length());
+    if (path.starts_with(Ship::IResource::gAltAssetPrefix)) {
+        info.vanillaSkeletonPath = path.substr(Ship::IResource::gAltAssetPrefix.length(),
+                                               path.size() - Ship::IResource::gAltAssetPrefix.length());
     } else {
         info.vanillaSkeletonPath = path;
     }
@@ -65,12 +65,11 @@ void SkeletonPatcher::ClearSkeletons()
 }
 
 void SkeletonPatcher::UpdateSkeletons() {
-    bool isHD = CVarGetInteger("gAltAssets", 0);
+    auto resourceMgr = Ship::Context::GetInstance()->GetResourceManager();
+    bool isHD = resourceMgr->IsAltAssetsEnabled();
     for (auto skel : skeletons) {
         Skeleton* newSkel =
-            (Skeleton*)LUS::Context::GetInstance()->GetResourceManager()
-                ->LoadResource((isHD ? LUS::IResource::gAltAssetPrefix : "") + skel.vanillaSkeletonPath, true)
-                .get();
+            (Skeleton*)resourceMgr->LoadResource((isHD ? Ship::IResource::gAltAssetPrefix : "") + skel.vanillaSkeletonPath, true).get();
 
         if (newSkel != nullptr) {
             skel.skelAnime->skeleton = newSkel->skeletonData.skeletonHeader.segment;
@@ -79,4 +78,4 @@ void SkeletonPatcher::UpdateSkeletons() {
         }
     }
 }
-} // namespace LUS
+} // namespace SOH

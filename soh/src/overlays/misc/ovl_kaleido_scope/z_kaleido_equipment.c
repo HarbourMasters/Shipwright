@@ -2,6 +2,7 @@
 #include "textures/icon_item_static/icon_item_static.h"
 #include "textures/parameter_static/parameter_static.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
+#include "soh/Enhancements/enhancementTypes.h"
 
 static u8 sChildUpgrades[] = { UPG_BULLET_BAG, UPG_BOMB_BAG, UPG_STRENGTH, UPG_SCALE };
 static u8 sAdultUpgrades[] = { UPG_QUIVER, UPG_BOMB_BAG, UPG_STRENGTH, UPG_SCALE };
@@ -25,6 +26,8 @@ static Vtx sStrengthAButtonVtx[] = {
 };
 
 static s16 sEquipTimer = 0;
+
+extern int gPauseLinkFrameBuffer;
 
 void KaleidoScope_DrawEquipmentImage(PlayState* play, void* source, u32 width, u32 height) {
     PauseContext* pauseCtx = &play->pauseCtx;
@@ -69,13 +72,12 @@ void KaleidoScope_DrawEquipmentImage(PlayState* play, void* source, u32 width, u
     for (i = 0; i < textureCount; i++) {
         gSPVertex(POLY_KAL_DISP++, &pauseCtx->equipVtx[vtxIndex], 4, 0);
 
-        extern int fbTest;
         gDPSetTextureImage(POLY_KAL_DISP++, G_IM_FMT_RGBA, G_IM_SIZ_16b, width, curTexture);
 
         gDPLoadSync(POLY_KAL_DISP++);
         gDPLoadTile(POLY_KAL_DISP++, G_TX_LOADTILE, 0, 0, (width - 1) << 2, (textureHeight - 1) << 2);
 
-        gDPSetTextureImageFB(POLY_KAL_DISP++, G_IM_FMT_RGBA, G_IM_SIZ_16b, width, fbTest);
+        gDPSetTextureImageFB(POLY_KAL_DISP++, G_IM_FMT_RGBA, G_IM_SIZ_16b, width, gPauseLinkFrameBuffer);
         gSP1Quadrangle(POLY_KAL_DISP++, 0, 2, 3, 1, 0);
 
         curTexture += textureSize;
@@ -107,9 +109,9 @@ void KaleidoScope_DrawAButton(PlayState* play, Vtx* vtx, int16_t xTranslate, int
     Matrix_Translate(xTranslate, yTranslate, 0, MTXMODE_APPLY);
     gSPMatrix(POLY_KAL_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     Color_RGB8 aButtonColor = { 0, 100, 255 };
-    if (CVarGetInteger("gCosmetics.Hud_AButton.Changed", 0)) {
-        aButtonColor = CVarGetColor24("gCosmetics.Hud_AButton.Value", aButtonColor);
-    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.AButton.Changed"), 0)) {
+        aButtonColor = CVarGetColor24(CVAR_COSMETIC("HUD.AButton.Value"), aButtonColor);
+    } else if (CVarGetInteger(CVAR_COSMETIC("DefaultColorScheme"), COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
         aButtonColor = (Color_RGB8){ 0, 255, 100 };
     }
 
@@ -131,10 +133,10 @@ void KaleidoScope_DrawPlayerWork(PlayState* play) {
     //Vec3s rot; // Removed for not having it use din the function
     f32 scale;
     Input* input = &play->state.input[0];
-    s16 RotationSpeed = 150 * CVarGetInteger("gPauseLiveLinkRotationSpeed", 0);
-    u8 AllowStickRotation = (CVarGetInteger("gPauseLiveLinkRotation", 0) == 3) ? true : false;
-    u8 AllowCRotation = (CVarGetInteger("gPauseLiveLinkRotation", 0) == 2) ? true : false;
-    u8 AllowDPadRotation = (CVarGetInteger("gPauseLiveLinkRotation", 0) == 1) ? true : false;
+    s16 RotationSpeed = 150 * CVarGetInteger(CVAR_ENHANCEMENT("PauseLiveLinkRotationSpeed"), 0);
+    u8 AllowStickRotation = (CVarGetInteger(CVAR_ENHANCEMENT("PauseLiveLinkRotation"), 0) == 3) ? true : false;
+    u8 AllowCRotation = (CVarGetInteger(CVAR_ENHANCEMENT("PauseLiveLinkRotation"), 0) == 2) ? true : false;
+    u8 AllowDPadRotation = (CVarGetInteger(CVAR_ENHANCEMENT("PauseLiveLinkRotation"), 0) == 1) ? true : false;
 
 
     if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
@@ -142,7 +144,7 @@ void KaleidoScope_DrawPlayerWork(PlayState* play) {
         pos.y = -130.0f;
         pos.z = -150.0f;
         scale = 0.046f;
-    } else if (CUR_EQUIP_VALUE(EQUIP_TYPE_SWORD) != EQUIP_VALUE_SWORD_MASTER && !CVarGetInteger("gPauseTriforce", 0)) {
+    } else if (CUR_EQUIP_VALUE(EQUIP_TYPE_SWORD) != EQUIP_VALUE_SWORD_MASTER && !CVarGetInteger(CVAR_GENERAL("PauseTriforce"), 0)) {
         pos.x = 25.0f;
         pos.y = -228.0f;
         pos.z = 60.0f;
@@ -184,8 +186,7 @@ void KaleidoScope_DrawPlayerWork(PlayState* play) {
 
     link_kaleido_rot.x = 0;
 
-    extern int fbTest;
-    gsSPSetFB(play->state.gfxCtx->polyOpa.p++, fbTest);
+    gsSPSetFB(play->state.gfxCtx->polyOpa.p++, gPauseLinkFrameBuffer);
     Player_DrawPause(play, pauseCtx->playerSegment, &pauseCtx->playerSkelAnime, &pos, &link_kaleido_rot, scale,
                      SWORD_EQUIP_TO_PLAYER(CUR_EQUIP_VALUE(EQUIP_TYPE_SWORD)),
                      TUNIC_EQUIP_TO_PLAYER(CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC)),
@@ -212,9 +213,9 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
     s16 cursorX;
     s16 cursorY;
     s16 oldCursorPoint;
-    bool dpad = (CVarGetInteger("gDpadPause", 0) && !CHECK_BTN_ALL(input->cur.button, BTN_CUP));
-    bool pauseAnyCursor = (CVarGetInteger("gPauseAnyCursor", 0) == PAUSE_ANY_CURSOR_RANDO_ONLY && IS_RANDO) ||
-                          (CVarGetInteger("gPauseAnyCursor", 0) == PAUSE_ANY_CURSOR_ALWAYS_ON);
+    bool dpad = (CVarGetInteger(CVAR_SETTING("DPadOnPause"), 0) && !CHECK_BTN_ALL(input->cur.button, BTN_CUP));
+    bool pauseAnyCursor = (CVarGetInteger(CVAR_SETTING("PauseAnyCursor"), 0) == PAUSE_ANY_CURSOR_RANDO_ONLY && IS_RANDO) ||
+                          (CVarGetInteger(CVAR_SETTING("PauseAnyCursor"), 0) == PAUSE_ANY_CURSOR_ALWAYS_ON);
 
     OPEN_DISPS(play->state.gfxCtx);
 
@@ -541,8 +542,8 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
         // Allow Toggling of Strength when Pressing A on Strength Upgrade Slot
         if ((pauseCtx->cursorSpecialPos == 0) && (pauseCtx->state == 6) &&
             (pauseCtx->unk_1E4 == 0) && CHECK_BTN_ALL(input->press.button, BTN_A) &&
-            (pauseCtx->cursorX[PAUSE_EQUIP] == 0) && (pauseCtx->cursorY[PAUSE_EQUIP] == 2) && CVarGetInteger("gToggleStrength", 0)) {
-            CVarSetInteger("gStrengthDisabled", !CVarGetInteger("gStrengthDisabled", 0));
+            (pauseCtx->cursorX[PAUSE_EQUIP] == 0) && (pauseCtx->cursorY[PAUSE_EQUIP] == 2) && CVarGetInteger(CVAR_ENHANCEMENT("ToggleStrength"), 0)) {
+            CVarSetInteger(CVAR_ENHANCEMENT("StrengthDisabled"), !CVarGetInteger(CVAR_ENHANCEMENT("StrengthDisabled"), 0));
             // Equip success sound
             Audio_PlaySoundGeneral(NA_SE_SY_DECIDE, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
             // Wait 10 frames before accepting input again
@@ -551,7 +552,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
         }
 
         u16 buttonsToCheck = BTN_A | BTN_CLEFT | BTN_CDOWN | BTN_CRIGHT;
-        if (CVarGetInteger("gDpadEquips", 0) && (!CVarGetInteger("gDpadPause", 0) || CHECK_BTN_ALL(input->cur.button, BTN_CUP))) {
+        if (CVarGetInteger(CVAR_SETTING("DpadEquips"), 0) && (!CVarGetInteger(CVAR_SETTING("DPadOnPause"), 0) || CHECK_BTN_ALL(input->cur.button, BTN_CUP))) {
             buttonsToCheck |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
         }
 
@@ -562,20 +563,32 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
             if (CHECK_AGE_REQ_EQUIP(pauseCtx->cursorY[PAUSE_EQUIP], pauseCtx->cursorX[PAUSE_EQUIP])) {
                 if (CHECK_BTN_ALL(input->press.button, BTN_A)) {
 
+                    // #Region SoH [Enhancements]
                     // Allow Link to remove his equipment from the equipment subscreen by toggling on/off
                     // Shields will be un-equipped entirely, and tunics/boots will revert to Kokiri Tunic/Kokiri Boots
                     // Only BGS/Giant's Knife is affected, and it will revert to Master Sword.
 
                     // If we have the feature toggled on
-                    if (CVarGetInteger("gEquipmentCanBeRemoved", 0)) {
-                        
-                        // If we're on the "swords" section of the equipment screen AND we're on a currently-equipped BGS/Giant's Knife
-                        if (pauseCtx->cursorY[PAUSE_EQUIP] == 0 && pauseCtx->cursorX[PAUSE_EQUIP] == 3 
-                            && CUR_EQUIP_VALUE(EQUIP_TYPE_SWORD) == EQUIP_VALUE_SWORD_BIGGORON && CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER)){ // And we have the Master Sword
-                            Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_MASTER); // "Unequip" it by equipping Master Sword
-                            gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
-                            gSaveContext.infTable[29] = 0;
-                            goto RESUME_EQUIPMENT_SWORD;               // Skip to here so we don't re-equip it
+                    if (CVarGetInteger(CVAR_ENHANCEMENT("EquipmentCanBeRemoved"), 0)) {
+
+                        if (CVarGetInteger(CVAR_ENHANCEMENT("SwordToggle"), SWORD_TOGGLE_NONE) == SWORD_TOGGLE_BOTH_AGES ||
+                            (CVarGetInteger(CVAR_ENHANCEMENT("SwordToggle"), SWORD_TOGGLE_NONE) == SWORD_TOGGLE_CHILD) && LINK_IS_CHILD) {
+                            // If we're on the "swords" section of the equipment screen AND we're on a currently-equipped sword  
+                            if (pauseCtx->cursorY[PAUSE_EQUIP] == 0 && pauseCtx->cursorX[PAUSE_EQUIP] == CUR_EQUIP_VALUE(EQUIP_TYPE_SWORD)) {
+                                Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_NONE);
+                                gSaveContext.equips.buttonItems[0] = ITEM_NONE;
+                                Flags_SetInfTable(INFTABLE_SWORDLESS);
+                                goto RESUME_EQUIPMENT_SWORD;               // Skip to here so we don't re-equip it
+                            }
+                        } else {
+                            // If we're on the "swords" section of the equipment screen AND we're on a currently-equipped BGS/Giant's Knife
+                            if (pauseCtx->cursorY[PAUSE_EQUIP] == 0 && pauseCtx->cursorX[PAUSE_EQUIP] == 3 
+                                && CUR_EQUIP_VALUE(EQUIP_TYPE_SWORD) == EQUIP_VALUE_SWORD_BIGGORON && CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER)){ // And we have the Master Sword
+                                Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_MASTER); // "Unequip" it by equipping Master Sword
+                                gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
+                                Flags_UnsetInfTable(INFTABLE_SWORDLESS);
+                                goto RESUME_EQUIPMENT_SWORD;               // Skip to here so we don't re-equip it
+                            }
                         }
 
                         // If we're on the "shields" section of the equipment screen AND we're on a currently-equipped shield
@@ -627,7 +640,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
                     Audio_PlaySoundGeneral(NA_SE_SY_DECIDE, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
                     pauseCtx->unk_1E4 = 7;
                     sEquipTimer = 10;
-                } else if (CVarGetInteger("gAssignableTunicsAndBoots", 0) != 0) {
+                } else if (CVarGetInteger(CVAR_ENHANCEMENT("AssignableTunicsAndBoots"), 0) != 0) {
                     // Only allow assigning tunic and boots to c-buttons
                     if (pauseCtx->cursorY[PAUSE_EQUIP] > 1) {
                         if (CHECK_OWNED_EQUIP(pauseCtx->cursorY[PAUSE_EQUIP], pauseCtx->cursorX[PAUSE_EQUIP] - 1)) {
@@ -667,7 +680,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
                 EQUIP_FAIL:
                 if (CHECK_BTN_ALL(input->press.button, BTN_A)) {
                     Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-                } else if ((CVarGetInteger("gAssignableTunicsAndBoots", 0) != 0) && (pauseCtx->cursorY[PAUSE_EQUIP] > 1)) {
+                } else if ((CVarGetInteger(CVAR_ENHANCEMENT("AssignableTunicsAndBoots"), 0) != 0) && (pauseCtx->cursorY[PAUSE_EQUIP] > 1)) {
                     Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
                 }
             }
@@ -691,8 +704,8 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
     // Do not Grey Out Strength Upgrade Name when Enabled
     // This needs to be outside the previous block since otherwise the nameColorSet is cleared to 0 by other menu pages when toggling
     if ((pauseCtx->pageIndex == PAUSE_EQUIP) && (pauseCtx->cursorX[PAUSE_EQUIP] == 0) &&
-        (pauseCtx->cursorY[PAUSE_EQUIP] == 2) && CVarGetInteger("gToggleStrength", 0)) {
-        if (CVarGetInteger("gStrengthDisabled", 0)) {
+        (pauseCtx->cursorY[PAUSE_EQUIP] == 2) && CVarGetInteger(CVAR_ENHANCEMENT("ToggleStrength"), 0)) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("StrengthDisabled"), 0)) {
             pauseCtx->nameColorSet = 1;
         } else {
             pauseCtx->nameColorSet = 0;
@@ -722,7 +735,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
 
     // Add zoom effect to strength item if cursor is hovering over it when toggle option is on
     if ((pauseCtx->cursorX[PAUSE_EQUIP] == 0) && (pauseCtx->cursorY[PAUSE_EQUIP] == 2) &&
-        CVarGetInteger("gToggleStrength", 0) && pauseCtx->cursorSpecialPos == 0) {
+        CVarGetInteger(CVAR_ENHANCEMENT("ToggleStrength"), 0) && pauseCtx->cursorSpecialPos == 0) {
         u8 row = 2;
         u8 column = 0;
         u8 equipVtxIndex = 16 * row + 4 * column;
@@ -743,7 +756,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
 
     for (rowStart = 0, j = 0, temp = 0, i = 0; i < 4; i++, rowStart += 4, j += 16) {
         gSPVertex(POLY_KAL_DISP++, &pauseCtx->equipVtx[j], 16, 0);
-        bool drawGreyItems = !CVarGetInteger("gTimelessEquipment", 0);
+        bool drawGreyItems = !CVarGetInteger(CVAR_CHEAT("TimelessEquipment"), 0);
         if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
             point = CUR_UPG_VALUE(sChildUpgrades[i]);
             if ((point != 0) && (CUR_UPG_VALUE(sChildUpgrades[i]) != 0)) {
@@ -752,7 +765,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
                 if ((drawGreyItems &&
                     ((sChildUpgradeItemBases[i] + CUR_UPG_VALUE(sChildUpgrades[i]) - 1) == ITEM_GAUNTLETS_SILVER || 
                     (sChildUpgradeItemBases[i] + CUR_UPG_VALUE(sChildUpgrades[i]) - 1) == ITEM_GAUNTLETS_GOLD)) ||
-                    (CVarGetInteger("gToggleStrength", 0) && CVarGetInteger("gStrengthDisabled", 0) && sChildUpgrades[i] == UPG_STRENGTH)) {
+                    (CVarGetInteger(CVAR_ENHANCEMENT("ToggleStrength"), 0) && CVarGetInteger(CVAR_ENHANCEMENT("StrengthDisabled"), 0) && sChildUpgrades[i] == UPG_STRENGTH)) {
                     gDPSetGrayscaleColor(POLY_KAL_DISP++, 109, 109, 109, 255);
                     gSPGrayscale(POLY_KAL_DISP++, true);
                 }
@@ -772,8 +785,8 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
                 // Grey Out Strength Upgrades when Disabled and the Toggle Strength Option is on
                 if ((drawGreyItems &&
                     (((sAdultUpgradeItemBases[i] + CUR_UPG_VALUE(sAdultUpgrades[i]) - 1) == ITEM_BRACELET &&
-                        !(IS_RANDO) && !CVarGetInteger("gToggleStrength", 0)))) || 
-                     (CVarGetInteger("gToggleStrength", 0) && CVarGetInteger("gStrengthDisabled", 0) && sAdultUpgrades[i] == UPG_STRENGTH)) {
+                        !(IS_RANDO) && !CVarGetInteger(CVAR_ENHANCEMENT("ToggleStrength"), 0)))) || 
+                     (CVarGetInteger(CVAR_ENHANCEMENT("ToggleStrength"), 0) && CVarGetInteger(CVAR_ENHANCEMENT("StrengthDisabled"), 0) && sAdultUpgrades[i] == UPG_STRENGTH)) {
                     gDPSetGrayscaleColor(POLY_KAL_DISP++, 109, 109, 109, 255);
                     gSPGrayscale(POLY_KAL_DISP++, true);
                 }
@@ -803,7 +816,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
 
     // Render A button indicator when hovered over strength
     if ((pauseCtx->cursorX[PAUSE_EQUIP] == 0) && (pauseCtx->cursorY[PAUSE_EQUIP] == 2) &&
-        CVarGetInteger("gToggleStrength", 0) && pauseCtx->cursorSpecialPos == 0
+        CVarGetInteger(CVAR_ENHANCEMENT("ToggleStrength"), 0) && pauseCtx->cursorSpecialPos == 0
         && pauseCtx->unk_1E4 == 0 && pauseCtx->state == 6) {
         u8 row = 2;
         u8 column = 0;
@@ -839,7 +852,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
     //gSPSegment(POLY_KAL_DISP++, 0x0C, pauseCtx->iconItemAltSegment);
 
     Gfx_SetupDL_42Kal(play->state.gfxCtx);
-    KaleidoScope_DrawEquipmentImage(play, pauseCtx->playerSegment, 64, 112);
+    KaleidoScope_DrawEquipmentImage(play, pauseCtx->playerSegment, PAUSE_EQUIP_PLAYER_WIDTH, PAUSE_EQUIP_PLAYER_HEIGHT);
 
     if (gUpgradeMasks[0]) {}
 

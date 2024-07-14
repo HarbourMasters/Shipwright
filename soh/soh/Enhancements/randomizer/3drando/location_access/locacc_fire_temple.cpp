@@ -40,7 +40,7 @@ void AreaTable_Init_FireTemple() {
                 }, {
                   //Exits
                   Entrance(FIRE_TEMPLE_FIRST_ROOM, {[]{return true;}}),
-                  Entrance(FIRE_TEMPLE_BOSS_ENTRYWAY, {[]{return BossKeyFireTemple && ((IsAdult && LogicFireBossDoorJump) || CanUse(HOVER_BOOTS) || Here(FIRE_TEMPLE_FIRE_MAZE_UPPER, []{return CanUse(MEGATON_HAMMER);}));}}),
+                  Entrance(FIRE_TEMPLE_BOSS_ENTRYWAY, {[]{return BossKeyFireTemple && ((IsAdult && (LogicFireBossDoorJump || Here(FIRE_TEMPLE_FIRE_MAZE_UPPER, []{return CanUse(MEGATON_HAMMER);}))) || CanUse(HOVER_BOOTS));}}),
   });
 
   areaTable[FIRE_TEMPLE_LOOP_ENEMIES] = Area("Fire Temple Loop Enemies", "Fire Temple", FIRE_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {}, {
@@ -420,5 +420,6 @@ void AreaTable_Init_FireTemple() {
              {
                  // Exits
                  Entrance(FIRE_TEMPLE_BOSS_ENTRYWAY, { [] { return false; } }),
+                 Entrance(DMC_CENTRAL_LOCAL, { [] { return FireTempleClear; } }),
              });
 }

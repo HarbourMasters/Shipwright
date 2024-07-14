@@ -22,12 +22,10 @@ extern "C"
 
 void gSPSegment(void* value, int segNum, uintptr_t target);
 void gSPSegmentLoadRes(void* value, int segNum, uintptr_t target);
-void gDPSetTextureImage(Gfx* pkt, u32 f, u32 s, u32 w, uintptr_t i);
 void gSPDisplayList(Gfx* pkt, Gfx* dl);
 void gSPDisplayListOffset(Gfx* pkt, Gfx* dl, int offset);
 void gSPVertex(Gfx* pkt, uintptr_t v, int n, int v0);
 void gSPInvalidateTexCache(Gfx* pkt, uintptr_t texAddr);
-void gDPSetTextureImageFB(Gfx* pkt, u32 format, u32 size, u32 width, int fb);
 
 
 void cleararena(void);
@@ -1230,8 +1228,8 @@ Gfx* Gfx_EnvColor(GraphicsContext* gfxCtx, s32 r, s32 g, s32 b, s32 a);
 void Gfx_SetupFrame(GraphicsContext* gfxCtx, u8 r, u8 g, u8 b);
 void func_80095974(GraphicsContext* gfxCtx);
 void func_80095AA0(PlayState* play, Room* room, Input* arg2, UNK_TYPE arg3);
-void func_8009638C(Gfx** displayList, void* source, void* tlut, u16 width, u16 height, u8 fmt, u8 siz, u16 mode0,
-                   u16 tlutCount, f32 frameX, f32 frameY);
+void Room_DrawBackground2D(Gfx** gfxP, void* tex, void* tlut, u16 width, u16 height, u8 fmt, u8 siz, u16 tlutMode,
+                           u16 tlutCount, f32 offsetX, f32 offsetY);
 void func_80096FD4(PlayState* play, Room* room);
 u32 func_80096FE8(PlayState* play, RoomContext* roomCtx);
 s32 func_8009728C(PlayState* play, RoomContext* roomCtx, s32 roomNum);
@@ -1828,8 +1826,8 @@ MtxF* Matrix_CheckFloats(MtxF* mf, char* file, s32 line);
 void Matrix_SetTranslateScaleMtx2(Mtx* mtx, f32 scaleX, f32 scaleY, f32 scaleZ, f32 translateX, f32 translateY,
                                   f32 translateZ);
 uintptr_t SysUcode_GetUCodeBoot(void);
-uintptr_t SysUcode_GetUCodeBootSize(void);
-uintptr_t SysUcode_GetUCode(void);
+size_t SysUcode_GetUCodeBootSize(void);
+uint32_t SysUcode_GetUCode(void);
 uintptr_t SysUcode_GetUCodeData(void);
 void func_800D2E30(UnkRumbleStruct* arg0);
 void func_800D3140(UnkRumbleStruct* arg0);
@@ -2354,7 +2352,6 @@ s32 __osCheckPackId(OSPfs* pfs, __OSPackId* check);
 s32 __osGetId(OSPfs* pfs);
 s32 __osCheckId(OSPfs* pfs);
 s32 __osPfsRWInode(OSPfs* pfs, __OSInode* inode, u8 flag, u8 bank);
-void guMtxL2F(MtxF* m1, Mtx* m2);
 s32 osPfsFindFile(OSPfs* pfs, u16 companyCode, u32 gameCode, u8* gameName, u8* extName, s32* fileNo);
 s32 osAfterPreNMI(void);
 s32 osContStartQuery(OSMesgQueue* mq);
@@ -2408,7 +2405,6 @@ u32 __osSpGetStatus(void);
 void __osSpSetStatus(u32 status);
 void osWritebackDCacheAll(void);
 OSThread* __osGetCurrFaultedThread(void);
-void guMtxF2L(MtxF* m1, Mtx* m2);
 // ? __d_to_ll(?);
 // ? __f_to_ll(?);
 // ? __d_to_ull(?);
@@ -2466,6 +2462,10 @@ void Message_DrawText(PlayState* play, Gfx** gfxP);
 
 void Interface_CreateQuadVertexGroup(Vtx* vtxList, s32 xStart, s32 yStart, s32 width, s32 height, u8 flippedH);
 void Interface_RandoRestoreSwordless(void);
+
+//Pause Warp
+void PauseWarp_HandleSelection();
+void PauseWarp_Execute();
 
 // #endregion
 

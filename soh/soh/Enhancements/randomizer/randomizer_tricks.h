@@ -71,8 +71,8 @@ typedef struct {
     std::vector<RandomizerTrickTag> *rtTags;
     bool rtGlitch;
     bool visibleInImgui;
-    std::string rtShortName;
-    std::string rtDesc;
+    const char* rtShortName;
+    const char* rtDesc;
 } RandomizerTrickObject;
 
 namespace RandomizerTricks {

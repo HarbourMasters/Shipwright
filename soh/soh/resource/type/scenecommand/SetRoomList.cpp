@@ -1,6 +1,6 @@
 #include "SetRoomList.h"
 
-namespace LUS {
+namespace SOH {
 RomFile* SetRoomList::GetPointer() {
     return rooms.data();
 }
@@ -8,4 +8,4 @@ RomFile* SetRoomList::GetPointer() {
 size_t SetRoomList::GetPointerSize() {
 	return rooms.size() * sizeof(RomFile);
 }
-} // namespace LUS
+} // namespace SOH

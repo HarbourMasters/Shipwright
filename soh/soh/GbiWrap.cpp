@@ -14,8 +14,6 @@ void OTRGetPixelDepthPrepare(float x, float y);
 uint16_t OTRGetPixelDepth(float x, float y);
 int32_t OTRGetLastScancode();
 void ResourceMgr_LoadDirectory(const char* resName);
-void ResourceMgr_LoadFile(const char* resName);
-char* ResourceMgr_LoadFileFromDisk(const char* filePath);
 uint16_t ResourceMgr_LoadTexWidthByName(char* texPath);
 uint16_t ResourceMgr_LoadTexHeightByName(char* texPath);
 size_t ResourceGetTexSizeByName(const char* name);
@@ -66,15 +64,6 @@ extern "C" void gSPSegmentLoadRes(void* value, int segNum, uintptr_t target) {
     }
 
     __gSPSegment(value, segNum, target);
-}
-
-extern "C" void gDPSetTextureImage(Gfx* pkt, u32 format, u32 size, u32 width, uintptr_t i) {
-    __gDPSetTextureImage(pkt, format, size, width, i);
-}
-
-extern "C" void gDPSetTextureImageFB(Gfx* pkt, u32 format, u32 size, u32 width, int fb)
-{
-    __gDPSetTextureImageFB(pkt, format, size, width, fb);
 }
 
 extern "C" void gSPDisplayList(Gfx* pkt, Gfx* dl) {

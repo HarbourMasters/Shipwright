@@ -16,6 +16,7 @@ void EnSi_Init(Actor* thisx, PlayState* play);
 void EnSi_Destroy(Actor* thisx, PlayState* play);
 void EnSi_Update(Actor* thisx, PlayState* play);
 void EnSi_Draw(Actor* thisx, PlayState* play);
+void EnSi_Reset();
 
 s32 func_80AFB748(EnSi* this, PlayState* play);
 void func_80AFB768(EnSi* this, PlayState* play);
@@ -61,7 +62,7 @@ const ActorInit En_Si_InitVars = {
     (ActorFunc)EnSi_Destroy,
     (ActorFunc)EnSi_Update,
     (ActorFunc)EnSi_Draw,
-    NULL,
+    (ActorResetFunc)EnSi_Reset,
 };
 
 void EnSi_Init(Actor* thisx, PlayState* play) {
@@ -110,7 +111,7 @@ void func_80AFB768(EnSi* this, PlayState* play) {
                 } else {
                     Item_Give(play, giveItemId);
                 }
-                if ((!CVarGetInteger("gSkulltulaFreeze", 0) || giveItemId != ITEM_SKULL_TOKEN) &&
+                if ((!CVarGetInteger(CVAR_ENHANCEMENT("SkulltulaFreeze"), 0) || giveItemId != ITEM_SKULL_TOKEN) &&
                     getItemId != RG_ICE_TRAP) {
                     player->actor.freezeTimer = 20;
                 }
@@ -180,7 +181,7 @@ void func_80AFB950(EnSi* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     if (Message_GetState(&play->msgCtx) != TEXT_STATE_CLOSING &&
-        (!CVarGetInteger("gSkulltulaFreeze", 0) || getItemId == RG_ICE_TRAP || giveItemId != ITEM_SKULL_TOKEN)) {
+        (!CVarGetInteger(CVAR_ENHANCEMENT("SkulltulaFreeze"), 0) || getItemId == RG_ICE_TRAP || giveItemId != ITEM_SKULL_TOKEN)) {
         player->actor.freezeTimer = 10;
     } else {
         SET_GS_FLAGS((this->actor.params & 0x1F00) >> 8, this->actor.params & 0xFF);
@@ -190,7 +191,7 @@ void func_80AFB950(EnSi* this, PlayState* play) {
             player->actor.freezeTimer = 0;
             func_8083C148(GET_PLAYER(play), play);
             func_80078884(NA_SE_SY_CAMERA_ZOOM_UP);
-            player->currentYaw = player->actor.shape.rot.y;
+            player->yaw = player->actor.shape.rot.y;
         }
     }
 }
@@ -213,7 +214,8 @@ void EnSi_Draw(Actor* thisx, PlayState* play) {
         if (!IS_RANDO) {
             GetItem_Draw(play, GID_SKULL_TOKEN_2);
         } else {
-            getItem = Randomizer_GetItemFromActor(this->actor.id, play->sceneNum, this->actor.params, GI_SKULL_TOKEN);
+            RandomizerCheck check = Randomizer_GetCheckFromActor(this->actor.id, play->sceneNum, this->actor.params);
+            getItem = (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0) && Randomizer_IsCheckShuffled(check)) ? GetItemMystery() : Randomizer_GetItemFromKnownCheck(check, GI_SKULL_TOKEN);
             EnItem00_CustomItemsParticles(&this->actor, play, getItem);
             if (getItem.itemId != ITEM_SKULL_TOKEN) {
                 f32 mtxScale = 1.5f;
@@ -222,6 +224,11 @@ void EnSi_Draw(Actor* thisx, PlayState* play) {
             GetItemEntry_Draw(play, getItem);
         }
     }
+}
+
+void EnSi_Reset() {
+    textId = 0xB4;
+    giveItemId = ITEM_SKULL_TOKEN;
 }
 
 void Randomizer_UpdateSkullReward(EnSi* this, PlayState* play) {

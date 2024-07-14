@@ -7,7 +7,10 @@
 enum ActorID : int;
 enum SceneID : int;
 
-#define TWO_ACTOR_PARAMS(a, b) (abs(a) << 16) | abs(b)
+// ABS macro to use since `std::abs` is not constexpr yet
+#define ABS(x) ((x) < 0 ? -(x) : (x))
+
+#define TWO_ACTOR_PARAMS(a, b) (ABS(a) << 16) | ABS(b)
 
 #define RC_OBJECT(rc, rc_v_or_mq, rc_type, rc_area, actor_id, scene_id, actor_params, og_item_id, rc_shortname, rc_spoilername, vanillaCompletion) \
     { rc, {rc, rc_v_or_mq, rc_type, rc_area, actor_id, scene_id, actor_params, og_item_id, false, rc_shortname, rc_spoilername, vanillaCompletion} }
@@ -22,8 +25,8 @@ typedef struct {
     int32_t actorParams;
     GetItemID ogItemId;
     bool visibleInImgui;
-    std::string rcShortName;
-    std::string rcSpoilerName;
+    const char* rcShortName;
+    const char* rcSpoilerName;
     bool vanillaCompletion;
 } RandomizerCheckObject;
 

@@ -10,8 +10,8 @@
 #ifndef IMGUI_DEFINE_MATH_OPERATORS
 #define IMGUI_DEFINE_MATH_OPERATORS
 #endif
-#include <ImGui/imgui.h>
-#include <ImGui/imgui_internal.h>
+#include <imgui.h>
+#include <imgui_internal.h>
 #include <libultraship/libultraship.h>
 
 #include <libultraship/libultra/types.h>
@@ -208,7 +208,7 @@ namespace UIWidgets {
         bool val = (bool)CVarGetInteger(cvarName, defaultValue);
         if (CustomCheckbox(text, &val, disabled, disabledGraphic)) {
             CVarSetInteger(cvarName, val);
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
             changed = true;
         }
 
@@ -248,7 +248,7 @@ namespace UIWidgets {
                         CVarSetInteger(cvarName, i);
                         selected = i;
                         changed = true;
-                        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                     }
                 }
             }
@@ -261,7 +261,7 @@ namespace UIWidgets {
             if (disabledValue >= 0 && selected != disabledValue) {
                 CVarSetInteger(cvarName, disabledValue);
                 changed = true;
-                LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
             }
         }
 
@@ -351,7 +351,7 @@ namespace UIWidgets {
 
         if (changed && (oldVal != val)) {
             CVarSetInteger(cvarName, val);
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         } else {
             changed = false;
         }
@@ -449,10 +449,10 @@ namespace UIWidgets {
 
         if (changed && !(abs(oldVal - val) < 0.000001f)) {
             std::stringstream ss;
-            ss << std::setprecision(ticks) << val;
+            ss << std::setprecision(ticks + 1) << std::setiosflags(std::ios_base::fixed) << val;
             val = std::stof(ss.str());
             CVarSetFloat(cvarName, val);
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         } else {
             changed = false;
         }
@@ -486,14 +486,14 @@ namespace UIWidgets {
 
     bool EnhancementRadioButton(const char* text, const char* cvarName, int id) {
         /*Usage :
-        EnhancementRadioButton("My Visible Name","gMyCVarName", MyID);
+        EnhancementRadioButton("My Visible Name",CVAR_GROUP("MyCVarName"), MyID);
         First arg is the visible name of the Radio button
         Second is the cvar name where MyID will be saved.
         Note: the CVar name should be the same to each Buddies.
         Example :
-            EnhancementRadioButton("English", "gLanguages", LANGUAGE_ENG);
-            EnhancementRadioButton("German", "gLanguages", LANGUAGE_GER);
-            EnhancementRadioButton("French", "gLanguages", LANGUAGE_FRA);
+            EnhancementRadioButton("English", CVAR_SETTING("Languages"), LANGUAGE_ENG);
+            EnhancementRadioButton("German", CVAR_SETTING("Languages"), LANGUAGE_GER);
+            EnhancementRadioButton("French", CVAR_SETTING("Languages"), LANGUAGE_FRA);
         */
         std::string make_invisible = "##" + std::string(text) + std::string(cvarName);
 
@@ -501,7 +501,7 @@ namespace UIWidgets {
         int val = CVarGetInteger(cvarName, 0);
         if (ImGui::RadioButton(make_invisible.c_str(), id == val)) {
             CVarSetInteger(cvarName, id);
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
             ret = true;
         }
         ImGui::SameLine();
@@ -528,7 +528,7 @@ namespace UIWidgets {
 
             CVarSetColor(cvarName, colorsRGBA);
             CVarSetInteger(Cvar_RBM.c_str(), 0); //On click disable rainbow mode.
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
             changed = true;
         }
         Tooltip("Revert colors to the game's original colors (GameCube version)\nOverwrites previously chosen color");
@@ -553,7 +553,7 @@ namespace UIWidgets {
             NewColors.b = fmin(fmax(colors->z * 255, 0), 255);
             CVarSetColor(cvarName, NewColors);
             CVarSetInteger(Cvar_RBM.c_str(), 0); // On click disable rainbow mode.
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
             changed = true;
         }
         Tooltip("Chooses a random color\nOverwrites previously chosen color");
@@ -614,7 +614,7 @@ namespace UIWidgets {
                 colors.a = 255.0;
 
                 CVarSetColor(cvarName, colors);
-                LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                 changed = true;
             }
         }
@@ -630,7 +630,7 @@ namespace UIWidgets {
                 colors.a = ColorRGBA.w * 255.0;
 
                 CVarSetColor(cvarName, colors);
-                LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                 changed = true;
             }
         }

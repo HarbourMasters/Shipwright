@@ -1259,11 +1259,11 @@ void Audio_PlayFanfare_Rando(GetItemEntry getItem);
 // Function originally not called, so repurposing for control mapping
 void Audio_OcaUpdateBtnMap(bool customControls, bool dpad, bool rStick) {
     if (customControls) {
-        sOcarinaD5BtnMap = CVarGetInteger("gOcarinaD5BtnMap", BTN_CUP);
-        sOcarinaB4BtnMap = CVarGetInteger("gOcarinaB4BtnMap", BTN_CLEFT);
-        sOcarinaA4BtnMap = CVarGetInteger("gOcarinaA4BtnMap", BTN_CRIGHT);
-        sOcarinaF4BtnMap = CVarGetInteger("gOcarinaF4BtnMap", BTN_CDOWN);
-        sOcarinaD4BtnMap = CVarGetInteger("gOcarinaD4BtnMap", BTN_A);
+        sOcarinaD5BtnMap = CVarGetInteger(CVAR_SETTING("CustomOcarina.D5Button"), BTN_CUP);
+        sOcarinaB4BtnMap = CVarGetInteger(CVAR_SETTING("CustomOcarina.B4Button"), BTN_CLEFT);
+        sOcarinaA4BtnMap = CVarGetInteger(CVAR_SETTING("CustomOcarina.A4Button"), BTN_CRIGHT);
+        sOcarinaF4BtnMap = CVarGetInteger(CVAR_SETTING("CustomOcarina.F4Button"), BTN_CDOWN);
+        sOcarinaD4BtnMap = CVarGetInteger(CVAR_SETTING("CustomOcarina.D4Button"), BTN_A);
     } else {
         sOcarinaD5BtnMap = BTN_CUP;
         sOcarinaB4BtnMap = BTN_CLEFT;
@@ -1540,8 +1540,8 @@ void func_800ED200(void) {
     u8 k;
 
     u32 disableSongBtnMap;
-    if (CVarGetInteger("gCustomOcarinaControls", 0)) {
-        disableSongBtnMap = CVarGetInteger("gOcarinaDisableBtnMap", BTN_L);
+    if (CVarGetInteger(CVAR_SETTING("CustomOcarina.Enabled"), 0)) {
+        disableSongBtnMap = CVarGetInteger(CVAR_SETTING("CustomOcarina.DisableButton"), BTN_L);
     } else {
         disableSongBtnMap = BTN_L;
     }
@@ -1602,13 +1602,13 @@ void func_800ED200(void) {
 
 void func_800ED458(s32 arg0) {
     u32 phi_v1_2;
-    bool customControls = CVarGetInteger("gCustomOcarinaControls", 0);
-    bool dpad = CVarGetInteger("gDpadOcarina", 0);
-    bool rStick = CVarGetInteger("gRStickOcarina", 0);
+    bool customControls = CVarGetInteger(CVAR_SETTING("CustomOcarina.Enabled"), 0);
+    bool dpad = CVarGetInteger(CVAR_SETTING("OcarinaControl.Dpad"), 0);
+    bool rStick = CVarGetInteger(CVAR_SETTING("OcarinaControl.RStick"), 0);
 
     if (D_80130F3C != 0 && sOcarinaDropInputTimer != 0) {
         sOcarinaDropInputTimer--;
-        if (!CVarGetInteger("gDpadNoDropOcarinaInput", 0)) {
+        if (!CVarGetInteger(CVAR_ENHANCEMENT("DpadNoDropOcarinaInput"), 0)) {
             return;
         }
     }
@@ -1650,7 +1650,7 @@ void func_800ED458(s32 arg0) {
 
         u32 noteSharpBtnMap;
         if (customControls) {
-            noteSharpBtnMap = CVarGetInteger("gOcarinaSharpBtnMap", BTN_R);
+            noteSharpBtnMap = CVarGetInteger(CVAR_SETTING("CustomOcarina.SharpButton"), BTN_R);
         } else {
             noteSharpBtnMap = BTN_R;
         }
@@ -1661,7 +1661,7 @@ void func_800ED458(s32 arg0) {
 
         u32 noteFlatBtnMap;
         if (customControls) {
-            noteFlatBtnMap = CVarGetInteger("gOcarinaFlatBtnMap", BTN_Z);
+            noteFlatBtnMap = CVarGetInteger(CVAR_SETTING("CustomOcarina.FlatButton"), BTN_Z);
         } else {
             noteFlatBtnMap = BTN_Z;
         }
@@ -2065,16 +2065,40 @@ void func_800EE404(void) {
 
 void Audio_OcaMemoryGameStart(u8 minigameRound) {
     u8 i;
+    
+    // #region SOH [Enhancement]
+    if (CVarGetInteger(CVAR_ENHANCEMENT("CustomizeOcarinaGame"), 0)) {
+        u8 startingNotes = 3;
+        u8 roundOneCount = CVarGetInteger(CVAR_ENHANCEMENT("OcarinaGame.RoundOneNotes"), 5);
+        u8 roundTwoCount = CVarGetInteger(CVAR_ENHANCEMENT("OcarinaGame.RoundTwoNotes"), 6);
+        u8 roundThreeCount = CVarGetInteger(CVAR_ENHANCEMENT("OcarinaGame.RoundThreeNotes"), 8);
+        u8 modMinigameNoteCnts[] = { roundOneCount, roundTwoCount, roundThreeCount };
 
-    if (minigameRound > 2) {
-        minigameRound = 2;
-    }
 
-    sOcaMinigameAppendPos = 0;
-    sOcaMinigameEndPos = sOcaMinigameNoteCnts[minigameRound];
+        startingNotes = CVarGetInteger(CVAR_ENHANCEMENT("OcarinaGame.StartingNotes"), 3);
 
-    for (i = 0; i < 3; i++) {
-        Audio_OcaMemoryGameGenNote();
+        if (minigameRound > 2) {
+            minigameRound = 2;
+        }
+
+        sOcaMinigameAppendPos = 0;
+        sOcaMinigameEndPos = modMinigameNoteCnts[minigameRound];
+
+        for (i = 0; i < startingNotes; i++) {
+            Audio_OcaMemoryGameGenNote();
+        }
+    // #endregion
+    } else {
+        if (minigameRound > 2) {
+            minigameRound = 2;
+        }
+
+        sOcaMinigameAppendPos = 0;
+        sOcaMinigameEndPos = sOcaMinigameNoteCnts[minigameRound];
+
+        for (i = 0; i < 3; i++) {
+            Audio_OcaMemoryGameGenNote();
+        }
     }
 }
 
@@ -2093,11 +2117,24 @@ s32 Audio_OcaMemoryGameGenNote(void) {
         rndNote = sOcarinaNoteValues[(rnd + 1) % 5];
     }
 
-    sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].noteIdx = rndNote;
-    sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].unk_02 = 0x2D;
-    sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].volume = 0x50;
-    sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].vibrato = 0;
-    sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].tone = 0;
+    // #region SOH [Enhancement]
+    if (CVarGetInteger(CVAR_ENHANCEMENT("CustomizeOcarinaGame"), 0)) {
+        int noteSpeed = 0x2D;
+        noteSpeed = noteSpeed / CVarGetInteger(CVAR_ENHANCEMENT("OcarinaGame.NoteSpeed"), 1);
+
+        sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].noteIdx = rndNote;
+        sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].unk_02 = noteSpeed;
+        sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].volume = 0x50;
+        sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].vibrato = 0;
+        sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].tone = 0;
+    // #endregion
+    } else {
+        sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].noteIdx = rndNote;
+        sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].unk_02 = 0x2D;
+        sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].volume = 0x50;
+        sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].vibrato = 0;
+        sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].tone = 0;
+    }
 
     sOcaMinigameAppendPos++;
 
@@ -3988,7 +4025,7 @@ void Audio_PlayFanfare_Rando(GetItemEntry getItem) {
                 temp1 = NA_BGM_SMALL_ITEM_GET | 0x900;
             }
             // If the setting is toggled on and we get special quest items (longer fanfares):
-            if (CVarGetInteger("gRandoQuestItemFanfares", 0) != 0) {
+            if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("QuestItemFanfares"), 0) != 0) {
                 // If we get a medallion, play the "get a medallion" fanfare
                 if ((itemId >= ITEM_MEDALLION_FOREST) && (itemId <= ITEM_MEDALLION_LIGHT)) {
                     temp1 = NA_BGM_MEDALLION_GET | 0x900;
