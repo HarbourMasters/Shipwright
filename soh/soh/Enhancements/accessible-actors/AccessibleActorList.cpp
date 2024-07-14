@@ -9,6 +9,9 @@
 #include <string>
 #include <float.h>
 #include "overlays/actors/ovl_Boss_Goma/z_boss_goma.h"
+
+std::vector<uint32_t> buttonList = { BTN_A, BTN_B, BTN_CUP,   BTN_CDOWN, BTN_CLEFT, BTN_CRIGHT, BTN_L,
+                                  BTN_Z, BTN_R, BTN_START, BTN_DUP,   BTN_DDOWN, BTN_DLEFT,  BTN_DRIGHT };
 //Declarations specific to chests.
 #include "overlays/actors/ovl_En_Box/z_en_box.h"
 extern "C" {
@@ -649,6 +652,27 @@ void accessible_audio_compass(AccessibleActor* actor) {
     Player* player = GET_PLAYER(actor->play);
     if (player->stateFlags1 & PLAYER_STATE1_TARGETING || player->stateFlags1 & PLAYER_STATE1_CLIMBING_LADDER)
         return;
+    OSContPad* trackerButtonsPressed = LUS::Context::GetInstance()->GetControlDeck()->GetPads();
+    AudioCompassData* data = (AudioCompassData*)actor->userData;
+    bool compassCombo = trackerButtonsPressed != nullptr && trackerButtonsPressed[0].button & buttonList[11] &&
+                        trackerButtonsPressed[0].button & buttonList[6];
+    actor->world.pos = player->actor.world.pos;
+    actor->world.pos.z -= 50;
+
+  
+    if (data->framesUntilChime > 0)
+        data->framesUntilChime--;
+    if (compassCombo && data->framesUntilChime <= 0) {
+
+        ActorAccessibility_PlaySoundForActor(actor, 0, actor->policy.sound, false);
+        data->framesUntilChime = 30;
+        }
+    
+   
+    
+        /* Player* player = GET_PLAYER(actor->play);
+    if (player->stateFlags1 & PLAYER_STATE1_TARGETING || player->stateFlags1 & PLAYER_STATE1_CLIMBING_LADDER)
+        return;
 
     actor->world.pos = player->actor.world.pos;
     actor->world.pos.z -= 50;
@@ -671,7 +695,7 @@ void accessible_audio_compass(AccessibleActor* actor) {
         ActorAccessibility_PlaySoundForActor(actor, 0, actor->policy.sound, false);
         data->framesUntilChime = 10;
 
-    }
+    }*/
 
 }
 

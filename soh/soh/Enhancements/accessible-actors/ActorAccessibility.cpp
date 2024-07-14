@@ -25,6 +25,7 @@ std::vector<uint32_t> buttons = { BTN_A, BTN_B, BTN_CUP,   BTN_CDOWN, BTN_CLEFT,
 extern "C" {
 extern PlayState* gPlayState;
 extern bool freezeGame;
+extern bool freezeActors;
 }
 
 const char* GetLanguageCode();
@@ -66,6 +67,8 @@ class AudioGlossaryData {
     bool GlossaryStarted = false;
     int cooldown = 0;
     int frameCount = 0;
+    s16 currentScene = -1;
+    s8 currentRoom = -1;
 };
 
 class ActorAccessibility {
@@ -467,6 +470,15 @@ int ActorAccessibility_GetRandomStartingFrameCount(int min, int max) {
             aa->currentRoom = play->roomCtx.curRoom.num;
 
         }
+        if (aa->glossary->currentScene != play->sceneNum || aa->glossary->currentRoom != play->roomCtx.curRoom.num) {
+            if (aa->glossary->GlossaryStarted = true) { 
+                aa->glossary->cooldown = 0;
+                aa->glossary->GlossaryStarted = false;
+                freezeActors = false;
+                
+            }
+            
+        }
         if (player->stateFlags1 & PLAYER_STATE1_IN_CUTSCENE) {
             return;
         }
@@ -499,7 +511,10 @@ int ActorAccessibility_GetRandomStartingFrameCount(int min, int max) {
     }
     
     void ActorAccessibility_AudioGlossary(PlayState* play) {
+        
         if (aa->glossary->GlossaryStarted) {
+            
+            freezeActors = true;
             AccessibleActor glossaryActor = (*aa->glossary->current).second;
             ActorAccessibility_CopyParamsFromRealActor(&glossaryActor);
             glossaryActor.policy.distance = glossaryActor.xzDistToPlayer * 3;
@@ -518,6 +533,8 @@ int ActorAccessibility_GetRandomStartingFrameCount(int min, int max) {
         if (comboStartGlossary) {
             aa->glossary->GlossaryStarted = true;
             aa->glossary->current = aa->accessibleActorList.begin();
+            aa->glossary->currentScene = play->sceneNum;
+            aa->glossary->currentRoom = play->roomCtx.curRoom.num;
             SpeechSynthesizer::Instance->Speak((*aa->glossary->current).second.policy.englishName, GetLanguageCode());
             return;
         }
@@ -548,11 +565,14 @@ int ActorAccessibility_GetRandomStartingFrameCount(int min, int max) {
         if (comboDisableGlossary) {
             aa->glossary->cooldown = 0;
             aa->glossary->GlossaryStarted = false;
+            freezeActors = false;
         }
         // Processes external audio engine.
         ActorAccessibility_PrepareNextAudioFrame();
         
     }
+
+    
         //Virtual actor config.
     VirtualActorList* ActorAccessibility_GetVirtualActorList(s16 sceneNum, s8 roomNum)
     {
