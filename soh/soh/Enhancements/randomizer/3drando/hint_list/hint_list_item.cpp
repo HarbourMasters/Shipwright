@@ -2031,38 +2031,38 @@ void StaticData::HintTable_Init_Item() {
                                                         CustomMessage("a low tone", /*german*/"", /*french*/"une tonalité basse")});
                                                          // /*spanish*/un tono bajo
 
-    hintTable[RHT_OCARINA_C_LEFT_BUTTON] = HintText::Item({
-                      //obscure text
-                      Text{"a leftward tone", /*french*/"une tonalité vers la gauche", /*spanish*/"un tono hacia la izquierda"},
-                    }, {
+    hintTextTable[RHT_OCARINA_C_LEFT_BUTTON] = HintText(CustomMessage("a leftward tone", /*german*/"", /*french*/"une tonalité vers la gauche"),
+    /*spanish "un tono hacia la izquierda" */
+                    {
                       //ambiguous text
-                      Text{"something melodic", /*french*/"quelque chose de mélodieux", /*spanish*/"algo melódico"}
+                      CustomMessage("something melodic", /*german*/"", /*french*/"quelque chose de mélodieux")
+                      ///*spanish*/"algo melódico"
                     }, {
                       //clear text
-                      Text{"an Ocarina C Left Button", /*french*/"la Touche C-Gauche de l'Ocarina", /*spanish*/"un botón C izquierdo de Ocarina"}}
-     );
+                      CustomMessage("an Ocarina C Left Button", /*german*/"", /*french*/"la Touche C-Gauche de l'Ocarina")});
+                      // /*spanish*/"un botón C izquierdo de Ocarina"
 
-    hintTable[RHT_OCARINA_C_RIGHT_BUTTON] = HintText::Item({
-                      //obscure text
-                      Text{"a rightward tone", /*french*/"une tonalité vers la droite", /*spanish*/"un tono hacia la derecha"},
-                    }, {
+    hintTextTable[RHT_OCARINA_C_RIGHT_BUTTON] = HintText(CustomMessage("a rightward tone", /*german*/"", /*french*/"une tonalité vers la droite"),
+                      ///*spanish*/"un tono hacia la derecha"
+                    {
                       //ambiguous text
-                      Text{"something melodic", /*french*/"quelque chose de mélodieux", /*spanish*/"algo melódico"}
+                      CustomMessage("something melodic", /*german*/"", /*french*/"quelque chose de mélodieux")
+                      ///*spanish*/"algo melódico"
                     }, {
                       //clear text
-                      Text{"an Ocarina C Right Button", /*french*/"la Touche C-Droit de l'Ocarina", /*spanish*/"un botón C derecho de Ocarina"}}
-     );
+                      CustomMessage("an Ocarina C Right Button", /*german*/"", /*french*/"la Touche C-Droit de l'Ocarina")});
+                      ///*spanish*/"un botón C derecho de Ocarina"
 
-    hintTable[RHT_FISHING_POLE] = HintText::Item({
-                       //obscure text
-                       Text{"a fish-puller", /*french*/"(canne à pêche)", /*spanish*/"(caña de pescar)"},
-                     }, {
+    hintTextTable[RHT_FISHING_POLE] = HintText(CustomMessage("a fish-puller", /*german*/"", /*french*/"(canne à pêche)"),
+    ///*spanish*/"(caña de pescar)"
+                     {
                        //ambiguous text
-                       Text{"the pond owner's property", /*french*/"(canne à pêche)", /*spanish*/"(caña de pescar)"},
-                     },
+                       CustomMessage("the pond owner's property", /*german*/"", /*french*/"(canne à pêche)")
+                       ///*spanish*/"(caña de pescar)",
+                     }, {
                        //clear text
-                       Text{"a fishing pole", /*french*/"canne à pêche", /*spanish*/"caña de pescar"}
-    );
+                       CustomMessage("a fishing pole", /*german*/"", /*french*/"canne à pêche")});
+                       ///*spanish*/"caña de pescar"}
 
     hintTextTable[RHT_EPONA] = HintText(CustomMessage("Epona", /*german*/"", /*french*/"Epona"),
                                     // /*spanish*/a Epona

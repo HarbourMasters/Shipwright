@@ -32,7 +32,7 @@ namespace Rando {
         SilverRupeesInfo& GetInfo(RandomizerGet rgid);
         size_t GetInfoListSize();
         void ResetAll();
-        static CustomMessage GetSilverRupeeMessage(u16 rgid);
+        static CustomMessage GetSilverRupeeMessage(uint16_t rgid);
     private:
         std::array<SilverRupeesInfo, RG_SILVER_RUPEE_LAST - RG_SILVER_RUPEE_FIRST + 1> mSilverRupees;
         static std::unordered_map<RandomizerGet, Text> mSilverRupeeRoomNames;

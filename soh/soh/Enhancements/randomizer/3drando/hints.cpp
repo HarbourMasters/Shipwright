@@ -5,6 +5,7 @@
 #include "spoiler_log.hpp"
 #include "fill.hpp"
 #include "../trial.h"
+#include "../dungeon.h"
 #include "../entrance.h"
 #include "z64item.h"
 #include <spdlog/spdlog.h>
@@ -436,7 +437,7 @@ Text AutoFormatHintText(const Text& unformattedHintText, const std::vector<std::
     return {strings[0], strings[2], ""/*spanish*/, strings[1]};
 }
 
-std::array<DungeonHintInfo, 10> dungeonInfoData;
+std::array<DungeonInfo, 10> dungeonInfoData;
 
 Text childAltarText;
 Text adultAltarText;

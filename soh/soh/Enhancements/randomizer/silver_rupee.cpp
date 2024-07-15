@@ -278,7 +278,7 @@ namespace Rando {
         u16 roomNameKey =
                 /*(rgid >= RG_SILVER_RUPEE_POUCH_FIRST) ? (rgid - RG_SILVER_RUPEE_POUCH_FIRST) + RG_SILVER_RUPEE_FIRST :*/ rgid;
         Text locationNames = mSilverRupeeRoomNames[(RandomizerGet)roomNameKey];
-        messageEntry.Replace("{{location}}", locationNames.english.c_str(), locationNames.german.c_str(), locationNames.french.c_str());
+        messageEntry.Replace("{{location}}", CustomMessage(locationNames.english.c_str(), locationNames.german.c_str(), locationNames.french.c_str()));
         return messageEntry;
     }
 

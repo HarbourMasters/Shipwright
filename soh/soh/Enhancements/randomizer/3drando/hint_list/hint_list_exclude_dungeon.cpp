@@ -1441,8 +1441,8 @@ hintTextTable[RHT_SHADOW_TEMPLE_MAP_CHEST] = HintText(CustomMessage("They say th
                                                                 // /*spanish*/ Según dicen, una #Skulltula flotante# del Templo de las Sombras otorga #[[1]]#.
     //TODO: Translate
   hintTextTable[RHT_SHADOW_SPINNING_SCYTHE_SILVER_RUPEE] = HintText(CustomMessage("a #spinning scythe# guards", {QM_RED}));
-  hintTable[RHT_SHADOW_OUTSIDE_SPIKE_RAIN_SILVER_RUPEE] = HintText(CustomMessage("a #Beamos and Spike Trap# in the Shadow Temple guard", {QM_RED}));
-  hintTable[RHT_SHADOW_INVISIBLE_SPIKES_SILVER_RUPEE] = HintText(CustomMessage("#invisible spikes# guard", {QM_RED}));
+  hintTextTable[RHT_SHADOW_OUTSIDE_SPIKE_RAIN_SILVER_RUPEE] = HintText(CustomMessage("a #Beamos and Spike Trap# in the Shadow Temple guard", {QM_RED}));
+  hintTextTable[RHT_SHADOW_INVISIBLE_SPIKES_SILVER_RUPEE] = HintText(CustomMessage("#invisible spikes# guard", {QM_RED}));
   // TODO: End Translation
 
   /*--------------------------
@@ -1640,7 +1640,7 @@ hintTextTable[RHT_SHADOW_TEMPLE_MAP_CHEST] = HintText(CustomMessage("They say th
                                                            // /*spanish*/ Según dicen, una #Skulltula tras un ardiente hielo# otorga #[[1]]#.
 
    // TODO: Translate
-  hintTable[RHT_ICE_CAVERN_SPINNING_BLADES_SILVER_RUPEE] = HintText(CustomMessage("#spinning ice# guards", {QM_RED}));
+  hintTextTable[RHT_ICE_CAVERN_SPINNING_BLADES_SILVER_RUPEE] = HintText(CustomMessage("#spinning ice# guards", {QM_RED}));
 
   /*--------------------------
   | GERUDO TRAINING GROUNDS  |
@@ -1821,9 +1821,9 @@ hintTextTable[RHT_SHADOW_TEMPLE_MAP_CHEST] = HintText(CustomMessage("They say th
                                                                               // /*spanish*/ Según dicen, una #hazaña de fuerza# premia a las bandidas con #[[1]]#.
 
    // TODO: Translate
-  hintTable[RHT_GERUDO_TRAINING_GROUND_BOULDER_SILVER_RUPEE] = HintText(CustomMessage("a #boulder maze# in the Gerudo Training Grounds guards", {QM_RED}));
-  hintTable[RHT_GERUDO_TRAINING_GROUND_LAVA_SILVER_RUPEE] = HintText(CustomMessage("a #fiery trial# in the Gerudo Training Grounds guards", {QM_RED}));
-  hintTable[RHT_GERUDO_TRAINING_GROUND_TOILET_SILVER_RUPEE] = HintText(CustomMessage("a #swirly trial# in the Gerudo Training Grounds guards", {QM_RED}));
+  hintTextTable[RHT_GERUDO_TRAINING_GROUND_BOULDER_SILVER_RUPEE] = HintText(CustomMessage("a #boulder maze# in the Gerudo Training Grounds guards", {QM_RED}));
+  hintTextTable[RHT_GERUDO_TRAINING_GROUND_LAVA_SILVER_RUPEE] = HintText(CustomMessage("a #fiery trial# in the Gerudo Training Grounds guards", {QM_RED}));
+  hintTextTable[RHT_GERUDO_TRAINING_GROUND_TOILET_SILVER_RUPEE] = HintText(CustomMessage("a #swirly trial# in the Gerudo Training Grounds guards", {QM_RED}));
   //TODO: End Translation
 
   /*--------------------------
@@ -2019,12 +2019,13 @@ hintTextTable[RHT_SHADOW_TEMPLE_MAP_CHEST] = HintText(CustomMessage("They say th
                                                                       /*french*/ "Selon moi, les #pestes Mojo dans le Château de Ganon# vendent #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                    // /*spanish*/ Según dicen, los #dekus del Castillo de Ganon# venden #[[1]]#.
    
-   hintTable[RHT_FOREST_TRIAL_SILVER_RUPEE] = HintText(CustomMessage("the #test of the wilds# holds", /*german*/"", /*french*/"l'#épreuve des bois# contient", {QM_RED}));
+   hintTextTable[RHT_FOREST_TRIAL_SILVER_RUPEE] = HintText(CustomMessage("the #test of the wilds# holds", /*german*/"", /*french*/"l'#épreuve des bois# contient", {QM_RED}));
    // /*spanish*/"la #prueba de la naturaleza# brinda"
   //TODO: Translate
-  hintTable[RHT_FIRE_TRIAL_SILVER_RUPEE] = HintText(CustomMessage("the #test of flames# holds", {QM_RED}));
-  hintTable[RHT_SPIRIT_TRIAL_SILVER_RUPEE] = HintText(CustomMessage("the #test of the sands# holds", /*german*/"" /*french*/"l'#épreuve des sables# contient", {QM_RED}));
+  hintTextTable[RHT_FIRE_TRIAL_SILVER_RUPEE] = HintText(CustomMessage("the #test of flames# holds", {QM_RED}));
+  hintTextTable[RHT_SPIRIT_TRIAL_SILVER_RUPEE] = HintText(CustomMessage("the #test of the sands# holds", /*german*/"" /*french*/"l'#épreuve des sables# contient", {QM_RED}));
   // /*spanish*/"la #prueba de las arenas# brinda"
-  hintTable[RHT_LIGHT_TRIAL_SILVER_RUPEE] = HintText(CustomMessage("the #test of radiance# holds", /*german*/"", /*french*/"l'#épreuve du ciel# contient", {QM_RED}));
+  hintTextTable[RHT_LIGHT_TRIAL_SILVER_RUPEE] = HintText(CustomMessage("the #test of radiance# holds", /*german*/"", /*french*/"l'#épreuve du ciel# contient", {QM_RED}));
   // /*spanish*/"la #prueba del resplandor# brinda"
+}
 }
