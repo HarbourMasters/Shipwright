@@ -929,7 +929,6 @@ static void* sPromptChoiceTexs[][2] = {
 static u8 sButtonStatusSave[ARRAY_COUNT(gSaveContext.buttonStatus)];
 static PreRender sPlayerPreRender;
 static void* sPreRenderCvg;
-extern int fbTest;
 
 void KaleidoScope_ProcessPlayerPreRender(void) {
     PreRender_Calc(&sPlayerPreRender);
@@ -3725,7 +3724,8 @@ void KaleidoScope_Update(PlayState* play)
             sPreRenderCvg = (void*)(((uintptr_t)pauseCtx->nameSegment + 0x400 + 0xA00 + 0xF) & ~0xF);
 
             PreRender_Init(&sPlayerPreRender);
-            PreRender_SetValuesSave(&sPlayerPreRender, 64, 112, pauseCtx->playerSegment, NULL, sPreRenderCvg);
+            PreRender_SetValuesSave(&sPlayerPreRender, PAUSE_EQUIP_PLAYER_WIDTH, PAUSE_EQUIP_PLAYER_HEIGHT,
+                                    pauseCtx->playerSegment, NULL, sPreRenderCvg);
 
             KaleidoScope_DrawPlayerWork(play);
             //KaleidoScope_SetupPlayerPreRender(play);

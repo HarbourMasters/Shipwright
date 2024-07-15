@@ -43,7 +43,6 @@
 #include "Enhancements/resolution-editor/ResolutionEditor.h"
 #include "Enhancements/debugger/MessageViewer.h"
 
-bool ToggleAltAssetsAtEndOfFrame = false;
 bool isBetaQuestEnabled = false;
 
 extern "C" {

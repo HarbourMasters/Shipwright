@@ -841,6 +841,9 @@ typedef enum {
 #define PAUSE_CURSOR_PAGE_LEFT 10
 #define PAUSE_CURSOR_PAGE_RIGHT 11
 
+#define PAUSE_EQUIP_PLAYER_WIDTH 64
+#define PAUSE_EQUIP_PLAYER_HEIGHT 112
+
 typedef enum {
     /* 0x00 */ PAUSE_ITEM,
     /* 0x01 */ PAUSE_MAP,
