@@ -49,7 +49,7 @@ class ItemLocation {
     void SetVisible(bool visibleInImGui_);
     bool IsWothCandidate() const;
     void SetWothCandidate();
-    bool IsBarrenCandidate() const;
+    bool IsFoolishCandidate() const;
     void SetBarrenCandidate();
     void ResetVariables();
 

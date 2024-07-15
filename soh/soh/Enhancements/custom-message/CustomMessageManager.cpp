@@ -184,7 +184,7 @@ CustomMessage CustomMessage::operator+(const CustomMessage& right) const {
         newColors.push_back(color);
     }
     std::vector<bool> newCapital = capital;
-    newCapital.insert(capital.end(), right.GetCapital().begin(), right.GetCapital().end());
+    newCapital.insert(newCapital.end(), right.GetCapital().begin(), right.GetCapital().end());
     return CustomMessage(messages[LANGUAGE_ENG] + right.GetEnglish(MF_RAW),
                          messages[LANGUAGE_GER] + right.GetGerman(MF_RAW),
                          messages[LANGUAGE_FRA] + right.GetFrench(MF_RAW),
@@ -314,7 +314,6 @@ void CustomMessage::CleanString(std::string& str) const {
 static size_t NextLineLength(const std::string* textStr, const size_t lastNewline, bool hasIcon = false) {
   const  size_t maxLinePixelWidth = hasIcon ? 200 : 216;
 
-
   size_t totalPixelWidth = 0;
   size_t currentPos = lastNewline;
 
@@ -363,24 +362,53 @@ void CustomMessage::AutoFormatString(std::string& str) const {// did I do this r
     size_t lastNewline = 0;
     const bool hasIcon = str.find('$', 0) != std::string::npos;
     size_t lineLength = NextLineLength(&str, lastNewline, hasIcon);
+    size_t lineCount = 1;
     while (lastNewline + lineLength < str.length()) {
         const size_t carrot = str.find('^', lastNewline);
         const size_t ampersand = str.find('&', lastNewline);
         const size_t lastSpace = str.rfind(' ', lastNewline + lineLength);
-        const size_t lastPeriod = str.rfind('.', lastNewline + lineLength);
-        // replace '&' first if it's within the newline range
-        if (ampersand < lastNewline + lineLength) {
-            lastNewline = ampersand + 1;
-            // or move the lastNewline cursor to the next line if a '^' is encountered
-        } else if (carrot < lastNewline + lineLength) {
-            lastNewline = carrot + 1;
-            // some lines need to be split but don't have spaces, look for periods instead
-        } else if (lastSpace == std::string::npos) {
-            str.replace(lastPeriod, 1, ".&");
-            lastNewline = lastPeriod + 2;
-        } else {
-            str.replace(lastSpace, 1, "&");
-            lastNewline = lastSpace + 1;
+        if (lineCount < 4){
+            // replace '&' first if it's within the newline range
+            if (ampersand < lastNewline + lineLength) {
+                lastNewline = ampersand + 1;
+                // or move the lastNewline cursor to the next line if a '^' is encountered
+            } else if (carrot < lastNewline + lineLength) {
+                lastNewline = carrot + 1;
+                lineCount = 0;
+                // some lines need to be split but don't have spaces, look for periods instead
+            } else if (lastSpace == std::string::npos) {
+                const size_t lastPeriod = str.rfind('.', lastNewline + lineLength);
+                str.replace(lastPeriod, 1, ".&");
+                lastNewline = lastPeriod + 2;
+            } else {
+                str.replace(lastSpace, 1, "&");
+                lastNewline = lastSpace + 1;
+            }
+            lineCount += 1;
+        } else { 
+            const size_t lastColor = str.rfind("\x05"s, lastNewline + lineLength);
+            std::string colorText = "";
+            //check if we are on a non default colour, as ^ resets it, and readd if needed
+            if (lastColor != std::string::npos && str[lastColor+1] != 0){
+                colorText = "\x05"s + str[lastColor+1];
+            }
+            // replace '&' first if it's within the newline range
+            if (ampersand < lastNewline + lineLength) {
+                str.replace(ampersand, 1, "^" + colorText);
+                lastNewline = ampersand + 1;
+                // or move the lastNewline cursor to the next line if a '^' is encountered.
+            } else if (carrot < lastNewline + lineLength) {
+                lastNewline = carrot + 1;
+                // some lines need to be split but don't have spaces, look for periods instead
+            } else if (lastSpace == std::string::npos) {
+                const size_t lastPeriod = str.rfind('.', lastNewline + lineLength);
+                str.replace(lastPeriod, 1, ".^" + colorText);
+                lastNewline = lastPeriod + 2;
+            } else {
+                str.replace(lastSpace, 1, "^" + colorText);
+                lastNewline = lastSpace + 1;
+            }
+            lineCount = 1;
         }
         lineLength = NextLineLength(&str, lastNewline, hasIcon);
     }
