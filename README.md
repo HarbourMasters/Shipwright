@@ -70,6 +70,11 @@ Congratulations, you are now sailing with the Ship of Harkinian! Have fun!
 | Tab | Toggle Alternate assets |
 | Ctrl+R | Reset |
 
+# Project Overview
+Ship of Harkinian (SOH) is built atop a custom library dubbed libultraship (LUS). Back in the N64 days, there was an SDK distributed to developers named libultra; LUS is designed to mimic the functionality of libultra on modern hardware. In addition, we are dependant on the source code provided by the OOT decompilation project.
+
+In order for the game to function, you will require a **legally aquired** ROM for Ocarina of Time. Click [here](https://ship.equipment/) to check the compatability of your specific rom. Any copyrighted assets are extracted from the ROM and reformated as a .otr archive file which the code uses.
+
 ### Graphics Backends
 Currently, there are three rendering APIs supported: DirectX11 (Windows), OpenGL (all platforms), and Metal (MacOS). You can change which API to use in the `Settings` menu of the menubar, which requires a restart.  If you're having an issue with crashing, you can change the API in the `shipofharkinian.json` file by finding the line `gfxbackend:""` and changing the value to `sdl` for OpenGL. DirectX 11 is the default on Windows.
 
