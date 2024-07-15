@@ -12,6 +12,34 @@ extern "C" {
 
 extern "C" uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
 
+const char* enemyCVarList[] = {
+    CVAR_ENHANCEMENT("Enemies.Keese"),          CVAR_ENHANCEMENT("Enemies.FireKeese"),
+    CVAR_ENHANCEMENT("Enemies.IceKeese"),       CVAR_ENHANCEMENT("Enemies.Stalfos"),
+    CVAR_ENHANCEMENT("Enemies.RedTektite"),     CVAR_ENHANCEMENT("Enemies.BlueTektite"),
+    CVAR_ENHANCEMENT("Enemies.Wallmaster"),     CVAR_ENHANCEMENT("Enemies.Dodongo"),
+    CVAR_ENHANCEMENT("Enemies.FlyingPeahat"),   CVAR_ENHANCEMENT("Enemies.PeahatLarva"),
+    CVAR_ENHANCEMENT("Enemies.Lizalfos"),       CVAR_ENHANCEMENT("Enemies.Dinolfos"),
+    CVAR_ENHANCEMENT("Enemies.GohmaLarva"),     CVAR_ENHANCEMENT("Enemies.Shabom"),
+    CVAR_ENHANCEMENT("Enemies.BabyDodongo"),    CVAR_ENHANCEMENT("Enemies.DarkLink"),
+    CVAR_ENHANCEMENT("Enemies.Biri"),           CVAR_ENHANCEMENT("Enemies.Tailparasan"),
+    CVAR_ENHANCEMENT("Enemies.Skulltula"),      CVAR_ENHANCEMENT("Enemies.BigSkulltula"),
+    CVAR_ENHANCEMENT("Enemies.InvisSkulltula"), CVAR_ENHANCEMENT("Enemies.TorchSlug"),
+    CVAR_ENHANCEMENT("Enemies.Stinger"),        CVAR_ENHANCEMENT("Enemies.ClubMoblin"),
+    CVAR_ENHANCEMENT("Enemies.SmallBaba"),      CVAR_ENHANCEMENT("Enemies.LargeBaba"),
+    CVAR_ENHANCEMENT("Enemies.Armos"),          CVAR_ENHANCEMENT("Enemies.MadScrub"),
+    CVAR_ENHANCEMENT("Enemies.Bari"),           CVAR_ENHANCEMENT("Enemies.Bubble"),
+    CVAR_ENHANCEMENT("Enemies.FloorTile"),      CVAR_ENHANCEMENT("Enemies.Beamos"),
+    CVAR_ENHANCEMENT("Enemies.Floormaster"),    CVAR_ENHANCEMENT("Enemies.Redead"),
+    CVAR_ENHANCEMENT("Enemies.Gibdo"),          CVAR_ENHANCEMENT("Enemies.ShellBlade"),
+    CVAR_ENHANCEMENT("Enemies.WitheredBaba"),   CVAR_ENHANCEMENT("Enemies.LikeLike"),
+    CVAR_ENHANCEMENT("Enemies.Spike"),          CVAR_ENHANCEMENT("Enemies.BlackKnuckle"),
+    CVAR_ENHANCEMENT("Enemies.WhiteKnuckle"),   CVAR_ENHANCEMENT("Enemies.FlyingPot"),
+    CVAR_ENHANCEMENT("Enemies.Freezard"),       CVAR_ENHANCEMENT("Enemies.Arwing"),
+    CVAR_ENHANCEMENT("Enemies.NormalWolfos"),   CVAR_ENHANCEMENT("Enemies.WhiteWolfos"),
+    CVAR_ENHANCEMENT("Enemies.SmallStalchild"), CVAR_ENHANCEMENT("Enemies.BigStalchild"),
+    CVAR_ENHANCEMENT("Enemies.Guay"),
+};
+
 static EnemyEntry randomizedEnemySpawnTable[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] = {
     { ACTOR_EN_FIREFLY, 2 },    // Regular Keese
     { ACTOR_EN_FIREFLY, 1 },    // Fire Keese
@@ -233,14 +261,40 @@ extern "C" uint8_t GetRandomizedEnemy(PlayState* play, int16_t *actorId, f32 *po
     return 1;
 }
 
+std::vector<EnemyEntry> selectedEnemyList;
+
+void GetSelectedEnemies() {
+    selectedEnemyList.clear();
+    if (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), ENEMY_RANDOMIZER_OFF) == ENEMY_RANDOMIZER_RANDOM) {
+        for (int i = 0; i < 49; i++) {
+            if (CVarGetInteger(CVAR_ENHANCEMENT("Enemies.All"), 0)) {
+                selectedEnemyList.push_back(randomizedEnemySpawnTable[i]);
+            } else if (CVarGetInteger(enemyCVarList[i], 0)) {
+                selectedEnemyList.push_back(randomizedEnemySpawnTable[i]);
+            }
+        }
+        if (selectedEnemyList.size() == 0) {
+            selectedEnemyList.push_back(randomizedEnemySpawnTable[0]);
+        }
+    } else {
+        for (int i = 0; i < 49; i++) {
+            selectedEnemyList.push_back(randomizedEnemySpawnTable[i]);
+        }
+    }
+}
+
 EnemyEntry GetRandomizedEnemyEntry(uint32_t seed) {
+    GetSelectedEnemies();
+    
     if (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), ENEMY_RANDOMIZER_OFF) == ENEMY_RANDOMIZER_RANDOM_SEEDED) {
         uint32_t finalSeed = seed + (IS_RANDO ? gSaveContext.finalSeed : gSaveContext.sohStats.fileCreatedAt);
         Random_Init(finalSeed);
+        uint32_t randomNumber = Random(0, RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE);
+        return selectedEnemyList[randomNumber];
+    } else {
+        uint32_t randomSelectedEnemy = Random(0, selectedEnemyList.size());
+        return selectedEnemyList[randomSelectedEnemy];
     }
-
-    uint32_t randomNumber = Random(0, RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE);
-    return randomizedEnemySpawnTable[randomNumber];
 }
 
 bool IsEnemyFoundToRandomize(int16_t sceneNum, int8_t roomNum, int16_t actorId, int16_t params, float posX) {
