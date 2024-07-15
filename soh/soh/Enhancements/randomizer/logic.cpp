@@ -448,11 +448,11 @@ namespace Rando {
         ZeldasLetter   = HasItem(RG_ZELDAS_LETTER);
         WeirdEgg       = CanUse(RG_WEIRD_EGG);
         Bombchus       = HasItem(RG_PROGRESSIVE_BOMBCHUS);
-        BuySeed        = GetInLogic(ITEMLOGIC_BUYSEED);
-        BuyArrow       = GetInLogic(ITEMLOGIC_BUYARROW);
-        BuyBomb        = GetInLogic(ITEMLOGIC_BUYBOMB);
-        BuyMagicPotion = GetInLogic(ITEMLOGIC_BUYMAGICPOTION);
-        BuyBombchus    = GetInLogic(ITEMLOGIC_BUYBOMBCHUS);
+        BuySeed        = GetInLogic(LOGIC_BUY_SEED);
+        BuyArrow       = GetInLogic(LOGIC_BUY_ARROW);
+        BuyBomb        = GetInLogic(LOGIC_BUY_BOMB);
+        BuyMagicPotion = GetInLogic(LOGIC_BUY_MAGIC_POTION);
+        BuyBombchus    = GetInLogic(LOGIC_BUY_BOMBCHUS);
         MagicBean      = ctx->GetAmmo(ITEM_BEAN) > 0;
         RutosLetter    = CanUse(RG_RUTOS_LETTER);
         Boomerang      = CanUse(RG_BOOMERANG);
@@ -546,9 +546,9 @@ namespace Rando {
         //Drop Access
         DekuStickDrop = StickPot || DekuBabaSticks;
         DekuNutDrop   = (NutPot  || NutCrate         || DekuBabaNuts) && AmmoCanDrop;
-        BugsAccess    = BugShrub || WanderingBugs    || BugRock || GetInLogic(ITEMLOGIC_BUGSACCESS);
-        FishAccess    = LoneFish || FishGroup || GetInLogic(ITEMLOGIC_FISHACCESS);
-        FairyAccess   = FairyPot || GossipStoneFairy || BeanPlantFairy || ButterflyFairy || FreeFairies || FairyPond || GetInLogic(ITEMLOGIC_FAIRYACCESS);
+        BugsAccess    = BugShrub || WanderingBugs    || BugRock || GetInLogic(LOGIC_BUGS_ACCESS);
+        FishAccess    = LoneFish || FishGroup || GetInLogic(LOGIC_FISH_ACCESS);
+        FairyAccess   = FairyPot || GossipStoneFairy || BeanPlantFairy || ButterflyFairy || FreeFairies || FairyPond || GetInLogic(LOGIC_FAIRY_ACCESS);
 
 
         //refills
@@ -556,7 +556,7 @@ namespace Rando {
         Nuts         = DekuNutDrop || HasItem(RG_NUTS);
         Sticks       = DekuStickDrop || HasItem(RG_STICKS);
         Bugs         = HasBottle && BugsAccess;
-        BlueFireAccess = BlueFireAccess || GetInLogic(ITEMLOGIC_BLUEFIREACCESS);
+        BlueFireAccess = BlueFireAccess || GetInLogic(LOGIC_BLUE_FIRE_ACCESS);
         BlueFire     = (HasBottle && BlueFireAccess) || (ctx->GetOption(RSK_BLUE_FIRE_ARROWS) && CanUse(RG_ICE_ARROWS));
         Fish         = HasBottle && FishAccess;
         Fairy        = HasBottle && FairyAccess;
@@ -762,11 +762,11 @@ namespace Rando {
         ctx = _ctx;
     }
 
-    bool Logic::GetInLogic(ItemLogic logicVar) {
+    bool Logic::GetInLogic(LogicVal logicVar) {
         return std::find(inLogic.begin(), inLogic.end(), logicVar) != inLogic.end();
     }
 
-    void Logic::SetInLogic(ItemLogic logicVar, bool remove) {
+    void Logic::SetInLogic(LogicVal logicVar, bool remove) {
         auto it = std::find(inLogic.begin(), inLogic.end(), logicVar);
         if (it == inLogic.end() && !remove) {
             inLogic.push_back(logicVar);

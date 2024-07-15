@@ -245,7 +245,7 @@ std::vector<RandomizerCheck> GetAccessibleLocations(const std::vector<Randomizer
   int gsCount = 0;
   const int maxGsCount = mode == SearchMode::GeneratePlaythrough ? GetMaxGSCount() : 0; //If generating playthrough want the max that's possibly useful, else doesn't matter
   bool bombchusFound = false;
-  std::vector<ItemLogic> buyIgnores;
+  std::vector<LogicVal> buyIgnores;
 
   //Variables for search
   std::vector<Rando::ItemLocation*> newItemLocations;

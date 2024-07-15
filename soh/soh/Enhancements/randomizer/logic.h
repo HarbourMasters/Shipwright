@@ -428,13 +428,13 @@ class Logic {
     uint8_t BottleCount();
     void Reset();
     void SetContext(std::shared_ptr<Context> _ctx);
-    bool GetInLogic(ItemLogic logicVar);
-    void SetInLogic(ItemLogic logicVar, bool remove);
+    bool GetInLogic(LogicVal logicVar);
+    void SetInLogic(LogicVal logicVar, bool remove);
 
   private:
     static bool IsMagicItem(RandomizerGet item);
     static bool IsMagicArrow(RandomizerGet item);
     std::shared_ptr<Context> ctx;
-    std::vector<ItemLogic> inLogic;
+    std::vector<LogicVal> inLogic;
 }; // class Logic
 } // namespace Rando

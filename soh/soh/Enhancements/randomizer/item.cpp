@@ -14,7 +14,7 @@ namespace Rando {
 Item::Item() : randomizerGet(RG_NONE), type(ITEMTYPE_ITEM), getItemId(GI_NONE), advancement(false), hintKey(RHT_NONE),
                progressive(false), price(0) {}
 Item::Item(const RandomizerGet randomizerGet_, Text name_, const ItemType type_, const int16_t getItemId_,
-    const bool advancement_, ItemLogic logicVar_, const RandomizerHintTextKey hintKey_, const uint16_t itemId_,
+    const bool advancement_, LogicVal logicVar_, const RandomizerHintTextKey hintKey_, const uint16_t itemId_,
     const uint16_t objectId_, const uint16_t gid_, const uint16_t textId_, const uint16_t field_,
     const int16_t chestAnimation_, const GetItemCategory category_, const uint16_t modIndex_,
     const bool progressive_, const uint16_t price_)
@@ -29,7 +29,7 @@ Item::Item(const RandomizerGet randomizerGet_, Text name_, const ItemType type_,
 }
 
 Item::Item(const RandomizerGet randomizerGet_, Text name_, const ItemType type_, const int16_t getItemId_,
-    const bool advancement_, ItemLogic logicVar_, const RandomizerHintTextKey hintKey_, const bool progressive_,
+    const bool advancement_, LogicVal logicVar_, const RandomizerHintTextKey hintKey_, const bool progressive_,
     const uint16_t price_)
     : randomizerGet(randomizerGet_), name(std::move(name_)), type(type_), getItemId(getItemId_),
     advancement(advancement_), logicVar(logicVar_), hintKey(hintKey_), progressive(progressive_), price(price_) {
@@ -86,7 +86,7 @@ ItemType Item::GetItemType() const {
     return type;
 }
 
-ItemLogic Item::GetLogicVar() const {
+LogicVal Item::GetLogicVar() const {
     return logicVar;
 }
 
