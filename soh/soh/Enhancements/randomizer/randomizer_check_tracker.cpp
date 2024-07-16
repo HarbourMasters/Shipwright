@@ -5,6 +5,7 @@
 #include "dungeon.h"
 #include "../../OTRGlobals.h"
 #include "../../UIWidgets.hpp"
+#include "3drando/location_access.hpp"
 
 #include <string>
 #include <vector>
@@ -144,8 +145,8 @@ RandomizerCheckArea currentArea = RCAREA_INVALID;
 OSContPad* trackerButtonsPressed;
 std::unordered_map<RandomizerCheck, std::string> checkNameOverrides;
 
-bool passesTextFilter(ImGuiTextFilter& checkSearch, const RandomizerCheck check);
-bool shouldHideArea(ImGuiTextFilter& checkSearch, std::map<RandomizerCheckArea, std::vector<RandomizerCheck>> checksByArea, const RandomizerCheckArea rcArea);
+bool ShouldShowCheck(RandomizerCheck rc);
+bool ShouldHideArea(RandomizerCheckArea rcArea);
 void BeginFloatWindows(std::string UniqueName, bool& open, ImGuiWindowFlags flags = 0);
 bool CompareChecks(RandomizerCheck, RandomizerCheck);
 bool CheckByArea(RandomizerCheckArea);
@@ -214,6 +215,7 @@ Color_RGBA8 Color_Saved_Extra           = {   0, 185,   0, 255 }; // Green
 
 std::vector<uint32_t> buttons = { BTN_A, BTN_B, BTN_CUP,   BTN_CDOWN, BTN_CLEFT, BTN_CRIGHT, BTN_L,
                                   BTN_Z, BTN_R, BTN_START, BTN_DUP,   BTN_DDOWN, BTN_DLEFT,  BTN_DRIGHT };
+static ImGuiTextFilter checkSearch;
 
 void DefaultCheckData(RandomizerCheck rc) {
     gSaveContext.checkTrackerData[rc].status = RCSHOW_UNCHECKED;
@@ -926,6 +928,8 @@ void CheckTrackerWindow::DrawElement() {
         return;
     }
 
+    AreaTable_Init();
+
     ImGui::TableNextRow(0, headerHeight);
     ImGui::TableNextColumn();
     UIWidgets::EnhancementCheckbox(
@@ -943,9 +947,9 @@ void CheckTrackerWindow::DrawElement() {
         optCollapseAll = true;
     }
     ImGui::SameLine();
-    static ImGuiTextFilter checkSearch;
     if (ImGui::Button("Clear")) {
         checkSearch.Clear();
+        doAreaScroll = true;
     }
     UIWidgets::Tooltip("Clear the search field");
     checkSearch.Draw();
@@ -983,6 +987,8 @@ void CheckTrackerWindow::DrawElement() {
     Color_RGBA8 extraColor;
     std::string stemp;
 
+    bool shouldHideFilteredAreas = CVarGetInteger(CVAR_TRACKER_CHECK("HideFilteredAreas"), 1);
+
     for (auto& [rcArea, checks] : checksByArea) {
         RandomizerCheckArea thisArea = currentArea;
 
@@ -996,7 +1002,7 @@ void CheckTrackerWindow::DrawElement() {
             previousShowHidden = showHidden;
             doAreaScroll = true;
         }
-        if (shouldHideArea(checkSearch, checksByArea, rcArea) ||
+        if ((shouldHideFilteredAreas && ShouldHideArea(rcArea)) ||
             (!showHidden && ((hideComplete && thisAreaFullyChecked) || (hideIncomplete && !thisAreaFullyChecked)))
         ) {
             doDraw = false;
@@ -1056,7 +1062,7 @@ void CheckTrackerWindow::DrawElement() {
                 doAreaScroll = false;
             }
             for (auto rc : checks) {
-                if (doDraw && isThisAreaSpoiled && IsVisibleInCheckTracker(rc) && passesTextFilter(checkSearch, rc)) {
+                if (doDraw && isThisAreaSpoiled && ShouldShowCheck(rc)) {
                     DrawLocation(rc);
                 }
             }
@@ -1076,14 +1082,12 @@ void CheckTrackerWindow::DrawElement() {
     }
 }
 
-bool shouldHideArea(ImGuiTextFilter& checkSearch, std::map<RandomizerCheckArea, std::vector<RandomizerCheck>> checksByArea, RandomizerCheckArea rcArea) {
-    bool shouldHideFilteredAreas = CVarGetInteger(CVAR_TRACKER_CHECK("HideFilteredAreas"), 1);
-    if (!shouldHideFilteredAreas) {
+bool ShouldHideArea(RandomizerCheckArea rcArea) {
+    if (checkSearch.Filters.Size == 0 || checkSearch.PassFilter(RandomizerCheckObjects::GetRCAreaName(rcArea).c_str())) {
         return false;
     }
-
     for (auto check : checksByArea[rcArea]) {
-        if (IsVisibleInCheckTracker(check) && passesTextFilter(checkSearch, check)) {
+        if (ShouldShowCheck(check)) {
             return false;
         }
     }
@@ -1091,10 +1095,12 @@ bool shouldHideArea(ImGuiTextFilter& checkSearch, std::map<RandomizerCheckArea, 
     return true;
 }
 
-bool passesTextFilter(ImGuiTextFilter& checkSearch, RandomizerCheck check) {
+bool ShouldShowCheck(RandomizerCheck check) {
     return (
+        IsVisibleInCheckTracker(check) && 
+        (checkSearch.Filters.Size == 0 ||
         checkSearch.PassFilter(RandomizerCheckObjects::GetRCAreaName(Rando::StaticData::GetLocation(check)->GetArea()).c_str()) ||
-        checkSearch.PassFilter(Rando::StaticData::GetLocation(check)->GetShortName().c_str())
+        checkSearch.PassFilter(Rando::StaticData::GetLocation(check)->GetShortName().c_str()))
     );
 }
 
@@ -1241,7 +1247,7 @@ void LoadSettings() {
     fishsanityAgeSplit = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY_AGE_SPLIT);
 }
 
-bool IsVisibleInCheckTracker(RandomizerCheck rc) {
+bool IsCheckShuffled(RandomizerCheck rc) {
     Rando::Location* loc = Rando::StaticData::GetLocation(rc);
     if (IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LOGIC_RULES) != RO_LOGIC_VANILLA) {
         return
@@ -1255,7 +1261,7 @@ bool IsVisibleInCheckTracker(RandomizerCheck rc) {
                 loc->GetQuest() == RCQUEST_MQ && OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(loc->GetScene())->IsMQ() ||
                 loc->GetQuest() == RCQUEST_VANILLA && OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(loc->GetScene())->IsVanilla()
                 ) &&
-            (loc->GetRCType() != RCTYPE_SHOP || (showShops && (!hideShopRightChecks || hideShopRightChecks && loc->GetActorParams() > 0x03))) &&
+            (loc->GetRCType() != RCTYPE_SHOP || (showShops && loc->GetActorParams() > 0x03)) &&
             (loc->GetRandomizerCheck() != RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS) &&
             (rc != RC_TRIFORCE_COMPLETED || !hideTriforceCompleted) &&
             (rc != RC_GIFT_FROM_SAGES || !IS_RANDO) &&
@@ -1302,6 +1308,12 @@ bool IsVisibleInCheckTracker(RandomizerCheck rc) {
             rc == RC_GIFT_FROM_SAGES) && rc != RC_LINKS_POCKET;
     }
     return false;
+}
+
+bool IsVisibleInCheckTracker(RandomizerCheck rc) {
+    auto loc = Rando::StaticData::GetLocation(rc);
+    return IsCheckShuffled(rc) || (loc->GetRCType() == RCTYPE_SKULL_TOKEN && alwaysShowGS) ||
+           (loc->GetRCType() == RCTYPE_SHOP && (showShops && (!hideShopRightChecks)));
 }
 
 void UpdateInventoryChecks() {
@@ -1494,6 +1506,8 @@ void DrawLocation(RandomizerCheck rc) {
     //Draw the extra info
     txt = "";
 
+    bool mystery = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0) && itemLoc->IsAddedToPool();
+
     if (checkData.hintItem != 0) {
         // TODO hints
     } else if (status != RCSHOW_UNCHECKED) {
@@ -1516,16 +1530,16 @@ void DrawLocation(RandomizerCheck rc) {
             case RCSHOW_IDENTIFIED:
             case RCSHOW_SEEN:
                 if (IS_RANDO) {
-                    if (itemLoc->GetPlacedRandomizerGet() == RG_ICE_TRAP) {
+                    if (itemLoc->GetPlacedRandomizerGet() == RG_ICE_TRAP && !mystery) {
                         if (status == RCSHOW_IDENTIFIED) {
                             txt = OTRGlobals::Instance->gRandoContext->overrides[rc].GetTrickName().GetForLanguage(gSaveContext.language);
                         } else {
                             txt = Rando::StaticData::RetrieveItem(OTRGlobals::Instance->gRandoContext->overrides[rc].LooksLike()).GetName().GetForLanguage(gSaveContext.language);
                         }
-                    } else {
+                    } else if (!mystery) {
                         txt = itemLoc->GetPlacedItem().GetName().GetForLanguage(gSaveContext.language);
                     }
-                    if (status == RCSHOW_IDENTIFIED) {
+                    if (!IsVisibleInCheckTracker(rc) && status == RCSHOW_IDENTIFIED && !mystery) {
                         txt += fmt::format(" - {}", gSaveContext.checkTrackerData[rc].price);
                     }
                 } else {
@@ -1549,6 +1563,19 @@ void DrawLocation(RandomizerCheck rc) {
         ImGui::SameLine();
         ImGui::Text(" (%s)", txt.c_str());
         ImGui::PopStyleColor();
+    }
+
+    if (CVarGetInteger("gCheckTrackerOptionShowLogic", 0)) {
+        std::vector<LocationAccess> locationsInRegion = areaTable[itemLoc->GetParentRegionKey()].locations;
+        for (auto& locationInRegion : locationsInRegion) {
+            if (locationInRegion.GetLocation() == rc) {
+                std::string conditionStr = locationInRegion.GetConditionStr();
+                if (conditionStr != "true") {
+                    UIWidgets::InsertHelpHoverText(conditionStr);
+                }
+                return;
+            }
+        }
     }
 }
 
@@ -1687,6 +1714,8 @@ void CheckTrackerSettingsWindow::DrawElement() {
         RecalculateAreaTotals();
     }
     UIWidgets::Tooltip("If enabled, will show GS locations in the tracker regardless of tokensanity settings.");
+    UIWidgets::EnhancementCheckbox("Show Logic", "gCheckTrackerOptionShowLogic");
+    UIWidgets::Tooltip("If enabled, will show a check's logic when hovering over it.");
 
     // Filtering settings
     UIWidgets::PaddedSeparator();

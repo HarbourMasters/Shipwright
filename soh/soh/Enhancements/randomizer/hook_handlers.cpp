@@ -3,6 +3,7 @@
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/custom-message/CustomMessageTypes.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
+#include "soh/Enhancements/randomizer/dungeon.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
@@ -33,22 +34,36 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Bom_Bowl_Pit/z_en_bom_bowl_pit.h"
 #include "src/overlays/actors/ovl_En_Ge1/z_en_ge1.h"
 #include "adult_trade_shuffle.h"
+#include "draw.h"
+
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
+extern void func_8084DFAC(PlayState* play, Player* player);
+extern void func_80835DAC(PlayState* play, Player* player, PlayerActionFunc actionFunc, s32 flags);
+extern s32 func_80836898(PlayState* play, Player* player, PlayerFuncA74 func);
 }
 
 #define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).GetSelectedOptionIndex()
 
+bool LocMatchesQuest(Rando::Location loc) {
+    if (loc.GetQuest() == RCQUEST_BOTH) {
+        return true;
+    } else {
+        auto dungeon = OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(loc.GetScene());
+        return (dungeon->IsMQ() && loc.GetQuest() == RCQUEST_MQ) || (dungeon->IsVanilla() && loc.GetQuest() == RCQUEST_VANILLA);
+    }
+}
+
 RandomizerCheck GetRandomizerCheckFromFlag(int16_t flagType, int16_t flag) {
     for (auto& loc : Rando::StaticData::GetLocationTable()) {
-        if (loc.GetCollectionCheck().flag == flag && (
+        if ((loc.GetCollectionCheck().flag == flag && (
                 (flagType == FLAG_INF_TABLE && loc.GetCollectionCheck().type == SPOILER_CHK_INF_TABLE) ||
                 (flagType == FLAG_EVENT_CHECK_INF && loc.GetCollectionCheck().type == SPOILER_CHK_EVENT_CHK_INF) ||
                 (flagType == FLAG_ITEM_GET_INF && loc.GetCollectionCheck().type == SPOILER_CHK_ITEM_GET_INF) ||
                 (flagType == FLAG_RANDOMIZER_INF && loc.GetCollectionCheck().type == SPOILER_CHK_RANDOMIZER_INF)
             ) ||
             (loc.GetActorParams() == flag && flagType == FLAG_GS_TOKEN && loc.GetCollectionCheck().type == SPOILER_CHK_GOLD_SKULLTULA)
-        ) {
+        ) && LocMatchesQuest(loc)) {
             return loc.GetRandomizerCheck();
         }
     }
@@ -62,7 +77,7 @@ RandomizerCheck GetRandomizerCheckFromSceneFlag(int16_t sceneNum, int16_t flagTy
             (flagType == FLAG_SCENE_TREASURE && loc.GetCollectionCheck().type == SPOILER_CHK_CHEST) ||
             (flagType == FLAG_SCENE_COLLECTIBLE && loc.GetCollectionCheck().type == SPOILER_CHK_COLLECTABLE) ||
             (flagType == FLAG_GS_TOKEN && loc.GetCollectionCheck().type == SPOILER_CHK_GOLD_SKULLTULA)
-        )) {
+        ) && LocMatchesQuest(loc)) {
             return loc.GetRandomizerCheck();
         }
     }
@@ -331,9 +346,13 @@ void RandomizerOnItemReceiveHandler(GetItemEntry receivedItemEntry) {
 }
 
 void EnExItem_DrawRandomizedItem(EnExItem* enExItem, PlayState* play) {
+    GetItemEntry randoGetItem = enExItem->sohItemEntry;
+    if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0)) {
+        randoGetItem = GET_ITEM_MYSTERY;
+    }
     func_8002ED80(&enExItem->actor, play, 0);
-    EnItem00_CustomItemsParticles(&enExItem->actor, play, enExItem->sohItemEntry);
-    GetItemEntry_Draw(play, enExItem->sohItemEntry);
+    EnItem00_CustomItemsParticles(&enExItem->actor, play, randoGetItem);
+    GetItemEntry_Draw(play, randoGetItem);
 }
 
 void EnExItem_WaitForObjectRandomized(EnExItem* enExItem, PlayState* play) {
@@ -357,13 +376,21 @@ void EnExItem_WaitForObjectRandomized(EnExItem* enExItem, PlayState* play) {
 void EnItem00_DrawRandomizedItem(EnItem00* enItem00, PlayState* play) {
     f32 mtxScale = CVarGetFloat(CVAR_ENHANCEMENT("TimeSavers.SkipGetItemAnimationScale"), 10.0f);
     Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
-    EnItem00_CustomItemsParticles(&enItem00->actor, play, enItem00->itemEntry);
-    GetItemEntry_Draw(play, enItem00->itemEntry);
+    GetItemEntry randoItem = enItem00->itemEntry;
+    if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0)) {
+        randoItem = GET_ITEM_MYSTERY;
+    }
+    EnItem00_CustomItemsParticles(&enItem00->actor, play, randoItem);
+    GetItemEntry_Draw(play, randoItem);
 }
 
 void ItemBHeart_DrawRandomizedItem(ItemBHeart* itemBHeart, PlayState* play) {
-    EnItem00_CustomItemsParticles(&itemBHeart->actor, play, itemBHeart->sohItemEntry);
-    GetItemEntry_Draw(play, itemBHeart->sohItemEntry);
+    GetItemEntry randoItem = itemBHeart->sohItemEntry;
+    if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0)) {
+        randoItem = GET_ITEM_MYSTERY;
+    }
+    EnItem00_CustomItemsParticles(&itemBHeart->actor, play, randoItem);
+    GetItemEntry_Draw(play, randoItem);
 }
 
 void ItemBHeart_UpdateRandomizedItem(Actor* actor, PlayState* play) {
@@ -378,14 +405,18 @@ void ItemBHeart_UpdateRandomizedItem(Actor* actor, PlayState* play) {
 }
 
 void ItemEtcetera_DrawRandomizedItem(ItemEtcetera* itemEtcetera, PlayState* play) {
-    EnItem00_CustomItemsParticles(&itemEtcetera->actor, play, itemEtcetera->sohItemEntry);
+    GetItemEntry randoItem = itemEtcetera->sohItemEntry;
+    if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0)) {
+        randoItem = GET_ITEM_MYSTERY;
+    }
+    EnItem00_CustomItemsParticles(&itemEtcetera->actor, play, randoItem);
     func_8002EBCC(&itemEtcetera->actor, play, 0);
     func_8002ED80(&itemEtcetera->actor, play, 0);
-    GetItemEntry_Draw(play, itemEtcetera->sohItemEntry);
+    GetItemEntry_Draw(play, randoItem);
 }
 
 void ItemEtcetera_DrawRandomizedItemThroughLens(ItemEtcetera* itemEtcetera, PlayState* play) {
-    if (play->actorCtx.lensActive) {
+    if (play->actorCtx.lensActive) { // todo [Rando] mysterious shuffle for chest minigame key shuffle
         ItemEtcetera_DrawRandomizedItem(itemEtcetera, play);
     }
 }
@@ -537,8 +568,26 @@ void RandomizerSetChestGameRandomizerInf(RandomizerCheck rc) {
     }
 }
 
+void Player_Action_8084E6D4_override(Player* player, PlayState* play) {
+    if (LinkAnimation_Update(play, &player->skelAnime)) {
+        func_8084DFAC(play, player);
+    }
+}
+
+void func_8083A434_override(PlayState* play, Player* player) {
+    func_80835DAC(play, player, Player_Action_8084E6D4_override, 0);
+    player->stateFlags1 |= PLAYER_STATE1_GETTING_ITEM | PLAYER_STATE1_IN_CUTSCENE;
+}
+
 void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void* optionalArg) {
     switch (id) {
+        case VB_PLAY_SLOW_CHEST_CS: {
+            // We force fast chests if SkipGetItemAnimation is enabled because the camera in the CS looks pretty wonky otherwise
+            if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"), SGIA_DISABLED)) {
+                *should = false;
+            }
+            break;
+        }
         case VB_GIVE_ITEM_FROM_CHEST: {
             EnBox* chest = static_cast<EnBox*>(optionalArg);
             RandomizerCheck rc = OTRGlobals::Instance->gRandomizer->GetCheckFromActor(chest->dyna.actor.id, gPlayState->sceneNum, chest->dyna.actor.params);
@@ -547,9 +596,8 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
             RandomizerSetChestGameRandomizerInf(rc);
 
             Player* player = GET_PLAYER(gPlayState);
-            player->av2.actionVar2 = 1;
-            player->getItemId = GI_NONE;
-            player->getItemEntry = GetItemEntry(GET_ITEM_NONE);
+            func_80836898(gPlayState, player, func_8083A434_override);
+
             *should = false;
             break;
         }
@@ -1178,10 +1226,14 @@ void RandomizerOnSceneInitHandler(int16_t sceneNum) {
 }
 
 void EnSi_DrawRandomizedItem(EnSi* enSi, PlayState* play) {
+    GetItemEntry randoItem = enSi->sohGetItemEntry;
+    if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0)) {
+        randoItem = GET_ITEM_MYSTERY;
+    }
     func_8002ED80(&enSi->actor, play, 0);
     func_8002EBCC(&enSi->actor, play, 0);
-    EnItem00_CustomItemsParticles(&enSi->actor, play, enSi->sohGetItemEntry);
-    GetItemEntry_Draw(play, enSi->sohGetItemEntry);
+    EnItem00_CustomItemsParticles(&enSi->actor, play, randoItem);
+    GetItemEntry_Draw(play, randoItem);
 }
 
 u32 EnDns_RandomizerPurchaseableCheck(EnDns* enDns) {

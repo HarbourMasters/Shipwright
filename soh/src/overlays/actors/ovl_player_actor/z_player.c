@@ -6268,7 +6268,7 @@ s32 func_8083D12C(PlayState* play, Player* this, Input* arg2) {
                 func_80832340(play, this);
                 // Skip take breath animation on surface if Link didn't grab an item while underwater and the setting is enabled
                 if (CVarGetInteger(CVAR_ENHANCEMENT("SkipSwimDeepEndAnim"), 0) && !(this->stateFlags1 & PLAYER_STATE1_ITEM_OVER_HEAD)) {
-                    auto lastAnimFrame = Animation_GetLastFrame(&gPlayerAnim_link_swimer_swim_deep_end);
+                    int lastAnimFrame = Animation_GetLastFrame(&gPlayerAnim_link_swimer_swim_deep_end);
                     LinkAnimation_Change(play, &this->skelAnime, &gPlayerAnim_link_swimer_swim_deep_end, 1.0f,
                         lastAnimFrame, lastAnimFrame, ANIMMODE_ONCE, -6.0f);
                 } else {
@@ -6853,10 +6853,6 @@ s32 Player_ActionChange_2(Player* this, PlayState* play) {
                     giEntry = this->getItemEntry;
                 }
                 EnBox* chest = (EnBox*)interactedActor;
-                if (CVarGetInteger(CVAR_ENHANCEMENT("FastChests"), 0) != 0) {
-                    giEntry.gi = -1 * abs(giEntry.gi);
-                }
-
                 if (giEntry.itemId != ITEM_NONE) {
                     if (((Item_CheckObtainability(giEntry.itemId) == ITEM_NONE) && (giEntry.field & 0x40)) ||
                         ((Item_CheckObtainability(giEntry.itemId) != ITEM_NONE) && (giEntry.field & 0x20))) {
@@ -6865,11 +6861,12 @@ s32 Player_ActionChange_2(Player* this, PlayState* play) {
                     }
                 }
 
-                func_80836898(play, this, func_8083A434);
                 if (GameInteractor_Should(VB_GIVE_ITEM_FROM_CHEST, true, chest)) {
+                    func_80836898(play, this, func_8083A434);
+                }
                 this->stateFlags1 |= PLAYER_STATE1_GETTING_ITEM | PLAYER_STATE1_ITEM_OVER_HEAD | PLAYER_STATE1_IN_CUTSCENE;
                 func_8083AE40(this, giEntry.objectId);
-                }
+
                 this->actor.world.pos.x =
                     chest->dyna.actor.world.pos.x - (Math_SinS(chest->dyna.actor.shape.rot.y) * 29.4343f);
                 this->actor.world.pos.z =
@@ -6877,8 +6874,10 @@ s32 Player_ActionChange_2(Player* this, PlayState* play) {
                 this->yaw = this->actor.shape.rot.y = chest->dyna.actor.shape.rot.y;
                 func_80832224(this);
 
-                if ((giEntry.itemId != ITEM_NONE) && (giEntry.gi >= 0) &&
-                    (Item_CheckObtainability(giEntry.itemId) == ITEM_NONE)) {
+                bool vanillaPlaySlowChestCS = (giEntry.itemId != ITEM_NONE) && (giEntry.gi >= 0) &&
+                    (Item_CheckObtainability(giEntry.itemId) == ITEM_NONE);
+
+                if (GameInteractor_Should(VB_PLAY_SLOW_CHEST_CS, vanillaPlaySlowChestCS, chest)) {
                     Player_AnimPlayOnceAdjusted(play, this, this->ageProperties->unk_98);
                     Player_AnimReplaceApplyFlags(play, this, 0x28F);
                     chest->unk_1F4 = 1;

@@ -88,12 +88,14 @@ std::unordered_map<uint32_t, CustomMessage> StaticData::hintNames = {
     {RH_BIG_POES_HINT, CustomMessage("Big Poe Reward Hint")},
     {RH_BIGGORON_HINT, CustomMessage("Biggoron Claim Check Hint")},
     {RH_FROGS_HINT, CustomMessage("Final Frogs in River Hint")},
+    {RH_OOT_HINT, CustomMessage("Sheik in Temple of Time Hint")},
     {RH_KAK_10_SKULLS_HINT, CustomMessage("10 Skulls Hint")},
     {RH_KAK_20_SKULLS_HINT, CustomMessage("20 Skulls Hint")},
     {RH_KAK_30_SKULLS_HINT, CustomMessage("30 Skulls Hint")},
     {RH_KAK_40_SKULLS_HINT, CustomMessage("40 Skulls Hint")},
     {RH_KAK_50_SKULLS_HINT, CustomMessage("50 Skulls Hint")},
-    {RH_KAK_100_SKULLS_HINT, CustomMessage("100 Skulls Hint")}
+    {RH_KAK_100_SKULLS_HINT, CustomMessage("100 Skulls Hint")},
+    {RH_MASK_SHOP_HINT, CustomMessage("Mask Shop Hint")},
 };
 
 std::unordered_map<RandomizerCheck, RandomizerHint> StaticData::gossipStoneCheckToHint {
@@ -203,17 +205,19 @@ std::unordered_map<RandomizerHint, StaticHintInfo> StaticData::staticHintInfoMap
   {RH_CARPET_SALESMAN,     StaticHintInfo(HINT_TYPE_MERCHANT, {RHT_CARPET_SALESMAN_DIALOG_HINTED}, RSK_SHUFFLE_MERCHANTS,   (uint8_t)RO_SHUFFLE_MERCHANTS_ON_HINT,  {RC_WASTELAND_BOMBCHU_SALESMAN})},
   {RH_BEAN_SALESMAN,       StaticHintInfo(HINT_TYPE_MERCHANT, {RHT_BEAN_SALESMAN_HINT},            RSK_SHUFFLE_MAGIC_BEANS, true,                                   {RC_ZR_MAGIC_BEAN_SALESMAN})},
   {RH_HBA_HINT,            StaticHintInfo(HINT_TYPE_ITEM,     {RHT_HBA_HINT_SIGN, RHT_HBA_HINT_NOT_ON_HORSE, RHT_HBA_HINT_INITIAL, RHT_HBA_HINT_HAVE_1000}, RSK_HBA_HINT, true, {RC_GF_HBA_1000_POINTS, RC_GF_HBA_1500_POINTS})},
-  {RH_MALON_HINT,          StaticHintInfo(HINT_TYPE_ITEM,     {RHT_MALON_HINT_TURNING_EVIL, RHT_MALON_HINT_HOW_IS_EPONA, RHT_MALON_HINT_OBSTICLE_COURSE, RHT_MALON_HINT_INGO_TEMPTED},RSK_MALON_HINT, true, {RC_KF_LINKS_HOUSE_COW})},
+  {RH_MALON_HINT,          StaticHintInfo(HINT_TYPE_ITEM,     {RHT_MALON_HINT_TURNING_EVIL, RHT_MALON_HINT_HOW_IS_EPONA, RHT_MALON_HINT_OBSTICLE_COURSE, RHT_MALON_HINT_INGO_TEMPTED}, RSK_MALON_HINT, true, {RC_KF_LINKS_HOUSE_COW})},
   {RH_BIG_POES_HINT,       StaticHintInfo(HINT_TYPE_ITEM,     {RHT_BIG_POES_HINT},                 RSK_BIG_POES_HINT,       true, {RC_MARKET_10_BIG_POES})},
   {RH_CHICKENS_HINT,       StaticHintInfo(HINT_TYPE_ITEM,     {RHT_CHICKENS_HINT},                 RSK_CHICKENS_HINT,       true, {RC_KAK_ANJU_AS_CHILD})},
   {RH_BIGGORON_HINT,       StaticHintInfo(HINT_TYPE_ITEM,     {RHT_BIGGORON_HINT},                 RSK_BIGGORON_HINT,       true, {RC_DMT_TRADE_CLAIM_CHECK})},
   {RH_FROGS_HINT,          StaticHintInfo(HINT_TYPE_ITEM,     {RHT_FROGS_HINT},                    RSK_FROGS_HINT,          true, {RC_ZR_FROGS_OCARINA_GAME})},
+  {RH_OOT_HINT,            StaticHintInfo(HINT_TYPE_ITEM,     {RHT_OOT_HINT},                      RSK_OOT_HINT,            true, {RC_HF_OCARINA_OF_TIME_ITEM, RC_SONG_FROM_OCARINA_OF_TIME}, {}, {RC_TOT_SHEIK_HINT})},
   {RH_KAK_10_SKULLS_HINT,  StaticHintInfo(HINT_TYPE_ITEM,     {RHT_SKULLS_HINT},                   RSK_KAK_10_SKULLS_HINT,  true, {RC_KAK_10_GOLD_SKULLTULA_REWARD},  {}, {}, false, 10)},
   {RH_KAK_20_SKULLS_HINT,  StaticHintInfo(HINT_TYPE_ITEM,     {RHT_SKULLS_HINT},                   RSK_KAK_20_SKULLS_HINT,  true, {RC_KAK_20_GOLD_SKULLTULA_REWARD},  {}, {}, false, 20)},
   {RH_KAK_30_SKULLS_HINT,  StaticHintInfo(HINT_TYPE_ITEM,     {RHT_SKULLS_HINT},                   RSK_KAK_30_SKULLS_HINT,  true, {RC_KAK_30_GOLD_SKULLTULA_REWARD},  {}, {}, false, 30)},
   {RH_KAK_40_SKULLS_HINT,  StaticHintInfo(HINT_TYPE_ITEM,     {RHT_SKULLS_HINT},                   RSK_KAK_40_SKULLS_HINT,  true, {RC_KAK_40_GOLD_SKULLTULA_REWARD},  {}, {}, false, 40)},
   {RH_KAK_50_SKULLS_HINT,  StaticHintInfo(HINT_TYPE_ITEM,     {RHT_SKULLS_HINT},                   RSK_KAK_50_SKULLS_HINT,  true, {RC_KAK_50_GOLD_SKULLTULA_REWARD},  {}, {}, false, 50)},
-  {RH_KAK_100_SKULLS_HINT, StaticHintInfo(HINT_TYPE_ITEM,     {RHT_SKULLS_HINT},                   RSK_KAK_100_SKULLS_HINT, true, {RC_KAK_100_GOLD_SKULLTULA_REWARD}, {}, {}, false, 100)}
+  {RH_KAK_100_SKULLS_HINT, StaticHintInfo(HINT_TYPE_ITEM,     {RHT_SKULLS_HINT},                   RSK_KAK_100_SKULLS_HINT, true, {RC_KAK_100_GOLD_SKULLTULA_REWARD}, {}, {}, false, 100)},
+  {RH_MASK_SHOP_HINT,      StaticHintInfo(HINT_TYPE_ITEM,     {RHT_MASK_SHOP_HINT},                RSK_MASK_SHOP_HINT,      true, {RC_DEKU_THEATER_SKULL_MASK, RC_DEKU_THEATER_MASK_OF_TRUTH}, {}, {RC_MASK_SHOP_HINT})}
 };
 
 std::unordered_map<std::string, uint32_t> StaticData::PopulateTranslationMap(std::unordered_map<uint32_t, CustomMessage> input){
