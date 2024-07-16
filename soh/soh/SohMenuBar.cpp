@@ -37,6 +37,8 @@
 #include "Enhancements/randomizer/randomizer_settings_window.h"
 #include "Enhancements/resolution-editor/ResolutionEditor.h"
 
+#include "Enhancements/enemyrandomizer.h"
+
 extern bool isBetaQuestEnabled;
 
 extern "C" PlayState* gPlayState;
@@ -1321,7 +1323,9 @@ void DrawEnhancementsMenu() {
             );
 
             UIWidgets::PaddedText("Enemy Randomizer", true, false);
-            UIWidgets::EnhancementCombobox(CVAR_ENHANCEMENT("RandomizedEnemies"), enemyRandomizerModes, ENEMY_RANDOMIZER_OFF);
+            if (UIWidgets::EnhancementCombobox(CVAR_ENHANCEMENT("RandomizedEnemies"), enemyRandomizerModes, ENEMY_RANDOMIZER_OFF)) {
+                GetSelectedEnemies();
+            }
             UIWidgets::Tooltip(
                 "Replaces fixed enemies throughout the game with a random enemy. Bosses, mini-bosses and a few specific regular enemies are excluded.\n"
                 "Enemies that need more than Deku Nuts + either Deku Sticks or a sword to kill are excluded from spawning in \"clear enemy\" rooms.\n\n"
@@ -1338,203 +1342,302 @@ void DrawEnhancementsMenu() {
                     ImGui::BeginDisabled(CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemyList.All"), 0));
                     ImGui::BeginTable("Enemy Table", 2);
                     ImGui::TableNextColumn();
-                    UIWidgets::PaddedEnhancementCheckbox(
-                        "Keese", CVAR_ENHANCEMENT("RandomizedEnemyList.Keese"), true, false, disabledEnemyList,
-                        "These options are disabled because \"Select All Enemies\" is enabled.",
-                        UIWidgets::CheckboxGraphics::Checkmark);
-                    UIWidgets::PaddedEnhancementCheckbox("Fire Keese", CVAR_ENHANCEMENT("RandomizedEnemyList.FireKeese"), true, false, disabledEnemyList,
-                        "These options are disabled because \"Select All Enemies\" is enabled.",
-                        UIWidgets::CheckboxGraphics::Checkmark);
-                    UIWidgets::PaddedEnhancementCheckbox(
-                        "Ice Keese", CVAR_ENHANCEMENT("RandomizedEnemyList.IceKeese"), true, false, disabledEnemyList,
-                        "These options are disabled because \"Select All Enemies\" is enabled.",
-                        UIWidgets::CheckboxGraphics::Checkmark);
-                    UIWidgets::PaddedEnhancementCheckbox(
-                        "Stalfos", CVAR_ENHANCEMENT("RandomizedEnemyList.Stalfos"), true, false, disabledEnemyList,
-                        "These options are disabled because \"Select All Enemies\" is enabled.",
-                        UIWidgets::CheckboxGraphics::Checkmark);
-                    UIWidgets::PaddedEnhancementCheckbox(
-                        "Red Tektite", CVAR_ENHANCEMENT("RandomizedEnemyList.RedTektite"), true, false, disabledEnemyList,
-                        "These options are disabled because \"Select All Enemies\" is enabled.",
-                        UIWidgets::CheckboxGraphics::Checkmark);
-                    UIWidgets::PaddedEnhancementCheckbox(
-                        "Blue Tektite", CVAR_ENHANCEMENT("RandomizedEnemyList.BlueTektite"), true, false, disabledEnemyList,
-                        "These options are disabled because \"Select All Enemies\" is enabled.",
-                        UIWidgets::CheckboxGraphics::Checkmark);
-                    UIWidgets::PaddedEnhancementCheckbox(
-                        "Wallmaster", CVAR_ENHANCEMENT("RandomizedEnemyList.Wallmaster"), true, false, disabledEnemyList,
-                        "These options are disabled because \"Select All Enemies\" is enabled.",
-                        UIWidgets::CheckboxGraphics::Checkmark);
-                    UIWidgets::PaddedEnhancementCheckbox(
-                        "Dodongo", CVAR_ENHANCEMENT("RandomizedEnemyList.Dodongo"), true, false, disabledEnemyList,
-                        "These options are disabled because \"Select All Enemies\" is enabled.",
-                        UIWidgets::CheckboxGraphics::Checkmark);
-                    UIWidgets::PaddedEnhancementCheckbox(
-                        "Flying Peahat", CVAR_ENHANCEMENT("RandomizedEnemyList.FlyingPeahat"), true, false, disabledEnemyList,
-                        "These options are disabled because \"Select All Enemies\" is enabled.",
-                        UIWidgets::CheckboxGraphics::Checkmark);
-                    UIWidgets::PaddedEnhancementCheckbox(
-                        "Peahat Larva", CVAR_ENHANCEMENT("RandomizedEnemyList.PeahatLarva"), true, false, disabledEnemyList,
-                        "These options are disabled because \"Select All Enemies\" is enabled.",
-                        UIWidgets::CheckboxGraphics::Checkmark);
-                    UIWidgets::PaddedEnhancementCheckbox(
-                        "Lizalfos", CVAR_ENHANCEMENT("RandomizedEnemyList.Lizalfos"), true, false, disabledEnemyList,
-                        "These options are disabled because \"Select All Enemies\" is enabled.",
-                        UIWidgets::CheckboxGraphics::Checkmark);
-                    UIWidgets::PaddedEnhancementCheckbox(
-                        "Dinolfos", CVAR_ENHANCEMENT("RandomizedEnemyList.Dinolfos"), true, false, disabledEnemyList,
-                        "These options are disabled because \"Select All Enemies\" is enabled.",
-                        UIWidgets::CheckboxGraphics::Checkmark);
-                    UIWidgets::PaddedEnhancementCheckbox(
-                        "Gohma Larva", CVAR_ENHANCEMENT("RandomizedEnemyList.GohmaLarva"), true, false, disabledEnemyList,
-                        "These options are disabled because \"Select All Enemies\" is enabled.",
-                        UIWidgets::CheckboxGraphics::Checkmark);
-                    UIWidgets::PaddedEnhancementCheckbox(
-                        "Shabom", CVAR_ENHANCEMENT("RandomizedEnemyList.Shabom"), true, false, disabledEnemyList,
-                        "These options are disabled because \"Select All Enemies\" is enabled.",
-                        UIWidgets::CheckboxGraphics::Checkmark);
-                    UIWidgets::PaddedEnhancementCheckbox(
-                        "Baby Dodongo", CVAR_ENHANCEMENT("RandomizedEnemyList.BabyDodongo"), true, false, disabledEnemyList,
-                        "These options are disabled because \"Select All Enemies\" is enabled.",
-                        UIWidgets::CheckboxGraphics::Checkmark);
-                    UIWidgets::PaddedEnhancementCheckbox(
-                        "Dark Link", CVAR_ENHANCEMENT("RandomizedEnemyList.DarkLink"), true, false, disabledEnemyList,
-                        "These options are disabled because \"Select All Enemies\" is enabled.",
-                        UIWidgets::CheckboxGraphics::Checkmark);
-                    UIWidgets::PaddedEnhancementCheckbox(
-                        "Biri", CVAR_ENHANCEMENT("RandomizedEnemyList.Biri"), true, false, disabledEnemyList,
-                        "These options are disabled because \"Select All Enemies\" is enabled.",
-                        UIWidgets::CheckboxGraphics::Checkmark);
-                    UIWidgets::PaddedEnhancementCheckbox(
-                        "Tailparasan", CVAR_ENHANCEMENT("RandomizedEnemyList.Tailparasan"), true, false, disabledEnemyList,
-                        "These options are disabled because \"Select All Enemies\" is enabled.",
-                        UIWidgets::CheckboxGraphics::Checkmark);
-                    UIWidgets::PaddedEnhancementCheckbox(
-                        "Skulltula", CVAR_ENHANCEMENT("RandomizedEnemyList.Skulltula"), true, false, disabledEnemyList,
-                        "These options are disabled because \"Select All Enemies\" is enabled.",
-                        UIWidgets::CheckboxGraphics::Checkmark);
-                    UIWidgets::PaddedEnhancementCheckbox(
-                        "Big Skulltula", CVAR_ENHANCEMENT("RandomizedEnemyList.BigSkulltula"), true, false, disabledEnemyList,
-                        "These options are disabled because \"Select All Enemies\" is enabled.",
-                        UIWidgets::CheckboxGraphics::Checkmark);
-                    UIWidgets::PaddedEnhancementCheckbox(
-                        "Invisible Skulltula", CVAR_ENHANCEMENT("RandomizedEnemyList.InvisSkulltula"), true, false,
-                        disabledEnemyList, "These options are disabled because \"Select All Enemies\" is enabled.",
-                        UIWidgets::CheckboxGraphics::Checkmark);
-                    UIWidgets::PaddedEnhancementCheckbox(
-                        "Torch Slug", CVAR_ENHANCEMENT("RandomizedEnemyList.TorchSlug"), true, false, disabledEnemyList,
-                        "These options are disabled because \"Select All Enemies\" is enabled.",
-                        UIWidgets::CheckboxGraphics::Checkmark);
-                    UIWidgets::PaddedEnhancementCheckbox(
-                        "Stinger", CVAR_ENHANCEMENT("RandomizedEnemyList.Stinger"), true, false, disabledEnemyList,
-                        "These options are disabled because \"Select All Enemies\" is enabled.",
-                        UIWidgets::CheckboxGraphics::Checkmark);
-                    UIWidgets::PaddedEnhancementCheckbox(
-                        "Club Moblin", CVAR_ENHANCEMENT("RandomizedEnemyList.ClubMoblin"), true, false, disabledEnemyList,
-                        "These options are disabled because \"Select All Enemies\" is enabled.",
-                        UIWidgets::CheckboxGraphics::Checkmark);
-                    UIWidgets::PaddedEnhancementCheckbox(
-                        "Small Deku Baba", CVAR_ENHANCEMENT("RandomizedEnemyList.SmallBaba"), true, false, disabledEnemyList,
-                        "These options are disabled because \"Select All Enemies\" is enabled.",
-                        UIWidgets::CheckboxGraphics::Checkmark);
+                    if (UIWidgets::PaddedEnhancementCheckbox(
+                            "Keese", CVAR_ENHANCEMENT("RandomizedEnemyList.Keese"), true, false, disabledEnemyList,
+                            "These options are disabled because \"Select All Enemies\" is enabled.",
+                            UIWidgets::CheckboxGraphics::Checkmark)) {
+                        GetSelectedEnemies();
+                    }
+                    if (UIWidgets::PaddedEnhancementCheckbox(
+                            "Fire Keese", CVAR_ENHANCEMENT("RandomizedEnemyList.FireKeese"), true, false,
+                            disabledEnemyList, "These options are disabled because \"Select All Enemies\" is enabled.",
+                            UIWidgets::CheckboxGraphics::Checkmark)) {
+                        GetSelectedEnemies();
+                    }
+                    if (UIWidgets::PaddedEnhancementCheckbox(
+                            "Ice Keese", CVAR_ENHANCEMENT("RandomizedEnemyList.IceKeese"), true, false,
+                            disabledEnemyList, "These options are disabled because \"Select All Enemies\" is enabled.",
+                            UIWidgets::CheckboxGraphics::Checkmark)) {
+                        GetSelectedEnemies();
+                    }
+                    if (UIWidgets::PaddedEnhancementCheckbox(
+                            "Stalfos", CVAR_ENHANCEMENT("RandomizedEnemyList.Stalfos"), true, false, disabledEnemyList,
+                            "These options are disabled because \"Select All Enemies\" is enabled.",
+                            UIWidgets::CheckboxGraphics::Checkmark)) {
+                        GetSelectedEnemies();
+                    }
+                    if (UIWidgets::PaddedEnhancementCheckbox(
+                            "Red Tektite", CVAR_ENHANCEMENT("RandomizedEnemyList.RedTektite"), true, false,
+                            disabledEnemyList, "These options are disabled because \"Select All Enemies\" is enabled.",
+                            UIWidgets::CheckboxGraphics::Checkmark)) {
+                        GetSelectedEnemies();
+                    }
+                    if (UIWidgets::PaddedEnhancementCheckbox(
+                            "Blue Tektite", CVAR_ENHANCEMENT("RandomizedEnemyList.BlueTektite"), true, false,
+                            disabledEnemyList, "These options are disabled because \"Select All Enemies\" is enabled.",
+                            UIWidgets::CheckboxGraphics::Checkmark)) {
+                        GetSelectedEnemies();
+                    }
+                    if (UIWidgets::PaddedEnhancementCheckbox(
+                            "Wallmaster", CVAR_ENHANCEMENT("RandomizedEnemyList.Wallmaster"), true, false,
+                            disabledEnemyList, "These options are disabled because \"Select All Enemies\" is enabled.",
+                            UIWidgets::CheckboxGraphics::Checkmark)) {
+                        GetSelectedEnemies();
+                    }
+                    if (UIWidgets::PaddedEnhancementCheckbox(
+                            "Dodongo", CVAR_ENHANCEMENT("RandomizedEnemyList.Dodongo"), true, false, disabledEnemyList,
+                            "These options are disabled because \"Select All Enemies\" is enabled.",
+                            UIWidgets::CheckboxGraphics::Checkmark)) {
+                        GetSelectedEnemies();
+                    }
+                    if (UIWidgets::PaddedEnhancementCheckbox(
+                            "Flying Peahat", CVAR_ENHANCEMENT("RandomizedEnemyList.FlyingPeahat"), true, false,
+                            disabledEnemyList, "These options are disabled because \"Select All Enemies\" is enabled.",
+                            UIWidgets::CheckboxGraphics::Checkmark)) {
+                        GetSelectedEnemies();
+                    }
+                    if (UIWidgets::PaddedEnhancementCheckbox(
+                            "Peahat Larva", CVAR_ENHANCEMENT("RandomizedEnemyList.PeahatLarva"), true, false,
+                            disabledEnemyList, "These options are disabled because \"Select All Enemies\" is enabled.",
+                            UIWidgets::CheckboxGraphics::Checkmark)) {
+                        GetSelectedEnemies();
+                    }
+                    if (UIWidgets::PaddedEnhancementCheckbox(
+                            "Lizalfos", CVAR_ENHANCEMENT("RandomizedEnemyList.Lizalfos"), true, false,
+                            disabledEnemyList, "These options are disabled because \"Select All Enemies\" is enabled.",
+                            UIWidgets::CheckboxGraphics::Checkmark)) {
+                        GetSelectedEnemies();
+                    }
+                    if (UIWidgets::PaddedEnhancementCheckbox(
+                            "Dinolfos", CVAR_ENHANCEMENT("RandomizedEnemyList.Dinolfos"), true, false,
+                            disabledEnemyList, "These options are disabled because \"Select All Enemies\" is enabled.",
+                            UIWidgets::CheckboxGraphics::Checkmark)) {
+                        GetSelectedEnemies();
+                    }
+                    if (UIWidgets::PaddedEnhancementCheckbox(
+                            "Gohma Larva", CVAR_ENHANCEMENT("RandomizedEnemyList.GohmaLarva"), true, false,
+                            disabledEnemyList, "These options are disabled because \"Select All Enemies\" is enabled.",
+                            UIWidgets::CheckboxGraphics::Checkmark)) {
+                        GetSelectedEnemies();
+                    }
+                    if (UIWidgets::PaddedEnhancementCheckbox(
+                            "Shabom", CVAR_ENHANCEMENT("RandomizedEnemyList.Shabom"), true, false, disabledEnemyList,
+                            "These options are disabled because \"Select All Enemies\" is enabled.",
+                            UIWidgets::CheckboxGraphics::Checkmark)) {
+                        GetSelectedEnemies();
+                    }
+                    if (UIWidgets::PaddedEnhancementCheckbox(
+                            "Baby Dodongo", CVAR_ENHANCEMENT("RandomizedEnemyList.BabyDodongo"), true, false,
+                            disabledEnemyList, "These options are disabled because \"Select All Enemies\" is enabled.",
+                            UIWidgets::CheckboxGraphics::Checkmark)) {
+                        GetSelectedEnemies();
+                    }
+                    if (UIWidgets::PaddedEnhancementCheckbox(
+                            "Dark Link", CVAR_ENHANCEMENT("RandomizedEnemyList.DarkLink"), true, false,
+                            disabledEnemyList, "These options are disabled because \"Select All Enemies\" is enabled.",
+                            UIWidgets::CheckboxGraphics::Checkmark)) {
+                        GetSelectedEnemies();
+                    }
+                    if (UIWidgets::PaddedEnhancementCheckbox(
+                            "Biri", CVAR_ENHANCEMENT("RandomizedEnemyList.Biri"), true, false, disabledEnemyList,
+                            "These options are disabled because \"Select All Enemies\" is enabled.",
+                            UIWidgets::CheckboxGraphics::Checkmark)) {
+                        GetSelectedEnemies();
+                    }
+                    if (UIWidgets::PaddedEnhancementCheckbox(
+                            "Tailparasan", CVAR_ENHANCEMENT("RandomizedEnemyList.Tailparasan"), true, false,
+                            disabledEnemyList, "These options are disabled because \"Select All Enemies\" is enabled.",
+                            UIWidgets::CheckboxGraphics::Checkmark)) {
+                        GetSelectedEnemies();
+                    }
+                    if (UIWidgets::PaddedEnhancementCheckbox(
+                            "Skulltula", CVAR_ENHANCEMENT("RandomizedEnemyList.Skulltula"), true, false,
+                            disabledEnemyList, "These options are disabled because \"Select All Enemies\" is enabled.",
+                            UIWidgets::CheckboxGraphics::Checkmark)) {
+                        GetSelectedEnemies();
+                    }
+                    if (UIWidgets::PaddedEnhancementCheckbox(
+                            "Big Skulltula", CVAR_ENHANCEMENT("RandomizedEnemyList.BigSkulltula"), true, false,
+                            disabledEnemyList, "These options are disabled because \"Select All Enemies\" is enabled.",
+                            UIWidgets::CheckboxGraphics::Checkmark)) {
+                        GetSelectedEnemies();
+                    }
+                    if (UIWidgets::PaddedEnhancementCheckbox(
+                            "Invisible Skulltula", CVAR_ENHANCEMENT("RandomizedEnemyList.InvisSkulltula"), true, false,
+                            disabledEnemyList, "These options are disabled because \"Select All Enemies\" is enabled.",
+                            UIWidgets::CheckboxGraphics::Checkmark)) {
+                        GetSelectedEnemies();
+                    }
+                    if (UIWidgets::PaddedEnhancementCheckbox(
+                            "Torch Slug", CVAR_ENHANCEMENT("RandomizedEnemyList.TorchSlug"), true, false,
+                            disabledEnemyList, "These options are disabled because \"Select All Enemies\" is enabled.",
+                            UIWidgets::CheckboxGraphics::Checkmark)) {
+                        GetSelectedEnemies();
+                    }
+                    if (UIWidgets::PaddedEnhancementCheckbox(
+                            "Stinger", CVAR_ENHANCEMENT("RandomizedEnemyList.Stinger"), true, false, disabledEnemyList,
+                            "These options are disabled because \"Select All Enemies\" is enabled.",
+                            UIWidgets::CheckboxGraphics::Checkmark)) {
+                        GetSelectedEnemies();
+                    }
+                    if (UIWidgets::PaddedEnhancementCheckbox(
+                            "Club Moblin", CVAR_ENHANCEMENT("RandomizedEnemyList.ClubMoblin"), true, false,
+                            disabledEnemyList, "These options are disabled because \"Select All Enemies\" is enabled.",
+                            UIWidgets::CheckboxGraphics::Checkmark)) {
+                        GetSelectedEnemies();
+                    }
+                    if (UIWidgets::PaddedEnhancementCheckbox(
+                            "Small Deku Baba", CVAR_ENHANCEMENT("RandomizedEnemyList.SmallBaba"), true, false,
+                            disabledEnemyList, "These options are disabled because \"Select All Enemies\" is enabled.",
+                            UIWidgets::CheckboxGraphics::Checkmark)) {
+                        GetSelectedEnemies();
+                    }
                     
                     ImGui::TableNextColumn();
-                    UIWidgets::PaddedEnhancementCheckbox(
-                        "Large Deku Baba", CVAR_ENHANCEMENT("RandomizedEnemyList.LargeBaba"), true, false, disabledEnemyList,
-                        "These options are disabled because \"Select All Enemies\" is enabled.",
-                        UIWidgets::CheckboxGraphics::Checkmark);
-                    UIWidgets::PaddedEnhancementCheckbox(
-                        "Armos", CVAR_ENHANCEMENT("RandomizedEnemyList.Armos"), true, false, disabledEnemyList,
-                        "These options are disabled because \"Select All Enemies\" is enabled.",
-                        UIWidgets::CheckboxGraphics::Checkmark);
-                    UIWidgets::PaddedEnhancementCheckbox(
-                        "Mad Scrub", CVAR_ENHANCEMENT("RandomizedEnemyList.MadScrub"), true, false, disabledEnemyList,
-                        "These options are disabled because \"Select All Enemies\" is enabled.",
-                        UIWidgets::CheckboxGraphics::Checkmark);
-                    UIWidgets::PaddedEnhancementCheckbox(
-                        "Bari", CVAR_ENHANCEMENT("RandomizedEnemyList.Bari"), true, false, disabledEnemyList,
-                        "These options are disabled because \"Select All Enemies\" is enabled.",
-                        UIWidgets::CheckboxGraphics::Checkmark);
-                    UIWidgets::PaddedEnhancementCheckbox(
-                        "Bubble", CVAR_ENHANCEMENT("RandomizedEnemyList.Bubble"), true, false, disabledEnemyList,
-                        "These options are disabled because \"Select All Enemies\" is enabled.",
-                        UIWidgets::CheckboxGraphics::Checkmark);
-                    UIWidgets::PaddedEnhancementCheckbox(
-                        "Floor Tile", CVAR_ENHANCEMENT("RandomizedEnemyList.FloorTile"), true, false, disabledEnemyList,
-                        "These options are disabled because \"Select All Enemies\" is enabled.",
-                        UIWidgets::CheckboxGraphics::Checkmark);
-                    UIWidgets::PaddedEnhancementCheckbox(
-                        "Beamos", CVAR_ENHANCEMENT("RandomizedEnemyList.Beamos"), true, false, disabledEnemyList,
-                        "These options are disabled because \"Select All Enemies\" is enabled.",
-                        UIWidgets::CheckboxGraphics::Checkmark);
-                    UIWidgets::PaddedEnhancementCheckbox(
-                        "Floormaster", CVAR_ENHANCEMENT("RandomizedEnemyList.Floormaster"), true, false, disabledEnemyList,
-                        "These options are disabled because \"Select All Enemies\" is enabled.",
-                        UIWidgets::CheckboxGraphics::Checkmark);
-                    UIWidgets::PaddedEnhancementCheckbox(
-                        "Redead", CVAR_ENHANCEMENT("RandomizedEnemyList.Redead"), true, false, disabledEnemyList,
-                        "These options are disabled because \"Select All Enemies\" is enabled.",
-                        UIWidgets::CheckboxGraphics::Checkmark);
-                    UIWidgets::PaddedEnhancementCheckbox(
-                        "Gibdo", CVAR_ENHANCEMENT("RandomizedEnemyList.Gibdo"), true, false, disabledEnemyList,
-                        "These options are disabled because \"Select All Enemies\" is enabled.",
-                        UIWidgets::CheckboxGraphics::Checkmark);
-                    UIWidgets::PaddedEnhancementCheckbox(
-                        "ShellBlade", CVAR_ENHANCEMENT("RandomizedEnemyList.ShellBlade"), true, false, disabledEnemyList,
-                        "These options are disabled because \"Select All Enemies\" is enabled.",
-                        UIWidgets::CheckboxGraphics::Checkmark);
-                    UIWidgets::PaddedEnhancementCheckbox(
-                        "Withered Deku Baba", CVAR_ENHANCEMENT("RandomizedEnemyList.WitheredBaba"), true, false, disabledEnemyList,
-                        "These options are disabled because \"Select All Enemies\" is enabled.",
-                        UIWidgets::CheckboxGraphics::Checkmark);
-                    UIWidgets::PaddedEnhancementCheckbox(
-                        "Like-Like", CVAR_ENHANCEMENT("RandomizedEnemyList.LikeLike"), true, false, disabledEnemyList,
-                        "These options are disabled because \"Select All Enemies\" is enabled.",
-                        UIWidgets::CheckboxGraphics::Checkmark);
-                    UIWidgets::PaddedEnhancementCheckbox(
-                        "Spike", CVAR_ENHANCEMENT("RandomizedEnemyList.Spike"), true, false, disabledEnemyList,
-                        "These options are disabled because \"Select All Enemies\" is enabled.",
-                        UIWidgets::CheckboxGraphics::Checkmark);
-                    UIWidgets::PaddedEnhancementCheckbox(
-                        "Iron Knuckle (Black)", CVAR_ENHANCEMENT("RandomizedEnemyList.BlackKnuckle"), true, false,
-                        disabledEnemyList, "These options are disabled because \"Select All Enemies\" is enabled.",
-                        UIWidgets::CheckboxGraphics::Checkmark);
-                    UIWidgets::PaddedEnhancementCheckbox(
-                        "Iron Knuckle (White)", CVAR_ENHANCEMENT("RandomizedEnemyList.WhiteKnuckle"), true, false,
-                        disabledEnemyList, "These options are disabled because \"Select All Enemies\" is enabled.",
-                        UIWidgets::CheckboxGraphics::Checkmark);
-                    UIWidgets::PaddedEnhancementCheckbox(
-                        "Flying Pot", CVAR_ENHANCEMENT("RandomizedEnemyList.FlyingPot"), true, false, disabledEnemyList,
-                        "These options are disabled because \"Select All Enemies\" is enabled.",
-                        UIWidgets::CheckboxGraphics::Checkmark);
-                    UIWidgets::PaddedEnhancementCheckbox(
-                        "Freezard", CVAR_ENHANCEMENT("RandomizedEnemyList.Freezard"), true, false, disabledEnemyList,
-                        "These options are disabled because \"Select All Enemies\" is enabled.",
-                        UIWidgets::CheckboxGraphics::Checkmark);
-                    UIWidgets::PaddedEnhancementCheckbox(
-                        "Arwing", CVAR_ENHANCEMENT("RandomizedEnemyList.Arwing"), true, false, disabledEnemyList,
-                        "These options are disabled because \"Select All Enemies\" is enabled.",
-                        UIWidgets::CheckboxGraphics::Checkmark);
-                    UIWidgets::PaddedEnhancementCheckbox(
-                        "Wolfos (Normal)", CVAR_ENHANCEMENT("RandomizedEnemyList.NormalWolfos"), true, false, disabledEnemyList,
-                        "These options are disabled because \"Select All Enemies\" is enabled.",
-                        UIWidgets::CheckboxGraphics::Checkmark);
-                    UIWidgets::PaddedEnhancementCheckbox(
-                        "Wolfos (White)", CVAR_ENHANCEMENT("RandomizedEnemyList.WhiteWolfos"), true, false, disabledEnemyList,
-                        "These options are disabled because \"Select All Enemies\" is enabled.",
-                        UIWidgets::CheckboxGraphics::Checkmark);
-                    UIWidgets::PaddedEnhancementCheckbox(
-                        "Stalchild (Small)", CVAR_ENHANCEMENT("RandomizedEnemyList.SmallStalchild"), true, false, disabledEnemyList,
-                        "These options are disabled because \"Select All Enemies\" is enabled.",
-                        UIWidgets::CheckboxGraphics::Checkmark);
-                    UIWidgets::PaddedEnhancementCheckbox(
-                        "Stalchild (Big)", CVAR_ENHANCEMENT("RandomizedEnemyList.BigStalchild"), true, false, disabledEnemyList,
-                        "These options are disabled because \"Select All Enemies\" is enabled.",
-                        UIWidgets::CheckboxGraphics::Checkmark);
-                    UIWidgets::PaddedEnhancementCheckbox(
-                        "Guay", CVAR_ENHANCEMENT("RandomizedEnemyList.Guay"), true, false, disabledEnemyList,
-                        "These options are disabled because \"Select All Enemies\" is enabled.",
-                        UIWidgets::CheckboxGraphics::Checkmark);
+                    if (UIWidgets::PaddedEnhancementCheckbox(
+                            "Large Deku Baba", CVAR_ENHANCEMENT("RandomizedEnemyList.LargeBaba"), true, false,
+                            disabledEnemyList, "These options are disabled because \"Select All Enemies\" is enabled.",
+                            UIWidgets::CheckboxGraphics::Checkmark)) {
+                        GetSelectedEnemies();
+                    }
+                    if (UIWidgets::PaddedEnhancementCheckbox(
+                            "Armos", CVAR_ENHANCEMENT("RandomizedEnemyList.Armos"), true, false, disabledEnemyList,
+                            "These options are disabled because \"Select All Enemies\" is enabled.",
+                            UIWidgets::CheckboxGraphics::Checkmark)) {
+                        GetSelectedEnemies();
+                    }
+                    if (UIWidgets::PaddedEnhancementCheckbox(
+                            "Mad Scrub", CVAR_ENHANCEMENT("RandomizedEnemyList.MadScrub"), true, false,
+                            disabledEnemyList, "These options are disabled because \"Select All Enemies\" is enabled.",
+                            UIWidgets::CheckboxGraphics::Checkmark)) {
+                        GetSelectedEnemies();
+                    }
+                    if (UIWidgets::PaddedEnhancementCheckbox(
+                            "Bari", CVAR_ENHANCEMENT("RandomizedEnemyList.Bari"), true, false, disabledEnemyList,
+                            "These options are disabled because \"Select All Enemies\" is enabled.",
+                            UIWidgets::CheckboxGraphics::Checkmark)) {
+                        GetSelectedEnemies();
+                    }
+                    if (UIWidgets::PaddedEnhancementCheckbox(
+                            "Bubble", CVAR_ENHANCEMENT("RandomizedEnemyList.Bubble"), true, false, disabledEnemyList,
+                            "These options are disabled because \"Select All Enemies\" is enabled.",
+                            UIWidgets::CheckboxGraphics::Checkmark)) {
+                        GetSelectedEnemies();
+                    }
+                    if (UIWidgets::PaddedEnhancementCheckbox(
+                            "Floor Tile", CVAR_ENHANCEMENT("RandomizedEnemyList.FloorTile"), true, false,
+                            disabledEnemyList, "These options are disabled because \"Select All Enemies\" is enabled.",
+                            UIWidgets::CheckboxGraphics::Checkmark)) {
+                        GetSelectedEnemies();
+                    }
+                    if (UIWidgets::PaddedEnhancementCheckbox(
+                            "Beamos", CVAR_ENHANCEMENT("RandomizedEnemyList.Beamos"), true, false, disabledEnemyList,
+                            "These options are disabled because \"Select All Enemies\" is enabled.",
+                            UIWidgets::CheckboxGraphics::Checkmark)) {
+                        GetSelectedEnemies();
+                    }
+                    if (UIWidgets::PaddedEnhancementCheckbox(
+                            "Floormaster", CVAR_ENHANCEMENT("RandomizedEnemyList.Floormaster"), true, false,
+                            disabledEnemyList, "These options are disabled because \"Select All Enemies\" is enabled.",
+                            UIWidgets::CheckboxGraphics::Checkmark)) {
+                        GetSelectedEnemies();
+                    }
+                    if (UIWidgets::PaddedEnhancementCheckbox(
+                            "Redead", CVAR_ENHANCEMENT("RandomizedEnemyList.Redead"), true, false, disabledEnemyList,
+                            "These options are disabled because \"Select All Enemies\" is enabled.",
+                            UIWidgets::CheckboxGraphics::Checkmark)) {
+                        GetSelectedEnemies();
+                    }
+                    if (UIWidgets::PaddedEnhancementCheckbox(
+                            "Gibdo", CVAR_ENHANCEMENT("RandomizedEnemyList.Gibdo"), true, false, disabledEnemyList,
+                            "These options are disabled because \"Select All Enemies\" is enabled.",
+                            UIWidgets::CheckboxGraphics::Checkmark)) {
+                        GetSelectedEnemies();
+                    }
+                    if (UIWidgets::PaddedEnhancementCheckbox(
+                            "ShellBlade", CVAR_ENHANCEMENT("RandomizedEnemyList.ShellBlade"), true, false,
+                            disabledEnemyList, "These options are disabled because \"Select All Enemies\" is enabled.",
+                            UIWidgets::CheckboxGraphics::Checkmark)) {
+                        GetSelectedEnemies();
+                    }
+                    if (UIWidgets::PaddedEnhancementCheckbox(
+                            "Withered Deku Baba", CVAR_ENHANCEMENT("RandomizedEnemyList.WitheredBaba"), true, false,
+                            disabledEnemyList, "These options are disabled because \"Select All Enemies\" is enabled.",
+                            UIWidgets::CheckboxGraphics::Checkmark)) {
+                        GetSelectedEnemies();
+                    }
+                    if (UIWidgets::PaddedEnhancementCheckbox(
+                            "Like-Like", CVAR_ENHANCEMENT("RandomizedEnemyList.LikeLike"), true, false,
+                            disabledEnemyList, "These options are disabled because \"Select All Enemies\" is enabled.",
+                            UIWidgets::CheckboxGraphics::Checkmark)) {
+                        GetSelectedEnemies();
+                    }
+                    if (UIWidgets::PaddedEnhancementCheckbox(
+                            "Spike", CVAR_ENHANCEMENT("RandomizedEnemyList.Spike"), true, false, disabledEnemyList,
+                            "These options are disabled because \"Select All Enemies\" is enabled.",
+                            UIWidgets::CheckboxGraphics::Checkmark)) {
+                        GetSelectedEnemies();
+                    }
+                    if (UIWidgets::PaddedEnhancementCheckbox(
+                            "Iron Knuckle (Black)", CVAR_ENHANCEMENT("RandomizedEnemyList.BlackKnuckle"), true, false,
+                            disabledEnemyList, "These options are disabled because \"Select All Enemies\" is enabled.",
+                            UIWidgets::CheckboxGraphics::Checkmark)) {
+                        GetSelectedEnemies();
+                    }
+                    if (UIWidgets::PaddedEnhancementCheckbox(
+                            "Iron Knuckle (White)", CVAR_ENHANCEMENT("RandomizedEnemyList.WhiteKnuckle"), true, false,
+                            disabledEnemyList, "These options are disabled because \"Select All Enemies\" is enabled.",
+                            UIWidgets::CheckboxGraphics::Checkmark)) {
+                        GetSelectedEnemies();
+                    }
+                    if (UIWidgets::PaddedEnhancementCheckbox(
+                            "Flying Pot", CVAR_ENHANCEMENT("RandomizedEnemyList.FlyingPot"), true, false,
+                            disabledEnemyList, "These options are disabled because \"Select All Enemies\" is enabled.",
+                            UIWidgets::CheckboxGraphics::Checkmark)) {
+                        GetSelectedEnemies();
+                    }
+                    if (UIWidgets::PaddedEnhancementCheckbox(
+                            "Freezard", CVAR_ENHANCEMENT("RandomizedEnemyList.Freezard"), true, false,
+                            disabledEnemyList, "These options are disabled because \"Select All Enemies\" is enabled.",
+                            UIWidgets::CheckboxGraphics::Checkmark)) {
+                        GetSelectedEnemies();
+                    }
+                    if (UIWidgets::PaddedEnhancementCheckbox(
+                            "Arwing", CVAR_ENHANCEMENT("RandomizedEnemyList.Arwing"), true, false, disabledEnemyList,
+                            "These options are disabled because \"Select All Enemies\" is enabled.",
+                            UIWidgets::CheckboxGraphics::Checkmark)) {
+                        GetSelectedEnemies();
+                    }
+                    if (UIWidgets::PaddedEnhancementCheckbox(
+                            "Wolfos (Normal)", CVAR_ENHANCEMENT("RandomizedEnemyList.NormalWolfos"), true, false,
+                            disabledEnemyList, "These options are disabled because \"Select All Enemies\" is enabled.",
+                            UIWidgets::CheckboxGraphics::Checkmark)) {
+                        GetSelectedEnemies();
+                    }
+                    if (UIWidgets::PaddedEnhancementCheckbox(
+                            "Wolfos (White)", CVAR_ENHANCEMENT("RandomizedEnemyList.WhiteWolfos"), true, false,
+                            disabledEnemyList, "These options are disabled because \"Select All Enemies\" is enabled.",
+                            UIWidgets::CheckboxGraphics::Checkmark)) {
+                        GetSelectedEnemies();
+                    }
+                    if (UIWidgets::PaddedEnhancementCheckbox(
+                            "Stalchild (Small)", CVAR_ENHANCEMENT("RandomizedEnemyList.SmallStalchild"), true, false,
+                            disabledEnemyList, "These options are disabled because \"Select All Enemies\" is enabled.",
+                            UIWidgets::CheckboxGraphics::Checkmark)) {
+                        GetSelectedEnemies();
+                    }
+                    if (UIWidgets::PaddedEnhancementCheckbox(
+                            "Stalchild (Big)", CVAR_ENHANCEMENT("RandomizedEnemyList.BigStalchild"), true, false,
+                            disabledEnemyList, "These options are disabled because \"Select All Enemies\" is enabled.",
+                            UIWidgets::CheckboxGraphics::Checkmark)) {
+                        GetSelectedEnemies();
+                    }
+                    if (UIWidgets::PaddedEnhancementCheckbox(
+                            "Guay", CVAR_ENHANCEMENT("RandomizedEnemyList.Guay"), true, false, disabledEnemyList,
+                            "These options are disabled because \"Select All Enemies\" is enabled.",
+                            UIWidgets::CheckboxGraphics::Checkmark)) {
+                        GetSelectedEnemies();
+                    }
                     ImGui::EndTable();
                     ImGui::EndDisabled();
 

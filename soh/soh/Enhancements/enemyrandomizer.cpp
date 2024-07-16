@@ -284,8 +284,9 @@ void GetSelectedEnemies() {
 }
 
 EnemyEntry GetRandomizedEnemyEntry(uint32_t seed) {
-    GetSelectedEnemies();
-    
+    if (selectedEnemyList.size() == 0) {
+        GetSelectedEnemies();
+    }
     if (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), ENEMY_RANDOMIZER_OFF) == ENEMY_RANDOMIZER_RANDOM_SEEDED) {
         uint32_t finalSeed = seed + (IS_RANDO ? gSaveContext.finalSeed : gSaveContext.sohStats.fileCreatedAt);
         Random_Init(finalSeed);
