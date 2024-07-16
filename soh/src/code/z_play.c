@@ -764,692 +764,694 @@ void Play_Init(GameState* thisx) {
 }
 
 void Play_Update(PlayState* play) {
-    s32 pad1;
-    s32 sp80;
-    Input* input;
-    u32 i;
-    s32 pad2;
+    for (int i = 0; i < CVarGetInteger(CVAR_CHEAT("GameSpeedMultiplier"), 1); i += 1) {
+        s32 pad1;
+        s32 sp80;
+        Input* input;
+        u32 i;
+        s32 pad2;
 
-    input = play->state.input;
+        input = play->state.input;
 
-    if ((SREG(1) < 0) || (DREG(0) != 0)) {
-        SREG(1) = 0;
-        ZeldaArena_Display();
-    }
-
-    if ((HREG(80) == 18) && (HREG(81) < 0)) {
-        HREG(81) = 0;
-        osSyncPrintf("object_exchange_rom_address %u\n", gObjectTableSize);
-        osSyncPrintf("RomStart RomEnd   Size\n");
-        for (i = 0; i < gObjectTableSize; i++) {
-            ptrdiff_t size = gObjectTable[i].vromEnd - gObjectTable[i].vromStart;
-
-            osSyncPrintf("%08x-%08x %08x(%8.3fKB)\n", gObjectTable[i].vromStart, gObjectTable[i].vromEnd, size,
-                         size / 1024.0f);
-        }
-        osSyncPrintf("\n");
-    }
-
-    if ((HREG(81) == 18) && (HREG(82) < 0)) {
-        HREG(82) = 0;
-    }
-
-    if (CVarGetInteger(CVAR_SETTING("FreeLook.Enabled"), 0) && Player_InCsMode(play)) {
-        play->manualCamera = false;
-    }
-
-    gSegments[4] = VIRTUAL_TO_PHYSICAL(play->objectCtx.status[play->objectCtx.mainKeepIndex].segment);
-    gSegments[5] = VIRTUAL_TO_PHYSICAL(play->objectCtx.status[play->objectCtx.subKeepIndex].segment);
-    gSegments[2] = VIRTUAL_TO_PHYSICAL(play->sceneSegment);
-
-    if (FrameAdvance_Update(&play->frameAdvCtx, &input[1])) {
-        if ((play->transitionMode == TRANS_MODE_OFF) && (play->transitionTrigger != TRANS_TRIGGER_OFF)) {
-            play->transitionMode = TRANS_MODE_SETUP;
+        if ((SREG(1) < 0) || (DREG(0) != 0)) {
+            SREG(1) = 0;
+            ZeldaArena_Display();
         }
 
-        // Gameplay stats: Count button presses
-        if (!gSaveContext.sohStats.gameComplete) {
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_A))      {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_A]++;}
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_B))      {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_B]++;}
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_CUP))    {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_CUP]++;}
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_CRIGHT)) {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_CRIGHT]++;}
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_CLEFT))  {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_CLEFT]++;}
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_CDOWN))  {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_CDOWN]++;}
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_DUP))    {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_DUP]++;}
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_DRIGHT)) {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_DRIGHT]++;}
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_DDOWN))  {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_DDOWN]++;}
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_DLEFT))  {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_DLEFT]++;}
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_L))      {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_L]++;}
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_R))      {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_R]++;}
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_Z))      {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_Z]++;}
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_START))  {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_START]++;}
+        if ((HREG(80) == 18) && (HREG(81) < 0)) {
+            HREG(81) = 0;
+            osSyncPrintf("object_exchange_rom_address %u\n", gObjectTableSize);
+            osSyncPrintf("RomStart RomEnd   Size\n");
+            for (i = 0; i < gObjectTableSize; i++) {
+                ptrdiff_t size = gObjectTable[i].vromEnd - gObjectTable[i].vromStart;
 
-            // Start RTA timing on first non-c-up input after intro cutscene
-            if (
-                !gSaveContext.sohStats.fileCreatedAt && !Player_InCsMode(play) && 
-                ((input[0].press.button && input[0].press.button != 0x8) || input[0].rel.stick_x != 0 || input[0].rel.stick_y != 0)
-            ) {
-                gSaveContext.sohStats.fileCreatedAt = GetUnixTimestamp();
+                osSyncPrintf("%08x-%08x %08x(%8.3fKB)\n", gObjectTable[i].vromStart, gObjectTable[i].vromEnd, size,
+                             size / 1024.0f);
             }
+            osSyncPrintf("\n");
         }
 
-        if (gTrnsnUnkState != 0) {
-            switch (gTrnsnUnkState) {
-                case 2:
-                    if (TransitionUnk_Init(&sTrnsnUnk, 10, 7) == NULL) {
-                        osSyncPrintf("fbdemo_init呼出し失敗！\n"); // "fbdemo_init call failed!"
-                        gTrnsnUnkState = 0;
-                    } else {
-                        sTrnsnUnk.zBuffer = (u16*)gZBuffer;
-                        gTrnsnUnkState = 3;
-                        R_UPDATE_RATE = 1;
-                    }
-                    break;
-                case 3:
-                    func_800B23E8(&sTrnsnUnk);
-                    break;
+        if ((HREG(81) == 18) && (HREG(82) < 0)) {
+            HREG(82) = 0;
+        }
+
+        if (CVarGetInteger(CVAR_SETTING("FreeLook.Enabled"), 0) && Player_InCsMode(play)) {
+            play->manualCamera = false;
+        }
+
+        gSegments[4] = VIRTUAL_TO_PHYSICAL(play->objectCtx.status[play->objectCtx.mainKeepIndex].segment);
+        gSegments[5] = VIRTUAL_TO_PHYSICAL(play->objectCtx.status[play->objectCtx.subKeepIndex].segment);
+        gSegments[2] = VIRTUAL_TO_PHYSICAL(play->sceneSegment);
+
+        if (FrameAdvance_Update(&play->frameAdvCtx, &input[1])) {
+            if ((play->transitionMode == TRANS_MODE_OFF) && (play->transitionTrigger != TRANS_TRIGGER_OFF)) {
+                play->transitionMode = TRANS_MODE_SETUP;
             }
-        }
 
-        if (play->transitionMode) {
-            switch (play->transitionMode) {
-                case TRANS_MODE_SETUP:
-                    if (play->transitionTrigger != TRANS_TRIGGER_END) {
-                        s16 sp6E = 0;
-                        Interface_ChangeAlpha(1);
+            // Gameplay stats: Count button presses
+            if (!gSaveContext.sohStats.gameComplete) {
+                if (CHECK_BTN_ALL(input[0].press.button, BTN_A))      {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_A]++;}
+                if (CHECK_BTN_ALL(input[0].press.button, BTN_B))      {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_B]++;}
+                if (CHECK_BTN_ALL(input[0].press.button, BTN_CUP))    {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_CUP]++;}
+                if (CHECK_BTN_ALL(input[0].press.button, BTN_CRIGHT)) {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_CRIGHT]++;}
+                if (CHECK_BTN_ALL(input[0].press.button, BTN_CLEFT))  {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_CLEFT]++;}
+                if (CHECK_BTN_ALL(input[0].press.button, BTN_CDOWN))  {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_CDOWN]++;}
+                if (CHECK_BTN_ALL(input[0].press.button, BTN_DUP))    {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_DUP]++;}
+                if (CHECK_BTN_ALL(input[0].press.button, BTN_DRIGHT)) {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_DRIGHT]++;}
+                if (CHECK_BTN_ALL(input[0].press.button, BTN_DDOWN))  {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_DDOWN]++;}
+                if (CHECK_BTN_ALL(input[0].press.button, BTN_DLEFT))  {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_DLEFT]++;}
+                if (CHECK_BTN_ALL(input[0].press.button, BTN_L))      {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_L]++;}
+                if (CHECK_BTN_ALL(input[0].press.button, BTN_R))      {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_R]++;}
+                if (CHECK_BTN_ALL(input[0].press.button, BTN_Z))      {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_Z]++;}
+                if (CHECK_BTN_ALL(input[0].press.button, BTN_START))  {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_START]++;}
 
-                        if (gSaveContext.cutsceneIndex >= 0xFFF0) {
-                            sp6E = (gSaveContext.cutsceneIndex & 0xF) + 4;
+                // Start RTA timing on first non-c-up input after intro cutscene
+                if (
+                    !gSaveContext.sohStats.fileCreatedAt && !Player_InCsMode(play) && 
+                    ((input[0].press.button && input[0].press.button != 0x8) || input[0].rel.stick_x != 0 || input[0].rel.stick_y != 0)
+                ) {
+                    gSaveContext.sohStats.fileCreatedAt = GetUnixTimestamp();
+                }
+            }
+
+            if (gTrnsnUnkState != 0) {
+                switch (gTrnsnUnkState) {
+                    case 2:
+                        if (TransitionUnk_Init(&sTrnsnUnk, 10, 7) == NULL) {
+                            osSyncPrintf("fbdemo_init呼出し失敗！\n"); // "fbdemo_init call failed!"
+                            gTrnsnUnkState = 0;
+                        } else {
+                            sTrnsnUnk.zBuffer = (u16*)gZBuffer;
+                            gTrnsnUnkState = 3;
+                            R_UPDATE_RATE = 1;
                         }
+                        break;
+                    case 3:
+                        func_800B23E8(&sTrnsnUnk);
+                        break;
+                }
+            }
 
-                        if (!(gEntranceTable[play->nextEntranceIndex + sp6E].field & ENTRANCE_INFO_CONTINUE_BGM_FLAG)) { // Continue BGM Off
-                            // "Sound initalized. 111"
-                            osSyncPrintf("\n\n\nサウンドイニシャル来ました。111");
-                            if ((play->transitionType < TRANS_TYPE_MAX) && !Environment_IsForcedSequenceDisabled()) {
-                                // "Sound initalized. 222"
-                                osSyncPrintf("\n\n\nサウンドイニシャル来ました。222");
-                                func_800F6964(0x14);
-                                gSaveContext.seqId = (u8)NA_BGM_DISABLED;
-                                gSaveContext.natureAmbienceId = NATURE_ID_DISABLED;
+            if (play->transitionMode) {
+                switch (play->transitionMode) {
+                    case TRANS_MODE_SETUP:
+                        if (play->transitionTrigger != TRANS_TRIGGER_END) {
+                            s16 sp6E = 0;
+                            Interface_ChangeAlpha(1);
+
+                            if (gSaveContext.cutsceneIndex >= 0xFFF0) {
+                                sp6E = (gSaveContext.cutsceneIndex & 0xF) + 4;
+                            }
+
+                            if (!(gEntranceTable[play->nextEntranceIndex + sp6E].field & ENTRANCE_INFO_CONTINUE_BGM_FLAG)) { // Continue BGM Off
+                                // "Sound initalized. 111"
+                                osSyncPrintf("\n\n\nサウンドイニシャル来ました。111");
+                                if ((play->transitionType < TRANS_TYPE_MAX) && !Environment_IsForcedSequenceDisabled()) {
+                                    // "Sound initalized. 222"
+                                    osSyncPrintf("\n\n\nサウンドイニシャル来ました。222");
+                                    func_800F6964(0x14);
+                                    gSaveContext.seqId = (u8)NA_BGM_DISABLED;
+                                    gSaveContext.natureAmbienceId = NATURE_ID_DISABLED;
+                                }
                             }
                         }
-                    }
 
-                    if (!R_TRANS_DBG_ENABLED) {
-                        Gameplay_SetupTransition(play, play->transitionType);
-                    } else {
-                        Gameplay_SetupTransition(play, R_TRANS_DBG_TYPE);
-                    }
+                        if (!R_TRANS_DBG_ENABLED) {
+                            Gameplay_SetupTransition(play, play->transitionType);
+                        } else {
+                            Gameplay_SetupTransition(play, R_TRANS_DBG_TYPE);
+                        }
 
-                    if (play->transitionMode >= TRANS_MODE_FILL_WHITE_INIT) {
+                        if (play->transitionMode >= TRANS_MODE_FILL_WHITE_INIT) {
+                            break;
+                        }
+
+                    case TRANS_MODE_INSTANCE_INIT:
+                        play->transitionCtx.init(&play->transitionCtx.data);
+
+                        // Circle Transition Types
+                        if ((play->transitionCtx.transitionType >> 5) == 1) {
+                            play->transitionCtx.setType(&play->transitionCtx.data,
+                                                             play->transitionCtx.transitionType | TC_SET_PARAMS);
+                        }
+
+                        gSaveContext.transWipeSpeed = 14;
+                        if ((play->transitionCtx.transitionType == TRANS_TYPE_WIPE_FAST) ||
+                            (play->transitionCtx.transitionType == TRANS_TYPE_FILL_WHITE2)) {
+                            gSaveContext.transWipeSpeed = 28;
+                        }
+
+                        gSaveContext.transFadeDuration = 60;
+                        if ((play->transitionCtx.transitionType == TRANS_TYPE_FADE_BLACK_FAST) ||
+                            (play->transitionCtx.transitionType == TRANS_TYPE_FADE_WHITE_FAST)) {
+                            gSaveContext.transFadeDuration = 20;
+                        } else if ((play->transitionCtx.transitionType == TRANS_TYPE_FADE_BLACK_SLOW) ||
+                                   (play->transitionCtx.transitionType == TRANS_TYPE_FADE_WHITE_SLOW)) {
+                            gSaveContext.transFadeDuration = 150;
+                        } else if (play->transitionCtx.transitionType == TRANS_TYPE_FADE_WHITE_INSTANT) {
+                            gSaveContext.transFadeDuration = 2;
+                        }
+
+                        if ((play->transitionCtx.transitionType == TRANS_TYPE_FADE_WHITE) ||
+                            (play->transitionCtx.transitionType == TRANS_TYPE_FADE_WHITE_FAST) ||
+                            (play->transitionCtx.transitionType == TRANS_TYPE_FADE_WHITE_SLOW) ||
+                            (play->transitionCtx.transitionType == TRANS_TYPE_FADE_WHITE_CS_DELAYED) ||
+                            (play->transitionCtx.transitionType == TRANS_TYPE_FADE_WHITE_INSTANT)) {
+                            play->transitionCtx.setColor(&play->transitionCtx.data, RGBA8(160, 160, 160, 255));
+                            if (play->transitionCtx.setEnvColor != NULL) {
+                                play->transitionCtx.setEnvColor(&play->transitionCtx.data,
+                                                                     RGBA8(160, 160, 160, 255));
+                            }
+                        } else if (play->transitionCtx.transitionType == TRANS_TYPE_FADE_GREEN) {
+                            play->transitionCtx.setColor(&play->transitionCtx.data, RGBA8(140, 140, 100, 255));
+                            if (play->transitionCtx.setEnvColor != NULL) {
+                                play->transitionCtx.setEnvColor(&play->transitionCtx.data,
+                                                                     RGBA8(140, 140, 100, 255));
+                            }
+                        } else if (play->transitionCtx.transitionType == TRANS_TYPE_FADE_BLUE) {
+                            play->transitionCtx.setColor(&play->transitionCtx.data, RGBA8(70, 100, 110, 255));
+                            if (play->transitionCtx.setEnvColor != NULL) {
+                                play->transitionCtx.setEnvColor(&play->transitionCtx.data,
+                                                                     RGBA8(70, 100, 110, 255));
+                            }
+                        } else {
+                            play->transitionCtx.setColor(&play->transitionCtx.data, RGBA8(0, 0, 0, 0));
+                            if (play->transitionCtx.setEnvColor != NULL) {
+                                play->transitionCtx.setEnvColor(&play->transitionCtx.data, RGBA8(0, 0, 0, 0));
+                            }
+                        }
+
+                        if (play->transitionTrigger == TRANS_TRIGGER_END) {
+                            play->transitionCtx.setType(&play->transitionCtx.data, 1);
+                        } else {
+                            play->transitionCtx.setType(&play->transitionCtx.data, 2);
+                        }
+
+                        play->transitionCtx.start(&play->transitionCtx);
+
+                        if (play->transitionCtx.transitionType == TRANS_TYPE_FADE_WHITE_CS_DELAYED) {
+                            play->transitionMode = TRANS_MODE_INSTANCE_WAIT;
+                        } else {
+                            play->transitionMode = TRANS_MODE_INSTANCE_RUNNING;
+                        }
                         break;
-                    }
 
-                case TRANS_MODE_INSTANCE_INIT:
-                    play->transitionCtx.init(&play->transitionCtx.data);
-
-                    // Circle Transition Types
-                    if ((play->transitionCtx.transitionType >> 5) == 1) {
-                        play->transitionCtx.setType(&play->transitionCtx.data,
-                                                         play->transitionCtx.transitionType | TC_SET_PARAMS);
-                    }
-
-                    gSaveContext.transWipeSpeed = 14;
-                    if ((play->transitionCtx.transitionType == TRANS_TYPE_WIPE_FAST) ||
-                        (play->transitionCtx.transitionType == TRANS_TYPE_FILL_WHITE2)) {
-                        gSaveContext.transWipeSpeed = 28;
-                    }
-
-                    gSaveContext.transFadeDuration = 60;
-                    if ((play->transitionCtx.transitionType == TRANS_TYPE_FADE_BLACK_FAST) ||
-                        (play->transitionCtx.transitionType == TRANS_TYPE_FADE_WHITE_FAST)) {
-                        gSaveContext.transFadeDuration = 20;
-                    } else if ((play->transitionCtx.transitionType == TRANS_TYPE_FADE_BLACK_SLOW) ||
-                               (play->transitionCtx.transitionType == TRANS_TYPE_FADE_WHITE_SLOW)) {
-                        gSaveContext.transFadeDuration = 150;
-                    } else if (play->transitionCtx.transitionType == TRANS_TYPE_FADE_WHITE_INSTANT) {
-                        gSaveContext.transFadeDuration = 2;
-                    }
-
-                    if ((play->transitionCtx.transitionType == TRANS_TYPE_FADE_WHITE) ||
-                        (play->transitionCtx.transitionType == TRANS_TYPE_FADE_WHITE_FAST) ||
-                        (play->transitionCtx.transitionType == TRANS_TYPE_FADE_WHITE_SLOW) ||
-                        (play->transitionCtx.transitionType == TRANS_TYPE_FADE_WHITE_CS_DELAYED) ||
-                        (play->transitionCtx.transitionType == TRANS_TYPE_FADE_WHITE_INSTANT)) {
-                        play->transitionCtx.setColor(&play->transitionCtx.data, RGBA8(160, 160, 160, 255));
-                        if (play->transitionCtx.setEnvColor != NULL) {
-                            play->transitionCtx.setEnvColor(&play->transitionCtx.data,
-                                                                 RGBA8(160, 160, 160, 255));
-                        }
-                    } else if (play->transitionCtx.transitionType == TRANS_TYPE_FADE_GREEN) {
-                        play->transitionCtx.setColor(&play->transitionCtx.data, RGBA8(140, 140, 100, 255));
-                        if (play->transitionCtx.setEnvColor != NULL) {
-                            play->transitionCtx.setEnvColor(&play->transitionCtx.data,
-                                                                 RGBA8(140, 140, 100, 255));
-                        }
-                    } else if (play->transitionCtx.transitionType == TRANS_TYPE_FADE_BLUE) {
-                        play->transitionCtx.setColor(&play->transitionCtx.data, RGBA8(70, 100, 110, 255));
-                        if (play->transitionCtx.setEnvColor != NULL) {
-                            play->transitionCtx.setEnvColor(&play->transitionCtx.data,
-                                                                 RGBA8(70, 100, 110, 255));
-                        }
-                    } else {
-                        play->transitionCtx.setColor(&play->transitionCtx.data, RGBA8(0, 0, 0, 0));
-                        if (play->transitionCtx.setEnvColor != NULL) {
-                            play->transitionCtx.setEnvColor(&play->transitionCtx.data, RGBA8(0, 0, 0, 0));
-                        }
-                    }
-
-                    if (play->transitionTrigger == TRANS_TRIGGER_END) {
-                        play->transitionCtx.setType(&play->transitionCtx.data, 1);
-                    } else {
-                        play->transitionCtx.setType(&play->transitionCtx.data, 2);
-                    }
-
-                    play->transitionCtx.start(&play->transitionCtx);
-
-                    if (play->transitionCtx.transitionType == TRANS_TYPE_FADE_WHITE_CS_DELAYED) {
-                        play->transitionMode = TRANS_MODE_INSTANCE_WAIT;
-                    } else {
-                        play->transitionMode = TRANS_MODE_INSTANCE_RUNNING;
-                    }
-                    break;
-
-                case TRANS_MODE_INSTANCE_RUNNING:
-                    if (play->transitionCtx.isDone(&play->transitionCtx) != 0) {
-                        if (play->transitionCtx.transitionType >= TRANS_TYPE_MAX) {
-                            if (play->transitionTrigger == TRANS_TRIGGER_END) {
+                    case TRANS_MODE_INSTANCE_RUNNING:
+                        if (play->transitionCtx.isDone(&play->transitionCtx) != 0) {
+                            if (play->transitionCtx.transitionType >= TRANS_TYPE_MAX) {
+                                if (play->transitionTrigger == TRANS_TRIGGER_END) {
+                                    play->transitionCtx.destroy(&play->transitionCtx);
+                                    func_800BC88C(play);
+                                    play->transitionMode = TRANS_MODE_OFF;
+                                }
+                            } else if (play->transitionTrigger != TRANS_TRIGGER_END) {
+                                play->state.running = 0;
+                                if (gSaveContext.gameMode != 2) {
+                                    SET_NEXT_GAMESTATE(&play->state, Play_Init, PlayState);
+                                    gSaveContext.entranceIndex = play->nextEntranceIndex;
+                                    if (gSaveContext.minigameState == 1) {
+                                        gSaveContext.minigameState = 3;
+                                    }
+                                } else {
+                                    SET_NEXT_GAMESTATE(&play->state, FileChoose_Init, FileChooseContext);
+                                }
+                            } else {
                                 play->transitionCtx.destroy(&play->transitionCtx);
                                 func_800BC88C(play);
                                 play->transitionMode = TRANS_MODE_OFF;
-                            }
-                        } else if (play->transitionTrigger != TRANS_TRIGGER_END) {
-                            play->state.running = 0;
-                            if (gSaveContext.gameMode != 2) {
-                                SET_NEXT_GAMESTATE(&play->state, Play_Init, PlayState);
-                                gSaveContext.entranceIndex = play->nextEntranceIndex;
-                                if (gSaveContext.minigameState == 1) {
-                                    gSaveContext.minigameState = 3;
+                                if (gTrnsnUnkState == 3) {
+                                    TransitionUnk_Destroy(&sTrnsnUnk);
+                                    gTrnsnUnkState = 0;
+                                    R_UPDATE_RATE = 3;
                                 }
-                            } else {
-                                SET_NEXT_GAMESTATE(&play->state, FileChoose_Init, FileChooseContext);
+
+                                // Transition end for standard transitions
+                                GameInteractor_ExecuteOnTransitionEndHooks(play->sceneNum);
                             }
-                        } else {
-                            play->transitionCtx.destroy(&play->transitionCtx);
-                            func_800BC88C(play);
-                            play->transitionMode = TRANS_MODE_OFF;
-                            if (gTrnsnUnkState == 3) {
-                                TransitionUnk_Destroy(&sTrnsnUnk);
-                                gTrnsnUnkState = 0;
-                                R_UPDATE_RATE = 3;
-                            }
-                            
-                            // Transition end for standard transitions
-                            GameInteractor_ExecuteOnTransitionEndHooks(play->sceneNum);
-                        }
-                        play->transitionTrigger = TRANS_TRIGGER_OFF;
-                    } else {
-                        play->transitionCtx.update(&play->transitionCtx.data, R_UPDATE_RATE);
-                    }
-                    break;
-            }
-
-            switch (play->transitionMode) {
-                case TRANS_MODE_FILL_WHITE_INIT:
-                    D_801614C8 = 0;
-                    play->envCtx.fillScreen = true;
-                    play->envCtx.screenFillColor[0] = 160;
-                    play->envCtx.screenFillColor[1] = 160;
-                    play->envCtx.screenFillColor[2] = 160;
-                    if (play->transitionTrigger != TRANS_TRIGGER_END) {
-                        play->envCtx.screenFillColor[3] = 0;
-                        play->transitionMode = TRANS_MODE_FILL_IN;
-                    } else {
-                        play->envCtx.screenFillColor[3] = 255;
-                        play->transitionMode = TRANS_MODE_FILL_OUT;
-                    }
-                    break;
-
-                case TRANS_MODE_FILL_IN:
-                    play->envCtx.screenFillColor[3] = (D_801614C8 / 20.0f) * 255.0f;
-                    if (D_801614C8 >= 20 && 1) {
-                        play->state.running = 0;
-                        SET_NEXT_GAMESTATE(&play->state, Play_Init, PlayState);
-                        gSaveContext.entranceIndex = play->nextEntranceIndex;
-                        play->transitionTrigger = TRANS_TRIGGER_OFF;
-                        play->transitionMode = TRANS_MODE_OFF;
-                    } else {
-                        D_801614C8++;
-                    }
-                    break;
-
-                case TRANS_MODE_FILL_OUT:
-                    play->envCtx.screenFillColor[3] = (1 - D_801614C8 / 20.0f) * 255.0f;
-                    if (D_801614C8 >= 20 && 1) {
-                        gTrnsnUnkState = 0;
-                        R_UPDATE_RATE = 3;
-                        play->transitionTrigger = TRANS_TRIGGER_OFF;
-                        play->transitionMode = TRANS_MODE_OFF;
-                        play->envCtx.fillScreen = false;
-                    } else {
-                        D_801614C8++;
-                    }
-                    break;
-
-                case TRANS_MODE_FILL_BROWN_INIT:
-                    D_801614C8 = 0;
-                    play->envCtx.fillScreen = true;
-                    play->envCtx.screenFillColor[0] = 170;
-                    play->envCtx.screenFillColor[1] = 160;
-                    play->envCtx.screenFillColor[2] = 150;
-                    if (play->transitionTrigger != TRANS_TRIGGER_END) {
-                        play->envCtx.screenFillColor[3] = 0;
-                        play->transitionMode = TRANS_MODE_FILL_IN;
-                    } else {
-                        play->envCtx.screenFillColor[3] = 255;
-                        play->transitionMode = TRANS_MODE_FILL_OUT;
-                    }
-                    break;
-
-                case TRANS_MODE_INSTANT:
-                    if (play->transitionTrigger != TRANS_TRIGGER_END) {
-                        play->state.running = 0;
-                        SET_NEXT_GAMESTATE(&play->state, Play_Init, PlayState);
-                        gSaveContext.entranceIndex = play->nextEntranceIndex;
-                        play->transitionTrigger = TRANS_TRIGGER_OFF;
-                        play->transitionMode = TRANS_MODE_OFF;
-                    } else {
-                        gTrnsnUnkState = 0;
-                        R_UPDATE_RATE = 3;
-                        play->transitionTrigger = TRANS_TRIGGER_OFF;
-                        play->transitionMode = TRANS_MODE_OFF;
-                    }
-                    break;
-
-                case TRANS_MODE_INSTANCE_WAIT:
-                    if (gSaveContext.cutsceneTransitionControl != 0) {
-                        play->transitionMode = TRANS_MODE_INSTANCE_RUNNING;
-                    }
-                    break;
-
-                case TRANS_MODE_SANDSTORM_INIT:
-                    if (play->transitionTrigger != TRANS_TRIGGER_END) {
-                        play->envCtx.sandstormState = SANDSTORM_FILL;
-                        play->transitionMode = TRANS_MODE_SANDSTORM;
-                    } else {
-                        play->envCtx.sandstormState = SANDSTORM_UNFILL;
-                        play->envCtx.sandstormPrimA = 255;
-                        play->envCtx.sandstormEnvA = 255;
-                        play->transitionMode = TRANS_MODE_SANDSTORM;
-                    }
-                    break;
-
-                case TRANS_MODE_SANDSTORM:
-                    Audio_PlaySoundGeneral(NA_SE_EV_SAND_STORM - SFX_FLAG, &D_801333D4, 4, &D_801333E0, &D_801333E0,
-                                           &D_801333E8);
-                    if (play->transitionTrigger == TRANS_TRIGGER_END) {
-                        if (play->envCtx.sandstormPrimA < 110) {
-                            gTrnsnUnkState = 0;
-                            R_UPDATE_RATE = 3;
                             play->transitionTrigger = TRANS_TRIGGER_OFF;
-                            play->transitionMode = TRANS_MODE_OFF;
-
-                            // Transition end for sandstorm effect (delayed until effect is finished)
-                            GameInteractor_ExecuteOnTransitionEndHooks(play->sceneNum);
+                        } else {
+                            play->transitionCtx.update(&play->transitionCtx.data, R_UPDATE_RATE);
                         }
-                    } else {
-                        if (play->envCtx.sandstormEnvA == 255) {
+                        break;
+                }
+
+                switch (play->transitionMode) {
+                    case TRANS_MODE_FILL_WHITE_INIT:
+                        D_801614C8 = 0;
+                        play->envCtx.fillScreen = true;
+                        play->envCtx.screenFillColor[0] = 160;
+                        play->envCtx.screenFillColor[1] = 160;
+                        play->envCtx.screenFillColor[2] = 160;
+                        if (play->transitionTrigger != TRANS_TRIGGER_END) {
+                            play->envCtx.screenFillColor[3] = 0;
+                            play->transitionMode = TRANS_MODE_FILL_IN;
+                        } else {
+                            play->envCtx.screenFillColor[3] = 255;
+                            play->transitionMode = TRANS_MODE_FILL_OUT;
+                        }
+                        break;
+
+                    case TRANS_MODE_FILL_IN:
+                        play->envCtx.screenFillColor[3] = (D_801614C8 / 20.0f) * 255.0f;
+                        if (D_801614C8 >= 20 && 1) {
                             play->state.running = 0;
                             SET_NEXT_GAMESTATE(&play->state, Play_Init, PlayState);
                             gSaveContext.entranceIndex = play->nextEntranceIndex;
                             play->transitionTrigger = TRANS_TRIGGER_OFF;
                             play->transitionMode = TRANS_MODE_OFF;
+                        } else {
+                            D_801614C8++;
                         }
-                    }
-                    break;
+                        break;
 
-                case TRANS_MODE_SANDSTORM_END_INIT:
-                    if (play->transitionTrigger == TRANS_TRIGGER_END) {
-                        play->envCtx.sandstormState = SANDSTORM_DISSIPATE;
-                        play->envCtx.sandstormPrimA = 255;
-                        play->envCtx.sandstormEnvA = 255;
-                        // "It's here!!!!!!!!!"
-                        LOG_STRING("来た!!!!!!!!!!!!!!!!!!!!!");
-                        play->transitionMode = TRANS_MODE_SANDSTORM_END;
-                    } else {
-                        play->transitionMode = TRANS_MODE_SANDSTORM_INIT;
-                    }
-                    break;
-
-                case TRANS_MODE_SANDSTORM_END:
-                    Audio_PlaySoundGeneral(NA_SE_EV_SAND_STORM - SFX_FLAG, &D_801333D4, 4, &D_801333E0, &D_801333E0,
-                                           &D_801333E8);
-                    if (play->transitionTrigger == TRANS_TRIGGER_END) {
-                        if (play->envCtx.sandstormPrimA <= 0) {
+                    case TRANS_MODE_FILL_OUT:
+                        play->envCtx.screenFillColor[3] = (1 - D_801614C8 / 20.0f) * 255.0f;
+                        if (D_801614C8 >= 20 && 1) {
                             gTrnsnUnkState = 0;
                             R_UPDATE_RATE = 3;
                             play->transitionTrigger = TRANS_TRIGGER_OFF;
                             play->transitionMode = TRANS_MODE_OFF;
-
-                            // Transition end for sandstorm effect (delayed until effect is finished)
-                            GameInteractor_ExecuteOnTransitionEndHooks(play->sceneNum);
+                            play->envCtx.fillScreen = false;
+                        } else {
+                            D_801614C8++;
                         }
-                    }
-                    break;
+                        break;
 
-                case TRANS_MODE_CS_BLACK_FILL_INIT:
-                    D_801614C8 = 0;
-                    play->envCtx.fillScreen = true;
-                    play->envCtx.screenFillColor[0] = 0;
-                    play->envCtx.screenFillColor[1] = 0;
-                    play->envCtx.screenFillColor[2] = 0;
-                    play->envCtx.screenFillColor[3] = 255;
-                    play->transitionMode = TRANS_MODE_CS_BLACK_FILL;
-                    break;
+                    case TRANS_MODE_FILL_BROWN_INIT:
+                        D_801614C8 = 0;
+                        play->envCtx.fillScreen = true;
+                        play->envCtx.screenFillColor[0] = 170;
+                        play->envCtx.screenFillColor[1] = 160;
+                        play->envCtx.screenFillColor[2] = 150;
+                        if (play->transitionTrigger != TRANS_TRIGGER_END) {
+                            play->envCtx.screenFillColor[3] = 0;
+                            play->transitionMode = TRANS_MODE_FILL_IN;
+                        } else {
+                            play->envCtx.screenFillColor[3] = 255;
+                            play->transitionMode = TRANS_MODE_FILL_OUT;
+                        }
+                        break;
 
-                case TRANS_MODE_CS_BLACK_FILL:
-                    if (gSaveContext.cutsceneTransitionControl != 0) {
-                        play->envCtx.screenFillColor[3] = gSaveContext.cutsceneTransitionControl;
-                        if (gSaveContext.cutsceneTransitionControl < 0x65) {
+                    case TRANS_MODE_INSTANT:
+                        if (play->transitionTrigger != TRANS_TRIGGER_END) {
+                            play->state.running = 0;
+                            SET_NEXT_GAMESTATE(&play->state, Play_Init, PlayState);
+                            gSaveContext.entranceIndex = play->nextEntranceIndex;
+                            play->transitionTrigger = TRANS_TRIGGER_OFF;
+                            play->transitionMode = TRANS_MODE_OFF;
+                        } else {
                             gTrnsnUnkState = 0;
                             R_UPDATE_RATE = 3;
                             play->transitionTrigger = TRANS_TRIGGER_OFF;
                             play->transitionMode = TRANS_MODE_OFF;
                         }
-                    }
-                    break;
+                        break;
+
+                    case TRANS_MODE_INSTANCE_WAIT:
+                        if (gSaveContext.cutsceneTransitionControl != 0) {
+                            play->transitionMode = TRANS_MODE_INSTANCE_RUNNING;
+                        }
+                        break;
+
+                    case TRANS_MODE_SANDSTORM_INIT:
+                        if (play->transitionTrigger != TRANS_TRIGGER_END) {
+                            play->envCtx.sandstormState = SANDSTORM_FILL;
+                            play->transitionMode = TRANS_MODE_SANDSTORM;
+                        } else {
+                            play->envCtx.sandstormState = SANDSTORM_UNFILL;
+                            play->envCtx.sandstormPrimA = 255;
+                            play->envCtx.sandstormEnvA = 255;
+                            play->transitionMode = TRANS_MODE_SANDSTORM;
+                        }
+                        break;
+
+                    case TRANS_MODE_SANDSTORM:
+                        Audio_PlaySoundGeneral(NA_SE_EV_SAND_STORM - SFX_FLAG, &D_801333D4, 4, &D_801333E0, &D_801333E0,
+                                               &D_801333E8);
+                        if (play->transitionTrigger == TRANS_TRIGGER_END) {
+                            if (play->envCtx.sandstormPrimA < 110) {
+                                gTrnsnUnkState = 0;
+                                R_UPDATE_RATE = 3;
+                                play->transitionTrigger = TRANS_TRIGGER_OFF;
+                                play->transitionMode = TRANS_MODE_OFF;
+
+                                // Transition end for sandstorm effect (delayed until effect is finished)
+                                GameInteractor_ExecuteOnTransitionEndHooks(play->sceneNum);
+                            }
+                        } else {
+                            if (play->envCtx.sandstormEnvA == 255) {
+                                play->state.running = 0;
+                                SET_NEXT_GAMESTATE(&play->state, Play_Init, PlayState);
+                                gSaveContext.entranceIndex = play->nextEntranceIndex;
+                                play->transitionTrigger = TRANS_TRIGGER_OFF;
+                                play->transitionMode = TRANS_MODE_OFF;
+                            }
+                        }
+                        break;
+
+                    case TRANS_MODE_SANDSTORM_END_INIT:
+                        if (play->transitionTrigger == TRANS_TRIGGER_END) {
+                            play->envCtx.sandstormState = SANDSTORM_DISSIPATE;
+                            play->envCtx.sandstormPrimA = 255;
+                            play->envCtx.sandstormEnvA = 255;
+                            // "It's here!!!!!!!!!"
+                            LOG_STRING("来た!!!!!!!!!!!!!!!!!!!!!");
+                            play->transitionMode = TRANS_MODE_SANDSTORM_END;
+                        } else {
+                            play->transitionMode = TRANS_MODE_SANDSTORM_INIT;
+                        }
+                        break;
+
+                    case TRANS_MODE_SANDSTORM_END:
+                        Audio_PlaySoundGeneral(NA_SE_EV_SAND_STORM - SFX_FLAG, &D_801333D4, 4, &D_801333E0, &D_801333E0,
+                                               &D_801333E8);
+                        if (play->transitionTrigger == TRANS_TRIGGER_END) {
+                            if (play->envCtx.sandstormPrimA <= 0) {
+                                gTrnsnUnkState = 0;
+                                R_UPDATE_RATE = 3;
+                                play->transitionTrigger = TRANS_TRIGGER_OFF;
+                                play->transitionMode = TRANS_MODE_OFF;
+
+                                // Transition end for sandstorm effect (delayed until effect is finished)
+                                GameInteractor_ExecuteOnTransitionEndHooks(play->sceneNum);
+                            }
+                        }
+                        break;
+
+                    case TRANS_MODE_CS_BLACK_FILL_INIT:
+                        D_801614C8 = 0;
+                        play->envCtx.fillScreen = true;
+                        play->envCtx.screenFillColor[0] = 0;
+                        play->envCtx.screenFillColor[1] = 0;
+                        play->envCtx.screenFillColor[2] = 0;
+                        play->envCtx.screenFillColor[3] = 255;
+                        play->transitionMode = TRANS_MODE_CS_BLACK_FILL;
+                        break;
+
+                    case TRANS_MODE_CS_BLACK_FILL:
+                        if (gSaveContext.cutsceneTransitionControl != 0) {
+                            play->envCtx.screenFillColor[3] = gSaveContext.cutsceneTransitionControl;
+                            if (gSaveContext.cutsceneTransitionControl < 0x65) {
+                                gTrnsnUnkState = 0;
+                                R_UPDATE_RATE = 3;
+                                play->transitionTrigger = TRANS_TRIGGER_OFF;
+                                play->transitionMode = TRANS_MODE_OFF;
+                            }
+                        }
+                        break;
+                }
             }
-        }
 
-        if (1 && HREG(63)) {
-            LOG_NUM("1", 1);
-        }
-
-        if (1 && (gTrnsnUnkState != 3)) {
             if (1 && HREG(63)) {
                 LOG_NUM("1", 1);
             }
 
-            if ((gSaveContext.gameMode == 0) && (play->msgCtx.msgMode == MSGMODE_NONE) &&
-                (play->gameOverCtx.state == GAMEOVER_INACTIVE)) {
-                KaleidoSetup_Update(play);
-            }
-
-            if (1 && HREG(63)) {
-                LOG_NUM("1", 1);
-            }
-
-            sp80 = (play->pauseCtx.state != 0) || (play->pauseCtx.debugState != 0);
-
-            if (1 && HREG(63)) {
-                LOG_NUM("1", 1);
-            }
-
-            AnimationContext_Reset(&play->animationCtx);
-
-            if (1 && HREG(63)) {
-                LOG_NUM("1", 1);
-            }
-
-            Object_UpdateBank(&play->objectCtx);
-
-            if (1 && HREG(63)) {
-                LOG_NUM("1", 1);
-            }
-
-            if ((sp80 == 0) && (IREG(72) == 0)) {
+            if (1 && (gTrnsnUnkState != 3)) {
                 if (1 && HREG(63)) {
                     LOG_NUM("1", 1);
                 }
 
-                play->gameplayFrames++;
-                // Gameplay stat tracking
-                if (!gSaveContext.sohStats.gameComplete &&
-                    (!IS_BOSS_RUSH || !gSaveContext.isBossRushPaused)) {
-                      gSaveContext.sohStats.playTimer++;
-                      gSaveContext.sohStats.sceneTimer++;
-                      gSaveContext.sohStats.roomTimer++;
-
-                      if (CVarGetInteger(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA && Player_GetMask(play) == PLAYER_MASK_BUNNY) {
-                          gSaveContext.sohStats.count[COUNT_TIME_BUNNY_HOOD]++;
-                      }
+                if ((gSaveContext.gameMode == 0) && (play->msgCtx.msgMode == MSGMODE_NONE) &&
+                    (play->gameOverCtx.state == GAMEOVER_INACTIVE)) {
+                    KaleidoSetup_Update(play);
                 }
 
-                func_800AA178(1);
+                if (1 && HREG(63)) {
+                    LOG_NUM("1", 1);
+                }
 
-                if (play->actorCtx.freezeFlashTimer && (play->actorCtx.freezeFlashTimer-- < 5)) {
-                    osSyncPrintf("FINISH=%d\n", play->actorCtx.freezeFlashTimer);
-                    if ((play->actorCtx.freezeFlashTimer > 0) &&
-                        ((play->actorCtx.freezeFlashTimer % 2) != 0)) {
-                        play->envCtx.fillScreen = true;
-                        play->envCtx.screenFillColor[0] = play->envCtx.screenFillColor[1] =
-                            play->envCtx.screenFillColor[2] = 150;
-                        play->envCtx.screenFillColor[3] = 80;
-                    } else {
-                        play->envCtx.fillScreen = false;
+                sp80 = (play->pauseCtx.state != 0) || (play->pauseCtx.debugState != 0);
+
+                if (1 && HREG(63)) {
+                    LOG_NUM("1", 1);
+                }
+
+                AnimationContext_Reset(&play->animationCtx);
+
+                if (1 && HREG(63)) {
+                    LOG_NUM("1", 1);
+                }
+
+                Object_UpdateBank(&play->objectCtx);
+
+                if (1 && HREG(63)) {
+                    LOG_NUM("1", 1);
+                }
+
+                if ((sp80 == 0) && (IREG(72) == 0)) {
+                    if (1 && HREG(63)) {
+                        LOG_NUM("1", 1);
                     }
+
+                    play->gameplayFrames++;
+                    // Gameplay stat tracking
+                    if (!gSaveContext.sohStats.gameComplete &&
+                        (!IS_BOSS_RUSH || !gSaveContext.isBossRushPaused)) {
+                          gSaveContext.sohStats.playTimer++;
+                          gSaveContext.sohStats.sceneTimer++;
+                          gSaveContext.sohStats.roomTimer++;
+
+                          if (CVarGetInteger(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA && Player_GetMask(play) == PLAYER_MASK_BUNNY) {
+                              gSaveContext.sohStats.count[COUNT_TIME_BUNNY_HOOD]++;
+                          }
+                    }
+
+                    func_800AA178(1);
+
+                    if (play->actorCtx.freezeFlashTimer && (play->actorCtx.freezeFlashTimer-- < 5)) {
+                        osSyncPrintf("FINISH=%d\n", play->actorCtx.freezeFlashTimer);
+                        if ((play->actorCtx.freezeFlashTimer > 0) &&
+                            ((play->actorCtx.freezeFlashTimer % 2) != 0)) {
+                            play->envCtx.fillScreen = true;
+                            play->envCtx.screenFillColor[0] = play->envCtx.screenFillColor[1] =
+                                play->envCtx.screenFillColor[2] = 150;
+                            play->envCtx.screenFillColor[3] = 80;
+                        } else {
+                            play->envCtx.fillScreen = false;
+                        }
+                    } else {
+                        if (1 && HREG(63)) {
+                            LOG_NUM("1", 1);
+                        }
+
+                        func_800973FC(play, &play->roomCtx);
+
+                        if (1 && HREG(63)) {
+                            LOG_NUM("1", 1);
+                        }
+
+                        CollisionCheck_AT(play, &play->colChkCtx);
+
+                        if (1 && HREG(63)) {
+                            LOG_NUM("1", 1);
+                        }
+
+                        CollisionCheck_OC(play, &play->colChkCtx);
+
+                        if (1 && HREG(63)) {
+                            LOG_NUM("1", 1);
+                        }
+
+                        CollisionCheck_Damage(play, &play->colChkCtx);
+
+                        if (1 && HREG(63)) {
+                            LOG_NUM("1", 1);
+                        }
+
+                        CollisionCheck_ClearContext(play, &play->colChkCtx);
+
+                        if (1 && HREG(63)) {
+                            LOG_NUM("1", 1);
+                        }
+
+                        if (play->unk_11DE9 == 0) {
+                            Actor_UpdateAll(play, &play->actorCtx);
+                        }
+
+                        if (1 && HREG(63)) {
+                            LOG_NUM("1", 1);
+                        }
+
+                        func_80064558(play, &play->csCtx);
+
+                        if (1 && HREG(63)) {
+                            LOG_NUM("1", 1);
+                        }
+
+                        func_800645A0(play, &play->csCtx);
+
+                        if (1 && HREG(63)) {
+                            LOG_NUM("1", 1);
+                        }
+
+                        Effect_UpdateAll(play);
+
+                        if (1 && HREG(63)) {
+                            LOG_NUM("1", 1);
+                        }
+
+                        EffectSs_UpdateAll(play);
+
+                        if (1 && HREG(63)) {
+                            LOG_NUM("1", 1);
+                        }
+                    }
+                } else {
+                    func_800AA178(0);
+                }
+
+                if (1 && HREG(63)) {
+                    LOG_NUM("1", 1);
+                }
+
+                func_80095AA0(play, &play->roomCtx.curRoom, &input[1], 0);
+
+                if (1 && HREG(63)) {
+                    LOG_NUM("1", 1);
+                }
+
+                func_80095AA0(play, &play->roomCtx.prevRoom, &input[1], 1);
+
+                if (1 && HREG(63)) {
+                    LOG_NUM("1", 1);
+                }
+
+                if (play->unk_1242B != 0) {
+                    if (CHECK_BTN_ALL(input[0].press.button, BTN_CUP)) {
+                        if ((play->pauseCtx.state != 0) || (play->pauseCtx.debugState != 0)) {
+                            // "Changing viewpoint is prohibited due to the kaleidoscope"
+                            osSyncPrintf(VT_FGCOL(CYAN) "カレイドスコープ中につき視点変更を禁止しております\n" VT_RST);
+                        } else if (Player_InCsMode(play)) {
+                            // "Changing viewpoint is prohibited during the cutscene"
+                            osSyncPrintf(VT_FGCOL(CYAN) "デモ中につき視点変更を禁止しております\n" VT_RST);
+                        } else if (YREG(15) == 0x10) {
+                            Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                        } else {
+                            func_800BC490(play, play->unk_1242B ^ 3);
+                        }
+                    }
+                    func_800BC450(play);
+                }
+
+                if (1 && HREG(63)) {
+                    LOG_NUM("1", 1);
+                }
+
+                SkyboxDraw_Update(&play->skyboxCtx);
+
+                if (1 && HREG(63)) {
+                    LOG_NUM("1", 1);
+                }
+
+                if ((play->pauseCtx.state != 0) || (play->pauseCtx.debugState != 0)) {
+                    if (1 && HREG(63)) {
+                        LOG_NUM("1", 1);
+                    }
+
+                    KaleidoScopeCall_Update(play);
+                } else if (play->gameOverCtx.state != GAMEOVER_INACTIVE) {
+                    if (1 && HREG(63)) {
+                        LOG_NUM("1", 1);
+                    }
+
+                    GameOver_Update(play);
                 } else {
                     if (1 && HREG(63)) {
                         LOG_NUM("1", 1);
                     }
 
-                    func_800973FC(play, &play->roomCtx);
-
-                    if (1 && HREG(63)) {
-                        LOG_NUM("1", 1);
-                    }
-
-                    CollisionCheck_AT(play, &play->colChkCtx);
-
-                    if (1 && HREG(63)) {
-                        LOG_NUM("1", 1);
-                    }
-
-                    CollisionCheck_OC(play, &play->colChkCtx);
-
-                    if (1 && HREG(63)) {
-                        LOG_NUM("1", 1);
-                    }
-
-                    CollisionCheck_Damage(play, &play->colChkCtx);
-
-                    if (1 && HREG(63)) {
-                        LOG_NUM("1", 1);
-                    }
-
-                    CollisionCheck_ClearContext(play, &play->colChkCtx);
-
-                    if (1 && HREG(63)) {
-                        LOG_NUM("1", 1);
-                    }
-
-                    if (play->unk_11DE9 == 0) {
-                        Actor_UpdateAll(play, &play->actorCtx);
-                    }
-
-                    if (1 && HREG(63)) {
-                        LOG_NUM("1", 1);
-                    }
-
-                    func_80064558(play, &play->csCtx);
-
-                    if (1 && HREG(63)) {
-                        LOG_NUM("1", 1);
-                    }
-
-                    func_800645A0(play, &play->csCtx);
-
-                    if (1 && HREG(63)) {
-                        LOG_NUM("1", 1);
-                    }
-
-                    Effect_UpdateAll(play);
-
-                    if (1 && HREG(63)) {
-                        LOG_NUM("1", 1);
-                    }
-
-                    EffectSs_UpdateAll(play);
-
-                    if (1 && HREG(63)) {
-                        LOG_NUM("1", 1);
-                    }
+                    Message_Update(play);
                 }
+
+                if (1 && HREG(63)) {
+                    LOG_NUM("1", 1);
+                }
+
+                if (1 && HREG(63)) {
+                    LOG_NUM("1", 1);
+                }
+
+                Interface_Update(play);
+
+                if (1 && HREG(63)) {
+                    LOG_NUM("1", 1);
+                }
+
+                AnimationContext_Update(play, &play->animationCtx);
+
+                if (1 && HREG(63)) {
+                    LOG_NUM("1", 1);
+                }
+
+                SoundSource_UpdateAll(play);
+
+                if (1 && HREG(63)) {
+                    LOG_NUM("1", 1);
+                }
+
+                ShrinkWindow_Update(R_UPDATE_RATE);
+
+                if (1 && HREG(63)) {
+                    LOG_NUM("1", 1);
+                }
+
+                TransitionFade_Update(&play->transitionFade, R_UPDATE_RATE);
             } else {
-                func_800AA178(0);
+                goto skip;
             }
-
-            if (1 && HREG(63)) {
-                LOG_NUM("1", 1);
-            }
-
-            func_80095AA0(play, &play->roomCtx.curRoom, &input[1], 0);
-
-            if (1 && HREG(63)) {
-                LOG_NUM("1", 1);
-            }
-
-            func_80095AA0(play, &play->roomCtx.prevRoom, &input[1], 1);
-
-            if (1 && HREG(63)) {
-                LOG_NUM("1", 1);
-            }
-
-            if (play->unk_1242B != 0) {
-                if (CHECK_BTN_ALL(input[0].press.button, BTN_CUP)) {
-                    if ((play->pauseCtx.state != 0) || (play->pauseCtx.debugState != 0)) {
-                        // "Changing viewpoint is prohibited due to the kaleidoscope"
-                        osSyncPrintf(VT_FGCOL(CYAN) "カレイドスコープ中につき視点変更を禁止しております\n" VT_RST);
-                    } else if (Player_InCsMode(play)) {
-                        // "Changing viewpoint is prohibited during the cutscene"
-                        osSyncPrintf(VT_FGCOL(CYAN) "デモ中につき視点変更を禁止しております\n" VT_RST);
-                    } else if (YREG(15) == 0x10) {
-                        Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-                    } else {
-                        func_800BC490(play, play->unk_1242B ^ 3);
-                    }
-                }
-                func_800BC450(play);
-            }
-
-            if (1 && HREG(63)) {
-                LOG_NUM("1", 1);
-            }
-
-            SkyboxDraw_Update(&play->skyboxCtx);
-
-            if (1 && HREG(63)) {
-                LOG_NUM("1", 1);
-            }
-
-            if ((play->pauseCtx.state != 0) || (play->pauseCtx.debugState != 0)) {
-                if (1 && HREG(63)) {
-                    LOG_NUM("1", 1);
-                }
-
-                KaleidoScopeCall_Update(play);
-            } else if (play->gameOverCtx.state != GAMEOVER_INACTIVE) {
-                if (1 && HREG(63)) {
-                    LOG_NUM("1", 1);
-                }
-
-                GameOver_Update(play);
-            } else {
-                if (1 && HREG(63)) {
-                    LOG_NUM("1", 1);
-                }
-
-                Message_Update(play);
-            }
-
-            if (1 && HREG(63)) {
-                LOG_NUM("1", 1);
-            }
-
-            if (1 && HREG(63)) {
-                LOG_NUM("1", 1);
-            }
-
-            Interface_Update(play);
-
-            if (1 && HREG(63)) {
-                LOG_NUM("1", 1);
-            }
-
-            AnimationContext_Update(play, &play->animationCtx);
-
-            if (1 && HREG(63)) {
-                LOG_NUM("1", 1);
-            }
-
-            SoundSource_UpdateAll(play);
-
-            if (1 && HREG(63)) {
-                LOG_NUM("1", 1);
-            }
-
-            ShrinkWindow_Update(R_UPDATE_RATE);
-
-            if (1 && HREG(63)) {
-                LOG_NUM("1", 1);
-            }
-
-            TransitionFade_Update(&play->transitionFade, R_UPDATE_RATE);
-        } else {
-            goto skip;
         }
-    }
-
-    if (1 && HREG(63)) {
-        LOG_NUM("1", 1);
-    }
-
-skip:
-    if (1 && HREG(63)) {
-        LOG_NUM("1", 1);
-    }
-
-    if ((sp80 == 0) || (gDbgCamEnabled)) {
-        s32 pad3[5];
-        s32 i;
-
-        play->nextCamera = play->activeCamera;
 
         if (1 && HREG(63)) {
             LOG_NUM("1", 1);
         }
 
-        for (i = 0; i < NUM_CAMS; i++) {
-            if ((i != play->nextCamera) && (play->cameraPtrs[i] != NULL)) {
-                if (1 && HREG(63)) {
-                    LOG_NUM("1", 1);
-                }
-
-                Camera_Update(play->cameraPtrs[i]);
-            }
+    skip:
+        if (1 && HREG(63)) {
+            LOG_NUM("1", 1);
         }
 
-        Camera_Update(play->cameraPtrs[play->nextCamera]);
+        if ((sp80 == 0) || (gDbgCamEnabled)) {
+            s32 pad3[5];
+            s32 i;
+
+            play->nextCamera = play->activeCamera;
+
+            if (1 && HREG(63)) {
+                LOG_NUM("1", 1);
+            }
+
+            for (i = 0; i < NUM_CAMS; i++) {
+                if ((i != play->nextCamera) && (play->cameraPtrs[i] != NULL)) {
+                    if (1 && HREG(63)) {
+                        LOG_NUM("1", 1);
+                    }
+
+                    Camera_Update(play->cameraPtrs[i]);
+                }
+            }
+
+            Camera_Update(play->cameraPtrs[play->nextCamera]);
+
+            if (1 && HREG(63)) {
+                LOG_NUM("1", 1);
+            }
+        }
 
         if (1 && HREG(63)) {
             LOG_NUM("1", 1);
         }
-    }
 
-    if (1 && HREG(63)) {
-        LOG_NUM("1", 1);
-    }
+        Environment_Update(play, &play->envCtx, &play->lightCtx, &play->pauseCtx, &play->msgCtx,
+                           &play->gameOverCtx, play->state.gfxCtx);
 
-    Environment_Update(play, &play->envCtx, &play->lightCtx, &play->pauseCtx, &play->msgCtx,
-                       &play->gameOverCtx, play->state.gfxCtx);
-
-    if (IS_RANDO) {
-        GivePlayerRandoRewardSariaGift(play, RC_LW_GIFT_FROM_SARIA);
-        GivePlayerRandoRewardSongOfTime(play, RC_SONG_FROM_OCARINA_OF_TIME);
-        GivePlayerRandoRewardZeldaLightArrowsGift(play, RC_TOT_LIGHT_ARROWS_CUTSCENE);
-        GivePlayerRandoRewardNocturne(play, RC_SHEIK_IN_KAKARIKO);
-        GivePlayerRandoRewardRequiem(play, RC_SHEIK_AT_COLOSSUS);
-        GivePlayerRandoRewardMasterSword(play, RC_TOT_MASTER_SWORD);
+        if (IS_RANDO) {
+            GivePlayerRandoRewardSariaGift(play, RC_LW_GIFT_FROM_SARIA);
+            GivePlayerRandoRewardSongOfTime(play, RC_SONG_FROM_OCARINA_OF_TIME);
+            GivePlayerRandoRewardZeldaLightArrowsGift(play, RC_TOT_LIGHT_ARROWS_CUTSCENE);
+            GivePlayerRandoRewardNocturne(play, RC_SHEIK_IN_KAKARIKO);
+            GivePlayerRandoRewardRequiem(play, RC_SHEIK_AT_COLOSSUS);
+            GivePlayerRandoRewardMasterSword(play, RC_TOT_MASTER_SWORD);
+        }
     }
 }
 

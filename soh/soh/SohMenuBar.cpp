@@ -1560,6 +1560,8 @@ void DrawCheatsMenu() {
         UIWidgets::Tooltip("Freezes the time of day");
         UIWidgets::PaddedEnhancementCheckbox("Time Sync", CVAR_CHEAT("TimeSync"), true, false);
         UIWidgets::Tooltip("This syncs the ingame time with the real world time");
+        UIWidgets::EnhancementSliderInt("Game Speed Multiplier: %dx", "##GameSpeedMultiplier", CVAR_CHEAT("GameSpeedMultiplier"), 1, 10, "", 1, true, false);
+        UIWidgets::Tooltip("Multiplies the speed of the entire game");
         UIWidgets::PaddedEnhancementCheckbox("No ReDead/Gibdo Freeze", CVAR_CHEAT("NoRedeadFreeze"), true, false);
         UIWidgets::Tooltip("Prevents ReDeads and Gibdos from being able to freeze you with their scream");
         UIWidgets::PaddedEnhancementCheckbox("Keese/Guay don't target you", CVAR_CHEAT("NoKeeseGuayTarget"), true, false);
