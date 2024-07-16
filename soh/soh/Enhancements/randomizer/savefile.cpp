@@ -331,7 +331,7 @@ extern "C" void Randomizer_InitSaveFile() {
         gSaveContext.adultTradeItems = 0;
     }
 
-    int startingAge = Randomizer_GetSettingValue(RSK_STARTING_AGE);
+    int startingAge = OTRGlobals::Instance->gRandoContext->GetSettings()->ResolvedStartingAge();
     switch (startingAge) {
         case RO_AGE_ADULT: // Adult
             gSaveContext.linkAge = LINK_AGE_ADULT;
