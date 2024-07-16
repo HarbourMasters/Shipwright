@@ -598,7 +598,7 @@ namespace Rando {
         CanRideEpona    = IsAdult && Epona && CanUse(RG_EPONAS_SONG);
         CanSummonGossipFairyWithoutSuns = CanUse(RG_ZELDAS_LULLABY) || CanUse(RG_EPONAS_SONG) || CanUse(RG_SONG_OF_TIME);
         CanSummonGossipFairy            = CanSummonGossipFairyWithoutSuns || CanUse(RG_SUNS_SONG);
-        Hearts          = Hearts = ctx->GetSaveContext()->healthCapacity / 16;
+        Hearts          = ctx->GetSaveContext()->healthCapacity / 16;
         EffectiveHealth = ((Hearts << (2 + DoubleDefense)) >> Multiplier) + ((Hearts << (2 + DoubleDefense)) % (1 << Multiplier) > 0); //Number of half heart hits to die, ranges from 1 to 160
         FireTimer       = CanUse(RG_GORON_TUNIC) ? 255 : (ctx->GetTrickOption(RT_FEWER_TUNIC_REQUIREMENTS)) ? (Hearts * 8) : 0;
         WaterTimer      = CanUse(RG_ZORA_TUNIC) ? 255 : (ctx->GetTrickOption(RT_FEWER_TUNIC_REQUIREMENTS)) ? (Hearts * 8) : 0;
@@ -924,7 +924,7 @@ namespace Rando {
         ProgressiveGiantKnife = 0;
 
         //If not keysanity, start with 1 logical key to account for automatically unlocking the basement door in vanilla FiT
-        if (IsKeysanity || ctx->GetDungeon(Rando::FIRE_TEMPLE)->IsMQ()) {
+        if (!IsKeysanity && ctx->GetDungeon(Rando::FIRE_TEMPLE)->IsVanilla()) {
             ctx->SetSmallKeyCount(SCENE_FIRE_TEMPLE, 1);
         }
 
