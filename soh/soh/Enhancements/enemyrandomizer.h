@@ -13,6 +13,8 @@ bool IsEnemyFoundToRandomize(int16_t sceneNum, int8_t roomNum, int16_t actorId, 
 bool IsEnemyAllowedToSpawn(int16_t sceneNum, int8_t roomNum, EnemyEntry enemy);
 EnemyEntry GetRandomizedEnemyEntry(uint32_t seed);
 
+extern const char* enemyCVarList[];
+const char* enemyNameList[];
 extern void GetSelectedEnemies();
 
 #ifndef __cplusplus

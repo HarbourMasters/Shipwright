@@ -40,6 +40,22 @@ const char* enemyCVarList[] = {
     CVAR_ENHANCEMENT("RandomizedEnemyList.Guay"),
 };
 
+const char* enemyNameList[] = {
+    "Keese",				"Fire Keese",		"Ice Keese",			"Stalfos",
+    "Red Tektite",			"Blue Tektite",		"Wallmaster",			"Dodongo",
+    "Flying Peahat",		"Peahat Larva",		"Lizalfos",				"Dinolfos",
+    "Gohma Larva",			"Shabom",			"Baby Dodongo",			"Dark Link",
+    "Biri",					"Tailparasan",		"Skulltula",			"Big Skulltula",
+    "Invisible Skulltula",	"Torch Slug",		"Stinger",				"Club Moblin",
+    "Small Deku Baba",		"Large Deku Baba",	"Armos",				"Mad Scrub",
+    "Bari",					"Bubble",			"Floor Tile",			"Beamos",
+    "Floormaster",			"Redead",			"Gibdo",				"ShellBlade",
+    "Withered Deku Baba",	"Like-Like",		"Spike",				"Iron Knuckle (Black)",
+    "Iron Knuckle (White)",	"Flying Pot",		"Freezard",				"Arwing",
+    "Wolfos (Normal)",		"Wolfos (White)",	"Stalchild (Small)",	"Stalchild (Big)",
+    "Guay",
+};
+
 static EnemyEntry randomizedEnemySpawnTable[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] = {
     { ACTOR_EN_FIREFLY, 2 },    // Regular Keese
     { ACTOR_EN_FIREFLY, 1 },    // Fire Keese
