@@ -767,7 +767,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_ENABLE_BOMBCHU_DROPS],
         &mOptions[RSK_BLUE_FIRE_ARROWS],
         &mOptions[RSK_SUNLIGHT_ARROWS],
-        &mOptions[RSK_INFINITE_UPGRADES]
+        &mOptions[RSK_INFINITE_UPGRADES],
         &mOptions[RSK_SKELETON_KEY],
     }, false, WidgetContainerType::COLUMN);
     mOptionGroups[RSG_GAMEPLAY_IMGUI_TABLE] = OptionGroup::SubGroup("Gameplay", {
