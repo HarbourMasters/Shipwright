@@ -129,6 +129,7 @@ namespace SohGui {
     std::shared_ptr<GameplayStatsWindow> mGameplayStatsWindow;
     std::shared_ptr<CheckTracker::CheckTrackerSettingsWindow> mCheckTrackerSettingsWindow;
     std::shared_ptr<CheckTracker::CheckTrackerWindow> mCheckTrackerWindow;
+    std::shared_ptr<EntranceTrackerSettingsWindow> mEntranceTrackerSettingsWindow;
     std::shared_ptr<EntranceTrackerWindow> mEntranceTrackerWindow;
     std::shared_ptr<ItemTrackerSettingsWindow> mItemTrackerSettingsWindow;
     std::shared_ptr<ItemTrackerWindow> mItemTrackerWindow;
@@ -191,8 +192,10 @@ namespace SohGui {
         gui->AddGuiWindow(mCheckTrackerWindow);
         mCheckTrackerSettingsWindow = std::make_shared<CheckTracker::CheckTrackerSettingsWindow>(CVAR_WINDOW("CheckTrackerSettings"), "Check Tracker Settings");
         gui->AddGuiWindow(mCheckTrackerSettingsWindow);
-        mEntranceTrackerWindow = std::make_shared<EntranceTrackerWindow>(CVAR_WINDOW("EntranceTracker"),"Entrance Tracker");
+        mEntranceTrackerWindow = std::make_shared<EntranceTrackerWindow>(CVAR_WINDOW("EntranceTracker"), "Entrance Tracker");
         gui->AddGuiWindow(mEntranceTrackerWindow);
+        mEntranceTrackerSettingsWindow = std::make_shared<EntranceTrackerSettingsWindow>(CVAR_WINDOW("EntranceTrackerSettings"), "Entrance Tracker Settings");
+        gui->AddGuiWindow(mEntranceTrackerSettingsWindow);
         mItemTrackerWindow = std::make_shared<ItemTrackerWindow>(CVAR_WINDOW("ItemTracker"), "Item Tracker");
         gui->AddGuiWindow(mItemTrackerWindow);
         mItemTrackerSettingsWindow = std::make_shared<ItemTrackerSettingsWindow>(CVAR_WINDOW("ItemTrackerSettings"), "Item Tracker Settings");
@@ -213,6 +216,7 @@ namespace SohGui {
         mItemTrackerWindow = nullptr;
         mItemTrackerSettingsWindow = nullptr;
         mEntranceTrackerWindow = nullptr;
+        mEntranceTrackerSettingsWindow = nullptr;
         mCheckTrackerWindow = nullptr;
         mCheckTrackerSettingsWindow = nullptr;
         mGameplayStatsWindow = nullptr;

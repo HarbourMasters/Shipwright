@@ -38,6 +38,10 @@
 #include "Enhancements/randomizer/randomizer_settings_window.h"
 #include "Enhancements/resolution-editor/ResolutionEditor.h"
 
+// FA icons are kind of wonky, if they worked how I expected them to the "+ 2.0f" wouldn't be needed, but
+// they don't work how I expect them to so I added that because it looked good when I eyeballed it
+#define FA_ICON_BUTTON_FRAME_PADDING_X(icon) (((optionsButtonSize.x - ImGui::CalcTextSize(icon).x) / 2) + 2.0f)
+
 extern bool ToggleAltAssetsAtEndOfFrame;
 extern bool isBetaQuestEnabled;
 
@@ -1963,6 +1967,7 @@ extern std::shared_ptr<RandomizerSettingsWindow> mRandomizerSettingsWindow;
 extern std::shared_ptr<ItemTrackerWindow> mItemTrackerWindow;
 extern std::shared_ptr<ItemTrackerSettingsWindow> mItemTrackerSettingsWindow;
 extern std::shared_ptr<EntranceTrackerWindow> mEntranceTrackerWindow;
+extern std::shared_ptr<EntranceTrackerSettingsWindow> mEntranceTrackerSettingsWindow;
 extern std::shared_ptr<CheckTracker::CheckTrackerWindow> mCheckTrackerWindow;
 extern std::shared_ptr<CheckTracker::CheckTrackerSettingsWindow> mCheckTrackerSettingsWindow;
 extern "C" u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
@@ -1981,11 +1986,19 @@ void DrawRandomizerMenu() {
         ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0, 0));
         ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
         ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
+
     #ifdef __WIIU__
         static ImVec2 buttonSize(200.0f * 2.0f, 0.0f);
+        static ImVec2 buttonWithOptionsSize(170.0f * 2.0f, 0.0f);
+        static ImVec2 optionsButtonSize(25.0f * 2.0f, 0.0f);
+        static float separationToOptionsButton = 5.0f * 2.0f;
     #else
         static ImVec2 buttonSize(200.0f, 0.0f);
+        static ImVec2 buttonWithOptionsSize(170.0f, 0.0f);
+        static ImVec2 optionsButtonSize(25.0f, 0.0f);
+        static float separationToOptionsButton = 5.0f;
     #endif
+
         if (mRandomizerSettingsWindow) {
             if (ImGui::Button(GetWindowButtonText("Randomizer Settings", CVarGetInteger(CVAR_WINDOW("RandomizerSettings"), 0)).c_str(), buttonSize)) {
                 mRandomizerSettingsWindow->ToggleVisibility();
@@ -1993,36 +2006,64 @@ void DrawRandomizerMenu() {
         }
 
         UIWidgets::Spacer(0);
+
         if (mItemTrackerWindow) {
-            if (ImGui::Button(GetWindowButtonText("Item Tracker", CVarGetInteger(CVAR_WINDOW("ItemTracker"), 0)).c_str(), buttonSize)) {
+            if (ImGui::Button(GetWindowButtonText("Item Tracker", CVarGetInteger(CVAR_WINDOW("ItemTracker"), 0)).c_str(), buttonWithOptionsSize)) {
                 mItemTrackerWindow->ToggleVisibility();
             }
         }
 
-        UIWidgets::Spacer(0);
+        ImGui::SameLine(0, 0);
+        ImVec2 cursor = ImGui::GetCursorPos();
+        ImGui::SetCursorPos(ImVec2(cursor.x + separationToOptionsButton, cursor.y));
+
         if (mItemTrackerSettingsWindow) {
-            if (ImGui::Button(GetWindowButtonText("Item Tracker Settings", CVarGetInteger(CVAR_WINDOW("ItemTrackerSettings"), 0)).c_str(), buttonSize)) {
+            ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(FA_ICON_BUTTON_FRAME_PADDING_X(ICON_FA_COG), 6.0f));
+            if (ImGui::Button(ICON_FA_COG "##ItemTrackerSettings", optionsButtonSize)) {
                 mItemTrackerSettingsWindow->ToggleVisibility();
             }
+            ImGui::PopStyleVar();
         }
+
         UIWidgets::Spacer(0);
         if (mEntranceTrackerWindow) {
-            if (ImGui::Button(GetWindowButtonText("Entrance Tracker", CVarGetInteger(CVAR_WINDOW("EntranceTracker"), 0)).c_str(), buttonSize)) {
+            if (ImGui::Button(GetWindowButtonText("Entrance Tracker", CVarGetInteger(CVAR_WINDOW("EntranceTracker"), 0)).c_str(), buttonWithOptionsSize)) {
                 mEntranceTrackerWindow->ToggleVisibility();
             }
         }
+
+        ImGui::SameLine(0, 0);
+        cursor = ImGui::GetCursorPos();
+        ImGui::SetCursorPos(ImVec2(cursor.x + separationToOptionsButton, cursor.y));
+
+        if (mEntranceTrackerSettingsWindow) {
+            ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(FA_ICON_BUTTON_FRAME_PADDING_X(ICON_FA_COG), 6.0f));
+            if (ImGui::Button(ICON_FA_COG "##EntranceTrackerSettings", optionsButtonSize)) {
+                mEntranceTrackerSettingsWindow->ToggleVisibility();
+            }
+            ImGui::PopStyleVar();
+        }
+
         UIWidgets::Spacer(0);
+
         if (mCheckTrackerWindow) {
-            if (ImGui::Button(GetWindowButtonText("Check Tracker", CVarGetInteger(CVAR_WINDOW("CheckTracker"), 0)).c_str(), buttonSize)) {
+            if (ImGui::Button(GetWindowButtonText("Check Tracker", CVarGetInteger(CVAR_WINDOW("CheckTracker"), 0)).c_str(), buttonWithOptionsSize)) {
                 mCheckTrackerWindow->ToggleVisibility();
             }
         }
-        UIWidgets::Spacer(0);
+
+        ImGui::SameLine(0, 0);
+        cursor = ImGui::GetCursorPos();
+        ImGui::SetCursorPos(ImVec2(cursor.x + separationToOptionsButton, cursor.y));
+
         if (mCheckTrackerSettingsWindow) {
-            if (ImGui::Button(GetWindowButtonText("Check Tracker Settings", CVarGetInteger(CVAR_WINDOW("CheckTrackerSettings"), 0)).c_str(), buttonSize)) {
+            ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(FA_ICON_BUTTON_FRAME_PADDING_X(ICON_FA_COG), 6.0f));
+            if (ImGui::Button(ICON_FA_COG "##CheckTrackerSettings", optionsButtonSize)) {
                 mCheckTrackerSettingsWindow->ToggleVisibility();
             }
+            ImGui::PopStyleVar();
         }
+
         ImGui::PopStyleVar(3);
         ImGui::PopStyleColor(1);
 

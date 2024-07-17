@@ -406,10 +406,18 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
             return infiniteUpgrades != RO_INF_UPGRADES_OFF ?
                 (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_STICK_UPGRADE) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN) :
                 (CUR_UPG_VALUE(UPG_STICKS) < 3 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE);
+        case RG_DEKU_STICK_1:
+        case RG_BUY_DEKU_STICK_1:
+            return CUR_UPG_VALUE(UPG_STICKS) ? CAN_OBTAIN : CANT_OBTAIN_NEED_UPGRADE;
         case RG_PROGRESSIVE_NUT_UPGRADE:
             return infiniteUpgrades != RO_INF_UPGRADES_OFF ?
                 (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_NUT_UPGRADE) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN) :
                 (CUR_UPG_VALUE(UPG_NUTS) < 3 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE);
+        case RG_DEKU_NUTS_5:
+        case RG_DEKU_NUTS_10:
+        case RG_BUY_DEKU_NUTS_5:
+        case RG_BUY_DEKU_NUTS_10:
+            return CUR_UPG_VALUE(UPG_NUTS) ? CAN_OBTAIN : CANT_OBTAIN_NEED_UPGRADE;
         case RG_PROGRESSIVE_BOMB_BAG:
             return infiniteUpgrades != RO_INF_UPGRADES_OFF ?
                 (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_BOMB_BAG) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN) :
@@ -713,14 +721,8 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_PIECE_OF_HEART:
         case RG_HEART_CONTAINER:
         case RG_ICE_TRAP:
-        case RG_DEKU_NUTS_5:
-        case RG_DEKU_NUTS_10:
-        case RG_DEKU_STICK_1:
         case RG_TREASURE_GAME_HEART:
         case RG_TREASURE_GAME_GREEN_RUPEE:
-        case RG_BUY_DEKU_NUTS_5:
-        case RG_BUY_DEKU_NUTS_10:
-        case RG_BUY_DEKU_STICK_1:
         case RG_BUY_HEART:
         case RG_TRIFORCE_PIECE:
         default:
@@ -3029,7 +3031,7 @@ CustomMessage Randomizer::GetGoronMessage(u16 index) {
 void Randomizer::CreateCustomMessages() {
     // RANDTODO: Translate into french and german and replace GIMESSAGE_UNTRANSLATED
     // with GIMESSAGE(getItemID, itemID, english, german, french).
-    const std::array<GetItemMessage, 82> getItemMessages = {{
+    const std::array<GetItemMessage, 85> getItemMessages = {{
         GIMESSAGE(RG_GREG_RUPEE, ITEM_MASK_GORON, 
 			"You found %gGreg%w!",
 			"%gGreg%w! Du hast ihn wirklich gefunden!",
@@ -3309,6 +3311,9 @@ void Randomizer::CreateCustomMessages() {
         GIMESSAGE_UNTRANSLATED(RG_MAGIC_INF, ITEM_MAGIC_LARGE, "You now have %yinfinite%w %rMagic%w!"),
         GIMESSAGE_UNTRANSLATED(RG_BOMBCHU_INF, ITEM_BOMBCHU, "You now have %yinfinite%w %rBombchus%w!"),
         GIMESSAGE_UNTRANSLATED(RG_WALLET_INF, ITEM_WALLET_GIANT, "You now have %yinfinite%w %rmoney%w!"),
+        GIMESSAGE_UNTRANSLATED(RG_SKELETON_KEY, ITEM_KEY_SMALL, "You found the %rSkeleton Key%w!"),
+        GIMESSAGE_UNTRANSLATED(RG_DEKU_STICK_BAG, ITEM_STICK, "You found the %rDeku Stick Bag%w!&You can now hold deku sticks!"),
+        GIMESSAGE_UNTRANSLATED(RG_DEKU_NUT_BAG, ITEM_NUT, "You found the %rDeku Nut Bag%w!&You can now hold deku nuts!"),
     }};
     CreateGetItemMessages(&getItemMessages);
     CreateRupeeMessages();

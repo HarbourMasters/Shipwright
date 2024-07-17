@@ -124,6 +124,10 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
         case RG_PROGRESSIVE_STICK_UPGRADE:
             switch (CUR_UPG_VALUE(UPG_STICKS)) {
                 case 0:
+                    if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_DEKU_STICK_BAG)) {
+                        actual = RG_DEKU_STICK_BAG;
+                        break;
+                    }
                 case 1:
                     if (infiniteUpgrades == RO_INF_UPGRADES_CONDENSED_PROGRESSIVE) {
                         actual = RG_STICK_UPGRADE_INF;
@@ -149,6 +153,10 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
         case RG_PROGRESSIVE_NUT_UPGRADE:
             switch (CUR_UPG_VALUE(UPG_NUTS)) {
                 case 0:
+                    if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_DEKU_NUT_BAG)) {
+                        actual = RG_DEKU_NUT_BAG;
+                        break;
+                    }
                 case 1:
                     if (infiniteUpgrades == RO_INF_UPGRADES_CONDENSED_PROGRESSIVE) {
                         actual = RG_NUT_UPGRADE_INF;
