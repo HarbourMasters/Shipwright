@@ -28,7 +28,6 @@
 #include "Enhancements/randomizer/randomizer_item_tracker.h"
 #include "Enhancements/randomizer/randomizer_settings_window.h"
 
-extern bool ToggleAltAssetsAtEndOfFrame;
 extern bool isBetaQuestEnabled;
 
 extern "C" PlayState* gPlayState;
@@ -907,12 +906,7 @@ void DrawEnhancementsMenu() {
         if (ImGui::BeginMenu("Graphics"))
         {
             if (ImGui::BeginMenu("Mods")) {
-                if (UIWidgets::PaddedEnhancementCheckbox("Use Alternate Assets", "gAltAssets", false, false)) {
-                    // The checkbox will flip the alt asset CVar, but we instead want it to change at the end of the game frame
-                    // We toggle it back while setting the flag to update the CVar later
-                    CVarSetInteger("gAltAssets", !CVarGetInteger("gAltAssets", 0));
-                    ToggleAltAssetsAtEndOfFrame = true;
-                }
+                UIWidgets::PaddedEnhancementCheckbox("Use Alternate Assets", "gAltAssets", false, false);
                 UIWidgets::Tooltip("Toggle between standard assets and alternate assets. Usually mods will indicate if this setting has to be used or not.");
                 UIWidgets::PaddedEnhancementCheckbox("Disable Bomb Billboarding", "gDisableBombBillboarding", true, false);
                 UIWidgets::Tooltip("Disables bombs always rotating to face the camera. To be used in conjunction with mods that want to replace bombs with 3D objects.");

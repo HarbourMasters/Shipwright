@@ -38,7 +38,6 @@
 #include "Enhancements/game-interactor/GameInteractor.h"
 #include "Enhancements/cosmetics/authenticGfxPatches.h"
 
-bool ToggleAltAssetsAtEndOfFrame = false;
 bool isBetaQuestEnabled = false;
 
 extern "C" {

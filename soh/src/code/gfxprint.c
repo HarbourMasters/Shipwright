@@ -141,7 +141,7 @@ static const ALIGN_ASSET(2) char rGfxPrintFontDataAlt[] = drGfxPrintFontDataAlt;
 // https://github.com/HarbourMasters/Shipwright/issues/2762
 typedef enum {hardcoded, otrDefault, otrAlt} font_texture_t;
 font_texture_t GfxPrint_TextureToUse() {
-    if (CVarGetInteger("gAltAssets", 0) && ResourceMgr_FileExists(rGfxPrintFontDataAlt)) {
+    if (ResourceMgr_IsAltAssetsEnabled() && ResourceMgr_FileExists(rGfxPrintFontDataAlt)) {
         // If we have alt assets enabled, and we have alt prefixed font texture, use that
         return otrAlt;
     } else if (ResourceMgr_FileExists(rGfxPrintFontData)) {
