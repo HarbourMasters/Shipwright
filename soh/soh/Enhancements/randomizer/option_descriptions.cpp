@@ -98,7 +98,8 @@ void Settings::CreateOptionDescriptions() {
         "\n"
         "Random Number - A Random number and set of dungeons will be their Master Quest varieties.\n"
         "\n"
-        "Selection Only - Specify which dungeons are Vanilla or Master Quest.";
+        "Selection Only - Specify which dungeons are Vanilla, Master Quest or a 50/50 between the two.\n"
+        "Differs from Random Number in that they are rolled individually, making the exact total a bell curve.";
     mOptionDescriptions[RSK_MQ_DUNGEON_SET] =
                 "Choose specific Dungeons to be Master Quest or Vanilla.\n"
                 "\n"
@@ -249,6 +250,12 @@ void Settings::CreateOptionDescriptions() {
     mOptionDescriptions[RSK_SHUFFLE_FISHING_POLE] = "Shuffles the fishing pole into the item pool.\n"
         "\n"
         "The fishing pole is required to play the fishing pond minigame.";
+    mOptionDescriptions[RSK_SHUFFLE_DEKU_STICK_BAG] = "Shuffles the deku stick bag into the item pool.\n"
+        "\n"
+        "The deku stick bag is required to hold deku sticks.";
+    mOptionDescriptions[RSK_SHUFFLE_DEKU_NUT_BAG] = "Shuffles the deku nut bag into the item pool.\n"
+        "\n"
+        "The deku nut bag is required to hold deku nuts.";
     mOptionDescriptions[RSK_SHOPSANITY] = "Off - All shop items will be the same as vanilla.\n"
                                           "\n"
                                           "0 Items - Vanilla shop items will be shuffled among different shops.\n"
@@ -370,7 +377,8 @@ void Settings::CreateOptionDescriptions() {
         "\n"
         "Count - A specified amount of randomly selected dungeons will have their keys replaced with keyrings.\n"
         "\n"
-        "Selection - Hand select which dungeons will have their keys replaced with keyrings.\n"
+        "Selection - Hand select which dungeons will have their keys replaced with keyrings\n"
+        "(can also be left as random, in which case each one will have a 50% chance of being a keyring).\n"
         "\n"
         "Selecting key ring for dungeons will have no effect if Small Keys are set to Start With or Vanilla.\n"
         "\n"

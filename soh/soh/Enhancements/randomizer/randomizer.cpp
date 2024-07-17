@@ -397,8 +397,16 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         // Inventory Items
         case RG_PROGRESSIVE_STICK_UPGRADE:
             return CUR_UPG_VALUE(UPG_STICKS) < 3 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_DEKU_STICK_1:
+        case RG_BUY_DEKU_STICK_1:
+            return CUR_UPG_VALUE(UPG_STICKS) ? CAN_OBTAIN : CANT_OBTAIN_NEED_UPGRADE;
         case RG_PROGRESSIVE_NUT_UPGRADE:
             return CUR_UPG_VALUE(UPG_NUTS) < 3 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_DEKU_NUTS_5:
+        case RG_DEKU_NUTS_10:
+        case RG_BUY_DEKU_NUTS_5:
+        case RG_BUY_DEKU_NUTS_10:
+            return CUR_UPG_VALUE(UPG_NUTS) ? CAN_OBTAIN : CANT_OBTAIN_NEED_UPGRADE;
         case RG_PROGRESSIVE_BOMB_BAG:
             return CUR_UPG_VALUE(UPG_BOMB_BAG) < 3 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_BOMBS_5:
@@ -694,14 +702,8 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_PIECE_OF_HEART:
         case RG_HEART_CONTAINER:
         case RG_ICE_TRAP:
-        case RG_DEKU_NUTS_5:
-        case RG_DEKU_NUTS_10:
-        case RG_DEKU_STICK_1:
         case RG_TREASURE_GAME_HEART:
         case RG_TREASURE_GAME_GREEN_RUPEE:
-        case RG_BUY_DEKU_NUTS_5:
-        case RG_BUY_DEKU_NUTS_10:
-        case RG_BUY_DEKU_STICK_1:
         case RG_BUY_HEART:
         case RG_TRIFORCE_PIECE:
         default:
@@ -2952,7 +2954,7 @@ CustomMessage Randomizer::GetGoronMessage(u16 index) {
 void Randomizer::CreateCustomMessages() {
     // RANDTODO: Translate into french and german and replace GIMESSAGE_UNTRANSLATED
     // with GIMESSAGE(getItemID, itemID, english, german, french).
-    const std::array<GetItemMessage, 75> getItemMessages = {{
+    const std::array<GetItemMessage, 77> getItemMessages = {{
         GIMESSAGE(RG_GREG_RUPEE, ITEM_MASK_GORON, 
 			"You found %gGreg%w!",
 			"%gGreg%w! Du hast ihn wirklich gefunden!",
@@ -3225,6 +3227,8 @@ void Randomizer::CreateCustomMessages() {
         GIMESSAGE_UNTRANSLATED(RG_BRONZE_SCALE, ITEM_SCALE_SILVER, "You got the %rBronze Scale%w!&The power of buoyancy is yours!"),
         GIMESSAGE_UNTRANSLATED(RG_FISHING_POLE, ITEM_FISHING_POLE, "You found a lost %rFishing Pole%w!&Time to hit the pond!"),
         GIMESSAGE_UNTRANSLATED(RG_SKELETON_KEY, ITEM_KEY_SMALL, "You found the %rSkeleton Key%w!"),
+        GIMESSAGE_UNTRANSLATED(RG_DEKU_STICK_BAG, ITEM_STICK, "You found the %rDeku Stick Bag%w!&You can now hold deku sticks!"),
+        GIMESSAGE_UNTRANSLATED(RG_DEKU_NUT_BAG, ITEM_NUT, "You found the %rDeku Nut Bag%w!&You can now hold deku nuts!"),
     }};
     CreateGetItemMessages(&getItemMessages);
     CreateRupeeMessages();

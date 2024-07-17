@@ -1981,6 +1981,8 @@ typedef enum {
     RG_OCARINA_C_RIGHT_BUTTON,
     RG_SKELETON_KEY,
     RG_FISHING_POLE,
+    RG_DEKU_STICK_BAG,
+    RG_DEKU_NUT_BAG,
     RG_HINT,
     RG_TYCOON_WALLET,
     RG_BRONZE_SCALE,
@@ -3714,6 +3716,8 @@ typedef enum {
     RSK_FISHSANITY_AGE_SPLIT,
     RSK_SHUFFLE_FISHING_POLE,
     RSK_SKELETON_KEY,
+    RSK_SHUFFLE_DEKU_STICK_BAG,
+    RSK_SHUFFLE_DEKU_NUT_BAG,
     RSK_MAX
 } RandomizerSettingKey;
 
@@ -3878,6 +3882,12 @@ typedef enum {
     RO_KEYRINGS_COUNT,
     RO_KEYRINGS_SELECTION,
 } RandoOptionKeyrings;
+
+typedef enum {
+    RO_KEYRING_FOR_DUNGEON_OFF,
+    RO_KEYRING_FOR_DUNGEON_RANDOM,
+    RO_KEYRING_FOR_DUNGEON_ON,
+} RandoOptionKeyringForDungeon;
 
 //Ganon's Boss Key Settings (vanilla, own dungeon, start with,
 //overworld, anywhere, 100 GS reward)

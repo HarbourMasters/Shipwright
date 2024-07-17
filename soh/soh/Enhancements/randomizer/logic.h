@@ -140,6 +140,8 @@ class Logic {
     bool GregInLacsLogic = false;
 
     // Progressive Items
+    uint8_t ProgressiveStickBag = 0;
+    uint8_t ProgressiveNutBag = 0;
     uint8_t ProgressiveBulletBag = 0;
     uint8_t ProgressiveBombBag = 0;
     uint8_t ProgressiveMagic = 0;
