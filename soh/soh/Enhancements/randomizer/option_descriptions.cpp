@@ -98,7 +98,8 @@ void Settings::CreateOptionDescriptions() {
         "\n"
         "Random Number - A Random number and set of dungeons will be their Master Quest varieties.\n"
         "\n"
-        "Selection Only - Specify which dungeons are Vanilla or Master Quest.";
+        "Selection Only - Specify which dungeons are Vanilla, Master Quest or a 50/50 between the two.\n"
+        "Differs from Random Number in that they are rolled individually, making the exact total a bell curve.";
     mOptionDescriptions[RSK_MQ_DUNGEON_SET] =
                 "Choose specific Dungeons to be Master Quest or Vanilla.\n"
                 "\n"

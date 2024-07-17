@@ -30,6 +30,7 @@ const auto& RandomElement(const Container& container) {
 }
 
 //Shuffle items within a vector or array
+//RANDOTODO There's probably a more efficient way to do what this does.
 template <typename T>
 void Shuffle(std::vector<T>& vector) {
     for (std::size_t i = 0; i + 1 < vector.size(); i++)

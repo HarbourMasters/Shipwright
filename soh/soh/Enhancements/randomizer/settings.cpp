@@ -1486,7 +1486,7 @@ void Settings::UpdateOptionProperties() {
     } else {
         // If any MQ Options are available, show the MQ Dungeon Randomization Combobox
         mOptions[RSK_MQ_DUNGEON_RANDOM].Unhide();
-        switch(CVarGetInteger(CVAR_RANDOMIZER_SETTING("MqDungeons"), RO_MQ_DUNGEONS_NONE)) {
+        switch(CVarGetInteger(CVAR_RANDOMIZER_SETTING("MQDungeons"), RO_MQ_DUNGEONS_NONE)) {
             // If No MQ Dungeons, add a separator after the combobx and hide
             // the count slider and the toggle for individual dungeon selections.
             case RO_MQ_DUNGEONS_NONE:
@@ -1504,17 +1504,22 @@ void Settings::UpdateOptionProperties() {
             // else if random number or selection only, remove the separator and only show
             // the individual dungeon selection toggle.
             case RO_MQ_DUNGEONS_RANDOM_NUMBER:
-            case RO_MQ_DUNGEONS_SELECTION:
                 mOptions[RSK_MQ_DUNGEON_RANDOM].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
                 mOptions[RSK_MQ_DUNGEON_COUNT].Hide();
                 mOptions[RSK_MQ_DUNGEON_SET].Unhide();
+                break;
+            case RO_MQ_DUNGEONS_SELECTION:
+                mOptions[RSK_MQ_DUNGEON_RANDOM].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
+                mOptions[RSK_MQ_DUNGEON_COUNT].Hide();
+                mOptions[RSK_MQ_DUNGEON_SET].Hide();
                 break;
             default:
                 break;
         }
         // Controls whether or not to show the selectors for individual dungeons.
-        if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("MqDungeons"), RO_MQ_DUNGEONS_NONE) != RO_MQ_DUNGEONS_NONE &&
-            CVarGetInteger(CVAR_RANDOMIZER_SETTING("MqDungeonsSelection"), RO_GENERIC_OFF) == RO_GENERIC_ON) {
+        if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("MQDungeons"), RO_MQ_DUNGEONS_NONE) != RO_MQ_DUNGEONS_NONE &&
+            (CVarGetInteger(CVAR_RANDOMIZER_SETTING("MQDungeonsSelection"), RO_GENERIC_OFF) == RO_GENERIC_ON ||
+             CVarGetInteger(CVAR_RANDOMIZER_SETTING("MQDungeons"), RO_MQ_DUNGEONS_NONE) == RO_MQ_DUNGEONS_SELECTION)) {
             // if showing the dungeon selectors, remove the separator after the Set Dungeons checkbox.
             mOptions[RSK_MQ_DUNGEON_SET].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
             mOptions[RSK_MQ_DEKU_TREE].Unhide();
@@ -1546,12 +1551,7 @@ void Settings::UpdateOptionProperties() {
             mOptions[RSK_MQ_GANONS_CASTLE].Hide();
         }
     }
-    // Disable interaction with Set Dungeons checkbox if MQ Dungeon Randomization is set to Selection Only.
-    if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("MqDungeons"), RO_MQ_DUNGEONS_NONE) == RO_MQ_DUNGEONS_SELECTION) {
-        mOptions[RSK_MQ_DUNGEON_SET].Disable("This option is force-enabled because Master Quest Dungeons is set to Selection Only", UIWidgets::CheckboxGraphics::Checkmark);
-    } else {
-        mOptions[RSK_MQ_DUNGEON_SET].Enable();
-    }
+
     // Show mixed entrance pool options if mixed entrance pools are enabled at all.
     if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("MixedEntrances"), RO_GENERIC_OFF)) {
         mOptions[RSK_MIXED_ENTRANCE_POOLS].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
@@ -1871,74 +1871,121 @@ void Settings::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocatio
     // RANDOTODO implement chest shuffle with keysanity
     // ShuffleChestMinigame.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_CHEST_MINIGAME]);
     mOptions[RSK_SHUFFLE_CHEST_MINIGAME].SetSelectedIndex(RO_CHEST_GAME_OFF);
+    
     //TODO: RandomizeAllSettings(true) when implementing the ability to randomize the options themselves.
     std::array<DungeonInfo*, 12> dungeons = ctx->GetDungeons()->GetDungeonList();
-    std::array<bool, 12> dungeonModesKnown{};
-    const std::vector<Option*> dungeonOptions = {
-        &mOptions[RSK_MQ_DEKU_TREE],
-        &mOptions[RSK_MQ_DODONGOS_CAVERN],
-        &mOptions[RSK_MQ_JABU_JABU],
-        &mOptions[RSK_MQ_FOREST_TEMPLE],
-        &mOptions[RSK_MQ_FIRE_TEMPLE],
-        &mOptions[RSK_MQ_WATER_TEMPLE],
-        &mOptions[RSK_MQ_SPIRIT_TEMPLE],
-        &mOptions[RSK_MQ_SHADOW_TEMPLE],
-        &mOptions[RSK_MQ_BOTTOM_OF_THE_WELL],
-        &mOptions[RSK_MQ_ICE_CAVERN],
-        &mOptions[RSK_MQ_GTG],
-        &mOptions[RSK_MQ_GANONS_CASTLE]
-    };
-    auto mqSet = mOptions[RSK_MQ_DUNGEON_COUNT].Value<uint8_t>();
-    if (mOptions[RSK_MQ_DUNGEON_RANDOM].Is(RO_MQ_DUNGEONS_SELECTION)) {
-        mqSet = 0;
+
+    //reset the MQ vars
+    for (auto dungeon: dungeons) {
+        dungeon->ClearMQ();
+        dungeon->SetDungeonKnown(true);
     }
-    std::vector<uint8_t> randMQOption = {};
-    if (mOptions[RSK_MQ_DUNGEON_SET]) {
-        uint8_t dungeonCount = 0;
-        for (size_t i = 0; i < dungeons.size(); i++) {
-            dungeons[i]->ClearMQ();
-            dungeonModesKnown[i] = true;
-            switch (dungeonOptions[i]->Value<uint8_t>()) {
-                case 1:
-                    dungeons[i]->SetMQ();
-                    dungeonCount++;
+    //if it's selection mode, process the selection directly
+    if (mOptions[RSK_MQ_DUNGEON_RANDOM].Value<uint8_t>() == RO_MQ_DUNGEONS_SELECTION){
+        mOptions[RSK_MQ_DUNGEON_SET].SetSelectedIndex(RO_GENERIC_ON);
+        //How many dungeons are set to MQ in selection
+        uint8_t mqSet = 0;
+        for (auto dungeon: dungeons) {
+            switch (mOptions[dungeon->GetMQSetting()].Value<uint8_t>()) {
+                case RO_MQ_SET_MQ:
+                    dungeon->SetMQ();
+                    mqSet += 1;
                     break;
-                case 2:
-                    randMQOption.push_back(i);
-                    dungeonModesKnown[i] = false;
+                case RO_MQ_SET_RANDOM:
+                    //50% per dungeon, rolled seperatly so people can either have a linear distribtuion
+                    //or a bell curve for the number of MQ dungeons per seed.
+                    if (Random(0,2)){
+                        dungeon->SetMQ();
+                        mqSet += 1;
+                    }
+                    dungeon->SetDungeonKnown(false);
                     break;
                 default:
                     break;
             }
         }
-        Shuffle(randMQOption);
-        if (mOptions[RSK_MQ_DUNGEON_RANDOM].Is(RO_MQ_DUNGEONS_RANDOM_NUMBER)) {
-            mqSet = dungeonCount + Random(0, static_cast<int>(randMQOption.size()) + 1);
-        }
-        for (uint8_t i = 0; dungeonCount < mqSet; i++) {
-            if (i > randMQOption.size()) {
-                // This can happen if the amount of MQ Dungeons is specifically
-                // set to a higher number than the amount of Dungeons specifically set to MQ or Random,
-                // break out of the loop and just have fewer MQ dungeons than the Set Count.
-                break;
+        //override the dungeons set with the ones set by selection, so it's accurate for anything that wants to know MQ dungeon count
+        mOptions[RSK_MQ_DUNGEON_COUNT].SetSelectedIndex(mqSet);
+    //handling set number and random number together
+    } else if (mOptions[RSK_MQ_DUNGEON_RANDOM].Value<uint8_t>() != RO_MQ_DUNGEONS_NONE){
+        // so we don't have to call this repeatedly
+        uint8_t mqCount = mOptions[RSK_MQ_DUNGEON_COUNT].Value<uint8_t>();
+        //How many dungeons are set to MQ in selection
+        uint8_t mqSet = 0;
+        //the number of random 
+        uint8_t mqToSet = 0;
+        //store the dungeons to randomly decide between. we use the id instead of a dungeon object to avoid a lot of casting.
+        std::vector<uint8_t> randMQOption = {};
+        //if dungeons have been preset, process them
+        if (mOptions[RSK_MQ_DUNGEON_SET]){
+            for (size_t i = 0; i < dungeons.size(); i++) {
+                switch (mOptions[dungeons[i]->GetMQSetting()].Value<uint8_t>()) {
+                case RO_MQ_SET_MQ:
+                    dungeons[i]->SetMQ();
+                    mqSet += 1;
+                    break;
+                case RO_MQ_SET_RANDOM:
+                    randMQOption.push_back(i);
+                    dungeons[i]->SetDungeonKnown(false);
+                    break;
+                default:
+                    break;
+                }
             }
-            dungeons[randMQOption[i]]->SetMQ();
-            dungeonCount++;
+        //otherwise, every dungeon is possible
+        } else {
+            //if the count is fixed to 12, we know everything is MQ, so can skip some setps and do not set Known
+            if (mOptions[RSK_MQ_DUNGEON_RANDOM].Value<uint8_t>() == RO_MQ_DUNGEONS_SET_NUMBER &&
+                mqCount == 12) {
+                randMQOption = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+                for (auto dungeon: dungeons) {
+                    mOptions[dungeon->GetMQSetting()].SetSelectedIndex(RO_MQ_SET_MQ);
+                }
+            //if it's fixed to zero, set it to None instead. the rest is processed after
+            } else if (mOptions[RSK_MQ_DUNGEON_RANDOM].Value<uint8_t>() == RO_MQ_DUNGEONS_SET_NUMBER &&
+                       mqCount == 0){
+                mOptions[RSK_MQ_DUNGEON_RANDOM].SetSelectedIndex(RO_MQ_DUNGEONS_NONE);
+            //otherwise, make everything a possibility and unknown
+            } else {
+                for (size_t i = 0; i < dungeons.size(); i++) {
+                    randMQOption.push_back(i);
+                    dungeons[i]->SetDungeonKnown(false);
+                    mOptions[dungeons[i]->GetMQSetting()].SetSelectedIndex(RO_MQ_SET_RANDOM);
+                }
+            }
         }
-    } else {
-        Shuffle(dungeons);
-        for (const auto dungeon : dungeons) {
-            dungeon->ClearMQ();
+        //if there's no random options, we can skip this
+        if (randMQOption.size() > 0){
+            //Figure out how many dungeons to select, rolling the random number if needed
+            if (mOptions[RSK_MQ_DUNGEON_RANDOM].Is(RO_MQ_DUNGEONS_RANDOM_NUMBER)){
+                mqToSet = Random(0, static_cast<int>(randMQOption.size()) + 1);
+            } else if (mqCount > mqSet) {
+                mqToSet = std::min(mqCount - mqSet, static_cast<int>(randMQOption.size()));
+            }
+            //we only need to shuffle if we're not using them all
+            if (mqToSet <= static_cast<int8_t>(randMQOption.size()) && mqToSet > 0) {
+                Shuffle(randMQOption);
+            } 
+            for (uint8_t i = 0; i < mqToSet; i++){
+                dungeons[randMQOption[i]]->SetMQ();
+            }
+        } else {
+            //if there's no random options, check if we can collapse the setting into None or Selection
+            if (mqSet == 0){   
+                mOptions[RSK_MQ_DUNGEON_RANDOM].SetSelectedIndex(RO_MQ_DUNGEONS_NONE);
+            } else {
+                mOptions[RSK_MQ_DUNGEON_RANDOM].SetSelectedIndex(RO_MQ_DUNGEONS_SELECTION);
+            }
         }
-        const bool allDungeonModesKnown = mqSet == 0 || mqSet == dungeons.size();
-        for (bool & i : dungeonModesKnown) {
-            i = allDungeonModesKnown;
-        }
-        if (mOptions[RSK_MQ_DUNGEON_RANDOM].Is(RO_MQ_DUNGEONS_RANDOM_NUMBER)) {
-            mqSet = Random(0, 13);
-        }
-        for (uint8_t i = 0; i < mqSet; i++) {
-            dungeons[i]->SetMQ();
+        //reset the value set based on what was actually set
+        mOptions[RSK_MQ_DUNGEON_COUNT].SetSelectedIndex(mqToSet + mqSet);
+    } 
+    //Not an if else as other settings can become None in processing
+    if (mOptions[RSK_MQ_DUNGEON_RANDOM].Value<uint8_t>() == RO_MQ_DUNGEONS_NONE) {
+        mOptions[RSK_MQ_DUNGEON_SET].SetSelectedIndex(RO_GENERIC_OFF);
+        mOptions[RSK_MQ_DUNGEON_COUNT].SetSelectedIndex(0);
+        for (auto dungeon: dungeons) {
+            mOptions[dungeon->GetMQSetting()].SetSelectedIndex(RO_MQ_SET_VANILLA);
         }
     }
 
