@@ -1443,6 +1443,25 @@ void RandomizerOnActorInitHandler(void* actorRef) {
             Actor_Kill(actor);
         }
     }
+
+    //consumable bags
+    if (
+        actor->id = ACTOR_EN_ITEM00 &&
+        (
+            (
+                RAND_GET_OPTION(RSK_SHUFFLE_DEKU_STICK_BAG) &&
+                CUR_UPG_VALUE(UPG_STICKS) == 0 &&
+                actor->params == ITEM00_STICK
+            ) ||
+            (
+                RAND_GET_OPTION(RSK_SHUFFLE_DEKU_NUT_BAG) &&
+                CUR_UPG_VALUE(UPG_NUTS) == 0 &&
+                actor->params == ITEM00_NUTS
+            )
+        )
+    ) {
+        Actor_Kill(actor);
+    }
 }
 
 void RandomizerRegisterHooks() {
