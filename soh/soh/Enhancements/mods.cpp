@@ -1208,7 +1208,7 @@ void RegisterSilverRupeeShuffle() {
                     Actor_Kill(actor);
                 }
                 silverRupee->rg = OTRGlobals::Instance->gRandoContext->GetItemLocation(silverRupee->rc)->GetPlacedRandomizerGet();
-                silverRupee->giEntry = OTRGlobals::Instance->gRandoContext->GetItemLocation(silverRupee->rc)->GetPlacedItem().GetGIEntry().get();
+                silverRupee->giEntry = OTRGlobals::Instance->gRandoContext->GetFinalGIEntry(silverRupee->rc, true, GI_NONE);
                 silverRupee->actionFunc = EnGSwitch_Randomizer_SilverRupeeIdle;
                 silverRupee->actor.draw = EnGSwitch_Randomizer_Draw;
             } else if (silverRupee->type == ENGSWITCH_SILVER_TRACKER) {

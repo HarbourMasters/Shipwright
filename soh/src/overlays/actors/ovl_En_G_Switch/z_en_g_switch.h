@@ -67,7 +67,7 @@ typedef struct EnGSwitch {
     // #region SOH [Randomizer]
     /*        */ RandomizerCheck rc;
     /*        */ RandomizerGet rg;
-    /*        */ GetItemEntry* giEntry;
+    /*        */ GetItemEntry giEntry;
     /*        */ RandomizerInf randInfFlag;
 } EnGSwitch; // size = 0x12F8
 
