@@ -407,6 +407,8 @@ void DrawInfoTab() {
     ImGui::SetNextItemWidth(ImGui::GetFontSize() * 15);
     ImGui::SliderScalar("Time", ImGuiDataType_U16, &gSaveContext.dayTime, &dayTimeMin, &dayTimeMax);
     UIWidgets::InsertHelpHoverText("Time of day");
+    ImGui::SameLine();
+    UIWidgets::PaddedEnhancementCheckbox("Display On-screen", CVAR_ENHANCEMENT("TimeDisplay"), true, false);
     if (ImGui::Button("Dawn")) {
         gSaveContext.dayTime = 0x4000;
     }
@@ -1746,7 +1748,24 @@ void DrawPlayerTab() {
     }
 }
 
+std::string convertTime(uint32_t dayTime) {
+    uint32_t totalSeconds = 24 * 60 * 60;
+    uint32_t seconds = static_cast<uint32_t>(static_cast<double>(dayTime) * (totalSeconds - 1) / 65535);
+    uint32_t hh = seconds / 3600;
+    uint32_t mm = (seconds % 3600) / 60;
+    uint32_t ss = seconds % 60;
+    return fmt::format("{:0>2}:{:0>2}:{:0>2}", hh, mm, ss);
+}
+
 void SaveEditorWindow::DrawElement() {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("TimeDisplay"), 0) == 1) {
+        ImGui::SetNextWindowSize(ImVec2(100, 100));
+        ImGui::Begin("##TimeofDay", nullptr, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoDecoration);
+        std::string timeOfDay = convertTime(gSaveContext.dayTime);
+        ImGui::Text(timeOfDay.c_str());
+        ImGui::End();
+    }
+
     ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
     if (!ImGui::Begin("Save Editor", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();
