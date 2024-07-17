@@ -50,6 +50,13 @@ std::string GetWindowButtonText(const char* text, bool menuOpen) {
     if (!menuOpen) { strcat(buttonText, "  "); }
     return buttonText;
 }
+            
+static std::unordered_map<LUS::WindowBackend, const char*> windowBackendNames = {
+    { LUS::WindowBackend::DX11, "DirectX" },
+    { LUS::WindowBackend::SDL_OPENGL, "OpenGL"},
+    { LUS::WindowBackend::SDL_METAL, "Metal" },
+    { LUS::WindowBackend::GX2, "GX2"}
+};
 
 static const char* imguiScaleOptions[4] = { "Small", "Normal", "Large", "X-Large" };
 
@@ -101,6 +108,24 @@ static const char* imguiScaleOptions[4] = { "Small", "Normal", "Large", "X-Large
 extern "C" SaveContext gSaveContext;
 
 namespace SohGui {
+
+std::unordered_map<LUS::WindowBackend, const char*> availableWindowBackendsMap;
+LUS::WindowBackend configWindowBackend;
+
+void UpdateWindowBackendObjects() {
+    LUS::WindowBackend runningWindowBackend = LUS::Context::GetInstance()->GetWindow()->GetWindowBackend();
+    int32_t configWindowBackendId = LUS::Context::GetInstance()->GetConfig()->GetInt("Window.Backend.Id", -1);
+    if (configWindowBackendId != -1 && configWindowBackendId < static_cast<int>(LUS::WindowBackend::BACKEND_COUNT)) {
+        configWindowBackend = static_cast<LUS::WindowBackend>(configWindowBackendId);
+    } else {
+        configWindowBackend = runningWindowBackend;
+    }
+
+    auto availableWindowBackends = LUS::Context::GetInstance()->GetWindow()->GetAvailableWindowBackends();
+    for (auto& backend : *availableWindowBackends) {
+        availableWindowBackendsMap[backend] = windowBackendNames[backend];
+    }
+}
 
 void DrawMenuBarIcon() {
     static bool gameIconLoaded = false;
@@ -391,40 +416,24 @@ void DrawSettingsMenu() {
             UIWidgets::Tooltip("Changes the scaling of the ImGui menu elements.");
 
             UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
-            
-            static std::unordered_map<LUS::WindowBackend, const char*> windowBackendNames = {
-                { LUS::WindowBackend::DX11, "DirectX" },
-                { LUS::WindowBackend::SDL_OPENGL, "OpenGL"},
-                { LUS::WindowBackend::SDL_METAL, "Metal" },
-                { LUS::WindowBackend::GX2, "GX2"}
-            };
 
             ImGui::Text("Renderer API (Needs reload)");
-            LUS::WindowBackend runningWindowBackend = LUS::Context::GetInstance()->GetWindow()->GetWindowBackend();
-            LUS::WindowBackend configWindowBackend;
-            int configWindowBackendId = LUS::Context::GetInstance()->GetConfig()->GetInt("Window.Backend.Id", -1);
-            if (configWindowBackendId != -1 && configWindowBackendId < static_cast<int>(LUS::WindowBackend::BACKEND_COUNT)) {
-                configWindowBackend = static_cast<LUS::WindowBackend>(configWindowBackendId);
-            } else {
-                configWindowBackend = runningWindowBackend;
-            }
 
-            if (LUS::Context::GetInstance()->GetWindow()->GetAvailableWindowBackends()->size() <= 1) {
+            if (availableWindowBackendsMap.size() <= 1) {
                 UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
             }
-            if (ImGui::BeginCombo("##RApi", windowBackendNames[configWindowBackend])) {
-                for (size_t i = 0; i < LUS::Context::GetInstance()->GetWindow()->GetAvailableWindowBackends()->size(); i++) {
-                    auto backend = LUS::Context::GetInstance()->GetWindow()->GetAvailableWindowBackends()->data()[i];
-                    if (ImGui::Selectable(windowBackendNames[backend], backend == configWindowBackend)) {
-                        LUS::Context::GetInstance()->GetConfig()->SetInt("Window.Backend.Id", static_cast<int>(backend));
-                        LUS::Context::GetInstance()->GetConfig()->SetString("Window.Backend.Name",
-                                                                            windowBackendNames[backend]);
+            if (ImGui::BeginCombo("##RApi", availableWindowBackendsMap[configWindowBackend])) {
+                for (auto backend : availableWindowBackendsMap) {
+                    if (ImGui::Selectable(backend.second, backend.first == configWindowBackend)) {
+                        LUS::Context::GetInstance()->GetConfig()->SetInt("Window.Backend.Id", static_cast<int>(backend.first));
+                        LUS::Context::GetInstance()->GetConfig()->SetString("Window.Backend.Name", backend.second);
                         LUS::Context::GetInstance()->GetConfig()->Save();
+                        UpdateWindowBackendObjects();
                     }
                 }
                 ImGui::EndCombo();
             }
-            if (LUS::Context::GetInstance()->GetWindow()->GetAvailableWindowBackends()->size() <= 1) {
+            if (availableWindowBackendsMap.size() <= 1) {
                 UIWidgets::ReEnableComponent("");
             }
 
@@ -1608,6 +1617,10 @@ void DrawRandomizerMenu() {
 
         ImGui::EndMenu();
     }
+}
+
+void SohMenuBar::InitElement() {
+    UpdateWindowBackendObjects();
 }
 
 void SohMenuBar::DrawElement() {
