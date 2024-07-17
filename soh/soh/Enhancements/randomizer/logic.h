@@ -171,6 +171,9 @@ class Logic {
     // Triforce Pieces
     uint8_t TriforcePieces = 0;
 
+    // Skeleton Key
+    bool SkeletonKey = false;
+
     // Boss Keys
     bool BossKeyForestTemple = false;
     bool BossKeyFireTemple = false;
