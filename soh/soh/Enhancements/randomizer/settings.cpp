@@ -136,15 +136,15 @@ void Settings::CreateOptions() {
     mOptions[RSK_LACS_OPTIONS] = Option::U8("LACS Reward Options", {"Standard Reward", "Greg as Reward", "Greg as Wildcard"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("LacsRewardOptions"), "", WidgetType::Combobox, RO_LACS_STANDARD_REWARD);
     mOptions[RSK_KEYRINGS] = Option::U8("Key Rings", {"Off", "Random", "Count", "Selection"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleKeyRings"), mOptionDescriptions[RSK_KEYRINGS], WidgetType::Combobox, RO_KEYRINGS_OFF);
     mOptions[RSK_KEYRINGS_RANDOM_COUNT] = Option::U8("Keyring Dungeon Count", {NumOpts(0, 9)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleKeyRingsRandomCount"), "", WidgetType::Slider, 8);
-    mOptions[RSK_KEYRINGS_GERUDO_FORTRESS] = Option::Bool("Gerudo Fortress", CVAR_RANDOMIZER_SETTING("ShuffleKeyRingsGerudoFortress"), "", IMFLAG_NONE);
-    mOptions[RSK_KEYRINGS_FOREST_TEMPLE] = Option::Bool("Forest Temple", CVAR_RANDOMIZER_SETTING("ShuffleKeyRingsForestTemple"), "", IMFLAG_NONE);
-    mOptions[RSK_KEYRINGS_FIRE_TEMPLE] = Option::Bool("Fire Temple", CVAR_RANDOMIZER_SETTING("ShuffleKeyRingsFireTemple"), "", IMFLAG_NONE);
-    mOptions[RSK_KEYRINGS_WATER_TEMPLE] = Option::Bool("Water Temple", CVAR_RANDOMIZER_SETTING("ShuffleKeyRingsWaterTemple"), "", IMFLAG_NONE);
-    mOptions[RSK_KEYRINGS_SPIRIT_TEMPLE] = Option::Bool("Spirit Temple", CVAR_RANDOMIZER_SETTING("ShuffleKeyRingsSpiritTemple"), "", IMFLAG_NONE);
-    mOptions[RSK_KEYRINGS_SHADOW_TEMPLE] = Option::Bool("Shadow Temple", CVAR_RANDOMIZER_SETTING("ShuffleKeyRingsShadowTemple"), "", IMFLAG_NONE);
-    mOptions[RSK_KEYRINGS_BOTTOM_OF_THE_WELL] = Option::Bool("Bottom of the Well", CVAR_RANDOMIZER_SETTING("ShuffleKeyRingsBottomOfTheWell"), "", IMFLAG_NONE);
-    mOptions[RSK_KEYRINGS_GTG] = Option::Bool("Gerudo Training Grounds", CVAR_RANDOMIZER_SETTING("ShuffleKeyRingsGTG"), "", IMFLAG_NONE);
-    mOptions[RSK_KEYRINGS_GANONS_CASTLE] = Option::Bool("Ganon's Castle", CVAR_RANDOMIZER_SETTING("ShuffleKeyRingsGanonsCastle"));
+    mOptions[RSK_KEYRINGS_GERUDO_FORTRESS] = Option::U8("Gerudo Fortress Keyring", {"No", "Random", "Yes"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleKeyRingsGerudoFortress"), "", WidgetType::TristateCheckbox, 0);
+    mOptions[RSK_KEYRINGS_FOREST_TEMPLE] = Option::U8("Forest Temple Keyring", {"No", "Random", "Yes"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleKeyRingsForestTemple"), "", WidgetType::TristateCheckbox, 0);
+    mOptions[RSK_KEYRINGS_FIRE_TEMPLE] = Option::U8("Fire Temple Keyring", {"No", "Random", "Yes"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleKeyRingsFireTemple"), "", WidgetType::TristateCheckbox, 0);
+    mOptions[RSK_KEYRINGS_WATER_TEMPLE] = Option::U8("Water Temple Keyring", {"No", "Random", "Yes"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleKeyRingsWaterTemple"), "", WidgetType::TristateCheckbox, 0);
+    mOptions[RSK_KEYRINGS_SPIRIT_TEMPLE] = Option::U8("Spirit Temple Keyring", {"No", "Random", "Yes"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleKeyRingsSpiritTemple"), "", WidgetType::TristateCheckbox, 0);
+    mOptions[RSK_KEYRINGS_SHADOW_TEMPLE] = Option::U8("Shadow Temple Keyring", {"No", "Random", "Yes"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleKeyRingsShadowTemple"), "", WidgetType::TristateCheckbox, 0);
+    mOptions[RSK_KEYRINGS_BOTTOM_OF_THE_WELL] = Option::U8("Bottom of the Well Keyring", {"No", "Random", "Yes"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleKeyRingsBottomOfTheWell"), "", WidgetType::TristateCheckbox, 0);
+    mOptions[RSK_KEYRINGS_GTG] = Option::U8("Gerudo Training Grounds Keyring", {"No", "Random", "Yes"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleKeyRingsGTG"), "", WidgetType::TristateCheckbox, 0);
+    mOptions[RSK_KEYRINGS_GANONS_CASTLE] = Option::U8("Ganon's Castle Keyring", {"No", "Random", "Yes"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleKeyRingsGanonsCastle"), "", WidgetType::TristateCheckbox, 0);
     mOptions[RSK_SKIP_CHILD_STEALTH] = Option::Bool("Skip Child Stealth", {"Don't Skip", "Skip"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("SkipChildStealth"), mOptionDescriptions[RSK_SKIP_CHILD_STEALTH], WidgetType::Checkbox, RO_GENERIC_DONT_SKIP);
     mOptions[RSK_SKIP_CHILD_ZELDA] = Option::Bool("Skip Child Zelda", {"Don't Skip", "Skip"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("SkipChildZelda"), mOptionDescriptions[RSK_SKIP_CHILD_ZELDA], WidgetType::Checkbox, RO_GENERIC_DONT_SKIP);
     mOptions[RSK_SKIP_EPONA_RACE] = Option::Bool("Skip Epona Race", {"Don't Skip", "Skip"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("SkipEponaRace"), mOptionDescriptions[RSK_SKIP_EPONA_RACE], WidgetType::Checkbox, RO_GENERIC_DONT_SKIP);
@@ -1145,15 +1145,15 @@ void Settings::CreateOptions() {
         { "Shuffle Dungeon Items:LACS Reward Options", RSK_LACS_OPTIONS },
         { "Shuffle Dungeon Items:Key Rings", RSK_KEYRINGS },
         { "Shuffle Dungeon Items:Keyring Dungeon Count", RSK_KEYRINGS_RANDOM_COUNT },
-        { "Shuffle Dungeon Items:Gerudo Fortress", RSK_KEYRINGS_GERUDO_FORTRESS },
-        { "Shuffle Dungeon Items:Forest Temple", RSK_KEYRINGS_FOREST_TEMPLE },
-        { "Shuffle Dungeon Items:Fire Temple", RSK_KEYRINGS_FIRE_TEMPLE },
-        { "Shuffle Dungeon Items:Water Temple", RSK_KEYRINGS_WATER_TEMPLE },
-        { "Shuffle Dungeon Items:Spirit Temple", RSK_KEYRINGS_SPIRIT_TEMPLE },
-        { "Shuffle Dungeon Items:Shadow Temple", RSK_KEYRINGS_SHADOW_TEMPLE },
-        { "Shuffle Dungeon Items:Bottom of the Well", RSK_KEYRINGS_BOTTOM_OF_THE_WELL },
-        { "Shuffle Dungeon Items:GTG", RSK_KEYRINGS_GTG },
-        { "Shuffle Dungeon Items:Ganon's Castle", RSK_KEYRINGS_GANONS_CASTLE },
+        { "Shuffle Dungeon Items:Gerudo Fortress Keyring", RSK_KEYRINGS_GERUDO_FORTRESS },
+        { "Shuffle Dungeon Items:Forest Temple Keyring", RSK_KEYRINGS_FOREST_TEMPLE },
+        { "Shuffle Dungeon Items:Fire Temple Keyring", RSK_KEYRINGS_FIRE_TEMPLE },
+        { "Shuffle Dungeon Items:Water Temple Keyring", RSK_KEYRINGS_WATER_TEMPLE },
+        { "Shuffle Dungeon Items:Spirit Temple Keyring", RSK_KEYRINGS_SPIRIT_TEMPLE },
+        { "Shuffle Dungeon Items:Shadow Temple Keyring", RSK_KEYRINGS_SHADOW_TEMPLE },
+        { "Shuffle Dungeon Items:Bottom of the Well Keyring", RSK_KEYRINGS_BOTTOM_OF_THE_WELL },
+        { "Shuffle Dungeon Items:GTG Keyring", RSK_KEYRINGS_GTG },
+        { "Shuffle Dungeon Items:Ganon's Castle Keyring", RSK_KEYRINGS_GANONS_CASTLE },
         { "World Settings:Starting Age", RSK_STARTING_AGE },
         // TODO: Ammo Drop settings
         { "World Settings:Bombchu Drops", RSK_ENABLE_BOMBCHU_DROPS },
@@ -1952,39 +1952,44 @@ void Settings::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocatio
 
     if (mOptions[RSK_KEYRINGS]) {
         // Random Key Rings
+        auto keyrings = keyRingOptions;
+        if (mOptions[RSK_GERUDO_FORTRESS].Is(RO_GF_NORMAL) && mOptions[RSK_GERUDO_KEYS].IsNot(RO_GERUDO_KEYS_VANILLA)) {
+            keyrings.push_back(&mOptions[RSK_KEYRINGS_GERUDO_FORTRESS]);
+        } else {
+            mOptions[RSK_KEYRINGS_GERUDO_FORTRESS].SetSelectedIndex(RO_KEYRING_FOR_DUNGEON_OFF);
+        }
         if (mOptions[RSK_KEYRINGS].Is(RO_KEYRINGS_RANDOM) || mOptions[RSK_KEYRINGS].Is(RO_KEYRINGS_COUNT)) {
-            auto keyrings = keyRingOptions;
-            if (mOptions[RSK_GERUDO_FORTRESS].Is(RO_GF_NORMAL) && mOptions[RSK_GERUDO_KEYS].IsNot(RO_GERUDO_KEYS_VANILLA)) {
-                keyrings.push_back(&mOptions[RSK_KEYRINGS_GERUDO_FORTRESS]);
-            }
             const uint32_t keyRingCount = mOptions[RSK_KEYRINGS].Is(RO_KEYRINGS_COUNT) ? mOptions[RSK_KEYRINGS_RANDOM_COUNT].Value<uint8_t>() : Random(0, static_cast<int>(keyrings.size()));
             Shuffle(keyrings);
             for (size_t i = 0; i < keyRingCount; i++) {
-                keyrings[i]->SetSelectedIndex(RO_GENERIC_ON);
+                keyrings[i]->SetSelectedIndex(RO_KEYRING_FOR_DUNGEON_ON);
+            }
+            for (size_t i = keyRingCount; i < keyrings.size(); i++) {
+                keyrings[i]->SetSelectedIndex(RO_KEYRING_FOR_DUNGEON_OFF);
             }
         }
-        if (mOptions[RSK_KEYRINGS_BOTTOM_OF_THE_WELL]) {
+        if (mOptions[RSK_KEYRINGS_BOTTOM_OF_THE_WELL].Is(RO_KEYRING_FOR_DUNGEON_ON) || (mOptions[RSK_KEYRINGS_BOTTOM_OF_THE_WELL].Is(RO_KEYRING_FOR_DUNGEON_RANDOM) && Random(0, 2) == 1)) {
             ctx->GetDungeon(BOTTOM_OF_THE_WELL)->SetKeyRing();
         }
-        if (mOptions[RSK_KEYRINGS_FOREST_TEMPLE]) {
+        if (mOptions[RSK_KEYRINGS_FOREST_TEMPLE].Is(RO_KEYRING_FOR_DUNGEON_ON) || (mOptions[RSK_KEYRINGS_FOREST_TEMPLE].Is(RO_KEYRING_FOR_DUNGEON_RANDOM) && Random(0, 2) == 1)) {
             ctx->GetDungeon(FOREST_TEMPLE)->SetKeyRing();
         }
-        if (mOptions[RSK_KEYRINGS_FIRE_TEMPLE]) {
+        if (mOptions[RSK_KEYRINGS_FIRE_TEMPLE].Is(RO_KEYRING_FOR_DUNGEON_ON) || (mOptions[RSK_KEYRINGS_FIRE_TEMPLE].Is(RO_KEYRING_FOR_DUNGEON_RANDOM) && Random(0, 2) == 1)) {
             ctx->GetDungeon(FIRE_TEMPLE)->SetKeyRing();
         }
-        if (mOptions[RSK_KEYRINGS_WATER_TEMPLE]) {
+        if (mOptions[RSK_KEYRINGS_WATER_TEMPLE].Is(RO_KEYRING_FOR_DUNGEON_ON) || (mOptions[RSK_KEYRINGS_WATER_TEMPLE].Is(RO_KEYRING_FOR_DUNGEON_RANDOM) && Random(0, 2) == 1)) {
             ctx->GetDungeon(WATER_TEMPLE)->SetKeyRing();
         }
-        if (mOptions[RSK_KEYRINGS_SPIRIT_TEMPLE]) {
+        if (mOptions[RSK_KEYRINGS_SPIRIT_TEMPLE].Is(RO_KEYRING_FOR_DUNGEON_ON) || (mOptions[RSK_KEYRINGS_SPIRIT_TEMPLE].Is(RO_KEYRING_FOR_DUNGEON_RANDOM) && Random(0, 2) == 1)) {
             ctx->GetDungeon(SPIRIT_TEMPLE)->SetKeyRing();
         }
-        if (mOptions[RSK_KEYRINGS_SHADOW_TEMPLE]) {
+        if (mOptions[RSK_KEYRINGS_SHADOW_TEMPLE].Is(RO_KEYRING_FOR_DUNGEON_ON) || (mOptions[RSK_KEYRINGS_SHADOW_TEMPLE].Is(RO_KEYRING_FOR_DUNGEON_RANDOM) && Random(0, 2) == 1)) {
             ctx->GetDungeon(SHADOW_TEMPLE)->SetKeyRing();
         }
-        if (mOptions[RSK_KEYRINGS_GTG]) {
+        if (mOptions[RSK_KEYRINGS_GTG].Is(RO_KEYRING_FOR_DUNGEON_ON) || (mOptions[RSK_KEYRINGS_GTG].Is(RO_KEYRING_FOR_DUNGEON_RANDOM) && Random(0, 2) == 1)) {
             ctx->GetDungeon(GERUDO_TRAINING_GROUNDS)->SetKeyRing();
         }
-        if (mOptions[RSK_KEYRINGS_GANONS_CASTLE]) {
+        if (mOptions[RSK_KEYRINGS_GANONS_CASTLE].Is(RO_KEYRING_FOR_DUNGEON_ON) || (mOptions[RSK_KEYRINGS_GANONS_CASTLE].Is(RO_KEYRING_FOR_DUNGEON_RANDOM) && Random(0, 2) == 1)) {
             ctx->GetDungeon(GANONS_CASTLE)->SetKeyRing();
         }
     }
@@ -2322,15 +2327,6 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
                 case RSK_HBA_HINT:
                 case RSK_WARP_SONG_HINTS:
                 case RSK_SCRUB_TEXT_HINT:
-                case RSK_KEYRINGS_GERUDO_FORTRESS:
-                case RSK_KEYRINGS_FOREST_TEMPLE:
-                case RSK_KEYRINGS_FIRE_TEMPLE:
-                case RSK_KEYRINGS_WATER_TEMPLE:
-                case RSK_KEYRINGS_SHADOW_TEMPLE:
-                case RSK_KEYRINGS_SPIRIT_TEMPLE:
-                case RSK_KEYRINGS_BOTTOM_OF_THE_WELL:
-                case RSK_KEYRINGS_GTG:
-                case RSK_KEYRINGS_GANONS_CASTLE:
                 case RSK_SHUFFLE_ENTRANCES:
                 case RSK_SHUFFLE_OVERWORLD_ENTRANCES:
                 case RSK_SHUFFLE_GROTTO_ENTRANCES:
@@ -2363,6 +2359,23 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
                         mOptions[index].SetSelectedIndex(RO_KEYRINGS_COUNT);
                     } else if (it.value() == "Selection") {
                         mOptions[index].SetSelectedIndex(RO_KEYRINGS_SELECTION);
+                    }
+                    break;
+                case RSK_KEYRINGS_GERUDO_FORTRESS:
+                case RSK_KEYRINGS_FOREST_TEMPLE:
+                case RSK_KEYRINGS_FIRE_TEMPLE:
+                case RSK_KEYRINGS_WATER_TEMPLE:
+                case RSK_KEYRINGS_SHADOW_TEMPLE:
+                case RSK_KEYRINGS_SPIRIT_TEMPLE:
+                case RSK_KEYRINGS_BOTTOM_OF_THE_WELL:
+                case RSK_KEYRINGS_GTG:
+                case RSK_KEYRINGS_GANONS_CASTLE:
+                    if (it.value() == "No") {
+                        mOptions[index].SetSelectedIndex(RO_KEYRING_FOR_DUNGEON_OFF);
+                    } else if (it.value() == "Random") {
+                        mOptions[index].SetSelectedIndex(RO_KEYRING_FOR_DUNGEON_RANDOM);
+                    } else if (it.value() == "Yes") {
+                        mOptions[index].SetSelectedIndex(RO_KEYRING_FOR_DUNGEON_ON);
                     }
                     break;
                 case RSK_SHUFFLE_MERCHANTS:
