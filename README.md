@@ -80,7 +80,7 @@ Currently, there are three rendering APIs supported: DirectX11 (Windows), OpenGL
 
 # Custom Assets
 
-Custom assets are packed in `.otr` files. To use custom assets, place them in the `mods` folder.
+Custom assets are packed in `.otr` archive files. To use custom assets, place them in the `mods` folder.
 
 If you're interested in creating and/or packing your own custom asset `.otr` files, check out the following tools:
 * [**retro - OTR generator**](https://github.com/HarbourMasters64/retro)
@@ -97,6 +97,15 @@ If you want to playtest a continuous integration build, you can find them at the
 * [Windows](https://nightly.link/HarbourMasters/Shipwright/workflows/generate-builds/develop/soh-windows.zip)
 * [macOS](https://nightly.link/HarbourMasters/Shipwright/workflows/generate-builds/develop/soh-mac.zip)
 * [Linux](https://nightly.link/HarbourMasters/Shipwright/workflows/generate-builds/develop/soh-linux.zip)
+
+### Further Reading
+More detailed documentation can be found in the 'docs' directory, including the afformentioned [building instructions](docs/BUILDING.md).
+
+*[Credits](docs/CREDITS.md)
+*[Custom Music](docs/CUSTOM_MUSIC.md)
+*[Controler Maping](docs/GAME_CONTROLLER_DB.md)
+*[Modding](docs/MODDING.md)
+*[Versioning](docs/VERSIONING.md)
 
 <a href="https://github.com/Kenix3/libultraship/">
   <picture>
