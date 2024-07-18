@@ -246,6 +246,8 @@ const char* const countMappings[] = {
 char itemTimestampDisplayName[TIMESTAMP_MAX][21] = { "" };
 ImVec4 itemTimestampDisplayColor[TIMESTAMP_MAX];
 
+bool stopFeverTimer = false;
+
 typedef struct {
     char name[40];
     u32 time;
@@ -281,8 +283,6 @@ std::string formatHexOnlyGameplayStat(uint32_t value) {
     return fmt::format("{:#x}", value, value);
 }
 
-bool stopTimer = false;
-
 extern "C" char* GameplayStats_GetCurrentTime() {
     std::string timeString;
     
@@ -290,10 +290,10 @@ extern "C" char* GameplayStats_GetCurrentTime() {
         uint32_t remainingFeverTime = 
             ((gSaveContext.sohStats.count[COUNT_ICE_TRAPS] * (CVarGetInteger(CVAR_ENHANCEMENT("ExtendTimer"), 0) * 600)) +
             (CVarGetInteger(CVAR_ENHANCEMENT("StartTimer"), 0) * 600) - GAMEPLAYSTAT_TOTAL_TIME);
-        if (remainingFeverTime > 0 && stopTimer == false) {
+        if (remainingFeverTime > 0 && stopFeverTimer == false) {
             timeString = formatTimestampGameplayStat(remainingFeverTime).c_str();
         } else if (remainingFeverTime == 0) {
-            stopTimer = true;
+            stopFeverTimer = true;
             IceTrapFever();
         } else {
             timeString = formatTimestampGameplayStat(0).c_str();

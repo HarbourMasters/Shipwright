@@ -1394,9 +1394,11 @@ void DrawEnhancementsMenu() {
                 "- Can be enabled retroactively after a File has already started.");
 
             UIWidgets::PaddedEnhancementCheckbox("Ice Trap Fever", CVAR_ENHANCEMENT("TrapFever"), true, false);
+            UIWidgets::Tooltip("Uses the In-Game Timer to determine how long you have to play.\n"
+                "Obtaining Ice Traps extends your timer.");
             if (CVarGetInteger(CVAR_ENHANCEMENT("TrapFever"), 0)) {
                 ImGui::Separator();
-                UIWidgets::PaddedEnhancementSliderInt("Starting Timer: %d minutes", "##StartTime", CVAR_ENHANCEMENT("StartTimer"), 1,
+                UIWidgets::PaddedEnhancementSliderInt("Starting Timer: %d minutes", "##StartTime", CVAR_ENHANCEMENT("StartTimer"), 5,
                                                       30, "", 15, true, true, false);
                 UIWidgets::PaddedEnhancementSliderInt("Time Extensions: %d minutes", "##ExtendTime", CVAR_ENHANCEMENT("ExtendTimer"),
                                                       1, 15, "", 5, true, true, false);
