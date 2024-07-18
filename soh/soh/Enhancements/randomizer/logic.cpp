@@ -294,8 +294,8 @@ namespace Rando {
         Bombs     = (BuyBomb || AmmoCanDrop) && BombBag;
         Bombchus  = BombchuRefill && ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) ? BombchuBag : BombBag;
         Bow       = (BuyArrow || AmmoCanDrop) && Quiver;
-        Nuts      = ((NutPot  || NutCrate || DekuBabaNuts) && AmmoCanDrop) || Nuts; //RANDOTODO BuyNuts currently mixed in with Nuts, should be seperate as BuyNuts are also a Nuts source
-        Sticks    = (StickPot || DekuBabaSticks) || Sticks;
+        Nuts      = ProgressiveNutBag != 0 && ((NutPot  || NutCrate || DekuBabaNuts) && AmmoCanDrop) || Nuts; //RANDOTODO BuyNuts currently mixed in with Nuts, should be seperate as BuyNuts are also a Nuts source
+        Sticks    = ProgressiveStickBag != 0 && (StickPot || DekuBabaSticks) || Sticks;
         Bugs      = HasBottle && (BugShrub || WanderingBugs || BugRock || BuyBugs);
         BlueFire  = (HasBottle && BlueFireAccess) || (ctx->GetOption(RSK_BLUE_FIRE_ARROWS) && CanUse(RG_ICE_ARROWS));
         Fish      = HasBottle && (LoneFish || FishGroup || BuyFish); //is there any need to care about lone vs group?
@@ -408,6 +408,9 @@ namespace Rando {
     }
 
     bool Logic::SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmountGlitchless, uint8_t requiredAmountGlitched) {
+        if (SkeletonKey) {
+            return true;
+        }
         switch (dungeon) {
             case RR_FOREST_TEMPLE:
                 /*if (IsGlitched && (GetDifficultyValueFromString(GlitchHookshotJump_Boots) >= static_cast<uint8_t>(GlitchDifficulty::INTERMEDIATE) || GetDifficultyValueFromString(GlitchHoverBoost) >= static_cast<uint8_t>(GlitchDifficulty::NOVICE) ||
@@ -620,6 +623,8 @@ namespace Rando {
         OcarinaCDownButton = ctx->GetOption(RSK_SHUFFLE_OCARINA_BUTTONS).Is(true) ? 0 : 1;
 
         //Progressive Items
+        ProgressiveStickBag   = ctx->GetOption(RSK_SHUFFLE_DEKU_STICK_BAG).Is(true) ? 0 : 1;
+        ProgressiveNutBag     = ctx->GetOption(RSK_SHUFFLE_DEKU_NUT_BAG).Is(true) ? 0 : 1;
         ProgressiveBulletBag  = 0;
         ProgressiveBombBag    = 0;
         ProgressiveMagic      = 0;
@@ -664,6 +669,9 @@ namespace Rando {
 
         //Triforce Pieces
         TriforcePieces = 0;
+
+        //Skeleton Key
+        SkeletonKey = false;
 
         //Boss Souls
         CanSummonGohma        = false;

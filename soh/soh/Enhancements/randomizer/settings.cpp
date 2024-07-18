@@ -65,7 +65,7 @@ void Settings::CreateOptions() {
     mOptions[RSK_SHUFFLE_GROTTO_ENTRANCES] = Option::Bool("Grottos Entrances", CVAR_RANDOMIZER_SETTING("ShuffleGrottosEntrances"), mOptionDescriptions[RSK_SHUFFLE_GROTTO_ENTRANCES]);
     mOptions[RSK_SHUFFLE_OWL_DROPS] = Option::Bool("Owl Drops", CVAR_RANDOMIZER_SETTING("ShuffleOwlDrops"), mOptionDescriptions[RSK_SHUFFLE_OWL_DROPS]);
     mOptions[RSK_SHUFFLE_WARP_SONGS] = Option::Bool("Warp Songs", CVAR_RANDOMIZER_SETTING("ShuffleWarpSongs"), mOptionDescriptions[RSK_SHUFFLE_WARP_SONGS]);
-    mOptions[RSK_SHUFFLE_OVERWORLD_SPAWNS] = Option::Bool("Overworld Spawns", CVAR_RANDOMIZER_SETTING("ShuffleOverworldSpanws"), mOptionDescriptions[RSK_SHUFFLE_OVERWORLD_SPAWNS]);
+    mOptions[RSK_SHUFFLE_OVERWORLD_SPAWNS] = Option::Bool("Overworld Spawns", CVAR_RANDOMIZER_SETTING("ShuffleOverworldSpawns"), mOptionDescriptions[RSK_SHUFFLE_OVERWORLD_SPAWNS]);
     mOptions[RSK_MIXED_ENTRANCE_POOLS] = Option::Bool("Mixed Entrance Pools", CVAR_RANDOMIZER_SETTING("MixedEntrances"), mOptionDescriptions[RSK_MIXED_ENTRANCE_POOLS]);
     mOptions[RSK_MIX_DUNGEON_ENTRANCES] = Option::Bool("Mix Dungeons", CVAR_RANDOMIZER_SETTING("MixDungeons"), mOptionDescriptions[RSK_MIX_DUNGEON_ENTRANCES], IMFLAG_NONE);
     mOptions[RSK_MIX_BOSS_ENTRANCES] = Option::Bool("Mix Bosses", CVAR_RANDOMIZER_SETTING("MixBosses"), mOptionDescriptions[RSK_MIX_BOSS_ENTRANCES], IMFLAG_NONE);
@@ -120,6 +120,8 @@ void Settings::CreateOptions() {
     mOptions[RSK_SHUFFLE_CHEST_MINIGAME] = Option::U8("Shuffle Chest Minigame", {"Off", "On (Separate)", "On (Pack)"});
     mOptions[RSK_SHUFFLE_100_GS_REWARD] = Option::Bool("Shuffle 100 GS Reward", CVAR_RANDOMIZER_SETTING("Shuffle100GSReward"), mOptionDescriptions[RSK_SHUFFLE_100_GS_REWARD], IMFLAG_SEPARATOR_BOTTOM, WidgetType::Checkbox, RO_GENERIC_OFF);
     mOptions[RSK_SHUFFLE_BOSS_SOULS] = Option::U8("Shuffle Boss Souls", {"Off", "On", "On + Ganon"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleBossSouls"), mOptionDescriptions[RSK_SHUFFLE_BOSS_SOULS], WidgetType::Combobox);
+    mOptions[RSK_SHUFFLE_DEKU_STICK_BAG] = Option::Bool("Shuffle Deku Stick Bag", CVAR_RANDOMIZER_SETTING("ShuffleDekuStickBag"), mOptionDescriptions[RSK_SHUFFLE_DEKU_STICK_BAG], IMFLAG_SEPARATOR_BOTTOM, WidgetType::Checkbox, RO_GENERIC_OFF);
+    mOptions[RSK_SHUFFLE_DEKU_NUT_BAG] = Option::Bool("Shuffle Deku Nut Bag", CVAR_RANDOMIZER_SETTING("ShuffleDekuNutBag"), mOptionDescriptions[RSK_SHUFFLE_DEKU_NUT_BAG], IMFLAG_SEPARATOR_BOTTOM, WidgetType::Checkbox, RO_GENERIC_OFF);
     mOptions[RSK_FISHSANITY] = Option::U8("Fishsanity", {"Off", "Shuffle Fishing Pond", "Shuffle Overworld Fish", "Shuffle Both"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("Fishsanity"), mOptionDescriptions[RSK_FISHSANITY], WidgetType::Combobox, RO_FISHSANITY_OFF);
     mOptions[RSK_FISHSANITY_POND_COUNT] = Option::U8("Pond Fish Count", {NumOpts(0,17,1)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("FishsanityPondCount"), mOptionDescriptions[RSK_FISHSANITY_POND_COUNT], WidgetType::Slider, 0, true, IMFLAG_NONE);
     mOptions[RSK_FISHSANITY_AGE_SPLIT] = Option::Bool("Pond Age Split", CVAR_RANDOMIZER_SETTING("FishsanityAgeSplit"), mOptionDescriptions[RSK_FISHSANITY_AGE_SPLIT]);
@@ -136,15 +138,15 @@ void Settings::CreateOptions() {
     mOptions[RSK_LACS_OPTIONS] = Option::U8("LACS Reward Options", {"Standard Reward", "Greg as Reward", "Greg as Wildcard"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("LacsRewardOptions"), "", WidgetType::Combobox, RO_LACS_STANDARD_REWARD);
     mOptions[RSK_KEYRINGS] = Option::U8("Key Rings", {"Off", "Random", "Count", "Selection"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleKeyRings"), mOptionDescriptions[RSK_KEYRINGS], WidgetType::Combobox, RO_KEYRINGS_OFF);
     mOptions[RSK_KEYRINGS_RANDOM_COUNT] = Option::U8("Keyring Dungeon Count", {NumOpts(0, 9)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleKeyRingsRandomCount"), "", WidgetType::Slider, 8);
-    mOptions[RSK_KEYRINGS_GERUDO_FORTRESS] = Option::Bool("Gerudo Fortress", CVAR_RANDOMIZER_SETTING("ShuffleKeyRingsGerudoFortress"), "", IMFLAG_NONE);
-    mOptions[RSK_KEYRINGS_FOREST_TEMPLE] = Option::Bool("Forest Temple", CVAR_RANDOMIZER_SETTING("ShuffleKeyRingsForestTemple"), "", IMFLAG_NONE);
-    mOptions[RSK_KEYRINGS_FIRE_TEMPLE] = Option::Bool("Fire Temple", CVAR_RANDOMIZER_SETTING("ShuffleKeyRingsFireTemple"), "", IMFLAG_NONE);
-    mOptions[RSK_KEYRINGS_WATER_TEMPLE] = Option::Bool("Water Temple", CVAR_RANDOMIZER_SETTING("ShuffleKeyRingsWaterTemple"), "", IMFLAG_NONE);
-    mOptions[RSK_KEYRINGS_SPIRIT_TEMPLE] = Option::Bool("Spirit Temple", CVAR_RANDOMIZER_SETTING("ShuffleKeyRingsSpiritTemple"), "", IMFLAG_NONE);
-    mOptions[RSK_KEYRINGS_SHADOW_TEMPLE] = Option::Bool("Shadow Temple", CVAR_RANDOMIZER_SETTING("ShuffleKeyRingsShadowTemple"), "", IMFLAG_NONE);
-    mOptions[RSK_KEYRINGS_BOTTOM_OF_THE_WELL] = Option::Bool("Bottom of the Well", CVAR_RANDOMIZER_SETTING("ShuffleKeyRingsBottomOfTheWell"), "", IMFLAG_NONE);
-    mOptions[RSK_KEYRINGS_GTG] = Option::Bool("Gerudo Training Grounds", CVAR_RANDOMIZER_SETTING("ShuffleKeyRingsGTG"), "", IMFLAG_NONE);
-    mOptions[RSK_KEYRINGS_GANONS_CASTLE] = Option::Bool("Ganon's Castle", CVAR_RANDOMIZER_SETTING("ShuffleKeyRingsGanonsCastle"));
+    mOptions[RSK_KEYRINGS_GERUDO_FORTRESS] = Option::U8("Gerudo Fortress Keyring", {"No", "Random", "Yes"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleKeyRingsGerudoFortress"), "", WidgetType::TristateCheckbox, 0);
+    mOptions[RSK_KEYRINGS_FOREST_TEMPLE] = Option::U8("Forest Temple Keyring", {"No", "Random", "Yes"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleKeyRingsForestTemple"), "", WidgetType::TristateCheckbox, 0);
+    mOptions[RSK_KEYRINGS_FIRE_TEMPLE] = Option::U8("Fire Temple Keyring", {"No", "Random", "Yes"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleKeyRingsFireTemple"), "", WidgetType::TristateCheckbox, 0);
+    mOptions[RSK_KEYRINGS_WATER_TEMPLE] = Option::U8("Water Temple Keyring", {"No", "Random", "Yes"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleKeyRingsWaterTemple"), "", WidgetType::TristateCheckbox, 0);
+    mOptions[RSK_KEYRINGS_SPIRIT_TEMPLE] = Option::U8("Spirit Temple Keyring", {"No", "Random", "Yes"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleKeyRingsSpiritTemple"), "", WidgetType::TristateCheckbox, 0);
+    mOptions[RSK_KEYRINGS_SHADOW_TEMPLE] = Option::U8("Shadow Temple Keyring", {"No", "Random", "Yes"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleKeyRingsShadowTemple"), "", WidgetType::TristateCheckbox, 0);
+    mOptions[RSK_KEYRINGS_BOTTOM_OF_THE_WELL] = Option::U8("Bottom of the Well Keyring", {"No", "Random", "Yes"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleKeyRingsBottomOfTheWell"), "", WidgetType::TristateCheckbox, 0);
+    mOptions[RSK_KEYRINGS_GTG] = Option::U8("Gerudo Training Grounds Keyring", {"No", "Random", "Yes"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleKeyRingsGTG"), "", WidgetType::TristateCheckbox, 0);
+    mOptions[RSK_KEYRINGS_GANONS_CASTLE] = Option::U8("Ganon's Castle Keyring", {"No", "Random", "Yes"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleKeyRingsGanonsCastle"), "", WidgetType::TristateCheckbox, 0);
     mOptions[RSK_SKIP_CHILD_STEALTH] = Option::Bool("Skip Child Stealth", {"Don't Skip", "Skip"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("SkipChildStealth"), mOptionDescriptions[RSK_SKIP_CHILD_STEALTH], WidgetType::Checkbox, RO_GENERIC_DONT_SKIP);
     mOptions[RSK_SKIP_CHILD_ZELDA] = Option::Bool("Skip Child Zelda", {"Don't Skip", "Skip"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("SkipChildZelda"), mOptionDescriptions[RSK_SKIP_CHILD_ZELDA], WidgetType::Checkbox, RO_GENERIC_DONT_SKIP);
     mOptions[RSK_SKIP_EPONA_RACE] = Option::Bool("Skip Epona Race", {"Don't Skip", "Skip"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("SkipEponaRace"), mOptionDescriptions[RSK_SKIP_EPONA_RACE], WidgetType::Checkbox, RO_GENERIC_DONT_SKIP);
@@ -182,6 +184,7 @@ void Settings::CreateOptions() {
     // TODO: Compasses show rewards/woth, maps show dungeon mode
     mOptions[RSK_BLUE_FIRE_ARROWS] = Option::Bool("Blue Fire Arrows", CVAR_RANDOMIZER_SETTING("BlueFireArrows"), mOptionDescriptions[RSK_BLUE_FIRE_ARROWS]);
     mOptions[RSK_SUNLIGHT_ARROWS] = Option::Bool("Sunlight Arrows", CVAR_RANDOMIZER_SETTING("SunlightArrows"), mOptionDescriptions[RSK_SUNLIGHT_ARROWS]);
+    mOptions[RSK_SKELETON_KEY] = Option::Bool("Skeleton Key", CVAR_RANDOMIZER_SETTING("SkeletonKey"), mOptionDescriptions[RSK_SKELETON_KEY]);
     mOptions[RSK_ITEM_POOL] = Option::U8("Item Pool", {"Plentiful", "Balanced", "Scarce", "Minimal"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ItemPool"), mOptionDescriptions[RSK_ITEM_POOL], WidgetType::Combobox, RO_ITEM_POOL_BALANCED);
     mOptions[RSK_ICE_TRAPS] = Option::U8("Ice Traps", {"Off", "Normal", "Extra", "Mayhem", "Onslaught"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("IceTraps"), mOptionDescriptions[RSK_ICE_TRAPS], WidgetType::Combobox, RO_ICE_TRAPS_NORMAL);
     // TODO: Remove Double Defense, Progressive Goron Sword
@@ -662,6 +665,8 @@ void Settings::CreateOptions() {
         &mOptions[RSK_SHUFFLE_WEIRD_EGG],
         &mOptions[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD],
         &mOptions[RSK_SHUFFLE_FISHING_POLE],
+        &mOptions[RSK_SHUFFLE_DEKU_STICK_BAG],
+        &mOptions[RSK_SHUFFLE_DEKU_NUT_BAG],
     }, false, WidgetContainerType::COLUMN);
     mOptionGroups[RSG_SHUFFLE_NPCS_IMGUI] = OptionGroup::SubGroup("Shuffle NPCs & Merchants", {
         &mOptions[RSK_SHOPSANITY],
@@ -760,7 +765,8 @@ void Settings::CreateOptions() {
         &mOptions[RSK_BOMBCHUS_IN_LOGIC],
         &mOptions[RSK_ENABLE_BOMBCHU_DROPS],
         &mOptions[RSK_BLUE_FIRE_ARROWS],
-        &mOptions[RSK_SUNLIGHT_ARROWS]
+        &mOptions[RSK_SUNLIGHT_ARROWS],
+        &mOptions[RSK_SKELETON_KEY],
     }, false, WidgetContainerType::COLUMN);
     mOptionGroups[RSG_GAMEPLAY_IMGUI_TABLE] = OptionGroup::SubGroup("Gameplay", {
         &mOptionGroups[RSG_TIMESAVERS_IMGUI],
@@ -889,6 +895,8 @@ void Settings::CreateOptions() {
         &mOptions[RSK_SHUFFLE_CHEST_MINIGAME],
         &mOptions[RSK_SHUFFLE_100_GS_REWARD],
         &mOptions[RSK_SHUFFLE_BOSS_SOULS],
+        &mOptions[RSK_SHUFFLE_DEKU_STICK_BAG],
+        &mOptions[RSK_SHUFFLE_DEKU_NUT_BAG],
     });
     mOptionGroups[RSG_SHUFFLE_DUNGEON_ITEMS] = OptionGroup("Shuffle Dungeon Items", {
         &mOptions[RSK_SHUFFLE_MAPANDCOMPASS],
@@ -986,6 +994,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_DAMAGE_MULTIPLIER],
         &mOptions[RSK_BLUE_FIRE_ARROWS],
         &mOptions[RSK_SUNLIGHT_ARROWS],
+        &mOptions[RSK_SKELETON_KEY],
     });
     mOptionGroups[RSG_ITEM_POOL] = OptionGroup("Item Pool Settings", std::initializer_list<Option*>({
         &mOptions[RSK_ITEM_POOL],
@@ -1117,6 +1126,8 @@ void Settings::CreateOptions() {
         { "Shuffle Settings:Shuffle Merchants", RSK_SHUFFLE_MERCHANTS },
         { "Shuffle Settings:Shuffle 100 GS Reward", RSK_SHUFFLE_100_GS_REWARD },
         { "Shuffle Settings:Shuffle Boss Souls", RSK_SHUFFLE_BOSS_SOULS },
+        { "Shuffle Settings:Shuffle Deku Stick Bag", RSK_SHUFFLE_DEKU_STICK_BAG },
+        { "Shuffle Settings:Shuffle Deku Nut Bag", RSK_SHUFFLE_DEKU_NUT_BAG },
         { "Start with Deku Shield", RSK_STARTING_DEKU_SHIELD },
         { "Start with Kokiri Sword", RSK_STARTING_KOKIRI_SWORD },
         { "Start with Fairy Ocarina", RSK_STARTING_OCARINA },
@@ -1145,15 +1156,15 @@ void Settings::CreateOptions() {
         { "Shuffle Dungeon Items:LACS Reward Options", RSK_LACS_OPTIONS },
         { "Shuffle Dungeon Items:Key Rings", RSK_KEYRINGS },
         { "Shuffle Dungeon Items:Keyring Dungeon Count", RSK_KEYRINGS_RANDOM_COUNT },
-        { "Shuffle Dungeon Items:Gerudo Fortress", RSK_KEYRINGS_GERUDO_FORTRESS },
-        { "Shuffle Dungeon Items:Forest Temple", RSK_KEYRINGS_FOREST_TEMPLE },
-        { "Shuffle Dungeon Items:Fire Temple", RSK_KEYRINGS_FIRE_TEMPLE },
-        { "Shuffle Dungeon Items:Water Temple", RSK_KEYRINGS_WATER_TEMPLE },
-        { "Shuffle Dungeon Items:Spirit Temple", RSK_KEYRINGS_SPIRIT_TEMPLE },
-        { "Shuffle Dungeon Items:Shadow Temple", RSK_KEYRINGS_SHADOW_TEMPLE },
-        { "Shuffle Dungeon Items:Bottom of the Well", RSK_KEYRINGS_BOTTOM_OF_THE_WELL },
-        { "Shuffle Dungeon Items:GTG", RSK_KEYRINGS_GTG },
-        { "Shuffle Dungeon Items:Ganon's Castle", RSK_KEYRINGS_GANONS_CASTLE },
+        { "Shuffle Dungeon Items:Gerudo Fortress Keyring", RSK_KEYRINGS_GERUDO_FORTRESS },
+        { "Shuffle Dungeon Items:Forest Temple Keyring", RSK_KEYRINGS_FOREST_TEMPLE },
+        { "Shuffle Dungeon Items:Fire Temple Keyring", RSK_KEYRINGS_FIRE_TEMPLE },
+        { "Shuffle Dungeon Items:Water Temple Keyring", RSK_KEYRINGS_WATER_TEMPLE },
+        { "Shuffle Dungeon Items:Spirit Temple Keyring", RSK_KEYRINGS_SPIRIT_TEMPLE },
+        { "Shuffle Dungeon Items:Shadow Temple Keyring", RSK_KEYRINGS_SHADOW_TEMPLE },
+        { "Shuffle Dungeon Items:Bottom of the Well Keyring", RSK_KEYRINGS_BOTTOM_OF_THE_WELL },
+        { "Shuffle Dungeon Items:GTG Keyring", RSK_KEYRINGS_GTG },
+        { "Shuffle Dungeon Items:Ganon's Castle Keyring", RSK_KEYRINGS_GANONS_CASTLE },
         { "World Settings:Starting Age", RSK_STARTING_AGE },
         // TODO: Ammo Drop settings
         { "World Settings:Bombchu Drops", RSK_ENABLE_BOMBCHU_DROPS },
@@ -1202,6 +1213,7 @@ void Settings::CreateOptions() {
         { "Miscellaneous Settings:Hint Distribution", RSK_HINT_DISTRIBUTION },
         { "Miscellaneous Settings:Blue Fire Arrows", RSK_BLUE_FIRE_ARROWS },
         { "Miscellaneous Settings:Sunlight Arrows", RSK_SUNLIGHT_ARROWS },
+        { "Miscellaneous Settings:Skeleton Key", RSK_SKELETON_KEY },
         { "Timesaver Settings:Skip Child Zelda", RSK_SKIP_CHILD_ZELDA },
         { "Start with Consumables", RSK_STARTING_CONSUMABLES },
         { "Full Wallets", RSK_FULL_WALLETS },
@@ -1478,7 +1490,7 @@ void Settings::UpdateOptionProperties() {
     } else {
         // If any MQ Options are available, show the MQ Dungeon Randomization Combobox
         mOptions[RSK_MQ_DUNGEON_RANDOM].Unhide();
-        switch(CVarGetInteger(CVAR_RANDOMIZER_SETTING("MqDungeons"), RO_MQ_DUNGEONS_NONE)) {
+        switch(CVarGetInteger(CVAR_RANDOMIZER_SETTING("MQDungeons"), RO_MQ_DUNGEONS_NONE)) {
             // If No MQ Dungeons, add a separator after the combobx and hide
             // the count slider and the toggle for individual dungeon selections.
             case RO_MQ_DUNGEONS_NONE:
@@ -1496,17 +1508,22 @@ void Settings::UpdateOptionProperties() {
             // else if random number or selection only, remove the separator and only show
             // the individual dungeon selection toggle.
             case RO_MQ_DUNGEONS_RANDOM_NUMBER:
-            case RO_MQ_DUNGEONS_SELECTION:
                 mOptions[RSK_MQ_DUNGEON_RANDOM].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
                 mOptions[RSK_MQ_DUNGEON_COUNT].Hide();
                 mOptions[RSK_MQ_DUNGEON_SET].Unhide();
+                break;
+            case RO_MQ_DUNGEONS_SELECTION:
+                mOptions[RSK_MQ_DUNGEON_RANDOM].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
+                mOptions[RSK_MQ_DUNGEON_COUNT].Hide();
+                mOptions[RSK_MQ_DUNGEON_SET].Hide();
                 break;
             default:
                 break;
         }
         // Controls whether or not to show the selectors for individual dungeons.
-        if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("MqDungeons"), RO_MQ_DUNGEONS_NONE) != RO_MQ_DUNGEONS_NONE &&
-            CVarGetInteger(CVAR_RANDOMIZER_SETTING("MqDungeonsSelection"), RO_GENERIC_OFF) == RO_GENERIC_ON) {
+        if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("MQDungeons"), RO_MQ_DUNGEONS_NONE) != RO_MQ_DUNGEONS_NONE &&
+            (CVarGetInteger(CVAR_RANDOMIZER_SETTING("MQDungeonsSelection"), RO_GENERIC_OFF) == RO_GENERIC_ON ||
+             CVarGetInteger(CVAR_RANDOMIZER_SETTING("MQDungeons"), RO_MQ_DUNGEONS_NONE) == RO_MQ_DUNGEONS_SELECTION)) {
             // if showing the dungeon selectors, remove the separator after the Set Dungeons checkbox.
             mOptions[RSK_MQ_DUNGEON_SET].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
             mOptions[RSK_MQ_DEKU_TREE].Unhide();
@@ -1538,12 +1555,7 @@ void Settings::UpdateOptionProperties() {
             mOptions[RSK_MQ_GANONS_CASTLE].Hide();
         }
     }
-    // Disable interaction with Set Dungeons checkbox if MQ Dungeon Randomization is set to Selection Only.
-    if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("MqDungeons"), RO_MQ_DUNGEONS_NONE) == RO_MQ_DUNGEONS_SELECTION) {
-        mOptions[RSK_MQ_DUNGEON_SET].Disable("This option is force-enabled because Master Quest Dungeons is set to Selection Only", UIWidgets::CheckboxGraphics::Checkmark);
-    } else {
-        mOptions[RSK_MQ_DUNGEON_SET].Enable();
-    }
+
     // Show mixed entrance pool options if mixed entrance pools are enabled at all.
     if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("MixedEntrances"), RO_GENERIC_OFF)) {
         mOptions[RSK_MIXED_ENTRANCE_POOLS].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
@@ -1739,6 +1751,12 @@ void Settings::UpdateOptionProperties() {
         mOptions[RSK_HINT_DISTRIBUTION].Unhide();
     }
 
+    if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleWarpSongs"), RO_GENERIC_ON)) {
+        mOptions[RSK_WARP_SONG_HINTS].Enable();
+    } else {
+        mOptions[RSK_WARP_SONG_HINTS].Disable("This option is disabled since warp song locations not shuffled.");
+    }
+
     if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleCows"), RO_GENERIC_OFF)) {
         mOptions[RSK_MALON_HINT].Enable();
         } else {
@@ -1857,74 +1875,121 @@ void Settings::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocatio
     // RANDOTODO implement chest shuffle with keysanity
     // ShuffleChestMinigame.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_CHEST_MINIGAME]);
     mOptions[RSK_SHUFFLE_CHEST_MINIGAME].SetSelectedIndex(RO_CHEST_GAME_OFF);
+    
     //TODO: RandomizeAllSettings(true) when implementing the ability to randomize the options themselves.
     std::array<DungeonInfo*, 12> dungeons = ctx->GetDungeons()->GetDungeonList();
-    std::array<bool, 12> dungeonModesKnown{};
-    const std::vector<Option*> dungeonOptions = {
-        &mOptions[RSK_MQ_DEKU_TREE],
-        &mOptions[RSK_MQ_DODONGOS_CAVERN],
-        &mOptions[RSK_MQ_JABU_JABU],
-        &mOptions[RSK_MQ_FOREST_TEMPLE],
-        &mOptions[RSK_MQ_FIRE_TEMPLE],
-        &mOptions[RSK_MQ_WATER_TEMPLE],
-        &mOptions[RSK_MQ_SPIRIT_TEMPLE],
-        &mOptions[RSK_MQ_SHADOW_TEMPLE],
-        &mOptions[RSK_MQ_BOTTOM_OF_THE_WELL],
-        &mOptions[RSK_MQ_ICE_CAVERN],
-        &mOptions[RSK_MQ_GTG],
-        &mOptions[RSK_MQ_GANONS_CASTLE]
-    };
-    auto mqSet = mOptions[RSK_MQ_DUNGEON_COUNT].Value<uint8_t>();
-    if (mOptions[RSK_MQ_DUNGEON_RANDOM].Is(RO_MQ_DUNGEONS_SELECTION)) {
-        mqSet = 0;
+
+    //reset the MQ vars
+    for (auto dungeon: dungeons) {
+        dungeon->ClearMQ();
+        dungeon->SetDungeonKnown(true);
     }
-    std::vector<uint8_t> randMQOption = {};
-    if (mOptions[RSK_MQ_DUNGEON_SET]) {
-        uint8_t dungeonCount = 0;
-        for (size_t i = 0; i < dungeons.size(); i++) {
-            dungeons[i]->ClearMQ();
-            dungeonModesKnown[i] = true;
-            switch (dungeonOptions[i]->Value<uint8_t>()) {
-                case 1:
-                    dungeons[i]->SetMQ();
-                    dungeonCount++;
+    //if it's selection mode, process the selection directly
+    if (mOptions[RSK_MQ_DUNGEON_RANDOM].Value<uint8_t>() == RO_MQ_DUNGEONS_SELECTION){
+        mOptions[RSK_MQ_DUNGEON_SET].SetSelectedIndex(RO_GENERIC_ON);
+        //How many dungeons are set to MQ in selection
+        uint8_t mqSet = 0;
+        for (auto dungeon: dungeons) {
+            switch (mOptions[dungeon->GetMQSetting()].Value<uint8_t>()) {
+                case RO_MQ_SET_MQ:
+                    dungeon->SetMQ();
+                    mqSet += 1;
                     break;
-                case 2:
-                    randMQOption.push_back(i);
-                    dungeonModesKnown[i] = false;
+                case RO_MQ_SET_RANDOM:
+                    //50% per dungeon, rolled seperatly so people can either have a linear distribtuion
+                    //or a bell curve for the number of MQ dungeons per seed.
+                    if (Random(0,2)){
+                        dungeon->SetMQ();
+                        mqSet += 1;
+                    }
+                    dungeon->SetDungeonKnown(false);
                     break;
                 default:
                     break;
             }
         }
-        Shuffle(randMQOption);
-        if (mOptions[RSK_MQ_DUNGEON_RANDOM].Is(RO_MQ_DUNGEONS_RANDOM_NUMBER)) {
-            mqSet = dungeonCount + Random(0, static_cast<int>(randMQOption.size()) + 1);
-        }
-        for (uint8_t i = 0; dungeonCount < mqSet; i++) {
-            if (i > randMQOption.size()) {
-                // This can happen if the amount of MQ Dungeons is specifically
-                // set to a higher number than the amount of Dungeons specifically set to MQ or Random,
-                // break out of the loop and just have fewer MQ dungeons than the Set Count.
-                break;
+        //override the dungeons set with the ones set by selection, so it's accurate for anything that wants to know MQ dungeon count
+        mOptions[RSK_MQ_DUNGEON_COUNT].SetSelectedIndex(mqSet);
+    //handling set number and random number together
+    } else if (mOptions[RSK_MQ_DUNGEON_RANDOM].Value<uint8_t>() != RO_MQ_DUNGEONS_NONE){
+        // so we don't have to call this repeatedly
+        uint8_t mqCount = mOptions[RSK_MQ_DUNGEON_COUNT].Value<uint8_t>();
+        //How many dungeons are set to MQ in selection
+        uint8_t mqSet = 0;
+        //the number of random 
+        uint8_t mqToSet = 0;
+        //store the dungeons to randomly decide between. we use the id instead of a dungeon object to avoid a lot of casting.
+        std::vector<uint8_t> randMQOption = {};
+        //if dungeons have been preset, process them
+        if (mOptions[RSK_MQ_DUNGEON_SET]){
+            for (size_t i = 0; i < dungeons.size(); i++) {
+                switch (mOptions[dungeons[i]->GetMQSetting()].Value<uint8_t>()) {
+                case RO_MQ_SET_MQ:
+                    dungeons[i]->SetMQ();
+                    mqSet += 1;
+                    break;
+                case RO_MQ_SET_RANDOM:
+                    randMQOption.push_back(i);
+                    dungeons[i]->SetDungeonKnown(false);
+                    break;
+                default:
+                    break;
+                }
             }
-            dungeons[randMQOption[i]]->SetMQ();
-            dungeonCount++;
+        //otherwise, every dungeon is possible
+        } else {
+            //if the count is fixed to 12, we know everything is MQ, so can skip some setps and do not set Known
+            if (mOptions[RSK_MQ_DUNGEON_RANDOM].Value<uint8_t>() == RO_MQ_DUNGEONS_SET_NUMBER &&
+                mqCount == 12) {
+                randMQOption = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+                for (auto dungeon: dungeons) {
+                    mOptions[dungeon->GetMQSetting()].SetSelectedIndex(RO_MQ_SET_MQ);
+                }
+            //if it's fixed to zero, set it to None instead. the rest is processed after
+            } else if (mOptions[RSK_MQ_DUNGEON_RANDOM].Value<uint8_t>() == RO_MQ_DUNGEONS_SET_NUMBER &&
+                       mqCount == 0){
+                mOptions[RSK_MQ_DUNGEON_RANDOM].SetSelectedIndex(RO_MQ_DUNGEONS_NONE);
+            //otherwise, make everything a possibility and unknown
+            } else {
+                for (size_t i = 0; i < dungeons.size(); i++) {
+                    randMQOption.push_back(i);
+                    dungeons[i]->SetDungeonKnown(false);
+                    mOptions[dungeons[i]->GetMQSetting()].SetSelectedIndex(RO_MQ_SET_RANDOM);
+                }
+            }
         }
-    } else {
-        Shuffle(dungeons);
-        for (const auto dungeon : dungeons) {
-            dungeon->ClearMQ();
+        //if there's no random options, we can skip this
+        if (randMQOption.size() > 0){
+            //Figure out how many dungeons to select, rolling the random number if needed
+            if (mOptions[RSK_MQ_DUNGEON_RANDOM].Is(RO_MQ_DUNGEONS_RANDOM_NUMBER)){
+                mqToSet = Random(0, static_cast<int>(randMQOption.size()) + 1);
+            } else if (mqCount > mqSet) {
+                mqToSet = std::min(mqCount - mqSet, static_cast<int>(randMQOption.size()));
+            }
+            //we only need to shuffle if we're not using them all
+            if (mqToSet <= static_cast<int8_t>(randMQOption.size()) && mqToSet > 0) {
+                Shuffle(randMQOption);
+            } 
+            for (uint8_t i = 0; i < mqToSet; i++){
+                dungeons[randMQOption[i]]->SetMQ();
+            }
+        } else {
+            //if there's no random options, check if we can collapse the setting into None or Selection
+            if (mqSet == 0){   
+                mOptions[RSK_MQ_DUNGEON_RANDOM].SetSelectedIndex(RO_MQ_DUNGEONS_NONE);
+            } else {
+                mOptions[RSK_MQ_DUNGEON_RANDOM].SetSelectedIndex(RO_MQ_DUNGEONS_SELECTION);
+            }
         }
-        const bool allDungeonModesKnown = mqSet == 0 || mqSet == dungeons.size();
-        for (bool & i : dungeonModesKnown) {
-            i = allDungeonModesKnown;
-        }
-        if (mOptions[RSK_MQ_DUNGEON_RANDOM].Is(RO_MQ_DUNGEONS_RANDOM_NUMBER)) {
-            mqSet = Random(0, 13);
-        }
-        for (uint8_t i = 0; i < mqSet; i++) {
-            dungeons[i]->SetMQ();
+        //reset the value set based on what was actually set
+        mOptions[RSK_MQ_DUNGEON_COUNT].SetSelectedIndex(mqToSet + mqSet);
+    } 
+    //Not an if else as other settings can become None in processing
+    if (mOptions[RSK_MQ_DUNGEON_RANDOM].Value<uint8_t>() == RO_MQ_DUNGEONS_NONE) {
+        mOptions[RSK_MQ_DUNGEON_SET].SetSelectedIndex(RO_GENERIC_OFF);
+        mOptions[RSK_MQ_DUNGEON_COUNT].SetSelectedIndex(0);
+        for (auto dungeon: dungeons) {
+            mOptions[dungeon->GetMQSetting()].SetSelectedIndex(RO_MQ_SET_VANILLA);
         }
     }
 
@@ -1946,39 +2011,44 @@ void Settings::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocatio
 
     if (mOptions[RSK_KEYRINGS]) {
         // Random Key Rings
+        auto keyrings = keyRingOptions;
+        if (mOptions[RSK_GERUDO_FORTRESS].Is(RO_GF_NORMAL) && mOptions[RSK_GERUDO_KEYS].IsNot(RO_GERUDO_KEYS_VANILLA)) {
+            keyrings.push_back(&mOptions[RSK_KEYRINGS_GERUDO_FORTRESS]);
+        } else {
+            mOptions[RSK_KEYRINGS_GERUDO_FORTRESS].SetSelectedIndex(RO_KEYRING_FOR_DUNGEON_OFF);
+        }
         if (mOptions[RSK_KEYRINGS].Is(RO_KEYRINGS_RANDOM) || mOptions[RSK_KEYRINGS].Is(RO_KEYRINGS_COUNT)) {
-            auto keyrings = keyRingOptions;
-            if (mOptions[RSK_GERUDO_FORTRESS].Is(RO_GF_NORMAL) && mOptions[RSK_GERUDO_KEYS].IsNot(RO_GERUDO_KEYS_VANILLA)) {
-                keyrings.push_back(&mOptions[RSK_KEYRINGS_GERUDO_FORTRESS]);
-            }
             const uint32_t keyRingCount = mOptions[RSK_KEYRINGS].Is(RO_KEYRINGS_COUNT) ? mOptions[RSK_KEYRINGS_RANDOM_COUNT].Value<uint8_t>() : Random(0, static_cast<int>(keyrings.size()));
             Shuffle(keyrings);
             for (size_t i = 0; i < keyRingCount; i++) {
-                keyrings[i]->SetSelectedIndex(RO_GENERIC_ON);
+                keyrings[i]->SetSelectedIndex(RO_KEYRING_FOR_DUNGEON_ON);
+            }
+            for (size_t i = keyRingCount; i < keyrings.size(); i++) {
+                keyrings[i]->SetSelectedIndex(RO_KEYRING_FOR_DUNGEON_OFF);
             }
         }
-        if (mOptions[RSK_KEYRINGS_BOTTOM_OF_THE_WELL]) {
+        if (mOptions[RSK_KEYRINGS_BOTTOM_OF_THE_WELL].Is(RO_KEYRING_FOR_DUNGEON_ON) || (mOptions[RSK_KEYRINGS_BOTTOM_OF_THE_WELL].Is(RO_KEYRING_FOR_DUNGEON_RANDOM) && Random(0, 2) == 1)) {
             ctx->GetDungeon(BOTTOM_OF_THE_WELL)->SetKeyRing();
         }
-        if (mOptions[RSK_KEYRINGS_FOREST_TEMPLE]) {
+        if (mOptions[RSK_KEYRINGS_FOREST_TEMPLE].Is(RO_KEYRING_FOR_DUNGEON_ON) || (mOptions[RSK_KEYRINGS_FOREST_TEMPLE].Is(RO_KEYRING_FOR_DUNGEON_RANDOM) && Random(0, 2) == 1)) {
             ctx->GetDungeon(FOREST_TEMPLE)->SetKeyRing();
         }
-        if (mOptions[RSK_KEYRINGS_FIRE_TEMPLE]) {
+        if (mOptions[RSK_KEYRINGS_FIRE_TEMPLE].Is(RO_KEYRING_FOR_DUNGEON_ON) || (mOptions[RSK_KEYRINGS_FIRE_TEMPLE].Is(RO_KEYRING_FOR_DUNGEON_RANDOM) && Random(0, 2) == 1)) {
             ctx->GetDungeon(FIRE_TEMPLE)->SetKeyRing();
         }
-        if (mOptions[RSK_KEYRINGS_WATER_TEMPLE]) {
+        if (mOptions[RSK_KEYRINGS_WATER_TEMPLE].Is(RO_KEYRING_FOR_DUNGEON_ON) || (mOptions[RSK_KEYRINGS_WATER_TEMPLE].Is(RO_KEYRING_FOR_DUNGEON_RANDOM) && Random(0, 2) == 1)) {
             ctx->GetDungeon(WATER_TEMPLE)->SetKeyRing();
         }
-        if (mOptions[RSK_KEYRINGS_SPIRIT_TEMPLE]) {
+        if (mOptions[RSK_KEYRINGS_SPIRIT_TEMPLE].Is(RO_KEYRING_FOR_DUNGEON_ON) || (mOptions[RSK_KEYRINGS_SPIRIT_TEMPLE].Is(RO_KEYRING_FOR_DUNGEON_RANDOM) && Random(0, 2) == 1)) {
             ctx->GetDungeon(SPIRIT_TEMPLE)->SetKeyRing();
         }
-        if (mOptions[RSK_KEYRINGS_SHADOW_TEMPLE]) {
+        if (mOptions[RSK_KEYRINGS_SHADOW_TEMPLE].Is(RO_KEYRING_FOR_DUNGEON_ON) || (mOptions[RSK_KEYRINGS_SHADOW_TEMPLE].Is(RO_KEYRING_FOR_DUNGEON_RANDOM) && Random(0, 2) == 1)) {
             ctx->GetDungeon(SHADOW_TEMPLE)->SetKeyRing();
         }
-        if (mOptions[RSK_KEYRINGS_GTG]) {
+        if (mOptions[RSK_KEYRINGS_GTG].Is(RO_KEYRING_FOR_DUNGEON_ON) || (mOptions[RSK_KEYRINGS_GTG].Is(RO_KEYRING_FOR_DUNGEON_RANDOM) && Random(0, 2) == 1)) {
             ctx->GetDungeon(GERUDO_TRAINING_GROUNDS)->SetKeyRing();
         }
-        if (mOptions[RSK_KEYRINGS_GANONS_CASTLE]) {
+        if (mOptions[RSK_KEYRINGS_GANONS_CASTLE].Is(RO_KEYRING_FOR_DUNGEON_ON) || (mOptions[RSK_KEYRINGS_GANONS_CASTLE].Is(RO_KEYRING_FOR_DUNGEON_RANDOM) && Random(0, 2) == 1)) {
             ctx->GetDungeon(GANONS_CASTLE)->SetKeyRing();
         }
     }
@@ -2037,6 +2107,10 @@ void Settings::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocatio
         }
         mOptions[RSK_KEYSANITY].SetDelayedOption();
         mOptions[RSK_KEYSANITY].SetSelectedIndex(3);
+    }
+
+    if (!mOptions[RSK_SHUFFLE_WARP_SONGS]) {
+        mOptions[RSK_WARP_SONG_HINTS].SetSelectedIndex(RO_GENERIC_OFF);
     }
 
     if (!mOptions[RSK_SHUFFLE_COWS]) {
@@ -2289,6 +2363,7 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
                 case RSK_SKULLS_SUNS_SONG:
                 case RSK_BLUE_FIRE_ARROWS:
                 case RSK_SUNLIGHT_ARROWS:
+                case RSK_SKELETON_KEY:
                 case RSK_BOMBCHUS_IN_LOGIC:
                 case RSK_TOT_ALTAR_HINT:
                 case RSK_GANONDORF_HINT:
@@ -2312,15 +2387,6 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
                 case RSK_HBA_HINT:
                 case RSK_WARP_SONG_HINTS:
                 case RSK_SCRUB_TEXT_HINT:
-                case RSK_KEYRINGS_GERUDO_FORTRESS:
-                case RSK_KEYRINGS_FOREST_TEMPLE:
-                case RSK_KEYRINGS_FIRE_TEMPLE:
-                case RSK_KEYRINGS_WATER_TEMPLE:
-                case RSK_KEYRINGS_SHADOW_TEMPLE:
-                case RSK_KEYRINGS_SPIRIT_TEMPLE:
-                case RSK_KEYRINGS_BOTTOM_OF_THE_WELL:
-                case RSK_KEYRINGS_GTG:
-                case RSK_KEYRINGS_GANONS_CASTLE:
                 case RSK_SHUFFLE_ENTRANCES:
                 case RSK_SHUFFLE_OVERWORLD_ENTRANCES:
                 case RSK_SHUFFLE_GROTTO_ENTRANCES:
@@ -2353,6 +2419,23 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
                         mOptions[index].SetSelectedIndex(RO_KEYRINGS_COUNT);
                     } else if (it.value() == "Selection") {
                         mOptions[index].SetSelectedIndex(RO_KEYRINGS_SELECTION);
+                    }
+                    break;
+                case RSK_KEYRINGS_GERUDO_FORTRESS:
+                case RSK_KEYRINGS_FOREST_TEMPLE:
+                case RSK_KEYRINGS_FIRE_TEMPLE:
+                case RSK_KEYRINGS_WATER_TEMPLE:
+                case RSK_KEYRINGS_SHADOW_TEMPLE:
+                case RSK_KEYRINGS_SPIRIT_TEMPLE:
+                case RSK_KEYRINGS_BOTTOM_OF_THE_WELL:
+                case RSK_KEYRINGS_GTG:
+                case RSK_KEYRINGS_GANONS_CASTLE:
+                    if (it.value() == "No") {
+                        mOptions[index].SetSelectedIndex(RO_KEYRING_FOR_DUNGEON_OFF);
+                    } else if (it.value() == "Random") {
+                        mOptions[index].SetSelectedIndex(RO_KEYRING_FOR_DUNGEON_RANDOM);
+                    } else if (it.value() == "Yes") {
+                        mOptions[index].SetSelectedIndex(RO_KEYRING_FOR_DUNGEON_ON);
                     }
                     break;
                 case RSK_SHUFFLE_MERCHANTS:

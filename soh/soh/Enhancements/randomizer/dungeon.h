@@ -12,7 +12,8 @@ class DungeonInfo {
   public:
     DungeonInfo(std::string name_, RandomizerHintTextKey hintKey_, RandomizerGet map_, RandomizerGet compass_,
                 RandomizerGet smallKey_, RandomizerGet keyRing_, RandomizerGet bossKey_, RandomizerArea area_, 
-                uint8_t vanillaKeyCount_, uint8_t mqKeyCount_, std::vector<RandomizerCheck> vanillaLocations_,
+                uint8_t vanillaKeyCount_, uint8_t mqKeyCount_, RandomizerSettingKey mqSetting_,
+                std::vector<RandomizerCheck> vanillaLocations_,
                 std::vector<RandomizerCheck> mqLocations_, std::vector<RandomizerCheck> sharedLocations_,
                 std::vector<RandomizerCheck> bossRoomLocations_);
     DungeonInfo();
@@ -34,6 +35,8 @@ class DungeonInfo {
     RandomizerGet GetMap() const;
     RandomizerGet GetCompass() const;
     RandomizerGet GetBossKey() const;
+    RandomizerSettingKey GetMQSetting() const;
+    void SetDungeonKnown(bool known);
     void PlaceVanillaMap() const;
     void PlaceVanillaCompass() const;
     void PlaceVanillaBossKey() const;
@@ -50,6 +53,8 @@ class DungeonInfo {
     RandomizerGet smallKey;
     RandomizerGet keyRing;
     RandomizerGet bossKey;
+    RandomizerSettingKey mqSetting;
+    bool isDungeonModeKnown = true;
     uint8_t vanillaKeyCount{};
     uint8_t mqKeyCount{};
     bool masterQuest = false;

@@ -781,6 +781,10 @@ void GenerateItemPool() {
     ctx->possibleIceTrapModels.push_back(RG_OCARINA_C_RIGHT_BUTTON);
   }
 
+  if (ctx->GetOption(RSK_SKELETON_KEY)) {
+    AddItemToMainPool(RG_SKELETON_KEY);
+  }
+
   if (ctx->GetOption(RSK_SHUFFLE_SWIM)) {
     AddItemToMainPool(RG_PROGRESSIVE_SCALE);
   }
@@ -976,6 +980,13 @@ void GenerateItemPool() {
     AddItemToMainPool(RG_PROGRESSIVE_WALLET);
   }
 
+  if (ctx->GetOption(RSK_SHUFFLE_DEKU_STICK_BAG)) {
+    AddItemToMainPool(RG_PROGRESSIVE_STICK_UPGRADE);
+  }
+
+  if (ctx->GetOption(RSK_SHUFFLE_DEKU_NUT_BAG)) {
+    AddItemToMainPool(RG_PROGRESSIVE_NUT_UPGRADE);
+  }
 
   if (ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC)) {
     AddItemToMainPool(RG_PROGRESSIVE_BOMBCHUS, 5);

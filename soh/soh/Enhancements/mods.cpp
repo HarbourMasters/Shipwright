@@ -29,8 +29,10 @@
 #include "src/overlays/actors/ovl_En_Tp/z_en_tp.h"
 #include "src/overlays/actors/ovl_En_Firefly/z_en_firefly.h"
 #include "src/overlays/actors/ovl_En_Xc/z_en_xc.h"
-#include "src/overlays//actors/ovl_Fishing/z_fishing.h"
+#include "src/overlays/actors/ovl_Fishing/z_fishing.h"
 #include "src/overlays/actors/ovl_Obj_Switch/z_obj_switch.h"
+#include "src/overlays/actors/ovl_Door_Shutter/z_door_shutter.h"
+#include "src/overlays/actors/ovl_En_Door/z_en_door.h"
 #include "objects/object_link_boy/object_link_boy.h"
 #include "objects/object_link_child/object_link_child.h"
 
@@ -1712,6 +1714,24 @@ void RegisterRandomizerCompasses() {
     });
 }
 
+void RegisterSkeletonKey() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* refActor) {
+        Actor* actor = static_cast<Actor*>(refActor);
+
+        if (Flags_GetRandomizerInf(RAND_INF_HAS_SKELETON_KEY)) {
+            if (actor->id == ACTOR_EN_DOOR) {
+                EnDoor* door = (EnDoor*)actor;
+                door->lockTimer = 0;
+            } else if (actor->id == ACTOR_DOOR_SHUTTER) {
+                DoorShutter* shutterDoor = (DoorShutter*)actor;
+                if (shutterDoor->doorType == SHUTTER_KEY_LOCKED) {
+                    shutterDoor->unk_16E = 0;
+                }
+            }
+        }
+    });
+}
+
 void InitMods() {
     RandomizerRegisterHooks();
     TimeSaverRegisterHooks();
@@ -1760,4 +1780,5 @@ void InitMods() {
     RegisterPatchHandHandler();
     RegisterHurtContainerModeHandler();
     RegisterPauseMenuHooks();
+    RegisterSkeletonKey();
 }
