@@ -128,7 +128,7 @@ s16 func_80A9C6C0(PlayState* play, Actor* thisx) {
 
     switch (Message_GetState(&play->msgCtx)) {
         case TEXT_STATE_DONE:
-            if (CVarGetInteger("gRestorations.EarlyEyeballFrog", 0)) {
+            if (CVarGetInteger(CVAR_ENHANCEMENT("EarlyEyeballFrog"), 0)) {
                 if (Message_ShouldAdvance(play)) {
                     ret = NPC_TALK_STATE_ITEM_GIVEN;
                 }
@@ -149,7 +149,7 @@ s16 func_80A9C6C0(PlayState* play, Actor* thisx) {
             }
             break;
         case TEXT_STATE_CLOSING:
-            if (CVarGetInteger("gRestorations.EarlyEyeballFrog", 0)) {
+            if (CVarGetInteger(CVAR_ENHANCEMENT("EarlyEyeballFrog"), 0)) {
                 ret = NPC_TALK_STATE_IDLE;
                 switch (this->actor.textId) {
                     case 0x4012:
@@ -182,8 +182,8 @@ s16 func_80A9C6C0(PlayState* play, Actor* thisx) {
                 break;
             }
             if (this->actor.textId == 0x4014) {
-                if (play->msgCtx.choiceIndex == 0 && (CVarGetInteger("gRestorations.EarlyEyeballFrog", 0) && this->actor.textId == 0x4014)) {
-                    if (!CVarGetInteger("gRestorations.EarlyEyeballFrog", 0)) {
+                if (play->msgCtx.choiceIndex == 0 && (CVarGetInteger(CVAR_ENHANCEMENT("EarlyEyeballFrog"), 0) && this->actor.textId == 0x4014)) {
+                    if (!CVarGetInteger(CVAR_ENHANCEMENT("EarlyEyeballFrog"), 0)) {
                         EnKz_SetupGetItem(this, play);
                     }
                     ret = NPC_TALK_STATE_ACTION;
@@ -231,7 +231,7 @@ s32 func_80A9C95C(PlayState* play, EnKz* this, s16* talkState, f32 unkf, NpcGetT
         return 1;
     }
 
-    if (!CVarGetInteger("gRestorations.EarlyEyeballFrog", 0)) {
+    if (!CVarGetInteger(CVAR_ENHANCEMENT("EarlyEyeballFrog"), 0)) {
         if (*talkState != NPC_TALK_STATE_IDLE) {
             *talkState = updateTalkState(play, &this->actor);
             return 0;
@@ -252,7 +252,7 @@ s32 func_80A9C95C(PlayState* play, EnKz* this, s16* talkState, f32 unkf, NpcGetT
         return 0;
     }
 
-    if (CVarGetInteger("gRestorations.EarlyEyeballFrog", 0)) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("EarlyEyeballFrog"), 0)) {
         if (*talkState != NPC_TALK_STATE_IDLE) {
             *talkState = updateTalkState(play, &this->actor);
             return 0;
@@ -274,7 +274,7 @@ s32 func_80A9C95C(PlayState* play, EnKz* this, s16* talkState, f32 unkf, NpcGetT
 void func_80A9CB18(EnKz* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    if (CVarGetInteger("gRestorations.EarlyEyeballFrog", 0)) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("EarlyEyeballFrog"), 0)) {
         f32 yaw;
         yaw = Math_Vec3f_Yaw(&this->actor.home.pos, &player->actor.world.pos);
         yaw -= this->actor.shape.rot.y;
@@ -307,13 +307,13 @@ void func_80A9CB18(EnKz* this, PlayState* play) {
                     this->actor.textId = 0x4014;
                     this->sfxPlayed = false;
                     player->actor.textId = this->actor.textId;
-                    if (!CVarGetInteger("gRestorations.EarlyEyeballFrog", 0)) {
+                    if (!CVarGetInteger(CVAR_ENHANCEMENT("EarlyEyeballFrog"), 0)) {
                         this->isTrading = true;
                     }
                     return;
                 }
             }
-            if (!CVarGetInteger("gRestorations.EarlyEyeballFrog", 0)) {
+            if (!CVarGetInteger(CVAR_ENHANCEMENT("EarlyEyeballFrog"), 0)) {
                 this->isTrading = false;
             }
             if (Flags_GetInfTable(INFTABLE_139)) {
@@ -482,7 +482,7 @@ void EnKz_StopMweep(EnKz* this, PlayState* play) {
 
 void EnKz_Wait(EnKz* this, PlayState* play) {
     if (this->interactInfo.talkState == NPC_TALK_STATE_ACTION) {
-        if (CVarGetInteger("gRestorations.EarlyEyeballFrog", 0)) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("EarlyEyeballFrog"), 0)) {
             this->interactInfo.talkState = NPC_TALK_STATE_IDLE;
         }
         this->actionFunc = EnKz_SetupGetItem;
@@ -511,7 +511,7 @@ void EnKz_SetupGetItem(EnKz* this, PlayState* play) {
             Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_ZD_TRADE_PRESCRIPTION);
         }
     } else {
-        if (CVarGetInteger("gRestorations.EarlyEyeballFrog", 0)) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("EarlyEyeballFrog"), 0)) {
             getItemId = func_8002F368(play) == EXCH_ITEM_PRESCRIPTION ? GI_FROG : GI_TUNIC_ZORA;
         } else {
             getItemId = this->isTrading ? GI_FROG : GI_TUNIC_ZORA;
