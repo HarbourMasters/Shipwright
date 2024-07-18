@@ -293,7 +293,7 @@ void EnSyatekiMan_StartGame(EnSyatekiMan* this, PlayState* play) {
         Message_CloseTextbox(play);
         gallery = ((EnSyatekiItm*)this->actor.parent);
         if (gallery->actor.update != NULL) {
-            if(CVarGetInteger("gCustomizeShootingGallery", 0) && CVarGetInteger("gInstantShootingGalleryWin", 0)) {
+            if(CVarGetInteger(CVAR_ENHANCEMENT("CustomizeShootingGallery"), 0) && CVarGetInteger(CVAR_ENHANCEMENT("InstantShootingGalleryWin"), 0)) {
                 gallery->hitCount = 10;
                 gallery->signal = ENSYATEKI_END;
             } else {
@@ -386,7 +386,7 @@ void EnSyatekiMan_EndGame(EnSyatekiMan* this, PlayState* play) {
                             this->getItemId = GI_RUPEE_PURPLE;
                         }
                     }
-                    if (GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_SHOOTING_GALLERY, true, this)) {
+                    if (GameInteractor_Should(VB_GIVE_ITEM_FROM_SHOOTING_GALLERY, true, this)) {
                         Actor_OfferGetItem(&this->actor, play, this->getItemId, 2000.0f, 1000.0f);
                     }
                     this->actionFunc = EnSyatekiMan_GivePrize;
@@ -394,8 +394,8 @@ void EnSyatekiMan_EndGame(EnSyatekiMan* this, PlayState* play) {
                 case SYATEKI_RESULT_ALMOST:
                     this->timer = 20;
                     s32 ammunition = 15;
-                    if(CVarGetInteger("gCustomizeShootingGallery", 0)) {
-                        ammunition = CVarGetInteger(LINK_IS_ADULT ? "gAdultShootingGalleryAmmunition" : "gChildShootingGalleryAmmunition", 15);
+                    if(CVarGetInteger(CVAR_ENHANCEMENT("CustomizeShootingGallery"), 0)) {
+                        ammunition = CVarGetInteger(LINK_IS_ADULT ? CVAR_ENHANCEMENT("ShootingGalleryAmmoAdult") : CVAR_ENHANCEMENT("ShootingGalleryAmmoChild"), 15);
                     }
                     func_8008EF44(play, ammunition);
                     this->actionFunc = EnSyatekiMan_RestartGame;
@@ -418,7 +418,7 @@ void EnSyatekiMan_EndGame(EnSyatekiMan* this, PlayState* play) {
 
 void EnSyatekiMan_GivePrize(EnSyatekiMan* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
-    if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_SHOOTING_GALLERY, true, this)) {
+    if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(VB_GIVE_ITEM_FROM_SHOOTING_GALLERY, true, this)) {
         this->actionFunc = EnSyatekiMan_FinishPrize;
     } else { 
         Actor_OfferGetItem(&this->actor, play, this->getItemId, 2000.0f, 1000.0f);
@@ -427,12 +427,12 @@ void EnSyatekiMan_GivePrize(EnSyatekiMan* this, PlayState* play) {
 
 void EnSyatekiMan_FinishPrize(EnSyatekiMan* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
-    if (((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) || !GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_SHOOTING_GALLERY, true, this)) {
+    if (((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) || !GameInteractor_Should(VB_GIVE_ITEM_FROM_SHOOTING_GALLERY, true, this)) {
         // "Successful completion"
         osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ 正常終了 ☆☆☆☆☆ \n" VT_RST);
         if (!LINK_IS_ADULT) {
             Flags_SetItemGetInf(ITEMGETINF_0D);
-        } else if (GameInteractor_Should(GI_VB_BE_ELIGIBLE_FOR_ADULT_SHOOTING_GAME_REWARD, (this->getItemId == GI_QUIVER_40) || (this->getItemId == GI_QUIVER_50), this)) {
+        } else if (GameInteractor_Should(VB_BE_ELIGIBLE_FOR_ADULT_SHOOTING_GAME_REWARD, (this->getItemId == GI_QUIVER_40) || (this->getItemId == GI_QUIVER_50), this)) {
             Flags_SetItemGetInf(ITEMGETINF_0E);
         }
         this->gameResult = SYATEKI_RESULT_NONE;

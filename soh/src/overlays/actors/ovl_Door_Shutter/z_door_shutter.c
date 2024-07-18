@@ -355,7 +355,7 @@ void func_80996A54(DoorShutter* this, PlayState* play) {
     if (Flags_GetClear(play, this->dyna.actor.room) || Flags_GetTempClear(play, this->dyna.actor.room)) {
         Flags_SetClear(play, this->dyna.actor.room);
         DoorShutter_SetupAction(this, func_80997150);
-        if (GameInteractor_Should(GI_VB_PLAY_ONEPOINT_ACTOR_CS, true, this)) {
+        if (GameInteractor_Should(VB_PLAY_ONEPOINT_ACTOR_CS, true, this)) {
             OnePointCutscene_Attention(play, &this->dyna.actor);
             OnePointCutscene_Attention(play, &GET_PLAYER(play)->actor);
             this->unk_16F = -100;
@@ -473,7 +473,7 @@ void func_80996EE8(DoorShutter* this, PlayState* play) {
     if (func_80996E08(this, play, 1.0f)) {
         if (Flags_GetSwitch(play, this->dyna.actor.params & 0x3F)) {
             DoorShutter_SetupAction(this, func_80997150);
-            if (GameInteractor_Should(GI_VB_PLAY_ONEPOINT_ACTOR_CS, true, this)) {
+            if (GameInteractor_Should(VB_PLAY_ONEPOINT_ACTOR_CS, true, this)) {
                 OnePointCutscene_Attention(play, &this->dyna.actor);
                 this->unk_16F = -100;
             }

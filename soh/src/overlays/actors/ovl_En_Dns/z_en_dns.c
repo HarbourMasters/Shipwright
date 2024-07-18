@@ -397,7 +397,7 @@ void func_809EFDD0(EnDns* this, PlayState* play) {
 void func_809EFEE8(EnDns* this, PlayState* play) {
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(play)) {
         Message_CloseTextbox(play);
-        if (GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_BUSINESS_SCRUB, true, this)) {
+        if (GameInteractor_Should(VB_GIVE_ITEM_FROM_BUSINESS_SCRUB, true, this)) {
             func_809EFDD0(this, play);
         }
         this->actionFunc = func_809EFF50;
@@ -405,7 +405,7 @@ void func_809EFEE8(EnDns* this, PlayState* play) {
 }
 
 void func_809EFF50(EnDns* this, PlayState* play) {
-    if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_BUSINESS_SCRUB, true, this)) {
+    if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(VB_GIVE_ITEM_FROM_BUSINESS_SCRUB, true, this)) {
         this->actor.parent = NULL;
         this->actionFunc = func_809EFF98;
     } else {

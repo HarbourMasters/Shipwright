@@ -134,7 +134,7 @@ void EnGe1_Init(Actor* thisx, PlayState* play) {
         case GE1_TYPE_GATE_OPERATOR:
             this->hairstyle = GE1_HAIR_STRAIGHT;
 
-            if (GameInteractor_Should(GI_VB_GERUDOS_BE_FRIENDLY, EnGe1_CheckCarpentersFreed(), NULL)) {
+            if (GameInteractor_Should(VB_GERUDOS_BE_FRIENDLY, EnGe1_CheckCarpentersFreed(), NULL)) {
                 this->actionFunc = EnGe1_CheckGate_GateOp;
             } else {
                 this->actionFunc = EnGe1_WatchForPlayerFrontOnly;
@@ -144,7 +144,7 @@ void EnGe1_Init(Actor* thisx, PlayState* play) {
         case GE1_TYPE_NORMAL:
             this->hairstyle = GE1_HAIR_STRAIGHT;
 
-            if (GameInteractor_Should(GI_VB_GERUDOS_BE_FRIENDLY, EnGe1_CheckCarpentersFreed(), NULL)) {
+            if (GameInteractor_Should(VB_GERUDOS_BE_FRIENDLY, EnGe1_CheckCarpentersFreed(), NULL)) {
                 this->actionFunc = EnGe1_SetNormalText;
             } else {
                 this->actionFunc = EnGe1_WatchForAndSensePlayer;
@@ -174,7 +174,7 @@ void EnGe1_Init(Actor* thisx, PlayState* play) {
 
             if (gSaveContext.eventInf[0] & 0x100) {
                 this->actionFunc = EnGe1_TalkAfterGame_Archery;
-            } else if (GameInteractor_Should(GI_VB_GERUDOS_BE_FRIENDLY, EnGe1_CheckCarpentersFreed(), NULL)) {
+            } else if (GameInteractor_Should(VB_GERUDOS_BE_FRIENDLY, EnGe1_CheckCarpentersFreed(), NULL)) {
                 this->actionFunc = EnGe1_Wait_Archery;
             } else {
                 this->actionFunc = EnGe1_WatchForPlayerFrontOnly;
@@ -184,7 +184,7 @@ void EnGe1_Init(Actor* thisx, PlayState* play) {
         case GE1_TYPE_TRAINING_GROUNDS_GUARD:
             this->hairstyle = GE1_HAIR_STRAIGHT;
 
-            if (GameInteractor_Should(GI_VB_GERUDOS_BE_FRIENDLY, EnGe1_CheckCarpentersFreed(), NULL)) {
+            if (GameInteractor_Should(VB_GERUDOS_BE_FRIENDLY, EnGe1_CheckCarpentersFreed(), NULL)) {
                 this->actionFunc = EnGe1_CheckForCard_GTGGuard;
             } else {
                 this->actionFunc = EnGe1_WatchForPlayerFrontOnly;
@@ -519,7 +519,7 @@ void EnGe1_WaitTillItemGiven_Archery(EnGe1* this, PlayState* play) {
     GetItemEntry getItemEntry = (GetItemEntry)GET_ITEM_NONE;
     s32 getItemId;
 
-    if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_HORSEBACK_ARCHERY, true, this)) {
+    if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(VB_GIVE_ITEM_FROM_HORSEBACK_ARCHERY, true, this)) {
         this->actionFunc = EnGe1_SetupWait_Archery;
 
         if (this->stateFlags & GE1_STATE_GIVE_QUIVER) {
@@ -542,7 +542,7 @@ void EnGe1_WaitTillItemGiven_Archery(EnGe1* this, PlayState* play) {
             getItemId = GI_HEART_PIECE;
         }
 
-        if (GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_HORSEBACK_ARCHERY, true, this)) {
+        if (GameInteractor_Should(VB_GIVE_ITEM_FROM_HORSEBACK_ARCHERY, true, this)) {
             Actor_OfferGetItem(&this->actor, play, getItemId, 10000.0f, 50.0f);
         }
     }
@@ -571,7 +571,7 @@ void EnGe1_BeginGiveItem_Archery(EnGe1* this, PlayState* play) {
         getItemId = GI_HEART_PIECE;
     }
 
-    if (GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_HORSEBACK_ARCHERY, true, this)) {
+    if (GameInteractor_Should(VB_GIVE_ITEM_FROM_HORSEBACK_ARCHERY, true, this)) {
         Actor_OfferGetItem(&this->actor, play, getItemId, 10000.0f, 50.0f);
     }
 }

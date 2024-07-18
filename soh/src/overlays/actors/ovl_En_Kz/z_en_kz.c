@@ -73,7 +73,7 @@ static AnimationInfo sAnimationInfo[] = {
 u16 EnKz_GetTextNoMaskChild(PlayState* play, EnKz* this) {
     Player* player = GET_PLAYER(play);
 
-    if (GameInteractor_Should(GI_VB_KING_ZORA_THANK_CHILD, (
+    if (GameInteractor_Should(VB_KING_ZORA_THANK_CHILD, (
         CHECK_QUEST_ITEM(QUEST_ZORA_SAPPHIRE)
     ), this)) {
         return 0x402B;
@@ -91,7 +91,7 @@ u16 EnKz_GetTextNoMaskAdult(PlayState* play, EnKz* this) {
     // this works because both ITEM_NONE and later trade items are > ITEM_FROG
     if (INV_CONTENT(ITEM_TRADE_ADULT) >= ITEM_FROG) {
         if (!Flags_GetInfTable(INFTABLE_139)) {
-            if (!GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_THAWING_KING_ZORA, (
+            if (!GameInteractor_Should(VB_GIVE_ITEM_FROM_THAWING_KING_ZORA, (
                 !CHECK_OWNED_EQUIP(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_ZORA)
             ), this)) {
                 return 0x401F;
@@ -287,7 +287,7 @@ void func_80A9CB18(EnKz* this, PlayState* play) {
     }
 
     if (func_80A9C95C(play, this, &this->interactInfo.talkState, 340.0f, EnKz_GetText, func_80A9C6C0)) {
-        if (GameInteractor_Should(GI_VB_BE_ABLE_TO_EXCHANGE_RUTOS_LETTER, (this->actor.textId == 0x401A), this) &&
+        if (GameInteractor_Should(VB_BE_ABLE_TO_EXCHANGE_RUTOS_LETTER, (this->actor.textId == 0x401A), this) &&
             !Flags_GetEventChkInf(EVENTCHKINF_KING_ZORA_MOVED))
         {
             if (func_8002F368(play) == EXCH_ITEM_LETTER_RUTO) {
@@ -303,7 +303,7 @@ void func_80A9CB18(EnKz* this, PlayState* play) {
         if (LINK_IS_ADULT) {
             if ((INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_PRESCRIPTION) &&
                 (func_8002F368(play) == EXCH_ITEM_PRESCRIPTION)) {
-                if (GameInteractor_Should(GI_VB_TRADE_PRESCRIPTION, true, this)) {
+                if (GameInteractor_Should(VB_TRADE_PRESCRIPTION, true, this)) {
                     this->actor.textId = 0x4014;
                     this->sfxPlayed = false;
                     player->actor.textId = this->actor.textId;
@@ -321,7 +321,7 @@ void func_80A9CB18(EnKz* this, PlayState* play) {
                 player->actor.textId = this->actor.textId;
             } else {
                 this->actor.textId =
-                    !GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_THAWING_KING_ZORA,
+                    !GameInteractor_Should(VB_GIVE_ITEM_FROM_THAWING_KING_ZORA,
                                             (!CHECK_OWNED_EQUIP(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_ZORA)), this)
                         ? 0x401F
                         : 0x4012;
@@ -350,7 +350,7 @@ s32 EnKz_FollowPath(EnKz* this, PlayState* play) {
     pathDiffZ = pointPos->z - this->actor.world.pos.z;
     Math_SmoothStepToS(&this->actor.world.rot.y, (Math_FAtan2F(pathDiffX, pathDiffZ) * (0x8000 / M_PI)), 0xA, 0x3E8, 1);
 
-    if ((SQ(pathDiffX) + SQ(pathDiffZ)) < 10.0f * CVarGetInteger("gMweepSpeed", 1)) {
+    if ((SQ(pathDiffX) + SQ(pathDiffZ)) < 10.0f * CVarGetInteger(CVAR_ENHANCEMENT("MweepSpeed"), 1)) {
         this->waypoint++;
         if (this->waypoint >= path->count) {
             this->waypoint = 0;
@@ -393,7 +393,7 @@ void EnKz_Init(Actor* thisx, PlayState* play) {
     this->interactInfo.talkState = NPC_TALK_STATE_IDLE;
     Animation_ChangeByInfo(&this->skelanime, sAnimationInfo, ENKZ_ANIM_0);
 
-    if (GameInteractor_Should(GI_VB_KING_ZORA_BE_MOVED, (
+    if (GameInteractor_Should(VB_KING_ZORA_BE_MOVED, (
         Flags_GetEventChkInf(EVENTCHKINF_KING_ZORA_MOVED)
     ), this)) {
         EnKz_SetMovedPos(this, play);
@@ -445,7 +445,7 @@ void EnKz_SetupMweep(EnKz* this, PlayState* play) {
     initPos.z += 260.0f;
     Play_CameraSetAtEye(play, this->cutsceneCamera, &pos, &initPos);
     Player_SetCsActionWithHaltedActors(play, &this->actor, 8);
-    this->actor.speedXZ = 0.1f * CVarGetInteger("gMweepSpeed", 1);
+    this->actor.speedXZ = 0.1f * CVarGetInteger(CVAR_ENHANCEMENT("MweepSpeed"), 1);
     this->actionFunc = EnKz_Mweep;
 }
 
@@ -499,8 +499,8 @@ void EnKz_SetupGetItem(EnKz* this, PlayState* play) {
     f32 yRange;
 
     if (Actor_HasParent(&this->actor, play) || (
-        (this->isTrading && !GameInteractor_Should(GI_VB_TRADE_PRESCRIPTION, true, this)) ||
-        (!this->isTrading && !GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_THAWING_KING_ZORA, true, this))
+        (this->isTrading && !GameInteractor_Should(VB_TRADE_PRESCRIPTION, true, this)) ||
+        (!this->isTrading && !GameInteractor_Should(VB_GIVE_ITEM_FROM_THAWING_KING_ZORA, true, this))
     )) {
         this->actor.parent = NULL;
         this->interactInfo.talkState = NPC_TALK_STATE_TALKING;
@@ -524,7 +524,7 @@ void EnKz_SetupGetItem(EnKz* this, PlayState* play) {
 
 void EnKz_StartTimer(EnKz* this, PlayState* play) {
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) {
-        if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_FROG && GameInteractor_Should(GI_VB_TRADE_TIMER_FROG, true, NULL)) { 
+        if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_FROG && GameInteractor_Should(VB_TRADE_TIMER_FROG, true, NULL)) { 
             func_80088AA0(180); // start timer2 with 3 minutes
             gSaveContext.eventInf[1] &= ~1;
         }

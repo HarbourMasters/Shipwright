@@ -29,7 +29,7 @@ extern "C" void Randomizer_DrawSmallKey(PlayState* play, GetItemEntry* getItemEn
     s8 keysCanBeOutsideDungeon = getItemEntry->getItemId == RG_GERUDO_FORTRESS_SMALL_KEY ?
         Randomizer_GetSettingValue(RSK_GERUDO_KEYS) != RO_GERUDO_KEYS_VANILLA :
         DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_KEYSANITY);
-    s8 isColoredKeysEnabled = keysCanBeOutsideDungeon && CVarGetInteger("gRandoMatchKeyColors", 1);
+    s8 isColoredKeysEnabled = keysCanBeOutsideDungeon && CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MatchKeyColors"), 1);
     s16 color_slot = getItemEntry->getItemId - RG_FOREST_TEMPLE_SMALL_KEY;
     s16 colors[9][3] = {
         { 4, 195, 46 },    // Forest Temple
@@ -111,7 +111,7 @@ extern "C" void Randomizer_DrawBossKey(PlayState* play, GetItemEntry* getItemEnt
     s8 keysCanBeOutsideDungeon = getItemEntry->getItemId == RG_GANONS_CASTLE_BOSS_KEY ?
         DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_GANONS_BOSS_KEY) :
         DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_BOSS_KEYSANITY);
-    s8 isColoredKeysEnabled = keysCanBeOutsideDungeon && CVarGetInteger("gRandoMatchKeyColors", 1);
+    s8 isColoredKeysEnabled = keysCanBeOutsideDungeon && CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MatchKeyColors"), 1);
     s16 color_slot;
     color_slot = getItemEntry->getItemId - RG_FOREST_TEMPLE_BOSS_KEY;
     s16 colors[6][3] = {
@@ -296,7 +296,7 @@ extern "C" void Randomizer_DrawTriforcePieceGI(PlayState* play, GetItemEntry get
     if (triforcePieceScale < 0.0001f) {
         triforcePieceScale += 0.00003f;
     }
-    
+
     // Animation. When not the completed triforce, create delay before showing the piece to bypass interpolation.
     // If the completed triforce, make it grow slowly.
     if (current != required) {
@@ -323,6 +323,29 @@ extern "C" void Randomizer_DrawTriforcePieceGI(PlayState* play, GetItemEntry get
     } else if (current == required && triforcePieceScale > 0.00008f) {
         gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gTriforcePieceCompletedDL);
     }
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
+extern "C" void Randomizer_DrawMysteryItem(PlayState* play, GetItemEntry getItemEntry) {
+    Color_RGB8 color = { 0, 60, 100 };
+    if (CVarGetInteger(CVAR_COSMETIC("World.MysteryItem.Changed"), 0)) {
+        color = CVarGetColor24(CVAR_COSMETIC("World.MysteryItem.Value"), color);
+    }
+
+    OPEN_DISPS(play->state.gfxCtx);
+
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
+
+    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__), G_MTX_MODELVIEW | G_MTX_LOAD);
+
+    gDPSetGrayscaleColor(POLY_XLU_DISP++, color.r, color.g, color.b, 255);
+    gSPGrayscale(POLY_XLU_DISP++, true);
+
+    gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gMysteryItemDL);
+
+    gSPGrayscale(POLY_XLU_DISP++, false);
+
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
@@ -377,31 +400,31 @@ extern "C" void Randomizer_DrawBossSoul(PlayState* play, GetItemEntry* getItemEn
 
 extern "C" void Randomizer_DrawOcarinaButton(PlayState* play, GetItemEntry* getItemEntry) {
     Color_RGB8 aButtonColor = { 80, 150, 255 };
-    if (CVarGetInteger("gCosmetics.Hud_AButton.Changed", 0)) {
-        aButtonColor = CVarGetColor24("gCosmetics.Hud_AButton.Value", aButtonColor);
-    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.AButton.Changed"), 0)) {
+        aButtonColor = CVarGetColor24(CVAR_COSMETIC("HUD.AButton.Value"), aButtonColor);
+    } else if (CVarGetInteger(CVAR_COSMETIC("DefaultColorScheme"), COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
         aButtonColor = { 80, 255, 150 };
     }
 
     Color_RGB8 cButtonsColor = { 255, 255, 50 };
-    if (CVarGetInteger("gCosmetics.Hud_CButtons.Changed", 0)) {
-        cButtonsColor = CVarGetColor24("gCosmetics.Hud_CButtons.Value", cButtonsColor);
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.CButtons.Changed"), 0)) {
+        cButtonsColor = CVarGetColor24(CVAR_COSMETIC("HUD.CButtons.Value"), cButtonsColor);
     }
     Color_RGB8 cUpButtonColor = cButtonsColor;
-    if (CVarGetInteger("gCosmetics.Hud_CUpButton.Changed", 0)) {
-        cUpButtonColor = CVarGetColor24("gCosmetics.Hud_CUpButton.Value", cUpButtonColor);
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.CUpButton.Changed"), 0)) {
+        cUpButtonColor = CVarGetColor24(CVAR_COSMETIC("HUD.CUpButton.Value"), cUpButtonColor);
     }
     Color_RGB8 cDownButtonColor = cButtonsColor;
-    if (CVarGetInteger("gCosmetics.Hud_CDownButton.Changed", 0)) {
-        cDownButtonColor = CVarGetColor24("gCosmetics.Hud_CDownButton.Value", cDownButtonColor);
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.CDownButton.Changed"), 0)) {
+        cDownButtonColor = CVarGetColor24(CVAR_COSMETIC("HUD.CDownButton.Value"), cDownButtonColor);
     }
     Color_RGB8 cLeftButtonColor = cButtonsColor;
-    if (CVarGetInteger("gCosmetics.Hud_CLeftButton.Changed", 0)) {
-        cLeftButtonColor = CVarGetColor24("gCosmetics.Hud_CLeftButton.Value", cLeftButtonColor);
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.CLeftButton.Changed"), 0)) {
+        cLeftButtonColor = CVarGetColor24(CVAR_COSMETIC("HUD.CLeftButton.Value"), cLeftButtonColor);
     }
     Color_RGB8 cRightButtonColor = cButtonsColor;
-    if (CVarGetInteger("gCosmetics.Hud_CRightButton.Changed", 0)) {
-        cRightButtonColor = CVarGetColor24("gCosmetics.Hud_CRightButton.Value", cRightButtonColor);
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.CRightButton.Changed"), 0)) {
+        cRightButtonColor = CVarGetColor24(CVAR_COSMETIC("HUD.CRightButton.Value"), cRightButtonColor);
     }
 
     s16 slot = getItemEntry->drawItemId - RG_OCARINA_A_BUTTON;
@@ -518,5 +541,55 @@ extern "C" void Randomizer_DrawFishingPoleGI(PlayState* play, GetItemEntry* getI
 
     Matrix_Pop();
 
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
+int skeletonKeyHue = 0;
+
+// Runs every frame to update rainbow hue, taken from CosmeticsEditor.cpp.
+Color_RGBA8 GetSkeletonKeyColor() {
+    float rainbowSpeed = 0.6f;
+    
+    float frequency = 2 * M_PI / (360 * rainbowSpeed);
+    Color_RGBA8 color;
+    color.r = sin(frequency * skeletonKeyHue + 0) * 127 + 128;
+    color.g = sin(frequency * skeletonKeyHue + (2 * M_PI / 3)) * 127 + 128;
+    color.b = sin(frequency * skeletonKeyHue + (4 * M_PI / 3)) * 127 + 128;
+    color.a = 255;
+
+    skeletonKeyHue++;
+    if (skeletonKeyHue >= (360 * rainbowSpeed)) skeletonKeyHue = 0;
+
+    return color;
+}
+
+int test = 0;
+
+extern "C" void Randomizer_DrawSkeletonKey(PlayState* play, GetItemEntry* getItemEntry) {
+    OPEN_DISPS(play->state.gfxCtx);
+
+    Color_RGBA8 color = GetSkeletonKeyColor();
+
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+
+    test += 1;
+
+    if (test > 40) {
+        test -= 80;
+    }
+
+    Matrix_RotateZ(M_PI / 40 * test, MTXMODE_APPLY);
+    Matrix_RotateY(M_PI / 40 * test, MTXMODE_APPLY);
+
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
+
+    gDPSetGrayscaleColor(POLY_OPA_DISP++, color.r, color.g, color.b, color.a);
+    gSPGrayscale(POLY_OPA_DISP++, true);
+    
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiSmallKeyDL);
+
+    gSPGrayscale(POLY_OPA_DISP++, false);
+    
     CLOSE_DISPS(play->state.gfxCtx);
 }

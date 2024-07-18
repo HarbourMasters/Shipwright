@@ -185,7 +185,7 @@ void func_80969F38(DemoDu* this, PlayState* play) {
 
     Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DEMO_EFFECT, posX, posY, posZ, 0, 0, 0,
                        DEMO_EFFECT_MEDAL_FIRE);
-    if (GameInteractor_Should(GI_VB_GIVE_ITEM_FIRE_MEDALLION, true, NULL)) {
+    if (GameInteractor_Should(VB_GIVE_ITEM_FIRE_MEDALLION, true, NULL)) {
         Item_Give(play, ITEM_MEDALLION_FIRE);
     }
 }
@@ -204,7 +204,7 @@ void DemoDu_CsFireMedallion_AdvanceTo01(DemoDu* this, PlayState* play) {
         this->updateIndex = CS_FIREMEDALLION_SUBSCENE(1);
         play->csCtx.segment = D_8096C1A4;
         gSaveContext.cutsceneTrigger = 2;
-        if (GameInteractor_Should(GI_VB_GIVE_ITEM_FIRE_MEDALLION, true, NULL)) {
+        if (GameInteractor_Should(VB_GIVE_ITEM_FIRE_MEDALLION, true, NULL)) {
             Item_Give(play, ITEM_MEDALLION_FIRE);
         }
 

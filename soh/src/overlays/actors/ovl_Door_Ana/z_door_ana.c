@@ -181,7 +181,7 @@ void DoorAna_Update(Actor* thisx, PlayState* play) {
 
     this->actionFunc(this, play);
     // Changes the grottos facing angle based on camera angle
-    if (!CVarGetInteger("gDisableGrottoRotation", 0)) {
+    if (!CVarGetInteger(CVAR_ENHANCEMENT("DisableGrottoRotation"), 0)) {
         this->actor.shape.rot.y = Camera_GetCamDirYaw(GET_ACTIVE_CAM(play)) + 0x8000;
     }
 }

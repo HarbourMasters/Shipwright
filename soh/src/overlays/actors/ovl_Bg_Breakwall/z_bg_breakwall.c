@@ -107,7 +107,7 @@ void BgBreakwall_Init(Actor* thisx, PlayState* play) {
     s32 wallType = ((this->dyna.actor.params >> 13) & 3) & 0xFF;
 
     // Initialize this with the mud wall, so it can't be affected by toggling while the actor is loaded
-    blueFireArrowsEnabledOnMudwallLoad = CVarGetInteger("gBlueFireArrows", 0) || (IS_RANDO && Randomizer_GetSettingValue(RSK_BLUE_FIRE_ARROWS));
+    blueFireArrowsEnabledOnMudwallLoad = CVarGetInteger(CVAR_ENHANCEMENT("BlueFireArrows"), 0) || (IS_RANDO && Randomizer_GetSettingValue(RSK_BLUE_FIRE_ARROWS));
 
     Actor_ProcessInitChain(&this->dyna.actor, sInitChain);
     DynaPolyActor_Init(&this->dyna, DPM_UNK);
@@ -302,7 +302,7 @@ void BgBreakwall_Wait(BgBreakwall* this, PlayState* play) {
         if ((wallType == BWALL_DC_ENTRANCE) && (!Flags_GetEventChkInf(EVENTCHKINF_ENTERED_DODONGOS_CAVERN))) {
             Flags_SetEventChkInf(EVENTCHKINF_ENTERED_DODONGOS_CAVERN);
             s32 flag = EVENTCHKINF_ENTERED_DODONGOS_CAVERN;
-            if (GameInteractor_Should(GI_VB_PLAY_ENTRANCE_CS, true, &flag)) {
+            if (GameInteractor_Should(VB_PLAY_ENTRANCE_CS, true, &flag)) {
                 Cutscene_SetSegment(play, gDcOpeningCs);
                 gSaveContext.cutsceneTrigger = 1;
                 Player_SetCsActionWithHaltedActors(play, NULL, 0x31);

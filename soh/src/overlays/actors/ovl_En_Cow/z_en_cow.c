@@ -118,7 +118,7 @@ void EnCow_Init(Actor* thisx, PlayState* play) {
             Collider_SetCylinder(play, &this->colliders[1], &this->actor, &sCylinderInit);
             func_809DEE9C(this);
             this->actionFunc = func_809DF96C;
-            if (GameInteractor_Should(GI_VB_DESPAWN_HORSE_RACE_COW, (
+            if (GameInteractor_Should(VB_DESPAWN_HORSE_RACE_COW, (
                 play->sceneNum == SCENE_LINKS_HOUSE && (!LINK_IS_ADULT || !Flags_GetEventChkInf(EVENTCHKINF_WON_COW_IN_MALONS_RACE))
             ), this)) {
                 Actor_Kill(&this->actor);
@@ -260,7 +260,7 @@ void func_809DF96C(EnCow* this, PlayState* play) {
                 if ((this->actor.xzDistToPlayer < 150.0f) &&
                     (ABS((s16)(this->actor.yawTowardsPlayer - this->actor.shape.rot.y)) < 0x61A8)) {
                     DREG(53) = 0;
-                    if (GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_COW, true, this)) {
+                    if (GameInteractor_Should(VB_GIVE_ITEM_FROM_COW, true, this)) {
                         this->actionFunc = func_809DF8FC;
                         this->actor.flags |= ACTOR_FLAG_WILL_TALK;
                         func_8002F2CC(&this->actor, play, 170.0f);

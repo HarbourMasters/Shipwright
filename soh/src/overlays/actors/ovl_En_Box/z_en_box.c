@@ -278,7 +278,7 @@ void EnBox_Fall(EnBox* this, PlayState* play) {
             this->dyna.actor.shape.rot.z = 0;
             this->dyna.actor.world.pos.y = this->dyna.actor.floorHeight;
             EnBox_SetupAction(this, EnBox_WaitOpen);
-            if (GameInteractor_Should(GI_VB_PLAY_ONEPOINT_ACTOR_CS, true, this)) {
+            if (GameInteractor_Should(VB_PLAY_ONEPOINT_ACTOR_CS, true, this)) {
                 OnePointCutscene_EndCutscene(play, this->unk_1AC);
             }
         }
@@ -577,8 +577,8 @@ void EnBox_Update(Actor* thisx, PlayState* play) {
 
 void EnBox_UpdateSizeAndTexture(EnBox* this, PlayState* play) {
     EnBox_CreateExtraChestTextures();
-    int csmc = CVarGetInteger("gChestSizeAndTextureMatchesContents", CSMC_DISABLED);
-    int requiresStoneAgony = CVarGetInteger("gChestSizeDependsStoneOfAgony", 0);
+    int csmc = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), CSMC_DISABLED);
+    int requiresStoneAgony = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeDependsStoneOfAgony"), 0);
     GetItemCategory getItemCategory;
 
     int isVanilla = csmc == CSMC_DISABLED || (requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)) ||
@@ -673,7 +673,7 @@ void EnBox_UpdateSizeAndTexture(EnBox* this, PlayState* play) {
         }
     }
 
-    if (CVarGetInteger("gLetItSnow", 0) && hasChristmasChestTexturesAvailable && hasCreatedRandoChestTextures && !hasCustomChestDLs) {
+    if (CVarGetInteger(CVAR_GENERAL("LetItSnow"), 0) && hasChristmasChestTexturesAvailable && hasCreatedRandoChestTextures && !hasCustomChestDLs) {
         if (this->dyna.actor.scale.x == 0.01f) {
             this->boxBodyDL = gChristmasRedTreasureChestChestFrontDL;
             this->boxLidDL = gChristmasRedTreasureChestChestSideAndLidDL;

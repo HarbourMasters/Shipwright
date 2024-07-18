@@ -373,7 +373,7 @@ u16 EnMd_GetTextKokiriForest(PlayState* play, EnMd* this) {
     this->unk_208 = 0;
     this->unk_209 = TEXT_STATE_NONE;
 
-    if (GameInteractor_Should(GI_VB_MIDO_CONSIDER_DEKU_TREE_DEAD, CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD), this)) {
+    if (GameInteractor_Should(VB_MIDO_CONSIDER_DEKU_TREE_DEAD, CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD), this)) {
         return 0x1045;
     }
 
@@ -616,7 +616,7 @@ void func_80AAB5A4(EnMd* this, PlayState* play) {
     f32 temp;
 
     if (play->sceneNum != SCENE_MIDOS_HOUSE) {
-        if (CVarGetInteger("gDisableKokiriDrawDistance", 0) != 0) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("DisableKokiriDrawDistance"), 0) != 0) {
             temp = (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) && !Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_AFTER_DEKU_TREES_DEATH) &&
                     (play->sceneNum == SCENE_KOKIRI_FOREST))
                        ? 100.0f
@@ -723,7 +723,7 @@ void func_80AAB948(EnMd* this, PlayState* play) {
     }
 
     if (
-        (GameInteractor_Should(GI_VB_MOVE_MIDO_IN_KOKIRI_FOREST, this->interactInfo.talkState == NPC_TALK_STATE_ACTION, this) && play->sceneNum == SCENE_KOKIRI_FOREST) ||
+        (GameInteractor_Should(VB_MOVE_MIDO_IN_KOKIRI_FOREST, this->interactInfo.talkState == NPC_TALK_STATE_ACTION, this) && play->sceneNum == SCENE_KOKIRI_FOREST) ||
         this->interactInfo.talkState == NPC_TALK_STATE_ACTION
     ) {
         if (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) && !Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_AFTER_DEKU_TREES_DEATH) &&

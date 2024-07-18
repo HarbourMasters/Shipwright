@@ -362,7 +362,7 @@ void EnExItem_TargetPrizeApproach(EnExItem* this, PlayState* play) {
         Math_SmoothStepToS(&this->actor.shape.rot.y, -0x4000, 5, 0x1000, 0);
     }
 
-    if (GameInteractor_Should(GI_VB_PLAY_ONEPOINT_ACTOR_CS, true, &this->actor) && this->timer != 0) {
+    if (GameInteractor_Should(VB_PLAY_ONEPOINT_ACTOR_CS, true, &this->actor) && this->timer != 0) {
         if (this->prizeRotateTimer != 0) {
             tmpf1 = play->view.lookAt.x - play->view.eye.x;
             tmpf2 = play->view.lookAt.y - 10.0f - play->view.eye.y;
@@ -388,7 +388,7 @@ void EnExItem_TargetPrizeApproach(EnExItem* this, PlayState* play) {
         Player_SetCsActionWithHaltedActors(play, NULL, 7);
         this->actor.parent = NULL;
 
-        if (!GameInteractor_Should(GI_VB_PLAY_ONEPOINT_ACTOR_CS, true, &this->actor)) {
+        if (!GameInteractor_Should(VB_PLAY_ONEPOINT_ACTOR_CS, true, &this->actor)) {
             GET_PLAYER(play)->stateFlags1 &= ~(PLAYER_STATE1_GETTING_ITEM | PLAYER_STATE1_ITEM_OVER_HEAD);
         }
 
@@ -398,7 +398,7 @@ void EnExItem_TargetPrizeApproach(EnExItem* this, PlayState* play) {
             getItemId = GI_BULLET_BAG_50;
         }
 
-        if (GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_TARGET_IN_WOODS, true, &this->actor)) {
+        if (GameInteractor_Should(VB_GIVE_ITEM_FROM_TARGET_IN_WOODS, true, &this->actor)) {
             Actor_OfferGetItem(&this->actor, play, getItemId, 2000.0f, 1000.0f);
         }
 
@@ -407,7 +407,7 @@ void EnExItem_TargetPrizeApproach(EnExItem* this, PlayState* play) {
 }
 
 void EnExItem_TargetPrizeGive(EnExItem* this, PlayState* play) {
-    if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_TARGET_IN_WOODS, true, &this->actor)) {
+    if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(VB_GIVE_ITEM_FROM_TARGET_IN_WOODS, true, &this->actor)) {
         this->actionFunc = EnExItem_TargetPrizeFinish;
     } else {
         s32 getItemId = (CUR_UPG_VALUE(UPG_BULLET_BAG) == 2) ? GI_BULLET_BAG_50 : GI_BULLET_BAG_40;
@@ -416,7 +416,7 @@ void EnExItem_TargetPrizeGive(EnExItem* this, PlayState* play) {
 }
 
 void EnExItem_TargetPrizeFinish(EnExItem* this, PlayState* play) {
-    if (!GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_TARGET_IN_WOODS, true, &this->actor) || (Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) {
+    if (!GameInteractor_Should(VB_GIVE_ITEM_FROM_TARGET_IN_WOODS, true, &this->actor) || (Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) {
         // "Successful completion"
         osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ 正常終了 ☆☆☆☆☆ \n" VT_RST);
         Flags_SetItemGetInf(ITEMGETINF_1D);
@@ -487,6 +487,7 @@ void EnExItem_DrawItems(EnExItem* this, PlayState* play) {
     }
     if (this) {}
     func_8002ED80(&this->actor, play, 0);
+
     GetItem_Draw(play, this->giDrawId);
 }
 

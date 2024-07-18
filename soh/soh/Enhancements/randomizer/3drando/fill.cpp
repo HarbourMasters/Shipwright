@@ -9,7 +9,6 @@
 #include "spoiler_log.hpp"
 #include "starting_inventory.hpp"
 #include "hints.hpp"
-#include "hint_list.hpp"
 #include "../entrance.h"
 #include "shops.hpp"
 #include "pool_functions.hpp"
@@ -486,18 +485,19 @@ static void GeneratePlaythrough() {
     GetAccessibleLocations(ctx->allLocations, SearchMode::GeneratePlaythrough);
 }
 
-RandomizerArea LookForExternalArea(Area* curRegion, std::vector<RandomizerRegion> alreadyChecked){//RANDOTODO curREGION
-  for (auto& entrance : curRegion->entrances) {
+RandomizerArea LookForExternalArea(const Area* const currentRegion, std::vector<RandomizerRegion> &alreadyChecked){
+  for (const auto& entrance : currentRegion->entrances) {
     RandomizerArea otherArea = entrance->GetParentRegion()->GetArea();
-    if(otherArea != RA_NONE){
-      return otherArea;
-      //if the area hasn't already been checked, check it
-    } else if (std::find(alreadyChecked.begin(), alreadyChecked.end(), entrance->GetParentRegionKey()) == alreadyChecked.end()) {
+    const bool isAreaUnchecked = std::find(alreadyChecked.begin(), alreadyChecked.end(), entrance->GetParentRegionKey()) == alreadyChecked.end();
+    if (otherArea == RA_NONE && isAreaUnchecked) {
+      //if the region is in RA_NONE and hasn't already been checked, check it
       alreadyChecked.push_back(entrance->GetParentRegionKey());
-      RandomizerArea passdown = LookForExternalArea(entrance->GetParentRegion(), alreadyChecked);
+      const RandomizerArea passdown = LookForExternalArea(entrance->GetParentRegion(), alreadyChecked);
       if(passdown != RA_NONE){
         return passdown;
       }
+    } else if (otherArea != RA_LINKS_POCKET){ //if it's links pocket, do not propogate this, Link's Pocket is not a real Area
+      return otherArea;
     }
   }
   return RA_NONE;
@@ -506,16 +506,17 @@ RandomizerArea LookForExternalArea(Area* curRegion, std::vector<RandomizerRegion
 void SetAreas(){
   auto ctx = Rando::Context::GetInstance();
 //RANDOTODO give entrances an enum like RandomizerCheck, the give them all areas here, the use those areas to not need to recursivly find ItemLocation areas
-  for (int c = 0; c < RR_MARKER_AREAS_END; c++) {
-    Area region = areaTable[c];
+  for (int regionType = 0; regionType < RR_MARKER_AREAS_END; regionType++) {
+    Area region = areaTable[regionType];
     RandomizerArea area = region.GetArea();
     if (area == RA_NONE) {
-      std::vector<RandomizerRegion> alreadyChecked = {(RandomizerRegion)c};
+      std::vector<RandomizerRegion> alreadyChecked = {static_cast<RandomizerRegion>(regionType)};
       area = LookForExternalArea(&region, alreadyChecked);
     }
     for (auto& loc : region.locations){
       ctx->GetItemLocation(loc.GetLocation())->SetArea(area);
     }
+    areaTable[regionType].SetArea(area);
   }
 }
 
@@ -1156,13 +1157,6 @@ int Fill() {
       SPDLOG_INFO("Calculating Playthrough Done");
       ctx->CreateItemOverrides();
       ctx->GetEntranceShuffler()->CreateEntranceOverrides();
-      
-      SPDLOG_INFO("Creating Other Hint Texts...");
-      //funny ganon line
-      Text ganonText = RandomElement(GetHintCategory(HintCategory::GanonLine)).GetText();
-      CreateMessageFromTextObject(0x70CB, 0, 2, 3, AddColorsAndFormat(ganonText));
-      SetGanonText(ganonText);
-      SPDLOG_INFO("Creating Other Hint Texts Done");
       
       CreateAllHints();
       CreateWarpSongTexts();

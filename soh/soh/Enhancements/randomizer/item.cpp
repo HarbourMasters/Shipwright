@@ -123,6 +123,10 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
         case RG_PROGRESSIVE_STICK_UPGRADE:
             switch (CUR_UPG_VALUE(UPG_STICKS)) {
                 case 0:
+                    if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_DEKU_STICK_BAG)) {
+                        actual = RG_DEKU_STICK_BAG;
+                        break;
+                    }
                 case 1:
                     actual = RG_DEKU_STICK_CAPACITY_20;
                     break;
@@ -137,6 +141,10 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
         case RG_PROGRESSIVE_NUT_UPGRADE:
             switch (CUR_UPG_VALUE(UPG_NUTS)) {
                 case 0:
+                    if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_DEKU_NUT_BAG)) {
+                        actual = RG_DEKU_NUT_BAG;
+                        break;
+                    }
                 case 1:
                     actual = RG_DEKU_NUT_CAPACITY_30;
                     break;
@@ -378,7 +386,7 @@ RandomizerHintTextKey Item::GetHintKey() const {
 }
 
 const HintText& Item::GetHint() const {
-    return ::Hint(hintKey);
+    return StaticData::hintTextTable[hintKey];
 }
 
 bool Item::operator==(const Item& right) const {

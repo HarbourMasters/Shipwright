@@ -128,12 +128,12 @@ void EnMs_Talk(EnMs* this, PlayState* play) {
     } else if (Message_ShouldAdvance(play)) {
         switch (play->msgCtx.choiceIndex) {
             case 0: // yes
-                if (!GameInteractor_Should(GI_VB_BE_ELIGIBLE_FOR_MAGIC_BEANS_PURCHASE, (gSaveContext.rupees >= sPrices[BEANS_BOUGHT]), this)) {
+                if (!GameInteractor_Should(VB_BE_ELIGIBLE_FOR_MAGIC_BEANS_PURCHASE, (gSaveContext.rupees >= sPrices[BEANS_BOUGHT]), this)) {
                     Message_ContinueTextbox(play, 0x4069); // not enough rupees text
                     return;
                 }
     
-                if (GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_MAGIC_BEAN_SALESMAN, true, this)) {
+                if (GameInteractor_Should(VB_GIVE_ITEM_FROM_MAGIC_BEAN_SALESMAN, true, this)) {
                     Actor_OfferGetItem(&this->actor, play, GI_BEAN, 90.0f, 10.0f);
                     this->actionFunc = EnMs_Sell;
                 }

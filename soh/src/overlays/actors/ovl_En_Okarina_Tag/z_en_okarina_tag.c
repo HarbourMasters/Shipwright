@@ -193,7 +193,7 @@ void func_80ABF28C(EnOkarinaTag* this, PlayState* play) {
     if ((this->ocarinaSong != 6) || (gSaveContext.scarecrowSpawnSongSet)) {
         if ((this->switchFlag >= 0) && Flags_GetSwitch(play, this->switchFlag)) {
             this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
-        } else if (((this->type != 4) || GameInteractor_Should(GI_VB_BE_ELIGIBLE_TO_OPEN_DOT, !Flags_GetEventChkInf(EVENTCHKINF_OPENED_THE_DOOR_OF_TIME), this)) &&
+        } else if (((this->type != 4) || GameInteractor_Should(VB_BE_ELIGIBLE_TO_OPEN_DOT, !Flags_GetEventChkInf(EVENTCHKINF_OPENED_THE_DOOR_OF_TIME), this)) &&
                    ((this->type != 6) || !Flags_GetEventChkInf(EVENTCHKINF_DESTROYED_ROYAL_FAMILY_TOMB)) &&
                    (this->actor.xzDistToPlayer < (90.0f + this->interactRange)) &&
                    (fabsf(player->actor.world.pos.y - this->actor.world.pos.y) < 80.0f)) {
@@ -245,20 +245,20 @@ void func_80ABF4C8(EnOkarinaTag* this, PlayState* play) {
                 Flags_SetEventChkInf(EVENTCHKINF_OPENED_ZORAS_DOMAIN);
                 break;
             case 2: // Kakariko Windmill
-                if (GameInteractor_Should(GI_VB_PLAY_DRAIN_WELL_CS, true, this)) {
+                if (GameInteractor_Should(VB_PLAY_DRAIN_WELL_CS, true, this)) {
                     play->csCtx.segment = D_80ABF9D0;
                     gSaveContext.cutsceneTrigger = 1;
                 }
                 func_800F574C(1.18921f, 0x5A);
                 break;
             case 4: // Door of Time
-                if (GameInteractor_Should(GI_VB_PLAY_DOOR_OF_TIME_CS, true, this)) {
+                if (GameInteractor_Should(VB_PLAY_DOOR_OF_TIME_CS, true, this)) {
                     play->csCtx.segment = D_80ABFB40;
                     gSaveContext.cutsceneTrigger = 1;
                 }
                 break;
             case 6: // Royal Family Tomb
-                if (GameInteractor_Should(GI_VB_PLAY_ROYAL_FAMILY_TOMB_CS, true, this)) {
+                if (GameInteractor_Should(VB_PLAY_ROYAL_FAMILY_TOMB_CS, true, this)) {
                     play->csCtx.segment = LINK_IS_ADULT ? SEGMENTED_TO_VIRTUAL(&spot02_scene_Cs_003C80)
                                                              : SEGMENTED_TO_VIRTUAL(&spot02_scene_Cs_005020);
                     gSaveContext.cutsceneTrigger = 1;
@@ -313,7 +313,7 @@ void func_80ABF7CC(EnOkarinaTag* this, PlayState* play) {
 
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(play)) {
         Message_CloseTextbox(play);
-        if (GameInteractor_Should(GI_VB_PLAY_SUNS_SONG_CS, !CHECK_QUEST_ITEM(QUEST_SONG_SUN), this)) {
+        if (GameInteractor_Should(VB_PLAY_SUNS_SONG_CS, !CHECK_QUEST_ITEM(QUEST_SONG_SUN), this)) {
             play->csCtx.segment = SEGMENTED_TO_VIRTUAL(&gSunSongGraveSunSongTeachCs);
             gSaveContext.cutsceneTrigger = 1;
         }

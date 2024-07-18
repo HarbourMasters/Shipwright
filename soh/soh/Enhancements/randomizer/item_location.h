@@ -36,10 +36,10 @@ class ItemLocation {
     void MarkAsNotObtained();
     bool IsHintable() const;
     void SetAsHintable();
-    bool IsHintedAt() const;
-    void SetAsHinted();
-    const std::vector<RandomizerHintKey>& GetHintedBy() const;
-    void AddHintedBy(RandomizerHintKey hintKey);
+    bool IsAHintAccessible() const;
+    void SetHintAccesible();
+    const std::vector<RandomizerHint>& GetHintedBy() const;
+    void AddHintedBy(RandomizerHint hintKey);
     bool IsHidden() const;
     bool IsExcluded() const;
     void AddExcludeOption();
@@ -49,14 +49,14 @@ class ItemLocation {
     void SetVisible(bool visibleInImGui_);
     bool IsWothCandidate() const;
     void SetWothCandidate();
-    bool IsBarrenCandidate() const;
+    bool IsFoolishCandidate() const;
     void SetBarrenCandidate();
     void ResetVariables();
 
   private:
     RandomizerCheck rc;
-    std::vector<RandomizerHintKey> hintedBy = {};
-    bool hintedAt = false;
+    std::vector<RandomizerHint> hintedBy = {};
+    bool hintAccesible = false;
     bool isHintable = false;
     bool addedToPool = false;
     RandomizerGet placedItem = RG_NONE;

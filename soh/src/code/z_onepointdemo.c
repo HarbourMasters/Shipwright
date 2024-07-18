@@ -73,7 +73,7 @@ s32 OnePointCutscene_SetInfo(PlayState* play, s16 camIdx, s16 csId, Actor* actor
     
     // #region SOH [Enhancement]
     //the default is 90, lower values necessary to prevent camera swing as animation speeds up
-    s16 camCrawlTemp = CVarGetInteger("gCrawlSpeed", 1);
+    s16 camCrawlTemp = CVarGetInteger(CVAR_ENHANCEMENT("CrawlSpeed"), 1);
     s16 camCrawlTimer = D_8012042C / camCrawlTemp;
     // #endregion
     
@@ -337,7 +337,7 @@ s32 OnePointCutscene_SetInfo(PlayState* play, s16 camIdx, s16 csId, Actor* actor
         case 9601:
             Play_CameraChangeSetting(play, camIdx, CAM_SET_CS_3);
             Play_CameraChangeSetting(play, MAIN_CAM, mainCam->prevSetting);
-            if (CVarGetInteger("gCrawlSpeed", 1) > 1) {
+            if (CVarGetInteger(CVAR_ENHANCEMENT("CrawlSpeed"), 1) > 1) {
                 OnePointCutscene_SetCsCamPoints(csCam, D_80120430 | 0x1000, camCrawlTimer, D_80120308, D_80120398);
             } else {
                 OnePointCutscene_SetCsCamPoints(csCam, D_80120430 | 0x1000, D_8012042C, D_80120308, D_80120398);
@@ -345,7 +345,7 @@ s32 OnePointCutscene_SetInfo(PlayState* play, s16 camIdx, s16 csId, Actor* actor
             break;
         case 9602:
             // #region SOH [Enhancement]
-            if (CVarGetInteger("gCrawlSpeed", 1) > 1) {
+            if (CVarGetInteger(CVAR_ENHANCEMENT("CrawlSpeed"), 1) > 1) {
                 Play_CameraChangeSetting(play, camIdx, CAM_SET_CS_3);
                 Play_CameraChangeSetting(play, MAIN_CAM, mainCam->prevSetting);
                 OnePointCutscene_SetCsCamPoints(csCam, D_80120430 | 0x1000, camCrawlTimer, D_80120308, D_80120434);
@@ -1173,11 +1173,11 @@ s16 OnePointCutscene_Init(PlayState* play, s16 csId, s16 timer, Actor* actor, s1
     Camera* csCam;
 
     if (actor != NULL && actor->id != ACTOR_PLAYER) {
-        if (!GameInteractor_Should(GI_VB_PLAY_ONEPOINT_ACTOR_CS, true, actor)) {
+        if (!GameInteractor_Should(VB_PLAY_ONEPOINT_ACTOR_CS, true, actor)) {
             return SUBCAM_NONE;
         }
     } else {
-        if (!GameInteractor_Should(GI_VB_PLAY_ONEPOINT_CS, true, &csId)) {
+        if (!GameInteractor_Should(VB_PLAY_ONEPOINT_CS, true, &csId)) {
             return SUBCAM_NONE;
         }
     }

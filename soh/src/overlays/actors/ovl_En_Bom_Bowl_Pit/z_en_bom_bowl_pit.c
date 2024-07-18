@@ -185,7 +185,7 @@ void EnBomBowlPit_GivePrize(EnBomBowlPit* this, PlayState* play) {
 
     player->stateFlags1 &= ~PLAYER_STATE1_IN_CUTSCENE;
     this->actor.parent = NULL;
-    if (GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_BOMBCHU_BOWLING, true, this)) {
+    if (GameInteractor_Should(VB_GIVE_ITEM_FROM_BOMBCHU_BOWLING, true, this)) {
         Actor_OfferGetItem(&this->actor, play, this->getItemId, 2000.0f, 1000.0f);
     }
     player->stateFlags1 |= PLAYER_STATE1_IN_CUTSCENE;
@@ -193,7 +193,7 @@ void EnBomBowlPit_GivePrize(EnBomBowlPit* this, PlayState* play) {
 }
 
 void EnBomBowlPit_WaitTillPrizeGiven(EnBomBowlPit* this, PlayState* play) {
-    if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_BOMBCHU_BOWLING, true, this)) {
+    if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(VB_GIVE_ITEM_FROM_BOMBCHU_BOWLING, true, this)) {
         this->actionFunc = EnBomBowlPit_Reset;
     } else {
         Actor_OfferGetItem(&this->actor, play, this->getItemId, 2000.0f, 1000.0f);

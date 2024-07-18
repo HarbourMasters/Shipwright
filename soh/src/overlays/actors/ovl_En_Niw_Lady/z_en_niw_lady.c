@@ -204,7 +204,7 @@ void func_80ABA244(EnNiwLady* this, PlayState* play) {
     EnNiw* currentCucco;
     s32 phi_s1;
 
-    if (GameInteractor_Should(GI_VB_SET_CUCCO_COUNT, true, this)) {
+    if (GameInteractor_Should(VB_SET_CUCCO_COUNT, true, this)) {
         this->cuccosInPen = 0;
     }
     currentCucco = (EnNiw*)play->actorCtx.actorLists[ACTORCAT_PROP].head;
@@ -312,7 +312,7 @@ void func_80ABA654(EnNiwLady* this, PlayState* play) {
         if (!Flags_GetItemGetInf(ITEMGETINF_0C)) {
             this->actor.parent = NULL;
 
-            if (GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_ANJU_AS_CHILD, true, this)) {
+            if (GameInteractor_Should(VB_GIVE_ITEM_FROM_ANJU_AS_CHILD, true, this)) {
                 this->getItemId = GI_BOTTLE;
                 Actor_OfferGetItem(&this->actor, play, GI_BOTTLE, 100.0f, 50.0f);
             } else {
@@ -404,7 +404,7 @@ void func_80ABA9B8(EnNiwLady* this, PlayState* play) {
                 Message_CloseTextbox(play);
                 this->actor.parent = NULL;
 
-                if (GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_ANJU_AS_ADULT, true, this)) {
+                if (GameInteractor_Should(VB_GIVE_ITEM_FROM_ANJU_AS_ADULT, true, this)) {
                     Actor_OfferGetItem(&this->actor, play, GI_POCKET_EGG, 200.0f, 100.0f);
                     this->actionFunc = func_80ABAC00;
                 } else {
@@ -439,7 +439,7 @@ void func_80ABAB08(EnNiwLady* this, PlayState* play) {
             case 0:
                 Message_CloseTextbox(play);
                 this->actor.parent = NULL;
-                if (GameInteractor_Should(GI_VB_TRADE_POCKET_CUCCO, true, this)) {
+                if (GameInteractor_Should(VB_TRADE_POCKET_CUCCO, true, this)) {
                     Actor_OfferGetItem(&this->actor, play, GI_COJIRO, 200.0f, 100.0f);
                     this->actionFunc = func_80ABAC00;
                 } else {
@@ -481,7 +481,7 @@ void func_80ABAC84(EnNiwLady* this, PlayState* play) {
     }
     osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ 正常終了 ☆☆☆☆☆ \n" VT_RST);
     if (LINK_IS_ADULT) {
-        if (GameInteractor_Should(GI_VB_ANJU_SET_OBTAINED_TRADE_ITEM, true, this)) {
+        if (GameInteractor_Should(VB_ANJU_SET_OBTAINED_TRADE_ITEM, true, this)) {
             if (!Flags_GetItemGetInf(ITEMGETINF_2C)) {
                 Flags_SetItemGetInf(ITEMGETINF_2C);
             } else {

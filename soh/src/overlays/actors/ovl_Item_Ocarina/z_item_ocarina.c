@@ -179,7 +179,7 @@ void ItemOcarina_WaitInWater(ItemOcarina* this, PlayState* play) {
     if (
         Actor_HasParent(&this->actor, play) || 
         (
-            !GameInteractor_Should(GI_VB_GIVE_ITEM_OCARINA_OF_TIME, true, NULL) &&
+            !GameInteractor_Should(VB_GIVE_ITEM_OCARINA_OF_TIME, true, NULL) &&
             (this->actor.xzDistToPlayer < 20.0f) && (fabsf(this->actor.yDistToPlayer) < 10.0f) &&
             GET_PLAYER(play)->stateFlags2 & PLAYER_STATE2_DIVING
         )
@@ -189,7 +189,7 @@ void ItemOcarina_WaitInWater(ItemOcarina* this, PlayState* play) {
         this->actionFunc = ItemOcarina_StartSoTCutscene;
         this->actor.draw = NULL;
     } else {
-        if (GameInteractor_Should(GI_VB_GIVE_ITEM_OCARINA_OF_TIME, true, NULL)) {
+        if (GameInteractor_Should(VB_GIVE_ITEM_OCARINA_OF_TIME, true, NULL)) {
             Actor_OfferGetItem(&this->actor, play, GI_OCARINA_OOT, 30.0f, 50.0f);
         }
 
@@ -212,7 +212,7 @@ void ItemOcarina_Draw(Actor* thisx, PlayState* play) {
     func_8002ED80(thisx, play, 0);
 
     if (IS_RANDO) {
-        GetItemEntry randoGetItem = Randomizer_GetItemFromKnownCheck(RC_HF_OCARINA_OF_TIME_ITEM, GI_OCARINA_OOT);
+        GetItemEntry randoGetItem = (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0) && Randomizer_IsCheckShuffled(RC_HF_OCARINA_OF_TIME_ITEM)) ? GetItemMystery() : Randomizer_GetItemFromKnownCheck(RC_HF_OCARINA_OF_TIME_ITEM, GI_OCARINA_OOT);
         EnItem00_CustomItemsParticles(&this->actor, play, randoGetItem);
         GetItemEntry_Draw(play, randoGetItem);
         return;

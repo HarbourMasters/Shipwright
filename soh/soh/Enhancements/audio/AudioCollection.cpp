@@ -2,9 +2,10 @@
 #include "sequence.h"
 #include "sfx.h"
 #include <vector>
-#include <Utils/StringHelper.h>
+#include <utils/StringHelper.h>
 #include <libultraship/bridge.h>
 #include <libultraship/classes.h>
+#include <soh/OTRGlobals.h>
 #include <locale>
 #include <filesystem>
 
@@ -330,11 +331,13 @@ AudioCollection::AudioCollection() {
 }
 
 std::string AudioCollection::GetCvarKey(std::string sfxKey) {
-    return "gAudioEditor.ReplacedSequences." + sfxKey + ".value";
+    auto prefix = CVAR_AUDIO("ReplacedSequences.");
+    return prefix + sfxKey + ".value";
 }
 
 std::string AudioCollection::GetCvarLockKey(std::string sfxKey) {
-    return "gAudioEditor.ReplacedSequences." + sfxKey + ".locked";
+    auto prefix = std::string(CVAR_AUDIO("ReplacedSequences."));
+    return prefix + sfxKey + ".locked";
 }
 
 void AudioCollection::AddToCollection(char* otrPath, uint16_t seqNum) {
@@ -362,7 +365,7 @@ uint16_t AudioCollection::GetReplacementSequence(uint16_t seqId) {
     // for Hyrule Field instead. Otherwise, leave it alone, so that without any sfx editor modifications we will
     // play the normal track as usual.
     if (seqId == NA_BGM_FIELD_MORNING) {
-        if (CVarGetInteger("gAudioEditor.ReplacedSequences.NA_BGM_FIELD_LOGIC.value", NA_BGM_FIELD_LOGIC) != NA_BGM_FIELD_LOGIC) {
+        if (CVarGetInteger(CVAR_AUDIO("ReplacedSequences.NA_BGM_FIELD_LOGIC.value"), NA_BGM_FIELD_LOGIC) != NA_BGM_FIELD_LOGIC) {
             seqId = NA_BGM_FIELD_LOGIC;
         }
     }
@@ -381,19 +384,19 @@ uint16_t AudioCollection::GetReplacementSequence(uint16_t seqId) {
 }
 
 void AudioCollection::RemoveFromShufflePool(SequenceInfo* seqInfo) {
-    const std::string cvarKey = "gAudioEditor.Excluded." + seqInfo->sfxKey;
+    const std::string cvarKey = std::string(CVAR_AUDIO("Excluded.")) + seqInfo->sfxKey;
     excludedSequences.insert(seqInfo);
     includedSequences.erase(seqInfo);
     CVarSetInteger(cvarKey.c_str(), 1);
-    LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
 }
 
 void AudioCollection::AddToShufflePool(SequenceInfo* seqInfo) {
-    const std::string cvarKey = "gAudioEditor.Excluded." + seqInfo->sfxKey;
+    const std::string cvarKey = std::string(CVAR_AUDIO("Excluded.")) + seqInfo->sfxKey;
     includedSequences.insert(seqInfo);
     excludedSequences.erase(seqInfo);
     CVarClear(cvarKey.c_str());
-    LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
 }
 
 void AudioCollection::InitializeShufflePool() {
@@ -401,7 +404,7 @@ void AudioCollection::InitializeShufflePool() {
     
     for (auto& [seqId, seqInfo] : sequenceMap) {
         if (!seqInfo.canBeUsedAsReplacement) continue;
-        const std::string cvarKey = "gAudioEditor.Excluded." + seqInfo.sfxKey;
+        const std::string cvarKey = std::string(CVAR_AUDIO("Excluded.")) + seqInfo.sfxKey;
         if (CVarGetInteger(cvarKey.c_str(), 0)) {
             excludedSequences.insert(&seqInfo);
         } else {

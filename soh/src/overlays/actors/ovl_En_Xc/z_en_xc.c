@@ -17,9 +17,6 @@
 
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
-#define TEXT_SHEIK_NEED_HOOK 0x700F
-#define TEXT_SHEIK_HAVE_HOOK 0x7010
-
 void EnXc_Init(Actor* thisx, PlayState* play);
 void EnXc_Destroy(Actor* thisx, PlayState* play);
 void EnXc_Update(Actor* thisx, PlayState* play);
@@ -301,15 +298,15 @@ s32 EnXc_MinuetCS(EnXc* this, PlayState* play) {
 
         if (z < -2225.0f) {
             if (!Play_InCsMode(play)) {
-                if (GameInteractor_Should(GI_VB_PLAY_MINUET_OF_FOREST_CS, true, NULL)) {
+                if (GameInteractor_Should(VB_PLAY_MINUET_OF_FOREST_CS, true, NULL)) {
                     play->csCtx.segment = SEGMENTED_TO_VIRTUAL(&gMinuetCs);
                     gSaveContext.cutsceneTrigger = 1;
                 }
                 Flags_SetEventChkInf(EVENTCHKINF_LEARNED_MINUET_OF_FOREST);
-                if (GameInteractor_Should(GI_VB_GIVE_ITEM_MINUET_OF_FOREST, true, NULL)) {
+                if (GameInteractor_Should(VB_GIVE_ITEM_MINUET_OF_FOREST, true, NULL)) {
                     Item_Give(play, ITEM_SONG_MINUET);
                 }
-                if (GameInteractor_Should(GI_VB_PLAY_MINUET_OF_FOREST_CS, true, NULL)) {
+                if (GameInteractor_Should(VB_PLAY_MINUET_OF_FOREST_CS, true, NULL)) {
                     return true;
                 }
             }
@@ -338,15 +335,15 @@ s32 EnXc_BoleroCS(EnXc* this, PlayState* play) {
         if ((posRot->pos.x > -784.0f) && (posRot->pos.x < -584.0f) && (posRot->pos.y > 447.0f) &&
             (posRot->pos.y < 647.0f) && (posRot->pos.z > -446.0f) && (posRot->pos.z < -246.0f) &&
             !Play_InCsMode(play)) {
-            if (GameInteractor_Should(GI_VB_PLAY_BOLERO_OF_FIRE_CS, true, NULL)) {
+            if (GameInteractor_Should(VB_PLAY_BOLERO_OF_FIRE_CS, true, NULL)) {
                 play->csCtx.segment = SEGMENTED_TO_VIRTUAL(&gDeathMountainCraterBoleroCs);
                 gSaveContext.cutsceneTrigger = 1;
             }
             Flags_SetEventChkInf(EVENTCHKINF_LEARNED_BOLERO_OF_FIRE);
-            if (GameInteractor_Should(GI_VB_GIVE_ITEM_BOLERO_OF_FIRE, true, NULL)) {
+            if (GameInteractor_Should(VB_GIVE_ITEM_BOLERO_OF_FIRE, true, NULL)) {
                 Item_Give(play, ITEM_SONG_BOLERO);
             }
-            if (GameInteractor_Should(GI_VB_PLAY_BOLERO_OF_FIRE_CS, true, NULL)) {
+            if (GameInteractor_Should(VB_PLAY_BOLERO_OF_FIRE_CS, true, NULL)) {
                 return true;
             }
         }
@@ -357,7 +354,7 @@ s32 EnXc_BoleroCS(EnXc* this, PlayState* play) {
 
 void EnXc_SetupSerenadeAction(EnXc* this, PlayState* play) {
     // Player is adult and does not have iron boots and has not learned Serenade
-    if (GameInteractor_Should(GI_VB_SHIEK_PREPARE_TO_GIVE_SERENADE_OF_WATER, (!CHECK_OWNED_EQUIP(EQUIP_TYPE_BOOTS, EQUIP_INV_BOOTS_IRON) && !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_SERENADE_OF_WATER)) && LINK_IS_ADULT, NULL)) {
+    if (GameInteractor_Should(VB_SHIEK_PREPARE_TO_GIVE_SERENADE_OF_WATER, (!CHECK_OWNED_EQUIP(EQUIP_TYPE_BOOTS, EQUIP_INV_BOOTS_IRON) && !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_SERENADE_OF_WATER)) && LINK_IS_ADULT, NULL)) {
         this->action = SHEIK_ACTION_SERENADE;
         osSyncPrintf("水のセレナーデ シーク誕生!!!!!!!!!!!!!!!!!!\n");
     } else {
@@ -370,18 +367,18 @@ s32 EnXc_SerenadeCS(EnXc* this, PlayState* play) {
     if (this->actor.params == SHEIK_TYPE_SERENADE) {
         Player* player = GET_PLAYER(play);
         s32 stateFlags = player->stateFlags1;
-        if (GameInteractor_Should(GI_VB_BE_ELIGIBLE_FOR_SERENADE_OF_WATER, CHECK_OWNED_EQUIP(EQUIP_TYPE_BOOTS, EQUIP_INV_BOOTS_IRON) && !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_SERENADE_OF_WATER), NULL) &&
+        if (GameInteractor_Should(VB_BE_ELIGIBLE_FOR_SERENADE_OF_WATER, CHECK_OWNED_EQUIP(EQUIP_TYPE_BOOTS, EQUIP_INV_BOOTS_IRON) && !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_SERENADE_OF_WATER), NULL) &&
             !(stateFlags & PLAYER_STATE1_IN_CUTSCENE) && !Play_InCsMode(play)) {
-            if (GameInteractor_Should(GI_VB_PLAY_SERENADE_OF_WATER_CS, true, NULL)) {
+            if (GameInteractor_Should(VB_PLAY_SERENADE_OF_WATER_CS, true, NULL)) {
                 Cutscene_SetSegment(play, &gIceCavernSerenadeCs);
                 gSaveContext.cutsceneTrigger = 1;
             }
             Flags_SetEventChkInf(EVENTCHKINF_LEARNED_SERENADE_OF_WATER); // Learned Serenade of Water Flag
-            if (GameInteractor_Should(GI_VB_GIVE_ITEM_SERENADE_OF_WATER, true, NULL)) {
+            if (GameInteractor_Should(VB_GIVE_ITEM_SERENADE_OF_WATER, true, NULL)) {
                 Item_Give(play, ITEM_SONG_SERENADE);
             }
             osSyncPrintf("ブーツを取った!!!!!!!!!!!!!!!!!!\n");
-            if (GameInteractor_Should(GI_VB_PLAY_SERENADE_OF_WATER_CS, true, NULL)) {
+            if (GameInteractor_Should(VB_PLAY_SERENADE_OF_WATER_CS, true, NULL)) {
                 return true;
             }
         }
@@ -2188,17 +2185,17 @@ void EnXc_InitTempleOfTime(EnXc* this, PlayState* play) {
     if (LINK_IS_ADULT) {
         if (!Flags_GetEventChkInf(EVENTCHKINF_SHEIK_SPAWNED_AT_MASTER_SWORD_PEDESTAL)) {
             Flags_SetEventChkInf(EVENTCHKINF_SHEIK_SPAWNED_AT_MASTER_SWORD_PEDESTAL);
-            if (GameInteractor_Should(GI_VB_PLAY_SHIEK_BLOCK_MASTER_SWORD_CS, true, NULL)) {
+            if (GameInteractor_Should(VB_PLAY_SHIEK_BLOCK_MASTER_SWORD_CS, true, NULL)) {
                 play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gTempleOfTimeFirstAdultCs);
                 gSaveContext.cutsceneTrigger = 1;
             }
             func_80B3EBF0(this, play);
-        } else if (GameInteractor_Should(GI_VB_BE_ELIGIBLE_FOR_PRELUDE_OF_LIGHT, !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_PRELUDE_OF_LIGHT) && Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP), NULL)) {
+        } else if (GameInteractor_Should(VB_BE_ELIGIBLE_FOR_PRELUDE_OF_LIGHT, !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_PRELUDE_OF_LIGHT) && Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP), NULL)) {
             Flags_SetEventChkInf(EVENTCHKINF_LEARNED_PRELUDE_OF_LIGHT);
-            if (GameInteractor_Should(GI_VB_GIVE_ITEM_PRELUDE_OF_LIGHT, true, NULL)) {
+            if (GameInteractor_Should(VB_GIVE_ITEM_PRELUDE_OF_LIGHT, true, NULL)) {
                 Item_Give(play, ITEM_SONG_PRELUDE);
             }
-            if (GameInteractor_Should(GI_VB_PLAY_PRELUDE_OF_LIGHT_CS, true, NULL)) {
+            if (GameInteractor_Should(VB_PLAY_PRELUDE_OF_LIGHT_CS, true, NULL)) {
                 play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gTempleOfTimePreludeCs);
                 gSaveContext.cutsceneTrigger = 1;
             }
@@ -2217,27 +2214,11 @@ void EnXc_SetupDialogueAction(EnXc* this, PlayState* play) {
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
         this->action = SHEIK_ACTION_IN_DIALOGUE;
     } else {
-         this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY;
-        if (IS_RANDO && gPlayState->sceneNum == SCENE_TEMPLE_OF_TIME) {
-            if (!CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_GANONS_TOWER)) {
-                this->actor.textId = TEXT_SHEIK_NEED_HOOK;
-            } else {
-                this->actor.textId = TEXT_SHEIK_HAVE_HOOK;
-            }
-        } else if (IS_RANDO && gPlayState->sceneNum == SCENE_INSIDE_GANONS_CASTLE) {
-            if (CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER) && INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT &&
-            CUR_CAPACITY(UPG_QUIVER) >= 30 && gSaveContext.isMagicAcquired) {
-                this->actor.textId = TEXT_SHEIK_HAVE_HOOK;
-            } else {
-                this->actor.textId = TEXT_SHEIK_NEED_HOOK;
-            }
-        }
-        else {
-            if (INV_CONTENT(ITEM_HOOKSHOT) != ITEM_NONE) {
-                this->actor.textId = 0x7010; //"You have what you need"
-            } else {
-                this->actor.textId = 0x700F; //"You need another skill"
-            }
+         this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY; //this arrangment is cute but I would rather handle all message selection in ship code
+        if (INV_CONTENT(ITEM_HOOKSHOT) != ITEM_NONE) {
+            this->actor.textId = 0x7010; //"You have what you need"
+        } else {
+            this->actor.textId = 0x700F; //"You need another skill"
         }
         func_8002F2F4(&this->actor, play);
     }

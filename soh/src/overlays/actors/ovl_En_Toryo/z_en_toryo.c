@@ -291,7 +291,7 @@ void func_80B20768(EnToryo* this, PlayState* play) {
     s16 sp32;
     s16 sp30;
 
-    if (this->unk_1E4 == 3 && !GameInteractor_Should(GI_VB_FIX_SAW_SOFTLOCK, false, NULL)) {
+    if (this->unk_1E4 == 3 && !GameInteractor_Should(VB_FIX_SAW_SOFTLOCK, false, NULL)) {
         Actor_ProcessTalkRequest(&this->actor, play);
         Message_ContinueTextbox(play, this->actor.textId);
         this->unk_1E4 = 1;
@@ -312,7 +312,7 @@ void func_80B20768(EnToryo* this, PlayState* play) {
     }
 
     if (this->unk_1E4 == 4) {
-        if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(GI_VB_TRADE_SAW, true, this)) {
+        if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(VB_TRADE_SAW, true, this)) {
             this->actor.parent = NULL;
             this->unk_1E4 = 5;
             Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_GV_TRADE_SAW);

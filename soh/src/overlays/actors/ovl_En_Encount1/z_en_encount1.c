@@ -169,7 +169,7 @@ void EnEncount1_SpawnLeevers(EnEncount1* this, PlayState* play) {
                     break;
                 }
             }
-            int32_t modifiedSpawnRate = CVarGetInteger("gEnhancements.LeeverSpawnRate", 0);
+            int32_t modifiedSpawnRate = CVarGetInteger(CVAR_ENHANCEMENT("LeeverSpawnRate"), 0);
             if (modifiedSpawnRate) {
                 this->timer = 20 * modifiedSpawnRate;
             }
@@ -248,9 +248,9 @@ void EnEncount1_SpawnStalchildOrWolfos(EnEncount1* this, PlayState* play) {
     // been spawned and/or killed.
     int8_t enemyCount = play->actorCtx.actorLists[ACTORCAT_ENEMY].length;
     if ((this->curNumSpawn < this->maxCurSpawns && this->totalNumSpawn < this->maxTotalSpawns) || 
-            (CVarGetInteger("gRandomizedEnemies", 0) && enemyCount < 15)) {
+            (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) && enemyCount < 15)) {
         while ((this->curNumSpawn < this->maxCurSpawns && this->totalNumSpawn < this->maxTotalSpawns) || 
-                (CVarGetInteger("gRandomizedEnemies", 0) && enemyCount < 15)) {
+                (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) && enemyCount < 15)) {
             if (play->sceneNum == SCENE_HYRULE_FIELD) {
                 if ((player->floorSfxOffset == 0) || (player->actor.floorBgId != BGCHECK_SCENE) ||
                     !(player->actor.bgCheckFlags & 1) || (player->stateFlags1 & PLAYER_STATE1_IN_WATER)) {
@@ -282,7 +282,7 @@ void EnEncount1_SpawnStalchildOrWolfos(EnEncount1* this, PlayState* play) {
                     break;
                 }
                 if ((player->actor.yDistToWater != BGCHECK_Y_MIN) &&
-                    (floorY < (player->actor.world.pos.y + player->actor.yDistToWater*(CVarGetInteger("gEnemySpawnsOverWaterboxes", 0) ? 1 : -1)))) {
+                    (floorY < (player->actor.world.pos.y + player->actor.yDistToWater*(CVarGetInteger(CVAR_ENHANCEMENT("EnemySpawnsOverWaterboxes"), 0) ? 1 : -1)))) {
                     break;
                 }
                 spawnPos.y = floorY;
