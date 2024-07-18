@@ -206,6 +206,9 @@ namespace SohGui {
     }
 
     void Destroy() {
+        auto gui = Ship::Context::GetInstance()->GetWindow()->GetGui();
+        gui->RemoveAllGuiWindows();
+        
         mModalWindow = nullptr;
         mAdvancedResolutionSettingsWindow = nullptr;
         mRandomizerSettingsWindow = nullptr;

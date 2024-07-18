@@ -88,7 +88,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 # Set GBI version
 ################################################################################
 
-add_compile_definitions(F3DEX_GBI_2)
+set(GBI_UCODE F3DEX_GBI_2)
 
 ################################################################################
 # Sub-projects
