@@ -1386,7 +1386,6 @@ void DrawEnhancementsMenu() {
                 }
             }
 
-            UIWidgets::Spacer(0);
             if (UIWidgets::PaddedEnhancementCheckbox("Hurt Container Mode", CVAR_ENHANCEMENT("HurtContainer"), true, false)) {
                 UpdateHurtContainerModeState(CVarGetInteger(CVAR_ENHANCEMENT("HurtContainer"), 0));
             }
@@ -1394,6 +1393,15 @@ void DrawEnhancementsMenu() {
                 "- Each Heart Container or full Heart Piece reduces Links hearts by 1.\n"
                 "- Can be enabled retroactively after a File has already started.");
 
+            UIWidgets::PaddedEnhancementCheckbox("Ice Trap Fever", CVAR_ENHANCEMENT("TrapFever"), true, false);
+            if (CVarGetInteger(CVAR_ENHANCEMENT("TrapFever"), 0)) {
+                ImGui::Separator();
+                UIWidgets::PaddedEnhancementSliderInt("Starting Timer: %d minutes", "##StartTime", CVAR_ENHANCEMENT("StartTimer"), 1,
+                                                      30, "", 15, true, true, false);
+                UIWidgets::PaddedEnhancementSliderInt("Time Extensions: %d minutes", "##ExtendTime", CVAR_ENHANCEMENT("ExtendTimer"),
+                                                      1, 15, "", 5, true, true, false);
+                ImGui::Separator();
+            }
             ImGui::EndMenu();
         }
 

@@ -16,6 +16,8 @@ extern "C" {
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/OTRGlobals.h"
 
+#include "soh/Enhancements/mods.h"
+
 extern "C" {
 #include <z64.h>
 #include "variables.h"
@@ -279,8 +281,28 @@ std::string formatHexOnlyGameplayStat(uint32_t value) {
     return fmt::format("{:#x}", value, value);
 }
 
+bool stopTimer = false;
+
 extern "C" char* GameplayStats_GetCurrentTime() {
-    std::string timeString = formatTimestampGameplayStat(GAMEPLAYSTAT_TOTAL_TIME).c_str();
+    std::string timeString;
+    
+    if (CVarGetInteger(CVAR_ENHANCEMENT("TrapFever"), 0)) {
+        uint32_t remainingFeverTime = 
+            ((gSaveContext.sohStats.count[COUNT_ICE_TRAPS] * (CVarGetInteger(CVAR_ENHANCEMENT("ExtendTimer"), 0) * 600)) +
+            (CVarGetInteger(CVAR_ENHANCEMENT("StartTimer"), 0) * 600) - GAMEPLAYSTAT_TOTAL_TIME);
+        if (remainingFeverTime > 0 && stopTimer == false) {
+            timeString = formatTimestampGameplayStat(remainingFeverTime).c_str();
+        } else if (remainingFeverTime == 0) {
+            stopTimer = true;
+            IceTrapFever();
+        } else {
+            timeString = formatTimestampGameplayStat(0).c_str();
+        }
+
+    } else {
+        timeString = formatTimestampGameplayStat(GAMEPLAYSTAT_TOTAL_TIME).c_str();
+    }
+    
     const size_t stringLength = timeString.length();
     char* timeChar = (char*)malloc(stringLength + 1); // We need to use malloc so we can free this from a C file.
     strcpy(timeChar, timeString.c_str());
