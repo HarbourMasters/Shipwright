@@ -1933,7 +1933,7 @@ u8 Item_Give(PlayState* play, u8 item) {
         Randomizer_GetSettingValue(RSK_SHUFFLE_DEKU_STICK_BAG) &&
         CUR_UPG_VALUE(UPG_STICKS) == 0
     ) {
-        return;
+        return item;
     }
 
     //prevents getting nuts without the bag in case something got missed
@@ -1943,7 +1943,7 @@ u8 Item_Give(PlayState* play, u8 item) {
         Randomizer_GetSettingValue(RSK_SHUFFLE_DEKU_NUT_BAG) &&
         CUR_UPG_VALUE(UPG_NUTS) == 0
     ) {
-        return;
+        return item;
     }
 
     lusprintf(__FILE__, __LINE__, 2, "Item Give - item: %#x", item);
