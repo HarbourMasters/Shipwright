@@ -6,12 +6,6 @@
 #include "SaveManager.h"
 #include <soh/Enhancements/item-tables/ItemTableTypes.h>
 
-#define GAME_REGION_NTSC 0
-#define GAME_REGION_PAL 1
-
-#define GAME_PLATFORM_N64 0
-#define GAME_PLATFORM_GC 1
-
 #define BTN_MODIFIER1 0x00040
 #define BTN_MODIFIER2 0x00080
 
@@ -20,6 +14,14 @@
 #include "Enhancements/savestates.h"
 #include "Enhancements/randomizer/randomizer.h"
 #include <vector>
+#include <string>
+
+struct ExtensionEntry {
+    std::string path;
+    std::string ext;
+};
+
+extern std::unordered_map<std::string, ExtensionEntry> ExtensionCache;
 
 const std::string customMessageTableID = "BaseGameOverrides";
 const std::string appShortName = "soh";
@@ -96,53 +98,12 @@ void OTRGfxPrint(const char* str, void* printer, void (*printImpl)(void*, char))
 void OTRGetPixelDepthPrepare(float x, float y);
 uint16_t OTRGetPixelDepth(float x, float y);
 int32_t OTRGetLastScancode();
-uint32_t ResourceMgr_IsGameMasterQuest();
-uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
-uint32_t ResourceMgr_GameHasMasterQuest();
-uint32_t ResourceMgr_GameHasOriginal();
-uint32_t ResourceMgr_GetNumGameVersions();
-uint32_t ResourceMgr_GetGameVersion(int index);
-uint32_t ResourceMgr_GetGamePlatform(int index);
-uint32_t ResourceMgr_GetGameRegion(int index);
-void ResourceMgr_LoadDirectory(const char* resName);
-void ResourceMgr_UnloadResource(const char* resName);
-char** ResourceMgr_ListFiles(const char* searchMask, int* resultSize);
-uint8_t ResourceMgr_FileExists(const char* resName);
-uint8_t ResourceMgr_FileAltExists(const char* resName);
-void ResourceMgr_UnloadOriginalWhenAltExists(const char* resName);
 char* GetResourceDataByNameHandlingMQ(const char* path);
-uint8_t ResourceMgr_TexIsRaw(const char* texPath);
-uint8_t ResourceMgr_ResourceIsBackground(char* texPath);
-char* ResourceMgr_LoadJPEG(char* data, size_t dataSize);
-uint16_t ResourceMgr_LoadTexWidthByName(char* texPath);
-uint16_t ResourceMgr_LoadTexHeightByName(char* texPath);
-char* ResourceMgr_LoadTexOrDListByName(const char* filePath);
-char* ResourceMgr_LoadPlayerAnimByName(const char* animPath);
-AnimationHeaderCommon* ResourceMgr_LoadAnimByName(const char* path);
-char* ResourceMgr_GetNameByCRC(uint64_t crc, char* alloc);
-Gfx* ResourceMgr_LoadGfxByCRC(uint64_t crc);
-Gfx* ResourceMgr_LoadGfxByName(const char* path);
-uint8_t ResourceMgr_FileIsCustomByName(const char* path);
-void ResourceMgr_PatchGfxByName(const char* path, const char* patchName, int index, Gfx instruction);
-void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName);
-char* ResourceMgr_LoadArrayByNameAsVec3s(const char* path);
-Vtx* ResourceMgr_LoadVtxByCRC(uint64_t crc);
 
-Vtx* ResourceMgr_LoadVtxByName(char* path);
-SoundFont* ResourceMgr_LoadAudioSoundFont(const char* path);
-SequenceData ResourceMgr_LoadSeqByName(const char* path);
-SoundFontSample* ResourceMgr_LoadAudioSample(const char* path);
-CollisionHeader* ResourceMgr_LoadColByName(const char* path);
 void Ctx_ReadSaveFile(uintptr_t addr, void* dramAddr, size_t size);
 void Ctx_WriteSaveFile(uintptr_t addr, void* dramAddr, size_t size);
 
 uint64_t GetPerfCounter();
-bool ResourceMgr_IsAltAssetsEnabled();
-struct SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path, SkelAnime* skelAnime);
-void ResourceMgr_UnregisterSkeleton(SkelAnime* skelAnime);
-void ResourceMgr_ClearSkeletons();
-s32* ResourceMgr_LoadCSByName(const char* path);
-int ResourceMgr_OTRSigCheck(char* imgData);
 uint64_t osGetTime(void);
 uint32_t osGetCount(void);
 uint32_t OTRGetCurrentWidth(void);

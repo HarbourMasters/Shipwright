@@ -11,6 +11,7 @@
 #include <textures/icon_item_24_static/icon_item_24_static.h>
 #include "3drando/rando_main.hpp"
 #include "3drando/random.hpp"
+#include "../../ResourceManagerHelpers.h"
 #include "../../UIWidgets.hpp"
 #ifndef IMGUI_DEFINE_MATH_OPERATORS
 #define IMGUI_DEFINE_MATH_OPERATORS
@@ -35,9 +36,6 @@
 #include "randomizer_settings_window.h"
 #include "savefile.h"
 #include "soh/util.h"
-
-extern "C" uint32_t ResourceMgr_IsGameMasterQuest();
-extern "C" uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
 
 extern std::map<RandomizerCheckArea, std::string> rcAreaNames;
 extern std::unordered_map<HintType, std::string> hintTypeNames;

@@ -3,6 +3,7 @@
 #include "randomizer_item_tracker.h"
 #include "randomizerTypes.h"
 #include "../../OTRGlobals.h"
+#include "../../ResourceManagerHelpers.h"
 #include "../../UIWidgets.hpp"
 
 #include <string>
@@ -19,7 +20,6 @@ extern "C" {
 #include "macros.h"
 extern PlayState* gPlayState;
 }
-extern "C" uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
 extern "C" GetItemEntry ItemTable_RetrieveEntry(s16 modIndex, s16 getItemID);
 
 extern std::vector<ItemTrackerItem> dungeonRewardStones;
