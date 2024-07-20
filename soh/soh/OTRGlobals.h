@@ -82,7 +82,7 @@ uint32_t IsGameMasterQuest();
 #define CVAR_REMOTE(var) CVAR_PREFIX_REMOTE "." var
 
 #ifndef __cplusplus
-    void InitOTR(void);
+void InitOTR(void);
 void DeinitOTR(void);
 void VanillaItemTable_Init();
 void OTRAudio_Init();
