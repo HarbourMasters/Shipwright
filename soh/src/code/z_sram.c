@@ -4,6 +4,7 @@
 #include <string.h>
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include "soh/Enhancements/randomizer/savefile.h"
+#include "soh/SaveManager.h"
 
 #define NUM_DUNGEONS 8
 #define NUM_COWS 10

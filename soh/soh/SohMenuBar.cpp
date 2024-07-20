@@ -10,6 +10,7 @@
 #include "include/z64audio.h"
 #include "graphic/Fast3D/gfx_rendering_api.h"
 #include "OTRGlobals.h"
+#include "SaveManager.h"
 #include "z64.h"
 #include "Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/presets.h"

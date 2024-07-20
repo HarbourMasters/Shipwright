@@ -70,6 +70,7 @@
 #include "Enhancements/item-tables/ItemTableManager.h"
 #include "SohGui.hpp"
 #include "ActorDB.h"
+#include "SaveManager.h"
 
 #ifdef ENABLE_REMOTE_CONTROL
 #include "Enhancements/crowd-control/CrowdControl.h"

@@ -3,7 +3,6 @@
 
 #pragma once
 
-#include "SaveManager.h"
 #include <soh/Enhancements/item-tables/ItemTableTypes.h>
 
 #define BTN_MODIFIER1 0x00040
@@ -124,6 +123,7 @@ void* getN64WeirdFrame(s32 i);
 int GetEquipNowMessage(char* buffer, char* src, const int maxBufferSize);
 u32 SpoilerFileExists(const char* spoilerFileName);
 Sprite* GetSeedTexture(uint8_t index);
+
 void Randomizer_LoadSettings(const char* spoilerFileName);
 u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 RandomizerCheck Randomizer_GetCheckFromActor(s16 actorId, s16 sceneNum, s16 actorParams);
@@ -142,6 +142,7 @@ GetItemEntry Randomizer_GetItemFromActorWithoutObtainabilityCheck(s16 actorId, s
 GetItemEntry Randomizer_GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
 GetItemEntry Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
 bool Randomizer_IsCheckShuffled(RandomizerCheck check);
+
 GetItemEntry GetItemMystery();
 ItemObtainability Randomizer_GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck);
 int CustomMessage_RetrieveIfExists(PlayState* play);

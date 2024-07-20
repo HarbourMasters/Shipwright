@@ -22,6 +22,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include <assert.h>
 #include "z64save.h"
+#include "soh/SaveManager.h"
 
 typedef struct {
     s16 left;
