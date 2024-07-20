@@ -1446,7 +1446,7 @@ void RandomizerOnActorInitHandler(void* actorRef) {
 
     //consumable bags
     if (
-        actor->id = ACTOR_EN_ITEM00 &&
+        actor->id == ACTOR_EN_ITEM00 &&
         (
             (
                 RAND_GET_OPTION(RSK_SHUFFLE_DEKU_STICK_BAG) &&
