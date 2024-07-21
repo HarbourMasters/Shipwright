@@ -8,7 +8,8 @@
 #include "functions.h"
 #include "variables.h"
 #include "macros.h"
-#include "soh/OTRGlobals.h"
+#include "soh/cvar_prefixes.h"
+#include "soh/Enhancements/item-tables/ItemTableTypes.h"
 #include "soh/Enhancements/gameconsole.h"
 #include "soh/Enhancements/gameplaystats.h"
 #include <libultraship/bridge.h>

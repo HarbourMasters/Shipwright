@@ -33,6 +33,7 @@ extern "C" {
 #include <z64.h>
 #include "align_asset_macro.h"
 #include "macros.h"
+#include "soh/cvar_prefixes.h"
 #include "functions.h"
 #include "variables.h"
 #include "functions.h"

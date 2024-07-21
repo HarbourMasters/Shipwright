@@ -2,6 +2,7 @@
 #include "OTRGlobals.h"
 #include "variables.h"
 #include "z64.h"
+#include "cvar_prefixes.h"
 #include "Enhancements/enhancementTypes.h"
 #include <libultraship/libultraship.h>
 #include <GameVersions.h>
@@ -94,10 +95,6 @@ uint32_t IsSceneMasterQuest(s16 sceneNum) {
     return value;
 }
 
-uint32_t IsGameMasterQuest() {
-    return gPlayState != NULL ? IsSceneMasterQuest(gPlayState->sceneNum) : 0;
-}
-
 extern "C" uint32_t ResourceMgr_GameHasMasterQuest() {
     return OTRGlobals::Instance->HasMasterQuest();
 }
@@ -111,7 +108,7 @@ extern "C" uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum) {
 }
 
 extern "C" uint32_t ResourceMgr_IsGameMasterQuest() {
-    return IsGameMasterQuest();
+    return gPlayState != NULL ? IsSceneMasterQuest(gPlayState->sceneNum) : 0;
 }
 
 extern "C" void ResourceMgr_LoadDirectory(const char* resName) {

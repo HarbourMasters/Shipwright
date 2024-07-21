@@ -5,6 +5,7 @@
 #include "soh/Enhancements/enhancementTypes.h"
 #include "variables.h"
 #include "soh/OTRGlobals.h"
+#include "soh/cvar_prefixes.h"
 #include "soh/ResourceManagerHelpers.h"
 
 extern "C" {

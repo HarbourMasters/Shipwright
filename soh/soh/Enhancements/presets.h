@@ -8,6 +8,7 @@
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/OTRGlobals.h"
+#include "soh/cvar_prefixes.h"
 
 enum PresetEntryType {
     PRESET_ENTRY_TYPE_S32,

@@ -12,6 +12,7 @@
 #include "OTRGlobals.h"
 #include "SaveManager.h"
 #include "z64.h"
+#include "cvar_prefixes.h"
 #include "Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/presets.h"
 #include "soh/Enhancements/mods.h"

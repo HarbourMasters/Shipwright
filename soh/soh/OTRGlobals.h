@@ -3,8 +3,6 @@
 
 #pragma once
 
-#include <soh/Enhancements/item-tables/ItemTableTypes.h>
-
 #define BTN_MODIFIER1 0x00040
 #define BTN_MODIFIER2 0x00080
 
@@ -33,54 +31,35 @@ const uint32_t defaultImGuiScale = 1;
 
 const float imguiScaleOptionToValue[4] = { 0.75f, 1.0f, 1.5f, 2.0f };
 
-class OTRGlobals
-{
-public:
-    static OTRGlobals* Instance;
+class OTRGlobals {
+    public:
+        static OTRGlobals* Instance;
 
-    std::shared_ptr<Ship::Context> context;
-    std::shared_ptr<SaveStateMgr> gSaveStateMgr;
-    std::shared_ptr<Randomizer> gRandomizer;
+        std::shared_ptr<Ship::Context> context;
+        std::shared_ptr<SaveStateMgr> gSaveStateMgr;
+        std::shared_ptr<Randomizer> gRandomizer;
 
-    ImFont* defaultFontSmaller;
-    ImFont* defaultFontLarger;
-    ImFont* defaultFontLargest;
+        ImFont* defaultFontSmaller;
+        ImFont* defaultFontLarger;
+        ImFont* defaultFontLargest;
 
-    OTRGlobals();
-    ~OTRGlobals();
-    
-    void ScaleImGui();
+        OTRGlobals();
+        ~OTRGlobals();
 
-    bool HasMasterQuest();
-    bool HasOriginal();
-    uint32_t GetInterpolationFPS();
-    std::shared_ptr<std::vector<std::string>> ListFiles(std::string path);
+        void ScaleImGui();
 
-private:
-	void CheckSaveFile(size_t sramSize) const;
-    bool hasMasterQuest;
-    bool hasOriginal;
-    ImFont* CreateDefaultFontWithSize(float size);
+        bool HasMasterQuest();
+        bool HasOriginal();
+        uint32_t GetInterpolationFPS();
+        std::shared_ptr<std::vector<std::string>> ListFiles(std::string path);
+
+    private:
+    	void CheckSaveFile(size_t sramSize) const;
+        bool hasMasterQuest;
+        bool hasOriginal;
+        ImFont* CreateDefaultFontWithSize(float size);
 };
-
-uint32_t IsGameMasterQuest();
 #endif
-
-#define CVAR_RANDOMIZER_ENHANCEMENT(var) CVAR_PREFIX_RANDOMIZER_ENHANCEMENT "." var
-#define CVAR_RANDOMIZER_SETTING(var) CVAR_PREFIX_RANDOMIZER_SETTING "." var
-#define CVAR_COSMETIC(var) CVAR_PREFIX_COSMETIC "." var
-#define CVAR_AUDIO(var) CVAR_PREFIX_AUDIO "." var
-#define CVAR_CHEAT(var) CVAR_PREFIX_CHEAT "." var
-#define CVAR_ENHANCEMENT(var) CVAR_PREFIX_ENHANCEMENT "." var
-#define CVAR_SETTING(var) CVAR_PREFIX_SETTING "." var
-#define CVAR_WINDOW(var) CVAR_PREFIX_WINDOW "." var
-#define CVAR_TRACKER(var) CVAR_PREFIX_TRACKER "." var
-#define CVAR_TRACKER_ITEM(var) CVAR_TRACKER(".ItemTracker." var)
-#define CVAR_TRACKER_CHECK(var) CVAR_TRACKER(".CheckTracker." var)
-#define CVAR_TRACKER_ENTRANCE(var) CVAR_TRACKER(".EntranceTracker." var)
-#define CVAR_DEVELOPER_TOOLS(var) CVAR_PREFIX_DEVELOPER_TOOLS "." var
-#define CVAR_GENERAL(var) CVAR_PREFIX_GENERAL "." var
-#define CVAR_REMOTE(var) CVAR_PREFIX_REMOTE "." var
 
 #ifndef __cplusplus
 void InitOTR(void);
@@ -142,9 +121,9 @@ GetItemEntry Randomizer_GetItemFromActorWithoutObtainabilityCheck(s16 actorId, s
 GetItemEntry Randomizer_GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
 GetItemEntry Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
 bool Randomizer_IsCheckShuffled(RandomizerCheck check);
-
 GetItemEntry GetItemMystery();
 ItemObtainability Randomizer_GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck);
+
 int CustomMessage_RetrieveIfExists(PlayState* play);
 void Overlay_DisplayText(float duration, const char* text);
 void Overlay_DisplayText_Seconds(int seconds, const char* text);

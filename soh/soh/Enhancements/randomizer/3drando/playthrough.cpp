@@ -11,6 +11,7 @@
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "variables.h"
 #include "soh/OTRGlobals.h"
+#include "soh/cvar_prefixes.h"
 
 namespace Playthrough {
 

@@ -9,6 +9,7 @@
 #include <functions.h>
 #include "../randomizer/3drando/random.hpp"
 #include "../../OTRGlobals.h"
+#include "soh/cvar_prefixes.h"
 #include <utils/StringHelper.h>
 #include "../../UIWidgets.hpp"
 #include "AudioCollection.h"

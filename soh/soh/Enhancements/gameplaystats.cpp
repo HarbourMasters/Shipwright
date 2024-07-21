@@ -6,6 +6,7 @@ extern "C" {
 #include "soh/SaveManager.h"
 #include "functions.h"
 #include "macros.h"
+#include "soh/cvar_prefixes.h"
 #include "../UIWidgets.hpp"
 #include "soh/util.h"
 

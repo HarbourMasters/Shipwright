@@ -1,6 +1,7 @@
 #include "randomizer_item_tracker.h"
 #include "../../util.h"
 #include "../../OTRGlobals.h"
+#include "../../cvar_prefixes.h"
 #include "../../SaveManager.h"
 #include "../../ResourceManagerHelpers.h"
 #include "../../UIWidgets.hpp"
