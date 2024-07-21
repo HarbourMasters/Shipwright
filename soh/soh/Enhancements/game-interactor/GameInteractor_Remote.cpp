@@ -9,6 +9,7 @@
 #include <type_traits>
 #include <libultraship/libultraship.h>
 #include "soh/OTRGlobals.h"
+#include "soh/cvar_prefixes.h"
 
 // MARK: - Remote
 

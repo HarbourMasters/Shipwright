@@ -1,5 +1,8 @@
 #pragma once
 
+#include "soh/OTRGlobals.h"
+#include "soh/cvar_prefixes.h"
+
 // When using RTA timing
     // get the diff since the save was created,
     // unless the game is complete in which we use the defeated ganon timestamp
