@@ -6,7 +6,6 @@
 #include <fstream>
 #include <chrono>
 
-//#include <ResourceManager.h>
 #include "ResourceManagerHelpers.h"
 #include "graphic/Fast3D/Fast3dWindow.h"
 #include <File.h>
@@ -49,7 +48,6 @@
 #endif
 
 #include <Fast3D/gfx_pc.h>
-#include <Fast3D/gfx_rendering_api.h>
 
 #ifdef __APPLE__
 #include <SDL_scancode.h>
