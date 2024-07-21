@@ -65,12 +65,11 @@ void SkeletonPatcher::ClearSkeletons()
 }
 
 void SkeletonPatcher::UpdateSkeletons() {
-    bool isHD = CVarGetInteger("gAltAssets", 0);
+    auto resourceMgr = LUS::Context::GetInstance()->GetResourceManager();
+    bool isHD = resourceMgr->IsAltAssetsEnabled();
     for (auto skel : skeletons) {
         Skeleton* newSkel =
-            (Skeleton*)LUS::Context::GetInstance()->GetResourceManager()
-                ->LoadResource((isHD ? LUS::IResource::gAltAssetPrefix : "") + skel.vanillaSkeletonPath, true)
-                .get();
+            (Skeleton*)resourceMgr->LoadResource((isHD ? LUS::IResource::gAltAssetPrefix : "") + skel.vanillaSkeletonPath, true).get();
 
         if (newSkel != nullptr) {
             skel.skelAnime->skeleton = newSkel->skeletonData.skeletonHeader.segment;

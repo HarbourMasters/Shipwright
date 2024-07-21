@@ -467,7 +467,7 @@ void GameState_Destroy(GameState* gameState) {
     // Performing clear skeletons before unload resources fixes an actor heap corruption crash due to the skeleton patching system.
     ResourceMgr_ClearSkeletons();
 
-    if (CVarGetInteger("gAltAssets", 0)) {
+    if (ResourceMgr_IsAltAssetsEnabled()) {
         ResourceUnloadDirectory("alt/*");
         gfx_texture_cache_clear();
     }

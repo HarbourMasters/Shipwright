@@ -120,6 +120,7 @@ void Ctx_ReadSaveFile(uintptr_t addr, void* dramAddr, size_t size);
 void Ctx_WriteSaveFile(uintptr_t addr, void* dramAddr, size_t size);
 
 uint64_t GetPerfCounter();
+bool ResourceMgr_IsAltAssetsEnabled();
 struct SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path, SkelAnime* skelAnime);
 void ResourceMgr_UnregisterSkeleton(SkelAnime* skelAnime);
 void ResourceMgr_ClearSkeletons();
