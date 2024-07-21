@@ -50,6 +50,13 @@ std::string GetWindowButtonText(const char* text, bool menuOpen) {
     if (!menuOpen) { strcat(buttonText, "  "); }
     return buttonText;
 }
+            
+static std::unordered_map<LUS::WindowBackend, const char*> windowBackendNames = {
+    { LUS::WindowBackend::DX11, "DirectX" },
+    { LUS::WindowBackend::SDL_OPENGL, "OpenGL"},
+    { LUS::WindowBackend::SDL_METAL, "Metal" },
+    { LUS::WindowBackend::GX2, "GX2"}
+};
 
 static const char* imguiScaleOptions[4] = { "Small", "Normal", "Large", "X-Large" };
 
@@ -102,6 +109,24 @@ static const char* imguiScaleOptions[4] = { "Small", "Normal", "Large", "X-Large
 extern "C" SaveContext gSaveContext;
 
 namespace SohGui {
+
+std::unordered_map<LUS::WindowBackend, const char*> availableWindowBackendsMap;
+LUS::WindowBackend configWindowBackend;
+
+void UpdateWindowBackendObjects() {
+    LUS::WindowBackend runningWindowBackend = LUS::Context::GetInstance()->GetWindow()->GetWindowBackend();
+    int32_t configWindowBackendId = LUS::Context::GetInstance()->GetConfig()->GetInt("Window.Backend.Id", -1);
+    if (configWindowBackendId != -1 && configWindowBackendId < static_cast<int>(LUS::WindowBackend::BACKEND_COUNT)) {
+        configWindowBackend = static_cast<LUS::WindowBackend>(configWindowBackendId);
+    } else {
+        configWindowBackend = runningWindowBackend;
+    }
+
+    auto availableWindowBackends = LUS::Context::GetInstance()->GetWindow()->GetAvailableWindowBackends();
+    for (auto& backend : *availableWindowBackends) {
+        availableWindowBackendsMap[backend] = windowBackendNames[backend];
+    }
+}
 
 void DrawMenuBarIcon() {
     static bool gameIconLoaded = false;
@@ -2002,6 +2027,10 @@ void DrawRandomizerMenu() {
 
         ImGui::EndMenu();
     }
+}
+
+void SohMenuBar::InitElement() {
+    UpdateWindowBackendObjects();
 }
 
 void SohMenuBar::DrawElement() {

@@ -1832,6 +1832,7 @@ extern "C" char* ResourceMgr_LoadArrayByName(const char* path)
     return (char*)res->Scalars.data();
 }
 
+// Return of LoadArrayByNameAsVec3s must be freed by the caller
 extern "C" char* ResourceMgr_LoadArrayByNameAsVec3s(const char* path) {
     auto res = std::static_pointer_cast<SOH::Array>(GetResourceByNameHandlingMQ(path));
 
