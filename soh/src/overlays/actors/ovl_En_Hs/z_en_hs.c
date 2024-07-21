@@ -8,6 +8,7 @@
 #include "vt.h"
 #include "objects/object_hs/object_hs.h"
 #include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
+#include "soh/OTRGlobals.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
 

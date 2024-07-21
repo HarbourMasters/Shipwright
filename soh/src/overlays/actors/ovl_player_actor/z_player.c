@@ -30,6 +30,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/randomizer/randomizer_grotto.h"
 #include "soh/frame_interpolation.h"
+#include "soh/OTRGlobals.h"
 
 #include <string.h>
 #include <stdlib.h>

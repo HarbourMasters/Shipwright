@@ -3,6 +3,7 @@
 #include "soh_assets.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include <assert.h>
+#include "soh/OTRGlobals.h"
 
 #define FLAGS 0
 

@@ -4,6 +4,7 @@
 #include "overlays/actors/ovl_En_Niw/z_en_niw.h"
 #include "vt.h"
 #include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
+#include "soh/OTRGlobals.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 

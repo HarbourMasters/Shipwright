@@ -6,6 +6,7 @@
 
 #include "z_en_si.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/OTRGlobals.h"
 
 extern void func_8083C148(Player*, PlayState*);
 extern void func_80078884(uint16_t);
