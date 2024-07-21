@@ -1,10 +1,10 @@
 #include "randomizer_item_tracker.h"
-#include "../../util.h"
-#include "../../OTRGlobals.h"
-#include "../../cvar_prefixes.h"
-#include "../../SaveManager.h"
-#include "../../ResourceManagerHelpers.h"
-#include "../../UIWidgets.hpp"
+#include "soh/util.h"
+#include "soh/OTRGlobals.h"
+#include "soh/cvar_prefixes.h"
+#include "soh/SaveManager.h"
+#include "soh/ResourceManagerHelpers.h"
+#include "soh/UIWidgets.hpp"
 #include "randomizerTypes.h"
 
 #include <map>

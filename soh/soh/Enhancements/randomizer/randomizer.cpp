@@ -11,8 +11,8 @@
 #include <textures/icon_item_24_static/icon_item_24_static.h>
 #include "3drando/rando_main.hpp"
 #include "3drando/random.hpp"
-#include "../../ResourceManagerHelpers.h"
-#include "../../UIWidgets.hpp"
+#include "soh/ResourceManagerHelpers.h"
+#include "soh/UIWidgets.hpp"
 #ifndef IMGUI_DEFINE_MATH_OPERATORS
 #define IMGUI_DEFINE_MATH_OPERATORS
 #endif
