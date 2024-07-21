@@ -1,7 +1,15 @@
 #pragma once
 
-#include "soh/OTRGlobals.h"
 #include "soh/cvar_prefixes.h"
+#include <stdint.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+uint64_t GetUnixTimestamp(void); //this is line 8
+#ifdef __cplusplus
+};
+#endif
 
 // When using RTA timing
     // get the diff since the save was created,
