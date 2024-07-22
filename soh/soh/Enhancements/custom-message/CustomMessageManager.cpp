@@ -184,7 +184,7 @@ CustomMessage CustomMessage::operator+(const CustomMessage& right) const {
         newColors.push_back(color);
     }
     std::vector<bool> newCapital = capital;
-    newCapital.insert(capital.end(), right.GetCapital().begin(), right.GetCapital().end());
+    newCapital.insert(newCapital.end(), right.GetCapital().begin(), right.GetCapital().end());
     return CustomMessage(messages[LANGUAGE_ENG] + right.GetEnglish(MF_RAW),
                          messages[LANGUAGE_GER] + right.GetGerman(MF_RAW),
                          messages[LANGUAGE_FRA] + right.GetFrench(MF_RAW),

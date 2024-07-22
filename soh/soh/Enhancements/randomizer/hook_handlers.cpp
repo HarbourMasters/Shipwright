@@ -3,6 +3,7 @@
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/custom-message/CustomMessageTypes.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
+#include "soh/Enhancements/randomizer/dungeon.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
@@ -44,16 +45,25 @@ extern s32 func_80836898(PlayState* play, Player* player, PlayerFuncA74 func);
 
 #define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).GetSelectedOptionIndex()
 
+bool LocMatchesQuest(Rando::Location loc) {
+    if (loc.GetQuest() == RCQUEST_BOTH) {
+        return true;
+    } else {
+        auto dungeon = OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(loc.GetScene());
+        return (dungeon->IsMQ() && loc.GetQuest() == RCQUEST_MQ) || (dungeon->IsVanilla() && loc.GetQuest() == RCQUEST_VANILLA);
+    }
+}
+
 RandomizerCheck GetRandomizerCheckFromFlag(int16_t flagType, int16_t flag) {
     for (auto& loc : Rando::StaticData::GetLocationTable()) {
-        if (loc.GetCollectionCheck().flag == flag && (
+        if ((loc.GetCollectionCheck().flag == flag && (
                 (flagType == FLAG_INF_TABLE && loc.GetCollectionCheck().type == SPOILER_CHK_INF_TABLE) ||
                 (flagType == FLAG_EVENT_CHECK_INF && loc.GetCollectionCheck().type == SPOILER_CHK_EVENT_CHK_INF) ||
                 (flagType == FLAG_ITEM_GET_INF && loc.GetCollectionCheck().type == SPOILER_CHK_ITEM_GET_INF) ||
                 (flagType == FLAG_RANDOMIZER_INF && loc.GetCollectionCheck().type == SPOILER_CHK_RANDOMIZER_INF)
             ) ||
             (loc.GetActorParams() == flag && flagType == FLAG_GS_TOKEN && loc.GetCollectionCheck().type == SPOILER_CHK_GOLD_SKULLTULA)
-        ) {
+        ) && LocMatchesQuest(loc)) {
             return loc.GetRandomizerCheck();
         }
     }
@@ -67,7 +77,7 @@ RandomizerCheck GetRandomizerCheckFromSceneFlag(int16_t sceneNum, int16_t flagTy
             (flagType == FLAG_SCENE_TREASURE && loc.GetCollectionCheck().type == SPOILER_CHK_CHEST) ||
             (flagType == FLAG_SCENE_COLLECTIBLE && loc.GetCollectionCheck().type == SPOILER_CHK_COLLECTABLE) ||
             (flagType == FLAG_GS_TOKEN && loc.GetCollectionCheck().type == SPOILER_CHK_GOLD_SKULLTULA)
-        )) {
+        ) && LocMatchesQuest(loc)) {
             return loc.GetRandomizerCheck();
         }
     }
@@ -1432,6 +1442,25 @@ void RandomizerOnActorInitHandler(void* actorRef) {
         if (CompletedAllTrials()) {
             Actor_Kill(actor);
         }
+    }
+
+    //consumable bags
+    if (
+        actor->id == ACTOR_EN_ITEM00 &&
+        (
+            (
+                RAND_GET_OPTION(RSK_SHUFFLE_DEKU_STICK_BAG) &&
+                CUR_UPG_VALUE(UPG_STICKS) == 0 &&
+                actor->params == ITEM00_STICK
+            ) ||
+            (
+                RAND_GET_OPTION(RSK_SHUFFLE_DEKU_NUT_BAG) &&
+                CUR_UPG_VALUE(UPG_NUTS) == 0 &&
+                actor->params == ITEM00_NUTS
+            )
+        )
+    ) {
+        Actor_Kill(actor);
     }
 }
 

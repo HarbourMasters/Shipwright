@@ -1926,6 +1926,26 @@ u8 Return_Item(u8 itemID, ModIndex modId, ItemID returnItem) {
  * @return u8 
  */
 u8 Item_Give(PlayState* play, u8 item) {
+    //prevents getting sticks without the bag in case something got missed
+    if (
+        IS_RANDO &&
+        (item == ITEM_STICK || item == ITEM_STICKS_5 || item == ITEM_STICKS_10) &&
+        Randomizer_GetSettingValue(RSK_SHUFFLE_DEKU_STICK_BAG) &&
+        CUR_UPG_VALUE(UPG_STICKS) == 0
+    ) {
+        return item;
+    }
+
+    //prevents getting nuts without the bag in case something got missed
+    if (
+        IS_RANDO &&
+        (item == ITEM_NUT || item == ITEM_NUTS_5 || item == ITEM_NUTS_10) &&
+        Randomizer_GetSettingValue(RSK_SHUFFLE_DEKU_NUT_BAG) &&
+        CUR_UPG_VALUE(UPG_NUTS) == 0
+    ) {
+        return item;
+    }
+
     lusprintf(__FILE__, __LINE__, 2, "Item Give - item: %#x", item);
     static s16 sAmmoRefillCounts[] = { 5, 10, 20, 30, 5, 10, 30, 0, 5, 20, 1, 5, 20, 50, 200, 10 };
     s16 i;
@@ -2773,6 +2793,25 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
 
     if (item == RG_BRONZE_SCALE) {
         Flags_SetRandomizerInf(RAND_INF_CAN_SWIM);
+        return Return_Item_Entry(giEntry, RG_NONE);
+    }
+
+    if (item == RG_SKELETON_KEY) {
+        Flags_SetRandomizerInf(RAND_INF_HAS_SKELETON_KEY);
+        return Return_Item_Entry(giEntry, RG_NONE);
+    }
+
+    if (item == RG_DEKU_STICK_BAG) {
+        Inventory_ChangeUpgrade(UPG_STICKS, 1);
+        INV_CONTENT(ITEM_STICK) = ITEM_STICK;
+        AMMO(ITEM_STICK) = CUR_CAPACITY(UPG_STICKS);
+        return Return_Item_Entry(giEntry, RG_NONE);
+    }
+
+    if (item == RG_DEKU_NUT_BAG) {
+        Inventory_ChangeUpgrade(UPG_NUTS, 1);
+        INV_CONTENT(ITEM_NUT) = ITEM_NUT;
+        AMMO(ITEM_NUT) = CUR_CAPACITY(UPG_NUTS);
         return Return_Item_Entry(giEntry, RG_NONE);
     }
 
@@ -5336,83 +5375,87 @@ void Interface_Draw(PlayState* play) {
                 }
             }
 
-            switch (play->sceneNum) {
-                case SCENE_FOREST_TEMPLE:
-                case SCENE_FIRE_TEMPLE:
-                case SCENE_WATER_TEMPLE:
-                case SCENE_SPIRIT_TEMPLE:
-                case SCENE_SHADOW_TEMPLE:
-                case SCENE_BOTTOM_OF_THE_WELL:
-                case SCENE_ICE_CAVERN:
-                case SCENE_GANONS_TOWER:
-                case SCENE_GERUDO_TRAINING_GROUND:
-                case SCENE_THIEVES_HIDEOUT:
-                case SCENE_INSIDE_GANONS_CASTLE:
-                case SCENE_GANONS_TOWER_COLLAPSE_INTERIOR:
-                case SCENE_INSIDE_GANONS_CASTLE_COLLAPSE:
-                case SCENE_TREASURE_BOX_SHOP:
-                    if (gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex] >= 0) {
-                        s16 X_Margins_SKC;
-                        s16 Y_Margins_SKC;
-                        if (CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.UseMargins"), 0) != 0) {
-                            if (CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosType"), 0) == 0) {X_Margins_SKC = Left_HUD_Margin;};
-                            Y_Margins_SKC = Bottom_HUD_Margin;
-                        } else {
-                            X_Margins_SKC = 0;
-                            Y_Margins_SKC = 0;
-                        }
-                        s16 PosX_SKC_ori = OTRGetRectDimensionFromLeftEdge(26+X_Margins_SKC);
-                        s16 PosY_SKC_ori = 190+Y_Margins_SKC;
-                        s16 PosX_SKC;
-                        s16 PosY_SKC;
-                        if (CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosType"), 0) != 0) {
-                            PosY_SKC = CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosY"), 0)+Y_Margins_SKC;
-                            if (CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosType"), 0) == 1) {//Anchor Left
-                                if (CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.UseMargins"), 0) != 0) {X_Margins_SKC = Left_HUD_Margin;};
-                                PosX_SKC = OTRGetDimensionFromLeftEdge(CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosX"), 0)+X_Margins_SKC);
-                            } else if (CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosType"), 0) == 2) {//Anchor Right
-                                if (CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.UseMargins"), 0) != 0) {X_Margins_SKC = Right_HUD_Margin;};
-                                PosX_SKC = OTRGetDimensionFromRightEdge(CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosX"), 0)+X_Margins_SKC);
-                            } else if (CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosType"), 0) == 3) {//Anchor None
-                                PosX_SKC = CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosX"), 0);
-                            } else if (CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosType"), 0) == 4) {//Hidden
-                            PosX_SKC = -9999;
+            //when having the skeleton key in rando, don't render the small key counter
+            if (!Flags_GetRandomizerInf(RAND_INF_HAS_SKELETON_KEY)) {
+                switch (play->sceneNum) {
+                    case SCENE_FOREST_TEMPLE:
+                    case SCENE_FIRE_TEMPLE:
+                    case SCENE_WATER_TEMPLE:
+                    case SCENE_SPIRIT_TEMPLE:
+                    case SCENE_SHADOW_TEMPLE:
+                    case SCENE_BOTTOM_OF_THE_WELL:
+                    case SCENE_ICE_CAVERN:
+                    case SCENE_GANONS_TOWER:
+                    case SCENE_GERUDO_TRAINING_GROUND:
+                    case SCENE_THIEVES_HIDEOUT:
+                    case SCENE_INSIDE_GANONS_CASTLE:
+                    case SCENE_GANONS_TOWER_COLLAPSE_INTERIOR:
+                    case SCENE_INSIDE_GANONS_CASTLE_COLLAPSE:
+                    case SCENE_TREASURE_BOX_SHOP:
+
+                        if (gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex] >= 0) {
+                            s16 X_Margins_SKC;
+                            s16 Y_Margins_SKC;
+                            if (CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.UseMargins"), 0) != 0) {
+                                if (CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosType"), 0) == 0) {X_Margins_SKC = Left_HUD_Margin;};
+                                Y_Margins_SKC = Bottom_HUD_Margin;
+                            } else {
+                                X_Margins_SKC = 0;
+                                Y_Margins_SKC = 0;
                             }
-                        } else {
-                            PosY_SKC = PosY_SKC_ori;
-                            PosX_SKC = PosX_SKC_ori;
+                            s16 PosX_SKC_ori = OTRGetRectDimensionFromLeftEdge(26+X_Margins_SKC);
+                            s16 PosY_SKC_ori = 190+Y_Margins_SKC;
+                            s16 PosX_SKC;
+                            s16 PosY_SKC;
+                            if (CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosType"), 0) != 0) {
+                                PosY_SKC = CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosY"), 0)+Y_Margins_SKC;
+                                if (CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosType"), 0) == 1) {//Anchor Left
+                                    if (CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.UseMargins"), 0) != 0) {X_Margins_SKC = Left_HUD_Margin;};
+                                    PosX_SKC = OTRGetDimensionFromLeftEdge(CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosX"), 0)+X_Margins_SKC);
+                                } else if (CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosType"), 0) == 2) {//Anchor Right
+                                    if (CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.UseMargins"), 0) != 0) {X_Margins_SKC = Right_HUD_Margin;};
+                                    PosX_SKC = OTRGetDimensionFromRightEdge(CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosX"), 0)+X_Margins_SKC);
+                                } else if (CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosType"), 0) == 3) {//Anchor None
+                                    PosX_SKC = CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosX"), 0);
+                                } else if (CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosType"), 0) == 4) {//Hidden
+                                    PosX_SKC = -9999;
+                                }
+                            } else {
+                                PosY_SKC = PosY_SKC_ori;
+                                PosX_SKC = PosX_SKC_ori;
+                            }
+                            // Small Key Icon
+                            gDPPipeSync(OVERLAY_DISP++);
+
+                            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, keyCountColor.r,keyCountColor.g,keyCountColor.b, interfaceCtx->magicAlpha);
+                            gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 20, 255); //We reset this here so it match user color :)
+                            OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gSmallKeyCounterIconTex, 16, 16, PosX_SKC, PosY_SKC, 16, 16,
+                                                          1 << 10, 1 << 10);
+
+                            // Small Key Counter
+                            gDPPipeSync(OVERLAY_DISP++);
+                            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, interfaceCtx->magicAlpha);
+                            gDPSetCombineLERP(OVERLAY_DISP++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE,
+                                              TEXEL0, 0, PRIMITIVE, 0);
+
+                            interfaceCtx->counterDigits[2] = 0;
+                            interfaceCtx->counterDigits[3] = gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex];
+
+                            while (interfaceCtx->counterDigits[3] >= 10) {
+                                interfaceCtx->counterDigits[2]++;
+                                interfaceCtx->counterDigits[3] -= 10;
+                            }
+
+                            if (interfaceCtx->counterDigits[2] != 0) {
+                                OVERLAY_DISP = Gfx_TextureI8(OVERLAY_DISP, ((u8*)((u8*)digitTextures[interfaceCtx->counterDigits[2]])), 8, 16, PosX_SKC+8, PosY_SKC, 8, 16, 1 << 10, 1 << 10);
+                            }
+
+                            OVERLAY_DISP = Gfx_TextureI8(OVERLAY_DISP, ((u8*)digitTextures[interfaceCtx->counterDigits[3]]), 8, 16, PosX_SKC+16, PosY_SKC, 8, 16, 1 << 10, 1 << 10);
                         }
-                        // Small Key Icon
-                        gDPPipeSync(OVERLAY_DISP++);
-
-                        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, keyCountColor.r,keyCountColor.g,keyCountColor.b, interfaceCtx->magicAlpha);
-                        gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 20, 255); //We reset this here so it match user color :)
-                        OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gSmallKeyCounterIconTex, 16, 16, PosX_SKC, PosY_SKC, 16, 16,
-                                                      1 << 10, 1 << 10);
-
-                        // Small Key Counter
-                        gDPPipeSync(OVERLAY_DISP++);
-                        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, interfaceCtx->magicAlpha);
-                        gDPSetCombineLERP(OVERLAY_DISP++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE,
-                                          TEXEL0, 0, PRIMITIVE, 0);
-
-                        interfaceCtx->counterDigits[2] = 0;
-                        interfaceCtx->counterDigits[3] = gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex];
-
-                        while (interfaceCtx->counterDigits[3] >= 10) {
-                            interfaceCtx->counterDigits[2]++;
-                            interfaceCtx->counterDigits[3] -= 10;
-                        }
-
-                        if (interfaceCtx->counterDigits[2] != 0) {
-                            OVERLAY_DISP = Gfx_TextureI8(OVERLAY_DISP, ((u8*)((u8*)digitTextures[interfaceCtx->counterDigits[2]])), 8, 16, PosX_SKC+8, PosY_SKC, 8, 16, 1 << 10, 1 << 10);
-                        }
-
-                        OVERLAY_DISP = Gfx_TextureI8(OVERLAY_DISP, ((u8*)digitTextures[interfaceCtx->counterDigits[3]]), 8, 16, PosX_SKC+16, PosY_SKC, 8, 16, 1 << 10, 1 << 10);
-                    }
-                    break;
-                default:
-                    break;
+                        break;
+                    default:
+                        break;
+                }
             }
 
             // Rupee Counter
