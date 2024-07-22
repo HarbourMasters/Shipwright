@@ -250,6 +250,11 @@ void Settings::CreateOptionDescriptions() {
     mOptionDescriptions[RSK_SHUFFLE_FISHING_POLE] = "Shuffles the fishing pole into the item pool.\n"
         "\n"
         "The fishing pole is required to play the fishing pond minigame.";
+    mOptionDescriptions[RSK_INFINITE_UPGRADES] = "Adds upgrades that hold infinite quanities of items (bombs, arrows, etc.)\n"
+        "\n"
+        "Progressive - The infinite upgrades are obtained after getting the last normal capacity upgrade\n"
+        "\n"
+        "Condensed Progressive - The infinite upgrades are obtained as the first capacity upgrade (doesn't apply to the infinite wallet or to infinite magic)";
     mOptionDescriptions[RSK_SHUFFLE_DEKU_STICK_BAG] = "Shuffles the deku stick bag into the item pool.\n"
         "\n"
         "The deku stick bag is required to hold deku sticks.";

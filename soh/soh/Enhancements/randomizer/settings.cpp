@@ -184,6 +184,7 @@ void Settings::CreateOptions() {
     // TODO: Compasses show rewards/woth, maps show dungeon mode
     mOptions[RSK_BLUE_FIRE_ARROWS] = Option::Bool("Blue Fire Arrows", CVAR_RANDOMIZER_SETTING("BlueFireArrows"), mOptionDescriptions[RSK_BLUE_FIRE_ARROWS]);
     mOptions[RSK_SUNLIGHT_ARROWS] = Option::Bool("Sunlight Arrows", CVAR_RANDOMIZER_SETTING("SunlightArrows"), mOptionDescriptions[RSK_SUNLIGHT_ARROWS]);
+    mOptions[RSK_INFINITE_UPGRADES] = Option::U8("Infinite Upgrades", {"Off", "Progressive", "Condensed Progressive"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("InfiniteUpgrades"), mOptionDescriptions[RSK_INFINITE_UPGRADES]);
     mOptions[RSK_SKELETON_KEY] = Option::Bool("Skeleton Key", CVAR_RANDOMIZER_SETTING("SkeletonKey"), mOptionDescriptions[RSK_SKELETON_KEY]);
     mOptions[RSK_ITEM_POOL] = Option::U8("Item Pool", {"Plentiful", "Balanced", "Scarce", "Minimal"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ItemPool"), mOptionDescriptions[RSK_ITEM_POOL], WidgetType::Combobox, RO_ITEM_POOL_BALANCED);
     mOptions[RSK_ICE_TRAPS] = Option::U8("Ice Traps", {"Off", "Normal", "Extra", "Mayhem", "Onslaught"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("IceTraps"), mOptionDescriptions[RSK_ICE_TRAPS], WidgetType::Combobox, RO_ICE_TRAPS_NORMAL);
@@ -766,6 +767,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_ENABLE_BOMBCHU_DROPS],
         &mOptions[RSK_BLUE_FIRE_ARROWS],
         &mOptions[RSK_SUNLIGHT_ARROWS],
+        &mOptions[RSK_INFINITE_UPGRADES],
         &mOptions[RSK_SKELETON_KEY],
     }, false, WidgetContainerType::COLUMN);
     mOptionGroups[RSG_GAMEPLAY_IMGUI_TABLE] = OptionGroup::SubGroup("Gameplay", {
@@ -994,6 +996,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_DAMAGE_MULTIPLIER],
         &mOptions[RSK_BLUE_FIRE_ARROWS],
         &mOptions[RSK_SUNLIGHT_ARROWS],
+        &mOptions[RSK_INFINITE_UPGRADES],
         &mOptions[RSK_SKELETON_KEY],
     });
     mOptionGroups[RSG_ITEM_POOL] = OptionGroup("Item Pool Settings", std::initializer_list<Option*>({
@@ -1213,6 +1216,7 @@ void Settings::CreateOptions() {
         { "Miscellaneous Settings:Hint Distribution", RSK_HINT_DISTRIBUTION },
         { "Miscellaneous Settings:Blue Fire Arrows", RSK_BLUE_FIRE_ARROWS },
         { "Miscellaneous Settings:Sunlight Arrows", RSK_SUNLIGHT_ARROWS },
+        { "Miscellaneous Settings:Infinite Upgrades", RSK_INFINITE_UPGRADES },
         { "Miscellaneous Settings:Skeleton Key", RSK_SKELETON_KEY },
         { "Timesaver Settings:Skip Child Zelda", RSK_SKIP_CHILD_ZELDA },
         { "Start with Consumables", RSK_STARTING_CONSUMABLES },
@@ -2363,6 +2367,7 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
                 case RSK_SKULLS_SUNS_SONG:
                 case RSK_BLUE_FIRE_ARROWS:
                 case RSK_SUNLIGHT_ARROWS:
+                case RSK_INFINITE_UPGRADES:
                 case RSK_SKELETON_KEY:
                 case RSK_BOMBCHUS_IN_LOGIC:
                 case RSK_TOT_ALTAR_HINT:

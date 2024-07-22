@@ -1987,6 +1987,14 @@ typedef enum {
     RG_TYCOON_WALLET,
     RG_BRONZE_SCALE,
     RG_CHILD_WALLET,
+    RG_QUIVER_INF,
+    RG_BOMB_BAG_INF,
+    RG_BULLET_BAG_INF,
+    RG_STICK_UPGRADE_INF,
+    RG_NUT_UPGRADE_INF,
+    RG_MAGIC_INF,
+    RG_BOMBCHU_INF,
+    RG_WALLET_INF,
     RG_FAIRY_OCARINA,
     RG_OCARINA_OF_TIME,
     RG_BOMB_BAG,
@@ -3201,6 +3209,14 @@ typedef enum {
     RHT_BUY_RED_POTION_40,
     RHT_BUY_RED_POTION_50,
     RHT_TRIFORCE,
+    RHT_QUIVER_INF,
+    RHT_BOMB_BAG_INF,
+    RHT_BULLET_BAG_INF,
+    RHT_STICK_UPGRADE_INF,
+    RHT_NUT_UPGRADE_INF,
+    RHT_MAGIC_INF,
+    RHT_BOMBCHU_INF,
+    RHT_WALLET_INF,
     RHT_HINT,
     RHT_TYCOON_WALLET,
     RHT_CHILD_WALLET,
@@ -3715,6 +3731,7 @@ typedef enum {
     RSK_FISHSANITY_POND_COUNT,
     RSK_FISHSANITY_AGE_SPLIT,
     RSK_SHUFFLE_FISHING_POLE,
+    RSK_INFINITE_UPGRADES,
     RSK_SKELETON_KEY,
     RSK_SHUFFLE_DEKU_STICK_BAG,
     RSK_SHUFFLE_DEKU_NUT_BAG,
@@ -3855,6 +3872,13 @@ typedef enum {
     RO_FISHSANITY_OVERWORLD,
     RO_FISHSANITY_BOTH
 } RandoOptionsFishsanity;
+
+//Infinite Upgrades settings (off, progressive, condensed progressive)
+typedef enum {
+    RO_INF_UPGRADES_OFF,
+    RO_INF_UPGRADES_PROGRESSIVE,
+    RO_INF_UPGRADES_CONDENSED_PROGRESSIVE,
+} RandoOptionInfiniteUpgrades;
 
 //Any Dungeon Item (start with, vanilla, own dungeon, any dungeon,
 //overworld, anywhere)
