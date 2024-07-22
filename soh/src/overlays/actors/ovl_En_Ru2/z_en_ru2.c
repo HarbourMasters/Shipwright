@@ -8,6 +8,7 @@
 #include "objects/object_ru2/object_ru2.h"
 #include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
 #include "vt.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 

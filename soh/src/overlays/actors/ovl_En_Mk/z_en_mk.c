@@ -8,6 +8,7 @@
 #include "objects/object_mk/object_mk.h"
 #include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 #include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 

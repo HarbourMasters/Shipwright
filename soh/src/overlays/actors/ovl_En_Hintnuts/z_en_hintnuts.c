@@ -7,6 +7,7 @@
 #include "z_en_hintnuts.h"
 #include "objects/object_hintnuts/object_hintnuts.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE)
 

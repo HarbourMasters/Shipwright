@@ -9,6 +9,7 @@
 #include "objects/object_ge1/object_ge1.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
 

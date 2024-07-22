@@ -9,6 +9,7 @@
 #include "objects/object_hs/object_hs.h"
 #include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 #include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
 

@@ -4,6 +4,7 @@
 #include "soh/Enhancements/enhancementTypes.h"
 #include <assert.h>
 #include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS 0
 

@@ -31,6 +31,7 @@
 #include "soh/Enhancements/randomizer/randomizer_grotto.h"
 #include "soh/frame_interpolation.h"
 #include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #include <string.h>
 #include <stdlib.h>

@@ -8,6 +8,7 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_tk/object_tk.h"
 #include "soh/frame_interpolation.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
 #define COLLECTFLAG_GRAVEDIGGING_HEART_PIECE 0x19

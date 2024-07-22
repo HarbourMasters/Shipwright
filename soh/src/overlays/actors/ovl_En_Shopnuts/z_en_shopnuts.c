@@ -1,6 +1,7 @@
 #include "z_en_shopnuts.h"
 #include "objects/object_shopnuts/object_shopnuts.h"
 #include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE)
 

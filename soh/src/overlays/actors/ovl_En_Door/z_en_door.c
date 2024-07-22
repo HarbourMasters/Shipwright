@@ -10,6 +10,7 @@
 #include "objects/object_hidan_objects/object_hidan_objects.h"
 #include "objects/object_mizu_objects/object_mizu_objects.h"
 #include "objects/object_haka_door/object_haka_door.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 

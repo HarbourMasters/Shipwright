@@ -7,6 +7,7 @@
 #include "z_en_ani.h"
 #include "objects/object_ani/object_ani.h"
 #include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
 

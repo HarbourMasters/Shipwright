@@ -11,6 +11,7 @@
 #include "objects/object_im/object_im.h"
 #include "vt.h"
 #include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 

@@ -9,6 +9,7 @@
 #include "overlays/actors/ovl_En_Attack_Niw/z_en_attack_niw.h"
 #include "vt.h"
 #include "soh/frame_interpolation.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_ALWAYS_THROWN)
 

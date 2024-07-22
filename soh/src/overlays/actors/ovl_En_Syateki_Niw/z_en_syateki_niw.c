@@ -8,6 +8,7 @@
 #include "objects/object_niw/object_niw.h"
 #include "vt.h"
 #include "soh/frame_interpolation.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 

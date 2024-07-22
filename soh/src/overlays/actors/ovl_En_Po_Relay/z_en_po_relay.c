@@ -7,6 +7,7 @@
 #include "z_en_po_relay.h"
 #include "overlays/actors/ovl_En_Honotrap/z_en_honotrap.h"
 #include "objects/object_tk/object_tk.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_IGNORE_QUAKE | ACTOR_FLAG_WILL_TALK)
 
