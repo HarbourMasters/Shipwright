@@ -782,6 +782,10 @@ void GenerateItemPool() {
     ctx->possibleIceTrapModels.push_back(RG_OCARINA_C_RIGHT_BUTTON);
   }
 
+  if (ctx->GetOption(RSK_SKELETON_KEY)) {
+    AddItemToMainPool(RG_SKELETON_KEY);
+  }
+
   if (ctx->GetOption(RSK_SHUFFLE_SWIM)) {
     AddItemToMainPool(RG_PROGRESSIVE_SCALE);
   }
@@ -845,6 +849,16 @@ void GenerateItemPool() {
   if (ctx->GetOption(RSK_SHUFFLE_FISHING_POLE)) {
     AddItemToMainPool(RG_FISHING_POLE);
     ctx->possibleIceTrapModels.push_back(RG_FISHING_POLE);
+  }
+
+  if (ctx->GetOption(RSK_INFINITE_UPGRADES).Is(RO_INF_UPGRADES_PROGRESSIVE)) {
+    AddItemToMainPool(RG_PROGRESSIVE_BOMB_BAG);
+    AddItemToMainPool(RG_PROGRESSIVE_BOW);
+    AddItemToMainPool(RG_PROGRESSIVE_NUT_UPGRADE);
+    AddItemToMainPool(RG_PROGRESSIVE_SLINGSHOT);
+    AddItemToMainPool(RG_PROGRESSIVE_STICK_UPGRADE);
+    AddItemToMainPool(RG_PROGRESSIVE_MAGIC_METER);
+    AddItemToMainPool(RG_PROGRESSIVE_WALLET);
   }
 
   if (ctx->GetOption(RSK_SHUFFLE_MAGIC_BEANS)) {
@@ -983,6 +997,13 @@ void GenerateItemPool() {
     AddItemToMainPool(RG_PROGRESSIVE_WALLET);
   }
 
+  if (ctx->GetOption(RSK_SHUFFLE_DEKU_STICK_BAG)) {
+    AddItemToMainPool(RG_PROGRESSIVE_STICK_UPGRADE);
+  }
+
+  if (ctx->GetOption(RSK_SHUFFLE_DEKU_NUT_BAG)) {
+    AddItemToMainPool(RG_PROGRESSIVE_NUT_UPGRADE);
+  }
 
   if (ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC)) {
     AddItemToMainPool(RG_PROGRESSIVE_BOMBCHUS, 5);
