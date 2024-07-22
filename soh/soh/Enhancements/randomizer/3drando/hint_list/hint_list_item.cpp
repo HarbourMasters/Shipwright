@@ -563,7 +563,7 @@ void StaticData::HintTable_Init_Item() {
                                                     CustomMessage("a piece of Zora", /*german*/"ein Zora-Fragment", /*french*/"un morceau de Zora")});
                                                      // /*spanish*/un fragmento de Zora
 
-    hintTextTable[RHT_PROGRESSIVE_NUT_UPGRADE] = HintText(CustomMessage("Deku Nut Capacity", /*german*/"Deku-Nuß Kapazität", /*french*/"une Augmentation de Noix Mojo"),
+    hintTextTable[RHT_PROGRESSIVE_NUT_UPGRADE] = HintText(CustomMessage("Deku Nut Capacity", /*german*/"Deku-Nuß-Kapazität", /*french*/"une Augmentation de Noix Mojo"),
                                                           // /*spanish*/un aumento de nueces deku
                                                           {
                                                           CustomMessage("some Deku munitions", /*german*/"etwas Deku-Munition", /*french*/"un paquet de munitions Mojo"),
@@ -576,7 +576,7 @@ void StaticData::HintTable_Init_Item() {
                                                           CustomMessage("flashbang storage", /*german*/"Blendgranatenvorrat", /*french*/"un sac à noix")});
                                                            // /*spanish*/más frutos aturdidores
 
-    hintTextTable[RHT_PROGRESSIVE_STICK_UPGRADE] = HintText(CustomMessage("Deku Stick Capacity", /*german*/"Deku-Stab Kapazität", /*french*/"une augmentation de bâtons Mojo"),
+    hintTextTable[RHT_PROGRESSIVE_STICK_UPGRADE] = HintText(CustomMessage("Deku Stick Capacity", /*german*/"Deku-Stab-Kapazität", /*french*/"une augmentation de bâtons Mojo"),
                                                             // /*spanish*/un aumento de palos deku
                                                             {
                                                             CustomMessage("some Deku munitions", /*german*/"etwas Deku-Munition", /*french*/"un paquet de munitions Mojo")
@@ -861,7 +861,7 @@ void StaticData::HintTable_Init_Item() {
                                                  CustomMessage("windmill acceleration", /*german*/"Windmühlenbeschleunigung", /*french*/"l'accélérateur de moulins")});
                                                   // /*spanish*/el arranque de molinos
 
-    hintTextTable[RHT_MINUET_OF_FOREST] = HintText(CustomMessage("the Minuet of Forest", /*german*/"Menuett des Waldess", /*french*/"le menuet de la forêt"),
+    hintTextTable[RHT_MINUET_OF_FOREST] = HintText(CustomMessage("the Minuet of Forest", /*german*/"Menuett des Waldes", /*french*/"le menuet de la forêt"),
                                                    // /*spanish*/el Minueto del bosque
                                                    {
                                                    CustomMessage("a warp song", /*german*/"ein Teleportationslied", /*french*/"une chanson de téléportation")
@@ -1029,7 +1029,7 @@ void StaticData::HintTable_Init_Item() {
                                                     CustomMessage("some creepy blueprints", /*german*/"einige gruselige Blaupausen", /*french*/"un plan sinistre")});
                                                      // /*spanish*/unos planos siniestras
 
-    hintTextTable[RHT_BOTTOM_OF_THE_WELL_MAP] = HintText(CustomMessage("the Bottom of the Well Map", /*german*/"die Karte des Brunnenbodens", /*french*/"la carte du fond du Puits"),
+    hintTextTable[RHT_BOTTOM_OF_THE_WELL_MAP] = HintText(CustomMessage("the Bottom of the Well Map", /*german*/"die Karte des Grund des Brunnens", /*french*/"la carte du fond du Puits"),
                                                          // /*spanish*/el mapa del Fondo del pozo
                                                          {
                                                          CustomMessage("a dungeon map", /*german*/"eine Karte", /*french*/"une carte")
@@ -1139,7 +1139,7 @@ void StaticData::HintTable_Init_Item() {
                                                         CustomMessage("a creepy magnetic needle", /*german*/"eine gruselige Magnetnadel", /*french*/"une aimant sinistre")});
                                                          // /*spanish*/un imán siniestra
 
-    hintTextTable[RHT_BOTTOM_OF_THE_WELL_COMPASS] = HintText(CustomMessage("the Bottom of the Well Compass", /*german*/"der Kompaß des Brunnenbodens", /*french*/"la boussole du fond du Puits"),
+    hintTextTable[RHT_BOTTOM_OF_THE_WELL_COMPASS] = HintText(CustomMessage("the Bottom of the Well Compass", /*german*/"der Kompaß des Grund des Brunnens", /*french*/"la boussole du fond du Puits"),
                                                              // /*spanish*/la brújula del Fondo del pozo
                                                              {
                                                              CustomMessage("a compass", /*german*/"ein Kompaß", /*french*/"une boussole")
@@ -1216,7 +1216,7 @@ void StaticData::HintTable_Init_Item() {
                                                          CustomMessage("a creepy dungeon's master pass", /*german*/"ein gruseliger Dungeon-Meisterpass", /*french*/"une clé maléfique sinistre")});
                                                           // /*spanish*/el pase maestro siniestra
 
-    hintTextTable[RHT_GANONS_CASTLE_BOSS_KEY] = HintText(CustomMessage("the Ganon's Castle Boss Key", /*german*/"der Schlüssel für Ganons Schloß", /*french*/"la Clé d'Or du Château de Ganon"),
+    hintTextTable[RHT_GANONS_CASTLE_BOSS_KEY] = HintText(CustomMessage("the Ganon's Castle Boss Key", /*german*/"der Boss-Schlüssel für Ganons Schloß", /*french*/"la Clé d'Or du Château de Ganon"),
                                                          // /*spanish*/la gran llave del Castillo de Ganon
                                                          {
                                                          CustomMessage("a boss key", /*german*/"ein Boss-Schlüssel", /*french*/"une Clé d'Or")
@@ -1332,7 +1332,7 @@ void StaticData::HintTable_Init_Item() {
                                                             CustomMessage("an imprisoned lockpick", /*german*/"ein gefangener Dietrich", /*french*/"un crochet à porte emprisonné")});
                                                              // /*spanish*/una apertura portentosa encarcelada
 
-    hintTextTable[RHT_BOTTOM_OF_THE_WELL_SMALL_KEY] = HintText(CustomMessage("a Bottom of the Well Small Key", /*german*/"ein kleiner Schlüssel des Brunnenbodens", /*french*/"une petite clé du fond du Puits"),
+    hintTextTable[RHT_BOTTOM_OF_THE_WELL_SMALL_KEY] = HintText(CustomMessage("a Bottom of the Well Small Key", /*german*/"ein kleiner Schlüssel des Grund des Brunnens", /*french*/"une petite clé du fond du Puits"),
                                                                // /*spanish*/una llave pequeña del Fondo del pozo
                                                                {
                                                                CustomMessage("a small key", /*german*/"ein kleiner Schlüssel", /*french*/"une petite clé")
@@ -1467,7 +1467,7 @@ void StaticData::HintTable_Init_Item() {
                                                            CustomMessage("an imprisoned skeleton key", /*german*/"ein gefangener Skelettschlüssel", /*french*/"des crochets à porte emprisonnés")});
                                                             // /*spanish*/un anillo enjaulado contra cerrojos
 
-    hintTextTable[RHT_BOTTOM_OF_THE_WELL_KEY_RING] = HintText(CustomMessage("a Bottom of the Well Key Ring", /*german*/"ein Schlüsselbund des Brunnenbodens", /*french*/"un trousseau de clés du fond du Puits"),
+    hintTextTable[RHT_BOTTOM_OF_THE_WELL_KEY_RING] = HintText(CustomMessage("a Bottom of the Well Key Ring", /*german*/"ein Schlüsselbund des Grund des Brunnens", /*french*/"un trousseau de clés du fond du Puits"),
                                                               // /*spanish*/un llavero del Fondo del pozo
                                                               {
                                                               CustomMessage("a key ring", /*german*/"ein Schlüsselbund", /*french*/"un trousseau de clés")
