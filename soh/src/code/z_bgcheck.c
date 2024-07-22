@@ -1,7 +1,8 @@
 #include "global.h"
 #include "vt.h"
 
-#include <soh/OTRGlobals.h>
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 #include <assert.h>
 
 #define SS_NULL 0xFFFF

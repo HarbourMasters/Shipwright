@@ -8,6 +8,7 @@
 
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/draw.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #include <stdlib.h>
 

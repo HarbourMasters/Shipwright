@@ -6,6 +6,7 @@
 
 #include "z_bg_sst_floor.h"
 #include "objects/object_sst/object_sst.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 

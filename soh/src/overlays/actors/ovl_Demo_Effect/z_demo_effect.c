@@ -11,6 +11,7 @@
 #include "objects/object_gi_jewel/object_gi_jewel.h"
 #include <assert.h>
 #include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 

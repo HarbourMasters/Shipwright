@@ -12,6 +12,7 @@
 
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/boss-rush/BossRush.h"
+#include "soh/OTRGlobals.h"
 
 #include <string.h>
 

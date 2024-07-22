@@ -4,6 +4,8 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/gameplay_field_keep/gameplay_field_keep.h"
 #include "soh/frame_interpolation.h"
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 
 typedef enum {
     /* 0 */ LENS_FLARE_CIRCLE0,

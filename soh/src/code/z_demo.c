@@ -32,6 +32,8 @@
 #include "scenes/misc/hakaana_ouke/hakaana_ouke_scene.h"
 
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 
 u16 D_8011E1C0 = 0;
 u16 D_8011E1C4 = 0;

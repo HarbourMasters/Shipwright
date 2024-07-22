@@ -20,6 +20,9 @@
 #include "soh/Enhancements/randomizer/randomizer_grotto.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
+#include "soh/SaveManager.h"
 
 
 static void* sEquipmentFRATexs[] = {

@@ -6,6 +6,7 @@
 
 #include "z_bg_jya_lift.h"
 #include "objects/object_jya_obj/object_jya_obj.h"
+#include "soh/OTRGlobals.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 

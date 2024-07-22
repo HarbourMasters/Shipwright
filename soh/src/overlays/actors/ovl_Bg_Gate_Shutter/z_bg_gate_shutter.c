@@ -7,6 +7,7 @@
 #include "z_bg_gate_shutter.h"
 #include "objects/object_spot01_matoyab/object_spot01_matoyab.h"
 #include "vt.h"
+#include "soh/OTRGlobals.h"
 
 #define FLAGS 0
 

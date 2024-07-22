@@ -6,7 +6,8 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-uint64_t GetUnixTimestamp(void); //this is line 8
+    uint64_t GetUnixTimestamp(void);
+    char* GameplayStats_GetCurrentTime();
 #ifdef __cplusplus
 };
 #endif
@@ -28,12 +29,6 @@ uint64_t GetUnixTimestamp(void); //this is line 8
     gSaveContext.sohStats.sceneTimer)
 
 void InitStatTracker();
-
-#ifdef __cplusplus
-extern "C" {
-    char* GameplayStats_GetCurrentTime();
-}
-#endif
 
 typedef enum {
     // 0x00 to 0x9B (0 to 155) used for getting items,

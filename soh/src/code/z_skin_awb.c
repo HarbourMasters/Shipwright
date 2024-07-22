@@ -1,6 +1,7 @@
 #include "global.h"
 #include "overlays/actors/ovl_En_fHG/z_en_fhg.h"
 #include <assert.h>
+#include "soh/ResourceManagerHelpers.h"
 
 /**
  * Initialises the Vtx buffers used for limb at index `limbIndex`
