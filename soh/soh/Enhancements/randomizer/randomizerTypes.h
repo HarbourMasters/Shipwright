@@ -1091,6 +1091,7 @@ typedef enum {
     RC_LH_CHILD_LOACH_1,
     RC_LH_CHILD_LOACH_2,
     RC_LH_ADULT_FISHING,
+    RC_LH_HYRULE_LOACH,
     RC_LH_ADULT_FISH_1,
     RC_LH_ADULT_FISH_2,
     RC_LH_ADULT_FISH_3,
@@ -2125,11 +2126,22 @@ typedef enum {
     RG_OCARINA_C_DOWN_BUTTON,
     RG_OCARINA_C_LEFT_BUTTON,
     RG_OCARINA_C_RIGHT_BUTTON,
+    RG_SKELETON_KEY,
     RG_FISHING_POLE,
+    RG_DEKU_STICK_BAG,
+    RG_DEKU_NUT_BAG,
     RG_HINT,
     RG_TYCOON_WALLET,
     RG_BRONZE_SCALE,
     RG_CHILD_WALLET,
+    RG_QUIVER_INF,
+    RG_BOMB_BAG_INF,
+    RG_BULLET_BAG_INF,
+    RG_STICK_UPGRADE_INF,
+    RG_NUT_UPGRADE_INF,
+    RG_MAGIC_INF,
+    RG_BOMBCHU_INF,
+    RG_WALLET_INF,
     RG_FAIRY_OCARINA,
     RG_OCARINA_OF_TIME,
     RG_BOMB_BAG,
@@ -2212,6 +2224,7 @@ typedef enum {
     RH_ALTAR_CHILD,
     RH_ALTAR_ADULT,
     RH_SARIA_HINT,
+    RH_LOACH_HINT,
     RH_FISHING_POLE,
     RH_MINUET_WARP_LOC,
     RH_BOLERO_WARP_LOC,
@@ -3345,6 +3358,14 @@ typedef enum {
     RHT_BUY_RED_POTION_40,
     RHT_BUY_RED_POTION_50,
     RHT_TRIFORCE,
+    RHT_QUIVER_INF,
+    RHT_BOMB_BAG_INF,
+    RHT_BULLET_BAG_INF,
+    RHT_STICK_UPGRADE_INF,
+    RHT_NUT_UPGRADE_INF,
+    RHT_MAGIC_INF,
+    RHT_BOMBCHU_INF,
+    RHT_WALLET_INF,
     RHT_HINT,
     RHT_TYCOON_WALLET,
     RHT_CHILD_WALLET,
@@ -3389,6 +3410,7 @@ typedef enum {
     RHT_OCARINA_C_RIGHT_BUTTON,
     RHT_BRONZE_SCALE,
     RHT_FISHING_POLE,
+    RHT_SKELETON_KEY,
     RHT_EPONA,
     RHT_HINT_MYSTERIOUS,
     RHT_MYSTERIOUS_ITEM,
@@ -3575,6 +3597,7 @@ typedef enum {
     RHT_GREG_HINT,
     RHT_SARIA_TALK_HINT,
     RHT_SARIA_SONG_HINT,
+    RHT_LOACH_HINT,
     RHT_FISHING_POLE_HINT,
     // Static Entrance Hints
     RHT_WARP_SONG,
@@ -3752,6 +3775,7 @@ typedef enum {
     RSK_SHEIK_LA_HINT,
     RSK_DAMPES_DIARY_HINT,
     RSK_GREG_HINT,
+    RSK_LOACH_HINT,
     RSK_SARIA_HINT,
     RSK_FROGS_HINT,
     RSK_OOT_HINT,
@@ -3858,6 +3882,10 @@ typedef enum {
     RSK_FISHSANITY_POND_COUNT,
     RSK_FISHSANITY_AGE_SPLIT,
     RSK_SHUFFLE_FISHING_POLE,
+    RSK_INFINITE_UPGRADES,
+    RSK_SKELETON_KEY,
+    RSK_SHUFFLE_DEKU_STICK_BAG,
+    RSK_SHUFFLE_DEKU_NUT_BAG,
     RSK_MAX
 } RandomizerSettingKey;
 
@@ -3988,13 +4016,21 @@ typedef enum {
     RO_BOSS_SOULS_ON_PLUS_GANON,
 } RandoOptionBossSouls;
 
-//Fishsanity settings (off, pond only, grottos only, both)
+//Fishsanity settings (off, loach only, pond only, grottos only, both)
 typedef enum {
     RO_FISHSANITY_OFF,
+    RO_FISHSANITY_HYRULE_LOACH,
     RO_FISHSANITY_POND,
     RO_FISHSANITY_OVERWORLD,
     RO_FISHSANITY_BOTH
 } RandoOptionsFishsanity;
+
+//Infinite Upgrades settings (off, progressive, condensed progressive)
+typedef enum {
+    RO_INF_UPGRADES_OFF,
+    RO_INF_UPGRADES_PROGRESSIVE,
+    RO_INF_UPGRADES_CONDENSED_PROGRESSIVE,
+} RandoOptionInfiniteUpgrades;
 
 //Any Dungeon Item (start with, vanilla, own dungeon, any dungeon,
 //overworld, anywhere)
@@ -4022,6 +4058,12 @@ typedef enum {
     RO_KEYRINGS_COUNT,
     RO_KEYRINGS_SELECTION,
 } RandoOptionKeyrings;
+
+typedef enum {
+    RO_KEYRING_FOR_DUNGEON_OFF,
+    RO_KEYRING_FOR_DUNGEON_RANDOM,
+    RO_KEYRING_FOR_DUNGEON_ON,
+} RandoOptionKeyringForDungeon;
 
 //Ganon's Boss Key Settings (vanilla, own dungeon, start with,
 //overworld, anywhere, 100 GS reward)

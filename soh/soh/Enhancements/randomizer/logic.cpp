@@ -553,8 +553,8 @@ namespace Rando {
 
         //refills
         Bombs        = HasItem(RG_PROGRESSIVE_BOMB_BAG);
-        Nuts         = DekuNutDrop || HasItem(RG_NUTS);
-        Sticks       = DekuStickDrop || HasItem(RG_STICKS);
+        Nuts         = DekuNutDrop || HasItem(RG_PROGRESSIVE_NUT_BAG);
+        Sticks       = DekuStickDrop || HasItem(RG_PROGRESSIVE_STICK_BAG);
         Bugs         = HasBottle && BugsAccess;
         BlueFireAccess = BlueFireAccess || GetInLogic(LOGIC_BLUE_FIRE_ACCESS);
         BlueFire     = (HasBottle && BlueFireAccess) || (ctx->GetOption(RSK_BLUE_FIRE_ARROWS) && CanUse(RG_ICE_ARROWS));
@@ -668,6 +668,9 @@ namespace Rando {
     }
 
     bool Logic::SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmountGlitchless, uint8_t requiredAmountGlitched) {
+        if (SkeletonKey) {
+            return true;
+        }
         switch (dungeon) {
             case RR_FOREST_TEMPLE:
                 /*if (IsGlitched && (GetDifficultyValueFromString(GlitchHookshotJump_Boots) >= static_cast<uint8_t>(GlitchDifficulty::INTERMEDIATE) || GetDifficultyValueFromString(GlitchHoverBoost) >= static_cast<uint8_t>(GlitchDifficulty::NOVICE) ||
@@ -902,6 +905,8 @@ namespace Rando {
         ctx->SetRandoInf(RAND_INF_HAS_OCARINA_C_RIGHT, ocBtnShuffle);
 
         //Progressive Items
+        ProgressiveStickBag   = ctx->GetOption(RSK_SHUFFLE_DEKU_STICK_BAG).Is(true) ? 0 : 1;
+        ProgressiveNutBag     = ctx->GetOption(RSK_SHUFFLE_DEKU_NUT_BAG).Is(true) ? 0 : 1;
         ProgressiveBulletBag  = 0;
         ProgressiveBombBag    = 0;
         ProgressiveMagic      = 0;
@@ -946,6 +951,9 @@ namespace Rando {
 
         //Triforce Pieces
         TriforcePieces = 0;
+
+        //Skeleton Key
+        SkeletonKey = false;
 
         //Boss Souls
         CanSummonGohma        = false;
