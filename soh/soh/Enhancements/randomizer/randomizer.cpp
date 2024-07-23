@@ -86,7 +86,7 @@ static const char* englishRupeeNames[171] = {
     "Frog Coins",        "Gald",             "Gekz",             "Gems",             "Geo",
     "Gil",               "Glimmer",          "Glitches",         "Gold",             "Gold Dragons",
     "Goober Dollars",    "Green Herbs",      "Greg Siblings",    "Gummybears",       "Hell",
-    "Hylian Loaches",    "Ice Traps",        "ISK",              "Jiggies",          "KF7 Ammo",
+    "Hyrule Loaches",    "Ice Traps",        "ISK",              "Jiggies",          "KF7 Ammo",
     "Kinstones",         "Kremcoins",        "Kroner",           "Leaves ",          "Lemmings",
     "Lien",              "Lira",             "Lumber",           "Lungmen Dollars",  "Macca",
     "Mana",              "Mann Co. Keys",    "Meat",             "Meat Stacks",      "Medaparts",
