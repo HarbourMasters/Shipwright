@@ -929,7 +929,6 @@ void DrawEnhancementsMenu() {
                 }
 
                 UIWidgets::Spacer(0);
-
                 if (ImGui::BeginMenu("Fishing")) {
                     UIWidgets::EnhancementCheckbox("Customize Behavior", CVAR_ENHANCEMENT("CustomizeFishing"));
                     UIWidgets::Tooltip("Turn on/off changes to the fishing behavior");
@@ -949,6 +948,8 @@ void DrawEnhancementsMenu() {
                     UIWidgets::Tooltip("The minimum weight for the unique fishing reward as a child");
                     UIWidgets::PaddedEnhancementSliderInt("Adult Minimum Weight: %d", "##aMinimumWeight", CVAR_ENHANCEMENT("MinimumFishWeightAdult"), 6, 13, "", 13, true, true, false, disabled, disabledTooltip);
                     UIWidgets::Tooltip("The minimum weight for the unique fishing reward as an adult");
+                    UIWidgets::PaddedEnhancementCheckbox("All fish are Hyrule Loaches", CVAR_ENHANCEMENT("AllHyruleLoaches"), true, false, disabled, disabledTooltip);
+                    UIWidgets::Tooltip("Every fish in the fishing pond will always be a Hyrule Loach");
                     ImGui::EndMenu();
                 }
                 UIWidgets::Spacer(0);

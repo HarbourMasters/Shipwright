@@ -161,6 +161,8 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
              CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleAdultTrade"), RO_GENERIC_NO)) &&
             (location.GetRandomizerCheck() != RC_KF_KOKIRI_SWORD_CHEST ||
              CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleKokiriSword"), RO_GENERIC_NO)) &&
+            (location.GetRandomizerCheck() != RC_LH_HYRULE_LOACH ||
+             CVarGetInteger(CVAR_RANDOMIZER_SETTING("Fishsanity"), RO_GENERIC_NO) == RO_FISHSANITY_HYRULE_LOACH) &&
             (location.GetRandomizerCheck() != RC_ZR_MAGIC_BEAN_SALESMAN ||
              CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleBeans"), RO_GENERIC_NO)) &&
             (location.GetRandomizerCheck() != RC_HC_MALON_EGG ||
