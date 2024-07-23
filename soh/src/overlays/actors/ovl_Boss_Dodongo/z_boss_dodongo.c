@@ -1312,7 +1312,6 @@ block_1:
             Matrix_RotateX(-(this->unk_25C[limbIndex] * 0.115f), MTXMODE_APPLY);
         }
 
-        
         if (this->skelAnime.skeletonHeader->skeletonType == SKELANIME_TYPE_FLEX) {
             gSPMatrix(POLY_OPA_DISP++, *play->flexLimbOverrideMTX, G_MTX_LOAD);
         } else {

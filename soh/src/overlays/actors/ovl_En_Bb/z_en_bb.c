@@ -491,8 +491,7 @@ void EnBb_Death(EnBb* this, PlayState* play) {
             enpartType = 11;
         }
 
-        if (!BodyBreak_SpawnParts(&this->actor, &this->bodyBreak, play, enpartType,
-                                  this->skelAnime.skeletonHeader->skeletonType == SKELANIME_TYPE_FLEX)) {
+        if (!BodyBreak_SpawnParts(&this->actor, &this->bodyBreak, play, enpartType)) {
             return;
         }
         Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos, 0xD0);

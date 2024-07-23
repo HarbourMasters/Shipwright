@@ -451,8 +451,7 @@ void EnSb_Update(Actor* thisx, PlayState* play) {
         } else {
             this->actor.params = 1;
         }
-        if (BodyBreak_SpawnParts(&this->actor, &this->bodyBreak, play, this->actor.params,
-                                 this->skelAnime.skeletonHeader->skeletonType == SKELANIME_TYPE_FLEX)) {
+        if (BodyBreak_SpawnParts(&this->actor, &this->bodyBreak, play, this->actor.params)) {
             if (!this->hitByWindArrow) {
                 Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos, 0x80);
             } else {

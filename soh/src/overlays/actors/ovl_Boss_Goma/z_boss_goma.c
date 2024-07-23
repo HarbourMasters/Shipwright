@@ -2014,7 +2014,7 @@ s32 BossGoma_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f
 
                 Matrix_TranslateRotateZYX(pos, rot);
 
-                if (*dList != NULL)  {
+                if (*dList != NULL) {
                     if (this->skelanime.skeletonHeader->skeletonType == SKELANIME_TYPE_FLEX) {
                         MATRIX_TOMTX(*play->flexLimbOverrideMTX);
                     }
