@@ -435,6 +435,6 @@ class Logic {
     static bool IsMagicItem(RandomizerGet item);
     static bool IsMagicArrow(RandomizerGet item);
     std::shared_ptr<Context> ctx;
-    std::vector<LogicVal> inLogic;
+    bool inLogic[LOGIC_MAX];
 }; // class Logic
 } // namespace Rando

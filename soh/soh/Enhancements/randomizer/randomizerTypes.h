@@ -200,6 +200,7 @@ typedef enum {
     LOGIC_OCARINA_C_LEFT_BUTTON,
     LOGIC_OCARINA_C_RIGHT_BUTTON,  
     LOGIC_TRIFORCE_PIECES,
+    LOGIC_MAX
 } LogicVal;
 
 typedef enum {

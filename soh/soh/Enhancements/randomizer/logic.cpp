@@ -768,22 +768,16 @@ namespace Rando {
     }
 
     bool Logic::GetInLogic(LogicVal logicVar) {
-        return std::find(inLogic.begin(), inLogic.end(), logicVar) != inLogic.end();
+        return inLogic[logicVar];
     }
 
-    void Logic::SetInLogic(LogicVal logicVar, bool remove) {
-        auto it = std::find(inLogic.begin(), inLogic.end(), logicVar);
-        if (it == inLogic.end() && !remove) {
-            inLogic.push_back(logicVar);
-        }
-        else if (it != inLogic.end() && remove) {
-            inLogic.erase(it);
-        }
+    void Logic::SetInLogic(LogicVal logicVar, bool value) {
+        inLogic[logicVar] = value;
     }
 
     void Logic::Reset() {
-        //SPDLOG_INFO("Logic reset.");
         ctx->NewSaveContext();
+        memset(inLogic, false, sizeof(inLogic));
         //Settings-dependent variables
         IsKeysanity = ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_ANYWHERE) || 
                     ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_ANYWHERE) || 
