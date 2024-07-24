@@ -46,8 +46,8 @@ namespace Rando {
                 return ctx->CheckInventory(ITEM_HOOKSHOT, false);
             case RG_LONGSHOT:
                 return ctx->CheckInventory(ITEM_LONGSHOT, true);
-            case RG_STICKS:
-                return ctx->CheckInventory(ITEM_STICK, true);
+            case RG_PROGRESSIVE_STICK_UPGRADE:
+                return ctx->CurrentUpgrade(UPG_STICKS);
             case RG_FIRE_ARROWS:
                 return ctx->CheckInventory(ITEM_ARROW_FIRE, true);
             case RG_ICE_ARROWS:
@@ -60,8 +60,8 @@ namespace Rando {
                 return ctx->CheckInventory(ITEM_SLINGSHOT, true);
             case RG_BOOMERANG:
                 return ctx->CheckInventory(ITEM_BOOMERANG, true);
-            case RG_NUTS:
-                return ctx->CheckInventory(ITEM_NUT, true);
+            case RG_PROGRESSIVE_NUT_UPGRADE:
+                return ctx->CurrentUpgrade(UPG_NUTS);
             case RG_SCARECROW:
                 return Scarecrow;
             case RG_DISTANT_SCARECROW:
@@ -165,6 +165,8 @@ namespace Rando {
                 return ctx->CheckRandoInf(RAND_INF_TWINROVA_SOUL);
             case RG_GANON_SOUL:
                 return ctx->CheckRandoInf(RAND_INF_GANON_SOUL);
+            case RG_SKELETON_KEY:
+                return ctx->CheckRandoInf(RAND_INF_HAS_SKELETON_KEY);
                 // Boss Keys
             case RG_FOREST_TEMPLE_BOSS_KEY:
             case RG_FIRE_TEMPLE_BOSS_KEY:
@@ -368,7 +370,7 @@ namespace Rando {
             case RG_GANON_SOUL:
                 return ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS).Is(RO_BOSS_SOULS_ON_PLUS_GANON) ? HasItem(RG_GANON_SOUL) : true;
             default:
-                break;
+                return false;
         }
     }
 
@@ -553,8 +555,8 @@ namespace Rando {
 
         //refills
         Bombs        = HasItem(RG_PROGRESSIVE_BOMB_BAG);
-        Nuts         = DekuNutDrop || HasItem(RG_PROGRESSIVE_NUT_BAG);
-        Sticks       = DekuStickDrop || HasItem(RG_PROGRESSIVE_STICK_BAG);
+        Nuts         = DekuNutDrop || HasItem(RG_PROGRESSIVE_NUT_UPGRADE);
+        Sticks       = DekuStickDrop || HasItem(RG_PROGRESSIVE_STICK_UPGRADE);
         Bugs         = HasBottle && BugsAccess;
         BlueFireAccess = BlueFireAccess || GetInLogic(LOGIC_BLUE_FIRE_ACCESS);
         BlueFire     = (HasBottle && BlueFireAccess) || (ctx->GetOption(RSK_BLUE_FIRE_ARROWS) && CanUse(RG_ICE_ARROWS));
@@ -668,7 +670,7 @@ namespace Rando {
     }
 
     bool Logic::SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmountGlitchless, uint8_t requiredAmountGlitched) {
-        if (SkeletonKey) {
+        if (HasItem(RG_SKELETON_KEY)) {
             return true;
         }
         switch (dungeon) {
@@ -905,8 +907,8 @@ namespace Rando {
         ctx->SetRandoInf(RAND_INF_HAS_OCARINA_C_RIGHT, ocBtnShuffle);
 
         //Progressive Items
-        ProgressiveStickBag   = ctx->GetOption(RSK_SHUFFLE_DEKU_STICK_BAG).Is(true) ? 0 : 1;
-        ProgressiveNutBag     = ctx->GetOption(RSK_SHUFFLE_DEKU_NUT_BAG).Is(true) ? 0 : 1;
+        ctx->SetUpgrade(UPG_STICKS, ctx->GetOption(RSK_SHUFFLE_DEKU_STICK_BAG).Is(true) ? 0 : 1);
+        ctx->SetUpgrade(UPG_NUTS, ctx->GetOption(RSK_SHUFFLE_DEKU_NUT_BAG).Is(true) ? 0 : 1);
         ProgressiveBulletBag  = 0;
         ProgressiveBombBag    = 0;
         ProgressiveMagic      = 0;
@@ -951,9 +953,6 @@ namespace Rando {
 
         //Triforce Pieces
         TriforcePieces = 0;
-
-        //Skeleton Key
-        SkeletonKey = false;
 
         //Boss Souls
         CanSummonGohma        = false;

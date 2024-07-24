@@ -424,6 +424,7 @@ std::map<RandomizerGet, uint32_t> Context::RandoGetToFlag = {
     { RG_OCARINA_C_DOWN_BUTTON,  RAND_INF_HAS_OCARINA_C_DOWN },
     { RG_OCARINA_C_LEFT_BUTTON,  RAND_INF_HAS_OCARINA_C_LEFT },
     { RG_OCARINA_C_RIGHT_BUTTON, RAND_INF_HAS_OCARINA_C_RIGHT },
+    { RG_SKELETON_KEY,           RAND_INF_HAS_SKELETON_KEY }, 
     { RG_GREG_RUPEE,             RAND_INF_GREG_FOUND }
 };
 
@@ -506,8 +507,6 @@ uint32_t OcarinaLookup[3] = { ITEM_NONE, ITEM_OCARINA_FAIRY, ITEM_OCARINA_TIME }
 
 void Context::ApplyItemEffect(Item& item, bool remove) {
     auto randoGet = item.GetRandomizerGet();
-    //if (randoGet >= RG_BOOMERANG && randoGet <= RG_CLAIM_CHECK)
-    //    SPDLOG_INFO("Applying item effect for {}", item.GetName().GetEnglish().c_str());
     if (item.GetGIEntry()->objectId == OBJECT_GI_STICK) {
         SetInventory(ITEM_STICK, (remove ? ITEM_NONE : ITEM_STICK));
     }
@@ -517,7 +516,6 @@ void Context::ApplyItemEffect(Item& item, bool remove) {
     switch (item.GetItemType()) {
     case ITEMTYPE_ITEM:
     {
-        //if (item.GetGIEntry()->getItemCategory == ITEM_CATEGORY_MAJOR || item.GetGIEntry()->getItemCategory == ITEM_CATEGORY_LESSER) {
         switch (randoGet) {
             case RG_STONE_OF_AGONY:
             case RG_GERUDO_MEMBERSHIP_CARD:
@@ -736,27 +734,12 @@ void Context::ApplyItemEffect(Item& item, bool remove) {
             case RG_TRIFORCE_PIECE:
                 mSaveContext->triforcePiecesCollected += (remove ? -1 : 1);
                 break;
-            //}
-        //} else if (item.GetGIEntry()->getItemCategory == ITEM_CATEGORY_JUNK) {
-            //switch (randoGet) {
-            case RG_DEKU_NUTS_5:
-            case RG_DEKU_NUTS_10:
-            case RG_BUY_DEKU_NUTS_5:
-            case RG_BUY_DEKU_NUTS_10:
-                SetInventory(ITEM_NUT, (remove ? ITEM_NONE : ITEM_NUT));
-                break;
-            case RG_DEKU_STICK_1:
-            case RG_BUY_DEKU_STICK_1:
-            case RG_STICKS:
-                SetInventory(ITEM_STICK, (remove ? ITEM_NONE : ITEM_STICK));
-                break;
             case RG_BOMBCHU_5:
             case RG_BOMBCHU_10:
             case RG_BOMBCHU_20:
             case RG_BOMBCHU_DROP:
                 SetInventory(ITEM_BOMBCHU, (remove ? ITEM_NONE : ITEM_BOMBCHU));
                 break;
-            //}
         }
     }
     break;
@@ -1189,21 +1172,4 @@ uint8_t Context::GetAmmo(uint32_t item) {
 void Context::SetAmmo(uint32_t item, uint8_t count) {
     mSaveContext->inventory.ammo[gItemSlots[item]] = count;
 }
-
-#define BEANS_BOUGHT AMMO(ITEM_BEAN + 1)
-
-#define ALL_EQUIP_VALUE(equip) ((s32)(gSaveContext.inventory.equipment & gEquipMasks[equip]) >> gEquipShifts[equip])
-#define CUR_EQUIP_VALUE(equip) ((s32)(gSaveContext.equips.equipment & gEquipMasks[equip]) >> gEquipShifts[equip])
-#define OWNED_EQUIP_FLAG(equip, value) (gBitFlags[value] << gEquipShifts[equip])
-#define OWNED_EQUIP_FLAG_ALT(equip, value) ((1 << (value)) << gEquipShifts[equip])
-#define CHECK_OWNED_EQUIP(equip, value) (OWNED_EQUIP_FLAG(equip, value) & gSaveContext.inventory.equipment)
-#define CHECK_OWNED_EQUIP_ALT(equip, value) (gBitFlags[(value) + (equip)*4] & gSaveContext.inventory.equipment)
-
-#define SWORD_EQUIP_TO_PLAYER(swordEquip) (swordEquip)
-#define SHIELD_EQUIP_TO_PLAYER(shieldEquip) (shieldEquip)
-#define TUNIC_EQUIP_TO_PLAYER(tunicEquip) ((tunicEquip)-1)
-#define BOOTS_EQUIP_TO_PLAYER(bootsEquip) ((bootsEquip)-1)
-
-#define CAPACITY(upg, value) gUpgradeCapacities[upg][value]
-#define CUR_CAPACITY(upg) CAPACITY(upg, CUR_UPG_VALUE(upg))
 } // namespace Rando

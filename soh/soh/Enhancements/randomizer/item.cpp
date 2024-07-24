@@ -38,16 +38,6 @@ Item::Item(const RandomizerGet randomizerGet_, Text name_, const ItemType type_,
     Item::~Item() = default;
 
 void Item::ApplyEffect() const {
-    // If this is a key ring, logically add as many keys as we could need
-    //if (RHT_FOREST_TEMPLE_KEY_RING <= hintKey && hintKey <= RHT_GANONS_CASTLE_KEY_RING) {
-    //    *std::get<uint8_t*>(logicVar) += 10;
-    //} else {
-    //    if (std::holds_alternative<bool*>(logicVar)) {
-    //        *std::get<bool*>(logicVar) = true;
-    //    } else {
-    //        *std::get<uint8_t*>(logicVar) += 1;
-    //    }
-    //}
     auto ctx = Rando::Context::GetInstance();
     ctx->ApplyItemEffect(StaticData::RetrieveItem(randomizerGet), false);
     ctx->GetLogic()->SetInLogic(logicVar, false);
@@ -55,15 +45,6 @@ void Item::ApplyEffect() const {
 }
 
 void Item::UndoEffect() const {
-    //if (RHT_FOREST_TEMPLE_KEY_RING <= hintKey && hintKey <= RHT_GANONS_CASTLE_KEY_RING) {
-    //    *std::get<uint8_t*>(logicVar) -= 10;
-    //} else {
-    //    if (std::holds_alternative<bool*>(logicVar)) {
-    //        *std::get<bool*>(logicVar) = false;
-    //    } else {
-    //        *std::get<uint8_t*>(logicVar) -= 1;
-    //    }
-    //}
     auto ctx = Rando::Context::GetInstance();
     ctx->ApplyItemEffect(StaticData::RetrieveItem(randomizerGet), true);
     ctx->GetLogic()->SetInLogic(logicVar, true);
