@@ -2057,6 +2057,54 @@ void StaticData::HintTable_Init_Item() {
                                                }, {
                                                CustomMessage("a fish-puller", /*german*/"ein Fischzieher", /*french*/"(canne à pêche)")});
                                                 // /*spanish*/(caña de pescar)
+  
+    hintTextTable[RHT_QUIVER_INF] = HintText(CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
+                                             {
+                                             CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
+                                             }, {
+                                             CustomMessage("", /*german*/"!!!", /*french*/"!!!")});
+
+    hintTextTable[RHT_BOMB_BAG_INF] = HintText(CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
+                                               {
+                                               CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
+                                               }, {
+                                               CustomMessage("", /*german*/"!!!", /*french*/"!!!")});
+
+    hintTextTable[RHT_BULLET_BAG_INF] = HintText(CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
+                                                 {
+                                                 CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
+                                                 }, {
+                                                 CustomMessage("", /*german*/"!!!", /*french*/"!!!")});
+
+    hintTextTable[RHT_STICK_UPGRADE_INF] = HintText(CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
+                                                    {
+                                                    CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
+                                                    }, {
+                                                    CustomMessage("", /*german*/"!!!", /*french*/"!!!")});
+
+    hintTextTable[RHT_NUT_UPGRADE_INF] = HintText(CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
+                                                  {
+                                                  CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
+                                                  }, {
+                                                  CustomMessage("", /*german*/"!!!", /*french*/"!!!")});
+
+    hintTextTable[RHT_MAGIC_INF] = HintText(CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
+                                            {
+                                            CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
+                                            }, {
+                                            CustomMessage("", /*german*/"!!!", /*french*/"!!!")});
+
+    hintTextTable[RHT_BOMBCHU_INF] = HintText(CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
+                                              {
+                                              CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
+                                              }, {
+                                              CustomMessage("", /*german*/"!!!", /*french*/"!!!")});
+
+    hintTextTable[RHT_WALLET_INF] = HintText(CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
+                                             {
+                                             CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
+                                             }, {
+                                             CustomMessage("", /*german*/"!!!", /*french*/"!!!")});
 
     hintTextTable[RHT_EPONA] = HintText(CustomMessage("Epona", /*german*/"Epona", /*french*/"Epona"),
                                     // /*spanish*/a Epona

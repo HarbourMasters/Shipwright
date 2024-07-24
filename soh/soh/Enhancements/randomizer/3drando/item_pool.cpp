@@ -836,6 +836,12 @@ void GenerateItemPool() {
     } else {
       PlaceVanillaOverworldFish();
     }
+
+    if (fsMode.Is(RO_FISHSANITY_HYRULE_LOACH)) {
+      AddItemToMainPool(RG_PURPLE_RUPEE);
+    } else {
+      ctx->PlaceItemInLocation(RC_LH_HYRULE_LOACH, RG_PURPLE_RUPEE, false, true);
+    }
   } else {
     PlaceVanillaOverworldFish();
   }
@@ -843,6 +849,16 @@ void GenerateItemPool() {
   if (ctx->GetOption(RSK_SHUFFLE_FISHING_POLE)) {
     AddItemToMainPool(RG_FISHING_POLE);
     ctx->possibleIceTrapModels.push_back(RG_FISHING_POLE);
+  }
+
+  if (ctx->GetOption(RSK_INFINITE_UPGRADES).Is(RO_INF_UPGRADES_PROGRESSIVE)) {
+    AddItemToMainPool(RG_PROGRESSIVE_BOMB_BAG);
+    AddItemToMainPool(RG_PROGRESSIVE_BOW);
+    AddItemToMainPool(RG_PROGRESSIVE_NUT_UPGRADE);
+    AddItemToMainPool(RG_PROGRESSIVE_SLINGSHOT);
+    AddItemToMainPool(RG_PROGRESSIVE_STICK_UPGRADE);
+    AddItemToMainPool(RG_PROGRESSIVE_MAGIC_METER);
+    AddItemToMainPool(RG_PROGRESSIVE_WALLET);
   }
 
   if (ctx->GetOption(RSK_SHUFFLE_MAGIC_BEANS)) {
