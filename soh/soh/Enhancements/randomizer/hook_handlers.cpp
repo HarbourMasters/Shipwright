@@ -1634,6 +1634,22 @@ void RandomizerOnGameFrameUpdateHandler() {
     }
 }
 
+void RandomizerOnActorUpdateHandler(void* refActor) {
+    Actor* actor = static_cast<Actor*>(refActor);
+
+    if (Flags_GetRandomizerInf(RAND_INF_HAS_SKELETON_KEY)) {
+        if (actor->id == ACTOR_EN_DOOR) {
+            EnDoor* door = reinterpret_cast<EnDoor*>(actor);
+            door->lockTimer = 0;
+        } else if (actor->id == ACTOR_DOOR_SHUTTER) {
+            DoorShutter* shutterDoor = reinterpret_cast<DoorShutter*>(actor);
+            if (shutterDoor->doorType == SHUTTER_KEY_LOCKED) {
+                shutterDoor->unk_16E = 0;
+            }
+        }
+    }
+}
+
 void RandomizerRegisterHooks() {
     static uint32_t onFlagSetHook = 0;
     static uint32_t onSceneFlagSetHook = 0;
@@ -1643,6 +1659,7 @@ void RandomizerRegisterHooks() {
     static uint32_t onVanillaBehaviorHook = 0;
     static uint32_t onSceneInitHook = 0;
     static uint32_t onActorInitHook = 0;
+    static uint32_t onActorUpdateHook = 0;
     static uint32_t onGameFrameUpdateHook = 0;
 
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) {
@@ -1658,6 +1675,7 @@ void RandomizerRegisterHooks() {
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnVanillaBehavior>(onVanillaBehaviorHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(onSceneInitHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorInit>(onActorInitHook);
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(onActorUpdateHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnGameFrameUpdate>(onGameFrameUpdateHook);
 
         onFlagSetHook = 0;
@@ -1668,6 +1686,7 @@ void RandomizerRegisterHooks() {
         onVanillaBehaviorHook = 0;
         onSceneInitHook = 0;
         onActorInitHook = 0;
+        onActorUpdateHook = 0;
         onGameFrameUpdateHook = 0;
 
         if (!IS_RANDO) return;
@@ -1680,6 +1699,7 @@ void RandomizerRegisterHooks() {
         onVanillaBehaviorHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnVanillaBehavior>(RandomizerOnVanillaBehaviorHandler);
         onSceneInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>(RandomizerOnSceneInitHandler);
         onActorInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>(RandomizerOnActorInitHandler);
+        onActorUpdateHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>(RandomizerOnActorUpdateHandler);
         onGameFrameUpdateHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>(RandomizerOnGameFrameUpdateHandler);
     });
 }

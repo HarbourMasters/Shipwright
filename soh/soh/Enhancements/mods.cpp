@@ -1696,24 +1696,6 @@ void RegisterRandomizerCompasses() {
     });
 }
 
-void RegisterSkeletonKey() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* refActor) {
-        Actor* actor = static_cast<Actor*>(refActor);
-
-        if (Flags_GetRandomizerInf(RAND_INF_HAS_SKELETON_KEY)) {
-            if (actor->id == ACTOR_EN_DOOR) {
-                EnDoor* door = (EnDoor*)actor;
-                door->lockTimer = 0;
-            } else if (actor->id == ACTOR_DOOR_SHUTTER) {
-                DoorShutter* shutterDoor = (DoorShutter*)actor;
-                if (shutterDoor->doorType == SHUTTER_KEY_LOCKED) {
-                    shutterDoor->unk_16E = 0;
-                }
-            }
-        }
-    });
-}
-
 void InitMods() {
     BossRush_RegisterHooks();
     RandomizerRegisterHooks();
@@ -1763,5 +1745,4 @@ void InitMods() {
     RegisterPatchHandHandler();
     RegisterHurtContainerModeHandler();
     RegisterPauseMenuHooks();
-    RegisterSkeletonKey();
 }
