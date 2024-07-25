@@ -1252,6 +1252,10 @@ void RandomizerOnSceneInitHandler(int16_t sceneNum) {
         Rando::Context::GetInstance()->GetItemLocation(RC_MARKET_TREASURE_CHEST_GAME_KEY_5)->MarkAsNotObtained();
     }
 
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
+        Entrance_OverrideWeatherState();
+    }
+
     // LACs & Prelude checks
     static uint32_t updateHook = 0;
 
