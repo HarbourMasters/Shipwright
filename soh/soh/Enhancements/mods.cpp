@@ -872,7 +872,7 @@ static std::unordered_map<u16, u16> uniqueEnemyIdToStatCount = {
 
 void RegisterEnemyDefeatCounts() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnEnemyDefeat>([](void* refActor) {
-        Actor* actor = (Actor*)refActor;
+        Actor* actor = static_cast<Actor*>(refActor);
         if (uniqueEnemyIdToStatCount.contains(actor->id)) {
             gSaveContext.sohStats.count[uniqueEnemyIdToStatCount[actor->id]]++;
         } else {
@@ -1012,6 +1012,45 @@ void RegisterEnemyDefeatCounts() {
                     }
                     break;
             }
+        }
+    });
+}
+
+void RegisterBossDefeatTimestamps() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnBossDefeat>([](void* refActor) {
+        Actor* actor = static_cast<Actor*>(refActor);
+        switch (actor->id) {
+            case ACTOR_BOSS_DODONGO:
+                gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_KING_DODONGO] = GAMEPLAYSTAT_TOTAL_TIME;
+                break;
+            case ACTOR_BOSS_FD2:
+                gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_VOLVAGIA] = GAMEPLAYSTAT_TOTAL_TIME;
+                break;
+            case ACTOR_BOSS_GANON:
+                gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_GANONDORF] = GAMEPLAYSTAT_TOTAL_TIME;
+                break;
+            case ACTOR_BOSS_GANON2:
+                gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
+                gSaveContext.sohStats.gameComplete = true;
+                break;
+            case ACTOR_BOSS_GANONDROF:
+                gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_PHANTOM_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
+                break;
+            case ACTOR_BOSS_GOMA:
+                gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_GOHMA] = GAMEPLAYSTAT_TOTAL_TIME;
+                break;
+            case ACTOR_BOSS_MO:
+                gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_MORPHA] = GAMEPLAYSTAT_TOTAL_TIME;
+                break;
+            case ACTOR_BOSS_SST:
+                gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_BONGO_BONGO] = GAMEPLAYSTAT_TOTAL_TIME;
+                break;
+            case ACTOR_BOSS_TW:
+                gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_TWINROVA] = GAMEPLAYSTAT_TOTAL_TIME;
+                break;
+            case ACTOR_BOSS_VA:
+                gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_BARINADE] = GAMEPLAYSTAT_TOTAL_TIME;
+                break;
         }
     });
 }
@@ -1806,6 +1845,7 @@ void InitMods() {
     RegisterTriforceHunt();
     RegisterGrantGanonsBossKey();
     RegisterEnemyDefeatCounts();
+    RegisterBossDefeatTimestamps();
     RegisterAltTrapTypes();
     RegisterRandomizerSheikSpawn();
     RegisterBossSouls();

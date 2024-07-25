@@ -1547,7 +1547,6 @@ void BossDodongo_DeathCutscene(BossDodongo* this, PlayState* play) {
             this->cameraAt.x = camera->at.x;
             this->cameraAt.y = camera->at.y;
             this->cameraAt.z = camera->at.z;
-            gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_KING_DODONGO] = GAMEPLAYSTAT_TOTAL_TIME;
             GameInteractor_ExecuteOnBossDefeat(&this->actor);
             break;
         case 5:

@@ -898,7 +898,6 @@ void BossFd2_CollisionCheck(BossFd2* this, PlayState* play) {
                 Audio_QueueSeqCmd(0x1 << 28 | SEQ_PLAYER_BGM_MAIN << 24 | 0x100FF);
                 Audio_PlayActorSound2(&this->actor, NA_SE_EN_VALVAISA_DEAD);
                 Enemy_StartFinishingBlow(play, &this->actor);
-                gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_VOLVAGIA] = GAMEPLAYSTAT_TOTAL_TIME;
                 GameInteractor_ExecuteOnBossDefeat(&this->actor);
             } else if (damage) {
                 BossFd2_SetupDamaged(this, play);
