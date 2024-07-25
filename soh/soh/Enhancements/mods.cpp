@@ -783,35 +783,6 @@ void RegisterResetNaviTimer() {
 	});
 }
 
-f32 triforcePieceScale;
-
-void RegisterTriforceHunt() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
-        if (!GameInteractor::IsGameplayPaused() &&
-            OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT)) {
-
-            // Warp to credits
-            if (GameInteractor::State::TriforceHuntCreditsWarpActive) {
-                gPlayState->nextEntranceIndex = ENTR_CHAMBER_OF_THE_SAGES_0;
-                gSaveContext.nextCutsceneIndex = 0xFFF2;
-                gPlayState->transitionTrigger = TRANS_TRIGGER_START;
-                gPlayState->transitionType = TRANS_TYPE_FADE_WHITE;
-                GameInteractor::State::TriforceHuntCreditsWarpActive = 0;
-            }
-
-            // Reset Triforce Piece scale for GI animation. Triforce Hunt allows for multiple triforce models,
-            // and cycles through them based on the amount of triforce pieces collected. It takes a little while
-            // for the count to increase during the GI animation, so the model is entirely hidden until that piece
-            // has been added. That scale has to be reset after the textbox is closed, and this is the best way
-            // to ensure it's done at that point in time specifically.
-            if (GameInteractor::State::TriforceHuntPieceGiven) {
-                triforcePieceScale = 0.0f;
-                GameInteractor::State::TriforceHuntPieceGiven = 0;
-            }
-        }
-    });
-}
-
 //this map is used for enemies that can be uniquely identified by their id
 //and that are always counted
 //enemies that can't be uniquely identified by their id
@@ -1629,7 +1600,6 @@ void InitMods() {
     RegisterMenuPathFix();
     RegisterMirrorModeHandler();
     RegisterResetNaviTimer();
-    RegisterTriforceHunt();
     RegisterEnemyDefeatCounts();
     RegisterBossDefeatTimestamps();
     RegisterAltTrapTypes();

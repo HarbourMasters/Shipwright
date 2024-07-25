@@ -1707,6 +1707,8 @@ std::map<s32, SpecialRespawnInfo> swimSpecialRespawnInfo = {
     }
 };
 
+f32 triforcePieceScale;
+
 void RandomizerOnPlayerUpdateHandler() {
     if (
         (GET_PLAYER(gPlayState)->stateFlags1 & PLAYER_STATE1_IN_WATER) &&
@@ -1738,6 +1740,30 @@ void RandomizerOnPlayerUpdateHandler() {
         (1 << 0 & gSaveContext.inventory.dungeonItems[SCENE_GANONS_TOWER]) == 0
     ) {
         GiveItemEntryWithoutActor(gPlayState, ItemTableManager::Instance->RetrieveItemEntry(MOD_RANDOMIZER, RG_GANONS_CASTLE_BOSS_KEY));
+    }
+
+    if (
+        !GameInteractor::IsGameplayPaused() &&
+        RAND_GET_OPTION(RSK_TRIFORCE_HUNT)
+    ) {
+        // Warp to credits
+        if (GameInteractor::State::TriforceHuntCreditsWarpActive) {
+            gPlayState->nextEntranceIndex = ENTR_CHAMBER_OF_THE_SAGES_0;
+            gSaveContext.nextCutsceneIndex = 0xFFF2;
+            gPlayState->transitionTrigger = TRANS_TRIGGER_START;
+            gPlayState->transitionType = TRANS_TYPE_FADE_WHITE;
+            GameInteractor::State::TriforceHuntCreditsWarpActive = 0;
+        }
+
+        // Reset Triforce Piece scale for GI animation. Triforce Hunt allows for multiple triforce models,
+        // and cycles through them based on the amount of triforce pieces collected. It takes a little while
+        // for the count to increase during the GI animation, so the model is entirely hidden until that piece
+        // has been added. That scale has to be reset after the textbox is closed, and this is the best way
+        // to ensure it's done at that point in time specifically.
+        if (GameInteractor::State::TriforceHuntPieceGiven) {
+            triforcePieceScale = 0.0f;
+            GameInteractor::State::TriforceHuntPieceGiven = 0;
+        }
     }
 }
 
