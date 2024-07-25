@@ -1545,6 +1545,59 @@ void RandomizerOnActorInitHandler(void* actorRef) {
     ) {
         Actor_Kill(actor);
     }
+
+    if (RAND_GET_OPTION(RSK_SHUFFLE_BOSS_SOULS)) {
+        //Boss souls require an additional item (represented by a RAND_INF) to spawn a boss in a particular lair
+        RandomizerInf currentBossSoulRandInf = RAND_INF_MAX;
+        switch (gPlayState->sceneNum){
+            case SCENE_DEKU_TREE_BOSS:
+                currentBossSoulRandInf = RAND_INF_GOHMA_SOUL;
+                break;
+            case SCENE_DODONGOS_CAVERN_BOSS:
+                currentBossSoulRandInf = RAND_INF_KING_DODONGO_SOUL;
+                break;
+            case SCENE_JABU_JABU_BOSS:
+                currentBossSoulRandInf = RAND_INF_BARINADE_SOUL;
+                break;
+            case SCENE_FOREST_TEMPLE_BOSS:
+                currentBossSoulRandInf = RAND_INF_PHANTOM_GANON_SOUL;
+                break;
+            case SCENE_FIRE_TEMPLE_BOSS:
+                currentBossSoulRandInf = RAND_INF_VOLVAGIA_SOUL;
+                break;
+            case SCENE_WATER_TEMPLE_BOSS:
+                currentBossSoulRandInf = RAND_INF_MORPHA_SOUL;
+                break;
+            case SCENE_SHADOW_TEMPLE_BOSS:
+                currentBossSoulRandInf = RAND_INF_BONGO_BONGO_SOUL;
+                break;
+            case SCENE_SPIRIT_TEMPLE_BOSS:
+                currentBossSoulRandInf = RAND_INF_TWINROVA_SOUL;
+                break;
+            case SCENE_GANONDORF_BOSS:
+            case SCENE_GANON_BOSS:
+                if (RAND_GET_OPTION(RSK_SHUFFLE_BOSS_SOULS) == RO_BOSS_SOULS_ON_PLUS_GANON) {
+                    currentBossSoulRandInf = RAND_INF_GANON_SOUL;
+                }
+                break;
+            default:
+                break;
+        }
+
+        //Deletes all actors in the boss category if the soul isn't found.
+        //Some actors, like Dark Link, Arwings, and Zora's Sapphire...?, are in this category despite not being actual bosses,
+        //so ignore any "boss" if `currentBossSoulRandInf` doesn't change from RAND_INF_MAX.
+        if (currentBossSoulRandInf != RAND_INF_MAX) {
+            if (!Flags_GetRandomizerInf(currentBossSoulRandInf) && actor->category == ACTORCAT_BOSS) {
+                Actor_Delete(&gPlayState->actorCtx, actor, gPlayState);
+            }
+            //Special case for Phantom Ganon's horse (and fake), as they're considered "background actors",
+            //but still control the boss fight flow.
+            if (!Flags_GetRandomizerInf(RAND_INF_PHANTOM_GANON_SOUL) && actor->id == ACTOR_EN_FHG) {
+                Actor_Delete(&gPlayState->actorCtx, actor, gPlayState);
+            }
+        }
+    }
 }
 
 void RandomizerRegisterHooks() {
