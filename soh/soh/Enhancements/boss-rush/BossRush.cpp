@@ -496,6 +496,8 @@ void BossRush_SetEquipment(uint8_t linkAge) {
 
 void BossRush_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void* optionalArg) {
     switch (id) {
+        // Disable doors so the player can't leave the boss rooms backwards.
+        case VB_BE_ABLE_TO_OPEN_DOORS:
         case VB_SPAWN_HEART_CONTAINER:
         case VB_RENDER_RUPEE_COUNTER:
             *should = false;
@@ -506,9 +508,9 @@ void BossRush_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
 void BossRush_OnActorInitHandler(void* actorRef) {
     Actor* actor = static_cast<Actor*>(actorRef);
 
-    // Remove chests in Boss Rush. Mainly for the chest in King Dodongo's boss room.
-    // Remove bushes in Boss Rush. Used in Gohma's arena.
-    // Remove pots in Boss Rush. Used in Barinade's and Ganondorf's arenas.
+    // Remove chests, mainly for the chest in King Dodongo's boss room.
+    // Remove bushes, used in Gohma's arena.
+    // Remove pots, used in Barinade's and Ganondorf's arenas.
     if (actor->id == ACTOR_EN_KUSA || actor->id == ACTOR_OBJ_TSUBO || actor->id == ACTOR_EN_BOX) {
         Actor_Kill(actor);
         return;
@@ -516,7 +518,7 @@ void BossRush_OnActorInitHandler(void* actorRef) {
 }
 
 void BossRush_OnSceneInitHandler(int16_t sceneNum) {
-    // Unpause the timer for Boss Rush when the scene loaded isn't the Chamber of Sages.
+    // Unpause the timer when the scene loaded isn't the Chamber of Sages.
     if (sceneNum != SCENE_CHAMBER_OF_THE_SAGES) {
         gSaveContext.isBossRushPaused = 0;
     }

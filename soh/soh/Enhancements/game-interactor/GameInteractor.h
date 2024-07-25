@@ -260,6 +260,8 @@ typedef enum {
     VB_RENDER_KEY_COUNTER,
     // Vanilla condition: true
     VB_SPAWN_HEART_CONTAINER,
+    // Vanilla condition: true
+    VB_BE_ABLE_TO_OPEN_DOORS,
 
     /*** Play Cutscenes ***/
 
