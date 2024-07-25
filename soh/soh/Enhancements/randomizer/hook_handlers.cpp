@@ -2,6 +2,7 @@
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/custom-message/CustomMessageTypes.h"
+#include "soh/Enhancements/item-tables/ItemTableManager.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "soh/Enhancements/randomizer/dungeon.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
@@ -1727,6 +1728,16 @@ void RandomizerOnPlayerUpdateHandler() {
         }
 
         Play_TriggerVoidOut(gPlayState);
+    }
+
+    // Triforce Hunt needs the check if the player isn't being teleported to the credits scene.
+    if (
+        !GameInteractor::IsGameplayPaused() &&
+        Flags_GetRandomizerInf(RAND_INF_GRANT_GANONS_BOSSKEY) &&
+        gPlayState->transitionTrigger != TRANS_TRIGGER_START &&
+        (1 << 0 & gSaveContext.inventory.dungeonItems[SCENE_GANONS_TOWER]) == 0
+    ) {
+        GiveItemEntryWithoutActor(gPlayState, ItemTableManager::Instance->RetrieveItemEntry(MOD_RANDOMIZER, RG_GANONS_CASTLE_BOSS_KEY));
     }
 }
 
