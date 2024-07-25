@@ -1600,6 +1600,40 @@ void RandomizerOnActorInitHandler(void* actorRef) {
     }
 }
 
+void RandomizerOnGameFrameUpdateHandler() {
+    if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_QUIVER)) {
+        AMMO(ITEM_BOW) = CUR_CAPACITY(UPG_QUIVER);
+    }
+
+    if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_BOMB_BAG)) {
+        AMMO(ITEM_BOMB) = CUR_CAPACITY(UPG_BOMB_BAG);
+    }
+
+    if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_BULLET_BAG)) {
+        AMMO(ITEM_SLINGSHOT) = CUR_CAPACITY(UPG_BULLET_BAG);
+    }
+
+    if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_STICK_UPGRADE)) {
+        AMMO(ITEM_STICK) = CUR_CAPACITY(UPG_STICKS);
+    }
+
+    if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_NUT_UPGRADE)) {
+        AMMO(ITEM_NUT) = CUR_CAPACITY(UPG_NUTS);
+    }
+
+    if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_MAGIC_METER)) {
+        gSaveContext.magic = gSaveContext.magicCapacity;
+    }
+
+    if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_BOMBCHUS)) {
+        AMMO(ITEM_BOMBCHU) = 50;
+    }
+
+    if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_MONEY)) {
+        gSaveContext.rupees = CUR_CAPACITY(UPG_WALLET);
+    }
+}
+
 void RandomizerRegisterHooks() {
     static uint32_t onFlagSetHook = 0;
     static uint32_t onSceneFlagSetHook = 0;
@@ -1609,6 +1643,7 @@ void RandomizerRegisterHooks() {
     static uint32_t onVanillaBehaviorHook = 0;
     static uint32_t onSceneInitHook = 0;
     static uint32_t onActorInitHook = 0;
+    static uint32_t onGameFrameUpdateHook = 0;
 
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) {
         randomizerQueuedChecks = std::queue<RandomizerCheck>();
@@ -1623,6 +1658,7 @@ void RandomizerRegisterHooks() {
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnVanillaBehavior>(onVanillaBehaviorHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(onSceneInitHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorInit>(onActorInitHook);
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnGameFrameUpdate>(onGameFrameUpdateHook);
 
         onFlagSetHook = 0;
         onSceneFlagSetHook = 0;
@@ -1632,6 +1668,7 @@ void RandomizerRegisterHooks() {
         onVanillaBehaviorHook = 0;
         onSceneInitHook = 0;
         onActorInitHook = 0;
+        onGameFrameUpdateHook = 0;
 
         if (!IS_RANDO) return;
 
@@ -1643,5 +1680,6 @@ void RandomizerRegisterHooks() {
         onVanillaBehaviorHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnVanillaBehavior>(RandomizerOnVanillaBehaviorHandler);
         onSceneInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>(RandomizerOnSceneInitHandler);
         onActorInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>(RandomizerOnActorInitHandler);
+        onGameFrameUpdateHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>(RandomizerOnGameFrameUpdateHandler);
     });
 }
