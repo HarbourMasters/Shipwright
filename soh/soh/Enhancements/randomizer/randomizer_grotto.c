@@ -142,12 +142,12 @@ s16 Grotto_GetEntranceValueHandlingGrottoRando(s16 nextEntranceIndex) {
         nextEntranceIndex = grottoExitList[grottoId];
     }
 
-    // Get the new grotto id from the next entrance
-    grottoId = nextEntranceIndex & 0x00FF;
+    // Get the new grotto id from the next entrance, temp value to override modifying the static one
+    s8 tempGrottoId = nextEntranceIndex & 0x00FF;
 
     // Grotto Returns
     if (nextEntranceIndex >= ENTRANCE_RANDO_GROTTO_EXIT_START && nextEntranceIndex < ENTRANCE_RANDO_GROTTO_EXIT_START + NUM_GROTTOS) {
-        GrottoReturnInfo grotto = grottoReturnTable[grottoId];
+        GrottoReturnInfo grotto = grottoReturnTable[tempGrottoId];
 
         // When the nextEntranceIndex is determined by a dynamic exit,
         // or set by Entrance_OverrideBlueWarp to mark a blue warp entrance,
@@ -162,7 +162,7 @@ s16 Grotto_GetEntranceValueHandlingGrottoRando(s16 nextEntranceIndex) {
         }
     // Grotto Loads
     } else if (nextEntranceIndex >= ENTRANCE_RANDO_GROTTO_LOAD_START && nextEntranceIndex < ENTRANCE_RANDO_GROTTO_EXIT_START) {
-        GrottoLoadInfo grotto = grottoLoadTable[grottoId];
+        GrottoLoadInfo grotto = grottoLoadTable[tempGrottoId];
         nextEntranceIndex = grotto.entranceIndex;
     }
 
