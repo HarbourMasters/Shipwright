@@ -1,6 +1,7 @@
 #include "global.h"
 #include "vt.h"
 #include <assert.h>
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 s32 func_8006CFC0(s32 scene) {
     s32 validScenes[] = { SCENE_HYRULE_FIELD, SCENE_LAKE_HYLIA, SCENE_GERUDO_VALLEY, SCENE_GERUDOS_FORTRESS, SCENE_LON_LON_RANCH };

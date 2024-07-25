@@ -1,15 +1,17 @@
 ﻿#include "BossRush.h"
 #include "soh/OTRGlobals.h"
-#include "functions.h"
-#include "macros.h"
-#include "variables.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #include <array>
 #include <string>
 #include <vector>
 
 extern "C" {
-    #include "src/overlays/actors/ovl_En_Box/z_en_box.h"
+    #include "functions.h"
+    #include "macros.h"
+    #include "variables.h"
+    extern PlayState* gPlayState;
 }
 
 typedef struct BossRushSetting {
@@ -505,14 +507,9 @@ void BossRush_OnActorInitHandler(void* actorRef) {
     Actor* actor = static_cast<Actor*>(actorRef);
 
     // Remove chests in Boss Rush. Mainly for the chest in King Dodongo's boss room.
-    if (actor->id == ACTOR_EN_BOX) {
-        EnBox_SetupAction(actor, EnBox_Destroy);
-        return;
-    }
-
     // Remove bushes in Boss Rush. Used in Gohma's arena.
     // Remove pots in Boss Rush. Used in Barinade's and Ganondorf's arenas.
-    if (actor->id == ACTOR_EN_KUSA || actor->id == ACTOR_OBJ_TSUBO) {
+    if (actor->id == ACTOR_EN_KUSA || actor->id == ACTOR_OBJ_TSUBO || actor->id == ACTOR_EN_BOX) {
         Actor_Kill(actor);
         return;
     }
@@ -525,24 +522,32 @@ void BossRush_OnSceneInitHandler(int16_t sceneNum) {
     }
 }
 
+void BossRush_OnBossDefeatHandler(void* refActor) {
+    BossRush_HandleCompleteBoss(gPlayState);
+}
+
 void BossRush_RegisterHooks() {
     static uint32_t onVanillaBehaviorHook = 0;
     static uint32_t onSceneInitHook = 0;
     static uint32_t onActorInitHook = 0;
+    static uint32_t onBossDefeatHook = 0;
 
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) {
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnVanillaBehavior>(onVanillaBehaviorHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(onSceneInitHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorInit>(onActorInitHook);
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnBossDefeat>(onBossDefeatHook);
 
         onVanillaBehaviorHook = 0;
         onSceneInitHook = 0;
         onActorInitHook = 0;
+        onBossDefeatHook = 0;
 
         if (!IS_BOSS_RUSH) return;
 
         onVanillaBehaviorHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnVanillaBehavior>(BossRush_OnVanillaBehaviorHandler);
         onSceneInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>(BossRush_OnSceneInitHandler);
         onActorInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>(BossRush_OnActorInitHandler);
+        onBossDefeatHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnBossDefeat>(BossRush_OnBossDefeatHandler);
     });
 }

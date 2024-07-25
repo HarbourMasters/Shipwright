@@ -11,7 +11,7 @@
 #include "assets/scenes/dungeons/ganon_boss/ganon_boss_scene.h"
 
 #include "soh/frame_interpolation.h"
-#include "soh/Enhancements/boss-rush/BossRush.h"
+#include "soh/Enhancements/boss-rush/BossRushTypes.h"
 
 #include <string.h>
 
@@ -2807,7 +2807,7 @@ void BossGanon_UpdateDamage(BossGanon* this, PlayState* play) {
                     Audio_QueueSeqCmd(0x100100FF);
                     this->screenFlashTimer = 4;
                     gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_GANONDORF] = GAMEPLAYSTAT_TOTAL_TIME;
-                    BossRush_HandleCompleteBoss(play);
+                    GameInteractor_ExecuteOnBossDefeat(&this->actor);
                 } else {
                     Audio_PlayActorSound2(&this->actor, NA_SE_EN_GANON_DAMAGE2);
                     Audio_PlayActorSound2(&this->actor, NA_SE_EN_GANON_CUTBODY);

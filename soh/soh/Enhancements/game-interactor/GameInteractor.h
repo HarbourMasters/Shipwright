@@ -700,6 +700,7 @@ public:
     DEFINE_HOOK(OnActorUpdate, (void* actor));
     DEFINE_HOOK(OnActorKill, (void* actor));
     DEFINE_HOOK(OnEnemyDefeat, (void* actor));
+    DEFINE_HOOK(OnBossDefeat, (void* actor));
     DEFINE_HOOK(OnPlayerBonk, ());
     DEFINE_HOOK(OnPlayDestroy, ());
     DEFINE_HOOK(OnPlayDrawEnd, ());

@@ -15,7 +15,7 @@
 #include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
 
 #include "soh/frame_interpolation.h"
-#include "soh/Enhancements/boss-rush/BossRush.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
@@ -1404,7 +1404,7 @@ void BossVa_BodyPhase4(BossVa* this, PlayState* play) {
                             BossVa_SetupBodyDeath(this, play);
                             Enemy_StartFinishingBlow(play, &this->actor);
                             gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_BARINADE] = GAMEPLAYSTAT_TOTAL_TIME;
-                            BossRush_HandleCompleteBoss(play);
+                            GameInteractor_ExecuteOnBossDefeat(&this->actor);
                             return;
                         }
                         this->actor.speedXZ = -10.0f;
