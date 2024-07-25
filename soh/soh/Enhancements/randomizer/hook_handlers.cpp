@@ -1131,6 +1131,55 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
             }
             break;
         }
+        case VB_HAVE_OCARINA_NOTE_D4: {
+            if (!Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_A)) {
+                *should = false;
+            }
+            break;
+        }
+        case VB_HAVE_OCARINA_NOTE_D5: {
+            if (!Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_UP)) {
+                *should = false;
+            }
+            break;
+        }
+        case VB_HAVE_OCARINA_NOTE_F4: {
+            if (!Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_DOWN)) {
+                *should = false;
+            }
+            break;
+        }
+        case VB_HAVE_OCARINA_NOTE_B4: {
+            if (!Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_LEFT)) {
+                *should = false;
+            }
+            break;
+        }
+        case VB_HAVE_OCARINA_NOTE_A4: {
+            if (!Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_RIGHT)) {
+                *should = false;
+            }
+            break;
+        }
+        case VB_SKIP_SCARECROWS_SONG: {
+            int ocarinaButtonCount = 0;
+            for (int i = VB_HAVE_OCARINA_NOTE_D4; i <= VB_HAVE_OCARINA_NOTE_A4; i++) {
+                if (GameInteractor_Should((GIVanillaBehavior)i, true, NULL)) {
+                    ocarinaButtonCount++;
+                }
+            }
+
+            if (ocarinaButtonCount < 2) {
+                *should = false;
+                break;
+            }
+
+            if (gPlayState->msgCtx.msgMode == MSGMODE_OCARINA_PLAYING && RAND_GET_OPTION(RSK_SKIP_SCARECROWS_SONG)) {
+                *should = true;
+                break;
+            }
+            break;
+        }
         case VB_TRADE_TIMER_ODD_MUSHROOM:
         case VB_TRADE_TIMER_EYEDROPS:
         case VB_TRADE_TIMER_FROG:

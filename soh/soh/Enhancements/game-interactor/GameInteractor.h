@@ -242,6 +242,13 @@ typedef enum {
     ```
     */
     VB_DRAW_AMMO_COUNT,
+    VB_HAVE_OCARINA_NOTE_D4,
+    VB_HAVE_OCARINA_NOTE_D5,
+    VB_HAVE_OCARINA_NOTE_F4,
+    VB_HAVE_OCARINA_NOTE_B4,
+    VB_HAVE_OCARINA_NOTE_A4,
+    // Vanilla condition: false
+    VB_SKIP_SCARECROWS_SONG,
 
     /*** Play Cutscenes ***/
 
