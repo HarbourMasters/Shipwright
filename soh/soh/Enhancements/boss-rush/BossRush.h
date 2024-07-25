@@ -15,6 +15,7 @@ void BossRush_HandleCompleteBoss(PlayState* play);
 const char* BossRush_GetSettingName(uint8_t optionIndex, uint8_t language);
 const char* BossRush_GetSettingChoiceName(uint8_t optionIndex, uint8_t choiceIndex, uint8_t language);
 uint8_t BossRush_GetSettingOptionsAmount(uint8_t optionIndex);
+void BossRush_RegisterHooks();
 #ifdef __cplusplus
 };
 #endif

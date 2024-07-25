@@ -207,11 +207,6 @@ void EnBox_Init(Actor* thisx, PlayState* play2) {
     if (play->sceneNum == SCENE_FOREST_TEMPLE && this->dyna.actor.params == 10222) {
         this->movementFlags = ENBOX_MOVE_IMMOBILE;
     }
-
-    // Delete chests in Boss Rush. Mainly for the chest in King Dodongo's boss room.
-    if (IS_BOSS_RUSH) {
-        EnBox_SetupAction(this, EnBox_Destroy);
-    }
 }
 
 void EnBox_Destroy(Actor* thisx, PlayState* play) {

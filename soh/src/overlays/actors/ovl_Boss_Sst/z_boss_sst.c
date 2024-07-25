@@ -295,8 +295,10 @@ void BossSst_Init(Actor* thisx, PlayState* play2) {
         if (Flags_GetClear(play, play->roomCtx.curRoom.num)) {
             Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, ROOM_CENTER_X, ROOM_CENTER_Y,
                         ROOM_CENTER_Z + 400.0f, 0, 0, 0, WARP_DUNGEON_ADULT, true);
-            Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, ROOM_CENTER_X, ROOM_CENTER_Y,
-                        ROOM_CENTER_Z - 200.0f, 0, 0, 0, 0, true);
+            if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true, NULL)) {
+                Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, ROOM_CENTER_X, ROOM_CENTER_Y,
+                            ROOM_CENTER_Z - 200.0f, 0, 0, 0, 0, true);
+            }
             Actor_Kill(&this->actor);
         } else {
             sHands[LEFT] =
@@ -1204,7 +1206,7 @@ void BossSst_HeadFinish(BossSst* this, PlayState* play) {
     } else if (this->effects[0].alpha == 0) {
         Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, ROOM_CENTER_X, ROOM_CENTER_Y, ROOM_CENTER_Z, 0, 0, 0,
                     WARP_DUNGEON_ADULT, true);
-        if (!IS_BOSS_RUSH) {
+        if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true, NULL)) {
             Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART,
                         (Math_SinS(this->actor.shape.rot.y) * 200.0f) + ROOM_CENTER_X, ROOM_CENTER_Y,
                         Math_CosS(this->actor.shape.rot.y) * 200.0f + ROOM_CENTER_Z, 0, 0, 0, 0, true);

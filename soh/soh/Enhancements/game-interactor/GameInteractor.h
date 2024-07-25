@@ -242,13 +242,24 @@ typedef enum {
     ```
     */
     VB_DRAW_AMMO_COUNT,
+    // Vanilla condition: true
     VB_HAVE_OCARINA_NOTE_D4,
+    // Vanilla condition: true
     VB_HAVE_OCARINA_NOTE_D5,
+    // Vanilla condition: true
     VB_HAVE_OCARINA_NOTE_F4,
+    // Vanilla condition: true
     VB_HAVE_OCARINA_NOTE_B4,
+    // Vanilla condition: true
     VB_HAVE_OCARINA_NOTE_A4,
     // Vanilla condition: false
     VB_SKIP_SCARECROWS_SONG,
+    // Vanilla condition: true
+    VB_RENDER_RUPEE_COUNTER,
+    // Vanilla condition: true
+    VB_RENDER_KEY_COUNTER,
+    // Vanilla condition: true
+    VB_SPAWN_HEART_CONTAINER,
 
     /*** Play Cutscenes ***/
 

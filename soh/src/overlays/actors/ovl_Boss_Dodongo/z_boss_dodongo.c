@@ -341,7 +341,9 @@ void BossDodongo_Init(Actor* thisx, PlayState* play) {
         Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, -890.0f, -1523.76f,
                            -3304.0f, 0, 0, 0, WARP_DUNGEON_CHILD);
         Actor_Spawn(&play->actorCtx, play, ACTOR_BG_BREAKWALL, -890.0f, -1523.76f, -3304.0f, 0, 0, 0, 0x6000, true);
-        Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, -690.0f, -1523.76f, -3304.0f, 0, 0, 0, 0, true);
+        if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true, NULL)) {
+            Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, -690.0f, -1523.76f, -3304.0f, 0, 0, 0, 0, true);
+        }
     }
 
     this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
@@ -1832,7 +1834,7 @@ void BossDodongo_DeathCutscene(BossDodongo* this, PlayState* play) {
 
             if (this->unk_1DA == 820) {
                 Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_BOSS_CLEAR);
-                if (!IS_BOSS_RUSH) {
+                if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true, NULL)) {
                     Actor_Spawn(
                         &play->actorCtx, play, ACTOR_ITEM_B_HEART,
                         Math_SinS(this->actor.shape.rot.y) * -50.0f + this->actor.world.pos.x, this->actor.world.pos.y,

@@ -341,7 +341,9 @@ void BossGoma_Init(Actor* thisx, PlayState* play) {
         Actor_Kill(&this->actor);
         Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, 0.0f, -640.0f, 0.0f, 0, 0,
                            0, WARP_DUNGEON_CHILD);
-        Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, 141.0f, -640.0f, -84.0f, 0, 0, 0, 0, true);
+        if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true, NULL)) {
+            Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, 141.0f, -640.0f, -84.0f, 0, 0, 0, 0, true);
+        }
     }
 
     for (int i = 0; i < ARRAY_COUNT(sClearPixelTex16); i++) {
@@ -1118,7 +1120,7 @@ void BossGoma_Defeated(BossGoma* this, PlayState* play) {
                 this->timer = 70;
                 this->decayingProgress = 0;
                 this->subCameraFollowSpeed = 0.0f;
-                if (!IS_BOSS_RUSH) {
+                if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true, NULL)) {
                     Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, this->actor.world.pos.x,
                                 this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0, true);
                 }

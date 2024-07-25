@@ -3,7 +3,7 @@
 #include "game-interactor/GameInteractor.h"
 #include "tts/tts.h"
 #include "soh/OTRGlobals.h"
-#include "soh/Enhancements/boss-rush/BossRushTypes.h"
+#include "soh/Enhancements/boss-rush/BossRush.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/randomizer/3drando/random.hpp"
 #include "soh/Enhancements/randomizer/fishsanity.h"
@@ -1773,6 +1773,7 @@ void RegisterSkeletonKey() {
 }
 
 void InitMods() {
+    BossRush_RegisterHooks();
     RandomizerRegisterHooks();
     TimeSaverRegisterHooks();
     CheatsRegisterHooks();

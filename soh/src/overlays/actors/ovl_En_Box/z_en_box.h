@@ -51,4 +51,9 @@ typedef struct EnBox {
     /*        */ Gfx* boxBodyDL;
 } EnBox; // size = 0x01FC
 
+// #region SOH [General] Exposed these functions for use in other places (Boss Rush as an example)
+void EnBox_SetupAction(EnBox* this, EnBoxActionFunc actionFunc);
+void EnBox_Destroy(Actor* thisx, PlayState* play);
+// #endregion
+
 #endif

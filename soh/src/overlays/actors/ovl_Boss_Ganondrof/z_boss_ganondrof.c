@@ -236,8 +236,10 @@ void BossGanondrof_Init(Actor* thisx, PlayState* play) {
         Actor_Kill(&this->actor);
         Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, GND_BOSSROOM_CENTER_X, GND_BOSSROOM_CENTER_Y,
                     GND_BOSSROOM_CENTER_Z, 0, 0, 0, WARP_DUNGEON_ADULT, true);
-        Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, 200.0f + GND_BOSSROOM_CENTER_X,
-                    GND_BOSSROOM_CENTER_Y, GND_BOSSROOM_CENTER_Z, 0, 0, 0, 0, true);
+        if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true, NULL)) {
+            Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, 200.0f + GND_BOSSROOM_CENTER_X,
+                        GND_BOSSROOM_CENTER_Y, GND_BOSSROOM_CENTER_Z, 0, 0, 0, 0, true);
+        }
     } else {
         Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_FHG, this->actor.world.pos.x,
                            this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, this->actor.params);
@@ -1076,7 +1078,7 @@ void BossGanondrof_Death(BossGanondrof* this, PlayState* play) {
                 this->deathCamera = 0;
                 func_80064534(play, &play->csCtx);
                 Player_SetCsActionWithHaltedActors(play, &this->actor, 7);
-                if (!IS_BOSS_RUSH) {
+                if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true, NULL)) {
                     Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, GND_BOSSROOM_CENTER_X, GND_BOSSROOM_CENTER_Y,
                                 GND_BOSSROOM_CENTER_Z + 200.0f, 0, 0, 0, 0, true);
                 }

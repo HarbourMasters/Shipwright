@@ -8,6 +8,10 @@
 #include <string>
 #include <vector>
 
+extern "C" {
+    #include "src/overlays/actors/ovl_En_Box/z_en_box.h"
+}
+
 typedef struct BossRushSetting {
     std::array<std::string, LANGUAGE_MAX> name;
     std::vector<std::array<std::string, LANGUAGE_MAX>> choices;
@@ -486,4 +490,59 @@ void BossRush_SetEquipment(uint8_t linkAge) {
     for (int button = 0; button < ARRAY_COUNT(gSaveContext.equips.cButtonSlots); button++) {
         gSaveContext.equips.cButtonSlots[button] = brCButtonSlots[button];
     }
+}
+
+void BossRush_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void* optionalArg) {
+    switch (id) {
+        case VB_SPAWN_HEART_CONTAINER:
+        case VB_RENDER_RUPEE_COUNTER:
+            *should = false;
+            break;
+    }
+}
+
+void BossRush_OnActorInitHandler(void* actorRef) {
+    Actor* actor = static_cast<Actor*>(actorRef);
+
+    // Remove chests in Boss Rush. Mainly for the chest in King Dodongo's boss room.
+    if (actor->id == ACTOR_EN_BOX) {
+        EnBox_SetupAction(actor, EnBox_Destroy);
+        return;
+    }
+
+    // Remove bushes in Boss Rush. Used in Gohma's arena.
+    // Remove pots in Boss Rush. Used in Barinade's and Ganondorf's arenas.
+    if (actor->id == ACTOR_EN_KUSA || actor->id == ACTOR_OBJ_TSUBO) {
+        Actor_Kill(actor);
+        return;
+    }
+}
+
+void BossRush_OnSceneInitHandler(int16_t sceneNum) {
+    // Unpause the timer for Boss Rush when the scene loaded isn't the Chamber of Sages.
+    if (sceneNum != SCENE_CHAMBER_OF_THE_SAGES) {
+        gSaveContext.isBossRushPaused = 0;
+    }
+}
+
+void BossRush_RegisterHooks() {
+    static uint32_t onVanillaBehaviorHook = 0;
+    static uint32_t onSceneInitHook = 0;
+    static uint32_t onActorInitHook = 0;
+
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) {
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnVanillaBehavior>(onVanillaBehaviorHook);
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(onSceneInitHook);
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorInit>(onActorInitHook);
+
+        onVanillaBehaviorHook = 0;
+        onSceneInitHook = 0;
+        onActorInitHook = 0;
+
+        if (!IS_BOSS_RUSH) return;
+
+        onVanillaBehaviorHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnVanillaBehavior>(BossRush_OnVanillaBehaviorHandler);
+        onSceneInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>(BossRush_OnSceneInitHandler);
+        onActorInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>(BossRush_OnActorInitHandler);
+    });
 }

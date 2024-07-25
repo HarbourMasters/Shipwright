@@ -1180,6 +1180,18 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
             }
             break;
         }
+        case VB_RENDER_KEY_COUNTER: {
+            if (Flags_GetRandomizerInf(RAND_INF_HAS_SKELETON_KEY)) {
+                *should = false;
+            }
+            break;
+        }
+        case VB_RENDER_RUPEE_COUNTER: {
+            if (!Flags_GetRandomizerInf(RAND_INF_HAS_WALLET) || Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_MONEY)) {
+                *should = false;
+            }
+            break;
+        }
         case VB_TRADE_TIMER_ODD_MUSHROOM:
         case VB_TRADE_TIMER_EYEDROPS:
         case VB_TRADE_TIMER_FROG:
