@@ -3,6 +3,7 @@
 #include "textures/icon_item_static/icon_item_static.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 extern const char* digitTextures[];
 

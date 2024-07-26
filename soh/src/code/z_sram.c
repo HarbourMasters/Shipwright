@@ -3,6 +3,7 @@
 
 #include <string.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include "soh/Enhancements/randomizer/savefile.h"
 

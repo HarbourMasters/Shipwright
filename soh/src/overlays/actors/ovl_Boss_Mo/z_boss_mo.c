@@ -13,6 +13,7 @@
 
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #include <string.h>
 

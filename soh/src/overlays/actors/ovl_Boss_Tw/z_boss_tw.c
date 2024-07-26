@@ -5,6 +5,7 @@
 #include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #include <string.h>
 
