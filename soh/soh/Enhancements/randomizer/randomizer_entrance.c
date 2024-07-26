@@ -260,6 +260,10 @@ s16 Entrance_GetOverride(s16 index) {
     return entranceOverrideTable[index];
 }
 
+s16 Entrance_PeekNextIndexOverride(int16_t nextEntranceIndex) {
+    return Grotto_GetEntranceValueHandlingGrottoRando(Entrance_GetOverride(nextEntranceIndex));
+}
+
 s16 Entrance_OverrideNextIndex(s16 nextEntranceIndex) {
     // When entering Spirit Temple, clear temp flags so they don't carry over to the randomized dungeon
     if (nextEntranceIndex == ENTR_SPIRIT_TEMPLE_0 && Entrance_GetOverride(nextEntranceIndex) != nextEntranceIndex &&
