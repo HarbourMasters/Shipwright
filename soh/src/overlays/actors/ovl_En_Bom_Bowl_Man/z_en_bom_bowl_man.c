@@ -141,25 +141,10 @@ void EnBomBowMan_BlinkAwake(EnBomBowlMan* this, PlayState* play) {
     if (frameCount == 30.0f) {
         this->dialogState = TEXT_STATE_EVENT;
 
-        // Check for beaten Dodongo's Cavern if Rando is disabled
-        if (!IS_RANDO) {
-            if ((Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP)) || BREG(2)) {
-                this->actor.textId = 0xBF;
-            } else {
-                this->actor.textId = 0x7058;
-            }
-        }
-
-        // In randomizer, only check for bomb bag when bombchus aren't in logic
-        // and only check for bombchus when bombchus are in logic
-        if (IS_RANDO) {
-            u8 bombchusInLogic = Randomizer_GetSettingValue(RSK_BOMBCHUS_IN_LOGIC);
-            if ((!bombchusInLogic && INV_CONTENT(ITEM_BOMB) == ITEM_NONE) ||
-                (bombchusInLogic && INV_CONTENT(ITEM_BOMBCHU) == ITEM_NONE)) {
-                this->actor.textId = 0x7058;
-            } else {
-                this->actor.textId = 0xBF;
-            }
+        if (GameInteractor_Should(VB_BE_ABLE_TO_PLAY_BOMBCHU_BOWLING, (Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP)) || BREG(2), NULL)) {
+            this->actor.textId = 0xBF;
+        } else {
+            this->actor.textId = 0x7058;
         }
     }
     Message_ContinueTextbox(play, this->actor.textId);

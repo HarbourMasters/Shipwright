@@ -264,6 +264,8 @@ typedef enum {
     VB_BE_ABLE_TO_OPEN_DOORS,
     // Vanilla condition: true
     VB_REVERT_SPOILING_ITEMS,
+    // Vanilla condition: Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP) || BREG(2)
+    VB_BE_ABLE_TO_PLAY_BOMBCHU_BOWLING,
 
     /*** Play Cutscenes ***/
 
