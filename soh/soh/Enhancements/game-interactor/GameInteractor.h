@@ -262,6 +262,8 @@ typedef enum {
     VB_SPAWN_HEART_CONTAINER,
     // Vanilla condition: true
     VB_BE_ABLE_TO_OPEN_DOORS,
+    // Vanilla condition: true
+    VB_REVERT_SPOILING_ITEMS,
 
     /*** Play Cutscenes ***/
 

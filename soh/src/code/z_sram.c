@@ -198,7 +198,7 @@ void Sram_OpenSave() {
         }
     }
 
-    if (!(IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE))) {
+    if (GameInteractor_Should(VB_REVERT_SPOILING_ITEMS, true, NULL)) {
         for (i = 0; i < ARRAY_COUNT(gSpoilingItems); i++) {
             if (INV_CONTENT(ITEM_TRADE_ADULT) == gSpoilingItems[i]) {
                 INV_CONTENT(gSpoilingItemReverts[i]) = gSpoilingItemReverts[i];

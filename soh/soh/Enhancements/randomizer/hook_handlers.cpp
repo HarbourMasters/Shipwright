@@ -1196,6 +1196,12 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
             }
             break;
         }
+        case VB_REVERT_SPOILING_ITEMS: {
+            if (RAND_GET_OPTION(RSK_SHUFFLE_ADULT_TRADE)) {
+                *should = false;
+            }
+            break;
+        }
         case VB_TRADE_TIMER_ODD_MUSHROOM:
         case VB_TRADE_TIMER_EYEDROPS:
         case VB_TRADE_TIMER_FROG:
