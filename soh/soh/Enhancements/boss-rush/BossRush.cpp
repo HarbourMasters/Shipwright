@@ -174,6 +174,43 @@ void BossRush_SpawnBlueWarps(PlayState* play) {
     }
 }
 
+void BossRush_SetEquipment(uint8_t linkAge) {
+    std::array<u8, 8> brButtonItems;
+    std::array<u8, 7> brCButtonSlots;
+
+    // Set Child Equipment.
+    if (linkAge == LINK_AGE_CHILD) {
+        brButtonItems = {
+            ITEM_SWORD_KOKIRI, ITEM_STICK, ITEM_NUT, ITEM_BOMB, ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_NONE
+        };
+
+        brCButtonSlots = { SLOT_STICK, SLOT_NUT, SLOT_BOMB, SLOT_NONE, SLOT_NONE, SLOT_NONE, SLOT_NONE };
+
+        Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_KOKIRI);
+        Inventory_ChangeEquipment(EQUIP_TYPE_SHIELD, EQUIP_VALUE_SHIELD_DEKU);
+    // Set Adult equipment.
+    } else {
+        brButtonItems = { ITEM_SWORD_MASTER, ITEM_BOW,  ITEM_HAMMER, ITEM_BOMB,
+                          ITEM_NONE,         ITEM_NONE, ITEM_NONE,   ITEM_NONE };
+
+        brCButtonSlots = { SLOT_BOW, SLOT_HAMMER, SLOT_BOMB, SLOT_NONE, SLOT_NONE, SLOT_NONE, SLOT_NONE };
+
+        Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_MASTER);
+        Inventory_ChangeEquipment(EQUIP_TYPE_SHIELD, EQUIP_VALUE_SHIELD_MIRROR);
+        Inventory_ChangeEquipment(EQUIP_TYPE_TUNIC, EQUIP_VALUE_TUNIC_GORON);
+    }
+
+    // Button Items
+    for (int button = 0; button < ARRAY_COUNT(gSaveContext.equips.buttonItems); button++) {
+        gSaveContext.equips.buttonItems[button] = brButtonItems[button];
+    }
+
+    // C buttons
+    for (int button = 0; button < ARRAY_COUNT(gSaveContext.equips.cButtonSlots); button++) {
+        gSaveContext.equips.cButtonSlots[button] = brCButtonSlots[button];
+    }
+}
+
 void BossRush_HandleBlueWarp(PlayState* play, f32 warpPosX, f32 warpPosZ) {
 
     // If warping from Chamber of Sages, choose the correct boss room to teleport to.
@@ -453,44 +490,6 @@ void BossRush_InitSave() {
     } else {
         gSaveContext.linkAge = LINK_AGE_CHILD;
         BossRush_SetEquipment(LINK_AGE_CHILD);
-    }
-}
-
-void BossRush_SetEquipment(uint8_t linkAge) {
-
-    std::array<u8, 8> brButtonItems;
-    std::array<u8, 7> brCButtonSlots;
-
-    // Set Child Equipment.
-    if (linkAge == LINK_AGE_CHILD) {
-        brButtonItems = {
-            ITEM_SWORD_KOKIRI, ITEM_STICK, ITEM_NUT, ITEM_BOMB, ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_NONE
-        };
-
-        brCButtonSlots = { SLOT_STICK, SLOT_NUT, SLOT_BOMB, SLOT_NONE, SLOT_NONE, SLOT_NONE, SLOT_NONE };
-
-        Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_KOKIRI);
-        Inventory_ChangeEquipment(EQUIP_TYPE_SHIELD, EQUIP_VALUE_SHIELD_DEKU);
-    // Set Adult equipment.
-    } else {
-        brButtonItems = { ITEM_SWORD_MASTER, ITEM_BOW,  ITEM_HAMMER, ITEM_BOMB,
-                          ITEM_NONE,         ITEM_NONE, ITEM_NONE,   ITEM_NONE };
-
-        brCButtonSlots = { SLOT_BOW, SLOT_HAMMER, SLOT_BOMB, SLOT_NONE, SLOT_NONE, SLOT_NONE, SLOT_NONE };
-
-        Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_MASTER);
-        Inventory_ChangeEquipment(EQUIP_TYPE_SHIELD, EQUIP_VALUE_SHIELD_MIRROR);
-        Inventory_ChangeEquipment(EQUIP_TYPE_TUNIC, EQUIP_VALUE_TUNIC_GORON);
-    }
-
-    // Button Items
-    for (int button = 0; button < ARRAY_COUNT(gSaveContext.equips.buttonItems); button++) {
-        gSaveContext.equips.buttonItems[button] = brButtonItems[button];
-    }
-
-    // C buttons
-    for (int button = 0; button < ARRAY_COUNT(gSaveContext.equips.cButtonSlots); button++) {
-        gSaveContext.equips.cButtonSlots[button] = brCButtonSlots[button];
     }
 }
 

@@ -1620,8 +1620,8 @@ void RandomizerOnActorInitHandler(void* actorRef) {
     if (
         actor->id == ACTOR_OBJ_OSHIHIKI &&
         LINK_IS_CHILD &&
-        ResourceMgr_IsGameMasterQuest() &&
-        play->sceneNum == SCENE_SPIRIT_TEMPLE && actor->room == 6 && // Spirit Temple silver block hallway
+        IsGameMasterQuest() &&
+        gPlayState->sceneNum == SCENE_SPIRIT_TEMPLE && actor->room == 6 && // Spirit Temple silver block hallway
         actor->params == 0x9C7 // Silver block that is marked as in the hole
     ) {
         Actor_Kill(actor);

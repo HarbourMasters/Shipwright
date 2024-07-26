@@ -3,6 +3,7 @@
 #include "overlays/actors/ovl_En_Syateki_Niw/z_en_syateki_niw.h"
 #include "overlays/actors/ovl_En_Ex_Item/z_en_ex_item.h"
 #include "objects/object_bg/object_bg.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED | ACTOR_FLAG_NO_LOCKON)
 
