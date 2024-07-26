@@ -92,7 +92,7 @@ namespace Rando {
                 return ctx->CurrentUpgrade(UPG_STRENGTH);
             case RG_GOLDEN_GAUNTLETS:
                 return ctx->CurrentUpgrade(UPG_STRENGTH);
-            case RG_BOMB_BAG:
+            case RG_PROGRESSIVE_BOMB_BAG:
                 return ctx->CurrentUpgrade(UPG_BOMB_BAG);
             case RG_MAGIC_SINGLE:
                 return ctx->GetSaveContext()->magicLevel >= 1;
