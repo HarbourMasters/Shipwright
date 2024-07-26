@@ -1840,6 +1840,14 @@ void RandomizerRegisterHooks() {
 
         if (!IS_RANDO) return;
 
+        // Setup the modified entrance table and entrance shuffle table for rando
+        Entrance_Init();
+
+        // Handle randomized spawn positions after the save context has been setup from load
+        if (RAND_GET_OPTION(RSK_SHUFFLE_ENTRANCES)) {
+            Entrance_SetSavewarpEntrance();
+        }
+
         onFlagSetHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnFlagSet>(RandomizerOnFlagSetHandler);
         onSceneFlagSetHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneFlagSet>(RandomizerOnSceneFlagSetHandler);
         onPlayerUpdateForRCQueueHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>(RandomizerOnPlayerUpdateForRCQueueHandler);

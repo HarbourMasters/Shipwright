@@ -3045,16 +3045,6 @@ void FileChoose_LoadGame(GameState* thisx) {
 
     gSaveContext.naviTimer = 0;
 
-    if (IS_RANDO) {
-        // Setup the modified entrance table and entrance shuffle table for rando
-        Entrance_Init();
-
-        // Handle randomized spawn positions after the save context has been setup from load
-        if (Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
-            Entrance_SetSavewarpEntrance();
-        }
-    }
-
     GameInteractor_ExecuteOnLoadGame(gSaveContext.fileNum);
 }
 
