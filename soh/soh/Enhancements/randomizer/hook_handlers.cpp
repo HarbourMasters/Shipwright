@@ -1699,6 +1699,11 @@ void RandomizerOnActorUpdateHandler(void* refActor) {
     if (RAND_GET_OPTION(RSK_SHUFFLE_ENTRANCES) && actor->id == ACTOR_DEMO_KANKYO && actor->params == 0x000F) { // Warp Song particles
         Entrance_SetWarpSongEntrance();
     }
+
+    if (actor->id == ACTOR_OBJ_COMB) {
+        ObjComb* combActor = reinterpret_cast<ObjComb*>(actor);
+        combActor->actor.shape.rot.x = Math_SinS(combActor->unk_1B2) * CLAMP_MIN(combActor->unk_1B0, 0) + combActor->actor.home.rot.x;
+    }
 }
 
 //from z_player.c
