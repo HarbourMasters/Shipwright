@@ -1615,6 +1615,19 @@ void RandomizerOnActorInitHandler(void* actorRef) {
         }
     }
 
+    // In MQ Spirit, remove the large silver block in the hole as child so the chest in the silver block hallway
+    // can be guaranteed accessible
+    if (
+        actor->id == ACTOR_OBJ_OSHIHIKI &&
+        LINK_IS_CHILD &&
+        ResourceMgr_IsGameMasterQuest() &&
+        play->sceneNum == SCENE_SPIRIT_TEMPLE && actor->room == 6 && // Spirit Temple silver block hallway
+        actor->params == 0x9C7 // Silver block that is marked as in the hole
+    ) {
+        Actor_Kill(actor);
+        return;
+    }
+
     if (
         // If child is in the adult shooting gallery or adult in the child shooting gallery, then despawn the shooting gallery man
         actor->id == ACTOR_EN_SYATEKI_MAN &&
