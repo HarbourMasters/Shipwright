@@ -796,6 +796,7 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, PlayState* play) {
             }
         } else if (play->sceneNum == SCENE_WATER_TEMPLE_BOSS) {
             if (GameInteractor_Should(VB_PLAY_BLUE_WARP_CS, !Flags_GetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP), EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP)) {
+                Flags_SetEventChkInf(EVENTCHKINF_RAISED_LAKE_HYLIA_WATER);
                 Flags_SetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP);
                 if (GameInteractor_Should(VB_GIVE_ITEM_FROM_BLUE_WARP, true, ITEM_MEDALLION_WATER)) {
                     Item_Give(play, ITEM_MEDALLION_WATER);
