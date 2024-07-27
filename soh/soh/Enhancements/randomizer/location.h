@@ -23,10 +23,6 @@ class SpoilerCollectionCheck {
         : type(type_), scene(scene_), flag(flag_) {
     }
 
-    static auto None() {
-        return SpoilerCollectionCheck(SPOILER_CHK_NONE, 0x00, 0x00);
-    }
-
     static auto ItemGetInf(const uint8_t slot) {
         return SpoilerCollectionCheck(SPOILER_CHK_ITEM_GET_INF, 0x00, slot);
     }
