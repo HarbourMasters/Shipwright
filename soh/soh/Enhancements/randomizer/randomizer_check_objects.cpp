@@ -112,12 +112,12 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
             (location.GetRandomizerCheck() != RC_UNKNOWN_CHECK) &&
             (!RandomizerCheckObjects::AreaIsDungeon(location.GetArea()) || location.GetQuest() == RCQUEST_BOTH ||
              location.GetQuest() == RCQUEST_MQ &&
-                 ((CVarGetInteger(CVAR_RANDOMIZER_SETTING("MqDungeons"), RO_MQ_DUNGEONS_NONE) == RO_MQ_DUNGEONS_SET_NUMBER &&
-                       (CVarGetInteger(CVAR_RANDOMIZER_SETTING("MqDungeonCount"), 12) > 0) || // at least one MQ dungeon
-                   CVarGetInteger(CVAR_RANDOMIZER_SETTING("MqDungeons"), RO_MQ_DUNGEONS_NONE) == RO_MQ_DUNGEONS_RANDOM_NUMBER)) ||
+                 ((CVarGetInteger(CVAR_RANDOMIZER_SETTING("MQDungeons"), RO_MQ_DUNGEONS_NONE) == RO_MQ_DUNGEONS_SET_NUMBER &&
+                       (CVarGetInteger(CVAR_RANDOMIZER_SETTING("MQDungeonCount"), 12) > 0) || // at least one MQ dungeon
+                   CVarGetInteger(CVAR_RANDOMIZER_SETTING("MQDungeons"), RO_MQ_DUNGEONS_NONE) == RO_MQ_DUNGEONS_RANDOM_NUMBER)) ||
              location.GetQuest() == RCQUEST_VANILLA &&
-                 (CVarGetInteger(CVAR_RANDOMIZER_SETTING("MqDungeons"), RO_MQ_DUNGEONS_NONE) != RO_MQ_DUNGEONS_SET_NUMBER ||
-                  CVarGetInteger(CVAR_RANDOMIZER_SETTING("MqDungeonCount"), 12) < 12) // at least one vanilla dungeon
+                 (CVarGetInteger(CVAR_RANDOMIZER_SETTING("MQDungeons"), RO_MQ_DUNGEONS_NONE) != RO_MQ_DUNGEONS_SET_NUMBER ||
+                  CVarGetInteger(CVAR_RANDOMIZER_SETTING("MQDungeonCount"), 12) < 12) // at least one vanilla dungeon
              ) &&
             (location.GetRCType() != RCTYPE_SHOP ||
              CVarGetInteger(CVAR_RANDOMIZER_SETTING("Shopsanity"), RO_SHOPSANITY_OFF) > RO_SHOPSANITY_ZERO_ITEMS) &&
@@ -161,6 +161,8 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
              CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleAdultTrade"), RO_GENERIC_NO)) &&
             (location.GetRandomizerCheck() != RC_KF_KOKIRI_SWORD_CHEST ||
              CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleKokiriSword"), RO_GENERIC_NO)) &&
+            (location.GetRandomizerCheck() != RC_LH_HYRULE_LOACH ||
+             CVarGetInteger(CVAR_RANDOMIZER_SETTING("Fishsanity"), RO_GENERIC_NO) == RO_FISHSANITY_HYRULE_LOACH) &&
             (location.GetRandomizerCheck() != RC_ZR_MAGIC_BEAN_SALESMAN ||
              CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleBeans"), RO_GENERIC_NO)) &&
             (location.GetRandomizerCheck() != RC_HC_MALON_EGG ||
