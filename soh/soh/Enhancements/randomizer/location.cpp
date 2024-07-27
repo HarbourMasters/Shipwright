@@ -210,23 +210,21 @@ Rando::Location Rando::Location::Reward(RandomizerCheck rc, RandomizerCheckQuest
 
 Rando::Location Rando::Location::OtherHint(RandomizerCheck rc, RandomizerCheckQuest quest_,
                                            RandomizerCheckType checkType_, RandomizerCheckArea area_, ActorID actorId_,
-                                           uint8_t scene_,
-                                           std::string&& shortName_, std::string&& spoilerName_,
-                                           bool isVanillaCompletion_) {
+                                           uint8_t scene_, std::string&& shortName_, std::string&& spoilerName_) {
     return {rc, quest_, checkType_, area_, actorId_, scene_, 0x00, 0x00,
-                    std::move(shortName_), std::move(spoilerName_), RHT_NONE, RG_NONE, isVanillaCompletion_};
+                    std::move(shortName_), std::move(spoilerName_), RHT_NONE, RG_NONE, false};
 }
 
 Rando::Location Rando::Location::OtherHint(RandomizerCheck rc, RandomizerCheckQuest quest_,
                                            RandomizerCheckType checkType_, RandomizerCheckArea area_, ActorID actorId_,
-                                           uint8_t scene_, std::string&& shortName_, bool isVanillaCompletion_) {
+                                           uint8_t scene_, std::string&& shortName_) {
     return {rc, quest_, checkType_, area_, actorId_, scene_, 0x00, 0x00,
-                    std::move(shortName_), RHT_NONE, RG_NONE, isVanillaCompletion_};
+                    std::move(shortName_), RHT_NONE, RG_NONE, false};
 }
 
 Rando::Location Rando::Location::HintStone(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_,
                                            uint8_t scene_, int32_t actorParams_, uint8_t flag_,
-                                           std::string&& shortName_, bool isVanillaCompletion_) {
+                                           std::string&& shortName_) {
     return {rc, quest_, RCTYPE_GOSSIP_STONE, area_, ACTOR_EN_GS, scene_, actorParams_, flag_,
-                    std::move(shortName_), RHT_NONE, RG_NONE, isVanillaCompletion_};
+                    std::move(shortName_), RHT_NONE, RG_NONE, false};
 }

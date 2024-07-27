@@ -206,15 +206,14 @@ class Location {
 
     static Location OtherHint(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckType checkType_,
                               RandomizerCheckArea area_, ActorID actorId_, uint8_t scene_,
-                              std::string&& shortName_, std::string&& spoilerName_, bool isVanillaCompletion_ = false);
+                              std::string&& shortName_, std::string&& spoilerName_);
 
     static Location OtherHint(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckType checkType_,
                               RandomizerCheckArea area_, ActorID actorId_, uint8_t scene_,
-                              std::string&& shortName_, bool isVanillaCompletion_ = false);
+                              std::string&& shortName_);
 
     static Location HintStone(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_, uint8_t scene_,
-                              int32_t actorParams_, uint8_t flag_, std::string&& shortName_,
-                              bool isVanillaCompletion_ = false);
+                              int32_t actorParams_, uint8_t flag_, std::string&& shortName_);
 
   private:
     RandomizerCheck rc;
