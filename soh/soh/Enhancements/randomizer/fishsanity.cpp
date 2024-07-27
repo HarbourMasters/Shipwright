@@ -6,7 +6,19 @@
 #include "macros.h"
 #include <consolevariablebridge.h>
 
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+
+extern "C" {
+#include "src/overlays/actors/ovl_Fishing/z_fishing.h"
+
+extern SaveContext gSaveContext;
+extern PlayState* gPlayState;
+}
+
 #define FSi OTRGlobals::Instance->gRandoContext->GetFishsanity()
+
+#define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).GetSelectedOptionIndex()
 
 /**
  * @brief Parallel list of pond fish checks for both ages
@@ -43,6 +55,7 @@ std::unordered_map<int8_t, RandomizerCheck> Rando::StaticData::randomizerGrottoF
 namespace Rando {
     const FishIdentity Fishsanity::defaultIdentity = { RAND_INF_MAX, RC_UNKNOWN_CHECK };
     bool Fishsanity::fishsanityHelpersInit = false;
+    s16 Fishsanity::fishGroupCounter = 0;
     std::unordered_map<RandomizerCheck, LinkAge> Fishsanity::pondFishAgeMap;
     std::vector<RandomizerCheck> Fishsanity::childPondFish;
     std::vector<RandomizerCheck> Fishsanity::adultPondFish;
@@ -327,6 +340,169 @@ namespace Rando {
 
     FishIdentity Fishsanity::GetPendingFish() {
         return mPendingFish;
+    }
+
+    void Fishsanity::OnActorInitHandler(void* refActor) {
+        Actor* actor = static_cast<Actor*>(refActor);
+
+        auto fs = OTRGlobals::Instance->gRandoContext->GetFishsanity();
+        FishIdentity fish;
+
+        if (actor->id == ACTOR_EN_FISH && fs->GetOverworldFishShuffled()) {
+            // Set fish ID for ZD fish
+            if (gPlayState->sceneNum == SCENE_ZORAS_DOMAIN && actor->params == -1) {
+                actor->params ^= fishGroupCounter++;
+            }
+
+            fish = OTRGlobals::Instance->gRandomizer->IdentifyFish(gPlayState->sceneNum, actor->params);
+            // Create effect for uncaught fish
+            if (Rando::Fishsanity::IsFish(&fish) && !Flags_GetRandomizerInf(fish.randomizerInf)) {
+                actor->shape.shadowDraw = Fishsanity_DrawEffShadow;
+            }
+            return;
+        }
+
+        if (actor->id == ACTOR_FISHING && gPlayState->sceneNum == SCENE_FISHING_POND && actor->params >= 100 &&
+            actor->params <= 117 && fs->GetPondFishShuffled()) {
+            // Initialize pond fish for fishsanity
+            // Initialize fishsanity metadata on this actor
+            Fishing* fishActor = static_cast<Fishing*>(refActor);
+            fishActor->fishsanityParams = actor->params;
+            fish = OTRGlobals::Instance->gRandomizer->IdentifyFish(gPlayState->sceneNum, actor->params);
+
+            // With every pond fish shuffled, caught fish will not spawn unless all fish have been caught.
+            if (RAND_GET_OPTION(RSK_FISHSANITY_POND_COUNT) > 16 &&
+                !fs->GetPondCleared()) {
+                // Create effect for uncaught fish
+                if (!Flags_GetRandomizerInf(fish.randomizerInf)) {
+                    actor->shape.shadowDraw = Fishsanity_DrawEffShadow;
+                }
+            }
+        }
+    }
+
+    void Fishsanity::OnFlagSetHandler(int16_t flagType, int16_t flag) {
+        if (flagType != FLAG_RANDOMIZER_INF) {
+            return;
+        }
+        RandomizerCheck rc = OTRGlobals::Instance->gRandomizer->GetCheckFromRandomizerInf((RandomizerInf)flag);
+        FishsanityCheckType fsType = Rando::Fishsanity::GetCheckType(rc);
+        if (fsType == FSC_NONE) {
+            return;
+        }
+
+        // When a pond fish is caught, advance the pond.
+        if (fsType == FSC_POND) {
+            OTRGlobals::Instance->gRandoContext->GetFishsanity()->AdvancePond();
+        }
+    }
+
+    void Fishsanity::OnPlayerUpdateHandler() {
+        if (GameInteractor::IsGameplayPaused() || !gPlayState) {
+            return;
+        }
+
+        Player* player = GET_PLAYER(gPlayState);
+        if (Player_InBlockingCsMode(gPlayState, player)) {
+            return;
+        }
+
+        auto fs = OTRGlobals::Instance->gRandoContext->GetFishsanity();
+        if (!fs->GetPondFishShuffled()) {
+            return;
+        }
+
+        FishIdentity pending = fs->GetPendingFish();
+        if (!Rando::Fishsanity::IsFish(&pending)) { // No fish currently pending
+            return;
+        }
+
+        // Award fish
+        GetItemEntry gi = OTRGlobals::Instance->gRandomizer->GetItemFromKnownCheck(pending.randomizerCheck, GI_NONE);
+        Flags_SetRandomizerInf(pending.randomizerInf);
+        GiveItemEntryWithoutActor(gPlayState, gi);
+        fs->SetPendingFish(NULL);
+    }
+
+    void Fishsanity::OnActorUpdateHandler(void* refActor) {
+        if (gPlayState->sceneNum != SCENE_GROTTOS && gPlayState->sceneNum != SCENE_ZORAS_DOMAIN && gPlayState->sceneNum != SCENE_FISHING_POND) {
+            return;
+        }
+
+        Actor* actor = static_cast<Actor*>(refActor);
+        auto fs = OTRGlobals::Instance->gRandoContext->GetFishsanity();
+
+        // Detect fish catch
+        if (actor->id == ACTOR_FISHING && fs->GetPondFishShuffled()) {
+            Fishing* fish = static_cast<Fishing*>(refActor);
+
+            // State 6 -> Fish caught and hoisted
+            FishIdentity pending = fs->GetPendingFish();
+            if (fish->fishState == 6 && !Rando::Fishsanity::IsFish(&pending)) {
+                pending = OTRGlobals::Instance->gRandomizer->IdentifyFish(gPlayState->sceneNum, fish->fishsanityParams);
+                if (!Flags_GetRandomizerInf(pending.randomizerInf)) {
+                    fs->SetPendingFish(&pending);
+                    // Remove uncaught effect
+                    if (actor->shape.shadowDraw != NULL) {
+                        actor->shape.shadowDraw = NULL;
+                    }
+                }
+            }
+        }
+
+        if (actor->id == ACTOR_EN_FISH && fs->GetOverworldFishShuffled()) {
+            FishIdentity fish = OTRGlobals::Instance->gRandomizer->IdentifyFish(gPlayState->sceneNum, actor->params);
+            if (Rando::Fishsanity::IsFish(&fish) && Flags_GetRandomizerInf(fish.randomizerInf)) {
+                // Remove uncaught effect
+                if (actor->shape.shadowDraw != NULL) {
+                    actor->shape.shadowDraw = NULL;
+                }
+            }
+        }
+
+        // Reset fish group counter when the group gets culled
+        if (actor->id == ACTOR_OBJ_MURE && gPlayState->sceneNum == SCENE_ZORAS_DOMAIN && fishGroupCounter > 0 &&
+            !(actor->flags & ACTOR_FLAG_UPDATE_WHILE_CULLED) && fs->GetOverworldFishShuffled()) {
+            fishGroupCounter = 0;
+        }
+    }
+
+    void Fishsanity::OnSceneInitHandler(int16_t sceneNum) {
+        if (sceneNum == SCENE_ZORAS_DOMAIN) {
+            fishGroupCounter = 0;
+        }
+    }
+
+    void Fishsanity::RegisterHooks() {
+        static uint32_t onActorInitHook = 0;
+        static uint32_t onFlagSetHook = 0;
+        static uint32_t onPlayerUpdateHook = 0;
+        static uint32_t onActorUpdateHook = 0;
+        static uint32_t onSceneInitHook = 0;
+
+        GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) {
+            GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorInit>(onActorInitHook);
+            GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnFlagSet>(onFlagSetHook);
+            GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnPlayerUpdate>(onPlayerUpdateHook);
+            GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(onActorUpdateHook);
+            GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(onSceneInitHook);
+
+            onActorInitHook = 0;
+            onFlagSetHook = 0;
+            onPlayerUpdateHook = 0;
+            onActorUpdateHook = 0;
+            onSceneInitHook = 0;
+
+            if (!IS_RANDO || RAND_GET_OPTION(RSK_FISHSANITY) == RO_FISHSANITY_OFF) return;
+
+            FSi->InitializeFromSave();
+
+            onActorInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>(Fishsanity::OnActorInitHandler);
+            onActorInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnFlagSet>(Fishsanity::OnFlagSetHandler);
+            onActorInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>(Fishsanity::OnPlayerUpdateHandler);
+            onActorInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>(Fishsanity::OnActorUpdateHandler);
+            onActorInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>(Fishsanity::OnSceneInitHandler);
+        });
     }
 } // namespace Rando
 

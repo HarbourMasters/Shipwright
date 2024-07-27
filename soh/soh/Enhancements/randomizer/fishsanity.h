@@ -34,6 +34,8 @@ class Fishsanity {
     Fishsanity();
     ~Fishsanity();
 
+    static void RegisterHooks();
+
     static const FishIdentity defaultIdentity;
 
     /**
@@ -153,6 +155,16 @@ class Fishsanity {
     */
     static FishIdentity GetPondFish(s16 params, bool adultPond);
     
+    static void OnActorInitHandler(void* refActor);
+
+    static void OnFlagSetHandler(int16_t flagType, int16_t flag);
+
+    static void OnPlayerUpdateHandler();
+
+    static void OnActorUpdateHandler(void* refActor);
+
+    static void OnSceneInitHandler(int16_t sceneNum);
+
     /**
      * @brief Current pond fish when all pond fish are not randomized
     */
@@ -167,6 +179,8 @@ class Fishsanity {
      * @brief True if fishsanity helpers have been initialized
     */
     static bool fishsanityHelpersInit;
+
+    static s16 fishGroupCounter;
 
     /////////////////////////////////////////////////////////
     //// Helper data structures derived from static data ////
