@@ -1660,13 +1660,9 @@ void InitMods() {
     RegisterRandomizedEnemySizes();
     RegisterOpenAllHours();
     RegisterToTMedallions();
-<<<<<<< HEAD
     RegisterNoSwim();
     RegisterNoWallet();
-    RegisterFishsanity();
     RegisterInfiniteUpgrades();
-=======
->>>>>>> 7aed137a (Move Fishsanity hooks out of mods.cpp)
     RegisterRandomizerCompasses();
     NameTag_RegisterHooks();
     RegisterFloorSwitchesHook();

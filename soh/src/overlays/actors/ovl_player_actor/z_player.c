@@ -13981,14 +13981,7 @@ void Player_Action_8084ECA4(Player* this, PlayState* play) {
                 // Item get cutscene hasn't played yet
                 else if((this->interactRangeActor == NULL && !(this->stateFlags1 & PLAYER_STATE1_ITEM_OVER_HEAD)) || !Actor_HasParent(this->interactRangeActor, play)) {
                     // Can't guarantee that whatever we "caught" is actually going to still exist
-                    if (GiveItemEntryWithoutActor(play, gi)) {
-                        // have to set this flag manually to prevent interactRangeActor from being wiped out
-                        this->stateFlags1 |= PLAYER_STATE1_ITEM_OVER_HEAD;
-                        this->pendingFlag.flagID = temp;
-                        this->pendingFlag.flagType = FLAG_RANDOMIZER_INF;
-                        Flags_SetRandomizerInf(temp);
-                    }
-
+                    Flags_SetRandomizerInf(temp);
                 }
             } else if (this->av2.actionVar2 == 0) {
                 if (CVarGetInteger(CVAR_ENHANCEMENT("FastDrops"), 0)) {
