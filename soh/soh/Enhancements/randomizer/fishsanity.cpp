@@ -11,6 +11,7 @@
 
 extern "C" {
 #include "src/overlays/actors/ovl_Fishing/z_fishing.h"
+#include "src/overlays/actors/ovl_En_Fish/z_en_fish.h"
 
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
@@ -92,7 +93,7 @@ namespace Rando {
         }
         // Are overworld fish enabled, and is this an overworld fish location?
         if (mode != RO_FISHSANITY_POND && (loc->GetScene() == SCENE_GROTTOS || loc->GetScene() == SCENE_ZORAS_DOMAIN)
-            && loc->GetActorID() == ACTOR_EN_FISH && (loc->GetActorParams() == 1 || loc->GetActorParams() < 0)) {
+            && loc->GetActorID() == ACTOR_EN_FISH && (loc->GetActorParams() >> 8)) {
             return true;
         }
         // Must not be an included fish location!
@@ -348,6 +349,8 @@ namespace Rando {
             // Set fish ID for ZD fish
             if (gPlayState->sceneNum == SCENE_ZORAS_DOMAIN && actor->params == -1) {
                 actor->params ^= fishGroupCounter++;
+            } else if (gPlayState->sceneNum == SCENE_GROTTOS && actor->params == 1) {
+                actor->params = 0x100 | gSaveContext.respawn[RESPAWN_MODE_RETURN].data;
             }
 
             fish = OTRGlobals::Instance->gRandomizer->IdentifyFish(gPlayState->sceneNum, actor->params);
@@ -431,12 +434,17 @@ namespace Rando {
 
         if (actor->id == ACTOR_EN_FISH && fs->GetOverworldFishShuffled()) {
             FishIdentity fish = OTRGlobals::Instance->gRandomizer->IdentifyFish(gPlayState->sceneNum, actor->params);
+            EnFish* fishActor = static_cast<EnFish*>(refActor);
             if (Rando::Fishsanity::IsFish(&fish) && Flags_GetRandomizerInf(fish.randomizerInf)) {
                 // Remove uncaught effect
                 if (actor->shape.shadowDraw != NULL) {
                     actor->shape.shadowDraw = NULL;
                     actor->draw = drawEnFish;
                 }
+            }
+
+            if (((actor->params >> 8) > 0) && fishActor->respawnTimer > 0) {
+                Actor_Kill(actor);
             }
         }
 

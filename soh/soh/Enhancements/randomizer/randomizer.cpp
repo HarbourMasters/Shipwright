@@ -1592,15 +1592,6 @@ Rando::Location* Randomizer::GetCheckObjectFromActor(s16 actorId, s16 sceneNum, 
                 specialRc = RC_DODONGOS_CAVERN_GOSSIP_STONE;
             }
             break;
-        case SCENE_GROTTOS:
-            // Grotto fish are identified by respawn data
-            if (actorId == ACTOR_EN_FISH && actorParams == 1) {
-                int8_t data = gSaveContext.respawn[RESPAWN_MODE_RETURN].data;
-                if (Rando::StaticData::randomizerGrottoFishMap.contains(data)) {
-                    specialRc = Rando::StaticData::randomizerGrottoFishMap[data];
-                }
-            }
-            break;
     }
 
     if (specialRc != RC_UNKNOWN_CHECK) {
