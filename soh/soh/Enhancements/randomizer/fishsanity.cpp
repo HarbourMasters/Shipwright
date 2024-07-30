@@ -334,14 +334,6 @@ namespace Rando {
         return GetCheckType(fish->randomizerCheck) != FSC_NONE;
     }
 
-    void Fishsanity::SetPendingFish(FishIdentity* fish) {
-        mPendingFish = fish == NULL ? defaultIdentity : *fish;
-    }
-
-    FishIdentity Fishsanity::GetPendingFish() {
-        return mPendingFish;
-    }
-
     void Fishsanity::OnActorInitHandler(void* refActor) {
         Actor* actor = static_cast<Actor*>(refActor);
 
@@ -397,33 +389,6 @@ namespace Rando {
         }
     }
 
-    void Fishsanity::OnPlayerUpdateHandler() {
-        if (GameInteractor::IsGameplayPaused() || !gPlayState) {
-            return;
-        }
-
-        Player* player = GET_PLAYER(gPlayState);
-        if (Player_InBlockingCsMode(gPlayState, player)) {
-            return;
-        }
-
-        auto fs = OTRGlobals::Instance->gRandoContext->GetFishsanity();
-        if (!fs->GetPondFishShuffled()) {
-            return;
-        }
-
-        FishIdentity pending = fs->GetPendingFish();
-        if (!Rando::Fishsanity::IsFish(&pending)) { // No fish currently pending
-            return;
-        }
-
-        // Award fish
-        GetItemEntry gi = OTRGlobals::Instance->gRandomizer->GetItemFromKnownCheck(pending.randomizerCheck, GI_NONE);
-        Flags_SetRandomizerInf(pending.randomizerInf);
-        GiveItemEntryWithoutActor(gPlayState, gi);
-        fs->SetPendingFish(NULL);
-    }
-
     void Fishsanity::OnActorUpdateHandler(void* refActor) {
         if (gPlayState->sceneNum != SCENE_GROTTOS && gPlayState->sceneNum != SCENE_ZORAS_DOMAIN && gPlayState->sceneNum != SCENE_FISHING_POND) {
             return;
@@ -475,20 +440,17 @@ namespace Rando {
     void Fishsanity::RegisterHooks() {
         static uint32_t onActorInitHook = 0;
         static uint32_t onFlagSetHook = 0;
-        static uint32_t onPlayerUpdateHook = 0;
         static uint32_t onActorUpdateHook = 0;
         static uint32_t onSceneInitHook = 0;
 
         GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) {
             GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorInit>(onActorInitHook);
             GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnFlagSet>(onFlagSetHook);
-            GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnPlayerUpdate>(onPlayerUpdateHook);
             GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(onActorUpdateHook);
             GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(onSceneInitHook);
 
             onActorInitHook = 0;
             onFlagSetHook = 0;
-            onPlayerUpdateHook = 0;
             onActorUpdateHook = 0;
             onSceneInitHook = 0;
 
@@ -498,7 +460,6 @@ namespace Rando {
 
             onActorInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>(Fishsanity::OnActorInitHandler);
             onActorInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnFlagSet>(Fishsanity::OnFlagSetHandler);
-            onActorInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>(Fishsanity::OnPlayerUpdateHandler);
             onActorInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>(Fishsanity::OnActorUpdateHandler);
             onActorInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>(Fishsanity::OnSceneInitHandler);
         });
@@ -517,10 +478,6 @@ extern "C" {
 
     bool Randomizer_IsAdultPond() {
         return FSi->IsAdultPond();
-    }
-
-    void Randomizer_SetPendingFish(FishIdentity* fish) {
-        return FSi->SetPendingFish(fish);
     }
 
     void Fishsanity_DrawEffShadow(Actor* actor, Lights* lights, PlayState* play) {

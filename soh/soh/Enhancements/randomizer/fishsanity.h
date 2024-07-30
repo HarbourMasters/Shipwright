@@ -129,17 +129,6 @@ class Fishsanity {
     */
     FishIdentity AdvancePond();
 
-    /**
-     * @brief Set the currently held fish
-     * @param fish Pointer to FishIdentity to copy
-    */
-    void SetPendingFish(FishIdentity* fish);
-
-    /**
-     * @brief Get the currently held fish
-    */
-    FishIdentity GetPendingFish();
-
   private:
     /**
      * @brief Initialize helper statics if they have not been initialized yet
@@ -169,11 +158,6 @@ class Fishsanity {
      * @brief Current pond fish when all pond fish are not randomized
     */
     std::pair<FishIdentity, FishIdentity> mCurrPondFish;
-    
-    /**
-     * @brief Identity of the last-caught fish in the fishing pond minigame awaiting reward
-    */
-    FishIdentity mPendingFish;
     
     /**
      * @brief True if fishsanity helpers have been initialized
@@ -211,8 +195,6 @@ bool Randomizer_GetPondFishShuffled();
 bool Randomizer_GetOverworldFishShuffled();
 /// Returns true if the adult fishing pond should be used for fishsanity.
 bool Randomizer_IsAdultPond();
-/// Sets the pending fish
-void Randomizer_SetPendingFish(FishIdentity* fish);
 /// Custom shadow draw function to add effect to uncollected fish
 void Fishsanity_DrawEffShadow(Actor* actor, Lights* lights, PlayState* play);
 void Fishsanity_OpenGreyscaleColor(PlayState* play, Color_RGBA16* color, int16_t frameOffset);
