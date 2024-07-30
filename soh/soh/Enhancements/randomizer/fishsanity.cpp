@@ -437,11 +437,10 @@ namespace Rando {
             Fishing* fish = static_cast<Fishing*>(refActor);
 
             // State 6 -> Fish caught and hoisted
-            FishIdentity pending = fs->GetPendingFish();
-            if (fish->fishState == 6 && !Rando::Fishsanity::IsFish(&pending)) {
-                pending = OTRGlobals::Instance->gRandomizer->IdentifyFish(gPlayState->sceneNum, fish->fishsanityParams);
-                if (!Flags_GetRandomizerInf(pending.randomizerInf)) {
-                    fs->SetPendingFish(&pending);
+            if (fish->fishState == 6) {
+                FishIdentity identity = OTRGlobals::Instance->gRandomizer->IdentifyFish(gPlayState->sceneNum, fish->fishsanityParams);
+                if (identity.randomizerCheck != RC_UNKNOWN_CHECK) {
+                    Flags_SetRandomizerInf(identity.randomizerInf);
                     // Remove uncaught effect
                     if (actor->shape.shadowDraw != NULL) {
                         actor->shape.shadowDraw = NULL;
