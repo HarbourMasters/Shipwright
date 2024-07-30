@@ -350,6 +350,12 @@ class Location {
            std::vector<Category>&& categories, SpoilerCollectionCheck collectionCheck = SpoilerCollectionCheck(),
            SpoilerCollectionCheckGroup collectionCheckGroup = GROUP_NO_GROUP, bool isVanillaCompletion_ = false);
 
+    static Location
+    Fish(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_,
+         ActorID actorId_, uint8_t scene_, int32_t actorParams_, uint8_t flag_, std::string&& shortName_,
+         RandomizerHintTextKey hintKey, RandomizerGet vanillaItem, std::vector<Category>&& categories,
+         SpoilerCollectionCheckGroup collectionCheckGroup = GROUP_NO_GROUP, bool isVanillaCompletion_ = false);
+
     static Location OtherHint(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckType checkType_,
                               RandomizerCheckArea area_, ActorID actorId_, uint8_t scene_,
                               std::string&& shortName_, std::string&& spoilerName_, bool isVanillaCompletion_ = false);
