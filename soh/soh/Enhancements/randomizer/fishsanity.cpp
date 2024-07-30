@@ -53,6 +53,7 @@ std::unordered_map<int8_t, RandomizerCheck> Rando::StaticData::randomizerGrottoF
 };
 
 ActorFunc drawFishing = NULL;
+ActorFunc drawEnFish = NULL;
 Color_RGBA16 fsPulseColor = { 30, 240, 200 };
 
 namespace Rando {
@@ -353,6 +354,12 @@ namespace Rando {
             // Create effect for uncaught fish
             if (Rando::Fishsanity::IsFish(&fish) && !Flags_GetRandomizerInf(fish.randomizerInf)) {
                 actor->shape.shadowDraw = Fishsanity_DrawEffShadow;
+                if (!drawEnFish) {
+                    drawEnFish = actor->draw;
+                }
+                actor->draw = Fishsanity_DrawEnFish;
+            } else {
+                actor->shape.shadowDraw = NULL;
             }
             return;
         }
@@ -428,6 +435,7 @@ namespace Rando {
                 // Remove uncaught effect
                 if (actor->shape.shadowDraw != NULL) {
                     actor->shape.shadowDraw = NULL;
+                    actor->draw = drawEnFish;
                 }
             }
         }
@@ -532,6 +540,12 @@ extern "C" {
         if (actor->bgCheckFlags & 0x20 && Rand_ZeroOne() < 0.15f) {
             EffectSsGRipple_Spawn(play, &ripplePos, 100, 200, 2);
         }
+    }
+
+    void Fishsanity_DrawEnFish(struct Actor* actor, struct PlayState* play) {
+        Fishsanity_OpenGreyscaleColor(play, &fsPulseColor, (actor->params - 100) * 20);
+        drawEnFish(actor, play);
+        Fishsanity_CloseGreyscaleColor(play);
     }
 
     void Fishsanity_DrawFishing(struct Actor* actor, struct PlayState* play) {
