@@ -30,6 +30,7 @@ Context::Context() {
     mTrials = std::make_shared<Trials>();
     mSettings = std::make_shared<Settings>();
     mFishsanity = std::make_shared<Fishsanity>();
+    mKaleido = nullptr;
 }
 
 RandomizerArea Context::GetAreaFromString(std::string str) {

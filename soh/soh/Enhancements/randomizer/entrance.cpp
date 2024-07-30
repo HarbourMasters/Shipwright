@@ -235,6 +235,11 @@ Entrance* Entrance::AssumeReachable() {
     return assumed;
 }
 
+EntranceShuffler::EntranceShuffler() {
+  playthroughEntrances = {};
+  entranceOverrides = {};
+}
+
 bool EntranceShuffler::HasNoRandomEntrances() {
     return mNoRandomEntrances;
 }
