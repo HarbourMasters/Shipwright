@@ -424,8 +424,9 @@ std::map<RandomizerGet, uint32_t> Context::RandoGetToFlag = {
     { RG_OCARINA_C_DOWN_BUTTON,  RAND_INF_HAS_OCARINA_C_DOWN },
     { RG_OCARINA_C_LEFT_BUTTON,  RAND_INF_HAS_OCARINA_C_LEFT },
     { RG_OCARINA_C_RIGHT_BUTTON, RAND_INF_HAS_OCARINA_C_RIGHT },
-    { RG_SKELETON_KEY,           RAND_INF_HAS_SKELETON_KEY }, 
-    { RG_GREG_RUPEE,             RAND_INF_GREG_FOUND }
+    { RG_SKELETON_KEY,           RAND_INF_HAS_SKELETON_KEY },
+    { RG_GREG_RUPEE,             RAND_INF_GREG_FOUND },
+    { RG_FISHING_POLE,           RAND_INF_FISHING_POLE_FOUND }
 };
 
 std::map<uint32_t, uint32_t> Context::RandoGetToDungeonScene = {
@@ -729,6 +730,7 @@ void Context::ApplyItemEffect(Item& item, bool state) {
             case RG_OCARINA_C_LEFT_BUTTON:
             case RG_OCARINA_C_RIGHT_BUTTON:
             case RG_GREG_RUPEE:
+            case RG_FISHING_POLE:
                 SetRandoInf(RandoGetToFlag.at(randoGet), state);
                 break;
             case RG_TRIFORCE_PIECE:
