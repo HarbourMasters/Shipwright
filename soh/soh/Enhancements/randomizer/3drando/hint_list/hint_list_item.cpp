@@ -105,7 +105,7 @@ void StaticData::HintTable_Init_Item() {
                                              {
                                              CustomMessage("a tunic", /*german*/"eine Tunika", /*french*/"une tunique"),
                                               // /*spanish*/un sayo
-                                             CustomMessage("something expensive", /*german*/"etwas teures", /*french*/"une chose dispendieuse")
+                                             CustomMessage("something expensive", /*german*/"etwas Teures", /*french*/"une chose dispendieuse")
                                               // /*spanish*/algo caro
                                              }, {
                                              CustomMessage("a sapphire suit", /*german*/"ein Saphiranzug", /*french*/"un pigment bleuté"),
@@ -122,7 +122,7 @@ void StaticData::HintTable_Init_Item() {
                                               // /*spanish*/un par de botas
                                              CustomMessage("a feature of the Water Temple", /*german*/"ein Merkmal des Wassertempels", /*french*/"une particularité du Temple de l'Eau"),
                                               // /*spanish*/algo particular del Templo del Agua
-                                             CustomMessage("something heavy", /*german*/"etwas schweres", /*french*/"une chose pesante")
+                                             CustomMessage("something heavy", /*german*/"etwas Schweres", /*french*/"une chose pesante")
                                               // /*spanish*/algo de lo más pesado
                                              }, {
                                              CustomMessage("sink shoes", /*german*/"Sinkschuhe", /*french*/"un boulet de fer"),
@@ -2113,7 +2113,7 @@ void StaticData::HintTable_Init_Item() {
                                          // /*spanish*/un obsequio de Malon
                                     CustomMessage("a song sung by frogs", /*german*/"ein von Fröschen gesungenes Lied", /*french*/"une chanson aimée des grenouilles"),
                                          // /*spanish*/una melodía de ranas
-                                    CustomMessage("something to cross a broken bridge", /*german*/"etwas um eine kaputte Brücke zu überqueren", /*french*/"une chose pour traverser un pont brisé")
+                                    CustomMessage("something to cross a broken bridge", /*german*/"etwas, um eine kaputte Brücke zu überqueren", /*french*/"une chose pour traverser un pont brisé")
                                          // /*spanish*/algo para cruzar un puente roto
                                     }, {
                                     CustomMessage("a horse", /*german*/"ein Pferd", /*french*/"un fidèle destrier"),
