@@ -505,13 +505,13 @@ std::map<uint32_t, uint32_t> Context::RandoGetToQuestItem = {
 uint32_t HookshotLookup[3] = { ITEM_NONE, ITEM_HOOKSHOT, ITEM_LONGSHOT };
 uint32_t OcarinaLookup[3] = { ITEM_NONE, ITEM_OCARINA_FAIRY, ITEM_OCARINA_TIME };
 
-void Context::ApplyItemEffect(Item& item, bool remove) {
+void Context::ApplyItemEffect(Item& item, bool state) {
     auto randoGet = item.GetRandomizerGet();
     if (item.GetGIEntry()->objectId == OBJECT_GI_STICK) {
-        SetInventory(ITEM_STICK, (remove ? ITEM_NONE : ITEM_STICK));
+        SetInventory(ITEM_STICK, (!state ? ITEM_NONE : ITEM_STICK));
     }
     if (item.GetGIEntry()->objectId == OBJECT_GI_NUTS) {
-        SetInventory(ITEM_NUT, (remove ? ITEM_NONE : ITEM_NUT));
+        SetInventory(ITEM_NUT, (!state ? ITEM_NONE : ITEM_NUT));
     }
     switch (item.GetItemType()) {
     case ITEMTYPE_ITEM:
@@ -519,16 +519,16 @@ void Context::ApplyItemEffect(Item& item, bool remove) {
         switch (randoGet) {
             case RG_STONE_OF_AGONY:
             case RG_GERUDO_MEMBERSHIP_CARD:
-                SetQuestItem(RandoGetToQuestItem.at(randoGet), remove);
+                SetQuestItem(RandoGetToQuestItem.at(randoGet), state);
                 break;
             case RG_WEIRD_EGG:
-                SetRandoInf(RAND_INF_WEIRD_EGG, remove);
+                SetRandoInf(RAND_INF_WEIRD_EGG, state);
                 break;
             case RG_ZELDAS_LETTER:
-                SetRandoInf(RAND_INF_ZELDAS_LETTER, remove);
+                SetRandoInf(RAND_INF_ZELDAS_LETTER, state);
                 break;
             case RG_DOUBLE_DEFENSE:
-                mSaveContext->isDoubleDefenseAcquired = !remove;
+                mSaveContext->isDoubleDefenseAcquired = state;
                 break;
             case RG_POCKET_EGG:
             case RG_COJIRO:
@@ -540,7 +540,7 @@ void Context::ApplyItemEffect(Item& item, bool remove) {
             case RG_EYEBALL_FROG:
             case RG_EYEDROPS:
             case RG_CLAIM_CHECK:
-                if (remove) {
+                if (!state) {
                     mSaveContext->adultTradeItems &= ~(1 << (item.GetGIEntry()->itemId - ITEM_POCKET_EGG));
                 }
                 else {
@@ -555,7 +555,7 @@ void Context::ApplyItemEffect(Item& item, bool remove) {
                         break;
                     }
                 }
-                auto newItem = i + (remove ? -1 : 1);
+                auto newItem = i + (!state ? -1 : 1);
                 if (newItem < 0) {
                     newItem = 0;
                 }
@@ -567,87 +567,87 @@ void Context::ApplyItemEffect(Item& item, bool remove) {
             case RG_PROGRESSIVE_STRENGTH:
             {
                 auto currentLevel = CurrentUpgrade(UPG_STRENGTH);
-                auto newLevel = currentLevel + (remove ? -1 : 1);
+                auto newLevel = currentLevel + (!state ? -1 : 1);
                 SetUpgrade(UPG_STRENGTH, newLevel);
             }   break;
             case RG_PROGRESSIVE_BOMB_BAG:
             {
                 auto currentLevel = CurrentUpgrade(UPG_BOMB_BAG);
-                auto newLevel = currentLevel + (remove ? -1 : 1);
-                if (currentLevel == 0 && !remove || currentLevel == 1 && remove) {
-                    SetInventory(ITEM_BOMB, (remove ? ITEM_NONE : ITEM_BOMB));
+                auto newLevel = currentLevel + (!state ? -1 : 1);
+                if (currentLevel == 0 && state || currentLevel == 1 && !state) {
+                    SetInventory(ITEM_BOMB, (!state ? ITEM_NONE : ITEM_BOMB));
                 }
                 SetUpgrade(UPG_BOMB_BAG, newLevel);
             }   break;
             case RG_PROGRESSIVE_BOW:
             {
                 auto currentLevel = CurrentUpgrade(UPG_QUIVER);
-                auto newLevel = currentLevel + (remove ? -1 : 1);
-                if (currentLevel == 0 && !remove || currentLevel == 1 && remove) {
-                    SetInventory(ITEM_BOW, (remove ? ITEM_NONE : ITEM_BOW));
+                auto newLevel = currentLevel + (!state ? -1 : 1);
+                if (currentLevel == 0 && state || currentLevel == 1 && !state) {
+                    SetInventory(ITEM_BOW, (!state ? ITEM_NONE : ITEM_BOW));
                 }
                 SetUpgrade(UPG_QUIVER, newLevel);
             }   break;
             case RG_PROGRESSIVE_SLINGSHOT:
             {
                 auto currentLevel = CurrentUpgrade(UPG_BULLET_BAG);
-                auto newLevel = currentLevel + (remove ? -1 : 1);
-                if (currentLevel == 0 && !remove || currentLevel == 1 && remove) {
-                    SetInventory(ITEM_SLINGSHOT, (remove ? ITEM_NONE : ITEM_SLINGSHOT));
+                auto newLevel = currentLevel + (!state ? -1 : 1);
+                if (currentLevel == 0 && state || currentLevel == 1 && !state) {
+                    SetInventory(ITEM_SLINGSHOT, (!state ? ITEM_NONE : ITEM_SLINGSHOT));
                 }
                 SetUpgrade(UPG_BULLET_BAG, newLevel);
             }   break;
             case RG_PROGRESSIVE_WALLET:
             {
                 auto currentLevel = CurrentUpgrade(UPG_WALLET);
-                if (!CheckRandoInf(RAND_INF_HAS_WALLET) && !remove) {
-                    SetRandoInf(RAND_INF_HAS_WALLET, false);
-                }
-                else if (currentLevel == 0 && remove) {
+                if (!CheckRandoInf(RAND_INF_HAS_WALLET) && state) {
                     SetRandoInf(RAND_INF_HAS_WALLET, true);
                 }
+                else if (currentLevel == 0 && !state) {
+                    SetRandoInf(RAND_INF_HAS_WALLET, false);
+                }
                 else {
-                    auto newLevel = currentLevel + (remove ? -1 : 1);
+                    auto newLevel = currentLevel + (!state ? -1 : 1);
                     SetUpgrade(UPG_WALLET, newLevel);
                 }
             }   break;
             case RG_PROGRESSIVE_SCALE:
             {
                 auto currentLevel = CurrentUpgrade(UPG_SCALE);
-                if (!CheckRandoInf(RAND_INF_CAN_SWIM) && !remove) {
-                    SetRandoInf(RAND_INF_CAN_SWIM, false);
-                }
-                else if (currentLevel == 0 && remove) {
+                if (!CheckRandoInf(RAND_INF_CAN_SWIM) && state) {
                     SetRandoInf(RAND_INF_CAN_SWIM, true);
                 }
+                else if (currentLevel == 0 && !state) {
+                    SetRandoInf(RAND_INF_CAN_SWIM, false);
+                }
                 else {
-                    auto newLevel = currentLevel + (remove ? -1 : 1);
+                    auto newLevel = currentLevel + (!state ? -1 : 1);
                     SetUpgrade(UPG_SCALE, newLevel);
                 }
             }   break;
             case RG_PROGRESSIVE_NUT_UPGRADE:
             {
                 auto currentLevel = CurrentUpgrade(UPG_NUTS);
-                auto newLevel = currentLevel + (remove ? -1 : 1);
-                if (currentLevel == 0 && !remove || currentLevel == 1 && remove) {
-                    SetInventory(ITEM_NUT, (remove ? ITEM_NONE : ITEM_NUT));
+                auto newLevel = currentLevel + (!state ? -1 : 1);
+                if (currentLevel == 0 && state || currentLevel == 1 && !state) {
+                    SetInventory(ITEM_NUT, (!state ? ITEM_NONE : ITEM_NUT));
                 }
                 SetUpgrade(UPG_NUTS, newLevel);
             }   break;
             case RG_PROGRESSIVE_STICK_UPGRADE:
             {
                 auto currentLevel = CurrentUpgrade(UPG_STICKS);
-                auto newLevel = currentLevel + (remove ? -1 : 1);
-                if (currentLevel == 0 && !remove || currentLevel == 1 && remove) {
-                    SetInventory(ITEM_STICK, (remove ? ITEM_NONE : ITEM_STICK));
+                auto newLevel = currentLevel + (!state ? -1 : 1);
+                if (currentLevel == 0 && state || currentLevel == 1 && !state) {
+                    SetInventory(ITEM_STICK, (!state ? ITEM_NONE : ITEM_STICK));
                 }
                 SetUpgrade(UPG_STICKS, newLevel);
             }   break;
             case RG_PROGRESSIVE_BOMBCHUS:
-                SetInventory(ITEM_BOMBCHU, (remove ? ITEM_NONE : ITEM_BOMBCHU));
+                SetInventory(ITEM_BOMBCHU, (!state ? ITEM_NONE : ITEM_BOMBCHU));
                 break;
             case RG_PROGRESSIVE_MAGIC_METER:
-                mSaveContext->magicLevel += (remove ? -1 : 1);
+                mSaveContext->magicLevel += (!state ? -1 : 1);
                 break;
             case RG_PROGRESSIVE_OCARINA:
             {
@@ -657,7 +657,7 @@ void Context::ApplyItemEffect(Item& item, bool remove) {
                         break;
                     }
                 }
-                i += (remove ? -1 : 1);
+                i += (!state ? -1 : 1);
                 if (i < 0) {
                     i = 0;
                 }
@@ -667,10 +667,10 @@ void Context::ApplyItemEffect(Item& item, bool remove) {
                 SetInventory(ITEM_OCARINA_FAIRY, OcarinaLookup[i]);
             }   break;
             case RG_HEART_CONTAINER:
-                mSaveContext->healthCapacity += (remove ? -16 : 16);
+                mSaveContext->healthCapacity += (!state ? -16 : 16);
                 break;
             case RG_PIECE_OF_HEART:
-                mSaveContext->healthCapacity += (remove ? -4 : 4);
+                mSaveContext->healthCapacity += (!state ? -4 : 4);
                 break;
             case RG_BOOMERANG:
             case RG_LENS_OF_TRUTH:
@@ -681,14 +681,14 @@ void Context::ApplyItemEffect(Item& item, bool remove) {
             case RG_FIRE_ARROWS:
             case RG_ICE_ARROWS:
             case RG_LIGHT_ARROWS:
-                SetInventory(item.GetGIEntry()->itemId, (remove ? ITEM_NONE : item.GetGIEntry()->itemId));
+                SetInventory(item.GetGIEntry()->itemId, (!state ? ITEM_NONE : item.GetGIEntry()->itemId));
                 break;
             case RG_MAGIC_BEAN:
             case RG_MAGIC_BEAN_PACK:
             {
                 auto change = (item.GetRandomizerGet() == RG_MAGIC_BEAN ? 1 : 10);
                 auto current = GetAmmo(ITEM_BEAN);
-                SetAmmo(ITEM_BEAN, current + (remove ? -change : change));
+                SetAmmo(ITEM_BEAN, current + (!state ? -change : change));
             }   break;
             case RG_EMPTY_BOTTLE:
             case RG_BOTTLE_WITH_MILK:
@@ -712,7 +712,7 @@ void Context::ApplyItemEffect(Item& item, bool remove) {
                 mSaveContext->inventory.items[slot] = item.GetGIEntry()->itemId;
             }   break;
             case RG_RUTOS_LETTER:
-                SetEventChkInf(EVENTCHKINF_OBTAINED_RUTOS_LETTER, remove);
+                SetEventChkInf(EVENTCHKINF_OBTAINED_RUTOS_LETTER, state);
                 break;
             case RG_GOHMA_SOUL:
             case RG_KING_DODONGO_SOUL:
@@ -729,16 +729,16 @@ void Context::ApplyItemEffect(Item& item, bool remove) {
             case RG_OCARINA_C_LEFT_BUTTON:
             case RG_OCARINA_C_RIGHT_BUTTON:
             case RG_GREG_RUPEE:
-                SetRandoInf(RandoGetToFlag.at(randoGet), remove);
+                SetRandoInf(RandoGetToFlag.at(randoGet), state);
                 break;
             case RG_TRIFORCE_PIECE:
-                mSaveContext->triforcePiecesCollected += (remove ? -1 : 1);
+                mSaveContext->triforcePiecesCollected += (!state ? -1 : 1);
                 break;
             case RG_BOMBCHU_5:
             case RG_BOMBCHU_10:
             case RG_BOMBCHU_20:
             case RG_BOMBCHU_DROP:
-                SetInventory(ITEM_BOMBCHU, (remove ? ITEM_NONE : ITEM_BOMBCHU));
+                SetInventory(ITEM_BOMBCHU, (!state ? ITEM_NONE : ITEM_BOMBCHU));
                 break;
         }
     }
@@ -750,7 +750,7 @@ void Context::ApplyItemEffect(Item& item, bool remove) {
             return;
         }
         uint32_t equipId = RandoGetToFlag.find(itemRG)->second;
-        if (remove) {
+        if (!state) {
             mSaveContext->inventory.equipment &= ~equipId;
             if (equipId == EQUIP_FLAG_SWORD_BGS) {
                 mSaveContext->bgsFlag = false;
@@ -766,16 +766,16 @@ void Context::ApplyItemEffect(Item& item, bool remove) {
     break;
     case ITEMTYPE_DUNGEONREWARD:
     case ITEMTYPE_SONG:
-        SetQuestItem(RandoGetToQuestItem.find(item.GetRandomizerGet())->second, remove);
+        SetQuestItem(RandoGetToQuestItem.find(item.GetRandomizerGet())->second, state);
         break;
     case ITEMTYPE_MAP:
-        SetDungeonItem(DUNGEON_MAP, RandoGetToDungeonScene.find(item.GetRandomizerGet())->second, remove);
+        SetDungeonItem(DUNGEON_MAP, RandoGetToDungeonScene.find(item.GetRandomizerGet())->second, state);
         break;
     case ITEMTYPE_COMPASS:
-        SetDungeonItem(DUNGEON_COMPASS, RandoGetToDungeonScene.find(item.GetRandomizerGet())->second, remove);
+        SetDungeonItem(DUNGEON_COMPASS, RandoGetToDungeonScene.find(item.GetRandomizerGet())->second, state);
         break;
     case ITEMTYPE_BOSSKEY:
-        SetDungeonItem(DUNGEON_KEY_BOSS, RandoGetToDungeonScene.find(item.GetRandomizerGet())->second, remove);
+        SetDungeonItem(DUNGEON_KEY_BOSS, RandoGetToDungeonScene.find(item.GetRandomizerGet())->second, state);
         break;
     case ITEMTYPE_FORTRESS_SMALLKEY:
     case ITEMTYPE_SMALLKEY:
@@ -784,7 +784,7 @@ void Context::ApplyItemEffect(Item& item, bool remove) {
         auto keyring = randoGet >= RG_FOREST_TEMPLE_KEY_RING && randoGet <= RG_GANONS_CASTLE_KEY_RING;
         auto dungeonIndex = RandoGetToDungeonScene.find(randoGet)->second;
         auto count = GetSmallKeyCount(dungeonIndex);
-        if (remove) {
+        if (!state) {
             if (keyring) {
                 count = 0;
             }
@@ -803,7 +803,7 @@ void Context::ApplyItemEffect(Item& item, bool remove) {
         SetSmallKeyCount(dungeonIndex, count);
     } break;
     case ITEMTYPE_TOKEN:
-        mSaveContext->inventory.gsTokens += (remove ? -1 : 1);
+        mSaveContext->inventory.gsTokens += (!state ? -1 : 1);
         break;
     case ITEMTYPE_EVENT:
         break;
@@ -814,7 +814,7 @@ void Context::ApplyItemEffect(Item& item, bool remove) {
         RandomizerGet itemRG = item.GetRandomizerGet();
         if (itemRG == RG_BUY_HYLIAN_SHIELD || itemRG == RG_BUY_DEKU_SHIELD || itemRG == RG_BUY_GORON_TUNIC || itemRG == RG_BUY_ZORA_TUNIC) {
             uint32_t equipId = RandoGetToFlag.find(itemRG)->second;
-            if (remove) {
+            if (!state) {
                 mSaveContext->inventory.equipment &= ~equipId;
             }
             else {
@@ -826,18 +826,18 @@ void Context::ApplyItemEffect(Item& item, bool remove) {
         case RG_DEKU_NUTS_10:
         case RG_BUY_DEKU_NUTS_5:
         case RG_BUY_DEKU_NUTS_10:
-            SetInventory(ITEM_NUT, (remove ? ITEM_NONE : ITEM_NUT));
+            SetInventory(ITEM_NUT, (!state ? ITEM_NONE : ITEM_NUT));
             break;
         case RG_DEKU_STICK_1:
         case RG_BUY_DEKU_STICK_1:
         case RG_STICKS:
-            SetInventory(ITEM_STICK, (remove ? ITEM_NONE : ITEM_STICK));
+            SetInventory(ITEM_STICK, (!state ? ITEM_NONE : ITEM_STICK));
             break;
         case RG_BOMBCHU_5:
         case RG_BOMBCHU_10:
         case RG_BOMBCHU_20:
         case RG_BOMBCHU_DROP:
-            SetInventory(ITEM_BOMBCHU, (remove ? ITEM_NONE : ITEM_BOMBCHU));
+            SetInventory(ITEM_BOMBCHU, (!state ? ITEM_NONE : ITEM_BOMBCHU));
             break;
         }
     } break;
@@ -1095,9 +1095,9 @@ bool Context::HasAdultTrade(uint32_t itemID) {
     return mSaveContext->adultTradeItems & (1 << tradeIndex);
 }
 
-void Context::SetAdultTrade(uint32_t itemID, bool remove) {
+void Context::SetAdultTrade(uint32_t itemID, bool state) {
     int tradeIndex = itemID - ITEM_POCKET_EGG;
-    if (remove) {
+    if (!state) {
         mSaveContext->adultTradeItems &= ~(1 << tradeIndex);
     }
     else {
@@ -1105,8 +1105,8 @@ void Context::SetAdultTrade(uint32_t itemID, bool remove) {
     }
 }
 
-void Context::SetQuestItem(uint32_t item, bool remove) {
-    if (remove) {
+void Context::SetQuestItem(uint32_t item, bool state) {
+    if (!state) {
         mSaveContext->inventory.questItems &= ~(1 << item);
     }
     else {
@@ -1126,8 +1126,8 @@ bool Context::CheckDungeonItem(uint32_t item, uint32_t dungeonIndex) {
     return mSaveContext->inventory.dungeonItems[dungeonIndex] & gBitFlags[item];
 }
 
-void Context::SetDungeonItem(uint32_t item, uint32_t dungeonIndex, bool remove) {
-    if (remove) {
+void Context::SetDungeonItem(uint32_t item, uint32_t dungeonIndex, bool state) {
+    if (!state) {
         mSaveContext->inventory.dungeonItems[dungeonIndex] &= ~gBitFlags[item];
     }
     else {
@@ -1139,8 +1139,8 @@ bool Context::CheckRandoInf(uint32_t flag) {
     return mSaveContext->randomizerInf[flag >> 4] & (1 << (flag & 0xF));
 }
 
-void Context::SetRandoInf(uint32_t flag, bool disable) {
-    if (disable) {
+void Context::SetRandoInf(uint32_t flag, bool state) {
+    if (!state) {
         mSaveContext->randomizerInf[flag >> 4] &= ~(1 << (flag & 0xF));
     }
     else {
@@ -1152,8 +1152,8 @@ bool Context::CheckEventChkInf(int32_t flag) {
     return mSaveContext->eventChkInf[flag >> 4] & (1 << (flag & 0xF));
 }
 
-void Context::SetEventChkInf(int32_t flag, bool disable) {
-    if (disable) {
+void Context::SetEventChkInf(int32_t flag, bool state) {
+    if (!state) {
         mSaveContext->eventChkInf[flag >> 4] &= ~(1 << (flag & 0xF));
     }
     else {

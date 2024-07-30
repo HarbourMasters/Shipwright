@@ -39,14 +39,14 @@ Item::Item(const RandomizerGet randomizerGet_, Text name_, const ItemType type_,
 
 void Item::ApplyEffect() const {
     auto ctx = Rando::Context::GetInstance();
-    ctx->ApplyItemEffect(StaticData::RetrieveItem(randomizerGet), false);
+    ctx->ApplyItemEffect(StaticData::RetrieveItem(randomizerGet), true);
     ctx->GetLogic()->SetInLogic(logicVar, true);
     ctx->GetLogic()->UpdateHelpers();
 }
 
 void Item::UndoEffect() const {
     auto ctx = Rando::Context::GetInstance();
-    ctx->ApplyItemEffect(StaticData::RetrieveItem(randomizerGet), true);
+    ctx->ApplyItemEffect(StaticData::RetrieveItem(randomizerGet), false);
     ctx->GetLogic()->SetInLogic(logicVar, false);
     ctx->GetLogic()->UpdateHelpers();
 }

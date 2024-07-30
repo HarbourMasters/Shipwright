@@ -67,7 +67,7 @@ class Context {
     void SetSpoilerLoaded(bool spoilerLoaded = true);
     bool IsPlandoLoaded() const;
     void SetPlandoLoaded(bool plandoLoaded = true);
-    void ApplyItemEffect(Item& item, bool remove);
+    void ApplyItemEffect(Item& item, bool state);
     std::shared_ptr<Settings> GetSettings();
     std::shared_ptr<EntranceShuffler> GetEntranceShuffler();
     std::shared_ptr<Dungeons> GetDungeons();
@@ -107,18 +107,18 @@ class Context {
     void SetInventory(uint32_t itemSlot, uint32_t item);
     bool CheckEquipment(uint32_t item);
     bool CheckQuestItem(uint32_t item);
-    void SetQuestItem(uint32_t item, bool remove);
+    void SetQuestItem(uint32_t item, bool state);
     bool HasAdultTrade(uint32_t item);
-    void SetAdultTrade(uint32_t item, bool remove);
+    void SetAdultTrade(uint32_t item, bool state);
     uint8_t GetSmallKeyCount(uint32_t dungeonIndex);
     void SetSmallKeyCount(uint32_t dungeonIndex, uint8_t count);
     bool CheckDungeonItem(uint32_t item, uint32_t dungeonIndex);
-    void SetDungeonItem(uint32_t item, uint32_t dungeonIndex, bool remove);
+    void SetDungeonItem(uint32_t item, uint32_t dungeonIndex, bool state);
     bool CheckRandoInf(uint32_t flag);
-    void SetRandoInf(uint32_t flag, bool disable);
+    void SetRandoInf(uint32_t flag, bool state);
     bool CheckEventChkInf(int32_t flag);
     uint8_t GetGSCount();
-    void SetEventChkInf(int32_t flag, bool disable);
+    void SetEventChkInf(int32_t flag, bool state);
     uint8_t GetAmmo(uint32_t item);
     void SetAmmo(uint32_t item, uint8_t count);
 
