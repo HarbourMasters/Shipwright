@@ -92,7 +92,7 @@ namespace Rando {
                 return ctx->CurrentUpgrade(UPG_STRENGTH);
             case RG_GOLDEN_GAUNTLETS:
                 return ctx->CurrentUpgrade(UPG_STRENGTH);
-            case RG_BOMB_BAG:
+            case RG_PROGRESSIVE_BOMB_BAG:
                 return ctx->CurrentUpgrade(UPG_BOMB_BAG);
             case RG_MAGIC_SINGLE:
                 return ctx->GetSaveContext()->magicLevel >= 1;
@@ -433,7 +433,7 @@ namespace Rando {
         uint8_t count = 0;
         for (int i = SLOT_BOTTLE_1; i <= SLOT_BOTTLE_4; i++) {
             uint8_t item = ctx->GetSaveContext()->inventory.items[i];
-            if (item != ITEM_NONE && (item == ITEM_LETTER_RUTO && DeliverLetter) && item != ITEM_BIG_POE) {
+            if (item != ITEM_NONE && (item != ITEM_LETTER_RUTO || (item == ITEM_LETTER_RUTO && DeliverLetter)) && item != ITEM_BIG_POE) {
                 count++;
             }
         }
