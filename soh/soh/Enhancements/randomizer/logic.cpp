@@ -624,8 +624,8 @@ namespace Rando {
         HasFireSourceWithTorch = HasFireSource || CanUse(RG_STICKS);
 
         //Gerudo Fortress
-        CanFinishGerudoFortress = (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_NORMAL)      && SmallKeys(RR_GERUDO_TRAINING_GROUNDS, 4) && (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD)) && (GerudoToken || CanUse(RG_FAIRY_BOW) || CanUse(RG_HOOKSHOT) || CanUse(RG_HOVER_BOOTS) || ctx->GetTrickOption(RT_GF_KITCHEN))) ||
-                                    (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_FAST)      && SmallKeys(RR_GERUDO_TRAINING_GROUNDS, 1) && (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD))) ||
+        CanFinishGerudoFortress = (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_NORMAL)      && SmallKeys(RR_GERUDO_FORTRESS, 4) && (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD)) && (GerudoToken || CanUse(RG_FAIRY_BOW) || CanUse(RG_HOOKSHOT) || CanUse(RG_HOVER_BOOTS) || ctx->GetTrickOption(RT_GF_KITCHEN))) ||
+                                    (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_FAST)      && SmallKeys(RR_GERUDO_FORTRESS, 1) && (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD))) ||
                                     (ctx->GetOption(RSK_GERUDO_FORTRESS).IsNot(RO_GF_NORMAL) && ctx->GetOption(RSK_GERUDO_FORTRESS).IsNot(RO_GF_FAST));
 
         HasShield          = CanUse(RG_HYLIAN_SHIELD) || CanUse(RG_DEKU_SHIELD); //Mirror shield can't reflect attacks
@@ -721,13 +721,16 @@ namespace Rando {
                 /*if (IsGlitched && (false)) {
                     return GanonsCastleKeys >= requiredAmountGlitched;
                 }*/
-                return ctx->GetSmallKeyCount(SCENE_INSIDE_GANONS_CASTLE_COLLAPSE) >= requiredAmountGlitchless;
+                return ctx->GetSmallKeyCount(SCENE_INSIDE_GANONS_CASTLE) >= requiredAmountGlitchless;
 
             case RR_MARKET_TREASURE_CHEST_GAME:
                 /*if (IsGlitched && (false)) {
                     return TreasureGameKeys >= requiredAmountGlitched;
                 }*/
                 return ctx->GetSmallKeyCount(SCENE_TREASURE_BOX_SHOP) >= requiredAmountGlitchless;
+
+            case RR_GERUDO_FORTRESS:
+                return ctx->GetSmallKeyCount(SCENE_THIEVES_HIDEOUT) >= requiredAmountGlitchless;
 
             default:
                 return false;
