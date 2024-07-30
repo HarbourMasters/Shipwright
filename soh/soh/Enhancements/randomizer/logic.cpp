@@ -897,11 +897,11 @@ namespace Rando {
 
         //Ocarina C Buttons
         bool ocBtnShuffle = ctx->GetOption(RSK_SHUFFLE_OCARINA_BUTTONS).Is(true);
-        ctx->SetRandoInf(RAND_INF_HAS_OCARINA_A, ocBtnShuffle);
-        ctx->SetRandoInf(RAND_INF_HAS_OCARINA_C_UP, ocBtnShuffle);
-        ctx->SetRandoInf(RAND_INF_HAS_OCARINA_C_DOWN, ocBtnShuffle);
-        ctx->SetRandoInf(RAND_INF_HAS_OCARINA_C_LEFT, ocBtnShuffle);
-        ctx->SetRandoInf(RAND_INF_HAS_OCARINA_C_RIGHT, ocBtnShuffle);
+        ctx->SetRandoInf(RAND_INF_HAS_OCARINA_A, !ocBtnShuffle);
+        ctx->SetRandoInf(RAND_INF_HAS_OCARINA_C_UP, !ocBtnShuffle);
+        ctx->SetRandoInf(RAND_INF_HAS_OCARINA_C_DOWN, !ocBtnShuffle);
+        ctx->SetRandoInf(RAND_INF_HAS_OCARINA_C_LEFT, !ocBtnShuffle);
+        ctx->SetRandoInf(RAND_INF_HAS_OCARINA_C_RIGHT, !ocBtnShuffle);
 
         //Progressive Items
         ctx->SetUpgrade(UPG_STICKS, ctx->GetOption(RSK_SHUFFLE_DEKU_STICK_BAG).Is(true) ? 0 : 1);
@@ -913,7 +913,7 @@ namespace Rando {
         ProgressiveScale = 0;
         if (ctx->GetOption(RSK_SHUFFLE_SWIM).Is(false)) {
             ProgressiveScale = 1;
-            ctx->SetRandoInf(RAND_INF_CAN_SWIM, false);
+            ctx->SetRandoInf(RAND_INF_CAN_SWIM, true);
         }
         ProgressiveHookshot   = 0;
         ProgressiveBow        = 0;
@@ -921,7 +921,7 @@ namespace Rando {
         ProgressiveWallet = 0;
         if (ctx->GetOption(RSK_SHUFFLE_CHILD_WALLET).Is(false)) {
             ProgressiveWallet = 1;
-            ctx->SetRandoInf(RAND_INF_HAS_WALLET, false);
+            ctx->SetRandoInf(RAND_INF_HAS_WALLET, true);
         }
         ProgressiveStrength   = 0;
         ProgressiveOcarina    = 0;
