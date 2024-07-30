@@ -2503,8 +2503,8 @@ CustomMessage Randomizer::GetSheikMessage(s16 scene, u16 originalTextId) {
             } else if (!Flags_GetEventChkInf(EVENTCHKINF_DISPELLED_GANONS_TOWER_BARRIER) && !ctx->GetOption(RSK_TRIAL_COUNT).Is(0)){
                 messageEntry = CustomMessage(
                     "You may have what you need to defeat %rthe Evil King%w, but the %cbarrier%w still stands.^Complete the remaining %gtrials%w to destroy it.",
-                    "Du magst das haben, was Du brauchst um %rden bösen König%w zu besiegen, aber die %cBarriere%w steht noch.^Absolviere die verbleibenden %gPrüfungen%w um sie zu zerstören."
-                );
+                    "Du magst das haben, was Du brauchst um %rden bösen König%w zu besiegen, aber die %cBarriere%w steht noch.^Absolviere die verbleibenden %gPrüfungen%w um sie zu zerstören.",
+		    "");
             } else {
                 messageEntry = CustomMessage(
                     "If you're ready, then proceed.^Good luck.",
@@ -2866,7 +2866,7 @@ void CreateIceTrapRandoMessages() {
 
         { "You just got %bPUNKED%w!", "Du wurdest %beiskalt%w erwischt!", "Ça me %bglace%w le sang!" },
 
-        { "Stay %bfrosty%w, @.", "Es läuft dir %beiskalt%w den Rücken&hinunter, @.", "%bReste au frais%w, @." },
+        { "Stay %bfrosty%w, @.", "Es läuft Dir %beiskalt%w den Rücken&hinunter, @.", "%bReste au frais%w, @." },
 
         { "Take a %bchill pill%w, @.", "Bleib %bcool%w, @.", "Et c'est la douche %bfroide%w!" },
 
