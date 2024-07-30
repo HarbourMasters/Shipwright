@@ -1161,10 +1161,10 @@ void StaticData::HintTable_Init_Item() {
                                                      CustomMessage("a polar magnetic needle", /*german*/"eine polare Magnetnadel", /*french*/"une aimant polaire")});
                                                       // /*spanish*/un imán polar
 
-    hintTextTable[RHT_FOREST_TEMPLE_BOSS_KEY] = HintText(CustomMessage("the Forest Temple Boss Key", /*german*/"der Waldtempel-Boss-Schlüssel", /*french*/"la Clé d'Or du Temple de la Forêt"),
+    hintTextTable[RHT_FOREST_TEMPLE_BOSS_KEY] = HintText(CustomMessage("the Forest Temple Boss Key", /*german*/"der Waldtempel-Master-Schlüssel", /*french*/"la Clé d'Or du Temple de la Forêt"),
                                                          // /*spanish*/la gran llave del Templo del Bosque
                                                          {
-                                                         CustomMessage("a boss key", /*german*/"ein Boss-Schlüssel", /*french*/"une Clé d'Or")
+                                                         CustomMessage("a boss key", /*german*/"ein Master-Schlüssel", /*french*/"une Clé d'Or")
                                                           // /*spanish*/una gran llave
                                                          }, {
                                                          CustomMessage("a sylvan master of unlocking", /*german*/"ein waldiger Meister des Entschlüsselns", /*french*/"un anti-grosse porte sylvestre"),
@@ -1172,10 +1172,10 @@ void StaticData::HintTable_Init_Item() {
                                                          CustomMessage("a sylvan dungeon's master pass", /*german*/"ein waldiger Dungeon-Meisterpass", /*french*/"une clé maléfique sylvestre")});
                                                           // /*spanish*/el pase maestro enselvado
 
-    hintTextTable[RHT_FIRE_TEMPLE_BOSS_KEY] = HintText(CustomMessage("the Fire Temple Boss Key", /*german*/"der Feuertempel-Boss-Schlüssel", /*french*/"la Clé d'Or du Temple du Feu"),
+    hintTextTable[RHT_FIRE_TEMPLE_BOSS_KEY] = HintText(CustomMessage("the Fire Temple Boss Key", /*german*/"der Feuertempel-Master-Schlüssel", /*french*/"la Clé d'Or du Temple du Feu"),
                                                        // /*spanish*/la gran llave del Templo del Fuego
                                                        {
-                                                       CustomMessage("a boss key", /*german*/"ein Boss-Schlüssel", /*french*/"une Clé d'Or")
+                                                       CustomMessage("a boss key", /*german*/"ein Master-Schlüssel", /*french*/"une Clé d'Or")
                                                         // /*spanish*/una gran llave
                                                        }, {
                                                        CustomMessage("a molten master of unlocking", /*german*/"ein geschmolzener Meister des Entschlüsselns", /*french*/"un anti-grosse porte fondu"),
@@ -1183,10 +1183,10 @@ void StaticData::HintTable_Init_Item() {
                                                        CustomMessage("a molten dungeon's master pass", /*german*/"ein geschmolzener Dungeon-Meisterpass", /*french*/"une clé maléfique fondu")});
                                                         // /*spanish*/el pase maestro fundido
 
-    hintTextTable[RHT_WATER_TEMPLE_BOSS_KEY] = HintText(CustomMessage("the Water Temple Boss Key", /*german*/"der Wassertempel-Boss-Schlüssel", /*french*/"la Clé d'Or du Temple de l'Eau"),
+    hintTextTable[RHT_WATER_TEMPLE_BOSS_KEY] = HintText(CustomMessage("the Water Temple Boss Key", /*german*/"der Wassertempel-Master-Schlüssel", /*french*/"la Clé d'Or du Temple de l'Eau"),
                                                         // /*spanish*/la gran llave del Templo del Agua
                                                         {
-                                                        CustomMessage("a boss key", /*german*/"ein Boss-Schlüssel", /*french*/"une Clé d'Or")
+                                                        CustomMessage("a boss key", /*german*/"ein Master-Schlüssel", /*french*/"une Clé d'Or")
                                                          // /*spanish*/una gran llave
                                                         }, {
                                                         CustomMessage("a wet master of unlocking", /*german*/"ein nasser Meister des Entschlüsselns", /*french*/"un anti-grosse porte humide"),
@@ -1194,10 +1194,10 @@ void StaticData::HintTable_Init_Item() {
                                                         CustomMessage("a wet dungeon's master pass", /*german*/"ein nasser Dungeon-Meisterpass", /*french*/"une clé maléfique humide")});
                                                          // /*spanish*/el pase maestro mojado
 
-    hintTextTable[RHT_SPIRIT_TEMPLE_BOSS_KEY] = HintText(CustomMessage("the Spirit Temple Boss Key", /*german*/"der Geistertempel-Boss-Schlüssel", /*french*/"la Clé d'Or du Temple de l'Esprit"),
+    hintTextTable[RHT_SPIRIT_TEMPLE_BOSS_KEY] = HintText(CustomMessage("the Spirit Temple Boss Key", /*german*/"der Geistertempel-Master-Schlüssel", /*french*/"la Clé d'Or du Temple de l'Esprit"),
                                                          // /*spanish*/la gran llave del Templo del Espíritu
                                                          {
-                                                         CustomMessage("a boss key", /*german*/"ein Boss-Schlüssel", /*french*/"une Clé d'Or")
+                                                         CustomMessage("a boss key", /*german*/"ein Master-Schlüssel", /*french*/"une Clé d'Or")
                                                           // /*spanish*/una gran llave
                                                          }, {
                                                          CustomMessage("a sandy master of unlocking", /*german*/"ein sandiger Meister des Entschlüsselns", /*french*/"un anti-grosse porte sableux"),
@@ -1205,10 +1205,10 @@ void StaticData::HintTable_Init_Item() {
                                                          CustomMessage("a sandy dungeon's master pass", /*german*/"ein sandiger Dungeon-Meisterpass", /*french*/"une clé maléfique sableux")});
                                                           // /*spanish*/el pase maestro arenoso
 
-    hintTextTable[RHT_SHADOW_TEMPLE_BOSS_KEY] = HintText(CustomMessage("the Shadow Temple Boss Key", /*german*/"der Schattentempel-Boss-Schlüssel", /*french*/"la Clé d'Or du Temple de l'Ombre"),
+    hintTextTable[RHT_SHADOW_TEMPLE_BOSS_KEY] = HintText(CustomMessage("the Shadow Temple Boss Key", /*german*/"der Schattentempel-Master-Schlüssel", /*french*/"la Clé d'Or du Temple de l'Ombre"),
                                                          // /*spanish*/la gran llave del Templo de las Sombras
                                                          {
-                                                         CustomMessage("a boss key", /*german*/"ein Boss-Schlüssel", /*french*/"une Clé d'Or")
+                                                         CustomMessage("a boss key", /*german*/"ein Master-Schlüssel", /*french*/"une Clé d'Or")
                                                           // /*spanish*/una gran llave
                                                          }, {
                                                          CustomMessage("a creepy master of unlocking", /*german*/"ein gruseliger Meister des Entschlüsselns", /*french*/"un anti-grosse porte sinistre"),
@@ -1216,10 +1216,10 @@ void StaticData::HintTable_Init_Item() {
                                                          CustomMessage("a creepy dungeon's master pass", /*german*/"ein gruseliger Dungeon-Meisterpass", /*french*/"une clé maléfique sinistre")});
                                                           // /*spanish*/el pase maestro siniestra
 
-    hintTextTable[RHT_GANONS_CASTLE_BOSS_KEY] = HintText(CustomMessage("the Ganon's Castle Boss Key", /*german*/"der Boss-Schlüssel für Ganons Schloß", /*french*/"la Clé d'Or du Château de Ganon"),
+    hintTextTable[RHT_GANONS_CASTLE_BOSS_KEY] = HintText(CustomMessage("the Ganon's Castle Boss Key", /*german*/"der Master-Schlüssel für Ganons Schloß", /*french*/"la Clé d'Or du Château de Ganon"),
                                                          // /*spanish*/la gran llave del Castillo de Ganon
                                                          {
-                                                         CustomMessage("a boss key", /*german*/"ein Boss-Schlüssel", /*french*/"une Clé d'Or")
+                                                         CustomMessage("a boss key", /*german*/"ein Master-Schlüssel", /*french*/"une Clé d'Or")
                                                           // /*spanish*/una gran llave
                                                          }, {
                                                          CustomMessage("a final master of unlocking", /*german*/"ein finaler Meister des Entschlüsselns", /*french*/"un anti-grosse porte final"),
