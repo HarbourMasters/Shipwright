@@ -2092,7 +2092,7 @@ void DemoEffect_DrawGetItem(Actor* thisx, PlayState* play) {
             RandomizerCheck rc = RC_MAX;
             RandomizerGet rg = RG_NONE;
 
-            switch (this->actor.params) {
+            switch (this->actor.params & 0x00FF) {
                 case DEMO_EFFECT_JEWEL_KOKIRI:
                     rc = RC_QUEEN_GOHMA;
                     rg = RG_KOKIRI_EMERALD;
