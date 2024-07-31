@@ -74,7 +74,7 @@ class Context {
     std::shared_ptr<Fishsanity> GetFishsanity();
     DungeonInfo* GetDungeon(size_t key) const;
     std::shared_ptr<Logic> GetLogic();
-    std::shared_ptr<SaveContext> GetSaveContext();
+    SaveContext* GetSaveContext();
     void SetSaveContext(SaveContext* context);
     void InitSaveContext();
     void NewSaveContext();
@@ -103,6 +103,7 @@ class Context {
     uint8_t InventorySlot(uint32_t item);
     void SetUpgrade(uint32_t upgrade, uint8_t level);
     uint32_t CurrentUpgrade(uint32_t upgrade);
+    uint32_t CurrentInventory(uint32_t item);
     bool CheckInventory(uint32_t item, bool exact);
     void SetInventory(uint32_t itemSlot, uint32_t item);
     bool CheckEquipment(uint32_t item);
@@ -130,7 +131,7 @@ class Context {
     std::shared_ptr<EntranceShuffler> mEntranceShuffler;
     std::shared_ptr<Dungeons> mDungeons;
     std::shared_ptr<Logic> mLogic;
-    std::shared_ptr<SaveContext> mSaveContext;
+    SaveContext* mSaveContext = nullptr;
     std::shared_ptr<Trials> mTrials;
     std::shared_ptr<Fishsanity> mFishsanity;
     bool mSeedGenerated = false;

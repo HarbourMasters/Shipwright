@@ -83,13 +83,14 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
     if (giEntry != nullptr) {
         return giEntry;
     }
+    auto ctx = Rando::Context::GetInstance();
     RandomizerGet actual = RG_NONE;
     const bool tycoonWallet =
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHOPSANITY) > RO_SHOPSANITY_ZERO_ITEMS;
     const u8 infiniteUpgrades = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_INFINITE_UPGRADES);
     switch (randomizerGet) {
         case RG_PROGRESSIVE_STICK_UPGRADE:
-            switch (CUR_UPG_VALUE(UPG_STICKS)) {
+            switch (ctx->CurrentUpgrade(UPG_STICKS)) {
                 case 0:
                     if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_DEKU_STICK_BAG)) {
                         actual = RG_DEKU_STICK_BAG;
@@ -118,7 +119,7 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
             }
             break;
         case RG_PROGRESSIVE_NUT_UPGRADE:
-            switch (CUR_UPG_VALUE(UPG_NUTS)) {
+            switch (ctx->CurrentUpgrade(UPG_NUTS)) {
                 case 0:
                     if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_DEKU_NUT_BAG)) {
                         actual = RG_DEKU_NUT_BAG;
@@ -147,7 +148,7 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
             }
             break;
         case RG_PROGRESSIVE_BOMB_BAG:
-            switch (CUR_UPG_VALUE(UPG_BOMB_BAG)) {
+            switch (ctx->CurrentUpgrade(UPG_BOMB_BAG)) {
                 case 0:
                     actual = RG_BOMB_BAG;
                     break;
@@ -174,7 +175,7 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
             }
             break;
         case RG_PROGRESSIVE_BOW:
-            switch (CUR_UPG_VALUE(UPG_QUIVER)) {
+            switch (ctx->CurrentUpgrade(UPG_QUIVER)) {
                 case 0:
                     actual = RG_FAIRY_BOW;
                     break;
@@ -201,7 +202,7 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
             }
             break;
         case RG_PROGRESSIVE_SLINGSHOT:
-            switch (CUR_UPG_VALUE(UPG_BULLET_BAG)) {
+            switch (ctx->CurrentUpgrade(UPG_BULLET_BAG)) {
                 case 0:
                     actual = RG_FAIRY_SLINGSHOT;
                     break;
@@ -228,7 +229,7 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
             }
             break;
         case RG_PROGRESSIVE_OCARINA:
-            switch (INV_CONTENT(ITEM_OCARINA_FAIRY)) {
+            switch (ctx->CurrentInventory(ITEM_OCARINA_FAIRY)) {
                 case ITEM_NONE:
                     actual = RG_FAIRY_OCARINA;
                     break;
@@ -241,7 +242,7 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
             }
             break;
         case RG_PROGRESSIVE_HOOKSHOT:
-            switch (INV_CONTENT(ITEM_HOOKSHOT)) {
+            switch (ctx->CurrentInventory(ITEM_HOOKSHOT)) {
                 case ITEM_NONE:
                     actual = RG_HOOKSHOT;
                     break;
@@ -254,7 +255,7 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
             }
             break;
         case RG_PROGRESSIVE_STRENGTH:
-            switch (CUR_UPG_VALUE(UPG_STRENGTH)) {
+            switch (ctx->CurrentUpgrade(UPG_STRENGTH)) {
                 case 0:
                     actual = RG_GORONS_BRACELET;
                     break;
@@ -270,11 +271,11 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
             }
             break;
         case RG_PROGRESSIVE_WALLET:
-            if (!Flags_GetRandomizerInf(RAND_INF_HAS_WALLET)) {
+            if (!ctx->CheckRandoInf(RAND_INF_HAS_WALLET)) {
                 actual = RG_CHILD_WALLET;
                 break;
             }
-            switch (CUR_UPG_VALUE(UPG_WALLET)) {
+            switch (ctx->CurrentUpgrade(UPG_WALLET)) {
                 case 0:
                     actual = RG_ADULT_WALLET;
                     break;
@@ -297,11 +298,11 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
             }
             break;
         case RG_PROGRESSIVE_SCALE:
-            if (!Flags_GetRandomizerInf(RAND_INF_CAN_SWIM)) {
+            if (!ctx->CheckRandoInf(RAND_INF_CAN_SWIM)) {
                 actual = RG_BRONZE_SCALE;
                 break;
             }
-            switch (CUR_UPG_VALUE(UPG_SCALE)) {
+            switch (ctx->CurrentUpgrade(UPG_SCALE)) {
                 case 0:
                     actual = RG_SILVER_SCALE;
                     break;
@@ -314,7 +315,7 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
             }
             break;
         case RG_PROGRESSIVE_MAGIC_METER:
-            switch (gSaveContext.magicLevel) {
+            switch (ctx->GetSaveContext()->magicLevel) {
                 case 0:
                     actual = RG_MAGIC_SINGLE;
                     break;
@@ -337,11 +338,11 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
            actual = RG_BIGGORON_SWORD;
            break;
         case RG_PROGRESSIVE_BOMBCHUS:
-            if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_NONE) {
+            if (ctx->CurrentInventory(ITEM_BOMBCHU) == ITEM_NONE) {
                 actual = RG_BOMBCHU_20;
             } else if (infiniteUpgrades != RO_INF_UPGRADES_OFF) {
                 actual = RG_BOMBCHU_INF;
-            } else if (AMMO(ITEM_BOMBCHU) < 5) {
+            } else if (ctx->GetAmmo(ITEM_BOMBCHU) < 5) {
                 actual = RG_BOMBCHU_10;
             } else {
                 actual = RG_BOMBCHU_5;

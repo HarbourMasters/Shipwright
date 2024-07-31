@@ -230,6 +230,8 @@ namespace Rando {
             case RG_CLAIM_CHECK:
                 return ctx->HasAdultTrade(StaticData::RetrieveItem(itemName).GetGIEntry()->itemId);
         }
+        SPDLOG_ERROR("HasItem reached `return false;`. Missing case for RandomizerGet of {}", static_cast<uint32_t>(itemName));
+        assert(false);
         return false;
     }
 

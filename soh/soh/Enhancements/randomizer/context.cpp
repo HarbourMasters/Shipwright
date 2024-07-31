@@ -573,6 +573,11 @@ void Context::ApplyItemEffect(Item& item, bool state) {
             }   break;
             case RG_PROGRESSIVE_BOMB_BAG:
             {
+                auto realGI = item.GetGIEntry();
+                if (realGI->itemId == RG_BOMB_BAG_INF && realGI->modIndex == MOD_RANDOMIZER) {
+                    SetRandoInf(RAND_INF_HAS_INFINITE_BOMB_BAG, true);
+                    break;
+                }
                 auto currentLevel = CurrentUpgrade(UPG_BOMB_BAG);
                 auto newLevel = currentLevel + (!state ? -1 : 1);
                 if (currentLevel == 0 && state || currentLevel == 1 && !state) {
@@ -582,6 +587,11 @@ void Context::ApplyItemEffect(Item& item, bool state) {
             }   break;
             case RG_PROGRESSIVE_BOW:
             {
+                auto realGI = item.GetGIEntry();
+                if (realGI->itemId == RG_QUIVER_INF && realGI->modIndex == MOD_RANDOMIZER) {
+                    SetRandoInf(RAND_INF_HAS_INFINITE_QUIVER, true);
+                    break;
+                }
                 auto currentLevel = CurrentUpgrade(UPG_QUIVER);
                 auto newLevel = currentLevel + (!state ? -1 : 1);
                 if (currentLevel == 0 && state || currentLevel == 1 && !state) {
@@ -591,6 +601,11 @@ void Context::ApplyItemEffect(Item& item, bool state) {
             }   break;
             case RG_PROGRESSIVE_SLINGSHOT:
             {
+                auto realGI = item.GetGIEntry();
+                if (realGI->itemId == RG_BULLET_BAG_INF && realGI->modIndex == MOD_RANDOMIZER) {
+                    SetRandoInf(RAND_INF_HAS_INFINITE_BULLET_BAG, true);
+                    break;
+                }
                 auto currentLevel = CurrentUpgrade(UPG_BULLET_BAG);
                 auto newLevel = currentLevel + (!state ? -1 : 1);
                 if (currentLevel == 0 && state || currentLevel == 1 && !state) {
@@ -600,6 +615,11 @@ void Context::ApplyItemEffect(Item& item, bool state) {
             }   break;
             case RG_PROGRESSIVE_WALLET:
             {
+                auto realGI = item.GetGIEntry();
+                if (realGI->itemId == RG_WALLET_INF && realGI->modIndex == MOD_RANDOMIZER) {
+                    SetRandoInf(RAND_INF_HAS_INFINITE_MONEY, true);
+                    break;
+                }
                 auto currentLevel = CurrentUpgrade(UPG_WALLET);
                 if (!CheckRandoInf(RAND_INF_HAS_WALLET) && state) {
                     SetRandoInf(RAND_INF_HAS_WALLET, true);
@@ -628,6 +648,11 @@ void Context::ApplyItemEffect(Item& item, bool state) {
             }   break;
             case RG_PROGRESSIVE_NUT_UPGRADE:
             {
+                auto realGI = item.GetGIEntry();
+                if (realGI->itemId == RG_NUT_UPGRADE_INF && realGI->modIndex == MOD_RANDOMIZER) {
+                    SetRandoInf(RAND_INF_HAS_INFINITE_NUT_UPGRADE, true);
+                    break;
+                }
                 auto currentLevel = CurrentUpgrade(UPG_NUTS);
                 auto newLevel = currentLevel + (!state ? -1 : 1);
                 if (currentLevel == 0 && state || currentLevel == 1 && !state) {
@@ -637,6 +662,11 @@ void Context::ApplyItemEffect(Item& item, bool state) {
             }   break;
             case RG_PROGRESSIVE_STICK_UPGRADE:
             {
+                auto realGI = item.GetGIEntry();
+                if (realGI->itemId == RG_STICK_UPGRADE_INF && realGI->modIndex == MOD_RANDOMIZER) {
+                    SetRandoInf(RAND_INF_HAS_INFINITE_STICK_UPGRADE, true);
+                    break;
+                }
                 auto currentLevel = CurrentUpgrade(UPG_STICKS);
                 auto newLevel = currentLevel + (!state ? -1 : 1);
                 if (currentLevel == 0 && state || currentLevel == 1 && !state) {
@@ -645,11 +675,23 @@ void Context::ApplyItemEffect(Item& item, bool state) {
                 SetUpgrade(UPG_STICKS, newLevel);
             }   break;
             case RG_PROGRESSIVE_BOMBCHUS:
+            {
+                auto realGI = item.GetGIEntry();
+                if (realGI->itemId == RG_BOMBCHU_INF && realGI->modIndex == MOD_RANDOMIZER) {
+                    SetRandoInf(RAND_INF_HAS_INFINITE_BOMBCHUS, true);
+                    break;
+                }
                 SetInventory(ITEM_BOMBCHU, (!state ? ITEM_NONE : ITEM_BOMBCHU));
-                break;
+            } break;
             case RG_PROGRESSIVE_MAGIC_METER:
+            {
+                auto realGI = item.GetGIEntry();
+                if (realGI->itemId == RG_MAGIC_INF && realGI->modIndex == MOD_RANDOMIZER) {
+                    SetRandoInf(RAND_INF_HAS_INFINITE_MAGIC_METER, true);
+                    break;
+                }
                 mSaveContext->magicLevel += (!state ? -1 : 1);
-                break;
+            } break;
             case RG_PROGRESSIVE_OCARINA:
             {
                 uint8_t i;
@@ -874,15 +916,15 @@ std::shared_ptr<Logic> Context::GetLogic() {
     return mLogic;
 }
 
-std::shared_ptr<SaveContext> Context::GetSaveContext() {
-    if (mSaveContext.get() == nullptr) {
+SaveContext* Context::GetSaveContext() {
+    if (mSaveContext == nullptr) {
         NewSaveContext();
     }
     return mSaveContext;
 }
 
 void Context::SetSaveContext(SaveContext* context) {
-    mSaveContext = std::shared_ptr<SaveContext>(context);
+    mSaveContext = context;
 }
 
 void Context::InitSaveContext() {
@@ -1029,7 +1071,10 @@ void Context::InitSaveContext() {
 }
 
 void Context::NewSaveContext() {
-    mSaveContext = std::make_shared<SaveContext>();
+    if (mSaveContext != nullptr && mSaveContext != &gSaveContext) {
+        free(mSaveContext);
+    }
+    mSaveContext = new SaveContext();
     InitSaveContext();
 }
 
@@ -1068,6 +1113,10 @@ uint8_t Context::InventorySlot(uint32_t item) {
 
 uint32_t Context::CurrentUpgrade(uint32_t upgrade) {
     return (mSaveContext->inventory.upgrades & gUpgradeMasks[upgrade]) >> gUpgradeShifts[upgrade];
+}
+
+uint32_t Context::CurrentInventory(uint32_t item) {
+    return mSaveContext->inventory.items[InventorySlot(item)];
 }
 
 void Context::SetUpgrade(uint32_t upgrade, uint8_t level) {
