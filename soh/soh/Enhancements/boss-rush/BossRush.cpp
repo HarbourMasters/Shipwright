@@ -597,6 +597,12 @@ void BossRush_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
             *should = false;
             break;
         }
+
+        // Break the dodongo breakable floor immediately so the player can jump in the hole immediately.
+        case VB_BG_BREAKWALL_BREAK:
+            *should = true;
+            break;
+
         case VB_BE_ABLE_TO_SAVE:
         // Disable doors so the player can't leave the boss rooms backwards.
         case VB_BE_ABLE_TO_OPEN_DOORS:
