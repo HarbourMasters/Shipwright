@@ -274,6 +274,8 @@ typedef enum {
     VB_CLOSE_PAUSE_MENU,
     // Vanilla condition: true
     VB_SPAWN_BLUE_WARP,
+    // Vanilla condition: this->warpTimer > sWarpTimerTarget && gSaveContext.nextCutsceneIndex == 0xFFEF
+    VB_BLUE_WARP_ADULT_WARP_OUT,
 
     /*** Play Cutscenes ***/
 

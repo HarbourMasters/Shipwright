@@ -220,7 +220,6 @@ void BossRush_SetEquipment(uint8_t linkAge) {
 }
 
 void BossRush_HandleBlueWarp(PlayState* play, f32 warpPosX, f32 warpPosZ) {
-
     // If warping from Chamber of Sages, choose the correct boss room to teleport to.
     if (play->sceneNum == SCENE_CHAMBER_OF_THE_SAGES) {
         // Gohma & Phantom Ganon
@@ -274,6 +273,10 @@ void BossRush_HandleBlueWarp(PlayState* play, f32 warpPosX, f32 warpPosZ) {
             }
         }
     }
+
+    play->transitionTrigger = TRANS_TRIGGER_START;
+    play->transitionType = TRANS_TYPE_FADE_WHITE;
+    gSaveContext.nextTransitionType = TRANS_TYPE_FADE_WHITE_SLOW;
 }
 
 void BossRush_HandleBlueWarpHeal(PlayState* play) {
@@ -509,6 +512,12 @@ static void* sSavePromptNoChoiceTexs[] = {
 
 void BossRush_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void* optionalArg) {
     switch (id) {
+        case VB_BLUE_WARP_ADULT_WARP_OUT: {
+            DoorWarp1* blueWarp = static_cast<DoorWarp1*>(optionalArg);
+            BossRush_HandleBlueWarp(gPlayState, blueWarp->actor.world.pos.x, blueWarp->actor.world.pos.z);
+            *should = false;
+            break;
+        }
         case VB_SPAWN_BLUE_WARP: {
             switch (gPlayState->sceneNum) {
                 case SCENE_DEKU_TREE_BOSS: {
