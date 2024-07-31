@@ -508,6 +508,12 @@ static void* sSavePromptNoChoiceTexs[] = {
 
 void BossRush_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void* optionalArg) {
     switch (id) {
+        case VB_GANON_HEAL_BEFORE_FIGHT: {
+            if (gSaveContext.bossRushOptions[BR_OPTIONS_HEAL] == BR_CHOICE_HEAL_NEVER) {
+                *should = false;
+            }
+            break;
+        }
         case VB_BLUE_WARP_ADULT_WARP_OUT: {
             DoorWarp1* blueWarp = static_cast<DoorWarp1*>(optionalArg);
             BossRush_HandleBlueWarp(gPlayState, blueWarp->actor.world.pos.x, blueWarp->actor.world.pos.z);

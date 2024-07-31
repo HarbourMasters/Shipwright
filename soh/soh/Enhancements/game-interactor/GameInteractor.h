@@ -278,6 +278,8 @@ typedef enum {
     VB_BLUE_WARP_ADULT_WARP_OUT,
     // Vanilla condition: this->collider.base.acFlags & 2
     VB_BG_BREAKWALL_BREAK,
+    // Vanilla condition: true
+    VB_GANON_HEAL_BEFORE_FIGHT,
 
     /*** Play Cutscenes ***/
 
