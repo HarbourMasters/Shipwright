@@ -1851,10 +1851,8 @@ void BossDodongo_DeathCutscene(BossDodongo* this, PlayState* play) {
                 Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_ACTIVE);
                 func_80064534(play, &play->csCtx);
                 Player_SetCsActionWithHaltedActors(play, &this->actor, 7);
-                if (!IS_BOSS_RUSH) {
+                if (GameInteractor_Should(VB_SPAWN_BLUE_WARP, true, this)) {
                     Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, -890.0f, -1523.76f, -3304.0f, 0, 0, 0, WARP_DUNGEON_CHILD);
-                } else {
-                    Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, -890.0f, -1523.76f, -3304.0f, 0, 0, 0, WARP_DUNGEON_ADULT, false);
                 }
                 this->skelAnime.playSpeed = 0.0f;
                 Flags_SetClear(play, play->roomCtx.curRoom.num);

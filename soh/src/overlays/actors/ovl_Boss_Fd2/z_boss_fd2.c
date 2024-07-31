@@ -783,18 +783,16 @@ void BossFd2_Death(BossFd2* this, PlayState* play) {
             if (bossFd->work[BFD_ACTION_STATE] == BOSSFD_SKULL_BURN) {
                 this->deathState = DEATH_FINISH;
                 mainCam->eye = this->camData.eye;
+                mainCam->eye = this->camData.eye;
                 mainCam->eyeNext = this->camData.eye;
                 mainCam->at = this->camData.at;
                 func_800C08AC(play, this->deathCamera, 0);
                 this->deathCamera = 0;
                 func_80064534(play, &play->csCtx);
                 Player_SetCsActionWithHaltedActors(play, &this->actor, 7);
-                if (!IS_BOSS_RUSH) {
+                if (GameInteractor_Should(VB_SPAWN_BLUE_WARP, true, this)) {
                     Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, 0.0f, 100.0f, 0.0f, 0, 0,
                                        0, WARP_DUNGEON_ADULT);
-                } else {
-                    Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, 0.0f, 100.0f, 0.0f, 0, 0, 0,
-                                WARP_DUNGEON_ADULT, true);
                 }
                 Flags_SetClear(play, play->roomCtx.curRoom.num);
             }

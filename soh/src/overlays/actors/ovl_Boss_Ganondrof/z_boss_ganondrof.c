@@ -233,8 +233,10 @@ void BossGanondrof_Init(Actor* thisx, PlayState* play) {
     this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     if (Flags_GetClear(play, play->roomCtx.curRoom.num)) {
         Actor_Kill(&this->actor);
-        Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, GND_BOSSROOM_CENTER_X, GND_BOSSROOM_CENTER_Y,
-                    GND_BOSSROOM_CENTER_Z, 0, 0, 0, WARP_DUNGEON_ADULT, true);
+        if (GameInteractor_Should(VB_SPAWN_BLUE_WARP, true, this)) {
+            Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, GND_BOSSROOM_CENTER_X, GND_BOSSROOM_CENTER_Y,
+                        GND_BOSSROOM_CENTER_Z, 0, 0, 0, WARP_DUNGEON_ADULT, true);
+        }
         if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true, NULL)) {
             Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, 200.0f + GND_BOSSROOM_CENTER_X,
                         GND_BOSSROOM_CENTER_Y, GND_BOSSROOM_CENTER_Z, 0, 0, 0, 0, true);
@@ -1060,8 +1062,10 @@ void BossGanondrof_Death(BossGanondrof* this, PlayState* play) {
             bodyDecayLevel = 10;
             if (this->timers[0] == 150) {
                 Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_BOSS_CLEAR);
-                Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, GND_BOSSROOM_CENTER_X, GND_BOSSROOM_CENTER_Y,
-                            GND_BOSSROOM_CENTER_Z, 0, 0, 0, WARP_DUNGEON_ADULT, true);
+                if (GameInteractor_Should(VB_SPAWN_BLUE_WARP, true, this)) {
+                    Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, GND_BOSSROOM_CENTER_X, GND_BOSSROOM_CENTER_Y,
+                                GND_BOSSROOM_CENTER_Z, 0, 0, 0, WARP_DUNGEON_ADULT, true);
+                }
             }
 
             Math_ApproachZeroF(&this->cameraEye.y, 0.05f, 1.0f); // GND_BOSSROOM_CENTER_Y + 33.0f

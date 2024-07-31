@@ -272,6 +272,8 @@ typedef enum {
     VB_RENDER_YES_ON_CONTINUE_PROMPT,
     // Vanilla condition: CHECK_BTN_ALL(input->press.button, BTN_START)
     VB_CLOSE_PAUSE_MENU,
+    // Vanilla condition: true
+    VB_SPAWN_BLUE_WARP,
 
     /*** Play Cutscenes ***/
 

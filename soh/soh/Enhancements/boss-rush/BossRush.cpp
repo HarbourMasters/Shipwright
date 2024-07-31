@@ -11,6 +11,9 @@ extern "C" {
     #include "functions.h"
     #include "macros.h"
     #include "variables.h"
+    #include "src/overlays/actors/ovl_Boss_Goma/z_boss_goma.h"
+    #include "src/overlays/actors/ovl_Boss_Mo/z_boss_mo.h"
+    #include "src/overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
     extern PlayState* gPlayState;
 
     Gfx* KaleidoScope_QuadTextureIA8(Gfx* gfx, void* texture, s16 width, s16 height, u16 point);
@@ -506,6 +509,71 @@ static void* sSavePromptNoChoiceTexs[] = {
 
 void BossRush_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void* optionalArg) {
     switch (id) {
+        case VB_SPAWN_BLUE_WARP: {
+            switch (gPlayState->sceneNum) {
+                case SCENE_DEKU_TREE_BOSS: {
+                    BossGoma* bossGoma = static_cast<BossGoma*>(optionalArg);
+                    static Vec3f roomCenter = { -150.0f, 0.0f, -350.0f };
+                    Vec3f childPos = roomCenter;
+
+                    for (s32 i = 0; i < 10000; i++) {
+                        if ((fabsf(childPos.x - GET_PLAYER(gPlayState)->actor.world.pos.x) < 100.0f &&
+                             fabsf(childPos.z - GET_PLAYER(gPlayState)->actor.world.pos.z) < 100.0f) ||
+                            (fabsf(childPos.x - bossGoma->actor.world.pos.x) < 150.0f &&
+                             fabsf(childPos.z - bossGoma->actor.world.pos.z) < 150.0f)) {
+                            childPos.x = Rand_CenteredFloat(400.0f) + -150.0f;
+                            childPos.z = Rand_CenteredFloat(400.0f) + -350.0f;
+                        } else {
+                            break;
+                        }
+                    }
+                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, childPos.x, bossGoma->actor.world.pos.y, childPos.z, 0, 0, 0, WARP_DUNGEON_ADULT, false);
+                    break;
+                }
+                case SCENE_DODONGOS_CAVERN_BOSS:
+                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, -890.0f, -1523.76f, -3304.0f, 0, 0, 0, WARP_DUNGEON_ADULT, false);
+                    break;
+                case SCENE_JABU_JABU_BOSS: {
+                    static Vec3f sWarpPos[] = {
+                        { 10.0f, 0.0f, 30.0f },
+                        { 260.0f, 0.0f, -470.0f },
+                        { -240.0f, 0.0f, -470.0f },
+                    };
+
+                    s32 sp7C = 2;
+                    for (s32 i = 2; i > 0; i -= 1) {
+                        if (Math_Vec3f_DistXYZ(&sWarpPos[i], &GET_PLAYER(gPlayState)->actor.world.pos) <
+                            Math_Vec3f_DistXYZ(&sWarpPos[i - 1], &GET_PLAYER(gPlayState)->actor.world.pos)) {
+                            sp7C = i - 1;
+                        }
+                    }
+
+                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, sWarpPos[sp7C].x, sWarpPos[sp7C].y, sWarpPos[sp7C].z, 0, 0, 0, WARP_DUNGEON_ADULT, false);
+                    break;
+                }
+                case SCENE_FOREST_TEMPLE_BOSS:
+                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, 14.0f, -33.0f, -3315.0f, 0, 0, 0, WARP_DUNGEON_ADULT, true);
+                    break;
+                case SCENE_FIRE_TEMPLE_BOSS:
+                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, 0.0f, 100.0f, 0.0f, 0, 0, 0, WARP_DUNGEON_ADULT, true);
+                    break;
+                case SCENE_WATER_TEMPLE_BOSS: {
+                    BossMo* bossMo = static_cast<BossMo*>(optionalArg);
+                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, bossMo->actor.world.pos.x, -280.0f, bossMo->actor.world.pos.z, 0, 0, 0, WARP_DUNGEON_ADULT, true);
+                    break;
+                }
+                case SCENE_SPIRIT_TEMPLE_BOSS:
+                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, 600.0f, 230.0f, 0.0f, 0, 0, 0, WARP_DUNGEON_ADULT, true);
+                    break;
+                case SCENE_SHADOW_TEMPLE_BOSS:
+                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, -50.0f, 0.0f, 400.0f, 0, 0, 0, WARP_DUNGEON_ADULT, true);
+                    break;
+                default:
+                    break;
+            }
+            *should = false;
+            break;
+        }
         // Skip past the "Save?" window when pressing B while paused and instead close the menu.
         case VB_CLOSE_PAUSE_MENU: {
             if (CHECK_BTN_ALL(gPlayState->state.input[0].press.button, BTN_B)) {

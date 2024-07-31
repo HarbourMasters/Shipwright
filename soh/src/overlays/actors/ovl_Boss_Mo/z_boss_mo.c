@@ -371,8 +371,10 @@ void BossMo_Init(Actor* thisx, PlayState* play2) {
         Collider_SetCylinder(play, &this->coreCollider, &this->actor, &sCylinderInit);
         if (Flags_GetClear(play, play->roomCtx.curRoom.num)) {
             Actor_Kill(&this->actor);
-            Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, 0.0f, -280.0f, 0.0f, 0,
-                               0, 0, WARP_DUNGEON_ADULT);
+            if (GameInteractor_Should(VB_SPAWN_BLUE_WARP, true, this)) {
+                Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, 0.0f, -280.0f, 0.0f, 0,
+                                   0, 0, WARP_DUNGEON_ADULT);
+            }
             if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true, NULL)) {
                 Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, -200.0f, -280.0f, 0.0f, 0, 0, 0, 0, true);
             }
@@ -1119,13 +1121,10 @@ void BossMo_Tentacle(BossMo* this, PlayState* play) {
                         BossMo_SpawnDroplet(MO_FX_DROPLET, (BossMoEffect*)play->specialEffects, &spD4, &spE0,
                                             ((300 - indS1) * .0015f) + 0.13f);
                     }
-                    if (!IS_BOSS_RUSH) {
+                    if (GameInteractor_Should(VB_SPAWN_BLUE_WARP, true, this)) {
                         Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1,
                                            this->actor.world.pos.x, -280.0f, this->actor.world.pos.z, 0, 0, 0,
                                            WARP_DUNGEON_ADULT);
-                    } else {
-                        Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, this->actor.world.pos.x, -280.0f,
-                                    this->actor.world.pos.z, 0, 0, 0, WARP_DUNGEON_ADULT, true);
                     }
 
                     if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true, NULL)) {

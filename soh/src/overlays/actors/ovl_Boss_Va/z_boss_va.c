@@ -642,9 +642,12 @@ void BossVa_Init(Actor* thisx, PlayState* play2) {
                 if (Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP)) {
                     warpId = ACTOR_DOOR_WARP1;
                 }
-                Actor_Spawn(&play->actorCtx, play, warpId, this->actor.world.pos.x, this->actor.world.pos.y,
-                            this->actor.world.pos.z, 0, 0, 0,
-                            0, true); //! params could be WARP_DUNGEON_CHILD however this can also spawn Ru1
+                if (GameInteractor_Should(VB_SPAWN_BLUE_WARP, true, this)) {
+                    Actor_Spawn(&play->actorCtx, play, warpId, this->actor.world.pos.x, this->actor.world.pos.y,
+                                this->actor.world.pos.z, 0, 0, 0,
+                                0, true); //! params could be WARP_DUNGEON_CHILD however this can also spawn Ru1
+                }
+
                 if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true, NULL)) {
                     Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, this->actor.world.pos.x + 160.0f,
                                 this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0, true);
@@ -1671,12 +1674,9 @@ void BossVa_BodyDeath(BossVa* this, PlayState* play) {
                     }
                 }
 
-                if (!IS_BOSS_RUSH) {
+                if (GameInteractor_Should(VB_SPAWN_BLUE_WARP, true, this)) {
                     Actor_Spawn(&play->actorCtx, play, ACTOR_EN_RU1, sWarpPos[sp7C].x, sWarpPos[sp7C].y,
                                 sWarpPos[sp7C].z, 0, 0, 0, 0, true);
-                } else {
-                    Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, sWarpPos[sp7C].x, sWarpPos[sp7C].y,
-                                sWarpPos[sp7C].z, 0, 0, 0, WARP_DUNGEON_ADULT, false);
                 }
             }
         case DEATH_FINISH:

@@ -340,8 +340,10 @@ void BossGoma_Init(Actor* thisx, PlayState* play) {
 
     if (Flags_GetClear(play, play->roomCtx.curRoom.num)) {
         Actor_Kill(&this->actor);
-        Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, 0.0f, -640.0f, 0.0f, 0, 0,
-                           0, WARP_DUNGEON_CHILD);
+        if (GameInteractor_Should(VB_SPAWN_BLUE_WARP, true, this)) {
+            Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, 0.0f, -640.0f, 0.0f, 0, 0,
+                               0, WARP_DUNGEON_CHILD);
+        }
         if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true, NULL)) {
             Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, 141.0f, -640.0f, -84.0f, 0, 0, 0, 0, true);
         }
@@ -1155,12 +1157,9 @@ void BossGoma_Defeated(BossGoma* this, PlayState* play) {
                     }
                 }
 
-                if (!IS_BOSS_RUSH) {
+                if (GameInteractor_Should(VB_SPAWN_BLUE_WARP, true, this)) {
                     Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, childPos.x,
                                        this->actor.world.pos.y, childPos.z, 0, 0, 0, WARP_DUNGEON_CHILD);
-                } else {
-                    Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, childPos.x, this->actor.world.pos.y,
-                                childPos.z, 0, 0, 0, WARP_DUNGEON_ADULT, false);
                 }
                 Flags_SetClear(play, play->roomCtx.curRoom.num);
             }
