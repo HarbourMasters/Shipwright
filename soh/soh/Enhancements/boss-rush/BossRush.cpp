@@ -616,6 +616,13 @@ void BossRush_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
 void BossRush_OnActorInitHandler(void* actorRef) {
     Actor* actor = static_cast<Actor*>(actorRef);
 
+    if (actor->id == ACTOR_DEMO_SA && gPlayState->sceneNum == SCENE_CHAMBER_OF_THE_SAGES) {
+        BossRush_SpawnBlueWarps(gPlayState);
+        Actor_Kill(actor);
+        GET_PLAYER(gPlayState)->actor.world.rot.y = GET_PLAYER(gPlayState)->actor.shape.rot.y = 27306;
+        return;
+    }
+
     // Remove chests, mainly for the chest in King Dodongo's boss room.
     // Remove bushes, used in Gohma's arena.
     // Remove pots, used in Barinade's and Ganondorf's arenas.
