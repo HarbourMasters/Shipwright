@@ -3991,9 +3991,7 @@ void KaleidoScope_Update(PlayState* play)
         case 6:
             switch (pauseCtx->unk_1E4) {
                 case 0:
-                    // Boss Rush skips past the "Save?" window when pressing B while paused.
-                    if (CHECK_BTN_ALL(input->press.button, BTN_START) ||
-                        (CHECK_BTN_ALL(input->press.button, BTN_B) && IS_BOSS_RUSH)) {
+                    if (GameInteractor_Should(VB_CLOSE_PAUSE_MENU, CHECK_BTN_ALL(input->press.button, BTN_START), NULL)) {
                         if (CVarGetInteger(CVAR_CHEAT("EasyPauseBuffer"), 0) || CVarGetInteger(CVAR_CHEAT("EasyInputBuffer"), 0)) {
                             // Easy pause buffer is 13 frames, 12 for kaledio to end, and one more to advance a single frame
                             CVarSetInteger(CVAR_GENERAL("CheatEasyPauseBufferTimer"), 13);

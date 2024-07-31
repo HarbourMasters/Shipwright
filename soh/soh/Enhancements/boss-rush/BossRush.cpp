@@ -495,6 +495,13 @@ void BossRush_InitSave() {
 
 void BossRush_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void* optionalArg) {
     switch (id) {
+        // Skip past the "Save?" window when pressing B while paused and instead close the menu.
+        case VB_CLOSE_PAUSE_MENU: {
+            if (CHECK_BTN_ALL(gPlayState->state.input[0].press.button, BTN_B)) {
+                *should = true;
+            }
+            break;
+        }
         // Disable doors so the player can't leave the boss rooms backwards.
         case VB_BE_ABLE_TO_OPEN_DOORS:
         case VB_SPAWN_HEART_CONTAINER:

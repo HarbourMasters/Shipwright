@@ -266,6 +266,8 @@ typedef enum {
     VB_REVERT_SPOILING_ITEMS,
     // Vanilla condition: Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP) || BREG(2)
     VB_BE_ABLE_TO_PLAY_BOMBCHU_BOWLING,
+    // Vanilla condition: CHECK_BTN_ALL(input->press.button, BTN_START)
+    VB_CLOSE_PAUSE_MENU,
 
     /*** Play Cutscenes ***/
 
