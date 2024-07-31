@@ -12,6 +12,11 @@ extern "C" {
     #include "macros.h"
     #include "variables.h"
     extern PlayState* gPlayState;
+
+    Gfx* KaleidoScope_QuadTextureIA8(Gfx* gfx, void* texture, s16 width, s16 height, u16 point);
+    #include "textures/icon_item_nes_static/icon_item_nes_static.h"
+    #include "textures/icon_item_ger_static/icon_item_ger_static.h"
+    #include "textures/icon_item_fra_static/icon_item_fra_static.h"
 }
 
 typedef struct BossRushSetting {
@@ -493,6 +498,12 @@ void BossRush_InitSave() {
     }
 }
 
+static void* sSavePromptNoChoiceTexs[] = {
+    (void*)gPauseNoENGTex,
+    (void*)gPauseNoGERTex,
+    (void*)gPauseNoFRATex
+};
+
 void BossRush_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void* optionalArg) {
     switch (id) {
         // Skip past the "Save?" window when pressing B while paused and instead close the menu.
@@ -500,6 +511,13 @@ void BossRush_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
             if (CHECK_BTN_ALL(gPlayState->state.input[0].press.button, BTN_B)) {
                 *should = true;
             }
+            break;
+        }
+        // Show "No" twice because the player can't continue.
+        case VB_RENDER_YES_ON_CONTINUE_PROMPT: {
+            Gfx** disp = static_cast<Gfx**>(optionalArg);
+            *disp = KaleidoScope_QuadTextureIA8(*disp, sSavePromptNoChoiceTexs[gSaveContext.language], 48, 16, 12);
+            *should = false;
             break;
         }
         case VB_BE_ABLE_TO_SAVE:

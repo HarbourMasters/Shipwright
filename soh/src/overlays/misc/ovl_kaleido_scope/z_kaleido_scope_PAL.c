@@ -1640,13 +1640,9 @@ void KaleidoScope_DrawPages(PlayState* play, GraphicsContext* gfxCtx) {
                 gDPSetCombineMode(POLY_KAL_DISP++, G_CC_MODULATEIA, G_CC_MODULATEIA);
                 gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, pauseCtx->alpha);
 
-                if (!IS_BOSS_RUSH) {
+                if (GameInteractor_Should(VB_RENDER_YES_ON_CONTINUE_PROMPT, true, &POLY_KAL_DISP)) {
                     POLY_KAL_DISP = KaleidoScope_QuadTextureIA8(
                         POLY_KAL_DISP, sPromptChoiceTexs[gSaveContext.language][0], 48, 16, 12);
-                } else {
-                    // Show "No" twice in Boss Rush because the player can't save within it.
-                    POLY_KAL_DISP = KaleidoScope_QuadTextureIA8(
-                        POLY_KAL_DISP, sPromptChoiceTexs[gSaveContext.language][1], 48, 16, 12);
                 }
 
                 POLY_KAL_DISP =

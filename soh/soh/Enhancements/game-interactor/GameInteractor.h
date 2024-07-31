@@ -268,6 +268,8 @@ typedef enum {
     VB_BE_ABLE_TO_PLAY_BOMBCHU_BOWLING,
     // Vanilla condition: true
     VB_BE_ABLE_TO_SAVE,
+    // Vanilla condition: true
+    VB_RENDER_YES_ON_CONTINUE_PROMPT,
     // Vanilla condition: CHECK_BTN_ALL(input->press.button, BTN_START)
     VB_CLOSE_PAUSE_MENU,
 
