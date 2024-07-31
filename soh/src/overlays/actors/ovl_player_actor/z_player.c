@@ -14019,6 +14019,7 @@ void Player_Action_8084ECA4(Player* this, PlayState* play) {
                             }
                         }
 
+                        /*
                         if (i < 4) {
                             this->av1.actionVar1 = i + 1;
                             this->av2.actionVar2 = 0;
@@ -14056,6 +14057,16 @@ void Player_Action_8084ECA4(Player* this, PlayState* play) {
                                 this->av1.actionVar1 = -1;
                                 this->av2.actionVar2 = rc;
                             }
+                        }
+                        */
+                        if (GameInteractor_Should(VB_BOTTLE_ACTOR, i < 4, this->interactRangeActor)) {
+                            this->av1.actionVar1 = i + 1;
+                            this->av2.actionVar2 = 0;
+                            this->stateFlags1 |= PLAYER_STATE1_IN_ITEM_CS | PLAYER_STATE1_IN_CUTSCENE;
+                            this->interactRangeActor->parent = &this->actor;
+                            Player_UpdateBottleHeld(play, this, catchInfo->itemId, ABS(catchInfo->itemAction));
+                            Player_AnimPlayOnceAdjusted(play, this, sp24->unk_04);
+                            func_80835EA4(play, 4);
                         }
                     }
                 }

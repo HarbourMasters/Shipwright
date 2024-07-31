@@ -6,9 +6,6 @@
 #include "macros.h"
 #include <consolevariablebridge.h>
 
-#include "soh/Enhancements/game-interactor/GameInteractor.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-
 extern "C" {
 #include "src/overlays/actors/ovl_Fishing/z_fishing.h"
 #include "src/overlays/actors/ovl_En_Fish/z_en_fish.h"
@@ -461,17 +458,33 @@ namespace Rando {
         }
     }
 
+    void Fishsanity::OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void* refActor) {
+        Actor* actor = static_cast<Actor*>(refActor);
+        auto fs = OTRGlobals::Instance->gRandoContext->GetFishsanity();
+
+        if (id == VB_BOTTLE_ACTOR && actor->id == ACTOR_EN_FISH && fs->GetOverworldFishShuffled()) {
+            FishIdentity fish = OTRGlobals::Instance->gRandomizer->IdentifyFish(gPlayState->sceneNum, actor->params);
+            if (fish.randomizerCheck != RC_UNKNOWN_CHECK && !Flags_GetRandomizerInf(fish.randomizerInf)) {
+                Flags_SetRandomizerInf(fish.randomizerInf);
+                actor->parent = &GET_PLAYER(gPlayState)->actor;
+                *should = false;
+            }
+        }
+    }
+
     void Fishsanity::RegisterHooks() {
         static uint32_t onActorInitHook = 0;
         static uint32_t onFlagSetHook = 0;
         static uint32_t onActorUpdateHook = 0;
         static uint32_t onSceneInitHook = 0;
+        static uint32_t onVanillaBehaviorHook = 0;
 
         GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) {
             GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorInit>(onActorInitHook);
             GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnFlagSet>(onFlagSetHook);
             GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(onActorUpdateHook);
             GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(onSceneInitHook);
+            GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnVanillaBehavior>(onVanillaBehaviorHook);
 
             onActorInitHook = 0;
             onFlagSetHook = 0;
@@ -486,6 +499,7 @@ namespace Rando {
             onActorInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnFlagSet>(Fishsanity::OnFlagSetHandler);
             onActorInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>(Fishsanity::OnActorUpdateHandler);
             onActorInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>(Fishsanity::OnSceneInitHandler);
+            onActorInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnVanillaBehavior>(Fishsanity::OnVanillaBehaviorHandler);
         });
     }
 } // namespace Rando

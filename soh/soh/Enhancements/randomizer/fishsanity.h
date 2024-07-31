@@ -4,6 +4,7 @@
 
 #include <z64.h>
 #include "randomizerTypes.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 typedef struct FishsanityPondOptions {
     u8 mode;
@@ -153,6 +154,8 @@ class Fishsanity {
     static void OnActorUpdateHandler(void* refActor);
 
     static void OnSceneInitHandler(int16_t sceneNum);
+
+    static void OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void* refActor);
 
     /**
      * @brief Current pond fish when all pond fish are not randomized
