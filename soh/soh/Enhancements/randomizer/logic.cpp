@@ -47,6 +47,7 @@ namespace Rando {
             case RG_LONGSHOT:
                 return ctx->CheckInventory(ITEM_LONGSHOT, true);
             case RG_PROGRESSIVE_STICK_UPGRADE:
+            case RG_STICKS:
                 return ctx->CurrentUpgrade(UPG_STICKS);
             case RG_FIRE_ARROWS:
                 return ctx->CheckInventory(ITEM_ARROW_FIRE, true);
@@ -61,6 +62,7 @@ namespace Rando {
             case RG_BOOMERANG:
                 return ctx->CheckInventory(ITEM_BOOMERANG, true);
             case RG_PROGRESSIVE_NUT_UPGRADE:
+            case RG_NUTS:
                 return ctx->CurrentUpgrade(UPG_NUTS);
             case RG_SCARECROW:
                 return Scarecrow;
@@ -89,10 +91,11 @@ namespace Rando {
             case RG_GORONS_BRACELET:
                 return ctx->CurrentUpgrade(UPG_STRENGTH);
             case RG_SILVER_GAUNTLETS:
-                return ctx->CurrentUpgrade(UPG_STRENGTH);
+                return ctx->CurrentUpgrade(UPG_STRENGTH) >= 2;
             case RG_GOLDEN_GAUNTLETS:
-                return ctx->CurrentUpgrade(UPG_STRENGTH);
+                return ctx->CurrentUpgrade(UPG_STRENGTH) >= 3;
             case RG_PROGRESSIVE_BOMB_BAG:
+            case RG_BOMB_BAG:
                 return ctx->CurrentUpgrade(UPG_BOMB_BAG);
             case RG_MAGIC_SINGLE:
                 return ctx->GetSaveContext()->magicLevel >= 1;
@@ -555,8 +558,8 @@ namespace Rando {
 
         //refills
         Bombs        = HasItem(RG_PROGRESSIVE_BOMB_BAG);
-        Nuts         = DekuNutDrop || HasItem(RG_PROGRESSIVE_NUT_UPGRADE);
-        Sticks       = DekuStickDrop || HasItem(RG_PROGRESSIVE_STICK_UPGRADE);
+        Nuts         = DekuNutDrop || HasItem(RG_NUTS);
+        Sticks       = DekuStickDrop || HasItem(RG_STICKS);
         Bugs         = HasBottle && BugsAccess;
         BlueFireAccess = BlueFireAccess || GetInLogic(LOGIC_BLUE_FIRE_ACCESS);
         BlueFire     = (HasBottle && BlueFireAccess) || (ctx->GetOption(RSK_BLUE_FIRE_ARROWS) && CanUse(RG_ICE_ARROWS));
