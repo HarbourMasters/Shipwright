@@ -502,6 +502,7 @@ void BossRush_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
             }
             break;
         }
+        case VB_BE_ABLE_TO_SAVE:
         // Disable doors so the player can't leave the boss rooms backwards.
         case VB_BE_ABLE_TO_OPEN_DOORS:
         case VB_SPAWN_HEART_CONTAINER:
