@@ -471,37 +471,6 @@ namespace Rando {
             }
         }
     }
-
-    void Fishsanity::RegisterHooks() {
-        static uint32_t onActorInitHook = 0;
-        static uint32_t onFlagSetHook = 0;
-        static uint32_t onActorUpdateHook = 0;
-        static uint32_t onSceneInitHook = 0;
-        static uint32_t onVanillaBehaviorHook = 0;
-
-        GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) {
-            GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorInit>(onActorInitHook);
-            GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnFlagSet>(onFlagSetHook);
-            GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(onActorUpdateHook);
-            GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(onSceneInitHook);
-            GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnVanillaBehavior>(onVanillaBehaviorHook);
-
-            onActorInitHook = 0;
-            onFlagSetHook = 0;
-            onActorUpdateHook = 0;
-            onSceneInitHook = 0;
-
-            if (!IS_RANDO || RAND_GET_OPTION(RSK_FISHSANITY) == RO_FISHSANITY_OFF) return;
-
-            FSi->InitializeFromSave();
-
-            onActorInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>(Fishsanity::OnActorInitHandler);
-            onActorInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnFlagSet>(Fishsanity::OnFlagSetHandler);
-            onActorInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>(Fishsanity::OnActorUpdateHandler);
-            onActorInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>(Fishsanity::OnSceneInitHandler);
-            onActorInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnVanillaBehavior>(Fishsanity::OnVanillaBehaviorHandler);
-        });
-    }
 } // namespace Rando
 
 // C interface

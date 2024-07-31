@@ -1493,6 +1493,12 @@ void RandomizerRegisterHooks() {
     static uint32_t onSceneInitHook = 0;
     static uint32_t onActorInitHook = 0;
 
+    static uint32_t fishsanityOnActorInitHook = 0;
+    static uint32_t fishsanityOnFlagSetHook = 0;
+    static uint32_t fishsanityOnActorUpdateHook = 0;
+    static uint32_t fishsanityOnSceneInitHook = 0;
+    static uint32_t fishsanityOnVanillaBehaviorHook = 0;
+
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) {
         randomizerQueuedChecks = std::queue<RandomizerCheck>();
         randomizerQueuedCheck = RC_UNKNOWN_CHECK;
@@ -1507,6 +1513,12 @@ void RandomizerRegisterHooks() {
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(onSceneInitHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorInit>(onActorInitHook);
 
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorInit>(fishsanityOnActorInitHook);
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnFlagSet>(fishsanityOnFlagSetHook);
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(fishsanityOnActorUpdateHook);
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(fishsanityOnSceneInitHook);
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnVanillaBehavior>(fishsanityOnVanillaBehaviorHook);
+
         onFlagSetHook = 0;
         onSceneFlagSetHook = 0;
         onPlayerUpdateForRCQueueHook = 0;
@@ -1515,6 +1527,12 @@ void RandomizerRegisterHooks() {
         onVanillaBehaviorHook = 0;
         onSceneInitHook = 0;
         onActorInitHook = 0;
+
+        fishsanityOnActorInitHook = 0;
+        fishsanityOnFlagSetHook = 0;
+        fishsanityOnActorUpdateHook = 0;
+        fishsanityOnSceneInitHook = 0;
+        fishsanityOnVanillaBehaviorHook = 0;
 
         if (!IS_RANDO) return;
 
@@ -1526,6 +1544,15 @@ void RandomizerRegisterHooks() {
         onVanillaBehaviorHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnVanillaBehavior>(RandomizerOnVanillaBehaviorHandler);
         onSceneInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>(RandomizerOnSceneInitHandler);
         onActorInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>(RandomizerOnActorInitHandler);
+
+        if (RAND_GET_OPTION(RSK_FISHSANITY) != RO_FISHSANITY_OFF) {
+            OTRGlobals::Instance->gRandoContext->GetFishsanity()->InitializeFromSave();
+
+            fishsanityOnActorInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>(Rando::Fishsanity::OnActorInitHandler);
+            fishsanityOnActorInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnFlagSet>(Rando::Fishsanity::OnFlagSetHandler);
+            fishsanityOnActorInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>(Rando::Fishsanity::OnActorUpdateHandler);
+            fishsanityOnActorInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>(Rando::Fishsanity::OnSceneInitHandler);
+            fishsanityOnActorInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnVanillaBehavior>(Rando::Fishsanity::OnVanillaBehaviorHandler);
+        }
     });
-    Rando::Fishsanity::RegisterHooks();
 }

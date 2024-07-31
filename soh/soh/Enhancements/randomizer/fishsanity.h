@@ -35,8 +35,6 @@ class Fishsanity {
     Fishsanity();
     ~Fishsanity();
 
-    static void RegisterHooks();
-
     static const FishIdentity defaultIdentity;
 
     /**
@@ -130,6 +128,36 @@ class Fishsanity {
     */
     FishIdentity AdvancePond();
 
+    /**
+     * @brief ActorInit hook handler for fishsanity
+    */
+    static void OnActorInitHandler(void* refActor);
+
+    /**
+     * @brief FlagSet hook handler for fishsanity
+    */
+    static void OnFlagSetHandler(int16_t flagType, int16_t flag);
+
+    /**
+     * @brief PlayerUpdate hook handler for fishsanity
+    */
+    static void OnPlayerUpdateHandler();
+
+    /**
+     * @brief ActorUpdate hook handler for fishsanity
+    */
+    static void OnActorUpdateHandler(void* refActor);
+
+    /**
+     * @brief SceneInit hook handler for fishsanity
+    */
+    static void OnSceneInitHandler(int16_t sceneNum);
+
+    /**
+     * @brief VB hook handler for fishsanity
+    */
+    static void OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void* refActor);
+
   private:
     /**
      * @brief Initialize helper statics if they have not been initialized yet
@@ -144,18 +172,6 @@ class Fishsanity {
      * @return The FishIdentity for the described fish
     */
     static FishIdentity GetPondFish(s16 params, bool adultPond);
-    
-    static void OnActorInitHandler(void* refActor);
-
-    static void OnFlagSetHandler(int16_t flagType, int16_t flag);
-
-    static void OnPlayerUpdateHandler();
-
-    static void OnActorUpdateHandler(void* refActor);
-
-    static void OnSceneInitHandler(int16_t sceneNum);
-
-    static void OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void* refActor);
 
     /**
      * @brief Current pond fish when all pond fish are not randomized
