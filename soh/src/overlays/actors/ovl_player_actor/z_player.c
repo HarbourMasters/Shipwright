@@ -13966,7 +13966,11 @@ void Player_Action_8084ECA4(Player* this, PlayState* play) {
     if (LinkAnimation_Update(play, &this->skelAnime)) {
         if (this->av1.actionVar1 != 0) {
             if (this->av2.actionVar2 == 0) {
-                Message_StartTextbox(play, D_80854A04[this->av1.actionVar1 - 1].textId, &this->actor);
+                if (CVarGetInteger(CVAR_ENHANCEMENT("FastDrops"), 0)) {
+                    this->av1.actionVar1 = 0;
+                } else {
+                    Message_StartTextbox(play, D_80854A04[this->av1.actionVar1 - 1].textId, &this->actor);
+                }
                 Audio_PlayFanfare(NA_BGM_ITEM_GET | 0x900);
                 this->av2.actionVar2 = 1;
             } else if (Message_GetState(&play->msgCtx) == TEXT_STATE_CLOSING) {
@@ -14000,11 +14004,13 @@ void Player_Action_8084ECA4(Player* this, PlayState* play) {
                         if (GameInteractor_Should(VB_BOTTLE_ACTOR, i < 4, this->interactRangeActor)) {
                             this->av1.actionVar1 = i + 1;
                             this->av2.actionVar2 = 0;
-                            this->stateFlags1 |= PLAYER_STATE1_IN_ITEM_CS | PLAYER_STATE1_IN_CUTSCENE;
                             this->interactRangeActor->parent = &this->actor;
                             Player_UpdateBottleHeld(play, this, catchInfo->itemId, ABS(catchInfo->itemAction));
-                            Player_AnimPlayOnceAdjusted(play, this, sp24->unk_04);
-                            func_80835EA4(play, 4);
+                            if (!CVarGetInteger(CVAR_ENHANCEMENT("FastDrops"), 0)) {
+                                this->stateFlags1 |= PLAYER_STATE1_IN_ITEM_CS | PLAYER_STATE1_IN_CUTSCENE;
+                                Player_AnimPlayOnceAdjusted(play, this, sp24->unk_04);
+                                func_80835EA4(play, 4);
+                            }
                         }
                     }
                 }
