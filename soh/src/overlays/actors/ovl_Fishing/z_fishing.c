@@ -15,8 +15,6 @@
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 #define WATER_SURFACE_Y(play) play->colCtx.colHeader->waterBoxes->ySurface
-#define IS_FISHSANITY (IS_RANDO && Randomizer_GetPondFishShuffled())
-#define FISHID(params) (Randomizer_IdentifyFish(play->sceneNum, params))
 bool getShouldSpawnLoaches();
 
 void Fishing_Init(Actor* thisx, PlayState* play);
@@ -3997,9 +3995,6 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
                                         sFishOnHandLength = this->fishLength;
                                         sFishOnHandIsLoach = (this->isLoach || AllHyruleLoaches());
                                         sLureCaughtWith = sLureEquipped;
-                                        if (IS_FISHSANITY) {
-                                            sFishOnHandParams = this->fishsanityParams;
-                                        }
                                         Actor_Kill(&this->actor);
                                     } else if (getShouldConfirmKeep() && (this->isLoach == 0 && !AllHyruleLoaches()) && (sFishOnHandIsLoach == 0) &&
                                                ((s16)this->fishLength < (s16)sFishOnHandLength)) {
@@ -4014,11 +4009,6 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
                                         sLureCaughtWith = sLureEquipped;
                                         this->fishLength = lengthTemp;
                                         this->isLoach = loachTemp;
-                                        if (IS_FISHSANITY) {
-                                            s16 paramsTemp = sFishOnHandParams;
-                                            sFishOnHandParams = this->fishsanityParams;
-                                            this->fishsanityParams = paramsTemp;
-                                        }
                                     }
                                 }
                                 if (this->keepState == 0) {
@@ -4039,11 +4029,6 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
                                     sLureCaughtWith = sLureEquipped;
                                     this->fishLength = temp1;
                                     this->isLoach = temp2;
-                                    if (IS_FISHSANITY) {
-                                        s16 paramsTemp = sFishOnHandParams;
-                                        sFishOnHandParams = this->fishsanityParams;
-                                        this->fishsanityParams = paramsTemp;
-                                    }
                                 }
                                 sRodCastState = 0;
                             }

@@ -369,7 +369,7 @@ namespace Rando {
             // Initialize pond fish for fishsanity
             // Initialize fishsanity metadata on this actor
             Fishing* fishActor = static_cast<Fishing*>(refActor);
-            fishActor->fishsanityParams = actor->params;
+            //fishActor->fishsanityParams = actor->params;
             fish = OTRGlobals::Instance->gRandomizer->IdentifyFish(gPlayState->sceneNum, actor->params);
 
             // With every pond fish shuffled, caught fish will not spawn unless all fish have been caught.
@@ -417,7 +417,7 @@ namespace Rando {
 
             // State 6 -> Fish caught and hoisted
             if (fish->fishState == 6) {
-                FishIdentity identity = OTRGlobals::Instance->gRandomizer->IdentifyFish(gPlayState->sceneNum, fish->fishsanityParams);
+                FishIdentity identity = OTRGlobals::Instance->gRandomizer->IdentifyFish(gPlayState->sceneNum, actor->params);
                 if (identity.randomizerCheck != RC_UNKNOWN_CHECK) {
                     Flags_SetRandomizerInf(identity.randomizerInf);
                     // Remove uncaught effect
