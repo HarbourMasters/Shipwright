@@ -365,9 +365,9 @@ std::vector<RandomizerCheck> GetAccessibleLocations(const std::vector<Randomizer
                 else if (IsBombchus(ignore) && IsBombchus(locItem, true)) {
                   newItemLocations.push_back(location);
                 }
-                //We want to ignore a specific Buy item. Buy items with different RandomizerGets are recognised by a shared GetLogicVar
+                //We want to ignore a specific Buy item. Buy items with different RandomizerGets are recognised by a shared GetLogicVal
                 else if (ignore != RG_GOLD_SKULLTULA_TOKEN && IsBombchus(ignore)) {
-                  if ((type == ITEMTYPE_SHOP && Rando::StaticData::GetItemTable()[ignore].GetLogicVar() != location->GetPlacedItem().GetLogicVar()) || type != ITEMTYPE_SHOP) {
+                  if ((type == ITEMTYPE_SHOP && Rando::StaticData::GetItemTable()[ignore].GetLogicVal() != location->GetPlacedItem().GetLogicVal()) || type != ITEMTYPE_SHOP) {
                     newItemLocations.push_back(location);
                   }
                 }
@@ -408,7 +408,7 @@ std::vector<RandomizerCheck> GetAccessibleLocations(const std::vector<Randomizer
                 // TODO: Reimplement Ammo Drops setting
                 else if (/*AmmoDrops.IsNot(AMMODROPS_NONE) &&*/ !(bombchus && bombchusFound) && type == ITEMTYPE_SHOP) {
                   //Only check each buy item once
-                  auto buyItem = location->GetPlacedItem().GetLogicVar();
+                  auto buyItem = location->GetPlacedItem().GetLogicVal();
                   //Buy item not in list to ignore, add it to list and write to playthrough
                   if (std::find(buyIgnores.begin(), buyIgnores.end(), buyItem) == buyIgnores.end()) {
                     exclude = false;

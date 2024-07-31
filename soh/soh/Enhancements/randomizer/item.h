@@ -31,11 +31,11 @@ class Item {
   public:
     Item();
     Item(RandomizerGet randomizerGet_, Text name_, ItemType type_, int16_t getItemId_, bool advancement_,
-        LogicVal logicVar_, RandomizerHintTextKey hintKey_, uint16_t itemId_, uint16_t objectId_, uint16_t gid_,
+        LogicVal logicVal_, RandomizerHintTextKey hintKey_, uint16_t itemId_, uint16_t objectId_, uint16_t gid_,
         uint16_t textId_, uint16_t field_, int16_t chestAnimation_, GetItemCategory category_, uint16_t modIndex_,
         bool progressive_ = false, uint16_t price_ = 0);
     Item(RandomizerGet randomizerGet_, Text name_, ItemType type_, int16_t getItemId_, bool advancement_,
-        LogicVal logicVar_, RandomizerHintTextKey hintKey_, bool progressive_ = false, uint16_t price_ = 0);
+        LogicVal logicVal_, RandomizerHintTextKey hintKey_, bool progressive_ = false, uint16_t price_ = 0);
     ~Item();
 
     void ApplyEffect() const;
@@ -46,7 +46,7 @@ class Item {
     bool IsAdvancement() const;
     int GetItemID() const;
     ItemType GetItemType() const;
-    LogicVal GetLogicVar() const;
+    LogicVal GetLogicVal() const;
     RandomizerGet GetRandomizerGet() const;
     uint16_t GetPrice() const;
     std::shared_ptr<GetItemEntry> GetGIEntry() const;
@@ -68,7 +68,7 @@ class Item {
     ItemType type;
     int16_t getItemId;
     bool advancement;
-    LogicVal logicVar;
+    LogicVal logicVal;
     RandomizerHintTextKey hintKey;
     bool progressive;
     uint16_t price;

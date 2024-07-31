@@ -775,12 +775,12 @@ namespace Rando {
         ctx = _ctx;
     }
 
-    bool Logic::GetInLogic(LogicVal logicVar) {
-        return inLogic[logicVar];
+    bool Logic::GetInLogic(LogicVal logicVal) {
+        return inLogic[logicVal];
     }
 
-    void Logic::SetInLogic(LogicVal logicVar, bool value) {
-        inLogic[logicVar] = value;
+    void Logic::SetInLogic(LogicVal logicVal, bool value) {
+        inLogic[logicVal] = value;
     }
 
     void Logic::Reset() {

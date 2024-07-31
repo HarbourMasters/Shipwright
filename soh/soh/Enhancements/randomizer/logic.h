@@ -428,8 +428,8 @@ class Logic {
     uint8_t BottleCount();
     void Reset();
     void SetContext(std::shared_ptr<Context> _ctx);
-    bool GetInLogic(LogicVal logicVar);
-    void SetInLogic(LogicVal logicVar, bool remove);
+    bool GetInLogic(LogicVal logicVal);
+    void SetInLogic(LogicVal logicVal, bool remove);
 
   private:
     static bool IsMagicItem(RandomizerGet item);
