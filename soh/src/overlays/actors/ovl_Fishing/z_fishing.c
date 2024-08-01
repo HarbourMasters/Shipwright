@@ -5130,8 +5130,7 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
                                 if (!IS_RANDO) {
                                     getItemId = GI_HEART_PIECE;
                                 } else {
-                                    getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_CHILD_FISHING, GI_HEART_PIECE);
-                                    getItemId = getItemEntry.getItemId;
+                                    getItemId = GI_NONE;
                                 }
                             }
                         }
@@ -5146,8 +5145,7 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
                                 if (!IS_RANDO) {
                                     getItemId = GI_SCALE_GOLD;
                                 } else {
-                                    getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_ADULT_FISHING, GI_SCALE_GOLD);
-                                    getItemId = getItemEntry.getItemId;
+                                    getItemId = GI_NONE;
                                 }
                             }
                         }
@@ -5164,10 +5162,8 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
                 }
 
                 this->actor.parent = NULL;
-                if (!IS_RANDO || getItemEntry.getItemId == GI_NONE) {
+                if (!IS_RANDO) {
                     Actor_OfferGetItem(&this->actor, play, getItemId, 2000.0f, 1000.0f);
-                } else {
-                    GiveItemEntryFromActor(&this->actor, play, getItemEntry, 2000.0f, 1000.0f);
                 }
                 this->stateAndTimer = 23;
             }
@@ -5219,19 +5215,17 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
             if (Actor_HasParent(&this->actor, play)) {
                 this->stateAndTimer = 24;
             } else {
-                if (!IS_RANDO) {
-                    Actor_OfferGetItem(&this->actor, play, GI_SCALE_GOLD, 2000.0f, 1000.0f);
+                if (IS_RANDO) {
+                    sIsRodVisible = true;
                 } else {
-                    GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_ADULT_FISHING, GI_SCALE_GOLD);
-                    GiveItemEntryFromActor(&this->actor, play, getItemEntry, 2000.0f, 1000.0f);
+                    Actor_OfferGetItem(&this->actor, play, GI_SCALE_GOLD, 2000.0f, 1000.0f);
                 }
             }
             break;
 
         case 24:
             sIsRodVisible = false;
-            if (((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) ||
-                (IS_RANDO && GET_PLAYER(play)->getItemId == GI_ICE_TRAP)) {
+            if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) {
                 if (sFishOnHandIsLoach == 0) {
                     this->stateAndTimer = 0;
                 } else {
