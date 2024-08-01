@@ -852,20 +852,6 @@ namespace Rando {
         EyedropsAccess     = false;
         DisableTradeRevert = false;
 
-        //Songs
-        ZeldasLullaby    = false;
-        SariasSong       = false;
-        SunsSong         = false;
-        SongOfStorms     = false;
-        EponasSong       = false;
-        SongOfTime       = false;
-        MinuetOfForest   = false;
-        BoleroOfFire     = false;
-        SerenadeOfWater  = false;
-        RequiemOfSpirit  = false;
-        NocturneOfShadow = false;
-        PreludeOfLight   = false;
-
         //Stones and Meddallions
         ForestMedallion = false;
         FireMedallion   = false;

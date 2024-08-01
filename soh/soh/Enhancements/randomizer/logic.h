@@ -90,20 +90,6 @@ class Logic {
     bool EyedropsAccess = false;
     bool DisableTradeRevert = false;
 
-    // Songs
-    bool ZeldasLullaby = false;
-    bool SariasSong = false;
-    bool SunsSong = false;
-    bool SongOfStorms = false;
-    bool EponasSong = false;
-    bool SongOfTime = false;
-    bool MinuetOfForest = false;
-    bool BoleroOfFire = false;
-    bool SerenadeOfWater = false;
-    bool RequiemOfSpirit = false;
-    bool NocturneOfShadow = false;
-    bool PreludeOfLight = false;
-
     // Stones and Meddallions
     bool ForestMedallion = false;
     bool FireMedallion = false;
