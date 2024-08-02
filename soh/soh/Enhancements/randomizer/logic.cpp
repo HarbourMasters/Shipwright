@@ -461,7 +461,7 @@ namespace Rando {
         LightArrows     = CanUse(RG_LIGHT_ARROWS);
         KokiriSword     = CanUse(RG_KOKIRI_SWORD);
         MasterSword     = CanUse(RG_MASTER_SWORD);
-        BiggoronSword   = CanUse(RG_MASTER_SWORD);
+        BiggoronSword   = CanUse(RG_BIGGORON_SWORD);
         NumBottles      = ((NoBottles) ? 0 : BottleCount());
         HasBottle       = NumBottles >= 1;
         Slingshot       = CanUse(RG_FAIRY_SLINGSHOT) && (BuySeed || AmmoCanDrop);
