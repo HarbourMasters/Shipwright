@@ -189,9 +189,9 @@ class Logic {
     bool FairyPond = false;
     bool AmmoCanDrop = false;
     bool BombchuRefill = false;
-    bool BombchuIcon = false;
-
+    bool BombchusEnabled  = false;
     bool BuyBombchus = false;
+
     bool BuySeed = false;
     bool BuyArrow = false;
     bool BuyBomb = false;
@@ -211,7 +211,7 @@ class Logic {
     bool Ocarina = false;
     bool OcarinaOfTime = false;
     bool BombBag = false;
-    bool BombchuBag = false;
+    bool BombchuIcon = false;
     bool MagicMeter = false;
     bool Hookshot = false;
     bool Longshot = false;
@@ -251,8 +251,8 @@ class Logic {
     bool OcarinaCUpButton    = false;
     bool OcarinaCDownButton  = false;
 
-    bool BombchuSalesman = false;
-    bool CanPlayBowling = false;
+    bool CarpetMerchant = false;
+    bool CouldPlayBowling = false;
     bool HasExplosives = false;
     bool HasBoots = false;
     bool IsChild = false;

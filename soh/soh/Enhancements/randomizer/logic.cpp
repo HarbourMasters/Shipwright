@@ -427,12 +427,10 @@ namespace Rando {
                            (HasItem(RG_OCARINA_C_DOWN_BUTTON) ? 1 : 0);
         ZeldasLetter   = HasItem(RG_ZELDAS_LETTER);
         WeirdEgg       = CanUse(RG_WEIRD_EGG);
-        Bombchus       = HasItem(RG_PROGRESSIVE_BOMBCHUS);
         BuySeed        = GetInLogic(LOGIC_BUY_SEED);
         BuyArrow       = GetInLogic(LOGIC_BUY_ARROW);
         BuyBomb        = GetInLogic(LOGIC_BUY_BOMB);
         BuyMagicPotion = GetInLogic(LOGIC_BUY_MAGIC_POTION);
-        BuyBombchus    = GetInLogic(LOGIC_BUY_BOMBCHUS);
         MagicBean      = ctx->GetAmmo(ITEM_BEAN) > 0;
         RutosLetter    = CanUse(RG_RUTOS_LETTER);
         Boomerang      = CanUse(RG_BOOMERANG);
@@ -464,14 +462,17 @@ namespace Rando {
         BiggoronSword   = CanUse(RG_MASTER_SWORD);
         NumBottles      = ((NoBottles) ? 0 : BottleCount());
         HasBottle       = NumBottles >= 1;
-        Slingshot       = CanUse(RG_FAIRY_SLINGSHOT) && (BuySeed || AmmoCanDrop);
+        BulletBag       = HasItem(RG_FAIRY_SLINGSHOT);
         Ocarina         = HasItem(RG_FAIRY_OCARINA);
         OcarinaOfTime   = HasItem(RG_OCARINA_OF_TIME);
-        MagicMeter      = HasItem(RG_MAGIC_SINGLE) && (AmmoCanDrop || (HasBottle && BuyMagicPotion));
-        BombBag         = HasItem(RG_BOMB_BAG) && (BuyBomb || AmmoCanDrop);
+        MagicMeter      = HasItem(RG_MAGIC_SINGLE);
+        BombBag         = HasItem(RG_BOMB_BAG);
+        BombchusEnabled = ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) ? GetInLogic(LOGIC_BOMBCHUS) : BombBag;
+        BuyBombchus     = (GetInLogic(LOGIC_BUY_BOMBCHUS) || CouldPlayBowling || CarpetMerchant);
+        BombchuIcon     = (BombchusEnabled && BuyBombchus) || GetInLogic(LOGIC_BOMBCHUS);
         Hookshot        = CanUse(RG_HOOKSHOT);
         Longshot        = CanUse(RG_LONGSHOT);
-        Bow             = CanUse(RG_FAIRY_BOW) && (BuyArrow || AmmoCanDrop);
+        Quiver          = HasItem(RG_FAIRY_BOW);
         GoronBracelet   = HasItem(RG_GORONS_BRACELET);
         SilverGauntlets = HasItem(RG_SILVER_GAUNTLETS);
         GoldenGauntlets = HasItem(RG_GOLDEN_GAUNTLETS);
@@ -518,48 +519,21 @@ namespace Rando {
         Greg = HasItem(RG_GREG_RUPEE);
         GoldSkulltulaTokens = ctx->GetGSCount();
 
-        //you need at least 2 buttons for scarecrow song
-        ScarecrowSong    = ScarecrowSong || (ctx->GetOption(RSK_SKIP_SCARECROWS_SONG) && Ocarina && OcarinaButtons >= 2) || (ChildScarecrow && AdultScarecrow);
-        Scarecrow        = Hookshot && ScarecrowSong;
-        DistantScarecrow = Longshot && ScarecrowSong;
-
-        //Drop Access
-        DekuStickDrop = StickPot || DekuBabaSticks;
-        DekuNutDrop   = (NutPot  || NutCrate         || DekuBabaNuts) && AmmoCanDrop;
-        BugsAccess    = BugShrub || WanderingBugs    || BugRock || GetInLogic(LOGIC_BUGS_ACCESS);
-        FishAccess    = LoneFish || FishGroup || GetInLogic(LOGIC_FISH_ACCESS);
-        FairyAccess   = FairyPot || GossipStoneFairy || BeanPlantFairy || ButterflyFairy || FreeFairies || FairyPond || GetInLogic(LOGIC_FAIRY_ACCESS);
-
-
-        //refills
-        Bombs        = HasItem(RG_PROGRESSIVE_BOMB_BAG);
-        Nuts         = DekuNutDrop || HasItem(RG_NUTS);
-        Sticks       = DekuStickDrop || HasItem(RG_STICKS);
-        Bugs         = HasBottle && BugsAccess;
-        BlueFireAccess = BlueFireAccess || GetInLogic(LOGIC_BLUE_FIRE_ACCESS);
-        BlueFire     = (HasBottle && BlueFireAccess) || (ctx->GetOption(RSK_BLUE_FIRE_ARROWS) && CanUse(RG_ICE_ARROWS));
-        Fish         = HasBottle && FishAccess;
-        Fairy        = HasBottle && FairyAccess;
-
-        FoundBombchus   = Bombchus && (BombBag || ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC));
-        CanPlayBowling  = ChildsWallet && ((ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && FoundBombchus) || (!ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && BombBag));
         // TODO: Implement Ammo Drop Setting in place of bombchu drops
-        BombchuRefill   = (AmmoCanDrop && (ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) || BombchuIcon) && 
-                           ctx->GetOption(RSK_ENABLE_BOMBCHU_DROPS).Is(RO_AMMO_DROPS_ON/*_PLUS_BOMBCHU*/)) || 
-                           CanPlayBowling || BombchuSalesman || BuyBombchus;
-        FairyAccess     = FairyPot || GossipStoneFairy || BeanPlantFairy || ButterflyFairy || FreeFairies || FairyPond || BuyFairy;
+        BombchuRefill = BuyBombchus || (ctx->GetOption(RSK_ENABLE_BOMBCHU_DROPS).Is(RO_AMMO_DROPS_ON/*_PLUS_BOMBCHU*/));
+        FairyAccess   = FairyPot || GossipStoneFairy || BeanPlantFairy || ButterflyFairy || FreeFairies || FairyPond || GetInLogic(LOGIC_FAIRY_ACCESS);
 
         //Usage
         Slingshot = (BuySeed || AmmoCanDrop) && BulletBag;
         Magic     = (AmmoCanDrop || (HasBottle && (BuyMagicPotion))) && MagicMeter;
-        Bombs     = (BuyBomb || AmmoCanDrop) && BombBag;
-        Bombchus  = BombchuRefill && ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) ? BombchuBag : BombBag;
+        Bombs     = (BuyBomb || AmmoCanDrop) && HasItem(RG_PROGRESSIVE_BOMB_BAG);
+        Bombchus  = BombchuRefill && BombchuIcon;
         Bow       = (BuyArrow || AmmoCanDrop) && Quiver;
-        Nuts      = ProgressiveNutBag != 0 && ((NutPot  || NutCrate || DekuBabaNuts) && AmmoCanDrop) || Nuts; //RANDOTODO BuyNuts currently mixed in with Nuts, should be seperate as BuyNuts are also a Nuts source
-        Sticks    = ProgressiveStickBag != 0 && (StickPot || DekuBabaSticks) || Sticks;
-        Bugs      = HasBottle && (BugShrub || WanderingBugs || BugRock || BuyBugs);
-        BlueFire  = (HasBottle && BlueFireAccess) || (ctx->GetOption(RSK_BLUE_FIRE_ARROWS) && CanUse(RG_ICE_ARROWS));
-        Fish      = HasBottle && (LoneFish || FishGroup || BuyFish); //is there any need to care about lone vs group?
+        Nuts      = HasItem(RG_NUTS) && ((NutPot  || NutCrate || DekuBabaNuts) && AmmoCanDrop) || Nuts; //RANDOTODO BuyNuts currently mixed in with Nuts, should be seperate as BuyNuts are also a Nuts source
+        Sticks    = HasItem(RG_STICKS) && (StickPot || DekuBabaSticks);
+        Bugs      = HasBottle && (BugShrub || WanderingBugs || BugRock || GetInLogic(LOGIC_BUGS_ACCESS));
+        BlueFire  = (HasBottle && (BlueFireAccess || GetInLogic(LOGIC_BUY_BLUE_FIRE))) || (ctx->GetOption(RSK_BLUE_FIRE_ARROWS) && CanUse(RG_ICE_ARROWS));
+        Fish      = HasBottle && (LoneFish || FishGroup || GetInLogic(LOGIC_FISH_ACCESS)); //is there any need to care about lone vs group?
         Fairy     = HasBottle && FairyAccess;
 
         // TODO: Implement Ammo Drop Setting in place of bombchu drops
@@ -964,9 +938,9 @@ namespace Rando {
         FreeFairies      = false;
         FairyPond        = false;
         BombchuRefill    = false;
-        BombchuIcon      = false;
-
+        BombchusEnabled  = false;
         BuyBombchus      = false;
+
         BuySeed          = false;
         BuyArrow         = false;
         BuyBomb          = false;
@@ -987,7 +961,7 @@ namespace Rando {
         Ocarina          = false;
         OcarinaOfTime    = false;
         BombBag          = false;
-        BombchuBag       = false;
+        BombchuIcon       = false;
         Magic            = false;
         Hookshot         = false;
         Longshot         = false;
@@ -1019,7 +993,7 @@ namespace Rando {
         Fairy            = false;
         BottleWithBigPoe = false;
 
-        CanPlayBowling   = false;
+        CouldPlayBowling   = false;
         HasExplosives    = false;
         HasBoots         = false;
         IsChild          = false;

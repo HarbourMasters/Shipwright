@@ -68,33 +68,26 @@ void AreaTable_Init_SpiritTemple() {
   areaTable[RR_SPIRIT_TEMPLE_CENTRAL_CHAMBER] = Area("Spirit Temple Central Chamber", "Spirit Temple", RA_SPIRIT_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LOCATION(RC_SPIRIT_TEMPLE_MAP_CHEST,                    ((logic->HasExplosives || logic->SmallKeys(RR_SPIRIT_TEMPLE, 3) || (logic->SmallKeys(RR_SPIRIT_TEMPLE, 2) && randoCtx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && logic->BombchuRefill && randoCtx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).Is(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF))) &&
-
-                                                                                                (logic->CanUse(RG_DINS_FIRE) ||
-                                                                                                    (((logic->Magic && logic->FireArrows) || randoCtx->GetTrickOption(RT_SPIRIT_MAP_CHEST)) && logic->Bow && logic->Sticks))) ||
-                                                                                            (logic->SmallKeys(RR_SPIRIT_TEMPLE, 5) && logic->HasExplosives &&
-                                                                                                logic->CanUse(RG_STICKS)) ||
-                                                                                            (logic->SmallKeys(RR_SPIRIT_TEMPLE, 3) &&
-                                                                                                (logic->CanUse(RG_FIRE_ARROWS) || (randoCtx->GetTrickOption(RT_SPIRIT_MAP_CHEST) && logic->Bow)) &&
-                                                                                                logic->CanUse(RG_SILVER_GAUNTLETS))),
+                                                                            (logic->CanUse(RG_DINS_FIRE) || ((logic->CanUse(RG_FIRE_ARROWS) || randoCtx->GetTrickOption(RT_SPIRIT_MAP_CHEST)) && logic->Bow && logic->Sticks))) ||
+                                                                          (logic->SmallKeys(RR_SPIRIT_TEMPLE, 5) && logic->HasExplosives && logic->CanUse(RG_STICKS)) ||
+                                                                          (logic->SmallKeys(RR_SPIRIT_TEMPLE, 3) && (logic->CanUse(RG_FIRE_ARROWS) || (randoCtx->GetTrickOption(RT_SPIRIT_MAP_CHEST) && logic->Bow)) && logic->CanUse(RG_SILVER_GAUNTLETS))),
+                  
                   LOCATION(RC_SPIRIT_TEMPLE_SUN_BLOCK_ROOM_CHEST,         ((logic->HasExplosives || logic->SmallKeys(RR_SPIRIT_TEMPLE, 3) || (logic->SmallKeys(RR_SPIRIT_TEMPLE, 2) && randoCtx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && logic->BombchuRefill && randoCtx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).Is(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF))) &&
-                                                                                                (logic->CanUse(RG_DINS_FIRE) ||
-                                                                                                    (((logic->Magic && logic->FireArrows) || randoCtx->GetTrickOption(RT_SPIRIT_SUN_CHEST)) && logic->Bow && logic->Sticks))) ||
-                                                                                            (logic->SmallKeys(RR_SPIRIT_TEMPLE, 5) && logic->HasExplosives &&
-                                                                                                logic->CanUse(RG_STICKS)) ||
-                                                                                            (logic->SmallKeys(RR_SPIRIT_TEMPLE, 3) &&
-                                                                                                (logic->CanUse(RG_FIRE_ARROWS) || (randoCtx->GetTrickOption(RT_SPIRIT_SUN_CHEST) && logic->Bow)) &&
-                                                                                                logic->CanUse(RG_SILVER_GAUNTLETS))),
+                                                                           (logic->CanUse(RG_DINS_FIRE) || ((logic->CanUse(RG_FIRE_ARROWS) || randoCtx->GetTrickOption(RT_SPIRIT_SUN_CHEST)) && logic->Bow && logic->Sticks))) ||
+                                                                          (logic->SmallKeys(RR_SPIRIT_TEMPLE, 5) && logic->HasExplosives && logic->CanUse(RG_STICKS)) ||
+                                                                          (logic->SmallKeys(RR_SPIRIT_TEMPLE, 3) && (logic->CanUse(RG_FIRE_ARROWS) || (randoCtx->GetTrickOption(RT_SPIRIT_SUN_CHEST) && logic->Bow)) && logic->CanUse(RG_SILVER_GAUNTLETS))),
+
                   LOCATION(RC_SPIRIT_TEMPLE_STATUE_ROOM_HAND_CHEST,       logic->SmallKeys(RR_SPIRIT_TEMPLE, 3) && logic->CanUse(RG_SILVER_GAUNTLETS) && logic->CanUse(RG_ZELDAS_LULLABY)),
                   LOCATION(RC_SPIRIT_TEMPLE_STATUE_ROOM_NORTHEAST_CHEST,  logic->SmallKeys(RR_SPIRIT_TEMPLE, 3) && logic->CanUse(RG_SILVER_GAUNTLETS) && logic->CanUse(RG_ZELDAS_LULLABY) && (logic->Hookshot || logic->HoverBoots || randoCtx->GetTrickOption(RT_SPIRIT_LOBBY_JUMP))),
                   LOCATION(RC_SPIRIT_TEMPLE_GS_HALL_AFTER_SUN_BLOCK_ROOM, (logic->HasExplosives && logic->Boomerang && logic->Hookshot) ||
-                                                                                            (logic->CanUse(RG_BOOMERANG) && logic->SmallKeys(RR_SPIRIT_TEMPLE, 5) && logic->HasExplosives) ||
-                                                                                            (logic->Hookshot && logic->CanUse(RG_SILVER_GAUNTLETS) &&
-                                                                                                (logic->SmallKeys(RR_SPIRIT_TEMPLE, 3) ||
-                                                                                                    (logic->SmallKeys(RR_SPIRIT_TEMPLE, 2) && logic->Boomerang && randoCtx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && logic->BombchuRefill && randoCtx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).Is(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF))))),
+                                                                          (logic->CanUse(RG_BOOMERANG) && logic->SmallKeys(RR_SPIRIT_TEMPLE, 5) && logic->HasExplosives) ||
+                                                                          (logic->Hookshot && logic->CanUse(RG_SILVER_GAUNTLETS) && (logic->SmallKeys(RR_SPIRIT_TEMPLE, 3) || (logic->SmallKeys(RR_SPIRIT_TEMPLE, 2) && 
+                                                                           logic->Boomerang && randoCtx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && logic->BombchuRefill && randoCtx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).Is(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF))))),
+
                   LOCATION(RC_SPIRIT_TEMPLE_GS_LOBBY,                     ((logic->HasExplosives || logic->SmallKeys(RR_SPIRIT_TEMPLE, 3) || (logic->SmallKeys(RR_SPIRIT_TEMPLE, 2) && randoCtx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && logic->BombchuRefill && randoCtx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).Is(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF))) &&
-                                                                                                randoCtx->GetTrickOption(RT_SPIRIT_LOBBY_GS) && logic->Boomerang && (logic->Hookshot || logic->HoverBoots || randoCtx->GetTrickOption(RT_SPIRIT_LOBBY_JUMP))) ||
-                                                                                            (randoCtx->GetTrickOption(RT_SPIRIT_LOBBY_GS) && logic->SmallKeys(RR_SPIRIT_TEMPLE, 5) && logic->HasExplosives && logic->CanUse(RG_BOOMERANG)) ||
-                                                                                            (logic->SmallKeys(RR_SPIRIT_TEMPLE, 3) && logic->CanUse(RG_SILVER_GAUNTLETS) && (logic->Hookshot || logic->HoverBoots || randoCtx->GetTrickOption(RT_SPIRIT_LOBBY_JUMP)))),
+                                                                           randoCtx->GetTrickOption(RT_SPIRIT_LOBBY_GS) && logic->Boomerang && (logic->Hookshot || logic->HoverBoots || randoCtx->GetTrickOption(RT_SPIRIT_LOBBY_JUMP))) ||
+                                                                          (randoCtx->GetTrickOption(RT_SPIRIT_LOBBY_GS) && logic->SmallKeys(RR_SPIRIT_TEMPLE, 5) && logic->HasExplosives && logic->CanUse(RG_BOOMERANG)) ||
+                                                                          (logic->SmallKeys(RR_SPIRIT_TEMPLE, 3) && logic->CanUse(RG_SILVER_GAUNTLETS) && (logic->Hookshot || logic->HoverBoots || randoCtx->GetTrickOption(RT_SPIRIT_LOBBY_JUMP)))),
                 }, {
                   //Exits
                   Entrance(RR_SPIRIT_TEMPLE_OUTDOOR_HANDS,              {[]{return logic->CanJumpslash || logic->HasExplosives;}}),
