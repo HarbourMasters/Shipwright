@@ -69,25 +69,16 @@ namespace Rando {
             case RG_DISTANT_SCARECROW:
                 return DistantScarecrow;
             case RG_KOKIRI_SWORD:
-                return ctx->CheckEquipment(EQUIP_FLAG_SWORD_KOKIRI);
             case RG_DEKU_SHIELD:
-                return ctx->CheckEquipment(EQUIP_FLAG_SHIELD_DEKU);
             case RG_GORON_TUNIC:
-                return ctx->CheckEquipment(EQUIP_FLAG_TUNIC_GORON);
             case RG_ZORA_TUNIC:
-                return ctx->CheckEquipment(EQUIP_FLAG_TUNIC_ZORA);
             case RG_HYLIAN_SHIELD:
-                return ctx->CheckEquipment(EQUIP_FLAG_SHIELD_HYLIAN);
             case RG_MIRROR_SHIELD:
-                return ctx->CheckEquipment(EQUIP_FLAG_SHIELD_MIRROR);
             case RG_MASTER_SWORD:
-                return ctx->CheckEquipment(EQUIP_FLAG_SWORD_MASTER);
             case RG_BIGGORON_SWORD:
-                return ctx->CheckEquipment(EQUIP_FLAG_SWORD_BGS);
             case RG_IRON_BOOTS:
-                return ctx->CheckEquipment(EQUIP_FLAG_BOOTS_IRON);
             case RG_HOVER_BOOTS:
-                return ctx->CheckEquipment(EQUIP_FLAG_BOOTS_HOVER);
+                return ctx->CheckEquipment(Context::RandoGetToEquipFlag.at(itemName));
             case RG_GORONS_BRACELET:
                 return ctx->CurrentUpgrade(UPG_STRENGTH);
             case RG_SILVER_GAUNTLETS:
@@ -126,50 +117,32 @@ namespace Rando {
             case RG_STONE_OF_AGONY:
             case RG_GERUDO_MEMBERSHIP_CARD:
                 return ctx->CheckQuestItem(Context::RandoGetToQuestItem.at(itemName));
-            case RG_FISHING_POLE:
-                return ctx->CheckRandoInf(RAND_INF_FISHING_POLE_FOUND);
-            case RG_ZELDAS_LETTER:
-                return ctx->CheckRandoInf(RAND_INF_ZELDAS_LETTER);
-            case RG_WEIRD_EGG:
-                return ctx->CheckRandoInf(RAND_INF_WEIRD_EGG);
-            case RG_GREG_RUPEE:
-                return ctx->CheckRandoInf(RAND_INF_GREG_FOUND);
             case RG_RUTOS_LETTER:
                 return ctx->CheckEventChkInf(EVENTCHKINF_OBTAINED_RUTOS_LETTER);
             case RG_DOUBLE_DEFENSE:
                 return ctx->GetSaveContext()->isDoubleDefenseAcquired;
+            case RG_FISHING_POLE:
+            case RG_ZELDAS_LETTER:
+            case RG_WEIRD_EGG:
+            case RG_GREG_RUPEE:
                 // Ocarina Buttons
             case RG_OCARINA_A_BUTTON:
-                return ctx->CheckRandoInf(RAND_INF_HAS_OCARINA_A);
             case RG_OCARINA_C_LEFT_BUTTON:
-                return ctx->CheckRandoInf(RAND_INF_HAS_OCARINA_C_LEFT);
             case RG_OCARINA_C_RIGHT_BUTTON:
-                return ctx->CheckRandoInf(RAND_INF_HAS_OCARINA_C_RIGHT);
             case RG_OCARINA_C_DOWN_BUTTON:
-                return ctx->CheckRandoInf(RAND_INF_HAS_OCARINA_C_DOWN);
             case RG_OCARINA_C_UP_BUTTON:
-                return ctx->CheckRandoInf(RAND_INF_HAS_OCARINA_C_UP);
                 // Boss Souls
             case RG_GOHMA_SOUL:
-                return ctx->CheckRandoInf(RAND_INF_GOHMA_SOUL);
             case RG_KING_DODONGO_SOUL:
-                return ctx->CheckRandoInf(RAND_INF_KING_DODONGO_SOUL);
             case RG_BARINADE_SOUL:
-                return ctx->CheckRandoInf(RAND_INF_BARINADE_SOUL);
             case RG_PHANTOM_GANON_SOUL:
-                return ctx->CheckRandoInf(RAND_INF_PHANTOM_GANON_SOUL);
             case RG_VOLVAGIA_SOUL:
-                return ctx->CheckRandoInf(RAND_INF_VOLVAGIA_SOUL);
             case RG_MORPHA_SOUL:
-                return ctx->CheckRandoInf(RAND_INF_MORPHA_SOUL);
             case RG_BONGO_BONGO_SOUL:
-                return ctx->CheckRandoInf(RAND_INF_BONGO_BONGO_SOUL);
             case RG_TWINROVA_SOUL:
-                return ctx->CheckRandoInf(RAND_INF_TWINROVA_SOUL);
             case RG_GANON_SOUL:
-                return ctx->CheckRandoInf(RAND_INF_GANON_SOUL);
             case RG_SKELETON_KEY:
-                return ctx->CheckRandoInf(RAND_INF_HAS_SKELETON_KEY);
+                return ctx->CheckRandoInf(Context::RandoGetToRandInf.at(itemName));
                 // Boss Keys
             case RG_FOREST_TEMPLE_BOSS_KEY:
             case RG_FIRE_TEMPLE_BOSS_KEY:
@@ -177,7 +150,7 @@ namespace Rando {
             case RG_SPIRIT_TEMPLE_BOSS_KEY:
             case RG_SHADOW_TEMPLE_BOSS_KEY:
             case RG_GANONS_CASTLE_BOSS_KEY:
-                return ctx->CheckDungeonItem(DUNGEON_KEY_BOSS, ctx->RandoGetToDungeonScene.at(itemName));
+                return ctx->CheckDungeonItem(DUNGEON_KEY_BOSS, Context::RandoGetToDungeonScene.at(itemName));
                 // Maps
             case RG_DEKU_TREE_MAP:
             case RG_DODONGOS_CAVERN_MAP:
@@ -189,7 +162,7 @@ namespace Rando {
             case RG_SHADOW_TEMPLE_MAP:
             case RG_BOTTOM_OF_THE_WELL_MAP:
             case RG_ICE_CAVERN_MAP:
-                return ctx->CheckDungeonItem(DUNGEON_MAP, ctx->RandoGetToDungeonScene.at(itemName));
+                return ctx->CheckDungeonItem(DUNGEON_MAP, Context::RandoGetToDungeonScene.at(itemName));
                 // Compasses
             case RG_DEKU_TREE_COMPASS:
             case RG_DODONGOS_CAVERN_COMPASS:
@@ -201,7 +174,7 @@ namespace Rando {
             case RG_SHADOW_TEMPLE_COMPASS:
             case RG_BOTTOM_OF_THE_WELL_COMPASS:
             case RG_ICE_CAVERN_COMPASS:
-                return ctx->CheckDungeonItem(DUNGEON_COMPASS, ctx->RandoGetToDungeonScene.at(itemName));
+                return ctx->CheckDungeonItem(DUNGEON_COMPASS, Context::RandoGetToDungeonScene.at(itemName));
                 // Wallets
             case RG_CHILD_WALLET:
                 return ctx->CheckRandoInf(RAND_INF_HAS_WALLET);

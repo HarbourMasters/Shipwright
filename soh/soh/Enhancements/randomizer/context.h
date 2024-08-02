@@ -54,7 +54,8 @@ class Context {
                                               Category categoryInclude, Category categoryExclude = Category::cNull);
     static std::map<uint32_t, uint32_t> RandoGetToQuestItem;
     static std::map<uint32_t, uint32_t> RandoGetToDungeonScene;
-    static std::map<RandomizerGet, uint32_t> RandoGetToFlag;
+    static std::map<RandomizerGet, uint32_t> RandoGetToEquipFlag;
+    static std::map<RandomizerGet, uint32_t> RandoGetToRandInf;
     void AddExcludedOptions();
     void LocationReset();
     void ClearItemLocations();

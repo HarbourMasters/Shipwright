@@ -395,7 +395,7 @@ void Context::ParseHintJson(nlohmann::json spoilerFileJson) {
     CreateStaticHints();
 }
 
-std::map<RandomizerGet, uint32_t> Context::RandoGetToFlag = {
+std::map<RandomizerGet, uint32_t> Context::RandoGetToEquipFlag = {
     { RG_KOKIRI_SWORD,           EQUIP_FLAG_SWORD_KOKIRI },
     { RG_MASTER_SWORD,           EQUIP_FLAG_SWORD_MASTER },
     { RG_BIGGORON_SWORD,         EQUIP_FLAG_SWORD_BGS },
@@ -409,7 +409,12 @@ std::map<RandomizerGet, uint32_t> Context::RandoGetToFlag = {
     { RG_BUY_GORON_TUNIC,        EQUIP_FLAG_TUNIC_GORON },
     { RG_BUY_ZORA_TUNIC,         EQUIP_FLAG_TUNIC_ZORA },
     { RG_IRON_BOOTS,             EQUIP_FLAG_BOOTS_IRON },
-    { RG_HOVER_BOOTS,            EQUIP_FLAG_BOOTS_HOVER },
+    { RG_HOVER_BOOTS,            EQUIP_FLAG_BOOTS_HOVER }
+};
+
+std::map<RandomizerGet, uint32_t> Context::RandoGetToRandInf = {
+    { RG_ZELDAS_LETTER,          RAND_INF_ZELDAS_LETTER },
+    { RG_WEIRD_EGG,              RAND_INF_WEIRD_EGG },
     { RG_GOHMA_SOUL,             RAND_INF_GOHMA_SOUL },
     { RG_KING_DODONGO_SOUL,      RAND_INF_KING_DODONGO_SOUL },
     { RG_BARINADE_SOUL,          RAND_INF_BARINADE_SOUL },
@@ -541,18 +546,13 @@ void Context::ApplyItemEffect(Item& item, bool state) {
             case RG_EYEBALL_FROG:
             case RG_EYEDROPS:
             case RG_CLAIM_CHECK:
-                if (!state) {
-                    mSaveContext->adultTradeItems &= ~(1 << (item.GetGIEntry()->itemId - ITEM_POCKET_EGG));
-                }
-                else {
-                    mSaveContext->adultTradeItems |= (1 << (item.GetGIEntry()->itemId - ITEM_POCKET_EGG));
-                }
+                SetAdultTrade(item.GetGIEntry()->itemId, state);
                 break;
             case RG_PROGRESSIVE_HOOKSHOT:
             {
                 uint8_t i;
                 for (i = 0; i < 3; i++) {
-                    if (mSaveContext->inventory.items[SLOT_HOOKSHOT] == HookshotLookup[i]) {
+                    if (CurrentInventory(ITEM_HOOKSHOT) == HookshotLookup[i]) {
                         break;
                     }
                 }
@@ -696,7 +696,7 @@ void Context::ApplyItemEffect(Item& item, bool state) {
             {
                 uint8_t i;
                 for (i = 0; i < 3; i++) {
-                    if (mSaveContext->inventory.items[SLOT_OCARINA] == OcarinaLookup[i]) {
+                    if (CurrentInventory(ITEM_OCARINA_FAIRY) == OcarinaLookup[i]) {
                         break;
                     }
                 }
@@ -773,7 +773,7 @@ void Context::ApplyItemEffect(Item& item, bool state) {
             case RG_OCARINA_C_RIGHT_BUTTON:
             case RG_GREG_RUPEE:
             case RG_FISHING_POLE:
-                SetRandoInf(RandoGetToFlag.at(randoGet), state);
+                SetRandoInf(RandoGetToRandInf.at(randoGet), state);
                 break;
             case RG_TRIFORCE_PIECE:
                 mSaveContext->triforcePiecesCollected += (!state ? -1 : 1);
@@ -793,7 +793,7 @@ void Context::ApplyItemEffect(Item& item, bool state) {
         if (itemRG == RG_GIANTS_KNIFE) {
             return;
         }
-        uint32_t equipId = RandoGetToFlag.find(itemRG)->second;
+        uint32_t equipId = RandoGetToEquipFlag.find(itemRG)->second;
         if (!state) {
             mSaveContext->inventory.equipment &= ~equipId;
             if (equipId == EQUIP_FLAG_SWORD_BGS) {
@@ -857,7 +857,7 @@ void Context::ApplyItemEffect(Item& item, bool state) {
     {
         RandomizerGet itemRG = item.GetRandomizerGet();
         if (itemRG == RG_BUY_HYLIAN_SHIELD || itemRG == RG_BUY_DEKU_SHIELD || itemRG == RG_BUY_GORON_TUNIC || itemRG == RG_BUY_ZORA_TUNIC) {
-            uint32_t equipId = RandoGetToFlag.find(itemRG)->second;
+            uint32_t equipId = RandoGetToEquipFlag.find(itemRG)->second;
             if (!state) {
                 mSaveContext->inventory.equipment &= ~equipId;
             }
