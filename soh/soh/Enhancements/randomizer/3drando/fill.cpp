@@ -245,7 +245,7 @@ std::vector<RandomizerCheck> GetAccessibleLocations(const std::vector<Randomizer
   int gsCount = 0;
   const int maxGsCount = mode == SearchMode::GeneratePlaythrough ? GetMaxGSCount() : 0; //If generating playthrough want the max that's possibly useful, else doesn't matter
   bool bombchusFound = false;
-  std::vector<std::variant<bool*, uint8_t*>> buyIgnores;
+  std::vector<LogicVal> buyIgnores;
 
   //Variables for search
   std::vector<Rando::ItemLocation*> newItemLocations;
@@ -365,9 +365,9 @@ std::vector<RandomizerCheck> GetAccessibleLocations(const std::vector<Randomizer
                 else if (IsBombchus(ignore) && IsBombchus(locItem, true)) {
                   newItemLocations.push_back(location);
                 }
-                //We want to ignore a specific Buy item. Buy items with different RandomizerGets are recognised by a shared GetLogicVar
+                //We want to ignore a specific Buy item. Buy items with different RandomizerGets are recognised by a shared GetLogicVal
                 else if (ignore != RG_GOLD_SKULLTULA_TOKEN && IsBombchus(ignore)) {
-                  if ((type == ITEMTYPE_SHOP && Rando::StaticData::GetItemTable()[ignore].GetLogicVar() != location->GetPlacedItem().GetLogicVar()) || type != ITEMTYPE_SHOP) {
+                  if ((type == ITEMTYPE_SHOP && Rando::StaticData::GetItemTable()[ignore].GetLogicVal() != location->GetPlacedItem().GetLogicVal()) || type != ITEMTYPE_SHOP) {
                     newItemLocations.push_back(location);
                   }
                 }
@@ -408,7 +408,7 @@ std::vector<RandomizerCheck> GetAccessibleLocations(const std::vector<Randomizer
                 // TODO: Reimplement Ammo Drops setting
                 else if (/*AmmoDrops.IsNot(AMMODROPS_NONE) &&*/ !(bombchus && bombchusFound) && type == ITEMTYPE_SHOP) {
                   //Only check each buy item once
-                  auto buyItem = location->GetPlacedItem().GetLogicVar();
+                  auto buyItem = location->GetPlacedItem().GetLogicVal();
                   //Buy item not in list to ignore, add it to list and write to playthrough
                   if (std::find(buyIgnores.begin(), buyIgnores.end(), buyItem) == buyIgnores.end()) {
                     exclude = false;
@@ -1000,7 +1000,9 @@ void ClearProgress() {
 int Fill() {
   auto ctx = Rando::Context::GetInstance();
   int retries = 0;
+  SPDLOG_INFO("Starting seed generation...");
   while(retries < 5) {
+    SPDLOG_INFO("Attempt {}...", retries + 1);
     placementFailure = false;
     //showItemProgress = false;
     ctx->playthroughLocations.clear();
@@ -1033,8 +1035,10 @@ int Fill() {
     //Place shop items first, since a buy shield is needed to place a dungeon reward on Gohma due to access
     NonShopItems = {};
     if (ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_OFF)) {
+      SPDLOG_INFO("Placing Vanilla Shop Items...");
       PlaceVanillaShopItems(); //Place vanilla shop items in vanilla location
     } else {
+      SPDLOG_INFO("Shuffling Shop Items");
       int total_replaced = 0;
       if (ctx->GetOption(RSK_SHOPSANITY).IsNot(RO_SHOPSANITY_ZERO_ITEMS)) { //Shopsanity 1-4, random
         //Initialize NonShopItems
@@ -1077,6 +1081,7 @@ int Fill() {
     }
 
     //Place dungeon rewards
+    SPDLOG_INFO("Shuffling and Placing Dungeon Items...");
     RandomizeDungeonRewards();
 
     //Place dungeon items restricted to their Own Dungeon
@@ -1121,15 +1126,18 @@ int Fill() {
 
     //Then place dungeon items that are assigned to restrictive location pools
     RandomizeDungeonItems();
+    SPDLOG_INFO("Dungeon Items Done");
 
     //Then place Link's Pocket Item if it has to be an advancement item
     RandomizeLinksPocket();
+    SPDLOG_INFO("Shuffling Advancement Items");
     //Then place the rest of the advancement items
     std::vector<RandomizerGet> remainingAdvancementItems =
         FilterAndEraseFromPool(ItemPool, [](const auto i) { return Rando::StaticData::RetrieveItem(i).IsAdvancement(); });
     AssumedFill(remainingAdvancementItems, ctx->allLocations, true);
 
     //Fast fill for the rest of the pool
+    SPDLOG_INFO("Shuffling Remaining Items");
     std::vector<RandomizerGet> remainingPool = FilterAndEraseFromPool(ItemPool, [](const auto i) { return true; });
     FastFill(remainingPool, GetAllEmptyLocations(), false);
 
