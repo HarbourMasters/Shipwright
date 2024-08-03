@@ -161,7 +161,7 @@ Rando::Entrance* Area::GetExit(RandomizerRegion exitToReturn) {
 }
 
 bool Area::CanPlantBeanCheck() const {
-  return (logic->MagicBean || logic->MagicBeanPack) && BothAgesCheck();
+    return Rando::Context::GetInstance()->GetAmmo(ITEM_BEAN) > 0 && BothAgesCheck();
 }
 
 bool Area::AllAccountedFor() const {

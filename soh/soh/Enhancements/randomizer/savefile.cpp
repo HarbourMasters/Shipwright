@@ -150,8 +150,12 @@ void SetStartingItems() {
     }
 
     if (Randomizer_GetSettingValue(RSK_STARTING_CONSUMABLES)) {
-        GiveLinkDekuSticks(10);
-        GiveLinkDekuNuts(20);
+        if (!Randomizer_GetSettingValue(RSK_SHUFFLE_DEKU_STICK_BAG)) {
+            GiveLinkDekuSticks(10);
+        }
+        if (!Randomizer_GetSettingValue(RSK_SHUFFLE_DEKU_NUT_BAG)) {
+            GiveLinkDekuNuts(20);
+        }
     }
 
     if (Randomizer_GetSettingValue(RSK_FULL_WALLETS)) {
@@ -331,7 +335,7 @@ extern "C" void Randomizer_InitSaveFile() {
         gSaveContext.adultTradeItems = 0;
     }
 
-    int startingAge = Randomizer_GetSettingValue(RSK_STARTING_AGE);
+    int startingAge = OTRGlobals::Instance->gRandoContext->GetSettings()->ResolvedStartingAge();
     switch (startingAge) {
         case RO_AGE_ADULT: // Adult
             gSaveContext.linkAge = LINK_AGE_ADULT;
