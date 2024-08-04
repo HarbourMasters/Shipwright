@@ -216,8 +216,8 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Equipment.HookshotChain",      "Hookshot Chain",           COSMETICS_GROUP_EQUIPMENT,    ImVec4(255, 255, 255, 255), false, true, true),
     COSMETIC_OPTION("Equipment.HookshotTip",        "Hookshot Tip",             COSMETICS_GROUP_EQUIPMENT,    ImVec4(255, 255, 255, 255), false, true, false),
     */
-    COSMETIC_OPTION("HookshotReticle.Target",       "Hookshotable Reticle",     COSMETICS_GROUP_EQUIPMENT,    ImVec4(  0, 255,   0, 255), false, false, false),
-    COSMETIC_OPTION("HookshotReticle.NonTarget",    "Non-Hookshotable Reticle", COSMETICS_GROUP_EQUIPMENT,    ImVec4(255,   0,   0, 255), false, false, false),
+    COSMETIC_OPTION("HookshotReticle.Target",       "Hookshotable Reticle",     COSMETICS_GROUP_EQUIPMENT,    ImVec4(  0, 255,   0, 255), false, true, false),
+    COSMETIC_OPTION("HookshotReticle.NonTarget",    "Non-Hookshotable Reticle", COSMETICS_GROUP_EQUIPMENT,    ImVec4(255,   0,   0, 255), false, true, false),
     COSMETIC_OPTION("Equipment.BowTips",            "Bow Tips",                 COSMETICS_GROUP_EQUIPMENT,    ImVec4(200,   0,   0, 255), false, true, true),
     COSMETIC_OPTION("Equipment.BowString",          "Bow String",               COSMETICS_GROUP_EQUIPMENT,    ImVec4(255, 255, 255, 255), false, true, true),
     COSMETIC_OPTION("Equipment.BowBody",            "Bow Body",                 COSMETICS_GROUP_EQUIPMENT,    ImVec4(140,  90,  10, 255), false, true, false),
@@ -232,8 +232,8 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Consumable.DDHeartBorder",     "DD Heart Border",          COSMETICS_GROUP_CONSUMABLE,   ImVec4(255, 255, 255, 255), false, true, true),
     COSMETIC_OPTION("Consumable.Magic",             "Magic",                    COSMETICS_GROUP_CONSUMABLE,   ImVec4(  0, 200,   0, 255), false, true, false),
     COSMETIC_OPTION("Consumable.MagicActive",       "Magic Active",             COSMETICS_GROUP_CONSUMABLE,   ImVec4(250, 250,   0, 255), false, true, true),
-    COSMETIC_OPTION("Consumable.MagicBorder",       "Magic Border",             COSMETICS_GROUP_CONSUMABLE,   ImVec4(255, 255, 255, 255), false, false, true),
-    COSMETIC_OPTION("Consumable.MagicBorderActive", "Magic Border Active",      COSMETICS_GROUP_CONSUMABLE,   ImVec4(255, 255, 255, 255), false, false, true),
+    COSMETIC_OPTION("Consumable.MagicBorder",       "Magic Border",             COSMETICS_GROUP_CONSUMABLE,   ImVec4(255, 255, 255, 255), false, true, true),
+    COSMETIC_OPTION("Consumable.MagicBorderActive", "Magic Border Active",      COSMETICS_GROUP_CONSUMABLE,   ImVec4(255, 255, 255, 255), false, true, true),
     COSMETIC_OPTION("Consumable.GreenRupee",        "Green Rupee",              COSMETICS_GROUP_CONSUMABLE,   ImVec4( 50, 255,  50, 255), false, true, true),
     COSMETIC_OPTION("Consumable.BlueRupee",         "Blue Rupee",               COSMETICS_GROUP_CONSUMABLE,   ImVec4( 50,  50, 255, 255), false, true, true),
     COSMETIC_OPTION("Consumable.RedRupee",          "Red Rupee",                COSMETICS_GROUP_CONSUMABLE,   ImVec4(255,  50,  50, 255), false, true, true),
@@ -256,9 +256,9 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("HUD.MinimapPosition",          "Minimap Position",         COSMETICS_GROUP_HUD,          ImVec4(200, 255,   0, 255), false, true, true),
     COSMETIC_OPTION("HUD.MinimapEntrance",          "Minimap Entrance",         COSMETICS_GROUP_HUD,          ImVec4(200,   0,   0, 255), false, true, true),
     COSMETIC_OPTION("HUD.EnemyHealthBar",           "Enemy Health Bar",         COSMETICS_GROUP_HUD,          ImVec4(255,   0,   0, 255), true,  true, false),
-    COSMETIC_OPTION("HUD.EnemyHealthBorder",        "Enemy Health Border",      COSMETICS_GROUP_HUD,          ImVec4(255, 255, 255, 255), true,  false, true),
+    COSMETIC_OPTION("HUD.EnemyHealthBorder",        "Enemy Health Border",      COSMETICS_GROUP_HUD,          ImVec4(255, 255, 255, 255), true,  true, true),
     COSMETIC_OPTION("HUD.NameTagActorText",         "Nametag Text",             COSMETICS_GROUP_HUD,          ImVec4(255, 255, 255, 255), true,  true, false),
-    COSMETIC_OPTION("HUD.NameTagActorBackground",   "Nametag Background",       COSMETICS_GROUP_HUD,          ImVec4(  0,   0,   0,  80), true,  false, true),
+    COSMETIC_OPTION("HUD.NameTagActorBackground",   "Nametag Background",       COSMETICS_GROUP_HUD,          ImVec4(  0,   0,   0,  80), true,  true, true),
 
     #define MESSAGE_COSMETIC_OPTION(id, label, r, g, b) COSMETIC_OPTION("Message." id, label, COSMETICS_GROUP_MESSAGE,  ImVec4(r, g, b, 255), false, true, true)
 
