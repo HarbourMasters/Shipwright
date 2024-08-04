@@ -260,6 +260,8 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("HUD.EnemyHealthBorder",        "Enemy Health Border",      COSMETICS_GROUP_HUD,          ImVec4(255, 255, 255, 255), true,  true, true),
     COSMETIC_OPTION("HUD.NameTagActorText",         "Nametag Text",             COSMETICS_GROUP_HUD,          ImVec4(255, 255, 255, 255), true,  true, false),
     COSMETIC_OPTION("HUD.NameTagActorBackground",   "Nametag Background",       COSMETICS_GROUP_HUD,          ImVec4(  0,   0,   0,  80), true,  true, true),
+    COSMETIC_OPTION("HUD.TitleCard.Map",            "Map Title Card",           COSMETICS_GROUP_HUD,          ImVec4(255, 255, 255, 255), false, true, false),
+    COSMETIC_OPTION("HUD.TitleCard.Boss",           "Boss Title Card",          COSMETICS_GROUP_HUD,          ImVec4(255, 255, 255, 255), false, true, false),
 
     #define MESSAGE_COSMETIC_OPTION(id, label, r, g, b) COSMETIC_OPTION("Message." id, label, COSMETICS_GROUP_MESSAGE,  ImVec4(r, g, b, 255), false, true, true)
 
@@ -282,8 +284,6 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
 
     #undef MESSAGE_COSMETIC_OPTION
 
-    // Todo (Cosmetics): re-implement title card colors
-    
     COSMETIC_OPTION("Kaleido.ItemSelA",             "Item Select Color",        COSMETICS_GROUP_KALEIDO,      ImVec4( 10,  50,  80, 255), false, true, false),
     COSMETIC_OPTION("Kaleido.ItemSelB",             "Item Select Color B",      COSMETICS_GROUP_KALEIDO,      ImVec4( 70, 100, 130, 255), false, true, true),
     COSMETIC_OPTION("Kaleido.ItemSelC",             "Item Select Color C",      COSMETICS_GROUP_KALEIDO,      ImVec4( 70, 100, 130, 255), false, true, true),
