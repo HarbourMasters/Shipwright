@@ -1392,16 +1392,16 @@ int EntranceShuffler::ShuffleAllEntrances() {
                 poolsToMix.insert(EntranceType::BossReverse);
             }
         }
-        if (ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {
+        if (ctx->GetOption(RSK_MIX_OVERWORLD_ENTRANCES)) {
             poolsToMix.insert(EntranceType::Overworld);
         }
-        if (ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES)) {
+        if (ctx->GetOption(RSK_MIX_INTERIOR_ENTRANCES)) {
             poolsToMix.insert(EntranceType::Interior);
             if (ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
                 poolsToMix.insert(EntranceType::InteriorReverse);
             }
         }
-        if (ctx->GetOption(RSK_SHUFFLE_GROTTO_ENTRANCES)) {
+        if (ctx->GetOption(RSK_MIX_GROTTO_ENTRANCES)) {
             poolsToMix.insert(EntranceType::GrottoGrave);
             if (ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
                 poolsToMix.insert(EntranceType::GrottoGraveReverse);
