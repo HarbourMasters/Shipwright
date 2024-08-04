@@ -54,6 +54,13 @@ void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName);
 u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 }
 
+#define PATCH_GFX(path, name, cvar, index, instruction)             \
+    if (CVarGetInteger(cvar, 0)) {                                  \
+        ResourceMgr_PatchGfxByName(path, name, index, instruction); \
+    } else {                                                        \
+        ResourceMgr_UnpatchGfxByName(path, name);                   \
+    }
+
 // This is used for the greg bridge
 #define dgEndGrayscaleAndEndDlistDL "__OTR__helpers/cosmetics/gEndGrayscaleAndEndDlistDL"
 static const ALIGN_ASSET(2) char gEndGrayscaleAndEndDlistDL[] = dgEndGrayscaleAndEndDlistDL;
