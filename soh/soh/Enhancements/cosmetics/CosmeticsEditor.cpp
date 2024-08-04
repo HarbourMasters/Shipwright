@@ -212,8 +212,8 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Equipment.SlingshotString",    "Slingshot String",         COSMETICS_GROUP_EQUIPMENT,    ImVec4(255, 255, 255, 255), false, true, true),
     COSMETIC_OPTION("Equipment.HammerHead",         "Hammer Head",              COSMETICS_GROUP_EQUIPMENT,    ImVec4(155, 192, 201, 255), false, true, false),
     COSMETIC_OPTION("Equipment.HammerHandle",       "Hammer Handle",            COSMETICS_GROUP_EQUIPMENT,    ImVec4(110,  60,   0, 255), false, true, true),
-    /* Todo (Cosmetics): Implement
     COSMETIC_OPTION("Equipment.HookshotChain",      "Hookshot Chain",           COSMETICS_GROUP_EQUIPMENT,    ImVec4(255, 255, 255, 255), false, true, true),
+    /* Todo (Cosmetics): Implement
     COSMETIC_OPTION("Equipment.HookshotTip",        "Hookshot Tip",             COSMETICS_GROUP_EQUIPMENT,    ImVec4(255, 255, 255, 255), false, true, false),
     */
     COSMETIC_OPTION("HookshotReticle.Target",       "Hookshotable Reticle",     COSMETICS_GROUP_EQUIPMENT,    ImVec4(  0, 255,   0, 255), false, true, false),
@@ -282,7 +282,7 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     #undef MESSAGE_COSMETIC_OPTION
 
     // Todo (Cosmetics): re-implement title card colors
-
+    
     COSMETIC_OPTION("Kaleido.ItemSelA",             "Item Select Color",        COSMETICS_GROUP_KALEIDO,      ImVec4( 10,  50,  80, 255), false, true, false),
     COSMETIC_OPTION("Kaleido.ItemSelB",             "Item Select Color B",      COSMETICS_GROUP_KALEIDO,      ImVec4( 70, 100, 130, 255), false, true, true),
     COSMETIC_OPTION("Kaleido.ItemSelC",             "Item Select Color C",      COSMETICS_GROUP_KALEIDO,      ImVec4( 70, 100, 130, 255), false, true, true),
@@ -297,7 +297,7 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Kaleido.MapSelDunB",           "Map Dungeon Color B",      COSMETICS_GROUP_KALEIDO,      ImVec4(140,  60,  60, 255), false, true, true),
     COSMETIC_OPTION("Kaleido.MapSelDunC",           "Map Dungeon Color C",      COSMETICS_GROUP_KALEIDO,      ImVec4(140,  60,  60, 255), false, true, true),
     COSMETIC_OPTION("Kaleido.MapSelDunD",           "Map Dungeon Color D",      COSMETICS_GROUP_KALEIDO,      ImVec4( 80,  40,  30, 255), false, true, true),
-
+    
     COSMETIC_OPTION("Kaleido.QuestStatusA",         "Quest Status Color",       COSMETICS_GROUP_KALEIDO,      ImVec4( 80,  80,  50, 255), false, true, false),
     COSMETIC_OPTION("Kaleido.QuestStatusB",         "Quest Status Color B",     COSMETICS_GROUP_KALEIDO,      ImVec4(120, 120,  70, 255), false, true, true),
     COSMETIC_OPTION("Kaleido.QuestStatusC",         "Quest Status Color C",     COSMETICS_GROUP_KALEIDO,      ImVec4(120, 120,  70, 255), false, true, true),
@@ -307,14 +307,14 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Kaleido.MapSelectB",           "Map Color B",              COSMETICS_GROUP_KALEIDO,      ImVec4(140,  60,  60, 255), false, true, true),
     COSMETIC_OPTION("Kaleido.MapSelectC",           "Map Color C",              COSMETICS_GROUP_KALEIDO,      ImVec4(140,  60,  60, 255), false, true, true),
     COSMETIC_OPTION("Kaleido.MapSelectD",           "Map Color D",              COSMETICS_GROUP_KALEIDO,      ImVec4( 80,  40,  30, 255), false, true, true),
-
+    
     COSMETIC_OPTION("Kaleido.SaveA",                "Save Color",               COSMETICS_GROUP_KALEIDO,      ImVec4( 50,  50,  50, 255), false, true, false),
     COSMETIC_OPTION("Kaleido.SaveB",                "Save Color B",             COSMETICS_GROUP_KALEIDO,      ImVec4(110, 110, 110, 255), false, true, true),
     COSMETIC_OPTION("Kaleido.SaveC",                "Save Color C",             COSMETICS_GROUP_KALEIDO,      ImVec4(110, 110, 110, 255), false, true, true),
     COSMETIC_OPTION("Kaleido.SaveD",                "Save Color D",             COSMETICS_GROUP_KALEIDO,      ImVec4( 50,  50,  50, 255), false, true, true),
-
+    
     COSMETIC_OPTION("Kaleido.NamePanel",            "Name Panel",               COSMETICS_GROUP_KALEIDO,      ImVec4( 90, 100, 130, 255), true,  true, false),
-
+    
     COSMETIC_OPTION("Title.FileChoose",             "File Choose",              COSMETICS_GROUP_TITLE,        ImVec4(100, 150, 255, 255), false, true, false),
     COSMETIC_OPTION("Title.NintendoLogo",           "Nintendo Logo",            COSMETICS_GROUP_TITLE,        ImVec4(  0,   0, 255, 255), false, true, true),
     COSMETIC_OPTION("Title.N64LogoRed",             "N64 Red",                  COSMETICS_GROUP_TITLE,        ImVec4(150,   0,   0, 255), false, true, true),
@@ -326,7 +326,7 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Title.FirePrimary",            "Title Fire Primary",       COSMETICS_GROUP_TITLE,        ImVec4(255, 255, 170, 255), false, true, false),
     COSMETIC_OPTION("Title.FireSecondary",          "Title Fire Secondary",     COSMETICS_GROUP_TITLE,        ImVec4(255, 100,   0, 255), false, true, true),
     */
-
+    
     COSMETIC_OPTION("Arrows.NormalPrimary",         "Normal Primary",           COSMETICS_GROUP_ARROWS,       ImVec4(  0, 150,   0,   0), false, true, false),
     COSMETIC_OPTION("Arrows.NormalSecondary",       "Normal Secondary",         COSMETICS_GROUP_ARROWS,       ImVec4(255, 255, 170, 255), false, true, true),
     COSMETIC_OPTION("Arrows.FirePrimary",           "Fire Primary",             COSMETICS_GROUP_ARROWS,       ImVec4(255, 200,   0,   0), false, true, false),
@@ -344,7 +344,7 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Magic.NayrusPrimary",          "Nayru's Primary",          COSMETICS_GROUP_MAGIC,        ImVec4(255, 255, 255, 255), false, true, false),
     COSMETIC_OPTION("Magic.NayrusSecondary",        "Nayru's Secondary",        COSMETICS_GROUP_MAGIC,        ImVec4(255, 255, 255, 255), false, true, true),
     */
-
+    
     COSMETIC_OPTION("SpinAttack.Level1Primary",     "Level 1 Primary",          COSMETICS_GROUP_SPIN_ATTACK,  ImVec4(170, 255, 255, 255), false, true, true),
     COSMETIC_OPTION("SpinAttack.Level1Secondary",   "Level 1 Secondary",        COSMETICS_GROUP_SPIN_ATTACK,  ImVec4(  0, 100, 255, 255), false, true, false),
     COSMETIC_OPTION("SpinAttack.Level2Primary",     "Level 2 Primary",          COSMETICS_GROUP_SPIN_ATTACK,  ImVec4(255, 255, 170, 255), false, true, true),
@@ -981,6 +981,13 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
         PATCH_GFX(gGiHammerDL,                                    "Equipment_HammerHandle2",  equipmentHammerHandle.changedCvar,   85, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
         PATCH_GFX(gLinkAdultLeftHandHoldingHammerNearDL,          "Equipment_HammerHandle5",  equipmentHammerHandle.changedCvar,   18, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
         PATCH_GFX(gLinkAdultLeftHandHoldingHammerFarDL,           "Equipment_HammerHandle6",  equipmentHammerHandle.changedCvar,   18, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+    }
+    
+    static CosmeticOption& equipmentHookshotChain = cosmeticOptions.at("Equipment.HookshotChain");
+    if (manualChange || CVarGetInteger(equipmentHookshotChain.rainbowCvar, 0)) {
+        static Color_RGBA8 defaultColor = {equipmentHookshotChain.defaultColor.x, equipmentHookshotChain.defaultColor.y, equipmentHookshotChain.defaultColor.z, equipmentHookshotChain.defaultColor.w};
+        Color_RGBA8 color = CVarGetColor(equipmentHookshotChain.cvar, defaultColor);
+        PATCH_GFX(gLinkAdultHookshotChainDL,                      "Equipment_HookshotChain1",  equipmentHookshotChain.changedCvar,   17, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
     }
 
     static CosmeticOption& equipmentChuFace = cosmeticOptions.at("Equipment.ChuFace");
