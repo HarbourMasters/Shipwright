@@ -25,6 +25,14 @@ typedef enum {
 } CosmeticGroup;
 
 #ifdef __cplusplus
+extern "C" {
+#endif //__cplusplus
+
+    Color_RGBA8 CosmeticsEditor_GetDefaultValue(const char* id);
+
+#ifdef __cplusplus
+}
+
 typedef struct {
     const std::string Name;
     const std::string ToolTip;

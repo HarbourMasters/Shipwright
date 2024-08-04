@@ -1126,6 +1126,15 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
     }
 }
 
+extern "C" Color_RGBA8 CosmeticsEditor_GetDefaultValue(const char* id) {
+    return Color_RGBA8 {
+        (uint8_t)(cosmeticOptions[id].defaultColor.x * 255.0f),
+        (uint8_t)(cosmeticOptions[id].defaultColor.y * 255.0f),
+        (uint8_t)(cosmeticOptions[id].defaultColor.z * 255.0f),
+        (uint8_t)(cosmeticOptions[id].defaultColor.w * 255.0f)
+    };
+}
+
 void Table_InitHeader(bool has_header = true) {
     if (has_header) {
         ImGui::TableHeadersRow();
