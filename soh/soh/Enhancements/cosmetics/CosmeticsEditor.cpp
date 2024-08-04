@@ -535,8 +535,8 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
     if (manualChange || CVarGetInteger(magicFaroresSecondary.rainbowCvar, 0)) {
         static Color_RGBA8 defaultColor = {magicFaroresSecondary.defaultColor.x, magicFaroresSecondary.defaultColor.y, magicFaroresSecondary.defaultColor.z, magicFaroresSecondary.defaultColor.w};
         Color_RGBA8 color = CVarGetColor(magicFaroresSecondary.cvar, defaultColor);
-        PATCH_GFX(sInnerCylinderDL,                               "Magic_FaroresSecondary1",  magicFaroresSecondary.changedCvar,   25, gsDPSetEnvColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(sOuterCylinderDL,                               "Magic_FaroresSecondary2",  magicFaroresSecondary.changedCvar,   25, gsDPSetEnvColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(sInnerCylinderDL,                               "Magic_FaroresSecondary1",  magicFaroresSecondary.changedCvar,   25, gsDPSetEnvColor(color.r, color.g, color.b, 255));
+        PATCH_GFX(sOuterCylinderDL,                               "Magic_FaroresSecondary2",  magicFaroresSecondary.changedCvar,   25, gsDPSetEnvColor(color.r, color.g, color.b, 255));
     }
 
     static CosmeticOption& linkGoronTunic = cosmeticOptions.at("Link.GoronTunic");
