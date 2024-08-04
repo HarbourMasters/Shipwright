@@ -49,7 +49,7 @@ static float TablesCellsWidth = 300.0f;
 static ImGuiTableColumnFlags FlagsTable = ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV;
 static ImGuiTableColumnFlags FlagsCell = ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort;
 
-ImVec4 GetRandomValue(int MaximumPossible);
+ImVec4 GetRandomValue();
 void CosmeticsEditor_RandomizeAll();
 void CosmeticsEditor_RandomizeGroup(CosmeticGroup group);
 void CosmeticsEditor_ResetAll();
