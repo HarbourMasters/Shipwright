@@ -44,6 +44,7 @@ extern "C" {
     #include "objects/object_gjyo_objects/object_gjyo_objects.h"
     #include "objects/object_gi_rabit_mask/object_gi_rabit_mask.h"
     #include "overlays/ovl_Boss_Ganon2/ovl_Boss_Ganon2.h"
+    #include "overlays/ovl_Magic_Wind/ovl_Magic_Wind.h"
     #include "textures/nintendo_rogo_static/nintendo_rogo_static.h"
     extern PlayState* gPlayState;
     void ResourceMgr_PatchGfxByName(const char* path, const char* patchName, int index, Gfx instruction);
@@ -335,13 +336,13 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Arrows.IceSecondary",          "Ice Secondary",            COSMETICS_GROUP_ARROWS,       ImVec4(255, 255, 255, 255), false, true, true),
     COSMETIC_OPTION("Arrows.LightPrimary",          "Light Primary",            COSMETICS_GROUP_ARROWS,       ImVec4(255, 255,   0, 255), false, true, false),
     COSMETIC_OPTION("Arrows.LightSecondary",        "Light Secondary",          COSMETICS_GROUP_ARROWS,       ImVec4(255, 255, 170,   0), false, true, true),
-
+    
     /* Todo (Cosmetics): Implement
-    COSMETIC_OPTION("Magic.DinsPrimary",            "Din's Primary",            COSMETICS_GROUP_MAGIC,        ImVec4(255, 255, 255, 255), false, true, false),
-    COSMETIC_OPTION("Magic.DinsSecondary",          "Din's Secondary",          COSMETICS_GROUP_MAGIC,        ImVec4(255, 255, 255, 255), false, true, true),
-    COSMETIC_OPTION("Magic.FaroresPrimary",         "Farore's Primary",         COSMETICS_GROUP_MAGIC,        ImVec4(255, 255, 255, 255), false, true, false),
-    COSMETIC_OPTION("Magic.FaroresSecondary",       "Farore's Secondary",       COSMETICS_GROUP_MAGIC,        ImVec4(255, 255, 255, 255), false, true, true),
+    COSMETIC_OPTION("Magic.DinsPrimary",            "Din's Primary",            COSMETICS_GROUP_MAGIC,        ImVec4(255, 200,   0, 255), false, true, false),
+    COSMETIC_OPTION("Magic.DinsSecondary",          "Din's Secondary",          COSMETICS_GROUP_MAGIC,        ImVec4(255,   0,   0, 255), false, true, true),
     */
+    COSMETIC_OPTION("Magic.FaroresPrimary",         "Farore's Primary",         COSMETICS_GROUP_MAGIC,        ImVec4(255, 255,   0, 255), false, true, false),
+    COSMETIC_OPTION("Magic.FaroresSecondary",       "Farore's Secondary",       COSMETICS_GROUP_MAGIC,        ImVec4(100, 200,   0, 255), false, true, true),
     COSMETIC_OPTION("Magic.NayrusPrimary",          "Nayru's Primary",          COSMETICS_GROUP_MAGIC,        ImVec4(170, 255, 255, 255), false, true, false),
     COSMETIC_OPTION("Magic.NayrusSecondary",        "Nayru's Secondary",        COSMETICS_GROUP_MAGIC,        ImVec4(  0, 100, 255, 255), false, true, true),
     
@@ -524,6 +525,22 @@ void CosmeticsUpdateTick() {
     5. GFX Command: The GFX command you want to insert
 */
 void ApplyOrResetCustomGfxPatches(bool manualChange) {
+    static CosmeticOption& magicFaroresPrimary = cosmeticOptions.at("Magic.FaroresPrimary");
+    if (manualChange || CVarGetInteger(magicFaroresPrimary.rainbowCvar, 0)) {
+        static Color_RGBA8 defaultColor = {magicFaroresPrimary.defaultColor.x, magicFaroresPrimary.defaultColor.y, magicFaroresPrimary.defaultColor.z, magicFaroresPrimary.defaultColor.w};
+        Color_RGBA8 color = CVarGetColor(magicFaroresPrimary.cvar, defaultColor);
+        PATCH_GFX(sInnerCylinderDL,                               "Magic_FaroresPrimary1",    magicFaroresPrimary.changedCvar,     24, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(sOuterCylinderDL,                               "Magic_FaroresPrimary2",    magicFaroresPrimary.changedCvar,     24, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+    }
+    
+    static CosmeticOption& magicFaroresSecondary = cosmeticOptions.at("Magic.FaroresSecondary");
+    if (manualChange || CVarGetInteger(magicFaroresSecondary.rainbowCvar, 0)) {
+        static Color_RGBA8 defaultColor = {magicFaroresSecondary.defaultColor.x, magicFaroresSecondary.defaultColor.y, magicFaroresSecondary.defaultColor.z, magicFaroresSecondary.defaultColor.w};
+        Color_RGBA8 color = CVarGetColor(magicFaroresSecondary.cvar, defaultColor);
+        PATCH_GFX(sInnerCylinderDL,                               "Magic_FaroresSecondary1",  magicFaroresSecondary.changedCvar,   25, gsDPSetEnvColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(sOuterCylinderDL,                               "Magic_FaroresSecondary2",  magicFaroresSecondary.changedCvar,   25, gsDPSetEnvColor(0, 0, color.r, color.g, color.b, 255));
+    }
+
     static CosmeticOption& linkGoronTunic = cosmeticOptions.at("Link.GoronTunic");
     if (manualChange || CVarGetInteger(linkGoronTunic.rainbowCvar, 0)) {
         static Color_RGBA8 defaultColor = {linkGoronTunic.defaultColor.x, linkGoronTunic.defaultColor.y, linkGoronTunic.defaultColor.z, linkGoronTunic.defaultColor.w};
