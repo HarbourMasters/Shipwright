@@ -327,6 +327,7 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Title.FirePrimary",            "Title Fire Primary",       COSMETICS_GROUP_TITLE,        ImVec4(255, 255, 170, 255), false, true, false),
     COSMETIC_OPTION("Title.FireSecondary",          "Title Fire Secondary",     COSMETICS_GROUP_TITLE,        ImVec4(255, 100,   0, 255), false, true, true),
     */
+    COSMETIC_OPTION("Title.Copyright",              "Copyright Text",           COSMETICS_GROUP_TITLE,        ImVec4(255, 255, 255, 255), true,  true, false),
     
     COSMETIC_OPTION("Arrows.NormalPrimary",         "Normal Primary",           COSMETICS_GROUP_ARROWS,       ImVec4(  0, 150,   0,   0), false, true, false),
     COSMETIC_OPTION("Arrows.NormalSecondary",       "Normal Secondary",         COSMETICS_GROUP_ARROWS,       ImVec4(255, 255, 170, 255), false, true, true),
