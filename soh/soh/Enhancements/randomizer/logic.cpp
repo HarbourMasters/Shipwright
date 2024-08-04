@@ -527,7 +527,7 @@ namespace Rando {
         Slingshot = (BuySeed || AmmoCanDrop) && BulletBag;
         Magic     = (AmmoCanDrop || (HasBottle && (BuyMagicPotion))) && MagicMeter;
         Bombs     = (BuyBomb || AmmoCanDrop) && HasItem(RG_PROGRESSIVE_BOMB_BAG);
-        Bombchus  = BombchuRefill && BombchuIcon;
+        Bombchus  = BombchuRefill && BombchuIcon && BombchusEnabled;
         Bow       = (BuyArrow || AmmoCanDrop) && Quiver;
         Nuts      = HasItem(RG_NUTS) && ((NutPot  || NutCrate || DekuBabaNuts) && AmmoCanDrop) || Nuts; //RANDOTODO BuyNuts currently mixed in with Nuts, should be seperate as BuyNuts are also a Nuts source
         Sticks    = HasItem(RG_STICKS) && (StickPot || DekuBabaSticks);
