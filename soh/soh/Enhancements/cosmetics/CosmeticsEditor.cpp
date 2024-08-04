@@ -82,7 +82,8 @@ std::map<CosmeticGroup, const char*> groupLabels = {
     { COSMETICS_GROUP_SPIN_ATTACK, "Spin Attack" },
     { COSMETICS_GROUP_TRAILS, "Trails" },
     { COSMETICS_GROUP_NAVI, "Navi" },
-    { COSMETICS_GROUP_IVAN, "Ivan" } 
+    { COSMETICS_GROUP_IVAN, "Ivan" },
+    { COSMETICS_GROUP_MESSAGE, "Message" },
 };
 
 typedef struct {
@@ -254,6 +255,28 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("HUD.EnemyHealthBorder",         "Enemy Health Border",  COSMETICS_GROUP_HUD,          ImVec4(255, 255, 255, 255), true, false, true),
     COSMETIC_OPTION("HUD.NameTagActorText",          "Nametag Text",         COSMETICS_GROUP_HUD,          ImVec4(255, 255, 255, 255), true, true, false),
     COSMETIC_OPTION("HUD.NameTagActorBackground",    "Nametag Background",   COSMETICS_GROUP_HUD,          ImVec4(0,     0,   0,  80), true, false, true),
+
+    #define MESSAGE_COSMETIC_OPTION(id, label, r, g, b) COSMETIC_OPTION("Message." id, label, COSMETICS_GROUP_MESSAGE,  ImVec4(r, g, b, 255), false, true, true)
+
+    MESSAGE_COSMETIC_OPTION("Default.Normal",                   "Message Default Color",                     255, 255, 255),
+    MESSAGE_COSMETIC_OPTION("Default.NoneNoShadow",             "Message Default (None No Shadow) Color",      0,   0,   0),
+    MESSAGE_COSMETIC_OPTION("Red.Normal",                       "Message Red Color",                         255,  60,  60),
+    MESSAGE_COSMETIC_OPTION("Red.Wooden",                       "Message Red (Wooden) Color",                255, 120,   0),
+    MESSAGE_COSMETIC_OPTION("Adjustable.Normal",                "Message Adjustable Color",                   70, 255,  80),
+    MESSAGE_COSMETIC_OPTION("Adjustable.Wooden",                "Message Adjustable (Wooden) Color",          70, 255,  80),
+    MESSAGE_COSMETIC_OPTION("Blue.Normal",                      "Message Blue Color",                         80,  90, 255),
+    MESSAGE_COSMETIC_OPTION("Blue.Wooden",                      "Message Blue (Wooden) Color",                80, 110, 255),
+    MESSAGE_COSMETIC_OPTION("LightBlue.Normal",                 "Message Light Blue Color",                  100, 180, 255),
+    MESSAGE_COSMETIC_OPTION("LightBlue.Wooden",                 "Message Light Blue (Wooden) Color",          90, 180, 255),
+    MESSAGE_COSMETIC_OPTION("LightBlue.LightBlue.NoneNoShadow", "Message Light Blue (None No Shadow) Color",  80, 150, 180),
+    MESSAGE_COSMETIC_OPTION("Purple.Normal",                    "Message Purple Color",                      255, 150, 180),
+    MESSAGE_COSMETIC_OPTION("Purple.Wooden",                    "Message Purple (Wooden) Color",             210, 100, 255),
+    MESSAGE_COSMETIC_OPTION("Yellow.Normal",                    "Message Yellow Color",                      255, 255,  50),
+    MESSAGE_COSMETIC_OPTION("Yellow.Wooden",                    "Message Yellow (Wooden) Color",             255, 255,  30),
+    MESSAGE_COSMETIC_OPTION("Black",                            "Message Black Color",                         0,   0,   0),
+
+    #undef MESSAGE_COSMETIC_OPTION
+
     // Todo (Cosmetics): re-implement title card colors
 
     COSMETIC_OPTION("Kaleido.ItemSelA",                  "Item Select Color",    COSMETICS_GROUP_KALEIDO,      ImVec4(10,   50,  80, 255), false, true, false),
@@ -1634,7 +1657,8 @@ void DrawCosmeticRow(CosmeticOption& cosmeticOption) {
     }
     ImGui::SameLine();
     ImGui::Text("%s", cosmeticOption.label.c_str());
-    ImGui::SameLine((ImGui::CalcTextSize("Mirror Shield Mirror").x * 1.0f) + 60.0f);
+    //the longest option name
+    ImGui::SameLine((ImGui::CalcTextSize("Message Light Blue (None No Shadow) Color").x * 1.0f) + 60.0f);
     if (ImGui::Button(("Random##" + cosmeticOption.label).c_str())) {
         RandomizeColor(cosmeticOption);
         ApplyOrResetCustomGfxPatches();
@@ -1670,7 +1694,8 @@ void DrawCosmeticRow(CosmeticOption& cosmeticOption) {
 void DrawCosmeticGroup(CosmeticGroup cosmeticGroup) {
     std::string label = groupLabels.at(cosmeticGroup);
     ImGui::Text("%s", label.c_str());
-    ImGui::SameLine((ImGui::CalcTextSize("Mirror Shield Mirror").x * 1.0f) + 60.0f);
+    // the longest option name
+    ImGui::SameLine((ImGui::CalcTextSize("Message Light Blue (None No Shadow) Color").x * 1.0f) + 60.0f);
     if (ImGui::Button(("Random##" + label).c_str())) {
         for (auto& [id, cosmeticOption] : cosmeticOptions) {
             if (cosmeticOption.group == cosmeticGroup && (!cosmeticOption.advancedOption || CVarGetInteger(CVAR_COSMETIC("AdvancedMode"), 0)) && !CVarGetInteger(cosmeticOption.lockedCvar, 0)) {
@@ -1823,6 +1848,11 @@ void CosmeticsEditorWindow::DrawElement() {
 
         if (ImGui::BeginTabItem("Pause Menu")) {
             DrawCosmeticGroup(COSMETICS_GROUP_KALEIDO);
+            ImGui::EndTabItem();
+        }
+
+        if (ImGui::BeginTabItem("Message")) {
+            DrawCosmeticGroup(COSMETICS_GROUP_MESSAGE);
             ImGui::EndTabItem();
         }
         ImGui::EndTabBar();
