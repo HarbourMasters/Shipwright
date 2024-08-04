@@ -8,7 +8,6 @@
 #include <random>
 #include <math.h>
 #include <algorithm>
-#include "soh/Enhancements/randomizer/3drando/random.hpp"
 #include <libultraship/libultraship.h>
 
 #include "soh/UIWidgets.hpp"
@@ -1605,10 +1604,11 @@ void ApplySideEffects(CosmeticOption& cosmeticOption) {
 }
 
 void RandomizeColor(CosmeticOption& cosmeticOption) {
+    ImVec4 randomColor = GetRandomValue();
     Color_RGBA8 newColor;
-    newColor.r = Random(0, 255);
-    newColor.g = Random(0, 255);
-    newColor.b = Random(0, 255);
+    newColor.r = randomColor.x * 255;
+    newColor.g = randomColor.y * 255;
+    newColor.b = randomColor.z * 255;
     newColor.a = 255;
     // For alpha supported options, retain the last set alpha instead of overwriting
     if (cosmeticOption.supportsAlpha) {
@@ -1621,8 +1621,8 @@ void RandomizeColor(CosmeticOption& cosmeticOption) {
     cosmeticOption.currentColor.w = newColor.a / 255.0;
 
     CVarSetColor(cosmeticOption.cvar, newColor);
-    CVarSetInteger((cosmeticOption.rainbowCvar), 0);
-    CVarSetInteger((cosmeticOption.changedCvar), 1);
+    CVarSetInteger(cosmeticOption.rainbowCvar, 0);
+    CVarSetInteger(cosmeticOption.changedCvar, 1);
     ApplySideEffects(cosmeticOption);
 }
 
