@@ -1849,6 +1849,36 @@ void CosmeticsEditorWindow::DrawElement() {
         }
         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
+    
+    if (ImGui::Button("Rainbow All", ImVec2(ImGui::GetContentRegionAvail().x / 2, 30.0f))) {
+        for (auto& [id, cosmeticOption] : cosmeticOptions) {
+            if (
+                !CVarGetInteger(cosmeticOption.lockedCvar, 0) &&
+                (
+                    !cosmeticOption.advancedOption ||
+                    CVarGetInteger(CVAR_COSMETIC("AdvancedMode"), 0)
+                )
+            ) {
+                CVarSetInteger(cosmeticOption.rainbowCvar, 1);
+            }
+        }
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Un-Rainbow All", ImVec2(ImGui::GetContentRegionAvail().x, 30.0f))) {
+        for (auto& [id, cosmeticOption] : cosmeticOptions) {
+            if (
+                !CVarGetInteger(cosmeticOption.lockedCvar, 0) &&
+                (
+                    !cosmeticOption.advancedOption ||
+                    CVarGetInteger(CVAR_COSMETIC("AdvancedMode"), 0)
+                )
+            ) {
+                CVarSetInteger(cosmeticOption.rainbowCvar, 0);
+            }
+        }
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
 
     if (ImGui::BeginTabBar("CosmeticsContextTabBar", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
         if (ImGui::BeginTabItem("Link & Items")) {
