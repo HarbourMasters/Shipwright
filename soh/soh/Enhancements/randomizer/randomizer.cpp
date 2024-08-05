@@ -2169,7 +2169,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 {RA_GANONS_CASTLE, true}
             };
 
-            static std::unordered_map<Rando::Tricks::Tag, bool> showTag {
+            static std::map<Rando::Tricks::Tag, bool> showTag {
                 {Rando::Tricks::Tag::NOVICE,true},
                 {Rando::Tricks::Tag::INTERMEDIATE,true},
                 {Rando::Tricks::Tag::ADVANCED,true},
