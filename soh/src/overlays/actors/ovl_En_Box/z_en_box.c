@@ -947,7 +947,7 @@ void EnBox_Draw(Actor* thisx, PlayState* play) {
         gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 255);
         gSPSegment(POLY_OPA_DISP++, 0x08, EnBox_EmptyDList(play->state.gfxCtx));
         Gfx_SetupDL_25Opa(play->state.gfxCtx);
-        POLY_OPA_DISP = SkelAnime_Draw(play, this->skelanime.skeleton, this->skelanime.jointTable, NULL,
+        POLY_OPA_DISP = SkelAnime_DrawSkeleton2(play, &this->skelanime, NULL,
                                        EnBox_PostLimbDraw, this, POLY_OPA_DISP);
     } else if (this->alpha != 0) {
         gDPPipeSync(POLY_XLU_DISP++);
@@ -958,7 +958,7 @@ void EnBox_Draw(Actor* thisx, PlayState* play) {
         } else {
             gSPSegment(POLY_XLU_DISP++, 0x08, func_809CA4A0(play->state.gfxCtx));
         }
-        POLY_XLU_DISP = SkelAnime_Draw(play, this->skelanime.skeleton, this->skelanime.jointTable, NULL,
+        POLY_XLU_DISP = SkelAnime_DrawSkeleton2(play, &this->skelanime, NULL,
                                        EnBox_PostLimbDraw, this, POLY_XLU_DISP);
     }
 
