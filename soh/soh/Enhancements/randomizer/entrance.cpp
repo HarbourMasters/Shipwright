@@ -1386,7 +1386,7 @@ int EntranceShuffler::ShuffleAllEntrances() {
                 poolsToMix.insert(EntranceType::DungeonReverse);
             }
         }
-        if (ctx->GetOption(RSK_MIX_DUNGEON_ENTRANCES)) {
+        if (ctx->GetOption(RSK_MIX_BOSS_ENTRANCES)) {
             poolsToMix.insert(EntranceType::Boss);
             if (ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
                 poolsToMix.insert(EntranceType::BossReverse);
