@@ -3,10 +3,10 @@
 #include "random.hpp"
 #include "shops.hpp"
 
+#include <array>
 #include <math.h>
 #include <map>
 #include "z64item.h"
-
 
 std::vector<ItemAndPrice> NonShopItems = {};
 
@@ -39,6 +39,7 @@ std::vector<RandomizerGet> GetMinVanillaShopItems(int total_replaced) {
         RG_BUY_DEKU_NUTS_5,
         RG_BUY_DEKU_NUTS_10,
         RG_BUY_DEKU_STICK_1,
+        //^First 8 items: Exist on shopsanity 7 or less
         RG_BUY_DEKU_STICK_1,
         RG_BUY_DEKU_SEEDS_30,
         RG_BUY_ARROWS_10,
@@ -47,6 +48,7 @@ std::vector<RandomizerGet> GetMinVanillaShopItems(int total_replaced) {
         RG_BUY_ARROWS_50,
         RG_BUY_BOMBCHU_10,
         RG_BUY_BOMBCHU_10,
+        //^First 16 items: Exist on shopsanity 6 or less
         RG_BUY_BOMBCHU_10,
         RG_BUY_BOMBCHU_20,
         RG_BUY_BOMBS_525,
@@ -55,6 +57,7 @@ std::vector<RandomizerGet> GetMinVanillaShopItems(int total_replaced) {
         RG_BUY_BOMBS_20,
         RG_BUY_GREEN_POTION,
         RG_BUY_RED_POTION_30,
+        //^First 24 items: Exist on shopsanity 5 or less
         RG_BUY_BLUE_FIRE,
         RG_BUY_FAIRYS_SPIRIT,
         RG_BUY_BOTTLE_BUG,
@@ -64,7 +67,7 @@ std::vector<RandomizerGet> GetMinVanillaShopItems(int total_replaced) {
         RG_BUY_BOTTLE_BUG,
         RG_BUY_DEKU_STICK_1,
         RG_BUY_FAIRYS_SPIRIT,
-        //^First 32 items: Always guaranteed
+        //^First 32 items: Exist on shopsanity 4 or less
         RG_BUY_BLUE_FIRE,
         RG_BUY_FISH,
         RG_BUY_BOMBCHU_10,
@@ -201,7 +204,7 @@ int16_t GetRandomScrubPrice() {
     return -1;
 }
 
-//Get 1 to 4, or a random number from 1-4 depending on shopsanity setting
+//Get 1 to 7, or a random number from 1-7 depending on shopsanity setting
 int GetShopsanityReplaceAmount() {
     auto ctx = Rando::Context::GetInstance();
     if (ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_ONE_ITEM)) {
@@ -212,8 +215,18 @@ int GetShopsanityReplaceAmount() {
         return 3;
     } else if (ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_FOUR_ITEMS)) {
         return 4;
-    } else { //Random, get number in [1, 4]
-        return Random(1, 5);
+    } else if (ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_FIVE_ITEMS)) {
+        return 5;
+    } else if (ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_SIX_ITEMS)) {
+        return 6;
+    } else if (ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_SEVEN_ITEMS)) {
+        return 7;
+    /*
+    } else if (ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_EIGHT_ITEMS)) {
+        return 8;
+    */
+    } else { //Random, get number in [1, 7]
+        return Random(1, 8);
     }
 }
 
@@ -1089,15 +1102,4 @@ int GetShopIndex(RandomizerCheck loc) {
     int pos = std::stoi(name.substr(split+6, 1)) - 1;
     int shopnum = ShopNameToNum[shop];
     return shopnum*8 + pos;
-}
-
-//Without this transformed index, shop-related tables and arrays would need 64 entries- But only half of that is needed for shopsanity
-//So we use this transformation to map only important indices to an array with 32 entries in the following manner:
-//Shop index:  4  5  6  7 12 13 14 15 20 21 22 23...
-//Transformed: 0  1  2  3  4  5  6  7  8  9 10 11...
-//So we first divide the shop index by 4, then by 2 which basically tells us the index of the shop it's in,
-//then multiply by 4 since there are 4 items per shop
-//And finally we use a modulo by 4 to get the index within the "shop" of 4 items, and add
-int TransformShopIndex(int index) {
-    return 4 * ((index / 4) / 2) + index % 4;
 }

@@ -3979,7 +3979,7 @@ typedef enum {
     RO_BRIDGE_WILDCARD_REWARD,
 } RandoOptionBridgeRewards;
 
-//Shopsanity settings (off, 0-4 items, random)
+//Shopsanity settings (off, 1-7 items, random)
 typedef enum {
     RO_SHOPSANITY_OFF,
     RO_SHOPSANITY_ZERO_ITEMS,
@@ -3987,6 +3987,10 @@ typedef enum {
     RO_SHOPSANITY_TWO_ITEMS,
     RO_SHOPSANITY_THREE_ITEMS,
     RO_SHOPSANITY_FOUR_ITEMS,
+    RO_SHOPSANITY_FIVE_ITEMS,
+    RO_SHOPSANITY_SIX_ITEMS,
+    RO_SHOPSANITY_SEVEN_ITEMS,
+    //RO_SHOPSANITY_EIGHT_ITEMS,
     RO_SHOPSANITY_RANDOM,
 } RandoOptionShopsanity;
 

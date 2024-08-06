@@ -265,11 +265,15 @@ void Settings::CreateOptionDescriptions() {
                                           "\n"
                                           "0 Items - Vanilla shop items will be shuffled among different shops.\n"
                                           "\n"
-                                          "1-4 Items - Vanilla shop items will be shuffled among different shops, and "
-                                          "each shop will contain 1-4 non-vanilla shop items.\n"
+                                          "1-7 Items - Vanilla shop items will be shuffled among different shops, and "
+                                          "each shop will contain 1-7 non-vanilla shop items.\n"
                                           "\n"
+                                          /*
+                                          "8 Items - All shops will contain 8 non-vanilla shop items.\n"
+                                          "\n"
+                                          */
                                           "Random - Vanilla shop items will be shuffled among different shops, and "
-                                          "each shop will contain a random number(1-4) of non-vanilla shop items.\n";
+                                          "each shop will contain a random number (1-7) of non-vanilla shop items.\n";
     mOptionDescriptions[RSK_SHOPSANITY_PRICES] =
         "Balanced - The default randomization. Shop prices for shopsanity items will range between 0 to 300 rupees, "
         "with a bias towards values slightly below the middle of the range, in multiples of 5.\n "
