@@ -36,8 +36,8 @@ std::vector<RandomizerGet> GetMinVanillaShopItems(int total_replaced) {
         RG_BUY_GORON_TUNIC,
         RG_BUY_ZORA_TUNIC,
         RG_BUY_DEKU_NUTS_5,
-        RG_BUY_DEKU_NUTS_5,
-        RG_BUY_DEKU_NUTS_10,
+        RG_BUY_BOMBS_20,
+        RG_BUY_BOMBCHU_10,
         RG_BUY_DEKU_STICK_1,
         //^First 8 items: Exist on shopsanity 7 or less
         RG_BUY_DEKU_STICK_1,
@@ -46,7 +46,7 @@ std::vector<RandomizerGet> GetMinVanillaShopItems(int total_replaced) {
         RG_BUY_ARROWS_10,
         RG_BUY_ARROWS_30,
         RG_BUY_ARROWS_50,
-        RG_BUY_BOMBCHU_10,
+        RG_BUY_DEKU_NUTS_10,
         RG_BUY_BOMBCHU_10,
         //^First 16 items: Exist on shopsanity 6 or less
         RG_BUY_BOMBCHU_10,
@@ -54,7 +54,7 @@ std::vector<RandomizerGet> GetMinVanillaShopItems(int total_replaced) {
         RG_BUY_BOMBS_525,
         RG_BUY_BOMBS_535,
         RG_BUY_BOMBS_10,
-        RG_BUY_BOMBS_20,
+        RG_BUY_DEKU_NUTS_5,
         RG_BUY_GREEN_POTION,
         RG_BUY_RED_POTION_30,
         //^First 24 items: Exist on shopsanity 5 or less
