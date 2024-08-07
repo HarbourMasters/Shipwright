@@ -18,7 +18,8 @@ void SkipIntro_Register() {
         bool shuffleOverworldSpawns =
             OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_OVERWORLD_SPAWNS).Is(true);
         if ((CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Intro"), IS_RANDO) ||
-             (IS_RANDO && (adultStart || shuffleOverworldSpawns)) && gSaveContext.cutsceneIndex == 0xFFF1)) {
+             (IS_RANDO && (adultStart || shuffleOverworldSpawns))) &&
+            gSaveContext.cutsceneIndex == 0xFFF1) {
             // Calculate spawn location. Start with vanilla, Link's house.
             int32_t spawnEntrance = ENTR_LINKS_HOUSE_0;
             // If we're not in rando, we can skip all of the below.
