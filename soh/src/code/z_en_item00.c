@@ -349,7 +349,6 @@ void EnItem00_Init(Actor* thisx, PlayState* play) {
     f32 yOffset = 980.0f;
     f32 shadowScale = 6.0f;
     s32 getItemId = GI_NONE;
-    this->randoGiEntry = (GetItemEntry)GET_ITEM_NONE;
     this->randoCheck = (RandomizerCheck)RC_UNKNOWN_CHECK;
     this->itemEntry = (GetItemEntry)GET_ITEM_NONE;
     s16 spawnParam8000 = this->actor.params & 0x8000;
@@ -492,13 +491,6 @@ void EnItem00_Init(Actor* thisx, PlayState* play) {
     this->actor.shape.shadowAlpha = 180;
     this->actor.focus.pos = this->actor.world.pos;
     this->getItemId = GI_NONE;
-    this->randoCheck = Randomizer_GetCheckFromActor(this->actor.id, play->sceneNum, this->ogParams);
-    this->randoInf = RAND_INF_MAX;
-
-    if (IS_RANDO && this->randoCheck != RC_UNKNOWN_CHECK) {
-        this->randoGiEntry = Randomizer_GetItemFromKnownCheck(this->randoCheck, getItemId);
-        this->randoGiEntry.getItemFrom = ITEM_FROM_FREESTANDING;
-    }
 
     if (!spawnParam8000) {
         EnItem00_SetupAction(this, func_8001DFC8);
