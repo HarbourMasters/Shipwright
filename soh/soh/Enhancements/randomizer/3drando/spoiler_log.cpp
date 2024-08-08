@@ -142,6 +142,8 @@ void WriteIngameSpoilerLog() {
                  (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_FAST) && loc->IsCategory(Category::cVanillaGFSmallKey) &&
                   loc->GetHintKey() != RHT_GF_NORTH_F1_CARPENTER)) {
             continue;
+        } else if (!ctx->GetOption(RSK_SHUFFLE_FREESTANDING) && loc->IsCategory(Category::cFreestanding)) {
+            continue;
         }
 
         // Copy at most 51 chars from the name and location name to avoid issues with names that don't fit on screen
