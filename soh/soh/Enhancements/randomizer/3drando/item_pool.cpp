@@ -1210,6 +1210,15 @@ void GenerateItemPool() {
     PlaceVanillaDekuScrubItems();
   }
 
+  for (RandomizerCheck loc : ctx->GetLocations(ctx->allLocations, Category::cFreestanding)) {
+    RandomizerGet vanillaItem = Rando::StaticData::GetLocation(loc)->GetVanillaItem();
+    if (ctx->GetOption(RSK_SHUFFLE_FREESTANDING)) {
+      AddItemToMainPool(vanillaItem);
+    } else {
+      ctx->PlaceItemInLocation(loc, vanillaItem, false, true);
+    }
+  }
+
   AddItemsToPool(ItemPool, alwaysItems);
   AddItemsToPool(ItemPool, dungeonRewards);
 
