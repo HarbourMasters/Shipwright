@@ -618,6 +618,29 @@ static void PlaceVanillaOverworldFish() {
   }
 }
 
+static void PlaceFreestandingItems() {
+  auto ctx = Rando::Context::GetInstance();
+  for (RandomizerCheck loc : ctx->GetLocations(Rando::StaticData::overworldLocations, Category::cFreestanding)) {
+    RandomizerGet vanillaItem = Rando::StaticData::GetLocation(loc)->GetVanillaItem();
+    if (ctx->GetOption(RSK_SHUFFLE_FREESTANDING)) {
+      AddItemToMainPool(vanillaItem);
+    } else {
+      ctx->PlaceItemInLocation(loc, vanillaItem, false, true);
+    }
+  }
+
+  for (auto dungeon : ctx->GetDungeons()->GetDungeonList()) {
+    for (RandomizerCheck loc : ctx->GetLocations(dungeon->GetDungeonLocations(), Category::cFreestanding)) {
+      RandomizerGet vanillaItem = Rando::StaticData::GetLocation(loc)->GetVanillaItem();
+      if (ctx->GetOption(RSK_SHUFFLE_FREESTANDING)) {
+        AddItemToMainPool(vanillaItem);
+      } else {
+        ctx->PlaceItemInLocation(loc, vanillaItem, false, true);
+      }
+    }
+  }
+}
+
 static void SetScarceItemPool() {
   ReplaceMaxItem(RG_PROGRESSIVE_BOMBCHUS, 3);
   ReplaceMaxItem(RG_BOMBCHU_5, 1);
@@ -1210,14 +1233,7 @@ void GenerateItemPool() {
     PlaceVanillaDekuScrubItems();
   }
 
-  for (RandomizerCheck loc : ctx->GetLocations(ctx->allLocations, Category::cFreestanding)) {
-    RandomizerGet vanillaItem = Rando::StaticData::GetLocation(loc)->GetVanillaItem();
-    if (ctx->GetOption(RSK_SHUFFLE_FREESTANDING)) {
-      AddItemToMainPool(vanillaItem);
-    } else {
-      ctx->PlaceItemInLocation(loc, vanillaItem, false, true);
-    }
-  }
+  PlaceFreestandingItems();
 
   AddItemsToPool(ItemPool, alwaysItems);
   AddItemsToPool(ItemPool, dungeonRewards);

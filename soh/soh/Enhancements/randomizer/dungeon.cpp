@@ -175,6 +175,11 @@ Dungeons::Dungeons() {
                         RC_DEKU_TREE_GS_BASEMENT_GATE,
                         RC_DEKU_TREE_GS_BASEMENT_VINES,
                         RC_DEKU_TREE_GS_COMPASS_ROOM,
+                        RC_DEKU_TREE_LOBBY_LOWER_HEART,
+                        RC_DEKU_TREE_LOBBY_UPPER_HEART,
+                        RC_DEKU_TREE_BEFORE_BOSS_LEFT_HEART,
+                        RC_DEKU_TREE_BEFORE_BOSS_MIDDLE_HEART,
+                        RC_DEKU_TREE_BEFORE_BOSS_RIGHT_HEART,
                     },
                     {
                         // MQ Locations
@@ -190,6 +195,13 @@ Dungeons::Dungeons() {
                         RC_DEKU_TREE_MQ_GS_COMPASS_ROOM,
                         RC_DEKU_TREE_MQ_GS_BASEMENT_GRAVES_ROOM,
                         RC_DEKU_TREE_MQ_GS_BASEMENT_BACK_ROOM,
+                        RC_DEKU_TREE_MQ_COMPASS_ROOM_HEART,
+                        RC_DEKU_TREE_MQ_DEKU_BABA_HEART,
+                        RC_DEKU_TREE_MQ_LOBBY_HEART,
+                        RC_DEKU_TREE_MQ_SLINGSHOT_ROOM_HEART,
+                        RC_DEKU_TREE_MQ_BEFORE_BOSS_LEFT_HEART,
+                        RC_DEKU_TREE_MQ_BEFORE_BOSS_MIDDLE_HEART,
+                        RC_DEKU_TREE_MQ_BEFORE_BOSS_RIGHT_HEART,
                     },
                     {},
                     {
@@ -215,6 +227,10 @@ Dungeons::Dungeons() {
                                                    RC_DODONGOS_CAVERN_GS_ALCOVE_ABOVE_STAIRS,
                                                    RC_DODONGOS_CAVERN_GS_BACK_ROOM,
                                                    RC_DODONGOS_CAVERN_GS_SIDE_ROOM_NEAR_LOWER_LIZALFOS,
+                                                   RC_DODONGOS_CAVERN_LOWER_LIZALFOS_HEART,
+                                                   RC_DODONGOS_CAVERN_BLADE_ROOM_HEART,
+                                                   RC_DODONGOS_CAVERN_UPPER_LIZALFOS_LEFT_HEART,
+                                                   RC_DODONGOS_CAVERN_UPPER_LIZALFOS_RIGHT_HEART,
                                                },
                                                {
                                                    // MQ Locations
@@ -233,6 +249,8 @@ Dungeons::Dungeons() {
                                                    RC_DODONGOS_CAVERN_MQ_GS_LIZALFOS_ROOM,
                                                    RC_DODONGOS_CAVERN_MQ_GS_LARVAE_ROOM,
                                                    RC_DODONGOS_CAVERN_MQ_GS_BACK_AREA,
+                                                   RC_DODONGOS_CAVERN_MQ_LIZALFOS_ROOM_HEART,
+                                                   RC_DODONGOS_CAVERN_MQ_TORCH_PUZZLE_ROOM_HEART,
                                                },
                                                {},
                                                {
@@ -272,6 +290,11 @@ Dungeons::Dungeons() {
                                                     RC_JABU_JABUS_BELLY_MQ_GS_INVISIBLE_ENEMIES_ROOM,
                                                     RC_JABU_JABUS_BELLY_MQ_GS_BOOMERANG_CHEST_ROOM,
                                                     RC_JABU_JABUS_BELLY_MQ_GS_NEAR_BOSS,
+                                                    RC_JABU_JABUS_BELLY_MQ_LIFT_RUPEE_1,
+                                                    RC_JABU_JABUS_BELLY_MQ_LIFT_RUPEE_2,
+                                                    RC_JABU_JABUS_BELLY_MQ_LIFT_RUPEE_3,
+                                                    RC_JABU_JABUS_BELLY_MQ_LIFT_HEART_1,
+                                                    RC_JABU_JABUS_BELLY_MQ_LIFT_HEART_2,
                                                 },
                                                 {},
                                                 {

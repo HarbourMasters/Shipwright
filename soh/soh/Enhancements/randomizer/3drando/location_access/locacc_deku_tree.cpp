@@ -25,7 +25,9 @@ void AreaTable_Init_DekuTree() {
                   EventAccess(&logic->DekuBabaNuts,   {[]{return logic->DekuBabaNuts   || (logic->CanJumpslash || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_MEGATON_HAMMER) || logic->HasExplosives || logic->CanUse(RG_DINS_FIRE));}}),
                 }, {
                   //Locations
-                  LOCATION(RC_DEKU_TREE_MAP_CHEST, true),
+                  LOCATION(RC_DEKU_TREE_MAP_CHEST,         true),
+                  LOCATION(RC_DEKU_TREE_LOBBY_LOWER_HEART, true),
+                  LOCATION(RC_DEKU_TREE_LOBBY_UPPER_HEART, logic->CanChildAttack || logic->CanAdultAttack),
                 }, {
                   //Exits
                   Entrance(RR_DEKU_TREE_ENTRYWAY,          {[]{return true;}}),
@@ -144,7 +146,11 @@ void AreaTable_Init_DekuTree() {
                   Entrance(RR_DEKU_TREE_OUTSIDE_BOSS_ROOM,   {[]{return Here(RR_DEKU_TREE_BASEMENT_UPPER, []{return logic->HasFireSourceWithTorch || (randoCtx->GetTrickOption(RT_DEKU_B1_BOW_WEBS) && logic->IsAdult && logic->CanUse(RG_FAIRY_BOW));});}}),
   });
 
-  areaTable[RR_DEKU_TREE_OUTSIDE_BOSS_ROOM] = Area("Deku Tree Outside Boss Room", "Deku Tree", RA_DEKU_TREE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_DEKU_TREE_OUTSIDE_BOSS_ROOM] = Area("Deku Tree Outside Boss Room", "Deku Tree", RA_DEKU_TREE, NO_DAY_NIGHT_CYCLE, {}, {
+                  LOCATION(RC_DEKU_TREE_BEFORE_BOSS_LEFT_HEART,   logic->HasItem(RG_BRONZE_SCALE)),
+                  LOCATION(RC_DEKU_TREE_BEFORE_BOSS_MIDDLE_HEART, logic->HasItem(RG_BRONZE_SCALE)),
+                  LOCATION(RC_DEKU_TREE_BEFORE_BOSS_RIGHT_HEART,  logic->HasItem(RG_BRONZE_SCALE)),
+                }, {
                   //Exits
                   Entrance(RR_DEKU_TREE_BASEMENT_UPPER, {[]{return true;}}),
                   Entrance(RR_DEKU_TREE_BOSS_ENTRYWAY,  {[]{return (logic->Swim || Here(RR_DEKU_TREE_OUTSIDE_BOSS_ROOM, []{return logic->CanUse(RG_IRON_BOOTS);})) && Here(RR_DEKU_TREE_OUTSIDE_BOSS_ROOM, []{return logic->HasShield;});}}),
@@ -166,6 +172,9 @@ void AreaTable_Init_DekuTree() {
                   LOCATION(RC_DEKU_TREE_MQ_SLINGSHOT_ROOM_BACK_CHEST, logic->HasFireSourceWithTorch || (logic->IsAdult && logic->CanUse(RG_FAIRY_BOW))),
                   LOCATION(RC_DEKU_TREE_MQ_BASEMENT_CHEST,            logic->HasFireSourceWithTorch || (logic->IsAdult && logic->CanUse(RG_FAIRY_BOW))),
                   LOCATION(RC_DEKU_TREE_MQ_GS_LOBBY,                  logic->CanAdultAttack || logic->CanChildAttack),
+                  LOCATION(RC_DEKU_TREE_MQ_LOBBY_HEART,               true),
+                  LOCATION(RC_DEKU_TREE_MQ_DEKU_BABA_HEART,           logic->HasFireSourceWithTorch || (logic->IsAdult && logic->CanUse(RG_FAIRY_BOW))),
+                  LOCATION(RC_DEKU_TREE_MQ_SLINGSHOT_ROOM_HEART,      true),
   }, {
                   //Exits
                   Entrance(RR_DEKU_TREE_ENTRYWAY,                     {[]{return true;}}),
@@ -178,11 +187,13 @@ void AreaTable_Init_DekuTree() {
 
   areaTable[RR_DEKU_TREE_MQ_COMPASS_ROOM] = Area("Deku Tree MQ Compass Room", "Deku Tree", RA_DEKU_TREE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LOCATION(RC_DEKU_TREE_MQ_COMPASS_CHEST,   true),
-                  LOCATION(RC_DEKU_TREE_MQ_GS_COMPASS_ROOM, logic->HookshotOrBoomerang &&
+                  LOCATION(RC_DEKU_TREE_MQ_COMPASS_CHEST,       true),
+                  LOCATION(RC_DEKU_TREE_MQ_GS_COMPASS_ROOM,     logic->HookshotOrBoomerang &&
                                                                                Here(RR_DEKU_TREE_MQ_COMPASS_ROOM, []{return logic->HasBombchus ||
                                                                                (logic->Bombs && (logic->CanUse(RG_SONG_OF_TIME) || logic->IsAdult)) ||
                                                                                (logic->IsAdult && logic->CanUse(RG_MEGATON_HAMMER) && (logic->CanUse(RG_SONG_OF_TIME) || randoCtx->GetTrickOption(RT_DEKU_MQ_COMPASS_GS)));})),
+                  LOCATION(RC_DEKU_TREE_MQ_COMPASS_ROOM_HEART,  logic->HasBombchus || (logic->Bombs && (logic->CanUse(RG_SONG_OF_TIME) || logic->IsAdult)) ||
+                                                                               (logic->IsAdult && logic->CanUse(RG_MEGATON_HAMMER) && (logic->CanUse(RG_SONG_OF_TIME) || randoCtx->GetTrickOption(RT_DEKU_MQ_COMPASS_GS)))),
   }, {
                   //Exits
                   Entrance(RR_DEKU_TREE_MQ_LOBBY, {[]{return true;}}),
@@ -232,8 +243,11 @@ void AreaTable_Init_DekuTree() {
   });
 
     areaTable[RR_DEKU_TREE_MQ_OUTSIDE_BOSS_ROOM] =
-            Area("Deku Tree MQ Outside Boss Room", "Deku Tree", RA_DEKU_TREE, NO_DAY_NIGHT_CYCLE, {}, {},
-                 {
+            Area("Deku Tree MQ Outside Boss Room", "Deku Tree", RA_DEKU_TREE, NO_DAY_NIGHT_CYCLE, {}, {
+                  LOCATION(RC_DEKU_TREE_MQ_BEFORE_BOSS_LEFT_HEART,    logic->HasItem(RG_BRONZE_SCALE)),
+                  LOCATION(RC_DEKU_TREE_MQ_BEFORE_BOSS_MIDDLE_HEART,  logic->HasItem(RG_BRONZE_SCALE)),
+                  LOCATION(RC_DEKU_TREE_MQ_BEFORE_BOSS_RIGHT_HEART,   logic->HasItem(RG_BRONZE_SCALE)),
+                }, {
                      // Exits
                      Entrance(RR_DEKU_TREE_MQ_BASEMENT_LEDGE, {[]{ return true; }}),
                      Entrance(RR_DEKU_TREE_BOSS_ENTRYWAY,     {[]{return (logic->Swim || Here(RR_DEKU_TREE_MQ_BASEMENT_LEDGE, []{return logic->CanUse(RG_IRON_BOOTS);})) && Here(RR_DEKU_TREE_MQ_BASEMENT_LEDGE, [] { return logic->HasShield; }); } }),

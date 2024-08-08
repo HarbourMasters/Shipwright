@@ -183,6 +183,11 @@ void AreaTable_Init_JabuJabusBelly() {
                   LOCATION(RC_JABU_JABUS_BELLY_MQ_BOOMERANG_ROOM_SMALL_CHEST,   true),
                   LOCATION(RC_JABU_JABUS_BELLY_MQ_BOOMERANG_CHEST,              logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD) || logic->CanUse(RG_MEGATON_HAMMER) || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_STICKS) || logic->Bombs),
                   LOCATION(RC_JABU_JABUS_BELLY_MQ_GS_BOOMERANG_CHEST_ROOM,      logic->CanUse(RG_SONG_OF_TIME) || (randoCtx->GetTrickOption(RT_JABU_MQ_SOT_GS) && logic->IsChild && logic->CanUse(RG_BOOMERANG))),
+                  LOCATION(RC_JABU_JABUS_BELLY_MQ_LIFT_HEART_1,                 true),
+                  LOCATION(RC_JABU_JABUS_BELLY_MQ_LIFT_HEART_2,                 true),
+                  LOCATION(RC_JABU_JABUS_BELLY_MQ_LIFT_RUPEE_1,                 logic->HasItem(RG_GOLDEN_SCALE)),
+                  LOCATION(RC_JABU_JABUS_BELLY_MQ_LIFT_RUPEE_2,                 logic->HasItem(RG_SILVER_SCALE)),
+                  LOCATION(RC_JABU_JABUS_BELLY_MQ_LIFT_RUPEE_3,                 logic->HasItem(RG_BRONZE_SCALE)),
                     //Trick: logic->CanUse(RG_SONG_OF_TIME) || (LogicJabuMQSoTGS && logic->IsChild && logic->CanUse(RG_BOOMERANG))
   }, {
                   //Exits
