@@ -26,6 +26,23 @@ extern PlayState* gPlayState;
 
 #define DEBUG_ACTOR_NAMETAG_TAG "debug_actor_viewer"
 
+
+#include <vector>
+std::vector<int16_t> unculledActors;
+std::vector<int16_t> culledActors;
+
+extern "C" void AV_ClearLists() {
+    unculledActors.clear();
+    culledActors.clear();
+}
+
+extern "C" void AV_AddUnculledActor(Actor* actor) {
+    unculledActors.push_back(actor->id);
+}
+extern "C" void AV_AddCulledActor(Actor* actor) {
+    culledActors.push_back(actor->id);
+}
+
 typedef struct {
     u16 id;
     u16 params;
@@ -402,6 +419,17 @@ void ActorViewerWindow::DrawElement() {
             list.clear();
             needs_reset = false;
         }
+    }
+
+    ImGui::Text("Unculled Actors");
+    for (auto id : unculledActors) {
+        ImGui::Text(GetActorDescription(id).c_str());
+    }
+    ImGui::NewLine();
+    ImGui::NewLine();
+    ImGui::Text("Culled Actors");
+    for (auto id : culledActors) {
+        ImGui::Text(GetActorDescription(id).c_str());
     }
 
     ImGui::End();
