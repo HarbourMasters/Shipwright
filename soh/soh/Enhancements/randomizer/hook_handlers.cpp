@@ -669,7 +669,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
             uint32_t params = item00->collectibleFlag ? item00->ogParams : TWO_ACTOR_PARAMS((int32_t)pos.x, (int32_t)pos.z);
             Rando::Location* loc = OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(item00->actor.id, gPlayState->sceneNum, params);
 
-            if (loc && loc->GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
+            if (loc && loc->GetRandomizerCheck() != RC_UNKNOWN_CHECK && (RAND_GET_OPTION(RSK_SHUFFLE_FREESTANDING) || item00->actor.params == ITEM00_HEART_PIECE || item00->actor.params == ITEM00_SMALL_KEY)) {
                 // Spawn vanilla item if collected and renewable
                 if (loc->GetCollectionCheck().type != SPOILER_CHK_RANDOMIZER_INF || !Rando::Context::GetInstance()->GetItemLocation(loc->GetRandomizerCheck())->HasObtained()) {
                     item00->randoCheck = loc->GetRandomizerCheck();
