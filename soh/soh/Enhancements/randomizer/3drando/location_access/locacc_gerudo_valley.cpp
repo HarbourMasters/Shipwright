@@ -78,7 +78,17 @@ void AreaTable_Init_GerudoValley() {
                   Entrance(RR_GV_FORTRESS_SIDE, {[]{return true;}}),
   });
 
-  areaTable[RR_GV_OCTOROK_GROTTO] = Area("GV Octorok Grotto", "GV Octorok Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_GV_OCTOROK_GROTTO] = Area("GV Octorok Grotto", "GV Octorok Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
+                  //Locations
+                  LOCATION(RC_GV_OCTOROK_GROTTO_FRONT_LEFT_BLUE_RUPEE,   logic->HasItem(RG_BRONZE_SCALE)),
+                  LOCATION(RC_GV_OCTOROK_GROTTO_FRONT_RIGHT_BLUE_RUPEE,  logic->HasItem(RG_BRONZE_SCALE)),
+                  LOCATION(RC_GV_OCTOROK_GROTTO_BACK_BLUE_RUPEE,         logic->HasItem(RG_BRONZE_SCALE)),
+                  LOCATION(RC_GV_OCTOROK_GROTTO_FRONT_LEFT_GREEN_RUPEE,  logic->HasItem(RG_BRONZE_SCALE)),
+                  LOCATION(RC_GV_OCTOROK_GROTTO_FRONT_RIGHT_GREEN_RUPEE, logic->HasItem(RG_BRONZE_SCALE)),
+                  LOCATION(RC_GV_OCTOROK_GROTTO_BACK_LEFT_GREEN_RUPEE,   logic->HasItem(RG_BRONZE_SCALE)),
+                  LOCATION(RC_GV_OCTOROK_GROTTO_BACK_RIGHT_GREEN_RUPEE,  logic->HasItem(RG_BRONZE_SCALE)),
+                  LOCATION(RC_GV_OCTOROK_GROTTO_RED_RUPEE,               logic->HasItem(RG_BRONZE_SCALE)),
+                }, {
                   //Exits
                   Entrance(RR_GV_GROTTO_LEDGE, {[]{return true;}}),
   });

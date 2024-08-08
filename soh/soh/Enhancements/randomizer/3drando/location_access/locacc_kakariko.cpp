@@ -262,6 +262,14 @@ void AreaTable_Init_Kakariko() {
                   //Locations
                   LOCATION(RC_GRAVEYARD_HOOKSHOT_CHEST,              true),
                   LOCATION(RC_GRAVEYARD_DAMPE_RACE_FREESTANDING_POH, logic->IsAdult || randoCtx->GetTrickOption(RT_GY_CHILD_DAMPE_RACE_POH)),
+                  LOCATION(RC_GRAVEYARD_DAMPE_RACE_RUPEE_1,          true),
+                  LOCATION(RC_GRAVEYARD_DAMPE_RACE_RUPEE_2,          true),
+                  LOCATION(RC_GRAVEYARD_DAMPE_RACE_RUPEE_3,          true),
+                  LOCATION(RC_GRAVEYARD_DAMPE_RACE_RUPEE_4,          true),
+                  LOCATION(RC_GRAVEYARD_DAMPE_RACE_RUPEE_5,          true),
+                  LOCATION(RC_GRAVEYARD_DAMPE_RACE_RUPEE_6,          true),
+                  LOCATION(RC_GRAVEYARD_DAMPE_RACE_RUPEE_7,          true),
+                  LOCATION(RC_GRAVEYARD_DAMPE_RACE_RUPEE_8,          true),
                 }, {
                   //Exits
                   Entrance(RR_THE_GRAVEYARD, {[]{return true;}}),
