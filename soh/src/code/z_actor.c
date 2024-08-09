@@ -2854,11 +2854,11 @@ s32 func_800314B0(PlayState* play, Actor* actor) {
 s32 func_800314D4_old(PlayState* play, Actor* actor, Vec3f* arg2, f32 arg3) {
     f32 var;
 
-    if (CVarGetInteger("gDisableDrawDistance", 0)) {
+    if (CVarGetInteger("gDisableDrawDistance", 1) > 1) {
         return true;
     }
 
-    if (CVarGetInteger("gDisableDrawDistance", 0) != 0 && actor->id != ACTOR_EN_TORCH2 && actor->id != ACTOR_EN_BLKOBJ // Extra check for Dark Link and his room 
+    if (CVarGetInteger("gDisableDrawDistance", 1) > 1 && actor->id != ACTOR_EN_TORCH2 && actor->id != ACTOR_EN_BLKOBJ // Extra check for Dark Link and his room 
         && actor->id != ACTOR_EN_HORSE // Check for Epona, else if we call her she will spawn at the other side of the  map + we can hear her during the title screen sequence
         && actor->id != ACTOR_EN_HORSE_GANON && actor->id != ACTOR_EN_HORSE_ZELDA  // check for Zelda's and Ganondorf's horses that will always be scene during cinematic whith camera paning
         && (play->sceneNum != SCENE_DODONGOS_CAVERN && actor->id != ACTOR_EN_ZF)) { // Check for DC and Lizalfos for the case where the miniboss music would still play under certains conditions and changing room
@@ -2907,8 +2907,8 @@ s32 func_800314D4(PlayState* play, Actor* actor, Vec3f* arg2, f32 arg3) {
     return false;
 }
 
-// #region SOH [Enhancements] Allows us to increase the draw and update distance independently, mostly a modified
-// version of the function above
+// #region SOH [Enhancements] Allows us to increase the draw and update distance independently,
+// mostly a modified version of the function above and additional tweaks for some specfic actors
 s32 Ship_CalcShouldDrawAndUpdate(PlayState* play, Actor* actor, Vec3f* projectedPos, f32 projectedW, bool* shouldDraw,
                                  bool* shouldUpdate) {
     f32 clampedProjectedW;
@@ -2930,21 +2930,20 @@ s32 Ship_CalcShouldDrawAndUpdate(PlayState* play, Actor* actor, Vec3f* projected
         return true;
     }
 
-    s32 multiplier =
-        CVarGetInteger("gDisableDrawDistance", 0) != 0
-                // && actor->id != ACTOR_EN_HORSE // Check for Epona, else if we call her she will spawn at the other side
-                //                                // of the map + we can hear her during the title screen sequence
-                // && actor->id != ACTOR_EN_HORSE_GANON &&
-                // actor->id != ACTOR_EN_HORSE_ZELDA // check for Zelda's and Ganondorf's horses that will always be scene
-                                                  // during cinematic whith camera paning
-                // && (play->sceneNum != SCENE_DODONGOS_CAVERN &&
-                //     actor->id != ACTOR_EN_ZF) // Check for DC and Lizalfos for the case where the miniboss music would
-                                              // still play under certains conditions and changing room
-            ? 5
-            : 1;
+    // Skip cutscne actors that depend on culling to hide from camera pans
+    if (actor->id == ACTOR_EN_VIEWER) {
+        return false;
+    }
+
+    s32 multiplier = CVarGetInteger("gDisableDrawDistance", 1);
+    multiplier = MAX(multiplier, 1);
+
+    // Some actors have a really short forward value, so we need to add to it before the multiplier to increase the
+    // strength of the forward culling
+    f32 adder = (actor->uncullZoneForward < 500) ? 1000.0f : 0.0f;
 
     if ((projectedPos->z > -actor->uncullZoneScale) &&
-        (projectedPos->z < ((actor->uncullZoneForward * multiplier) + actor->uncullZoneScale))) {
+        (projectedPos->z < (((actor->uncullZoneForward + adder) * multiplier) + actor->uncullZoneScale))) {
         clampedProjectedW = (projectedW < 1.0f) ? 1.0f : 1.0f / projectedW;
 
         f32 ratioAdjusted = 1.0f;
@@ -2960,10 +2959,11 @@ s32 Ship_CalcShouldDrawAndUpdate(PlayState* play, Actor* actor, Vec3f* projected
             (((projectedPos->y - actor->uncullZoneScale) * clampedProjectedW) < 1.0f)) {
 
             if (CVarGetInteger("gEnhancements.ExtendedCullingExcludeGlitchActors", 0)) {
+                // These actors are safe to draw without impacting glitches
                 if ((actor->id == ACTOR_OBJ_BOMBIWA || actor->id == ACTOR_OBJ_HAMISHI ||
                      actor->id == ACTOR_EN_ISHI) || // Boulders (hookshot through collision)
                     actor->id == ACTOR_EN_GS ||     // Gossip stones (text delay)
-                    actor->id == ACTOR_EN_GE1 ||    // White gerudos (gate clip/archery transition)
+                    actor->id == ACTOR_EN_GE1 ||    // White gerudos (gate clip/archery room transition)
                     actor->id == ACTOR_EN_KZ ||     // King Zora (unfreeze glitch)
                     actor->id == ACTOR_EN_DU ||     // Darunia (Fire temple BK skip)
                     actor->id == ACTOR_DOOR_WARP1   // Blue warps (wrong warps)
@@ -2972,9 +2972,10 @@ s32 Ship_CalcShouldDrawAndUpdate(PlayState* play, Actor* actor, Vec3f* projected
                     return true;
                 }
 
+                // Skip these actors entirely as their draw funcs impacts glitches
                 if ((actor->id == ACTOR_EN_SW &&
                      (((actor->params & 0xE000) >> 0xD) == 1 ||
-                      ((actor->params & 0xE000) >> 0xD) == 2)) // Gold Skulltulas (hitbox at 0,0))
+                      ((actor->params & 0xE000) >> 0xD) == 2)) // Gold Skulltulas (hitbox at 0,0)
                 ) {
                     return false;
                 }
@@ -2988,6 +2989,7 @@ s32 Ship_CalcShouldDrawAndUpdate(PlayState* play, Actor* actor, Vec3f* projected
 
     return false;
 }
+// #endregion
 
 void func_800315AC(PlayState* play, ActorContext* actorCtx) {
     s32 invisibleActorCounter;
@@ -3030,7 +3032,7 @@ void func_800315AC(PlayState* play, ActorContext* actorCtx) {
             bool shipShouldDraw = false;
             bool shipShouldUpdate = false;
             if ((HREG(64) != 1) || ((HREG(65) != -1) && (HREG(65) != HREG(66))) || (HREG(70) == 0)) {
-                if (CVarGetInteger("gDisableDrawDistance", 0) ||
+                if (CVarGetInteger("gDisableDrawDistance", 1) > 1 ||
                     CVarGetInteger("gEnhancements.WidescreenActorCulling", 0)) {
                     Ship_CalcShouldDrawAndUpdate(play, actor, &actor->projectedPos, actor->projectedW, &shipShouldDraw,
                                                  &shipShouldUpdate);

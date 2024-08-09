@@ -928,20 +928,26 @@ void DrawEnhancementsMenu() {
             }
             UIWidgets::PaddedEnhancementCheckbox("Disable LOD", "gDisableLOD", true, false);
             UIWidgets::Tooltip("Turns off the Level of Detail setting, making models use their higher-poly variants at any distance");
-            if (UIWidgets::PaddedEnhancementCheckbox("Increase Actor Draw Distance", "gDisableDrawDistance", true, false)) {
-                if (CVarGetInteger("gDisableDrawDistance", 0) == 0) {
+            if (UIWidgets::EnhancementSliderInt("Increase Actor Draw Distance: %dx", "##IncreaseActorDrawDistance",
+                                                "gDisableDrawDistance", 1, 5, "", 1, true, false)) {
+                if (CVarGetInteger("gDisableDrawDistance", 1) <= 1) {
                     CVarSetInteger("gDisableKokiriDrawDistance", 0);
                 }
             }
             UIWidgets::Tooltip("Increases the range in which actors/objects are drawn");
-            if (CVarGetInteger("gDisableDrawDistance", 0) == 1) {
+            if (CVarGetInteger("gDisableDrawDistance", 1) > 1) {
                 UIWidgets::PaddedEnhancementCheckbox("Kokiri Draw Distance", "gDisableKokiriDrawDistance", true, false);
-                UIWidgets::Tooltip("The Kokiri are mystical beings that fade into view when approached\nEnabling this will remove their draw distance");
+                UIWidgets::Tooltip("The Kokiri are mystical beings that fade into view when approached\nEnabling this "
+                                   "will remove their draw distance");
             }
-            UIWidgets::PaddedEnhancementCheckbox("Widescreen Actor Culling", "gEnhancements.WidescreenActorCulling", true, false);
+            UIWidgets::PaddedEnhancementCheckbox("Widescreen Actor Culling", "gEnhancements.WidescreenActorCulling",
+                                                 true, false);
             UIWidgets::Tooltip("Adjusts the horizontal culling plane to account for widescreen resolutions");
-            UIWidgets::PaddedEnhancementCheckbox("Exclude Glitch Useful Actors",
-                                                 "gEnhancements.ExtendedCullingExcludeGlitchActors", true, false);
+            UIWidgets::PaddedEnhancementCheckbox(
+                "Exclude Glitch Useful Actors", "gEnhancements.ExtendedCullingExcludeGlitchActors", true, false,
+                !CVarGetInteger("gEnhancements.WidescreenActorCulling", 0) &&
+                    CVarGetInteger("gDisableDrawDistance", 1) <= 1,
+                "Requires Actor Draw Distance to be increased or Widescreen Actor Culling enabled");
             UIWidgets::Tooltip(
                 "Exclude actors that are useful for glitches from the extended culling ranges.\n"
                 "Some actors may still draw in the extended ranges, but will not \"update\" so that certain "
