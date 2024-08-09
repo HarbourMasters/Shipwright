@@ -256,7 +256,7 @@ namespace Rando {
         };
     }
 
-    CustomMessage SilverRupees::GetSilverRupeeMessage(u16 rgid) {
+    CustomMessage SilverRupees::GetSilverRupeeMessage(uint16_t rgid) {
         CustomMessage messageEntry;
         if (rgid >= RG_SILVER_RUPEE_FIRST && rgid <= RG_SILVER_RUPEE_LAST) {
             messageEntry =
