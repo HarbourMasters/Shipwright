@@ -78,11 +78,6 @@
 #include "textures/place_title_cards/g_pn_57.h"
 #endif
 
-extern void AV_ClearLists();
-
-extern void AV_AddUnculledActor(Actor* actor);
-extern void AV_AddCulledActor(Actor* actor);
-
 static CollisionPoly* sCurCeilingPoly;
 static s32 sCurCeilingBgId;
 
@@ -2851,48 +2846,8 @@ s32 func_800314B0(PlayState* play, Actor* actor) {
     return func_800314D4(play, actor, &actor->projectedPos, actor->projectedW);
 }
 
-s32 func_800314D4_old(PlayState* play, Actor* actor, Vec3f* arg2, f32 arg3) {
-    f32 var;
-
-    if (CVarGetInteger("gDisableDrawDistance", 1) > 1) {
-        return true;
-    }
-
-    if (CVarGetInteger("gDisableDrawDistance", 1) > 1 && actor->id != ACTOR_EN_TORCH2 && actor->id != ACTOR_EN_BLKOBJ // Extra check for Dark Link and his room 
-        && actor->id != ACTOR_EN_HORSE // Check for Epona, else if we call her she will spawn at the other side of the  map + we can hear her during the title screen sequence
-        && actor->id != ACTOR_EN_HORSE_GANON && actor->id != ACTOR_EN_HORSE_ZELDA  // check for Zelda's and Ganondorf's horses that will always be scene during cinematic whith camera paning
-        && (play->sceneNum != SCENE_DODONGOS_CAVERN && actor->id != ACTOR_EN_ZF)) { // Check for DC and Lizalfos for the case where the miniboss music would still play under certains conditions and changing room
-        return true;
-    }
-
-    if ((arg2->z > -actor->uncullZoneScale) && (arg2->z < (actor->uncullZoneForward + actor->uncullZoneScale))) {
-        var = (arg3 < 1.0f) ? 1.0f : 1.0f / arg3;
-
-        // #region SoH [Widescreen support]
-        // Doors will cull quite noticeably on wider screens. For these actors the zone is increased
-        f32 limit = 1.0f;
-        // if (((actor->id == ACTOR_EN_DOOR) || (actor->id == ACTOR_DOOR_SHUTTER)) && CVarGetInteger("gIncreaseDoorUncullZones", 1)) {
-            limit = 2.0f;
-        // }
-
-        if ((((fabsf(arg2->x) - actor->uncullZoneScale) * var) < limit) &&
-            (((arg2->y + actor->uncullZoneDownward) * var) > -limit) &&
-            (((arg2->y - actor->uncullZoneScale) * var) < limit)) {
-            return true;
-        }
-        // #endregion
-    }
-
-    return false;
-}
-
-
 s32 func_800314D4(PlayState* play, Actor* actor, Vec3f* arg2, f32 arg3) {
     f32 var;
-
-    if (CVarGetInteger("gMyInt1", 0)) {
-        return func_800314D4_old(play, actor, arg2, arg3);
-    }
 
     if ((arg2->z > -actor->uncullZoneScale) && (arg2->z < (actor->uncullZoneForward + actor->uncullZoneScale))) {
         var = (arg3 < 1.0f) ? 1.0f : 1.0f / arg3;
@@ -2912,16 +2867,6 @@ s32 func_800314D4(PlayState* play, Actor* actor, Vec3f* arg2, f32 arg3) {
 s32 Ship_CalcShouldDrawAndUpdate(PlayState* play, Actor* actor, Vec3f* projectedPos, f32 projectedW, bool* shouldDraw,
                                  bool* shouldUpdate) {
     f32 clampedProjectedW;
-
-    if (CVarGetInteger("gMyInt1", 0)) {
-        if (func_800314D4_old(play, actor, projectedPos, projectedW)) {
-            *shouldUpdate = true;
-            *shouldDraw = true;
-            return true;
-        } else {
-            return false;
-        }
-    }
 
     // Check if the actor passes its original/vanilla culling requirements
     if (func_800314D4(play, actor, projectedPos, projectedW)) {
@@ -3004,8 +2949,6 @@ void func_800315AC(PlayState* play, ActorContext* actorCtx) {
 
     actorListEntry = &actorCtx->actorLists[0];
 
-    AV_ClearLists();
-
     for (i = 0; i < ARRAY_COUNT(actorCtx->actorLists); i++, actorListEntry++) {
         actor = actorListEntry->head;
 
@@ -3028,7 +2971,7 @@ void func_800315AC(PlayState* play, ActorContext* actorCtx) {
                 }
             }
 
-            // #region SOH 
+            // #region SOH [Enhancement] Extended culling updates
             bool shipShouldDraw = false;
             bool shipShouldUpdate = false;
             if ((HREG(64) != 1) || ((HREG(65) != -1) && (HREG(65) != HREG(66))) || (HREG(70) == 0)) {
@@ -3039,18 +2982,14 @@ void func_800315AC(PlayState* play, ActorContext* actorCtx) {
 
                     if (shipShouldUpdate) {
                         actor->flags |= ACTOR_FLAG_ACTIVE;
-                        AV_AddUnculledActor(actor);
                     } else {
                         actor->flags &= ~ACTOR_FLAG_ACTIVE;
-                        AV_AddCulledActor(actor);
                     }
                 } else {
                     if (func_800314B0(play, actor)) {
                         actor->flags |= ACTOR_FLAG_ACTIVE;
-                        AV_AddUnculledActor(actor);
                     } else {
                         actor->flags &= ~ACTOR_FLAG_ACTIVE;
-                        AV_AddCulledActor(actor);
                     }
                 }
             }

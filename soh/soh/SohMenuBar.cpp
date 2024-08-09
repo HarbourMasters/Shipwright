@@ -961,7 +961,6 @@ void DrawEnhancementsMenu() {
                 "- Blue Warps\n"
                 "- Darunia\n"
                 "- Gold Skulltulas");
-            UIWidgets::PaddedEnhancementCheckbox("old cull", "gMyInt1", true, false);
             UIWidgets::PaddedEnhancementCheckbox("N64 Mode", "gLowResMode", true, false);
             UIWidgets::Tooltip("Sets aspect ratio to 4:3 and lowers resolution to 240p, the N64's native resolution");
             UIWidgets::PaddedEnhancementCheckbox("Glitch line-up tick", "gDrawLineupTick", true, false);
