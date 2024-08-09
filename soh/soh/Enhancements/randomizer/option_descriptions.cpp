@@ -98,7 +98,8 @@ void Settings::CreateOptionDescriptions() {
         "\n"
         "Random Number - A Random number and set of dungeons will be their Master Quest varieties.\n"
         "\n"
-        "Selection Only - Specify which dungeons are Vanilla or Master Quest.";
+        "Selection Only - Specify which dungeons are Vanilla, Master Quest or a 50/50 between the two.\n"
+        "Differs from Random Number in that they are rolled individually, making the exact total a bell curve.";
     mOptionDescriptions[RSK_MQ_DUNGEON_SET] =
                 "Choose specific Dungeons to be Master Quest or Vanilla.\n"
                 "\n"
@@ -249,6 +250,17 @@ void Settings::CreateOptionDescriptions() {
     mOptionDescriptions[RSK_SHUFFLE_FISHING_POLE] = "Shuffles the fishing pole into the item pool.\n"
         "\n"
         "The fishing pole is required to play the fishing pond minigame.";
+    mOptionDescriptions[RSK_INFINITE_UPGRADES] = "Adds upgrades that hold infinite quanities of items (bombs, arrows, etc.)\n"
+        "\n"
+        "Progressive - The infinite upgrades are obtained after getting the last normal capacity upgrade\n"
+        "\n"
+        "Condensed Progressive - The infinite upgrades are obtained as the first capacity upgrade (doesn't apply to the infinite wallet or to infinite magic)";
+    mOptionDescriptions[RSK_SHUFFLE_DEKU_STICK_BAG] = "Shuffles the deku stick bag into the item pool.\n"
+        "\n"
+        "The deku stick bag is required to hold deku sticks.";
+    mOptionDescriptions[RSK_SHUFFLE_DEKU_NUT_BAG] = "Shuffles the deku nut bag into the item pool.\n"
+        "\n"
+        "The deku nut bag is required to hold deku nuts.";
     mOptionDescriptions[RSK_SHOPSANITY] = "Off - All shop items will be the same as vanilla.\n"
                                           "\n"
                                           "0 Items - Vanilla shop items will be shuffled among different shops.\n"
@@ -267,6 +279,7 @@ void Settings::CreateOptionDescriptions() {
         "Affordable prices per tier: starter = 10, adult = 105, giant = 205, tycoon = 505\n\n"
         "Use this to enable wallet tier locking, but make shop items not as expensive as they could be.";
     mOptionDescriptions[RSK_FISHSANITY] = "Off - Fish will not be shuffled. No changes will be made to fishing behavior.\n\n"
+        "Shuffle only Hyrule Loach - Allows you to earn an item by catching the hyrule loach at the fishing pond and giving it to the owner.\n\n"
         "Shuffle Fishing Pond - The fishing pond's fish will be shuffled. Catching a fish in the fishing pond will grant a reward.\n\n"
         "Shuffle Overworld Fish - Fish in generic grottos and Zora's Domain will be shuffled. Catching a fish in a bottle will give a reward.\n\n"
         "Shuffle Both - Both overworld fish and fish in the fishing pond will be shuffled.";
@@ -370,7 +383,8 @@ void Settings::CreateOptionDescriptions() {
         "\n"
         "Count - A specified amount of randomly selected dungeons will have their keys replaced with keyrings.\n"
         "\n"
-        "Selection - Hand select which dungeons will have their keys replaced with keyrings.\n"
+        "Selection - Hand select which dungeons will have their keys replaced with keyrings\n"
+        "(can also be left as random, in which case each one will have a 50% chance of being a keyring).\n"
         "\n"
         "Selecting key ring for dungeons will have no effect if Small Keys are set to Start With or Vanilla.\n"
         "\n"
@@ -524,6 +538,8 @@ void Settings::CreateOptionDescriptions() {
         "Reading the diary of Dampé the gravekeeper as adult will tell you the location of one of the Hookshots.";
     mOptionDescriptions[RSK_GREG_HINT] =
         "Talking to the chest game owner after buying a key will tell you the location of Greg the Green Rupee.";
+    mOptionDescriptions[RSK_LOACH_HINT] =
+        "Talking to the fishing pond owner and asking to talk about something will tell you what's the reward for the Hyrule Loach.";
     mOptionDescriptions[RSK_SARIA_HINT] = "Talking to Saria either in person or through Saria's Song will tell you the "
                                           "location of a progressive magic meter.";
     mOptionDescriptions[RSK_FISHING_POLE_HINT] = "Talking to the fishing pond owner without the fishing pole will tell you its location.";
@@ -545,7 +561,6 @@ void Settings::CreateOptionDescriptions() {
     mOptionDescriptions[RSK_KAK_50_SKULLS_HINT] = "Talking to the Cursed Resident in the Skultulla House who is saved after 50 tokens will tell you the reward";
     mOptionDescriptions[RSK_KAK_100_SKULLS_HINT] = "Talking to the Cursed Resident in the Skultulla House who is saved after 100 tokens will tell you the reward";
     mOptionDescriptions[RSK_MASK_SHOP_HINT] = "Reading the mask shop sign will tell you rewards from showing masks at the Deku Theatre.";
-    
     mOptionDescriptions[RSK_FULL_WALLETS] = "Start with a full wallet. All wallet upgrades come filled with rupees.";
     mOptionDescriptions[RSK_BOMBCHUS_IN_LOGIC] =
         "Bombchus are properly considered in logic.\n"
@@ -560,6 +575,7 @@ void Settings::CreateOptionDescriptions() {
     mOptionDescriptions[RSK_BLUE_FIRE_ARROWS] =
         "Ice Arrows act like Blue Fire, making them able to melt red ice. "
         "Item placement logic will respect this option, so it might be required to use this to progress.";
+    mOptionDescriptions[RSK_SKELETON_KEY] = "Adds a new item called the \"Skeleton Key\", it unlocks every dungeon door locked by a small key.";
     mOptionDescriptions[RSK_SUNLIGHT_ARROWS] =
         "Light Arrows can be used to light up the sun switches instead of using the Mirror Shield. "
         "Item placement logic will respect this option, so it might be required to use this to progress.";

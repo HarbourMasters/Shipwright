@@ -2713,7 +2713,21 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
         else if (textId == TEXT_FROGS_UNDERWATER && ctx->GetOption(RSK_FROGS_HINT)) {
            messageEntry = ctx->GetHint(RH_FROGS_HINT)->GetHintMessage(MF_AUTO_FORMAT), TEXTBOX_TYPE_BLUE;
         }
-        else if ((textId == TEXT_FISHING_POND_START || textId == TEXT_FISHING_POND_START_MET) && 
+        else if (
+            Randomizer_GetSettingValue(RSK_LOACH_HINT) &&
+            (
+                textId == TEXT_FISHING_CLOUDY ||
+                textId == TEXT_FISHING_TRY_ANOTHER_LURE ||
+                textId == TEXT_FISHING_SECRETS ||
+                textId == TEXT_FISHING_GOOD_FISHERMAN ||
+                textId == TEXT_FISHING_DIFFERENT_POND ||
+                textId == TEXT_FISHING_SCRATCHING ||
+                textId == TEXT_FISHING_TRY_ANOTHER_LURE_WITH_SINKING_LURE
+            )
+        ) {
+            messageEntry = ctx->GetHint(RH_LOACH_HINT)->GetHintMessage(MF_AUTO_FORMAT);
+        }
+        else if ((textId == TEXT_FISHING_POND_START || textId == TEXT_FISHING_POND_START_MET) &&
                    ctx->GetOption(RSK_SHUFFLE_FISHING_POLE) && !Flags_GetRandomizerInf(RAND_INF_FISHING_POLE_FOUND)) {
             messageEntry = OTRGlobals::Instance->gRandomizer->GetFishingPondOwnerMessage(textId);
         }

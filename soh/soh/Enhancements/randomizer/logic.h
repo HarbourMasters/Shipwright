@@ -40,7 +40,6 @@ class Logic {
     bool Bombchus10 = false;
     bool Bombchus20 = false;
     bool MagicBean = false;
-    bool MagicBeanPack = false;
     bool RutosLetter = false;
     bool Boomerang = false;
     bool DinsFire = false;
@@ -59,7 +58,7 @@ class Logic {
     bool GoronTunic = false;
     bool ZoraTunic = false;
     bool Epona = false;
-    bool BigPoe = false;
+    //bool BigPoe = false; //unused
     bool GerudoToken = false;
     bool FireArrows = false;
     bool IceArrows = false;
@@ -90,20 +89,6 @@ class Logic {
     bool EyeballFrogAccess = false;
     bool EyedropsAccess = false;
     bool DisableTradeRevert = false;
-
-    // Songs
-    bool ZeldasLullaby = false;
-    bool SariasSong = false;
-    bool SunsSong = false;
-    bool SongOfStorms = false;
-    bool EponasSong = false;
-    bool SongOfTime = false;
-    bool MinuetOfForest = false;
-    bool BoleroOfFire = false;
-    bool SerenadeOfWater = false;
-    bool RequiemOfSpirit = false;
-    bool NocturneOfShadow = false;
-    bool PreludeOfLight = false;
 
     // Stones and Meddallions
     bool ForestMedallion = false;
@@ -417,6 +402,7 @@ class Logic {
     void UpdateHelpers();
     bool CanUse(RandomizerGet itemName);
     bool HasProjectile(HasProjectileAge age);
+    bool HasItem(RandomizerGet itemName);
     bool HasBossSoul(RandomizerGet itemName);
     bool SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmount);
     bool SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmountGlitchless, uint8_t requiredAmountGlitched);
@@ -425,11 +411,16 @@ class Logic {
     bool CanKillEnemy(std::string enemy);
     bool CanPassEnemy(std::string enemy);
     bool EventsUpdated();
+    uint8_t BottleCount();
     void Reset();
+    void SetContext(std::shared_ptr<Context> _ctx);
+    bool GetInLogic(LogicVal logicVal);
+    void SetInLogic(LogicVal logicVal, bool remove);
 
   private:
     static bool IsMagicItem(RandomizerGet item);
     static bool IsMagicArrow(RandomizerGet item);
-    bool HasItem(RandomizerGet itemName);
+    std::shared_ptr<Context> ctx;
+    bool inLogic[LOGIC_MAX];
 }; // class Logic
 } // namespace Rando

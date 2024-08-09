@@ -545,6 +545,56 @@ extern "C" void Randomizer_DrawFishingPoleGI(PlayState* play, GetItemEntry* getI
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
+int skeletonKeyHue = 0;
+
+// Runs every frame to update rainbow hue, taken from CosmeticsEditor.cpp.
+Color_RGBA8 GetSkeletonKeyColor() {
+    float rainbowSpeed = 0.6f;
+    
+    float frequency = 2 * M_PI / (360 * rainbowSpeed);
+    Color_RGBA8 color;
+    color.r = sin(frequency * skeletonKeyHue + 0) * 127 + 128;
+    color.g = sin(frequency * skeletonKeyHue + (2 * M_PI / 3)) * 127 + 128;
+    color.b = sin(frequency * skeletonKeyHue + (4 * M_PI / 3)) * 127 + 128;
+    color.a = 255;
+
+    skeletonKeyHue++;
+    if (skeletonKeyHue >= (360 * rainbowSpeed)) skeletonKeyHue = 0;
+
+    return color;
+}
+
+int test = 0;
+
+extern "C" void Randomizer_DrawSkeletonKey(PlayState* play, GetItemEntry* getItemEntry) {
+    OPEN_DISPS(play->state.gfxCtx);
+
+    Color_RGBA8 color = GetSkeletonKeyColor();
+
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+
+    test += 1;
+
+    if (test > 40) {
+        test -= 80;
+    }
+
+    Matrix_RotateZ(M_PI / 40 * test, MTXMODE_APPLY);
+    Matrix_RotateY(M_PI / 40 * test, MTXMODE_APPLY);
+
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
+
+    gDPSetGrayscaleColor(POLY_OPA_DISP++, color.r, color.g, color.b, color.a);
+    gSPGrayscale(POLY_OPA_DISP++, true);
+    
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiSmallKeyDL);
+
+    gSPGrayscale(POLY_OPA_DISP++, false);
+    
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
 extern "C" void Randomizer_DrawSilverRupee(PlayState* play, GetItemEntry* getItemEntry) {
     OPEN_DISPS(play->state.gfxCtx);
     Color_RGB8 silverRupeeColor =

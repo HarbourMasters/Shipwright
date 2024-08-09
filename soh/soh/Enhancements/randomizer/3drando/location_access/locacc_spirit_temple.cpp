@@ -227,10 +227,12 @@ void AreaTable_Init_SpiritTemple() {
   areaTable[RR_SPIRIT_TEMPLE_MQ_LOWER_ADULT] = Area("Spirit Temple MQ Lower Adult", "Spirit Temple", RA_SPIRIT_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LOCATION(RC_SPIRIT_TEMPLE_MQ_LEEVER_ROOM_CHEST,          true),
-                  LOCATION(RC_SPIRIT_TEMPLE_MQ_SYMPHONY_ROOM_CHEST,        logic->SmallKeys(RR_SPIRIT_TEMPLE, 7) && logic->Hammer && logic->Ocarina && logic->SongOfTime && logic->EponasSong && logic->SunsSong && logic->SongOfStorms && logic->ZeldasLullaby),
+                  LOCATION(RC_SPIRIT_TEMPLE_MQ_SYMPHONY_ROOM_CHEST,        logic->SmallKeys(RR_SPIRIT_TEMPLE, 7) && logic->Hammer && logic->CanUse(RG_SONG_OF_TIME) && logic->CanUse(RG_EPONAS_SONG) && logic->CanUse(RG_SUNS_SONG)
+                                                                           && logic->CanUse(RG_SONG_OF_STORMS) && logic->CanUse(RG_ZELDAS_LULLABY)),
                   LOCATION(RC_SPIRIT_TEMPLE_MQ_ENTRANCE_FRONT_RIGHT_CHEST, logic->Hammer),
                   LOCATION(RC_SPIRIT_TEMPLE_MQ_GS_LEEVER_ROOM,             true),
-                  LOCATION(RC_SPIRIT_TEMPLE_MQ_GS_SYMPHONY_ROOM,           logic->SmallKeys(RR_SPIRIT_TEMPLE, 7) && logic->Hammer && logic->Ocarina && logic->SongOfTime && logic->EponasSong && logic->SunsSong && logic->SongOfStorms && logic->ZeldasLullaby),
+                  LOCATION(RC_SPIRIT_TEMPLE_MQ_GS_SYMPHONY_ROOM,           logic->SmallKeys(RR_SPIRIT_TEMPLE, 7) && logic->Hammer && logic->CanUse(RG_SONG_OF_TIME) && logic->CanUse(RG_EPONAS_SONG) && logic->CanUse(RG_SUNS_SONG)
+                                                                           && logic->CanUse(RG_SONG_OF_STORMS) && logic->CanUse(RG_ZELDAS_LULLABY)),
   }, {});
 
   areaTable[RR_SPIRIT_TEMPLE_MQ_BOSS_AREA] = Area("Spirit Temple MQ Boss Area", "Spirit Temple", RA_SPIRIT_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
