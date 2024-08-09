@@ -944,7 +944,7 @@ void DrawEnhancementsMenu() {
                                                  true, false);
             UIWidgets::Tooltip("Adjusts the horizontal culling plane to account for widescreen resolutions");
             UIWidgets::PaddedEnhancementCheckbox(
-                "Exclude Glitch Useful Actors", "gEnhancements.ExtendedCullingExcludeGlitchActors", true, false,
+                "Cull Glitch Useful Actors", "gEnhancements.ExtendedCullingExcludeGlitchActors", true, false,
                 !CVarGetInteger("gEnhancements.WidescreenActorCulling", 0) &&
                     CVarGetInteger("gDisableDrawDistance", 1) <= 1,
                 "Requires Actor Draw Distance to be increased or Widescreen Actor Culling enabled");

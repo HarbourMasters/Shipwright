@@ -2884,7 +2884,7 @@ s32 Ship_CalcShouldDrawAndUpdate(PlayState* play, Actor* actor, Vec3f* projected
     multiplier = MAX(multiplier, 1);
 
     // Some actors have a really short forward value, so we need to add to it before the multiplier to increase the
-    // strength of the forward culling
+    // final strength of the forward culling
     f32 adder = (actor->uncullZoneForward < 500) ? 1000.0f : 0.0f;
 
     if ((projectedPos->z > -actor->uncullZoneScale) &&
