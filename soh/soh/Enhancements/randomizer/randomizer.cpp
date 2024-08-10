@@ -326,7 +326,7 @@ void Randomizer::LoadMerchantMessages() {
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN_BUY_FOR_100,
         CustomMessage("I never thought I'd say this, but I'm &selling the last %rMagic Bean%w. %r99%w Rupees...\x1B&%gYes&No%w",
-                      "Ich hätte nie gedacht, daß ich das&sage, aber ich verkaufe die&letzte %rWundererbse%w für %r99%w Rubine.\x1B&%gJa&Nein%w",
+                      "Ich hätte nie gedacht, daß ich das&sage, aber ich verkaufe die letzte^%rWundererbse%w für %r99%w Rubine.\x1B&%gJa&Nein%w",
                       "Je te vends mon dernier %rHaricot&magique%w pour %r99 Rubis%w.\x1B&%gAcheter&Ne pas acheter%w"));
 }
 
@@ -2765,7 +2765,7 @@ void CreateNaviRandoMessages() {
           "mouvants%c?" },
 
         { "%cYou can reach the back of %wImpa's&House %cby jumping from the&unfinished house with a %rcucco%c!",
-          "%cDu kannst den Balkon von %wImpas&Haus %cerreichen indem du von&der Baustelle aus mit einem "
+          "%cDu kannst den Balkon von %wImpas&Haus %cerreichen indem Du von&der Baustelle aus mit einem "
           "%rHuhn&%cspringst!",
           "%cTu peux atteindre l'arrière de la&%wMaison d'Impa %cen sautant depuis la&maison en construction avec "
           "une&%rcocotte%c!" },
