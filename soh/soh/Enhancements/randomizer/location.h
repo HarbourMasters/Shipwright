@@ -52,25 +52,25 @@ class Location {
   public:
     Location() : rc(RC_UNKNOWN_CHECK), quest(RCQUEST_BOTH), checkType(RCTYPE_STANDARD), area(RCAREA_INVALID),
                  actorId(ACTOR_ID_MAX), scene(SCENE_ID_MAX), actorParams(0),
-                 flag(0), hintKey(RHT_NONE), vanillaItem(RG_NONE), isVanillaCompletion(false),
+                 hintKey(RHT_NONE), vanillaItem(RG_NONE), isVanillaCompletion(false),
                  collectionCheck(SpoilerCollectionCheck()) {}
     Location(const RandomizerCheck rc_, const RandomizerCheckQuest quest_, const RandomizerCheckType checkType_,
              const RandomizerCheckArea area_, const ActorID actorId_, const uint8_t scene_,
-             const int32_t actorParams_, const uint8_t flag_, std::string shortName_, std::string spoilerName_,
+             const int32_t actorParams_, std::string shortName_, std::string spoilerName_,
              const RandomizerHintTextKey hintKey_, const RandomizerGet vanillaItem_,
              const bool isVanillaCompletion_ = false, const SpoilerCollectionCheck collectionCheck_ = SpoilerCollectionCheck())
         : rc(rc_), quest(quest_), checkType(checkType_), area(area_), actorId(actorId_),
-          scene(scene_), actorParams(actorParams_), flag(flag_), shortName(std::move(shortName_)),
+          scene(scene_), actorParams(actorParams_), shortName(std::move(shortName_)),
           spoilerName(std::move(spoilerName_)), hintKey(hintKey_), vanillaItem(vanillaItem_),
           isVanillaCompletion(isVanillaCompletion_), collectionCheck(collectionCheck_) {
     }
     Location(const RandomizerCheck rc_, const RandomizerCheckQuest quest_, const RandomizerCheckType checkType_,
              const RandomizerCheckArea area_, const ActorID actorId_, const uint8_t scene_,
-             const int32_t actorParams_, const uint8_t flag_, std::string shortName_,
+             const int32_t actorParams_, std::string shortName_,
              const RandomizerHintTextKey hintKey_, const RandomizerGet vanillaItem_,
              const bool isVanillaCompletion_ = false, const SpoilerCollectionCheck collectionCheck_ = SpoilerCollectionCheck())
         : rc(rc_), quest(quest_), checkType(checkType_), area(area_), actorId(actorId_),
-          scene(scene_), actorParams(actorParams_), flag(flag_), shortName(shortName_),
+          scene(scene_), actorParams(actorParams_), shortName(shortName_),
           spoilerName(SpoilerNameFromShortName(shortName_, area_)), hintKey(hintKey_), vanillaItem(vanillaItem_),
           isVanillaCompletion(isVanillaCompletion_), collectionCheck(collectionCheck_) {}
 
@@ -89,7 +89,6 @@ class Location {
     ActorID GetActorID() const;
     int32_t GetActorParams() const;
     SceneID GetScene() const;
-    uint8_t GetFlag() const;
     RandomizerHintTextKey GetHintKey() const;
     HintText* GetHint();
     const std::string& GetName() const;
@@ -103,30 +102,26 @@ class Location {
     RandomizerGet GetVanillaItem() const;
 
     static Location Base(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckType checkType_,
-                         ActorID actorId_, uint8_t scene_, int32_t actorParams_,
-                         uint8_t flag_, std::string&& shortName_, std::string&& spoilerName_,
-                         RandomizerHintTextKey hintKey, RandomizerGet vanillaItem,
+                         ActorID actorId_, uint8_t scene_, int32_t actorParams_, std::string&& shortName_,
+                         std::string&& spoilerName_, RandomizerHintTextKey hintKey, RandomizerGet vanillaItem,
                          SpoilerCollectionCheck collectionCheck = SpoilerCollectionCheck(),
                          bool isVanillaCompletion_ = false);
 
     static Location Base(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckType checkType_,
-                         ActorID actorId_, uint8_t scene_, int32_t actorParams_,
-                         uint8_t flag_, std::string&& shortName_,
-                         RandomizerHintTextKey hintKey, RandomizerGet vanillaItem,
-                         SpoilerCollectionCheck collectionCheck = SpoilerCollectionCheck(),
-                         bool isVanillaCompletion_ = false);
-
-    static Location Base(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckType checkType_,
-                         RandomizerCheckArea area_, ActorID actorId_, uint8_t scene_, int32_t actorParams_,
-                         uint8_t flag_, std::string&& shortName_, std::string&& spoilerName_,
+                         ActorID actorId_, uint8_t scene_, int32_t actorParams_, std::string&& shortName_,
                          RandomizerHintTextKey hintKey, RandomizerGet vanillaItem,
                          SpoilerCollectionCheck collectionCheck = SpoilerCollectionCheck(),
                          bool isVanillaCompletion_ = false);
 
     static Location Base(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckType checkType_,
                          RandomizerCheckArea area_, ActorID actorId_, uint8_t scene_, int32_t actorParams_,
-                         uint8_t flag_, std::string&& shortName_,
-                         RandomizerHintTextKey hintKey, RandomizerGet vanillaItem,
+                         std::string&& shortName_, std::string&& spoilerName_, RandomizerHintTextKey hintKey,
+                         RandomizerGet vanillaItem, SpoilerCollectionCheck collectionCheck = SpoilerCollectionCheck(),
+                         bool isVanillaCompletion_ = false);
+
+    static Location Base(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckType checkType_,
+                         RandomizerCheckArea area_, ActorID actorId_, uint8_t scene_, int32_t actorParams_,
+                         std::string&& shortName_, RandomizerHintTextKey hintKey, RandomizerGet vanillaItem,
                          SpoilerCollectionCheck collectionCheck = SpoilerCollectionCheck(),
                          bool isVanillaCompletion_ = false);
 
@@ -137,7 +132,7 @@ class Location {
 
     static Location
     Chest(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckType checkType_, RandomizerCheckArea area_,
-          ActorID actorId_, uint8_t scene_, int32_t actorParams_, uint8_t flag_, std::string&& shortName_,
+          ActorID actorId_, uint8_t scene_, int32_t actorParams_, std::string&& shortName_,
           RandomizerHintTextKey hintKey, RandomizerGet vanillaItem, SpoilerCollectionCheck collectionCheck,
           bool isVanillaCompletion_ = false);
 
@@ -148,7 +143,7 @@ class Location {
 
     static Location
     Chest(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckType checkType_,
-          ActorID actorId_, uint8_t scene_, int32_t actorParams_, uint8_t flag_, std::string&& shortName_,
+          ActorID actorId_, uint8_t scene_, int32_t actorParams_, std::string&& shortName_,
           RandomizerHintTextKey hintKey, RandomizerGet vanillaItem, SpoilerCollectionCheck collectionCheck,
           bool isVanillaCompletion_ = false);
 
@@ -166,21 +161,21 @@ class Location {
 
     static Location
     Collectable(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckType checkType_,
-                ActorID actorId_, uint8_t scene_, int32_t actorParams_, uint8_t flag_,
+                ActorID actorId_, uint8_t scene_, int32_t actorParams_,
                 std::string&& shortName_, RandomizerHintTextKey hintKey, RandomizerGet vanillaItem,
                 SpoilerCollectionCheck collectionCheck = SpoilerCollectionCheck(),
                 bool isVanillaCompletion_ = false);
 
     static Location
     Collectable(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckType checkType_,
-                RandomizerCheckArea area_, ActorID actorId_, uint8_t scene_, int32_t actorParams_, uint8_t flag_,
+                RandomizerCheckArea area_, ActorID actorId_, uint8_t scene_, int32_t actorParams_,
                 std::string&& shortName_, RandomizerHintTextKey hintKey, RandomizerGet vanillaItem,
                 SpoilerCollectionCheck collectionCheck = SpoilerCollectionCheck(),
                 bool isVanillaCompletion_ = false);
 
     static Location
     GSToken(RandomizerCheck rc, RandomizerCheckQuest quest_, uint8_t scene_, int32_t actorParams_,
-            uint8_t flag_, std::string&& shortName_, RandomizerHintTextKey hintKey);
+             uint8_t flag_, std::string&& shortName_, RandomizerHintTextKey hintKey);
 
     /// @brief For certain scenes, the sceneId and the "Scene" in spoiler collection check later used to check the
     /// GS flags don't necessarily match. Use this constructor (or the next one) for those. scene_ should be the actual scene where
@@ -197,11 +192,11 @@ class Location {
     /// @return
     static Location
     GSToken(RandomizerCheck rc, RandomizerCheckQuest quest_, uint8_t scene_, int32_t actorParams_,
-            uint8_t flag_, std::string&& shortName_, RandomizerHintTextKey hintKey, uint8_t skullScene_);
+             uint8_t flag_, std::string&& shortName_, RandomizerHintTextKey hintKey, uint8_t skullScene_);
 
     static Location
     GSToken(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_, uint8_t scene_, int32_t actorParams_,
-            uint8_t flag_, std::string&& shortName_, RandomizerHintTextKey hintKey, uint8_t skullScene_);
+             uint8_t flag_, std::string&& shortName_, RandomizerHintTextKey hintKey, uint8_t skullScene_);
 
     static Location OtherHint(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckType checkType_,
                               RandomizerCheckArea area_, ActorID actorId_, uint8_t scene_,
@@ -215,10 +210,10 @@ class Location {
                               std::string&& shortName_);
 
     static Location HintStone(RandomizerCheck rc, RandomizerCheckQuest quest_, uint8_t scene_, int32_t actorParams_,
-                              uint8_t flag_, std::string&& shortName_);
+                              std::string&& shortName_);
 
     static Location HintStone(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_, uint8_t scene_,
-                              int32_t actorParams_, uint8_t flag_, std::string&& shortName_);
+                              int32_t actorParams_, std::string&& shortName_);
 
   private:
     RandomizerCheck rc;
@@ -228,7 +223,6 @@ class Location {
     ActorID actorId;
     uint8_t scene;
     int32_t actorParams;
-    uint8_t flag;
     bool checked = false;
     std::string shortName;
     std::string spoilerName;
