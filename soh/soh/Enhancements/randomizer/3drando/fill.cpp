@@ -884,7 +884,7 @@ static void RandomizeDungeonItems() {
 
   //Get Any Dungeon and Overworld group locations
   std::vector<RandomizerCheck> anyDungeonLocations = FilterFromPool(ctx->allLocations, [](const auto loc){return Rando::StaticData::GetLocation(loc)->IsDungeon();});
-  //overworldLocations defined in item_location.cpp
+  //StaticData::GetOverworldLocations() defined in item_location.cpp
 
   //Create Any Dungeon and Overworld item pools
   std::vector<RandomizerGet> anyDungeonItems;
@@ -936,7 +936,7 @@ static void RandomizeDungeonItems() {
 
   //Randomize Any Dungeon and Overworld pools
   AssumedFill(anyDungeonItems, anyDungeonLocations, true);
-  AssumedFill(overworldItems, Rando::StaticData::overworldLocations, true);
+  AssumedFill(overworldItems, Rando::StaticData::GetOverworldLocations(), true);
 
   //Randomize maps and compasses after since they're not advancement items
   for (auto dungeon : ctx->GetDungeons()->GetDungeonList()) {
@@ -945,7 +945,7 @@ static void RandomizeDungeonItems() {
       AssumedFill(mapAndCompassItems, anyDungeonLocations, true);
     } else if (ctx->GetOption(RSK_SHUFFLE_MAPANDCOMPASS).Is(RO_DUNGEON_ITEM_LOC_OVERWORLD)) {
       auto mapAndCompassItems = FilterAndEraseFromPool(ItemPool, [dungeon](const RandomizerGet i){return i == dungeon->GetMap() || i == dungeon->GetCompass();});
-      AssumedFill(mapAndCompassItems, Rando::StaticData::overworldLocations, true);
+      AssumedFill(mapAndCompassItems, Rando::StaticData::GetOverworldLocations(), true);
     }
   }
 }

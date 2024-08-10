@@ -58,7 +58,7 @@ class Location {
           scene(scene_), actorParams(actorParams_), shortName(std::move(shortName_)),
           spoilerName(std::move(spoilerName_)), hintKey(hintKey_), vanillaItem(vanillaItem_),
           isVanillaCompletion(isVanillaCompletion_), collectionCheck(collectionCheck_) {}
-    
+
     Location(const RandomizerCheck rc_, const RandomizerCheckQuest quest_, const RandomizerCheckType checkType_, const RandomizerCheckArea area_, const ActorID actorId_,
              const SceneID scene_, const int32_t actorParams_, std::string shortName_, const RandomizerHintTextKey hintKey_, const RandomizerGet vanillaItem_,
              const bool isVanillaCompletion_ = false, const SpoilerCollectionCheck collectionCheck_ = SpoilerCollectionCheck())

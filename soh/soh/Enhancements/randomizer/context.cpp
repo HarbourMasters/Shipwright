@@ -140,7 +140,7 @@ void Context::GenerateLocationPool() {
     if (mSettings->GetOption(RSK_TRIFORCE_HUNT)) {
         AddLocation(RC_TRIFORCE_COMPLETED);
     }
-    AddLocations(StaticData::overworldLocations);
+    AddLocations(StaticData::GetOverworldLocations());
 
     if (mSettings->GetOption(RSK_FISHSANITY).IsNot(RO_FISHSANITY_OFF)) {
         AddLocations(mFishsanity->GetFishsanityLocations().first);
@@ -152,7 +152,7 @@ void Context::GenerateLocationPool() {
 }
 
 void Context::AddExcludedOptions() {
-    AddLocations(StaticData::overworldLocations, &everyPossibleLocation);
+    AddLocations(StaticData::GetOverworldLocations(), &everyPossibleLocation);
     for (const auto dungeon : mDungeons->GetDungeonList()) {
         AddLocations(dungeon->GetEveryLocation(), &everyPossibleLocation);
     }
