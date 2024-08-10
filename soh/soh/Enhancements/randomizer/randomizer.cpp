@@ -326,7 +326,7 @@ void Randomizer::LoadMerchantMessages() {
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN_BUY_FOR_100,
         CustomMessage("I never thought I'd say this, but I'm &selling the last %rMagic Bean%w. %r99%w Rupees...\x1B&%gYes&No%w",
-                      "Ich hätte nie gedacht, daß ich das sage, aber ich &verkaufe die letzte %rWundererbse%w für %r99%w Rubine.\x1B&%gJa&Nein%w",
+                      "Ich hätte nie gedacht, daß ich das&sage, aber ich verkaufe die&letzte %rWundererbse%w für %r99%w Rubine.\x1B&%gJa&Nein%w",
                       "Je te vends mon dernier %rHaricot&magique%w pour %r99 Rubis%w.\x1B&%gAcheter&Ne pas acheter%w"));
 }
 
@@ -2521,7 +2521,7 @@ CustomMessage Randomizer::GetFishingPondOwnerMessage(u16 originalTextId) {
     auto ctx = Rando::Context::GetInstance();
     CustomMessage messageEntry = CustomMessage(
       "Sorry, but the pond is closed.&I've lost my good %rfishing pole%w...&Can't go fishing without it!",
-      "Entschuldigung, aber der Teich ist geschlossen.&Ich habe meine gute %rAngelrute%w verloren...&Ohne kann ich nicht fischen!",
+      "Entschuldigung, aber der Teich ist zu.&Ich habe meine gute %rAngelrute%w verloren.&Ohne kann ich nicht fischen!",
       ""
     );
 
@@ -2783,8 +2783,8 @@ void CreateNaviRandoMessages() {
           "intéréssant?" },
 
         { "%cHave you been using %wDeku Nuts&%cenough? I've seen them blow up&a %rBombchu%c!",
-          "%cBenutzt Du auch genügend %wDeku-Nüsse%c? Ich habe mal gesehen, daß&man damit %rKrabbelminen "
-          "%cdetonieren& lassen kann!",
+          "%cBenutzt Du auch genügend %wDeku-Nüsse%c?&Ich habe mal gesehen, daß&man damit %rKrabbelminen "
+          "%cdetonieren&lassen kann!",
           "%cTu es sûr d'utiliser tes %wNoix Mojo &%ccorrectement? J'en ai déjà vu&exploser des %rChoux-Péteurs%c!" },
 
         { "%cYou might end up with an %wextra&key %cfor the %bWater Temple %cor the&%rFire Temple%c. It's for your "
@@ -3269,8 +3269,8 @@ void Randomizer::CreateCustomMessages() {
 			"Vous obtenez la %rBourse de Magnat%w!&Elle peut contenir jusqu'à %y999 rubis%w!&C'est gigantesque!"),
         GIMESSAGE(RG_CHILD_WALLET, ITEM_WALLET_ADULT,
 			"You got a %rChild's Wallet%w!&Now you can carry&up to %y99 rupees%w!",
-			"Du erhältst die %rKindergeldbörse%w! Jetzt kannst Du bis&zu %y99 Rubine%w mit Dir führen!",
-			"Vous obtenez la %rBourse d'enfant%w!&Elle peut contenir jusqu'à %y99 rubis%w!"),
+			"Du erhältst die %rKindergeldbörse%w!&Jetzt kannst Du bis&zu %y99 Rubine%w mit Dir führen!",
+			"Vous obtenez la %rBourse d'Enfant%w!&Elle peut contenir jusqu'à %y99 rubis%w!"),
 
         GIMESSAGE_UNTRANSLATED(RG_GOHMA_SOUL, ITEM_BIG_POE, "You found the soul for %gGohma%w!"),
         GIMESSAGE_UNTRANSLATED(RG_KING_DODONGO_SOUL, ITEM_BIG_POE, "You found the soul for %rKing&Dodongo%w!"),
