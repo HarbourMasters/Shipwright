@@ -211,6 +211,8 @@ const std::vector<const char*> enhancementsCvars = {
     "gDisableLOD",
     "gDisableDrawDistance",
     "gDisableKokiriDrawDistance",
+    "gEnhancements.WidescreenActorCulling",
+    "gEnhancements.ExtendedCullingExcludeGlitchActors",
     "gLowResMode",
     "gDrawLineupTick",
     "gQuickBongoKill",
