@@ -366,12 +366,12 @@ void EnHeishi1_Kick(EnHeishi1* this, PlayState* play) {
             Message_CloseTextbox(play);
             if (!this->loadStarted) {
                 Flags_SetEventChkInf(EVENTCHKINF_CAUGHT_BY_CASTLE_GUARDS);
-                play->nextEntranceIndex = 0x4FA;
-                play->sceneLoadFlag = 0x14;
+                play->nextEntranceIndex = ENTR_HYRULE_CASTLE_3;
+                play->transitionTrigger = TRANS_TRIGGER_START;
                 this->loadStarted = true;
                 sHeishi1PlayerIsCaught = false;
-                play->fadeTransition = 0x2E;
-                gSaveContext.nextTransitionType = 0x2E;
+                play->transitionType = TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_WHITE, TCS_FAST);
+                gSaveContext.nextTransitionType = TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_WHITE, TCS_FAST);
             }
         }
     }

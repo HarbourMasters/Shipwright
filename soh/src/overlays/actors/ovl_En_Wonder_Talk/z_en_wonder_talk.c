@@ -142,7 +142,7 @@ void func_80B3943C(EnWonderTalk* this, PlayState* play) {
         if ((Actor_ProcessTalkRequest(&this->actor, play))) {
             if (this->unk_156 != TEXT_STATE_DONE) {
                 // not if we're rando'd in the temple of time talking to the altar
-                if(!(IS_RANDO && play->sceneNum == 67)) {
+                if(!(IS_RANDO && play->sceneNum == SCENE_TEMPLE_OF_TIME)) {
                     this->actionFunc = func_80B395F0;
                 }
             } else {

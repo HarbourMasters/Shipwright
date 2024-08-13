@@ -337,9 +337,9 @@ void func_80A56B40(EnHeishi4* this, PlayState* play) {
             Player* player = GET_PLAYER(play);
             // Only allow sneaking when not wearing a mask as that triggers different dialogue. MM Bunny hood disables
             // these interactions, so bunny hood is fine in that case.
-            if (CVarGetInteger("gMarketSneak", 0) &&
+            if (CVarGetInteger(CVAR_ENHANCEMENT("MarketSneak"), 0) &&
                 (player->currentMask == PLAYER_MASK_NONE ||
-                 (player->currentMask == PLAYER_MASK_BUNNY && CVarGetInteger("gMMBunnyHood", 0)))) {
+                 (player->currentMask == PLAYER_MASK_BUNNY && CVarGetInteger(CVAR_ENHANCEMENT("MMBunnyHood"), 0)))) {
                 this->actionFunc = EnHeishi4_MarketSneak;
             } else {
                 this->actionFunc = func_80A56614;
@@ -358,13 +358,13 @@ void EnHeishi4_MarketSneak(EnHeishi4* this, PlayState* play) {
         switch (play->msgCtx.choiceIndex) {
             case 0: //yes
                 if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES) != RO_GENERIC_OFF){
-                    play->nextEntranceIndex = Entrance_OverrideNextIndex(0x01FD); // Market Entrance -> HF
+                    play->nextEntranceIndex = Entrance_OverrideNextIndex(ENTR_HYRULE_FIELD_7); // Market Entrance -> HF
                 } else {
-                    play->nextEntranceIndex = 0x00CD; // HF Near bridge (OoT cutscene entrance) to not fall in the water
+                    play->nextEntranceIndex = ENTR_HYRULE_FIELD_0; // HF Near bridge (OoT cutscene entrance) to not fall in the water
                 } 
-                play->sceneLoadFlag = 0x14;
-                play->fadeTransition = 0x2E;
-                gSaveContext.nextTransitionType = 0x2E;
+                play->transitionTrigger = TRANS_TRIGGER_START;
+                play->transitionType = TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_WHITE, TCS_FAST);
+                gSaveContext.nextTransitionType = TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_WHITE, TCS_FAST);
                 this->actionFunc = func_80A56614;
                 break;
             case 1: //no

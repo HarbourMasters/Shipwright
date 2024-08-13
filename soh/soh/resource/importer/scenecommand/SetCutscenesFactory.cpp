@@ -1,40 +1,35 @@
 #include "soh/resource/importer/scenecommand/SetCutscenesFactory.h"
 #include "soh/resource/type/scenecommand/SetCutscenes.h"
+#include "soh/resource/logging/SceneCommandLoggers.h"
 #include <libultraship/libultraship.h>
 #include "spdlog/spdlog.h"
 
-namespace LUS {
-std::shared_ptr<IResource>
-SetCutscenesFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
-    auto resource = std::make_shared<SetCutscenes>(initData);
-    std::shared_ptr<ResourceVersionFactory> factory = nullptr;
-
-    switch (resource->GetInitData()->ResourceVersion) {
-    case 0:
-	    factory = std::make_shared<SetCutscenesFactoryV0>();
-	    break;
-    }
-
-    if (factory == nullptr)
-    {
-        SPDLOG_ERROR("Failed to load SetCutscenes with version {}", resource->GetInitData()->ResourceVersion);
-        return nullptr;
-    }
-
-    factory->ParseFileBinary(reader, resource);
-
-    return resource;
-}
-
-void LUS::SetCutscenesFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
-                                        		  std::shared_ptr<IResource> resource) {
-    std::shared_ptr<SetCutscenes> setCutscenes = std::static_pointer_cast<SetCutscenes>(resource);
-    ResourceVersionFactory::ParseFileBinary(reader, setCutscenes);
+namespace SOH {
+std::shared_ptr<Ship::IResource>
+SetCutscenesFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData, std::shared_ptr<Ship::BinaryReader> reader) {
+    auto setCutscenes = std::make_shared<SetCutscenes>(initData);
 
     ReadCommandId(setCutscenes, reader);
     
     setCutscenes->fileName = reader->ReadString();
-    setCutscenes->cutscene = std::static_pointer_cast<Cutscene>(LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(setCutscenes->fileName.c_str()));
+    setCutscenes->cutscene = std::static_pointer_cast<Cutscene>(Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(setCutscenes->fileName.c_str()));
+
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ResourceLogging"), 0)) {
+        LogCutscenesAsXML(setCutscenes);
+    }
+
+    return setCutscenes;
 }
 
-} // namespace LUS
+std::shared_ptr<Ship::IResource> SetCutscenesFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
+                                                                   tinyxml2::XMLElement* reader) {
+    auto setCutscenes = std::make_shared<SetCutscenes>(initData);
+
+    setCutscenes->cmdId = SceneCommandID::SetCutscenes;
+
+    setCutscenes->fileName = reader->Attribute("FileName");
+    setCutscenes->cutscene = std::static_pointer_cast<Cutscene>(Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(setCutscenes->fileName.c_str()));
+
+    return setCutscenes;
+}
+} // namespace SOH

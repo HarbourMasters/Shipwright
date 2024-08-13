@@ -670,7 +670,7 @@ void EnAm_Statue(EnAm* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
     f32 temp158f = this->dyna.unk_158;
     s16 moveDir = 0;
-    s32 blockSpeed = CVarGetInteger("gFasterBlockPush", 0);
+    s32 blockSpeed = CVarGetInteger(CVAR_ENHANCEMENT("FasterBlockPush"), 0);
 
     if (this->unk_258 == 0) {
         if (this->dyna.unk_150 != 0.0f) {
@@ -694,7 +694,7 @@ void EnAm_Statue(EnAm* this, PlayState* play) {
             ((this->hurtCollider.base.ocFlags1 & OC1_HIT) && (ABS(moveDir) <= 0x2000))) {
 
             this->unk_258 = 0;
-            player->stateFlags2 &= ~0x151;
+            player->stateFlags2 &= ~(PLAYER_STATE2_DO_ACTION_GRAB | PLAYER_STATE2_MOVING_DYNAPOLY | PLAYER_STATE2_DISABLE_ROTATION_ALWAYS | PLAYER_STATE2_GRABBING_DYNAPOLY);
             player->actor.speedXZ = 0.0f;
             this->dyna.unk_150 = this->dyna.unk_154 = 0.0f;
         }

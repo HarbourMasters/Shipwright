@@ -276,7 +276,7 @@ void ObjMure_InitialAction(ObjMure* this, PlayState* play) {
 
 void ObjMure_CulledState(ObjMure* this, PlayState* play) {
     // #region SOH [Enhancements] Extended draw distance
-    s32 distanceMultiplier = CVarGetInteger("gDisableDrawDistance", 1);
+    s32 distanceMultiplier = CVarGetInteger(CVAR_ENHANCEMENT("DisableDrawDistance"), 1);
     distanceMultiplier = MAX(distanceMultiplier, 1);
 
     if (fabsf(this->actor.projectedPos.z) < sZClip[this->type] * distanceMultiplier) {
@@ -405,7 +405,7 @@ void ObjMure_ActiveState(ObjMure* this, PlayState* play) {
     ObjMure_CheckChildren(this, play);
 
     // #region SOH [Enhancements] Extended draw distance
-    s32 distanceMultiplier = CVarGetInteger("gDisableDrawDistance", 1);
+    s32 distanceMultiplier = CVarGetInteger(CVAR_ENHANCEMENT("DisableDrawDistance"), 1);
     distanceMultiplier = MAX(distanceMultiplier, 1);
 
     if ((sZClip[this->type] + 40.0f) * distanceMultiplier <= fabsf(this->actor.projectedPos.z)) {

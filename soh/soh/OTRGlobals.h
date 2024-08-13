@@ -12,6 +12,9 @@
 #define GAME_PLATFORM_N64 0
 #define GAME_PLATFORM_GC 1
 
+#define BTN_MODIFIER1 0x00040
+#define BTN_MODIFIER2 0x00080
+
 #ifdef __cplusplus
 #include <Context.h>
 #include "Enhancements/savestates.h"
@@ -34,7 +37,7 @@ class OTRGlobals
 public:
     static OTRGlobals* Instance;
 
-    std::shared_ptr<LUS::Context> context;
+    std::shared_ptr<Ship::Context> context;
     std::shared_ptr<SaveStateMgr> gSaveStateMgr;
     std::shared_ptr<Randomizer> gRandomizer;
 
@@ -61,6 +64,22 @@ private:
 
 uint32_t IsGameMasterQuest();
 #endif
+
+#define CVAR_RANDOMIZER_ENHANCEMENT(var) CVAR_PREFIX_RANDOMIZER_ENHANCEMENT "." var
+#define CVAR_RANDOMIZER_SETTING(var) CVAR_PREFIX_RANDOMIZER_SETTING "." var
+#define CVAR_COSMETIC(var) CVAR_PREFIX_COSMETIC "." var
+#define CVAR_AUDIO(var) CVAR_PREFIX_AUDIO "." var
+#define CVAR_CHEAT(var) CVAR_PREFIX_CHEAT "." var
+#define CVAR_ENHANCEMENT(var) CVAR_PREFIX_ENHANCEMENT "." var
+#define CVAR_SETTING(var) CVAR_PREFIX_SETTING "." var
+#define CVAR_WINDOW(var) CVAR_PREFIX_WINDOW "." var
+#define CVAR_TRACKER(var) CVAR_PREFIX_TRACKER "." var
+#define CVAR_TRACKER_ITEM(var) CVAR_TRACKER(".ItemTracker." var)
+#define CVAR_TRACKER_CHECK(var) CVAR_TRACKER(".CheckTracker." var)
+#define CVAR_TRACKER_ENTRANCE(var) CVAR_TRACKER(".EntranceTracker." var)
+#define CVAR_DEVELOPER_TOOLS(var) CVAR_PREFIX_DEVELOPER_TOOLS "." var
+#define CVAR_GENERAL(var) CVAR_PREFIX_GENERAL "." var
+#define CVAR_REMOTE(var) CVAR_PREFIX_REMOTE "." var
 
 #ifndef __cplusplus
     void InitOTR(void);
@@ -92,8 +111,6 @@ uint8_t ResourceMgr_FileExists(const char* resName);
 uint8_t ResourceMgr_FileAltExists(const char* resName);
 void ResourceMgr_UnloadOriginalWhenAltExists(const char* resName);
 char* GetResourceDataByNameHandlingMQ(const char* path);
-void ResourceMgr_LoadFile(const char* resName);
-char* ResourceMgr_LoadFileFromDisk(const char* filePath);
 uint8_t ResourceMgr_TexIsRaw(const char* texPath);
 uint8_t ResourceMgr_ResourceIsBackground(char* texPath);
 char* ResourceMgr_LoadJPEG(char* data, size_t dataSize);
@@ -163,6 +180,8 @@ GetItemEntry Randomizer_GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorPar
 GetItemEntry Randomizer_GetItemFromActorWithoutObtainabilityCheck(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogId);
 GetItemEntry Randomizer_GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
 GetItemEntry Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
+bool Randomizer_IsCheckShuffled(RandomizerCheck check);
+GetItemEntry GetItemMystery();
 ItemObtainability Randomizer_GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck);
 int CustomMessage_RetrieveIfExists(PlayState* play);
 void Overlay_DisplayText(float duration, const char* text);
@@ -179,7 +198,8 @@ void Gfx_TextureCacheDelete(const uint8_t* addr);
 void SaveManager_ThreadPoolWait();
 void CheckTracker_OnMessageClose();
 
-int32_t GetGIID(uint32_t itemID);
+GetItemID RetrieveGetItemIDFromItemID(ItemID itemID);
+RandomizerGet RetrieveRandomizerGetFromItemID(ItemID itemID);
 #endif
 
 #ifdef __cplusplus

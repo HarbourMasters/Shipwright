@@ -7,8 +7,10 @@
 #include <stdlib.h>
 
 #include "soh/Enhancements/debugger/colViewer.h"
+#include "soh/Enhancements/debugger/valueViewer.h"
 #include "soh/Enhancements/gameconsole.h"
 #include "soh/OTRGlobals.h"
+#include "libultraship/bridge.h"
 
 #define GFXPOOL_HEAD_MAGIC 0x1234
 #define GFXPOOL_TAIL_MAGIC 0x5678
@@ -289,6 +291,28 @@ void Graph_Update(GraphicsContext* gfxCtx, GameState* gameState) {
 
     OPEN_DISPS(gfxCtx);
 
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ValueViewerEnablePrinting"), 0)) {
+        Gfx* gfx;
+        Gfx* polyOpa;
+        GfxPrint printer;
+
+        polyOpa = POLY_OPA_DISP;
+        gfx = Graph_GfxPlusOne(polyOpa);
+        gSPDisplayList(OVERLAY_DISP++, gfx);
+
+        GfxPrint_Init(&printer);
+        GfxPrint_Open(&printer, gfx);
+
+        ValueViewer_Draw(&printer);
+
+        gfx = GfxPrint_Close(&printer);
+        GfxPrint_Destroy(&printer);
+
+        gSPEndDisplayList(gfx++);
+        Graph_BranchDlist(polyOpa, gfx);
+        POLY_OPA_DISP = gfx;
+    }
+
     gDPNoOpString(WORK_DISP++, "WORK_DISP 終了", 0);
     gDPNoOpString(POLY_OPA_DISP++, "POLY_OPA_DISP 終了", 0);
     gDPNoOpString(POLY_XLU_DISP++, "POLY_XLU_DISP 終了", 0);
@@ -401,7 +425,7 @@ void Graph_Update(GraphicsContext* gfxCtx, GameState* gameState) {
         sGraphUpdateTime = time;
     }
 
-    if (CVarGetInteger("gDebugEnabled", 0))
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0))
     {
         if (CHECK_BTN_ALL(gameState->input[0].press.button, BTN_Z) &&
             CHECK_BTN_ALL(gameState->input[0].cur.button, BTN_L | BTN_R)) {
@@ -518,8 +542,9 @@ static void RunFrame()
 }
 
 void Graph_ThreadEntry(void* arg0) {
-
-    Graph_ProcessFrame(RunFrame);
+    while (WindowIsRunning()) {
+        RunFrame();
+    }
 }
 
 void* Graph_Alloc(GraphicsContext* gfxCtx, size_t size) {

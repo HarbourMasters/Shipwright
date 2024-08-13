@@ -666,7 +666,7 @@ void func_80AB6D08(EnNiw* this, PlayState* play) {
         }
 
         this->path = 1;
-        this->timer5 = 80;
+        this->timer5 = 80 * CVarGetInteger(CVAR_ENHANCEMENT("CuccoStayDurationMult"), 1);
         this->actor.speedXZ = 0.0f;
         this->actor.velocity.y = 4.0f;
     } else {

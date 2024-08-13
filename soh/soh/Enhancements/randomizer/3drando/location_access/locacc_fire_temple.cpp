@@ -420,5 +420,6 @@ void AreaTable_Init_FireTemple() {
              {
                  // Exits
                  Entrance(FIRE_TEMPLE_BOSS_ENTRYWAY, { [] { return false; } }),
+                 Entrance(DMC_CENTRAL_LOCAL, { [] { return FireTempleClear; } }),
              });
 }

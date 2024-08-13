@@ -222,8 +222,8 @@ void ObjMure2_Update(Actor* thisx, PlayState* play) {
     }
 
     // SOH [Enhancements] Extended draw distance
-    s32 distanceMultiplier = CVarGetInteger("gDisableDrawDistance", 1);
-    if (CVarGetInteger("gEnhancements.WidescreenActorCulling", 0) || distanceMultiplier > 1) {
+    s32 distanceMultiplier = CVarGetInteger(CVAR_ENHANCEMENT("DisableDrawDistance"), 1);
+    if (CVarGetInteger(CVAR_ENHANCEMENT("WidescreenActorCulling"), 0) || distanceMultiplier > 1) {
         f32 originalAspectRatio = 4.0f / 3.0f;
         f32 currentAspectRatio = OTRGetAspectRatio();
         // Adjust ratio difference based on field of view testing

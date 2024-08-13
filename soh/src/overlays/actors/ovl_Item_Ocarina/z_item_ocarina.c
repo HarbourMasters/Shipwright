@@ -173,10 +173,10 @@ void ItemOcarina_StartSoTCutscene(ItemOcarina* this, PlayState* play) {
             play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gHyruleFieldZeldaSongOfTimeCs);
             gSaveContext.cutsceneTrigger = 1;
         } else {
-            play->sceneLoadFlag = 0x14;
-            play->fadeTransition = 3;
-            gSaveContext.nextTransitionType = 3;
-            play->nextEntranceIndex = 0x050F;
+            play->transitionTrigger = TRANS_TRIGGER_START;
+            play->transitionType = TRANS_TYPE_FADE_WHITE;
+            gSaveContext.nextTransitionType = TRANS_TYPE_FADE_WHITE;
+            play->nextEntranceIndex = ENTR_HYRULE_FIELD_16;
             gSaveContext.nextCutsceneIndex = 0;
         }
     }
@@ -215,7 +215,7 @@ void ItemOcarina_Draw(Actor* thisx, PlayState* play) {
     func_8002ED80(thisx, play, 0);
 
     if (IS_RANDO) {
-        GetItemEntry randoGetItem = Randomizer_GetItemFromKnownCheck(RC_HF_OCARINA_OF_TIME_ITEM, GI_OCARINA_OOT);
+        GetItemEntry randoGetItem = (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0) && Randomizer_IsCheckShuffled(RC_HF_OCARINA_OF_TIME_ITEM)) ? GetItemMystery() : Randomizer_GetItemFromKnownCheck(RC_HF_OCARINA_OF_TIME_ITEM, GI_OCARINA_OOT);
         EnItem00_CustomItemsParticles(&this->actor, play, randoGetItem);
         GetItemEntry_Draw(play, randoGetItem);
         return;

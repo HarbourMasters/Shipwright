@@ -1,17 +1,11 @@
 #pragma once
 
 #include "resource/Resource.h"
-#include "resource/ResourceFactory.h"
+#include "resource/ResourceFactoryBinary.h"
 
-namespace LUS {
-class BackgroundFactory : public ResourceFactory {
+namespace SOH {
+class ResourceFactoryBinaryBackgroundV0 : public Ship::ResourceFactoryBinary {
   public:
-    std::shared_ptr<IResource>
-    ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) override;
+    std::shared_ptr<Ship::IResource> ReadResource(std::shared_ptr<Ship::File> file) override;
 };
-
-class BackgroundFactoryV0 : public ResourceVersionFactory {
-  public:
-    void ParseFileBinary(std::shared_ptr<BinaryReader> reader, std::shared_ptr<IResource> resource) override;
-};
-}; // namespace LUS
+} // namespace SOH

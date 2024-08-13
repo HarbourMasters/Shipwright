@@ -4,4 +4,4 @@
 *.cfg
 *.vtx.inc
 *.dlist.inc
-*.txt
+!*.png
