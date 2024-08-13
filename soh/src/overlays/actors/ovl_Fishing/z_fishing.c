@@ -11,12 +11,14 @@
 #include "vt.h"
 
 #include "soh/frame_interpolation.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 #define WATER_SURFACE_Y(play) play->colCtx.colHeader->waterBoxes->ySurface
 #define IS_FISHSANITY (IS_RANDO && Randomizer_GetPondFishShuffled())
 #define FISHID(params) (Randomizer_IdentifyFish(play->sceneNum, params))
+bool vanillaPath = true;
 bool getShouldSpawnLoaches();
 
 void Fishing_Init(Actor* thisx, PlayState* play);
@@ -5003,7 +5005,8 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
                                 this->stateAndTimer = 20;
                             } else if (sFishOnHandIsLoach == 0) {
                                 sFishLengthToWeigh = sFishOnHandLength;
-                                if ((s16)sFishingRecordLength < (s16)sFishOnHandLength) {
+                                //(s16)sFishingRecordLength < (s16)sFishOnHandLength
+                                if (GameInteractor_Should(VB_SHOULD_GIVE_FISHING_REWARD, true, &sFishOnHandLength)) {
                                     if (sLureCaughtWith == FS_LURE_SINKING) {
                                         this->actor.textId = 0x40B0;
                                     } else {
@@ -5074,40 +5077,42 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
                 Message_CloseTextbox(play);
 
                 if (sFishOnHandIsLoach == 0) {
-                    sFishingRecordLength = sFishOnHandLength;
-                    sFishOnHandLength = 0.0f;
+                    if(GameInteractor_Should(VB_SHOULD_GIVE_FISHING_REWARD, true, &sFishOnHandLength)){
+                        sFishingRecordLength = sFishOnHandLength;
+                        sFishOnHandLength = 0.0f;
 
-                    if (sLinkAge == LINK_AGE_CHILD) {
-                        f32 temp;
+                        if (sLinkAge == LINK_AGE_CHILD) {
+                            f32 temp;
 
-                        HIGH_SCORE(HS_FISHING) &= 0xFFFFFF00;
-                        HIGH_SCORE(HS_FISHING) |= (s32)sFishingRecordLength & HS_FISH_LENGTH_CHILD;
+                            HIGH_SCORE(HS_FISHING) &= 0xFFFFFF00;
+                            HIGH_SCORE(HS_FISHING) |= (s32)sFishingRecordLength & HS_FISH_LENGTH_CHILD;
 
-                        temp = (HIGH_SCORE(HS_FISHING) & HS_FISH_LENGTH_ADULT) >> 0x18;
-                        if (temp < sFishingRecordLength) {
+                            temp = (HIGH_SCORE(HS_FISHING) & HS_FISH_LENGTH_ADULT) >> 0x18;
+                            if (temp < sFishingRecordLength) {
+                                HIGH_SCORE(HS_FISHING) &= 0xFFFFFF;
+                                HIGH_SCORE(HS_FISHING) |= ((s32)sFishingRecordLength & HS_FISH_LENGTH_CHILD) << 0x18;
+
+                                if (sLureCaughtWith == FS_LURE_SINKING) {
+                                    HIGH_SCORE(HS_FISHING) |= HS_FISH_CHEAT_ADULT;
+                                }
+                            }
+
+                            if (sLureCaughtWith == FS_LURE_SINKING) {
+                                HIGH_SCORE(HS_FISHING) |= HS_FISH_CHEAT_CHILD;
+                                this->stateAndTimer = 0;
+                                break;
+                            }
+                        } else {
                             HIGH_SCORE(HS_FISHING) &= 0xFFFFFF;
                             HIGH_SCORE(HS_FISHING) |= ((s32)sFishingRecordLength & HS_FISH_LENGTH_CHILD) << 0x18;
 
                             if (sLureCaughtWith == FS_LURE_SINKING) {
                                 HIGH_SCORE(HS_FISHING) |= HS_FISH_CHEAT_ADULT;
+                                this->stateAndTimer = 0;
+                                break;
                             }
                         }
-
-                        if (sLureCaughtWith == FS_LURE_SINKING) {
-                            HIGH_SCORE(HS_FISHING) |= HS_FISH_CHEAT_CHILD;
-                            this->stateAndTimer = 0;
-                            break;
-                        }
-                    } else {
-                        HIGH_SCORE(HS_FISHING) &= 0xFFFFFF;
-                        HIGH_SCORE(HS_FISHING) |= ((s32)sFishingRecordLength & HS_FISH_LENGTH_CHILD) << 0x18;
-
-                        if (sLureCaughtWith == FS_LURE_SINKING) {
-                            HIGH_SCORE(HS_FISHING) |= HS_FISH_CHEAT_ADULT;
-                            this->stateAndTimer = 0;
-                            break;
-                        }
-                    }
+                    }                     
 
                     if (sFishingRecordLength >= 60.0f) { // 13 lbs
                         getItemId = GI_RUPEE_PURPLE;
@@ -5119,50 +5124,33 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
                         getItemId = GI_RUPEE_GREEN;
                     }
 
-                    if (sLinkAge == LINK_AGE_CHILD) { // 9 lbs
-                        if ((!IS_RANDO && !(HIGH_SCORE(HS_FISHING) & HS_FISH_PRIZE_CHILD)) ||
-                            (IS_RANDO && !Flags_GetRandomizerInf(RAND_INF_CHILD_FISHING))
-                        ) {
-                            if (sFishingRecordLength >= Fishing_GetMinimumRequiredScore()) {
+                    vanillaPath = GameInteractor_Should(VB_SHOULD_GIVE_VANILLA_REWARD, true, &getItemId);
+
+                    if (vanillaPath){
+                        if (sLinkAge == LINK_AGE_CHILD) { // 9 lbs
+                            if ((sFishingRecordLength >= 50.0f) && !(HIGH_SCORE(HS_FISHING) & HS_FISH_PRIZE_CHILD)) {
                                 HIGH_SCORE(HS_FISHING) |= HS_FISH_PRIZE_CHILD;
-                                Flags_SetRandomizerInf(RAND_INF_CHILD_FISHING);
+                                getItemId = GI_HEART_PIECE;
                                 sSinkingLureLocation = (u8)Rand_ZeroFloat(3.999f) + 1;
-                                if (!IS_RANDO) {
-                                    getItemId = GI_HEART_PIECE;
-                                } else {
-                                    getItemId = GI_NONE;
-                                }
                             }
-                        }
-                    } else { // 13 lbs
-                        if ((!IS_RANDO && !(HIGH_SCORE(HS_FISHING) & HS_FISH_PRIZE_ADULT)) ||
-                            (IS_RANDO && !Flags_GetRandomizerInf(RAND_INF_ADULT_FISHING))
-                        ) {
-                            if (sFishingRecordLength >= Fishing_GetMinimumRequiredScore()) {
+                        } else { // 13 lbs
+                            if ((sFishingRecordLength >= 60.0f) && !(HIGH_SCORE(HS_FISHING) & HS_FISH_PRIZE_ADULT)) {
                                 HIGH_SCORE(HS_FISHING) |= HS_FISH_PRIZE_ADULT;
-                                Flags_SetRandomizerInf(RAND_INF_ADULT_FISHING);
+                                getItemId = GI_SCALE_GOLDEN;
                                 sSinkingLureLocation = (u8)Rand_ZeroFloat(3.999f) + 1;
-                                if (!IS_RANDO) {
-                                    getItemId = GI_SCALE_GOLD;
-                                } else {
-                                    getItemId = GI_NONE;
-                                }
                             }
                         }
                     }
                 } else {
-                    if (IS_RANDO && !Flags_GetRandomizerInf(RAND_INF_CAUGHT_LOACH)) {
-                        Flags_SetRandomizerInf(RAND_INF_CAUGHT_LOACH);
-                        getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_HYRULE_LOACH, GI_RUPEE_PURPLE);
-                        getItemId = getItemEntry.getItemId;
-                    } else {
+                    vanillaPath = GameInteractor_Should(VB_SHOULD_GET_LOACH_RANDO_REWARD, true, NULL);
+                    if (vanillaPath) {
                         getItemId = GI_RUPEE_PURPLE;
                     }
                     sFishOnHandLength = 0.0f; // doesn't record loach
                 }
 
                 this->actor.parent = NULL;
-                if (!IS_RANDO) {
+                if (vanillaPath){
                     Actor_OfferGetItem(&this->actor, play, getItemId, 2000.0f, 1000.0f);
                 }
                 this->stateAndTimer = 23;
@@ -5215,10 +5203,11 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
             if (Actor_HasParent(&this->actor, play)) {
                 this->stateAndTimer = 24;
             } else {
-                if (IS_RANDO) {
-                    sIsRodVisible = true;
+                if (vanillaPath) {
+                    Actor_OfferGetItem(&this->actor, play, GI_SCALE_GOLDEN, 2000.0f, 1000.0f);
                 } else {
-                    Actor_OfferGetItem(&this->actor, play, GI_SCALE_GOLD, 2000.0f, 1000.0f);
+                    sIsRodVisible = true;
+                    this->stateAndTimer = 24;
                 }
             }
             break;

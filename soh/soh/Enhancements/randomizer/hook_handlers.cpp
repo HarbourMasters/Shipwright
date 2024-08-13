@@ -33,6 +33,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_Obj_Comb/z_obj_comb.h"
 #include "src/overlays/actors/ovl_En_Bom_Bowl_Pit/z_en_bom_bowl_pit.h"
 #include "src/overlays/actors/ovl_En_Ge1/z_en_ge1.h"
+#include "src/overlays/actors/ovl_Fishing/z_fishing.h"
 #include "adult_trade_shuffle.h"
 #include "draw.h"
 
@@ -577,6 +578,22 @@ void Player_Action_8084E6D4_override(Player* player, PlayState* play) {
 void func_8083A434_override(PlayState* play, Player* player) {
     func_80835DAC(play, player, Player_Action_8084E6D4_override, 0);
     player->stateFlags1 |= PLAYER_STATE1_GETTING_ITEM | PLAYER_STATE1_IN_CUTSCENE;
+}
+
+f32 GetFishingRecord(){
+    if (LINK_IS_CHILD) {
+        if ((HIGH_SCORE(HS_FISHING) & HS_FISH_LENGTH_CHILD) != 0) {
+            return HIGH_SCORE(HS_FISHING) & HS_FISH_LENGTH_CHILD;
+        } else {
+            return 40.0f; // 6 lbs
+        }
+    } else {
+        if ((HIGH_SCORE(HS_FISHING) & HS_FISH_LENGTH_ADULT) != 0) {
+            return (HIGH_SCORE(HS_FISHING) & HS_FISH_LENGTH_ADULT) >> 0x18;
+        } else {
+            return 45.0f; // 7 lbs
+        }
+    }
 }
 
 void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void* optionalArg) {
@@ -1129,6 +1146,60 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
             ) {
                 *should = false;
             }
+            break;
+        }
+        case VB_SHOULD_GIVE_FISHING_REWARD: {
+            f32* sFishOnHandLength = static_cast<f32*>(optionalArg);
+            f32 sFishingRecordLength = GetFishingRecord();
+            // RANDOTODO: update the enhancement sliders to not allow
+            // values above rando fish weight values when rando'd
+            if(LINK_IS_CHILD) { 
+                int32_t weight = CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFishing"), 0) ? CVarGetInteger(CVAR_ENHANCEMENT("MinimumFishWeightChild"), 10) : 10;
+                f32 score = sqrt(((f32)weight - 0.5f) / 0.0036f);
+                *should = *sFishOnHandLength >= score && !IS_RANDO ? !Flags_GetRandomizerInf(RAND_INF_CHILD_FISHING) : !(HIGH_SCORE(HS_FISHING) & HS_FISH_PRIZE_CHILD);
+            } else 
+            {
+                int32_t weight = CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFishing"), 0) ? CVarGetInteger(CVAR_ENHANCEMENT("MinimumFishWeightAdult"), 13) : 13;
+                f32 score = sqrt(((f32)weight - 0.5f) / 0.0036f);
+                *should = *sFishOnHandLength >= score && !IS_RANDO ? !Flags_GetRandomizerInf(RAND_INF_ADULT_FISHING) : !(HIGH_SCORE(HS_FISHING) & HS_FISH_PRIZE_ADULT);
+            }
+            *should = *should || (s16)sFishingRecordLength < (s16)*sFishOnHandLength;
+            break;
+        }
+        case VB_SHOULD_SET_FISHING_RECORD: {
+            f32* sFishOnHandLength = static_cast<f32*>(optionalArg);
+            f32 sFishingRecordLength = GetFishingRecord();
+            *should = (s16)sFishingRecordLength < (s16)*sFishOnHandLength;
+            if (!*should){
+                *sFishOnHandLength = 0.0f;
+            }
+            break;
+        }
+        case VB_SHOULD_GIVE_VANILLA_REWARD: {
+            s32* getItemId = static_cast<s32*>(optionalArg);
+            if (LINK_IS_CHILD && !Flags_GetRandomizerInf(RAND_INF_CHILD_FISHING)){
+                Flags_SetRandomizerInf(RAND_INF_CHILD_FISHING);
+                HIGH_SCORE(HS_FISHING) |= HS_FISH_PRIZE_CHILD;
+                *getItemId = GI_NONE;
+                *should = false;
+            } else if (LINK_IS_ADULT && !Flags_GetRandomizerInf(RAND_INF_ADULT_FISHING)){
+                Flags_SetRandomizerInf(RAND_INF_ADULT_FISHING);
+                HIGH_SCORE(HS_FISHING) |= HS_FISH_PRIZE_ADULT;
+                *getItemId = GI_NONE;
+                *should = false;
+            } else {
+                *should = true;
+            }
+            break;
+        }
+        case VB_SHOULD_GET_LOACH_RANDO_REWARD: {
+            if (IS_RANDO && !Flags_GetRandomizerInf(RAND_INF_CAUGHT_LOACH) &&
+                OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY) == RO_FISHSANITY_HYRULE_LOACH){
+                    Flags_SetRandomizerInf(RAND_INF_CAUGHT_LOACH);
+                    *should = false;
+                } else {
+                    *should = true;
+                }
             break;
         }
         case VB_TRADE_TIMER_ODD_MUSHROOM:

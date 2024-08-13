@@ -1017,7 +1017,7 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                     return GI_SCALE_SILVER;
                 case 1:
                 case 2:
-                    return GI_SCALE_GOLD;
+                    return GI_SCALE_GOLDEN;
             }
         case RG_PROGRESSIVE_MAGIC_METER:
             switch (gSaveContext.magicLevel) {
