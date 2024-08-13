@@ -594,6 +594,13 @@ Dungeons::Dungeons() {
             RC_BOTTOM_OF_THE_WELL_GS_LIKE_LIKE_CAGE,
             RC_BOTTOM_OF_THE_WELL_GS_EAST_INNER_ROOM,
             RC_BOTTOM_OF_THE_WELL_GS_WEST_INNER_ROOM,
+            RC_BOTTOM_OF_THE_WELL_BASEMENT_PLATFORM_LEFT_RUPEE,
+            RC_BOTTOM_OF_THE_WELL_BASEMENT_PLATFORM_BACK_LEFT_RUPEE,
+            RC_BOTTOM_OF_THE_WELL_BASEMENT_PLATFORM_MIDDLE_RUPEE,
+            RC_BOTTOM_OF_THE_WELL_BASEMENT_PLATFORM_BACK_RIGHT_RUPEE,
+            RC_BOTTOM_OF_THE_WELL_BASEMENT_PLATFORM_RIGHT_RUPEE,
+            RC_BOTTOM_OF_THE_WELL_COFFIN_ROOM_FRONT_LEFT_HEART,
+            RC_BOTTOM_OF_THE_WELL_COFFIN_ROOM_MIDDLE_RIGHT_HEART,
         },
         {
             // MQ Locations
@@ -605,6 +612,13 @@ Dungeons::Dungeons() {
             RC_BOTTOM_OF_THE_WELL_MQ_GS_BASEMENT,
             RC_BOTTOM_OF_THE_WELL_MQ_GS_COFFIN_ROOM,
             RC_BOTTOM_OF_THE_WELL_MQ_GS_WEST_INNER_ROOM,
+            RC_BOTTOM_OF_THE_WELL_MQ_COFFIN_ROOM_FRONT_RIGHT_HEART,
+            RC_BOTTOM_OF_THE_WELL_MQ_BOMB_LEFT_HEART,
+            RC_BOTTOM_OF_THE_WELL_MQ_BOMB_RIGHT_HEART,
+            RC_BOTTOM_OF_THE_WELL_MQ_COFFIN_ROOM_MIDDLE_LEFT_HEART,
+            RC_BOTTOM_OF_THE_WELL_MQ_BASEMENT_HALLWAY_FRONT_HEART,
+            RC_BOTTOM_OF_THE_WELL_MQ_BASEMENT_HALLWAY_LEFT_HEART,
+            RC_BOTTOM_OF_THE_WELL_MQ_BASEMENT_HALLWAY_RIGHT_HEART,
         },
         {}, {});
     dungeonList[ICE_CAVERN] = DungeonInfo("Ice Cavern", RHT_ICE_CAVERN, RG_ICE_CAVERN_MAP, RG_ICE_CAVERN_COMPASS,
@@ -618,6 +632,13 @@ Dungeons::Dungeons() {
                                               RC_ICE_CAVERN_GS_PUSH_BLOCK_ROOM,
                                               RC_ICE_CAVERN_GS_SPINNING_SCYTHE_ROOM,
                                               RC_ICE_CAVERN_GS_HEART_PIECE_ROOM,
+                                              RC_ICE_CAVERN_LOBBY_RUPEE,
+                                              RC_ICE_CAVERN_MAP_ROOM_LEFT_HEART,
+                                              RC_ICE_CAVERN_MAP_ROOM_MIDDLE_HEART,
+                                              RC_ICE_CAVERN_MAP_ROOM_RIGHT_HEART,
+                                              RC_ICE_CAVERN_SLIDING_BLOCK_RUPEE_1,
+                                              RC_ICE_CAVERN_SLIDING_BLOCK_RUPEE_2,
+                                              RC_ICE_CAVERN_SLIDING_BLOCK_RUPEE_3,
                                           },
                                           {
                                               // MQ Locations

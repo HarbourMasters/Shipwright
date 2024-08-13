@@ -38,6 +38,13 @@ void AreaTable_Init_IceCavern() {
                   LOCATION(RC_ICE_CAVERN_GS_SPINNING_SCYTHE_ROOM, logic->HookshotOrBoomerang),
                   LOCATION(RC_ICE_CAVERN_GS_HEART_PIECE_ROOM,     logic->BlueFire && logic->HookshotOrBoomerang),
                   LOCATION(RC_ICE_CAVERN_GS_PUSH_BLOCK_ROOM,      logic->BlueFire && (logic->HookshotOrBoomerang || (randoCtx->GetTrickOption(RT_ICE_BLOCK_GS) && logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)))),
+                  LOCATION(RC_ICE_CAVERN_LOBBY_RUPEE,             logic->BlueFire),
+                  LOCATION(RC_ICE_CAVERN_MAP_ROOM_LEFT_HEART,     logic->IsAdult),
+                  LOCATION(RC_ICE_CAVERN_MAP_ROOM_MIDDLE_HEART,   logic->IsAdult),
+                  LOCATION(RC_ICE_CAVERN_MAP_ROOM_RIGHT_HEART,    logic->IsAdult),
+                  LOCATION(RC_ICE_CAVERN_SLIDING_BLOCK_RUPEE_1,   logic->BlueFire && logic->CanUse(RG_SONG_OF_TIME)),
+                  LOCATION(RC_ICE_CAVERN_SLIDING_BLOCK_RUPEE_2,   logic->BlueFire && logic->CanUse(RG_SONG_OF_TIME)),
+                  LOCATION(RC_ICE_CAVERN_SLIDING_BLOCK_RUPEE_3,   logic->BlueFire && logic->CanUse(RG_SONG_OF_TIME)),
   }, {});
   }
 
