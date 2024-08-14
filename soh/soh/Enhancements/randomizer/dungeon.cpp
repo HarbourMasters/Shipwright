@@ -386,6 +386,15 @@ Dungeons::Dungeons() {
                         RC_FIRE_TEMPLE_GS_BOULDER_MAZE,
                         RC_FIRE_TEMPLE_GS_SCARECROW_TOP,
                         RC_FIRE_TEMPLE_GS_SCARECROW_CLIMB,
+                        RC_FIRE_TEMPLE_FIRE_PILLAR_LEFT_HEART,
+                        RC_FIRE_TEMPLE_FIRE_PILLAR_RIGHT_HEART,
+                        RC_FIRE_TEMPLE_FIRE_PILLAR_BACK_HEART,
+                        RC_FIRE_TEMPLE_EAST_CENTRAL_LEFT_HEART,
+                        RC_FIRE_TEMPLE_EAST_CENTRAL_RIGHT_HEART,
+                        RC_FIRE_TEMPLE_EAST_CENTRAL_MIDDLE_HEART,
+                        RC_FIRE_TEMPLE_FIRE_WALL_EAST_HEART,
+                        RC_FIRE_TEMPLE_FIRE_WALL_WEST_HEART,
+                        RC_FIRE_TEMPLE_FIRE_WALL_EXIT_HEART,
                     },
                     {
                         // MQ Locations
@@ -406,6 +415,9 @@ Dungeons::Dungeons() {
                         RC_FIRE_TEMPLE_MQ_GS_BIG_LAVA_ROOM_OPEN_DOOR,
                         RC_FIRE_TEMPLE_MQ_GS_FIRE_WALL_MAZE_SIDE_ROOM,
                         RC_FIRE_TEMPLE_MQ_GS_SKULL_ON_FIRE,
+                        RC_FIRE_TEMPLE_MQ_FIRE_PILLAR_LEFT_HEART,
+                        RC_FIRE_TEMPLE_MQ_FIRE_PILLAR_RIGHT_HEART,
+                        RC_FIRE_TEMPLE_MQ_FIRE_PILLAR_LOWER_HEART,
                     },
                     {},
                     {
@@ -433,6 +445,10 @@ Dungeons::Dungeons() {
                         RC_WATER_TEMPLE_GS_CENTRAL_PILLAR,
                         RC_WATER_TEMPLE_GS_NEAR_BOSS_KEY_CHEST,
                         RC_WATER_TEMPLE_GS_RIVER,
+                        RC_WATER_TEMPLE_RIVER_HEART_1,
+                        RC_WATER_TEMPLE_RIVER_HEART_2,
+                        RC_WATER_TEMPLE_RIVER_HEART_3,
+                        RC_WATER_TEMPLE_RIVER_HEART_4,
                     },
                     {
                         // MQ Locations

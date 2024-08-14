@@ -230,8 +230,12 @@ void AreaTable_Init_WaterTemple() {
 
   areaTable[RR_WATER_TEMPLE_RIVER] = Area("Water Temple River", "Water Temple", RA_WATER_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LOCATION(RC_WATER_TEMPLE_RIVER_CHEST, (logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_FAIRY_BOW)) && (logic->IsAdult || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_HOOKSHOT))),
-                  LOCATION(RC_WATER_TEMPLE_GS_RIVER,    (logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_HOOKSHOT)) || (randoCtx->GetTrickOption(RT_WATER_RIVER_GS) && logic->CanUse(RG_LONGSHOT))),
+                  LOCATION(RC_WATER_TEMPLE_RIVER_CHEST,   (logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_FAIRY_BOW)) && (logic->IsAdult || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_HOOKSHOT))),
+                  LOCATION(RC_WATER_TEMPLE_GS_RIVER,      (logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_HOOKSHOT)) || (randoCtx->GetTrickOption(RT_WATER_RIVER_GS) && logic->CanUse(RG_LONGSHOT))),
+                  LOCATION(RC_WATER_TEMPLE_RIVER_HEART_1, true),
+                  LOCATION(RC_WATER_TEMPLE_RIVER_HEART_2, true),
+                  LOCATION(RC_WATER_TEMPLE_RIVER_HEART_3, true),
+                  LOCATION(RC_WATER_TEMPLE_RIVER_HEART_4, true),
                 }, {
                   //Exits
                   Entrance(RR_WATER_TEMPLE_DRAGON_ROOM, {[]{return (logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_FAIRY_BOW)) && (logic->IsAdult || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_HOOKSHOT));}}),
