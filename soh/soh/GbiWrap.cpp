@@ -66,15 +66,6 @@ extern "C" void gSPSegmentLoadRes(void* value, int segNum, uintptr_t target) {
     __gSPSegment(value, segNum, target);
 }
 
-extern "C" void gDPSetTextureImage(Gfx* pkt, u32 format, u32 size, u32 width, uintptr_t i) {
-    __gDPSetTextureImage(pkt, format, size, width, i);
-}
-
-extern "C" void gDPSetTextureImageFB(Gfx* pkt, u32 format, u32 size, u32 width, int fb)
-{
-    __gDPSetTextureImageFB(pkt, format, size, width, fb);
-}
-
 extern "C" void gSPDisplayList(Gfx* pkt, Gfx* dl) {
     char* imgData = (char*)dl;
 
