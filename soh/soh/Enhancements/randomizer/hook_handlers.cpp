@@ -1156,12 +1156,12 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
             if(LINK_IS_CHILD) { 
                 int32_t weight = CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFishing"), 0) ? CVarGetInteger(CVAR_ENHANCEMENT("MinimumFishWeightChild"), 10) : 10;
                 f32 score = sqrt(((f32)weight - 0.5f) / 0.0036f);
-                *should = *sFishOnHandLength >= score && !IS_RANDO ? !Flags_GetRandomizerInf(RAND_INF_CHILD_FISHING) : !(HIGH_SCORE(HS_FISHING) & HS_FISH_PRIZE_CHILD);
+                *should = *sFishOnHandLength >= score && (IS_RANDO ? !Flags_GetRandomizerInf(RAND_INF_CHILD_FISHING) : !(HIGH_SCORE(HS_FISHING) & HS_FISH_PRIZE_CHILD));
             } else 
             {
                 int32_t weight = CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFishing"), 0) ? CVarGetInteger(CVAR_ENHANCEMENT("MinimumFishWeightAdult"), 13) : 13;
                 f32 score = sqrt(((f32)weight - 0.5f) / 0.0036f);
-                *should = *sFishOnHandLength >= score && !IS_RANDO ? !Flags_GetRandomizerInf(RAND_INF_ADULT_FISHING) : !(HIGH_SCORE(HS_FISHING) & HS_FISH_PRIZE_ADULT);
+                *should = *sFishOnHandLength >= score && (IS_RANDO ? !Flags_GetRandomizerInf(RAND_INF_ADULT_FISHING) : !(HIGH_SCORE(HS_FISHING) & HS_FISH_PRIZE_ADULT));
             }
             *should = *should || (s16)sFishingRecordLength < (s16)*sFishOnHandLength;
             break;
@@ -1177,18 +1177,19 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
         }
         case VB_SHOULD_GIVE_VANILLA_REWARD: {
             s32* getItemId = static_cast<s32*>(optionalArg);
-            if (LINK_IS_CHILD && !Flags_GetRandomizerInf(RAND_INF_CHILD_FISHING)){
-                Flags_SetRandomizerInf(RAND_INF_CHILD_FISHING);
-                HIGH_SCORE(HS_FISHING) |= HS_FISH_PRIZE_CHILD;
-                *getItemId = GI_NONE;
-                *should = false;
-            } else if (LINK_IS_ADULT && !Flags_GetRandomizerInf(RAND_INF_ADULT_FISHING)){
-                Flags_SetRandomizerInf(RAND_INF_ADULT_FISHING);
-                HIGH_SCORE(HS_FISHING) |= HS_FISH_PRIZE_ADULT;
-                *getItemId = GI_NONE;
-                *should = false;
-            } else {
-                *should = true;
+            *should = true;
+            if (IS_RANDO){
+                if (LINK_IS_CHILD && !Flags_GetRandomizerInf(RAND_INF_CHILD_FISHING)){
+                    Flags_SetRandomizerInf(RAND_INF_CHILD_FISHING);
+                    HIGH_SCORE(HS_FISHING) |= HS_FISH_PRIZE_CHILD;
+                    *getItemId = GI_NONE;
+                    *should = false;
+                } else if (LINK_IS_ADULT && !Flags_GetRandomizerInf(RAND_INF_ADULT_FISHING)){
+                    Flags_SetRandomizerInf(RAND_INF_ADULT_FISHING);
+                    HIGH_SCORE(HS_FISHING) |= HS_FISH_PRIZE_ADULT;
+                    *getItemId = GI_NONE;
+                    *should = false;
+                }
             }
             break;
         }

@@ -5077,7 +5077,7 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
                 Message_CloseTextbox(play);
 
                 if (sFishOnHandIsLoach == 0) {
-                    if(GameInteractor_Should(VB_SHOULD_GIVE_FISHING_REWARD, true, &sFishOnHandLength)){
+                    if(GameInteractor_Should(VB_SHOULD_SET_FISHING_RECORD, true, &sFishOnHandLength)){
                         sFishingRecordLength = sFishOnHandLength;
                         sFishOnHandLength = 0.0f;
 
@@ -5206,7 +5206,6 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
                 if (vanillaPath) {
                     Actor_OfferGetItem(&this->actor, play, GI_SCALE_GOLDEN, 2000.0f, 1000.0f);
                 } else {
-                    sIsRodVisible = true;
                     this->stateAndTimer = 24;
                 }
             }
