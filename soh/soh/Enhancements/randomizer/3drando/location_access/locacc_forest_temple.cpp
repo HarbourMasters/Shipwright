@@ -77,6 +77,8 @@ void AreaTable_Init_ForestTemple() {
                 }, {
                   //Locations
                   LOCATION(RC_FOREST_TEMPLE_GS_LEVEL_ISLAND_COURTYARD, logic->CanUse(RG_LONGSHOT) || Here(RR_FOREST_TEMPLE_NW_OUTDOORS_UPPER, []{return logic->HookshotOrBoomerang;})),
+                  LOCATION(RC_FOREST_TEMPLE_COURTYARD_RIGHT_HEART,     HasAccessTo(RR_FOREST_TEMPLE_NW_OUTDOORS_UPPER) || (logic->CanUse(RG_BOOMERANG) && randoCtx->GetTrickOption(RT_FOREST_OUTDOORS_HEARTS_BOOMERANG))),
+                  LOCATION(RC_FOREST_TEMPLE_COURTYARD_LEFT_HEART,      HasAccessTo(RR_FOREST_TEMPLE_NW_OUTDOORS_UPPER) || (logic->CanUse(RG_BOOMERANG) && randoCtx->GetTrickOption(RT_FOREST_OUTDOORS_HEARTS_BOOMERANG))),
                 }, {
                   //Exits
                   Entrance(RR_FOREST_TEMPLE_LOBBY,             {[]{return logic->CanUse(RG_SONG_OF_TIME);}}),
@@ -136,7 +138,9 @@ void AreaTable_Init_ForestTemple() {
 
   areaTable[RR_FOREST_TEMPLE_SEWER] = Area("Forest Temple Sewer", "Forest Temple", RA_FOREST_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LOCATION(RC_FOREST_TEMPLE_WELL_CHEST, HasAccessTo(RR_FOREST_TEMPLE_NE_OUTDOORS_UPPER)),
+                  LOCATION(RC_FOREST_TEMPLE_WELL_CHEST,       HasAccessTo(RR_FOREST_TEMPLE_NE_OUTDOORS_UPPER)),
+                  LOCATION(RC_FOREST_TEMPLE_WELL_WEST_HEART,  HasAccessTo(RR_FOREST_TEMPLE_NE_OUTDOORS_UPPER) || logic->CanUse(RG_IRON_BOOTS)),
+                  LOCATION(RC_FOREST_TEMPLE_WELL_EAST_HEART,  HasAccessTo(RR_FOREST_TEMPLE_NE_OUTDOORS_UPPER) || logic->CanUse(RG_IRON_BOOTS)),
                 }, {
                   //Exits
                   Entrance(RR_FOREST_TEMPLE_NW_OUTDOORS_LOWER, {[]{return true;}}),
@@ -328,6 +332,9 @@ void AreaTable_Init_ForestTemple() {
   areaTable[RR_FOREST_TEMPLE_MQ_NW_OUTDOORS] = Area("Forest Temple MQ NW Outdoors", "Forest Temple", RA_FOREST_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LOCATION(RC_FOREST_TEMPLE_MQ_GS_LEVEL_ISLAND_COURTYARD, logic->CanAdultAttack || logic->CanChildAttack),
+                  LOCATION(RC_FOREST_TEMPLE_MQ_COURTYARD_RIGHT_HEART,     HasAccessTo(RR_FOREST_TEMPLE_MQ_OUTDOOR_LEDGE) || (logic->CanUse(RG_BOOMERANG) && randoCtx->GetTrickOption(RT_FOREST_OUTDOORS_HEARTS_BOOMERANG))),
+                  LOCATION(RC_FOREST_TEMPLE_MQ_COURTYARD_MIDDLE_HEART,    HasAccessTo(RR_FOREST_TEMPLE_MQ_OUTDOOR_LEDGE) || (logic->CanUse(RG_BOOMERANG) && randoCtx->GetTrickOption(RT_FOREST_OUTDOORS_HEARTS_BOOMERANG))),
+                  LOCATION(RC_FOREST_TEMPLE_MQ_COURTYARD_LEFT_HEART,      HasAccessTo(RR_FOREST_TEMPLE_MQ_OUTDOOR_LEDGE) || (logic->CanUse(RG_BOOMERANG) && randoCtx->GetTrickOption(RT_FOREST_OUTDOORS_HEARTS_BOOMERANG))),
   }, {
                   //Exits
                   Entrance(RR_FOREST_TEMPLE_MQ_NE_OUTDOORS,         {[]{return (logic->IsAdult && (logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_LONGSHOT) || (randoCtx->GetTrickOption(RT_FOREST_MQ_WELL_SWIM) && logic->CanUse(RG_HOOKSHOT)))) || logic->ProgressiveScale >= 2;}}),
@@ -344,6 +351,9 @@ void AreaTable_Init_ForestTemple() {
                   LOCATION(RC_FOREST_TEMPLE_MQ_WELL_CHEST,                 (logic->IsAdult && logic->CanUse(RG_FAIRY_BOW)) || (logic->IsChild && logic->CanUse(RG_FAIRY_SLINGSHOT))),
                   LOCATION(RC_FOREST_TEMPLE_MQ_GS_RAISED_ISLAND_COURTYARD, logic->HookshotOrBoomerang || (logic->IsAdult && logic->CanUse(RG_FIRE_ARROWS) && (logic->CanUse(RG_SONG_OF_TIME) || (logic->CanUse(RG_HOVER_BOOTS) && randoCtx->GetTrickOption(RT_FOREST_DOORFRAME))))),
                   LOCATION(RC_FOREST_TEMPLE_MQ_GS_WELL,                    (logic->IsAdult && ((logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_HOOKSHOT)) || logic->CanUse(RG_FAIRY_BOW))) || (logic->IsChild && logic->CanUse(RG_FAIRY_SLINGSHOT))),
+                  LOCATION(RC_FOREST_TEMPLE_MQ_WELL_WEST_HEART,            logic->CanUse(RG_IRON_BOOTS) || (logic->IsAdult && logic->CanUse(RG_FAIRY_BOW)) || (logic->IsChild && logic->CanUse(RG_FAIRY_SLINGSHOT))),
+                  LOCATION(RC_FOREST_TEMPLE_MQ_WELL_MIDDLE_HEART,          logic->CanUse(RG_IRON_BOOTS) || (logic->IsAdult && logic->CanUse(RG_FAIRY_BOW)) || (logic->IsChild && logic->CanUse(RG_FAIRY_SLINGSHOT))),
+                  LOCATION(RC_FOREST_TEMPLE_MQ_WELL_EAST_HEART,            logic->CanUse(RG_IRON_BOOTS) || (logic->IsAdult && logic->CanUse(RG_FAIRY_BOW)) || (logic->IsChild && logic->CanUse(RG_FAIRY_SLINGSHOT))),
   }, {
                   //Exits
                   Entrance(RR_FOREST_TEMPLE_MQ_OUTDOORS_TOP_LEDGES, {[]{return logic->IsAdult && logic->CanUse(RG_HOOKSHOT) && (logic->CanUse(RG_LONGSHOT) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_SONG_OF_TIME));}}),

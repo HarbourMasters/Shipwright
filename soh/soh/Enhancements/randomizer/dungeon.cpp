@@ -325,6 +325,10 @@ Dungeons::Dungeons() {
                         RC_FOREST_TEMPLE_GS_LEVEL_ISLAND_COURTYARD,
                         RC_FOREST_TEMPLE_GS_LOBBY,
                         RC_FOREST_TEMPLE_GS_BASEMENT,
+                        RC_FOREST_TEMPLE_COURTYARD_RIGHT_HEART,
+                        RC_FOREST_TEMPLE_COURTYARD_LEFT_HEART,
+                        RC_FOREST_TEMPLE_WELL_WEST_HEART,
+                        RC_FOREST_TEMPLE_WELL_EAST_HEART,
                     },
                     {
                         // MQ Locations
@@ -345,6 +349,12 @@ Dungeons::Dungeons() {
                         RC_FOREST_TEMPLE_MQ_GS_RAISED_ISLAND_COURTYARD,
                         RC_FOREST_TEMPLE_MQ_GS_LEVEL_ISLAND_COURTYARD,
                         RC_FOREST_TEMPLE_MQ_GS_WELL,
+                        RC_FOREST_TEMPLE_MQ_COURTYARD_RIGHT_HEART,
+                        RC_FOREST_TEMPLE_MQ_COURTYARD_MIDDLE_HEART,
+                        RC_FOREST_TEMPLE_MQ_COURTYARD_LEFT_HEART,
+                        RC_FOREST_TEMPLE_MQ_WELL_WEST_HEART,
+                        RC_FOREST_TEMPLE_MQ_WELL_MIDDLE_HEART,
+                        RC_FOREST_TEMPLE_MQ_WELL_EAST_HEART,
                     },
                     {},
                     {
@@ -682,6 +692,8 @@ Dungeons::Dungeons() {
                         RC_GERUDO_TRAINING_GROUND_HEAVY_BLOCK_THIRD_CHEST,
                         RC_GERUDO_TRAINING_GROUND_HEAVY_BLOCK_FOURTH_CHEST,
                         RC_GERUDO_TRAINING_GROUND_FREESTANDING_KEY,
+                        RC_GERUDO_TRAINING_GROUND_BEAMOS_SOUTH_HEART,
+                        RC_GERUDO_TRAINING_GROUND_BEAMOS_EAST_HEART,
                     },
                     {
                         // MQ Locations
