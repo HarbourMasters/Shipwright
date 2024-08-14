@@ -149,7 +149,7 @@ static SceneSelectEntry sScenes[] = {
     { "19:SPOT20", "19:Lon Lon Ranch", "19:Lon Lon-Farm", "19:Ranch Lon Lon", Select_LoadGame, ENTR_LON_LON_RANCH_0 },
     { "20:" GFXP_HIRAGANA "ﾄｷﾉﾏ", "20:Temple Of Time", "20:Zitadelle der Zeit", "20:Temple du Temps", Select_LoadGame, ENTR_TEMPLE_OF_TIME_0 },
     { "21:" GFXP_HIRAGANA "ｹﾝｼﾞｬﾉﾏ", "21:Chamber of Sages", "21:Halle der Weisen", "21:Sanctuaire des Sages", Select_LoadGame, ENTR_CHAMBER_OF_THE_SAGES_0 },
-    { "22:" GFXP_HIRAGANA "ｼｬﾃｷｼﾞｮｳ", "22:Shooting Gallery", "22:Schiessbude ", "22:Jeu d'adresse", Select_LoadGame, ENTR_SHOOTING_GALLERY_0 },
+    { "22:" GFXP_HIRAGANA "ｼｬﾃｷｼﾞｮｳ", "22:Shooting Gallery", "22:Schiessbude", "22:Jeu d'adresse", Select_LoadGame, ENTR_SHOOTING_GALLERY_0 },
     { "23:" GFXP_KATAKANA "ﾊｲﾗﾙ" GFXP_HIRAGANA "ﾆﾜ" GFXP_KATAKANA "ｹﾞｰﾑ", "23:Castle Courtyard Game", "23:Burghof - Wachen", "23:Cour du Chateau (Infilration)", Select_LoadGame, ENTR_CASTLE_COURTYARD_GUARDS_DAY_0 },
     { "24:" GFXP_HIRAGANA "ﾊｶｼﾀﾄﾋﾞｺﾐｱﾅ", "24:Grave 1", "24:Grab 1", "24:Tombe 1", Select_LoadGame, ENTR_REDEAD_GRAVE_0 },
     { "25:" GFXP_HIRAGANA "ﾊｶｼﾀﾄﾋﾞｺﾐｱﾅ 2", "25:Grave 2", "25:Grab 2", "25:Tombe 2", Select_LoadGame, ENTR_GRAVE_WITH_FAIRYS_FOUNTAIN_0 },
@@ -165,7 +165,7 @@ static SceneSelectEntry sScenes[] = {
     { "35:" GFXP_KATAKANA "ﾛﾝﾛﾝ" GFXP_HIRAGANA "ﾎﾞｸｼﾞｮｳ ｿｳｺ 2", "35:Lon Lon Ranch Silo", "35:Lon Lon-Farm Silo", "35:Silo du Ranch Lon Lon", Select_LoadGame, ENTR_LON_LON_BUILDINGS_1 },
     { "36:" GFXP_HIRAGANA "ﾐﾊﾘ ｺﾞﾔ", "36:Guard House", "36:Wachposten", "36:Maison de Garde", Select_LoadGame, ENTR_MARKET_GUARD_HOUSE_0 },
     { "37:" GFXP_HIRAGANA "ﾏﾎｳ ﾉ ｸｽﾘﾔ", "37:Potion Shop", "37:Magie-Laden", "37:Apothicaire", Select_LoadGame, ENTR_POTION_SHOP_GRANNY_0 },
-    { "38:" GFXP_HIRAGANA "ﾀｶﾗﾊﾞｺﾔ", "38:Treasure Chest Game", "38:Trhenlotterie", "38:Chasse aux Tresors", Select_LoadGame, ENTR_TREASURE_BOX_SHOP_0 },
+    { "38:" GFXP_HIRAGANA "ﾀｶﾗﾊﾞｺﾔ", "38:Treasure Chest Game", "38:Truhenlotterie", "38:Chasse aux Tresors", Select_LoadGame, ENTR_TREASURE_BOX_SHOP_0 },
     { "39:" GFXP_HIRAGANA "ｷﾝ " GFXP_KATAKANA "ｽﾀﾙﾁｭﾗ ﾊｳｽ", "39:House Of Skulltula", "39:Skulltulas Haus", "39:Maison des Skulltulas", Select_LoadGame, ENTR_HOUSE_OF_SKULLTULA_0 },
     { "40:" GFXP_HIRAGANA "ｼﾞｮｳｶﾏﾁ ｲﾘｸﾞﾁ", "40:Entrance to Market", "40:Eingang zum Marktplatz", "40:Entree de la Place du Marche", Select_LoadGame, ENTR_MARKET_ENTRANCE_DAY_0 },
     { "41:" GFXP_HIRAGANA "ｼﾞｮｳｶﾏﾁ", "41:Market", "41:Marktplatz", "41:Place du Marche", Select_LoadGame, ENTR_MARKET_DAY_0 },
@@ -192,11 +192,11 @@ static SceneSelectEntry sScenes[] = {
     { "62:" GFXP_HIRAGANA "ｼﾞｮｳｶﾏﾁ ｸｽﾘﾔ", "62:Potion Shop", "62:Magie-Laden", "62:Apothicaire (Boutique)", Select_LoadGame, ENTR_POTION_SHOP_MARKET_0 },
     { "63:" GFXP_HIRAGANA "ｳﾗﾛｼﾞ ﾖﾙﾉﾐｾ", "63:Bombchu Shop", "63:Krabbelminen-Laden", "63:Boutique de Missiles Teigneux", Select_LoadGame, ENTR_BOMBCHU_SHOP_0 },
     { "64:" GFXP_HIRAGANA "ｵﾒﾝﾔ", "64:Happy Mask Shop", "64:Maskenhaendler", "64:Foire aux Masques", Select_LoadGame, ENTR_HAPPY_MASK_SHOP_0 },
-    { "65:" GFXP_KATAKANA "ｹﾞﾙﾄﾞ" GFXP_HIRAGANA "ﾉｼｭｳﾚﾝｼﾞｮｳ", "65:Gerudo Training Ground", "65:Gerudo-Arena", "65:Gymnase Gerudo", Select_LoadGame, ENTR_GERUDO_TRAINING_GROUND_0 },
+    { "65:" GFXP_KATAKANA "ｹﾞﾙﾄﾞ" GFXP_HIRAGANA "ﾉｼｭｳﾚﾝｼﾞｮｳ", "65:Gerudo Training Ground", "65:Gerudo-Trainingsarena", "65:Gymnase Gerudo", Select_LoadGame, ENTR_GERUDO_TRAINING_GROUND_0 },
     { "66:" GFXP_HIRAGANA "ﾖｳｾｲﾉｷﾉ " GFXP_KATAKANA "ﾀﾞﾝｼﾞｮﾝ", "66:Inside the Deku Tree", "66:Im Deku-Baum", "66:Arbre Mojo", Select_LoadGame, ENTR_DEKU_TREE_0 },
     { "67:" GFXP_HIRAGANA "ﾖｳｾｲﾉｷﾉ " GFXP_KATAKANA "ﾀﾞﾝｼﾞｮﾝ ﾎﾞｽ", "67:Gohma's Lair", "67:Gohmas Verlies", "67:Repaire de Gohma", Select_LoadGame, ENTR_DEKU_TREE_BOSS_0 },
     { "68:" GFXP_KATAKANA "ﾄﾞﾄﾞﾝｺﾞ ﾀﾞﾝｼﾞｮﾝ", "68:Dodongo's Cavern", "68:Dodongos Hoehle", "68:Caverne Dodongo", Select_LoadGame, ENTR_DODONGOS_CAVERN_0 },
-    { "69:" GFXP_KATAKANA "ﾄﾞﾄﾞﾝｺﾞ ﾀﾞﾝｼﾞｮﾝ ﾎﾞｽ", "69:King Dodongo's Lair", "69:King Dodongos Verlies", "69:Repaire du Roi Dodongo", Select_LoadGame, ENTR_DODONGOS_CAVERN_BOSS_0 },
+    { "69:" GFXP_KATAKANA "ﾄﾞﾄﾞﾝｺﾞ ﾀﾞﾝｼﾞｮﾝ ﾎﾞｽ", "69:King Dodongo's Lair", "69:Koenig Dodongos Verlies", "69:Repaire du Roi Dodongo", Select_LoadGame, ENTR_DODONGOS_CAVERN_BOSS_0 },
     { "70:" GFXP_HIRAGANA "ｷｮﾀﾞｲｷﾞｮ " GFXP_KATAKANA "ﾀﾞﾝｼﾞｮﾝ", "70:Inside Jabu-Jabu's Belly", "70:Jabu-Jabus Bauch", "70:Ventre de Jabu-Jabu", Select_LoadGame, ENTR_JABU_JABU_0 },
     { "71:" GFXP_HIRAGANA "ｷｮﾀﾞｲｷﾞｮ " GFXP_KATAKANA "ﾀﾞﾝｼﾞｮﾝ ﾎﾞｽ", "71:Barinade's Lair", "71:Barinades Verlies", "71:Repaire de Barinade", Select_LoadGame, ENTR_JABU_JABU_BOSS_0 },
     { "72:" GFXP_HIRAGANA "ﾓﾘﾉｼﾝﾃﾞﾝ", "72:Forest Temple", "72:Waldtempel", "72:Temple de la Foret", Select_LoadGame, ENTR_FOREST_TEMPLE_0 },
@@ -393,7 +393,7 @@ static BetterSceneSelectEntry sBetterScenes[] = {
         { "Impas House (Near Cow)", "Impas Haus (Kuh)", "Maison d'Impa (Vache)", ENTR_IMPAS_HOUSE_1, 0 },
         { "Boss House", "Haus des Bosses", "Maison du Boss", ENTR_KAKARIKO_CENTER_GUEST_HOUSE_0, 0 },
         { "Windmill", "Windmuehle", "Moulin", ENTR_WINDMILL_AND_DAMPES_GRAVE_1, 0 },
-        { "Skulltula House", "Skulltula Haus", "Maison des SKulltulas", ENTR_HOUSE_OF_SKULLTULA_0, 0 },
+        { "Skulltula House", "Skulltula Haus", "Maison des Skulltulas", ENTR_HOUSE_OF_SKULLTULA_0, 0 },
     }}, 
     { "17:Graveyard", "17:Friedhof", "17:Cimetiere", Select_LoadGame, 9, {
         { "From Kakariko", "Von Kakariko", "Depuis l'Apothicaire", ENTR_GRAVEYARD_0, 0 },
@@ -531,7 +531,7 @@ static BetterSceneSelectEntry sBetterScenes[] = {
     { "33:Dodongos Cavern", "33:Dodongos Hoehle", "33:Caverne Dodongo", Select_LoadGame, 3, {
         { "Entrance", "Eingang", "Entree", ENTR_DODONGOS_CAVERN_0, 1 },
         { "From King Dodongo", "Von King Dodongo", "Depuis le Repaire du Roi Dodongo", ENTR_DODONGOS_CAVERN_1, 1 },
-        { "King Dodongo's Lair", "King Dodongo Kampf", "Repaire du Roi Dodongo", ENTR_DODONGOS_CAVERN_BOSS_0, 0 },
+        { "King Dodongo's Lair", "Koenig Dodongos Kampf", "Repaire du Roi Dodongo", ENTR_DODONGOS_CAVERN_BOSS_0, 0 },
     }},
     { "34:Jabu Jabu", "34:Jabu-Jabu", "34:Jabu-Jabu", Select_LoadGame, 2, {
         { "Entrance", "Eingang", "Entree", ENTR_JABU_JABU_0, 1 },
@@ -582,7 +582,7 @@ static BetterSceneSelectEntry sBetterScenes[] = {
     { "42:Ice Cavern", "42:Eishoehle", "42:Caverne Polaire", Select_LoadGame, 1, {
         { "Entrance", "Eingang", "Entree", ENTR_ICE_CAVERN_0, 1 },
     }},
-    { "43:Gerudo Training Grounds", "43:Gerudo-Arena", "43:Gymnase Gerudo", Select_LoadGame, 1, {
+    { "43:Gerudo Training Grounds", "43:Gerudo-Trainingsarena", "43:Gymnase Gerudo", Select_LoadGame, 1, {
         { "Entrance", "Eingang", "Entree", ENTR_GERUDO_TRAINING_GROUND_0, 1 },
     }},
     { "44:Warps", "44:Teleportpunkte", "44:Teleporteurs", Select_LoadGame, 6, {
