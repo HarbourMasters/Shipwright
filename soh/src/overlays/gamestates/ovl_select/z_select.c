@@ -338,7 +338,7 @@ static BetterSceneSelectEntry sBetterScenes[] = {
     }},
     { "10:Temple of Time", "10:Zitadelle der Zeit", "10:Temple du Temps", Select_LoadGame, 5, { 
         { "From Outside", "Von draussen", "Depuis l'Entree", ENTR_TEMPLE_OF_TIME_0, 0 },
-        { "From Master Sword Pedestal", "Vom Master-Schwert Podest", "Depuis le Piedestal de l'Epee de Legende", ENTR_TEMPLE_OF_TIME_2, 0 },
+        { "From Master Sword Pedestal", "Vom Podest des Master-Schwerts", "Depuis le Piedestal de l'Epee de Legende", ENTR_TEMPLE_OF_TIME_2, 0 },
         { "Prelude of Light Warp", "Kantate des Lichts Teleport", "Teleporteur du Prelude de la Lumiere", ENTR_TEMPLE_OF_TIME_7, 0 },
         { "Outside Temple of Time - From Market", "Vor der Zitadelle der Zeit - Vom Marktplatz", "Exterieur du Temple - Depuis la Place du Marche", ENTR_TEMPLE_OF_TIME_EXTERIOR_DAY_0, 0 },
         { "Outside Temple of Time - From Temple of Time", "Vor der Zitadelle der Zeit - Von der Zitadelle der Zeit", "Exterieur du Temple - Depuis le Temple", ENTR_TEMPLE_OF_TIME_EXTERIOR_DAY_1, 0 },
@@ -347,7 +347,7 @@ static BetterSceneSelectEntry sBetterScenes[] = {
         { "From Market", "Vom Marktplatz", "Depuis la Place du Marche", ENTR_HYRULE_CASTLE_0, 0 },
         { "From Castle Courtyard", "Vom Burghof", "Depuis la Cour du Chateau", ENTR_HYRULE_CASTLE_1, 0 },
         { "From Great Fairy", "Von der Feen-Quelle", "Depuis la Grande Fee", ENTR_HYRULE_CASTLE_2, 0 },
-        { "From Courtyard Guard Capture", "Von Wachen-Festnahme", "Depuis la capture d'un Garde de la Cour", ENTR_HYRULE_CASTLE_3, 0 },
+        { "From Courtyard Guard Capture", "Von der Wachen-Festnahme", "Depuis la capture d'un Garde de la Cour", ENTR_HYRULE_CASTLE_3, 0 },
         { "Great Fairy", "Feen-Quelle", "Grande Fee", ENTR_GREAT_FAIRYS_FOUNTAIN_MAGIC_2, 0 },
     }},
     { "12:Hyrule Castle Courtyard", "12:Burghof", "12:Cour du Chateau", Select_LoadGame, 3, {
@@ -360,7 +360,7 @@ static BetterSceneSelectEntry sBetterScenes[] = {
         { "From Ranch House", "Vom Farmhaus", "Depuis la Maison du Ranch", ENTR_LON_LON_RANCH_4, 0 },
         { "From Stables", "Vom Stall", "Depuis l'Etable", ENTR_LON_LON_RANCH_5, 0 },
         { "From Back Tower", "Vom Silo", "Depuis Silo du Ranch", ENTR_LON_LON_RANCH_10, 0 },
-        { "Epona Song Cutscene", "Eponas Song Cutscene", "Cinematique du Chant d'Epona", ENTR_LON_LON_RANCH_1, 0 },
+        { "Epona Song Cutscene", "Eponas Song Sequenz", "Cinematique du Chant d'Epona", ENTR_LON_LON_RANCH_1, 0 },
     }},
     { "14:Lon Lon Ranch Buildings", "14:Lon Lon-Farm Gebaeude", "14:Batiments du Ranch Lon Lon", Select_LoadGame, 3, {
         { "Ranch House", "Farmhaus", "Maison du Ranch", ENTR_LON_LON_BUILDINGS_0, 0 },
@@ -381,7 +381,7 @@ static BetterSceneSelectEntry sBetterScenes[] = {
         { "From Impas House (Cow)", "Von Impas Haus (Kuh)", "Depuis la Maison d'Impa (Vache)", ENTR_KAKARIKO_VILLAGE_15, 0 },
         { "From Windmill", "Von der Windmuehle", "Depuis le Moulin", ENTR_KAKARIKO_VILLAGE_8, 0 },
         { "From Shooting Gallery", "Von der Schiessbude", "Depuis le Jeu d'adresse", ENTR_KAKARIKO_VILLAGE_10, 0 },
-        { "From Skulltula House", "Vom Skulltula Haus", "Depuis la Maison des Skulltulas", ENTR_KAKARIKO_VILLAGE_11, 0 },
+        { "From Skulltula House", "Vom Haus der Skulltulas", "Depuis la Maison des Skulltulas", ENTR_KAKARIKO_VILLAGE_11, 0 },
         { "Owl Drop Spot from Death Mountain", "Eulen-Absetzpunkt vom Todesberg", "Point de chute du Hibou depuis le Mont du Peril", ENTR_KAKARIKO_VILLAGE_14, 0 },
     }},
     { "16:Kakariko Buildings", "16:Kakariko Gebaeude", "16:Batiments du Village Cocorico", Select_LoadGame, 9, {
@@ -393,7 +393,7 @@ static BetterSceneSelectEntry sBetterScenes[] = {
         { "Impas House (Near Cow)", "Impas Haus (Kuh)", "Maison d'Impa (Vache)", ENTR_IMPAS_HOUSE_1, 0 },
         { "Boss House", "Haus des Bosses", "Maison du Boss", ENTR_KAKARIKO_CENTER_GUEST_HOUSE_0, 0 },
         { "Windmill", "Windmuehle", "Moulin", ENTR_WINDMILL_AND_DAMPES_GRAVE_1, 0 },
-        { "Skulltula House", "Skulltula Haus", "Maison des Skulltulas", ENTR_HOUSE_OF_SKULLTULA_0, 0 },
+        { "Skulltula House", "Haus der Skulltulas", "Maison des Skulltulas", ENTR_HOUSE_OF_SKULLTULA_0, 0 },
     }}, 
     { "17:Graveyard", "17:Friedhof", "17:Cimetiere", Select_LoadGame, 9, {
         { "From Kakariko", "Von Kakariko", "Depuis l'Apothicaire", ENTR_GRAVEYARD_0, 0 },
@@ -409,7 +409,7 @@ static BetterSceneSelectEntry sBetterScenes[] = {
     { "18:Graves", "18:Graeber", "18:Tombes", Select_LoadGame, 5, {
         { "Dampes Grave Minigame", "Boris' Grab-Minispiel", "Tour du Cimetiere d'Igor", ENTR_WINDMILL_AND_DAMPES_GRAVE_0, 0 },
         { "Royal Familys Tomb", "Koenigsgrab", "Tombe Royale", ENTR_ROYAL_FAMILYS_TOMB_0, 0 },
-        { "Royal Familys Tomb, Suns Song Cutscene", "Koenigsgrab, Hymne der Sonne Cutscene", "Tombe Royale, Cinematique du Chant du Soleil", ENTR_ROYAL_FAMILYS_TOMB_1, 0 },
+        { "Royal Familys Tomb, Suns Song Cutscene", "Koenigsgrab, Hymne der Sonne Sequenz", "Tombe Royale, Cinematique du Chant du Soleil", ENTR_ROYAL_FAMILYS_TOMB_1, 0 },
         { "Treasure Chest Grave", "Schatzkisten Grab", "Tombe au Coffre", ENTR_GRAVE_WITH_FAIRYS_FOUNTAIN_0, 0 },
         { "ReDead Grave", "Zombie Grab", "Tombe au Effrois", ENTR_REDEAD_GRAVE_0, 0 },
     }},
@@ -477,7 +477,7 @@ static BetterSceneSelectEntry sBetterScenes[] = {
     }},
     { "28:Gerudo Fortress", "28:Gerudo-Festung", "28:Forteresse Gerudo", Select_LoadGame, 18, {
         { "From Gerudo Valley", "Vom Gerudotal", "Depuis la Vallee Gerudo", ENTR_GERUDOS_FORTRESS_0, 0 },
-        { "From Gerudo Training Grounds", "Von der Gerudo-Arena", "Depuis le Gymnase Gerudo", ENTR_GERUDOS_FORTRESS_14, 0 },
+        { "From Gerudo Training Grounds", "Von der Gerudo-Trainingsarena", "Depuis le Gymnase Gerudo", ENTR_GERUDOS_FORTRESS_14, 0 },
         { "From Haunted Wasteland", "Von der Gespensterwueste", "Depuis le Desert Hante", ENTR_GERUDOS_FORTRESS_15, 0 },
         { "Horseback Riding Minigame", "Bogen zu Pferde Minispiel", "Archerie Montee", ENTR_GERUDOS_FORTRESS_16, 0 },
         { "Gerudo Fortress Jail", "Gerudo-Festung Gefaengnis", "Prison de la Forteresse Gerudo", ENTR_GERUDOS_FORTRESS_17, 0 },
@@ -525,45 +525,45 @@ static BetterSceneSelectEntry sBetterScenes[] = {
     }},
     { "32:Deku Tree", "32:Deku-Baum", "32:Arbre Mojo", Select_LoadGame, 3, {
         { "Entrance", "Eingang", "Entree", ENTR_DEKU_TREE_0, 1 },
-        { "From Gohma's Lair", "Vom Gohma Kampf", "Depuis le Repaire de Gohma", ENTR_DEKU_TREE_1, 1 },
-        { "Gohma's Lair", "Gohma Kampf", "Repaire de Gohma", ENTR_DEKU_TREE_BOSS_0, 0 },
+        { "From Gohma's Lair", "Von Gohmas Kampf", "Depuis le Repaire de Gohma", ENTR_DEKU_TREE_1, 1 },
+        { "Gohma's Lair", "Gohmas Kampf", "Repaire de Gohma", ENTR_DEKU_TREE_BOSS_0, 0 },
     }},
     { "33:Dodongos Cavern", "33:Dodongos Hoehle", "33:Caverne Dodongo", Select_LoadGame, 3, {
         { "Entrance", "Eingang", "Entree", ENTR_DODONGOS_CAVERN_0, 1 },
-        { "From King Dodongo", "Von King Dodongo", "Depuis le Repaire du Roi Dodongo", ENTR_DODONGOS_CAVERN_1, 1 },
+        { "From King Dodongo", "Von Koenig Dodongo", "Depuis le Repaire du Roi Dodongo", ENTR_DODONGOS_CAVERN_1, 1 },
         { "King Dodongo's Lair", "Koenig Dodongos Kampf", "Repaire du Roi Dodongo", ENTR_DODONGOS_CAVERN_BOSS_0, 0 },
     }},
     { "34:Jabu Jabu", "34:Jabu-Jabu", "34:Jabu-Jabu", Select_LoadGame, 2, {
         { "Entrance", "Eingang", "Entree", ENTR_JABU_JABU_0, 1 },
-        { "Barinade's Lair", "Barinade Kampf", "Repaire de Barinade", ENTR_JABU_JABU_BOSS_0, 0 },
+        { "Barinade's Lair", "Barinades Kampf", "Repaire de Barinade", ENTR_JABU_JABU_BOSS_0, 0 },
     }},
     { "35:Forest Temple", "35:Waldtempel", "35:Temple de la Foret", Select_LoadGame, 4, {
         { "Entrance", "Eingang", "Entree", ENTR_FOREST_TEMPLE_0, 1 },
         { "Crushing Room", "Der Fallende Decke Raum", "Salle de Broyage", ENTR_FOREST_TEMPLE_2, 1 },
         { "Before Phantom Ganon", "Vor Phantom-Ganon", "Avant Ganon Spectral", ENTR_FOREST_TEMPLE_1, 1 },
-        { "Phantom Ganon's Lair", "Phantom-Ganon Kampf", "Repaire de Ganon Spectral", ENTR_FOREST_TEMPLE_BOSS_0, 0 },
+        { "Phantom Ganon's Lair", "Phantom-Ganons Kampf", "Repaire de Ganon Spectral", ENTR_FOREST_TEMPLE_BOSS_0, 0 },
     }},
     { "36:Fire Temple", "36:Feuertempel", "36:Temple du Feu", Select_LoadGame, 3, {
         { "Entrance", "Eingang", "Entrance", ENTR_FIRE_TEMPLE_0, 1 },
         { "Before Volvagia", "Vor Volvagia", "Avant Volvagia", ENTR_FIRE_TEMPLE_1, 1 },
-        { "Volvagia's Lair", "Volvagia Kampf", "Repaire de Volcania", ENTR_FIRE_TEMPLE_BOSS_0, 0 },
+        { "Volvagia's Lair", "Volvagias Kampf", "Repaire de Volcania", ENTR_FIRE_TEMPLE_BOSS_0, 0 },
     }},
     { "37:Water Temple", "37:Wassertempel", "37:Temple de l'Eau", Select_LoadGame, 2, { 
         { "Entrance", "Eingang", "Entree", ENTR_WATER_TEMPLE_0, 1 },
-        { "Morpha's Lair", "Morpha Kampf", "Repaire de Morpha", ENTR_WATER_TEMPLE_BOSS_0, 0 },
+        { "Morpha's Lair", "Morphas Kampf", "Repaire de Morpha", ENTR_WATER_TEMPLE_BOSS_0, 0 },
     }},
     { "38:Shadow Temple", "38:Schattentempel", "38:Temple de l'Ombre", Select_LoadGame, 3, {
         { "Entrance", "Eingang", "Entree", ENTR_SHADOW_TEMPLE_0, 1 },
         { "Outside Bongo Bongo", "Vor Bongo Bongo", "Avant Bongo Bongo", ENTR_SHADOW_TEMPLE_1, 1 },
-        { "Bongo Bongo's Lair", "Bongo Bongo Kampf", "Repaire de Bongo Bongo", ENTR_SHADOW_TEMPLE_BOSS_0, 1 },
+        { "Bongo Bongo's Lair", "Bongo Bongos Kampf", "Repaire de Bongo Bongo", ENTR_SHADOW_TEMPLE_BOSS_0, 1 },
     }},
     { "39:Spirit Temple", "39:Geistertempel", "39:Temple de l'Esprit", Select_LoadGame, 6, {
         { "Entrance", "Eingang", "Entree", ENTR_SPIRIT_TEMPLE_0, 1 },
         { "From Left Hand", "Von der linken Hand", "Depuis la Main Gauche", ENTR_SPIRIT_TEMPLE_2, 1 },
         { "From Right Hand", "Von der rechten Hand", "Depuis la Main Droite", ENTR_SPIRIT_TEMPLE_3, 1 },
         { "Before Twinrova", "Vor den Killa Ohmaz", "Avant le Duo Malefique", ENTR_SPIRIT_TEMPLE_1, 1 },
-        { "Nabooru Fight", "Naboru Kampf", "Combat contre Nabooru", ENTR_SPIRIT_TEMPLE_BOSS_0, 0 },
-        { "Twinrova's Lair", "Killa Ohmaz Kampf", "Repaire du Duo Malefique", ENTR_SPIRIT_TEMPLE_BOSS_2, 0 },
+        { "Nabooru Fight", "Naborus Kampf", "Combat contre Nabooru", ENTR_SPIRIT_TEMPLE_BOSS_0, 0 },
+        { "Twinrova's Lair", "Killa Ohmaz' Kampf", "Repaire du Duo Malefique", ENTR_SPIRIT_TEMPLE_BOSS_2, 0 },
     }},
     { "40:Ganons Castle", "40:Ganons Schloss", "40:Chateau de Ganon", Select_LoadGame, 9, {
         { "Entrance", "Eingang", "Entree", ENTR_INSIDE_GANONS_CASTLE_0, 1 },
@@ -573,8 +573,8 @@ static BetterSceneSelectEntry sBetterScenes[] = {
         { "Ganondorf's Lair", "Ganondorfs Verlies", "Repaire de Ganondorf", ENTR_GANONDORF_BOSS_0, 0 },
         { "Ganondorf Defeated", "Ganondorf Besiegt", "Ganondorf Vaincu", ENTR_GANONS_TOWER_COLLAPSE_EXTERIOR_5, 0 },
         { "Ganondorf Defeated (2)", "Ganondorf Besiegt (2)", "Ganondorf Vaincu (2)", ENTR_GANONS_TOWER_COLLAPSE_EXTERIOR_1, 0 },
-        { "Ganon's Lair", "Ganon Kampf", "Repaire de Ganon", ENTR_GANON_BOSS_0, 0 },
-        { "Ganon Death Cutscene", "Ganon Todes Cutscene", "Cinematique de la Mort de Ganon", ENTR_GANONS_TOWER_COLLAPSE_EXTERIOR_0, 0 },
+        { "Ganon's Lair", "Ganons Kampf", "Repaire de Ganon", ENTR_GANON_BOSS_0, 0 },
+        { "Ganon Death Cutscene", "Ganons Todessequenz", "Cinematique de la Mort de Ganon", ENTR_GANONS_TOWER_COLLAPSE_EXTERIOR_0, 0 },
     }},
     { "41:Bottom of the Well", "41:Grund des Brunnens", "41:Puits", Select_LoadGame, 1, {
         { "Entrance", "Eingang", "Entree", ENTR_BOTTOM_OF_THE_WELL_0, 1 },
@@ -612,7 +612,7 @@ static BetterSceneSelectEntry sBetterScenes[] = {
         { "Zoras Fountain", "Zoras Quelle", "Fontaine Zora", ENTR_GREAT_FAIRYS_FOUNTAIN_SPELLS_0, 0 },
         { "Desert Colossus", "Wuestenkoloss", "Colosse du Desert", ENTR_GREAT_FAIRYS_FOUNTAIN_SPELLS_2, 0 },
     }},
-    { "47:Chest Grottos", "47:Truhen Grotten", "47:Grottes a Coffres", Select_Grotto_LoadGame, 11, {
+    { "47:Chest Grottos", "47:Truhengrotten", "47:Grottes a Coffres", Select_Grotto_LoadGame, 11, {
         { "Kokiri Forest (Song of Storms)", "Kokiri-Wald (Hymne des Sturms)", "Foret Kokiri (Chant des Tempetes)", 0x00, 0 },
         { "Lost Woods", "Verlorene Waelder", "Bois Perdus", 0x01, 0 },
         { "Sacred Forest Meadow", "Waldlichtung", "Bosquet Sacre", 0x02, 0 },
@@ -625,7 +625,7 @@ static BetterSceneSelectEntry sBetterScenes[] = {
         { "Death Mountain Crater", "Todeskrater", "Cratere du Peril", 0x09, 0 },
         { "Zora River (Open)", "Zora-Fluss (Offen)", "Riviere Zora (Deja Ouverte)", 0x0A, 0 },
     }},
-    { "48:Scrub Grottos", "48:Laubkerl Grotten", "48:Grottes des Pestes Marchandes", Select_Grotto_LoadGame, 10, {
+    { "48:Scrub Grottos", "48:Laubkerlgrotten", "48:Grottes des Pestes Marchandes", Select_Grotto_LoadGame, 10, {
         { "Hyrule Field (Near Lake)", "Hylianische Steppe (beim Hylia-See)", "Plaine d'Hyrule (Pres du Lac)", 0x0B, 0 },
         { "Death Mountain Crater", "Todeskrater", "Cratere du Peril", 0x0C, 0 },
         { "Goron City", "Goronia", "Village Goron", 0x0D, 0 },
@@ -651,8 +651,8 @@ static BetterSceneSelectEntry sBetterScenes[] = {
         { "SRD Map", "SRD Karte", "Carte SRD", ENTR_SASATEST_0, 0 },
         { "Test Map", "Test Karte", "Carte de Test", ENTR_TEST01_0, 0 },
         { "Treasure Chest Warp", "Schatzkisten Teleport", "Salle de Test - Objets", ENTR_TESTROOM_0, 0 },
-        { "Stalfos Miniboss Room", "Stalfos-Ritter Miniboss Raum", "Salle du Minoboss Stalfos", ENTR_SYOTES_0, 0 },
-        { "Stalfos Boss Room", "Stalfos-Ritter Boss Raum", "Salle de Boss Stalfos", ENTR_SYOTES2_0, 0 },
+        { "Stalfos Miniboss Room", "Stalfos-Ritter Miniboss-Raum", "Salle du Minoboss Stalfos", ENTR_SYOTES_0, 0 },
+        { "Stalfos Boss Room", "Stalfos-Ritter Boss-Raum", "Salle de Boss Stalfos", ENTR_SYOTES2_0, 0 },
         { "Dark Link Room", "Schwarzer Link Raum", "Salle de Dark Link", ENTR_SUTARU_0, 0 },
         { "Shooting Gallery Duplicate", "Schiessbude (Duplikat)", "Jeu d'Adresse (Duplicata)", ENTR_TEST_SHOOTING_GALLERY_0, 0 },
         { "Depth Test", "Tiefen Test", "Test de Profondeur", ENTR_DEPTH_TEST_0, 0 },
