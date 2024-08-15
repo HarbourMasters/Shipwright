@@ -958,10 +958,11 @@ namespace Rando {
         /  every time a base value is updated.                       */
 
         BulletBag        = false;
+        Slingshot        = false;
         Ocarina          = false;
         OcarinaOfTime    = false;
         BombBag          = false;
-        BombchuIcon       = false;
+        BombchuIcon      = false;
         Magic            = false;
         Hookshot         = false;
         Longshot         = false;
