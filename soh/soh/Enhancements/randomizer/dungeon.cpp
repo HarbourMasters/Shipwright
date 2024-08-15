@@ -497,6 +497,8 @@ Dungeons::Dungeons() {
                         RC_SPIRIT_TEMPLE_GS_LOBBY,
                         RC_SPIRIT_TEMPLE_GS_SUN_ON_FLOOR_ROOM,
                         RC_SPIRIT_TEMPLE_GS_METAL_FENCE,
+                        RC_SPIRIT_TEMPLE_ADULT_CLIMB_LEFT_HEART,
+                        RC_SPIRIT_TEMPLE_ADULT_CLIMB_RIGHT_HEART,
                     },
                     {
                         // MQ Locations
@@ -563,6 +565,13 @@ Dungeons::Dungeons() {
                         RC_SHADOW_TEMPLE_GS_TRIPLE_GIANT_POT,
                         RC_SHADOW_TEMPLE_GS_LIKE_LIKE_ROOM,
                         RC_SHADOW_TEMPLE_GS_NEAR_SHIP,
+                        RC_SHADOW_TEMPLE_INVISIBLE_BLADES_LEFT_HEART,
+                        RC_SHADOW_TEMPLE_INVISIBLE_BLADES_RIGHT_HEART,
+                        RC_SHADOW_TEMPLE_SCARECROW_NORTH_HEART,
+                        RC_SHADOW_TEMPLE_SCARECROW_SOUTH_HEART,
+                        RC_SHADOW_TEMPLE_AFTER_SHIP_UPPER_LEFT_HEART,
+                        RC_SHADOW_TEMPLE_AFTER_SHIP_UPPER_RIGHT_HEART,
+                        RC_SHADOW_TEMPLE_AFTER_SHIP_LOWER_HEART,
                     },
                     {
                         // MQ Locations
@@ -591,6 +600,13 @@ Dungeons::Dungeons() {
                         RC_SHADOW_TEMPLE_MQ_GS_AFTER_WIND,
                         RC_SHADOW_TEMPLE_MQ_GS_AFTER_SHIP,
                         RC_SHADOW_TEMPLE_MQ_GS_NEAR_BOSS,
+                        RC_SHADOW_TEMPLE_MQ_INVISIBLE_BLADES_LEFT_HEART,
+                        RC_SHADOW_TEMPLE_MQ_INVISIBLE_BLADES_RIGHT_HEART,
+                        RC_SHADOW_TEMPLE_MQ_SCARECROW_NORTH_HEART,
+                        RC_SHADOW_TEMPLE_MQ_SCARECROW_SOUTH_HEART,
+                        RC_SHADOW_TEMPLE_MQ_AFTER_SHIP_UPPER_LEFT_HEART,
+                        RC_SHADOW_TEMPLE_MQ_AFTER_SHIP_UPPER_RIGHT_HEART,
+                        RC_SHADOW_TEMPLE_MQ_AFTER_SHIP_LOWER_HEART,
                     },
                     {},
                     {
@@ -756,6 +772,11 @@ Dungeons::Dungeons() {
                         RC_GANONS_CASTLE_DEKU_SCRUB_CENTER_LEFT,
                         RC_GANONS_CASTLE_DEKU_SCRUB_CENTER_RIGHT,
                         RC_GANONS_CASTLE_DEKU_SCRUB_RIGHT,
+                        RC_GANONS_CASTLE_SHADOW_TRIAL_HEART_1,
+                        RC_GANONS_CASTLE_SHADOW_TRIAL_HEART_2,
+                        RC_GANONS_CASTLE_SHADOW_TRIAL_HEART_3,
+                        RC_GANONS_CASTLE_FIRE_TRIAL_HEART,
+                        RC_GANONS_CASTLE_SPIRIT_TRIAL_HEART,
                     },
                     {
                         // MQ Locations
@@ -777,6 +798,9 @@ Dungeons::Dungeons() {
                         RC_GANONS_CASTLE_MQ_DEKU_SCRUB_CENTER,
                         RC_GANONS_CASTLE_MQ_DEKU_SCRUB_CENTER_RIGHT,
                         RC_GANONS_CASTLE_MQ_DEKU_SCRUB_LEFT,
+                        RC_GANONS_CASTLE_MQ_WATER_TRIAL_HEART,
+                        RC_GANONS_CASTLE_MQ_LIGHT_TRIAL_RIGHT_HEART,
+                        RC_GANONS_CASTLE_MQ_LIGHT_TRIAL_LEFT_HEART,
                     },
                     {
                         // Shared Locations
