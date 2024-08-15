@@ -841,6 +841,9 @@ typedef enum {
 #define PAUSE_CURSOR_PAGE_LEFT 10
 #define PAUSE_CURSOR_PAGE_RIGHT 11
 
+#define PAUSE_EQUIP_PLAYER_WIDTH 64
+#define PAUSE_EQUIP_PLAYER_HEIGHT 112
+
 typedef enum {
     /* 0x00 */ PAUSE_ITEM,
     /* 0x01 */ PAUSE_MAP,
@@ -1481,6 +1484,8 @@ typedef struct PlayState {
     /* 0x1242B */ u8 unk_1242B;
     /* 0x1242C */ SceneTableEntry* loadedScene;
     /* 0x12430 */ char unk_12430[0xE8];
+    // SOH [Custom Models] MTX tracker for flex based skeletons
+    Mtx** flexLimbOverrideMTX;
 } PlayState; // size = 0x12518
 
 typedef struct {

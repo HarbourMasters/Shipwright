@@ -20,6 +20,8 @@ static ImVec4 range2Color = ImVec4(0, 1.0f, 0, 1.0f);
 
 static const char* buttonOutlineOptions[4] = { "Always Shown", "Shown Only While Not Pressed",
                                                "Shown Only While Pressed", "Always Hidden" };
+static const char* buttonOutlineOptionsVerbose[4] = { "Outline Always Shown", "Outline Shown Only While Not Pressed",
+                                                      "Outline Shown Only While Pressed", "Outline Always Hidden" };
 
 static const char* stickModeOptions[3] = { "Always", "While In Use", "Never" };
 
@@ -85,6 +87,8 @@ void InputViewer::DrawElement() {
             Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Dpad-Up", "textures/buttons/DPadUp.png");
             Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Dpad-Down",
                                                                             "textures/buttons/DPadDown.png");
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Modifier-1", "textures/buttons/Mod1.png");
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Modifier-2", "textures/buttons/Mod2.png");
             Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Right-Stick",
                                                                             "textures/buttons/RightStick.png");
             Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("A-Btn Outline",
@@ -117,6 +121,10 @@ void InputViewer::DrawElement() {
                                                                             "textures/buttons/DPadUpOutline.png");
             Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Dpad-Down Outline",
                                                                             "textures/buttons/DPadDownOutline.png");
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Modifier-1 Outline",
+                                                                            "textures/buttons/Mod1Outline.png");
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Modifier-2 Outline",
+                                                                            "textures/buttons/Mod2Outline.png");
             Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Right-Stick Outline",
                                                                             "textures/buttons/RightStickOutline.png");
             sButtonTexturesLoaded = true;
@@ -132,17 +140,19 @@ void InputViewer::DrawElement() {
 #endif
         const int showAnalogAngles = CVarGetInteger(CVAR_INPUT_VIEWER("AnalogAngles.Enabled"), 0);
         const int buttonOutlineMode = CVarGetInteger(CVAR_INPUT_VIEWER("ButtonOutlineMode"), BUTTON_OUTLINE_NOT_PRESSED);
+        const bool useGlobalOutlineMode = CVarGetInteger(CVAR_INPUT_VIEWER("UseGlobalButtonOutlineMode"), 1);
 
         ImVec2 bgSize = Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureSize("Input-Viewer-Background");
         ImVec2 scaledBGSize = ImVec2(bgSize.x * scale, bgSize.y * scale);
 
-        ImGui::SetNextWindowSize(ImVec2(
-            scaledBGSize.x + 20,
-            scaledBGSize.y +
-                (showAnalogAngles ? ImGui::CalcTextSize("X").y : 0) * scale * CVarGetFloat(CVAR_INPUT_VIEWER("AnalogAngles.Scale"), 1.0f) + 20));
+        ImGui::SetNextWindowSize(
+            ImVec2(scaledBGSize.x + 20, scaledBGSize.y +
+                                            (showAnalogAngles ? ImGui::CalcTextSize("X").y : 0) * scale *
+                                                CVarGetFloat(CVAR_INPUT_VIEWER("AnalogAngles.Scale"), 1.0f) +
+                                            20));
         ImGui::SetNextWindowContentSize(
             ImVec2(scaledBGSize.x, scaledBGSize.y + (showAnalogAngles ? 15 : 0) * scale *
-                                                          CVarGetFloat(CVAR_INPUT_VIEWER("AnalogAngles.Scale"), 1.0f)));
+                                                        CVarGetFloat(CVAR_INPUT_VIEWER("AnalogAngles.Scale"), 1.0f)));
         ImGui::SetNextWindowPos(
             ImVec2(mainPos.x + size.x - scaledBGSize.x - 30, mainPos.y + size.y - scaledBGSize.y - 30),
             ImGuiCond_FirstUseEver);
@@ -176,52 +186,78 @@ void InputViewer::DrawElement() {
             if (CVarGetInteger(CVAR_INPUT_VIEWER("BBtn"), 1)) {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
-                RenderButton("B-Btn", "B-Btn Outline", pads[0].button & BTN_B, scaledBGSize, buttonOutlineMode);
+                RenderButton("B-Btn", "B-Btn Outline", pads[0].button & BTN_B, scaledBGSize,
+                             useGlobalOutlineMode
+                                 ? buttonOutlineMode
+                                 : CVarGetInteger(CVAR_INPUT_VIEWER("BBtnOutlineMode"), BUTTON_OUTLINE_NOT_PRESSED));
             }
             if (CVarGetInteger(CVAR_INPUT_VIEWER("ABtn"), 1)) {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
-                RenderButton("A-Btn", "A-Btn Outline", pads[0].button & BTN_A, scaledBGSize, buttonOutlineMode);
+                RenderButton("A-Btn", "A-Btn Outline", pads[0].button & BTN_A, scaledBGSize,
+                             useGlobalOutlineMode
+                                 ? buttonOutlineMode
+                                 : CVarGetInteger(CVAR_INPUT_VIEWER("ABtnOutlineMode"), BUTTON_OUTLINE_NOT_PRESSED));
             }
 
             // C buttons
             if (CVarGetInteger(CVAR_INPUT_VIEWER("CUp"), 1)) {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
-                RenderButton("C-Up", "C-Up Outline", pads[0].button & BTN_CUP, scaledBGSize, buttonOutlineMode);
+                RenderButton("C-Up", "C-Up Outline", pads[0].button & BTN_CUP, scaledBGSize,
+                             useGlobalOutlineMode
+                                 ? buttonOutlineMode
+                                 : CVarGetInteger(CVAR_INPUT_VIEWER("CUpOutlineMode"), BUTTON_OUTLINE_NOT_PRESSED));
             }
             if (CVarGetInteger(CVAR_INPUT_VIEWER("CLeft"), 1)) {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
-                RenderButton("C-Left", "C-Left Outline", pads[0].button & BTN_CLEFT, scaledBGSize, buttonOutlineMode);
+                RenderButton("C-Left", "C-Left Outline", pads[0].button & BTN_CLEFT, scaledBGSize,
+                             useGlobalOutlineMode
+                                 ? buttonOutlineMode
+                                 : CVarGetInteger(CVAR_INPUT_VIEWER("CLeftOutlineMode"), BUTTON_OUTLINE_NOT_PRESSED));
             }
             if (CVarGetInteger(CVAR_INPUT_VIEWER("CRight"), 1)) {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
                 RenderButton("C-Right", "C-Right Outline", pads[0].button & BTN_CRIGHT, scaledBGSize,
-                             buttonOutlineMode);
+                             useGlobalOutlineMode
+                                 ? buttonOutlineMode
+                                 : CVarGetInteger(CVAR_INPUT_VIEWER("CRightOutlineMode"), BUTTON_OUTLINE_NOT_PRESSED));
             }
             if (CVarGetInteger(CVAR_INPUT_VIEWER("CDown"), 1)) {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
-                RenderButton("C-Down", "C-Down Outline", pads[0].button & BTN_CDOWN, scaledBGSize, buttonOutlineMode);
+                RenderButton("C-Down", "C-Down Outline", pads[0].button & BTN_CDOWN, scaledBGSize,
+                             useGlobalOutlineMode
+                                 ? buttonOutlineMode
+                                 : CVarGetInteger(CVAR_INPUT_VIEWER("CDownOutlineMode"), BUTTON_OUTLINE_NOT_PRESSED));
             }
 
             // L/R/Z
             if (CVarGetInteger(CVAR_INPUT_VIEWER("LBtn"), 1)) {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
-                RenderButton("L-Btn", "L-Btn Outline", pads[0].button & BTN_L, scaledBGSize, buttonOutlineMode);
+                RenderButton("L-Btn", "L-Btn Outline", pads[0].button & BTN_L, scaledBGSize,
+                             useGlobalOutlineMode
+                                 ? buttonOutlineMode
+                                 : CVarGetInteger(CVAR_INPUT_VIEWER("LBtnOutlineMode"), BUTTON_OUTLINE_NOT_PRESSED));
             }
             if (CVarGetInteger(CVAR_INPUT_VIEWER("RBtn"), 1)) {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
-                RenderButton("R-Btn", "R-Btn Outline", pads[0].button & BTN_R, scaledBGSize, buttonOutlineMode);
+                RenderButton("R-Btn", "R-Btn Outline", pads[0].button & BTN_R, scaledBGSize,
+                             useGlobalOutlineMode
+                                 ? buttonOutlineMode
+                                 : CVarGetInteger(CVAR_INPUT_VIEWER("RBtnOutlineMode"), BUTTON_OUTLINE_NOT_PRESSED));
             }
             if (CVarGetInteger(CVAR_INPUT_VIEWER("ZBtn"), 1)) {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
-                RenderButton("Z-Btn", "Z-Btn Outline", pads[0].button & BTN_Z, scaledBGSize, buttonOutlineMode);
+                RenderButton("Z-Btn", "Z-Btn Outline", pads[0].button & BTN_Z, scaledBGSize,
+                             useGlobalOutlineMode
+                                 ? buttonOutlineMode
+                                 : CVarGetInteger(CVAR_INPUT_VIEWER("ZBtnOutlineMode"), BUTTON_OUTLINE_NOT_PRESSED));
             }
 
             // Start
@@ -229,7 +265,9 @@ void InputViewer::DrawElement() {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
                 RenderButton("Start-Btn", "Start-Btn Outline", pads[0].button & BTN_START, scaledBGSize,
-                             buttonOutlineMode);
+                             useGlobalOutlineMode
+                                 ? buttonOutlineMode
+                                 : CVarGetInteger(CVAR_INPUT_VIEWER("StartBtnOutlineMode"), BUTTON_OUTLINE_NOT_PRESSED));
             }
 
             // Dpad
@@ -237,18 +275,46 @@ void InputViewer::DrawElement() {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
                 RenderButton("Dpad-Left", "Dpad-Left Outline", pads[0].button & BTN_DLEFT, scaledBGSize,
-                             buttonOutlineMode);
+                             useGlobalOutlineMode
+                                 ? buttonOutlineMode
+                                 : CVarGetInteger(CVAR_INPUT_VIEWER("DpadOutlineMode"), BUTTON_OUTLINE_NOT_PRESSED));
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
                 RenderButton("Dpad-Right", "Dpad-Right Outline", pads[0].button & BTN_DRIGHT, scaledBGSize,
-                             buttonOutlineMode);
+                             useGlobalOutlineMode
+                                 ? buttonOutlineMode
+                                 : CVarGetInteger(CVAR_INPUT_VIEWER("DpadOutlineMode"), BUTTON_OUTLINE_NOT_PRESSED));
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
-                RenderButton("Dpad-Up", "Dpad-Up Outline", pads[0].button & BTN_DUP, scaledBGSize, buttonOutlineMode);
+                RenderButton("Dpad-Up", "Dpad-Up Outline", pads[0].button & BTN_DUP, scaledBGSize,
+                             useGlobalOutlineMode
+                                 ? buttonOutlineMode
+                                 : CVarGetInteger(CVAR_INPUT_VIEWER("DpadOutlineMode"), BUTTON_OUTLINE_NOT_PRESSED));
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
                 RenderButton("Dpad-Down", "Dpad-Down Outline", pads[0].button & BTN_DDOWN, scaledBGSize,
-                             buttonOutlineMode);
+                             useGlobalOutlineMode
+                                 ? buttonOutlineMode
+                                 : CVarGetInteger(CVAR_INPUT_VIEWER("DpadOutlineMode"), BUTTON_OUTLINE_NOT_PRESSED));
+            }
+
+            // Modifier 1
+            if (CVarGetInteger(CVAR_INPUT_VIEWER("Mod1"), 0)) {
+                ImGui::SetNextItemAllowOverlap();
+                ImGui::SetCursorPos(aPos);
+                RenderButton("Modifier-1", "Modifier-1 Outline", pads[0].button & BTN_MODIFIER1, scaledBGSize,
+                             useGlobalOutlineMode
+                                 ? buttonOutlineMode
+                                 : CVarGetInteger(CVAR_INPUT_VIEWER("Mod1OutlineMode"), BUTTON_OUTLINE_NOT_PRESSED));
+            }
+            // Modifier 2
+            if (CVarGetInteger(CVAR_INPUT_VIEWER("Mod2"), 0)) {
+                ImGui::SetNextItemAllowOverlap();
+                ImGui::SetCursorPos(aPos);
+                RenderButton("Modifier-2", "Modifier-2 Outline", pads[0].button & BTN_MODIFIER2, scaledBGSize,
+                             useGlobalOutlineMode
+                                 ? buttonOutlineMode
+                                 : CVarGetInteger(CVAR_INPUT_VIEWER("Mod2OutlineMode"), BUTTON_OUTLINE_NOT_PRESSED));
             }
 
             const bool analogStickIsInDeadzone = !pads[0].stick_x && !pads[0].stick_y;
@@ -359,9 +425,9 @@ InputViewerSettingsWindow::~InputViewerSettingsWindow() {
 }
 
 void InputViewerSettingsWindow::DrawElement() {
-    ImGui::SetNextWindowSize(ImVec2(450, 525), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowSize(ImVec2(500, 525), ImGuiCond_FirstUseEver);
 
-    if (ImGui::Begin("Input Viewer Settings", &mIsVisible)) {
+    if (ImGui::Begin("Input Viewer Settings", &mIsVisible, ImGuiWindowFlags_HorizontalScrollbar)) {
 
         // gInputViewer.Scale
         UIWidgets::EnhancementSliderFloat("Input Viewer Scale: %.2f", "##Input", CVAR_INPUT_VIEWER("Scale"), 0.1f, 5.0f, "",
@@ -381,47 +447,142 @@ void InputViewerSettingsWindow::DrawElement() {
         UIWidgets::PaddedSeparator(true, true);
 
         if (ImGui::CollapsingHeader("Buttons")) {
-            // gInputViewer.ABtn
-            UIWidgets::EnhancementCheckbox("Show A-Button Layers", CVAR_INPUT_VIEWER("ABtn"), false, "",
-                                           UIWidgets::CheckboxGraphics::Checkmark, true);
-            // gInputViewer.BBtn
-            UIWidgets::EnhancementCheckbox("Show B-Button Layers", CVAR_INPUT_VIEWER("BBtn"), false, "",
-                                           UIWidgets::CheckboxGraphics::Checkmark, true);
-            // gInputViewer.CUp
-            UIWidgets::EnhancementCheckbox("Show C-Up Layers", CVAR_INPUT_VIEWER("CUp"), false, "",
-                                           UIWidgets::CheckboxGraphics::Checkmark, true);
-            // gInputViewer.CRight
-            UIWidgets::EnhancementCheckbox("Show C-Right Layers", CVAR_INPUT_VIEWER("CRight"), false, "",
-                                           UIWidgets::CheckboxGraphics::Checkmark, true);
-            // gInputViewer.CDown
-            UIWidgets::EnhancementCheckbox("Show C-Down Layers", CVAR_INPUT_VIEWER("CDown"), false, "",
-                                           UIWidgets::CheckboxGraphics::Checkmark, true);
-            // gInputViewer.CLeft
-            UIWidgets::EnhancementCheckbox("Show C-Left Layers", CVAR_INPUT_VIEWER("CLeft"), false, "",
-                                           UIWidgets::CheckboxGraphics::Checkmark, true);
-            // gInputViewer.LBtn
-            UIWidgets::EnhancementCheckbox("Show L-Button Layers", CVAR_INPUT_VIEWER("LBtn"), false, "",
-                                           UIWidgets::CheckboxGraphics::Checkmark, true);
-            // gInputViewer.RBtn
-            UIWidgets::EnhancementCheckbox("Show R-Button Layers", CVAR_INPUT_VIEWER("RBtn"), false, "",
-                                           UIWidgets::CheckboxGraphics::Checkmark, true);
-            // gInputViewer.ZBtn
-            UIWidgets::EnhancementCheckbox("Show Z-Button Layers", CVAR_INPUT_VIEWER("ZBtn"), false, "",
-                                           UIWidgets::CheckboxGraphics::Checkmark, true);
-            // gInputViewer.StartBtn
-            UIWidgets::EnhancementCheckbox("Show Start Button Layers", CVAR_INPUT_VIEWER("StartBtn"), false, "",
-                                           UIWidgets::CheckboxGraphics::Checkmark, true);
-            // gInputViewer.Dpad
-            UIWidgets::EnhancementCheckbox("Show D-Pad Layers", CVAR_INPUT_VIEWER("Dpad"), false, "",
-                                           UIWidgets::CheckboxGraphics::Checkmark, false);
 
             // gInputViewer.ButtonOutlineMode
             UIWidgets::PaddedText("Button Outlines/Backgrounds", true, false);
-            UIWidgets::EnhancementCombobox(CVAR_INPUT_VIEWER("ButtonOutlineMode"), buttonOutlineOptions,
-                                           BUTTON_OUTLINE_NOT_PRESSED);
+            UIWidgets::EnhancementCombobox(
+                CVAR_INPUT_VIEWER("ButtonOutlineMode"), buttonOutlineOptions, BUTTON_OUTLINE_NOT_PRESSED,
+                !CVarGetInteger(CVAR_INPUT_VIEWER("UseGlobalButtonOutlineMode"), 1), "",
+                CVarGetInteger(CVAR_INPUT_VIEWER("ButtonOutlineMode"), BUTTON_OUTLINE_NOT_PRESSED));
             UIWidgets::Tooltip(
                 "Sets the desired visibility behavior for the button outline/background layers. Useful for "
                 "custom input viewers.");
+
+            // gInputViewer.UseGlobalButtonOutlineMode
+            UIWidgets::EnhancementCheckbox("Use for all buttons", CVAR_INPUT_VIEWER("UseGlobalButtonOutlineMode"), false, "",
+                                           UIWidgets::CheckboxGraphics::Checkmark, true);
+
+            UIWidgets::PaddedSeparator();
+
+            bool useIndividualOutlines = !CVarGetInteger(CVAR_INPUT_VIEWER("UseGlobalButtonOutlineMode"), 1);
+
+            // gInputViewer.ABtn
+            UIWidgets::EnhancementCheckbox("Show A-Button Layers", CVAR_INPUT_VIEWER("ABtn"), false, "",
+                                           UIWidgets::CheckboxGraphics::Checkmark, true);
+            if (useIndividualOutlines && CVarGetInteger(CVAR_INPUT_VIEWER("ABtn"), 1)) {
+                ImGui::Indent();
+                UIWidgets::EnhancementCombobox(CVAR_INPUT_VIEWER("ABtnOutlineMode"), buttonOutlineOptionsVerbose,
+                                               BUTTON_OUTLINE_NOT_PRESSED);
+                ImGui::Unindent();
+            }
+            // gInputViewer.BBtn
+            UIWidgets::EnhancementCheckbox("Show B-Button Layers", CVAR_INPUT_VIEWER("BBtn"), false, "",
+                                           UIWidgets::CheckboxGraphics::Checkmark, true);
+            if (useIndividualOutlines && CVarGetInteger(CVAR_INPUT_VIEWER("BBtn"), 1)) {
+                ImGui::Indent();
+                UIWidgets::EnhancementCombobox(CVAR_INPUT_VIEWER("BBtnOutlineMode"), buttonOutlineOptionsVerbose,
+                                               BUTTON_OUTLINE_NOT_PRESSED);
+                ImGui::Unindent();
+            }
+            // gInputViewer.CUp
+            UIWidgets::EnhancementCheckbox("Show C-Up Layers", CVAR_INPUT_VIEWER("CUp"), false, "",
+                                           UIWidgets::CheckboxGraphics::Checkmark, true);
+            if (useIndividualOutlines && CVarGetInteger(CVAR_INPUT_VIEWER("CUp"), 1)) {
+                ImGui::Indent();
+                UIWidgets::EnhancementCombobox(CVAR_INPUT_VIEWER("CUpOutlineMode"), buttonOutlineOptionsVerbose,
+                                               BUTTON_OUTLINE_NOT_PRESSED);
+                ImGui::Unindent();
+            }
+            // gInputViewer.CRight
+            UIWidgets::EnhancementCheckbox("Show C-Right Layers", CVAR_INPUT_VIEWER("CRight"), false, "",
+                                           UIWidgets::CheckboxGraphics::Checkmark, true);
+            if (useIndividualOutlines && CVarGetInteger(CVAR_INPUT_VIEWER("CRight"), 1)) {
+                ImGui::Indent();
+                UIWidgets::EnhancementCombobox(CVAR_INPUT_VIEWER("CRightOutlineMode"), buttonOutlineOptionsVerbose,
+                                               BUTTON_OUTLINE_NOT_PRESSED);
+                ImGui::Unindent();
+            }
+            // gInputViewer.CDown
+            UIWidgets::EnhancementCheckbox("Show C-Down Layers", CVAR_INPUT_VIEWER("CDown"), false, "",
+                                           UIWidgets::CheckboxGraphics::Checkmark, true);
+            if (useIndividualOutlines && CVarGetInteger(CVAR_INPUT_VIEWER("CDown"), 1)) {
+                ImGui::Indent();
+                UIWidgets::EnhancementCombobox(CVAR_INPUT_VIEWER("CDownOutlineMode"), buttonOutlineOptionsVerbose,
+                                               BUTTON_OUTLINE_NOT_PRESSED);
+                ImGui::Unindent();
+            }
+            // gInputViewer.CLeft
+            UIWidgets::EnhancementCheckbox("Show C-Left Layers", CVAR_INPUT_VIEWER("CLeft"), false, "",
+                                           UIWidgets::CheckboxGraphics::Checkmark, true);
+            if (useIndividualOutlines && CVarGetInteger(CVAR_INPUT_VIEWER("CLeft"), 1)) {
+                ImGui::Indent();
+                UIWidgets::EnhancementCombobox(CVAR_INPUT_VIEWER("CLeftOutlineMode"), buttonOutlineOptionsVerbose,
+                                               BUTTON_OUTLINE_NOT_PRESSED);
+                ImGui::Unindent();
+            }
+            // gInputViewer.LBtn
+            UIWidgets::EnhancementCheckbox("Show L-Button Layers", CVAR_INPUT_VIEWER("LBtn"), false, "",
+                                           UIWidgets::CheckboxGraphics::Checkmark, true);
+            if (useIndividualOutlines && CVarGetInteger(CVAR_INPUT_VIEWER("LBtn"), 1)) {
+                ImGui::Indent();
+                UIWidgets::EnhancementCombobox(CVAR_INPUT_VIEWER("LBtnOutlineMode"), buttonOutlineOptionsVerbose,
+                                               BUTTON_OUTLINE_NOT_PRESSED);
+                ImGui::Unindent();
+            }
+            // gInputViewer.RBtn
+            UIWidgets::EnhancementCheckbox("Show R-Button Layers", CVAR_INPUT_VIEWER("RBtn"), false, "",
+                                           UIWidgets::CheckboxGraphics::Checkmark, true);
+            if (useIndividualOutlines && CVarGetInteger(CVAR_INPUT_VIEWER("RBtn"), 1)) {
+                ImGui::Indent();
+                UIWidgets::EnhancementCombobox(CVAR_INPUT_VIEWER("RBtnOutlineMode"), buttonOutlineOptionsVerbose,
+                                               BUTTON_OUTLINE_NOT_PRESSED);
+                ImGui::Unindent();
+            }
+            // gInputViewer.ZBtn
+            UIWidgets::EnhancementCheckbox("Show Z-Button Layers", CVAR_INPUT_VIEWER("ZBtn"), false, "",
+                                           UIWidgets::CheckboxGraphics::Checkmark, true);
+            if (useIndividualOutlines && CVarGetInteger(CVAR_INPUT_VIEWER("ZBtn"), 1)) {
+                ImGui::Indent();
+                UIWidgets::EnhancementCombobox(CVAR_INPUT_VIEWER("ZBtnOutlineMode"), buttonOutlineOptionsVerbose,
+                                               BUTTON_OUTLINE_NOT_PRESSED);
+                ImGui::Unindent();
+            }
+            // gInputViewer.StartBtn
+            UIWidgets::EnhancementCheckbox("Show Start Button Layers", CVAR_INPUT_VIEWER("StartBtn"), false, "",
+                                           UIWidgets::CheckboxGraphics::Checkmark, true);
+            if (useIndividualOutlines && CVarGetInteger(CVAR_INPUT_VIEWER("StartBtn"), 1)) {
+                ImGui::Indent();
+                UIWidgets::EnhancementCombobox(CVAR_INPUT_VIEWER("StartBtnOutlineMode"), buttonOutlineOptionsVerbose,
+                                               BUTTON_OUTLINE_NOT_PRESSED);
+                ImGui::Unindent();
+            }
+            // gInputViewer.Dpad
+            UIWidgets::EnhancementCheckbox("Show D-Pad Layers", CVAR_INPUT_VIEWER("Dpad"), false, "",
+                                           UIWidgets::CheckboxGraphics::Checkmark, false);
+            if (useIndividualOutlines && CVarGetInteger(CVAR_INPUT_VIEWER("Dpad"), 0)) {
+                ImGui::Indent();
+                UIWidgets::EnhancementCombobox(CVAR_INPUT_VIEWER("DpadOutlineMode"), buttonOutlineOptionsVerbose,
+                                               BUTTON_OUTLINE_NOT_PRESSED);
+                ImGui::Unindent();
+            }
+            // gInputViewer.Mod1
+            UIWidgets::EnhancementCheckbox("Show Modifier Button 1 Layers", CVAR_INPUT_VIEWER("Mod1"), false, "",
+                                           UIWidgets::CheckboxGraphics::Checkmark, false);
+            if (useIndividualOutlines && CVarGetInteger(CVAR_INPUT_VIEWER("Mod1"), 0)) {
+                ImGui::Indent();
+                UIWidgets::EnhancementCombobox(CVAR_INPUT_VIEWER("Mod1OutlineMode"), buttonOutlineOptionsVerbose,
+                                               BUTTON_OUTLINE_NOT_PRESSED);
+                ImGui::Unindent();
+            }
+            // gInputViewer.Mod2
+            UIWidgets::EnhancementCheckbox("Show Modifier Button 2 Layers", CVAR_INPUT_VIEWER("Mod2"), false, "",
+                                           UIWidgets::CheckboxGraphics::Checkmark, false);
+            if (useIndividualOutlines && CVarGetInteger(CVAR_INPUT_VIEWER("Mod2"), 0)) {
+                ImGui::Indent();
+                UIWidgets::EnhancementCombobox(CVAR_INPUT_VIEWER("Mod2OutlineMode"), buttonOutlineOptionsVerbose,
+                                               BUTTON_OUTLINE_NOT_PRESSED);
+                ImGui::Unindent();
+            }
 
             UIWidgets::PaddedSeparator(true, true);
         }

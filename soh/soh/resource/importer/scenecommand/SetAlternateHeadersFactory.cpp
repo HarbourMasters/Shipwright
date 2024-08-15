@@ -17,6 +17,7 @@ std::shared_ptr<Ship::IResource> SetAlternateHeadersFactory::ReadResource(std::s
         auto headerName = reader->ReadString();
         if (!headerName.empty()) {
             setAlternateHeaders->headers.push_back(std::static_pointer_cast<Scene>(Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(headerName.c_str())));
+            setAlternateHeaders->headerFileNames.push_back(headerName);
         } else {
             setAlternateHeaders->headers.push_back(nullptr);
         }
@@ -41,7 +42,7 @@ std::shared_ptr<Ship::IResource> SetAlternateHeadersFactoryXML::ReadResource(std
         std::string childName = child->Name();
         if (childName == "AlternateHeader") {
             for (uint32_t i = 0; i < setAlternateHeaders->numHeaders; i++) {
-	            auto headerName = std::string(child->Attribute("HeaderName"));
+	            auto headerName = std::string(child->Attribute("Path"));
 	            if (!headerName.empty()) {
 	            	setAlternateHeaders->headers.push_back(std::static_pointer_cast<Scene>(Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(headerName.c_str())));
 	            } else {

@@ -17,6 +17,7 @@ SetPathwaysFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initDat
         std::string pathFileName = reader->ReadString();
         auto path = std::static_pointer_cast<Path>(Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(pathFileName.c_str()));
         setPathways->paths.push_back(path->GetPointer());
+        setPathways->pathFileNames.push_back(pathFileName);
     }
 
     if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ResourceLogging"), 0)) {
