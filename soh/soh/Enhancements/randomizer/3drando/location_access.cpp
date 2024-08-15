@@ -235,12 +235,12 @@ bool HasAccessTo(const RandomizerRegion area) {
   return areaTable[area].HasAccess();
 }
 
-std::shared_ptr<Rando::Context> randoCtx;
+Rando::Context* randoCtx;
 std::shared_ptr<Rando::Logic> logic;
 
 void AreaTable_Init() {
   using namespace Rando;
-  randoCtx = Context::GetInstance();
+  randoCtx = Context::GetInstance().get();
   logic = randoCtx->GetLogic();
   grottoEvents = {
       EventAccess(&logic->GossipStoneFairy, { [] { return logic->GossipStoneFairy || logic->CanSummonGossipFairy; } }),

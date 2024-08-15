@@ -2252,7 +2252,7 @@ void EnZf_Draw(Actor* thisx, PlayState* play) {
         gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, this->alpha);
         gSPSegment(POLY_OPA_DISP++, 0x09, &D_80116280[2]);
 
-        POLY_OPA_DISP = SkelAnime_Draw(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
+        POLY_OPA_DISP = SkelAnime_DrawSkeleton2(play, &this->skelAnime,
                                        EnZf_OverrideLimbDraw, EnZf_PostLimbDraw, this, POLY_OPA_DISP);
 
         if (this->iceTimer != 0) {
@@ -2271,7 +2271,7 @@ void EnZf_Draw(Actor* thisx, PlayState* play) {
         gDPPipeSync(POLY_XLU_DISP++);
         gDPSetEnvColor(POLY_XLU_DISP++, 0, 0, 0, this->alpha);
         gSPSegment(POLY_XLU_DISP++, 0x09, &D_80116280[0]);
-        POLY_XLU_DISP = SkelAnime_Draw(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
+        POLY_XLU_DISP = SkelAnime_DrawSkeleton2(play, &this->skelAnime,
                                        EnZf_OverrideLimbDraw, EnZf_PostLimbDraw, this, POLY_XLU_DISP);
     }
     CLOSE_DISPS(play->state.gfxCtx);

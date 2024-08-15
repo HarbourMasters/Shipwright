@@ -65,12 +65,11 @@ void SkeletonPatcher::ClearSkeletons()
 }
 
 void SkeletonPatcher::UpdateSkeletons() {
-    bool isHD = CVarGetInteger(CVAR_ALT_ASSETS, 0);
+    auto resourceMgr = Ship::Context::GetInstance()->GetResourceManager();
+    bool isHD = resourceMgr->IsAltAssetsEnabled();
     for (auto skel : skeletons) {
         Skeleton* newSkel =
-            (Skeleton*)Ship::Context::GetInstance()->GetResourceManager()
-                ->LoadResource((isHD ? Ship::IResource::gAltAssetPrefix : "") + skel.vanillaSkeletonPath, true)
-                .get();
+            (Skeleton*)resourceMgr->LoadResource((isHD ? Ship::IResource::gAltAssetPrefix : "") + skel.vanillaSkeletonPath, true).get();
 
         if (newSkel != nullptr) {
             skel.skelAnime->skeleton = newSkel->skeletonData.skeletonHeader.segment;

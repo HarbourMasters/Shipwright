@@ -92,7 +92,6 @@ class SohInputEditorWindow : public Ship::GuiWindow {
     void DrawLinkTab();
     void DrawIvanTab();
     void DrawDebugPortTab(uint8_t portIndex, std::string customName = "");
-    void DrawDevicesTab();
     std::set<uint16_t> mButtonsBitmasks;
     std::set<uint16_t> mDpadBitmasks;
     std::set<uint16_t> mModifierButtonsBitmasks;
@@ -104,4 +103,7 @@ class SohInputEditorWindow : public Ship::GuiWindow {
     bool mInputEditorPopupOpen;
     void DrawSetDefaultsButton(uint8_t portIndex);
     void DrawClearAllButton(uint8_t portIndex);
+
+    std::map<Ship::ShipDeviceIndex, bool> mDeviceIndexVisiblity;
+    void DrawDeviceVisibilityButtons();
 };

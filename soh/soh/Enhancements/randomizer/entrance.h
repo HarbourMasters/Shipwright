@@ -115,6 +115,7 @@ using EntrancePools = std::map<EntranceType, std::vector<Entrance*>>;
 
 class EntranceShuffler {
   public:
+    EntranceShuffler();
     std::array<EntranceOverride, ENTRANCE_OVERRIDES_MAX_COUNT> entranceOverrides;
     std::vector<std::list<Entrance*>> playthroughEntrances;
     bool HasNoRandomEntrances();
