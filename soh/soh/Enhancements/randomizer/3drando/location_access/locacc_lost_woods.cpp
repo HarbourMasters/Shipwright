@@ -30,6 +30,9 @@ void AreaTable_Init_LostWoods() {
                   LOCATION(RC_KF_BEAN_RUPEE_5,           logic->IsAdult && (CanPlantBean(RR_KOKIRI_FOREST) || logic->CanUse(RG_HOVER_BOOTS))),
                   LOCATION(RC_KF_BEAN_RUPEE_6,           logic->IsAdult && (CanPlantBean(RR_KOKIRI_FOREST) || logic->CanUse(RG_HOVER_BOOTS))),
                   LOCATION(RC_KF_BEAN_RED_RUPEE,         logic->IsAdult && (CanPlantBean(RR_KOKIRI_FOREST) || logic->CanUse(RG_HOVER_BOOTS))),
+                  LOCATION(RC_KF_SARIAS_ROOF_WEST_HEART, logic->IsChild),
+                  LOCATION(RC_KF_SARIAS_ROOF_EAST_HEART, logic->IsChild),
+                  LOCATION(RC_KF_SARIAS_ROOF_NORTH_HEART, logic->IsChild),
                   LOCATION(RC_KF_GOSSIP_STONE,           true),
                 }, {
                   //Exits
@@ -184,6 +187,7 @@ void AreaTable_Init_LostWoods() {
                   LOCATION(RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_LEFT,  logic->IsChild && logic->CanStunDeku),
                   LOCATION(RC_LW_GS_ABOVE_THEATER,                   logic->IsAdult && logic->AtNight && ((CanPlantBean(RR_LW_BEYOND_MIDO) && logic->CanAdultAttack) || (randoCtx->GetTrickOption(RT_LW_GS_BEAN) && logic->CanUse(RG_HOOKSHOT) && (logic->CanUse(RG_LONGSHOT) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->HasBombchus || logic->CanUse(RG_DINS_FIRE)))) && logic->CanGetNightTimeGS),
                   LOCATION(RC_LW_GS_BEAN_PATCH_NEAR_THEATER,         logic->CanPlantBugs && (logic->CanChildAttack || (randoCtx->GetOption(RSK_SHUFFLE_SCRUBS).Is(RO_SCRUBS_OFF) && logic->DekuShield))),
+                  LOCATION(RC_LW_BOULDER_RUPEE,                      logic->CanBlastOrSmash),
                 }, {
                   //Exits
                   Entrance(RR_LW_FOREST_EXIT,   {[]{return true;}}),
