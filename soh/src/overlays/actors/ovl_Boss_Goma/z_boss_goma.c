@@ -2015,12 +2015,26 @@ s32 BossGoma_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f
                 Matrix_TranslateRotateZYX(pos, rot);
 
                 if (*dList != NULL) {
+                    if (this->skelanime.skeletonHeader->skeletonType == SKELANIME_TYPE_FLEX) {
+                        MATRIX_TOMTX(*play->flexLimbOverrideMTX);
+                    }
+
                     Matrix_Push();
                     Matrix_Scale(this->eyeIrisScaleX, this->eyeIrisScaleY, 1.0f, MTXMODE_APPLY);
-                    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+
+                    if (this->skelanime.skeletonHeader->skeletonType == SKELANIME_TYPE_FLEX) {
+                        gSPMatrix(POLY_OPA_DISP++, *play->flexLimbOverrideMTX, G_MTX_LOAD);
+                    } else {
+                        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                    }
+
                     gSPDisplayList(POLY_OPA_DISP++, *dList);
                     Matrix_Pop();
+
+                    if (this->skelanime.skeletonHeader->skeletonType == SKELANIME_TYPE_FLEX) {
+                        (*play->flexLimbOverrideMTX)++;
+                    }
                 }
 
                 doNotDrawLimb = true;
@@ -2034,14 +2048,28 @@ s32 BossGoma_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f
             Matrix_TranslateRotateZYX(pos, rot);
 
             if (*dList != NULL) {
+                if (this->skelanime.skeletonHeader->skeletonType == SKELANIME_TYPE_FLEX) {
+                    MATRIX_TOMTX(*play->flexLimbOverrideMTX);
+                }
+
                 Matrix_Push();
                 Matrix_Scale(this->tailLimbsScale[limbIndex - BOSSGOMA_LIMB_TAIL4],
                              this->tailLimbsScale[limbIndex - BOSSGOMA_LIMB_TAIL4],
                              this->tailLimbsScale[limbIndex - BOSSGOMA_LIMB_TAIL4], MTXMODE_APPLY);
-                gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                          G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+
+                if (this->skelanime.skeletonHeader->skeletonType == SKELANIME_TYPE_FLEX) {
+                    gSPMatrix(POLY_OPA_DISP++, *play->flexLimbOverrideMTX, G_MTX_LOAD);
+                } else {
+                    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                }
+
                 gSPDisplayList(POLY_OPA_DISP++, *dList);
                 Matrix_Pop();
+
+                if (this->skelanime.skeletonHeader->skeletonType == SKELANIME_TYPE_FLEX) {
+                    (*play->flexLimbOverrideMTX)++;
+                }
             }
 
             doNotDrawLimb = true;
