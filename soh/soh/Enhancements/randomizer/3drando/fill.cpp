@@ -1141,26 +1141,25 @@ int Fill() {
     FastFill(remainingPool, GetAllEmptyLocations(), false);
 
     //Add default prices to scrubs
-    for (size_t i = 0; i < Rando::StaticData::scrubLocations.size(); i++) {
-      if (Rando::StaticData::scrubLocations[i] == RC_LW_DEKU_SCRUB_NEAR_BRIDGE || Rando::StaticData::scrubLocations[i] == RC_LW_DEKU_SCRUB_GROTTO_FRONT) {
-        ctx->GetItemLocation(Rando::StaticData::scrubLocations[i])->SetCustomPrice(40);
-      } else if (Rando::StaticData::scrubLocations[i] == RC_HF_DEKU_SCRUB_GROTTO) {
-        ctx->GetItemLocation(Rando::StaticData::scrubLocations[i])->SetCustomPrice(10);
+    for (RandomizerCheck& randomizerCheck : Rando::StaticData::GetScrubLocations()) {
+      if (randomizerCheck == RC_LW_DEKU_SCRUB_NEAR_BRIDGE || randomizerCheck == RC_LW_DEKU_SCRUB_GROTTO_FRONT) {
+        ctx->GetItemLocation(randomizerCheck)->SetCustomPrice(40);
+      } else if (randomizerCheck == RC_HF_DEKU_SCRUB_GROTTO) {
+        ctx->GetItemLocation(randomizerCheck)->SetCustomPrice(10);
       } else {
-        auto loc = Rando::StaticData::GetLocation(Rando::StaticData::scrubLocations[i]);
+        auto loc = Rando::StaticData::GetLocation(randomizerCheck);
         auto item = Rando::StaticData::RetrieveItem(loc->GetVanillaItem());
-        ctx->GetItemLocation(Rando::StaticData::scrubLocations[i])->SetCustomPrice(item.GetPrice());
+        ctx->GetItemLocation(randomizerCheck)->SetCustomPrice(item.GetPrice());
       }
     }
 
     if (ctx->GetOption(RSK_SHUFFLE_SCRUBS).Is(RO_SCRUBS_AFFORDABLE)) {
-      for (size_t i = 0; i < Rando::StaticData::scrubLocations.size(); i++) {
-        ctx->GetItemLocation(Rando::StaticData::scrubLocations[i])->SetCustomPrice(10);
+      for (RandomizerCheck& randomizerCheck : Rando::StaticData::GetScrubLocations()) {
+        ctx->GetItemLocation(randomizerCheck)->SetCustomPrice(10);
       }
     } else if (ctx->GetOption(RSK_SHUFFLE_SCRUBS).Is(RO_SCRUBS_RANDOM)) {
-      for (size_t i = 0; i < Rando::StaticData::scrubLocations.size(); i++) {
-        int randomPrice = GetRandomScrubPrice();
-        ctx->GetItemLocation(Rando::StaticData::scrubLocations[i])->SetCustomPrice(randomPrice);
+      for (RandomizerCheck& randomizerCheck : Rando::StaticData::GetScrubLocations()) {
+        ctx->GetItemLocation(randomizerCheck)->SetCustomPrice(GetRandomScrubPrice());
       }
     }
 

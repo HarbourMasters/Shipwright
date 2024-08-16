@@ -6,55 +6,6 @@
 std::array<Rando::Location, RC_MAX> Rando::StaticData::locationTable;
 std::multimap<std::tuple<s16, s16, s32>, RandomizerCheck> Rando::StaticData::CheckFromActorMultimap;
 
-std::vector<RandomizerCheck> Rando::StaticData::scrubLocations = {
-    RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_RIGHT,
-    RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_LEFT,
-    RC_LW_DEKU_SCRUB_NEAR_BRIDGE,
-    RC_LW_DEKU_SCRUB_GROTTO_REAR,
-    RC_LW_DEKU_SCRUB_GROTTO_FRONT,
-    RC_SFM_DEKU_SCRUB_GROTTO_REAR,
-    RC_SFM_DEKU_SCRUB_GROTTO_FRONT,
-    RC_HF_DEKU_SCRUB_GROTTO,
-    RC_LH_DEKU_SCRUB_GROTTO_LEFT,
-    RC_LH_DEKU_SCRUB_GROTTO_RIGHT,
-    RC_LH_DEKU_SCRUB_GROTTO_CENTER,
-    RC_GV_DEKU_SCRUB_GROTTO_REAR,
-    RC_GV_DEKU_SCRUB_GROTTO_FRONT,
-    RC_COLOSSUS_DEKU_SCRUB_GROTTO_REAR,
-    RC_COLOSSUS_DEKU_SCRUB_GROTTO_FRONT,
-    RC_GC_DEKU_SCRUB_GROTTO_LEFT,
-    RC_GC_DEKU_SCRUB_GROTTO_RIGHT,
-    RC_GC_DEKU_SCRUB_GROTTO_CENTER,
-    RC_DMC_DEKU_SCRUB,
-    RC_DMC_DEKU_SCRUB_GROTTO_LEFT,
-    RC_DMC_DEKU_SCRUB_GROTTO_RIGHT,
-    RC_DMC_DEKU_SCRUB_GROTTO_CENTER,
-    RC_ZR_DEKU_SCRUB_GROTTO_REAR,
-    RC_ZR_DEKU_SCRUB_GROTTO_FRONT,
-    RC_LLR_DEKU_SCRUB_GROTTO_LEFT,
-    RC_LLR_DEKU_SCRUB_GROTTO_RIGHT,
-    RC_LLR_DEKU_SCRUB_GROTTO_CENTER,
-    RC_DEKU_TREE_MQ_DEKU_SCRUB,
-    RC_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_LEFT,
-    RC_DODONGOS_CAVERN_DEKU_SCRUB_SIDE_ROOM_NEAR_DODONGOS,
-    RC_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_RIGHT,
-    RC_DODONGOS_CAVERN_DEKU_SCRUB_LOBBY,
-    RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_LOBBY_REAR,
-    RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_LOBBY_FRONT,
-    RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_STAIRCASE,
-    RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_SIDE_ROOM_NEAR_LOWER_LIZALFOS,
-    RC_JABU_JABUS_BELLY_DEKU_SCRUB,
-    RC_GANONS_CASTLE_DEKU_SCRUB_CENTER_LEFT,
-    RC_GANONS_CASTLE_DEKU_SCRUB_CENTER_RIGHT,
-    RC_GANONS_CASTLE_DEKU_SCRUB_RIGHT,
-    RC_GANONS_CASTLE_DEKU_SCRUB_LEFT,
-    RC_GANONS_CASTLE_MQ_DEKU_SCRUB_RIGHT,
-    RC_GANONS_CASTLE_MQ_DEKU_SCRUB_CENTER_LEFT,
-    RC_GANONS_CASTLE_MQ_DEKU_SCRUB_CENTER,
-    RC_GANONS_CASTLE_MQ_DEKU_SCRUB_CENTER_RIGHT,
-    RC_GANONS_CASTLE_MQ_DEKU_SCRUB_LEFT,
-};
-
 std::vector<RandomizerCheck> Rando::StaticData::dungeonRewardLocations = {
     // Bosses
     RC_QUEEN_GOHMA, RC_KING_DODONGO, RC_BARINADE,    RC_PHANTOM_GANON, RC_VOLVAGIA,
@@ -93,6 +44,16 @@ std::vector<RandomizerCheck> Rando::StaticData::overworldFishLocations = {
 };
 
 using namespace Rando;
+
+std::vector<RandomizerCheck> Rando::StaticData::GetScrubLocations() {
+    std::vector<RandomizerCheck> scrubLocations = {};
+    for (Location& location : locationTable) {
+        if (location.GetRCType() == RCTYPE_SCRUB && location.GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
+            scrubLocations.push_back(location.GetRandomizerCheck());
+        }
+    }
+    return scrubLocations;
+}
 
 std::vector<RandomizerCheck> Rando::StaticData::GetGossipStoneLocations() {
     std::vector<RandomizerCheck> gossipStoneLocations = {};
