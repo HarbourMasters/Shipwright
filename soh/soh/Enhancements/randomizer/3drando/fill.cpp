@@ -1050,17 +1050,19 @@ int Fill() {
         //Indices from OoTR. So shopsanity one will overwrite 7, three will overwrite 7, 5, 8, etc.
         const std::array<int, 4> indices = {7, 5, 8, 6};
         //Overwrite appropriate number of shop items
-        for (size_t i = 0; i < Rando::StaticData::shopLocationLists.size(); i++) {
+        #define LOCATIONS_PER_SHOP 8
+        for (size_t i = 0; i < Rando::StaticData::GetShopLocations().size() / LOCATIONS_PER_SHOP; i++) {
           int num_to_replace = GetShopsanityReplaceAmount(); //1-4 shop items will be overwritten, depending on settings
           total_replaced += num_to_replace;
           for (int j = 0; j < num_to_replace; j++) {
             int itemindex = indices[j];
             int shopsanityPrice = GetRandomShopPrice();
-            NonShopItems[TransformShopIndex(i * 8 + itemindex - 1)].Price =
+            NonShopItems[TransformShopIndex(i * LOCATIONS_PER_SHOP + itemindex - 1)].Price =
                 shopsanityPrice; // Set price to be retrieved by the patch and textboxes
-            ctx->GetItemLocation(Rando::StaticData::shopLocationLists[i][itemindex - 1])->SetCustomPrice(shopsanityPrice);
+            ctx->GetItemLocation(Rando::StaticData::GetShopLocations()[i * LOCATIONS_PER_SHOP + itemindex - 1])->SetCustomPrice(shopsanityPrice);
           }
         }
+        #undef LOCATIONS_PER_SHOP
       }
       //Get all locations and items that don't have a shopsanity price attached
       std::vector<RandomizerCheck> shopLocations = {};
@@ -1068,12 +1070,9 @@ int Fill() {
       //So shopsanity 0 will get all 64 vanilla items, shopsanity 4 will get 32, etc.
       std::vector<RandomizerGet> shopItems = GetMinVanillaShopItems(total_replaced);
 
-      for (size_t i = 0; i < Rando::StaticData::shopLocationLists.size(); i++) {
-        for (size_t j = 0; j < Rando::StaticData::shopLocationLists[i].size(); j++) {
-          RandomizerCheck loc = Rando::StaticData::shopLocationLists[i][j];
-          if (!(ctx->GetItemLocation(loc)->HasCustomPrice())) {
-            shopLocations.push_back(loc);
-          }
+      for (RandomizerCheck& randomizerCheck : Rando::StaticData::GetShopLocations()) {
+        if (!(ctx->GetItemLocation(randomizerCheck)->HasCustomPrice())) {
+          shopLocations.push_back(randomizerCheck);
         }
       }
       //Place the shop items which will still be at shop locations

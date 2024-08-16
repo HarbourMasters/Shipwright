@@ -6,46 +6,6 @@
 std::array<Rando::Location, RC_MAX> Rando::StaticData::locationTable;
 std::multimap<std::tuple<s16, s16, s32>, RandomizerCheck> Rando::StaticData::CheckFromActorMultimap;
 
-std::vector<RandomizerCheck> KF_ShopLocations = {
-    RC_KF_SHOP_ITEM_1, RC_KF_SHOP_ITEM_2, RC_KF_SHOP_ITEM_3, RC_KF_SHOP_ITEM_4,
-    RC_KF_SHOP_ITEM_5, RC_KF_SHOP_ITEM_6, RC_KF_SHOP_ITEM_7, RC_KF_SHOP_ITEM_8,
-};
-std::vector<RandomizerCheck> Kak_PotionShopLocations = {
-    RC_KAK_POTION_SHOP_ITEM_1, RC_KAK_POTION_SHOP_ITEM_2, RC_KAK_POTION_SHOP_ITEM_3, RC_KAK_POTION_SHOP_ITEM_4,
-    RC_KAK_POTION_SHOP_ITEM_5, RC_KAK_POTION_SHOP_ITEM_6, RC_KAK_POTION_SHOP_ITEM_7, RC_KAK_POTION_SHOP_ITEM_8,
-};
-std::vector<RandomizerCheck> MK_BombchuShopLocations = {
-    RC_MARKET_BOMBCHU_SHOP_ITEM_1, RC_MARKET_BOMBCHU_SHOP_ITEM_2, RC_MARKET_BOMBCHU_SHOP_ITEM_3,
-    RC_MARKET_BOMBCHU_SHOP_ITEM_4, RC_MARKET_BOMBCHU_SHOP_ITEM_5, RC_MARKET_BOMBCHU_SHOP_ITEM_6,
-    RC_MARKET_BOMBCHU_SHOP_ITEM_7, RC_MARKET_BOMBCHU_SHOP_ITEM_8,
-};
-std::vector<RandomizerCheck> MK_PotionShopLocations = {
-    RC_MARKET_POTION_SHOP_ITEM_1, RC_MARKET_POTION_SHOP_ITEM_2, RC_MARKET_POTION_SHOP_ITEM_3,
-    RC_MARKET_POTION_SHOP_ITEM_4, RC_MARKET_POTION_SHOP_ITEM_5, RC_MARKET_POTION_SHOP_ITEM_6,
-    RC_MARKET_POTION_SHOP_ITEM_7, RC_MARKET_POTION_SHOP_ITEM_8,
-};
-std::vector<RandomizerCheck> MK_BazaarLocations = {
-    RC_MARKET_BAZAAR_ITEM_1, RC_MARKET_BAZAAR_ITEM_2, RC_MARKET_BAZAAR_ITEM_3, RC_MARKET_BAZAAR_ITEM_4,
-    RC_MARKET_BAZAAR_ITEM_5, RC_MARKET_BAZAAR_ITEM_6, RC_MARKET_BAZAAR_ITEM_7, RC_MARKET_BAZAAR_ITEM_8,
-};
-std::vector<RandomizerCheck> Kak_BazaarLocations = {
-    RC_KAK_BAZAAR_ITEM_1, RC_KAK_BAZAAR_ITEM_2, RC_KAK_BAZAAR_ITEM_3, RC_KAK_BAZAAR_ITEM_4,
-    RC_KAK_BAZAAR_ITEM_5, RC_KAK_BAZAAR_ITEM_6, RC_KAK_BAZAAR_ITEM_7, RC_KAK_BAZAAR_ITEM_8,
-};
-std::vector<RandomizerCheck> ZD_ShopLocations = {
-    RC_ZD_SHOP_ITEM_1, RC_ZD_SHOP_ITEM_2, RC_ZD_SHOP_ITEM_3, RC_ZD_SHOP_ITEM_4,
-    RC_ZD_SHOP_ITEM_5, RC_ZD_SHOP_ITEM_6, RC_ZD_SHOP_ITEM_7, RC_ZD_SHOP_ITEM_8,
-};
-std::vector<RandomizerCheck> GC_ShopLocations = {
-    RC_GC_SHOP_ITEM_1, RC_GC_SHOP_ITEM_2, RC_GC_SHOP_ITEM_3, RC_GC_SHOP_ITEM_4,
-    RC_GC_SHOP_ITEM_5, RC_GC_SHOP_ITEM_6, RC_GC_SHOP_ITEM_7, RC_GC_SHOP_ITEM_8,
-};
-// List of shop location lists, used for shop shuffle
-std::vector<std::vector<RandomizerCheck>> Rando::StaticData::shopLocationLists = {
-    KF_ShopLocations,   Kak_PotionShopLocations, MK_BombchuShopLocations, MK_PotionShopLocations,
-    MK_BazaarLocations, Kak_BazaarLocations,     ZD_ShopLocations,        GC_ShopLocations,
-};
-
 std::vector<RandomizerCheck> Rando::StaticData::scrubLocations = {
     RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_RIGHT,
     RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_LEFT,
@@ -176,6 +136,16 @@ std::vector<RandomizerCheck> Rando::StaticData::overworldFishLocations = {
 };
 
 using namespace Rando;
+
+std::vector<RandomizerCheck> Rando::StaticData::GetShopLocations() {
+    std::vector<RandomizerCheck> shopLocations = {};
+    for (Location& location : locationTable) {
+        if (location.GetRCType() == RCTYPE_SHOP && location.GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
+            shopLocations.push_back(location.GetRandomizerCheck());
+        }
+    }
+    return shopLocations;
+}
 
 std::vector<RandomizerCheck> Rando::StaticData::GetOverworldLocations() {
     std::vector<RandomizerCheck> overworldLocations = {};

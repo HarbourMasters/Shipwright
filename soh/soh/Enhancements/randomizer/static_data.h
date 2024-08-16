@@ -37,7 +37,7 @@ class StaticData {
       static std::multimap<std::tuple<s16, s16, s32>, RandomizerCheck> CheckFromActorMultimap;
       static std::vector<RandomizerCheck> GetOverworldLocations();
       static std::vector<RandomizerCheck> dungeonRewardLocations;
-      static std::vector<std::vector<RandomizerCheck>> shopLocationLists;
+      static std::vector<RandomizerCheck> GetShopLocations();
       static std::vector<RandomizerCheck> scrubLocations;
       static std::vector<RandomizerCheck> gossipStoneLocations;
       static std::vector<RandomizerCheck> staticHintLocations;
