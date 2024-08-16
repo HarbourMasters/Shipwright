@@ -620,9 +620,10 @@ static void PlaceVanillaOverworldFish() {
 
 static void PlaceFreestandingItems() {
   auto ctx = Rando::Context::GetInstance();
+  auto option = ctx->GetOption(RSK_SHUFFLE_FREESTANDING);
   for (RandomizerCheck loc : ctx->GetLocations(Rando::StaticData::overworldLocations, Category::cFreestanding)) {
     RandomizerGet vanillaItem = Rando::StaticData::GetLocation(loc)->GetVanillaItem();
-    if (ctx->GetOption(RSK_SHUFFLE_FREESTANDING)) {
+    if (option.Is(RO_TOKENSANITY_OVERWORLD) || option.Is(RO_TOKENSANITY_ALL)) {
       AddItemToMainPool(vanillaItem);
     } else {
       ctx->PlaceItemInLocation(loc, vanillaItem, false, true);
@@ -632,7 +633,7 @@ static void PlaceFreestandingItems() {
   for (auto dungeon : ctx->GetDungeons()->GetDungeonList()) {
     for (RandomizerCheck loc : ctx->GetLocations(dungeon->GetDungeonLocations(), Category::cFreestanding)) {
       RandomizerGet vanillaItem = Rando::StaticData::GetLocation(loc)->GetVanillaItem();
-      if (ctx->GetOption(RSK_SHUFFLE_FREESTANDING)) {
+    if (option.Is(RO_TOKENSANITY_DUNGEONS) || option.Is(RO_TOKENSANITY_ALL)) {
         AddItemToMainPool(vanillaItem);
       } else {
         ctx->PlaceItemInLocation(loc, vanillaItem, false, true);

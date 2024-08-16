@@ -62,6 +62,8 @@ bool showScrubs;
 bool showMerchants;
 bool showBeehives;
 bool showCows;
+bool showOverworldFreestanding;
+bool showDungeonFreestanding;
 bool showAdultTrade;
 bool showKokiriSword;
 bool showMasterSword;
@@ -1249,6 +1251,30 @@ void LoadSettings() {
     fishsanityMode = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY);
     fishsanityPondCount = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY_POND_COUNT);
     fishsanityAgeSplit = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY_AGE_SPLIT);
+
+    if (IS_RANDO) {
+        switch (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_FREESTANDING)) {
+            case RO_TOKENSANITY_ALL:
+                showOverworldFreestanding = true;
+                showDungeonFreestanding = true;
+                break;
+            case RO_TOKENSANITY_OVERWORLD:
+                showOverworldFreestanding = true;
+                showDungeonFreestanding = false;
+                break;
+            case RO_TOKENSANITY_DUNGEONS:
+                showOverworldFreestanding = false;
+                showDungeonFreestanding = true;
+                break;
+            default:
+                showOverworldFreestanding = false;
+                showDungeonFreestanding = false;
+                break;
+        }
+    } else { // Vanilla
+        showOverworldFreestanding = false;
+        showDungeonFreestanding = true;
+    }
 }
 
 bool IsCheckShuffled(RandomizerCheck rc) {
@@ -1284,6 +1310,10 @@ bool IsCheckShuffled(RandomizerCheck rc) {
                 ) &&
             (loc->GetRCType() != RCTYPE_COW || showCows) &&
             (loc->GetRCType() != RCTYPE_FISH || OTRGlobals::Instance->gRandoContext->GetFishsanity()->GetFishLocationIncluded(loc)) &&
+            (loc->GetRCType() != RCTYPE_FREESTANDING ||
+                (showOverworldFreestanding && RandomizerCheckObjects::AreaIsOverworld(loc->GetArea())) ||
+                (showDungeonFreestanding && RandomizerCheckObjects::AreaIsDungeon(loc->GetArea()))
+                ) &&
             (loc->GetRCType() != RCTYPE_ADULT_TRADE ||
                 showAdultTrade ||
                 rc == RC_KAK_ANJU_AS_ADULT ||  // adult trade checks that are always shuffled
