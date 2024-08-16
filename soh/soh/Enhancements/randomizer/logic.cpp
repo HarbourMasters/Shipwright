@@ -56,7 +56,10 @@ namespace Rando {
             case RG_LIGHT_ARROWS:
                 return ctx->CheckInventory(ITEM_ARROW_LIGHT, true);
             case RG_PROGRESSIVE_BOMBCHUS:
-                return ctx->CheckInventory(ITEM_BOMBCHU, true);
+            case RG_BOMBCHU_5:
+            case RG_BOMBCHU_10:
+            case RG_BOMBCHU_20:
+                return (BombchusEnabled && BuyBombchus) || ctx->CheckInventory(ITEM_BOMBCHU, true);
             case RG_FAIRY_SLINGSHOT:
                 return ctx->CheckInventory(ITEM_SLINGSHOT, true);
             case RG_BOOMERANG:
@@ -88,10 +91,6 @@ namespace Rando {
             case RG_PROGRESSIVE_BOMB_BAG:
             case RG_BOMB_BAG:
                 return ctx->CurrentUpgrade(UPG_BOMB_BAG);
-            case RG_BOMBCHU_5:
-            case RG_BOMBCHU_10:
-            case RG_BOMBCHU_20:
-                return (BombchusEnabled && BuyBombchus) || GetInLogic(LOGIC_BOMBCHUS);
             case RG_MAGIC_SINGLE:
                 return ctx->GetSaveContext()->magicLevel >= 1;
                 // Songs
@@ -280,10 +279,11 @@ namespace Rando {
                 return IsChild;// || DekuShieldAsAdult;
             case RG_WEIRD_EGG:
                 return IsChild;
+            case RG_PROGRESSIVE_BOMBCHUS:
             case RG_BOMBCHU_5:
             case RG_BOMBCHU_10:
             case RG_BOMBCHU_20:
-                return BombchuRefill && BombchusEnabled;; 
+                return BombchuRefill && BombchusEnabled;
             case RG_RUTOS_LETTER:
                 return IsChild;
 
@@ -345,7 +345,7 @@ namespace Rando {
             case RG_BOTTLE_WITH_FISH:
                 return LoneFish || FishGroup || GetInLogic(LOGIC_FISH_ACCESS); //is there any need to care about lone vs group?
             case RG_BOTTLE_WITH_BLUE_FIRE: //RANDOTODO should probably be better named to 
-                return BlueFireAccess || GetInLogic(LOGIC_BUY_BLUE_FIRE);
+                return BlueFireAccess || GetInLogic(LOGIC_BLUE_FIRE_ACCESS);
             case RG_BOTTLE_WITH_FAIRY:
                 return FairyPot || GossipStoneFairy || BeanPlantFairy || ButterflyFairy || FreeFairies || FairyPond || GetInLogic(LOGIC_FAIRY_ACCESS);
 
@@ -499,7 +499,7 @@ namespace Rando {
         OcarinaOfTime   = HasItem(RG_OCARINA_OF_TIME);
         MagicMeter      = HasItem(RG_MAGIC_SINGLE) && (AmmoCanDrop || (HasBottle && BuyMagicPotion));
         BombBag         = HasItem(RG_BOMB_BAG) && (BuyBomb || AmmoCanDrop);
-        BombchusEnabled = ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) ? GetInLogic(LOGIC_BOMBCHUS) : BombBag;
+        BombchusEnabled = ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) ? ctx->CheckInventory(ITEM_BOMBCHU, true) : BombBag;
         BuyBombchus     = (GetInLogic(LOGIC_BUY_BOMBCHUS) || CouldPlayBowling || CarpetMerchant);
         Hookshot        = CanUse(RG_HOOKSHOT);
         Longshot        = CanUse(RG_LONGSHOT);
