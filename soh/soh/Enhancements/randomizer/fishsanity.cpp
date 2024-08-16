@@ -89,8 +89,8 @@ namespace Rando {
         std::vector<RandomizerCheck> remainingFish;
 
         // Fishsanity_InitializeHelpers();
-        remainingFish.insert(remainingFish.end(), Rando::StaticData::pondFishLocations.begin(),
-                             Rando::StaticData::pondFishLocations.end());
+        remainingFish.insert(remainingFish.end(), Rando::StaticData::GetPondFishLocations().begin(),
+                             Rando::StaticData::GetPondFishLocations().end());
 
         // No pond fish shuffled
         if (numFish == 0) {
@@ -299,7 +299,7 @@ namespace Rando {
 
     FishsanityCheckType Fishsanity::GetCheckType(RandomizerCheck rc) {
         // Is this a pond fish?
-        if (std::binary_search(Rando::StaticData::pondFishLocations.begin(), Rando::StaticData::pondFishLocations.end(), rc))
+        if (std::binary_search(Rando::StaticData::GetPondFishLocations().begin(), Rando::StaticData::GetPondFishLocations().end(), rc))
             return FSC_POND;
 
         // Is this an overworld fish?

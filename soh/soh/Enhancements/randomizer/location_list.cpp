@@ -12,17 +12,17 @@ std::vector<RandomizerCheck> Rando::StaticData::dungeonRewardLocations = {
     RC_MORPHA,      RC_TWINROVA,     RC_BONGO_BONGO, RC_LINKS_POCKET,
 };
 
-std::vector<RandomizerCheck> Rando::StaticData::pondFishLocations = {
-    RC_LH_CHILD_FISH_1,  RC_LH_CHILD_FISH_2,  RC_LH_CHILD_FISH_3,  RC_LH_CHILD_FISH_4,  RC_LH_CHILD_FISH_5,
-    RC_LH_CHILD_FISH_6,  RC_LH_CHILD_FISH_7,  RC_LH_CHILD_FISH_8,  RC_LH_CHILD_FISH_9,  RC_LH_CHILD_FISH_10,
-    RC_LH_CHILD_FISH_11, RC_LH_CHILD_FISH_12, RC_LH_CHILD_FISH_13, RC_LH_CHILD_FISH_14, RC_LH_CHILD_FISH_15,
-    RC_LH_CHILD_LOACH_1, RC_LH_CHILD_LOACH_2, RC_LH_ADULT_FISH_1,  RC_LH_ADULT_FISH_2,  RC_LH_ADULT_FISH_3,
-    RC_LH_ADULT_FISH_4,  RC_LH_ADULT_FISH_5,  RC_LH_ADULT_FISH_6,  RC_LH_ADULT_FISH_7,  RC_LH_ADULT_FISH_8,
-    RC_LH_ADULT_FISH_9,  RC_LH_ADULT_FISH_10, RC_LH_ADULT_FISH_11, RC_LH_ADULT_FISH_12, RC_LH_ADULT_FISH_13,
-    RC_LH_ADULT_FISH_14, RC_LH_ADULT_FISH_15, RC_LH_ADULT_LOACH
-};
-
 using namespace Rando;
+
+std::vector<RandomizerCheck> Rando::StaticData::GetPondFishLocations() {
+    std::vector<RandomizerCheck> pondFishLocations = {};
+    for (Location& location : locationTable) {
+        if (location.GetRCType() == RCTYPE_FISH && location.GetScene() == SCENE_FISHING_POND && location.GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
+            pondFishLocations.push_back(location.GetRandomizerCheck());
+        }
+    }
+    return pondFishLocations;
+}
 
 std::vector<RandomizerCheck> Rando::StaticData::GetOverworldFishLocations() {
     std::vector<RandomizerCheck> overworldFishLocations = {};
