@@ -8,7 +8,7 @@
 #include <map>
 #include "z64item.h"
 
-std::vector<ItemAndPrice> NonShopItems = {};
+std::map<RandomizerCheck, ItemAndPrice> NonShopItems = {};
 
 static std::array<std::vector<Text>, 0xF1> trickNameTable; // Table of trick names for ice traps
 bool initTrickNames = false; //Indicates if trick ice trap names have been initialized yet
@@ -1080,26 +1080,4 @@ Text GetIceTrapName(uint8_t id) {
     }
     //Randomly get the easy, medium, or hard name for the given item id
     return RandomElement(trickNameTable[id]);
-}
-
-//Get shop index based on a given location
-static std::map<std::string_view, int> ShopNameToNum = {
-    {"KF Shop", 0},
-    {"Kak Potion Shop", 1},
-    {"MK Bombchu Shop", 2},
-    {"MK Potion Shop", 3},
-    {"MK Bazaar", 4},
-    {"Kak Bazaar", 5},
-    {"ZD Shop", 6},
-    {"GC Shop", 7}
-};
-
-int GetShopIndex(RandomizerCheck loc) {
-    //Kind of hacky, but extract the shop and item position from the name
-    const std::string& name(Rando::StaticData::GetLocation(loc)->GetName());
-    int split = name.find(" Item ");
-    std::string_view shop(name.c_str(), split);
-    int pos = std::stoi(name.substr(split+6, 1)) - 1;
-    int shopnum = ShopNameToNum[shop];
-    return shopnum*8 + pos;
 }

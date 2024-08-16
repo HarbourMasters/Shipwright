@@ -161,7 +161,7 @@ void WriteIngameSpoilerLog() {
         // PURPLE TODO: LOCALIZATION
         auto locItem = itemLocation->GetPlacedItemName().GetEnglish();
         if (itemLocation->GetPlacedRandomizerGet() == RG_ICE_TRAP && loc->IsCategory(Category::cShop)) {
-            locItem = NonShopItems[GetShopIndex(key)].Name.GetEnglish();
+            locItem = NonShopItems[key].Name.GetEnglish();
         }
         if (stringOffsetMap.find(locItem) == stringOffsetMap.end()) {
             if (spoilerStringOffset + locItem.size() + 1 >= SPOILER_STRING_DATA_SIZE) {
