@@ -61,49 +61,6 @@ std::vector<RandomizerCheck> Rando::StaticData::dungeonRewardLocations = {
     RC_MORPHA,      RC_TWINROVA,     RC_BONGO_BONGO, RC_LINKS_POCKET,
 };
 
-std::vector<RandomizerCheck> Rando::StaticData::gossipStoneLocations = {
-    RC_KF_DEKU_TREE_LEFT_GOSSIP_STONE,
-    RC_KF_DEKU_TREE_RIGHT_GOSSIP_STONE,
-    RC_KF_GOSSIP_STONE,
-    RC_KF_STORMS_GROTTO_GOSSIP_STONE,
-    RC_LW_GOSSIP_STONE,
-    RC_LW_NEAR_SHORTCUTS_GROTTO_GOSSIP_STONE,
-    RC_SFM_MAZE_LOWER_GOSSIP_STONE,
-    RC_SFM_MAZE_UPPER_GOSSIP_STONE,
-    RC_SFM_SARIA_GOSSIP_STONE,
-    RC_HF_COW_GROTTO_GOSSIP_STONE,
-    RC_HF_NEAR_MARKET_GROTTO_GOSSIP_STONE,
-    RC_HF_OPEN_GROTTO_GOSSIP_STONE,
-    RC_HF_SOUTHEAST_GROTTO_GOSSIP_STONE,
-    RC_TOT_LEFT_CENTER_GOSSIP_STONE,
-    RC_TOT_LEFTMOST_GOSSIP_STONE,
-    RC_TOT_RIGHT_CENTER_GOSSIP_STONE,
-    RC_TOT_RIGHTMOST_GOSSIP_STONE,
-    RC_HC_MALON_GOSSIP_STONE,
-    RC_HC_ROCK_WALL_GOSSIP_STONE,
-    RC_HC_STORMS_GROTTO_GOSSIP_STONE,
-    RC_KAK_OPEN_GROTTO_GOSSIP_STONE,
-    RC_GRAVEYARD_GOSSIP_STONE,
-    RC_DMT_GOSSIP_STONE,
-    RC_DMT_STORMS_GROTTO_GOSSIP_STONE,
-    RC_GC_MAZE_GOSSIP_STONE,
-    RC_GC_MEDIGORON_GOSSIP_STONE,
-    RC_DMC_GOSSIP_STONE,
-    RC_DMC_UPPER_GROTTO_GOSSIP_STONE,
-    RC_ZR_NEAR_DOMAIN_GOSSIP_STONE,
-    RC_ZR_NEAR_GROTTOS_GOSSIP_STONE,
-    RC_ZR_OPEN_GROTTO_GOSSIP_STONE,
-    RC_ZD_GOSSIP_STONE,
-    RC_ZF_JABU_GOSSIP_STONE,
-    RC_ZF_FAIRY_GOSSIP_STONE,
-    RC_LH_LAB_GOSSIP_STONE,
-    RC_LH_SOUTHEAST_GOSSIP_STONE,
-    RC_LH_SOUTHWEST_GOSSIP_STONE,
-    RC_GV_GOSSIP_STONE,
-    RC_COLOSSUS_GOSSIP_STONE,
-    RC_DODONGOS_CAVERN_GOSSIP_STONE,
-};
-
 std::vector<RandomizerCheck> Rando::StaticData::staticHintLocations = {
     RC_GANONDORF_HINT,
     RC_SHEIK_HINT_GC,
@@ -136,6 +93,16 @@ std::vector<RandomizerCheck> Rando::StaticData::overworldFishLocations = {
 };
 
 using namespace Rando;
+
+std::vector<RandomizerCheck> Rando::StaticData::GetGossipStoneLocations() {
+    std::vector<RandomizerCheck> gossipStoneLocations = {};
+    for (Location& location : locationTable) {
+        if (location.GetRCType() == RCTYPE_GOSSIP_STONE && location.GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
+            gossipStoneLocations.push_back(location.GetRandomizerCheck());
+        }
+    }
+    return gossipStoneLocations;
+}
 
 std::vector<RandomizerCheck> Rando::StaticData::GetShopLocations() {
     std::vector<RandomizerCheck> shopLocations = {};
@@ -1110,17 +1077,17 @@ void Rando::StaticData::InitLocationTable() { //                                
     locationTable[RC_DMC_UPPER_GROTTO_GOSSIP_STONE] =                             Location::HintStone(RC_DMC_UPPER_GROTTO_GOSSIP_STONE,                                RCQUEST_BOTH,                                        RCAREA_DEATH_MOUNTAIN_CRATER,                              SCENE_GROTTOS,                      -23802,                             "Upper Grotto Gossip Stone");
 
     // Other Hints
-    locationTable[RC_GANONDORF_HINT]    =                                         Location::OtherHint(RC_GANONDORF_HINT,                                               RCQUEST_BOTH,    RCTYPE_GOSSIP_STONE,                                                     ACTOR_EN_GANON_MANT,  SCENE_GANON_BOSS,           "Ganondorf Hint");
-    locationTable[RC_SHEIK_HINT_GC]     =                                         Location::OtherHint(RC_SHEIK_HINT_GC,                                                RCQUEST_VANILLA, RCTYPE_GOSSIP_STONE,                                                     ACTOR_EN_XC,          SCENE_INSIDE_GANONS_CASTLE, "Sheik Hint");
-    locationTable[RC_SHEIK_HINT_MQ_GC]  =                                         Location::OtherHint(RC_SHEIK_HINT_MQ_GC,                                             RCQUEST_MQ,      RCTYPE_GOSSIP_STONE,                                                     ACTOR_EN_XC,          SCENE_INSIDE_GANONS_CASTLE, "Sheik Hint");
-    locationTable[RC_DAMPE_HINT]        =                                         Location::OtherHint(RC_DAMPE_HINT,                                                   RCQUEST_BOTH,    RCTYPE_GOSSIP_STONE,                                                     ACTOR_ID_MAX,         SCENE_GRAVEKEEPERS_HUT,     "Diary Hint");
-    locationTable[RC_GREG_HINT]         =                                         Location::OtherHint(RC_GREG_HINT,                                                    RCQUEST_BOTH,    RCTYPE_GOSSIP_STONE,                RCAREA_MARKET,                       ACTOR_EN_TAKARA_MAN,  SCENE_TREASURE_BOX_SHOP,    "Greg Hint");
-    locationTable[RC_SARIA_SONG_HINT]   =                                         Location::OtherHint(RC_SARIA_SONG_HINT,                                              RCQUEST_BOTH,    RCTYPE_GOSSIP_STONE,                RCAREA_KOKIRI_FOREST,                ACTOR_ID_MAX,         SCENE_ID_MAX,               "Sarias Song Hint", "Magic Hint Via Saria's Song");
-    locationTable[RC_ALTAR_HINT_CHILD]  =                                         Location::OtherHint(RC_ALTAR_HINT_CHILD,                                             RCQUEST_BOTH,    RCTYPE_GOSSIP_STONE,                                                     ACTOR_ID_MAX,         SCENE_TEMPLE_OF_TIME,       "ToT Child Altar Hint");
-    locationTable[RC_ALTAR_HINT_ADULT]  =                                         Location::OtherHint(RC_ALTAR_HINT_ADULT,                                             RCQUEST_BOTH,    RCTYPE_GOSSIP_STONE,                                                     ACTOR_ID_MAX,         SCENE_TEMPLE_OF_TIME,       "ToT Adult Altar Hint");
-    locationTable[RC_FISHING_POLE_HINT] =                                         Location::OtherHint(RC_FISHING_POLE_HINT,                                            RCQUEST_BOTH,    RCTYPE_GOSSIP_STONE,                                                     ACTOR_FISHING,        SCENE_FISHING_POND,         "Fishing Pole Hint");
-    locationTable[RC_TOT_SHEIK_HINT] =                                            Location::OtherHint(RC_TOT_SHEIK_HINT,                                               RCQUEST_BOTH,    RCTYPE_GOSSIP_STONE,                                                     ACTOR_EN_XC,          SCENE_TEMPLE_OF_TIME,       "Ocarina of Time Hint");
-    locationTable[RC_MASK_SHOP_HINT] =                                            Location::OtherHint(RC_MASK_SHOP_HINT,                                               RCQUEST_BOTH,    RCTYPE_GOSSIP_STONE,                                                     ACTOR_ID_MAX,         SCENE_HAPPY_MASK_SHOP,      "Mask Shop Hint");
+    locationTable[RC_GANONDORF_HINT]    =                                         Location::OtherHint(RC_GANONDORF_HINT,                                               RCQUEST_BOTH,                                                                             ACTOR_EN_GANON_MANT,  SCENE_GANON_BOSS,           "Ganondorf Hint");
+    locationTable[RC_SHEIK_HINT_GC]     =                                         Location::OtherHint(RC_SHEIK_HINT_GC,                                                RCQUEST_VANILLA,                                                                          ACTOR_EN_XC,          SCENE_INSIDE_GANONS_CASTLE, "Sheik Hint");
+    locationTable[RC_SHEIK_HINT_MQ_GC]  =                                         Location::OtherHint(RC_SHEIK_HINT_MQ_GC,                                             RCQUEST_MQ,                                                                               ACTOR_EN_XC,          SCENE_INSIDE_GANONS_CASTLE, "Sheik Hint");
+    locationTable[RC_DAMPE_HINT]        =                                         Location::OtherHint(RC_DAMPE_HINT,                                                   RCQUEST_BOTH,                                                                             ACTOR_ID_MAX,         SCENE_GRAVEKEEPERS_HUT,     "Diary Hint");
+    locationTable[RC_GREG_HINT]         =                                         Location::OtherHint(RC_GREG_HINT,                                                    RCQUEST_BOTH,                                        RCAREA_MARKET,                       ACTOR_EN_TAKARA_MAN,  SCENE_TREASURE_BOX_SHOP,    "Greg Hint");
+    locationTable[RC_SARIA_SONG_HINT]   =                                         Location::OtherHint(RC_SARIA_SONG_HINT,                                              RCQUEST_BOTH,                                        RCAREA_KOKIRI_FOREST,                ACTOR_ID_MAX,         SCENE_ID_MAX,               "Sarias Song Hint", "Magic Hint Via Saria's Song");
+    locationTable[RC_ALTAR_HINT_CHILD]  =                                         Location::OtherHint(RC_ALTAR_HINT_CHILD,                                             RCQUEST_BOTH,                                                                             ACTOR_ID_MAX,         SCENE_TEMPLE_OF_TIME,       "ToT Child Altar Hint");
+    locationTable[RC_ALTAR_HINT_ADULT]  =                                         Location::OtherHint(RC_ALTAR_HINT_ADULT,                                             RCQUEST_BOTH,                                                                             ACTOR_ID_MAX,         SCENE_TEMPLE_OF_TIME,       "ToT Adult Altar Hint");
+    locationTable[RC_FISHING_POLE_HINT] =                                         Location::OtherHint(RC_FISHING_POLE_HINT,                                            RCQUEST_BOTH,                                                                             ACTOR_FISHING,        SCENE_FISHING_POND,         "Fishing Pole Hint");
+    locationTable[RC_TOT_SHEIK_HINT] =                                            Location::OtherHint(RC_TOT_SHEIK_HINT,                                               RCQUEST_BOTH,                                                                             ACTOR_EN_XC,          SCENE_TEMPLE_OF_TIME,       "Ocarina of Time Hint");
+    locationTable[RC_MASK_SHOP_HINT] =                                            Location::OtherHint(RC_MASK_SHOP_HINT,                                               RCQUEST_BOTH,                                                                             ACTOR_ID_MAX,         SCENE_HAPPY_MASK_SHOP,      "Mask Shop Hint");
 
     locationTable[RC_TRIFORCE_COMPLETED] =                                             Location::Base(RC_TRIFORCE_COMPLETED,                                           RCQUEST_BOTH,    RCTYPE_STANDARD,                    RCAREA_MARKET,                       ACTOR_ID_MAX,         SCENE_ID_MAX,                       0x00,                               "Completed Triforce", "Completed Triforce",    RHT_NONE,                                                        RG_NONE);
     // clang-format on

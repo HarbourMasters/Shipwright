@@ -160,13 +160,12 @@ class Location {
     static Location GSToken(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_, SceneID scene_, int32_t actorParams_, uint8_t flag_,
                             std::string&& shortName_, RandomizerHintTextKey hintKey, uint8_t skullScene_);
 
-    static Location OtherHint(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckType checkType_, RandomizerCheckArea area_, ActorID actorId_, SceneID scene_,
-                              std::string&& shortName_, std::string&& spoilerName_);
+    static Location OtherHint(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_, ActorID actorId_, SceneID scene_, std::string&& shortName_,
+                              std::string&& spoilerName_);
 
-    static Location OtherHint(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckType checkType_, ActorID actorId_, SceneID scene_, std::string&& shortName_);
+    static Location OtherHint(RandomizerCheck rc, RandomizerCheckQuest quest_, ActorID actorId_, SceneID scene_, std::string&& shortName_);
 
-    static Location OtherHint(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckType checkType_, RandomizerCheckArea area_, ActorID actorId_, SceneID scene_,
-                              std::string&& shortName_);
+    static Location OtherHint(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_, ActorID actorId_, SceneID scene_, std::string&& shortName_);
 
     static Location HintStone(RandomizerCheck rc, RandomizerCheckQuest quest_, SceneID scene_, int32_t actorParams_, std::string&& shortName_);
 

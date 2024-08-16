@@ -336,18 +336,17 @@ Rando::Location Rando::Location::GSToken(RandomizerCheck rc, RandomizerCheckQues
                     SpoilerCollectionCheck(SPOILER_CHK_GOLD_SKULLTULA, skullScene_, flag_) };
 }
 
-Rando::Location Rando::Location::OtherHint(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckType checkType_, RandomizerCheckArea area_, ActorID actorId_, SceneID scene_,
-                                           std::string&& shortName_, std::string&& spoilerName_) {
-    return { rc, quest_, checkType_, area_, actorId_, scene_, 0x00, std::move(shortName_), std::move(spoilerName_), RHT_NONE, RG_NONE, false };
+Rando::Location Rando::Location::OtherHint(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_, ActorID actorId_, SceneID scene_, std::string&& shortName_,
+                                           std::string&& spoilerName_) {
+    return { rc, quest_, RCTYPE_STATIC_HINT, area_, actorId_, scene_, 0x00, std::move(shortName_), std::move(spoilerName_), RHT_NONE, RG_NONE, false };
 }
 
-Rando::Location Rando::Location::OtherHint(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckType checkType_, ActorID actorId_, SceneID scene_, std::string&& shortName_) {
-    return { rc, quest_, checkType_, GetAreaFromScene(scene_), actorId_, scene_, 0x00, std::move(shortName_), RHT_NONE, RG_NONE, false };
+Rando::Location Rando::Location::OtherHint(RandomizerCheck rc, RandomizerCheckQuest quest_, ActorID actorId_, SceneID scene_, std::string&& shortName_) {
+    return { rc, quest_, RCTYPE_STATIC_HINT, GetAreaFromScene(scene_), actorId_, scene_, 0x00, std::move(shortName_), RHT_NONE, RG_NONE, false };
 }
 
-Rando::Location Rando::Location::OtherHint(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckType checkType_, RandomizerCheckArea area_, ActorID actorId_, SceneID scene_,
-                                           std::string&& shortName_) {
-    return { rc, quest_, checkType_, area_, actorId_, scene_, 0x00, std::move(shortName_), RHT_NONE, RG_NONE, false };
+Rando::Location Rando::Location::OtherHint(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_, ActorID actorId_, SceneID scene_, std::string&& shortName_) {
+    return { rc, quest_, RCTYPE_STATIC_HINT, area_, actorId_, scene_, 0x00, std::move(shortName_), RHT_NONE, RG_NONE, false };
 }
 
 Rando::Location Rando::Location::HintStone(RandomizerCheck rc, RandomizerCheckQuest quest_, SceneID scene_, int32_t actorParams_, std::string&& shortName_) {

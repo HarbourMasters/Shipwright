@@ -196,7 +196,7 @@ void Context::LocationReset() {
         GetItemLocation(il)->RemoveFromPool();
     }
 
-    for (const RandomizerCheck il : StaticData::gossipStoneLocations) {
+    for (const RandomizerCheck il : StaticData::GetGossipStoneLocations()) {
         GetItemLocation(il)->RemoveFromPool();
     }
 
@@ -206,7 +206,7 @@ void Context::LocationReset() {
 }
 
 void Context::HintReset() {
-    for (const RandomizerCheck il : StaticData::gossipStoneLocations) {
+    for (const RandomizerCheck il : StaticData::GetGossipStoneLocations()) {
         GetItemLocation(il)->ResetVariables();
     }
     for (Hint& hint : hintTable){

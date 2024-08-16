@@ -273,6 +273,7 @@ typedef enum {
     RCTYPE_CHEST_GAME,                 // RANDOTODO replace this once we implement it, just using it to exclude for now
     RCTYPE_LINKS_POCKET,               // RANDOTODO this feels hacky, replace with better starting items
     RCTYPE_GOSSIP_STONE,               // RANDOTODO make these into event access
+    RCTYPE_STATIC_HINT,                // RANDOTODO make these into event access
     RCTYPE_SONG_LOCATION,              // Song locations
     RCTYPE_BOSS_HEART_OR_OTHER_REWARD, // Boss heart container or lesser dungeon rewards (lens, ice arrow)
     RCTYPE_DUNGEON_REWARD,             // Dungeon rewards (blue warps)

@@ -39,7 +39,7 @@ class StaticData {
       static std::vector<RandomizerCheck> dungeonRewardLocations;
       static std::vector<RandomizerCheck> GetShopLocations();
       static std::vector<RandomizerCheck> scrubLocations;
-      static std::vector<RandomizerCheck> gossipStoneLocations;
+      static std::vector<RandomizerCheck> GetGossipStoneLocations();
       static std::vector<RandomizerCheck> staticHintLocations;
       static std::vector<RandomizerCheck> pondFishLocations;
       static std::vector<RandomizerCheck> overworldFishLocations;

@@ -143,8 +143,8 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
             (location.GetRCType() != RCTYPE_OCARINA ||
              CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleOcarinas"), RO_GENERIC_NO)) && // ocarina locations
             (location.GetRandomizerCheck() != RC_HC_ZELDAS_LETTER) && // don't show until we support shuffling letter
-            (location.GetRCType() !=
-             RCTYPE_GOSSIP_STONE) && // don't show gossip stones (maybe gossipsanity will be a thing eventually?)
+            (location.GetRCType() != RCTYPE_GOSSIP_STONE) && // don't show gossip stones (maybe gossipsanity will be a thing eventually?)
+            (location.GetRCType() != RCTYPE_STATIC_HINT) && // don't show static hints
             (location.GetRCType() != RCTYPE_LINKS_POCKET) && // links pocket can be set to nothing if needed
             (location.GetRCType() !=
              RCTYPE_CHEST_GAME) && // don't show non final reward chest game checks until we support shuffling them

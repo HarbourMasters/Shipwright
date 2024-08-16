@@ -316,7 +316,7 @@ std::vector<std::pair<RandomizerCheck, std::function<bool()>>> conditionalAlways
 };
 
 static std::vector<RandomizerCheck> GetEmptyGossipStones() {
-  auto emptyGossipStones = GetEmptyLocations(Rando::StaticData::gossipStoneLocations);
+  auto emptyGossipStones = GetEmptyLocations(Rando::StaticData::GetGossipStoneLocations());
   return emptyGossipStones;
 }
 
@@ -328,7 +328,7 @@ static std::vector<RandomizerCheck> GetAccessibleGossipStones(const RandomizerCh
   ctx->GetItemLocation(hintedLocation)->SetPlacedItem(RG_NONE);
 
   ctx->GetLogic()->Reset();
-  auto accessibleGossipStones = GetAccessibleLocations(Rando::StaticData::gossipStoneLocations);
+  auto accessibleGossipStones = GetAccessibleLocations(Rando::StaticData::GetGossipStoneLocations());
   //Give the item back to the location
   ctx->GetItemLocation(hintedLocation)->SetPlacedItem(originalItem);
 
@@ -405,8 +405,8 @@ static bool CreateHint(RandomizerCheck location, uint8_t copies, HintType type, 
 
   //get a gossip stone accessible without the hinted item
   std::vector<RandomizerCheck> gossipStoneLocations = GetAccessibleGossipStones(location);
-  if (gossipStoneLocations.empty()) { 
-      SPDLOG_DEBUG("\tNO IN LOGIC GOSSIP STONE\n\n"); 
+  if (gossipStoneLocations.empty()) {
+      SPDLOG_DEBUG("\tNO IN LOGIC GOSSIP STONE\n\n");
       return false;
   }
   RandomizerCheck gossipStone = RandomElement(gossipStoneLocations);
