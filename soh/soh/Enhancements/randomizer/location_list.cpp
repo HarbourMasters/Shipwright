@@ -12,20 +12,6 @@ std::vector<RandomizerCheck> Rando::StaticData::dungeonRewardLocations = {
     RC_MORPHA,      RC_TWINROVA,     RC_BONGO_BONGO, RC_LINKS_POCKET,
 };
 
-std::vector<RandomizerCheck> Rando::StaticData::staticHintLocations = {
-    RC_GANONDORF_HINT,
-    RC_SHEIK_HINT_GC,
-    RC_SHEIK_HINT_MQ_GC,
-    RC_DAMPE_HINT,
-    RC_GREG_HINT,
-    RC_SARIA_SONG_HINT,
-    RC_ALTAR_HINT_CHILD,
-    RC_ALTAR_HINT_ADULT,
-    RC_FISHING_POLE_HINT,
-    RC_TOT_SHEIK_HINT,
-    RC_MASK_SHOP_HINT,
-};
-
 std::vector<RandomizerCheck> Rando::StaticData::pondFishLocations = {
     RC_LH_CHILD_FISH_1,  RC_LH_CHILD_FISH_2,  RC_LH_CHILD_FISH_3,  RC_LH_CHILD_FISH_4,  RC_LH_CHILD_FISH_5,
     RC_LH_CHILD_FISH_6,  RC_LH_CHILD_FISH_7,  RC_LH_CHILD_FISH_8,  RC_LH_CHILD_FISH_9,  RC_LH_CHILD_FISH_10,
@@ -44,6 +30,16 @@ std::vector<RandomizerCheck> Rando::StaticData::overworldFishLocations = {
 };
 
 using namespace Rando;
+
+std::vector<RandomizerCheck> Rando::StaticData::GetStaticHintLocations() {
+    std::vector<RandomizerCheck> staticHintLocations = {};
+    for (Location& location : locationTable) {
+        if (location.GetRCType() == RCTYPE_STATIC_HINT && location.GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
+            staticHintLocations.push_back(location.GetRandomizerCheck());
+        }
+    }
+    return staticHintLocations;
+}
 
 std::vector<RandomizerCheck> Rando::StaticData::GetScrubLocations() {
     std::vector<RandomizerCheck> scrubLocations = {};

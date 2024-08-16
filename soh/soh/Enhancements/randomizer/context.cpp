@@ -200,7 +200,7 @@ void Context::LocationReset() {
         GetItemLocation(il)->RemoveFromPool();
     }
 
-    for (const RandomizerCheck il : StaticData::staticHintLocations) {
+    for (const RandomizerCheck il : StaticData::GetStaticHintLocations()) {
         GetItemLocation(il)->RemoveFromPool();
     }
 }
