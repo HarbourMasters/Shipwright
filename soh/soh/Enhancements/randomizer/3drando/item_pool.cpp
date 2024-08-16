@@ -633,7 +633,7 @@ static void PlaceFreestandingItems() {
   for (auto dungeon : ctx->GetDungeons()->GetDungeonList()) {
     for (RandomizerCheck loc : ctx->GetLocations(dungeon->GetDungeonLocations(), Category::cFreestanding)) {
       RandomizerGet vanillaItem = Rando::StaticData::GetLocation(loc)->GetVanillaItem();
-    if (option.Is(RO_TOKENSANITY_DUNGEONS) || option.Is(RO_TOKENSANITY_ALL)) {
+      if (option.Is(RO_TOKENSANITY_DUNGEONS) || option.Is(RO_TOKENSANITY_ALL)) {
         AddItemToMainPool(vanillaItem);
       } else {
         ctx->PlaceItemInLocation(loc, vanillaItem, false, true);

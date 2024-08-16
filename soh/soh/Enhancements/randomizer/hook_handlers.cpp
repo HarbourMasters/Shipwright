@@ -677,7 +677,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
                     item00->actor.params = ITEM00_SOH_DUMMY;
                     item00->actor.draw = (ActorFunc)EnItem00_DrawRandomizedItem;
                     if (loc->GetCollectionCheck().type == SPOILER_CHK_RANDOMIZER_INF) {
-                        item00->randoInf = loc->GetCollectionCheck().flag;
+                        item00->randoInf = static_cast<RandomizerInf>(loc->GetCollectionCheck().flag);
                     }
                     *should = Rando::Context::GetInstance()->GetItemLocation(loc->GetRandomizerCheck())->HasObtained();
                 }

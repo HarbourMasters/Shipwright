@@ -361,6 +361,9 @@ void AreaTable_Init_FireTemple() {
                   LOCATION(RC_FIRE_TEMPLE_MQ_BIG_LAVA_ROOM_BLOCKED_DOOR_CHEST, logic->HasFireSource && logic->HasExplosives && logic->IsAdult && (logic->CanUse(RG_HOOKSHOT) || randoCtx->GetTrickOption(RT_FIRE_MQ_BLOCKED_CHEST))),
                     //Trick: logic->HasFireSource && logic->HasExplosives && logic->IsAdult && (logic->CanUse(RG_HOOKSHOT) || LogicFireMQBlockedChest)
                   LOCATION(RC_FIRE_TEMPLE_MQ_GS_BIG_LAVA_ROOM_OPEN_DOOR,       true),
+                  LOCATION(RC_FIRE_TEMPLE_MQ_FIRE_PILLAR_LEFT_HEART,           logic->CanUse(RG_GORON_TUNIC) && logic->SmallKeys(RR_FIRE_TEMPLE, 1)),
+                  LOCATION(RC_FIRE_TEMPLE_MQ_FIRE_PILLAR_RIGHT_HEART,          logic->CanUse(RG_GORON_TUNIC) && logic->SmallKeys(RR_FIRE_TEMPLE, 1)),
+                  LOCATION(RC_FIRE_TEMPLE_MQ_FIRE_PILLAR_LOWER_HEART,          logic->CanUse(RG_GORON_TUNIC) && logic->SmallKeys(RR_FIRE_TEMPLE, 1)),
   }, {
                   //Exits
                   Entrance(RR_FIRE_TEMPLE_MQ_LOWER_MAZE, {[]{return logic->IsAdult && logic->CanUse(RG_GORON_TUNIC) && logic->SmallKeys(RR_FIRE_TEMPLE, 2) && (logic->HasFireSource || (randoCtx->GetTrickOption(RT_FIRE_MQ_CLIMB) && logic->HoverBoots));}}),
