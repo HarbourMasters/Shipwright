@@ -432,7 +432,7 @@ void EnOssan_SpawnItemsOnShelves(EnOssan* this, PlayState* play, ShopItem* shopI
         } else {
             itemParams = sShopItemReplaceFunc[shopItems->shopItemIndex](shopItems->shopItemIndex);
             if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHOPSANITY) != RO_SHOPSANITY_OFF) {
-                ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(play->sceneNum, i);
+                ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(play->sceneNum, i + 1);
                 if (shopItemIdentity.randomizerCheck != RC_UNKNOWN_CHECK) {
                     itemParams = shopItemIdentity.enGirlAShopItem;
 
@@ -452,7 +452,7 @@ void EnOssan_SpawnItemsOnShelves(EnOssan* this, PlayState* play, ShopItem* shopI
                     shelves->actor.shape.rot.x, shelves->actor.shape.rot.y + sItemShelfRot[i],
                     shelves->actor.shape.rot.z, itemParams, true);
                 if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHOPSANITY) != RO_SHOPSANITY_OFF) {
-                    this->shelfSlots[i]->randoSlotIndex = i;
+                    this->shelfSlots[i]->randoSlotIndex = i + 1;
                 }
             }
         }
@@ -1391,7 +1391,7 @@ void EnOssan_GiveItemWithFanfare(PlayState* play, EnOssan* this) {
     if (!IS_RANDO) {
         Actor_OfferGetItem(&this->actor, play, this->shelfSlots[this->cursorIndex]->getItemId, 120.0f, 120.0f);
     } else {
-        ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(play->sceneNum, this->cursorIndex);
+        ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(play->sceneNum, this->cursorIndex + 1);
         // en_ossan/en_girla are also used for the happy mask shop, which never has randomized items
         // and returns RC_UNKNOWN_CHECK, in which case we should fall back to vanilla logic
         if (shopItemIdentity.randomizerCheck != RC_UNKNOWN_CHECK) {
@@ -1738,7 +1738,7 @@ void EnOssan_State_GiveItemWithFanfare(EnOssan* this, PlayState* play, Player* p
     if (!IS_RANDO) {
         Actor_OfferGetItem(&this->actor, play, this->shelfSlots[this->cursorIndex]->getItemId, 120.0f, 120.0f);
     } else {
-        ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(play->sceneNum, this->cursorIndex);
+        ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(play->sceneNum, this->cursorIndex + 1);
         // en_ossan/en_girla are also used for the happy mask shop, which never has randomized items
         // and returns RC_UNKNOWN_CHECK, in which case we should fall back to vanilla logic
         if (shopItemIdentity.randomizerCheck != RC_UNKNOWN_CHECK) {
@@ -1754,7 +1754,7 @@ void EnOssan_State_GiveItemWithFanfare(EnOssan* this, PlayState* play, Player* p
 void EnOssan_State_ItemPurchased(EnOssan* this, PlayState* play, Player* player) {
     EnGirlA* item;
     EnGirlA* itemTemp;
-    ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(play->sceneNum, this->cursorIndex);
+    ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(play->sceneNum, this->cursorIndex + 1);
     GetItemEntry getItemEntry;
     if (shopItemIdentity.randomizerCheck != RC_UNKNOWN_CHECK) {
         getItemEntry = Randomizer_GetItemFromKnownCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
