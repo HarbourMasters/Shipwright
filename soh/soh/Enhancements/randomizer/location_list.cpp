@@ -22,14 +22,17 @@ std::vector<RandomizerCheck> Rando::StaticData::pondFishLocations = {
     RC_LH_ADULT_FISH_14, RC_LH_ADULT_FISH_15, RC_LH_ADULT_LOACH
 };
 
-std::vector<RandomizerCheck> Rando::StaticData::overworldFishLocations = {
-    RC_DMC_UPPER_GROTTO_FISH,      RC_DMT_STORMS_GROTTO_FISH,        RC_HF_SOUTHEAST_GROTTO_FISH,
-    RC_HF_NEAR_MARKET_GROTTO_FISH, RC_HF_OPEN_GROTTO_FISH,           RC_KAK_OPEN_GROTTO_FISH,
-    RC_KF_STORMS_GROTTO_FISH,      RC_LW_NEAR_SHORTCUTS_GROTTO_FISH, RC_ZR_OPEN_GROTTO_FISH,
-    RC_ZD_FISH_1,   RC_ZD_FISH_2,   RC_ZD_FISH_3,   RC_ZD_FISH_4,    RC_ZD_FISH_5
-};
-
 using namespace Rando;
+
+std::vector<RandomizerCheck> Rando::StaticData::GetOverworldFishLocations() {
+    std::vector<RandomizerCheck> overworldFishLocations = {};
+    for (Location& location : locationTable) {
+        if (location.GetRCType() == RCTYPE_FISH && location.GetScene() != SCENE_FISHING_POND && location.GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
+            overworldFishLocations.push_back(location.GetRandomizerCheck());
+        }
+    }
+    return overworldFishLocations;
+}
 
 std::vector<RandomizerCheck> Rando::StaticData::GetStaticHintLocations() {
     std::vector<RandomizerCheck> staticHintLocations = {};

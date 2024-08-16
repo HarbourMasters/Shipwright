@@ -138,8 +138,8 @@ namespace Rando {
 
         // Add overworld fish
         if (mode == RO_FISHSANITY_OVERWORLD || mode == RO_FISHSANITY_BOTH) {
-            activeFish.insert(activeFish.end(), Rando::StaticData::overworldFishLocations.begin(),
-                              Rando::StaticData::overworldFishLocations.end());
+            activeFish.insert(activeFish.end(), Rando::StaticData::GetOverworldFishLocations().begin(),
+                              Rando::StaticData::GetOverworldFishLocations().end());
         }
 
         return std::make_pair(activeFish, remainingFish);
@@ -303,7 +303,7 @@ namespace Rando {
             return FSC_POND;
 
         // Is this an overworld fish?
-        if (std::binary_search(Rando::StaticData::overworldFishLocations.begin(), Rando::StaticData::overworldFishLocations.end(), rc)) {
+        if (std::binary_search(Rando::StaticData::GetOverworldFishLocations().begin(), Rando::StaticData::GetOverworldFishLocations().end(), rc)) {
             if (rc < RC_ZD_FISH_1)
                 return FSC_GROTTO;
             else
