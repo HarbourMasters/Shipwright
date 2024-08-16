@@ -36,7 +36,6 @@ class Logic {
     bool ZeldasLetter = false;
     bool WeirdEgg = false;
     bool HasBottle = false;
-    bool Bombchus = false;
     bool MagicBean = false;
     bool RutosLetter = false;
     bool Boomerang = false;
@@ -180,7 +179,6 @@ class Logic {
     bool BlueFireAccess = false;
     bool FishGroup = false;
     bool LoneFish = false;
-    bool FairyAccess = false;
     bool GossipStoneFairy = false;
     bool BeanPlantFairy = false;
     bool ButterflyFairy = false;
@@ -211,7 +209,6 @@ class Logic {
     bool Ocarina = false;
     bool OcarinaOfTime = false;
     bool BombBag = false;
-    bool BombchuIcon = false;
     bool MagicMeter = false;
     bool Hookshot = false;
     bool Longshot = false;
@@ -233,16 +230,10 @@ class Logic {
 
     bool Slingshot = false;
     bool Bombs = false;
-    bool Magic = false;
     bool Bow = false;
     bool DekuShield = false;
     bool HylianShield = false;
-    bool Nuts = false;
-    bool Sticks = false;
-    bool Bugs = false;
     bool BlueFire = false;
-    bool Fish = false;
-    bool Fairy = false;
     bool BottleWithBigPoe = false;
 
     bool OcarinaAButton      = false;

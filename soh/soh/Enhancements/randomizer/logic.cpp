@@ -88,6 +88,10 @@ namespace Rando {
             case RG_PROGRESSIVE_BOMB_BAG:
             case RG_BOMB_BAG:
                 return ctx->CurrentUpgrade(UPG_BOMB_BAG);
+            case RG_BOMBCHU_5:
+            case RG_BOMBCHU_10:
+            case RG_BOMBCHU_20:
+                return (BombchusEnabled && BuyBombchus) || GetInLogic(LOGIC_BOMBCHUS);
             case RG_MAGIC_SINGLE:
                 return ctx->GetSaveContext()->magicLevel >= 1;
                 // Songs
@@ -202,6 +206,18 @@ namespace Rando {
             case RG_EYEDROPS:
             case RG_CLAIM_CHECK:
                 return ctx->HasAdultTrade(StaticData::RetrieveItem(itemName).GetGIEntry()->itemId);
+            case RG_BOTTLE_WITH_BIG_POE:
+            case RG_BOTTLE_WITH_BLUE_FIRE:
+            case RG_BOTTLE_WITH_BLUE_POTION:
+            case RG_BOTTLE_WITH_BUGS:
+            case RG_BOTTLE_WITH_FAIRY:
+            case RG_BOTTLE_WITH_FISH:
+            case RG_BOTTLE_WITH_GREEN_POTION:
+            case RG_BOTTLE_WITH_MILK:
+            case RG_BOTTLE_WITH_POE:
+            case RG_BOTTLE_WITH_RED_POTION:
+            case RG_EMPTY_BOTTLE:
+                return HasBottle;
         }
         SPDLOG_ERROR("HasItem reached `return false;`. Missing case for RandomizerGet of {}", static_cast<uint32_t>(itemName));
         assert(false);
@@ -256,12 +272,18 @@ namespace Rando {
                 return IsChild;// || BoomerangAsAdult;
             case RG_KOKIRI_SWORD:
                 return IsChild;// || KokiriSwordAsAdult;
+            case RG_NUTS:
+                return (NutPot  || NutCrate || DekuBabaNuts) && AmmoCanDrop; //RANDOTODO BuyNuts currently mixed in with Nuts, should be seperate as BuyNuts are also a Nuts source
             case RG_STICKS:
-                return IsChild;// || StickAsAdult;
+                return IsChild /* || StickAsAdult;*/&& (StickPot || DekuBabaSticks);
             case RG_DEKU_SHIELD:
                 return IsChild;// || DekuShieldAsAdult;
             case RG_WEIRD_EGG:
                 return IsChild;
+            case RG_BOMBCHU_5:
+            case RG_BOMBCHU_10:
+            case RG_BOMBCHU_20:
+                return BombchuRefill && BombchusEnabled;; 
             case RG_RUTOS_LETTER:
                 return IsChild;
 
@@ -317,9 +339,19 @@ namespace Rando {
             case RG_FISHING_POLE:
                 return HasItem(RG_CHILD_WALLET); // as long as you have enough rubies
 
+            // Bottle Items
+            case RG_BOTTLE_WITH_BUGS:
+                return BugShrub || WanderingBugs || BugRock || GetInLogic(LOGIC_BUGS_ACCESS);
+            case RG_BOTTLE_WITH_FISH:
+                return LoneFish || FishGroup || GetInLogic(LOGIC_FISH_ACCESS); //is there any need to care about lone vs group?
+            case RG_BOTTLE_WITH_BLUE_FIRE: //RANDOTODO should probably be better named to 
+                return BlueFireAccess || GetInLogic(LOGIC_BUY_BLUE_FIRE);
+            case RG_BOTTLE_WITH_FAIRY:
+                return FairyPot || GossipStoneFairy || BeanPlantFairy || ButterflyFairy || FreeFairies || FairyPond || GetInLogic(LOGIC_FAIRY_ACCESS);
+
             // Magic items
             default:
-                return Magic && (IsMagicItem(itemName) || (IsMagicArrow(itemName) && CanUse(RG_FAIRY_BOW)));
+                return MagicMeter && (IsMagicItem(itemName) || (IsMagicArrow(itemName) && CanUse(RG_FAIRY_BOW)));
         }
     }
 
@@ -375,7 +407,7 @@ namespace Rando {
                 return ((IsAdult && HasItem(RG_DINS_FIRE)) || (IsChild && (HasItem(RG_STICKS) || HasItem(RG_DINS_FIRE)))) && false; //GlitchEquipSwapDins;
             case GlitchType::EquipSwap: // todo: add bunny hood to adult item equippable list and child trade item to child item equippable list
                 return ((IsAdult && (HasItem(RG_DINS_FIRE) || HasItem(RG_FARORES_WIND) || HasItem(RG_NAYRUS_LOVE))) || (IsChild && (HasItem(RG_STICKS) || 
-                    HasItem(RG_FAIRY_SLINGSHOT) || HasItem(RG_BOOMERANG) || HasBottle || Nuts || Ocarina || HasItem(RG_LENS_OF_TRUTH) || HasExplosives ||
+                    HasItem(RG_FAIRY_SLINGSHOT) || HasItem(RG_BOOMERANG) || HasBottle || CanUse(RG_NUTS) || Ocarina || HasItem(RG_LENS_OF_TRUTH) || HasExplosives ||
                     ctx->GetAmmo(ITEM_BEAN) > 0 || HasItem(RG_DINS_FIRE) || HasItem(RG_FARORES_WIND) || HasItem(RG_NAYRUS_LOVE)))) && false; //GlitchEquipSwap;
         }
 
@@ -398,7 +430,7 @@ namespace Rando {
             return true;
         }
         if (enemy == "Big Skulltula"){
-            return Nuts || CanUse(RG_BOOMERANG);
+            return CanUse(RG_NUTS) || CanUse(RG_BOOMERANG);
         }
         return false;
     }
@@ -462,17 +494,16 @@ namespace Rando {
         BiggoronSword   = CanUse(RG_BIGGORON_SWORD);
         NumBottles      = ((NoBottles) ? 0 : BottleCount());
         HasBottle       = NumBottles >= 1;
-        BulletBag       = HasItem(RG_FAIRY_SLINGSHOT);
+        Slingshot       = CanUse(RG_FAIRY_SLINGSHOT) && (BuySeed || AmmoCanDrop);
         Ocarina         = HasItem(RG_FAIRY_OCARINA);
         OcarinaOfTime   = HasItem(RG_OCARINA_OF_TIME);
-        MagicMeter      = HasItem(RG_MAGIC_SINGLE);
-        BombBag         = HasItem(RG_BOMB_BAG);
+        MagicMeter      = HasItem(RG_MAGIC_SINGLE) && (AmmoCanDrop || (HasBottle && BuyMagicPotion));
+        BombBag         = HasItem(RG_BOMB_BAG) && (BuyBomb || AmmoCanDrop);
         BombchusEnabled = ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) ? GetInLogic(LOGIC_BOMBCHUS) : BombBag;
         BuyBombchus     = (GetInLogic(LOGIC_BUY_BOMBCHUS) || CouldPlayBowling || CarpetMerchant);
-        BombchuIcon     = (BombchusEnabled && BuyBombchus) || GetInLogic(LOGIC_BOMBCHUS);
         Hookshot        = CanUse(RG_HOOKSHOT);
         Longshot        = CanUse(RG_LONGSHOT);
-        Quiver          = HasItem(RG_FAIRY_BOW);
+        Bow             = CanUse(RG_FAIRY_BOW) && (BuyArrow || AmmoCanDrop);
         GoronBracelet   = HasItem(RG_GORONS_BRACELET);
         SilverGauntlets = HasItem(RG_SILVER_GAUNTLETS);
         GoldenGauntlets = HasItem(RG_GOLDEN_GAUNTLETS);
@@ -519,32 +550,21 @@ namespace Rando {
         Greg = HasItem(RG_GREG_RUPEE);
         GoldSkulltulaTokens = ctx->GetGSCount();
 
-        // TODO: Implement Ammo Drop Setting in place of bombchu drops
-        BombchuRefill = BuyBombchus || (ctx->GetOption(RSK_ENABLE_BOMBCHU_DROPS).Is(RO_AMMO_DROPS_ON/*_PLUS_BOMBCHU*/));
-        FairyAccess   = FairyPot || GossipStoneFairy || BeanPlantFairy || ButterflyFairy || FreeFairies || FairyPond || GetInLogic(LOGIC_FAIRY_ACCESS);
-
-        //Usage
-        Slingshot = (BuySeed || AmmoCanDrop) && BulletBag;
-        Magic     = (AmmoCanDrop || (HasBottle && (BuyMagicPotion))) && MagicMeter;
-        Bombs     = (BuyBomb || AmmoCanDrop) && HasItem(RG_PROGRESSIVE_BOMB_BAG);
-        Bombchus  = BombchuRefill && BombchuIcon && BombchusEnabled;
-        Bow       = (BuyArrow || AmmoCanDrop) && Quiver;
-        Nuts      = HasItem(RG_NUTS) && ((NutPot  || NutCrate || DekuBabaNuts) && AmmoCanDrop) || Nuts; //RANDOTODO BuyNuts currently mixed in with Nuts, should be seperate as BuyNuts are also a Nuts source
-        Sticks    = HasItem(RG_STICKS) && (StickPot || DekuBabaSticks);
-        Bugs      = HasBottle && (BugShrub || WanderingBugs || BugRock || GetInLogic(LOGIC_BUGS_ACCESS));
-        BlueFire  = (HasBottle && (BlueFireAccess || GetInLogic(LOGIC_BUY_BLUE_FIRE))) || (ctx->GetOption(RSK_BLUE_FIRE_ARROWS) && CanUse(RG_ICE_ARROWS));
-        Fish      = HasBottle && (LoneFish || FishGroup || GetInLogic(LOGIC_FISH_ACCESS)); //is there any need to care about lone vs group?
-        Fairy     = HasBottle && FairyAccess;
-
-        // TODO: Implement Ammo Drop Setting in place of bombchu drops
-        HasExplosives = Bombs || Bombchus;
-        HasBoots = IronBoots || HoverBoots;
-
         //you need at least 2 buttons for scarecrow song
         ScarecrowSong    = ScarecrowSong || (ctx->GetOption(RSK_SKIP_SCARECROWS_SONG) && Ocarina && OcarinaButtons >= 2) || (ChildScarecrow && AdultScarecrow);
         Scarecrow        = Hookshot && ScarecrowSong;
         DistantScarecrow = Longshot && ScarecrowSong;
 
+        // TODO: Implement Ammo Drop Setting in place of bombchu drops
+        BombchuRefill = BuyBombchus || (ctx->GetOption(RSK_ENABLE_BOMBCHU_DROPS).Is(RO_AMMO_DROPS_ON/*_PLUS_BOMBCHU*/));
+
+        //Usage
+        Bombs     = HasItem(RG_PROGRESSIVE_BOMB_BAG);
+        BlueFire  = CanUse(RG_BOTTLE_WITH_BLUE_FIRE) || (ctx->GetOption(RSK_BLUE_FIRE_ARROWS) && CanUse(RG_ICE_ARROWS));
+
+        // TODO: Implement Ammo Drop Setting in place of bombchu drops
+        HasExplosives = Bombs || CanUse(RG_BOMBCHU_5);
+        HasBoots = IronBoots || HoverBoots;
         //Unshuffled adult trade quest
         ClaimCheck = CanUse(RG_CLAIM_CHECK);
         Eyedrops = CanUse(RG_EYEDROPS) || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && ClaimCheck);
@@ -561,15 +581,15 @@ namespace Rando {
         // IsAdult = Age == AGE_ADULT;
 
         CanBlastOrSmash = HasExplosives || CanUse(RG_MEGATON_HAMMER);
-        CanChildAttack  = IsChild && (Slingshot || Boomerang || Sticks || KokiriSword || HasExplosives || CanUse(RG_DINS_FIRE) || CanUse(RG_MASTER_SWORD) || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_BIGGORON_SWORD));
-        CanChildDamage  = IsChild && (Slingshot ||              Sticks || KokiriSword || HasExplosives || CanUse(RG_DINS_FIRE) || CanUse(RG_MASTER_SWORD) || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_BIGGORON_SWORD));
+        CanChildAttack  = IsChild && (Slingshot || Boomerang || CanUse(RG_STICKS) || KokiriSword || HasExplosives || CanUse(RG_DINS_FIRE) || CanUse(RG_MASTER_SWORD) || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_BIGGORON_SWORD));
+        CanChildDamage  = IsChild && (Slingshot ||              CanUse(RG_STICKS) || KokiriSword || HasExplosives || CanUse(RG_DINS_FIRE) || CanUse(RG_MASTER_SWORD) || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_BIGGORON_SWORD));
         CanAdultAttack  = IsAdult && (CanUse(RG_FAIRY_BOW) || CanUse(RG_BOOMERANG)       || CanUse(RG_STICKS) || CanUse(RG_KOKIRI_SWORD) || HasExplosives || CanUse(RG_DINS_FIRE) || MasterSword || Hammer || BiggoronSword || Hookshot);
         CanAdultDamage  = IsAdult && (CanUse(RG_FAIRY_BOW) || CanUse(RG_STICKS)          || CanUse(RG_KOKIRI_SWORD) || HasExplosives || CanUse(RG_DINS_FIRE) || MasterSword || Hammer || BiggoronSword);
-        CanStunDeku     = CanAdultAttack || CanChildAttack || Nuts || HasShield;
+        CanStunDeku     = CanAdultAttack || CanChildAttack || CanUse(RG_NUTS) || HasShield;
         CanCutShrubs    = CanUse(RG_KOKIRI_SWORD) || CanUse(RG_BOOMERANG) || HasExplosives || CanUse(RG_MASTER_SWORD) || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_BIGGORON_SWORD);
         CanDive         = ProgressiveScale >= 2;
         CanLeaveForest  = ctx->GetOption(RSK_FOREST).IsNot(RO_FOREST_CLOSED) || IsAdult || DekuTreeClear || ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES) || ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES);
-        CanPlantBugs    = IsChild && Bugs;
+        CanPlantBugs    = IsChild && CanUse(RG_BOTTLE_WITH_BUGS);
         CanRideEpona    = IsAdult && Epona && CanUse(RG_EPONAS_SONG);
         CanSummonGossipFairyWithoutSuns = CanUse(RG_ZELDAS_LULLABY) || CanUse(RG_EPONAS_SONG) || CanUse(RG_SONG_OF_TIME);
         CanSummonGossipFairy            = CanSummonGossipFairyWithoutSuns || CanUse(RG_SUNS_SONG);
@@ -579,13 +599,13 @@ namespace Rando {
         WaterTimer      = CanUse(RG_ZORA_TUNIC) ? 255 : (ctx->GetTrickOption(RT_FEWER_TUNIC_REQUIREMENTS)) ? (Hearts * 8) : 0;
         NeedNayrusLove      = (EffectiveHealth == 1);
         CanSurviveDamage    = !NeedNayrusLove || CanUse(RG_NAYRUS_LOVE);
-        CanTakeDamage       = Fairy || CanSurviveDamage;
-        CanTakeDamageTwice  = (Fairy && NumBottles >= 2) || ((EffectiveHealth == 2) && (CanUse(RG_NAYRUS_LOVE) || Fairy)) || (EffectiveHealth > 2);
+        CanTakeDamage       = CanUse(RG_BOTTLE_WITH_FAIRY) || CanSurviveDamage;
+        CanTakeDamageTwice  = (CanUse(RG_BOTTLE_WITH_FAIRY) && NumBottles >= 2) || ((EffectiveHealth == 2) && (CanUse(RG_NAYRUS_LOVE) || CanUse(RG_BOTTLE_WITH_FAIRY))) || (EffectiveHealth > 2);
         CanOpenBombGrotto   = CanBlastOrSmash       && (ShardOfAgony || ctx->GetTrickOption(RT_GROTTOS_WITHOUT_AGONY));
         CanOpenStormGrotto  = CanUse(RG_SONG_OF_STORMS) && (ShardOfAgony || ctx->GetTrickOption(RT_GROTTOS_WITHOUT_AGONY));
         HookshotOrBoomerang = CanUse(RG_HOOKSHOT) || CanUse(RG_BOOMERANG);
         CanGetNightTimeGS   = (CanUse(RG_SUNS_SONG) || !ctx->GetOption(RSK_SKULLS_SUNS_SONG));
-        CanBreakUpperBeehives = HookshotOrBoomerang || (ctx->GetTrickOption(RT_BOMBCHU_BEEHIVES) && Bombchus);
+        CanBreakUpperBeehives = HookshotOrBoomerang || (ctx->GetTrickOption(RT_BOMBCHU_BEEHIVES) && CanUse(RG_BOMBCHU_5));
         CanBreakLowerBeehives = CanBreakUpperBeehives || Bombs;
         CanFish = ChildsWallet && (HasItem(RG_FISHING_POLE) || !ctx->GetOption(RSK_SHUFFLE_FISHING_POLE));
         CanGetChildFish = CanFish && (IsChild || (IsAdult && !ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT)));
@@ -765,7 +785,6 @@ namespace Rando {
         ZeldasLetter  = false;
         WeirdEgg      = false;
         HasBottle     = false;
-        Bombchus      = false;
         MagicBean     = false;
         RutosLetter   = false;
         Boomerang     = false;
@@ -930,7 +949,6 @@ namespace Rando {
         BlueFireAccess   = false;
         FishGroup        = false;
         LoneFish         = false;
-        FairyAccess      = false;
         GossipStoneFairy = false;
         BeanPlantFairy   = false;
         ButterflyFairy   = false;
@@ -962,8 +980,7 @@ namespace Rando {
         Ocarina          = false;
         OcarinaOfTime    = false;
         BombBag          = false;
-        BombchuIcon      = false;
-        Magic            = false;
+        MagicMeter       = false;
         Hookshot         = false;
         Longshot         = false;
         Quiver           = false;
@@ -986,12 +1003,7 @@ namespace Rando {
         Bombs            = false;
         DekuShield       = false;
         HylianShield     = false;
-        Nuts             = false;
-        Sticks           = false;
-        Bugs             = false;
         BlueFire         = false;
-        Fish             = false;
-        Fairy            = false;
         BottleWithBigPoe = false;
 
         CouldPlayBowling   = false;

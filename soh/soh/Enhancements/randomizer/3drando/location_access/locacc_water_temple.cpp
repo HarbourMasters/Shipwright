@@ -50,10 +50,10 @@ void AreaTable_Init_WaterTemple() {
 
   areaTable[RR_WATER_TEMPLE_MAP_ROOM] = Area("Water Temple Map Room", "Water Temple", RA_WATER_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LOCATION(RC_WATER_TEMPLE_MAP_CHEST, (logic->Magic && logic->CanUse(RG_KOKIRI_SWORD)) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD) || logic->CanUse(RG_HOOKSHOT)),
+                  LOCATION(RC_WATER_TEMPLE_MAP_CHEST, (logic->MagicMeter && logic->CanUse(RG_KOKIRI_SWORD)) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD) || logic->CanUse(RG_HOOKSHOT)),
                 }, {
                   //Exits
-                  Entrance(RR_WATER_TEMPLE_EAST_LOWER, {[]{return (logic->Magic && logic->CanUse(RG_KOKIRI_SWORD)) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD) || logic->CanUse(RG_HOOKSHOT);}}),
+                  Entrance(RR_WATER_TEMPLE_EAST_LOWER, {[]{return (logic->MagicMeter && logic->CanUse(RG_KOKIRI_SWORD)) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD) || logic->CanUse(RG_HOOKSHOT);}}),
   });
 
   areaTable[RR_WATER_TEMPLE_CRACKED_WALL] = Area("Water Temple Cracked Wall", "Water Temple", RA_WATER_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
@@ -66,10 +66,10 @@ void AreaTable_Init_WaterTemple() {
 
   areaTable[RR_WATER_TEMPLE_TORCH_ROOM] = Area("Water Temple Torch Room", "Water Temple", RA_WATER_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LOCATION(RC_WATER_TEMPLE_TORCHES_CHEST, (logic->Magic && logic->CanUse(RG_KOKIRI_SWORD)) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD) || logic->CanUse(RG_HOOKSHOT)),
+                  LOCATION(RC_WATER_TEMPLE_TORCHES_CHEST, (logic->MagicMeter && logic->CanUse(RG_KOKIRI_SWORD)) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD) || logic->CanUse(RG_HOOKSHOT)),
                 }, {
                   //Exits
-                  Entrance(RR_WATER_TEMPLE_EAST_LOWER, {[]{return (logic->Magic && logic->CanUse(RG_KOKIRI_SWORD)) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD) || logic->CanUse(RG_HOOKSHOT);}}),
+                  Entrance(RR_WATER_TEMPLE_EAST_LOWER, {[]{return (logic->MagicMeter && logic->CanUse(RG_KOKIRI_SWORD)) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD) || logic->CanUse(RG_HOOKSHOT);}}),
   });
 
   areaTable[RR_WATER_TEMPLE_NORTH_LOWER] = Area("Water Temple North Lower", "Water Temple", RA_WATER_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {}, {
@@ -134,7 +134,7 @@ void AreaTable_Init_WaterTemple() {
 
   areaTable[RR_WATER_TEMPLE_DRAGON_ROOM] = Area("Water Temple Dragon Room", "Water Temple", RA_WATER_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LOCATION(RC_WATER_TEMPLE_DRAGON_CHEST, (logic->CanUse(RG_HOOKSHOT) && logic->CanUse(RG_IRON_BOOTS)) || (((logic->IsAdult && randoCtx->GetTrickOption(RT_WATER_ADULT_DRAGON) && (logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_FAIRY_BOW) || logic->Bombchus)) || (logic->IsChild && randoCtx->GetTrickOption(RT_WATER_CHILD_DRAGON) && (logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_BOOMERANG) || logic->Bombchus))) && (logic->CanDive || logic->CanUse(RG_IRON_BOOTS))) ||
+                  LOCATION(RC_WATER_TEMPLE_DRAGON_CHEST, (logic->CanUse(RG_HOOKSHOT) && logic->CanUse(RG_IRON_BOOTS)) || (((logic->IsAdult && randoCtx->GetTrickOption(RT_WATER_ADULT_DRAGON) && (logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_BOMBCHU_5))) || (logic->IsChild && randoCtx->GetTrickOption(RT_WATER_CHILD_DRAGON) && (logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_BOOMERANG) || logic->CanUse(RG_BOMBCHU_5)))) && (logic->CanDive || logic->CanUse(RG_IRON_BOOTS))) ||
                                                                        Here(RR_WATER_TEMPLE_RIVER, []{return logic->IsAdult && logic->CanUse(RG_FAIRY_BOW) && ((randoCtx->GetTrickOption(RT_WATER_ADULT_DRAGON) && (logic->CanDive || logic->CanUse(RG_IRON_BOOTS))) || randoCtx->GetTrickOption(RT_WATER_DRAGON_JUMP_DIVE));})),
                 }, {
                   //Exits

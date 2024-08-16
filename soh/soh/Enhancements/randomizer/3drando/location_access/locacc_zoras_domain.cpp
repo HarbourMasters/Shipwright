@@ -97,7 +97,7 @@ void AreaTable_Init_ZorasDomain() {
                   LOCATION(RC_ZD_CHEST,                               logic->IsChild && logic->CanUse(RG_STICKS)),
                   LOCATION(RC_ZD_KING_ZORA_THAWED,                    logic->KingZoraThawed),
                   LOCATION(RC_ZD_TRADE_PRESCRIPTION,                  logic->KingZoraThawed && logic->Prescription),
-                  LOCATION(RC_ZD_GS_FROZEN_WATERFALL,                 logic->IsAdult && logic->AtNight && (logic->HookshotOrBoomerang || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->Bow || (logic->Magic && (logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_BIGGORON_SWORD))) || (randoCtx->GetTrickOption(RT_ZD_GS) && logic->CanJumpslash)) && logic->CanGetNightTimeGS),
+                  LOCATION(RC_ZD_GS_FROZEN_WATERFALL,                 logic->IsAdult && logic->AtNight && (logic->HookshotOrBoomerang || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->Bow || (logic->MagicMeter && (logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_BIGGORON_SWORD))) || (randoCtx->GetTrickOption(RT_ZD_GS) && logic->CanJumpslash)) && logic->CanGetNightTimeGS),
                   LOCATION(RC_ZD_FISH_1,                              logic->IsChild && logic->HasBottle),
                   LOCATION(RC_ZD_FISH_2,                              logic->IsChild && logic->HasBottle),
                   LOCATION(RC_ZD_FISH_3,                              logic->IsChild && logic->HasBottle),
@@ -163,7 +163,7 @@ void AreaTable_Init_ZorasDomain() {
                 }, {
                   //Exits
                   Entrance(RR_ZD_BEHIND_KING_ZORA,       {[]{return true;}}),
-                  Entrance(RR_JABU_JABUS_BELLY_ENTRYWAY, {[]{return (logic->IsChild && logic->Fish);}}),
+                  Entrance(RR_JABU_JABUS_BELLY_ENTRYWAY, {[]{return (logic->IsChild && logic->CanUse(RG_BOTTLE_WITH_FISH));}}),
                   Entrance(RR_ICE_CAVERN_ENTRYWAY,       {[]{return logic->IsAdult;}}),
                   Entrance(RR_ZF_GREAT_FAIRY_FOUNTAIN,   {[]{return logic->HasExplosives;}}),
   });
