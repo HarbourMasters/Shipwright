@@ -163,7 +163,7 @@ void AreaTable_Init_ZorasDomain() {
                 }, {
                   //Exits
                   Entrance(RR_ZD_BEHIND_KING_ZORA,       {[]{return true;}}),
-                  Entrance(RR_JABU_JABUS_BELLY_ENTRYWAY, {[]{return (logic->IsChild && logic->Fish);}}),
+                  Entrance(RR_JABU_JABUS_BELLY_ENTRYWAY, {[]{return (logic->IsChild && logic->CanUse(RG_BOTTLE_WITH_FISH));}}),
                   Entrance(RR_ICE_CAVERN_ENTRYWAY,       {[]{return logic->IsAdult;}}),
                   Entrance(RR_ZF_GREAT_FAIRY_FOUNTAIN,   {[]{return logic->HasExplosives;}}),
   });

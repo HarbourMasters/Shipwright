@@ -1293,7 +1293,6 @@ bool IsCheckShuffled(RandomizerCheck rc) {
                 loc->GetQuest() == RCQUEST_VANILLA && OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(loc->GetScene())->IsVanilla()
                 ) &&
             (loc->GetRCType() != RCTYPE_SHOP || (showShops && loc->GetActorParams() > 0x03)) &&
-            (loc->GetRandomizerCheck() != RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS) &&
             (rc != RC_TRIFORCE_COMPLETED || !hideTriforceCompleted) &&
             (rc != RC_GIFT_FROM_SAGES || !IS_RANDO) &&
             (loc->GetRCType() != RCTYPE_SCRUB ||
