@@ -108,13 +108,15 @@ static const char* englishRupeeNames[171] = {
     "Zorkmids"
 };
 
-static const char* germanRupeeNames[41] = {
+static const char* germanRupeeNames[56] = {
     "Rubine",     "Mäuse",       "Kröten",        "Münzen",     "Euro",       "Mark",     "Bananen",
     "Gummibären", "Bonbons",     "Diamanten",     "Bratwürste", "Bitcoin",    "Dogecoin", "Monde",
     "Sterne",     "Brause UFOs", "Taler",         "Sternis",    "Schilling",  "Freunde",  "Seelen",
     "Gil",        "Zenny",       "Pfandflaschen", "Knochen",    "Pilze",      "Smaragde", "Kronkorken",
     "Pokédollar", "Brötchen",    "EXP",           "Wagenchips", "Moos",       "Knete",    "Kohle",
-    "Kies",       "Radieschen",  "Diridari",      "Steine",     "Kartoffeln", "Penunze"
+    "Kies",       "Radieschen",  "Diridari",      "Steine",     "Kartoffeln", "Penunze",  "ECU",
+    "Franken",    "Cent",        "Pfennig",       "Groschen",   "Rappen",     "Gulden",   "Kreuzer",
+    "Kronen",     "Forint",      "Heller",        "Pfund",      "Karolin",    "Pesa",     "Tael"
 };
 
 static const char* frenchRupeeNames[36] = {
