@@ -192,7 +192,7 @@ void AreaTable_Init_DekuTree() {
                                                                                Here(RR_DEKU_TREE_MQ_COMPASS_ROOM, []{return logic->CanUse(RG_BOMBCHU_5) ||
                                                                                (logic->Bombs && (logic->CanUse(RG_SONG_OF_TIME) || logic->IsAdult)) ||
                                                                                (logic->IsAdult && logic->CanUse(RG_MEGATON_HAMMER) && (logic->CanUse(RG_SONG_OF_TIME) || randoCtx->GetTrickOption(RT_DEKU_MQ_COMPASS_GS)));})),
-                  LOCATION(RC_DEKU_TREE_MQ_COMPASS_ROOM_HEART,  logic->HasBombchus || (logic->Bombs && (logic->CanUse(RG_SONG_OF_TIME) || logic->IsAdult)) ||
+                  LOCATION(RC_DEKU_TREE_MQ_COMPASS_ROOM_HEART,  logic->CanUse(RG_BOMBCHU_5) || (logic->Bombs && (logic->CanUse(RG_SONG_OF_TIME) || logic->IsAdult)) ||
                                                                                (logic->IsAdult && logic->CanUse(RG_MEGATON_HAMMER) && (logic->CanUse(RG_SONG_OF_TIME) || randoCtx->GetTrickOption(RT_DEKU_MQ_COMPASS_GS)))),
   }, {
                   //Exits
