@@ -46,12 +46,16 @@ void SkipBlueWarp_ShouldPlayTransitionCS(GIVanillaBehavior _, bool* should, void
             isBlueWarp = 1;
         // Fire Temple Blue warp
         } else if (gSaveContext.entranceIndex == ENTR_KAKARIKO_VILLAGE_0 && gSaveContext.cutsceneIndex == 0xFFF3) {
+            // Normally set in the blue warp cutscene
+            Flags_SetEventChkInf(EVENTCHKINF_DEATH_MOUNTAIN_ERUPTED);
+
             gSaveContext.entranceIndex = ENTR_DEATH_MOUNTAIN_CRATER_5;
             isBlueWarp = 1;
         // Water Temple Blue warp
         } else if (gSaveContext.entranceIndex == ENTR_CHAMBER_OF_THE_SAGES_0 && gSaveContext.cutsceneIndex == 0x0 && gSaveContext.chamberCutsceneNum == CHAMBER_CS_WATER) {
             // Normally set in the blue warp cutscene
             gSaveContext.dayTime = gSaveContext.skyboxTime = 0x4800;
+            Flags_SetEventChkInf(EVENTCHKINF_RAISED_LAKE_HYLIA_WATER);
 
             gSaveContext.entranceIndex = ENTR_LAKE_HYLIA_9;
             isBlueWarp = 1;

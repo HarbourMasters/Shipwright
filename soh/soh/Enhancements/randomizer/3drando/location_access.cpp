@@ -69,11 +69,6 @@ bool LocationAccess::CanBuy() const {
       placed == RG_BUY_FAIRYS_SPIRIT) {
       OtherCondition = logic->HasBottle;
   }
-  // If bombchus in logic, need to have found chus to buy; if not just need bomb bag
-  else if (placed == RG_BUY_BOMBCHU_10 || placed == RG_BUY_BOMBCHU_20) {
-      OtherCondition =
-          (!ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && logic->Bombs) || (ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && logic->FoundBombchus);
-  }
 
   return SufficientWallet && OtherCondition;
 }
@@ -162,7 +157,7 @@ Rando::Entrance* Area::GetExit(RandomizerRegion exitToReturn) {
 }
 
 bool Area::CanPlantBeanCheck() const {
-  return (logic->MagicBean || logic->MagicBeanPack) && BothAgesCheck();
+    return Rando::Context::GetInstance()->GetAmmo(ITEM_BEAN) > 0 && BothAgesCheck();
 }
 
 bool Area::AllAccountedFor() const {
@@ -240,12 +235,12 @@ bool HasAccessTo(const RandomizerRegion area) {
   return areaTable[area].HasAccess();
 }
 
-std::shared_ptr<Rando::Context> randoCtx;
+Rando::Context* randoCtx;
 std::shared_ptr<Rando::Logic> logic;
 
 void AreaTable_Init() {
   using namespace Rando;
-  randoCtx = Context::GetInstance();
+  randoCtx = Context::GetInstance().get();
   logic = randoCtx->GetLogic();
   grottoEvents = {
       EventAccess(&logic->GossipStoneFairy, { [] { return logic->GossipStoneFairy || logic->CanSummonGossipFairy; } }),

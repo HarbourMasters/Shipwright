@@ -14,74 +14,41 @@ namespace Rando {
 Item::Item() : randomizerGet(RG_NONE), type(ITEMTYPE_ITEM), getItemId(GI_NONE), advancement(false), hintKey(RHT_NONE),
                progressive(false), price(0) {}
 Item::Item(const RandomizerGet randomizerGet_, Text name_, const ItemType type_, const int16_t getItemId_,
-           const bool advancement_, bool* logicVar_, const RandomizerHintTextKey hintKey_, const uint16_t itemId_,
-           const uint16_t objectId_, const uint16_t gid_, const uint16_t textId_, const uint16_t field_,
-           const int16_t chestAnimation_, const GetItemCategory category_, const uint16_t modIndex_,
-           const bool progressive_, const uint16_t price_)
+    const bool advancement_, LogicVal logicVal_, const RandomizerHintTextKey hintKey_, const uint16_t itemId_,
+    const uint16_t objectId_, const uint16_t gid_, const uint16_t textId_, const uint16_t field_,
+    const int16_t chestAnimation_, const GetItemCategory category_, const uint16_t modIndex_,
+    const bool progressive_, const uint16_t price_)
     : randomizerGet(randomizerGet_), name(std::move(name_)), type(type_), getItemId(getItemId_),
-      advancement(advancement_), logicVar(logicVar_), hintKey(hintKey_), progressive(progressive_), price(price_) {
+    advancement(advancement_), logicVal(logicVal_), hintKey(hintKey_), progressive(progressive_), price(price_) {
     if (modIndex_ == MOD_RANDOMIZER || getItemId > 0x7D) {
-        giEntry = std::make_shared<GetItemEntry>(GetItemEntry{itemId_, field_, static_cast<int16_t>((chestAnimation_ != CHEST_ANIM_SHORT ? 1 : -1) * (gid_ + 1)), textId_, objectId_, modIndex_, TABLE_RANDOMIZER, static_cast<int16_t>(randomizerGet_), gid_, true, ITEM_FROM_NPC, category_, static_cast<uint16_t>(randomizerGet_), MOD_RANDOMIZER, NULL});
-    } else {
-        giEntry = std::make_shared<GetItemEntry>(GetItemEntry{itemId_, field_, static_cast<int16_t>((chestAnimation_ != CHEST_ANIM_SHORT ? 1 : -1) * (gid_ + 1)), textId_, objectId_, modIndex_, TABLE_VANILLA, getItemId_, gid_, true, ITEM_FROM_NPC, category_, itemId_, modIndex_, NULL});
+        giEntry = std::make_shared<GetItemEntry>(GetItemEntry{ itemId_, field_, static_cast<int16_t>((chestAnimation_ != CHEST_ANIM_SHORT ? 1 : -1) * (gid_ + 1)), textId_, objectId_, modIndex_, TABLE_RANDOMIZER, static_cast<int16_t>(randomizerGet_), gid_, true, ITEM_FROM_NPC, category_, static_cast<uint16_t>(randomizerGet_), MOD_RANDOMIZER, NULL });
+    }
+    else {
+        giEntry = std::make_shared<GetItemEntry>(GetItemEntry{ itemId_, field_, static_cast<int16_t>((chestAnimation_ != CHEST_ANIM_SHORT ? 1 : -1) * (gid_ + 1)), textId_, objectId_, modIndex_, TABLE_VANILLA, getItemId_, gid_, true, ITEM_FROM_NPC, category_, itemId_, modIndex_, NULL });
     }
 }
 
 Item::Item(const RandomizerGet randomizerGet_, Text name_, const ItemType type_, const int16_t getItemId_,
-           const bool advancement_, uint8_t* logicVar_, const RandomizerHintTextKey hintKey_, const uint16_t itemId_,
-           const uint16_t objectId_, const uint16_t gid_, const uint16_t textId_, const uint16_t field_,
-           const int16_t chestAnimation_, const GetItemCategory category_, const uint16_t modIndex_,
-           const bool progressive_, const uint16_t price_)
+    const bool advancement_, LogicVal logicVal_, const RandomizerHintTextKey hintKey_, const bool progressive_,
+    const uint16_t price_)
     : randomizerGet(randomizerGet_), name(std::move(name_)), type(type_), getItemId(getItemId_),
-      advancement(advancement_), logicVar(logicVar_), hintKey(hintKey_), progressive(progressive_), price(price_) {
-    if (modIndex_ == MOD_RANDOMIZER || getItemId > 0x7D) {
-        giEntry = std::make_shared<GetItemEntry>(GetItemEntry{itemId_, field_, static_cast<int16_t>((chestAnimation_ != CHEST_ANIM_SHORT ? 1 : -1) * (gid_ + 1)), textId_, objectId_, modIndex_, TABLE_RANDOMIZER, static_cast<int16_t>(randomizerGet_), gid_, true, ITEM_FROM_NPC, category_, static_cast<uint16_t>(randomizerGet_), modIndex_, NULL});
-    } else {
-        giEntry = std::make_shared<GetItemEntry>(GetItemEntry{itemId_, field_, static_cast<int16_t>((chestAnimation_ != CHEST_ANIM_SHORT ? 1 : -1) * (gid_ + 1)), textId_, objectId_, modIndex_, TABLE_VANILLA, getItemId_, gid_, true, ITEM_FROM_NPC, category_, itemId_, modIndex_, NULL});
-    }
-}
-
-Item::Item(const RandomizerGet randomizerGet_, Text name_, const ItemType type_, const int16_t getItemId_,
-           const bool advancement_, bool* logicVar_, const RandomizerHintTextKey hintKey_, const bool progressive_,
-           const uint16_t price_)
-    : randomizerGet(randomizerGet_), name(std::move(name_)), type(type_), getItemId(getItemId_),
-      advancement(advancement_), logicVar(logicVar_), hintKey(hintKey_), progressive(progressive_), price(price_) {
-}
-
-Item::Item(const RandomizerGet randomizerGet_, Text name_, const ItemType type_, const int16_t getItemId_,
-           const bool advancement_, uint8_t* logicVar_, const RandomizerHintTextKey hintKey_, const bool progressive_,
-           const uint16_t price_)
-    : randomizerGet(randomizerGet_), name(std::move(name_)), type(type_), getItemId(getItemId_),
-      advancement(advancement_), logicVar(logicVar_), hintKey(hintKey_), progressive(progressive_), price(price_) {
+    advancement(advancement_), logicVal(logicVal_), hintKey(hintKey_), progressive(progressive_), price(price_) {
 }
 
     Item::~Item() = default;
 
 void Item::ApplyEffect() const {
-    // If this is a key ring, logically add as many keys as we could need
-    if (RHT_FOREST_TEMPLE_KEY_RING <= hintKey && hintKey <= RHT_GANONS_CASTLE_KEY_RING) {
-        *std::get<uint8_t*>(logicVar) += 10;
-    } else {
-        if (std::holds_alternative<bool*>(logicVar)) {
-            *std::get<bool*>(logicVar) = true;
-        } else {
-            *std::get<uint8_t*>(logicVar) += 1;
-        }
-    }
-    Rando::Context::GetInstance()->GetLogic()->UpdateHelpers();
+    auto ctx = Rando::Context::GetInstance();
+    ctx->ApplyItemEffect(StaticData::RetrieveItem(randomizerGet), true);
+    ctx->GetLogic()->SetInLogic(logicVal, true);
+    ctx->GetLogic()->UpdateHelpers();
 }
 
 void Item::UndoEffect() const {
-    if (RHT_FOREST_TEMPLE_KEY_RING <= hintKey && hintKey <= RHT_GANONS_CASTLE_KEY_RING) {
-        *std::get<uint8_t*>(logicVar) -= 10;
-    } else {
-        if (std::holds_alternative<bool*>(logicVar)) {
-            *std::get<bool*>(logicVar) = false;
-        } else {
-            *std::get<uint8_t*>(logicVar) -= 1;
-        }
-    }
-    Rando::Context::GetInstance()->GetLogic()->UpdateHelpers();
+    auto ctx = Rando::Context::GetInstance();
+    ctx->ApplyItemEffect(StaticData::RetrieveItem(randomizerGet), false);
+    ctx->GetLogic()->SetInLogic(logicVal, false);
+    ctx->GetLogic()->UpdateHelpers();
 }
 
 const Text& Item::GetName() const {
@@ -100,8 +67,8 @@ ItemType Item::GetItemType() const {
     return type;
 }
 
-std::variant<bool*, uint8_t*> Item::GetLogicVar() const {
-    return logicVar;
+LogicVal Item::GetLogicVal() const {
+    return logicVal;
 }
 
 RandomizerGet Item::GetRandomizerGet() const {
@@ -116,13 +83,14 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
     if (giEntry != nullptr) {
         return giEntry;
     }
+    auto ctx = Rando::Context::GetInstance();
     RandomizerGet actual = RG_NONE;
     const bool tycoonWallet =
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHOPSANITY) > RO_SHOPSANITY_ZERO_ITEMS;
     const u8 infiniteUpgrades = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_INFINITE_UPGRADES);
     switch (randomizerGet) {
         case RG_PROGRESSIVE_STICK_UPGRADE:
-            switch (CUR_UPG_VALUE(UPG_STICKS)) {
+            switch (ctx->CurrentUpgrade(UPG_STICKS)) {
                 case 0:
                     if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_DEKU_STICK_BAG)) {
                         actual = RG_DEKU_STICK_BAG;
@@ -151,7 +119,7 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
             }
             break;
         case RG_PROGRESSIVE_NUT_UPGRADE:
-            switch (CUR_UPG_VALUE(UPG_NUTS)) {
+            switch (ctx->CurrentUpgrade(UPG_NUTS)) {
                 case 0:
                     if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_DEKU_NUT_BAG)) {
                         actual = RG_DEKU_NUT_BAG;
@@ -180,7 +148,7 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
             }
             break;
         case RG_PROGRESSIVE_BOMB_BAG:
-            switch (CUR_UPG_VALUE(UPG_BOMB_BAG)) {
+            switch (ctx->CurrentUpgrade(UPG_BOMB_BAG)) {
                 case 0:
                     actual = RG_BOMB_BAG;
                     break;
@@ -207,7 +175,7 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
             }
             break;
         case RG_PROGRESSIVE_BOW:
-            switch (CUR_UPG_VALUE(UPG_QUIVER)) {
+            switch (ctx->CurrentUpgrade(UPG_QUIVER)) {
                 case 0:
                     actual = RG_FAIRY_BOW;
                     break;
@@ -234,7 +202,7 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
             }
             break;
         case RG_PROGRESSIVE_SLINGSHOT:
-            switch (CUR_UPG_VALUE(UPG_BULLET_BAG)) {
+            switch (ctx->CurrentUpgrade(UPG_BULLET_BAG)) {
                 case 0:
                     actual = RG_FAIRY_SLINGSHOT;
                     break;
@@ -261,7 +229,7 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
             }
             break;
         case RG_PROGRESSIVE_OCARINA:
-            switch (INV_CONTENT(ITEM_OCARINA_FAIRY)) {
+            switch (ctx->CurrentInventory(ITEM_OCARINA_FAIRY)) {
                 case ITEM_NONE:
                     actual = RG_FAIRY_OCARINA;
                     break;
@@ -274,7 +242,7 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
             }
             break;
         case RG_PROGRESSIVE_HOOKSHOT:
-            switch (INV_CONTENT(ITEM_HOOKSHOT)) {
+            switch (ctx->CurrentInventory(ITEM_HOOKSHOT)) {
                 case ITEM_NONE:
                     actual = RG_HOOKSHOT;
                     break;
@@ -287,7 +255,7 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
             }
             break;
         case RG_PROGRESSIVE_STRENGTH:
-            switch (CUR_UPG_VALUE(UPG_STRENGTH)) {
+            switch (ctx->CurrentUpgrade(UPG_STRENGTH)) {
                 case 0:
                     actual = RG_GORONS_BRACELET;
                     break;
@@ -303,11 +271,11 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
             }
             break;
         case RG_PROGRESSIVE_WALLET:
-            if (!Flags_GetRandomizerInf(RAND_INF_HAS_WALLET)) {
+            if (!ctx->CheckRandoInf(RAND_INF_HAS_WALLET)) {
                 actual = RG_CHILD_WALLET;
                 break;
             }
-            switch (CUR_UPG_VALUE(UPG_WALLET)) {
+            switch (ctx->CurrentUpgrade(UPG_WALLET)) {
                 case 0:
                     actual = RG_ADULT_WALLET;
                     break;
@@ -330,11 +298,11 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
             }
             break;
         case RG_PROGRESSIVE_SCALE:
-            if (!Flags_GetRandomizerInf(RAND_INF_CAN_SWIM)) {
+            if (!ctx->CheckRandoInf(RAND_INF_CAN_SWIM)) {
                 actual = RG_BRONZE_SCALE;
                 break;
             }
-            switch (CUR_UPG_VALUE(UPG_SCALE)) {
+            switch (ctx->CurrentUpgrade(UPG_SCALE)) {
                 case 0:
                     actual = RG_SILVER_SCALE;
                     break;
@@ -347,7 +315,7 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
             }
             break;
         case RG_PROGRESSIVE_MAGIC_METER:
-            switch (gSaveContext.magicLevel) {
+            switch (ctx->GetSaveContext()->magicLevel) {
                 case 0:
                     actual = RG_MAGIC_SINGLE;
                     break;
@@ -370,11 +338,11 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
            actual = RG_BIGGORON_SWORD;
            break;
         case RG_PROGRESSIVE_BOMBCHUS:
-            if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_NONE) {
+            if (ctx->CurrentInventory(ITEM_BOMBCHU) == ITEM_NONE) {
                 actual = RG_BOMBCHU_20;
             } else if (infiniteUpgrades != RO_INF_UPGRADES_OFF) {
                 actual = RG_BOMBCHU_INF;
-            } else if (AMMO(ITEM_BOMBCHU) < 5) {
+            } else if (ctx->GetAmmo(ITEM_BOMBCHU) < 5) {
                 actual = RG_BOMBCHU_10;
             } else {
                 actual = RG_BOMBCHU_5;

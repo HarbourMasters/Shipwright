@@ -1350,11 +1350,11 @@ void FileChoose_GenerateRandoSeed(GameState* thisx) {
         this->kbdY = 0;
         this->charIndex = 0;
         this->charBgAlpha = 0;
-        this->newFileNameCharCount = CVarGetInteger(CVAR_GENERAL("LinkDefaultName"), 0) ? 4 : 0;
+        this->newFileNameCharCount = CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) ? 4 : 0;
         this->nameEntryBoxPosX = 120;
         this->nameEntryBoxAlpha = 0;
         memcpy(Save_GetSaveMetaInfo(this->buttonIndex)->playerName,
-               CVarGetInteger(CVAR_GENERAL("LinkDefaultName"), 0) ? &linkName : &emptyName, 8);
+               CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) ? &linkName : &emptyName, 8);
         return;
     }
     if (!generating) {

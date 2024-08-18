@@ -41,6 +41,7 @@ tools/asmsplitter/c/*
 ctx.c
 tools/*dSYM/
 graphs/
+.netcoredbg_hist
 
 # Assets
 *.png

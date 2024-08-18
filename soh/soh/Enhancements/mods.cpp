@@ -32,6 +32,7 @@
 #include "src/overlays/actors/ovl_Fishing/z_fishing.h"
 #include "src/overlays/actors/ovl_Obj_Switch/z_obj_switch.h"
 #include "src/overlays/actors/ovl_Door_Shutter/z_door_shutter.h"
+#include "src/overlays/actors/ovl_Door_Gerudo/z_door_gerudo.h"
 #include "src/overlays/actors/ovl_En_Door/z_en_door.h"
 #include "objects/object_link_boy/object_link_boy.h"
 #include "objects/object_link_child/object_link_child.h"
@@ -344,7 +345,7 @@ void AutoSave(GetItemEntry itemEntry) {
                     case ITEM_BOMBCHU:
                     case ITEM_BOMBCHUS_5:
                     case ITEM_BOMBCHUS_20:
-                        if (!CVarGetInteger(CVAR_ENHANCEMENT("BombchuDrops"), 0)) {
+                        if (!CVarGetInteger(CVAR_ENHANCEMENT("EnableBombchuDrops"), 0)) {
                             performSave = true;
                         }
                         break;
