@@ -182,7 +182,7 @@ s16 func_80A9C6C0(PlayState* play, Actor* thisx) {
                 break;
             }
             if (this->actor.textId == 0x4014) {
-                if (play->msgCtx.choiceIndex == 0 && (CVarGetInteger(CVAR_ENHANCEMENT("EarlyEyeballFrog"), 0) && this->actor.textId == 0x4014)) {
+                if (play->msgCtx.choiceIndex == 0) {
                     if (!CVarGetInteger(CVAR_ENHANCEMENT("EarlyEyeballFrog"), 0)) {
                         EnKz_SetupGetItem(this, play);
                     }
