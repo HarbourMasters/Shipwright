@@ -31,7 +31,7 @@ void AreaTable_Init_DekuTree() {
                   Entrance(RR_DEKU_TREE_ENTRYWAY,          {[]{return true;}}),
                   Entrance(RR_DEKU_TREE_2F_MIDDLE_ROOM,    {[]{return true;}}),
                   Entrance(RR_DEKU_TREE_COMPASS_ROOM,      {[]{return true;}}),
-                  Entrance(RR_DEKU_TREE_BASEMENT_LOWER,    {[]{return Here(RR_DEKU_TREE_LOBBY, []{return logic->CanAdultAttack || logic->CanChildAttack || logic->Nuts;});}}),
+                  Entrance(RR_DEKU_TREE_BASEMENT_LOWER,    {[]{return Here(RR_DEKU_TREE_LOBBY, []{return logic->CanAdultAttack || logic->CanChildAttack || logic->CanUse(RG_NUTS);});}}),
                   Entrance(RR_DEKU_TREE_OUTSIDE_BOSS_ROOM, {[]{return false;}}),
                   Entrance(RR_DEKU_TREE_BOSS_ENTRYWAY,     {[]{return false;}}),
   });
@@ -180,7 +180,7 @@ void AreaTable_Init_DekuTree() {
                   //Locations
                   LOCATION(RC_DEKU_TREE_MQ_COMPASS_CHEST,   true),
                   LOCATION(RC_DEKU_TREE_MQ_GS_COMPASS_ROOM, logic->HookshotOrBoomerang &&
-                                                                               Here(RR_DEKU_TREE_MQ_COMPASS_ROOM, []{return logic->HasBombchus ||
+                                                                               Here(RR_DEKU_TREE_MQ_COMPASS_ROOM, []{return logic->CanUse(RG_BOMBCHU_5) ||
                                                                                (logic->Bombs && (logic->CanUse(RG_SONG_OF_TIME) || logic->IsAdult)) ||
                                                                                (logic->IsAdult && logic->CanUse(RG_MEGATON_HAMMER) && (logic->CanUse(RG_SONG_OF_TIME) || randoCtx->GetTrickOption(RT_DEKU_MQ_COMPASS_GS)));})),
   }, {
@@ -206,7 +206,7 @@ void AreaTable_Init_DekuTree() {
                   Entrance(RR_DEKU_TREE_MQ_BASEMENT_BACK_ROOM,        {[]{return Here(RR_DEKU_TREE_MQ_BASEMENT_WATER_ROOM_BACK, []{return (logic->IsChild && logic->CanUse(RG_STICKS)) || logic->CanUse(RG_DINS_FIRE) ||
                                                                                Here(RR_DEKU_TREE_MQ_BASEMENT_WATER_ROOM_FRONT, []{return logic->IsAdult && logic->CanUse(RG_FIRE_ARROWS);});}) &&
                                                                                  Here(RR_DEKU_TREE_MQ_BASEMENT_WATER_ROOM_BACK, []{return logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD) ||
-                                                                                  logic->CanUseProjectile || (logic->Nuts && logic->CanUse(RG_STICKS));});}}),
+                                                                                  logic->CanUseProjectile || (logic->CanUse(RG_NUTS) && logic->CanUse(RG_STICKS));});}}),
                   Entrance(RR_DEKU_TREE_MQ_BASEMENT_WATER_ROOM_FRONT, {[]{return true;}}),
   });
 
@@ -217,7 +217,7 @@ void AreaTable_Init_DekuTree() {
   }, {
                   //Exits
                   Entrance(RR_DEKU_TREE_MQ_BASEMENT_LEDGE,           {[]{return logic->IsChild;}}),
-                  Entrance(RR_DEKU_TREE_MQ_BASEMENT_WATER_ROOM_BACK, {[]{return (logic->IsChild && logic->CanUse(RG_KOKIRI_SWORD)) || logic->CanUseProjectile || (logic->Nuts && (logic->IsChild && logic->CanUse(RG_STICKS)));}}),
+                  Entrance(RR_DEKU_TREE_MQ_BASEMENT_WATER_ROOM_BACK, {[]{return (logic->IsChild && logic->CanUse(RG_KOKIRI_SWORD)) || logic->CanUseProjectile || (logic->CanUse(RG_NUTS) && (logic->IsChild && logic->CanUse(RG_STICKS)));}}),
   });
 
   areaTable[RR_DEKU_TREE_MQ_BASEMENT_LEDGE] = Area("Deku Tree MQ Basement Ledge", "Deku Tree", RA_DEKU_TREE, NO_DAY_NIGHT_CYCLE, {}, {
@@ -258,7 +258,7 @@ void AreaTable_Init_DekuTree() {
                  // Events
                  EventAccess(&logic->DekuTreeClear, { [] {
                                                   return logic->DekuTreeClear || (logic->HasBossSoul(RG_GOHMA_SOUL) && 
-                                                         (logic->CanJumpslash && (logic->Nuts || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_FAIRY_BOW) ||
+                                                         (logic->CanJumpslash && (logic->CanUse(RG_NUTS) || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_FAIRY_BOW) ||
                                                                            logic->HookshotOrBoomerang)));
                                               }}),
              },

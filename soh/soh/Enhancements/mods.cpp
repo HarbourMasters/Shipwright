@@ -32,6 +32,7 @@
 #include "src/overlays/actors/ovl_Fishing/z_fishing.h"
 #include "src/overlays/actors/ovl_Obj_Switch/z_obj_switch.h"
 #include "src/overlays/actors/ovl_Door_Shutter/z_door_shutter.h"
+#include "src/overlays/actors/ovl_Door_Gerudo/z_door_gerudo.h"
 #include "src/overlays/actors/ovl_En_Door/z_en_door.h"
 #include "objects/object_link_boy/object_link_boy.h"
 #include "objects/object_link_child/object_link_child.h"
@@ -344,7 +345,7 @@ void AutoSave(GetItemEntry itemEntry) {
                     case ITEM_BOMBCHU:
                     case ITEM_BOMBCHUS_5:
                     case ITEM_BOMBCHUS_20:
-                        if (!CVarGetInteger(CVAR_ENHANCEMENT("BombchuDrops"), 0)) {
+                        if (!CVarGetInteger(CVAR_ENHANCEMENT("EnableBombchuDrops"), 0)) {
                             performSave = true;
                         }
                         break;
@@ -1754,11 +1755,12 @@ void RegisterRandomizerCompasses() {
     });
 }
 
+extern "C" void func_8099485C(DoorGerudo* gerudoDoor, PlayState* play);
+
 void RegisterSkeletonKey() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* refActor) {
-        Actor* actor = static_cast<Actor*>(refActor);
-
         if (Flags_GetRandomizerInf(RAND_INF_HAS_SKELETON_KEY)) {
+            Actor* actor = static_cast<Actor*>(refActor);
             if (actor->id == ACTOR_EN_DOOR) {
                 EnDoor* door = (EnDoor*)actor;
                 door->lockTimer = 0;
@@ -1767,6 +1769,10 @@ void RegisterSkeletonKey() {
                 if (shutterDoor->doorType == SHUTTER_KEY_LOCKED) {
                     shutterDoor->unk_16E = 0;
                 }
+            } else if (actor->id == ACTOR_DOOR_GERUDO) {
+                DoorGerudo* gerudoDoor = (DoorGerudo*)actor;
+                gerudoDoor->actionFunc = func_8099485C;
+                gerudoDoor->dyna.actor.world.pos.y = gerudoDoor->dyna.actor.home.pos.y + 200.0f;
             }
         }
     });
