@@ -188,10 +188,7 @@ void WriteIngameSpoilerLog() {
         if (key == RC_GANON) {
             spoilerData.ItemLocations[spoilerItemIndex].CollectType = COLLECTTYPE_NEVER;
             spoilerData.ItemLocations[spoilerItemIndex].RevealType = REVEALTYPE_ALWAYS;
-        } else if (key == RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS) {
-            spoilerData.ItemLocations[spoilerItemIndex].CollectType = COLLECTTYPE_REPEATABLE;
-            spoilerData.ItemLocations[spoilerItemIndex].RevealType = REVEALTYPE_ALWAYS;
-        }
+        } 
         // Shops
         else if (loc->IsShop()) {
             if (ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_OFF)) {

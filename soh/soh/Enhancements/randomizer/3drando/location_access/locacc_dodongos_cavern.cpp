@@ -231,7 +231,7 @@ void AreaTable_Init_DodongosCavern() {
   }, {
                   //Locations
                   LOCATION(RC_DODONGOS_CAVERN_MQ_MAP_CHEST,                  true),
-                  LOCATION(RC_DODONGOS_CAVERN_MQ_COMPASS_CHEST,              logic->CanAdultAttack || logic->CanChildAttack || logic->Nuts),
+                  LOCATION(RC_DODONGOS_CAVERN_MQ_COMPASS_CHEST,              logic->CanAdultAttack || logic->CanChildAttack || logic->CanUse(RG_NUTS)),
                   LOCATION(RC_DODONGOS_CAVERN_MQ_LARVAE_ROOM_CHEST,          (logic->IsChild && logic->CanUse(RG_STICKS)) || logic->HasFireSource),
                   LOCATION(RC_DODONGOS_CAVERN_MQ_TORCH_PUZZLE_ROOM_CHEST,    logic->CanBlastOrSmash || (logic->IsChild && logic->CanUse(RG_STICKS)) || logic->CanUse(RG_DINS_FIRE) || (logic->IsAdult && (randoCtx->GetTrickOption(RT_DC_JUMP) || logic->HoverBoots || logic->Hookshot))),
                   LOCATION(RC_DODONGOS_CAVERN_MQ_TORCH_PUZZLE_ROOM_HEART,    logic->CanBlastOrSmash || (logic->IsChild && logic->CanUse(RG_STICKS)) || logic->CanUse(RG_DINS_FIRE) || (logic->IsAdult && (randoCtx->GetTrickOption(RT_DC_JUMP) || logic->HoverBoots || logic->Hookshot))),

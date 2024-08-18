@@ -107,7 +107,7 @@ void AreaTable_Init_DeathMountain() {
                   LOCATION(RC_GC_MAZE_LEFT_CHEST,        logic->CanUse(RG_MEGATON_HAMMER) || logic->CanUse(RG_SILVER_GAUNTLETS) || (randoCtx->GetTrickOption(RT_GC_LEFTMOST) && logic->HasExplosives && logic->CanUse(RG_HOVER_BOOTS))),
                   LOCATION(RC_GC_MAZE_CENTER_CHEST,      logic->CanBlastOrSmash  || logic->CanUse(RG_SILVER_GAUNTLETS)),
                   LOCATION(RC_GC_MAZE_RIGHT_CHEST,       logic->CanBlastOrSmash  || logic->CanUse(RG_SILVER_GAUNTLETS)),
-                  LOCATION(RC_GC_POT_FREESTANDING_POH,   logic->IsChild && logic->GoronCityChildFire && (logic->Bombs || (logic->GoronBracelet && randoCtx->GetTrickOption(RT_GC_POT_STRENGTH)) || (logic->HasBombchus && randoCtx->GetTrickOption(RT_GC_POT)))),
+                  LOCATION(RC_GC_POT_FREESTANDING_POH,   logic->IsChild && logic->GoronCityChildFire && (logic->Bombs || (logic->GoronBracelet && randoCtx->GetTrickOption(RT_GC_POT_STRENGTH)) || (logic->CanUse(RG_BOMBCHU_5) && randoCtx->GetTrickOption(RT_GC_POT)))),
                   LOCATION(RC_GC_ROLLING_GORON_AS_CHILD, logic->IsChild && (logic->HasExplosives || (logic->GoronBracelet && randoCtx->GetTrickOption(RT_GC_ROLLING_STRENGTH)))),
                   LOCATION(RC_GC_ROLLING_GORON_AS_ADULT, logic->StopGCRollingGoronAsAdult),
                   LOCATION(RC_GC_GS_BOULDER_MAZE,        logic->IsChild && logic->CanBlastOrSmash),
@@ -196,7 +196,7 @@ void AreaTable_Init_DeathMountain() {
                   //Exits
                   Entrance(RR_DMC_UPPER_NEARBY,         {[]{return true;}}),
                   Entrance(RR_DMC_LADDER_AREA_NEARBY,   {[]{return logic->FireTimer >= 16 || logic->Hearts >= 3;}}),
-                  Entrance(RR_DMC_CENTRAL_NEARBY,       {[]{return logic->IsAdult && logic->CanUse(RG_GORON_TUNIC) && logic->CanUse(RG_DISTANT_SCARECROW) && ((logic->EffectiveHealth > 2) || (logic->Fairy && randoCtx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF)) || logic->CanUse(RG_NAYRUS_LOVE));}}),
+                  Entrance(RR_DMC_CENTRAL_NEARBY,       {[]{return logic->IsAdult && logic->CanUse(RG_GORON_TUNIC) && logic->CanUse(RG_DISTANT_SCARECROW) && ((logic->EffectiveHealth > 2) || (logic->CanUse(RG_BOTTLE_WITH_FAIRY) && randoCtx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF)) || logic->CanUse(RG_NAYRUS_LOVE));}}),
                   Entrance(RR_DMC_LOWER_NEARBY,         {[]{return false;}}),
                   Entrance(RR_DMC_DISTANT_PLATFORM,     {[]{return (logic->FireTimer >= 48 && logic->Hearts >= 2) || logic->Hearts >= 3;}}),
   });

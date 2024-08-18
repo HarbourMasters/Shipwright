@@ -99,7 +99,7 @@ const std::vector<const char*> enhancementsCvars = {
     CVAR_ENHANCEMENT("BonkDamageMult"),
     CVAR_ENHANCEMENT("NoRandomDrops"),
     CVAR_ENHANCEMENT("NoHeartDrops"),
-    CVAR_ENHANCEMENT("BombchuDrops"),
+    CVAR_ENHANCEMENT("EnableBombchuDrops"),
     CVAR_ENHANCEMENT("GoronPot"),
     CVAR_ENHANCEMENT("FullHealthSpawn"),
     CVAR_ENHANCEMENT("DampeWin"),
@@ -218,6 +218,7 @@ const std::vector<const char*> enhancementsCvars = {
     CVAR_ENHANCEMENT("BowSlingshotAmmoFix"),
     CVAR_ENHANCEMENT("BetterFarore"),
     CVAR_ENHANCEMENT("DisableFirstPersonChus"),
+    CVAR_ENHANCEMENT("BetterBombchuShopping"),
     CVAR_ENHANCEMENT("HyperBosses"),
     CVAR_ENHANCEMENT("RupeeDash"),
     CVAR_ENHANCEMENT("RupeeDashInterval"),
@@ -713,6 +714,9 @@ const std::vector<PresetEntry> enhancedPresetEntries = {
 
     // Autosave
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("Autosave"), AUTOSAVE_LOCATION_AND_MAJOR_ITEMS),
+
+    // Bombchu shop doesn't sell out, and 10 bombchus cost 99 instead of 100
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("BetterBombchuShopping"), 1),
 };
 
 const std::vector<PresetEntry> randomizerPresetEntries = {

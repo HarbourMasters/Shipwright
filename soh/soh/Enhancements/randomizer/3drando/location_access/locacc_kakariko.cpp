@@ -19,7 +19,7 @@ void AreaTable_Init_Kakariko() {
                   LOCATION(RC_KAK_GS_SKULLTULA_HOUSE,          logic->IsChild && logic->AtNight && logic->CanGetNightTimeGS),
                   LOCATION(RC_KAK_GS_GUARDS_HOUSE,             logic->IsChild && logic->AtNight && logic->CanGetNightTimeGS),
                   LOCATION(RC_KAK_GS_TREE,                     logic->IsChild && logic->AtNight && logic->CanGetNightTimeGS),
-                  LOCATION(RC_KAK_GS_WATCHTOWER,               logic->IsChild && (logic->Slingshot || logic->HasBombchus || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_LONGSHOT) || (randoCtx->GetTrickOption(RT_KAK_TOWER_GS) && logic->CanJumpslash)) && logic->AtNight && logic->CanGetNightTimeGS),
+                  LOCATION(RC_KAK_GS_WATCHTOWER,               logic->IsChild && (logic->Slingshot || logic->CanUse(RG_BOMBCHU_5) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_LONGSHOT) || (randoCtx->GetTrickOption(RT_KAK_TOWER_GS) && logic->CanJumpslash)) && logic->AtNight && logic->CanGetNightTimeGS),
                 }, {
                   //Exits
                   Entrance(RR_HYRULE_FIELD,                {[]{return true;}}),
@@ -33,7 +33,7 @@ void AreaTable_Init_Kakariko() {
                   Entrance(RR_KAK_POTION_SHOP_FRONT,       {[]{return logic->AtDay || logic->IsChild;}}),
                   Entrance(RR_KAK_REDEAD_GROTTO,           {[]{return logic->CanOpenBombGrotto;}}),
                   Entrance(RR_KAK_IMPAS_LEDGE,             {[]{return (logic->IsChild && logic->AtDay) || logic->CanUse(RG_HOOKSHOT) || (logic->IsAdult && randoCtx->GetTrickOption(RT_VISIBLE_COLLISION));}}),
-                  Entrance(RR_KAK_ROOFTOP,                 {[]{return logic->CanUse(RG_HOOKSHOT) || (randoCtx->GetTrickOption(RT_KAK_MAN_ON_ROOF) && (logic->IsAdult || logic->AtDay || logic->Slingshot || logic->HasBombchus || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_LONGSHOT)));}}),
+                  Entrance(RR_KAK_ROOFTOP,                 {[]{return logic->CanUse(RG_HOOKSHOT) || (randoCtx->GetTrickOption(RT_KAK_MAN_ON_ROOF) && (logic->IsAdult || logic->AtDay || logic->Slingshot || logic->CanUse(RG_BOMBCHU_5) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_LONGSHOT)));}}),
                   Entrance(RR_KAK_IMPAS_ROOFTOP,           {[]{return logic->CanUse(RG_HOOKSHOT) || (randoCtx->GetTrickOption(RT_KAK_ROOFTOP_GS) && logic->CanUse(RG_HOVER_BOOTS));}}),
                   Entrance(RR_THE_GRAVEYARD,               {[]{return true;}}),
                   Entrance(RR_KAK_BEHIND_GATE,             {[]{return logic->IsAdult || (logic->KakarikoVillageGateOpen);}}),

@@ -794,6 +794,11 @@ void DrawEnhancementsMenu() {
                 UIWidgets::Tooltip("Explosions are now a static size, like in Majora's Mask and OoT3D. Makes bombchu hovering much easier.");
                 UIWidgets::PaddedEnhancementCheckbox("Prevent Bombchus Forcing First-Person", CVAR_ENHANCEMENT("DisableFirstPersonChus"), true, false);
                 UIWidgets::Tooltip("Prevent bombchus from forcing the camera into first-person mode when released.");
+                UIWidgets::PaddedEnhancementCheckbox("Better Bombchu Shopping", CVAR_ENHANCEMENT("BetterBombchuShopping"), true, false,
+                                                        IS_RANDO, "This setting is forcefully enabled when you are playing a randomizer.", UIWidgets::CheckboxGraphics::Checkmark);
+                UIWidgets::Tooltip("Bombchus do not sell out when bought, and a 10 pack of bombchus costs 99 rupees instead of 100."
+                "\n"
+                "Toggling while inside the shop will not change prices or restock any SOLD OUTs");
                 UIWidgets::PaddedEnhancementCheckbox("Aiming reticle for the bow/slingshot", CVAR_ENHANCEMENT("BowReticle"), true, false);
                 UIWidgets::Tooltip("Aiming with a bow or slingshot will display a reticle as with the hookshot when the projectile is ready to fire.");
                 if (UIWidgets::PaddedEnhancementCheckbox("Allow strength equipment to be toggled", CVAR_ENHANCEMENT("ToggleStrength"), true, false)) {
@@ -1072,7 +1077,7 @@ void DrawEnhancementsMenu() {
                     OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_ENABLE_BOMBCHU_DROPS) == 1;
                 static const char* forceEnableBombchuDropsText =
                     "This setting is forcefully enabled because a savefile\nwith \"Enable Bombchu Drops\" is loaded.";
-                UIWidgets::PaddedEnhancementCheckbox("Enable Bombchu Drops", CVAR_ENHANCEMENT("BombchuDrops"), true, false,
+                UIWidgets::PaddedEnhancementCheckbox("Enable Bombchu Drops", CVAR_ENHANCEMENT("EnableBombchuDrops"), true, false,
                                                         forceEnableBombchuDrops, forceEnableBombchuDropsText, UIWidgets::CheckboxGraphics::Checkmark);
                 UIWidgets::Tooltip("Bombchus will sometimes drop in place of bombs");
                 UIWidgets::PaddedEnhancementCheckbox("Trees Drop Sticks", CVAR_ENHANCEMENT("TreesDropSticks"), true, false);
