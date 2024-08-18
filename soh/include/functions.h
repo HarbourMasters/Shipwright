@@ -1257,6 +1257,8 @@ void SkelAnime_DrawFlexLod(PlayState* play, void** skeleton, Vec3s* jointTable, 
                            s32 dListIndex);
 void SkelAnime_DrawSkeletonOpa(PlayState* play, SkelAnime* skelAnime, OverrideLimbDrawOpa overrideLimbDraw,
                                PostLimbDrawOpa postLimbDraw, void* arg);
+Gfx* SkelAnime_DrawSkeleton2(PlayState* play, SkelAnime* skelAnime, OverrideLimbDrawOpa overrideLimbDraw,
+                                PostLimbDrawOpa postLimbDraw, void* arg, Gfx* gfx);
 void SkelAnime_DrawOpa(PlayState* play, void** skeleton, Vec3s* jointTable,
                        OverrideLimbDrawOpa overrideLimbDraw, PostLimbDrawOpa postLimbDraw, void* arg);
 void SkelAnime_DrawFlexOpa(PlayState* play, void** skeleton, Vec3s* jointTable, s32 dListCount,
@@ -2462,6 +2464,8 @@ void Message_DrawText(PlayState* play, Gfx** gfxP);
 
 void Interface_CreateQuadVertexGroup(Vtx* vtxList, s32 xStart, s32 yStart, s32 width, s32 height, u8 flippedH);
 void Interface_RandoRestoreSwordless(void);
+s32 Ship_CalcShouldDrawAndUpdate(PlayState* play, Actor* actor, Vec3f* projectedPos, f32 projectedW, bool* shouldDraw,
+                                 bool* shouldUpdate);
 
 //Pause Warp
 void PauseWarp_HandleSelection();
