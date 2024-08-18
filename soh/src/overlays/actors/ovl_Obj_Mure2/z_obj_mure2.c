@@ -5,6 +5,7 @@
  */
 
 #include "z_obj_mure2.h"
+#include "soh/OTRGlobals.h"
 
 #define FLAGS 0
 
