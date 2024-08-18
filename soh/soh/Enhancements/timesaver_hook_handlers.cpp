@@ -240,13 +240,14 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
                         // The switch in jabu that you are intended to press with a box to reach barrinade
                         // can be skipped by either a frame perfect roll open or with OI
                         // The One Point for that switch is used in common setups for the former and is required for the latter to work
-                        if (!(actor->params == 14848 && gPlayState->sceneNum == SCENE_JABU_JABU) || CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.GlitchAiding"), 0)){
-                            BgBdanSwitch* switchActor = static_cast<BgBdanSwitch*>(opt);
-                            switchActor->unk_1D8 = 0;
-                            switchActor->unk_1DA = 0;
-                            *should = false;
-                            RateLimitedSuccessChime();
+                        if (actor->params == 14848 && gPlayState->sceneNum == SCENE_JABU_JABU && !CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.GlitchAiding"), 0)){
+                            break;
                         }
+                        BgBdanSwitch* switchActor = static_cast<BgBdanSwitch*>(opt);
+                        switchActor->unk_1D8 = 0;
+                        switchActor->unk_1DA = 0;
+                        *should = false;
+                        RateLimitedSuccessChime();
                         break;
                     }
                     case ACTOR_BG_HIDAN_KOUSI: {
