@@ -201,8 +201,8 @@ std::vector<RandomizerCheck> GetAllEmptyLocations() {
 }
 
 bool IsBombchus(RandomizerGet item, bool includeShops = false){
-  return (item >= RG_BOMBCHU_5 && item <= RG_BOMBCHU_DROP) || item == RG_PROGRESSIVE_BOMBCHUS || 
-    (includeShops && (item == RG_BUY_BOMBCHU_10 || item == RG_BUY_BOMBCHU_20));
+  return (item >= RG_BOMBCHU_5 && item <= RG_BOMBCHU_20) || item == RG_PROGRESSIVE_BOMBCHUS || 
+    (includeShops && (item == RG_BUY_BOMBCHUS_10 || item == RG_BUY_BOMBCHUS_20));
 }
 
 bool IsBeatableWithout(RandomizerCheck excludedCheck, bool replaceItem, RandomizerGet ignore = RG_NONE){ //RANDOTODO make excludCheck an ItemLocation
@@ -244,7 +244,6 @@ std::vector<RandomizerCheck> GetAccessibleLocations(const std::vector<Randomizer
   //Variables for playthrough
   int gsCount = 0;
   const int maxGsCount = mode == SearchMode::GeneratePlaythrough ? GetMaxGSCount() : 0; //If generating playthrough want the max that's possibly useful, else doesn't matter
-  bool bombchusFound = false;
   std::vector<LogicVal> buyIgnores;
 
   //Variables for search
@@ -384,29 +383,23 @@ std::vector<RandomizerCheck> GetAccessibleLocations(const std::vector<Randomizer
               //Item is an advancement item, figure out if it should be added to this sphere
               if (!ctx->playthroughBeatable && location->GetPlacedItem().IsAdvancement()) {
                 ItemType type = location->GetPlacedItem().GetItemType();
-                bool bombchus = IsBombchus(locItem, true); //Is a bombchu location
 
                 //Decide whether to exclude this location
                 //This preprocessing is done to reduce the amount of searches performed in PareDownPlaythrough
                 //Want to exclude:
                 //1) Tokens after the last potentially useful one (the last one that gives an advancement item or last for token bridge)
-                //2) Bombchus after the first (including buy bombchus)
-                //3) Buy items of the same type, after the first (So only see Buy Deku Nut of any amount once)
+                //2) Buy items of the same type, after the first (So only see Buy Deku Nut of any amount once)
                 bool exclude = true;
                 //Exclude tokens after the last possibly useful one
                 if (type == ITEMTYPE_TOKEN && gsCount < maxGsCount) {
                   gsCount++;
                   exclude = false;
                 }
-                //Only print first bombchu location found
-                else if (bombchus && !bombchusFound) {
-                  bombchusFound = true;
-                  exclude = false;
-                }
+
                 //Handle buy items
                 //If ammo drops are off, don't do this step, since buyable ammo becomes logically important
                 // TODO: Reimplement Ammo Drops setting
-                else if (/*AmmoDrops.IsNot(AMMODROPS_NONE) &&*/ !(bombchus && bombchusFound) && type == ITEMTYPE_SHOP) {
+                else if (/*AmmoDrops.IsNot(AMMODROPS_NONE) &&*/ type == ITEMTYPE_SHOP) {
                   //Only check each buy item once
                   auto buyItem = location->GetPlacedItem().GetLogicVal();
                   //Buy item not in list to ignore, add it to list and write to playthrough
@@ -416,7 +409,7 @@ std::vector<RandomizerCheck> GetAccessibleLocations(const std::vector<Randomizer
                   }
                 }
                 //Add all other advancement items
-                else if (!bombchus && type != ITEMTYPE_TOKEN && (/*AmmoDrops.Is(AMMODROPS_NONE) ||*/ type != ITEMTYPE_SHOP)) {
+                else if (type != ITEMTYPE_TOKEN && (/*AmmoDrops.Is(AMMODROPS_NONE) ||*/ type != ITEMTYPE_SHOP)) {
                   exclude = false;
                 }
                 //Has not been excluded, add to playthrough

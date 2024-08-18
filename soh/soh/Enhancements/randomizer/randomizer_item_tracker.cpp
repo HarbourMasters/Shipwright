@@ -316,6 +316,11 @@ typedef enum {
     SECTION_DISPLAY_EXTENDED_SEPARATE
 } ItemTrackerExtendedDisplayType;
 
+typedef enum {
+    SECTION_DISPLAY_MINIMAL_HIDDEN,
+    SECTION_DISPLAY_MINIMAL_SEPARATE
+} ItemTrackerMinimalDisplayType;
+
 struct ItemTrackerNumbers {
   int currentCapacity;
   int maxCapacity;
@@ -911,6 +916,16 @@ void DrawNotes(bool resizeable = false) {
     ImGui::EndGroup();
 }
 
+void DrawTotalChecks() {
+    uint16_t totalChecks = CheckTracker::GetTotalChecks();
+    uint16_t totalChecksGotten = CheckTracker::GetTotalChecksGotten();
+
+    ImGui::BeginGroup();
+    ImGui::SetWindowFontScale(2.5);
+    ImGui::Text("Checks: %d/%d", totalChecksGotten, totalChecks);
+    ImGui::EndGroup();
+}
+
 // Windowing stuff
 ImVec4 ChromaKeyBackground = { 0, 0, 0, 0 }; // Float value, 1 = 255 in rgb value.
 void BeginFloatingWindows(std::string UniqueName, ImGuiWindowFlags flags = 0) {
@@ -1313,6 +1328,14 @@ void ItemTrackerWindow::DrawElement() {
             DrawNotes(true);
             EndFloatingWindows();
         }
+
+        if (CVarGetInteger("gTrackers.ItemTracker.TotalChecks.DisplayType", SECTION_DISPLAY_MINIMAL_HIDDEN) ==
+            SECTION_DISPLAY_MINIMAL_SEPARATE) {
+            ImGui::SetNextWindowSize(ImVec2(400, 300), ImGuiCond_FirstUseEver);
+            BeginFloatingWindows("Total Checks");
+            DrawTotalChecks();
+            EndFloatingWindows();
+        }
     }
 }
 
@@ -1324,6 +1347,7 @@ static const char* displayModes[2] = { "Always", "Combo Button Hold" };
 static const char* buttons[14] = { "A", "B", "C-Up", "C-Down", "C-Left", "C-Right", "L", "Z", "R", "Start", "D-Up", "D-Down", "D-Left", "D-Right" };
 static const char* displayTypes[3] = { "Hidden", "Main Window", "Separate" };
 static const char* extendedDisplayTypes[4] = { "Hidden", "Main Window", "Misc Window", "Separate" };
+static const char* minimalDisplayTypes[2] = { "Hidden", "Separate" };
 
 void ItemTrackerSettingsWindow::DrawElement() {
     ImGui::SetNextWindowSize(ImVec2(733, 472), ImGuiCond_FirstUseEver);
@@ -1456,6 +1480,10 @@ void ItemTrackerSettingsWindow::DrawElement() {
     }
 
     if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Fishing Pole", CVAR_TRACKER_ITEM("DisplayType.FishingPole"), extendedDisplayTypes, SECTION_DISPLAY_EXTENDED_HIDDEN)) {
+        shouldUpdateVectors = true;
+    }
+
+    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Total Checks", "gTrackers.ItemTracker.TotalChecks.DisplayType", minimalDisplayTypes, SECTION_DISPLAY_MINIMAL_HIDDEN)) {
         shouldUpdateVectors = true;
     }
 
