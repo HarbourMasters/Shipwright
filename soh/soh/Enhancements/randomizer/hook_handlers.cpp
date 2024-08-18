@@ -36,6 +36,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Ge1/z_en_ge1.h"
 #include "src/overlays/actors/ovl_En_Door/z_en_door.h"
 #include "src/overlays/actors/ovl_Door_Shutter/z_door_shutter.h"
+#include "src/overlays/actors/ovl_Door_Gerudo/z_door_gerudo.h"
 #include "src/overlays/actors/ovl_En_Xc/z_en_xc.h"
 #include "adult_trade_shuffle.h"
 #include "draw.h"
@@ -1683,6 +1684,8 @@ void RandomizerOnGameFrameUpdateHandler() {
     }
 }
 
+extern "C" void func_8099485C(DoorGerudo* gerudoDoor, PlayState* play);
+
 void RandomizerOnActorUpdateHandler(void* refActor) {
     Actor* actor = static_cast<Actor*>(refActor);
 
@@ -1695,6 +1698,10 @@ void RandomizerOnActorUpdateHandler(void* refActor) {
             if (shutterDoor->doorType == SHUTTER_KEY_LOCKED) {
                 shutterDoor->unk_16E = 0;
             }
+        } else if (actor->id == ACTOR_DOOR_GERUDO) {
+            DoorGerudo* gerudoDoor = (DoorGerudo*)actor;
+            gerudoDoor->actionFunc = func_8099485C;
+            gerudoDoor->dyna.actor.world.pos.y = gerudoDoor->dyna.actor.home.pos.y + 200.0f;
         }
     }
 
