@@ -250,6 +250,11 @@ void Settings::CreateOptionDescriptions() {
     mOptionDescriptions[RSK_SHUFFLE_FISHING_POLE] = "Shuffles the fishing pole into the item pool.\n"
         "\n"
         "The fishing pole is required to play the fishing pond minigame.";
+    mOptionDescriptions[RSK_INFINITE_UPGRADES] = "Adds upgrades that hold infinite quanities of items (bombs, arrows, etc.)\n"
+        "\n"
+        "Progressive - The infinite upgrades are obtained after getting the last normal capacity upgrade\n"
+        "\n"
+        "Condensed Progressive - The infinite upgrades are obtained as the first capacity upgrade (doesn't apply to the infinite wallet or to infinite magic)";
     mOptionDescriptions[RSK_SHUFFLE_DEKU_STICK_BAG] = "Shuffles the deku stick bag into the item pool.\n"
         "\n"
         "The deku stick bag is required to hold deku sticks.";
@@ -274,6 +279,7 @@ void Settings::CreateOptionDescriptions() {
         "Affordable prices per tier: starter = 10, adult = 105, giant = 205, tycoon = 505\n\n"
         "Use this to enable wallet tier locking, but make shop items not as expensive as they could be.";
     mOptionDescriptions[RSK_FISHSANITY] = "Off - Fish will not be shuffled. No changes will be made to fishing behavior.\n\n"
+        "Shuffle only Hyrule Loach - Allows you to earn an item by catching the hyrule loach at the fishing pond and giving it to the owner.\n\n"
         "Shuffle Fishing Pond - The fishing pond's fish will be shuffled. Catching a fish in the fishing pond will grant a reward.\n\n"
         "Shuffle Overworld Fish - Fish in generic grottos and Zora's Domain will be shuffled. Catching a fish in a bottle will give a reward.\n\n"
         "Shuffle Both - Both overworld fish and fish in the fishing pond will be shuffled.";
@@ -521,6 +527,8 @@ void Settings::CreateOptionDescriptions() {
         "Reading the diary of Dampé the gravekeeper as adult will tell you the location of one of the Hookshots.";
     mOptionDescriptions[RSK_GREG_HINT] =
         "Talking to the chest game owner after buying a key will tell you the location of Greg the Green Rupee.";
+    mOptionDescriptions[RSK_LOACH_HINT] =
+        "Talking to the fishing pond owner and asking to talk about something will tell you what's the reward for the Hyrule Loach.";
     mOptionDescriptions[RSK_SARIA_HINT] = "Talking to Saria either in person or through Saria's Song will tell you the "
                                           "location of a progressive magic meter.";
     mOptionDescriptions[RSK_FISHING_POLE_HINT] = "Talking to the fishing pond owner without the fishing pole will tell you its location.";
@@ -544,7 +552,8 @@ void Settings::CreateOptionDescriptions() {
     mOptionDescriptions[RSK_MASK_SHOP_HINT] = "Reading the mask shop sign will tell you rewards from showing masks at the Deku Theatre.";
     mOptionDescriptions[RSK_FULL_WALLETS] = "Start with a full wallet. All wallet upgrades come filled with rupees.";
     mOptionDescriptions[RSK_BOMBCHUS_IN_LOGIC] =
-        "Bombchus are properly considered in logic.\n"
+        "Bombchus are properly considered in logic. Without this setting, any Bombchu requirement"
+        " is filled by Bomb Bag + a renewable source of Bombchus\n"
         "\n"
         "The first Bombchu pack will always be 20, and subsequent packs will be "
         "5 or 10 based on how many you have.\n"
@@ -552,7 +561,10 @@ void Settings::CreateOptionDescriptions() {
         "\n"
         "Bombchu Bowling is opened by obtaining Bombchus.";
     mOptionDescriptions[RSK_ENABLE_BOMBCHU_DROPS] = "Once you obtain bombchus for the first time, refills can be found "
-                                                    "in bushes and other places where bomb drops can normally spawn.";
+                                                    "in bushes and other places where bomb drops can normally spawn."
+                                                    "\n"
+                                                    "If you have Bombchus in Logic disabled, you will also need a"
+                                                    "Bomb bag for bombchus to drop";
     mOptionDescriptions[RSK_BLUE_FIRE_ARROWS] =
         "Ice Arrows act like Blue Fire, making them able to melt red ice. "
         "Item placement logic will respect this option, so it might be required to use this to progress.";

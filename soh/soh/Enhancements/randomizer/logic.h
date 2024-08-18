@@ -32,15 +32,11 @@ class Logic {
 
     // Child item logic
     bool KokiriSword = false;
+    bool BulletBag = false;
     bool ZeldasLetter = false;
     bool WeirdEgg = false;
     bool HasBottle = false;
-    bool Bombchus = false;
-    bool Bombchus5 = false;
-    bool Bombchus10 = false;
-    bool Bombchus20 = false;
     bool MagicBean = false;
-    bool MagicBeanPack = false;
     bool RutosLetter = false;
     bool Boomerang = false;
     bool DinsFire = false;
@@ -59,7 +55,7 @@ class Logic {
     bool GoronTunic = false;
     bool ZoraTunic = false;
     bool Epona = false;
-    bool BigPoe = false;
+    //bool BigPoe = false; //unused
     bool GerudoToken = false;
     bool FireArrows = false;
     bool IceArrows = false;
@@ -90,20 +86,6 @@ class Logic {
     bool EyeballFrogAccess = false;
     bool EyedropsAccess = false;
     bool DisableTradeRevert = false;
-
-    // Songs
-    bool ZeldasLullaby = false;
-    bool SariasSong = false;
-    bool SunsSong = false;
-    bool SongOfStorms = false;
-    bool EponasSong = false;
-    bool SongOfTime = false;
-    bool MinuetOfForest = false;
-    bool BoleroOfFire = false;
-    bool SerenadeOfWater = false;
-    bool RequiemOfSpirit = false;
-    bool NocturneOfShadow = false;
-    bool PreludeOfLight = false;
 
     // Stones and Meddallions
     bool ForestMedallion = false;
@@ -140,8 +122,6 @@ class Logic {
     bool GregInLacsLogic = false;
 
     // Progressive Items
-    uint8_t ProgressiveStickBag = 0;
-    uint8_t ProgressiveNutBag = 0;
     uint8_t ProgressiveBulletBag = 0;
     uint8_t ProgressiveBombBag = 0;
     uint8_t ProgressiveMagic = 0;
@@ -171,9 +151,6 @@ class Logic {
     // Triforce Pieces
     uint8_t TriforcePieces = 0;
 
-    // Skeleton Key
-    bool SkeletonKey = false;
-
     // Boss Keys
     bool BossKeyForestTemple = false;
     bool BossKeyFireTemple = false;
@@ -191,37 +168,35 @@ class Logic {
     bool NoBottles = false;
 
     // Drops and Bottle Contents Access
-    bool DekuNutDrop = false;
     bool NutPot = false;
     bool NutCrate = false;
     bool DekuBabaNuts = false;
-    bool DekuStickDrop = false;
     bool StickPot = false;
     bool DekuBabaSticks = false;
-    bool BugsAccess = false;
     bool BugShrub = false;
     bool WanderingBugs = false;
     bool BugRock = false;
     bool BlueFireAccess = false;
-    bool FishAccess = false;
     bool FishGroup = false;
     bool LoneFish = false;
-    bool FairyAccess = false;
     bool GossipStoneFairy = false;
     bool BeanPlantFairy = false;
     bool ButterflyFairy = false;
     bool FairyPot = false;
     bool FreeFairies = false;
     bool FairyPond = false;
-    bool BombchuDrop = false;
     bool AmmoCanDrop = false;
-
+    bool BombchuRefill = false;
+    bool BombchusEnabled  = false;
     bool BuyBombchus = false;
+
     bool BuySeed = false;
     bool BuyArrow = false;
     bool BuyBomb = false;
     bool BuyMagicPotion = false;
-    bool MagicRefill = false;
+    bool BuyFish = false;
+    bool BuyBugs = false;
+    bool BuyFairy = false;
 
     uint8_t PieceOfHeart = 0;
     uint8_t HeartContainer = 0;
@@ -231,14 +206,13 @@ class Logic {
     /* These are used to simplify reading the logic, but need to be updated
     /  every time a base value is updated.                       */
 
-    bool Slingshot = false;
     bool Ocarina = false;
     bool OcarinaOfTime = false;
     bool BombBag = false;
     bool MagicMeter = false;
     bool Hookshot = false;
     bool Longshot = false;
-    bool Bow = false;
+    bool Quiver = false;
     bool GoronBracelet = false;
     bool SilverGauntlets = false;
     bool GoldenGauntlets = false;
@@ -254,15 +228,12 @@ class Logic {
     bool Scarecrow = false;
     bool DistantScarecrow = false;
 
+    bool Slingshot = false;
     bool Bombs = false;
+    bool Bow = false;
     bool DekuShield = false;
     bool HylianShield = false;
-    bool Nuts = false;
-    bool Sticks = false;
-    bool Bugs = false;
     bool BlueFire = false;
-    bool Fish = false;
-    bool Fairy = false;
     bool BottleWithBigPoe = false;
 
     bool OcarinaAButton      = false;
@@ -271,9 +242,8 @@ class Logic {
     bool OcarinaCUpButton    = false;
     bool OcarinaCDownButton  = false;
 
-    bool FoundBombchus = false;
-    bool CanPlayBowling = false;
-    bool HasBombchus = false;
+    bool CarpetMerchant = false;
+    bool CouldPlayBowling = false;
     bool HasExplosives = false;
     bool HasBoots = false;
     bool IsChild = false;
@@ -422,6 +392,7 @@ class Logic {
     void UpdateHelpers();
     bool CanUse(RandomizerGet itemName);
     bool HasProjectile(HasProjectileAge age);
+    bool HasItem(RandomizerGet itemName);
     bool HasBossSoul(RandomizerGet itemName);
     bool SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmount);
     bool SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmountGlitchless, uint8_t requiredAmountGlitched);
@@ -430,11 +401,16 @@ class Logic {
     bool CanKillEnemy(std::string enemy);
     bool CanPassEnemy(std::string enemy);
     bool EventsUpdated();
+    uint8_t BottleCount();
     void Reset();
+    void SetContext(std::shared_ptr<Context> _ctx);
+    bool GetInLogic(LogicVal logicVal);
+    void SetInLogic(LogicVal logicVal, bool remove);
 
   private:
     static bool IsMagicItem(RandomizerGet item);
     static bool IsMagicArrow(RandomizerGet item);
-    bool HasItem(RandomizerGet itemName);
+    std::shared_ptr<Context> ctx;
+    bool inLogic[LOGIC_MAX];
 }; // class Logic
 } // namespace Rando

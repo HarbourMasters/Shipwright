@@ -261,7 +261,6 @@ void RandomizerOnPlayerUpdateForRCQueueHandler() {
             rc != RC_SPIRIT_TEMPLE_SILVER_GAUNTLETS_CHEST &&
             rc != RC_MARKET_BOMBCHU_BOWLING_FIRST_PRIZE &&
             rc != RC_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE &&
-            rc != RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS &&
             // Always show ItemGet animation for ice traps
             !(getItemEntry.modIndex == MOD_RANDOMIZER && getItemEntry.getItemId == RG_ICE_TRAP) &&
             (
@@ -835,6 +834,10 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
                       Flags_GetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN);
             break;
         }
+        case VB_GIVE_BOMBCHUS_FROM_CARPET_SALESMAN: {
+            *should = RAND_GET_OPTION(RSK_BOMBCHUS_IN_LOGIC) == false || INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU;
+            break;
+        }
         case VB_GIVE_ITEM_FROM_MEDIGORON: {
             // fallthrough
         case VB_BE_ELIGIBLE_FOR_GIANTS_KNIFE_PURCHASE:
@@ -1110,6 +1113,24 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
                 *should = !Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_SPIRIT_TEMPLE);
             } else if (gPlayState->sceneNum == SCENE_SHADOW_TEMPLE_BOSS) {
                 *should = !Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_SHADOW_TEMPLE);
+            }
+            break;
+        }
+        case VB_DRAW_AMMO_COUNT: {
+            s16 item = *static_cast<s16*>(optionalArg);
+            // don't draw ammo count if you have the infinite upgrade
+            if (
+                (item == ITEM_NUT && Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_NUT_UPGRADE)) ||
+                (item == ITEM_STICK && Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_STICK_UPGRADE)) ||
+                (item == ITEM_BOMB && Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_BOMB_BAG)) ||
+                (
+                    (item == ITEM_BOW || item == ITEM_BOW_ARROW_FIRE || item == ITEM_BOW_ARROW_ICE || item == ITEM_BOW_ARROW_LIGHT) &&
+                    Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_QUIVER)
+                ) ||
+                (item == ITEM_SLINGSHOT && Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_BULLET_BAG)) ||
+                (item == ITEM_BOMBCHU && Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_BOMBCHUS))
+            ) {
+                *should = false;
             }
             break;
         }
@@ -1417,7 +1438,7 @@ void RandomizerOnActorInitHandler(void* actorRef) {
                 break;
             case EXITEM_BOMBCHUS_COUNTER:
             case EXITEM_BOMBCHUS_BOWLING:
-                rc = RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS;
+                //RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS was removed as a 3DS holdover not in anyones near term plans due to being pretty useless.
                 break;
             case EXITEM_BULLET_BAG:
                 rc = RC_LW_TARGET_IN_WOODS;
@@ -1446,7 +1467,7 @@ void RandomizerOnActorInitHandler(void* actorRef) {
 
     //consumable bags
     if (
-        actor->id = ACTOR_EN_ITEM00 &&
+        actor->id == ACTOR_EN_ITEM00 &&
         (
             (
                 RAND_GET_OPTION(RSK_SHUFFLE_DEKU_STICK_BAG) &&

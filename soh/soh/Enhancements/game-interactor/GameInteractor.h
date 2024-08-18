@@ -220,6 +220,28 @@ typedef enum {
     VB_GERUDOS_BE_FRIENDLY,
     // Vanilla condition: switch
     VB_GTG_GATE_BE_OPEN,
+    // Opt: *s16 (item id)
+    /* Vanilla condition:
+    In one case:
+    ```
+    true
+    ```
+    In the other case:
+    ```
+    (i == ITEM_STICK) ||
+    (i == ITEM_NUT) ||
+    (i == ITEM_BOMB) ||
+    (i == ITEM_BOW) ||
+    (
+        (i >= ITEM_BOW_ARROW_FIRE) &&
+        (i <= ITEM_BOW_ARROW_LIGHT)
+    ) ||
+    (i == ITEM_SLINGSHOT) ||
+    (i == ITEM_BOMBCHU) ||
+    (i == ITEM_BEAN)
+    ```
+    */
+    VB_DRAW_AMMO_COUNT,
 
     /*** Play Cutscenes ***/
 
@@ -291,6 +313,7 @@ typedef enum {
     VB_GIVE_ITEM_FROM_GORON,
     // Opt: *EnJs
     VB_GIVE_ITEM_FROM_CARPET_SALESMAN,
+    VB_GIVE_BOMBCHUS_FROM_CARPET_SALESMAN,
     // Opt: *EnGm
     VB_GIVE_ITEM_FROM_MEDIGORON,
     // Opt: *EnMs
