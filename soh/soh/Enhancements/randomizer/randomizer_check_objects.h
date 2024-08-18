@@ -6,7 +6,9 @@
 #include <vector>
 #include <map>
 
-#define TWO_ACTOR_PARAMS(a, b) (abs(a) << 16) | abs(b)
+// ABS macro to use since `std::abs` is not constexpr yet
+#define ABS(x) ((x) < 0 ? -(x) : (x))
+#define TWO_ACTOR_PARAMS(a, b) (ABS(a) << 16) | ABS(b)
 
 namespace RandomizerCheckObjects {
     bool AreaIsDungeon(RandomizerCheckArea area);

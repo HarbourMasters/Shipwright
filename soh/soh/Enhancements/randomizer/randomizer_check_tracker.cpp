@@ -138,6 +138,8 @@ u32 areasSpoiled = 0;
 bool showVOrMQ;
 s8 areaChecksGotten[RCAREA_INVALID]; //|     "Kokiri Forest (4/9)"
 s8 areaCheckTotals[RCAREA_INVALID];
+uint16_t totalChecks = 0;
+uint16_t totalChecksGotten = 0;
 bool optCollapseAll; // A bool that will collapse all checks once
 bool optExpandAll;       // A bool that will expand all checks once
 RandomizerCheck lastLocationChecked = RC_UNKNOWN_CHECK;
@@ -260,6 +262,24 @@ void TrySetAreas() {
     }
 }
 
+void CalculateTotals() {
+    totalChecks = 0;
+    totalChecksGotten = 0;
+
+    for (uint8_t i = 0; i < RCAREA_INVALID; i++) {
+        totalChecks += areaCheckTotals[i];
+        totalChecksGotten += areaChecksGotten[i];
+    }
+}
+
+uint16_t GetTotalChecks() {
+    return totalChecks;
+}
+
+uint16_t GetTotalChecksGotten() {
+    return totalChecksGotten;
+}
+
 void RecalculateAreaTotals() {
     for (auto [rcArea, checks] : checksByArea) {
         if (rcArea == RCAREA_INVALID) {
@@ -278,6 +298,9 @@ void RecalculateAreaTotals() {
             }
         }
     }
+
+    totalChecks = 0;
+    totalChecksGotten = 0;
 }
 
 void SetCheckCollected(RandomizerCheck rc) {
@@ -948,6 +971,10 @@ void CheckTrackerWindow::DrawElement() {
 
     UIWidgets::PaddedSeparator();
 
+    ImGui::Text("Total Checks: %d / %d", totalChecksGotten, totalChecks);
+
+    UIWidgets::PaddedSeparator();
+
     //Checks Section Lead-in
     ImGui::TableNextRow();
     ImGui::TableNextColumn();
@@ -1258,7 +1285,6 @@ bool IsCheckShuffled(RandomizerCheck rc) {
                 loc->GetQuest() == RCQUEST_VANILLA && OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(loc->GetScene())->IsVanilla()
                 ) &&
             (loc->GetRCType() != RCTYPE_SHOP || (showShops && loc->GetActorParams() > 0x03)) &&
-            (loc->GetRandomizerCheck() != RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS) &&
             (rc != RC_TRIFORCE_COMPLETED || !hideTriforceCompleted) &&
             (rc != RC_GIFT_FROM_SAGES || !IS_RANDO) &&
             (loc->GetRCType() != RCTYPE_SCRUB ||
@@ -1341,6 +1367,8 @@ void UpdateOrdering(RandomizerCheckArea rcArea) {
     if(checksByArea.contains(rcArea)) {
         std::sort(checksByArea.find(rcArea)->second.begin(), checksByArea.find(rcArea)->second.end(), CompareChecks);
     }
+
+    CalculateTotals();
 }
 
 bool IsEoDCheck(RandomizerCheckType type) {

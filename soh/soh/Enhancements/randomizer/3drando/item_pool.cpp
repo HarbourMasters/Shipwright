@@ -723,7 +723,6 @@ void GenerateItemPool() {
 
   //Fixed item locations
   ctx->PlaceItemInLocation(RC_HC_ZELDAS_LETTER, RG_ZELDAS_LETTER);
-  ctx->PlaceItemInLocation(RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS, RG_BOMBCHU_DROP);
 
   if (ctx->GetOption(RSK_SHUFFLE_KOKIRI_SWORD)) {
     AddItemToMainPool(RG_KOKIRI_SWORD);
