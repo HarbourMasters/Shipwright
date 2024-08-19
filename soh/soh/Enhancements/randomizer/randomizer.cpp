@@ -2835,866 +2835,244 @@ void CreateNaviRandoMessages() {
     }
 }
 
-void CreateIceTrapRandoMessages() {
-    CustomMessage IceTrapMessages[NUM_ICE_TRAP_MESSAGES] = {
-        {
-            "You are a %bFOOL%w!",
-            "Du bist ein %bDUMMKOPF%w!",
-            "%bPauvre fou%w..."
-        },
-        {
-            "You are a %bFOWL%w!",
-            "Du bist eine %bFrostbeule%w!",
-            "Tu es un %bglaçon%w, Harry!"
-        },
-        {
-            "%bFOOL%w!",
-            "%bDUMMKOPF%w!",
-            "%bSot%w que tu es."
-        },
-        {
-            "You just got %bPUNKED%w!",
-            "Du wurdest %beiskalt%w erwischt!",
-            "Ça me %bglace%w le sang!"
-        },
-        {
-            "Stay %bfrosty%w, @.",
-            "Es läuft Dir %beiskalt%w den Rücken&hinunter, @.",
-            "%bReste au frais%w, @."
-        },
-        {
-            "Take a %bchill pill%w, @.",
-            "Bleib %bcool%w, @.",
-            "Et c'est la douche %bfroide%w!"
-        },
-        {
-            "%bWinter%w is coming.",
-            "Der %bWinter%w naht.",
-            "L'%bhiver%w vient."
-        },
-        {
-            "%bICE%w to see you, @.",
-            "Alles %bcool%w im Pool?",
-            "%bGlacier%w!"
-        },
-        {
-            "Feeling a little %rhot%w under the collar?&%bLet's fix that%w.",
-            "%bAbkühlung gefällig%w?",
-            "%Ça en jette un %bfroid%w."
-        },
-        {
-            "It's a %bcold day%w in the Evil Realm.",
-            "Es ist ein %kalter%w Tag im Herzen&von Hyrule.",
-            "Est-ce que tu as déjà eu des sueurs&%bfroides%w?"
-        },
-        {
-            "Getting %bcold feet%w?", "Bekommst Du etwa %bkalte%w Füße?",
-            "La vengeance est un plat qui se mange&%bfroid%w!"
-        },
-        {
-            "Say hello to the %bZoras%w for me!", "Sag den %bZoras%w viele Grüße von mir!",
-            "Dit bonjour aux %bZoras%w pour moi!"
-        },
-        {
-            "Can you keep a %bcool head%w?",
-            "Bewahre einen %bkühlen%w! Kopf.",
-            "Il faut parfois savoir garder la tête&%bfroide%w!"
-        },
-        {
-            "Ganondorf used %bIce Trap%w!&It's super effective!",
-            "Ganondorf setzt %bEisstrahl%w ein.&Das ist sehr effektiv!",
-            "Ganondorf utilise %bPiège de Glace%w!&C'est super efficace!"
-        },
-        {
-            "Allow me to break the %bice%w!",
-            "Ein Lächeln ist der beste Weg,&um das %bEis%w zu brechen!",
-            "Laisse moi briser la %bglace%w!"
-        },
-        {
-            "%bCold pun%w.",
-            "%bEiskalt%w lässt du meine Seele&erfrier'n.",
-            "Balance man...,&Cadence man...,&Trace la %bglace%w...,&c'est le Cooooolllll Rasta!"
-        },
-        {
-            "The %bTitanic%w would be scared of you,&@.",
-            "Die %bTitanic%w hätte Angst vor Dir,&@.",
-            "Le %bTitanic%w aurait peur de toi,&@."
-        },
-        {
-            "Oh no!",
-            "Oh nein!",
-            "Oh non!"
-        },
-        {
-            "Uh oh!",
-            "",
-            ""
-        },
-        {
-            "What killed the dinosaurs?&The %bICE%w age!",
-            "Was die Dinosaurier getötet hat?&Die %bEiszeit%w!",
-            "Qu'est-ce qui a tué les dinosaures?&L'ère %bglacière%w!"
-        },
-        {
-            "Knock knock. Who's there? Ice. Ice&who? Ice see that you're a %bFOOL%w.",
-            "Nachts ist es %bkälter%w als draußen.",
-            "L'imbécile réfléchit uniquement quand il&s'observe dans la %bglace%w."
-        },
-        {
-            "Never gonna %bgive you up%w. Never&gonna %blet you down%w. Never gonna&run around and %bdesert you%w.",
-            "Never gonna %bgive you up%w. Never&gonna %blet you down%w. Never gonna&run around and %bdesert you%w.",
-            "Never gonna %bgive you up%w. Never&gonna %blet you down%w. Never gonna&run around and %bdesert you%w."
-        },
-        {
-            "Thank you %b@%w!&But your item is in another castle!",
-            "Danke %b@%w!&Aber der Gegenstand ist in&einem anderem Schloß!",
-            "Merci %b@%w!&Mais ton objet est dans un autre&château!"
-        },
-        {
-            "%bFREEZE%w! Don't move!",
-            "Kalt. Kalt. Kälter. %bEISKALT%w!",
-            "J'espère que ça ne te fait ni chaud, ni&%bfroid%w."
-        },
-        {
-            "Wouldn't it be %bice%w if we were colder?",
-            "",
-            ""
-        },
-        {
-            "Greetings from %bSnowhead%w! Wish you were here",
-            "",
-            ""
-        },
-        {
-            "Too %bcool%w for you?",
-            "",
-            ""
-        },
-        {
-            "%bIce%w, %bice%w, baby...",
-            "",
-            ""
-        },
-        {
-            "Time to break the %bice%w.",
-            "",
-            ""
-        },
-        {
-            "We wish that you would read this...&We wish that you would read this...&But we set our bar low.",
-            "",
-            ""
-        },
-        {
-            "%bFreeze%w and put your hands in the air!",
-            "",
-            ""
-        },
-        {
-            "%bIce%w to meet you!",
-            "",
-            ""
-        },
-        {
-            "Do you want to %bfreeze%w a snowman?",
-            "",
-            ""
-        },
-        {
-            "Isn't there a %bmansion%w around here?",
-            "",
-            ""
-        },
-        {
-            "Now you know how %bKing Zora%w feels",
-            "",
-            ""
-        },
-        {
-            "May the %bFrost%w be with you.",
-            "",
-            ""
-        },
-        {
-            "Carpe diem. %bFreeze%w the day.",
-            "",
-            ""
-        },
-        {
-            "There %bsnow%w place like home.",
-            "",
-            ""
-        },
-        {
-            "That'll do, %bice%w. That'll do.",
-            "",
-            ""
-        },
-        {
-            "All that is %bcold%w does not glitter,&Not all those who wander are %bfrost%w.",
-            "",
-            ""
-        },
-        {
-            "I Used To Be An Adventurer Like You.&Then I Took An %bIcetrap%w To The Knee.",
-            "",
-            ""
-        },
-        {
-            "Would you like %bice%w with that?",
-            "",
-            ""
-        },
-        {
-            "You have obtained the %bIce%w Medallion!",
-            "",
-            ""
-        },
-        {
-            "Quick, do a %bZora%w impression!",
-            "",
-            ""
-        },
-        {
-            "One item %bon the rocks%w!",//would be better if it could display the name of the item
-            "",
-            ""
-        },
-        {
-            "How much does a polar bear weigh?&Enough to break the %bice%w.",
-            "",
-            ""
-        },
-        {
-            "You got Din's %bIce%w!",
-            "",
-            ""
-        },
-        {
-            "You got Nayru's %bCold%w!",
-            "",
-            ""
-        },
-        {
-            "You got Farore's %bFreeze%w!",
-            "",
-            ""
-        },
-        {
-            "KEKW",
-            "KEKW",
-            "KEKW"
-        },
-        {
-            "You just got %bICE TRAPPED%w! Tag your friends to totally %bICE TRAP%w them!",
-            "",
-            ""
-        },
-        {
-            "Are you okay, @? You're being %bcold%w today.",
-            "",
-            ""
-        },
-        {
-            "In a moment, your game might experience some %bfreezing%w.",
-            "",
-            ""
-        },
-        {
-            "Breeze? Trees? Squeeze? No, it's a %bfreeze%w!",
-            "",
-            ""
-        },
-        {
-            "After collecting this item, @ was assaulted in %bcold%w blood.",
-            "",
-            ""
-        },
-        {
-            "Only %bchill%w vibes around here!",
-            "",
-            ""
-        },
-        {
-            "Here's a %bcool%w gift for you!",
-            "",
-            ""
-        },
-        {
-            "Aha! You THOUGHT.",
-            "",
-            ""
-        },
-        {
-            "Stay hydrated and brush your teeth!",
-            "",
-            ""
-        },
-        {
-            "Isn't it too hot here? Let's turn the %bAC%w on.",
-            "",
-            ""
-        },
-        {
-            "One serving of %bcold%w @, coming right up!",
-            "",
-            ""
-        },
-        {
-            "Is it %bcold%w in here is that just me?",
-            "",
-            ""
-        },
-        {
-            "Yahaha! You found me!",
-            "",
-            ""
-        },
-        {
-            "You'd made a great %bice%w-tronaut!",
-            "",
-            ""
-        },
-        {
-            "That's just the tip of the %biceberg%w!",
-            "",
-            ""
-        },
-        {
-            "It's the triforce!&No, just kidding, it's an %bice trap%w.",
-            "",
-            ""
-        },
-        {
-            "WINNER!",
-            "",
-            ""
-        },
-        {
-            "LOSER!",
-            "",
-            ""
-        },
-        {
-            "Greetings from %bCold Miser%w!",
-            "",
-            ""
-        },
-        {
-            "Pardon me while I turn up the %bAC%w.",
-            "",
-            ""
-        },
-        {
-            "If you can't stand the %bcold%w, get out of the %bfreezer%w.",
-            "",
-            ""
-        },
-        {
-            "Oh, goodie! %bFrozen @%w for the main course!",
-            "",
-            ""
-        },
-        {
-            "You have %bfreeze%w power!",
-            "",
-            ""
-        },
-        {
-            "You obtained the %bIce Beam%w!&No wait, wrong game.",
-            "",
-            ""
-        },
-        {
-            "Here's to another lousy millenium!",
-            "",
-            ""
-        },
-        {
-            "You've activated my %btrap card%w!",
-            "",
-            ""
-        },
-        {
-            "I love %brefrigerators%w!",
-            "",
-            ""
-        },
-        {
-            "You expected an item,&BUT IT WAS I, AN %bICE TRAP%w!",
-            "",
-            ""
-        },
-        {
-            "It's dangerous to go alone! Take %bthis%w!",
-            "",
-            ""
-        },
-        {
-            "soh.exe has %bstopped responding%w.",
-            "",
-            ""
-        },
-        {
-            "Enough! My %bIce Trap%w thaws in the morning!",
-            "",
-            ""
-        },
-        {
-            "Nobody expects the span-%bice%w inquisition!",
-            "",
-            ""
-        },
-        {
-            "This is one %bcool%w item!",
-            "",
-            ""
-        },
-        {
-            "Say hello to my %blittle friend%w!",
-            "",
-            ""
-        },
-        {
-            "We made you an offer you %bcan't refuse%w.",
-            "",
-            ""
-        },
-        {
-            "Hyrule? More like %bHycool%w!",
-            "",
-            ""
-        },
-        {
-            "Ice puns are %bsnow%w problem!",
-            "",
-            ""
-        },
-        {
-            "This %bice%w is %bsnow%w joke!",
-            "",
-            ""
-        },
-        {
-            "There's no business like %bsnow%w business!",
-            "",
-            ""
-        },
-        {
-            "no, dude",
-            "",
-            ""
-        },
-        {
-            "N%bice%w trap ya got here!",
-            "",
-            ""
-        },
-        {
-            "Quick do your best impression of %bZoras Domain%w!",
-            "",
-            ""
-        },
-        {
-            "Ganon used %bice beam%w, it's super effective!",
-            "",
-            ""
-        },
-        {
-            "I was %bfrozen%w today.",
-            "",
-            ""
-        },
-        {
-            "You're not in a %bhurry%w, right?",
-            "",
-            ""
-        },
-        {
-            "It's a %btrap%w!",
-            "",
-            ""
-        },
-        {
-            "At least it's not a VC crash and only Link is %bfrozen%w!",
-            "",
-            ""
-        },
-        {
-            "Oh no! %bBRAIN FREEZE%w!",
-            "",
-            ""
-        },
-        {
-            "Looks like your game %bfroze%w! Nope just you!",
-            "",
-            ""
-        },
-        {
-            "PK %bFREEZE%w!",
-            "",
-            ""
-        },
-        {
-            "May I interest you in some %biced%w Tea?",
-            "",
-            ""
-        },
-        {
-            "Time for some Netflix and %bchill%w.",
-            "",
-            ""
-        },
-        {
-            "I know, I know...&%bFREEZE%w!",
-            "",
-            ""
-        },
-        {
-            "%bIce%w of you to drop by!",
-            "",
-            ""
-        },
-        {
-            "STOP!&You violated the %bThaw%w!",
-            "",
-            ""
-        },
-        {
-            "I wanted to give you a treasure,&but it looks like you got %bcold feet%w",
-            "",
-            ""
-        },
-        {
-            "You told me you wanted to deliver %bjust ice%w to Ganondorf!",
-            "",
-            ""
-        },
-        {
-            "You got the triforce!&This ancient artifact of divine power can grant any-^wait, no, sorry, it's just an ice trap.&My bad",
-            "",
-            ""
-        },
-        {
-            "Time to %bcool off%w!",
-            "",
-            ""
-        },
-        {
-            "The %bIce Cavern%w sends its regards.",
-            "",
-            ""
-        },
-        {
-            "Loading item, please %bwait%w...",
-            "",
-            ""
-        },
-        {
-            "Mash A+B to not %bdie%w.",
-            "",
-            ""
-        },
-        {
-            "Sorry, your item is in another location.", //would be better if it could have the name of the item
-            "",
-            ""
-        },
-        {
-            "You only wish this was %gGreg%w.",
-            "",
-            ""
-        },
-        {
-            "Do you want to drink a hot chocolate?",
-            "",
-            ""
-        },
-        {
-            "The %bcold%w never bothered me anyway",
-            "",
-            ""
-        },
-        {
-            "Hope you're too school for %bcool%w!",
-            "",
-            ""
-        },
-        {
-            "Be thankful this isn't %babsolute zero%w.",
-            "",
-            ""
-        },
-        {
-            "Did you know the F in ZFG stands for %bFreeze%w?",
-            "",
-            ""
-        },
-        {
-            "You got %bIce Age (2002)%w!",
-            "",
-            ""
-        },
-        {
-            "Now you can cast a %bspell%w you don't know",
-            "",
-            ""
-        },
-        {
-            "How's about a hero %bon the rocks%w?",
-            "",
-            ""
-        },
-        {
-            "Ain't no tunic for %bthis%w!",
-            "",
-            ""
-        },
-        {
-            "I knew you were %bpart metroid%w!",
-            "",
-            ""
-        },
-        {
-            "That's just the %bicing on the cake%w!",
-            "",
-            ""
-        },
-        {
-            "You're so %bcool%w, @!",
-            "",
-            ""
-        },
-        {
-            "You found %bdisappointment%w!",
-            "",
-            ""
-        },
-        {
-            "You got %bFOOLED%w!",
-            "",
-            ""
-        },
-        {
-            "Start Mashing.",
-            "",
-            ""
-        },
-        {
-            "This item will %bself-destruct%w in 5 seconds...",
-            "",
-            ""
-        },
-        {
-            "Remember, there may be some momentary %bdiscomfort%w.",
-            "",
-            ""
-        },
-        {
-            "In a perfect world&%bice traps%w like me would not exist,&but this is not a perfect world.",
-            "",
-            ""
-        },
-        {
-            "Gee, it sure is %bcold%w around here.",
-            "",
-            ""
-        },
-        {
-            "You tested the item with your %bice detector%w, it beeped.",
-            "",
-            ""
-        },
-        {
-            "You have found the way of the zero. The %bsub-zero%w.",
-            "",
-            ""
-        },
-        {
-            "Mweep... mweep... mweep...",
-            "",
-            ""
-        },
-        {
-            "Scum, %bfreezebag%w! I mean %bfreeze%w, scumbag!",
-            "",
-            ""
-        },
-        {
-            "Is it %bchilly%w in here or is it just %byou%w?",
-            "",
-            ""
-        },
-        {
-            "%bProceed%w",
-            "",
-            ""
-        },
-        {
-            "WHAT'S SHE GONNA DO, MAKE ME AN %b[Ice Cream]%w!?",
-            "",
-            ""
-        },
-        {
-            "You've met with a %bterrible fate%w, haven't you?",
-            "",
-            ""
-        },
-        {
-            "So I heard you like the Shining, here's how it %bends%w.",
-            "",
-            ""
-        },
-        {
-            "Minor routing mistake. %bI win%w.",
-            "",
-            ""
-        },
-        {
-            "Hold this %bL%w, @.",
-            "",
-            ""
-        },
-        {
-            "%bSKILL ISSUE%w",
-            "",
-            ""
-        },
-        {
-            "All you heat are belong to us",
-            "",
-            ""
-        },
-        {
-            "Wait a second, don't you already have %bthis item%w?",
-            "",
-            ""
-        },
-        {
-            "%bFreeze%w! We have you surrounded!",
-            "",
-            ""
-        },
-        {
-            "Error 404 - Item not %bfound%w.",
-            "",
-            ""
-        },
-        {
-            "Hydration break! Hey, who %bfroze%w my water?",
-            "",
-            ""
-        },
-        {
-            "Oops, wrong %bitem model%w.",
-            "",
-            ""
-        },
-        {
-            "Whoops! You have to put the item %bin your inventory%w.",
-            "",
-            ""
-        },
-        {
-            "You dropped the item, shattering it into %bshards of ice%w!",
-            "",
-            ""
-        },
-        {
-            "Is this... golden age Simpsons?&BECAUSE I'M ABOUT TO %bCHOKE A CHILD%w.",
-            "",
-            ""
-        },
-        {
-            "You are the weakest @, %bgoodbye%w!",
-            "",
-            ""
-        },
-        {
-            "Ugh... Why did we even randomize %bthis item%w?",
-            "",
-            ""
-        },
-        {
-            "The %bFrost Moon%w is rising...",
-            "",
-            ""
-        },
-        {
-            "According to all known laws&of physics and biology, there is no way&that @ should be able to survive&%bgetting fully encased in ice%w.^The cells in @'s body&would all die by the time they %bunthaw%w.&Of course, this is a video game,&so @ survives anyway...^%bProbably%w.",
-            "",
-            ""
-        },
-        {
-            "Okay, so stop me if you've heard this one&- a gamer and a bottle of %bliquid nitrogen%w&walk into a milk bar...",
-            "",
-            ""
-        },
-        {
-            "Lástima, es una %btrampa de hielo%w...&&Nobody expects the Spanish %bice trap%w!",
-            "",
-            ""
-        },
-        {
-            "Gee, it sure is %bBURR%wing around here.",
-            "",
-            ""
-        },
-        {
-            "Navi? Oh! I thought she was called %bNévé%w!",
-            "",
-            ""
-        },
-        {
-            "It's fine, @ knew this was a %btrap%w,&they're just using it to take damage&intentionally to manipulate RNG.",
-            "",
-            ""
-        },
-        {
-            "Unfortunately, the item has %bstopped%w.",
-            "",
-            ""
-        },
-        {
-            "This item is %bnot available%w in your country.",
-            "",
-            ""
-        },
-        {
-            "%bIce%w try. %b;)%w",
-            "",
-            ""
-        },
-        {
-            "D'oh, I %bmissed%w!",
-            "",
-            ""
-        },
-        {
-            "Where is my %bsuper suit%w?",
-            "",
-            ""
-        },
-        {
-            "%bTitanic's revenge%w.",
-            "",
-            ""
-        },
+CustomMessage Randomizer::GetIceTrapMessage() {
+    static const char* const englishIceTrapMessages[169] = {
+        "You are a %bFOOL%w!",
+        "You are a %bFOWL%w!",
+        "%bFOOL%w!",
+        "You just got %bPUNKED%w!",
+        "Stay %bfrosty%w, @.",
+        "Take a %bchill pill%w, @.",
+        "%bWinter%w is coming.",
+        "%bICE%w to see you, @.",
+        "Feeling a little %rhot%w under the collar?&%bLet's fix that%w.",
+        "It's a %bcold day%w in the Evil Realm.",
+        "Getting %bcold feet%w?",
+        "Say hello to the %bZoras%w for me!",
+        "Can you keep a %bcool head%w?",
+        "Ganondorf used %bIce Trap%w!&It's super effective!",
+        "Allow me to break the %bice%w!",
+        "%bCold pun%w.",
+        "The %bTitanic%w would be scared of you,&@.",
+        "Oh no!",
+        "Uh oh!",
+        "What killed the dinosaurs?&The %bICE%w age!",
+        "Knock knock. Who's there? Ice. Ice&who? Ice see that you're a %bFOOL%w.",
+        "Never gonna %bgive you up%w. Never&gonna %blet you down%w. Never gonna&run around and %bdesert you%w.",
+        "Thank you %b@%w!&But your item is in another castle!",
+        "%bFREEZE%w! Don't move!",
+        "Wouldn't it be %bice%w if we were colder?",
+        "Greetings from %bSnowhead%w! Wish you were here",
+        "Too %bcool%w for you?",
+        "%bIce%w, %bice%w, baby...",
+        "Time to break the %bice%w.",
+        "We wish that you would read this...&We wish that you would read this...&But we set our bar low.",
+        "%bFreeze%w and put your hands in the air!",
+        "%bIce%w to meet you!",
+        "Do you want to %bfreeze%w a snowman?",
+        "Isn't there a %bmansion%w around here?",
+        "Now you know how %bKing Zora%w feels",
+        "May the %bFrost%w be with you.",
+        "Carpe diem. %bFreeze%w the day.",
+        "There %bsnow%w place like home.",
+        "That'll do, %bice%w. That'll do.",
+        "All that is %bcold%w does not glitter,&Not all those who wander are %bfrost%w.",
+        "I Used To Be An Adventurer Like You.&Then I Took An %bIcetrap%w To The Knee.",
+        "Would you like %bice%w with that?",
+        "You have obtained the %bIce%w Medallion!",
+        "Quick, do a %bZora%w impression!",
+        "One item %bon the rocks%w!",//would be better if it could display the name of the item
+        "How much does a polar bear weigh?&Enough to break the %bice%w.",
+        "You got Din's %bIce%w!",
+        "You got Nayru's %bCold%w!",
+        "You got Farore's %bFreeze%w!",
+        "KEKW",
+        "You just got %bICE TRAPPED%w! Tag your friends to totally %bICE TRAP%w them!",
+        "Are you okay, @? You're being %bcold%w today.",
+        "In a moment, your game might experience some %bfreezing%w.",
+        "Breeze? Trees? Squeeze? No, it's a %bfreeze%w!",
+        "After collecting this item, @ was assaulted in %bcold%w blood.",
+        "Only %bchill%w vibes around here!",
+        "Here's a %bcool%w gift for you!",
+        "Aha! You THOUGHT.",
+        "Stay hydrated and brush your teeth!",
+        "Isn't it too hot here? Let's turn the %bAC%w on.",
+        "One serving of %bcold%w @, coming right up!",
+        "Is it %bcold%w in here is that just me?",
+        "Yahaha! You found me!",
+        "You'd made a great %bice%w-tronaut!",
+        "That's just the tip of the %biceberg%w!",
+        "It's the triforce!&No, just kidding, it's an %bice trap%w.",
+        "WINNER!",
+        "LOSER!",
+        "Greetings from %bCold Miser%w!",
+        "Pardon me while I turn up the %bAC%w.",
+        "If you can't stand the %bcold%w, get out of the %bfreezer%w.",
+        "Oh, goodie! %bFrozen @%w for the main course!",
+        "You have %bfreeze%w power!",
+        "You obtained the %bIce Beam%w!&No wait, wrong game.",
+        "Here's to another lousy millenium!",
+        "You've activated my %btrap card%w!",
+        "I love %brefrigerators%w!",
+        "You expected an item,&BUT IT WAS I, AN %bICE TRAP%w!",
+        "It's dangerous to go alone! Take %bthis%w!",
+        "soh.exe has %bstopped responding%w.",
+        "Enough! My %bIce Trap%w thaws in the morning!",
+        "Nobody expects the span-%bice%w inquisition!",
+        "This is one %bcool%w item!",
+        "Say hello to my %blittle friend%w!",
+        "We made you an offer you %bcan't refuse%w.",
+        "Hyrule? More like %bHycool%w!",
+        "Ice puns are %bsnow%w problem!",
+        "This %bice%w is %bsnow%w joke!",
+        "There's no business like %bsnow%w business!",
+        "no, dude",
+        "N%bice%w trap ya got here!",
+        "Quick do your best impression of %bZoras Domain%w!",
+        "Ganon used %bice beam%w, it's super effective!",
+        "I was %bfrozen%w today.",
+        "You're not in a %bhurry%w, right?",
+        "It's a %btrap%w!",
+        "At least it's not a VC crash and only Link is %bfrozen%w!",
+        "Oh no! %bBRAIN FREEZE%w!",
+        "Looks like your game %bfroze%w! Nope just you!",
+        "PK %bFREEZE%w!",
+        "May I interest you in some %biced%w Tea?",
+        "Time for some Netflix and %bchill%w.",
+        "I know, I know...&%bFREEZE%w!",
+        "%bIce%w of you to drop by!",
+        "STOP!&You violated the %bThaw%w!",
+        "I wanted to give you a treasure,&but it looks like you got %bcold feet%w",
+        "You told me you wanted to deliver %bjust ice%w to Ganondorf!",
+        "You got the triforce!&This ancient artifact of divine power can grant any-^wait, no, sorry, it's just an ice trap.&My bad",
+        "Time to %bcool off%w!",
+        "The %bIce Cavern%w sends its regards.",
+        "Loading item, please %bwait%w...",
+        "Mash A+B to not %bdie%w.",
+        "Sorry, your item is in another location.", //would be better if it could have the name of the item
+        "You only wish this was %gGreg%w.",
+        "Do you want to drink a hot chocolate?",
+        "The %bcold%w never bothered me anyway",
+        "Hope you're too school for %bcool%w!",
+        "Be thankful this isn't %babsolute zero%w.",
+        "Did you know the F in ZFG stands for %bFreeze%w?",
+        "You got %bIce Age (2002)%w!",
+        "Now you can cast a %bspell%w you don't know",
+        "How's about a hero %bon the rocks%w?",
+        "Ain't no tunic for %bthis%w!",
+        "I knew you were %bpart metroid%w!",
+        "That's just the %bicing on the cake%w!",
+        "You're so %bcool%w, @!",
+        "You found %bdisappointment%w!",
+        "You got %bFOOLED%w!",
+        "Start Mashing.",
+        "This item will %bself-destruct%w in 5 seconds...",
+        "Remember, there may be some momentary %bdiscomfort%w.",
+        "In a perfect world&%bice traps%w like me would not exist,&but this is not a perfect world.",
+        "Gee, it sure is %bcold%w around here.",
+        "You tested the item with your %bice detector%w, it beeped.", //would be better if it could have the name of the item
+        "You have found the way of the zero. The %bsub-zero%w.",
+        "Mweep... mweep... mweep...",
+        "Scum, %bfreezebag%w! I mean %bfreeze%w, scumbag!",
+        "Is it %bchilly%w in here or is it just %byou%w?",
+        "%bProceed%w",
+        "WHAT'S SHE GONNA DO, MAKE ME AN %b[Ice Cream]%w!?",
+        "You've met with a %bterrible fate%w, haven't you?",
+        "So I heard you like the Shining, here's how it %bends%w.",
+        "Minor routing mistake. %bI win%w.",
+        "Hold this %bL%w, @.",
+        "%bSKILL ISSUE%w",
+        "All you heat are belong to us",
+        "Wait a second, don't you already have %bthis item%w?",
+        "%bFreeze%w! We have you surrounded!",
+        "Error 404 - Item not %bfound%w.",
+        "Hydration break! Hey, who %bfroze%w my water?",
+        "Oops, wrong %bitem model%w.",
+        "Whoops! You have to put the item %bin your inventory%w.",
+        "You dropped the item, shattering it into %bshards of ice%w!", //would be better if it could have the name of the item
+        "Is this... golden age Simpsons?&BECAUSE I'M ABOUT TO %bCHOKE A CHILD%w.",
+        "You are the weakest @, %bgoodbye%w!",
+        "Ugh... Why did we even randomize %bthis item%w?",
+        "The %bFrost Moon%w is rising...",
+        "According to all known laws&of physics and biology, there is no way&that @ should be able to survive&%bgetting fully encased in ice%w.^The cells in @'s body&would all die by the time they %bunthaw%w.&Of course, this is a video game,&so @ survives anyway...^%bProbably%w.",
+        "Okay, so stop me if you've heard this one&- a gamer and a bottle of %bliquid nitrogen%w&walk into a milk bar...",
+        "Lástima, es una %btrampa de hielo%w...&&Nobody expects the Spanish %bice trap%w!",
+        "Gee, it sure is %bBURR%wing around here.",
+        "Navi? Oh! I thought she was called %bNévé%w!",
+        "It's fine, @ knew this was a %btrap%w,&they're just using it to take damage&intentionally to manipulate RNG.",
+        "Unfortunately, the item has %bstopped%w.", //would be better if it could have the name of the item
+        "This item is %bnot available%w in your country.", //would be better if it could have the name of the item
+        "%bIce%w try. %b;)%w",
+        "D'oh, I %bmissed%w!",
+        "Where is my %bsuper suit%w?",
+        "%bTitanic's revenge%w.",
     };
 
-    CustomMessageManager* customMessageManager = CustomMessageManager::Instance;
-    customMessageManager->AddCustomMessageTable(Randomizer::IceTrapRandoMessageTableID);
-    for (u8 i = 0; i <= (NUM_ICE_TRAP_MESSAGES - 1); i++) {
-        customMessageManager->CreateMessage(Randomizer::IceTrapRandoMessageTableID, i,
-                                            IceTrapMessages[i]);
+    static const char* const germanIceTrapMessages[23] = {
+        "Du bist ein %bDUMMKOPF%w!",
+        "Du bist eine %bFrostbeule%w!",
+        "%bDUMMKOPF%w!",
+        "Du wurdest %beiskalt%w erwischt!",
+        "Es läuft Dir %beiskalt%w den Rücken&hinunter, @.",
+        "Bleib %bcool%w, @.",
+        "Der %bWinter%w naht.",
+        "Alles %bcool%w im Pool?",
+        "%bAbkühlung gefällig%w?",
+        "Es ist ein %kalter%w Tag im Herzen&von Hyrule.",
+        "Bekommst Du etwa %bkalte%w Füße?",
+        "Sag den %bZoras%w viele Grüße von mir!",
+        "Bewahre einen %bkühlen%w! Kopf.",
+        "Ganondorf setzt %bEisstrahl%w ein.&Das ist sehr effektiv!",
+        "Ein Lächeln ist der beste Weg,&um das %bEis%w zu brechen!",
+        "%bEiskalt%w lässt du meine Seele&erfrier'n.",
+        "Die %bTitanic%w hätte Angst vor Dir,&@.",
+        "Oh nein!",
+        "Was die Dinosaurier getötet hat?&Die %bEiszeit%w!",
+        "Nachts ist es %bkälter%w als draußen.",
+        "Never gonna %bgive you up%w. Never&gonna %blet you down%w. Never gonna&run around and %bdesert you%w.",
+        "Danke %b@%w!&Aber der Gegenstand ist in&einem anderem Schloß!",
+        "Kalt. Kalt. Kälter. %bEISKALT%w!",
+    };
+
+    static const char* const frenchIceTrapMessages[23] = {
+        "%bPauvre fou%w...",
+        "Tu es un %bglaçon%w, Harry!",
+        "%bSot%w que tu es.",
+        "Ça me %bglace%w le sang!",
+        "%bReste au frais%w, @.",
+        "Et c'est la douche %bfroide%w!",
+        "L'%bhiver%w vient.",
+        "%bGlacier%w!",
+        "%Ça en jette un %bfroid%w.",
+        "Est-ce que tu as déjà eu des sueurs&%bfroides%w?",
+        "La vengeance est un plat qui se mange&%bfroid%w!",
+        "Dit bonjour aux %bZoras%w pour moi!",
+        "Il faut parfois savoir garder la tête&%bfroide%w!",
+        "Ganondorf utilise %bPiège de Glace%w!&C'est super efficace!",
+        "Laisse moi briser la %bglace%w!",
+        "Balance man...,&Cadence man...,&Trace la %bglace%w...,&c'est le Cooooolllll Rasta!",
+        "Le %bTitanic%w aurait peur de toi,&@.",
+        "Oh non!",
+        "Qu'est-ce qui a tué les dinosaures?&L'ère %bglacière%w!",
+        "L'imbécile réfléchit uniquement quand il&s'observe dans la %bglace%w.",
+        "Never gonna %bgive you up%w. Never&gonna %blet you down%w. Never gonna&run around and %bdesert you%w.",
+        "Merci %b@%w!&Mais ton objet est dans un autre&château!",
+        "J'espère que ça ne te fait ni chaud, ni&%bfroid%w.",
+    };
+
+    if (CVarGetInteger(CVAR_GENERAL("LetItSnow"), 0)) {
+        return CustomMessage(
+            /*english*/ "This year for Christmas, all&you get is %BCOAL%w!",
+            /*german*/  "This year for Christmas, all&you get is %BCOAL%w!",
+            /*french*/  "Pour Noël, cette année, tu&n'auras que du %BCHARBON!&%rJoyeux Noël%w!"
+        );
     }
 
-    // We only use this ice trap message for christmas, so we don't want it in the normal ice trap messages rotation
-    customMessageManager->CreateMessage(
-        Randomizer::IceTrapRandoMessageTableID, NUM_ICE_TRAP_MESSAGES + 1,
-        CustomMessage("This year for Christmas, all&you get is %BCOAL%w!",
-                      "This year for Christmas, all&you get is %BCOAL%w!",
-                      "Pour Noël, cette année, tu&n'auras que du %BCHARBON!&%rJoyeux Noël%w!"));
+    return CustomMessage(
+        RandomElement(englishIceTrapMessages),
+        RandomElement(germanIceTrapMessages),
+        RandomElement(frenchIceTrapMessages)
+    );
 }
 
 static int goronIDs[9] = { 0x3052, 0x3069, 0x306A, 0x306B, 0x306C, 0x306D, 0x306E, 0x306F, 0x3070 };
@@ -4079,7 +3457,6 @@ void Randomizer::CreateCustomMessages() {
     CreateRupeeMessages();
     CreateTriforcePieceMessages();
     CreateNaviRandoMessages();
-    CreateIceTrapRandoMessages();
     CreateFireTempleGoronMessages();
 }
 

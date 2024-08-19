@@ -2519,11 +2519,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
         Player* player = GET_PLAYER(play);
         if (textId == TEXT_RANDOMIZER_CUSTOM_ITEM) {
             if (player->getItemEntry.getItemId == RG_ICE_TRAP) {
-                u16 iceTrapTextId = Random(0, NUM_ICE_TRAP_MESSAGES);
-                messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::IceTrapRandoMessageTableID, iceTrapTextId);
-                if (CVarGetInteger(CVAR_GENERAL("LetItSnow"), 0)) {
-                    messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::IceTrapRandoMessageTableID, NUM_ICE_TRAP_MESSAGES + 1);
-                }
+                messageEntry = Randomizer::GetIceTrapMessage();
             } else if (player->getItemEntry.getItemId == RG_TRIFORCE_PIECE) {
                 messageEntry = Randomizer::GetTriforcePieceMessage();
             } else {
