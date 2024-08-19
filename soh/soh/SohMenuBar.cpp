@@ -51,6 +51,12 @@ std::string GetWindowButtonText(const char* text, bool menuOpen) {
     return buttonText;
 }
 
+static std::unordered_map<Ship::WindowBackend, const char*> windowBackendNames = {
+    { Ship::WindowBackend::FAST3D_DXGI_DX11, "DirectX" },
+    { Ship::WindowBackend::FAST3D_SDL_OPENGL, "OpenGL" },
+    { Ship::WindowBackend::FAST3D_SDL_METAL, "Metal" },
+};
+
 static const char* imguiScaleOptions[4] = { "Small", "Normal", "Large", "X-Large" };
 
     static const char* filters[3] = {
@@ -102,6 +108,24 @@ static const char* imguiScaleOptions[4] = { "Small", "Normal", "Large", "X-Large
 extern "C" SaveContext gSaveContext;
 
 namespace SohGui {
+
+std::unordered_map<Ship::WindowBackend, const char*> availableWindowBackendsMap;
+Ship::WindowBackend configWindowBackend;
+
+void UpdateWindowBackendObjects() {
+    Ship::WindowBackend runningWindowBackend = Ship::Context::GetInstance()->GetWindow()->GetWindowBackend();
+    int32_t configWindowBackendId = Ship::Context::GetInstance()->GetConfig()->GetInt("Window.Backend.Id", -1);
+    if (Ship::Context::GetInstance()->GetWindow()->IsAvailableWindowBackend(configWindowBackendId)) {
+        configWindowBackend = static_cast<Ship::WindowBackend>(configWindowBackendId);
+    } else {
+        configWindowBackend = runningWindowBackend;
+    }
+
+    auto availableWindowBackends = Ship::Context::GetInstance()->GetWindow()->GetAvailableWindowBackends();
+    for (auto& backend : *availableWindowBackends) {
+        availableWindowBackendsMap[backend] = windowBackendNames[backend];
+    }
+}
 
 void DrawMenuBarIcon() {
     static bool gameIconLoaded = false;
@@ -441,39 +465,24 @@ void DrawSettingsMenu() {
             UIWidgets::Tooltip("Changes the scaling of the ImGui menu elements.");
 
             UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
-            
-            static std::unordered_map<Ship::WindowBackend, const char*> windowBackendNames = {
-                { Ship::WindowBackend::FAST3D_DXGI_DX11, "DirectX" },
-                { Ship::WindowBackend::FAST3D_SDL_OPENGL, "OpenGL"},
-                { Ship::WindowBackend::FAST3D_SDL_METAL, "Metal" }
-            };
 
             ImGui::Text("Renderer API (Needs reload)");
-            Ship::WindowBackend runningWindowBackend = Ship::Context::GetInstance()->GetWindow()->GetWindowBackend();
-            Ship::WindowBackend configWindowBackend;
-            int configWindowBackendId = Ship::Context::GetInstance()->GetConfig()->GetInt("Window.Backend.Id", -1);
-            if (Ship::Context::GetInstance()->GetWindow()->IsAvailableWindowBackend(configWindowBackendId)) {
-                configWindowBackend = static_cast<Ship::WindowBackend>(configWindowBackendId);
-            } else {
-                configWindowBackend = runningWindowBackend;
-            }
 
-            if (Ship::Context::GetInstance()->GetWindow()->GetAvailableWindowBackends()->size() <= 1) {
+            if (availableWindowBackendsMap.size() <= 1) {
                 UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
             }
-            if (ImGui::BeginCombo("##RApi", windowBackendNames[configWindowBackend])) {
-                for (size_t i = 0; i < Ship::Context::GetInstance()->GetWindow()->GetAvailableWindowBackends()->size(); i++) {
-                    auto backend = Ship::Context::GetInstance()->GetWindow()->GetAvailableWindowBackends()->data()[i];
-                    if (ImGui::Selectable(windowBackendNames[backend], backend == configWindowBackend)) {
-                        Ship::Context::GetInstance()->GetConfig()->SetInt("Window.Backend.Id", static_cast<int>(backend));
-                        Ship::Context::GetInstance()->GetConfig()->SetString("Window.Backend.Name",
-                                                                            windowBackendNames[backend]);
+            if (ImGui::BeginCombo("##RApi", availableWindowBackendsMap[configWindowBackend])) {
+                for (auto backend : availableWindowBackendsMap) {
+                    if (ImGui::Selectable(backend.second, backend.first == configWindowBackend)) {
+                        Ship::Context::GetInstance()->GetConfig()->SetInt("Window.Backend.Id", static_cast<int>(backend.first));
+                        Ship::Context::GetInstance()->GetConfig()->SetString("Window.Backend.Name", backend.second);
                         Ship::Context::GetInstance()->GetConfig()->Save();
+                        UpdateWindowBackendObjects();
                     }
                 }
                 ImGui::EndCombo();
             }
-            if (Ship::Context::GetInstance()->GetWindow()->GetAvailableWindowBackends()->size() <= 1) {
+            if (availableWindowBackendsMap.size() <= 1) {
                 UIWidgets::ReEnableComponent("");
             }
 
@@ -1147,26 +1156,42 @@ void DrawEnhancementsMenu() {
             UIWidgets::Spacer(0);
 
             UIWidgets::PaddedEnhancementCheckbox("Disable LOD", CVAR_ENHANCEMENT("DisableLOD"), true, false);
-            UIWidgets::Tooltip("Turns off the Level of Detail setting, making models use their higher-poly variants at any distance");
-            if (UIWidgets::PaddedEnhancementCheckbox("Disable Draw Distance", CVAR_ENHANCEMENT("DisableDrawDistance"), true, false)) {
-                if (CVarGetInteger(CVAR_ENHANCEMENT("DisableDrawDistance"), 0) == 0) {
+            UIWidgets::Tooltip(
+                "Turns off the Level of Detail setting, making models use their higher-poly variants at any distance");
+            if (UIWidgets::EnhancementSliderInt("Increase Actor Draw Distance: %dx", "##IncreaseActorDrawDistance",
+                                                CVAR_ENHANCEMENT("DisableDrawDistance"), 1, 5, "", 1, true, false)) {
+                if (CVarGetInteger(CVAR_ENHANCEMENT("DisableDrawDistance"), 1) <= 1) {
                     CVarSetInteger(CVAR_ENHANCEMENT("DisableKokiriDrawDistance"), 0);
                 }
             }
-            UIWidgets::Tooltip("Turns off the objects draw distance, making objects being visible from a longer range");
-            if (CVarGetInteger(CVAR_ENHANCEMENT("DisableDrawDistance"), 0) == 1) {
-                UIWidgets::PaddedEnhancementCheckbox("Kokiri Draw Distance", CVAR_ENHANCEMENT("DisableKokiriDrawDistance"), true, false);
-                UIWidgets::Tooltip("The Kokiri are mystical beings that fade into view when approached\nEnabling this will remove their draw distance");
+            UIWidgets::Tooltip("Increases the range in which actors/objects are drawn");
+            if (CVarGetInteger(CVAR_ENHANCEMENT("DisableDrawDistance"), 1) > 1) {
+                UIWidgets::PaddedEnhancementCheckbox("Kokiri Draw Distance",
+                                                     CVAR_ENHANCEMENT("DisableKokiriDrawDistance"), true, false);
+                UIWidgets::Tooltip("The Kokiri are mystical beings that fade into view when approached\nEnabling this "
+                                   "will remove their draw distance");
             }
-            if (UIWidgets::PaddedEnhancementCheckbox("Show Age-Dependent Equipment", CVAR_ENHANCEMENT("EquimentAlwaysVisible"), true,
-                                                     false)) {
-                UpdatePatchHand();
-            }
-            UIWidgets::Tooltip("Makes all equipment visible, regardless of Age.");
-            if (CVarGetInteger(CVAR_ENHANCEMENT("EquimentAlwaysVisible"), 0) == 1) {
-				UIWidgets::PaddedEnhancementCheckbox("Scale Adult Equipment as Child", CVAR_ENHANCEMENT("ScaleAdultEquimentAsChild"), true, false);
-				UIWidgets::Tooltip("Scales all of the Adult Equipment, as well and moving some a bit, to fit on Child Link Better. May not work properly with some mods.");
-			}
+            UIWidgets::PaddedEnhancementCheckbox("Widescreen Actor Culling", CVAR_ENHANCEMENT("WidescreenActorCulling"),
+                                                 true, false);
+            UIWidgets::Tooltip("Adjusts the horizontal culling plane to account for widescreen resolutions");
+            UIWidgets::PaddedEnhancementCheckbox(
+                "Cull Glitch Useful Actors", CVAR_ENHANCEMENT("ExtendedCullingExcludeGlitchActors"), true, false,
+                !CVarGetInteger(CVAR_ENHANCEMENT("WidescreenActorCulling"), 0) &&
+                    CVarGetInteger(CVAR_ENHANCEMENT("DisableDrawDistance"), 1) <= 1,
+                "Requires Actor Draw Distance to be increased or Widescreen Actor Culling enabled");
+            UIWidgets::Tooltip(
+                "Exclude actors that are useful for glitches from the extended culling ranges.\n"
+                "Some actors may still draw in the extended ranges, but will not \"update\" so that certain "
+                "glitches that leverage the original culling requirements will still work.\n"
+                "\n"
+                "The following actors are excluded:\n"
+                "- White clothed Gerudos\n"
+                "- King Zora\n"
+                "- Gossip Stones\n"
+                "- Boulders\n"
+                "- Blue Warps\n"
+                "- Darunia\n"
+                "- Gold Skulltulas");
             UIWidgets::PaddedEnhancementCheckbox("N64 Mode", CVAR_LOW_RES_MODE, true, false);
             UIWidgets::Tooltip("Sets aspect ratio to 4:3 and lowers resolution to 240p, the N64's native resolution");
             UIWidgets::PaddedEnhancementCheckbox("Glitch line-up tick", CVAR_ENHANCEMENT("DrawLineupTick"), true, false);
@@ -2002,6 +2027,10 @@ void DrawRandomizerMenu() {
 
         ImGui::EndMenu();
     }
+}
+
+void SohMenuBar::InitElement() {
+    UpdateWindowBackendObjects();
 }
 
 void SohMenuBar::DrawElement() {

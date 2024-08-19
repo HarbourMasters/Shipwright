@@ -5,11 +5,11 @@ set(CMAKE_CXX_STANDARD 20 CACHE STRING "The C++ standard to use")
 
 set(CMAKE_OSX_DEPLOYMENT_TARGET "10.15" CACHE STRING "Minimum OS X deployment version")
 
-project(Ship VERSION 8.0.5 LANGUAGES C CXX)
+project(Ship VERSION 8.0.6 LANGUAGES C CXX)
 include(CMake/soh-cvars.cmake)
 include(CMake/lus-cvars.cmake)
-set(PROJECT_BUILD_NAME "MacReady Foxtrot" CACHE STRING "")
-set(PROJECT_TEAM "github.com/harbourmasters" CACHE STRING "")
+set(PROJECT_BUILD_NAME "MacReady Golf" CACHE STRING "" FORCE)
+set(PROJECT_TEAM "github.com/harbourmasters" CACHE STRING "" FORCE)
 
 set_property(DIRECTORY ${CMAKE_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT soh)
 add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/MP>)
