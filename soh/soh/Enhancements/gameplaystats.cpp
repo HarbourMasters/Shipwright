@@ -441,8 +441,6 @@ void DrawGameplayStatsHeader() {
     //if tag is empty (not a release build)
     if (gGitCommitTag[0] == 0) {
         GameplayStatsRow("Git Branch:", (char*)gGitBranch);
-    }
-    if (CVarGetInteger("gGameplayStats.ShowDebugInfo", 0)) {
         GameplayStatsRow("Git Commit Hash:", (char*)gGitCommitHash);
     }
     if (gSaveContext.sohStats.rtaTiming) {

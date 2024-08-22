@@ -32,16 +32,14 @@ void Title_PrintBuildInfo(Gfx** gfxp) {
     GfxPrint_SetColor(&printer, 131, 154, 255, 255);
 
     //if tag is empty (not a release build)
-    bool showGitBranch = gGitCommitTag[0] == 0;
-    bool showGitCommit = CVarGetInteger("gDebugEnabled", 0);
+    bool showGitInfo = gGitCommitTag[0] == 0;
 
-    GfxPrint_SetPos(&printer, 1, showGitBranch ? (showGitCommit ? 23 : 24) : (showGitCommit ? 24 : 25));
+    GfxPrint_SetPos(&printer, 1, showGitInfo ? 23 : 25);
     GfxPrint_Printf(&printer, "%s", gBuildVersion);
-    if (showGitBranch) {
-        GfxPrint_SetPos(&printer, 1, showGitCommit ? 24 : 25);
+    if (showGitInfo) {
+        GfxPrint_SetPos(&printer, 1, 24);
         GfxPrint_Printf(&printer, "Git Branch: %s", gGitBranch);
-    }
-    if (showGitCommit) {
+
         //truncate the commit to 7 characters
         char gGitCommitHashTruncated[8];
         strncpy(gGitCommitHashTruncated, gGitCommitHash, 7);
