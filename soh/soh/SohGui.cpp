@@ -43,7 +43,6 @@
 #include "Enhancements/resolution-editor/ResolutionEditor.h"
 #include "Enhancements/debugger/MessageViewer.h"
 
-bool ToggleAltAssetsAtEndOfFrame = false;
 bool isBetaQuestEnabled = false;
 
 extern "C" {
@@ -207,6 +206,9 @@ namespace SohGui {
     }
 
     void Destroy() {
+        auto gui = Ship::Context::GetInstance()->GetWindow()->GetGui();
+        gui->RemoveAllGuiWindows();
+        
         mModalWindow = nullptr;
         mAdvancedResolutionSettingsWindow = nullptr;
         mRandomizerSettingsWindow = nullptr;
