@@ -34,8 +34,6 @@ void Title_PrintBuildInfo(Gfx** gfxp) {
     //if tag is empty (not a release build)
     bool showGitInfo = gGitCommitTag[0] == 0;
 
-    GfxPrint_SetPos(&printer, 1, showGitInfo ? 23 : 25);
-    GfxPrint_Printf(&printer, "%s", gBuildVersion);
     if (showGitInfo) {
         GfxPrint_SetPos(&printer, 1, 24);
         GfxPrint_Printf(&printer, "Git Branch: %s", gGitBranch);
@@ -47,6 +45,9 @@ void Title_PrintBuildInfo(Gfx** gfxp) {
 
         GfxPrint_SetPos(&printer, 1, 25);
         GfxPrint_Printf(&printer, "Git Commit: %s", gGitCommitHashTruncated);
+    } else {
+        GfxPrint_SetPos(&printer, 1, 25);
+        GfxPrint_Printf(&printer, "%s", gBuildVersion);
     }
     GfxPrint_SetPos(&printer, 1, 26);
     GfxPrint_Printf(&printer, "%s", gBuildDate);
