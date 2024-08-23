@@ -563,7 +563,7 @@ Color_RGBA8 GetSkeletonKeyColor() {
     return color;
 }
 
-int test = 0;
+int skeletonKeyRotation = 0;
 
 extern "C" void Randomizer_DrawSkeletonKey(PlayState* play, GetItemEntry* getItemEntry) {
     OPEN_DISPS(play->state.gfxCtx);
@@ -572,24 +572,24 @@ extern "C" void Randomizer_DrawSkeletonKey(PlayState* play, GetItemEntry* getIte
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
-    test += 1;
+    skeletonKeyRotation += 1;
 
-    if (test > 40) {
-        test -= 80;
+    if (skeletonKeyRotation > 40) {
+        skeletonKeyRotation -= 80;
     }
 
-    Matrix_RotateZ(M_PI / 40 * test, MTXMODE_APPLY);
-    Matrix_RotateY(M_PI / 40 * test, MTXMODE_APPLY);
+    Matrix_RotateZ(M_PI / 40 * skeletonKeyRotation, MTXMODE_APPLY);
+    Matrix_RotateY(M_PI / 40 * skeletonKeyRotation, MTXMODE_APPLY);
 
     gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
               G_MTX_MODELVIEW | G_MTX_LOAD);
 
     gDPSetGrayscaleColor(POLY_OPA_DISP++, color.r, color.g, color.b, color.a);
     gSPGrayscale(POLY_OPA_DISP++, true);
-    
+
     gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiSmallKeyDL);
 
     gSPGrayscale(POLY_OPA_DISP++, false);
-    
+
     CLOSE_DISPS(play->state.gfxCtx);
 }
