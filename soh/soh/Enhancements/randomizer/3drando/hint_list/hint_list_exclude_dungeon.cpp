@@ -1224,6 +1224,10 @@ hintTextTable[RHT_FIRE_TEMPLE_NEAR_BOSS_CHEST] = HintText(CustomMessage("They sa
                                                          /*german*/ "",
                                                          /*french*/ "", {QM_RED, QM_GREEN}));
 
+    hintTextTable[RHT_SPIRIT_TEMPLE_MQ_HEART] = HintText(CustomMessage("They say that guarded by a #ring of flame# in the Spirit Temple is #[[1]]#.",
+                                                         /*german*/ "",
+                                                         /*french*/ "", {QM_RED, QM_GREEN}));
+
   /*--------------------------
   |      SHADOW TEMPLE       |
   ---------------------------*/

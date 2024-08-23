@@ -527,6 +527,8 @@ Dungeons::Dungeons() {
                         RC_SPIRIT_TEMPLE_MQ_GS_NINE_THRONES_ROOM_WEST,
                         RC_SPIRIT_TEMPLE_MQ_GS_NINE_THRONES_ROOM_NORTH,
                         RC_SPIRIT_TEMPLE_MQ_GS_SUN_BLOCK_ROOM,
+                        RC_SPIRIT_TEMPLE_MQ_CHILD_LEFT_HEART,
+                        RC_SPIRIT_TEMPLE_MQ_CHILD_RIGHT_HEART,
                     },
                     {
                         // Shared Locations
