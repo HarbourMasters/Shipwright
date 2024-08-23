@@ -425,257 +425,250 @@ InputViewerSettingsWindow::~InputViewerSettingsWindow() {
 }
 
 void InputViewerSettingsWindow::DrawElement() {
-    ImGui::SetNextWindowSize(ImVec2(500, 525), ImGuiCond_FirstUseEver);
+   // gInputViewer.Scale
+    UIWidgets::EnhancementSliderFloat("Input Viewer Scale: %.2f", "##Input", CVAR_INPUT_VIEWER("Scale"), 0.1f, 5.0f, "",
+                                        1.0f, false, true);
+    UIWidgets::Tooltip("Sets the on screen size of the input viewer");
 
-    if (ImGui::Begin("Input Viewer Settings", &mIsVisible, ImGuiWindowFlags_HorizontalScrollbar)) {
+    // gInputViewer.EnableDragging
+    UIWidgets::EnhancementCheckbox("Enable Dragging", CVAR_INPUT_VIEWER("EnableDragging"), false, "",
+                                    UIWidgets::CheckboxGraphics::Checkmark, true);
 
-        // gInputViewer.Scale
-        UIWidgets::EnhancementSliderFloat("Input Viewer Scale: %.2f", "##Input", CVAR_INPUT_VIEWER("Scale"), 0.1f, 5.0f, "",
-                                          1.0f, false, true);
-        UIWidgets::Tooltip("Sets the on screen size of the input viewer");
+    UIWidgets::PaddedSeparator(true, true);
 
-        // gInputViewer.EnableDragging
-        UIWidgets::EnhancementCheckbox("Enable Dragging", CVAR_INPUT_VIEWER("EnableDragging"), false, "",
-                                       UIWidgets::CheckboxGraphics::Checkmark, true);
+    // gInputViewer.ShowBackground
+    UIWidgets::EnhancementCheckbox("Show Background Layer", CVAR_INPUT_VIEWER("ShowBackground"), false, "",
+                                    UIWidgets::CheckboxGraphics::Checkmark, true);
+
+    UIWidgets::PaddedSeparator(true, true);
+
+    if (ImGui::CollapsingHeader("Buttons")) {
+
+        // gInputViewer.ButtonOutlineMode
+        UIWidgets::PaddedText("Button Outlines/Backgrounds", true, false);
+        UIWidgets::EnhancementCombobox(
+            CVAR_INPUT_VIEWER("ButtonOutlineMode"), buttonOutlineOptions, BUTTON_OUTLINE_NOT_PRESSED,
+            !CVarGetInteger(CVAR_INPUT_VIEWER("UseGlobalButtonOutlineMode"), 1), "",
+            CVarGetInteger(CVAR_INPUT_VIEWER("ButtonOutlineMode"), BUTTON_OUTLINE_NOT_PRESSED));
+        UIWidgets::Tooltip(
+            "Sets the desired visibility behavior for the button outline/background layers. Useful for "
+            "custom input viewers.");
+
+        // gInputViewer.UseGlobalButtonOutlineMode
+        UIWidgets::EnhancementCheckbox("Use for all buttons", CVAR_INPUT_VIEWER("UseGlobalButtonOutlineMode"), false, "",
+                                        UIWidgets::CheckboxGraphics::Checkmark, true);
+
+        UIWidgets::PaddedSeparator();
+
+        bool useIndividualOutlines = !CVarGetInteger(CVAR_INPUT_VIEWER("UseGlobalButtonOutlineMode"), 1);
+
+        // gInputViewer.ABtn
+        UIWidgets::EnhancementCheckbox("Show A-Button Layers", CVAR_INPUT_VIEWER("ABtn"), false, "",
+                                        UIWidgets::CheckboxGraphics::Checkmark, true);
+        if (useIndividualOutlines && CVarGetInteger(CVAR_INPUT_VIEWER("ABtn"), 1)) {
+            ImGui::Indent();
+            UIWidgets::EnhancementCombobox(CVAR_INPUT_VIEWER("ABtnOutlineMode"), buttonOutlineOptionsVerbose,
+                                            BUTTON_OUTLINE_NOT_PRESSED);
+            ImGui::Unindent();
+        }
+        // gInputViewer.BBtn
+        UIWidgets::EnhancementCheckbox("Show B-Button Layers", CVAR_INPUT_VIEWER("BBtn"), false, "",
+                                        UIWidgets::CheckboxGraphics::Checkmark, true);
+        if (useIndividualOutlines && CVarGetInteger(CVAR_INPUT_VIEWER("BBtn"), 1)) {
+            ImGui::Indent();
+            UIWidgets::EnhancementCombobox(CVAR_INPUT_VIEWER("BBtnOutlineMode"), buttonOutlineOptionsVerbose,
+                                            BUTTON_OUTLINE_NOT_PRESSED);
+            ImGui::Unindent();
+        }
+        // gInputViewer.CUp
+        UIWidgets::EnhancementCheckbox("Show C-Up Layers", CVAR_INPUT_VIEWER("CUp"), false, "",
+                                        UIWidgets::CheckboxGraphics::Checkmark, true);
+        if (useIndividualOutlines && CVarGetInteger(CVAR_INPUT_VIEWER("CUp"), 1)) {
+            ImGui::Indent();
+            UIWidgets::EnhancementCombobox(CVAR_INPUT_VIEWER("CUpOutlineMode"), buttonOutlineOptionsVerbose,
+                                            BUTTON_OUTLINE_NOT_PRESSED);
+            ImGui::Unindent();
+        }
+        // gInputViewer.CRight
+        UIWidgets::EnhancementCheckbox("Show C-Right Layers", CVAR_INPUT_VIEWER("CRight"), false, "",
+                                        UIWidgets::CheckboxGraphics::Checkmark, true);
+        if (useIndividualOutlines && CVarGetInteger(CVAR_INPUT_VIEWER("CRight"), 1)) {
+            ImGui::Indent();
+            UIWidgets::EnhancementCombobox(CVAR_INPUT_VIEWER("CRightOutlineMode"), buttonOutlineOptionsVerbose,
+                                            BUTTON_OUTLINE_NOT_PRESSED);
+            ImGui::Unindent();
+        }
+        // gInputViewer.CDown
+        UIWidgets::EnhancementCheckbox("Show C-Down Layers", CVAR_INPUT_VIEWER("CDown"), false, "",
+                                        UIWidgets::CheckboxGraphics::Checkmark, true);
+        if (useIndividualOutlines && CVarGetInteger(CVAR_INPUT_VIEWER("CDown"), 1)) {
+            ImGui::Indent();
+            UIWidgets::EnhancementCombobox(CVAR_INPUT_VIEWER("CDownOutlineMode"), buttonOutlineOptionsVerbose,
+                                            BUTTON_OUTLINE_NOT_PRESSED);
+            ImGui::Unindent();
+        }
+        // gInputViewer.CLeft
+        UIWidgets::EnhancementCheckbox("Show C-Left Layers", CVAR_INPUT_VIEWER("CLeft"), false, "",
+                                        UIWidgets::CheckboxGraphics::Checkmark, true);
+        if (useIndividualOutlines && CVarGetInteger(CVAR_INPUT_VIEWER("CLeft"), 1)) {
+            ImGui::Indent();
+            UIWidgets::EnhancementCombobox(CVAR_INPUT_VIEWER("CLeftOutlineMode"), buttonOutlineOptionsVerbose,
+                                            BUTTON_OUTLINE_NOT_PRESSED);
+            ImGui::Unindent();
+        }
+        // gInputViewer.LBtn
+        UIWidgets::EnhancementCheckbox("Show L-Button Layers", CVAR_INPUT_VIEWER("LBtn"), false, "",
+                                        UIWidgets::CheckboxGraphics::Checkmark, true);
+        if (useIndividualOutlines && CVarGetInteger(CVAR_INPUT_VIEWER("LBtn"), 1)) {
+            ImGui::Indent();
+            UIWidgets::EnhancementCombobox(CVAR_INPUT_VIEWER("LBtnOutlineMode"), buttonOutlineOptionsVerbose,
+                                            BUTTON_OUTLINE_NOT_PRESSED);
+            ImGui::Unindent();
+        }
+        // gInputViewer.RBtn
+        UIWidgets::EnhancementCheckbox("Show R-Button Layers", CVAR_INPUT_VIEWER("RBtn"), false, "",
+                                        UIWidgets::CheckboxGraphics::Checkmark, true);
+        if (useIndividualOutlines && CVarGetInteger(CVAR_INPUT_VIEWER("RBtn"), 1)) {
+            ImGui::Indent();
+            UIWidgets::EnhancementCombobox(CVAR_INPUT_VIEWER("RBtnOutlineMode"), buttonOutlineOptionsVerbose,
+                                            BUTTON_OUTLINE_NOT_PRESSED);
+            ImGui::Unindent();
+        }
+        // gInputViewer.ZBtn
+        UIWidgets::EnhancementCheckbox("Show Z-Button Layers", CVAR_INPUT_VIEWER("ZBtn"), false, "",
+                                        UIWidgets::CheckboxGraphics::Checkmark, true);
+        if (useIndividualOutlines && CVarGetInteger(CVAR_INPUT_VIEWER("ZBtn"), 1)) {
+            ImGui::Indent();
+            UIWidgets::EnhancementCombobox(CVAR_INPUT_VIEWER("ZBtnOutlineMode"), buttonOutlineOptionsVerbose,
+                                            BUTTON_OUTLINE_NOT_PRESSED);
+            ImGui::Unindent();
+        }
+        // gInputViewer.StartBtn
+        UIWidgets::EnhancementCheckbox("Show Start Button Layers", CVAR_INPUT_VIEWER("StartBtn"), false, "",
+                                        UIWidgets::CheckboxGraphics::Checkmark, true);
+        if (useIndividualOutlines && CVarGetInteger(CVAR_INPUT_VIEWER("StartBtn"), 1)) {
+            ImGui::Indent();
+            UIWidgets::EnhancementCombobox(CVAR_INPUT_VIEWER("StartBtnOutlineMode"), buttonOutlineOptionsVerbose,
+                                            BUTTON_OUTLINE_NOT_PRESSED);
+            ImGui::Unindent();
+        }
+        // gInputViewer.Dpad
+        UIWidgets::EnhancementCheckbox("Show D-Pad Layers", CVAR_INPUT_VIEWER("Dpad"), false, "",
+                                        UIWidgets::CheckboxGraphics::Checkmark, false);
+        if (useIndividualOutlines && CVarGetInteger(CVAR_INPUT_VIEWER("Dpad"), 0)) {
+            ImGui::Indent();
+            UIWidgets::EnhancementCombobox(CVAR_INPUT_VIEWER("DpadOutlineMode"), buttonOutlineOptionsVerbose,
+                                            BUTTON_OUTLINE_NOT_PRESSED);
+            ImGui::Unindent();
+        }
+        // gInputViewer.Mod1
+        UIWidgets::EnhancementCheckbox("Show Modifier Button 1 Layers", CVAR_INPUT_VIEWER("Mod1"), false, "",
+                                        UIWidgets::CheckboxGraphics::Checkmark, false);
+        if (useIndividualOutlines && CVarGetInteger(CVAR_INPUT_VIEWER("Mod1"), 0)) {
+            ImGui::Indent();
+            UIWidgets::EnhancementCombobox(CVAR_INPUT_VIEWER("Mod1OutlineMode"), buttonOutlineOptionsVerbose,
+                                            BUTTON_OUTLINE_NOT_PRESSED);
+            ImGui::Unindent();
+        }
+        // gInputViewer.Mod2
+        UIWidgets::EnhancementCheckbox("Show Modifier Button 2 Layers", CVAR_INPUT_VIEWER("Mod2"), false, "",
+                                        UIWidgets::CheckboxGraphics::Checkmark, false);
+        if (useIndividualOutlines && CVarGetInteger(CVAR_INPUT_VIEWER("Mod2"), 0)) {
+            ImGui::Indent();
+            UIWidgets::EnhancementCombobox(CVAR_INPUT_VIEWER("Mod2OutlineMode"), buttonOutlineOptionsVerbose,
+                                            BUTTON_OUTLINE_NOT_PRESSED);
+            ImGui::Unindent();
+        }
 
         UIWidgets::PaddedSeparator(true, true);
+    }
 
-        // gInputViewer.ShowBackground
-        UIWidgets::EnhancementCheckbox("Show Background Layer", CVAR_INPUT_VIEWER("ShowBackground"), false, "",
-                                       UIWidgets::CheckboxGraphics::Checkmark, true);
+    if (ImGui::CollapsingHeader("Analog Stick")) {
+        // gInputViewer.AnalogStick.VisibilityMode
+        UIWidgets::PaddedText("Analog Stick Visibility", true, false);
+        UIWidgets::EnhancementCombobox(CVAR_INPUT_VIEWER("AnalogStick.VisibilityMode"), stickModeOptions,
+                                        STICK_MODE_ALWAYS_SHOWN);
+        UIWidgets::Tooltip(
+            "Determines the conditions under which the moving layer of the analog stick texture is visible.");
 
+        // gInputViewer.AnalogStick.OutlineMode
+        UIWidgets::PaddedText("Analog Stick Outline/Background Visibility", true, false);
+        UIWidgets::EnhancementCombobox(CVAR_INPUT_VIEWER("AnalogStick.OutlineMode"), stickModeOptions,
+                                        STICK_MODE_ALWAYS_SHOWN);
+        UIWidgets::Tooltip(
+            "Determines the conditions under which the analog stick outline/background texture is visible.");
+
+        // gInputViewer.AnalogStick.Movement
+        UIWidgets::EnhancementSliderInt("Analog Stick Movement: %dpx", "##AnalogMovement",
+                                        CVAR_INPUT_VIEWER("AnalogStick.Movement"), 0, 200, "", 12, true);
+        UIWidgets::Tooltip(
+            "Sets the distance to move the analog stick in the input viewer. Useful for custom input viewers.");
         UIWidgets::PaddedSeparator(true, true);
+    }
 
-        if (ImGui::CollapsingHeader("Buttons")) {
+    if (ImGui::CollapsingHeader("Additional (\"Right\") Stick")) {
+        // gInputViewer.RightStick.VisibilityMode
+        UIWidgets::PaddedText("Right Stick Visibility", true, false);
+        UIWidgets::EnhancementCombobox(CVAR_INPUT_VIEWER("RightStick.VisibilityMode"), stickModeOptions,
+                                        STICK_MODE_HIDDEN_IN_DEADZONE);
+        UIWidgets::Tooltip(
+            "Determines the conditions under which the moving layer of the right stick texture is visible.");
 
-            // gInputViewer.ButtonOutlineMode
-            UIWidgets::PaddedText("Button Outlines/Backgrounds", true, false);
-            UIWidgets::EnhancementCombobox(
-                CVAR_INPUT_VIEWER("ButtonOutlineMode"), buttonOutlineOptions, BUTTON_OUTLINE_NOT_PRESSED,
-                !CVarGetInteger(CVAR_INPUT_VIEWER("UseGlobalButtonOutlineMode"), 1), "",
-                CVarGetInteger(CVAR_INPUT_VIEWER("ButtonOutlineMode"), BUTTON_OUTLINE_NOT_PRESSED));
+        // gInputViewer.RightStick.OutlineMode
+        UIWidgets::PaddedText("Right Stick Outline/Background Visibility", true, false);
+        UIWidgets::EnhancementCombobox(CVAR_INPUT_VIEWER("RightStick.OutlineMode"), stickModeOptions,
+                                        STICK_MODE_HIDDEN_IN_DEADZONE);
+        UIWidgets::Tooltip(
+            "Determines the conditions under which the right stick outline/background texture is visible.");
+
+        // gInputViewer.RightStick.Movement
+        UIWidgets::EnhancementSliderInt("Right Stick Movement: %dpx", "##RightMovement",
+                                        CVAR_INPUT_VIEWER("RightStick.Movement"), 0, 200, "", 7, true);
+        UIWidgets::Tooltip(
+            "Sets the distance to move the right stick in the input viewer. Useful for custom input viewers.");
+        UIWidgets::PaddedSeparator(true, true);
+    }
+
+    if (ImGui::CollapsingHeader("Analog Angle Values")) {
+        // gAnalogAngles
+        UIWidgets::EnhancementCheckbox("Show Analog Stick Angle Values", CVAR_INPUT_VIEWER("AnalogAngles.Enabled"));
+        UIWidgets::Tooltip("Displays analog stick angle values in the input viewer");
+        if (CVarGetInteger(CVAR_INPUT_VIEWER("AnalogAngles.Enabled"), 0)) {
+            // gInputViewer.AnalogAngles.TextColor
+            if (ImGui::ColorEdit4("Text Color", (float*)&textColor)) {
+                CVarSetColor(CVAR_INPUT_VIEWER("AnalogAngles.TextColor"), vec2Color(textColor));
+            }
+            // gAnalogAngleScale
+            UIWidgets::EnhancementSliderFloat("Angle Text Scale: %.2f%%", "##AnalogAngleScale",
+                                                CVAR_INPUT_VIEWER("AnalogAngles.Scale"), 0.1f, 5.0f, "", 1.0f, true, true);
+            // gInputViewer.AnalogAngles.Offset
+            UIWidgets::EnhancementSliderInt("Angle Text Offset: %dpx", "##AnalogAngleOffset",
+                                            CVAR_INPUT_VIEWER("AnalogAngles.Offset"), 0, 400, "", 0, true);
+            UIWidgets::PaddedSeparator(true, true);
+            // gInputViewer.AnalogAngles.Range1.Enabled
+            UIWidgets::EnhancementCheckbox("Highlight ESS Position", CVAR_INPUT_VIEWER("AnalogAngles.Range1.Enabled"));
             UIWidgets::Tooltip(
-                "Sets the desired visibility behavior for the button outline/background layers. Useful for "
-                "custom input viewers.");
-
-            // gInputViewer.UseGlobalButtonOutlineMode
-            UIWidgets::EnhancementCheckbox("Use for all buttons", CVAR_INPUT_VIEWER("UseGlobalButtonOutlineMode"), false, "",
-                                           UIWidgets::CheckboxGraphics::Checkmark, true);
-
-            UIWidgets::PaddedSeparator();
-
-            bool useIndividualOutlines = !CVarGetInteger(CVAR_INPUT_VIEWER("UseGlobalButtonOutlineMode"), 1);
-
-            // gInputViewer.ABtn
-            UIWidgets::EnhancementCheckbox("Show A-Button Layers", CVAR_INPUT_VIEWER("ABtn"), false, "",
-                                           UIWidgets::CheckboxGraphics::Checkmark, true);
-            if (useIndividualOutlines && CVarGetInteger(CVAR_INPUT_VIEWER("ABtn"), 1)) {
-                ImGui::Indent();
-                UIWidgets::EnhancementCombobox(CVAR_INPUT_VIEWER("ABtnOutlineMode"), buttonOutlineOptionsVerbose,
-                                               BUTTON_OUTLINE_NOT_PRESSED);
-                ImGui::Unindent();
-            }
-            // gInputViewer.BBtn
-            UIWidgets::EnhancementCheckbox("Show B-Button Layers", CVAR_INPUT_VIEWER("BBtn"), false, "",
-                                           UIWidgets::CheckboxGraphics::Checkmark, true);
-            if (useIndividualOutlines && CVarGetInteger(CVAR_INPUT_VIEWER("BBtn"), 1)) {
-                ImGui::Indent();
-                UIWidgets::EnhancementCombobox(CVAR_INPUT_VIEWER("BBtnOutlineMode"), buttonOutlineOptionsVerbose,
-                                               BUTTON_OUTLINE_NOT_PRESSED);
-                ImGui::Unindent();
-            }
-            // gInputViewer.CUp
-            UIWidgets::EnhancementCheckbox("Show C-Up Layers", CVAR_INPUT_VIEWER("CUp"), false, "",
-                                           UIWidgets::CheckboxGraphics::Checkmark, true);
-            if (useIndividualOutlines && CVarGetInteger(CVAR_INPUT_VIEWER("CUp"), 1)) {
-                ImGui::Indent();
-                UIWidgets::EnhancementCombobox(CVAR_INPUT_VIEWER("CUpOutlineMode"), buttonOutlineOptionsVerbose,
-                                               BUTTON_OUTLINE_NOT_PRESSED);
-                ImGui::Unindent();
-            }
-            // gInputViewer.CRight
-            UIWidgets::EnhancementCheckbox("Show C-Right Layers", CVAR_INPUT_VIEWER("CRight"), false, "",
-                                           UIWidgets::CheckboxGraphics::Checkmark, true);
-            if (useIndividualOutlines && CVarGetInteger(CVAR_INPUT_VIEWER("CRight"), 1)) {
-                ImGui::Indent();
-                UIWidgets::EnhancementCombobox(CVAR_INPUT_VIEWER("CRightOutlineMode"), buttonOutlineOptionsVerbose,
-                                               BUTTON_OUTLINE_NOT_PRESSED);
-                ImGui::Unindent();
-            }
-            // gInputViewer.CDown
-            UIWidgets::EnhancementCheckbox("Show C-Down Layers", CVAR_INPUT_VIEWER("CDown"), false, "",
-                                           UIWidgets::CheckboxGraphics::Checkmark, true);
-            if (useIndividualOutlines && CVarGetInteger(CVAR_INPUT_VIEWER("CDown"), 1)) {
-                ImGui::Indent();
-                UIWidgets::EnhancementCombobox(CVAR_INPUT_VIEWER("CDownOutlineMode"), buttonOutlineOptionsVerbose,
-                                               BUTTON_OUTLINE_NOT_PRESSED);
-                ImGui::Unindent();
-            }
-            // gInputViewer.CLeft
-            UIWidgets::EnhancementCheckbox("Show C-Left Layers", CVAR_INPUT_VIEWER("CLeft"), false, "",
-                                           UIWidgets::CheckboxGraphics::Checkmark, true);
-            if (useIndividualOutlines && CVarGetInteger(CVAR_INPUT_VIEWER("CLeft"), 1)) {
-                ImGui::Indent();
-                UIWidgets::EnhancementCombobox(CVAR_INPUT_VIEWER("CLeftOutlineMode"), buttonOutlineOptionsVerbose,
-                                               BUTTON_OUTLINE_NOT_PRESSED);
-                ImGui::Unindent();
-            }
-            // gInputViewer.LBtn
-            UIWidgets::EnhancementCheckbox("Show L-Button Layers", CVAR_INPUT_VIEWER("LBtn"), false, "",
-                                           UIWidgets::CheckboxGraphics::Checkmark, true);
-            if (useIndividualOutlines && CVarGetInteger(CVAR_INPUT_VIEWER("LBtn"), 1)) {
-                ImGui::Indent();
-                UIWidgets::EnhancementCombobox(CVAR_INPUT_VIEWER("LBtnOutlineMode"), buttonOutlineOptionsVerbose,
-                                               BUTTON_OUTLINE_NOT_PRESSED);
-                ImGui::Unindent();
-            }
-            // gInputViewer.RBtn
-            UIWidgets::EnhancementCheckbox("Show R-Button Layers", CVAR_INPUT_VIEWER("RBtn"), false, "",
-                                           UIWidgets::CheckboxGraphics::Checkmark, true);
-            if (useIndividualOutlines && CVarGetInteger(CVAR_INPUT_VIEWER("RBtn"), 1)) {
-                ImGui::Indent();
-                UIWidgets::EnhancementCombobox(CVAR_INPUT_VIEWER("RBtnOutlineMode"), buttonOutlineOptionsVerbose,
-                                               BUTTON_OUTLINE_NOT_PRESSED);
-                ImGui::Unindent();
-            }
-            // gInputViewer.ZBtn
-            UIWidgets::EnhancementCheckbox("Show Z-Button Layers", CVAR_INPUT_VIEWER("ZBtn"), false, "",
-                                           UIWidgets::CheckboxGraphics::Checkmark, true);
-            if (useIndividualOutlines && CVarGetInteger(CVAR_INPUT_VIEWER("ZBtn"), 1)) {
-                ImGui::Indent();
-                UIWidgets::EnhancementCombobox(CVAR_INPUT_VIEWER("ZBtnOutlineMode"), buttonOutlineOptionsVerbose,
-                                               BUTTON_OUTLINE_NOT_PRESSED);
-                ImGui::Unindent();
-            }
-            // gInputViewer.StartBtn
-            UIWidgets::EnhancementCheckbox("Show Start Button Layers", CVAR_INPUT_VIEWER("StartBtn"), false, "",
-                                           UIWidgets::CheckboxGraphics::Checkmark, true);
-            if (useIndividualOutlines && CVarGetInteger(CVAR_INPUT_VIEWER("StartBtn"), 1)) {
-                ImGui::Indent();
-                UIWidgets::EnhancementCombobox(CVAR_INPUT_VIEWER("StartBtnOutlineMode"), buttonOutlineOptionsVerbose,
-                                               BUTTON_OUTLINE_NOT_PRESSED);
-                ImGui::Unindent();
-            }
-            // gInputViewer.Dpad
-            UIWidgets::EnhancementCheckbox("Show D-Pad Layers", CVAR_INPUT_VIEWER("Dpad"), false, "",
-                                           UIWidgets::CheckboxGraphics::Checkmark, false);
-            if (useIndividualOutlines && CVarGetInteger(CVAR_INPUT_VIEWER("Dpad"), 0)) {
-                ImGui::Indent();
-                UIWidgets::EnhancementCombobox(CVAR_INPUT_VIEWER("DpadOutlineMode"), buttonOutlineOptionsVerbose,
-                                               BUTTON_OUTLINE_NOT_PRESSED);
-                ImGui::Unindent();
-            }
-            // gInputViewer.Mod1
-            UIWidgets::EnhancementCheckbox("Show Modifier Button 1 Layers", CVAR_INPUT_VIEWER("Mod1"), false, "",
-                                           UIWidgets::CheckboxGraphics::Checkmark, false);
-            if (useIndividualOutlines && CVarGetInteger(CVAR_INPUT_VIEWER("Mod1"), 0)) {
-                ImGui::Indent();
-                UIWidgets::EnhancementCombobox(CVAR_INPUT_VIEWER("Mod1OutlineMode"), buttonOutlineOptionsVerbose,
-                                               BUTTON_OUTLINE_NOT_PRESSED);
-                ImGui::Unindent();
-            }
-            // gInputViewer.Mod2
-            UIWidgets::EnhancementCheckbox("Show Modifier Button 2 Layers", CVAR_INPUT_VIEWER("Mod2"), false, "",
-                                           UIWidgets::CheckboxGraphics::Checkmark, false);
-            if (useIndividualOutlines && CVarGetInteger(CVAR_INPUT_VIEWER("Mod2"), 0)) {
-                ImGui::Indent();
-                UIWidgets::EnhancementCombobox(CVAR_INPUT_VIEWER("Mod2OutlineMode"), buttonOutlineOptionsVerbose,
-                                               BUTTON_OUTLINE_NOT_PRESSED);
-                ImGui::Unindent();
+                "Highlights the angle value text when the analog stick is in ESS position (on flat ground)");
+            if (CVarGetInteger(CVAR_INPUT_VIEWER("AnalogAngles.Range1.Enabled"), 0)) {
+                // gInputViewer.AnalogAngles.Range1.Color
+                if (ImGui::ColorEdit4("ESS Color", (float*)&range1Color)) {
+                    CVarSetColor(CVAR_INPUT_VIEWER("AnalogAngles.Range1.Color"), vec2Color(range1Color));
+                }
             }
 
             UIWidgets::PaddedSeparator(true, true);
-        }
-
-        if (ImGui::CollapsingHeader("Analog Stick")) {
-            // gInputViewer.AnalogStick.VisibilityMode
-            UIWidgets::PaddedText("Analog Stick Visibility", true, false);
-            UIWidgets::EnhancementCombobox(CVAR_INPUT_VIEWER("AnalogStick.VisibilityMode"), stickModeOptions,
-                                           STICK_MODE_ALWAYS_SHOWN);
-            UIWidgets::Tooltip(
-                "Determines the conditions under which the moving layer of the analog stick texture is visible.");
-
-            // gInputViewer.AnalogStick.OutlineMode
-            UIWidgets::PaddedText("Analog Stick Outline/Background Visibility", true, false);
-            UIWidgets::EnhancementCombobox(CVAR_INPUT_VIEWER("AnalogStick.OutlineMode"), stickModeOptions,
-                                           STICK_MODE_ALWAYS_SHOWN);
-            UIWidgets::Tooltip(
-                "Determines the conditions under which the analog stick outline/background texture is visible.");
-
-            // gInputViewer.AnalogStick.Movement
-            UIWidgets::EnhancementSliderInt("Analog Stick Movement: %dpx", "##AnalogMovement",
-                                            CVAR_INPUT_VIEWER("AnalogStick.Movement"), 0, 200, "", 12, true);
-            UIWidgets::Tooltip(
-                "Sets the distance to move the analog stick in the input viewer. Useful for custom input viewers.");
-            UIWidgets::PaddedSeparator(true, true);
-        }
-
-        if (ImGui::CollapsingHeader("Additional (\"Right\") Stick")) {
-            // gInputViewer.RightStick.VisibilityMode
-            UIWidgets::PaddedText("Right Stick Visibility", true, false);
-            UIWidgets::EnhancementCombobox(CVAR_INPUT_VIEWER("RightStick.VisibilityMode"), stickModeOptions,
-                                           STICK_MODE_HIDDEN_IN_DEADZONE);
-            UIWidgets::Tooltip(
-                "Determines the conditions under which the moving layer of the right stick texture is visible.");
-
-            // gInputViewer.RightStick.OutlineMode
-            UIWidgets::PaddedText("Right Stick Outline/Background Visibility", true, false);
-            UIWidgets::EnhancementCombobox(CVAR_INPUT_VIEWER("RightStick.OutlineMode"), stickModeOptions,
-                                           STICK_MODE_HIDDEN_IN_DEADZONE);
-            UIWidgets::Tooltip(
-                "Determines the conditions under which the right stick outline/background texture is visible.");
-
-            // gInputViewer.RightStick.Movement
-            UIWidgets::EnhancementSliderInt("Right Stick Movement: %dpx", "##RightMovement",
-                                            CVAR_INPUT_VIEWER("RightStick.Movement"), 0, 200, "", 7, true);
-            UIWidgets::Tooltip(
-                "Sets the distance to move the right stick in the input viewer. Useful for custom input viewers.");
-            UIWidgets::PaddedSeparator(true, true);
-        }
-
-        if (ImGui::CollapsingHeader("Analog Angle Values")) {
-            // gAnalogAngles
-            UIWidgets::EnhancementCheckbox("Show Analog Stick Angle Values", CVAR_INPUT_VIEWER("AnalogAngles.Enabled"));
-            UIWidgets::Tooltip("Displays analog stick angle values in the input viewer");
-            if (CVarGetInteger(CVAR_INPUT_VIEWER("AnalogAngles.Enabled"), 0)) {
-                // gInputViewer.AnalogAngles.TextColor
-                if (ImGui::ColorEdit4("Text Color", (float*)&textColor)) {
-                    CVarSetColor(CVAR_INPUT_VIEWER("AnalogAngles.TextColor"), vec2Color(textColor));
-                }
-                // gAnalogAngleScale
-                UIWidgets::EnhancementSliderFloat("Angle Text Scale: %.2f%%", "##AnalogAngleScale",
-                                                  CVAR_INPUT_VIEWER("AnalogAngles.Scale"), 0.1f, 5.0f, "", 1.0f, true, true);
-                // gInputViewer.AnalogAngles.Offset
-                UIWidgets::EnhancementSliderInt("Angle Text Offset: %dpx", "##AnalogAngleOffset",
-                                                CVAR_INPUT_VIEWER("AnalogAngles.Offset"), 0, 400, "", 0, true);
-                UIWidgets::PaddedSeparator(true, true);
-                // gInputViewer.AnalogAngles.Range1.Enabled
-                UIWidgets::EnhancementCheckbox("Highlight ESS Position", CVAR_INPUT_VIEWER("AnalogAngles.Range1.Enabled"));
-                UIWidgets::Tooltip(
-                    "Highlights the angle value text when the analog stick is in ESS position (on flat ground)");
-                if (CVarGetInteger(CVAR_INPUT_VIEWER("AnalogAngles.Range1.Enabled"), 0)) {
-                    // gInputViewer.AnalogAngles.Range1.Color
-                    if (ImGui::ColorEdit4("ESS Color", (float*)&range1Color)) {
-                        CVarSetColor(CVAR_INPUT_VIEWER("AnalogAngles.Range1.Color"), vec2Color(range1Color));
-                    }
-                }
-
-                UIWidgets::PaddedSeparator(true, true);
-                // gInputViewer.AnalogAngles.Range2.Enabled
-                UIWidgets::EnhancementCheckbox("Highlight Walking Speed Angles",
-                                               CVAR_INPUT_VIEWER("AnalogAngles.Range2.Enabled"));
-                UIWidgets::Tooltip("Highlights the angle value text when the analog stick is at an angle that would "
-                                   "produce a walking speed (on flat ground)\n\n"
-                                   "Useful for 1.0 Empty Jumpslash Quick Put Away");
-                if (CVarGetInteger(CVAR_INPUT_VIEWER("AnalogAngles.Range2.Enabled"), 0)) {
-                    // gInputViewer.AnalogAngles.Range2.Color
-                    if (ImGui::ColorEdit4("Walking Speed Color", (float*)&range2Color)) {
-                        CVarSetColor(CVAR_INPUT_VIEWER("AnalogAngles.Range2.Color"), vec2Color(range2Color));
-                    }
+            // gInputViewer.AnalogAngles.Range2.Enabled
+            UIWidgets::EnhancementCheckbox("Highlight Walking Speed Angles",
+                                            CVAR_INPUT_VIEWER("AnalogAngles.Range2.Enabled"));
+            UIWidgets::Tooltip("Highlights the angle value text when the analog stick is at an angle that would "
+                                "produce a walking speed (on flat ground)\n\n"
+                                "Useful for 1.0 Empty Jumpslash Quick Put Away");
+            if (CVarGetInteger(CVAR_INPUT_VIEWER("AnalogAngles.Range2.Enabled"), 0)) {
+                // gInputViewer.AnalogAngles.Range2.Color
+                if (ImGui::ColorEdit4("Walking Speed Color", (float*)&range2Color)) {
+                    CVarSetColor(CVAR_INPUT_VIEWER("AnalogAngles.Range2.Color"), vec2Color(range2Color));
                 }
             }
         }
-
-        ImGui::End();
     }
 }

@@ -637,13 +637,6 @@ void InitEntranceTrackingData() {
 }
 
 void EntranceTrackerWindow::DrawElement() {
-    ImGui::SetNextWindowSize(ImVec2(600, 375), ImGuiCond_FirstUseEver);
-
-    if (!ImGui::Begin("Entrance Tracker", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
-        ImGui::End();
-        return;
-    }
-
     // Begin tracker settings
     ImGui::SetNextItemOpen(false, ImGuiCond_Once);
     if (ImGui::TreeNode("Tracker Settings")) {
@@ -929,8 +922,6 @@ void EntranceTrackerWindow::DrawElement() {
         }
     }
     ImGui::EndChild();
-
-    ImGui::End();
 }
 
 void EntranceTrackerWindow::InitElement() {

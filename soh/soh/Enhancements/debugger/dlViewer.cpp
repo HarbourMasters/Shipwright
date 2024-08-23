@@ -90,12 +90,6 @@ void PerformDisplayListSearch() {
 }
 
 void DLViewerWindow::DrawElement() {
-    ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Display List Viewer", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
-        ImGui::End();
-        return;
-    }
-
     // Debounce the search field as listing otr files is expensive
     if (ImGui::InputText("Search Display Lists", searchString, ARRAY_COUNT(searchString))) {
         doSearch = true;
@@ -328,8 +322,6 @@ void DLViewerWindow::DrawElement() {
         ImGui::End();
         return;
     }
-
-    ImGui::End();
 }
 
 void DLViewerWindow::InitElement() {

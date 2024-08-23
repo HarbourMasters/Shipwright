@@ -867,12 +867,11 @@ void UpdateCheck(uint32_t check, RandomizerCheckTrackerData data) {
     UpdateOrdering(area);
 }
 
-void CheckTrackerWindow::DrawElement() {
-    ImGui::SetNextWindowSize(ImVec2(400, 540), ImGuiCond_FirstUseEver);
-
+void CheckTrackerWindow::UpdateElement() {
+    bool visible = IsVisible();
     if (CVarGetInteger(CVAR_TRACKER_CHECK("WindowType"), TRACKER_WINDOW_WINDOW) == TRACKER_WINDOW_FLOATING) {
         if (CVarGetInteger(CVAR_TRACKER_CHECK("ShowOnlyPaused"), 0) && (gPlayState == nullptr || gPlayState->pauseCtx.state == 0)) {
-            return;
+            visible = false;
         }
 
         if (CVarGetInteger(CVAR_TRACKER_CHECK("DisplayType"), TRACKER_DISPLAY_ALWAYS) == TRACKER_DISPLAY_COMBO_BUTTON) {
@@ -880,14 +879,19 @@ void CheckTrackerWindow::DrawElement() {
             int comboButton2Mask = buttons[CVarGetInteger(CVAR_TRACKER_CHECK("ComboButton2"), TRACKER_COMBO_BUTTON_R)];
             OSContPad* trackerButtonsPressed = Ship::Context::GetInstance()->GetControlDeck()->GetPads();
             bool comboButtonsHeld = trackerButtonsPressed != nullptr &&
-                                    trackerButtonsPressed[0].button & comboButton1Mask &&
-                                    trackerButtonsPressed[0].button & comboButton2Mask;
+                trackerButtonsPressed[0].button & comboButton1Mask &&
+                trackerButtonsPressed[0].button & comboButton2Mask;
             if (!comboButtonsHeld) {
-                return;
+                visible = false;
             }
         }
     }
+    if (visible != IsVisible()) {
+        SetVisiblity(visible);
+    }
+}
 
+void CheckTrackerWindow::DrawElement() {
     BeginFloatWindows("Check Tracker", mIsVisible, ImGuiWindowFlags_NoScrollbar);
 
     if (!GameInteractor::IsSaveLoaded() || !initialized) {
@@ -1064,7 +1068,7 @@ void CheckTrackerWindow::DrawElement() {
 
     ImGui::EndTable(); //Checks Lead-out
     ImGui::EndTable(); //Quick Options Lead-out
-    EndFloatWindows();
+    //EndFloatWindows();
     if (doingCollapseOrExpand) {
         optCollapseAll = false;
         optExpandAll = false;
@@ -1602,13 +1606,6 @@ static const char* displayType[] = { "Always", "Combo Button Hold" };
 static const char* buttonStrings[] = { "A Button", "B Button", "C-Up",  "C-Down", "C-Left", "C-Right", "L Button",
                                        "Z Button", "R Button", "Start", "D-Up",   "D-Down", "D-Left",  "D-Right" };
 void CheckTrackerSettingsWindow::DrawElement() {
-    ImGui::SetNextWindowSize(ImVec2(600, 375), ImGuiCond_FirstUseEver);
-
-    if (!ImGui::Begin("Check Tracker Settings", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
-        ImGui::End();
-        return;
-    }
-
     ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 8.0f, 8.0f });
     ImGui::BeginTable("CheckTrackerSettingsTable", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV);
     ImGui::TableSetupColumn("General settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
@@ -1668,7 +1665,6 @@ void CheckTrackerSettingsWindow::DrawElement() {
 
     ImGui::PopStyleVar(1);
     ImGui::EndTable();
-    ImGui::End();
 }
 
 void CheckTrackerWindow::InitElement() {

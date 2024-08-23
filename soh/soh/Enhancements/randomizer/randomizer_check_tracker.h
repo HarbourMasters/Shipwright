@@ -26,7 +26,7 @@ class CheckTrackerWindow : public Ship::GuiWindow {
   protected:
     void InitElement() override;
     void DrawElement() override;
-    void UpdateElement() override {};
+    void UpdateElement() override;
 };
 
 //Converts an index into a Little Endian bitmask, as follows:
