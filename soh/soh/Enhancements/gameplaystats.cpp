@@ -437,7 +437,13 @@ void DrawGameplayStatsHeader() {
     ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 4.0f, 4.0f });
     ImGui::BeginTable("gameplayStatsHeader", 1, ImGuiTableFlags_BordersOuter);
     ImGui::TableSetupColumn("stat", ImGuiTableColumnFlags_WidthStretch);
-    GameplayStatsRow("Build Version:", (char*) gBuildVersion);
+    //if tag is empty (not a release build)
+    if (gGitCommitTag[0] == 0) {
+        GameplayStatsRow("Git Branch:", (char*)gGitBranch);
+        GameplayStatsRow("Git Commit Hash:", (char*)gGitCommitHash);
+    } else {
+        GameplayStatsRow("Build Version:", (char*)gBuildVersion);
+    }
     if (gSaveContext.sohStats.rtaTiming) {
         GameplayStatsRow("Total Time (RTA):", formatTimestampGameplayStat(GAMEPLAYSTAT_TOTAL_TIME), gSaveContext.sohStats.gameComplete ? COLOR_GREEN : COLOR_WHITE);
     } else {
