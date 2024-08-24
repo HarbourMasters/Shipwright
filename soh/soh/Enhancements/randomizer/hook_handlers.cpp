@@ -1212,6 +1212,15 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
             *should = INV_CONTENT((RAND_GET_OPTION(RSK_BOMBCHUS_IN_LOGIC) ? ITEM_BOMBCHU : ITEM_BOMB)) != ITEM_NONE;
             break;
         }
+        case VB_BLUE_WARP_APPLY_ENTRANCE_AND_CUTSCENE: {
+            if (
+                RAND_GET_OPTION(RSK_SHUFFLE_DUNGEON_ENTRANCES) != RO_DUNGEON_ENTRANCE_SHUFFLE_OFF ||
+                RAND_GET_OPTION(RSK_SHUFFLE_BOSS_ENTRANCES) != RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF
+            ) {
+                Entrance_OverrideBlueWarp();
+            }
+            break;
+        }
         case VB_TRADE_TIMER_ODD_MUSHROOM:
         case VB_TRADE_TIMER_EYEDROPS:
         case VB_TRADE_TIMER_FROG:

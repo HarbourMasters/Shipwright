@@ -514,7 +514,7 @@ void BossRush_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
             }
             break;
         }
-        case VB_BLUE_WARP_ADULT_WARP_OUT: {
+        case VB_BLUE_WARP_APPLY_ENTRANCE_AND_CUTSCENE: {
             DoorWarp1* blueWarp = static_cast<DoorWarp1*>(optionalArg);
             BossRush_HandleBlueWarp(gPlayState, blueWarp->actor.world.pos.x, blueWarp->actor.world.pos.z);
             *should = false;

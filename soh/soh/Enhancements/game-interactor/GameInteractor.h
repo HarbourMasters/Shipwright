@@ -275,7 +275,7 @@ typedef enum {
     // Vanilla condition: true
     VB_SPAWN_BLUE_WARP,
     // Vanilla condition: this->warpTimer > sWarpTimerTarget && gSaveContext.nextCutsceneIndex == 0xFFEF
-    VB_BLUE_WARP_ADULT_WARP_OUT,
+    VB_BLUE_WARP_APPLY_ENTRANCE_AND_CUTSCENE,
     // Vanilla condition: this->collider.base.acFlags & 2
     VB_BG_BREAKWALL_BREAK,
     // Vanilla condition: true

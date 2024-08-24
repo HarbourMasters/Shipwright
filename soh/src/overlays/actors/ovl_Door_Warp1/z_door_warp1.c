@@ -758,7 +758,7 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, PlayState* play) {
     }
     this->warpTimer++;
 
-    if (GameInteractor_Should(VB_BLUE_WARP_ADULT_WARP_OUT, this->warpTimer > sWarpTimerTarget && gSaveContext.nextCutsceneIndex == 0xFFEF, this)) {
+    if (GameInteractor_Should(VB_BLUE_WARP_APPLY_ENTRANCE_AND_CUTSCENE, this->warpTimer > sWarpTimerTarget && gSaveContext.nextCutsceneIndex == 0xFFEF, this)) {
         if (play->sceneNum == SCENE_FOREST_TEMPLE_BOSS) {
             if (GameInteractor_Should(VB_PLAY_BLUE_WARP_CS, !Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP), EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP)) {
                 Flags_SetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP);
@@ -844,16 +844,12 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, PlayState* play) {
                 gSaveContext.nextCutsceneIndex = 0;
             }
         }
-
-        if (IS_RANDO && (Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES) != RO_DUNGEON_ENTRANCE_SHUFFLE_OFF ||
-            Randomizer_GetSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) != RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF)) {
-            Entrance_OverrideBlueWarp();
-        }
-
-        play->transitionTrigger = TRANS_TRIGGER_START;
-        play->transitionType = TRANS_TYPE_FADE_WHITE;
-        gSaveContext.nextTransitionType = TRANS_TYPE_FADE_WHITE_SLOW;
     }
+
+    play->transitionTrigger = TRANS_TRIGGER_START;
+    play->transitionType = TRANS_TYPE_FADE_WHITE;
+    gSaveContext.nextTransitionType = TRANS_TYPE_FADE_WHITE_SLOW;
+
     if (this->warpTimer >= 141) {
         f32 screenFillAlpha;
 
