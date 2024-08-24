@@ -204,27 +204,31 @@ int16_t GetRandomScrubPrice() {
     return -1;
 }
 
-//Get 1 to 7, or a random number from 1-7 depending on shopsanity setting
+//Get 0 to 7, or a random number from 1-7 depending on shopsanity setting
 int GetShopsanityReplaceAmount() {
     auto ctx = Rando::Context::GetInstance();
-    if (ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_ONE_ITEM)) {
-        return 1;
-    } else if (ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_TWO_ITEMS)) {
-        return 2;
-    } else if (ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_THREE_ITEMS)) {
-        return 3;
-    } else if (ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_FOUR_ITEMS)) {
-        return 4;
-    } else if (ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_FIVE_ITEMS)) {
-        return 5;
-    } else if (ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_SIX_ITEMS)) {
-        return 6;
-    } else if (ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_SEVEN_ITEMS)) {
-        return 7;
-    /*
-    } else if (ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_EIGHT_ITEMS)) {
-        return 8;
-    */
+    if (ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_OFF)) {
+        return 0;
+    } else if (ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_SPECIFIC_COUNT)) {
+        if (ctx->GetOption(RSK_SHOPSANITY_COUNT).Is(RO_SHOPSANITY_COUNT_ZERO_ITEMS)) {
+            return 0;
+        } else if (ctx->GetOption(RSK_SHOPSANITY_COUNT).Is(RO_SHOPSANITY_COUNT_ONE_ITEM)) {
+            return 1;
+        } else if (ctx->GetOption(RSK_SHOPSANITY_COUNT).Is(RO_SHOPSANITY_COUNT_TWO_ITEMS)) {
+            return 2;
+        } else if (ctx->GetOption(RSK_SHOPSANITY_COUNT).Is(RO_SHOPSANITY_COUNT_THREE_ITEMS)) {
+            return 3;
+        } else if (ctx->GetOption(RSK_SHOPSANITY_COUNT).Is(RO_SHOPSANITY_COUNT_FOUR_ITEMS)) {
+            return 4;
+        } else if (ctx->GetOption(RSK_SHOPSANITY_COUNT).Is(RO_SHOPSANITY_COUNT_FIVE_ITEMS)) {
+            return 5;
+        } else if (ctx->GetOption(RSK_SHOPSANITY_COUNT).Is(RO_SHOPSANITY_COUNT_SIX_ITEMS)) {
+            return 6;
+        } else if (ctx->GetOption(RSK_SHOPSANITY_COUNT).Is(RO_SHOPSANITY_COUNT_SEVEN_ITEMS)) {
+            return 7;
+        } else if (ctx->GetOption(RSK_SHOPSANITY_COUNT).Is(RO_SHOPSANITY_COUNT_EIGHT_ITEMS)) {
+            return 8; //temporarily unreachable due to logic limitations
+        }
     } else { //Random, get number in [1, 7]
         return Random(1, 8);
     }

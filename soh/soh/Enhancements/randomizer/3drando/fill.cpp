@@ -1036,7 +1036,7 @@ int Fill() {
     } else {
       SPDLOG_INFO("Shuffling Shop Items");
       int total_replaced = 0;
-      if (ctx->GetOption(RSK_SHOPSANITY).IsNot(RO_SHOPSANITY_ZERO_ITEMS)) { //Shopsanity 1-7, random
+      if (ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_RANDOM) || ctx->GetOption(RSK_SHOPSANITY_COUNT).IsNot(RO_SHOPSANITY_COUNT_ZERO_ITEMS)) { //Shopsanity 1-7, random
         /*
         Indices from OoTR. So shopsanity one will overwrite 7, three will overwrite 7, 5, 8, etc.
           8 6    2 4

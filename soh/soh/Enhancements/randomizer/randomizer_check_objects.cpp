@@ -119,8 +119,16 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
                  (CVarGetInteger(CVAR_RANDOMIZER_SETTING("MQDungeons"), RO_MQ_DUNGEONS_NONE) != RO_MQ_DUNGEONS_SET_NUMBER ||
                   CVarGetInteger(CVAR_RANDOMIZER_SETTING("MQDungeonCount"), 12) < 12) // at least one vanilla dungeon
              ) &&
-            (location.GetRCType() != RCTYPE_SHOP ||
-             CVarGetInteger(CVAR_RANDOMIZER_SETTING("Shopsanity"), RO_SHOPSANITY_OFF) > RO_SHOPSANITY_ZERO_ITEMS) &&
+            (
+                location.GetRCType() != RCTYPE_SHOP ||
+                !(
+                    ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_OFF) ||
+                    (
+                        ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_SPECIFIC_COUNT) &&
+                        ctx->GetOption(RSK_SHOPSANITY_COUNT).Is(RO_SHOPSANITY_COUNT_ZERO_ITEMS)
+                    )
+                )
+            ) &&
             (location.GetRCType() != RCTYPE_SCRUB ||
              CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleScrubs"), RO_SCRUBS_OFF) != RO_SCRUBS_OFF ||
              location.GetRandomizerCheck() == RC_HF_DEKU_SCRUB_GROTTO ||

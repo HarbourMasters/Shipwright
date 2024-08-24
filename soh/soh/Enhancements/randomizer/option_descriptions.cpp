@@ -263,17 +263,19 @@ void Settings::CreateOptionDescriptions() {
         "The deku nut bag is required to hold deku nuts.";
     mOptionDescriptions[RSK_SHOPSANITY] = "Off - All shop items will be the same as vanilla.\n"
                                           "\n"
-                                          "0 Items - Vanilla shop items will be shuffled among different shops.\n"
+                                          "Specifc Count - Vanilla shop items will be shuffled among different shops, and "
+                                          "each shop will contain a specifc number (0-7) of non-vanilla shop items.\n"
                                           "\n"
-                                          "1-7 Items - Vanilla shop items will be shuffled among different shops, and "
-                                          "each shop will contain 1-7 non-vanilla shop items.\n"
-                                          "\n"
-                                          /*
-                                          "8 Items - All shops will contain 8 non-vanilla shop items.\n"
-                                          "\n"
-                                          */
                                           "Random - Vanilla shop items will be shuffled among different shops, and "
-                                          "each shop will contain a random number (1-7) of non-vanilla shop items.\n";
+                                          "each shop will contain a random number (1-7) of non-vanilla shop items.";
+    mOptionDescriptions[RSK_SHOPSANITY_COUNT] = "0 Items - Vanilla shop items will be shuffled among different shops.\n"
+                                                "\n"
+                                                "1-7 Items - Vanilla shop items will be shuffled among different shops, and "
+                                                "each shop will contain 1-7 non-vanilla shop items.\n"
+                                                /*
+                                                "\n"
+                                                "8 Items - All shops will contain 8 non-vanilla shop items.\n"
+                                                */;
     mOptionDescriptions[RSK_SHOPSANITY_PRICES] =
         "Balanced - The default randomization. Shop prices for shopsanity items will range between 0 to 300 rupees, "
         "with a bias towards values slightly below the middle of the range, in multiples of 5.\n "
