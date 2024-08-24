@@ -90,8 +90,6 @@ void ColViewerWindow::DrawElement() {
     } else {
         UIWidgets::InsertHelpHoverText(colorHelpText);
     }
-
-    ImGui::End();
 }
 
 // Calculates the normal for a triangle at the 3 specified points

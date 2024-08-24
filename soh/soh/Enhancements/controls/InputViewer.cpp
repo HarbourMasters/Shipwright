@@ -61,6 +61,15 @@ void InputViewer::RenderButton(std::string btnTexture, std::string btnOutlineTex
     }
 }
 
+void InputViewer::Draw() {
+    if (!IsVisible()) {
+        return;
+    }
+    DrawElement();
+    // Sync up the IsVisible flag if it was changed by ImGui
+    SyncVisibilityConsoleVariable();
+}
+
 void InputViewer::DrawElement() {
     if (CVarGetInteger(CVAR_WINDOW("InputViewer"), 0)) {
         static bool sButtonTexturesLoaded = false;
@@ -73,60 +82,60 @@ void InputViewer::DrawElement() {
             Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("R-Btn", "textures/buttons/RBtn.png");
             Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Z-Btn", "textures/buttons/ZBtn.png");
             Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Start-Btn",
-                                                                            "textures/buttons/StartBtn.png");
+                "textures/buttons/StartBtn.png");
             Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("C-Left", "textures/buttons/CLeft.png");
             Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("C-Right", "textures/buttons/CRight.png");
             Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("C-Up", "textures/buttons/CUp.png");
             Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("C-Down", "textures/buttons/CDown.png");
             Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Analog-Stick",
-                                                                            "textures/buttons/AnalogStick.png");
+                "textures/buttons/AnalogStick.png");
             Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Dpad-Left",
-                                                                            "textures/buttons/DPadLeft.png");
+                "textures/buttons/DPadLeft.png");
             Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Dpad-Right",
-                                                                            "textures/buttons/DPadRight.png");
+                "textures/buttons/DPadRight.png");
             Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Dpad-Up", "textures/buttons/DPadUp.png");
             Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Dpad-Down",
-                                                                            "textures/buttons/DPadDown.png");
+                "textures/buttons/DPadDown.png");
             Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Modifier-1", "textures/buttons/Mod1.png");
             Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Modifier-2", "textures/buttons/Mod2.png");
             Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Right-Stick",
-                                                                            "textures/buttons/RightStick.png");
+                "textures/buttons/RightStick.png");
             Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("A-Btn Outline",
-                                                                            "textures/buttons/ABtnOutline.png");
+                "textures/buttons/ABtnOutline.png");
             Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("B-Btn Outline",
-                                                                            "textures/buttons/BBtnOutline.png");
+                "textures/buttons/BBtnOutline.png");
             Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("L-Btn Outline",
-                                                                            "textures/buttons/LBtnOutline.png");
+                "textures/buttons/LBtnOutline.png");
             Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("R-Btn Outline",
-                                                                            "textures/buttons/RBtnOutline.png");
+                "textures/buttons/RBtnOutline.png");
             Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Z-Btn Outline",
-                                                                            "textures/buttons/ZBtnOutline.png");
+                "textures/buttons/ZBtnOutline.png");
             Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Start-Btn Outline",
-                                                                            "textures/buttons/StartBtnOutline.png");
+                "textures/buttons/StartBtnOutline.png");
             Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("C-Left Outline",
-                                                                            "textures/buttons/CLeftOutline.png");
+                "textures/buttons/CLeftOutline.png");
             Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("C-Right Outline",
-                                                                            "textures/buttons/CRightOutline.png");
+                "textures/buttons/CRightOutline.png");
             Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("C-Up Outline",
-                                                                            "textures/buttons/CUpOutline.png");
+                "textures/buttons/CUpOutline.png");
             Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("C-Down Outline",
-                                                                            "textures/buttons/CDownOutline.png");
+                "textures/buttons/CDownOutline.png");
             Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Analog-Stick Outline",
-                                                                            "textures/buttons/AnalogStickOutline.png");
+                "textures/buttons/AnalogStickOutline.png");
             Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Dpad-Left Outline",
-                                                                            "textures/buttons/DPadLeftOutline.png");
+                "textures/buttons/DPadLeftOutline.png");
             Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Dpad-Right Outline",
-                                                                            "textures/buttons/DPadRightOutline.png");
+                "textures/buttons/DPadRightOutline.png");
             Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Dpad-Up Outline",
-                                                                            "textures/buttons/DPadUpOutline.png");
+                "textures/buttons/DPadUpOutline.png");
             Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Dpad-Down Outline",
-                                                                            "textures/buttons/DPadDownOutline.png");
+                "textures/buttons/DPadDownOutline.png");
             Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Modifier-1 Outline",
-                                                                            "textures/buttons/Mod1Outline.png");
+                "textures/buttons/Mod1Outline.png");
             Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Modifier-2 Outline",
-                                                                            "textures/buttons/Mod2Outline.png");
+                "textures/buttons/Mod2Outline.png");
             Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Right-Stick Outline",
-                                                                            "textures/buttons/RightStickOutline.png");
+                "textures/buttons/RightStickOutline.png");
             sButtonTexturesLoaded = true;
         }
 
@@ -147,12 +156,12 @@ void InputViewer::DrawElement() {
 
         ImGui::SetNextWindowSize(
             ImVec2(scaledBGSize.x + 20, scaledBGSize.y +
-                                            (showAnalogAngles ? ImGui::CalcTextSize("X").y : 0) * scale *
-                                                CVarGetFloat(CVAR_INPUT_VIEWER("AnalogAngles.Scale"), 1.0f) +
-                                            20));
+                (showAnalogAngles ? ImGui::CalcTextSize("X").y : 0) * scale *
+                CVarGetFloat(CVAR_INPUT_VIEWER("AnalogAngles.Scale"), 1.0f) +
+                20));
         ImGui::SetNextWindowContentSize(
             ImVec2(scaledBGSize.x, scaledBGSize.y + (showAnalogAngles ? 15 : 0) * scale *
-                                                        CVarGetFloat(CVAR_INPUT_VIEWER("AnalogAngles.Scale"), 1.0f)));
+                CVarGetFloat(CVAR_INPUT_VIEWER("AnalogAngles.Scale"), 1.0f)));
         ImGui::SetNextWindowPos(
             ImVec2(mainPos.x + size.x - scaledBGSize.x - 30, mainPos.y + size.y - scaledBGSize.y - 30),
             ImGuiCond_FirstUseEver);
@@ -163,8 +172,8 @@ void InputViewer::DrawElement() {
         OSContPad* pads = Ship::Context::GetInstance()->GetControlDeck()->GetPads();
 
         ImGuiWindowFlags windowFlags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollbar |
-                                       ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoBackground |
-                                       ImGuiWindowFlags_NoFocusOnAppearing;
+            ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoBackground |
+            ImGuiWindowFlags_NoFocusOnAppearing;
 
         if (!CVarGetInteger(CVAR_INPUT_VIEWER("EnableDragging"), 1)) {
             windowFlags |= ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoMove;
@@ -187,17 +196,17 @@ void InputViewer::DrawElement() {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
                 RenderButton("B-Btn", "B-Btn Outline", pads[0].button & BTN_B, scaledBGSize,
-                             useGlobalOutlineMode
-                                 ? buttonOutlineMode
-                                 : CVarGetInteger(CVAR_INPUT_VIEWER("BBtnOutlineMode"), BUTTON_OUTLINE_NOT_PRESSED));
+                    useGlobalOutlineMode
+                    ? buttonOutlineMode
+                    : CVarGetInteger(CVAR_INPUT_VIEWER("BBtnOutlineMode"), BUTTON_OUTLINE_NOT_PRESSED));
             }
             if (CVarGetInteger(CVAR_INPUT_VIEWER("ABtn"), 1)) {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
                 RenderButton("A-Btn", "A-Btn Outline", pads[0].button & BTN_A, scaledBGSize,
-                             useGlobalOutlineMode
-                                 ? buttonOutlineMode
-                                 : CVarGetInteger(CVAR_INPUT_VIEWER("ABtnOutlineMode"), BUTTON_OUTLINE_NOT_PRESSED));
+                    useGlobalOutlineMode
+                    ? buttonOutlineMode
+                    : CVarGetInteger(CVAR_INPUT_VIEWER("ABtnOutlineMode"), BUTTON_OUTLINE_NOT_PRESSED));
             }
 
             // C buttons
@@ -205,33 +214,33 @@ void InputViewer::DrawElement() {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
                 RenderButton("C-Up", "C-Up Outline", pads[0].button & BTN_CUP, scaledBGSize,
-                             useGlobalOutlineMode
-                                 ? buttonOutlineMode
-                                 : CVarGetInteger(CVAR_INPUT_VIEWER("CUpOutlineMode"), BUTTON_OUTLINE_NOT_PRESSED));
+                    useGlobalOutlineMode
+                    ? buttonOutlineMode
+                    : CVarGetInteger(CVAR_INPUT_VIEWER("CUpOutlineMode"), BUTTON_OUTLINE_NOT_PRESSED));
             }
             if (CVarGetInteger(CVAR_INPUT_VIEWER("CLeft"), 1)) {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
                 RenderButton("C-Left", "C-Left Outline", pads[0].button & BTN_CLEFT, scaledBGSize,
-                             useGlobalOutlineMode
-                                 ? buttonOutlineMode
-                                 : CVarGetInteger(CVAR_INPUT_VIEWER("CLeftOutlineMode"), BUTTON_OUTLINE_NOT_PRESSED));
+                    useGlobalOutlineMode
+                    ? buttonOutlineMode
+                    : CVarGetInteger(CVAR_INPUT_VIEWER("CLeftOutlineMode"), BUTTON_OUTLINE_NOT_PRESSED));
             }
             if (CVarGetInteger(CVAR_INPUT_VIEWER("CRight"), 1)) {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
                 RenderButton("C-Right", "C-Right Outline", pads[0].button & BTN_CRIGHT, scaledBGSize,
-                             useGlobalOutlineMode
-                                 ? buttonOutlineMode
-                                 : CVarGetInteger(CVAR_INPUT_VIEWER("CRightOutlineMode"), BUTTON_OUTLINE_NOT_PRESSED));
+                    useGlobalOutlineMode
+                    ? buttonOutlineMode
+                    : CVarGetInteger(CVAR_INPUT_VIEWER("CRightOutlineMode"), BUTTON_OUTLINE_NOT_PRESSED));
             }
             if (CVarGetInteger(CVAR_INPUT_VIEWER("CDown"), 1)) {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
                 RenderButton("C-Down", "C-Down Outline", pads[0].button & BTN_CDOWN, scaledBGSize,
-                             useGlobalOutlineMode
-                                 ? buttonOutlineMode
-                                 : CVarGetInteger(CVAR_INPUT_VIEWER("CDownOutlineMode"), BUTTON_OUTLINE_NOT_PRESSED));
+                    useGlobalOutlineMode
+                    ? buttonOutlineMode
+                    : CVarGetInteger(CVAR_INPUT_VIEWER("CDownOutlineMode"), BUTTON_OUTLINE_NOT_PRESSED));
             }
 
             // L/R/Z
@@ -239,25 +248,25 @@ void InputViewer::DrawElement() {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
                 RenderButton("L-Btn", "L-Btn Outline", pads[0].button & BTN_L, scaledBGSize,
-                             useGlobalOutlineMode
-                                 ? buttonOutlineMode
-                                 : CVarGetInteger(CVAR_INPUT_VIEWER("LBtnOutlineMode"), BUTTON_OUTLINE_NOT_PRESSED));
+                    useGlobalOutlineMode
+                    ? buttonOutlineMode
+                    : CVarGetInteger(CVAR_INPUT_VIEWER("LBtnOutlineMode"), BUTTON_OUTLINE_NOT_PRESSED));
             }
             if (CVarGetInteger(CVAR_INPUT_VIEWER("RBtn"), 1)) {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
                 RenderButton("R-Btn", "R-Btn Outline", pads[0].button & BTN_R, scaledBGSize,
-                             useGlobalOutlineMode
-                                 ? buttonOutlineMode
-                                 : CVarGetInteger(CVAR_INPUT_VIEWER("RBtnOutlineMode"), BUTTON_OUTLINE_NOT_PRESSED));
+                    useGlobalOutlineMode
+                    ? buttonOutlineMode
+                    : CVarGetInteger(CVAR_INPUT_VIEWER("RBtnOutlineMode"), BUTTON_OUTLINE_NOT_PRESSED));
             }
             if (CVarGetInteger(CVAR_INPUT_VIEWER("ZBtn"), 1)) {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
                 RenderButton("Z-Btn", "Z-Btn Outline", pads[0].button & BTN_Z, scaledBGSize,
-                             useGlobalOutlineMode
-                                 ? buttonOutlineMode
-                                 : CVarGetInteger(CVAR_INPUT_VIEWER("ZBtnOutlineMode"), BUTTON_OUTLINE_NOT_PRESSED));
+                    useGlobalOutlineMode
+                    ? buttonOutlineMode
+                    : CVarGetInteger(CVAR_INPUT_VIEWER("ZBtnOutlineMode"), BUTTON_OUTLINE_NOT_PRESSED));
             }
 
             // Start
@@ -265,9 +274,9 @@ void InputViewer::DrawElement() {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
                 RenderButton("Start-Btn", "Start-Btn Outline", pads[0].button & BTN_START, scaledBGSize,
-                             useGlobalOutlineMode
-                                 ? buttonOutlineMode
-                                 : CVarGetInteger(CVAR_INPUT_VIEWER("StartBtnOutlineMode"), BUTTON_OUTLINE_NOT_PRESSED));
+                    useGlobalOutlineMode
+                    ? buttonOutlineMode
+                    : CVarGetInteger(CVAR_INPUT_VIEWER("StartBtnOutlineMode"), BUTTON_OUTLINE_NOT_PRESSED));
             }
 
             // Dpad
@@ -275,27 +284,27 @@ void InputViewer::DrawElement() {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
                 RenderButton("Dpad-Left", "Dpad-Left Outline", pads[0].button & BTN_DLEFT, scaledBGSize,
-                             useGlobalOutlineMode
-                                 ? buttonOutlineMode
-                                 : CVarGetInteger(CVAR_INPUT_VIEWER("DpadOutlineMode"), BUTTON_OUTLINE_NOT_PRESSED));
+                    useGlobalOutlineMode
+                    ? buttonOutlineMode
+                    : CVarGetInteger(CVAR_INPUT_VIEWER("DpadOutlineMode"), BUTTON_OUTLINE_NOT_PRESSED));
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
                 RenderButton("Dpad-Right", "Dpad-Right Outline", pads[0].button & BTN_DRIGHT, scaledBGSize,
-                             useGlobalOutlineMode
-                                 ? buttonOutlineMode
-                                 : CVarGetInteger(CVAR_INPUT_VIEWER("DpadOutlineMode"), BUTTON_OUTLINE_NOT_PRESSED));
+                    useGlobalOutlineMode
+                    ? buttonOutlineMode
+                    : CVarGetInteger(CVAR_INPUT_VIEWER("DpadOutlineMode"), BUTTON_OUTLINE_NOT_PRESSED));
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
                 RenderButton("Dpad-Up", "Dpad-Up Outline", pads[0].button & BTN_DUP, scaledBGSize,
-                             useGlobalOutlineMode
-                                 ? buttonOutlineMode
-                                 : CVarGetInteger(CVAR_INPUT_VIEWER("DpadOutlineMode"), BUTTON_OUTLINE_NOT_PRESSED));
+                    useGlobalOutlineMode
+                    ? buttonOutlineMode
+                    : CVarGetInteger(CVAR_INPUT_VIEWER("DpadOutlineMode"), BUTTON_OUTLINE_NOT_PRESSED));
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
                 RenderButton("Dpad-Down", "Dpad-Down Outline", pads[0].button & BTN_DDOWN, scaledBGSize,
-                             useGlobalOutlineMode
-                                 ? buttonOutlineMode
-                                 : CVarGetInteger(CVAR_INPUT_VIEWER("DpadOutlineMode"), BUTTON_OUTLINE_NOT_PRESSED));
+                    useGlobalOutlineMode
+                    ? buttonOutlineMode
+                    : CVarGetInteger(CVAR_INPUT_VIEWER("DpadOutlineMode"), BUTTON_OUTLINE_NOT_PRESSED));
             }
 
             // Modifier 1
@@ -303,18 +312,18 @@ void InputViewer::DrawElement() {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
                 RenderButton("Modifier-1", "Modifier-1 Outline", pads[0].button & BTN_MODIFIER1, scaledBGSize,
-                             useGlobalOutlineMode
-                                 ? buttonOutlineMode
-                                 : CVarGetInteger(CVAR_INPUT_VIEWER("Mod1OutlineMode"), BUTTON_OUTLINE_NOT_PRESSED));
+                    useGlobalOutlineMode
+                    ? buttonOutlineMode
+                    : CVarGetInteger(CVAR_INPUT_VIEWER("Mod1OutlineMode"), BUTTON_OUTLINE_NOT_PRESSED));
             }
             // Modifier 2
             if (CVarGetInteger(CVAR_INPUT_VIEWER("Mod2"), 0)) {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
                 RenderButton("Modifier-2", "Modifier-2 Outline", pads[0].button & BTN_MODIFIER2, scaledBGSize,
-                             useGlobalOutlineMode
-                                 ? buttonOutlineMode
-                                 : CVarGetInteger(CVAR_INPUT_VIEWER("Mod2OutlineMode"), BUTTON_OUTLINE_NOT_PRESSED));
+                    useGlobalOutlineMode
+                    ? buttonOutlineMode
+                    : CVarGetInteger(CVAR_INPUT_VIEWER("Mod2OutlineMode"), BUTTON_OUTLINE_NOT_PRESSED));
             }
 
             const bool analogStickIsInDeadzone = !pads[0].stick_x && !pads[0].stick_y;
@@ -339,9 +348,9 @@ void InputViewer::DrawElement() {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(
                     ImVec2(aPos.x + maxStickDistance * ((float)(pads[0].stick_x) / MAX_AXIS_RANGE) * scale,
-                           aPos.y - maxStickDistance * ((float)(pads[0].stick_y) / MAX_AXIS_RANGE) * scale));
+                        aPos.y - maxStickDistance * ((float)(pads[0].stick_y) / MAX_AXIS_RANGE) * scale));
                 ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("Analog-Stick"),
-                             scaledBGSize, ImVec2(0, 0), ImVec2(1.0f, 1.0f), ImVec4(255, 255, 255, 255));
+                    scaledBGSize, ImVec2(0, 0), ImVec2(1.0f, 1.0f), ImVec4(255, 255, 255, 255));
             }
 
             // Right Stick
@@ -363,15 +372,15 @@ void InputViewer::DrawElement() {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(
                     ImVec2(aPos.x + maxRightStickDistance * ((float)(pads[0].right_stick_x) / MAX_AXIS_RANGE) * scale,
-                           aPos.y - maxRightStickDistance * ((float)(pads[0].right_stick_y) / MAX_AXIS_RANGE) * scale));
+                        aPos.y - maxRightStickDistance * ((float)(pads[0].right_stick_y) / MAX_AXIS_RANGE) * scale));
                 ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("Right-Stick"),
-                             scaledBGSize, ImVec2(0, 0), ImVec2(1.0f, 1.0f), ImVec4(255, 255, 255, 255));
+                    scaledBGSize, ImVec2(0, 0), ImVec2(1.0f, 1.0f), ImVec4(255, 255, 255, 255));
             }
 
             // Analog stick angle text
             if (showAnalogAngles) {
                 ImGui::SetCursorPos(ImVec2(aPos.x + 10 + CVarGetInteger(CVAR_INPUT_VIEWER("AnalogAngles.Offset"), 0) * scale,
-                                           scaledBGSize.y + aPos.y + 10));
+                    scaledBGSize.y + aPos.y + 10));
                 // Scale font with input viewer scale
                 float oldFontScale = ImGui::GetFont()->Scale;
                 ImGui::GetFont()->Scale *= scale * CVarGetFloat(CVAR_INPUT_VIEWER("AnalogAngles.Scale"), 1.0f);
@@ -393,14 +402,16 @@ void InputViewer::DrawElement() {
                     ImGui::PushStyleColor(
                         ImGuiCol_Text,
                         color2Vec(CVarGetColor(CVAR_INPUT_VIEWER("AnalogAngles.Range1.Color"), vec2Color(range1Color))));
-                } else if (CVarGetInteger(CVAR_INPUT_VIEWER("AnalogAngles.Range2.Enabled"), 0) &&
-                           (rSquared >= (range2Min * range2Min)) && (rSquared < (range2Max * range2Max))) {
+                }
+                else if (CVarGetInteger(CVAR_INPUT_VIEWER("AnalogAngles.Range2.Enabled"), 0) &&
+                    (rSquared >= (range2Min * range2Min)) && (rSquared < (range2Max * range2Max))) {
                     ImGui::PushStyleColor(
                         ImGuiCol_Text,
                         color2Vec(CVarGetColor(CVAR_INPUT_VIEWER("AnalogAngles.Range2.Color"), vec2Color(range2Color))));
-                } else {
+                }
+                else {
                     ImGui::PushStyleColor(ImGuiCol_Text, color2Vec(CVarGetColor(CVAR_INPUT_VIEWER("AnalogAngles.TextColor"),
-                                                                                vec2Color(textColor))));
+                        vec2Color(textColor))));
                 }
 
                 // Render text

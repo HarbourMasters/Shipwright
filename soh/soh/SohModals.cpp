@@ -19,6 +19,15 @@ struct SohModal {
 };
 std::vector<SohModal> modals;
 
+void SohModalWindow::Draw() {
+    if (!IsVisible()) {
+        return;
+    }
+    DrawElement();
+    // Sync up the IsVisible flag if it was changed by ImGui
+    SyncVisibilityConsoleVariable();
+}
+
 void SohModalWindow::DrawElement() {
     if (modals.size() > 0) {
         SohModal curModal = modals.at(0);
@@ -46,11 +55,9 @@ void SohModalWindow::DrawElement() {
             }
         }
         ImGui::EndPopup();
-        SetVisiblity(false);
     }
 }
 
 void SohModalWindow::RegisterPopup(std::string title, std::string message, std::string button1, std::string button2, std::function<void()> button1callback, std::function<void()> button2callback) {
     modals.push_back({ title, message, button1, button2, button1callback, button2callback });
-    SetVisiblity(true);
 }

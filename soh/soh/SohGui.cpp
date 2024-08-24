@@ -202,6 +202,7 @@ namespace SohGui {
         gui->AddGuiWindow(mAdvancedResolutionSettingsWindow);
         mModalWindow = std::make_shared<SohModalWindow>(CVAR_WINDOW("ModalWindow"), "Modal Window");
         gui->AddGuiWindow(mModalWindow);
+        mModalWindow->Show();
     }
 
     void Destroy() {

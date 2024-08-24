@@ -1006,6 +1006,15 @@ void ItemTrackerLoadFile() {
     }
 }
 
+void ItemTrackerWindow::Draw() {
+    if (!IsVisible()) {
+        return;
+    }
+    DrawElement();
+    // Sync up the IsVisible flag if it was changed by ImGui
+    SyncVisibilityConsoleVariable();
+}
+
 void ItemTrackerWindow::DrawElement() {
     UpdateVectors();
 

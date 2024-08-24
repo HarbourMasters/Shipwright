@@ -116,7 +116,6 @@ void DLViewerWindow::DrawElement() {
     }
 
     if (activeDisplayList == "") {
-        ImGui::End();
         return;
     }
 
@@ -125,7 +124,6 @@ void DLViewerWindow::DrawElement() {
 
         if (res->GetInitData()->Type != static_cast<uint32_t>(LUS::ResourceType::DisplayList)) {
             ImGui::Text("Resource type is not a Display List. Please choose another.");
-            ImGui::End();
             return;
         }
 
@@ -319,7 +317,6 @@ void DLViewerWindow::DrawElement() {
         }
     } catch (const std::exception& e) {
         ImGui::Text("Error displaying DL instructions.");
-        ImGui::End();
         return;
     }
 }

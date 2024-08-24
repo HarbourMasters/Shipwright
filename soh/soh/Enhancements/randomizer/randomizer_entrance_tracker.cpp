@@ -636,8 +636,24 @@ void InitEntranceTrackingData() {
     SortEntranceListByType(destListSortedByType, 1);
 }
 
+void EntranceTrackerWindow::Draw() {
+    if (!IsVisible()) {
+        return;
+    }
+    DrawElement();
+    // Sync up the IsVisible flag if it was changed by ImGui
+    SyncVisibilityConsoleVariable();
+}
+
 void EntranceTrackerWindow::DrawElement() {
     // Begin tracker settings
+    ImGui::SetNextWindowSize(ImVec2(600, 375), ImGuiCond_FirstUseEver);
+
+    if (!ImGui::Begin("Entrance Tracker", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
+        ImGui::End();
+        return;
+    }
+
     ImGui::SetNextItemOpen(false, ImGuiCond_Once);
     if (ImGui::TreeNode("Tracker Settings")) {
         // Reduce indentation from the tree node for the table
@@ -922,6 +938,8 @@ void EntranceTrackerWindow::DrawElement() {
         }
     }
     ImGui::EndChild();
+
+    ImGui::End();
 }
 
 void EntranceTrackerWindow::InitElement() {
