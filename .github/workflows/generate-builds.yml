@@ -116,198 +116,198 @@ jobs:
         path: |
           SoH.dmg
           readme.txt
-  build-linux:
-    needs: generate-soh-otr
-    strategy:
-      fail-fast: true
-      matrix:
-        include:
-        - os: ubuntu-20.04
-          gcc: 10
-          archive-suffix: compatibility
-        - os: ubuntu-22.04
-          gcc: 12
-          archive-suffix: performance
-    runs-on: ${{ (matrix.os == 'ubuntu-20.04' && ((vars.LINUX_COMPATIBILITY_RUNNER && fromJSON(vars.LINUX_COMPATIBILITY_RUNNER)) || matrix.os)) || (matrix.os == 'ubuntu-22.04' && ((vars.LINUX_PERFORMANCE_RUNNER && fromJSON(vars.LINUX_PERFORMANCE_RUNNER)) || matrix.os)) }}
-    steps:
-    - uses: actions/checkout@v3
-      with:
-        submodules: true
-    - name: Install dependencies
-      if: ${{ (matrix.os == 'ubuntu-20.04' && !vars.LINUX_COMPATIBILITY_RUNNER) || (matrix.os == 'ubuntu-22.04' && !vars.LINUX_PERFORMANCE_RUNNER) }}
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y $(cat .github/workflows/apt-deps.txt)
-    - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2
-      with:
-        key: ${{ matrix.os }}-ccache
-    - name: Install latest SDL
-      if: ${{ (matrix.os == 'ubuntu-20.04' && !vars.LINUX_COMPATIBILITY_RUNNER) || (matrix.os == 'ubuntu-22.04' && !vars.LINUX_PERFORMANCE_RUNNER) }}
-      run: |
-        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
-        wget https://www.libsdl.org/release/SDL2-2.26.1.tar.gz
-        tar -xzf SDL2-2.26.1.tar.gz
-        cd SDL2-2.26.1
-        ./configure
-        make -j 10
-        sudo make install
-        sudo cp -av /usr/local/lib/libSDL* /lib/x86_64-linux-gnu/
-    - name: Install latest SDL_net
-      if: ${{ (matrix.os == 'ubuntu-20.04' && !vars.LINUX_COMPATIBILITY_RUNNER) || (matrix.os == 'ubuntu-22.04' && !vars.LINUX_PERFORMANCE_RUNNER) }}
-      run: |
-        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
-        wget https://www.libsdl.org/projects/SDL_net/release/SDL2_net-2.2.0.tar.gz
-        tar -xzf SDL2_net-2.2.0.tar.gz
-        cd SDL2_net-2.2.0
-        ./configure
-        make -j 10
-        sudo make install
-        sudo cp -av /usr/local/lib/libSDL* /lib/x86_64-linux-gnu/
-    - name: Download soh.otr
-      uses: actions/download-artifact@v3
-      with:
-        name: soh.otr
-    - name: Build SoH
-      run: |
-        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
-        cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release
-        cmake --build build-cmake --config Release -j3
-        (cd build-cmake && cpack -G External)
+  # build-linux:
+  #   needs: generate-soh-otr
+  #   strategy:
+  #     fail-fast: true
+  #     matrix:
+  #       include:
+  #       - os: ubuntu-20.04
+  #         gcc: 10
+  #         archive-suffix: compatibility
+  #       - os: ubuntu-22.04
+  #         gcc: 12
+  #         archive-suffix: performance
+  #   runs-on: ${{ (matrix.os == 'ubuntu-20.04' && ((vars.LINUX_COMPATIBILITY_RUNNER && fromJSON(vars.LINUX_COMPATIBILITY_RUNNER)) || matrix.os)) || (matrix.os == 'ubuntu-22.04' && ((vars.LINUX_PERFORMANCE_RUNNER && fromJSON(vars.LINUX_PERFORMANCE_RUNNER)) || matrix.os)) }}
+  #   steps:
+  #   - uses: actions/checkout@v3
+  #     with:
+  #       submodules: true
+  #   - name: Install dependencies
+  #     if: ${{ (matrix.os == 'ubuntu-20.04' && !vars.LINUX_COMPATIBILITY_RUNNER) || (matrix.os == 'ubuntu-22.04' && !vars.LINUX_PERFORMANCE_RUNNER) }}
+  #     run: |
+  #       sudo apt-get update
+  #       sudo apt-get install -y $(cat .github/workflows/apt-deps.txt)
+  #   - name: ccache
+  #     uses: hendrikmuhs/ccache-action@v1.2
+  #     with:
+  #       key: ${{ matrix.os }}-ccache
+  #   - name: Install latest SDL
+  #     if: ${{ (matrix.os == 'ubuntu-20.04' && !vars.LINUX_COMPATIBILITY_RUNNER) || (matrix.os == 'ubuntu-22.04' && !vars.LINUX_PERFORMANCE_RUNNER) }}
+  #     run: |
+  #       export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
+  #       wget https://www.libsdl.org/release/SDL2-2.26.1.tar.gz
+  #       tar -xzf SDL2-2.26.1.tar.gz
+  #       cd SDL2-2.26.1
+  #       ./configure
+  #       make -j 10
+  #       sudo make install
+  #       sudo cp -av /usr/local/lib/libSDL* /lib/x86_64-linux-gnu/
+  #   - name: Install latest SDL_net
+  #     if: ${{ (matrix.os == 'ubuntu-20.04' && !vars.LINUX_COMPATIBILITY_RUNNER) || (matrix.os == 'ubuntu-22.04' && !vars.LINUX_PERFORMANCE_RUNNER) }}
+  #     run: |
+  #       export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
+  #       wget https://www.libsdl.org/projects/SDL_net/release/SDL2_net-2.2.0.tar.gz
+  #       tar -xzf SDL2_net-2.2.0.tar.gz
+  #       cd SDL2_net-2.2.0
+  #       ./configure
+  #       make -j 10
+  #       sudo make install
+  #       sudo cp -av /usr/local/lib/libSDL* /lib/x86_64-linux-gnu/
+  #   - name: Download soh.otr
+  #     uses: actions/download-artifact@v3
+  #     with:
+  #       name: soh.otr
+  #   - name: Build SoH
+  #     run: |
+  #       export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
+  #       cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release
+  #       cmake --build build-cmake --config Release -j3
+  #       (cd build-cmake && cpack -G External)
 
-        mv README.md readme.txt
-        mv build-cmake/*.appimage soh.appimage
-      env:
-        CC: gcc-${{ matrix.gcc }}
-        CXX: g++-${{ matrix.gcc }}
-    - name: Upload build
-      uses: actions/upload-artifact@v3
-      with:
-        name: soh-linux-${{ matrix.archive-suffix }}
-        path: |
-          soh.appimage
-          readme.txt
-  build-switch:
-    needs: generate-soh-otr
-    runs-on: ${{ (vars.LINUX_RUNNER && fromJSON(vars.LINUX_RUNNER)) || 'ubuntu-latest' }}
-    container:
-      image: devkitpro/devkita64:20240120
-    steps:
-    - name: Install dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y ninja-build
-    - name: Fix dubious ownership error
-      if: ${{ vars.LINUX_RUNNER }}
-      run: git config --global --add safe.directory '*'
-    - uses: actions/checkout@v3
-      with:
-        submodules: true
-    - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2
-      with:
-        key: ${{ runner.os }}-switch-ccache
-    - name: Build SoH
-      run: |
-        cmake -H. -Bbuild-switch -GNinja -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/Switch.cmake -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DCMAKE_C_COMPILER_LAUNCHER=ccache
-        cmake --build build-switch --target soh_nro -j3
+  #       mv README.md readme.txt
+  #       mv build-cmake/*.appimage soh.appimage
+  #     env:
+  #       CC: gcc-${{ matrix.gcc }}
+  #       CXX: g++-${{ matrix.gcc }}
+  #   - name: Upload build
+  #     uses: actions/upload-artifact@v3
+  #     with:
+  #       name: soh-linux-${{ matrix.archive-suffix }}
+  #       path: |
+  #         soh.appimage
+  #         readme.txt
+  # build-switch:
+  #   needs: generate-soh-otr
+  #   runs-on: ${{ (vars.LINUX_RUNNER && fromJSON(vars.LINUX_RUNNER)) || 'ubuntu-latest' }}
+  #   container:
+  #     image: devkitpro/devkita64:20240120
+  #   steps:
+  #   - name: Install dependencies
+  #     run: |
+  #       sudo apt-get update
+  #       sudo apt-get install -y ninja-build
+  #   - name: Fix dubious ownership error
+  #     if: ${{ vars.LINUX_RUNNER }}
+  #     run: git config --global --add safe.directory '*'
+  #   - uses: actions/checkout@v3
+  #     with:
+  #       submodules: true
+  #   - name: ccache
+  #     uses: hendrikmuhs/ccache-action@v1.2
+  #     with:
+  #       key: ${{ runner.os }}-switch-ccache
+  #   - name: Build SoH
+  #     run: |
+  #       cmake -H. -Bbuild-switch -GNinja -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/Switch.cmake -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DCMAKE_C_COMPILER_LAUNCHER=ccache
+  #       cmake --build build-switch --target soh_nro -j3
 
-        mv build-switch/soh/*.nro soh.nro
-        mv README.md readme.txt
-    - name: Download soh.otr
-      uses: actions/download-artifact@v3
-      with:
-        name: soh.otr
-    - name: Upload build
-      uses: actions/upload-artifact@v3
-      with:
-        name: soh-switch
-        path: |
-          soh.nro
-          soh.otr
-          readme.txt
-  build-wiiu:
-    needs: generate-soh-otr
-    runs-on: ${{ (vars.LINUX_RUNNER && fromJSON(vars.LINUX_RUNNER)) || 'ubuntu-latest' }}
-    container:
-      image: devkitpro/devkitppc:20230110
-    steps:
-    - name: Install dependencies
-      if: ${{ !vars.LINUX_RUNNER }}
-      run: |
-        sudo apt-get install -y ninja-build
-    - uses: actions/checkout@v3
-      with:
-        submodules: true
-    - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2
-      with:
-        key: ${{ runner.os }}-wiiu-ccache
-    - name: Build SoH
-      run: |
-        cmake -H. -Bbuild-wiiu -GNinja -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/WiiU.cmake -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DCMAKE_C_COMPILER_LAUNCHER=ccache
-        cmake --build build-wiiu --target soh_wuhb --config Release -j3
+  #       mv build-switch/soh/*.nro soh.nro
+  #       mv README.md readme.txt
+  #   - name: Download soh.otr
+  #     uses: actions/download-artifact@v3
+  #     with:
+  #       name: soh.otr
+  #   - name: Upload build
+  #     uses: actions/upload-artifact@v3
+  #     with:
+  #       name: soh-switch
+  #       path: |
+  #         soh.nro
+  #         soh.otr
+  #         readme.txt
+  # build-wiiu:
+  #   needs: generate-soh-otr
+  #   runs-on: ${{ (vars.LINUX_RUNNER && fromJSON(vars.LINUX_RUNNER)) || 'ubuntu-latest' }}
+  #   container:
+  #     image: devkitpro/devkitppc:20230110
+  #   steps:
+  #   - name: Install dependencies
+  #     if: ${{ !vars.LINUX_RUNNER }}
+  #     run: |
+  #       sudo apt-get install -y ninja-build
+  #   - uses: actions/checkout@v3
+  #     with:
+  #       submodules: true
+  #   - name: ccache
+  #     uses: hendrikmuhs/ccache-action@v1.2
+  #     with:
+  #       key: ${{ runner.os }}-wiiu-ccache
+  #   - name: Build SoH
+  #     run: |
+  #       cmake -H. -Bbuild-wiiu -GNinja -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/WiiU.cmake -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DCMAKE_C_COMPILER_LAUNCHER=ccache
+  #       cmake --build build-wiiu --target soh_wuhb --config Release -j3
 
-        mv build-wiiu/soh/*.rpx soh.rpx
-        mv build-wiiu/soh/*.wuhb soh.wuhb
-        mv README.md readme.txt
-      env:
-        DEVKITPRO: /opt/devkitpro
-        DEVKITPPC: /opt/devkitpro/devkitPPC
-    - name: Download soh.otr
-      uses: actions/download-artifact@v3
-      with:
-        name: soh.otr
-    - name: Upload build
-      uses: actions/upload-artifact@v3
-      with:
-        name: soh-wiiu
-        path: |
-          soh.rpx
-          soh.wuhb
-          soh.otr
-          readme.txt
-  build-windows:
-    needs: generate-soh-otr
-    runs-on: ${{ (vars.WINDOWS_RUNNER && fromJSON(vars.WINDOWS_RUNNER)) || 'windows-latest' }}
-    steps:
-    - name: Install dependencies
-      if: ${{ !vars.WINDOWS_RUNNER }}
-      run: |
-        choco install ninja
-        Remove-Item -Path "C:\ProgramData\Chocolatey\bin\ccache.exe" -Force -ErrorAction SilentlyContinue
-    - uses: actions/checkout@v3
-      with:
-        submodules: true
-    - name: ccache
-      uses: dcvz/ccache-action@27b9f33213c0079872f064f6b6ba0233dfa16ba2
-      with:
-        key: ${{ runner.os }}-ccache
-    - uses: ilammy/msvc-dev-cmd@v1
-    - name: Build SoH
-      env: 
-        VCPKG_ROOT: D:/a/vcpkg
-      run: |
-        set $env:PATH="$env:USERPROFILE/.cargo/bin;$env:PATH"
-        cmake -S . -B build-windows -G Ninja -DCMAKE_MAKE_PROGRAM=ninja -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
-        cmake --build build-windows --config Release --parallel 10
+  #       mv build-wiiu/soh/*.rpx soh.rpx
+  #       mv build-wiiu/soh/*.wuhb soh.wuhb
+  #       mv README.md readme.txt
+  #     env:
+  #       DEVKITPRO: /opt/devkitpro
+  #       DEVKITPPC: /opt/devkitpro/devkitPPC
+  #   - name: Download soh.otr
+  #     uses: actions/download-artifact@v3
+  #     with:
+  #       name: soh.otr
+  #   - name: Upload build
+  #     uses: actions/upload-artifact@v3
+  #     with:
+  #       name: soh-wiiu
+  #       path: |
+  #         soh.rpx
+  #         soh.wuhb
+  #         soh.otr
+  #         readme.txt
+  # build-windows:
+  #   needs: generate-soh-otr
+  #   runs-on: ${{ (vars.WINDOWS_RUNNER && fromJSON(vars.WINDOWS_RUNNER)) || 'windows-latest' }}
+  #   steps:
+  #   - name: Install dependencies
+  #     if: ${{ !vars.WINDOWS_RUNNER }}
+  #     run: |
+  #       choco install ninja
+  #       Remove-Item -Path "C:\ProgramData\Chocolatey\bin\ccache.exe" -Force -ErrorAction SilentlyContinue
+  #   - uses: actions/checkout@v3
+  #     with:
+  #       submodules: true
+  #   - name: ccache
+  #     uses: dcvz/ccache-action@27b9f33213c0079872f064f6b6ba0233dfa16ba2
+  #     with:
+  #       key: ${{ runner.os }}-ccache
+  #   - uses: ilammy/msvc-dev-cmd@v1
+  #   - name: Build SoH
+  #     env: 
+  #       VCPKG_ROOT: D:/a/vcpkg
+  #     run: |
+  #       set $env:PATH="$env:USERPROFILE/.cargo/bin;$env:PATH"
+  #       cmake -S . -B build-windows -G Ninja -DCMAKE_MAKE_PROGRAM=ninja -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
+  #       cmake --build build-windows --config Release --parallel 10
 
-        mkdir soh-windows
-        mv ./x64/Release/soh.exe ./soh-windows/soh.exe
-        mkdir soh-windows/debug
-        mkdir soh-windows/mods
-        New-Item soh-windows/mods/custom_otr_files_go_here.txt -type file
-        mv ./x64/Release/soh.pdb ./soh-windows/debug/soh.pdb
-        mv ./README.md ./soh-windows/readme.txt
-        mv ./build-windows/gamecontrollerdb.txt ./soh-windows/gamecontrollerdb.txt
-        mv ./x64/Release/assets ./soh-windows
-    - name: Download soh.otr
-      uses: actions/download-artifact@v3
-      with:
-        name: soh.otr
-        path: soh-windows
-    - name: Upload build
-      uses: actions/upload-artifact@v3
-      with:
-        name: soh-windows
-        path: soh-windows
+  #       mkdir soh-windows
+  #       mv ./x64/Release/soh.exe ./soh-windows/soh.exe
+  #       mkdir soh-windows/debug
+  #       mkdir soh-windows/mods
+  #       New-Item soh-windows/mods/custom_otr_files_go_here.txt -type file
+  #       mv ./x64/Release/soh.pdb ./soh-windows/debug/soh.pdb
+  #       mv ./README.md ./soh-windows/readme.txt
+  #       mv ./build-windows/gamecontrollerdb.txt ./soh-windows/gamecontrollerdb.txt
+  #       mv ./x64/Release/assets ./soh-windows
+  #   - name: Download soh.otr
+  #     uses: actions/download-artifact@v3
+  #     with:
+  #       name: soh.otr
+  #       path: soh-windows
+  #   - name: Upload build
+  #     uses: actions/upload-artifact@v3
+  #     with:
+  #       name: soh-windows
+  #       path: soh-windows
