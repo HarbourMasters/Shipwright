@@ -559,7 +559,7 @@ void Settings::CreateOptionDescriptions() {
         "Once found, they can be replenished at shops selling refills, Bombchu Bowling and the carpet merchant.\n"
         "\n"
         "Bombchu Bowling is opened by obtaining the Bombchu Bag.";
-    mOptionDescriptions[RSK_ENABLE_BOMBCHU_DROPS] = "Once you obtain a Bombch Bag, refills will sometimes replace "
+    mOptionDescriptions[RSK_ENABLE_BOMBCHU_DROPS] = "Once you obtain a Bombchu Bag, refills will sometimes replace "
                                                     "Bomb drops that would spawn."
                                                     "\n"
                                                     "If you have Bombchu Bag disabled, you will need a Bomb Bag "
