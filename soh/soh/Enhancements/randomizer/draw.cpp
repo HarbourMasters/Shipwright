@@ -743,7 +743,7 @@ extern "C" void Randomizer_DrawBombchuBagInLogic(PlayState* play, GetItemEntry* 
     OPEN_DISPS(play->state.gfxCtx);
 
     Gfx_SetupDL_26Opa(play->state.gfxCtx);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
               G_MTX_MODELVIEW | G_MTX_LOAD);
     if(IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_BOMBCHU_BAG)){
         //DrawBombchuBag();
@@ -769,7 +769,7 @@ extern "C" void Randomizer_DrawBombchuBagInfinite(PlayState* play, GetItemEntry*
     OPEN_DISPS(play->state.gfxCtx);
 
     Gfx_SetupDL_26Opa(play->state.gfxCtx);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
               G_MTX_MODELVIEW | G_MTX_LOAD);
     //DrawBombchuBag();
     Color_RGB8 maskColor = { 0, 100, 150 };
