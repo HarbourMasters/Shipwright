@@ -873,10 +873,8 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                 return (GetItemID)RG_PROGRESSIVE_BOMBCHUS;
             } else if (infiniteUpgrades != RO_INF_UPGRADES_OFF) {
                 return (GetItemID)RG_BOMBCHU_INF;
-            } else if (AMMO(ITEM_BOMBCHU) < 5) {
-                return GI_BOMBCHUS_10;
             } else {
-                return GI_BOMBCHUS_5;
+                return GI_BOMBCHUS_10;
             }
         case RG_PROGRESSIVE_HOOKSHOT:
             switch (INV_CONTENT(ITEM_HOOKSHOT)) {
@@ -3011,7 +3009,7 @@ CustomMessage Randomizer::GetGoronMessage(u16 index) {
 void Randomizer::CreateCustomMessages() {
     // RANDTODO: Translate into french and german and replace GIMESSAGE_UNTRANSLATED
     // with GIMESSAGE(getItemID, itemID, english, german, french).
-    const std::array<GetItemMessage, 85> getItemMessages = {{
+    const std::array<GetItemMessage, 86> getItemMessages = {{
         GIMESSAGE(RG_GREG_RUPEE, ITEM_MASK_GORON, 
 			"You found %gGreg%w!",
 			"%gGreg%w! Du hast ihn wirklich gefunden!",
@@ -3130,6 +3128,10 @@ void Randomizer::CreateCustomMessages() {
 			"You found a %rGanon's Castle &%wKeyring!",
 			"Du erhältst ein %rSchlüsselbund%w&für %rGanons Schloß%w!",
 			"Vous obtenez un trousseau de&clés du %rChâteau de Ganon%w!"),
+        GIMESSAGE(RG_TREASURE_GAME_KEY_RING, ITEM_KEY_SMALL, 
+			"You found a %rTreasure Chest Game &%wKeyring!",
+			"!!!",
+			"!!!"),
 
         GIMESSAGE(RG_FOREST_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS,
 			"You found the %gForest Temple &%wBoss Key!",

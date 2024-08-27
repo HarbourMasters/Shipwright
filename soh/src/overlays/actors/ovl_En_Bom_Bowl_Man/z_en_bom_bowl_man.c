@@ -153,9 +153,9 @@ void EnBomBowMan_BlinkAwake(EnBomBowlMan* this, PlayState* play) {
         // In randomizer, only check for bomb bag when bombchus aren't in logic
         // and only check for bombchus when bombchus are in logic
         if (IS_RANDO) {
-            u8 bombchusInLogic = Randomizer_GetSettingValue(RSK_BOMBCHUS_IN_LOGIC);
-            if ((!bombchusInLogic && INV_CONTENT(ITEM_BOMB) == ITEM_NONE) ||
-                (bombchusInLogic && INV_CONTENT(ITEM_BOMBCHU) == ITEM_NONE)) {
+            u8 bombchuBag = Randomizer_GetSettingValue(RSK_BOMBCHU_BAG);
+            if ((!bombchuBag && INV_CONTENT(ITEM_BOMB) == ITEM_NONE) ||
+                (bombchuBag && INV_CONTENT(ITEM_BOMBCHU) == ITEM_NONE)) {
                 this->actor.textId = 0x7058;
             } else {
                 this->actor.textId = 0xBF;
@@ -190,7 +190,7 @@ void EnBomBowMan_CheckBeatenDC(EnBomBowlMan* this, PlayState* play) {
         if (IS_RANDO) {
             // when rando'd, check if we have bombchus if chus are in logic
             // and check if we have a bomb bag if chus aren't in logic
-            u8 explosive = Randomizer_GetSettingValue(RSK_BOMBCHUS_IN_LOGIC) ? ITEM_BOMBCHU : ITEM_BOMB;
+            u8 explosive = Randomizer_GetSettingValue(RSK_BOMBCHU_BAG) ? ITEM_BOMBCHU : ITEM_BOMB;
             bombchuBowlingClosed = (INV_CONTENT(explosive) == ITEM_NONE);
         } else {
             // if not rando'd, check if we have beaten Dodongo's Cavern

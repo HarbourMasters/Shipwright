@@ -499,7 +499,7 @@ namespace Rando {
         OcarinaOfTime   = HasItem(RG_OCARINA_OF_TIME);
         MagicMeter      = HasItem(RG_MAGIC_SINGLE) && (AmmoCanDrop || (HasBottle && BuyMagicPotion));
         BombBag         = HasItem(RG_BOMB_BAG) && (BuyBomb || AmmoCanDrop);
-        BombchusEnabled = ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) ? ctx->CheckInventory(ITEM_BOMBCHU, true) : BombBag;
+        BombchusEnabled = ctx->GetOption(RSK_BOMBCHU_BAG) ? ctx->CheckInventory(ITEM_BOMBCHU, true) : BombBag;
         BuyBombchus     = (GetInLogic(LOGIC_BUY_BOMBCHUS) || CouldPlayBowling || CarpetMerchant);
         Hookshot        = CanUse(RG_HOOKSHOT);
         Longshot        = CanUse(RG_LONGSHOT);
