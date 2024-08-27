@@ -31,7 +31,7 @@ extern "C" void Randomizer_DrawSmallKey(PlayState* play, GetItemEntry* getItemEn
     s8 isCustomKeysEnabled = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("CustomKeyModels"), 0);
     int slot = getItemEntry->drawItemId - RG_FOREST_TEMPLE_SMALL_KEY;
 
-    char* BaseCvarValue[10] = {
+    const char* BaseCvarValue[10] = {
         CVAR_COSMETIC("Key.ForestSmallBase.Value"),
         CVAR_COSMETIC("Key.FireSmallBase.Value"),
         CVAR_COSMETIC("Key.WaterSmallBase.Value"),
@@ -44,7 +44,7 @@ extern "C" void Randomizer_DrawSmallKey(PlayState* play, GetItemEntry* getItemEn
         CVAR_COSMETIC("Key.ChestSmallBase.Value"),
     };
 
-    char* IconCvarValue[10] = {
+    const char* IconCvarValue[10] = {
         CVAR_COSMETIC("Key.ForestIcon.Value"),
         CVAR_COSMETIC("Key.FireIcon.Value"),
         CVAR_COSMETIC("Key.WaterIcon.Value"),
@@ -152,7 +152,7 @@ extern "C" void Randomizer_DrawBossKey(PlayState* play, GetItemEntry* getItemEnt
     s8 isCustomKeysEnabled = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("CustomKeyModels"), 1);
     s16 slot = getItemEntry->getItemId - RG_FOREST_TEMPLE_BOSS_KEY;
 
-    char* BaseCvarValue[6] = {
+    const char* BaseCvarValue[6] = {
         CVAR_COSMETIC("Key.ForestBossBase.Value"),
         CVAR_COSMETIC("Key.FireBossBase.Value"),
         CVAR_COSMETIC("Key.WaterBossBase.Value"),
@@ -161,7 +161,7 @@ extern "C" void Randomizer_DrawBossKey(PlayState* play, GetItemEntry* getItemEnt
         CVAR_COSMETIC("Key.GanonsBossBase.Value"),
     };
 
-    char* IconCvarValue[6] = {
+    const char* IconCvarValue[6] = {
         CVAR_COSMETIC("Key.ForestIcon.Value"),
         CVAR_COSMETIC("Key.FireIcon.Value"),
         CVAR_COSMETIC("Key.WaterIcon.Value"),
@@ -224,7 +224,7 @@ extern "C" void Randomizer_DrawKeyRing(PlayState* play, GetItemEntry* getItemEnt
     s8 isCustomKeysEnabled = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("CustomKeyModels"), 0);
     int slot = getItemEntry->drawItemId - RG_FOREST_TEMPLE_KEY_RING;
 
-    char* BaseCvarValue[10] = {
+    const char* BaseCvarValue[10] = {
         CVAR_COSMETIC("Key.ForestSmallBase.Value"),
         CVAR_COSMETIC("Key.FireSmallBase.Value"),
         CVAR_COSMETIC("Key.WaterSmallBase.Value"),
@@ -237,7 +237,7 @@ extern "C" void Randomizer_DrawKeyRing(PlayState* play, GetItemEntry* getItemEnt
         CVAR_COSMETIC("Key.ChestSmallBase.Value"),
     };
 
-    char* IconCvarValue[10] = {
+    const char* IconCvarValue[10] = {
         CVAR_COSMETIC("Key.ForestIcon.Value"),
         CVAR_COSMETIC("Key.FireIcon.Value"),
         CVAR_COSMETIC("Key.WaterIcon.Value"),
