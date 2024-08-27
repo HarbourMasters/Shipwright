@@ -25,13 +25,7 @@ extern "C" {
 extern SaveContext gSaveContext;
 }
 
-extern "C" u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
-
-extern "C" void Randomizer_DrawSmallKey(PlayState* play, GetItemEntry* getItemEntry) {
-    s8 isCustomKeysEnabled = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("CustomKeyModels"), 0);
-    int slot = getItemEntry->drawItemId - RG_FOREST_TEMPLE_SMALL_KEY;
-
-    const char* BaseCvarValue[10] = {
+    const char* SmallBaseCvarValue[10] = {
         CVAR_COSMETIC("Key.ForestSmallBase.Value"),
         CVAR_COSMETIC("Key.FireSmallBase.Value"),
         CVAR_COSMETIC("Key.WaterSmallBase.Value"),
@@ -44,7 +38,7 @@ extern "C" void Randomizer_DrawSmallKey(PlayState* play, GetItemEntry* getItemEn
         CVAR_COSMETIC("Key.ChestSmallBase.Value"),
     };
 
-    const char* IconCvarValue[10] = {
+    const char* SmallIconCvarValue[10] = {
         CVAR_COSMETIC("Key.ForestIcon.Value"),
         CVAR_COSMETIC("Key.FireIcon.Value"),
         CVAR_COSMETIC("Key.WaterIcon.Value"),
@@ -56,6 +50,12 @@ extern "C" void Randomizer_DrawSmallKey(PlayState* play, GetItemEntry* getItemEn
         CVAR_COSMETIC("Key.GanonsIcon.Value"),
         CVAR_COSMETIC("Key.ChestIcon.Value"),
     };
+
+extern "C" u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
+
+extern "C" void Randomizer_DrawSmallKey(PlayState* play, GetItemEntry* getItemEntry) {
+    s8 isCustomKeysEnabled = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("CustomKeyModels"), 0);
+    int slot = getItemEntry->drawItemId - RG_FOREST_TEMPLE_SMALL_KEY;
 
     Gfx* CustomdLists[] = {
         (Gfx*)gSmallKeyIconForestTempleDL,
@@ -78,7 +78,7 @@ extern "C" void Randomizer_DrawSmallKey(PlayState* play, GetItemEntry* getItemEn
               G_MTX_MODELVIEW | G_MTX_LOAD);
 
     Color_RGB8 keyColor = { 255, 255, 255 };
-    keyColor = CVarGetColor24(BaseCvarValue[slot], keyColor);
+    keyColor = CVarGetColor24(SmallBaseCvarValue[slot], keyColor);
 
     if (isCustomKeysEnabled) {
         gDPSetEnvColor(POLY_OPA_DISP++, keyColor.r, keyColor.g, keyColor.b, 255);
@@ -87,7 +87,7 @@ extern "C" void Randomizer_DrawSmallKey(PlayState* play, GetItemEntry* getItemEn
         Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
         Color_RGB8 iconColor = { 255, 0, 0 };
-        iconColor = CVarGetColor24(IconCvarValue[slot], iconColor);
+        iconColor = CVarGetColor24(SmallIconCvarValue[slot], iconColor);
 
         gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
                 G_MTX_MODELVIEW | G_MTX_LOAD);
@@ -224,32 +224,6 @@ extern "C" void Randomizer_DrawKeyRing(PlayState* play, GetItemEntry* getItemEnt
     s8 isCustomKeysEnabled = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("CustomKeyModels"), 0);
     int slot = getItemEntry->drawItemId - RG_FOREST_TEMPLE_KEY_RING;
 
-    const char* BaseCvarValue[10] = {
-        CVAR_COSMETIC("Key.ForestSmallBase.Value"),
-        CVAR_COSMETIC("Key.FireSmallBase.Value"),
-        CVAR_COSMETIC("Key.WaterSmallBase.Value"),
-        CVAR_COSMETIC("Key.SpiritSmallBase.Value"),
-        CVAR_COSMETIC("Key.ShadowSmallBase.Value"),
-        CVAR_COSMETIC("Key.WellSmallBase.Value"),
-        CVAR_COSMETIC("Key.GTGSmallBase.Value"),
-        CVAR_COSMETIC("Key.FortSmallBase.Value"),
-        CVAR_COSMETIC("Key.GanonsSmallBase.Value"),
-        CVAR_COSMETIC("Key.ChestSmallBase.Value"),
-    };
-
-    const char* IconCvarValue[10] = {
-        CVAR_COSMETIC("Key.ForestIcon.Value"),
-        CVAR_COSMETIC("Key.FireIcon.Value"),
-        CVAR_COSMETIC("Key.WaterIcon.Value"),
-        CVAR_COSMETIC("Key.SpiritIcon.Value"),
-        CVAR_COSMETIC("Key.ShadowIcon.Value"),
-        CVAR_COSMETIC("Key.WellIcon.Value"),
-        CVAR_COSMETIC("Key.GTGIcon.Value"),
-        CVAR_COSMETIC("Key.FortIcon.Value"),
-        CVAR_COSMETIC("Key.GanonsIcon.Value"),
-        CVAR_COSMETIC("Key.ChestIcon.Value"),
-    };
-
     Gfx* CustomIconDLs[] = {
         (Gfx*)gKeyringIconForestTempleDL,
         (Gfx*)gKeyringIconFireTempleDL,
@@ -308,7 +282,7 @@ extern "C" void Randomizer_DrawKeyRing(PlayState* play, GetItemEntry* getItemEnt
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     Color_RGB8 keyColor = { 255, 255, 255 };
-    keyColor = CVarGetColor24(BaseCvarValue[slot], keyColor);
+    keyColor = CVarGetColor24(SmallBaseCvarValue[slot], keyColor);
 
     if (isCustomKeysEnabled) {
         gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
@@ -334,7 +308,7 @@ extern "C" void Randomizer_DrawKeyRing(PlayState* play, GetItemEntry* getItemEnt
         gSPGrayscale(POLY_OPA_DISP++, false);
 
         Color_RGB8 iconColor = { 255, 0, 0 };
-        iconColor = CVarGetColor24(IconCvarValue[slot], iconColor);
+        iconColor = CVarGetColor24(SmallIconCvarValue[slot], iconColor);
 
         Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
@@ -749,17 +723,6 @@ void DrawBombchuBag(PlayState* play){
 extern "C" void Randomizer_DrawBombchuBagInLogic(PlayState* play, GetItemEntry* getItemEntry) {
     if(IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_BOMBCHU_BAG)){
         DrawBombchuBag(play);
-        /*Color_RGB8 maskColor = { 0, 100, 150 };
-        maskColor = CVarGetColor24(CVAR_COSMETIC("Equipment.ChuFace.Value"), maskColor);
-        gDPSetEnvColor(POLY_OPA_DISP++, maskColor.r, maskColor.g, maskColor.b, 255);
-
-        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gBombchuBagMaskDL);
-
-        Color_RGB8 bodyColor = { 180, 130, 50 };
-        bodyColor = CVarGetColor24(CVAR_COSMETIC("Equipment.ChuBody.Value"), bodyColor);
-        gDPSetEnvColor(POLY_OPA_DISP++, bodyColor.r, bodyColor.g, bodyColor.b, 255);
-
-        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gBombchuBagBodyDL);*/
     } else {
         OPEN_DISPS(play->state.gfxCtx);
         Gfx_SetupDL_26Opa(play->state.gfxCtx);
