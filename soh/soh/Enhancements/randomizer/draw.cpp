@@ -725,53 +725,13 @@ extern "C" void Randomizer_DrawSkeletonKey(PlayState* play, GetItemEntry* getIte
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
-/*void DrawBombchuBag(){ RANDOTODO make this work
-        Color_RGB8 maskColor = { 0, 100, 150 };
-        maskColor = CVarGetColor24(CVAR_COSMETIC("Equipment.ChuFace.Value"), maskColor);
-        gDPSetEnvColor(POLY_OPA_DISP++, maskColor.r, maskColor.g, maskColor.b, 255);
-
-        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gBombchuBagMaskDL);
-
-        Color_RGB8 bodyColor = { 180, 130, 50 };
-        bodyColor = CVarGetColor24(CVAR_COSMETIC("Equipment.ChuBody.Value"), bodyColor);
-        gDPSetEnvColor(POLY_OPA_DISP++, bodyColor.r, bodyColor.g, bodyColor.b, 255);
-
-        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gBombchuBagBodyDL);
-}*/
-
-extern "C" void Randomizer_DrawBombchuBagInLogic(PlayState* play, GetItemEntry* getItemEntry) {
+void DrawBombchuBag(PlayState* play){
     OPEN_DISPS(play->state.gfxCtx);
 
     Gfx_SetupDL_26Opa(play->state.gfxCtx);
     gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
               G_MTX_MODELVIEW | G_MTX_LOAD);
-    if(IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_BOMBCHU_BAG)){
-        //DrawBombchuBag();
-        Color_RGB8 maskColor = { 0, 100, 150 };
-        maskColor = CVarGetColor24(CVAR_COSMETIC("Equipment.ChuFace.Value"), maskColor);
-        gDPSetEnvColor(POLY_OPA_DISP++, maskColor.r, maskColor.g, maskColor.b, 255);
 
-        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gBombchuBagMaskDL);
-
-        Color_RGB8 bodyColor = { 180, 130, 50 };
-        bodyColor = CVarGetColor24(CVAR_COSMETIC("Equipment.ChuBody.Value"), bodyColor);
-        gDPSetEnvColor(POLY_OPA_DISP++, bodyColor.r, bodyColor.g, bodyColor.b, 255);
-
-        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gBombchuBagBodyDL);
-    } else {
-        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiBombchuDL);
-    }
-
-    CLOSE_DISPS(play->state.gfxCtx);
-}
-
-extern "C" void Randomizer_DrawBombchuBagInfinite(PlayState* play, GetItemEntry* getItemEntry) {
-    OPEN_DISPS(play->state.gfxCtx);
-
-    Gfx_SetupDL_26Opa(play->state.gfxCtx);
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
-              G_MTX_MODELVIEW | G_MTX_LOAD);
-    //DrawBombchuBag();
     Color_RGB8 maskColor = { 0, 100, 150 };
     maskColor = CVarGetColor24(CVAR_COSMETIC("Equipment.ChuFace.Value"), maskColor);
     gDPSetEnvColor(POLY_OPA_DISP++, maskColor.r, maskColor.g, maskColor.b, 255);
@@ -783,6 +743,34 @@ extern "C" void Randomizer_DrawBombchuBagInfinite(PlayState* play, GetItemEntry*
     gDPSetEnvColor(POLY_OPA_DISP++, bodyColor.r, bodyColor.g, bodyColor.b, 255);
 
     gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gBombchuBagBodyDL);
-
     CLOSE_DISPS(play->state.gfxCtx);
+}
+
+extern "C" void Randomizer_DrawBombchuBagInLogic(PlayState* play, GetItemEntry* getItemEntry) {
+    if(IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_BOMBCHU_BAG)){
+        DrawBombchuBag(play);
+        /*Color_RGB8 maskColor = { 0, 100, 150 };
+        maskColor = CVarGetColor24(CVAR_COSMETIC("Equipment.ChuFace.Value"), maskColor);
+        gDPSetEnvColor(POLY_OPA_DISP++, maskColor.r, maskColor.g, maskColor.b, 255);
+
+        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gBombchuBagMaskDL);
+
+        Color_RGB8 bodyColor = { 180, 130, 50 };
+        bodyColor = CVarGetColor24(CVAR_COSMETIC("Equipment.ChuBody.Value"), bodyColor);
+        gDPSetEnvColor(POLY_OPA_DISP++, bodyColor.r, bodyColor.g, bodyColor.b, 255);
+
+        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gBombchuBagBodyDL);*/
+    } else {
+        OPEN_DISPS(play->state.gfxCtx);
+        Gfx_SetupDL_26Opa(play->state.gfxCtx);
+        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
+        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiBombchuDL);
+        CLOSE_DISPS(play->state.gfxCtx);
+    }
+
+}
+
+extern "C" void Randomizer_DrawBombchuBagInfinite(PlayState* play, GetItemEntry* getItemEntry) {
+    DrawBombchuBag(play);
 }
