@@ -699,7 +699,7 @@ extern "C" void Randomizer_DrawSkeletonKey(PlayState* play, GetItemEntry* getIte
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
-void DrawBombchuBag(PlayState* play){
+extern "C" void Randomizer_DrawBombchuBag(PlayState* play, GetItemEntry* getItemEntry){
     OPEN_DISPS(play->state.gfxCtx);
 
     Gfx_SetupDL_26Opa(play->state.gfxCtx);
@@ -722,7 +722,7 @@ void DrawBombchuBag(PlayState* play){
 
 extern "C" void Randomizer_DrawBombchuBagInLogic(PlayState* play, GetItemEntry* getItemEntry) {
     if(IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_BOMBCHU_BAG)){
-        DrawBombchuBag(play);
+        Randomizer_DrawBombchuBag(play, getItemEntry);
     } else {
         OPEN_DISPS(play->state.gfxCtx);
         Gfx_SetupDL_26Opa(play->state.gfxCtx);
@@ -731,9 +731,4 @@ extern "C" void Randomizer_DrawBombchuBagInLogic(PlayState* play, GetItemEntry* 
         gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiBombchuDL);
         CLOSE_DISPS(play->state.gfxCtx);
     }
-
-}
-
-extern "C" void Randomizer_DrawBombchuBagInfinite(PlayState* play, GetItemEntry* getItemEntry) {
-    DrawBombchuBag(play);
 }
