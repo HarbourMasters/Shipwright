@@ -155,7 +155,7 @@ int16_t OTRGetRectDimensionFromRightEdge(float v);
 int AudioPlayer_Buffered(void);
 int AudioPlayer_GetDesiredBuffered(void);
 void AudioPlayer_Play(const uint8_t* buf, uint32_t len);
-void AudioMgr_CreateNextAudioBuffer(u8* samples, u32 num_samples);
+void AudioMgr_CreateNextAudioBuffer(s16* samples, u32 num_samples);
 int Controller_ShouldRumble(size_t slot);
 void Controller_BlockGameInput();
 void Controller_UnblockGameInput();
