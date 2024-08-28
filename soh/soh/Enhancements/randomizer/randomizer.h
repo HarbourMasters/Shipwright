@@ -26,7 +26,6 @@
 class Randomizer {
   private:
     std::unordered_map<RandomizerSettingKey, u8> randoSettings;
-    bool IsItemVanilla(RandomizerGet randoGet);
 
   public:
     Randomizer();
@@ -57,7 +56,6 @@ class Randomizer {
     FishIdentity IdentifyFish(s32 sceneNum, s32 actorParams);
     GetItemEntry GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogItemId, bool checkObtainability = true);
     GetItemEntry GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogItemId, bool checkObtainability = true);
-    GetItemID GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItemID ogItemId);
     ItemObtainability GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck);
     ItemObtainability GetItemObtainabilityFromRandomizerGet(RandomizerGet randomizerCheck);
     CustomMessage GetSheikMessage(s16 scene, u16 originalTextId);
@@ -69,7 +67,6 @@ class Randomizer {
     static void CreateCustomMessages();
     static CustomMessage GetRupeeMessage(u16 rupeeTextId);
     static CustomMessage GetTriforcePieceMessage();
-    bool CheckContainsVanillaItem(RandomizerCheck randoCheck);
 };
 
 #ifdef __cplusplus
