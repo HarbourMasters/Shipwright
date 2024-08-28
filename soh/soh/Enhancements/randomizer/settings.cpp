@@ -1080,6 +1080,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_SHUFFLE_SCRUBS],
         &mOptions[RSK_SHUFFLE_BEEHIVES],
         &mOptions[RSK_SHUFFLE_COWS],
+        &mOptions[RSK_SHUFFLE_FREESTANDING],
         &mOptions[RSK_SHUFFLE_MAGIC_BEANS],
         &mOptions[RSK_SHUFFLE_MERCHANTS],
         &mOptions[RSK_SHUFFLE_FROG_SONG_RUPEES],
@@ -1123,6 +1124,7 @@ void Settings::CreateOptions() {
         { "Shuffle Settings:Beehive Shuffle", RSK_SHUFFLE_BEEHIVES },
         { "Shuffle Settings:Shuffle Cows", RSK_SHUFFLE_COWS },
         { "Shuffle Settings:Tokensanity", RSK_SHUFFLE_TOKENS },
+        { "Shuffle Settings:Freestanding Shuffle", RSK_SHUFFLE_FREESTANDING },
         { "Shuffle Settings:Shuffle Ocarinas", RSK_SHUFFLE_OCARINA },
         { "Shuffle Settings:Shuffle Ocarina Buttons", RSK_SHUFFLE_OCARINA_BUTTONS },
         { "Shuffle Settings:Shuffle Swim", RSK_SHUFFLE_SWIM },
@@ -2347,6 +2349,17 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
                         mOptions[index].SetSelectedIndex(RO_SCRUBS_EXPENSIVE);
                     } else if (it.value() == "Random Prices") {
                         mOptions[index].SetSelectedIndex(RO_SCRUBS_RANDOM);
+                    }
+                    break;
+                case RSK_SHUFFLE_FREESTANDING:
+                    if (it.value() == "Off") {
+                        mOptions[index].SetSelectedIndex(RO_TOKENSANITY_OFF);
+                    } else if (it.value() == "Overworld") {
+                        mOptions[index].SetSelectedIndex(RO_TOKENSANITY_OVERWORLD);
+                    } else if (it.value() == "Dungeons") {
+                        mOptions[index].SetSelectedIndex(RO_TOKENSANITY_DUNGEONS);
+                    } else if (it.value() == "All Items") {
+                        mOptions[index].SetSelectedIndex(RO_TOKENSANITY_ALL);
                     }
                     break;
                 case RSK_SHUFFLE_FISHING_POLE:
