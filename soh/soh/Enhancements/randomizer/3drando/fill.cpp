@@ -1029,7 +1029,6 @@ int Fill() {
 
     //ctx->showItemProgress = true;
     //Place shop items first, since a buy shield is needed to place a dungeon reward on Gohma due to access
-    NonShopItems = {};
     if (ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_OFF)) {
       SPDLOG_INFO("Placing Vanilla Shop Items...");
       PlaceVanillaShopItems(); //Place vanilla shop items in vanilla location
@@ -1037,12 +1036,6 @@ int Fill() {
       SPDLOG_INFO("Shuffling Shop Items");
       int total_replaced = 0;
       if (ctx->GetOption(RSK_SHOPSANITY).IsNot(RO_SHOPSANITY_ZERO_ITEMS)) { //Shopsanity 1-4, random
-        //Initialize NonShopItems
-        ItemAndPrice init;
-        init.Name = Text{"No Item", "Sin objeto", "Pas d'objet"};
-        init.Price = -1;
-        init.Repurchaseable = false;
-        NonShopItems.assign(32, init);
         //Indices from OoTR. So shopsanity one will overwrite 7, three will overwrite 7, 5, 8, etc.
         const std::array<int, 4> indices = {7, 5, 8, 6};
         //Overwrite appropriate number of shop items
@@ -1051,10 +1044,9 @@ int Fill() {
           total_replaced += num_to_replace;
           for (int j = 0; j < num_to_replace; j++) {
             int itemindex = indices[j];
+            Rando::ItemLocation* itemLoc = ctx->GetItemLocation(Rando::StaticData::shopLocationLists[i][itemindex - 1]);
             int shopsanityPrice = GetRandomShopPrice();
-            NonShopItems[TransformShopIndex(i * 8 + itemindex - 1)].Price =
-                shopsanityPrice; // Set price to be retrieved by the patch and textboxes
-            ctx->GetItemLocation(Rando::StaticData::shopLocationLists[i][itemindex - 1])->SetCustomPrice(shopsanityPrice);
+            itemLoc->SetCustomPrice(shopsanityPrice);
           }
         }
       }
@@ -1143,7 +1135,7 @@ int Fill() {
       }
     } else if (ctx->GetOption(RSK_SHUFFLE_SCRUBS).Is(RO_SCRUBS_RANDOM)) {
       for (size_t i = 0; i < Rando::StaticData::scrubLocations.size(); i++) {
-        int randomPrice = GetRandomScrubPrice();
+        int randomPrice = GetCheapBalancedPrice();
         ctx->GetItemLocation(Rando::StaticData::scrubLocations[i])->SetCustomPrice(randomPrice);
       }
     }

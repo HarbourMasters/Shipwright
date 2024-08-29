@@ -98,7 +98,15 @@ void Settings::CreateOptions() {
     mOptions[RSK_LINKS_POCKET] = Option::U8("Link's Pocket", {"Dungeon Reward", "Advancement", "Anything", "Nothing"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("LinksPocket"), "", WidgetType::Combobox, RO_LINKS_POCKET_DUNGEON_REWARD);
     mOptions[RSK_SHUFFLE_SONGS] = Option::U8("Shuffle Songs", {"Song Locations", "Dungeon Rewards", "Anywhere"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleSongs"), mOptionDescriptions[RSK_SHUFFLE_SONGS], WidgetType::Combobox, RO_SONG_SHUFFLE_SONG_LOCATIONS);
     mOptions[RSK_SHOPSANITY] = Option::U8("Shopsanity", {"Off", "0 Items", "1 Item", "2 Items", "3 Items", "4 Items", "Random"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("Shopsanity"), mOptionDescriptions[RSK_SHOPSANITY], WidgetType::Combobox, RO_SHOPSANITY_OFF);
-    mOptions[RSK_SHOPSANITY_PRICES] = Option::U8("Shopsanity Prices", {"Balanced", "Starting Wallet", "Adult Wallet", "Giant's Wallet", "Tycoon's Wallet"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShopsanityPrices"), mOptionDescriptions[RSK_SHOPSANITY_PRICES], WidgetType::Combobox, RO_SHOPSANITY_PRICE_BALANCED, false, IMFLAG_NONE);
+    mOptions[RSK_SHOPSANITY_PRICES] = Option::U8("Shopsanity Prices", {"Vanilla", "Cheap Balanced", "Balanced", "Fixed", "Range", "Set By Wallet"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShopsanityPrices"), mOptionDescriptions[RSK_SHOPSANITY_PRICES], WidgetType::Combobox, RO_PRICE_VANILLA, false, IMFLAG_NONE);
+    mOptions[RSK_SHOPSANITY_PRICES_FIXED_PRICE] = Option::U8("Fixed Price", {NumOpts(0, 199)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShopsanityFixedPrice"), mOptionDescriptions[RSK_SHOPSANITY_PRICES_FIXED_PRICE], WidgetType::Slider, 10, true);
+    mOptions[RSK_SHOPSANITY_PRICES_RANGE_1] = Option::U8("Lower Bound", {NumOpts(0, 199)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShopsanityPriceRange1"), mOptionDescriptions[RSK_SHOPSANITY_PRICES_RANGE_1], WidgetType::Slider, 10, true);
+    mOptions[RSK_SHOPSANITY_PRICES_RANGE_2] = Option::U8("Upper Bound", {NumOpts(0, 199)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShopsanityPriceRange2"), mOptionDescriptions[RSK_SHOPSANITY_PRICES_RANGE_2], WidgetType::Slider, 100, true);
+    mOptions[RSK_SHOPSANITY_PRICES_NO_WALLET_WEIGHT] = Option::U8("No Wallet Weight", {NumOpts(0, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShopsanityNoWalletWeight"), mOptionDescriptions[RSK_SHOPSANITY_PRICES_NO_WALLET_WEIGHT], WidgetType::Slider, 10, true);
+    mOptions[RSK_SHOPSANITY_PRICES_CHILD_WALLET_WEIGHT] = Option::U8("Child Wallet Weight", {NumOpts(0, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShopsanityChildWalletWeight"), mOptionDescriptions[RSK_SHOPSANITY_PRICES_CHILD_WALLET_WEIGHT], WidgetType::Slider, 10, true);
+    mOptions[RSK_SHOPSANITY_PRICES_ADULT_WALLET_WEIGHT] = Option::U8("Adult Wallet Weight", {NumOpts(0, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShopsanityAdultWalletWeight"), mOptionDescriptions[RSK_SHOPSANITY_PRICES_ADULT_WALLET_WEIGHT], WidgetType::Slider, 10, true);
+    mOptions[RSK_SHOPSANITY_PRICES_GIANT_WALLET_WEIGHT] = Option::U8("Giant Wallet Weight", {NumOpts(0, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShopsanityGiantWalletWeight"), mOptionDescriptions[RSK_SHOPSANITY_PRICES_GIANT_WALLET_WEIGHT], WidgetType::Slider, 10, true);
+    mOptions[RSK_SHOPSANITY_PRICES_TYCOON_WALLET_WEIGHT] = Option::U8("Tycoon Wallet Weight", {NumOpts(0, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShopsanityTycoonWalletWeight"), mOptionDescriptions[RSK_SHOPSANITY_PRICES_TYCOON_WALLET_WEIGHT], WidgetType::Slider, 10, true);
     mOptions[RSK_SHOPSANITY_PRICES_AFFORDABLE] = Option::Bool("Affordable Prices", CVAR_RANDOMIZER_SETTING("ShopsanityPricesAffordable"), mOptionDescriptions[RSK_SHOPSANITY_PRICES_AFFORDABLE]);
     mOptions[RSK_SHUFFLE_TOKENS] = Option::U8("Tokensanity", {"Off", "Dungeons", "Overworld", "All Tokens"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleTokens"), mOptionDescriptions[RSK_SHUFFLE_TOKENS], WidgetType::Combobox, RO_TOKENSANITY_OFF);
     mOptions[RSK_SHUFFLE_SCRUBS] = Option::U8("Scrub Shuffle", {"Off", "Affordable", "Expensive", "Random Prices"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleScrubs"), mOptionDescriptions[RSK_SHUFFLE_SCRUBS], WidgetType::Combobox, RO_SCRUBS_OFF);
@@ -107,6 +115,7 @@ void Settings::CreateOptions() {
     mOptions[RSK_SHUFFLE_KOKIRI_SWORD] = Option::Bool("Shuffle Kokiri Sword", CVAR_RANDOMIZER_SETTING("ShuffleKokiriSword"), mOptionDescriptions[RSK_SHUFFLE_KOKIRI_SWORD]);
     mOptions[RSK_SHUFFLE_MASTER_SWORD] = Option::Bool("Shuffle Master Sword", CVAR_RANDOMIZER_SETTING("ShuffleMasterSword"), mOptionDescriptions[RSK_SHUFFLE_MASTER_SWORD]);
     mOptions[RSK_SHUFFLE_CHILD_WALLET] = Option::Bool("Shuffle Child's Wallet", CVAR_RANDOMIZER_SETTING("ShuffleChildWallet"), mOptionDescriptions[RSK_SHUFFLE_CHILD_WALLET]);
+    mOptions[RSK_INCLUDE_TYCOON_WALLET] = Option::Bool("Include Tycoon Wallet", CVAR_RANDOMIZER_SETTING("IncludeTycoonWallet"), mOptionDescriptions[RSK_INCLUDE_TYCOON_WALLET]);
     mOptions[RSK_SHUFFLE_OCARINA] = Option::Bool("Shuffle Ocarinas", CVAR_RANDOMIZER_SETTING("ShuffleOcarinas"), mOptionDescriptions[RSK_SHUFFLE_OCARINA]);
     mOptions[RSK_SHUFFLE_OCARINA_BUTTONS] = Option::Bool("Shuffle Ocarina Buttons", CVAR_RANDOMIZER_SETTING("ShuffleOcarinaButtons"), mOptionDescriptions[RSK_SHUFFLE_OCARINA_BUTTONS]);
     mOptions[RSK_SHUFFLE_SWIM] = Option::Bool("Shuffle Swim", CVAR_RANDOMIZER_SETTING("ShuffleSwim"), mOptionDescriptions[RSK_SHUFFLE_SWIM]);
@@ -661,6 +670,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_SHUFFLE_KOKIRI_SWORD],
         &mOptions[RSK_SHUFFLE_MASTER_SWORD],
         &mOptions[RSK_SHUFFLE_CHILD_WALLET],
+        &mOptions[RSK_INCLUDE_TYCOON_WALLET],
         &mOptions[RSK_SHUFFLE_OCARINA],
         &mOptions[RSK_SHUFFLE_OCARINA_BUTTONS],
         &mOptions[RSK_SHUFFLE_SWIM],
@@ -1110,6 +1120,14 @@ void Settings::CreateOptions() {
         { "Shuffle Settings:Shuffle Gerudo Membership Card", RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD },
         { "Shuffle Settings:Shopsanity", RSK_SHOPSANITY },
         { "Shuffle Settings:Shopsanity Prices", RSK_SHOPSANITY_PRICES },
+        { "Shuffle Settings:Fixed Amount", RSK_SHOPSANITY_PRICES_FIXED_PRICE },
+        { "Shuffle Settings:Range 1", RSK_SHOPSANITY_PRICES_RANGE_1 },
+        { "Shuffle Settings:Range 2", RSK_SHOPSANITY_PRICES_RANGE_2 },
+        { "Shuffle Settings:No Wallet Weight", RSK_SHOPSANITY_PRICES_NO_WALLET_WEIGHT },
+        { "Shuffle Settings:Child Wallet Weight", RSK_SHOPSANITY_PRICES_CHILD_WALLET_WEIGHT },
+        { "Shuffle Settings:Adult Wallet Weight", RSK_SHOPSANITY_PRICES_ADULT_WALLET_WEIGHT },
+        { "Shuffle Settings:Giants Wallet Weight", RSK_SHOPSANITY_PRICES_GIANT_WALLET_WEIGHT },
+        { "Shuffle Settings:Tycoon Wallet Weight", RSK_SHOPSANITY_PRICES_TYCOON_WALLET_WEIGHT },
         { "Shuffle Settings:Affordable Prices", RSK_SHOPSANITY_PRICES_AFFORDABLE },
         { "Shuffle Settings:Fishsanity", RSK_FISHSANITY },
         { "Shuffle Settings:Pond Fish Count", RSK_FISHSANITY_POND_COUNT },
@@ -1127,6 +1145,7 @@ void Settings::CreateOptions() {
         { "Shuffle Settings:Shuffle Kokiri Sword", RSK_SHUFFLE_KOKIRI_SWORD },
         { "Shuffle Settings:Shuffle Master Sword", RSK_SHUFFLE_MASTER_SWORD },
         { "Shuffle Settings:Shuffle Child's Wallet", RSK_SHUFFLE_CHILD_WALLET },
+        { "Shuffle Settings:Include Tycoon Wallet", RSK_INCLUDE_TYCOON_WALLET },
         { "Shuffle Settings:Shuffle Weird Egg", RSK_SHUFFLE_WEIRD_EGG },
         { "Shuffle Settings:Shuffle Frog Song Rupees", RSK_SHUFFLE_FROG_SONG_RUPEES },
         { "Shuffle Settings:Shuffle Merchants", RSK_SHUFFLE_MERCHANTS },
@@ -1586,6 +1605,7 @@ void Settings::UpdateOptionProperties() {
     } else {
         mOptions[RSK_SHUFFLE_WEIRD_EGG].Enable();
     }
+    bool isTycoon = CVarGetInteger(CVAR_RANDOMIZER_SETTING("IncludeTycoonWallet"), RO_GENERIC_OFF);
     // Hide shopsanity prices if shopsanity is off or zero
     switch (CVarGetInteger(CVAR_RANDOMIZER_SETTING("Shopsanity"), RO_SHOPSANITY_OFF)) {
         case RO_SHOPSANITY_OFF:
@@ -1598,6 +1618,59 @@ void Settings::UpdateOptionProperties() {
             mOptions[RSK_SHOPSANITY].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
             mOptions[RSK_SHOPSANITY_PRICES].Unhide();
             mOptions[RSK_SHOPSANITY_PRICES_AFFORDABLE].Unhide();
+            switch (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShopsanityPrices"), RO_PRICE_VANILLA)){
+                case RO_PRICE_FIXED:
+                    mOptions[RSK_SHOPSANITY_PRICES_FIXED_PRICE].Unhide();
+                    mOptions[RSK_SHOPSANITY_PRICES_RANGE_1].Hide();
+                    mOptions[RSK_SHOPSANITY_PRICES_RANGE_2].Hide();
+                    mOptions[RSK_SHOPSANITY_PRICES_NO_WALLET_WEIGHT].Hide();
+                    mOptions[RSK_SHOPSANITY_PRICES_CHILD_WALLET_WEIGHT].Hide();
+                    mOptions[RSK_SHOPSANITY_PRICES_ADULT_WALLET_WEIGHT].Hide();
+                    mOptions[RSK_SHOPSANITY_PRICES_GIANT_WALLET_WEIGHT].Hide();
+                    mOptions[RSK_SHOPSANITY_PRICES_TYCOON_WALLET_WEIGHT].Hide();
+                    if (isTycoon ? mOptions[RSK_SHOPSANITY_PRICES_FIXED_PRICE].GetOptionCount() == 501 : mOptions[RSK_SHOPSANITY_PRICES_FIXED_PRICE].GetOptionCount() == 1000) {
+                        mOptions[RSK_SHOPSANITY_PRICES_FIXED_PRICE].ChangeOptions(isTycoon ? NumOpts(0, 999) : NumOpts(0, 500));
+                    }
+                    break;
+                case RO_PRICE_RANGE:
+                    mOptions[RSK_SHOPSANITY_PRICES_FIXED_PRICE].Hide();
+                    mOptions[RSK_SHOPSANITY_PRICES_RANGE_1].Unhide();
+                    mOptions[RSK_SHOPSANITY_PRICES_RANGE_2].Unhide();
+                    mOptions[RSK_SHOPSANITY_PRICES_NO_WALLET_WEIGHT].Hide();
+                    mOptions[RSK_SHOPSANITY_PRICES_CHILD_WALLET_WEIGHT].Hide();
+                    mOptions[RSK_SHOPSANITY_PRICES_ADULT_WALLET_WEIGHT].Hide();
+                    mOptions[RSK_SHOPSANITY_PRICES_GIANT_WALLET_WEIGHT].Hide();
+                    mOptions[RSK_SHOPSANITY_PRICES_TYCOON_WALLET_WEIGHT].Hide();
+                    if (isTycoon ? mOptions[RSK_SHOPSANITY_PRICES_RANGE_1].GetOptionCount() == 501 : mOptions[RSK_SHOPSANITY_PRICES_RANGE_1].GetOptionCount() == 1000) {
+                        mOptions[RSK_SHOPSANITY_PRICES_RANGE_1].ChangeOptions(isTycoon ? NumOpts(0, 999) : NumOpts(0, 500));
+                        mOptions[RSK_SHOPSANITY_PRICES_RANGE_2].ChangeOptions(isTycoon ? NumOpts(0, 999) : NumOpts(0, 500));
+                    }
+                    break;
+                case RO_PRICE_SET_BY_WALLET:
+                    mOptions[RSK_SHOPSANITY_PRICES_FIXED_PRICE].Hide();
+                    mOptions[RSK_SHOPSANITY_PRICES_RANGE_1].Hide();
+                    mOptions[RSK_SHOPSANITY_PRICES_RANGE_2].Hide();
+                    mOptions[RSK_SHOPSANITY_PRICES_NO_WALLET_WEIGHT].Unhide();
+                    mOptions[RSK_SHOPSANITY_PRICES_CHILD_WALLET_WEIGHT].Unhide();
+                    mOptions[RSK_SHOPSANITY_PRICES_ADULT_WALLET_WEIGHT].Unhide();
+                    mOptions[RSK_SHOPSANITY_PRICES_GIANT_WALLET_WEIGHT].Unhide();
+                    if (isTycoon){
+                        mOptions[RSK_SHOPSANITY_PRICES_TYCOON_WALLET_WEIGHT].Unhide();
+                    } else {
+                        mOptions[RSK_SHOPSANITY_PRICES_TYCOON_WALLET_WEIGHT].Hide();
+                    }
+                    break;
+                default:
+                    mOptions[RSK_SHOPSANITY_PRICES_FIXED_PRICE].Hide();
+                    mOptions[RSK_SHOPSANITY_PRICES_RANGE_1].Hide();
+                    mOptions[RSK_SHOPSANITY_PRICES_RANGE_2].Hide();
+                    mOptions[RSK_SHOPSANITY_PRICES_NO_WALLET_WEIGHT].Hide();
+                    mOptions[RSK_SHOPSANITY_PRICES_CHILD_WALLET_WEIGHT].Hide();
+                    mOptions[RSK_SHOPSANITY_PRICES_ADULT_WALLET_WEIGHT].Hide();
+                    mOptions[RSK_SHOPSANITY_PRICES_GIANT_WALLET_WEIGHT].Hide();
+                    mOptions[RSK_SHOPSANITY_PRICES_TYCOON_WALLET_WEIGHT].Hide();
+                    break;
+            }
             break;
     }
     // Hide fishing pond settings if we aren't shuffling the fishing pond
@@ -2322,16 +2395,18 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
                     }
                     break;
                 case RSK_SHOPSANITY_PRICES:
-                    if (it.value() == "Random") {
-                        mOptions[index].SetSelectedIndex(RO_SHOPSANITY_PRICE_BALANCED);
-                    } else if (it.value() == "Starter Wallet") {
-                        mOptions[index].SetSelectedIndex(RO_SHOPSANITY_PRICE_STARTER);
-                    } else if (it.value() == "Adult's Wallet") {
-                        mOptions[index].SetSelectedIndex(RO_SHOPSANITY_PRICE_ADULT);
-                    } else if (it.value() == "Giant's Wallet") {
-                        mOptions[index].SetSelectedIndex(RO_SHOPSANITY_PRICE_GIANT);
-                    } else if (it.value() == "Tycoon's Wallet") {
-                        mOptions[index].SetSelectedIndex(RO_SHOPSANITY_PRICE_TYCOON);
+                    if (it.value() == "Vanilla") {
+                        mOptions[index].SetSelectedIndex(RO_PRICE_VANILLA);
+                    } else if (it.value() == "Cheap Balanced") {
+                        mOptions[index].SetSelectedIndex(RO_PRICE_CHEAP_BALANCED);
+                    } else if (it.value() == "Balanced") {
+                        mOptions[index].SetSelectedIndex(RO_PRICE_BALANCED);
+                    } else if (it.value() == "Fixed") {
+                        mOptions[index].SetSelectedIndex(RO_PRICE_FIXED);
+                    } else if (it.value() == "Range") {
+                        mOptions[index].SetSelectedIndex(RO_PRICE_RANGE);
+                    } else if (it.value() == "Set By Wallet") {
+                        mOptions[index].SetSelectedIndex(RO_PRICE_SET_BY_WALLET);
                     }
                     break;
                 case RSK_SHUFFLE_SCRUBS:
@@ -2361,6 +2436,7 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
                 case RSK_SHUFFLE_OCARINA_BUTTONS:
                 case RSK_SHUFFLE_SWIM:
                 case RSK_SHUFFLE_CHILD_WALLET:
+                case RSK_INCLUDE_TYCOON_WALLET:
                 case RSK_STARTING_DEKU_SHIELD:
                 case RSK_STARTING_KOKIRI_SWORD:
                 case RSK_STARTING_ZELDAS_LULLABY:

@@ -103,16 +103,6 @@ void Context::PlaceItemInLocation(const RandomizerCheck locKey, const Randomizer
 
     // TODO? Show Progress
 
-    // If we're placing a non-shop item in a shop location, we want to record it for custom messages
-    if (StaticData::RetrieveItem(item).GetItemType() != ITEMTYPE_SHOP &&
-        StaticData::GetLocation(locKey)->IsCategory(Category::cShop)) {
-        const int index = TransformShopIndex(GetShopIndex(locKey));
-        NonShopItems[index].Name = StaticData::RetrieveItem(item).GetName();
-        NonShopItems[index].Repurchaseable =
-            StaticData::RetrieveItem(item).GetItemType() == ITEMTYPE_REFILL ||
-            StaticData::RetrieveItem(item).GetHintKey() == RHT_PROGRESSIVE_BOMBCHUS;
-    }
-
     loc->SetPlacedItem(item);
     if (setHidden) {
         loc->SetHidden(true);

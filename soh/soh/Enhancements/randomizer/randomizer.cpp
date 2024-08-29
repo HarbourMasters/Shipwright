@@ -358,10 +358,9 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerCheck(Randomizer
 
 ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGet randoGet) {
 
-    // Shopsanity with at least one item shuffled allows for a third wallet upgrade.
     // This is needed since Plentiful item pool also adds a third progressive wallet
-    // but we should *not* get Tycoon's Wallet in that mode.
-    bool tycoonWallet = GetRandoSettingValue(RSK_SHOPSANITY) > RO_SHOPSANITY_ZERO_ITEMS;
+    // but we should not get Tycoon's Wallet from it if it is off.
+    bool tycoonWallet = GetRandoSettingValue(RSK_INCLUDE_TYCOON_WALLET);
 
     // Same thing with the infinite upgrades, if we're not shuffling them
     // and we're using the Plentiful item pool, we should prevent the infinite
@@ -727,7 +726,7 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
     // Shopsanity with at least one item shuffled allows for a third wallet upgrade.
     // This is needed since Plentiful item pool also adds a third progressive wallet
     // but we should *not* get Tycoon's Wallet in that mode.
-    bool tycoonWallet = GetRandoSettingValue(RSK_SHOPSANITY) > RO_SHOPSANITY_ZERO_ITEMS;
+    bool tycoonWallet = GetRandoSettingValue(RSK_INCLUDE_TYCOON_WALLET);
 
     // Same thing with the infinite upgrades, if we're not shuffling them
     //and we're using the Plentiful item pool, we should prevent the infinite

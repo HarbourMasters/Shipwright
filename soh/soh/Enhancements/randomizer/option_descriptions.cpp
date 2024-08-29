@@ -218,6 +218,8 @@ void Settings::CreateOptionDescriptions() {
         "Enabling this shuffles the Child's Wallet into the item pool.\n"
         "\n"
         "You will not be able to carry any rupees until you find a wallet.";
+    mOptionDescriptions[RSK_INCLUDE_TYCOON_WALLET] =
+        "Enabling this adds an extra Progressive Wallet to the pool and adds a new 999 capacity tier after Giant's Wallet.\n";
     mOptionDescriptions[RSK_SHUFFLE_OCARINA] =
         "Enabling this shuffles the Fairy Ocarina and the Ocarina of Time into the item pool.\n"
         "\n"
@@ -271,10 +273,28 @@ void Settings::CreateOptionDescriptions() {
                                           "Random - Vanilla shop items will be shuffled among different shops, and "
                                           "each shop will contain a random number(1-4) of non-vanilla shop items.\n";
     mOptionDescriptions[RSK_SHOPSANITY_PRICES] =
-        "Balanced - The default randomization. Shop prices for shopsanity items will range between 0 to 300 rupees, "
-        "with a bias towards values slightly below the middle of the range, in multiples of 5.\n "
-        "\n"
-        "X Wallet - Randomized between 5 and the wallet's max size, in multiples of 5";
+        "Vanilla - The same price as the item it replaced\n"
+        "Cheap Balanced - Prices will range between 0 to 95 rupees, favoring lower numbers\n"
+        "Balanced - Prices will range between 0 to 300 rupees, favoring lower numbers\n"
+        "Fixed - A fixed number\n"
+        "Range - A random point between specific ranges\n"
+        "Set By Wallet - Set wieghts that decide the choice of each wallet, and get a random price in that range if that wallet is chosen";
+    mOptionDescriptions[RSK_SHOPSANITY_PRICES_FIXED_PRICE] =
+        "The price for Shopsanity checks.";
+    mOptionDescriptions[RSK_SHOPSANITY_PRICES_RANGE_1] =
+        "The first part of the inclusive range of prices to allow for Shopsanity checks.";
+    mOptionDescriptions[RSK_SHOPSANITY_PRICES_RANGE_2] =
+        "The second part of the inclusive range of prices to allow for Shopsanity checks.";
+    mOptionDescriptions[RSK_SHOPSANITY_PRICES_NO_WALLET_WEIGHT] =
+        "The chance for Shopanity checks to be free.";
+    mOptionDescriptions[RSK_SHOPSANITY_PRICES_CHILD_WALLET_WEIGHT] =
+        "The chance for Shopanity checks to be puchasable with Child's Wallet (1-99).";
+    mOptionDescriptions[RSK_SHOPSANITY_PRICES_ADULT_WALLET_WEIGHT] =
+        "The chance for Shopanity checks to be puchasable with Adults's Wallet (100-200).";
+    mOptionDescriptions[RSK_SHOPSANITY_PRICES_GIANT_WALLET_WEIGHT] =
+        "The chance for Shopanity checks to be puchasable with Giant's Wallet (201-500).";
+    mOptionDescriptions[RSK_SHOPSANITY_PRICES_TYCOON_WALLET_WEIGHT] =
+        "The chance for Shopanity checks to be puchasable with Tycoon Wallet. (500+)";
     mOptionDescriptions[RSK_SHOPSANITY_PRICES_AFFORDABLE] =
         "Affordable prices per tier: starter = 10, adult = 105, giant = 205, tycoon = 505\n\n"
         "Use this to enable wallet tier locking, but make shop items not as expensive as they could be.";

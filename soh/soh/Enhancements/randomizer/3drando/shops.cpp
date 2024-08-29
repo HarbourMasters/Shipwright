@@ -2,13 +2,11 @@
 #include "location_access.hpp"
 #include "random.hpp"
 #include "shops.hpp"
+#include "../location.h"
 
 #include <math.h>
 #include <map>
 #include "z64item.h"
-
-
-std::vector<ItemAndPrice> NonShopItems = {};
 
 static std::array<std::vector<Text>, 0xF1> trickNameTable; // Table of trick names for ice traps
 bool initTrickNames = false; //Indicates if trick ice trap names have been initialized yet
@@ -147,8 +145,34 @@ int GetPriceAffordable() {
     return RandomElement(priceList);
 }
 
-int GetRandomShopPrice() {
+int16_t GetRandomShopPrice(Rando::Location loc) {
    auto ctx = Rando::Context::GetInstance();
+   switch (ctx->GetOption(RSK_SHOPSANITY_PRICES).Value<uint8_t>()){
+      case RO_PRICE_VANILLA: 
+         return loc.GetVanillaPrice();
+      case RO_PRICE_CHEAP_BALANCED:
+         return GetCheapBalancedPrice();
+      case RO_PRICE_BALANCED:
+         int price = 150; // JUST in case something fails with the randomization, return sane price for balanced
+         double random = RandomDouble(); //Randomly generated probability value
+         for (size_t i = 0; i < ShopPriceProbability.size(); i++) {
+            if (random < ShopPriceProbability[i]) {
+            //The randomly generated value has surpassed the total probability up to this point, so this is the generated price
+                  price = i * 5; //i in range [0, 59], output in range [0, 295] in increments of 5
+                  break;
+            }
+         }
+         return price;
+      case RO_PRICE_FIXED:
+         return 
+
+
+   }
+   if(ctx->GetOption(RSK_SHOPSANITY_PRICES).Is(RO_PRICE_VANILLA)) {
+        return loc.GetVanillaPrice();
+    }
+
+
     // If Shopsanity prices aren't Balanced, but Affordable is on, don't GetPriceFromMax
     if (ctx->GetOption(RSK_SHOPSANITY_PRICES_AFFORDABLE).Is(true) && ctx->GetOption(RSK_SHOPSANITY_PRICES).IsNot(RO_SHOPSANITY_PRICE_BALANCED)) {
         return GetPriceAffordable();
@@ -158,9 +182,7 @@ int GetRandomShopPrice() {
     int max = 0;
 
     // check settings for a wallet tier selection and set max amount as method for setting true randomization
-    if(ctx->GetOption(RSK_SHOPSANITY_PRICES).Is(RO_SHOPSANITY_PRICE_STARTER)) {
-        max = 19; // 95/5
-    }
+    
     else if (ctx->GetOption(RSK_SHOPSANITY_PRICES).Is(RO_SHOPSANITY_PRICE_ADULT)) {
         max = 40; // 200/5
     }
@@ -174,16 +196,7 @@ int GetRandomShopPrice() {
         return GetPriceFromMax(max);
     }
     // Balanced is default, so if all other known cases fail, fall back to Balanced
-    int price = 150; // JUST in case something fails with the randomization, return sane price for balanced
-    double random = RandomDouble(); //Randomly generated probability value
-    for (size_t i = 0; i < ShopPriceProbability.size(); i++) {
-        if (random < ShopPriceProbability[i]) {
-        //The randomly generated value has surpassed the total probability up to this point, so this is the generated price
-            price = i * 5; //i in range [0, 59], output in range [0, 295] in increments of 5
-            break;
-        }
-    }
-    return price;
+
 }
 
 //Similar to above, beta distribution with alpha = 1, beta = 2,
@@ -194,7 +207,7 @@ static constexpr std::array<double, 20> ScrubPriceProbability = {
   0.797518749, 0.840011707, 0.877508776, 0.910010904, 0.937504342, 0.960004661, 0.977502132, 0.989998967, 0.997500116, 1.000000000,
 };
 
-int16_t GetRandomScrubPrice() {
+int16_t GetCheapBalancedPrice() {
     double random = RandomDouble();
     for (size_t i = 0; i < ScrubPriceProbability.size(); i++) {
         if (random < ScrubPriceProbability[i]) {

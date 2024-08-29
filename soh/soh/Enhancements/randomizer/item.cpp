@@ -85,8 +85,7 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
     }
     auto ctx = Rando::Context::GetInstance();
     RandomizerGet actual = RG_NONE;
-    const bool tycoonWallet =
-        OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHOPSANITY) > RO_SHOPSANITY_ZERO_ITEMS;
+    const bool tycoonWallet = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_INCLUDE_TYCOON_WALLET);
     const u8 infiniteUpgrades = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_INFINITE_UPGRADES);
     switch (randomizerGet) {
         case RG_PROGRESSIVE_STICK_UPGRADE:

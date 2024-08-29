@@ -358,7 +358,7 @@ const std::array<RandomizerGet, 28> shopsanityRupees = {
   RG_HUGE_RUPEE,
   RG_HUGE_RUPEE,
   RG_HUGE_RUPEE,
-  RG_PROGRESSIVE_WALLET,
+  RG_HUGE_RUPEE,
 };
 const std::array<RandomizerGet, 19> dekuScrubItems = {
   RG_DEKU_NUTS_5,
@@ -993,6 +993,10 @@ void GenerateItemPool() {
   }
 
   if (ctx->GetOption(RSK_SHUFFLE_CHILD_WALLET)) {
+    AddItemToMainPool(RG_PROGRESSIVE_WALLET);
+  }
+
+  if (ctx->GetOption(RSK_INCLUDE_TYCOON_WALLET)) {
     AddItemToMainPool(RG_PROGRESSIVE_WALLET);
   }
 
