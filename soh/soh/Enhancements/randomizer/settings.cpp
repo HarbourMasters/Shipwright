@@ -507,6 +507,7 @@ void Settings::CreateOptions() {
         &mTrickOptions[RT_FOREST_OUTDOORS_LEDGE],
         &mTrickOptions[RT_FOREST_DOORFRAME],
         &mTrickOptions[RT_FOREST_OUTSIDE_BACKDOOR],
+        &mTrickOptions[RT_FOREST_OUTDOORS_HEARTS_BOOMERANG],
         &mTrickOptions[RT_FOREST_MQ_WELL_SWIM],
         &mTrickOptions[RT_FOREST_MQ_BLOCK_PUZZLE],
         &mTrickOptions[RT_FOREST_MQ_JS_HALLWAY_SWITCH],
