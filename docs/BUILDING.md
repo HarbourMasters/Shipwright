@@ -31,8 +31,6 @@ cd Shipwright
 
 # Setup cmake project
 & 'C:\Program Files\CMake\bin\cmake' -S . -B "build/x64" -G "Visual Studio 17 2022" -T v143 -A x64 # -DCMAKE_BUILD_TYPE:STRING=Release (if you're packaging)
-# or for VS2019
-& 'C:\Program Files\CMake\bin\cmake' -S . -B "build/x64" -G "Visual Studio 16 2019" -T v143 -A x64
 # Extract assets & generate OTR (run this anytime you need to regenerate OTR)
 & 'C:\Program Files\CMake\bin\cmake.exe' --build .\build\x64 --target ExtractAssets # --config Release (if you're packaging)
 # Compile project
@@ -58,8 +56,6 @@ To develop using Visual Studio you only need to use cmake to generate the soluti
 ```powershell
 # Generates Ship.sln at `build/x64` for Visual Studio 2022
 & 'C:\Program Files\CMake\bin\cmake' -S . -B "build/x64" -G "Visual Studio 17 2022" -T v143 -A x64
-# or for Visual Studio 2019
-& 'C:\Program Files\CMake\bin\cmake' -S . -B "build/x64" -G "Visual Studio 16 2019" -T v143 -A x64
 ```
 
 #### Visual Studio Code or another editor
