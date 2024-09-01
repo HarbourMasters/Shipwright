@@ -125,7 +125,7 @@
         <Texture Name="gBiggoronsSwordItemNameJPNTex" OutName="biggorons_sword_item_name_jpn" Format="ia4" Width="128" Height="16" Offset="0x1E800"/>
         <Texture Name="gDekuStickItemNameENGTex" OutName="deku_stick_item_name_eng" Format="ia4" Width="128" Height="16" Offset="0x1EC00"/>
         <Texture Name="gDekuNutItemNameENGTex" OutName="dekunut_item_name_eng" Format="ia4" Width="128" Height="16" Offset="0x1F000"/>
-        <Texture Name="gBombItemNameItemNameENGTex" OutName="bomb_item_name_item_name_eng" Format="ia4" Width="128" Height="16" Offset="0x1F400"/>
+        <Texture Name="gBombItemNameENGTex" OutName="bomb_item_name_item_name_eng" Format="ia4" Width="128" Height="16" Offset="0x1F400"/>
         <Texture Name="gFairyBowItemNameENGTex" OutName="fairy_bow_item_name_eng" Format="ia4" Width="128" Height="16" Offset="0x1F800"/>
         <Texture Name="gFireArrowItemNameUnk2ENGTex" OutName="fire_arrow_item_name_unk2_eng" Format="ia4" Width="128" Height="16" Offset="0x1FC00"/>
         <Texture Name="gDinsFireItemNameENGTex" OutName="dins_fire_item_name_eng" Format="ia4" Width="128" Height="16" Offset="0x20000"/>
