@@ -13,6 +13,7 @@
 #include <soh/Enhancements/bootcommands.h>
 #include <GameVersions.h>
 #include <soh/SaveManager.h>
+#include <string.h>
 
 #include "time.h"
 
@@ -30,8 +31,24 @@ void Title_PrintBuildInfo(Gfx** gfxp) {
     GfxPrint_Open(&printer, g);
     GfxPrint_SetColor(&printer, 131, 154, 255, 255);
 
-    GfxPrint_SetPos(&printer, 1, 25);
-    GfxPrint_Printf(&printer, "%s", gBuildVersion);
+    //if tag is empty (not a release build)
+    bool showGitInfo = gGitCommitTag[0] == 0;
+
+    if (showGitInfo) {
+        GfxPrint_SetPos(&printer, 1, 24);
+        GfxPrint_Printf(&printer, "Git Branch: %s", gGitBranch);
+
+        //truncate the commit to 7 characters
+        char gGitCommitHashTruncated[8];
+        strncpy(gGitCommitHashTruncated, gGitCommitHash, 7);
+        gGitCommitHashTruncated[7] = 0;
+
+        GfxPrint_SetPos(&printer, 1, 25);
+        GfxPrint_Printf(&printer, "Git Commit: %s", gGitCommitHashTruncated);
+    } else {
+        GfxPrint_SetPos(&printer, 1, 25);
+        GfxPrint_Printf(&printer, "%s", gBuildVersion);
+    }
     GfxPrint_SetPos(&printer, 1, 26);
     GfxPrint_Printf(&printer, "%s", gBuildDate);
 

@@ -782,7 +782,7 @@ void DrawFlagTableArray16(const FlagTable& flagTable, uint16_t row, uint16_t& fl
         ImGui::PopStyleColor();
         if (ImGui::IsItemHovered() && hasDescription) {
             ImGui::BeginTooltip();
-            ImGui::Text("%s", UIWidgets::WrappedText(flagTable.flagDescriptions.at(row * 16 + flagIndex), 60));
+            ImGui::Text("%s", UIWidgets::WrappedText(flagTable.flagDescriptions.at(row * 16 + flagIndex), 60).c_str());
             ImGui::EndTooltip();
         }
         ImGui::PopID();

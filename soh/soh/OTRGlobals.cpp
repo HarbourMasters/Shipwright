@@ -340,7 +340,7 @@ OTRGlobals::OTRGlobals() {
 
     context->InitAudio();
 
-    SPDLOG_INFO("Starting Ship of Harkinian version {}", (char*)gBuildVersion);
+    SPDLOG_INFO("Starting Ship of Harkinian version {} (Branch: {} | Commit: {})", (char*)gBuildVersion, (char*)gGitBranch, (char*)gGitCommitHash);
 
     auto loader = context->GetResourceManager()->GetResourceLoader();
     loader->RegisterResourceFactory(std::make_shared<LUS::ResourceFactoryBinaryTextureV0>(), RESOURCE_FORMAT_BINARY, "Texture", static_cast<uint32_t>(LUS::ResourceType::Texture), 0);
@@ -1879,6 +1879,7 @@ extern "C" char* ResourceMgr_LoadArrayByName(const char* path)
     return (char*)res->Scalars.data();
 }
 
+// Return of LoadArrayByNameAsVec3s must be freed by the caller
 extern "C" char* ResourceMgr_LoadArrayByNameAsVec3s(const char* path) {
     auto res = std::static_pointer_cast<SOH::Array>(GetResourceByNameHandlingMQ(path));
 
