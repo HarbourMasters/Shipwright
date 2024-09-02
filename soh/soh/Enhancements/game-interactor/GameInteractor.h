@@ -313,6 +313,7 @@ typedef enum {
     VB_GIVE_ITEM_FROM_GORON,
     // Opt: *EnJs
     VB_GIVE_ITEM_FROM_CARPET_SALESMAN,
+    VB_GIVE_BOMBCHUS_FROM_CARPET_SALESMAN,
     // Opt: *EnGm
     VB_GIVE_ITEM_FROM_MEDIGORON,
     // Opt: *EnMs

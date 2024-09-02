@@ -781,7 +781,6 @@ void Context::ApplyItemEffect(Item& item, bool state) {
             case RG_BOMBCHU_5:
             case RG_BOMBCHU_10:
             case RG_BOMBCHU_20:
-            case RG_BOMBCHU_DROP:
                 SetInventory(ITEM_BOMBCHU, (!state ? ITEM_NONE : ITEM_BOMBCHU));
                 break;
         }
@@ -880,7 +879,6 @@ void Context::ApplyItemEffect(Item& item, bool state) {
         case RG_BOMBCHU_5:
         case RG_BOMBCHU_10:
         case RG_BOMBCHU_20:
-        case RG_BOMBCHU_DROP:
             SetInventory(ITEM_BOMBCHU, (!state ? ITEM_NONE : ITEM_BOMBCHU));
             break;
         }

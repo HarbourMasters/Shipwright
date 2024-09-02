@@ -12,7 +12,7 @@
 typedef bool (*ConditionFn)();
 
 // I hate this but every alternative I can think of right now is worse
-extern std::shared_ptr<Rando::Context> randoCtx;
+extern Rando::Context* randoCtx;
 extern std::shared_ptr<Rando::Logic> logic;
 
 class EventAccess {
