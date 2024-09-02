@@ -352,7 +352,7 @@ class Location {
 
     static Location
     Fish(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_,
-         ActorID actorId_, uint8_t scene_, int32_t actorParams_, uint8_t flag_, std::string&& shortName_,
+         ActorID actorId_, uint8_t scene_, int32_t actorParams_, RandomizerInf flag_, std::string&& shortName_,
          RandomizerHintTextKey hintKey, RandomizerGet vanillaItem, std::vector<Category>&& categories,
          SpoilerCollectionCheckGroup collectionCheckGroup = GROUP_NO_GROUP, bool isVanillaCompletion_ = false);
 
