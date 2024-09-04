@@ -1,6 +1,7 @@
 #include "3drando/pool_functions.hpp"
 #include "../../OTRGlobals.h"
 #include "fishsanity.h"
+#include "draw.h"
 #include "variables.h"
 #include "functions.h"
 #include "macros.h"
@@ -351,15 +352,12 @@ namespace Rando {
             }
 
             fish = OTRGlobals::Instance->gRandomizer->IdentifyFish(gPlayState->sceneNum, actor->params);
-            // Create effect for uncaught fish
+            // Render fish as randomized item
             if (Rando::Fishsanity::IsFish(&fish) && !Flags_GetRandomizerInf(fish.randomizerInf)) {
-                actor->shape.shadowDraw = Fishsanity_DrawEffShadow;
                 if (!drawEnFish) {
                     drawEnFish = actor->draw;
                 }
                 actor->draw = Fishsanity_DrawEnFish;
-            } else {
-                actor->shape.shadowDraw = NULL;
             }
             return;
         }
@@ -433,9 +431,8 @@ namespace Rando {
             FishIdentity fish = OTRGlobals::Instance->gRandomizer->IdentifyFish(gPlayState->sceneNum, actor->params);
             EnFish* fishActor = static_cast<EnFish*>(refActor);
             if (Rando::Fishsanity::IsFish(&fish) && Flags_GetRandomizerInf(fish.randomizerInf)) {
-                // Remove uncaught effect
-                if (actor->shape.shadowDraw != NULL) {
-                    actor->shape.shadowDraw = NULL;
+                // Reset draw method
+                if (actor->draw == Fishsanity_DrawEnFish) {
                     actor->draw = drawEnFish;
                 }
             }
@@ -534,9 +531,19 @@ extern "C" {
     }
 
     void Fishsanity_DrawEnFish(struct Actor* actor, struct PlayState* play) {
-        Fishsanity_OpenGreyscaleColor(play, &fsPulseColor, (actor->params - 100) * 20);
-        drawEnFish(actor, play);
-        Fishsanity_CloseGreyscaleColor(play);
+        FishIdentity fish = OTRGlobals::Instance->gRandomizer->IdentifyFish(play->sceneNum, actor->params);
+        GetItemEntry randoItem = Rando::Context::GetInstance()->GetFinalGIEntry(fish.randomizerCheck, true, GI_FISH);
+        if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0)) {
+            randoItem = GET_ITEM_MYSTERY;
+        }
+
+        Matrix_Push();
+        Matrix_Scale(30.0, 30.0, 30.0, MTXMODE_APPLY);
+
+        EnItem00_CustomItemsParticles(actor, play, randoItem);
+        GetItemEntry_Draw(play, randoItem);
+
+        Matrix_Pop();
     }
 
     void Fishsanity_DrawFishing(struct Actor* actor, struct PlayState* play) {
