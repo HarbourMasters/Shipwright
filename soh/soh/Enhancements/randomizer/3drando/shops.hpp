@@ -14,7 +14,7 @@ struct PriceSettingsStruct {
     RandomizerSettingKey adultWallet;
     RandomizerSettingKey giantWallet;
     RandomizerSettingKey tycoonWallet;
-    RandomizerSettingKey affordible;
+    RandomizerSettingKey affordable;
 
     PriceSettingsStruct(RandomizerSettingKey _main,
                         RandomizerSettingKey _fixedPrice,
@@ -25,7 +25,7 @@ struct PriceSettingsStruct {
                         RandomizerSettingKey _adultWallet,
                         RandomizerSettingKey _giantWallet,
                         RandomizerSettingKey _tycoonWallet,
-                        RandomizerSettingKey _affordible);
+                        RandomizerSettingKey _affordable);
 };
 
 extern void PlaceVanillaShopItems();

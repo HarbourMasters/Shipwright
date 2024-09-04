@@ -55,12 +55,12 @@ void EnDs_Destroy(Actor* thisx, PlayState* play) {
     ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
-void EnDs_Talk(EnDs* that, PlayState* play) {
-    if (Actor_TextboxIsClosing(&that->actor, play)) {
-        that->actionFunc = EnDs_Wait;
-        that->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
+void EnDs_Talk(EnDs* this, PlayState* play) {
+    if (Actor_TextboxIsClosing(&this->actor, play)) {
+        this->actionFunc = EnDs_Wait;
+        this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
     }
-    that->unk_1E8 |= 1;
+    this->unk_1E8 |= 1;
 }
 
 void EnDs_TalkNoEmptyBottle(EnDs* this, PlayState* play) {
@@ -105,6 +105,7 @@ void EnDs_TalkAfterBrewOddPotion(EnDs* this, PlayState* play) {
         this->actionFunc = EnDs_GiveOddPotion;
         u32 itemId = GI_ODD_POTION;
         if (GameInteractor_Should(VB_TRADE_ODD_MUSHROOM, true, this)) {
+            Actor_OfferGetItem(&this->actor, play, itemId, 10000.0f, 50.0f);
             Flags_SetItemGetInf(ITEMGETINF_30);
         }
     }

@@ -2,7 +2,6 @@
 #define MACROS_H
 
 #include <endianness.h>
-#include "z64.h"
 
 // Upstream TODO: Document reasoning for change
 // #ifndef __GNUC__

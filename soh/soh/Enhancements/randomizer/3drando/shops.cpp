@@ -6,6 +6,7 @@
 
 #include <math.h>
 #include <map>
+#include <spdlog/spdlog.h>
 #include "z64item.h"
 
 PriceSettingsStruct::PriceSettingsStruct(RandomizerSettingKey _main,
@@ -17,7 +18,7 @@ PriceSettingsStruct::PriceSettingsStruct(RandomizerSettingKey _main,
                         RandomizerSettingKey _adultWallet,
                         RandomizerSettingKey _giantWallet,
                         RandomizerSettingKey _tycoonWallet,
-                        RandomizerSettingKey _affordible){
+                        RandomizerSettingKey _affordable){
    main = _main;
    fixedPrice = _fixedPrice;
    range1 = _range1;
@@ -27,7 +28,7 @@ PriceSettingsStruct::PriceSettingsStruct(RandomizerSettingKey _main,
    adultWallet = _adultWallet;
    giantWallet= _giantWallet;
    tycoonWallet= _tycoonWallet;
-   affordible= _affordible;
+   affordable= _affordable;
 }
 
 
@@ -205,13 +206,15 @@ uint16_t GetPriceFromSettings(Rando::Location *loc, PriceSettingsStruct priceSet
          return Random(501, 999);
       }
    }
+   SPDLOG_ERROR("GetPriceFromSettings has failed to return a price for location {}, assigning a default value.", loc->GetName());
+   assert(false);
    return 69; //this should never happen, if it does, EASTER EGG that tells us something is wrong
 }
 
 uint16_t GetRandomPrice(Rando::Location *loc, PriceSettingsStruct priceSettings) {
    uint16_t initalPrice = GetPriceFromSettings(loc, priceSettings);
    auto ctx = Rando::Context::GetInstance();
-   if (ctx->GetOption(priceSettings.affordible) && !ctx->GetOption(priceSettings.main).Is(RO_PRICE_FIXED)){
+   if (ctx->GetOption(priceSettings.affordable) && !ctx->GetOption(priceSettings.main).Is(RO_PRICE_FIXED)){
       if (initalPrice >= 501){
          return 501;
       } else if (initalPrice >= 201){

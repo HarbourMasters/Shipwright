@@ -195,37 +195,37 @@ void func_80A3DBF4(EnGm* this, PlayState* play) {
     }
 }
 
-void func_80A3DC44(EnGm* that, PlayState* play) {
+void func_80A3DC44(EnGm* this, PlayState* play) {
     f32 dx;
     f32 dz;
     s32 pad;
     Player* player = GET_PLAYER(play);
 
-    EnGm_SetTextID(that);
+    EnGm_SetTextID(this);
 
-    dx = that->talkPos.x - player->actor.world.pos.x;
-    dz = that->talkPos.z - player->actor.world.pos.z;
+    dx = this->talkPos.x - player->actor.world.pos.x;
+    dz = this->talkPos.z - player->actor.world.pos.z;
 
-    if (Actor_ProcessTalkRequest(&that->actor, play)) {
+    if (Actor_ProcessTalkRequest(&this->actor, play)) {
         switch (func_80A3D7C8()) {
             case 0:
                 Flags_SetInfTable(INFTABLE_B0);
             case 3:
-                that->actionFunc = func_80A3DD7C;
+                this->actionFunc = func_80A3DD7C;
                 return;
             case 1:
                 Flags_SetInfTable(INFTABLE_B1);
             case 2:
-                that->actionFunc = EnGm_ProcessChoiceIndex;
+                this->actionFunc = EnGm_ProcessChoiceIndex;
             default:
                 return;
         }
 
-        that->actionFunc = EnGm_ProcessChoiceIndex;
+        this->actionFunc = EnGm_ProcessChoiceIndex;
     }
-    if ((that->collider.base.ocFlags1 & OC1_HIT) || (SQ(dx) + SQ(dz)) < SQ(100.0f)) {
-        that->collider.base.acFlags &= ~AC_HIT;
-        func_8002F2CC(&that->actor, play, 415.0f);
+    if ((this->collider.base.ocFlags1 & OC1_HIT) || (SQ(dx) + SQ(dz)) < SQ(100.0f)) {
+        this->collider.base.acFlags &= ~AC_HIT;
+        func_8002F2CC(&this->actor, play, 415.0f);
     }
 }
 

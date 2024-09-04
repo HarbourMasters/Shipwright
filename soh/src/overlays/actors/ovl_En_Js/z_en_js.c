@@ -111,11 +111,11 @@ void func_80A89078(EnJs* this, PlayState* play) {
     }
 }
 
-void func_80A890C0(EnJs* that, PlayState* play) {
-    if (Actor_ProcessTalkRequest(&that->actor, play)) {
-        En_Js_SetupAction(that, func_80A89078);
+void func_80A890C0(EnJs* this, PlayState* play) {
+    if (Actor_ProcessTalkRequest(&this->actor, play)) {
+        En_Js_SetupAction(this, func_80A89078);
     } else {
-        func_8002F2CC(&that->actor, play, 1000.0f);
+        func_8002F2CC(&this->actor, play, 1000.0f);
     }
 }
 
