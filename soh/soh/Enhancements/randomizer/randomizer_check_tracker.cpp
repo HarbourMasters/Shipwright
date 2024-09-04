@@ -1562,7 +1562,7 @@ void DrawLocation(RandomizerCheck rc) {
                     } else if (!mystery) {
                         txt = itemLoc->GetPlacedItem().GetName().GetForLanguage(gSaveContext.language);
                     }
-                    if (!IsVisibleInCheckTracker(rc) && status == RCSHOW_IDENTIFIED && !mystery) {
+                    if (IsVisibleInCheckTracker(rc) && status == RCSHOW_IDENTIFIED && !mystery) {
                         txt += fmt::format(" - {}", OTRGlobals::Instance->gRandoContext->GetItemLocation(rc)->GetPrice());
                     }
                 } else {
