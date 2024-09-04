@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../include/macros.h"
 #include "z64.h"
+#include "../include/macros.h"
 
 typedef enum {
     TEXT_NONE = 0x000,
