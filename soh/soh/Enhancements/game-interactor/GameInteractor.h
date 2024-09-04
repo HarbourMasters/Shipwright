@@ -242,6 +242,11 @@ typedef enum {
     ```
     */
     VB_DRAW_AMMO_COUNT,
+    VB_CONSUME_SMALL_KEY,
+    // Vanilla condition: gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex] <= 0
+    VB_NOT_HAVE_SMALL_KEY,
+    // Vanilla condition: !Flags_GetSwitch(play, this->actor.params & 0x3F)
+    VB_DOOR_BE_LOCKED,
 
     /*** Play Cutscenes ***/
 

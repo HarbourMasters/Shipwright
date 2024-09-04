@@ -593,3 +593,18 @@ extern "C" void Randomizer_DrawSkeletonKey(PlayState* play, GetItemEntry* getIte
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
+
+extern "C" void Randomizer_DrawOverworldKey(PlayState* play, GetItemEntry* getItemEntry) {
+    OPEN_DISPS(play->state.gfxCtx);
+
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+
+    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, 255);
+    gDPSetEnvColor(POLY_OPA_DISP++, 255, 255, 255, 255);
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
+
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gHouseKeyDL);
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}

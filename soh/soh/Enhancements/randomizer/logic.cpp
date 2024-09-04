@@ -145,6 +145,30 @@ namespace Rando {
             case RG_TWINROVA_SOUL:
             case RG_GANON_SOUL:
             case RG_SKELETON_KEY:
+                // Overworld Keys
+            case RG_GUARD_HOUSE_KEY:
+            case RG_MARKET_BAZAAR_KEY:
+            case RG_MARKET_POTION_SHOP_KEY:
+            case RG_MASK_SHOP_KEY:
+            case RG_MARKET_SHOOTING_GALLERY_KEY:
+            case RG_BOMBCHU_BOWLING_KEY:
+            case RG_TREASURE_CHEST_GAME_BUILDING_KEY:
+            case RG_BOMBCHU_SHOP_KEY:
+            case RG_RICHARDS_HOUSE_KEY:
+            case RG_KAK_BAZAAR_KEY:
+            case RG_KAK_POTION_SHOP_KEY:
+            case RG_BOSS_HOUSE_KEY:
+            case RG_GRANNYS_POTION_SHOP_KEY:
+            case RG_SKULLTULA_HOUSE_KEY:
+            case RG_IMPAS_HOUSE_KEY:
+            case RG_WINDMILL_KEY:
+            case RG_KAK_SHOOTING_GALLERY_KEY:
+            case RG_DAMPES_HUT_KEY:
+            case RG_TALONS_HOUSE_KEY:
+            case RG_STABLES_KEY:
+            case RG_BACK_TOWER_KEY:
+            case RG_HYLIA_LAB_KEY:
+            case RG_FISHING_HOLE_KEY:
                 return ctx->CheckRandoInf(Context::RandoGetToRandInf.at(itemName));
                 // Boss Keys
             case RG_FOREST_TEMPLE_BOSS_KEY:
@@ -382,6 +406,14 @@ namespace Rando {
             default:
                 return false;
         }
+    }
+
+    bool Logic::CanOpenOverworldDoor(RandomizerGet key) {
+        if (!ctx->GetOption(RSK_LOCK_OVERWORLD_DOORS)) {
+            return true;
+        }
+
+        return HasItem(key);
     }
 
     uint8_t GetDifficultyValueFromString(Rando::Option& glitchOption) {

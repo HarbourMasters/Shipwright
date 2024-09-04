@@ -4953,7 +4953,14 @@ s32 Player_ActionChange_1(Player* this, PlayState* play) {
                     this->stateFlags1 |= PLAYER_STATE1_IN_CUTSCENE;
                     Actor_DisableLens(play);
 
-                    if (((doorActor->params >> 7) & 7) == 3) {
+                    if (
+                        ((doorActor->params >> 7) & 7) == 3 || 
+                        (
+                            doorActor->id == ACTOR_EN_DOOR &&
+                            ((doorActor->params >> 7) & 7) == 1 &&
+                            ((EnDoor*)doorActor)->randomizerInf != RAND_INF_MAX
+                        )
+                    ) {
                         checkPos.x = doorActor->world.pos.x - (sp6C * sp74);
                         checkPos.y = doorActor->world.pos.y + 10.0f;
                         checkPos.z = doorActor->world.pos.z - (sp6C * sp78);

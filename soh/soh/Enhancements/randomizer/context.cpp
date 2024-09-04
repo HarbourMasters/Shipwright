@@ -431,7 +431,30 @@ std::map<RandomizerGet, uint32_t> Context::RandoGetToRandInf = {
     { RG_OCARINA_C_RIGHT_BUTTON, RAND_INF_HAS_OCARINA_C_RIGHT },
     { RG_SKELETON_KEY,           RAND_INF_HAS_SKELETON_KEY },
     { RG_GREG_RUPEE,             RAND_INF_GREG_FOUND },
-    { RG_FISHING_POLE,           RAND_INF_FISHING_POLE_FOUND }
+    { RG_FISHING_POLE,           RAND_INF_FISHING_POLE_FOUND },
+    { RG_GUARD_HOUSE_KEY,                  RAND_INF_GUARD_HOUSE_KEY_OBTAINED },
+    { RG_MARKET_BAZAAR_KEY,                RAND_INF_MARKET_BAZAAR_KEY_OBTAINED },
+    { RG_MARKET_POTION_SHOP_KEY,           RAND_INF_MARKET_POTION_SHOP_KEY_OBTAINED },
+    { RG_MASK_SHOP_KEY,                    RAND_INF_MASK_SHOP_KEY_OBTAINED },
+    { RG_MARKET_SHOOTING_GALLERY_KEY,      RAND_INF_MARKET_SHOOTING_GALLERY_KEY_OBTAINED },
+    { RG_BOMBCHU_BOWLING_KEY,              RAND_INF_BOMBCHU_BOWLING_KEY_OBTAINED },
+    { RG_TREASURE_CHEST_GAME_BUILDING_KEY, RAND_INF_TREASURE_CHEST_GAME_BUILDING_KEY_OBTAINED },
+    { RG_BOMBCHU_SHOP_KEY,                 RAND_INF_BOMBCHU_SHOP_KEY_OBTAINED },
+    { RG_RICHARDS_HOUSE_KEY,               RAND_INF_RICHARDS_HOUSE_KEY_OBTAINED },
+    { RG_KAK_BAZAAR_KEY,                   RAND_INF_KAK_BAZAAR_KEY_OBTAINED },
+    { RG_KAK_POTION_SHOP_KEY,              RAND_INF_KAK_POTION_SHOP_KEY_OBTAINED },
+    { RG_BOSS_HOUSE_KEY,                   RAND_INF_BOSS_HOUSE_KEY_OBTAINED },
+    { RG_GRANNYS_POTION_SHOP_KEY,          RAND_INF_GRANNYS_POTION_SHOP_KEY_OBTAINED },
+    { RG_SKULLTULA_HOUSE_KEY,              RAND_INF_SKULLTULA_HOUSE_KEY_OBTAINED },
+    { RG_IMPAS_HOUSE_KEY,                  RAND_INF_IMPAS_HOUSE_KEY_OBTAINED },
+    { RG_WINDMILL_KEY,                     RAND_INF_WINDMILL_KEY_OBTAINED },
+    { RG_KAK_SHOOTING_GALLERY_KEY,         RAND_INF_KAK_SHOOTING_GALLERY_KEY_OBTAINED },
+    { RG_DAMPES_HUT_KEY,                   RAND_INF_DAMPES_HUT_KEY_OBTAINED },
+    { RG_TALONS_HOUSE_KEY,                 RAND_INF_TALONS_HOUSE_KEY_OBTAINED },
+    { RG_STABLES_KEY,                      RAND_INF_STABLES_KEY_OBTAINED },
+    { RG_BACK_TOWER_KEY,                   RAND_INF_BACK_TOWER_KEY_OBTAINED },
+    { RG_HYLIA_LAB_KEY,                    RAND_INF_HYLIA_LAB_KEY_OBTAINED },
+    { RG_FISHING_HOLE_KEY,                 RAND_INF_FISHING_HOLE_KEY_OBTAINED },
 };
 
 std::map<uint32_t, uint32_t> Context::RandoGetToDungeonScene = {
@@ -773,6 +796,29 @@ void Context::ApplyItemEffect(Item& item, bool state) {
             case RG_OCARINA_C_RIGHT_BUTTON:
             case RG_GREG_RUPEE:
             case RG_FISHING_POLE:
+            case RG_GUARD_HOUSE_KEY:
+            case RG_MARKET_BAZAAR_KEY:
+            case RG_MARKET_POTION_SHOP_KEY:
+            case RG_MASK_SHOP_KEY:
+            case RG_MARKET_SHOOTING_GALLERY_KEY:
+            case RG_BOMBCHU_BOWLING_KEY:
+            case RG_TREASURE_CHEST_GAME_BUILDING_KEY:
+            case RG_BOMBCHU_SHOP_KEY:
+            case RG_RICHARDS_HOUSE_KEY:
+            case RG_KAK_BAZAAR_KEY:
+            case RG_KAK_POTION_SHOP_KEY:
+            case RG_BOSS_HOUSE_KEY:
+            case RG_GRANNYS_POTION_SHOP_KEY:
+            case RG_SKULLTULA_HOUSE_KEY:
+            case RG_IMPAS_HOUSE_KEY:
+            case RG_WINDMILL_KEY:
+            case RG_KAK_SHOOTING_GALLERY_KEY:
+            case RG_DAMPES_HUT_KEY:
+            case RG_TALONS_HOUSE_KEY:
+            case RG_STABLES_KEY:
+            case RG_BACK_TOWER_KEY:
+            case RG_HYLIA_LAB_KEY:
+            case RG_FISHING_HOLE_KEY:
                 SetRandoInf(RandoGetToRandInf.at(randoGet), state);
                 break;
             case RG_TRIFORCE_PIECE:

@@ -2711,6 +2711,9 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             gSaveContext.inventory.dungeonItems[mapIndex] |= bitmask;
             return Return_Item_Entry(giEntry, RG_NONE);
         }
+    } else if (item >= RG_GUARD_HOUSE_KEY && item <= RG_FISHING_HOLE_KEY) {
+        Flags_SetRandomizerInf(RAND_INF_GUARD_HOUSE_UNLOCKED + ((item - RG_GUARD_HOUSE_KEY) * 2) + 1);
+        return Return_Item_Entry(giEntry, RG_NONE);
     }
 
     if (item == RG_TYCOON_WALLET) {
