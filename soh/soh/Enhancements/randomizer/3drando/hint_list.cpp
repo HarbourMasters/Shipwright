@@ -2780,49 +2780,6 @@ void StaticData::HintTable_Init() {
     |   STATIC LOCATION HINTS   |
     ---------------------------*/
 
-    hintTextTable[RHT_MEDIGORON_HINT] = HintText(CustomMessage("How about buying #[[1]]# for #200 Rupees#?&" + TWO_WAY_CHOICE() + "#Buy&Don't buy#",
-                                                    /*german*/ "Möchtest Du #[[1]]# für #200 Rubine# kaufen?&" + TWO_WAY_CHOICE() + "#Klar!&Nie im Leben!#",
-                                                    /*french*/ "Veux-tu acheter #[[1]]# pour #200 rubis#?&" + TWO_WAY_CHOICE() + "#Acheter&Ne pas acheter#",
-                                                               {QM_GREEN, QM_YELLOW, QM_GREEN}));
-                                                /*spanish*/ // ¿Me compras #[[1]]# por #200 rupias#?&" + TWO_WAY_CHOICE() + "#Comprar&No comprar#
-
-    hintTextTable[RHT_CARPET_SALESMAN_DIALOG_FIRST] = HintText(CustomMessage("Welcome!^I am selling stuff, strange and rare, from all over the world to everybody. Today's special is...^",
-                                                                  /*german*/ "Sei gegrüßt!^Ich verkaufe allerlei Kuriositäten. Stets sonderliche und seltene Ware aus "
-                                                                             "aller Welt für jedermann. Das heutige Angebot bleibt...^#",
-                                                                  /*french*/ "Bienvenue!^Je vends des objets rares et merveilleux du monde entier. En spécial aujourd'hui...^"));
-                                                              /*spanish*/ // ¡Acércate!^Vendo productos extraños y difíciles de encontrar... De todo el mundo a todo el mundo. La oferta de hoy es...^#¡
-
-    hintTextTable[RHT_CARPET_SALESMAN_DIALOG_MYSTERIOUS] = HintText(CustomMessage("Terrifying! I won't tell you what it is until I see the #money#...^How about #200 Rupees#?&&" +
-                                                                                  TWO_WAY_CHOICE() + "#Buy&Don't buy#",
-                                                                       /*german*/ "Furchterregend, oder? Ich erzähle Euch mehr, wenn ich #Geld# sehe...^Wie wär's mit #200 Rubinen#?&&" +
-                                                                                  TWO_WAY_CHOICE() + "#Aber sicher!&Ich bin weg!#",
-                                                                       /*french*/ "Un concentré de puissance! Mais montre tes #rubis# avant que je te dise ce que c'est...^Disons #200 "
-                                                                                  "rubis#?&&" + TWO_WAY_CHOICE() + "#Acheter&Ne pas acheter#",
-                                                                                  {QM_RED, QM_YELLOW, QM_GREEN}));
-                                                                   /*spanish*/ // ¡Terrorífico! No te revelaré su nombre hasta que vea el #dinero#...^#200 rupias#, ¿qué te parece?&&" +
-                                                                               // TWO_WAY_CHOICE() + "#Comprar&No comprar#
-
-    hintTextTable[RHT_CARPET_SALESMAN_DIALOG_HINTED] = HintText(CustomMessage("#[[1]]!# It's real, I promise! A lonely man such as myself wouldn't #lie# to you, hmm?^"
-                                                                              "How about #200 Rupees#?&&" + TWO_WAY_CHOICE() + "#Buy&Don't buy#",
-                                                                  /*german*/ "#[[1]]#! Ich kann versichern, es ist ein aufrichtiges Angebot!^Ein einsamer Mann wie ich würde Dich doch "
-                                                                             "nicht #anlügen#, oder?^Wie wär's mit #200 Rubinen#?&&" + TWO_WAY_CHOICE() + "#Aber sicher!&Ich bin weg!#",
-                                                                  /*french*/ "#[[1]]!# C'est vrai! J'te jure! Un gars comme moi ne te #mentirai# pas tu ne crois pas?^Disons #200 "
-                                                                             "rubis#?&&" + TWO_WAY_CHOICE() + "#Acheter&Ne pas acheter#",
-                                                                             {QM_GREEN, QM_YELLOW, QM_GREEN}));
-
-    hintTextTable[RHT_BEAN_SALESMAN_HINT] = HintText(CustomMessage("I tried to be a #magic bean# salesman, but it turns out my marketing skills weren't worth "
-                                                                   "beans!^Anyway, want to buy #[[1]]# for #60 Rupees#?&" + TWO_WAY_CHOICE() + "#Yes&No#",
-                                                        /*german*/ "Möchten Sie #[[1]]# für #60 Rubine# kaufen?&" + TWO_WAY_CHOICE() + "#Ja&Nein#",
-                                                        /*french*/ "J'ai essayé d'être un vendeur de #haricots magiques#, mais j'étais mauvais au niveau du marketing et ça "
-                                                                   "me courait sur le haricot...^Enfin bref, ça te dirait de m'acheter #[[1]]# pour #60 Rubis#?&" + TWO_WAY_CHOICE() + "#Oui&Non#",
-                                                                   {QM_RED, QM_GREEN, QM_YELLOW, QM_GREEN}));
-
-    hintTextTable[RHT_GRANNY_HINT] = HintText(CustomMessage("#[[1]]#! How about #100 Rupees#?&" + TWO_WAY_CHOICE() + "#Buy&Don't buy#",
-                                                /*german*/ "#[[1]]#! Sagen wir #100 Rubine#?&" + TWO_WAY_CHOICE() + "#Gerne!&Auf keinen Fall!#",
-                                                /*french*/ "#[[1]]#! Que dis-tu de #100 rubis#?&" + TWO_WAY_CHOICE() + "#Acheter&Ne pas acheter#",
-                                                           {QM_GREEN, QM_YELLOW, QM_GREEN}, {true}));
-                                             // /*spanish*/#[[1]]#. Vendo por #100 rupias#.&" + TWO_WAY_CHOICE() + "#Comprar&No comprar#
-
     hintTextTable[RHT_HBA_HINT_SIGN] = HintText(CustomMessage("#Horseback Archery# Range Prizes:&1000: #[[1]]#&1500: #[[2]]#^@'s Record: #" + CustomMessage::POINTS(HS_HORSE_ARCHERY) + "#",
                                                               {QM_RED, QM_GREEN, QM_GREEN, QM_GREEN}, {}, TEXTBOX_TYPE_WOODEN));
 

@@ -55,12 +55,12 @@ void EnDs_Destroy(Actor* thisx, PlayState* play) {
     ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
-void EnDs_Talk(EnDs* this, PlayState* play) {
-    if (Actor_TextboxIsClosing(&this->actor, play)) {
-        this->actionFunc = EnDs_Wait;
-        this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
+void EnDs_Talk(EnDs* that, PlayState* play) {
+    if (Actor_TextboxIsClosing(&that->actor, play)) {
+        that->actionFunc = EnDs_Wait;
+        that->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
     }
-    this->unk_1E8 |= 1;
+    that->unk_1E8 |= 1;
 }
 
 void EnDs_TalkNoEmptyBottle(EnDs* this, PlayState* play) {
@@ -71,12 +71,12 @@ void EnDs_TalkNoEmptyBottle(EnDs* this, PlayState* play) {
     this->unk_1E8 |= 1;
 }
 
-void EnDs_TalkAfterGiveOddPotion(EnDs* this, PlayState* play) {
-    if (Actor_ProcessTalkRequest(&this->actor, play)) {
-        this->actionFunc = EnDs_Talk;
+void EnDs_TalkAfterGiveOddPotion(EnDs* self, PlayState* play) {
+    if (Actor_ProcessTalkRequest(&self->actor, play)) {
+        self->actionFunc = EnDs_Talk;
     } else {
-        this->actor.flags |= ACTOR_FLAG_WILL_TALK;
-        func_8002F2CC(&this->actor, play, 1000.0f);
+        self->actor.flags |= ACTOR_FLAG_WILL_TALK;
+        func_8002F2CC(&self->actor, play, 1000.0f);
     }
 }
 
@@ -105,7 +105,7 @@ void EnDs_TalkAfterBrewOddPotion(EnDs* this, PlayState* play) {
         this->actionFunc = EnDs_GiveOddPotion;
         u32 itemId = GI_ODD_POTION;
         if (GameInteractor_Should(VB_TRADE_ODD_MUSHROOM, true, this)) {
-            Actor_OfferGetItem(&this->actor, play, itemId, 10000.0f, 50.0f);
+            Flags_SetItemGetInf(ITEMGETINF_30);
         }
     }
 }
@@ -164,7 +164,7 @@ void EnDs_OfferOddPotion(EnDs* this, PlayState* play) {
 }
 
 s32 EnDs_CheckRupeesAndBottle() {
-    if (gSaveContext.rupees < 100) {
+    if (GameInteractor_Should(VB_CHECK_RANDO_PRICE_OF_GRANNY, gSaveContext.rupees < 100, NULL)) {
         return 0;
     } else if (GameInteractor_Should(VB_NEED_BOTTLE_FOR_GRANNYS_ITEM, Inventory_HasEmptyBottle() == 0, NULL)) {
         return 1;
@@ -174,7 +174,7 @@ s32 EnDs_CheckRupeesAndBottle() {
 }
 
 void EnDs_GiveBluePotion(EnDs* this, PlayState* play) {
-    if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(VB_GIVE_ITEM_FROM_GRANNYS_SHOP, true, this)) {
+    if (Actor_HasParent(&this->actor, play)) {
         this->actor.parent = NULL;
         this->actionFunc = EnDs_Talk;
     } else {
@@ -195,17 +195,19 @@ void EnDs_OfferBluePotion(EnDs* this, PlayState* play) {
                         this->actionFunc = EnDs_TalkNoEmptyBottle;
                         return;
                     case 2: // have 100 rupees and empty bottle
-                        Rupees_ChangeBy(-100);
+                        if(!GameInteractor_Should(VB_RANDO_GRANNY_TAKE_MONEY, false, this)){
+                            Rupees_ChangeBy(-100);
+                        }
                         this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
 
-                        if (GameInteractor_Should(VB_GIVE_ITEM_FROM_GRANNYS_SHOP, true, this)) {
+                        if (!GameInteractor_Should(VB_GIVE_ITEM_FROM_GRANNYS_SHOP, false, this)) {
                             GetItemEntry itemEntry = ItemTable_Retrieve(GI_POTION_BLUE);
                             Actor_OfferGetItem(&this->actor, play, GI_POTION_BLUE, 10000.0f, 50.0f);
                             gSaveContext.pendingSale = itemEntry.itemId;
                             gSaveContext.pendingSaleMod = itemEntry.modIndex;
+                            this->actionFunc = EnDs_GiveBluePotion;
                         }
-
-                        this->actionFunc = EnDs_GiveBluePotion;
+                        
                         return;
                 }
                 break;

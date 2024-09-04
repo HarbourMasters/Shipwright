@@ -242,9 +242,10 @@ class CustomMessageManager {
      *
      * @param tableID the ID of the custom message table
      * @param textID the ID of the message you want to retrieve
+     * @param format the type of formatting to apply to the retrieved message
      * @return CustomMessage
      */
-    CustomMessage RetrieveMessage(std::string tableID, uint16_t textID);
+    CustomMessage RetrieveMessage(std::string tableID, uint16_t textID, MessageFormat format = MF_RAW);
 
     /**
      * @brief Empties out the message table identified by tableID.

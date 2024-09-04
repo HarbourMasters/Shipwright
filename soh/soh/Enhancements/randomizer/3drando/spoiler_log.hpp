@@ -8,7 +8,7 @@
 
 using RandomizerHash = std::array<std::string, 5>;
 
-
+// RANDOTODO this is primerally used by the check tracker now, and should probably be moved
 typedef enum {
     SPOILER_CHK_NONE,
     SPOILER_CHK_ALWAYS_COLLECTED,
@@ -28,6 +28,7 @@ typedef enum {
 } SpoilerCollectionCheckType;
 
 // GetLocation groups for checks, used to group the checks by logical location
+// RANDOTODO this is only used by exclude groups ATM, and could probably be replaced with RandomizerArea for that purpose
 typedef enum {
     GROUP_NO_GROUP,
     GROUP_KOKIRI_FOREST,              // 0x55, 0x28
@@ -58,55 +59,7 @@ typedef enum {
     // Grottos are all 0x3E
 } SpoilerCollectionCheckGroup;
 
-typedef enum {
-    COLLECTTYPE_NORMAL,
-    COLLECTTYPE_REPEATABLE,
-    COLLECTTYPE_NEVER,
-} SpoilerItemCollectType;
-
-typedef enum {
-    REVEALTYPE_NORMAL,
-    REVEALTYPE_SCENE,
-    REVEALTYPE_ALWAYS,
-} SpoilerItemRevealType;
-
-#define SPOILER_SPHERES_MAX 50
-#define SPOILER_ITEMS_MAX RC_MAX
-#define SPOILER_STRING_DATA_SIZE 16384
-
-typedef struct {
-    std::string LocationStr;
-    std::string ItemStr;
-    uint16_t LocationStrOffset;
-    uint16_t ItemStrOffset;
-    SpoilerCollectionCheckType CollectionCheckType;
-    uint8_t LocationScene;
-    uint8_t LocationFlag;
-    SpoilerCollectionCheckGroup Group;
-    SpoilerItemCollectType CollectType;
-    SpoilerItemRevealType RevealType;
-} SpoilerItemLocation;
-
-typedef struct {
-    uint8_t ItemCount;
-    uint16_t ItemLocationsOffset;
-} SpoilerSphere;
-
-typedef struct {
-    uint8_t SphereCount;
-    uint16_t ItemLocationsCount;
-    SpoilerSphere Spheres[SPOILER_SPHERES_MAX];
-    SpoilerItemLocation ItemLocations[SPOILER_ITEMS_MAX];
-    uint16_t SphereItemLocations[SPOILER_ITEMS_MAX];
-    char StringData[SPOILER_STRING_DATA_SIZE];
-    uint16_t GroupItemCounts[SPOILER_COLLECTION_GROUP_COUNT];
-    uint16_t GroupOffsets[SPOILER_COLLECTION_GROUP_COUNT];
-} SpoilerData;
-
 void GenerateHash();
 const RandomizerHash& GetRandomizerHash();
 
-void WriteIngameSpoilerLog();
-
 const char* SpoilerLog_Write();
-const SpoilerData& GetSpoilerData();

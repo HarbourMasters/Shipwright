@@ -280,7 +280,6 @@ bool Option::RenderSlider() const {
     }
     const std::string formatName = name + ": %s";
     ImGui::Text(formatName.c_str(), options[val].c_str());
-    //MULTIPLY OPTION HERE
     if (!description.empty()) {
         UIWidgets::InsertHelpHoverText(description.c_str());
     }

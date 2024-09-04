@@ -171,19 +171,18 @@ void AreaTable_Init_Kakariko() {
 
   areaTable[RR_KAK_ODD_POTION_BUILDING] =
       Area("Kak Granny's Potion Shop", "Kak Granny's Potion Shop", RA_NONE, NO_DAY_NIGHT_CYCLE, {
-          
-               // Events
-               EventAccess(&logic->OddPoulticeAccess, { [] {
-                   return logic->OddPoulticeAccess || (logic->IsAdult && (logic->OddMushroomAccess || (logic->OddMushroom && logic->DisableTradeRevert)));
-               } }),
+              // Events
+              EventAccess(&logic->OddPoulticeAccess, { [] {
+                  return logic->OddPoulticeAccess || (logic->IsAdult && (logic->OddMushroomAccess || (logic->OddMushroom && logic->DisableTradeRevert)));
+              } }),
            },
            {
-               LOCATION(RC_KAK_TRADE_ODD_MUSHROOM, logic->IsAdult && logic->OddMushroom),
-               LOCATION(RC_KAK_GRANNYS_SHOP, logic->IsAdult && logic->OddMushroom && logic->AdultsWallet),
+              LOCATION(RC_KAK_TRADE_ODD_MUSHROOM, logic->IsAdult && logic->OddMushroom),
+              LOCATION(RC_KAK_GRANNYS_SHOP, logic->IsAdult && logic->OddMushroom && logic->AdultsWallet),
            },
            {
-               // Exits
-               Entrance(RR_KAK_BACKYARD, { [] { return true; } }),
+              // Exits
+              Entrance(RR_KAK_BACKYARD, { [] { return true; } }),
            });
 
   areaTable[RR_KAK_REDEAD_GROTTO] = Area("Kak Redead Grotto", "Kak Redead Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {

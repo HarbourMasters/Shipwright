@@ -217,9 +217,6 @@ void Context::CreateItemOverrides() {
             iceTrapModels[locKey] = val.LooksLike();
             val.SetTrickName(GetIceTrapName(val.LooksLike()));
             // If this is ice trap is in a shop, change the name based on what the model will look like
-            if (loc->IsCategory(Category::cShop)) {
-                NonShopItems[TransformShopIndex(GetShopIndex(locKey))].Name = val.GetTrickName();
-            }
             overrides[locKey] = val;
         }
         SPDLOG_DEBUG(loc->GetName());

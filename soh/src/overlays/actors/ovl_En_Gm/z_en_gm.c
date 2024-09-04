@@ -195,37 +195,37 @@ void func_80A3DBF4(EnGm* this, PlayState* play) {
     }
 }
 
-void func_80A3DC44(EnGm* this, PlayState* play) {
+void func_80A3DC44(EnGm* that, PlayState* play) {
     f32 dx;
     f32 dz;
     s32 pad;
     Player* player = GET_PLAYER(play);
 
-    EnGm_SetTextID(this);
+    EnGm_SetTextID(that);
 
-    dx = this->talkPos.x - player->actor.world.pos.x;
-    dz = this->talkPos.z - player->actor.world.pos.z;
+    dx = that->talkPos.x - player->actor.world.pos.x;
+    dz = that->talkPos.z - player->actor.world.pos.z;
 
-    if (Actor_ProcessTalkRequest(&this->actor, play)) {
+    if (Actor_ProcessTalkRequest(&that->actor, play)) {
         switch (func_80A3D7C8()) {
             case 0:
                 Flags_SetInfTable(INFTABLE_B0);
             case 3:
-                this->actionFunc = func_80A3DD7C;
+                that->actionFunc = func_80A3DD7C;
                 return;
             case 1:
                 Flags_SetInfTable(INFTABLE_B1);
             case 2:
-                this->actionFunc = EnGm_ProcessChoiceIndex;
+                that->actionFunc = EnGm_ProcessChoiceIndex;
             default:
                 return;
         }
 
-        this->actionFunc = EnGm_ProcessChoiceIndex;
+        that->actionFunc = EnGm_ProcessChoiceIndex;
     }
-    if ((this->collider.base.ocFlags1 & OC1_HIT) || (SQ(dx) + SQ(dz)) < SQ(100.0f)) {
-        this->collider.base.acFlags &= ~AC_HIT;
-        func_8002F2CC(&this->actor, play, 415.0f);
+    if ((that->collider.base.ocFlags1 & OC1_HIT) || (SQ(dx) + SQ(dz)) < SQ(100.0f)) {
+        that->collider.base.acFlags &= ~AC_HIT;
+        func_8002F2CC(&that->actor, play, 415.0f);
     }
 }
 
@@ -245,15 +245,15 @@ void EnGm_ProcessChoiceIndex(EnGm* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE && Message_ShouldAdvance(play)) {
         switch (play->msgCtx.choiceIndex) {
             case 0: // yes
-                if (gSaveContext.rupees < 200) {
+                if (GameInteractor_Should(VB_CHECK_RANDO_PRICE_OF_MEDIGORON, gSaveContext.rupees < 200, this)) {
                     Message_ContinueTextbox(play, 0xC8);
                     this->actionFunc = func_80A3DD7C;
                 } else {
                     if (GameInteractor_Should(VB_GIVE_ITEM_FROM_MEDIGORON, true, this)) {
                         Actor_OfferGetItem(&this->actor, play, GI_SWORD_KNIFE, 415.0f, 10.0f);
+                        this->actionFunc = func_80A3DF00;
                     }
-
-                    this->actionFunc = func_80A3DF00;
+                    
                 }
                 break;
             case 1: // no
@@ -265,8 +265,7 @@ void EnGm_ProcessChoiceIndex(EnGm* this, PlayState* play) {
 }
 
 void func_80A3DF00(EnGm* this, PlayState* play) {
-    if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(VB_GIVE_ITEM_FROM_MEDIGORON, true, this)) {
-        Flags_SetRandomizerInf(RAND_INF_MERCHANTS_MEDIGORON);
+    if (Actor_HasParent(&this->actor, play)) {
         this->actor.parent = NULL;
         this->actionFunc = func_80A3DF60;
     } else {

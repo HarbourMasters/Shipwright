@@ -282,8 +282,11 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
                     actual = RG_GIANT_WALLET;
                     break;
                 case 2:
-                    actual = tycoonWallet ? RG_TYCOON_WALLET : RG_GIANT_WALLET;
-                    break;
+                    if(tycoonWallet){
+                        actual = RG_TYCOON_WALLET;
+                        break;
+                    }
+                    //fallthrough
                 case 3:
                 case 4:
                     if (infiniteUpgrades != RO_INF_UPGRADES_OFF) {

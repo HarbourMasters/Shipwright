@@ -310,7 +310,7 @@ class Location {
                 RandomizerGet vanillaItem, std::vector<Category>&& categories,
                 SpoilerCollectionCheck collectionCheck = SpoilerCollectionCheck(),
                 SpoilerCollectionCheckGroup collectionCheckGroup = GROUP_NO_GROUP,
-                bool isVanillaCompletion_ = false, int16_t vanillaPrice_);
+                bool isVanillaCompletion_ = false, int16_t vanillaPrice_ = 0);
 
     static Location
     GrottoScrub(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckType checkType_,
@@ -319,7 +319,7 @@ class Location {
                 RandomizerGet vanillaItem, std::vector<Category>&& categories,
                 SpoilerCollectionCheck collectionCheck = SpoilerCollectionCheck(),
                 SpoilerCollectionCheckGroup collectionCheckGroup = GROUP_NO_GROUP,
-                bool isVanillaCompletion_ = false, int16_t vanillaPrice_);
+                bool isVanillaCompletion_ = false, int16_t vanillaPrice_ = 0);
 
     static Location
     Delayed(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckType checkType_, RandomizerCheckArea area_,

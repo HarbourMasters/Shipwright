@@ -8,7 +8,6 @@
 #include "../trial.h"
 #include "tinyxml2.h"
 #include "utils.hpp"
-#include "shops.hpp"
 #include "hints.hpp"
 #include "pool_functions.hpp"
 #include "soh/Enhancements/randomizer/randomizer_check_objects.h"
@@ -46,8 +45,6 @@ namespace {
 std::string placementtxt;
 } // namespace
 
-static SpoilerData spoilerData;
-
 void GenerateHash() {
     auto ctx = Rando::Context::GetInstance();
     std::string hash = ctx->GetSettings()->GetHash();
@@ -64,10 +61,6 @@ void GenerateHash() {
     // spoilerData = { 0 };
 }
 
-const SpoilerData& GetSpoilerData() {
-  return spoilerData;
-}
-
 static auto GetGeneralPath() {
     return "./randomizer/haha.xml";
 }
@@ -78,188 +71,6 @@ static auto GetSpoilerLogPath() {
 
 static auto GetPlacementLogPath() {
   return GetGeneralPath();
-}
-
-void WriteIngameSpoilerLog() {
-    auto ctx = Rando::Context::GetInstance();
-    uint16_t spoilerItemIndex = 0;
-    uint32_t spoilerStringOffset = 0;
-    uint16_t spoilerSphereItemoffset = 0;
-    uint16_t spoilerGroupOffset = 0;
-    // Intentionally junk value so we trigger the 'new group, record some stuff' code
-    uint8_t currentGroup = SpoilerCollectionCheckGroup::SPOILER_COLLECTION_GROUP_COUNT;
-    bool spoilerOutOfSpace = false;
-
-    // Create map of string data offsets for all _unique_ item locations and names in the playthrough
-    // Some item names, like gold skulltula tokens, can appear many times in a playthrough
-    std::unordered_map<uint32_t, uint16_t>
-        itemLocationsMap; // Map of LocationKey to an index into spoiler data item locations
-    itemLocationsMap.reserve(ctx->allLocations.size());
-    std::unordered_map<std::string, uint16_t>
-        stringOffsetMap; // Map of strings to their offset into spoiler string data array
-    stringOffsetMap.reserve(ctx->allLocations.size() * 2);
-
-    // Sort all locations by their group, so the in-game log can show a group of items by simply starting/ending at
-    // certain indices
-    std::stable_sort(ctx->allLocations.begin(), ctx->allLocations.end(), [](const RandomizerCheck& a, const RandomizerCheck& b) {
-        auto groupA = Rando::StaticData::GetLocation(a)->GetCollectionCheckGroup();
-        auto groupB = Rando::StaticData::GetLocation(b)->GetCollectionCheckGroup();
-        return groupA < groupB;
-    });
-
-    for (const RandomizerCheck key : ctx->allLocations) {
-        auto loc = Rando::StaticData::GetLocation(key);
-        auto itemLocation = ctx->GetItemLocation(key);
-
-        // Hide excluded locations from ingame tracker
-        // if (loc->IsExcluded()) {
-        //     continue;
-        // }
-        // Beehives
-        if (!ctx->GetOption(RSK_SHUFFLE_BEEHIVES) && loc->IsCategory(Category::cBeehive)) {
-            continue;
-        }
-        // Cows
-        else if (!ctx->GetOption(RSK_SHUFFLE_COWS) && loc->IsCategory(Category::cCow)) {
-            continue;
-        }
-        // Merchants
-        else if (ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_OFF) && loc->IsCategory(Category::cMerchant)) {
-            continue;
-        }
-        // Adult Trade
-        else if (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && loc->IsCategory(Category::cAdultTrade)) {
-            continue;
-        }
-        // Chest Minigame
-        else if (ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_GENERIC_OFF) &&
-                 loc->IsCategory(Category::cChestMinigame)) {
-            continue;
-        }
-        // Gerudo Fortress
-        else if ((ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_NORMAL) &&
-                  (loc->IsCategory(Category::cVanillaGFSmallKey) || loc->GetHintKey() == RHT_GF_GERUDO_MEMBERSHIP_CARD)) ||
-                 (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_FAST) && loc->IsCategory(Category::cVanillaGFSmallKey) &&
-                  loc->GetHintKey() != RHT_GF_NORTH_F1_CARPENTER)) {
-            continue;
-        }
-
-        // Copy at most 51 chars from the name and location name to avoid issues with names that don't fit on screen
-        const char* nameFormatStr = "%.51s";
-
-        auto locName = loc->GetName();
-        if (stringOffsetMap.find(locName) == stringOffsetMap.end()) {
-            if (spoilerStringOffset + locName.size() + 1 >= SPOILER_STRING_DATA_SIZE) {
-                spoilerOutOfSpace = true;
-                break;
-            } else {
-                stringOffsetMap[locName] = spoilerStringOffset;
-                spoilerStringOffset +=
-                    sprintf(&spoilerData.StringData[spoilerStringOffset], nameFormatStr, locName.c_str()) + 1;
-            }
-        }
-        // PURPLE TODO: LOCALIZATION
-        auto locItem = itemLocation->GetPlacedItemName().GetEnglish();
-        if (itemLocation->GetPlacedRandomizerGet() == RG_ICE_TRAP && loc->IsCategory(Category::cShop)) {
-            locItem = NonShopItems[TransformShopIndex(GetShopIndex(key))].Name.GetEnglish();
-        }
-        if (stringOffsetMap.find(locItem) == stringOffsetMap.end()) {
-            if (spoilerStringOffset + locItem.size() + 1 >= SPOILER_STRING_DATA_SIZE) {
-                spoilerOutOfSpace = true;
-                break;
-            } else {
-                stringOffsetMap[locItem] = spoilerStringOffset;
-                spoilerStringOffset +=
-                    sprintf(&spoilerData.StringData[spoilerStringOffset], nameFormatStr, locItem.c_str()) + 1;
-            }
-        }
-
-        spoilerData.ItemLocations[spoilerItemIndex].LocationStrOffset = stringOffsetMap[locName];
-        spoilerData.ItemLocations[spoilerItemIndex].ItemStrOffset = stringOffsetMap[locItem];
-        spoilerData.ItemLocations[spoilerItemIndex].LocationStr = locName;
-        spoilerData.ItemLocations[spoilerItemIndex].ItemStr = locItem;
-        spoilerData.ItemLocations[spoilerItemIndex].CollectionCheckType = loc->GetCollectionCheck().type;
-        spoilerData.ItemLocations[spoilerItemIndex].LocationScene = loc->GetCollectionCheck().scene;
-        spoilerData.ItemLocations[spoilerItemIndex].LocationFlag = loc->GetCollectionCheck().flag;
-
-        // Collect Type and Reveal Type
-        if (key == RC_GANON) {
-            spoilerData.ItemLocations[spoilerItemIndex].CollectType = COLLECTTYPE_NEVER;
-            spoilerData.ItemLocations[spoilerItemIndex].RevealType = REVEALTYPE_ALWAYS;
-        } 
-        // Shops
-        else if (loc->IsShop()) {
-            if (ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_OFF)) {
-                spoilerData.ItemLocations[spoilerItemIndex].RevealType = REVEALTYPE_ALWAYS;
-            } else {
-                spoilerData.ItemLocations[spoilerItemIndex].RevealType = REVEALTYPE_SCENE;
-            }
-            if (itemLocation->GetPlacedItem().GetItemType() == ITEMTYPE_REFILL ||
-                itemLocation->GetPlacedItem().GetItemType() == ITEMTYPE_SHOP ||
-                itemLocation->GetPlacedItem().GetHintKey() == RHT_PROGRESSIVE_BOMBCHUS) {
-                spoilerData.ItemLocations[spoilerItemIndex].CollectType = COLLECTTYPE_REPEATABLE;
-            }
-        }
-        // Gold Skulltulas
-        else if (loc->IsCategory(Category::cSkulltula) &&
-                 ((ctx->GetOption(RSK_SHUFFLE_TOKENS).Is(RO_TOKENSANITY_OFF)) ||
-                  (ctx->GetOption(RSK_SHUFFLE_TOKENS).Is(RO_TOKENSANITY_DUNGEONS) && !loc->IsDungeon()) ||
-                  (ctx->GetOption(RSK_SHUFFLE_TOKENS).Is(RO_TOKENSANITY_OVERWORLD) && loc->IsDungeon()))) {
-            spoilerData.ItemLocations[spoilerItemIndex].RevealType = REVEALTYPE_ALWAYS;
-        }
-        // Deku Scrubs
-        else if (loc->IsCategory(Category::cDekuScrub) && !loc->IsCategory(Category::cDekuScrubUpgrades) &&
-                 ctx->GetOption(RSK_SHUFFLE_SCRUBS).Is(RO_SCRUBS_OFF)) {
-            spoilerData.ItemLocations[spoilerItemIndex].CollectType = COLLECTTYPE_REPEATABLE;
-            spoilerData.ItemLocations[spoilerItemIndex].RevealType = REVEALTYPE_ALWAYS;
-        }
-
-        auto checkGroup = loc->GetCollectionCheckGroup();
-        spoilerData.ItemLocations[spoilerItemIndex].Group = checkGroup;
-
-        // Group setup
-        if (checkGroup != currentGroup) {
-            currentGroup = checkGroup;
-            spoilerData.GroupOffsets[currentGroup] = spoilerGroupOffset;
-        }
-        ++spoilerData.GroupItemCounts[currentGroup];
-        ++spoilerGroupOffset;
-
-        itemLocationsMap[key] = spoilerItemIndex++;
-    }
-    spoilerData.ItemLocationsCount = spoilerItemIndex;
-
-    if (/*Settings::IngameSpoilers TODO: Remove: don't think we have any need for this*/ false) {
-        bool playthroughItemNotFound = false;
-        // Write playthrough data to in-game spoiler log
-        if (!spoilerOutOfSpace) {
-            for (uint32_t i = 0; i < ctx->playthroughLocations.size(); i++) {
-                if (i >= SPOILER_SPHERES_MAX) {
-                    spoilerOutOfSpace = true;
-                    break;
-                }
-                spoilerData.Spheres[i].ItemLocationsOffset = spoilerSphereItemoffset;
-                for (uint32_t loc = 0; loc < ctx->playthroughLocations[i].size(); ++loc) {
-                    if (spoilerSphereItemoffset >= SPOILER_ITEMS_MAX) {
-                        spoilerOutOfSpace = true;
-                        break;
-                    }
-
-                    const auto foundItemLoc = itemLocationsMap.find(ctx->playthroughLocations[i][loc]);
-                    if (foundItemLoc != itemLocationsMap.end()) {
-                        spoilerData.SphereItemLocations[spoilerSphereItemoffset++] = foundItemLoc->second;
-                    } else {
-                        playthroughItemNotFound = true;
-                    }
-                    ++spoilerData.Spheres[i].ItemCount;
-                }
-                ++spoilerData.SphereCount;
-            }
-        }
-        if (spoilerOutOfSpace || playthroughItemNotFound) {
-            SPDLOG_ERROR("In-game spoiler log is out of space, playthrough data will not be written");
-        }
-    }
 }
 
 // Writes the location to the specified node.
@@ -674,6 +485,7 @@ void PlacementLog_Clear() {
     placementtxt = "";
 }
 
+// RANDOTODO: Do we even use this?
 bool PlacementLog_Write() {
     auto placementLog = tinyxml2::XMLDocument(false);
     placementLog.InsertEndChild(placementLog.NewDeclaration());
@@ -683,7 +495,6 @@ bool PlacementLog_Write() {
 
     // rootNode->SetAttribute("version", Settings::version.c_str());
     // rootNode->SetAttribute("seed", Settings::seed);
-    // TODO: Do we even use this?
 
     // WriteSettings(placementLog, true); // Include hidden settings.
     // WriteExcludedLocations(placementLog);
