@@ -141,7 +141,7 @@ const std::vector<std::string> CustomMessage::GetAllMessages(MessageFormat forma
 }
 
 void CustomMessage::ProcessMessageFormat(std::string& str, MessageFormat format) const {
-     if (format == MF_FORMATTED){
+    if (format == MF_FORMATTED){
         FormatString(str);
     } else if (format == MF_CLEAN){
         CleanString(str);
