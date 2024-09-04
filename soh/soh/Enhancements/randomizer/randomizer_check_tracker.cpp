@@ -203,9 +203,8 @@ Color_RGBA8 Color_Saved_Extra           = {   0, 185,   0, 255 }; // Green
 std::vector<uint32_t> buttons = { BTN_A, BTN_B, BTN_CUP,   BTN_CDOWN, BTN_CLEFT, BTN_CRIGHT, BTN_L,
                                   BTN_Z, BTN_R, BTN_START, BTN_DUP,   BTN_DDOWN, BTN_DLEFT,  BTN_DRIGHT };
 static ImGuiTextFilter checkSearch;
-static uint32_t filterSize = 0;
-static std::array<bool, RCAREA_INVALID> filterAreasHidden = { 0 };
-static std::array<bool, RC_MAX> filterChecksHidden = { 0 };
+std::array<bool, RCAREA_INVALID> filterAreasHidden = { 0 };
+std::array<bool, RC_MAX> filterChecksHidden = { 0 };
 
 void SongFromImpa() {
     if (IS_RANDO) {
@@ -500,6 +499,7 @@ void CheckTrackerLoadGame(int32_t fileNum) {
     initialized = true;
     UpdateAllOrdering();
     UpdateInventoryChecks();
+    UpdateFilters();
 }
 
 void CheckTrackerShopSlotChange(uint8_t cursorSlot, int16_t basePrice) {
@@ -755,8 +755,6 @@ void CheckTrackerFlagSet(int16_t flagType, int32_t flag) {
 void InitTrackerData(bool isDebug) {
     TrySetAreas();
     areasSpoiled = 0;
-    UpdateAllOrdering();
-    UpdateFilters();
 }
 
 void SaveTrackerData(SaveContext* saveContext, int sectionID, bool fullSave) {
