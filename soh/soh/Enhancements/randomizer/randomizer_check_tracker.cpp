@@ -134,7 +134,7 @@ OSContPad* trackerButtonsPressed;
 std::unordered_map<RandomizerCheck, std::string> checkNameOverrides;
 
 bool ShouldShowCheck(RandomizerCheck rc);
-bool ShouldHideArea(RandomizerCheckArea rcArea);
+bool UpdateFilters();
 void BeginFloatWindows(std::string UniqueName, bool& open, ImGuiWindowFlags flags = 0);
 bool CompareChecks(RandomizerCheck, RandomizerCheck);
 bool CheckByArea(RandomizerCheckArea);
@@ -203,6 +203,9 @@ Color_RGBA8 Color_Saved_Extra           = {   0, 185,   0, 255 }; // Green
 std::vector<uint32_t> buttons = { BTN_A, BTN_B, BTN_CUP,   BTN_CDOWN, BTN_CLEFT, BTN_CRIGHT, BTN_L,
                                   BTN_Z, BTN_R, BTN_START, BTN_DUP,   BTN_DDOWN, BTN_DLEFT,  BTN_DRIGHT };
 static ImGuiTextFilter checkSearch;
+static uint32_t filterSize = 0;
+static std::array<bool, RCAREA_INVALID> filterAreasHidden = { 0 };
+static std::array<bool, RC_MAX> filterChecksHidden = { 0 };
 
 void SongFromImpa() {
     if (IS_RANDO) {
@@ -753,6 +756,7 @@ void InitTrackerData(bool isDebug) {
     TrySetAreas();
     areasSpoiled = 0;
     UpdateAllOrdering();
+    UpdateFilters();
 }
 
 void SaveTrackerData(SaveContext* saveContext, int sectionID, bool fullSave) {
@@ -819,6 +823,8 @@ void Teardown() {
     ClearAreaChecksAndTotals();
     checksByArea.clear();
     areasSpoiled = 0;
+    filterAreasHidden = { 0 };
+    filterChecksHidden = { 0 };
 
     lastLocationChecked = RC_UNKNOWN_CHECK;
 }
@@ -911,7 +917,9 @@ void CheckTrackerWindow::DrawElement() {
         doAreaScroll = true;
     }
     UIWidgets::Tooltip("Clear the search field");
-    checkSearch.Draw();
+    //if (checkSearch.Draw()) {
+    //    UpdateFilters();
+    //}
 
     UIWidgets::PaddedSeparator();
 
@@ -965,7 +973,7 @@ void CheckTrackerWindow::DrawElement() {
             previousShowHidden = showHidden;
             doAreaScroll = true;
         }
-        if ((shouldHideFilteredAreas && ShouldHideArea(rcArea)) ||
+        if ((shouldHideFilteredAreas && filterAreasHidden[rcArea]) ||
             (!showHidden && ((hideComplete && thisAreaFullyChecked) || (hideIncomplete && !thisAreaFullyChecked)))
         ) {
             doDraw = false;
@@ -1025,7 +1033,7 @@ void CheckTrackerWindow::DrawElement() {
                 doAreaScroll = false;
             }
             for (auto rc : checks) {
-                if (doDraw && isThisAreaSpoiled && ShouldShowCheck(rc)) {
+                if (doDraw && isThisAreaSpoiled && !filterChecksHidden[rc]) {
                     DrawLocation(rc);
                 }
             }
@@ -1045,13 +1053,11 @@ void CheckTrackerWindow::DrawElement() {
     }
 }
 
-bool ShouldHideArea(RandomizerCheckArea rcArea) {
-    if (checkSearch.Filters.Size == 0 || checkSearch.PassFilter(RandomizerCheckObjects::GetRCAreaName(rcArea).c_str())) {
-        return false;
-    }
-    for (auto check : checksByArea[rcArea]) {
-        if (ShouldShowCheck(check)) {
-            return false;
+bool UpdateFilters() {
+    for (auto& [rcArea, checks] : checksByArea) {
+        filterAreasHidden[rcArea] = !checkSearch.PassFilter(RandomizerCheckObjects::GetRCAreaName(rcArea).c_str());
+        for (auto check : checks) { 
+            filterChecksHidden[check] = !ShouldShowCheck(check);
         }
     }
 
@@ -1533,8 +1539,7 @@ void DrawLocation(RandomizerCheck rc) {
     }
 
     if (CVarGetInteger("gCheckTrackerOptionShowLogic", 0)) {
-        std::vector<LocationAccess> locationsInRegion = areaTable[itemLoc->GetParentRegionKey()].locations;
-        for (auto& locationInRegion : locationsInRegion) {
+        for (auto& locationInRegion : areaTable[itemLoc->GetParentRegionKey()].locations) {
             if (locationInRegion.GetLocation() == rc) {
                 std::string conditionStr = locationInRegion.GetConditionStr();
                 if (conditionStr != "true") {
