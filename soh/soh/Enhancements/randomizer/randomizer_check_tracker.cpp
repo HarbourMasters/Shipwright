@@ -140,7 +140,6 @@ bool CompareChecks(RandomizerCheck, RandomizerCheck);
 bool CheckByArea(RandomizerCheckArea);
 void DrawLocation(RandomizerCheck);
 void EndFloatWindows();
-bool HasItemBeenCollected(RandomizerCheck);
 void LoadSettings();
 void RainbowTick();
 void UpdateAreas(RandomizerCheckArea area);
@@ -427,51 +426,6 @@ void SetShopSeen(uint32_t sceneNum, bool prices) {
     }
 }
 
-bool HasItemBeenCollected(RandomizerCheck rc) {
-    if (gPlayState == nullptr) {
-        return false;
-    }
-    Rando::Location* x = Rando::StaticData::GetLocation(rc);
-    Rando::SpoilerCollectionCheck check = x->GetCollectionCheck();
-    auto flag = check.flag;
-    auto scene = check.scene;
-    auto type = check.type;
-
-    switch (type) {
-    case SpoilerCollectionCheckType::SPOILER_CHK_ALWAYS_COLLECTED:
-        return true;
-    case SpoilerCollectionCheckType::SPOILER_CHK_CHEST:
-        return (gPlayState->sceneNum == scene && gPlayState->actorCtx.flags.chest & (1 << flag)) ||
-               gSaveContext.sceneFlags[scene].chest & (1 << flag);
-    case SpoilerCollectionCheckType::SPOILER_CHK_COLLECTABLE:
-        return (gPlayState->sceneNum == scene && gPlayState->actorCtx.flags.collect & (1 << flag)) ||
-               gSaveContext.sceneFlags[scene].collect & (1 << flag);
-    case SpoilerCollectionCheckType::SPOILER_CHK_SHOP_ITEM:
-    case SpoilerCollectionCheckType::SPOILER_CHK_FISH:
-    case SpoilerCollectionCheckType::SPOILER_CHK_RANDOMIZER_INF:
-    case SpoilerCollectionCheckType::SPOILER_CHK_MASTER_SWORD:
-        return Flags_GetRandomizerInf(OTRGlobals::Instance->gRandomizer->GetRandomizerInfFromCheck(rc));
-    case SpoilerCollectionCheckType::SPOILER_CHK_EVENT_CHK_INF:
-        return gSaveContext.eventChkInf[flag / 16] & (0x01 << flag % 16);
-    case SpoilerCollectionCheckType::SPOILER_CHK_GOLD_SKULLTULA:
-        return GET_GS_FLAGS(scene) & flag;
-    case SpoilerCollectionCheckType::SPOILER_CHK_INF_TABLE:
-        return gSaveContext.infTable[scene] & INDEX_TO_16BIT_LITTLE_ENDIAN_BITMASK(flag);
-    case SpoilerCollectionCheckType::SPOILER_CHK_ITEM_GET_INF:
-        return gSaveContext.itemGetInf[flag / 16] & INDEX_TO_16BIT_LITTLE_ENDIAN_BITMASK(flag);
-    case SpoilerCollectionCheckType::SPOILER_CHK_NONE:
-        return false;
-    case SpoilerCollectionCheckType::SPOILER_CHK_GRAVEDIGGER:
-        // Gravedigger has a fix in place that means one of two save locations. Check both.
-        return (gSaveContext.itemGetInf[1] & 0x1000) || // vanilla flag
-            ((IS_RANDO || CVarGetInteger(CVAR_ENHANCEMENT("GravediggingTourFix"), 0)) &&
-                gSaveContext.sceneFlags[scene].collect & (1 << flag) || (gPlayState->actorCtx.flags.collect & (1 << flag))); // rando/fix flag
-    default:
-        return false;
-    }
-    return false;
-}
-
 void CheckTrackerLoadGame(int32_t fileNum) {
     LoadSettings();
     TrySetAreas();
@@ -484,11 +438,6 @@ void CheckTrackerLoadGame(int32_t fileNum) {
 
         Rando::Location* entry2 = Rando::StaticData::GetLocation(rc);
         Rando::ItemLocation* loc = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
-        //if (rc == RC_GIFT_FROM_SAGES && !IS_RANDO) {
-        //    entry2 = Rando::StaticData::GetLocation(rc);
-        //} else {
-        //    entry2 = Rando::StaticData::GetLocation(rc);
-        //}
 
         checksByArea.find(entry2->GetArea())->second.push_back(entry2->GetRandomizerCheck());
         if (IsVisibleInCheckTracker(entry2->GetRandomizerCheck())) {
@@ -803,11 +752,6 @@ void CheckTrackerFlagSet(int16_t flagType, int32_t flag) {
 void InitTrackerData(bool isDebug) {
     TrySetAreas();
     areasSpoiled = 0;
-    //for (auto& loc : Rando::StaticData::GetLocationTable()) {
-    //    if (loc.GetRandomizerCheck() != RC_UNKNOWN_CHECK && loc.GetRandomizerCheck() != RC_MAX) {
-    //        DefaultCheckData(loc.GetRandomizerCheck());
-    //    }
-    //}
     UpdateAllOrdering();
 }
 

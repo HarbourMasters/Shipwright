@@ -659,8 +659,8 @@ void SaveManager::Init() {
         if (std::filesystem::exists(GetFileName(fileNum))) {
             LoadFile(fileNum);
             saveBlock = nlohmann::json::object();
+            OTRGlobals::Instance->gRandoContext->ClearItemLocations();
         }
-
     }
 }
 

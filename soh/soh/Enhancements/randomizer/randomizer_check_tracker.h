@@ -44,7 +44,6 @@ class CheckTrackerWindow : public Ship::GuiWindow {
 //repeat...
 #define INDEX_TO_16BIT_LITTLE_ENDIAN_BITMASK(idx) (0x8000 >> (7 - (idx % 8) + ((idx % 16) / 8) * 8))
 
-void DefaultCheckData(RandomizerCheck rc);
 void Teardown();
 void UpdateAllOrdering();
 bool IsVisibleInCheckTracker(RandomizerCheck rc);
