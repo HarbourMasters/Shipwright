@@ -51,13 +51,14 @@ bool IsVisibleInCheckTracker(RandomizerCheck rc);
 bool IsCheckShuffled(RandomizerCheck rc);
 void InitTrackerData(bool isDebug);
 RandomizerCheckArea GetCheckArea();
-void UpdateCheck(uint32_t, RandomizerCheckTrackerData);
 uint16_t GetTotalChecks();
 uint16_t GetTotalChecksGotten();
 bool IsAreaSpoiled(RandomizerCheckArea rcArea);
+uint32_t GetAreasSpoiled();
+void SetAreasSpoiled(uint32_t areasSpoiled_);
 void SetAreaSpoiled(RandomizerCheckArea rcArea);
+void UpdateInventoryChecks();
+void UpdateAreas(RandomizerCheckArea area);
+void UpdateAllOrdering();
+void UpdateAllAreas();
 } // namespace CheckTracker
-
-
-void to_json(nlohmann::json & j, const RandomizerCheckTrackerData& rctd);
-void from_json(const nlohmann::json& j, RandomizerCheckTrackerData& rctd);

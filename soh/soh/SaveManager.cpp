@@ -111,6 +111,7 @@ SaveManager::SaveManager() {
     coreSectionIDsByName["sohStats"] = SECTION_ID_STATS;
     coreSectionIDsByName["entrances"] = SECTION_ID_ENTRANCES;
     coreSectionIDsByName["scenes"] = SECTION_ID_SCENES;
+    coreSectionIDsByName["trackerData"] = SECTION_ID_TRACKER_DATA;
     AddLoadFunction("base", 1, LoadBaseVersion1);
     AddLoadFunction("base", 2, LoadBaseVersion2);
     AddLoadFunction("base", 3, LoadBaseVersion3);
@@ -404,13 +405,6 @@ void SaveManager::LoadRandomizerVersion3() {
                 // all ItemLocations is 0 anyway.
                 randoContext->GetItemLocation(i)->SetCustomPrice(price);
             }
-            uint16_t obtained = 0; 
-            SaveManager::Instance->LoadData("obtained", obtained, (uint16_t)0);
-            if (obtained) {
-                randoContext->GetItemLocation(i)->MarkAsObtained();
-            } else {
-                randoContext->GetItemLocation(i)->MarkAsNotObtained();
-            }
         });
     });
 
@@ -496,7 +490,6 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool f
             if (randoContext->GetItemLocation(i)->HasCustomPrice()) {
                 SaveManager::Instance->SaveData("price", randoContext->GetItemLocation(i)->GetPrice());
             }
-            SaveManager::Instance->SaveData("obtained", randoContext->GetItemLocation(i)->HasObtained());
         });
     });
 
