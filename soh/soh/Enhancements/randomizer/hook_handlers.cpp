@@ -1231,7 +1231,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
             *should = false;
             break;
         default:
-            break; //Remove if warnings spam is meant to happen
+            break;
     }
 }
 
