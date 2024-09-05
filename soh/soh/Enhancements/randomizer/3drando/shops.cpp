@@ -187,21 +187,22 @@ uint16_t GetPriceFromSettings(Rando::Location *loc, PriceSettingsStruct priceSet
          if (totalWeight == 0){ //if no weight, return from sane range
             return Random(0, 501);
          }
-         totalWeight = totalWeight - noWeight;
-         if (totalWeight <= 0){
+         int16_t selected = Random(1, totalWeight + 1);
+         selected = selected - noWeight;
+         if (selected <= 0){
             return 0;
          }
-         totalWeight = totalWeight - childWeight;
-         if (totalWeight <= 0){
-            return Random(1, 99);
+         selected = selected - childWeight;
+         if (selected <= 0){
+            return Random(1, 100);
          }
-         totalWeight = totalWeight - adultWeight;
-         if (totalWeight <= 0){
-            return Random(100, 200);
+         selected = selected - adultWeight;
+         if (selected <= 0){
+            return Random(100, 201);
          }
-         totalWeight = totalWeight - giantWeight;
-         if (totalWeight <= 0){
-            return Random(201, 500);
+         selected = selected - giantWeight;
+         if (selected <= 0){
+            return Random(201, 501);
          }
          return Random(501, 999);
       }
