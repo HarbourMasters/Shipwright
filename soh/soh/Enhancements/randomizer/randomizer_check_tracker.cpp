@@ -831,14 +831,6 @@ bool IsAreaSpoiled(RandomizerCheckArea rcArea) {
     return areasSpoiled & (1 << rcArea);
 }
 
-void SetAreasSpoiled(uint32_t areasSpoiled_) {
-    areasSpoiled = areasSpoiled_;
-}
-
-uint32_t GetAreasSpoiled() {
-    return areasSpoiled;
-}
-
 void SetAreaSpoiled(RandomizerCheckArea rcArea) {
     areasSpoiled |= (1 << rcArea);
     SaveManager::Instance->SaveSection(gSaveContext.fileNum, sectionId, true);
@@ -1739,8 +1731,6 @@ void CheckTrackerWindow::InitElement() {
 
     hideShopRightChecks = CVarGetInteger(CVAR_TRACKER_CHECK("HideRightShopChecks"), 1);
     alwaysShowGS = CVarGetInteger(CVAR_TRACKER_CHECK("AlwaysShowGSLocs"), 0);
-
-    //LocationTable_Init();
 }
 
 } // namespace CheckTracker

@@ -53,8 +53,6 @@ RandomizerCheckArea GetCheckArea();
 uint16_t GetTotalChecks();
 uint16_t GetTotalChecksGotten();
 bool IsAreaSpoiled(RandomizerCheckArea rcArea);
-uint32_t GetAreasSpoiled();
-void SetAreasSpoiled(uint32_t areasSpoiled_);
 void SetAreaSpoiled(RandomizerCheckArea rcArea);
 void UpdateInventoryChecks();
 void UpdateAreas(RandomizerCheckArea area);
