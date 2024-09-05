@@ -4,7 +4,7 @@
 #include <string>
 #include <version>
 
-static std::unordered_map<const char*, std::unordered_map<HOOK_ID, RegisteringInfo>> hookData;
+static std::unordered_map<const char*, std::unordered_map<HOOK_ID, HookInfo>> hookData;
 
 const ImVec4 grey = ImVec4(0.75, 0.75, 0.75, 1);
 const ImVec4 yellow = ImVec4(1, 1, 0, 1);
@@ -18,20 +18,23 @@ void DrawHookRegisteringInfos(const char* hookName) {
 
     if (ImGui::BeginTable(
         ("Table##" + std::string(hookName)).c_str(),
-        3,
+        4,
         ImGuiTableFlags_Resizable | ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable | ImGuiTableFlags_Borders | ImGuiTableFlags_SizingFixedFit
     )) {
         ImGui::TableSetupColumn("Id");
         ImGui::TableSetupColumn("Type");
         ImGui::TableSetupColumn("Registration Info");
         //ImGui::TableSetupColumn("Stub");
+        ImGui::TableSetupColumn("Number of Calls");
         ImGui::TableHeadersRow();
-        for (auto& [id, registeringInfo] : hookData[hookName]) {
+        for (auto& [id, hookInfo] : hookData[hookName]) {
             ImGui::TableNextRow();
+
             ImGui::TableNextColumn();
             ImGui::Text("%d", id);
+
             ImGui::TableNextColumn();
-            switch (registeringInfo.type) {
+            switch (hookInfo.registering.type) {
                 case HOOK_TYPE_NORMAL:
                     ImGui::Text("Normal");
                     break;
@@ -48,8 +51,13 @@ void DrawHookRegisteringInfos(const char* hookName) {
                     ImGui::TextColored(red, "[UNKNOWN]");
                     break;
             }
+
             ImGui::TableNextColumn();
-            ImGui::Text("%s(%d:%d) %s", registeringInfo.file, registeringInfo.line, registeringInfo.column, registeringInfo.function);
+            if (hookInfo.registering.valid) {
+                ImGui::Text("%s(%d:%d) %s", hookInfo.registering.file, hookInfo.registering.line, hookInfo.registering.column, hookInfo.registering.function);
+            } else {
+                ImGui::TextColored(yellow, "[Unavaliable]");
+            }
 
             //TODO: not currently possible
             /*
@@ -66,6 +74,9 @@ void DrawHookRegisteringInfos(const char* hookName) {
 
             ImGui::EndDisabled();
             */
+
+            ImGui::TableNextColumn();
+            ImGui::Text("%d", hookInfo.calls);
         }
         ImGui::EndTable();
     }
@@ -78,21 +89,21 @@ void HookDebuggerWindow::DrawElement() {
         return;
     }
 
-#ifdef __cpp_lib_source_location
+#ifndef __cpp_lib_source_location
+    ImGui::TextColored(
+        yellow,
+        "Some features of the Hook Debugger are unavaliable because SoH was compiled "
+        "without \"<source_location>\" support "
+        "(\"__cpp_lib_source_location\" not defined in \"<version>\")."
+    );
+#endif
+
     for (auto& [hookName, _] : hookData) {
         if (ImGui::TreeNode(hookName)) {
             DrawHookRegisteringInfos(hookName);
             ImGui::TreePop();
         }
     }
-#else
-    ImGui::TextColored(
-        yellow,
-        "The Hook Debugger is unavaliable because SoH was compiled "
-        "without \"<source_location>\" support "
-        "(\"__cpp_lib_source_location\" not defined in \"<version>\")."
-    );
-#endif
 
     ImGui::End();
 }
@@ -100,7 +111,7 @@ void HookDebuggerWindow::DrawElement() {
 void HookDebuggerWindow::UpdateElement() {
     hookData.clear();
 
-    #define DEFINE_HOOK(name, _) hookData.insert({#name, GameInteractor::Instance->GetRegisteringInfos<GameInteractor::name>()});
+    #define DEFINE_HOOK(name, _) hookData.insert({#name, GameInteractor::Instance->GetHookData<GameInteractor::name>()});
 
     #include "../game-interactor/GameInteractor_HookTable.h"
 
