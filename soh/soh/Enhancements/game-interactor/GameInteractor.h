@@ -286,14 +286,13 @@ typedef enum {
     VB_PLAY_SLOW_CHEST_CS,
     //*Opt f32 sFishOnHandLength
     // Vanilla condition: (s16)sFishingRecordLength < (s16)sFishOnHandLength
-    VB_SHOULD_GIVE_FISHING_REWARD,
+    VB_SHOULD_CHECK_FOR_FISHING_RECORD,
     //*Opt f32 sFishOnHandLength
-    // Vanilla condition is implied from precvious code that could be bypassed by above hook
+    // Vanilla condition is implied from previous code that could be bypassed by above hook
     VB_SHOULD_SET_FISHING_RECORD,
     //*Opt *s32 getItemId
-    VB_SHOULD_GIVE_VANILLA_REWARD,
-    VB_SHOULD_GET_LOACH_RANDO_REWARD,
-
+    VB_SHOULD_GIVE_VANILLA_FISHING_PRIZE,
+    VB_GIVE_RANDO_FISHING_PRIZE,
 
     /*** Give Items ***/
 
