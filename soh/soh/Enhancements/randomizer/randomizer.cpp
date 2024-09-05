@@ -108,13 +108,15 @@ static const char* englishRupeeNames[171] = {
     "Zorkmids"
 };
 
-static const char* germanRupeeNames[41] = {
+static const char* germanRupeeNames[56] = {
     "Rubine",     "Mäuse",       "Kröten",        "Münzen",     "Euro",       "Mark",     "Bananen",
     "Gummibären", "Bonbons",     "Diamanten",     "Bratwürste", "Bitcoin",    "Dogecoin", "Monde",
     "Sterne",     "Brause UFOs", "Taler",         "Sternis",    "Schilling",  "Freunde",  "Seelen",
     "Gil",        "Zenny",       "Pfandflaschen", "Knochen",    "Pilze",      "Smaragde", "Kronkorken",
     "Pokédollar", "Brötchen",    "EXP",           "Wagenchips", "Moos",       "Knete",    "Kohle",
-    "Kies",       "Radieschen",  "Diridari",      "Steine",     "Kartoffeln", "Penunze"
+    "Kies",       "Radieschen",  "Diridari",      "Steine",     "Kartoffeln", "Penunze",  "ECU",
+    "Franken",    "Cent",        "Pfennig",       "Groschen",   "Rappen",     "Gulden",   "Kreuzer",
+    "Kronen",     "Forint",      "Heller",        "Pfund",      "Karolin",    "Pesa",     "Tael"
 };
 
 static const char* frenchRupeeNames[36] = {
@@ -273,9 +275,9 @@ std::unordered_map<RandomizerGet, EnGirlAShopItem> randomizerGetToEnGirlShopItem
     { RG_BUY_DEKU_SHIELD,   SI_DEKU_SHIELD },
     { RG_BUY_GORON_TUNIC,   SI_GORON_TUNIC },
     { RG_BUY_ZORA_TUNIC,    SI_ZORA_TUNIC },
-    { RG_BUY_HEART,         SI_HEART },
-    { RG_BUY_BOMBCHU_10,    SI_BOMBCHU_10_1 },
-    { RG_BUY_BOMBCHU_20,    SI_BOMBCHU_20_1 },
+    { RG_BUY_HEART,         SI_RECOVERY_HEART },
+    { RG_BUY_BOMBCHUS_10,   SI_BOMBCHU_10_1 },
+    { RG_BUY_BOMBCHUS_20,   SI_BOMBCHU_20_1 },
     { RG_BUY_DEKU_SEEDS_30, SI_DEKU_SEEDS_30 },
     { RG_BUY_BLUE_FIRE,     SI_BLUE_FIRE },
     { RG_BUY_BOTTLE_BUG,    SI_BUGS },
@@ -461,19 +463,10 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_BOMBCHU_5:
         case RG_BOMBCHU_10:
         case RG_BOMBCHU_20:
-        case RG_PROGRESSIVE_BOMBCHUS:
+        case RG_BUY_BOMBCHUS_10:
+        case RG_BUY_BOMBCHUS_20:
+        case RG_PROGRESSIVE_BOMBCHUS: //RANDOTODO Do we want bombchu refills to exist seperatly from bombchu bags? If so, this needs changing.
             return CAN_OBTAIN;
-        case RG_BUY_BOMBCHU_10:
-        case RG_BUY_BOMBCHU_20:
-        case RG_BOMBCHU_DROP:
-            // If Bombchus aren't in logic, you need a bomb bag to purchase them
-            // If they are in logic, you need to have already obtained them somewhere else
-            // Bombchu Drop is only used as a bowling reward, so it needs the same logic
-            if (GetRandoSettingValue(RSK_BOMBCHUS_IN_LOGIC)) {
-                return INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU ? CAN_OBTAIN : CANT_OBTAIN_NEED_UPGRADE;
-            } else {
-                return CUR_UPG_VALUE(UPG_BOMB_BAG) ? CAN_OBTAIN : CANT_OBTAIN_NEED_UPGRADE;
-            }
         case RG_PROGRESSIVE_HOOKSHOT:
             switch (INV_CONTENT(ITEM_HOOKSHOT)) {
                 case ITEM_NONE:
@@ -869,13 +862,11 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                     return GI_OCARINA_OOT;
             }
         case RG_BOMBCHU_5:
-        case RG_BOMBCHU_DROP:
-            return GI_BOMBCHUS_5;
         case RG_BOMBCHU_10:
-        case RG_BUY_BOMBCHU_10:
+        case RG_BUY_BOMBCHUS_10:
             return GI_BOMBCHUS_10;
         case RG_BOMBCHU_20:
-        case RG_BUY_BOMBCHU_20:
+        case RG_BUY_BOMBCHUS_20:
             return GI_BOMBCHUS_20;
         case RG_PROGRESSIVE_BOMBCHUS:
             if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_NONE) {
@@ -1176,7 +1167,6 @@ bool Randomizer::IsItemVanilla(RandomizerGet randoGet) {
         case RG_BOMBCHU_5:
         case RG_BOMBCHU_10:
         case RG_BOMBCHU_20:
-        case RG_BOMBCHU_DROP:
             return true;
         case RG_PROGRESSIVE_BOMBCHUS:
             return INV_CONTENT(ITEM_BOMBCHU) != ITEM_NONE && !GetRandoSettingValue(RSK_INFINITE_UPGRADES);
@@ -1208,8 +1198,8 @@ bool Randomizer::IsItemVanilla(RandomizerGet randoGet) {
         case RG_BUY_GORON_TUNIC:
         case RG_BUY_ZORA_TUNIC:
         case RG_BUY_HEART:
-        case RG_BUY_BOMBCHU_10:
-        case RG_BUY_BOMBCHU_20:
+        case RG_BUY_BOMBCHUS_10:
+        case RG_BUY_BOMBCHUS_20:
         case RG_BUY_DEKU_SEEDS_30:
         case RG_SOLD_OUT:
         case RG_BUY_BLUE_FIRE:
@@ -2169,7 +2159,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 {RA_GANONS_CASTLE, true}
             };
 
-            static std::unordered_map<Rando::Tricks::Tag, bool> showTag {
+            static std::map<Rando::Tricks::Tag, bool> showTag {
                 {Rando::Tricks::Tag::NOVICE,true},
                 {Rando::Tricks::Tag::INTERMEDIATE,true},
                 {Rando::Tricks::Tag::ADVANCED,true},
@@ -2236,22 +2226,14 @@ void RandomizerSettingsWindow::DrawElement() {
                     window->DC.CurrLineTextBaseOffset = 0.0f;
                     
                     if (ImGui::Button("Collapse All##disabled")) {
-                        for (int i = 0; i < RT_MAX; i++) {
-                            auto option = mSettings->GetTrickOption(static_cast<RandomizerTrick>(i));
-                            if (!option.IsHidden() && !enabledTricks.count(static_cast<RandomizerTrick>(i)) &&
-                                !option.IsGlitch()) {
-                                areaTreeDisabled[option.GetArea()] = false;
-                            }
+                        for (int i = 0; i < RA_MAX; i++) {
+                            areaTreeDisabled[static_cast<RandomizerArea>(i)] = false;
                         }
                     }
                     ImGui::SameLine();
                     if (ImGui::Button("Open All##disabled")) {
-                        for (int i = 0; i < RT_MAX; i++) {
-                            auto option = mSettings->GetTrickOption(static_cast<RandomizerTrick>(i));
-                            if (option.IsHidden() && !enabledTricks.count(static_cast<RandomizerTrick>(i)) &&
-                                !option.IsGlitch()) {
-                                areaTreeDisabled[option.GetArea()] = false;
-                            }
+                        for (int i = 0; i < RA_MAX; i++) {
+                            areaTreeDisabled[static_cast<RandomizerArea>(i)] = true;
                         }
                     }
                     ImGui::SameLine();
@@ -2288,15 +2270,15 @@ void RandomizerSettingsWindow::DrawElement() {
                             }
                         }
                         if (hasTricks) {
-                            ImGui::TreeNodeSetOpen(ImGui::GetID(Rando::Tricks::GetRTAreaName(area).c_str()), areaTreeDisabled[area]);
+                            ImGui::TreeNodeSetOpen(ImGui::GetID((Rando::Tricks::GetRTAreaName(area) + "##disabled").c_str()), areaTreeDisabled[area]);
                             ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-                            if (ImGui::TreeNode(Rando::Tricks::GetRTAreaName(area).c_str())) {
+                            if (ImGui::TreeNode((Rando::Tricks::GetRTAreaName(area) + "##disabled").c_str())) {
                                 for (auto rt : trickIds) {
                                     auto option = mSettings->GetTrickOption(rt);
                                     if (!option.IsHidden() && trickSearch.PassFilter(option.GetName().c_str()) &&
                                         !enabledTricks.count(rt) && Rando::Tricks::CheckRTTags(showTag, option.GetTags()) &&
                                         !option.IsGlitch()) {
-                                        ImGui::TreeNodeSetOpen(ImGui::GetID(Rando::Tricks::GetRTAreaName(option.GetArea()).c_str()), areaTreeDisabled[option.GetArea()]);
+                                        ImGui::TreeNodeSetOpen(ImGui::GetID((Rando::Tricks::GetRTAreaName(option.GetArea()) + "##disabled").c_str()), areaTreeDisabled[option.GetArea()]);
                                         ImGui::SetNextItemOpen(true, ImGuiCond_Once);
                                         if (ImGui::ArrowButton(std::to_string(rt).c_str(), ImGuiDir_Right)) {
                                             enabledTricks.insert(rt);
@@ -2329,23 +2311,16 @@ void RandomizerSettingsWindow::DrawElement() {
                     ImGui::TableNextColumn();
                     window->DC.CurrLineTextBaseOffset = 0.0f;
 
+
                     if (ImGui::Button("Collapse All##enabled")) {
-                        for (int i = 0; i < RT_MAX; i++) {
-                            auto option = mSettings->GetTrickOption(static_cast<RandomizerTrick>(i));
-                            if (!option.IsHidden() && enabledTricks.count(static_cast<RandomizerTrick>(i)) &&
-                                !option.IsGlitch()) {
-                                areaTreeDisabled[option.GetArea()] = false;
-                            }
+                        for (int i = 0; i < RA_MAX; i++) {
+                            areaTreeEnabled[static_cast<RandomizerArea>(i)] = false;
                         }
                     }
                     ImGui::SameLine();
                     if (ImGui::Button("Open All##enabled")) {
-                        for (int i = 0; i < RT_MAX; i++) {
-                            auto option = mSettings->GetTrickOption(static_cast<RandomizerTrick>(i));
-                            if (option.IsHidden() && enabledTricks.count(static_cast<RandomizerTrick>(i)) &&
-                                !option.IsGlitch()) {
-                                areaTreeDisabled[option.GetArea()] = false;
-                            }
+                        for (int i = 0; i < RA_MAX; i++) {
+                            areaTreeEnabled[static_cast<RandomizerArea>(i)] = true;
                         }
                     }
                     ImGui::SameLine();
@@ -2356,7 +2331,7 @@ void RandomizerSettingsWindow::DrawElement() {
                                 trickSearch.PassFilter(option.GetName().c_str()) &&
                                 areaTreeEnabled[option.GetArea()] &&
                                 Rando::Tricks::CheckRTTags(showTag, option.GetTags())) {
-                                enabledTricks.insert(static_cast<RandomizerTrick>(i));
+                                enabledTricks.erase(static_cast<RandomizerTrick>(i));
                             }
                         }
                         std::string enabledTrickString = "";
@@ -2364,7 +2339,11 @@ void RandomizerSettingsWindow::DrawElement() {
                             enabledTrickString += std::to_string(enabledTrickIt);
                             enabledTrickString += ",";
                         }
-                        CVarClear(CVAR_RANDOMIZER_SETTING("EnabledTricks"));
+                        if (enabledTricks.size() == 0) {
+                            CVarClear(CVAR_RANDOMIZER_SETTING("EnabledTricks"));
+                        } else {
+                            CVarSetString(CVAR_RANDOMIZER_SETTING("EnabledTricks"), enabledTrickString.c_str());
+                        }
                         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                     }
                     
@@ -2382,18 +2361,18 @@ void RandomizerSettingsWindow::DrawElement() {
                             }
                         }
                         if (hasTricks) {
-                            ImGui::TreeNodeSetOpen(ImGui::GetID(Rando::Tricks::GetRTAreaName(area).c_str()), areaTreeDisabled[area]);
+                            ImGui::TreeNodeSetOpen(ImGui::GetID((Rando::Tricks::GetRTAreaName(area) + "##enabled").c_str()), areaTreeEnabled[area]);
                             ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-                            if (ImGui::TreeNode(Rando::Tricks::GetRTAreaName(area).c_str())) {
+                            if (ImGui::TreeNode((Rando::Tricks::GetRTAreaName(area) + "##enabled").c_str())) {
                                 for (auto rt : trickIds) {
                                     auto option = mSettings->GetTrickOption(rt);
                                     if (!option.IsHidden() && trickSearch.PassFilter(option.GetName().c_str()) &&
                                         enabledTricks.count(rt) && Rando::Tricks::CheckRTTags(showTag, option.GetTags()) &&
                                         !option.IsGlitch()) {
-                                        ImGui::TreeNodeSetOpen(ImGui::GetID(Rando::Tricks::GetRTAreaName(option.GetArea()).c_str()), areaTreeDisabled[option.GetArea()]);
+                                        ImGui::TreeNodeSetOpen(ImGui::GetID((Rando::Tricks::GetRTAreaName(option.GetArea()) + "##enabled").c_str()), areaTreeEnabled[option.GetArea()]);
                                         ImGui::SetNextItemOpen(true, ImGuiCond_Once);
                                         if (ImGui::ArrowButton(std::to_string(rt).c_str(), ImGuiDir_Left)) {
-                                            enabledTricks.insert(rt);
+                                            enabledTricks.erase(rt);
                                             std::string enabledTrickString = "";
                                             for (auto enabledTrickIt : enabledTricks) {
                                                 enabledTrickString += std::to_string(enabledTrickIt);
