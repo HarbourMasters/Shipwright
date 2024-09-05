@@ -215,14 +215,14 @@ uint16_t GetRandomPrice(Rando::Location *loc, PriceSettingsStruct priceSettings)
    uint16_t initalPrice = GetPriceFromSettings(loc, priceSettings);
    auto ctx = Rando::Context::GetInstance();
    if (ctx->GetOption(priceSettings.affordable) && !ctx->GetOption(priceSettings.main).Is(RO_PRICE_FIXED)){
-      if (initalPrice >= 501){
-         return 501;
-      } else if (initalPrice >= 201){
-         return 201;
-      } else if (initalPrice >= 100){
+      if (initalPrice > 500) {
+         return 505;
+      } else if (initalPrice > 200) {
+         return 205;
+      } else if (initalPrice > 99) {
          return 100;
-      } else if (initalPrice >= 1){
-         return 1;
+      } else if (initalPrice > 0) {
+         return 5;
       }
       return 0;
    } else {
