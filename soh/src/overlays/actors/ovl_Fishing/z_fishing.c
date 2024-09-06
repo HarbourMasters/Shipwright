@@ -986,9 +986,8 @@ void Fishing_Init(Actor* thisx, PlayState* play2) {
         Actor_SpawnAsChild(&play->actorCtx, thisx, play, ACTOR_EN_KANBAN, 53.0f, -17.0f, 982.0f, 0, 0, 0,
                            ENKANBAN_FISHING);
         Actor_Spawn(&play->actorCtx, play, ACTOR_FISHING, 0.0f, 0.0f, 0.0f, 0, 0, 0, 200, true);
-
-        // Loach(es) will spawn every fourth game, or if "Loaches Always Appear" is enabled
-        if (getShouldSpawnLoaches()) {
+        
+        if (GameInteractor_Should(VB_SHOULD_POND_HAVE_LOACHES, (sFishGameNumber & 3) == 3, NULL)) {
             // Fishes 16 and 17 are loaches. Only 16 is spawned as adult; child also spawns 17.
             if (sLinkAge != LINK_AGE_CHILD) {
                 fishCount = 16;
@@ -1004,7 +1003,7 @@ void Fishing_Init(Actor* thisx, PlayState* play2) {
                         sFishInits[i].pos.z, 0, Rand_ZeroFloat(0x10000), 0, 100 + i, true);
         }
     } else {
-        if ((thisx->params < (EN_FISH_PARAM + 15) && !AllHyruleLoaches()) || (thisx->params == EN_FISH_AQUARIUM)) {
+        if (GameInteractor_Should(VB_SHOULD_FISH_BE_NON_LOACH, (thisx->params < (EN_FISH_PARAM + 15)) || (thisx->params == EN_FISH_AQUARIUM), NULL)) {
             SkelAnime_InitFlex(play, &this->skelAnime, &gFishingFishSkel, &gFishingFishAnim, NULL, NULL, 0);
             Animation_MorphToLoop(&this->skelAnime, &gFishingFishAnim, 0.0f);
         } else {
@@ -2850,7 +2849,7 @@ void Fishing_FishLeapSfx(Fishing* this, u8 outOfWater) {
     s16 sfxId;
     u8 length;
 
-    if (this->isLoach == 0 && !AllHyruleLoaches()) {
+    if (GameInteractor_Should(VB_SHOULD_FISH_BE_NON_LOACH, this->isLoach == 0, NULL)) {
         length = this->fishLength;
     } else {
         length = 2.0f * this->fishLength;
@@ -2920,6 +2919,7 @@ void Fishing_HandleAquariumDialog(Fishing* this, PlayState* play) {
     }
 }
 
+// todo: remove this block
 f32 Fishing_GetMinimumRequiredScore() {
     int32_t weight;
     // RANDOTODO: update the enhancement sliders to not allow
@@ -2953,6 +2953,7 @@ bool getShouldSpawnLoaches() {
 bool getShouldConfirmKeep() {
     return !CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFishing"), 0) || !CVarGetInteger(CVAR_ENHANCEMENT("SkipKeepConfirmation"), 0);
 }
+// endtodo
 
 void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
     s16 i;
@@ -2995,7 +2996,7 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
     this->actor.uncullZoneForward = 700.0f;
     this->actor.uncullZoneScale = 50.0f;
 
-    if (this->isLoach == 0 && !AllHyruleLoaches()) {
+    if (GameInteractor_Should(VB_SHOULD_FISH_BE_NON_LOACH, this->isLoach == 0, NULL)) {
         playerSpeedMod = (player->actor.speedXZ * 0.15f) + 0.25f;
     } else {
         playerSpeedMod = (player->actor.speedXZ * 0.3f) + 0.25f;
@@ -3057,7 +3058,7 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
 
     Math_ApproachS(&this->fishLimbDRotZDelta, 0, 5, 0x1F4);
 
-    if (this->isLoach == 0 && !AllHyruleLoaches()) {
+    if (GameInteractor_Should(VB_SHOULD_FISH_BE_NON_LOACH, this->isLoach == 0, NULL)) {
         Actor_SetScale(&this->actor, this->fishLength * 15.0f * 0.00001f);
 
         this->fishLimbRotPhase += this->fishLimbRotPhaseStep;
@@ -3226,7 +3227,7 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
             break;
 
         case 1:
-            if (this->isLoach == 1 || AllHyruleLoaches()) {
+            if (GameInteractor_Should(VB_SHOULD_FISH_BE_LOACH, this->isLoach == 1, NULL)) {
                 this->fishState = -1;
                 this->unk_1A4 = 20000;
                 this->unk_1A2 = 20000;
@@ -3379,7 +3380,7 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
 
             if (sLureEquipped == FS_LURE_SINKING) {
                 this->fishTargetPos.y = sLurePos.y;
-            } else if (this->isLoach == 0 && !AllHyruleLoaches()) {
+            } else if (GameInteractor_Should(VB_SHOULD_FISH_BE_NON_LOACH, this->isLoach == 0, NULL)) {
                 this->fishTargetPos.y = sLurePos.y - 15.0f;
             } else {
                 this->fishTargetPos.y = sLurePos.y - 5.0f;
@@ -3452,10 +3453,17 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
             if (sLureEquipped == FS_LURE_SINKING) {
                 chance *= 5.0f;
             }
-            if (getGuaranteeBite() == 1 ||
-                ((this->timerArray[0] == 1) || (Rand_ZeroOne() < chance)) &&
-                ((Rand_ZeroOne() < (this->perception * multiplier)) || (((this->isLoach || AllHyruleLoaches()) + 1) == KREG(69)))) {
-                if (this->isLoach == 0 && !AllHyruleLoaches()) {
+
+            if (GameInteractor_Should(VB_SHOULD_FISH_BITE, (
+                (
+                    (this->timerArray[0] == 1) ||
+                    (Rand_ZeroOne() < chance)
+                ) && (
+                    (Rand_ZeroOne() < (this->perception * multiplier)) ||
+                    ((GameInteractor_Should(VB_SHOULD_FISH_BE_LOACH, this->isLoach, NULL) + 1) == KREG(69))
+                )
+            ), NULL)) {
+                if (GameInteractor_Should(VB_SHOULD_FISH_BE_NON_LOACH, this->isLoach == 0, NULL)) {
                     this->fishState = 3;
                     this->unk_190 = 1.2f;
                     this->unk_194 = 5000.0f;
@@ -3676,7 +3684,7 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
                     Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_ENEMY | 0x800);
                     sFishingMusicDelay = 0;
 
-                    if (this->isLoach == 1 || AllHyruleLoaches()) {
+                    if (GameInteractor_Should(VB_SHOULD_FISH_BE_LOACH, this->isLoach == 1, NULL)) {
                         rumbleStrength = (this->fishLength * 3.0f) + 120.0f;
                     } else {
                         rumbleStrength = (2.0f * this->fishLength) + 120.0f;
@@ -3779,7 +3787,7 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
                             Math_ApproachF(&this->actor.speedXZ, 5.0f, 1.0f, 0.5f);
                         }
 
-                        if (this->isLoach == 0 && !AllHyruleLoaches()) {
+                        if (GameInteractor_Should(VB_SHOULD_FISH_BE_NON_LOACH, this->isLoach == 0, NULL)) {
                             sRodReelingSpeed = 1.0f - (this->fishLength * 0.00899f);
                         } else {
                             sRodReelingSpeed = 1.0f - (this->fishLength * 0.00899f * 1.4f);
@@ -3795,7 +3803,7 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
                     this->unk_190 = 1.0f;
                     this->unk_194 = 4500.0f;
 
-                    if (this->isLoach == 0 && !AllHyruleLoaches()) {
+                    if (GameInteractor_Should(VB_SHOULD_FISH_BE_NON_LOACH, this->isLoach == 0, NULL)) {
                         sRodReelingSpeed = 1.3f - (this->fishLength * 0.00899f);
                     } else {
                         sRodReelingSpeed = 1.3f - (this->fishLength * 0.00899f * 1.4f);
@@ -3864,9 +3872,19 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
                 }
             }
 
-            if ((sRodCastState < 3) || ((sReelLock != 0) && (sFishFightTime > 50)) || (sFishFightTime >= 6000) ||
-                ((sLureBitTimer == 0) && (sLineHooked == 0)) || (sRodPullback == 0) ||
-                (((sLureTimer & 0x7F) == 0) && (Rand_ZeroOne() < 0.05f) && (sLureEquipped != FS_LURE_SINKING) && (KREG(69) == 0) && (getFishNeverEscape() == 0))) {
+            if (GameInteractor_Should(VB_SHOULD_FISH_ESCAPE, (
+                (sRodCastState < 3) ||
+                ((sReelLock != 0) && (sFishFightTime > 50)) ||
+                (sFishFightTime >= 6000) ||
+                ((sLureBitTimer == 0) && (sLineHooked == 0)) ||
+                (sRodPullback == 0) ||
+                (
+                    ((sLureTimer & 0x7F) == 0) &&
+                    (Rand_ZeroOne() < 0.05f) &&
+                    (sLureEquipped != FS_LURE_SINKING) &&
+                    (KREG(69) == 0)
+                )
+            ), NULL)) {
                 sFishingCaughtTextDelay = 20;
 
                 if ((sLureBitTimer == 0) && (sLineHooked == 0)) {
@@ -3896,7 +3914,7 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
                 sFishingMusicDelay = 50;
                 sRodReelingSpeed = 0.5f;
                 this->unk_152 = 0;
-            } else if (this->actor.xzDistToPlayer < (KREG(59) + 50.0f) || getInstantFish() == 1) {
+            } else if (GameInteractor_Should(VB_SHOULD_CATCH_FISH, this->actor.xzDistToPlayer < (KREG(59) + 50.0f), NULL)) {
                 this->fishState = 6;
                 this->timerArray[0] = 100;
                 player->unk_860 = 3;
@@ -3949,7 +3967,7 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
                 Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_HEART_GET | 0x900);
                 sFishingCaughtTextDelay = 40;
 
-                if (this->isLoach == 0 && !AllHyruleLoaches()) {
+                if (GameInteractor_Should(VB_SHOULD_FISH_BE_NON_LOACH, this->isLoach == 0, NULL)) {
                     sFishLengthToWeigh = this->fishLength;
 
                     if (sFishLengthToWeigh >= 75) {
@@ -3975,6 +3993,8 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
             multiVecSrc.y = -10.0f;
             multiVecSrc.z = 5.0f;
             Matrix_MultVec3f(&multiVecSrc, &targetPosOffset);
+
+            // todo: figure out how to VBify this
             if (getInstantFish() == 0) {
                 Math_ApproachF(&this->actor.world.pos.x, player->bodyPartsPos[15].x + targetPosOffset.x, 1.0f, 6.0f);
                 Math_ApproachF(&this->actor.world.pos.y, player->bodyPartsPos[15].y + targetPosOffset.y, 1.0f, 6.0f);
@@ -3984,6 +4004,8 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
                 this->actor.world.pos.y = player->bodyPartsPos[15].y + targetPosOffset.y;
                 this->actor.world.pos.z = player->bodyPartsPos[15].z + targetPosOffset.z;
             }
+            // endtodo
+
             sRodLineSpooled = 188.0f;
 
             if (this->timerArray[0] <= 50) {
@@ -3996,14 +4018,17 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
                                 if (play->msgCtx.choiceIndex == 0) {
                                     if (sFishOnHandLength == 0.0f) {
                                         sFishOnHandLength = this->fishLength;
-                                        sFishOnHandIsLoach = (this->isLoach || AllHyruleLoaches());
+                                        sFishOnHandIsLoach = GameInteractor_Should(VB_SHOULD_FISH_BE_LOACH, this->isLoach, NULL);
                                         sLureCaughtWith = sLureEquipped;
                                         if (IS_FISHSANITY) {
                                             sFishOnHandParams = this->fishsanityParams;
                                         }
                                         Actor_Kill(&this->actor);
-                                    } else if (getShouldConfirmKeep() && (this->isLoach == 0 && !AllHyruleLoaches()) && (sFishOnHandIsLoach == 0) &&
-                                               ((s16)this->fishLength < (s16)sFishOnHandLength)) {
+                                    } else if (GameInteractor_Should(VB_SHOULD_CONFIRM_KEEP_FISH, (
+                                        GameInteractor_Should(VB_SHOULD_FISH_BE_NON_LOACH, this->isLoach == 0, NULL) &&
+                                        (sFishOnHandIsLoach == 0) &&
+                                        ((s16)this->fishLength < (s16)sFishOnHandLength)
+                                    ), NULL)) {
                                         this->keepState = 1;
                                         this->timerArray[0] = 0x3C;
                                         Message_StartTextbox(play, 0x4098, NULL);
@@ -4015,11 +4040,14 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
                                         sLureCaughtWith = sLureEquipped;
                                         this->fishLength = lengthTemp;
                                         this->isLoach = loachTemp;
+
+                                        // todo: figure out how to VBify this
                                         if (IS_FISHSANITY) {
                                             s16 paramsTemp = sFishOnHandParams;
                                             sFishOnHandParams = this->fishsanityParams;
                                             this->fishsanityParams = paramsTemp;
                                         }
+                                        // endtodo
                                     }
                                 }
                                 if (this->keepState == 0) {
@@ -4040,11 +4068,14 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
                                     sLureCaughtWith = sLureEquipped;
                                     this->fishLength = temp1;
                                     this->isLoach = temp2;
+
+                                    // todo: figure out how to VBify this
                                     if (IS_FISHSANITY) {
                                         s16 paramsTemp = sFishOnHandParams;
                                         sFishOnHandParams = this->fishsanityParams;
                                         this->fishsanityParams = paramsTemp;
                                     }
+                                    // endtodo
                                 }
                                 sRodCastState = 0;
                             }
@@ -4064,7 +4095,7 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
                     this->unk_194 = 2000.0f;
                     SkelAnime_Free(&this->skelAnime, play);
 
-                    if (this->isLoach == 0 && !AllHyruleLoaches()) {
+                    if (GameInteractor_Should(VB_SHOULD_FISH_BE_NON_LOACH, this->isLoach == 0, NULL)) {
                         SkelAnime_InitFlex(play, &this->skelAnime, &gFishingFishSkel, &gFishingFishAnim, 0, 0, 0);
                         Animation_MorphToLoop(&this->skelAnime, &gFishingFishAnim, 0.0f);
                     } else {
@@ -4310,12 +4341,14 @@ s32 Fishing_FishOverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                                  void* thisx) {
     Fishing* this = (Fishing*)thisx; 
 
+    // todo: figure out how to VBify this
     // #region SOH [Randomizer]
     // A fish having a shadowDraw implies that it is being given uncollected FX
     if (IS_FISHSANITY && this->actor.shape.shadowDraw != NULL) {
         Fishsanity_OpenGreyscaleColor(play, &fsPulseColor, (this->actor.params - 100) * 20);
     }
     // #endregion
+    // endtodo
 
     if (limbIndex == 0xD) {
         rot->z -= this->fishLimbDRotZDelta - 11000;
@@ -4336,6 +4369,8 @@ s32 Fishing_FishOverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Ve
     return 0;
 }
 
+// todo: figure out how to VBify this
+// i'm pretty sure just replacing the func is the move
 void Fishing_FishPostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
     Fishing* this = (Fishing*)thisx;
 
@@ -4350,7 +4385,10 @@ void Fishing_FishPostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s
         Matrix_MultVec3f(&sFishMouthOffset, &this->fishMouthPos);
     }
 }
+// endtodo
 
+// todo: figure out how to VBify this
+// i'm pretty sure just replacing the func is the move
 s32 Fishing_LoachOverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
                                   void* thisx) {
     Fishing* this = (Fishing*)thisx;
@@ -4372,7 +4410,10 @@ s32 Fishing_LoachOverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, V
 
     return 0;
 }
+// endtodo
 
+// todo: figure out how to VBify this
+// i'm pretty sure just replacing the func is the move
 void Fishing_LoachPostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
     static Vec3f sLoachMouthOffset = { 500.0f, 500.0f, 0.0f };
     Fishing* this = (Fishing*)thisx;
@@ -4388,6 +4429,7 @@ void Fishing_LoachPostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3
         Matrix_MultVec3f(&sLoachMouthOffset, &this->fishMouthPos);
     }
 }
+// endtodo
 
 void Fishing_DrawFish(Actor* thisx, PlayState* play) {
     Fishing* this = (Fishing*)thisx;
@@ -4400,7 +4442,7 @@ void Fishing_DrawFish(Actor* thisx, PlayState* play) {
     Matrix_RotateZ(((this->unk_164 + this->actor.shape.rot.z) / 32768.0f) * M_PI, MTXMODE_APPLY);
     Matrix_Scale(this->actor.scale.x, this->actor.scale.y, this->actor.scale.z, MTXMODE_APPLY);
 
-    if (this->isLoach == 0 && !AllHyruleLoaches()) {
+    if (GameInteractor_Should(VB_SHOULD_FISH_BE_NON_LOACH, this->isLoach == 0, NULL)) {
         Matrix_RotateY((this->fishLimb23RotYDelta * (M_PI / 32768)) - (M_PI / 2), MTXMODE_APPLY);
         Matrix_Translate(0.0f, 0.0f, this->fishLimb23RotYDelta * 10.0f * 0.01f, MTXMODE_APPLY);
 
@@ -4856,6 +4898,11 @@ void Fishing_DrawGroupFishes(PlayState* play) {
 
 static u16 sPondOwnerTextIds[] = { 0x4096, 0x408D, 0x408E, 0x408F, 0x4094, 0x4095 };
 
+// todo: there is a *ton* of stuff going on in this func
+// it's also a giant func
+// even so, i think it probably makes sense to copy it into a hook handler
+// and revert things in this file back to vanilla
+// trying to do everything in here with SHOULDs feels like it'd get real messy real quick
 void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
     switch (this->stateAndTimer) {
         case 0:
@@ -5242,6 +5289,7 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
             break;
     }
 }
+// endtodo
 
 static s16 sOwnerBlinkIndex[] = { 0, 1, 2, 2, 1 };
 
@@ -5254,6 +5302,7 @@ static Vec3s sSinkingLureLocationPos[] = {
     { 553, -48, -508 },  // tip of log beside 3 posts
 };
 
+// todo: VBify this
 // #region SOH [Enhancement]
 void Fishing_QuitAtDoor(Fishing* this, PlayState* play) {
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE) && Message_ShouldAdvance(play)) {
@@ -5284,6 +5333,7 @@ void Fishing_QuitAtDoor(Fishing* this, PlayState* play) {
     }
 }
 // #endregion
+// endtodo
 
 void Fishing_UpdateOwner(Actor* thisx, PlayState* play2) {
     PlayState* play = play2;
@@ -5595,11 +5645,13 @@ void Fishing_UpdateOwner(Actor* thisx, PlayState* play2) {
             player->actor.world.pos.z = 1360.0f;
             player->actor.speedXZ = 0.0f;
             
+            // todo: VBify this
             // #region SOH [Enhancement]
             if (CVarGetInteger(CVAR_ENHANCEMENT("QuitFishingAtDoor"), 0)) {
                 Fishing_QuitAtDoor(this, play);
             }
             // #endregion
+            // endtodo
 
             if (Message_GetState(&play->msgCtx) == TEXT_STATE_NONE) {
                 Camera* mainCam = Play_GetCamera(play, MAIN_CAM);
