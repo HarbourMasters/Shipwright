@@ -682,6 +682,7 @@ std::vector<RandomizerCheck> FindItemsAndMarkHinted(std::vector<RandomizerGet> i
     if (found.size() > 0){
       locations.push_back(found[0]);
     }
+    //crashes on 0 checks found
     //RANDOTODO make the called functions of this always return true if empty hintChecks are provided
     if (hintChecks.size() == 0 || (!ctx->GetItemLocation(found[0])->IsAHintAccessible() && IsReachableWithout(hintChecks,found[0],true))){
       ctx->GetItemLocation(found[0])->SetHintAccesible();

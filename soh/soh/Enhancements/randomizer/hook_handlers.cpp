@@ -1157,25 +1157,31 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
             break;
         }
         case VB_SHOULD_SET_FISHING_RECORD: {
+            VBFishingData* fishData = static_cast<VBFishingData*>(optionalArg);
+            *should = (s16)fishData->sFishingRecordLength < (s16)fishData->fishWeight;
+            if (!*should){
+                *fishData->sFishOnHandLength = 0.0f;
+            }
             break;
         }
         case VB_SHOULD_GIVE_VANILLA_FISHING_PRIZE: {
-            f32 sFishOnHandLength = *static_cast<f32*>(optionalArg);
-            *should = !IS_RANDO && ShouldGiveFishingPrize(sFishOnHandLength);
+            VBFishingData* fishData = static_cast<VBFishingData*>(optionalArg);
+            *should = !IS_RANDO && ShouldGiveFishingPrize(fishData->fishWeight);
             break;
         }
         case VB_GIVE_RANDO_FISHING_PRIZE: {
             if (IS_RANDO){
-                f32 sFishOnHandLength = *static_cast<f32*>(optionalArg);
-                if (sFishOnHandIsLoach) {
+                VBFishingData* fishData = static_cast<VBFishingData*>(optionalArg);
+                if (*fishData->sFishOnHandIsLoach) {
                     if (!Flags_GetRandomizerInf(RAND_INF_CAUGHT_LOACH) &&
                         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY) == RO_FISHSANITY_HYRULE_LOACH){
                         Flags_SetRandomizerInf(RAND_INF_CAUGHT_LOACH);
                         Message_StartTextbox(gPlayState, TEXT_FISHING_RELEASE_THIS_ONE, NULL);
                         *should = true;
+                        fishData->actor->stateAndTimer = 20;
                     }
                 } else {
-                    if (ShouldGiveFishingPrize(sFishOnHandLength)){
+                    if (ShouldGiveFishingPrize(fishData->fishWeight)){
                         if (LINK_IS_CHILD){
                             Flags_SetRandomizerInf(RAND_INF_CHILD_FISHING);
                             HIGH_SCORE(HS_FISHING) |= HS_FISH_PRIZE_CHILD;
@@ -1184,6 +1190,8 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
                             HIGH_SCORE(HS_FISHING) |= HS_FISH_PRIZE_ADULT;
                         }
                         *should = true;
+                        *fishData->sSinkingLureLocation = (u8)Rand_ZeroFloat(3.999f) + 1;
+                        fishData->actor->stateAndTimer = 0;
                     }
                 }
             } 

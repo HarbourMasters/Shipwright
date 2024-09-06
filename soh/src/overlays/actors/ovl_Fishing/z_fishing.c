@@ -358,7 +358,7 @@ static u8 sLinkAge;
 static u8 sFishingFoggy;
 static u8 sStormChanceTimer;
 static f32 sFishingRecordLength;
-//static u8 sFishOnHandIsLoach; Decleration moved to header to be accessed in a hook
+static u8 sFishOnHandIsLoach;
 static u8 sFishGameNumber; // increments for each purchased play. effects weather
 static u8 sLureCaughtWith;
 static s16 sFishFightTime;
@@ -5073,10 +5073,19 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
                 GetItemEntry getItemEntry = (GetItemEntry)GET_ITEM_NONE;
 
                 Message_CloseTextbox(play);
+                //Declare and fill a struct for use in hooks
+                struct VBFishingData fishData;
+                fishData.actor = this;
+                fishData.sFishOnHandIsLoach = &sFishOnHandIsLoach;
+                fishData.sSinkingLureLocation = &sSinkingLureLocation;
+                fishData.fishWeight = sFishOnHandLength;
+                fishData.sFishOnHandLength = &sFishOnHandLength;
+                fishData.sFishingRecordLength = sFishingRecordLength;
 
                 if (sFishOnHandIsLoach == 0) {
-                    //if we set the record. reset sFishOnHandLength if not
-                    if(GameInteractor_Should(VB_SHOULD_SET_FISHING_RECORD, (s16)sFishingRecordLength < (s16)sFishOnHandLength, NULL)){
+                    //if we set the record. Needed because of the wider check at VB_SHOULD_CHECK_FOR_FISHING_RECORD
+                    //if not, reset sFishOnHandLength here as we carry it in the struct anyway
+                    if(GameInteractor_Should(VB_SHOULD_SET_FISHING_RECORD, true, &fishData)){
                         sFishingRecordLength = sFishOnHandLength;
                         sFishOnHandLength = 0.0f; //if skipped here, is set at the end of the function. needs to be kept for later checks
 
@@ -5125,7 +5134,7 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
                     
                     if (sLinkAge == LINK_AGE_CHILD) { // 9 lbs
                         //if we should give the main prize AND it's not rando
-                        if (GameInteractor_Should(VB_SHOULD_GIVE_VANILLA_FISHING_PRIZE, false, sFishOnHandLength == 0 ? &sFishingRecordLength : &sFishOnHandLength)){
+                        if (GameInteractor_Should(VB_SHOULD_GIVE_VANILLA_FISHING_PRIZE, false, &fishData)){
                         //((sFishingRecordLength >= 50.0f) && !(HIGH_SCORE(HS_FISHING) & HS_FISH_PRIZE_CHILD)) {
                             HIGH_SCORE(HS_FISHING) |= HS_FISH_PRIZE_CHILD;
                             getItemId = GI_HEART_PIECE;
@@ -5133,7 +5142,7 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
                         }
                     } else { // 13 lbs
                         //if we should give the main prize AND it's not rando
-                        if (GameInteractor_Should(VB_SHOULD_GIVE_VANILLA_FISHING_PRIZE, false, sFishOnHandLength == 0 ? &sFishingRecordLength : &sFishOnHandLength)){
+                        if (GameInteractor_Should(VB_SHOULD_GIVE_VANILLA_FISHING_PRIZE, false, &fishData)){
                         //(sFishingRecordLength >= 60.0f) && !(HIGH_SCORE(HS_FISHING) & HS_FISH_PRIZE_ADULT)) {
                             HIGH_SCORE(HS_FISHING) |= HS_FISH_PRIZE_ADULT;
                             getItemId = GI_SCALE_GOLDEN;
@@ -5148,18 +5157,10 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
                 this->actor.parent = NULL;
 
                 //if we should give the check in rando
-                if (!GameInteractor_Should(VB_GIVE_RANDO_FISHING_PRIZE, false, sFishOnHandLength == 0 ? &sFishingRecordLength : &sFishOnHandLength)){
+                if (!GameInteractor_Should(VB_GIVE_RANDO_FISHING_PRIZE, false, &fishData)){
                     Actor_OfferGetItem(&this->actor, play, getItemId, 2000.0f, 1000.0f);
                     this->stateAndTimer = 23;
-                } else {
-                    if (sFishOnHandIsLoach) {
-                        this->stateAndTimer = 20;
-                    } else {
-                        sSinkingLureLocation = (u8)Rand_ZeroFloat(3.999f) + 1;
-                        this->stateAndTimer = 0;
-                    }
                 }
-                sFishOnHandLength = 0.0f; //Added as we had to hold it longer for use in a hook
             }
             break;
 

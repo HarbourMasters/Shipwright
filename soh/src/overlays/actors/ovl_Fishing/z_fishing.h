@@ -64,6 +64,13 @@ typedef struct Fishing {
 #define EN_FISH_PARAM 100    // param base for fish in pond.
 #define EN_FISH_AQUARIUM 200 // param for record fish in tank.
 
-static u8 sFishOnHandIsLoach; //Decleration moved to header to be accessed in a hook
+struct VBFishingData {
+    Fishing* actor;
+    u8* sFishOnHandIsLoach;
+    u8* sSinkingLureLocation;
+    f32* sFishOnHandLength;
+    f32 fishWeight;
+    f32 sFishingRecordLength;
+};
 
 #endif
