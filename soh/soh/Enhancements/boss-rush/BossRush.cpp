@@ -588,7 +588,7 @@ void BossRush_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
                     break;
                 }
                 default: {
-                    SPDLOG_WARNING("[BossRush]: Blue warp spawned in unhandled scene, ignoring");
+                    SPDLOG_WARN("[BossRush]: Blue warp spawned in unhandled scene, ignoring");
                     return;
                 }
             }
@@ -630,6 +630,10 @@ void BossRush_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
         // Rupees are useless in boss rush
         case VB_RENDER_RUPEE_COUNTER: {
             *should = false;
+            break;
+        }
+        // Prevent warning spam
+        default: {
             break;
         }
     }
