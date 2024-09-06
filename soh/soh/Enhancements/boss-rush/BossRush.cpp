@@ -605,6 +605,13 @@ void BossRush_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
             *should = true;
             break;
 
+        // Skip past the "Save?" window when dying and go to the "Continue?" screen immediately.
+        case VB_TRANSITION_TO_SAVE_SCREEN_ON_DEATH: {
+            PauseContext* pauseCtx = static_cast<PauseContext*>(optionalArg);
+            pauseCtx->state = 0xF;
+            *should = false;
+            break;
+        }
         case VB_BE_ABLE_TO_SAVE:
         // Disable doors so the player can't leave the boss rooms backwards.
         case VB_BE_ABLE_TO_OPEN_DOORS:

@@ -4371,10 +4371,8 @@ void KaleidoScope_Update(PlayState* play)
                 VREG(88) = 66;
                 WREG(2) = 0;
                 pauseCtx->alpha = 255;
-                if (GameInteractor_Should(VB_BE_ABLE_TO_SAVE, true, NULL)) {
+                if (GameInteractor_Should(VB_TRANSITION_TO_SAVE_SCREEN_ON_DEATH, true, pauseCtx)) {
                     pauseCtx->state = 0xE;
-                } else {
-                    pauseCtx->state = 0xF;
                 }
                 gSaveContext.deaths++;
                 if (gSaveContext.deaths > 999) {
