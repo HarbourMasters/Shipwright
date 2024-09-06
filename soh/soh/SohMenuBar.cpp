@@ -956,7 +956,7 @@ void DrawEnhancementsMenu() {
                     UIWidgets::PaddedEnhancementSliderInt("Adult Minimum Weight: %d", "##aMinimumWeight", CVAR_ENHANCEMENT("MinimumFishWeightAdult"), 6, 13, "", 13, true, true, false, disabled, disabledTooltip);
                     UIWidgets::Tooltip("The minimum weight for the unique fishing reward as an adult");
                     UIWidgets::PaddedEnhancementCheckbox("All fish are Hyrule Loaches", CVAR_ENHANCEMENT("AllHyruleLoaches"), true, false, disabled, disabledTooltip);
-                    UIWidgets::Tooltip("Every fish in the fishing pond will always be a Hyrule Loach");
+                    UIWidgets::Tooltip("Every fish in the fishing pond will always be a Hyrule Loach\n\nNote: This requires reloading the area");
                     ImGui::EndMenu();
                 }
                 UIWidgets::Spacer(0);
