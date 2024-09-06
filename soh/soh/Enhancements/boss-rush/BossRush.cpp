@@ -508,18 +508,21 @@ static void* sSavePromptNoChoiceTexs[] = {
 
 void BossRush_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void* optionalArg) {
     switch (id) {
+        // Allow not healing before ganon
         case VB_GANON_HEAL_BEFORE_FIGHT: {
             if (gSaveContext.bossRushOptions[BR_OPTIONS_HEAL] == BR_CHOICE_HEAL_NEVER) {
                 *should = false;
             }
             break;
         }
+        // Replace the blue warp transitions with ones that lead back to the chamber of sages
         case VB_BLUE_WARP_APPLY_ENTRANCE_AND_CUTSCENE: {
             DoorWarp1* blueWarp = static_cast<DoorWarp1*>(optionalArg);
             BossRush_HandleBlueWarp(gPlayState, blueWarp->actor.world.pos.x, blueWarp->actor.world.pos.z);
             *should = false;
             break;
         }
+        // Spawn clean blue warps (no ruto, adult animation, etc)
         case VB_SPAWN_BLUE_WARP: {
             switch (gPlayState->sceneNum) {
                 case SCENE_DEKU_TREE_BOSS: {
@@ -541,9 +544,10 @@ void BossRush_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
                     Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, childPos.x, bossGoma->actor.world.pos.y, childPos.z, 0, 0, 0, WARP_DUNGEON_ADULT, false);
                     break;
                 }
-                case SCENE_DODONGOS_CAVERN_BOSS:
+                case SCENE_DODONGOS_CAVERN_BOSS: {
                     Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, -890.0f, -1523.76f, -3304.0f, 0, 0, 0, WARP_DUNGEON_ADULT, false);
                     break;
+                }
                 case SCENE_JABU_JABU_BOSS: {
                     static Vec3f sWarpPos[] = {
                         { 10.0f, 0.0f, 30.0f },
@@ -562,25 +566,31 @@ void BossRush_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
                     Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, sWarpPos[sp7C].x, sWarpPos[sp7C].y, sWarpPos[sp7C].z, 0, 0, 0, WARP_DUNGEON_ADULT, false);
                     break;
                 }
-                case SCENE_FOREST_TEMPLE_BOSS:
+                case SCENE_FOREST_TEMPLE_BOSS: {
                     Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, 14.0f, -33.0f, -3315.0f, 0, 0, 0, WARP_DUNGEON_ADULT, true);
                     break;
-                case SCENE_FIRE_TEMPLE_BOSS:
+                }
+                case SCENE_FIRE_TEMPLE_BOSS: {
                     Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, 0.0f, 100.0f, 0.0f, 0, 0, 0, WARP_DUNGEON_ADULT, true);
                     break;
+                }
                 case SCENE_WATER_TEMPLE_BOSS: {
                     BossMo* bossMo = static_cast<BossMo*>(optionalArg);
                     Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, bossMo->actor.world.pos.x, -280.0f, bossMo->actor.world.pos.z, 0, 0, 0, WARP_DUNGEON_ADULT, true);
                     break;
                 }
-                case SCENE_SPIRIT_TEMPLE_BOSS:
+                case SCENE_SPIRIT_TEMPLE_BOSS: {
                     Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, 600.0f, 230.0f, 0.0f, 0, 0, 0, WARP_DUNGEON_ADULT, true);
                     break;
-                case SCENE_SHADOW_TEMPLE_BOSS:
+                }
+                case SCENE_SHADOW_TEMPLE_BOSS: {
                     Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, -50.0f, 0.0f, 400.0f, 0, 0, 0, WARP_DUNGEON_ADULT, true);
                     break;
-                default:
-                    break;
+                }
+                default: {
+                    SPDLOG_WARNING("[BossRush]: Blue warp spawned in unhandled scene, ignoring");
+                    return;
+                }
             }
             *should = false;
             break;
@@ -599,12 +609,11 @@ void BossRush_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
             *should = false;
             break;
         }
-
         // Break the dodongo breakable floor immediately so the player can jump in the hole immediately.
-        case VB_BG_BREAKWALL_BREAK:
+        case VB_BG_BREAKWALL_BREAK: {
             *should = true;
             break;
-
+        }
         // Skip past the "Save?" window when dying and go to the "Continue?" screen immediately.
         case VB_TRANSITION_TO_SAVE_SCREEN_ON_DEATH: {
             PauseContext* pauseCtx = static_cast<PauseContext*>(optionalArg);
@@ -612,13 +621,17 @@ void BossRush_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
             *should = false;
             break;
         }
+        // Prevent saving
         case VB_BE_ABLE_TO_SAVE:
         // Disable doors so the player can't leave the boss rooms backwards.
         case VB_BE_ABLE_TO_OPEN_DOORS:
+        // There's no heart containers in boss rush
         case VB_SPAWN_HEART_CONTAINER:
-        case VB_RENDER_RUPEE_COUNTER:
+        // Rupees are useless in boss rush
+        case VB_RENDER_RUPEE_COUNTER: {
             *should = false;
             break;
+        }
     }
 }
 
