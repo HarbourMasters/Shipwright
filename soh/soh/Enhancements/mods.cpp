@@ -1778,7 +1778,6 @@ void RegisterSkeletonKey() {
     });
 }
 
-
 void InitMods() {
     RandomizerRegisterHooks();
     TimeSaverRegisterHooks();
