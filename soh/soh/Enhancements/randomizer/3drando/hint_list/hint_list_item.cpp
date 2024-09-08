@@ -1776,7 +1776,7 @@ void StaticData::HintTable_Init_Item() {
                                            CustomMessage("plenty of blast balls", /*german*/"viele Explosionsbälle", /*french*/"une abondance de boules bleues")});
                                             // /*spanish*/bastantes estallidos
 
-    hintTextTable[RHT_BOMBCHU_5] = HintText(CustomMessage("Bombchus (5 pieces)", /*german*/"Krabbelminen (5 Stück)", /*french*/"une demi-dizaine de Missiles"),
+    hintTextTable[RHT_BOMBCHUS_5] = HintText(CustomMessage("Bombchus (5 pieces)", /*german*/"Krabbelminen (5 Stück)", /*french*/"une demi-dizaine de Missiles"),
                                             // /*spanish*/unos (5) bombchus
                                             {
                                             CustomMessage("a prize of the House of Skulltulas", /*german*/"ein Preis des Skulltula-Hauses", /*french*/"un prix de la maison des Skulltulas"),
@@ -1793,7 +1793,7 @@ void StaticData::HintTable_Init_Item() {
                                             CustomMessage("a few trail blazers", /*german*/"ein paar Vorreiter", /*french*/"une poignée de zigzags éclatants")});
                                              // /*spanish*/un par de ratas propulsadas
 
-    hintTextTable[RHT_BOMBCHU_10] = HintText(CustomMessage("Bombchus (10 pieces)", /*german*/"Krabbelminen (10 Stück)", /*french*/"une dizaine de Missiles"),
+    hintTextTable[RHT_BOMBCHUS_10] = HintText(CustomMessage("Bombchus (10 pieces)", /*german*/"Krabbelminen (10 Stück)", /*french*/"une dizaine de Missiles"),
                                              // /*spanish*/unos (10) bombchus
                                              {
                                              CustomMessage("a prize of the House of Skulltulas", /*german*/"ein Preis des Skulltula-Hauses", /*french*/"un prix de la maison des Skulltulas"),
@@ -1810,7 +1810,7 @@ void StaticData::HintTable_Init_Item() {
                                              CustomMessage("some trail blazers", /*german*/"einige Vorreiter", /*french*/"un paquet de zigzags éclatants")});
                                               // /*spanish*/unas cuantas ratas propulsadas
 
-    hintTextTable[RHT_BOMBCHU_20] = HintText(CustomMessage("Bombchus (20 pieces)", /*german*/"Krabbelminen (20 Stück)", /*french*/"une vingtaine de Missiles"),
+    hintTextTable[RHT_BOMBCHUS_20] = HintText(CustomMessage("Bombchus (20 pieces)", /*german*/"Krabbelminen (20 Stück)", /*french*/"une vingtaine de Missiles"),
                                              // /*spanish*/unos (20) bombchus
                                              {
                                              CustomMessage("a prize of the House of Skulltulas", /*german*/"ein Preis des Skulltula-Hauses", /*french*/"un prix de la maison des Skulltulas"),

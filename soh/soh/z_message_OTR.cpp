@@ -152,7 +152,7 @@ extern "C" void OTRMessage_Init()
             "Vous obtenez un %rSymbole de&Skulltula d'or%w! Vous avez&collecté %r[[gsCount]]%w symboles en tout!",
             TEXTBOX_TYPE_BLUE));
     CustomMessageManager::Instance->CreateMessage(
-        customMessageTableID, TEXT_BUY_BOMBCHU_10_DESC,
+        customMessageTableID, TEXT_BUY_BOMBCHUS_10_DESC,
         CustomMessage("\x08%rBombchu  10 pieces  99 Rupees&%wThis looks like a toy mouse, but&it's actually a "
                       "self-propelled time&bomb!\x09\x0A",
                       "\x08%rKrabbelmine  10 Stück  99 Rubine&%wDas ist eine praktische Zeitbombe,&die Du als "
@@ -160,7 +160,7 @@ extern "C" void OTRMessage_Init()
                       "\x08%rMissile  10 unités  99 Rubis&%wProfilée comme une souris&mécanique, cette arme est "
                       "&destructrice!!!\x09\x0A"));
     CustomMessageManager::Instance->CreateMessage(
-        customMessageTableID, TEXT_BUY_BOMBCHU_10_PROMPT,
+        customMessageTableID, TEXT_BUY_BOMBCHUS_10_PROMPT,
         CustomMessage("\x08"
                       "Bombchu  10 pieces   99 Rupees\x09&&\x1B%gBuy&Don't buy%w",
                       "\x08Krabbelmine  10 Stück  99 Rubine\x09&&\x1B%gKaufen!&Nicht kaufen!%w",
@@ -187,4 +187,10 @@ extern "C" void OTRMessage_Init()
         CustomMessage("Hey! Hey!&You can't take the rod out of here!&I'm serious!^Do you want to quit?&\x1B&%gYes&No%w",
                       "Hey! Hey!&Du kannst die Angel doch nicht&einfach mitnehmen!&Ganz im Ernst!^Möchtest Du aufhören?&\x1B&%gJa&Nein%w",
                       "Holà! Holà!&Les cannes ne sortent pas d'ici!&Je suis sérieux!^Voulez-vous arrêter?&\x1B&%gOui&Non%w")); //TODO Used AI translation as placeholder
+    CustomMessageManager::Instance->CreateMessage(
+        customMessageTableID, TEXT_CARPET_SALESMAN_CUSTOM_FAIL_TO_BUY,
+        CustomMessage("I'm sorry I can't sell you&these fine specimens,&they need an %rexperienced owner%w.^"
+                      "Come back when you have&had %gBombchus%w of your own.",
+                      "",
+                      ""));
 }

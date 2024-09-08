@@ -30,7 +30,6 @@ struct GetAccessableLocationsStruct {
   //Variables for playthrough
   int gsCount;
   int maxGsCount;
-  bool bombchusFound;
   std::vector<LogicVal> buyIgnores;
 
   //Variables for search
@@ -283,8 +282,8 @@ std::vector<RandomizerCheck> GetAllEmptyLocations() {
 }
 
 bool IsBombchus(RandomizerGet item, bool includeShops = false){
-  return (item >= RG_BOMBCHU_5 && item <= RG_BOMBCHU_DROP) || item == RG_PROGRESSIVE_BOMBCHUS || 
-    (includeShops && (item == RG_BUY_BOMBCHU_10 || item == RG_BUY_BOMBCHU_20));
+  return (item >= RG_BOMBCHU_5 && item <= RG_BOMBCHU_20) || item == RG_PROGRESSIVE_BOMBCHUS || 
+    (includeShops && (item == RG_BUY_BOMBCHUS_10 || item == RG_BUY_BOMBCHUS_20));
 }
 
 bool IsBeatableWithout(RandomizerCheck excludedCheck, bool replaceItem, RandomizerGet ignore = RG_NONE){ //RANDOTODO make excludCheck an ItemLocation
@@ -324,23 +323,17 @@ void AddToPlaythrough(LocationAccess& locPair, GetAccessableLocationsStruct& gal
     //This preprocessing is done to reduce the amount of searches performed in PareDownPlaythrough
     //Want to exclude:
     //1) Tokens after the last potentially useful one (the last one that gives an advancement item or last for token bridge)
-    //2) Bombchus after the first (including buy bombchus)
-    //3) Buy items of the same type, after the first (So only see Buy Deku Nut of any amount once)
+    //2) Buy items of the same type, after the first (So only see Buy Deku Nut of any amount once)
     bool exclude = true;
     //Exclude tokens after the last possibly useful one
     if (type == ITEMTYPE_TOKEN && gals.gsCount < gals.maxGsCount) {
       gals.gsCount++;
       exclude = false;
     }
-    //Only print first bombchu location found
-    else if (bombchus && !gals.bombchusFound) {
-      gals.bombchusFound = true;
-      exclude = false;
-    }
     //Handle buy items
     //If ammo drops are off, don't do this step, since buyable ammo becomes logically important
     // TODO: Reimplement Ammo Drops setting
-    else if (/*AmmoDrops.IsNot(AMMODROPS_NONE) &&*/ !(bombchus && gals.bombchusFound) && type == ITEMTYPE_SHOP) {
+    else if (/*AmmoDrops.IsNot(AMMODROPS_NONE) &&*/ type == ITEMTYPE_SHOP) {
       //Only check each buy item once
       auto buyItem = location->GetPlacedItem().GetLogicVal();
       //Buy item not in list to ignore, add it to list and write to playthrough
@@ -350,7 +343,7 @@ void AddToPlaythrough(LocationAccess& locPair, GetAccessableLocationsStruct& gal
       }
     }
     //Add all other advancement items
-    else if (!bombchus && type != ITEMTYPE_TOKEN && (/*AmmoDrops.Is(AMMODROPS_NONE) ||*/ type != ITEMTYPE_SHOP)) {
+    else if (type != ITEMTYPE_TOKEN && (/*AmmoDrops.Is(AMMODROPS_NONE) ||*/ type != ITEMTYPE_SHOP)) {
       exclude = false;
     }
     //Has not been excluded, add to playthrough

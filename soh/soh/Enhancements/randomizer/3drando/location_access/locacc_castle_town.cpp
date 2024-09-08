@@ -211,11 +211,13 @@ void AreaTable_Init_CastleTown() {
                   Entrance(RR_THE_MARKET, {[]{return true;}}),
   });
 
-  areaTable[RR_MARKET_BOMBCHU_BOWLING] = Area("Market Bombchu Bowling", "Market Bombchu Bowling", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[RR_MARKET_BOMBCHU_BOWLING] = Area("Market Bombchu Bowling", "Market Bombchu Bowling", RA_NONE, NO_DAY_NIGHT_CYCLE, {
+                  //Events
+                  EventAccess(&logic->CouldPlayBowling, {[]{return (logic->ChildsWallet);}}),
+                }, {
                   //Locations
-                  LOCATION(RC_MARKET_BOMBCHU_BOWLING_FIRST_PRIZE,  logic->CanPlayBowling),
-                  LOCATION(RC_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE, logic->CanPlayBowling),
-                  LOCATION(RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS,     logic->CanPlayBowling),
+                  LOCATION(RC_MARKET_BOMBCHU_BOWLING_FIRST_PRIZE,  logic->CouldPlayBowling && logic->BombchusEnabled),
+                  LOCATION(RC_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE, logic->CouldPlayBowling && logic->BombchusEnabled),
                 }, {
                   //Exits
                   Entrance(RR_THE_MARKET, {[]{return true;}}),
