@@ -51,7 +51,6 @@ struct GetAccessableLocationsStruct {
     regionPool = {RR_ROOT};
     gsCount = 0;
     maxGsCount = _maxGsCount;
-    bombchusFound = false;
     updatedEvents = false;
     ageTimePropogated = false;
     firstIteration = true;
