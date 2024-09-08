@@ -316,7 +316,6 @@ void AddToPlaythrough(LocationAccess& locPair, GetAccessableLocationsStruct& gal
   //Item is an advancement item, figure out if it should be added to this sphere
   if (!ctx->playthroughBeatable && location->GetPlacedItem().IsAdvancement()) {
     ItemType type = location->GetPlacedItem().GetItemType();
-    bool bombchus = IsBombchus(locItem, true); //Is a bombchu location
 
     //Decide whether to exclude this location
     //This preprocessing is done to reduce the amount of searches performed in PareDownPlaythrough
@@ -384,7 +383,7 @@ bool AddCheckToLogic(LocationAccess& locPair, GetAccessableLocationsStruct& gals
           gals.newItemLocations.push_back(location);
         }
         //We want to ignore a specific Buy item. Buy items with different RandomizerGets are recognised by a shared GetLogicVal
-        else if (ignore != RG_GOLD_SKULLTULA_TOKEN && !IsBombchus(ignore)) {
+        else if (ignore != RG_GOLD_SKULLTULA_TOKEN && IsBombchus(ignore)) {
           if ((type == ITEMTYPE_SHOP && Rando::StaticData::GetItemTable()[ignore].GetLogicVal() != location->GetPlacedItem().GetLogicVal()) || type != ITEMTYPE_SHOP) {
             gals.newItemLocations.push_back(location);
           }
