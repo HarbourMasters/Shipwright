@@ -1739,7 +1739,7 @@ std::map<s32, SpecialRespawnInfo> swimSpecialRespawnInfo = {
     },
     {
         ENTR_HYRULE_FIELD_14,//zr to hf in water
-        { { 5830.209, -92.16, 3925.911 }, -20025 }
+        { { 5730.209, -20, 3725.911 }, -20025 }
     },
     {
         ENTR_LOST_WOODS_7,//zr to lw
@@ -1772,7 +1772,11 @@ std::map<s32, SpecialRespawnInfo> swimSpecialRespawnInfo = {
     {
         ENTR_GERUDO_VALLEY_1,//caught by gerudos as child
         { { -424, -2051, -74 }, 16384 }
-    }
+    },
+    {
+        ENTR_HYRULE_FIELD_7,//hf from mk (can be a problem when it then turns night)
+        { { 0, 0, 1100 }, 0 }
+    },
 };
 
 f32 triforcePieceScale;
