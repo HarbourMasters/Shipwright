@@ -1786,18 +1786,17 @@ void RandomizerOnPlayerUpdateHandler() {
         //if you void out in water temple without swim you get instantly kicked out to prevent softlocks
         if (gPlayState->sceneNum == SCENE_WATER_TEMPLE) {
             GameInteractor::RawAction::TeleportPlayer(Entrance_OverrideNextIndex(ENTR_LAKE_HYLIA_2));//lake hylia from water temple
-            return;
+        } else {
+            if (swimSpecialRespawnInfo.find(gSaveContext.entranceIndex) != swimSpecialRespawnInfo.end()) {
+                SpecialRespawnInfo* respawnInfo = &swimSpecialRespawnInfo.at(gSaveContext.entranceIndex);
+
+                Play_SetupRespawnPoint(gPlayState, RESPAWN_MODE_DOWN, 0xDFF);
+                gSaveContext.respawn[RESPAWN_MODE_DOWN].pos = respawnInfo->pos;
+                gSaveContext.respawn[RESPAWN_MODE_DOWN].yaw = respawnInfo->yaw;
+            }
+
+            Play_TriggerVoidOut(gPlayState);
         }
-
-        if (swimSpecialRespawnInfo.find(gSaveContext.entranceIndex) != swimSpecialRespawnInfo.end()) {
-            SpecialRespawnInfo* respawnInfo = &swimSpecialRespawnInfo.at(gSaveContext.entranceIndex);
-
-            Play_SetupRespawnPoint(gPlayState, RESPAWN_MODE_DOWN, 0xDFF);
-            gSaveContext.respawn[RESPAWN_MODE_DOWN].pos = respawnInfo->pos;
-            gSaveContext.respawn[RESPAWN_MODE_DOWN].yaw = respawnInfo->yaw;
-        }
-
-        Play_TriggerVoidOut(gPlayState);
     }
 
     // Triforce Hunt needs the check if the player isn't being teleported to the credits scene.
