@@ -1388,7 +1388,7 @@ void FileChoose_UpdateBossRushMenu(GameState* thisx) {
         // Move down
         if (this->stickRelY < -30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DDOWN))) {
             // When selecting past the last option, cycle back to the first option.
-            if ((this->bossRushIndex + 1) > BOSSRUSH_OPTIONS_AMOUNT - 1) {
+            if ((this->bossRushIndex + 1) > BR_OPTIONS_MAX - 1) {
                 this->bossRushIndex = 0;
                 this->bossRushOffset = 0;
             } else {
@@ -1401,7 +1401,7 @@ void FileChoose_UpdateBossRushMenu(GameState* thisx) {
         } else if (this->stickRelY > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DUP))) {
             // When selecting past the first option, cycle back to the last option and offset the list to view it properly.
             if ((this->bossRushIndex - 1) < 0) {
-                this->bossRushIndex = BOSSRUSH_OPTIONS_AMOUNT - 1;
+                this->bossRushIndex = BR_OPTIONS_MAX - 1;
                 this->bossRushOffset = this->bossRushIndex - BOSSRUSH_MAX_OPTIONS_ON_SCREEN + 1;
             } else {
                 // When first visible option is selected when moving up, offset the list up by one.
@@ -2306,7 +2306,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
                                     (arrowUpY + 8) << 2, G_TX_RENDERTILE, 0, 0, (1 << 11), (1 << 11));
         }
         // Arrow down
-        if (BOSSRUSH_OPTIONS_AMOUNT - listOffset > BOSSRUSH_MAX_OPTIONS_ON_SCREEN) {
+        if (BR_OPTIONS_MAX - listOffset > BOSSRUSH_MAX_OPTIONS_ON_SCREEN) {
             uint16_t arrowDownX = 140;
             uint16_t arrowDownY = 181 + (this->bossRushArrowOffset / 10);
             gDPLoadTextureBlock(POLY_OPA_DISP++, gArrowDownTex, G_IM_FMT_IA,

@@ -27,7 +27,7 @@ typedef struct BossRushSetting {
     std::vector<std::array<std::string, LANGUAGE_MAX>> choices;
 } BossRushSetting;
 
-BossRushSetting BossRushOptions[BOSSRUSH_OPTIONS_AMOUNT] = { 
+BossRushSetting BossRushOptions[BR_OPTIONS_MAX] = { 
     {
         { "BOSSES:", "BOSSE:", "BOSS:" },
         {
