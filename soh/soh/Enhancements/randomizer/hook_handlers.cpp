@@ -1774,8 +1774,12 @@ std::map<s32, SpecialRespawnInfo> swimSpecialRespawnInfo = {
         { { -424, -2051, -74 }, 16384 }
     },
     {
-        ENTR_HYRULE_FIELD_7,//hf from mk (can be a problem when it then turns night)
+        ENTR_HYRULE_FIELD_7,//mk to hf (can be a problem when it then turns night)
         { { 0, 0, 1100 }, 0 }
+    },
+    {
+        ENTR_ZORAS_FOUNTAIN_0,//jabu blue warp to zf
+        { { -1580, 150, 1670 }, 8000 }
     },
 };
 
