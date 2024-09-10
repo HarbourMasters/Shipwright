@@ -252,10 +252,13 @@ void BossRush_HandleBlueWarp(PlayState* play, f32 warpPosX, f32 warpPosZ) {
         // Ganondork
         } else if (warpPosX == -199 && warpPosZ == 0) {
             play->nextEntranceIndex = ENTR_GANONDORF_BOSS_0;
+        } else {
+            SPDLOG_ERROR("[BossRush]: Unknown blue warp in chamber of sages at position ({}, {}). Warping back to chamber of sages.", warpPosX, warpPosZ);
+            play->nextEntranceIndex = ENTR_CHAMBER_OF_THE_SAGES_0;
         }
     // If coming from a boss room, teleport back to Chamber of Sages and set flag.
     } else {
-        play->nextEntranceIndex = SCENE_HAIRAL_NIWA2;
+        play->nextEntranceIndex = ENTR_CHAMBER_OF_THE_SAGES_0;
 
         if (CheckDungeonCount() == 3) {
             play->linkAgeOnLoad = LINK_AGE_ADULT;
