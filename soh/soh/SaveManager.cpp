@@ -13,7 +13,6 @@
 #include "functions.h"
 #include "macros.h"
 #include <variables.h>
-#include "soh/Enhancements/boss-rush/BossRush.h"
 #include <libultraship/libultraship.h>
 #include "SohGui.hpp"
 
