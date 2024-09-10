@@ -77,7 +77,11 @@ std::vector<RandomizerCheck> Rando::StaticData::GetShopLocations() {
 std::vector<RandomizerCheck> Rando::StaticData::GetOverworldLocations() {
     std::vector<RandomizerCheck> overworldLocations = {};
     for (Location& location : locationTable) {
-        if (location.IsOverworld() && location.GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
+        if (
+            location.IsOverworld() &&
+            location.GetRandomizerCheck() != RC_UNKNOWN_CHECK &&
+            location.GetRandomizerCheck() != RC_TRIFORCE_COMPLETED //not really an overworld check
+        ) {
             overworldLocations.push_back(location.GetRandomizerCheck());
         }
     }
