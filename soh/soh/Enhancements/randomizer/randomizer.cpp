@@ -3137,13 +3137,6 @@ void RandomizerSettingsWindow::DrawElement() {
 
     static int maxKeyringCount;
     static bool disableGFKeyring = false;
-
-    ImGui::SetNextWindowSize(ImVec2(920, 600), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Randomizer Editor", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
-        ImGui::End();
-        return;
-    }
-
     bool disableEditingRandoSettings = CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0) || CVarGetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 0);
     if (disableEditingRandoSettings) {
         UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
@@ -5284,7 +5277,6 @@ void RandomizerSettingsWindow::DrawElement() {
     if (disableEditingRandoSettings) {
         UIWidgets::ReEnableComponent("");
     }
-    ImGui::End();
 }
 
 CustomMessage Randomizer::GetWarpSongMessage(u16 textId, bool mysterious) {
