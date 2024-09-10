@@ -126,15 +126,15 @@ BossRushSetting BossRushOptions[BOSSRUSH_OPTIONS_AMOUNT] = {
     }
 };
 
-const char* BossRush_GetSettingName(uint8_t optionIndex, uint8_t language) {
+const char* BossRush_GetSettingName(u8 optionIndex, u8 language) {
     return BossRushOptions[optionIndex].name[language].c_str();
 }
 
-const char* BossRush_GetSettingChoiceName(uint8_t optionIndex, uint8_t choiceIndex, uint8_t language) {
+const char* BossRush_GetSettingChoiceName(u8 optionIndex, u8 choiceIndex, u8 language) {
     return BossRushOptions[optionIndex].choices[choiceIndex][language].c_str();
 }
 
-uint8_t BossRush_GetSettingOptionsAmount(uint8_t optionIndex) {
+u8 BossRush_GetSettingOptionsAmount(u8 optionIndex) {
     return BossRushOptions[optionIndex].choices.size();
 }
 
@@ -182,7 +182,7 @@ void BossRush_SpawnBlueWarps(PlayState* play) {
     }
 }
 
-void BossRush_SetEquipment(uint8_t linkAge) {
+void BossRush_SetEquipment(u8 linkAge) {
     std::array<u8, 8> brButtonItems;
     std::array<u8, 7> brCButtonSlots;
 
@@ -361,7 +361,7 @@ void BossRush_InitSave() {
     }
 
     // Set health
-    uint16_t health = 16;
+    u16 health = 16;
     switch (gSaveContext.bossRushOptions[BR_OPTIONS_HEARTS]) { 
         case BR_CHOICE_HEARTS_7:
             health *= 7;
@@ -471,7 +471,7 @@ void BossRush_InitSave() {
     }
 
     // Upgrades
-    uint8_t upgradeLevel = 1;
+    u8 upgradeLevel = 1;
     if (gSaveContext.bossRushOptions[BR_OPTIONS_AMMO] == BR_CHOICE_AMMO_MAXED) {
         upgradeLevel = 3;
     }
@@ -661,7 +661,7 @@ void BossRush_OnActorInitHandler(void* actorRef) {
     }
 }
 
-void BossRush_OnSceneInitHandler(int16_t sceneNum) {
+void BossRush_OnSceneInitHandler(s16 sceneNum) {
     // Unpause the timer when the scene loaded isn't the Chamber of Sages.
     if (sceneNum != SCENE_CHAMBER_OF_THE_SAGES) {
         gSaveContext.isBossRushPaused = 0;
@@ -673,10 +673,10 @@ void BossRush_OnBossDefeatHandler(void* refActor) {
 }
 
 void BossRush_RegisterHooks() {
-    static uint32_t onVanillaBehaviorHook = 0;
-    static uint32_t onSceneInitHook = 0;
-    static uint32_t onActorInitHook = 0;
-    static uint32_t onBossDefeatHook = 0;
+    static u32 onVanillaBehaviorHook = 0;
+    static u32 onSceneInitHook = 0;
+    static u32 onActorInitHook = 0;
+    static u32 onBossDefeatHook = 0;
 
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) {
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnVanillaBehavior>(onVanillaBehaviorHook);
