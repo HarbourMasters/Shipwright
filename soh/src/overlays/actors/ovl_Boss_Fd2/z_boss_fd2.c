@@ -783,7 +783,6 @@ void BossFd2_Death(BossFd2* this, PlayState* play) {
             if (bossFd->work[BFD_ACTION_STATE] == BOSSFD_SKULL_BURN) {
                 this->deathState = DEATH_FINISH;
                 mainCam->eye = this->camData.eye;
-                mainCam->eye = this->camData.eye;
                 mainCam->eyeNext = this->camData.eye;
                 mainCam->at = this->camData.at;
                 func_800C08AC(play, this->deathCamera, 0);
