@@ -12,6 +12,7 @@ extern "C" {
 #include "functions.h"
 #include "variables.h"
 #include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
+#include "src/overlays/actors/ovl_Bg_Treemouth/z_bg_treemouth.h"
 #include "src/overlays/actors/ovl_En_Si/z_en_si.h"
 #include "src/overlays/actors/ovl_En_Cow/z_en_cow.h"
 #include "src/overlays/actors/ovl_En_Shopnuts/z_en_shopnuts.h"
@@ -1463,6 +1464,14 @@ void RandomizerOnActorInitHandler(void* actorRef) {
         if (CompletedAllTrials()) {
             Actor_Kill(actor);
         }
+    }
+
+    if (actor->id == ACTOR_BG_TREEMOUTH && LINK_IS_ADULT && IS_RANDO &&
+        OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).GetSelectedOptionIndex() != RO_DUNGEON_ENTRANCE_SHUFFLE_OFF &&
+        (OTRGlobals::Instance->gRandoContext->GetOption(RSK_FOREST).GetSelectedOptionIndex() == RO_FOREST_OPEN || 
+            Flags_GetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD))) {
+        BgTreemouth* bgTreemouth = static_cast<BgTreemouth*>(actorRef);
+        bgTreemouth->unk_168 = 1.0f;
     }
 
     //consumable bags
