@@ -107,7 +107,7 @@ std::vector<uint32_t> actorCatList = {
 };
 
 std::vector<Actor*> actorData = {};
-std::vector<Actor*> actorDefaultData = {};
+std::vector<std::pair<Vec3f, Vec3s>> actorDefaultData = {};
 std::vector<eventObject> activeEvents = {};
 std::vector<eventObject> eventList = {};
 
@@ -123,7 +123,7 @@ std::vector<colorObject> colorOptions = {
 ImVec4 voteColor = colorOptions[COLOR_WHITE].colorCode;
 
 void ChaosUpdateFrameMultiplier() {
-    frameMultiplier = (CVarGetInteger(CVAR_SETTING("InterpolationFPS"), 0) / 20);
+    frameMultiplier = 1;
 }
 
 void ChaosUpdateInterval() {
@@ -179,17 +179,18 @@ void ChaosEventActorMagnet() {
         return;
     }
     actorData.clear();
+    actorDefaultData.clear();
     for (int i = 0; i < actorCatList.size(); i++) {
         ActorListEntry currList = gPlayState->actorCtx.actorLists[actorCatList[i]];
         Actor* currAct = currList.head;
         if (currAct != nullptr) {
             while (currAct != nullptr) {
                 actorData.push_back(currAct);
+                actorDefaultData.push_back({ currAct->world.pos, currAct->world.rot });
                 currAct = currAct->next;
             }
         }
     }
-    actorDefaultData = actorData;
 }
 
 void ChaosEventDeathSwitch(uint8_t buttonId) {
@@ -283,9 +284,13 @@ void ChaosEventsRepeater() {
         }
         if (magnetTimer > 0) {
             for (auto& actorUpdate : actorData) {
-                actorUpdate->world.pos.x = player->actor.world.pos.x + 30;
-                actorUpdate->world.pos.y = player->actor.world.pos.y;
-                actorUpdate->world.pos.z = player->actor.world.pos.z + 30;
+                Math_SmoothStepToF(&actorUpdate->world.pos.x, player->actor.world.pos.x + 30, 0.4f, 5.0f, 0.0f);
+                Math_SmoothStepToF(&actorUpdate->world.pos.y, player->actor.world.pos.y, 0.4f, 5.0f, 0.0f);
+                Math_SmoothStepToF(&actorUpdate->world.pos.z, player->actor.world.pos.z + 30, 0.4f, 5.0f, 0.0f);
+
+                // actorUpdate->world.pos.x = player->actor.world.pos.x + 30;
+                // actorUpdate->world.pos.y = player->actor.world.pos.y;
+                // actorUpdate->world.pos.z = player->actor.world.pos.z + 30;
                 actorUpdate->world.rot = player->actor.world.rot;
             }
             magnetTimer--;
@@ -435,8 +440,8 @@ void ChaosEventsActivator(uint32_t eventId, bool isActive) {
                     actorMagnetHook = 0;
                 }
                 for (int i = 0; i < actorData.size(); i++) {
-                    actorData[i]->world.pos = actorDefaultData[i]->world.pos;
-                    actorData[i]->world.rot = actorDefaultData[i]->world.rot;
+                    actorData[i]->world.pos = actorDefaultData[i].first;
+                    actorData[i]->world.rot = actorDefaultData[i].second;
                 }
                 actorData.clear();
                 actorDefaultData.clear();
@@ -499,7 +504,7 @@ void ChaosVotingCounter() {
 }
 
 void ChaosVoteSelector(uint32_t option) {
-    //uint32_t roll = EVENT_KNUCKLE_RING;
+    // uint32_t roll = EVENT_ACTOR_MAGNET;
     uint32_t roll = rand() % votingList.size();
     votingObjectList[option].votingOption = votingList[roll].eventId;
     votingList.erase(votingList.begin() + roll);
@@ -517,17 +522,33 @@ void ChaosVotingStarted() {
     ChaosVotingCounter();
 }
 
+uint32_t GetVotesForOption(uint32_t option) {
+    uint32_t currentOption = -1;
+    if (option == votingObjectList[0].votingOption) currentOption = 1;
+    if (option == votingObjectList[1].votingOption) currentOption = 2;
+    if (option == votingObjectList[2].votingOption) currentOption = 3;
+
+    // Loop over map and return amount of votes that equal the option
+    uint32_t votes = 0;
+    for (auto& voting : GameInteractor::State::ChaosVotes) {
+        if (voting.second == currentOption) {
+            votes++;
+        }
+    }
+    return votes;
+}
+
 void ChaosVotingFinished() {
     uint32_t voteWinner = 
-        std::max({ votingObjectList[VOTE_OPTION_A].votingCount, votingObjectList[VOTE_OPTION_B].votingCount,
-                   votingObjectList[VOTE_OPTION_C].votingCount });
-    if (votingObjectList[VOTE_OPTION_A].votingCount == voteWinner) {
+        std::max({ GetVotesForOption(votingObjectList[VOTE_OPTION_A].votingOption), GetVotesForOption(votingObjectList[VOTE_OPTION_B].votingOption),
+                   GetVotesForOption(votingObjectList[VOTE_OPTION_C].votingOption) });
+    if (GetVotesForOption(votingObjectList[VOTE_OPTION_A].votingOption) == voteWinner) {
         ChaosEventsManager(EVENT_ACTION_ADD, eventList[votingObjectList[VOTE_OPTION_A].votingOption].eventId);
         ChaosEventsActivator(eventList[votingObjectList[VOTE_OPTION_A].votingOption].eventId, true);
-    } else if (votingObjectList[VOTE_OPTION_B].votingCount == voteWinner) {
+    } else if (GetVotesForOption(votingObjectList[VOTE_OPTION_B].votingOption) == voteWinner) {
         ChaosEventsManager(EVENT_ACTION_ADD, eventList[votingObjectList[VOTE_OPTION_B].votingOption].eventId);
         ChaosEventsActivator(eventList[votingObjectList[VOTE_OPTION_B].votingOption].eventId, true);
-    } else if (votingObjectList[VOTE_OPTION_C].votingCount == voteWinner) {
+    } else if (GetVotesForOption(votingObjectList[VOTE_OPTION_C].votingOption) == voteWinner) {
         ChaosEventsManager(EVENT_ACTION_ADD, eventList[votingObjectList[VOTE_OPTION_C].votingOption].eventId);
         ChaosEventsActivator(eventList[votingObjectList[VOTE_OPTION_C].votingOption].eventId, true);
     }
@@ -550,6 +571,7 @@ void ChaosTrackerTimer() {
                 ChaosVotingFinished();
                 activeInterval = chaosInterval;
             } else {
+                GameInteractor::State::ChaosVotes.clear();
                 votingObjectList[VOTE_OPTION_A].votingCount = 0;
                 votingObjectList[VOTE_OPTION_B].votingCount = 0;
                 votingObjectList[VOTE_OPTION_C].votingCount = 0;
@@ -592,9 +614,9 @@ void DrawChaosTrackerEvents() {
 
 void ChaosVotingColorSelector(uint32_t option) {
     std::vector<uint32_t> votes = {
-        votingObjectList[VOTE_OPTION_A].votingCount,
-        votingObjectList[VOTE_OPTION_B].votingCount,
-        votingObjectList[VOTE_OPTION_C].votingCount,
+        GetVotesForOption(votingObjectList[VOTE_OPTION_A].votingOption),
+        GetVotesForOption(votingObjectList[VOTE_OPTION_B].votingOption),
+        GetVotesForOption(votingObjectList[VOTE_OPTION_C].votingOption),
     };
     std::sort(votes.begin(), votes.end(), [](const auto& a, const auto& b) { return a > b; });
 
@@ -614,10 +636,10 @@ void DrawChaosEventsVoting() {
     ImGui::BeginTable("Voting Table", 2);
     for (auto& voting : votingObjectList) {
         ImGui::TableNextColumn();
-        ChaosVotingColorSelector(voting.votingCount);
+        ChaosVotingColorSelector(GetVotesForOption(voting.votingOption));
         ImGui::TextColored(voteColor, eventList[voting.votingOption].eventName);
         ImGui::TableNextColumn();
-        std::string voteCounter = std::to_string(voting.votingCount);
+        std::string voteCounter = std::to_string(GetVotesForOption(voting.votingOption));
         ImGui::TextColored(voteColor, voteCounter.c_str());
     }
     ImGui::EndTable();

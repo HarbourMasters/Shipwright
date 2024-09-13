@@ -139,6 +139,7 @@ public:
         static uint8_t SecondCollisionUpdate;
         static uint8_t TriforceHuntPieceGiven;
         static uint8_t TriforceHuntCreditsWarpActive;
+        static std::map<std::string, uint32_t> ChaosVotes;
 
         static void SetPacifistMode(bool active);
     };

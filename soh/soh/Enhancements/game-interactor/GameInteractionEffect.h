@@ -6,6 +6,8 @@
 #include <stdint.h>
 
 #ifdef __cplusplus
+#include <string>
+
 enum GameInteractionEffectQueryResult {
     Possible                = 0x00,
     TemporarilyNotPossible  = 0x01,
@@ -261,6 +263,15 @@ namespace GameInteractionEffect {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void _Apply() override;
         void _Remove() override;
+    };
+
+    class ChaosVote: public GameInteractionEffectBase, public ParameterizedGameInteractionEffect {
+        GameInteractionEffectQueryResult CanBeApplied() override;
+        void _Apply() override;
+
+        public:
+            std::string voterName;
+            int32_t vote;
     };
 }
 

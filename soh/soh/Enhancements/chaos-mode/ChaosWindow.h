@@ -57,7 +57,7 @@ typedef enum {
     EVENT_ACTOR_MAGNET,
     EVENT_DEATH_SWITCH,
     EVENT_KNUCKLE_RING,
-};
+} ChaosEvents;
 
 typedef enum {
     VOTE_OPTION_A,
