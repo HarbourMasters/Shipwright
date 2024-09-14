@@ -58,4 +58,5 @@ void UpdateInventoryChecks();
 void UpdateAreas(RandomizerCheckArea area);
 void UpdateAllOrdering();
 void UpdateAllAreas();
+void RecalculateAllAreaTotals();
 } // namespace CheckTracker

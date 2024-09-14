@@ -260,26 +260,28 @@ uint16_t GetTotalChecksGotten() {
     return totalChecksGotten;
 }
 
-void RecalculateAreaTotals() {
-    for (auto [rcArea, checks] : checksByArea) {
+void RecalculateAreaTotals(RandomizerCheckArea rcArea) {
+    areaChecksGotten[rcArea] = 0;
+    areaCheckTotals[rcArea] = 0;
+    for (auto rc : checksByArea.at(rcArea)) {
+        if (!IsVisibleInCheckTracker(rc)) {
+            continue;
+        }
+        areaCheckTotals[rcArea]++;
+        if (OTRGlobals::Instance->gRandoContext->GetItemLocation(rc)->GetIsSkipped() || OTRGlobals::Instance->gRandoContext->GetItemLocation(rc)->HasObtained()) {
+            areaChecksGotten[rcArea]++;
+        }
+    }
+    CalculateTotals();
+}
+
+void RecalculateAllAreaTotals() {
+    for (auto& [rcArea, checks] : checksByArea) {
         if (rcArea == RCAREA_INVALID) {
             return;
         }
-        areaChecksGotten[rcArea] = 0;
-        areaCheckTotals[rcArea] = 0;
-        for (auto rc : checks) {
-            if (!IsVisibleInCheckTracker(rc)) {
-                continue;
-            }
-            areaCheckTotals[rcArea]++;
-            if (OTRGlobals::Instance->gRandoContext->GetItemLocation(rc)->GetIsSkipped() || OTRGlobals::Instance->gRandoContext->GetItemLocation(rc)->HasObtained()) {
-                areaChecksGotten[rcArea]++;
-            }
-        }
+        RecalculateAreaTotals(rcArea);
     }
-
-    totalChecks = 0;
-    totalChecksGotten = 0;
 }
 
 void SetCheckCollected(RandomizerCheck rc) {
@@ -406,6 +408,8 @@ void ClearAreaChecksAndTotals() {
         areaChecksGotten[rcArea] = 0;
         areaCheckTotals[rcArea] = 0;
     }
+    totalChecks = 0;
+    totalChecksGotten = 0;
 }
 
 void SetShopSeen(uint32_t sceneNum, bool prices) {
@@ -768,7 +772,7 @@ void SaveTrackerData(SaveContext* saveContext, int sectionID, bool fullSave) {
     SaveManager::Instance->SaveArray("checkStatus", checkCount.size(), [&](size_t i) {
         RandomizerCheck check = checkCount.at(i);
         RandomizerCheckStatus savedStatus = OTRGlobals::Instance->gRandoContext->GetItemLocation(check)->GetCheckStatus();
-        bool isSkipped = OTRGlobals::Instance->gRandoContext->GetItemLocation(i)->GetIsSkipped();
+        bool isSkipped = OTRGlobals::Instance->gRandoContext->GetItemLocation(check)->GetIsSkipped();
         if (savedStatus == RCSHOW_COLLECTED) {
             if (fullSave) {
                 OTRGlobals::Instance->gRandoContext->GetItemLocation(check)->SetCheckStatus(RCSHOW_SAVED);
@@ -1319,7 +1323,7 @@ void UpdateOrdering(RandomizerCheckArea rcArea) {
     if(checksByArea.contains(rcArea)) {
         std::sort(checksByArea.find(rcArea)->second.begin(), checksByArea.find(rcArea)->second.end(), CompareChecks);
     }
-
+    RecalculateAllAreaTotals();
     CalculateTotals();
 }
 
@@ -1456,9 +1460,11 @@ void DrawLocation(RandomizerCheck rc) {
             if (skipped) {
                 OTRGlobals::Instance->gRandoContext->GetItemLocation(rc)->SetIsSkipped(false);
                 areaChecksGotten[loc->GetArea()]--;
+                totalChecksGotten--;
             } else {
                 OTRGlobals::Instance->gRandoContext->GetItemLocation(rc)->SetIsSkipped(true);
                 areaChecksGotten[loc->GetArea()]++;
+                totalChecksGotten++;
             }
             UpdateOrdering(loc->GetArea());
             UpdateInventoryChecks();
@@ -1668,12 +1674,12 @@ void CheckTrackerSettingsWindow::DrawElement() {
     UIWidgets::Tooltip("If enabled, Vanilla/MQ dungeons will show on the tracker immediately. Otherwise, Vanilla/MQ dungeon locations must be unlocked.");
     if (UIWidgets::EnhancementCheckbox("Hide right-side shop item checks", CVAR_TRACKER_CHECK("HideRightShopChecks"), false, "", UIWidgets::CheckboxGraphics::Cross, true)) {
         hideShopRightChecks = !hideShopRightChecks;
-        RecalculateAreaTotals();
+        RecalculateAllAreaTotals();
     }
     UIWidgets::Tooltip("If enabled, will prevent the tracker from displaying slots 1-4 in all shops.");
     if (UIWidgets::EnhancementCheckbox("Always show gold skulltulas", CVAR_TRACKER_CHECK("AlwaysShowGSLocs"), false, "")) {
         alwaysShowGS = !alwaysShowGS;
-        RecalculateAreaTotals();
+        RecalculateAllAreaTotals();
     }
     UIWidgets::Tooltip("If enabled, will show GS locations in the tracker regardless of tokensanity settings.");
     UIWidgets::EnhancementCheckbox("Show Logic", "gCheckTrackerOptionShowLogic");

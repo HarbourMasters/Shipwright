@@ -306,6 +306,7 @@ void RandomizerOnItemReceiveHandler(GetItemEntry receivedItemEntry) {
     if (randomizerQueuedItemEntry.modIndex == receivedItemEntry.modIndex && randomizerQueuedItemEntry.itemId == receivedItemEntry.itemId) {
         SPDLOG_INFO("Item received mod {} item {} from RC {}", receivedItemEntry.modIndex, receivedItemEntry.itemId, static_cast<uint32_t>(randomizerQueuedCheck));
         loc->SetCheckStatus(RCSHOW_COLLECTED);
+        CheckTracker::RecalculateAllAreaTotals();
         SaveManager::Instance->SaveSection(gSaveContext.fileNum, SECTION_ID_TRACKER_DATA, true);
         randomizerQueuedCheck = RC_UNKNOWN_CHECK;
         randomizerQueuedItemEntry = GET_ITEM_NONE;
@@ -658,6 +659,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
             } else {
                 *should = true;
                 Rando::Context::GetInstance()->GetItemLocation(RC_TOT_MASTER_SWORD)->SetCheckStatus(RCSHOW_COLLECTED);
+                CheckTracker::RecalculateAllAreaTotals();
             }
             break;
         case VB_ITEM00_DESPAWN: {
@@ -1193,6 +1195,7 @@ void RandomizerOnSceneInitHandler(int16_t sceneNum) {
         Rando::Context::GetInstance()->GetItemLocation(RC_MARKET_TREASURE_CHEST_GAME_KEY_4)->SetCheckStatus(RCSHOW_UNCHECKED);
         Flags_UnsetRandomizerInf(RAND_INF_MARKET_TREASURE_CHEST_GAME_KEY_5);
         Rando::Context::GetInstance()->GetItemLocation(RC_MARKET_TREASURE_CHEST_GAME_KEY_5)->SetCheckStatus(RCSHOW_UNCHECKED);
+        CheckTracker::RecalculateAllAreaTotals();
     }
 
     // LACs & Prelude checks
