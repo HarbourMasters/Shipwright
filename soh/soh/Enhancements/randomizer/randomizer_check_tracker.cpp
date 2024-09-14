@@ -907,9 +907,9 @@ void CheckTrackerWindow::DrawElement() {
         doAreaScroll = true;
     }
     UIWidgets::Tooltip("Clear the search field");
-    //if (checkSearch.Draw()) {
-    //    UpdateFilters();
-    //}
+    if (checkSearch.Draw()) {
+        UpdateFilters();
+    }
 
     UIWidgets::PaddedSeparator();
 
@@ -1047,7 +1047,12 @@ bool UpdateFilters() {
     for (auto& [rcArea, checks] : checksByArea) {
         filterAreasHidden[rcArea] = !checkSearch.PassFilter(RandomizerCheckObjects::GetRCAreaName(rcArea).c_str());
         for (auto check : checks) { 
-            filterChecksHidden[check] = !ShouldShowCheck(check);
+            if (ShouldShowCheck(check)) {
+                filterAreasHidden[rcArea] = false;
+                filterChecksHidden[check] = false;
+            } else {
+                filterChecksHidden[check] = true;
+            }
         }
     }
 
@@ -1058,8 +1063,9 @@ bool ShouldShowCheck(RandomizerCheck check) {
     return (
         IsVisibleInCheckTracker(check) && 
         (checkSearch.Filters.Size == 0 ||
-        checkSearch.PassFilter(RandomizerCheckObjects::GetRCAreaName(Rando::StaticData::GetLocation(check)->GetArea()).c_str()) ||
-        checkSearch.PassFilter(Rando::StaticData::GetLocation(check)->GetShortName().c_str()))
+        checkSearch.PassFilter((Rando::StaticData::GetLocation(check)->GetShortName() + " " +
+            Rando::StaticData::GetLocation(check)->GetName() + " " +
+            RandomizerCheckObjects::GetRCAreaName(Rando::StaticData::GetLocation(check)->GetArea())).c_str()))
     );
 }
 
