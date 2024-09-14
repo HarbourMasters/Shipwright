@@ -6,7 +6,7 @@ namespace Rando {
         return rtAreaNames.at(area);
     }
 
-    bool Tricks::CheckRTTags(const std::unordered_map<Tag, bool> &showTag, const std::set<Tag> &rtTags) {
+    bool Tricks::CheckRTTags(const std::map<Tag, bool> &showTag, const std::set<Tag> &rtTags) {
         if (rtTags.empty()) {
             return false;
         }

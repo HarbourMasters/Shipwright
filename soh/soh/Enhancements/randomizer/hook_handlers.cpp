@@ -261,7 +261,6 @@ void RandomizerOnPlayerUpdateForRCQueueHandler() {
             rc != RC_SPIRIT_TEMPLE_SILVER_GAUNTLETS_CHEST &&
             rc != RC_MARKET_BOMBCHU_BOWLING_FIRST_PRIZE &&
             rc != RC_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE &&
-            rc != RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS &&
             // Always show ItemGet animation for ice traps
             !(getItemEntry.modIndex == MOD_RANDOMIZER && getItemEntry.getItemId == RG_ICE_TRAP) &&
             (
@@ -833,6 +832,10 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
             *should = RAND_GET_OPTION(RSK_SHUFFLE_MERCHANTS) == RO_SHUFFLE_MERCHANTS_OFF ||
                       // If the rando check has already been awarded, use vanilla behavior.
                       Flags_GetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN);
+            break;
+        }
+        case VB_GIVE_BOMBCHUS_FROM_CARPET_SALESMAN: {
+            *should = RAND_GET_OPTION(RSK_BOMBCHUS_IN_LOGIC) == false || INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU;
             break;
         }
         case VB_GIVE_ITEM_FROM_MEDIGORON: {
@@ -1435,7 +1438,7 @@ void RandomizerOnActorInitHandler(void* actorRef) {
                 break;
             case EXITEM_BOMBCHUS_COUNTER:
             case EXITEM_BOMBCHUS_BOWLING:
-                rc = RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS;
+                //RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS was removed as a 3DS holdover not in anyones near term plans due to being pretty useless.
                 break;
             case EXITEM_BULLET_BAG:
                 rc = RC_LW_TARGET_IN_WOODS;

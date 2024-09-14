@@ -7,6 +7,7 @@
 #include "randomizerTypes.h"
 
 #include <unordered_map>
+#include <map>
 #include <string>
 
 
@@ -25,7 +26,7 @@ namespace Rando {
         };
 
         static const std::string& GetRTAreaName(RandomizerArea area);
-        static bool CheckRTTags(const std::unordered_map<Tag, bool> &showTag, const std::set<Tag> &rtTags);
+        static bool CheckRTTags(const std::map<Tag, bool> &showTag, const std::set<Tag> &rtTags);
         static std::string GetRTTagName(Tag tag);
         static ImVec4 GetRTTagColor(Tag tag);
         static void DrawTagChips(const std::set<Tag> &rtTags);
