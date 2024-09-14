@@ -16,6 +16,8 @@
 #define BLOCK_FREE_MAGIC (0xEF)
 #define BLOCK_FREE_MAGIC_32 (0xEFEFEFEF)
 
+#define NODE_IS_VALID(node) (((node) != NULL) && ((node)->magic == NODE_MAGIC))
+
 OSMesg sArenaLockMsg;
 u32 __osMalloc_FreeBlockTest_Enable;
 
@@ -97,7 +99,7 @@ ArenaNode* ArenaImpl_GetLastBlock(Arena* arena) {
     ArenaNode* last = NULL;
     ArenaNode* iter;
 
-    if (arena != NULL && arena->head != NULL && arena->head->magic == NODE_MAGIC) {
+    if (arena != NULL && NODE_IS_VALID(arena->head)) {
         iter = arena->head;
         while (iter != NULL) {
             last = iter;
@@ -424,7 +426,7 @@ void __osFree_NoLock(Arena* arena, void* ptr) {
     }
 
     node = (ArenaNode*)((uintptr_t)ptr - sizeof(ArenaNode));
-    if (node == NULL || node->magic != NODE_MAGIC) {
+    if (!NODE_IS_VALID(node)) {
         // "__osFree: Unauthorized release (%08x)"
         osSyncPrintf(VT_COL(RED, WHITE) "__osFree:不正解放(%08x)\n" VT_RST, ptr);
         return;
@@ -496,7 +498,7 @@ void __osFree_NoLockDebug(Arena* arena, void* ptr, const char* file, s32 line) {
     }
 
     node = (ArenaNode*)((uintptr_t)ptr - sizeof(ArenaNode));
-    if (node == NULL || node->magic != NODE_MAGIC) {
+    if (!NODE_IS_VALID(node)) {
         // "__osFree: Unauthorized release (%08x)"
         osSyncPrintf(VT_COL(RED, WHITE) "__osFree:不正解放(%08x) [%s:%d ]\n" VT_RST, ptr, file, line);
         return;
@@ -809,7 +811,8 @@ u32 __osCheckArena(Arena* arena) {
     osSyncPrintf("アリーナの内容をチェックしています．．． (%08x)\n", arena);
     iter = arena->head;
     while (iter != NULL) {
-        if (iter && iter->magic == NODE_MAGIC) {
+        //! @bug: Probably intended to be `!NODE_IS_VALID(iter)`
+        if (NODE_IS_VALID(iter)) {
             // "Oops!! (%08x %08x)"
             osSyncPrintf(VT_COL(RED, WHITE) "おおっと！！ (%08x %08x)\n" VT_RST, iter, iter->magic);
             error = 1;
