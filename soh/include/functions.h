@@ -2277,7 +2277,7 @@ void __osMallocInit(Arena* arena, void* start, size_t size);
 void __osMallocAddBlock(Arena* arena, void* start, ptrdiff_t size);
 void ArenaImpl_RemoveAllBlocks(Arena* arena);
 void __osMallocCleanup(Arena* arena);
-u8 __osMallocIsInitalized(Arena* arena);
+s32 __osMallocIsInitialized(Arena* arena);
 void __osMalloc_FreeBlockTest(Arena* arena, ArenaNode* node);
 void* __osMalloc_NoLockDebug(Arena* arena, size_t size, const char* file, s32 line);
 void* __osMallocDebug(Arena* arena, size_t size, const char* file, s32 line);
@@ -2418,7 +2418,10 @@ OSThread* __osGetCurrFaultedThread(void);
 u32* osViGetCurrentFramebuffer(void);
 s32 __osSpSetPc(void* pc);
 f32 absf(f32);
-void* func_801068B0(void* dst, void* src, size_t size);
+#ifndef __cplusplus
+void* oot_memmove(void* dest, const void* src, size_t len);
+#define memmove oot_memmove
+#endif
 void Message_UpdateOcarinaGame(PlayState* play);
 u8 Message_ShouldAdvance(PlayState* play);
 u8 Message_ShouldAdvanceSilent(PlayState* play);

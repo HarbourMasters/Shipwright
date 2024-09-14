@@ -1,24 +1,33 @@
 #include "global.h"
 
-// memmove used in __osMalloc.c
-void* func_801068B0(void* dst, void* src, size_t size) {
-    u8* spC = dst;
-    u8* sp8 = src;
-    register s32 a3;
+/**
+ * memmove: copies `len` bytes from memory starting at `src` to memory starting at `dest`.
+ *
+ * Unlike memcpy(), the regions of memory may overlap.
+ *
+ * @param dest address of start of buffer to write to
+ * @param src address of start of buffer to read from
+ * @param len number of bytes to copy.
+ *
+ * @return dest
+ */
+void* oot_memmove(void* dest, const void* src, size_t len) {
+    char* d = dest;
+    const char* s = src;
 
-    if (spC == sp8) {
-        return dst;
+    if (d == s) {
+        return dest;
     }
-    if (spC < sp8) {
-        for (a3 = size--; a3 != 0; a3 = size--) {
-            *spC++ = *sp8++;
+    if (d < s) {
+        while (len--) {
+            *d++ = *s++;
         }
     } else {
-        spC += size - 1;
-        sp8 += size - 1;
-        for (a3 = size--; a3 != 0; a3 = size--) {
-            *spC-- = *sp8--;
+        d += len - 1;
+        s += len - 1;
+        while (len--) {
+            *d-- = *s--;
         }
     }
-    return dst;
+    return dest;
 }
