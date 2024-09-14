@@ -21,6 +21,28 @@
 #define NODE_GET_NEXT(node) ArenaImpl_GetNextBlock(node)
 #define NODE_GET_PREV(node) ArenaImpl_GetPrevBlock(node)
 
+#define SET_DEBUG_INFO(node, file, line, arena) ArenaImpl_SetDebugInfo(node, file, line, arena)
+
+#define FILL_UNINIT_BLOCK(arena, node, size) memset(node, BLOCK_UNINIT_MAGIC, size)
+
+#define FILL_ALLOC_BLOCK(arena, alloc, size)   \
+    if ((arena)->flag & FILL_ALLOC_BLOCK_FLAG) \
+    memset(alloc, BLOCK_ALLOC_MAGIC, size)
+
+#define FILL_FREE_BLOCK_HEADER(arena, node)   \
+    if ((arena)->flag & FILL_FREE_BLOCK_FLAG) \
+    memset(node, BLOCK_FREE_MAGIC, sizeof(ArenaNode))
+
+#define FILL_FREE_BLOCK_CONTENTS(arena, node) \
+    if ((arena)->flag & FILL_FREE_BLOCK_FLAG) \
+    memset((void*)((u32)(node) + sizeof(ArenaNode)), BLOCK_FREE_MAGIC, (node)->size)
+
+#define CHECK_FREE_BLOCK(arena, node)          \
+    if ((arena)->flag & CHECK_FREE_BLOCK_FLAG) \
+    __osMalloc_FreeBlockTest(arena, node)
+
+#define CHECK_ALLOC_FAILURE(arena, ptr) (void)0
+
 OSMesg sArenaLockMsg;
 u32 __osMalloc_FreeBlockTest_Enable;
 
