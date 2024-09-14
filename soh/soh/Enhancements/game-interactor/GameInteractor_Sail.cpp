@@ -330,6 +330,12 @@ GameInteractionEffectBase* GameInteractorSail::EffectFromJson(nlohmann::json pay
         return new GameInteractionEffect::PlayerInvincibility();
     } else if (name == "SlipperyFloor") {
         return new GameInteractionEffect::SlipperyFloor();
+    } else if (name == "ChaosVote") {
+        auto effect = new GameInteractionEffect::ChaosVote();
+        effect->vote = payload["parameters"][0].get<int32_t>();
+        effect->voterName = payload["parameters"][1].get<std::string>();
+
+        return effect;
     } else {
         SPDLOG_INFO("[GameInteractorSail] Unknown effect name: {}", name);
         return nullptr;
