@@ -722,6 +722,15 @@ void EntranceTrackerSettingsWindow::DrawElement() {
     ImGui::End();
 }
 
+void EntranceTrackerWindow::Draw() {
+    if (!IsVisible()) {
+        return;
+    }
+    DrawElement();
+    // Sync up the IsVisible flag if it was changed by ImGui
+    SyncVisibilityConsoleVariable();
+}
+
 void EntranceTrackerWindow::DrawElement() {
     ImGui::SetNextWindowSize(ImVec2(600, 375), ImGuiCond_FirstUseEver);
 
