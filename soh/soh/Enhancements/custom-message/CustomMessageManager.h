@@ -11,7 +11,7 @@
 
 #undef MESSAGE_END
 
-#define QM_WHITE "\x00"
+#define QM_WHITE "\x00"s
 #define QM_RED "\x41"
 #define QM_GREEN "\x42"
 #define QM_BLUE "\x43"
@@ -20,7 +20,7 @@
 #define QM_YELLOW "\x46"
 #define QM_BLACK "\x47"
 
-#define HS_HORSE_ARCHERY "\x00" //HS_HBA is an enum already
+#define HS_HORSE_ARCHERY "\x00"s //HS_HBA is an enum already
 
 typedef enum {
     MF_FORMATTED,
