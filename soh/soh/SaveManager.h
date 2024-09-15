@@ -186,7 +186,7 @@ class SaveManager {
     nlohmann::json* currentJsonContext = nullptr;
     nlohmann::json::iterator currentJsonArrayContext;
     std::shared_ptr<BS::thread_pool> smThreadPool;
-
+    std::mutex saveMtx;
 };
 
 #else
