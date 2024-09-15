@@ -1471,9 +1471,9 @@ void RandomizerOnActorInitHandler(void* actorRef) {
         }
     }
 
-    if (actor->id == ACTOR_BG_TREEMOUTH && LINK_IS_ADULT && IS_RANDO &&
-        OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).GetSelectedOptionIndex() != RO_DUNGEON_ENTRANCE_SHUFFLE_OFF &&
-        (OTRGlobals::Instance->gRandoContext->GetOption(RSK_FOREST).GetSelectedOptionIndex() == RO_FOREST_OPEN || 
+    if (actor->id == ACTOR_BG_TREEMOUTH && LINK_IS_ADULT &&
+        RAND_GET_OPTION(RSK_SHUFFLE_DUNGEON_ENTRANCES) != RO_DUNGEON_ENTRANCE_SHUFFLE_OFF &&
+        (RAND_GET_OPTION(RSK_FOREST) == RO_FOREST_OPEN ||
             Flags_GetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD))) {
         BgTreemouth* bgTreemouth = static_cast<BgTreemouth*>(actorRef);
         bgTreemouth->unk_168 = 1.0f;
