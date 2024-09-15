@@ -21,7 +21,6 @@ class CheckTrackerSettingsWindow : public Ship::GuiWindow {
 class CheckTrackerWindow : public Ship::GuiWindow {
   public:
     using GuiWindow::GuiWindow;
-    void Draw() override;
     ~CheckTrackerWindow() {};
 
   protected:
