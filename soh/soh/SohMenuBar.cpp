@@ -416,7 +416,6 @@ void DrawSettingsMenu() {
                 if (UIWidgets::PaddedEnhancementSliderInt(
                     (currentFps == 20) ? "Frame Rate: Original (20 fps)" : "Frame Rate: %d fps",
                     "##FPSInterpolation", CVAR_SETTING("InterpolationFPS"), minFps, maxFps, "", 20, true, true, false, matchingRefreshRate)) {
-                    ChaosUpdateFrameMultiplier(); // Chaos Event Addition
                 }
             #endif
                 if (Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() == Ship::WindowBackend::FAST3D_DXGI_DX11) {
@@ -441,7 +440,6 @@ void DrawSettingsMenu() {
                     if (hz >= 20 && hz <= 360) {
                         CVarSetInteger(CVAR_SETTING("InterpolationFPS"), hz);
                         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-                        ChaosUpdateFrameMultiplier(); // Chaos Event Addition
                     }
                 }
             } else {

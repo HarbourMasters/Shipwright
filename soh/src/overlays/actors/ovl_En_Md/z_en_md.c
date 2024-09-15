@@ -491,7 +491,7 @@ u8 EnMd_ShouldSpawn(EnMd* this, PlayState* play) {
     // in the forest until you've obtained Zelda's letter or Deku Tree dies
     // This is to ensure Deku Tree can still be opened in dungeon entrance rando even if Ghoma is defeated
     if (IS_RANDO) {
-        if (play->sceneNum == SCENE_LOST_WOODS) {
+        if (play->sceneNum == SCENE_LOST_WOODS || CVarGetInteger(CVAR_ENHANCEMENT("EnableChaosMode"), 0) == 1) {
             return 1;
         }
 
@@ -579,6 +579,9 @@ void func_80AAB158(EnMd* this, PlayState* play) {
 
     Npc_TrackPoint(&this->actor, &this->interactInfo, 2, trackingMode);
     if (this->actionFunc != func_80AABC10) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("EnableChaosMode"), 0) == 1) {
+            return;
+        }
         if (temp2) {
             Npc_UpdateTalking(play, &this->actor, &this->interactInfo.talkState, this->collider.dim.radius + 30.0f,
                               EnMd_GetText, func_80AAAF04);
@@ -623,14 +626,15 @@ u8 EnMd_SetMovedPos(EnMd* this, PlayState* play) {
         return 0;
     }
 
-    path = &play->setupPathList[(this->actor.params & 0xFF00) >> 8];
-    lastPointPos = SEGMENTED_TO_VIRTUAL(path->points);
-    lastPointPos += path->count - 1;
+    if (CVarGetInteger(CVAR_ENHANCEMENT("EnableChaosMode"), 0) == 0) {
+        path = &play->setupPathList[(this->actor.params & 0xFF00) >> 8];
+        lastPointPos = SEGMENTED_TO_VIRTUAL(path->points);
+        lastPointPos += path->count - 1;
 
-    this->actor.world.pos.x = lastPointPos->x;
-    this->actor.world.pos.y = lastPointPos->y;
-    this->actor.world.pos.z = lastPointPos->z;
-
+        this->actor.world.pos.x = lastPointPos->x;
+        this->actor.world.pos.y = lastPointPos->y;
+        this->actor.world.pos.z = lastPointPos->z;
+    }
     return 1;
 }
 

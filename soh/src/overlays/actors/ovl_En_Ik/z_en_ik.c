@@ -1423,6 +1423,11 @@ void func_80A780D0(EnIk* this, PlayState* play) {
             EnIk_StartMusic();
         }
     }
+
+    if (CVarGetInteger(CVAR_WINDOW("Chaos"), 0) == 1) {
+        func_80A78160(this, play);
+        EnIk_StartMusic();
+    }
     osSyncPrintf("En_Ik_inConfrontion_Init : %d !!!!!!!!!!!!!!!!\n", this->actor.params);
 }
 

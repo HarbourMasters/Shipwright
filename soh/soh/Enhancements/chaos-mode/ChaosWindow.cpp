@@ -7,12 +7,14 @@
 #include <libultraship/libultraship.h>
 
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include <cmath>
 
 extern "C" {
 #include "variables.h"
 #include "functions.h"
 #include "macros.h"
 extern PlayState* gPlayState;
+#include "src/overlays/actors/ovl_En_Md/z_en_md.h"
 }
 
 uint32_t frameCounter = 0;
@@ -23,7 +25,7 @@ uint32_t fakeTeleportTimer = 0;
 uint32_t magnetTimer = 0;
 uint32_t deathSwitchTimer = 0;
 uint32_t knuckleTimer = 0;
-uint32_t frameMultiplier = 1;
+uint32_t midoTimer = 0;
 uint32_t chaosInterval = 5;
 uint32_t votingInterval = 5;
 uint32_t activeInterval = 1;
@@ -49,6 +51,7 @@ uint32_t eventRealTimer;
 uint32_t eventMagnetTimer;
 uint32_t eventDeathSwitchTimer;
 uint32_t eventKnuckleTimer;
+uint32_t eventMidoTimer;
 
 static uint32_t actorMagnetHook = 0;
 static uint32_t votingHook = 0;
@@ -63,6 +66,7 @@ uint32_t voteCountCLeft = 0;
 bool isVotingActive = false;
 bool rollOptions = false;
 bool shouldTeleport = false;
+bool openChaosSettings = false;
 
 const char* fakeText = "Random Teleport";
 
@@ -86,6 +90,7 @@ std::vector<uint32_t> eventTimerList = {
     eventMagnetTimer,
     eventDeathSwitchTimer,
     eventKnuckleTimer,
+    eventMidoTimer,
 };
 
 std::vector<uint32_t> teleportList = {
@@ -122,31 +127,29 @@ std::vector<colorObject> colorOptions = {
 
 ImVec4 voteColor = colorOptions[COLOR_WHITE].colorCode;
 
-void ChaosUpdateFrameMultiplier() {
-    frameMultiplier = 1;
-}
-
 void ChaosUpdateInterval() {
-    chaosInterval = (CVarGetInteger(CVAR_ENHANCEMENT("ChaosInterval"), 0) * (1200 * frameMultiplier));
+    chaosInterval = (CVarGetInteger(CVAR_ENHANCEMENT("ChaosInterval"), 0) * 1200);
 }
 void ChaosUpdateVotingInterval() {
-    votingInterval = (CVarGetInteger(CVAR_ENHANCEMENT("VotingInterval"), 0) * (20 * frameMultiplier));
+    votingInterval = (CVarGetInteger(CVAR_ENHANCEMENT("VotingInterval"), 0) * 20);
+    //votingInterval = 60;
 }
 
 void ChaosUpdateEventTimers() {
     eventList.clear();
 
-    eventInvisibleTimer = (CVarGetInteger(CVAR_ENHANCEMENT("Invisibility"), 0) * (1200 * frameMultiplier));
-    eventStormTimer = (CVarGetInteger(CVAR_ENHANCEMENT("StormyWeather"), 0) * (1200 * frameMultiplier));
-    eventIronTimer = (CVarGetInteger(CVAR_ENHANCEMENT("IronBoots"), 0) * (1200 * frameMultiplier));
-    eventHovertimer = (CVarGetInteger(CVAR_ENHANCEMENT("HoverBoots"), 0) * (1200 * frameMultiplier));
-    eventBomberTimer = (CVarGetInteger(CVAR_ENHANCEMENT("Bomberman"), 0) * (1200 * frameMultiplier));
-    eventLavaTimer = (CVarGetInteger(CVAR_ENHANCEMENT("LavaFloor"), 0) * (1200 * frameMultiplier));
-    eventFakeTimer = (CVarGetInteger(CVAR_ENHANCEMENT("FakeTeleport"), 0) * (1200 * frameMultiplier));
-    eventRealTimer = (CVarGetInteger(CVAR_ENHANCEMENT("RealTeleport"), 0) * (1200 * frameMultiplier));
-    eventMagnetTimer = (CVarGetInteger(CVAR_ENHANCEMENT("ActorMagnet"), 0) * (1200 * frameMultiplier));
-    eventDeathSwitchTimer = (CVarGetInteger(CVAR_ENHANCEMENT("DeathSwitch"), 0) * (1200 * frameMultiplier));
-    eventKnuckleTimer = (CVarGetInteger(CVAR_ENHANCEMENT("KnuckleRing"), 0) * (1200 * frameMultiplier));
+    eventInvisibleTimer = (CVarGetInteger(CVAR_ENHANCEMENT("Invisibility"), 0) * 1200);
+    eventStormTimer = (CVarGetInteger(CVAR_ENHANCEMENT("StormyWeather"), 0) * 1200);
+    eventIronTimer = (CVarGetInteger(CVAR_ENHANCEMENT("IronBoots"), 0) * 1200);
+    eventHovertimer = (CVarGetInteger(CVAR_ENHANCEMENT("HoverBoots"), 0) * 1200);
+    eventBomberTimer = (CVarGetInteger(CVAR_ENHANCEMENT("Bomberman"), 0) * 1200);
+    eventLavaTimer = (CVarGetInteger(CVAR_ENHANCEMENT("LavaFloor"), 0) * 1200);
+    eventFakeTimer = (CVarGetInteger(CVAR_ENHANCEMENT("FakeTeleport"), 0) * 1200);
+    eventRealTimer = (CVarGetInteger(CVAR_ENHANCEMENT("RealTeleport"), 0) * 1200);
+    eventMagnetTimer = (CVarGetInteger(CVAR_ENHANCEMENT("ActorMagnet"), 0) * 1200);
+    eventDeathSwitchTimer = (CVarGetInteger(CVAR_ENHANCEMENT("DeathSwitch"), 0) * 1200);
+    eventKnuckleTimer = (CVarGetInteger(CVAR_ENHANCEMENT("KnuckleRing"), 0) * 1200);
+    eventMidoTimer = (CVarGetInteger(CVAR_ENHANCEMENT("MidoSucks"), 0) * 1200);
 
     eventList = {
         { EVENT_INVISIBILITY, "Invisibility", "gEnhancements.Invisibility", eventInvisibleTimer,
@@ -171,6 +174,8 @@ void ChaosUpdateEventTimers() {
             "A random input will kill Link, which one that is changes over time." },
         { EVENT_KNUCKLE_RING, "Iron Knuckle Ring", "gEnhancements.KnuckleRing", eventKnuckleTimer, 
             "A ring of Iron Knuckles has spawned!" },
+        { EVENT_MIDO_SUCKS, "Mido Sucks", "gEnhancements.MidoSucks",  eventMidoTimer,
+            "Mido abruptly reminds you why they suck so much." },
     };
 }
 
@@ -236,21 +241,26 @@ void ChaosEventsRepeater() {
         }
         Player* player = GET_PLAYER(gPlayState);
 
-        if (bombermanTimer > 0) {
-            if (bombermanTimer % 5 == 0) {
-                GameInteractor::RawAction::SpawnActor(ACTOR_EN_BOM, 0);
+        if (isEventIdPresent(EVENT_BOMBERMAN_MODE) == true) {
+            if (bombermanTimer > 0) {
+                if (bombermanTimer % 5 == 0) {
+                    GameInteractor::RawAction::SpawnActor(ACTOR_EN_BOM, 0);
+                }
+                bombermanTimer--;
+            } else {
+                CVarSetInteger(CVAR_ENHANCEMENT("RemoveExplosiveLimit"), prevExplosiveLimit);
             }
-            bombermanTimer--;
-        } else {
-            CVarSetInteger(CVAR_ENHANCEMENT("RemoveExplosiveLimit"), prevExplosiveLimit);
         }
 
-        if (lavaTimer > 0) {
-            if (lavaTimer % (20 * frameMultiplier) == 0) {
-                func_80837C0C(gPlayState, player, 0, 4, 5, 21372, 20);
+        if (isEventIdPresent(EVENT_FLOOR_IS_LAVA) == true) {
+            if (lavaTimer > 0) {
+                if (lavaTimer % 20 == 0) {
+                    func_80837C0C(gPlayState, player, 0, 4, 5, 21372, 20);
+                }
+                lavaTimer--;
             }
-            lavaTimer--;
         }
+        
         if (isEventIdPresent(EVENT_FAKE_TELEPORT) == true) {
             if (fakeTimer > 0) {
                 fakeTimer--;
@@ -282,27 +292,24 @@ void ChaosEventsRepeater() {
                 fakeTimer--;
             }
         }
-        if (magnetTimer > 0) {
-            for (auto& actorUpdate : actorData) {
-                Math_SmoothStepToF(&actorUpdate->world.pos.x, player->actor.world.pos.x + 30, 0.4f, 5.0f, 0.0f);
-                Math_SmoothStepToF(&actorUpdate->world.pos.y, player->actor.world.pos.y, 0.4f, 5.0f, 0.0f);
-                Math_SmoothStepToF(&actorUpdate->world.pos.z, player->actor.world.pos.z + 30, 0.4f, 5.0f, 0.0f);
 
-                // actorUpdate->world.pos.x = player->actor.world.pos.x + 30;
-                // actorUpdate->world.pos.y = player->actor.world.pos.y;
-                // actorUpdate->world.pos.z = player->actor.world.pos.z + 30;
-                actorUpdate->world.rot = player->actor.world.rot;
+        if (isEventIdPresent(EVENT_ACTOR_MAGNET) == true) {
+            if (magnetTimer > 0) {
+                for (auto& actorUpdate : actorData) {
+                    Math_SmoothStepToF(&actorUpdate->world.pos.x, player->actor.world.pos.x + 30, 0.4f, 5.0f, 0.0f);
+                    Math_SmoothStepToF(&actorUpdate->world.pos.y, player->actor.world.pos.y, 0.4f, 5.0f, 0.0f);
+                    Math_SmoothStepToF(&actorUpdate->world.pos.z, player->actor.world.pos.z + 30, 0.4f, 5.0f, 0.0f);
+                    actorUpdate->world.rot = player->actor.world.rot;
+                }
+                magnetTimer--;
             }
-            magnetTimer--;
         }
+
         if (isEventIdPresent(EVENT_DEATH_SWITCH) == true) {
             if (deathSwitchTimer > 0) {
-                deathSwitchTimer--;
-                if (prevRoll != 10) {
-                    gSaveContext.equips.buttonItems[prevRoll] = ITEM_SOLD_OUT;
-                }
+                deathSwitchTimer--;               
             }
-            if (deathSwitchTimer % 120 == 0) {
+            if (deathSwitchTimer % 120 == 0 || deathSwitchTimer == eventDeathSwitchTimer - 1) {
                 uint32_t roll = (rand() % 7) + 1;
                 if (prevRoll == 10) {
                     ChaosEventDeathSwitch(roll);
@@ -317,37 +324,37 @@ void ChaosEventsRepeater() {
             if (prevRoll != 10) {
                 bool deathTrigger = false;
                 switch (prevRoll) {
-                    case 1:
+                    case BUTTON_CLEFT:
                         if (CHECK_BTN_ALL(gPlayState->state.input->press.button, BTN_CLEFT)) {
                             deathTrigger = true;
                         }
                         break;
-                    case 2:
+                    case BUTTON_CDOWN:
                         if (CHECK_BTN_ALL(gPlayState->state.input->press.button, BTN_CDOWN)) {
                             deathTrigger = true;
                         }
                         break;
-                    case 3:
+                    case BUTTON_CRIGHT:
                         if (CHECK_BTN_ALL(gPlayState->state.input->press.button, BTN_CRIGHT)) {
                             deathTrigger = true;
                         }
                         break;
-                    case 4:
+                    case BUTTON_DUP:
                         if (CHECK_BTN_ALL(gPlayState->state.input->press.button, BTN_DUP)) {
                             deathTrigger = true;
                         }
                         break;
-                    case 5:
+                    case BUTTON_DDOWN:
                         if (CHECK_BTN_ALL(gPlayState->state.input->press.button, BTN_DDOWN)) {
                             deathTrigger = true;
                         }
                         break;
-                    case 6:
+                    case BUTTON_DLEFT:
                         if (CHECK_BTN_ALL(gPlayState->state.input->press.button, BTN_DLEFT)) {
                             deathTrigger = true;
                         }
                         break;
-                    case 7:
+                    case BUTTON_DRIGHT:
                         if (CHECK_BTN_ALL(gPlayState->state.input->press.button, BTN_DRIGHT)) {
                             deathTrigger = true;
                         }
@@ -364,6 +371,42 @@ void ChaosEventsRepeater() {
         if (isEventIdPresent(EVENT_KNUCKLE_RING) == true) {
             if (knuckleTimer > 0) {
                 knuckleTimer--;
+            }
+        }
+
+        if (isEventIdPresent(EVENT_MIDO_SUCKS) == true) {
+            if (midoTimer > 0) {
+                midoTimer--;
+                Vec3f_ actorPosition;
+
+                ActorListEntry midoActors = gPlayState->actorCtx.actorLists[ACTORCAT_NPC];
+                Actor* currAct = midoActors.head;
+                Actor* actorToBlock = &GET_PLAYER(gPlayState)->actor;
+                if (currAct != nullptr) {
+                    while (currAct != nullptr) {
+                        if (currAct->id == ACTOR_EN_MD) {
+                            EnMd* midoActor = (EnMd*)currAct;
+                            currAct->world.rot.y = currAct->yawTowardsPlayer;
+                            currAct->shape.rot.y = currAct->yawTowardsPlayer;
+
+                            s16 yaw = Math_Vec3f_Yaw(&currAct->home.pos, &actorToBlock->world.pos);
+
+                            currAct->world.pos.x = currAct->home.pos.x;
+                            currAct->world.pos.x += 60.0f * Math_SinS(yaw);
+
+                            currAct->world.pos.z = currAct->home.pos.z;
+                            currAct->world.pos.z += 60.0f * Math_CosS(yaw);
+
+                            f32 temp = fabsf((f32)currAct->yawTowardsPlayer - yaw) * 0.001f * 3.0f;
+                            midoActor->skelAnime.playSpeed = CLAMP(temp, 1.0f, 3.0f);
+                        }
+                        currAct = currAct->next;
+                    }
+                }
+
+                
+
+              
             }
         }
     });
@@ -451,13 +494,16 @@ void ChaosEventsActivator(uint32_t eventId, bool isActive) {
         case EVENT_DEATH_SWITCH:
             if (isActive) {
                 deathSwitchTimer = eventDeathSwitchTimer;
+            } else {
+                gSaveContext.equips.buttonItems[prevRoll] = prevEquip;
+                GameInteractor::RawAction::ForceInterfaceUpdate();
             }
             break;
         case EVENT_KNUCKLE_RING:
             if (isActive) {
                 knuckleTimer = eventKnuckleTimer;
                 Player* player = GET_PLAYER(gPlayState);
-                float radius = 20.0f;
+                float radius = 45.0f;
                 std::vector<std::tuple<float, float, float>> spawnPoints;
 
                 for (int i = 0; i < 8; i++) {
@@ -473,38 +519,67 @@ void ChaosEventsActivator(uint32_t eventId, bool isActive) {
                     float deltaX = player->actor.world.pos.x - std::get<0>(spawnKnuckle);
                     float deltaZ = player->actor.world.pos.z - std::get<2>(spawnKnuckle);
                     float angleToPlayer = atan2(deltaZ, deltaX);
-
-                    int16_t rotY = static_cast<int16_t>(angleToPlayer * (32768 / M_PI));
+                    int16_t rotY = static_cast<int16_t>(angleToPlayer * (180.0f / M_PI));
+                    rotY -= 90.0f;
+                    rotY = static_cast<int16_t>(((rotY / 360.0f) * 65536.0f) * -1);
+                    uint32_t knuckleColor = rand() % 3;
 
                     Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_IK, std::get<0>(spawnKnuckle),
-                                std::get<1>(spawnKnuckle), std::get<2>(spawnKnuckle), 0, rotY, 0, 2, false);
+                                std::get<1>(spawnKnuckle), std::get<2>(spawnKnuckle), 0, rotY, 0, knuckleColor, false);
                 }
                 
+            } else {
+                if (!gPlayState) {
+                    return;
+                }
+                ActorListEntry nqKnuckles = gPlayState->actorCtx.actorLists[ACTORCAT_ENEMY];
+                ActorListEntry hqKnuckles = gPlayState->actorCtx.actorLists[ACTORCAT_BOSS];
+                Actor* currAct = nqKnuckles.head;
+                if (currAct != nullptr) {
+                    while (currAct != nullptr) {
+                        if (currAct->id == ACTOR_EN_IK) {
+                            Actor_Kill(currAct);
+                        }
+                        currAct = currAct->next;
+                    }
+                }
+                currAct = hqKnuckles.head;
+                if (currAct != nullptr) {
+                    while (currAct != nullptr) {
+                        if (currAct->id == ACTOR_EN_IK) {
+                            Actor_Kill(currAct);
+                        }
+                        currAct = currAct->next;
+                    }
+                }
             }
+            break;
+        case EVENT_MIDO_SUCKS:
+            if (isActive) {
+                Player* player = GET_PLAYER(gPlayState);
+                Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_MD, player->actor.world.pos.x,
+                            player->actor.world.pos.y, player->actor.world.pos.z, 0, player->actor.world.rot.y + 16384, 0, 256, false);
+                midoTimer = eventMidoTimer;
+            } else {
+                ActorListEntry midoActors = gPlayState->actorCtx.actorLists[ACTORCAT_NPC];
+                Actor* currAct = midoActors.head;
+                if (currAct != nullptr) {
+                    while (currAct != nullptr) {
+                        if (currAct->id == ACTOR_EN_MD) {
+                            Actor_Kill(currAct);
+                        }
+                        currAct = currAct->next;
+                    }
+                }
+            }
+            break;
         default:
             break;
     }
 }
 
-void ChaosVotingCounter() {
-    votingHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!gPlayState || !isVotingActive) {
-            return;
-        }
-        if (CHECK_BTN_ALL(gPlayState->state.input[0].cur.button, BTN_A)) {
-            votingObjectList[VOTE_OPTION_A].votingCount++;
-        }
-        if (CHECK_BTN_ALL(gPlayState->state.input[0].cur.button, BTN_CLEFT)) {
-            votingObjectList[VOTE_OPTION_B].votingCount++;
-        }
-        if (CHECK_BTN_ALL(gPlayState->state.input[0].cur.button, BTN_CRIGHT)) {
-            votingObjectList[VOTE_OPTION_C].votingCount++;
-        }
-    });
-}
-
 void ChaosVoteSelector(uint32_t option) {
-    // uint32_t roll = EVENT_ACTOR_MAGNET;
+    //uint32_t roll = EVENT_MIDO_SUCKS;
     uint32_t roll = rand() % votingList.size();
     votingObjectList[option].votingOption = votingList[roll].eventId;
     votingList.erase(votingList.begin() + roll);
@@ -519,7 +594,6 @@ void ChaosVotingStarted() {
         ChaosVoteSelector(VOTE_OPTION_C);
         rollOptions = false;
     }
-    ChaosVotingCounter();
 }
 
 uint32_t GetVotesForOption(uint32_t option) {
@@ -607,7 +681,7 @@ void DrawChaosTrackerEvents() {
             }
             ImGui::SameLine();
             ImGui::TextColored(colorOptions[COLOR_LIGHT_GREEN].colorCode, std::to_string(obj.eventTimer).c_str());
-            ImGui::Text(obj.eventDescription);
+            ImGui::TextWrapped(obj.eventDescription);
         }
     }
 }
@@ -631,7 +705,7 @@ void ChaosVotingColorSelector(uint32_t option) {
 
 void DrawChaosEventsVoting() {
     ChaosVotingStarted();
-    ImGui::TextColored(colorOptions[COLOR_INDIGO].colorCode, "Voting Active");
+    ImGui::TextColored(colorOptions[COLOR_WHITE].colorCode, "Voting Active");
     UIWidgets::PaddedSeparator();
     ImGui::BeginTable("Voting Table", 2);
     for (auto& voting : votingObjectList) {
@@ -646,40 +720,66 @@ void DrawChaosEventsVoting() {
     UIWidgets::PaddedSeparator();
 }
 
+void DrawChaosSettings() {
+    if (!openChaosSettings) {
+        return;
+    }
+    ImGui::SetNextWindowSize(ImVec2(400, 400), ImGuiCond_FirstUseEver);
+    ImGui::Begin("Chaos Settings");
+    ImGui::PushItemWidth(100.0f);
+    if (UIWidgets::PaddedEnhancementSliderInt("Chaos Interval", "##chaosInterval",
+                                              CVAR_ENHANCEMENT("ChaosInterval"), 1, 10, "%d Minutes", 5, true, true,
+                                              false)) {
+        ChaosUpdateInterval();
+    }
+    if (UIWidgets::PaddedEnhancementSliderInt("Voting Interval", "##voteInterval",
+                                              CVAR_ENHANCEMENT("VotingInterval"), 30, 60, "%d Seconds", 60, true,
+                                              true, false)) {
+        ChaosUpdateVotingInterval();
+    }
+    ImGui::PopItemWidth();
+    UIWidgets::PaddedSeparator();
+    uint32_t row = 0;
+    ImGui::BeginTable("ChaosSettings", 2);
+    ImGui::TableNextColumn();
+    for (auto& optionsList : eventList) {
+        if (row == eventList.size() / 2) {
+            ImGui::TableNextColumn();
+        }
+        std::string str1 = "##";
+        std::string optionId = str1 + optionsList.eventName;
+        optionId.erase(std::remove(optionId.begin(), optionId.end(), ' '), optionId.end());
+        if (UIWidgets::PaddedEnhancementSliderInt(optionsList.eventName, optionId.c_str(),
+                                                  optionsList.eventVariable, 1, 10, "%d Minutes", 5, true, true,
+                                                  true)) {
+            ChaosUpdateEventTimers();
+        }
+        row++;
+    }
+    ImGui::EndTable();
+
+    ImGui::End();
+}
+
 void ChaosWindow::DrawElement() {
+    ImGui::SetWindowFontScale(2.0f);
     std::string counter = std::to_string(frameCounter).c_str();
     std::string frameText = "Frame Counter: " + counter;
-    if (ImGui::CollapsingHeader("Chaos Mode Settings")) {
-        if (UIWidgets::PaddedEnhancementCheckbox("Enable Chaos Mode", CVAR_ENHANCEMENT("EnableChaosMode"), true, false)) {
-            if (CVarGetInteger(CVAR_ENHANCEMENT("EnableChaosMode"), 0) == 0) {
-                for (auto& removal : activeEvents) {
-                    ChaosEventsActivator(removal.eventId, false);
-                    ChaosEventsManager(EVENT_ACTION_REMOVE, removal.eventId);
-                }
-                frameCounter = 0;
+    
+    if (UIWidgets::PaddedEnhancementCheckbox("Enable Chaos Mode", CVAR_ENHANCEMENT("EnableChaosMode"), true, false)) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("EnableChaosMode"), 0) == 0) {
+            for (auto& removal : activeEvents) {
+                ChaosEventsActivator(removal.eventId, false);
+                ChaosEventsManager(EVENT_ACTION_REMOVE, removal.eventId);
             }
-        }
-        ImGui::PushItemWidth(100.0f);
-        if (UIWidgets::PaddedEnhancementSliderInt("Chaos Interval", "##chaosInterval", CVAR_ENHANCEMENT("ChaosInterval"), 1, 10, 
-                "%d Minutes", 5, true, true, false)) {
-            ChaosUpdateInterval();
-        }
-        if (UIWidgets::PaddedEnhancementSliderInt("Voting Interval", "##voteInterval", CVAR_ENHANCEMENT("VotingInterval"), 30,
-                                                  60, "%d Seconds", 60, true, true, false)) {
-            ChaosUpdateVotingInterval();
-        }
-        ImGui::PopItemWidth();
-        UIWidgets::PaddedSeparator();
-        for (auto& optionsList : eventList) {
-            std::string str1 = "##";
-            std::string optionId = str1 + optionsList.eventName;
-            optionId.erase(std::remove(optionId.begin(), optionId.end(), ' '), optionId.end());
-            if (UIWidgets::PaddedEnhancementSliderInt(optionsList.eventName, optionId.c_str(), optionsList.eventVariable, 1,
-                    10, "%d Minutes", 5, true, false, false)) {
-                ChaosUpdateEventTimers();
-            }
+            frameCounter = 0;
+            isVotingActive = false;
         }
     }
+    if (ImGui::Button("Chaos Settings")) {
+        openChaosSettings = !openChaosSettings;
+    }
+    DrawChaosSettings();
     
     ImGui::Text(frameText.c_str());
     UIWidgets::PaddedSeparator();
@@ -694,11 +794,11 @@ void ChaosWindow::DrawElement() {
 }
 
 void ChaosWindow::InitElement() {
-    ChaosUpdateFrameMultiplier();
     ChaosUpdateInterval();
     ChaosUpdateVotingInterval();
     ChaosUpdateEventTimers();
     ChaosEventActorMagnet();
     ChaosEventsRepeater();
     ChaosTrackerTimer();
+    DrawChaosSettings();
 }

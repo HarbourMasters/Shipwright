@@ -4,8 +4,8 @@
 #include "GuiWindow.h"
 #include "z64.h"
 #include <vector>
+#include "Fonts.h"
 
-extern void ChaosUpdateFrameMultiplier();
 extern void ChaosUpdateVotingInterval();
 
 typedef enum {
@@ -57,12 +57,23 @@ typedef enum {
     EVENT_ACTOR_MAGNET,
     EVENT_DEATH_SWITCH,
     EVENT_KNUCKLE_RING,
+    EVENT_MIDO_SUCKS,
 } ChaosEvents;
 
 typedef enum {
     VOTE_OPTION_A,
     VOTE_OPTION_B,
     VOTE_OPTION_C,
+};
+
+typedef enum {
+    BUTTON_CLEFT = 1,
+    BUTTON_CDOWN,
+    BUTTON_CRIGHT,
+    BUTTON_DUP,
+    BUTTON_DDOWN,
+    BUTTON_DLEFT,
+    BUTTON_DRIGHT,
 };
 
 class ChaosWindow : public Ship::GuiWindow {
