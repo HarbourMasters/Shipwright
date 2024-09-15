@@ -193,7 +193,7 @@ namespace SohGui {
         gui->AddGuiWindow(mCheckTrackerSettingsWindow);
         mEntranceTrackerWindow = std::make_shared<EntranceTrackerWindow>(CVAR_WINDOW("EntranceTracker"), "Entrance Tracker");
         gui->AddGuiWindow(mEntranceTrackerWindow);
-        mEntranceTrackerSettingsWindow = std::make_shared<EntranceTrackerSettingsWindow>(CVAR_WINDOW("EntranceTrackerSettings"), "Entrance Tracker Settings");
+        mEntranceTrackerSettingsWindow = std::make_shared<EntranceTrackerSettingsWindow>(CVAR_WINDOW("EntranceTrackerSettings"), "Entrance Tracker Settings", ImVec2(600, 375));
         gui->AddGuiWindow(mEntranceTrackerSettingsWindow);
         mItemTrackerWindow = std::make_shared<ItemTrackerWindow>(CVAR_WINDOW("ItemTracker"), "Item Tracker");
         gui->AddGuiWindow(mItemTrackerWindow);
