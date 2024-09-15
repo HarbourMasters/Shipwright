@@ -2057,6 +2057,15 @@ void StaticData::HintTable_Init_Item() {
                                                }, {
                                                CustomMessage("a fish-puller", /*german*/"ein Fischzieher", /*french*/"(canne à pêche)")});
                                                 // /*spanish*/(caña de pescar)
+     // TODO: Translations
+     hintTextTable[RHT_ICE_CAVERN_SILVER_RUPEE] = HintText(CustomMessage("an Ice Cavern Silver Rupee"), { CustomMessage("a Silver Rupee") }, { CustomMessage("cold unlocking currency") });
+     hintTextTable[RHT_BOTTOM_OF_THE_WELL_SILVER_RUPEE] = HintText(CustomMessage("a Bottom of the Well Silver Rupee"), { CustomMessage("a Silver Rupee") }, { CustomMessage("damp unlocking currency") });
+     hintTextTable[RHT_GERUDO_TRAINING_GROUNDS_SILVER_RUPEE] = HintText(CustomMessage("a Gerudo Training Grounds Silver Rupee"), { CustomMessage("a Silver Rupee") }, { CustomMessage("stolen unlocking currency") });
+     hintTextTable[RHT_SPIRIT_TEMPLE_SILVER_RUPEE] = HintText(CustomMessage("a Spirit Temple Silver Rupee"), { CustomMessage("a Silver Rupee") }, { CustomMessage("spiritual unlocking currency") });
+     hintTextTable[RHT_SHADOW_TEMPLE_SILVER_RUPEE] = HintText(CustomMessage("a Shadow Temple Silver Rupee"), { CustomMessage("a Silver Rupee") }, { CustomMessage("dark unlocking currency") });
+     hintTextTable[RHT_GANONS_CASTLE_SILVER_RUPEE] = HintText(CustomMessage("a Ganon's Castle Silver Rupee"), { CustomMessage("a Silver Rupee") }, { CustomMessage("evil unlocking currency") });
+     hintTextTable[RHT_DODONGOS_CAVERN_SILVER_RUPEE] = HintText(CustomMessage("a Dodongo's Cavern Silver Rupee"), { CustomMessage("a Silver Rupee") }, {CustomMessage("explosive unlocking currency") });
+     // TODO: End Translations
   
     hintTextTable[RHT_QUIVER_INF] = HintText(CustomMessage("", /*german*/"!!!", /*french*/"!!!"),
                                              {
