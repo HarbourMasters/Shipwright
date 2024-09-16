@@ -12,6 +12,7 @@
 #include <overlays/misc/ovl_kaleido_scope/z_kaleido_scope.h>
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/framebuffer_effects.h"
 
 #include <libultraship/libultraship.h>
 
@@ -1336,6 +1337,24 @@ void Play_Draw(PlayState* play) {
     Lights* sp228;
     Vec3f sp21C;
 
+    // #region SOH [Port] Frame buffer effects for pause menu
+    // Track render size when paused and that a copy was performed
+    static u32 lastPauseWidth;
+    static u32 lastPauseHeight;
+    static u8 hasCapturedPauseBuffer;
+    u8 recapturePauseBuffer = false;
+
+    // If the size has changed or dropped frames leading to the buffer not being copied,
+    // set the prerender state back to setup to copy a new frame.
+    // This requires not rendering kaleido during this copy to avoid kaleido being copied
+    if ((R_PAUSE_MENU_MODE == 2 || R_PAUSE_MENU_MODE == 3) &&
+        (lastPauseWidth != OTRGetGameRenderWidth() || lastPauseHeight != OTRGetGameRenderHeight() ||
+         !hasCapturedPauseBuffer)) {
+        R_PAUSE_MENU_MODE = 1;
+        recapturePauseBuffer = true;
+    }
+    // #endregion
+
     OPEN_DISPS(gfxCtx);
 
     gSegments[4] = VIRTUAL_TO_PHYSICAL(play->objectCtx.status[play->objectCtx.mainKeepIndex].segment);
@@ -1450,13 +1469,13 @@ void Play_Draw(PlayState* play) {
             if (R_PAUSE_MENU_MODE == 3) {
                 Gfx* sp84 = POLY_OPA_DISP;
 
+                // SOH [Port] Draw game framebuffer using our custom handling
                 //func_800C24BC(&play->pauseBgPreRender, &sp84);
+                FB_DrawFromFramebuffer(&sp84, gPauseFrameBuffer, 255);
                 POLY_OPA_DISP = sp84;
 
-                //goto Play_Draw_DrawOverlayElements;
-            }
-            //else
-            {
+                goto Play_Draw_DrawOverlayElements;
+            } else {
                 s32 sp80;
 
                 if ((HREG(80) != 10) || (HREG(83) != 0)) {
@@ -1530,10 +1549,6 @@ void Play_Draw(PlayState* play) {
                     Environment_FillScreen(gfxCtx, 0, 0, 0, play->unk_11E18, FILL_SCREEN_OPA);
                 }
 
-                if ((play->pauseCtx.state != 0) && (HREG(80) != 10) || (HREG(89) != 0)) {
-                    Play_DrawOverlayElements(play);
-                }
-
                 if ((HREG(80) != 10) || (HREG(85) != 0)) {
                     func_800315AC(play, &play->actorCtx);
                 }
@@ -1581,11 +1596,25 @@ void Play_Draw(PlayState* play) {
 
                     play->pauseBgPreRender.fbuf = gfxCtx->curFrameBuffer;
                     play->pauseBgPreRender.fbufSave = (u16*)gZBuffer;
-                    func_800C1F20(&play->pauseBgPreRender, &sp70);
+                    // SOH [Port] Use our custom copy method instead of the prerender system
+                    // func_800C1F20(&play->pauseBgPreRender, &sp70);
                     if (R_PAUSE_MENU_MODE == 1) {
                         play->pauseBgPreRender.cvgSave = (u8*)gfxCtx->curFrameBuffer;
-                        func_800C20B4(&play->pauseBgPreRender, &sp70);
+                        // func_800C20B4(&play->pauseBgPreRender, &sp70);
                         R_PAUSE_MENU_MODE = 2;
+
+                        // #region SOH [Port] Custom handling for pause prerender background capture
+                        lastPauseWidth = OTRGetGameRenderWidth();
+                        lastPauseHeight = OTRGetGameRenderHeight();
+                        hasCapturedPauseBuffer = false;
+
+                        FB_CopyToFramebuffer(&sp70, 0, gPauseFrameBuffer, false, &hasCapturedPauseBuffer);
+
+                        // Set the state back to ready after the recapture is done
+                        if (recapturePauseBuffer) {
+                            R_PAUSE_MENU_MODE = 3;
+                        }
+                        // #endregion
                     } else {
                         gTrnsnUnkState = 2;
                     }
@@ -1621,15 +1650,6 @@ void Play_Draw(PlayState* play) {
     }
 
     Camera_Finish(GET_ACTIVE_CAM(play));
-
-    {
-        Gfx* prevDisplayList = POLY_OPA_DISP;
-        Gfx* gfxP = Graph_GfxPlusOne(POLY_OPA_DISP);
-        gSPDisplayList(OVERLAY_DISP++, gfxP);
-        gSPEndDisplayList(gfxP++);
-        Graph_BranchDlist(prevDisplayList, gfxP);
-        POLY_OPA_DISP = gfxP;
-    }
 
     CLOSE_DISPS(gfxCtx);
 
