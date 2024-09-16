@@ -255,7 +255,6 @@ bool BothAges(const RandomizerRegion area);
 bool ChildCanAccess(const RandomizerRegion area);
 bool AdultCanAccess(const RandomizerRegion area);
 bool HasAccessTo(const RandomizerRegion area);
-bool HereAsSameAge(const RandomizerRegion area, ConditionFn condition); //RANDOTODO make a less stupid way to check other at same age than self referncing with this
 
 #define DAY_NIGHT_CYCLE true
 #define NO_DAY_NIGHT_CYCLE false
