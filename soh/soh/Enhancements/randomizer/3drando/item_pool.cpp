@@ -659,7 +659,7 @@ static void SetMinimalItemPool() {
 }
 
 void GenerateItemPool() {
-  //RANDOTODO proper removal of items not in pool or logically relevent instead of dummy checks.
+  //RANDOTODO proper removal of items not in pool or logically relevant instead of dummy checks.
   auto ctx = Rando::Context::GetInstance();
   ItemPool.clear();
   PendingJunkPool.clear();

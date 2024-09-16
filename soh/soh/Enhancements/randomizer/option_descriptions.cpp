@@ -278,7 +278,7 @@ void Settings::CreateOptionDescriptions() {
         "Balanced - Prices will range between 0 to 300 rupees, favoring lower numbers\n"
         "Fixed - A fixed number\n"
         "Range - A random point between specific ranges\n"
-        "Set By Wallet - Set wieghts that decide the choice of each wallet, and get a random price in that range if that wallet is chosen";
+        "Set By Wallet - Set weights that decide the choice of each wallet, and get a random price in that range if that wallet is chosen";
     mOptionDescriptions[RSK_SHOPSANITY_PRICES_FIXED_PRICE] =
         "The price for Shopsanity checks.";
     mOptionDescriptions[RSK_SHOPSANITY_PRICES_RANGE_1] =
@@ -286,15 +286,15 @@ void Settings::CreateOptionDescriptions() {
     mOptionDescriptions[RSK_SHOPSANITY_PRICES_RANGE_2] =
         "The second part of the inclusive range of prices to allow for Shopsanity checks.";
     mOptionDescriptions[RSK_SHOPSANITY_PRICES_NO_WALLET_WEIGHT] =
-        "The chance for Shopanity checks to be free.";
+        "The chance for Shopsanity checks to be free.";
     mOptionDescriptions[RSK_SHOPSANITY_PRICES_CHILD_WALLET_WEIGHT] =
-        "The chance for Shopanity checks to be puchasable with Child's Wallet (1-99).";
+        "The chance for Shopsanity checks to be purchasable with Child's Wallet (1-99).";
     mOptionDescriptions[RSK_SHOPSANITY_PRICES_ADULT_WALLET_WEIGHT] =
-        "The chance for Shopanity checks to be puchasable with Adults's Wallet (100-200).";
+        "The chance for Shopsanity checks to be purchasable with Adult's Wallet (100-200).";
     mOptionDescriptions[RSK_SHOPSANITY_PRICES_GIANT_WALLET_WEIGHT] =
-        "The chance for Shopanity checks to be puchasable with Giant's Wallet (201-500).";
+        "The chance for Shopsanity checks to be purchasable with Giant's Wallet (201-500).";
     mOptionDescriptions[RSK_SHOPSANITY_PRICES_TYCOON_WALLET_WEIGHT] =
-        "The chance for Shopanity checks to be puchasable with Tycoon Wallet. (500+)";
+        "The chance for Shopsanity checks to be purchasable with Tycoon Wallet. (500+)";
     mOptionDescriptions[RSK_SHOPSANITY_PRICES_AFFORDABLE] =
         "After choosing a price, set it to the affordable amount based on the wallet required.\n\n"
         "Affordable prices per tier: starter = 1, adult = 100, giant = 201, tycoon = 501\n\n"
@@ -325,7 +325,7 @@ void Settings::CreateOptionDescriptions() {
         "Balanced - Prices will range between 0 to 300 rupees, favoring lower numbers\n"
         "Fixed - A fixed number\n"
         "Range - A random point between specific ranges\n"
-        "Set By Wallet - Set wieghts that decide the choice of each wallet, and get a random price in that range if that wallet is chosen";
+        "Set By Wallet - Set weights that decide the choice of each wallet, and get a random price in that range if that wallet is chosen";
     mOptionDescriptions[RSK_SCRUBS_PRICES_FIXED_PRICE] =
         "The price for Scrub checks.";
     mOptionDescriptions[RSK_SCRUBS_PRICES_RANGE_1] =
@@ -335,13 +335,13 @@ void Settings::CreateOptionDescriptions() {
     mOptionDescriptions[RSK_SCRUBS_PRICES_NO_WALLET_WEIGHT] =
         "The chance for Scrub checks to be free.";
     mOptionDescriptions[RSK_SCRUBS_PRICES_CHILD_WALLET_WEIGHT] =
-        "The chance for Scrub checks to be puchasable with Child's Wallet (1-99).";
+        "The chance for Scrub checks to be purchasable with Child's Wallet (1-99).";
     mOptionDescriptions[RSK_SCRUBS_PRICES_ADULT_WALLET_WEIGHT] =
-        "The chance for Scrub checks to be puchasable with Adults's Wallet (100-200).";
+        "The chance for Scrub checks to be purchasable with Adult's Wallet (100-200).";
     mOptionDescriptions[RSK_SCRUBS_PRICES_GIANT_WALLET_WEIGHT] =
-        "The chance for Scrub checks to be puchasable with Giant's Wallet (201-500).";
+        "The chance for Scrub checks to be purchasable with Giant's Wallet (201-500).";
     mOptionDescriptions[RSK_SCRUBS_PRICES_TYCOON_WALLET_WEIGHT] =
-        "The chance for Scrub checks to be puchasable with Tycoon Wallet. (500+)";
+        "The chance for Scrub checks to be purchasable with Tycoon Wallet. (500+)";
     mOptionDescriptions[RSK_SCRUBS_PRICES_AFFORDABLE] =
         "After choosing a price, set it to the affordable amount based on the wallet required.\n\n"
         "Affordable prices per tier: starter = 1, adult = 100, giant = 201, tycoon = 501\n\n"
@@ -369,7 +369,7 @@ void Settings::CreateOptionDescriptions() {
         "Balanced - Prices will range between 0 to 300 rupees, favoring lower numbers\n"
         "Fixed - A fixed number\n"
         "Range - A random point between specific ranges\n"
-        "Set By Wallet - Set wieghts that decide the choice of each wallet, and get a random price in that range if that wallet is chosen";
+        "Set By Wallet - Set weights that decide the choice of each wallet, and get a random price in that range if that wallet is chosen";
     mOptionDescriptions[RSK_MERCHANT_PRICES_FIXED_PRICE] =
         "The price for Merchant checks.";
     mOptionDescriptions[RSK_MERCHANT_PRICES_RANGE_1] =
@@ -379,13 +379,13 @@ void Settings::CreateOptionDescriptions() {
     mOptionDescriptions[RSK_MERCHANT_PRICES_NO_WALLET_WEIGHT] =
         "The chance for Merchant checks to be free.";
     mOptionDescriptions[RSK_MERCHANT_PRICES_CHILD_WALLET_WEIGHT] =
-        "The chance for Merchant checks to be puchasable with Child's Wallet (1-99).";
+        "The chance for Merchant checks to be purchasable with Child's Wallet (1-99).";
     mOptionDescriptions[RSK_MERCHANT_PRICES_ADULT_WALLET_WEIGHT] =
-        "The chance for Merchant checks to be puchasable with Adults's Wallet (100-200).";
+        "The chance for Merchant checks to be purchasable with Adult's Wallet (100-200).";
     mOptionDescriptions[RSK_MERCHANT_PRICES_GIANT_WALLET_WEIGHT] =
-        "The chance for Merchant checks to be puchasable with Giant's Wallet (201-500).";
+        "The chance for Merchant checks to be purchasable with Giant's Wallet (201-500).";
     mOptionDescriptions[RSK_MERCHANT_PRICES_TYCOON_WALLET_WEIGHT] =
-        "The chance for Merchant checks to be puchasable with Tycoon Wallet. (500+)";
+        "The chance for Merchant checks to be purchasable with Tycoon Wallet. (500+)";
     mOptionDescriptions[RSK_MERCHANT_PRICES_AFFORDABLE] =
         "After choosing a price, set it to the affordable amount based on the wallet required.\n\n"
         "Affordable prices per tier: starter = 1, adult = 100, giant = 201, tycoon = 501\n\n"

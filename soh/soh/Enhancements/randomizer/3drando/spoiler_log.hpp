@@ -8,7 +8,7 @@
 
 using RandomizerHash = std::array<std::string, 5>;
 
-// RANDOTODO this is primerally used by the check tracker now, and should probably be moved
+// RANDOTODO this is primarily used by the check tracker now, and should probably be moved
 typedef enum {
     SPOILER_CHK_NONE,
     SPOILER_CHK_ALWAYS_COLLECTED,
@@ -28,7 +28,6 @@ typedef enum {
 } SpoilerCollectionCheckType;
 
 // GetLocation groups for checks, used to group the checks by logical location
-// RANDOTODO this is only used by exclude groups ATM, and could probably be replaced with RandomizerArea for that purpose
 typedef enum {
     GROUP_NO_GROUP,
     GROUP_KOKIRI_FOREST,              // 0x55, 0x28
