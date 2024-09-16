@@ -2282,6 +2282,16 @@ extern "C" float OTRGetDimensionFromRightEdge(float v) {
     return (SCREEN_WIDTH / 2 + SCREEN_HEIGHT / 2 * OTRGetAspectRatio() - (SCREEN_WIDTH - v));
 }
 
+// Gets the width of the current render target area
+extern "C" uint32_t OTRGetGameRenderWidth() {
+    return gfx_current_dimensions.width;
+}
+
+// Gets the height of the current render target area
+extern "C" uint32_t OTRGetGameRenderHeight() {
+    return gfx_current_dimensions.height;
+}
+
 f32 floorf(f32 x);// RANDOTODO False positive error "allowing all exceptions is incompatible with previous function"
 f32 ceilf(f32 x); // This gets annoying
 
