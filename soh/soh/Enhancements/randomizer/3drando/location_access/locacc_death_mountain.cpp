@@ -27,7 +27,7 @@ void AreaTable_Init_DeathMountain() {
   areaTable[RR_DEATH_MOUNTAIN_SUMMIT] = Area("Death Mountain Summit", "Death Mountain", RA_DEATH_MOUNTAIN_TRAIL, DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&logic->PrescriptionAccess, {[]{return logic->PrescriptionAccess || (logic->IsAdult && (logic->BrokenSwordAccess || logic->BrokenSword));}}),
-                  EventAccess(&logic->GossipStoneFairy,   {[]{return logic->GossipStoneFairy   || logic->CanSummonGossipFairy;}}),
+                  EventAccess(&logic->GossipStoneFairy,   {[]{return logic->CanSummonGossipFairy();}}),
                   EventAccess(&logic->BugRock,            {[]{return logic->BugRock            || logic->IsChild;}}),
                 }, {
                   //Locations
@@ -82,7 +82,7 @@ void AreaTable_Init_DeathMountain() {
 
   areaTable[RR_GORON_CITY] = Area("Goron City", "Goron City", RA_GORON_CITY, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&logic->GossipStoneFairy,          {[]{return logic->GossipStoneFairy          || logic->CanSummonGossipFairyWithoutSuns;}}),
+                  EventAccess(&logic->GossipStoneFairy,          {[]{return logic->CanSummonGossipFairyWithoutSuns();}}),
                   EventAccess(&logic->StickPot,                  {[]{return logic->StickPot                  || logic->IsChild;}}),
                   EventAccess(&logic->BugRock,                   {[]{return logic->BugRock                   || (logic->CanBlastOrSmash || logic->CanUse(RG_SILVER_GAUNTLETS));}}),
                   EventAccess(&logic->GoronCityChildFire,        {[]{return logic->GoronCityChildFire        || (logic->IsChild && logic->CanUse(RG_DINS_FIRE));}}),
@@ -173,7 +173,7 @@ void AreaTable_Init_DeathMountain() {
 
   areaTable[RR_DMC_UPPER_LOCAL] = Area("DMC Upper Local", "Death Mountain Crater", RA_DEATH_MOUNTAIN_CRATER, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&logic->GossipStoneFairy, {[]{return logic->GossipStoneFairy || (logic->HasExplosives && logic->CanSummonGossipFairyWithoutSuns && (logic->FireTimer >= 16 || logic->Hearts >= 3));}}),
+                  EventAccess(&logic->GossipStoneFairy, {[]{return logic->GossipStoneFairy || (logic->HasExplosives && logic->CanSummonGossipFairyWithoutSuns() && (logic->FireTimer >= 16 || logic->Hearts >= 3));}}),
                 }, {
                   //Locations
                   LOCATION(RC_DMC_WALL_FREESTANDING_POH, logic->FireTimer >= 16 || logic->Hearts >= 3),

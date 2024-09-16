@@ -278,7 +278,7 @@ void AreaTable_Init_Kakariko() {
 
   areaTable[RR_GRAVEYARD_WARP_PAD_REGION] = Area("Graveyard Warp Pad Region", "Graveyard", RA_THE_GRAVEYARD, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&logic->GossipStoneFairy, {[]{return logic->GossipStoneFairy || logic->CanSummonGossipFairyWithoutSuns;}}),
+                  EventAccess(&logic->GossipStoneFairy, {[]{return logic->CanSummonGossipFairyWithoutSuns();}}),
                 }, {
                   //Locations
                   LOCATION(RC_GRAVEYARD_GOSSIP_STONE, true),

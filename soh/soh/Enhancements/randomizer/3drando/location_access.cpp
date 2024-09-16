@@ -212,7 +212,7 @@ void Area::ResetVariables() {
 std::array<Area, RR_MAX> areaTable;
 
 bool Here(const RandomizerRegion area, ConditionFn condition) {
-  return areaTable[area].HereCheck(condition);
+  return areaTable[area].Here(condition);
 }
 
 bool CanPlantBean(const RandomizerRegion area) {
@@ -243,7 +243,7 @@ void AreaTable_Init() {
   randoCtx = Context::GetInstance().get();
   logic = randoCtx->GetLogic();
   grottoEvents = {
-      EventAccess(&logic->GossipStoneFairy, { [] { return logic->GossipStoneFairy || logic->CanSummonGossipFairy; } }),
+      EventAccess(&logic->GossipStoneFairy, { [] { return logic->CanSummonGossipFairy(); } }),
       EventAccess(&logic->ButterflyFairy, { [] { return logic->ButterflyFairy || (logic->CanUse(RG_STICKS)); } }),
       EventAccess(&logic->BugShrub, { [] { return logic->CanCutShrubs; } }),
       EventAccess(&logic->LoneFish, { [] { return true; } }),

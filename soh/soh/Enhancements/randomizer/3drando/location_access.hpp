@@ -211,7 +211,7 @@ public:
     //access to this area. For example: if there are rocks that block a path
     //which both child and adult can access, adult having hammer can give
     //both child and adult access to the path.
-    bool HereCheck(ConditionFn condition) {
+    bool Here(ConditionFn condition) {
 
       //store current age variables
       bool pastAdult = logic->IsAdult;
@@ -249,12 +249,13 @@ public:
 extern std::array<Area, RR_MAX> areaTable;
 extern std::vector<EventAccess> grottoEvents;
 
-bool Here(const RandomizerRegion area, ConditionFn condition);
+bool Here(const RandomizerRegion area, ConditionFn condition); //RANDOTODO make a less stupid way to check own at either age than self referncing with this
 bool CanPlantBean(const RandomizerRegion area);
 bool BothAges(const RandomizerRegion area);
 bool ChildCanAccess(const RandomizerRegion area);
 bool AdultCanAccess(const RandomizerRegion area);
 bool HasAccessTo(const RandomizerRegion area);
+bool HereAsSameAge(const RandomizerRegion area, ConditionFn condition); //RANDOTODO make a less stupid way to check other at same age than self referncing with this
 
 #define DAY_NIGHT_CYCLE true
 #define NO_DAY_NIGHT_CYCLE false

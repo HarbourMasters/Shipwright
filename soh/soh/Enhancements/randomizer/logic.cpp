@@ -232,7 +232,7 @@ namespace Rando {
             // Adult items
             // TODO: Uncomment those if we ever implement more item usability settings
             case RG_FAIRY_BOW:
-                return IsAdult;// || BowAsChild;
+                return IsAdult && (BuyArrow || AmmoCanDrop);// || BowAsChild;
             case RG_MEGATON_HAMMER:
                 return IsAdult;// || HammerAsChild;
             case RG_IRON_BOOTS:
@@ -415,24 +415,125 @@ namespace Rando {
         return false;
     }
 
-    bool Logic::CanKillEnemy(std::string enemy) {
-        //switch(enemy) {} RANDOTODO implement enemies enum
-        if (enemy == "Big Skulltula"){
-            return CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT) || CanJumpslash || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_HOOKSHOT) || CanUse(RG_DINS_FIRE) || HasExplosives;
+    bool Logic::CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance) {
+        switch(enemy) {
+            case RE_GOLD_SKULLTULA:
+            case RE_GOHMA_LARVA:
+            case RE_MAD_SCRUB:
+                return CanAttack();
+            case RE_BIG_SKULLTULA:
+                return CanDamage() || CanUse(RG_HOOKSHOT);
+            case RE_DODONGO:
+            case RE_LIZALFOS:
+                return CanJumpslash || HasExplosives || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_FAIRY_BOW) || CanUse(RG_MEGATON_HAMMER);
+            case RE_KEESE:
+            case RE_FIRE_KEESE:
+                return CanJumpslash || HasExplosives || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_FAIRY_BOW) || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_HOOKSHOT) || CanUse(RG_BOOMERANG);
+            default:
+                SPDLOG_ERROR("CanKillEnemy reached `default`.");
+                assert(false);
+                return false;
         }
-        //Shouldn't be reached
-        return false;
     }
 
-    bool Logic::CanPassEnemy(std::string enemy) {
-        //switch(enemy) {} RANDOTODO implement enemies enum
+    bool Logic::CanPassEnemy(RandomizerEnemy enemy) {
         if (CanKillEnemy(enemy)){
             return true;
         }
-        if (enemy == "Big Skulltula"){
-            return CanUse(RG_NUTS) || CanUse(RG_BOOMERANG);
+        switch(enemy) {
+            case RE_GOLD_SKULLTULA: 
+            case RE_GOHMA_LARVA:
+            case RE_LIZALFOS:
+            case RE_DODONGO: //RANDOTODO do dodongos block the way in tight corridors?
+            case RE_MAD_SCRUB:
+            case RE_KEESE:
+            case RE_FIRE_KEESE:
+                return true;
+            case RE_BIG_SKULLTULA:
+                return CanUse(RG_NUTS) || CanUse(RG_BOOMERANG);
+            default:
+                SPDLOG_ERROR("CanPassEnemy reached `default`.");
+                assert(false);
+                return false;
         }
-        return false;
+    }
+
+    bool Logic::CanAvoidEnemy(RandomizerEnemy enemy) {
+        if (CanKillEnemy(enemy)){
+            return true;
+        }
+        switch(enemy) {
+            case RE_GOLD_SKULLTULA: 
+            case RE_GOHMA_LARVA:
+            case RE_LIZALFOS:
+            case RE_DODONGO: //RANDOTODO do dodongos block the way in tight corridors?
+            case RE_BIG_SKULLTULA:
+                return true;
+            case RE_MAD_SCRUB:
+            case RE_KEESE:
+            case RE_FIRE_KEESE:
+                return CanUse(RG_NUTS);
+            default:
+                SPDLOG_ERROR("CanPassEnemy reached `default`.");
+                assert(false);
+                return false;
+        }
+    }
+
+    bool Logic::CanGetEnemyDrop(RandomizerEnemy enemy, EnemyDistance distance, bool aboveLink) {
+        if (!CanKillEnemy(enemy, distance)){
+            return false;
+        }
+        if (distance <= ED_MASTER_SWORD_JUMPSLASH){
+            return true;
+        }
+        switch(enemy) {
+            case RE_GOLD_SKULLTULA:
+                //RANDOTODO double check all jumpslash kills that might be out of jump/backflip range
+                return distance <= ED_HAMMER_JUMPSLASH || (distance <= ED_RANG_OR_HOOKSHOT && (CanUse(RG_HOOKSHOT) || CanUse(RG_BOOMERANG))) || (distance == ED_LONGSHOT && CanUse(RG_LONGSHOT));
+            case RE_KEESE:
+            case RE_FIRE_KEESE:
+                return true;
+            default:
+                return aboveLink || (distance <= ED_RANG_OR_HOOKSHOT && CanUse(RG_BOOMERANG));
+        }
+    }
+
+    bool Logic::CanBreakMudWalls() {
+        //RANDOTODO blue fire tricks
+        return CanBlastOrSmash;
+    }
+
+    bool Logic::CanSummonGossipFairyWithoutSuns() {
+        return GossipStoneFairy || CanUse(RG_ZELDAS_LULLABY) || CanUse(RG_EPONAS_SONG) || CanUse(RG_SONG_OF_TIME);
+    }
+
+    bool Logic::CanSummonGossipFairy() {
+        return CanSummonGossipFairyWithoutSuns() || CanUse(RG_SUNS_SONG);
+    }
+
+    bool Logic::CanGetDekuBabaSticks() {
+        return DekuBabaSticks || (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD) || CanUse(RG_BOOMERANG));
+    }
+
+    bool Logic::CanDamage() {
+        return Slingshot || CanJumpslash || HasExplosives || CanUse(RG_DINS_FIRE) || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_FAIRY_BOW);
+    }
+
+    bool Logic::CanAttack() {
+        return CanDamage() || CanUse(RG_BOOMERANG) || Hookshot;
+    }
+
+    bool Logic::CanHitEyeTargets() {
+        return CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT);
+    }
+
+    bool Logic::CanDetonateBombFlowers() {
+        return CanUse(RG_FAIRY_BOW) || HasExplosives || CanUse(RG_DINS_FIRE);
+    }
+
+    bool Logic::CanDetonateUprightBombFlower() {
+        return CanDetonateBombFlowers() || CanUse(RG_GORONS_BRACELET);
     }
 
     Logic::Logic() {
@@ -503,7 +604,7 @@ namespace Rando {
         BuyBombchus     = (GetInLogic(LOGIC_BUY_BOMBCHUS) || CouldPlayBowling || CarpetMerchant);
         Hookshot        = CanUse(RG_HOOKSHOT);
         Longshot        = CanUse(RG_LONGSHOT);
-        Bow             = CanUse(RG_FAIRY_BOW) && (BuyArrow || AmmoCanDrop);
+        Bow             = CanUse(RG_FAIRY_BOW);
         GoronBracelet   = HasItem(RG_GORONS_BRACELET);
         SilverGauntlets = HasItem(RG_SILVER_GAUNTLETS);
         GoldenGauntlets = HasItem(RG_GOLDEN_GAUNTLETS);
@@ -581,6 +682,7 @@ namespace Rando {
         // IsAdult = Age == AGE_ADULT;
 
         CanBlastOrSmash = HasExplosives || CanUse(RG_MEGATON_HAMMER);
+        //RANDOTODO replace with CanAttack and CanDamage
         CanChildAttack  = IsChild && (Slingshot || Boomerang || CanUse(RG_STICKS) || KokiriSword || HasExplosives || CanUse(RG_DINS_FIRE) || CanUse(RG_MASTER_SWORD) || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_BIGGORON_SWORD));
         CanChildDamage  = IsChild && (Slingshot ||              CanUse(RG_STICKS) || KokiriSword || HasExplosives || CanUse(RG_DINS_FIRE) || CanUse(RG_MASTER_SWORD) || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_BIGGORON_SWORD));
         CanAdultAttack  = IsAdult && (CanUse(RG_FAIRY_BOW) || CanUse(RG_BOOMERANG)       || CanUse(RG_STICKS) || CanUse(RG_KOKIRI_SWORD) || HasExplosives || CanUse(RG_DINS_FIRE) || MasterSword || Hammer || BiggoronSword || Hookshot);
@@ -591,8 +693,6 @@ namespace Rando {
         CanLeaveForest  = ctx->GetOption(RSK_FOREST).IsNot(RO_FOREST_CLOSED) || IsAdult || DekuTreeClear || ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES) || ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES);
         CanPlantBugs    = IsChild && CanUse(RG_BOTTLE_WITH_BUGS);
         CanRideEpona    = IsAdult && Epona && CanUse(RG_EPONAS_SONG);
-        CanSummonGossipFairyWithoutSuns = CanUse(RG_ZELDAS_LULLABY) || CanUse(RG_EPONAS_SONG) || CanUse(RG_SONG_OF_TIME);
-        CanSummonGossipFairy            = CanSummonGossipFairyWithoutSuns || CanUse(RG_SUNS_SONG);
         Hearts          = ctx->GetSaveContext()->healthCapacity / 16;
         EffectiveHealth = ((Hearts << (2 + DoubleDefense)) >> Multiplier) + ((Hearts << (2 + DoubleDefense)) % (1 << Multiplier) > 0); //Number of half heart hits to die, ranges from 1 to 160
         FireTimer       = CanUse(RG_GORON_TUNIC) ? 255 : (ctx->GetTrickOption(RT_FEWER_TUNIC_REQUIREMENTS)) ? (Hearts * 8) : 0;
@@ -1021,8 +1121,6 @@ namespace Rando {
         CanPlantBugs     = false;
         CanRideEpona     = false;
         CanStunDeku      = false;
-        CanSummonGossipFairy = false;
-        CanSummonGossipFairyWithoutSuns = false;
         //CanPlantBean        = false;
         CanOpenBombGrotto     = false;
         CanOpenStormGrotto    = false;
@@ -1099,6 +1197,7 @@ namespace Rando {
         AtDampeTime               = false;
         DeliverLetter             = false;
         TimeTravel                = false;
+        ClearMQDCUpperLobbyRocks  = false;
 
         DrainWellPast            = false;
         DampesWindmillAccessPast = false;

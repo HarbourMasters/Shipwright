@@ -260,8 +260,6 @@ class Logic {
     bool CanPlantBugs = false;
     bool CanRideEpona = false;
     bool CanStunDeku = false;
-    bool CanSummonGossipFairy = false;
-    bool CanSummonGossipFairyWithoutSuns = false;
     bool NeedNayrusLove = false;
     bool CanSurviveDamage = false;
     bool CanTakeDamage = false;
@@ -357,6 +355,7 @@ class Logic {
     bool AtDampeTime = false;
     bool DeliverLetter = false;
     bool TimeTravel = false;
+    bool ClearMQDCUpperLobbyRocks = false;
 
     /* --- END OF HELPERS AND LOCATION ACCESS --- */
 
@@ -398,8 +397,19 @@ class Logic {
     bool SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmountGlitchless, uint8_t requiredAmountGlitched);
     bool CanDoGlitch(GlitchType glitch);
     bool CanEquipSwap(RandomizerGet itemName);
-    bool CanKillEnemy(std::string enemy);
-    bool CanPassEnemy(std::string enemy);
+    bool CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance = ED_CLOSE);
+    bool CanPassEnemy(RandomizerEnemy enemy);
+    bool CanAvoidEnemy(RandomizerEnemy enemy);
+    bool CanGetEnemyDrop(RandomizerEnemy enemy, EnemyDistance distance = ED_CLOSE, bool aboveLink = false);
+    bool CanBreakMudWalls();
+    bool CanSummonGossipFairy();
+    bool CanSummonGossipFairyWithoutSuns();
+    bool CanGetDekuBabaSticks();
+    bool CanAttack();
+    bool CanDamage();
+    bool CanHitEyeTargets();
+    bool CanDetonateBombFlowers();
+    bool CanDetonateUprightBombFlower();
     bool EventsUpdated();
     uint8_t BottleCount();
     void Reset();

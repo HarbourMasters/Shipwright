@@ -35,7 +35,7 @@ void AreaTable_Init_CastleTown() {
 
   areaTable[RR_TOT_ENTRANCE] = Area("ToT Entrance", "ToT Entrance", RA_THE_MARKET, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&logic->GossipStoneFairy, {[]{return logic->GossipStoneFairy || logic->CanSummonGossipFairyWithoutSuns;}}),
+                  EventAccess(&logic->GossipStoneFairy, {[]{return logic->CanSummonGossipFairyWithoutSuns();}}),
                 }, {
                   //Locations
                   LOCATION(RC_TOT_LEFTMOST_GOSSIP_STONE,     true),
@@ -82,7 +82,7 @@ void AreaTable_Init_CastleTown() {
 
   areaTable[RR_HYRULE_CASTLE_GROUNDS] = Area("Hyrule Castle Grounds", "Castle Grounds", RA_HYRULE_CASTLE, DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&logic->GossipStoneFairy, {[]{return logic->GossipStoneFairy || logic->CanSummonGossipFairy;}}),
+                  EventAccess(&logic->GossipStoneFairy, {[]{return logic->CanSummonGossipFairy();}}),
                   EventAccess(&logic->ButterflyFairy,   {[]{return logic->ButterflyFairy   || logic->CanUse(RG_STICKS);}}),
                   EventAccess(&logic->BugRock,          {[]{return true;}}),
                 }, {
@@ -121,7 +121,7 @@ void AreaTable_Init_CastleTown() {
   areaTable[RR_HC_STORMS_GROTTO] = Area("HC Storms Grotto", "HC Storms Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&logic->NutPot,           {[]{return logic->NutPot           || logic->CanBlastOrSmash;}}),
-                  EventAccess(&logic->GossipStoneFairy, {[]{return logic->GossipStoneFairy || (logic->CanBlastOrSmash && logic->CanSummonGossipFairy);}}),
+                  EventAccess(&logic->GossipStoneFairy, {[]{return logic->CanBreakMudWalls() && logic->CanSummonGossipFairy();}}),
                   EventAccess(&logic->WanderingBugs,    {[]{return logic->WanderingBugs    || logic->CanBlastOrSmash;}}),
                 }, {
                   //Locations

@@ -7,7 +7,7 @@ void AreaTable_Init_LostWoods() {
   areaTable[RR_KOKIRI_FOREST] = Area("Kokiri Forest", "Kokiri Forest", RA_KOKIRI_FOREST, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&logic->BeanPlantFairy,           {[]{return logic->BeanPlantFairy   || (CanPlantBean(RR_KOKIRI_FOREST) && logic->CanUse(RG_SONG_OF_STORMS));}}),
-                  EventAccess(&logic->GossipStoneFairy,         {[]{return logic->GossipStoneFairy || logic->CanSummonGossipFairyWithoutSuns;}}),
+                  EventAccess(&logic->GossipStoneFairy,         {[]{return logic->CanSummonGossipFairyWithoutSuns();}}),
                   EventAccess(&logic->ShowedMidoSwordAndShield, {[]{return logic->ShowedMidoSwordAndShield || (logic->IsChild && logic->KokiriSword && logic->DekuShield);}}),
                 }, {
                   //Locations
@@ -24,7 +24,7 @@ void AreaTable_Init_LostWoods() {
                   Entrance(RR_KF_HOUSE_OF_TWINS,     {[]{return true;}}),
                   Entrance(RR_KF_KNOW_IT_ALL_HOUSE,  {[]{return true;}}),
                   Entrance(RR_KF_KOKIRI_SHOP,        {[]{return true;}}),
-                  Entrance(RR_KF_OUTSIDE_DEKU_TREE,  {[]{return (logic->IsAdult && (logic->CanPassEnemy("Big Skulltula") || logic->ForestTempleClear)) || randoCtx->GetOption(RSK_FOREST).Is(RO_FOREST_OPEN) || logic->ShowedMidoSwordAndShield;}}),
+                  Entrance(RR_KF_OUTSIDE_DEKU_TREE,  {[]{return (logic->IsAdult && (logic->CanPassEnemy(RE_BIG_SKULLTULA) || logic->ForestTempleClear)) || randoCtx->GetOption(RSK_FOREST).Is(RO_FOREST_OPEN) || logic->ShowedMidoSwordAndShield;}}),
                   Entrance(RR_THE_LOST_WOODS,        {[]{return true;}}),
                   Entrance(RR_LW_BRIDGE_FROM_FOREST, {[]{return logic->IsAdult || randoCtx->GetOption(RSK_FOREST).IsNot(RO_FOREST_CLOSED) || logic->DekuTreeClear;}}),
                   Entrance(RR_KF_STORMS_GROTTO,      {[]{return logic->CanOpenStormGrotto;}}),
@@ -42,7 +42,7 @@ void AreaTable_Init_LostWoods() {
                 }, {
                   //Exits
                   Entrance(RR_DEKU_TREE_ENTRYWAY, {[]{return logic->IsChild || (randoCtx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF) && (randoCtx->GetOption(RSK_FOREST).Is(RO_FOREST_OPEN) || logic->ShowedMidoSwordAndShield));}}),
-                  Entrance(RR_KOKIRI_FOREST,      {[]{return (logic->IsAdult && (logic->CanPassEnemy("Big Skulltula") || logic->ForestTempleClear)) || randoCtx->GetOption(RSK_FOREST).Is(RO_FOREST_OPEN) || logic->ShowedMidoSwordAndShield;}}),
+                  Entrance(RR_KOKIRI_FOREST,      {[]{return (logic->IsAdult && (logic->CanPassEnemy(RE_BIG_SKULLTULA) || logic->ForestTempleClear)) || randoCtx->GetOption(RSK_FOREST).Is(RO_FOREST_OPEN) || logic->ShowedMidoSwordAndShield;}}),
   });
 
   areaTable[RR_KF_LINKS_HOUSE] = Area("KF Link's House", "KF Link's House", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
@@ -115,7 +115,7 @@ void AreaTable_Init_LostWoods() {
                   //Events
                   EventAccess(&logic->OddMushroomAccess, {[]{return logic->OddMushroomAccess || (logic->IsAdult && (logic->CojiroAccess || logic->Cojiro));}}),
                   EventAccess(&logic->PoachersSawAccess, {[]{return logic->PoachersSawAccess || (logic->IsAdult && logic->OddPoulticeAccess);}}),
-                  EventAccess(&logic->GossipStoneFairy,  {[]{return logic->GossipStoneFairy  || logic->CanSummonGossipFairyWithoutSuns;}}),
+                  EventAccess(&logic->GossipStoneFairy,  {[]{return logic->CanSummonGossipFairyWithoutSuns();}}),
                   EventAccess(&logic->BeanPlantFairy,    {[]{return logic->BeanPlantFairy    || logic->CanUse(RG_SONG_OF_STORMS);}}),
                   EventAccess(&logic->BugShrub,          {[]{return logic->IsChild && logic->CanCutShrubs;}}),
                 }, {
@@ -204,7 +204,7 @@ void AreaTable_Init_LostWoods() {
 
   areaTable[RR_SACRED_FOREST_MEADOW] = Area("Sacred Forest Meadow", "Sacred Forest Meadow", RA_SACRED_FOREST_MEADOW, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&logic->GossipStoneFairy, {[]{return logic->GossipStoneFairy || logic->CanSummonGossipFairyWithoutSuns;}}),
+                  EventAccess(&logic->GossipStoneFairy, {[]{return logic->CanSummonGossipFairyWithoutSuns();}}),
                 }, {
                   //Locations
                   LOCATION(RC_SONG_FROM_SARIA,             logic->IsChild && logic->ZeldasLetter),
