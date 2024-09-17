@@ -1275,8 +1275,7 @@ void GenerateRandomizerImgui(std::string seed = "") {
     RandoMain::GenerateRando(excludedLocations, enabledTricks, seed);
 
     CVarSetInteger(CVAR_GENERAL("RandoGenerating"), 0);
-    CVarSave();
-    CVarLoad();
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
 
     generated = 1;
 }
@@ -1299,13 +1298,6 @@ void RandomizerSettingsWindow::DrawElement() {
         generated = 0;
         randoThread.join();
     }
-
-    ImGui::SetNextWindowSize(ImVec2(920, 600), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Randomizer Editor", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
-        ImGui::End();
-        return;
-    }
-
     bool disableEditingRandoSettings = CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0) || CVarGetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 0);
     if (disableEditingRandoSettings) {
         UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
@@ -1926,7 +1918,6 @@ void RandomizerSettingsWindow::DrawElement() {
     if (disableEditingRandoSettings) {
         UIWidgets::ReEnableComponent("");
     }
-    ImGui::End();
 }
 
 void RandomizerSettingsWindow::UpdateElement() {
