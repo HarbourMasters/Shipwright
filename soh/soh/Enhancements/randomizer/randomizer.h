@@ -20,7 +20,6 @@
 #define MAX_SEED_STRING_SIZE 1024
 #define NUM_TRIFORCE_PIECE_MESSAGES 6
 #define NUM_NAVI_MESSAGES 18
-#define NUM_ICE_TRAP_MESSAGES 23
 #define NUM_GORON_MESSAGES 9
 
 class Randomizer {
@@ -68,6 +67,7 @@ class Randomizer {
     CustomMessage GetMapGetItemMessageWithHint(GetItemEntry itemEntry);
     static void CreateCustomMessages();
     static CustomMessage GetRupeeMessage(u16 rupeeTextId);
+    static CustomMessage GetIceTrapMessage();
     static CustomMessage GetTriforcePieceMessage();
     bool CheckContainsVanillaItem(RandomizerCheck randoCheck);
 };

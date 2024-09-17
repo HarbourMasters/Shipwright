@@ -419,6 +419,8 @@ const char* SpoilerLog_Write() {
     jsonData.clear();
 
     jsonData["version"] = (char*) gBuildVersion;
+    jsonData["git_branch"] = (char*) gGitBranch;
+    jsonData["git_commit"] = (char*) gGitCommitHash;
     jsonData["seed"] = ctx->GetSettings()->GetSeedString();
     jsonData["finalSeed"] = ctx->GetSettings()->GetSeed();
 

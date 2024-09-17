@@ -1777,12 +1777,6 @@ void DrawPlayerTab() {
 }
 
 void SaveEditorWindow::DrawElement() {
-    ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Save Editor", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
-        ImGui::End();
-        return;
-    }
-
     if (ImGui::BeginTabBar("SaveContextTabBar", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
         if (ImGui::BeginTabItem("Info")) {
             DrawInfoTab();
@@ -1816,8 +1810,6 @@ void SaveEditorWindow::DrawElement() {
 
         ImGui::EndTabBar();
     }
-
-    ImGui::End();
 }
 
 void SaveEditorWindow::InitElement() {

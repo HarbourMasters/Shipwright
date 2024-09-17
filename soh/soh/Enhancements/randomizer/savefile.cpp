@@ -97,7 +97,7 @@ void GiveLinksPocketItem() {
     if (Randomizer_GetSettingValue(RSK_LINKS_POCKET) != RO_LINKS_POCKET_NOTHING) {
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LINKS_POCKET, (GetItemID)RG_NONE);
         StartingItemGive(getItemEntry);
-        Rando::Context::GetInstance()->GetItemLocation(RC_LINKS_POCKET)->MarkAsObtained();
+        Rando::Context::GetInstance()->GetItemLocation(RC_LINKS_POCKET)->SetCheckStatus(RCSHOW_SAVED);
         // If we re-add the above, we'll get the item on save creation, now it's given on first load
         Flags_SetRandomizerInf(RAND_INF_LINKS_POCKET);
     }

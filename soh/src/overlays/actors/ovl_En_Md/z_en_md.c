@@ -646,7 +646,7 @@ void EnMd_Init(Actor* thisx, PlayState* play) {
     Collider_InitCylinder(play, &this->collider);
     Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
     CollisionCheck_SetInfo2(&this->actor.colChkInfo, NULL, &sColChkInfoInit);
-    if (!EnMd_ShouldSpawn(this, play)) {
+    if (!GameInteractor_Should(VB_MIDO_SPAWN, EnMd_ShouldSpawn(this, play), this)) {
         Actor_Kill(&this->actor);
         return;
     }

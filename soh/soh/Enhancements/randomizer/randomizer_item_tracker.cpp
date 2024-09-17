@@ -1206,6 +1206,15 @@ void ItemTrackerLoadFile() {
     }
 }
 
+void ItemTrackerWindow::Draw() {
+    if (!IsVisible()) {
+        return;
+    }
+    DrawElement();
+    // Sync up the IsVisible flag if it was changed by ImGui
+    SyncVisibilityConsoleVariable();
+}
+
 void ItemTrackerWindow::DrawElement() {
     UpdateVectors();
 
@@ -1350,13 +1359,6 @@ static const char* extendedDisplayTypes[4] = { "Hidden", "Main Window", "Misc Wi
 static const char* minimalDisplayTypes[2] = { "Hidden", "Separate" };
 
 void ItemTrackerSettingsWindow::DrawElement() {
-    ImGui::SetNextWindowSize(ImVec2(733, 472), ImGuiCond_FirstUseEver);
-
-    if (!ImGui::Begin("Item Tracker Settings", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
-        ImGui::End();
-        return;
-    }
-
     ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 8.0f, 8.0f });
     ImGui::BeginTable("itemTrackerSettingsTable", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV);
     ImGui::TableSetupColumn("General settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
@@ -1499,8 +1501,6 @@ void ItemTrackerSettingsWindow::DrawElement() {
 
     ImGui::PopStyleVar(1);
     ImGui::EndTable();
-
-    ImGui::End();
 }
 
 void ItemTrackerWindow::InitElement() {

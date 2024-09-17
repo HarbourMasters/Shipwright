@@ -640,13 +640,6 @@ void InitEntranceTrackingData() {
 }
 
 void EntranceTrackerSettingsWindow::DrawElement() {
-    ImGui::SetNextWindowSize(ImVec2(600, 375), ImGuiCond_FirstUseEver);
-
-    if (!ImGui::Begin("Entrance Tracker Settings", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
-        ImGui::End();
-        return;
-    }
-
     if (ImGui::BeginTable("entranceTrackerSettings", 1, ImGuiTableFlags_BordersInnerH)) {
 
         ImGui::TableNextColumn();
@@ -718,8 +711,15 @@ void EntranceTrackerSettingsWindow::DrawElement() {
 
         ImGui::EndTable();
     }
+}
 
-    ImGui::End();
+void EntranceTrackerWindow::Draw() {
+    if (!IsVisible()) {
+        return;
+    }
+    DrawElement();
+    // Sync up the IsVisible flag if it was changed by ImGui
+    SyncVisibilityConsoleVariable();
 }
 
 void EntranceTrackerWindow::DrawElement() {
