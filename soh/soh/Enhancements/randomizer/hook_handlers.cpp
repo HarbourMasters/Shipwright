@@ -12,6 +12,7 @@ extern "C" {
 #include "functions.h"
 #include "variables.h"
 #include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
+#include "src/overlays/actors/ovl_Bg_Treemouth/z_bg_treemouth.h"
 #include "src/overlays/actors/ovl_En_Si/z_en_si.h"
 #include "src/overlays/actors/ovl_En_Cow/z_en_cow.h"
 #include "src/overlays/actors/ovl_En_Shopnuts/z_en_shopnuts.h"
@@ -613,6 +614,11 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
             break;
         case VB_BE_ELIGIBLE_FOR_PRELUDE_OF_LIGHT:
             *should = !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_PRELUDE_OF_LIGHT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST);
+            break;
+        case VB_MIDO_SPAWN:
+            if (RAND_GET_OPTION(RSK_FOREST) != RO_FOREST_OPEN && !Flags_GetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD)) {
+                *should = true;
+            }
             break;
         case VB_MOVE_MIDO_IN_KOKIRI_FOREST:
             if (RAND_GET_OPTION(RSK_FOREST) == RO_FOREST_OPEN) {
@@ -1463,6 +1469,14 @@ void RandomizerOnActorInitHandler(void* actorRef) {
         if (CompletedAllTrials()) {
             Actor_Kill(actor);
         }
+    }
+
+    if (actor->id == ACTOR_BG_TREEMOUTH && LINK_IS_ADULT &&
+        RAND_GET_OPTION(RSK_SHUFFLE_DUNGEON_ENTRANCES) != RO_DUNGEON_ENTRANCE_SHUFFLE_OFF &&
+        (RAND_GET_OPTION(RSK_FOREST) == RO_FOREST_OPEN ||
+            Flags_GetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD))) {
+        BgTreemouth* bgTreemouth = static_cast<BgTreemouth*>(actorRef);
+        bgTreemouth->unk_168 = 1.0f;
     }
 
     //consumable bags
