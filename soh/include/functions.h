@@ -2294,7 +2294,7 @@ void* __osReallocDebug(Arena* arena, void* ptr, size_t newSize, const char* file
 void ArenaImpl_GetSizes(Arena* arena, u32* outMaxFree, u32* outFree, u32* outAlloc);
 void __osDisplayArena(Arena* arena);
 void ArenaImpl_FaultClient(Arena* arena);
-u32 __osCheckArena(Arena* arena);
+s32 __osCheckArena(Arena* arena);
 u8 func_800FF334(Arena* arena);
 s32 PrintUtils_VPrintf(PrintCallback* pfn, const char* fmt, va_list args);
 s32 PrintUtils_Printf(PrintCallback* pfn, const char* fmt, ...);
