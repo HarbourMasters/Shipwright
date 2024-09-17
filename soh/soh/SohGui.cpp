@@ -159,7 +159,7 @@ namespace SohGui {
             SPDLOG_ERROR("Could not find console window");
         }
 
-        mInputEditorWindow = gui->GetGuiWindow("Input Editor");
+        mInputEditorWindow = gui->GetGuiWindow("Controller Configuration");
         if (mInputEditorWindow == nullptr) {
             SPDLOG_ERROR("Could not find input editor window");
         }
