@@ -376,7 +376,7 @@ Rando::Location Rando::Location::Fish(RandomizerCheck rc, RandomizerCheckQuest q
                                       std::string&& shortName_, RandomizerHintTextKey hintKey,
                                       RandomizerGet vanillaItem, std::vector<Category>&& categories,
                                       SpoilerCollectionCheckGroup collectionCheckGroup, bool isVanillaCompletion_) {
-    return {rc, quest_, RCTYPE_FISH, area_, LocationType::Base, actorId_, scene_, actorParams_, flag_,
+    return {rc, quest_, RCTYPE_FISH, area_, LocationType::Base, actorId_, scene_, actorParams_, 0,
                     std::move(shortName_), hintKey, vanillaItem, std::move(categories),
                     isVanillaCompletion_, SpoilerCollectionCheck(SPOILER_CHK_RANDOMIZER_INF, scene_, flag_),
                     collectionCheckGroup};
