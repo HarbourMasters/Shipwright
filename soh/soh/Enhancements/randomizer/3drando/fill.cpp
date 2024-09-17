@@ -40,7 +40,7 @@ struct GetAccessableLocationsStruct {
 
   //Variables For Validating Entrences
   bool haveTimeAccess;
-  bool foundTempleofTime;
+  bool foundTempleOfTime;
   bool validatedStartingRegion;
   bool sphereZeroComplete;
 
@@ -55,7 +55,7 @@ struct GetAccessableLocationsStruct {
     ageTimePropogated = false;
     firstIteration = true;
     haveTimeAccess = false;
-    foundTempleofTime = false;
+    foundTempleOfTime = false;
     validatedStartingRegion = false;
     sphereZeroComplete = false;
   }
@@ -98,12 +98,12 @@ static void RemoveStartingItemsFromPool() {
   }
 }
 
-//This function will propogate Time of Day access through the entrance
-static bool UpdateToDAccess(Entrance* entrance, bool propogateTimeTravel) {
+//This function will propagate Time of Day access through the entrance
+static bool UpdateToDAccess(Entrance* entrance, bool propagateTimeTravel) {
 
   bool ageTimePropogated = false;
 
-  //propogate childDay, childNight, adultDay, and adultNight separately
+  //propagate childDay, childNight, adultDay, and adultNight separately
   Area* parent = entrance->GetParentRegion();
   Area* connection = entrance->GetConnectedRegion();
 
@@ -125,10 +125,10 @@ static bool UpdateToDAccess(Entrance* entrance, bool propogateTimeTravel) {
   }
 
   //special check for temple of time
-  if (propogateTimeTravel && !AreaTable(RR_ROOT)->Adult() && AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->Child()) { //RANDOTODO: sphere weirdness, other age locations not propogated in this sphere
+  if (propagateTimeTravel && !AreaTable(RR_ROOT)->Adult() && AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->Child()) { //RANDOTODO: sphere weirdness, other age locations not propagated in this sphere
     AreaTable(RR_ROOT)->adultDay   = AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->childDay;
     AreaTable(RR_ROOT)->adultNight = AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->childNight;
-  } else if (propogateTimeTravel && !AreaTable(RR_ROOT)->Child() && AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->Adult()){
+  } else if (propagateTimeTravel && !AreaTable(RR_ROOT)->Child() && AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->Adult()){
     AreaTable(RR_ROOT)->childDay   = AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->adultDay;
     AreaTable(RR_ROOT)->childNight = AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->adultNight;
   }
@@ -140,9 +140,9 @@ static bool UpdateToDAccess(Entrance* entrance, bool propogateTimeTravel) {
 static void ValidateOtherEntrance(GetAccessableLocationsStruct& gals) {
   auto ctx = Rando::Context::GetInstance();
   // Condition for validating Temple of Time Access
-  if (!gals.foundTempleofTime && ((ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_CHILD && AreaTable(RR_TEMPLE_OF_TIME)->Adult()) || 
+  if (!gals.foundTempleOfTime && ((ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_CHILD && AreaTable(RR_TEMPLE_OF_TIME)->Adult()) || 
                             (ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_ADULT && AreaTable(RR_TEMPLE_OF_TIME)->Child()))) {
-    gals.foundTempleofTime = true;
+    gals.foundTempleOfTime = true;
   }
   // Condition for validating a valid starting region
   if (!gals.validatedStartingRegion) {
@@ -174,7 +174,7 @@ static void ApplyAllAdvancmentItems(){
 static void ValidateSphereZero(GetAccessableLocationsStruct& gals){
   auto ctx = Rando::Context::GetInstance();
   // Condition for verifying everything required for sphere 0, expanding search to all locations
-  if (logic->CanEmptyBigPoes && gals.validatedStartingRegion && gals.foundTempleofTime && gals.haveTimeAccess) {
+  if (logic->CanEmptyBigPoes && gals.validatedStartingRegion && gals.foundTempleOfTime && gals.haveTimeAccess) {
     // Apply all items that are necessary for checking all location access
     ApplyAllAdvancmentItems();
     // Reset access as the non-starting age
@@ -194,9 +194,9 @@ static void ValidateSphereZero(GetAccessableLocationsStruct& gals){
 }
 
 //This function handles each possible exit
-void ProcessExit(Entrance& exit, GetAccessableLocationsStruct& gals, bool propogateTimeTravel = true, bool checkPoeCollectorAccess = false, bool checkOtherEntranceAccess = false){
+void ProcessExit(Entrance& exit, GetAccessableLocationsStruct& gals, bool propagateTimeTravel = true, bool checkPoeCollectorAccess = false, bool checkOtherEntranceAccess = false){
   //Update Time of Day Access for the exit
-  if (UpdateToDAccess(&exit, propogateTimeTravel)) {
+  if (UpdateToDAccess(&exit, propagateTimeTravel)) {
     gals.ageTimePropogated = true;
     if (checkOtherEntranceAccess){
       ValidateOtherEntrance(gals);
@@ -527,7 +527,7 @@ void ValidateEntrances(bool checkPoeCollectorAccess, bool checkOtherEntranceAcce
     logic->CanEmptyBigPoes = false;
   }
   if (!checkOtherEntranceAccess){
-    gals.foundTempleofTime = true;
+    gals.foundTempleOfTime = true;
     gals.validatedStartingRegion = true;
     gals.haveTimeAccess = true;
     gals.sphereZeroComplete = true;
@@ -587,7 +587,7 @@ void ValidateEntrances(bool checkPoeCollectorAccess, bool checkOtherEntranceAcce
 
       //for each exit in this region
       for (auto& exit : region->exits) {
-        ProcessExit(exit, gals, gals.haveTimeAccess && gals.foundTempleofTime, checkPoeCollectorAccess, checkOtherEntranceAccess);
+        ProcessExit(exit, gals, gals.haveTimeAccess && gals.foundTempleOfTime, checkPoeCollectorAccess, checkOtherEntranceAccess);
       } 
       if (gals.sphereZeroComplete) {
         for (size_t k = 0; k < region->locations.size(); k++) {
@@ -625,7 +625,7 @@ RandomizerArea LookForExternalArea(const Area* const currentRegion, std::vector<
       if(passdown != RA_NONE){
         return passdown;
       }
-    } else if (otherArea != RA_LINKS_POCKET){ //if it's links pocket, do not propogate this, Link's Pocket is not a real Area
+    } else if (otherArea != RA_LINKS_POCKET){ //if it's links pocket, do not propagate this, Link's Pocket is not a real Area
       return otherArea;
     }
   }
