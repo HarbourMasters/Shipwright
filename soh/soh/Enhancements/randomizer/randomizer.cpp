@@ -56,8 +56,6 @@ std::set<RandomizerCheck> spoilerExcludedLocations;
 std::set<RandomizerTrick> enabledTricks;
 std::set<RandomizerTrick> enabledGlitches;
 
-std::set<std::map<RandomizerCheck, RandomizerCheckTrackerData>> checkTrackerStates;
-
 u8 generated;
 char* seedString;
 
