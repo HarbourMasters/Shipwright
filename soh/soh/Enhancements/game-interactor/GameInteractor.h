@@ -78,6 +78,8 @@ typedef enum {
     // Vanilla condition: INFTABLE_GREETED_BY_SARIA
     VB_NOT_BE_GREETED_BY_SARIA,
     // Opt: *EnMd
+    VB_MIDO_SPAWN,
+    // Opt: *EnMd
     // Vanilla condition: EnMd->interactInfo.talkState == NPC_TALK_STATE_ACTION
     VB_MOVE_MIDO_IN_KOKIRI_FOREST,
     // Opt: *EnMd

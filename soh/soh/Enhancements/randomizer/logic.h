@@ -165,7 +165,7 @@ class Logic {
     // Bottle Count
     uint8_t Bottles = 0;
     uint8_t NumBottles = 0;
-    bool NoBottles = false;
+    bool CanEmptyBigPoes = true;
 
     // Drops and Bottle Contents Access
     bool NutPot = false;
