@@ -280,7 +280,7 @@ void func_80A9CB18(EnKz* this, PlayState* play) {
         yaw -= this->actor.shape.rot.y;
         if ((fabsf(yaw) > 1638.0f) || (this->actor.xzDistToPlayer < 265.0f)) {
             this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
-            return 0;
+            return;
         }
 
         this->actor.flags |= ACTOR_FLAG_TARGETABLE;
