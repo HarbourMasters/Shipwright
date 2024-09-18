@@ -6,7 +6,7 @@
 #include "soh/OTRGlobals.h"
 
 //            RandomizerCheck,                                                RCVORMQ,         RCTYPE,              RCAREA,                        ActorId,            SceneId,                              ActorParams,                 OG ItemID,           "Short name", "Spoiler name", vanillaCompletion
-std::map<RandomizerCheck, RandomizerCheckObject> rcObjects = {
+static constexpr std::pair<RandomizerCheck, RandomizerCheckObject> rcObjectsData[] = {
     RC_OBJECT(RC_KF_KOKIRI_SWORD_CHEST,                                       RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_KOKIRI_FOREST,          ACTOR_EN_BOX,       SCENE_KOKIRI_FOREST,                  1248,                        GI_SWORD_KOKIRI,     "Kokiri Sword Chest", "KF Kokiri Sword Chest", true),
     RC_OBJECT(RC_KF_MIDOS_TOP_LEFT_CHEST,                                     RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_KOKIRI_FOREST,          ACTOR_EN_BOX,       SCENE_MIDOS_HOUSE,                    22944,                       GI_RUPEE_BLUE,       "Mido Top Left Chest", "KF Mido Top Left Chest", false),
     RC_OBJECT(RC_KF_MIDOS_TOP_RIGHT_CHEST,                                    RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_KOKIRI_FOREST,          ACTOR_EN_BOX,       SCENE_MIDOS_HOUSE,                    22945,                       GI_RUPEE_BLUE,       "Mido Top Right Chest", "KF Mido Top Right Chest", false),
@@ -775,6 +775,7 @@ std::map<RandomizerCheck, RandomizerCheckObject> rcObjects = {
 
     RC_OBJECT(RC_UNKNOWN_CHECK,                                               RCVORMQ_BOTH,    RCTYPE_STANDARD,                   RCAREA_INVALID,                ACTOR_ID_MAX,       SCENE_ID_MAX,                         0x00,                        GI_NONE,             "Invalid Check", "Invalid Check", false),
 };
+std::map<RandomizerCheck, RandomizerCheckObject> rcObjects = std::map<RandomizerCheck, RandomizerCheckObject>(std::begin(rcObjectsData), std::end(rcObjectsData));
 
 std::map<RandomizerCheckArea, std::string> rcAreaNames = {
     { RCAREA_KOKIRI_FOREST, "Kokiri Forest"},

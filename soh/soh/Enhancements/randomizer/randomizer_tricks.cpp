@@ -21,7 +21,7 @@ std::vector<RandomizerTrickTag> extremeBase{RTTAG_EXTREME};
 // Experimental - not implemented; these tricks may let you put the game into a softlockable state
 // Please see https://www.youtube.com/playlist?list=PLqsXSioZwQyoa23_27l5NZq5IZdKRi5Sm for reference on performing several of these tricks
 //            RandomizerTrick,                              RTVORMQ,         RTAREA,                         rt_tags                     rt_glitch (is it a glitch)                 "Short name", "Description"
-std::unordered_map<RandomizerTrick, RandomizerTrickObject> rtObjects = {
+static constexpr std::pair<RandomizerTrick, RandomizerTrickObject> rtObjectsData[] = {
     RT_OBJECT(RT_ACUTE_ANGLE_CLIP,                          RTVORMQ_BOTH,    RTAREA_GENERAL,                &advancedBase,               true,                                      "Acute angle clip", "Enables locations requiring jumpslash clips through walls which meet at an acute angle."),
     RT_OBJECT(RT_ADVANCED_CLIPS,                            RTVORMQ_BOTH,    RTAREA_GENERAL,                &advancedBase,               true,                                      "Advanced clips", "Enables locations requiring clips through walls and objects requiring precise jumps or other tricks."),
     RT_OBJECT(RT_BLANK_A,                                   RTVORMQ_BOTH,    RTAREA_GENERAL,                &advancedBase,               true,                                      "Blank A", "Enables locations requiring blank A button; NOTE: this requires the 'Quick Putaway' restoration."),
@@ -208,6 +208,7 @@ std::unordered_map<RandomizerTrick, RandomizerTrickObject> rtObjects = {
     RT_OBJECT(RT_GANON_MQ_SHADOW_TRIAL,                     RTVORMQ_MQ,      RTAREA_GANONS_CASTLE,          &noviceBase,                 false,                                     "Shadow Trial MQ Torch with Bow", "You can light the torch in this room without a fire source by shooting an arrow through the lit torch at the beginning of the room. Because the room is so dark and the unlit torch is so far away, it can be difficult to aim the shot correctly."),
     RT_OBJECT(RT_GANON_MQ_LIGHT_TRIAL,                      RTVORMQ_MQ,      RTAREA_GANONS_CASTLE,          &intermediateBase,  /*todo*/ false,                                     "Light Trial MQ without Hookshot", "If you move quickly you can sneak past the edge of a flame wall before it can rise up to block you. In this case to do it without taking damage is especially precise.")
 };
+std::unordered_map<RandomizerTrick, RandomizerTrickObject> rtObjects = std::unordered_map<RandomizerTrick, RandomizerTrickObject>(std::begin(rtObjectsData), std::end(rtObjectsData));
 
 std::unordered_map<RandomizerTrickArea, std::string> rtAreaNames = {
     { RTAREA_GENERAL, "General Tricks"},
