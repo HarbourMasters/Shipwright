@@ -45,6 +45,11 @@ typedef enum {
     EVENT_ACTION_ADD,
 };
 
+typedef struct {
+    uint32_t eventTimer;
+    const char* eventVariable;
+} eventTimerObject;
+
 typedef enum {
     EVENT_INVISIBILITY,
     EVENT_STORMY_WEATHER,
@@ -58,6 +63,7 @@ typedef enum {
     EVENT_DEATH_SWITCH,
     EVENT_KNUCKLE_RING,
     EVENT_MIDO_SUCKS,
+    EVENT_THROWN_IN_THE_PAST,
 } ChaosEvents;
 
 typedef enum {

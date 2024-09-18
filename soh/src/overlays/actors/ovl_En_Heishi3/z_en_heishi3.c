@@ -206,6 +206,9 @@ void func_80A55D00(EnHeishi3* this, PlayState* play) {
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(play) &&
         (this->respawnFlag == 0)) {
         Flags_SetEventChkInf(EVENTCHKINF_CAUGHT_BY_CASTLE_GUARDS);
+        if (LINK_IS_ADULT) {
+            gPlayState->linkAgeOnLoad ^= 1; // Test for EVENT
+        }
         play->nextEntranceIndex = ENTR_HYRULE_CASTLE_4; // Hyrule Castle from Guard Capture (outside)
         play->transitionTrigger = TRANS_TRIGGER_START;
         this->respawnFlag = 1;

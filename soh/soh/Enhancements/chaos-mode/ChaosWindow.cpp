@@ -17,7 +17,13 @@ extern PlayState* gPlayState;
 #include "src/overlays/actors/ovl_En_Md/z_en_md.h"
 }
 
+float chaosWindowSize = 1.0f;
+
 uint32_t frameCounter = 0;
+uint32_t invisibilityTimer = 0;
+uint32_t stormTimer = 0;
+uint32_t ironBootTimer = 0;
+uint32_t hoverBootTimer = 0;
 uint32_t bombermanTimer = 0;
 uint32_t lavaTimer = 0;
 uint32_t fakeTimer = 0;
@@ -26,6 +32,7 @@ uint32_t magnetTimer = 0;
 uint32_t deathSwitchTimer = 0;
 uint32_t knuckleTimer = 0;
 uint32_t midoTimer = 0;
+uint32_t guardTimer = 0;
 uint32_t chaosInterval = 5;
 uint32_t votingInterval = 5;
 uint32_t activeInterval = 1;
@@ -43,7 +50,7 @@ uint32_t prevRoll = 10;
 uint32_t eventInvisibleTimer;
 uint32_t eventStormTimer;
 uint32_t eventIronTimer;
-uint32_t eventHovertimer;
+uint32_t eventHoverTimer;
 uint32_t eventBomberTimer;
 uint32_t eventLavaTimer;
 uint32_t eventFakeTimer;
@@ -52,6 +59,10 @@ uint32_t eventMagnetTimer;
 uint32_t eventDeathSwitchTimer;
 uint32_t eventKnuckleTimer;
 uint32_t eventMidoTimer;
+uint32_t eventGuardTimer;
+
+ActorListEntry guardActors;
+Actor* currGuard = guardActors.head;
 
 static uint32_t actorMagnetHook = 0;
 static uint32_t votingHook = 0;
@@ -78,19 +89,33 @@ std::vector<voteObject> votingObjectList = {
 
 std::vector<eventObject> votingList = {};
 
-std::vector<uint32_t> eventTimerList = {
-    eventInvisibleTimer,
-    eventStormTimer,
-    eventIronTimer,
-    eventHovertimer,
-    eventBomberTimer,
-    eventLavaTimer,
-    eventFakeTimer,
-    eventRealTimer,
-    eventMagnetTimer,
-    eventDeathSwitchTimer,
-    eventKnuckleTimer,
-    eventMidoTimer,
+std::vector<eventObject> eventList = {
+    { EVENT_INVISIBILITY, "Invisibility", "gEnhancements.Invisibility", eventInvisibleTimer,
+      "Link is invisible for the length of the timer. Try not to stub your toe on a pot!" },
+    { EVENT_STORMY_WEATHER, "Stormy Weather", "gEnhancements.StormyWeather", eventStormTimer,
+      "You aren't sure where this storm came from or why it also appears to be raining indoors..." },
+    { EVENT_FORCE_IRON_BOOTS, "Force Iron Boots", "gEnhancements.IronBoots", eventIronTimer,
+      "Perfect for that trip to the Water Temple you have been meaning to take." },
+    { EVENT_FORCE_HOVER_BOOTS, "Force Hover Boots", "gEnhancements.HoverBoots", eventHoverTimer,
+      "Not so perfect for that trip to the Ice Cavern you have been dreading." },
+    { EVENT_BOMBERMAN_MODE, "Bomberman Mode", "gEnhancements.Bomberman", eventBomberTimer,
+      "Exactly like you remember, except worse!" },
+    { EVENT_FLOOR_IS_LAVA, "The Floor is Lava!", "gEnhancements.LavaFloor", eventLavaTimer,
+      "The floor is lava, you know what that means." },
+    { EVENT_FAKE_TELEPORT, "Fake Teleport", "gEnhancements.FakeTeleport", eventFakeTimer,
+      "You totally wanted to come here..." },
+    { EVENT_REAL_TELEPORT, "Random Teleport", "gEnhancements.RealTeleport", eventRealTimer,
+      "You totally wanted to come here..." },
+    { EVENT_ACTOR_MAGNET, "Actor Magnet", "gEnhancements.ActorMagnet", eventMagnetTimer,
+      "Opposites attract, or something to that extent." },
+    { EVENT_DEATH_SWITCH, "Death Switch", "gEnhancements.DeathSwitch", eventDeathSwitchTimer,
+      "A random input will kill Link, which one that is changes over time." },
+    { EVENT_KNUCKLE_RING, "Iron Knuckle Ring", "gEnhancements.KnuckleRing", eventKnuckleTimer,
+      "A ring of Iron Knuckles has spawned!" },
+    { EVENT_MIDO_SUCKS, "Mido Sucks", "gEnhancements.MidoSucks", eventMidoTimer,
+      "Mido abruptly reminds you why they suck so much." },
+    { EVENT_THROWN_IN_THE_PAST, "Spawn Royal Guard", "gEnhancements.RoyalGuard", eventGuardTimer,
+       "Hyrules finest Royal Guard comes to show you the business." },
 };
 
 std::vector<uint32_t> teleportList = {
@@ -114,7 +139,6 @@ std::vector<uint32_t> actorCatList = {
 std::vector<Actor*> actorData = {};
 std::vector<std::pair<Vec3f, Vec3s>> actorDefaultData = {};
 std::vector<eventObject> activeEvents = {};
-std::vector<eventObject> eventList = {};
 
 std::vector<colorObject> colorOptions = {
     { COLOR_WHITE, ImVec4(1.0f, 1.0f, 1.0f, 1.0f) },     { COLOR_GRAY, ImVec4(0.4f, 0.4f, 0.4f, 1.0f) },
@@ -127,56 +151,35 @@ std::vector<colorObject> colorOptions = {
 
 ImVec4 voteColor = colorOptions[COLOR_WHITE].colorCode;
 
+std::string formatChaosTimers(uint32_t value) {
+    uint32_t sec = value / 20;
+    uint32_t hh = sec / 3600;
+    uint32_t mm = (sec - hh * 3600) / 60;
+    uint32_t ss = sec - hh * 3600 - mm * 60;
+    uint32_t ds = value % 10;
+    return fmt::format("{:0>2}:{:0>2}.{}", mm, ss, ds);
+}
+
+void ChaosUpdateWindowSize() {
+    chaosWindowSize = CVarGetFloat(CVAR_ENHANCEMENT("ChaosWindowSize"), 0);
+}
+
 void ChaosUpdateInterval() {
     chaosInterval = (CVarGetInteger(CVAR_ENHANCEMENT("ChaosInterval"), 0) * 1200);
 }
+
 void ChaosUpdateVotingInterval() {
-    votingInterval = (CVarGetInteger(CVAR_ENHANCEMENT("VotingInterval"), 0) * 20);
-    //votingInterval = 60;
+    //votingInterval = (CVarGetInteger(CVAR_ENHANCEMENT("VotingInterval"), 0) * 20);
+    votingInterval = 60;
 }
 
 void ChaosUpdateEventTimers() {
-    eventList.clear();
-
-    eventInvisibleTimer = (CVarGetInteger(CVAR_ENHANCEMENT("Invisibility"), 0) * 1200);
-    eventStormTimer = (CVarGetInteger(CVAR_ENHANCEMENT("StormyWeather"), 0) * 1200);
-    eventIronTimer = (CVarGetInteger(CVAR_ENHANCEMENT("IronBoots"), 0) * 1200);
-    eventHovertimer = (CVarGetInteger(CVAR_ENHANCEMENT("HoverBoots"), 0) * 1200);
-    eventBomberTimer = (CVarGetInteger(CVAR_ENHANCEMENT("Bomberman"), 0) * 1200);
-    eventLavaTimer = (CVarGetInteger(CVAR_ENHANCEMENT("LavaFloor"), 0) * 1200);
-    eventFakeTimer = (CVarGetInteger(CVAR_ENHANCEMENT("FakeTeleport"), 0) * 1200);
-    eventRealTimer = (CVarGetInteger(CVAR_ENHANCEMENT("RealTeleport"), 0) * 1200);
-    eventMagnetTimer = (CVarGetInteger(CVAR_ENHANCEMENT("ActorMagnet"), 0) * 1200);
-    eventDeathSwitchTimer = (CVarGetInteger(CVAR_ENHANCEMENT("DeathSwitch"), 0) * 1200);
-    eventKnuckleTimer = (CVarGetInteger(CVAR_ENHANCEMENT("KnuckleRing"), 0) * 1200);
-    eventMidoTimer = (CVarGetInteger(CVAR_ENHANCEMENT("MidoSucks"), 0) * 1200);
-
-    eventList = {
-        { EVENT_INVISIBILITY, "Invisibility", "gEnhancements.Invisibility", eventInvisibleTimer,
-            "Link is invisible for the length of the timer. Try not to stub your toe on a pot!" },
-        { EVENT_STORMY_WEATHER, "Stormy Weather", "gEnhancements.StormyWeather", eventStormTimer,
-            "You aren't sure where this storm came from or why it also appears to be raining indoors..." },
-        { EVENT_FORCE_IRON_BOOTS, "Force Iron Boots", "gEnhancements.IronBoots", eventIronTimer,
-            "Perfect for that trip to the Water Temple you have been meaning to take." },
-        { EVENT_FORCE_HOVER_BOOTS, "Force Hover Boots", "gEnhancements.HoverBoots", eventHovertimer,
-            "Not so perfect for that trip to the Ice Cavern you have been dreading." },
-        { EVENT_BOMBERMAN_MODE, "Bomberman Mode", "gEnhancements.Bomberman", eventBomberTimer,
-            "Exactly like you remember, except worse!" },
-        { EVENT_FLOOR_IS_LAVA, "The Floor is Lava!", "gEnhancements.LavaFloor", eventLavaTimer,
-            "The floor is lava, you know what that means." },
-        { EVENT_FAKE_TELEPORT, "Fake Teleport", "gEnhancements.FakeTeleport", eventFakeTimer,
-            "You totally wanted to come here..." },
-        { EVENT_REAL_TELEPORT, "Random Teleport", "gEnhancements.RealTeleport", eventRealTimer,
-            "You totally wanted to come here..." },
-        { EVENT_ACTOR_MAGNET, "Actor Magnet", "gEnhancements.ActorMagnet", eventMagnetTimer,
-            "Opposites attract, or something to that extent." },
-        { EVENT_DEATH_SWITCH, "Death Switch", "gEnhancements.DeathSwitch", eventDeathSwitchTimer, 
-            "A random input will kill Link, which one that is changes over time." },
-        { EVENT_KNUCKLE_RING, "Iron Knuckle Ring", "gEnhancements.KnuckleRing", eventKnuckleTimer, 
-            "A ring of Iron Knuckles has spawned!" },
-        { EVENT_MIDO_SUCKS, "Mido Sucks", "gEnhancements.MidoSucks",  eventMidoTimer,
-            "Mido abruptly reminds you why they suck so much." },
-    };
+    uint32_t loop = 0;
+    for (auto& eventUpdate : eventList) {
+        int32_t setTimer = CVarGetInteger(eventUpdate.eventVariable, 0) * 1200;
+        eventList[loop].eventTimer = setTimer;
+        loop++;
+    }
 }
 
 void ChaosEventActorMagnet() {
@@ -240,6 +243,46 @@ void ChaosEventsRepeater() {
             return;
         }
         Player* player = GET_PLAYER(gPlayState);
+
+        if (isEventIdPresent(EVENT_INVISIBILITY) == true) {
+            if (invisibilityTimer > 0) {
+                invisibilityTimer--;
+                GameInteractor::RawAction::SetLinkInvisibility(true);
+            } else {
+                GameInteractor::RawAction::SetLinkInvisibility(false);
+            }
+        }
+
+        if (isEventIdPresent(EVENT_STORMY_WEATHER) == true) {
+            if (stormTimer > 0) {
+                stormTimer--;
+                GameInteractor::RawAction::SetWeatherStorm(true);
+            } else {
+                GameInteractor::RawAction::SetWeatherStorm(false);
+            }
+        }
+
+        if (isEventIdPresent(EVENT_FORCE_IRON_BOOTS) == true) {
+            if (ironBootTimer > 0) {
+                ironBootTimer--;
+            } else {
+                GameInteractor::RawAction::ForceEquipBoots(EQUIP_VALUE_BOOTS_KOKIRI);
+            }
+            if (player->currentBoots != PLAYER_BOOTS_IRON) {
+                GameInteractor::RawAction::ForceEquipBoots(EQUIP_VALUE_BOOTS_IRON);
+            }
+        }
+
+        if (isEventIdPresent(EVENT_FORCE_HOVER_BOOTS) == true) {
+            if (hoverBootTimer > 0) {
+                hoverBootTimer--;
+            } else {
+                GameInteractor::RawAction::ForceEquipBoots(EQUIP_VALUE_BOOTS_KOKIRI);
+            }
+            if (player->currentBoots != PLAYER_BOOTS_HOVER) {
+                GameInteractor::RawAction::ForceEquipBoots(EQUIP_VALUE_BOOTS_HOVER);
+            }
+        }
 
         if (isEventIdPresent(EVENT_BOMBERMAN_MODE) == true) {
             if (bombermanTimer > 0) {
@@ -403,10 +446,28 @@ void ChaosEventsRepeater() {
                         currAct = currAct->next;
                     }
                 }
+            }
+        }
 
-                
-
-              
+        if (isEventIdPresent(EVENT_THROWN_IN_THE_PAST) == true) {
+            if (guardTimer > 0) {
+                guardTimer--;
+                guardActors = gPlayState->actorCtx.actorLists[ACTORCAT_NPC];
+                currGuard = guardActors.head;
+                if (currGuard != nullptr) {
+                    while (currGuard != nullptr) {
+                        if (currGuard->id == ACTOR_EN_HEISHI3) {
+                            currGuard->world.rot.y += 300.0f;
+                        }
+                        currGuard = currGuard->next;
+                    }
+                }
+                if (guardTimer == eventGuardTimer / 2) {
+                    Player* player = GET_PLAYER(gPlayState);
+                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_HEISHI3, player->actor.world.pos.x + 250.0f,
+                                player->actor.world.pos.y, player->actor.world.pos.z, 0,
+                                player->actor.world.rot.y + 16384, 0, 0, false);
+                }
             }
         }
     });
@@ -415,28 +476,36 @@ void ChaosEventsRepeater() {
 void ChaosEventsActivator(uint32_t eventId, bool isActive) {
     switch (eventId) {
         case EVENT_INVISIBILITY:
-            GameInteractor::RawAction::SetLinkInvisibility(isActive);
+            if (isActive) {
+                invisibilityTimer = eventList[EVENT_INVISIBILITY].eventTimer;
+            } else {
+                GameInteractor::RawAction::SetLinkInvisibility(false);
+            }
             break;
         case EVENT_STORMY_WEATHER:
-            GameInteractor::RawAction::SetWeatherStorm(isActive);
+            if (isActive) {
+                stormTimer = eventList[EVENT_STORMY_WEATHER].eventTimer;
+            } else {
+                GameInteractor::RawAction::SetWeatherStorm(false);
+            }
             break;
         case EVENT_FORCE_IRON_BOOTS:
             if (isActive) {
-                GameInteractor::RawAction::ForceEquipBoots(EQUIP_VALUE_BOOTS_IRON);
+                ironBootTimer = eventList[EVENT_FORCE_IRON_BOOTS].eventTimer;
             } else {
                 GameInteractor::RawAction::ForceEquipBoots(EQUIP_VALUE_BOOTS_KOKIRI);
             }
             break;
         case EVENT_FORCE_HOVER_BOOTS:
             if (isActive) {
-                GameInteractor::RawAction::ForceEquipBoots(EQUIP_VALUE_BOOTS_HOVER);
+                hoverBootTimer = eventList[EVENT_FORCE_HOVER_BOOTS].eventTimer;
             } else {
                 GameInteractor::RawAction::ForceEquipBoots(EQUIP_VALUE_BOOTS_KOKIRI);
             }
             break;
         case EVENT_BOMBERMAN_MODE:
             if (isActive) {
-                bombermanTimer = eventBomberTimer;
+                bombermanTimer = eventList[EVENT_BOMBERMAN_MODE].eventTimer;
                 if (!CVarGetInteger(CVAR_ENHANCEMENT("RemoveExplosiveLimit"), 0)) {
                     prevExplosiveLimit = 1;
                 } else {
@@ -449,7 +518,7 @@ void ChaosEventsActivator(uint32_t eventId, bool isActive) {
             break;
         case EVENT_FLOOR_IS_LAVA:
             if (isActive) {
-                lavaTimer = eventLavaTimer;
+                lavaTimer = eventList[EVENT_FLOOR_IS_LAVA].eventTimer;
             } else {
                 Player* player = GET_PLAYER(gPlayState);
                 func_80837C0C(gPlayState, player, 0, 0, 0, 0, 0);
@@ -464,7 +533,7 @@ void ChaosEventsActivator(uint32_t eventId, bool isActive) {
                     prevScene = gSaveContext.entranceIndex;
                     prevRoomCtx = gPlayState->roomCtx;
                     prevRoomNum = gPlayState->roomCtx.curRoom.num;
-                    fakeTimer = (eventFakeTimer / 3);
+                    fakeTimer = (eventList[EVENT_FAKE_TELEPORT].eventTimer / 3);
                 }
                 uint32_t teleportLoc = rand() % 6;
                 GameInteractor::RawAction::TeleportPlayer(teleportList[teleportLoc]);
@@ -476,7 +545,7 @@ void ChaosEventsActivator(uint32_t eventId, bool isActive) {
                     ChaosEventActorMagnet();    
                 });
                 ChaosEventActorMagnet();
-                magnetTimer = eventMagnetTimer;
+                magnetTimer = eventList[EVENT_ACTOR_MAGNET].eventTimer;
             } else {
                 if (actorMagnetHook != 0) {
                     GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneSpawnActors>(actorMagnetHook);
@@ -493,7 +562,7 @@ void ChaosEventsActivator(uint32_t eventId, bool isActive) {
             break;
         case EVENT_DEATH_SWITCH:
             if (isActive) {
-                deathSwitchTimer = eventDeathSwitchTimer;
+                deathSwitchTimer = eventList[EVENT_DEATH_SWITCH].eventTimer;
             } else {
                 gSaveContext.equips.buttonItems[prevRoll] = prevEquip;
                 GameInteractor::RawAction::ForceInterfaceUpdate();
@@ -501,7 +570,7 @@ void ChaosEventsActivator(uint32_t eventId, bool isActive) {
             break;
         case EVENT_KNUCKLE_RING:
             if (isActive) {
-                knuckleTimer = eventKnuckleTimer;
+                knuckleTimer = eventList[EVENT_KNUCKLE_RING].eventTimer;
                 Player* player = GET_PLAYER(gPlayState);
                 float radius = 45.0f;
                 std::vector<std::tuple<float, float, float>> spawnPoints;
@@ -559,7 +628,7 @@ void ChaosEventsActivator(uint32_t eventId, bool isActive) {
                 Player* player = GET_PLAYER(gPlayState);
                 Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_MD, player->actor.world.pos.x,
                             player->actor.world.pos.y, player->actor.world.pos.z, 0, player->actor.world.rot.y + 16384, 0, 256, false);
-                midoTimer = eventMidoTimer;
+                midoTimer = eventList[EVENT_MIDO_SUCKS].eventTimer;
             } else {
                 ActorListEntry midoActors = gPlayState->actorCtx.actorLists[ACTORCAT_NPC];
                 Actor* currAct = midoActors.head;
@@ -573,16 +642,36 @@ void ChaosEventsActivator(uint32_t eventId, bool isActive) {
                 }
             }
             break;
+        case EVENT_THROWN_IN_THE_PAST:
+            if (isActive) {
+                guardTimer = eventList[EVENT_THROWN_IN_THE_PAST].eventTimer;
+                Player* player = GET_PLAYER(gPlayState);
+                Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_HEISHI3, player->actor.world.pos.x + 250.0f,
+                            player->actor.world.pos.y, player->actor.world.pos.z, 0, player->actor.world.rot.y + 16384,
+                            0, 0, false);
+            } else {
+                guardActors = gPlayState->actorCtx.actorLists[ACTORCAT_NPC];
+                currGuard = guardActors.head;
+                if (currGuard != nullptr) {
+                    while (currGuard != nullptr) {
+                        if (currGuard->id == ACTOR_EN_HEISHI3) {
+                            Actor_Kill(currGuard);
+                        }
+                        currGuard = currGuard->next;
+                    }
+                }
+            }
+            break;
         default:
             break;
     }
 }
 
 void ChaosVoteSelector(uint32_t option) {
-    //uint32_t roll = EVENT_MIDO_SUCKS;
-    uint32_t roll = rand() % votingList.size();
+    uint32_t roll = EVENT_THROWN_IN_THE_PAST;
+    //uint32_t roll = rand() % votingList.size();
     votingObjectList[option].votingOption = votingList[roll].eventId;
-    votingList.erase(votingList.begin() + roll);
+    //votingList.erase(votingList.begin() + roll);
 }
 
 void ChaosVotingStarted() {
@@ -680,7 +769,9 @@ void DrawChaosTrackerEvents() {
                 ImGui::TextColored(colorOptions[COLOR_LIGHT_GREEN].colorCode, obj.eventName);
             }
             ImGui::SameLine();
-            ImGui::TextColored(colorOptions[COLOR_LIGHT_GREEN].colorCode, std::to_string(obj.eventTimer).c_str());
+            float rightAlign = ImGui::GetContentRegionAvail().x;
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + rightAlign - ImGui::CalcTextSize(formatChaosTimers(obj.eventTimer).c_str()).x);
+            ImGui::TextColored(colorOptions[COLOR_LIGHT_GREEN].colorCode, formatChaosTimers(obj.eventTimer).c_str());
             ImGui::TextWrapped(obj.eventDescription);
         }
     }
@@ -707,16 +798,20 @@ void DrawChaosEventsVoting() {
     ChaosVotingStarted();
     ImGui::TextColored(colorOptions[COLOR_WHITE].colorCode, "Voting Active");
     UIWidgets::PaddedSeparator();
-    ImGui::BeginTable("Voting Table", 2);
+    uint32_t voteNum = 1;
     for (auto& voting : votingObjectList) {
-        ImGui::TableNextColumn();
         ChaosVotingColorSelector(GetVotesForOption(voting.votingOption));
+        std::string str = std::to_string(voteNum) + " ";
+        ImGui::TextColored(voteColor, str.c_str());
+        ImGui::SameLine();
         ImGui::TextColored(voteColor, eventList[voting.votingOption].eventName);
-        ImGui::TableNextColumn();
+        ImGui::SameLine();
         std::string voteCounter = std::to_string(GetVotesForOption(voting.votingOption));
+        float rightAlign = ImGui::GetContentRegionAvail().x;
+        ImGui::SetCursorPosX(ImGui::GetCursorPosX() + rightAlign - ImGui::CalcTextSize(voteCounter.c_str()).x);
         ImGui::TextColored(voteColor, voteCounter.c_str());
+        voteNum++;
     }
-    ImGui::EndTable();
     UIWidgets::PaddedSeparator();
 }
 
@@ -727,14 +822,16 @@ void DrawChaosSettings() {
     ImGui::SetNextWindowSize(ImVec2(400, 400), ImGuiCond_FirstUseEver);
     ImGui::Begin("Chaos Settings");
     ImGui::PushItemWidth(100.0f);
+    if (UIWidgets::PaddedEnhancementSliderFloat("Window Size: %.1fx", "##windowSize",
+        CVAR_ENHANCEMENT("ChaosWindowSize"), 1.0f, 3.0f, "", 1.0f, false, false, true, false)) {
+        ChaosUpdateWindowSize();
+    }
     if (UIWidgets::PaddedEnhancementSliderInt("Chaos Interval", "##chaosInterval",
-                                              CVAR_ENHANCEMENT("ChaosInterval"), 1, 10, "%d Minutes", 5, true, true,
-                                              false)) {
+        CVAR_ENHANCEMENT("ChaosInterval"), 1, 10, "%d Minutes", 5, true, true, false)) {
         ChaosUpdateInterval();
     }
     if (UIWidgets::PaddedEnhancementSliderInt("Voting Interval", "##voteInterval",
-                                              CVAR_ENHANCEMENT("VotingInterval"), 30, 60, "%d Seconds", 60, true,
-                                              true, false)) {
+        CVAR_ENHANCEMENT("VotingInterval"), 30, 60, "%d Seconds", 60, true, true, false)) {
         ChaosUpdateVotingInterval();
     }
     ImGui::PopItemWidth();
@@ -762,9 +859,9 @@ void DrawChaosSettings() {
 }
 
 void ChaosWindow::DrawElement() {
-    ImGui::SetWindowFontScale(2.0f);
-    std::string counter = std::to_string(frameCounter).c_str();
-    std::string frameText = "Frame Counter: " + counter;
+    ImGui::SetWindowFontScale(chaosWindowSize);
+    std::string frameText;
+    uint32_t timeRemaining;
     
     if (UIWidgets::PaddedEnhancementCheckbox("Enable Chaos Mode", CVAR_ENHANCEMENT("EnableChaosMode"), true, false)) {
         if (CVarGetInteger(CVAR_ENHANCEMENT("EnableChaosMode"), 0) == 0) {
@@ -776,10 +873,19 @@ void ChaosWindow::DrawElement() {
             isVotingActive = false;
         }
     }
+    ImGui::SameLine();
     if (ImGui::Button("Chaos Settings")) {
         openChaosSettings = !openChaosSettings;
     }
     DrawChaosSettings();
+
+    if (isVotingActive) {
+        timeRemaining = votingInterval - frameCounter;
+        frameText = "Voting Ends in " + formatChaosTimers(timeRemaining);
+    } else {
+        timeRemaining = chaosInterval - frameCounter;
+        frameText = "Next Vote Begins in " + formatChaosTimers(timeRemaining);
+    }
     
     ImGui::Text(frameText.c_str());
     UIWidgets::PaddedSeparator();
@@ -794,6 +900,7 @@ void ChaosWindow::DrawElement() {
 }
 
 void ChaosWindow::InitElement() {
+    ChaosUpdateWindowSize();
     ChaosUpdateInterval();
     ChaosUpdateVotingInterval();
     ChaosUpdateEventTimers();
