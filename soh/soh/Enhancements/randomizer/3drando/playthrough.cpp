@@ -25,7 +25,9 @@ int Playthrough_Init(uint32_t seed, std::set<RandomizerCheck> excludedLocations,
     ctx->ItemReset();
     ctx->HintReset();
     ctx->GetLogic()->Reset();
+    ctx->areaResetStart = std::chrono::high_resolution_clock::now();
     Areas::AccessReset();
+    ctx->areaResetEnd = std::chrono::high_resolution_clock::now();
 
     ctx->GetSettings()->FinalizeSettings(excludedLocations, enabledTricks);
     // once the settings have been finalized turn them into a string for hashing
@@ -71,11 +73,13 @@ int Playthrough_Init(uint32_t seed, std::set<RandomizerCheck> excludedLocations,
         //TODO: Handle different types of file output (i.e. Spoiler Log, Plando Template, Patch Files, Race Files, etc.)
         // write logs
         SPDLOG_INFO("Writing Spoiler Log...");
+        ctx->logStart = std::chrono::high_resolution_clock::now();
         if (SpoilerLog_Write()) {
             SPDLOG_INFO("Writing Spoiler Log Done");
         } else {
             SPDLOG_ERROR("Writing Spoiler Log Failed");
         }
+        ctx->logEnd = std::chrono::high_resolution_clock::now();
 #ifdef ENABLE_DEBUG
         SPDLOG_INFO("Writing Placement Log...");
         if (PlacementLog_Write()) {

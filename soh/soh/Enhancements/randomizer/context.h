@@ -123,6 +123,30 @@ class Context {
     void SetEventChkInf(int32_t flag, bool state);
     uint8_t GetAmmo(uint32_t item);
     void SetAmmo(uint32_t item, uint8_t count);
+    std::chrono::_V2::system_clock::time_point metricStart;
+    std::chrono::_V2::system_clock::time_point SCLResetStart;
+    std::chrono::_V2::system_clock::time_point SCLResetEnd;
+    std::chrono::_V2::system_clock::time_point LogicResetStart;
+    std::chrono::_V2::system_clock::time_point LogicResetEnd;
+    std::chrono::_V2::system_clock::time_point areaResetStart;
+    std::chrono::_V2::system_clock::time_point areaResetEnd;
+    std::chrono::duration<double, std::milli> updateHelpersDuration;
+    std::chrono::_V2::system_clock::time_point logStart;
+    std::chrono::_V2::system_clock::time_point logEnd;
+    std::chrono::duration<double, std::milli> entranceShuffleDuration;
+    std::chrono::duration<double, std::milli> setAreasDuration;
+    std::chrono::duration<double, std::milli> shopDuration;
+    std::chrono::duration<double, std::milli> dungeonsDuration;
+    std::chrono::duration<double, std::milli> limitedDuration;
+    std::chrono::duration<double, std::milli> advancmentDuration;
+    std::chrono::duration<double, std::milli> remainingDuration;
+    std::chrono::duration<double, std::milli> playthroughDuration;
+    std::chrono::duration<double, std::milli> pareDownDuration;
+    std::chrono::duration<double, std::milli> WotHDuration;
+    std::chrono::duration<double, std::milli> FoolishDuration;
+    std::chrono::duration<double, std::milli> OverridesDuration;
+    std::chrono::duration<double, std::milli> HintsDuration;
+    
 
   private:
     static std::weak_ptr<Context> mContext;

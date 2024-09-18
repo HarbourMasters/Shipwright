@@ -455,6 +455,7 @@ namespace Rando {
 
     // Updates all logic helpers. Should be called whenever a non-helper is changed
     void Logic::UpdateHelpers() {
+        auto helperMetricStart = std::chrono::high_resolution_clock::now();
         OcarinaButtons  =  (HasItem(RG_OCARINA_A_BUTTON) ? 1 : 0) +
                            (HasItem(RG_OCARINA_C_LEFT_BUTTON) ? 1 : 0) +
                            (HasItem(RG_OCARINA_C_RIGHT_BUTTON) ? 1 : 0) +
@@ -659,6 +660,8 @@ namespace Rando {
                             (ctx->GetSettings()->LACSCondition() == RO_LACS_DUNGEONS   && DungeonCount + (Greg && GregInLacsLogic ? 1 : 0) >= ctx->GetOption(RSK_LACS_DUNGEON_COUNT).Value<uint8_t>())                ||
                             (ctx->GetSettings()->LACSCondition() == RO_LACS_TOKENS     && GoldSkulltulaTokens >= ctx->GetOption(RSK_LACS_TOKEN_COUNT).Value<uint8_t>());
         CanCompleteTriforce = TriforcePieces >= ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_REQUIRED).Value<uint8_t>();
+        auto helperMetricEnd = std::chrono::high_resolution_clock::now();
+        ctx->updateHelpersDuration += (helperMetricEnd - helperMetricStart);
     }
 
     bool Logic::SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmount) {
@@ -775,7 +778,10 @@ namespace Rando {
     }
 
     void Logic::Reset() {
+        ctx->SCLResetStart = std::chrono::high_resolution_clock::now();
         ctx->NewSaveContext();
+        ctx->SCLResetStart = std::chrono::high_resolution_clock::now();
+        ctx->LogicResetStart = std::chrono::high_resolution_clock::now();
         memset(inLogic, false, sizeof(inLogic));
         //Settings-dependent variables
         IsKeysanity = ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_ANYWHERE) || 
@@ -1116,5 +1122,8 @@ namespace Rando {
         LightTrialClearPast      = false;
         BuyDekuShieldPast        = false;
         TimeTravelPast           = false;
+
+
+        ctx->LogicResetEnd = std::chrono::high_resolution_clock::now();
     }
 }
