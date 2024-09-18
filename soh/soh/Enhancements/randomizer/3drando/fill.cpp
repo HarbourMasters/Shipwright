@@ -1149,7 +1149,7 @@ int Fill() {
 
     //Temporarily add shop items to the ItemPool so that entrance randomization
     //can validate the world using deku/hylian shields
-    std::chrono::system_clock::time_point metricStart = std::chrono::high_resolution_clock::now();
+    std::chrono::high_resolution_clock::time_point metricStart = std::chrono::high_resolution_clock::now();
     AddElementsToPool(ItemPool, GetMinVanillaShopItems(32)); //assume worst case shopsanity 4
     if (ctx->GetOption(RSK_SHUFFLE_ENTRANCES)) {
       SPDLOG_INFO("Shuffling Entrances...");
@@ -1160,10 +1160,10 @@ int Fill() {
       }
       SPDLOG_INFO("Shuffling Entrances Done");
     }
-    std::chrono::system_clock::time_point entranceToAreaTime = std::chrono::high_resolution_clock::now();
+    std::chrono::high_resolution_clock::time_point entranceToAreaTime = std::chrono::high_resolution_clock::now();
     ctx->entranceShuffleDuration += (entranceToAreaTime - metricStart);
     SetAreas();
-    std::chrono::system_clock::time_point areaToShopTime = std::chrono::high_resolution_clock::now();
+    std::chrono::high_resolution_clock::time_point areaToShopTime = std::chrono::high_resolution_clock::now();
     ctx->setAreasDuration += (areaToShopTime - entranceToAreaTime);
     //erase temporary shop items
     FilterAndEraseFromPool(ItemPool, [](const auto item) { return Rando::StaticData::RetrieveItem(item).GetItemType() == ITEMTYPE_SHOP; });
@@ -1216,7 +1216,7 @@ int Fill() {
       //Place the shop items which will still be at shop locations
       AssumedFill(shopItems, shopLocations);
     }
-    std::chrono::system_clock::time_point shopToDungeonsTime = std::chrono::high_resolution_clock::now();
+    std::chrono::high_resolution_clock::time_point shopToDungeonsTime = std::chrono::high_resolution_clock::now();
     ctx->shopDuration += (shopToDungeonsTime - areaToShopTime);
 
     //Place dungeon rewards
@@ -1228,7 +1228,7 @@ int Fill() {
       RandomizeOwnDungeon(dungeon);
     }
 
-    std::chrono::system_clock::time_point dungeonsToLimitedTime = std::chrono::high_resolution_clock::now();
+    std::chrono::high_resolution_clock::time_point dungeonsToLimitedTime = std::chrono::high_resolution_clock::now();
     ctx->dungeonsDuration += (dungeonsToLimitedTime - shopToDungeonsTime);
 
     //Then Place songs if song shuffle is set to specific locations
@@ -1260,7 +1260,7 @@ int Fill() {
     //Then place Link's Pocket Item if it has to be an advancement item
     RandomizeLinksPocket();
 
-   std::chrono::system_clock::time_point limitedToAdvancmentTime = std::chrono::high_resolution_clock::now();
+   std::chrono::high_resolution_clock::time_point limitedToAdvancmentTime = std::chrono::high_resolution_clock::now();
     ctx->limitedDuration += (limitedToAdvancmentTime - dungeonsToLimitedTime);
 
     SPDLOG_INFO("Shuffling Advancement Items");
@@ -1269,7 +1269,7 @@ int Fill() {
         FilterAndEraseFromPool(ItemPool, [](const auto i) { return Rando::StaticData::RetrieveItem(i).IsAdvancement(); });
     AssumedFill(remainingAdvancementItems, ctx->allLocations, true);
 
-   std::chrono::system_clock::time_point advancmentToRemainingTime = std::chrono::high_resolution_clock::now();
+   std::chrono::high_resolution_clock::time_point advancmentToRemainingTime = std::chrono::high_resolution_clock::now();
     ctx->advancmentDuration += (advancmentToRemainingTime - limitedToAdvancmentTime);
 
     //Fast fill for the rest of the pool
@@ -1305,25 +1305,25 @@ int Fill() {
 
     metricStart = std::chrono::high_resolution_clock::now();
     GeneratePlaythrough();
-   std::chrono::system_clock::time_point playthroughEnd = std::chrono::high_resolution_clock::now();
+   std::chrono::high_resolution_clock::time_point playthroughEnd = std::chrono::high_resolution_clock::now();
     ctx->playthroughDuration += (playthroughEnd - metricStart);
     //Successful placement, produced beatable result
     if(ctx->playthroughBeatable && !placementFailure) {
       SPDLOG_INFO("Calculating Playthrough...");
       PareDownPlaythrough();
-     std::chrono::system_clock::time_point pareDownToWoth = std::chrono::high_resolution_clock::now();
+     std::chrono::high_resolution_clock::time_point pareDownToWoth = std::chrono::high_resolution_clock::now();
       ctx->pareDownDuration += (pareDownToWoth - playthroughEnd);
       CalculateWotH();
-     std::chrono::system_clock::time_point WothToFoolish = std::chrono::high_resolution_clock::now();
+     std::chrono::high_resolution_clock::time_point WothToFoolish = std::chrono::high_resolution_clock::now();
       ctx->WotHDuration += (WothToFoolish - pareDownToWoth);
       CalculateBarren(); 
       SPDLOG_INFO("Calculating Playthrough Done");
-     std::chrono::system_clock::time_point foolishToOverrides = std::chrono::high_resolution_clock::now();
+     std::chrono::high_resolution_clock::time_point foolishToOverrides = std::chrono::high_resolution_clock::now();
       ctx->FoolishDuration += (foolishToOverrides - WothToFoolish);
       ctx->CreateItemOverrides();
       ctx->GetEntranceShuffler()->CreateEntranceOverrides();
       
-     std::chrono::system_clock::time_point overridesToHints = std::chrono::high_resolution_clock::now();
+     std::chrono::high_resolution_clock::time_point overridesToHints = std::chrono::high_resolution_clock::now();
       ctx->OverridesDuration += (overridesToHints - foolishToOverrides);
       CreateAllHints();
       CreateWarpSongTexts();
