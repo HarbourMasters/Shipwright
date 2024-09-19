@@ -14,7 +14,7 @@ FaultClient sGameFaultClient;
 u16 sLastButtonPressed;
 
 // Forward declared, because this in a C++ header.
-int gfx_create_framebuffer(uint32_t width, uint32_t height);
+int gfx_create_framebuffer(uint32_t width, uint32_t height, uint32_t native_width, uint32_t native_height, uint8_t resize);
 void gfx_texture_cache_clear();
 
 
@@ -93,7 +93,7 @@ void func_800C4344(GameState* gameState) {
         HREG(95) = CHECK_BTN_ALL(selectedInput->press.button, hReg82);
     }
 
-    if (CVarGetInteger("gRegEditEnabled", 0) || gIsCtrlr2Valid) {
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("RegEditEnabled"), 0) || gIsCtrlr2Valid) {
         func_8006390C(&gameState->input[1]);
     }
 
@@ -162,7 +162,7 @@ void GameState_Draw(GameState* gameState, GraphicsContext* gfxCtx) {
     }
 
     sLastButtonPressed = gameState->input[0].press.button | gameState->input[0].cur.button;
-    if (R_DISABLE_INPUT_DISPLAY == 0 && CVarGetInteger("gDebugEnabled", 0)) {
+    if (R_DISABLE_INPUT_DISPLAY == 0 && CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0)) {
         GameState_DrawInputDisplay(sLastButtonPressed, &newDList);
     }
 
@@ -239,16 +239,15 @@ void GameState_ReqPadData(GameState* gameState) {
     PadMgr_RequestPadData(&gPadMgr, &gameState->input[0], 1);
 }
 
-// OTRTODO
-int fbTest = -1;
+// Framebuffer for the Link preview on the pause menu equipment sub-screen
+int gPauseLinkFrameBuffer = -1;
 
 void GameState_Update(GameState* gameState) {
     GraphicsContext* gfxCtx = gameState->gfxCtx;
 
-    if (fbTest == -1)
-    {
-        fbTest = gfx_create_framebuffer(64, 112);
-        //fbTest = gfx_create_framebuffer(256, 512);
+    if (gPauseLinkFrameBuffer == -1) {
+        gPauseLinkFrameBuffer = gfx_create_framebuffer(PAUSE_EQUIP_PLAYER_WIDTH, PAUSE_EQUIP_PLAYER_HEIGHT,
+                                                       PAUSE_EQUIP_PLAYER_WIDTH, PAUSE_EQUIP_PLAYER_HEIGHT, true);
     }
 
     GameState_SetFrameBuffer(gfxCtx);
@@ -329,7 +328,7 @@ void GameState_Update(GameState* gameState) {
         func_800C49F4(gfxCtx);
     }
 
-    gSaveContext.language = CVarGetInteger("gLanguages", LANGUAGE_ENG);
+    gSaveContext.language = CVarGetInteger(CVAR_SETTING("Languages"), LANGUAGE_ENG);
 
     GameInteractor_ExecuteOnGameFrameUpdate();
     gameState->frames++;
@@ -467,7 +466,7 @@ void GameState_Destroy(GameState* gameState) {
     // Performing clear skeletons before unload resources fixes an actor heap corruption crash due to the skeleton patching system.
     ResourceMgr_ClearSkeletons();
 
-    if (CVarGetInteger("gAltAssets", 0)) {
+    if (ResourceMgr_IsAltAssetsEnabled()) {
         ResourceUnloadDirectory("alt/*");
         gfx_texture_cache_clear();
     }

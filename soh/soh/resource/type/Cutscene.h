@@ -3,9 +3,6 @@
 #include <vector>
 #include <string>
 #include "Resource.h"
-#include "Vec2f.h"
-#include "Vec3f.h"
-#include "Color3b.h"
 
 namespace SOH {
 
@@ -44,11 +41,11 @@ enum class CutsceneCommands {
     Error = 0xFEAF,
 };
 
-class Cutscene : public LUS::Resource<uint32_t> {
+class Cutscene : public Ship::Resource<uint32_t> {
   public:
     using Resource::Resource;
 
-    Cutscene() : Resource(std::shared_ptr<LUS::ResourceInitData>()) {}
+    Cutscene() : Resource(std::shared_ptr<Ship::ResourceInitData>()) {}
 
     uint32_t* GetPointer();
     size_t GetPointerSize();

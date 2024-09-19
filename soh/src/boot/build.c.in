@@ -4,6 +4,11 @@ const char gBuildVersion[] = "@PROJECT_BUILD_NAME@ (@CMAKE_PROJECT_VERSION_MAJOR
 const u16 gBuildVersionMajor = @CMAKE_PROJECT_VERSION_MAJOR@;
 const u16 gBuildVersionMinor = @CMAKE_PROJECT_VERSION_MINOR@;
 const u16 gBuildVersionPatch = @CMAKE_PROJECT_VERSION_PATCH@;
+
+const char gGitBranch[] = "@CMAKE_PROJECT_GIT_BRANCH@";
+const char gGitCommitHash[] = "@CMAKE_PROJECT_GIT_COMMIT_HASH@";
+const char gGitCommitTag[] = "@CMAKE_PROJECT_GIT_COMMIT_TAG@";
+
 const char gBuildTeam[] = "@PROJECT_TEAM@";
 const char gBuildDate[] = __DATE__ " " __TIME__;
 const char gBuildMakeOption[] = "";

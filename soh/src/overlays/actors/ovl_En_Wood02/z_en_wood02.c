@@ -101,12 +101,18 @@ static f32 sSpawnSin;
 s32 EnWood02_SpawnZoneCheck(EnWood02* this, PlayState* play, Vec3f* pos) {
     f32 phi_f12;
 
-    if (CVarGetInteger("gDisableDrawDistance", 0) != 0) {
-        return true;
-    }
-
     SkinMatrix_Vec3fMtxFMultXYZW(&play->viewProjectionMtxF, pos, &this->actor.projectedPos,
                                  &this->actor.projectedW);
+
+    // #region SOH [Enhancement] Use the extended culling calculation
+    if (CVarGetInteger(CVAR_ENHANCEMENT("DisableDrawDistance"), 1) > 1 ||
+        CVarGetInteger(CVAR_ENHANCEMENT("WidescreenActorCulling"), 0)) {
+        bool shipShouldDraw = false;
+        bool shipShouldUpdate = false;
+        return Ship_CalcShouldDrawAndUpdate(play, &this->actor, &this->actor.projectedPos, this->actor.projectedW,
+                                            &shipShouldDraw, &shipShouldUpdate);
+    }
+    // #endregion
 
     phi_f12 = ((this->actor.projectedW == 0.0f) ? 1000.0f : fabsf(1.0f / this->actor.projectedW));
 
@@ -177,7 +183,7 @@ void EnWood02_Init(Actor* thisx, PlayState* play2) {
     // as the night scene, For the always spawn GS enhancement we apply the needed
     // params to have the GS drop when bonking
     if ((this->actor.params & 0xFF) == WOOD_TREE_CONICAL_MEDIUM && IS_DAY &&
-        play->sceneNum == SCENE_KAKARIKO_VILLAGE && CVarGetInteger("gNightGSAlwaysSpawn", 0)) {
+        play->sceneNum == SCENE_KAKARIKO_VILLAGE && CVarGetInteger(CVAR_ENHANCEMENT("NightGSAlwaysSpawn"), 0)) {
         this->actor.params = 0x2001;
         this->actor.home.rot.z = 0x71;
     }
@@ -352,7 +358,7 @@ void EnWood02_Update(Actor* thisx, PlayState* play2) {
             dropsSpawnPt = this->actor.world.pos;
             dropsSpawnPt.y += 200.0f;
 
-            if ((this->unk_14C >= 0) && (this->unk_14C < 0x64) && (CVarGetInteger("gTreeStickDrops", 0)) && !(INV_CONTENT(ITEM_STICK) == ITEM_NONE)) {
+            if ((this->unk_14C >= 0) && (this->unk_14C < 0x64) && (CVarGetInteger(CVAR_ENHANCEMENT("TreesDropSticks"), 0)) && !(INV_CONTENT(ITEM_STICK) == ITEM_NONE)) {
                 (numDrops = (Rand_ZeroOne() * 4));
                 for (i = 0; i < numDrops; ++i) {
                     Item_DropCollectible(play, &dropsSpawnPt, ITEM00_STICK);

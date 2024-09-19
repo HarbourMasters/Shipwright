@@ -8,7 +8,7 @@ void SaveContext_Init(void) {
     gSaveContext.seqId = (u8)NA_BGM_DISABLED;
     gSaveContext.natureAmbienceId = NATURE_ID_DISABLED;
     gSaveContext.forcedSeqId = NA_BGM_GENERAL_SFX;
-    gSaveContext.nextCutsceneIndex = CVarGetInteger("gBetaQuestWorld", 0xFFEF);
+    gSaveContext.nextCutsceneIndex = CVarGetInteger(CVAR_CHEAT("BetaQuestWorld"), 0xFFEF);
     gSaveContext.cutsceneTrigger = 0;
     gSaveContext.chamberCutsceneNum = 0;
     gSaveContext.nextDayTime = 0xFFFF;

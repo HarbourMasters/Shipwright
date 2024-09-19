@@ -14,6 +14,7 @@ extern "C" {
 #include <libultraship/bridge.h>
 #include <libultraship/libultraship.h>
 #include "soh/Enhancements/enhancementTypes.h"
+#include "soh/OTRGlobals.h"
 
 extern "C" {
 #include <z64.h>
@@ -387,7 +388,7 @@ void GameplayStatsRow(const char* label, const std::string& value, ImVec4 color 
 }
 
 bool compareTimestampInfoByTime(const TimestampInfo& a, const TimestampInfo& b) {
-    return CVarGetInteger("gGameplayStats.TimestampsReverse", 0) ? a.time > b.time : a.time < b.time;
+    return CVarGetInteger(CVAR_ENHANCEMENT("GameplayStats.ReverseTimestamps"), 0) ? a.time > b.time : a.time < b.time;
 }
 
 const char* ResolveSceneID(int sceneID, int roomID){
@@ -436,19 +437,25 @@ void DrawGameplayStatsHeader() {
     ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 4.0f, 4.0f });
     ImGui::BeginTable("gameplayStatsHeader", 1, ImGuiTableFlags_BordersOuter);
     ImGui::TableSetupColumn("stat", ImGuiTableColumnFlags_WidthStretch);
-    GameplayStatsRow("Build Version:", (char*) gBuildVersion);
+    //if tag is empty (not a release build)
+    if (gGitCommitTag[0] == 0) {
+        GameplayStatsRow("Git Branch:", (char*)gGitBranch);
+        GameplayStatsRow("Git Commit Hash:", (char*)gGitCommitHash);
+    } else {
+        GameplayStatsRow("Build Version:", (char*)gBuildVersion);
+    }
     if (gSaveContext.sohStats.rtaTiming) {
         GameplayStatsRow("Total Time (RTA):", formatTimestampGameplayStat(GAMEPLAYSTAT_TOTAL_TIME), gSaveContext.sohStats.gameComplete ? COLOR_GREEN : COLOR_WHITE);
     } else {
         GameplayStatsRow("Total Game Time:", formatTimestampGameplayStat(GAMEPLAYSTAT_TOTAL_TIME), gSaveContext.sohStats.gameComplete ? COLOR_GREEN : COLOR_WHITE);
     }
-    if (CVarGetInteger("gGameplayStats.ShowAdditionalTimers", 0)) { // !Only display total game time
+    if (CVarGetInteger(CVAR_ENHANCEMENT("GameplayStats.ShowAdditionalTimers"), 0)) { // !Only display total game time
         GameplayStatsRow("Gameplay Time:", formatTimestampGameplayStat(gSaveContext.sohStats.playTimer / 2), COLOR_GREY);
         GameplayStatsRow("Pause Menu Time:", formatTimestampGameplayStat(gSaveContext.sohStats.pauseTimer / 3), COLOR_GREY);
         GameplayStatsRow("Time in scene:", formatTimestampGameplayStat(gSaveContext.sohStats.sceneTimer / 2), COLOR_LIGHT_BLUE);
         GameplayStatsRow("Time in room:", formatTimestampGameplayStat(gSaveContext.sohStats.roomTimer / 2), COLOR_LIGHT_BLUE);
     }
-    if (gPlayState != NULL && CVarGetInteger("gGameplayStats.ShowDebugInfo", 0)) { // && display debug info
+    if (gPlayState != NULL && CVarGetInteger(CVAR_ENHANCEMENT("GameplayStats.ShowDebugInfo"), 0)) { // && display debug info
         GameplayStatsRow("play->sceneNum:", formatHexGameplayStat(gPlayState->sceneNum), COLOR_YELLOW);
         GameplayStatsRow("gSaveContext.entranceIndex:", formatHexGameplayStat(gSaveContext.entranceIndex), COLOR_YELLOW);
         GameplayStatsRow("gSaveContext.cutsceneIndex:", formatHexOnlyGameplayStat(gSaveContext.cutsceneIndex), COLOR_YELLOW);
@@ -538,7 +545,7 @@ void DrawGameplayStatsCountsTab() {
     GameplayStatsRow("Sword Swings:", formatIntGameplayStat(gSaveContext.sohStats.count[COUNT_SWORD_SWINGS]));
     GameplayStatsRow("Steps Taken:", formatIntGameplayStat(gSaveContext.sohStats.count[COUNT_STEPS]));
     // If using MM Bunny Hood enhancement, show how long it's been equipped (not counting pause time)
-    if (CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA || gSaveContext.sohStats.count[COUNT_TIME_BUNNY_HOOD] > 0) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA || gSaveContext.sohStats.count[COUNT_TIME_BUNNY_HOOD] > 0) {
         GameplayStatsRow("Bunny Hood Time:", formatTimestampGameplayStat(gSaveContext.sohStats.count[COUNT_TIME_BUNNY_HOOD] / 2));
     }
     GameplayStatsRow("Rolls:", formatIntGameplayStat(gSaveContext.sohStats.count[COUNT_ROLLS]));
@@ -566,13 +573,13 @@ void DrawGameplayStatsBreakdownTab() {
     for (int i = 0; i < gSaveContext.sohStats.tsIdx; i++) {
         std::string sceneName = ResolveSceneID(gSaveContext.sohStats.sceneTimestamps[i].scene, gSaveContext.sohStats.sceneTimestamps[i].room);
         std::string name;
-        if (CVarGetInteger("gGameplayStats.RoomBreakdown", 0) && gSaveContext.sohStats.sceneTimestamps[i].scene != SCENE_GROTTOS) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("GameplayStats.RoomBreakdown"), 0) && gSaveContext.sohStats.sceneTimestamps[i].scene != SCENE_GROTTOS) {
             name = fmt::format("{:s} Room {:d}", sceneName, gSaveContext.sohStats.sceneTimestamps[i].room);    
         } else {
             name = sceneName;
         }
         strcpy(sceneTimestampDisplay[i].name, name.c_str());
-        sceneTimestampDisplay[i].time = CVarGetInteger("gGameplayStats.RoomBreakdown", 0) ? 
+        sceneTimestampDisplay[i].time = CVarGetInteger(CVAR_ENHANCEMENT("GameplayStats.RoomBreakdown"), 0) ? 
             gSaveContext.sohStats.sceneTimestamps[i].roomTime : gSaveContext.sohStats.sceneTimestamps[i].sceneTime;
         sceneTimestampDisplay[i].color = COLOR_GREY;
         sceneTimestampDisplay[i].isRoom = gSaveContext.sohStats.sceneTimestamps[i].isRoom;
@@ -583,13 +590,13 @@ void DrawGameplayStatsBreakdownTab() {
     ImGui::TableSetupColumn("stat", ImGuiTableColumnFlags_WidthStretch);
     for (int i = 0; i < gSaveContext.sohStats.tsIdx; i++) {
         TimestampInfo tsInfo = sceneTimestampDisplay[i];
-        bool canShow = !tsInfo.isRoom || CVarGetInteger("gGameplayStats.RoomBreakdown", 0);
+        bool canShow = !tsInfo.isRoom || CVarGetInteger(CVAR_ENHANCEMENT("GameplayStats.RoomBreakdown"), 0);
         if (tsInfo.time > 0 && strnlen(tsInfo.name, 40) > 1 && canShow) {
             GameplayStatsRow(tsInfo.name, formatTimestampGameplayStat(tsInfo.time), tsInfo.color);
         }
     }
     std::string toPass;
-    if (CVarGetInteger("gGameplayStats.RoomBreakdown", 0) && gSaveContext.sohStats.sceneNum != SCENE_GROTTOS) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("GameplayStats.RoomBreakdown"), 0) && gSaveContext.sohStats.sceneNum != SCENE_GROTTOS) {
         toPass = fmt::format("{:s} Room {:d}", ResolveSceneID(gSaveContext.sohStats.sceneNum, gSaveContext.sohStats.roomNum), gSaveContext.sohStats.roomNum);
     } else {
         toPass = ResolveSceneID(gSaveContext.sohStats.sceneNum, gSaveContext.sohStats.roomNum);
@@ -600,30 +607,24 @@ void DrawGameplayStatsBreakdownTab() {
 }
 
 void DrawGameplayStatsOptionsTab() {
-    UIWidgets::PaddedEnhancementCheckbox("Show in-game total timer", "gGameplayStats.ShowIngameTimer", true, false);
+    UIWidgets::PaddedEnhancementCheckbox("Show in-game total timer", CVAR_ENHANCEMENT("GameplayStats.ShowIngameTimer"), true, false);
     UIWidgets::InsertHelpHoverText("Keep track of the timer as an in-game HUD element. The position of the timer can be changed in the Cosmetics Editor.");
-    UIWidgets::PaddedEnhancementCheckbox("Show latest timestamps on top", "gGameplayStats.TimestampsReverse", true, false);
-    UIWidgets::PaddedEnhancementCheckbox("Room Breakdown", "gGameplayStats.RoomBreakdown", true, false);
+    UIWidgets::PaddedEnhancementCheckbox("Show latest timestamps on top", CVAR_ENHANCEMENT("GameplayStats.ReverseTimestamps"), true, false);
+    UIWidgets::PaddedEnhancementCheckbox("Room Breakdown", CVAR_ENHANCEMENT("GameplayStats.RoomBreakdown"), true, false);
     ImGui::SameLine();
     UIWidgets::InsertHelpHoverText("Allows a more in-depth perspective of time spent in a certain map.");   
-    UIWidgets::PaddedEnhancementCheckbox("RTA Timing on new files", "gGameplayStats.RTATiming", true, false);
+    UIWidgets::PaddedEnhancementCheckbox("RTA Timing on new files", CVAR_ENHANCEMENT("GameplayStats.RTATiming"), true, false);
     ImGui::SameLine();
     UIWidgets::InsertHelpHoverText(
         "Timestamps are relative to starting timestamp rather than in game time, usually necessary for races/speedruns.\n\n"
         "Starting timestamp is on first non-c-up input after intro cutscene.\n\n"
         "NOTE: THIS NEEDS TO BE SET BEFORE CREATING A FILE TO TAKE EFFECT"
     );   
-    UIWidgets::PaddedEnhancementCheckbox("Show additional detail timers", "gGameplayStats.ShowAdditionalTimers", true, false);
-    UIWidgets::PaddedEnhancementCheckbox("Show Debug Info", "gGameplayStats.ShowDebugInfo");
+    UIWidgets::PaddedEnhancementCheckbox("Show additional detail timers", CVAR_ENHANCEMENT("GameplayStats.ShowAdditionalTimers"), true, false);
+    UIWidgets::PaddedEnhancementCheckbox("Show Debug Info", CVAR_ENHANCEMENT("GameplayStats.ShowDebugInfo"));
 }
 
 void GameplayStatsWindow::DrawElement() {
-    ImGui::SetNextWindowSize(ImVec2(480, 550), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Gameplay Stats", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
-        ImGui::End();
-        return;
-    }
-
     DrawGameplayStatsHeader();
 
     if (ImGui::BeginTabBar("Stats", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
@@ -647,8 +648,6 @@ void GameplayStatsWindow::DrawElement() {
     }
    
     ImGui::Text("Note: Gameplay stats are saved to the current file and will be\nlost if you quit without saving.");
-
-    ImGui::End();
 }
 void InitStats(bool isDebug) {
     gSaveContext.sohStats.heartPieces = isDebug ? 8 : 0;
@@ -656,7 +655,7 @@ void InitStats(bool isDebug) {
     for (int dungeon = 0; dungeon < ARRAY_COUNT(gSaveContext.sohStats.dungeonKeys); dungeon++) {
         gSaveContext.sohStats.dungeonKeys[dungeon] = isDebug ? 8 : 0;
     }
-    gSaveContext.sohStats.rtaTiming = CVarGetInteger("gGameplayStats.RTATiming", 0);
+    gSaveContext.sohStats.rtaTiming = CVarGetInteger(CVAR_ENHANCEMENT("GameplayStats.RTATiming"), 0);
     gSaveContext.sohStats.fileCreatedAt = 0;
     gSaveContext.sohStats.playTimer = 0;
     gSaveContext.sohStats.pauseTimer = 0;

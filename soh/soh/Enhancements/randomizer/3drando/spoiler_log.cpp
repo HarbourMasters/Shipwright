@@ -864,6 +864,8 @@ const char* SpoilerLog_Write(int language) {
     jsonData.clear();
 
     jsonData["version"] = (char*) gBuildVersion;
+    jsonData["git_branch"] = (char*) gGitBranch;
+    jsonData["git_commit"] = (char*) gGitCommitHash;
     jsonData["seed"] = Settings::seedString;
     jsonData["finalSeed"] = Settings::seed;
 
@@ -895,8 +897,8 @@ const char* SpoilerLog_Write(int language) {
     WriteAllLocations(language);
     //WriteHintData(language);
 
-    if (!std::filesystem::exists(LUS::Context::GetPathRelativeToAppDirectory("Randomizer"))) {
-        std::filesystem::create_directory(LUS::Context::GetPathRelativeToAppDirectory("Randomizer"));
+    if (!std::filesystem::exists(Ship::Context::GetPathRelativeToAppDirectory("Randomizer"))) {
+        std::filesystem::create_directory(Ship::Context::GetPathRelativeToAppDirectory("Randomizer"));
     }
 
     std::string jsonString = jsonData.dump(4);
@@ -911,7 +913,7 @@ const char* SpoilerLog_Write(int language) {
         fileNameStream << std::to_string(Settings::hashIconIndexes[i]);
     }
     std::string fileName = fileNameStream.str();
-    std::ofstream jsonFile(LUS::Context::GetPathRelativeToAppDirectory(
+    std::ofstream jsonFile(Ship::Context::GetPathRelativeToAppDirectory(
         (std::string("Randomizer/") + fileName + std::string(".json")).c_str()));
     jsonFile << std::setw(4) << jsonString << std::endl;
     jsonFile.close();

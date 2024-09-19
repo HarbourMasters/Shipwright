@@ -246,7 +246,7 @@ void EnVali_SetupDivideAndDie(EnVali* this, PlayState* play) {
 
         // Offset small jellyfish with Enemy Randomizer, otherwise it gets
         // stuck in a loop spawning more big jellyfish with seeded spawns.
-        if (CVarGetInteger("gRandomizedEnemies", 0)) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0)) {
             this->actor.world.rot.y += rand() % 50;
         }
 
@@ -814,7 +814,7 @@ void EnVali_Draw(Actor* thisx, PlayState* play) {
 
     EnVali_DrawBody(this, play);
 
-    POLY_XLU_DISP = SkelAnime_Draw(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
+    POLY_XLU_DISP = SkelAnime_DrawSkeleton2(play, &this->skelAnime,
                                    EnVali_OverrideLimbDraw, EnVali_PostLimbDraw, this, POLY_XLU_DISP);
 
     CLOSE_DISPS(play->state.gfxCtx);
