@@ -24,20 +24,7 @@ Rando::Option* currentSetting;
 bool GenerateRandomizer(std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks,
     std::string seedInput) {
     const auto ctx = Rando::Context::GetInstance();
-    ctx->metricStart = std::chrono::high_resolution_clock::now();
-    ctx->updateHelpersDuration = std::chrono::milliseconds(0);
-    ctx->entranceShuffleDuration = std::chrono::milliseconds(0);
-    ctx->shopDuration = std::chrono::milliseconds(0);
-    ctx->dungeonsDuration = std::chrono::milliseconds(0);
-    ctx->limitedDuration = std::chrono::milliseconds(0);
-    ctx->advancmentDuration = std::chrono::milliseconds(0);
-    ctx->remainingDuration = std::chrono::milliseconds(0);
-    ctx->playthroughDuration = std::chrono::milliseconds(0);
-    ctx->pareDownDuration = std::chrono::milliseconds(0);
-    ctx->WotHDuration = std::chrono::milliseconds(0);
-    ctx->FoolishDuration = std::chrono::milliseconds(0);
-    ctx->OverridesDuration = std::chrono::milliseconds(0);
-    ctx->HintsDuration = std::chrono::milliseconds(0);
+    ctx->StartPerformanceTimer(PT_WHOLE_SEED);
 
     srand(time(NULL));
     // if a blank seed was entered, make a random one
@@ -80,30 +67,27 @@ bool GenerateRandomizer(std::set<RandomizerCheck> excludedLocations, std::set<Ra
         ctx->GetOption(RSK_KEYSANITY).RestoreDelayedOption();
     }
 
-    std::chrono::duration<double, std::milli> duration = std::chrono::high_resolution_clock::now() - ctx->metricStart;
-    SPDLOG_DEBUG("Full Seed Genration Time: {}ms", duration.count());
-    duration = ctx->SCLResetEnd - ctx->SCLResetStart;
-    SPDLOG_DEBUG("SCL reset time: {}ms", duration.count());
-    duration = ctx->LogicResetEnd - ctx->LogicResetStart;
-    SPDLOG_DEBUG("LogicReset time: {}ms", duration.count());
-    duration = ctx->areaResetEnd - ctx->areaResetStart;
-    SPDLOG_DEBUG("Area->Reset time: {}ms", duration.count());
-    duration = ctx->logEnd - ctx->logStart;
-    SPDLOG_DEBUG("SpoilerLog writing time: {}ms", duration.count());
-    SPDLOG_DEBUG("Total UpdateHelpers time: {}ms", ctx->updateHelpersDuration.count());
-    SPDLOG_DEBUG("Total Entrance Shuffle time: {}ms", ctx->entranceShuffleDuration.count());
-    SPDLOG_DEBUG("Total SetAreas time: {}ms", ctx->setAreasDuration.count());
-    SPDLOG_DEBUG("Total Shopsanity time: {}ms", ctx->shopDuration.count());
-    SPDLOG_DEBUG("Total Dungeon Specific Items time: {}ms", ctx->dungeonsDuration.count());
-    SPDLOG_DEBUG("Total Misc Limited Checks time: {}ms", ctx->limitedDuration.count());
-    SPDLOG_DEBUG("Total Advancment Checks time: {}ms", ctx->advancmentDuration.count());
-    SPDLOG_DEBUG("Total Other Checks time: {}ms", ctx->remainingDuration.count());
-    SPDLOG_DEBUG("Total Playthrough Generation time: {}ms", ctx->playthroughDuration.count());
-    SPDLOG_DEBUG("Total ParDownPlaythrough time: {}ms", ctx->pareDownDuration.count());
-    SPDLOG_DEBUG("Total WotH generation time: {}ms", ctx->WotHDuration.count());
-    SPDLOG_DEBUG("Total Foolish generation time: {}ms", ctx->FoolishDuration.count());
-    SPDLOG_DEBUG("Total Overrides time: {}ms", ctx->OverridesDuration.count());
-    SPDLOG_DEBUG("Total Hint Generation time: {}ms", ctx->HintsDuration.count());
-
+    ctx->StopPerformanceTimer(PT_WHOLE_SEED);
+    SPDLOG_DEBUG("Full Seed Genration Time: {}ms", ctx->GetPerformanceTimer(PT_WHOLE_SEED).count());
+    SPDLOG_DEBUG("LogicReset time: {}ms", ctx->GetPerformanceTimer(PT_LOGIC_RESET).count());
+    SPDLOG_DEBUG("Area->Reset time: {}ms", ctx->GetPerformanceTimer(PT_AREA_RESET).count());
+    SPDLOG_DEBUG("Total Entrance Shuffle time: {}ms", ctx->GetPerformanceTimer(PT_ENTRANCE_SHUFFLE).count());
+    SPDLOG_DEBUG("Total Shopsanity time: {}ms", ctx->GetPerformanceTimer(PT_SHOPSANITY).count());
+    SPDLOG_DEBUG("Total Dungeon Specific Items time: {}ms", ctx->GetPerformanceTimer(PT_OWN_DUNGEON).count());
+    SPDLOG_DEBUG("Total Misc Limited Checks time: {}ms", ctx->GetPerformanceTimer(PT_LIMITED_CHECKS).count());
+    SPDLOG_DEBUG("Total Advancment Checks time: {}ms", ctx->GetPerformanceTimer(PT_ADVANCEMENT_ITEMS).count());
+    SPDLOG_DEBUG("Total Other Checks time: {}ms", ctx->GetPerformanceTimer(PT_REMAINING_ITEMS).count());
+    SPDLOG_DEBUG("Total Playthrough Generation time: {}ms", ctx->GetPerformanceTimer(PT_PLAYTHROUGH_GENERATION).count());
+    SPDLOG_DEBUG("Total PareDownPlaythrough time: {}ms", ctx->GetPerformanceTimer(PT_PARE_DOWN_PLAYTHROUGH).count());
+    SPDLOG_DEBUG("Total WotH generation time: {}ms", ctx->GetPerformanceTimer(PT_WOTH).count());
+    SPDLOG_DEBUG("Total Foolish generation time: {}ms", ctx->GetPerformanceTimer(PT_FOOLISH).count());
+    SPDLOG_DEBUG("Total Overrides time: {}ms", ctx->GetPerformanceTimer(PT_OVERRIDES).count());
+    SPDLOG_DEBUG("Total Hint Generation time: {}ms", ctx->GetPerformanceTimer(PT_HINTS).count());
+    SPDLOG_DEBUG("SpoilerLog writing time: {}ms", ctx->GetPerformanceTimer(PT_SPOILER_LOG).count());
+    SPDLOG_DEBUG("Total UpdateHelpers time: {}ms", ctx->GetPerformanceTimer(PT_UPDATE_HELPERS).count());
+    SPDLOG_DEBUG("Total Event Access Calculation time: {}ms", ctx->GetPerformanceTimer(PT_EVENT_ACCESS).count());
+    SPDLOG_DEBUG("Total ToD Access Calculation: {}ms", ctx->GetPerformanceTimer(PT_TOD_ACCESS).count());
+    SPDLOG_DEBUG("Total Entrance Logic Calculation time: {}ms", ctx->GetPerformanceTimer(PT_ENTRANCE_LOGIC).count());
+    SPDLOG_DEBUG("Total Check Logic Calculation time: {}ms", ctx->GetPerformanceTimer(PT_LOCATION_LOGIC).count());
     return true;
 }

@@ -123,29 +123,11 @@ class Context {
     void SetEventChkInf(int32_t flag, bool state);
     uint8_t GetAmmo(uint32_t item);
     void SetAmmo(uint32_t item, uint8_t count);
-    std::chrono::high_resolution_clock::time_point metricStart;
-    std::chrono::high_resolution_clock::time_point SCLResetStart;
-    std::chrono::high_resolution_clock::time_point SCLResetEnd;
-    std::chrono::high_resolution_clock::time_point LogicResetStart;
-    std::chrono::high_resolution_clock::time_point LogicResetEnd;
-    std::chrono::high_resolution_clock::time_point areaResetStart;
-    std::chrono::high_resolution_clock::time_point areaResetEnd;
-    std::chrono::duration<double, std::milli> updateHelpersDuration;
-    std::chrono::high_resolution_clock::time_point logStart;
-    std::chrono::high_resolution_clock::time_point logEnd;
-    std::chrono::duration<double, std::milli> entranceShuffleDuration;
-    std::chrono::duration<double, std::milli> setAreasDuration;
-    std::chrono::duration<double, std::milli> shopDuration;
-    std::chrono::duration<double, std::milli> dungeonsDuration;
-    std::chrono::duration<double, std::milli> limitedDuration;
-    std::chrono::duration<double, std::milli> advancmentDuration;
-    std::chrono::duration<double, std::milli> remainingDuration;
-    std::chrono::duration<double, std::milli> playthroughDuration;
-    std::chrono::duration<double, std::milli> pareDownDuration;
-    std::chrono::duration<double, std::milli> WotHDuration;
-    std::chrono::duration<double, std::milli> FoolishDuration;
-    std::chrono::duration<double, std::milli> OverridesDuration;
-    std::chrono::duration<double, std::milli> HintsDuration;
+    void StartPerformanceTimer(PerformanceTimers timer);
+    void StopPerformanceTimer(PerformanceTimers timer);
+    std::chrono::duration<double, std::milli> GetPerformanceTimer(PerformanceTimers timer);
+    void SubtractTimerFromTimer(PerformanceTimers timer1, PerformanceTimers timer2);
+    void ResetTimers();
     
 
   private:
@@ -162,5 +144,7 @@ class Context {
     bool mSeedGenerated = false;
     bool mSpoilerLoaded = false;
     bool mPlandoLoaded = false;
+    std::array<std::chrono::duration<double, std::milli>, PT_MAX> totalTimes = {};
+    std::array<std::chrono::high_resolution_clock::time_point, PT_MAX> timeStarted = {};
 };
 } // namespace Rando

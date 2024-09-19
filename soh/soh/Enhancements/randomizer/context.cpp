@@ -1221,4 +1221,27 @@ uint8_t Context::GetAmmo(uint32_t item) {
 void Context::SetAmmo(uint32_t item, uint8_t count) {
     mSaveContext->inventory.ammo[gItemSlots[item]] = count;
 }
+
+void Context::StartPerformanceTimer(PerformanceTimers timer){
+    timeStarted[timer] = std::chrono::high_resolution_clock::now();
+}
+
+void Context::StopPerformanceTimer(PerformanceTimers timer){
+    totalTimes[timer] += (std::chrono::high_resolution_clock::now() - timeStarted[timer]);
+}
+
+std::chrono::duration<double, std::milli> Context::GetPerformanceTimer(PerformanceTimers timer){
+    return totalTimes[timer];
+}
+
+void Context::SubtractTimerFromTimer(PerformanceTimers timer1, PerformanceTimers timer2){
+    totalTimes[timer1] -= totalTimes[timer2];
+}
+
+void Context::ResetTimers(){
+    for (auto duration : totalTimes){
+        duration = std::chrono::milliseconds(0);
+    }
+}
+
 } // namespace Rando

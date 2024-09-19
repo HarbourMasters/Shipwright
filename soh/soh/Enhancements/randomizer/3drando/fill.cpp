@@ -100,6 +100,8 @@ static void RemoveStartingItemsFromPool() {
 
 //This function will propagate Time of Day access through the entrance
 static bool UpdateToDAccess(Entrance* entrance, bool propagateTimeTravel) {
+  auto ctx = Rando::Context::GetInstance();
+  ctx->StartPerformanceTimer(PT_TOD_ACCESS);
 
   bool ageTimePropogated = false;
 
@@ -133,6 +135,7 @@ static bool UpdateToDAccess(Entrance* entrance, bool propagateTimeTravel) {
     AreaTable(RR_ROOT)->childNight = AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->adultNight;
   }
 
+  ctx->StopPerformanceTimer(PT_TOD_ACCESS);
   return ageTimePropogated;
 }
 
@@ -360,6 +363,7 @@ void AddToPlaythrough(LocationAccess& locPair, GetAccessableLocationsStruct& gal
 // Adds the contents of a location to the current progression and optionally playthrough
 bool AddCheckToLogic(LocationAccess& locPair, GetAccessableLocationsStruct& gals, RandomizerGet ignore, bool stopOnBeatable, bool addToPlaythrough=false){
   auto ctx = Rando::Context::GetInstance();
+  ctx->StartPerformanceTimer(PT_LOCATION_LOGIC);
   RandomizerCheck loc = locPair.GetLocation();
   Rando::ItemLocation* location = ctx->GetItemLocation(loc);
   RandomizerGet locItem = location->GetPlacedRandomizerGet();
@@ -399,9 +403,11 @@ bool AddCheckToLogic(LocationAccess& locPair, GetAccessableLocationsStruct& gals
     }
     //All we care about is if the game is beatable, used to pare down playthrough
     if (location->GetPlacedRandomizerGet() == RG_TRIFORCE && stopOnBeatable) {
+      ctx->StopPerformanceTimer(PT_LOCATION_LOGIC);
       return true; //Return early for efficiency
     }
   }
+  ctx->StopPerformanceTimer(PT_LOCATION_LOGIC);
   return false;
 }
 
@@ -1149,7 +1155,7 @@ int Fill() {
 
     //Temporarily add shop items to the ItemPool so that entrance randomization
     //can validate the world using deku/hylian shields
-    std::chrono::high_resolution_clock::time_point metricStart = std::chrono::high_resolution_clock::now();
+    ctx->StartPerformanceTimer(PT_ENTRANCE_SHUFFLE);
     AddElementsToPool(ItemPool, GetMinVanillaShopItems(32)); //assume worst case shopsanity 4
     if (ctx->GetOption(RSK_SHUFFLE_ENTRANCES)) {
       SPDLOG_INFO("Shuffling Entrances...");
@@ -1160,16 +1166,15 @@ int Fill() {
       }
       SPDLOG_INFO("Shuffling Entrances Done");
     }
-    std::chrono::high_resolution_clock::time_point entranceToAreaTime = std::chrono::high_resolution_clock::now();
-    ctx->entranceShuffleDuration += (entranceToAreaTime - metricStart);
     SetAreas();
-    std::chrono::high_resolution_clock::time_point areaToShopTime = std::chrono::high_resolution_clock::now();
-    ctx->setAreasDuration += (areaToShopTime - entranceToAreaTime);
     //erase temporary shop items
     FilterAndEraseFromPool(ItemPool, [](const auto item) { return Rando::StaticData::RetrieveItem(item).GetItemType() == ITEMTYPE_SHOP; });
+    ctx->StopPerformanceTimer(PT_ENTRANCE_SHUFFLE);
 
     //ctx->showItemProgress = true;
     //Place shop items first, since a buy shield is needed to place a dungeon reward on Gohma due to access
+    
+    ctx->StartPerformanceTimer(PT_SHOPSANITY);
     NonShopItems = {};
     if (ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_OFF)) {
       SPDLOG_INFO("Placing Vanilla Shop Items...");
@@ -1216,9 +1221,9 @@ int Fill() {
       //Place the shop items which will still be at shop locations
       AssumedFill(shopItems, shopLocations);
     }
-    std::chrono::high_resolution_clock::time_point shopToDungeonsTime = std::chrono::high_resolution_clock::now();
-    ctx->shopDuration += (shopToDungeonsTime - areaToShopTime);
+    ctx->StopPerformanceTimer(PT_SHOPSANITY);
 
+    ctx->StartPerformanceTimer(PT_OWN_DUNGEON);
     //Place dungeon rewards
     SPDLOG_INFO("Shuffling and Placing Dungeon Items...");
     RandomizeDungeonRewards();
@@ -1227,10 +1232,9 @@ int Fill() {
     for (auto dungeon : ctx->GetDungeons()->GetDungeonList()) {
       RandomizeOwnDungeon(dungeon);
     }
+    ctx->StopPerformanceTimer(PT_OWN_DUNGEON);
 
-    std::chrono::high_resolution_clock::time_point dungeonsToLimitedTime = std::chrono::high_resolution_clock::now();
-    ctx->dungeonsDuration += (dungeonsToLimitedTime - shopToDungeonsTime);
-
+    ctx->StartPerformanceTimer(PT_LIMITED_CHECKS);
     //Then Place songs if song shuffle is set to specific locations
     if (ctx->GetOption(RSK_SHUFFLE_SONGS).IsNot(RO_SONG_SHUFFLE_ANYWHERE)) {
 
@@ -1259,25 +1263,23 @@ int Fill() {
 
     //Then place Link's Pocket Item if it has to be an advancement item
     RandomizeLinksPocket();
+    ctx->StopPerformanceTimer(PT_LIMITED_CHECKS);
 
-   std::chrono::high_resolution_clock::time_point limitedToAdvancmentTime = std::chrono::high_resolution_clock::now();
-    ctx->limitedDuration += (limitedToAdvancmentTime - dungeonsToLimitedTime);
 
+    ctx->StartPerformanceTimer(PT_ADVANCEMENT_ITEMS);
     SPDLOG_INFO("Shuffling Advancement Items");
     //Then place the rest of the advancement items
     std::vector<RandomizerGet> remainingAdvancementItems =
         FilterAndEraseFromPool(ItemPool, [](const auto i) { return Rando::StaticData::RetrieveItem(i).IsAdvancement(); });
     AssumedFill(remainingAdvancementItems, ctx->allLocations, true);
+    ctx->StopPerformanceTimer(PT_ADVANCEMENT_ITEMS);
 
-   std::chrono::high_resolution_clock::time_point advancmentToRemainingTime = std::chrono::high_resolution_clock::now();
-    ctx->advancmentDuration += (advancmentToRemainingTime - limitedToAdvancmentTime);
-
+    ctx->StartPerformanceTimer(PT_REMAINING_ITEMS);
     //Fast fill for the rest of the pool
     SPDLOG_INFO("Shuffling Remaining Items");
     std::vector<RandomizerGet> remainingPool = FilterAndEraseFromPool(ItemPool, [](const auto i) { return true; });
     FastFill(remainingPool, GetAllEmptyLocations(), false);
-    
-    ctx->remainingDuration += (std::chrono::high_resolution_clock::now() - advancmentToRemainingTime);
+    ctx->StopPerformanceTimer(PT_REMAINING_ITEMS);
 
     //Add default prices to scrubs
     for (size_t i = 0; i < Rando::StaticData::scrubLocations.size(); i++) {
@@ -1303,31 +1305,35 @@ int Fill() {
       }
     }
 
-    metricStart = std::chrono::high_resolution_clock::now();
+    ctx->StartPerformanceTimer(PT_PLAYTHROUGH_GENERATION);
     GeneratePlaythrough();
-   std::chrono::high_resolution_clock::time_point playthroughEnd = std::chrono::high_resolution_clock::now();
-    ctx->playthroughDuration += (playthroughEnd - metricStart);
+    ctx->StopPerformanceTimer(PT_PLAYTHROUGH_GENERATION);
     //Successful placement, produced beatable result
     if(ctx->playthroughBeatable && !placementFailure) {
+
       SPDLOG_INFO("Calculating Playthrough...");
+      ctx->StartPerformanceTimer(PT_PARE_DOWN_PLAYTHROUGH);
       PareDownPlaythrough();
-     std::chrono::high_resolution_clock::time_point pareDownToWoth = std::chrono::high_resolution_clock::now();
-      ctx->pareDownDuration += (pareDownToWoth - playthroughEnd);
+      ctx->StopPerformanceTimer(PT_PARE_DOWN_PLAYTHROUGH);
+
+      ctx->StartPerformanceTimer(PT_WOTH);
       CalculateWotH();
-     std::chrono::high_resolution_clock::time_point WothToFoolish = std::chrono::high_resolution_clock::now();
-      ctx->WotHDuration += (WothToFoolish - pareDownToWoth);
+      ctx->StopPerformanceTimer(PT_WOTH);
+
+      ctx->StartPerformanceTimer(PT_FOOLISH);
       CalculateBarren(); 
+      ctx->StopPerformanceTimer(PT_FOOLISH);
       SPDLOG_INFO("Calculating Playthrough Done");
-     std::chrono::high_resolution_clock::time_point foolishToOverrides = std::chrono::high_resolution_clock::now();
-      ctx->FoolishDuration += (foolishToOverrides - WothToFoolish);
+
+      ctx->StartPerformanceTimer(PT_OVERRIDES);
       ctx->CreateItemOverrides();
       ctx->GetEntranceShuffler()->CreateEntranceOverrides();
-      
-     std::chrono::high_resolution_clock::time_point overridesToHints = std::chrono::high_resolution_clock::now();
-      ctx->OverridesDuration += (overridesToHints - foolishToOverrides);
+      ctx->StopPerformanceTimer(PT_OVERRIDES);
+
+      ctx->StartPerformanceTimer(PT_HINTS);
       CreateAllHints();
       CreateWarpSongTexts();
-      ctx->HintsDuration += (std::chrono::high_resolution_clock::now() - overridesToHints);
+      ctx->StopPerformanceTimer(PT_HINTS);
       return 1;
     }
     //Unsuccessful placement

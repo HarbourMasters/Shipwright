@@ -70,21 +70,24 @@ void Entrance::printAgeTimeAccess() {
 }
 
 bool Entrance::ConditionsMet(bool allAgeTimes) const {
+  auto ctx = Rando::Context::GetInstance();
+  ctx->StartPerformanceTimer(PT_ENTRANCE_LOGIC);
+  Area* parent = AreaTable(parentRegion);
+  int conditionsMet = 0;
 
-    Area* parent = AreaTable(parentRegion);
-    int conditionsMet = 0;
+  if (allAgeTimes && !parent->AllAccess()) {
+      ctx->StopPerformanceTimer(PT_ENTRANCE_LOGIC);
+      return false;
+  }
 
-    if (allAgeTimes && !parent->AllAccess()) {
-        return false;
-    }
+  // check all possible day/night condition combinations
+  conditionsMet = (parent->childDay && CheckConditionAtAgeTime(logic->IsChild, logic->AtDay, allAgeTimes)) +
+                  (parent->childNight && CheckConditionAtAgeTime(logic->IsChild, logic->AtNight, allAgeTimes)) +
+                  (parent->adultDay && CheckConditionAtAgeTime(logic->IsAdult, logic->AtDay, allAgeTimes)) +
+                  (parent->adultNight && CheckConditionAtAgeTime(logic->IsAdult, logic->AtNight, allAgeTimes));
 
-    // check all possible day/night condition combinations
-    conditionsMet = (parent->childDay && CheckConditionAtAgeTime(logic->IsChild, logic->AtDay, allAgeTimes)) +
-                    (parent->childNight && CheckConditionAtAgeTime(logic->IsChild, logic->AtNight, allAgeTimes)) +
-                    (parent->adultDay && CheckConditionAtAgeTime(logic->IsAdult, logic->AtDay, allAgeTimes)) +
-                    (parent->adultNight && CheckConditionAtAgeTime(logic->IsAdult, logic->AtNight, allAgeTimes));
-
-    return conditionsMet && (!allAgeTimes || conditionsMet == 4);
+  ctx->StopPerformanceTimer(PT_ENTRANCE_LOGIC);
+  return conditionsMet && (!allAgeTimes || conditionsMet == 4);
 }
 
 uint32_t Entrance::Getuint32_t() const {
