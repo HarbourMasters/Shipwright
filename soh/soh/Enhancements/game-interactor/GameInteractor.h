@@ -244,6 +244,8 @@ typedef enum {
     ```
     */
     VB_DRAW_AMMO_COUNT,
+    VB_FREEZE_LINK_FOR_BLOCK_THROW,
+    VB_MOVE_THROWN_ACTOR,
 
     /*** Play Cutscenes ***/
 
@@ -295,6 +297,7 @@ typedef enum {
     //*Opt *s32 getItemId
     VB_SHOULD_GIVE_VANILLA_FISHING_PRIZE,
     VB_GIVE_RANDO_FISHING_PRIZE,
+    VB_PLAY_THROW_ANIMATION,
 
     /*** Give Items ***/
 
