@@ -3053,8 +3053,7 @@ void GenerateRandomizerImgui(std::string seed = "") {
     RandoMain::GenerateRando(cvarSettings, excludedLocations, enabledTricks, seed);
 
     CVarSetInteger(CVAR_GENERAL("RandoGenerating"), 0);
-    CVarSave();
-    CVarLoad();
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
 
     generated = 1;
 }
@@ -3137,13 +3136,6 @@ void RandomizerSettingsWindow::DrawElement() {
 
     static int maxKeyringCount;
     static bool disableGFKeyring = false;
-
-    ImGui::SetNextWindowSize(ImVec2(920, 600), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Randomizer Editor", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
-        ImGui::End();
-        return;
-    }
-
     bool disableEditingRandoSettings = CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0) || CVarGetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 0);
     if (disableEditingRandoSettings) {
         UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
@@ -4660,7 +4652,7 @@ void RandomizerSettingsWindow::DrawElement() {
                     bool hasItems = false;
                     for (auto& [randomizerCheck, rcObject] : rcObjects) {
                         if (rcObject->visibleInImgui && !excludedLocations.count(rcObject->rc) &&
-                            locationSearch.PassFilter(rcObject->rcSpoilerName.c_str())) {
+                            locationSearch.PassFilter(rcObject->rcSpoilerName)) {
 
                             hasItems = true;
                             break;
@@ -4672,7 +4664,7 @@ void RandomizerSettingsWindow::DrawElement() {
                         if (ImGui::TreeNode(RandomizerCheckObjects::GetRCAreaName(rcArea).c_str())) {
                             for (auto& [randomizerCheck, rcObject] : rcObjects) {
                                 if (rcObject->visibleInImgui && !excludedLocations.count(rcObject->rc) &&
-                                    locationSearch.PassFilter(rcObject->rcSpoilerName.c_str())) {
+                                    locationSearch.PassFilter(rcObject->rcSpoilerName)) {
 
                                     if (ImGui::ArrowButton(std::to_string(rcObject->rc).c_str(), ImGuiDir_Right)) {
                                         excludedLocations.insert(rcObject->rc);
@@ -4686,7 +4678,7 @@ void RandomizerSettingsWindow::DrawElement() {
                                         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                                     }
                                     ImGui::SameLine();
-                                    ImGui::Text("%s", rcObject->rcShortName.c_str());
+                                    ImGui::Text("%s", rcObject->rcShortName);
                                 }
                             }
                             ImGui::TreePop();
@@ -4731,7 +4723,7 @@ void RandomizerSettingsWindow::DrawElement() {
                                         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                                     }
                                     ImGui::SameLine();
-                                    ImGui::Text("%s", rcObject->rcShortName.c_str());
+                                    ImGui::Text("%s", rcObject->rcShortName);
                                 }
                             }
                             ImGui::TreePop();
@@ -4997,7 +4989,7 @@ void RandomizerSettingsWindow::DrawElement() {
                     if (ImGui::Button("Enable Visible")) {
                         for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
                             for (auto [randomizerTrick, rtObject] : rtObjects) {
-                                if (!rtObject.rtGlitch && !enabledTricks.count(rtObject.rt) && trickSearch.PassFilter(rtObject.rtShortName.c_str()) && areaTreeDisabled[rtArea] && RandomizerTricks::CheckRTTags(showTag, *rtObject.rtTags)) {
+                                if (!rtObject.rtGlitch && !enabledTricks.count(rtObject.rt) && trickSearch.PassFilter(rtObject.rtShortName) && areaTreeDisabled[rtArea] && RandomizerTricks::CheckRTTags(showTag, *rtObject.rtTags)) {
                                     enabledTricks.insert(randomizerTrick);
                                 }
                             }
@@ -5017,7 +5009,7 @@ void RandomizerSettingsWindow::DrawElement() {
                         bool hasTricks = false;
                         for (auto [randomizerTrick, rtObject] : rtObjects) {
                             if (rtObject.visibleInImgui &&
-                                trickSearch.PassFilter(rtObject.rtShortName.c_str()) &&
+                                trickSearch.PassFilter(rtObject.rtShortName) &&
                                 !enabledTricks.count(rtObject.rt) &&
                                 RandomizerTricks::CheckRTTags(showTag, *rtObject.rtTags) &&
                                 !rtObject.rtGlitch) {
@@ -5032,7 +5024,7 @@ void RandomizerSettingsWindow::DrawElement() {
                             if (ImGui::TreeNode(RandomizerTricks::GetRTAreaName(rtArea).c_str())) {
                                 for (auto [randomizerTrick, rtObject] : rtObjects) {
                                     if (rtObject.visibleInImgui &&
-                                        trickSearch.PassFilter(rtObject.rtShortName.c_str()) &&
+                                        trickSearch.PassFilter(rtObject.rtShortName) &&
                                         !enabledTricks.count(rtObject.rt) &&
                                         RandomizerTricks::CheckRTTags(showTag, *rtObject.rtTags) &&
                                         !rtObject.rtGlitch) {
@@ -5048,8 +5040,8 @@ void RandomizerSettingsWindow::DrawElement() {
                                         }
                                         DrawTagChips(*rtObject.rtTags);
                                         ImGui::SameLine();
-                                        ImGui::Text("%s", rtObject.rtShortName.c_str());
-                                        UIWidgets::InsertHelpHoverText(rtObject.rtDesc.c_str());
+                                        ImGui::Text("%s", rtObject.rtShortName);
+                                        UIWidgets::InsertHelpHoverText(rtObject.rtDesc);
                                     }
                                 }
                                 areaTreeDisabled[rtArea] = true;
@@ -5107,7 +5099,7 @@ void RandomizerSettingsWindow::DrawElement() {
                         for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
                             for (auto [randomizerTrick, rtObject] : rtObjects) {
                                 auto etfound = enabledTricks.find(randomizerTrick);
-                                if (!rtObject.rtGlitch && etfound != enabledTricks.end() && trickSearch.PassFilter(rtObject.rtShortName.c_str()) && areaTreeEnabled[rtArea] && RandomizerTricks::CheckRTTags(showTag, *rtObject.rtTags)) {
+                                if (!rtObject.rtGlitch && etfound != enabledTricks.end() && trickSearch.PassFilter(rtObject.rtShortName) && areaTreeEnabled[rtArea] && RandomizerTricks::CheckRTTags(showTag, *rtObject.rtTags)) {
                                     enabledTricks.erase(etfound);
                                 }
                             }
@@ -5127,7 +5119,7 @@ void RandomizerSettingsWindow::DrawElement() {
                         bool hasTricks = false;
                         for (auto [randomizerTrick, rtObject] : rtObjects) {
                             if (rtObject.visibleInImgui &&
-                                trickSearch.PassFilter(rtObject.rtShortName.c_str()) &&
+                                trickSearch.PassFilter(rtObject.rtShortName) &&
                                 enabledTricks.count(rtObject.rt) &&
                                 RandomizerTricks::CheckRTTags(showTag, *rtObject.rtTags) &&
                                 !rtObject.rtGlitch) {
@@ -5143,7 +5135,7 @@ void RandomizerSettingsWindow::DrawElement() {
                                 for (auto [randomizerTrick, rtObject] : rtObjects) {
                                     auto etfound = enabledTricks.find(rtObject.rt);
                                     if (rtObject.visibleInImgui &&
-                                        trickSearch.PassFilter(rtObject.rtShortName.c_str()) &&
+                                        trickSearch.PassFilter(rtObject.rtShortName) &&
                                         etfound != enabledTricks.end() &&
                                         RandomizerTricks::CheckRTTags(showTag, *rtObject.rtTags) &&
                                         !rtObject.rtGlitch) {
@@ -5164,8 +5156,8 @@ void RandomizerSettingsWindow::DrawElement() {
                                         }
                                         DrawTagChips(*rtObject.rtTags);
                                         ImGui::SameLine();
-                                        ImGui::Text("%s", rtObject.rtShortName.c_str());
-                                        UIWidgets::InsertHelpHoverText(rtObject.rtDesc.c_str());
+                                        ImGui::Text("%s", rtObject.rtShortName);
+                                        UIWidgets::InsertHelpHoverText(rtObject.rtDesc);
                                     }
                                 }
                                 areaTreeEnabled[rtArea] = true;
@@ -5284,7 +5276,6 @@ void RandomizerSettingsWindow::DrawElement() {
     if (disableEditingRandoSettings) {
         UIWidgets::ReEnableComponent("");
     }
-    ImGui::End();
 }
 
 CustomMessage Randomizer::GetWarpSongMessage(u16 textId, bool mysterious) {

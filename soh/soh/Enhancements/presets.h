@@ -226,6 +226,8 @@ const std::vector<const char*> enhancementsCvars = {
     CVAR_ENHANCEMENT("DisableLOD"),
     CVAR_ENHANCEMENT("DisableDrawDistance"),
     CVAR_ENHANCEMENT("DisableKokiriDrawDistance"),
+    CVAR_ENHANCEMENT("WidescreenActorCulling"),
+    CVAR_ENHANCEMENT("ExtendedCullingExcludeGlitchActors"),
     CVAR_LOW_RES_MODE,
     CVAR_ENHANCEMENT("DrawLineupTick"),
     CVAR_ENHANCEMENT("QuickBongoKill"),

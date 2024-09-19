@@ -1288,6 +1288,10 @@ block_1:
     if (*dList != NULL) {
         OPEN_DISPS(play->state.gfxCtx);
 
+        if (this->skelAnime.skeletonHeader->skeletonType == SKELANIME_TYPE_FLEX) {
+            MATRIX_TOMTX(*play->flexLimbOverrideMTX);
+        }
+
         mtxScaleZ = 1.0f;
         mtxScaleY = 1.0f;
 
@@ -1308,10 +1312,19 @@ block_1:
             Matrix_RotateX(-(this->unk_25C[limbIndex] * 0.115f), MTXMODE_APPLY);
         }
 
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        if (this->skelAnime.skeletonHeader->skeletonType == SKELANIME_TYPE_FLEX) {
+            gSPMatrix(POLY_OPA_DISP++, *play->flexLimbOverrideMTX, G_MTX_LOAD);
+        } else {
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        }
+
         gSPDisplayList(POLY_OPA_DISP++, *dList);
         Matrix_Pop();
+
+        if (this->skelAnime.skeletonHeader->skeletonType == SKELANIME_TYPE_FLEX) {
+            (*play->flexLimbOverrideMTX)++;
+        }
 
         CLOSE_DISPS(play->state.gfxCtx);
     }
