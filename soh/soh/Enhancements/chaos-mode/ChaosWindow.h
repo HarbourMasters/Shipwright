@@ -64,6 +64,7 @@ typedef enum {
     EVENT_KNUCKLE_RING,
     EVENT_MIDO_SUCKS,
     EVENT_THROWN_IN_THE_PAST,
+    EVENT_ERASURE,
 } ChaosEvents;
 
 typedef enum {

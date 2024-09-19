@@ -33,6 +33,8 @@ uint32_t deathSwitchTimer = 0;
 uint32_t knuckleTimer = 0;
 uint32_t midoTimer = 0;
 uint32_t guardTimer = 0;
+uint32_t erasureTimer = 0;
+
 uint32_t chaosInterval = 5;
 uint32_t votingInterval = 5;
 uint32_t activeInterval = 1;
@@ -60,6 +62,7 @@ uint32_t eventDeathSwitchTimer;
 uint32_t eventKnuckleTimer;
 uint32_t eventMidoTimer;
 uint32_t eventGuardTimer;
+uint32_t eventErasureTimer;
 
 ActorListEntry guardActors;
 Actor* currGuard = guardActors.head;
@@ -116,6 +119,8 @@ std::vector<eventObject> eventList = {
       "Mido abruptly reminds you why they suck so much." },
     { EVENT_THROWN_IN_THE_PAST, "Spawn Royal Guard", "gEnhancements.RoyalGuard", eventGuardTimer,
        "Hyrules finest Royal Guard comes to show you the business." },
+    { EVENT_ERASURE, "Erase Dungeon Reward", "gEnhancements.Erasure", eventErasureTimer,
+        "Erases a Dungeon Reward and respective Dungeon Boss." },
 };
 
 std::vector<uint32_t> teleportList = {
@@ -134,6 +139,40 @@ std::vector<uint32_t> actorCatList = {
     ACTORCAT_NPC,
     ACTORCAT_PROP,
     ACTORCAT_MISC,
+};
+
+std::vector<uint32_t> rcBosses = {
+    RC_QUEEN_GOHMA,
+    RC_KING_DODONGO,
+    RC_BARINADE,
+    RC_PHANTOM_GANON,
+    RC_VOLVAGIA,
+    RC_MORPHA,
+    RC_BONGO_BONGO,
+    RC_TWINROVA,
+};
+
+std::unordered_map<uint32_t, uint32_t> bossList = {
+    { RC_QUEEN_GOHMA, 		SCENE_DEKU_TREE_BOSS, },
+    { RC_KING_DODONGO, 		SCENE_DODONGOS_CAVERN_BOSS, },
+    { RC_BARINADE, 			SCENE_JABU_JABU_BOSS, },
+    { RC_PHANTOM_GANON, 	SCENE_FOREST_TEMPLE_BOSS, },
+    { RC_VOLVAGIA, 			SCENE_FIRE_TEMPLE_BOSS, },
+    { RC_MORPHA, 			SCENE_WATER_TEMPLE_BOSS, },
+    { RC_BONGO_BONGO, 		SCENE_SHADOW_TEMPLE_BOSS, },
+    { RC_TWINROVA, 			SCENE_SPIRIT_TEMPLE_BOSS, },
+};
+
+std::unordered_map<uint32_t, uint32_t> itemToQuestList = {
+    { ITEM_MEDALLION_FOREST, QUEST_MEDALLION_FOREST, },
+    { ITEM_MEDALLION_FIRE,   QUEST_MEDALLION_FIRE, },
+    { ITEM_MEDALLION_WATER,  QUEST_MEDALLION_WATER, },
+    { ITEM_MEDALLION_SPIRIT, QUEST_MEDALLION_SPIRIT, },
+    { ITEM_MEDALLION_SHADOW, QUEST_MEDALLION_SHADOW, },
+    { ITEM_MEDALLION_LIGHT,  QUEST_MEDALLION_LIGHT, },
+    { ITEM_KOKIRI_EMERALD,   QUEST_KOKIRI_EMERALD, },
+    { ITEM_GORON_RUBY,       QUEST_GORON_RUBY, },
+    { ITEM_ZORA_SAPPHIRE,    QUEST_ZORA_SAPPHIRE, },
 };
 
 std::vector<Actor*> actorData = {};
@@ -462,12 +501,19 @@ void ChaosEventsRepeater() {
                         currGuard = currGuard->next;
                     }
                 }
-                if (guardTimer == eventGuardTimer / 2) {
+                if (guardTimer == eventList[EVENT_THROWN_IN_THE_PAST].eventTimer / 2) {
                     Player* player = GET_PLAYER(gPlayState);
                     Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_HEISHI3, player->actor.world.pos.x + 250.0f,
                                 player->actor.world.pos.y, player->actor.world.pos.z, 0,
                                 player->actor.world.rot.y + 16384, 0, 0, false);
                 }
+            }
+        }
+
+        if (isEventIdPresent(EVENT_ERASURE) == true) {
+            if (erasureTimer > 0) {
+                erasureTimer--;
+
             }
         }
     });
@@ -662,13 +708,35 @@ void ChaosEventsActivator(uint32_t eventId, bool isActive) {
                 }
             }
             break;
+        case EVENT_ERASURE:
+            if (isActive) {
+                std::vector<uint32_t> questItems = {};
+                for (int i = ITEM_MEDALLION_FOREST; i <= ITEM_ZORA_SAPPHIRE; i++) {
+                    if (CHECK_QUEST_ITEM(itemToQuestList[i])) {
+                        questItems.push_back(i);
+                    }
+                }
+                uint32_t roll = rand() % questItems.size();
+                for (int i = 0; i < rcBosses.size(); i++) {
+                    auto itemEntry = OTRGlobals::Instance->gRandomizer->GetItemFromKnownCheck((RandomizerCheck)rcBosses[i], GI_NONE, false);
+                    if (itemEntry.itemId == questItems[roll]) {
+                        uint32_t flagToClear = bossList[rcBosses[i]];
+                        uint32_t bitMask = 1 << itemToQuestList[questItems[roll]];
+                        gSaveContext.sceneFlags[flagToClear].clear = 0;
+                        gSaveContext.inventory.questItems &= ~bitMask;
+                        //need to unset item get flag as well.
+                        break;
+                    }
+                }
+            }
+            break;
         default:
             break;
     }
 }
 
 void ChaosVoteSelector(uint32_t option) {
-    uint32_t roll = EVENT_THROWN_IN_THE_PAST;
+    uint32_t roll = EVENT_ERASURE;
     //uint32_t roll = rand() % votingList.size();
     votingObjectList[option].votingOption = votingList[roll].eventId;
     //votingList.erase(votingList.begin() + roll);
