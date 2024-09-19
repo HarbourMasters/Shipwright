@@ -89,9 +89,8 @@ Area::Area(std::string regionName_, std::string scene_, RandomizerArea area,
 
 Area::~Area() = default;
 
-bool Area::UpdateEvents(SearchMode mode) {
-
-  if (timePass && mode != SearchMode::TimePassAccess) {
+bool Area::UpdateEvents(bool haveTimeAccess) {
+  if (timePass && haveTimeAccess) {
     if (Child()) {
       childDay = true;
       childNight = true;
@@ -241,7 +240,7 @@ std::shared_ptr<Rando::Logic> logic;
 void AreaTable_Init() {
   using namespace Rando;
   randoCtx = Context::GetInstance().get();
-  logic = randoCtx->GetLogic();
+  logic = randoCtx->GetLogic(); //RANDOTODO do not hardcode, instead allow accepting a Logic class somehow
   grottoEvents = {
       EventAccess(&logic->GossipStoneFairy, { [] { return logic->GossipStoneFairy || logic->CanSummonGossipFairy; } }),
       EventAccess(&logic->ButterflyFairy, { [] { return logic->ButterflyFairy || (logic->CanUse(RG_STICKS)); } }),

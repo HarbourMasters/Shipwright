@@ -164,9 +164,9 @@ public:
     bool childNight = false;
     bool adultDay = false;
     bool adultNight = false;
-    bool addedToPool = false;
+    bool addedToPool = false;;
 
-    bool UpdateEvents(SearchMode mode);
+    bool UpdateEvents(bool haveTimeAccess = true);
 
     void AddExit(RandomizerRegion parentKey, RandomizerRegion newExitKey, ConditionFn condition);
 
