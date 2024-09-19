@@ -223,6 +223,10 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
                         if (actor->id == ACTOR_BG_MORI_HINERI) {
                             break;
                         }
+                        // This is handled in the FasterHeavyBlockLift enhancement
+                        if (actor->id == ACTOR_BG_HEAVY_BLOCK) {
+                            break;
+                        }
 
                         RateLimitedSuccessChime();
                         *should = false;
