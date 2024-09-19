@@ -13,6 +13,7 @@
 #include <soh/Enhancements/bootcommands.h>
 #include <GameVersions.h>
 #include <soh/SaveManager.h>
+#include <string.h>
 
 #include "time.h"
 
@@ -30,8 +31,24 @@ void Title_PrintBuildInfo(Gfx** gfxp) {
     GfxPrint_Open(&printer, g);
     GfxPrint_SetColor(&printer, 131, 154, 255, 255);
 
-    GfxPrint_SetPos(&printer, 1, 25);
-    GfxPrint_Printf(&printer, "%s", gBuildVersion);
+    //if tag is empty (not a release build)
+    bool showGitInfo = gGitCommitTag[0] == 0;
+
+    if (showGitInfo) {
+        GfxPrint_SetPos(&printer, 1, 24);
+        GfxPrint_Printf(&printer, "Git Branch: %s", gGitBranch);
+
+        //truncate the commit to 7 characters
+        char gGitCommitHashTruncated[8];
+        strncpy(gGitCommitHashTruncated, gGitCommitHash, 7);
+        gGitCommitHashTruncated[7] = 0;
+
+        GfxPrint_SetPos(&printer, 1, 25);
+        GfxPrint_Printf(&printer, "Git Commit: %s", gGitCommitHashTruncated);
+    } else {
+        GfxPrint_SetPos(&printer, 1, 25);
+        GfxPrint_Printf(&printer, "%s", gBuildVersion);
+    }
     GfxPrint_SetPos(&printer, 1, 26);
     GfxPrint_Printf(&printer, "%s", gBuildDate);
 
@@ -167,7 +184,7 @@ void Title_Draw(TitleContext* this) {
     Matrix_RotateZYX(0, sTitleRotY, 0, MTXMODE_APPLY);
 
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(this->state.gfxCtx), G_MTX_LOAD);
-    if (CVarGetInteger("gAuthenticLogo", 0)) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("AuthenticLogo"), 0)) {
         gSPDisplayList(POLY_OPA_DISP++, gNintendo64LogoDL);
     } else {
         gSPDisplayList(POLY_OPA_DISP++, gShipLogoDL);
@@ -178,8 +195,8 @@ void Title_Draw(TitleContext* this) {
     gDPSetRenderMode(POLY_OPA_DISP++, G_RM_XLU_SURF2, G_RM_OPA_CI | CVG_DST_WRAP);
     gDPSetCombineLERP(POLY_OPA_DISP++, TEXEL1, PRIMITIVE, ENV_ALPHA, TEXEL0, 0, 0, 0, TEXEL0, PRIMITIVE, ENVIRONMENT,
         COMBINED, ENVIRONMENT, COMBINED, 0, PRIMITIVE, 0);
-    if (CVarGetInteger("gCosmetics.Title_NintendoLogo.Changed", 0)) {
-        Color_RGB8 nintendoLogoColor = CVarGetColor24("gCosmetics.Title_NintendoLogo.Value", (Color_RGB8){0, 0, 255});
+    if (CVarGetInteger(CVAR_COSMETIC("Title.NintendoLogo.Changed"), 0)) {
+        Color_RGB8 nintendoLogoColor = CVarGetColor24(CVAR_COSMETIC("Title.NintendoLogo.Value"), (Color_RGB8){0, 0, 255});
         gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, 255);
         gDPSetEnvColor(POLY_OPA_DISP++, nintendoLogoColor.r, nintendoLogoColor.g, nintendoLogoColor.b, 128);
     } else {
@@ -192,7 +209,7 @@ void Title_Draw(TitleContext* this) {
 
     for (idx = 0, y = 94; idx < 16; idx++, y += 2)
     {
-        gDPLoadMultiTile(POLY_OPA_DISP++, CVarGetInteger("gAuthenticLogo", 0) ? nintendo_rogo_static_Tex_000000 : nintendo_rogo_static_Tex_LUS_000000, 0, G_TX_RENDERTILE, G_IM_FMT_I, G_IM_SIZ_8b, 192, 32,
+        gDPLoadMultiTile(POLY_OPA_DISP++, CVarGetInteger(CVAR_ENHANCEMENT("AuthenticLogo"), 0) ? nintendo_rogo_static_Tex_000000 : nintendo_rogo_static_Tex_LUS_000000, 0, G_TX_RENDERTILE, G_IM_FMT_I, G_IM_SIZ_8b, 192, 32,
                          0, idx * 2, 192 - 1, (idx + 1) * 2 - 1, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
                          G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
         
@@ -204,7 +221,7 @@ void Title_Draw(TitleContext* this) {
     }
 
     // Draw ice cube around N64 logo.
-    if (CVarGetInteger("gLetItSnow", 0)) {
+    if (CVarGetInteger(CVAR_GENERAL("LetItSnow"), 0)) {
         f32 scale = 0.4f;
 
         gSPSegment(POLY_OPA_DISP++, 0x08,
@@ -221,7 +238,7 @@ void Title_Draw(TitleContext* this) {
 
     Environment_FillScreen(this->state.gfxCtx, 0, 0, 0, (s16)this->coverAlpha, FILL_SCREEN_XLU);
 
-    sTitleRotY += (300 * CVarGetFloat("gCosmetics.N64Logo_SpinSpeed", 1.0f));
+    sTitleRotY += (300 * CVarGetFloat(CVAR_COSMETIC("N64Logo.SpinSpeed"), 1.0f));
 
     CLOSE_DISPS(this->state.gfxCtx);
 }
@@ -237,7 +254,7 @@ void Title_Main(GameState* thisx) {
     Title_Calc(this);
     Title_Draw(this);
 
-    if (!CVarGetInteger("gAuthenticLogo", 0)) {
+    if (!CVarGetInteger(CVAR_ENHANCEMENT("AuthenticLogo"), 0)) {
         Gfx* gfx = POLY_OPA_DISP;
         s32 pad;
 
@@ -245,13 +262,13 @@ void Title_Main(GameState* thisx) {
         POLY_OPA_DISP = gfx;
     }
 
-    if (this->exit || CVarGetInteger("gSkipLogoTitle", 0)) {
+    if (this->exit || CVarGetInteger(CVAR_DEVELOPER_TOOLS("SkipLogoTitle"), 0)) {
         gSaveContext.seqId = (u8)NA_BGM_DISABLED;
         gSaveContext.natureAmbienceId = 0xFF;
         gSaveContext.gameMode = 1;
         this->state.running = false;
 
-        if (gLoadFileSelect || CVarGetInteger("gSkipLogoTitle", 0))
+        if (gLoadFileSelect || CVarGetInteger(CVAR_DEVELOPER_TOOLS("SkipLogoTitle"), 0))
             SET_NEXT_GAMESTATE(&this->state, FileChoose_Init, FileChooseContext);
         else
             SET_NEXT_GAMESTATE(&this->state, Opening_Init, OpeningContext);

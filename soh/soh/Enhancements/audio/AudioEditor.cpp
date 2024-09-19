@@ -9,7 +9,7 @@
 #include <functions.h>
 #include "../randomizer/3drando/random.hpp"
 #include "../../OTRGlobals.h"
-#include <Utils/StringHelper.h>
+#include <utils/StringHelper.h>
 #include "../../UIWidgets.hpp"
 #include "AudioCollection.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
@@ -163,17 +163,17 @@ void DrawPreviewButton(uint16_t sequenceId, std::string sfxKey, SeqType sequence
     const std::string stopButton = ICON_FA_STOP + hiddenKey;
     const std::string previewButton = ICON_FA_PLAY + hiddenKey;
 
-    if (CVarGetInteger("gAudioEditor.Playing", 0) == sequenceId) {
+    if (CVarGetInteger(CVAR_AUDIO("Playing"), 0) == sequenceId) {
         if (ImGui::Button(stopButton.c_str())) {
             func_800F5C2C();
-            CVarSetInteger("gAudioEditor.Playing", 0);
+            CVarSetInteger(CVAR_AUDIO("Playing"), 0);
         }
         UIWidgets::Tooltip("Stop Preview");
     } else {
         if (ImGui::Button(previewButton.c_str())) {
-            if  (CVarGetInteger("gAudioEditor.Playing", 0) != 0) {
+            if  (CVarGetInteger(CVAR_AUDIO("Playing"), 0) != 0) {
                 func_800F5C2C();
-                CVarSetInteger("gAudioEditor.Playing", 0);
+                CVarSetInteger(CVAR_AUDIO("Playing"), 0);
             } else {
                 if (sequenceType == SEQ_SFX || sequenceType == SEQ_VOICE) {
                     Audio_PlaySoundGeneral(sequenceId, &pos, 4, &freqScale, &freqScale, &reverbAdd);
@@ -183,7 +183,7 @@ void DrawPreviewButton(uint16_t sequenceId, std::string sfxKey, SeqType sequence
                 } else {
                     // TODO: Cant do both here, so have to click preview button twice
                     PreviewSequence(sequenceId);
-                    CVarSetInteger("gAudioEditor.Playing", sequenceId);
+                    CVarSetInteger(CVAR_AUDIO("Playing"), sequenceId);
                 }
             }
         }
@@ -203,7 +203,7 @@ void Draw_SfxTab(const std::string& tabId, SeqType type) {
         auto currentBGM = func_800FA0B4(SEQ_PLAYER_BGM_MAIN);
         auto prevReplacement = AudioCollection::Instance->GetReplacementSequence(currentBGM);
         ResetGroup(map, type);
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         auto curReplacement = AudioCollection::Instance->GetReplacementSequence(currentBGM);
         if (type == SEQ_BGM_WORLD && prevReplacement != curReplacement) {
             ReplayCurrentBGM();
@@ -214,7 +214,7 @@ void Draw_SfxTab(const std::string& tabId, SeqType type) {
         auto currentBGM = func_800FA0B4(SEQ_PLAYER_BGM_MAIN);
         auto prevReplacement = AudioCollection::Instance->GetReplacementSequence(currentBGM);
         RandomizeGroup(type);
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         auto curReplacement = AudioCollection::Instance->GetReplacementSequence(currentBGM);
         if (type == SEQ_BGM_WORLD && prevReplacement != curReplacement) {
             ReplayCurrentBGM();
@@ -225,7 +225,7 @@ void Draw_SfxTab(const std::string& tabId, SeqType type) {
         auto currentBGM = func_800FA0B4(SEQ_PLAYER_BGM_MAIN);
         auto prevReplacement = AudioCollection::Instance->GetReplacementSequence(currentBGM);
         LockGroup(map, type);
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         auto curReplacement = AudioCollection::Instance->GetReplacementSequence(currentBGM);
         if (type == SEQ_BGM_WORLD && prevReplacement != curReplacement) {
             ReplayCurrentBGM();
@@ -236,7 +236,7 @@ void Draw_SfxTab(const std::string& tabId, SeqType type) {
         auto currentBGM = func_800FA0B4(SEQ_PLAYER_BGM_MAIN);
         auto prevReplacement = AudioCollection::Instance->GetReplacementSequence(currentBGM);
         UnlockGroup(map, type);
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         auto curReplacement = AudioCollection::Instance->GetReplacementSequence(currentBGM);
         if (type == SEQ_BGM_WORLD && prevReplacement != curReplacement) {
             ReplayCurrentBGM();
@@ -281,7 +281,7 @@ void Draw_SfxTab(const std::string& tabId, SeqType type) {
 
                 if (ImGui::Selectable(seqData.label.c_str())) {
                     CVarSetInteger(cvarKey.c_str(), value);
-                    LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                     UpdateCurrentBGM(defaultValue, type);
                 }
 
@@ -301,7 +301,7 @@ void Draw_SfxTab(const std::string& tabId, SeqType type) {
         if (ImGui::Button(resetButton.c_str())) {
             CVarClear(cvarKey.c_str());
             CVarClear(cvarLockKey.c_str());
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
             UpdateCurrentBGM(defaultValue, seqData.category);
         }
         UIWidgets::Tooltip("Reset to default");
@@ -322,7 +322,7 @@ void Draw_SfxTab(const std::string& tabId, SeqType type) {
                 if (locked) {
                     CVarClear(cvarLockKey.c_str());
                 }
-                LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                 UpdateCurrentBGM(defaultValue, type);
             } 
         }
@@ -335,7 +335,7 @@ void Draw_SfxTab(const std::string& tabId, SeqType type) {
             } else {
                 CVarSetInteger(cvarLockKey.c_str(), 1);
             }
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         }
         UIWidgets::Tooltip(locked ? "Sound locked" : "Sound unlocked");
     }
@@ -411,7 +411,7 @@ void DrawTypeChip(SeqType type) {
 
 void AudioEditorRegisterOnSceneInitHook() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) {
-        if (CVarGetInteger("gAudioEditor.RandomizeAllOnNewScene", 0)) {
+        if (CVarGetInteger(CVAR_AUDIO("RandomizeAllOnNewScene"), 0)) {
             AudioEditor_RandomizeAll();
         }
     });
@@ -423,12 +423,6 @@ void AudioEditor::InitElement() {
 
 void AudioEditor::DrawElement() {
     AudioCollection::Instance->InitializeShufflePool();
-
-    ImGui::SetNextWindowSize(ImVec2(820, 630), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Audio Editor", &mIsVisible)) {
-        ImGui::End();
-        return;
-    }
 
     float buttonSegments = ImGui::GetContentRegionAvail().x / 4;
     if (ImGui::Button("Randomize All Groups", ImVec2(buttonSegments, 30.0f))) {
@@ -492,18 +486,18 @@ void AudioEditor::DrawElement() {
             ImGui::TableNextColumn();
             if (ImGui::BeginChild("SfxOptions", ImVec2(0, -8))) {
                 ImGui::PushItemWidth(-FLT_MIN);
-                UIWidgets::EnhancementCheckbox("Disable Enemy Proximity Music", "gEnemyBGMDisable");
+                UIWidgets::EnhancementCheckbox("Disable Enemy Proximity Music", CVAR_AUDIO("EnemyBGMDisable"));
                 UIWidgets::InsertHelpHoverText(
                     "Disables the music change when getting close to enemies. Useful for hearing "
                     "your custom music for each scene more often.");
-                UIWidgets::EnhancementCheckbox("Disable Leading Music in Lost Woods", "gLostWoodsConsistentVolume");
+                UIWidgets::EnhancementCheckbox("Disable Leading Music in Lost Woods", CVAR_AUDIO("LostWoodsConsistentVolume"));
                 UIWidgets::InsertHelpHoverText(
                     "Disables the volume shifting in the Lost Woods. Useful for hearing "
                     "your custom music in the Lost Woods if you don't need the navigation assitance "
                     "the volume changing provides. If toggling this while in the Lost Woods, reload "
                     "the area for the effect to kick in."
                 );
-                UIWidgets::EnhancementCheckbox("Display Sequence Name on Overlay", "gSeqNameOverlay");
+                UIWidgets::EnhancementCheckbox("Display Sequence Name on Overlay", CVAR_AUDIO("SeqNameOverlay"));
                 UIWidgets::InsertHelpHoverText(
                     "Displays the name of the current sequence in the corner of the screen whenever a new sequence "
                     "is loaded to the main sequence player (does not apply to fanfares or enemy BGM)."
@@ -511,28 +505,28 @@ void AudioEditor::DrawElement() {
                 ImGui::SameLine();
                 ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
                 UIWidgets::EnhancementSliderInt("Overlay Duration: %d seconds", "##SeqNameOverlayDuration",
-                                                "gSeqNameOverlayDuration", 1, 10, "", 5);
+                                                CVAR_AUDIO("SeqNameOverlayDuration"), 1, 10, "", 5);
                 ImGui::PopItemWidth();
                 ImGui::NewLine();
                 ImGui::PopItemWidth();
                 UIWidgets::EnhancementSliderFloat("Link's voice pitch multiplier: %.1f %%", "##linkVoiceFreqMultiplier",
-                        "gLinkVoiceFreqMultiplier", 0.4, 2.5, "", 1.0, true, true);
+                        CVAR_AUDIO("LinkVoiceFreqMultiplier"), 0.4, 2.5, "", 1.0, true, true);
                 ImGui::SameLine();
                 const std::string resetButton = "Reset##linkVoiceFreqMultiplier";
                 if (ImGui::Button(resetButton.c_str())) {
-                    CVarSetFloat("gLinkVoiceFreqMultiplier", 1.0f);
-                    LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                    CVarSetFloat(CVAR_AUDIO("LinkVoiceFreqMultiplier"), 1.0f);
+                    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                 }
 
                 ImGui::NewLine();
-                UIWidgets::EnhancementCheckbox("Randomize All Music and Sound Effects on New Scene", "gAudioEditor.RandomizeAllOnNewScene");
+                UIWidgets::EnhancementCheckbox("Randomize All Music and Sound Effects on New Scene", CVAR_AUDIO("RandomizeAllOnNewScene"));
                 UIWidgets::Tooltip("Enables randomizing all unlocked music and sound effects when you enter a new scene.");
 
                 ImGui::NewLine();
                 ImGui::PushItemWidth(-FLT_MIN);
                 UIWidgets::PaddedSeparator();
                 UIWidgets::PaddedText("The following options are experimental and may cause music\nto sound odd or have other undesireable effects.");
-                UIWidgets::EnhancementCheckbox("Lower Octaves of Unplayable High Notes", "gExperimentalOctaveDrop");
+                UIWidgets::EnhancementCheckbox("Lower Octaves of Unplayable High Notes", CVAR_AUDIO("ExperimentalOctaveDrop"));
                 UIWidgets::InsertHelpHoverText("Some custom sequences may have notes that are too high for the game's audio "
                                             "engine to play. Enabling this checkbox will cause these notes to drop a "
                                             "couple of octaves so they can still harmonize with the other notes of the "
@@ -700,7 +694,6 @@ void AudioEditor::DrawElement() {
 
         ImGui::EndTabBar();
     }
-    ImGui::End();
 }
 
 std::vector<SeqType> allTypes = { SEQ_BGM_WORLD, SEQ_BGM_EVENT, SEQ_BGM_BATTLE, SEQ_OCARINA, SEQ_FANFARE, SEQ_INSTRUMENT, SEQ_SFX, SEQ_VOICE };
@@ -710,7 +703,14 @@ void AudioEditor_RandomizeAll() {
         RandomizeGroup(type);
     }
 
-    LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    ReplayCurrentBGM();
+}
+
+void AudioEditor_RandomizeGroup(SeqType group) {
+    RandomizeGroup(group);
+
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     ReplayCurrentBGM();
 }
 
@@ -719,7 +719,14 @@ void AudioEditor_ResetAll() {
         ResetGroup(AudioCollection::Instance->GetAllSequences(), type);
     }
 
-    LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    ReplayCurrentBGM();
+}
+
+void AudioEditor_ResetGroup(SeqType group) {
+    ResetGroup(AudioCollection::Instance->GetAllSequences(), group);
+
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     ReplayCurrentBGM();
 }
 
@@ -728,7 +735,7 @@ void AudioEditor_LockAll() {
         LockGroup(AudioCollection::Instance->GetAllSequences(), type);
     }
 
-    LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
 }
 
 void AudioEditor_UnlockAll() {
@@ -736,5 +743,5 @@ void AudioEditor_UnlockAll() {
         UnlockGroup(AudioCollection::Instance->GetAllSequences(), type);
     }
 
-    LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
 }

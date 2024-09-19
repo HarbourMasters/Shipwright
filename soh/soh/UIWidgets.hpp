@@ -16,7 +16,7 @@
 #ifndef IMGUI_DEFINE_MATH_OPERATORS
 #define IMGUI_DEFINE_MATH_OPERATORS
 #endif
-#include <ImGui/imgui.h>
+#include <imgui.h>
 
 namespace UIWidgets {
 
@@ -54,8 +54,8 @@ namespace UIWidgets {
     constexpr float sliderButtonWidth = 30.0f;
 #endif
 
-    char* WrappedText(const char* text, unsigned int charactersPerLine = 60);
-    char* WrappedText(const std::string& text, unsigned int charactersPerLine);
+    std::string WrappedText(const char* text, unsigned int charactersPerLine = 60);
+    std::string WrappedText(const std::string& text, unsigned int charactersPerLine);
 
     void SetLastItemHoverText(const std::string& text);
     void SetLastItemHoverText(const char* text);

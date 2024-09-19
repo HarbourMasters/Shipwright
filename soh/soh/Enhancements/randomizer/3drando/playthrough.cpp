@@ -10,6 +10,7 @@
 #include "spoiler_log.hpp"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "variables.h"
+#include "soh/OTRGlobals.h"
 
 namespace Playthrough {
 
@@ -41,7 +42,7 @@ int Playthrough_Init(uint32_t seed, std::unordered_map<RandomizerSettingKey, uin
         }
     }
 
-    if (CVarGetInteger("gRandomizerDontGenerateSpoiler", 0)) {
+    if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("DontGenerateSpoiler"), 0)) {
         settingsStr += (char*)gBuildVersion;
     }
 

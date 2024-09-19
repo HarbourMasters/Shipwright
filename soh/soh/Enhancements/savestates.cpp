@@ -5,7 +5,6 @@
 #include <cstdio> // std::sprintf
 
 #include <spdlog/spdlog.h>
-#include <spdlog/fmt/fmt.h>
 
 #include <soh/OTRGlobals.h>
 #include <soh/OTRAudio.h>
@@ -24,19 +23,6 @@
 #include <libultraship/libultraship.h>
 
 extern "C" PlayState* gPlayState;
-
-template <> struct fmt::formatter<RequestType> {
-    constexpr auto parse(format_parse_context& ctx) { return ctx.begin(); }
-
-    template <typename FormatContext>
-    auto format(const RequestType& type, FormatContext& ctx) {
-        switch (type) {
-            case RequestType::SAVE: return fmt::format_to(ctx.out(), "Save");
-            case RequestType::LOAD: return fmt::format_to(ctx.out(), "Load");
-            default: return fmt::format_to(ctx.out(), "Unknown");
-        }
-    }
-};
 
 // FROM z_lights.c
 // I didn't feel like moving it into a header file.
@@ -837,7 +823,7 @@ extern "C" void ProcessSaveStateRequests(void) {
 }
 
 void SaveStateMgr::SetCurrentSlot(unsigned int slot) {
-    LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(1.0f, true, "slot %u set", slot);
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(1.0f, true, "slot %u set", slot);
     this->currentSlot = slot;
 }
 
@@ -855,18 +841,18 @@ void SaveStateMgr::ProcessSaveStateRequests(void) {
                     this->states[request.slot] = std::make_shared<SaveState>(OTRGlobals::Instance->gSaveStateMgr, request.slot);
                 }
                 this->states[request.slot]->Save();
-                LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(1.0f, true, "saved state %u", request.slot);
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(1.0f, true, "saved state %u", request.slot);
                 break;
             case RequestType::LOAD:
                 if (this->states.contains(request.slot)) {
                     this->states[request.slot]->Load();
-                    LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(1.0f, true, "loaded state %u", request.slot);
+                    Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(1.0f, true, "loaded state %u", request.slot);
                 } else {
-                    SPDLOG_ERROR("Invalid SaveState slot: {}", request.type);
+                    SPDLOG_ERROR("Invalid SaveState slot: {}", request.slot);
                 }
                 break;
             [[unlikely]] default: 
-                SPDLOG_ERROR("Invalid SaveState request type: {}", request.type);
+                SPDLOG_ERROR("Invalid SaveState request type: Unknown ({})", static_cast<int>(request.type));
                 break;
         }
         this->requests.pop();
@@ -876,7 +862,7 @@ void SaveStateMgr::ProcessSaveStateRequests(void) {
 SaveStateReturn SaveStateMgr::AddRequest(const SaveStateRequest request) {
     if (gPlayState == nullptr) {
         SPDLOG_ERROR("[SOH] Can not save or load a state outside of \"GamePlay\"");
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(1.0f, true, "states not available here", request.slot);
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(1.0f, true, "states not available here", request.slot);
         return SaveStateReturn::FAIL_WRONG_GAMESTATE;
     }
 
@@ -889,12 +875,12 @@ SaveStateReturn SaveStateMgr::AddRequest(const SaveStateRequest request) {
                 requests.push(request);
                 return SaveStateReturn::SUCCESS;
             } else {
-                SPDLOG_ERROR("Invalid SaveState slot: {}", request.type);
-                LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(1.0f, true, "state slot %u empty", request.slot);
+                SPDLOG_ERROR("Invalid SaveState slot: {}", request.slot);
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(1.0f, true, "state slot %u empty", request.slot);
                 return SaveStateReturn::FAIL_INVALID_SLOT;
             }
         [[unlikely]] default: 
-            SPDLOG_ERROR("Invalid SaveState request type: {}", request.type);
+            SPDLOG_ERROR("Invalid SaveState request type: Unknown ({})", static_cast<int>(request.type));
             return SaveStateReturn::FAIL_BAD_REQUEST;
     }
 }

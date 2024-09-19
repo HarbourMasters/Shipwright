@@ -1,5 +1,6 @@
 #include "valueViewer.h"
 #include "../../UIWidgets.hpp"
+#include "soh/OTRGlobals.h"
 
 extern "C" {
 #include <z64.h>
@@ -101,13 +102,7 @@ extern "C" void ValueViewer_Draw(GfxPrint* printer) {
 }
 
 void ValueViewerWindow::DrawElement() {
-    ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Value Viewer", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
-        ImGui::End();
-        return;
-    }
-
-    UIWidgets::PaddedEnhancementCheckbox("Enable Printing", "gValueViewer.EnablePrinting");
+    UIWidgets::PaddedEnhancementCheckbox("Enable Printing", CVAR_DEVELOPER_TOOLS("ValueViewerEnablePrinting"));
 
     ImGui::BeginGroup();
     static int selectedElement = -1;
@@ -187,7 +182,7 @@ void ValueViewerWindow::DrawElement() {
         }
 
         ImGui::BeginGroup();
-        if (CVarGetInteger("gValueViewer.EnablePrinting", 0)) {
+        if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ValueViewerEnablePrinting"), 0)) {
             ImGui::Checkbox(("Print##" + std::string(element.name)).c_str(), &element.isPrinted);
             if (element.isPrinted) {
                 char* prefix = (char*)element.prefix.c_str();
@@ -211,8 +206,6 @@ void ValueViewerWindow::DrawElement() {
         }
         ImGui::EndGroup();
     }
-
-    ImGui::End();
 }
 
 void ValueViewerWindow::InitElement() {

@@ -7,6 +7,7 @@
 #include <cmath>
 #include <libultraship/bridge.h>
 #include <libultraship/libultraship.h>
+#include "soh/OTRGlobals.h"
 
 extern "C" {
 #include <z64.h>
@@ -52,22 +53,17 @@ static std::vector<Vtx> sphereVtx;
 
 // Draws the ImGui window for the collision viewer
 void ColViewerWindow::DrawElement() {
-    ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Collision Viewer", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
-        ImGui::End();
-        return;
-    }
-    UIWidgets::EnhancementCheckbox("Enabled", "gColViewerEnabled");
+    UIWidgets::EnhancementCheckbox("Enabled", CVAR_DEVELOPER_TOOLS("ColViewer.Enabled"));
 
-    UIWidgets::LabeledRightAlignedEnhancementCombobox("Scene", "gColViewerScene", ColRenderSettingNames, COLVIEW_DISABLED);
-    UIWidgets::LabeledRightAlignedEnhancementCombobox("Bg Actors", "gColViewerBgActors", ColRenderSettingNames, COLVIEW_DISABLED);
-    UIWidgets::LabeledRightAlignedEnhancementCombobox("Col Check", "gColViewerColCheck", ColRenderSettingNames, COLVIEW_DISABLED);
-    UIWidgets::LabeledRightAlignedEnhancementCombobox("Waterbox", "gColViewerWaterbox", ColRenderSettingNames, COLVIEW_DISABLED);
+    UIWidgets::LabeledRightAlignedEnhancementCombobox("Scene", CVAR_DEVELOPER_TOOLS("ColViewer.Scene"), ColRenderSettingNames, COLVIEW_DISABLED);
+    UIWidgets::LabeledRightAlignedEnhancementCombobox("Bg Actors", CVAR_DEVELOPER_TOOLS("ColViewer.BGActors"), ColRenderSettingNames, COLVIEW_DISABLED);
+    UIWidgets::LabeledRightAlignedEnhancementCombobox("Col Check", CVAR_DEVELOPER_TOOLS("ColViewer.ColCheck"), ColRenderSettingNames, COLVIEW_DISABLED);
+    UIWidgets::LabeledRightAlignedEnhancementCombobox("Waterbox", CVAR_DEVELOPER_TOOLS("ColViewer.Waterbox"), ColRenderSettingNames, COLVIEW_DISABLED);
 
-    UIWidgets::EnhancementCheckbox("Apply as decal", "gColViewerDecal");
+    UIWidgets::EnhancementCheckbox("Apply as decal", CVAR_DEVELOPER_TOOLS("ColViewer.Decal"));
     UIWidgets::InsertHelpHoverText("Applies the collision as a decal display. This can be useful if there is z-fighting occuring "
                         "with the scene geometry, but can cause other artifacts.");
-    UIWidgets::EnhancementCheckbox("Shaded", "gColViewerShaded");
+    UIWidgets::EnhancementCheckbox("Shaded", CVAR_DEVELOPER_TOOLS("ColViewer.Shaded"));
     UIWidgets::InsertHelpHoverText("Applies the scene's shading to the collision display.");
 
     // This has to be duplicated in both code paths due to the nature of ImGui::IsItemHovered()
@@ -75,27 +71,25 @@ void ColViewerWindow::DrawElement() {
     if (ImGui::TreeNode("Colors")) {
         UIWidgets::InsertHelpHoverText(colorHelpText);
 
-        UIWidgets::EnhancementColor("Normal", "gColViewerColorNormal", scene_col, ImVec4(255, 255, 255, 255), false);
-        UIWidgets::EnhancementColor("Hookshot", "gColViewerColorHookshot", hookshot_col, ImVec4(128, 128, 255, 255),
+        UIWidgets::EnhancementColor("Normal", CVAR_DEVELOPER_TOOLS("ColViewer.ColorNormal"), scene_col, ImVec4(255, 255, 255, 255), false);
+        UIWidgets::EnhancementColor("Hookshot", CVAR_DEVELOPER_TOOLS("ColViewer.ColorHookshot"), hookshot_col, ImVec4(128, 128, 255, 255),
                                    false);
-        UIWidgets::EnhancementColor("Entrance", "gColViewerColorEntrance", entrance_col, ImVec4(0, 255, 0, 255), false);
-        UIWidgets::EnhancementColor("Special Surface (Grass/Sand/Etc)", "gColViewerColorSpecialSurface",
+        UIWidgets::EnhancementColor("Entrance", CVAR_DEVELOPER_TOOLS("ColViewer.ColorEntrance"), entrance_col, ImVec4(0, 255, 0, 255), false);
+        UIWidgets::EnhancementColor("Special Surface (Grass/Sand/Etc)", CVAR_DEVELOPER_TOOLS("ColViewer.ColorSpecialSurface"),
                                    specialSurface_col, ImVec4(192, 255, 192, 255), false);
-        UIWidgets::EnhancementColor("Interactable (Vines/Crawlspace/Etc)", "gColViewerColorInteractable",
+        UIWidgets::EnhancementColor("Interactable (Vines/Crawlspace/Etc)", CVAR_DEVELOPER_TOOLS("ColViewer.ColorInteractable"),
                                    interactable_col, ImVec4(192, 0, 192, 255), false);
-        UIWidgets::EnhancementColor("Slope", "gColViewerColorSlope", slope_col, ImVec4(255, 255, 128, 255), false);
-        UIWidgets::EnhancementColor("Void", "gColViewerColorVoid", void_col, ImVec4(255, 0, 0, 255), false);
-        UIWidgets::EnhancementColor("OC", "gColViewerColorOC", oc_col, ImVec4(255, 255, 255, 255), false);
-        UIWidgets::EnhancementColor("AC", "gColViewerColorAC", ac_col, ImVec4(0, 0, 255, 255), false);
-        UIWidgets::EnhancementColor("AT", "gColViewerColorAT", at_col, ImVec4(255, 0, 0, 255), false);
-        UIWidgets::EnhancementColor("Waterbox", "gColViewerColorWaterbox", waterbox_col, ImVec4(0, 0, 255, 255), false);
+        UIWidgets::EnhancementColor("Slope", CVAR_DEVELOPER_TOOLS("ColViewer.ColorSlope"), slope_col, ImVec4(255, 255, 128, 255), false);
+        UIWidgets::EnhancementColor("Void", CVAR_DEVELOPER_TOOLS("ColViewer.ColorVoid"), void_col, ImVec4(255, 0, 0, 255), false);
+        UIWidgets::EnhancementColor("OC", CVAR_DEVELOPER_TOOLS("ColViewer.ColorOC"), oc_col, ImVec4(255, 255, 255, 255), false);
+        UIWidgets::EnhancementColor("AC", CVAR_DEVELOPER_TOOLS("ColViewer.ColorAC"), ac_col, ImVec4(0, 0, 255, 255), false);
+        UIWidgets::EnhancementColor("AT", CVAR_DEVELOPER_TOOLS("ColViewer.ColorAT"), at_col, ImVec4(255, 0, 0, 255), false);
+        UIWidgets::EnhancementColor("Waterbox", CVAR_DEVELOPER_TOOLS("ColViewer.ColorWaterbox"), waterbox_col, ImVec4(0, 0, 255, 255), false);
 
         ImGui::TreePop();
     } else {
         UIWidgets::InsertHelpHoverText(colorHelpText);
     }
-
-    ImGui::End();
 }
 
 // Calculates the normal for a triangle at the 3 specified points
@@ -308,7 +302,7 @@ void InitGfx(std::vector<Gfx>& gfx, ColRenderSetting setting) {
         alpha = 0xFF;
     }
 
-    if (CVarGetInteger("gColViewerDecal", 0) != 0) {
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ColViewer.Decal"), 0) != 0) {
         rm |= ZMODE_DEC;
     } else if (setting == ColRenderSetting::Transparent) {
         rm |= ZMODE_XLU;
@@ -320,7 +314,7 @@ void InitGfx(std::vector<Gfx>& gfx, ColRenderSetting setting) {
     gfx.push_back(gsDPSetCycleType(G_CYC_1CYCLE));
     gfx.push_back(gsDPSetRenderMode(rm | blc1, rm | blc2));
 
-    if (CVarGetInteger("gColViewerShaded", 0) != 0) {
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ColViewer.Shaded"), 0) != 0) {
         gfx.push_back(gsDPSetCombineMode(G_CC_MODULATERGB_PRIM_ENVA, G_CC_MODULATERGB_PRIM_ENVA));
         gfx.push_back(gsSPLoadGeometryMode(G_CULL_BACK | G_ZBUFFER | G_LIGHTING));
     } else {
@@ -333,16 +327,13 @@ void InitGfx(std::vector<Gfx>& gfx, ColRenderSetting setting) {
 
 // Draws a dynapoly structure (scenes or Bg Actors)
 void DrawDynapoly(std::vector<Gfx>& dl, CollisionHeader* col, int32_t bgId) {
-    uint32_t colorR = CVarGetInteger("gColViewerColorNormalR", 255);
-    uint32_t colorG = CVarGetInteger("gColViewerColorNormalG", 255);
-    uint32_t colorB = CVarGetInteger("gColViewerColorNormalB", 255);
-    uint32_t colorA = 255;
+    Color_RGBA8 color = {255, 255, 255, 255};
 
-    uint32_t lastColorR = colorR;
-    uint32_t lastColorG = colorG;
-    uint32_t lastColorB = colorB;
+    uint32_t lastColorR = color.r;
+    uint32_t lastColorG = color.g;
+    uint32_t lastColorB = color.b;
 
-    dl.push_back(gsDPSetPrimColor(0, 0, colorR, colorG, colorB, colorA));
+    dl.push_back(gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
 
     // This keeps track of if we have processed a poly, but not drawn it yet so we can batch them.
     // This saves several hundred commands in larger scenes
@@ -352,49 +343,35 @@ void DrawDynapoly(std::vector<Gfx>& dl, CollisionHeader* col, int32_t bgId) {
         CollisionPoly* poly = &col->polyList[i];
 
         if (SurfaceType_IsHookshotSurface(&gPlayState->colCtx, poly, bgId)) {
-            colorR = CVarGetInteger("gColViewerColorHookshotR", 128);
-            colorG = CVarGetInteger("gColViewerColorHookshotG", 128);
-            colorB = CVarGetInteger("gColViewerColorHookshotB", 255);
+            color = CVarGetColor(CVAR_DEVELOPER_TOOLS("ColViewer.ColorHookshot"), { 128, 128, 255, 255 });
         } else if (func_80041D94(&gPlayState->colCtx, poly, bgId) > 0x01) {
-            colorR = CVarGetInteger("gColViewerColorInteractableR", 192);
-            colorG = CVarGetInteger("gColViewerColorInteractableG", 0);
-            colorB = CVarGetInteger("gColViewerColorInteractableB", 192);
+            color = CVarGetColor(CVAR_DEVELOPER_TOOLS("ColViewer.ColorInteractable"), {192, 0, 192, 255});
         } else if (func_80041E80(&gPlayState->colCtx, poly, bgId) == 0x0C) {
-            colorR = CVarGetInteger("gColViewerColorVoidR", 255);
-            colorG = CVarGetInteger("gColViewerColorVoidG", 0);
-            colorB = CVarGetInteger("gColViewerColorVoidB", 0);
+            color = CVarGetColor(CVAR_DEVELOPER_TOOLS("ColViewer.ColorVoid"), { 255, 0, 0, 255 });
         } else if (SurfaceType_GetSceneExitIndex(&gPlayState->colCtx, poly, bgId) ||
                    func_80041E80(&gPlayState->colCtx, poly, bgId) == 0x05) {
-            colorR = CVarGetInteger("gColViewerColorEntranceR", 0);
-            colorG = CVarGetInteger("gColViewerColorEntranceG", 255);
-            colorB = CVarGetInteger("gColViewerColorEntranceB", 0);
+            color = CVarGetColor(CVAR_DEVELOPER_TOOLS("ColViewer.ColorEntrance"), { 0, 255, 0, 255 });
         } else if (func_80041D4C(&gPlayState->colCtx, poly, bgId) != 0 ||
                    SurfaceType_IsWallDamage(&gPlayState->colCtx, poly, bgId)) {
-            colorR = CVarGetInteger("gColViewerColorSpecialSurfaceR", 192);
-            colorG = CVarGetInteger("gColViewerColorSpecialSurfaceG", 255);
-            colorB = CVarGetInteger("gColViewerColorSpecialSurfaceB", 192);
+            color = CVarGetColor(CVAR_DEVELOPER_TOOLS("ColViewer.ColorSpecialSurface"), { 192, 255, 192, 255 });
         } else if (SurfaceType_GetSlope(&gPlayState->colCtx, poly, bgId) == 0x01) {
-            colorR = CVarGetInteger("gColViewerColorSlopeR", 255);
-            colorG = CVarGetInteger("gColViewerColorSlopeG", 255);
-            colorB = CVarGetInteger("gColViewerColorSlopeB", 128);
+            color = CVarGetColor(CVAR_DEVELOPER_TOOLS("ColViewer.ColorSlope"), { 255, 255, 128, 255 });
         } else {
-            colorR = CVarGetInteger("gColViewerColorNormalR", 255);
-            colorG = CVarGetInteger("gColViewerColorNormalG", 255);
-            colorB = CVarGetInteger("gColViewerColorNormalB", 255);
+            color = CVarGetColor(CVAR_DEVELOPER_TOOLS("ColViewer.ColorNormal"), { 255, 255, 255, 255 });
         }
 
-        if (colorR != lastColorR || colorG != lastColorG || colorB != lastColorB) {
+        if (color.r != lastColorR || color.g != lastColorG || color.b != lastColorB) {
             // Color changed, flush previous poly
             if (previousPoly) {
                 dl.push_back(gsSPVertex((uintptr_t)&vtxDl.at(vtxDl.size() - 3), 3, 0));
                 dl.push_back(gsSP1Triangle(0, 1, 2, 0));
                 previousPoly = false;
             }
-            dl.push_back(gsDPSetPrimColor(0, 0, colorR, colorG, colorB, colorA));
+            dl.push_back(gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
         }
-        lastColorR = colorR;
-        lastColorG = colorG;
-        lastColorB = colorB;
+        lastColorR = color.r;
+        lastColorG = color.g;
+        lastColorB = color.b;
 
         Vec3s* va = &col->vtxList[COLPOLY_VTX_INDEX(poly->flags_vIA)];
         Vec3s* vb = &col->vtxList[COLPOLY_VTX_INDEX(poly->flags_vIB)];
@@ -428,9 +405,9 @@ void DrawDynapoly(std::vector<Gfx>& dl, CollisionHeader* col, int32_t bgId) {
 
 // Draws the scene
 void DrawSceneCollision() {
-    ColRenderSetting showSceneColSetting = (ColRenderSetting)CVarGetInteger("gColViewerScene", COLVIEW_DISABLED);
+    ColRenderSetting showSceneColSetting = (ColRenderSetting)CVarGetInteger(CVAR_DEVELOPER_TOOLS("ColViewer.Scene"), COLVIEW_DISABLED);
 
-    if (showSceneColSetting == ColRenderSetting::Disabled || !CVarGetInteger("gColViewerEnabled", 0)) {
+    if (showSceneColSetting == ColRenderSetting::Disabled || !CVarGetInteger(CVAR_DEVELOPER_TOOLS("ColViewer.Enabled"), 0)) {
         return;
     }
 
@@ -443,8 +420,8 @@ void DrawSceneCollision() {
 
 // Draws all Bg Actors
 void DrawBgActorCollision() {
-    ColRenderSetting showBgActorSetting = (ColRenderSetting)CVarGetInteger("gColViewerBgActors", COLVIEW_DISABLED);
-    if (showBgActorSetting == ColRenderSetting::Disabled || !CVarGetInteger("gColViewerEnabled", 0)) {
+    ColRenderSetting showBgActorSetting = (ColRenderSetting)CVarGetInteger(CVAR_DEVELOPER_TOOLS("ColViewer.BGActors"), COLVIEW_DISABLED);
+    if (showBgActorSetting == ColRenderSetting::Disabled || !CVarGetInteger(CVAR_DEVELOPER_TOOLS("ColViewer.Enabled"), 0)) {
         return;
     }
 
@@ -461,7 +438,7 @@ void DrawBgActorCollision() {
                                                   bg.curTransform.scale.z, bg.curTransform.rot.x, bg.curTransform.rot.y,
                                                   bg.curTransform.rot.z, bg.curTransform.pos.x, bg.curTransform.pos.y,
                                                   bg.curTransform.pos.z);
-            guMtxF2L(&mf, &m);
+            guMtxF2L(mf.mf, &m);
             mtxDl.push_back(m);
             dl.push_back(gsSPMatrix(&mtxDl.back(), G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_PUSH));
 
@@ -509,7 +486,7 @@ void DrawColCheckList(std::vector<Gfx>& dl, Collider** objects, int32_t count) {
                     SkinMatrix_SetScale(&ms, radius / 128.0f, radius / 128.0f, radius / 128.0f);
                     MtxF dest;
                     SkinMatrix_MtxFMtxFMult(&mf, &ms, &dest);
-                    guMtxF2L(&dest, &m);
+                    guMtxF2L(dest.mf, &m);
                     mtxDl.push_back(m);
 
                     dl.push_back(gsSPMatrix(&mtxDl.back(), G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_PUSH));
@@ -528,7 +505,7 @@ void DrawColCheckList(std::vector<Gfx>& dl, Collider** objects, int32_t count) {
                 SkinMatrix_SetScale(&ms, radius / 128.0f, cyl->dim.height / 128.0f, radius / 128.0f);
                 MtxF dest;
                 SkinMatrix_MtxFMtxFMult(&mt, &ms, &dest);
-                guMtxF2L(&dest, &m);
+                guMtxF2L(dest.mf, &m);
                 mtxDl.push_back(m);
 
                 dl.push_back(gsSPMatrix(&mtxDl.back(), G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_PUSH));
@@ -568,8 +545,8 @@ void DrawColCheckList(std::vector<Gfx>& dl, Collider** objects, int32_t count) {
 
 // Draws all Col Check objects
 void DrawColCheckCollision() {
-    ColRenderSetting showColCheckSetting = (ColRenderSetting)CVarGetInteger("gColViewerColCheck", COLVIEW_DISABLED);
-    if (showColCheckSetting == ColRenderSetting::Disabled || !CVarGetInteger("gColViewerEnabled", 0)) {
+    ColRenderSetting showColCheckSetting = (ColRenderSetting)CVarGetInteger(CVAR_DEVELOPER_TOOLS("ColViewer.ColCheck"), COLVIEW_DISABLED);
+    if (showColCheckSetting == ColRenderSetting::Disabled || !CVarGetInteger(CVAR_DEVELOPER_TOOLS("ColViewer.Enabled"), 0)) {
         return;
     }
 
@@ -578,15 +555,14 @@ void DrawColCheckCollision() {
     dl.push_back(gsSPMatrix(&gMtxClear, G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_NOPUSH));
 
     CollisionCheckContext& col = gPlayState->colChkCtx;
-
-    dl.push_back(gsDPSetPrimColor(0, 0, CVarGetInteger("gColViewerColorOCR", 255), CVarGetInteger("gColViewerColorOCG", 255),
-                                  CVarGetInteger("gColViewerColorOCB", 255), 255));
+    Color_RGBA8 color = CVarGetColor(CVAR_DEVELOPER_TOOLS("ColViewer.ColorOC"), { 255, 255, 255, 255 });
+    dl.push_back(gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
     DrawColCheckList(dl, col.colOC, col.colOCCount);
-    dl.push_back(gsDPSetPrimColor(0, 0, CVarGetInteger("gColViewerColorACR", 0), CVarGetInteger("gColViewerColorACG", 0),
-                                  CVarGetInteger("gColViewerColorACB", 255), 255));
+    color = CVarGetColor(CVAR_DEVELOPER_TOOLS("ColViewer.ColorAC"), { 0, 0, 255, 255 });
+    dl.push_back(gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
     DrawColCheckList(dl, col.colAC, col.colACCount);
-    dl.push_back(gsDPSetPrimColor(0, 0, CVarGetInteger("gColViewerColorATR", 255), CVarGetInteger("gColViewerColorATG", 0),
-                                  CVarGetInteger("gColViewerColorATB", 0), 255));
+    color = CVarGetColor(CVAR_DEVELOPER_TOOLS("ColViewer.ColorAT"), { 0, 0, 255, 255 });
+    dl.push_back(gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
 
     DrawColCheckList(dl, col.colAT, col.colATCount);
 }
@@ -621,8 +597,8 @@ extern "C" f32 zdWaterBoxMinY;
 
 // Draws all waterboxes
 void DrawWaterboxList() {
-    ColRenderSetting showWaterboxSetting = (ColRenderSetting)CVarGetInteger("gColViewerWaterbox", COLVIEW_DISABLED);
-    if (showWaterboxSetting == ColRenderSetting::Disabled || !CVarGetInteger("gColViewerEnabled", 0)) {
+    ColRenderSetting showWaterboxSetting = (ColRenderSetting)CVarGetInteger(CVAR_DEVELOPER_TOOLS("ColViewer.Waterbox"), COLVIEW_DISABLED);
+    if (showWaterboxSetting == ColRenderSetting::Disabled || !CVarGetInteger(CVAR_DEVELOPER_TOOLS("ColViewer.Enabled"), 0)) {
         return;
     }
 
@@ -630,9 +606,9 @@ void DrawWaterboxList() {
     InitGfx(dl, showWaterboxSetting);
     dl.push_back(gsSPMatrix(&gMtxClear, G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_NOPUSH));
 
-    dl.push_back(gsDPSetPrimColor(0, 0, CVarGetInteger("gColViewerColorWaterboxR", 0),
-                                  CVarGetInteger("gColViewerColorWaterboxG", 0),
-                                  CVarGetInteger("gColViewerColorWaterboxB", 255), 255));
+    Color_RGBA8 color = CVarGetColor(CVAR_DEVELOPER_TOOLS("ColViewer.ColorWaterbox"), { 0, 0, 255, 255 });
+
+    dl.push_back(gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
 
     CollisionHeader* col = gPlayState->colCtx.colHeader;
     for (int32_t waterboxIndex = 0; waterboxIndex < col->numWaterBoxes; waterboxIndex++) {
@@ -693,7 +669,7 @@ extern "C" void DrawColViewer() {
 
     OPEN_DISPS(gPlayState->state.gfxCtx);
 
-    uint8_t mirroredWorld = CVarGetInteger("gMirroredWorld", 0);
+    uint8_t mirroredWorld = CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0);
     // Col viewer needs inverted culling in mirror mode for both OPA and XLU buffers
     if (mirroredWorld) {
         gSPSetExtraGeometryMode(POLY_OPA_DISP++, G_EX_INVERT_CULLING);

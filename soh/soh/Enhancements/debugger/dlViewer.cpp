@@ -65,7 +65,7 @@ std::map<int, std::string> cmdMap = {
 };
 
 void PerformDisplayListSearch() {
-    auto result = LUS::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->ListFiles("*" + std::string(searchString) + "*DL*");
+    auto result = Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->ListFiles("*" + std::string(searchString) + "*DL*");
 
     displayListSearchResults.clear();
 
@@ -90,12 +90,6 @@ void PerformDisplayListSearch() {
 }
 
 void DLViewerWindow::DrawElement() {
-    ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Display List Viewer", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
-        ImGui::End();
-        return;
-    }
-
     // Debounce the search field as listing otr files is expensive
     if (ImGui::InputText("Search Display Lists", searchString, ARRAY_COUNT(searchString))) {
         doSearch = true;
@@ -122,16 +116,14 @@ void DLViewerWindow::DrawElement() {
     }
 
     if (activeDisplayList == "") {
-        ImGui::End();
         return;
     }
 
     try {
-        auto res = std::static_pointer_cast<LUS::DisplayList>(LUS::Context::GetInstance()->GetResourceManager()->LoadResource(activeDisplayList));
+        auto res = std::static_pointer_cast<LUS::DisplayList>(Ship::Context::GetInstance()->GetResourceManager()->LoadResource(activeDisplayList));
 
         if (res->GetInitData()->Type != static_cast<uint32_t>(LUS::ResourceType::DisplayList)) {
             ImGui::Text("Resource type is not a Display List. Please choose another.");
-            ImGui::End();
             return;
         }
 
@@ -325,11 +317,8 @@ void DLViewerWindow::DrawElement() {
         }
     } catch (const std::exception& e) {
         ImGui::Text("Error displaying DL instructions.");
-        ImGui::End();
         return;
     }
-
-    ImGui::End();
 }
 
 void DLViewerWindow::InitElement() {

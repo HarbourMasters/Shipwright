@@ -416,7 +416,7 @@ void EnFirefly_FlyIdle(EnFirefly* this, PlayState* play) {
     }
     if ((this->timer == 0) && (this->actor.xzDistToPlayer < 200.0f) &&
         (Player_GetMask(play) != PLAYER_MASK_SKULL) &&
-        !CVarGetInteger("gNoKeeseGuayTarget", 0)) {
+        !CVarGetInteger(CVAR_CHEAT("NoKeeseGuayTarget"), 0)) {
         EnFirefly_SetupDiveAttack(this);
     }
 }
@@ -495,7 +495,7 @@ void EnFirefly_DiveAttack(EnFirefly* this, PlayState* play) {
         Math_ScaledStepToS(&this->actor.shape.rot.x, this->targetPitch, 0x100);
     }
     if ((this->timer == 0) || (Player_GetMask(play) == PLAYER_MASK_SKULL) ||
-        CVarGetInteger("gNoKeeseGuayTarget", 0)) {
+        CVarGetInteger(CVAR_CHEAT("NoKeeseGuayTarget"), 0)) {
         EnFirefly_SetupFlyAway(this);
     }
 }
@@ -742,10 +742,10 @@ void EnFirefly_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* 
     static Color_RGBA8 fireAuraEnvColor = { 255, 50, 0, 0 };
     static Color_RGBA8 iceAuraPrimColor = { 100, 200, 255, 255 };
     static Color_RGBA8 iceAuraEnvColor = { 0, 0, 255, 0 };
-    Color_RGBA8 customFireAuraPrimColor = CVarGetColor("gCosmetics.NPC_FireKeesePrimary.Value", fireAuraPrimColor);
-    Color_RGBA8 customFireAuraEnvColor = CVarGetColor("gCosmetics.NPC_FireKeeseSecondary.Value", fireAuraEnvColor);
-    Color_RGBA8 customIceAuraPrimColor = CVarGetColor("gCosmetics.NPC_IceKeesePrimary.Value", iceAuraPrimColor);
-    Color_RGBA8 customIceAuraEnvColor = CVarGetColor("gCosmetics.NPC_IceKeeseSecondary.Value", iceAuraEnvColor);
+    Color_RGBA8 customFireAuraPrimColor = CVarGetColor(CVAR_COSMETIC("NPC.FireKeesePrimary.Value"), fireAuraPrimColor);
+    Color_RGBA8 customFireAuraEnvColor = CVarGetColor(CVAR_COSMETIC("NPC.FireKeeseSecondary.Value"), fireAuraEnvColor);
+    Color_RGBA8 customIceAuraPrimColor = CVarGetColor(CVAR_COSMETIC("NPC.IceKeesePrimary.Value"), iceAuraPrimColor);
+    Color_RGBA8 customIceAuraEnvColor = CVarGetColor(CVAR_COSMETIC("NPC.IceKeeseSecondary.Value"), iceAuraEnvColor);
     static Vec3f effVelocity = { 0.0f, 0.5f, 0.0f };
     static Vec3f effAccel = { 0.0f, 0.5f, 0.0f };
     static Vec3f limbSrc = { 0.0f, 0.0f, 0.0f };
@@ -785,23 +785,23 @@ void EnFirefly_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* 
                 }
 
                 if (this->auraType == KEESE_AURA_FIRE) {
-                    if (CVarGetInteger("gCosmetics.NPC_FireKeesePrimary.Changed", 0)) {
+                    if (CVarGetInteger(CVAR_COSMETIC("NPC.FireKeesePrimary.Changed"), 0)) {
                         effPrimColor = &customFireAuraPrimColor;
                     } else {
                         effPrimColor = &fireAuraPrimColor;
                     }
-                    if (CVarGetInteger("gCosmetics.NPC_FireKeeseSecondary.Changed", 0)) {
+                    if (CVarGetInteger(CVAR_COSMETIC("NPC.FireKeeseSecondary.Changed"), 0)) {
                         effEnvColor = &customFireAuraEnvColor;
                     } else {
                         effEnvColor = &fireAuraEnvColor;
                     }
                 } else {
-                    if (CVarGetInteger("gCosmetics.NPC_IceKeesePrimary.Changed", 0)) {
+                    if (CVarGetInteger(CVAR_COSMETIC("NPC.IceKeesePrimary.Changed"), 0)) {
                         effPrimColor = &customIceAuraPrimColor;
                     } else {
                         effPrimColor = &iceAuraPrimColor;
                     }
-                    if (CVarGetInteger("gCosmetics.NPC_IceKeeseSecondary.Changed", 0)) {
+                    if (CVarGetInteger(CVAR_COSMETIC("NPC.IceKeeseSecondary.Changed"), 0)) {
                         effEnvColor = &customIceAuraEnvColor;
                     } else {
                         effEnvColor = &iceAuraEnvColor;
@@ -839,8 +839,9 @@ void EnFirefly_Draw(Actor* thisx, PlayState* play) {
         gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 255);
     }
 
-    POLY_OPA_DISP = SkelAnime_Draw(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                                   EnFirefly_OverrideLimbDraw, EnFirefly_PostLimbDraw, &this->actor, POLY_OPA_DISP);
+    POLY_OPA_DISP = SkelAnime_DrawSkeleton2(play, &this->skelAnime, EnFirefly_OverrideLimbDraw, EnFirefly_PostLimbDraw,
+                                            &this->actor, POLY_OPA_DISP);
+    
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
@@ -856,7 +857,7 @@ void EnFirefly_DrawInvisible(Actor* thisx, PlayState* play) {
         gDPSetEnvColor(POLY_XLU_DISP++, 0, 0, 0, 255);
     }
 
-    POLY_XLU_DISP = SkelAnime_Draw(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
+    POLY_XLU_DISP = SkelAnime_DrawSkeleton2(play, &this->skelAnime,
                                    EnFirefly_OverrideLimbDraw, EnFirefly_PostLimbDraw, this, POLY_XLU_DISP);
     CLOSE_DISPS(play->state.gfxCtx);
 }

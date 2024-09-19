@@ -85,10 +85,11 @@ s16 GetLastEntranceOverride();
 s16 GetCurrentGrottoId();
 const EntranceData* GetEntranceData(s16);
 
-class EntranceTrackerWindow : public LUS::GuiWindow {
+class EntranceTrackerWindow : public Ship::GuiWindow {
   public:
     using GuiWindow::GuiWindow;
 
+    void Draw() override;
     void InitElement() override;
     void DrawElement() override;
     void UpdateElement() override {};
