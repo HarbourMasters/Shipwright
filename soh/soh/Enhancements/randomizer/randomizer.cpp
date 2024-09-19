@@ -2621,9 +2621,10 @@ void CreateGetItemMessages(const std::array<GetItemMessage, N>* messageEntries) 
     //TODO: AI Translated Text, get translation from native speaker.
     customMessageManager->CreateMessage(
         Randomizer::getItemMessageTableID, RG_SILVER_RUPEE_FIRST,
-        CustomMessage("You got a %cSilver Rupee%w for the %g{{location}}%w! {{count_text}}!",
-                      "Du hast eine %cSilberne Rupie%w für die %g{{location}}%w!{{count_text}}!",
-                      "Vous avez reçu une %cRoupie d'Argent%w pour le %g{{location}}%w!{{count_text}}!",
+        CustomMessage("You got a #Silver Rupee# for the #{{location}}#! {{count_text}}!",
+                      "Du hast eine #Silberne Rupie# für die #{{location}}#!{{count_text}}!",
+                      "Vous avez reçu une #Roupie d'Argent# pour le #{{location}}#!{{count_text}}!",
+                      {QM_LBLUE, QM_GREEN}, {false, false, false},
                       TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM));
     // Special Case for Silver Rupee Pouches
 //    customMessageManager->CreateMessage(Randomizer::getItemMessageTableID, RG_SILVER_RUPEE_POUCH_FIRST,

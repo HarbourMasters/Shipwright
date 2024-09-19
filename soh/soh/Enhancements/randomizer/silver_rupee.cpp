@@ -268,7 +268,7 @@ namespace Rando {
             if (complete) {
                 messageEntry.Replace("{{count_text}}", "That's all of them");
             } else {
-                messageEntry.Replace("{{count_text}}", CustomMessage("You have collected #{{count}}# of them so far", {QM_GREEN}));
+                messageEntry.Replace("{{count_text}}", CustomMessage("You have collected #{{count}}# of them so far"));
                 messageEntry.Replace("{{count}}", std::to_string(srCount));
             }
         }/* else if (rgid >= RG_SILVER_RUPEE_POUCH_FIRST && rgid <= RG_SILVER_RUPEE_POUCH_LAST) {
