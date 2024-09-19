@@ -5,4 +5,5 @@ static struct {
     std::thread thread;
     std::mutex mutex;
     bool running;
+    bool paused;
 } audio;

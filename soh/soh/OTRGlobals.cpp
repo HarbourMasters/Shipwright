@@ -508,12 +508,22 @@ std::unordered_map<std::string, ExtensionEntry> ExtensionCache;
 // 44KHZ values
 // Don't follow high and low anymore, but instead just the target sample rate as defined in the audio player properties.
 // Not sure how to adapt that to make other sample rates usable
+#define SAMPLE_RATE 44100
 #define SAMPLES_TARGET 736
 #define NUM_AUDIO_CHANNELS 2
 
 void OTRAudio_Thread() {
+    auto now = std::chrono::high_resolution_clock::now();
+    auto lastTick = now;
+    auto tickRate = std::chrono::high_resolution_clock::period::den / SAMPLE_RATE;
     while (audio.running) {
-        if (gGameInfo == nullptr) {
+        auto timeElapsed = now - lastTick;
+        if (audio.paused || gGameInfo == nullptr || gAudioContext.cmdProcQueueP == NULL) {
+            continue;
+        }
+        
+        if (timeElapsed.count() < tickRate) {
+            now = std::chrono::high_resolution_clock::now();
             continue;
         }
         
@@ -525,10 +535,9 @@ void OTRAudio_Thread() {
         //AudioMgr_ThreadEntry(&gAudioMgr);
 
         int samples_left = AudioPlayer_Buffered();
-        s16 audio_buffer[SAMPLES_TARGET * NUM_AUDIO_CHANNELS];
-        AudioMgr_CreateNextAudioBuffer(audio_buffer, SAMPLES_TARGET);
-        AudioPlayer_Play((u8*)audio_buffer, SAMPLES_TARGET * (sizeof(int16_t) * NUM_AUDIO_CHANNELS));
-        std::this_thread::sleep_for(std::chrono::milliseconds((1000 / 60) - (SAMPLES_TARGET - samples_left) / 60));
+        s16 audio_buffer[NUM_AUDIO_CHANNELS];
+        AudioMgr_CreateNextAudioBuffer(audio_buffer, 1);
+        AudioPlayer_Play((u8*)audio_buffer, (sizeof(int16_t) * NUM_AUDIO_CHANNELS));
     }
 }
 
@@ -542,6 +551,14 @@ extern "C" void OTRAudio_Init()
         audio.running = true;
         audio.thread = std::thread(OTRAudio_Thread);
     }
+}
+
+extern "C" bool OTRAudio_IsPaused() {
+    return audio.paused;
+}
+
+extern "C" void OTRAudio_SetPaused(bool pause) {
+    audio.paused = pause;
 }
 
 extern "C" void OTRAudio_Exit() {

@@ -86,6 +86,8 @@ uint32_t IsGameMasterQuest();
 void DeinitOTR(void);
 void VanillaItemTable_Init();
 void OTRAudio_Init();
+bool OTRAudio_IsPaused();
+void OTRAudio_SetPaused(bool pause);
 void OTRMessage_Init();
 void InitAudio();
 void Graph_StartFrame();
