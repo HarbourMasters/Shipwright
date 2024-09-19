@@ -1192,6 +1192,15 @@ void DrawEnhancementsMenu() {
                 "- Blue Warps\n"
                 "- Darunia\n"
                 "- Gold Skulltulas");
+            if (UIWidgets::PaddedEnhancementCheckbox("Show Age-Dependent Equipment", CVAR_ENHANCEMENT("EquimentAlwaysVisible"), true,
+                                                     false)) {
+                UpdatePatchHand();
+            }
+            UIWidgets::Tooltip("Makes all equipment visible, regardless of Age.");
+            if (CVarGetInteger(CVAR_ENHANCEMENT("EquimentAlwaysVisible"), 0) == 1) {
+				UIWidgets::PaddedEnhancementCheckbox("Scale Adult Equipment as Child", CVAR_ENHANCEMENT("ScaleAdultEquimentAsChild"), true, false);
+				UIWidgets::Tooltip("Scales all of the Adult Equipment, as well and moving some a bit, to fit on Child Link Better. May not work properly with some mods.");
+			}
             UIWidgets::PaddedEnhancementCheckbox("N64 Mode", CVAR_LOW_RES_MODE, true, false);
             UIWidgets::Tooltip("Sets aspect ratio to 4:3 and lowers resolution to 240p, the N64's native resolution");
             UIWidgets::PaddedEnhancementCheckbox("Glitch line-up tick", CVAR_ENHANCEMENT("DrawLineupTick"), true, false);

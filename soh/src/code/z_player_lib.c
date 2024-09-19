@@ -1254,7 +1254,7 @@ s32 Player_OverrideLimbDrawGameplayCommon(PlayState* play, s32 limbIndex, Gfx** 
         }
         if (limbIndex == PLAYER_LIMB_R_HAND) {
             if ((this->currentShield == PLAYER_SHIELD_MIRROR && sRightHandType == PLAYER_MODELTYPE_RH_SHIELD) || 
-                gSaveContext.equips.buttonItems[0] == ITEM_SWORD_BGS || sRightHandType == PLAYER_MODELTYPE_RH_HOOKSHOT ||
+                sRightHandType == PLAYER_MODELTYPE_RH_HOOKSHOT ||
                 (sRightHandType == PLAYER_MODELTYPE_RH_BOW_SLINGSHOT && Player_HoldsBow(this))) {
                 Matrix_Scale(0.8, 0.8, 0.8, MTXMODE_APPLY);
             }
@@ -1398,7 +1398,7 @@ s32 Player_OverrideLimbDrawGameplayDefault(PlayState* play, s32 limbIndex, Gfx**
                     dLists += PLAYER_SHIELD_MAX * 4;
                 }
             } else if (!CVarGetInteger(CVAR_ENHANCEMENT("EquimentAlwaysVisible"), 0) || (CVarGetInteger(CVAR_ENHANCEMENT("EquimentAlwaysVisible"), 0) && 
-                (gSaveContext.equips.buttonItems[0] == ITEM_NONE && this->currentShield == PLAYER_SHIELD_DEKU))) {
+                ((gSaveContext.equips.buttonItems[0] != ITEM_SWORD_MASTER && gSaveContext.equips.buttonItems[0] != ITEM_SWORD_BGS) && this->currentShield == PLAYER_SHIELD_DEKU))) {
                 if (!LINK_IS_ADULT && ((this->sheathType == PLAYER_MODELTYPE_SHEATH_16) || (this->sheathType == PLAYER_MODELTYPE_SHEATH_17)) &&
                     (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KOKIRI)) {
                     dLists = &sSheathWithSwordDLs[PLAYER_SHIELD_MAX * 4];
