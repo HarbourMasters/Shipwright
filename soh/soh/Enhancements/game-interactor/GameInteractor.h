@@ -244,6 +244,8 @@ typedef enum {
     ```
     */
     VB_DRAW_AMMO_COUNT,
+    VB_FREEZE_LINK_FOR_BLOCK_THROW,
+    VB_MOVE_THROWN_ACTOR,
 
     /*** Play Cutscenes ***/
 
@@ -286,6 +288,7 @@ typedef enum {
     VB_PLAY_RAINBOW_BRIDGE_CS,
     // Opt: *EnBox
     VB_PLAY_SLOW_CHEST_CS,
+    VB_PLAY_THROW_ANIMATION,
 
     /*** Give Items ***/
 
