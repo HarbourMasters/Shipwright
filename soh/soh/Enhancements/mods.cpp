@@ -719,7 +719,10 @@ void RegisterMirrorModeHandler() {
 
 void RegisterPatchNoMSHandler() {
         GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() { 
-        if (CVarGetInteger("gRandomizeShuffleMasterSword", 0) && (gSaveContext.equips.buttonItems[0] == ITEM_NONE)) {
+        if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_MASTER_SWORD) &&
+            (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_MASTER &&
+             gSaveContext.equips.buttonItems[0] != ITEM_SWORD_BGS &&
+             gSaveContext.equips.buttonItems[0] != ITEM_SWORD_BROKEN)) {
             for (int i = 43; i <= 46; i++) {
                 std::string patchName = "adultNoMS." + std::to_string(1) + "." + std::to_string(i);
                 ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldSwordAndSheathFarDL, patchName.c_str(), i, gsDPNoOp());
