@@ -631,7 +631,7 @@ RandomizerArea LookForExternalArea(const Region* const currentRegion, std::vecto
       if(passdown != RA_NONE){
         return passdown;
       }
-    } else if (otherArea != RA_LINKS_POCKET){ //if it's links pocket, do not propagate this, Link's Pocket is not a real Region
+    } else if (otherArea != RA_LINKS_POCKET){ //if it's links pocket, do not propagate this, Link's Pocket is not a real Area
       return otherArea;
     }
   }
