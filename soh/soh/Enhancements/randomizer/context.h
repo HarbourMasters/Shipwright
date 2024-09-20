@@ -126,7 +126,6 @@ class Context {
     void StartPerformanceTimer(PerformanceTimers timer);
     void StopPerformanceTimer(PerformanceTimers timer);
     std::chrono::duration<double, std::milli> GetPerformanceTimer(PerformanceTimers timer);
-    void SubtractTimerFromTimer(PerformanceTimers timer1, PerformanceTimers timer2);
     void ResetTimers();
     
 

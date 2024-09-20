@@ -24,6 +24,7 @@ Rando::Option* currentSetting;
 bool GenerateRandomizer(std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks,
     std::string seedInput) {
     const auto ctx = Rando::Context::GetInstance();
+    ctx->ResetTimers();
     ctx->StartPerformanceTimer(PT_WHOLE_SEED);
 
     srand(time(NULL));

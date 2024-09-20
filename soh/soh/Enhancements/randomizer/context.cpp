@@ -1234,10 +1234,6 @@ std::chrono::duration<double, std::milli> Context::GetPerformanceTimer(Performan
     return totalTimes[timer];
 }
 
-void Context::SubtractTimerFromTimer(PerformanceTimers timer1, PerformanceTimers timer2){
-    totalTimes[timer1] -= totalTimes[timer2];
-}
-
 void Context::ResetTimers(){
     for (auto duration : totalTimes){
         duration = std::chrono::milliseconds(0);
