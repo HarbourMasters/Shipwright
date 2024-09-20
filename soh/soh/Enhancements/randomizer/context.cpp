@@ -1235,9 +1235,7 @@ std::chrono::duration<double, std::milli> Context::GetPerformanceTimer(Performan
 }
 
 void Context::ResetTimers(){
-    for (auto duration : totalTimes){
-        duration = std::chrono::milliseconds(0);
-    }
+    totalTimes = {};
 }
 
 } // namespace Rando
