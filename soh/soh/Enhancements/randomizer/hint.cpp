@@ -354,7 +354,7 @@ const CustomMessage Hint::GetHintMessage(MessageFormat format, uint8_t id) const
       break;}
     case HINT_TYPE_ALTAR_CHILD:
     case HINT_TYPE_ALTAR_ADULT:
-    case HINT_TYPE_AREA:
+    case HINT_TYPE_REGION:
     case HINT_TYPE_WOTH:
     case HINT_TYPE_FOOLISH:{
       //If we write areas

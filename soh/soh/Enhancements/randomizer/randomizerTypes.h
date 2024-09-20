@@ -29,7 +29,7 @@ typedef struct {
 
 typedef enum {
     HINT_TYPE_HINT_KEY,
-    HINT_TYPE_AREA,
+    HINT_TYPE_REGION,
     HINT_TYPE_ITEM,
     HINT_TYPE_TRIAL,
     HINT_TYPE_ENTRANCE,

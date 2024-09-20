@@ -6,7 +6,7 @@ namespace Rando {
 
 std::unordered_map<uint32_t, CustomMessage> StaticData::hintTypeNames = {
     {HINT_TYPE_HINT_KEY, CustomMessage("Message")},
-    {HINT_TYPE_AREA, CustomMessage("Area")},
+    {HINT_TYPE_REGION, CustomMessage("Region")},
     {HINT_TYPE_ITEM, CustomMessage("Item")},
     {HINT_TYPE_TRIAL, CustomMessage("Trial")},
     {HINT_TYPE_ENTRANCE, CustomMessage("Entrance")},
@@ -196,12 +196,12 @@ std::unordered_map<RandomizerHint, StaticHintInfo> StaticData::staticHintInfoMap
   // Altar hints are special cased due to special hint marking rules
   // warp song hints are special cased due to entrences not being done properly yet
   // Ganondorf Joke is special Cased as the text is random
-  {RH_SHEIK_HINT,          StaticHintInfo(HINT_TYPE_AREA,     {RHT_SHEIK_HINT_LA_ONLY},            RSK_SHEIK_LA_HINT,       true, {}, {RG_LIGHT_ARROWS},            {RC_SHEIK_HINT_GC, RC_SHEIK_HINT_MQ_GC}, true)},
-  {RH_DAMPES_DIARY,        StaticHintInfo(HINT_TYPE_AREA,     {RHT_DAMPE_DIARY},                   RSK_DAMPES_DIARY_HINT,   true, {}, {RG_PROGRESSIVE_HOOKSHOT},    {RC_DAMPE_HINT})},
-  {RH_GREG_RUPEE,          StaticHintInfo(HINT_TYPE_AREA,     {RHT_GREG_HINT},                     RSK_GREG_HINT,           true, {}, {RG_GREG_RUPEE},              {RC_GREG_HINT})},
-  {RH_SARIA_HINT,          StaticHintInfo(HINT_TYPE_AREA,     {RHT_SARIA_TALK_HINT, RHT_SARIA_SONG_HINT}, RSK_SARIA_HINT,   true, {}, {RG_PROGRESSIVE_MAGIC_METER}, {RC_SARIA_SONG_HINT, RC_SONG_FROM_SARIA}, true)},
+  {RH_SHEIK_HINT,          StaticHintInfo(HINT_TYPE_REGION,     {RHT_SHEIK_HINT_LA_ONLY},            RSK_SHEIK_LA_HINT,       true, {}, {RG_LIGHT_ARROWS},            {RC_SHEIK_HINT_GC, RC_SHEIK_HINT_MQ_GC}, true)},
+  {RH_DAMPES_DIARY,        StaticHintInfo(HINT_TYPE_REGION,     {RHT_DAMPE_DIARY},                   RSK_DAMPES_DIARY_HINT,   true, {}, {RG_PROGRESSIVE_HOOKSHOT},    {RC_DAMPE_HINT})},
+  {RH_GREG_RUPEE,          StaticHintInfo(HINT_TYPE_REGION,     {RHT_GREG_HINT},                     RSK_GREG_HINT,           true, {}, {RG_GREG_RUPEE},              {RC_GREG_HINT})},
+  {RH_SARIA_HINT,          StaticHintInfo(HINT_TYPE_REGION,     {RHT_SARIA_TALK_HINT, RHT_SARIA_SONG_HINT}, RSK_SARIA_HINT,   true, {}, {RG_PROGRESSIVE_MAGIC_METER}, {RC_SARIA_SONG_HINT, RC_SONG_FROM_SARIA}, true)},
   {RH_LOACH_HINT,          StaticHintInfo(HINT_TYPE_ITEM,     {RHT_LOACH_HINT},                    RSK_LOACH_HINT,          true, {RC_LH_HYRULE_LOACH})},
-  {RH_FISHING_POLE,        StaticHintInfo(HINT_TYPE_AREA,     {RHT_FISHING_POLE_HINT},             RSK_FISHING_POLE_HINT,   true, {}, {RG_FISHING_POLE},            {RC_FISHING_POLE_HINT}, true)},
+  {RH_FISHING_POLE,        StaticHintInfo(HINT_TYPE_REGION,     {RHT_FISHING_POLE_HINT},             RSK_FISHING_POLE_HINT,   true, {}, {RG_FISHING_POLE},            {RC_FISHING_POLE_HINT}, true)},
   {RH_MEDIGORON,           StaticHintInfo(HINT_TYPE_MERCHANT, {RHT_MEDIGORON_HINT},                RSK_SHUFFLE_MERCHANTS,   (uint8_t)RO_SHUFFLE_MERCHANTS_ON_HINT,  {RC_GC_MEDIGORON})},
   {RH_GRANNY,              StaticHintInfo(HINT_TYPE_MERCHANT, {RHT_GRANNY_HINT},                   RSK_SHUFFLE_MERCHANTS,   (uint8_t)RO_SHUFFLE_MERCHANTS_ON_HINT,  {RC_KAK_GRANNYS_SHOP})},
   {RH_CARPET_SALESMAN,     StaticHintInfo(HINT_TYPE_MERCHANT, {RHT_CARPET_SALESMAN_DIALOG_HINTED}, RSK_SHUFFLE_MERCHANTS,   (uint8_t)RO_SHUFFLE_MERCHANTS_ON_HINT,  {RC_WASTELAND_BOMBCHU_SALESMAN})},
