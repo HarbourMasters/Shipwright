@@ -166,7 +166,9 @@ public:
     bool adultNight = false;
     bool addedToPool = false;;
 
-    bool UpdateEvents(bool haveTimeAccess = true);
+    void ApplyTimePass();
+
+    bool UpdateEvents();
 
     void AddExit(RandomizerRegion parentKey, RandomizerRegion newExitKey, ConditionFn condition);
 
