@@ -141,6 +141,9 @@ typedef enum {
     // Opt: *EnItem00
     // Vanilla condition: Flags_GetCollectible(play, this->collectibleFlag)
     VB_ITEM00_DESPAWN,
+    // Opt: *ItemBHeart
+    // Vanilla condition: Flags_GetCollectible(play, 0x1F)
+    VB_ITEM_B_HEART_DESPAWN,
     // Opt: *EnTk
     // Vanilla condition: gSaveContext.dayTime <= 0xC000 || gSaveContext.dayTime >= 0xE000 || LINK_IS_ADULT || play->sceneNum != SCENE_GRAVEYARD
     VB_DAMPE_IN_GRAVEYARD_DESPAWN,
@@ -244,6 +247,8 @@ typedef enum {
     ```
     */
     VB_DRAW_AMMO_COUNT,
+    VB_FREEZE_LINK_FOR_BLOCK_THROW,
+    VB_MOVE_THROWN_ACTOR,
 
     /*** Play Cutscenes ***/
 
@@ -286,6 +291,7 @@ typedef enum {
     VB_PLAY_RAINBOW_BRIDGE_CS,
     // Opt: *EnBox
     VB_PLAY_SLOW_CHEST_CS,
+    VB_PLAY_THROW_ANIMATION,
 
     /*** Give Items ***/
 
