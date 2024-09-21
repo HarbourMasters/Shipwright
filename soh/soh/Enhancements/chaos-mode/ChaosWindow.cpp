@@ -34,6 +34,7 @@ uint32_t knuckleTimer = 0;
 uint32_t midoTimer = 0;
 uint32_t guardTimer = 0;
 uint32_t erasureTimer = 0;
+uint32_t ceilingTimer = 0;
 
 uint32_t chaosInterval = 5;
 uint32_t votingInterval = 5;
@@ -63,9 +64,12 @@ uint32_t eventKnuckleTimer;
 uint32_t eventMidoTimer;
 uint32_t eventGuardTimer;
 uint32_t eventErasureTimer;
+uint32_t eventCeilingTimer;
 
 ActorListEntry guardActors;
+ActorListEntry ceilingActors;
 Actor* currGuard = guardActors.head;
+Actor* currCeiling = ceilingActors.head;
 
 static uint32_t actorMagnetHook = 0;
 static uint32_t votingHook = 0;
@@ -121,16 +125,19 @@ std::vector<eventObject> eventList = {
        "Hyrules finest Royal Guard comes to show you the business." },
     { EVENT_ERASURE, "Erase Dungeon Reward", "gEnhancements.Erasure", eventErasureTimer,
         "Erases a Dungeon Reward and respective Dungeon Boss." },
+    { EVENT_FALLING_CEILING, "Unstable Ceiling", "gEnhancements.FallingCeiling", eventCeilingTimer,
+        "Watch your head, whoever built this forgot to use supports..." },
 };
 
 std::vector<uint32_t> teleportList = {
-    GI_TP_DEST_SERENADE,
-    GI_TP_DEST_REQUIEM,
-    GI_TP_DEST_BOLERO,
-    GI_TP_DEST_MINUET,
-    GI_TP_DEST_NOCTURNE,
-    GI_TP_DEST_PRELUDE,
-    GI_TP_DEST_LINKSHOUSE,
+    //GI_TP_DEST_SERENADE,
+    //GI_TP_DEST_REQUIEM,
+    //GI_TP_DEST_BOLERO,
+    //GI_TP_DEST_MINUET,
+    //GI_TP_DEST_NOCTURNE,
+    //GI_TP_DEST_PRELUDE,
+    //GI_TP_DEST_LINKSHOUSE,
+    GI_TP_DEST_JAILCELL,
 };
 
 std::vector<uint32_t> actorCatList = {
@@ -141,26 +148,15 @@ std::vector<uint32_t> actorCatList = {
     ACTORCAT_MISC,
 };
 
-std::vector<uint32_t> rcBosses = {
-    RC_QUEEN_GOHMA,
-    RC_KING_DODONGO,
-    RC_BARINADE,
-    RC_PHANTOM_GANON,
-    RC_VOLVAGIA,
-    RC_MORPHA,
-    RC_BONGO_BONGO,
-    RC_TWINROVA,
-};
-
-std::unordered_map<uint32_t, uint32_t> bossList = {
-    { RC_QUEEN_GOHMA, 		SCENE_DEKU_TREE_BOSS, },
-    { RC_KING_DODONGO, 		SCENE_DODONGOS_CAVERN_BOSS, },
-    { RC_BARINADE, 			SCENE_JABU_JABU_BOSS, },
-    { RC_PHANTOM_GANON, 	SCENE_FOREST_TEMPLE_BOSS, },
-    { RC_VOLVAGIA, 			SCENE_FIRE_TEMPLE_BOSS, },
-    { RC_MORPHA, 			SCENE_WATER_TEMPLE_BOSS, },
-    { RC_BONGO_BONGO, 		SCENE_SHADOW_TEMPLE_BOSS, },
-    { RC_TWINROVA, 			SCENE_SPIRIT_TEMPLE_BOSS, },
+std::vector<std::tuple<uint32_t, uint32_t, uint32_t>> dungeonClears = {
+    { RC_QUEEN_GOHMA,   SCENE_DEKU_TREE_BOSS,       RAND_INF_DUNGEONS_DONE_DEKU_TREE },
+    { RC_KING_DODONGO,  SCENE_DODONGOS_CAVERN_BOSS, RAND_INF_DUNGEONS_DONE_DODONGOS_CAVERN },
+    { RC_BARINADE,      SCENE_JABU_JABU_BOSS,       RAND_INF_DUNGEONS_DONE_JABU_JABUS_BELLY },
+    { RC_PHANTOM_GANON, SCENE_FOREST_TEMPLE_BOSS,   RAND_INF_DUNGEONS_DONE_FOREST_TEMPLE },
+    { RC_VOLVAGIA,      SCENE_FIRE_TEMPLE_BOSS,     RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE },
+    { RC_MORPHA,        SCENE_WATER_TEMPLE_BOSS,    RAND_INF_DUNGEONS_DONE_WATER_TEMPLE },
+    { RC_TWINROVA,      SCENE_SPIRIT_TEMPLE_BOSS,   RAND_INF_DUNGEONS_DONE_SPIRIT_TEMPLE },
+    { RC_BONGO_BONGO,   SCENE_SHADOW_TEMPLE_BOSS,   RAND_INF_DUNGEONS_DONE_SHADOW_TEMPLE },
 };
 
 std::unordered_map<uint32_t, uint32_t> itemToQuestList = {
@@ -513,7 +509,12 @@ void ChaosEventsRepeater() {
         if (isEventIdPresent(EVENT_ERASURE) == true) {
             if (erasureTimer > 0) {
                 erasureTimer--;
+            }
+        }
 
+        if (isEventIdPresent(EVENT_FALLING_CEILING) == true) {
+            if (ceilingTimer > 0) {
+                ceilingTimer--;
             }
         }
     });
@@ -581,7 +582,7 @@ void ChaosEventsActivator(uint32_t eventId, bool isActive) {
                     prevRoomNum = gPlayState->roomCtx.curRoom.num;
                     fakeTimer = (eventList[EVENT_FAKE_TELEPORT].eventTimer / 3);
                 }
-                uint32_t teleportLoc = rand() % 6;
+                uint32_t teleportLoc = rand() % teleportList.size();
                 GameInteractor::RawAction::TeleportPlayer(teleportList[teleportLoc]);
             }
             break;
@@ -710,22 +711,46 @@ void ChaosEventsActivator(uint32_t eventId, bool isActive) {
             break;
         case EVENT_ERASURE:
             if (isActive) {
+                erasureTimer = eventList[EVENT_ERASURE].eventTimer;
                 std::vector<uint32_t> questItems = {};
                 for (int i = ITEM_MEDALLION_FOREST; i <= ITEM_ZORA_SAPPHIRE; i++) {
                     if (CHECK_QUEST_ITEM(itemToQuestList[i])) {
                         questItems.push_back(i);
                     }
                 }
-                uint32_t roll = rand() % questItems.size();
-                for (int i = 0; i < rcBosses.size(); i++) {
-                    auto itemEntry = OTRGlobals::Instance->gRandomizer->GetItemFromKnownCheck((RandomizerCheck)rcBosses[i], GI_NONE, false);
-                    if (itemEntry.itemId == questItems[roll]) {
-                        uint32_t flagToClear = bossList[rcBosses[i]];
-                        uint32_t bitMask = 1 << itemToQuestList[questItems[roll]];
-                        gSaveContext.sceneFlags[flagToClear].clear = 0;
-                        gSaveContext.inventory.questItems &= ~bitMask;
-                        //need to unset item get flag as well.
-                        break;
+                if (!questItems.empty()) {
+                    uint32_t roll = rand() % questItems.size();
+                    for (int i = 0; i < dungeonClears.size(); i++) {
+                        auto itemEntry = OTRGlobals::Instance->gRandomizer->GetItemFromKnownCheck(
+                            (RandomizerCheck)std::get<0>(dungeonClears[i]), GI_NONE, false);
+                        if (itemEntry.itemId == questItems[roll]) {
+                            uint32_t bitMask = 1 << itemToQuestList[questItems[roll]];
+                            gSaveContext.sceneFlags[std::get<1>(dungeonClears[i])].clear = 0;
+                            Flags_UnsetRandomizerInf((RandomizerInf)std::get<2>(dungeonClears[i]));
+                            gSaveContext.inventory.questItems &= ~bitMask;
+                            break;
+                        }
+                    }
+                }
+            }
+            break;
+        case EVENT_FALLING_CEILING:
+            if (isActive) {
+                ceilingTimer = eventList[EVENT_FALLING_CEILING].eventTimer;
+                
+                Player* player = GET_PLAYER(gPlayState);
+                Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_BG_MORI_RAKKATENJO, player->actor.world.pos.x - 1,
+                            player->actor.world.pos.y + 280, player->actor.world.pos.z, 0, player->actor.world.rot.y - 32768,
+                            0, -1, false);
+            } else {
+                ceilingActors = gPlayState->actorCtx.actorLists[ACTORCAT_BG];
+                currCeiling = ceilingActors.head;
+                if (currCeiling != nullptr) {
+                    while (currCeiling != nullptr) {
+                        if (currCeiling->id == ACTOR_BG_MORI_RAKKATENJO) {
+                            Actor_Kill(currCeiling);
+                        }
+                        currCeiling = currCeiling->next;
                     }
                 }
             }
@@ -736,7 +761,7 @@ void ChaosEventsActivator(uint32_t eventId, bool isActive) {
 }
 
 void ChaosVoteSelector(uint32_t option) {
-    uint32_t roll = EVENT_ERASURE;
+    uint32_t roll = EVENT_FALLING_CEILING;
     //uint32_t roll = rand() % votingList.size();
     votingObjectList[option].votingOption = votingList[roll].eventId;
     //votingList.erase(votingList.begin() + roll);

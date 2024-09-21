@@ -65,6 +65,7 @@ typedef enum {
     /*      */ GI_TP_DEST_REQUIEM = ENTR_DESERT_COLOSSUS_5,
     /*      */ GI_TP_DEST_NOCTURNE = ENTR_GRAVEYARD_7,
     /*      */ GI_TP_DEST_PRELUDE = ENTR_TEMPLE_OF_TIME_7,
+    /*      */ GI_TP_DEST_JAILCELL = ENTR_GERUDOS_FORTRESS_17,
 } GITeleportDestinations;
 
 #ifdef __cplusplus

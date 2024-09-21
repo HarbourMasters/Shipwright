@@ -65,6 +65,7 @@ typedef enum {
     EVENT_MIDO_SUCKS,
     EVENT_THROWN_IN_THE_PAST,
     EVENT_ERASURE,
+    EVENT_FALLING_CEILING,
 } ChaosEvents;
 
 typedef enum {
