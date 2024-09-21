@@ -7,6 +7,7 @@
 #include "spoiler_log.hpp"
 #include "../trial.h"
 #include "../entrance.h"
+#include "../../debugger/performanceTimer.h"
 
 #include <fstream>
 
@@ -90,9 +91,8 @@ Area::Area(std::string regionName_, std::string scene_, RandomizerArea area,
 Area::~Area() = default;
 
 bool Area::UpdateEvents(bool haveTimeAccess) {
-  auto ctx = Rando::Context::GetInstance();
   if (timePass && haveTimeAccess) {
-    ctx->StartPerformanceTimer(PT_TOD_ACCESS);
+    StartPerformanceTimer(PT_TOD_ACCESS);
     if (Child()) {
       childDay = true;
       childNight = true;
@@ -105,11 +105,11 @@ bool Area::UpdateEvents(bool haveTimeAccess) {
       AreaTable(RR_ROOT)->adultDay = true;
       AreaTable(RR_ROOT)->adultNight = true;
     }
-    ctx->StopPerformanceTimer(PT_TOD_ACCESS);
+    StopPerformanceTimer(PT_TOD_ACCESS);
   }
 
   bool eventsUpdated =  false;
-  ctx->StartPerformanceTimer(PT_EVENT_ACCESS);
+  StartPerformanceTimer(PT_EVENT_ACCESS);
   for (EventAccess& event : events) {
     
     //If the event has already happened, there's no reason to check it
@@ -125,7 +125,7 @@ bool Area::UpdateEvents(bool haveTimeAccess) {
           eventsUpdated = true;
     }
   }
-  ctx->StopPerformanceTimer(PT_EVENT_ACCESS);
+  StopPerformanceTimer(PT_EVENT_ACCESS);
   return eventsUpdated;
 }
 

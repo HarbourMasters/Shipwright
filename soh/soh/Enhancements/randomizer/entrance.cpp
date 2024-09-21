@@ -2,6 +2,7 @@
 
 #include "3drando/pool_functions.hpp"
 #include "3drando/item_pool.hpp"
+#include "../debugger/performanceTimer.h"
 
 #include <spdlog/spdlog.h>
 
@@ -71,12 +72,12 @@ void Entrance::printAgeTimeAccess() {
 
 bool Entrance::ConditionsMet(bool allAgeTimes) const {
   auto ctx = Rando::Context::GetInstance();
-  ctx->StartPerformanceTimer(PT_ENTRANCE_LOGIC);
+  StartPerformanceTimer(PT_ENTRANCE_LOGIC);
   Area* parent = AreaTable(parentRegion);
   int conditionsMet = 0;
 
   if (allAgeTimes && !parent->AllAccess()) {
-      ctx->StopPerformanceTimer(PT_ENTRANCE_LOGIC);
+      StopPerformanceTimer(PT_ENTRANCE_LOGIC);
       return false;
   }
 
@@ -86,7 +87,7 @@ bool Entrance::ConditionsMet(bool allAgeTimes) const {
                   (parent->adultDay && CheckConditionAtAgeTime(logic->IsAdult, logic->AtDay, allAgeTimes)) +
                   (parent->adultNight && CheckConditionAtAgeTime(logic->IsAdult, logic->AtNight, allAgeTimes));
 
-  ctx->StopPerformanceTimer(PT_ENTRANCE_LOGIC);
+  StopPerformanceTimer(PT_ENTRANCE_LOGIC);
   return conditionsMet && (!allAgeTimes || conditionsMet == 4);
 }
 

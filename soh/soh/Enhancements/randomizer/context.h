@@ -123,10 +123,6 @@ class Context {
     void SetEventChkInf(int32_t flag, bool state);
     uint8_t GetAmmo(uint32_t item);
     void SetAmmo(uint32_t item, uint8_t count);
-    void StartPerformanceTimer(PerformanceTimers timer);
-    void StopPerformanceTimer(PerformanceTimers timer);
-    std::chrono::duration<double, std::milli> GetPerformanceTimer(PerformanceTimers timer);
-    void ResetTimers();
     
 
   private:
@@ -143,7 +139,5 @@ class Context {
     bool mSeedGenerated = false;
     bool mSpoilerLoaded = false;
     bool mPlandoLoaded = false;
-    std::array<std::chrono::duration<double, std::milli>, PT_MAX> totalTimes = {};
-    std::array<std::chrono::high_resolution_clock::time_point, PT_MAX> timeStarted = {};
 };
 } // namespace Rando
