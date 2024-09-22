@@ -1,5 +1,6 @@
 #include "entrance.h"
 
+#include "3drando/fill.hpp"
 #include "3drando/pool_functions.hpp"
 #include "3drando/item_pool.hpp"
 

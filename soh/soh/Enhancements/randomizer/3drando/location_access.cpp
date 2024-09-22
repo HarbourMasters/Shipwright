@@ -29,7 +29,9 @@ bool LocationAccess::CheckConditionAtAgeTime(bool& age, bool& time) const {
 }
 
 bool LocationAccess::ConditionsMet() const {
-
+  //WARNING enterance validation can run this after resetting the access for sphere 0 validation
+  //When refactoring ToD access, either fit the above or do not assume that we
+  //have any access at all just because this is being run
   Area* parentRegion = AreaTable(Rando::Context::GetInstance()->GetItemLocation(location)->GetParentRegionKey());
   bool conditionsMet = false;
 
@@ -414,7 +416,7 @@ namespace Areas {
 
   void AccessReset() {
     auto ctx = Rando::Context::GetInstance();
-      for (const RandomizerRegion area : GetAllAreas()) {
+    for (const RandomizerRegion area : GetAllAreas()) {
       AreaTable(area)->ResetVariables();
     }
 

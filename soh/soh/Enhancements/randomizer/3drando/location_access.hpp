@@ -4,7 +4,6 @@
 #include <vector>
 #include <list>
 
-#include "fill.hpp"
 #include "../randomizerTypes.h"
 #include "../context.h"
 #include "../logic.h"
@@ -17,7 +16,6 @@ extern std::shared_ptr<Rando::Logic> logic;
 
 class EventAccess {
 public:
-
 
     explicit EventAccess(bool* event_, std::vector<ConditionFn> conditions_met_)
         : event(event_) {

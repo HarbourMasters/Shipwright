@@ -4,12 +4,10 @@
 #include "../dungeon.h"
 #include "../context.h"
 #include "item_pool.hpp"
-#include "location_access.hpp"
 #include "random.hpp"
 #include "spoiler_log.hpp"
 #include "starting_inventory.hpp"
 #include "hints.hpp"
-#include "../entrance.h"
 #include "shops.hpp"
 #include "pool_functions.hpp"
 //#include "debug.hpp"
@@ -22,51 +20,6 @@
 using namespace CustomMessages;
 using namespace Rando;
 
-
-//RANDOTODO merge into Logic once Logic is a class passed to logic funtions 
-struct GetAccessableLocationsStruct {
-  std::vector<RandomizerCheck> accessibleLocations;
-  std::vector<RandomizerRegion> regionPool;
-  //Variables for playthrough
-  int gsCount;
-  int maxGsCount;
-  std::vector<LogicVal> buyIgnores;
-
-  //Variables for search
-  std::vector<Rando::ItemLocation*> newItemLocations;
-  bool updatedEvents;
-  bool ageTimePropogated;
-  bool firstIteration;
-
-  //Variables For Validating Entrences
-  bool haveTimeAccess;
-  bool foundTempleOfTime;
-  bool validatedStartingRegion;
-  bool sphereZeroComplete;
-
-  std::vector<RandomizerCheck> itemSphere;
-  std::list<Entrance*> entranceSphere;
-
-  GetAccessableLocationsStruct(int _maxGsCount){
-    regionPool = {RR_ROOT};
-    gsCount = 0;
-    maxGsCount = _maxGsCount;
-    updatedEvents = false;
-    ageTimePropogated = false;
-  }
-
-  void InitLoop(){
-    firstIteration = false;
-    ageTimePropogated = false;
-    updatedEvents = false;
-    for (Rando::ItemLocation* location : newItemLocations) {
-      location->ApplyPlacedItemEffect();
-    }
-    newItemLocations.clear();
-    itemSphere.clear();
-    entranceSphere.clear();
-  }
-};
 
 static bool placementFailure = false;
 
@@ -105,13 +58,9 @@ static void PropagateTimeTravel(){
 }
 
 //This function will propagate Time of Day access through the entrance
-static bool UpdateToDAccess(Entrance* entrance) {
+static bool UpdateToDAccess(Entrance* entrance, Area* parent, Area* connection) {
 
   bool ageTimePropogated = false;
-
-  //propagate childDay, childNight, adultDay, and adultNight separately
-  Area* parent = entrance->GetParentRegion();
-  Area* connection = entrance->GetConnectedRegion();
 
   if (!connection->childDay && parent->childDay && entrance->CheckConditionAtAgeTime(logic->IsChild, logic->AtDay)) {
     connection->childDay = true;
@@ -186,28 +135,54 @@ static void ValidateSphereZero(GetAccessableLocationsStruct& gals){
         AreaTable(regionKey)->childNight = false;
       }
     }
+    //RANDOTODO do we want to keep the region pool after this reset? 
+    //It's a lot of potential looping over regions we have no access to
     gals.sphereZeroComplete = true;
   } 
 }
 
 //This function handles each possible exit
-void ProcessExit(Entrance& exit, GetAccessableLocationsStruct& gals){
-  //Update Time of Day Access for the exit
-  if (UpdateToDAccess(&exit)) {
-    gals.ageTimePropogated = true;
-    if (!gals.sphereZeroComplete){
-      if (!gals.foundTempleOfTime || !gals.validatedStartingRegion){
-        ValidateOtherEntrance(gals);
+void ProcessExits(Area* region, GetAccessableLocationsStruct gals, RandomizerGet ignore = RG_NONE, 
+                  bool stopOnBeatable = false, bool addToPlaythrough = false){
+  auto ctx = Rando::Context::GetInstance();
+  for (auto& exit : region->exits) {
+    Area* exitArea = exit.GetConnectedRegion();
+    //Update Time of Day Access for the exit
+    if (UpdateToDAccess(&exit, region, exitArea)) {
+      gals.ageTimePropogated = true;
+      if (!gals.sphereZeroComplete){
+        if (!gals.foundTempleOfTime || !gals.validatedStartingRegion){
+          ValidateOtherEntrance(gals);
+        }
+        ValidateSphereZero(gals);
       }
-      ValidateSphereZero(gals);
+      //process the region we just expanded to, to reduce looping
+      ProcessRegion(region, gals, ignore, stopOnBeatable, addToPlaythrough);
     }
-  }
 
-  //If the exit is accessible and hasn't been added yet, add it to the pool
-  Area* exitArea = exit.GetConnectedRegion();
-  if (!exitArea->addedToPool && exit.ConditionsMet()) {
-    exitArea->addedToPool = true;
-    gals.regionPool.push_back(exit.GetConnectedRegionKey());
+    //If the exit is accessible and hasn't been added yet, add it to the pool
+    //RANDOTODO do we want to add the region after the loop now, considering we
+    //are processing the new region immediatly. Maybe a reverse for loop in ProcessRegion?
+    if (!exitArea->addedToPool && exit.ConditionsMet()) {
+      exitArea->addedToPool = true;
+      gals.regionPool.push_back(exit.GetConnectedRegionKey());
+    }
+
+    if (addToPlaythrough){
+      // RANDOTODO Should this match the regular spheres?
+      // Add shuffled entrances to the entrance playthrough
+      // Include bluewarps when unshuffled but dungeon or boss shuffle is on
+      if((exit.IsShuffled() || (exit.GetType() == Rando::EntranceType::BlueWarp && 
+          (ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES) || ctx->GetOption(RSK_SHUFFLE_BOSS_ENTRANCES)))) &&
+          !exit.IsAddedToPool() && !ctx->GetEntranceShuffler()->HasNoRandomEntrances()) {
+        gals.entranceSphere.push_back(&exit);
+        exit.AddToPool();
+        // Don't list a two-way coupled entrance from both directions
+        if (exit.GetReverse() != nullptr && exit.GetReplacement()->GetReverse() != nullptr && !exit.IsDecoupled()) {
+          exit.GetReplacement()->GetReverse()->AddToPool();
+        }
+      }
+    }
   }
 }
 
@@ -297,6 +272,10 @@ bool IsBeatableWithout(RandomizerCheck excludedCheck, bool replaceItem, Randomiz
 
 // Reset non-Logic-class logic, and optionally apply the initial inventory
 void ResetLogic(std::shared_ptr<Context>& ctx, GetAccessableLocationsStruct& gals, bool applyInventory = false){
+  gals.timePassChildDay = true;
+  gals.timePassChildNight = true;
+  gals.timePassAdultDay = true;
+  gals.timePassAdultNight = true;
   gals.firstIteration = true;
   gals.haveTimeAccess = true;
   gals.foundTempleOfTime = true;
@@ -407,6 +386,54 @@ bool AddCheckToLogic(LocationAccess& locPair, GetAccessableLocationsStruct& gals
   return false;
 }
 
+void ProcessRegion(Area* region, GetAccessableLocationsStruct gals, RandomizerGet ignore, 
+                   bool stopOnBeatable, bool addToPlaythrough){
+  
+  if (gals.haveTimeAccess) {
+    region->ApplyTimePass();
+  } else {
+    // If we're checking for TimePass access do that for each region as it's being updated.
+    // TimePass Access is satisfied when every AgeTime can reach a region with TimePass
+    // without the aid of TimePass. During this mode, TimePass won't update ToD access
+    // in any region.
+    //RANDOTODO can probably be removed after a ToD rework that accounts for having Dampe time access
+    if (region->timePass) {
+      if (region->childDay) {
+        gals.timePassChildDay = true;
+      }
+      if (region->childNight) {
+        gals.timePassChildNight = true;
+      }
+      if (region->adultDay) {
+        gals.timePassAdultDay = true;
+      }
+      if (region->adultNight) {
+        gals.timePassAdultNight = true;
+      }
+    }
+    // Condition for validating that all startring AgeTimes have timepass access
+    if (gals.timePassChildDay && gals.timePassChildNight && 
+        gals.timePassAdultDay && gals.timePassAdultNight) {
+      gals.haveTimeAccess = true;
+      region->ApplyTimePass();
+    }
+  }
+
+  if (region->UpdateEvents()){
+    gals.updatedEvents = true;
+  }
+  
+  ProcessExits(region, gals, ignore, stopOnBeatable, addToPlaythrough);
+  
+  PropagateTimeTravel();
+  for (size_t k = 0; k < region->locations.size(); k++) {
+    if(AddCheckToLogic(region->locations[k], gals, ignore, stopOnBeatable, addToPlaythrough)){
+      Rando::Context::GetInstance()->playthroughBeatable = true;
+      return;
+    }
+  }
+}
+
 // Return any of the targetLocations that are accessible in logic
 std::vector<RandomizerCheck> ReachabilitySearch(const std::vector<RandomizerCheck>& targetLocations, RandomizerGet ignore /* = RG_NONE*/) {
   auto ctx = Rando::Context::GetInstance();
@@ -415,20 +442,7 @@ std::vector<RandomizerCheck> ReachabilitySearch(const std::vector<RandomizerChec
   while (gals.newItemLocations.size() > 0 || gals.updatedEvents || gals.ageTimePropogated || gals.firstIteration) {
     gals.InitLoop();
     for (size_t i = 0; i < gals.regionPool.size(); i++) {
-      Area* region = AreaTable(gals.regionPool[i]);
-
-      region->ApplyTimePass();
-      if (region->UpdateEvents()){
-        gals.updatedEvents = true;
-      }
-      for (auto& exit : region->exits) {
-        ProcessExit(exit, gals);
-        PropagateTimeTravel();
-      }
-      for (size_t k = 0; k < region->locations.size(); k++) {
-        LocationAccess& locPair = region->locations[k];
-        AddCheckToLogic(locPair, gals, ignore, false);
-      }
+      ProcessRegion(AreaTable(gals.regionPool[i]), gals, ignore);
     }
   }
   erase_if(gals.accessibleLocations, [&targetLocations, ctx](RandomizerCheck loc){
@@ -452,32 +466,7 @@ void GeneratePlaythrough() {
   while (gals.newItemLocations.size() > 0 || gals.updatedEvents || gals.ageTimePropogated || gals.firstIteration) {
     gals.InitLoop();
     for (size_t i = 0; i < gals.regionPool.size(); i++) {
-      Area* region = AreaTable(gals.regionPool[i]);
-
-      region->ApplyTimePass();
-      if (region->UpdateEvents()){
-        gals.updatedEvents = true;
-      }
-      for (auto& exit : region->exits) {
-        ProcessExit(exit, gals);
-        PropagateTimeTravel();
-        // Add shuffled entrances to the entrance playthrough
-        // Include bluewarps when unshuffled but dungeon or boss shuffle is on
-        if((exit.IsShuffled() || (exit.GetType() == Rando::EntranceType::BlueWarp && 
-            (ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES) || ctx->GetOption(RSK_SHUFFLE_BOSS_ENTRANCES)))) &&
-           !exit.IsAddedToPool() && !ctx->GetEntranceShuffler()->HasNoRandomEntrances()) {
-          gals.entranceSphere.push_back(&exit);
-          exit.AddToPool();
-          // Don't list a two-way coupled entrance from both directions
-          if (exit.GetReverse() != nullptr && exit.GetReplacement()->GetReverse() != nullptr && !exit.IsDecoupled()) {
-            exit.GetReplacement()->GetReverse()->AddToPool();
-          }
-        }
-      }
-      for (size_t k = 0; k < region->locations.size(); k++) {
-        LocationAccess& locPair = region->locations[k];
-        AddCheckToLogic(locPair, gals, RG_NONE, false, true);
-      }
+      ProcessRegion(AreaTable(gals.regionPool[i]), gals, RG_NONE, false, true);
     }
     if (gals.itemSphere.size() > 0) {
       ctx->playthroughLocations.push_back(gals.itemSphere);
@@ -496,22 +485,9 @@ bool CheckBeatable(RandomizerGet ignore /* = RG_NONE*/) {
   while (gals.newItemLocations.size() > 0 || gals.updatedEvents || gals.ageTimePropogated || gals.firstIteration) {
     gals.InitLoop();
     for (size_t i = 0; i < gals.regionPool.size(); i++) {
-      Area* region = AreaTable(gals.regionPool[i]);
-
-      region->ApplyTimePass();
-      if (region->UpdateEvents()){
-        gals.updatedEvents = true;
-      }
-      for (auto& exit : region->exits) {
-        ProcessExit(exit, gals);
-        PropagateTimeTravel();
-      }
-      for (size_t k = 0; k < region->locations.size(); k++) {
-        LocationAccess& locPair = region->locations[k];
-        if(AddCheckToLogic(locPair, gals, ignore, true)){
-          ctx->playthroughBeatable = true;
-          return true;
-        }
+      ProcessRegion(AreaTable(gals.regionPool[i]), gals, ignore, true);
+      if (ctx->playthroughBeatable == true){
+        return true;
       }
     }
   }
@@ -524,12 +500,6 @@ void ValidateEntrances(bool checkPoeCollectorAccess, bool checkOtherEntranceAcce
   GetAccessableLocationsStruct gals(0);
   ResetLogic(ctx, gals, !checkOtherEntranceAccess);
 
-  //Variables for Time Pass access
-  bool timePassChildDay = false;
-  bool timePassChildNight = false;
-  bool timePassAdultDay = false;
-  bool timePassAdultNight = false;
-
   ctx->allLocationsReachable = false;
   if (checkPoeCollectorAccess){
     logic->CanEmptyBigPoes = false;
@@ -538,6 +508,11 @@ void ValidateEntrances(bool checkPoeCollectorAccess, bool checkOtherEntranceAcce
   if (checkOtherEntranceAccess){
     gals.foundTempleOfTime = false;
     gals.validatedStartingRegion = false;
+    //Variables for Time Pass access
+    gals.timePassChildDay = false;
+    gals.timePassChildNight = false;
+    gals.timePassAdultDay = false;
+    gals.timePassAdultNight = false;
     gals.haveTimeAccess = false;
     gals.sphereZeroComplete = false;
     AreaTable(RR_ROOT)->childNight = true;
@@ -546,76 +521,18 @@ void ValidateEntrances(bool checkPoeCollectorAccess, bool checkOtherEntranceAcce
     AreaTable(RR_ROOT)->adultDay = true;
   } else {
     ApplyAllAdvancmentItems();
-    //if we assume valid sphere zero, we only want starting age access
-    if (ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_CHILD) {
-      for (RandomizerRegion regionKey : gals.regionPool) {
-        AreaTable(RR_ROOT)->childNight = true;
-        AreaTable(RR_ROOT)->childDay = true;
-      }
-    } else {
-      for (RandomizerRegion regionKey : gals.regionPool) {
-        AreaTable(RR_ROOT)->adultNight = true;
-        AreaTable(RR_ROOT)->adultDay = true;
-      }
-    }
   }
 
   while (gals.newItemLocations.size() > 0 || gals.updatedEvents || gals.ageTimePropogated || gals.firstIteration) {
     gals.InitLoop();
     for (size_t i = 0; i < gals.regionPool.size(); i++) {
-      Area* region = AreaTable(gals.regionPool[i]);
-
-      // If we're checking for TimePass access do that for each region as it's being updated.
-      // TimePass Access is satisfied when every AgeTime can reach a region with TimePass
-      // without the aid of TimePass. During this mode, TimePass won't update ToD access
-      // in any region.
-      //RANDOTODO can probably be removed after a ToD rework that accounts for having Dampe time access
-      if (gals.haveTimeAccess) {
-        region->ApplyTimePass();
-      } else {
-        if (region->timePass) {
-          if (region->childDay) {
-            timePassChildDay = true;
-          }
-          if (region->childNight) {
-            timePassChildNight = true;
-          }
-          if (region->adultDay) {
-            timePassAdultDay = true;
-          }
-          if (region->adultNight) {
-            timePassAdultNight = true;
-          }
-        }
-        // Condition for validating that all startring AgeTimes have timepass access
-        // Once satisifed, change the mode to begin checking for Temple of Time Access
-        if (timePassChildDay && timePassChildNight && timePassAdultDay && timePassAdultNight) {
-          gals.haveTimeAccess = true;
-          region->ApplyTimePass();
-        }
-      }
-      
-      if (region->UpdateEvents()){
-        gals.updatedEvents = true;
-      }
-
-      //for each exit in this region
-      for (auto& exit : region->exits) {
-        ProcessExit(exit, gals);
-        if (gals.haveTimeAccess && gals.foundTempleOfTime && gals.validatedStartingRegion){
-          PropagateTimeTravel();
-        }
-      } 
-      if (gals.sphereZeroComplete) {
-        for (size_t k = 0; k < region->locations.size(); k++) {
-          LocationAccess& locPair = region->locations[k];
-          AddCheckToLogic(locPair, gals, RG_NONE, false);
-        }
-      }
+      ProcessRegion(AreaTable(gals.regionPool[i]), gals);
     }
   }
   if (gals.sphereZeroComplete) {
     ctx->allLocationsReachable = true;
+    //RANDOTODO a size check here before getting the exact fails would be a minor optimisation
+    //and a full list of location failures would be useful for logging when it does fail
     for (const RandomizerCheck loc : ctx->allLocations) {
       if (!ctx->GetItemLocation(loc)->IsAddedToPool()) {
           ctx->allLocationsReachable = false;
