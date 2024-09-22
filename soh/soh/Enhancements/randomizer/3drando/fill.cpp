@@ -14,7 +14,7 @@
 #include "pool_functions.hpp"
 //#include "debug.hpp"
 #include "soh/Enhancements/randomizer/static_data.h"
-#include "../../debugger/performanceTimer.h"
+#include "soh/Enhancements/debugger/performanceTimer.h"
 
 #include <vector>
 #include <list>

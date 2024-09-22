@@ -7,7 +7,7 @@
 #include "spoiler_log.hpp"
 #include "../trial.h"
 #include "../entrance.h"
-#include "../../debugger/performanceTimer.h"
+#include "soh/Enhancements/debugger/performanceTimer.h"
 
 #include <fstream>
 

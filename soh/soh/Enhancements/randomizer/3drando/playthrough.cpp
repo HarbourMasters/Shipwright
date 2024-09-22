@@ -11,7 +11,7 @@
 #include "variables.h"
 #include "soh/OTRGlobals.h"
 #include "../option.h"
-#include "../../debugger/performanceTimer.h"
+#include "soh/Enhancements/debugger/performanceTimer.h"
 
 namespace Playthrough {
 
@@ -26,9 +26,9 @@ int Playthrough_Init(uint32_t seed, std::set<RandomizerCheck> excludedLocations,
     ctx->ItemReset();
     ctx->HintReset();
     ctx->GetLogic()->Reset();
-    StartPerformanceTimer(PT_AREA_RESET);
+    StartPerformanceTimer(PT_REGION_RESET);
     Regions::AccessReset();
-    StopPerformanceTimer(PT_AREA_RESET);
+    StopPerformanceTimer(PT_REGION_RESET);
 
     ctx->GetSettings()->FinalizeSettings(excludedLocations, enabledTricks);
     // once the settings have been finalized turn them into a string for hashing
