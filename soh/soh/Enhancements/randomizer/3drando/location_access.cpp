@@ -107,8 +107,8 @@ void Area::ApplyTimePass(){
       AreaTable(RR_ROOT)->adultDay = true;
       AreaTable(RR_ROOT)->adultNight = true;
     }
-  }
     StopPerformanceTimer(PT_TOD_ACCESS);
+  }
 }
 
 bool Area::UpdateEvents() {

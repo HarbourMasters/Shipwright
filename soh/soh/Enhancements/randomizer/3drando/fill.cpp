@@ -47,14 +47,19 @@ static void RemoveStartingItemsFromPool() {
   }
 }
 
-static void PropagateTimeTravel(){
+static void PropagateTimeTravel(GetAccessableLocationsStruct& gals, RandomizerGet ignore = RG_NONE, 
+                              bool stopOnBeatable = false, bool addToPlaythrough = false){
   //special check for temple of time
-  if (!AreaTable(RR_ROOT)->Adult() && AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->Child()) { //RANDOTODO: sphere weirdness, other age locations not propagated in this sphere
-    AreaTable(RR_ROOT)->adultDay   = AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->childDay;
-    AreaTable(RR_ROOT)->adultNight = AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->childNight;
-  } else if (!AreaTable(RR_ROOT)->Child() && AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->Adult()){
-    AreaTable(RR_ROOT)->childDay   = AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->adultDay;
-    AreaTable(RR_ROOT)->childNight = AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->adultNight;
+  if(gals.haveTimeAccess && gals.foundTempleOfTime && gals.validatedStartingRegion){
+    if (!AreaTable(RR_ROOT)->Adult() && AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->Child()) { //RANDOTODO: sphere weirdness, other age locations not propagated in this sphere
+      AreaTable(RR_ROOT)->adultDay   = AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->childDay;
+      AreaTable(RR_ROOT)->adultNight = AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->childNight;
+      ProcessRegion(AreaTable(RR_ROOT), gals, ignore, stopOnBeatable, addToPlaythrough);
+    } else if (!AreaTable(RR_ROOT)->Child() && AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->Adult()){
+      AreaTable(RR_ROOT)->childDay   = AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->adultDay;
+      AreaTable(RR_ROOT)->childNight = AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->adultNight;
+      ProcessRegion(AreaTable(RR_ROOT), gals, ignore, stopOnBeatable, addToPlaythrough);
+    }
   }
 }
 
@@ -145,7 +150,7 @@ static void ValidateSphereZero(GetAccessableLocationsStruct& gals){
 }
 
 //This function handles each possible exit
-void ProcessExits(Area* region, GetAccessableLocationsStruct gals, RandomizerGet ignore = RG_NONE, 
+void ProcessExits(Area* region, GetAccessableLocationsStruct& gals, RandomizerGet ignore = RG_NONE, 
                   bool stopOnBeatable = false, bool addToPlaythrough = false){
   auto ctx = Rando::Context::GetInstance();
   for (auto& exit : region->exits) {
@@ -160,7 +165,7 @@ void ProcessExits(Area* region, GetAccessableLocationsStruct gals, RandomizerGet
         ValidateSphereZero(gals);
       }
       //process the region we just expanded to, to reduce looping
-      ProcessRegion(region, gals, ignore, stopOnBeatable, addToPlaythrough);
+      ProcessRegion(exitArea, gals, ignore, stopOnBeatable, addToPlaythrough);
     }
 
     //If the exit is accessible and hasn't been added yet, add it to the pool
@@ -392,7 +397,7 @@ bool AddCheckToLogic(LocationAccess& locPair, GetAccessableLocationsStruct& gals
   return false;
 }
 
-void ProcessRegion(Area* region, GetAccessableLocationsStruct gals, RandomizerGet ignore, 
+void ProcessRegion(Area* region, GetAccessableLocationsStruct& gals, RandomizerGet ignore, 
                    bool stopOnBeatable, bool addToPlaythrough){
   
   if (gals.haveTimeAccess) {
@@ -426,12 +431,15 @@ void ProcessRegion(Area* region, GetAccessableLocationsStruct gals, RandomizerGe
   }
 
   if (region->UpdateEvents()){
+    //Note that eventAccess can cause playthrough jank, try to avoid them where possible
+    //Later I will likely force another loop on updated events in a sphere for playthrough generation
+    //to force the issue at a performance cost
     gals.updatedEvents = true;
   }
   
   ProcessExits(region, gals, ignore, stopOnBeatable, addToPlaythrough);
   
-  PropagateTimeTravel();
+  PropagateTimeTravel(gals, ignore, stopOnBeatable, addToPlaythrough);
   for (size_t k = 0; k < region->locations.size(); k++) {
     if(AddCheckToLogic(region->locations[k], gals, ignore, stopOnBeatable, addToPlaythrough)){
       Rando::Context::GetInstance()->playthroughBeatable = true;
