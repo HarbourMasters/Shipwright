@@ -93,19 +93,38 @@ void BgMoriKaitenkabe_Wait(BgMoriKaitenkabe* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     if (this->dyna.unk_150 > 0.001f) {
-        this->timer++;
-        if ((this->timer > (28 - CVarGetInteger(CVAR_ENHANCEMENT("FasterBlockPush"), 0) * 4)) && !Player_InCsMode(play)) {
-            BgMoriKaitenkabe_SetupRotate(this);
-            func_8002DF54(play, &this->dyna.actor, 8);
-            Math_Vec3f_Copy(&this->lockedPlayerPos, &player->actor.world.pos);
-            push.x = Math_SinS(this->dyna.unk_158);
-            push.y = 0.0f;
-            push.z = Math_CosS(this->dyna.unk_158);
-            leverArm.x = this->dyna.actor.world.pos.x - player->actor.world.pos.x;
-            leverArm.y = 0.0f;
-            leverArm.z = this->dyna.actor.world.pos.z - player->actor.world.pos.z;
-            BgMoriKaitenkabe_CrossProduct(&torque, &push, &leverArm);
-            this->rotDirection = (torque.y > 0.0f) ? 1.0f : -1.0f;
+        // #region SOH [Enhancement]
+        if (CVarGetInteger(CVAR_ENHANCEMENT("FasterBlockPush"), 0)) {
+            this->timer++;
+            if ((this->timer > (28 - CVarGetInteger(CVAR_ENHANCEMENT("FasterBlockPush"), 0) * 4)) &&
+                !Player_InCsMode(play)) {
+                BgMoriKaitenkabe_SetupRotate(this);
+                Math_Vec3f_Copy(&this->lockedPlayerPos, &player->actor.world.pos);
+                push.x = Math_SinS(this->dyna.unk_158);
+                push.y = 0.0f;
+                push.z = Math_CosS(this->dyna.unk_158);
+                leverArm.x = this->dyna.actor.world.pos.x - player->actor.world.pos.x;
+                leverArm.y = 0.0f;
+                leverArm.z = this->dyna.actor.world.pos.z - player->actor.world.pos.z;
+                BgMoriKaitenkabe_CrossProduct(&torque, &push, &leverArm);
+                this->rotDirection = (torque.y > 0.0f) ? 1.0f : -1.0f;
+            }
+            // #endregion
+        } else {
+            this->timer++;
+            if (this->timer > 28 && !Player_InCsMode(play)) {
+                BgMoriKaitenkabe_SetupRotate(this);
+                func_8002DF54(play, &this->dyna.actor, 8);
+                Math_Vec3f_Copy(&this->lockedPlayerPos, &player->actor.world.pos);
+                push.x = Math_SinS(this->dyna.unk_158);
+                push.y = 0.0f;
+                push.z = Math_CosS(this->dyna.unk_158);
+                leverArm.x = this->dyna.actor.world.pos.x - player->actor.world.pos.x;
+                leverArm.y = 0.0f;
+                leverArm.z = this->dyna.actor.world.pos.z - player->actor.world.pos.z;
+                BgMoriKaitenkabe_CrossProduct(&torque, &push, &leverArm);
+                this->rotDirection = (torque.y > 0.0f) ? 1.0f : -1.0f;
+            }
         }
     } else {
         this->timer = 0;
@@ -127,27 +146,52 @@ void BgMoriKaitenkabe_Rotate(BgMoriKaitenkabe* this, PlayState* play) {
     Actor* thisx = &this->dyna.actor;
     s16 rotY;
 
-    Math_StepToF(&this->rotSpeed, 0.6f, 0.02f);
-    if (Math_StepToF(&this->rotYdeg, this->rotDirection * 45.0f, this->rotSpeed)) {
-        BgMoriKaitenkabe_SetupWait(this);
-        func_8002DF54(play, thisx, 7);
-        if (this->rotDirection > 0.0f) {
-            thisx->home.rot.y += 0x2000;
+    // #region SOH [Enhancement]
+    if (CVarGetInteger(CVAR_ENHANCEMENT("FasterBlockPush"), 0)) {
+        Math_StepToF(&this->rotSpeed, 0.6f * (CVarGetInteger(CVAR_ENHANCEMENT("FasterBlockPush"), 0) + 1),
+                     0.02f * (CVarGetInteger(CVAR_ENHANCEMENT("FasterBlockPush"), 0) + 1) * 10);
+        if (Math_StepToF(&this->rotYdeg, this->rotDirection * 45.0f, this->rotSpeed)) {
+            BgMoriKaitenkabe_SetupWait(this);
+            if (this->rotDirection > 0.0f) {
+                thisx->home.rot.y += 0x2000;
+            } else {
+                thisx->home.rot.y -= 0x2000;
+            }
+            thisx->world.rot.y = thisx->shape.rot.y = thisx->home.rot.y;
+            func_800788CC(NA_SE_EV_STONEDOOR_STOP);
         } else {
-            thisx->home.rot.y -= 0x2000;
+            rotY = this->rotYdeg * (0x10000 / 360.0f);
+            thisx->world.rot.y = thisx->shape.rot.y = thisx->home.rot.y + rotY;
+            func_800788CC(NA_SE_EV_WALL_SLIDE - SFX_FLAG);
         }
-        thisx->world.rot.y = thisx->shape.rot.y = thisx->home.rot.y;
-        func_800788CC(NA_SE_EV_STONEDOOR_STOP);
+        if (fabsf(this->dyna.unk_150) > 0.001f) {
+            this->dyna.unk_150 = 0.0f;
+            player->stateFlags2 &= ~PLAYER_STATE2_MOVING_DYNAPOLY;
+        }
+        // #endregion
     } else {
-        rotY = this->rotYdeg * (0x10000 / 360.0f);
-        thisx->world.rot.y = thisx->shape.rot.y = thisx->home.rot.y + rotY;
-        func_800788CC(NA_SE_EV_WALL_SLIDE - SFX_FLAG);
+        Math_StepToF(&this->rotSpeed, 0.6f, 0.02f);
+        if (Math_StepToF(&this->rotYdeg, this->rotDirection * 45.0f, this->rotSpeed)) {
+            BgMoriKaitenkabe_SetupWait(this);
+            func_8002DF54(play, thisx, 7);
+            if (this->rotDirection > 0.0f) {
+                thisx->home.rot.y += 0x2000;
+            } else {
+                thisx->home.rot.y -= 0x2000;
+            }
+            thisx->world.rot.y = thisx->shape.rot.y = thisx->home.rot.y;
+            func_800788CC(NA_SE_EV_STONEDOOR_STOP);
+        } else {
+            rotY = this->rotYdeg * (0x10000 / 360.0f);
+            thisx->world.rot.y = thisx->shape.rot.y = thisx->home.rot.y + rotY;
+            func_800788CC(NA_SE_EV_WALL_SLIDE - SFX_FLAG);
+        }
+        if (fabsf(this->dyna.unk_150) > 0.001f) {
+            this->dyna.unk_150 = 0.0f;
+            player->stateFlags2 &= ~PLAYER_STATE2_MOVING_DYNAPOLY;
+        }
+        Math_Vec3f_Copy(&player->actor.world.pos, &this->lockedPlayerPos);
     }
-    if (fabsf(this->dyna.unk_150) > 0.001f) {
-        this->dyna.unk_150 = 0.0f;
-        player->stateFlags2 &= ~PLAYER_STATE2_MOVING_DYNAPOLY;
-    }
-    Math_Vec3f_Copy(&player->actor.world.pos, &this->lockedPlayerPos);
 }
 
 void BgMoriKaitenkabe_Update(Actor* thisx, PlayState* play) {
