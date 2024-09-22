@@ -148,8 +148,8 @@ void BgMoriKaitenkabe_Rotate(BgMoriKaitenkabe* this, PlayState* play) {
 
     // #region SOH [Enhancement]
     if (CVarGetInteger(CVAR_ENHANCEMENT("FasterBlockPush"), 0)) {
-        Math_StepToF(&this->rotSpeed, 0.6f * (CVarGetInteger(CVAR_ENHANCEMENT("FasterBlockPush"), 0) + 1),
-                     0.02f * (CVarGetInteger(CVAR_ENHANCEMENT("FasterBlockPush"), 0) + 1) * 10);
+        Math_StepToF(&this->rotSpeed, 0.6f * CVarGetInteger(CVAR_ENHANCEMENT("FasterBlockPush"), 0),
+                     0.02f * CVarGetInteger(CVAR_ENHANCEMENT("FasterBlockPush"), 0) * 10);
         if (Math_StepToF(&this->rotYdeg, this->rotDirection * 45.0f, this->rotSpeed)) {
             BgMoriKaitenkabe_SetupWait(this);
             if (this->rotDirection > 0.0f) {
