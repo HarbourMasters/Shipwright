@@ -1,4 +1,5 @@
 #include "logic.h"
+#include "../debugger/performanceTimer.h"
 
 #include <algorithm>
 #include <cstdio>
@@ -455,6 +456,7 @@ namespace Rando {
 
     // Updates all logic helpers. Should be called whenever a non-helper is changed
     void Logic::UpdateHelpers() {
+        StartPerformanceTimer(PT_UPDATE_HELPERS);
         OcarinaButtons  =  (HasItem(RG_OCARINA_A_BUTTON) ? 1 : 0) +
                            (HasItem(RG_OCARINA_C_LEFT_BUTTON) ? 1 : 0) +
                            (HasItem(RG_OCARINA_C_RIGHT_BUTTON) ? 1 : 0) +
@@ -659,6 +661,7 @@ namespace Rando {
                             (ctx->GetSettings()->LACSCondition() == RO_LACS_DUNGEONS   && DungeonCount + (Greg && GregInLacsLogic ? 1 : 0) >= ctx->GetOption(RSK_LACS_DUNGEON_COUNT).Value<uint8_t>())                ||
                             (ctx->GetSettings()->LACSCondition() == RO_LACS_TOKENS     && GoldSkulltulaTokens >= ctx->GetOption(RSK_LACS_TOKEN_COUNT).Value<uint8_t>());
         CanCompleteTriforce = TriforcePieces >= ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_REQUIRED).Value<uint8_t>();
+        StopPerformanceTimer(PT_UPDATE_HELPERS);
     }
 
     bool Logic::SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmount) {
@@ -776,6 +779,7 @@ namespace Rando {
 
     void Logic::Reset() {
         ctx->NewSaveContext();
+        StartPerformanceTimer(PT_LOGIC_RESET);
         memset(inLogic, false, sizeof(inLogic));
         //Settings-dependent variables
         IsKeysanity = ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_ANYWHERE) || 
@@ -1116,5 +1120,7 @@ namespace Rando {
         LightTrialClearPast      = false;
         BuyDekuShieldPast        = false;
         TimeTravelPast           = false;
+
+        StopPerformanceTimer(PT_LOGIC_RESET);
     }
 }

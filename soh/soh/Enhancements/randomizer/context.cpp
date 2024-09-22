@@ -1221,4 +1221,5 @@ uint8_t Context::GetAmmo(uint32_t item) {
 void Context::SetAmmo(uint32_t item, uint8_t count) {
     mSaveContext->inventory.ammo[gItemSlots[item]] = count;
 }
+
 } // namespace Rando

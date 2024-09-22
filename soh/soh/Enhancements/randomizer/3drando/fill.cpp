@@ -12,6 +12,7 @@
 #include "pool_functions.hpp"
 //#include "debug.hpp"
 #include "soh/Enhancements/randomizer/static_data.h"
+#include "../../debugger/performanceTimer.h"
 
 #include <vector>
 #include <list>
@@ -59,6 +60,7 @@ static void PropagateTimeTravel(){
 
 //This function will propagate Time of Day access through the entrance
 static bool UpdateToDAccess(Entrance* entrance, Area* parent, Area* connection) {
+  StartPerformanceTimer(PT_TOD_ACCESS);
 
   bool ageTimePropogated = false;
 
@@ -79,6 +81,7 @@ static bool UpdateToDAccess(Entrance* entrance, Area* parent, Area* connection) 
     ageTimePropogated = true;
   }
 
+  StopPerformanceTimer(PT_TOD_ACCESS);
   return ageTimePropogated;
 }
 
@@ -341,6 +344,7 @@ void AddToPlaythrough(LocationAccess& locPair, GetAccessableLocationsStruct& gal
 // Adds the contents of a location to the current progression and optionally playthrough
 bool AddCheckToLogic(LocationAccess& locPair, GetAccessableLocationsStruct& gals, RandomizerGet ignore, bool stopOnBeatable, bool addToPlaythrough=false){
   auto ctx = Rando::Context::GetInstance();
+  StartPerformanceTimer(PT_LOCATION_LOGIC);
   RandomizerCheck loc = locPair.GetLocation();
   Rando::ItemLocation* location = ctx->GetItemLocation(loc);
   RandomizerGet locItem = location->GetPlacedRandomizerGet();
@@ -380,9 +384,11 @@ bool AddCheckToLogic(LocationAccess& locPair, GetAccessableLocationsStruct& gals
     }
     //All we care about is if the game is beatable, used to pare down playthrough
     if (location->GetPlacedRandomizerGet() == RG_TRIFORCE && stopOnBeatable) {
+      StopPerformanceTimer(PT_LOCATION_LOGIC);
       return true; //Return early for efficiency
     }
   }
+  StopPerformanceTimer(PT_LOCATION_LOGIC);
   return false;
 }
 
@@ -1083,6 +1089,7 @@ int Fill() {
 
     //Temporarily add shop items to the ItemPool so that entrance randomization
     //can validate the world using deku/hylian shields
+    StartPerformanceTimer(PT_ENTRANCE_SHUFFLE);
     AddElementsToPool(ItemPool, GetMinVanillaShopItems(32)); //assume worst case shopsanity 4
     if (ctx->GetOption(RSK_SHUFFLE_ENTRANCES)) {
       SPDLOG_INFO("Shuffling Entrances...");
@@ -1096,9 +1103,12 @@ int Fill() {
     SetAreas();
     //erase temporary shop items
     FilterAndEraseFromPool(ItemPool, [](const auto item) { return Rando::StaticData::RetrieveItem(item).GetItemType() == ITEMTYPE_SHOP; });
+    StopPerformanceTimer(PT_ENTRANCE_SHUFFLE);
 
     //ctx->showItemProgress = true;
     //Place shop items first, since a buy shield is needed to place a dungeon reward on Gohma due to access
+    
+    StartPerformanceTimer(PT_SHOPSANITY);
     NonShopItems = {};
     if (ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_OFF)) {
       SPDLOG_INFO("Placing Vanilla Shop Items...");
@@ -1145,7 +1155,9 @@ int Fill() {
       //Place the shop items which will still be at shop locations
       AssumedFill(shopItems, shopLocations);
     }
+    StopPerformanceTimer(PT_SHOPSANITY);
 
+    StartPerformanceTimer(PT_OWN_DUNGEON);
     //Place dungeon rewards
     SPDLOG_INFO("Shuffling and Placing Dungeon Items...");
     RandomizeDungeonRewards();
@@ -1154,7 +1166,9 @@ int Fill() {
     for (auto dungeon : ctx->GetDungeons()->GetDungeonList()) {
       RandomizeOwnDungeon(dungeon);
     }
+    StopPerformanceTimer(PT_OWN_DUNGEON);
 
+    StartPerformanceTimer(PT_LIMITED_CHECKS);
     //Then Place songs if song shuffle is set to specific locations
     if (ctx->GetOption(RSK_SHUFFLE_SONGS).IsNot(RO_SONG_SHUFFLE_ANYWHERE)) {
 
@@ -1183,16 +1197,23 @@ int Fill() {
 
     //Then place Link's Pocket Item if it has to be an advancement item
     RandomizeLinksPocket();
+    StopPerformanceTimer(PT_LIMITED_CHECKS);
+
+
+    StartPerformanceTimer(PT_ADVANCEMENT_ITEMS);
     SPDLOG_INFO("Shuffling Advancement Items");
     //Then place the rest of the advancement items
     std::vector<RandomizerGet> remainingAdvancementItems =
         FilterAndEraseFromPool(ItemPool, [](const auto i) { return Rando::StaticData::RetrieveItem(i).IsAdvancement(); });
     AssumedFill(remainingAdvancementItems, ctx->allLocations, true);
+    StopPerformanceTimer(PT_ADVANCEMENT_ITEMS);
 
+    StartPerformanceTimer(PT_REMAINING_ITEMS);
     //Fast fill for the rest of the pool
     SPDLOG_INFO("Shuffling Remaining Items");
     std::vector<RandomizerGet> remainingPool = FilterAndEraseFromPool(ItemPool, [](const auto i) { return true; });
     FastFill(remainingPool, GetAllEmptyLocations(), false);
+    StopPerformanceTimer(PT_REMAINING_ITEMS);
 
     //Add default prices to scrubs
     for (size_t i = 0; i < Rando::StaticData::scrubLocations.size(); i++) {
@@ -1218,19 +1239,35 @@ int Fill() {
       }
     }
 
+    StartPerformanceTimer(PT_PLAYTHROUGH_GENERATION);
     GeneratePlaythrough();
+    StopPerformanceTimer(PT_PLAYTHROUGH_GENERATION);
     //Successful placement, produced beatable result
     if(ctx->playthroughBeatable && !placementFailure) {
+
       SPDLOG_INFO("Calculating Playthrough...");
+      StartPerformanceTimer(PT_PARE_DOWN_PLAYTHROUGH);
       PareDownPlaythrough();
+      StopPerformanceTimer(PT_PARE_DOWN_PLAYTHROUGH);
+
+      StartPerformanceTimer(PT_WOTH);
       CalculateWotH();
+      StopPerformanceTimer(PT_WOTH);
+
+      StartPerformanceTimer(PT_FOOLISH);
       CalculateBarren(); 
+      StopPerformanceTimer(PT_FOOLISH);
       SPDLOG_INFO("Calculating Playthrough Done");
+
+      StartPerformanceTimer(PT_OVERRIDES);
       ctx->CreateItemOverrides();
       ctx->GetEntranceShuffler()->CreateEntranceOverrides();
-      
+      StopPerformanceTimer(PT_OVERRIDES);
+
+      StartPerformanceTimer(PT_HINTS);
       CreateAllHints();
       CreateWarpSongTexts();
+      StopPerformanceTimer(PT_HINTS);
       return 1;
     }
     //Unsuccessful placement

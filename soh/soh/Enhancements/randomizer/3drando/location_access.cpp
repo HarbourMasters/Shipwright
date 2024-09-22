@@ -7,6 +7,7 @@
 #include "spoiler_log.hpp"
 #include "../trial.h"
 #include "../entrance.h"
+#include "../../debugger/performanceTimer.h"
 
 #include <fstream>
 
@@ -93,6 +94,7 @@ Area::~Area() = default;
 
 void Area::ApplyTimePass(){
   if (timePass) {
+    StartPerformanceTimer(PT_TOD_ACCESS);
     if (Child()) {
       childDay = true;
       childNight = true;
@@ -106,11 +108,14 @@ void Area::ApplyTimePass(){
       AreaTable(RR_ROOT)->adultNight = true;
     }
   }
+    StopPerformanceTimer(PT_TOD_ACCESS);
 }
 
 bool Area::UpdateEvents() {
   bool eventsUpdated =  false;
+  StartPerformanceTimer(PT_EVENT_ACCESS);
   for (EventAccess& event : events) {
+    
     //If the event has already happened, there's no reason to check it
     if (event.GetEvent()) {
       continue;
@@ -124,6 +129,7 @@ bool Area::UpdateEvents() {
           eventsUpdated = true;
     }
   }
+  StopPerformanceTimer(PT_EVENT_ACCESS);
   return eventsUpdated;
 }
 

@@ -123,6 +123,7 @@ class Context {
     void SetEventChkInf(int32_t flag, bool state);
     uint8_t GetAmmo(uint32_t item);
     void SetAmmo(uint32_t item, uint8_t count);
+    
 
   private:
     static std::weak_ptr<Context> mContext;
