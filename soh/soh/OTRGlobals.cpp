@@ -128,9 +128,10 @@ GameInteractorSail* GameInteractorSail::Instance;
 #include "soh/resource/importer/BackgroundFactory.h"
 
 #include "soh/config/ConfigUpdaters.h"
-
+#if !defined(__SWITCH__) && !defined(__WIIU__)
+#include "Enhancements/accessible-actors/ActorAccessibility.h"
+#endif
 void SoH_ProcessDroppedFiles(std::string filePath);
-
 OTRGlobals* OTRGlobals::Instance;
 SaveManager* SaveManager::Instance;
 CustomMessageManager* CustomMessageManager::Instance;
@@ -284,6 +285,12 @@ OTRGlobals::OTRGlobals() {
             }
         }
     }
+
+        std::string sohAccessibilityPath = LUS::Context::GetPathRelativeToAppDirectory("accessibility.otr");
+        if (std::filesystem::exists(sohAccessibilityPath)) {
+            OTRFiles.push_back(sohAccessibilityPath);
+        }
+
     std::sort(patchOTRs.begin(), patchOTRs.end(), [](const std::string& a, const std::string& b) {
         return std::lexicographical_compare(
             a.begin(), a.end(),
@@ -531,9 +538,14 @@ void OTRAudio_Thread() {
         // 3 is the maximum authentic frame divisor.
         s16 audio_buffer[SAMPLES_HIGH * NUM_AUDIO_CHANNELS * 3];
         for (int i = 0; i < AUDIO_FRAMES_PER_UPDATE; i++) {
-            AudioMgr_CreateNextAudioBuffer(audio_buffer + i * (num_audio_samples * NUM_AUDIO_CHANNELS), num_audio_samples);
+            AudioMgr_CreateNextAudioBuffer(audio_buffer + i * (num_audio_samples * NUM_AUDIO_CHANNELS),
+                                           num_audio_samples);
+#if !defined(__SWITCH__) && !defined(__WIIU__)
+            // Give accessibility a chance to merge its own audio in.
+            ActorAccessibility_MixAccessibleAudioWithGameAudio(
+                audio_buffer + i * (num_audio_samples * NUM_AUDIO_CHANNELS), num_audio_samples);
+#endif
         }
-
         AudioPlayer_Play((u8*)audio_buffer, num_audio_samples * (sizeof(int16_t) * NUM_AUDIO_CHANNELS * AUDIO_FRAMES_PER_UPDATE));
 
         audio.processing = false;
@@ -1146,6 +1158,9 @@ extern "C" void InitOTR() {
 #endif
 
     OTRMessage_Init();
+    #if !defined(__SWITCH__) && !defined(__WIIU__)
+    ActorAccessibility_Init();
+    #endif
     OTRAudio_Init();
     OTRExtScanner();
     VanillaItemTable_Init();
@@ -1208,7 +1223,9 @@ extern "C" void DeinitOTR() {
     }
     SDLNet_Quit();
 #endif
-
+#if !defined(__SWITCH__) && !defined(__WIIU__)
+    ActorAccessibility_Shutdown();
+#endif
     // Destroying gui here because we have shared ptrs to LUS objects which output to SPDLOG which is destroyed before these shared ptrs.
     SohGui::Destroy();
 
@@ -1411,7 +1428,7 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
     last_update_rate = R_UPDATE_RATE;
 
     {
-        std::unique_lock<std::mutex> Lock(audio.mutex);
+            std::unique_lock<std::mutex> Lock(audio.mutex);
         while (audio.processing) {
             audio.cv_from_thread.wait(Lock);
         }
@@ -2713,6 +2730,45 @@ extern "C" void Gfx_RegisterBlendedTexture(const char* name, u8* mask, u8* repla
     gfx_register_blended_texture(name, mask, replacement);
 }
 
+void OTRAudio_SfxCaptureThread() {
+    while (audio.running) {
+        {
+            std::unique_lock<std::mutex> Lock(audio.mutex);
+            while (!audio.processing && audio.running) {
+                audio.cv_to_thread.wait(Lock);
+            }
+
+            if (!audio.running) {
+                break;
+            }
+        }
+        std::unique_lock<std::mutex> Lock(audio.mutex);
+#if !defined(__SWITCH__) && !defined(__WIIU__)
+        ActorAccessibility_DoSoundExtractionStep();
+#endif
+        audio.processing = false;
+        audio.cv_from_thread.notify_one();
+    }
+}
+
+    extern "C" void OTRAudio_InstallSfxCaptureThread() {
+    OTRAudio_Exit();
+    audio.running = true;
+    audio.thread = std::thread(OTRAudio_SfxCaptureThread);
+
+    }
+    extern "C" void OTRAudio_UninstallSfxCaptureThread()
+    {
+    OTRAudio_Exit();
+    audio.running = true;
+    audio.thread = std::thread(OTRAudio_Thread);
+    }
+    std::unique_lock<std::mutex> OTRAudio_Lock()
+    {
+    return std::unique_lock<std::mutex>(audio.mutex);
+    }
+//extern "C" void CheckTracker_OnMessageClose() {
+//    CheckTracker::CheckTrackerDialogClosed();
 extern "C" void Gfx_UnregisterBlendedTexture(const char* name) {
     gfx_unregister_blended_texture(name);
 }

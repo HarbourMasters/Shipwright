@@ -541,6 +541,12 @@ void DrawSettingsMenu() {
         #endif
             UIWidgets::PaddedEnhancementCheckbox("Disable Idle Camera Re-Centering", CVAR_SETTING("A11yDisableIdleCam"));
             UIWidgets::Tooltip("Disables the automatic re-centering of the camera when idle.");
+
+            UIWidgets::PaddedEnhancementCheckbox("Accessible Audio Cues", "gA11yAudioInteraction");
+            UIWidgets::Tooltip("Enables accessibility audio cues");
+
+            UIWidgets::PaddedEnhancementCheckbox("Extract Sfx", "gExtractSfx");
+            UIWidgets::Tooltip("Extracts the sfx to be used in accessible audio cues, must be run once for the audio cues to play then restart game");
             
             ImGui::EndMenu();
         }

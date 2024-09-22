@@ -207,6 +207,7 @@ public:
     DEFINE_HOOK(OnShopSlotChange, void(uint8_t cursorIndex, int16_t price));
     DEFINE_HOOK(OnActorInit, void(void* actor));
     DEFINE_HOOK(OnActorUpdate, void(void* actor));
+    DEFINE_HOOK(OnActorDestroy, void(void* actor));
     DEFINE_HOOK(OnActorKill, void(void* actor));
     DEFINE_HOOK(OnEnemyDefeat, void(void* actor));
     DEFINE_HOOK(OnPlayerBonk, void());
@@ -237,6 +238,7 @@ public:
     DEFINE_HOOK(OnUpdateFileNameSelection, void(int16_t charCode));
     
     DEFINE_HOOK(OnSetGameLanguage, void());
+    DEFINE_HOOK(OnGameStillFrozen, void());
 
     DEFINE_HOOK(OnFileDropped, void(std::string filePath));
     DEFINE_HOOK(OnAssetAltChange, void());

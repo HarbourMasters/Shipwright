@@ -69,7 +69,9 @@ void GameInteractor_ExecuteOnActorInit(void* actor) {
 void GameInteractor_ExecuteOnActorUpdate(void* actor) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnActorUpdate>(actor);
 }
-
+void GameInteractor_ExecuteOnActorDestroy(void* actor) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnActorDestroy>(actor);
+}
 void GameInteractor_ExecuteOnActorKill(void* actor) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnActorKill>(actor);
 }
@@ -181,6 +183,12 @@ void GameInteractor_ExecuteOnUpdateFileNameSelection(int16_t charCode) {
 void GameInteractor_ExecuteOnSetGameLanguage() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSetGameLanguage>();
 }
+
+void GameInteractor_ExecuteOnGameStillFrozen()
+{
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnGameStillFrozen>();
+}
+
 
 // MARK: - System
 
