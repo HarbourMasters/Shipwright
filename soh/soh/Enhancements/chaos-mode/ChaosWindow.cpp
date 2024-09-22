@@ -35,10 +35,12 @@ uint32_t midoTimer = 0;
 uint32_t guardTimer = 0;
 uint32_t erasureTimer = 0;
 uint32_t ceilingTimer = 0;
+uint32_t stopHeartTimer = 0;
 
 uint32_t chaosInterval = 5;
 uint32_t votingInterval = 5;
 uint32_t activeInterval = 1;
+uint32_t stopInterval = 0;
 
 uint32_t prevExplosiveLimit = 0;
 int16_t prevYaw;
@@ -65,6 +67,7 @@ uint32_t eventMidoTimer;
 uint32_t eventGuardTimer;
 uint32_t eventErasureTimer;
 uint32_t eventCeilingTimer;
+uint32_t eventStopHeartTimer;
 
 ActorListEntry guardActors;
 ActorListEntry ceilingActors;
@@ -72,6 +75,8 @@ Actor* currGuard = guardActors.head;
 Actor* currCeiling = ceilingActors.head;
 
 static uint32_t actorMagnetHook = 0;
+static uint32_t fallingCeilingHook = 0;
+static uint32_t stopHeartHook = 0;
 static uint32_t votingHook = 0;
 
 uint32_t votingOptionA;
@@ -85,6 +90,8 @@ bool isVotingActive = false;
 bool rollOptions = false;
 bool shouldTeleport = false;
 bool openChaosSettings = false;
+bool openChaosTester = false;
+bool stopHeart = false;
 
 const char* fakeText = "Random Teleport";
 
@@ -127,6 +134,8 @@ std::vector<eventObject> eventList = {
         "Erases a Dungeon Reward and respective Dungeon Boss." },
     { EVENT_FALLING_CEILING, "Unstable Ceiling", "gEnhancements.FallingCeiling", eventCeilingTimer,
         "Watch your head, whoever built this forgot to use supports..." },
+    { EVENT_FORCE_STOP_HEARTS, "Force Stop Heart", "gEnhancements.StopHeart", eventStopHeartTimer,
+        "Press A to stop the Hearts! Enjoy your new health." },
 };
 
 std::vector<uint32_t> teleportList = {
@@ -205,7 +214,7 @@ void ChaosUpdateInterval() {
 
 void ChaosUpdateVotingInterval() {
     //votingInterval = (CVarGetInteger(CVAR_ENHANCEMENT("VotingInterval"), 0) * 20);
-    votingInterval = 60;
+    votingInterval = 999999;
 }
 
 void ChaosUpdateEventTimers() {
@@ -215,6 +224,42 @@ void ChaosUpdateEventTimers() {
         eventList[loop].eventTimer = setTimer;
         loop++;
     }
+}
+
+void ChaosEventForceStopHearts() {
+    stopHeart = false;
+    stopInterval = 0;
+    uint32_t maxHealth = gSaveContext.healthCapacity;
+    uint32_t currentHealth = gSaveContext.health;
+
+    stopHeartHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
+        if (!stopHeart) {
+            if (CHECK_BTN_ALL(gPlayState->state.input->press.button, BTN_A)) {
+                stopHeart = true;
+            }
+            if (stopInterval % 20 == 0) {
+                if (gSaveContext.healthCapacity <= gSaveContext.health) {
+                    Health_ChangeBy(gPlayState, (-gSaveContext.healthCapacity - (gSaveContext.healthCapacity - 0x010)));
+                } else {
+                    Health_ChangeBy(gPlayState, 0x010);
+                }
+            }
+            stopInterval++;
+        } else {
+            if (stopHeartHook != 0) {
+                GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnGameFrameUpdate>(stopHeartHook);
+                stopHeartHook = 0;
+            }
+        }
+        
+    });
+}
+
+void ChaosEventFallingCeiling() {
+    Player* player = GET_PLAYER(gPlayState);
+    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_BG_MORI_RAKKATENJO, player->actor.world.pos.x - 1,
+                player->actor.world.pos.y + 280, player->actor.world.pos.z, 0, player->actor.world.rot.y - 32768, 0, -1,
+                false);
 }
 
 void ChaosEventActorMagnet() {
@@ -517,6 +562,12 @@ void ChaosEventsRepeater() {
                 ceilingTimer--;
             }
         }
+
+        if (isEventIdPresent(EVENT_FORCE_STOP_HEARTS) == true) {
+            if (stopHeartTimer > 0) {
+                stopHeartTimer--;
+            }
+        }
     });
 }
 
@@ -736,13 +787,16 @@ void ChaosEventsActivator(uint32_t eventId, bool isActive) {
             break;
         case EVENT_FALLING_CEILING:
             if (isActive) {
+                fallingCeilingHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneSpawnActors>([]() {
+                    ChaosEventFallingCeiling();
+                });
                 ceilingTimer = eventList[EVENT_FALLING_CEILING].eventTimer;
-                
-                Player* player = GET_PLAYER(gPlayState);
-                Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_BG_MORI_RAKKATENJO, player->actor.world.pos.x - 1,
-                            player->actor.world.pos.y + 280, player->actor.world.pos.z, 0, player->actor.world.rot.y - 32768,
-                            0, -1, false);
+                ChaosEventFallingCeiling();
             } else {
+                if (fallingCeilingHook != 0) {
+                    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneSpawnActors>(fallingCeilingHook);
+                    fallingCeilingHook = 0;
+                }
                 ceilingActors = gPlayState->actorCtx.actorLists[ACTORCAT_BG];
                 currCeiling = ceilingActors.head;
                 if (currCeiling != nullptr) {
@@ -755,13 +809,19 @@ void ChaosEventsActivator(uint32_t eventId, bool isActive) {
                 }
             }
             break;
+        case EVENT_FORCE_STOP_HEARTS:
+            if (isActive) {
+                stopHeartTimer = eventList[EVENT_FORCE_STOP_HEARTS].eventTimer;
+                ChaosEventForceStopHearts();
+            }
+            break;
         default:
             break;
     }
 }
 
 void ChaosVoteSelector(uint32_t option) {
-    uint32_t roll = EVENT_FALLING_CEILING;
+    uint32_t roll = EVENT_FORCE_STOP_HEARTS;
     //uint32_t roll = rand() % votingList.size();
     votingObjectList[option].votingOption = votingList[roll].eventId;
     //votingList.erase(votingList.begin() + roll);
@@ -908,6 +968,33 @@ void DrawChaosEventsVoting() {
     UIWidgets::PaddedSeparator();
 }
 
+void DrawChaosEventTest() {
+    if (!openChaosTester) {
+        return;
+    }
+    ImGui::SetNextWindowSize(ImVec2(400, 400), ImGuiCond_FirstUseEver);
+    ImGui::Begin("Chaos Tester");
+    ImGui::PushItemWidth(100.0f);
+    for (int i = EVENT_INVISIBILITY; i < EVENT_MAX_CHAOS; i++) {
+        if (i % 2 == 1) {
+            ImGui::SameLine();
+        }
+        if (ImGui::Button(eventList[i].eventName)) {
+            if (CVarGetInteger(CVAR_ENHANCEMENT("EnableChaosMode"), 0) == 1) {
+                if (isEventIdPresent(eventList[i].eventId) == false) {
+                    ChaosEventsManager(EVENT_ACTION_ADD, eventList[i].eventId);
+                    ChaosEventsActivator(eventList[i].eventId, true);
+                } else {
+                    ChaosEventsManager(EVENT_ACTION_REMOVE, eventList[i].eventId);
+                    ChaosEventsActivator(eventList[i].eventId, false);
+                }
+            }
+        }
+    }
+    ImGui::PopItemWidth();
+    ImGui::End();
+}
+
 void DrawChaosSettings() {
     if (!openChaosSettings) {
         return;
@@ -947,7 +1034,6 @@ void DrawChaosSettings() {
         row++;
     }
     ImGui::EndTable();
-
     ImGui::End();
 }
 
@@ -966,11 +1052,15 @@ void ChaosWindow::DrawElement() {
             isVotingActive = false;
         }
     }
-    ImGui::SameLine();
     if (ImGui::Button("Chaos Settings")) {
         openChaosSettings = !openChaosSettings;
     }
+    ImGui::SameLine();
+    if (ImGui::Button("Test Events")) {
+        openChaosTester = !openChaosTester;
+    }
     DrawChaosSettings();
+    DrawChaosEventTest();
 
     if (isVotingActive) {
         timeRemaining = votingInterval - frameCounter;
