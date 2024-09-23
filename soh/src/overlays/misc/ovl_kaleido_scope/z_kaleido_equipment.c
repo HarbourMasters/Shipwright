@@ -27,6 +27,8 @@ static Vtx sStrengthAButtonVtx[] = {
 
 static s16 sEquipTimer = 0;
 
+extern int gPauseLinkFrameBuffer;
+
 void KaleidoScope_DrawEquipmentImage(PlayState* play, void* source, u32 width, u32 height) {
     PauseContext* pauseCtx = &play->pauseCtx;
     u8* curTexture;
@@ -70,13 +72,12 @@ void KaleidoScope_DrawEquipmentImage(PlayState* play, void* source, u32 width, u
     for (i = 0; i < textureCount; i++) {
         gSPVertex(POLY_KAL_DISP++, &pauseCtx->equipVtx[vtxIndex], 4, 0);
 
-        extern int fbTest;
         gDPSetTextureImage(POLY_KAL_DISP++, G_IM_FMT_RGBA, G_IM_SIZ_16b, width, curTexture);
 
         gDPLoadSync(POLY_KAL_DISP++);
         gDPLoadTile(POLY_KAL_DISP++, G_TX_LOADTILE, 0, 0, (width - 1) << 2, (textureHeight - 1) << 2);
 
-        gDPSetTextureImageFB(POLY_KAL_DISP++, G_IM_FMT_RGBA, G_IM_SIZ_16b, width, fbTest);
+        gDPSetTextureImageFB(POLY_KAL_DISP++, G_IM_FMT_RGBA, G_IM_SIZ_16b, width, gPauseLinkFrameBuffer);
         gSP1Quadrangle(POLY_KAL_DISP++, 0, 2, 3, 1, 0);
 
         curTexture += textureSize;
@@ -185,8 +186,7 @@ void KaleidoScope_DrawPlayerWork(PlayState* play) {
 
     link_kaleido_rot.x = 0;
 
-    extern int fbTest;
-    gsSPSetFB(play->state.gfxCtx->polyOpa.p++, fbTest);
+    gsSPSetFB(play->state.gfxCtx->polyOpa.p++, gPauseLinkFrameBuffer);
     Player_DrawPause(play, pauseCtx->playerSegment, &pauseCtx->playerSkelAnime, &pos, &link_kaleido_rot, scale,
                      SWORD_EQUIP_TO_PLAYER(CUR_EQUIP_VALUE(EQUIP_TYPE_SWORD)),
                      TUNIC_EQUIP_TO_PLAYER(CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC)),
@@ -852,7 +852,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
     //gSPSegment(POLY_KAL_DISP++, 0x0C, pauseCtx->iconItemAltSegment);
 
     Gfx_SetupDL_42Kal(play->state.gfxCtx);
-    KaleidoScope_DrawEquipmentImage(play, pauseCtx->playerSegment, 64, 112);
+    KaleidoScope_DrawEquipmentImage(play, pauseCtx->playerSegment, PAUSE_EQUIP_PLAYER_WIDTH, PAUSE_EQUIP_PLAYER_HEIGHT);
 
     if (gUpgradeMasks[0]) {}
 

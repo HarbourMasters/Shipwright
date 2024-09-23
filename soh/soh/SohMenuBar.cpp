@@ -37,7 +37,6 @@
 #include "Enhancements/randomizer/randomizer_settings_window.h"
 #include "Enhancements/resolution-editor/ResolutionEditor.h"
 
-extern bool ToggleAltAssetsAtEndOfFrame;
 extern bool isBetaQuestEnabled;
 
 extern "C" PlayState* gPlayState;
@@ -51,6 +50,12 @@ std::string GetWindowButtonText(const char* text, bool menuOpen) {
     if (!menuOpen) { strcat(buttonText, "  "); }
     return buttonText;
 }
+
+static std::unordered_map<Ship::WindowBackend, const char*> windowBackendNames = {
+    { Ship::WindowBackend::FAST3D_DXGI_DX11, "DirectX" },
+    { Ship::WindowBackend::FAST3D_SDL_OPENGL, "OpenGL" },
+    { Ship::WindowBackend::FAST3D_SDL_METAL, "Metal" },
+};
 
 static const char* imguiScaleOptions[4] = { "Small", "Normal", "Large", "X-Large" };
 
@@ -103,6 +108,24 @@ static const char* imguiScaleOptions[4] = { "Small", "Normal", "Large", "X-Large
 extern "C" SaveContext gSaveContext;
 
 namespace SohGui {
+
+std::unordered_map<Ship::WindowBackend, const char*> availableWindowBackendsMap;
+Ship::WindowBackend configWindowBackend;
+
+void UpdateWindowBackendObjects() {
+    Ship::WindowBackend runningWindowBackend = Ship::Context::GetInstance()->GetWindow()->GetWindowBackend();
+    int32_t configWindowBackendId = Ship::Context::GetInstance()->GetConfig()->GetInt("Window.Backend.Id", -1);
+    if (Ship::Context::GetInstance()->GetWindow()->IsAvailableWindowBackend(configWindowBackendId)) {
+        configWindowBackend = static_cast<Ship::WindowBackend>(configWindowBackendId);
+    } else {
+        configWindowBackend = runningWindowBackend;
+    }
+
+    auto availableWindowBackends = Ship::Context::GetInstance()->GetWindow()->GetAvailableWindowBackends();
+    for (auto& backend : *availableWindowBackends) {
+        availableWindowBackendsMap[backend] = windowBackendNames[backend];
+    }
+}
 
 void DrawMenuBarIcon() {
     static bool gameIconLoaded = false;
@@ -319,7 +342,7 @@ void DrawSettingsMenu() {
             { // FPS Slider
                 const int minFps = 20;
                 static int maxFps;
-                if (Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() == Ship::WindowBackend::DX11) {
+                if (Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() == Ship::WindowBackend::FAST3D_DXGI_DX11) {
                     maxFps = 360;
                 } else {
                     maxFps = Ship::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate();
@@ -387,12 +410,12 @@ void DrawSettingsMenu() {
                 Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
             #else
                 bool matchingRefreshRate =
-                    CVarGetInteger(CVAR_SETTING("MatchRefreshRate"), 0) && Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() != Ship::WindowBackend::DX11;
+                    CVarGetInteger(CVAR_SETTING("MatchRefreshRate"), 0) && Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() != Ship::WindowBackend::FAST3D_DXGI_DX11;
                 UIWidgets::PaddedEnhancementSliderInt(
                     (currentFps == 20) ? "Frame Rate: Original (20 fps)" : "Frame Rate: %d fps",
                     "##FPSInterpolation", CVAR_SETTING("InterpolationFPS"), minFps, maxFps, "", 20, true, true, false, matchingRefreshRate);
             #endif
-                if (Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() == Ship::WindowBackend::DX11) {
+                if (Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() == Ship::WindowBackend::FAST3D_DXGI_DX11) {
                     UIWidgets::Tooltip(
                         "Uses Matrix Interpolation to create extra frames, resulting in smoother graphics.\n"
                         "This is purely visual and does not impact game logic, execution of glitches etc.\n"
@@ -407,7 +430,7 @@ void DrawSettingsMenu() {
                 }
             } // END FPS Slider
 
-            if (Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() == Ship::WindowBackend::DX11) {
+            if (Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() == Ship::WindowBackend::FAST3D_DXGI_DX11) {
                 UIWidgets::Spacer(0);
                 if (ImGui::Button("Match Frame Rate to Refresh Rate")) {
                     int hz = Ship::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate();
@@ -421,7 +444,7 @@ void DrawSettingsMenu() {
             }
             UIWidgets::Tooltip("Matches interpolation value to the game window's current refresh rate.");
 
-            if (Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() == Ship::WindowBackend::DX11) {
+            if (Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() == Ship::WindowBackend::FAST3D_DXGI_DX11) {
                 UIWidgets::PaddedEnhancementSliderInt(CVarGetInteger(CVAR_SETTING("ExtraLatencyThreshold"), 80) == 0 ? "Jitter fix: Off" : "Jitter fix: >= %d FPS",
                     "##ExtraLatencyThreshold", CVAR_SETTING("ExtraLatencyThreshold"), 0, 360, "", 80, true, true, false);
                 UIWidgets::Tooltip(
@@ -442,40 +465,24 @@ void DrawSettingsMenu() {
             UIWidgets::Tooltip("Changes the scaling of the ImGui menu elements.");
 
             UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
-            
-            static std::unordered_map<Ship::WindowBackend, const char*> windowBackendNames = {
-                { Ship::WindowBackend::DX11, "DirectX" },
-                { Ship::WindowBackend::SDL_OPENGL, "OpenGL"},
-                { Ship::WindowBackend::SDL_METAL, "Metal" },
-                { Ship::WindowBackend::GX2, "GX2"}
-            };
 
             ImGui::Text("Renderer API (Needs reload)");
-            Ship::WindowBackend runningWindowBackend = Ship::Context::GetInstance()->GetWindow()->GetWindowBackend();
-            Ship::WindowBackend configWindowBackend;
-            int configWindowBackendId = Ship::Context::GetInstance()->GetConfig()->GetInt("Window.Backend.Id", -1);
-            if (configWindowBackendId != -1 && configWindowBackendId < static_cast<int>(Ship::WindowBackend::BACKEND_COUNT)) {
-                configWindowBackend = static_cast<Ship::WindowBackend>(configWindowBackendId);
-            } else {
-                configWindowBackend = runningWindowBackend;
-            }
 
-            if (Ship::Context::GetInstance()->GetWindow()->GetAvailableWindowBackends()->size() <= 1) {
+            if (availableWindowBackendsMap.size() <= 1) {
                 UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
             }
-            if (ImGui::BeginCombo("##RApi", windowBackendNames[configWindowBackend])) {
-                for (size_t i = 0; i < Ship::Context::GetInstance()->GetWindow()->GetAvailableWindowBackends()->size(); i++) {
-                    auto backend = Ship::Context::GetInstance()->GetWindow()->GetAvailableWindowBackends()->data()[i];
-                    if (ImGui::Selectable(windowBackendNames[backend], backend == configWindowBackend)) {
-                        Ship::Context::GetInstance()->GetConfig()->SetInt("Window.Backend.Id", static_cast<int>(backend));
-                        Ship::Context::GetInstance()->GetConfig()->SetString("Window.Backend.Name",
-                                                                            windowBackendNames[backend]);
+            if (ImGui::BeginCombo("##RApi", availableWindowBackendsMap[configWindowBackend])) {
+                for (auto backend : availableWindowBackendsMap) {
+                    if (ImGui::Selectable(backend.second, backend.first == configWindowBackend)) {
+                        Ship::Context::GetInstance()->GetConfig()->SetInt("Window.Backend.Id", static_cast<int>(backend.first));
+                        Ship::Context::GetInstance()->GetConfig()->SetString("Window.Backend.Name", backend.second);
                         Ship::Context::GetInstance()->GetConfig()->Save();
+                        UpdateWindowBackendObjects();
                     }
                 }
                 ImGui::EndCombo();
             }
-            if (Ship::Context::GetInstance()->GetWindow()->GetAvailableWindowBackends()->size() <= 1) {
+            if (availableWindowBackendsMap.size() <= 1) {
                 UIWidgets::ReEnableComponent("");
             }
 
@@ -1088,12 +1095,7 @@ void DrawEnhancementsMenu() {
         if (ImGui::BeginMenu("Graphics"))
         {
             if (ImGui::BeginMenu("Mods")) {
-                if (UIWidgets::PaddedEnhancementCheckbox("Use Alternate Assets", CVAR_ALT_ASSETS, false, false)) {
-                    // The checkbox will flip the alt asset CVar, but we instead want it to change at the end of the game frame
-                    // We toggle it back while setting the flag to update the CVar later
-                    CVarSetInteger(CVAR_ALT_ASSETS, !CVarGetInteger(CVAR_ALT_ASSETS, 0));
-                    ToggleAltAssetsAtEndOfFrame = true;
-                }
+                UIWidgets::PaddedEnhancementCheckbox("Use Alternate Assets", CVAR_ENHANCEMENT("AltAssets"), false, false);
                 UIWidgets::Tooltip("Toggle between standard assets and alternate assets. Usually mods will indicate if this setting has to be used or not.");
                 UIWidgets::PaddedEnhancementCheckbox("Disable Bomb Billboarding", CVAR_ENHANCEMENT("DisableBombBillboarding"), true, false);
                 UIWidgets::Tooltip("Disables bombs always rotating to face the camera. To be used in conjunction with mods that want to replace bombs with 3D objects.");
@@ -1156,26 +1158,42 @@ void DrawEnhancementsMenu() {
             UIWidgets::Spacer(0);
 
             UIWidgets::PaddedEnhancementCheckbox("Disable LOD", CVAR_ENHANCEMENT("DisableLOD"), true, false);
-            UIWidgets::Tooltip("Turns off the Level of Detail setting, making models use their higher-poly variants at any distance");
-            if (UIWidgets::PaddedEnhancementCheckbox("Disable Draw Distance", CVAR_ENHANCEMENT("DisableDrawDistance"), true, false)) {
-                if (CVarGetInteger(CVAR_ENHANCEMENT("DisableDrawDistance"), 0) == 0) {
+            UIWidgets::Tooltip(
+                "Turns off the Level of Detail setting, making models use their higher-poly variants at any distance");
+            if (UIWidgets::EnhancementSliderInt("Increase Actor Draw Distance: %dx", "##IncreaseActorDrawDistance",
+                                                CVAR_ENHANCEMENT("DisableDrawDistance"), 1, 5, "", 1, true, false)) {
+                if (CVarGetInteger(CVAR_ENHANCEMENT("DisableDrawDistance"), 1) <= 1) {
                     CVarSetInteger(CVAR_ENHANCEMENT("DisableKokiriDrawDistance"), 0);
                 }
             }
-            UIWidgets::Tooltip("Turns off the objects draw distance, making objects being visible from a longer range");
-            if (CVarGetInteger(CVAR_ENHANCEMENT("DisableDrawDistance"), 0) == 1) {
-                UIWidgets::PaddedEnhancementCheckbox("Kokiri Draw Distance", CVAR_ENHANCEMENT("DisableKokiriDrawDistance"), true, false);
-                UIWidgets::Tooltip("The Kokiri are mystical beings that fade into view when approached\nEnabling this will remove their draw distance");
+            UIWidgets::Tooltip("Increases the range in which actors/objects are drawn");
+            if (CVarGetInteger(CVAR_ENHANCEMENT("DisableDrawDistance"), 1) > 1) {
+                UIWidgets::PaddedEnhancementCheckbox("Kokiri Draw Distance",
+                                                     CVAR_ENHANCEMENT("DisableKokiriDrawDistance"), true, false);
+                UIWidgets::Tooltip("The Kokiri are mystical beings that fade into view when approached\nEnabling this "
+                                   "will remove their draw distance");
             }
-            if (UIWidgets::PaddedEnhancementCheckbox("Show Age-Dependent Equipment", CVAR_ENHANCEMENT("EquimentAlwaysVisible"), true,
-                                                     false)) {
-                UpdatePatchHand();
-            }
-            UIWidgets::Tooltip("Makes all equipment visible, regardless of Age.");
-            if (CVarGetInteger(CVAR_ENHANCEMENT("EquimentAlwaysVisible"), 0) == 1) {
-				UIWidgets::PaddedEnhancementCheckbox("Scale Adult Equipment as Child", CVAR_ENHANCEMENT("ScaleAdultEquimentAsChild"), true, false);
-				UIWidgets::Tooltip("Scales all of the Adult Equipment, as well and moving some a bit, to fit on Child Link Better. May not work properly with some mods.");
-			}
+            UIWidgets::PaddedEnhancementCheckbox("Widescreen Actor Culling", CVAR_ENHANCEMENT("WidescreenActorCulling"),
+                                                 true, false);
+            UIWidgets::Tooltip("Adjusts the horizontal culling plane to account for widescreen resolutions");
+            UIWidgets::PaddedEnhancementCheckbox(
+                "Cull Glitch Useful Actors", CVAR_ENHANCEMENT("ExtendedCullingExcludeGlitchActors"), true, false,
+                !CVarGetInteger(CVAR_ENHANCEMENT("WidescreenActorCulling"), 0) &&
+                    CVarGetInteger(CVAR_ENHANCEMENT("DisableDrawDistance"), 1) <= 1,
+                "Requires Actor Draw Distance to be increased or Widescreen Actor Culling enabled");
+            UIWidgets::Tooltip(
+                "Exclude actors that are useful for glitches from the extended culling ranges.\n"
+                "Some actors may still draw in the extended ranges, but will not \"update\" so that certain "
+                "glitches that leverage the original culling requirements will still work.\n"
+                "\n"
+                "The following actors are excluded:\n"
+                "- White clothed Gerudos\n"
+                "- King Zora\n"
+                "- Gossip Stones\n"
+                "- Boulders\n"
+                "- Blue Warps\n"
+                "- Darunia\n"
+                "- Gold Skulltulas");
             UIWidgets::PaddedEnhancementCheckbox("N64 Mode", CVAR_LOW_RES_MODE, true, false);
             UIWidgets::Tooltip("Sets aspect ratio to 4:3 and lowers resolution to 240p, the N64's native resolution");
             UIWidgets::PaddedEnhancementCheckbox("Glitch line-up tick", CVAR_ENHANCEMENT("DrawLineupTick"), true, false);
@@ -2011,6 +2029,10 @@ void DrawRandomizerMenu() {
 
         ImGui::EndMenu();
     }
+}
+
+void SohMenuBar::InitElement() {
+    UpdateWindowBackendObjects();
 }
 
 void SohMenuBar::DrawElement() {

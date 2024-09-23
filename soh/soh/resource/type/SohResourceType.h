@@ -2,6 +2,7 @@
 
 namespace SOH {
 enum class ResourceType {
+    SOH_Array = 0x4F415252,           // OARR
     SOH_Animation = 0x4F414E4D,       // OANM
     SOH_PlayerAnimation = 0x4F50414D, // OPAM
     SOH_Room = 0x4F524F4D,            // OROM
