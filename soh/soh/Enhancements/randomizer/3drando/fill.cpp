@@ -64,10 +64,11 @@ static void PropagateTimeTravel(GetAccessableLocationsStruct& gals, RandomizerGe
 }
 
 //This function will propagate Time of Day access through the entrance
-static bool UpdateToDAccess(Entrance* entrance, Area* parent, Area* connection) {
+static bool UpdateToDAccess(Entrance* entrance, Area* connection) {
   StartPerformanceTimer(PT_TOD_ACCESS);
 
   bool ageTimePropogated = false;
+  Area* parent = entrance->GetParentRegion();
 
   if (!connection->childDay && parent->childDay && entrance->CheckConditionAtAgeTime(logic->IsChild, logic->AtDay)) {
     connection->childDay = true;
@@ -156,7 +157,7 @@ void ProcessExits(Area* region, GetAccessableLocationsStruct& gals, RandomizerGe
   for (auto& exit : region->exits) {
     Area* exitArea = exit.GetConnectedRegion();
     //Update Time of Day Access for the exit
-    if (UpdateToDAccess(&exit, region, exitArea)) {
+    if (UpdateToDAccess(&exit, exitArea)) {
       gals.ageTimePropogated = true;
       if (!gals.sphereZeroComplete){
         if (!gals.foundTempleOfTime || !gals.validatedStartingRegion){
@@ -1276,6 +1277,7 @@ int Fill() {
       CreateAllHints();
       CreateWarpSongTexts();
       StopPerformanceTimer(PT_HINTS);
+      SPDLOG_DEBUG("Number of retries {}", retries);
       return 1;
     }
     //Unsuccessful placement
