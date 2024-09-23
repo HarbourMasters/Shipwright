@@ -158,7 +158,7 @@ void ProcessExits(Area* region, GetAccessableLocationsStruct& gals, RandomizerGe
     Area* exitArea = exit.GetConnectedRegion();
     //Update Time of Day Access for the exit
     if (UpdateToDAccess(&exit, exitArea)) {
-      gals.ageTimePropogated = true;
+      gals.logicUpdated = true;
       if (!gals.sphereZeroComplete){
         if (!gals.foundTempleOfTime || !gals.validatedStartingRegion){
           ValidateOtherEntrance(gals);
@@ -285,7 +285,6 @@ void ResetLogic(std::shared_ptr<Context>& ctx, GetAccessableLocationsStruct& gal
   gals.timePassChildNight = true;
   gals.timePassAdultDay = true;
   gals.timePassAdultNight = true;
-  gals.firstIteration = true;
   gals.haveTimeAccess = true;
   gals.foundTempleOfTime = true;
   gals.validatedStartingRegion = true;
@@ -347,6 +346,15 @@ void AddToPlaythrough(LocationAccess& locPair, GetAccessableLocationsStruct& gal
   }
 }
 
+void ApplyOrStoreItem(Rando::ItemLocation* loc, GetAccessableLocationsStruct& gals, bool addToPlaythrough){
+  if (addToPlaythrough){
+    gals.newItemLocations.push_back(loc);
+  } else {
+    loc->ApplyPlacedItemEffect();
+  }
+  gals.logicUpdated = true;
+}
+
 // Adds the contents of a location to the current progression and optionally playthrough
 bool AddCheckToLogic(LocationAccess& locPair, GetAccessableLocationsStruct& gals, RandomizerGet ignore, bool stopOnBeatable, bool addToPlaythrough=false){
   auto ctx = Rando::Context::GetInstance();
@@ -367,22 +375,22 @@ bool AddCheckToLogic(LocationAccess& locPair, GetAccessableLocationsStruct& gals
         ItemType type = location->GetPlacedItem().GetItemType();
         //If we want to ignore tokens, only add if not a token
         if (ignore == RG_GOLD_SKULLTULA_TOKEN && type != ITEMTYPE_TOKEN) {
-          gals.newItemLocations.push_back(location);
+          ApplyOrStoreItem(location, gals, addToPlaythrough);
         }
         //If we want to ignore bombchus, only add if bombchu is not in the name
         else if (IsBombchus(ignore) && IsBombchus(locItem, true)) {
-          gals.newItemLocations.push_back(location);
+          ApplyOrStoreItem(location, gals, addToPlaythrough);
         }
         //We want to ignore a specific Buy item. Buy items with different RandomizerGets are recognised by a shared GetLogicVal
         else if (ignore != RG_GOLD_SKULLTULA_TOKEN && IsBombchus(ignore)) {
           if ((type == ITEMTYPE_SHOP && Rando::StaticData::GetItemTable()[ignore].GetLogicVal() != location->GetPlacedItem().GetLogicVal()) || type != ITEMTYPE_SHOP) {
-            gals.newItemLocations.push_back(location);
+            ApplyOrStoreItem(location, gals, addToPlaythrough);
           }
         }
       }
       //If it doesn't, we can just add the location
       else {
-        gals.newItemLocations.push_back(location); //Add item to cache to be considered in logic next iteration
+        ApplyOrStoreItem(location, gals, addToPlaythrough); //Add item to cache to be considered in logic next iteration
       }
     }
     if (addToPlaythrough){
@@ -435,7 +443,7 @@ void ProcessRegion(Area* region, GetAccessableLocationsStruct& gals, RandomizerG
     //Note that eventAccess can cause playthrough jank, try to avoid them where possible
     //Later I will likely force another loop on updated events in a sphere for playthrough generation
     //to force the issue at a performance cost
-    gals.updatedEvents = true;
+    gals.logicUpdated = true;
   }
   
   ProcessExits(region, gals, ignore, stopOnBeatable, addToPlaythrough);
@@ -454,12 +462,12 @@ std::vector<RandomizerCheck> ReachabilitySearch(const std::vector<RandomizerChec
   auto ctx = Rando::Context::GetInstance();
   GetAccessableLocationsStruct gals(0);
   ResetLogic(ctx, gals, true);
-  while (gals.newItemLocations.size() > 0 || gals.updatedEvents || gals.ageTimePropogated || gals.firstIteration) {
+  do {
     gals.InitLoop();
     for (size_t i = 0; i < gals.regionPool.size(); i++) {
       ProcessRegion(AreaTable(gals.regionPool[i]), gals, ignore);
     }
-  }
+  } while (gals.logicUpdated);
   erase_if(gals.accessibleLocations, [&targetLocations, ctx](RandomizerCheck loc){
     for (RandomizerCheck allowedLocation : targetLocations) {
       if (loc == allowedLocation || ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() != RG_NONE) {
@@ -478,7 +486,7 @@ void GeneratePlaythrough() {
   logic->Reset();
   GetAccessableLocationsStruct gals(GetMaxGSCount());
   ResetLogic(ctx, gals, true);
-  while (gals.newItemLocations.size() > 0 || gals.updatedEvents || gals.ageTimePropogated || gals.firstIteration) {
+  do {
     gals.InitLoop();
     for (size_t i = 0; i < gals.regionPool.size(); i++) {
       ProcessRegion(AreaTable(gals.regionPool[i]), gals, RG_NONE, false, true);
@@ -489,7 +497,7 @@ void GeneratePlaythrough() {
     if (gals.entranceSphere.size() > 0 && !ctx->GetEntranceShuffler()->HasNoRandomEntrances()) {
       ctx->GetEntranceShuffler()->playthroughEntrances.push_back(gals.entranceSphere);
     }
-  }
+  } while (gals.logicUpdated);
 }
 
 // return if the seed is currently beatable or not
@@ -497,7 +505,7 @@ bool CheckBeatable(RandomizerGet ignore /* = RG_NONE*/) {
   auto ctx = Rando::Context::GetInstance();
   GetAccessableLocationsStruct gals(0);
   ResetLogic(ctx, gals, true);
-  while (gals.newItemLocations.size() > 0 || gals.updatedEvents || gals.ageTimePropogated || gals.firstIteration) {
+  do {
     gals.InitLoop();
     for (size_t i = 0; i < gals.regionPool.size(); i++) {
       ProcessRegion(AreaTable(gals.regionPool[i]), gals, ignore, true);
@@ -505,7 +513,7 @@ bool CheckBeatable(RandomizerGet ignore /* = RG_NONE*/) {
         return true;
       }
     }
-  }
+  } while (gals.logicUpdated);
   return false;
 }
 
@@ -538,12 +546,12 @@ void ValidateEntrances(bool checkPoeCollectorAccess, bool checkOtherEntranceAcce
     ApplyAllAdvancmentItems();
   }
 
-  while (gals.newItemLocations.size() > 0 || gals.updatedEvents || gals.ageTimePropogated || gals.firstIteration) {
+  do {
     gals.InitLoop();
     for (size_t i = 0; i < gals.regionPool.size(); i++) {
       ProcessRegion(AreaTable(gals.regionPool[i]), gals);
     }
-  }
+  } while (gals.logicUpdated);
   if (gals.sphereZeroComplete) {
     ctx->allLocationsReachable = true;
     //RANDOTODO a size check here before getting the exact fails would be a minor optimisation

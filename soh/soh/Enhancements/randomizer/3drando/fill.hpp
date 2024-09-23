@@ -18,9 +18,7 @@ struct GetAccessableLocationsStruct {
 
   //Variables for search
   std::vector<Rando::ItemLocation*> newItemLocations;
-  bool updatedEvents;
-  bool ageTimePropogated;
-  bool firstIteration;
+  bool logicUpdated;
 
   //Variables For Validating Entrences
   bool haveTimeAccess;
@@ -39,14 +37,12 @@ struct GetAccessableLocationsStruct {
     regionPool = {RR_ROOT};
     gsCount = 0;
     maxGsCount = _maxGsCount;
-    updatedEvents = false;
-    ageTimePropogated = false;
+    logicUpdated = false;
+    logicUpdated = false;
   }
 
   void InitLoop(){
-    firstIteration = false;
-    ageTimePropogated = false;
-    updatedEvents = false;
+    logicUpdated = false;
     for (Rando::ItemLocation* location : newItemLocations) {
       location->ApplyPlacedItemEffect();
     }
