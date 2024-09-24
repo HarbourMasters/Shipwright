@@ -102,15 +102,23 @@ void ItemLocation::SetCustomPrice(const uint16_t price_) {
 }
 
 bool ItemLocation::HasObtained() const {
-    return obtained;
+    return status == RCSHOW_COLLECTED || status == RCSHOW_SAVED;
 }
 
-void ItemLocation::MarkAsObtained() {
-    obtained = true;
+void ItemLocation::SetCheckStatus(RandomizerCheckStatus status_) {
+    status = status_;
 }
 
-void ItemLocation::MarkAsNotObtained() {
-    obtained = false;
+RandomizerCheckStatus ItemLocation::GetCheckStatus() {
+    return status;
+}
+
+void ItemLocation::SetIsSkipped(bool isSkipped_) {
+    isSkipped = isSkipped_;
+}
+
+bool ItemLocation::GetIsSkipped() {
+    return isSkipped;
 }
 
 bool ItemLocation::IsHintable() const {
@@ -213,6 +221,7 @@ void ItemLocation::ResetVariables() {
     wothCandidate = false;
     barrenCandidate = false;
     area = RA_NONE;
-    obtained = false;
+    status = RCSHOW_UNCHECKED;
+    isSkipped = false;
 }
 }
