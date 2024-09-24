@@ -411,6 +411,10 @@ u16 EnMd_GetTextLostWoods(PlayState* play, EnMd* this) {
     this->unk_208 = 0;
     this->unk_209 = TEXT_STATE_NONE;
 
+    if (CVarGetInteger(CVAR_ENHANCEMENT("EnableChaosMode"), 0)) {
+        return 0x1070;
+    }
+
     if (Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP)) {
         if (Flags_GetInfTable(INFTABLE_19)) {
             return 0x1071;
@@ -431,20 +435,26 @@ u16 EnMd_GetTextLostWoods(PlayState* play, EnMd* this) {
 
 u16 EnMd_GetText(PlayState* play, Actor* thisx) {
     EnMd* this = (EnMd*)thisx;
-
-    switch (play->sceneNum) {
-        case SCENE_KOKIRI_FOREST:
-            return EnMd_GetTextKokiriForest(play, this);
-        case SCENE_MIDOS_HOUSE:
-            return EnMd_GetTextKokiriHome(play, this);
-        case SCENE_LOST_WOODS:
-            return EnMd_GetTextLostWoods(play, this);
-        default:
-            return 0;
+    if (CVarGetInteger(CVAR_ENHANCEMENT("EnableChaosMode"), 0)) {
+        return EnMd_GetTextLostWoods(play, this);
+    } else {
+        switch (play->sceneNum) {
+            case SCENE_KOKIRI_FOREST:
+                return EnMd_GetTextKokiriForest(play, this);
+            case SCENE_MIDOS_HOUSE:
+                return EnMd_GetTextKokiriHome(play, this);
+            case SCENE_LOST_WOODS:
+                return EnMd_GetTextLostWoods(play, this);
+            default:
+                return 0;
+        }
     }
 }
 
 s16 func_80AAAF04(PlayState* play, Actor* thisx) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("EnableChaosMode"), 0)) {
+        CVarSetInteger(CVAR_ENHANCEMENT("ChaosModeMido"), 1);
+    }
     EnMd* this = (EnMd*)thisx;
     switch (func_80AAAC78(this, play)) {
         case TEXT_STATE_NONE:
@@ -554,7 +564,6 @@ void func_80AAB158(EnMd* this, PlayState* play) {
         trackingMode = NPC_TRACKING_NONE;
         temp2 = 0;
     }
-
     if (this->interactInfo.talkState != NPC_TALK_STATE_IDLE) {
         trackingMode = NPC_TRACKING_FULL_BODY;
     }
@@ -579,9 +588,6 @@ void func_80AAB158(EnMd* this, PlayState* play) {
 
     Npc_TrackPoint(&this->actor, &this->interactInfo, 2, trackingMode);
     if (this->actionFunc != func_80AABC10) {
-        if (CVarGetInteger(CVAR_ENHANCEMENT("EnableChaosMode"), 0) == 1) {
-            return;
-        }
         if (temp2) {
             Npc_UpdateTalking(play, &this->actor, &this->interactInfo.talkState, this->collider.dim.radius + 30.0f,
                               EnMd_GetText, func_80AAAF04);

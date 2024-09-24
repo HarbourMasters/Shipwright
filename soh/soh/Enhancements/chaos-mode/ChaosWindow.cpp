@@ -77,6 +77,7 @@ Actor* currGuard = guardActors.head;
 Actor* currCeiling = ceilingActors.head;
 
 static uint32_t actorMagnetHook = 0;
+static uint32_t midoSucksHook = 0;
 static uint32_t fallingCeilingHook = 0;
 static uint32_t stopHeartHook = 0;
 static uint32_t spikeTrapHook = 0;
@@ -231,7 +232,7 @@ void ChaosUpdateEventTimers() {
     }
 }
 
-void ChaosEventsSpikeTrap() {
+void ChaosEventSpikeTrap() {
     Player* player = GET_PLAYER(gPlayState);
     Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_BG_HAKA_TRAP, player->actor.world.pos.x,
                 player->actor.world.pos.y + 225, player->actor.world.pos.z, 0, player->actor.world.rot.y, 0, 1,
@@ -511,28 +512,30 @@ void ChaosEventsRepeater() {
                 midoTimer--;
                 Vec3f_ actorPosition;
 
-                ActorListEntry midoActors = gPlayState->actorCtx.actorLists[ACTORCAT_NPC];
-                Actor* currAct = midoActors.head;
-                Actor* actorToBlock = &GET_PLAYER(gPlayState)->actor;
-                if (currAct != nullptr) {
-                    while (currAct != nullptr) {
-                        if (currAct->id == ACTOR_EN_MD) {
-                            EnMd* midoActor = (EnMd*)currAct;
-                            currAct->world.rot.y = currAct->yawTowardsPlayer;
-                            currAct->shape.rot.y = currAct->yawTowardsPlayer;
+                if (!CVarGetInteger(CVAR_ENHANCEMENT("ChaosModeMido"), 0)) {
+                    ActorListEntry midoActors = gPlayState->actorCtx.actorLists[ACTORCAT_NPC];
+                    Actor* currAct = midoActors.head;
+                    Actor* actorToBlock = &GET_PLAYER(gPlayState)->actor;
+                    if (currAct != nullptr) {
+                        while (currAct != nullptr) {
+                            if (currAct->id == ACTOR_EN_MD) {
+                                EnMd* midoActor = (EnMd*)currAct;
+                                currAct->world.rot.y = currAct->yawTowardsPlayer;
+                                currAct->shape.rot.y = currAct->yawTowardsPlayer;
 
-                            s16 yaw = Math_Vec3f_Yaw(&currAct->home.pos, &actorToBlock->world.pos);
+                                s16 yaw = Math_Vec3f_Yaw(&currAct->home.pos, &actorToBlock->world.pos);
 
-                            currAct->world.pos.x = currAct->home.pos.x;
-                            currAct->world.pos.x += 60.0f * Math_SinS(yaw);
+                                currAct->world.pos.x = currAct->home.pos.x;
+                                currAct->world.pos.x += 60.0f * Math_SinS(yaw);
 
-                            currAct->world.pos.z = currAct->home.pos.z;
-                            currAct->world.pos.z += 60.0f * Math_CosS(yaw);
+                                currAct->world.pos.z = currAct->home.pos.z;
+                                currAct->world.pos.z += 60.0f * Math_CosS(yaw);
 
-                            f32 temp = fabsf((f32)currAct->yawTowardsPlayer - yaw) * 0.001f * 3.0f;
-                            midoActor->skelAnime.playSpeed = CLAMP(temp, 1.0f, 3.0f);
+                                f32 temp = fabsf((f32)currAct->yawTowardsPlayer - yaw) * 0.001f * 3.0f;
+                                midoActor->skelAnime.playSpeed = CLAMP(temp, 1.0f, 3.0f);
+                            }
+                            currAct = currAct->next;
                         }
-                        currAct = currAct->next;
                     }
                 }
             }
@@ -738,6 +741,7 @@ void ChaosEventsActivator(uint32_t eventId, bool isActive) {
             break;
         case EVENT_MIDO_SUCKS:
             if (isActive) {
+                CVarSetInteger(CVAR_ENHANCEMENT("ChaosModeMido"), 0);
                 Player* player = GET_PLAYER(gPlayState);
                 Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_MD, player->actor.world.pos.x,
                             player->actor.world.pos.y, player->actor.world.pos.z, 0, player->actor.world.rot.y + 16384, 0, 256, false);
@@ -834,9 +838,9 @@ void ChaosEventsActivator(uint32_t eventId, bool isActive) {
             if (isActive) {
                 spikeTrapTimer == eventList[EVENT_SPIKE_TRAP].eventTimer;
                 spikeTrapHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneSpawnActors>([]() {
-                    ChaosEventsSpikeTrap();
+                    ChaosEventSpikeTrap();
                 });
-                ChaosEventsSpikeTrap();
+                ChaosEventSpikeTrap();
             } else {
                 if (spikeTrapHook != 0) {
                     GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneSpawnActors>(spikeTrapHook);
