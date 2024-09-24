@@ -51,20 +51,20 @@ static void PropagateTimeTravel(GetAccessableLocationsStruct& gals, RandomizerGe
                               bool stopOnBeatable = false, bool addToPlaythrough = false){
   //special check for temple of time
   if(gals.haveTimeAccess && gals.foundTempleOfTime && gals.validatedStartingRegion){
-    if (!AreaTable(RR_ROOT)->Adult() && AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->Child()) { //RANDOTODO: sphere weirdness, other age locations not propagated in this sphere
-      AreaTable(RR_ROOT)->adultDay   = AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->childDay;
-      AreaTable(RR_ROOT)->adultNight = AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->childNight;
-      ProcessRegion(AreaTable(RR_ROOT), gals, ignore, stopOnBeatable, addToPlaythrough);
-    } else if (!AreaTable(RR_ROOT)->Child() && AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->Adult()){
-      AreaTable(RR_ROOT)->childDay   = AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->adultDay;
-      AreaTable(RR_ROOT)->childNight = AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->adultNight;
-      ProcessRegion(AreaTable(RR_ROOT), gals, ignore, stopOnBeatable, addToPlaythrough);
+    if (!RegionTable(RR_ROOT)->Adult() && RegionTable(RR_TOT_BEYOND_DOOR_OF_TIME)->Child()) { //RANDOTODO: sphere weirdness, other age locations not propagated in this sphere
+      RegionTable(RR_ROOT)->adultDay   = RegionTable(RR_TOT_BEYOND_DOOR_OF_TIME)->childDay;
+      RegionTable(RR_ROOT)->adultNight = RegionTable(RR_TOT_BEYOND_DOOR_OF_TIME)->childNight;
+      ProcessRegion(RegionTable(RR_ROOT), gals, ignore, stopOnBeatable, addToPlaythrough);
+    } else if (!RegionTable(RR_ROOT)->Child() && RegionTable(RR_TOT_BEYOND_DOOR_OF_TIME)->Adult()){
+      RegionTable(RR_ROOT)->childDay   = RegionTable(RR_TOT_BEYOND_DOOR_OF_TIME)->adultDay;
+      RegionTable(RR_ROOT)->childNight = RegionTable(RR_TOT_BEYOND_DOOR_OF_TIME)->adultNight;
+      ProcessRegion(RegionTable(RR_ROOT), gals, ignore, stopOnBeatable, addToPlaythrough);
     }
   }
 }
 
 //This function will propagate Time of Day access through the entrance
-static bool UpdateToDAccess(Entrance* entrance, Area* connection) {
+static bool UpdateToDAccess(Entrance* entrance, Region* connection) {
   StartPerformanceTimer(PT_TOD_ACCESS);
 
   bool ageTimePropogated = false;
@@ -151,13 +151,13 @@ static void ValidateSphereZero(GetAccessableLocationsStruct& gals){
 }
 
 //This function handles each possible exit
-void ProcessExits(Area* region, GetAccessableLocationsStruct& gals, RandomizerGet ignore = RG_NONE, 
+void ProcessExits(Region* region, GetAccessableLocationsStruct& gals, RandomizerGet ignore = RG_NONE, 
                   bool stopOnBeatable = false, bool addToPlaythrough = false){
   auto ctx = Rando::Context::GetInstance();
   for (auto& exit : region->exits) {
-    Area* exitArea = exit.GetConnectedRegion();
+    Region* exitRegion = exit.GetConnectedRegion();
     //Update Time of Day Access for the exit
-    if (UpdateToDAccess(&exit, exitArea)) {
+    if (UpdateToDAccess(&exit, exitRegion)) {
       gals.logicUpdated = true;
       if (!gals.sphereZeroComplete){
         if (!gals.foundTempleOfTime || !gals.validatedStartingRegion){
@@ -166,14 +166,14 @@ void ProcessExits(Area* region, GetAccessableLocationsStruct& gals, RandomizerGe
         ValidateSphereZero(gals);
       }
       //process the region we just expanded to, to reduce looping
-      ProcessRegion(exitArea, gals, ignore, stopOnBeatable, addToPlaythrough);
+      ProcessRegion(exitRegion, gals, ignore, stopOnBeatable, addToPlaythrough);
     }
 
     //If the exit is accessible and hasn't been added yet, add it to the pool
     //RANDOTODO do we want to add the region after the loop now, considering we
     //are processing the new region immediatly. Maybe a reverse for loop in ProcessRegion?
-    if (!exitArea->addedToPool && exit.ConditionsMet()) {
-      exitArea->addedToPool = true;
+    if (!exitRegion->addedToPool && exit.ConditionsMet()) {
+      exitRegion->addedToPool = true;
       gals.regionPool.push_back(exit.GetConnectedRegionKey());
     }
 
@@ -406,7 +406,7 @@ bool AddCheckToLogic(LocationAccess& locPair, GetAccessableLocationsStruct& gals
   return false;
 }
 
-void ProcessRegion(Area* region, GetAccessableLocationsStruct& gals, RandomizerGet ignore, 
+void ProcessRegion(Region* region, GetAccessableLocationsStruct& gals, RandomizerGet ignore, 
                    bool stopOnBeatable, bool addToPlaythrough){
   
   if (gals.haveTimeAccess) {
@@ -465,7 +465,7 @@ std::vector<RandomizerCheck> ReachabilitySearch(const std::vector<RandomizerChec
   do {
     gals.InitLoop();
     for (size_t i = 0; i < gals.regionPool.size(); i++) {
-      ProcessRegion(AreaTable(gals.regionPool[i]), gals, ignore);
+      ProcessRegion(RegionTable(gals.regionPool[i]), gals, ignore);
     }
   } while (gals.logicUpdated);
   erase_if(gals.accessibleLocations, [&targetLocations, ctx](RandomizerCheck loc){
@@ -489,7 +489,7 @@ void GeneratePlaythrough() {
   do {
     gals.InitLoop();
     for (size_t i = 0; i < gals.regionPool.size(); i++) {
-      ProcessRegion(AreaTable(gals.regionPool[i]), gals, RG_NONE, false, true);
+      ProcessRegion(RegionTable(gals.regionPool[i]), gals, RG_NONE, false, true);
     }
     if (gals.itemSphere.size() > 0) {
       ctx->playthroughLocations.push_back(gals.itemSphere);
@@ -508,7 +508,7 @@ bool CheckBeatable(RandomizerGet ignore /* = RG_NONE*/) {
   do {
     gals.InitLoop();
     for (size_t i = 0; i < gals.regionPool.size(); i++) {
-      ProcessRegion(AreaTable(gals.regionPool[i]), gals, ignore, true);
+      ProcessRegion(RegionTable(gals.regionPool[i]), gals, ignore, true);
       if (ctx->playthroughBeatable == true){
         return true;
       }
@@ -538,10 +538,10 @@ void ValidateEntrances(bool checkPoeCollectorAccess, bool checkOtherEntranceAcce
     gals.timePassAdultNight = false;
     gals.haveTimeAccess = false;
     gals.sphereZeroComplete = false;
-    AreaTable(RR_ROOT)->childNight = true;
-    AreaTable(RR_ROOT)->adultNight = true;
-    AreaTable(RR_ROOT)->childDay = true;
-    AreaTable(RR_ROOT)->adultDay = true;
+    RegionTable(RR_ROOT)->childNight = true;
+    RegionTable(RR_ROOT)->adultNight = true;
+    RegionTable(RR_ROOT)->childDay = true;
+    RegionTable(RR_ROOT)->adultDay = true;
   } else {
     ApplyAllAdvancmentItems();
   }
@@ -549,7 +549,7 @@ void ValidateEntrances(bool checkPoeCollectorAccess, bool checkOtherEntranceAcce
   do {
     gals.InitLoop();
     for (size_t i = 0; i < gals.regionPool.size(); i++) {
-      ProcessRegion(AreaTable(gals.regionPool[i]), gals);
+      ProcessRegion(RegionTable(gals.regionPool[i]), gals);
     }
   } while (gals.logicUpdated);
   if (gals.sphereZeroComplete) {

@@ -111,7 +111,7 @@ void Region::ApplyTimePass(){
   }
 }
 
-bool Area::UpdateEvents() {
+bool Region::UpdateEvents() {
   bool eventsUpdated =  false;
   StartPerformanceTimer(PT_EVENT_ACCESS);
   for (EventAccess& event : events) {

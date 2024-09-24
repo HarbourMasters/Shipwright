@@ -58,7 +58,7 @@ int Fill();
 
 std::vector<RandomizerCheck> GetEmptyLocations(std::vector<RandomizerCheck> allowedLocations);
 
-void ProcessRegion(Area* region, GetAccessableLocationsStruct& gals, RandomizerGet ignore = RG_NONE, 
+void ProcessRegion(Region* region, GetAccessableLocationsStruct& gals, RandomizerGet ignore = RG_NONE, 
                    bool stopOnBeatable = false, bool addToPlaythrough = false);
 
 std::vector<RandomizerCheck> ReachabilitySearch(const std::vector<RandomizerCheck>& allowedLocations, RandomizerGet ignore=RG_NONE);
