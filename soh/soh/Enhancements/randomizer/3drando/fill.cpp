@@ -1248,7 +1248,6 @@ int Fill() {
       //Place the shop items which will still be at shop locations
       AssumedFill(shopItems, shopLocations);
     }
-    StopPerformanceTimer(PT_SHOPSANITY);
 
     //Add prices to scrubs
     if (ctx->GetOption(RSK_SHUFFLE_SCRUBS).Is(RO_SCRUBS_ALL)) {
@@ -1291,6 +1290,7 @@ int Fill() {
         );
       }
     }
+    StopPerformanceTimer(PT_SHOPSANITY);
 
     StartPerformanceTimer(PT_OWN_DUNGEON);
     //Place dungeon rewards
