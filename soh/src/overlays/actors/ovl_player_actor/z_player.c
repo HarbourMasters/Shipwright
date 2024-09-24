@@ -5096,11 +5096,7 @@ void func_8083A0F4(PlayState* play, Player* this) {
                 anim = GET_PLAYER_ANIM(PLAYER_ANIMGROUP_carryB, this->modelAnimType);
             }
 
-            // Same actor is used for small and large silver rocks, use actor params to identify large ones
-            bool isLargeSilverRock = interactActorId == ACTOR_EN_ISHI && interactRangeActor->params & 1 == 1;
-            if (CVarGetInteger(CVAR_ENHANCEMENT("FasterHeavyBlockLift"), 0) && (isLargeSilverRock || interactActorId == ACTOR_BG_HEAVY_BLOCK)) {
-                LinkAnimation_PlayOnceSetSpeed(play, &this->skelAnime, anim, 5.0f);
-            } else {
+            if (GameInteractor_Should(VB_PLAY_THROW_ANIMATION, true, anim)) {
                 LinkAnimation_PlayOnce(play, &this->skelAnime, anim);
             }
         }
@@ -9842,14 +9838,12 @@ void Player_Action_80846120(Player* this, PlayState* play) {
     if (LinkAnimation_OnFrame(&this->skelAnime, 229.0f)) {
         Actor* heldActor = this->heldActor;
 
-        if (CVarGetInteger(CVAR_ENHANCEMENT("FasterHeavyBlockLift"), 0)) {
-            // This is the difference in rotation when the animation is sped up 5x
-            heldActor->shape.rot.x -= 3510;
+        if (GameInteractor_Should(VB_MOVE_THROWN_ACTOR, true, heldActor)) {
+            heldActor->speedXZ = Math_SinS(heldActor->shape.rot.x) * 40.0f;
+            heldActor->velocity.y = Math_CosS(heldActor->shape.rot.x) * 40.0f;
+            heldActor->gravity = -2.0f;
+            heldActor->minVelocityY = -30.0f;
         }
-        heldActor->speedXZ = Math_SinS(heldActor->shape.rot.x) * 40.0f;
-        heldActor->velocity.y = Math_CosS(heldActor->shape.rot.x) * 40.0f;
-        heldActor->gravity = -2.0f;
-        heldActor->minVelocityY = -30.0f;
         Player_DetachHeldActor(play, this);
         return;
     }

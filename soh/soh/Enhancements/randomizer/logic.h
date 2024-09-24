@@ -165,7 +165,7 @@ class Logic {
     // Bottle Count
     uint8_t Bottles = 0;
     uint8_t NumBottles = 0;
-    bool NoBottles = false;
+    bool CanEmptyBigPoes = true;
 
     // Drops and Bottle Contents Access
     bool NutPot = false;
@@ -387,7 +387,7 @@ class Logic {
     bool BuyDekuShieldPast = false;
     bool TimeTravelPast = false;
 
-    SaveContext* mSaveContext;
+    SaveContext* mSaveContext = nullptr;
     Logic();
     void UpdateHelpers();
     bool CanUse(RandomizerGet itemName);
@@ -406,6 +406,37 @@ class Logic {
     void SetContext(std::shared_ptr<Context> _ctx);
     bool GetInLogic(LogicVal logicVal);
     void SetInLogic(LogicVal logicVal, bool remove);
+    void ApplyItemEffect(Item& item, bool state);
+    uint8_t InventorySlot(uint32_t item);
+    void SetUpgrade(uint32_t upgrade, uint8_t level);
+    uint32_t CurrentUpgrade(uint32_t upgrade);
+    uint32_t CurrentInventory(uint32_t item);
+    bool CheckInventory(uint32_t item, bool exact);
+    void SetInventory(uint32_t itemSlot, uint32_t item);
+    bool CheckEquipment(uint32_t item);
+    bool CheckQuestItem(uint32_t item);
+    void SetQuestItem(uint32_t item, bool state);
+    bool HasAdultTrade(uint32_t item);
+    void SetAdultTrade(uint32_t item, bool state);
+    uint8_t GetSmallKeyCount(uint32_t dungeonIndex);
+    void SetSmallKeyCount(uint32_t dungeonIndex, uint8_t count);
+    bool CheckDungeonItem(uint32_t item, uint32_t dungeonIndex);
+    void SetDungeonItem(uint32_t item, uint32_t dungeonIndex, bool state);
+    bool CheckRandoInf(uint32_t flag);
+    void SetRandoInf(uint32_t flag, bool state);
+    bool CheckEventChkInf(int32_t flag);
+    uint8_t GetGSCount();
+    void SetEventChkInf(int32_t flag, bool state);
+    uint8_t GetAmmo(uint32_t item);
+    void SetAmmo(uint32_t item, uint8_t count);
+    SaveContext* GetSaveContext();
+    void SetSaveContext(SaveContext* context);
+    void InitSaveContext();
+    void NewSaveContext();
+    static std::map<uint32_t, uint32_t> RandoGetToQuestItem;
+    static std::map<uint32_t, uint32_t> RandoGetToDungeonScene;
+    static std::map<RandomizerGet, uint32_t> RandoGetToEquipFlag;
+    static std::map<RandomizerGet, uint32_t> RandoGetToRandInf;
 
   private:
     static bool IsMagicItem(RandomizerGet item);
