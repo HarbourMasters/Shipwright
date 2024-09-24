@@ -12,7 +12,7 @@
 #include "pool_functions.hpp"
 //#include "debug.hpp"
 #include "soh/Enhancements/randomizer/static_data.h"
-#include "../../debugger/performanceTimer.h"
+#include "soh/Enhancements/debugger/performanceTimer.h"
 
 #include <vector>
 #include <list>
@@ -68,7 +68,7 @@ static bool UpdateToDAccess(Entrance* entrance, Area* connection) {
   StartPerformanceTimer(PT_TOD_ACCESS);
 
   bool ageTimePropogated = false;
-  Area* parent = entrance->GetParentRegion();
+  Region* parent = entrance->GetParentRegion();
 
   if (!connection->childDay && parent->childDay && entrance->CheckConditionAtAgeTime(logic->IsChild, logic->AtDay)) {
     connection->childDay = true;
@@ -95,17 +95,17 @@ static bool UpdateToDAccess(Entrance* entrance, Area* connection) {
 static void ValidateOtherEntrance(GetAccessableLocationsStruct& gals) {
   auto ctx = Rando::Context::GetInstance();
   // Condition for validating Temple of Time Access
-  if (!gals.foundTempleOfTime && ((ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_CHILD && AreaTable(RR_TEMPLE_OF_TIME)->Adult()) || 
-                            (ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_ADULT && AreaTable(RR_TEMPLE_OF_TIME)->Child()))) {
+  if (!gals.foundTempleOfTime && ((ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_CHILD && RegionTable(RR_TEMPLE_OF_TIME)->Adult()) || 
+                            (ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_ADULT && RegionTable(RR_TEMPLE_OF_TIME)->Child()))) {
     gals.foundTempleOfTime = true;
   }
   // Condition for validating a valid starting region
   if (!gals.validatedStartingRegion) {
-    bool childAccess = ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_CHILD || AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->Child();
-    bool adultAccess = ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_ADULT || AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->Adult();
+    bool childAccess = ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_CHILD || RegionTable(RR_TOT_BEYOND_DOOR_OF_TIME)->Child();
+    bool adultAccess = ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_ADULT || RegionTable(RR_TOT_BEYOND_DOOR_OF_TIME)->Adult();
 
-    Area* kokiri = AreaTable(RR_KOKIRI_FOREST);
-    Area* kakariko = AreaTable(RR_KAKARIKO_VILLAGE);
+    Region* kokiri = RegionTable(RR_KOKIRI_FOREST);
+    Region* kakariko = RegionTable(RR_KAKARIKO_VILLAGE);
 
     if ((childAccess && (kokiri->Child() || kakariko->Child())) ||// RANDOTODO when proper ammo logic is done, this could probably be made optional
         (adultAccess && (kokiri->Adult() || kakariko->Adult()))) {
@@ -135,13 +135,13 @@ static void ValidateSphereZero(GetAccessableLocationsStruct& gals){
     // Reset access as the non-starting age
     if (ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_CHILD) {
       for (RandomizerRegion regionKey : gals.regionPool) {
-        AreaTable(regionKey)->adultDay = false;
-        AreaTable(regionKey)->adultNight = false;
+        RegionTable(regionKey)->adultDay = false;
+        RegionTable(regionKey)->adultNight = false;
       }
     } else {
       for (RandomizerRegion regionKey : gals.regionPool) {
-        AreaTable(regionKey)->childDay = false;
-        AreaTable(regionKey)->childNight = false;
+        RegionTable(regionKey)->childDay = false;
+        RegionTable(regionKey)->childNight = false;
       }
     }
     //RANDOTODO do we want to keep the region pool after this reset? 
@@ -292,7 +292,7 @@ void ResetLogic(std::shared_ptr<Context>& ctx, GetAccessableLocationsStruct& gal
   if (applyInventory){
     ApplyStartingInventory();
   }
-  Areas::AccessReset();
+  Regions::AccessReset();
   ctx->LocationReset();
 } 
 
@@ -571,7 +571,7 @@ void ValidateEntrances(bool checkPoeCollectorAccess, bool checkOtherEntranceAcce
   }
 }
 
-RandomizerArea LookForExternalArea(const Area* const currentRegion, std::vector<RandomizerRegion> &alreadyChecked){
+RandomizerArea LookForExternalArea(const Region* const currentRegion, std::vector<RandomizerRegion> &alreadyChecked){
   for (const auto& entrance : currentRegion->entrances) {
     RandomizerArea otherArea = entrance->GetParentRegion()->GetArea();
     const bool isAreaUnchecked = std::find(alreadyChecked.begin(), alreadyChecked.end(), entrance->GetParentRegionKey()) == alreadyChecked.end();
@@ -593,7 +593,7 @@ void SetAreas(){
   auto ctx = Rando::Context::GetInstance();
 //RANDOTODO give entrances an enum like RandomizerCheck, the give them all areas here, the use those areas to not need to recursivly find ItemLocation areas
   for (int regionType = 0; regionType < RR_MARKER_AREAS_END; regionType++) {
-    Area region = areaTable[regionType];
+    Region region = areaTable[regionType];
     RandomizerArea area = region.GetArea();
     if (area == RA_NONE) {
       std::vector<RandomizerRegion> alreadyChecked = {static_cast<RandomizerRegion>(regionType)};
@@ -790,7 +790,7 @@ static void AssumedFill(const std::vector<RandomizerGet>& items, const std::vect
                 SPDLOG_DEBUG(". TRYING AGAIN...\n");
 
 #ifdef ENABLE_DEBUG
-                Areas::DumpWorldGraph(Rando::StaticData::RetrieveItem(item).GetName().GetEnglish());
+                Regions::DumpWorldGraph(Rando::StaticData::RetrieveItem(item).GetName().GetEnglish());
                 PlacementLog_Write();
 #endif
 
@@ -1060,7 +1060,7 @@ static void RandomizeLinksPocket() {
 void VanillaFill() {
   auto ctx = Rando::Context::GetInstance();
   //Perform minimum needed initialization
-  AreaTable_Init();
+  RegionTable_Init();
   ctx->GenerateLocationPool();
   GenerateItemPool();
   GenerateStartingInventory();
@@ -1096,7 +1096,7 @@ int Fill() {
     //showItemProgress = false;
     ctx->playthroughLocations.clear();
     ctx->GetEntranceShuffler()->playthroughEntrances.clear();
-    AreaTable_Init(); //Reset the world graph to intialize the proper locations
+    RegionTable_Init(); //Reset the world graph to intialize the proper locations
     ctx->ItemReset(); //Reset shops incase of shopsanity random
     ctx->GenerateLocationPool();
     GenerateItemPool();
@@ -1291,7 +1291,7 @@ int Fill() {
     //Unsuccessful placement
     if(retries < 4) {
       SPDLOG_DEBUG("Failed to generate a beatable seed. Retrying...");
-      Areas::ResetAllLocations();
+      Regions::ResetAllLocations();
       logic->Reset();
       ClearProgress();
     }

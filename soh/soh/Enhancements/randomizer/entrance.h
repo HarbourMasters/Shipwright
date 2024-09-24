@@ -50,10 +50,10 @@ class Entrance {
     bool CheckConditionAtAgeTime(bool& age, bool& time, bool passAnyway = false) const;
     RandomizerRegion GetConnectedRegionKey() const;
     RandomizerRegion GetOriginalConnectedRegionKey() const;
-    Area* GetConnectedRegion() const;
+    Region* GetConnectedRegion() const;
     void SetParentRegion(RandomizerRegion newParent);
     RandomizerRegion GetParentRegionKey() const;
-    Area* GetParentRegion() const;
+    Region* GetParentRegion() const;
     void SetNewEntrance(RandomizerRegion newRegion);
     void SetAsShuffled();
     bool IsShuffled() const;
