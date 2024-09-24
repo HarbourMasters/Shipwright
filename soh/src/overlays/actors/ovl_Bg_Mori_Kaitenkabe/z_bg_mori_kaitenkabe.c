@@ -99,6 +99,9 @@ void BgMoriKaitenkabe_Wait(BgMoriKaitenkabe* this, PlayState* play) {
             if ((this->timer > (28 - CVarGetInteger(CVAR_ENHANCEMENT("FasterBlockPush"), 0) * 4)) &&
                 !Player_InCsMode(play)) {
                 BgMoriKaitenkabe_SetupRotate(this);
+                if (!CVarGetInteger(CVAR_ENHANCEMENT("FasterForestPillars"), 0)) {
+                    func_8002DF54(play, &this->dyna.actor, 8);
+                }
                 Math_Vec3f_Copy(&this->lockedPlayerPos, &player->actor.world.pos);
                 push.x = Math_SinS(this->dyna.unk_158);
                 push.y = 0.0f;
@@ -147,7 +150,7 @@ void BgMoriKaitenkabe_Rotate(BgMoriKaitenkabe* this, PlayState* play) {
     s16 rotY;
 
     // #region SOH [Enhancement]
-    if (CVarGetInteger(CVAR_ENHANCEMENT("FasterBlockPush"), 0)) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("FasterForestPillars"), 0)) {
         Math_StepToF(&this->rotSpeed, 0.6f * CVarGetInteger(CVAR_ENHANCEMENT("FasterBlockPush"), 0),
                      0.02f * CVarGetInteger(CVAR_ENHANCEMENT("FasterBlockPush"), 0) * 10);
         if (Math_StepToF(&this->rotYdeg, this->rotDirection * 45.0f, this->rotSpeed)) {
@@ -167,6 +170,9 @@ void BgMoriKaitenkabe_Rotate(BgMoriKaitenkabe* this, PlayState* play) {
         if (fabsf(this->dyna.unk_150) > 0.001f) {
             this->dyna.unk_150 = 0.0f;
             player->stateFlags2 &= ~PLAYER_STATE2_MOVING_DYNAPOLY;
+        }
+        if (Player_InCsMode(play)) {
+            func_8002DF54(play, thisx, 7);
         }
         // #endregion
     } else {
