@@ -40,7 +40,7 @@ json jsonData;
 std::map<RandomizerHintTextKey, Rando::ItemLocation*> hintedLocations;
 
 extern std::array<std::string, 17> hintCategoryNames;
-extern Area* GetHintRegion(uint32_t);
+extern Region* GetHintRegion(uint32_t);
 
 namespace {
 std::string placementtxt;
@@ -615,6 +615,8 @@ const char* SpoilerLog_Write() {
     jsonData.clear();
 
     jsonData["version"] = (char*) gBuildVersion;
+    jsonData["git_branch"] = (char*) gGitBranch;
+    jsonData["git_commit"] = (char*) gGitCommitHash;
     jsonData["seed"] = ctx->GetSettings()->GetSeedString();
     jsonData["finalSeed"] = ctx->GetSettings()->GetSeed();
 

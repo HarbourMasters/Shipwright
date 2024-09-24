@@ -11,6 +11,7 @@
 #include "variables.h"
 #include "soh/OTRGlobals.h"
 #include "../option.h"
+#include "soh/Enhancements/debugger/performanceTimer.h"
 
 namespace Playthrough {
 
@@ -25,7 +26,9 @@ int Playthrough_Init(uint32_t seed, std::set<RandomizerCheck> excludedLocations,
     ctx->ItemReset();
     ctx->HintReset();
     ctx->GetLogic()->Reset();
-    Areas::AccessReset();
+    StartPerformanceTimer(PT_REGION_RESET);
+    Regions::AccessReset();
+    StopPerformanceTimer(PT_REGION_RESET);
 
     ctx->GetSettings()->FinalizeSettings(excludedLocations, enabledTricks);
     // once the settings have been finalized turn them into a string for hashing
@@ -71,11 +74,13 @@ int Playthrough_Init(uint32_t seed, std::set<RandomizerCheck> excludedLocations,
         //TODO: Handle different types of file output (i.e. Spoiler Log, Plando Template, Patch Files, Race Files, etc.)
         // write logs
         SPDLOG_INFO("Writing Spoiler Log...");
+        StartPerformanceTimer(PT_SPOILER_LOG);
         if (SpoilerLog_Write()) {
             SPDLOG_INFO("Writing Spoiler Log Done");
         } else {
             SPDLOG_ERROR("Writing Spoiler Log Failed");
         }
+        StopPerformanceTimer(PT_SPOILER_LOG);
 #ifdef ENABLE_DEBUG
         SPDLOG_INFO("Writing Placement Log...");
         if (PlacementLog_Write()) {
