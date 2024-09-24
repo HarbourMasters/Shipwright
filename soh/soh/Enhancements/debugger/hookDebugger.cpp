@@ -83,12 +83,6 @@ void DrawHookRegisteringInfos(const char* hookName) {
 }
 
 void HookDebuggerWindow::DrawElement() {
-    ImGui::SetNextWindowSize(ImVec2(1250, 850), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Hook Debugger", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
-        ImGui::End();
-        return;
-    }
-
 #ifndef __cpp_lib_source_location
     ImGui::TextColored(
         yellow,
@@ -104,8 +98,6 @@ void HookDebuggerWindow::DrawElement() {
             ImGui::TreePop();
         }
     }
-
-    ImGui::End();
 }
 
 void HookDebuggerWindow::UpdateElement() {
