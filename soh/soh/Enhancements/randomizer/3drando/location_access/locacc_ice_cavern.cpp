@@ -4,11 +4,11 @@
 
 using namespace Rando;
 
-void AreaTable_Init_IceCavern() {
+void RegionTable_Init_IceCavern() {
   /*--------------------------
   |    VANILLA/MQ DECIDER    |
   ---------------------------*/
-  areaTable[RR_ICE_CAVERN_ENTRYWAY] = Area("Ice Cavern Entryway", "Ice Cavern", RA_ICE_CAVERN, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_ICE_CAVERN_ENTRYWAY] = Region("Ice Cavern Entryway", "Ice Cavern", RA_ICE_CAVERN, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_ICE_CAVERN_BEGINNING,    {[]{return randoCtx->GetDungeon(ICE_CAVERN)->IsVanilla();}}),
                   Entrance(RR_ICE_CAVERN_MQ_BEGINNING, {[]{return randoCtx->GetDungeon(ICE_CAVERN)->IsMQ() && logic->CanUseProjectile;}}),
@@ -19,13 +19,13 @@ void AreaTable_Init_IceCavern() {
   |     VANILLA DUNGEON      |
   ---------------------------*/
   if (randoCtx->GetDungeon(ICE_CAVERN)->IsVanilla()) {
-  areaTable[RR_ICE_CAVERN_BEGINNING] = Area("Ice Cavern Beginning", "Ice Cavern", RA_ICE_CAVERN, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_ICE_CAVERN_BEGINNING] = Region("Ice Cavern Beginning", "Ice Cavern", RA_ICE_CAVERN, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_ICE_CAVERN_ENTRYWAY, {[]{return true;}}),
                   Entrance(RR_ICE_CAVERN_MAIN,     {[]{return Here(RR_ICE_CAVERN_BEGINNING, []{return (logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD)) || logic->CanUse(RG_MEGATON_HAMMER) || logic->HasExplosives || logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_DINS_FIRE);});}}),
   });
 
-  areaTable[RR_ICE_CAVERN_MAIN] = Area("Ice Cavern", "Ice Cavern", RA_ICE_CAVERN, NO_DAY_NIGHT_CYCLE, {
+  areaTable[RR_ICE_CAVERN_MAIN] = Region("Ice Cavern", "Ice Cavern", RA_ICE_CAVERN, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&logic->BlueFireAccess, {[]{return logic->BlueFireAccess || (logic->IsAdult && logic->HasBottle);}}),
                 }, {
@@ -45,7 +45,7 @@ void AreaTable_Init_IceCavern() {
   |   MASTER QUEST DUNGEON    |
   ---------------------------*/
   if (randoCtx->GetDungeon(ICE_CAVERN)->IsMQ()) {
-  areaTable[RR_ICE_CAVERN_MQ_BEGINNING] = Area("Ice Cavern MQ Beginning", "Ice Cavern", RA_ICE_CAVERN, NO_DAY_NIGHT_CYCLE, {
+  areaTable[RR_ICE_CAVERN_MQ_BEGINNING] = Region("Ice Cavern MQ Beginning", "Ice Cavern", RA_ICE_CAVERN, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&logic->FairyPot, {[]{return true;}}),
   }, {}, {
@@ -56,7 +56,7 @@ void AreaTable_Init_IceCavern() {
                   Entrance(RR_ICE_CAVERN_MQ_IRON_BOOTS_REGION, {[]{return logic->BlueFire;}}),
   });
 
-  areaTable[RR_ICE_CAVERN_MQ_MAP_ROOM] = Area("Ice Cavern MQ Map Room", "Ice Cavern", RA_ICE_CAVERN, NO_DAY_NIGHT_CYCLE, {
+  areaTable[RR_ICE_CAVERN_MQ_MAP_ROOM] = Region("Ice Cavern MQ Map Room", "Ice Cavern", RA_ICE_CAVERN, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&logic->BlueFireAccess,  {[]{return logic->BlueFireAccess || (logic->HasBottle && logic->CanJumpslash);}}),
   }, {
@@ -64,7 +64,7 @@ void AreaTable_Init_IceCavern() {
                   LOCATION(RC_ICE_CAVERN_MQ_MAP_CHEST, logic->BlueFire && (logic->CanJumpslash || logic->CanUse(RG_MEGATON_HAMMER) || logic->HasExplosives || logic->CanUseProjectile)),
   }, {});
 
-  areaTable[RR_ICE_CAVERN_MQ_IRON_BOOTS_REGION] = Area("Ice Cavern MQ Iron Boots Region", "Ice Cavern", RA_ICE_CAVERN, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[RR_ICE_CAVERN_MQ_IRON_BOOTS_REGION] = Region("Ice Cavern MQ Iron Boots Region", "Ice Cavern", RA_ICE_CAVERN, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LOCATION(RC_ICE_CAVERN_MQ_IRON_BOOTS_CHEST, logic->IsAdult && (logic->CanJumpslash || logic->CanUse(RG_MEGATON_HAMMER))),
                   LOCATION(RC_SHEIK_IN_ICE_CAVERN,            logic->IsAdult && (logic->CanJumpslash || logic->CanUse(RG_MEGATON_HAMMER))),
@@ -73,7 +73,7 @@ void AreaTable_Init_IceCavern() {
                     //Tricks: (logic->CanUse(RG_SCARECROW) || (logic->HoverBoots && logic->CanUse(RG_LONGSHOT)) || LogicIceMQScarecrow) && logic->IsAdult
   }, {});
 
-  areaTable[RR_ICE_CAVERN_MQ_COMPASS_ROOM] = Area("Ice Cavern MQ Compass Room", "Ice Cavern", RA_ICE_CAVERN, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[RR_ICE_CAVERN_MQ_COMPASS_ROOM] = Region("Ice Cavern MQ Compass Room", "Ice Cavern", RA_ICE_CAVERN, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LOCATION(RC_ICE_CAVERN_MQ_COMPASS_CHEST,    true),
                   LOCATION(RC_ICE_CAVERN_MQ_FREESTANDING_POH, logic->HasExplosives),

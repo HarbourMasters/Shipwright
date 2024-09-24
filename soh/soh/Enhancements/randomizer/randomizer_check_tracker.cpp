@@ -887,7 +887,7 @@ void CheckTrackerWindow::DrawElement() {
         return;
     }
 
-    AreaTable_Init();
+    RegionTable_Init();
 
     ImGui::TableNextRow(0, headerHeight);
     ImGui::TableNextColumn();

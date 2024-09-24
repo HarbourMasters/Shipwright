@@ -19,19 +19,19 @@ extern "C" {
  */
 void SkipBlueWarp_ShouldPlayTransitionCS(GIVanillaBehavior _, bool* should, void* opt) {
     if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO)) {
-        uint8_t isBlueWarp = 0;
+        uint8_t isBlueWarpCutscene = 0;
         // Deku Tree Blue warp
         if (gSaveContext.entranceIndex == ENTR_KOKIRI_FOREST_0 && gSaveContext.cutsceneIndex == 0xFFF1) {
             gSaveContext.entranceIndex = ENTR_KOKIRI_FOREST_11;
-            isBlueWarp = 1;
+            isBlueWarpCutscene = 1;
         // Dodongo's Cavern Blue warp
         } else if (gSaveContext.entranceIndex == ENTR_DEATH_MOUNTAIN_TRAIL_0 && gSaveContext.cutsceneIndex == 0xFFF1) {
             gSaveContext.entranceIndex = ENTR_DEATH_MOUNTAIN_TRAIL_5;
-            isBlueWarp = 1;
+            isBlueWarpCutscene = 1;
         // Jabu Jabu's Blue warp
         } else if (gSaveContext.entranceIndex == ENTR_ZORAS_FOUNTAIN_0 && gSaveContext.cutsceneIndex == 0xFFF0) {
             gSaveContext.entranceIndex = ENTR_ZORAS_FOUNTAIN_0;
-            isBlueWarp = 1;
+            isBlueWarpCutscene = 1;
         // Forest Temple Blue warp
         } else if (gSaveContext.entranceIndex == ENTR_CHAMBER_OF_THE_SAGES_0 && gSaveContext.cutsceneIndex == 0x0 && gSaveContext.chamberCutsceneNum == CHAMBER_CS_FOREST) {
             // Normally set in the blue warp cutscene
@@ -43,14 +43,14 @@ void SkipBlueWarp_ShouldPlayTransitionCS(GIVanillaBehavior _, bool* should, void
                 gSaveContext.entranceIndex = ENTR_KOKIRI_FOREST_12;
             }
 
-            isBlueWarp = 1;
+            isBlueWarpCutscene = 1;
         // Fire Temple Blue warp
         } else if (gSaveContext.entranceIndex == ENTR_KAKARIKO_VILLAGE_0 && gSaveContext.cutsceneIndex == 0xFFF3) {
             // Normally set in the blue warp cutscene
             Flags_SetEventChkInf(EVENTCHKINF_DEATH_MOUNTAIN_ERUPTED);
 
             gSaveContext.entranceIndex = ENTR_DEATH_MOUNTAIN_CRATER_5;
-            isBlueWarp = 1;
+            isBlueWarpCutscene = 1;
         // Water Temple Blue warp
         } else if (gSaveContext.entranceIndex == ENTR_CHAMBER_OF_THE_SAGES_0 && gSaveContext.cutsceneIndex == 0x0 && gSaveContext.chamberCutsceneNum == CHAMBER_CS_WATER) {
             // Normally set in the blue warp cutscene
@@ -58,18 +58,18 @@ void SkipBlueWarp_ShouldPlayTransitionCS(GIVanillaBehavior _, bool* should, void
             Flags_SetEventChkInf(EVENTCHKINF_RAISED_LAKE_HYLIA_WATER);
 
             gSaveContext.entranceIndex = ENTR_LAKE_HYLIA_9;
-            isBlueWarp = 1;
+            isBlueWarpCutscene = 1;
         // Spirit Temple Blue warp
         } else if (gSaveContext.entranceIndex == ENTR_CHAMBER_OF_THE_SAGES_0 && gSaveContext.cutsceneIndex == 0x0 && gSaveContext.chamberCutsceneNum == CHAMBER_CS_SPIRIT) {
             gSaveContext.entranceIndex = ENTR_DESERT_COLOSSUS_8;
-            isBlueWarp = 1;
+            isBlueWarpCutscene = 1;
         // Shadow Temple Blue warp
         } else if (gSaveContext.entranceIndex == ENTR_CHAMBER_OF_THE_SAGES_0 && gSaveContext.cutsceneIndex == 0x0 && gSaveContext.chamberCutsceneNum == CHAMBER_CS_SHADOW) {
             gSaveContext.entranceIndex = ENTR_GRAVEYARD_8;
-            isBlueWarp = 1;
+            isBlueWarpCutscene = 1;
         }
 
-        if (isBlueWarp) {
+        if (isBlueWarpCutscene) {
             if (gSaveContext.entranceIndex != ENTR_LAKE_HYLIA_9) {
                 // Normally set in the blue warp cutscene
                 gSaveContext.dayTime = gSaveContext.skyboxTime = 0x8000;
@@ -77,10 +77,11 @@ void SkipBlueWarp_ShouldPlayTransitionCS(GIVanillaBehavior _, bool* should, void
 
             *should = false;
             gSaveContext.cutsceneIndex = 0;
+        }
 
-            if (IS_RANDO && (RAND_GET_OPTION(RSK_SHUFFLE_DUNGEON_ENTRANCES) != RO_DUNGEON_ENTRANCE_SHUFFLE_OFF || RAND_GET_OPTION(RSK_SHUFFLE_BOSS_ENTRANCES) != RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF)) {
-                Entrance_OverrideBlueWarp();
-            }
+        // This is outside the above condition because we want to handle both first and following visits to the blue warp
+        if (IS_RANDO && (RAND_GET_OPTION(RSK_SHUFFLE_DUNGEON_ENTRANCES) != RO_DUNGEON_ENTRANCE_SHUFFLE_OFF || RAND_GET_OPTION(RSK_SHUFFLE_BOSS_ENTRANCES) != RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF)) {
+            Entrance_OverrideBlueWarp();
         }
     }
 }
