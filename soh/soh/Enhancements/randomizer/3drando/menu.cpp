@@ -10,7 +10,7 @@
 #include "randomizer.hpp"
 #include "spoiler_log.hpp"
 #include "location_access.hpp"
-#include "../../debugger/performanceTimer.h"
+#include "soh/Enhancements/debugger/performanceTimer.h"
 #include <spdlog/spdlog.h>
 #include "../../randomizer/randomizerTypes.h"
 #include <boost_custom/container_hash/hash_32.hpp>
@@ -72,7 +72,7 @@ bool GenerateRandomizer(std::set<RandomizerCheck> excludedLocations, std::set<Ra
     StopPerformanceTimer(PT_WHOLE_SEED);
     SPDLOG_DEBUG("Full Seed Genration Time: {}ms", GetPerformanceTimer(PT_WHOLE_SEED).count());
     SPDLOG_DEBUG("LogicReset time: {}ms", GetPerformanceTimer(PT_LOGIC_RESET).count());
-    SPDLOG_DEBUG("Area->Reset time: {}ms", GetPerformanceTimer(PT_AREA_RESET).count());
+    SPDLOG_DEBUG("Area->Reset time: {}ms", GetPerformanceTimer(PT_REGION_RESET).count());
     SPDLOG_DEBUG("Total Entrance Shuffle time: {}ms", GetPerformanceTimer(PT_ENTRANCE_SHUFFLE).count());
     SPDLOG_DEBUG("Total Shopsanity time: {}ms", GetPerformanceTimer(PT_SHOPSANITY).count());
     SPDLOG_DEBUG("Total Dungeon Specific Items time: {}ms", GetPerformanceTimer(PT_OWN_DUNGEON).count());

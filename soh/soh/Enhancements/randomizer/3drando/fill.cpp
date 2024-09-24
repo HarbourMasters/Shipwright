@@ -14,7 +14,7 @@
 #include "pool_functions.hpp"
 //#include "debug.hpp"
 #include "soh/Enhancements/randomizer/static_data.h"
-#include "../../debugger/performanceTimer.h"
+#include "soh/Enhancements/debugger/performanceTimer.h"
 
 #include <vector>
 #include <list>
@@ -106,8 +106,8 @@ static bool UpdateToDAccess(Entrance* entrance, bool propagateTimeTravel) {
   bool ageTimePropogated = false;
 
   //propagate childDay, childNight, adultDay, and adultNight separately
-  Area* parent = entrance->GetParentRegion();
-  Area* connection = entrance->GetConnectedRegion();
+  Region* parent = entrance->GetParentRegion();
+  Region* connection = entrance->GetConnectedRegion();
 
   if (!connection->childDay && parent->childDay && entrance->CheckConditionAtAgeTime(logic->IsChild, logic->AtDay)) {
     connection->childDay = true;
@@ -127,12 +127,12 @@ static bool UpdateToDAccess(Entrance* entrance, bool propagateTimeTravel) {
   }
 
   //special check for temple of time
-  if (propagateTimeTravel && !AreaTable(RR_ROOT)->Adult() && AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->Child()) { //RANDOTODO: sphere weirdness, other age locations not propagated in this sphere
-    AreaTable(RR_ROOT)->adultDay   = AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->childDay;
-    AreaTable(RR_ROOT)->adultNight = AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->childNight;
-  } else if (propagateTimeTravel && !AreaTable(RR_ROOT)->Child() && AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->Adult()){
-    AreaTable(RR_ROOT)->childDay   = AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->adultDay;
-    AreaTable(RR_ROOT)->childNight = AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->adultNight;
+  if (propagateTimeTravel && !RegionTable(RR_ROOT)->Adult() && RegionTable(RR_TOT_BEYOND_DOOR_OF_TIME)->Child()) { //RANDOTODO: sphere weirdness, other age locations not propagated in this sphere
+    RegionTable(RR_ROOT)->adultDay   = RegionTable(RR_TOT_BEYOND_DOOR_OF_TIME)->childDay;
+    RegionTable(RR_ROOT)->adultNight = RegionTable(RR_TOT_BEYOND_DOOR_OF_TIME)->childNight;
+  } else if (propagateTimeTravel && !RegionTable(RR_ROOT)->Child() && RegionTable(RR_TOT_BEYOND_DOOR_OF_TIME)->Adult()){
+    RegionTable(RR_ROOT)->childDay   = RegionTable(RR_TOT_BEYOND_DOOR_OF_TIME)->adultDay;
+    RegionTable(RR_ROOT)->childNight = RegionTable(RR_TOT_BEYOND_DOOR_OF_TIME)->adultNight;
   }
 
   StopPerformanceTimer(PT_TOD_ACCESS);
@@ -143,17 +143,17 @@ static bool UpdateToDAccess(Entrance* entrance, bool propagateTimeTravel) {
 static void ValidateOtherEntrance(GetAccessableLocationsStruct& gals) {
   auto ctx = Rando::Context::GetInstance();
   // Condition for validating Temple of Time Access
-  if (!gals.foundTempleOfTime && ((ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_CHILD && AreaTable(RR_TEMPLE_OF_TIME)->Adult()) || 
-                            (ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_ADULT && AreaTable(RR_TEMPLE_OF_TIME)->Child()))) {
+  if (!gals.foundTempleOfTime && ((ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_CHILD && RegionTable(RR_TEMPLE_OF_TIME)->Adult()) || 
+                            (ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_ADULT && RegionTable(RR_TEMPLE_OF_TIME)->Child()))) {
     gals.foundTempleOfTime = true;
   }
   // Condition for validating a valid starting region
   if (!gals.validatedStartingRegion) {
-    bool childAccess = ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_CHILD || AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->Child();
-    bool adultAccess = ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_ADULT || AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->Adult();
+    bool childAccess = ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_CHILD || RegionTable(RR_TOT_BEYOND_DOOR_OF_TIME)->Child();
+    bool adultAccess = ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_ADULT || RegionTable(RR_TOT_BEYOND_DOOR_OF_TIME)->Adult();
 
-    Area* kokiri = AreaTable(RR_KOKIRI_FOREST);
-    Area* kakariko = AreaTable(RR_KAKARIKO_VILLAGE);
+    Region* kokiri = RegionTable(RR_KOKIRI_FOREST);
+    Region* kakariko = RegionTable(RR_KAKARIKO_VILLAGE);
 
     if ((childAccess && (kokiri->Child() || kakariko->Child())) ||// RANDOTODO when proper ammo logic is done, this could probably be made optional
         (adultAccess && (kokiri->Adult() || kakariko->Adult()))) {
@@ -183,13 +183,13 @@ static void ValidateSphereZero(GetAccessableLocationsStruct& gals){
     // Reset access as the non-starting age
     if (ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_CHILD) {
       for (RandomizerRegion regionKey : gals.regionPool) {
-        AreaTable(regionKey)->adultDay = false;
-        AreaTable(regionKey)->adultNight = false;
+        RegionTable(regionKey)->adultDay = false;
+        RegionTable(regionKey)->adultNight = false;
       }
     } else {
       for (RandomizerRegion regionKey : gals.regionPool) {
-        AreaTable(regionKey)->childDay = false;
-        AreaTable(regionKey)->childNight = false;
+        RegionTable(regionKey)->childDay = false;
+        RegionTable(regionKey)->childNight = false;
       }
     }
     gals.sphereZeroComplete = true;
@@ -210,9 +210,9 @@ void ProcessExit(Entrance& exit, GetAccessableLocationsStruct& gals, bool propag
   }
 
   //If the exit is accessible and hasn't been added yet, add it to the pool
-  Area* exitArea = exit.GetConnectedRegion();
-  if (!exitArea->addedToPool && exit.ConditionsMet()) {
-    exitArea->addedToPool = true;
+  Region* exitRegion = exit.GetConnectedRegion();
+  if (!exitRegion->addedToPool && exit.ConditionsMet()) {
+    exitRegion->addedToPool = true;
     gals.regionPool.push_back(exit.GetConnectedRegionKey());
   }
 }
@@ -306,7 +306,7 @@ void ResetLogic(std::shared_ptr<Context>& ctx, bool applyInventory = false){
   if (applyInventory){
     ApplyStartingInventory();
   }
-  Areas::AccessReset();
+  Regions::AccessReset();
   ctx->LocationReset();
 } 
 
@@ -419,7 +419,7 @@ std::vector<RandomizerCheck> ReachabilitySearch(const std::vector<RandomizerChec
   while (gals.newItemLocations.size() > 0 || gals.updatedEvents || gals.ageTimePropogated || gals.firstIteration) {
     gals.InitLoop();
     for (size_t i = 0; i < gals.regionPool.size(); i++) {
-      Area* region = AreaTable(gals.regionPool[i]);
+      Region* region = RegionTable(gals.regionPool[i]);
 
       if (region->UpdateEvents()){
         gals.updatedEvents = true;
@@ -454,7 +454,7 @@ void GeneratePlaythrough() {
   while (gals.newItemLocations.size() > 0 || gals.updatedEvents || gals.ageTimePropogated || gals.firstIteration) {
     gals.InitLoop();
     for (size_t i = 0; i < gals.regionPool.size(); i++) {
-      Area* region = AreaTable(gals.regionPool[i]);
+      Region* region = RegionTable(gals.regionPool[i]);
 
       if (region->UpdateEvents()){
         gals.updatedEvents = true;
@@ -496,7 +496,7 @@ bool CheckBeatable(RandomizerGet ignore /* = RG_NONE*/) {
   while (gals.newItemLocations.size() > 0 || gals.updatedEvents || gals.ageTimePropogated || gals.firstIteration) {
     gals.InitLoop();
     for (size_t i = 0; i < gals.regionPool.size(); i++) {
-      Area* region = AreaTable(gals.regionPool[i]);
+      Region* region = RegionTable(gals.regionPool[i]);
 
       if (region->UpdateEvents()){
         gals.updatedEvents = true;
@@ -541,26 +541,26 @@ void ValidateEntrances(bool checkPoeCollectorAccess, bool checkOtherEntranceAcce
     //if we assume valid sphere zero, we only want starting age access
     if (ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_CHILD) {
       for (RandomizerRegion regionKey : gals.regionPool) {
-        AreaTable(RR_ROOT)->childNight = true;
-        AreaTable(RR_ROOT)->childDay = true;
+        RegionTable(RR_ROOT)->childNight = true;
+        RegionTable(RR_ROOT)->childDay = true;
       }
     } else {
       for (RandomizerRegion regionKey : gals.regionPool) {
-        AreaTable(RR_ROOT)->adultNight = true;
-        AreaTable(RR_ROOT)->adultDay = true;
+        RegionTable(RR_ROOT)->adultNight = true;
+        RegionTable(RR_ROOT)->adultDay = true;
       }
     }
   } else {
-    AreaTable(RR_ROOT)->childNight = true;
-    AreaTable(RR_ROOT)->adultNight = true;
-    AreaTable(RR_ROOT)->childDay = true;
-    AreaTable(RR_ROOT)->adultDay = true;
+    RegionTable(RR_ROOT)->childNight = true;
+    RegionTable(RR_ROOT)->adultNight = true;
+    RegionTable(RR_ROOT)->childDay = true;
+    RegionTable(RR_ROOT)->adultDay = true;
   }
 
   while (gals.newItemLocations.size() > 0 || gals.updatedEvents || gals.ageTimePropogated || gals.firstIteration) {
     gals.InitLoop();
     for (size_t i = 0; i < gals.regionPool.size(); i++) {
-      Area* region = AreaTable(gals.regionPool[i]);
+      Region* region = RegionTable(gals.regionPool[i]);
 
       if (region->UpdateEvents(gals.haveTimeAccess)){
         gals.updatedEvents = true;
@@ -620,7 +620,7 @@ void ValidateEntrances(bool checkPoeCollectorAccess, bool checkOtherEntranceAcce
   }
 }
 
-RandomizerArea LookForExternalArea(const Area* const currentRegion, std::vector<RandomizerRegion> &alreadyChecked){
+RandomizerArea LookForExternalArea(const Region* const currentRegion, std::vector<RandomizerRegion> &alreadyChecked){
   for (const auto& entrance : currentRegion->entrances) {
     RandomizerArea otherArea = entrance->GetParentRegion()->GetArea();
     const bool isAreaUnchecked = std::find(alreadyChecked.begin(), alreadyChecked.end(), entrance->GetParentRegionKey()) == alreadyChecked.end();
@@ -642,7 +642,7 @@ void SetAreas(){
   auto ctx = Rando::Context::GetInstance();
 //RANDOTODO give entrances an enum like RandomizerCheck, the give them all areas here, the use those areas to not need to recursivly find ItemLocation areas
   for (int regionType = 0; regionType < RR_MARKER_AREAS_END; regionType++) {
-    Area region = areaTable[regionType];
+    Region region = areaTable[regionType];
     RandomizerArea area = region.GetArea();
     if (area == RA_NONE) {
       std::vector<RandomizerRegion> alreadyChecked = {static_cast<RandomizerRegion>(regionType)};
@@ -839,7 +839,7 @@ static void AssumedFill(const std::vector<RandomizerGet>& items, const std::vect
                 SPDLOG_DEBUG(". TRYING AGAIN...\n");
 
 #ifdef ENABLE_DEBUG
-                Areas::DumpWorldGraph(Rando::StaticData::RetrieveItem(item).GetName().GetEnglish());
+                Regions::DumpWorldGraph(Rando::StaticData::RetrieveItem(item).GetName().GetEnglish());
                 PlacementLog_Write();
 #endif
 
@@ -1109,7 +1109,7 @@ static void RandomizeLinksPocket() {
 void VanillaFill() {
   auto ctx = Rando::Context::GetInstance();
   //Perform minimum needed initialization
-  AreaTable_Init();
+  RegionTable_Init();
   ctx->GenerateLocationPool();
   GenerateItemPool();
   GenerateStartingInventory();
@@ -1145,7 +1145,7 @@ int Fill() {
     //showItemProgress = false;
     ctx->playthroughLocations.clear();
     ctx->GetEntranceShuffler()->playthroughEntrances.clear();
-    AreaTable_Init(); //Reset the world graph to intialize the proper locations
+    RegionTable_Init(); //Reset the world graph to intialize the proper locations
     ctx->ItemReset(); //Reset shops incase of shopsanity random
     ctx->GenerateLocationPool();
     GenerateItemPool();
@@ -1339,7 +1339,7 @@ int Fill() {
     //Unsuccessful placement
     if(retries < 4) {
       SPDLOG_DEBUG("Failed to generate a beatable seed. Retrying...");
-      Areas::ResetAllLocations();
+      Regions::ResetAllLocations();
       logic->Reset();
       ClearProgress();
     }
