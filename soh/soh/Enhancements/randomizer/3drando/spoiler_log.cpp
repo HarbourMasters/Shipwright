@@ -40,7 +40,7 @@ json jsonData;
 std::map<RandomizerHintTextKey, Rando::ItemLocation*> hintedLocations;
 
 extern std::array<std::string, 17> hintCategoryNames;
-extern Area* GetHintRegion(uint32_t);
+extern Region* GetHintRegion(uint32_t);
 
 namespace {
 std::string placementtxt;

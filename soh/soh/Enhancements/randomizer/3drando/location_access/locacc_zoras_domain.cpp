@@ -3,8 +3,8 @@
 
 using namespace Rando;
 
-void AreaTable_Init_ZorasDomain() {
-  areaTable[RR_ZR_FRONT] = Area("ZR Front", "Zora River", RA_ZORAS_RIVER, DAY_NIGHT_CYCLE, {}, {
+void RegionTable_Init_ZorasDomain() {
+  areaTable[RR_ZR_FRONT] = Region("ZR Front", "Zora River", RA_ZORAS_RIVER, DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LOCATION(RC_ZR_GS_TREE, logic->IsChild && logic->CanChildAttack),
                 }, {
@@ -13,7 +13,7 @@ void AreaTable_Init_ZorasDomain() {
                   Entrance(RR_HYRULE_FIELD, {[]{return true;}}),
   });
 
-  areaTable[RR_ZORAS_RIVER] = Area("Zora River", "Zora River", RA_ZORAS_RIVER, DAY_NIGHT_CYCLE, {
+  areaTable[RR_ZORAS_RIVER] = Region("Zora River", "Zora River", RA_ZORAS_RIVER, DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&logic->GossipStoneFairy, {[]{return logic->CanSummonGossipFairy();}}),
                   EventAccess(&logic->BeanPlantFairy,   {[]{return logic->BeanPlantFairy   || (CanPlantBean(RR_ZORAS_RIVER) && logic->CanUse(RG_SONG_OF_STORMS));}}),
@@ -46,13 +46,13 @@ void AreaTable_Init_ZorasDomain() {
                   Entrance(RR_ZR_BEHIND_WATERFALL, {[]{return logic->CanUse(RG_ZELDAS_LULLABY) || (logic->IsChild && randoCtx->GetTrickOption(RT_ZR_CUCCO)) || (logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS) && randoCtx->GetTrickOption(RT_ZR_HOVERS));}}),
   });
 
-  areaTable[RR_ZR_BEHIND_WATERFALL] = Area("ZR Behind Waterfall", "Zora River", RA_ZORAS_RIVER, DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_ZR_BEHIND_WATERFALL] = Region("ZR Behind Waterfall", "Zora River", RA_ZORAS_RIVER, DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_ZORAS_RIVER,  {[]{return true;}}),
                   Entrance(RR_ZORAS_DOMAIN, {[]{return true;}}),
   });
 
-  areaTable[RR_ZR_OPEN_GROTTO] = Area("ZR Open Grotto", "ZR Open Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, grottoEvents, {
+  areaTable[RR_ZR_OPEN_GROTTO] = Region("ZR Open Grotto", "ZR Open Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, grottoEvents, {
                   //Locations
                   LOCATION(RC_ZR_OPEN_GROTTO_CHEST,         true),
                   LOCATION(RC_ZR_OPEN_GROTTO_FISH,          logic->HasBottle),
@@ -64,7 +64,7 @@ void AreaTable_Init_ZorasDomain() {
                   Entrance(RR_ZORAS_RIVER, {[]{return true;}}),
   });
 
-  areaTable[RR_ZR_FAIRY_GROTTO] = Area("ZR Fairy Grotto", "ZR Fairy Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, {
+  areaTable[RR_ZR_FAIRY_GROTTO] = Region("ZR Fairy Grotto", "ZR Fairy Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, {
                   //Event
                   EventAccess(&logic->FreeFairies, {[]{return true;}}),
                 }, {}, {
@@ -72,7 +72,7 @@ void AreaTable_Init_ZorasDomain() {
                   Entrance(RR_ZORAS_RIVER, {[]{return true;}}),
   });
 
-  areaTable[RR_ZR_STORMS_GROTTO] = Area("ZR Storms Grotto", "ZR Storms Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[RR_ZR_STORMS_GROTTO] = Region("ZR Storms Grotto", "ZR Storms Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LOCATION(RC_ZR_DEKU_SCRUB_GROTTO_REAR,  logic->CanStunDeku),
                   LOCATION(RC_ZR_DEKU_SCRUB_GROTTO_FRONT, logic->CanStunDeku),
@@ -82,7 +82,7 @@ void AreaTable_Init_ZorasDomain() {
                   Entrance(RR_ZORAS_RIVER, {[]{return true;}}),
   });
 
-  areaTable[RR_ZORAS_DOMAIN] = Area("Zoras Domain", "Zoras Domain", RA_ZORAS_DOMAIN, NO_DAY_NIGHT_CYCLE, {
+  areaTable[RR_ZORAS_DOMAIN] = Region("Zoras Domain", "Zoras Domain", RA_ZORAS_DOMAIN, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&logic->EyeballFrogAccess, {[]{return logic->EyeballFrogAccess || (logic->IsAdult && logic->KingZoraThawed && (logic->Eyedrops || logic->EyeballFrog || logic->Prescription || logic->PrescriptionAccess));}}),
                   EventAccess(&logic->GossipStoneFairy,  {[]{return logic->CanSummonGossipFairyWithoutSuns();}}),
@@ -115,7 +115,7 @@ void AreaTable_Init_ZorasDomain() {
                   Entrance(RR_ZD_STORMS_GROTTO,    {[]{return logic->CanOpenStormGrotto;}}),
   });
 
-  areaTable[RR_ZD_BEHIND_KING_ZORA] = Area("ZD Behind King Zora", "Zoras Domain", RA_ZORAS_DOMAIN, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[RR_ZD_BEHIND_KING_ZORA] = Region("ZD Behind King Zora", "Zoras Domain", RA_ZORAS_DOMAIN, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LOCATION(RC_ZD_BEHIND_KING_ZORA_BEEHIVE, logic->CanBreakUpperBeehives),
                 }, {
@@ -124,7 +124,7 @@ void AreaTable_Init_ZorasDomain() {
                   Entrance(RR_ZORAS_FOUNTAIN, {[]{return true;}}),
   });
 
-  areaTable[RR_ZD_SHOP] = Area("ZD Shop", "ZD Shop", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[RR_ZD_SHOP] = Region("ZD Shop", "ZD Shop", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LOCATION(RC_ZD_SHOP_ITEM_1, true),
                   LOCATION(RC_ZD_SHOP_ITEM_2, true),
@@ -139,7 +139,7 @@ void AreaTable_Init_ZorasDomain() {
                   Entrance(RR_ZORAS_DOMAIN, {[]{return true;}}),
   });
 
-  areaTable[RR_ZD_STORMS_GROTTO] = Area("ZD Storms Grotto", "ZD Storms Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, {
+  areaTable[RR_ZD_STORMS_GROTTO] = Region("ZD Storms Grotto", "ZD Storms Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&logic->FreeFairies, {[]{return true;}}),
                 }, {}, {
@@ -147,7 +147,7 @@ void AreaTable_Init_ZorasDomain() {
                   Entrance(RR_ZORAS_DOMAIN, {[]{return true;}}),
   });
 
-  areaTable[RR_ZORAS_FOUNTAIN] = Area("Zoras Fountain", "Zoras Fountain", RA_ZORAS_FOUNTAIN, NO_DAY_NIGHT_CYCLE, {
+  areaTable[RR_ZORAS_FOUNTAIN] = Region("Zoras Fountain", "Zoras Fountain", RA_ZORAS_FOUNTAIN, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&logic->GossipStoneFairy, {[]{return logic->CanSummonGossipFairyWithoutSuns();}}),
                   EventAccess(&logic->ButterflyFairy,   {[]{return logic->ButterflyFairy   || (logic->CanUse(RG_STICKS) && logic->AtDay);}}),
@@ -168,7 +168,7 @@ void AreaTable_Init_ZorasDomain() {
                   Entrance(RR_ZF_GREAT_FAIRY_FOUNTAIN,   {[]{return logic->HasExplosives;}}),
   });
 
-  areaTable[RR_ZF_GREAT_FAIRY_FOUNTAIN] = Area("ZF Great Fairy Fountain", "ZF Great Fairy Fountain", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[RR_ZF_GREAT_FAIRY_FOUNTAIN] = Region("ZF Great Fairy Fountain", "ZF Great Fairy Fountain", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LOCATION(RC_ZF_GREAT_FAIRY_REWARD, logic->CanUse(RG_ZELDAS_LULLABY)),
                 }, {
