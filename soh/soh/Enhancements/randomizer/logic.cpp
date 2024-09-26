@@ -1083,15 +1083,13 @@ namespace Rando {
             case RG_BONGO_BONGO_SOUL:
             case RG_TWINROVA_SOUL:
             case RG_GANON_SOUL:
-            case RG_GREG_RUPEE:
-            case RG_FISHING_POLE:
-                SetRandoInf(RandoGetToRandInf.at(randoGet), state);
-                break;
             case RG_OCARINA_A_BUTTON:
             case RG_OCARINA_C_UP_BUTTON:
             case RG_OCARINA_C_DOWN_BUTTON:
             case RG_OCARINA_C_LEFT_BUTTON:
             case RG_OCARINA_C_RIGHT_BUTTON:
+            case RG_GREG_RUPEE:
+            case RG_FISHING_POLE:
                 SetRandoInf(RandoGetToRandInf.at(randoGet), state);
                 break;
             case RG_TRIFORCE_PIECE:
@@ -1556,11 +1554,12 @@ namespace Rando {
         SetUpgrade(UPG_STICKS, ctx->GetOption(RSK_SHUFFLE_DEKU_STICK_BAG).Is(true) ? 0 : 1);
         SetUpgrade(UPG_NUTS, ctx->GetOption(RSK_SHUFFLE_DEKU_NUT_BAG).Is(true) ? 0 : 1);
 
+        //If we're not shuffling swim, we start with it
         if (ctx->GetOption(RSK_SHUFFLE_SWIM).Is(false)) {
             SetRandoInf(RAND_INF_CAN_SWIM, true);
         }
 
-        //If we're not shuffling child's wallet, we start with it (wallet 1)
+        //If we're not shuffling child's wallet, we start with it
         if (ctx->GetOption(RSK_SHUFFLE_CHILD_WALLET).Is(false)) {
             SetRandoInf(RAND_INF_HAS_WALLET, true);
         }

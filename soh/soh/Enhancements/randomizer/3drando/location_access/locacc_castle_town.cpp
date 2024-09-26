@@ -135,8 +135,7 @@ void RegionTable_Init_CastleTown() {
   areaTable[RR_GANONS_CASTLE_GROUNDS] = Region("Ganon's Castle Grounds", "Castle Grounds", RA_OUTSIDE_GANONS_CASTLE, NO_DAY_NIGHT_CYCLE, {
                   EventAccess(&logic->BuiltRainbowBridge, {[]{return logic->CanBuildRainbowBridge();}}),
                 }, {
-                  //Locations                                   //the terrain was lowered such that you can't get this GS with a simple sword slash
-                                                                // ^ 3DS change?
+                  //Locations                                   
                   LOCATION(RC_OGC_GS, logic->CanJumpslash() || logic->CanUseProjectile() || (logic->CanShield() && logic->CanUse(RG_MEGATON_HAMMER)) || logic->CanUse(RG_DINS_FIRE)),
                 }, {
                   //Exits
