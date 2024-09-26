@@ -2169,6 +2169,7 @@ typedef enum {
     RG_DISTANT_SCARECROW,
     RG_STICKS,
     RG_NUTS,
+    RG_EPONA,
     RG_MAX
 } RandomizerGet;
 
