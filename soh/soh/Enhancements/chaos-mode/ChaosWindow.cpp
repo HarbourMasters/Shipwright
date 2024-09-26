@@ -208,33 +208,14 @@ std::unordered_map<uint32_t, uint32_t> itemToGIDMap = {
     { GID_OCARINA_TIME,         ITEM_OCARINA_TIME },
     { GID_HAMMER,               ITEM_HAMMER },
     { GID_BEAN,                 ITEM_BEAN },
-    { GID_CLAIM_CHECK,          ITEM_CLAIM_CHECK },
-    { GID_SWORD_KOKIRI,         ITEM_SWORD_KOKIRI },
-    { GID_SWORD_BGS,            ITEM_SWORD_BGS },
-    { GID_SHIELD_DEKU,          ITEM_SHIELD_DEKU },
-    { GID_SHIELD_HYLIAN,        ITEM_SHIELD_HYLIAN },
-    { GID_SHIELD_MIRROR,        ITEM_SHIELD_MIRROR },
-    { GID_TUNIC_GORON,          ITEM_TUNIC_GORON },
-    { GID_TUNIC_ZORA,           ITEM_TUNIC_ZORA },
-    { GID_BOOTS_IRON,           ITEM_BOOTS_IRON },
-    { GID_BOOTS_HOVER,          ITEM_BOOTS_HOVER },
-    { GID_STONE_OF_AGONY,       ITEM_STONE_OF_AGONY },
-    { GID_GERUDO_CARD,          ITEM_GERUDO_CARD },
     { GID_OCARINA_FAIRY,        ITEM_OCARINA_FAIRY },
-    { GID_SWORD_BGS,            ITEM_SWORD_BGS },
     { GID_ARROW_FIRE,           ITEM_ARROW_FIRE },
     { GID_ARROW_ICE,            ITEM_ARROW_ICE },
     { GID_ARROW_LIGHT,          ITEM_ARROW_LIGHT },
-    { GID_SKULL_TOKEN,          ITEM_SKULL_TOKEN },
     { GID_DINS_FIRE,            ITEM_DINS_FIRE },
     { GID_FARORES_WIND,         ITEM_FARORES_WIND },
     { GID_NAYRUS_LOVE,          ITEM_NAYRUS_LOVE },
     { GID_BOMB,                 ITEM_BOMB },
-    { GID_RUPEE_GREEN,          ITEM_RUPEE_GREEN },
-    { GID_RUPEE_BLUE,           ITEM_RUPEE_BLUE },
-    { GID_RUPEE_RED,            ITEM_RUPEE_RED },
-    { GID_RUPEE_PURPLE,         ITEM_RUPEE_PURPLE },
-    { GID_RUPEE_GOLD,           ITEM_RUPEE_GOLD },
 };
 
 
@@ -301,14 +282,18 @@ void ChaosEventFloatingStuffReturn(Actor* actor) {
 void ChaosEventFloatingStuffSelector() {
     availableItems.clear();
     for (auto& item : itemToGIDMap) {
-        if (INV_CONTENT(std::get<1>(item))) {
+        if (INV_CONTENT(std::get<1>(item)) != ITEM_NONE) {
             availableItems.push_back(std::get<0>(item));
-        }
+        } 
     }
     if (availableItems.size() != 0) {
         uint32_t roll = rand() % availableItems.size();
         randomItem = (GetItemDrawID)availableItems[roll];
-        INV_CONTENT(itemToGIDMap[availableItems[roll]]) = ITEM_NONE;
+        for (auto itemToLose : itemToGIDMap) {
+            if (std::get<0>(itemToLose) == availableItems[roll]) {
+                INV_CONTENT(itemToGIDMap[availableItems[roll]]) = ITEM_NONE;
+            }
+        }
     } else {
         randomItem = GID_MAXIMUM;
     }
