@@ -282,7 +282,7 @@ void ChaosEventFloatingStuffReturn(Actor* actor) {
 void ChaosEventFloatingStuffSelector() {
     availableItems.clear();
     for (auto& item : itemToGIDMap) {
-        if (INV_CONTENT(std::get<1>(item)) != ITEM_NONE) {
+        if (INV_CONTENT(std::get<1>(item)) == std::get<1>(item)) {
             availableItems.push_back(std::get<0>(item));
         } 
     }
