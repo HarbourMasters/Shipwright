@@ -71,18 +71,6 @@ class Logic {
     // Logical keysanity
     bool IsKeysanity = false;
 
-    // Keys
-    uint8_t ForestTempleKeys = 0;
-    uint8_t FireTempleKeys = 0;
-    uint8_t WaterTempleKeys = 0;
-    uint8_t SpiritTempleKeys = 0;
-    uint8_t ShadowTempleKeys = 0;
-    uint8_t GanonsCastleKeys = 0;
-    uint8_t GerudoFortressKeys = 0;
-    uint8_t GerudoTrainingGroundsKeys = 0;
-    uint8_t BottomOfTheWellKeys = 0;
-    uint8_t TreasureGameKeys = 0;
-
     // Bottle Count
     uint8_t Bottles = 0;
     uint8_t NumBottles = 0;
@@ -108,10 +96,6 @@ class Logic {
     bool FairyPond = false;
     bool AmmoCanDrop = false;
 
-    bool BuyFish = false;
-    bool BuyBugs = false;
-    bool BuyFairy = false;
-
     uint8_t PieceOfHeart = 0;
     uint8_t HeartContainer = 0;
 
@@ -122,22 +106,12 @@ class Logic {
     bool ChildScarecrow = false;
     bool AdultScarecrow = false;
 
-    bool OcarinaAButton      = false;
-    bool OcarinaCLeftButton  = false;
-    bool OcarinaCRightButton = false;
-    bool OcarinaCUpButton    = false;
-    bool OcarinaCDownButton  = false;
-
     bool CarpetMerchant = false;
     bool CouldPlayBowling = false;
     bool IsChild = false;
     bool IsAdult = false;
-    // bool CanPlantBean        = false;
     bool BigPoeKill = false;
     uint8_t BaseHearts = 0;
-    uint8_t Multiplier = 0;
-
-    bool GuaranteeHint = false;
 
     // Bridge and LACS Requirements
     bool BuiltRainbowBridge = false;
@@ -145,7 +119,6 @@ class Logic {
     // Other
     bool AtDay = false;
     bool AtNight = false;
-    uint8_t Age = 0;
 
     // Events
     bool ShowedMidoSwordAndShield = false;
@@ -171,38 +144,9 @@ class Logic {
     bool ForestTempleAmyAndMeg = false;
     bool FireLoopSwitch = false;
     bool LinksCow = false;
-    bool AtDampeTime = false;
     bool DeliverLetter = false;
-    bool TimeTravel = false;
 
     /* --- END OF HELPERS AND LOCATION ACCESS --- */
-
-    // Placement Tracking
-    uint8_t AddedProgressiveBulletBags = 0;
-    uint8_t AddedProgressiveBombBags = 0;
-    uint8_t AddedProgressiveMagics = 0;
-    uint8_t AddedProgressiveScales = 0;
-    uint8_t AddedProgressiveHookshots = 0;
-    uint8_t AddedProgressiveBows = 0;
-    uint8_t AddedProgressiveWallets = 0;
-    uint8_t AddedProgressiveStrengths = 0;
-    uint8_t AddedProgressiveOcarinas = 0;
-    uint8_t TokensInPool = 0;
-
-    // Event checking past
-    bool DrainWellPast = false;
-    bool DampesWindmillAccessPast = false;
-    bool DekuTreeClearPast = false;
-    bool GoronRubyPast = false;
-    bool ZoraSapphirePast = false;
-    bool ForestTrialClearPast = false;
-    bool FireTrialClearPast = false;
-    bool WaterTrialClearPast = false;
-    bool SpiritTrialClearPast = false;
-    bool ShadowTrialClearPast = false;
-    bool LightTrialClearPast = false;
-    bool BuyDekuShieldPast = false;
-    bool TimeTravelPast = false;
 
     SaveContext* mSaveContext = nullptr;
     Logic();

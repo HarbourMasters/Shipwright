@@ -223,7 +223,7 @@ void RegionTable_Init_Kakariko() {
                   Entrance(RR_GRAVEYARD_COMPOSERS_GRAVE,    {[]{return logic->CanUse(RG_ZELDAS_LULLABY);}}),
                   Entrance(RR_GRAVEYARD_HEART_PIECE_GRAVE,  {[]{return logic->IsAdult || logic->AtNight;}}),
                   Entrance(RR_GRAVEYARD_DAMPES_GRAVE,       {[]{return logic->IsAdult;}}),
-                  Entrance(RR_GRAVEYARD_DAMPES_HOUSE,       {[]{return logic->IsAdult || logic->AtDampeTime;}}), //TODO: This needs to be handled
+                  Entrance(RR_GRAVEYARD_DAMPES_HOUSE,       {[]{return logic->IsAdult /*|| logic->AtDampeTime*/;}}), //TODO: This needs to be handled in ToD rework
                   Entrance(RR_KAKARIKO_VILLAGE,             {[]{return true;}}),
                   Entrance(RR_GRAVEYARD_WARP_PAD_REGION,    {[]{return false;}}),
   });

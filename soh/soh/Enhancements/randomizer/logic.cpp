@@ -1599,10 +1599,6 @@ namespace Rando {
         FreeFairies      = false;
         FairyPond        = false;
 
-        BuyFish          = false;
-        BuyBugs          = false;
-        BuyFairy         = false;
-
         PieceOfHeart     = 0;
         HeartContainer   = 0;
 
@@ -1620,9 +1616,7 @@ namespace Rando {
         BigPoeKill            = false;
 
         BaseHearts      = ctx->GetOption(RSK_STARTING_HEARTS).Value<uint8_t>() + 1;
-        Multiplier      = (ctx->GetOption(RSK_DAMAGE_MULTIPLIER).Value<uint8_t>() < 6) ? ctx->GetOption(RSK_DAMAGE_MULTIPLIER).Value<uint8_t>() : 10;
-
-        GuaranteeHint          = false;
+        
 
         //Bridge Requirements
         BuiltRainbowBridge    = false;
@@ -1630,8 +1624,7 @@ namespace Rando {
         //Other
         AtDay         = false;
         AtNight       = false;
-        Age           = ctx->GetSettings()->ResolvedStartingAge();
-        GetSaveContext()->linkAge = !Age;
+        GetSaveContext()->linkAge = !ctx->GetSettings()->ResolvedStartingAge();
 
         //Events
         ShowedMidoSwordAndShield  = false;
@@ -1657,23 +1650,7 @@ namespace Rando {
         ForestTempleAmyAndMeg     = false;
         FireLoopSwitch            = false;
         LinksCow                  = false;
-        AtDampeTime               = false;
         DeliverLetter             = false;
-        TimeTravel                = false;
-
-        DrainWellPast            = false;
-        DampesWindmillAccessPast = false;
-        DekuTreeClearPast        = false;
-        GoronRubyPast            = false;
-        ZoraSapphirePast         = false;
-        ForestTrialClearPast     = false;
-        FireTrialClearPast       = false;
-        WaterTrialClearPast      = false;
-        SpiritTrialClearPast     = false;
-        ShadowTrialClearPast     = false;
-        LightTrialClearPast      = false;
-        BuyDekuShieldPast        = false;
-        TimeTravelPast           = false;
 
         StopPerformanceTimer(PT_LOGIC_RESET);
     }
