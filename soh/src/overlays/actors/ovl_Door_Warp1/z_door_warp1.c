@@ -567,11 +567,6 @@ void DoorWarp1_ChildWarpOut(DoorWarp1* this, PlayState* play) {
             }
         }
 
-        if (IS_RANDO && (Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES) != RO_DUNGEON_ENTRANCE_SHUFFLE_OFF ||
-            Randomizer_GetSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) != RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF)) {
-            Entrance_OverrideBlueWarp();
-        }
-
         if (GameInteractor_Should(VB_BLUE_WARP_APPLY_ENTRANCE_AND_CUTSCENE, true, this)) {
             osSyncPrintf("\n\n\nおわりおわり");
             play->transitionTrigger = TRANS_TRIGGER_START;
@@ -668,11 +663,6 @@ void DoorWarp1_RutoWarpOut(DoorWarp1* this, PlayState* play) {
         }
         if (GameInteractor_Should(VB_BLUE_WARP_APPLY_ENTRANCE_AND_CUTSCENE, true, this)) {
             play->nextEntranceIndex = ENTR_ZORAS_FOUNTAIN_0;
-        }
-
-        if (IS_RANDO && (Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES) != RO_DUNGEON_ENTRANCE_SHUFFLE_OFF ||
-            Randomizer_GetSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) != RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF)) {
-            Entrance_OverrideBlueWarp();
         }
 
         if (GameInteractor_Should(VB_BLUE_WARP_APPLY_ENTRANCE_AND_CUTSCENE, true, this)) {

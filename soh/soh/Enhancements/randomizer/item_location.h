@@ -32,8 +32,10 @@ class ItemLocation {
     bool HasCustomPrice() const;
     void SetCustomPrice(uint16_t price_);
     bool HasObtained() const;
-    void MarkAsObtained();
-    void MarkAsNotObtained();
+    void SetCheckStatus(RandomizerCheckStatus status_);
+    RandomizerCheckStatus GetCheckStatus();
+    void SetIsSkipped(bool isSkipped_);
+    bool GetIsSkipped();
     bool IsHintable() const;
     void SetAsHintable();
     bool IsAHintAccessible() const;
@@ -70,6 +72,7 @@ class ItemLocation {
     bool visibleInImGui = false;
     bool wothCandidate = false;
     bool barrenCandidate = false;
-    bool obtained = false;
+    RandomizerCheckStatus status = RCSHOW_UNCHECKED;
+    bool isSkipped = false;
 };
 } // namespace Rando

@@ -925,12 +925,6 @@ void ActorViewer_AddTagForAllActors() {
 }
 
 void ActorViewerWindow::DrawElement() {
-    ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Actor Viewer", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
-        ImGui::End();
-        return;
-    }
-
     static Actor* display;
     static Actor empty{};
     static Actor* fetch = NULL;
@@ -1235,8 +1229,6 @@ void ActorViewerWindow::DrawElement() {
             actors.clear();
         }
     }
-
-    ImGui::End();
 }
 
 void ActorViewerWindow::InitElement() {

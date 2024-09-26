@@ -18,7 +18,6 @@ void RandoMain::GenerateRando(std::set<RandomizerCheck> excludedLocations, std::
 
     Rando::Context::GetInstance()->SetSeedGenerated(GenerateRandomizer(excludedLocations, enabledTricks, seedString));
 
-    CVarSave();
-    CVarLoad();
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     Rando::Context::GetInstance()->SetPlandoLoaded(false);
 }

@@ -163,6 +163,8 @@ class SaveManager {
     static void LoadRandomizerVersion1();
     static void LoadRandomizerVersion2();
     static void LoadRandomizerVersion3();
+    static void LoadTrackerData();
+    static void SaveTrackerData(SaveContext* saveContext, int sectionID, bool fullSave);
     static void SaveRandomizer(SaveContext* saveContext, int sectionID, bool fullSave);
 
     static void LoadBaseVersion1();
@@ -186,7 +188,7 @@ class SaveManager {
     nlohmann::json* currentJsonContext = nullptr;
     nlohmann::json::iterator currentJsonArrayContext;
     std::shared_ptr<BS::thread_pool> smThreadPool;
-
+    std::mutex saveMtx;
 };
 
 #else

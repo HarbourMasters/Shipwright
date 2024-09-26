@@ -223,6 +223,10 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
                         if (actor->id == ACTOR_BG_MORI_HINERI) {
                             break;
                         }
+                        // This is handled in the FasterHeavyBlockLift enhancement
+                        if (actor->id == ACTOR_BG_HEAVY_BLOCK) {
+                            break;
+                        }
 
                         RateLimitedSuccessChime();
                         *should = false;
@@ -237,6 +241,12 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
                         break;
                     }
                     case ACTOR_BG_BDAN_SWITCH: {
+                        // The switch in jabu that you are intended to press with a box to reach barrinade
+                        // can be skipped by either a frame perfect roll open or with OI
+                        // The One Point for that switch is used in common setups for the former and is required for the latter to work
+                        if (actor->params == 14848 && gPlayState->sceneNum == SCENE_JABU_JABU && !CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.GlitchAiding"), 0)){
+                            break;
+                        }
                         BgBdanSwitch* switchActor = static_cast<BgBdanSwitch*>(opt);
                         switchActor->unk_1D8 = 0;
                         switchActor->unk_1DA = 0;
@@ -297,7 +307,9 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
             }
             break;
         case VB_WONDER_TALK: {
-            if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.NoForcedDialog"), IS_RANDO)) {
+            //We want to show the frog hint if it is on, regardless of cutscene settings
+            if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.NoForcedDialog"), IS_RANDO) && 
+                !(gPlayState->sceneNum == SCENE_ZORAS_RIVER && IS_RANDO && RAND_GET_OPTION(RSK_FROGS_HINT))) {
                 *should = false;
             }
             break;
@@ -305,9 +317,11 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
         case VB_NAVI_TALK: {
             if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.NoForcedDialog"), IS_RANDO)) {
                 ElfMsg* naviTalk = static_cast<ElfMsg*>(opt);
-                Flags_SetSwitch(gPlayState, (naviTalk->actor.params >> 8) & 0x3F);
-                Actor_Kill(&naviTalk->actor);
-                *should = false;
+                if (((naviTalk->actor.params >> 8) & 0x3F) != 0x3F) {
+                    Flags_SetSwitch(gPlayState, (naviTalk->actor.params >> 8) & 0x3F);
+                    Actor_Kill(&naviTalk->actor);
+                    *should = false;
+                }
             }
             break;
         }
