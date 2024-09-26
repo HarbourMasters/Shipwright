@@ -15,6 +15,8 @@ extern "C" {
 #include "macros.h"
 extern PlayState* gPlayState;
 #include "src/overlays/actors/ovl_En_Md/z_en_md.h"
+#include "src/overlays/actors/ovl_En_Bubble/z_en_bubble.h"
+void func_809CC774(EnBubble* thisx);
 }
 
 float chaosWindowSize = 1.0f;
@@ -37,6 +39,7 @@ uint32_t erasureTimer = 0;
 uint32_t ceilingTimer = 0;
 uint32_t stopHeartTimer = 0;
 uint32_t spikeTrapTimer = 0;
+uint32_t floatTimer = 0;
 
 uint32_t chaosInterval = 5;
 uint32_t votingInterval = 5;
@@ -70,6 +73,7 @@ uint32_t eventErasureTimer;
 uint32_t eventCeilingTimer;
 uint32_t eventStopHeartTimer;
 uint32_t eventSpikeTrapTimer;
+uint32_t eventFloatTimer;
 
 ActorListEntry guardActors;
 ActorListEntry ceilingActors;
@@ -81,6 +85,7 @@ static uint32_t midoSucksHook = 0;
 static uint32_t fallingCeilingHook = 0;
 static uint32_t stopHeartHook = 0;
 static uint32_t spikeTrapHook = 0;
+static uint32_t floatingHook = 0;
 static uint32_t votingHook = 0;
 
 uint32_t votingOptionA;
@@ -98,6 +103,7 @@ bool openChaosTester = false;
 bool stopHeart = false;
 
 const char* fakeText = "Random Teleport";
+GetItemDrawID randomItem;
 
 std::vector<voteObject> votingObjectList = {
     { votingOptionA, voteCountA },
@@ -142,16 +148,20 @@ std::vector<eventObject> eventList = {
         "Press A to stop the Hearts! Enjoy your new health." },
     { EVENT_SPIKE_TRAP, "Spawn Spike Trap", "gEnhancements.SpikeTrap", eventSpikeTrapTimer,
         "You've seen this before, but this time it's different!" },
+    { EVENT_FLOATING_STUFF, "Floating Stuff", "gEnhancements.FloatingStuff", eventFloatTimer,
+        "What is this stuff, and why is it floating?" },
 };
 
+static std::vector<Actor*> floatingStuffActors;
+
 std::vector<uint32_t> teleportList = {
-    //GI_TP_DEST_SERENADE,
-    //GI_TP_DEST_REQUIEM,
-    //GI_TP_DEST_BOLERO,
-    //GI_TP_DEST_MINUET,
-    //GI_TP_DEST_NOCTURNE,
-    //GI_TP_DEST_PRELUDE,
-    //GI_TP_DEST_LINKSHOUSE,
+    GI_TP_DEST_SERENADE,
+    GI_TP_DEST_REQUIEM,
+    GI_TP_DEST_BOLERO,
+    GI_TP_DEST_MINUET,
+    GI_TP_DEST_NOCTURNE,
+    GI_TP_DEST_PRELUDE,
+    GI_TP_DEST_LINKSHOUSE,
     GI_TP_DEST_JAILCELL,
 };
 
@@ -186,9 +196,52 @@ std::unordered_map<uint32_t, uint32_t> itemToQuestList = {
     { ITEM_ZORA_SAPPHIRE,    QUEST_ZORA_SAPPHIRE, },
 };
 
+std::unordered_map<uint32_t, uint32_t> itemToGIDMap = {
+    { GID_BOMBCHU,              ITEM_BOMBCHU },
+    { GID_BOW,                  ITEM_BOW },
+    { GID_SLINGSHOT,            ITEM_SLINGSHOT },
+    { GID_BOOMERANG,            ITEM_BOOMERANG },
+    { GID_STICK,                ITEM_STICK },
+    { GID_HOOKSHOT,             ITEM_HOOKSHOT },
+    { GID_LONGSHOT,             ITEM_LONGSHOT },
+    { GID_LENS,                 ITEM_LENS },
+    { GID_OCARINA_TIME,         ITEM_OCARINA_TIME },
+    { GID_HAMMER,               ITEM_HAMMER },
+    { GID_BEAN,                 ITEM_BEAN },
+    { GID_CLAIM_CHECK,          ITEM_CLAIM_CHECK },
+    { GID_SWORD_KOKIRI,         ITEM_SWORD_KOKIRI },
+    { GID_SWORD_BGS,            ITEM_SWORD_BGS },
+    { GID_SHIELD_DEKU,          ITEM_SHIELD_DEKU },
+    { GID_SHIELD_HYLIAN,        ITEM_SHIELD_HYLIAN },
+    { GID_SHIELD_MIRROR,        ITEM_SHIELD_MIRROR },
+    { GID_TUNIC_GORON,          ITEM_TUNIC_GORON },
+    { GID_TUNIC_ZORA,           ITEM_TUNIC_ZORA },
+    { GID_BOOTS_IRON,           ITEM_BOOTS_IRON },
+    { GID_BOOTS_HOVER,          ITEM_BOOTS_HOVER },
+    { GID_STONE_OF_AGONY,       ITEM_STONE_OF_AGONY },
+    { GID_GERUDO_CARD,          ITEM_GERUDO_CARD },
+    { GID_OCARINA_FAIRY,        ITEM_OCARINA_FAIRY },
+    { GID_SWORD_BGS,            ITEM_SWORD_BGS },
+    { GID_ARROW_FIRE,           ITEM_ARROW_FIRE },
+    { GID_ARROW_ICE,            ITEM_ARROW_ICE },
+    { GID_ARROW_LIGHT,          ITEM_ARROW_LIGHT },
+    { GID_SKULL_TOKEN,          ITEM_SKULL_TOKEN },
+    { GID_DINS_FIRE,            ITEM_DINS_FIRE },
+    { GID_FARORES_WIND,         ITEM_FARORES_WIND },
+    { GID_NAYRUS_LOVE,          ITEM_NAYRUS_LOVE },
+    { GID_BOMB,                 ITEM_BOMB },
+    { GID_RUPEE_GREEN,          ITEM_RUPEE_GREEN },
+    { GID_RUPEE_BLUE,           ITEM_RUPEE_BLUE },
+    { GID_RUPEE_RED,            ITEM_RUPEE_RED },
+    { GID_RUPEE_PURPLE,         ITEM_RUPEE_PURPLE },
+    { GID_RUPEE_GOLD,           ITEM_RUPEE_GOLD },
+};
+
+
 std::vector<Actor*> actorData = {};
 std::vector<std::pair<Vec3f, Vec3s>> actorDefaultData = {};
 std::vector<eventObject> activeEvents = {};
+std::vector<uint32_t> availableItems;
 
 std::vector<colorObject> colorOptions = {
     { COLOR_WHITE, ImVec4(1.0f, 1.0f, 1.0f, 1.0f) },     { COLOR_GRAY, ImVec4(0.4f, 0.4f, 0.4f, 1.0f) },
@@ -230,6 +283,47 @@ void ChaosUpdateEventTimers() {
         eventList[loop].eventTimer = setTimer;
         loop++;
     }
+}
+
+void ChaosEventFloatingStuffReturn(Actor* actor) {
+    if (actor->id == ACTOR_EN_BUBBLE) {
+        if (((EnBubble*)actor)->unk_218 != 1.0f) {
+            for (auto item : itemToGIDMap) {
+                if (std::get<0>(item) == ((EnBubble*)actor)->unk_218) {
+                    INV_CONTENT(std::get<1>(item)) = std::get<1>(item);
+                    break;
+                }
+            }
+        }
+    }
+}
+
+void ChaosEventFloatingStuffSelector() {
+    availableItems.clear();
+    for (auto& item : itemToGIDMap) {
+        if (INV_CONTENT(std::get<1>(item))) {
+            availableItems.push_back(std::get<0>(item));
+        }
+    }
+    if (availableItems.size() != 0) {
+        uint32_t roll = rand() % availableItems.size();
+        randomItem = (GetItemDrawID)availableItems[roll];
+        INV_CONTENT(itemToGIDMap[availableItems[roll]]) = ITEM_NONE;
+    } else {
+        randomItem = GID_MAXIMUM;
+    }
+}
+
+void EnBubble_DrawAlt(Actor* thisx, PlayState* play) {
+    EnBubble* enBubble = (EnBubble*)thisx;
+    u32 pad;
+
+    thisx->shape.rot.y += 960;
+
+    GetItem_Draw(play, (GetItemDrawID)enBubble->unk_218);
+
+    enBubble->actor.shape.shadowScale = (f32)((enBubble->expansionWidth + 1.0f) * 0.2f);
+    func_809CC774(enBubble);
 }
 
 void ChaosEventSpikeTrap() {
@@ -555,7 +649,6 @@ void ChaosEventsRepeater() {
                     }
                 }
                 if (guardTimer == eventList[EVENT_THROWN_IN_THE_PAST].eventTimer / 2) {
-                    Player* player = GET_PLAYER(gPlayState);
                     Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_HEISHI3, player->actor.world.pos.x + 250.0f,
                                 player->actor.world.pos.y, player->actor.world.pos.z, 0,
                                 player->actor.world.rot.y + 16384, 0, 0, false);
@@ -584,6 +677,27 @@ void ChaosEventsRepeater() {
         if (isEventIdPresent(EVENT_SPIKE_TRAP) == true) {
             if (spikeTrapTimer > 0) {
                 spikeTrapTimer--;
+            }
+        }
+
+        if (isEventIdPresent(EVENT_FLOATING_STUFF) == true) {
+            if (floatTimer > 0) {
+                floatTimer--;
+
+                if (floatingStuffActors.size() < 100 && floatTimer % 80 == 0) {
+                    ChaosEventFloatingStuffSelector();
+                    if (randomItem != GID_MAXIMUM) {
+                        float x = player->actor.world.pos.x + (rand() % 1000) - 500;
+                        float y = player->actor.world.pos.y + (rand() % 600);
+                        float z = player->actor.world.pos.z + (rand() % 1000) - 500;
+                        Actor* actor =
+                            Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_BUBBLE, x, y, z, 0, 0, 0, 0, false);
+                        floatingStuffActors.push_back(actor);
+                        ((EnBubble*)actor)->unk_218 = randomItem;
+
+                        actor->draw = EnBubble_DrawAlt;
+                    }
+                }
             }
         }
     });
@@ -855,6 +969,26 @@ void ChaosEventsActivator(uint32_t eventId, bool isActive) {
                         }
                         currCeiling = currCeiling->next;
                     }
+                }
+            }
+            break;
+        case EVENT_FLOATING_STUFF:
+            if (isActive) {
+                floatingHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorKill>([](void* actor) {
+                    Actor* bubbleActor = (Actor*)actor;
+                    ChaosEventFloatingStuffReturn(bubbleActor);    
+                });
+                Player* player = GET_PLAYER(gPlayState);
+
+                floatTimer = eventList[EVENT_FLOATING_STUFF].eventTimer;
+            } else {
+                for (auto actor : floatingStuffActors) {
+                    Actor_Kill(actor);
+                }
+                floatingStuffActors.clear();
+                if (floatingHook != 0) {
+                    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorKill>(floatingHook);
+                    floatingHook = 0;
                 }
             }
             break;
