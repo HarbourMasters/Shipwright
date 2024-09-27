@@ -42,6 +42,7 @@ uint32_t spikeTrapTimer = 0;
 uint32_t floatTimer = 0;
 uint32_t rupeeDropTimer = 0;
 uint32_t fireMazeTimer = 0;
+uint32_t revengeTimer = 0;
 
 uint32_t chaosInterval = 5;
 uint32_t votingInterval = 5;
@@ -78,6 +79,7 @@ uint32_t eventSpikeTrapTimer;
 uint32_t eventFloatTimer;
 uint32_t eventRupeeDropTimer;
 uint32_t eventFireMazeTimer;
+uint32_t eventRevengeTimer;
 
 ActorListEntry guardActors;
 ActorListEntry ceilingActors;
@@ -159,6 +161,8 @@ std::vector<eventObject> eventList = {
         "Remember what happens to Sonic when he gets hit?" },
     { EVENT_FIRE_MAZE, "Fire Maze", "gEnhancements.FireMaze", eventFireMazeTimer,
         "It's getting hot in here" },
+    { EVENT_CARDINALS_REVENGE, "Cardinal's Revenge", "gEnhancements.CardinalsRevenge", eventRevengeTimer,
+        "You smashed one too many and now he's pissed!"}
 };
 
 static std::vector<Actor*> floatingStuffActors;
@@ -739,6 +743,33 @@ void ChaosEventsRepeater() {
                 fireMazeTimer--;
             }
         }
+
+        if (isEventIdPresent(EVENT_CARDINALS_REVENGE) == true) {
+            if (revengeTimer > 0) {
+                revengeTimer--;
+                static int numOfPots = 8;   // Every 45 degrees
+                static int spawnSpeed = 10; // 1 pot every 10 frames
+                static int lastAgroPotIndex = 0;
+                static float circleRadius = 100.0f;                 // Set the radius of the circle
+                static float angleIncrement = 2 * M_PI / numOfPots; // Calculate angle increment
+
+                if (revengeTimer % spawnSpeed == 0) {
+                    if (lastAgroPotIndex < numOfPots) {
+                        lastAgroPotIndex++;
+                    } else {
+                        lastAgroPotIndex = 0;
+                    }
+
+                    Player* player = GET_PLAYER(gPlayState);
+                    float x = player->actor.world.pos.x + circleRadius * cos(lastAgroPotIndex * angleIncrement);
+                    float z = player->actor.world.pos.z + circleRadius * sin(lastAgroPotIndex * angleIncrement);
+
+                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_TUBO_TRAP, x, player->actor.world.pos.y, z,
+                                0, 0, 0, 0x1A, false);
+                    player->invincibilityTimer = 0;
+                }
+            }
+        }
     });
 }
 
@@ -1063,6 +1094,7 @@ void ChaosEventsActivator(uint32_t eventId, bool isActive) {
             break;
         case EVENT_FIRE_MAZE:
             if (isActive) {
+                fireMazeTimer = eventList[EVENT_FIRE_MAZE].eventTimer;
                 Player* player = GET_PLAYER(gPlayState);
                 // Builds a maze using fire wall actors. It should just build 3 layers of fire walls, and then remove a
                 // random one from each layer.
@@ -1088,6 +1120,10 @@ void ChaosEventsActivator(uint32_t eventId, bool isActive) {
                 fireMazeActors.clear();
             }
             break;
+        case EVENT_CARDINALS_REVENGE:
+            if (isActive) {
+                revengeTimer = eventList[EVENT_CARDINALS_REVENGE].eventTimer;
+            }
         default:
             break;
     }

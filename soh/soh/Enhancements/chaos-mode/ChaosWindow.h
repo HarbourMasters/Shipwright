@@ -71,6 +71,7 @@ typedef enum {
     EVENT_FLOATING_STUFF,
     EVENT_DROP_RUPEES,
     EVENT_FIRE_MAZE,
+    EVENT_CARDINALS_REVENGE,
     EVENT_MAX_CHAOS,
 } ChaosEvents;
 
