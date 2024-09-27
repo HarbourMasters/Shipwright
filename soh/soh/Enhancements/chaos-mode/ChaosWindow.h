@@ -70,6 +70,7 @@ typedef enum {
     EVENT_SPIKE_TRAP,
     EVENT_FLOATING_STUFF,
     EVENT_DROP_RUPEES,
+    EVENT_FIRE_MAZE,
     EVENT_MAX_CHAOS,
 } ChaosEvents;
 

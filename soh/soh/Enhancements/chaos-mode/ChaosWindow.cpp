@@ -41,6 +41,7 @@ uint32_t stopHeartTimer = 0;
 uint32_t spikeTrapTimer = 0;
 uint32_t floatTimer = 0;
 uint32_t rupeeDropTimer = 0;
+uint32_t fireMazeTimer = 0;
 
 uint32_t chaosInterval = 5;
 uint32_t votingInterval = 5;
@@ -76,6 +77,7 @@ uint32_t eventStopHeartTimer;
 uint32_t eventSpikeTrapTimer;
 uint32_t eventFloatTimer;
 uint32_t eventRupeeDropTimer;
+uint32_t eventFireMazeTimer;
 
 ActorListEntry guardActors;
 ActorListEntry ceilingActors;
@@ -155,6 +157,8 @@ std::vector<eventObject> eventList = {
         "What is this stuff, and why is it floating?" },
     { EVENT_DROP_RUPEES, "Drop Rupees on Hit", "gEnhancements.DropRupees", eventRupeeDropTimer,
         "Remember what happens to Sonic when he gets hit?" },
+    { EVENT_FIRE_MAZE, "Fire Maze", "gEnhancements.FireMaze", eventFireMazeTimer,
+        "It's getting hot in here" },
 };
 
 static std::vector<Actor*> floatingStuffActors;
@@ -234,6 +238,7 @@ std::vector<Actor*> actorData = {};
 std::vector<std::pair<Vec3f, Vec3s>> actorDefaultData = {};
 std::vector<eventObject> activeEvents = {};
 std::vector<uint32_t> availableItems;
+std::vector<Actor*> fireMazeActors;
 
 std::vector<colorObject> colorOptions = {
     { COLOR_WHITE, ImVec4(1.0f, 1.0f, 1.0f, 1.0f) },     { COLOR_GRAY, ImVec4(0.4f, 0.4f, 0.4f, 1.0f) },
@@ -274,6 +279,32 @@ void ChaosUpdateEventTimers() {
         int32_t setTimer = CVarGetInteger(eventUpdate.eventVariable, 0) * 1200;
         eventList[loop].eventTimer = setTimer;
         loop++;
+    }
+}
+
+Actor* SpawnWall(float x, float y, float z, int16_t rotationY) {
+    return Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_BG_HIDAN_FIREWALL, x, y, z, 0, rotationY, 0, 0, false);
+}
+
+void BuildFireWallRoom(std::vector<Actor*>* walls, float centerX, float centerY, float centerZ, int16_t wallsPerSide) {
+    const float wallWidth = 150.0f;
+    const float halfWidth = (wallsPerSide * wallWidth) / 2.0f;
+
+    // Loop through each side
+    for (int i = 0; i < wallsPerSide; i++) {
+        float offset = i * wallWidth - halfWidth + (wallWidth / 2.0f);
+
+        // Front wall (facing +Z)
+        walls->push_back(SpawnWall(centerX + offset, centerY, centerZ + halfWidth, 0));
+
+        // Back wall (facing -Z)
+        walls->push_back(SpawnWall(centerX + offset, centerY, centerZ - halfWidth, 0));
+
+        // Left wall (facing -X)
+        walls->push_back(SpawnWall(centerX - halfWidth, centerY, centerZ + offset, 0x4000));
+
+        // Right wall (facing +X)
+        walls->push_back(SpawnWall(centerX + halfWidth, centerY, centerZ + offset, 0x4000));
     }
 }
 
@@ -696,6 +727,18 @@ void ChaosEventsRepeater() {
                 }
             }
         }
+
+        if (isEventIdPresent(EVENT_DROP_RUPEES) == true) {
+            if (rupeeDropTimer > 0) {
+                rupeeDropTimer--;
+            }
+        }
+
+        if (isEventIdPresent(EVENT_FIRE_MAZE) == true) {
+            if (fireMazeTimer > 0) {
+                fireMazeTimer--;
+            }
+        }
     });
 }
 
@@ -994,8 +1037,6 @@ void ChaosEventsActivator(uint32_t eventId, bool isActive) {
                     bool shouldSpawn = true;
                     if (gSaveContext.health > 0 && shouldSpawn) {
                         Player* player = GET_PLAYER(gPlayState);
-                        /* Green = 1 | Blue = 5 | Red = 20 | Purp = 50 | Gold = 200 | max 320/16 = 20 */
-                        //rupeeGIDList
                         uint32_t rupeesToSpawn = 8;
                         for (int i = 0; i < rupeesToSpawn; i++) {
                             uint32_t rupeeRoll = rand() % rupeeItemList.size();
@@ -1018,6 +1059,33 @@ void ChaosEventsActivator(uint32_t eventId, bool isActive) {
                     GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnPlayerHealthChange>(rupeeDropHook);
                     rupeeDropHook = 0;
                 }
+            }
+            break;
+        case EVENT_FIRE_MAZE:
+            if (isActive) {
+                Player* player = GET_PLAYER(gPlayState);
+                // Builds a maze using fire wall actors. It should just build 3 layers of fire walls, and then remove a
+                // random one from each layer.
+                BuildFireWallRoom(&fireMazeActors, player->actor.world.pos.x, player->actor.world.pos.y,
+                                  player->actor.world.pos.z, 1);
+                BuildFireWallRoom(&fireMazeActors, player->actor.world.pos.x, player->actor.world.pos.y,
+                                  player->actor.world.pos.z, 3);
+                BuildFireWallRoom(&fireMazeActors, player->actor.world.pos.x, player->actor.world.pos.y,
+                                  player->actor.world.pos.z, 5);
+
+                // Remove a random wall from each layer
+                int firstLayer = rand() % 4;
+                int secondLayer = rand() % 12;
+                int thirdLayer = rand() % 20;
+
+                Actor_Kill(fireMazeActors[firstLayer]);
+                Actor_Kill(fireMazeActors[4 + secondLayer]);
+                Actor_Kill(fireMazeActors[16 + thirdLayer]);
+            } else {
+                for (auto actor : fireMazeActors) {
+                    Actor_Kill(actor);
+                }
+                fireMazeActors.clear();
             }
             break;
         default:
