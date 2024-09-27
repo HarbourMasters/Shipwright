@@ -69,6 +69,7 @@ typedef enum {
     EVENT_FORCE_STOP_HEARTS,
     EVENT_SPIKE_TRAP,
     EVENT_FLOATING_STUFF,
+    EVENT_DROP_RUPEES,
     EVENT_MAX_CHAOS,
 } ChaosEvents;
 

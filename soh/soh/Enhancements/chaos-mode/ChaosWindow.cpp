@@ -40,6 +40,7 @@ uint32_t ceilingTimer = 0;
 uint32_t stopHeartTimer = 0;
 uint32_t spikeTrapTimer = 0;
 uint32_t floatTimer = 0;
+uint32_t rupeeDropTimer = 0;
 
 uint32_t chaosInterval = 5;
 uint32_t votingInterval = 5;
@@ -74,6 +75,7 @@ uint32_t eventCeilingTimer;
 uint32_t eventStopHeartTimer;
 uint32_t eventSpikeTrapTimer;
 uint32_t eventFloatTimer;
+uint32_t eventRupeeDropTimer;
 
 ActorListEntry guardActors;
 ActorListEntry ceilingActors;
@@ -86,6 +88,7 @@ static uint32_t fallingCeilingHook = 0;
 static uint32_t stopHeartHook = 0;
 static uint32_t spikeTrapHook = 0;
 static uint32_t floatingHook = 0;
+static uint32_t rupeeDropHook = 0;
 static uint32_t votingHook = 0;
 
 uint32_t votingOptionA;
@@ -150,6 +153,8 @@ std::vector<eventObject> eventList = {
         "You've seen this before, but this time it's different!" },
     { EVENT_FLOATING_STUFF, "Floating Stuff", "gEnhancements.FloatingStuff", eventFloatTimer,
         "What is this stuff, and why is it floating?" },
+    { EVENT_DROP_RUPEES, "Drop Rupees on Hit", "gEnhancements.DropRupees", eventRupeeDropTimer,
+        "Remember what happens to Sonic when he gets hit?" },
 };
 
 static std::vector<Actor*> floatingStuffActors;
@@ -218,6 +223,12 @@ std::unordered_map<uint32_t, uint32_t> itemToGIDMap = {
     { GID_BOMB,                 ITEM_BOMB },
 };
 
+std::vector<uint32_t> rupeeItemList = {
+    ITEM00_RUPEE_GREEN,
+    ITEM00_RUPEE_BLUE,
+    ITEM00_RUPEE_RED,
+    ITEM00_RUPEE_PURPLE,
+};
 
 std::vector<Actor*> actorData = {};
 std::vector<std::pair<Vec3f, Vec3s>> actorDefaultData = {};
@@ -977,16 +988,48 @@ void ChaosEventsActivator(uint32_t eventId, bool isActive) {
                 }
             }
             break;
+        case EVENT_DROP_RUPEES:
+            if (isActive) {
+                rupeeDropHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerHealthChange>([](int16_t amount){
+                    bool shouldSpawn = true;
+                    if (gSaveContext.health > 0 && shouldSpawn) {
+                        Player* player = GET_PLAYER(gPlayState);
+                        /* Green = 1 | Blue = 5 | Red = 20 | Purp = 50 | Gold = 200 | max 320/16 = 20 */
+                        //rupeeGIDList
+                        uint32_t rupeesToSpawn = 8;
+                        for (int i = 0; i < rupeesToSpawn; i++) {
+                            uint32_t rupeeRoll = rand() % rupeeItemList.size();
+                            Vec3f_ positional = player->actor.world.pos;
+                            positional.y = player->actor.world.pos.y + 100.0f;
+                            EnItem00* actor = Item_DropCollectible(gPlayState, &positional, rupeeItemList[rupeeRoll]);
+                            actor->actor.speedXZ = Rand_CenteredFloat(5.0f) + 8.0f;
+                        }
+                        if (gSaveContext.rupees >= 50) {
+                            gSaveContext.rupees = gSaveContext.rupees - 50;
+                        } else {
+                            gSaveContext.rupees = 0;
+                        }
+                        bool shouldSpawn = false;
+                    }
+                });
+                rupeeDropTimer = eventList[EVENT_DROP_RUPEES].eventTimer;
+            } else {
+                if (rupeeDropHook != 0) {
+                    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnPlayerHealthChange>(rupeeDropHook);
+                    rupeeDropHook = 0;
+                }
+            }
+            break;
         default:
             break;
     }
 }
 
 void ChaosVoteSelector(uint32_t option) {
-    uint32_t roll = EVENT_FORCE_STOP_HEARTS;
-    //uint32_t roll = rand() % votingList.size();
+    //uint32_t roll = EVENT_FORCE_STOP_HEARTS;
+    uint32_t roll = rand() % votingList.size();
     votingObjectList[option].votingOption = votingList[roll].eventId;
-    //votingList.erase(votingList.begin() + roll);
+    votingList.erase(votingList.begin() + roll);
 }
 
 void ChaosVotingStarted() {

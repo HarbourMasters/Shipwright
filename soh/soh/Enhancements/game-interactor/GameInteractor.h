@@ -214,6 +214,7 @@ public:
     DEFINE_HOOK(OnPlayerBonk, void());
     DEFINE_HOOK(OnPlayDestroy, void());
     DEFINE_HOOK(OnPlayDrawEnd, void());
+    DEFINE_HOOK(OnPlayerHealthChange, void(int16_t amount));
 
     DEFINE_HOOK(OnSaveFile, void(int32_t fileNum));
     DEFINE_HOOK(OnLoadFile, void(int32_t fileNum));

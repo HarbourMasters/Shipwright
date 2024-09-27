@@ -3154,6 +3154,7 @@ s32 Health_ChangeBy(PlayState* play, s16 healthChange) {
     if (healthChange < 0) {
         gSaveContext.sohStats.count[COUNT_DAMAGE_TAKEN] += -healthChange;
     }
+    GameInteractor_ExecuteOnPlayerHealthChange(healthChange);
 
     // If one-hit ko mode is on, any damage kills you and you cannot gain health.
     if (GameInteractor_OneHitKOActive()) {
