@@ -681,11 +681,12 @@ std::vector<RandomizerCheck> FindItemsAndMarkHinted(std::vector<RandomizerGet> i
       return ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() == items[c];});
     if (found.size() > 0){
       locations.push_back(found[0]);
-    }
-    //crashes on 0 checks found
-    //RANDOTODO make the called functions of this always return true if empty hintChecks are provided
-    if (hintChecks.size() == 0 || (!ctx->GetItemLocation(found[0])->IsAHintAccessible() && IsReachableWithout(hintChecks,found[0],true))){
-      ctx->GetItemLocation(found[0])->SetHintAccesible();
+      //RANDOTODO make the called functions of this always return true if empty hintChecks are provided
+      if (!ctx->GetItemLocation(found[0])->IsAHintAccessible() && (hintChecks.size() == 0 || IsReachableWithout(hintChecks, found[0],true))){
+        ctx->GetItemLocation(found[0])->SetHintAccesible();
+      }
+    } else {
+      locations.push_back(RC_UNKNOWN_CHECK);
     }
   }
   return locations;
@@ -731,10 +732,15 @@ void CreateStaticHintFromData(RandomizerHint hint, StaticHintInfo staticData){
     Option option = ctx->GetOption(staticData.setting);
     if ((std::holds_alternative<bool>(staticData.condition) && option.Is(std::get<bool>(staticData.condition))) ||
         (std::holds_alternative<uint8_t>(staticData.condition) && option.Is(std::get<uint8_t>(staticData.condition)))){
+
       std::vector<RandomizerCheck> locations = {};
       if (staticData.targetItems.size() > 0){
         locations = FindItemsAndMarkHinted(staticData.targetItems, staticData.hintChecks);
       }
+      for(auto check: staticData.targetChecks){
+        ctx->GetItemLocation(check)->SetHintAccesible();
+      }
+
       //hintKeys are defaulted to in the hint object and do not need to be specified
       ctx->AddHint(hint, Hint(hint, staticData.type, {}, locations, {}, {}, staticData.yourPocket, staticData.num));
     }

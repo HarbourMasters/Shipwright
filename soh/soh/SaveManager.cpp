@@ -2843,7 +2843,7 @@ extern "C" void Save_LoadFile(void) {
         // Reset rando context for rando saves.
         OTRGlobals::Instance->gRandoContext.reset();
         OTRGlobals::Instance->gRandoContext = Rando::Context::CreateInstance();
-        OTRGlobals::Instance->gRandoContext->SetSaveContext(&gSaveContext);
+        OTRGlobals::Instance->gRandoContext->GetLogic()->SetSaveContext(&gSaveContext);
         OTRGlobals::Instance->gRandoContext->AddExcludedOptions();
         OTRGlobals::Instance->gRandoContext->GetSettings()->CreateOptions();
     }
