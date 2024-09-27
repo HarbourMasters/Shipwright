@@ -6,7 +6,7 @@ Requires:
   * At least 8GB of RAM (machines with 4GB have seen complier failures)
   * Visual Studio 2022 Community Edition with the C++ feature set
   * One of the Windows SDKs that comes with Visual Studio, for example the current Windows 10 version 10.0.19041.0
-  * The `MSVC v142 - VS 2019 C++ build tools` component of Visual Studio
+  * The `MSVC v143 - VS 2022 C++ build tools` component of Visual Studio
   * Python 3 (can be installed manually or as part of Visual Studio)
   * Git (can be installed manually or as part of Visual Studio)
   * Cmake (can be installed via chocolatey or manually)
@@ -14,12 +14,9 @@ Requires:
 During installation, check the "Desktop development with C++" feature set:
 
 ![image](https://user-images.githubusercontent.com/30329717/183511274-d11aceea-7900-46ec-acb6-3f2cc110021a.png)
-Doing so should also check one of the Windows SDKs by default.  Then, in the installation details in the right-hand column, make sure you also check the v142 toolset. 
+Doing so should also check one of the Windows SDKs by default.  Then, in the installation details in the right-hand column, make sure you also check the v143 toolset. This is often done by default.
 
-You can also find the v142 toolset by searching through the individual components tab:  
-
-![image](https://user-images.githubusercontent.com/30329717/183521169-ead6a73b-a1bf-4e99-aab8-441746d8f08e.png)
-While you're there, you can also install Python 3 and Git if needed.
+It is recommended that you install Python and Git standalone, the install process in VS Installer has given some issues in the past.
 
 1. Clone the Ship of Harkinian repository
 
@@ -33,9 +30,7 @@ _Note: Instructions assume using powershell_
 cd Shipwright
 
 # Setup cmake project
-& 'C:\Program Files\CMake\bin\cmake' -S . -B "build/x64" -G "Visual Studio 17 2022" -T v142 -A x64 # -DCMAKE_BUILD_TYPE:STRING=Release (if you're packaging)
-# or for VS2019
-& 'C:\Program Files\CMake\bin\cmake' -S . -B "build/x64" -G "Visual Studio 16 2019" -T v142 -A x64
+& 'C:\Program Files\CMake\bin\cmake' -S . -B "build/x64" -G "Visual Studio 17 2022" -T v143 -A x64 # -DCMAKE_BUILD_TYPE:STRING=Release (if you're packaging)
 # Extract assets & generate OTR (run this anytime you need to regenerate OTR)
 & 'C:\Program Files\CMake\bin\cmake.exe' --build .\build\x64 --target ExtractAssets # --config Release (if you're packaging)
 # Compile project
@@ -60,9 +55,7 @@ With the cmake build system you have two options for working on the project:
 To develop using Visual Studio you only need to use cmake to generate the solution file:
 ```powershell
 # Generates Ship.sln at `build/x64` for Visual Studio 2022
-& 'C:\Program Files\CMake\bin\cmake' -S . -B "build/x64" -G "Visual Studio 17 2022" -T v142 -A x64
-# or for Visual Studio 2019
-& 'C:\Program Files\CMake\bin\cmake' -S . -B "build/x64" -G "Visual Studio 16 2019" -T v142 -A x64
+& 'C:\Program Files\CMake\bin\cmake' -S . -B "build/x64" -G "Visual Studio 17 2022" -T v143 -A x64
 ```
 
 #### Visual Studio Code or another editor
