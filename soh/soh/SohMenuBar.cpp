@@ -28,6 +28,7 @@
 #include "Enhancements/debugger/actorViewer.h"
 #include "Enhancements/debugger/colViewer.h"
 #include "Enhancements/debugger/debugSaveEditor.h"
+#include "Enhancements/debugger/hookDebugger.h"
 #include "Enhancements/debugger/dlViewer.h"
 #include "Enhancements/debugger/valueViewer.h"
 #include "Enhancements/gameplaystatswindow.h"
@@ -1761,6 +1762,7 @@ void DrawCheatsMenu() {
 extern std::shared_ptr<Ship::GuiWindow> mStatsWindow;
 extern std::shared_ptr<Ship::GuiWindow> mConsoleWindow;
 extern std::shared_ptr<SaveEditorWindow> mSaveEditorWindow;
+extern std::shared_ptr<HookDebuggerWindow> mHookDebuggerWindow;
 extern std::shared_ptr<ColViewerWindow> mColViewerWindow;
 extern std::shared_ptr<ActorViewerWindow> mActorViewerWindow;
 extern std::shared_ptr<DLViewerWindow> mDLViewerWindow;
@@ -1841,6 +1843,12 @@ void DrawDeveloperToolsMenu() {
         if (mSaveEditorWindow) {
             if (ImGui::Button(GetWindowButtonText("Save Editor", CVarGetInteger(CVAR_WINDOW("SaveEditor"), 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
                 mSaveEditorWindow->ToggleVisibility();
+            }
+        }
+        UIWidgets::Spacer(0);
+        if (mHookDebuggerWindow) {
+            if (ImGui::Button(GetWindowButtonText("Hook Debugger", CVarGetInteger(CVAR_WINDOW("HookDebugger"), 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
+                mHookDebuggerWindow->ToggleVisibility();
             }
         }
         UIWidgets::Spacer(0);
