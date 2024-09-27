@@ -811,6 +811,9 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
                         Randomizer_Item_Give(gPlayState, item00->itemEntry);
                     }
                 }
+                // This is typically called when you close the text box after getting an item, in case a previous
+                // function hid the interface.
+                Interface_ChangeAlpha(gSaveContext.unk_13EE);
                 // EnItem00_SetupAction(item00, func_8001E5C8);
                 // *should = false;
             } else if (item00->actor.params == ITEM00_SOH_GIVE_ITEM_ENTRY_GI) {
