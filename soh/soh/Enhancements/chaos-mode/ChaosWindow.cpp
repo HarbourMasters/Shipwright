@@ -318,12 +318,34 @@ void BuildFireWallRoom(std::vector<Actor*>* walls, float centerX, float centerY,
     }
 }
 
-void ChaosEventFloatingStuffReturn(Actor* actor) {
+void ChaosEventFloatingStuffReturn() {
+    uint32_t loopcounter = 0;
+    for (auto& floaties : floatingStuffActors) {
+        for (auto item : itemToGIDMap) {
+            if (std::get<0>(item) == std::get<1>(floaties)) {
+                INV_CONTENT(std::get<1>(item)) = std::get<1>(item);
+                floatingStuffActors.erase(floatingStuffActors.begin() + loopcounter);
+                break;
+            }
+        }
+        loopcounter++;
+    }
+}
+
+void ChaosEventFloatingStuffKillReturn(Actor* actor) {
     if (actor->id == ACTOR_EN_BUBBLE) {
         if (((EnBubble*)actor)->unk_218 != 1.0f) {
             for (auto item : itemToGIDMap) {
                 if (std::get<0>(item) == ((EnBubble*)actor)->unk_218) {
                     INV_CONTENT(std::get<1>(item)) = std::get<1>(item);
+                    uint32_t removeCounter = 0;
+                    for (auto& floatRemove : floatingStuffActors) {
+                        if (std::get<0>(item) == std::get<1>(floatRemove)) {
+                            floatingStuffActors.erase(floatingStuffActors.begin() + removeCounter);
+                            break;
+                        }
+                        removeCounter++;
+                    }
                     break;
                 }
             }
@@ -845,9 +867,6 @@ void ChaosEventsRepeater() {
         }
 
         if (isEventIdPresent(EVENT_FLOATING_STUFF) == true) {
-            floatingRespawnHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneSpawnActors>([]() {
-                ChaosEventFloatingStuffRespawn();
-            });
             if (floatTimer > 0) {
                 floatTimer--;
                 if (floatingStuffActors.size() < 100 && floatTimer % 80 == 0) {
@@ -1155,19 +1174,24 @@ void ChaosEventsActivator(uint32_t eventId, bool isActive) {
             if (isActive) {
                 floatingHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorKill>([](void* actor) {
                     Actor* bubbleActor = (Actor*)actor;
-                    ChaosEventFloatingStuffReturn(bubbleActor);    
+                    ChaosEventFloatingStuffKillReturn(bubbleActor);    
+                });
+                floatingRespawnHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneSpawnActors>([]() {
+                    ChaosEventFloatingStuffRespawn();
                 });
                 Player* player = GET_PLAYER(gPlayState);
                 floatTimer = eventList[EVENT_FLOATING_STUFF].eventTimer;
             } else {
-                for (auto actor : floatingStuffActors) {
-                    Actor_Kill(std::get<0>(actor));
-                }
-                floatingStuffActors.clear();
                 if (floatingHook != 0) {
                     GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorKill>(floatingHook);
                     floatingHook = 0;
                 }
+                if (floatingRespawnHook != 0) {
+                    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneSpawnActors>(floatingRespawnHook);
+                    floatingRespawnHook = 0;
+                }
+                ChaosEventFloatingStuffReturn();
+                floatingStuffActors.clear();
             }
             break;
         case EVENT_DROP_RUPEES:
