@@ -241,7 +241,6 @@ std::vector<uint32_t> rupeeItemList = {
     ITEM00_RUPEE_GREEN,
     ITEM00_RUPEE_BLUE,
     ITEM00_RUPEE_RED,
-    ITEM00_RUPEE_PURPLE,
 };
 
 std::vector<Actor*> actorData = {};
@@ -279,8 +278,8 @@ void ChaosUpdateInterval() {
 }
 
 void ChaosUpdateVotingInterval() {
-    //votingInterval = (CVarGetInteger(CVAR_ENHANCEMENT("VotingInterval"), 0) * 20);
-    votingInterval = 999999;
+    votingInterval = (CVarGetInteger(CVAR_ENHANCEMENT("VotingInterval"), 0) * 20);
+    //votingInterval = 999999;
 }
 
 void ChaosUpdateEventTimers() {
@@ -433,11 +432,6 @@ void ChaosEventSpikeTrap() {
 }
 
 void ChaosEventForceStopHearts() {
-    stopHeart = false;
-    stopInterval = 0;
-    uint32_t maxHealth = gSaveContext.healthCapacity;
-    uint32_t currentHealth = gSaveContext.health;
-
     stopHeartHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
         if (!stopHeart && !GameInteractor::IsGameplayPaused()) {
             if (CHECK_BTN_ALL(gPlayState->state.input->press.button, BTN_A)) {
@@ -450,15 +444,17 @@ void ChaosEventForceStopHearts() {
                 }
                 Health_ChangeBy(gPlayState, healthValue);
             } else {
-                Health_ChangeBy(gPlayState, 0x010);
-            }
-        } else {
-            if (stopHeart && stopHeartHook != 0) {
-                GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnGameFrameUpdate>(stopHeartHook);
-                stopHeartHook = 0;
+                if (gSaveContext.isDoubleDefenseAcquired == 1) {
+                    Health_ChangeBy(gPlayState, 0x020);
+                } else {
+                    Health_ChangeBy(gPlayState, 0x010);
+                }
             }
         }
-        
+        if (stopHeart && stopHeartHook != 0) {
+            GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnGameFrameUpdate>(stopHeartHook);
+            stopHeartHook = 0;
+        }
     });
 }
 
@@ -1123,6 +1119,8 @@ void ChaosEventsActivator(uint32_t eventId, bool isActive) {
         case EVENT_FORCE_STOP_HEARTS:
             if (isActive) {
                 stopHeartTimer = eventList[EVENT_FORCE_STOP_HEARTS].eventTimer;
+                stopHeart = false;
+                stopInterval = 0;
                 ChaosEventForceStopHearts();
             }
             break;
