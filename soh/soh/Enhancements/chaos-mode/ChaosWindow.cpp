@@ -96,6 +96,7 @@ static uint32_t spikeTrapHook = 0;
 static uint32_t spikeTrapRespawnHook = 0;
 static uint32_t spikeTrapRespawnHookTimer = 0;
 static uint32_t floatingHook = 0;
+static uint32_t floatingRespawnHook = 0;
 static uint32_t rupeeDropHook = 0;
 static uint32_t votingHook = 0;
 
@@ -170,7 +171,7 @@ std::vector<eventObject> eventList = {
         "You smashed one too many and now he's pissed!"}
 };
 
-static std::vector<Actor*> floatingStuffActors;
+static std::vector<std::pair<Actor*, GetItemDrawID>> floatingStuffActors;
 
 std::vector<uint32_t> teleportList = {
     GI_TP_DEST_SERENADE,
@@ -362,6 +363,33 @@ void EnBubble_DrawAlt(Actor* thisx, PlayState* play) {
     func_809CC774(enBubble);
 }
 
+void ChaosEventFloatingStuffSpawner() {
+    ChaosEventFloatingStuffSelector();
+    if (randomItem != GID_MAXIMUM) {
+        Player* player = GET_PLAYER(gPlayState);
+        float x = player->actor.world.pos.x + (rand() % 1000) - 500;
+        float y = player->actor.world.pos.y + (rand() % 600);
+        float z = player->actor.world.pos.z + (rand() % 1000) - 500;
+        Actor* actor = Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_BUBBLE, x, y, z, 0, 0, 0, 0, false);
+        std::pair<Actor*, GetItemDrawID> floatingActor = { actor, randomItem };
+        floatingStuffActors.push_back(floatingActor);
+        ((EnBubble*)actor)->unk_218 = randomItem;
+        actor->draw = EnBubble_DrawAlt;
+    }
+}
+
+void ChaosEventFloatingStuffRespawn() {
+    for (auto bubble : floatingStuffActors) {
+        Player* player = GET_PLAYER(gPlayState);
+        float x = player->actor.world.pos.x + (rand() % 1000) - 500;
+        float y = player->actor.world.pos.y + (rand() % 600);
+        float z = player->actor.world.pos.z + (rand() % 1000) - 500;
+        Actor* actor = Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_BUBBLE, x, y, z, 0, 0, 0, 0, false);
+        ((EnBubble*)actor)->unk_218 = std::get<1>(bubble);
+        actor->draw = EnBubble_DrawAlt;
+    }
+}
+
 void ChaosEventSpikeTrap() {
     spikeTrapRespawnHookTimer = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
         if (!gPlayState || GameInteractor::IsGameplayPaused()) {
@@ -417,6 +445,86 @@ void ChaosEventFallingCeiling() {
     Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_BG_MORI_RAKKATENJO, player->actor.world.pos.x - 1,
                 player->actor.world.pos.y + 280, player->actor.world.pos.z, 0, player->actor.world.rot.y - 32768, 0, -1,
                 false);
+}
+
+void ChaosEventsIronKnuckleDespawner() {
+    if (!gPlayState) {
+        return;
+    }
+    ActorListEntry nqKnuckles = gPlayState->actorCtx.actorLists[ACTORCAT_ENEMY];
+    ActorListEntry hqKnuckles = gPlayState->actorCtx.actorLists[ACTORCAT_BOSS];
+    Actor* currAct = nqKnuckles.head;
+    if (currAct != nullptr) {
+        while (currAct != nullptr) {
+            if (currAct->id == ACTOR_EN_IK) {
+                Actor_Kill(currAct);
+            }
+            currAct = currAct->next;
+        }
+    }
+    currAct = hqKnuckles.head;
+    if (currAct != nullptr) {
+        while (currAct != nullptr) {
+            if (currAct->id == ACTOR_EN_IK) {
+                Actor_Kill(currAct);
+            }
+            currAct = currAct->next;
+        }
+    }
+}
+
+void ChaosEventsIronKnucklerSpawner() {
+    uint32_t knuckleCounter = 0;
+    ActorListEntry nqKnuckles = gPlayState->actorCtx.actorLists[ACTORCAT_ENEMY];
+    ActorListEntry hqKnuckles = gPlayState->actorCtx.actorLists[ACTORCAT_BOSS];
+    Actor* knuckleAct = nqKnuckles.head;
+    if (knuckleAct != nullptr) {
+        while (knuckleAct != nullptr) {
+            if (knuckleAct->id == ACTOR_EN_IK) {
+                knuckleCounter++;
+            }
+            knuckleAct = knuckleAct->next;
+        }
+    }
+    knuckleAct = hqKnuckles.head;
+    if (knuckleAct != nullptr) {
+        while (knuckleAct != nullptr) {
+            if (knuckleAct->id == ACTOR_EN_IK) {
+                knuckleCounter++;
+            }
+            knuckleAct = knuckleAct->next;
+        }
+    }
+
+    if (knuckleCounter >= 32) {
+        ChaosEventsIronKnuckleDespawner();
+    }
+
+    Player* player = GET_PLAYER(gPlayState);
+    float radius = 45.0f;
+    std::vector<std::tuple<float, float, float>> spawnPoints;
+
+    for (int i = 0; i < 8; i++) {
+        float angle = i * (2.0f * M_PI / 8);
+
+        float x = player->actor.world.pos.x + radius * cos(angle);
+        float z = player->actor.world.pos.z + radius * sin(angle);
+        float y = player->actor.world.pos.y;
+
+        spawnPoints.push_back(std::make_tuple(x, y, z));
+    }
+    for (auto spawnKnuckle : spawnPoints) {
+        float deltaX = player->actor.world.pos.x - std::get<0>(spawnKnuckle);
+        float deltaZ = player->actor.world.pos.z - std::get<2>(spawnKnuckle);
+        float angleToPlayer = atan2(deltaZ, deltaX);
+        int16_t rotY = static_cast<int16_t>(angleToPlayer * (180.0f / M_PI));
+        rotY -= 90.0f;
+        rotY = static_cast<int16_t>(((rotY / 360.0f) * 65536.0f) * -1);
+        uint32_t knuckleColor = rand() % 3;
+
+        Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_IK, std::get<0>(spawnKnuckle),
+                    std::get<1>(spawnKnuckle), std::get<2>(spawnKnuckle), 0, rotY, 0, knuckleColor, false);
+    }
 }
 
 void ChaosEventActorMagnet() {
@@ -652,6 +760,9 @@ void ChaosEventsRepeater() {
             if (knuckleTimer > 0) {
                 knuckleTimer--;
             }
+            if (knuckleTimer % (eventList[EVENT_KNUCKLE_RING].eventTimer / 3) == 0) {
+                ChaosEventsIronKnucklerSpawner();
+            }
         }
 
         if (isEventIdPresent(EVENT_MIDO_SUCKS) == true) {
@@ -734,22 +845,13 @@ void ChaosEventsRepeater() {
         }
 
         if (isEventIdPresent(EVENT_FLOATING_STUFF) == true) {
+            floatingRespawnHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneSpawnActors>([]() {
+                ChaosEventFloatingStuffRespawn();
+            });
             if (floatTimer > 0) {
                 floatTimer--;
-
                 if (floatingStuffActors.size() < 100 && floatTimer % 80 == 0) {
-                    ChaosEventFloatingStuffSelector();
-                    if (randomItem != GID_MAXIMUM) {
-                        float x = player->actor.world.pos.x + (rand() % 1000) - 500;
-                        float y = player->actor.world.pos.y + (rand() % 600);
-                        float z = player->actor.world.pos.z + (rand() % 1000) - 500;
-                        Actor* actor =
-                            Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_BUBBLE, x, y, z, 0, 0, 0, 0, false);
-                        floatingStuffActors.push_back(actor);
-                        ((EnBubble*)actor)->unk_218 = randomItem;
-
-                        actor->draw = EnBubble_DrawAlt;
-                    }
+                    ChaosEventFloatingStuffSpawner();
                 }
             }
         }
@@ -893,56 +995,9 @@ void ChaosEventsActivator(uint32_t eventId, bool isActive) {
         case EVENT_KNUCKLE_RING:
             if (isActive) {
                 knuckleTimer = eventList[EVENT_KNUCKLE_RING].eventTimer;
-                Player* player = GET_PLAYER(gPlayState);
-                float radius = 45.0f;
-                std::vector<std::tuple<float, float, float>> spawnPoints;
-
-                for (int i = 0; i < 8; i++) {
-                    float angle = i * (2.0f * M_PI / 8);
-
-                    float x = player->actor.world.pos.x + radius * cos(angle);
-                    float z = player->actor.world.pos.z + radius * sin(angle);
-                    float y = player->actor.world.pos.y;
-
-                    spawnPoints.push_back(std::make_tuple(x, y, z));
-                }
-                for (auto spawnKnuckle : spawnPoints) {
-                    float deltaX = player->actor.world.pos.x - std::get<0>(spawnKnuckle);
-                    float deltaZ = player->actor.world.pos.z - std::get<2>(spawnKnuckle);
-                    float angleToPlayer = atan2(deltaZ, deltaX);
-                    int16_t rotY = static_cast<int16_t>(angleToPlayer * (180.0f / M_PI));
-                    rotY -= 90.0f;
-                    rotY = static_cast<int16_t>(((rotY / 360.0f) * 65536.0f) * -1);
-                    uint32_t knuckleColor = rand() % 3;
-
-                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_IK, std::get<0>(spawnKnuckle),
-                                std::get<1>(spawnKnuckle), std::get<2>(spawnKnuckle), 0, rotY, 0, knuckleColor, false);
-                }
-                
+                ChaosEventsIronKnucklerSpawner();
             } else {
-                if (!gPlayState) {
-                    return;
-                }
-                ActorListEntry nqKnuckles = gPlayState->actorCtx.actorLists[ACTORCAT_ENEMY];
-                ActorListEntry hqKnuckles = gPlayState->actorCtx.actorLists[ACTORCAT_BOSS];
-                Actor* currAct = nqKnuckles.head;
-                if (currAct != nullptr) {
-                    while (currAct != nullptr) {
-                        if (currAct->id == ACTOR_EN_IK) {
-                            Actor_Kill(currAct);
-                        }
-                        currAct = currAct->next;
-                    }
-                }
-                currAct = hqKnuckles.head;
-                if (currAct != nullptr) {
-                    while (currAct != nullptr) {
-                        if (currAct->id == ACTOR_EN_IK) {
-                            Actor_Kill(currAct);
-                        }
-                        currAct = currAct->next;
-                    }
-                }
+                ChaosEventsIronKnuckleDespawner();
             }
             break;
         case EVENT_MIDO_SUCKS:
@@ -1103,11 +1158,10 @@ void ChaosEventsActivator(uint32_t eventId, bool isActive) {
                     ChaosEventFloatingStuffReturn(bubbleActor);    
                 });
                 Player* player = GET_PLAYER(gPlayState);
-
                 floatTimer = eventList[EVENT_FLOATING_STUFF].eventTimer;
             } else {
                 for (auto actor : floatingStuffActors) {
-                    Actor_Kill(actor);
+                    Actor_Kill(std::get<0>(actor));
                 }
                 floatingStuffActors.clear();
                 if (floatingHook != 0) {
@@ -1178,6 +1232,7 @@ void ChaosEventsActivator(uint32_t eventId, bool isActive) {
             if (isActive) {
                 revengeTimer = eventList[EVENT_CARDINALS_REVENGE].eventTimer;
             }
+            break;
         default:
             break;
     }
