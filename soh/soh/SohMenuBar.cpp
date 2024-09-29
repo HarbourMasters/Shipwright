@@ -667,6 +667,8 @@ void DrawEnhancementsMenu() {
                     "- Not within range of Ocarina playing spots");
                 UIWidgets::PaddedEnhancementCheckbox("Pause Warp", CVAR_ENHANCEMENT("PauseWarp"), true, false);
                 UIWidgets::Tooltip("Selection of warp song in pause menu initiates warp. Disables song playback.");
+                UIWidgets::PaddedEnhancementCheckbox("Faster Bean Patch Skulltulas", CVAR_ENHANCEMENT("FastBeanSkullSpawn"), true, false);
+                UIWidgets::Tooltip("Makes the Gold Skulltulas from bean patches come out faster after the bugs dig into the center.");
                 
                 ImGui::EndTable();
                 ImGui::EndMenu();

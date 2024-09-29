@@ -46,6 +46,12 @@ void ObjMakekinsuta_Init(Actor* thisx, PlayState* play) {
 }
 
 void func_80B98320(ObjMakekinsuta* this, PlayState* play) {
+
+    // Forces the timer to be 60 to make the Gold Skulltula spawn instantly out of the soil patch
+    if (CVarGetInteger(CVAR_ENHANCEMENT("FastBeanSkullSpawn"), 0)) {
+        this->timer = 60;
+    }
+
     if (this->unk_152 != 0) {
         if (this->timer >= 60 && !func_8002DEEC(GET_PLAYER(play))) {
             Actor_Spawn(&play->actorCtx, play, ACTOR_EN_SW, this->actor.world.pos.x, this->actor.world.pos.y,
