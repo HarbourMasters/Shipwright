@@ -564,6 +564,18 @@ void ChaosEventActorMagnet() {
     }
 }
 
+void ChaosEventActorSnap(Actor* actor, PlayState* playstate) {
+    Vec3f raycastStart = actor->world.pos;
+    float actorSnapTop = actor->world.pos.y + 120.0f;
+    CollisionPoly* poly = NULL;
+
+    actorSnapTop = BgCheck_EntityRaycastFloor1(&playstate->colCtx, &poly, &raycastStart);
+
+    if (actorSnapTop != BGCHECK_Y_MIN) {
+        actor->world.pos.y = actorSnapTop;
+    }
+}
+
 void ChaosEventDeathSwitch(uint8_t buttonId) {
     prevEquip = gSaveContext.equips.buttonItems[buttonId];
     prevRoll = buttonId;
@@ -831,9 +843,10 @@ void ChaosEventsRepeater() {
                     }
                 }
                 if (guardTimer == eventList[EVENT_THROWN_IN_THE_PAST].eventTimer / 2) {
-                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_HEISHI3, player->actor.world.pos.x + 250.0f,
+                    Actor* actor = Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_HEISHI3, player->actor.world.pos.x + 250.0f,
                                 player->actor.world.pos.y, player->actor.world.pos.z, 0,
                                 player->actor.world.rot.y + 16384, 0, 0, false);
+                    ChaosEventActorSnap(actor, gPlayState);
                 }
             }
         }
