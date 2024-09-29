@@ -48,6 +48,8 @@
 #include "util.h"
 #include <boost_custom/container_hash/hash_32.hpp>
 
+#include "Enhancements/chaos-mode/ChaosWindow.h"
+
 #if not defined (__SWITCH__) && not defined(__WIIU__)
 #include "Extractor/Extract.h"
 #endif

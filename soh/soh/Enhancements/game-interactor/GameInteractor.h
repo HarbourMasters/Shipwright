@@ -65,6 +65,7 @@ typedef enum {
     /*      */ GI_TP_DEST_REQUIEM = ENTR_DESERT_COLOSSUS_5,
     /*      */ GI_TP_DEST_NOCTURNE = ENTR_GRAVEYARD_7,
     /*      */ GI_TP_DEST_PRELUDE = ENTR_TEMPLE_OF_TIME_7,
+    /*      */ GI_TP_DEST_JAILCELL = ENTR_GERUDOS_FORTRESS_17,
 } GITeleportDestinations;
 
 #ifdef __cplusplus
@@ -139,6 +140,7 @@ public:
         static uint8_t SecondCollisionUpdate;
         static uint8_t TriforceHuntPieceGiven;
         static uint8_t TriforceHuntCreditsWarpActive;
+        static std::map<std::string, uint32_t> ChaosVotes;
 
         static void SetPacifistMode(bool active);
     };
@@ -212,6 +214,7 @@ public:
     DEFINE_HOOK(OnPlayerBonk, void());
     DEFINE_HOOK(OnPlayDestroy, void());
     DEFINE_HOOK(OnPlayDrawEnd, void());
+    DEFINE_HOOK(OnPlayerHealthChange, void(int16_t amount));
 
     DEFINE_HOOK(OnSaveFile, void(int32_t fileNum));
     DEFINE_HOOK(OnLoadFile, void(int32_t fileNum));

@@ -411,6 +411,10 @@ u16 EnMd_GetTextLostWoods(PlayState* play, EnMd* this) {
     this->unk_208 = 0;
     this->unk_209 = TEXT_STATE_NONE;
 
+    if (CVarGetInteger(CVAR_ENHANCEMENT("EnableChaosMode"), 0)) {
+        return 0x1070;
+    }
+
     if (Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP)) {
         if (Flags_GetInfTable(INFTABLE_19)) {
             return 0x1071;
@@ -431,20 +435,26 @@ u16 EnMd_GetTextLostWoods(PlayState* play, EnMd* this) {
 
 u16 EnMd_GetText(PlayState* play, Actor* thisx) {
     EnMd* this = (EnMd*)thisx;
-
-    switch (play->sceneNum) {
-        case SCENE_KOKIRI_FOREST:
-            return EnMd_GetTextKokiriForest(play, this);
-        case SCENE_MIDOS_HOUSE:
-            return EnMd_GetTextKokiriHome(play, this);
-        case SCENE_LOST_WOODS:
-            return EnMd_GetTextLostWoods(play, this);
-        default:
-            return 0;
+    if (CVarGetInteger(CVAR_ENHANCEMENT("EnableChaosMode"), 0)) {
+        return EnMd_GetTextLostWoods(play, this);
+    } else {
+        switch (play->sceneNum) {
+            case SCENE_KOKIRI_FOREST:
+                return EnMd_GetTextKokiriForest(play, this);
+            case SCENE_MIDOS_HOUSE:
+                return EnMd_GetTextKokiriHome(play, this);
+            case SCENE_LOST_WOODS:
+                return EnMd_GetTextLostWoods(play, this);
+            default:
+                return 0;
+        }
     }
 }
 
 s16 func_80AAAF04(PlayState* play, Actor* thisx) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("EnableChaosMode"), 0)) {
+        CVarSetInteger(CVAR_ENHANCEMENT("ChaosModeMido"), 1);
+    }
     EnMd* this = (EnMd*)thisx;
     switch (func_80AAAC78(this, play)) {
         case TEXT_STATE_NONE:
@@ -491,7 +501,7 @@ u8 EnMd_ShouldSpawn(EnMd* this, PlayState* play) {
     // in the forest until you've obtained Zelda's letter or Deku Tree dies
     // This is to ensure Deku Tree can still be opened in dungeon entrance rando even if Ghoma is defeated
     if (IS_RANDO) {
-        if (play->sceneNum == SCENE_LOST_WOODS) {
+        if (play->sceneNum == SCENE_LOST_WOODS || CVarGetInteger(CVAR_ENHANCEMENT("EnableChaosMode"), 0) == 1) {
             return 1;
         }
 
@@ -554,7 +564,6 @@ void func_80AAB158(EnMd* this, PlayState* play) {
         trackingMode = NPC_TRACKING_NONE;
         temp2 = 0;
     }
-
     if (this->interactInfo.talkState != NPC_TALK_STATE_IDLE) {
         trackingMode = NPC_TRACKING_FULL_BODY;
     }
@@ -623,14 +632,15 @@ u8 EnMd_SetMovedPos(EnMd* this, PlayState* play) {
         return 0;
     }
 
-    path = &play->setupPathList[(this->actor.params & 0xFF00) >> 8];
-    lastPointPos = SEGMENTED_TO_VIRTUAL(path->points);
-    lastPointPos += path->count - 1;
+    if (CVarGetInteger(CVAR_ENHANCEMENT("EnableChaosMode"), 0) == 0) {
+        path = &play->setupPathList[(this->actor.params & 0xFF00) >> 8];
+        lastPointPos = SEGMENTED_TO_VIRTUAL(path->points);
+        lastPointPos += path->count - 1;
 
-    this->actor.world.pos.x = lastPointPos->x;
-    this->actor.world.pos.y = lastPointPos->y;
-    this->actor.world.pos.z = lastPointPos->z;
-
+        this->actor.world.pos.x = lastPointPos->x;
+        this->actor.world.pos.y = lastPointPos->y;
+        this->actor.world.pos.z = lastPointPos->z;
+    }
     return 1;
 }
 

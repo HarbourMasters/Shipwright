@@ -90,6 +90,10 @@ void GameInteractor_ExecuteOnPlayDrawEnd() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayDrawEnd>();
 }
 
+void GameInteractor_ExecuteOnPlayerHealthChange(int16_t amount) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerHealthChange>(amount);
+}
+
 // MARK: -  Save Files
 
 void GameInteractor_ExecuteOnSaveFile(int32_t fileNum) {

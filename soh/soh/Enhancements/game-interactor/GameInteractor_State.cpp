@@ -22,6 +22,7 @@ uint8_t GameInteractor::State::SlipperyFloorActive = 0;
 uint8_t GameInteractor::State::SecondCollisionUpdate = 0;
 uint8_t GameInteractor::State::TriforceHuntPieceGiven = 0;
 uint8_t GameInteractor::State::TriforceHuntCreditsWarpActive = 0;
+std::map<std::string, uint32_t> GameInteractor::State::ChaosVotes = {};
 
 void GameInteractor::State::SetPacifistMode(bool active) {
     PacifistModeActive = active;

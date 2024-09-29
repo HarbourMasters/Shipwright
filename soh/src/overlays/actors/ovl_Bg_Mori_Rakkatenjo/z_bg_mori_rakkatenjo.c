@@ -64,7 +64,13 @@ void BgMoriRakkatenjo_Init(Actor* thisx, PlayState* play) {
         // "The set Angle has changed. Let's fix the program."
         osSyncPrintf("Warning : セット Angle が変更されています。プログラムを修正しましょう。\n");
     }
-    this->moriTexObjIndex = Object_GetIndex(&play->objectCtx, OBJECT_MORI_TEX);
+
+    if (CVarGetInteger(CVAR_ENHANCEMENT("EnableChaosMode"), 0) == 1) {
+        this->moriTexObjIndex = 3;
+    } else {
+        this->moriTexObjIndex = Object_GetIndex(&play->objectCtx, OBJECT_MORI_TEX);
+    }
+    
     if (this->moriTexObjIndex < 0) {
         // "Forest Temple obj Falling Ceiling Bank Danger!"
         osSyncPrintf("Error : 森の神殿 obj 落下天井 バンク危険！(%s %d)\n", __FILE__, __LINE__);
@@ -87,14 +93,20 @@ void BgMoriRakkatenjo_Destroy(Actor* thisx, PlayState* play) {
 
 s32 BgMoriRakkatenjo_IsLinkUnder(BgMoriRakkatenjo* this, PlayState* play) {
     Vec3f* pos = &GET_PLAYER(play)->actor.world.pos;
-
-    return (-3300.0f < pos->z) && (pos->z < -1840.0f) && (1791.0f < pos->x) && (pos->x < 2191.0f);
+    if (CVarGetInteger(CVAR_ENHANCEMENT("EnableChaosMode"), 0) == 1) {
+        return (true) && (true) && (true) && (true);
+    } else {
+        return (-3300.0f < pos->z) && (pos->z < -1840.0f) && (1791.0f < pos->x) && (pos->x < 2191.0f);
+    }
 }
 
 s32 BgMoriRakkatenjo_IsLinkClose(BgMoriRakkatenjo* this, PlayState* play) {
     Vec3f* pos = &GET_PLAYER(play)->actor.world.pos;
-
-    return (-3360.0f < pos->z) && (pos->z < -1840.0f) && (1791.0f < pos->x) && (pos->x < 2191.0f);
+    if (CVarGetInteger(CVAR_ENHANCEMENT("EnableChaosMode"), 0) == 1) {
+        return (true) && (true) && (true) && (true);
+    } else {
+        return (-3360.0f < pos->z) && (pos->z < -1840.0f) && (1791.0f < pos->x) && (pos->x < 2191.0f);
+    }
 }
 
 void BgMoriRakkatenjo_SetupWaitForMoriTex(BgMoriRakkatenjo* this) {
@@ -110,7 +122,12 @@ void BgMoriRakkatenjo_WaitForMoriTex(BgMoriRakkatenjo* this, PlayState* play) {
 
 void BgMoriRakkatenjo_SetupWait(BgMoriRakkatenjo* this) {
     this->timer = (this->fallCount > 0) ? 100 : 21;
-    this->dyna.actor.world.pos.y = 683.0f;
+    if (CVarGetInteger(CVAR_ENHANCEMENT("EnableChaosMode"), 0) == 1) {
+        Player* player = GET_PLAYER(gPlayState);
+        this->dyna.actor.world.pos.y = player->actor.world.pos.y + 280.0f;
+    } else {
+        this->dyna.actor.world.pos.y = 683.0f;
+    }
     this->actionFunc = BgMoriRakkatenjo_Wait;
 }
 
@@ -150,36 +167,68 @@ void BgMoriRakkatenjo_Fall(BgMoriRakkatenjo* this, PlayState* play) {
     s32 quake;
 
     Actor_MoveForward(thisx);
-    if ((thisx->velocity.y < 0.0f) && (thisx->world.pos.y <= 403.0f)) {
-        if (this->bounceCount >= ARRAY_COUNT(bounceVel)) {
-            BgMoriRakkatenjo_SetupRest(this);
-        } else {
-            if (this->bounceCount == 0) {
-                this->fallCount++;
-                func_800788CC(NA_SE_EV_STONE_BOUND);
-                func_800AA000(SQ(thisx->yDistToPlayer), 0xFF, 0x14, 0x96);
+    if (CVarGetInteger(CVAR_ENHANCEMENT("EnableChaosMode"), 0) == 1) {
+        Player* player = GET_PLAYER(gPlayState);
+        if ((thisx->velocity.y < 0.0f) && (thisx->world.pos.y <= player->actor.world.pos.y)) {
+            if (this->bounceCount >= ARRAY_COUNT(bounceVel)) {
+                BgMoriRakkatenjo_SetupRest(this);
+            } else {
+                if (this->bounceCount == 0) {
+                    this->fallCount++;
+                    func_800788CC(NA_SE_EV_STONE_BOUND);
+                    func_800AA000(SQ(thisx->yDistToPlayer), 0xFF, 0x14, 0x96);
+                }
+                thisx->world.pos.y =
+                    player->actor.world.pos.y - (thisx->world.pos.y - player->actor.world.pos.y) * bounceVel[this->bounceCount] / fabsf(thisx->velocity.y);
+                thisx->velocity.y = bounceVel[this->bounceCount];
+                this->bounceCount++;
+                quake = Quake_Add(GET_ACTIVE_CAM(play), 3);
+                Quake_SetSpeed(quake, 50000);
+                Quake_SetQuakeValues(quake, 5, 0, 0, 0);
+                Quake_SetCountdown(quake, 5);
             }
-            thisx->world.pos.y =
-                403.0f - (thisx->world.pos.y - 403.0f) * bounceVel[this->bounceCount] / fabsf(thisx->velocity.y);
-            thisx->velocity.y = bounceVel[this->bounceCount];
-            this->bounceCount++;
-            quake = Quake_Add(GET_ACTIVE_CAM(play), 3);
-            Quake_SetSpeed(quake, 50000);
-            Quake_SetQuakeValues(quake, 5, 0, 0, 0);
-            Quake_SetCountdown(quake, 5);
+        }
+    } else {
+        if ((thisx->velocity.y < 0.0f) && (thisx->world.pos.y <= 403.0f)) {
+            if (this->bounceCount >= ARRAY_COUNT(bounceVel)) {
+                BgMoriRakkatenjo_SetupRest(this);
+            } else {
+                if (this->bounceCount == 0) {
+                    this->fallCount++;
+                    func_800788CC(NA_SE_EV_STONE_BOUND);
+                    func_800AA000(SQ(thisx->yDistToPlayer), 0xFF, 0x14, 0x96);
+                }
+                thisx->world.pos.y =
+                    403.0f - (thisx->world.pos.y - 403.0f) * bounceVel[this->bounceCount] / fabsf(thisx->velocity.y);
+                thisx->velocity.y = bounceVel[this->bounceCount];
+                this->bounceCount++;
+                quake = Quake_Add(GET_ACTIVE_CAM(play), 3);
+                Quake_SetSpeed(quake, 50000);
+                Quake_SetQuakeValues(quake, 5, 0, 0, 0);
+                Quake_SetCountdown(quake, 5);
+            }
         }
     }
 }
 
 void BgMoriRakkatenjo_SetupRest(BgMoriRakkatenjo* this) {
     this->actionFunc = BgMoriRakkatenjo_Rest;
-    this->dyna.actor.world.pos.y = 403.0f;
+    if (CVarGetInteger(CVAR_ENHANCEMENT("EnableChaosMode"), 0) == 1) {
+        Player* player = GET_PLAYER(gPlayState);
+        this->dyna.actor.world.pos.y = player->actor.world.pos.y;
+    } else {
+        this->dyna.actor.world.pos.y = 403.0f;
+    }
     this->timer = 20;
 }
 
 void BgMoriRakkatenjo_Rest(BgMoriRakkatenjo* this, PlayState* play) {
     if (this->timer <= 0) {
-        BgMoriRakkatenjo_SetupRise(this);
+        if (CVarGetInteger(CVAR_ENHANCEMENT("EnableChaosMode"), 0) == 1) {
+            Actor_Kill(this);
+        } else {
+            BgMoriRakkatenjo_SetupRise(this);
+        }
     }
 }
 
@@ -204,18 +253,20 @@ void BgMoriRakkatenjo_Update(Actor* thisx, PlayState* play) {
         this->timer--;
     }
     this->actionFunc(this, play);
-    if (BgMoriRakkatenjo_IsLinkUnder(this, play)) {
-        if (sCamSetting == CAM_SET_NONE) {
-            osSyncPrintf("camera changed (mori rakka tenjyo) ... \n");
-            sCamSetting = play->cameraPtrs[MAIN_CAM]->setting;
-            Camera_SetCameraData(play->cameraPtrs[MAIN_CAM], 1, &this->dyna.actor, NULL, 0, 0, 0);
-            Camera_ChangeSetting(play->cameraPtrs[MAIN_CAM], CAM_SET_FOREST_BIRDS_EYE);
+    if (CVarGetInteger(CVAR_ENHANCEMENT("EnableChaosMode"), 0) == 0) {
+        if (BgMoriRakkatenjo_IsLinkUnder(this, play)) {
+            if (sCamSetting == CAM_SET_NONE) {
+                osSyncPrintf("camera changed (mori rakka tenjyo) ... \n");
+                sCamSetting = play->cameraPtrs[MAIN_CAM]->setting;
+                Camera_SetCameraData(play->cameraPtrs[MAIN_CAM], 1, &this->dyna.actor, NULL, 0, 0, 0);
+                Camera_ChangeSetting(play->cameraPtrs[MAIN_CAM], CAM_SET_FOREST_BIRDS_EYE);
+            }
+        } else if (sCamSetting != CAM_SET_NONE) {
+            osSyncPrintf("camera changed (previous) ... \n");
+            Camera_ChangeSetting(play->cameraPtrs[MAIN_CAM], CAM_SET_DUNGEON1);
+            sCamSetting = 0;
         }
-    } else if (sCamSetting != CAM_SET_NONE) {
-        osSyncPrintf("camera changed (previous) ... \n");
-        Camera_ChangeSetting(play->cameraPtrs[MAIN_CAM], CAM_SET_DUNGEON1);
-        sCamSetting = 0;
-    }
+    } 
 }
 
 void BgMoriRakkatenjo_Draw(Actor* thisx, PlayState* play) {

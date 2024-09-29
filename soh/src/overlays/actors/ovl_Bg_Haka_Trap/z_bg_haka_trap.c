@@ -336,7 +336,7 @@ void func_808805C0(BgHakaTrap* this, PlayState* play) {
         }
 
         if (this->timer == 20) {
-            Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_GUILLOTINE_UP);
+                Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_GUILLOTINE_UP);
         }
     }
 
@@ -413,10 +413,14 @@ void func_808808F4(BgHakaTrap* this, PlayState* play) {
     }
 
     if (this->timer == 0) {
-        this->timer = 30;
-        this->dyna.actor.world.pos.y = this->dyna.actor.home.pos.y;
-        this->dyna.actor.velocity.y = 0.5f;
-        this->actionFunc = func_808806BC;
+        if (CVarGetInteger(CVAR_ENHANCEMENT("EnableChaosMode"), 0) == 1) {
+            Actor_Kill(this);
+        } else {
+            this->timer = 30;
+            this->dyna.actor.world.pos.y = this->dyna.actor.home.pos.y;
+            this->dyna.actor.velocity.y = 0.5f;
+            this->actionFunc = func_808806BC;
+        }
     }
 }
 

@@ -37,6 +37,8 @@
 #include "Enhancements/randomizer/randomizer_settings_window.h"
 #include "Enhancements/resolution-editor/ResolutionEditor.h"
 
+#include "Enhancements/chaos-mode/ChaosWindow.h"
+
 extern bool isBetaQuestEnabled;
 
 extern "C" PlayState* gPlayState;
@@ -411,9 +413,10 @@ void DrawSettingsMenu() {
             #else
                 bool matchingRefreshRate =
                     CVarGetInteger(CVAR_SETTING("MatchRefreshRate"), 0) && Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() != Ship::WindowBackend::FAST3D_DXGI_DX11;
-                UIWidgets::PaddedEnhancementSliderInt(
+                if (UIWidgets::PaddedEnhancementSliderInt(
                     (currentFps == 20) ? "Frame Rate: Original (20 fps)" : "Frame Rate: %d fps",
-                    "##FPSInterpolation", CVAR_SETTING("InterpolationFPS"), minFps, maxFps, "", 20, true, true, false, matchingRefreshRate);
+                    "##FPSInterpolation", CVAR_SETTING("InterpolationFPS"), minFps, maxFps, "", 20, true, true, false, matchingRefreshRate)) {
+                }
             #endif
                 if (Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() == Ship::WindowBackend::FAST3D_DXGI_DX11) {
                     UIWidgets::Tooltip(
@@ -551,6 +554,8 @@ void DrawSettingsMenu() {
 extern std::shared_ptr<AudioEditor> mAudioEditorWindow;
 extern std::shared_ptr<CosmeticsEditorWindow> mCosmeticsEditorWindow;
 extern std::shared_ptr<GameplayStatsWindow> mGameplayStatsWindow;
+
+extern std::shared_ptr<ChaosWindow> mChaosWindow;
 
 void DrawEnhancementsMenu() {
     if (ImGui::BeginMenu("Enhancements"))
@@ -1418,6 +1423,14 @@ void DrawEnhancementsMenu() {
             UIWidgets::Tooltip("Changes Heart Piece and Heart Container functionality.\n\n"
                 "- Each Heart Container or full Heart Piece reduces Links hearts by 1.\n"
                 "- Can be enabled retroactively after a File has already started.");
+
+            if (mChaosWindow) {
+                if (ImGui::Button(
+                        GetWindowButtonText("Chaos Tracker", CVarGetInteger(CVAR_WINDOW("Chaos"), 0)).c_str(),
+                        ImVec2(-1.0f, 0.0f))) {
+                    mChaosWindow->ToggleVisibility();
+                }
+            }
 
             ImGui::EndMenu();
         }

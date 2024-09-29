@@ -640,4 +640,12 @@ namespace GameInteractionEffect {
     void SlipperyFloor::_Remove() {
         GameInteractor::State::SlipperyFloorActive = 0;
     }
+
+    // MARK: - ChaosVote
+    GameInteractionEffectQueryResult ChaosVote::CanBeApplied() {
+        return GameInteractionEffectQueryResult::Possible;
+    }
+    void ChaosVote::_Apply() {
+        GameInteractor::State::ChaosVotes[this->voterName] = this->vote;
+    }
 }
