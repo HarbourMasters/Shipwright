@@ -91,7 +91,7 @@ jobs:
         sudo chmod +x /opt/homebrew/bin/gtar
     - name: Cache MacPorts
       id: cache-macports
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         path: /opt/local/
         key: ${{ runner.os }}-14-macports-${{ hashFiles('.github/workflows/macports-deps.txt') }}
