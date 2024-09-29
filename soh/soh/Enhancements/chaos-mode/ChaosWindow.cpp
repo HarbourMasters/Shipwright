@@ -39,6 +39,7 @@ uint32_t erasureTimer = 0;
 uint32_t ceilingTimer = 0;
 uint32_t stopHeartTimer = 0;
 uint32_t spikeTrapTimer = 0;
+uint32_t spikeTrapRespawnTimer = 0;
 uint32_t floatTimer = 0;
 uint32_t rupeeDropTimer = 0;
 uint32_t fireMazeTimer = 0;
@@ -92,6 +93,8 @@ static uint32_t fallingCeilingHook = 0;
 static uint32_t fallingCeilingRespawnHook = 0;
 static uint32_t stopHeartHook = 0;
 static uint32_t spikeTrapHook = 0;
+static uint32_t spikeTrapRespawnHook = 0;
+static uint32_t spikeTrapRespawnHookTimer = 0;
 static uint32_t floatingHook = 0;
 static uint32_t rupeeDropHook = 0;
 static uint32_t votingHook = 0;
@@ -108,6 +111,7 @@ bool rollOptions = false;
 bool shouldTeleport = false;
 bool openChaosSettings = false;
 bool openChaosTester = false;
+bool spawnSpikeTrap = false;
 bool stopHeart = false;
 
 const char* fakeText = "Random Teleport";
@@ -359,10 +363,23 @@ void EnBubble_DrawAlt(Actor* thisx, PlayState* play) {
 }
 
 void ChaosEventSpikeTrap() {
-    Player* player = GET_PLAYER(gPlayState);
-    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_BG_HAKA_TRAP, player->actor.world.pos.x,
-                player->actor.world.pos.y + 225, player->actor.world.pos.z, 0, player->actor.world.rot.y, 0, 1,
-                false);
+    spikeTrapRespawnHookTimer = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
+        if (!gPlayState || GameInteractor::IsGameplayPaused()) {
+            return;
+        }
+
+        if (spikeTrapRespawnTimer > 0) {
+            spikeTrapRespawnTimer--;
+        }
+
+        if (spikeTrapRespawnTimer == 0 && spawnSpikeTrap == true) {
+            Player* player = GET_PLAYER(gPlayState);
+            Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_BG_HAKA_TRAP, player->actor.world.pos.x,
+                        player->actor.world.pos.y + 200, player->actor.world.pos.z, 0, player->actor.world.rot.y, 0, 1,
+                        false);
+            spawnSpikeTrap = false;
+        }
+    });
 }
 
 void ChaosEventForceStopHearts() {
@@ -1005,7 +1022,7 @@ void ChaosEventsActivator(uint32_t eventId, bool isActive) {
                     if (actor->id == ACTOR_BG_MORI_RAKKATENJO) {
                         ChaosEventFallingCeiling();
                     }
-                });
+                    });
                 ceilingTimer = eventList[EVENT_FALLING_CEILING].eventTimer;
                 ChaosEventFallingCeiling();
             } else {
@@ -1039,13 +1056,33 @@ void ChaosEventsActivator(uint32_t eventId, bool isActive) {
             if (isActive) {
                 spikeTrapTimer == eventList[EVENT_SPIKE_TRAP].eventTimer;
                 spikeTrapHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneSpawnActors>([]() {
+                    spikeTrapRespawnTimer = 60;
+                    spawnSpikeTrap = true;
                     ChaosEventSpikeTrap();
                 });
+                spikeTrapRespawnHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorKill>(
+                    [](void* refActor) {
+                        Actor* actor = (Actor*)refActor;
+                        if (actor->id == ACTOR_BG_HAKA_TRAP) {
+                            spikeTrapRespawnTimer = 60;
+                            spawnSpikeTrap = true;
+                            ChaosEventSpikeTrap();
+                        }
+                    });
+                spawnSpikeTrap = true;
                 ChaosEventSpikeTrap();
             } else {
                 if (spikeTrapHook != 0) {
                     GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneSpawnActors>(spikeTrapHook);
                     spikeTrapHook = 0;
+                }
+                if (spikeTrapRespawnHook != 0) {
+                    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorKill>(spikeTrapRespawnHook);
+                    spikeTrapRespawnHook = 0;
+                }
+                if (spikeTrapRespawnHookTimer != 0) {
+                    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnGameFrameUpdate>(spikeTrapRespawnHookTimer);
+                    spikeTrapRespawnHookTimer = 0;
                 }
                 ceilingActors = gPlayState->actorCtx.actorLists[ACTORCAT_BG];
                 currCeiling = ceilingActors.head;
