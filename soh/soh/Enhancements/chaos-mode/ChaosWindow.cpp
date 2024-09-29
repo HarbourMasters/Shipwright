@@ -273,8 +273,8 @@ void ChaosUpdateInterval() {
 }
 
 void ChaosUpdateVotingInterval() {
-    votingInterval = (CVarGetInteger(CVAR_ENHANCEMENT("VotingInterval"), 0) * 20);
-    //votingInterval = 999999;
+    //votingInterval = (CVarGetInteger(CVAR_ENHANCEMENT("VotingInterval"), 0) * 20);
+    votingInterval = 999999;
 }
 
 void ChaosUpdateEventTimers() {
@@ -376,7 +376,11 @@ void ChaosEventForceStopHearts() {
                 stopHeart = true;
             }
             if (gSaveContext.healthCapacity <= gSaveContext.health) {
-                Health_ChangeBy(gPlayState, (-gSaveContext.healthCapacity - (gSaveContext.healthCapacity - 0x010)));
+                int16_t healthValue = -gSaveContext.healthCapacity + 0x010;
+                if (gSaveContext.isDoubleDefenseAcquired == 1) {
+                    healthValue = healthValue * 2;
+                }
+                Health_ChangeBy(gPlayState, healthValue);
             } else {
                 Health_ChangeBy(gPlayState, 0x010);
             }
