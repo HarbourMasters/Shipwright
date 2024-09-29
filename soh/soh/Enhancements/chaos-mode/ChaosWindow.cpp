@@ -271,6 +271,9 @@ std::string formatChaosTimers(uint32_t value) {
 
 void ChaosUpdateWindowSize() {
     chaosWindowSize = CVarGetFloat(CVAR_ENHANCEMENT("ChaosWindowSize"), 0);
+    if (chaosWindowSize < 1.0f) {
+        chaosWindowSize = 1.0f;
+    }
 }
 
 void ChaosUpdateInterval() {
