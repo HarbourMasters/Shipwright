@@ -667,6 +667,8 @@ void DrawEnhancementsMenu() {
                     "- Not within range of Ocarina playing spots");
                 UIWidgets::PaddedEnhancementCheckbox("Pause Warp", CVAR_ENHANCEMENT("PauseWarp"), true, false);
                 UIWidgets::Tooltip("Selection of warp song in pause menu initiates warp. Disables song playback.");
+                UIWidgets::PaddedEnhancementCheckbox("Empty Bottles Faster", CVAR_ENHANCEMENT("FastBottleEmpty"), true, false);
+                UIWidgets::Tooltip("Speeds up the bottle emptying animation when dumping out the contents of a bottle.");
                 
                 ImGui::EndTable();
                 ImGui::EndMenu();

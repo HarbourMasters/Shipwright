@@ -14057,6 +14057,15 @@ static AnimSfxEntry D_80854A34[] = {
 void Player_Action_8084EFC0(Player* this, PlayState* play) {
     func_8083721C(this);
 
+    //Speeds up bottle emptying animation without making it look too out of place
+    if (CVarGetInteger(CVAR_ENHANCEMENT("FastBottleEmpty"), 0)) {
+        if (this->skelAnime.curFrame <= 60.0f) {
+            this->skelAnime.playSpeed = 3.0f;
+        } else {
+            this->skelAnime.playSpeed = 1.0f;
+        }
+    }
+
     if (LinkAnimation_Update(play, &this->skelAnime)) {
         func_8083C0E8(this, play);
         func_8005B1A4(Play_GetCamera(play, 0));
