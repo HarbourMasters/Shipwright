@@ -1117,7 +1117,7 @@ void Message_DrawText(PlayState* play, Gfx** gfxP) {
         }
     }
 
-    gTextSpeed = CVarGetInteger(CVAR_ENHANCEMENT("TextSpeed"), 2);
+    gTextSpeed = CVarGetInteger(CVAR_ENHANCEMENT("TextSpeed"), 1);
     if (msgCtx->textDelay == 0) {
         msgCtx->textDrawPos = i + gTextSpeed;
     } else if (msgCtx->textDelayTimer == 0) {

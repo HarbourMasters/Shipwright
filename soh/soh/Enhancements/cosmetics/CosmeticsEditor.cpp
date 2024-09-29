@@ -1687,12 +1687,6 @@ static const char* colorSchemes[2] = {
 };
 
 void CosmeticsEditorWindow::DrawElement() {
-    ImGui::SetNextWindowSize(ImVec2(550, 520), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Cosmetics Editor", &mIsVisible)) {
-        ImGui::End();
-        return;
-    }
-
     ImGui::Text("Color Scheme");
     ImGui::SameLine();
     UIWidgets::EnhancementCombobox(CVAR_COSMETIC("DefaultColorScheme"), colorSchemes, COLORSCHEME_N64);
@@ -1811,7 +1805,6 @@ void CosmeticsEditorWindow::DrawElement() {
         }
         ImGui::EndTabBar();
     }
-    ImGui::End();
 }
 
 void RegisterOnLoadGameHook() {

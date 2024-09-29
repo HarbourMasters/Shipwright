@@ -6266,7 +6266,7 @@ s32 func_8083D12C(PlayState* play, Player* this, Input* arg2) {
                 func_80832340(play, this);
                 // Skip take breath animation on surface if Link didn't grab an item while underwater and the setting is enabled
                 if (CVarGetInteger(CVAR_ENHANCEMENT("SkipSwimDeepEndAnim"), 0) && !(this->stateFlags1 & PLAYER_STATE1_ITEM_OVER_HEAD)) {
-                    auto lastAnimFrame = Animation_GetLastFrame(&gPlayerAnim_link_swimer_swim_deep_end);
+                    int lastAnimFrame = Animation_GetLastFrame(&gPlayerAnim_link_swimer_swim_deep_end);
                     LinkAnimation_Change(play, &this->skelAnime, &gPlayerAnim_link_swimer_swim_deep_end, 1.0f,
                         lastAnimFrame, lastAnimFrame, ANIMMODE_ONCE, -6.0f);
                 } else {
@@ -11892,10 +11892,6 @@ void Player_Draw(Actor* thisx, PlayState* play2) {
             lod = 1;
         }
 
-        if (CVarGetInteger(CVAR_ENHANCEMENT("DisableLOD"), 0)) {
-            lod = 0;
-        }
-
         func_80093C80(play);
         Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
@@ -12116,7 +12112,8 @@ void func_8084AEEC(Player* this, f32* arg1, f32 arg2, s16 arg3) {
             } else if (gWalkSpeedToggle2) {
                 swimMod *= CVarGetFloat(CVAR_SETTING("WalkModifier.SwimMapping2"), 1.0f);
             }
-        } else {
+        // sControlInput is NULL to prevent inputs while surfacing after obtaining an underwater item so we want to ignore it for that case
+        } else if (sControlInput != NULL) {
             if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_MODIFIER1)) {
                 swimMod *= CVarGetFloat(CVAR_SETTING("WalkModifier.SwimMapping1"), 1.0f);
             } else if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_MODIFIER2)) {
