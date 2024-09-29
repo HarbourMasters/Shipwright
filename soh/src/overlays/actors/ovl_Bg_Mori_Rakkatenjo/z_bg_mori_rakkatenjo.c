@@ -224,7 +224,11 @@ void BgMoriRakkatenjo_SetupRest(BgMoriRakkatenjo* this) {
 
 void BgMoriRakkatenjo_Rest(BgMoriRakkatenjo* this, PlayState* play) {
     if (this->timer <= 0) {
-        BgMoriRakkatenjo_SetupRise(this);
+        if (CVarGetInteger(CVAR_ENHANCEMENT("EnableChaosMode"), 0) == 1) {
+            Actor_Kill(this);
+        } else {
+            BgMoriRakkatenjo_SetupRise(this);
+        }
     }
 }
 

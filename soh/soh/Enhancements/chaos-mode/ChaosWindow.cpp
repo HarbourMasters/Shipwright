@@ -89,6 +89,7 @@ Actor* currCeiling = ceilingActors.head;
 static uint32_t actorMagnetHook = 0;
 static uint32_t midoSucksHook = 0;
 static uint32_t fallingCeilingHook = 0;
+static uint32_t fallingCeilingRespawnHook = 0;
 static uint32_t stopHeartHook = 0;
 static uint32_t spikeTrapHook = 0;
 static uint32_t floatingHook = 0;
@@ -998,12 +999,23 @@ void ChaosEventsActivator(uint32_t eventId, bool isActive) {
                 fallingCeilingHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneSpawnActors>([]() {
                     ChaosEventFallingCeiling();
                 });
+                fallingCeilingRespawnHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorKill>(
+                    [](void* refActor) {
+                        Actor* actor = (Actor*)refActor;
+                    if (actor->id == ACTOR_BG_MORI_RAKKATENJO) {
+                        ChaosEventFallingCeiling();
+                    }
+                });
                 ceilingTimer = eventList[EVENT_FALLING_CEILING].eventTimer;
                 ChaosEventFallingCeiling();
             } else {
                 if (fallingCeilingHook != 0) {
                     GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneSpawnActors>(fallingCeilingHook);
                     fallingCeilingHook = 0;
+                }
+                if (fallingCeilingRespawnHook != 0) {
+                    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorKill>(fallingCeilingRespawnHook);
+                    fallingCeilingRespawnHook = 0;
                 }
                 ceilingActors = gPlayState->actorCtx.actorLists[ACTORCAT_BG];
                 currCeiling = ceilingActors.head;
