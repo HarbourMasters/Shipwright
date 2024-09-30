@@ -977,14 +977,14 @@ static void RandomizeOwnDungeon(const Rando::DungeonInfo* dungeon) {
   });
 
   //filter out locations that may be required to have songs placed at them
-  dungeonLocations = FilterFromPool(dungeonLocations, [ctx](const auto loc){
+  dungeonLocations = FilterFromPool(dungeonLocations, [ctx](const auto loc) {
     if (ctx->GetOption(RSK_SHUFFLE_SONGS).Is(RO_SONG_SHUFFLE_SONG_LOCATIONS)) {
       return !(Rando::StaticData::GetLocation(loc)->GetRCType() == RCTYPE_SONG_LOCATION);
     }
     if (ctx->GetOption(RSK_SHUFFLE_SONGS).Is(RO_SONG_SHUFFLE_DUNGEON_REWARDS)) {
-        return !(Rando::StaticData::GetLocation(loc)->GetRCType() == RCTYPE_BOSS_HEART_OR_OTHER_REWARD ||
-               loc == RC_SHEIK_IN_ICE_CAVERN ||
-               loc == RC_SONG_FROM_IMPA;));
+      return !(Rando::StaticData::GetLocation(loc)->GetRCType() == RCTYPE_BOSS_HEART_OR_OTHER_REWARD ||
+             loc == RC_SHEIK_IN_ICE_CAVERN ||
+             loc == RC_SONG_FROM_IMPA);
     }
     return true;
   });
