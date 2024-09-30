@@ -981,6 +981,11 @@ static void RandomizeOwnDungeon(const Rando::DungeonInfo* dungeon) {
     if (ctx->GetOption(RSK_SHUFFLE_SONGS).Is(RO_SONG_SHUFFLE_SONG_LOCATIONS)) {
       return !(Rando::StaticData::GetLocation(loc)->GetRCType() == RCTYPE_SONG_LOCATION);
     }
+    if (ctx->GetOption(RSK_SHUFFLE_SONGS).Is(RO_SONG_SHUFFLE_DUNGEON_REWARDS)) {
+        return !(Rando::StaticData::GetLocation(loc)->GetRCType() == RCTYPE_BOSS_HEART_OR_OTHER_REWARD ||
+               loc == RC_SHEIK_IN_ICE_CAVERN ||
+               loc == RC_SONG_FROM_IMPA;));
+    }
     return true;
   });
 
@@ -1246,18 +1251,7 @@ int Fill() {
 
       } else if (ctx->GetOption(RSK_SHUFFLE_SONGS).Is(RO_SONG_SHUFFLE_DUNGEON_REWARDS)) {
           songLocations = FilterFromPool(ctx->allLocations, [](const auto loc) {
-            return loc == RC_BOTTOM_OF_THE_WELL_LENS_OF_TRUTH_CHEST ||
-                   loc == RC_BOTTOM_OF_THE_WELL_MQ_LENS_OF_TRUTH_CHEST ||
-                   loc == RC_GERUDO_TRAINING_GROUND_MAZE_PATH_FINAL_CHEST ||
-                   loc == RC_GERUDO_TRAINING_GROUND_MQ_ICE_ARROWS_CHEST ||
-                   loc == RC_DEKU_TREE_QUEEN_GOHMA_HEART ||
-                   loc == RC_DODONGOS_CAVERN_KING_DODONGO_HEART ||
-                   loc == RC_JABU_JABUS_BELLY_BARINADE_HEART ||
-                   loc == RC_FOREST_TEMPLE_PHANTOM_GANON_HEART ||
-                   loc == RC_FIRE_TEMPLE_VOLVAGIA_HEART ||
-                   loc == RC_WATER_TEMPLE_MORPHA_HEART ||
-                   loc == RC_SPIRIT_TEMPLE_TWINROVA_HEART ||
-                   loc == RC_SHADOW_TEMPLE_BONGO_BONGO_HEART ||
+            return Rando::StaticData::GetLocation(loc)->GetRCType() == RCTYPE_BOSS_HEART_OR_OTHER_REWARD ||
                    loc == RC_SHEIK_IN_ICE_CAVERN ||
                    loc == RC_SONG_FROM_IMPA;
           });
