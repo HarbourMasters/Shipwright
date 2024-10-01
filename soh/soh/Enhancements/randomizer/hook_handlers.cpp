@@ -689,6 +689,17 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
             }
             break;
         }
+        case VB_ITEM_B_HEART_DESPAWN: {
+            ItemBHeart* itemBHeart = static_cast<ItemBHeart*>(optionalArg);
+            RandomizerCheck rc = OTRGlobals::Instance->gRandomizer->GetCheckFromActor(itemBHeart->actor.id, gPlayState->sceneNum, itemBHeart->actor.params);
+            if (rc != RC_UNKNOWN_CHECK) {
+                itemBHeart->sohItemEntry = Rando::Context::GetInstance()->GetFinalGIEntry(rc, true, (GetItemID)Rando::StaticData::GetLocation(rc)->GetVanillaItem());
+                itemBHeart->actor.draw = (ActorFunc)ItemBHeart_DrawRandomizedItem;
+                itemBHeart->actor.update = (ActorFunc)ItemBHeart_UpdateRandomizedItem;
+                *should = Rando::Context::GetInstance()->GetItemLocation(rc)->HasObtained();
+            }
+            break;
+        }
         case VB_MALON_ALREADY_TAUGHT_EPONAS_SONG: {
             *should = Flags_GetRandomizerInf(RAND_INF_LEARNED_EPONA_SONG);
             break;
@@ -779,6 +790,9 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
                         Randomizer_Item_Give(gPlayState, item00->itemEntry);
                     }
                 }
+                // This is typically called when you close the text box after getting an item, in case a previous
+                // function hid the interface.
+                Interface_ChangeAlpha(gSaveContext.unk_13EE);
                 // EnItem00_SetupAction(item00, func_8001E5C8);
                 // *should = false;
             } else if (item00->actor.params == ITEM00_SOH_GIVE_ITEM_ENTRY_GI) {
@@ -1345,16 +1359,6 @@ void RandomizerOnActorInitHandler(void* actorRef) {
             EnSi* enSi = static_cast<EnSi*>(actorRef);
             enSi->sohGetItemEntry = Rando::Context::GetInstance()->GetFinalGIEntry(rc, true, (GetItemID)Rando::StaticData::GetLocation(rc)->GetVanillaItem());
             actor->draw = (ActorFunc)EnSi_DrawRandomizedItem;
-        }
-    }
-
-    if (actor->id == ACTOR_ITEM_B_HEART) {
-        ItemBHeart* itemBHeart = static_cast<ItemBHeart*>(actorRef);
-        RandomizerCheck rc = OTRGlobals::Instance->gRandomizer->GetCheckFromActor(itemBHeart->actor.id, gPlayState->sceneNum, itemBHeart->actor.params);
-        if (rc != RC_UNKNOWN_CHECK) {
-            itemBHeart->sohItemEntry = Rando::Context::GetInstance()->GetFinalGIEntry(rc, true, (GetItemID)Rando::StaticData::GetLocation(rc)->GetVanillaItem());
-            itemBHeart->actor.draw = (ActorFunc)ItemBHeart_DrawRandomizedItem;
-            itemBHeart->actor.update = (ActorFunc)ItemBHeart_UpdateRandomizedItem;
         }
     }
 

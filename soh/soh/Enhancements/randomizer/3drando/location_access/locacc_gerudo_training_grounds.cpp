@@ -4,11 +4,11 @@
 
 using namespace Rando;
 
-void AreaTable_Init_GerudoTrainingGrounds() {
+void RegionTable_Init_GerudoTrainingGrounds() {
   /*--------------------------
   |    VANILLA/MQ DECIDER    |
   ---------------------------*/
-  areaTable[RR_GERUDO_TRAINING_GROUNDS_ENTRYWAY] = Area("Gerudo Training Grounds Entryway", "Gerudo Training Grounds", RA_GERUDO_TRAINING_GROUND, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_GERUDO_TRAINING_GROUNDS_ENTRYWAY] = Region("Gerudo Training Grounds Entryway", "Gerudo Training Grounds", RA_GERUDO_TRAINING_GROUND, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_GERUDO_TRAINING_GROUNDS_LOBBY,    {[]{return randoCtx->GetDungeon(GERUDO_TRAINING_GROUNDS)->IsVanilla();}}),
                   Entrance(RR_GERUDO_TRAINING_GROUNDS_MQ_LOBBY, {[]{return randoCtx->GetDungeon(GERUDO_TRAINING_GROUNDS)->IsMQ();}}),
@@ -19,7 +19,7 @@ void AreaTable_Init_GerudoTrainingGrounds() {
   |     VANILLA DUNGEON      |
   ---------------------------*/
   if (randoCtx->GetDungeon(GERUDO_TRAINING_GROUNDS)->IsVanilla()) {
-  areaTable[RR_GERUDO_TRAINING_GROUNDS_LOBBY] = Area("Gerudo Training Grounds Lobby", "Gerudo Training Grounds", RA_GERUDO_TRAINING_GROUND, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[RR_GERUDO_TRAINING_GROUNDS_LOBBY] = Region("Gerudo Training Grounds Lobby", "Gerudo Training Grounds", RA_GERUDO_TRAINING_GROUND, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LOCATION(RC_GERUDO_TRAINING_GROUND_LOBBY_LEFT_CHEST,  logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_FAIRY_SLINGSHOT)),
                   LOCATION(RC_GERUDO_TRAINING_GROUND_LOBBY_RIGHT_CHEST, logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_FAIRY_SLINGSHOT)),
@@ -33,7 +33,7 @@ void AreaTable_Init_GerudoTrainingGrounds() {
                   Entrance(RR_GERUDO_TRAINING_GROUNDS_CENTRAL_MAZE,     {[]{return true;}}),
   });
 
-  areaTable[RR_GERUDO_TRAINING_GROUNDS_CENTRAL_MAZE] = Area("Gerudo Training Grounds Central Maze", "Gerudo Training Grounds", RA_GERUDO_TRAINING_GROUND, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[RR_GERUDO_TRAINING_GROUNDS_CENTRAL_MAZE] = Region("Gerudo Training Grounds Central Maze", "Gerudo Training Grounds", RA_GERUDO_TRAINING_GROUND, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LOCATION(RC_GERUDO_TRAINING_GROUND_HIDDEN_CEILING_CHEST,   logic->SmallKeys(RR_GERUDO_TRAINING_GROUNDS, 3) && (randoCtx->GetTrickOption(RT_LENS_GTG) || logic->CanUse(RG_LENS_OF_TRUTH))),
                   LOCATION(RC_GERUDO_TRAINING_GROUND_MAZE_PATH_FIRST_CHEST,  logic->SmallKeys(RR_GERUDO_TRAINING_GROUNDS, 4)),
@@ -45,7 +45,7 @@ void AreaTable_Init_GerudoTrainingGrounds() {
                   Entrance(RR_GERUDO_TRAINING_GROUNDS_CENTRAL_MAZE_RIGHT, {[]{return logic->SmallKeys(RR_GERUDO_TRAINING_GROUNDS, 9);}}),
   });
 
-  areaTable[RR_GERUDO_TRAINING_GROUNDS_CENTRAL_MAZE_RIGHT] = Area("Gerudo Training Grounds Central Maze Right", "Gerudo Training Grounds", RA_GERUDO_TRAINING_GROUND, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[RR_GERUDO_TRAINING_GROUNDS_CENTRAL_MAZE_RIGHT] = Region("Gerudo Training Grounds Central Maze Right", "Gerudo Training Grounds", RA_GERUDO_TRAINING_GROUND, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LOCATION(RC_GERUDO_TRAINING_GROUND_MAZE_RIGHT_CENTRAL_CHEST, true),
                   LOCATION(RC_GERUDO_TRAINING_GROUND_MAZE_RIGHT_SIDE_CHEST,    true),
@@ -56,7 +56,7 @@ void AreaTable_Init_GerudoTrainingGrounds() {
                   Entrance(RR_GERUDO_TRAINING_GROUNDS_LAVA_ROOM,   {[]{return true;}}),
   });
 
-  areaTable[RR_GERUDO_TRAINING_GROUNDS_LAVA_ROOM] = Area("Gerudo Training Grounds Lava Room", "Gerudo Training Grounds", RA_GERUDO_TRAINING_GROUND, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[RR_GERUDO_TRAINING_GROUNDS_LAVA_ROOM] = Region("Gerudo Training Grounds Lava Room", "Gerudo Training Grounds", RA_GERUDO_TRAINING_GROUND, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LOCATION(RC_GERUDO_TRAINING_GROUND_UNDERWATER_SILVER_RUPEE_CHEST, logic->CanUse(RG_HOOKSHOT) && logic->CanUse(RG_SONG_OF_TIME) && logic->IronBoots && logic->WaterTimer >= 24),
                   LocationAccess(RC_GERUDO_TRAINING_GROUNDS_TOILET_SILVER_RUPEE_1, {[]{return true;}}), /*TODO: Silver Rupee Logic*/
@@ -75,7 +75,7 @@ void AreaTable_Init_GerudoTrainingGrounds() {
                   Entrance(RR_GERUDO_TRAINING_GROUNDS_HAMMER_ROOM,        {[]{return logic->CanUse(RG_LONGSHOT)  || (logic->CanUse(RG_HOVER_BOOTS) && logic->CanUse(RG_HOOKSHOT));}}),
   });
 
-  areaTable[RR_GERUDO_TRAINING_GROUNDS_HAMMER_ROOM] = Area("Gerudo Training Grounds Hammer Room", "Gerudo Training Grounds", RA_GERUDO_TRAINING_GROUND, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[RR_GERUDO_TRAINING_GROUNDS_HAMMER_ROOM] = Region("Gerudo Training Grounds Hammer Room", "Gerudo Training Grounds", RA_GERUDO_TRAINING_GROUND, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LOCATION(RC_GERUDO_TRAINING_GROUND_HAMMER_ROOM_CLEAR_CHEST,  logic->CanAdultAttack || logic->CanChildAttack),
                   LOCATION(RC_GERUDO_TRAINING_GROUND_HAMMER_ROOM_SWITCH_CHEST, logic->CanUse(RG_MEGATON_HAMMER) || (logic->CanTakeDamage && randoCtx->GetTrickOption(RT_FLAMING_CHESTS))),
@@ -85,7 +85,7 @@ void AreaTable_Init_GerudoTrainingGrounds() {
                   Entrance(RR_GERUDO_TRAINING_GROUNDS_LAVA_ROOM,        {[]{return true;}}),
   });
 
-  areaTable[RR_GERUDO_TRAINING_GROUNDS_EYE_STATUE_LOWER] = Area("Gerudo Training Grounds Eye Statue Lower", "Gerudo Training Grounds", RA_GERUDO_TRAINING_GROUND, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[RR_GERUDO_TRAINING_GROUNDS_EYE_STATUE_LOWER] = Region("Gerudo Training Grounds Eye Statue Lower", "Gerudo Training Grounds", RA_GERUDO_TRAINING_GROUND, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LOCATION(RC_GERUDO_TRAINING_GROUND_EYE_STATUE_CHEST, logic->CanUse(RG_FAIRY_BOW)),
                 }, {
@@ -93,7 +93,7 @@ void AreaTable_Init_GerudoTrainingGrounds() {
                   Entrance(RR_GERUDO_TRAINING_GROUNDS_HAMMER_ROOM, {[]{return true;}}),
   });
 
-  areaTable[RR_GERUDO_TRAINING_GROUNDS_EYE_STATUE_UPPER] = Area("Gerudo Training Grounds Eye Statue Upper", "Gerudo Training Grounds", RA_GERUDO_TRAINING_GROUND, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[RR_GERUDO_TRAINING_GROUNDS_EYE_STATUE_UPPER] = Region("Gerudo Training Grounds Eye Statue Upper", "Gerudo Training Grounds", RA_GERUDO_TRAINING_GROUND, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LOCATION(RC_GERUDO_TRAINING_GROUND_NEAR_SCARECROW_CHEST, logic->CanUse(RG_FAIRY_BOW)),
                 }, {
@@ -101,7 +101,7 @@ void AreaTable_Init_GerudoTrainingGrounds() {
                   Entrance(RR_GERUDO_TRAINING_GROUNDS_EYE_STATUE_LOWER, {[]{return true;}}),
   });
 
-  areaTable[RR_GERUDO_TRAINING_GROUNDS_HEAVY_BLOCK_ROOM] = Area("Gerudo Training Grounds Heavy Block Room", "Gerudo Training Grounds", RA_GERUDO_TRAINING_GROUND, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[RR_GERUDO_TRAINING_GROUNDS_HEAVY_BLOCK_ROOM] = Region("Gerudo Training Grounds Heavy Block Room", "Gerudo Training Grounds", RA_GERUDO_TRAINING_GROUND, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LOCATION(RC_GERUDO_TRAINING_GROUND_BEFORE_HEAVY_BLOCK_CHEST, logic->CanJumpslash),
                   // TODO: Maybe a new region for the boulder maze room? Not sure if that's needed or if it's fine for them to stay here.
@@ -116,7 +116,7 @@ void AreaTable_Init_GerudoTrainingGrounds() {
                   Entrance(RR_GERUDO_TRAINING_GROUNDS_LIKE_LIKE_ROOM,   {[]{return (randoCtx->GetTrickOption(RT_LENS_GTG) || logic->CanUse(RG_LENS_OF_TRUTH)) && (logic->CanUse(RG_HOOKSHOT) || (randoCtx->GetTrickOption(RT_GTG_FAKE_WALL) && logic->CanUse(RG_HOVER_BOOTS))) && logic->CanUse(RG_SILVER_GAUNTLETS);}}),
   });
 
-  areaTable[RR_GERUDO_TRAINING_GROUNDS_LIKE_LIKE_ROOM] = Area("Gerudo Training Grounds Like Like Room", "Gerudo Training Grounds", RA_GERUDO_TRAINING_GROUND, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[RR_GERUDO_TRAINING_GROUNDS_LIKE_LIKE_ROOM] = Region("Gerudo Training Grounds Like Like Room", "Gerudo Training Grounds", RA_GERUDO_TRAINING_GROUND, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LOCATION(RC_GERUDO_TRAINING_GROUND_HEAVY_BLOCK_FIRST_CHEST,  logic->CanJumpslash),
                   LOCATION(RC_GERUDO_TRAINING_GROUND_HEAVY_BLOCK_SECOND_CHEST, logic->CanJumpslash),
@@ -129,7 +129,7 @@ void AreaTable_Init_GerudoTrainingGrounds() {
   |   MASTER QUEST DUNGEON    |
   ---------------------------*/
   if (randoCtx->GetDungeon(GERUDO_TRAINING_GROUNDS)->IsMQ()) {
-  areaTable[RR_GERUDO_TRAINING_GROUNDS_MQ_LOBBY] = Area("Gerudo Training Grounds MQ Lobby", "Gerudo Training Grounds", RA_GERUDO_TRAINING_GROUND, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[RR_GERUDO_TRAINING_GROUNDS_MQ_LOBBY] = Region("Gerudo Training Grounds MQ Lobby", "Gerudo Training Grounds", RA_GERUDO_TRAINING_GROUND, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LOCATION(RC_GERUDO_TRAINING_GROUND_MQ_LOBBY_LEFT_CHEST,       true),
                   LOCATION(RC_GERUDO_TRAINING_GROUND_MQ_LOBBY_RIGHT_CHEST,      true),
@@ -144,7 +144,7 @@ void AreaTable_Init_GerudoTrainingGrounds() {
                   Entrance(RR_GERUDO_TRAINING_GROUNDS_MQ_RIGHT_SIDE, {[]{return Here(RR_GERUDO_TRAINING_GROUNDS_MQ_LOBBY, []{return (logic->IsAdult && logic->CanUse(RG_FAIRY_BOW)) || (logic->IsChild && logic->CanUse(RG_FAIRY_SLINGSHOT));});}}),
   });
 
-  areaTable[RR_GERUDO_TRAINING_GROUNDS_MQ_RIGHT_SIDE] = Area("Gerudo Training Grounds MQ Right Side", "Gerudo Training Grounds", RA_GERUDO_TRAINING_GROUND, NO_DAY_NIGHT_CYCLE, {
+  areaTable[RR_GERUDO_TRAINING_GROUNDS_MQ_RIGHT_SIDE] = Region("Gerudo Training Grounds MQ Right Side", "Gerudo Training Grounds", RA_GERUDO_TRAINING_GROUND, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   //EventAccess(&WallFairy, {[]{return WallFairy || (logic->IsAdult && logic->CanUse(RG_FAIRY_BOW));}}),
   }, {
@@ -155,7 +155,7 @@ void AreaTable_Init_GerudoTrainingGrounds() {
                   Entrance(RR_GERUDO_TRAINING_GROUNDS_MQ_UNDERWATER, {[]{return (logic->Bow || (logic->CanUse(RG_LONGSHOT) && logic->HasFireSource)) && logic->CanUse(RG_HOVER_BOOTS) && logic->IsAdult && (logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_BIGGORON_SWORD));}}),
   });
 
-  areaTable[RR_GERUDO_TRAINING_GROUNDS_MQ_UNDERWATER] = Area("Gerudo Training Grounds MQ Underwater", "Gerudo Training Grounds", RA_GERUDO_TRAINING_GROUND, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[RR_GERUDO_TRAINING_GROUNDS_MQ_UNDERWATER] = Region("Gerudo Training Grounds MQ Underwater", "Gerudo Training Grounds", RA_GERUDO_TRAINING_GROUND, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LOCATION(RC_GERUDO_TRAINING_GROUND_MQ_UNDERWATER_SILVER_RUPEE_CHEST, logic->HasFireSource && logic->IsAdult && logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer >= 24 && logic->CanTakeDamage),
                   LocationAccess(RC_GERUDO_TRAINING_GROUNDS_MQ_TOILET_SILVER_RUPEE_1, {[]{ return true; }}), /*TODO: Silver Rupee Logic*/
@@ -163,7 +163,7 @@ void AreaTable_Init_GerudoTrainingGrounds() {
                   LocationAccess(RC_GERUDO_TRAINING_GROUNDS_MQ_TOILET_SILVER_RUPEE_3, {[]{ return true; }}), /*TODO: Silver Rupee Logic*/
   }, {});
 
-  areaTable[RR_GERUDO_TRAINING_GROUNDS_MQ_LEFT_SIDE] = Area("Gerudo Training Grounds MQ Left Side", "Gerudo Training Grounds", RA_GERUDO_TRAINING_GROUND, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[RR_GERUDO_TRAINING_GROUNDS_MQ_LEFT_SIDE] = Region("Gerudo Training Grounds MQ Left Side", "Gerudo Training Grounds", RA_GERUDO_TRAINING_GROUND, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LOCATION(RC_GERUDO_TRAINING_GROUND_MQ_FIRST_IRON_KNUCKLE_CHEST, logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD) || logic->HasExplosives),
   }, {
@@ -172,7 +172,7 @@ void AreaTable_Init_GerudoTrainingGrounds() {
                     //Trick: (logic->IsAdult && logic->CanUse(RG_LONGSHOT)) || LogicGtgMQWithoutHookshot || (LogicGtgMQWithHookshot && logic->IsAdult && logic->CanUse(RG_HOOKSHOT))
   });
 
-  areaTable[RR_GERUDO_TRAINING_GROUNDS_MQ_STALFOS_ROOM] = Area("Gerudo Training Grounds MQ Stalfos Room", "Gerudo Training Grounds", RA_GERUDO_TRAINING_GROUND, NO_DAY_NIGHT_CYCLE, {
+  areaTable[RR_GERUDO_TRAINING_GROUNDS_MQ_STALFOS_ROOM] = Region("Gerudo Training Grounds MQ Stalfos Room", "Gerudo Training Grounds", RA_GERUDO_TRAINING_GROUND, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&logic->BlueFireAccess,  {[]{return logic->BlueFireAccess || logic->HasBottle;}}),
   }, {
@@ -190,7 +190,7 @@ void AreaTable_Init_GerudoTrainingGrounds() {
                     //Trick: logic->IsAdult && (LogicLensGtgMQ || logic->CanUse(RG_LENS_OF_TRUTH)) && logic->BlueFire && (logic->CanUse(RG_SONG_OF_TIME) || (LogicGtgFakeWall && logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)))
   });
 
-  areaTable[RR_GERUDO_TRAINING_GROUNDS_MQ_BACK_AREAS] = Area("Gerudo Training Grounds MQ Back Areas", "Gerudo Training Grounds", RA_GERUDO_TRAINING_GROUND, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[RR_GERUDO_TRAINING_GROUNDS_MQ_BACK_AREAS] = Region("Gerudo Training Grounds MQ Back Areas", "Gerudo Training Grounds", RA_GERUDO_TRAINING_GROUND, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LOCATION(RC_GERUDO_TRAINING_GROUND_MQ_EYE_STATUE_CHEST,          logic->CanUse(RG_FAIRY_BOW)),
                   LOCATION(RC_GERUDO_TRAINING_GROUND_MQ_SECOND_IRON_KNUCKLE_CHEST, logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD)),
@@ -201,7 +201,7 @@ void AreaTable_Init_GerudoTrainingGrounds() {
                   Entrance(RR_GERUDO_TRAINING_GROUNDS_MQ_RIGHT_SIDE,         {[]{return logic->CanUse(RG_LONGSHOT);}}),
   });
 
-  areaTable[RR_GERUDO_TRAINING_GROUNDS_MQ_CENTRAL_MAZE_RIGHT] = Area("Gerudo Training Grounds MQ Central Maze Right", "Gerudo Training Grounds", RA_GERUDO_TRAINING_GROUND, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[RR_GERUDO_TRAINING_GROUNDS_MQ_CENTRAL_MAZE_RIGHT] = Region("Gerudo Training Grounds MQ Central Maze Right", "Gerudo Training Grounds", RA_GERUDO_TRAINING_GROUND, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LOCATION(RC_GERUDO_TRAINING_GROUND_MQ_MAZE_RIGHT_CENTRAL_CHEST, true),
                   LOCATION(RC_GERUDO_TRAINING_GROUND_MQ_MAZE_RIGHT_SIDE_CHEST,    true),
