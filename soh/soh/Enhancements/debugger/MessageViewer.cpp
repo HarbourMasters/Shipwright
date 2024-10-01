@@ -20,11 +20,6 @@ void MessageViewer::InitElement() {
 }
 
 void MessageViewer::DrawElement() {
-    ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Custom Message Debugger", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
-        ImGui::End();
-        return;
-    }
     ImGui::Text("Table ID");
     ImGui::SameLine();
     ImGui::InputText("##TableID", mTableIdBuf, MAX_STRING_SIZE, ImGuiInputTextFlags_CallbackCharFilter, UIWidgets::TextFilters::FilterAlphaNum);
@@ -74,7 +69,6 @@ void MessageViewer::DrawElement() {
     if (ImGui::Button("Display Message##CustomMessage")) {
         mDisplayCustomMessageClicked = true;
     }
-    ImGui::End();
     // ReSharper restore CppDFAUnreachableCode
 }
 

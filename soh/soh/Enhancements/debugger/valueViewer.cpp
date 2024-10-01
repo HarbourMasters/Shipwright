@@ -102,12 +102,6 @@ extern "C" void ValueViewer_Draw(GfxPrint* printer) {
 }
 
 void ValueViewerWindow::DrawElement() {
-    ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Value Viewer", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
-        ImGui::End();
-        return;
-    }
-
     UIWidgets::PaddedEnhancementCheckbox("Enable Printing", CVAR_DEVELOPER_TOOLS("ValueViewerEnablePrinting"));
 
     ImGui::BeginGroup();
@@ -212,8 +206,6 @@ void ValueViewerWindow::DrawElement() {
         }
         ImGui::EndGroup();
     }
-
-    ImGui::End();
 }
 
 void ValueViewerWindow::InitElement() {
