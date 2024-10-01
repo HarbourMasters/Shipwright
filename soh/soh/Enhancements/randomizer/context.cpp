@@ -136,7 +136,7 @@ void Context::AddLocations(const Container& locations, std::vector<RandomizerChe
 
 void Context::GenerateLocationPool() {
     allLocations.clear();
-    AddLocation(RC_LINKS_POCKET);
+    //AddLocation(RC_LINKS_POCKET); this is being added twice now
     if (mSettings->GetOption(RSK_TRIFORCE_HUNT)) {
         AddLocation(RC_TRIFORCE_COMPLETED);
     }

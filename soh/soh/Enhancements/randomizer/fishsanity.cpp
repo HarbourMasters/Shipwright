@@ -87,10 +87,10 @@ namespace Rando {
         auto [mode, numFish, ageSplit] = GetOptions(optionsSource);
         std::vector<RandomizerCheck> activeFish;
         std::vector<RandomizerCheck> remainingFish;
+        std::vector<RandomizerCheck> pondFish = Rando::StaticData::GetPondFishLocations();
 
         // Fishsanity_InitializeHelpers();
-        remainingFish.insert(remainingFish.end(), Rando::StaticData::GetPondFishLocations().begin(),
-                             Rando::StaticData::GetPondFishLocations().end());
+        remainingFish.insert(remainingFish.end(), pondFish.begin(), pondFish.end());
 
         // No pond fish shuffled
         if (numFish == 0) {
@@ -138,8 +138,8 @@ namespace Rando {
 
         // Add overworld fish
         if (mode == RO_FISHSANITY_OVERWORLD || mode == RO_FISHSANITY_BOTH) {
-            activeFish.insert(activeFish.end(), Rando::StaticData::GetOverworldFishLocations().begin(),
-                              Rando::StaticData::GetOverworldFishLocations().end());
+            std::vector<RandomizerCheck> overworldFish = Rando::StaticData::GetOverworldFishLocations();
+            activeFish.insert(activeFish.end(), overworldFish.begin(), overworldFish.end());
         }
 
         return std::make_pair(activeFish, remainingFish);

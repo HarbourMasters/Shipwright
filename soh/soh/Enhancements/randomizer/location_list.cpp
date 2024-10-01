@@ -80,7 +80,9 @@ std::vector<RandomizerCheck> Rando::StaticData::GetOverworldLocations() {
         if (
             location.IsOverworld() &&
             location.GetRandomizerCheck() != RC_UNKNOWN_CHECK &&
-            location.GetRandomizerCheck() != RC_TRIFORCE_COMPLETED //not really an overworld check
+            location.GetRandomizerCheck() != RC_TRIFORCE_COMPLETED && //not really an overworld check
+            location.GetRCType() != RCTYPE_FISH && //temp fix while locations are properly sorted out
+            location.GetRCType() != RCTYPE_CHEST_GAME //this is supposed to be excluded
         ) {
             overworldLocations.push_back(location.GetRandomizerCheck());
         }
