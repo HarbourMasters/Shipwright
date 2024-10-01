@@ -6881,7 +6881,8 @@ s32 Player_ActionChange_2(Player* this, PlayState* play) {
             }
 
             if ((this->heldActor == NULL) || Player_HoldsHookshot(this)) {
-                if ((interactedActor->id == ACTOR_BG_TOKI_SWD) && LINK_IS_ADULT) {
+                if ((interactedActor->id == ACTOR_BG_TOKI_SWD) && LINK_IS_ADULT &&
+                    !(Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD && !CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER)))) {
                     s32 sp24 = this->itemAction;
 
                     this->itemAction = PLAYER_IA_NONE;
@@ -10256,6 +10257,13 @@ void Player_Init(Actor* thisx, PlayState* play2) {
         if (gSaveContext.cutsceneIndex >= 0xFFF0) {
             initMode = 13;
         }
+    }
+
+    if (initMode == 1 && IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) &&
+        !CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER)) {
+        Math_Vec3f_Copy(&this->actor.world.pos, &D_808546F4);
+        this->yaw = this->actor.shape.rot.y = -0x8000;
+        initMode = 13;
     }
 
     D_80854738[initMode](play, this);

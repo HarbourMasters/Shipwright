@@ -717,6 +717,50 @@ void RegisterMirrorModeHandler() {
     });
 }
 
+void RegisterPatchNoMSHandler() {
+        GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() { 
+        if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_MASTER_SWORD) &&
+            (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_MASTER &&
+             gSaveContext.equips.buttonItems[0] != ITEM_SWORD_BGS &&
+             gSaveContext.equips.buttonItems[0] != ITEM_SWORD_BROKEN)) {
+            for (int i = 43; i <= 46; i++) {
+                std::string patchName = "adultNoMS." + std::to_string(1) + "." + std::to_string(i);
+                ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldSwordAndSheathFarDL, patchName.c_str(), i, gsDPNoOp());
+            }
+            for (int i = 62; i <= 150; i++) {
+                std::string patchName = "adultNoMS." + std::to_string(2) + "." + std::to_string(i);
+                ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL, patchName.c_str(), i, gsDPNoOp());
+            }
+            for (int i = 61; i <= 118; i++) {
+                std::string patchName = "adultNoMS." + std::to_string(3) + "." + std::to_string(i);
+                ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathFarDL,  patchName.c_str(), i, gsDPNoOp());
+            }
+            ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "adultNoMSHylianShield1", 75, gsSPEndDisplayList());
+            ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldSwordAndSheathFarDL, "adultNoMSHylianShield2", 71, gsSPEndDisplayList());
+            ResourceMgr_PatchGfxByName(gLinkAdultMasterSwordAndSheathNearDL, "adultNoMasterSword1", 2, gsSPEndDisplayList());
+            ResourceMgr_PatchGfxByName(gLinkAdultMasterSwordAndSheathFarDL, "adultNoMasterSword2", 2, gsSPEndDisplayList());
+        }
+        else {
+            for (int i = 43; i <= 46; i++) {
+                std::string patchName = "adultNoMS." + std::to_string(1) + "." + std::to_string(i);
+                ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldSwordAndSheathFarDL, patchName.c_str());
+            }
+            for (int i = 62; i <= 150; i++) {
+                std::string patchName = "adultNoMS." + std::to_string(2) + "." + std::to_string(i);
+                ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL, patchName.c_str());
+            }
+            for (int i = 61; i <= 118; i++) {
+                std::string patchName = "adultNoMS." + std::to_string(3) + "." + std::to_string(i);
+                ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathFarDL,  patchName.c_str());
+            }
+            ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "adultNoMSHylianShield1");
+            ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldSwordAndSheathFarDL, "adultNoMSHylianShield2");
+            ResourceMgr_UnpatchGfxByName(gLinkAdultMasterSwordAndSheathNearDL, "adultNoMasterSword1");
+            ResourceMgr_UnpatchGfxByName(gLinkAdultMasterSwordAndSheathFarDL, "adultNoMasterSword2");
+        }
+    });
+}
+
 void UpdatePatchHand() {
     if ((CVarGetInteger(CVAR_ENHANCEMENT("EquimentAlwaysVisible"), 0)) && LINK_IS_CHILD) {
         ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "childHammer1", 92, gsSPDisplayListOTRFilePath(gLinkChildLeftFistNearDL));
@@ -1429,6 +1473,7 @@ void InitMods() {
     RegisterOpenAllHours();
     RegisterToTMedallions();
     NameTag_RegisterHooks();
+    RegisterPatchNoMSHandler();
     RegisterFloorSwitchesHook();
     RegisterPatchHandHandler();
     RegisterHurtContainerModeHandler();
