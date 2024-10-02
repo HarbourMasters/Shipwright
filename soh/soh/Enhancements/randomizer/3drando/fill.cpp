@@ -1207,7 +1207,8 @@ int Fill() {
             init.Name = Text { "No Item", "Sin objeto", "Pas d'objet" };
             init.Price = -1;
             init.Repurchaseable = false;
-            NonShopItems[Rando::StaticData::shopLocationLists[i][indices[j] - 1]] = init; // Set price to be retrieved by the patch and textboxes
+            int itemindex = indices[j];
+            NonShopItems[Rando::StaticData::GetShopLocations()[i * LOCATIONS_PER_SHOP + itemindex - 1]] = init; // Set price to be retrieved by the patch and textboxes
           }
         }
         #undef LOCATIONS_PER_SHOP

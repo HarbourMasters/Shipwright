@@ -83,7 +83,8 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
     if (giEntry != nullptr) {
         return giEntry;
     }
-    auto logic = Rando::Context::GetInstance()->GetLogic();
+    std::shared_ptr<Rando::Context> ctx = Rando::Context::GetInstance();
+    auto logic = ctx->GetLogic();
     RandomizerGet actual = RG_NONE;
     const bool tycoonWallet = !(
         ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_OFF) ||
