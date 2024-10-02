@@ -188,20 +188,8 @@ void Context::ItemReset() {
 }
 
 void Context::LocationReset() {
-    for (const RandomizerCheck il : allLocations) {
-        GetItemLocation(il)->RemoveFromPool();
-    }
-
-    for (const RandomizerCheck il : StaticData::dungeonRewardLocations) {
-        GetItemLocation(il)->RemoveFromPool();
-    }
-
-    for (const RandomizerCheck il : StaticData::GetGossipStoneLocations()) {
-        GetItemLocation(il)->RemoveFromPool();
-    }
-
-    for (const RandomizerCheck il : StaticData::GetStaticHintLocations()) {
-        GetItemLocation(il)->RemoveFromPool();
+    for (auto& il : itemLocationTable) {
+        il.RemoveFromPool();
     }
 }
 

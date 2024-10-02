@@ -421,6 +421,11 @@ typedef enum {
     // Vanilla condition: true
     VB_PHANTOM_GANON_DEATH_SCENE,
     VB_NABOORU_KNUCKLE_DEATH_SCENE,
+
+    /*** Fishsanity ***/
+    // Vanilla condition: Actor is ACTOR_EN_ELF, ACTOR_EN_FISH, ACTOR_EN_ICE_HONO, or ACTOR_EN_INSECT
+    // Opt: *Actor
+    VB_BOTTLE_ACTOR,
 } GIVanillaBehavior;
 
 #ifdef __cplusplus
