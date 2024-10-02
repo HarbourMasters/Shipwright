@@ -106,9 +106,8 @@ void Context::PlaceItemInLocation(const RandomizerCheck locKey, const Randomizer
     // If we're placing a non-shop item in a shop location, we want to record it for custom messages
     if (StaticData::RetrieveItem(item).GetItemType() != ITEMTYPE_SHOP &&
         StaticData::GetLocation(locKey)->GetRCType() == RCTYPE_SHOP) {
-        const int index = TransformShopIndex(GetShopIndex(locKey));
-        NonShopItems[index].Name = StaticData::RetrieveItem(item).GetName();
-        NonShopItems[index].Repurchaseable =
+        NonShopItems[locKey].Name = StaticData::RetrieveItem(item).GetName();
+        NonShopItems[locKey].Repurchaseable =
             StaticData::RetrieveItem(item).GetItemType() == ITEMTYPE_REFILL ||
             StaticData::RetrieveItem(item).GetHintKey() == RHT_PROGRESSIVE_BOMBCHUS;
     }
@@ -214,7 +213,7 @@ void Context::CreateItemOverrides() {
             val.SetTrickName(GetIceTrapName(val.LooksLike()));
             // If this is ice trap is in a shop, change the name based on what the model will look like
             if (loc->GetRCType() == RCTYPE_SHOP) {
-                NonShopItems[TransformShopIndex(GetShopIndex(locKey))].Name = val.GetTrickName();
+                NonShopItems[locKey].Name = val.GetTrickName();
             }
             overrides[locKey] = val;
         }

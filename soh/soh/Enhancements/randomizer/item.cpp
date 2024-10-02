@@ -81,16 +81,22 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
     if (giEntry != nullptr) {
         return giEntry;
     }
-    auto logic = Rando::Context::GetInstance()->GetLogic();
+    std::shared_ptr<Rando::Context> ctx = Rando::Context::GetInstance();
+    auto logic = ctx->GetLogic();
     RandomizerGet actual = RG_NONE;
-    const bool tycoonWallet =
-        OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHOPSANITY) > RO_SHOPSANITY_ZERO_ITEMS;
-    const u8 infiniteUpgrades = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_INFINITE_UPGRADES);
+    const bool tycoonWallet = !(
+        ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_OFF) ||
+        (
+            ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_SPECIFIC_COUNT) &&
+            ctx->GetOption(RSK_SHOPSANITY_COUNT).Is(RO_SHOPSANITY_COUNT_ZERO_ITEMS)
+        )
+    );
+    const u8 infiniteUpgrades = ctx->GetOption(RSK_INFINITE_UPGRADES).Value<u8>();
     switch (randomizerGet) {
         case RG_PROGRESSIVE_STICK_UPGRADE:
             switch (logic->CurrentUpgrade(UPG_STICKS)) {
                 case 0:
-                    if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_DEKU_STICK_BAG)) {
+                    if (ctx->GetOption(RSK_SHUFFLE_DEKU_STICK_BAG)) {
                         actual = RG_DEKU_STICK_BAG;
                         break;
                     }
@@ -119,7 +125,7 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
         case RG_PROGRESSIVE_NUT_UPGRADE:
             switch (logic->CurrentUpgrade(UPG_NUTS)) {
                 case 0:
-                    if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_DEKU_NUT_BAG)) {
+                    if (ctx->GetOption(RSK_SHUFFLE_DEKU_NUT_BAG)) {
                         actual = RG_DEKU_NUT_BAG;
                         break;
                     }

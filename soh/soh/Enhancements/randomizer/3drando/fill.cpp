@@ -1158,7 +1158,7 @@ int Fill() {
     //Temporarily add shop items to the ItemPool so that entrance randomization
     //can validate the world using deku/hylian shields
     StartPerformanceTimer(PT_ENTRANCE_SHUFFLE);
-    AddElementsToPool(ItemPool, GetMinVanillaShopItems(32)); //assume worst case shopsanity 4
+    AddElementsToPool(ItemPool, GetMinVanillaShopItems(8)); //assume worst case shopsanity 7
     if (ctx->GetOption(RSK_SHUFFLE_ENTRANCES)) {
       SPDLOG_INFO("Shuffling Entrances...");
       if (ctx->GetEntranceShuffler()->ShuffleAllEntrances() == ENTRANCE_SHUFFLE_FAILURE) {
@@ -1175,35 +1175,40 @@ int Fill() {
 
     //ctx->showItemProgress = true;
     //Place shop items first, since a buy shield is needed to place a dungeon reward on Gohma due to access
-    
+
     StartPerformanceTimer(PT_SHOPSANITY);
-    NonShopItems = {};
+    NonShopItems.clear();
     if (ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_OFF)) {
       SPDLOG_INFO("Placing Vanilla Shop Items...");
       PlaceVanillaShopItems(); //Place vanilla shop items in vanilla location
     } else {
       SPDLOG_INFO("Shuffling Shop Items");
       int total_replaced = 0;
-      if (ctx->GetOption(RSK_SHOPSANITY).IsNot(RO_SHOPSANITY_ZERO_ITEMS)) { //Shopsanity 1-4, random
-        //Initialize NonShopItems
-        ItemAndPrice init;
-        init.Name = Text{"No Item", "Sin objeto", "Pas d'objet"};
-        init.Price = -1;
-        init.Repurchaseable = false;
-        NonShopItems.assign(32, init);
-        //Indices from OoTR. So shopsanity one will overwrite 7, three will overwrite 7, 5, 8, etc.
-        const std::array<int, 4> indices = {7, 5, 8, 6};
+      if (ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_RANDOM) || ctx->GetOption(RSK_SHOPSANITY_COUNT).IsNot(RO_SHOPSANITY_COUNT_ZERO_ITEMS)) { //Shopsanity 1-7, random
+        /*
+        Indices from OoTR. So shopsanity one will overwrite 7, three will overwrite 7, 5, 8, etc.
+          8 6    2 4
+          7 5    1 3
+        */
+        const std::array<int, 8> indices = { 7, 5, 8, 6, 3, 1, 4, 2 };
         //Overwrite appropriate number of shop items
         #define LOCATIONS_PER_SHOP 8
         for (size_t i = 0; i < Rando::StaticData::GetShopLocations().size() / LOCATIONS_PER_SHOP; i++) {
-          int num_to_replace = GetShopsanityReplaceAmount(); //1-4 shop items will be overwritten, depending on settings
+          int num_to_replace = GetShopsanityReplaceAmount(); //1-7 shop items will be overwritten, depending on settings
           total_replaced += num_to_replace;
           for (int j = 0; j < num_to_replace; j++) {
             int itemindex = indices[j];
             int shopsanityPrice = GetRandomShopPrice();
-            NonShopItems[TransformShopIndex(i * LOCATIONS_PER_SHOP + itemindex - 1)].Price =
-                shopsanityPrice; // Set price to be retrieved by the patch and textboxes
+            NonShopItems[Rando::StaticData::GetShopLocations()[i * LOCATIONS_PER_SHOP + itemindex - 1]].Price = shopsanityPrice; // Set price to be retrieved by the patch and textboxes
             ctx->GetItemLocation(Rando::StaticData::GetShopLocations()[i * LOCATIONS_PER_SHOP + itemindex - 1])->SetCustomPrice(shopsanityPrice);
+          }
+          for (int j = num_to_replace; j < 8; j++) {
+            ItemAndPrice init;
+            init.Name = Text { "No Item", "Sin objeto", "Pas d'objet" };
+            init.Price = -1;
+            init.Repurchaseable = false;
+            int itemindex = indices[j];
+            NonShopItems[Rando::StaticData::GetShopLocations()[i * LOCATIONS_PER_SHOP + itemindex - 1]] = init; // Set price to be retrieved by the patch and textboxes
           }
         }
         #undef LOCATIONS_PER_SHOP

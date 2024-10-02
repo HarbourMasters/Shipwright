@@ -367,7 +367,13 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
     // Shopsanity with at least one item shuffled allows for a third wallet upgrade.
     // This is needed since Plentiful item pool also adds a third progressive wallet
     // but we should *not* get Tycoon's Wallet in that mode.
-    bool tycoonWallet = GetRandoSettingValue(RSK_SHOPSANITY) > RO_SHOPSANITY_ZERO_ITEMS;
+    bool tycoonWallet = !(
+        GetRandoSettingValue(RSK_SHOPSANITY) == RO_SHOPSANITY_OFF ||
+        (
+            GetRandoSettingValue(RSK_SHOPSANITY) == RO_SHOPSANITY_SPECIFIC_COUNT &&
+            GetRandoSettingValue(RSK_SHOPSANITY_COUNT) == RO_SHOPSANITY_COUNT_ZERO_ITEMS
+        )
+    );
 
     // Same thing with the infinite upgrades, if we're not shuffling them
     // and we're using the Plentiful item pool, we should prevent the infinite
@@ -1138,9 +1144,13 @@ ShopItemIdentity Randomizer::IdentifyShopItem(s32 sceneNum, u8 slotIndex) {
     shopItemIdentity.itemPrice = -1;
     shopItemIdentity.enGirlAShopItem = 0x32;
 
+    if (slotIndex == 0) {
+        return shopItemIdentity;
+    }
+
     Rando::Location* location = GetCheckObjectFromActor(ACTOR_EN_GIRLA,
         // Bazaar (SHOP1) scene is reused, so if entering from Kak use debug scene to identify
-        (sceneNum == SCENE_BAZAAR && gSaveContext.entranceIndex == ENTR_BAZAAR_0) ? SCENE_TEST01 : sceneNum, slotIndex);
+        (sceneNum == SCENE_BAZAAR && gSaveContext.entranceIndex == ENTR_BAZAAR_0) ? SCENE_TEST01 : sceneNum, slotIndex - 1);
 
     if (location->GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
         shopItemIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];

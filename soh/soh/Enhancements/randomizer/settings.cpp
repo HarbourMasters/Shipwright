@@ -97,7 +97,8 @@ void Settings::CreateOptions() {
     mOptions[RSK_SHUFFLE_DUNGEON_REWARDS] = Option::U8("Shuffle Dungeon Rewards", {"End of Dungeons", "Any Dungeon", "Overworld", "Anywhere"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleDungeonReward"), mOptionDescriptions[RSK_SHUFFLE_DUNGEON_REWARDS], WidgetType::Combobox, RO_DUNGEON_REWARDS_END_OF_DUNGEON);
     mOptions[RSK_LINKS_POCKET] = Option::U8("Link's Pocket", {"Dungeon Reward", "Advancement", "Anything", "Nothing"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("LinksPocket"), "", WidgetType::Combobox, RO_LINKS_POCKET_DUNGEON_REWARD);
     mOptions[RSK_SHUFFLE_SONGS] = Option::U8("Shuffle Songs", {"Song Locations", "Dungeon Rewards", "Anywhere"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleSongs"), mOptionDescriptions[RSK_SHUFFLE_SONGS], WidgetType::Combobox, RO_SONG_SHUFFLE_SONG_LOCATIONS);
-    mOptions[RSK_SHOPSANITY] = Option::U8("Shopsanity", {"Off", "0 Items", "1 Item", "2 Items", "3 Items", "4 Items", "Random"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("Shopsanity"), mOptionDescriptions[RSK_SHOPSANITY], WidgetType::Combobox, RO_SHOPSANITY_OFF);
+    mOptions[RSK_SHOPSANITY] = Option::U8("Shopsanity", {"Off", "Specific Count", "Random"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("Shopsanity"), mOptionDescriptions[RSK_SHOPSANITY], WidgetType::Combobox, RO_SHOPSANITY_OFF);
+    mOptions[RSK_SHOPSANITY_COUNT] = Option::U8("Shopsanity Item Count", {NumOpts(0, 7/*8*/)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShopsanityCount"), mOptionDescriptions[RSK_SHOPSANITY_COUNT], WidgetType::Slider, 0, false, IMFLAG_NONE);
     mOptions[RSK_SHOPSANITY_PRICES] = Option::U8("Shopsanity Prices", {"Balanced", "Starting Wallet", "Adult Wallet", "Giant's Wallet", "Tycoon's Wallet"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShopsanityPrices"), mOptionDescriptions[RSK_SHOPSANITY_PRICES], WidgetType::Combobox, RO_SHOPSANITY_PRICE_BALANCED, false, IMFLAG_NONE);
     mOptions[RSK_SHOPSANITY_PRICES_AFFORDABLE] = Option::Bool("Affordable Prices", CVAR_RANDOMIZER_SETTING("ShopsanityPricesAffordable"), mOptionDescriptions[RSK_SHOPSANITY_PRICES_AFFORDABLE]);
     mOptions[RSK_SHUFFLE_TOKENS] = Option::U8("Tokensanity", {"Off", "Dungeons", "Overworld", "All Tokens"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleTokens"), mOptionDescriptions[RSK_SHUFFLE_TOKENS], WidgetType::Combobox, RO_TOKENSANITY_OFF);
@@ -672,6 +673,7 @@ void Settings::CreateOptions() {
     }, false, WidgetContainerType::COLUMN);
     mOptionGroups[RSG_SHUFFLE_NPCS_IMGUI] = OptionGroup::SubGroup("Shuffle NPCs & Merchants", {
         &mOptions[RSK_SHOPSANITY],
+        &mOptions[RSK_SHOPSANITY_COUNT],
         &mOptions[RSK_SHOPSANITY_PRICES],
         &mOptions[RSK_SHOPSANITY_PRICES_AFFORDABLE],
         &mOptions[RSK_FISHSANITY],
@@ -876,6 +878,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_LINKS_POCKET],
         &mOptions[RSK_SHUFFLE_SONGS],
         &mOptions[RSK_SHOPSANITY],
+        &mOptions[RSK_SHOPSANITY_COUNT],
         &mOptions[RSK_SHOPSANITY_PRICES],
         &mOptions[RSK_SHOPSANITY_PRICES_AFFORDABLE],
         &mOptions[RSK_FISHSANITY],
@@ -1084,6 +1087,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_SHUFFLE_DUNGEON_REWARDS],
         &mOptions[RSK_SHUFFLE_SONGS],
         &mOptions[RSK_SHOPSANITY],
+        &mOptions[RSK_SHOPSANITY_COUNT],
         &mOptions[RSK_SHOPSANITY_PRICES],
         &mOptions[RSK_SHOPSANITY_PRICES_AFFORDABLE],
         &mOptions[RSK_FISHSANITY],
@@ -1125,6 +1129,7 @@ void Settings::CreateOptions() {
         { "Shuffle Settings:Shuffle Songs", RSK_SHUFFLE_SONGS },
         { "Shuffle Settings:Shuffle Gerudo Membership Card", RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD },
         { "Shuffle Settings:Shopsanity", RSK_SHOPSANITY },
+        { "Shuffle Settings:Shopsanity Specific Count", RSK_SHOPSANITY_COUNT },
         { "Shuffle Settings:Shopsanity Prices", RSK_SHOPSANITY_PRICES },
         { "Shuffle Settings:Affordable Prices", RSK_SHOPSANITY_PRICES_AFFORDABLE },
         { "Shuffle Settings:Fishsanity", RSK_FISHSANITY },
@@ -1605,13 +1610,20 @@ void Settings::UpdateOptionProperties() {
     // Hide shopsanity prices if shopsanity is off or zero
     switch (CVarGetInteger(CVAR_RANDOMIZER_SETTING("Shopsanity"), RO_SHOPSANITY_OFF)) {
         case RO_SHOPSANITY_OFF:
-        case RO_SHOPSANITY_ZERO_ITEMS:
             mOptions[RSK_SHOPSANITY].AddFlag(IMFLAG_SEPARATOR_BOTTOM);
+            mOptions[RSK_SHOPSANITY_COUNT].Hide();
             mOptions[RSK_SHOPSANITY_PRICES].Hide();
             mOptions[RSK_SHOPSANITY_PRICES_AFFORDABLE].Hide();
             break;
+        case RO_SHOPSANITY_SPECIFIC_COUNT:
+            mOptions[RSK_SHOPSANITY].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
+            mOptions[RSK_SHOPSANITY_COUNT].Unhide();
+            mOptions[RSK_SHOPSANITY_PRICES].Unhide();
+            mOptions[RSK_SHOPSANITY_PRICES_AFFORDABLE].Unhide();
+            break;
         default:
             mOptions[RSK_SHOPSANITY].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
+            mOptions[RSK_SHOPSANITY_COUNT].Hide();
             mOptions[RSK_SHOPSANITY_PRICES].Unhide();
             mOptions[RSK_SHOPSANITY_PRICES_AFFORDABLE].Unhide();
             break;
@@ -2300,6 +2312,7 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
                 case RSK_CUCCO_COUNT:
                 case RSK_FISHSANITY_POND_COUNT:
                 case RSK_STARTING_SKULLTULA_TOKEN:
+                case RSK_SHOPSANITY_COUNT:
                     numericValueString = it.value();
                     mOptions[index].SetSelectedIndex(std::stoi(numericValueString));
                     break;
@@ -2323,16 +2336,8 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
                 case RSK_SHOPSANITY:
                     if (it.value() == "Off") {
                         mOptions[index].SetSelectedIndex(RO_SHOPSANITY_OFF);
-                    } else if (it.value() == "0 Items") {
-                        mOptions[index].SetSelectedIndex(RO_SHOPSANITY_ZERO_ITEMS);
-                    } else if (it.value() == "1 Item") {
-                        mOptions[index].SetSelectedIndex(RO_SHOPSANITY_ONE_ITEM);
-                    } else if (it.value() == "2 Items") {
-                        mOptions[index].SetSelectedIndex(RO_SHOPSANITY_TWO_ITEMS);
-                    } else if (it.value() == "3 Items") {
-                        mOptions[index].SetSelectedIndex(RO_SHOPSANITY_THREE_ITEMS);
-                    } else if (it.value() == "4 Items") {
-                        mOptions[index].SetSelectedIndex(RO_SHOPSANITY_FOUR_ITEMS);
+                    } else if (it.value() == "Specific Count") {
+                        mOptions[index].SetSelectedIndex(RO_SHOPSANITY_SPECIFIC_COUNT);
                     } else if (it.value() == "Random") {
                         mOptions[index].SetSelectedIndex(RO_SHOPSANITY_RANDOM);
                     }
