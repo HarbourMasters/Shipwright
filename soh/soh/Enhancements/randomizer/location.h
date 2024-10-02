@@ -160,7 +160,7 @@ class Location {
     static Location GSToken(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_, SceneID scene_, int32_t actorParams_, uint8_t flag_,
                             std::string&& shortName_, RandomizerHintTextKey hintKey, uint8_t skullScene_);
 
-    static Location Fish(RandomizerCheck rc, RandomizerCheckQuest quest_, ActorID actorId_, uint8_t scene_, int32_t actorParams_,
+    static Location Fish(RandomizerCheck rc, RandomizerCheckQuest quest_, ActorID actorId_, SceneID scene_, int32_t actorParams_,
                          RandomizerInf flag_, std::string&& shortName_, RandomizerHintTextKey hintKey, RandomizerGet vanillaItem);
 
     static Location GrottoFish(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_, int32_t actorParams_,
