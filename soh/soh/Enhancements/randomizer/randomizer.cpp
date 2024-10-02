@@ -2967,11 +2967,11 @@ void GenerateRandomizerImgui(std::string seed = "") {
     if (OTRGlobals::Instance->HasMasterQuest() && OTRGlobals::Instance->HasOriginal()) {
         // If both OTRs are loaded.
         cvarSettings[RSK_RANDOM_MQ_DUNGEONS] = CVarGetInteger(CVAR_RANDOMIZER_SETTING("MQDungeons"), RO_MQ_DUNGEONS_NONE);
-        cvarSettings[RSK_MQ_DUNGEON_COUNT] = CVarGetInteger(CVAR_RANDOMIZER_SETTING("MQDungeonCount"), 12);
+        cvarSettings[RSK_MQ_DUNGEON_COUNT] = CVarGetInteger(CVAR_RANDOMIZER_SETTING("MQDungeonCount"), MAX_MQ_DUNGEON_COUNT);
     } else if (OTRGlobals::Instance->HasMasterQuest()) {
         // If only Master Quest is loaded.
         cvarSettings[RSK_RANDOM_MQ_DUNGEONS] = RO_MQ_DUNGEONS_SET_NUMBER;
-        cvarSettings[RSK_MQ_DUNGEON_COUNT] = 12;
+        cvarSettings[RSK_MQ_DUNGEON_COUNT] = MAX_MQ_DUNGEON_COUNT;
     } else {
         // If only Original Quest is loaded.
         cvarSettings[RSK_RANDOM_MQ_DUNGEONS] = RO_MQ_DUNGEONS_NONE;
@@ -5509,7 +5509,7 @@ CustomMessage Randomizer::GetMapGetItemMessageWithHint(GetItemEntry itemEntry) {
 
     if (this->randoSettings[RSK_RANDOM_MQ_DUNGEONS] == RO_MQ_DUNGEONS_NONE ||
         (this->randoSettings[RSK_RANDOM_MQ_DUNGEONS] == RO_MQ_DUNGEONS_SET_NUMBER &&
-         this->randoSettings[RSK_MQ_DUNGEON_COUNT] == 12)
+         this->randoSettings[RSK_MQ_DUNGEON_COUNT] == MAX_MQ_DUNGEON_COUNT)
        ) {
         messageEntry.Replace("{{typeHint}}", "");
     } else if (ResourceMgr_IsSceneMasterQuest(sceneNum)) {
