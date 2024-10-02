@@ -672,22 +672,33 @@ void BossRush_OnBossDefeatHandler(void* refActor) {
     BossRush_HandleCompleteBoss(gPlayState);
 }
 
+void BossRush_OnBlueWarpUpdate(void* actor) {
+    DoorWarp1* blueWarp = static_cast<DoorWarp1*>(actor);
+
+    if (blueWarp->warpTimer > 160) {
+        BossRush_HandleBlueWarp(gPlayState, blueWarp->actor.world.pos.x, blueWarp->actor.world.pos.z);
+    }
+}
+
 void BossRush_RegisterHooks() {
     static u32 onVanillaBehaviorHook = 0;
     static u32 onSceneInitHook = 0;
     static u32 onActorInitHook = 0;
     static u32 onBossDefeatHook = 0;
+    static u32 onActorUpdate = 0;
 
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) {
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnVanillaBehavior>(onVanillaBehaviorHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(onSceneInitHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorInit>(onActorInitHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnBossDefeat>(onBossDefeatHook);
+        GameInteractor::Instance->UnregisterGameHookForID<GameInteractor::OnActorUpdate>(onActorUpdate);
 
         onVanillaBehaviorHook = 0;
         onSceneInitHook = 0;
         onActorInitHook = 0;
         onBossDefeatHook = 0;
+        onActorUpdate = 0;
 
         if (!IS_BOSS_RUSH) return;
 
@@ -695,5 +706,6 @@ void BossRush_RegisterHooks() {
         onSceneInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>(BossRush_OnSceneInitHandler);
         onActorInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>(BossRush_OnActorInitHandler);
         onBossDefeatHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnBossDefeat>(BossRush_OnBossDefeatHandler);
+        onActorUpdate = GameInteractor::Instance->RegisterGameHookForID<GameInteractor::OnActorUpdate>(ACTOR_DOOR_WARP1, BossRush_OnBlueWarpUpdate);
     });
 }
