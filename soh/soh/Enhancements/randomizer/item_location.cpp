@@ -74,8 +74,6 @@ void ItemLocation::PlaceVanillaItem() {
 
 void ItemLocation::ApplyPlacedItemEffect() const {
     StaticData::RetrieveItem(placedItem).ApplyEffect();
-    auto ctx = Context::GetInstance();
-    ctx->GetLogic()->UpdateHelpers();
 }
 
 uint16_t ItemLocation::GetPrice() const {
