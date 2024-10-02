@@ -103,10 +103,10 @@ namespace Rando {
         auto [mode, numFish, ageSplit] = GetOptions(optionsSource);
         std::vector<RandomizerCheck> activeFish;
         std::vector<RandomizerCheck> remainingFish;
+        std::vector<RandomizerCheck> pondFish = Rando::StaticData::GetPondFishLocations();
 
         // Fishsanity_InitializeHelpers();
-        remainingFish.insert(remainingFish.end(), Rando::StaticData::pondFishLocations.begin(),
-                             Rando::StaticData::pondFishLocations.end());
+        remainingFish.insert(remainingFish.end(), pondFish.begin(), pondFish.end());
 
         // No pond fish shuffled
         if (numFish == 0) {
@@ -154,8 +154,8 @@ namespace Rando {
 
         // Add overworld fish
         if (mode == RO_FISHSANITY_OVERWORLD || mode == RO_FISHSANITY_BOTH) {
-            activeFish.insert(activeFish.end(), Rando::StaticData::overworldFishLocations.begin(),
-                              Rando::StaticData::overworldFishLocations.end());
+            std::vector<RandomizerCheck> overworldFish = Rando::StaticData::GetOverworldFishLocations();
+            activeFish.insert(activeFish.end(), overworldFish.begin(), overworldFish.end());
         }
 
         return std::make_pair(activeFish, remainingFish);
@@ -315,11 +315,11 @@ namespace Rando {
 
     FishsanityCheckType Fishsanity::GetCheckType(RandomizerCheck rc) {
         // Is this a pond fish?
-        if (std::binary_search(Rando::StaticData::pondFishLocations.begin(), Rando::StaticData::pondFishLocations.end(), rc))
+        if (std::binary_search(Rando::StaticData::GetPondFishLocations().begin(), Rando::StaticData::GetPondFishLocations().end(), rc))
             return FSC_POND;
 
         // Is this an overworld fish?
-        if (std::binary_search(Rando::StaticData::overworldFishLocations.begin(), Rando::StaticData::overworldFishLocations.end(), rc)) {
+        if (std::binary_search(Rando::StaticData::GetOverworldFishLocations().begin(), Rando::StaticData::GetOverworldFishLocations().end(), rc)) {
             if (rc < RC_ZD_FISH_1)
                 return FSC_GROTTO;
             else

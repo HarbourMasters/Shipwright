@@ -223,6 +223,10 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
                         if (actor->id == ACTOR_BG_MORI_HINERI) {
                             break;
                         }
+                        // This is handled in the FasterHeavyBlockLift enhancement
+                        if (actor->id == ACTOR_BG_HEAVY_BLOCK) {
+                            break;
+                        }
 
                         RateLimitedSuccessChime();
                         *should = false;
@@ -313,9 +317,11 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
         case VB_NAVI_TALK: {
             if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.NoForcedDialog"), IS_RANDO)) {
                 ElfMsg* naviTalk = static_cast<ElfMsg*>(opt);
-                Flags_SetSwitch(gPlayState, (naviTalk->actor.params >> 8) & 0x3F);
-                Actor_Kill(&naviTalk->actor);
-                *should = false;
+                if (((naviTalk->actor.params >> 8) & 0x3F) != 0x3F) {
+                    Flags_SetSwitch(gPlayState, (naviTalk->actor.params >> 8) & 0x3F);
+                    Actor_Kill(&naviTalk->actor);
+                    *should = false;
+                }
             }
             break;
         }
