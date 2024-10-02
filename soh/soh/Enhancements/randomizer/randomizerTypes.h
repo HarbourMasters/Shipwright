@@ -27,16 +27,6 @@ typedef struct {
     uint8_t id;
 } Sprite;
 
-// Check tracker check visibility categories
-typedef enum {
-    RCSHOW_UNCHECKED,
-    RCSHOW_SEEN,
-    RCSHOW_IDENTIFIED,
-    RCSHOW_SCUMMED,
-    RCSHOW_COLLECTED,
-    RCSHOW_SAVED,
-} RandomizerCheckStatus;
-
 typedef enum {
     HINT_TYPE_HINT_KEY,
     HINT_TYPE_AREA,
@@ -257,23 +247,25 @@ typedef enum {
     RCTYPE_COW,                        // Cows
     RCTYPE_ADULT_TRADE,                // Adult trade quest checks
     RCTYPE_FROG_SONG,                  // Frog song purple rupee checks
-    RCTYPE_MAP_COMPASS,                // Maps/Compasses
+    RCTYPE_MAP,                        // Maps
+    RCTYPE_COMPASS,                    // Compasses
     RCTYPE_SMALL_KEY,                  // Small Keys
     RCTYPE_GF_KEY,                     // Gerudo Fortress Keys
     RCTYPE_BOSS_KEY,                   // Boss Keys
     RCTYPE_GANON_BOSS_KEY,             // Ganon's boss key
-    RCTYPE_SHOP,                       // shops
-    RCTYPE_SCRUB,                      // scrubs
-    RCTYPE_MERCHANT,                   // merchants
+    RCTYPE_SHOP,                       // Shops
+    RCTYPE_SCRUB,                      // Scrubs
+    RCTYPE_MERCHANT,                   // Merchants
     RCTYPE_CHEST_GAME,                 // RANDOTODO replace this once we implement it, just using it to exclude for now
     RCTYPE_LINKS_POCKET,               // RANDOTODO this feels hacky, replace with better starting items
     RCTYPE_GOSSIP_STONE,               // RANDOTODO make these into event access
+    RCTYPE_STATIC_HINT,                // RANDOTODO make these into event access
     RCTYPE_SONG_LOCATION,              // Song locations
     RCTYPE_BOSS_HEART_OR_OTHER_REWARD, // Boss heart container or lesser dungeon rewards (lens, ice arrow)
     RCTYPE_DUNGEON_REWARD,             // Dungeon rewards (blue warps)
     RCTYPE_OCARINA,                    // Ocarina locations
     RCTYPE_BEEHIVE,                    // Beehives
-    RCTYPE_FISH,
+    RCTYPE_FISH,                       // Fishes
 } RandomizerCheckType;
 
 typedef enum { RCQUEST_VANILLA, RCQUEST_MQ, RCQUEST_BOTH } RandomizerCheckQuest;
@@ -314,6 +306,16 @@ typedef enum {
     // If adding any more areas, Check Tracker will need a refactor
     RCAREA_INVALID
 } RandomizerCheckArea;
+
+// Check tracker check visibility categories
+typedef enum {
+    RCSHOW_UNCHECKED,
+    RCSHOW_SEEN,
+    RCSHOW_IDENTIFIED,
+    RCSHOW_SCUMMED,
+    RCSHOW_COLLECTED,
+    RCSHOW_SAVED,
+} RandomizerCheckStatus;
 
 typedef enum {
     RR_NONE,
@@ -3651,17 +3653,21 @@ typedef enum {
     RSG_LOGIC,
     RSG_EXCLUDES_KOKIRI_FOREST,
     RSG_EXCLUDES_LOST_WOODS,
+    RSG_EXCLUDES_SACRED_FOREST_MEADOW,
     RSG_EXCLUDES_DEKU_TREE,
     RSG_EXCLUDES_FOREST_TEMPLE,
     RSG_EXCLUDES_KAKARIKO_VILLAGE,
+    RSG_EXCLUDES_GRAVEYARD,
     RSG_EXCLUDES_BOTTOM_OF_THE_WELL,
     RSG_EXCLUDES_SHADOW_TEMPLE,
-    RSG_EXCLUDES_DEATH_MOUNTAIN,
+    RSG_EXCLUDES_DEATH_MOUNTAIN_TRAIL,
+    RSG_EXCLUDES_DEATH_MOUNTAIN_CRATER,
     RSG_EXCLUDES_GORON_CITY,
     RSG_EXCLUDES_DODONGOS_CAVERN,
     RSG_EXCLUDES_FIRE_TEMPLE,
     RSG_EXCLUDES_ZORAS_RIVER,
     RSG_EXCLUDES_ZORAS_DOMAIN,
+    RSG_EXCLUDES_ZORAS_FOUNTAIN,
     RSG_EXCLUDES_JABU_JABU,
     RSG_EXCLUDES_ICE_CAVERN,
     RSG_EXCLUDES_HYRULE_FIELD,
@@ -3669,9 +3675,13 @@ typedef enum {
     RSG_EXCLUDES_LAKE_HYLIA,
     RSG_EXCLUDES_WATER_TEMPLE,
     RSG_EXCLUDES_GERUDO_VALLEY,
+    RSG_EXCLUDES_GERUDO_FORTRESS,
+    RSG_EXCLUDES_HAUNTED_WASTELAND,
+    RSG_EXCLUDES_DESERT_COLOSSUS,
     RSG_EXCLUDES_GERUDO_TRAINING_GROUNDS,
     RSG_EXCLUDES_SPIRIT_TEMPLE,
     RSG_EXCLUDES_HYRULE_CASTLE,
+    RSG_EXCLUDES_MARKET,
     RSG_EXCLUDES_GANONS_CASTLE,
     RSG_EXCLUDES,
     RSG_TRICKS,
@@ -3886,13 +3896,6 @@ typedef enum {
     RSK_SHUFFLE_DEKU_NUT_BAG,
     RSK_MAX
 } RandomizerSettingKey;
-
-typedef struct {
-    RandomizerCheckStatus status;
-    uint16_t skipped;
-    int16_t price;
-    uint16_t hintItem;
-} RandomizerCheckTrackerData;
 
 //Generic Settings (any binary option can use this)
 // off/on

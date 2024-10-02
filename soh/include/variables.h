@@ -49,7 +49,10 @@ extern "C"
 	extern u16 gBuildVersionMajor;
 	extern u16 gBuildVersionMinor;
 	extern u16 gBuildVersionPatch;
-    extern u8 gBuildTeam[];
+	extern u8 gGitBranch[];
+	extern u8 gGitCommitHash[];
+	extern u8 gGitCommitTag[];
+	extern u8 gBuildTeam[];
 	extern u8 gBuildDate[];
 	extern u8 gBuildMakeOption[];
 	extern OSMesgQueue gPiMgrCmdQ;

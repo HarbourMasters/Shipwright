@@ -102,15 +102,23 @@ void ItemLocation::SetCustomPrice(const uint16_t price_) {
 }
 
 bool ItemLocation::HasObtained() const {
-    return obtained;
+    return status == RCSHOW_COLLECTED || status == RCSHOW_SAVED;
 }
 
-void ItemLocation::MarkAsObtained() {
-    obtained = true;
+void ItemLocation::SetCheckStatus(RandomizerCheckStatus status_) {
+    status = status_;
 }
 
-void ItemLocation::MarkAsNotObtained() {
-    obtained = false;
+RandomizerCheckStatus ItemLocation::GetCheckStatus() {
+    return status;
+}
+
+void ItemLocation::SetIsSkipped(bool isSkipped_) {
+    isSkipped = isSkipped_;
+}
+
+bool ItemLocation::GetIsSkipped() {
+    return isSkipped;
 }
 
 bool ItemLocation::IsHintable() const {
@@ -166,13 +174,13 @@ void ItemLocation::AddExcludeOption() {
     // RANDOTODO: this without string compares and loops
     bool alreadyAdded = false;
     const Location* loc = StaticData::GetLocation(rc);
-    for (const Option* location : Context::GetInstance()->GetSettings()->GetExcludeOptionsForGroup(loc->GetCollectionCheckGroup())) {
+    for (const Option* location : Context::GetInstance()->GetSettings()->GetExcludeOptionsForArea(loc->GetArea())) {
         if (location->GetName() == excludedOption.GetName()) {
             alreadyAdded = true;
         }
     }
     if (!alreadyAdded) {
-        Context::GetInstance()->GetSettings()->GetExcludeOptionsForGroup(loc->GetCollectionCheckGroup()).push_back(&excludedOption);
+        Context::GetInstance()->GetSettings()->GetExcludeOptionsForArea(loc->GetArea()).push_back(&excludedOption);
     }
 }
 
@@ -213,6 +221,7 @@ void ItemLocation::ResetVariables() {
     wothCandidate = false;
     barrenCandidate = false;
     area = RA_NONE;
-    obtained = false;
+    status = RCSHOW_UNCHECKED;
+    isSkipped = false;
 }
 }

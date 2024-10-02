@@ -136,7 +136,7 @@ bool FilterFoolishLocations(RandomizerCheck loc){
 
 bool FilterSongLocations(RandomizerCheck loc){
   auto ctx = Rando::Context::GetInstance();
-  return Rando::StaticData::GetLocation(loc)->IsCategory(Category::cSong);
+  return Rando::StaticData::GetLocation(loc)->GetRCType() == RCTYPE_SONG_LOCATION;
 }
 
 bool FilterOverworldLocations(RandomizerCheck loc){
@@ -316,7 +316,7 @@ std::vector<std::pair<RandomizerCheck, std::function<bool()>>> conditionalAlways
 };
 
 static std::vector<RandomizerCheck> GetEmptyGossipStones() {
-  auto emptyGossipStones = GetEmptyLocations(Rando::StaticData::gossipStoneLocations);
+  auto emptyGossipStones = GetEmptyLocations(Rando::StaticData::GetGossipStoneLocations());
   return emptyGossipStones;
 }
 
@@ -328,7 +328,7 @@ static std::vector<RandomizerCheck> GetAccessibleGossipStones(const RandomizerCh
   ctx->GetItemLocation(hintedLocation)->SetPlacedItem(RG_NONE);
 
   ctx->GetLogic()->Reset();
-  auto accessibleGossipStones = GetAccessibleLocations(Rando::StaticData::gossipStoneLocations);
+  auto accessibleGossipStones = ReachabilitySearch(Rando::StaticData::GetGossipStoneLocations());
   //Give the item back to the location
   ctx->GetItemLocation(hintedLocation)->SetPlacedItem(originalItem);
 
@@ -342,7 +342,7 @@ bool IsReachableWithout(std::vector<RandomizerCheck> locsToCheck, RandomizerChec
   RandomizerGet originalItem = ctx->GetItemLocation(excludedCheck)->GetPlacedRandomizerGet();
   ctx->GetItemLocation(excludedCheck)->SetPlacedItem(RG_NONE);
   ctx->GetLogic()->Reset();
-  const auto rechableWithout = GetAccessibleLocations(locsToCheck);
+  const auto rechableWithout = ReachabilitySearch(locsToCheck);
   ctx->GetItemLocation(excludedCheck)->SetPlacedItem(originalItem);
   if (resetAfter){
     //if resetAfter is on, reset logic we are done
@@ -405,8 +405,8 @@ static bool CreateHint(RandomizerCheck location, uint8_t copies, HintType type, 
 
   //get a gossip stone accessible without the hinted item
   std::vector<RandomizerCheck> gossipStoneLocations = GetAccessibleGossipStones(location);
-  if (gossipStoneLocations.empty()) { 
-      SPDLOG_DEBUG("\tNO IN LOGIC GOSSIP STONE\n\n"); 
+  if (gossipStoneLocations.empty()) {
+      SPDLOG_DEBUG("\tNO IN LOGIC GOSSIP STONE\n\n");
       return false;
   }
   RandomizerCheck gossipStone = RandomElement(gossipStoneLocations);
@@ -670,7 +670,7 @@ void CreateStoneHints() {
   //Getting gossip stone locations temporarily sets one location to not be reachable.
   //Call the function one last time to get rid of false positives on locations not
   //being reachable.
-  GetAccessibleLocations({});
+  ReachabilitySearch({});
 }
 
 std::vector<RandomizerCheck> FindItemsAndMarkHinted(std::vector<RandomizerGet> items, std::vector<RandomizerCheck> hintChecks){
@@ -681,10 +681,12 @@ std::vector<RandomizerCheck> FindItemsAndMarkHinted(std::vector<RandomizerGet> i
       return ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() == items[c];});
     if (found.size() > 0){
       locations.push_back(found[0]);
-    }
-    //RANDOTODO make the called functions of this always return true if empty hintChecks are provided
-    if (hintChecks.size() == 0 || (!ctx->GetItemLocation(found[0])->IsAHintAccessible() && IsReachableWithout(hintChecks,found[0],true))){
-      ctx->GetItemLocation(found[0])->SetHintAccesible();
+      //RANDOTODO make the called functions of this always return true if empty hintChecks are provided
+      if (!ctx->GetItemLocation(found[0])->IsAHintAccessible() && (hintChecks.size() == 0 || IsReachableWithout(hintChecks, found[0],true))){
+        ctx->GetItemLocation(found[0])->SetHintAccesible();
+      }
+    } else {
+      locations.push_back(RC_UNKNOWN_CHECK);
     }
   }
   return locations;
@@ -730,10 +732,15 @@ void CreateStaticHintFromData(RandomizerHint hint, StaticHintInfo staticData){
     Option option = ctx->GetOption(staticData.setting);
     if ((std::holds_alternative<bool>(staticData.condition) && option.Is(std::get<bool>(staticData.condition))) ||
         (std::holds_alternative<uint8_t>(staticData.condition) && option.Is(std::get<uint8_t>(staticData.condition)))){
+
       std::vector<RandomizerCheck> locations = {};
       if (staticData.targetItems.size() > 0){
         locations = FindItemsAndMarkHinted(staticData.targetItems, staticData.hintChecks);
       }
+      for(auto check: staticData.targetChecks){
+        ctx->GetItemLocation(check)->SetHintAccesible();
+      }
+
       //hintKeys are defaulted to in the hint object and do not need to be specified
       ctx->AddHint(hint, Hint(hint, staticData.type, {}, locations, {}, {}, staticData.yourPocket, staticData.num));
     }

@@ -136,15 +136,15 @@ namespace Rando {
     enum class EntranceType;
 }
 
-class Area {
+class Region {
 public:
-    Area();
-    Area(std::string regionName_, std::string scene_, RandomizerArea area,
+    Region();
+    Region(std::string regionName_, std::string scene_, RandomizerArea area,
          bool timePass_,
          std::vector<EventAccess> events_,
          std::vector<LocationAccess> locations_,
          std::list<Rando::Entrance> exits_);
-    ~Area();
+    ~Region();
 
     std::string regionName;
     std::string scene;
@@ -164,9 +164,9 @@ public:
     bool childNight = false;
     bool adultDay = false;
     bool adultNight = false;
-    bool addedToPool = false;
+    bool addedToPool = false;;
 
-    bool UpdateEvents(SearchMode mode);
+    bool UpdateEvents(bool haveTimeAccess = true);
 
     void AddExit(RandomizerRegion parentKey, RandomizerRegion newExitKey, ConditionFn condition);
 
@@ -246,20 +246,20 @@ public:
     }
 };
 
-extern std::array<Area, RR_MAX> areaTable;
+extern std::array<Region, RR_MAX> areaTable;
 extern std::vector<EventAccess> grottoEvents;
 
-bool Here(const RandomizerRegion area, ConditionFn condition);
-bool CanPlantBean(const RandomizerRegion area);
-bool BothAges(const RandomizerRegion area);
-bool ChildCanAccess(const RandomizerRegion area);
-bool AdultCanAccess(const RandomizerRegion area);
-bool HasAccessTo(const RandomizerRegion area);
+bool Here(const RandomizerRegion region, ConditionFn condition);
+bool CanPlantBean(const RandomizerRegion region);
+bool BothAges(const RandomizerRegion region);
+bool ChildCanAccess(const RandomizerRegion region);
+bool AdultCanAccess(const RandomizerRegion region);
+bool HasAccessTo(const RandomizerRegion region);
 
 #define DAY_NIGHT_CYCLE true
 #define NO_DAY_NIGHT_CYCLE false
 
-namespace Areas {
+namespace Regions {
 
   extern void AccessReset();
   extern void ResetAllLocations();
@@ -267,29 +267,29 @@ namespace Areas {
   extern void DumpWorldGraph(std::string str);
 } //namespace Exits
 
-void  AreaTable_Init();
-Area* AreaTable(const RandomizerRegion areaKey);
+void  RegionTable_Init();
+Region* RegionTable(const RandomizerRegion regionKey);
 std::vector<Rando::Entrance*> GetShuffleableEntrances(Rando::EntranceType type, bool onlyPrimary = true);
 Rando::Entrance* GetEntrance(const std::string name);
 
 // Overworld
-void AreaTable_Init_LostWoods();
-void AreaTable_Init_HyruleField();
-void AreaTable_Init_CastleTown();
-void AreaTable_Init_Kakariko();
-void AreaTable_Init_DeathMountain();
-void AreaTable_Init_ZorasDomain();
-void AreaTable_Init_GerudoValley();
+void RegionTable_Init_LostWoods();
+void RegionTable_Init_HyruleField();
+void RegionTable_Init_CastleTown();
+void RegionTable_Init_Kakariko();
+void RegionTable_Init_DeathMountain();
+void RegionTable_Init_ZorasDomain();
+void RegionTable_Init_GerudoValley();
 // Dungeons
-void AreaTable_Init_DekuTree();
-void AreaTable_Init_DodongosCavern();
-void AreaTable_Init_JabuJabusBelly();
-void AreaTable_Init_ForestTemple();
-void AreaTable_Init_FireTemple();
-void AreaTable_Init_WaterTemple();
-void AreaTable_Init_SpiritTemple();
-void AreaTable_Init_ShadowTemple();
-void AreaTable_Init_BottomOfTheWell();
-void AreaTable_Init_IceCavern();
-void AreaTable_Init_GerudoTrainingGrounds();
-void AreaTable_Init_GanonsCastle();
+void RegionTable_Init_DekuTree();
+void RegionTable_Init_DodongosCavern();
+void RegionTable_Init_JabuJabusBelly();
+void RegionTable_Init_ForestTemple();
+void RegionTable_Init_FireTemple();
+void RegionTable_Init_WaterTemple();
+void RegionTable_Init_SpiritTemple();
+void RegionTable_Init_ShadowTemple();
+void RegionTable_Init_BottomOfTheWell();
+void RegionTable_Init_IceCavern();
+void RegionTable_Init_GerudoTrainingGrounds();
+void RegionTable_Init_GanonsCastle();

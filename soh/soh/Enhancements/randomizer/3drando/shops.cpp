@@ -17,10 +17,8 @@ bool initTrickNames = false; //Indicates if trick ice trap names have been initi
 void PlaceVanillaShopItems() {
     auto ctx = Rando::Context::GetInstance();
     //Loop to place vanilla items in each location
-    for (size_t i = 0; i < Rando::StaticData::shopLocationLists.size(); i++) {
-        for (size_t j = 0; j < Rando::StaticData::shopLocationLists[i].size(); j++) {
-            ctx->GetItemLocation(Rando::StaticData::shopLocationLists[i][j])->PlaceVanillaItem();
-        }
+    for (RandomizerCheck& randomizerCheck : Rando::StaticData::GetShopLocations()) {
+        ctx->GetItemLocation(randomizerCheck)->PlaceVanillaItem();
     }
 }
 

@@ -56,8 +56,6 @@ std::set<RandomizerCheck> spoilerExcludedLocations;
 std::set<RandomizerTrick> enabledTricks;
 std::set<RandomizerTrick> enabledGlitches;
 
-std::set<std::map<RandomizerCheck, RandomizerCheckTrackerData>> checkTrackerStates;
-
 u8 generated;
 char* seedString;
 
@@ -70,61 +68,69 @@ const std::string Randomizer::NaviRandoMessageTableID = "RandomizerNavi";
 const std::string Randomizer::IceTrapRandoMessageTableID = "RandomizerIceTrap";
 const std::string Randomizer::randoMiscHintsTableID = "RandomizerMiscHints";
 
-static const char* englishRupeeNames[171] = {
-    "[P]",               "Bad RNG Rolls",    "Bananas",          "Beanbean Coins",   "Beans",
-    "Beli",              "Bells",            "Berries",          "Bison Dollars",    "Bitcoin",
-    "Blue Essence",      "Bolts",            "Bones",            "Boondollars",      "Bottle Caps",
-    "Bratwürste",        "Bucks",            "BugFrags",         "Canadian Dollars", "Cards",
-    "Chaos Orbs",        "Clams",            "Coal",             "Cocoa Beans",      "Coins",
-    "Cookies",           "Copper",           "Cor",              "Cornflakes",       "Credits",
-    "Crimebucks",        "Crystal Shards",   "Cubits",           "Cucumbers",        "Dalmations",
-    "Dampécoin",         "Dark Elixir",      "Darseks",          "Dead Memes",       "Diamonds",
-    "DNA",               "Doge",             "Dogecoin",         "Doll Hairs",       "Dollars",
-    "Dollarydoos",       "Dosh",             "Doubloons",        "Dwarfbucks",       "Emeralds",
-    "Energon",           "Eris",             "Ether",            "Euro",             "Experience",
-    "Extinction Points", "Floopies",         "Flurbos",          "FPS",              "Friends",
-    "Frog Coins",        "Gald",             "Gekz",             "Gems",             "Geo",
-    "Gil",               "Glimmer",          "Glitches",         "Gold",             "Gold Dragons",
-    "Goober Dollars",    "Green Herbs",      "Greg Siblings",    "Gummybears",       "Hell",
-    "Hyrule Loaches",    "Ice Traps",        "ISK",              "Jiggies",          "KF7 Ammo",
-    "Kinstones",         "Kremcoins",        "Kroner",           "Leaves ",          "Lemmings",
-    "Lien",              "Lira",             "Lumber",           "Lungmen Dollars",  "Macca",
-    "Mana",              "Mann Co. Keys",    "Meat",             "Meat Stacks",      "Medaparts",
-    "Meseta",            "Mesetas",          "Minerals",         "Monopoly Money",   "Moons",
-    "Mora",              "Mumbo Tokens",     "Munny",            "Mushrooms",        "Mysteries",
-    "Neopoints",         "Notes",            "Nuyen",            "Orbs",             "Pix",
-    "Pixels",            "Platinum",         "Pokédollars",      "Pokémon",          "Poko",
-    "Pokos",             "Potch",            "Pounds",           "Power Pellets",    "Primogems",
-    "Réals",             "Refined Metal",    "Remote Mines",     "Retweets",         "Rhinu",
-    "Rings",             "Riot Points",      "Robux",            "Rubies",           "Rubles",
-    "Runite Ore",        "Rupees",           "Saint Quartz",     "Septims",          "Shekels",
-    "Shillings",         "Silver",           "Simoleons",        "Smackaroos",       "Social Credit",
-    "Souls",             "Spent Casings",    "Spice",            "Spondulicks",      "Spoons",
-    "Star Bits",         "Star Chips",       "Stars",            "Stones of Jordan", "Store Credit",
-    "Strawbs",           "Studs",            "Super Sea Snails", "Talent",           "Teef",
-    "Telecrystals",      "Tiberium",         "TokKul",           "Toys",             "Turnips",
-    "Upvotes",           "V-Bucks",          "Vespene Gas",      "Watts",            "Widgets",
-    "Woolongs",          "World Dollars",    "Wumpa Fruit",      "Yen",              "Zenny",
-    "Zorkmids"
+static const char* englishRupeeNames[175] = {
+    "[P]",                "Bad RNG Rolls",     "Bananas",           "Beanbean Coins",    "Beans",
+    "Beli",               "Bells",             "Berries",           "Bison Dollars",     "Bitcoin",
+    "Blue Essence",       "Bolts",             "Bones",             "Boondollars",       "Bottle Caps",
+    "Bratwürste",         "Bucks",             "BugFrags",          "Canadian Dollars",  "Cards",
+    "Chaos Orbs",         "Clams",             "Coal",              "Cocoa Beans",       "Coins",
+    "Cookies",            "Copper",            "Cor",               "Cornflakes",        "Credits",
+    "Crimebucks",         "Crystal Shards",    "Cubits",            "Cucumbers",         "Dalmations",
+    "Dampécoin",          "Dark Elixir",       "Darseks",           "Dead Memes",        "Diamonds",
+    "DNA",                "Doge",              "Dogecoin",          "Doll Hairs",        "Dollars",
+    "Dollarydoos",        "Dosh",              "Doubloons",         "Dwarfbucks",        "Elexit",
+    "Emeralds",           "Energon",           "Eris",              "Ether",             "Euro",
+    "Experience",         "Extinction Points", "Floopies",          "Flurbos",           "FPS",
+    "Friends",            "Frog Coins",        "Gald",              "Gekz",              "Gems",
+    "Geo",                "Gil",               "Glimmer",           "Glitches",          "Gold",
+    "Gold Dragons",       "Goober Dollars",    "Green Herbs",       "Greg Siblings",     "Grouses",
+    "Gummybears",         "Hell",              "Hyrule Loaches",    "Ice Traps",         "ISK",
+    "Jiggies",            "KF7 Ammo",          "Kinstones",         "Kremcoins",         "Kroner",
+    "Leaves",             "Lemmings",          "Lien",              "Lira",              "Lumber",
+    "Lungmen Dollars",    "Macca",             "Mana",              "Mann Co. Keys",     "Meat",
+    "Meat Stacks",        "Medaparts",         "Meseta",            "Mesetas",           "Minerals",
+    "Monopoly Money",     "Moons",             "Mora",              "Mumbo Tokens",      "Munny",
+    "Mushrooms",          "Mysteries",         "Neopoints",         "Notes",             "Nuyen",
+    "Orbs",               "Ore",               "Pix",               "Pixels",            "Plastyks",
+    "Platinum",           "Pokédollars",       "Pokémon",           "Poko",              "Pokos",
+    "Potch",              "Pounds",            "Power Pellets",     "Primogems",         "Réals",
+    "Refined Metal",      "Remote Mines",      "Retweets",          "Rhinu",             "Rings",
+    "Riot Points",        "Robux",             "Rubies",            "Rubles",            "Runite Ore",
+    "Rupees",             "Saint Quartz",      "Septims",           "Shekels",           "Shillings",
+    "Silver",             "Simoleons",         "Smackaroos",        "Social Credit",     "Souls",
+    "Spent Casings",      "Spice",             "Spondulicks",       "Spoons",            "Star Bits",
+    "Star Chips",         "Stars",             "Stones of Jordan",  "Store Credit",      "Strawbs",
+    "Studs",              "Super Sea Snails",  "Talent",            "Teef",              "Telecrystals",
+    "Tiberium",           "TokKul",            "Toys",              "Turnips",           "Upvotes",
+    "V-Bucks",            "Vespene Gas",       "Watts",             "Widgets",           "Woolongs",
+    "World Dollars",      "Wumpa Fruit",       "Yen",               "Zenny",             "Zorkmids"
 };
 
-static const char* germanRupeeNames[56] = {
-    "Rubine",     "Mäuse",       "Kröten",        "Münzen",     "Euro",       "Mark",     "Bananen",
-    "Gummibären", "Bonbons",     "Diamanten",     "Bratwürste", "Bitcoin",    "Dogecoin", "Monde",
-    "Sterne",     "Brause UFOs", "Taler",         "Sternis",    "Schilling",  "Freunde",  "Seelen",
-    "Gil",        "Zenny",       "Pfandflaschen", "Knochen",    "Pilze",      "Smaragde", "Kronkorken",
-    "Pokédollar", "Brötchen",    "EXP",           "Wagenchips", "Moos",       "Knete",    "Kohle",
-    "Kies",       "Radieschen",  "Diridari",      "Steine",     "Kartoffeln", "Penunze",  "ECU",
-    "Franken",    "Cent",        "Pfennig",       "Groschen",   "Rappen",     "Gulden",   "Kreuzer",
-    "Kronen",     "Forint",      "Heller",        "Pfund",      "Karolin",    "Pesa",     "Tael"
+static const char* germanRupeeNames[65] = {
+    "Bananen",            "Bitcoin",           "Bonbons",           "Bratwürste",        "Brause UFOs",
+    "Brötchen",           "Cent",              "Diamanten",         "Diridari",          "Dogecoin",
+    "ECU",                "Elexit",            "Erz",               "Erzbrocken",        "Euro",
+    "EXP",                "Forint",            "Franken",           "Freunde",           "Gil",
+    "Gold",               "Groschen",          "Gulden",            "Gummibären",        "Heller",
+    "Juwelen",            "Karolin",           "Kartoffeln",        "Kies",              "Knete",
+    "Knochen",            "Kohle",             "Kraniche",          "Kreuzer",           "Kronen",
+    "Kronkorken",         "Kröten",            "Mark",              "Mäuse",             "Monde",
+    "Moorhühner",         "Moos",              "Münzen",            "Penunze",           "Pesa",
+    "Pfandflaschen",      "Pfennig",           "Pfund",             "Pilze",             "Plastiks",
+    "Pokédollar",         "Radieschen",        "Rappen",            "Rubine",            "Saphire",
+    "Schilling",          "Seelen",            "Smaragde",          "Steine",            "Sterne",
+    "Sternis",            "Tael",              "Taler",             "Wagenchips",        "Zenny"
 };
 
-static const char* frenchRupeeNames[36] = {
-    "Rubis",       "Bitcoin", "Bananes",   "Euros",     "Dollars", "Émeraudes",  "Joyaux",   "Diamants",
-    "Balles",      "Pokémon", "Pièces",    "Lunes",     "Étoiles", "Dogecoin",   "Anneaux",  "Radis",
-    "Pokédollars", "Zennies", "Pépètes",   "Mailles",   "Éthers",  "Clochettes", "Capsules", "Gils",
-    "Champignons", "Blés",    "Halos",     "Munnies",   "Orens",   "Florens",    "Crédits",  "Galds",
-    "Bling",       "Orbes",   "Baguettes", "Croissants"
+static const char* frenchRupeeNames[40] = {
+    "Anneaux",            "Baguettes",         "Balles",            "Bananes",           "Bitcoin",
+    "Blés",               "Bling",             "Capsules",          "Centimes",          "Champignons",
+    "Clochettes",         "Crédits",           "Croissants",        "Diamants",          "Dogecoin",
+    "Dollars",            "Émeraudes",         "Éthers",            "Étoiles",           "Euros",
+    "Florens",            "Francs",            "Galds",             "Gils",              "Grouses",
+    "Halos",              "Joyaux",            "Lunes",             "Mailles",           "Munnies",
+    "Orbes",              "Orens",             "Pépètes",           "Pièces",            "Plastyks",
+    "Pokédollars",        "Pokémon",           "Radis",             "Rubis",             "Zennies"
 };
 
 Randomizer::Randomizer() {
@@ -140,7 +146,7 @@ Randomizer::Randomizer() {
     SpoilerfileAreaNameToEnum["the Graveyard"] = RCAREA_GRAVEYARD;
     SpoilerfileAreaNameToEnum["Haunted Wasteland"] = RCAREA_WASTELAND;
     SpoilerfileAreaNameToEnum["outside Ganon's Castle"] = RCAREA_HYRULE_CASTLE;
-    for (int c = 0; c < Rando::StaticData::hintTypeNames.size(); c++) {
+    for (size_t c = 0; c < Rando::StaticData::hintTypeNames.size(); c++) {
         SpoilerfileHintTypeNameToEnum[Rando::StaticData::hintTypeNames[(HintType)c].GetEnglish(MF_CLEAN)] = (HintType)c;
     }
 }
@@ -729,526 +735,6 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
     }
 }
 
-GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItemID ogItemId) {
-    // Shopsanity with at least one item shuffled allows for a third wallet upgrade.
-    // This is needed since Plentiful item pool also adds a third progressive wallet
-    // but we should *not* get Tycoon's Wallet in that mode.
-    bool tycoonWallet = !(
-        GetRandoSettingValue(RSK_SHOPSANITY) == RO_SHOPSANITY_OFF ||
-        (
-            GetRandoSettingValue(RSK_SHOPSANITY) == RO_SHOPSANITY_SPECIFIC_COUNT &&
-            GetRandoSettingValue(RSK_SHOPSANITY_COUNT) == RO_SHOPSANITY_COUNT_ZERO_ITEMS
-        )
-    );
-
-    // Same thing with the infinite upgrades, if we're not shuffling them
-    // and we're using the Plentiful item pool, we should prevent the infinite
-    // upgrades from being gotten
-    u8 infiniteUpgrades = GetRandoSettingValue(RSK_INFINITE_UPGRADES);
-    switch (randoGet) {
-        case RG_NONE:
-            return ogItemId;
-        case RG_TRIFORCE:
-        case RG_HINT:
-        case RG_MAX:
-        case RG_SOLD_OUT:
-            return GI_NONE;
-
-        // Equipment
-        case RG_KOKIRI_SWORD:
-            return GI_SWORD_KOKIRI;
-        case RG_PROGRESSIVE_GORONSWORD: //todo progressive?
-            return GI_SWORD_BGS;
-        case RG_GIANTS_KNIFE:
-            return GI_SWORD_KNIFE;
-        case RG_BIGGORON_SWORD:
-            return GI_SWORD_BGS;
-        case RG_DEKU_SHIELD:
-        case RG_BUY_DEKU_SHIELD:
-            return GI_SHIELD_DEKU;
-        case RG_HYLIAN_SHIELD:
-        case RG_BUY_HYLIAN_SHIELD:
-            return GI_SHIELD_HYLIAN;
-        case RG_MIRROR_SHIELD:
-            return GI_SHIELD_MIRROR;
-        case RG_GORON_TUNIC:
-        case RG_BUY_GORON_TUNIC:
-            return GI_TUNIC_GORON;
-        case RG_ZORA_TUNIC:
-        case RG_BUY_ZORA_TUNIC:
-            return GI_TUNIC_ZORA;
-        case RG_IRON_BOOTS:
-            return GI_BOOTS_IRON;
-        case RG_HOVER_BOOTS:
-            return GI_BOOTS_HOVER;
-
-        // Inventory Items
-        case RG_PROGRESSIVE_STICK_UPGRADE:
-            switch (CUR_UPG_VALUE(UPG_STICKS)) {
-                case 0:
-                case 1:
-                    return GI_STICK_UPGRADE_20;
-                case 2:
-                    return GI_STICK_UPGRADE_30;
-                case 3:
-                case 4:
-                    return infiniteUpgrades == RO_INF_UPGRADES_PROGRESSIVE ? (GetItemID)RG_STICK_UPGRADE_INF : GI_STICK_UPGRADE_30;
-            }
-        case RG_PROGRESSIVE_NUT_UPGRADE:
-            switch (CUR_UPG_VALUE(UPG_NUTS)) {
-                case 0:
-                case 1:
-                    return GI_NUT_UPGRADE_30;
-                case 2:
-                    return GI_NUT_UPGRADE_40;
-                case 3:
-                case 4:
-                    return infiniteUpgrades == RO_INF_UPGRADES_PROGRESSIVE ? (GetItemID)RG_NUT_UPGRADE_INF : GI_NUT_UPGRADE_40;
-            }
-        case RG_PROGRESSIVE_BOMB_BAG:
-            switch (CUR_UPG_VALUE(UPG_BOMB_BAG)) {
-                case 0:
-                    return GI_BOMB_BAG_20;
-                case 1:
-                    return GI_BOMB_BAG_30;
-                case 2:
-                    return GI_BOMB_BAG_40;
-                case 3:
-                case 4:
-                    return infiniteUpgrades == RO_INF_UPGRADES_PROGRESSIVE ? (GetItemID)RG_BOMB_BAG_INF : GI_BOMB_BAG_40;
-            }
-        case RG_BOMBS_5:
-        case RG_BUY_BOMBS_525:
-        case RG_BUY_BOMBS_535:
-            return GI_BOMBS_5;
-        case RG_BOMBS_10:
-        case RG_BUY_BOMBS_10:
-            return GI_BOMBS_10;
-        case RG_BOMBS_20:
-        case RG_BUY_BOMBS_20:
-            return GI_BOMBS_20;
-        case RG_BUY_BOMBS_30:
-            return GI_BOMBS_30;
-        case RG_PROGRESSIVE_BOW:
-            switch (CUR_UPG_VALUE(UPG_QUIVER)) {
-                case 0:
-                    return GI_BOW;
-                case 1:
-                    return GI_QUIVER_40;
-                case 2:
-                    return GI_QUIVER_50;
-                case 3:
-                case 4:
-                    return infiniteUpgrades == RO_INF_UPGRADES_PROGRESSIVE ? (GetItemID)RG_QUIVER_INF : GI_QUIVER_50;
-            }
-        case RG_ARROWS_5:
-        case RG_BUY_ARROWS_10:
-            return GI_ARROWS_SMALL;
-        case RG_ARROWS_10:
-        case RG_BUY_ARROWS_30:
-            return GI_ARROWS_MEDIUM;
-        case RG_ARROWS_30:
-        case RG_BUY_ARROWS_50:
-            return GI_ARROWS_LARGE;
-        case RG_PROGRESSIVE_SLINGSHOT:
-            switch (CUR_UPG_VALUE(UPG_BULLET_BAG)) {
-                case 0:
-                    return GI_SLINGSHOT;
-                case 1:
-                    return GI_BULLET_BAG_40;
-                case 2:
-                    return GI_BULLET_BAG_50;
-                case 3:
-                case 4:
-                    return infiniteUpgrades == RO_INF_UPGRADES_PROGRESSIVE ? (GetItemID)RG_BULLET_BAG_INF : GI_BULLET_BAG_50;
-            }
-        case RG_DEKU_SEEDS_30:
-        case RG_BUY_DEKU_SEEDS_30:
-            return GI_SEEDS_30;
-        case RG_PROGRESSIVE_OCARINA:
-            switch (INV_CONTENT(ITEM_OCARINA_FAIRY)) {
-                case ITEM_NONE:
-                    return GI_OCARINA_FAIRY;
-                case ITEM_OCARINA_FAIRY:
-                case ITEM_OCARINA_TIME:
-                    return GI_OCARINA_OOT;
-            }
-        case RG_BOMBCHU_5:
-        case RG_BOMBCHU_10:
-        case RG_BUY_BOMBCHUS_10:
-            return GI_BOMBCHUS_10;
-        case RG_BOMBCHU_20:
-        case RG_BUY_BOMBCHUS_20:
-            return GI_BOMBCHUS_20;
-        case RG_PROGRESSIVE_BOMBCHUS:
-            if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_NONE) {
-                return (GetItemID)RG_PROGRESSIVE_BOMBCHUS;
-            } else if (infiniteUpgrades != RO_INF_UPGRADES_OFF) {
-                return (GetItemID)RG_BOMBCHU_INF;
-            } else if (AMMO(ITEM_BOMBCHU) < 5) {
-                return GI_BOMBCHUS_10;
-            } else {
-                return GI_BOMBCHUS_5;
-            }
-        case RG_PROGRESSIVE_HOOKSHOT:
-            switch (INV_CONTENT(ITEM_HOOKSHOT)) {
-                case ITEM_NONE:
-                    return GI_HOOKSHOT;
-                case ITEM_HOOKSHOT:
-                case ITEM_LONGSHOT:
-                    return GI_LONGSHOT;
-            }
-        case RG_BOOMERANG:
-            return GI_BOOMERANG;
-        case RG_LENS_OF_TRUTH:
-            return GI_LENS;
-        case RG_MAGIC_BEAN:
-            return GI_BEAN;
-        case RG_MEGATON_HAMMER:
-            return GI_HAMMER;
-        case RG_FIRE_ARROWS:
-            return GI_ARROW_FIRE;
-        case RG_ICE_ARROWS:
-            return GI_ARROW_ICE;
-        case RG_LIGHT_ARROWS:
-            return GI_ARROW_LIGHT;
-        case RG_DINS_FIRE:
-            return GI_DINS_FIRE;
-        case RG_FARORES_WIND:
-            return GI_FARORES_WIND;
-        case RG_NAYRUS_LOVE:
-            return GI_NAYRUS_LOVE;
-
-        // Bottles
-        case RG_EMPTY_BOTTLE:
-            return GI_BOTTLE;
-        case RG_BOTTLE_WITH_MILK:
-            return GI_MILK_BOTTLE;
-        case RG_RUTOS_LETTER:
-            return GI_LETTER_RUTO;
-
-        // Bottle Refills
-        case RG_MILK:
-            return GI_MILK;
-        case RG_RED_POTION_REFILL:
-        case RG_BUY_RED_POTION_30:
-        case RG_BUY_RED_POTION_40:
-        case RG_BUY_RED_POTION_50:
-            return GI_POTION_RED;
-        case RG_GREEN_POTION_REFILL:
-        case RG_BUY_GREEN_POTION:
-            return GI_POTION_GREEN;
-        case RG_BLUE_POTION_REFILL:
-        case RG_BUY_BLUE_POTION:
-            return GI_POTION_BLUE;
-        case RG_FISH:
-        case RG_BUY_FISH:
-            return GI_FISH;
-        case RG_BUY_BLUE_FIRE:
-            return GI_BLUE_FIRE;
-        case RG_BUY_BOTTLE_BUG:
-            return GI_BUGS;
-        case RG_BUY_POE:
-            return GI_POE;
-        case RG_BUY_FAIRYS_SPIRIT:
-            return GI_FAIRY;
-
-        // Trade Items
-        case RG_WEIRD_EGG:
-            return GI_WEIRD_EGG;
-        case RG_ZELDAS_LETTER:
-            return GI_LETTER_ZELDA;
-        case RG_POCKET_EGG:
-            return GI_POCKET_EGG;
-        case RG_COJIRO:
-            return GI_COJIRO;
-        case RG_ODD_MUSHROOM:
-            return GI_ODD_MUSHROOM;
-        case RG_ODD_POTION:
-            return GI_ODD_POTION;
-        case RG_POACHERS_SAW:
-            return GI_SAW;
-        case RG_BROKEN_SWORD:
-            return GI_SWORD_BROKEN;
-        case RG_PRESCRIPTION:
-            return GI_PRESCRIPTION;
-        case RG_EYEBALL_FROG:
-            return GI_FROG;
-        case RG_EYEDROPS:
-            return GI_EYEDROPS;
-        case RG_CLAIM_CHECK:
-            return GI_CLAIM_CHECK;
-
-        // Misc Items
-        case RG_STONE_OF_AGONY:
-            return GI_STONE_OF_AGONY;
-        case RG_GERUDO_MEMBERSHIP_CARD:
-            return GI_GERUDO_CARD;
-        case RG_GOLD_SKULLTULA_TOKEN:
-            return GI_SKULL_TOKEN;
-        case RG_PROGRESSIVE_STRENGTH:
-            switch (CUR_UPG_VALUE(UPG_STRENGTH)) {
-                case 0:
-                    return GI_BRACELET;
-                case 1:
-                    return GI_GAUNTLETS_SILVER;
-                case 2:
-                case 3:
-                    return GI_GAUNTLETS_GOLD;
-            }
-        case RG_PROGRESSIVE_WALLET:
-            if (!Flags_GetRandomizerInf(RAND_INF_HAS_WALLET)) {
-                return (GetItemID)RG_CHILD_WALLET;
-            }
-            switch (CUR_UPG_VALUE(UPG_WALLET)) {
-                case 0:
-                    return GI_WALLET_ADULT;
-                case 1:
-                    return GI_WALLET_GIANT;
-                case 2:
-                    return tycoonWallet ? (GetItemID)RG_TYCOON_WALLET : infiniteUpgrades != RO_INF_UPGRADES_OFF ? (GetItemID)RG_WALLET_INF : GI_WALLET_GIANT;
-                case 3:
-                case 4:
-                    return infiniteUpgrades != RO_INF_UPGRADES_OFF ? (GetItemID)RG_WALLET_INF : tycoonWallet ? (GetItemID)RG_TYCOON_WALLET : GI_WALLET_GIANT;
-            }
-        case RG_PROGRESSIVE_SCALE:
-            if (!Flags_GetRandomizerInf(RAND_INF_CAN_SWIM)) {
-                return (GetItemID)RG_BRONZE_SCALE;
-            }
-            switch (CUR_UPG_VALUE(UPG_SCALE)) {
-                case 0:
-                    return GI_SCALE_SILVER;
-                case 1:
-                case 2:
-                    return GI_SCALE_GOLD;
-            }
-        case RG_PROGRESSIVE_MAGIC_METER:
-            switch (gSaveContext.magicLevel) {
-                case 0:
-                    return (GetItemID)RG_MAGIC_SINGLE;
-                case 1:
-                    return (GetItemID)RG_MAGIC_DOUBLE;
-                case 2:
-                case 3:
-                    return infiniteUpgrades != RO_INF_UPGRADES_OFF ? (GetItemID)RG_MAGIC_INF : (GetItemID)RG_MAGIC_DOUBLE;
-            }
-
-        case RG_RECOVERY_HEART:
-        case RG_BUY_HEART:
-            return GI_HEART;
-        case RG_GREEN_RUPEE:
-            return GI_RUPEE_GREEN;
-        case RG_BLUE_RUPEE:
-            return GI_RUPEE_BLUE;
-        case RG_RED_RUPEE:
-            return GI_RUPEE_RED;
-        case RG_PURPLE_RUPEE:
-            return GI_RUPEE_PURPLE;
-        case RG_HUGE_RUPEE:
-            return GI_RUPEE_GOLD;
-        case RG_PIECE_OF_HEART:
-            return GI_HEART_PIECE;
-        case RG_HEART_CONTAINER:
-            return GI_HEART_CONTAINER;
-        
-        case RG_DEKU_NUTS_5:
-        case RG_BUY_DEKU_NUTS_5:
-            return GI_NUTS_5;
-        case RG_DEKU_NUTS_10:
-        case RG_BUY_DEKU_NUTS_10:
-            return GI_NUTS_10;
-        case RG_DEKU_STICK_1:
-        case RG_BUY_DEKU_STICK_1:
-            return GI_STICKS_1;
-        case RG_TREASURE_GAME_SMALL_KEY:
-            return GI_DOOR_KEY;
-        case RG_TREASURE_GAME_HEART:
-            return GI_HEART_PIECE_WIN;
-        case RG_TREASURE_GAME_GREEN_RUPEE:
-            return GI_RUPEE_GREEN_LOSE;
-
-        //Ocarina Buttons
-        case RG_OCARINA_A_BUTTON:
-            return (GetItemID)RG_OCARINA_A_BUTTON;
-        case RG_OCARINA_C_LEFT_BUTTON:
-            return (GetItemID)RG_OCARINA_C_LEFT_BUTTON;
-        case RG_OCARINA_C_RIGHT_BUTTON:
-            return (GetItemID)RG_OCARINA_C_RIGHT_BUTTON;
-        case RG_OCARINA_C_UP_BUTTON:
-            return (GetItemID)RG_OCARINA_C_UP_BUTTON;
-        case RG_OCARINA_C_DOWN_BUTTON:
-            return (GetItemID)RG_OCARINA_C_DOWN_BUTTON;
-
-        default:
-            if (!IsItemVanilla(randoGet)) {
-                return (GetItemID)randoGet;
-            }
-            return ogItemId;
-    }
-}
-
-bool Randomizer::IsItemVanilla(RandomizerGet randoGet) {
-    switch (randoGet) {
-        case RG_NONE:
-        case RG_KOKIRI_SWORD: 
-        case RG_GIANTS_KNIFE: 
-        case RG_BIGGORON_SWORD:
-        case RG_DEKU_SHIELD:
-        case RG_HYLIAN_SHIELD:
-        case RG_MIRROR_SHIELD:
-        case RG_GORON_TUNIC:
-        case RG_ZORA_TUNIC:
-        case RG_IRON_BOOTS:
-        case RG_HOVER_BOOTS:
-        case RG_BOOMERANG:
-        case RG_LENS_OF_TRUTH:
-        case RG_MEGATON_HAMMER:
-        case RG_STONE_OF_AGONY:
-        case RG_DINS_FIRE:
-        case RG_FARORES_WIND:
-        case RG_NAYRUS_LOVE:
-        case RG_FIRE_ARROWS:
-        case RG_ICE_ARROWS:
-        case RG_LIGHT_ARROWS:
-        case RG_GERUDO_MEMBERSHIP_CARD:
-        case RG_MAGIC_BEAN:
-        case RG_WEIRD_EGG: 
-        case RG_ZELDAS_LETTER:
-        case RG_RUTOS_LETTER:
-        case RG_POCKET_EGG:
-        case RG_COJIRO:
-        case RG_ODD_MUSHROOM:
-        case RG_ODD_POTION:
-        case RG_POACHERS_SAW:
-        case RG_BROKEN_SWORD:
-        case RG_PRESCRIPTION:
-        case RG_EYEBALL_FROG:
-        case RG_EYEDROPS:
-        case RG_CLAIM_CHECK:
-        case RG_GOLD_SKULLTULA_TOKEN:
-        case RG_PROGRESSIVE_HOOKSHOT:
-        case RG_PROGRESSIVE_STRENGTH:
-            return true;
-        case RG_PROGRESSIVE_BOMB_BAG:
-            if (CUR_UPG_VALUE(UPG_BOMB_BAG) < 3) {
-                return true;
-            } else {
-                return false;
-            }
-        case RG_PROGRESSIVE_BOW:
-            if (CUR_UPG_VALUE(UPG_QUIVER) < 3) {
-                return true;
-            } else {
-                return false;
-            }
-        case RG_PROGRESSIVE_SLINGSHOT:
-            if (CUR_UPG_VALUE(UPG_BULLET_BAG) < 3) {
-                return true;
-            } else {
-                return false;
-            }
-        case RG_PROGRESSIVE_NUT_UPGRADE:
-            if (CUR_UPG_VALUE(UPG_NUTS) < 3) {
-                return true;
-            } else {
-                return false;
-            }
-        case RG_PROGRESSIVE_STICK_UPGRADE:
-            if (CUR_UPG_VALUE(UPG_STICKS) < 3) {
-                return true;
-            } else {
-                return false;
-            }
-        case RG_PROGRESSIVE_OCARINA:
-        case RG_PROGRESSIVE_GORONSWORD:
-        case RG_EMPTY_BOTTLE:
-        case RG_BOTTLE_WITH_MILK:
-        case RG_RECOVERY_HEART:
-        case RG_GREEN_RUPEE:
-        case RG_BLUE_RUPEE:
-        case RG_RED_RUPEE:
-        case RG_PURPLE_RUPEE:
-        case RG_HUGE_RUPEE:
-        case RG_PIECE_OF_HEART:
-        case RG_HEART_CONTAINER:
-        case RG_MILK:
-        case RG_FISH:
-        case RG_BOMBS_5:
-        case RG_BOMBS_10:
-        case RG_BOMBS_20:
-        case RG_BOMBCHU_5:
-        case RG_BOMBCHU_10:
-        case RG_BOMBCHU_20:
-            return true;
-        case RG_PROGRESSIVE_BOMBCHUS:
-            return INV_CONTENT(ITEM_BOMBCHU) != ITEM_NONE && !GetRandoSettingValue(RSK_INFINITE_UPGRADES);
-        case RG_ARROWS_5:
-        case RG_ARROWS_10:
-        case RG_ARROWS_30:
-        case RG_DEKU_NUTS_5:
-        case RG_DEKU_NUTS_10:
-        case RG_DEKU_SEEDS_30:
-        case RG_DEKU_STICK_1:
-        case RG_RED_POTION_REFILL:
-        case RG_GREEN_POTION_REFILL:
-        case RG_BLUE_POTION_REFILL:
-        case RG_TREASURE_GAME_HEART:
-        case RG_TREASURE_GAME_GREEN_RUPEE:
-        case RG_BUY_DEKU_NUTS_5:
-        case RG_BUY_ARROWS_30:
-        case RG_BUY_ARROWS_50:
-        case RG_BUY_BOMBS_525:
-        case RG_BUY_DEKU_NUTS_10:
-        case RG_BUY_DEKU_STICK_1:
-        case RG_BUY_BOMBS_10:
-        case RG_BUY_FISH:
-        case RG_BUY_RED_POTION_30:
-        case RG_BUY_GREEN_POTION:
-        case RG_BUY_BLUE_POTION:
-        case RG_BUY_HYLIAN_SHIELD:
-        case RG_BUY_DEKU_SHIELD:
-        case RG_BUY_GORON_TUNIC:
-        case RG_BUY_ZORA_TUNIC:
-        case RG_BUY_HEART:
-        case RG_BUY_BOMBCHUS_10:
-        case RG_BUY_BOMBCHUS_20:
-        case RG_BUY_DEKU_SEEDS_30:
-        case RG_SOLD_OUT:
-        case RG_BUY_BLUE_FIRE:
-        case RG_BUY_BOTTLE_BUG:
-        case RG_BUY_POE:
-        case RG_BUY_FAIRYS_SPIRIT:
-        case RG_BUY_ARROWS_10:
-        case RG_BUY_BOMBS_20:
-        case RG_BUY_BOMBS_30:
-        case RG_BUY_BOMBS_535:
-        case RG_BUY_RED_POTION_40:
-        case RG_BUY_RED_POTION_50:
-            return true;
-        case RG_PROGRESSIVE_SCALE:
-            if (!Flags_GetRandomizerInf(RAND_INF_CAN_SWIM)) {
-                return false;
-            }
-            return true;
-        case RG_PROGRESSIVE_WALLET:
-            if (!Flags_GetRandomizerInf(RAND_INF_HAS_WALLET)) {
-                return false;
-            }
-            if (CUR_UPG_VALUE(UPG_WALLET) < 2) {
-                return true;
-            } else {
-                return false;
-            }
-        default:
-            return false;
-    }
-}
-
-bool Randomizer::CheckContainsVanillaItem(RandomizerCheck randoCheck) {
-    RandomizerGet randoGet = Rando::Context::GetInstance()->GetItemLocation(randoCheck)->GetPlacedRandomizerGet();
-    return IsItemVanilla(randoGet);
-}
-
 // There has been some talk about potentially just using the RC identifier to store flags rather than randomizer inf, so
 // for now we're not going to store randomzierInf in the randomizer check objects, we're just going to map them 1:1 here
 std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf = {
@@ -1805,8 +1291,7 @@ void GenerateRandomizerImgui(std::string seed = "") {
     RandoMain::GenerateRando(excludedLocations, enabledTricks, seed);
 
     CVarSetInteger(CVAR_GENERAL("RandoGenerating"), 0);
-    CVarSave();
-    CVarLoad();
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
 
     generated = 1;
 }
@@ -1829,13 +1314,6 @@ void RandomizerSettingsWindow::DrawElement() {
         generated = 0;
         randoThread.join();
     }
-
-    ImGui::SetNextWindowSize(ImVec2(920, 600), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Randomizer Editor", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
-        ImGui::End();
-        return;
-    }
-
     bool disableEditingRandoSettings = CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0) || CVarGetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 0);
     if (disableEditingRandoSettings) {
         UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
@@ -2456,7 +1934,6 @@ void RandomizerSettingsWindow::DrawElement() {
     if (disableEditingRandoSettings) {
         UIWidgets::ReEnableComponent("");
     }
-    ImGui::End();
 }
 
 void RandomizerSettingsWindow::UpdateElement() {
@@ -2544,7 +2021,7 @@ CustomMessage Randomizer::GetMerchantMessage(RandomizerInf randomizerInf, u16 te
     RandomizerCheck rc = GetCheckFromRandomizerInf(randomizerInf);
     RandomizerGet shopItemGet = ctx->GetItemLocation(rc)->GetPlacedRandomizerGet();
     CustomMessage shopItemName;
-    if (mysterious|| CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0)) {
+    if (mysterious || CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0)) {
         if (randomizerInf >= RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1 && randomizerInf <= RAND_INF_SHOP_ITEMS_MARKET_BOMBCHU_SHOP_ITEM_8) {
             shopItemName = {
                 "Mysterious Item",
@@ -2851,86 +2328,251 @@ void CreateNaviRandoMessages() {
     }
 }
 
-void CreateIceTrapRandoMessages() {
-    CustomMessage IceTrapMessages[NUM_ICE_TRAP_MESSAGES] = {
-        { "You are a %bFOOL%w!", "Du bist ein %bDUMMKOPF%w!", "%bPauvre fou%w..." },
-
-        { "You are a %bFOWL%w!", "Du bist eine %bFrostbeule%w!", "Tu es un %bglaçon%w, Harry!" },
-
-        { "%bFOOL%w!", "%bDUMMKOPF%w!", "%bSot%w que tu es." },
-
-        { "You just got %bPUNKED%w!", "Du wurdest %beiskalt%w erwischt!", "Ça me %bglace%w le sang!" },
-
-        { "Stay %bfrosty%w, @.", "Es läuft Dir %beiskalt%w den Rücken&hinunter, @.", "%bReste au frais%w, @." },
-
-        { "Take a %bchill pill%w, @.", "Bleib %bcool%w, @.", "Et c'est la douche %bfroide%w!" },
-
-        { "%bWinter%w is coming.", "Der %bWinter%w naht.", "L'%bhiver%w vient." },
-
-        { "%bICE%w to see you, @.", "Alles %bcool%w im Pool?", "%bGlacier%w!" },
-
-        { "Feeling a little %rhot%w under the collar?&%bLet's fix that%w.", "%bAbkühlung gefällig%w?",
-          "%Ça en jette un %bfroid%w." },
-
-        { "It's a %bcold day%w in the Evil Realm.", "Es ist ein %kalter%w Tag im Herzen&von Hyrule.",
-          "Est-ce que tu as déjà eu des sueurs&%bfroides%w?" },
-
-        { "Getting %bcold feet%w?", "Bekommst Du etwa %bkalte%w Füße?",
-          "La vengeance est un plat qui se mange&%bfroid%w!" },
-
-        { "Say hello to the %bZoras%w for me!", "Sag den %bZoras%w viele Grüße von mir!",
-          "Dit bonjour aux %bZoras%w pour moi!" },
-
-        { "Can you keep a %bcool head%w?", "Bewahre einen %bkühlen%w! Kopf.",
-          "Il faut parfois savoir garder la tête&%bfroide%w!" },
-
-        { "Ganondorf used %bIce Trap%w!&It's super effective!",
-          "Ganondorf setzt %bEisstrahl%w ein.&Das ist sehr effektiv!",
-          "Ganondorf utilise %bPiège de Glace%w!&C'est super efficace!" },
-
-        { "Allow me to break the %bice%w!", "Ein Lächeln ist der beste Weg,&um das %bEis%w zu brechen!",
-          "Laisse moi briser la %bglace%w!" },
-
-        { "%bCold pun%w.", "%bEiskalt%w lässt du meine Seele&erfrier'n.",
-          "Balance man...,&Cadence man...,&Trace la %bglace%w...,&c'est le Cooooolllll Rasta!" },
-
-        { "The %bTitanic%w would be scared of you,&@.", "Die %bTitanic%w hätte Angst vor Dir,&@.",
-          "Le %bTitanic%w aurait peur de toi,&@." },
-
-        { "Oh no!", "Oh nein!", "Oh non!" },
-
-        { "What killed the dinosaurs?&The %bICE%w age!", "Was die Dinosaurier getötet hat?&Die %bEiszeit%w!",
-          "Qu'est-ce qui a tué les dinosaures?&L'ère %bglacière%w!" },
-
-        { "Knock knock. Who's there? Ice. Ice&who? Ice see that you're a %bFOOL%w.",
-          "Nachts ist es %bkälter%w als draußen.",
-          "L'imbécile réfléchit uniquement quand il&s'observe dans la %bglace%w." },
-
-        { "Never gonna %bgive you up%w. Never&gonna %blet you down%w. Never gonna&run around and %bdesert you%w.",
-          "Never gonna %bgive you up%w. Never&gonna %blet you down%w. Never gonna&run around and %bdesert you%w.",
-          "Never gonna %bgive you up%w. Never&gonna %blet you down%w. Never gonna&run around and %bdesert you%w." },
-
-        { "Thank you %b@%w!&But your item is in another castle!",
-          "Danke %b@%w!&Aber der Gegenstand ist in&einem anderem Schloß!",
-          "Merci %b@%w!&Mais ton objet est dans un autre&château!" },
-
-        { "%bFREEZE%w! Don't move!", "	Kalt. Kalt. Kälter. %bEISKALT%w!",
-          "J'espère que ça ne te fait ni chaud, ni&%bfroid%w." },
-
+CustomMessage Randomizer::GetIceTrapMessage() {
+    static const char* const englishIceTrapMessages[169] = {
+        "You are a #FOOL#!",
+        "You are a #FOWL#!",
+        "#FOOL#!",
+        "You just got #PUNKED#!",
+        "Stay #frosty#, @.",
+        "Take a #chill pill#, @.",
+        "#Winter# is coming.",
+        "#ICE# to see you, @.",
+        "Feeling a little %rhot%w under the collar? #Let's fix that#.",
+        "It's a #cold day# in the Evil Realm.",
+        "Getting #cold feet#?",
+        "Say hello to the #Zoras# for me!",
+        "Can you keep a #cool head#?",
+        "Ganondorf used #Ice Trap#!&It's super effective!",
+        "Allow me to break the #ice#!",
+        "#Cold pun#.",
+        "The #Titanic# would be scared of you, @.",
+        "Oh no!",
+        "Uh oh!",
+        "What killed the dinosaurs?&The #ICE# age!",
+        "Knock knock. Who's there? Ice. Ice who? Ice see that you're a #FOOL#.",
+        "Never gonna #give you up#. Never gonna #let you down#. Never gonna run around and #desert you#.",
+        "Thank you #@#! But your item is in another castle!",
+        "#FREEZE#! Don't move!",
+        "Wouldn't it be #ice# if we were colder?",
+        "Greetings from #Snowhead#! Wish you were here",
+        "Too #cool# for you?",
+        "#Ice#, #ice#, baby...",
+        "Time to break the #ice#.",
+        "We wish that you would read this... We wish that you would read this... But we set our bar low.",
+        "#Freeze# and put your hands in the air!",
+        "#Ice# to meet you!",
+        "Do you want to #freeze# a snowman?",
+        "Isn't there a #mansion# around here?",
+        "Now you know how #King Zora# feels",
+        "May the #Frost# be with you.",
+        "Carpe diem. #Freeze# the day.",
+        "There #snow# place like home.",
+        "That'll do, #ice#. That'll do.",
+        "All that is #cold# does not glitter, Not all those who wander are #frost#.",
+        "I Used To Be An Adventurer Like You. Then I Took An #Icetrap# To The Knee.",
+        "Would you like #ice# with that?",
+        "You have obtained the #Ice# Medallion!",
+        "Quick, do a #Zora# impression!",
+        "One item #on the rocks#!",//would be better if it could display the name of the item
+        "How much does a polar bear weigh?&Enough to break the #ice#.",
+        "You got Din's #Ice#!",
+        "You got Nayru's #Cold#!",
+        "You got Farore's #Freeze#!",
+        "KEKW",
+        "You just got #ICE TRAPPED#! Tag your friends to totally #ICE TRAP# them!",
+        "Are you okay, @? You're being #cold# today.",
+        "In a moment, your game might experience some #freezing#.",
+        "Breeze? Trees? Squeeze? No, it's a #freeze#!",
+        "After collecting this item, @ was assaulted in #cold# blood.",
+        "Only #chill# vibes around here!",
+        "Here's a #cool# gift for you!",
+        "Aha! You THOUGHT.",
+        "Stay hydrated and brush your teeth!",
+        "Isn't it too hot here? Let's turn the #AC# on.",
+        "One serving of #cold# @, coming right up!",
+        "Is it #cold# in here is that just me?",
+        "Yahaha! You found me!",
+        "You'd made a great #ice#-tronaut!",
+        "That's just the tip of the #iceberg#!",
+        "It's the triforce!&No, just kidding, it's an #ice trap#.",
+        "WINNER!",
+        "LOSER!",
+        "Greetings from #Cold Miser#!",
+        "Pardon me while I turn up the #AC#.",
+        "If you can't stand the #cold#, get out of the #freezer#.",
+        "Oh, goodie! #Frozen @# for the main course!",
+        "You have #freeze# power!",
+        "You obtained the #Ice Beam#! No wait, wrong game.",
+        "Here's to another lousy millenium!",
+        "You've activated my #trap card#!",
+        "I love #refrigerators#!",
+        "You expected an item,&BUT IT WAS I, AN #ICE TRAP#!",
+        "It's dangerous to go alone! Take #this#!",
+        "soh.exe has #stopped responding#.",
+        "Enough! My #Ice Trap# thaws in the morning!",
+        "Nobody expects the span-#ice# inquisition!",
+        "This is one #cool# item!",
+        "Say hello to my #little friend#!",
+        "We made you an offer you #can't refuse#.",
+        "Hyrule? More like #Hycool#!",
+        "Ice puns are #snow# problem!",
+        "This #ice# is #snow# joke!",
+        "There's no business like #snow# business!",
+        "no, dude",
+        "N#ice# trap ya got here!",
+        "Quick do your best impression of #Zoras Domain#!",
+        "Ganon used #ice beam#, it's super effective!",
+        "I was #frozen# today.",
+        "You're not in a #hurry#, right?",
+        "It's a #trap#!",
+        "At least it's not a VC crash and only Link is #frozen#!",
+        "Oh no! #BRAIN FREEZE#!",
+        "Looks like your game #froze#! Nope just you!",
+        "PK #FREEZE#!",
+        "May I interest you in some #iced# Tea?",
+        "Time for some Netflix and #chill#.",
+        "I know, I know... #FREEZE#!",
+        "#Ice# of you to drop by!",
+        "STOP!&You violated the #Thaw#!",
+        "I wanted to give you a treasure, but it looks like you got #cold feet#",
+        "You told me you wanted to deliver #just ice# to Ganondorf!",
+        "You got the triforce!&This ancient artifact of divine power can grant any- wait, no, sorry, it's just an ice trap. My bad",
+        "Time to #cool off#!",
+        "The #Ice Cavern# sends its regards.",
+        "Loading item, please #wait#...",
+        "Mash A+B to not #die#.",
+        "Sorry, your item is in another location.", //would be better if it could have the name of the item
+        "You only wish this was %gGreg%w.",
+        "Do you want to drink a hot chocolate?",
+        "The #cold# never bothered me anyway",
+        "Hope you're too school for #cool#!",
+        "Be thankful this isn't #absolute zero#.",
+        "Did you know the F in ZFG stands for #Freeze#?",
+        "You got #Ice Age (2002)#!",
+        "Now you can cast a #spell# you don't know",
+        "How's about a hero #on the rocks#?",
+        "Ain't no tunic for #this#!",
+        "I knew you were #part metroid#!",
+        "That's just the #icing on the cake#!",
+        "You're so #cool#, @!",
+        "You found #disappointment#!",
+        "You got #FOOLED#!",
+        "Start Mashing.",
+        "This item will #self-destruct# in 5 seconds...",
+        "Remember, there may be some momentary #discomfort#.",
+        "In a perfect world #ice traps# like me would not exist, but this is not a perfect world.",
+        "Gee, it sure is #cold# around here.",
+        "You tested the item with your #ice detector#, it beeped.", //would be better if it could have the name of the item
+        "You have found the way of the zero. The #sub-zero#.",
+        "Mweep... mweep... mweep...",
+        "Scum, #freezebag#! I mean #freeze#, scumbag!",
+        "Is it #chilly# in here or is it just #you#?",
+        "#Proceed#",
+        "WHAT'S SHE GONNA DO, MAKE ME AN #[Ice Cream]#!?",
+        "You've met with a #terrible fate#, haven't you?",
+        "So I heard you like the Shining, here's how it #ends#.",
+        "Minor routing mistake. #I win#.",
+        "Hold this #L#, @.",
+        "#SKILL ISSUE#",
+        "All you heat are belong to us",
+        "Wait a second, don't you already have #this item#?",
+        "#Freeze#! We have you surrounded!",
+        "Error 404 - Item not #found#.",
+        "Hydration break! Hey, who #froze# my water?",
+        "Oops, wrong #item model#.",
+        "Whoops! You have to put the item #in your inventory#.",
+        "You dropped the item, shattering it into #shards of ice#!", //would be better if it could have the name of the item
+        "Is this... golden age Simpsons?&BECAUSE I'M ABOUT TO #CHOKE A CHILD#.",
+        "You are the weakest @, #goodbye#!",
+        "Ugh... Why did we even randomize #this item#?",
+        "The #Frost Moon# is rising...",
+        "According to all known laws of physics and biology, there is no way that @ should be able to survive #getting fully encased in ice#. The cells in @'s body would all die by the time they #unthaw#. Of course, this is a video game, so @ survives anyway... #Probably#.",
+        "Okay, so stop me if you've heard this one - a gamer and a bottle of #liquid nitrogen# walk into a milk bar...",
+        "Lástima, es una #trampa de hielo#...&&Nobody expects the Spanish #ice trap#!",
+        "Gee, it sure is #BURR#ing around here.",
+        "Navi? Oh! I thought she was called #Névé#!",
+        "It's fine, @ knew this was a #trap#, they're just using it to take damage intentionally to manipulate RNG.",
+        "Unfortunately, the item has #stopped#.", //would be better if it could have the name of the item
+        "This item is #not available# in your country.", //would be better if it could have the name of the item
+        "#Ice# try. #;)#",
+        "D'oh, I #missed#!",
+        "Where is my #super suit#?",
+        "#Titanic's revenge#.",
     };
-    CustomMessageManager* customMessageManager = CustomMessageManager::Instance;
-    customMessageManager->AddCustomMessageTable(Randomizer::IceTrapRandoMessageTableID);
-    for (u8 i = 0; i <= (NUM_ICE_TRAP_MESSAGES - 1); i++) {
-        customMessageManager->CreateMessage(Randomizer::IceTrapRandoMessageTableID, i,
-                                            IceTrapMessages[i]);
+
+    static const char* const germanIceTrapMessages[23] = {
+        "Du bist ein #DUMMKOPF#!",
+        "Du bist eine #Frostbeule#!",
+        "#DUMMKOPF#!",
+        "Du wurdest #eiskalt# erwischt!",
+        "Es läuft Dir #eiskalt# den Rücken hinunter, @.",
+        "Bleib #cool#, @.",
+        "Der #Winter# naht.",
+        "Alles #cool# im Pool?",
+        "#Abkühlung gefällig#?",
+        "Es ist ein %kalter%w Tag im Herzen von Hyrule.",
+        "Bekommst Du etwa #kalte# Füße?",
+        "Sag den #Zoras# viele Grüße von mir!",
+        "Bewahre einen #kühlen#! Kopf.",
+        "Ganondorf setzt #Eisstrahl# ein. Das ist sehr effektiv!",
+        "Ein Lächeln ist der beste Weg, um das #Eis# zu brechen!",
+        "#Eiskalt# lässt du meine Seele erfrier'n.",
+        "Die #Titanic# hätte Angst vor Dir, @.",
+        "Oh nein!",
+        "Was die Dinosaurier getötet hat?&Die #Eiszeit#!",
+        "Nachts ist es #kälter# als draußen.",
+        "Never gonna #give you up#. Never gonna #let you down#. Never gonna run around and #desert you#.",
+        "Danke #@#! Aber der Gegenstand ist in einem anderem Schloß!",
+        "Kalt. Kalt. Kälter. #EISKALT#!",
+    };
+
+    static const char* const frenchIceTrapMessages[23] = {
+        "#Pauvre fou#...",
+        "Tu es un #glaçon#, Harry!",
+        "#Sot# que tu es.",
+        "Ça me #glace# le sang!",
+        "#Reste au frais#, @.",
+        "Et c'est la douche #froide#!",
+        "L'#hiver# vient.",
+        "#Glacier#!",
+        "Ça en jette un #froid#.",
+        "Est-ce que tu as déjà eu des sueurs #froides#?",
+        "La vengeance est un plat qui se mange #froid#!",
+        "Dit bonjour aux #Zoras# pour moi!",
+        "Il faut parfois savoir garder la tête #froide#!",
+        "Ganondorf utilise #Piège de Glace#! C'est super efficace!",
+        "Laisse moi briser la #glace#!",
+        "Balance man..., Cadence man..., Trace la #glace#..., c'est le Cooooolllll Rasta!",
+        "Le #Titanic# aurait peur de toi, @.",
+        "Oh non!",
+        "Qu'est-ce qui a tué les dinosaures?&L'ère #glacière#!",
+        "L'imbécile réfléchit uniquement quand il s'observe dans la #glace#.",
+        "Never gonna #give you up#. Never gonna #let you down#. Never gonna run around and #desert you#.",
+        "Merci #@#! Mais ton objet est dans un autre château!",
+        "J'espère que ça ne te fait ni chaud, ni #froid#.",
+    };
+
+    CustomMessage msg;
+
+    if (CVarGetInteger(CVAR_GENERAL("LetItSnow"), 0)) {
+        msg = CustomMessage(
+            /*english*/ "This year for Christmas, all you get is #COAL#!",
+            /*german*/  "This year for Christmas, all you get is #COAL#!",
+            /*french*/  "Pour Noël, cette année, tu n'auras que du #CHARBON#! %rJoyeux Noël%w!",
+                        { QM_BLUE }
+        );
+    } else {
+        msg = CustomMessage(
+            RandomElement(englishIceTrapMessages),
+            RandomElement(germanIceTrapMessages),
+            RandomElement(frenchIceTrapMessages),
+            { QM_BLUE, QM_BLUE, QM_BLUE }
+        );
     }
 
-    // We only use this ice trap message for christmas, so we don't want it in the normal ice trap messages rotation
-    customMessageManager->CreateMessage(
-        Randomizer::IceTrapRandoMessageTableID, NUM_ICE_TRAP_MESSAGES + 1,
-        CustomMessage("This year for Christmas, all&you get is %BCOAL%w!",
-                      "This year for Christmas, all&you get is %BCOAL%w!",
-                      "Pour Noël, cette année, tu&n'auras que du %BCHARBON!&%rJoyeux Noël%w!"));
+    msg.AutoFormat();
+    return msg;
 }
 
 static int goronIDs[9] = { 0x3052, 0x3069, 0x306A, 0x306B, 0x306C, 0x306D, 0x306E, 0x306F, 0x3070 };
@@ -3315,7 +2957,6 @@ void Randomizer::CreateCustomMessages() {
     CreateRupeeMessages();
     CreateTriforcePieceMessages();
     CreateNaviRandoMessages();
-    CreateIceTrapRandoMessages();
     CreateFireTempleGoronMessages();
 }
 
