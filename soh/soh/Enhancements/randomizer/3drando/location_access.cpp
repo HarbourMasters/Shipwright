@@ -394,6 +394,8 @@ void ReplaceAllInString(std::string& s, std::string const& toReplace, std::strin
 std::string CleanCheckConditionString(std::string condition) {
     ReplaceAllInString(condition, "logic->", "");
     ReplaceAllInString(condition, "ctx->", "");
+    ReplaceAllInString(condition, ".Value<uint8_t>()", "");
+    ReplaceAllInString(condition, "GetSaveContext()->", "");
     return condition;
 }
 
