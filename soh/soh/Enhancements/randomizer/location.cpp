@@ -353,6 +353,18 @@ Rando::Location Rando::Location::HintStone(RandomizerCheck rc, RandomizerCheckQu
     return { rc, quest_, RCTYPE_GOSSIP_STONE, GetAreaFromScene(scene_), ACTOR_EN_GS, scene_, actorParams_, std::move(shortName_), RHT_NONE, RG_NONE, false };
 }
 
+Rando::Location Rando::Location::Fish(RandomizerCheck rc, RandomizerCheckQuest quest_, ActorID actorId_, SceneID scene_, int32_t actorParams_, RandomizerInf flag_,
+                                      std::string&& shortName_, RandomizerHintTextKey hintKey, RandomizerGet vanillaItem) {
+    return {rc, quest_, RCTYPE_FISH, GetAreaFromScene(scene_), actorId_, scene_, actorParams_, std::move(shortName_), hintKey, vanillaItem, false,
+            SpoilerCollectionCheck(SPOILER_CHK_RANDOMIZER_INF, scene_, flag_)};
+}
+
+Rando::Location Rando::Location::GrottoFish(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_, int32_t actorParams_, RandomizerInf flag_,
+                                      std::string&& shortName_, RandomizerHintTextKey hintKey) {
+    return {rc, quest_, RCTYPE_FISH, area_, ACTOR_EN_FISH, SCENE_GROTTOS, actorParams_, std::move(shortName_), hintKey, RG_FISH, false,
+            SpoilerCollectionCheck(SPOILER_CHK_RANDOMIZER_INF, SCENE_GROTTOS, flag_)};
+}
+
 Rando::Location Rando::Location::HintStone(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_, SceneID scene_, int32_t actorParams_, std::string&& shortName_) {
     return { rc, quest_, RCTYPE_GOSSIP_STONE, area_, ACTOR_EN_GS, scene_, actorParams_, std::move(shortName_), RHT_NONE, RG_NONE, false };
 }

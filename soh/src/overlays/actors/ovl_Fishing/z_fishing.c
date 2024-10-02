@@ -15,8 +15,6 @@
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 #define WATER_SURFACE_Y(play) play->colCtx.colHeader->waterBoxes->ySurface
-#define IS_FISHSANITY (IS_RANDO && Randomizer_GetPondFishShuffled())
-#define FISHID(params) (Randomizer_IdentifyFish(play->sceneNum, params))
 bool getShouldSpawnLoaches();
 
 void Fishing_Init(Actor* thisx, PlayState* play);
@@ -433,7 +431,6 @@ static f32 sFishGroupAngle3;
 static FishingEffect sFishingEffects[FISHING_EFFECT_COUNT];
 static Vec3f sStreamSoundProjectedPos;
 static s16 sFishOnHandParams;
-static Color_RGBA16 fsPulseColor = { 30, 240, 200 };
 
 u8 AllHyruleLoaches() {
     return CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFishing"), 0) && CVarGetInteger(CVAR_ENHANCEMENT("AllHyruleLoaches"), 0);
@@ -3998,9 +3995,6 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
                                         sFishOnHandLength = this->fishLength;
                                         sFishOnHandIsLoach = (this->isLoach || AllHyruleLoaches());
                                         sLureCaughtWith = sLureEquipped;
-                                        if (IS_FISHSANITY) {
-                                            sFishOnHandParams = this->fishsanityParams;
-                                        }
                                         Actor_Kill(&this->actor);
                                     } else if (getShouldConfirmKeep() && (this->isLoach == 0 && !AllHyruleLoaches()) && (sFishOnHandIsLoach == 0) &&
                                                ((s16)this->fishLength < (s16)sFishOnHandLength)) {
@@ -4015,11 +4009,6 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
                                         sLureCaughtWith = sLureEquipped;
                                         this->fishLength = lengthTemp;
                                         this->isLoach = loachTemp;
-                                        if (IS_FISHSANITY) {
-                                            s16 paramsTemp = sFishOnHandParams;
-                                            sFishOnHandParams = this->fishsanityParams;
-                                            this->fishsanityParams = paramsTemp;
-                                        }
                                     }
                                 }
                                 if (this->keepState == 0) {
@@ -4040,11 +4029,6 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
                                     sLureCaughtWith = sLureEquipped;
                                     this->fishLength = temp1;
                                     this->isLoach = temp2;
-                                    if (IS_FISHSANITY) {
-                                        s16 paramsTemp = sFishOnHandParams;
-                                        sFishOnHandParams = this->fishsanityParams;
-                                        this->fishsanityParams = paramsTemp;
-                                    }
                                 }
                                 sRodCastState = 0;
                             }
@@ -4310,13 +4294,6 @@ s32 Fishing_FishOverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                                  void* thisx) {
     Fishing* this = (Fishing*)thisx; 
 
-    // #region SOH [Randomizer]
-    // A fish having a shadowDraw implies that it is being given uncollected FX
-    if (IS_FISHSANITY && this->actor.shape.shadowDraw != NULL) {
-        Fishsanity_OpenGreyscaleColor(play, &fsPulseColor, (this->actor.params - 100) * 20);
-    }
-    // #endregion
-
     if (limbIndex == 0xD) {
         rot->z -= this->fishLimbDRotZDelta - 11000;
     } else if ((limbIndex == 2) || (limbIndex == 3)) {
@@ -4339,13 +4316,6 @@ s32 Fishing_FishOverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Ve
 void Fishing_FishPostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
     Fishing* this = (Fishing*)thisx;
 
-    // #region SOH [Randomizer]
-    // A fish having a shadowDraw implies that it is being given uncollected FX
-    if (IS_FISHSANITY && this->actor.shape.shadowDraw != NULL) {
-        Fishsanity_CloseGreyscaleColor(play);
-    }
-    // #endregion
-
     if (limbIndex == 0xD) {
         Matrix_MultVec3f(&sFishMouthOffset, &this->fishMouthPos);
     }
@@ -4354,13 +4324,6 @@ void Fishing_FishPostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s
 s32 Fishing_LoachOverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
                                   void* thisx) {
     Fishing* this = (Fishing*)thisx;
-
-    // #region SOH [Randomizer]
-    // A fish having a shadowDraw implies that it is being given uncollected FX
-    if (IS_FISHSANITY && this->actor.shape.shadowDraw != NULL) {
-        Fishsanity_OpenGreyscaleColor(play, &fsPulseColor, (this->actor.params - 100) * 20);
-    }
-    // #endregion
 
     if (limbIndex == 3) {
         rot->y += this->loachRotYDelta[0];
@@ -4376,13 +4339,6 @@ s32 Fishing_LoachOverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, V
 void Fishing_LoachPostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
     static Vec3f sLoachMouthOffset = { 500.0f, 500.0f, 0.0f };
     Fishing* this = (Fishing*)thisx;
-
-    // #region SOH [Randomizer]
-    // A fish having a shadowDraw implies that it is being given uncollected FX
-    if (IS_FISHSANITY && this->actor.shape.shadowDraw != NULL) {
-        Fishsanity_CloseGreyscaleColor(play);
-    }
-    // #endregion
 
     if (limbIndex == 0xB) {
         Matrix_MultVec3f(&sLoachMouthOffset, &this->fishMouthPos);
