@@ -98,7 +98,7 @@ static void WriteLocation(
 
   //   // Insert a padding so we get a kind of table in the XML document.
   //   int16_t requiredPadding = LONGEST_NAME - location->GetName().length();
-  //   if (location->IsCategory(Category::cShop)) {
+  //   if (location->GetRCType() == RCTYPE_SHOP) {
   //     // Shop items have short location names, but come with an additional price attribute.
   //     requiredPadding -= PRICE_ATTRIBUTE;
   //   }
@@ -108,7 +108,7 @@ static void WriteLocation(
   //   }
   // }
 
-  // if (location->IsCategory(Category::cShop)) {
+  // if (location->GetRCType() == RCTYPE_SHOP) {
   //   char price[6];
   //   sprintf(price, "%03d", location->GetPrice());
   //   node->SetAttribute("price", price);

@@ -126,11 +126,11 @@ void Context::AddLocations(const Container& locations, std::vector<RandomizerChe
 
 void Context::GenerateLocationPool() {
     allLocations.clear();
-    AddLocation(RC_LINKS_POCKET);
+    //AddLocation(RC_LINKS_POCKET); this is being added twice now
     if (mSettings->GetOption(RSK_TRIFORCE_HUNT)) {
         AddLocation(RC_TRIFORCE_COMPLETED);
     }
-    AddLocations(StaticData::overworldLocations);
+    AddLocations(StaticData::GetOverworldLocations());
 
     if (mSettings->GetOption(RSK_FISHSANITY).IsNot(RO_FISHSANITY_OFF)) {
         AddLocations(mFishsanity->GetFishsanityLocations().first);
@@ -142,7 +142,7 @@ void Context::GenerateLocationPool() {
 }
 
 void Context::AddExcludedOptions() {
-    AddLocations(StaticData::overworldLocations, &everyPossibleLocation);
+    AddLocations(StaticData::GetOverworldLocations(), &everyPossibleLocation);
     for (const auto dungeon : mDungeons->GetDungeonList()) {
         AddLocations(dungeon->GetEveryLocation(), &everyPossibleLocation);
     }
@@ -151,16 +151,14 @@ void Context::AddExcludedOptions() {
     }
 }
 
-std::vector<RandomizerCheck> Context::GetLocations(const std::vector<RandomizerCheck>& locationPool,
-                                                   const Category categoryInclude, const Category categoryExclude) {
-    std::vector<RandomizerCheck> locationsInCategory;
+std::vector<RandomizerCheck> Context::GetLocations(const std::vector<RandomizerCheck>& locationPool, const RandomizerCheckType checkType) {
+    std::vector<RandomizerCheck> locationsOfType;
     for (RandomizerCheck locKey : locationPool) {
-        if (StaticData::GetLocation(locKey)->IsCategory(categoryInclude) &&
-            !StaticData::GetLocation(locKey)->IsCategory(categoryExclude)) {
-            locationsInCategory.push_back(locKey);
+        if (StaticData::GetLocation(locKey)->GetRCType() == checkType) {
+            locationsOfType.push_back(locKey);
         }
     }
-    return locationsInCategory;
+    return locationsOfType;
 }
 
 void Context::ClearItemLocations() {
@@ -180,25 +178,13 @@ void Context::ItemReset() {
 }
 
 void Context::LocationReset() {
-    for (const RandomizerCheck il : allLocations) {
-        GetItemLocation(il)->RemoveFromPool();
-    }
-
-    for (const RandomizerCheck il : StaticData::dungeonRewardLocations) {
-        GetItemLocation(il)->RemoveFromPool();
-    }
-
-    for (const RandomizerCheck il : StaticData::gossipStoneLocations) {
-        GetItemLocation(il)->RemoveFromPool();
-    }
-
-    for (const RandomizerCheck il : StaticData::staticHintLocations) {
-        GetItemLocation(il)->RemoveFromPool();
+    for (auto& il : itemLocationTable) {
+        il.RemoveFromPool();
     }
 }
 
 void Context::HintReset() {
-    for (const RandomizerCheck il : StaticData::gossipStoneLocations) {
+    for (const RandomizerCheck il : StaticData::GetGossipStoneLocations()) {
         GetItemLocation(il)->ResetVariables();
     }
     for (Hint& hint : hintTable){

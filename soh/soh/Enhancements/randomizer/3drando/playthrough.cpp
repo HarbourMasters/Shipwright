@@ -56,7 +56,6 @@ int Playthrough_Init(uint32_t seed, std::set<RandomizerCheck> excludedLocations,
     Random_Init(finalHash);
     ctx->GetSettings()->SetHash(std::to_string(finalHash));
 
-    ctx->GetLogic()->UpdateHelpers();
 
     if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_VANILLA)) {
         VanillaFill(); // Just place items in their vanilla locations

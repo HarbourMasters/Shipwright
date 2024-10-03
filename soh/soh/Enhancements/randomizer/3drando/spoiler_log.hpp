@@ -11,18 +11,12 @@ using RandomizerHash = std::array<std::string, 5>;
 // RANDOTODO this is primarily used by the check tracker now, and should probably be moved
 typedef enum {
     SPOILER_CHK_NONE,
-    SPOILER_CHK_ALWAYS_COLLECTED,
     SPOILER_CHK_CHEST,
     SPOILER_CHK_COLLECTABLE,
     SPOILER_CHK_GOLD_SKULLTULA,
     SPOILER_CHK_ITEM_GET_INF,
     SPOILER_CHK_EVENT_CHK_INF,
     SPOILER_CHK_INF_TABLE,
-    SPOILER_CHK_FISH,
-    SPOILER_CHK_MINIGAME,
-    SPOILER_CHK_POE_POINTS,
-    SPOILER_CHK_SHOP_ITEM,
-    SPOILER_CHK_MASTER_SWORD,
     SPOILER_CHK_GRAVEDIGGER,
     SPOILER_CHK_RANDOMIZER_INF,
 } SpoilerCollectionCheckType;

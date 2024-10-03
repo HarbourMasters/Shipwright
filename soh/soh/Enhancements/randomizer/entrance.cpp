@@ -106,7 +106,6 @@ bool Entrance::CheckConditionAtAgeTime(bool& age, bool& time, bool passAnyway) c
     time = true;
     age = true;
 
-    logic->UpdateHelpers();
     return GetConditionsMet() && (connectedRegion != RR_NONE || passAnyway);
 }
 

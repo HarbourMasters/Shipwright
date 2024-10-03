@@ -240,7 +240,7 @@ bool Option::RenderCombobox() const {
     ImGui::Text("%s", name.c_str());
     uint8_t selected = CVarGetInteger(cvarName.c_str(), defaultOption);
     if (selected >= options.size()) {
-        selected--;
+        selected = options.size();
         CVarSetInteger(cvarName.c_str(), selected);
         changed = true;
         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
@@ -272,7 +272,8 @@ bool Option::RenderSlider() const {
     bool changed = false;
     int val = CVarGetInteger(cvarName.c_str(), defaultOption);
     if (val >= options.size()) {
-        val--;
+        val = options.size();
+        CVarSetInteger(cvarName.c_str(), val);
         changed = true;
     }
     if (disabled) {

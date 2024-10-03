@@ -31,49 +31,12 @@ class Logic {
     bool noVariable = false;
 
     // Child item logic
-    bool KokiriSword = false;
-    bool BulletBag = false;
-    bool ZeldasLetter = false;
-    bool WeirdEgg = false;
-    bool HasBottle = false;
-    bool MagicBean = false;
-    bool RutosLetter = false;
-    bool Boomerang = false;
-    bool DinsFire = false;
-    bool FaroresWind = false;
-    bool NayrusLove = false;
-    bool LensOfTruth = false;
-    bool ShardOfAgony = false;
     bool SkullMask = false;
     bool MaskOfTruth = false;
 
     // Adult logic
-    bool Hammer = false;
-    bool IronBoots = false;
-    bool HoverBoots = false;
-    bool MirrorShield = false;
-    bool GoronTunic = false;
-    bool ZoraTunic = false;
-    bool Epona = false;
+    bool FreedEpona = false;
     //bool BigPoe = false; //unused
-    bool GerudoToken = false;
-    bool FireArrows = false;
-    bool IceArrows = false;
-    bool LightArrows = false;
-    bool MasterSword = false;
-    bool BiggoronSword = false;
-
-    // Trade Quest
-    bool PocketEgg = false;
-    bool Cojiro = false;
-    bool OddMushroom = false;
-    bool OddPoultice = false;
-    bool PoachersSaw = false;
-    bool BrokenSword = false;
-    bool Prescription = false;
-    bool EyeballFrog = false;
-    bool Eyedrops = false;
-    bool ClaimCheck = false;
 
     // Trade Quest Events
     bool WakeUpAdultTalon = false;
@@ -86,17 +49,6 @@ class Logic {
     bool EyeballFrogAccess = false;
     bool EyedropsAccess = false;
     bool DisableTradeRevert = false;
-
-    // Stones and Meddallions
-    bool ForestMedallion = false;
-    bool FireMedallion = false;
-    bool WaterMedallion = false;
-    bool SpiritMedallion = false;
-    bool ShadowMedallion = false;
-    bool LightMedallion = false;
-    bool KokiriEmerald = false;
-    bool GoronRuby = false;
-    bool ZoraSapphire = false;
 
     // Dungeon Clears
     bool DekuTreeClear = false;
@@ -116,51 +68,8 @@ class Logic {
     bool ShadowTrialClear = false;
     bool LightTrialClear = false;
 
-    // Greg
-    bool Greg = false;
-    bool GregInBridgeLogic = false;
-    bool GregInLacsLogic = false;
-
-    // Progressive Items
-    uint8_t ProgressiveBulletBag = 0;
-    uint8_t ProgressiveBombBag = 0;
-    uint8_t ProgressiveMagic = 0;
-    uint8_t ProgressiveScale = 0;
-    uint8_t ProgressiveHookshot = 0;
-    uint8_t ProgressiveBow = 0;
-    uint8_t ProgressiveWallet = 0;
-    uint8_t ProgressiveStrength = 0;
-    uint8_t ProgressiveOcarina = 0;
-    uint8_t ProgressiveGiantKnife = 0;
-
     // Logical keysanity
     bool IsKeysanity = false;
-
-    // Keys
-    uint8_t ForestTempleKeys = 0;
-    uint8_t FireTempleKeys = 0;
-    uint8_t WaterTempleKeys = 0;
-    uint8_t SpiritTempleKeys = 0;
-    uint8_t ShadowTempleKeys = 0;
-    uint8_t GanonsCastleKeys = 0;
-    uint8_t GerudoFortressKeys = 0;
-    uint8_t GerudoTrainingGroundsKeys = 0;
-    uint8_t BottomOfTheWellKeys = 0;
-    uint8_t TreasureGameKeys = 0;
-
-    // Triforce Pieces
-    uint8_t TriforcePieces = 0;
-
-    // Boss Keys
-    bool BossKeyForestTemple = false;
-    bool BossKeyFireTemple = false;
-    bool BossKeyWaterTemple = false;
-    bool BossKeySpiritTemple = false;
-    bool BossKeyShadowTemple = false;
-    bool BossKeyGanonsCastle = false;
-
-    // Gold Skulltula Count
-    uint8_t GoldSkulltulaTokens = 0;
 
     // Bottle Count
     uint8_t Bottles = 0;
@@ -186,149 +95,26 @@ class Logic {
     bool FreeFairies = false;
     bool FairyPond = false;
     bool AmmoCanDrop = false;
-    bool BombchuRefill = false;
-    bool BombchusEnabled  = false;
-    bool BuyBombchus = false;
-
-    bool BuySeed = false;
-    bool BuyArrow = false;
-    bool BuyBomb = false;
-    bool BuyMagicPotion = false;
-    bool BuyFish = false;
-    bool BuyBugs = false;
-    bool BuyFairy = false;
 
     uint8_t PieceOfHeart = 0;
     uint8_t HeartContainer = 0;
-    bool DoubleDefense = false;
-
-    /* --- HELPERS, EVENTS, AND LOCATION ACCESS --- */
-    /* These are used to simplify reading the logic, but need to be updated
-    /  every time a base value is updated.                       */
-
-    bool Ocarina = false;
-    bool OcarinaOfTime = false;
-    bool BombBag = false;
-    bool MagicMeter = false;
-    bool Hookshot = false;
-    bool Longshot = false;
-    bool Quiver = false;
-    bool GoronBracelet = false;
-    bool SilverGauntlets = false;
-    bool GoldenGauntlets = false;
-    bool Swim = false;
-    bool SilverScale = false;
-    bool GoldScale = false;
-    bool ChildsWallet = false;
-    bool AdultsWallet = false;
 
     bool ChildScarecrow = false;
     bool AdultScarecrow = false;
-    bool ScarecrowSong = false;
-    bool Scarecrow = false;
-    bool DistantScarecrow = false;
-
-    bool Slingshot = false;
-    bool Bombs = false;
-    bool Bow = false;
-    bool DekuShield = false;
-    bool HylianShield = false;
-    bool BlueFire = false;
-    bool BottleWithBigPoe = false;
-
-    bool OcarinaAButton      = false;
-    bool OcarinaCLeftButton  = false;
-    bool OcarinaCRightButton = false;
-    bool OcarinaCUpButton    = false;
-    bool OcarinaCDownButton  = false;
 
     bool CarpetMerchant = false;
     bool CouldPlayBowling = false;
-    bool HasExplosives = false;
-    bool HasBoots = false;
     bool IsChild = false;
     bool IsAdult = false;
-    bool IsGlitched = false;
-    bool CanBlastOrSmash = false;
-    bool CanChildAttack = false;
-    bool CanChildDamage = false;
-    bool CanAdultAttack = false;
-    bool CanAdultDamage = false;
-    bool CanCutShrubs = false;
-    bool CanDive = false;
-    bool CanLeaveForest = false;
-    bool CanPlantBugs = false;
-    bool CanRideEpona = false;
-    bool CanStunDeku = false;
-    bool CanSummonGossipFairy = false;
-    bool CanSummonGossipFairyWithoutSuns = false;
-    bool NeedNayrusLove = false;
-    bool CanSurviveDamage = false;
-    bool CanTakeDamage = false;
-    bool CanTakeDamageTwice = false;
-    // bool CanPlantBean        = false;
-    bool CanOpenBombGrotto = false;
-    bool CanOpenStormGrotto = false;
     bool BigPoeKill = false;
-    bool HookshotOrBoomerang = false;
-    bool CanGetNightTimeGS = false;
-    bool CanBreakLowerBeehives = false;
-    bool CanBreakUpperBeehives = false;
-    bool FishingPole = false;
-    bool CanGetChildFish = false;
-    bool CanGetAdultFish = false;
-    bool CanFish = false;
-
-    uint8_t OcarinaButtons = 0;
     uint8_t BaseHearts = 0;
-    uint8_t Hearts = 0;
-    uint8_t Multiplier = 0;
-    uint8_t EffectiveHealth = 0;
-    uint8_t FireTimer = 0;
-    uint8_t WaterTimer = 0;
-
-    bool GuaranteeTradePath = false;
-    bool GuaranteeHint = false;
-    bool HasFireSource = false;
-    bool HasFireSourceWithTorch = false;
-
-    bool CanFinishGerudoFortress = false;
-
-    bool HasShield = false;
-    bool CanShield = false;
-    bool ChildShield = false;
-    bool AdultReflectShield = false;
-    bool AdultShield = false;
-    bool CanShieldFlick = false;
-    bool CanJumpslash = false;
-    bool CanUseProjectile = false;
-    bool CanUseMagicArrow = false;
 
     // Bridge and LACS Requirements
-    uint8_t StoneCount = 0;
-    uint8_t MedallionCount = 0;
-    uint8_t DungeonCount = 0;
-    bool HasAllStones = false;
-    bool HasAllMedallions = false;
-    bool CanBuildRainbowBridge = false;
     bool BuiltRainbowBridge = false;
-    bool CanTriggerLACS = false;
 
     // Other
     bool AtDay = false;
     bool AtNight = false;
-    uint8_t Age = 0;
-    bool CanCompleteTriforce = false;
-
-    bool CanSummonGohma = false;
-    bool CanSummonKingDodongo = false;
-    bool CanSummonBarinade = false;
-    bool CanSummonPhantomGanon = false;
-    bool CanSummonVolvagia = false;
-    bool CanSummonMorpha = false;
-    bool CanSummonBongoBongo = false;
-    bool CanSummonTwinrova = false;
-    bool CanSummonGanon = false;
 
     // Events
     bool ShowedMidoSwordAndShield = false;
@@ -354,42 +140,12 @@ class Logic {
     bool ForestTempleAmyAndMeg = false;
     bool FireLoopSwitch = false;
     bool LinksCow = false;
-    bool AtDampeTime = false;
     bool DeliverLetter = false;
-    bool TimeTravel = false;
 
     /* --- END OF HELPERS AND LOCATION ACCESS --- */
 
-    // Placement Tracking
-    uint8_t AddedProgressiveBulletBags = 0;
-    uint8_t AddedProgressiveBombBags = 0;
-    uint8_t AddedProgressiveMagics = 0;
-    uint8_t AddedProgressiveScales = 0;
-    uint8_t AddedProgressiveHookshots = 0;
-    uint8_t AddedProgressiveBows = 0;
-    uint8_t AddedProgressiveWallets = 0;
-    uint8_t AddedProgressiveStrengths = 0;
-    uint8_t AddedProgressiveOcarinas = 0;
-    uint8_t TokensInPool = 0;
-
-    // Event checking past
-    bool DrainWellPast = false;
-    bool DampesWindmillAccessPast = false;
-    bool DekuTreeClearPast = false;
-    bool GoronRubyPast = false;
-    bool ZoraSapphirePast = false;
-    bool ForestTrialClearPast = false;
-    bool FireTrialClearPast = false;
-    bool WaterTrialClearPast = false;
-    bool SpiritTrialClearPast = false;
-    bool ShadowTrialClearPast = false;
-    bool LightTrialClearPast = false;
-    bool BuyDekuShieldPast = false;
-    bool TimeTravelPast = false;
-
     SaveContext* mSaveContext = nullptr;
     Logic();
-    void UpdateHelpers();
     bool CanUse(RandomizerGet itemName);
     bool HasProjectile(HasProjectileAge age);
     bool HasItem(RandomizerGet itemName);
@@ -400,8 +156,46 @@ class Logic {
     bool CanEquipSwap(RandomizerGet itemName);
     bool CanKillEnemy(std::string enemy);
     bool CanPassEnemy(std::string enemy);
-    bool EventsUpdated();
     uint8_t BottleCount();
+    uint8_t OcarinaButtons();
+    bool HasBottle();
+    bool CanJumpslash();
+    bool CanDamage();
+    bool CanAttack();
+    bool BombchusEnabled();
+    bool BombchuRefill();
+    bool HookshotOrBoomerang();
+    bool ScarecrowsSong();
+    bool BlueFire();
+    bool HasExplosives();
+    bool BlastOrSmash();
+    bool CanSpawnSoilSkull();
+    bool CanReflectNuts();
+    bool CanCutShrubs();
+    bool CanStunDeku();
+    bool CanLeaveForest();
+    bool CallGossipFairy();
+    bool CallGossipFairyExceptSuns();
+    bool EffectiveHealth();
+    uint8_t Hearts();
+    uint8_t StoneCount();
+    uint8_t MedallionCount();
+    uint8_t DungeonCount();
+    uint8_t FireTimer();
+    uint8_t WaterTimer();
+    bool TakeDamage();
+    bool CanOpenBombGrotto();
+    bool CanOpenStormsGrotto();
+    bool CanGetNightTimeGS();
+    bool CanBreakUpperBeehives();
+    bool CanBreakLowerBeehives();
+    bool HasFireSource();
+    bool HasFireSourceWithTorch();
+    bool CanFinishGerudoFortress();
+    bool CanShield();
+    bool CanUseProjectile();
+    bool CanBuildRainbowBridge();
+    bool CanTriggerLACS();
     void Reset();
     void SetContext(std::shared_ptr<Context> _ctx);
     bool GetInLogic(LogicVal logicVal);

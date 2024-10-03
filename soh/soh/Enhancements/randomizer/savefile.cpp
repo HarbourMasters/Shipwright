@@ -327,6 +327,10 @@ extern "C" void Randomizer_InitSaveFile() {
         Flags_SetRandomizerInf(RAND_INF_HAS_WALLET);
     }
 
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_FISHING_POLE) == RO_GENERIC_OFF) {
+        Flags_SetRandomizerInf(RAND_INF_FISHING_POLE_FOUND);
+    }
+
     // Give Link's pocket item
     GiveLinksPocketItem();
 
