@@ -489,7 +489,7 @@ namespace Rando {
     }
 
     bool Logic::BombchusEnabled(){
-        return ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) ? CheckInventory(ITEM_BOMBCHU, true) : HasItem(RG_BOMB_BAG);
+        return ctx->GetOption(RSK_BOMBCHU_BAG) ? CheckInventory(ITEM_BOMBCHU, true) : HasItem(RG_BOMB_BAG);
     }
 
     // TODO: Implement Ammo Drop Setting in place of bombchu drops
