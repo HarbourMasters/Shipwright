@@ -41,14 +41,12 @@ void Item::ApplyEffect() const {
     auto ctx = Rando::Context::GetInstance();
     ctx->GetLogic()->ApplyItemEffect(StaticData::RetrieveItem(randomizerGet), true);
     ctx->GetLogic()->SetInLogic(logicVal, true);
-    ctx->GetLogic()->UpdateHelpers();
 }
 
 void Item::UndoEffect() const {
     auto ctx = Rando::Context::GetInstance();
     ctx->GetLogic()->ApplyItemEffect(StaticData::RetrieveItem(randomizerGet), false);
     ctx->GetLogic()->SetInLogic(logicVal, false);
-    ctx->GetLogic()->UpdateHelpers();
 }
 
 const Text& Item::GetName() const {
