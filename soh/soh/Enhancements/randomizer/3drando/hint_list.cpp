@@ -25,25 +25,25 @@ void StaticData::HintTable_Init() {
     /*--------------------------
     |       GENERAL TEXT        |
     ---------------------------*/
-    hintTextTable[RHT_NONE] = HintText(CustomMessage("No Hint", "", "Pas d'Indice" ));
+    hintTextTable[RHT_NONE] = HintText(CustomMessage("No Hint", "Kein Hinweis", "Pas d'Indice" ));
     hintTextTable[RHT_WAY_OF_THE_HERO] =
         HintText(CustomMessage( "They say that #[[1]]# is on #the way of the hero#.", 
-                                "",
+                                "Man erzählt sich, daß #[[1]]# auf #dem Weg des Helden# sei.",
                      /*french*/ "Selon moi, #[[1]]# est sur #la voie du héros#.", {QM_RED, QM_LBLUE}));
                  // /*spanish*/ "Según dicen, #[[1]]# conduce a la senda del héroe."
     hintTextTable[RHT_FOOLISH] = 
         HintText(CustomMessage( "They say that plundering #[[1]]# is #a foolish choice#.",
-                                "",
+                                "Man erzählt sich, daß das Plündern von #[[1]]# #eine törichte Entscheidung# sei.",
                         /*french*/ "Selon moi, explorer #[[1]]# est #futile#.", {QM_RED, QM_PINK}));
                     // /*spanish*/ "Según dicen, inspeccionar #[[1]]# #no es una sabia decisión#."
     hintTextTable[RHT_CAN_BE_FOUND_AT] =
         HintText(CustomMessage( "They say that #[[1]]# can be found at #[[2]]#.",
-                                "",
+                                "Man erzählt sich, daß #[[1]]# bei #[[2]]# gefunden werden könne.",
                         /*french*/ "Selon moi, #[[1]]# se trouve dans #[[2]]#.", {QM_GREEN, QM_RED}));
                     // /*spanish*/ "Según dicen, #[[1]]# aguarda en #[[2]]#."
     hintTextTable[RHT_HOARDS] = 
         HintText(CustomMessage( "They say that #[[2]]# hoards #[[1]]#.",
-                                "",
+                                "Man erzählt sich, daß #[[2]]# #[[1]]# horte.",
                      /*french*/ "Selon moi, #[[2]]# recèle #[[1]]#.", {QM_RED, QM_GREEN}));
                     // /*spanish*/ "Según dicen, #[[2]]# acapara #[[1]]#."
 
@@ -57,415 +57,415 @@ void StaticData::HintTable_Init() {
     ---------------------------*/
 
     hintTextTable[RHT_KF_LINKS_HOUSE_COW] = HintText(CustomMessage("They say that #Malon's obstacle course# leads to #[[1]]#.",
-                                                        /*german*/ "",
+                                                        /*german*/ "Man erzählt sich, daß #Malons Hinderniskurs# zu #[[1]]# führe.",
                                                         /*french*/ "Selon moi, la #course à obstacle de Malon# amène à #[[1]]#.", {QM_RED, QM_GREEN}),
                                                      // /*spanish*/la #carrera de obstáculos de Malon# brinda #[[1]]#.
                                                      {},
                                                      {CustomMessage("They say that the #bovine bounty of a horseback hustle# gifts #[[1]]#.",
-                                                         /*german*/ "",
+                                                         /*german*/ "Man erzählt sich, daß der #bovine Schatz einer Pferdehast# #[[1]]# sei.",
                                                          /*french*/ "Selon moi, le cadeau #qui découle d'une réussite équestre# est #[[1]]#.", {QM_RED, QM_GREEN})});
                                                       // /*spanish*/la #recompensa bovina de un paseo a caballo# brinda #[[1]]#.
 
     hintTextTable[RHT_KAK_100_GOLD_SKULLTULA_REWARD] = HintText(CustomMessage("They say that slaying #100 Gold Skulltulas# reveals #[[1]]#.",
-                                                                   /*german*/ "",
+                                                                   /*german*/ "Man erzählt sich, daß das Vernichten von #100 Goldenen Skulltulas# #[[1]]# enthülle.",
                                                                    /*french*/ "Selon moi, détruire #100 Skulltulas d'or# donne #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                 // /*spanish*/exterminar #100 skulltulas doradas# revela #[[1]]#.
                                                                 {},
                                                                 {CustomMessage("They say that #100 bug badges# rewards #[[1]]#.",
-                                                                    /*german*/ "",
+                                                                    /*german*/ "Man erzählt sich, daß #100 Insektenplaketten# mit #[[1]]# belohnt würde.",
                                                                     /*french*/ "Selon moi, #100 écussons# donnent #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                  // /*spanish*/#100 medallas de insectos# otorgan #[[1]]#.
                                                                  CustomMessage("They say that #100 spider souls# yields #[[1]]#.",
-                                                                    /*german*/ "",
+                                                                    /*german*/ "Man erzählt sich, daß #100 Spinnenseelen# #[[1]]# einbrächte.",
                                                                     /*french*/ "Selon moi, #100 âmes d'arachnide# donnent #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                  // /*spanish*/#100 almas de araña# otorgan #[[1]]#.
                                                                  CustomMessage("They say that #100 auriferous arachnids# lead to #[[1]]#.",
-                                                                    /*german*/ "",
+                                                                    /*german*/ "Man erzählt sich, daß #100 goldhaltige Arachniden# zu #[[1]]# führen würde.",
                                                                     /*french*/ "Selon moi, #100 arachnides aurifères# donnent #[[1]]#.", {QM_RED, QM_GREEN})});
                                                                  // /*spanish*/#100 arácnidos auríferos# otorgan #[[1]]#.
 
     hintTextTable[RHT_SONG_FROM_OCARINA_OF_TIME] = HintText(CustomMessage("They say that the #Ocarina of Time# teaches #[[1]]#.",
-                                                               /*german*/ "",
+                                                               /*german*/ "Man erzählt sich, daß die #Okarina der Zeit# #[[1]]# lehre.",
                                                                /*french*/ "Selon moi, l'#Ocarina du Temps# est accompagné par #[[1]]#.", {QM_RED, QM_GREEN})),
                                                             // /*spanish*/la #Ocarina del Tiempo# enseña #[[1]]#.
 
     hintTextTable[RHT_SONG_FROM_ROYAL_FAMILYS_TOMB] = HintText(CustomMessage("They say that #ReDead in the Composers' Grave# guard #[[1]]#.",
-                                                                  /*german*/ "",
+                                                                  /*german*/ "Man erzählt sich, daß #Zombies im Grab des Komponisten# #[[1]]# bewache.",
                                                                   /*french*/ "Selon moi, les #Éffrois du tombeau des compositeurs# protègent #[[1]]#.", {QM_RED, QM_GREEN})),
                                                                // /*spanish*/los #ReDeads del Panteón Real# guardan #[[1]]#.
 
     hintTextTable[RHT_SHEIK_IN_FOREST] = HintText(CustomMessage("They say that #in a meadow# Sheik teaches #[[1]]#.",
-                                                     /*german*/ "",
+                                                     /*german*/ "Man erzählt sich, daß Shiek #auf einer Wiese# #[[1]]# lehre.",
                                                      /*french*/ "Selon moi, Sheik confiera, #dans un bosquet#, #[[1]]#.", {QM_RED, QM_GREEN})),
                                                   // /*spanish*/#en la pradera sagrada# Sheik enseña #[[1]]#.
 
     hintTextTable[RHT_SHEIK_AT_TEMPLE] = HintText(CustomMessage("They say that Sheik waits at a #monument to time# to teach #[[1]]#.",
-                                                     /*german*/ "",
+                                                     /*german*/ "Man erzählt sich, daß Shiek auf einem #Monument der Zeit# warte und #[[1]]# lehre.",
                                                      /*french*/ "Selon moi, Sheik confiera, #au pied de l'épée légendaire#, #[[1]]#.", {QM_RED, QM_GREEN})),
                                                   // /*spanish*/Sheik espera en el #momumento del tiempo# para enseñar #[[1]]#.
 
     hintTextTable[RHT_SHEIK_IN_CRATER] = HintText(CustomMessage("They say that the #crater's melody# is #[[1]]#.",
-                                                     /*german*/ "",
+                                                     /*german*/ "Man erzählt sich, daß die #Melodie eines Kraters# #[[1]]# sei.",
                                                      /*french*/ "Selon moi, Sheik confiera, #entouré de lave#, #[[1]]#.", {QM_RED, QM_GREEN})),
                                                   // /*spanish*/la #melodía del cráter# otorga #[[1]]#.
 
     hintTextTable[RHT_SHEIK_IN_ICE_CAVERN] = HintText(CustomMessage("They say that the #frozen cavern# echoes with #[[1]]#.",
-                                                         /*german*/ "",
+                                                         /*german*/ "Man erzählt sich, daß die #gefrorene Kaverne# mit #[[1]]# echoe.",
                                                          /*french*/ "Selon moi, Sheik confiera, #dans une caverne enneigée#, #[[1]]#.", {QM_RED, QM_GREEN})),
                                                       // /*spanish*/en la #caverna de hielo# retumban los ecos de #[[1]]#.
 
     hintTextTable[RHT_SHEIK_IN_KAKARIKO] = HintText(CustomMessage("They say that a #ravaged village# mourns with #[[1]]#.",
-                                                       /*german*/ "",
+                                                       /*german*/ "Man erzählt sich, daß ein #verwüstetes Dorf# mit #[[1]]# trauere.",
                                                        /*french*/ "Selon moi, Sheik confirera, #au coeur d'un village ravagé#, #[[1]]#.", {QM_RED, QM_GREEN})),
                                                     // /*spanish*/un #arrasado pueblo# llora #[[1]]#.
 
     hintTextTable[RHT_SHEIK_AT_COLOSSUS] = HintText(CustomMessage("They say that a hero ventures #beyond the wasteland# to learn #[[1]]#.",
-                                                       /*german*/ "",
+                                                       /*german*/ "Man erzählt sich, daß ein Held sich #jenseits des Ödlands# wage und #[[1]]# lerne.",
                                                        /*french*/ "Selon moi, Sheik confiera, #au bout d'un chemin sableux#, #[[1]]#.", {QM_RED, QM_GREEN})),
                                                     // /*spanish*/el héroe que se adentre #más allá del desierto# aprenderá #[[1]]#.
 
     hintTextTable[RHT_MARKET_10_BIG_POES] = HintText(CustomMessage("They say that catching #Big Poes# leads to #[[1]]#.",
-                                                        /*german*/ "",
+                                                        /*german*/ "Man erzählt sich, daß das Fangen #großer Irrlichter# zu #[[1]]# führe.",
                                                         /*french*/ "Selon moi, #d'attraper des Àmes# donne #[[1]]#.", {QM_RED, QM_GREEN}),
                                                      // /*spanish*/hacerte con #Grandes Poes# conduce a #[[1]]#.
                                                      {},
                                                      {CustomMessage("They say that #ghost hunters# will be rewarded with #[[1]]#.",
-                                                         /*german*/ "",
+                                                         /*german*/ "Man erzählt sich, daß #Geisterjäger# mit #[[1]]# belohnt würde.",
                                                          /*french*/ "Selon moi, #les chasseurs de fantômes# sont récompensés avec #[[1]]#.", {QM_RED, QM_GREEN})});
                                                       // /*spanish*/los #cazafantasmas# son premiados con #[[1]]#.
 
     hintTextTable[RHT_DEKU_THEATER_SKULL_MASK] = HintText(CustomMessage("They say that the #Skull Mask# yields #[[1]]#.",
-                                                             /*german*/ "",
+                                                             /*german*/ "Man erzählt sich, daß die #Schädel-Maske# #[[1]]# einbrächte.",
                                                              /*french*/ "Selon moi, le #Masque de Mort# donne #[[1]]#.", {QM_RED, QM_GREEN})),
                                                           // /*spanish*/la #máscara de calavera# otorga #[[1]]#.
 
     hintTextTable[RHT_DEKU_THEATER_MASK_OF_TRUTH] = HintText(CustomMessage("They say that the #Mask of Truth# yields #[[1]]#.",
-                                                                /*german*/ "",
+                                                                /*german*/ "Man erzählt sich, daß die #Maske der Wahrheit# #[[1]]# einbrächte.",
                                                                 /*french*/ "Selon moi, le #Masque de Vérité# donne #[[1]]#.", {QM_RED, QM_GREEN}),
                                                              // /*spanish*/la #máscara de la verdad# premia #[[1]]#.
                                                              {},
                                                              {CustomMessage("They say that showing a #truthful eye to the crowd# rewards #[[1]]#.",
-                                                                 /*german*/ "",
+                                                                 /*german*/ "Man erzählt sich, daß das Zeigen eines #wahrhaftigen Auges zu der Menge# mit #[[1]]# belohnt würde.",
                                                                  /*french*/ "Selon moi, montrer #l'oeil de vérité à la foule# donne #[[1]]#.", {QM_RED, QM_GREEN})});
                                                               // /*spanish*/#mostrarle el ojo verdadero# a una multitud brinda #[[1]]#.
 
     hintTextTable[RHT_HF_OCARINA_OF_TIME_ITEM] = HintText(CustomMessage("They say that the #treasure thrown by Princess Zelda# is #[[1]]#.",
-                                                             /*german*/ "",
+                                                             /*german*/ "Man erzählt sich, daß der #von Prinzessin Zelda geworfene Schatz# #[[1]]# sei.",
                                                              /*french*/ "Selon moi, le trésor #laissé par la princesse# est #[[1]]#.", {QM_RED, QM_GREEN})),
                                                           // /*spanish*/el #tesoro arrojado por la Princesa Zelda# se trata de #[[1]]#.
 
     hintTextTable[RHT_DMT_TRADE_BROKEN_SWORD] = HintText(CustomMessage("They say that a #blinded Biggoron# entrusts #[[1]]#.",
-                                                            /*german*/ "",
+                                                            /*german*/ "Man erzählt sich, daß ein #erblindeter Biggoron# #[[1]]# anvertraue.",
                                                             /*french*/ "Selon moi, They say that un #Grogoron aveuglé# confie #[[1]]#.", {QM_RED, QM_GREEN})),
                                                          // /*spanish*/un #miope Biggoron# otorga #[[1]]#.
 
     hintTextTable[RHT_DMT_TRADE_EYEDROPS] = HintText(CustomMessage("They say that while you wait, #Biggoron# gives #[[1]]#.",
-                                                        /*german*/ "",
+                                                        /*german*/ "Man erzählt sich, daß während man warte, #Biggoron# #[[1]]# gäbe.",
                                                         /*french*/ "Selon moi, pendant que tu attends, #Biggoron# donne #[[1]]#.", {QM_RED, QM_GREEN})),
                                                      // /*spanish*/#Biggoron# está a la espera de otorgar #[[1]]#.
 
     hintTextTable[RHT_DMT_TRADE_CLAIM_CHECK] = HintText(CustomMessage("They say that #Biggoron# crafts #[[1]]#.",
-                                                           /*german*/ "",
+                                                           /*german*/ "Man erzählt sich, daß #Biggoron# #[[1]]# fertige.",
                                                            /*french*/ "Selon moi, #Biggoron# fabrique #[[1]]#.", {QM_RED, QM_GREEN})),
                                                         // /*spanish*/#Biggoron# forja #[[1]]#.
 
     hintTextTable[RHT_KAK_50_GOLD_SKULLTULA_REWARD] = HintText(CustomMessage("They say that slaying #50 Gold Skulltulas# reveals #[[1]]#.",
-                                                                  /*german*/ "",
+                                                                  /*german*/ "Man erzählt sich, daß das Vernichten von #50 Goldenen Skulltulas# #[[1]]# enthülle.",
                                                                   /*french*/ "Selon moi, détruire #50 Skulltulas d'or# donne #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                // /*spanish*/exterminar #50 skulltulas doradas# revela #[[1]]#.
                                                                {},
                                                                {CustomMessage("They say that #50 bug badges# rewards #[[1]]#.",
-                                                                   /*german*/ "",
+                                                                   /*german*/ "Man erzählt sich, daß #50 Insektenplaketten# mit #[[1]]# belohnt würde.",
                                                                    /*french*/ "Selon moi, #50 écussons# donnent #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                 // /*spanish*/#50 medallas de insectos# otorgan #[[1]]#.
                                                                 CustomMessage("They say that #50 spider souls# yields #[[1]]#.",
-                                                                   /*german*/ "",
+                                                                   /*german*/ "Man erzählt sich, daß #50 Spinnenseelen# #[[1]]# einbrächte.",
                                                                    /*french*/ "Selon moi, #50 âmes d'arachnide# donnent #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                 // /*spanish*/#50 almas de araña# otorgan #[[1]]#.
                                                                 CustomMessage("They say that #50 auriferous arachnids# lead to #[[1]]#.",
-                                                                   /*german*/ "",
+                                                                   /*german*/ "Man erzählt sich, daß #50 goldhaltige Arachniden# zu #[[1]]# führen würde.",
                                                                    /*french*/ "Selon moi, #50 arachnides aurifères# donnent #[[1]]#.", {QM_RED, QM_GREEN})});
                                                                 // /*spanish*/#50 arácnidos auríferos# otorgan #[[1]]#.
 
     hintTextTable[RHT_KAK_40_GOLD_SKULLTULA_REWARD] = HintText(CustomMessage("They say that slaying #40 Gold Skulltulas# reveals #[[1]]#.",
-                                                                  /*german*/ "",
+                                                                  /*german*/ "Man erzählt sich, daß das Vernichten von #40 Goldenen Skulltulas# #[[1]]# enthülle.",
                                                                   /*french*/ "Selon moi, détruire #40 Skulltulas d'or# donne #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                // /*spanish*/exterminar #40 skulltulas doradas# revela #[[1]]#.
                                                                {},
                                                                {CustomMessage("They say that #40 bug badges# rewards #[[1]]#.",
-                                                                   /*german*/ "",
+                                                                   /*german*/ "Man erzählt sich, daß #40 Insektenplaketten# mit #[[1]]# belohnt würde.",
                                                                    /*french*/ "Selon moi, #40 écussons# donnent #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                 // /*spanish*/#40 medallas de insectos# otorgan #[[1]]#.
                                                                 CustomMessage("They say that #40 spider souls# yields #[[1]]#.",
-                                                                   /*german*/ "",
+                                                                   /*german*/ "Man erzählt sich, daß #40 Spinnenseelen# #[[1]]# einbrächte.",
                                                                    /*french*/ "Selon moi, #40 âmes d'arachnide# donnent #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                 // /*spanish*/#40 almas de araña# otorgan #[[1]]#.
                                                                 CustomMessage("They say that #40 auriferous arachnids# lead to #[[1]]#.",
-                                                                   /*german*/ "",
+                                                                   /*german*/ "Man erzählt sich, daß #40 goldhaltige Arachniden# zu #[[1]]# führen würde.",
                                                                    /*french*/ "Selon moi, #40 arachnides aurifères# donnent #[[1]]#.", {QM_RED, QM_GREEN})});
                                                                 // /*spanish*/#40 arácnidos auríferos# otorgan #[[1]]#.
 
     hintTextTable[RHT_KAK_30_GOLD_SKULLTULA_REWARD] = HintText(CustomMessage("They say that slaying #30 Gold Skulltulas# reveals #[[1]]#.",
-                                                                  /*german*/ "",
+                                                                  /*german*/ "Man erzählt sich, daß das Vernichten von #30 Goldenen Skulltulas# #[[1]]# enthülle.",
                                                                   /*french*/ "Selon moi, détruire #30 Skulltulas d'or# donne #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                // /*spanish*/exterminar #30 skulltulas doradas# revela #[[1]]#.
                                                                {},
                                                                {CustomMessage("They say that #30 bug badges# rewards #[[1]]#.",
-                                                                   /*german*/ "",
+                                                                   /*german*/ "Man erzählt sich, daß #30 Insektenplaketten# mit #[[1]]# belohnt würde.",
                                                                    /*french*/ "Selon moi, #30 écussons# donnent #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                 // /*spanish*/#30 medallas de insectos# otorgan #[[1]]#.
                                                                 CustomMessage("They say that #30 spider souls# yields #[[1]]#.",
-                                                                   /*german*/ "",
+                                                                   /*german*/ "Man erzählt sich, daß #30 Spinnenseelen# #[[1]]# einbrächte.",
                                                                    /*french*/ "Selon moi, #30 âmes d'arachnide# donnent #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                 // /*spanish*/#30 almas de araña# otorgan #[[1]]#.
                                                                 CustomMessage("They say that #30 auriferous arachnids# lead to #[[1]]#.",
-                                                                   /*german*/ "",
+                                                                   /*german*/ "Man erzählt sich, daß #30 goldhaltige Arachniden# zu #[[1]]# führen würde.",
                                                                    /*french*/ "Selon moi, #30 arachnides aurifères# donnent #[[1]]#.", {QM_RED, QM_GREEN})});
                                                                 // /*spanish*/#30 arácnidos auríferos# otorgan #[[1]]#.
 
     hintTextTable[RHT_KAK_20_GOLD_SKULLTULA_REWARD] = HintText(CustomMessage("They say that slaying #20 Gold Skulltulas# reveals #[[1]]#.",
-                                                                  /*german*/ "",
+                                                                  /*german*/ "Man erzählt sich, daß das Vernichten von #20 Goldenen Skulltulas# #[[1]]# enthülle.",
                                                                   /*french*/ "Selon moi, détruire #20 Skulltulas d'or# donne #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                // /*spanish*/exterminar #20 skulltulas doradas# revela #[[1]]#.
                                                                {},
                                                                {CustomMessage("They say that #20 bug badges# rewards #[[1]]#.",
-                                                                   /*german*/ "",
+                                                                   /*german*/ "Man erzählt sich, daß #20 Insektenplaketten# mit #[[1]]# belohnt würde.",
                                                                    /*french*/ "Selon moi, #20 écussons# donnent #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                 // /*spanish*/#20 medallas de insectos# otorgan #[[1]]#.
                                                                 CustomMessage("They say that #20 spider souls# yields #[[1]]#.",
-                                                                   /*german*/ "",
+                                                                   /*german*/ "Man erzählt sich, daß #20 Spinnenseelen# #[[1]]# einbrächte.",
                                                                    /*french*/ "Selon moi, #20 âmes d'arachnide# donnent #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                 // /*spanish*/#20 almas de araña# otorgan #[[1]]#.
                                                                 CustomMessage("They say that #20 auriferous arachnids# lead to #[[1]]#.",
-                                                                   /*german*/ "",
+                                                                   /*german*/ "Man erzählt sich, daß #20 goldhaltige Arachniden# zu #[[1]]# führen würde.",
                                                                    /*french*/ "Selon moi, #20 arachnides aurifères# donnent #[[1]]#.", {QM_RED, QM_GREEN})});
                                                                 // /*spanish*/#20 arácnidos auríferos# otorgan #[[1]]#.
 
     hintTextTable[RHT_KAK_ANJU_AS_CHILD] = HintText(CustomMessage("They say that #collecting cuccos# rewards #[[1]]#.",
-                                                       /*german*/ "",
+                                                       /*german*/ "Man erzählt sich, daß das #Sammeln von Hühnern# mit #[[1]]# belohnt würde.",
                                                        /*french*/ "Selon moi, #rapporter les Cocottes# donne #[[1]]#.", {QM_RED, QM_GREEN}),
                                                     // /*spanish*/#hacerte con todos los cucos# premia #[[1]]#.
                                                     {},
                                                     {CustomMessage("They say that #wrangling roosters# rewards #[[1]]#.",
-                                                        /*german*/ "",
+                                                        /*german*/ "Man erzählt sich, daß das #Rangeln mit Hähnen# mit #[[1]]# belohnt würde.",
                                                         /*french*/ "Selon moi, #plumer des poulets# donne #[[1]]#.", {QM_RED, QM_GREEN}),
                                                      // /*spanish*/#atrapar a las gallinas# premia #[[1]]#.
                                                      CustomMessage("They say that #chucking chickens# gifts #[[1]]#.",
-                                                        /*german*/ "",
+                                                        /*german*/ "Man erzählt sich, daß das #Werfen von Hühnchen# mit #[[1]]# belohnt würde.",
                                                         /*french*/ "Selon moi, #lancer des poulets# donne #[[1]]#.", {QM_RED, QM_GREEN})});
                                                      // /*spanish*/#reunir a unos emplumados# premia #[[1]]#.
 
     hintTextTable[RHT_KAK_TRADE_POCKET_CUCCO] = HintText(CustomMessage("They say that an adult's #happy Cucco# awards #[[1]]#.",
-                                                            /*german*/ "",
+                                                            /*german*/ "Man erzählt sich, daß das #glückliche Huhn# eines Erwachsenen #[[1]]# verleihe.",
                                                             /*french*/ "Selon moi, un adulte avec une #poulette joyeuse# obtient #[[1]]#.", {QM_RED, QM_GREEN})),
                                                          // /*spanish*/un #alegre cuco# en la madurez otorga #[[1]]#.
 
     hintTextTable[RHT_KAK_TRADE_ODD_MUSHROOM] = HintText(CustomMessage("They say that the #potion shop lady# entrusts #[[1]]#.",
-                                                            /*german*/ "",
+                                                            /*german*/ "Man erzählt sich, daß die #Dame des Trankladens# #[[1]]# anvertraue.",
                                                             /*french*/ "Selon moi, la #gribiche du magasin de potion# confie #[[1]]#.", {QM_RED, QM_GREEN})),
                                                          // /*spanish*/la #señora de la tienda de pociones# otorga #[[1]]#.
 
     hintTextTable[RHT_GC_DARUNIAS_JOY] = HintText(CustomMessage("They say that #Darunia's dance# leads to #[[1]]#.",
-                                                     /*german*/ "",
+                                                     /*german*/ "Man erzählt sich, daß #Darunias Tanz# zu #[[1]]# führe.",
                                                      /*french*/ "Selon moi, #la dance de Darunia# donne #[[1]]#.", {QM_RED, QM_GREEN}),
                                                   // /*spanish*/#el baile de Darunia# conduce a #[[1]]#.
                                                   {},
                                                   {CustomMessage("They say that a #groovin' goron# gifts #[[1]]#.",
-                                                      /*german*/ "",
+                                                      /*german*/ "Man erzählt sich, daß ein #grooviger Gorone# #[[1]]# schenke.",
                                                       /*french*/ "Selon moi, #le Goron joyeux# donne #[[1]]#.", {QM_RED, QM_GREEN})});
                                                    // /*spanish*/#un goron marchoso# otorga #[[1]]#.
 
     hintTextTable[RHT_LW_SKULL_KID] = HintText(CustomMessage("They say that the #Skull Kid# grants #[[1]]#.",
-                                                  /*german*/ "",
+                                                  /*german*/ "Man erzählt sich, daß das #Horror-Kid# #[[1]]# gewähre.",
                                                   /*french*/ "Selon moi, le #Skull Kid# donne #[[1]]#.", {QM_RED, QM_GREEN})),
                                                // /*spanish*/#Skull Kid# otorga #[[1]]#.
 
     hintTextTable[RHT_LW_TRADE_COJIRO] = HintText(CustomMessage("They say that returning a #special Cucco# awards #[[1]]#.",
-                                                     /*german*/ "",
+                                                     /*german*/ "Man erzählt sich, daß das Zurückbringen eines #speziellen Huhns# #[[1]]# einbrächte.",
                                                      /*french*/ "Selon moi, ramener une #poulette précieuse# donne #[[1]]#.", {QM_RED, QM_GREEN})),
                                                   // /*spanish*/quien devuelva un #cuco especial# encontrará #[[1]]#.
 
     hintTextTable[RHT_LW_TRADE_ODD_POTION] = HintText(CustomMessage("They say that a #Kokiri girl in the woods# leaves #[[1]]#.",
-                                                         /*german*/ "",
+                                                         /*german*/ "Man erzählt sich, daß ein #Kokiri-Mädchen in den Wäldern# #[[1]]# überließe.",
                                                          /*french*/ "Selon moi, la #fillette Kokiri dans les bois# laisse #[[1]]#.", {QM_RED, QM_GREEN})),
                                                       // /*spanish*/una #chica kokiri del bosque# otorga #[[1]]#.
 
     hintTextTable[RHT_LH_SUN] = HintText(CustomMessage("They say that shooting #the sun# grants #[[1]]#.",
-                                            /*german*/ "",
+                                            /*german*/ "Man erzählt sich, daß das Beschießen #der Sonne# #[[1]]# gewähre.",
                                             /*french*/ "Selon moi, tirer une flèche dans #sur le soleil# donne #[[1]]#.", {QM_RED, QM_GREEN}),
                                          // /*spanish*/#disparar al sol# revela #[[1]]#.
                                          {},
                                          {CustomMessage("They say that staring into #the sun# grants #[[1]]#.",
-                                             /*german*/ "",
+                                             /*german*/ "Man erzählt sich, daß das Starren in #die Sonne# #[[1]]# gewähre.",
                                              /*french*/ "Selon moi, regarder #le soleil# donne #[[1]]#.", {QM_RED, QM_GREEN})});
                                           // /*spanish*/#mirar al sol# revela #[[1]]#.
 
     hintTextTable[RHT_LH_TRADE_FROG] = HintText(CustomMessage("They say that #Lake Hylia's scientist# hurriedly entrusts #[[1]]#.",
-                                                   /*german*/ "",
+                                                   /*german*/ "Man erzählt sich, daß der #Wissenschaftler des Hylia-Sees# #[[1]]# zügig anvertraue.",
                                                    /*french*/ "Selon moi, le #scientifique du lac# confie rapidement #[[1]]#.", {QM_RED, QM_GREEN})),
                                                 // /*spanish*/el #científico del Lago Hylia# otorga con prisa #[[1]]#.
 
     hintTextTable[RHT_MARKET_TREASURE_CHEST_GAME_REWARD] = HintText(CustomMessage("They say that the #treasure chest game# grants #[[1]]#.",
-                                                                       /*german*/ "",
+                                                                       /*german*/ "Man erzählt sich, daß #Schatzkisten-Poker# #[[1]]# gewähre.",
                                                                        /*french*/ "Selon moi, la #Chasse-aux-Trésors# donne #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                     // /*spanish*/#el Cofre del Tesoro# premia #[[1]]#.
                                                                     {},
                                                                     {CustomMessage("They say that #gambling# grants #[[1]]#.",
-                                                                        /*german*/ "",
+                                                                        /*german*/ "Man erzählt sich, daß #Glücksspiel# #[[1]]# gewähre.",
                                                                         /*french*/ "Selon moi, #parier# donne #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                      // /*spanish*/#los juegos de azar# revelan #[[1]]#.
                                                                      CustomMessage("They say that there is a #1/32 chance# to win #[[1]]#.",
-                                                                        /*german*/ "",
+                                                                        /*german*/ "Man erzählt sich, daß es eine #Chance von 1 zu 32# gäbe, um #[[1]]# zu gewinnen.",
                                                                         /*french*/ "Selon moi, être #le gagnant parmi 32# donne #[[1]]#.", {QM_RED, QM_GREEN})});
                                                                      // /*spanish*/hay una #probabilidad de 1/32# de ganar #[[1]]#.
 
     hintTextTable[RHT_MARKET_TREASURE_CHEST_GAME_ITEM_1] = HintText(CustomMessage("They say that the #first locked room# in the chest game contains #[[1]]#.",
-                                                                       /*german*/ "",
+                                                                       /*german*/ "Man erzählt sich, daß der #erste verschlossene Raum# im Schatzkisten-Poker #[[1]]# enthielte.",
                                                                        /*french*/ "Selon moi, la #première salle# de la Chasse-aux-Trésors contient #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                     // /*spanish*/#en la primera sala del Cofre del Tesoro# aguarda #[[1]]#.
                                                                     {},
                                                                     {CustomMessage("They say that #gambling once# grants #[[1]]#.",
-                                                                        /*german*/ "",
+                                                                        /*german*/ "Man erzählt sich, daß #einmaliges Glücksspiel# #[[1]]# gewähre.",
                                                                         /*french*/ "Selon moi, #parier une fois# donne #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                      // /*spanish*/#apostar solo una vez# revelará #[[1]]#.
                                                                      CustomMessage("They say that the #first or second game chest# contains #[[1]]#.",
-                                                                        /*german*/ "",
+                                                                        /*german*/ "Man erzählt sich, daß das #erste oder zweite Schatzkiste im Spiel# #[[1]]# enthielte.",
                                                                         /*french*/ "Selon moi, le #premier ou deuxième coffre à jeu# contient #[[1]]#.", {QM_RED, QM_GREEN})});
                                                                      // /*spanish*/#el primer o segundo cofre del azar# revela #[[1]]#.
 
     hintTextTable[RHT_MARKET_TREASURE_CHEST_GAME_ITEM_2] = HintText(CustomMessage("They say that the #second locked room# in the chest game contains #[[1]]#.",
-                                                                       /*german*/ "",
+                                                                       /*german*/ "Man erzählt sich, daß der #zweite verschlossene Raum# im Schatzkisten-Poker #[[1]]# enthielte.",
                                                                        /*french*/ "Selon moi, la #deuxième salle# de la Chasse-aux-Trésors contient #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                     // /*spanish*/#en la segunda sala del Cofre del Tesoro# aguarda #[[1]]#.
                                                                     {},
                                                                     {CustomMessage("They say that #gambling twice# grants #[[1]]#.",
-                                                                        /*german*/ "",
+                                                                        /*german*/ "Man erzählt sich, daß #zweimaliges Glücksspiel# #[[1]]# gewähre.",
                                                                         /*french*/ "Selon moi, #parier deux fois# donne #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                      // /*spanish*/#apostar dos veces# revelará #[[1]]#.
                                                                      CustomMessage("They say that the #third or fourth game chest# contains #[[1]]#.",
-                                                                        /*german*/ "",
+                                                                        /*german*/ "Man erzählt sich, daß die #dritte oder vierte Schatzkiste im Spiel# #[[1]]# enthielte.",
                                                                         /*french*/ "Selon moi, le #troisième ou quatrième coffre à jeu# contient #[[1]]#.", {QM_RED, QM_GREEN})});
                                                                      // /*spanish*/#el tercer o cuarto cofre del azar# revela #[[1]]#.
 
     hintTextTable[RHT_MARKET_TREASURE_CHEST_GAME_ITEM_3] = HintText(CustomMessage("They say that the #third locked room# in the chest game contains #[[1]]#.",
-                                                                       /*german*/ "",
+                                                                       /*german*/ "Man erzählt sich, daß der #dritte verschlossene Raum# im Schatzkisten-Poker #[[1]]# enthielte.",
                                                                        /*french*/ "Selon moi, la #troisième salle# de la Chasse-aux-Trésors contient #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                     // /*spanish*/#en la tercera sala del Cofre del Tesoro# aguarda #[[1]]#.
                                                                     {},
                                                                     {CustomMessage("They say that #gambling 3 times# grants #[[1]]#.",
-                                                                        /*german*/ "",
+                                                                        /*german*/ "Man erzählt sich, daß #dreimaliges Glücksspiel# #[[1]]# gewähre.",
                                                                         /*french*/ "Selon moi, #parier trois fois# donne #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                      // /*spanish*/#apostar tres veces# revelará #[[1]]#.
                                                                      CustomMessage("They say that the #fifth or sixth game chest# contains #[[1]]#.",
-                                                                        /*german*/ "",
+                                                                        /*german*/ "Man erzählt sich, daß die #fünfte oder sechste Schatzkiste im Spiel# #[[1]]# enthielte.",
                                                                         /*french*/ "Selon moi, le #cinquième ou sixième coffre à jeu# contient #[[1]]#.", {QM_RED, QM_GREEN})});
                                                                      // /*spanish*/#el quinto o sexto cofre del azar# revela #[[1]]#.
 
     hintTextTable[RHT_MARKET_TREASURE_CHEST_GAME_ITEM_4] = HintText(CustomMessage("They say that the #fourth locked room# in the chest game contains #[[1]]#.",
-                                                                       /*german*/ "",
+                                                                       /*german*/ "Man erzählt sich, daß der #vierte verschlossene Raum# im Schatzkisten-Poker #[[1]]# enthielte.",
                                                                        /*french*/ "Selon moi, la #quatrième salle# de la Chasse-aux-Trésors contient #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                     // /*spanish*/#en la cuarta sala del Cofre del Tesoro# aguarda #[[1]]#.
                                                                     {},
                                                                     {CustomMessage("They say that #gambling 4 times# grants #[[1]]#.",
-                                                                        /*german*/ "",
+                                                                        /*german*/ "Man erzählt sich, daß #viermaliges Glücksspiel# #[[1]]# gewähre.",
                                                                         /*french*/ "Selon moi, #parier quatre fois# donne #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                      // /*spanish*/#apostar cuatro veces# revelará #[[1]]#.
                                                                      CustomMessage("They say that the #seventh or eighth game chest# contains #[[1]]#.",
-                                                                        /*german*/ "",
+                                                                        /*german*/ "Man erzählt sich, daß die #siebente oder achte Schatzkiste im Spiel# #[[1]]# enthielte.",
                                                                         /*french*/ "Selon moi, le #septième ou huitième coffre à jeu# contient #[[1]]#.", {QM_RED, QM_GREEN})});
                                                                      // /*spanish*/#el séptimo u octavo cofre del azar# revela #[[1]]#.
 
     hintTextTable[RHT_MARKET_TREASURE_CHEST_GAME_ITEM_5] = HintText(CustomMessage("They say that the #fifth locked room# in the chest game contains #[[1]]#.",
-                                                                       /*german*/ "",
+                                                                       /*german*/ "Man erzählt sich, daß der #fünfte verschlossene Raum# im Schatzkisten-Poker #[[1]]# enthielte.",
                                                                        /*french*/ "Selon moi, la #cinquième salle# de la Chasse-aux-Trésors contient #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                     // /*spanish*/#en la quinta sala del Cofre del Tesoro# aguarda #[[1]]#.
                                                                     {},
                                                                     {CustomMessage("They say that #gambling 5 times# grants #[[1]]#.",
-                                                                        /*german*/ "",
+                                                                        /*german*/ "Man erzählt sich, daß #fünfmaliges Glücksspiel# #[[1]]# gewähre.",
                                                                         /*french*/ "Selon moi, #parier cinq fois# donne #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                      // /*spanish*/#apostar cinco veces# revelará #[[1]]#.
                                                                      CustomMessage("They say that the #ninth or tenth game chest# contains #[[1]]#.",
-                                                                        /*german*/ "",
+                                                                        /*german*/ "Man erzählt sich, daß die #neunte oder zehnte Schatzkiste im Spiel# #[[1]]# enthielte.",
                                                                         /*french*/ "Selon moi, le #neuvième ou dixième coffre à jeu# contient #[[1]]#.", {QM_RED, QM_GREEN})});
                                                                      // /*spanish*/#el noveno o décimo cofre del azar# revela #[[1]]#.
 
    hintTextTable[RHT_MARKET_TREASURE_CHEST_GAME_KEY_1] = HintText(CustomMessage("They say that the #first locked room# in the chest game contains #[[1]]#.",
-                                                                       /*german*/ "",
+                                                                       /*german*/ "Man erzählt sich, daß der #erste verschlossene Raum# im Schatzkisten-Poker #[[1]]# enthielte.",
                                                                        /*french*/ "Selon moi, la #première salle# de la Chasse-aux-Trésors contient #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                     // /*spanish*/#en la primera sala del Cofre del Tesoro# aguarda #[[1]]#.
                                                                     {},
                                                                     {CustomMessage("They say that #gambling once# grants #[[1]]#.",
-                                                                        /*german*/ "",
+                                                                        /*german*/ "Man erzählt sich, daß #einmaliges Glücksspiel# #[[1]]# gewähre.",
                                                                         /*french*/ "Selon moi, #parier une fois# donne #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                      // /*spanish*/#apostar solo una vez# revelará #[[1]]#.
                                                                      CustomMessage("They say that the #first or second game chest# contains #[[1]]#.",
-                                                                        /*german*/ "",
+                                                                        /*german*/ "Man erzählt sich, daß das #erste oder zweite Schatzkiste im Spiel# #[[1]]# enthielte.",
                                                                         /*french*/ "Selon moi, le #premier ou deuxième coffre à jeu# contient #[[1]]#.", {QM_RED, QM_GREEN})});
                                                                      // /*spanish*/#el primer o segundo cofre del azar# revela #[[1]]#.
 
     hintTextTable[RHT_MARKET_TREASURE_CHEST_GAME_KEY_2] = HintText(CustomMessage("They say that the #second locked room# in the chest game contains #[[1]]#.",
-                                                                       /*german*/ "",
+                                                                       /*german*/ "Man erzählt sich, daß der #zweite verschlossene Raum# im Schatzkisten-Poker #[[1]]# enthielte.",
                                                                        /*french*/ "Selon moi, la #deuxième salle# de la Chasse-aux-Trésors contient #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                     // /*spanish*/#en la segunda sala del Cofre del Tesoro# aguarda #[[1]]#.
                                                                     {},
                                                                     {CustomMessage("They say that #gambling twice# grants #[[1]]#.",
-                                                                        /*german*/ "",
+                                                                        /*german*/ "Man erzählt sich, daß #zweimaliges Glücksspiel# #[[1]]# gewähre.",
                                                                         /*french*/ "Selon moi, #parier deux fois# donne #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                      // /*spanish*/#apostar dos veces# revelará #[[1]]#.
                                                                      CustomMessage("They say that the #third or fourth game chest# contains #[[1]]#.",
-                                                                        /*german*/ "",
+                                                                        /*german*/ "Man erzählt sich, daß das #dritte oder vierte Schatzkiste im Spiel# #[[1]]# enthielte.",
                                                                         /*french*/ "Selon moi, le #troisième ou quatrième coffre à jeu# contient #[[1]]#.", {QM_RED, QM_GREEN})});
                                                                      // /*spanish*/#el tercer o cuarto cofre del azar# revela #[[1]]#.
 
     hintTextTable[RHT_MARKET_TREASURE_CHEST_GAME_KEY_3] = HintText(CustomMessage("They say that the #third locked room# in the chest game contains #[[1]]#.",
-                                                                       /*german*/ "",
+                                                                       /*german*/ "Man erzählt sich, daß der #dritte verschlossene Raum# im Schatzkisten-Poker #[[1]]# enthielte.",
                                                                        /*french*/ "Selon moi, la #troisième salle# de la Chasse-aux-Trésors contient #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                     // /*spanish*/#en la tercera sala del Cofre del Tesoro# aguarda #[[1]]#.
                                                                     {},
                                                                     {CustomMessage("They say that #gambling 3 times# grants #[[1]]#.",
-                                                                        /*german*/ "",
+                                                                        /*german*/ "Man erzählt sich, daß #dreimaliges Glücksspiel# #[[1]]# gewähre.",
                                                                         /*french*/ "Selon moi, #parier trois fois# donne #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                      // /*spanish*/#apostar tres veces# revelará #[[1]]#.
                                                                      CustomMessage("They say that the #fifth or sixth game chest# contains #[[1]]#.",
-                                                                        /*german*/ "",
+                                                                        /*german*/ "Man erzählt sich, daß das #fünfte oder sechste Schatzkiste im Spiel# #[[1]]# enthielte.",
                                                                         /*french*/ "Selon moi, le #cinquième ou sixième coffre à jeu# contient #[[1]]#.", {QM_RED, QM_GREEN})});
                                                                      // /*spanish*/#el quinto o sexto cofre del azar# revela #[[1]]#.
 
     hintTextTable[RHT_MARKET_TREASURE_CHEST_GAME_KEY_4] = HintText(CustomMessage("They say that the #fourth locked room# in the chest game contains #[[1]]#.",
-                                                                       /*german*/ "",
+                                                                       /*german*/ "Man erzählt sich, daß der #vierte verschlossene Raum# im Schatzkisten-Poker #[[1]]# enthielte.",
                                                                        /*french*/ "Selon moi, la #quatrième salle# de la Chasse-aux-Trésors contient #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                     // /*spanish*/#en la cuarta sala del Cofre del Tesoro# aguarda #[[1]]#.
                                                                     {},
                                                                     {CustomMessage("They say that #gambling 4 times# grants #[[1]]#.",
-                                                                        /*german*/ "",
+                                                                        /*german*/ "Man erzählt sich, daß #viermaliges Glücksspiel# #[[1]]# gewähre.",
                                                                         /*french*/ "Selon moi, #parier quatre fois# donne #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                      // /*spanish*/#apostar cuatro veces# revelará #[[1]]#.
                                                                      CustomMessage("They say that the #seventh or eighth game chest# contains #[[1]]#.",
-                                                                        /*german*/ "",
+                                                                        /*german*/ "Man erzählt sich, daß das #siebente oder achte Schatzkiste im Spiel# #[[1]]# enthielte.",
                                                                         /*french*/ "Selon moi, le #septième ou huitième coffre à jeu# contient #[[1]]#.", {QM_RED, QM_GREEN})});
                                                                      // /*spanish*/#el séptimo u octavo cofre del azar# revela #[[1]]#.
 
     hintTextTable[RHT_MARKET_TREASURE_CHEST_GAME_KEY_5] = HintText(CustomMessage("They say that the #fifth locked room# in the chest game contains #[[1]]#.",
-                                                                       /*german*/ "",
+                                                                       /*german*/ "Man erzählt sich, daß der #fünfte verschlossene Raum# im Schatzkisten-Poker #[[1]]# enthielte.",
                                                                        /*french*/ "Selon moi, la #cinquième salle# de la Chasse-aux-Trésors contient #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                     // /*spanish*/#en la quinta sala del Cofre del Tesoro# aguarda #[[1]]#.
                                                                     {},
                                                                     {CustomMessage("They say that #gambling 5 times# grants #[[1]]#.",
-                                                                        /*german*/ "",
+                                                                        /*german*/ "Man erzählt sich, daß #fünfmaliges Glücksspiel# #[[1]]# gewähre.",
                                                                         /*french*/ "Selon moi, #parier cinq fois# donne #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                      // /*spanish*/#apostar cinco veces# revelará #[[1]]#.
                                                                      CustomMessage("They say that the #ninth or tenth game chest# contains #[[1]]#.",
-                                                                        /*german*/ "",
+                                                                        /*german*/ "Man erzählt sich, daß die #neunte oder zehnte Schatzkiste im Spiel# #[[1]]# enthielte.",
                                                                         /*french*/ "Selon moi, le #neuvième ou dixième coffre à jeu# contient #[[1]]#.", {QM_RED, QM_GREEN})});
                                                                      // /*spanish*/#el noveno o décimo cofre del azar# revela #[[1]]#.
 
     hintTextTable[RHT_GF_HBA_1500_POINTS] = HintText(CustomMessage("They say that scoring 1500 in #horseback archery# grants #[[1]]#.",
-                                                        /*german*/ "",
+                                                        /*german*/ "Man erzählt sich, daß das Erzielen von 1500 Punkten beim #Bogenschießen zu Pferde# #[[1]]# gewähre.",
                                                         /*french*/ "Selon moi, obtenir 1500 points dans l'#archerie équestre# donne #[[1]]#.", {QM_RED, QM_GREEN}),
                                                      // /*spanish*/conseguir 1500 puntos en el #tiro con arco a caballo# premia #[[1]]#.
                                                      {},
                                                      {CustomMessage("They say that mastery of #horseback archery# grants #[[1]]#.",
-                                                         /*german*/ "",
+                                                         /*german*/ "Man erzählt sich, daß das Meistern des #Bogenschießens zu Pferde# #[[1]]# gewähre.",
                                                          /*french*/ "Selon moi, maîtriser l'#archerie équestre# donne #[[1]]#.", {QM_RED, QM_GREEN})});
                                                       // /*spanish*/dominar el #tiro con arco a caballo# premia con #[[1]]#.
 
