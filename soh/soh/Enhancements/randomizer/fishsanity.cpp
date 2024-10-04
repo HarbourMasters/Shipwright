@@ -321,7 +321,11 @@ namespace Rando {
     }
 
     FishsanityCheckType Fishsanity::GetCheckType(RandomizerCheck rc) {
-        // Is this a pond fish?
+        // if it's not RCTYPE_FISH, obviously it's not a fish
+        if (Rando::StaticData::GetLocation(rc)->GetRCType() != RCTYPE_FISH) {
+            return FSC_NONE;
+        }
+
         auto loc = Rando::StaticData::GetLocation(rc);
         switch (loc->GetScene()) {
         case SCENE_FISHING_POND:
@@ -396,9 +400,6 @@ namespace Rando {
             return;
         }
         RandomizerCheck rc = OTRGlobals::Instance->gRandomizer->GetCheckFromRandomizerInf((RandomizerInf)flag);
-        if (Rando::StaticData::GetLocation(rc)->GetRCType() != RCTYPE_FISH) {
-            return;
-        }
         FishsanityCheckType fsType = Rando::Fishsanity::GetCheckType(rc);
         if (fsType == FSC_NONE) {
             return;
