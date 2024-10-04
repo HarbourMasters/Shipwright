@@ -1227,10 +1227,10 @@ int Fill() {
           total_replaced += num_to_replace;
           for (int j = 0; j < num_to_replace; j++) {
             int itemindex = indices[j];
-            int shopsanityPrice = GetRandomShopPrice();
-            NonShopItems[TransformShopIndex(i * 8 + itemindex - 1)].Price =
-                shopsanityPrice; // Set price to be retrieved by the patch and textboxes
-            ctx->GetItemLocation(Rando::StaticData::shopLocationLists[i][itemindex - 1])->SetCustomPrice(shopsanityPrice);
+            RandomizerCheck rc = Rando::StaticData::GetShopLocations()[i * LOCATIONS_PER_SHOP + itemindex - 1];
+            Rando::ItemLocation* itemLoc = ctx->GetItemLocation(rc);
+            uint16_t shopsanityPrice = GetRandomPrice(Rando::StaticData::GetLocation(rc), shopsanityPrices);
+            itemLoc->SetCustomPrice(shopsanityPrice);
           }
         }
         #undef LOCATIONS_PER_SHOP
@@ -1251,16 +1251,17 @@ int Fill() {
     }
 
     //Add prices to scrubs
+    auto scrubLoc = Rando::StaticData::GetScrubLocations();
     if (ctx->GetOption(RSK_SHUFFLE_SCRUBS).Is(RO_SCRUBS_ALL)) {
-      for (size_t i = 0; i < Rando::StaticData::scrubLocations.size(); i++) {
-        ctx->GetItemLocation(Rando::StaticData::scrubLocations[i])->SetCustomPrice(
-          GetRandomPrice(Rando::StaticData::GetLocation(Rando::StaticData::scrubLocations[i]), scrubPrices)
+      for (size_t i = 0; i < scrubLoc.size(); i++) {
+        ctx->GetItemLocation(scrubLoc[i])->SetCustomPrice(
+          GetRandomPrice(Rando::StaticData::GetLocation(scrubLoc[i]), scrubPrices)
         );
       }
     } else {
-      for (size_t i = 0; i < Rando::StaticData::scrubLocations.size(); i++) {
-        ctx->GetItemLocation(Rando::StaticData::scrubLocations[i])->SetCustomPrice(
-          Rando::StaticData::GetLocation(Rando::StaticData::scrubLocations[i])->GetVanillaPrice()
+      for (size_t i = 0; i < scrubLoc.size(); i++) {
+        ctx->GetItemLocation(scrubLoc[i])->SetCustomPrice(
+          Rando::StaticData::GetLocation(scrubLoc[i])->GetVanillaPrice()
         );
       }
     }
@@ -1277,17 +1278,19 @@ int Fill() {
       );
     }
 
+    auto merchantLoc = Rando::StaticData::GetMerchantLocations();
+
     if (ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL_BUT_BEANS) ||
         ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL)){
-      for (size_t i = 0; i < Rando::StaticData::merchantLocations.size(); i++) {
-        ctx->GetItemLocation(Rando::StaticData::merchantLocations[i])->SetCustomPrice(
-          GetRandomPrice(Rando::StaticData::GetLocation(Rando::StaticData::merchantLocations[i]), merchantPrices)
+      for (size_t i = 0; i < merchantLoc.size(); i++) {
+        ctx->GetItemLocation(merchantLoc[i])->SetCustomPrice(
+          GetRandomPrice(Rando::StaticData::GetLocation(merchantLoc[i]), merchantPrices)
         );
       }
     } else {
-      for (size_t i = 0; i < Rando::StaticData::merchantLocations.size(); i++) {
-        ctx->GetItemLocation(Rando::StaticData::merchantLocations[i])->SetCustomPrice(
-          Rando::StaticData::GetLocation(Rando::StaticData::merchantLocations[i])->GetVanillaPrice()
+      for (size_t i = 0; i < merchantLoc.size(); i++) {
+        ctx->GetItemLocation(merchantLoc[i])->SetCustomPrice(
+          Rando::StaticData::GetLocation(merchantLoc[i])->GetVanillaPrice()
         );
       }
     }

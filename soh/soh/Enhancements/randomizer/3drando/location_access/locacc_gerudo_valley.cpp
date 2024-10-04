@@ -149,7 +149,7 @@ void RegionTable_Init_GerudoValley() {
                 }, {
                   //Locations
                   LOCATION(RC_WASTELAND_CHEST,            logic->HasFireSource()),
-                  LOCATION(RC_WASTELAND_BOMBCHU_SALESMAN, logic->CanJumpslash || logic->CanUse(RG_HOVER_BOOTS)),
+                  LOCATION(RC_WASTELAND_BOMBCHU_SALESMAN, logic->CanJumpslash() || logic->CanUse(RG_HOVER_BOOTS)),
                   LOCATION(RC_WASTELAND_GS,               logic->HookshotOrBoomerang()),
                 }, {
                   //Exits

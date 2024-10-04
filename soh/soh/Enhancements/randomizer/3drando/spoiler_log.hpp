@@ -21,38 +21,6 @@ typedef enum {
     SPOILER_CHK_RANDOMIZER_INF,
 } SpoilerCollectionCheckType;
 
-// GetLocation groups for checks, used to group the checks by logical location
-typedef enum {
-    GROUP_NO_GROUP,
-    GROUP_KOKIRI_FOREST,              // 0x55, 0x28
-    GROUP_LOST_WOODS,                 // 0x5B, 0x56
-    GROUP_DUNGEON_DEKU_TREE,          // 0x00, 0x11
-    GROUP_DUNGEON_FOREST_TEMPLE,      // 0x03
-    GROUP_KAKARIKO,                   // 0x37, 0x42, 0x3F, 0x40, 0x41, 0x48, 0x52, 0x53
-    GROUP_DUNGEON_BOTTOM_OF_THE_WELL, // 0x08
-    GROUP_DUNGEON_SHADOW_TEMPLE,      // 0x07
-    GROUP_DEATH_MOUNTAIN,             // 0x60, 0x61
-    GROUP_GORON_CITY,                 // 0x62
-    GROUP_DUNGEON_DODONGOS_CAVERN,    // 0x01, 0x12
-    GROUP_DUNGEON_FIRE_TEMPLE,        // 0x04
-    GROUP_ZORAS_RIVER,                // 0x54
-    GROUP_ZORAS_DOMAIN,               // 0x58, 0x59
-    GROUP_DUNGEON_JABUJABUS_BELLY,    // 0x02, 0x13
-    GROUP_DUNGEON_ICE_CAVERN,         // 0x09
-    GROUP_HYRULE_FIELD,               // 0x51
-    GROUP_LON_LON_RANCH,              // 0x4C
-    GROUP_LAKE_HYLIA,                 // 0x57
-    GROUP_DUNGEON_WATER_TEMPLE,       // 0x05
-    GROUP_GERUDO_VALLEY,              // 0x5A, 0x5D, 0x0C, 0x5E, 0x5C
-    GROUP_GERUDO_TRAINING_GROUND,     // 0x0B
-    GROUP_DUNGEON_SPIRIT_TEMPLE,      // 0x06
-    GROUP_HYRULE_CASTLE,              // 0x10, 0x4B, 0x35, 0x42, 0x4D, 0x5F, 0x4A
-    GROUP_DUNGEON_GANONS_CASTLE,      // 0x0A, 0x0D, 0x0E, 0x0F
-    SPOILER_COLLECTION_GROUP_COUNT,
-    // Grottos are all 0x3E
-} SpoilerCollectionCheckGroup;
-
 void GenerateHash();
-const RandomizerHash& GetRandomizerHash();
 
 const char* SpoilerLog_Write();

@@ -172,13 +172,14 @@ void RegionTable_Init_Kakariko() {
   areaTable[RR_KAK_ODD_POTION_BUILDING] =
       Region("Kak Granny's Potion Shop", "Kak Granny's Potion Shop", RA_NONE, NO_DAY_NIGHT_CYCLE, {
               // Events
+              // RANDOTODO blue pot access
               EventAccess(&logic->OddPoulticeAccess, { [] {
                   return logic->OddPoulticeAccess || (logic->IsAdult && (logic->OddMushroomAccess || (logic->CanUse(RG_ODD_MUSHROOM) && logic->DisableTradeRevert)));
               } }),
            },
            {
               LOCATION(RC_KAK_TRADE_ODD_MUSHROOM, logic->IsAdult && logic->CanUse(RG_ODD_MUSHROOM)),
-              LOCATION(RC_KAK_GRANNYS_SHOP, logic->IsAdult && logic->CanUse(RG_ODD_MUSHROOM) && logic->HasItem(RG_ADULT_WALLET)),
+              LOCATION(RC_KAK_GRANNYS_SHOP, logic->IsAdult && logic->CanUse(RG_ODD_MUSHROOM)),
            },
            {
               // Exits

@@ -48,21 +48,18 @@ bool LocationAccess::CanBuy() const {
 }
 
 bool CanBuyAnother(RandomizerCheck rc) {
-  auto ctx = Rando::Context::GetInstance();
   uint16_t price = ctx->GetItemLocation(rc)->GetPrice();
 
-  switch (logic->ProgressiveWallet) {
-    case 0:
-      return ctx->GetItemLocation(rc)->GetPrice() == 0;
-    case 1:
-      return ctx->GetItemLocation(rc)->GetPrice() <= 99;
-    case 2:
-      return ctx->GetItemLocation(rc)->GetPrice() <= 200;
-    case 3:
-      return ctx->GetItemLocation(rc)->GetPrice() <= 500;
-    default:
-      return true;
+  if (price > 500) {
+    return logic->HasItem(RG_TYCOON_WALLET);
+  } else if (price > 200) {
+    return logic->HasItem(RG_GIANT_WALLET);
+  } else if (price > 99) {
+    return logic->HasItem(RG_ADULT_WALLET);
+  } else if (price > 0) {
+    return logic->HasItem(RG_CHILD_WALLET);
   }
+  return true;
 }
 
 Region::Region() = default;

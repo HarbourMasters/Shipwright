@@ -97,7 +97,8 @@ void Settings::CreateOptions() {
     mOptions[RSK_SHUFFLE_DUNGEON_REWARDS] = Option::U8("Shuffle Dungeon Rewards", {"End of Dungeons", "Any Dungeon", "Overworld", "Anywhere"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleDungeonReward"), mOptionDescriptions[RSK_SHUFFLE_DUNGEON_REWARDS], WidgetType::Combobox, RO_DUNGEON_REWARDS_END_OF_DUNGEON);
     mOptions[RSK_LINKS_POCKET] = Option::U8("Link's Pocket", {"Dungeon Reward", "Advancement", "Anything", "Nothing"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("LinksPocket"), "", WidgetType::Combobox, RO_LINKS_POCKET_DUNGEON_REWARD);
     mOptions[RSK_SHUFFLE_SONGS] = Option::U8("Shuffle Songs", {"Song Locations", "Dungeon Rewards", "Anywhere"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleSongs"), mOptionDescriptions[RSK_SHUFFLE_SONGS], WidgetType::Combobox, RO_SONG_SHUFFLE_SONG_LOCATIONS);
-    mOptions[RSK_SHOPSANITY] = Option::U8("Shopsanity", {"Off", "0 Items", "1 Item", "2 Items", "3 Items", "4 Items", "Random"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("Shopsanity"), mOptionDescriptions[RSK_SHOPSANITY], WidgetType::Combobox, RO_SHOPSANITY_OFF);
+    mOptions[RSK_SHOPSANITY] = Option::U8("Shopsanity", {"Off", "Specific Count", "Random"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("Shopsanity"), mOptionDescriptions[RSK_SHOPSANITY], WidgetType::Combobox, RO_SHOPSANITY_OFF);
+    mOptions[RSK_SHOPSANITY_COUNT] = Option::U8("Shopsanity Item Count", {NumOpts(0, 7/*8*/)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShopsanityCount"), mOptionDescriptions[RSK_SHOPSANITY_COUNT], WidgetType::Slider, 0, false, IMFLAG_NONE);
     mOptions[RSK_SHOPSANITY_PRICES] = Option::U8("Shopsanity Prices", {"Vanilla", "Cheap Balanced", "Balanced", "Fixed", "Range", "Set By Wallet"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShopsanityPrices"), mOptionDescriptions[RSK_SHOPSANITY_PRICES], WidgetType::Combobox, RO_PRICE_VANILLA, false, IMFLAG_NONE);
     mOptions[RSK_SHOPSANITY_PRICES_FIXED_PRICE] = Option::U8("Fixed Price", {NumOpts(0, 995, 5)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShopsanityFixedPrice"), mOptionDescriptions[RSK_SHOPSANITY_PRICES_FIXED_PRICE], WidgetType::Slider, 10, true);
     mOptions[RSK_SHOPSANITY_PRICES_RANGE_1] = Option::U8("Lower Bound", {NumOpts(0, 995, 5)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShopsanityPriceRange1"), mOptionDescriptions[RSK_SHOPSANITY_PRICES_RANGE_1], WidgetType::Slider, 10, true, IMFLAG_NONE);
@@ -1210,6 +1211,7 @@ void Settings::CreateOptions() {
         { "Shuffle Settings:Shuffle Songs", RSK_SHUFFLE_SONGS },
         { "Shuffle Settings:Shuffle Gerudo Membership Card", RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD },
         { "Shuffle Settings:Shopsanity", RSK_SHOPSANITY },
+        { "Shuffle Settings:Shopsanity Specific Count", RSK_SHOPSANITY_COUNT },
         { "Shuffle Settings:Shopsanity Prices", RSK_SHOPSANITY_PRICES },
         { "Shuffle Settings:Shopsanity Fixed Amount", RSK_SHOPSANITY_PRICES_FIXED_PRICE },
         { "Shuffle Settings:Shopsanity Range 1", RSK_SHOPSANITY_PRICES_RANGE_1 },
@@ -1720,8 +1722,8 @@ void Settings::UpdateOptionProperties() {
     // Hide shopsanity prices if shopsanity is off or zero
     switch (CVarGetInteger(CVAR_RANDOMIZER_SETTING("Shopsanity"), RO_SHOPSANITY_OFF)) {
         case RO_SHOPSANITY_OFF:
-        case RO_SHOPSANITY_ZERO_ITEMS:
             mOptions[RSK_SHOPSANITY].AddFlag(IMFLAG_SEPARATOR_BOTTOM);
+            mOptions[RSK_SHOPSANITY_COUNT].Hide();
             mOptions[RSK_SHOPSANITY_PRICES].Hide();
             mOptions[RSK_SHOPSANITY_PRICES_AFFORDABLE].Hide();
             mOptions[RSK_SHOPSANITY_PRICES_FIXED_PRICE].Hide();
