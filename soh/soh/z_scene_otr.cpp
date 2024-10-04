@@ -33,6 +33,7 @@
 #include "soh/resource/type/scenecommand/SetSoundSettings.h"
 #include "soh/resource/type/scenecommand/SetEchoSettings.h"
 #include "soh/resource/type/scenecommand/SetAlternateHeaders.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 extern Ship::IResource* OTRPlay_LoadFile(PlayState* play, const char* fileName);
 extern "C" s32 Object_Spawn(ObjectContext* objectCtx, s16 objectId);
@@ -519,6 +520,8 @@ extern "C" s32 OTRfunc_8009728C(PlayState* play, RoomContext* roomCtx, s32 roomN
         roomCtx->unk_30 ^= 1;
 
         SPDLOG_INFO("Room Init - curRoom.num: {0:#x}", roomCtx->curRoom.num);
+
+        GameInteractor_ExecuteOnRoomInit(play->sceneNum, roomCtx->curRoom.num);
 
         return 1;
     }

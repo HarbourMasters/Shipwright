@@ -202,6 +202,7 @@ public:
     DEFINE_HOOK(OnFlagSet, void(int16_t flagType, int16_t flag));
     DEFINE_HOOK(OnFlagUnset, void(int16_t flagType, int16_t flag));
     DEFINE_HOOK(OnSceneSpawnActors, void());
+    DEFINE_HOOK(OnRoomInit, void(int16_t sceneNum, int8_t roomNum));
     DEFINE_HOOK(OnPlayerUpdate, void());
     DEFINE_HOOK(OnOcarinaSongAction, void());
     DEFINE_HOOK(OnShopSlotChange, void(uint8_t cursorIndex, int16_t price));

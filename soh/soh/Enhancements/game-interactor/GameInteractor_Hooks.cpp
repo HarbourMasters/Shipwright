@@ -50,6 +50,10 @@ void GameInteractor_ExecuteOnSceneSpawnActors() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSceneSpawnActors>();
 }
 
+void GameInteractor_ExecuteOnRoomInit(int16_t sceneId, int8_t roomNum) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnRoomInit>(sceneId, roomNum);
+}
+
 void GameInteractor_ExecuteOnPlayerUpdate() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerUpdate>();
 }
