@@ -92,7 +92,23 @@ std::vector<RandomizerCheck> Rando::StaticData::GetOverworldLocations() {
             location.GetRandomizerCheck() != RC_UNKNOWN_CHECK &&
             location.GetRandomizerCheck() != RC_TRIFORCE_COMPLETED && //not really an overworld check
             location.GetRCType() != RCTYPE_FISH && //temp fix while locations are properly sorted out
-            location.GetRCType() != RCTYPE_CHEST_GAME //this is supposed to be excluded
+            location.GetRCType() != RCTYPE_CHEST_GAME && //this is supposed to be excluded
+            location.GetRCType() != RCTYPE_STATIC_HINT && 
+            location.GetRCType() != RCTYPE_GOSSIP_STONE  //don't put items on hints
+        ) {
+            overworldLocations.push_back(location.GetRandomizerCheck());
+        }
+    }
+    return overworldLocations;
+}
+
+std::vector<RandomizerCheck> Rando::StaticData::GetDungeonLocations() {
+    std::vector<RandomizerCheck> overworldLocations = {};
+    for (Location& location : locationTable) {
+        if (
+            location.IsDungeon() &&
+            location.GetRCType() != RCTYPE_STATIC_HINT && 
+            location.GetRCType() != RCTYPE_GOSSIP_STONE  //don't put items on hints
         ) {
             overworldLocations.push_back(location.GetRandomizerCheck());
         }

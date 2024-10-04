@@ -34,7 +34,5 @@ extern uint16_t GetRandomPrice(Rando::Location* loc, PriceSettingsStruct priceSe
 extern uint16_t GetCheapBalancedPrice();
 extern int GetShopsanityReplaceAmount();
 extern Text GetIceTrapName(uint8_t id);
-extern int GetShopIndex(RandomizerCheck loc);
-extern int TransformShopIndex(int index);
 
 

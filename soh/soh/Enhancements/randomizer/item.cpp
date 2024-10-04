@@ -81,7 +81,8 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
     if (giEntry != nullptr) {
         return giEntry;
     }
-    auto logic = Rando::Context::GetInstance()->GetLogic();
+    std::shared_ptr<Rando::Context> ctx = Rando::Context::GetInstance();
+    auto logic = ctx->GetLogic();
     RandomizerGet actual = RG_NONE;
     const bool tycoonWallet = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_INCLUDE_TYCOON_WALLET);
     const u8 infiniteUpgrades = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_INFINITE_UPGRADES);
@@ -89,7 +90,7 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
         case RG_PROGRESSIVE_STICK_UPGRADE:
             switch (logic->CurrentUpgrade(UPG_STICKS)) {
                 case 0:
-                    if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_DEKU_STICK_BAG)) {
+                    if (ctx->GetOption(RSK_SHUFFLE_DEKU_STICK_BAG)) {
                         actual = RG_DEKU_STICK_BAG;
                         break;
                     }
@@ -118,7 +119,7 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
         case RG_PROGRESSIVE_NUT_UPGRADE:
             switch (logic->CurrentUpgrade(UPG_NUTS)) {
                 case 0:
-                    if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_DEKU_NUT_BAG)) {
+                    if (ctx->GetOption(RSK_SHUFFLE_DEKU_NUT_BAG)) {
                         actual = RG_DEKU_NUT_BAG;
                         break;
                     }

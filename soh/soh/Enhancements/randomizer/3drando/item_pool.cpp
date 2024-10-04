@@ -1172,9 +1172,15 @@ void GenerateItemPool() {
   }
 
   //Shopsanity
-  if (ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_OFF) || ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_ZERO_ITEMS)) {
+  if (
+    ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_OFF) ||
+    (
+      ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_SPECIFIC_COUNT) &&
+      ctx->GetOption(RSK_SHOPSANITY_COUNT).Is(RO_SHOPSANITY_COUNT_ZERO_ITEMS)
+    )
+  ) {
     AddItemsToPool(ItemPool, normalRupees);
-  } else { //Shopsanity 1-4, random
+  } else {
     AddItemsToPool(ItemPool, shopsanityRupees); //Shopsanity gets extra large rupees
   }
 

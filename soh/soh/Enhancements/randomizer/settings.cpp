@@ -703,6 +703,7 @@ void Settings::CreateOptions() {
     }, false, WidgetContainerType::COLUMN);
     mOptionGroups[RSG_SHUFFLE_NPCS_IMGUI] = OptionGroup::SubGroup("Shuffle NPCs & Merchants", {
         &mOptions[RSK_SHOPSANITY],
+        &mOptions[RSK_SHOPSANITY_COUNT],
         &mOptions[RSK_SHOPSANITY_PRICES],
         &mOptions[RSK_SHOPSANITY_PRICES_FIXED_PRICE],
         &mOptions[RSK_SHOPSANITY_PRICES_RANGE_1],
@@ -935,6 +936,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_LINKS_POCKET],
         &mOptions[RSK_SHUFFLE_SONGS],
         &mOptions[RSK_SHOPSANITY],
+        &mOptions[RSK_SHOPSANITY_COUNT],
         &mOptions[RSK_SHOPSANITY_PRICES],
         &mOptions[RSK_SHOPSANITY_PRICES_FIXED_PRICE],
         &mOptions[RSK_SHOPSANITY_PRICES_RANGE_1],
@@ -1171,6 +1173,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_SHUFFLE_DUNGEON_REWARDS],
         &mOptions[RSK_SHUFFLE_SONGS],
         &mOptions[RSK_SHOPSANITY],
+        &mOptions[RSK_SHOPSANITY_COUNT],
         &mOptions[RSK_SHOPSANITY_PRICES],
         &mOptions[RSK_SHOPSANITY_PRICES_AFFORDABLE],
         &mOptions[RSK_FISHSANITY],
@@ -1724,6 +1727,7 @@ void Settings::UpdateOptionProperties() {
         case RO_SHOPSANITY_OFF:
             mOptions[RSK_SHOPSANITY].AddFlag(IMFLAG_SEPARATOR_BOTTOM);
             mOptions[RSK_SHOPSANITY_COUNT].Hide();
+            mOptions[RSK_SHOPSANITY_COUNT].Hide();
             mOptions[RSK_SHOPSANITY_PRICES].Hide();
             mOptions[RSK_SHOPSANITY_PRICES_AFFORDABLE].Hide();
             mOptions[RSK_SHOPSANITY_PRICES_FIXED_PRICE].Hide();
@@ -1735,8 +1739,21 @@ void Settings::UpdateOptionProperties() {
             mOptions[RSK_SHOPSANITY_PRICES_GIANT_WALLET_WEIGHT].Hide();
             mOptions[RSK_SHOPSANITY_PRICES_TYCOON_WALLET_WEIGHT].Hide();
             break;
+        case RO_SHOPSANITY_SPECIFIC_COUNT:
+            mOptions[RSK_SHOPSANITY].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
+            mOptions[RSK_SHOPSANITY_COUNT].Unhide();
+            mOptions[RSK_SHOPSANITY_PRICES].Unhide();
+            mOptions[RSK_SHOPSANITY_PRICES_AFFORDABLE].Unhide();
+            break;
+        case RO_SHOPSANITY_SPECIFIC_COUNT:
+            mOptions[RSK_SHOPSANITY].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
+            mOptions[RSK_SHOPSANITY_COUNT].Unhide();
+            mOptions[RSK_SHOPSANITY_PRICES].Unhide();
+            mOptions[RSK_SHOPSANITY_PRICES_AFFORDABLE].Unhide();
+            break;
         default:
             mOptions[RSK_SHOPSANITY].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
+            mOptions[RSK_SHOPSANITY_COUNT].Hide();
             mOptions[RSK_SHOPSANITY_PRICES].Unhide();
             switch (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShopsanityPrices"), RO_PRICE_VANILLA)){
                 case RO_PRICE_FIXED:
@@ -2633,6 +2650,7 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
                 case RSK_CUCCO_COUNT:
                 case RSK_FISHSANITY_POND_COUNT:
                 case RSK_STARTING_SKULLTULA_TOKEN:
+                case RSK_SHOPSANITY_COUNT:
                     numericValueString = it.value();
                     mOptions[index].SetSelectedIndex(std::stoi(numericValueString));
                     break;
@@ -2656,16 +2674,8 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
                 case RSK_SHOPSANITY:
                     if (it.value() == "Off") {
                         mOptions[index].SetSelectedIndex(RO_SHOPSANITY_OFF);
-                    } else if (it.value() == "0 Items") {
-                        mOptions[index].SetSelectedIndex(RO_SHOPSANITY_ZERO_ITEMS);
-                    } else if (it.value() == "1 Item") {
-                        mOptions[index].SetSelectedIndex(RO_SHOPSANITY_ONE_ITEM);
-                    } else if (it.value() == "2 Items") {
-                        mOptions[index].SetSelectedIndex(RO_SHOPSANITY_TWO_ITEMS);
-                    } else if (it.value() == "3 Items") {
-                        mOptions[index].SetSelectedIndex(RO_SHOPSANITY_THREE_ITEMS);
-                    } else if (it.value() == "4 Items") {
-                        mOptions[index].SetSelectedIndex(RO_SHOPSANITY_FOUR_ITEMS);
+                    } else if (it.value() == "Specific Count") {
+                        mOptions[index].SetSelectedIndex(RO_SHOPSANITY_SPECIFIC_COUNT);
                     } else if (it.value() == "Random") {
                         mOptions[index].SetSelectedIndex(RO_SHOPSANITY_RANDOM);
                     }
