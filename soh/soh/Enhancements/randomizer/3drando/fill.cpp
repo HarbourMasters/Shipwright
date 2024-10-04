@@ -1236,14 +1236,6 @@ int Fill() {
             uint16_t shopsanityPrice = GetRandomPrice(Rando::StaticData::GetLocation(rc), shopsanityPrices);
             itemLoc->SetCustomPrice(shopsanityPrice);
           }
-          for (int j = num_to_replace; j < 8; j++) {
-            ItemAndPrice init;
-            init.Name = Text { "No Item", "Sin objeto", "Pas d'objet" };
-            init.Price = -1;
-            init.Repurchaseable = false;
-            int itemindex = indices[j];
-            NonShopItems[Rando::StaticData::GetShopLocations()[i * LOCATIONS_PER_SHOP + itemindex - 1]] = init; // Set price to be retrieved by the patch and textboxes
-          }
         }
         #undef LOCATIONS_PER_SHOP
       }

@@ -36,6 +36,69 @@ std::vector<std::string> MultiVecOpts(const std::vector<std::vector<std::string>
     return options;
 }
 
+void Settings::HandleShopesanityPriceUI(){
+    bool isTycoon = CVarGetInteger(CVAR_RANDOMIZER_SETTING("IncludeTycoonWallet"), RO_GENERIC_OFF);
+    mOptions[RSK_SHOPSANITY].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
+    mOptions[RSK_SHOPSANITY_PRICES].Unhide();
+    switch (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShopsanityPrices"), RO_PRICE_VANILLA)){
+        case RO_PRICE_FIXED:
+            mOptions[RSK_SHOPSANITY_PRICES_FIXED_PRICE].Unhide();
+            mOptions[RSK_SHOPSANITY_PRICES_RANGE_1].Hide();
+            mOptions[RSK_SHOPSANITY_PRICES_RANGE_2].Hide();
+            mOptions[RSK_SHOPSANITY_PRICES_NO_WALLET_WEIGHT].Hide();
+            mOptions[RSK_SHOPSANITY_PRICES_CHILD_WALLET_WEIGHT].Hide();
+            mOptions[RSK_SHOPSANITY_PRICES_ADULT_WALLET_WEIGHT].Hide();
+            mOptions[RSK_SHOPSANITY_PRICES_GIANT_WALLET_WEIGHT].Hide();
+            mOptions[RSK_SHOPSANITY_PRICES_TYCOON_WALLET_WEIGHT].Hide();
+            if (isTycoon ? mOptions[RSK_SHOPSANITY_PRICES_FIXED_PRICE].GetOptionCount() == 501 : mOptions[RSK_SHOPSANITY_PRICES_FIXED_PRICE].GetOptionCount() == 1000) {
+                mOptions[RSK_SHOPSANITY_PRICES_FIXED_PRICE].ChangeOptions(isTycoon ? NumOpts(0, 999) : NumOpts(0, 500));
+            }
+            mOptions[RSK_SHOPSANITY_PRICES_AFFORDABLE].Hide();
+            break;
+        case RO_PRICE_RANGE:
+            mOptions[RSK_SHOPSANITY_PRICES_FIXED_PRICE].Hide();
+            mOptions[RSK_SHOPSANITY_PRICES_RANGE_1].Unhide();
+            mOptions[RSK_SHOPSANITY_PRICES_RANGE_2].Unhide();
+            mOptions[RSK_SHOPSANITY_PRICES_NO_WALLET_WEIGHT].Hide();
+            mOptions[RSK_SHOPSANITY_PRICES_CHILD_WALLET_WEIGHT].Hide();
+            mOptions[RSK_SHOPSANITY_PRICES_ADULT_WALLET_WEIGHT].Hide();
+            mOptions[RSK_SHOPSANITY_PRICES_GIANT_WALLET_WEIGHT].Hide();
+            mOptions[RSK_SHOPSANITY_PRICES_TYCOON_WALLET_WEIGHT].Hide();
+            if (isTycoon ? mOptions[RSK_SHOPSANITY_PRICES_RANGE_1].GetOptionCount() == 101 : mOptions[RSK_SHOPSANITY_PRICES_RANGE_1].GetOptionCount() == 200) {
+                mOptions[RSK_SHOPSANITY_PRICES_RANGE_1].ChangeOptions(isTycoon ? NumOpts(0, 995, 5) : NumOpts(0, 500, 5));
+                mOptions[RSK_SHOPSANITY_PRICES_RANGE_2].ChangeOptions(isTycoon ? NumOpts(0, 995, 5) : NumOpts(0, 500, 5));
+            }
+            mOptions[RSK_SHOPSANITY_PRICES_AFFORDABLE].Unhide();
+            break;
+        case RO_PRICE_SET_BY_WALLET:
+            mOptions[RSK_SHOPSANITY_PRICES_FIXED_PRICE].Hide();
+            mOptions[RSK_SHOPSANITY_PRICES_RANGE_1].Hide();
+            mOptions[RSK_SHOPSANITY_PRICES_RANGE_2].Hide();
+            mOptions[RSK_SHOPSANITY_PRICES_NO_WALLET_WEIGHT].Unhide();
+            mOptions[RSK_SHOPSANITY_PRICES_CHILD_WALLET_WEIGHT].Unhide();
+            mOptions[RSK_SHOPSANITY_PRICES_ADULT_WALLET_WEIGHT].Unhide();
+            mOptions[RSK_SHOPSANITY_PRICES_GIANT_WALLET_WEIGHT].Unhide();
+            if (isTycoon){
+                mOptions[RSK_SHOPSANITY_PRICES_TYCOON_WALLET_WEIGHT].Unhide();
+            } else {
+                mOptions[RSK_SHOPSANITY_PRICES_TYCOON_WALLET_WEIGHT].Hide();
+            }
+            mOptions[RSK_SHOPSANITY_PRICES_AFFORDABLE].Unhide();
+            break;
+        default:
+            mOptions[RSK_SHOPSANITY_PRICES_FIXED_PRICE].Hide();
+            mOptions[RSK_SHOPSANITY_PRICES_RANGE_1].Hide();
+            mOptions[RSK_SHOPSANITY_PRICES_RANGE_2].Hide();
+            mOptions[RSK_SHOPSANITY_PRICES_NO_WALLET_WEIGHT].Hide();
+            mOptions[RSK_SHOPSANITY_PRICES_CHILD_WALLET_WEIGHT].Hide();
+            mOptions[RSK_SHOPSANITY_PRICES_ADULT_WALLET_WEIGHT].Hide();
+            mOptions[RSK_SHOPSANITY_PRICES_GIANT_WALLET_WEIGHT].Hide();
+            mOptions[RSK_SHOPSANITY_PRICES_TYCOON_WALLET_WEIGHT].Hide();
+            mOptions[RSK_SHOPSANITY_PRICES_AFFORDABLE].Unhide();
+            break;
+    }
+}
+
 Settings::Settings() : mExcludeLocationsOptionsAreas(RCAREA_INVALID) {
 }
 
@@ -1740,78 +1803,12 @@ void Settings::UpdateOptionProperties() {
             mOptions[RSK_SHOPSANITY_PRICES_TYCOON_WALLET_WEIGHT].Hide();
             break;
         case RO_SHOPSANITY_SPECIFIC_COUNT:
-            mOptions[RSK_SHOPSANITY].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
             mOptions[RSK_SHOPSANITY_COUNT].Unhide();
-            mOptions[RSK_SHOPSANITY_PRICES].Unhide();
-            mOptions[RSK_SHOPSANITY_PRICES_AFFORDABLE].Unhide();
+            HandleShopesanityPriceUI();
             break;
-        case RO_SHOPSANITY_SPECIFIC_COUNT:
-            mOptions[RSK_SHOPSANITY].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
-            mOptions[RSK_SHOPSANITY_COUNT].Unhide();
-            mOptions[RSK_SHOPSANITY_PRICES].Unhide();
-            mOptions[RSK_SHOPSANITY_PRICES_AFFORDABLE].Unhide();
-            break;
-        default:
-            mOptions[RSK_SHOPSANITY].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
+        case RO_SHOPSANITY_RANDOM:
             mOptions[RSK_SHOPSANITY_COUNT].Hide();
-            mOptions[RSK_SHOPSANITY_PRICES].Unhide();
-            switch (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShopsanityPrices"), RO_PRICE_VANILLA)){
-                case RO_PRICE_FIXED:
-                    mOptions[RSK_SHOPSANITY_PRICES_FIXED_PRICE].Unhide();
-                    mOptions[RSK_SHOPSANITY_PRICES_RANGE_1].Hide();
-                    mOptions[RSK_SHOPSANITY_PRICES_RANGE_2].Hide();
-                    mOptions[RSK_SHOPSANITY_PRICES_NO_WALLET_WEIGHT].Hide();
-                    mOptions[RSK_SHOPSANITY_PRICES_CHILD_WALLET_WEIGHT].Hide();
-                    mOptions[RSK_SHOPSANITY_PRICES_ADULT_WALLET_WEIGHT].Hide();
-                    mOptions[RSK_SHOPSANITY_PRICES_GIANT_WALLET_WEIGHT].Hide();
-                    mOptions[RSK_SHOPSANITY_PRICES_TYCOON_WALLET_WEIGHT].Hide();
-                    if (isTycoon ? mOptions[RSK_SHOPSANITY_PRICES_FIXED_PRICE].GetOptionCount() == 501 : mOptions[RSK_SHOPSANITY_PRICES_FIXED_PRICE].GetOptionCount() == 1000) {
-                        mOptions[RSK_SHOPSANITY_PRICES_FIXED_PRICE].ChangeOptions(isTycoon ? NumOpts(0, 999) : NumOpts(0, 500));
-                    }
-                    mOptions[RSK_SHOPSANITY_PRICES_AFFORDABLE].Hide();
-                    break;
-                case RO_PRICE_RANGE:
-                    mOptions[RSK_SHOPSANITY_PRICES_FIXED_PRICE].Hide();
-                    mOptions[RSK_SHOPSANITY_PRICES_RANGE_1].Unhide();
-                    mOptions[RSK_SHOPSANITY_PRICES_RANGE_2].Unhide();
-                    mOptions[RSK_SHOPSANITY_PRICES_NO_WALLET_WEIGHT].Hide();
-                    mOptions[RSK_SHOPSANITY_PRICES_CHILD_WALLET_WEIGHT].Hide();
-                    mOptions[RSK_SHOPSANITY_PRICES_ADULT_WALLET_WEIGHT].Hide();
-                    mOptions[RSK_SHOPSANITY_PRICES_GIANT_WALLET_WEIGHT].Hide();
-                    mOptions[RSK_SHOPSANITY_PRICES_TYCOON_WALLET_WEIGHT].Hide();
-                    if (isTycoon ? mOptions[RSK_SHOPSANITY_PRICES_RANGE_1].GetOptionCount() == 101 : mOptions[RSK_SHOPSANITY_PRICES_RANGE_1].GetOptionCount() == 200) {
-                        mOptions[RSK_SHOPSANITY_PRICES_RANGE_1].ChangeOptions(isTycoon ? NumOpts(0, 995, 5) : NumOpts(0, 500, 5));
-                        mOptions[RSK_SHOPSANITY_PRICES_RANGE_2].ChangeOptions(isTycoon ? NumOpts(0, 995, 5) : NumOpts(0, 500, 5));
-                    }
-                    mOptions[RSK_SHOPSANITY_PRICES_AFFORDABLE].Unhide();
-                    break;
-                case RO_PRICE_SET_BY_WALLET:
-                    mOptions[RSK_SHOPSANITY_PRICES_FIXED_PRICE].Hide();
-                    mOptions[RSK_SHOPSANITY_PRICES_RANGE_1].Hide();
-                    mOptions[RSK_SHOPSANITY_PRICES_RANGE_2].Hide();
-                    mOptions[RSK_SHOPSANITY_PRICES_NO_WALLET_WEIGHT].Unhide();
-                    mOptions[RSK_SHOPSANITY_PRICES_CHILD_WALLET_WEIGHT].Unhide();
-                    mOptions[RSK_SHOPSANITY_PRICES_ADULT_WALLET_WEIGHT].Unhide();
-                    mOptions[RSK_SHOPSANITY_PRICES_GIANT_WALLET_WEIGHT].Unhide();
-                    if (isTycoon){
-                        mOptions[RSK_SHOPSANITY_PRICES_TYCOON_WALLET_WEIGHT].Unhide();
-                    } else {
-                        mOptions[RSK_SHOPSANITY_PRICES_TYCOON_WALLET_WEIGHT].Hide();
-                    }
-                    mOptions[RSK_SHOPSANITY_PRICES_AFFORDABLE].Unhide();
-                    break;
-                default:
-                    mOptions[RSK_SHOPSANITY_PRICES_FIXED_PRICE].Hide();
-                    mOptions[RSK_SHOPSANITY_PRICES_RANGE_1].Hide();
-                    mOptions[RSK_SHOPSANITY_PRICES_RANGE_2].Hide();
-                    mOptions[RSK_SHOPSANITY_PRICES_NO_WALLET_WEIGHT].Hide();
-                    mOptions[RSK_SHOPSANITY_PRICES_CHILD_WALLET_WEIGHT].Hide();
-                    mOptions[RSK_SHOPSANITY_PRICES_ADULT_WALLET_WEIGHT].Hide();
-                    mOptions[RSK_SHOPSANITY_PRICES_GIANT_WALLET_WEIGHT].Hide();
-                    mOptions[RSK_SHOPSANITY_PRICES_TYCOON_WALLET_WEIGHT].Hide();
-                    mOptions[RSK_SHOPSANITY_PRICES_AFFORDABLE].Unhide();
-                    break;
-            }
+            HandleShopesanityPriceUI();
             break;
     }
     switch (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleScrubs"), RO_SCRUBS_OFF)) {
