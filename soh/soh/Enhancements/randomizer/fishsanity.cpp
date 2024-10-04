@@ -322,22 +322,17 @@ namespace Rando {
 
     FishsanityCheckType Fishsanity::GetCheckType(RandomizerCheck rc) {
         // Is this a pond fish?
-        if (std::binary_search(Rando::StaticData::GetPondFishLocations().begin(), Rando::StaticData::GetPondFishLocations().end(), rc)) {
+        auto loc = Rando::StaticData::GetLocation(rc);
+        switch (loc->GetScene()) {
+        case SCENE_FISHING_POND:
             return FSC_POND;
+        case SCENE_ZORAS_DOMAIN:
+            return FSC_ZD;
+        case SCENE_GROTTOS:
+            return FSC_GROTTO;
+        default:
+            return FSC_NONE;
         }
-
-        // Is this an overworld fish?
-        if (std::binary_search(Rando::StaticData::GetOverworldFishLocations().begin(), Rando::StaticData::GetOverworldFishLocations().end(), rc)) {
-            if (rc < RC_ZD_FISH_1) {
-                return FSC_GROTTO;
-            }
-            else {
-                return FSC_ZD;
-            }
-        }
-        
-        // Must not be a fishsanity check
-        return FSC_NONE;
     }
 
     bool Fishsanity::IsFish(FishIdentity* fish) {

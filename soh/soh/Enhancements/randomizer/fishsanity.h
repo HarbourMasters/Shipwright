@@ -6,7 +6,7 @@
 #include "randomizerTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-typedef struct FishsanityPondOptions {
+typedef struct {
     u8 mode;
     u8 numFish;
     bool ageSplit;
