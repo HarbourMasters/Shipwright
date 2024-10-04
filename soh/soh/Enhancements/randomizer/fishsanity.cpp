@@ -75,19 +75,22 @@ namespace Rando {
                                              FishsanityOptionsSource optionsSource) {
         auto [mode, numFish, ageSplit] = GetOptions(optionsSource);
 
-        if (loc->GetRCType() != RCTYPE_FISH || mode == RO_FISHSANITY_OFF)
+        if (loc->GetRCType() != RCTYPE_FISH || mode == RO_FISHSANITY_OFF) {
             return false;
+        }
         RandomizerCheck rc = loc->GetRandomizerCheck();
         // Are pond fish enabled, and is this a pond fish location?
         if (mode != RO_FISHSANITY_OVERWORLD && numFish > 0 && loc->GetScene() == SCENE_FISHING_POND &&
             loc->GetActorID() == ACTOR_FISHING) {
             // Is this a child fish location? If so, is it within the defined number of pond fish checks?
-            if (rc >= RC_LH_CHILD_FISH_1 && rc <= RC_LH_CHILD_LOACH_2 && numFish > (loc->GetActorParams() - 100))
+            if (rc >= RC_LH_CHILD_FISH_1 && rc <= RC_LH_CHILD_LOACH_2 && numFish > (loc->GetActorParams() - 100)) {
                 return true;
+            }
             // Are adult fish available, and is this an adult fish location? If so, is it within the defined number of pond
             // fish checks?
-            if (ageSplit && rc >= RC_LH_ADULT_FISH_1 && rc <= RC_LH_ADULT_LOACH && numFish > (loc->GetActorParams() - 100))
+            if (ageSplit && rc >= RC_LH_ADULT_FISH_1 && rc <= RC_LH_ADULT_LOACH && numFish > (loc->GetActorParams() - 100)) {
                 return true;
+            }
         }
         // Are overworld fish enabled, and is this an overworld fish location?
         if (mode != RO_FISHSANITY_POND && (loc->GetScene() == SCENE_GROTTOS || loc->GetScene() == SCENE_ZORAS_DOMAIN)
@@ -238,7 +241,7 @@ namespace Rando {
     bool Fishsanity::GetPondFishShuffled() {
         u8 fsMode = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY);
         return OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY_POND_COUNT) > 0 &&
-           (fsMode == RO_FISHSANITY_POND || fsMode == RO_FISHSANITY_BOTH);
+            (fsMode == RO_FISHSANITY_POND || fsMode == RO_FISHSANITY_BOTH);
     }
 
     bool Fishsanity::GetOverworldFishShuffled() {
@@ -253,8 +256,9 @@ namespace Rando {
     bool Fishsanity::GetPondCleared() {
         auto [mode, pondCount, ageSplit] = GetOptions();
         // no fish shuffled, so pond is always cleared :thumbsup:
-        if (pondCount == 0)
+        if (pondCount == 0) {
             return true;
+        }
 
         bool adultPond = LINK_IS_ADULT && ageSplit;
         // if we've collected the final shuffled fish, pond is complete
@@ -268,23 +272,26 @@ namespace Rando {
         for (auto tableEntry : Rando::StaticData::randomizerFishingPondFish) {
             RandomizerCheck rc = adultPond ? tableEntry.second : tableEntry.first;
             // if we haven't collected this fish, then we're not done yet! get back in there, soldier
-            if (rc != RC_UNKNOWN_CHECK && !Flags_GetRandomizerInf(OTRGlobals::Instance->gRandomizer->GetRandomizerInfFromCheck(rc)))
+            if (rc != RC_UNKNOWN_CHECK && !Flags_GetRandomizerInf(OTRGlobals::Instance->gRandomizer->GetRandomizerInfFromCheck(rc))) {
                 return false;
+            }
         }
         return true;
     }
 
     bool Fishsanity::GetDomainCleared() {
         for (RandomizerInf i = RAND_INF_ZD_FISH_1; i <= RAND_INF_ZD_FISH_5; i = (RandomizerInf)(i + 1)) {
-            if (!Flags_GetRandomizerInf(i))
+            if (!Flags_GetRandomizerInf(i)) {
                 return false;
+            }
         }
         return true;
     }
 
     void Fishsanity::InitializeHelpers() {
-        if (fishsanityHelpersInit)
+        if (fishsanityHelpersInit) {
             return;
+        }
 
         for (auto pair : Rando::StaticData::randomizerFishingPondFish) {
             pondFishAgeMap[pair.first] = LINK_AGE_CHILD;
@@ -315,15 +322,18 @@ namespace Rando {
 
     FishsanityCheckType Fishsanity::GetCheckType(RandomizerCheck rc) {
         // Is this a pond fish?
-        if (std::binary_search(Rando::StaticData::GetPondFishLocations().begin(), Rando::StaticData::GetPondFishLocations().end(), rc))
+        if (std::binary_search(Rando::StaticData::GetPondFishLocations().begin(), Rando::StaticData::GetPondFishLocations().end(), rc)) {
             return FSC_POND;
+        }
 
         // Is this an overworld fish?
         if (std::binary_search(Rando::StaticData::GetOverworldFishLocations().begin(), Rando::StaticData::GetOverworldFishLocations().end(), rc)) {
-            if (rc < RC_ZD_FISH_1)
+            if (rc < RC_ZD_FISH_1) {
                 return FSC_GROTTO;
-            else
+            }
+            else {
                 return FSC_ZD;
+            }
         }
         
         // Must not be a fishsanity check
@@ -331,8 +341,9 @@ namespace Rando {
     }
 
     bool Fishsanity::IsFish(FishIdentity* fish) {
-        if (fish->randomizerCheck == RC_UNKNOWN_CHECK || fish->randomizerInf == RAND_INF_MAX)
+        if (fish->randomizerCheck == RC_UNKNOWN_CHECK || fish->randomizerInf == RAND_INF_MAX) {
             return false;
+        }
 
         return GetCheckType(fish->randomizerCheck) != FSC_NONE;
     }
@@ -390,6 +401,9 @@ namespace Rando {
             return;
         }
         RandomizerCheck rc = OTRGlobals::Instance->gRandomizer->GetCheckFromRandomizerInf((RandomizerInf)flag);
+        if (Rando::StaticData::GetLocation(rc)->GetRCType() != RCTYPE_FISH) {
+            return;
+        }
         FishsanityCheckType fsType = Rando::Fishsanity::GetCheckType(rc);
         if (fsType == FSC_NONE) {
             return;

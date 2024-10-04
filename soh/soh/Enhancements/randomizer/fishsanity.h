@@ -12,17 +12,17 @@ typedef struct FishsanityPondOptions {
     bool ageSplit;
 } FishsanityPondOptions;
 
-typedef enum FishsanityOptionsSource {
+typedef enum {
     FSO_SOURCE_RANDO,
     FSO_SOURCE_CVARS
-};
+} FishsanityOptionsSource;
 
-typedef enum FishsanityCheckType {
+typedef enum {
     FSC_NONE,
     FSC_POND,
     FSC_GROTTO,
     FSC_ZD,
-};
+} FishsanityCheckType;
 
 #ifdef __cplusplus
 namespace Rando {
