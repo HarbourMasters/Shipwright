@@ -12,7 +12,7 @@
 typedef bool (*ConditionFn)();
 
 // I hate this but every alternative I can think of right now is worse
-extern Rando::Context* randoCtx;
+extern Rando::Context* ctx;
 extern std::shared_ptr<Rando::Logic> logic;
 
 class EventAccess {
@@ -53,7 +53,6 @@ public:
       time = true;
       age = true;
 
-      logic->UpdateHelpers();
       return ConditionsMet();
     }
 
@@ -221,14 +220,12 @@ public:
       logic->IsChild = Child();
       logic->IsAdult = Adult();
 
-      //update helpers and check condition as well as having at least child or adult access
-      logic->UpdateHelpers();
+      //heck condition as well as having at least child or adult access
       bool hereVal = condition() && (logic->IsAdult || logic->IsChild);
 
       //set back age variables
       logic->IsChild = pastChild;
       logic->IsAdult = pastAdult;
-      logic->UpdateHelpers();
 
       return hereVal;
     }

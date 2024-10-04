@@ -390,7 +390,13 @@ ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
         case ITEM_WALLET_ADULT:
         case ITEM_WALLET_GIANT:
             result.currentCapacity = IS_RANDO && !Flags_GetRandomizerInf(RAND_INF_HAS_WALLET) ? 0 : CUR_CAPACITY(UPG_WALLET);
-            result.maxCapacity = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHOPSANITY) > RO_SHOPSANITY_ZERO_ITEMS ? 999 : 500;
+            result.maxCapacity = !IS_RANDO || (
+                OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHOPSANITY) == RO_SHOPSANITY_OFF ||
+                (
+                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHOPSANITY) == RO_SHOPSANITY_SPECIFIC_COUNT &&
+                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHOPSANITY_COUNT) == RO_SHOPSANITY_COUNT_ZERO_ITEMS
+                )
+            ) ? 500 : 999;
             result.currentAmmo = gSaveContext.rupees;
             break;
         case ITEM_BOMBCHU:

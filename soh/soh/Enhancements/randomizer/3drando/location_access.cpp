@@ -25,7 +25,6 @@ bool LocationAccess::CheckConditionAtAgeTime(bool& age, bool& time) const {
   time = true;
   age = true;
 
-  logic->UpdateHelpers();
   return GetConditionsMet();
 }
 
@@ -47,20 +46,20 @@ bool LocationAccess::ConditionsMet() const {
 bool LocationAccess::CanBuy() const {
   auto ctx = Rando::Context::GetInstance();
   //Not a shop or scrub location, don't need to check if buyable
-  if (!(Rando::StaticData::GetLocation(location)->IsCategory(Category::cShop)) && !(Rando::StaticData::GetLocation(location)->IsCategory(Category::cDekuScrub))) {
+  if (Rando::StaticData::GetLocation(location)->GetRCType() != RCTYPE_SHOP && Rando::StaticData::GetLocation(location)->GetRCType() != RCTYPE_SCRUB) {
     return true;
   }
 
   //Check if wallet is large enough to buy item
   bool SufficientWallet = true;
   if (ctx->GetItemLocation(location)->GetPrice() > 500) {
-    SufficientWallet = logic->ProgressiveWallet >= 4;
+    SufficientWallet = logic->HasItem(RG_TYCOON_WALLET);
   } else if (ctx->GetItemLocation(location)->GetPrice() > 200) {
-    SufficientWallet = logic->ProgressiveWallet >= 3;
+    SufficientWallet = logic->HasItem(RG_GIANT_WALLET);
   } else if (ctx->GetItemLocation(location)->GetPrice() > 99) {
-    SufficientWallet = logic->ProgressiveWallet >= 2;
+    SufficientWallet = logic->HasItem(RG_ADULT_WALLET);
   } else if (ctx->GetItemLocation(location)->GetPrice() > 0) {
-    SufficientWallet = logic->ProgressiveWallet >= 1;
+    SufficientWallet = logic->HasItem(RG_CHILD_WALLET);
   }
 
   bool OtherCondition = true;
@@ -68,7 +67,7 @@ bool LocationAccess::CanBuy() const {
   //Need bottle to buy bottle items, only logically relevant bottle items included here
   if (placed == RG_BUY_BLUE_FIRE || placed == RG_BUY_BOTTLE_BUG || placed == RG_BUY_FISH ||
       placed == RG_BUY_FAIRYS_SPIRIT) {
-      OtherCondition = logic->HasBottle;
+      OtherCondition = logic->HasBottle();
   }
 
   return SufficientWallet && OtherCondition;
@@ -239,17 +238,17 @@ bool HasAccessTo(const RandomizerRegion region) {
   return areaTable[region].HasAccess();
 }
 
-Rando::Context* randoCtx;
+Rando::Context* ctx;
 std::shared_ptr<Rando::Logic> logic;
 
 void RegionTable_Init() {
   using namespace Rando;
-  randoCtx = Context::GetInstance().get();
-  logic = randoCtx->GetLogic(); //RANDOTODO do not hardcode, instead allow accepting a Logic class somehow
+  ctx = Context::GetInstance().get();
+  logic = ctx->GetLogic(); //RANDOTODO do not hardcode, instead allow accepting a Logic class somehow
   grottoEvents = {
       EventAccess(&logic->GossipStoneFairy, { [] { return logic->CanSummonGossipFairy(); } }),
       EventAccess(&logic->ButterflyFairy, { [] { return logic->ButterflyFairy || (logic->CanUse(RG_STICKS)); } }),
-      EventAccess(&logic->BugShrub, { [] { return logic->CanCutShrubs; } }),
+      EventAccess(&logic->BugShrub, { [] { return logic->CanCutShrubs(); } }),
       EventAccess(&logic->LoneFish, { [] { return true; } }),
   };
   //Clear the array from any previous playthrough attempts. This is important so that
@@ -260,7 +259,7 @@ void RegionTable_Init() {
   areaTable[RR_ROOT] = Region("Root", "", RA_LINKS_POCKET, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LOCATION(RC_LINKS_POCKET,       true),
-                  LOCATION(RC_TRIFORCE_COMPLETED, logic->CanCompleteTriforce),
+                  LOCATION(RC_TRIFORCE_COMPLETED, logic->GetSaveContext()->triforcePiecesCollected >= ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_REQUIRED).Value<uint8_t>();),
                   LOCATION(RC_SARIA_SONG_HINT,    logic->CanUse(RG_SARIAS_SONG)),
                 }, {
                   //Exits
@@ -272,11 +271,11 @@ void RegionTable_Init() {
                   Entrance(RR_CHILD_SPAWN,             {[]{return logic->IsChild;}}),
                   Entrance(RR_ADULT_SPAWN,             {[]{return logic->IsAdult;}}),
                   Entrance(RR_MINUET_OF_FOREST_WARP,   {[]{return logic->CanUse(RG_MINUET_OF_FOREST);}}),
-                  Entrance(RR_BOLERO_OF_FIRE_WARP,     {[]{return logic->CanUse(RG_BOLERO_OF_FIRE)     && logic->CanLeaveForest;}}),
-                  Entrance(RR_SERENADE_OF_WATER_WARP,  {[]{return logic->CanUse(RG_SERENADE_OF_WATER)  && logic->CanLeaveForest;}}),
-                  Entrance(RR_NOCTURNE_OF_SHADOW_WARP, {[]{return logic->CanUse(RG_NOCTURNE_OF_SHADOW) && logic->CanLeaveForest;}}),
-                  Entrance(RR_REQUIEM_OF_SPIRIT_WARP,  {[]{return logic->CanUse(RG_REQUIEM_OF_SPIRIT)  && logic->CanLeaveForest;}}),
-                  Entrance(RR_PRELUDE_OF_LIGHT_WARP,   {[]{return logic->CanUse(RG_PRELUDE_OF_LIGHT)   && logic->CanLeaveForest;}}),
+                  Entrance(RR_BOLERO_OF_FIRE_WARP,     {[]{return logic->CanUse(RG_BOLERO_OF_FIRE)     && logic->CanLeaveForest();}}),
+                  Entrance(RR_SERENADE_OF_WATER_WARP,  {[]{return logic->CanUse(RG_SERENADE_OF_WATER)  && logic->CanLeaveForest();}}),
+                  Entrance(RR_NOCTURNE_OF_SHADOW_WARP, {[]{return logic->CanUse(RG_NOCTURNE_OF_SHADOW) && logic->CanLeaveForest();}}),
+                  Entrance(RR_REQUIEM_OF_SPIRIT_WARP,  {[]{return logic->CanUse(RG_REQUIEM_OF_SPIRIT)  && logic->CanLeaveForest();}}),
+                  Entrance(RR_PRELUDE_OF_LIGHT_WARP,   {[]{return logic->CanUse(RG_PRELUDE_OF_LIGHT)   && logic->CanLeaveForest();}}),
   });
 
   areaTable[RR_CHILD_SPAWN] = Region("Child Spawn", "", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
@@ -394,7 +393,9 @@ void ReplaceAllInString(std::string& s, std::string const& toReplace, std::strin
 
 std::string CleanCheckConditionString(std::string condition) {
     ReplaceAllInString(condition, "logic->", "");
-    ReplaceAllInString(condition, "randoCtx->", "");
+    ReplaceAllInString(condition, "ctx->", "");
+    ReplaceAllInString(condition, ".Value<uint8_t>()", "");
+    ReplaceAllInString(condition, "GetSaveContext()->", "");
     return condition;
 }
 
