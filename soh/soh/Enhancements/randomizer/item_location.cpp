@@ -74,8 +74,6 @@ void ItemLocation::PlaceVanillaItem() {
 
 void ItemLocation::ApplyPlacedItemEffect() const {
     StaticData::RetrieveItem(placedItem).ApplyEffect();
-    auto ctx = Context::GetInstance();
-    ctx->GetLogic()->UpdateHelpers();
 }
 
 uint16_t ItemLocation::GetPrice() const {
@@ -174,13 +172,13 @@ void ItemLocation::AddExcludeOption() {
     // RANDOTODO: this without string compares and loops
     bool alreadyAdded = false;
     const Location* loc = StaticData::GetLocation(rc);
-    for (const Option* location : Context::GetInstance()->GetSettings()->GetExcludeOptionsForGroup(loc->GetCollectionCheckGroup())) {
+    for (const Option* location : Context::GetInstance()->GetSettings()->GetExcludeOptionsForArea(loc->GetArea())) {
         if (location->GetName() == excludedOption.GetName()) {
             alreadyAdded = true;
         }
     }
     if (!alreadyAdded) {
-        Context::GetInstance()->GetSettings()->GetExcludeOptionsForGroup(loc->GetCollectionCheckGroup()).push_back(&excludedOption);
+        Context::GetInstance()->GetSettings()->GetExcludeOptionsForArea(loc->GetArea()).push_back(&excludedOption);
     }
 }
 

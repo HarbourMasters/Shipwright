@@ -613,7 +613,7 @@ static void PlaceVanillaCowMilk() {
 
 static void PlaceVanillaOverworldFish() {
   auto ctx = Rando::Context::GetInstance();
-  for (auto rc : Rando::StaticData::overworldFishLocations) {
+  for (auto rc : Rando::StaticData::GetOverworldFishLocations()) {
     ctx->PlaceItemInLocation(rc, RG_FISH, false, true);
   }
 }
@@ -830,7 +830,7 @@ void GenerateItemPool() {
     }
     // 9 grotto fish, 5 zora's domain fish
     if (fsMode.Is(RO_FISHSANITY_OVERWORLD) || fsMode.Is(RO_FISHSANITY_BOTH)) {
-      for (uint8_t i = 0; i < Rando::StaticData::overworldFishLocations.size(); i++)
+      for (uint8_t i = 0; i < Rando::StaticData::GetOverworldFishLocations().size(); i++)
         AddItemToMainPool(GetJunkItem());
     } else {
       PlaceVanillaOverworldFish();
@@ -936,11 +936,11 @@ void GenerateItemPool() {
   };
 
   if (ctx->GetOption(RSK_SHUFFLE_TOKENS).Is(RO_TOKENSANITY_OFF)) {
-    for (RandomizerCheck loc : ctx->GetLocations(ctx->allLocations, Category::cSkulltula)) {
+    for (RandomizerCheck loc : ctx->GetLocations(ctx->allLocations, RCTYPE_SKULL_TOKEN)) {
       ctx->PlaceItemInLocation(loc, RG_GOLD_SKULLTULA_TOKEN, false, true);
     }
   } else if (ctx->GetOption(RSK_SHUFFLE_TOKENS).Is(RO_TOKENSANITY_DUNGEONS)) {
-    for (RandomizerCheck loc : ctx->GetLocations(ctx->allLocations, Category::cSkulltula)) {
+    for (RandomizerCheck loc : ctx->GetLocations(ctx->allLocations, RCTYPE_SKULL_TOKEN)) {
       if (Rando::StaticData::GetLocation(loc)->IsOverworld()) {
           ctx->PlaceItemInLocation((RandomizerCheck)loc, RG_GOLD_SKULLTULA_TOKEN, false, true);
       } else {
@@ -948,7 +948,7 @@ void GenerateItemPool() {
       }
     }
   } else if (ctx->GetOption(RSK_SHUFFLE_TOKENS).Is(RO_TOKENSANITY_OVERWORLD)) {
-    for (RandomizerCheck loc : ctx->GetLocations(ctx->allLocations, Category::cSkulltula)) {
+    for (RandomizerCheck loc : ctx->GetLocations(ctx->allLocations, RCTYPE_SKULL_TOKEN)) {
       if (Rando::StaticData::GetLocation(loc)->IsDungeon()) {
           ctx->PlaceItemInLocation((RandomizerCheck)loc, RG_GOLD_SKULLTULA_TOKEN, false, true);
       } else {
@@ -1159,9 +1159,15 @@ void GenerateItemPool() {
   }
 
   //Shopsanity
-  if (ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_OFF) || ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_ZERO_ITEMS)) {
+  if (
+    ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_OFF) ||
+    (
+      ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_SPECIFIC_COUNT) &&
+      ctx->GetOption(RSK_SHOPSANITY_COUNT).Is(RO_SHOPSANITY_COUNT_ZERO_ITEMS)
+    )
+  ) {
     AddItemsToPool(ItemPool, normalRupees);
-  } else { //Shopsanity 1-4, random
+  } else {
     AddItemsToPool(ItemPool, shopsanityRupees); //Shopsanity gets extra large rupees
   }
 

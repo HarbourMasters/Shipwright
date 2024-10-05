@@ -122,6 +122,7 @@ namespace SohGui {
     std::shared_ptr<ActorViewerWindow> mActorViewerWindow;
     std::shared_ptr<ColViewerWindow> mColViewerWindow;
     std::shared_ptr<SaveEditorWindow> mSaveEditorWindow;
+    std::shared_ptr<HookDebuggerWindow> mHookDebuggerWindow;
     std::shared_ptr<DLViewerWindow> mDLViewerWindow;
     std::shared_ptr<ValueViewerWindow> mValueViewerWindow;
     std::shared_ptr<MessageViewer> mMessageViewerWindow;
@@ -179,6 +180,8 @@ namespace SohGui {
         gui->AddGuiWindow(mColViewerWindow);
         mSaveEditorWindow = std::make_shared<SaveEditorWindow>(CVAR_WINDOW("SaveEditor"), "Save Editor", ImVec2(520, 600));
         gui->AddGuiWindow(mSaveEditorWindow);
+        mHookDebuggerWindow = std::make_shared<HookDebuggerWindow>(CVAR_WINDOW("HookDebugger"), "Hook Debugger", ImVec2(1250, 850));
+        gui->AddGuiWindow(mHookDebuggerWindow);
         mDLViewerWindow = std::make_shared<DLViewerWindow>(CVAR_WINDOW("DLViewer"), "Display List Viewer", ImVec2(520, 600));
         gui->AddGuiWindow(mDLViewerWindow);
         mValueViewerWindow = std::make_shared<ValueViewerWindow>(CVAR_WINDOW("ValueViewer"), "Value Viewer", ImVec2(520, 600));
@@ -226,6 +229,7 @@ namespace SohGui {
         mValueViewerWindow = nullptr;
         mMessageViewerWindow = nullptr;
         mSaveEditorWindow = nullptr;
+        mHookDebuggerWindow = nullptr;
         mColViewerWindow = nullptr;
         mActorViewerWindow = nullptr;
         mCosmeticsEditorWindow = nullptr;

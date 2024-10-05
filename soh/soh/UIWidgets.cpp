@@ -170,7 +170,7 @@ namespace UIWidgets {
             ImGui::RenderCheckMark(window->DrawList, check_bb.Min + ImVec2(pad, pad), check_col, square_sz - pad * 2.0f);
         } else if ((!disabled && !*v && renderCrossWhenOff) || (disabled && disabledGraphic == CheckboxGraphics::Cross)) {
             const float pad = ImMax(1.0f, IM_FLOOR(square_sz / 6.0f));
-            RenderCross(window->DrawList, check_bb.Min + ImVec2(pad, pad), disabled ? cross_col : check_col, square_sz - pad * 2.0f);
+            //RenderCross(window->DrawList, check_bb.Min + ImVec2(pad, pad), disabled ? cross_col : check_col, square_sz - pad * 2.0f); // Caused confusion as to status
         }
 
         ImVec2 label_pos = ImVec2(check_bb.Max.x + style.ItemInnerSpacing.x, check_bb.Min.y + style.FramePadding.y);
