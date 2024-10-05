@@ -873,7 +873,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
             Flags_SetRandomizerInf(RAND_INF_MERCHANTS_GRANNYS_SHOP);
             granny->actor.parent = NULL;
             granny->actionFunc = EnDs_Talk;
-            *should = true;
+            *should = false;
             break;
         }
         case VB_GIVE_ITEM_FROM_THAWING_KING_ZORA: {
@@ -1093,15 +1093,15 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
             *should |= RAND_GET_OPTION(RSK_SHUFFLE_ADULT_TRADE) == RO_GENERIC_OFF;
             break;
         }
-        case VB_CHECK_RANDO_PRICE_OF_GRANNY: {
+        case VB_GRANNY_SAY_INSUFFICIENT_RUPEES: {
             if (EnDs_RandoCanGetGrannyItem()){
                 *should = gSaveContext.rupees < OTRGlobals::Instance->gRandoContext->GetItemLocation(RC_KAK_GRANNYS_SHOP)->GetPrice();
             }
             break;
         }
-        case VB_RANDO_GRANNY_TAKE_MONEY: {
+        case VB_GRANNY_TAKE_MONEY: {
             if (EnDs_RandoCanGetGrannyItem()){
-                    *should = true;
+                    *should = false;
                     Rupees_ChangeBy(OTRGlobals::Instance->gRandoContext->GetItemLocation(RC_KAK_GRANNYS_SHOP)->GetPrice() * -1);
                 }
             break;

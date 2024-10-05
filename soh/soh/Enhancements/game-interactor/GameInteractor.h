@@ -184,8 +184,8 @@ typedef enum {
     // Opt: *EnMk
     // Vanilla condition: Flags_GetItemGetInf(ITEMGETINF_30)
     VB_OFFER_BLUE_POTION,
-    VB_CHECK_RANDO_PRICE_OF_GRANNY,
-    VB_RANDO_GRANNY_TAKE_MONEY,
+    VB_GRANNY_SAY_INSUFFICIENT_RUPEES,
+    VB_GRANNY_TAKE_MONEY,
     // Vanilla condition: Inventory_HasEmptyBottle() == 0
     VB_NEED_BOTTLE_FOR_GRANNYS_ITEM,
     // Opt: *EnNiwLady

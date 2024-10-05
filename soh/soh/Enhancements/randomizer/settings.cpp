@@ -36,7 +36,7 @@ std::vector<std::string> MultiVecOpts(const std::vector<std::vector<std::string>
     return options;
 }
 
-void Settings::HandleShopesanityPriceUI(){
+void Settings::HandleShopsanityPriceUI(){
     bool isTycoon = CVarGetInteger(CVAR_RANDOMIZER_SETTING("IncludeTycoonWallet"), RO_GENERIC_OFF);
     mOptions[RSK_SHOPSANITY].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
     mOptions[RSK_SHOPSANITY_PRICES].Unhide();
@@ -1804,11 +1804,11 @@ void Settings::UpdateOptionProperties() {
             break;
         case RO_SHOPSANITY_SPECIFIC_COUNT:
             mOptions[RSK_SHOPSANITY_COUNT].Unhide();
-            HandleShopesanityPriceUI();
+            HandleShopsanityPriceUI();
             break;
         case RO_SHOPSANITY_RANDOM:
             mOptions[RSK_SHOPSANITY_COUNT].Hide();
-            HandleShopesanityPriceUI();
+            HandleShopsanityPriceUI();
             break;
     }
     switch (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleScrubs"), RO_SCRUBS_OFF)) {
