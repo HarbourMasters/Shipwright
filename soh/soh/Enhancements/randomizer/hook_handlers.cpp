@@ -35,6 +35,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_Obj_Comb/z_obj_comb.h"
 #include "src/overlays/actors/ovl_En_Bom_Bowl_Pit/z_en_bom_bowl_pit.h"
 #include "src/overlays/actors/ovl_En_Ge1/z_en_ge1.h"
+#include "src/overlays/actors/ovl_Fishing/z_fishing.h"
 #include "adult_trade_shuffle.h"
 #include "draw.h"
 
@@ -580,6 +581,22 @@ void Player_Action_8084E6D4_override(Player* player, PlayState* play) {
 void func_8083A434_override(PlayState* play, Player* player) {
     func_80835DAC(play, player, Player_Action_8084E6D4_override, 0);
     player->stateFlags1 |= PLAYER_STATE1_GETTING_ITEM | PLAYER_STATE1_IN_CUTSCENE;
+}
+
+
+bool ShouldGiveFishingPrize(f32 sFishOnHandLength){
+    // RANDOTODO: update the enhancement sliders to not allow
+    // values above rando fish weight values when rando'd
+    if(LINK_IS_CHILD) { 
+        int32_t weight = CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFishing"), 0) ? CVarGetInteger(CVAR_ENHANCEMENT("MinimumFishWeightChild"), 10) : 10;
+        f32 score = sqrt(((f32)weight - 0.5f) / 0.0036f);
+        return sFishOnHandLength >= score && (IS_RANDO ? !Flags_GetRandomizerInf(RAND_INF_CHILD_FISHING) : !(HIGH_SCORE(HS_FISHING) & HS_FISH_PRIZE_CHILD));
+    } else 
+    {
+        int32_t weight = CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFishing"), 0) ? CVarGetInteger(CVAR_ENHANCEMENT("MinimumFishWeightAdult"), 13) : 13;
+        f32 score = sqrt(((f32)weight - 0.5f) / 0.0036f);
+        return sFishOnHandLength >= score && (IS_RANDO ? !Flags_GetRandomizerInf(RAND_INF_ADULT_FISHING) : !(HIGH_SCORE(HS_FISHING) & HS_FISH_PRIZE_ADULT));
+    }
 }
 
 void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void* optionalArg) {
@@ -1160,6 +1177,52 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
             ) {
                 *should = false;
             }
+            break;
+        }
+        case VB_SHOULD_CHECK_FOR_FISHING_RECORD: {
+            f32 sFishOnHandLength = *static_cast<f32*>(optionalArg);
+            *should = *should || ShouldGiveFishingPrize(sFishOnHandLength);
+            break;
+        }
+        case VB_SHOULD_SET_FISHING_RECORD: {
+            VBFishingData* fishData = static_cast<VBFishingData*>(optionalArg);
+            *should = (s16)fishData->sFishingRecordLength < (s16)fishData->fishWeight;
+            if (!*should){
+                *fishData->sFishOnHandLength = 0.0f;
+            }
+            break;
+        }
+        case VB_SHOULD_GIVE_VANILLA_FISHING_PRIZE: {
+            VBFishingData* fishData = static_cast<VBFishingData*>(optionalArg);
+            *should = !IS_RANDO && ShouldGiveFishingPrize(fishData->fishWeight);
+            break;
+        }
+        case VB_GIVE_RANDO_FISHING_PRIZE: {
+            if (IS_RANDO){
+                VBFishingData* fishData = static_cast<VBFishingData*>(optionalArg);
+                if (*fishData->sFishOnHandIsLoach) {
+                    if (!Flags_GetRandomizerInf(RAND_INF_CAUGHT_LOACH) &&
+                        OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY) == RO_FISHSANITY_HYRULE_LOACH){
+                        Flags_SetRandomizerInf(RAND_INF_CAUGHT_LOACH);
+                        Message_StartTextbox(gPlayState, TEXT_FISHING_RELEASE_THIS_ONE, NULL);
+                        *should = true;
+                        fishData->actor->stateAndTimer = 20;
+                    }
+                } else {
+                    if (ShouldGiveFishingPrize(fishData->fishWeight)){
+                        if (LINK_IS_CHILD){
+                            Flags_SetRandomizerInf(RAND_INF_CHILD_FISHING);
+                            HIGH_SCORE(HS_FISHING) |= HS_FISH_PRIZE_CHILD;
+                        } else {
+                            Flags_SetRandomizerInf(RAND_INF_ADULT_FISHING);
+                            HIGH_SCORE(HS_FISHING) |= HS_FISH_PRIZE_ADULT;
+                        }
+                        *should = true;
+                        *fishData->sSinkingLureLocation = (u8)Rand_ZeroFloat(3.999f) + 1;
+                        fishData->actor->stateAndTimer = 0;
+                    }
+                }
+            } 
             break;
         }
         case VB_TRADE_TIMER_ODD_MUSHROOM:
