@@ -219,14 +219,58 @@ void RegionTable_Init_DodongosCavern() {
 
   areaTable[RR_DODONGOS_CAVERN_MQ_LOBBY] = Region("Dodongos Cavern MQ Lobby", "Dodongos Cavern", RA_DODONGOS_CAVERN, NO_DAY_NIGHT_CYCLE, {
                   //Events
+                  EventAccess(&logic->GossipStoneFairy, {[]{return (Here(RR_DODONGOS_CAVERN_MQ_LOBBY, []{return logic->CanBreakMudWalls();}) || logic->CanUse(RG_GORONS_BRACELET)) && logic->CallGossipFairy();}}),
+  }, {
+                  //Locations
+                  LOCATION(RC_DODONGOS_CAVERN_MQ_MAP_CHEST,                 logic->BlastOrSmash() || logic->CanUse(RG_GORONS_BRACELET)),
+                  LOCATION(RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_LOBBY_REAR,     logic->CanStunDeku()),
+                  LOCATION(RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_LOBBY_FRONT,    logic->CanStunDeku()),
+                  LOCATION(RC_DODONGOS_CAVERN_GOSSIP_STONE,                 Here(RR_DODONGOS_CAVERN_MQ_LOBBY, []{return logic->CanBreakMudWalls() || logic->CanUse(RG_GORONS_BRACELET);})),
+  }, {
+                  //Exits
+                  Entrance(RR_DODONGOS_CAVERN_MQ_MOUTH_SIDE_BRIDGE,     {[]{return Here(RR_DODONGOS_CAVERN_MQ_LOBBY, []{return logic->BlastOrSmash();});}}),
+                  Entrance(RR_DODONGOS_CAVERN_MQ_STAIRS_LOWER,          {[]{return Here(RR_DODONGOS_CAVERN_MQ_LOBBY, []{return logic->BlastOrSmash() || logic->CanUse(RG_GORONS_BRACELET);});}}),
+                  Entrance(RR_DODONGOS_CAVERN_MQ_LOWER_RIGHT_SIDE,      {[]{return Here(RR_DODONGOS_CAVERN_MQ_LOBBY, []{return logic->CanBreakMudWalls();}) ||
+                                                                                   Here(RR_DODONGOS_CAVERN_MQ_TORCH_PUZZLE_UPPER, []{return logic->HasItem(RG_GORONS_BRACELET) && logic->TakeDamage();});}}), //strength 1 and bunny speed works too
+                  Entrance(RR_DODONGOS_CAVERN_MQ_POES_ROOM,             {[]{return logic->IsAdult;}}),
+                  Entrance(RR_DODONGOS_CAVERN_MQ_BEHIND_MOUTH,          {[]{return Here(RR_DODONGOS_CAVERN_MQ_MOUTH_SIDE_BRIDGE, []{return logic->HasExplosives() || (logic->ClearMQDCUpperLobbyRocks && logic->HasItem(RG_GORONS_BRACELET) &&
+                                                                                                                                                                    ((logic->IsAdult && ctx->GetTrickOption(RT_DC_MQ_ADULT_EYES)) ||
+                                                                                                                                                                    (logic->IsChild && ctx->GetTrickOption(RT_DC_MQ_CHILD_EYES))));});}}),
+  });
+
+  areaTable[RR_DODONGOS_CAVERN_MQ_MOUTH_SIDE_BRIDGE] = Region("Dodongos Cavern MQ Mouth Side Bridge", "Dodongos Cavern", RA_DODONGOS_CAVERN, NO_DAY_NIGHT_CYCLE, {
+                  //Events
+                  EventAccess(&logic->ClearMQDCUpperLobbyRocks, {[]{return logic->BlastOrSmash() || logic->CanUse(RG_DINS_FIRE);}}),
+  }, {}, {
+                  //Exits
+                  Entrance(RR_DODONGOS_CAVERN_MQ_LOBBY,                 {[]{return true;}}),
+                  Entrance(RR_DODONGOS_CAVERN_MQ_TORCH_PUZZLE_UPPER,    {[]{return logic->ClearMQDCUpperLobbyRocks;}}),
+                  //Bunny hood jump + jumpslash can also make it directly from the raising platform
+                  Entrance(RR_DODONGOS_CAVERN_MQ_POES_ROOM,             {[]{return logic->CanUse(RG_HOVER_BOOTS) || (ctx->GetTrickOption(RT_DC_MQ_CHILD_BOMBS) && logic->CanJumpslash() && logic->TakeDamage());}}), //RANDOTODO is this possible with equip swapped hammer?
+                  //it is possible to use bunny hood speed, hovers and a jumpslash to go between here and the other bridge (included with TORCH_ROOM_LOWER), but this would be a trick
+  });
+
+  areaTable[RR_DODONGOS_CAVERN_MQ_STAIRS_LOWER] = Region("Dodongos Cavern MQ Stairs Lower", "Dodongos Cavern", RA_DODONGOS_CAVERN, NO_DAY_NIGHT_CYCLE, {
+                  //Events
+                  //EventAccess(&logic->CanClimbDCStairs, {[]{return logic->HasExplosives || logic->CanUse(RG_DINS_FIRE) || (ctx->GetTrickOption(RT_DC_STAIRCASE) && logic->CanUse(RG_FAIRY_BOW));}}),
+  }, {}, {
+                  //Exits
+                  //This is possible with sticks and shield, igniting a first flower by "touch" then very quickly crouch stabbing in a way that cuts the corner to light the 3rd bomb on the other side, but that's a trick
+                  Entrance(RR_DODONGOS_CAVERN_MQ_STAIRS_UPPER,         {[]{return Here(RR_DODONGOS_CAVERN_MQ_STAIRS_LOWER, []{return logic->HasExplosives() || logic->CanUse(RG_DINS_FIRE) ||
+                                                                                       (ctx->GetTrickOption(RT_DC_STAIRCASE) && logic->CanUse(RG_FAIRY_BOW));});}}),
+                  Entrance(RR_DODONGOS_CAVERN_MQ_STAIRS_PAST_MUD_WALL, {[]{return Here(RR_DODONGOS_CAVERN_MQ_STAIRS_LOWER, []{return logic->CanBreakMudWalls();});}}),
+  });
+
+  areaTable[RR_DODONGOS_CAVERN_MQ_STAIRS_PAST_MUD_WALL] = Region("Dodongos Cavern MQ Stairs Past Mud Wall", "Dodongos Cavern", RA_DODONGOS_CAVERN, NO_DAY_NIGHT_CYCLE, {
+                  //Events
                   EventAccess(&logic->DekuBabaSticks, {[]{return logic->CanGetDekuBabaSticks();}}),
-                  //EventAccess(&logic->CanClimbDCStairs, {[]{return logic->HasItem(RG_GORONS_BRACELET) && (logic->CanUse(RG_STICKS));}}),
+                  //EventAccess(&logic->CanClimbDCStairs, {[]{return logic->CanUse(RG_GORONS_BRACELET) && (logic->CanUse(RG_STICKS));}}),
   }, {
                   //Locations
                   LOCATION(RC_DODONGOS_CAVERN_MQ_GS_SONG_OF_TIME_BLOCK_ROOM, logic->CanUse(RG_SONG_OF_TIME) && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)),
   }, {
                   //Exits
-                  Entrance(RR_DODONGOS_CAVERN_MQ_STAIRS_UPPER, {[]{return logic->HasItem(RG_GORONS_BRACELET) && (logic->CanUse(RG_STICKS));}}),
+                  Entrance(RR_DODONGOS_CAVERN_MQ_STAIRS_UPPER, {[]{return logic->CanUse(RG_GORONS_BRACELET) && (logic->CanUse(RG_STICKS));}}),
                   Entrance(RR_DODONGOS_CAVERN_MQ_STAIRS_LOWER, {[]{return true;}}),
   });
 
