@@ -438,10 +438,10 @@ namespace Rando {
                 return CanDamage() || CanUse(RG_HOOKSHOT);
             case RE_DODONGO:
             case RE_LIZALFOS:
-                return CanJumpslash || HasExplosives || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_FAIRY_BOW) || CanUse(RG_MEGATON_HAMMER);
+                return CanJumpslash() || HasExplosives() || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_FAIRY_BOW) || CanUse(RG_MEGATON_HAMMER);
             case RE_KEESE:
             case RE_FIRE_KEESE:
-                return CanJumpslash || HasExplosives || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_FAIRY_BOW) || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_HOOKSHOT) || CanUse(RG_BOOMERANG);
+                return CanJumpslash() || HasExplosives() || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_FAIRY_BOW) || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_HOOKSHOT) || CanUse(RG_BOOMERANG);
             default:
                 SPDLOG_ERROR("CanKillEnemy reached `default`.");
                 assert(false);
@@ -514,27 +514,11 @@ namespace Rando {
 
     bool Logic::CanBreakMudWalls() {
         //RANDOTODO blue fire tricks
-        return CanBlastOrSmash;
-    }
-
-    bool Logic::CanSummonGossipFairyWithoutSuns() {
-        return GossipStoneFairy || CanUse(RG_ZELDAS_LULLABY) || CanUse(RG_EPONAS_SONG) || CanUse(RG_SONG_OF_TIME);
-    }
-
-    bool Logic::CanSummonGossipFairy() {
-        return CanSummonGossipFairyWithoutSuns() || CanUse(RG_SUNS_SONG);
+        return BlastOrSmash();
     }
 
     bool Logic::CanGetDekuBabaSticks() {
         return DekuBabaSticks || (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD) || CanUse(RG_BOOMERANG));
-    }
-
-    bool Logic::CanDamage() {
-        return Slingshot || CanJumpslash || HasExplosives || CanUse(RG_DINS_FIRE) || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_FAIRY_BOW);
-    }
-
-    bool Logic::CanAttack() {
-        return CanDamage() || CanUse(RG_BOOMERANG) || Hookshot;
     }
 
     bool Logic::CanHitEyeTargets() {
@@ -542,7 +526,7 @@ namespace Rando {
     }
 
     bool Logic::CanDetonateBombFlowers() {
-        return CanUse(RG_FAIRY_BOW) || HasExplosives || CanUse(RG_DINS_FIRE);
+        return CanUse(RG_FAIRY_BOW) || HasExplosives() || CanUse(RG_DINS_FIRE);
     }
 
     bool Logic::CanDetonateUprightBombFlower() {
@@ -646,8 +630,9 @@ namespace Rando {
         return CallGossipFairyExceptSuns() || CanUse(RG_SUNS_SONG);
     }
 
-    bool Logic::EffectiveHealth(){
-        return CallGossipFairyExceptSuns() || CanUse(RG_SUNS_SONG);
+    uint8_t Logic::EffectiveHealth(){
+        uint8_t Multiplier = (ctx->GetOption(RSK_DAMAGE_MULTIPLIER).Value<uint8_t>() < 6) ? ctx->GetOption(RSK_DAMAGE_MULTIPLIER).Value<uint8_t>() : 10;
+        return ((Hearts() << (2 + HasItem(RG_DOUBLE_DEFENSE))) >> Multiplier) + ((Hearts() << (2 + HasItem(RG_DOUBLE_DEFENSE))) % (1 << Multiplier) > 0);
     }
 
     uint8_t Logic::Hearts(){

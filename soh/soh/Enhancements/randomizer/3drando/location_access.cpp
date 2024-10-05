@@ -246,7 +246,7 @@ void RegionTable_Init() {
   ctx = Context::GetInstance().get();
   logic = ctx->GetLogic(); //RANDOTODO do not hardcode, instead allow accepting a Logic class somehow
   grottoEvents = {
-      EventAccess(&logic->GossipStoneFairy, { [] { return logic->CanSummonGossipFairy(); } }),
+      EventAccess(&logic->GossipStoneFairy, { [] { return logic->CallGossipFairy(); } }),
       EventAccess(&logic->ButterflyFairy, { [] { return logic->ButterflyFairy || (logic->CanUse(RG_STICKS)); } }),
       EventAccess(&logic->BugShrub, { [] { return logic->CanCutShrubs(); } }),
       EventAccess(&logic->LoneFish, { [] { return true; } }),

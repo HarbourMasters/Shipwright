@@ -15,7 +15,7 @@ void RegionTable_Init_ZorasDomain() {
 
   areaTable[RR_ZORAS_RIVER] = Region("Zora River", "Zora River", RA_ZORAS_RIVER, DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&logic->GossipStoneFairy, {[]{return logic->CanSummonGossipFairy();}}),
+                  EventAccess(&logic->GossipStoneFairy, {[]{return logic->CallGossipFairy();}}),
                   EventAccess(&logic->BeanPlantFairy,   {[]{return logic->BeanPlantFairy   || (CanPlantBean(RR_ZORAS_RIVER) && logic->CanUse(RG_SONG_OF_STORMS));}}),
                   EventAccess(&logic->ButterflyFairy,   {[]{return logic->ButterflyFairy   || logic->CanUse(RG_STICKS);}}),
                   EventAccess(&logic->BugShrub,         {[]{return logic->BugShrub         || logic->CanCutShrubs();}}),
@@ -85,7 +85,7 @@ void RegionTable_Init_ZorasDomain() {
   areaTable[RR_ZORAS_DOMAIN] = Region("Zoras Domain", "Zoras Domain", RA_ZORAS_DOMAIN, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&logic->EyeballFrogAccess, {[]{return logic->EyeballFrogAccess || (logic->IsAdult && logic->KingZoraThawed && (logic->CanUse(RG_EYEDROPS) || logic->CanUse(RG_EYEBALL_FROG) || logic->CanUse(RG_PRESCRIPTION) || logic->PrescriptionAccess));}}),
-                  EventAccess(&logic->GossipStoneFairy,  {[]{return logic->CallGossipFairyExceptSuns()();}}),
+                  EventAccess(&logic->GossipStoneFairy,  {[]{return logic->CallGossipFairyExceptSuns();}}),
                   EventAccess(&logic->NutPot,            {[]{return true;}}),
                   EventAccess(&logic->StickPot,          {[]{return logic->StickPot          || logic->IsChild;}}),
                   EventAccess(&logic->FishGroup,         {[]{return logic->FishGroup         || logic->IsChild;}}),
@@ -149,7 +149,7 @@ void RegionTable_Init_ZorasDomain() {
 
   areaTable[RR_ZORAS_FOUNTAIN] = Region("Zoras Fountain", "Zoras Fountain", RA_ZORAS_FOUNTAIN, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&logic->GossipStoneFairy, {[]{return logic->CanSummonGossipFairyWithoutSuns();}}),
+                  EventAccess(&logic->GossipStoneFairy, {[]{return logic->CallGossipFairyExceptSuns();}}),
                   EventAccess(&logic->ButterflyFairy,   {[]{return logic->ButterflyFairy   || (logic->CanUse(RG_STICKS) && logic->AtDay);}}),
                 }, {
                   //Locations

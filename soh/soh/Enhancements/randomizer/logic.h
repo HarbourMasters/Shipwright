@@ -160,11 +160,7 @@ class Logic {
     bool CanAvoidEnemy(RandomizerEnemy enemy);
     bool CanGetEnemyDrop(RandomizerEnemy enemy, EnemyDistance distance = ED_CLOSE, bool aboveLink = false);
     bool CanBreakMudWalls();
-    bool CanSummonGossipFairy();
-    bool CanSummonGossipFairyWithoutSuns();
     bool CanGetDekuBabaSticks();
-    bool CanAttack();
-    bool CanDamage();
     bool CanHitEyeTargets();
     bool CanDetonateBombFlowers();
     bool CanDetonateUprightBombFlower();
@@ -188,7 +184,7 @@ class Logic {
     bool CanLeaveForest();
     bool CallGossipFairy();
     bool CallGossipFairyExceptSuns();
-    bool EffectiveHealth();
+    uint8_t EffectiveHealth();
     uint8_t Hearts();
     uint8_t StoneCount();
     uint8_t MedallionCount();

@@ -35,7 +35,7 @@ void RegionTable_Init_CastleTown() {
 
   areaTable[RR_TOT_ENTRANCE] = Region("ToT Entrance", "ToT Entrance", RA_THE_MARKET, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&logic->GossipStoneFairy, {[]{return logic->CanSummonGossipFairyWithoutSuns();}}),
+                  EventAccess(&logic->GossipStoneFairy, {[]{return logic->CallGossipFairyExceptSuns();}}),
                 }, {
                   //Locations
                   LOCATION(RC_TOT_LEFTMOST_GOSSIP_STONE,     true),
@@ -82,7 +82,7 @@ void RegionTable_Init_CastleTown() {
 
   areaTable[RR_HYRULE_CASTLE_GROUNDS] = Region("Hyrule Castle Grounds", "Castle Grounds", RA_HYRULE_CASTLE, DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&logic->GossipStoneFairy, {[]{return logic->CanSummonGossipFairy();}}),
+                  EventAccess(&logic->GossipStoneFairy, {[]{return logic->CallGossipFairy();}}),
                   EventAccess(&logic->ButterflyFairy,   {[]{return logic->ButterflyFairy   || logic->CanUse(RG_STICKS);}}),
                   EventAccess(&logic->BugRock,          {[]{return true;}}),
                 }, {
@@ -120,9 +120,9 @@ void RegionTable_Init_CastleTown() {
 
   areaTable[RR_HC_STORMS_GROTTO] = Region("HC Storms Grotto", "HC Storms Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&logic->NutPot,           {[]{return logic->NutPot           || logic->CanBlastOrSmash;}}),
-                  EventAccess(&logic->GossipStoneFairy, {[]{return logic->CanBreakMudWalls() && logic->CanSummonGossipFairy();}}),
-                  EventAccess(&logic->WanderingBugs,    {[]{return logic->WanderingBugs    || logic->CanBlastOrSmash;}}),
+                  EventAccess(&logic->NutPot,           {[]{return logic->NutPot           || logic->BlastOrSmash();}}),
+                  EventAccess(&logic->GossipStoneFairy, {[]{return logic->CanBreakMudWalls() && logic->CallGossipFairy();}}),
+                  EventAccess(&logic->WanderingBugs,    {[]{return logic->WanderingBugs    || logic->BlastOrSmash();}}),
                 }, {
                   //Locations
                   LOCATION(RC_HC_GS_STORMS_GROTTO,           (logic->BlastOrSmash() && logic->HookshotOrBoomerang()) || (logic->CanUse(RG_BOOMERANG) && ctx->GetTrickOption(RT_HC_STORMS_GS))),

@@ -21,7 +21,7 @@ void RegionTable_Init_GerudoValley() {
 
   areaTable[RR_GV_UPPER_STREAM] = Region("GV Upper Stream", "Gerudo Valley", RA_GERUDO_VALLEY, DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&logic->GossipStoneFairy, {[]{return logic->CanSummonGossipFairy();}}),
+                  EventAccess(&logic->GossipStoneFairy, {[]{return logic->CallGossipFairy();}}),
                   EventAccess(&logic->BeanPlantFairy,   {[]{return logic->BeanPlantFairy   || (CanPlantBean(RR_GV_UPPER_STREAM) && logic->CanUse(RG_SONG_OF_STORMS));}}),
                 }, {
                   //Locations

@@ -7,7 +7,7 @@ void RegionTable_Init_LostWoods() {
   areaTable[RR_KOKIRI_FOREST] = Region("Kokiri Forest", "Kokiri Forest", RA_KOKIRI_FOREST, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&logic->BeanPlantFairy,           {[]{return logic->BeanPlantFairy   || (CanPlantBean(RR_KOKIRI_FOREST) && logic->CanUse(RG_SONG_OF_STORMS));}}),
-                  EventAccess(&logic->GossipStoneFairy,         {[]{return logic->CallGossipFairyExceptSuns()();}}),
+                  EventAccess(&logic->GossipStoneFairy,         {[]{return logic->CallGossipFairyExceptSuns();}}),
                   EventAccess(&logic->ShowedMidoSwordAndShield, {[]{return logic->ShowedMidoSwordAndShield || (logic->IsChild && logic->CanUse(RG_KOKIRI_SWORD) && logic->CanUse(RG_DEKU_SHIELD));}}),
                 }, {
                   //Locations
@@ -115,7 +115,7 @@ void RegionTable_Init_LostWoods() {
                   //Events
                   EventAccess(&logic->OddMushroomAccess, {[]{return logic->OddMushroomAccess || (logic->IsAdult && (logic->CojiroAccess || logic->CanUse(RG_COJIRO)));}}),
                   EventAccess(&logic->PoachersSawAccess, {[]{return logic->PoachersSawAccess || (logic->IsAdult && logic->OddPoulticeAccess);}}),
-                  EventAccess(&logic->GossipStoneFairy,  {[]{return logic->CanSummonGossipFairyWithoutSuns();}}),
+                  EventAccess(&logic->GossipStoneFairy,  {[]{return logic->CallGossipFairyExceptSuns();}}),
                   EventAccess(&logic->BeanPlantFairy,    {[]{return logic->BeanPlantFairy    || logic->CanUse(RG_SONG_OF_STORMS);}}),
                   EventAccess(&logic->BugShrub,          {[]{return logic->IsChild && logic->CanCutShrubs();}}),
                 }, {
@@ -204,7 +204,7 @@ void RegionTable_Init_LostWoods() {
 
   areaTable[RR_SACRED_FOREST_MEADOW] = Region("Sacred Forest Meadow", "Sacred Forest Meadow", RA_SACRED_FOREST_MEADOW, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&logic->GossipStoneFairy, {[]{return logic->CanSummonGossipFairyWithoutSuns();}}),
+                  EventAccess(&logic->GossipStoneFairy, {[]{return logic->CallGossipFairyExceptSuns();}}),
                 }, {
                   //Locations
                   LOCATION(RC_SONG_FROM_SARIA,             logic->IsChild && logic->HasItem(RG_ZELDAS_LETTER)),
