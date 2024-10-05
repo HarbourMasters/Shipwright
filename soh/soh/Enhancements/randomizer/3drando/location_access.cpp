@@ -204,7 +204,7 @@ void Region::ResetVariables() {
 std::array<Region, RR_MAX> areaTable;
 
 bool Here(const RandomizerRegion region, ConditionFn condition) {
-  return areaTable[region].HereCheck(condition);
+  return areaTable[region].Here(condition);
 }
 
 bool CanPlantBean(const RandomizerRegion region) {
@@ -235,7 +235,7 @@ void RegionTable_Init() {
   ctx = Context::GetInstance().get();
   logic = ctx->GetLogic(); //RANDOTODO do not hardcode, instead allow accepting a Logic class somehow
   grottoEvents = {
-      EventAccess(&logic->GossipStoneFairy, { [] { return logic->GossipStoneFairy || logic->CallGossipFairy(); } }),
+      EventAccess(&logic->GossipStoneFairy, { [] { return logic->CallGossipFairy(); } }),
       EventAccess(&logic->ButterflyFairy, { [] { return logic->ButterflyFairy || (logic->CanUse(RG_STICKS)); } }),
       EventAccess(&logic->BugShrub, { [] { return logic->CanCutShrubs(); } }),
       EventAccess(&logic->LoneFish, { [] { return true; } }),

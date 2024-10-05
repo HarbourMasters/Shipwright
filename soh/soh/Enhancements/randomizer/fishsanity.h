@@ -6,23 +6,23 @@
 #include "randomizerTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-typedef struct FishsanityPondOptions {
+typedef struct {
     u8 mode;
     u8 numFish;
     bool ageSplit;
 } FishsanityPondOptions;
 
-typedef enum FishsanityOptionsSource {
+typedef enum {
     FSO_SOURCE_RANDO,
     FSO_SOURCE_CVARS
-};
+} FishsanityOptionsSource;
 
-typedef enum FishsanityCheckType {
+typedef enum {
     FSC_NONE,
     FSC_POND,
     FSC_GROTTO,
     FSC_ZD,
-};
+} FishsanityCheckType;
 
 #ifdef __cplusplus
 namespace Rando {

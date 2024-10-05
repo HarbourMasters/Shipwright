@@ -26,7 +26,7 @@ void RegionTable_Init_DeathMountain() {
   areaTable[RR_DEATH_MOUNTAIN_SUMMIT] = Region("Death Mountain Summit", "Death Mountain", RA_DEATH_MOUNTAIN_TRAIL, DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&logic->PrescriptionAccess, {[]{return logic->PrescriptionAccess || (logic->IsAdult && (logic->BrokenSwordAccess || logic->CanUse(RG_BROKEN_SWORD)));}}),
-                  EventAccess(&logic->GossipStoneFairy,   {[]{return logic->GossipStoneFairy   || logic->CallGossipFairy();}}),
+                  EventAccess(&logic->GossipStoneFairy,   {[]{return logic->CallGossipFairy();}}),
                   EventAccess(&logic->BugRock,            {[]{return logic->BugRock            || logic->IsChild;}}),
                 }, {
                   //Locations
@@ -81,7 +81,7 @@ void RegionTable_Init_DeathMountain() {
 
   areaTable[RR_GORON_CITY] = Region("Goron City", "Goron City", RA_GORON_CITY, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&logic->GossipStoneFairy,          {[]{return logic->GossipStoneFairy          || logic->CallGossipFairyExceptSuns();}}),
+                  EventAccess(&logic->GossipStoneFairy,          {[]{return logic->CallGossipFairyExceptSuns();}}),
                   EventAccess(&logic->StickPot,                  {[]{return logic->StickPot                  || logic->IsChild;}}),
                   EventAccess(&logic->BugRock,                   {[]{return logic->BugRock                   || (logic->BlastOrSmash() || logic->CanUse(RG_SILVER_GAUNTLETS));}}),
                   EventAccess(&logic->GoronCityChildFire,        {[]{return logic->GoronCityChildFire        || (logic->IsChild && logic->CanUse(RG_DINS_FIRE));}}),

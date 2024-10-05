@@ -2498,8 +2498,12 @@ void Settings::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocatio
         mOptions[RSK_KAK_100_SKULLS_HINT].SetSelectedIndex(RO_GENERIC_OFF);
     }
 
+    if (!mOptions[RSK_SHUFFLE_FISHING_POLE]) {
+        mOptions[RSK_FISHING_POLE_HINT].SetSelectedIndex(RO_GENERIC_OFF);
+    }
+
     if (mOptions[RSK_FISHSANITY].IsNot(RO_FISHSANITY_HYRULE_LOACH)) {
-        mOptions[RSK_LOACH_HINT].SetSelectedIndex(RO_FISHSANITY_OFF);
+        mOptions[RSK_LOACH_HINT].SetSelectedIndex(RO_GENERIC_OFF);
     }
 
     if (mOptions[RSK_CUCCO_COUNT].Is(0)) {
