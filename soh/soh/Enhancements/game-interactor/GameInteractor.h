@@ -507,6 +507,7 @@ void GameInteractor_SetTriforceHuntCreditsWarpActive(uint8_t state);
 
 
 #ifdef __cplusplus
+#include <stdarg.h>
 #include <thread>
 #include <unordered_map>
 #include <vector>
@@ -561,8 +562,14 @@ struct HookInfo {
 #define GET_CURRENT_REGISTERING_INFO(type) HookRegisteringInfo{}
 #endif
 
-#define REGISTER_VB_SHOULD(flag, body) \
-    GameInteractor::Instance->RegisterGameHookForID<GameInteractor::OnVanillaBehavior>(flag, [](GIVanillaBehavior _, bool* should, void* opt) body)
+#define REGISTER_VB_SHOULD(flag, body)                                                      \
+    GameInteractor::Instance->RegisterGameHookForID<GameInteractor::OnVanillaBehavior>( \
+        flag, [](GIVanillaBehavior _, bool* should, va_list _originalArgs) {                 \
+            va_list args;                                                                   \
+            va_copy(args, _originalArgs);                                                    \
+            body;                                                                           \
+            va_end(args);                                                                   \
+        })
 
 class GameInteractor {
 public:

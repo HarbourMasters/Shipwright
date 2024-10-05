@@ -28,7 +28,7 @@ DEFINE_HOOK(OnBossDefeat, (void* actor));
 DEFINE_HOOK(OnPlayerBonk, ());
 DEFINE_HOOK(OnPlayDestroy, ());
 DEFINE_HOOK(OnPlayDrawEnd, ());
-DEFINE_HOOK(OnVanillaBehavior, (GIVanillaBehavior flag, bool* result, void* opt));
+DEFINE_HOOK(OnVanillaBehavior, (GIVanillaBehavior flag, bool* result, va_list originalArgs));
 DEFINE_HOOK(OnSaveFile, (int32_t fileNum));
 DEFINE_HOOK(OnLoadFile, (int32_t fileNum));
 DEFINE_HOOK(OnDeleteFile, (int32_t fileNum));
