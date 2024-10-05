@@ -8,7 +8,7 @@
 #include <string>
 
 //RANDOTODO merge into Logic once Logic is a class passed to logic funtions 
-struct GetAccessableLocationsStruct {
+struct GetAccessibleLocationsStruct {
   std::vector<RandomizerCheck> accessibleLocations;
   std::vector<RandomizerRegion> regionPool;
   //Variables for playthrough
@@ -34,7 +34,7 @@ struct GetAccessableLocationsStruct {
   std::vector<RandomizerCheck> itemSphere;
   std::list<Rando::Entrance*> entranceSphere;
 
-  GetAccessableLocationsStruct(int _maxGsCount){
+  GetAccessibleLocationsStruct(int _maxGsCount){
     regionPool = {RR_ROOT};
     gsCount = 0;
     maxGsCount = _maxGsCount;
@@ -59,7 +59,7 @@ int Fill();
 
 std::vector<RandomizerCheck> GetEmptyLocations(std::vector<RandomizerCheck> allowedLocations);
 
-void ProcessRegion(Region* region, GetAccessableLocationsStruct& gals, RandomizerGet ignore = RG_NONE, 
+void ProcessRegion(Region* region, GetAccessibleLocationsStruct& gals, RandomizerGet ignore = RG_NONE, 
                    bool stopOnBeatable = false, bool addToPlaythrough = false);
 
 std::vector<RandomizerCheck> ReachabilitySearch(const std::vector<RandomizerCheck>& allowedLocations, RandomizerGet ignore=RG_NONE);

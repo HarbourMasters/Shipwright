@@ -47,7 +47,7 @@ static void RemoveStartingItemsFromPool() {
   }
 }
 
-static void PropagateTimeTravel(GetAccessableLocationsStruct& gals, RandomizerGet ignore = RG_NONE, 
+static void PropagateTimeTravel(GetAccessibleLocationsStruct& gals, RandomizerGet ignore = RG_NONE, 
                               bool stopOnBeatable = false, bool addToPlaythrough = false){
   //special check for temple of time
   if(gals.haveTimeAccess && gals.foundTempleOfTime && gals.validatedStartingRegion){
@@ -92,7 +92,7 @@ static bool UpdateToDAccess(Entrance* entrance, Region* connection) {
 }
 
 // Check if key locations in the overworld are accessable
-static void ValidateOtherEntrance(GetAccessableLocationsStruct& gals) {
+static void ValidateOtherEntrance(GetAccessibleLocationsStruct& gals) {
   auto ctx = Rando::Context::GetInstance();
   // Condition for validating Temple of Time Access
   if (!gals.foundTempleOfTime && ((ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_CHILD && RegionTable(RR_TEMPLE_OF_TIME)->Adult()) || 
@@ -124,9 +124,9 @@ static void ApplyAllAdvancmentItems(){
   }
 }
 
-// Check if everything in an entrence rando seed that needs to be avalible without items, is,
+// Check if everything in an entrance rando seed that needs to be avalible without items, is,
 // and if so allow obtaining items in logic
-static void ValidateSphereZero(GetAccessableLocationsStruct& gals){
+static void ValidateSphereZero(GetAccessibleLocationsStruct& gals){
   auto ctx = Rando::Context::GetInstance();
   // Condition for verifying everything required for sphere 0, expanding search to all locations
   if (logic->CanEmptyBigPoes && gals.validatedStartingRegion && gals.foundTempleOfTime && gals.haveTimeAccess) {
@@ -151,7 +151,7 @@ static void ValidateSphereZero(GetAccessableLocationsStruct& gals){
 }
 
 //This function handles each possible exit
-void ProcessExits(Region* region, GetAccessableLocationsStruct& gals, RandomizerGet ignore = RG_NONE, 
+void ProcessExits(Region* region, GetAccessibleLocationsStruct& gals, RandomizerGet ignore = RG_NONE, 
                   bool stopOnBeatable = false, bool addToPlaythrough = false){
   auto ctx = Rando::Context::GetInstance();
   for (auto& exit : region->exits) {
@@ -171,7 +171,7 @@ void ProcessExits(Region* region, GetAccessableLocationsStruct& gals, Randomizer
 
     //If the exit is accessible and hasn't been added yet, add it to the pool
     //RANDOTODO do we want to add the region after the loop now, considering we
-    //are processing the new region immediatly. Maybe a reverse for loop in ProcessRegion?
+    //are processing the new region immediately. Maybe a reverse for loop in ProcessRegion?
     if (!exitRegion->addedToPool && exit.ConditionsMet()) {
       exitRegion->addedToPool = true;
       gals.regionPool.push_back(exit.GetConnectedRegionKey());
@@ -280,7 +280,7 @@ bool IsBeatableWithout(RandomizerCheck excludedCheck, bool replaceItem, Randomiz
 }
 
 // Reset non-Logic-class logic, and optionally apply the initial inventory
-void ResetLogic(std::shared_ptr<Context>& ctx, GetAccessableLocationsStruct& gals, bool applyInventory = false){
+void ResetLogic(std::shared_ptr<Context>& ctx, GetAccessibleLocationsStruct& gals, bool applyInventory = false){
   gals.timePassChildDay = true;
   gals.timePassChildNight = true;
   gals.timePassAdultDay = true;
@@ -297,7 +297,7 @@ void ResetLogic(std::shared_ptr<Context>& ctx, GetAccessableLocationsStruct& gal
 } 
 
 //Generate the playthrough, so we want to add advancement items, unless we know to ignore them
-void AddToPlaythrough(LocationAccess& locPair, GetAccessableLocationsStruct& gals){
+void AddToPlaythrough(LocationAccess& locPair, GetAccessibleLocationsStruct& gals){
   auto ctx = Rando::Context::GetInstance();
   RandomizerCheck loc = locPair.GetLocation();
   Rando::ItemLocation* location = ctx->GetItemLocation(loc);
@@ -346,7 +346,7 @@ void AddToPlaythrough(LocationAccess& locPair, GetAccessableLocationsStruct& gal
   }
 }
 
-void ApplyOrStoreItem(Rando::ItemLocation* loc, GetAccessableLocationsStruct& gals, bool addToPlaythrough){
+void ApplyOrStoreItem(Rando::ItemLocation* loc, GetAccessibleLocationsStruct& gals, bool addToPlaythrough){
   if (addToPlaythrough){
     gals.newItemLocations.push_back(loc);
   } else {
@@ -356,7 +356,7 @@ void ApplyOrStoreItem(Rando::ItemLocation* loc, GetAccessableLocationsStruct& ga
 }
 
 // Adds the contents of a location to the current progression and optionally playthrough
-bool AddCheckToLogic(LocationAccess& locPair, GetAccessableLocationsStruct& gals, RandomizerGet ignore, bool stopOnBeatable, bool addToPlaythrough=false){
+bool AddCheckToLogic(LocationAccess& locPair, GetAccessibleLocationsStruct& gals, RandomizerGet ignore, bool stopOnBeatable, bool addToPlaythrough=false){
   auto ctx = Rando::Context::GetInstance();
   StartPerformanceTimer(PT_LOCATION_LOGIC);
   RandomizerCheck loc = locPair.GetLocation();
@@ -406,7 +406,7 @@ bool AddCheckToLogic(LocationAccess& locPair, GetAccessableLocationsStruct& gals
   return false;
 }
 
-void ProcessRegion(Region* region, GetAccessableLocationsStruct& gals, RandomizerGet ignore, 
+void ProcessRegion(Region* region, GetAccessibleLocationsStruct& gals, RandomizerGet ignore, 
                    bool stopOnBeatable, bool addToPlaythrough){
   
   if (gals.haveTimeAccess) {
@@ -461,7 +461,7 @@ void ProcessRegion(Region* region, GetAccessableLocationsStruct& gals, Randomize
 // Return any of the targetLocations that are accessible in logic
 std::vector<RandomizerCheck> ReachabilitySearch(const std::vector<RandomizerCheck>& targetLocations, RandomizerGet ignore /* = RG_NONE*/) {
   auto ctx = Rando::Context::GetInstance();
-  GetAccessableLocationsStruct gals(0);
+  GetAccessibleLocationsStruct gals(0);
   ResetLogic(ctx, gals, true);
   do {
     gals.InitLoop();
@@ -485,7 +485,7 @@ void GeneratePlaythrough() {
   auto ctx = Rando::Context::GetInstance();
   ctx->playthroughBeatable = false;
   logic->Reset();
-  GetAccessableLocationsStruct gals(GetMaxGSCount());
+  GetAccessibleLocationsStruct gals(GetMaxGSCount());
   ResetLogic(ctx, gals, true);
   do {
     gals.InitLoop();
@@ -508,7 +508,7 @@ void GeneratePlaythrough() {
 // return if the seed is currently beatable or not
 bool CheckBeatable(RandomizerGet ignore /* = RG_NONE*/) {
   auto ctx = Rando::Context::GetInstance();
-  GetAccessableLocationsStruct gals(0);
+  GetAccessibleLocationsStruct gals(0);
   ResetLogic(ctx, gals, true);
   do {
     gals.InitLoop();
@@ -522,10 +522,10 @@ bool CheckBeatable(RandomizerGet ignore /* = RG_NONE*/) {
   return false;
 }
 
-// Check if the currently randomised set of entrences is a valid game map.
+// Check if the currently randomised set of entrances is a valid game map.
 void ValidateEntrances(bool checkPoeCollectorAccess, bool checkOtherEntranceAccess) {
   auto ctx = Rando::Context::GetInstance();
-  GetAccessableLocationsStruct gals(0);
+  GetAccessibleLocationsStruct gals(0);
   ResetLogic(ctx, gals, !checkOtherEntranceAccess);
 
   ctx->allLocationsReachable = false;
@@ -559,7 +559,7 @@ void ValidateEntrances(bool checkPoeCollectorAccess, bool checkOtherEntranceAcce
   } while (gals.logicUpdated);
   if (gals.sphereZeroComplete) {
     ctx->allLocationsReachable = true;
-    //RANDOTODO a size check here before getting the exact fails would be a minor optimisation
+    //RANDOTODO a size check here before getting the exact fails would be a minor optimization
     //and a full list of location failures would be useful for logging when it does fail
     for (const RandomizerCheck loc : ctx->allLocations) {
       if (!ctx->GetItemLocation(loc)->IsAddedToPool()) {
