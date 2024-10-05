@@ -19,6 +19,7 @@ struct GetAccessableLocationsStruct {
   //Variables for search
   std::vector<Rando::ItemLocation*> newItemLocations;
   bool logicUpdated;
+  bool resetSphere;
 
   //Variables For Validating Entrences
   bool haveTimeAccess;
@@ -38,7 +39,7 @@ struct GetAccessableLocationsStruct {
     gsCount = 0;
     maxGsCount = _maxGsCount;
     logicUpdated = false;
-    logicUpdated = false;
+    resetSphere = false;
   }
 
   void InitLoop(){

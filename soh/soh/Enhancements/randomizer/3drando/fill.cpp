@@ -440,10 +440,11 @@ void ProcessRegion(Region* region, GetAccessableLocationsStruct& gals, Randomize
   }
 
   if (region->UpdateEvents()){
-    //Note that eventAccess can cause playthrough jank, try to avoid them where possible
-    //Later I will likely force another loop on updated events in a sphere for playthrough generation
-    //to force the issue at a performance cost
     gals.logicUpdated = true;
+    //if we are working in spheres, reset the sphere on an event being enabled to avoid sphere skipping
+    if (addToPlaythrough){
+      gals.resetSphere = true;
+    }
   }
   
   ProcessExits(region, gals, ignore, stopOnBeatable, addToPlaythrough);
@@ -490,6 +491,10 @@ void GeneratePlaythrough() {
     gals.InitLoop();
     for (size_t i = 0; i < gals.regionPool.size(); i++) {
       ProcessRegion(RegionTable(gals.regionPool[i]), gals, RG_NONE, false, true);
+      if (gals.resetSphere){
+        gals.resetSphere = false;
+        i = -1;
+      }
     }
     if (gals.itemSphere.size() > 0) {
       ctx->playthroughLocations.push_back(gals.itemSphere);
