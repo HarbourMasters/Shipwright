@@ -648,7 +648,7 @@ void BossVa_Init(Actor* thisx, PlayState* play2) {
                                 0, true); //! params could be WARP_DUNGEON_CHILD however this can also spawn Ru1
                 }
 
-                if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true, NULL)) {
+                if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true)) {
                     Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, this->actor.world.pos.x + 160.0f,
                                 this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0, true);
                 }
@@ -1662,7 +1662,7 @@ void BossVa_BodyDeath(BossVa* this, PlayState* play) {
                 Player_SetCsActionWithHaltedActors(play, &this->actor, 7);
                 sCsState++;
 
-                if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true, NULL)) {
+                if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true)) {
                     Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, this->actor.world.pos.x,
                                 this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0, true);
                 }

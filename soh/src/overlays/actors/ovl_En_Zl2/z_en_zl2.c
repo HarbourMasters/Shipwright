@@ -634,7 +634,7 @@ void EnZl2_GiveLightArrows(EnZl2* this, PlayState* play) {
         posY = player->actor.world.pos.y + 80.0f;
         posZ = player->actor.world.pos.z;
         Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_EFFECT, posX, posY, posZ, 0, 0, 0, 0x17, true);
-        if (GameInteractor_Should(VB_GIVE_ITEM_LIGHT_ARROW, true, NULL)) {
+        if (GameInteractor_Should(VB_GIVE_ITEM_LIGHT_ARROW, true)) {
             Item_Give(play, ITEM_ARROW_LIGHT);
         }
         this->unk_244 = 1;

@@ -4843,7 +4843,7 @@ s32 Player_ActionChange_1(Player* this, PlayState* play) {
     if ((this->doorType != PLAYER_DOORTYPE_NONE) &&
         (!(this->stateFlags1 & PLAYER_STATE1_ITEM_OVER_HEAD) ||
          ((this->heldActor != NULL) && (this->heldActor->id == ACTOR_EN_RU1)))) {
-        if ((CHECK_BTN_ALL(sControlInput->press.button, BTN_A) || (Player_Action_8084F9A0 == this->actionFunc)) && GameInteractor_Should(VB_BE_ABLE_TO_OPEN_DOORS, true, NULL)) {
+        if ((CHECK_BTN_ALL(sControlInput->press.button, BTN_A) || (Player_Action_8084F9A0 == this->actionFunc)) && GameInteractor_Should(VB_BE_ABLE_TO_OPEN_DOORS, true)) {
             doorActor = this->doorActor;
 
             if (this->doorType <= PLAYER_DOORTYPE_AJAR) {
@@ -8515,7 +8515,7 @@ void func_80842A88(PlayState* play, Player* this) {
 s32 func_80842AC4(PlayState* play, Player* this) {
     if ((this->heldItemAction == PLAYER_IA_DEKU_STICK) && (this->unk_85C > 0.5f)) {
 
-        if (GameInteractor_Should(VB_DEKU_STICK_BREAK, AMMO(ITEM_STICK) != 0, NULL)) {
+        if (GameInteractor_Should(VB_DEKU_STICK_BREAK, AMMO(ITEM_STICK) != 0)) {
             EffectSsStick_Spawn(play, &this->bodyPartsPos[PLAYER_BODYPART_R_HAND],
                                 this->actor.shape.rot.y + 0x8000);
             this->unk_85C = 0.5f;
@@ -10229,7 +10229,7 @@ void Player_Init(Actor* thisx, PlayState* play2) {
 
     if ((sp50 == 0) || (sp50 < -1)) {
         titleFileSize = scene->titleFile.vromEnd - scene->titleFile.vromStart;
-        if (GameInteractor_Should(VB_SHOW_TITLE_CARD, gSaveContext.showTitleCard, NULL)) {
+        if (GameInteractor_Should(VB_SHOW_TITLE_CARD, gSaveContext.showTitleCard)) {
             if ((gSaveContext.sceneSetupIndex < 4) &&
                 (gEntranceTable[((void)0, gSaveContext.entranceIndex) + ((void)0, gSaveContext.sceneSetupIndex)].field &
                  ENTRANCE_INFO_DISPLAY_TITLE_CARD_FLAG) &&
@@ -10935,21 +10935,21 @@ static Color_RGBA8 D_808547C0 = { 255, 50, 0, 0 };
 void Player_UpdateBurningDekuStick(PlayState* play, Player* this) {
     f32 temp;
 
-    if (GameInteractor_Should(VB_DEKU_STICK_BURN_OUT, this->unk_85C == 0.0f, NULL)) {
+    if (GameInteractor_Should(VB_DEKU_STICK_BURN_OUT, this->unk_85C == 0.0f)) {
         Player_UseItem(play, this, ITEM_NONE);
         return;
     }
 
     temp = 1.0f;
     uint8_t vanillaShouldBurnOutCondition = DECR(this->unk_860) == 0;
-    if (GameInteractor_Should(VB_DEKU_STICK_BURN_OUT, vanillaShouldBurnOutCondition, NULL)) {
+    if (GameInteractor_Should(VB_DEKU_STICK_BURN_OUT, vanillaShouldBurnOutCondition)) {
         Inventory_ChangeAmmo(ITEM_STICK, -1);
         this->unk_860 = 1;
         temp = 0.0f;
         this->unk_85C = temp;
     } else if (this->unk_860 > 200) {
         temp = (210 - this->unk_860) / 10.0f;
-    } else if (GameInteractor_Should(VB_DEKU_STICK_BURN_DOWN, this->unk_860 < 20, NULL)) {
+    } else if (GameInteractor_Should(VB_DEKU_STICK_BURN_DOWN, this->unk_860 < 20)) {
         temp = this->unk_860 / 20.0f;
         this->unk_85C = temp;
     }
@@ -11251,7 +11251,7 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
     func_80836BEC(this, play);
 
     if (this->heldItemAction == PLAYER_IA_DEKU_STICK &&
-        GameInteractor_Should(VB_DEKU_STICK_BE_ON_FIRE, this->unk_860 != 0, NULL)) {
+        GameInteractor_Should(VB_DEKU_STICK_BE_ON_FIRE, this->unk_860 != 0)) {
         Player_UpdateBurningDekuStick(play, this);
     } else if ((this->heldItemAction == PLAYER_IA_FISHING_POLE) && (this->unk_860 < 0)) {
         this->unk_860++;
@@ -13533,7 +13533,7 @@ s32 func_8084DFF4(PlayState* play, Player* this) {
         play->msgCtx.msgMode = MSGMODE_TEXT_DONE;
     } else {
         if (Message_GetState(&play->msgCtx) == TEXT_STATE_CLOSING) {
-            if (GameInteractor_Should(VB_PLAY_NABOORU_CAPTURED_CS, this->getItemId == GI_GAUNTLETS_SILVER, NULL)) {
+            if (GameInteractor_Should(VB_PLAY_NABOORU_CAPTURED_CS, this->getItemId == GI_GAUNTLETS_SILVER)) {
                 play->nextEntranceIndex = ENTR_DESERT_COLOSSUS_0;
                 play->transitionTrigger = TRANS_TRIGGER_START;
                 gSaveContext.nextCutsceneIndex = 0xFFF1;

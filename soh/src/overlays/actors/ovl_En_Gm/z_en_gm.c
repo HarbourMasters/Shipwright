@@ -99,7 +99,7 @@ s32 func_80A3D7C8(void) {
         return 0;
     } else if (GameInteractor_Should(VB_BE_ELIGIBLE_FOR_GIANTS_KNIFE_PURCHASE, (
         !CHECK_OWNED_EQUIP_ALT(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_BIGGORON) // Don't have giant's knife
-    ), NULL)) {
+    ))) {
         return 1;
     } else if (CHECK_OWNED_EQUIP_ALT(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_BROKENGIANTKNIFE)) { // Have broken giant's knife
         return 2;

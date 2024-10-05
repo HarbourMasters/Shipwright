@@ -319,7 +319,7 @@ void func_809853B4(DemoIm* this, PlayState* play) {
 
     Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DEMO_EFFECT, playerX, playerY, playerZ, 0,
                        0, 0, 0xD);
-    if (GameInteractor_Should(VB_GIVE_ITEM_SHADOW_MEDALLION, true, NULL)) {
+    if (GameInteractor_Should(VB_GIVE_ITEM_SHADOW_MEDALLION, true)) {
         Item_Give(play, ITEM_MEDALLION_SHADOW);
     }
 }
@@ -337,7 +337,7 @@ void func_8098544C(DemoIm* this, PlayState* play) {
         this->action = 1;
         play->csCtx.segment = D_8098786C;
         gSaveContext.cutsceneTrigger = 2;
-        if (GameInteractor_Should(VB_GIVE_ITEM_SHADOW_MEDALLION, true, NULL)) {
+        if (GameInteractor_Should(VB_GIVE_ITEM_SHADOW_MEDALLION, true)) {
             Item_Give(play, ITEM_MEDALLION_SHADOW);
         }
         player->actor.world.rot.y = player->actor.shape.rot.y = this->actor.world.rot.y + 0x8000;
@@ -916,7 +916,7 @@ void func_80986C30(DemoIm* this, PlayState* play) {
             func_80985F54(this);
         }
         Flags_SetEventChkInf(EVENTCHKINF_LEARNED_ZELDAS_LULLABY);
-        if (GameInteractor_Should(VB_GIVE_ITEM_ZELDAS_LULLABY, true, NULL)) {
+        if (GameInteractor_Should(VB_GIVE_ITEM_ZELDAS_LULLABY, true)) {
             Item_Give(play, ITEM_SONG_LULLABY);
         }
     }

@@ -291,7 +291,7 @@ void func_80B20768(EnToryo* this, PlayState* play) {
     s16 sp32;
     s16 sp30;
 
-    if (this->unk_1E4 == 3 && !GameInteractor_Should(VB_FIX_SAW_SOFTLOCK, false, NULL)) {
+    if (this->unk_1E4 == 3 && !GameInteractor_Should(VB_FIX_SAW_SOFTLOCK, false)) {
         Actor_ProcessTalkRequest(&this->actor, play);
         Message_ContinueTextbox(play, this->actor.textId);
         this->unk_1E4 = 1;

@@ -143,7 +143,7 @@ void EnBomBowMan_BlinkAwake(EnBomBowlMan* this, PlayState* play) {
     if (frameCount == 30.0f) {
         this->dialogState = TEXT_STATE_EVENT;
 
-        if (GameInteractor_Should(VB_BE_ABLE_TO_PLAY_BOMBCHU_BOWLING, (Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP)) || BREG(2), NULL)) {
+        if (GameInteractor_Should(VB_BE_ABLE_TO_PLAY_BOMBCHU_BOWLING, (Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP)) || BREG(2))) {
             this->actor.textId = 0xBF;
         } else {
             this->actor.textId = 0x7058;

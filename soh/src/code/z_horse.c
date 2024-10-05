@@ -77,9 +77,9 @@ void func_8006D0EC(PlayState* play, Player* player) {
     } else if ((play->sceneNum == gSaveContext.horseData.scene) &&
                (((Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED) != 0) && (!IS_RANDO ||
                (IS_RANDO && CHECK_QUEST_ITEM(QUEST_SONG_EPONA) &&
-                    GameInteractor_Should(VB_HAVE_OCARINA_NOTE_D5, true, NULL) &&
-                    GameInteractor_Should(VB_HAVE_OCARINA_NOTE_B4, true, NULL) &&
-                    GameInteractor_Should(VB_HAVE_OCARINA_NOTE_A4, true, NULL) &&
+                    GameInteractor_Should(VB_HAVE_OCARINA_NOTE_D5, true) &&
+                    GameInteractor_Should(VB_HAVE_OCARINA_NOTE_B4, true) &&
+                    GameInteractor_Should(VB_HAVE_OCARINA_NOTE_A4, true) &&
                (INV_CONTENT(ITEM_OCARINA_FAIRY) != ITEM_NONE)))) || DREG(1) != 0)) {
         // "Set by existence of horse %d %d %d"
         osSyncPrintf("馬存在によるセット %d %d %d\n", gSaveContext.horseData.scene, Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED),

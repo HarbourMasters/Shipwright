@@ -276,7 +276,7 @@ void BgBreakwall_Wait(BgBreakwall* this, PlayState* play) {
         }
     }
 
-    if (GameInteractor_Should(VB_BG_BREAKWALL_BREAK, this->collider.base.acFlags & 2 || blueFireArrowHit, NULL)) {
+    if (GameInteractor_Should(VB_BG_BREAKWALL_BREAK, this->collider.base.acFlags & 2 || blueFireArrowHit)) {
         Vec3f effectPos;
         s32 wallType = ((this->dyna.actor.params >> 13) & 3) & 0xFF;
 
