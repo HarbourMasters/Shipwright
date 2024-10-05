@@ -61,18 +61,14 @@ void func_800AA000(f32 a, u8 b, u8 c, u8 d) {
 void func_800AA0B4(void) {
     func_800D3140(&D_80160FD0);
 
-    gPadMgr.retraceCallback = func_800A9F30;
-    gPadMgr.retraceCallbackValue = 0;
+    PADMGR_SET_RETRACE_CALLBACK(&gPadMgr, func_800A9F30, NULL);
 
 }
 
 void func_800AA0F0(void) {
-    PadMgr* padmgr = &gPadMgr;
+    PadMgr* padMgr = &gPadMgr;
 
-    if ((padmgr->retraceCallback == func_800A9F30) && (padmgr->retraceCallbackValue == 0)) {
-        padmgr->retraceCallback = NULL;
-        padmgr->retraceCallbackValue = 0;
-    }
+    PADMGR_UNSET_RETRACE_CALLBACK(padMgr, func_800A9F30, NULL);
 
     func_800D3178(&D_80160FD0);
 }

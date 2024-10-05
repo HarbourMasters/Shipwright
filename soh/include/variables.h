@@ -125,8 +125,6 @@ extern "C"
 	extern Mtx gMtxClear;
 	extern MtxF gMtxFClear;
 	extern u32 gIsCtrlr2Valid;
-	extern vu32 gIrqMgrResetStatus;
-	extern volatile OSTime gIrqMgrRetraceTime;
 	extern s16* gWaveSamples[9];
 	extern f32 gBendPitchOneOctaveFrequencies[256];
 	extern f32 gBendPitchTwoSemitonesFrequencies[256];
@@ -205,7 +203,6 @@ extern "C"
 	extern Color_RGBA8_u32 D_801614B0;
 	extern PreNmiBuff* gAppNmiBufferPtr;
 	extern SchedContext gSchedContext;
-	extern PadMgr gPadMgr;
 	extern uintptr_t gSegments[NUM_SEGMENTS];
 	extern volatile OSTime D_8016A520;
 	extern volatile OSTime D_8016A528;
