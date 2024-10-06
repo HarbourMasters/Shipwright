@@ -324,14 +324,10 @@ namespace Rando {
     }
 
     void KaleidoEntryOcarinaButtons::CalculateColors() {
-        // The commented out code in this function is for handling custom cosmetics for the
-        // A and C buttons. For contrast/accessibility reasons, I've chosen not to respect the
-        // custom cosmetics for now. I've left the code commented out in case that decision gets
-        // reversed later.
         Color_RGB8 aButtonColor = { 80, 150, 255 };
-//        if (CVarGetInteger("gCosmetics.Hud_AButton.Changed", 0)) {
-//            aButtonColor = CVarGetColor24("gCosmetics.Hud_AButton.Value", aButtonColor);
-        /*} else*/ if (CVarGetInteger("gCosmetics.DefaultColorScheme", COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
+        if (CVarGetInteger(CVAR_COSMETIC("HUD.AButton.Changed"), 0)) {
+            aButtonColor = CVarGetColor24(CVAR_COSMETIC("HUD.AButton.Value"), aButtonColor);
+        } else if (CVarGetInteger(CVAR_COSMETIC("DefaultColorScheme"), COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
             aButtonColor = { 80, 255, 150};
         }
         mButtonColors[0] = { aButtonColor.r, aButtonColor.g, aButtonColor.b, 255 };
@@ -340,24 +336,24 @@ namespace Rando {
         Color_RGB8 cDownButtonColor = cButtonsColor;
         Color_RGB8 cLeftButtonColor = cButtonsColor;
         Color_RGB8 cRightButtonColor = cButtonsColor;
-//        if (CVarGetInteger("gCosmetics.Hud_CButtons.Changed", 0)) {
-//            cUpButtonColor = CVarGetColor24("gCosmetics.Hud_CButtons.Value", cButtonsColor);
-//            cDownButtonColor = CVarGetColor24("gCosmetics.Hud_CButtons.Value", cButtonsColor);
-//            cLeftButtonColor = CVarGetColor24("gCosmetics.Hud_CButtons.Value", cButtonsColor);
-//            cRightButtonColor = CVarGetColor24("gCosmetics.Hud_CButtons.Value", cButtonsColor);
-//        }
-//        if (CVarGetInteger("gCosmetics.Hud_CUpButton.Changed", 0)) {
-//            cUpButtonColor = CVarGetColor24("gCosmetics.Hud_CUpButton.Value", cUpButtonColor);
-//        }
-//        if (CVarGetInteger("gCosmetics.Hud_CDownButton.Changed", 0)) {
-//            cDownButtonColor = CVarGetColor24("gCosmetics.Hud_CDownButton.Value", cDownButtonColor);
-//        }
-//        if (CVarGetInteger("gCosmetics.Hud_CLeftButton.Changed", 0)) {
-//            cLeftButtonColor = CVarGetColor24("gCosmetics.Hud_CLeftButton.Value", cLeftButtonColor);
-//        }
-//        if (CVarGetInteger("gCosmetics.Hud_CRightButton.Changed", 0)) {
-//            cRightButtonColor = CVarGetColor24("gCosmetics.Hud_CRightButton.Value", cRightButtonColor);
-//        }
+        if (CVarGetInteger(CVAR_COSMETIC("HUD.CButtons.Changed"), 0)) {
+            cUpButtonColor = CVarGetColor24(CVAR_COSMETIC("HUD.CButtons.Value"), cButtonsColor);
+            cDownButtonColor = CVarGetColor24(CVAR_COSMETIC("HUD.CButtons.Value"), cButtonsColor);
+            cLeftButtonColor = CVarGetColor24(CVAR_COSMETIC("HUD.CButtons.Value"), cButtonsColor);
+            cRightButtonColor = CVarGetColor24(CVAR_COSMETIC("HUD.CButtons.Value"), cButtonsColor);
+        }
+        if (CVarGetInteger(CVAR_COSMETIC("HUD.CUpButton.Changed"), 0)) {
+            cUpButtonColor = CVarGetColor24(CVAR_COSMETIC("HUD.CUpButton.Value"), cUpButtonColor);
+        }
+        if (CVarGetInteger(CVAR_COSMETIC("HUD.CDownButton.Changed"), 0)) {
+            cDownButtonColor = CVarGetColor24(CVAR_COSMETIC("HUD.CDownButton.Value"), cDownButtonColor);
+        }
+        if (CVarGetInteger(CVAR_COSMETIC("HUD.CLeftButton.Changed"), 0)) {
+            cLeftButtonColor = CVarGetColor24(CVAR_COSMETIC("HUD.CLeftButton.Value"), cLeftButtonColor);
+        }
+        if (CVarGetInteger(CVAR_COSMETIC("HUD.CRightButton.Changed"), 0)) {
+            cRightButtonColor = CVarGetColor24(CVAR_COSMETIC("HUD.CRightButton.Value"), cRightButtonColor);
+        }
         mButtonColors[1] = { cUpButtonColor.r, cUpButtonColor.g, cUpButtonColor.b, 255 };
         mButtonColors[2] = { cDownButtonColor.r, cDownButtonColor.g, cDownButtonColor.b, 255 };
         mButtonColors[3] = { cLeftButtonColor.r, cLeftButtonColor.g, cLeftButtonColor.b, 255 };
