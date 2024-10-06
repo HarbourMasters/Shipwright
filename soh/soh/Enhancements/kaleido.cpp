@@ -132,7 +132,7 @@ namespace Rando {
         }
         if (ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS).IsNot(RO_BOSS_SOULS_OFF)) {
             static const char* bossSoulNames[] = {
-                    "Ghoma's Soul",
+                    "Gohma's Soul",
                     "King Dodongo's Soul",
                     "Barinade's Soul",
                     "Phantom Ganon's Soul",
