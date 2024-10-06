@@ -15,7 +15,8 @@ void UpdatePermanentHeartLossState();
 void UpdateHyperEnemiesState();
 void UpdateHyperBossesState();
 void InitMods();
-void UpdatePatchHand(); 
+void UpdatePatchHand();
+void IceTrapFever();
 
 #ifdef __cplusplus
 }

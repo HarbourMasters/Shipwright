@@ -1394,6 +1394,10 @@ void RegisterPauseMenuHooks() {
     });
 }
 
+void IceTrapFever() {
+    gSaveContext.health = 0;
+}
+
 void InitMods() {
     RegisterTTS();
     RegisterInfiniteMoney();
