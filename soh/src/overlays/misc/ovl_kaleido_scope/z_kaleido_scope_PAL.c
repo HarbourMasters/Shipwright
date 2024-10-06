@@ -4036,9 +4036,7 @@ void KaleidoScope_Update(PlayState* play)
                         pauseCtx->state = 7;
                     } else if (CHECK_BTN_ALL(input->press.button, BTN_CUP) && pauseCtx->pageIndex == PAUSE_QUEST) {
                         Audio_PlaySoundGeneral(NA_SE_SY_DECIDE, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-                        // this starts at 0, subtracting one and taking absolute value makes it 1, then subtracting
-                        // one again puts it back at 0. So this acts as a toggle.
-                        pauseCtx->randoQuestMode = ABS(pauseCtx->randoQuestMode - 1);
+                        pauseCtx->randoQuestMode ^= 1;
                     }
                     break;
 
