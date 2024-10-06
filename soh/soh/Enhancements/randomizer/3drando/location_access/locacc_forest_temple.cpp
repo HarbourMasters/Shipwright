@@ -127,11 +127,11 @@ void RegionTable_Init_ForestTemple() {
 
   areaTable[RR_FOREST_TEMPLE_MAP_ROOM] = Region("Forest Temple Map Room", "Forest Temple", RA_FOREST_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LOCATION(RC_FOREST_TEMPLE_MAP_CHEST, Here(RR_FOREST_TEMPLE_MAP_ROOM, []{return logic->HasExplosives() || logic->CanUse(RG_MEGATON_HAMMER) || logic->CanUse(RG_FAIRY_BOW) || ((logic->CanJumpslash() || logic->CanUse(RG_FAIRY_SLINGSHOT)) && (logic->CanUse(RG_NUTS) || logic->HookshotOrBoomerang() || logic->CanShield()));})),
+                  LOCATION(RC_FOREST_TEMPLE_MAP_CHEST, logic->CanKillEnemy(RE_BLUE_BUBBLE)),
                 }, {
                   //Exits
-                  Entrance(RR_FOREST_TEMPLE_NW_OUTDOORS_LOWER, {[]{return Here(RR_FOREST_TEMPLE_MAP_ROOM, []{return logic->HasExplosives() || logic->CanUse(RG_MEGATON_HAMMER) || logic->CanUse(RG_FAIRY_BOW) || ((logic->CanJumpslash() || logic->CanUse(RG_FAIRY_SLINGSHOT)) && (logic->CanUse(RG_NUTS) || logic->HookshotOrBoomerang() || logic->CanShield()));});}}),
-                  Entrance(RR_FOREST_TEMPLE_NE_OUTDOORS_UPPER, {[]{return Here(RR_FOREST_TEMPLE_MAP_ROOM, []{return logic->HasExplosives() || logic->CanUse(RG_MEGATON_HAMMER) || logic->CanUse(RG_FAIRY_BOW) || ((logic->CanJumpslash() || logic->CanUse(RG_FAIRY_SLINGSHOT)) && (logic->CanUse(RG_NUTS) || logic->HookshotOrBoomerang() || logic->CanShield()));});}}),
+                  Entrance(RR_FOREST_TEMPLE_NW_OUTDOORS_LOWER, {[]{return Here(RR_FOREST_TEMPLE_MAP_ROOM, []{return logic->CanKillEnemy(RE_BLUE_BUBBLE);});}}),
+                  Entrance(RR_FOREST_TEMPLE_NE_OUTDOORS_UPPER, {[]{return Here(RR_FOREST_TEMPLE_MAP_ROOM, []{return logic->CanKillEnemy(RE_BLUE_BUBBLE);});}}),
   });
 
   areaTable[RR_FOREST_TEMPLE_SEWER] = Region("Forest Temple Sewer", "Forest Temple", RA_FOREST_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
@@ -145,7 +145,7 @@ void RegionTable_Init_ForestTemple() {
 
   areaTable[RR_FOREST_TEMPLE_BELOW_BOSS_KEY_CHEST] = Region("Forest Temple Below Boss Key Chest", "Forest Temple", RA_FOREST_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
-                  Entrance(RR_FOREST_TEMPLE_NW_OUTDOORS_UPPER, {[]{return Here(RR_FOREST_TEMPLE_BELOW_BOSS_KEY_CHEST, []{return logic->HasExplosives() || logic->CanUse(RG_MEGATON_HAMMER) || logic->CanUse(RG_FAIRY_BOW) || ((logic->CanJumpslash() || logic->CanUse(RG_FAIRY_SLINGSHOT)) && (logic->CanUse(RG_NUTS) || logic->HookshotOrBoomerang() || logic->CanShield()));});}}),
+                  Entrance(RR_FOREST_TEMPLE_NW_OUTDOORS_UPPER, {[]{return Here(RR_FOREST_TEMPLE_BELOW_BOSS_KEY_CHEST, []{return logic->CanKillEnemy(RE_BLUE_BUBBLE);});}}),
   });
 
   areaTable[RR_FOREST_TEMPLE_FLOORMASTER_ROOM] = Region("Forest Temple Floormaster Room", "Forest Temple", RA_FOREST_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {

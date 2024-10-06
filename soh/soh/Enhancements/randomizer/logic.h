@@ -40,15 +40,6 @@ class Logic {
 
     // Trade Quest Events
     bool WakeUpAdultTalon = false;
-    bool CojiroAccess = false;
-    bool OddMushroomAccess = false;
-    bool OddPoulticeAccess = false;
-    bool PoachersSawAccess = false;
-    bool BrokenSwordAccess = false;
-    bool PrescriptionAccess = false;
-    bool EyeballFrogAccess = false;
-    bool EyedropsAccess = false;
-    bool DisableTradeRevert = false;
 
     // Dungeon Clears
     bool DekuTreeClear = false;
@@ -199,7 +190,9 @@ class Logic {
     bool CanBreakLowerBeehives();
     bool HasFireSource();
     bool HasFireSourceWithTorch();
+    bool TradeQuestStep(RandomizerGet rg);
     bool CanFinishGerudoFortress();
+    bool CanStandingShield();
     bool CanShield();
     bool CanUseProjectile();
     bool CanBuildRainbowBridge();

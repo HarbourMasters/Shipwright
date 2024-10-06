@@ -113,8 +113,6 @@ void RegionTable_Init_LostWoods() {
 
   areaTable[RR_THE_LOST_WOODS] = Region("Lost Woods", "Lost Woods", RA_THE_LOST_WOODS, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&logic->OddMushroomAccess, {[]{return logic->OddMushroomAccess || (logic->IsAdult && (logic->CojiroAccess || logic->CanUse(RG_COJIRO)));}}),
-                  EventAccess(&logic->PoachersSawAccess, {[]{return logic->PoachersSawAccess || (logic->IsAdult && logic->OddPoulticeAccess);}}),
                   EventAccess(&logic->GossipStoneFairy,  {[]{return logic->CallGossipFairyExceptSuns();}}),
                   EventAccess(&logic->BeanPlantFairy,    {[]{return logic->BeanPlantFairy    || logic->CanUse(RG_SONG_OF_STORMS);}}),
                   EventAccess(&logic->BugShrub,          {[]{return logic->IsChild && logic->CanCutShrubs();}}),
@@ -122,7 +120,8 @@ void RegionTable_Init_LostWoods() {
                   //Locations
                   LOCATION(RC_LW_SKULL_KID,                 logic->IsChild && logic->CanUse(RG_SARIAS_SONG)),
                   LOCATION(RC_LW_TRADE_COJIRO,              logic->IsAdult && logic->CanUse(RG_COJIRO)),
-                  LOCATION(RC_LW_TRADE_ODD_POTION,          logic->IsAdult && logic->CanUse(RG_ODD_POTION) && logic->CanUse(RG_COJIRO)),
+                  //I cannot think of a case where you can use Odd pot but not Cojiro to reset the quadrant should you have both. If one exists, add it to logic
+                  LOCATION(RC_LW_TRADE_ODD_POTION,          logic->IsAdult && logic->CanUse(RG_ODD_POTION)),
                                                                                                 //all 5 buttons are logically required for memory game
                                                                                                 //because the chances of being able to beat it
                                                                                                 //every time you attempt it are as follows:

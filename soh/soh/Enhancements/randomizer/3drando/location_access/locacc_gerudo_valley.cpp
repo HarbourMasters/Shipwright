@@ -54,10 +54,7 @@ void RegionTable_Init_GerudoValley() {
                   Entrance(RR_GV_LOWER_STREAM, {[]{return true;}}),
   });
 
-  areaTable[RR_GV_FORTRESS_SIDE] = Region("GV Fortress Side", "Gerudo Valley", RA_GERUDO_VALLEY, DAY_NIGHT_CYCLE, {
-                  //Events
-                  EventAccess(&logic->BrokenSwordAccess, {[]{return logic->IsAdult && (logic->PoachersSawAccess || logic->CanUse(RG_POACHERS_SAW));}}),
-                }, {
+  areaTable[RR_GV_FORTRESS_SIDE] = Region("GV Fortress Side", "Gerudo Valley", RA_GERUDO_VALLEY, DAY_NIGHT_CYCLE, {}, {
                   //Locations                                       
                   LOCATION(RC_GV_CHEST,          logic->IsAdult && logic->CanUse(RG_MEGATON_HAMMER)),
                   LOCATION(RC_GV_TRADE_SAW,      logic->IsAdult && logic->CanUse(RG_POACHERS_SAW)),
