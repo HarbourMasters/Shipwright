@@ -20,6 +20,10 @@ extern PlayState* gPlayState;
 
 #include <sstream>
 
+extern "C" {
+void KaleidoScope_MoveCursorToSpecialPos(PlayState* play, u16 specialPos);
+}
+
 namespace Rando {
 
     void KaleidoEntryIcon::LoadIconTex(std::vector<Gfx>* mEntryDl) {
@@ -186,15 +190,38 @@ namespace Rando {
         // in its Draw functions, which get called after their update functions. I hate it but fixing
         // it would be a much larger Kaleido change.
         bool shouldScroll = false;
-        if ((pauseCtx->stickRelY > 30) || CHECK_BTN_ALL(input->press.button, BTN_DUP)) {
-            if (mTopIndex > 0) {
-                mTopIndex--;
-                shouldScroll = true;
-            }
-        } else if ((pauseCtx->stickRelY < -30) || CHECK_BTN_ALL(input->press.button, BTN_DDOWN)) {
-            if (mTopIndex + mNumVisible < mEntries.size()) {
-                mTopIndex++;
-                shouldScroll = true;
+        bool dpad = CVarGetInteger(CVAR_SETTING("DPadOnPause"), 0);
+        if ((!pauseCtx->unk_1E4 || (pauseCtx->unk_1E4 == 5) || (pauseCtx->unk_1E4 == 8)) &&
+            (pauseCtx->pageIndex == PAUSE_QUEST)) {
+            if (pauseCtx->cursorSpecialPos == 0) {
+                if ((pauseCtx->stickRelY > 30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DUP))) {
+                    if (mTopIndex > 0) {
+                        mTopIndex--;
+                        shouldScroll = true;
+                    }
+                } else if ((pauseCtx->stickRelY < -30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DDOWN))) {
+                    if (mTopIndex + mNumVisible < mEntries.size()) {
+                        mTopIndex++;
+                        shouldScroll = true;
+                    }
+                }
+                if ((pauseCtx->stickRelX < -30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DLEFT))) {
+                    KaleidoScope_MoveCursorToSpecialPos(play, PAUSE_CURSOR_PAGE_LEFT);
+                    pauseCtx->unk_1E4 = 0;
+                } else if ((pauseCtx->stickRelX > 30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DRIGHT))) {
+                    KaleidoScope_MoveCursorToSpecialPos(play, PAUSE_CURSOR_PAGE_RIGHT);
+                    pauseCtx->unk_1E4 = 0;
+                }
+            } else if (pauseCtx->cursorSpecialPos == PAUSE_CURSOR_PAGE_LEFT) {
+                if ((pauseCtx->stickRelX > 30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DRIGHT))) {
+                    pauseCtx->cursorSpecialPos = 0;
+                    Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                }
+            } else if (pauseCtx->cursorSpecialPos == PAUSE_CURSOR_PAGE_RIGHT) {
+                if ((pauseCtx->stickRelX < -30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DLEFT))) {
+                    pauseCtx->cursorSpecialPos = 0;
+                    Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                }
             }
         }
         int yOffset = 2;
