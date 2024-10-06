@@ -65,7 +65,6 @@ namespace Rando {
         }
 
         Matrix_Translate(mX, mY, 0.0f, MTXMODE_APPLY);
-//        Matrix_Scale(0.75f, 0.75f, 0.75f, MTXMODE_APPLY);
 
         mEntryDl->push_back(gsSPMatrix(Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__), G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW));
 
