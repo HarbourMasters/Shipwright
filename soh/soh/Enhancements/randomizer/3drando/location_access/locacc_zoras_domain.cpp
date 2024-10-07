@@ -84,7 +84,6 @@ void RegionTable_Init_ZorasDomain() {
 
   areaTable[RR_ZORAS_DOMAIN] = Region("Zoras Domain", "Zoras Domain", RA_ZORAS_DOMAIN, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&logic->EyeballFrogAccess, {[]{return logic->EyeballFrogAccess || (logic->IsAdult && logic->KingZoraThawed && (logic->CanUse(RG_EYEDROPS) || logic->CanUse(RG_EYEBALL_FROG) || logic->CanUse(RG_PRESCRIPTION) || logic->PrescriptionAccess));}}),
                   EventAccess(&logic->GossipStoneFairy,  {[]{return logic->CallGossipFairyExceptSuns();}}),
                   EventAccess(&logic->NutPot,            {[]{return true;}}),
                   EventAccess(&logic->StickPot,          {[]{return logic->StickPot          || logic->IsChild;}}),

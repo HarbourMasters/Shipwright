@@ -151,10 +151,7 @@ void RegionTable_Init_HyruleField() {
                   Entrance(RR_HYRULE_FIELD, {[]{return true;}}),
   });
 
-  areaTable[RR_LH_LAB] = Region("LH Lab", "LH Lab", RA_NONE, NO_DAY_NIGHT_CYCLE, {
-                  //Events
-                  EventAccess(&logic->EyedropsAccess, {[]{return logic->EyedropsAccess || (logic->IsAdult && (logic->EyeballFrogAccess || (logic->CanUse(RG_EYEBALL_FROG) && logic->DisableTradeRevert)));}}),
-                }, {
+  areaTable[RR_LH_LAB] = Region("LH Lab", "LH Lab", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LOCATION(RC_LH_LAB_DIVE,     logic->HasItem(RG_GOLDEN_SCALE) || (ctx->GetTrickOption(RT_LH_LAB_DIVING) && logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_HOOKSHOT))),
                   LOCATION(RC_LH_TRADE_FROG,   logic->IsAdult && logic->CanUse(RG_EYEBALL_FROG)),
