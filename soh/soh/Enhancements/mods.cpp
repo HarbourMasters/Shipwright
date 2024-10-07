@@ -35,6 +35,7 @@
 #include "src/overlays/actors/ovl_En_Door/z_en_door.h"
 #include "objects/object_link_boy/object_link_boy.h"
 #include "objects/object_link_child/object_link_child.h"
+#include "kaleido.h"
 
 extern "C" {
 #include <z64.h>
@@ -1676,4 +1677,5 @@ void InitMods() {
     RegisterHurtContainerModeHandler();
     RegisterPauseMenuHooks();
     RegisterSkeletonKey();
+    RandoKaleido_RegisterHooks();
 }
