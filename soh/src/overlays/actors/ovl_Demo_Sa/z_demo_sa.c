@@ -8,7 +8,6 @@
 #include "overlays/actors/ovl_En_Elf/z_en_elf.h"
 #include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
 #include "objects/object_sa/object_sa.h"
-#include "soh/Enhancements/boss-rush/BossRush.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #include "vt.h"
@@ -257,21 +256,13 @@ void func_8098E960(DemoSa* this, PlayState* play) {
 
     if ((gSaveContext.chamberCutsceneNum == 0) && (gSaveContext.sceneSetupIndex < 4)) {
         player = GET_PLAYER(play);
-        if (!IS_BOSS_RUSH) {
-            this->action = 1;
-            play->csCtx.segment = D_8099010C;
-            gSaveContext.cutsceneTrigger = 2;
-            if (GameInteractor_Should(VB_GIVE_ITEM_FOREST_MEDALLION, true, NULL)) {
-                Item_Give(play, ITEM_MEDALLION_FOREST);
-            }
-            player->actor.world.rot.y = player->actor.shape.rot.y = this->actor.world.rot.y + 0x8000;
-        } else {
-            this->action = 1;
-            if (gSaveContext.linkAge == LINK_AGE_CHILD) {
-                player->actor.world.rot.y = player->actor.shape.rot.y = -5461 + 0x8000;
-            }
-            BossRush_SpawnBlueWarps(play);
+        this->action = 1;
+        play->csCtx.segment = D_8099010C;
+        gSaveContext.cutsceneTrigger = 2;
+        if (GameInteractor_Should(VB_GIVE_ITEM_FOREST_MEDALLION, true, NULL)) {
+            Item_Give(play, ITEM_MEDALLION_FOREST);
         }
+        player->actor.world.rot.y = player->actor.shape.rot.y = this->actor.world.rot.y + 0x8000;
     }
 }
 
