@@ -5,6 +5,7 @@
 #include "soh/Enhancements/item-tables/ItemTableManager.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "soh/Enhancements/randomizer/dungeon.h"
+#include "soh/Enhancements/randomizer/fishsanity.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
@@ -39,6 +40,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_Door_Shutter/z_door_shutter.h"
 #include "src/overlays/actors/ovl_Door_Gerudo/z_door_gerudo.h"
 #include "src/overlays/actors/ovl_En_Xc/z_en_xc.h"
+#include "src/overlays/actors/ovl_Fishing/z_fishing.h"
 #include "adult_trade_shuffle.h"
 #include "draw.h"
 
@@ -584,6 +586,22 @@ void Player_Action_8084E6D4_override(Player* player, PlayState* play) {
 void func_8083A434_override(PlayState* play, Player* player) {
     func_80835DAC(play, player, Player_Action_8084E6D4_override, 0);
     player->stateFlags1 |= PLAYER_STATE1_GETTING_ITEM | PLAYER_STATE1_IN_CUTSCENE;
+}
+
+
+bool ShouldGiveFishingPrize(f32 sFishOnHandLength){
+    // RANDOTODO: update the enhancement sliders to not allow
+    // values above rando fish weight values when rando'd
+    if(LINK_IS_CHILD) { 
+        int32_t weight = CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFishing"), 0) ? CVarGetInteger(CVAR_ENHANCEMENT("MinimumFishWeightChild"), 10) : 10;
+        f32 score = sqrt(((f32)weight - 0.5f) / 0.0036f);
+        return sFishOnHandLength >= score && (IS_RANDO ? !Flags_GetRandomizerInf(RAND_INF_CHILD_FISHING) : !(HIGH_SCORE(HS_FISHING) & HS_FISH_PRIZE_CHILD));
+    } else 
+    {
+        int32_t weight = CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFishing"), 0) ? CVarGetInteger(CVAR_ENHANCEMENT("MinimumFishWeightAdult"), 13) : 13;
+        f32 score = sqrt(((f32)weight - 0.5f) / 0.0036f);
+        return sFishOnHandLength >= score && (IS_RANDO ? !Flags_GetRandomizerInf(RAND_INF_ADULT_FISHING) : !(HIGH_SCORE(HS_FISHING) & HS_FISH_PRIZE_ADULT));
+    }
 }
 
 void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void* optionalArg) {
@@ -1237,6 +1255,52 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
             // Only check for bomb bag when bombchus aren't in logic
             // and only check for bombchus when bombchus are in logic
             *should = INV_CONTENT((RAND_GET_OPTION(RSK_BOMBCHUS_IN_LOGIC) ? ITEM_BOMBCHU : ITEM_BOMB)) != ITEM_NONE;
+            break;
+        }
+        case VB_SHOULD_CHECK_FOR_FISHING_RECORD: {
+            f32 sFishOnHandLength = *static_cast<f32*>(optionalArg);
+            *should = *should || ShouldGiveFishingPrize(sFishOnHandLength);
+            break;
+        }
+        case VB_SHOULD_SET_FISHING_RECORD: {
+            VBFishingData* fishData = static_cast<VBFishingData*>(optionalArg);
+            *should = (s16)fishData->sFishingRecordLength < (s16)fishData->fishWeight;
+            if (!*should){
+                *fishData->sFishOnHandLength = 0.0f;
+            }
+            break;
+        }
+        case VB_SHOULD_GIVE_VANILLA_FISHING_PRIZE: {
+            VBFishingData* fishData = static_cast<VBFishingData*>(optionalArg);
+            *should = !IS_RANDO && ShouldGiveFishingPrize(fishData->fishWeight);
+            break;
+        }
+        case VB_GIVE_RANDO_FISHING_PRIZE: {
+            if (IS_RANDO){
+                VBFishingData* fishData = static_cast<VBFishingData*>(optionalArg);
+                if (*fishData->sFishOnHandIsLoach) {
+                    if (!Flags_GetRandomizerInf(RAND_INF_CAUGHT_LOACH) &&
+                        OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY) == RO_FISHSANITY_HYRULE_LOACH){
+                        Flags_SetRandomizerInf(RAND_INF_CAUGHT_LOACH);
+                        Message_StartTextbox(gPlayState, TEXT_FISHING_RELEASE_THIS_ONE, NULL);
+                        *should = true;
+                        fishData->actor->stateAndTimer = 20;
+                    }
+                } else {
+                    if (ShouldGiveFishingPrize(fishData->fishWeight)){
+                        if (LINK_IS_CHILD){
+                            Flags_SetRandomizerInf(RAND_INF_CHILD_FISHING);
+                            HIGH_SCORE(HS_FISHING) |= HS_FISH_PRIZE_CHILD;
+                        } else {
+                            Flags_SetRandomizerInf(RAND_INF_ADULT_FISHING);
+                            HIGH_SCORE(HS_FISHING) |= HS_FISH_PRIZE_ADULT;
+                        }
+                        *should = true;
+                        *fishData->sSinkingLureLocation = (u8)Rand_ZeroFloat(3.999f) + 1;
+                        fishData->actor->stateAndTimer = 0;
+                    }
+                }
+            }
             break;
         }
         case VB_TRADE_TIMER_ODD_MUSHROOM:
@@ -1896,6 +1960,12 @@ void RandomizerRegisterHooks() {
     static uint32_t onGameFrameUpdateHook = 0;
     static uint32_t onSceneSpawnActorsHook = 0;
 
+    static uint32_t fishsanityOnActorInitHook = 0;
+    static uint32_t fishsanityOnFlagSetHook = 0;
+    static uint32_t fishsanityOnActorUpdateHook = 0;
+    static uint32_t fishsanityOnSceneInitHook = 0;
+    static uint32_t fishsanityOnVanillaBehaviorHook = 0;
+
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) {
         randomizerQueuedChecks = std::queue<RandomizerCheck>();
         randomizerQueuedCheck = RC_UNKNOWN_CHECK;
@@ -1914,6 +1984,12 @@ void RandomizerRegisterHooks() {
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnGameFrameUpdate>(onGameFrameUpdateHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneSpawnActors>(onSceneSpawnActorsHook);
 
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorInit>(fishsanityOnActorInitHook);
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnFlagSet>(fishsanityOnFlagSetHook);
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(fishsanityOnActorUpdateHook);
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(fishsanityOnSceneInitHook);
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnVanillaBehavior>(fishsanityOnVanillaBehaviorHook);
+
         onFlagSetHook = 0;
         onSceneFlagSetHook = 0;
         onPlayerUpdateForRCQueueHook = 0;
@@ -1926,6 +2002,12 @@ void RandomizerRegisterHooks() {
         onPlayerUpdateHook = 0;
         onGameFrameUpdateHook = 0;
         onSceneSpawnActorsHook = 0;
+
+        fishsanityOnActorInitHook = 0;
+        fishsanityOnFlagSetHook = 0;
+        fishsanityOnActorUpdateHook = 0;
+        fishsanityOnSceneInitHook = 0;
+        fishsanityOnVanillaBehaviorHook = 0;
 
         if (!IS_RANDO) return;
 
@@ -1949,5 +2031,15 @@ void RandomizerRegisterHooks() {
         onPlayerUpdateHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>(RandomizerOnPlayerUpdateHandler);
         onGameFrameUpdateHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>(RandomizerOnGameFrameUpdateHandler);
         onSceneSpawnActorsHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneSpawnActors>(RandomizerOnSceneSpawnActorsHandler);
+
+        if (RAND_GET_OPTION(RSK_FISHSANITY) != RO_FISHSANITY_OFF) {
+            OTRGlobals::Instance->gRandoContext->GetFishsanity()->InitializeFromSave();
+
+            fishsanityOnActorInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>(Rando::Fishsanity::OnActorInitHandler);
+            fishsanityOnFlagSetHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnFlagSet>(Rando::Fishsanity::OnFlagSetHandler);
+            fishsanityOnActorUpdateHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>(Rando::Fishsanity::OnActorUpdateHandler);
+            fishsanityOnSceneInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>(Rando::Fishsanity::OnSceneInitHandler);
+            fishsanityOnVanillaBehaviorHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnVanillaBehavior>(Rando::Fishsanity::OnVanillaBehaviorHandler);
+        }
     });
 }

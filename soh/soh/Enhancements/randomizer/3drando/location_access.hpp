@@ -12,7 +12,7 @@
 typedef bool (*ConditionFn)();
 
 // I hate this but every alternative I can think of right now is worse
-extern Rando::Context* randoCtx;
+extern Rando::Context* ctx;
 extern std::shared_ptr<Rando::Logic> logic;
 
 class EventAccess {
@@ -53,7 +53,6 @@ public:
       time = true;
       age = true;
 
-      logic->UpdateHelpers();
       return ConditionsMet();
     }
 
@@ -211,7 +210,7 @@ public:
     //access to this area. For example: if there are rocks that block a path
     //which both child and adult can access, adult having hammer can give
     //both child and adult access to the path.
-    bool HereCheck(ConditionFn condition) {
+    bool Here(ConditionFn condition) {
 
       //store current age variables
       bool pastAdult = logic->IsAdult;
@@ -221,14 +220,12 @@ public:
       logic->IsChild = Child();
       logic->IsAdult = Adult();
 
-      //update helpers and check condition as well as having at least child or adult access
-      logic->UpdateHelpers();
+      //heck condition as well as having at least child or adult access
       bool hereVal = condition() && (logic->IsAdult || logic->IsChild);
 
       //set back age variables
       logic->IsChild = pastChild;
       logic->IsAdult = pastAdult;
-      logic->UpdateHelpers();
 
       return hereVal;
     }
@@ -249,7 +246,7 @@ public:
 extern std::array<Region, RR_MAX> areaTable;
 extern std::vector<EventAccess> grottoEvents;
 
-bool Here(const RandomizerRegion region, ConditionFn condition);
+bool Here(const RandomizerRegion region, ConditionFn condition); //RANDOTODO make a less stupid way to check own at either age than self referncing with this
 bool CanPlantBean(const RandomizerRegion region);
 bool BothAges(const RandomizerRegion region);
 bool ChildCanAccess(const RandomizerRegion region);

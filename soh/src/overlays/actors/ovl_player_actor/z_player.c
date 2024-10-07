@@ -29,7 +29,6 @@
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/randomizer/randomizer_grotto.h"
-#include "soh/Enhancements/randomizer/fishsanity.h"
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
@@ -13954,33 +13953,9 @@ void Player_Action_8084ECA4(Player* this, PlayState* play) {
 
     func_8083721C(this);
 
-    // TODO: Rework the bottle rando code in vanilla behavior overhaul
     if (LinkAnimation_Update(play, &this->skelAnime)) {
         if (this->av1.actionVar1 != 0) {
-            if (IS_RANDO && this->av1.actionVar1 < 0) {
-                rc = this->av2.actionVar2;
-                // Award rando item; this should only give us GI_NONE if something went wrong during the catch setup
-                gi = Randomizer_GetItemFromKnownCheck(rc, GI_NONE);
-                temp = Randomizer_GetRandomizerInfFromCheck(rc);
-                // Either we can't give an item, we can't tell if we've gotten the check, or we have definitely gotten the check
-                if (gi.getItemId == GI_NONE || temp == RAND_INF_MAX || Flags_GetRandomizerInf(temp)) {
-                    this->av1.actionVar1 = 0;
-                    if (this->interactRangeActor != NULL)
-                        this->interactRangeActor->parent = NULL;
-                }
-                // Item get cutscene hasn't played yet
-                else if((this->interactRangeActor == NULL && !(this->stateFlags1 & PLAYER_STATE1_ITEM_OVER_HEAD)) || !Actor_HasParent(this->interactRangeActor, play)) {
-                    // Can't guarantee that whatever we "caught" is actually going to still exist
-                    if (GiveItemEntryWithoutActor(play, gi)) {
-                        // have to set this flag manually to prevent interactRangeActor from being wiped out
-                        this->stateFlags1 |= PLAYER_STATE1_ITEM_OVER_HEAD;
-                        this->pendingFlag.flagID = temp;
-                        this->pendingFlag.flagType = FLAG_RANDOMIZER_INF;
-                        Flags_SetRandomizerInf(temp);
-                    }
-
-                }
-            } else if (this->av2.actionVar2 == 0) {
+            if (this->av2.actionVar2 == 0) {
                 if (CVarGetInteger(CVAR_ENHANCEMENT("FastDrops"), 0)) {
                     this->av1.actionVar1 = 0;
                 } else {
@@ -14016,42 +13991,15 @@ void Player_Action_8084ECA4(Player* this, PlayState* play) {
                             }
                         }
 
-                        if (i < 4) {
+                        if (GameInteractor_Should(VB_BOTTLE_ACTOR, i < 4, this->interactRangeActor)) {
                             this->av1.actionVar1 = i + 1;
                             this->av2.actionVar2 = 0;
                             this->interactRangeActor->parent = &this->actor;
-                            // TODO: this should probably be refactored a bit, maybe rehome some of this to rando instead
-                            if (IS_RANDO) {
-                                // Check if fishsanity applies for this actor
-                                if (Randomizer_GetOverworldFishShuffled()) {
-                                    fish = Randomizer_IdentifyFish(play->sceneNum, this->interactRangeActor->params);
-                                    if (fish.randomizerCheck != RC_UNKNOWN_CHECK && !Flags_GetRandomizerInf(fish.randomizerInf)) {
-                                        gi = Randomizer_GetItemFromKnownCheck(fish.randomizerCheck, GI_FISH);
-                                        rc = fish.randomizerCheck;
-                                        // check if the item is a bottle item anyway
-                                        catchInfo = NULL;
-                                        for (j = 0; j < 4; j++) {
-                                            if (D_80854A04[j].itemId == gi.itemId) {
-                                                catchInfo = &D_80854A04[j];
-                                                break;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-
-                            // Vanilla behavior/rando gave a bottle item
-                            if (!IS_RANDO || catchInfo != NULL) {
-                                Player_UpdateBottleHeld(play, this, catchInfo->itemId, ABS(catchInfo->itemAction));
-                                if (!CVarGetInteger(CVAR_ENHANCEMENT("FastDrops"), 0)) {
-                                    this->stateFlags1 |= PLAYER_STATE1_IN_ITEM_CS | PLAYER_STATE1_IN_CUTSCENE;
-                                    Player_AnimPlayOnceAdjusted(play, this, sp24->unk_04);
-                                    func_80835EA4(play, 4);
-                                }
-                            } else if (IS_RANDO && gi.itemId != ITEM_NONE) {
-                                // Non-bottle item found from rando, flag for special behavior
-                                this->av1.actionVar1 = -1;
-                                this->av2.actionVar2 = rc;
+                            Player_UpdateBottleHeld(play, this, catchInfo->itemId, ABS(catchInfo->itemAction));
+                            if (!CVarGetInteger(CVAR_ENHANCEMENT("FastDrops"), 0)) {
+                                this->stateFlags1 |= PLAYER_STATE1_IN_ITEM_CS | PLAYER_STATE1_IN_CUTSCENE;
+                                Player_AnimPlayOnceAdjusted(play, this, sp24->unk_04);
+                                func_80835EA4(play, 4);
                             }
                         }
                     }

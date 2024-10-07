@@ -11,6 +11,7 @@
 #include "fishsanity.h"
 #include "macros.h"
 #include "3drando/hints.hpp"
+#include "../kaleido.h"
 
 #include <fstream>
 #include <spdlog/spdlog.h>
@@ -105,10 +106,9 @@ void Context::PlaceItemInLocation(const RandomizerCheck locKey, const Randomizer
 
     // If we're placing a non-shop item in a shop location, we want to record it for custom messages
     if (StaticData::RetrieveItem(item).GetItemType() != ITEMTYPE_SHOP &&
-        StaticData::GetLocation(locKey)->IsCategory(Category::cShop)) {
-        const int index = TransformShopIndex(GetShopIndex(locKey));
-        NonShopItems[index].Name = StaticData::RetrieveItem(item).GetName();
-        NonShopItems[index].Repurchaseable =
+        StaticData::GetLocation(locKey)->GetRCType() == RCTYPE_SHOP) {
+        NonShopItems[locKey].Name = StaticData::RetrieveItem(item).GetName();
+        NonShopItems[locKey].Repurchaseable =
             StaticData::RetrieveItem(item).GetItemType() == ITEMTYPE_REFILL ||
             StaticData::RetrieveItem(item).GetHintKey() == RHT_PROGRESSIVE_BOMBCHUS;
     }
@@ -136,11 +136,11 @@ void Context::AddLocations(const Container& locations, std::vector<RandomizerChe
 
 void Context::GenerateLocationPool() {
     allLocations.clear();
-    AddLocation(RC_LINKS_POCKET);
+    //AddLocation(RC_LINKS_POCKET); this is being added twice now
     if (mSettings->GetOption(RSK_TRIFORCE_HUNT)) {
         AddLocation(RC_TRIFORCE_COMPLETED);
     }
-    AddLocations(StaticData::overworldLocations);
+    AddLocations(StaticData::GetOverworldLocations());
 
     if (mSettings->GetOption(RSK_FISHSANITY).IsNot(RO_FISHSANITY_OFF)) {
         AddLocations(mFishsanity->GetFishsanityLocations().first);
@@ -152,7 +152,7 @@ void Context::GenerateLocationPool() {
 }
 
 void Context::AddExcludedOptions() {
-    AddLocations(StaticData::overworldLocations, &everyPossibleLocation);
+    AddLocations(StaticData::GetOverworldLocations(), &everyPossibleLocation);
     for (const auto dungeon : mDungeons->GetDungeonList()) {
         AddLocations(dungeon->GetEveryLocation(), &everyPossibleLocation);
     }
@@ -161,16 +161,14 @@ void Context::AddExcludedOptions() {
     }
 }
 
-std::vector<RandomizerCheck> Context::GetLocations(const std::vector<RandomizerCheck>& locationPool,
-                                                   const Category categoryInclude, const Category categoryExclude) {
-    std::vector<RandomizerCheck> locationsInCategory;
+std::vector<RandomizerCheck> Context::GetLocations(const std::vector<RandomizerCheck>& locationPool, const RandomizerCheckType checkType) {
+    std::vector<RandomizerCheck> locationsOfType;
     for (RandomizerCheck locKey : locationPool) {
-        if (StaticData::GetLocation(locKey)->IsCategory(categoryInclude) &&
-            !StaticData::GetLocation(locKey)->IsCategory(categoryExclude)) {
-            locationsInCategory.push_back(locKey);
+        if (StaticData::GetLocation(locKey)->GetRCType() == checkType) {
+            locationsOfType.push_back(locKey);
         }
     }
-    return locationsInCategory;
+    return locationsOfType;
 }
 
 void Context::ClearItemLocations() {
@@ -190,25 +188,13 @@ void Context::ItemReset() {
 }
 
 void Context::LocationReset() {
-    for (const RandomizerCheck il : allLocations) {
-        GetItemLocation(il)->RemoveFromPool();
-    }
-
-    for (const RandomizerCheck il : StaticData::dungeonRewardLocations) {
-        GetItemLocation(il)->RemoveFromPool();
-    }
-
-    for (const RandomizerCheck il : StaticData::gossipStoneLocations) {
-        GetItemLocation(il)->RemoveFromPool();
-    }
-
-    for (const RandomizerCheck il : StaticData::staticHintLocations) {
-        GetItemLocation(il)->RemoveFromPool();
+    for (auto& il : itemLocationTable) {
+        il.RemoveFromPool();
     }
 }
 
 void Context::HintReset() {
-    for (const RandomizerCheck il : StaticData::gossipStoneLocations) {
+    for (const RandomizerCheck il : StaticData::GetGossipStoneLocations()) {
         GetItemLocation(il)->ResetVariables();
     }
     for (Hint& hint : hintTable){
@@ -227,8 +213,8 @@ void Context::CreateItemOverrides() {
             iceTrapModels[locKey] = val.LooksLike();
             val.SetTrickName(GetIceTrapName(val.LooksLike()));
             // If this is ice trap is in a shop, change the name based on what the model will look like
-            if (loc->IsCategory(Category::cShop)) {
-                NonShopItems[TransformShopIndex(GetShopIndex(locKey))].Name = val.GetTrickName();
+            if (loc->GetRCType() == RCTYPE_SHOP) {
+                NonShopItems[locKey].Name = val.GetTrickName();
             }
             overrides[locKey] = val;
         }
@@ -446,4 +432,10 @@ TrickOption& Context::GetTrickOption(const RandomizerTrick key) const {
     return mSettings->GetTrickOption(key);
 }
 
+std::shared_ptr<Kaleido> Context::GetKaleido() {
+    if (mKaleido == nullptr) {
+        mKaleido = std::make_shared<Kaleido>();
+    }
+    return mKaleido;
+}
 } // namespace Rando

@@ -57,11 +57,19 @@ typedef struct Fishing {
     /* 0x0220 */ LightInfo lightInfo;
     /* 0x0230 */ ColliderJntSph collider;
     /* 0x0250 */ ColliderJntSphElement colliderElements[12];
-    /*        */ s16 fishsanityParams;
 } Fishing; // size = 0x0550
 
 #define EN_FISH_OWNER 1      // param for owner of pond. default if params<100
 #define EN_FISH_PARAM 100    // param base for fish in pond.
 #define EN_FISH_AQUARIUM 200 // param for record fish in tank.
+
+struct VBFishingData {
+    Fishing* actor;
+    u8* sFishOnHandIsLoach;
+    u8* sSinkingLureLocation;
+    f32* sFishOnHandLength;
+    f32 fishWeight;
+    f32 sFishingRecordLength;
+};
 
 #endif

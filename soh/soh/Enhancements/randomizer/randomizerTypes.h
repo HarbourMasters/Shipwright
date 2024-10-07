@@ -247,23 +247,25 @@ typedef enum {
     RCTYPE_COW,                        // Cows
     RCTYPE_ADULT_TRADE,                // Adult trade quest checks
     RCTYPE_FROG_SONG,                  // Frog song purple rupee checks
-    RCTYPE_MAP_COMPASS,                // Maps/Compasses
+    RCTYPE_MAP,                        // Maps
+    RCTYPE_COMPASS,                    // Compasses
     RCTYPE_SMALL_KEY,                  // Small Keys
     RCTYPE_GF_KEY,                     // Gerudo Fortress Keys
     RCTYPE_BOSS_KEY,                   // Boss Keys
     RCTYPE_GANON_BOSS_KEY,             // Ganon's boss key
-    RCTYPE_SHOP,                       // shops
-    RCTYPE_SCRUB,                      // scrubs
-    RCTYPE_MERCHANT,                   // merchants
+    RCTYPE_SHOP,                       // Shops
+    RCTYPE_SCRUB,                      // Scrubs
+    RCTYPE_MERCHANT,                   // Merchants
     RCTYPE_CHEST_GAME,                 // RANDOTODO replace this once we implement it, just using it to exclude for now
     RCTYPE_LINKS_POCKET,               // RANDOTODO this feels hacky, replace with better starting items
     RCTYPE_GOSSIP_STONE,               // RANDOTODO make these into event access
+    RCTYPE_STATIC_HINT,                // RANDOTODO make these into event access
     RCTYPE_SONG_LOCATION,              // Song locations
     RCTYPE_BOSS_HEART_OR_OTHER_REWARD, // Boss heart container or lesser dungeon rewards (lens, ice arrow)
     RCTYPE_DUNGEON_REWARD,             // Dungeon rewards (blue warps)
     RCTYPE_OCARINA,                    // Ocarina locations
     RCTYPE_BEEHIVE,                    // Beehives
-    RCTYPE_FISH,
+    RCTYPE_FISH,                       // Fishes
 } RandomizerCheckType;
 
 typedef enum { RCQUEST_VANILLA, RCQUEST_MQ, RCQUEST_BOTH } RandomizerCheckQuest;
@@ -537,10 +539,25 @@ typedef enum {
 
     RR_DODONGOS_CAVERN_MQ_BEGINNING,
     RR_DODONGOS_CAVERN_MQ_LOBBY,
+    RR_DODONGOS_CAVERN_MQ_MOUTH_SIDE_BRIDGE,
+    RR_DODONGOS_CAVERN_MQ_STAIRS_PAST_MUD_WALL,
+    RR_DODONGOS_CAVERN_MQ_STAIRS_LOWER,
+    RR_DODONGOS_CAVERN_MQ_STAIRS_UPPER,
+    RR_DODONGOS_CAVERN_MQ_STAIRS_PAST_BIG_SKULLTULAS,
+    RR_DODONGOS_CAVERN_MQ_DODONGO_ROOM,
+    RR_DODONGOS_CAVERN_MQ_TORCH_PUZZLE_LOWER,
+    RR_DODONGOS_CAVERN_MQ_BIG_BLOCK_ROOM,
+    RR_DODONGOS_CAVERN_MQ_LARVAE_ROOM,
+    RR_DODONGOS_CAVERN_MQ_UPPER_LIZALFOS,
+    RR_DODONGOS_CAVERN_MQ_TWO_FIRES_ROOM,
+    RR_DODONGOS_CAVERN_MQ_TORCH_PUZZLE_UPPER,
     RR_DODONGOS_CAVERN_MQ_LOWER_RIGHT_SIDE,
-    RR_DODONGOS_CAVERN_MQ_BOMB_BAG_AREA,
-    RR_DODONGOS_CAVERN_MQ_BOSS_AREA,
-
+    RR_DODONGOS_CAVERN_MQ_LOWER_LIZALFOS,
+    RR_DODONGOS_CAVERN_MQ_POES_ROOM,
+    RR_DODONGOS_CAVERN_MQ_MAD_SCRUB_ROOM,
+    RR_DODONGOS_CAVERN_MQ_BEHIND_MOUTH,
+    RR_DODONGOS_CAVERN_MQ_BACK_BEHIND_FIRE,
+    RR_DODONGOS_CAVERN_MQ_BACK_SWITCH_GRAVE,
     RR_DODONGOS_CAVERN_BOSS_ENTRYWAY,
     RR_DODONGOS_CAVERN_BOSS_ROOM,
 
@@ -2169,6 +2186,7 @@ typedef enum {
     RG_DISTANT_SCARECROW,
     RG_STICKS,
     RG_NUTS,
+    RG_EPONA,
     RG_MAX
 } RandomizerGet;
 
@@ -3651,17 +3669,21 @@ typedef enum {
     RSG_LOGIC,
     RSG_EXCLUDES_KOKIRI_FOREST,
     RSG_EXCLUDES_LOST_WOODS,
+    RSG_EXCLUDES_SACRED_FOREST_MEADOW,
     RSG_EXCLUDES_DEKU_TREE,
     RSG_EXCLUDES_FOREST_TEMPLE,
     RSG_EXCLUDES_KAKARIKO_VILLAGE,
+    RSG_EXCLUDES_GRAVEYARD,
     RSG_EXCLUDES_BOTTOM_OF_THE_WELL,
     RSG_EXCLUDES_SHADOW_TEMPLE,
-    RSG_EXCLUDES_DEATH_MOUNTAIN,
+    RSG_EXCLUDES_DEATH_MOUNTAIN_TRAIL,
+    RSG_EXCLUDES_DEATH_MOUNTAIN_CRATER,
     RSG_EXCLUDES_GORON_CITY,
     RSG_EXCLUDES_DODONGOS_CAVERN,
     RSG_EXCLUDES_FIRE_TEMPLE,
     RSG_EXCLUDES_ZORAS_RIVER,
     RSG_EXCLUDES_ZORAS_DOMAIN,
+    RSG_EXCLUDES_ZORAS_FOUNTAIN,
     RSG_EXCLUDES_JABU_JABU,
     RSG_EXCLUDES_ICE_CAVERN,
     RSG_EXCLUDES_HYRULE_FIELD,
@@ -3669,9 +3691,13 @@ typedef enum {
     RSG_EXCLUDES_LAKE_HYLIA,
     RSG_EXCLUDES_WATER_TEMPLE,
     RSG_EXCLUDES_GERUDO_VALLEY,
+    RSG_EXCLUDES_GERUDO_FORTRESS,
+    RSG_EXCLUDES_HAUNTED_WASTELAND,
+    RSG_EXCLUDES_DESERT_COLOSSUS,
     RSG_EXCLUDES_GERUDO_TRAINING_GROUNDS,
     RSG_EXCLUDES_SPIRIT_TEMPLE,
     RSG_EXCLUDES_HYRULE_CASTLE,
+    RSG_EXCLUDES_MARKET,
     RSG_EXCLUDES_GANONS_CASTLE,
     RSG_EXCLUDES,
     RSG_TRICKS,
@@ -3756,6 +3782,7 @@ typedef enum {
     RSK_SHUFFLE_SONGS,
     RSK_SHUFFLE_TOKENS,
     RSK_SHOPSANITY,
+    RSK_SHOPSANITY_COUNT,
     RSK_SHOPSANITY_PRICES,
     RSK_SHOPSANITY_PRICES_AFFORDABLE,
     RSK_SHUFFLE_SCRUBS,
@@ -3965,16 +3992,25 @@ typedef enum {
     RO_BRIDGE_WILDCARD_REWARD,
 } RandoOptionBridgeRewards;
 
-//Shopsanity settings (off, 0-4 items, random)
+//Shopsanity settings (off, specific count, random)
 typedef enum {
     RO_SHOPSANITY_OFF,
-    RO_SHOPSANITY_ZERO_ITEMS,
-    RO_SHOPSANITY_ONE_ITEM,
-    RO_SHOPSANITY_TWO_ITEMS,
-    RO_SHOPSANITY_THREE_ITEMS,
-    RO_SHOPSANITY_FOUR_ITEMS,
+    RO_SHOPSANITY_SPECIFIC_COUNT,
     RO_SHOPSANITY_RANDOM,
 } RandoOptionShopsanity;
+
+//Shopsanity count settings (0-7 items)
+typedef enum {
+    RO_SHOPSANITY_COUNT_ZERO_ITEMS,
+    RO_SHOPSANITY_COUNT_ONE_ITEM,
+    RO_SHOPSANITY_COUNT_TWO_ITEMS,
+    RO_SHOPSANITY_COUNT_THREE_ITEMS,
+    RO_SHOPSANITY_COUNT_FOUR_ITEMS,
+    RO_SHOPSANITY_COUNT_FIVE_ITEMS,
+    RO_SHOPSANITY_COUNT_SIX_ITEMS,
+    RO_SHOPSANITY_COUNT_SEVEN_ITEMS,
+    RO_SHOPSANITY_COUNT_EIGHT_ITEMS,
+} RandoOptionShopsanityCount;
 
 //Shopsanity price ranges
 typedef enum {
@@ -4324,4 +4360,23 @@ typedef enum {
     TH_MESSAGE_SURPLUS,
 } TriforceHuntMessages;
 
+typedef enum {
+    RE_GOLD_SKULLTULA,
+    RE_BIG_SKULLTULA,
+    RE_DODONGO,
+    RE_LIZALFOS,
+    RE_GOHMA_LARVA,
+    RE_KEESE,
+    RE_FIRE_KEESE,
+    RE_MAD_SCRUB,
+    RE_BLUE_BUBBLE,
+} RandomizerEnemy;
 
+typedef enum {
+    ED_CLOSE,
+    ED_HAMMER_JUMPSLASH,
+    ED_MASTER_SWORD_JUMPSLASH,
+    ED_RANG_OR_HOOKSHOT,
+    ED_LONGSHOT,
+    ED_FAR,
+} EnemyDistance;

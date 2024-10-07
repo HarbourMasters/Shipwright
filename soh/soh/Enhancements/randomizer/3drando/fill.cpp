@@ -977,12 +977,14 @@ static void RandomizeOwnDungeon(const Rando::DungeonInfo* dungeon) {
   });
 
   //filter out locations that may be required to have songs placed at them
-  dungeonLocations = FilterFromPool(dungeonLocations, [ctx](const auto loc){
+  dungeonLocations = FilterFromPool(dungeonLocations, [ctx](const auto loc) {
     if (ctx->GetOption(RSK_SHUFFLE_SONGS).Is(RO_SONG_SHUFFLE_SONG_LOCATIONS)) {
-      return !(Rando::StaticData::GetLocation(loc)->IsCategory(Category::cSong));
+      return !(Rando::StaticData::GetLocation(loc)->GetRCType() == RCTYPE_SONG_LOCATION);
     }
-    if (ctx->GetOption(RSK_SHUFFLE_SONGS).Is(RO_SONG_SHUFFLE_SONG_LOCATIONS)) {
-      return !(Rando::StaticData::GetLocation(loc)->IsCategory(Category::cSongDungeonReward));
+    if (ctx->GetOption(RSK_SHUFFLE_SONGS).Is(RO_SONG_SHUFFLE_DUNGEON_REWARDS)) {
+      return !(Rando::StaticData::GetLocation(loc)->GetRCType() == RCTYPE_BOSS_HEART_OR_OTHER_REWARD ||
+             loc == RC_SHEIK_IN_ICE_CAVERN ||
+             loc == RC_SONG_FROM_IMPA);
     }
     return true;
   });
@@ -1021,8 +1023,8 @@ static void RandomizeDungeonItems() {
   auto ctx = Rando::Context::GetInstance();
 
   //Get Any Dungeon and Overworld group locations
-  std::vector<RandomizerCheck> anyDungeonLocations = FilterFromPool(ctx->allLocations, [](const auto loc){return Rando::StaticData::GetLocation(loc)->IsDungeon();});
-  //overworldLocations defined in item_location.cpp
+  std::vector<RandomizerCheck> anyDungeonLocations = Rando::StaticData::GetDungeonLocations();
+  //Rando::StaticData::GetOverworldLocations() defined in item_location.cpp
 
   //Create Any Dungeon and Overworld item pools
   std::vector<RandomizerGet> anyDungeonItems;
@@ -1074,7 +1076,7 @@ static void RandomizeDungeonItems() {
 
   //Randomize Any Dungeon and Overworld pools
   AssumedFill(anyDungeonItems, anyDungeonLocations, true);
-  AssumedFill(overworldItems, Rando::StaticData::overworldLocations, true);
+  AssumedFill(overworldItems, Rando::StaticData::GetOverworldLocations(), true);
 
   //Randomize maps and compasses after since they're not advancement items
   for (auto dungeon : ctx->GetDungeons()->GetDungeonList()) {
@@ -1083,7 +1085,7 @@ static void RandomizeDungeonItems() {
       AssumedFill(mapAndCompassItems, anyDungeonLocations, true);
     } else if (ctx->GetOption(RSK_SHUFFLE_MAPANDCOMPASS).Is(RO_DUNGEON_ITEM_LOC_OVERWORLD)) {
       auto mapAndCompassItems = FilterAndEraseFromPool(ItemPool, [dungeon](const RandomizerGet i){return i == dungeon->GetMap() || i == dungeon->GetCompass();});
-      AssumedFill(mapAndCompassItems, Rando::StaticData::overworldLocations, true);
+      AssumedFill(mapAndCompassItems, Rando::StaticData::GetOverworldLocations(), true);
     }
   }
 }
@@ -1156,7 +1158,7 @@ int Fill() {
     //Temporarily add shop items to the ItemPool so that entrance randomization
     //can validate the world using deku/hylian shields
     StartPerformanceTimer(PT_ENTRANCE_SHUFFLE);
-    AddElementsToPool(ItemPool, GetMinVanillaShopItems(32)); //assume worst case shopsanity 4
+    AddElementsToPool(ItemPool, GetMinVanillaShopItems(8)); //assume worst case shopsanity 7
     if (ctx->GetOption(RSK_SHUFFLE_ENTRANCES)) {
       SPDLOG_INFO("Shuffling Entrances...");
       if (ctx->GetEntranceShuffler()->ShuffleAllEntrances() == ENTRANCE_SHUFFLE_FAILURE) {
@@ -1173,36 +1175,43 @@ int Fill() {
 
     //ctx->showItemProgress = true;
     //Place shop items first, since a buy shield is needed to place a dungeon reward on Gohma due to access
-    
+
     StartPerformanceTimer(PT_SHOPSANITY);
-    NonShopItems = {};
+    NonShopItems.clear();
     if (ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_OFF)) {
       SPDLOG_INFO("Placing Vanilla Shop Items...");
       PlaceVanillaShopItems(); //Place vanilla shop items in vanilla location
     } else {
       SPDLOG_INFO("Shuffling Shop Items");
       int total_replaced = 0;
-      if (ctx->GetOption(RSK_SHOPSANITY).IsNot(RO_SHOPSANITY_ZERO_ITEMS)) { //Shopsanity 1-4, random
-        //Initialize NonShopItems
-        ItemAndPrice init;
-        init.Name = Text{"No Item", "Sin objeto", "Pas d'objet"};
-        init.Price = -1;
-        init.Repurchaseable = false;
-        NonShopItems.assign(32, init);
-        //Indices from OoTR. So shopsanity one will overwrite 7, three will overwrite 7, 5, 8, etc.
-        const std::array<int, 4> indices = {7, 5, 8, 6};
+      if (ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_RANDOM) || ctx->GetOption(RSK_SHOPSANITY_COUNT).IsNot(RO_SHOPSANITY_COUNT_ZERO_ITEMS)) { //Shopsanity 1-7, random
+        /*
+        Indices from OoTR. So shopsanity one will overwrite 7, three will overwrite 7, 5, 8, etc.
+          8 6    2 4
+          7 5    1 3
+        */
+        const std::array<int, 8> indices = { 7, 5, 8, 6, 3, 1, 4, 2 };
         //Overwrite appropriate number of shop items
-        for (size_t i = 0; i < Rando::StaticData::shopLocationLists.size(); i++) {
-          int num_to_replace = GetShopsanityReplaceAmount(); //1-4 shop items will be overwritten, depending on settings
+        #define LOCATIONS_PER_SHOP 8
+        for (size_t i = 0; i < Rando::StaticData::GetShopLocations().size() / LOCATIONS_PER_SHOP; i++) {
+          int num_to_replace = GetShopsanityReplaceAmount(); //1-7 shop items will be overwritten, depending on settings
           total_replaced += num_to_replace;
           for (int j = 0; j < num_to_replace; j++) {
             int itemindex = indices[j];
             int shopsanityPrice = GetRandomShopPrice();
-            NonShopItems[TransformShopIndex(i * 8 + itemindex - 1)].Price =
-                shopsanityPrice; // Set price to be retrieved by the patch and textboxes
-            ctx->GetItemLocation(Rando::StaticData::shopLocationLists[i][itemindex - 1])->SetCustomPrice(shopsanityPrice);
+            NonShopItems[Rando::StaticData::GetShopLocations()[i * LOCATIONS_PER_SHOP + itemindex - 1]].Price = shopsanityPrice; // Set price to be retrieved by the patch and textboxes
+            ctx->GetItemLocation(Rando::StaticData::GetShopLocations()[i * LOCATIONS_PER_SHOP + itemindex - 1])->SetCustomPrice(shopsanityPrice);
+          }
+          for (int j = num_to_replace; j < 8; j++) {
+            ItemAndPrice init;
+            init.Name = Text { "No Item", "Sin objeto", "Pas d'objet" };
+            init.Price = -1;
+            init.Repurchaseable = false;
+            int itemindex = indices[j];
+            NonShopItems[Rando::StaticData::GetShopLocations()[i * LOCATIONS_PER_SHOP + itemindex - 1]] = init; // Set price to be retrieved by the patch and textboxes
           }
         }
+        #undef LOCATIONS_PER_SHOP
       }
       //Get all locations and items that don't have a shopsanity price attached
       std::vector<RandomizerCheck> shopLocations = {};
@@ -1210,12 +1219,9 @@ int Fill() {
       //So shopsanity 0 will get all 64 vanilla items, shopsanity 4 will get 32, etc.
       std::vector<RandomizerGet> shopItems = GetMinVanillaShopItems(total_replaced);
 
-      for (size_t i = 0; i < Rando::StaticData::shopLocationLists.size(); i++) {
-        for (size_t j = 0; j < Rando::StaticData::shopLocationLists[i].size(); j++) {
-          RandomizerCheck loc = Rando::StaticData::shopLocationLists[i][j];
-          if (!(ctx->GetItemLocation(loc)->HasCustomPrice())) {
-            shopLocations.push_back(loc);
-          }
+      for (RandomizerCheck& randomizerCheck : Rando::StaticData::GetShopLocations()) {
+        if (!(ctx->GetItemLocation(randomizerCheck)->HasCustomPrice())) {
+          shopLocations.push_back(randomizerCheck);
         }
       }
       //Place the shop items which will still be at shop locations
@@ -1246,11 +1252,13 @@ int Fill() {
       std::vector<RandomizerCheck> songLocations;
       if (ctx->GetOption(RSK_SHUFFLE_SONGS).Is(RO_SONG_SHUFFLE_SONG_LOCATIONS)) {
           songLocations = FilterFromPool(
-              ctx->allLocations, [](const auto loc) { return Rando::StaticData::GetLocation(loc)->IsCategory(Category::cSong); });
+              ctx->allLocations, [](const auto loc) { return Rando::StaticData::GetLocation(loc)->GetRCType() == RCTYPE_SONG_LOCATION; });
 
       } else if (ctx->GetOption(RSK_SHUFFLE_SONGS).Is(RO_SONG_SHUFFLE_DUNGEON_REWARDS)) {
           songLocations = FilterFromPool(ctx->allLocations, [](const auto loc) {
-              return Rando::StaticData::GetLocation(loc)->IsCategory(Category::cSongDungeonReward);
+            return Rando::StaticData::GetLocation(loc)->GetRCType() == RCTYPE_BOSS_HEART_OR_OTHER_REWARD ||
+                   loc == RC_SHEIK_IN_ICE_CAVERN ||
+                   loc == RC_SONG_FROM_IMPA;
           });
       }
 
@@ -1282,26 +1290,25 @@ int Fill() {
     StopPerformanceTimer(PT_REMAINING_ITEMS);
 
     //Add default prices to scrubs
-    for (size_t i = 0; i < Rando::StaticData::scrubLocations.size(); i++) {
-      if (Rando::StaticData::scrubLocations[i] == RC_LW_DEKU_SCRUB_NEAR_BRIDGE || Rando::StaticData::scrubLocations[i] == RC_LW_DEKU_SCRUB_GROTTO_FRONT) {
-        ctx->GetItemLocation(Rando::StaticData::scrubLocations[i])->SetCustomPrice(40);
-      } else if (Rando::StaticData::scrubLocations[i] == RC_HF_DEKU_SCRUB_GROTTO) {
-        ctx->GetItemLocation(Rando::StaticData::scrubLocations[i])->SetCustomPrice(10);
+    for (RandomizerCheck& randomizerCheck : Rando::StaticData::GetScrubLocations()) {
+      if (randomizerCheck == RC_LW_DEKU_SCRUB_NEAR_BRIDGE || randomizerCheck == RC_LW_DEKU_SCRUB_GROTTO_FRONT) {
+        ctx->GetItemLocation(randomizerCheck)->SetCustomPrice(40);
+      } else if (randomizerCheck == RC_HF_DEKU_SCRUB_GROTTO) {
+        ctx->GetItemLocation(randomizerCheck)->SetCustomPrice(10);
       } else {
-        auto loc = Rando::StaticData::GetLocation(Rando::StaticData::scrubLocations[i]);
+        auto loc = Rando::StaticData::GetLocation(randomizerCheck);
         auto item = Rando::StaticData::RetrieveItem(loc->GetVanillaItem());
-        ctx->GetItemLocation(Rando::StaticData::scrubLocations[i])->SetCustomPrice(item.GetPrice());
+        ctx->GetItemLocation(randomizerCheck)->SetCustomPrice(item.GetPrice());
       }
     }
 
     if (ctx->GetOption(RSK_SHUFFLE_SCRUBS).Is(RO_SCRUBS_AFFORDABLE)) {
-      for (size_t i = 0; i < Rando::StaticData::scrubLocations.size(); i++) {
-        ctx->GetItemLocation(Rando::StaticData::scrubLocations[i])->SetCustomPrice(10);
+      for (RandomizerCheck& randomizerCheck : Rando::StaticData::GetScrubLocations()) {
+        ctx->GetItemLocation(randomizerCheck)->SetCustomPrice(10);
       }
     } else if (ctx->GetOption(RSK_SHUFFLE_SCRUBS).Is(RO_SCRUBS_RANDOM)) {
-      for (size_t i = 0; i < Rando::StaticData::scrubLocations.size(); i++) {
-        int randomPrice = GetRandomScrubPrice();
-        ctx->GetItemLocation(Rando::StaticData::scrubLocations[i])->SetCustomPrice(randomPrice);
+      for (RandomizerCheck& randomizerCheck : Rando::StaticData::GetScrubLocations()) {
+        ctx->GetItemLocation(randomizerCheck)->SetCustomPrice(GetRandomScrubPrice());
       }
     }
 
