@@ -794,6 +794,7 @@ public:
     public:
         static void SetSceneFlag(int16_t sceneNum, int16_t flagType, int16_t flag);
         static void UnsetSceneFlag(int16_t sceneNum, int16_t flagType, int16_t flag);
+        static bool CheckFlag(int16_t flagType, int16_t flag);
         static void SetFlag(int16_t flagType, int16_t chestNum);
         static void UnsetFlag(int16_t flagType, int16_t chestNum);
         static void AddOrRemoveHealthContainers(int16_t amount);

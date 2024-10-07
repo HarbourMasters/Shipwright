@@ -11,6 +11,7 @@
 #include "fishsanity.h"
 #include "macros.h"
 #include "3drando/hints.hpp"
+#include "../kaleido.h"
 
 #include <fstream>
 #include <spdlog/spdlog.h>
@@ -419,4 +420,10 @@ TrickOption& Context::GetTrickOption(const RandomizerTrick key) const {
     return mSettings->GetTrickOption(key);
 }
 
+std::shared_ptr<Kaleido> Context::GetKaleido() {
+    if (mKaleido == nullptr) {
+        mKaleido = std::make_shared<Kaleido>();
+    }
+    return mKaleido;
+}
 } // namespace Rando

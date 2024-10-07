@@ -4391,6 +4391,7 @@ typedef enum {
     RE_KEESE,
     RE_FIRE_KEESE,
     RE_MAD_SCRUB,
+    RE_BLUE_BUBBLE,
 } RandomizerEnemy;
 
 typedef enum {

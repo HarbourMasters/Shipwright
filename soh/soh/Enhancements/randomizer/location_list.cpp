@@ -1,5 +1,6 @@
 #include "static_data.h"
 #include "z64save.h"
+#include "context.h"
 
 #define TWO_ACTOR_PARAMS(a, b) (abs(a) << 16) | abs(b)
 
@@ -64,6 +65,16 @@ std::vector<RandomizerCheck> Rando::StaticData::GetMerchantLocations() {
     return scrubLocations;
 }
 
+std::vector<RandomizerCheck> Rando::StaticData::GetAdultTradeLocations() {
+    std::vector<RandomizerCheck> tradeLocations = {};
+    for (Location& location : locationTable) {
+        if (location.GetRCType() == RCTYPE_ADULT_TRADE && location.GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
+            tradeLocations.push_back(location.GetRandomizerCheck());
+        }
+    }
+    return tradeLocations;
+}
+
 std::vector<RandomizerCheck> Rando::StaticData::GetGossipStoneLocations() {
     std::vector<RandomizerCheck> gossipStoneLocations = {};
     for (Location& location : locationTable) {
@@ -84,8 +95,11 @@ std::vector<RandomizerCheck> Rando::StaticData::GetShopLocations() {
     return shopLocations;
 }
 
+
 std::vector<RandomizerCheck> Rando::StaticData::GetOverworldLocations() {
+    //RANDOTODO better way of filling the initial location pool, among other things. 
     std::vector<RandomizerCheck> overworldLocations = {};
+    auto ctx = Rando::Context::GetInstance();
     for (Location& location : locationTable) {
         if (
             location.IsOverworld() &&
@@ -93,6 +107,7 @@ std::vector<RandomizerCheck> Rando::StaticData::GetOverworldLocations() {
             location.GetRandomizerCheck() != RC_TRIFORCE_COMPLETED && //not really an overworld check
             location.GetRCType() != RCTYPE_FISH && //temp fix while locations are properly sorted out
             location.GetRCType() != RCTYPE_CHEST_GAME && //this is supposed to be excluded
+            (ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) || location.GetRCType() != RCTYPE_ADULT_TRADE) && //trade is handled elsewhere in location pool
             location.GetRCType() != RCTYPE_STATIC_HINT && 
             location.GetRCType() != RCTYPE_GOSSIP_STONE  //don't put items on hints
         ) {
