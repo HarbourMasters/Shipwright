@@ -128,6 +128,8 @@ protected:
     bool CanBuy() const;
 };
 
+bool CanBuyAnother(RandomizerCheck rc);
+
 namespace Rando {
     class Entrance;
     enum class EntranceType;

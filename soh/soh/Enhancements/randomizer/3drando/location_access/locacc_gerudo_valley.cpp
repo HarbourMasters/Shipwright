@@ -142,11 +142,11 @@ void RegionTable_Init_GerudoValley() {
                   //Events
                   EventAccess(&logic->FairyPot,       {[]{return true;}}),
                   EventAccess(&logic->NutPot,         {[]{return true;}}),
-                  EventAccess(&logic->CarpetMerchant, {[]{return logic->HasItem(RG_ADULT_WALLET) && (logic->CanJumpslash() || logic->CanUse(RG_HOVER_BOOTS));}}),
+                  EventAccess(&logic->CarpetMerchant, {[]{return logic->HasItem(RG_ADULT_WALLET) && CanBuyAnother(RC_WASTELAND_BOMBCHU_SALESMAN) && (logic->CanJumpslash() || logic->CanUse(RG_HOVER_BOOTS));}}),
                 }, {
                   //Locations
                   LOCATION(RC_WASTELAND_CHEST,            logic->HasFireSource()),
-                  LOCATION(RC_WASTELAND_BOMBCHU_SALESMAN, logic->CarpetMerchant),
+                  LOCATION(RC_WASTELAND_BOMBCHU_SALESMAN, logic->CanJumpslash() || logic->CanUse(RG_HOVER_BOOTS)),
                   LOCATION(RC_WASTELAND_GS,               logic->HookshotOrBoomerang()),
                 }, {
                   //Exits

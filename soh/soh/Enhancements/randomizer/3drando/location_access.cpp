@@ -46,33 +46,22 @@ bool LocationAccess::ConditionsMet() const {
 }
 
 bool LocationAccess::CanBuy() const {
-  auto ctx = Rando::Context::GetInstance();
-  //Not a shop or scrub location, don't need to check if buyable
-  if (Rando::StaticData::GetLocation(location)->GetRCType() != RCTYPE_SHOP && Rando::StaticData::GetLocation(location)->GetRCType() != RCTYPE_SCRUB) {
-    return true;
-  }
+  return CanBuyAnother(location);
+}
 
-  //Check if wallet is large enough to buy item
-  bool SufficientWallet = true;
-  if (ctx->GetItemLocation(location)->GetPrice() > 500) {
-    SufficientWallet = logic->HasItem(RG_TYCOON_WALLET);
-  } else if (ctx->GetItemLocation(location)->GetPrice() > 200) {
-    SufficientWallet = logic->HasItem(RG_GIANT_WALLET);
-  } else if (ctx->GetItemLocation(location)->GetPrice() > 99) {
-    SufficientWallet = logic->HasItem(RG_ADULT_WALLET);
-  } else if (ctx->GetItemLocation(location)->GetPrice() > 0) {
-    SufficientWallet = logic->HasItem(RG_CHILD_WALLET);
-  }
+bool CanBuyAnother(RandomizerCheck rc) {
+  uint16_t price = ctx->GetItemLocation(rc)->GetPrice();
 
-  bool OtherCondition = true;
-  RandomizerGet placed = ctx->GetItemLocation(location)->GetPlacedRandomizerGet();
-  //Need bottle to buy bottle items, only logically relevant bottle items included here
-  if (placed == RG_BUY_BLUE_FIRE || placed == RG_BUY_BOTTLE_BUG || placed == RG_BUY_FISH ||
-      placed == RG_BUY_FAIRYS_SPIRIT) {
-      OtherCondition = logic->HasBottle();
+  if (price > 500) {
+    return logic->HasItem(RG_TYCOON_WALLET);
+  } else if (price > 200) {
+    return logic->HasItem(RG_GIANT_WALLET);
+  } else if (price > 99) {
+    return logic->HasItem(RG_ADULT_WALLET);
+  } else if (price > 0) {
+    return logic->HasItem(RG_CHILD_WALLET);
   }
-
-  return SufficientWallet && OtherCondition;
+  return true;
 }
 
 Region::Region() = default;

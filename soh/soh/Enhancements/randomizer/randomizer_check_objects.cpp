@@ -172,7 +172,7 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
             (location.GetRandomizerCheck() != RC_LH_HYRULE_LOACH ||
              CVarGetInteger(CVAR_RANDOMIZER_SETTING("Fishsanity"), RO_GENERIC_NO) == RO_FISHSANITY_HYRULE_LOACH) &&
             (location.GetRandomizerCheck() != RC_ZR_MAGIC_BEAN_SALESMAN ||
-             CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleBeans"), RO_GENERIC_NO)) &&
+             CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleMerchants"), RO_SHUFFLE_MERCHANTS_OFF) % 2) &&
             (location.GetRandomizerCheck() != RC_HC_MALON_EGG ||
              CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleWeirdEgg"), RO_GENERIC_NO)) &&
             (location.GetRCType() != RCTYPE_FROG_SONG ||

@@ -24,6 +24,40 @@ using namespace Rando;
 
 static bool placementFailure = false;
 
+
+PriceSettingsStruct shopsanityPrices = {RSK_SHOPSANITY_PRICES, 
+                                        RSK_SHOPSANITY_PRICES_FIXED_PRICE,
+                                        RSK_SHOPSANITY_PRICES_RANGE_1,
+                                        RSK_SHOPSANITY_PRICES_RANGE_2,
+                                        RSK_SHOPSANITY_PRICES_NO_WALLET_WEIGHT,
+                                        RSK_SHOPSANITY_PRICES_CHILD_WALLET_WEIGHT,
+                                        RSK_SHOPSANITY_PRICES_ADULT_WALLET_WEIGHT,
+                                        RSK_SHOPSANITY_PRICES_GIANT_WALLET_WEIGHT,
+                                        RSK_SHOPSANITY_PRICES_TYCOON_WALLET_WEIGHT,
+                                        RSK_SHOPSANITY_PRICES_AFFORDABLE};
+  
+PriceSettingsStruct scrubPrices = {RSK_SCRUBS_PRICES, 
+                                   RSK_SCRUBS_PRICES_FIXED_PRICE,
+                                   RSK_SCRUBS_PRICES_RANGE_1,
+                                   RSK_SCRUBS_PRICES_RANGE_2,
+                                   RSK_SCRUBS_PRICES_NO_WALLET_WEIGHT,
+                                   RSK_SCRUBS_PRICES_CHILD_WALLET_WEIGHT,
+                                   RSK_SCRUBS_PRICES_ADULT_WALLET_WEIGHT,
+                                   RSK_SCRUBS_PRICES_GIANT_WALLET_WEIGHT,
+                                   RSK_SCRUBS_PRICES_TYCOON_WALLET_WEIGHT,
+                                   RSK_SCRUBS_PRICES_AFFORDABLE};
+
+PriceSettingsStruct merchantPrices = {RSK_MERCHANT_PRICES, 
+                                      RSK_MERCHANT_PRICES_FIXED_PRICE,
+                                      RSK_MERCHANT_PRICES_RANGE_1,
+                                      RSK_MERCHANT_PRICES_RANGE_2,
+                                      RSK_MERCHANT_PRICES_NO_WALLET_WEIGHT,
+                                      RSK_MERCHANT_PRICES_CHILD_WALLET_WEIGHT,
+                                      RSK_MERCHANT_PRICES_ADULT_WALLET_WEIGHT,
+                                      RSK_MERCHANT_PRICES_GIANT_WALLET_WEIGHT,
+                                      RSK_MERCHANT_PRICES_TYCOON_WALLET_WEIGHT,
+                                      RSK_MERCHANT_PRICES_AFFORDABLE};
+
 static void RemoveStartingItemsFromPool() {
   for (RandomizerGet startingItem : StartingInventory) {
     for (size_t i = 0; i < ItemPool.size(); i++) {
@@ -1133,7 +1167,6 @@ int Fill() {
     //Place shop items first, since a buy shield is needed to place a dungeon reward on Gohma due to access
 
     StartPerformanceTimer(PT_SHOPSANITY);
-    NonShopItems.clear();
     if (ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_OFF)) {
       SPDLOG_INFO("Placing Vanilla Shop Items...");
       PlaceVanillaShopItems(); //Place vanilla shop items in vanilla location
@@ -1154,17 +1187,10 @@ int Fill() {
           total_replaced += num_to_replace;
           for (int j = 0; j < num_to_replace; j++) {
             int itemindex = indices[j];
-            int shopsanityPrice = GetRandomShopPrice();
-            NonShopItems[Rando::StaticData::GetShopLocations()[i * LOCATIONS_PER_SHOP + itemindex - 1]].Price = shopsanityPrice; // Set price to be retrieved by the patch and textboxes
-            ctx->GetItemLocation(Rando::StaticData::GetShopLocations()[i * LOCATIONS_PER_SHOP + itemindex - 1])->SetCustomPrice(shopsanityPrice);
-          }
-          for (int j = num_to_replace; j < 8; j++) {
-            ItemAndPrice init;
-            init.Name = Text { "No Item", "Sin objeto", "Pas d'objet" };
-            init.Price = -1;
-            init.Repurchaseable = false;
-            int itemindex = indices[j];
-            NonShopItems[Rando::StaticData::GetShopLocations()[i * LOCATIONS_PER_SHOP + itemindex - 1]] = init; // Set price to be retrieved by the patch and textboxes
+            RandomizerCheck rc = Rando::StaticData::GetShopLocations()[i * LOCATIONS_PER_SHOP + itemindex - 1];
+            Rando::ItemLocation* itemLoc = ctx->GetItemLocation(rc);
+            uint16_t shopsanityPrice = GetRandomPrice(Rando::StaticData::GetLocation(rc), shopsanityPrices);
+            itemLoc->SetCustomPrice(shopsanityPrice);
           }
         }
         #undef LOCATIONS_PER_SHOP
@@ -1182,6 +1208,51 @@ int Fill() {
       }
       //Place the shop items which will still be at shop locations
       AssumedFill(shopItems, shopLocations);
+    }
+
+    //Add prices to scrubs
+    auto scrubLoc = Rando::StaticData::GetScrubLocations();
+    if (ctx->GetOption(RSK_SHUFFLE_SCRUBS).Is(RO_SCRUBS_ALL)) {
+      for (size_t i = 0; i < scrubLoc.size(); i++) {
+        ctx->GetItemLocation(scrubLoc[i])->SetCustomPrice(
+          GetRandomPrice(Rando::StaticData::GetLocation(scrubLoc[i]), scrubPrices)
+        );
+      }
+    } else {
+      for (size_t i = 0; i < scrubLoc.size(); i++) {
+        ctx->GetItemLocation(scrubLoc[i])->SetCustomPrice(
+          Rando::StaticData::GetLocation(scrubLoc[i])->GetVanillaPrice()
+        );
+      }
+    }
+
+    //set merchant prices
+    if (ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_BEANS_ONLY) ||
+        ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL)){
+      ctx->GetItemLocation(RC_ZR_MAGIC_BEAN_SALESMAN)->SetCustomPrice(
+        GetRandomPrice(Rando::StaticData::GetLocation(RC_ZR_MAGIC_BEAN_SALESMAN), merchantPrices)
+      );
+    } else {
+      ctx->GetItemLocation(RC_ZR_MAGIC_BEAN_SALESMAN)->SetCustomPrice(
+        Rando::StaticData::GetLocation(RC_ZR_MAGIC_BEAN_SALESMAN)->GetVanillaPrice()
+      );
+    }
+
+    auto merchantLoc = Rando::StaticData::GetMerchantLocations();
+
+    if (ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL_BUT_BEANS) ||
+        ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL)){
+      for (size_t i = 0; i < merchantLoc.size(); i++) {
+        ctx->GetItemLocation(merchantLoc[i])->SetCustomPrice(
+          GetRandomPrice(Rando::StaticData::GetLocation(merchantLoc[i]), merchantPrices)
+        );
+      }
+    } else {
+      for (size_t i = 0; i < merchantLoc.size(); i++) {
+        ctx->GetItemLocation(merchantLoc[i])->SetCustomPrice(
+          Rando::StaticData::GetLocation(merchantLoc[i])->GetVanillaPrice()
+        );
+      }
     }
     StopPerformanceTimer(PT_SHOPSANITY);
 
@@ -1245,28 +1316,6 @@ int Fill() {
     FastFill(remainingPool, GetAllEmptyLocations(), false);
     StopPerformanceTimer(PT_REMAINING_ITEMS);
 
-    //Add default prices to scrubs
-    for (RandomizerCheck& randomizerCheck : Rando::StaticData::GetScrubLocations()) {
-      if (randomizerCheck == RC_LW_DEKU_SCRUB_NEAR_BRIDGE || randomizerCheck == RC_LW_DEKU_SCRUB_GROTTO_FRONT) {
-        ctx->GetItemLocation(randomizerCheck)->SetCustomPrice(40);
-      } else if (randomizerCheck == RC_HF_DEKU_SCRUB_GROTTO) {
-        ctx->GetItemLocation(randomizerCheck)->SetCustomPrice(10);
-      } else {
-        auto loc = Rando::StaticData::GetLocation(randomizerCheck);
-        auto item = Rando::StaticData::RetrieveItem(loc->GetVanillaItem());
-        ctx->GetItemLocation(randomizerCheck)->SetCustomPrice(item.GetPrice());
-      }
-    }
-
-    if (ctx->GetOption(RSK_SHUFFLE_SCRUBS).Is(RO_SCRUBS_AFFORDABLE)) {
-      for (RandomizerCheck& randomizerCheck : Rando::StaticData::GetScrubLocations()) {
-        ctx->GetItemLocation(randomizerCheck)->SetCustomPrice(10);
-      }
-    } else if (ctx->GetOption(RSK_SHUFFLE_SCRUBS).Is(RO_SCRUBS_RANDOM)) {
-      for (RandomizerCheck& randomizerCheck : Rando::StaticData::GetScrubLocations()) {
-        ctx->GetItemLocation(randomizerCheck)->SetCustomPrice(GetRandomScrubPrice());
-      }
-    }
 
     StartPerformanceTimer(PT_PLAYTHROUGH_GENERATION);
     GeneratePlaythrough();

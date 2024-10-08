@@ -218,6 +218,8 @@ void Settings::CreateOptionDescriptions() {
         "Enabling this shuffles the Child's Wallet into the item pool.\n"
         "\n"
         "You will not be able to carry any rupees until you find a wallet.";
+    mOptionDescriptions[RSK_INCLUDE_TYCOON_WALLET] =
+        "Enabling this adds an extra Progressive Wallet to the pool and adds a new 999 capacity tier after Giant's Wallet.\n";
     mOptionDescriptions[RSK_SHUFFLE_OCARINA] =
         "Enabling this shuffles the Fairy Ocarina and the Ocarina of Time into the item pool.\n"
         "\n"
@@ -277,12 +279,31 @@ void Settings::CreateOptionDescriptions() {
                                                 "8 Items - All shops will contain 8 non-vanilla shop items.\n"
                                                 */;
     mOptionDescriptions[RSK_SHOPSANITY_PRICES] =
-        "Balanced - The default randomization. Shop prices for shopsanity items will range between 0 to 300 rupees, "
-        "with a bias towards values slightly below the middle of the range, in multiples of 5.\n "
-        "\n"
-        "X Wallet - Randomized between 5 and the wallet's max size, in multiples of 5";
+        "Vanilla - The same price as the item it replaced\n"
+        "Cheap Balanced - Prices will range between 0 to 95 rupees, favoring lower numbers\n"
+        "Balanced - Prices will range between 0 to 300 rupees, favoring lower numbers\n"
+        "Fixed - A fixed number\n"
+        "Range - A random point between specific ranges\n"
+        "Set By Wallet - Set weights that decide the choice of each wallet, and get a random price in that range if that wallet is chosen";
+    mOptionDescriptions[RSK_SHOPSANITY_PRICES_FIXED_PRICE] =
+        "The price for Shopsanity checks.";
+    mOptionDescriptions[RSK_SHOPSANITY_PRICES_RANGE_1] =
+        "The first part of the inclusive range of prices to allow for Shopsanity checks.";
+    mOptionDescriptions[RSK_SHOPSANITY_PRICES_RANGE_2] =
+        "The second part of the inclusive range of prices to allow for Shopsanity checks.";
+    mOptionDescriptions[RSK_SHOPSANITY_PRICES_NO_WALLET_WEIGHT] =
+        "The chance for Shopsanity checks to be free.";
+    mOptionDescriptions[RSK_SHOPSANITY_PRICES_CHILD_WALLET_WEIGHT] =
+        "The chance for Shopsanity checks to be purchasable with Child's Wallet (1-99).";
+    mOptionDescriptions[RSK_SHOPSANITY_PRICES_ADULT_WALLET_WEIGHT] =
+        "The chance for Shopsanity checks to be purchasable with Adult's Wallet (100-200).";
+    mOptionDescriptions[RSK_SHOPSANITY_PRICES_GIANT_WALLET_WEIGHT] =
+        "The chance for Shopsanity checks to be purchasable with Giant's Wallet (201-500).";
+    mOptionDescriptions[RSK_SHOPSANITY_PRICES_TYCOON_WALLET_WEIGHT] =
+        "The chance for Shopsanity checks to be purchasable with Tycoon Wallet. (500+)";
     mOptionDescriptions[RSK_SHOPSANITY_PRICES_AFFORDABLE] =
-        "Affordable prices per tier: starter = 10, adult = 105, giant = 205, tycoon = 505\n\n"
+        "After choosing a price, set it to the affordable amount based on the wallet required.\n\n"
+        "Affordable prices per tier: starter = 1, adult = 100, giant = 201, tycoon = 501\n\n"
         "Use this to enable wallet tier locking, but make shop items not as expensive as they could be.";
     mOptionDescriptions[RSK_FISHSANITY] = "Off - Fish will not be shuffled. No changes will be made to fishing behavior.\n\n"
         "Shuffle only Hyrule Loach - Allows you to earn an item by catching the hyrule loach at the fishing pond and giving it to the owner.\n\n"
@@ -297,32 +318,84 @@ void Settings::CreateOptionDescriptions() {
         "If disabled, then the child pond will be shuffled and shared between both ages.\n\n"
         "Note that, as child, there is a second loach available in the pond!";
     mOptionDescriptions[RSK_SHUFFLE_SCRUBS] =
-        "Off - Scrubs will not be shuffled. The 3 Scrubs that give one-time items in the vanilla game "
-        "(PoH, Deku Nut capacity, and Deku Stick capacity) will have random items.\n"
+        "Off - Scrubs will not be shuffled. The 3 Scrubs that give one-time items in the "
+        "vanilla game (PoH, Deku Nut capacity, and Deku Stick capacity) will not spawn."
         "\n"
-        "Affordable - Scrubs will be shuffled and their item will cost 10 rupees.\n"
+        "One-Time Only - Only the 3 Scrubs that give one-time items in the "
+        "vanilla game are shuffled.\n"
         "\n"
-        "Expensive - Scrubs will be shuffled and their item will cost the vanilla price.\n"
-        "\n"
-        "Random - Scrubs will be shuffled and their item will cost will be between 0-95 rupees.\n";
+        "All - All Scrubs are shuffled.";
+    mOptionDescriptions[RSK_SCRUBS_PRICES] =
+        "Vanilla - The same price as the item it replaced\n"
+        "Cheap Balanced - Prices will range between 0 to 95 rupees, favoring lower numbers\n"
+        "Balanced - Prices will range between 0 to 300 rupees, favoring lower numbers\n"
+        "Fixed - A fixed number\n"
+        "Range - A random point between specific ranges\n"
+        "Set By Wallet - Set weights that decide the choice of each wallet, and get a random price in that range if that wallet is chosen";
+    mOptionDescriptions[RSK_SCRUBS_PRICES_FIXED_PRICE] =
+        "The price for Scrub checks.";
+    mOptionDescriptions[RSK_SCRUBS_PRICES_RANGE_1] =
+        "The first part of the inclusive range of prices to allow for Scrub checks.";
+    mOptionDescriptions[RSK_SCRUBS_PRICES_RANGE_2] =
+        "The second part of the inclusive range of prices to allow for Scrub checks.";
+    mOptionDescriptions[RSK_SCRUBS_PRICES_NO_WALLET_WEIGHT] =
+        "The chance for Scrub checks to be free.";
+    mOptionDescriptions[RSK_SCRUBS_PRICES_CHILD_WALLET_WEIGHT] =
+        "The chance for Scrub checks to be purchasable with Child's Wallet (1-99).";
+    mOptionDescriptions[RSK_SCRUBS_PRICES_ADULT_WALLET_WEIGHT] =
+        "The chance for Scrub checks to be purchasable with Adult's Wallet (100-200).";
+    mOptionDescriptions[RSK_SCRUBS_PRICES_GIANT_WALLET_WEIGHT] =
+        "The chance for Scrub checks to be purchasable with Giant's Wallet (201-500).";
+    mOptionDescriptions[RSK_SCRUBS_PRICES_TYCOON_WALLET_WEIGHT] =
+        "The chance for Scrub checks to be purchasable with Tycoon Wallet. (500+)";
+    mOptionDescriptions[RSK_SCRUBS_PRICES_AFFORDABLE] =
+        "After choosing a price, set it to the affordable amount based on the wallet required.\n\n"
+        "Affordable prices per tier: starter = 1, adult = 100, giant = 201, tycoon = 501\n\n"
+        "Use this to enable wallet tier locking, but make scrub items not as expensive as they could be.";
     mOptionDescriptions[RSK_SHUFFLE_BEEHIVES] =
         "Beehives give a randomized item from the pool when broken.";
     mOptionDescriptions[RSK_SHUFFLE_COWS] =
         "Cows give a randomized item from the pool upon performing Epona's Song in front of them.";
-    mOptionDescriptions[RSK_SHUFFLE_MAGIC_BEANS] =
-        "Enabling this adds a pack of 10 beans to the item pool and changes the Magic Bean "
-        "Salesman to sell a random item at a price of 60 rupees.";
     mOptionDescriptions[RSK_SHUFFLE_MERCHANTS] =
-        "Enabling this changes Medigoron, Granny and the Carpet Salesman to sell a random item "
-        "once at a high price (100 for Granny, 200 for the others).\n"
+        "This setting governs if the Bean Salesman, Medigoron, Granny and the Carpet Salesman "
+        "sell a random item.\n"
+        "Beans Only - Only the Bean Salesman will have a check, and a pack of Magic Beans will be added "
+        " to the item pool."
+        "All But Beans - Medigoron, Granny and the Carpet Salesman will have checks, "
         "A Giant's Knife and a pack of Bombchus will be added to the item pool, and "
         "one of the bottles will contain a Blue Potion.\n\n"
-        "On (no hints) - Salesmen will be included but won't tell you what you'll get.\n"
-        "On (with hints) - Salesmen will be included and you'll know what you're buying.\n"
+        "All - Apply both effects.\n"
         "\n"
         "Granny's item will only be offered after you have traded in the Odd Mushroom when Shuffle Adult Trade is on. "
         "Otherwise when off, you will need to have found the Claim Check to buy her item (simulating the trade quest "
         "is complete).";
+    mOptionDescriptions[RSK_MERCHANT_PRICES] =
+        "Vanilla - The same price as the Check in vanilla, 60 for the Bean Salesman\n"
+        "Cheap Balanced - Prices will range between 0 to 95 rupees, favoring lower numbers\n"
+        "Balanced - Prices will range between 0 to 300 rupees, favoring lower numbers\n"
+        "Fixed - A fixed number\n"
+        "Range - A random point between specific ranges\n"
+        "Set By Wallet - Set weights that decide the choice of each wallet, and get a random price in that range if that wallet is chosen";
+    mOptionDescriptions[RSK_MERCHANT_PRICES_FIXED_PRICE] =
+        "The price for Merchant checks.";
+    mOptionDescriptions[RSK_MERCHANT_PRICES_RANGE_1] =
+        "The first part of the inclusive range of prices to allow for Merchant checks.";
+    mOptionDescriptions[RSK_MERCHANT_PRICES_RANGE_2] =
+        "The second part of the inclusive range of prices to allow for Merchant checks.";
+    mOptionDescriptions[RSK_MERCHANT_PRICES_NO_WALLET_WEIGHT] =
+        "The chance for Merchant checks to be free.";
+    mOptionDescriptions[RSK_MERCHANT_PRICES_CHILD_WALLET_WEIGHT] =
+        "The chance for Merchant checks to be purchasable with Child's Wallet (1-99).";
+    mOptionDescriptions[RSK_MERCHANT_PRICES_ADULT_WALLET_WEIGHT] =
+        "The chance for Merchant checks to be purchasable with Adult's Wallet (100-200).";
+    mOptionDescriptions[RSK_MERCHANT_PRICES_GIANT_WALLET_WEIGHT] =
+        "The chance for Merchant checks to be purchasable with Giant's Wallet (201-500).";
+    mOptionDescriptions[RSK_MERCHANT_PRICES_TYCOON_WALLET_WEIGHT] =
+        "The chance for Merchant checks to be purchasable with Tycoon Wallet. (500+)";
+    mOptionDescriptions[RSK_MERCHANT_PRICES_AFFORDABLE] =
+        "After choosing a price, set it to the affordable amount based on the wallet required.\n\n"
+        "Affordable prices per tier: starter = 1, adult = 100, giant = 201, tycoon = 501\n\n"
+        "Use this to enable wallet tier locking, but make merchant items not as expensive as they could be.";
     mOptionDescriptions[RSK_SHUFFLE_FROG_SONG_RUPEES] = "Shuffles 5 Purple Rupees into to the item pool, and allows\n"
                                                         "you to earn items by playing songs at the Frog Choir.\n"
                                                         "\n"
@@ -546,9 +619,9 @@ void Settings::CreateOptionDescriptions() {
     mOptionDescriptions[RSK_CHICKENS_HINT] = "Talking to Anju as a child will tell you the item she will give you for delivering her Cuccos to the pen";
     mOptionDescriptions[RSK_MALON_HINT] = "Talking to Malon as adult will tell you the item on \"Link's cow\", the cow you win from beating her time on the Lon Lon Obsticle Course.";
     mOptionDescriptions[RSK_HBA_HINT] = "Talking to the Horseback Archery gerudo in Gerudo Fortress, or the nearby sign, will tell you what you win for scoring 1000 and 1500 points on Horseback Archery.";
-    mOptionDescriptions[RSK_WARP_SONG_HINTS] = "Standing near the pedestal for the frogs in Zora's River will tell you "
-                                               "the reward for the frogs' ocarina game."; //RANDOTODO fix this, I can't find the original right now because github search sucks
+    mOptionDescriptions[RSK_WARP_SONG_HINTS] = "Playing a warp song will tell you where it leads. (If warp song destinations are vanilla, this is always enabled.)";
     mOptionDescriptions[RSK_SCRUB_TEXT_HINT] = "Business scrubs will reveal the identity of what they're selling.";
+    mOptionDescriptions[RSK_MERCHANT_TEXT_HINT] = "Merchants will reveal the identity of what they're selling (Shops are not affected by this setting).";
     mOptionDescriptions[RSK_KAK_10_SKULLS_HINT] = "Talking to the Cursed Resident in the Skultulla House who is saved after 10 tokens will tell you the reward";
     mOptionDescriptions[RSK_KAK_20_SKULLS_HINT] = "Talking to the Cursed Resident in the Skultulla House who is saved after 20 tokens will tell you the reward";
     mOptionDescriptions[RSK_KAK_30_SKULLS_HINT] = "Talking to the Cursed Resident in the Skultulla House who is saved after 30 tokens will tell you the reward";
