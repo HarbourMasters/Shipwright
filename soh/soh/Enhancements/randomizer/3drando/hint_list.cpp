@@ -2945,6 +2945,8 @@ void StaticData::HintTable_Init() {
                                                  /*french*/ "tes poches"));
                                               // /*spanish*/tu bolsillo
 
+    hintTextTable[RHT_ISOLATED_PLACE] = HintText(CustomMessage("an Isolated Place"));
+
     hintTextTable[RHT_DUNGEON_ORDINARY] = HintText(CustomMessage(" It's ordinary.",
                                                       /*german*/ "&Sieht aus wie immer.",
                                                       /*french*/ "&Elle vous semble %rordinaire%w."));

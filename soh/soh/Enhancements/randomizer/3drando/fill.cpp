@@ -18,6 +18,7 @@
 
 #include <vector>
 #include <list>
+#include <set>
 #include <spdlog/spdlog.h>
 
 using namespace CustomMessages;
@@ -620,38 +621,50 @@ void ValidateEntrances(bool checkPoeCollectorAccess, bool checkOtherEntranceAcce
   }
 }
 
-RandomizerArea LookForExternalArea(const Region* const currentRegion, std::vector<RandomizerRegion> &alreadyChecked){
+void LookForExternalArea(Region* currentRegion, std::set<Region*> &alreadyChecked, std::set<RandomizerArea> &areas, bool LowPriorityMode=false){
   for (const auto& entrance : currentRegion->entrances) {
-    RandomizerArea otherArea = entrance->GetParentRegion()->GetArea();
-    const bool isAreaUnchecked = std::find(alreadyChecked.begin(), alreadyChecked.end(), entrance->GetParentRegionKey()) == alreadyChecked.end();
-    if (otherArea == RA_NONE && isAreaUnchecked) {
-      //if the region is in RA_NONE and hasn't already been checked, check it
-      alreadyChecked.push_back(entrance->GetParentRegionKey());
-      const RandomizerArea passdown = LookForExternalArea(entrance->GetParentRegion(), alreadyChecked);
-      if(passdown != RA_NONE){
-        return passdown;
+    //if this entrance does not pass areas, only process it if we are in low priority mode
+    if (LowPriorityMode || entrance->DoesSpreadAreas()){
+      std::set<RandomizerArea> otherAreas = entrance->GetParentRegion()->GetAllAreas();
+      //if the region is arealess and hasn't already been checked, recursivly check what connects to it
+      if (otherAreas.size() == 0 && !alreadyChecked.contains(currentRegion)) {
+        alreadyChecked.insert(entrance->GetParentRegion());
+        LookForExternalArea(entrance->GetParentRegion(), alreadyChecked, areas, LowPriorityMode);
+      //if we find an area and it's not links pocket, we should try and add it.
+      //If it's Links Pocket or RA_NONE, do not propagate those, they are not real areas.
+      //This check is likely to fail if a region somehow is both in Link's Pocket and elsewhere, but this should never happen
+      } else if (*otherAreas.begin() > RA_LINKS_POCKET){
+        areas.merge(otherAreas);
       }
-    } else if (otherArea != RA_LINKS_POCKET){ //if it's links pocket, do not propagate this, Link's Pocket is not a real Area
-      return otherArea;
     }
   }
-  return RA_NONE;
 }
 
 void SetAreas(){
   auto ctx = Rando::Context::GetInstance();
-//RANDOTODO give entrances an enum like RandomizerCheck, the give them all areas here, the use those areas to not need to recursivly find ItemLocation areas
+//RANDOTODO give entrances an enum like RandomizerCheck, the give them all areas here,
+//then use those areas to not need to recursivly find ItemLocation areas when an identifying entrance's area
   for (int regionType = 0; regionType < RR_MARKER_AREAS_END; regionType++) {
     Region region = areaTable[regionType];
-    RandomizerArea area = region.GetArea();
-    if (area == RA_NONE) {
-      std::vector<RandomizerRegion> alreadyChecked = {static_cast<RandomizerRegion>(regionType)};
-      area = LookForExternalArea(&region, alreadyChecked);
+    std::set<RandomizerArea> areas = region.GetAllAreas();
+    std::set<Region*> regionsToSet = {&region};
+    if (areas.empty()) {
+      LookForExternalArea(&region, regionsToSet, areas);
+      //If we found nothing, try again in low priority mode to try every entrance
+      if (areas.empty()) {
+        LookForExternalArea(&region, regionsToSet, areas, true);
+        //If we still found nothing, we're disconnected, use RA_NONE to represent that
+        if (areas.empty()){
+          areas.insert(RA_NONE);
+        }
+      }
     }
-    for (auto& loc : region.locations){
-      ctx->GetItemLocation(loc.GetLocation())->SetArea(area);
+    for (auto regionToSet : regionsToSet) {
+      regionToSet->ReplaceAreas(areas);
+      for (auto& loc : regionToSet->locations){
+        ctx->GetItemLocation(loc.GetLocation())->MergeAreas(areas);
+      }
     }
-    areaTable[regionType].SetArea(area);
   }
 }
 
@@ -709,10 +722,12 @@ static void CalculateWotH() {
   //size - 1 so Triforce is not counted
   for (size_t i = 0; i < ctx->playthroughLocations.size() - 1; i++) {
     for (size_t j = 0; j < ctx->playthroughLocations[i].size(); j++) {
-      //If removing this item and no other item caused the game to become unbeatable, then it is strictly necessary, so add it
-      if (ctx->GetItemLocation(ctx->playthroughLocations[i][j])->IsHintable() 
-          && !(IsBeatableWithout(ctx->playthroughLocations[i][j], true))) {
-        ctx->GetItemLocation(ctx->playthroughLocations[i][j])->SetWothCandidate();
+      //If removing this item and no other item caused the game to become unbeatable, then it is strictly necessary,
+      //so add it unless it is in Links Pocket or an isolated place.
+      auto itemLoc = ctx->GetItemLocation(ctx->playthroughLocations[i][j]);
+      if (itemLoc->IsHintable() && *itemLoc->GetAreas().begin() > RA_LINKS_POCKET &&
+          !(IsBeatableWithout(ctx->playthroughLocations[i][j], true))) {
+        itemLoc->SetWothCandidate();
       }
     }
   }
@@ -721,28 +736,41 @@ static void CalculateWotH() {
   ReachabilitySearch(ctx->allLocations);
 }
 
+static bool FindIfBarren(Rando::ItemLocation* itemLoc, std::array<bool, RA_MAX> NotBarren){
+  std::set<RandomizerArea> locAreas = itemLoc->GetAreas();
+  for (auto locArea: locAreas){
+    if (NotBarren[locArea]){
+      return false;
+    }
+  }
+  return true;
+}
+
 //Calculate barren locations and assign Barren Candidacy to all locations inside those areas
 static void CalculateBarren() {
   auto ctx = Rando::Context::GetInstance();
   std::array<bool, RA_MAX> NotBarren = {}; //I would invert this but the "initialise all as true" syntax wasn't working
+  //Isolated Areas and Link's Pocket are never Hinted Barren
+  NotBarren[RA_NONE] = true;
+  NotBarren[RA_LINKS_POCKET] = true; 
 
   for (RandomizerCheck loc : ctx->allLocations) {
     Rando::ItemLocation* itemLoc = ctx->GetItemLocation(loc);
-    RandomizerArea locArea = itemLoc->GetArea();
-    bool test = (itemLoc->GetPlacedItem().IsMajorItem() || itemLoc->IsWothCandidate());
-    // If a location has a major item or is a way of the hero location, it is not barren
-    if (NotBarren[locArea] == false && locArea > RA_LINKS_POCKET && (itemLoc->GetPlacedItem().IsMajorItem() || itemLoc->IsWothCandidate())) {
-      NotBarren[locArea] = true;
-    } 
-  }
-
-  for (RandomizerCheck loc : ctx->allLocations) {
-    Rando::ItemLocation* itemLoc = ctx->GetItemLocation(loc);
-    if (!NotBarren[itemLoc->GetArea()]){
-      itemLoc->SetBarrenCandidate();
+    std::set<RandomizerArea> locAreas = itemLoc->GetAreas();
+    for (auto locArea: locAreas){
+      // If a location has a major item or is a way of the hero location, it is not barren
+      if (NotBarren[locArea] == false && (itemLoc->GetPlacedItem().IsMajorItem() || itemLoc->IsWothCandidate())) {
+        NotBarren[locArea] = true;
+      } 
     }
   }
 
+  for (RandomizerCheck loc : ctx->allLocations) {
+    Rando::ItemLocation* itemLoc = ctx->GetItemLocation(loc);
+    if (FindIfBarren(itemLoc, NotBarren)){
+      itemLoc->SetBarrenCandidate();
+    }
+  }
 }
 
 //Will place things completely randomly, no logic checks are performed
@@ -973,7 +1001,7 @@ static void RandomizeOwnDungeon(const Rando::DungeonInfo* dungeon) {
   // This accounts for boss room shuffle so that own dungeon items can be placed
   // in the shuffled boss room
   std::vector<RandomizerCheck> dungeonLocations = FilterFromPool(ctx->allLocations, [dungeon, ctx](const auto loc) {
-    return ctx->GetItemLocation(loc)->GetArea() == dungeon->GetArea();
+    return ctx->GetItemLocation(loc)->GetAreas().contains(dungeon->GetArea());
   });
 
   //filter out locations that may be required to have songs placed at them

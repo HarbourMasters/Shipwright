@@ -9,8 +9,8 @@
 namespace Rando {
 EntranceLinkInfo NO_RETURN_ENTRANCE = { EntranceType::None, RR_NONE, RR_NONE, -1 };
 
-Entrance::Entrance(RandomizerRegion connectedRegion_, std::vector<ConditionFn> conditions_met_)
-    : connectedRegion(connectedRegion_) {
+Entrance::Entrance(RandomizerRegion connectedRegion_, std::vector<ConditionFn> conditions_met_, bool spreadsAreasWithPriority_)
+    : connectedRegion(connectedRegion_),  spreadsAreasWithPriority(spreadsAreasWithPriority_){
     originalConnectedRegion = connectedRegion_;
     conditions_met.resize(2);
     for (size_t i = 0; i < conditions_met_.size(); i++) {
@@ -236,6 +236,10 @@ Entrance* Entrance::AssumeReachable() {
         Disconnect();
     }
     return assumed;
+}
+
+bool Entrance::DoesSpreadAreas(){
+  return spreadsAreasWithPriority;
 }
 
 EntranceShuffler::EntranceShuffler() {
@@ -521,24 +525,6 @@ static bool ValidateWorld(Entrance* entrancePlaced) {
         }
     }
 
-    if (ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES).IsNot(RO_INTERIOR_ENTRANCE_SHUFFLE_OFF) &&
-        ctx->GetOption(RSK_GOSSIP_STONE_HINTS).IsNot(RO_GOSSIP_STONES_NONE) &&
-        (entrancePlaced == nullptr || type == EntranceType::Interior || type == EntranceType::SpecialInterior)) {
-        // When cows are shuffled, ensure both Impa's House entrances are in the same hint area because the cow is
-        // reachable from both sides
-        if (ctx->GetOption(RSK_SHUFFLE_COWS)) {
-            auto impasHouseFrontHintRegion = areaTable[RR_KAK_IMPAS_HOUSE].GetArea();
-            auto impasHouseBackHintRegion = areaTable[RR_KAK_IMPAS_HOUSE_BACK].GetArea();
-            if (impasHouseFrontHintRegion != RA_NONE && impasHouseBackHintRegion != RA_NONE &&
-                impasHouseBackHintRegion != RA_LINKS_POCKET && impasHouseFrontHintRegion != RA_LINKS_POCKET &&
-                impasHouseBackHintRegion != impasHouseFrontHintRegion) {
-                auto message = "Kak Impas House entrances are not in the same hint area\n";
-                SPDLOG_DEBUG(message);
-                return false;
-            }
-        }
-    }
-
     // If all locations aren't reachable, that means that one of the conditions failed when searching
     if (!Rando::Context::GetInstance()->allLocationsReachable) {
         if (checkOtherEntranceAccess) {
@@ -787,42 +773,6 @@ static std::array<std::vector<Entrance*>, 2> SplitEntrancesByRequirements(std::v
     return { restrictiveEntrances, softEntrances };
 }
 
-// Once the first entrance to Impas House has been placed, try to place the next one immediately to reduce chances of
-// failure.
-bool EntranceShuffler::PlaceOtherImpasHouseEntrance(std::vector<Entrance*> entrances,
-                                                    std::vector<Entrance*> targetEntrances,
-                                                    std::vector<EntrancePair>& rollbacks) {
-    // Get the other impas house entrance
-    auto otherImpaTargets = FilterFromPool(targetEntrances, [](const Entrance* target) {
-        return (target->GetConnectedRegionKey() == RR_KAK_IMPAS_HOUSE ||
-                target->GetConnectedRegionKey() == RR_KAK_IMPAS_HOUSE_BACK);
-    });
-    if (otherImpaTargets.empty()) {
-        return true;
-    }
-
-    Entrance* otherImpaTarget = otherImpaTargets[0];
-    auto m = "Now Placing Other Impa Target: " + otherImpaTarget->GetName() + "\n";
-    SPDLOG_DEBUG(m);
-    RandomizerRegion otherImpaRegion = otherImpaTarget->GetConnectedRegionKey() != RR_KAK_IMPAS_HOUSE_BACK
-                                           ? RR_KAK_IMPAS_HOUSE_BACK
-                                           : RR_KAK_IMPAS_HOUSE;
-    for (Entrance* entrance : entrances) {
-        // If the entrance is already connected or it doesn't have the same hint region as the already placed impas
-        // house entrance, then don't try to use it
-        if (entrance->GetConnectedRegionKey() != RR_NONE ||
-            (areaTable[otherImpaRegion].GetArea() != areaTable[entrance->GetParentRegionKey()].GetArea())) {
-            continue;
-        }
-        // If the placement succeeds, we return true
-        if (ReplaceEntrance(entrance, otherImpaTarget, rollbacks)) {
-            return true;
-        }
-    }
-    SPDLOG_DEBUG("No available entrances for placing other impa region.\n");
-    return false;
-}
-
 // Shuffle entrances by placing them instead of entrances in the provided target entrances list
 bool EntranceShuffler::ShuffleEntrances(std::vector<Entrance*>& entrances, std::vector<Entrance*>& targetEntrances,
                                         std::vector<EntrancePair>& rollbacks) {
@@ -842,18 +792,7 @@ bool EntranceShuffler::ShuffleEntrances(std::vector<Entrance*>& entrances, std::
                 continue;
             }
 
-            // Store whether or not we're about to attempt placing an entrance to Impas House
-            bool attemptedImpasHousePlacement = (target->GetConnectedRegionKey() == RR_KAK_IMPAS_HOUSE ||
-                                                 target->GetConnectedRegionKey() == RR_KAK_IMPAS_HOUSE_BACK);
-
             if (ReplaceEntrance(entrance, target, rollbacks)) {
-                // If shuffle cows is enabled and the last entrance was one to Impas House,
-                // then immediately attempt to place the other entrance to Impas House
-                if (ctx->GetOption(RSK_SHUFFLE_COWS) && attemptedImpasHousePlacement) {
-                    if (!PlaceOtherImpasHouseEntrance(entrances, targetEntrances, rollbacks)) {
-                        return false;
-                    }
-                }
                 break;
             }
         }

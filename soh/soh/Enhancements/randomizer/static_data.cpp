@@ -143,7 +143,7 @@ std::unordered_map<RandomizerCheck, RandomizerHint> StaticData::gossipStoneCheck
 };
 
 std::unordered_map<uint32_t, RandomizerHintTextKey> StaticData::areaNames = { //RANDOTODO resolve None in area
-    {RA_NONE, RHT_LINKS_POCKET}, //explicit none in area hints usually means it's a starting item, so say Link's pocket
+    {RA_NONE, RHT_ISOLATED_PLACE}, //explicit none in area hints means we're disconnected
     {RA_LINKS_POCKET, RHT_LINKS_POCKET},
     {RA_KOKIRI_FOREST, RHT_KOKIRI_FOREST},
     {RA_THE_LOST_WOODS, RHT_THE_LOST_WOODS},
