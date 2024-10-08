@@ -4843,8 +4843,7 @@ s32 Player_ActionChange_1(Player* this, PlayState* play) {
     if ((this->doorType != PLAYER_DOORTYPE_NONE) &&
         (!(this->stateFlags1 & PLAYER_STATE1_ITEM_OVER_HEAD) ||
          ((this->heldActor != NULL) && (this->heldActor->id == ACTOR_EN_RU1)))) {
-        // Disable doors in Boss Rush so the player can't leave the boss rooms backwards.
-        if ((CHECK_BTN_ALL(sControlInput->press.button, BTN_A) || (Player_Action_8084F9A0 == this->actionFunc)) && !IS_BOSS_RUSH) {
+        if ((CHECK_BTN_ALL(sControlInput->press.button, BTN_A) || (Player_Action_8084F9A0 == this->actionFunc)) && GameInteractor_Should(VB_BE_ABLE_TO_OPEN_DOORS, true, NULL)) {
             doorActor = this->doorActor;
 
             if (this->doorType <= PLAYER_DOORTYPE_AJAR) {

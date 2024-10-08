@@ -650,6 +650,12 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
             }
             break;
         }
+        case VB_SKIP_SCARECROWS_SONG: {
+            if (gPlayState->msgCtx.msgMode == MSGMODE_OCARINA_PLAYING && CVarGetInteger(CVAR_ENHANCEMENT("InstantScarecrow"), 0) && gSaveContext.scarecrowSpawnSongSet) {
+                *should = true;
+            }
+            break;
+        }
     }
 }
 

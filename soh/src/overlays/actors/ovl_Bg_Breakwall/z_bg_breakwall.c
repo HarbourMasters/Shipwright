@@ -8,6 +8,7 @@
 #include "scenes/dungeons/ddan/ddan_scene.h"
 #include "objects/object_bwall/object_bwall.h"
 #include "objects/object_kingdodongo/object_kingdodongo.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
@@ -274,9 +275,8 @@ void BgBreakwall_Wait(BgBreakwall* this, PlayState* play) {
             }
         }
     }
-    
-    // Break the floor immediately in Boss Rush so the player can jump in the hole immediately.
-    if (this->collider.base.acFlags & 2 || blueFireArrowHit || IS_BOSS_RUSH) {
+
+    if (GameInteractor_Should(VB_BG_BREAKWALL_BREAK, this->collider.base.acFlags & 2 || blueFireArrowHit, NULL)) {
         Vec3f effectPos;
         s32 wallType = ((this->dyna.actor.params >> 13) & 3) & 0xFF;
 

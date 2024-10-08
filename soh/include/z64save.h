@@ -276,7 +276,7 @@ typedef struct {
     /*        */ u16 pendingSaleMod;
     /*        */ uint8_t questId;
     /*        */ uint32_t isBossRushPaused;
-    /*        */ uint8_t bossRushOptions[BOSSRUSH_OPTIONS_AMOUNT];
+    /*        */ uint8_t bossRushOptions[BR_OPTIONS_MAX];
     /*        */ u8 pendingIceTrapCount;
     /*        */ SohStats sohStats;
     /*        */ FaroresWindData backupFW;
