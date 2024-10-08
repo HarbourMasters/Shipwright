@@ -29,7 +29,9 @@ bool LocationAccess::CheckConditionAtAgeTime(bool& age, bool& time) const {
 }
 
 bool LocationAccess::ConditionsMet() const {
-
+  //WARNING enterance validation can run this after resetting the access for sphere 0 validation
+  //When refactoring ToD access, either fix the above or do not assume that we
+  //have any access at all just because this is being run
   Region* parentRegion = RegionTable(Rando::Context::GetInstance()->GetItemLocation(location)->GetParentRegionKey());
   bool conditionsMet = false;
 
@@ -78,8 +80,8 @@ Region::Region(std::string regionName_, std::string scene_, RandomizerArea area,
 
 Region::~Region() = default;
 
-bool Region::UpdateEvents(bool haveTimeAccess) {
-  if (timePass && haveTimeAccess) {
+void Region::ApplyTimePass(){
+  if (timePass) {
     StartPerformanceTimer(PT_TOD_ACCESS);
     if (Child()) {
       childDay = true;
@@ -95,7 +97,9 @@ bool Region::UpdateEvents(bool haveTimeAccess) {
     }
     StopPerformanceTimer(PT_TOD_ACCESS);
   }
+}
 
+bool Region::UpdateEvents() {
   bool eventsUpdated =  false;
   StartPerformanceTimer(PT_EVENT_ACCESS);
   for (EventAccess& event : events) {
@@ -408,7 +412,7 @@ namespace Regions {
 
   void AccessReset() {
     auto ctx = Rando::Context::GetInstance();
-      for (const RandomizerRegion region : GetAllRegions()) {
+    for (const RandomizerRegion region : GetAllRegions()) {
       RegionTable(region)->ResetVariables();
     }
 
