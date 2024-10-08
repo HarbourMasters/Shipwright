@@ -194,7 +194,7 @@ std::unordered_map<uint32_t, RandomizerHintTextKey> StaticData::trialData = {
 std::unordered_map<RandomizerHint, StaticHintInfo> StaticData::staticHintInfoMap = {
   // RH_GANONDORF_HINT is special cased due to being different based on master sword shuffle
   // Altar hints are special cased due to special hint marking rules
-  // warp song hints are special cased due to entrences not being done properly yet
+  // warp song hints are special cased due to entrances not being done properly yet
   // Ganondorf Joke is special Cased as the text is random
   {RH_SHEIK_HINT,          StaticHintInfo(HINT_TYPE_AREA,     {RHT_SHEIK_HINT_LA_ONLY},            RSK_SHEIK_LA_HINT,       true, {}, {RG_LIGHT_ARROWS},            {RC_SHEIK_HINT_GC, RC_SHEIK_HINT_MQ_GC}, true)},
   {RH_DAMPES_DIARY,        StaticHintInfo(HINT_TYPE_AREA,     {RHT_DAMPE_DIARY},                   RSK_DAMPES_DIARY_HINT,   true, {}, {RG_PROGRESSIVE_HOOKSHOT},    {RC_DAMPE_HINT})},
