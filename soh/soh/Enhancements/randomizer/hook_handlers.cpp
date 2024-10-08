@@ -875,7 +875,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             if (!EnDs_RandoCanGetGrannyItem()) {
                 break;
             }
-            EnDs* granny = static_cast<EnDs*>(optionalArg);
+            EnDs* granny = va_args(args, EnDs*);
             // Only setting the inf if we've actually gotten the rando item and not the vanilla blue potion
             Flags_SetRandomizerInf(RAND_INF_MERCHANTS_GRANNYS_SHOP);
             granny->actor.parent = NULL;
@@ -911,7 +911,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             break;
         }
         case VB_GIVE_ITEM_FROM_CARPET_SALESMAN: {
-            EnJs* enJs = static_cast<EnJs*>(optionalArg);
+            EnJs* enJs = va_args(args, EnJs*);
             if (EnJs_RandoCanGetCarpetMerchantItem()){
                 Rupees_ChangeBy(OTRGlobals::Instance->gRandoContext->GetItemLocation(RC_WASTELAND_BOMBCHU_SALESMAN)->GetPrice() * -1);
                 enJs->actor.parent = NULL;
@@ -939,7 +939,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         case VB_BE_ELIGIBLE_FOR_GIANTS_KNIFE_PURCHASE:
             if (EnGm_RandoCanGetMedigoronItem()) {
                 if (id == VB_GIVE_ITEM_FROM_MEDIGORON) {
-                    EnGm* enGm = static_cast<EnGm*>(optionalArg);
+                    EnGm* enGm = va_args(args, EnGm*);
                     Flags_SetInfTable(INFTABLE_B1);
                     Flags_SetRandomizerInf(RAND_INF_MERCHANTS_MEDIGORON);
                     enGm->actor.parent = NULL;
@@ -995,7 +995,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             break;
         }
         case VB_TRADE_ODD_MUSHROOM: {
-            EnDs* granny = static_cast<EnDs*>(optionalArg);
+            EnDs* granny = va_args(EnDs*);
             Randomizer_ConsumeAdultTradeItem(gPlayState, ITEM_ODD_MUSHROOM);
             // Trigger the reward now
             Flags_SetItemGetInf(ITEMGETINF_30);
