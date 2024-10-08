@@ -97,7 +97,7 @@ void RegionTable_Init_DeathMountain() {
                   LOCATION(RC_GC_ROLLING_GORON_AS_ADULT, logic->StopGCRollingGoronAsAdult),
                   LOCATION(RC_GC_GS_BOULDER_MAZE,        logic->IsChild && logic->BlastOrSmash()),
                   LOCATION(RC_GC_GS_CENTER_PLATFORM,     logic->IsAdult && logic->CanAttack()),
-                  LOCATION(RC_GC_MEDIGORON,              logic->IsAdult && logic->HasItem(RG_ADULT_WALLET) && (logic->BlastOrSmash() || logic->HasItem(RG_GORONS_BRACELET))),
+                  LOCATION(RC_GC_MEDIGORON,              logic->IsAdult && (logic->BlastOrSmash() || logic->HasItem(RG_GORONS_BRACELET))),
                   LOCATION(RC_GC_MAZE_GOSSIP_STONE,      logic->BlastOrSmash() || logic->CanUse(RG_SILVER_GAUNTLETS)),
                   LOCATION(RC_GC_MEDIGORON_GOSSIP_STONE, logic->BlastOrSmash() || logic->HasItem(RG_GORONS_BRACELET)),
                 }, {

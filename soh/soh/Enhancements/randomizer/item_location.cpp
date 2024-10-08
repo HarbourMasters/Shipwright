@@ -77,6 +77,7 @@ void ItemLocation::ApplyPlacedItemEffect() const {
 }
 
 uint16_t ItemLocation::GetPrice() const {
+    //RANDOTODO if we ever change price of shop items, this needs replacing with proper price assignment in Fill
     if (StaticData::RetrieveItem(placedItem).GetItemType() == ITEMTYPE_SHOP) {
         return StaticData::RetrieveItem(placedItem).GetPrice();
     }
