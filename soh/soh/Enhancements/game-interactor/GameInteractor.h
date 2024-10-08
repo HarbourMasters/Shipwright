@@ -184,6 +184,8 @@ typedef enum {
     // Opt: *EnMk
     // Vanilla condition: Flags_GetItemGetInf(ITEMGETINF_30)
     VB_OFFER_BLUE_POTION,
+    VB_GRANNY_SAY_INSUFFICIENT_RUPEES,
+    VB_GRANNY_TAKE_MONEY,
     // Vanilla condition: Inventory_HasEmptyBottle() == 0
     VB_NEED_BOTTLE_FOR_GRANNYS_ITEM,
     // Opt: *EnNiwLady
@@ -247,6 +249,46 @@ typedef enum {
     ```
     */
     VB_DRAW_AMMO_COUNT,
+    // Vanilla condition: true
+    VB_HAVE_OCARINA_NOTE_D4,
+    // Vanilla condition: true
+    VB_HAVE_OCARINA_NOTE_D5,
+    // Vanilla condition: true
+    VB_HAVE_OCARINA_NOTE_F4,
+    // Vanilla condition: true
+    VB_HAVE_OCARINA_NOTE_B4,
+    // Vanilla condition: true
+    VB_HAVE_OCARINA_NOTE_A4,
+    // Vanilla condition: false
+    VB_SKIP_SCARECROWS_SONG,
+    // Vanilla condition: true
+    VB_RENDER_RUPEE_COUNTER,
+    // Vanilla condition: true
+    VB_RENDER_KEY_COUNTER,
+    // Vanilla condition: true
+    VB_SPAWN_HEART_CONTAINER,
+    // Vanilla condition: true
+    VB_BE_ABLE_TO_OPEN_DOORS,
+    // Vanilla condition: true
+    VB_REVERT_SPOILING_ITEMS,
+    // Vanilla condition: Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP) || BREG(2)
+    VB_BE_ABLE_TO_PLAY_BOMBCHU_BOWLING,
+    // Vanilla condition: true
+    VB_BE_ABLE_TO_SAVE,
+    // Vanilla condition: true
+    VB_TRANSITION_TO_SAVE_SCREEN_ON_DEATH,
+    // Vanilla condition: true
+    VB_RENDER_YES_ON_CONTINUE_PROMPT,
+    // Vanilla condition: CHECK_BTN_ALL(input->press.button, BTN_START)
+    VB_CLOSE_PAUSE_MENU,
+    // Vanilla condition: true
+    VB_SPAWN_BLUE_WARP,
+    // Vanilla condition: this->warpTimer > sWarpTimerTarget && gSaveContext.nextCutsceneIndex == 0xFFEF
+    VB_BLUE_WARP_APPLY_ENTRANCE_AND_CUTSCENE,
+    // Vanilla condition: this->collider.base.acFlags & 2
+    VB_BG_BREAKWALL_BREAK,
+    // Vanilla condition: true
+    VB_GANON_HEAL_BEFORE_FIGHT,
     VB_FREEZE_LINK_FOR_BLOCK_THROW,
     VB_MOVE_THROWN_ACTOR,
 
@@ -329,9 +371,11 @@ typedef enum {
     // Opt: *EnGo2
     VB_GIVE_ITEM_FROM_GORON,
     // Opt: *EnJs
+    VB_CHECK_RANDO_PRICE_OF_CARPET_SALESMAN,
     VB_GIVE_ITEM_FROM_CARPET_SALESMAN,
     VB_GIVE_BOMBCHUS_FROM_CARPET_SALESMAN,
     // Opt: *EnGm
+    VB_CHECK_RANDO_PRICE_OF_MEDIGORON,
     VB_GIVE_ITEM_FROM_MEDIGORON,
     // Opt: *EnMs
     VB_GIVE_ITEM_FROM_MAGIC_BEAN_SALESMAN,

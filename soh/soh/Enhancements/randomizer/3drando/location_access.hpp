@@ -5,7 +5,6 @@
 #include <list>
 #include <set>
 
-#include "fill.hpp"
 #include "../randomizerTypes.h"
 #include "../context.h"
 #include "../logic.h"
@@ -18,7 +17,6 @@ extern std::shared_ptr<Rando::Logic> logic;
 
 class EventAccess {
 public:
-
 
     explicit EventAccess(bool* event_, std::vector<ConditionFn> conditions_met_)
         : event(event_) {
@@ -131,6 +129,8 @@ protected:
     bool CanBuy() const;
 };
 
+bool CanBuyAnother(RandomizerCheck rc);
+
 namespace Rando {
     class Entrance;
     enum class EntranceType;
@@ -166,7 +166,9 @@ public:
     bool adultNight = false;
     bool addedToPool = false;;
 
-    bool UpdateEvents(bool haveTimeAccess = true);
+    void ApplyTimePass();
+
+    bool UpdateEvents();
 
     void AddExit(RandomizerRegion parentKey, RandomizerRegion newExitKey, ConditionFn condition);
 

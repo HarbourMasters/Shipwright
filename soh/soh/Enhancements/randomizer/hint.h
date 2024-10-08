@@ -38,7 +38,7 @@ class Hint {
      const HintText GetHintText(uint8_t id = 0) const;
      oJson toJSON();
      void logHint(oJson& jsonData);
-     const HintText GetItemHintText(uint8_t slot, bool mysterious) const;
+     const HintText GetItemHintText(uint8_t slot, bool mysterious = false) const;
      const HintText GetAreaHintText(uint8_t slot) const;
      const CustomMessage GetItemName(uint8_t slot, bool mysterious = false) const;
      const CustomMessage GetAreaName(uint8_t slot) const;

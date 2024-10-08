@@ -128,11 +128,9 @@ void func_80A8910C(EnJs* this, PlayState* play) {
 }
 
 void func_80A89160(EnJs* this, PlayState* play) {
-    if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(VB_GIVE_ITEM_FROM_CARPET_SALESMAN, true, this)) {
+    if (Actor_HasParent(&this->actor, play)) {
         this->actor.parent = NULL;
         En_Js_SetupAction(this, func_80A8910C);
-        // Moved into the text handling to patch a text bug, not a great solution though
-        // Flags_SetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN);
     } else {
         GetItemEntry itemEntry = ItemTable_Retrieve(GI_BOMBCHUS_10);
         gSaveContext.pendingSale = itemEntry.itemId;
@@ -145,17 +143,18 @@ void func_80A891C4(EnJs* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE && Message_ShouldAdvance(play)) {
         switch (play->msgCtx.choiceIndex) {
             case 0: // yes
-                if (gSaveContext.rupees < 200) {
+                if (GameInteractor_Should(VB_CHECK_RANDO_PRICE_OF_CARPET_SALESMAN, gSaveContext.rupees < 200, this)) {
                     Message_ContinueTextbox(play, 0x6075);
                     func_80A89008(this);
                 } else {
-                    if (GameInteractor_Should(VB_GIVE_BOMBCHUS_FROM_CARPET_SALESMAN, true, this) || 
-                       (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(VB_GIVE_ITEM_FROM_CARPET_SALESMAN, true, this))){
-                        Rupees_ChangeBy(-200);
-                        En_Js_SetupAction(this, func_80A89160);
-                    } else{
-                        Message_ContinueTextbox(play, 0x6073);
-                        func_80A89008(this);
+                    if (!GameInteractor_Should(VB_GIVE_ITEM_FROM_CARPET_SALESMAN, false, this)) {
+                        if (GameInteractor_Should(VB_GIVE_BOMBCHUS_FROM_CARPET_SALESMAN, true, this) || Actor_HasParent(&this->actor, play)){
+                            Rupees_ChangeBy(-200);
+                            En_Js_SetupAction(this, func_80A89160);
+                        } else{
+                            Message_ContinueTextbox(play, 0x6073);
+                            func_80A89008(this);
+                        }
                     }
                 }
                 break;

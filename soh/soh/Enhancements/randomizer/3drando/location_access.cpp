@@ -29,7 +29,9 @@ bool LocationAccess::CheckConditionAtAgeTime(bool& age, bool& time) const {
 }
 
 bool LocationAccess::ConditionsMet() const {
-
+  //WARNING enterance validation can run this after resetting the access for sphere 0 validation
+  //When refactoring ToD access, either fix the above or do not assume that we
+  //have any access at all just because this is being run
   Region* parentRegion = RegionTable(Rando::Context::GetInstance()->GetItemLocation(location)->GetParentRegionKey());
   bool conditionsMet = false;
 
@@ -44,33 +46,22 @@ bool LocationAccess::ConditionsMet() const {
 }
 
 bool LocationAccess::CanBuy() const {
-  auto ctx = Rando::Context::GetInstance();
-  //Not a shop or scrub location, don't need to check if buyable
-  if (Rando::StaticData::GetLocation(location)->GetRCType() != RCTYPE_SHOP && Rando::StaticData::GetLocation(location)->GetRCType() != RCTYPE_SCRUB) {
-    return true;
-  }
+  return CanBuyAnother(location);
+}
 
-  //Check if wallet is large enough to buy item
-  bool SufficientWallet = true;
-  if (ctx->GetItemLocation(location)->GetPrice() > 500) {
-    SufficientWallet = logic->HasItem(RG_TYCOON_WALLET);
-  } else if (ctx->GetItemLocation(location)->GetPrice() > 200) {
-    SufficientWallet = logic->HasItem(RG_GIANT_WALLET);
-  } else if (ctx->GetItemLocation(location)->GetPrice() > 99) {
-    SufficientWallet = logic->HasItem(RG_ADULT_WALLET);
-  } else if (ctx->GetItemLocation(location)->GetPrice() > 0) {
-    SufficientWallet = logic->HasItem(RG_CHILD_WALLET);
-  }
+bool CanBuyAnother(RandomizerCheck rc) {
+  uint16_t price = ctx->GetItemLocation(rc)->GetPrice();
 
-  bool OtherCondition = true;
-  RandomizerGet placed = ctx->GetItemLocation(location)->GetPlacedRandomizerGet();
-  //Need bottle to buy bottle items, only logically relevant bottle items included here
-  if (placed == RG_BUY_BLUE_FIRE || placed == RG_BUY_BOTTLE_BUG || placed == RG_BUY_FISH ||
-      placed == RG_BUY_FAIRYS_SPIRIT) {
-      OtherCondition = logic->HasBottle();
+  if (price > 500) {
+    return logic->HasItem(RG_TYCOON_WALLET);
+  } else if (price > 200) {
+    return logic->HasItem(RG_GIANT_WALLET);
+  } else if (price > 99) {
+    return logic->HasItem(RG_ADULT_WALLET);
+  } else if (price > 0) {
+    return logic->HasItem(RG_CHILD_WALLET);
   }
-
-  return SufficientWallet && OtherCondition;
+  return true;
 }
 
 Region::Region() = default;
@@ -89,8 +80,8 @@ Region::Region(std::string regionName_, std::string scene_, std::set<RandomizerA
 
 Region::~Region() = default;
 
-bool Region::UpdateEvents(bool haveTimeAccess) {
-  if (timePass && haveTimeAccess) {
+void Region::ApplyTimePass(){
+  if (timePass) {
     StartPerformanceTimer(PT_TOD_ACCESS);
     if (Child()) {
       childDay = true;
@@ -106,7 +97,9 @@ bool Region::UpdateEvents(bool haveTimeAccess) {
     }
     StopPerformanceTimer(PT_TOD_ACCESS);
   }
+}
 
+bool Region::UpdateEvents() {
   bool eventsUpdated =  false;
   StartPerformanceTimer(PT_EVENT_ACCESS);
   for (EventAccess& event : events) {
@@ -419,7 +412,7 @@ namespace Regions {
 
   void AccessReset() {
     auto ctx = Rando::Context::GetInstance();
-      for (const RandomizerRegion region : GetAllRegions()) {
+    for (const RandomizerRegion region : GetAllRegions()) {
       RegionTable(region)->ResetVariables();
     }
 
