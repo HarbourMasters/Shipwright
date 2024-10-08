@@ -40,15 +40,6 @@ class Logic {
 
     // Trade Quest Events
     bool WakeUpAdultTalon = false;
-    bool CojiroAccess = false;
-    bool OddMushroomAccess = false;
-    bool OddPoulticeAccess = false;
-    bool PoachersSawAccess = false;
-    bool BrokenSwordAccess = false;
-    bool PrescriptionAccess = false;
-    bool EyeballFrogAccess = false;
-    bool EyedropsAccess = false;
-    bool DisableTradeRevert = false;
 
     // Dungeon Clears
     bool DekuTreeClear = false;
@@ -141,6 +132,7 @@ class Logic {
     bool FireLoopSwitch = false;
     bool LinksCow = false;
     bool DeliverLetter = false;
+    bool ClearMQDCUpperLobbyRocks = false;
 
     /* --- END OF HELPERS AND LOCATION ACCESS --- */
 
@@ -154,8 +146,15 @@ class Logic {
     bool SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmountGlitchless, uint8_t requiredAmountGlitched);
     bool CanDoGlitch(GlitchType glitch);
     bool CanEquipSwap(RandomizerGet itemName);
-    bool CanKillEnemy(std::string enemy);
-    bool CanPassEnemy(std::string enemy);
+    bool CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance = ED_CLOSE);
+    bool CanPassEnemy(RandomizerEnemy enemy);
+    bool CanAvoidEnemy(RandomizerEnemy enemy);
+    bool CanGetEnemyDrop(RandomizerEnemy enemy, EnemyDistance distance = ED_CLOSE, bool aboveLink = false);
+    bool CanBreakMudWalls();
+    bool CanGetDekuBabaSticks();
+    bool CanHitEyeTargets();
+    bool CanDetonateBombFlowers();
+    bool CanDetonateUprightBombFlower();
     uint8_t BottleCount();
     uint8_t OcarinaButtons();
     bool HasBottle();
@@ -176,7 +175,7 @@ class Logic {
     bool CanLeaveForest();
     bool CallGossipFairy();
     bool CallGossipFairyExceptSuns();
-    bool EffectiveHealth();
+    uint8_t EffectiveHealth();
     uint8_t Hearts();
     uint8_t StoneCount();
     uint8_t MedallionCount();
@@ -191,7 +190,9 @@ class Logic {
     bool CanBreakLowerBeehives();
     bool HasFireSource();
     bool HasFireSourceWithTorch();
+    bool TradeQuestStep(RandomizerGet rg);
     bool CanFinishGerudoFortress();
+    bool CanStandingShield();
     bool CanShield();
     bool CanUseProjectile();
     bool CanBuildRainbowBridge();

@@ -3,7 +3,7 @@
 #include "game-interactor/GameInteractor.h"
 #include "tts/tts.h"
 #include "soh/OTRGlobals.h"
-#include "soh/Enhancements/boss-rush/BossRushTypes.h"
+#include "soh/Enhancements/boss-rush/BossRush.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/randomizer/3drando/random.hpp"
 #include "soh/Enhancements/cosmetics/authenticGfxPatches.h"
@@ -35,6 +35,7 @@
 #include "src/overlays/actors/ovl_En_Door/z_en_door.h"
 #include "objects/object_link_boy/object_link_boy.h"
 #include "objects/object_link_child/object_link_child.h"
+#include "kaleido.h"
 
 extern "C" {
 #include <z64.h>
@@ -783,48 +784,6 @@ void RegisterResetNaviTimer() {
 	});
 }
 
-f32 triforcePieceScale;
-
-void RegisterTriforceHunt() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
-        if (!GameInteractor::IsGameplayPaused() &&
-            OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT)) {
-
-            // Warp to credits
-            if (GameInteractor::State::TriforceHuntCreditsWarpActive) {
-                gPlayState->nextEntranceIndex = ENTR_CHAMBER_OF_THE_SAGES_0;
-                gSaveContext.nextCutsceneIndex = 0xFFF2;
-                gPlayState->transitionTrigger = TRANS_TRIGGER_START;
-                gPlayState->transitionType = TRANS_TYPE_FADE_WHITE;
-                GameInteractor::State::TriforceHuntCreditsWarpActive = 0;
-            }
-
-            // Reset Triforce Piece scale for GI animation. Triforce Hunt allows for multiple triforce models,
-            // and cycles through them based on the amount of triforce pieces collected. It takes a little while
-            // for the count to increase during the GI animation, so the model is entirely hidden until that piece
-            // has been added. That scale has to be reset after the textbox is closed, and this is the best way
-            // to ensure it's done at that point in time specifically.
-            if (GameInteractor::State::TriforceHuntPieceGiven) {
-                triforcePieceScale = 0.0f;
-                GameInteractor::State::TriforceHuntPieceGiven = 0;
-            }
-        }
-    });
-}
-
-void RegisterGrantGanonsBossKey() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
-        // Triforce Hunt needs the check if the player isn't being teleported to the credits scene.
-        if (!GameInteractor::IsGameplayPaused() && IS_RANDO &&
-            Flags_GetRandomizerInf(RAND_INF_GRANT_GANONS_BOSSKEY) && gPlayState->transitionTrigger != TRANS_TRIGGER_START &&
-            (1 << 0 & gSaveContext.inventory.dungeonItems[SCENE_GANONS_TOWER]) == 0) {
-                GetItemEntry getItemEntry =
-                    ItemTableManager::Instance->RetrieveItemEntry(MOD_RANDOMIZER, RG_GANONS_CASTLE_BOSS_KEY);
-                GiveItemEntryWithoutActor(gPlayState, getItemEntry);
-        }
-    });
-}
-
 //this map is used for enemies that can be uniquely identified by their id
 //and that are always counted
 //enemies that can't be uniquely identified by their id
@@ -872,7 +831,7 @@ static std::unordered_map<u16, u16> uniqueEnemyIdToStatCount = {
 
 void RegisterEnemyDefeatCounts() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnEnemyDefeat>([](void* refActor) {
-        Actor* actor = (Actor*)refActor;
+        Actor* actor = static_cast<Actor*>(refActor);
         if (uniqueEnemyIdToStatCount.contains(actor->id)) {
             gSaveContext.sohStats.count[uniqueEnemyIdToStatCount[actor->id]]++;
         } else {
@@ -1012,6 +971,45 @@ void RegisterEnemyDefeatCounts() {
                     }
                     break;
             }
+        }
+    });
+}
+
+void RegisterBossDefeatTimestamps() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnBossDefeat>([](void* refActor) {
+        Actor* actor = static_cast<Actor*>(refActor);
+        switch (actor->id) {
+            case ACTOR_BOSS_DODONGO:
+                gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_KING_DODONGO] = GAMEPLAYSTAT_TOTAL_TIME;
+                break;
+            case ACTOR_BOSS_FD2:
+                gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_VOLVAGIA] = GAMEPLAYSTAT_TOTAL_TIME;
+                break;
+            case ACTOR_BOSS_GANON:
+                gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_GANONDORF] = GAMEPLAYSTAT_TOTAL_TIME;
+                break;
+            case ACTOR_BOSS_GANON2:
+                gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
+                gSaveContext.sohStats.gameComplete = true;
+                break;
+            case ACTOR_BOSS_GANONDROF:
+                gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_PHANTOM_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
+                break;
+            case ACTOR_BOSS_GOMA:
+                gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_GOHMA] = GAMEPLAYSTAT_TOTAL_TIME;
+                break;
+            case ACTOR_BOSS_MO:
+                gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_MORPHA] = GAMEPLAYSTAT_TOTAL_TIME;
+                break;
+            case ACTOR_BOSS_SST:
+                gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_BONGO_BONGO] = GAMEPLAYSTAT_TOTAL_TIME;
+                break;
+            case ACTOR_BOSS_TW:
+                gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_TWINROVA] = GAMEPLAYSTAT_TOTAL_TIME;
+                break;
+            case ACTOR_BOSS_VA:
+                gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_BARINADE] = GAMEPLAYSTAT_TOTAL_TIME;
+                break;
         }
     });
 }
@@ -1161,83 +1159,6 @@ void RegisterAltTrapTypes() {
         }
         statusTimer--;
         eventTimer--;
-    });
-}
-
-void RegisterRandomizerSheikSpawn() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneSpawnActors>([]() {
-        if (!gPlayState) return;
-        if (!IS_RANDO || !LINK_IS_ADULT || !OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHEIK_LA_HINT)) return;
-        switch (gPlayState->sceneNum) {
-            case SCENE_TEMPLE_OF_TIME:
-                if (gPlayState->roomCtx.curRoom.num == 1) {
-                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_XC, -104, -40, 2382, 0, 0x8000, 0, SHEIK_TYPE_RANDO, false);
-                }
-                break;
-            case SCENE_INSIDE_GANONS_CASTLE:
-                if (gPlayState->roomCtx.curRoom.num == 1){
-                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_XC, 101, 150, 137, 0, 0, 0, SHEIK_TYPE_RANDO, false);
-                    }
-                break;
-            default: break;
-        }
-    });
-}
-
-//Boss souls require an additional item (represented by a RAND_INF) to spawn a boss in a particular lair
-void RegisterBossSouls() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>([](void* actor) {
-        if (!gPlayState) return;
-        if (!IS_RANDO || !(OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_BOSS_SOULS))) return;
-        RandomizerInf rand_inf = RAND_INF_MAX;
-        Actor* actual = (Actor*)actor;
-        switch (gPlayState->sceneNum){
-            case SCENE_DEKU_TREE_BOSS:
-                rand_inf = RAND_INF_GOHMA_SOUL;
-                break;
-            case SCENE_DODONGOS_CAVERN_BOSS:
-                rand_inf = RAND_INF_KING_DODONGO_SOUL;
-                break;
-            case SCENE_JABU_JABU_BOSS:
-                rand_inf = RAND_INF_BARINADE_SOUL;
-                break;
-            case SCENE_FOREST_TEMPLE_BOSS:
-                rand_inf = RAND_INF_PHANTOM_GANON_SOUL;
-                break;
-            case SCENE_FIRE_TEMPLE_BOSS:
-                rand_inf = RAND_INF_VOLVAGIA_SOUL;
-                break;
-            case SCENE_WATER_TEMPLE_BOSS:
-                rand_inf = RAND_INF_MORPHA_SOUL;
-                break;
-            case SCENE_SHADOW_TEMPLE_BOSS:
-                rand_inf = RAND_INF_BONGO_BONGO_SOUL;
-                break;
-            case SCENE_SPIRIT_TEMPLE_BOSS:
-                rand_inf = RAND_INF_TWINROVA_SOUL;
-                break;
-            case SCENE_GANONDORF_BOSS:
-            case SCENE_GANON_BOSS:
-                if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_BOSS_SOULS) == RO_BOSS_SOULS_ON_PLUS_GANON) {
-                    rand_inf = RAND_INF_GANON_SOUL;
-                }
-                break;
-            default: break;
-        }
-
-        //Deletes all actors in the boss category if the soul isn't found.
-        //Some actors, like Dark Link, Arwings, and Zora's Sapphire...?, are in this category despite not being actual bosses,
-        //so ignore any "boss" if `rand_inf` doesn't change from RAND_INF_MAX.
-        if (rand_inf != RAND_INF_MAX) {
-            if (!Flags_GetRandomizerInf(rand_inf) && actual->category == ACTORCAT_BOSS) {
-                Actor_Delete(&gPlayState->actorCtx, actual, gPlayState);
-            }
-            //Special case for Phantom Ganon's horse (and fake), as they're considered "background actors",
-            //but still control the boss fight flow.
-            if (!Flags_GetRandomizerInf(RAND_INF_PHANTOM_GANON_SOUL) && actual->id == ACTOR_EN_FHG) {
-                Actor_Delete(&gPlayState->actorCtx, actual, gPlayState);
-            }
-        }
     });
 }
 
@@ -1459,131 +1380,6 @@ void RegisterPauseMenuHooks() {
     });
 }
 
-//from z_player.c
-typedef struct {
-    /* 0x00 */ Vec3f pos;
-    /* 0x0C */ s16 yaw;
-} SpecialRespawnInfo; // size = 0x10
-
-//special respawns used when voided out without swim to prevent infinite loops
-std::map<s32, SpecialRespawnInfo> swimSpecialRespawnInfo = {
-    {
-        ENTR_ZORAS_RIVER_3,//hf to zr in water
-        { { -1455.443, -20, 1384.826 }, 28761 }
-    },
-    {
-        ENTR_HYRULE_FIELD_14,//zr to hf in water
-        { { 5830.209, -92.16, 3925.911 }, -20025 }
-    },
-    {
-        ENTR_LOST_WOODS_7,//zr to lw
-        { { 1978.718, -36.908, -855 }, -16384 }
-    },
-    {
-        ENTR_ZORAS_RIVER_4,//lw to zr
-        { { 4082.366, 860.442, -1018.949 }, -32768 }
-    },
-    {
-        ENTR_LAKE_HYLIA_1,//gv to lh
-        { { -3276.416, -1033, 2908.421 }, 11228 }
-    },
-    {
-        ENTR_WATER_TEMPLE_0,//lh to water temple
-        { { -182, 780, 759.5 }, -32768 }
-    },
-    {
-        ENTR_LAKE_HYLIA_2,//water temple to lh
-        { { -955.028, -1306.9, 6768.954 }, -32768 }
-    },
-    {
-        ENTR_ZORAS_DOMAIN_4,//lh to zd
-        { { -109.86, 11.396, -9.933 }, -29131 }
-    },
-    {
-        ENTR_LAKE_HYLIA_7,//zd to lh
-        { { -912, -1326.967, 3391 }, 0 }
-    },
-    {
-        ENTR_GERUDO_VALLEY_1,//caught by gerudos as child
-        { { -424, -2051, -74 }, 16384 }
-    }
-};
-
-void RegisterNoSwim() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
-        if (
-            IS_RANDO &&
-            (GET_PLAYER(gPlayState)->stateFlags1 & PLAYER_STATE1_IN_WATER) &&
-            !Flags_GetRandomizerInf(RAND_INF_CAN_SWIM) &&
-            CUR_EQUIP_VALUE(EQUIP_TYPE_BOOTS) != EQUIP_VALUE_BOOTS_IRON
-        ) {
-            //if you void out in water temple without swim you get instantly kicked out to prevent softlocks
-            if (gPlayState->sceneNum == SCENE_WATER_TEMPLE) {
-                GameInteractor::RawAction::TeleportPlayer(Entrance_OverrideNextIndex(ENTR_LAKE_HYLIA_2));//lake hylia from water temple
-                return;
-            }
-
-            if (swimSpecialRespawnInfo.find(gSaveContext.entranceIndex) != swimSpecialRespawnInfo.end()) {
-                SpecialRespawnInfo* respawnInfo = &swimSpecialRespawnInfo.at(gSaveContext.entranceIndex);
-
-                Play_SetupRespawnPoint(gPlayState, RESPAWN_MODE_DOWN, 0xDFF);
-                gSaveContext.respawn[RESPAWN_MODE_DOWN].pos = respawnInfo->pos;
-                gSaveContext.respawn[RESPAWN_MODE_DOWN].yaw = respawnInfo->yaw;
-            }
-
-            Play_TriggerVoidOut(gPlayState);
-        }
-    });
-}
-
-void RegisterNoWallet() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (IS_RANDO && !Flags_GetRandomizerInf(RAND_INF_HAS_WALLET)) {
-            gSaveContext.rupees = 0;
-        }
-    });
-}
-
-void RegisterInfiniteUpgrades() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!IS_RANDO) {
-            return;
-        }
-
-        if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_QUIVER)) {
-            AMMO(ITEM_BOW) = CUR_CAPACITY(UPG_QUIVER);
-        }
-
-        if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_BOMB_BAG)) {
-            AMMO(ITEM_BOMB) = CUR_CAPACITY(UPG_BOMB_BAG);
-        }
-
-        if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_BULLET_BAG)) {
-            AMMO(ITEM_SLINGSHOT) = CUR_CAPACITY(UPG_BULLET_BAG);
-        }
-
-        if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_STICK_UPGRADE)) {
-            AMMO(ITEM_STICK) = CUR_CAPACITY(UPG_STICKS);
-        }
-
-        if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_NUT_UPGRADE)) {
-            AMMO(ITEM_NUT) = CUR_CAPACITY(UPG_NUTS);
-        }
-
-        if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_MAGIC_METER)) {
-            gSaveContext.magic = gSaveContext.magicCapacity;
-        }
-
-        if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_BOMBCHUS)) {
-            AMMO(ITEM_BOMBCHU) = 50;
-        }
-
-        if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_MONEY)) {
-            gSaveContext.rupees = CUR_CAPACITY(UPG_WALLET);
-        }
-    });
-}
-
 extern "C" u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 
 void PatchCompasses() {
@@ -1604,30 +1400,8 @@ void RegisterRandomizerCompasses() {
     });
 }
 
-extern "C" void func_8099485C(DoorGerudo* gerudoDoor, PlayState* play);
-
-void RegisterSkeletonKey() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* refActor) {
-        if (Flags_GetRandomizerInf(RAND_INF_HAS_SKELETON_KEY)) {
-            Actor* actor = static_cast<Actor*>(refActor);
-            if (actor->id == ACTOR_EN_DOOR) {
-                EnDoor* door = (EnDoor*)actor;
-                door->lockTimer = 0;
-            } else if (actor->id == ACTOR_DOOR_SHUTTER) {
-                DoorShutter* shutterDoor = (DoorShutter*)actor;
-                if (shutterDoor->doorType == SHUTTER_KEY_LOCKED) {
-                    shutterDoor->unk_16E = 0;
-                }
-            } else if (actor->id == ACTOR_DOOR_GERUDO) {
-                DoorGerudo* gerudoDoor = (DoorGerudo*)actor;
-                gerudoDoor->actionFunc = func_8099485C;
-                gerudoDoor->dyna.actor.world.pos.y = gerudoDoor->dyna.actor.home.pos.y + 200.0f;
-            }
-        }
-    });
-}
-
 void InitMods() {
+    BossRush_RegisterHooks();
     RandomizerRegisterHooks();
     TimeSaverRegisterHooks();
     CheatsRegisterHooks();
@@ -1657,23 +1431,17 @@ void InitMods() {
     RegisterMenuPathFix();
     RegisterMirrorModeHandler();
     RegisterResetNaviTimer();
-    RegisterTriforceHunt();
-    RegisterGrantGanonsBossKey();
     RegisterEnemyDefeatCounts();
+    RegisterBossDefeatTimestamps();
     RegisterAltTrapTypes();
-    RegisterRandomizerSheikSpawn();
-    RegisterBossSouls();
     RegisterRandomizedEnemySizes();
     RegisterOpenAllHours();
     RegisterToTMedallions();
-    RegisterNoSwim();
-    RegisterNoWallet();
-    RegisterInfiniteUpgrades();
     RegisterRandomizerCompasses();
     NameTag_RegisterHooks();
     RegisterFloorSwitchesHook();
     RegisterPatchHandHandler();
     RegisterHurtContainerModeHandler();
     RegisterPauseMenuHooks();
-    RegisterSkeletonKey();
+    RandoKaleido_RegisterHooks();
 }

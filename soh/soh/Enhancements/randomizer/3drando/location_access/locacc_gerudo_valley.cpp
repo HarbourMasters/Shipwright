@@ -21,7 +21,7 @@ void RegionTable_Init_GerudoValley() {
 
   areaTable[RR_GV_UPPER_STREAM] = Region("GV Upper Stream", "Gerudo Valley", RA_GERUDO_VALLEY, DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&logic->GossipStoneFairy, {[]{return logic->GossipStoneFairy || logic->CallGossipFairy();}}),
+                  EventAccess(&logic->GossipStoneFairy, {[]{return logic->CallGossipFairy();}}),
                   EventAccess(&logic->BeanPlantFairy,   {[]{return logic->BeanPlantFairy   || (CanPlantBean(RR_GV_UPPER_STREAM) && logic->CanUse(RG_SONG_OF_STORMS));}}),
                 }, {
                   //Locations
@@ -54,10 +54,7 @@ void RegionTable_Init_GerudoValley() {
                   Entrance(RR_GV_LOWER_STREAM, {[]{return true;}}),
   });
 
-  areaTable[RR_GV_FORTRESS_SIDE] = Region("GV Fortress Side", "Gerudo Valley", RA_GERUDO_VALLEY, DAY_NIGHT_CYCLE, {
-                  //Events
-                  EventAccess(&logic->BrokenSwordAccess, {[]{return logic->IsAdult && (logic->PoachersSawAccess || logic->CanUse(RG_POACHERS_SAW));}}),
-                }, {
+  areaTable[RR_GV_FORTRESS_SIDE] = Region("GV Fortress Side", "Gerudo Valley", RA_GERUDO_VALLEY, DAY_NIGHT_CYCLE, {}, {
                   //Locations                                       
                   LOCATION(RC_GV_CHEST,          logic->IsAdult && logic->CanUse(RG_MEGATON_HAMMER)),
                   LOCATION(RC_GV_TRADE_SAW,      logic->IsAdult && logic->CanUse(RG_POACHERS_SAW)),

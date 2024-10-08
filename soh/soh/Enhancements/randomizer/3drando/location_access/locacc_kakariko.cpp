@@ -6,7 +6,6 @@ using namespace Rando;
 void RegionTable_Init_Kakariko() {
   areaTable[RR_KAKARIKO_VILLAGE] = Region("Kakariko Village", "Kakariko Village", RA_KAKARIKO_VILLAGE, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&logic->CojiroAccess,            {[]{return logic->CojiroAccess || (logic->IsAdult && logic->WakeUpAdultTalon);}}),
                   EventAccess(&logic->BugRock,                 {[]{return true;}}),
                   EventAccess(&logic->KakarikoVillageGateOpen, {[]{return logic->KakarikoVillageGateOpen || (logic->IsChild && (logic->HasItem(RG_ZELDAS_LETTER) || ctx->GetOption(RSK_KAK_GATE).Is(RO_KAK_GATE_OPEN)));}}),
                 }, {
@@ -14,7 +13,7 @@ void RegionTable_Init_Kakariko() {
                   LOCATION(RC_SHEIK_IN_KAKARIKO,               logic->IsAdult && logic->HasItem(RG_FOREST_MEDALLION) && logic->HasItem(RG_FIRE_MEDALLION) && logic->HasItem(RG_WATER_MEDALLION)),
                   LOCATION(RC_KAK_ANJU_AS_CHILD,               logic->IsChild && logic->AtDay),
                   LOCATION(RC_KAK_ANJU_AS_ADULT,               logic->IsAdult && logic->AtDay),
-                  LOCATION(RC_KAK_TRADE_POCKET_CUCCO,          logic->IsAdult && logic->AtDay && logic->CanUse(RG_POCKET_EGG) && logic->WakeUpAdultTalon),
+                  LOCATION(RC_KAK_TRADE_POCKET_CUCCO,          logic->IsAdult && logic->AtDay && (logic->CanUse(RG_POCKET_EGG) && logic->WakeUpAdultTalon)),
                   LOCATION(RC_KAK_GS_HOUSE_UNDER_CONSTRUCTION, logic->IsChild && logic->AtNight && logic->CanGetNightTimeGS()),
                   LOCATION(RC_KAK_GS_SKULLTULA_HOUSE,          logic->IsChild && logic->AtNight && logic->CanGetNightTimeGS()),
                   LOCATION(RC_KAK_GS_GUARDS_HOUSE,             logic->IsChild && logic->AtNight && logic->CanGetNightTimeGS()),
@@ -72,7 +71,7 @@ void RegionTable_Init_Kakariko() {
 
   areaTable[RR_KAK_CARPENTER_BOSS_HOUSE] = Region("Kak Carpenter Boss House", "Kak Carpenter Boss House", RA_NONE, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&logic->WakeUpAdultTalon, {[]{return logic->WakeUpAdultTalon || (logic->IsAdult && logic->CanUse(RG_POCKET_EGG));}}),
+                  EventAccess(&logic->WakeUpAdultTalon, {[]{return logic->IsAdult && logic->CanUse(RG_POCKET_EGG);}}),
                 }, {}, {
                   //Exits
                   Entrance(RR_KAKARIKO_VILLAGE, {[]{return true;}}),
@@ -170,16 +169,10 @@ void RegionTable_Init_Kakariko() {
   });
 
   areaTable[RR_KAK_ODD_POTION_BUILDING] =
-      Region("Kak Granny's Potion Shop", "Kak Granny's Potion Shop", RA_NONE, NO_DAY_NIGHT_CYCLE, {
-          
-               // Events
-               EventAccess(&logic->OddPoulticeAccess, { [] {
-                   return logic->OddPoulticeAccess || (logic->IsAdult && (logic->OddMushroomAccess || (logic->CanUse(RG_ODD_MUSHROOM) && logic->DisableTradeRevert)));
-               } }),
-           },
+      Region("Kak Granny's Potion Shop", "Kak Granny's Potion Shop", RA_NONE, NO_DAY_NIGHT_CYCLE, {},
            {
                LOCATION(RC_KAK_TRADE_ODD_MUSHROOM, logic->IsAdult && logic->CanUse(RG_ODD_MUSHROOM)),
-               LOCATION(RC_KAK_GRANNYS_SHOP, logic->IsAdult && logic->CanUse(RG_ODD_MUSHROOM) && logic->HasItem(RG_ADULT_WALLET)),
+               LOCATION(RC_KAK_GRANNYS_SHOP, logic->IsAdult && (logic->CanUse(RG_ODD_MUSHROOM) || logic->TradeQuestStep(RG_ODD_MUSHROOM)) && logic->HasItem(RG_ADULT_WALLET)),
            },
            {
                // Exits
@@ -278,7 +271,7 @@ void RegionTable_Init_Kakariko() {
 
   areaTable[RR_GRAVEYARD_WARP_PAD_REGION] = Region("Graveyard Warp Pad Region", "Graveyard", RA_THE_GRAVEYARD, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&logic->GossipStoneFairy, {[]{return logic->GossipStoneFairy || logic->CallGossipFairyExceptSuns();}}),
+                  EventAccess(&logic->GossipStoneFairy, {[]{return logic->CallGossipFairyExceptSuns();}}),
                 }, {
                   //Locations
                   LOCATION(RC_GRAVEYARD_GOSSIP_STONE, true),

@@ -223,6 +223,8 @@ namespace Rando {
             case RG_BOTTLE_WITH_RED_POTION:
             case RG_EMPTY_BOTTLE:
                 return HasBottle();
+            default:
+                break;
         }
         SPDLOG_ERROR("HasItem reached `return false;`. Missing case for RandomizerGet of {}", static_cast<uint32_t>(itemName));
         assert(false);
@@ -250,7 +252,6 @@ namespace Rando {
             case RG_LONGSHOT:
                 return IsAdult;// || HookshotAsChild;
             case RG_SILVER_GAUNTLETS:
-                return IsAdult;
             case RG_GOLDEN_GAUNTLETS:
                 return IsAdult;
             case RG_GORON_TUNIC:
@@ -262,7 +263,7 @@ namespace Rando {
             case RG_DISTANT_SCARECROW:
                 return IsAdult;// || HookshotAsChild;
             case RG_HYLIAN_SHIELD:
-                return IsAdult;
+                return true;
             case RG_MIRROR_SHIELD:
                 return IsAdult;// || MirrorShieldAsChild;
             case RG_MASTER_SWORD:
@@ -298,23 +299,14 @@ namespace Rando {
 
                 // Adult Trade
             case RG_POCKET_EGG:
-                return IsAdult || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && CanUse(RG_COJIRO));
             case RG_COJIRO:
-                return IsAdult || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && CanUse(RG_ODD_MUSHROOM));
             case RG_ODD_MUSHROOM:
-                return IsAdult || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && CanUse(RG_ODD_POTION));
             case RG_ODD_POTION:
-                return IsAdult || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && CanUse(RG_POACHERS_SAW));
             case RG_POACHERS_SAW:
-                return IsAdult || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && CanUse(RG_BROKEN_SWORD));
             case RG_BROKEN_SWORD:
-                return IsAdult || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && CanUse(RG_PRESCRIPTION));
             case RG_PRESCRIPTION:
-                return IsAdult || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && CanUse(RG_EYEBALL_FROG));
             case RG_EYEBALL_FROG:
-                return IsAdult || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && CanUse(RG_EYEDROPS));
             case RG_EYEDROPS:
-                return IsAdult || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && CanUse(RG_CLAIM_CHECK));
             case RG_CLAIM_CHECK:
                 return IsAdult;
 
@@ -428,25 +420,116 @@ namespace Rando {
         return false;
     }
 
-    //NOTE, when adding dark link,add Hearts() > 0
-    bool Logic::CanKillEnemy(std::string enemy) {
-        //switch(enemy) {} RANDOTODO implement enemies enum
-        if (enemy == "Big Skulltula"){
-            return CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT) || CanJumpslash() || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_HOOKSHOT) || CanUse(RG_DINS_FIRE) || HasExplosives();
+    bool Logic::CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance) {
+        switch(enemy) {
+            case RE_GOLD_SKULLTULA:
+            case RE_GOHMA_LARVA:
+            case RE_MAD_SCRUB:
+                return CanAttack();
+            case RE_BIG_SKULLTULA:
+                return CanDamage() || CanUse(RG_HOOKSHOT);
+            case RE_DODONGO:
+            case RE_LIZALFOS:
+                return CanJumpslash() || HasExplosives() || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_FAIRY_BOW) || CanUse(RG_MEGATON_HAMMER);
+            case RE_KEESE:
+            case RE_FIRE_KEESE:
+                return CanJumpslash() || HasExplosives() || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_FAIRY_BOW) || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_HOOKSHOT) || CanUse(RG_BOOMERANG);
+            case RE_BLUE_BUBBLE:
+                //RANDOTODO Trick to use shield hylian shield to stun these guys
+                return BlastOrSmash() || CanUse(RG_FAIRY_BOW) || ((CanJumpslash() || CanUse(RG_FAIRY_SLINGSHOT)) && (CanUse(RG_NUTS) || HookshotOrBoomerang() || CanStandingShield()));
+            default:
+                SPDLOG_ERROR("CanKillEnemy reached `default`.");
+                assert(false);
+                return false;
         }
-        //Shouldn't be reached
-        return false;
     }
 
-    bool Logic::CanPassEnemy(std::string enemy) {
-        //switch(enemy) {} RANDOTODO implement enemies enum
+    bool Logic::CanPassEnemy(RandomizerEnemy enemy) {
         if (CanKillEnemy(enemy)){
             return true;
         }
-        if (enemy == "Big Skulltula"){
-            return CanUse(RG_NUTS) || CanUse(RG_BOOMERANG);
+        switch(enemy) {
+            case RE_GOLD_SKULLTULA: 
+            case RE_GOHMA_LARVA:
+            case RE_LIZALFOS:
+            case RE_DODONGO: //RANDOTODO do dodongos block the way in tight corridors?
+            case RE_MAD_SCRUB:
+            case RE_KEESE:
+            case RE_FIRE_KEESE:
+            case RE_BLUE_BUBBLE:
+                return true;
+            case RE_BIG_SKULLTULA:
+                return CanUse(RG_NUTS) || CanUse(RG_BOOMERANG);
+            default:
+                SPDLOG_ERROR("CanPassEnemy reached `default`.");
+                assert(false);
+                return false;
         }
-        return false;
+    }
+
+    bool Logic::CanAvoidEnemy(RandomizerEnemy enemy) {
+        if (CanKillEnemy(enemy)){
+            return true;
+        }
+        switch(enemy) {
+            case RE_GOLD_SKULLTULA: 
+            case RE_GOHMA_LARVA:
+            case RE_LIZALFOS:
+            case RE_DODONGO: //RANDOTODO do dodongos block the way in tight corridors?
+            case RE_BIG_SKULLTULA:
+                return true;
+            case RE_MAD_SCRUB:
+            case RE_KEESE:
+            case RE_FIRE_KEESE:
+                return CanUse(RG_NUTS);
+            case RE_BLUE_BUBBLE:
+                //RANDOTODO Trick to use shield hylian shield to stun these guys
+                return CanUse(RG_NUTS) || HookshotOrBoomerang() || CanStandingShield();
+            default:
+                SPDLOG_ERROR("CanPassEnemy reached `default`.");
+                assert(false);
+                return false;
+        }
+    }
+
+    bool Logic::CanGetEnemyDrop(RandomizerEnemy enemy, EnemyDistance distance, bool aboveLink) {
+        if (!CanKillEnemy(enemy, distance)){
+            return false;
+        }
+        if (distance <= ED_MASTER_SWORD_JUMPSLASH){
+            return true;
+        }
+        switch(enemy) {
+            case RE_GOLD_SKULLTULA:
+                //RANDOTODO double check all jumpslash kills that might be out of jump/backflip range
+                return distance <= ED_HAMMER_JUMPSLASH || (distance <= ED_RANG_OR_HOOKSHOT && (CanUse(RG_HOOKSHOT) || CanUse(RG_BOOMERANG))) || (distance == ED_LONGSHOT && CanUse(RG_LONGSHOT));
+            case RE_KEESE:
+            case RE_FIRE_KEESE:
+                return true;
+            default:
+                return aboveLink || (distance <= ED_RANG_OR_HOOKSHOT && CanUse(RG_BOOMERANG));
+        }
+    }
+
+    bool Logic::CanBreakMudWalls() {
+        //RANDOTODO blue fire tricks
+        return BlastOrSmash();
+    }
+
+    bool Logic::CanGetDekuBabaSticks() {
+        return DekuBabaSticks || (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD) || CanUse(RG_BOOMERANG));
+    }
+
+    bool Logic::CanHitEyeTargets() {
+        return CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT);
+    }
+
+    bool Logic::CanDetonateBombFlowers() {
+        return CanUse(RG_FAIRY_BOW) || HasExplosives() || CanUse(RG_DINS_FIRE);
+    }
+
+    bool Logic::CanDetonateUprightBombFlower() {
+        return CanDetonateBombFlowers() || CanUse(RG_GORONS_BRACELET);
     }
 
     Logic::Logic() {
@@ -546,8 +629,9 @@ namespace Rando {
         return CallGossipFairyExceptSuns() || CanUse(RG_SUNS_SONG);
     }
 
-    bool Logic::EffectiveHealth(){
-        return CallGossipFairyExceptSuns() || CanUse(RG_SUNS_SONG);
+    uint8_t Logic::EffectiveHealth(){
+        uint8_t Multiplier = (ctx->GetOption(RSK_DAMAGE_MULTIPLIER).Value<uint8_t>() < 6) ? ctx->GetOption(RSK_DAMAGE_MULTIPLIER).Value<uint8_t>() : 10;
+        return ((Hearts() << (2 + HasItem(RG_DOUBLE_DEFENSE))) >> Multiplier) + ((Hearts() << (2 + HasItem(RG_DOUBLE_DEFENSE))) % (1 << Multiplier) > 0);
     }
 
     uint8_t Logic::Hearts(){
@@ -606,10 +690,57 @@ namespace Rando {
         return HasFireSource() || CanUse(RG_STICKS);
     }
 
+//Is this best off signaling what you have already traded, or what step you are currently on?
+    bool Logic::TradeQuestStep(RandomizerGet rg){
+        if (ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE)){
+            return false; //This does not apply when we are shuffling trade items
+        }
+        bool hasState = false;
+        //Falling through each case to test each possibility
+        switch (rg){
+            case RG_POCKET_EGG:
+                hasState = hasState || HasItem(RG_POCKET_EGG);
+                [[fallthrough]];
+            case RG_COJIRO:
+                hasState = hasState || HasItem(RG_COJIRO);
+                [[fallthrough]];
+            case RG_ODD_MUSHROOM:
+                hasState = hasState || HasItem(RG_ODD_MUSHROOM);
+                [[fallthrough]];
+            case RG_ODD_POTION:
+                hasState = hasState || HasItem(RG_ODD_POTION);
+                [[fallthrough]];
+            case RG_POACHERS_SAW:
+                hasState = hasState || HasItem(RG_POACHERS_SAW);
+                [[fallthrough]];
+            case RG_BROKEN_SWORD:
+                hasState = hasState || HasItem(RG_BROKEN_SWORD);
+                [[fallthrough]];
+            case RG_PRESCRIPTION:
+                hasState = hasState || HasItem(RG_PRESCRIPTION);
+                [[fallthrough]];
+            case RG_EYEDROPS:
+                hasState = hasState || HasItem(RG_EYEDROPS);
+                [[fallthrough]];
+            case RG_CLAIM_CHECK:
+                hasState = hasState || HasItem(RG_CLAIM_CHECK);
+                break;
+            default:
+                SPDLOG_ERROR("TradeQuestStep reached `return false;`. Missing case for RandomizerGet of {}", static_cast<uint32_t>(rg));
+                assert(false);
+                return false;
+        }
+        return hasState;
+    }
+
     bool Logic::CanFinishGerudoFortress(){
         return (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_NORMAL) && SmallKeys(RR_GERUDO_FORTRESS, 4) && (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD)) && (HasItem(RG_GERUDO_MEMBERSHIP_CARD) || CanUse(RG_FAIRY_BOW) || CanUse(RG_HOOKSHOT) || CanUse(RG_HOVER_BOOTS) || ctx->GetTrickOption(RT_GF_KITCHEN))) ||
                (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_FAST)   && SmallKeys(RR_GERUDO_FORTRESS, 1) && (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD))) ||
                ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_OPEN);
+    }
+
+    bool Logic::CanStandingShield(){
+        return CanUse(RG_MIRROR_SHIELD) || (IsAdult && CanUse(RG_HYLIAN_SHIELD)) || CanUse(RG_DEKU_SHIELD);
     }
 
     bool Logic::CanShield(){
@@ -1514,15 +1645,6 @@ namespace Rando {
 
         //Trade Quest Events
         WakeUpAdultTalon   = false;
-        CojiroAccess       = false;
-        OddMushroomAccess  = false;
-        OddPoulticeAccess  = false;
-        PoachersSawAccess  = false;
-        BrokenSwordAccess  = false;
-        PrescriptionAccess = false;
-        EyeballFrogAccess  = false;
-        EyedropsAccess     = false;
-        DisableTradeRevert = false;
 
         //Dungeon Clears
         DekuTreeClear       = false;

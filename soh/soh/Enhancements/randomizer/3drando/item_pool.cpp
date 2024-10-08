@@ -905,16 +905,6 @@ void GenerateItemPool() {
     AddItemToMainPool(RG_PRESCRIPTION);
     AddItemToMainPool(RG_EYEBALL_FROG);
     AddItemToMainPool(RG_EYEDROPS);
-  } else {
-    ctx->PlaceItemInLocation(RC_KAK_TRADE_POCKET_CUCCO, RG_COJIRO, false, true);
-    ctx->PlaceItemInLocation(RC_LW_TRADE_COJIRO, RG_ODD_MUSHROOM, false, true);
-    ctx->PlaceItemInLocation(RC_KAK_TRADE_ODD_MUSHROOM, RG_ODD_POTION, false, true);
-    ctx->PlaceItemInLocation(RC_LW_TRADE_ODD_POTION, RG_POACHERS_SAW, false, true);
-    ctx->PlaceItemInLocation(RC_GV_TRADE_SAW, RG_BROKEN_SWORD, false, true);
-    ctx->PlaceItemInLocation(RC_DMT_TRADE_BROKEN_SWORD, RG_PRESCRIPTION, false, true);
-    ctx->PlaceItemInLocation(RC_ZD_TRADE_PRESCRIPTION, RG_EYEBALL_FROG, false, true);
-    ctx->PlaceItemInLocation(RC_LH_TRADE_FROG, RG_EYEDROPS, false, true);
-    ctx->PlaceItemInLocation(RC_DMT_TRADE_EYEDROPS, RG_CLAIM_CHECK, false, true);
   }
   AddItemToMainPool(RG_CLAIM_CHECK);
 
@@ -1159,9 +1149,15 @@ void GenerateItemPool() {
   }
 
   //Shopsanity
-  if (ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_OFF) || ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_ZERO_ITEMS)) {
+  if (
+    ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_OFF) ||
+    (
+      ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_SPECIFIC_COUNT) &&
+      ctx->GetOption(RSK_SHOPSANITY_COUNT).Is(RO_SHOPSANITY_COUNT_ZERO_ITEMS)
+    )
+  ) {
     AddItemsToPool(ItemPool, normalRupees);
-  } else { //Shopsanity 1-4, random
+  } else {
     AddItemsToPool(ItemPool, shopsanityRupees); //Shopsanity gets extra large rupees
   }
 

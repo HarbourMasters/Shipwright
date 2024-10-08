@@ -3,6 +3,8 @@
 #include "overlays/actors/ovl_En_Syateki_Niw/z_en_syateki_niw.h"
 #include "overlays/actors/ovl_En_Ex_Item/z_en_ex_item.h"
 #include "objects/object_bg/object_bg.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED | ACTOR_FLAG_NO_LOCKON)
 
@@ -141,25 +143,10 @@ void EnBomBowMan_BlinkAwake(EnBomBowlMan* this, PlayState* play) {
     if (frameCount == 30.0f) {
         this->dialogState = TEXT_STATE_EVENT;
 
-        // Check for beaten Dodongo's Cavern if Rando is disabled
-        if (!IS_RANDO) {
-            if ((Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP)) || BREG(2)) {
-                this->actor.textId = 0xBF;
-            } else {
-                this->actor.textId = 0x7058;
-            }
-        }
-
-        // In randomizer, only check for bomb bag when bombchus aren't in logic
-        // and only check for bombchus when bombchus are in logic
-        if (IS_RANDO) {
-            u8 bombchuBag = Randomizer_GetSettingValue(RSK_BOMBCHU_BAG);
-            if ((!bombchuBag && INV_CONTENT(ITEM_BOMB) == ITEM_NONE) ||
-                (bombchuBag && INV_CONTENT(ITEM_BOMBCHU) == ITEM_NONE)) {
-                this->actor.textId = 0x7058;
-            } else {
-                this->actor.textId = 0xBF;
-            }
+        if (GameInteractor_Should(VB_BE_ABLE_TO_PLAY_BOMBCHU_BOWLING, (Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP)) || BREG(2), NULL)) {
+            this->actor.textId = 0xBF;
+        } else {
+            this->actor.textId = 0x7058;
         }
     }
     Message_ContinueTextbox(play, this->actor.textId);
