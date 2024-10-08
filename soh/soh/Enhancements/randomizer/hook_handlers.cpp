@@ -1254,7 +1254,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
         case VB_BE_ABLE_TO_PLAY_BOMBCHU_BOWLING: {
             // Only check for bomb bag when bombchus aren't in logic
             // and only check for bombchus when bombchus are in logic
-            *should = INV_CONTENT((RAND_GET_OPTION(RSK_BOMBCHUS_IN_LOGIC) ? ITEM_BOMBCHU : ITEM_BOMB)) != ITEM_NONE;
+            *should = INV_CONTENT((RAND_GET_OPTION(RSK_BOMBCHU_BAG) ? ITEM_BOMBCHU : ITEM_BOMB)) != ITEM_NONE;
             break;
         }
         case VB_SHOULD_CHECK_FOR_FISHING_RECORD: {
