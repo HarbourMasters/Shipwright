@@ -71,12 +71,12 @@ void EnDs_TalkNoEmptyBottle(EnDs* this, PlayState* play) {
     this->unk_1E8 |= 1;
 }
 
-void EnDs_TalkAfterGiveOddPotion(EnDs* self, PlayState* play) {
-    if (Actor_ProcessTalkRequest(&self->actor, play)) {
-        self->actionFunc = EnDs_Talk;
+void EnDs_TalkAfterGiveOddPotion(EnDs* this, PlayState* play) {
+    if (Actor_ProcessTalkRequest(&this->actor, play)) {
+        this->actionFunc = EnDs_Talk;
     } else {
-        self->actor.flags |= ACTOR_FLAG_WILL_TALK;
-        func_8002F2CC(&self->actor, play, 1000.0f);
+        this->actor.flags |= ACTOR_FLAG_WILL_TALK;
+        func_8002F2CC(&this->actor, play, 1000.0f);
     }
 }
 
