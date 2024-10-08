@@ -96,7 +96,7 @@ class Entrance {
     bool addedToPool = false;
     bool decoupled = false;
     std::string name = "";
-    //If this is false, area's only spread to interiors through is entrance if there is no other choice
+    //If this is false, areas only spread to interiors through this entrance if there is no other choice
     //Set to false for owl drops, the windmill path between dampe's grave and windmill and blue warps
     bool spreadsAreasWithPriority = true; 
 };
