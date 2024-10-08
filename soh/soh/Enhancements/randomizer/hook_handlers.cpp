@@ -995,7 +995,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             break;
         }
         case VB_TRADE_ODD_MUSHROOM: {
-            EnDs* granny = va_arg(EnDs*);
+            EnDs* granny = va_arg(args, EnDs*);
             Randomizer_ConsumeAdultTradeItem(gPlayState, ITEM_ODD_MUSHROOM);
             // Trigger the reward now
             Flags_SetItemGetInf(ITEMGETINF_30);
