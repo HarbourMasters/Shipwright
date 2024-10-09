@@ -5372,7 +5372,7 @@ void Interface_Draw(PlayState* play) {
         if (fullUi) {
             s16 PosX_RC;
             s16 PosY_RC;
-            if (GameInteractor_Should(VB_RENDER_RUPEE_COUNTER, true, NULL)) {
+            if (GameInteractor_Should(VB_RENDER_RUPEE_COUNTER, true)) {
                 // Rupee Icon
                 if (CVarGetInteger(CVAR_ENHANCEMENT("DynamicWalletIcon"), 0)) {
                     switch (CUR_UPG_VALUE(UPG_WALLET)) {
@@ -5446,7 +5446,7 @@ void Interface_Draw(PlayState* play) {
                 OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gRupeeCounterIconTex, 16, 16, PosX_RC, PosY_RC, 16, 16, 1 << 10, 1 << 10);
             }
 
-            if (GameInteractor_Should(VB_RENDER_KEY_COUNTER, true, NULL)) {
+            if (GameInteractor_Should(VB_RENDER_KEY_COUNTER, true)) {
                 switch (play->sceneNum) {
                     case SCENE_FOREST_TEMPLE:
                     case SCENE_FIRE_TEMPLE:
@@ -5527,7 +5527,7 @@ void Interface_Draw(PlayState* play) {
                 }
             }
 
-            if (GameInteractor_Should(VB_RENDER_RUPEE_COUNTER, true, NULL)) {
+            if (GameInteractor_Should(VB_RENDER_RUPEE_COUNTER, true)) {
                 // Rupee Counter
                 gDPPipeSync(OVERLAY_DISP++);
 

@@ -84,14 +84,8 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
     std::shared_ptr<Rando::Context> ctx = Rando::Context::GetInstance();
     auto logic = ctx->GetLogic();
     RandomizerGet actual = RG_NONE;
-    const bool tycoonWallet = !(
-        ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_OFF) ||
-        (
-            ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_SPECIFIC_COUNT) &&
-            ctx->GetOption(RSK_SHOPSANITY_COUNT).Is(RO_SHOPSANITY_COUNT_ZERO_ITEMS)
-        )
-    );
-    const u8 infiniteUpgrades = ctx->GetOption(RSK_INFINITE_UPGRADES).Value<u8>();
+    const bool tycoonWallet = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_INCLUDE_TYCOON_WALLET);
+    const u8 infiniteUpgrades = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_INFINITE_UPGRADES);
     switch (randomizerGet) {
         case RG_PROGRESSIVE_STICK_UPGRADE:
             switch (logic->CurrentUpgrade(UPG_STICKS)) {
@@ -287,8 +281,11 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
                     actual = RG_GIANT_WALLET;
                     break;
                 case 2:
-                    actual = tycoonWallet ? RG_TYCOON_WALLET : RG_GIANT_WALLET;
-                    break;
+                    if(tycoonWallet){
+                        actual = RG_TYCOON_WALLET;
+                        break;
+                    }
+                    //fallthrough
                 case 3:
                 case 4:
                     if (infiniteUpgrades != RO_INF_UPGRADES_OFF) {

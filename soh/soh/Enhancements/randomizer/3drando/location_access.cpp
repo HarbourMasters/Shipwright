@@ -29,7 +29,9 @@ bool LocationAccess::CheckConditionAtAgeTime(bool& age, bool& time) const {
 }
 
 bool LocationAccess::ConditionsMet() const {
-
+  //WARNING enterance validation can run this after resetting the access for sphere 0 validation
+  //When refactoring ToD access, either fix the above or do not assume that we
+  //have any access at all just because this is being run
   Region* parentRegion = RegionTable(Rando::Context::GetInstance()->GetItemLocation(location)->GetParentRegionKey());
   bool conditionsMet = false;
 
@@ -44,44 +46,33 @@ bool LocationAccess::ConditionsMet() const {
 }
 
 bool LocationAccess::CanBuy() const {
-  auto ctx = Rando::Context::GetInstance();
-  //Not a shop or scrub location, don't need to check if buyable
-  if (Rando::StaticData::GetLocation(location)->GetRCType() != RCTYPE_SHOP && Rando::StaticData::GetLocation(location)->GetRCType() != RCTYPE_SCRUB) {
-    return true;
-  }
+  return CanBuyAnother(location);
+}
 
-  //Check if wallet is large enough to buy item
-  bool SufficientWallet = true;
-  if (ctx->GetItemLocation(location)->GetPrice() > 500) {
-    SufficientWallet = logic->HasItem(RG_TYCOON_WALLET);
-  } else if (ctx->GetItemLocation(location)->GetPrice() > 200) {
-    SufficientWallet = logic->HasItem(RG_GIANT_WALLET);
-  } else if (ctx->GetItemLocation(location)->GetPrice() > 99) {
-    SufficientWallet = logic->HasItem(RG_ADULT_WALLET);
-  } else if (ctx->GetItemLocation(location)->GetPrice() > 0) {
-    SufficientWallet = logic->HasItem(RG_CHILD_WALLET);
-  }
+bool CanBuyAnother(RandomizerCheck rc) {
+  uint16_t price = ctx->GetItemLocation(rc)->GetPrice();
 
-  bool OtherCondition = true;
-  RandomizerGet placed = ctx->GetItemLocation(location)->GetPlacedRandomizerGet();
-  //Need bottle to buy bottle items, only logically relevant bottle items included here
-  if (placed == RG_BUY_BLUE_FIRE || placed == RG_BUY_BOTTLE_BUG || placed == RG_BUY_FISH ||
-      placed == RG_BUY_FAIRYS_SPIRIT) {
-      OtherCondition = logic->HasBottle();
+  if (price > 500) {
+    return logic->HasItem(RG_TYCOON_WALLET);
+  } else if (price > 200) {
+    return logic->HasItem(RG_GIANT_WALLET);
+  } else if (price > 99) {
+    return logic->HasItem(RG_ADULT_WALLET);
+  } else if (price > 0) {
+    return logic->HasItem(RG_CHILD_WALLET);
   }
-
-  return SufficientWallet && OtherCondition;
+  return true;
 }
 
 Region::Region() = default;
-Region::Region(std::string regionName_, std::string scene_, RandomizerArea area,
+Region::Region(std::string regionName_, std::string scene_, std::set<RandomizerArea> areas,
          bool timePass_,
          std::vector<EventAccess> events_,
          std::vector<LocationAccess> locations_,
          std::list<Rando::Entrance> exits_)
   : regionName(std::move(regionName_)),
     scene(std::move(scene_)),
-    area(area),
+    areas(areas),
     timePass(timePass_),
     events(std::move(events_)),
     locations(std::move(locations_)),
@@ -89,8 +80,8 @@ Region::Region(std::string regionName_, std::string scene_, RandomizerArea area,
 
 Region::~Region() = default;
 
-bool Region::UpdateEvents(bool haveTimeAccess) {
-  if (timePass && haveTimeAccess) {
+void Region::ApplyTimePass(){
+  if (timePass) {
     StartPerformanceTimer(PT_TOD_ACCESS);
     if (Child()) {
       childDay = true;
@@ -106,7 +97,9 @@ bool Region::UpdateEvents(bool haveTimeAccess) {
     }
     StopPerformanceTimer(PT_TOD_ACCESS);
   }
+}
 
+bool Region::UpdateEvents() {
   bool eventsUpdated =  false;
   StartPerformanceTimer(PT_EVENT_ACCESS);
   for (EventAccess& event : events) {
@@ -253,10 +246,10 @@ void RegionTable_Init() {
   };
   //Clear the array from any previous playthrough attempts. This is important so that
   //locations which appear in both MQ and Vanilla dungeons don't get set in both areas.
-  areaTable.fill(Region("Invalid Region", "Invalid Region", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {}));
+  areaTable.fill(Region("Invalid Region", "Invalid Region", {}, NO_DAY_NIGHT_CYCLE, {}, {}, {}));
 
                        //name, scene, hint text,                       events, locations, exits
-  areaTable[RR_ROOT] = Region("Root", "", RA_LINKS_POCKET, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[RR_ROOT] = Region("Root", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LOCATION(RC_LINKS_POCKET,       true),
                   LOCATION(RC_TRIFORCE_COMPLETED, logic->GetSaveContext()->triforcePiecesCollected >= ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_REQUIRED).Value<uint8_t>();),
@@ -266,7 +259,7 @@ void RegionTable_Init() {
                   Entrance(RR_ROOT_EXITS, {[]{return true;}})
   });
 
-  areaTable[RR_ROOT_EXITS] = Region("Root Exits", "", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_ROOT_EXITS] = Region("Root Exits", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_CHILD_SPAWN,             {[]{return logic->IsChild;}}),
                   Entrance(RR_ADULT_SPAWN,             {[]{return logic->IsAdult;}}),
@@ -278,42 +271,42 @@ void RegionTable_Init() {
                   Entrance(RR_PRELUDE_OF_LIGHT_WARP,   {[]{return logic->CanUse(RG_PRELUDE_OF_LIGHT)   && logic->CanLeaveForest();}}),
   });
 
-  areaTable[RR_CHILD_SPAWN] = Region("Child Spawn", "", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_CHILD_SPAWN] = Region("Child Spawn", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_KF_LINKS_HOUSE, {[]{return true;}}),
   });
 
-  areaTable[RR_ADULT_SPAWN] = Region("Adult Spawn", "", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_ADULT_SPAWN] = Region("Adult Spawn", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_TEMPLE_OF_TIME, {[]{return true;}}),
   });
 
-  areaTable[RR_MINUET_OF_FOREST_WARP] = Region("Minuet of Forest Warp", "", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_MINUET_OF_FOREST_WARP] = Region("Minuet of Forest Warp", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_SACRED_FOREST_MEADOW, {[]{return true;}}),
   });
 
-  areaTable[RR_BOLERO_OF_FIRE_WARP] = Region("Bolero of Fire Warp", "", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_BOLERO_OF_FIRE_WARP] = Region("Bolero of Fire Warp", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_DMC_CENTRAL_LOCAL, {[]{return true;}}),
   });
 
-  areaTable[RR_SERENADE_OF_WATER_WARP] = Region("Serenade of Water Warp", "", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_SERENADE_OF_WATER_WARP] = Region("Serenade of Water Warp", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_LAKE_HYLIA, {[]{return true;}}),
   });
 
-  areaTable[RR_REQUIEM_OF_SPIRIT_WARP] = Region("Requiem of Spirit Warp", "", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_REQUIEM_OF_SPIRIT_WARP] = Region("Requiem of Spirit Warp", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_DESERT_COLOSSUS, {[]{return true;}}),
   });
 
-  areaTable[RR_NOCTURNE_OF_SHADOW_WARP] = Region("Nocturne of Shadow Warp", "", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_NOCTURNE_OF_SHADOW_WARP] = Region("Nocturne of Shadow Warp", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_GRAVEYARD_WARP_PAD_REGION, {[]{return true;}}),
   });
 
-  areaTable[RR_PRELUDE_OF_LIGHT_WARP] = Region("Prelude of Light Warp", "", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_PRELUDE_OF_LIGHT_WARP] = Region("Prelude of Light Warp", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_TEMPLE_OF_TIME, {[]{return true;}}),
   });
@@ -419,7 +412,7 @@ namespace Regions {
 
   void AccessReset() {
     auto ctx = Rando::Context::GetInstance();
-      for (const RandomizerRegion region : GetAllRegions()) {
+    for (const RandomizerRegion region : GetAllRegions()) {
       RegionTable(region)->ResetVariables();
     }
 

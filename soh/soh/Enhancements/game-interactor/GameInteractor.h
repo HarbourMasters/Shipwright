@@ -184,6 +184,8 @@ typedef enum {
     // Opt: *EnMk
     // Vanilla condition: Flags_GetItemGetInf(ITEMGETINF_30)
     VB_OFFER_BLUE_POTION,
+    VB_GRANNY_SAY_INSUFFICIENT_RUPEES,
+    VB_GRANNY_TAKE_MONEY,
     // Vanilla condition: Inventory_HasEmptyBottle() == 0
     VB_NEED_BOTTLE_FOR_GRANNYS_ITEM,
     // Opt: *EnNiwLady
@@ -369,9 +371,11 @@ typedef enum {
     // Opt: *EnGo2
     VB_GIVE_ITEM_FROM_GORON,
     // Opt: *EnJs
+    VB_CHECK_RANDO_PRICE_OF_CARPET_SALESMAN,
     VB_GIVE_ITEM_FROM_CARPET_SALESMAN,
     VB_GIVE_BOMBCHUS_FROM_CARPET_SALESMAN,
     // Opt: *EnGm
+    VB_CHECK_RANDO_PRICE_OF_MEDIGORON,
     VB_GIVE_ITEM_FROM_MEDIGORON,
     // Opt: *EnMs
     VB_GIVE_ITEM_FROM_MAGIC_BEAN_SALESMAN,
@@ -507,6 +511,7 @@ void GameInteractor_SetTriforceHuntCreditsWarpActive(uint8_t state);
 
 
 #ifdef __cplusplus
+#include <stdarg.h>
 #include <thread>
 #include <unordered_map>
 #include <vector>
@@ -561,8 +566,14 @@ struct HookInfo {
 #define GET_CURRENT_REGISTERING_INFO(type) HookRegisteringInfo{}
 #endif
 
-#define REGISTER_VB_SHOULD(flag, body) \
-    GameInteractor::Instance->RegisterGameHookForID<GameInteractor::OnVanillaBehavior>(flag, [](GIVanillaBehavior _, bool* should, void* opt) body)
+#define REGISTER_VB_SHOULD(flag, body)                                                      \
+    GameInteractor::Instance->RegisterGameHookForID<GameInteractor::OnVanillaBehavior>( \
+        flag, [](GIVanillaBehavior _, bool* should, va_list _originalArgs) {                 \
+            va_list args;                                                                   \
+            va_copy(args, _originalArgs);                                                    \
+            body;                                                                           \
+            va_end(args);                                                                   \
+        })
 
 class GameInteractor {
 public:

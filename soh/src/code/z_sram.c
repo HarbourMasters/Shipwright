@@ -200,7 +200,7 @@ void Sram_OpenSave() {
         }
     }
 
-    if (GameInteractor_Should(VB_REVERT_SPOILING_ITEMS, true, NULL)) {
+    if (GameInteractor_Should(VB_REVERT_SPOILING_ITEMS, true)) {
         for (i = 0; i < ARRAY_COUNT(gSpoilingItems); i++) {
             if (INV_CONTENT(ITEM_TRADE_ADULT) == gSpoilingItems[i]) {
                 INV_CONTENT(gSpoilingItemReverts[i]) = gSpoilingItemReverts[i];

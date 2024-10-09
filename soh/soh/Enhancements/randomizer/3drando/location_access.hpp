@@ -3,8 +3,8 @@
 #include <string>
 #include <vector>
 #include <list>
+#include <set>
 
-#include "fill.hpp"
 #include "../randomizerTypes.h"
 #include "../context.h"
 #include "../logic.h"
@@ -17,7 +17,6 @@ extern std::shared_ptr<Rando::Logic> logic;
 
 class EventAccess {
 public:
-
 
     explicit EventAccess(bool* event_, std::vector<ConditionFn> conditions_met_)
         : event(event_) {
@@ -130,6 +129,8 @@ protected:
     bool CanBuy() const;
 };
 
+bool CanBuyAnother(RandomizerCheck rc);
+
 namespace Rando {
     class Entrance;
     enum class EntranceType;
@@ -138,7 +139,7 @@ namespace Rando {
 class Region {
 public:
     Region();
-    Region(std::string regionName_, std::string scene_, RandomizerArea area,
+    Region(std::string regionName_, std::string scene_, std::set<RandomizerArea> areas,
          bool timePass_,
          std::vector<EventAccess> events_,
          std::vector<LocationAccess> locations_,
@@ -147,7 +148,7 @@ public:
 
     std::string regionName;
     std::string scene;
-    RandomizerArea area;
+    std::set<RandomizerArea> areas;
     bool timePass;
     std::vector<EventAccess> events;
     std::vector<LocationAccess> locations;
@@ -165,7 +166,9 @@ public:
     bool adultNight = false;
     bool addedToPool = false;;
 
-    bool UpdateEvents(bool haveTimeAccess = true);
+    void ApplyTimePass();
+
+    bool UpdateEvents();
 
     void AddExit(RandomizerRegion parentKey, RandomizerRegion newExitKey, ConditionFn condition);
 
@@ -198,12 +201,12 @@ public:
     //Check to see if an exit can be access as both ages at both times of day
     bool CheckAllAccess(RandomizerRegion exitKey);
 
-    RandomizerArea GetArea() const{
-        return area;
+    std::set<RandomizerArea> GetAllAreas() const{
+        return areas;
     }
 
-    void SetArea(RandomizerArea newArea) {
-        area = newArea;
+    void ReplaceAreas(std::set<RandomizerArea> newAreas) {
+        areas = newAreas;
     }
 
     //Here checks conditional access based on whether or not both ages have

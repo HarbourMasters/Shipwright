@@ -4,7 +4,7 @@
 using namespace Rando;
 
 void RegionTable_Init_GerudoValley() {
-  areaTable[RR_GERUDO_VALLEY] = Region("Gerudo Valley", "Gerudo Valley", RA_GERUDO_VALLEY, DAY_NIGHT_CYCLE, {
+  areaTable[RR_GERUDO_VALLEY] = Region("Gerudo Valley", "Gerudo Valley", {RA_GERUDO_VALLEY}, DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&logic->BugRock, {[]{return logic->BugRock || logic->IsChild;}}),
                 }, {
@@ -19,7 +19,7 @@ void RegionTable_Init_GerudoValley() {
                   Entrance(RR_GV_FORTRESS_SIDE,  {[]{return (logic->IsAdult && (logic->CanUse(RG_EPONA) || logic->CanUse(RG_LONGSHOT) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_OPEN) || logic->CarpenterRescue)) || (logic->IsChild && logic->CanUse(RG_HOOKSHOT));}}),
   });
 
-  areaTable[RR_GV_UPPER_STREAM] = Region("GV Upper Stream", "Gerudo Valley", RA_GERUDO_VALLEY, DAY_NIGHT_CYCLE, {
+  areaTable[RR_GV_UPPER_STREAM] = Region("GV Upper Stream", "Gerudo Valley", {RA_GERUDO_VALLEY}, DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&logic->GossipStoneFairy, {[]{return logic->CallGossipFairy();}}),
                   EventAccess(&logic->BeanPlantFairy,   {[]{return logic->BeanPlantFairy   || (CanPlantBean(RR_GV_UPPER_STREAM) && logic->CanUse(RG_SONG_OF_STORMS));}}),
@@ -34,19 +34,19 @@ void RegionTable_Init_GerudoValley() {
                   Entrance(RR_GV_LOWER_STREAM, {[]{return true;}}),
   });
 
-  areaTable[RR_GV_LOWER_STREAM] = Region("GV Lower Stream", "Gerudo Valley", RA_GERUDO_VALLEY, DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_GV_LOWER_STREAM] = Region("GV Lower Stream", "Gerudo Valley", {RA_GERUDO_VALLEY}, DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_LAKE_HYLIA, {[]{return logic->IsChild || logic->HasItem(RG_BRONZE_SCALE);}}),//can use cucco as child
   });
 
-  areaTable[RR_GV_GROTTO_LEDGE] = Region("GV Grotto Ledge", "Gerudo Valley", RA_GERUDO_VALLEY, DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_GV_GROTTO_LEDGE] = Region("GV Grotto Ledge", "Gerudo Valley", {RA_GERUDO_VALLEY}, DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_GV_LOWER_STREAM,   {[]{return true;}}),
                   Entrance(RR_GV_OCTOROK_GROTTO, {[]{return logic->CanUse(RG_SILVER_GAUNTLETS);}}),
                   Entrance(RR_GV_CRATE_LEDGE,    {[]{return logic->CanUse(RG_LONGSHOT);}}),
   });
 
-  areaTable[RR_GV_CRATE_LEDGE] = Region("GV Crate Ledge", "Gerudo Valley", RA_GERUDO_VALLEY, DAY_NIGHT_CYCLE, {}, {
+  areaTable[RR_GV_CRATE_LEDGE] = Region("GV Crate Ledge", "Gerudo Valley", {RA_GERUDO_VALLEY}, DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LOCATION(RC_GV_CRATE_FREESTANDING_POH, true),
                 }, {
@@ -54,7 +54,7 @@ void RegionTable_Init_GerudoValley() {
                   Entrance(RR_GV_LOWER_STREAM, {[]{return true;}}),
   });
 
-  areaTable[RR_GV_FORTRESS_SIDE] = Region("GV Fortress Side", "Gerudo Valley", RA_GERUDO_VALLEY, DAY_NIGHT_CYCLE, {}, {
+  areaTable[RR_GV_FORTRESS_SIDE] = Region("GV Fortress Side", "Gerudo Valley", {RA_GERUDO_VALLEY}, DAY_NIGHT_CYCLE, {}, {
                   //Locations                                       
                   LOCATION(RC_GV_CHEST,          logic->IsAdult && logic->CanUse(RG_MEGATON_HAMMER)),
                   LOCATION(RC_GV_TRADE_SAW,      logic->IsAdult && logic->CanUse(RG_POACHERS_SAW)),
@@ -70,17 +70,17 @@ void RegionTable_Init_GerudoValley() {
                   Entrance(RR_GV_CRATE_LEDGE, {[]{return false;}}),
   });
 
-  areaTable[RR_GV_CARPENTER_TENT] = Region("GV Carpenter Tent", "GV Carpenter Tent", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_GV_CARPENTER_TENT] = Region("GV Carpenter Tent", "GV Carpenter Tent", {}, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_GV_FORTRESS_SIDE, {[]{return true;}}),
   });
 
-  areaTable[RR_GV_OCTOROK_GROTTO] = Region("GV Octorok Grotto", "GV Octorok Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_GV_OCTOROK_GROTTO] = Region("GV Octorok Grotto", "GV Octorok Grotto", {}, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_GV_GROTTO_LEDGE, {[]{return true;}}),
   });
 
-  areaTable[RR_GV_STORMS_GROTTO] = Region("GV Storms Grotto", "GV Storms Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[RR_GV_STORMS_GROTTO] = Region("GV Storms Grotto", "GV Storms Grotto", {}, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LOCATION(RC_GV_DEKU_SCRUB_GROTTO_REAR,    logic->CanStunDeku()),
                   LOCATION(RC_GV_DEKU_SCRUB_GROTTO_FRONT,   logic->CanStunDeku()),
@@ -90,7 +90,7 @@ void RegionTable_Init_GerudoValley() {
                   Entrance(RR_GV_FORTRESS_SIDE, {[]{return true;}}),
   });
 
-  areaTable[RR_GERUDO_FORTRESS] = Region("Gerudo Fortress", "Gerudo Fortress", RA_GERUDO_FORTRESS, NO_DAY_NIGHT_CYCLE, {
+  areaTable[RR_GERUDO_FORTRESS] = Region("Gerudo Fortress", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&logic->CarpenterRescue, {[]{return logic->CanFinishGerudoFortress();}}),
                   EventAccess(&logic->GF_GateOpen,     {[]{return logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD);}}),
@@ -115,7 +115,7 @@ void RegionTable_Init_GerudoValley() {
                   Entrance(RR_GF_STORMS_GROTTO,                 {[]{return logic->IsAdult && logic->CanOpenStormsGrotto();}}),
   });
 
-  areaTable[RR_GF_OUTSIDE_GATE] = Region("GF Outside Gate", "Gerudo Fortress", RA_GERUDO_FORTRESS, NO_DAY_NIGHT_CYCLE, {
+  areaTable[RR_GF_OUTSIDE_GATE] = Region("GF Outside Gate", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&logic->GF_GateOpen, {[]{return logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && (ctx->GetOption(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD) || ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES) /*|| ShuffleSpecialIndoorEntrances*/);}}),
                 }, {}, {
@@ -124,7 +124,7 @@ void RegionTable_Init_GerudoValley() {
                   Entrance(RR_WASTELAND_NEAR_FORTRESS, {[]{return true;}}),
   });
 
-  areaTable[RR_GF_STORMS_GROTTO] = Region("GF Storms Grotto", "GF Storms Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, {
+  areaTable[RR_GF_STORMS_GROTTO] = Region("GF Storms Grotto", "GF Storms Grotto", {}, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&logic->FreeFairies, {[]{return true;}}),
                 }, {}, {
@@ -132,21 +132,21 @@ void RegionTable_Init_GerudoValley() {
                   Entrance(RR_GERUDO_FORTRESS, {[]{return true;}}),
   });
 
-  areaTable[RR_WASTELAND_NEAR_FORTRESS] = Region("Wasteland Near Fortress", "Haunted Wasteland", RA_HAUNTED_WASTELAND, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_WASTELAND_NEAR_FORTRESS] = Region("Wasteland Near Fortress", "Haunted Wasteland", {RA_HAUNTED_WASTELAND}, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_GF_OUTSIDE_GATE,   {[]{return true;}}),
                   Entrance(RR_HAUNTED_WASTELAND, {[]{return logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_LONGSHOT) || ctx->GetTrickOption(RT_HW_CROSSING);}}),
   });
 
-  areaTable[RR_HAUNTED_WASTELAND] = Region("Haunted Wasteland", "Haunted Wasteland", RA_HAUNTED_WASTELAND, NO_DAY_NIGHT_CYCLE, {
+  areaTable[RR_HAUNTED_WASTELAND] = Region("Haunted Wasteland", "Haunted Wasteland", {RA_HAUNTED_WASTELAND}, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&logic->FairyPot,       {[]{return true;}}),
                   EventAccess(&logic->NutPot,         {[]{return true;}}),
-                  EventAccess(&logic->CarpetMerchant, {[]{return logic->HasItem(RG_ADULT_WALLET) && (logic->CanJumpslash() || logic->CanUse(RG_HOVER_BOOTS));}}),
+                  EventAccess(&logic->CarpetMerchant, {[]{return logic->HasItem(RG_ADULT_WALLET) && CanBuyAnother(RC_WASTELAND_BOMBCHU_SALESMAN) && (logic->CanJumpslash() || logic->CanUse(RG_HOVER_BOOTS));}}),
                 }, {
                   //Locations
                   LOCATION(RC_WASTELAND_CHEST,            logic->HasFireSource()),
-                  LOCATION(RC_WASTELAND_BOMBCHU_SALESMAN, logic->CarpetMerchant),
+                  LOCATION(RC_WASTELAND_BOMBCHU_SALESMAN, logic->CanJumpslash() || logic->CanUse(RG_HOVER_BOOTS)),
                   LOCATION(RC_WASTELAND_GS,               logic->HookshotOrBoomerang()),
                 }, {
                   //Exits
@@ -154,13 +154,13 @@ void RegionTable_Init_GerudoValley() {
                   Entrance(RR_WASTELAND_NEAR_FORTRESS, {[]{return logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_LONGSHOT) || ctx->GetTrickOption(RT_HW_CROSSING);}}),
   });
 
-  areaTable[RR_WASTELAND_NEAR_COLOSSUS] = Region("Wasteland Near Colossus", "Haunted Wasteland", RA_HAUNTED_WASTELAND, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_WASTELAND_NEAR_COLOSSUS] = Region("Wasteland Near Colossus", "Haunted Wasteland", {RA_HAUNTED_WASTELAND}, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_DESERT_COLOSSUS,   {[]{return true;}}),
                   Entrance(RR_HAUNTED_WASTELAND, {[]{return ctx->GetTrickOption(RT_HW_REVERSE) || false;}}),
   });
 
-  areaTable[RR_DESERT_COLOSSUS] = Region("Desert Colossus", "Desert Colossus", RA_DESERT_COLOSSUS, DAY_NIGHT_CYCLE, {
+  areaTable[RR_DESERT_COLOSSUS] = Region("Desert Colossus", "Desert Colossus", {RA_DESERT_COLOSSUS}, DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&logic->FairyPond, {[]{return logic->FairyPond || logic->CanUse(RG_SONG_OF_STORMS);}}),
                   EventAccess(&logic->BugRock,   {[]{return true;}}),
@@ -179,7 +179,7 @@ void RegionTable_Init_GerudoValley() {
                   Entrance(RR_COLOSSUS_GROTTO,               {[]{return logic->CanUse(RG_SILVER_GAUNTLETS);}}),
   });
 
-  areaTable[RR_DESERT_COLOSSUS_FROM_SPIRIT_ENTRYWAY] = Region("Desert Colossus From Spirit Entryway", "Desert Colossus", RA_DESERT_COLOSSUS, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[RR_DESERT_COLOSSUS_FROM_SPIRIT_ENTRYWAY] = Region("Desert Colossus From Spirit Entryway", "Desert Colossus", {RA_DESERT_COLOSSUS}, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LOCATION(RC_SHEIK_AT_COLOSSUS, true),
                 }, {
@@ -187,7 +187,7 @@ void RegionTable_Init_GerudoValley() {
                   Entrance(RR_DESERT_COLOSSUS, {[]{return true;}}),
   });
 
-  areaTable[RR_COLOSSUS_GREAT_FAIRY_FOUNTAIN] = Region("Colossus Great Fairy Fountain", "Colossus Great Fairy Fountain", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[RR_COLOSSUS_GREAT_FAIRY_FOUNTAIN] = Region("Colossus Great Fairy Fountain", "Colossus Great Fairy Fountain", {}, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LOCATION(RC_COLOSSUS_GREAT_FAIRY_REWARD, logic->CanUse(RG_ZELDAS_LULLABY)),
                 }, {
@@ -195,7 +195,7 @@ void RegionTable_Init_GerudoValley() {
                   Entrance(RR_DESERT_COLOSSUS, {[]{return true;}}),
   });
 
-  areaTable[RR_COLOSSUS_GROTTO] = Region("Colossus Grotto", "Colossus Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[RR_COLOSSUS_GROTTO] = Region("Colossus Grotto", "Colossus Grotto", {}, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LOCATION(RC_COLOSSUS_DEKU_SCRUB_GROTTO_REAR,  logic->CanStunDeku()),
                   LOCATION(RC_COLOSSUS_DEKU_SCRUB_GROTTO_FRONT, logic->CanStunDeku()),

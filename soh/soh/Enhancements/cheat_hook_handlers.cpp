@@ -12,7 +12,7 @@ extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 }
 
-void CheatsOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void* opt) {
+void CheatsOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_list originalArgs) {
     switch (id) {
         case VB_DEKU_STICK_BREAK: {
             if (CVarGetInteger(CVAR_CHEAT("DekuStickCheat"), DEKU_STICK_NORMAL) != DEKU_STICK_NORMAL) {

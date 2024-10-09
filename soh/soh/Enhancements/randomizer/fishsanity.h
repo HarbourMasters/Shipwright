@@ -156,7 +156,7 @@ class Fishsanity {
     /**
      * @brief VB hook handler for fishsanity
     */
-    static void OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void* refActor);
+    static void OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_list originalArgs);
 
   private:
     /**

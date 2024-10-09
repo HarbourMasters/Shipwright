@@ -99,7 +99,7 @@ s32 func_80A3D7C8(void) {
         return 0;
     } else if (GameInteractor_Should(VB_BE_ELIGIBLE_FOR_GIANTS_KNIFE_PURCHASE, (
         !CHECK_OWNED_EQUIP_ALT(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_BIGGORON) // Don't have giant's knife
-    ), NULL)) {
+    ))) {
         return 1;
     } else if (CHECK_OWNED_EQUIP_ALT(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_BROKENGIANTKNIFE)) { // Have broken giant's knife
         return 2;
@@ -245,15 +245,15 @@ void EnGm_ProcessChoiceIndex(EnGm* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE && Message_ShouldAdvance(play)) {
         switch (play->msgCtx.choiceIndex) {
             case 0: // yes
-                if (gSaveContext.rupees < 200) {
+                if (GameInteractor_Should(VB_CHECK_RANDO_PRICE_OF_MEDIGORON, gSaveContext.rupees < 200, this)) {
                     Message_ContinueTextbox(play, 0xC8);
                     this->actionFunc = func_80A3DD7C;
                 } else {
                     if (GameInteractor_Should(VB_GIVE_ITEM_FROM_MEDIGORON, true, this)) {
                         Actor_OfferGetItem(&this->actor, play, GI_SWORD_KNIFE, 415.0f, 10.0f);
+                        this->actionFunc = func_80A3DF00;
                     }
-
-                    this->actionFunc = func_80A3DF00;
+                    
                 }
                 break;
             case 1: // no
@@ -265,8 +265,7 @@ void EnGm_ProcessChoiceIndex(EnGm* this, PlayState* play) {
 }
 
 void func_80A3DF00(EnGm* this, PlayState* play) {
-    if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(VB_GIVE_ITEM_FROM_MEDIGORON, true, this)) {
-        Flags_SetRandomizerInf(RAND_INF_MERCHANTS_MEDIGORON);
+    if (Actor_HasParent(&this->actor, play)) {
         this->actor.parent = NULL;
         this->actionFunc = func_80A3DF60;
     } else {

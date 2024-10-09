@@ -36,6 +36,9 @@ extern "C" {
 #include "src/overlays/actors/ovl_Obj_Comb/z_obj_comb.h"
 #include "src/overlays/actors/ovl_En_Bom_Bowl_Pit/z_en_bom_bowl_pit.h"
 #include "src/overlays/actors/ovl_En_Ge1/z_en_ge1.h"
+#include "src/overlays/actors/ovl_En_Ds/z_en_ds.h"
+#include "src/overlays/actors/ovl_En_Gm/z_en_gm.h"
+#include "src/overlays/actors/ovl_En_Js/z_en_js.h"
 #include "src/overlays/actors/ovl_En_Door/z_en_door.h"
 #include "src/overlays/actors/ovl_Door_Shutter/z_door_shutter.h"
 #include "src/overlays/actors/ovl_Door_Gerudo/z_door_gerudo.h"
@@ -512,13 +515,28 @@ void EnCow_MoveForRandomizer(EnCow* enCow, PlayState* play) {
 }
 
 u8 EnDs_RandoCanGetGrannyItem() {
-    return RAND_GET_OPTION(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF &&
+    return (RAND_GET_OPTION(RSK_SHUFFLE_MERCHANTS) == RO_SHUFFLE_MERCHANTS_ALL_BUT_BEANS ||
+            RAND_GET_OPTION(RSK_SHUFFLE_MERCHANTS) == RO_SHUFFLE_MERCHANTS_ALL) &&
            !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_GRANNYS_SHOP) &&
            // Traded odd mushroom when adult trade is on
            ((RAND_GET_OPTION(RSK_SHUFFLE_ADULT_TRADE) && Flags_GetItemGetInf(ITEMGETINF_30)) ||
             // Found claim check when adult trade is off
             (!RAND_GET_OPTION(RSK_SHUFFLE_ADULT_TRADE) &&
              INV_CONTENT(ITEM_CLAIM_CHECK) == ITEM_CLAIM_CHECK));
+}
+
+u8 EnJs_RandoCanGetCarpetMerchantItem() {
+    return  (RAND_GET_OPTION(RSK_SHUFFLE_MERCHANTS) == RO_SHUFFLE_MERCHANTS_ALL ||
+             RAND_GET_OPTION(RSK_SHUFFLE_MERCHANTS) == RO_SHUFFLE_MERCHANTS_ALL_BUT_BEANS) &&
+            // If the rando check has already been awarded, use vanilla behavior.
+            !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN);
+}
+
+u8 EnGm_RandoCanGetMedigoronItem() {
+    return  (RAND_GET_OPTION(RSK_SHUFFLE_MERCHANTS) == RO_SHUFFLE_MERCHANTS_ALL ||
+             RAND_GET_OPTION(RSK_SHUFFLE_MERCHANTS) == RO_SHUFFLE_MERCHANTS_ALL_BUT_BEANS) &&
+            // If the rando check has already been awarded, use vanilla behavior.
+            !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_MEDIGORON);
 }
 
 RandomizerCheck EnFr_RandomizerCheckFromSongIndex(u16 songIndex) {
@@ -574,6 +592,8 @@ void RandomizerSetChestGameRandomizerInf(RandomizerCheck rc) {
         case RC_MARKET_TREASURE_CHEST_GAME_KEY_5:
             Flags_SetRandomizerInf(RAND_INF_MARKET_TREASURE_CHEST_GAME_KEY_5);
             break;
+        default:
+            break;
     }
 }
 
@@ -587,7 +607,6 @@ void func_8083A434_override(PlayState* play, Player* player) {
     func_80835DAC(play, player, Player_Action_8084E6D4_override, 0);
     player->stateFlags1 |= PLAYER_STATE1_GETTING_ITEM | PLAYER_STATE1_IN_CUTSCENE;
 }
-
 
 bool ShouldGiveFishingPrize(f32 sFishOnHandLength){
     // RANDOTODO: update the enhancement sliders to not allow
@@ -604,7 +623,10 @@ bool ShouldGiveFishingPrize(f32 sFishOnHandLength){
     }
 }
 
-void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void* optionalArg) {
+void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_list originalArgs) {
+    va_list args;
+    va_copy(args, originalArgs);
+
     switch (id) {
         case VB_PLAY_SLOW_CHEST_CS: {
             // We force fast chests if SkipGetItemAnimation is enabled because the camera in the CS looks pretty wonky otherwise
@@ -614,7 +636,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
             break;
         }
         case VB_GIVE_ITEM_FROM_CHEST: {
-            EnBox* chest = static_cast<EnBox*>(optionalArg);
+            EnBox* chest = va_arg(args, EnBox*);
             RandomizerCheck rc = OTRGlobals::Instance->gRandomizer->GetCheckFromActor(chest->dyna.actor.id, gPlayState->sceneNum, chest->dyna.actor.params);
             
             // if this is a treasure chest game chest then set the appropriate rando inf
@@ -681,8 +703,9 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
             break;
         }
         case VB_BE_ELIGIBLE_FOR_MAGIC_BEANS_PURCHASE: {
-            if (RAND_GET_OPTION(RSK_SHUFFLE_MAGIC_BEANS)) {
-                *should = gSaveContext.rupees >= 60;
+            if (RAND_GET_OPTION(RSK_SHUFFLE_MERCHANTS) == RO_SHUFFLE_MERCHANTS_BEANS_ONLY ||
+                RAND_GET_OPTION(RSK_SHUFFLE_MERCHANTS) == RO_SHUFFLE_MERCHANTS_ALL) {
+                *should = gSaveContext.rupees >= OTRGlobals::Instance->gRandoContext->GetItemLocation(RC_ZR_MAGIC_BEAN_SALESMAN)->GetPrice();
             }
             break;
         }
@@ -696,7 +719,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
             }
             break;
         case VB_ITEM00_DESPAWN: {
-            EnItem00* item00 = static_cast<EnItem00*>(optionalArg);
+            EnItem00* item00 = va_arg(args, EnItem00*);
             if (item00->actor.params == ITEM00_HEART_PIECE || item00->actor.params == ITEM00_SMALL_KEY) {
                 RandomizerCheck rc = OTRGlobals::Instance->gRandomizer->GetCheckFromActor(item00->actor.id, gPlayState->sceneNum, item00->ogParams);
                 if (rc != RC_UNKNOWN_CHECK) {
@@ -713,7 +736,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
             break;
         }
         case VB_ITEM_B_HEART_DESPAWN: {
-            ItemBHeart* itemBHeart = static_cast<ItemBHeart*>(optionalArg);
+            ItemBHeart* itemBHeart = va_arg(args, ItemBHeart*);
             RandomizerCheck rc = OTRGlobals::Instance->gRandomizer->GetCheckFromActor(itemBHeart->actor.id, gPlayState->sceneNum, itemBHeart->actor.params);
             if (rc != RC_UNKNOWN_CHECK) {
                 itemBHeart->sohItemEntry = Rando::Context::GetInstance()->GetFinalGIEntry(rc, true, (GetItemID)Rando::StaticData::GetLocation(rc)->GetVanillaItem());
@@ -728,7 +751,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
             break;
         }
         case VB_SET_CUCCO_COUNT: {
-            EnNiwLady* enNiwLady = static_cast<EnNiwLady*>(optionalArg);
+            EnNiwLady* enNiwLady = va_arg(args, EnNiwLady*);
             // Override starting Cucco count using setting value
             enNiwLady->cuccosInPen = 7 - RAND_GET_OPTION(RSK_CUCCO_COUNT);
             *should = false;
@@ -790,7 +813,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
             break;
         }
         case VB_GIVE_ITEM_FROM_ITEM_00: {
-            EnItem00* item00 = static_cast<EnItem00*>(optionalArg);
+            EnItem00* item00 = va_arg(args, EnItem00*);
             if (item00->actor.params == ITEM00_SOH_DUMMY) {
                 if (item00->randoInf != RAND_INF_MAX) {
                     Flags_SetRandomizerInf(item00->randoInf);
@@ -835,7 +858,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
             if (!RAND_GET_OPTION(RSK_SHUFFLE_COWS)) {
                 break;
             }
-            EnCow* enCow = static_cast<EnCow*>(optionalArg);
+            EnCow* enCow = va_arg(args, EnCow*);
             CowIdentity cowIdentity = OTRGlobals::Instance->gRandomizer->IdentifyCow(gPlayState->sceneNum, enCow->actor.world.pos.x, enCow->actor.world.pos.z);
             // Has this cow already rewarded an item?
             if (Flags_GetRandomizerInf(cowIdentity.randomizerInf)) {
@@ -852,13 +875,16 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
             if (!EnDs_RandoCanGetGrannyItem()) {
                 break;
             }
+            EnDs* granny = va_arg(args, EnDs*);
             // Only setting the inf if we've actually gotten the rando item and not the vanilla blue potion
             Flags_SetRandomizerInf(RAND_INF_MERCHANTS_GRANNYS_SHOP);
+            granny->actor.parent = NULL;
+            granny->actionFunc = EnDs_Talk;
             *should = false;
             break;
         }
         case VB_GIVE_ITEM_FROM_THAWING_KING_ZORA: {
-            EnKz* enKz = static_cast<EnKz*>(optionalArg);
+            EnKz* enKz = va_arg(args, EnKz*);
             // If we aren't setting up the item offer, then we're just checking if it should be possible.
             if (enKz->actionFunc != (EnKzActionFunc)EnKz_SetupGetItem) {
                 // Always give the reward in rando
@@ -878,23 +904,47 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
             *should = false;
             break;
         }
+        case VB_CHECK_RANDO_PRICE_OF_CARPET_SALESMAN: {
+            if (EnJs_RandoCanGetCarpetMerchantItem()){
+                *should = gSaveContext.rupees < OTRGlobals::Instance->gRandoContext->GetItemLocation(RC_WASTELAND_BOMBCHU_SALESMAN)->GetPrice();
+            }
+            break;
+        }
         case VB_GIVE_ITEM_FROM_CARPET_SALESMAN: {
-            *should = RAND_GET_OPTION(RSK_SHUFFLE_MERCHANTS) == RO_SHUFFLE_MERCHANTS_OFF ||
-                      // If the rando check has already been awarded, use vanilla behavior.
-                      Flags_GetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN);
+            EnJs* enJs = va_arg(args, EnJs*);
+            if (EnJs_RandoCanGetCarpetMerchantItem()){
+                Rupees_ChangeBy(OTRGlobals::Instance->gRandoContext->GetItemLocation(RC_WASTELAND_BOMBCHU_SALESMAN)->GetPrice() * -1);
+                enJs->actor.parent = NULL;
+                enJs->actor.textId = TEXT_CARPET_SALESMAN_ARMS_DEALER;
+                enJs->actionFunc = (EnJsActionFunc)func_80A890C0;
+                enJs->actor.flags |= ACTOR_FLAG_WILL_TALK;
+                Flags_SetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN);
+                *should = true;
+            }
             break;
         }
         case VB_GIVE_BOMBCHUS_FROM_CARPET_SALESMAN: {
             *should = RAND_GET_OPTION(RSK_BOMBCHU_BAG) == false || INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU;
             break;
         }
+        case VB_CHECK_RANDO_PRICE_OF_MEDIGORON: {
+            if (EnGm_RandoCanGetMedigoronItem()){
+                *should = gSaveContext.rupees < OTRGlobals::Instance->gRandoContext->GetItemLocation(RC_GC_MEDIGORON)->GetPrice();
+            }
+            break;
+        }
+
         case VB_GIVE_ITEM_FROM_MEDIGORON: {
             // fallthrough
         case VB_BE_ELIGIBLE_FOR_GIANTS_KNIFE_PURCHASE:
-            if (RAND_GET_OPTION(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF &&
-                !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_MEDIGORON)) {
+            if (EnGm_RandoCanGetMedigoronItem()) {
                 if (id == VB_GIVE_ITEM_FROM_MEDIGORON) {
+                    EnGm* enGm = va_arg(args, EnGm*);
                     Flags_SetInfTable(INFTABLE_B1);
+                    Flags_SetRandomizerInf(RAND_INF_MERCHANTS_MEDIGORON);
+                    enGm->actor.parent = NULL;
+                    enGm->actionFunc = (EnGmActionFunc)func_80A3DC44;
+                    Rupees_ChangeBy(OTRGlobals::Instance->gRandoContext->GetItemLocation(RC_GC_MEDIGORON)->GetPrice() * -1);
                     *should = false;
                 } else {
                     // Resets "Talked to Medigoron" flag in infTable to restore initial conversation state
@@ -905,9 +955,10 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
             break;
         }
         case VB_GIVE_ITEM_FROM_MAGIC_BEAN_SALESMAN: {
-            EnMs* enMs = static_cast<EnMs*>(optionalArg);
-            if (RAND_GET_OPTION(RSK_SHUFFLE_MAGIC_BEANS)) {
-                Rupees_ChangeBy(-60);
+            EnMs* enMs = va_arg(args, EnMs*);
+            if (RAND_GET_OPTION(RSK_SHUFFLE_MERCHANTS) == RO_SHUFFLE_MERCHANTS_BEANS_ONLY ||
+                RAND_GET_OPTION(RSK_SHUFFLE_MERCHANTS) == RO_SHUFFLE_MERCHANTS_ALL) {
+                Rupees_ChangeBy(OTRGlobals::Instance->gRandoContext->GetItemLocation(RC_ZR_MAGIC_BEAN_SALESMAN)->GetPrice() * -1);
                 BEANS_BOUGHT = 10;
                 // Only set inf for buying rando check
                 Flags_SetRandomizerInf(RAND_INF_MERCHANTS_MAGIC_BEAN_SALESMAN);
@@ -917,7 +968,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
             break;
         }
         case VB_GIVE_ITEM_FROM_FROGS: {
-            EnFr* enFr = static_cast<EnFr*>(optionalArg);
+            EnFr* enFr = va_arg(args, EnFr*);
 
             // Skip GiveReward+SetIdle action func if the reward is an ice trap
             if (enFr->actionFunc == (EnFrActionFunc)EnFr_GiveReward) {
@@ -944,14 +995,18 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
             break;
         }
         case VB_TRADE_ODD_MUSHROOM: {
+            EnDs* granny = va_arg(args, EnDs*);
             Randomizer_ConsumeAdultTradeItem(gPlayState, ITEM_ODD_MUSHROOM);
             // Trigger the reward now
             Flags_SetItemGetInf(ITEMGETINF_30);
+            granny->actor.textId = 0x504F;
+            granny->actionFunc = (EnDsActionFunc)EnDs_TalkAfterGiveOddPotion;
+            granny->actor.flags &= ~ACTOR_FLAG_PLAYER_TALKED_TO;
             *should = false;
             break;
         }
         case VB_TRADE_ODD_POTION: {
-            EnKo* enKo = static_cast<EnKo*>(optionalArg);
+            EnKo* enKo = va_arg(args, EnKo*);
             Randomizer_ConsumeAdultTradeItem(gPlayState, ITEM_ODD_POTION);
             // Trigger the reward now
             Flags_SetItemGetInf(ITEMGETINF_31);
@@ -964,7 +1019,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
             break;
         }
         case VB_TRADE_PRESCRIPTION: {
-            EnKz* enKz = static_cast<EnKz*>(optionalArg);
+            EnKz* enKz = va_arg(args, EnKz*);
             // If we aren't setting up the item offer, then we're just checking if it should be possible.
             if (enKz->actionFunc != (EnKzActionFunc)EnKz_SetupGetItem) {
                 *should = !Flags_GetRandomizerInf(RAND_INF_ADULT_TRADES_ZD_TRADE_PRESCRIPTION);
@@ -983,13 +1038,13 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
             if (!RAND_GET_OPTION(RSK_SHUFFLE_COWS)) {
                 break;
             }
-            EnCow* enCow = static_cast<EnCow*>(optionalArg);
+            EnCow* enCow = va_arg(args, EnCow*);
             // If this is a cow we have to move, then move it now.
             EnCow_MoveForRandomizer(enCow, gPlayState);
             break;
         }
         case VB_BUSINESS_SCRUB_DESPAWN: {
-            EnShopnuts* enShopnuts = static_cast<EnShopnuts*>(optionalArg);
+            EnShopnuts* enShopnuts = va_arg(args, EnShopnuts*);
             s16 respawnData = gSaveContext.respawn[RESPAWN_MODE_RETURN].data & ((1 << 8) - 1);
             ScrubIdentity scrubIdentity = OTRGlobals::Instance->gRandomizer->IdentifyScrub(gPlayState->sceneNum, enShopnuts->actor.params, respawnData);
 
@@ -999,7 +1054,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
             break;
         }
         case VB_GIVE_ITEM_FROM_BUSINESS_SCRUB: {
-            EnDns* enDns = static_cast<EnDns*>(optionalArg);
+            EnDns* enDns = va_arg(args, EnDns*);
             *should = !enDns->sohScrubIdentity.isShuffled;
             break;
         }
@@ -1036,7 +1091,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
         }
         case VB_USE_EYEDROP_DIALOGUE: {
             // Skip eye drop text on rando if Link went in the water, so you can still receive the dive check
-            EnMk* enMk = static_cast<EnMk*>(optionalArg);
+            EnMk* enMk = va_arg(args, EnMk*);
             *should &= enMk->swimFlag == 0;
             break;
         }
@@ -1045,13 +1100,26 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
             *should |= RAND_GET_OPTION(RSK_SHUFFLE_ADULT_TRADE) == RO_GENERIC_OFF;
             break;
         }
+        case VB_GRANNY_SAY_INSUFFICIENT_RUPEES: {
+            if (EnDs_RandoCanGetGrannyItem()){
+                *should = gSaveContext.rupees < OTRGlobals::Instance->gRandoContext->GetItemLocation(RC_KAK_GRANNYS_SHOP)->GetPrice();
+            }
+            break;
+        }
+        case VB_GRANNY_TAKE_MONEY: {
+            if (EnDs_RandoCanGetGrannyItem()){
+                    *should = false;
+                    Rupees_ChangeBy(OTRGlobals::Instance->gRandoContext->GetItemLocation(RC_KAK_GRANNYS_SHOP)->GetPrice() * -1);
+                }
+            break;
+        }
         case VB_NEED_BOTTLE_FOR_GRANNYS_ITEM: {
             // Allow buying the rando item regardless of having a bottle
             *should &= !EnDs_RandoCanGetGrannyItem();
             break;
         }
         case VB_GIVE_ITEM_FROM_SHOOTING_GALLERY: {
-            EnSyatekiMan* enSyatekiMan = static_cast<EnSyatekiMan*>(optionalArg);
+            EnSyatekiMan* enSyatekiMan = va_arg(args, EnSyatekiMan*);
             enSyatekiMan->getItemId = GI_RUPEE_PURPLE;
             if (LINK_IS_ADULT) {
                 // Give purple rupee if we've already obtained the reward OR we don't have a bow
@@ -1093,7 +1161,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
             // in that array is GI_RUPEE_GOLD, and the reward is picked in EnSth_GivePlayerItem
             // via sGetItemIds[this->actor.params]. This means if actor.params == 0 we're looking
             // at the 100 GS reward
-            EnSth* enSth = static_cast<EnSth*>(optionalArg);
+            EnSth* enSth = va_arg(args, EnSth*);
             if (enSth->actor.params == 0) {
                 // if nothing is shuffled onto 100 GS,
                 // or we already got the 100 GS reward,
@@ -1116,14 +1184,14 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
             break;
         }
         case VB_GIVE_ITEM_FROM_OCARINA_MEMORY_GAME: {
-            EnSkj* enSkj = static_cast<EnSkj*>(optionalArg);
+            EnSkj* enSkj = va_arg(args, EnSkj*);
             Flags_SetItemGetInf(ITEMGETINF_17);
             enSkj->actionFunc = (EnSkjActionFunc)EnSkj_CleanupOcarinaGame;
             *should = false;
             break;
         }
         case VB_GIVE_ITEM_FROM_LOST_DOG: {
-            EnHy* enHy = static_cast<EnHy*>(optionalArg);
+            EnHy* enHy = va_arg(args, EnHy*);
             Flags_SetInfTable(INFTABLE_191);
             gSaveContext.dogParams = 0;
             gSaveContext.dogIsLost = false;
@@ -1132,7 +1200,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
             break;
         }
         case VB_GIVE_ITEM_FROM_BOMBCHU_BOWLING: {
-            EnBomBowlPit* enBomBowlPit = static_cast<EnBomBowlPit*>(optionalArg);
+            EnBomBowlPit* enBomBowlPit = va_arg(args, EnBomBowlPit*);
             if (enBomBowlPit->prizeIndex == EXITEM_BOMB_BAG_BOWLING || enBomBowlPit->prizeIndex == EXITEM_HEART_PIECE_BOWLING) {
                 *should = false;
             }
@@ -1167,7 +1235,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
             break;
         }
         case VB_DRAW_AMMO_COUNT: {
-            s16 item = *static_cast<s16*>(optionalArg);
+            s16 item = *va_arg(args, s16*);
             // don't draw ammo count if you have the infinite upgrade
             if (
                 (item == ITEM_NUT && Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_NUT_UPGRADE)) ||
@@ -1217,7 +1285,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
         case VB_SKIP_SCARECROWS_SONG: {
             int ocarinaButtonCount = 0;
             for (int i = VB_HAVE_OCARINA_NOTE_D4; i <= VB_HAVE_OCARINA_NOTE_A4; i++) {
-                if (GameInteractor_Should((GIVanillaBehavior)i, true, NULL)) {
+                if (GameInteractor_Should((GIVanillaBehavior)i, true)) {
                     ocarinaButtonCount++;
                 }
             }
@@ -1258,12 +1326,12 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
             break;
         }
         case VB_SHOULD_CHECK_FOR_FISHING_RECORD: {
-            f32 sFishOnHandLength = *static_cast<f32*>(optionalArg);
+            f32 sFishOnHandLength = *va_arg(args, f32*);
             *should = *should || ShouldGiveFishingPrize(sFishOnHandLength);
             break;
         }
         case VB_SHOULD_SET_FISHING_RECORD: {
-            VBFishingData* fishData = static_cast<VBFishingData*>(optionalArg);
+            VBFishingData* fishData = va_arg(args, VBFishingData*);
             *should = (s16)fishData->sFishingRecordLength < (s16)fishData->fishWeight;
             if (!*should){
                 *fishData->sFishOnHandLength = 0.0f;
@@ -1271,13 +1339,13 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
             break;
         }
         case VB_SHOULD_GIVE_VANILLA_FISHING_PRIZE: {
-            VBFishingData* fishData = static_cast<VBFishingData*>(optionalArg);
+            VBFishingData* fishData = va_arg(args, VBFishingData*);
             *should = !IS_RANDO && ShouldGiveFishingPrize(fishData->fishWeight);
             break;
         }
         case VB_GIVE_RANDO_FISHING_PRIZE: {
             if (IS_RANDO){
-                VBFishingData* fishData = static_cast<VBFishingData*>(optionalArg);
+                VBFishingData* fishData = va_arg(args, VBFishingData*);
                 if (*fishData->sFishOnHandIsLoach) {
                     if (!Flags_GetRandomizerInf(RAND_INF_CAUGHT_LOACH) &&
                         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY) == RO_FISHSANITY_HYRULE_LOACH){
@@ -1333,7 +1401,11 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
         case VB_GIVE_ITEM_SHADOW_MEDALLION:
             *should = false;
             break;
+        default:
+            break;
     }
+
+    va_end(args);
 }
 
 void RandomizerOnSceneInitHandler(int16_t sceneNum) {
@@ -1391,7 +1463,7 @@ void RandomizerOnSceneInitHandler(int16_t sceneNum) {
         }
 
         // We're always in rando here, and rando always overrides this should so we can just pass false
-        if (GameInteractor_Should(VB_BE_ELIGIBLE_FOR_LIGHT_ARROWS, false, NULL)) {
+        if (GameInteractor_Should(VB_BE_ELIGIBLE_FOR_LIGHT_ARROWS, false)) {
             Flags_SetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS);
         }
 

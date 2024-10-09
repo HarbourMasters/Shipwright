@@ -61,7 +61,7 @@ void BgSpot12Saku_Init(Actor* thisx, PlayState* play) {
 
     func_808B3420(this, play, &gGerudoFortressGTGShutterCol, DPM_UNK);
     Actor_ProcessInitChain(&this->dyna.actor, sInitChain);
-    if (GameInteractor_Should(VB_GTG_GATE_BE_OPEN, Flags_GetSwitch(play, this->dyna.actor.params & 0x3F), NULL)) {
+    if (GameInteractor_Should(VB_GTG_GATE_BE_OPEN, Flags_GetSwitch(play, this->dyna.actor.params & 0x3F))) {
         func_808B3714(this);
     } else {
         func_808B3550(this);
@@ -82,7 +82,7 @@ void func_808B3550(BgSpot12Saku* this) {
 }
 
 void func_808B357C(BgSpot12Saku* this, PlayState* play) {
-    if (GameInteractor_Should(VB_GTG_GATE_BE_OPEN, Flags_GetSwitch(play, this->dyna.actor.params & 0x3F), NULL)) {
+    if (GameInteractor_Should(VB_GTG_GATE_BE_OPEN, Flags_GetSwitch(play, this->dyna.actor.params & 0x3F))) {
         func_808B35E4(this);
         this->timer = 20;
         OnePointCutscene_Init(play, 4170, -99, &this->dyna.actor, MAIN_CAM);

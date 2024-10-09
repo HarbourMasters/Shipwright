@@ -12,7 +12,7 @@ extern "C" {
 void SkipDekuTreeIntro_Register() {
     REGISTER_VB_SHOULD(VB_PLAY_DEKU_TREE_INTRO_CS, {
         if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO)) {
-            BgTreemouth* treeMouth = static_cast<BgTreemouth*>(opt);
+            BgTreemouth* treeMouth = va_arg(args, BgTreemouth*);
             Flags_SetEventChkInf(EVENTCHKINF_DEKU_TREE_OPENED_MOUTH);
             Audio_PlaySoundGeneral(NA_SE_EV_WOODDOOR_OPEN, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
             BgTreemouth_SetupAction(treeMouth, func_808BC6F8);

@@ -581,7 +581,7 @@ void BossGanon_IntroCutscene(BossGanon* this, PlayState* play) {
                 BossGanon_SetIntroCsCamera(this, 11);
                 this->unk_198 = 2;
                 this->timers[2] = 110;
-                if (GameInteractor_Should(VB_GANON_HEAL_BEFORE_FIGHT, true, NULL)) {
+                if (GameInteractor_Should(VB_GANON_HEAL_BEFORE_FIGHT, true)) {
                     gSaveContext.healthAccumulator = 0x140;
                 }
                 Audio_QueueSeqCmd(NA_BGM_STOP);

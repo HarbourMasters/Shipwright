@@ -1,5 +1,5 @@
 #include "custom_messages.hpp"
-#include "shops.hpp"
+#include "../../custom-message/CustomMessageManager.h"
 #include "z64item.h"
 
 #include <array>

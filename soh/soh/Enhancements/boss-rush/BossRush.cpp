@@ -509,7 +509,10 @@ static void* sSavePromptNoChoiceTexs[] = {
     (void*)gPauseNoFRATex
 };
 
-void BossRush_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void* optionalArg) {
+void BossRush_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_list originalArgs) {
+    va_list args;
+    va_copy(args, originalArgs);
+
     switch (id) {
         // Allow not healing before ganon
         case VB_GANON_HEAL_BEFORE_FIGHT: {
@@ -520,7 +523,7 @@ void BossRush_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
         }
         // Replace the blue warp transitions with ones that lead back to the chamber of sages
         case VB_BLUE_WARP_APPLY_ENTRANCE_AND_CUTSCENE: {
-            DoorWarp1* blueWarp = static_cast<DoorWarp1*>(optionalArg);
+            DoorWarp1* blueWarp = va_arg(args, DoorWarp1*);
             BossRush_HandleBlueWarp(gPlayState, blueWarp->actor.world.pos.x, blueWarp->actor.world.pos.z);
             *should = false;
             break;
@@ -529,7 +532,7 @@ void BossRush_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
         case VB_SPAWN_BLUE_WARP: {
             switch (gPlayState->sceneNum) {
                 case SCENE_DEKU_TREE_BOSS: {
-                    BossGoma* bossGoma = static_cast<BossGoma*>(optionalArg);
+                    BossGoma* bossGoma = va_arg(args, BossGoma*);
                     static Vec3f roomCenter = { -150.0f, 0.0f, -350.0f };
                     Vec3f childPos = roomCenter;
 
@@ -578,7 +581,7 @@ void BossRush_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
                     break;
                 }
                 case SCENE_WATER_TEMPLE_BOSS: {
-                    BossMo* bossMo = static_cast<BossMo*>(optionalArg);
+                    BossMo* bossMo = va_arg(args, BossMo*);
                     Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, bossMo->actor.world.pos.x, -280.0f, bossMo->actor.world.pos.z, 0, 0, 0, WARP_DUNGEON_ADULT, true);
                     break;
                 }
@@ -607,7 +610,7 @@ void BossRush_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
         }
         // Show "No" twice because the player can't continue.
         case VB_RENDER_YES_ON_CONTINUE_PROMPT: {
-            Gfx** disp = static_cast<Gfx**>(optionalArg);
+            Gfx** disp = va_arg(args, Gfx**);
             *disp = KaleidoScope_QuadTextureIA8(*disp, sSavePromptNoChoiceTexs[gSaveContext.language], 48, 16, 12);
             *should = false;
             break;
@@ -619,7 +622,7 @@ void BossRush_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
         }
         // Skip past the "Save?" window when dying and go to the "Continue?" screen immediately.
         case VB_TRANSITION_TO_SAVE_SCREEN_ON_DEATH: {
-            PauseContext* pauseCtx = static_cast<PauseContext*>(optionalArg);
+            PauseContext* pauseCtx = va_arg(args, PauseContext*);
             pauseCtx->state = 0xF;
             *should = false;
             break;
@@ -640,6 +643,8 @@ void BossRush_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
             break;
         }
     }
+
+    va_end(args);
 }
 
 void BossRush_OnActorInitHandler(void* actorRef) {

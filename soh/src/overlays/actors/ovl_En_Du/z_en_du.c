@@ -377,7 +377,7 @@ void func_809FE4A4(EnDu* this, PlayState* play) {
         play->msgCtx.ocarinaMode = OCARINA_MODE_00;
         EnDu_SetupAction(this, func_809FE3C0);
     } else if (play->msgCtx.ocarinaMode >= OCARINA_MODE_06) {
-        if (GameInteractor_Should(VB_PLAY_DARUNIAS_JOY_CS, true, NULL)) {
+        if (GameInteractor_Should(VB_PLAY_DARUNIAS_JOY_CS, true)) {
             play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gGoronCityDaruniaWrongCs);
             gSaveContext.cutsceneTrigger = 1;
         }
@@ -386,7 +386,7 @@ void func_809FE4A4(EnDu* this, PlayState* play) {
         play->msgCtx.ocarinaMode = OCARINA_MODE_04;
     } else if (play->msgCtx.ocarinaMode == OCARINA_MODE_03) {
         Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-        if (GameInteractor_Should(VB_PLAY_DARUNIAS_JOY_CS, true, NULL)) {
+        if (GameInteractor_Should(VB_PLAY_DARUNIAS_JOY_CS, true)) {
             play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gGoronCityDaruniaCorrectCs);
             gSaveContext.cutsceneTrigger = 1;
         }
@@ -554,7 +554,7 @@ void func_809FEB08(EnDu* this, PlayState* play) {
         EnDu_SetupAction(this, func_809FE3C0);
         return;
     }
-    if (GameInteractor_Should(VB_BE_ELIGIBLE_FOR_DARUNIAS_JOY_REWARD, CUR_UPG_VALUE(UPG_STRENGTH) <= 0, NULL)) {
+    if (GameInteractor_Should(VB_BE_ELIGIBLE_FOR_DARUNIAS_JOY_REWARD, CUR_UPG_VALUE(UPG_STRENGTH) <= 0)) {
         Flags_SetRandomizerInf(RAND_INF_DARUNIAS_JOY);
         this->actor.textId = 0x301C;
         EnDu_SetupAction(this, func_809FEC14);
@@ -576,7 +576,7 @@ void func_809FEC14(EnDu* this, PlayState* play) {
 }
 
 void func_809FEC70(EnDu* this, PlayState* play) {
-    if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(VB_GIVE_ITEM_STRENGTH_1, true, NULL)) {
+    if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(VB_GIVE_ITEM_STRENGTH_1, true)) {
         this->actor.parent = NULL;
         EnDu_SetupAction(this, func_809FECE4);
     } else {

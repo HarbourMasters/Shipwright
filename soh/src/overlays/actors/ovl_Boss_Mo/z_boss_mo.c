@@ -375,7 +375,7 @@ void BossMo_Init(Actor* thisx, PlayState* play2) {
                 Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, 0.0f, -280.0f, 0.0f, 0,
                                    0, 0, WARP_DUNGEON_ADULT);
             }
-            if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true, NULL)) {
+            if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true)) {
                 Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, -200.0f, -280.0f, 0.0f, 0, 0, 0, 0, true);
             }
             play->roomCtx.unk_74[0] = 0xFF;
@@ -1127,7 +1127,7 @@ void BossMo_Tentacle(BossMo* this, PlayState* play) {
                                            WARP_DUNGEON_ADULT);
                     }
 
-                    if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true, NULL)) {
+                    if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true)) {
                         Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, this->actor.world.pos.x + 200.0f,
                                     -280.0f, this->actor.world.pos.z, 0, 0, 0, 0, true);
                     }

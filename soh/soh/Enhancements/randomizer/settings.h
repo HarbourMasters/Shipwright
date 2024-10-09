@@ -15,6 +15,11 @@ class Settings {
     Settings();
 
     /**
+     * @brief Hides or Unhides the price UI of Shopsanity based on settings.
+     */
+    void HandleShopsanityPriceUI();
+
+    /**
      * @brief Creates the `Option` and `OptionGroup` objects. This happens after construction because certain
      * other events in the codebase need to happen before all of the `Option`s can be created.
      */

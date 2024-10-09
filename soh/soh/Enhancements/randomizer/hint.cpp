@@ -146,8 +146,9 @@ void Hint::FillGapsInData(){
     fillItems = false;
   }
   for(uint8_t c = 0; c < locations.size(); c++){
+    //if area matters for the hint, it should be specified and not left to this
     if (fillAreas){
-      areas.push_back(ctx->GetItemLocation(locations[c])->GetArea());
+      areas.push_back(*ctx->GetItemLocation(locations[c])->GetAreas().begin());
     }
     if (fillItems){
       items.push_back(ctx->GetItemLocation(locations[c])->GetPlacedRandomizerGet());
@@ -192,12 +193,11 @@ void Hint::NamesChosen(){
     hintTextsChosen = namesTemp;
   }
 
-  if (hintType == HINT_TYPE_ITEM || hintType == HINT_TYPE_ITEM_AREA || hintType == HINT_TYPE_MERCHANT){
-    bool mysterious = hintType == HINT_TYPE_MERCHANT && ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ON_NO_HINT);
+  if (hintType == HINT_TYPE_ITEM || hintType == HINT_TYPE_ITEM_AREA){
     for(uint8_t c = 0; c < locations.size(); c++){
       namesTemp = {};
       saveNames = false;
-      uint8_t selection = GetRandomHintTextEntry(GetItemHintText(c, mysterious));
+      uint8_t selection = GetRandomHintTextEntry(GetItemHintText(c));
       if (selection > 0){
         saveNames = true;
       }
@@ -332,13 +332,6 @@ const CustomMessage Hint::GetHintMessage(MessageFormat format, uint8_t id) const
         toInsert.push_back(GetItemName(b)); 
       }
       break;}
-    case HINT_TYPE_MERCHANT:{
-        //if we write items, but need to adjust for merchants
-        bool mysterious = hintType == HINT_TYPE_MERCHANT && ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ON_NO_HINT);
-        for(uint8_t b = 0; b < locations.size(); b++){
-          toInsert.push_back(GetItemName(b, mysterious));
-        }
-        break;}
     case HINT_TYPE_TRIAL:{
       //If we write trials
       for(uint8_t b = 0; b < trials.size(); b++){
@@ -507,7 +500,7 @@ void Hint::logHint(oJson& jsonData){
     staticHint = false;
   }
   if (enabled &&
-      (!(staticHint && (hintType == HINT_TYPE_ITEM || hintType == HINT_TYPE_MERCHANT) && ctx->GetOption(RSK_HINT_CLARITY).Is(RO_HINT_CLARITY_CLEAR)))){
+      (!(staticHint && (hintType == HINT_TYPE_ITEM) && ctx->GetOption(RSK_HINT_CLARITY).Is(RO_HINT_CLARITY_CLEAR)))){
       //skip if not enabled or if a static hint with no possible variance
     jsonData[logMap][Rando::StaticData::hintNames[ownKey].GetForCurrentLanguage(MF_CLEAN)] = toJSON();
   }
@@ -529,7 +522,7 @@ const HintText Hint::GetItemHintText(uint8_t slot, bool mysterious) const {
 
 const HintText Hint::GetAreaHintText(uint8_t slot) const { 
   CustomMessage areaText;
-  if (yourPocket && (areas[slot] == RA_LINKS_POCKET || areas[slot] == RA_NONE)){
+  if (yourPocket && areas[slot] == RA_LINKS_POCKET){
     return StaticData::hintTextTable[RHT_YOUR_POCKET];
   } else {
     return StaticData::hintTextTable[Rando::StaticData::areaNames[areas[slot]]];

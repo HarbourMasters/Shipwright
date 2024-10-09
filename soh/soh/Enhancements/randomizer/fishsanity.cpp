@@ -465,9 +465,14 @@ namespace Rando {
         }
     }
 
-    void Fishsanity::OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void* refActor) {
-        Actor* actor = static_cast<Actor*>(refActor);
+    void Fishsanity::OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_list originalArgs) {
+        va_list args;
+        va_copy(args, originalArgs);
+
+        Actor* actor = va_arg(args, Actor*);
         auto fs = OTRGlobals::Instance->gRandoContext->GetFishsanity();
+
+        va_end(args);
 
         if (id == VB_BOTTLE_ACTOR && actor->id == ACTOR_EN_FISH && fs->GetOverworldFishShuffled()) {
             FishIdentity fish = OTRGlobals::Instance->gRandomizer->IdentifyFish(gPlayState->sceneNum, actor->params);

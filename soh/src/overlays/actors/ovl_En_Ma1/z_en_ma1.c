@@ -91,8 +91,8 @@ static void* sEyeTextures[] = {
 };
 
 u16 EnMa1_GetText(PlayState* play, Actor* thisx) {
-    bool malonReturnedFromCastle = GameInteractor_Should(VB_MALON_RETURN_FROM_CASTLE, Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE), NULL);
-    bool malonTaughtEponasSong = GameInteractor_Should(VB_MALON_ALREADY_TAUGHT_EPONAS_SONG, CHECK_QUEST_ITEM(QUEST_SONG_EPONA), NULL);
+    bool malonReturnedFromCastle = GameInteractor_Should(VB_MALON_RETURN_FROM_CASTLE, Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE));
+    bool malonTaughtEponasSong = GameInteractor_Should(VB_MALON_ALREADY_TAUGHT_EPONAS_SONG, CHECK_QUEST_ITEM(QUEST_SONG_EPONA));
     u16 faceReaction = Text_GetFaceReaction(play, 0x17);
 
     if (faceReaction != 0) {
@@ -185,7 +185,7 @@ s16 func_80AA0778(PlayState* play, Actor* thisx) {
 }
 
 s32 func_80AA08C4(EnMa1* this, PlayState* play) {
-    bool malonReturnedFromCastle = GameInteractor_Should(VB_MALON_RETURN_FROM_CASTLE, Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE), NULL);
+    bool malonReturnedFromCastle = GameInteractor_Should(VB_MALON_RETURN_FROM_CASTLE, Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE));
 
     if ((this->actor.shape.rot.z == 3) && (gSaveContext.sceneSetupIndex == 5)) {
         return 1;
@@ -269,8 +269,8 @@ void func_80AA0B74(EnMa1* this) {
 
 void EnMa1_Init(Actor* thisx, PlayState* play) {
     EnMa1* this = (EnMa1*)thisx;
-    bool malonReturnedFromCastle = GameInteractor_Should(VB_MALON_RETURN_FROM_CASTLE, Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE), NULL);
-    bool malonTaughtEponasSong = GameInteractor_Should(VB_MALON_ALREADY_TAUGHT_EPONAS_SONG, CHECK_QUEST_ITEM(QUEST_SONG_EPONA), NULL);
+    bool malonReturnedFromCastle = GameInteractor_Should(VB_MALON_RETURN_FROM_CASTLE, Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE));
+    bool malonTaughtEponasSong = GameInteractor_Should(VB_MALON_ALREADY_TAUGHT_EPONAS_SONG, CHECK_QUEST_ITEM(QUEST_SONG_EPONA));
     s32 pad;
 
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 18.0f);
@@ -306,8 +306,8 @@ void EnMa1_Destroy(Actor* thisx, PlayState* play) {
 }
 
 void func_80AA0D88(EnMa1* this, PlayState* play) {
-    bool malonReturnedFromCastle = GameInteractor_Should(VB_MALON_RETURN_FROM_CASTLE, Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE), NULL);
-    bool malonTaughtEponasSong = GameInteractor_Should(VB_MALON_ALREADY_TAUGHT_EPONAS_SONG, CHECK_QUEST_ITEM(QUEST_SONG_EPONA), NULL);
+    bool malonReturnedFromCastle = GameInteractor_Should(VB_MALON_RETURN_FROM_CASTLE, Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE));
+    bool malonTaughtEponasSong = GameInteractor_Should(VB_MALON_ALREADY_TAUGHT_EPONAS_SONG, CHECK_QUEST_ITEM(QUEST_SONG_EPONA));
 
     if (this->interactInfo.talkState != NPC_TALK_STATE_IDLE) {
         if (this->skelAnime.animation != &gMalonChildIdleAnim) {
@@ -331,7 +331,7 @@ void func_80AA0D88(EnMa1* this, PlayState* play) {
 }
 
 void func_80AA0EA0(EnMa1* this, PlayState* play) {
-    if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(VB_GIVE_ITEM_WEIRD_EGG, true, NULL)) {
+    if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(VB_GIVE_ITEM_WEIRD_EGG, true)) {
         this->actor.parent = NULL;
         this->actionFunc = func_80AA0EFC;
     } else {
@@ -340,7 +340,7 @@ void func_80AA0EA0(EnMa1* this, PlayState* play) {
 }
 
 void func_80AA0EFC(EnMa1* this, PlayState* play) {
-    if (this->interactInfo.talkState == NPC_TALK_STATE_ITEM_GIVEN || !GameInteractor_Should(VB_GIVE_ITEM_WEIRD_EGG, true, NULL)) {
+    if (this->interactInfo.talkState == NPC_TALK_STATE_ITEM_GIVEN || !GameInteractor_Should(VB_GIVE_ITEM_WEIRD_EGG, true)) {
         this->interactInfo.talkState = NPC_TALK_STATE_IDLE;
         this->actionFunc = func_80AA0D88;
         Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_POCKET_EGG);
