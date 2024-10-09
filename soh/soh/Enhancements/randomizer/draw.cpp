@@ -152,22 +152,13 @@ extern "C" void Randomizer_DrawBossKey(PlayState* play, GetItemEntry* getItemEnt
     s8 isCustomKeysEnabled = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("CustomKeyModels"), 1);
     s16 slot = getItemEntry->getItemId - RG_FOREST_TEMPLE_BOSS_KEY;
 
-    const char* BaseCvarValue[6] = {
-        CVAR_COSMETIC("Key.ForestBossBase.Value"),
-        CVAR_COSMETIC("Key.FireBossBase.Value"),
-        CVAR_COSMETIC("Key.WaterBossBase.Value"),
-        CVAR_COSMETIC("Key.SpiritBossBase.Value"),
-        CVAR_COSMETIC("Key.ShadowBossBase.Value"),
-        CVAR_COSMETIC("Key.GanonsBossBase.Value"),
-    };
-
-    const char* IconCvarValue[6] = {
-        CVAR_COSMETIC("Key.ForestIcon.Value"),
-        CVAR_COSMETIC("Key.FireIcon.Value"),
-        CVAR_COSMETIC("Key.WaterIcon.Value"),
-        CVAR_COSMETIC("Key.SpiritIcon.Value"),
-        CVAR_COSMETIC("Key.ShadowIcon.Value"),
-        CVAR_COSMETIC("Key.GanonsIcon.Value"),
+    std::string CvarValue[6] = {
+        "Forest",
+        "Fire",
+        "Water",
+        "Spirit",
+        "Shadow",
+        "Ganons",
     };
 
     Gfx* CustomdLists[] = {
@@ -187,16 +178,21 @@ extern "C" void Randomizer_DrawBossKey(PlayState* play, GetItemEntry* getItemEnt
               G_MTX_MODELVIEW | G_MTX_LOAD);
 
     Color_RGB8 keyColor = { 255, 255, 0 };
-    keyColor = CVarGetColor24(BaseCvarValue[slot], keyColor);
+    //Supposed to use CVAR_COSMETIC but I can't figure out the syntax
+    keyColor = CVarGetColor24(("gCosmetics.Key." + CvarValue[slot] + "BossBase.Value").c_str(), keyColor);
     
     if (isCustomKeysEnabled){
         gDPSetEnvColor(POLY_OPA_DISP++, keyColor.r, keyColor.g, keyColor.b, 255);
         gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gBossKeyCustomDL);
     } else {
-        gDPSetGrayscaleColor(POLY_OPA_DISP++, keyColor.r, keyColor.g, keyColor.b, 255);
-        gSPGrayscale(POLY_OPA_DISP++, true);
-        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiBossKeyDL);
-        gSPGrayscale(POLY_OPA_DISP++, false);
+        if (CVarGetInteger(("gCosmetics.Key." + CvarValue[slot] + "BossBase.Changed").c_str(), false)){
+            gDPSetGrayscaleColor(POLY_OPA_DISP++, keyColor.r, keyColor.g, keyColor.b, 255);
+            gSPGrayscale(POLY_OPA_DISP++, true);
+            gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiBossKeyDL);
+            gSPGrayscale(POLY_OPA_DISP++, false);
+        } else {
+            gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiBossKeyDL);
+        }
     }
 
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
@@ -205,16 +201,20 @@ extern "C" void Randomizer_DrawBossKey(PlayState* play, GetItemEntry* getItemEnt
               G_MTX_MODELVIEW | G_MTX_LOAD);
 
     Color_RGB8 iconColor = { 255, 0, 0 };
-    iconColor = CVarGetColor24(IconCvarValue[slot], iconColor);
+    iconColor = CVarGetColor24(("gCosmetics.Key." + CvarValue[slot] + "Icon.Value").c_str(), iconColor);
     
     if (isCustomKeysEnabled){
         gDPSetEnvColor(POLY_XLU_DISP++, iconColor.r, iconColor.g, iconColor.b, 255);
         gSPDisplayList(POLY_XLU_DISP++, CustomdLists[slot]);
     } else {
-        gDPSetGrayscaleColor(POLY_XLU_DISP++, iconColor.r, iconColor.g, iconColor.b, 255);
-        gSPGrayscale(POLY_XLU_DISP++, true);
-        gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiBossKeyGemDL);
-        gSPGrayscale(POLY_XLU_DISP++, false);
+        if (CVarGetInteger(("gCosmetics.Key." + CvarValue[slot] + "Icon.Changed").c_str(), false)){
+            gDPSetGrayscaleColor(POLY_XLU_DISP++, iconColor.r, iconColor.g, iconColor.b, 255);
+            gSPGrayscale(POLY_XLU_DISP++, true);
+            gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiBossKeyGemDL);
+            gSPGrayscale(POLY_XLU_DISP++, false);
+        } else {
+            gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiBossKeyGemDL);
+        }
     }
 
     CLOSE_DISPS(play->state.gfxCtx);
