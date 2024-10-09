@@ -179,7 +179,7 @@ void ItemOcarina_WaitInWater(ItemOcarina* this, PlayState* play) {
     if (
         Actor_HasParent(&this->actor, play) || 
         (
-            !GameInteractor_Should(VB_GIVE_ITEM_OCARINA_OF_TIME, true, NULL) &&
+            !GameInteractor_Should(VB_GIVE_ITEM_OCARINA_OF_TIME, true) &&
             (this->actor.xzDistToPlayer < 20.0f) && (fabsf(this->actor.yDistToPlayer) < 10.0f) &&
             GET_PLAYER(play)->stateFlags2 & PLAYER_STATE2_DIVING
         )
@@ -189,7 +189,7 @@ void ItemOcarina_WaitInWater(ItemOcarina* this, PlayState* play) {
         this->actionFunc = ItemOcarina_StartSoTCutscene;
         this->actor.draw = NULL;
     } else {
-        if (GameInteractor_Should(VB_GIVE_ITEM_OCARINA_OF_TIME, true, NULL)) {
+        if (GameInteractor_Should(VB_GIVE_ITEM_OCARINA_OF_TIME, true)) {
             Actor_OfferGetItem(&this->actor, play, GI_OCARINA_OOT, 30.0f, 50.0f);
         }
 

@@ -298,7 +298,7 @@ void BossSst_Init(Actor* thisx, PlayState* play2) {
                 Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, ROOM_CENTER_X, ROOM_CENTER_Y,
                             ROOM_CENTER_Z + 400.0f, 0, 0, 0, WARP_DUNGEON_ADULT, true);
             }
-            if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true, NULL)) {
+            if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true)) {
                 Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, ROOM_CENTER_X, ROOM_CENTER_Y,
                             ROOM_CENTER_Z - 200.0f, 0, 0, 0, 0, true);
             }
@@ -1211,7 +1211,7 @@ void BossSst_HeadFinish(BossSst* this, PlayState* play) {
             Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, ROOM_CENTER_X, ROOM_CENTER_Y, ROOM_CENTER_Z, 0, 0, 0,
                         WARP_DUNGEON_ADULT, true);
         }
-        if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true, NULL)) {
+        if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true)) {
             Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART,
                         (Math_SinS(this->actor.shape.rot.y) * 200.0f) + ROOM_CENTER_X, ROOM_CENTER_Y,
                         Math_CosS(this->actor.shape.rot.y) * 200.0f + ROOM_CENTER_Z, 0, 0, 0, 0, true);

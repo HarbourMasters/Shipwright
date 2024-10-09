@@ -119,7 +119,7 @@ void func_80A90264(EnKakasi2* this, PlayState* play) {
 
     this->unk_194++;
 
-    if ((BREG(1) != 0) || GameInteractor_Should(VB_SKIP_SCARECROWS_SONG, false, NULL) && (this->actor.xzDistToPlayer < this->maxSpawnDistance.x) &&
+    if ((BREG(1) != 0) || GameInteractor_Should(VB_SKIP_SCARECROWS_SONG, false) && (this->actor.xzDistToPlayer < this->maxSpawnDistance.x) &&
         (fabsf(player->actor.world.pos.y - this->actor.world.pos.y) < this->maxSpawnDistance.y)) {
         this->actor.draw = func_80A90948;
         Collider_InitCylinder(play, &this->collider);

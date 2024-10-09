@@ -18,7 +18,7 @@ extern "C" {
  */
 void FasterHeavyBlockLift_Register() {
     REGISTER_VB_SHOULD(VB_PLAY_ONEPOINT_ACTOR_CS, {
-        Actor* actor = static_cast<Actor*>(opt);
+        Actor* actor = va_arg(args, Actor*);
 
         if (
             actor->id == ACTOR_BG_HEAVY_BLOCK && 
@@ -38,7 +38,7 @@ void FasterHeavyBlockLift_Register() {
         Player *player = GET_PLAYER(gPlayState);
         Actor* interactRangeActor = player->interactRangeActor;
         s32 interactActorId = interactRangeActor->id;
-        LinkAnimationHeader* anim = static_cast<LinkAnimationHeader*>(opt);
+        LinkAnimationHeader* anim = va_arg(args, LinkAnimationHeader*);
 
         // Same actor is used for small and large silver rocks, use actor params to identify large ones
         bool isLargeSilverRock = interactActorId == ACTOR_EN_ISHI && interactRangeActor->params & 1 == 1;
@@ -50,7 +50,7 @@ void FasterHeavyBlockLift_Register() {
 
     REGISTER_VB_SHOULD(VB_MOVE_THROWN_ACTOR, {
         if (CVarGetInteger(CVAR_ENHANCEMENT("FasterHeavyBlockLift"), 0)) {
-            Actor* heldActor = static_cast<Actor*>(opt);
+            Actor* heldActor = va_arg(args, Actor*);
 
             heldActor->shape.rot.x -= 3510;
         }

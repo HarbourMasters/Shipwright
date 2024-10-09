@@ -3998,7 +3998,7 @@ void KaleidoScope_Update(PlayState* play)
         case 6:
             switch (pauseCtx->unk_1E4) {
                 case 0:
-                    if (GameInteractor_Should(VB_CLOSE_PAUSE_MENU, CHECK_BTN_ALL(input->press.button, BTN_START), NULL)) {
+                    if (GameInteractor_Should(VB_CLOSE_PAUSE_MENU, CHECK_BTN_ALL(input->press.button, BTN_START))) {
                         if (CVarGetInteger(CVAR_CHEAT("EasyPauseBuffer"), 0) || CVarGetInteger(CVAR_CHEAT("EasyInputBuffer"), 0)) {
                             // Easy pause buffer is 13 frames, 12 for kaledio to end, and one more to advance a single frame
                             CVarSetInteger(CVAR_GENERAL("CheatEasyPauseBufferTimer"), 13);
@@ -4431,7 +4431,7 @@ void KaleidoScope_Update(PlayState* play)
 
         case 0x10:
             if (CHECK_BTN_ALL(input->press.button, BTN_A) || CHECK_BTN_ALL(input->press.button, BTN_START)) {
-                if (pauseCtx->promptChoice == 0 && GameInteractor_Should(VB_BE_ABLE_TO_SAVE, true, NULL)) {
+                if (pauseCtx->promptChoice == 0 && GameInteractor_Should(VB_BE_ABLE_TO_SAVE, true)) {
                     Audio_PlaySoundGeneral(NA_SE_SY_PIECE_OF_HEART, &D_801333D4, 4, &D_801333E0, &D_801333E0,
                                            &D_801333E8);
                     Play_SaveSceneFlags(play);
@@ -4504,7 +4504,7 @@ void KaleidoScope_Update(PlayState* play)
                     R_PAUSE_MENU_MODE = 0;
                     func_800981B8(&play->objectCtx);
                     func_800418D0(&play->colCtx, play);
-                    if (pauseCtx->promptChoice == 0 && GameInteractor_Should(VB_BE_ABLE_TO_SAVE, true, NULL)) {
+                    if (pauseCtx->promptChoice == 0 && GameInteractor_Should(VB_BE_ABLE_TO_SAVE, true)) {
                         Play_TriggerRespawn(play);
                         gSaveContext.respawnFlag = -2;
                         // In ER, handle death warp to last entrance from grottos

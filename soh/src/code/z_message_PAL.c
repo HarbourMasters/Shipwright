@@ -2610,18 +2610,18 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                     u8 songItemId = ITEM_SONG_MINUET + gOcarinaSongItemMap[msgCtx->ocarinaStaff->state];
 
                     if (
-                        (songItemId == ITEM_SONG_MINUET && GameInteractor_Should(VB_GIVE_ITEM_MINUET_OF_FOREST, true, NULL)) ||
-                        (songItemId == ITEM_SONG_BOLERO && GameInteractor_Should(VB_GIVE_ITEM_BOLERO_OF_FIRE, true, NULL)) ||
-                        (songItemId == ITEM_SONG_SERENADE && GameInteractor_Should(VB_GIVE_ITEM_SERENADE_OF_WATER, true, NULL)) ||
-                        (songItemId == ITEM_SONG_REQUIEM && GameInteractor_Should(VB_GIVE_ITEM_REQUIEM_OF_SPIRIT, true, NULL)) ||
-                        (songItemId == ITEM_SONG_NOCTURNE && GameInteractor_Should(VB_GIVE_ITEM_NOCTURNE_OF_SHADOW, true, NULL)) ||
-                        (songItemId == ITEM_SONG_PRELUDE && GameInteractor_Should(VB_GIVE_ITEM_PRELUDE_OF_LIGHT, true, NULL)) ||
-                        (songItemId == ITEM_SONG_LULLABY && GameInteractor_Should(VB_GIVE_ITEM_ZELDAS_LULLABY, true, NULL)) ||
-                        (songItemId == ITEM_SONG_EPONA && GameInteractor_Should(VB_GIVE_ITEM_EPONAS_SONG, true, NULL)) ||
-                        (songItemId == ITEM_SONG_SARIA && GameInteractor_Should(VB_GIVE_ITEM_SARIAS_SONG, true, NULL)) ||
-                        (songItemId == ITEM_SONG_SUN && GameInteractor_Should(VB_GIVE_ITEM_SUNS_SONG, true, NULL)) ||
-                        (songItemId == ITEM_SONG_TIME && GameInteractor_Should(VB_GIVE_ITEM_SONG_OF_TIME, true, NULL)) ||
-                        (songItemId == ITEM_SONG_STORMS && GameInteractor_Should(VB_GIVE_ITEM_SONG_OF_STORMS, true, NULL))
+                        (songItemId == ITEM_SONG_MINUET && GameInteractor_Should(VB_GIVE_ITEM_MINUET_OF_FOREST, true)) ||
+                        (songItemId == ITEM_SONG_BOLERO && GameInteractor_Should(VB_GIVE_ITEM_BOLERO_OF_FIRE, true)) ||
+                        (songItemId == ITEM_SONG_SERENADE && GameInteractor_Should(VB_GIVE_ITEM_SERENADE_OF_WATER, true)) ||
+                        (songItemId == ITEM_SONG_REQUIEM && GameInteractor_Should(VB_GIVE_ITEM_REQUIEM_OF_SPIRIT, true)) ||
+                        (songItemId == ITEM_SONG_NOCTURNE && GameInteractor_Should(VB_GIVE_ITEM_NOCTURNE_OF_SHADOW, true)) ||
+                        (songItemId == ITEM_SONG_PRELUDE && GameInteractor_Should(VB_GIVE_ITEM_PRELUDE_OF_LIGHT, true)) ||
+                        (songItemId == ITEM_SONG_LULLABY && GameInteractor_Should(VB_GIVE_ITEM_ZELDAS_LULLABY, true)) ||
+                        (songItemId == ITEM_SONG_EPONA && GameInteractor_Should(VB_GIVE_ITEM_EPONAS_SONG, true)) ||
+                        (songItemId == ITEM_SONG_SARIA && GameInteractor_Should(VB_GIVE_ITEM_SARIAS_SONG, true)) ||
+                        (songItemId == ITEM_SONG_SUN && GameInteractor_Should(VB_GIVE_ITEM_SUNS_SONG, true)) ||
+                        (songItemId == ITEM_SONG_TIME && GameInteractor_Should(VB_GIVE_ITEM_SONG_OF_TIME, true)) ||
+                        (songItemId == ITEM_SONG_STORMS && GameInteractor_Should(VB_GIVE_ITEM_SONG_OF_STORMS, true))
                     ) {
                         Item_Give(play, songItemId);
                     }

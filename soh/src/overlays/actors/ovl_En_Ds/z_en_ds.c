@@ -166,7 +166,7 @@ void EnDs_OfferOddPotion(EnDs* this, PlayState* play) {
 s32 EnDs_CheckRupeesAndBottle() {
     if (GameInteractor_Should(VB_GRANNY_SAY_INSUFFICIENT_RUPEES, gSaveContext.rupees < 100, NULL)) {
         return 0;
-    } else if (GameInteractor_Should(VB_NEED_BOTTLE_FOR_GRANNYS_ITEM, Inventory_HasEmptyBottle() == 0, NULL)) {
+    } else if (GameInteractor_Should(VB_NEED_BOTTLE_FOR_GRANNYS_ITEM, Inventory_HasEmptyBottle() == 0)) {
         return 1;
     } else {
         return 2;

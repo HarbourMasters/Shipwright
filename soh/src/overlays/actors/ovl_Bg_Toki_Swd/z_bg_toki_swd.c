@@ -126,7 +126,7 @@ void func_808BAF40(BgTokiSwd* this, PlayState* play) {
     if (!LINK_IS_ADULT || (Flags_GetEventChkInf(EVENTCHKINF_LEARNED_PRELUDE_OF_LIGHT) && !IS_RANDO) || IS_RANDO) {
         if (Actor_HasParent(&this->actor, play)) {
             if (!LINK_IS_ADULT) {
-                 if (GameInteractor_Should(VB_GIVE_ITEM_MASTER_SWORD, true, NULL)) {
+                 if (GameInteractor_Should(VB_GIVE_ITEM_MASTER_SWORD, true)) {
                     Item_Give(play, ITEM_SWORD_MASTER);
                  }
                 play->csCtx.segment = D_808BB2F0;

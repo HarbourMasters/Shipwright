@@ -237,7 +237,7 @@ void BossGanondrof_Init(Actor* thisx, PlayState* play) {
             Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, GND_BOSSROOM_CENTER_X, GND_BOSSROOM_CENTER_Y,
                         GND_BOSSROOM_CENTER_Z, 0, 0, 0, WARP_DUNGEON_ADULT, true);
         }
-        if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true, NULL)) {
+        if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true)) {
             Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, 200.0f + GND_BOSSROOM_CENTER_X,
                         GND_BOSSROOM_CENTER_Y, GND_BOSSROOM_CENTER_Z, 0, 0, 0, 0, true);
         }
@@ -966,7 +966,7 @@ void BossGanondrof_Death(BossGanondrof* this, PlayState* play) {
                     bodyDecayLevel = 1;
                     break;
             }
-            if (GameInteractor_Should(VB_PHANTOM_GANON_DEATH_SCENE, true, NULL)) {
+            if (GameInteractor_Should(VB_PHANTOM_GANON_DEATH_SCENE, true)) {
                 Math_ApproachS(&this->actor.shape.rot.y, this->work[GND_VARIANCE_TIMER] * -100, 5, 0xBB8);
                 Math_ApproachF(&this->cameraNextEye.z, this->targetPos.z + 60.0f, 0.02f, 0.5f);
                 Math_ApproachF(&this->actor.world.pos.y, GND_BOSSROOM_CENTER_Y + 133.0f, 0.05f, 100.0f);
@@ -1081,7 +1081,7 @@ void BossGanondrof_Death(BossGanondrof* this, PlayState* play) {
                 this->deathCamera = 0;
                 func_80064534(play, &play->csCtx);
                 Player_SetCsActionWithHaltedActors(play, &this->actor, 7);
-                if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true, NULL)) {
+                if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true)) {
                     Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, GND_BOSSROOM_CENTER_X, GND_BOSSROOM_CENTER_Y,
                                 GND_BOSSROOM_CENTER_Z + 200.0f, 0, 0, 0, 0, true);
                 }

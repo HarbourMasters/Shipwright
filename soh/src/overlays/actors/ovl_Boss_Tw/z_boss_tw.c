@@ -541,7 +541,7 @@ void BossTw_Init(Actor* thisx, PlayState* play2) {
                                    0, 0, WARP_DUNGEON_ADULT);
             }
 
-            if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true, NULL)) {
+            if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true)) {
                 Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, -600.0f, 230.0f, 0.0f, 0, 0, 0, 0, true);
             }
         } else {
@@ -2806,7 +2806,7 @@ void BossTw_TwinrovaDeathCS(BossTw* this, PlayState* play) {
                                        0, 0, WARP_DUNGEON_ADULT);
                 }
 
-                if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true, NULL)) {
+                if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true)) {
                     Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, -600.0f, 230.f, 0.0f, 0, 0, 0, 0, true);
                 }
 

@@ -17,7 +17,7 @@ extern "C" {
  * set the entrance index to where you would normally end up after the blue warp cutscene. This
  * should also account for the difference between your first and following visits to the blue warp.
  */
-void SkipBlueWarp_ShouldPlayTransitionCS(GIVanillaBehavior _, bool* should, void* opt) {
+void SkipBlueWarp_ShouldPlayTransitionCS(GIVanillaBehavior _, bool* should, va_list originalArgs) {
     if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO)) {
         uint8_t isBlueWarpCutscene = 0;
         // Deku Tree Blue warp
@@ -91,7 +91,7 @@ void SkipBlueWarp_ShouldPlayTransitionCS(GIVanillaBehavior _, bool* should, void
  * received the item when skipping the blue warp cutscene, so we'll prevent that and queue it up to be given 
  * to the player instead.
  */
-void SkipBlueWarp_ShouldGiveItem(GIVanillaBehavior _, bool* should, void* opt) {
+void SkipBlueWarp_ShouldGiveItem(GIVanillaBehavior _, bool* should, va_list originalArgs) {
     if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO)) {
         *should = false;
     }
@@ -108,7 +108,7 @@ void EnKo_MoveWhenReady(EnKo* enKo, PlayState* play) {
     func_80A995CC(enKo, play);
 
     if ((enKo->actor.params & 0xFF) == ENKO_TYPE_CHILD_3) {
-        if (GameInteractor_Should(VB_OPEN_KOKIRI_FOREST, CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD), NULL)) {
+        if (GameInteractor_Should(VB_OPEN_KOKIRI_FOREST, CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD))) {
             enKo->collider.dim.height -= 200;
             Path_CopyLastPoint(enKo->path, &enKo->actor.world.pos);
             enKo->actionFunc = func_80A99384;
@@ -132,7 +132,7 @@ void SkipBlueWarp_OnActorUpdate(void* actorPtr) {
  * This will ensure that the Deku Tree Sprout considers the Forest Temple finished when you skip the blue warp cutscene.
  * Typically this checks for if you have the medallion, and when skipping the cutscene at this point you don't have it yet.
  */
-void SkipBlueWarp_ShouldDekuJrConsiderForestTempleFinished(GIVanillaBehavior _, bool* should, void* opt) {
+void SkipBlueWarp_ShouldDekuJrConsiderForestTempleFinished(GIVanillaBehavior _, bool* should, va_list originalArgs) {
     if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO)) {
         if (gSaveContext.entranceIndex == ENTR_KOKIRI_FOREST_11 && gSaveContext.cutsceneIndex == 0xFFF1) {
             *should = Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP);
