@@ -8,7 +8,7 @@ void RegionTable_Init_BottomOfTheWell() {
   /*--------------------------
   |    VANILLA/MQ DECIDER    |
   ---------------------------*/
-  areaTable[RR_BOTTOM_OF_THE_WELL_ENTRYWAY] = Region("Bottom of the Well Entryway", "Bottom of the Well", RA_BOTTOM_OF_THE_WELL, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_BOTTOM_OF_THE_WELL_ENTRYWAY] = Region("Bottom of the Well Entryway", "Bottom of the Well", {RA_BOTTOM_OF_THE_WELL}, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_BOTTOM_OF_THE_WELL_MAIN_AREA,    {[]{return ctx->GetDungeon(Rando::BOTTOM_OF_THE_WELL)->IsVanilla() && logic->IsChild && (logic->CanAttack() || logic->CanUse(RG_NUTS));}}),
                   Entrance(RR_BOTTOM_OF_THE_WELL_MQ_PERIMETER, {[]{return ctx->GetDungeon(Rando::BOTTOM_OF_THE_WELL)->IsMQ()      && logic->IsChild;}}),
@@ -19,7 +19,7 @@ void RegionTable_Init_BottomOfTheWell() {
   |     VANILLA DUNGEON      |
   ---------------------------*/
   if (ctx->GetDungeon(Rando::BOTTOM_OF_THE_WELL)->IsVanilla()) {
-  areaTable[RR_BOTTOM_OF_THE_WELL_MAIN_AREA] = Region("Bottom of the Well Main Region", "Bottom of the Well", RA_BOTTOM_OF_THE_WELL, NO_DAY_NIGHT_CYCLE, {
+  areaTable[RR_BOTTOM_OF_THE_WELL_MAIN_AREA] = Region("Bottom of the Well Main Region", "Bottom of the Well", {RA_BOTTOM_OF_THE_WELL}, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&logic->StickPot, {[]{return true;}}),
                   EventAccess(&logic->NutPot,   {[]{return true;}}),
@@ -53,7 +53,7 @@ void RegionTable_Init_BottomOfTheWell() {
   ---------------------------*/
   if (ctx->GetDungeon(Rando::BOTTOM_OF_THE_WELL)->IsMQ()) {
     //RANDOTODO double check the CanAttacks when rewriting, i assumed CanChildAttack was the only one called because of the initial crawlspace
-  areaTable[RR_BOTTOM_OF_THE_WELL_MQ_PERIMETER] = Region("Bottom of the Well MQ Perimeter", "Bottom of the Well", RA_BOTTOM_OF_THE_WELL, NO_DAY_NIGHT_CYCLE, {
+  areaTable[RR_BOTTOM_OF_THE_WELL_MQ_PERIMETER] = Region("Bottom of the Well MQ Perimeter", "Bottom of the Well", {RA_BOTTOM_OF_THE_WELL}, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   //EventAccess(&WallFairy, {[]{return WallFairy || logic->Slingshot;}}),
   }, {
@@ -70,7 +70,7 @@ void RegionTable_Init_BottomOfTheWell() {
                     //Trick: logic->CanUse(RG_ZELDAS_LULLABY) || (LogicBotWMQPits && logic->HasExplosives())
   });
 
-  areaTable[RR_BOTTOM_OF_THE_WELL_MQ_MIDDLE] = Region("Bottom of the Well MQ Middle", "Bottom of the Well", RA_BOTTOM_OF_THE_WELL, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[RR_BOTTOM_OF_THE_WELL_MQ_MIDDLE] = Region("Bottom of the Well MQ Middle", "Bottom of the Well", {RA_BOTTOM_OF_THE_WELL}, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_MAP_CHEST,                        true),
                   LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_LENS_OF_TRUTH_CHEST,              logic->HasExplosives() && logic->SmallKeys(RR_BOTTOM_OF_THE_WELL, 2)),

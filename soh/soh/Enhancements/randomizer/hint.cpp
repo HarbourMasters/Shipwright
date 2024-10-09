@@ -146,8 +146,9 @@ void Hint::FillGapsInData(){
     fillItems = false;
   }
   for(uint8_t c = 0; c < locations.size(); c++){
+    //if area matters for the hint, it should be specified and not left to this
     if (fillAreas){
-      areas.push_back(ctx->GetItemLocation(locations[c])->GetArea());
+      areas.push_back(*ctx->GetItemLocation(locations[c])->GetAreas().begin());
     }
     if (fillItems){
       items.push_back(ctx->GetItemLocation(locations[c])->GetPlacedRandomizerGet());
@@ -521,7 +522,7 @@ const HintText Hint::GetItemHintText(uint8_t slot, bool mysterious) const {
 
 const HintText Hint::GetAreaHintText(uint8_t slot) const { 
   CustomMessage areaText;
-  if (yourPocket && (areas[slot] == RA_LINKS_POCKET || areas[slot] == RA_NONE)){
+  if (yourPocket && areas[slot] == RA_LINKS_POCKET){
     return StaticData::hintTextTable[RHT_YOUR_POCKET];
   } else {
     return StaticData::hintTextTable[Rando::StaticData::areaNames[areas[slot]]];

@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <list>
+#include <set>
 
 #include "../randomizerTypes.h"
 #include "../context.h"
@@ -138,7 +139,7 @@ namespace Rando {
 class Region {
 public:
     Region();
-    Region(std::string regionName_, std::string scene_, RandomizerArea area,
+    Region(std::string regionName_, std::string scene_, std::set<RandomizerArea> areas,
          bool timePass_,
          std::vector<EventAccess> events_,
          std::vector<LocationAccess> locations_,
@@ -147,7 +148,7 @@ public:
 
     std::string regionName;
     std::string scene;
-    RandomizerArea area;
+    std::set<RandomizerArea> areas;
     bool timePass;
     std::vector<EventAccess> events;
     std::vector<LocationAccess> locations;
@@ -200,12 +201,12 @@ public:
     //Check to see if an exit can be access as both ages at both times of day
     bool CheckAllAccess(RandomizerRegion exitKey);
 
-    RandomizerArea GetArea() const{
-        return area;
+    std::set<RandomizerArea> GetAllAreas() const{
+        return areas;
     }
 
-    void SetArea(RandomizerArea newArea) {
-        area = newArea;
+    void ReplaceAreas(std::set<RandomizerArea> newAreas) {
+        areas = newAreas;
     }
 
     //Here checks conditional access based on whether or not both ages have

@@ -22,8 +22,8 @@ class ItemLocation {
     void SetDelayedItem(RandomizerGet item);
     RandomizerRegion GetParentRegionKey() const;
     void SetParentRegion (RandomizerRegion region);
-    RandomizerArea GetArea() const;
-    void SetArea (RandomizerArea region);
+    std::set<RandomizerArea> GetAreas() const;
+    void MergeAreas (std::set<RandomizerArea> newAreas);
     void PlaceVanillaItem();
     void ApplyPlacedItemEffect() const;
     void SaveDelayedItem();
@@ -66,7 +66,7 @@ class ItemLocation {
     Option excludedOption = Option::Bool(StaticData::GetLocation(rc)->GetName(), {"Include", "Exclude"}, OptionCategory::Setting, "", "", WidgetType::Checkbox, RO_LOCATION_INCLUDE);
     uint16_t price = 0;
     RandomizerRegion parentRegion = RR_NONE;
-    RandomizerArea area = RA_NONE;
+    std::set<RandomizerArea> areas = {};
     bool hasCustomPrice = false;
     bool hidden = false;
     bool visibleInImGui = false;

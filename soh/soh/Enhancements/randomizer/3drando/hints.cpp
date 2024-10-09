@@ -354,12 +354,12 @@ bool IsReachableWithout(std::vector<RandomizerCheck> locsToCheck, RandomizerChec
   return true;
 }
 
-static void SetAllInRegionAsHinted(RandomizerArea area, std::vector<RandomizerCheck> locations){
+static void SetAllInAreaAsHintAccesible(RandomizerArea area, std::vector<RandomizerCheck> locations){
   auto ctx = Rando::Context::GetInstance();
-  std::vector<RandomizerCheck> locsInRegion = FilterFromPool(locations, [area, ctx](const RandomizerCheck loc){
-                                        return ctx->GetItemLocation(loc)->GetArea() == area;
-                                      });
-  for(RandomizerCheck loc: locsInRegion){
+  std::vector<RandomizerCheck> locsInArea = FilterFromPool(locations, [area, ctx](const RandomizerCheck loc){
+                                                            return ctx->GetItemLocation(loc)->GetAreas().contains(area);
+                                                          });
+  for(RandomizerCheck loc: locsInArea){
     ctx->GetItemLocation(loc)->SetHintAccesible();
   }
 }
@@ -369,10 +369,10 @@ static void AddGossipStoneHint( const RandomizerCheck gossipStone,
                                 const std::string distributionName,
                                 const std::vector<RandomizerHintTextKey> hintKeys,
                                 const std::vector<RandomizerCheck> locations,
+                                const std::vector<RandomizerArea> areas,
                                 const std::vector<TrialKey> trials) {
-
   auto ctx = Rando::Context::GetInstance();
-  ctx->AddHint(StaticData::gossipStoneCheckToHint[gossipStone], Hint(StaticData::gossipStoneCheckToHint[gossipStone], hintType, distributionName, hintKeys, locations, {}, trials));
+  ctx->AddHint(StaticData::gossipStoneCheckToHint[gossipStone], Hint(StaticData::gossipStoneCheckToHint[gossipStone], hintType, distributionName, hintKeys, locations, areas, trials));
   ctx->GetItemLocation(gossipStone)->SetPlacedItem(RG_HINT); //RANDOTODO, better gossip stone to location to hint key system
 }
 
@@ -381,11 +381,12 @@ static void AddGossipStoneHintCopies(uint8_t copies,
                                      const std::string distributionName,
                                      const std::vector<RandomizerHintTextKey> hintKeys = {},
                                      const std::vector<RandomizerCheck> locations = {},
+                                     const std::vector<RandomizerArea> areas = {},
                                      const std::vector<TrialKey> trials = {},
                                      RandomizerCheck firstStone = RC_UNKNOWN_CHECK){
 
   if (firstStone != RC_UNKNOWN_CHECK && copies > 0){
-      AddGossipStoneHint(firstStone, hintType, distributionName, hintKeys, locations, trials);
+      AddGossipStoneHint(firstStone, hintType, distributionName, hintKeys, locations, areas, trials);
       copies -= 1;
   }
   for(int c=0; c<copies; c++){
@@ -396,7 +397,7 @@ static void AddGossipStoneHintCopies(uint8_t copies,
       return;
     }
     auto gossipStone = RandomElement(gossipStones, false);
-    AddGossipStoneHint(gossipStone, hintType, distributionName, hintKeys, locations, trials);
+    AddGossipStoneHint(gossipStone, hintType, distributionName, hintKeys, locations, areas, trials);
   }
 }
 
@@ -410,12 +411,15 @@ static bool CreateHint(RandomizerCheck location, uint8_t copies, HintType type, 
       return false;
   }
   RandomizerCheck gossipStone = RandomElement(gossipStoneLocations);
+  RandomizerArea area = RandomElementFromSet(ctx->GetItemLocation(location)->GetAreas());
 
-  //make hint text
-
+  //Set that hints are accesible
   ctx->GetItemLocation(location)->SetHintAccesible();
+  if (type == HINT_TYPE_FOOLISH){
+    SetAllInAreaAsHintAccesible(area, ctx->allLocations);
+  }
 
-  AddGossipStoneHintCopies(copies, type, distribution, {}, {location}, {}, gossipStone);
+  AddGossipStoneHintCopies(copies, type, distribution, {}, {location}, {area}, {}, gossipStone);
   return true;
 }
 
@@ -485,7 +489,7 @@ static void CreateTrialHints(uint8_t copies) {
         auto requiredTrials = FilterFromPool(trials, [](TrialInfo* trial){return trial->IsRequired();});
       }
       for (auto& trial : trials) {//create a hint for each hinted trial
-        AddGossipStoneHintCopies(copies, HINT_TYPE_TRIAL, "Trial", {}, {}, {trial->GetTrialKey()});
+        AddGossipStoneHintCopies(copies, HINT_TYPE_TRIAL, "Trial", {}, {}, {}, {trial->GetTrialKey()});
       }
     }
   }
@@ -496,25 +500,26 @@ void CreateWarpSongTexts() {
   if (ctx->GetOption(RSK_WARP_SONG_HINTS)){
     auto warpSongEntrances = GetShuffleableEntrances(EntranceType::WarpSong, false);
     for (auto entrance : warpSongEntrances) {
-      const auto destination = entrance->GetConnectedRegion()->GetArea();
+      //RANDOTODO make random
+      const auto destination = entrance->GetConnectedRegion()->GetAllAreas().begin();
       switch (entrance->GetIndex()) {
         case 0x0600: // minuet RANDOTODO make into entrance hints when they are added
-          ctx->AddHint(RH_MINUET_WARP_LOC, Hint(RH_MINUET_WARP_LOC, HINT_TYPE_AREA, "", {RHT_WARP_SONG}, {}, {destination}));
+          ctx->AddHint(RH_MINUET_WARP_LOC, Hint(RH_MINUET_WARP_LOC, HINT_TYPE_AREA, "", {RHT_WARP_SONG}, {}, {*destination}));
           break;
         case 0x04F6: // bolero
-          ctx->AddHint(RH_BOLERO_WARP_LOC, Hint(RH_BOLERO_WARP_LOC, HINT_TYPE_AREA, "", {RHT_WARP_SONG}, {}, {destination}));
+          ctx->AddHint(RH_BOLERO_WARP_LOC, Hint(RH_BOLERO_WARP_LOC, HINT_TYPE_AREA, "", {RHT_WARP_SONG}, {}, {*destination}));
           break;
         case 0x0604: // serenade
-          ctx->AddHint(RH_SERENADE_WARP_LOC, Hint(RH_SERENADE_WARP_LOC, HINT_TYPE_AREA, "", {RHT_WARP_SONG}, {}, {destination}));
+          ctx->AddHint(RH_SERENADE_WARP_LOC, Hint(RH_SERENADE_WARP_LOC, HINT_TYPE_AREA, "", {RHT_WARP_SONG}, {}, {*destination}));
           break;
         case 0x01F1: // requiem
-          ctx->AddHint(RH_REQUIEM_WARP_LOC, Hint(RH_REQUIEM_WARP_LOC, HINT_TYPE_AREA, "", {RHT_WARP_SONG}, {}, {destination}));
+          ctx->AddHint(RH_REQUIEM_WARP_LOC, Hint(RH_REQUIEM_WARP_LOC, HINT_TYPE_AREA, "", {RHT_WARP_SONG}, {}, {*destination}));
           break;
         case 0x0568: // nocturne
-          ctx->AddHint(RH_NOCTURNE_WARP_LOC, Hint(RH_NOCTURNE_WARP_LOC, HINT_TYPE_AREA, "", {RHT_WARP_SONG}, {}, {destination}));
+          ctx->AddHint(RH_NOCTURNE_WARP_LOC, Hint(RH_NOCTURNE_WARP_LOC, HINT_TYPE_AREA, "", {RHT_WARP_SONG}, {}, {*destination}));
           break;
         case 0x05F4: // prelude
-          ctx->AddHint(RH_PRELUDE_WARP_LOC, Hint(RH_PRELUDE_WARP_LOC, HINT_TYPE_AREA, "", {RHT_WARP_SONG}, {}, {destination}));
+          ctx->AddHint(RH_PRELUDE_WARP_LOC, Hint(RH_PRELUDE_WARP_LOC, HINT_TYPE_AREA, "", {RHT_WARP_SONG}, {}, {*destination}));
           break;
         default:
           break;
@@ -570,22 +575,18 @@ static void DistributeHints(std::vector<uint8_t>& selected, size_t stoneCount, s
   }
 }
 
-uint8_t PlaceHints(std::vector<uint8_t>& selectedHints,
-                std::vector<HintDistributionSetting>& distTable){
+uint8_t PlaceHints(std::vector<uint8_t>& selectedHints, std::vector<HintDistributionSetting>& distTable){
   auto ctx = Rando::Context::GetInstance();
   uint8_t curSlot = 0;
   for (HintDistributionSetting distribution : distTable){
     std::vector<RandomizerCheck> hintTypePool = FilterHintability(ctx->allLocations, distribution.filter);
     for (uint8_t numHint = 0; numHint < selectedHints[curSlot]; numHint++){
-
+      hintTypePool = FilterHintability(hintTypePool);
       SPDLOG_DEBUG("Attempting to make hint of type: " + StaticData::hintTypeNames[distribution.type].GetEnglish(MF_CLEAN) + "\n");
       RandomizerCheck hintedLocation = RC_UNKNOWN_CHECK;
 
       hintedLocation = CreateRandomHint(hintTypePool, distribution.copies, distribution.type, distribution.name);
-      if (distribution.type == HINT_TYPE_FOOLISH){
-        SetAllInRegionAsHinted(ctx->GetItemLocation(hintedLocation)->GetArea(), hintTypePool);
-        hintTypePool = FilterHintability(hintTypePool);
-      }
+
       if (hintedLocation == RC_UNKNOWN_CHECK){ //if hint failed to place, remove all wieght and copies then return the number of stones to redistribute
         uint8_t hintsToRemove = (selectedHints[curSlot] - numHint) * distribution.copies;
         selectedHints[curSlot] = 0;   //as distTable is passed by refernce here, these changes stick for the rest of this seed generation
@@ -704,7 +705,11 @@ void CreateChildAltarHint() {
         stoneLocs = FindItemsAndMarkHinted({RG_KOKIRI_EMERALD, RG_GORON_RUBY, RG_ZORA_SAPPHIRE}, {RC_ALTAR_HINT_CHILD});
       }
     }
-    ctx->AddHint(RH_ALTAR_CHILD, Hint(RH_ALTAR_CHILD, HINT_TYPE_ALTAR_CHILD, {}, stoneLocs));
+    std::vector<RandomizerArea> stoneAreas = {};
+    for (auto loc : stoneLocs){
+      stoneAreas.push_back(RandomElementFromSet(ctx->GetItemLocation(loc)->GetAreas()));
+    }
+    ctx->AddHint(RH_ALTAR_CHILD, Hint(RH_ALTAR_CHILD, HINT_TYPE_ALTAR_CHILD, {}, stoneLocs, stoneAreas));
   }
 }
 
@@ -722,7 +727,11 @@ void CreateAdultAltarHint() {
                                               {RC_ALTAR_HINT_ADULT});
       }
     }
-    ctx->AddHint(RH_ALTAR_ADULT, Hint(RH_ALTAR_ADULT, HINT_TYPE_ALTAR_ADULT, {}, medallionLocs));
+    std::vector<RandomizerArea> medallionAreas = {};
+    for (auto loc : medallionLocs){
+      medallionAreas.push_back(RandomElementFromSet(ctx->GetItemLocation(loc)->GetAreas()));
+    }
+    ctx->AddHint(RH_ALTAR_ADULT, Hint(RH_ALTAR_ADULT, HINT_TYPE_ALTAR_ADULT, {}, medallionLocs, medallionAreas));
   }
 }
 
@@ -740,18 +749,26 @@ void CreateStaticHintFromData(RandomizerHint hint, StaticHintInfo staticData){
       for(auto check: staticData.targetChecks){
         ctx->GetItemLocation(check)->SetHintAccesible();
       }
-
+      std::vector<RandomizerArea> areas = {};
+      for (auto loc : locations){
+        areas.push_back(RandomElementFromSet(ctx->GetItemLocation(loc)->GetAreas()));
+      }
       //hintKeys are defaulted to in the hint object and do not need to be specified
-      ctx->AddHint(hint, Hint(hint, staticData.type, {}, locations, {}, {}, staticData.yourPocket, staticData.num));
+      ctx->AddHint(hint, Hint(hint, staticData.type, {}, locations, areas, {}, staticData.yourPocket, staticData.num));
     }
   }
 }
 
 void CreateStaticItemHint(RandomizerHint hintKey, std::vector<RandomizerHintTextKey> hintTextKeys,
                           std::vector<RandomizerGet> items, std::vector<RandomizerCheck> hintChecks, bool yourPocket = false) {
+  //RANDOTODO choose area in case there are multiple
   auto ctx = Rando::Context::GetInstance();
   std::vector<RandomizerCheck> locations = FindItemsAndMarkHinted(items, hintChecks);
-  ctx->AddHint(hintKey, Hint(hintKey, HINT_TYPE_AREA, hintTextKeys, locations, {}, {}, yourPocket));
+  std::vector<RandomizerArea> areas = {};
+  for (auto loc : locations){
+    areas.push_back(RandomElementFromSet(ctx->GetItemLocation(loc)->GetAreas()));
+  }
+  ctx->AddHint(hintKey, Hint(hintKey, HINT_TYPE_AREA, hintTextKeys, locations, areas, {}, yourPocket));
 }
 
 void CreateGanondorfJoke(){

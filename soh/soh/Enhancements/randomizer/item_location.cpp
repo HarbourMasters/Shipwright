@@ -60,12 +60,16 @@ RandomizerRegion ItemLocation::GetParentRegionKey() const {
     return parentRegion;
 }
 
-void ItemLocation::SetArea(RandomizerArea newArea) {
-    area = newArea;
+void ItemLocation::MergeAreas(std::set<RandomizerArea> newAreas) {
+    areas.merge(newAreas);
+    if (areas.size() >= 2){
+        //if we have more than 1 area, remove any RA_NONE as that's not a real area. can happen if an entrance is in 2 regions and 1 is disconnected
+        areas.erase(RA_NONE);
+    }
 }
 
-RandomizerArea ItemLocation::GetArea() const {
-    return area;
+std::set<RandomizerArea> ItemLocation::GetAreas() const {
+    return areas;
 }
 
 void ItemLocation::PlaceVanillaItem() {
@@ -219,7 +223,7 @@ void ItemLocation::ResetVariables() {
     hidden = false;
     wothCandidate = false;
     barrenCandidate = false;
-    area = RA_NONE;
+    areas = {};
     status = RCSHOW_UNCHECKED;
     isSkipped = false;
 }
