@@ -57,7 +57,7 @@ extern "C" void Randomizer_DrawSmallKey(PlayState* play, GetItemEntry* getItemEn
     s8 isCustomKeysEnabled = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("CustomKeyModels"), 0);
     int slot = getItemEntry->drawItemId - RG_FOREST_TEMPLE_SMALL_KEY;
 
-    Gfx* CustomdLists[] = {
+    Gfx* customIconDLs[] = {
         (Gfx*)gSmallKeyIconForestTempleDL,
         (Gfx*)gSmallKeyIconFireTempleDL,
         (Gfx*)gSmallKeyIconWaterTempleDL,
@@ -93,7 +93,7 @@ extern "C" void Randomizer_DrawSmallKey(PlayState* play, GetItemEntry* getItemEn
                 G_MTX_MODELVIEW | G_MTX_LOAD);
         gDPSetEnvColor(POLY_XLU_DISP++, iconColor.r, iconColor.g, iconColor.b, 255);
 
-        gSPDisplayList(POLY_XLU_DISP++, CustomdLists[slot]);
+        gSPDisplayList(POLY_XLU_DISP++, customIconDLs[slot]);
 
     } else {
         gDPSetGrayscaleColor(POLY_OPA_DISP++, keyColor.r, keyColor.g, keyColor.b, 255);
