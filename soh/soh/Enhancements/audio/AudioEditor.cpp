@@ -424,12 +424,6 @@ void AudioEditor::InitElement() {
 void AudioEditor::DrawElement() {
     AudioCollection::Instance->InitializeShufflePool();
 
-    ImGui::SetNextWindowSize(ImVec2(820, 630), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Audio Editor", &mIsVisible)) {
-        ImGui::End();
-        return;
-    }
-
     float buttonSegments = ImGui::GetContentRegionAvail().x / 4;
     if (ImGui::Button("Randomize All Groups", ImVec2(buttonSegments, 30.0f))) {
         AudioEditor_RandomizeAll();
@@ -700,7 +694,6 @@ void AudioEditor::DrawElement() {
 
         ImGui::EndTabBar();
     }
-    ImGui::End();
 }
 
 std::vector<SeqType> allTypes = { SEQ_BGM_WORLD, SEQ_BGM_EVENT, SEQ_BGM_BATTLE, SEQ_OCARINA, SEQ_FANFARE, SEQ_INSTRUMENT, SEQ_SFX, SEQ_VOICE };
