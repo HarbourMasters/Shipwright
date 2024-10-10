@@ -2841,11 +2841,12 @@ extern "C" void Save_SaveGlobal(void) {
 }
 
 extern "C" void Save_LoadFile(void) {
+    // Handle vanilla context reset
+    OTRGlobals::Instance->gRandoContext.reset();
+    OTRGlobals::Instance->gRandoContext = Rando::Context::CreateInstance();
+    OTRGlobals::Instance->gRandoContext->GetLogic()->SetSaveContext(&gSaveContext);
+
     if (SaveManager::Instance->fileMetaInfo[gSaveContext.fileNum].randoSave) {
-        // Reset rando context for rando saves.
-        OTRGlobals::Instance->gRandoContext.reset();
-        OTRGlobals::Instance->gRandoContext = Rando::Context::CreateInstance();
-        OTRGlobals::Instance->gRandoContext->GetLogic()->SetSaveContext(&gSaveContext);
         OTRGlobals::Instance->gRandoContext->AddExcludedOptions();
         OTRGlobals::Instance->gRandoContext->GetSettings()->CreateOptions();
     }
