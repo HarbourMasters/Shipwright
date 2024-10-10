@@ -280,7 +280,6 @@ typedef struct {
     /*        */ u8 pendingIceTrapCount;
     /*        */ SohStats sohStats;
     /*        */ FaroresWindData backupFW;
-    /*        */ RandomizerCheckTrackerData checkTrackerData[RC_MAX];
     /*        */ u8 maskMemory;
     // #endregion
     // #region SOH [Randomizer]
