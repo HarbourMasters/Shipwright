@@ -1621,6 +1621,11 @@ void Play_Draw(PlayState* play) {
                     OVERLAY_DISP = sp70;
                     play->unk_121C7 = 2;
                     SREG(33) |= 1;
+
+                    // 2S2H [Port] Continue to render the post world for pausing to avoid flashing the HUD
+                    if (!(gTrnsnUnkState == 1)) {
+                        goto Play_Draw_DrawOverlayElements;
+                    }
                 } else if (R_PAUSE_MENU_MODE != 3) {
                 Play_Draw_DrawOverlayElements:
                     if ((HREG(80) != 10) || (HREG(89) != 0)) {
