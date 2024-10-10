@@ -2145,7 +2145,6 @@ void SohInputEditorWindow::DrawSetDefaultsButton(uint8_t portIndex) {
 }
 
 void SohInputEditorWindow::DrawElement() {
-    ImGui::Begin("Controller Configuration###sohControllerConfigWindowV1", &mIsVisible);
     ImGui::BeginTabBar("##ControllerConfigPortTabs");
     DrawLinkTab();
     DrawIvanTab();
@@ -2154,5 +2153,4 @@ void SohInputEditorWindow::DrawElement() {
         DrawDebugPortTab(3);
     }
     ImGui::EndTabBar();
-    ImGui::End();
 }
