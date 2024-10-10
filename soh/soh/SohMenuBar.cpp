@@ -407,7 +407,7 @@ void DrawSettingsMenu() {
                     currentFps = 60;
                 }
                 CVarSetInteger(CVAR_SETTING("InterpolationFPS"), currentFps);
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
             #else
                 bool matchingRefreshRate =
                     CVarGetInteger(CVAR_SETTING("MatchRefreshRate"), 0) && Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() != Ship::WindowBackend::FAST3D_DXGI_DX11;
@@ -436,7 +436,7 @@ void DrawSettingsMenu() {
                     int hz = Ship::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate();
                     if (hz >= 20 && hz <= 360) {
                         CVarSetInteger(CVAR_SETTING("InterpolationFPS"), hz);
-                        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                     }
                 }
             } else {
@@ -1549,7 +1549,7 @@ void DrawCheatsMenu() {
             if (UIWidgets::PaddedEnhancementCheckbox("I promise I have read the warning", CVAR_CHEAT("SaveStatePromise"), true,
                                                      false)) {
                 CVarSetInteger(CVAR_CHEAT("SaveStatesEnabled"), 0);
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
             }
             if (CVarGetInteger(CVAR_CHEAT("SaveStatePromise"), 0) == 1) {
                 UIWidgets::PaddedEnhancementCheckbox("I understand, enable save states", CVAR_CHEAT("SaveStatesEnabled"), true,
@@ -1644,7 +1644,7 @@ void DrawCheatsMenu() {
                 CVarSetInteger(CVAR_CHEAT("BetaQuestWorld"), betaQuestWorld);
 
                 std::reinterpret_pointer_cast<Ship::ConsoleWindow>(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->Dispatch("reset");
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
             }
 
             if (!isBetaQuestEnabled) {
@@ -1818,7 +1818,7 @@ void DrawRemoteControlMenu() {
                     port = 43384;
                     break;
             }
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         }
         switch (CVarGetInteger(CVAR_REMOTE("Scheme"), GI_SCHEME_SAIL)) {
             case GI_SCHEME_SAIL:
@@ -1854,14 +1854,14 @@ void DrawRemoteControlMenu() {
         ImGui::Text("Remote IP & Port");
         if (ImGui::InputText("##gRemote.IP", (char*)ip.c_str(), ip.capacity() + 1)) {
             CVarSetString(CVAR_REMOTE("IP"), ip.c_str());
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         }
 
         ImGui::SameLine();
         ImGui::PushItemWidth(ImGui::GetFontSize() * 5);
         if (ImGui::InputScalar("##gRemote.Port", ImGuiDataType_U16, &port)) {
             CVarSetInteger(CVAR_REMOTE("Port"), port);
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         }
 
         ImGui::PopItemWidth();
@@ -1875,7 +1875,7 @@ void DrawRemoteControlMenu() {
             if (GameInteractor::Instance->isRemoteInteractorEnabled) {
                 CVarClear(CVAR_REMOTE("Enabled"));
                 CVarClear(CVAR_REMOTE("CrowdControl"));
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                 switch (CVarGetInteger(CVAR_REMOTE("Scheme"), GI_SCHEME_SAIL)) {
                     case GI_SCHEME_SAIL:
                         GameInteractorSail::Instance->Disable();
@@ -1886,7 +1886,7 @@ void DrawRemoteControlMenu() {
                 }
             } else {
                 CVarSetInteger(CVAR_REMOTE("Enabled"), 1);
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                 switch (CVarGetInteger(CVAR_REMOTE("Scheme"), GI_SCHEME_SAIL)) {
                     case GI_SCHEME_SAIL:
                         GameInteractorSail::Instance->Enable();
