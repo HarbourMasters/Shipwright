@@ -2181,7 +2181,7 @@ void CreateRupeeMessages() {
 }
 
 CustomMessage Randomizer::GetRupeeMessage(u16 rupeeTextId) {
-    CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::rupeeMessageTableID, rupeeTextId);
+    CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::rupeeMessageTableID, rupeeTextId, MF_AUTO_FORMAT);
     messageEntry.Replace("[[rupee]]", CustomMessage(RandomElement(englishRupeeNames),
                                                     RandomElement(germanRupeeNames),
                                                     RandomElement(frenchRupeeNames)));
