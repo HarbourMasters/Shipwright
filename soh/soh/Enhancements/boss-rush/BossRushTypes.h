@@ -1,6 +1,5 @@
 #pragma once
 
-#define BOSSRUSH_OPTIONS_AMOUNT 12
 #define BOSSRUSH_MAX_OPTIONS_ON_SCREEN 6
 
 typedef enum {
@@ -15,7 +14,8 @@ typedef enum {
     BR_OPTIONS_LONGSHOT,
     BR_OPTIONS_HOVERBOOTS,
     BR_OPTIONS_BUNNYHOOD,
-    BR_OPTIONS_TIMER
+    BR_OPTIONS_TIMER,
+    BR_OPTIONS_MAX,
 } BossRushOptionEnums;
 
 typedef enum {

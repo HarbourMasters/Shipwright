@@ -920,7 +920,10 @@ typedef struct {
     /* 0x0266 */ u8     worldMapPoints[20]; // 0 = hidden; 1 = displayed; 2 = highlighted
     /* 0x027A */ u8     tradeQuestLocation;
     /* 0x027C */ SkelAnime playerSkelAnime;
-} PauseContext; // size = 0x2C0
+    // #region SOH [Randomizer]
+    /* 0x02C0 */ u8     randoQuestMode; // 0 = Off (normal quest menu); 1 = On (Misc Collectibles menu)
+    // #endregion
+} PauseContext; // size = 0x2C1
 
 typedef enum {
     /* 00 */ GAMEOVER_INACTIVE,
@@ -1484,6 +1487,8 @@ typedef struct PlayState {
     /* 0x1242B */ u8 unk_1242B;
     /* 0x1242C */ SceneTableEntry* loadedScene;
     /* 0x12430 */ char unk_12430[0xE8];
+    // SOH [Custom Models] MTX tracker for flex based skeletons
+    Mtx** flexLimbOverrideMTX;
 } PlayState; // size = 0x12518
 
 typedef struct {

@@ -1592,7 +1592,11 @@ void Player_DrawGetItemIceTrap(PlayState* play, Player* this, Vec3f* refPos, s32
         Matrix_RotateZYX(0, play->gameplayFrames * 1000, 0, MTXMODE_APPLY);
         Matrix_Scale(0.2f, 0.2f, 0.2f, MTXMODE_APPLY);
         // Draw fake item model.
-        GetItem_Draw(play, drawIdPlusOne - 1);
+        if (this->getItemEntry.drawFunc != NULL) {
+            this->getItemEntry.drawFunc(play, &this->getItemEntry);
+        } else {
+            GetItem_Draw(play, drawIdPlusOne - 1);
+        }
     }
 
     CLOSE_DISPS(play->state.gfxCtx);
@@ -2415,10 +2419,12 @@ void Player_DrawPause(PlayState* play, u8* segment, SkelAnime* skelAnime, Vec3f*
         }
 
         srcTable = ResourceMgr_LoadArrayByNameAsVec3s(srcTable);
+        Vec3s* ogSrcTable = srcTable;
         destTable = skelAnime->jointTable;
         for (i = 0; i < skelAnime->limbCount; i++) {
             *destTable++ = *srcTable++;
         }
+        free(ogSrcTable);
     }
 
     Player_DrawPauseImpl(play, segment + 0x3800, segment + 0x8800, skelAnime, pos, rot, scale, sword, tunic, shield,

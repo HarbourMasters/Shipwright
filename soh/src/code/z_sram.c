@@ -2,6 +2,8 @@
 #include "vt.h"
 
 #include <string.h>
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include "soh/Enhancements/randomizer/savefile.h"
 
@@ -198,7 +200,7 @@ void Sram_OpenSave() {
         }
     }
 
-    if (!(IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE))) {
+    if (GameInteractor_Should(VB_REVERT_SPOILING_ITEMS, true)) {
         for (i = 0; i < ARRAY_COUNT(gSpoilingItems); i++) {
             if (INV_CONTENT(ITEM_TRADE_ADULT) == gSpoilingItems[i]) {
                 INV_CONTENT(gSpoilingItemReverts[i]) = gSpoilingItemReverts[i];
@@ -244,8 +246,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
 
     u8 currentQuest = fileChooseCtx->questType[fileChooseCtx->buttonIndex];
 
-    if (currentQuest == QUEST_RANDOMIZER &&
-        strnlen(CVarGetString(CVAR_GENERAL("SpoilerLog"), ""), 1) != 0) {
+    if (Randomizer_IsSeedGenerated() || Randomizer_IsPlandoLoaded()) {
         gSaveContext.questId = QUEST_RANDOMIZER;
 
         Randomizer_InitSaveFile();

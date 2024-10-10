@@ -31,4 +31,9 @@ typedef struct EnZl4 {
     /* 0x0284 */ Vec3s morphTable[18];
 } EnZl4; // size = 0x02F0
 
+s16 func_80B5B9B0(PlayState* play, Actor* actor);
+void func_80B5BB78(EnZl4* enZl4, PlayState* play);
+void EnZl4_Cutscene(EnZl4* enZl4, PlayState* play);
+s32 EnZl4_SetNextAnim(EnZl4* enZl4, s32 nextAnim);
+
 #endif

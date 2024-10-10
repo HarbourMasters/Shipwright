@@ -782,7 +782,7 @@ void DrawFlagTableArray16(const FlagTable& flagTable, uint16_t row, uint16_t& fl
         ImGui::PopStyleColor();
         if (ImGui::IsItemHovered() && hasDescription) {
             ImGui::BeginTooltip();
-            ImGui::Text("%s", UIWidgets::WrappedText(flagTable.flagDescriptions.at(row * 16 + flagIndex), 60));
+            ImGui::Text("%s", UIWidgets::WrappedText(flagTable.flagDescriptions.at(row * 16 + flagIndex), 60).c_str());
             ImGui::EndTooltip();
         }
         ImGui::PopID();
@@ -1123,6 +1123,36 @@ void DrawFlagsTab() {
                     }
                 });
             }
+
+            // make some buttons to help with fishsanity debugging
+            uint8_t fsMode = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY);
+            if (flagTable.flagTableType == RANDOMIZER_INF &&
+                fsMode != RO_FISHSANITY_OFF && fsMode != RO_FISHSANITY_OVERWORLD) {
+                if (ImGui::Button("Catch All (Child)")) {
+                    for (int k = RAND_INF_CHILD_FISH_1; k <= RAND_INF_CHILD_LOACH_2; k++) {
+                        Flags_SetRandomizerInf((RandomizerInf)k);
+                    }
+                }
+                ImGui::SameLine();
+                if (ImGui::Button("Uncatch All (Child)")) {
+                    for (int k = RAND_INF_CHILD_FISH_1; k <= RAND_INF_CHILD_LOACH_2; k++) {
+                        Flags_UnsetRandomizerInf((RandomizerInf)k);
+                    }
+                }
+
+                if (ImGui::Button("Catch All (Adult)")) {
+                    for (int k = RAND_INF_ADULT_FISH_1; k <= RAND_INF_ADULT_LOACH; k++) {
+                        Flags_SetRandomizerInf((RandomizerInf)k);
+                    }
+                }
+                ImGui::SameLine();
+                if (ImGui::Button("Uncatch All (Adult)")) {
+                    for (int k = RAND_INF_ADULT_FISH_1; k <= RAND_INF_ADULT_LOACH; k++) {
+                        Flags_UnsetRandomizerInf((RandomizerInf)k);
+                    }
+                }
+            }
+
             ImGui::TreePop();
         }
     }
@@ -1290,7 +1320,7 @@ void DrawEquipmentTab() {
         "Giant (500)",
     };
     // only display Tycoon wallet if you're in a save file that would allow it.
-    if (IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHOPSANITY) > RO_SHOPSANITY_ZERO_ITEMS) {
+    if (IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_INCLUDE_TYCOON_WALLET)) {
         const std::string walletName = "Tycoon (999)";
         walletNamesImpl.push_back(walletName);
     }
@@ -1747,12 +1777,6 @@ void DrawPlayerTab() {
 }
 
 void SaveEditorWindow::DrawElement() {
-    ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Save Editor", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
-        ImGui::End();
-        return;
-    }
-
     if (ImGui::BeginTabBar("SaveContextTabBar", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
         if (ImGui::BeginTabItem("Info")) {
             DrawInfoTab();
@@ -1786,8 +1810,6 @@ void SaveEditorWindow::DrawElement() {
 
         ImGui::EndTabBar();
     }
-
-    ImGui::End();
 }
 
 void SaveEditorWindow::InitElement() {
