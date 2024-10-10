@@ -73,6 +73,12 @@ void LogAlternateHeadersAsXML(std::shared_ptr<Ship::IResource> resource) {
     tinyxml2::XMLElement* root = doc.NewElement("SetAlternateHeaders");
     doc.InsertFirstChild(root);
 
+    for (size_t i = 0; i < setAlternateHeaders->headerFileNames.size(); i++) {
+        tinyxml2::XMLElement* entry = doc.NewElement("Header");
+        entry->SetAttribute("Path", setAlternateHeaders->headerFileNames[i].c_str());
+        root->InsertEndChild(entry);
+    }
+
     tinyxml2::XMLPrinter printer;
     doc.Accept(&printer);
 

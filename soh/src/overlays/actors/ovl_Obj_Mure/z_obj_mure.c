@@ -193,7 +193,7 @@ void ObjMure_SpawnActors1(ObjMure* this, PlayState* play) {
         this->children[i] = Actor_Spawn(ac, play, sSpawnActorIds[this->type], spawnPos.x, spawnPos.y, spawnPos.z,
                                         actor->world.rot.x, actor->world.rot.y, actor->world.rot.z,
                                         (this->type == 4 && i == 0) ? 1 : sSpawnParams[this->type], true);
-        if (this->children[i] != NULL) {
+        if (this->children[i] != NULL && this->children[i]->update != NULL) {
             this->childrenStates[i] = OBJMURE_CHILD_STATE_0;
             this->children[i]->room = actor->room;
         } else {
@@ -275,7 +275,12 @@ void ObjMure_InitialAction(ObjMure* this, PlayState* play) {
 }
 
 void ObjMure_CulledState(ObjMure* this, PlayState* play) {
-    if (fabsf(this->actor.projectedPos.z) < sZClip[this->type] || CVarGetInteger(CVAR_ENHANCEMENT("DisableDrawDistance"), 0) != 0) {
+    // #region SOH [Enhancements] Extended draw distance
+    s32 distanceMultiplier = CVarGetInteger(CVAR_ENHANCEMENT("DisableDrawDistance"), 1);
+    distanceMultiplier = MAX(distanceMultiplier, 1);
+
+    if (fabsf(this->actor.projectedPos.z) < sZClip[this->type] * distanceMultiplier) {
+        // #endregion
         this->actionFunc = ObjMure_ActiveState;
         this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
         ObjMure_SpawnActors(this, play);
@@ -398,8 +403,13 @@ static ObjMureActionFunc sTypeGroupBehaviorFunc[] = {
 
 void ObjMure_ActiveState(ObjMure* this, PlayState* play) {
     ObjMure_CheckChildren(this, play);
-    if (sZClip[this->type] + 40.0f <= fabsf(this->actor.projectedPos.z) &&
-        CVarGetInteger(CVAR_ENHANCEMENT("DisableDrawDistance"), 1) != 0) {
+
+    // #region SOH [Enhancements] Extended draw distance
+    s32 distanceMultiplier = CVarGetInteger(CVAR_ENHANCEMENT("DisableDrawDistance"), 1);
+    distanceMultiplier = MAX(distanceMultiplier, 1);
+
+    if ((sZClip[this->type] + 40.0f) * distanceMultiplier <= fabsf(this->actor.projectedPos.z)) {
+        // #endregion
         this->actionFunc = ObjMure_CulledState;
         this->actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED;
         ObjMure_KillActors(this, play);

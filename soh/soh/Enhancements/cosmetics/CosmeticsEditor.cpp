@@ -220,6 +220,7 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Consumable.DDHeartBorder",      "DD Heart Border",      COSMETICS_GROUP_CONSUMABLE,   ImVec4(255, 255, 255, 255), false, true, true),
     COSMETIC_OPTION("Consumable.Magic",              "Magic",                COSMETICS_GROUP_CONSUMABLE,   ImVec4(  0, 200,   0, 255), false, true, false),
     COSMETIC_OPTION("Consumable.MagicActive",        "Magic Active",         COSMETICS_GROUP_CONSUMABLE,   ImVec4(250, 250,   0, 255), false, true, true),
+    COSMETIC_OPTION("Consumable_MagicInfinite",      "Infinite Magic",       COSMETICS_GROUP_CONSUMABLE,   ImVec4(  0,   0, 200, 255), false, true, true),
     COSMETIC_OPTION("Consumable.MagicBorder",        "Magic Border",         COSMETICS_GROUP_CONSUMABLE,   ImVec4(255, 255, 255, 255), false, false, true),
     COSMETIC_OPTION("Consumable.MagicBorderActive",  "Magic Border Active",  COSMETICS_GROUP_CONSUMABLE,   ImVec4(255, 255, 255, 255), false, false, true),
     COSMETIC_OPTION("Consumable.GreenRupee",         "Green Rupee",          COSMETICS_GROUP_CONSUMABLE,   ImVec4( 50, 255,  50, 255), false, true, true),
@@ -323,6 +324,7 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("World.Moon",                    "Moon",                 COSMETICS_GROUP_WORLD,        ImVec4(240, 255, 180, 255), false, true, true),
     COSMETIC_OPTION("World.GossipStone",             "Gossip Stone",         COSMETICS_GROUP_WORLD,        ImVec4(200, 200, 200, 255), false, true, true),
     COSMETIC_OPTION("World.RedIce",                  "Red Ice",              COSMETICS_GROUP_WORLD,        ImVec4(255,   0,   0, 255), false, true, false),
+    COSMETIC_OPTION("World.MysteryItem",             "Mystery Item",         COSMETICS_GROUP_WORLD,        ImVec4(0,    60, 100, 255), false, true, false),
 
     COSMETIC_OPTION("Navi.IdlePrimary",              "Idle Primary",         COSMETICS_GROUP_NAVI,         ImVec4(255, 255, 255, 255), false, true, false),
     COSMETIC_OPTION("Navi.IdleSecondary",            "Idle Secondary",       COSMETICS_GROUP_NAVI,         ImVec4(  0,   0, 255,   0), false, true, true),
@@ -1686,12 +1688,6 @@ static const char* colorSchemes[2] = {
 };
 
 void CosmeticsEditorWindow::DrawElement() {
-    ImGui::SetNextWindowSize(ImVec2(550, 520), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Cosmetics Editor", &mIsVisible)) {
-        ImGui::End();
-        return;
-    }
-
     ImGui::Text("Color Scheme");
     ImGui::SameLine();
     UIWidgets::EnhancementCombobox(CVAR_COSMETIC("DefaultColorScheme"), colorSchemes, COLORSCHEME_N64);
@@ -1810,7 +1806,6 @@ void CosmeticsEditorWindow::DrawElement() {
         }
         ImGui::EndTabBar();
     }
-    ImGui::End();
 }
 
 void RegisterOnLoadGameHook() {

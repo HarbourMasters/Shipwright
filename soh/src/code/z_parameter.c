@@ -1436,64 +1436,62 @@ Gfx* Gfx_TextureI8(Gfx* displayListHead, void* texture, s16 textureWidth, s16 te
     return displayListHead;
 }
 
-void Inventory_SwapAgeEquipment(void) {
+void Rando_Inventory_SwapAgeEquipment(void) {
     s16 i;
     u16 shieldEquipValue;
 
     if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
-        
-
         for (i = 0; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
             if (i != 0) {
-                gSaveContext.childEquips.buttonItems[i] = gSaveContext.equips.buttonItems[i];
+                gSaveContext.childEquips.buttonItems[i] =
+                    gSaveContext.equips.buttonItems[i];
             } else {
                 gSaveContext.childEquips.buttonItems[i] = ITEM_SWORD_KOKIRI;
             }
 
             if (i != 0) {
-                gSaveContext.childEquips.cButtonSlots[i - 1] = gSaveContext.equips.cButtonSlots[i - 1];
+                gSaveContext.childEquips.cButtonSlots[i - 1] =
+                    gSaveContext.equips.cButtonSlots[i - 1];
             }
-        }
-
-        // When becoming adult, remove swordless flag since we'll get master sword
-        // (Unless Master Sword is shuffled)
-        // Only in rando to keep swordless link bugs in vanilla
-        if (IS_RANDO && !Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD)) {
-            Flags_UnsetInfTable(INFTABLE_SWORDLESS);
         }
 
         gSaveContext.childEquips.equipment = gSaveContext.equips.equipment;
 
-        if (gSaveContext.adultEquips.buttonItems[0] == ITEM_NONE && !(IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) && gSaveContext.adultEquips.equipment)) {
-            if (!IS_RANDO || !Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD)) {
-                gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
-            } else {
-                gSaveContext.equips.buttonItems[0] = ITEM_NONE;
-                Flags_SetInfTable(INFTABLE_SWORDLESS);
-            }
+        // When becoming adult, remove swordless flag since we'll get master sword
+        // This gets set back appropriately later in the case of master sword shuffle
+        Flags_UnsetInfTable(INFTABLE_SWORDLESS);
+
+        // This section sets up the equipment on the first time going adult.
+        // On master sword shuffle the check for the B button is insufficient, and so checking the equipment is completely zero-ed is needed
+        // (Could just always use `gSaveContext.adultEquips.equipment == 0` for rando?)
+        if (gSaveContext.adultEquips.buttonItems[0] == ITEM_NONE && ((IS_RANDO && !Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD)) || (gSaveContext.adultEquips.equipment == 0))) {
+            gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
 
             if (gSaveContext.inventory.items[SLOT_NUT] != ITEM_NONE) {
                 gSaveContext.equips.buttonItems[1] = ITEM_NUT;
                 gSaveContext.equips.cButtonSlots[0] = SLOT_NUT;
             } else {
-                gSaveContext.equips.buttonItems[1] = gSaveContext.equips.cButtonSlots[0] = ITEM_NONE;
+                gSaveContext.equips.buttonItems[1] = gSaveContext.equips.cButtonSlots[0] =
+                    ITEM_NONE;
             }
 
             gSaveContext.equips.buttonItems[2] = ITEM_BOMB;
             gSaveContext.equips.buttonItems[3] = gSaveContext.inventory.items[SLOT_OCARINA];
             gSaveContext.equips.cButtonSlots[1] = SLOT_BOMB;
             gSaveContext.equips.cButtonSlots[2] = SLOT_OCARINA;
-            
             gSaveContext.equips.equipment = (EQUIP_VALUE_SWORD_MASTER << (EQUIP_TYPE_SWORD * 4)) |
-                                            (EQUIP_VALUE_SHIELD_HYLIAN << (EQUIP_TYPE_SHIELD * 4)) |
-                                            (EQUIP_VALUE_TUNIC_KOKIRI << (EQUIP_TYPE_TUNIC * 4)) |
-                                            (EQUIP_VALUE_BOOTS_KOKIRI << (EQUIP_TYPE_BOOTS * 4));
+                                                      (EQUIP_VALUE_SHIELD_HYLIAN << (EQUIP_TYPE_SHIELD * 4)) |
+                                                      (EQUIP_VALUE_TUNIC_KOKIRI << (EQUIP_TYPE_TUNIC * 4)) |
+                                                      (EQUIP_VALUE_BOOTS_KOKIRI << (EQUIP_TYPE_BOOTS * 4));
 
+            // In Master Sword Shuffle we want to override the equip of the master sword from the vanilla code
+            // First check we have the Master sword in our inventory, and if not, then unequip
             if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) && 
-                gSaveContext.equips.buttonItems[0] == ITEM_NONE) {
+                !CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER)) {
                 gSaveContext.equips.equipment &= (u16) ~(0xF << (EQUIP_TYPE_SWORD * 4));
+                gSaveContext.equips.buttonItems[0] = ITEM_NONE;
+                Flags_SetInfTable(INFTABLE_SWORDLESS);
             }
-
             // Set the dpad to nothing
             gSaveContext.equips.buttonItems[4] = ITEM_NONE;
             gSaveContext.equips.buttonItems[5] = ITEM_NONE;
@@ -1505,25 +1503,25 @@ void Inventory_SwapAgeEquipment(void) {
             gSaveContext.equips.cButtonSlots[6] = SLOT_NONE;
         } else {
             for (i = 0; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
-                gSaveContext.equips.buttonItems[i] = gSaveContext.adultEquips.buttonItems[i];
+                gSaveContext.equips.buttonItems[i] =
+                    gSaveContext.adultEquips.buttonItems[i];
 
                 if (i != 0) {
-                    gSaveContext.equips.cButtonSlots[i - 1] = gSaveContext.adultEquips.cButtonSlots[i - 1];
+                    gSaveContext.equips.cButtonSlots[i - 1] =
+                        gSaveContext.adultEquips.cButtonSlots[i - 1];
                 }
 
                 if (((gSaveContext.equips.buttonItems[i] >= ITEM_BOTTLE) &&
                      (gSaveContext.equips.buttonItems[i] <= ITEM_POE)) ||
                     ((gSaveContext.equips.buttonItems[i] >= ITEM_WEIRD_EGG) &&
                      (gSaveContext.equips.buttonItems[i] <= ITEM_CLAIM_CHECK))) {
-                    osSyncPrintf("Register_Item_Pt(%d)=%d\n", i, gSaveContext.equips.cButtonSlots[i - 1]);
                     gSaveContext.equips.buttonItems[i] =
                         gSaveContext.inventory.items[gSaveContext.equips.cButtonSlots[i - 1]];
                 }
             }
 
-            // In Rando, when switching to adult for the second+ time, if a sword was not previously
-            // equiped in MS shuffle, then we need to set the swordless flag again
-            if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) &&
+            // In Master Sword Shuffle we want to set the swordless flag if no item is on the B button
+            if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) && 
                 gSaveContext.equips.buttonItems[0] == ITEM_NONE) {
                 Flags_SetInfTable(INFTABLE_SWORDLESS);
             }
@@ -1531,90 +1529,43 @@ void Inventory_SwapAgeEquipment(void) {
             gSaveContext.equips.equipment = gSaveContext.adultEquips.equipment;
         }
     } else {
-        // When becoming child, set swordless flag if player doesn't have kokiri sword
-        // Only in rando to keep swordless link bugs in vanilla
-        if (IS_RANDO && CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_KOKIRI) == 0) {
-            Flags_SetInfTable(INFTABLE_SWORDLESS);
-        }
-
-        // When using enhancements, set swordless flag if player doesn't have kokiri sword or hasn't equipped a sword yet.
-        // Then set the child equips button items to item none to ensure kokiri sword is not equipped
-        if ((CVarGetInteger(CVAR_GENERAL("SwitchAge"), 0) || CVarGetInteger(CVAR_GENERAL("SwitchTimeline"), 0)) && (CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_KOKIRI) == 0 || Flags_GetInfTable(INFTABLE_SWORDLESS))) {
-            Flags_SetInfTable(INFTABLE_SWORDLESS);
-            gSaveContext.childEquips.buttonItems[0] = ITEM_NONE;
-        }
 
         for (i = 0; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
             gSaveContext.adultEquips.buttonItems[i] = gSaveContext.equips.buttonItems[i];
 
             if (i != 0) {
-                gSaveContext.adultEquips.cButtonSlots[i - 1] = gSaveContext.equips.cButtonSlots[i - 1];
+                gSaveContext.adultEquips.cButtonSlots[i - 1] =
+                    gSaveContext.equips.cButtonSlots[i - 1];
             }
         }
 
         gSaveContext.adultEquips.equipment = gSaveContext.equips.equipment;
-        // Switching age using enhancements separated out to make vanilla flow clear
-        if (CVarGetInteger(CVAR_GENERAL("SwitchAge"), 0) || CVarGetInteger(CVAR_GENERAL("SwitchTimeline"), 0)) {
+
+        if (gSaveContext.childEquips.buttonItems[0] != ITEM_NONE) {
             for (i = 0; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
-                gSaveContext.equips.buttonItems[i] = gSaveContext.childEquips.buttonItems[i];
+                gSaveContext.equips.buttonItems[i] =
+                    gSaveContext.childEquips.buttonItems[i];
 
                 if (i != 0) {
-                    gSaveContext.equips.cButtonSlots[i - 1] = gSaveContext.childEquips.cButtonSlots[i - 1];
+                    gSaveContext.equips.cButtonSlots[i - 1] =
+                        gSaveContext.childEquips.cButtonSlots[i - 1];
                 }
 
                 if (((gSaveContext.equips.buttonItems[i] >= ITEM_BOTTLE) &&
                      (gSaveContext.equips.buttonItems[i] <= ITEM_POE)) ||
                     ((gSaveContext.equips.buttonItems[i] >= ITEM_WEIRD_EGG) &&
                      (gSaveContext.equips.buttonItems[i] <= ITEM_CLAIM_CHECK))) {
-                    osSyncPrintf("Register_Item_Pt(%d)=%d\n", i, gSaveContext.equips.cButtonSlots[i - 1]);
                     gSaveContext.equips.buttonItems[i] =
                         gSaveContext.inventory.items[gSaveContext.equips.cButtonSlots[i - 1]];
                 }
-            }
-
-            gSaveContext.equips.equipment = gSaveContext.childEquips.equipment;
-            gSaveContext.equips.equipment &= (u16) ~(0xF << (EQUIP_TYPE_SWORD * 4));
-            // Equips kokiri sword in the inventory screen only if kokiri sword exists in inventory and a sword has been equipped already
-            if (!(CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_KOKIRI) == 0) && !Flags_GetInfTable(INFTABLE_SWORDLESS)) {
-                gSaveContext.equips.equipment |= EQUIP_VALUE_SWORD_KOKIRI << (EQUIP_TYPE_SWORD * 4);
-            }
-        } else if (gSaveContext.childEquips.buttonItems[0] != ITEM_NONE) {
-            for (i = 0; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
-                gSaveContext.equips.buttonItems[i] = gSaveContext.childEquips.buttonItems[i];
-
-                if (i != 0) {
-                    gSaveContext.equips.cButtonSlots[i - 1] = gSaveContext.childEquips.cButtonSlots[i - 1];
-                }
-
-                if (((gSaveContext.equips.buttonItems[i] >= ITEM_BOTTLE) &&
-                     (gSaveContext.equips.buttonItems[i] <= ITEM_POE)) ||
-                    ((gSaveContext.equips.buttonItems[i] >= ITEM_WEIRD_EGG) &&
-                     (gSaveContext.equips.buttonItems[i] <= ITEM_CLAIM_CHECK))) {
-                    osSyncPrintf("Register_Item_Pt(%d)=%d\n", i, gSaveContext.equips.cButtonSlots[i - 1]);
-                    gSaveContext.equips.buttonItems[i] =
-                        gSaveContext.inventory.items[gSaveContext.equips.cButtonSlots[i - 1]];
-                }
-            }
-
-            // In Rando, when switching to child from a swordless adult, and child Link previously had a
-            // sword equiped, then we need to unset the swordless flag to match
-            if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) &&
-                gSaveContext.equips.buttonItems[0] != ITEM_NONE) {
-                Flags_UnsetInfTable(INFTABLE_SWORDLESS);
             }
 
             gSaveContext.equips.equipment = gSaveContext.childEquips.equipment;
             gSaveContext.equips.equipment &= (u16) ~(0xF << (EQUIP_TYPE_SWORD * 4));
             gSaveContext.equips.equipment |= EQUIP_VALUE_SWORD_KOKIRI << (EQUIP_TYPE_SWORD * 4);
-        } else if (IS_RANDO && Randomizer_GetSettingValue(RSK_STARTING_AGE) == RO_AGE_ADULT) {
-            /*If in rando and starting age is adult, childEquips is not initialized and buttonItems[0]
-            will be ITEM_NONE. When changing age from adult -> child, reset equips to "default"
-            (only kokiri tunic/boots equipped, no sword, no C-button items, no D-Pad items).
-            When becoming child, set swordless flag if player doesn't have kokiri sword
-            Only in rando to keep swordless link bugs in vanilla*/
-            if (CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_KOKIRI) == 0) {
-                Flags_SetInfTable(INFTABLE_SWORDLESS);
-            }
+        }
+        // In Rando we need an extra case to handle starting as adult. We can use the fact that the childEquips will be uninitialised (i.e. 0) at this point
+        else if (gSaveContext.childEquips.equipment == 0) {
 
             //zero out items
             for (i = 0; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
@@ -1629,20 +1580,147 @@ void Inventory_SwapAgeEquipment(void) {
                                             (EQUIP_VALUE_BOOTS_KOKIRI << (EQUIP_TYPE_BOOTS * 4));
         }
 
-        if ((CVarGetInteger(CVAR_GENERAL("SwitchAge"), 0) || CVarGetInteger(CVAR_GENERAL("SwitchTimeline"), 0)) &&
-            (gSaveContext.equips.buttonItems[0] == ITEM_NONE)) {
+        // When becoming child in rando, set swordless flag and clear B button if player doesn't have kokiri sword
+        // Otherwise, equip sword and unset flag
+        if (!CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_KOKIRI)) {
+            gSaveContext.equips.equipment &= (u16) ~(0xF << (EQUIP_TYPE_SWORD * 4));
+            gSaveContext.equips.buttonItems[0] = ITEM_NONE;
             Flags_SetInfTable(INFTABLE_SWORDLESS);
-            if (gSaveContext.childEquips.equipment == 0) {
-                // force equip kokiri tunic and boots in scenario gSaveContext.childEquips.equipment is uninitialized
-                gSaveContext.equips.equipment &= (u16) ~(0xF << (EQUIP_TYPE_SWORD * 4));
-                gSaveContext.equips.equipment |= (EQUIP_VALUE_TUNIC_KOKIRI << (EQUIP_TYPE_TUNIC * 4)) |
-                                                 (EQUIP_VALUE_BOOTS_KOKIRI << (EQUIP_TYPE_BOOTS * 4));
-            }
+        } else {
+            gSaveContext.equips.equipment &= (u16) ~(0xF << (EQUIP_TYPE_SWORD * 4));
+            gSaveContext.equips.equipment |= (EQUIP_VALUE_SWORD_KOKIRI << (EQUIP_TYPE_SWORD * 4));
+            gSaveContext.equips.buttonItems[0] = ITEM_SWORD_KOKIRI;
+            Flags_UnsetInfTable(INFTABLE_SWORDLESS);
         }
     }
-    CVarSetInteger(CVAR_GENERAL("SwitchTimeline"), 0);
+
     shieldEquipValue = gEquipMasks[EQUIP_TYPE_SHIELD] & gSaveContext.equips.equipment;
-    if (shieldEquipValue != 0) {
+    if (shieldEquipValue) {
+        shieldEquipValue >>= gEquipShifts[EQUIP_TYPE_SHIELD];
+        if (!CHECK_OWNED_EQUIP_ALT(EQUIP_TYPE_SHIELD, shieldEquipValue - 1)) {
+            gSaveContext.equips.equipment &= gEquipNegMasks[EQUIP_TYPE_SHIELD];
+        }
+    }
+}
+
+void Inventory_SwapAgeEquipment(void) {
+    s16 i;
+    u16 shieldEquipValue;
+
+    // Mod Enhancments can utilise the rando flow path
+    if (IS_RANDO || CVarGetInteger(CVAR_GENERAL("SwitchAge"), 0) || CVarGetInteger(CVAR_GENERAL("SwitchTimeline"), 0)) {
+        Rando_Inventory_SwapAgeEquipment();
+        CVarSetInteger(CVAR_GENERAL("SwitchTimeline"), 0);
+        return;
+    }
+
+    if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
+        for (i = 0; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
+            if (i != 0) {
+                gSaveContext.childEquips.buttonItems[i] =
+                    gSaveContext.equips.buttonItems[i];
+            } else {
+                gSaveContext.childEquips.buttonItems[i] = ITEM_SWORD_KOKIRI;
+            }
+
+            if (i != 0) {
+                gSaveContext.childEquips.cButtonSlots[i - 1] =
+                    gSaveContext.equips.cButtonSlots[i - 1];
+            }
+        }
+
+        gSaveContext.childEquips.equipment = gSaveContext.equips.equipment;
+
+        if (gSaveContext.adultEquips.buttonItems[0] == ITEM_NONE) {
+            gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
+
+            if (gSaveContext.inventory.items[SLOT_NUT] != ITEM_NONE) {
+                gSaveContext.equips.buttonItems[1] = ITEM_NUT;
+                gSaveContext.equips.cButtonSlots[0] = SLOT_NUT;
+            } else {
+                gSaveContext.equips.buttonItems[1] = gSaveContext.equips.cButtonSlots[0] =
+                    ITEM_NONE;
+            }
+
+            gSaveContext.equips.buttonItems[2] = ITEM_BOMB;
+            gSaveContext.equips.buttonItems[3] = gSaveContext.inventory.items[SLOT_OCARINA];
+            gSaveContext.equips.cButtonSlots[1] = SLOT_BOMB;
+            gSaveContext.equips.cButtonSlots[2] = SLOT_OCARINA;
+            gSaveContext.equips.equipment = (EQUIP_VALUE_SWORD_MASTER << (EQUIP_TYPE_SWORD * 4)) |
+                                                      (EQUIP_VALUE_SHIELD_HYLIAN << (EQUIP_TYPE_SHIELD * 4)) |
+                                                      (EQUIP_VALUE_TUNIC_KOKIRI << (EQUIP_TYPE_TUNIC * 4)) |
+                                                      (EQUIP_VALUE_BOOTS_KOKIRI << (EQUIP_TYPE_BOOTS * 4));
+            // Set the dpad to nothing
+            gSaveContext.equips.buttonItems[4] = ITEM_NONE;
+            gSaveContext.equips.buttonItems[5] = ITEM_NONE;
+            gSaveContext.equips.buttonItems[6] = ITEM_NONE;
+            gSaveContext.equips.buttonItems[7] = ITEM_NONE;
+            gSaveContext.equips.cButtonSlots[3] = SLOT_NONE;
+            gSaveContext.equips.cButtonSlots[4] = SLOT_NONE;
+            gSaveContext.equips.cButtonSlots[5] = SLOT_NONE;
+            gSaveContext.equips.cButtonSlots[6] = SLOT_NONE;
+        } else {
+            for (i = 0; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
+                gSaveContext.equips.buttonItems[i] =
+                    gSaveContext.adultEquips.buttonItems[i];
+
+                if (i != 0) {
+                    gSaveContext.equips.cButtonSlots[i - 1] =
+                        gSaveContext.adultEquips.cButtonSlots[i - 1];
+                }
+
+                if (((gSaveContext.equips.buttonItems[i] >= ITEM_BOTTLE) &&
+                     (gSaveContext.equips.buttonItems[i] <= ITEM_POE)) ||
+                    ((gSaveContext.equips.buttonItems[i] >= ITEM_WEIRD_EGG) &&
+                     (gSaveContext.equips.buttonItems[i] <= ITEM_CLAIM_CHECK))) {
+                    osSyncPrintf("Register_Item_Pt(%d)=%d\n", i, gSaveContext.equips.cButtonSlots[i - 1]);
+                    gSaveContext.equips.buttonItems[i] =
+                        gSaveContext.inventory.items[gSaveContext.equips.cButtonSlots[i - 1]];
+                }
+            }
+
+            gSaveContext.equips.equipment = gSaveContext.adultEquips.equipment;
+        }
+    } else {
+        for (i = 0; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
+            gSaveContext.adultEquips.buttonItems[i] = gSaveContext.equips.buttonItems[i];
+
+            if (i != 0) {
+                gSaveContext.adultEquips.cButtonSlots[i - 1] =
+                    gSaveContext.equips.cButtonSlots[i - 1];
+            }
+        }
+
+        gSaveContext.adultEquips.equipment = gSaveContext.equips.equipment;
+
+        if (gSaveContext.childEquips.buttonItems[0] != ITEM_NONE) {
+            for (i = 0; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
+                gSaveContext.equips.buttonItems[i] =
+                    gSaveContext.childEquips.buttonItems[i];
+
+                if (i != 0) {
+                    gSaveContext.equips.cButtonSlots[i - 1] =
+                        gSaveContext.childEquips.cButtonSlots[i - 1];
+                }
+
+                if (((gSaveContext.equips.buttonItems[i] >= ITEM_BOTTLE) &&
+                     (gSaveContext.equips.buttonItems[i] <= ITEM_POE)) ||
+                    ((gSaveContext.equips.buttonItems[i] >= ITEM_WEIRD_EGG) &&
+                     (gSaveContext.equips.buttonItems[i] <= ITEM_CLAIM_CHECK))) {
+                    osSyncPrintf("Register_Item_Pt(%d)=%d\n", i, gSaveContext.equips.cButtonSlots[i - 1]);
+                    gSaveContext.equips.buttonItems[i] =
+                        gSaveContext.inventory.items[gSaveContext.equips.cButtonSlots[i - 1]];
+                }
+            }
+
+            gSaveContext.equips.equipment = gSaveContext.childEquips.equipment;
+            gSaveContext.equips.equipment &= (u16) ~(0xF << (EQUIP_TYPE_SWORD * 4));
+            gSaveContext.equips.equipment |= EQUIP_VALUE_SWORD_KOKIRI << (EQUIP_TYPE_SWORD * 4);
+        }
+    }
+
+    shieldEquipValue = gEquipMasks[EQUIP_TYPE_SHIELD] & gSaveContext.equips.equipment;
+    if (shieldEquipValue) {
         shieldEquipValue >>= gEquipShifts[EQUIP_TYPE_SHIELD];
         if (!CHECK_OWNED_EQUIP_ALT(EQUIP_TYPE_SHIELD, shieldEquipValue - 1)) {
             gSaveContext.equips.equipment &= gEquipNegMasks[EQUIP_TYPE_SHIELD];
@@ -1792,7 +1870,7 @@ void Randomizer_GameplayStats_SetTimestamp(uint16_t item) {
         return;
     }
     // Count any bombchu pack as bombchus
-    if ((item >= RG_BOMBCHU_5 && item <= RG_BOMBCHU_DROP) || item == RG_PROGRESSIVE_BOMBCHUS) {
+    if ((item >= RG_BOMBCHU_5 && item <= RG_BOMBCHU_20) || item == RG_PROGRESSIVE_BOMBCHUS) {
         if (gSaveContext.sohStats.itemTimestamp[ITEM_BOMBCHU] = 0) {
             gSaveContext.sohStats.itemTimestamp[ITEM_BOMBCHU] = time;
         }
@@ -1848,6 +1926,26 @@ u8 Return_Item(u8 itemID, ModIndex modId, ItemID returnItem) {
  * @return u8 
  */
 u8 Item_Give(PlayState* play, u8 item) {
+    //prevents getting sticks without the bag in case something got missed
+    if (
+        IS_RANDO &&
+        (item == ITEM_STICK || item == ITEM_STICKS_5 || item == ITEM_STICKS_10) &&
+        Randomizer_GetSettingValue(RSK_SHUFFLE_DEKU_STICK_BAG) &&
+        CUR_UPG_VALUE(UPG_STICKS) == 0
+    ) {
+        return item;
+    }
+
+    //prevents getting nuts without the bag in case something got missed
+    if (
+        IS_RANDO &&
+        (item == ITEM_NUT || item == ITEM_NUTS_5 || item == ITEM_NUTS_10) &&
+        Randomizer_GetSettingValue(RSK_SHUFFLE_DEKU_NUT_BAG) &&
+        CUR_UPG_VALUE(UPG_NUTS) == 0
+    ) {
+        return item;
+    }
+
     lusprintf(__FILE__, __LINE__, 2, "Item Give - item: %#x", item);
     static s16 sAmmoRefillCounts[] = { 5, 10, 20, 30, 5, 10, 30, 0, 5, 20, 1, 5, 20, 50, 200, 10 };
     s16 i;
@@ -2128,7 +2226,9 @@ u8 Item_Give(PlayState* play, u8 item) {
                 AMMO(ITEM_STICK) = CUR_CAPACITY(UPG_STICKS);
             }
         }
-        item = ITEM_STICK;
+        // [SOH] This results in the same behavior as the original code, but also allows us to get an accurate ReceivedItemEntry hook
+        INV_CONTENT(ITEM_STICK) = ITEM_STICK;
+        return Return_Item(item, MOD_NONE, returnItem);
     } else if (item == ITEM_NUT) {
         if (gSaveContext.inventory.items[slot] == ITEM_NONE) {
             Inventory_ChangeUpgrade(UPG_NUTS, 1);
@@ -2152,7 +2252,9 @@ u8 Item_Give(PlayState* play, u8 item) {
                 AMMO(ITEM_NUT) = CUR_CAPACITY(UPG_NUTS);
             }
         }
-        item = ITEM_NUT;
+        // [SOH] This results in the same behavior as the original code, but also allows us to get an accurate ReceivedItemEntry hook
+        INV_CONTENT(ITEM_NUT) = ITEM_NUT;
+        return Return_Item(item, MOD_NONE, returnItem);
     } else if (item == ITEM_BOMB) {
         // "Bomb  Bomb  Bomb  Bomb Bomb   Bomb Bomb"
         osSyncPrintf(" 爆弾  爆弾  爆弾  爆弾 爆弾   爆弾 爆弾 \n");
@@ -2619,6 +2721,14 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         return Return_Item_Entry(giEntry, RG_NONE);
     }
 
+    if (item == RG_CHILD_WALLET) {
+        Flags_SetRandomizerInf(RAND_INF_HAS_WALLET);
+        if (IS_RANDO && Randomizer_GetSettingValue(RSK_FULL_WALLETS)) {
+            Rupees_ChangeBy(99);
+        }
+        return Return_Item_Entry(giEntry, RG_NONE);
+    }
+
     if (item == RG_GREG_RUPEE) {
         Rupees_ChangeBy(1);
         Flags_SetRandomizerInf(RAND_INF_GREG_FOUND);
@@ -2631,7 +2741,7 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         GameInteractor_SetTriforceHuntPieceGiven(true);
 
         // Teleport to credits when goal is reached.
-        if (gSaveContext.triforcePiecesCollected == Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED)) {
+        if (gSaveContext.triforcePiecesCollected == (Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED) + 1)) {
             gSaveContext.sohStats.itemTimestamp[TIMESTAMP_TRIFORCE_COMPLETED] = GAMEPLAYSTAT_TOTAL_TIME;
             gSaveContext.sohStats.gameComplete = 1;
             Flags_SetRandomizerInf(RAND_INF_GRANT_GANONS_BOSSKEY);
@@ -2642,10 +2752,24 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         return Return_Item_Entry(giEntry, RG_NONE);
     }
 
+    if (item >= RG_GOHMA_SOUL && item <= RG_GANON_SOUL) {
+        u8 index = item - RG_GOHMA_SOUL;
+        Flags_SetRandomizerInf(RAND_INF_GOHMA_SOUL + index);
+
+        return Return_Item_Entry(giEntry, RG_NONE);
+    }
+
+    if (item == RG_FISHING_POLE) {
+        Flags_SetRandomizerInf(RAND_INF_FISHING_POLE_FOUND);
+        return Return_Item_Entry(giEntry, RG_NONE);
+    }
+
     if (item == RG_PROGRESSIVE_BOMBCHUS) {
         if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_NONE) {
             INV_CONTENT(ITEM_BOMBCHU) = ITEM_BOMBCHU;
             AMMO(ITEM_BOMBCHU) = 20;
+        } else if (Randomizer_GetSettingValue(RSK_INFINITE_UPGRADES)) {
+            Flags_SetRandomizerInf(RAND_INF_HAS_INFINITE_BOMBCHUS);
         } else {
             AMMO(ITEM_BOMBCHU) += AMMO(ITEM_BOMBCHU) < 5 ? 10 : 5;
             if (AMMO(ITEM_BOMBCHU) > 50) {
@@ -2659,6 +2783,77 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         if (!CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER)) {
             gSaveContext.inventory.equipment |= gBitFlags[1] << gEquipShifts[EQUIP_TYPE_SWORD];
         }
+        return Return_Item_Entry(giEntry, RG_NONE);
+    }
+
+    if (item >= RG_OCARINA_A_BUTTON && item <= RG_OCARINA_C_RIGHT_BUTTON) {
+        u8 index = item - RG_OCARINA_A_BUTTON;
+        Flags_SetRandomizerInf(RAND_INF_HAS_OCARINA_A + index);
+
+        return Return_Item_Entry(giEntry, RG_NONE);
+    }
+
+    if (item == RG_BRONZE_SCALE) {
+        Flags_SetRandomizerInf(RAND_INF_CAN_SWIM);
+        return Return_Item_Entry(giEntry, RG_NONE);
+    }
+
+    if (item == RG_QUIVER_INF) {
+        Flags_SetRandomizerInf(RAND_INF_HAS_INFINITE_QUIVER);
+        return Return_Item_Entry(giEntry, RG_NONE);
+    }
+
+    if (item == RG_BOMB_BAG_INF) {
+        Flags_SetRandomizerInf(RAND_INF_HAS_INFINITE_BOMB_BAG);
+        return Return_Item_Entry(giEntry, RG_NONE);
+    }
+
+    if (item == RG_BULLET_BAG_INF) {
+        Flags_SetRandomizerInf(RAND_INF_HAS_INFINITE_BULLET_BAG);
+        return Return_Item_Entry(giEntry, RG_NONE);
+    }
+
+    if (item == RG_STICK_UPGRADE_INF) {
+        Flags_SetRandomizerInf(RAND_INF_HAS_INFINITE_STICK_UPGRADE);
+        return Return_Item_Entry(giEntry, RG_NONE);
+    }
+
+    if (item == RG_NUT_UPGRADE_INF) {
+        Flags_SetRandomizerInf(RAND_INF_HAS_INFINITE_NUT_UPGRADE);
+        return Return_Item_Entry(giEntry, RG_NONE);
+    }
+
+    if (item == RG_MAGIC_INF) {
+        Flags_SetRandomizerInf(RAND_INF_HAS_INFINITE_MAGIC_METER);
+        return Return_Item_Entry(giEntry, RG_NONE);
+    }
+
+    if (item == RG_BOMBCHU_INF) {
+        Flags_SetRandomizerInf(RAND_INF_HAS_INFINITE_BOMBCHUS);
+        return Return_Item_Entry(giEntry, RG_NONE);
+    }
+
+    if (item == RG_WALLET_INF) {
+        Flags_SetRandomizerInf(RAND_INF_HAS_INFINITE_MONEY);
+        return Return_Item_Entry(giEntry, RG_NONE);
+    }
+
+    if (item == RG_SKELETON_KEY) {
+        Flags_SetRandomizerInf(RAND_INF_HAS_SKELETON_KEY);
+        return Return_Item_Entry(giEntry, RG_NONE);
+    }
+
+    if (item == RG_DEKU_STICK_BAG) {
+        Inventory_ChangeUpgrade(UPG_STICKS, 1);
+        INV_CONTENT(ITEM_STICK) = ITEM_STICK;
+        AMMO(ITEM_STICK) = CUR_CAPACITY(UPG_STICKS);
+        return Return_Item_Entry(giEntry, RG_NONE);
+    }
+
+    if (item == RG_DEKU_NUT_BAG) {
+        Inventory_ChangeUpgrade(UPG_NUTS, 1);
+        INV_CONTENT(ITEM_NUT) = ITEM_NUT;
+        AMMO(ITEM_NUT) = CUR_CAPACITY(UPG_NUTS);
         return Return_Item_Entry(giEntry, RG_NONE);
     }
 
@@ -3425,21 +3620,23 @@ void Interface_UpdateMagicBar(PlayState* play) {
             break;
 
         case MAGIC_STATE_CONSUME:
-            gSaveContext.magic -= 2;
-            if (gSaveContext.magic <= 0) {
-                gSaveContext.magic = 0;
-                gSaveContext.magicState = MAGIC_STATE_METER_FLASH_1;
-                if (CVarGetInteger(CVAR_COSMETIC("Consumable.MagicBorder.Changed"), 0)) {
-                    sMagicBorder = CVarGetColor24(CVAR_COSMETIC("Consumable.MagicBorder.Value"), sMagicBorder_ori);
-                } else {
-                    sMagicBorder = sMagicBorder_ori;
-                }
-            } else if (gSaveContext.magic == gSaveContext.magicTarget) {
-                gSaveContext.magicState = MAGIC_STATE_METER_FLASH_1;
-                if (CVarGetInteger(CVAR_COSMETIC("Consumable.MagicBorder.Changed"), 0)) {
-                    sMagicBorder = CVarGetColor24(CVAR_COSMETIC("Consumable.MagicBorder.Value"), sMagicBorder_ori);
-                } else {
-                    sMagicBorder = sMagicBorder_ori;
+            if (!Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_MAGIC_METER)) {
+                gSaveContext.magic -= 2;
+                if (gSaveContext.magic <= 0) {
+                    gSaveContext.magic = 0;
+                    gSaveContext.magicState = MAGIC_STATE_METER_FLASH_1;
+                    if (CVarGetInteger(CVAR_COSMETIC("Consumable.MagicBorder.Changed"), 0)) {
+                        sMagicBorder = CVarGetColor24(CVAR_COSMETIC("Consumable.MagicBorder.Value"), sMagicBorder_ori);
+                    } else {
+                        sMagicBorder = sMagicBorder_ori;
+                    }
+                } else if (gSaveContext.magic == gSaveContext.magicTarget) {
+                    gSaveContext.magicState = MAGIC_STATE_METER_FLASH_1;
+                    if (CVarGetInteger(CVAR_COSMETIC("Consumable.MagicBorder.Changed"), 0)) {
+                        sMagicBorder = CVarGetColor24(CVAR_COSMETIC("Consumable.MagicBorder.Value"), sMagicBorder_ori);
+                    } else {
+                        sMagicBorder = sMagicBorder_ori;
+                    }
                 }
             }
         case MAGIC_STATE_METER_FLASH_1:
@@ -3603,12 +3800,16 @@ void Interface_DrawMagicBar(PlayState* play) {
     s16 magicBarY;
     Color_RGB8 magicbar_yellow = {250,250,0}; //Magic bar being used
     Color_RGB8 magicbar_green = {R_MAGIC_FILL_COLOR(0),R_MAGIC_FILL_COLOR(1),R_MAGIC_FILL_COLOR(2)}; //Magic bar fill
+    Color_RGB8 magicbar_blue = {0,0,200};//Infinite magic bar
 
     if (CVarGetInteger(CVAR_COSMETIC("Consumable.MagicActive.Changed"), 0)) {
         magicbar_yellow = CVarGetColor24(CVAR_COSMETIC("Consumable.MagicActive.Value"), magicbar_yellow);
     }
     if (CVarGetInteger(CVAR_COSMETIC("Consumable.Magic.Changed"), 0)) {
         magicbar_green = CVarGetColor24(CVAR_COSMETIC("Consumable.Magic.Value"), magicbar_green);
+    }
+    if (CVarGetInteger("gCosmetics.Consumable_MagicInfinite.Changed", 0)) {
+        magicbar_blue = CVarGetColor24("gCosmetics.Consumable_MagicInfinite.Value", magicbar_blue);
     }
 
     OPEN_DISPS(play->state.gfxCtx);
@@ -3717,14 +3918,26 @@ void Interface_DrawMagicBar(PlayState* play) {
 
             // Fill the rest of the bar with the normal magic color
             gDPPipeSync(OVERLAY_DISP++);
-            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, magicbar_green.r, magicbar_green.g, magicbar_green.b, interfaceCtx->magicAlpha);
+            if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_MAGIC_METER)) {
+                // Blue magic
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, magicbar_blue.r, magicbar_blue.g, magicbar_blue.b, interfaceCtx->magicAlpha);
+            } else {
+                // Green magic (default)
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, magicbar_green.r, magicbar_green.g, magicbar_green.b, interfaceCtx->magicAlpha);
+            }
 
             gSPWideTextureRectangle(OVERLAY_DISP++, rMagicFillX << 2, (magicBarY + 3) << 2,
                                 (rMagicFillX + gSaveContext.magicTarget) << 2, (magicBarY + 10) << 2, G_TX_RENDERTILE,
                                 0, 0, 1 << 10, 1 << 10);
         } else {
             // Fill the whole bar with the normal magic color
-            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, magicbar_green.r, magicbar_green.g, magicbar_green.b, interfaceCtx->magicAlpha);
+            if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_MAGIC_METER)) {
+                // Blue magic
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, magicbar_blue.r, magicbar_blue.g, magicbar_blue.b, interfaceCtx->magicAlpha);
+            } else {
+                // Green magic (default)
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, magicbar_green.r, magicbar_green.g, magicbar_green.b, interfaceCtx->magicAlpha);
+            }
 
             gDPLoadMultiBlock_4b(OVERLAY_DISP++, gMagicMeterFillTex, 0, G_TX_RENDERTILE, G_IM_FMT_I, 16, 16, 0,
                                  G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
@@ -4868,10 +5081,25 @@ void Interface_DrawAmmoCount(PlayState* play, s16 button, s16 alpha) {
 
     i = gSaveContext.equips.buttonItems[button];
 
-    if ((i == ITEM_STICK) || (i == ITEM_NUT) || (i == ITEM_BOMB) || (i == ITEM_BOW) ||
-        ((i >= ITEM_BOW_ARROW_FIRE) && (i <= ITEM_BOW_ARROW_LIGHT)) || (i == ITEM_SLINGSHOT) || (i == ITEM_BOMBCHU) ||
-        (i == ITEM_BEAN)) {
-
+    if (
+        GameInteractor_Should(
+            VB_DRAW_AMMO_COUNT,
+            (
+                (i == ITEM_STICK) ||
+                (i == ITEM_NUT) ||
+                (i == ITEM_BOMB) ||
+                (i == ITEM_BOW) ||
+                (
+                    (i >= ITEM_BOW_ARROW_FIRE) &&
+                    (i <= ITEM_BOW_ARROW_LIGHT)
+                ) ||
+                (i == ITEM_SLINGSHOT) ||
+                (i == ITEM_BOMBCHU) ||
+                (i == ITEM_BEAN)
+            ),
+            &i
+        )
+    ) {
         if ((i >= ITEM_BOW_ARROW_FIRE) && (i <= ITEM_BOW_ARROW_LIGHT)) {
             i = ITEM_BOW;
         }
@@ -5142,205 +5370,204 @@ void Interface_Draw(PlayState* play) {
         Gfx_SetupDL_39Overlay(play->state.gfxCtx);
 
         if (fullUi) {
-            // Rupee Icon
-            if (CVarGetInteger(CVAR_ENHANCEMENT("DynamicWalletIcon"), 0)) {
-                switch (CUR_UPG_VALUE(UPG_WALLET)) {
-                    case 0:
-                        if (CVarGetInteger(CVAR_COSMETIC("Consumable.GreenRupee.Changed"), 0)) {
-                            rColor = CVarGetColor24(CVAR_COSMETIC("Consumable.GreenRupee.Value"), rupeeWalletColors[0]);
-                        } else {
-                            rColor = rupeeWalletColors[0];
-                        }
-                        break;
-                    case 1:
-                        if (CVarGetInteger(CVAR_COSMETIC("Consumable.BlueRupee.Changed"), 0)) {
-                            rColor = CVarGetColor24(CVAR_COSMETIC("Consumable.BlueRupee.Value"), rupeeWalletColors[1]);
-                        } else {
-                            rColor = rupeeWalletColors[1];
-                        }
-                        break;
-                    case 2:
-                        if (CVarGetInteger(CVAR_COSMETIC("Consumable.RedRupee.Changed"), 0)) {
-                            rColor = CVarGetColor24(CVAR_COSMETIC("Consumable.RedRupee.Value"), rupeeWalletColors[2]);
-                        } else {
-                            rColor = rupeeWalletColors[2];
-                        }
-                        break;
-                    case 3:
-                        if (CVarGetInteger(CVAR_COSMETIC("Consumable.PurpleRupee.Changed"), 0)) {
-                            rColor = CVarGetColor24(CVAR_COSMETIC("Consumable.PurpleRupee.Value"), rupeeWalletColors[3]);
-                        } else {
-                            rColor = rupeeWalletColors[3];
-                        }
-                        break;
-                }
-            } else {
-                if (CVarGetInteger(CVAR_COSMETIC("Consumable.GreenRupee.Changed"), rupeeWalletColors)) {
-                     rColor = CVarGetColor24(CVAR_COSMETIC("Consumable.GreenRupee.Value"), rupeeWalletColors[0]);
-                } else {
-                     rColor = rupeeWalletColors[0];
-                }
-            }
-
-            //Rupee icon & counter
-            s16 X_Margins_RC;
-            s16 Y_Margins_RC;
-            if (CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.UseMargins"), 0) != 0) {
-                if (CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosType"), 0) == 0) {X_Margins_RC = Left_HUD_Margin;};
-                Y_Margins_RC = Bottom_HUD_Margin;
-            } else {
-                X_Margins_RC = 0;
-                Y_Margins_RC = 0;
-            }
-            s16 PosX_RC_ori = OTRGetRectDimensionFromLeftEdge(26+X_Margins_RC);
-            s16 PosY_RC_ori = 206+Y_Margins_RC;
             s16 PosX_RC;
             s16 PosY_RC;
-            if (CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosType"), 0) != 0) {
-                PosY_RC = CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosY"), 0)+Y_Margins_RC;
-                if (CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosType"), 0) == 1) {//Anchor Left
-                    if (CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.UseMargins"), 0) != 0) {X_Margins_RC = Left_HUD_Margin;};
-                    PosX_RC = OTRGetDimensionFromLeftEdge(CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosX"), 0)+X_Margins_RC);
-                } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosType"), 0) == 2) {//Anchor Right
-                    if (CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.UseMargins"), 0) != 0) {X_Margins_RC = Right_HUD_Margin;};
-                    PosX_RC = OTRGetDimensionFromRightEdge(CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosX"), 0)+X_Margins_RC);
-                } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosType"), 0) == 3) {//Anchor None
-                    PosX_RC = CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosX"), 0);
-                } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosType"), 0) == 4) {//Hidden
-                PosX_RC = -9999;
+            if (GameInteractor_Should(VB_RENDER_RUPEE_COUNTER, true)) {
+                // Rupee Icon
+                if (CVarGetInteger(CVAR_ENHANCEMENT("DynamicWalletIcon"), 0)) {
+                    switch (CUR_UPG_VALUE(UPG_WALLET)) {
+                        case 0:
+                            if (CVarGetInteger(CVAR_COSMETIC("Consumable.GreenRupee.Changed"), 0)) {
+                                rColor = CVarGetColor24(CVAR_COSMETIC("Consumable.GreenRupee.Value"), rupeeWalletColors[0]);
+                            } else {
+                                rColor = rupeeWalletColors[0];
+                            }
+                            break;
+                        case 1:
+                            if (CVarGetInteger(CVAR_COSMETIC("Consumable.BlueRupee.Changed"), 0)) {
+                                rColor = CVarGetColor24(CVAR_COSMETIC("Consumable.BlueRupee.Value"), rupeeWalletColors[1]);
+                            } else {
+                                rColor = rupeeWalletColors[1];
+                            }
+                            break;
+                        case 2:
+                            if (CVarGetInteger(CVAR_COSMETIC("Consumable.RedRupee.Changed"), 0)) {
+                                rColor = CVarGetColor24(CVAR_COSMETIC("Consumable.RedRupee.Value"), rupeeWalletColors[2]);
+                            } else {
+                                rColor = rupeeWalletColors[2];
+                            }
+                            break;
+                        case 3:
+                            if (CVarGetInteger(CVAR_COSMETIC("Consumable.PurpleRupee.Changed"), 0)) {
+                                rColor = CVarGetColor24(CVAR_COSMETIC("Consumable.PurpleRupee.Value"), rupeeWalletColors[3]);
+                            } else {
+                                rColor = rupeeWalletColors[3];
+                            }
+                            break;
+                    }
+                } else {
+                    if (CVarGetInteger(CVAR_COSMETIC("Consumable.GreenRupee.Changed"), rupeeWalletColors)) {
+                        rColor = CVarGetColor24(CVAR_COSMETIC("Consumable.GreenRupee.Value"), rupeeWalletColors[0]);
+                    } else {
+                        rColor = rupeeWalletColors[0];
+                    }
                 }
-            } else {
-                PosY_RC = PosY_RC_ori;
-                PosX_RC = PosX_RC_ori;
-            }
-            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, rColor.r, rColor.g, rColor.b, interfaceCtx->magicAlpha);
-            // Draw Rupee icon. Hide in Boss Rush.
-            if (!IS_BOSS_RUSH) {
+
+                //Rupee icon & counter
+                s16 X_Margins_RC;
+                s16 Y_Margins_RC;
+                if (CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.UseMargins"), 0) != 0) {
+                    if (CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosType"), 0) == 0) {X_Margins_RC = Left_HUD_Margin;};
+                    Y_Margins_RC = Bottom_HUD_Margin;
+                } else {
+                    X_Margins_RC = 0;
+                    Y_Margins_RC = 0;
+                }
+                s16 PosX_RC_ori = OTRGetRectDimensionFromLeftEdge(26+X_Margins_RC);
+                s16 PosY_RC_ori = 206+Y_Margins_RC;
+                if (CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosType"), 0) != 0) {
+                    PosY_RC = CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosY"), 0)+Y_Margins_RC;
+                    if (CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosType"), 0) == 1) {//Anchor Left
+                        if (CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.UseMargins"), 0) != 0) {X_Margins_RC = Left_HUD_Margin;};
+                        PosX_RC = OTRGetDimensionFromLeftEdge(CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosX"), 0)+X_Margins_RC);
+                    } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosType"), 0) == 2) {//Anchor Right
+                        if (CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.UseMargins"), 0) != 0) {X_Margins_RC = Right_HUD_Margin;};
+                        PosX_RC = OTRGetDimensionFromRightEdge(CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosX"), 0)+X_Margins_RC);
+                    } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosType"), 0) == 3) {//Anchor None
+                        PosX_RC = CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosX"), 0);
+                    } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Rupees.PosType"), 0) == 4) {//Hidden
+                        PosX_RC = -9999;
+                    }
+                } else {
+                    PosY_RC = PosY_RC_ori;
+                    PosX_RC = PosX_RC_ori;
+                }
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, rColor.r, rColor.g, rColor.b, interfaceCtx->magicAlpha);
                 OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gRupeeCounterIconTex, 16, 16, PosX_RC, PosY_RC, 16, 16, 1 << 10, 1 << 10);
             }
 
-            switch (play->sceneNum) {
-                case SCENE_FOREST_TEMPLE:
-                case SCENE_FIRE_TEMPLE:
-                case SCENE_WATER_TEMPLE:
-                case SCENE_SPIRIT_TEMPLE:
-                case SCENE_SHADOW_TEMPLE:
-                case SCENE_BOTTOM_OF_THE_WELL:
-                case SCENE_ICE_CAVERN:
-                case SCENE_GANONS_TOWER:
-                case SCENE_GERUDO_TRAINING_GROUND:
-                case SCENE_THIEVES_HIDEOUT:
-                case SCENE_INSIDE_GANONS_CASTLE:
-                case SCENE_GANONS_TOWER_COLLAPSE_INTERIOR:
-                case SCENE_INSIDE_GANONS_CASTLE_COLLAPSE:
-                case SCENE_TREASURE_BOX_SHOP:
-                    if (gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex] >= 0) {
-                        s16 X_Margins_SKC;
-                        s16 Y_Margins_SKC;
-                        if (CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.UseMargins"), 0) != 0) {
-                            if (CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosType"), 0) == 0) {X_Margins_SKC = Left_HUD_Margin;};
-                            Y_Margins_SKC = Bottom_HUD_Margin;
-                        } else {
-                            X_Margins_SKC = 0;
-                            Y_Margins_SKC = 0;
-                        }
-                        s16 PosX_SKC_ori = OTRGetRectDimensionFromLeftEdge(26+X_Margins_SKC);
-                        s16 PosY_SKC_ori = 190+Y_Margins_SKC;
-                        s16 PosX_SKC;
-                        s16 PosY_SKC;
-                        if (CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosType"), 0) != 0) {
-                            PosY_SKC = CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosY"), 0)+Y_Margins_SKC;
-                            if (CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosType"), 0) == 1) {//Anchor Left
-                                if (CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.UseMargins"), 0) != 0) {X_Margins_SKC = Left_HUD_Margin;};
-                                PosX_SKC = OTRGetDimensionFromLeftEdge(CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosX"), 0)+X_Margins_SKC);
-                            } else if (CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosType"), 0) == 2) {//Anchor Right
-                                if (CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.UseMargins"), 0) != 0) {X_Margins_SKC = Right_HUD_Margin;};
-                                PosX_SKC = OTRGetDimensionFromRightEdge(CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosX"), 0)+X_Margins_SKC);
-                            } else if (CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosType"), 0) == 3) {//Anchor None
-                                PosX_SKC = CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosX"), 0);
-                            } else if (CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosType"), 0) == 4) {//Hidden
-                            PosX_SKC = -9999;
+            if (GameInteractor_Should(VB_RENDER_KEY_COUNTER, true)) {
+                switch (play->sceneNum) {
+                    case SCENE_FOREST_TEMPLE:
+                    case SCENE_FIRE_TEMPLE:
+                    case SCENE_WATER_TEMPLE:
+                    case SCENE_SPIRIT_TEMPLE:
+                    case SCENE_SHADOW_TEMPLE:
+                    case SCENE_BOTTOM_OF_THE_WELL:
+                    case SCENE_ICE_CAVERN:
+                    case SCENE_GANONS_TOWER:
+                    case SCENE_GERUDO_TRAINING_GROUND:
+                    case SCENE_THIEVES_HIDEOUT:
+                    case SCENE_INSIDE_GANONS_CASTLE:
+                    case SCENE_GANONS_TOWER_COLLAPSE_INTERIOR:
+                    case SCENE_INSIDE_GANONS_CASTLE_COLLAPSE:
+                    case SCENE_TREASURE_BOX_SHOP:
+                        if (gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex] >= 0) {
+                            s16 X_Margins_SKC;
+                            s16 Y_Margins_SKC;
+                            if (CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.UseMargins"), 0) != 0) {
+                                if (CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosType"), 0) == 0) {X_Margins_SKC = Left_HUD_Margin;};
+                                Y_Margins_SKC = Bottom_HUD_Margin;
+                            } else {
+                                X_Margins_SKC = 0;
+                                Y_Margins_SKC = 0;
                             }
-                        } else {
-                            PosY_SKC = PosY_SKC_ori;
-                            PosX_SKC = PosX_SKC_ori;
+                            s16 PosX_SKC_ori = OTRGetRectDimensionFromLeftEdge(26+X_Margins_SKC);
+                            s16 PosY_SKC_ori = 190+Y_Margins_SKC;
+                            s16 PosX_SKC;
+                            s16 PosY_SKC;
+                            if (CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosType"), 0) != 0) {
+                                PosY_SKC = CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosY"), 0)+Y_Margins_SKC;
+                                if (CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosType"), 0) == 1) {//Anchor Left
+                                    if (CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.UseMargins"), 0) != 0) {X_Margins_SKC = Left_HUD_Margin;};
+                                    PosX_SKC = OTRGetDimensionFromLeftEdge(CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosX"), 0)+X_Margins_SKC);
+                                } else if (CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosType"), 0) == 2) {//Anchor Right
+                                    if (CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.UseMargins"), 0) != 0) {X_Margins_SKC = Right_HUD_Margin;};
+                                    PosX_SKC = OTRGetDimensionFromRightEdge(CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosX"), 0)+X_Margins_SKC);
+                                } else if (CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosType"), 0) == 3) {//Anchor None
+                                    PosX_SKC = CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosX"), 0);
+                                } else if (CVarGetInteger(CVAR_COSMETIC("HUD.SmallKey.PosType"), 0) == 4) {//Hidden
+                                    PosX_SKC = -9999;
+                                }
+                            } else {
+                                PosY_SKC = PosY_SKC_ori;
+                                PosX_SKC = PosX_SKC_ori;
+                            }
+                            // Small Key Icon
+                            gDPPipeSync(OVERLAY_DISP++);
+
+                            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, keyCountColor.r,keyCountColor.g,keyCountColor.b, interfaceCtx->magicAlpha);
+                            gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 20, 255); //We reset this here so it match user color :)
+                            OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gSmallKeyCounterIconTex, 16, 16, PosX_SKC, PosY_SKC, 16, 16,
+                                                          1 << 10, 1 << 10);
+
+                            // Small Key Counter
+                            gDPPipeSync(OVERLAY_DISP++);
+                            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, interfaceCtx->magicAlpha);
+                            gDPSetCombineLERP(OVERLAY_DISP++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE,
+                                              TEXEL0, 0, PRIMITIVE, 0);
+
+                            interfaceCtx->counterDigits[2] = 0;
+                            interfaceCtx->counterDigits[3] = gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex];
+
+                            while (interfaceCtx->counterDigits[3] >= 10) {
+                                interfaceCtx->counterDigits[2]++;
+                                interfaceCtx->counterDigits[3] -= 10;
+                            }
+
+                            if (interfaceCtx->counterDigits[2] != 0) {
+                                OVERLAY_DISP = Gfx_TextureI8(OVERLAY_DISP, ((u8*)((u8*)digitTextures[interfaceCtx->counterDigits[2]])), 8, 16, PosX_SKC+8, PosY_SKC, 8, 16, 1 << 10, 1 << 10);
+                            }
+
+                            OVERLAY_DISP = Gfx_TextureI8(OVERLAY_DISP, ((u8*)digitTextures[interfaceCtx->counterDigits[3]]), 8, 16, PosX_SKC+16, PosY_SKC, 8, 16, 1 << 10, 1 << 10);
                         }
-                        // Small Key Icon
-                        gDPPipeSync(OVERLAY_DISP++);
-
-                        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, keyCountColor.r,keyCountColor.g,keyCountColor.b, interfaceCtx->magicAlpha);
-                        gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 20, 255); //We reset this here so it match user color :)
-                        OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gSmallKeyCounterIconTex, 16, 16, PosX_SKC, PosY_SKC, 16, 16,
-                                                      1 << 10, 1 << 10);
-
-                        // Small Key Counter
-                        gDPPipeSync(OVERLAY_DISP++);
-                        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, interfaceCtx->magicAlpha);
-                        gDPSetCombineLERP(OVERLAY_DISP++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE,
-                                          TEXEL0, 0, PRIMITIVE, 0);
-
-                        interfaceCtx->counterDigits[2] = 0;
-                        interfaceCtx->counterDigits[3] = gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex];
-
-                        while (interfaceCtx->counterDigits[3] >= 10) {
-                            interfaceCtx->counterDigits[2]++;
-                            interfaceCtx->counterDigits[3] -= 10;
-                        }
-
-                        if (interfaceCtx->counterDigits[2] != 0) {
-                            OVERLAY_DISP = Gfx_TextureI8(OVERLAY_DISP, ((u8*)((u8*)digitTextures[interfaceCtx->counterDigits[2]])), 8, 16, PosX_SKC+8, PosY_SKC, 8, 16, 1 << 10, 1 << 10);
-                        }
-
-                        OVERLAY_DISP = Gfx_TextureI8(OVERLAY_DISP, ((u8*)digitTextures[interfaceCtx->counterDigits[3]]), 8, 16, PosX_SKC+16, PosY_SKC, 8, 16, 1 << 10, 1 << 10);
-                    }
-                    break;
-                default:
-                    break;
+                        break;
+                    default:
+                        break;
+                }
             }
 
-            // Rupee Counter
-            gDPPipeSync(OVERLAY_DISP++);
+            if (GameInteractor_Should(VB_RENDER_RUPEE_COUNTER, true)) {
+                // Rupee Counter
+                gDPPipeSync(OVERLAY_DISP++);
 
-            if (gSaveContext.rupees == CUR_CAPACITY(UPG_WALLET)) {
-                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 120, 255, 0, interfaceCtx->magicAlpha);
-            } else if (gSaveContext.rupees != 0) {
-                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, interfaceCtx->magicAlpha);
-            } else {
-                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 100, 100, 100, interfaceCtx->magicAlpha);
-            }
+                if (gSaveContext.rupees == CUR_CAPACITY(UPG_WALLET)) {
+                    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 120, 255, 0, interfaceCtx->magicAlpha);
+                } else if (gSaveContext.rupees != 0) {
+                    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, interfaceCtx->magicAlpha);
+                } else {
+                    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 100, 100, 100, interfaceCtx->magicAlpha);
+                }
 
-            gDPSetCombineLERP(OVERLAY_DISP++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0, 0,
-                              PRIMITIVE, 0);
+                gDPSetCombineLERP(OVERLAY_DISP++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0, 0,
+                                  PRIMITIVE, 0);
 
-            interfaceCtx->counterDigits[0] = interfaceCtx->counterDigits[1] = 0;
-            interfaceCtx->counterDigits[2] = gSaveContext.rupees;
+                interfaceCtx->counterDigits[0] = interfaceCtx->counterDigits[1] = 0;
+                interfaceCtx->counterDigits[2] = gSaveContext.rupees;
 
-            if ((interfaceCtx->counterDigits[2] > 9999) || (interfaceCtx->counterDigits[2] < 0)) {
-                interfaceCtx->counterDigits[2] &= 0xDDD;
-            }
+                if ((interfaceCtx->counterDigits[2] > 9999) || (interfaceCtx->counterDigits[2] < 0)) {
+                    interfaceCtx->counterDigits[2] &= 0xDDD;
+                }
 
-            while (interfaceCtx->counterDigits[2] >= 100) {
-                interfaceCtx->counterDigits[0]++;
-                interfaceCtx->counterDigits[2] -= 100;
-            }
+                while (interfaceCtx->counterDigits[2] >= 100) {
+                    interfaceCtx->counterDigits[0]++;
+                    interfaceCtx->counterDigits[2] -= 100;
+                }
 
-            while (interfaceCtx->counterDigits[2] >= 10) {
-                interfaceCtx->counterDigits[1]++;
-                interfaceCtx->counterDigits[2] -= 10;
-            }
+                while (interfaceCtx->counterDigits[2] >= 10) {
+                    interfaceCtx->counterDigits[1]++;
+                    interfaceCtx->counterDigits[2] -= 10;
+                }
 
-            svar2 = rupeeDigitsFirst[CUR_UPG_VALUE(UPG_WALLET)];
-            svar5 = rupeeDigitsCount[CUR_UPG_VALUE(UPG_WALLET)];
+                svar2 = rupeeDigitsFirst[CUR_UPG_VALUE(UPG_WALLET)];
+                svar5 = rupeeDigitsCount[CUR_UPG_VALUE(UPG_WALLET)];
 
-            // Draw Rupee Counter. Hide in Boss Rush.
-            if (!IS_BOSS_RUSH) {
                 for (svar1 = 0, svar3 = 16; svar1 < svar5; svar1++, svar2++, svar3 += 8) {
                     OVERLAY_DISP = Gfx_TextureI8(OVERLAY_DISP, ((u8*)digitTextures[interfaceCtx->counterDigits[svar2]]),
                                                  8, 16, PosX_RC + svar3, PosY_RC, 8, 16, 1 << 10, 1 << 10);
                 }
             }
-        }
-        else {
+        } else {
             // Make sure item counts have black backgrounds
             gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 0, 0, 0, interfaceCtx->magicAlpha);
             gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 0);
@@ -6120,7 +6347,7 @@ void Interface_Draw(PlayState* play) {
                                                 gSaveContext.timer2State = 5;
                                                 gSaveContext.cutsceneIndex = 0;
                                                 Message_StartTextbox(play, 0x71B0, NULL);
-                                                func_8002DF54(play, NULL, 8);
+                                                Player_SetCsActionWithHaltedActors(play, NULL, 8);
                                             } else {
                                                 D_8015FFE6 = 40;
                                                 gSaveContext.timer2State = 6;

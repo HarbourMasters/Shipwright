@@ -6184,14 +6184,14 @@ s32 Camera_Demo5(Camera* camera) {
             pad = camera->play->state.frames - sDemo5PrevAction12Frame;
             if (player->stateFlags1 & PLAYER_STATE1_ITEM_OVER_HEAD) {
                 // holding object over head.
-                func_8002DF54(camera->play, camera->target, 8);
+                Player_SetCsActionWithHaltedActors(camera->play, camera->target, 8);
             } else if (ABS(pad) > 3000) {
-                func_8002DF54(camera->play, camera->target, 12);
+                Player_SetCsActionWithHaltedActors(camera->play, camera->target, 12);
             } else {
-                func_8002DF54(camera->play, camera->target, 69);
+                Player_SetCsActionWithHaltedActors(camera->play, camera->target, 69);
             }
         } else {
-            func_8002DF54(camera->play, camera->target, 1);
+            Player_SetCsActionWithHaltedActors(camera->play, camera->target, 1);
         }
     }
 
@@ -6250,7 +6250,7 @@ s32 Camera_Demo6(Camera* camera) {
             camera->animState++;
         case 1:
             if (stateTimers[camera->animState] < anim->animTimer) {
-                func_8002DF54(camera->play, &camera->player->actor, 8);
+                Player_SetCsActionWithHaltedActors(camera->play, &camera->player->actor, 8);
                 Actor_GetWorld(&focusPosRot, camFocus);
                 anim->atTarget.x = focusPosRot.pos.x;
                 anim->atTarget.y = focusPosRot.pos.y - 20.0f;
@@ -7735,7 +7735,7 @@ void Camera_Finish(Camera* camera) {
             player->stateFlags1 &= ~PLAYER_STATE1_IN_CUTSCENE;
 
             if (player->csAction != 0) {
-                func_8002DF54(camera->play, &player->actor, 7);
+                Player_SetCsActionWithHaltedActors(camera->play, &player->actor, 7);
                 osSyncPrintf("camera: player demo end!!\n");
             }
 

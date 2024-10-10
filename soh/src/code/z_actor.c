@@ -1228,14 +1228,6 @@ void Actor_Init(Actor* actor, PlayState* play) {
     actor->uncullZoneForward = 1000.0f;
     actor->uncullZoneScale = 350.0f;
     actor->uncullZoneDownward = 700.0f;
-    if (CVarGetInteger(CVAR_ENHANCEMENT("DisableDrawDistance"), 0) != 0 && actor->id != ACTOR_EN_TORCH2 && actor->id != ACTOR_EN_BLKOBJ // Extra check for Dark Link and his room 
-        && actor->id != ACTOR_EN_HORSE // Check for Epona, else if we call her she will spawn at the other side of the  map + we can hear her during the title screen sequence
-        && actor->id != ACTOR_EN_HORSE_GANON && actor->id != ACTOR_EN_HORSE_ZELDA  // check for Zelda's and Ganondorf's horses that will always be scene during cinematic whith camera paning
-        && (play->sceneNum != SCENE_DODONGOS_CAVERN && actor->id != ACTOR_EN_ZF)) { // Check for DC and Lizalfos for the case where the miniboss music would still play under certains conditions and changing room
-        actor->uncullZoneForward = 32767.0f;
-        actor->uncullZoneScale = 32767.0f;
-        actor->uncullZoneDownward = 32767.0f;
-    }
     CollisionCheck_InitInfo(&actor->colChkInfo);
     actor->floorBgId = BGCHECK_SCENE;
     ActorShape_Init(&actor->shape, 0.0f, NULL, 0.0f);
@@ -1462,7 +1454,7 @@ s32 func_8002DF38(PlayState* play, Actor* actor, u8 csAction) {
     return true;
 }
 
-s32 func_8002DF54(PlayState* play, Actor* actor, u8 csAction) {
+s32 Player_SetCsActionWithHaltedActors(PlayState* play, Actor* actor, u8 csAction) {
     Player* player = GET_PLAYER(play);
 
     func_8002DF38(play, actor, csAction);
@@ -2080,13 +2072,12 @@ s32 GiveItemEntryFromActor(Actor* actor, PlayState* play, GetItemEntry getItemEn
  * \param play the Global Context
  * \param getItemEntry the GetItemEntry for the item you want the player to receive.
  */
-void GiveItemEntryFromActorWithFixedRange(Actor* actor, PlayState* play, GetItemEntry getItemEntry) {
-    GiveItemEntryFromActor(actor, play, getItemEntry, 50.0f, 10.0f);
+s32 GiveItemEntryFromActorWithFixedRange(Actor* actor, PlayState* play, GetItemEntry getItemEntry) {
+    return GiveItemEntryFromActor(actor, play, getItemEntry, 50.0f, 10.0f);
 }
 
-// TODO: Rename to GiveItemIdFromActor or similar
 // If you're doing something for randomizer, you're probably looking for GiveItemEntryFromActor
-s32 func_8002F434(Actor* actor, PlayState* play, s32 getItemId, f32 xzRange, f32 yRange) {
+s32 Actor_OfferGetItem(Actor* actor, PlayState* play, s32 getItemId, f32 xzRange, f32 yRange) {
     Player* player = GET_PLAYER(play);
 
     if (!(player->stateFlags1 & 
@@ -2116,7 +2107,7 @@ s32 func_8002F434(Actor* actor, PlayState* play, s32 getItemId, f32 xzRange, f32
 // TODO: Rename to GiveItemIdFromActorWithFixedRange or similar
 // If you're doing something for randomizer, you're probably looking for GiveItemEntryFromActorWithFixedRange
 void func_8002F554(Actor* actor, PlayState* play, s32 getItemId) {
-    func_8002F434(actor, play, getItemId, 50.0f, 10.0f);
+    Actor_OfferGetItem(actor, play, getItemId, 50.0f, 10.0f);
 }
 
 void func_8002F580(Actor* actor, PlayState* play) {
@@ -2898,33 +2889,92 @@ s32 func_800314B0(PlayState* play, Actor* actor) {
 s32 func_800314D4(PlayState* play, Actor* actor, Vec3f* arg2, f32 arg3) {
     f32 var;
 
-    if (CVarGetInteger(CVAR_ENHANCEMENT("DisableDrawDistance"), 0) != 0 && actor->id != ACTOR_EN_TORCH2 && actor->id != ACTOR_EN_BLKOBJ // Extra check for Dark Link and his room 
-        && actor->id != ACTOR_EN_HORSE // Check for Epona, else if we call her she will spawn at the other side of the  map + we can hear her during the title screen sequence
-        && actor->id != ACTOR_EN_HORSE_GANON && actor->id != ACTOR_EN_HORSE_ZELDA  // check for Zelda's and Ganondorf's horses that will always be scene during cinematic whith camera paning
-        && (play->sceneNum != SCENE_DODONGOS_CAVERN && actor->id != ACTOR_EN_ZF)) { // Check for DC and Lizalfos for the case where the miniboss music would still play under certains conditions and changing room
-        return true;
-    }
-
     if ((arg2->z > -actor->uncullZoneScale) && (arg2->z < (actor->uncullZoneForward + actor->uncullZoneScale))) {
         var = (arg3 < 1.0f) ? 1.0f : 1.0f / arg3;
 
-        // #region SoH [Widescreen support]
-        // Doors will cull quite noticeably on wider screens. For these actors the zone is increased
-        f32 limit = 1.0f;
-        if (((actor->id == ACTOR_EN_DOOR) || (actor->id == ACTOR_DOOR_SHUTTER)) && CVarGetInteger(CVAR_GENERAL("IncreaseDoorUncullZones"), 1)) {
-            limit = 2.0f;
-        }
-
-        if ((((fabsf(arg2->x) - actor->uncullZoneScale) * var) < limit) &&
-            (((arg2->y + actor->uncullZoneDownward) * var) > -limit) &&
-            (((arg2->y - actor->uncullZoneScale) * var) < limit)) {
+        if ((((fabsf(arg2->x) - actor->uncullZoneScale) * var) < 1.0f) &&
+            (((arg2->y + actor->uncullZoneDownward) * var) > -1.0f) &&
+            (((arg2->y - actor->uncullZoneScale) * var) < 1.0f)) {
             return true;
         }
-        // #endregion
     }
 
     return false;
 }
+
+// #region SOH [Enhancements] Allows us to increase the draw and update distance independently,
+// mostly a modified version of the function above and additional tweaks for some specfic actors
+s32 Ship_CalcShouldDrawAndUpdate(PlayState* play, Actor* actor, Vec3f* projectedPos, f32 projectedW, bool* shouldDraw,
+                                 bool* shouldUpdate) {
+    f32 clampedProjectedW;
+
+    // Check if the actor passes its original/vanilla culling requirements
+    if (func_800314D4(play, actor, projectedPos, projectedW)) {
+        *shouldUpdate = true;
+        *shouldDraw = true;
+        return true;
+    }
+
+    // Skip cutscne actors that depend on culling to hide from camera pans
+    if (actor->id == ACTOR_EN_VIEWER) {
+        return false;
+    }
+
+    s32 multiplier = CVarGetInteger(CVAR_ENHANCEMENT("DisableDrawDistance"), 1);
+    multiplier = MAX(multiplier, 1);
+
+    // Some actors have a really short forward value, so we need to add to it before the multiplier to increase the
+    // final strength of the forward culling
+    f32 adder = (actor->uncullZoneForward < 500) ? 1000.0f : 0.0f;
+
+    if ((projectedPos->z > -actor->uncullZoneScale) &&
+        (projectedPos->z < (((actor->uncullZoneForward + adder) * multiplier) + actor->uncullZoneScale))) {
+        clampedProjectedW = (projectedW < 1.0f) ? 1.0f : 1.0f / projectedW;
+
+        f32 ratioAdjusted = 1.0f;
+
+        if (CVarGetInteger(CVAR_ENHANCEMENT("WidescreenActorCulling"), 0)) {
+            f32 originalAspectRatio = 4.0f / 3.0f;
+            f32 currentAspectRatio = OTRGetAspectRatio();
+            ratioAdjusted = MAX(currentAspectRatio / originalAspectRatio, 1.0f);
+        }
+
+        if ((((fabsf(projectedPos->x) - actor->uncullZoneScale) * (clampedProjectedW / ratioAdjusted)) < 1.0f) &&
+            (((projectedPos->y + actor->uncullZoneDownward) * clampedProjectedW) > -1.0f) &&
+            (((projectedPos->y - actor->uncullZoneScale) * clampedProjectedW) < 1.0f)) {
+
+            if (CVarGetInteger(CVAR_ENHANCEMENT("ExtendedCullingExcludeGlitchActors"), 0)) {
+                // These actors are safe to draw without impacting glitches
+                if ((actor->id == ACTOR_OBJ_BOMBIWA || actor->id == ACTOR_OBJ_HAMISHI ||
+                     actor->id == ACTOR_EN_ISHI) || // Boulders (hookshot through collision)
+                    actor->id == ACTOR_EN_GS ||     // Gossip stones (text delay)
+                    actor->id == ACTOR_EN_GE1 ||    // White gerudos (gate clip/archery room transition)
+                    actor->id == ACTOR_EN_KZ ||     // King Zora (unfreeze glitch)
+                    actor->id == ACTOR_EN_DU ||     // Darunia (Fire temple BK skip)
+                    actor->id == ACTOR_DOOR_WARP1   // Blue warps (wrong warps)
+                ) {
+                    *shouldDraw = true;
+                    return true;
+                }
+
+                // Skip these actors entirely as their draw funcs impacts glitches
+                if ((actor->id == ACTOR_EN_SW &&
+                     (((actor->params & 0xE000) >> 0xD) == 1 ||
+                      ((actor->params & 0xE000) >> 0xD) == 2)) // Gold Skulltulas (hitbox at 0,0)
+                ) {
+                    return false;
+                }
+            }
+
+            *shouldDraw = true;
+            *shouldUpdate = true;
+            return true;
+        }
+    }
+
+    return false;
+}
+// #endregion
 
 void func_800315AC(PlayState* play, ActorContext* actorCtx) {
     s32 invisibleActorCounter;
@@ -2961,18 +3011,35 @@ void func_800315AC(PlayState* play, ActorContext* actorCtx) {
                 }
             }
 
+            // #region SOH [Enhancement] Extended culling updates
+            bool shipShouldDraw = false;
+            bool shipShouldUpdate = false;
             if ((HREG(64) != 1) || ((HREG(65) != -1) && (HREG(65) != HREG(66))) || (HREG(70) == 0)) {
-                if (func_800314B0(play, actor)) {
-                    actor->flags |= ACTOR_FLAG_ACTIVE;
+                if (CVarGetInteger(CVAR_ENHANCEMENT("DisableDrawDistance"), 1) > 1 ||
+                    CVarGetInteger(CVAR_ENHANCEMENT("WidescreenActorCulling"), 0)) {
+                    Ship_CalcShouldDrawAndUpdate(play, actor, &actor->projectedPos, actor->projectedW, &shipShouldDraw,
+                                                 &shipShouldUpdate);
+
+                    if (shipShouldUpdate) {
+                        actor->flags |= ACTOR_FLAG_ACTIVE;
+                    } else {
+                        actor->flags &= ~ACTOR_FLAG_ACTIVE;
+                    }
                 } else {
-                    actor->flags &= ~ACTOR_FLAG_ACTIVE;
+                    if (func_800314B0(play, actor)) {
+                        actor->flags |= ACTOR_FLAG_ACTIVE;
+                    } else {
+                        actor->flags &= ~ACTOR_FLAG_ACTIVE;
+                    }
                 }
             }
 
             actor->isDrawn = false;
 
             if ((HREG(64) != 1) || ((HREG(65) != -1) && (HREG(65) != HREG(66))) || (HREG(71) == 0)) {
-                if ((actor->init == NULL) && (actor->draw != NULL) && (actor->flags & (ACTOR_FLAG_DRAW_WHILE_CULLED | ACTOR_FLAG_ACTIVE))) {
+                if ((actor->init == NULL) && (actor->draw != NULL) &&
+                    ((actor->flags & (ACTOR_FLAG_DRAW_WHILE_CULLED | ACTOR_FLAG_ACTIVE)) || shipShouldDraw)) {
+                    // #endregion
                     if ((actor->flags & ACTOR_FLAG_LENS) &&
                         ((play->roomCtx.curRoom.lensMode == LENS_MODE_HIDE_ACTORS) ||
                          play->actorCtx.lensActive || (actor->room != play->roomCtx.curRoom.num))) {
@@ -6282,59 +6349,4 @@ s32 func_80038290(PlayState* play, Actor* actor, Vec3s* arg2, Vec3s* arg3, Vec3f
     func_80037FC8(actor, &sp24, arg2, arg3);
 
     return true;
-}
-
-GetItemEntry GetChestGameRandoGetItem(s8 room, s16 ogDrawId, PlayState* play) {
-    if (Randomizer_GetSettingValue(RSK_SHUFFLE_CHEST_MINIGAME)) {
-        // RANDOTODO update this logic when we implement keysanity
-        // because 3drando replaces the keys not the rupees
-        if (ogDrawId == GID_RUPEE_GREEN ||
-            ogDrawId == GID_RUPEE_BLUE ||
-            ogDrawId == GID_RUPEE_RED)
-        {
-            switch(room) {
-                case 1:
-                    if(!Flags_GetCollectible(play, 0x1B)) {
-                        return Randomizer_GetItemFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_1, GI_RUPEE_GREEN);
-                    }
-                    break;
-                case 2:
-                    if(!Flags_GetCollectible(play, 0x1C)) {
-                        return Randomizer_GetItemFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_2, GI_RUPEE_GREEN);
-                    }
-                    break;
-                case 3:
-                    if(!Flags_GetCollectible(play, 0x1D)) {
-                        return Randomizer_GetItemFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_3, GI_RUPEE_BLUE);
-                    }
-                    break;
-                case 4:
-                    if(!Flags_GetCollectible(play, 0x1E)) {
-                        return Randomizer_GetItemFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_4, GI_RUPEE_BLUE);
-                    }
-                    break;
-                case 5:
-                    if(!Flags_GetCollectible(play, 0x1F)) {
-                        return Randomizer_GetItemFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_5, GI_RUPEE_RED);
-                    }
-                    break;
-            }
-        }
-    }
-
-    if(ogDrawId == GID_HEART_PIECE) {
-        return Randomizer_GetItemFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_REWARD, GI_HEART_PIECE);
-    }
-
-    return (GetItemEntry)GET_ITEM_NONE;
-}
-
-s16 GetChestGameRandoGiDrawId(s8 room, s16 ogDrawId, PlayState* play) {
-    GetItemEntry randoGetItem = GetChestGameRandoGetItem(room, ogDrawId, play);
-
-    if (randoGetItem.itemId != ITEM_NONE) {
-        return randoGetItem.gid;
-    }
-
-    return ogDrawId;
 }

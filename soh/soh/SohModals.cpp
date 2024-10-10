@@ -19,6 +19,15 @@ struct SohModal {
 };
 std::vector<SohModal> modals;
 
+void SohModalWindow::Draw() {
+    if (!IsVisible()) {
+        return;
+    }
+    DrawElement();
+    // Sync up the IsVisible flag if it was changed by ImGui
+    SyncVisibilityConsoleVariable();
+}
+
 void SohModalWindow::DrawElement() {
     if (modals.size() > 0) {
         SohModal curModal = modals.at(0);

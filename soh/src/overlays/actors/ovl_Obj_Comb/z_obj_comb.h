@@ -15,6 +15,9 @@ typedef struct ObjComb {
     /* 0x0170 */ ColliderJntSphElement colliderItems[1];
     /* 0x01B0 */ s16 unk_1B0;
     /* 0x01B2 */ s16 unk_1B2;
+    /*        */ BeehiveIdentity beehiveIdentity;
 } ObjComb; // size = 0x01B4
+
+void ObjComb_Break(ObjComb* objComb, PlayState* play);
 
 #endif
