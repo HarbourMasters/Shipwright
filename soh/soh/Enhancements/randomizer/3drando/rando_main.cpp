@@ -22,7 +22,7 @@ void RandoMain::GenerateRando(std::unordered_map<RandomizerSettingKey, u8> cvarS
     std::string fileName = Ship::Context::GetPathRelativeToAppDirectory(GenerateRandomizer(cvarSettings, excludedLocations, enabledTricks, seedString).c_str());
     CVarSetString(CVAR_GENERAL("SpoilerLog"), fileName.c_str());
 
-    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     CVarSetInteger(CVAR_GENERAL("NewSeedGenerated"), 1);
 }
 
