@@ -107,7 +107,7 @@ typedef struct {
     # Silly Options
     Lets get this one out of the way, probably the only thing that will be consistent between silly options is how they are rendered
     on the ImGui tab. So when adding one just make sure it follows the same general pattern as the rest. Notably:
-    - Make sure to SaveConsoleVariablesOnNextTick(), forgetting this will not persist your changes
+    - Make sure to SaveConsoleVariablesNextFrame(), forgetting this will not persist your changes
     - Make sure reset properly resets the value
     - Depending on your use case you may or may not have to split the cvar into two values (cvar.Changed & cvar.Value)
 
