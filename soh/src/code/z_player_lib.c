@@ -2095,7 +2095,13 @@ void Player_DrawPauseImpl(PlayState* play, void* gameplayKeep, void* linkObject,
     Mtx* perspMtx = Graph_Alloc(play->state.gfxCtx, sizeof(Mtx));
     Mtx* lookAtMtx = Graph_Alloc(play->state.gfxCtx, sizeof(Mtx));
 
+    u8 mirrorWorldActive = CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0);
+
     OPEN_DISPS(play->state.gfxCtx);
+
+    if (mirrorWorldActive) {
+        gSPSetExtraGeometryMode(POLY_OPA_DISP++, G_EX_INVERT_CULLING);
+    }
 
     gSPSegment(POLY_OPA_DISP++, 0x00, NULL);
 
@@ -2148,7 +2154,7 @@ void Player_DrawPauseImpl(PlayState* play, void* gameplayKeep, void* linkObject,
 
     Matrix_SetTranslateRotateYXZ(pos->x - ((CVarGetInteger(CVAR_ENHANCEMENT("PauseLiveLink"), 0) && LINK_AGE_IN_YEARS == YEARS_ADULT) ? 25 : 0),
                                  pos->y - (CVarGetInteger(CVAR_GENERAL("PauseTriforce"), 0) ? 16 : 0), pos->z, rot);
-    Matrix_Scale(scale * (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0) ? -1 : 1), scale, scale, MTXMODE_APPLY);
+    Matrix_Scale(scale * (mirrorWorldActive ? -1 : 1), scale, scale, MTXMODE_APPLY);
 
     gSPSegment(POLY_OPA_DISP++, 0x04, gameplayKeep);
     gSPSegment(POLY_OPA_DISP++, 0x06, linkObject);
@@ -2170,7 +2176,7 @@ void Player_DrawPauseImpl(PlayState* play, void* gameplayKeep, void* linkObject,
 
         Matrix_SetTranslateRotateYXZ(pos->x - (LINK_AGE_IN_YEARS == YEARS_ADULT ? 25 : 0),
                                       pos->y + 280 + (LINK_AGE_IN_YEARS == YEARS_ADULT ? 48 : 0), pos->z, rot);
-        Matrix_Scale(scale * (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0) ? -1 : 1), scale * 1, scale * 1, MTXMODE_APPLY);
+        Matrix_Scale(scale * (mirrorWorldActive ? -1 : 1), scale * 1, scale * 1, MTXMODE_APPLY);
 
         Gfx* ohNo = POLY_XLU_DISP;
         POLY_XLU_DISP = POLY_OPA_DISP;
@@ -2179,6 +2185,10 @@ void Player_DrawPauseImpl(PlayState* play, void* gameplayKeep, void* linkObject,
 
         POLY_OPA_DISP = POLY_XLU_DISP;
         POLY_XLU_DISP = ohNo;
+    }
+
+    if (mirrorWorldActive) {
+        gSPClearExtraGeometryMode(POLY_OPA_DISP++, G_EX_INVERT_CULLING);
     }
 
     POLY_OPA_DISP = Play_SetFog(play, POLY_OPA_DISP++);
