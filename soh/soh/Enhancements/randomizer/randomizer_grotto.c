@@ -128,8 +128,49 @@ static void Grotto_SetupReturnInfo(GrottoReturnInfo grotto, RespawnMode respawnM
     }
 }
 
+// Get the next entrance value while handling conversion of grotto rando IDs to real entrance values.
+// This method doesn't change player respawn data, so only use this if you are querying an entrance index.
+s16 Grotto_GetEntranceValueHandlingGrottoRando(s16 nextEntranceIndex) {
+    // Don't change anything unless grotto shuffle has been enabled
+    if (!Randomizer_GetSettingValue(RSK_SHUFFLE_GROTTO_ENTRANCES) && !Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_SPAWNS) && !Randomizer_GetSettingValue(RSK_SHUFFLE_WARP_SONGS)) {
+        return nextEntranceIndex;
+    }
+
+    // If Link hits a grotto exit, load the entrance index from the grotto exit list
+    // based on the current grotto ID
+    if (nextEntranceIndex == ENTR_RETURN_GROTTO) {
+        nextEntranceIndex = grottoExitList[grottoId];
+    }
+
+    // Get the new grotto id from the next entrance, temp value to override modifying the static one
+    s8 tempGrottoId = nextEntranceIndex & 0x00FF;
+
+    // Grotto Returns
+    if (nextEntranceIndex >= ENTRANCE_RANDO_GROTTO_EXIT_START && nextEntranceIndex < ENTRANCE_RANDO_GROTTO_EXIT_START + NUM_GROTTOS) {
+        GrottoReturnInfo grotto = grottoReturnTable[tempGrottoId];
+
+        // When the nextEntranceIndex is determined by a dynamic exit,
+        // or set by Entrance_OverrideBlueWarp to mark a blue warp entrance,
+        // we have to set the respawn information and nextEntranceIndex manually
+        if (gPlayState != NULL && gPlayState->nextEntranceIndex != ENTR_LOAD_OPENING) {
+            nextEntranceIndex = grotto.entranceIndex;
+        } else if (gPlayState == NULL) { // Handle spawn position when loading from a save file
+            nextEntranceIndex = grotto.entranceIndex;
+        // Otherwise return 0x7FFF (ENTR_RETURN_GROTTO) and let the game handle it
+        } else {
+            nextEntranceIndex = ENTR_RETURN_GROTTO;
+        }
+    // Grotto Loads
+    } else if (nextEntranceIndex >= ENTRANCE_RANDO_GROTTO_LOAD_START && nextEntranceIndex < ENTRANCE_RANDO_GROTTO_EXIT_START) {
+        GrottoLoadInfo grotto = grottoLoadTable[tempGrottoId];
+        nextEntranceIndex = grotto.entranceIndex;
+    }
+
+    return nextEntranceIndex;
+}
+
 // Translates and overrides the passed in entrance index if it corresponds to a
-// special grotto entrance (grotto load or returnpoint)
+// special grotto entrance (grotto load or returnpoint) and updates player respawn data correctly.
 s16 Grotto_OverrideSpecialEntrance(s16 nextEntranceIndex) {
 
     // Don't change anything unless grotto shuffle has been enabled

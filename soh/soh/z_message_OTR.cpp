@@ -137,30 +137,30 @@ extern "C" void OTRMessage_Init()
     CustomMessageManager::Instance->AddCustomMessageTable(customMessageTableID);
     CustomMessageManager::Instance->CreateGetItemMessage(
         customMessageTableID, (GetItemID)TEXT_GS_NO_FREEZE, ITEM_SKULL_TOKEN,
-        CustomMessage("You got a %rGold Skulltula Token%w!&You've collected %r{{gsCount}}%w tokens&in total!\x0E\x3C",
-                      "Ein %rGoldenes Skulltula-Symbol%w!&Du hast nun insgesamt %r{{gsCount}}&%wGoldene "
+        CustomMessage("You got a %rGold Skulltula Token%w!&You've collected %r[[gsCount]]%w tokens&in total!\x0E\x3C",
+                      "Ein %rGoldenes Skulltula-Symbol%w!&Du hast nun insgesamt %r[[gsCount]]&%wGoldene "
                       "Skulltula-Symbole&gesammelt!\x0E\x3C",
-                      "Vous obtenez un %rSymbole de&Skulltula d'or%w! Vous avez&collecté %r{{gsCount}}%w symboles en "
+                      "Vous obtenez un %rSymbole de&Skulltula d'or%w! Vous avez&collecté %r[[gsCount]]%w symboles en "
                       "tout!\x0E\x3C",
                       TEXTBOX_TYPE_BLUE));
     CustomMessageManager::Instance->CreateGetItemMessage(
         customMessageTableID, (GetItemID)TEXT_GS_FREEZE, ITEM_SKULL_TOKEN,
         CustomMessage(
-            "You got a %rGold Skulltula Token%w!&You've collected %r{{gsCount}}%w tokens&in total!",
-            "Ein %rGoldenes Skulltula-Symbol%w!&Du hast nun insgesamt %r{{gsCount}}&%wGoldene "
+            "You got a %rGold Skulltula Token%w!&You've collected %r[[gsCount]]%w tokens&in total!",
+            "Ein %rGoldenes Skulltula-Symbol%w!&Du hast nun insgesamt %r[[gsCount]]&%wGoldene "
             "Skulltula-Symbole&gesammelt!",
-            "Vous obtenez un %rSymbole de&Skulltula d'or%w! Vous avez&collecté %r{{gsCount}}%w symboles en tout!",
+            "Vous obtenez un %rSymbole de&Skulltula d'or%w! Vous avez&collecté %r[[gsCount]]%w symboles en tout!",
             TEXTBOX_TYPE_BLUE));
     CustomMessageManager::Instance->CreateMessage(
-        customMessageTableID, TEXT_BUY_BOMBCHU_10_DESC,
-        CustomMessage("\x08%rBombchu  (10 pieces)  99 Rupees&%wThis looks like a toy mouse, but&it's actually a "
+        customMessageTableID, TEXT_BUY_BOMBCHUS_10_DESC,
+        CustomMessage("\x08%rBombchu  10 pieces  99 Rupees&%wThis looks like a toy mouse, but&it's actually a "
                       "self-propelled time&bomb!\x09\x0A",
                       "\x08%rKrabbelmine  10 Stück  99 Rubine&%wDas ist eine praktische Zeitbombe,&die Du als "
                       "Distanzwaffe&einsetzen kannst!\x09\x0A",
                       "\x08%rMissile  10 unités  99 Rubis&%wProfilée comme une souris&mécanique, cette arme est "
                       "&destructrice!!!\x09\x0A"));
     CustomMessageManager::Instance->CreateMessage(
-        customMessageTableID, TEXT_BUY_BOMBCHU_10_PROMPT,
+        customMessageTableID, TEXT_BUY_BOMBCHUS_10_PROMPT,
         CustomMessage("\x08"
                       "Bombchu  10 pieces   99 Rupees\x09&&\x1B%gBuy&Don't buy%w",
                       "\x08Krabbelmine  10 Stück  99 Rubine\x09&&\x1B%gKaufen!&Nicht kaufen!%w",
@@ -168,23 +168,27 @@ extern "C" void OTRMessage_Init()
     CustomMessageManager::Instance->CreateGetItemMessage(
         customMessageTableID, (GetItemID)TEXT_HEART_CONTAINER, ITEM_HEART_CONTAINER,
         CustomMessage(
-            "You got a %rHeart Container%w!&You've collected %r{{heartContainerCount}}%w containers&in total!",
-            "Ein %rHerzcontainer%w!&Du hast nun insgesamt %r{{heartContainerCount}}%w&Herzcontainer gesammelt!",
-            "Vous obtenez un %rCoeur&d'Energie%w! Vous en avez&collecté %r{{heartContainerCount}}%w en tout!"));
+            "You got a %rHeart Container%w!&You've collected %r[[heartContainerCount]]%w containers&in total!",
+            "Ein %rHerzcontainer%w!&Du hast nun insgesamt %r[[heartContainerCount]]%w&Herzcontainer gesammelt!",
+            "Vous obtenez un %rCoeur&d'Energie%w! Vous en avez&collecté %r[[heartContainerCount]]%w en tout!"));
     CustomMessageManager::Instance->CreateGetItemMessage(
         customMessageTableID, (GetItemID)TEXT_HEART_PIECE, ITEM_HEART_PIECE,
-        CustomMessage("You got a %rHeart Piece%w!&You've collected %r{{heartPieceCount}}%w pieces&in total!",
-                      "Ein %rHerzteil%w!&Du hast nun insgesamt %r{{heartPieceCount}}%w&Herteile gesammelt!",
-                      "Vous obtenez un %rQuart de&Coeur%w! Vous en avez collecté&%r{{heartPieceCount}}%w en tout!",
+        CustomMessage("You got a %rHeart Piece%w!&You've collected %r[[heartPieceCount]]%w pieces&in total!",
+                      "Ein %rHerzteil%w!&Du hast nun insgesamt %r[[heartPieceCount]]%w&Herzteile gesammelt!",
+                      "Vous obtenez un %rQuart de&Coeur%w! Vous en avez collecté&%r[[heartPieceCount]]%w en tout!",
                       TEXTBOX_TYPE_BLUE));
     CustomMessageManager::Instance->CreateMessage(
         customMessageTableID, TEXT_MARKET_GUARD_NIGHT,
         CustomMessage("You look bored. Wanna go out for a&walk?\x1B&%gYes&No%w",
-                      "Du siehst gelangweilt aus.&Willst du einen Spaziergang machen?\x1B&%gJa&Nein%w",
+                      "Du siehst gelangweilt aus.&Willst Du einen Spaziergang machen?\x1B&%gJa&Nein%w",
                       "Tu as l'air de t'ennuyer. Tu veux&aller faire un tour?\x1B&%gOui&Non%w"));
     CustomMessageManager::Instance->CreateMessage(
         customMessageTableID, TEXT_FISHERMAN_LEAVE,
         CustomMessage("Hey! Hey!&You can't take the rod out of here!&I'm serious!^Do you want to quit?&\x1B&%gYes&No%w",
-                      "Hey! Hey!&Du kannst die Angel doch nicht&einfach mitnehmen!&Ganz im Ernst!^Möchtest du aufhören?&\x1B&%gJa&Nein%w", //TODO Used AI translation as placeholder
+                      "Hey! Hey!&Du kannst die Angel doch nicht&einfach mitnehmen!&Ganz im Ernst!^Möchtest Du aufhören?&\x1B&%gJa&Nein%w",
                       "Holà! Holà!&Les cannes ne sortent pas d'ici!&Je suis sérieux!^Voulez-vous arrêter?&\x1B&%gOui&Non%w")); //TODO Used AI translation as placeholder
+    CustomMessageManager::Instance->CreateMessage(
+        customMessageTableID, TEXT_CARPET_SALESMAN_CUSTOM_FAIL_TO_BUY,
+        CustomMessage("I'm sorry I can't sell you these fine specimens, they need an #experienced owner#.^"
+                      "Come back when you have had #Bombchus# of your own.", {QM_RED, QM_GREEN}));
 }

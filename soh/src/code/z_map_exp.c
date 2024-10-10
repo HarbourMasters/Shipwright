@@ -395,7 +395,7 @@ void Map_InitData(PlayState* play, s16 room) {
             } else if (play->sceneNum == SCENE_LAKE_HYLIA) {
                 if ((LINK_AGE_IN_YEARS == YEARS_ADULT) &&
                     ((!IS_RANDO && !CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER)) ||
-                     (IS_RANDO && !Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_WATER_TEMPLE)))) {
+                     (IS_RANDO && !Flags_GetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP)))) {
                     extendedMapIndex = 0x15;
                 }
             } else if (play->sceneNum == SCENE_GERUDO_VALLEY) {
