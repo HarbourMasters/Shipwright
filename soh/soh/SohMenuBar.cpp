@@ -778,8 +778,17 @@ void DrawEnhancementsMenu() {
                     "Wearing the Bunny Hood grants a speed increase like in Majora's Mask. The longer jump option is not accounted for in randomizer logic.\n\n"
                     "Also disables NPC's reactions to wearing the Bunny Hood."
                 );
-                UIWidgets::PaddedEnhancementCheckbox("Bunny Hood Equippable as Adult", CVAR_ENHANCEMENT("AdultBunnyHood"), true, false, (CVarGetInteger(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_VANILLA) == BUNNY_HOOD_VANILLA), "Only available with increased bunny hood speed", UIWidgets::CheckboxGraphics::Cross, false);
-                UIWidgets::Tooltip("Allows the bunny hood to be equipped normally from the pause menu as adult.");
+                UIWidgets::PaddedEnhancementCheckbox("Masks Equippable as Adult", CVAR_ENHANCEMENT("AdultMasks"), true, false);
+                UIWidgets::Tooltip("Allows masks to be equipped normally from the pause menu as adult.");
+                UIWidgets::PaddedEnhancementCheckbox("Persistent masks", CVAR_ENHANCEMENT("PersistentMasks"), true, false);
+                UIWidgets::Tooltip(
+                    "Stops masks from automatically unequipping on certain situations:\n"
+                    "- When entering a new scene\n"
+                    "- When not in any C button or the D-Pad\n"
+                    "- When saving and quitting\n"
+                    "- When dying\n"
+                    "- When traveling thru time (if \"Masks Equippable as Adult\" is activated)"
+                );
                 UIWidgets::PaddedEnhancementCheckbox("Mask Select in Inventory", CVAR_ENHANCEMENT("MaskSelect"), true, false);
                 UIWidgets::Tooltip("After completing the mask trading sub-quest, press A and any direction on the mask slot to change masks");
                 UIWidgets::PaddedEnhancementCheckbox("Nuts explode bombs", CVAR_ENHANCEMENT("NutsExplodeBombs"), true, false);

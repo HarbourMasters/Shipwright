@@ -539,14 +539,19 @@ void Play_Init(GameState* thisx) {
                  (s32)(zAllocAligned + zAllocSize) - (s32)(zAllocAligned - zAlloc));
 
     Fault_AddClient(&D_801614B8, ZeldaArena_Display, NULL, NULL);
-    // In order to keep bunny hood equipped on first load, we need to pre-set the age reqs for the item and slot
-    if ((CVarGetInteger(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA && CVarGetInteger(CVAR_ENHANCEMENT("AdultBunnyHood"), 0)) || CVarGetInteger(CVAR_CHEAT("TimelessEquipment"), 0)) {
-        gItemAgeReqs[ITEM_MASK_BUNNY] = AGE_REQ_NONE;
-        if(INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_MASK_BUNNY)
+    // In order to keep masks equipped on first load, we need to pre-set the age reqs for the item and slot
+    if (CVarGetInteger(CVAR_ENHANCEMENT("AdultMasks"), 0) || CVarGetInteger(CVAR_CHEAT("TimelessEquipment"), 0)) {
+        for (int i = ITEM_MASK_KEATON; i <= ITEM_MASK_TRUTH; i += 1) {
+            gItemAgeReqs[i] = AGE_REQ_NONE;
+        }
+        if (INV_CONTENT(ITEM_TRADE_CHILD) >= ITEM_MASK_KEATON && INV_CONTENT(ITEM_TRADE_CHILD) <= ITEM_MASK_TRUTH) {
             gSlotAgeReqs[SLOT_TRADE_CHILD] = AGE_REQ_NONE;
-    }
-    else {
-        gItemAgeReqs[ITEM_MASK_BUNNY] = gSlotAgeReqs[SLOT_TRADE_CHILD] = AGE_REQ_CHILD;
+        }
+    } else {
+        for (int i = ITEM_MASK_KEATON; i <= ITEM_MASK_TRUTH; i += 1) {
+            gItemAgeReqs[i] = AGE_REQ_CHILD;
+        }
+        gSlotAgeReqs[SLOT_TRADE_CHILD] = AGE_REQ_CHILD;
     }
     func_800304DC(play, &play->actorCtx, play->linkActorEntry);
 

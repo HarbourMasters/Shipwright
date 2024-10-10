@@ -140,6 +140,10 @@ void Sram_OpenSave() {
             break;
     }
 
+    if (!CVarGetInteger(CVAR_ENHANCEMENT("PersistentMasks"), 0)) {
+        gSaveContext.maskMemory = PLAYER_MASK_NONE;
+    }
+
     osSyncPrintf("scene_no = %d\n", gSaveContext.entranceIndex);
     osSyncPrintf(VT_RST);
 

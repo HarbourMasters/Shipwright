@@ -1089,7 +1089,6 @@ static s8 sItemActions[] = {
     PLAYER_IA_SWORD_BIGGORON,      // ITEM_SWORD_BIGGORON
 };
 
-static u8 sMaskMemory;
 u8 gWalkSpeedToggle1;
 u8 gWalkSpeedToggle2;
 
@@ -2251,36 +2250,19 @@ void Player_ProcessItemButtons(Player* this, PlayState* play) {
     s32 item;
     s32 i;
 
-    if (this->currentMask != PLAYER_MASK_NONE) {
-        if (CVarGetInteger(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA) {
-            s32 maskItem = this->currentMask - PLAYER_MASK_KEATON + ITEM_MASK_KEATON;
-            bool hasOnDpad = false;
-            if (CVarGetInteger(CVAR_SETTING("DpadEquips"), 0) != 0) {
-                for (int buttonIndex = 4; buttonIndex < 8; buttonIndex++) {
-                    hasOnDpad |= gSaveContext.equips.buttonItems[buttonIndex] == maskItem;
-                }
-            }
+    if (this->currentMask != PLAYER_MASK_NONE && !CVarGetInteger(CVAR_ENHANCEMENT("PersistentMasks"), 0)) {
+        maskItemAction = this->currentMask - 1 + PLAYER_IA_MASK_KEATON;
 
-            if (gSaveContext.equips.buttonItems[0] != maskItem && gSaveContext.equips.buttonItems[1] != maskItem &&
-                gSaveContext.equips.buttonItems[2] != maskItem && gSaveContext.equips.buttonItems[3] != maskItem &&
-                !hasOnDpad) {
-                this->currentMask = sMaskMemory = PLAYER_MASK_NONE;
-                func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
+        bool hasOnDpad = false;
+        if (CVarGetInteger(CVAR_SETTING("DpadEquips"), 0) != 0) {
+            for (int buttonIndex = 0; buttonIndex < 4; buttonIndex++) {
+                hasOnDpad |= Player_ItemIsItemAction(DPAD_ITEM(buttonIndex), maskItemAction);
             }
-        } else {
-            maskItemAction = this->currentMask - 1 + PLAYER_IA_MASK_KEATON;
-
-            bool hasOnDpad = false;
-            if (CVarGetInteger(CVAR_SETTING("DpadEquips"), 0) != 0) {
-                for (int buttonIndex = 0; buttonIndex < 4; buttonIndex++) {
-                    hasOnDpad |= Player_ItemIsItemAction(DPAD_ITEM(buttonIndex), maskItemAction);
-                }
-            }
-            if (!Player_ItemIsItemAction(C_BTN_ITEM(0), maskItemAction) &&
-                !Player_ItemIsItemAction(C_BTN_ITEM(1), maskItemAction) &&
-                !Player_ItemIsItemAction(C_BTN_ITEM(2), maskItemAction) && !hasOnDpad) {
-                this->currentMask = PLAYER_MASK_NONE;
-            }
+        }
+        if (!Player_ItemIsItemAction(C_BTN_ITEM(0), maskItemAction) &&
+            !Player_ItemIsItemAction(C_BTN_ITEM(1), maskItemAction) &&
+            !Player_ItemIsItemAction(C_BTN_ITEM(2), maskItemAction) && !hasOnDpad) {
+            this->currentMask = PLAYER_MASK_NONE;
         }
     }
 
@@ -3221,7 +3203,8 @@ void Player_UseItem(PlayState* play, Player* this, s32 item) {
                     this->currentMask = itemAction - PLAYER_IA_MASK_KEATON + 1;
                 }
 
-                sMaskMemory = this->currentMask;
+                gSaveContext.maskMemory = this->currentMask;
+
                 func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
             } else if (((itemAction >= PLAYER_IA_OCARINA_FAIRY) && (itemAction <= PLAYER_IA_OCARINA_OF_TIME)) ||
                 (itemAction >= PLAYER_IA_BOTTLE_FISH)) {
@@ -5069,7 +5052,9 @@ void func_8083A0F4(PlayState* play, Player* this) {
             this->interactRangeActor->parent = &this->actor;
             Player_SetupAction(play, this, Player_Action_8084F608, 0);
             this->stateFlags1 |= PLAYER_STATE1_IN_CUTSCENE;
-            sMaskMemory = PLAYER_MASK_NONE;
+            if (!CVarGetInteger(CVAR_ENHANCEMENT("PersistentMasks"), 0) || !CVarGetInteger(CVAR_ENHANCEMENT("AdultMasks"), 0)) {
+                gSaveContext.maskMemory = PLAYER_MASK_NONE;
+            }
         } else {
             LinkAnimationHeader* anim;
 
@@ -8940,7 +8925,9 @@ void func_80843AE8(PlayState* play, Player* this) {
         OnePointCutscene_Init(play, 9908, 125, &this->actor, MAIN_CAM);
     } else if (play->gameOverCtx.state == GAMEOVER_DEATH_WAIT_GROUND) {
         play->gameOverCtx.state = GAMEOVER_DEATH_DELAY_MENU;
-        sMaskMemory = PLAYER_MASK_NONE;
+        if (!CVarGetInteger(CVAR_ENHANCEMENT("PersistentMasks"), 0)) {
+            gSaveContext.maskMemory = PLAYER_MASK_NONE;
+        }
     }
 }
 
@@ -10191,11 +10178,12 @@ void Player_Init(Actor* thisx, PlayState* play2) {
     Player_UseItem(play, this, ITEM_NONE);
     Player_SetEquipmentData(play, this);
     this->prevBoots = this->currentBoots;
-    if (CVarGetInteger(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA) {
+    //keep masks thru loading zones
+    if (CVarGetInteger(CVAR_ENHANCEMENT("PersistentMasks"), 0)) {
         if (INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_SOLD_OUT) {
-            sMaskMemory = PLAYER_MASK_NONE;
+            gSaveContext.maskMemory = PLAYER_MASK_NONE;
         }
-        this->currentMask = sMaskMemory;
+        this->currentMask = gSaveContext.maskMemory;
     }
     Player_InitCommon(this, play, gPlayerSkelHeaders[((void)0, gSaveContext.linkAge)]);
     this->giObjectSegment = (void*)(((uintptr_t)ZELDA_ARENA_MALLOC_DEBUG(0x3008) + 8) & ~0xF);
