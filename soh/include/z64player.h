@@ -64,6 +64,12 @@ typedef enum {
     /* 0x09 */ PLAYER_MASK_MAX
 } PlayerMask;
 
+typedef enum PlayerIdleType {
+    /* -0x1 */ PLAYER_IDLE_CRIT_HEALTH = -1,
+    /*  0x0 */ PLAYER_IDLE_DEFAULT,
+    /*  0x1 */ PLAYER_IDLE_FIDGET
+} PlayerIdleType;
+
 typedef enum {
     /* 0x00 */ PLAYER_IA_NONE,
     /* 0x01 */ PLAYER_IA_LAST_USED,
@@ -470,7 +476,7 @@ typedef struct {
 #define PLAYER_STATE2_PLAY_FOR_ACTOR (1 << 25)
 #define PLAYER_STATE2_REFLECTION (1 << 26) //Handles Dark Link's Reflection
 #define PLAYER_STATE2_OCARINA_PLAYING (1 << 27)
-#define PLAYER_STATE2_IDLING (1 << 28)
+#define PLAYER_STATE2_IDLE_FIDGET (1 << 28)
 #define PLAYER_STATE2_DISABLE_DRAW (1 << 29)
 #define PLAYER_STATE2_SWORD_LUNGE (1 << 30)
 #define PLAYER_STATE2_FORCED_VOID_OUT (1 << 31)
@@ -573,7 +579,7 @@ typedef struct Player {
     /* 0x06A0 */ f32 unk_6A0;
     /* 0x06A4 */ f32 closestSecretDistSq;
     /* 0x06A8 */ Actor* unk_6A8;
-    /* 0x06AC */ s8 unk_6AC;
+    /* 0x06AC */ s8 idleType;
     /* 0x06AD */ u8 unk_6AD;
     /* 0x06AE */ u16 unk_6AE;
     /* 0x06B0 */ s16 unk_6B0;
