@@ -635,14 +635,14 @@ void SetAreas(){
 //RANDOTODO give entrances an enum like RandomizerCheck, the give them all areas here,
 //then use those areas to not need to recursivly find ItemLocation areas when an identifying entrance's area
   for (int regionType = 0; regionType < RR_MARKER_AREAS_END; regionType++) {
-    Region region = areaTable[regionType];
-    std::set<RandomizerArea> areas = region.GetAllAreas();
-    std::set<Region*> regionsToSet = {&region};
+    Region* region = &areaTable[regionType];
+    std::set<RandomizerArea> areas = region->GetAllAreas();
+    std::set<Region*> regionsToSet = {region};
     if (areas.empty()) {
-      LookForExternalArea(&region, regionsToSet, areas);
+      LookForExternalArea(region, regionsToSet, areas);
       //If we found nothing, try again in low priority mode to try every entrance
       if (areas.empty()) {
-        LookForExternalArea(&region, regionsToSet, areas, true);
+        LookForExternalArea(region, regionsToSet, areas, true);
         //If we still found nothing, we're disconnected, use RA_NONE to represent that
         if (areas.empty()){
           areas.insert(RA_NONE);
