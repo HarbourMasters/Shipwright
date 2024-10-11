@@ -1159,17 +1159,14 @@ void SaveManager::SaveFileThreaded(int fileNum, SaveContext* saveContext, int se
         for (auto& sectionHandlerPair : sectionSaveHandlers) {
             auto& saveFuncInfo = sectionHandlerPair.second;
             // Don't call SaveFuncs for sections that aren't tied to game save
-            if (!saveFuncInfo.saveWithBase) {
+            if (!saveFuncInfo.saveWithBase || (saveFuncInfo.name == "randomizer" && !IS_RANDO)) {
                 continue;
             }
             nlohmann::json& sectionBlock = saveBlock["sections"][saveFuncInfo.name];
             sectionBlock["version"] = sectionHandlerPair.second.version;
             // If any save file is loaded for medatata, or a spoiler log is loaded (not sure which at this point), there is still data in the "randomizer" section
             // This clears the randomizer data block if and only if the section being called is "randomizer" and the current save file is not a randomizer save file.
-            if (sectionHandlerPair.second.name == "randomizer" && !IS_RANDO) {
-                sectionBlock["data"] = nlohmann::json::object();
-                continue;
-            }
+
 
             currentJsonContext = &sectionBlock["data"];
             sectionHandlerPair.second.func(saveContext, sectionID, true);
@@ -1308,6 +1305,9 @@ void SaveManager::LoadFile(int fileNum) {
                         continue;
                     }
                     currentJsonContext = &block.value()["data"];
+                    if (currentJsonContext->empty()) {
+                        continue;
+                    }
                     handler[sectionVersion]();
                 }
                 break;
