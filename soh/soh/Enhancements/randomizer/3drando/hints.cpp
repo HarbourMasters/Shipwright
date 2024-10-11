@@ -504,11 +504,6 @@ void CreateWarpSongTexts() {
       RandomizerArea destination = RA_NONE;
       if (!entrance->GetConnectedRegion()->GetAllAreas().empty()){
         destination = *entrance->GetConnectedRegion()->GetAllAreas().begin();
-      } else {
-        auto test = *entrance->GetConnectedRegion()->GetAllAreas().begin();
-        auto testtwo = entrance->GetConnectedRegion()->GetAllAreas().empty();
-        auto testthree = entrance->GetConnectedRegion()->GetAllAreas().size();
-        destination = RA_NONE;
       }
       switch (entrance->GetIndex()) {
         case 0x0600: // minuet RANDOTODO make into entrance hints when they are added
