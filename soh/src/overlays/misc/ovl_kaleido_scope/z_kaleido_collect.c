@@ -80,9 +80,38 @@ void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
     static u8 D_8082A124[] = {
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     };
-    static void* D_8082A130[] = {
-        gOcarinaBtnIconATex, gOcarinaBtnIconCDownTex, gOcarinaBtnIconCRightTex, gOcarinaBtnIconCLeftTex, gOcarinaBtnIconCUpTex,
+
+    int32_t sOcarinaBtnMaps[5] = { CVarGetInteger("gOcarinaD4BtnMap", BTN_A),
+                                   CVarGetInteger("gOcarinaF4BtnMap", BTN_CDOWN),
+                                   CVarGetInteger("gOcarinaA4BtnMap", BTN_CRIGHT),
+                                   CVarGetInteger("gOcarinaB4BtnMap", BTN_CLEFT),
+                                   CVarGetInteger("gOcarinaD5BtnMap", BTN_CUP)
     };
+
+    // Hack to get custom ocarina controls to override default
+    static void* sOcarinaNoteTextures[5];
+
+    for (int i = 0; i < 5; i++) {
+        switch (sOcarinaBtnMaps[i]) {
+            default:
+            case BTN_A:
+                sOcarinaNoteTextures[i] = gOcarinaBtnIconATex;
+                break;
+            case BTN_CDOWN:
+                sOcarinaNoteTextures[i] = gOcarinaBtnIconCDownTex;
+                break;
+            case BTN_CRIGHT:
+                sOcarinaNoteTextures[i] = gOcarinaBtnIconCRightTex;
+                break;
+            case BTN_CLEFT:
+                sOcarinaNoteTextures[i] = gOcarinaBtnIconCLeftTex;
+                break;
+            case BTN_CUP:
+                sOcarinaNoteTextures[i] = gOcarinaBtnIconCUpTex;
+                break;
+        }
+    }
+
     static u16 D_8082A144[] = {
         0xFFCC, 0xFFCC, 0xFFCC, 0xFFCC, 0xFFCC,
     };
@@ -543,26 +572,60 @@ void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
                     gDPPipeSync(POLY_KAL_DISP++);
 
                     s16 Notes_alpha = D_8082A150[sp218];
-                    if (D_8082A124[sp218] == 0) {
-                        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, aButtonColor.r, aButtonColor.g, aButtonColor.b, Notes_alpha);
+                    // Quick hack for getting custom colors to work with custom ocarina controls
+                    switch (sOcarinaBtnMaps [D_8082A124[sp218]]) {
+                        case BTN_A:
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, aButtonColor.r, aButtonColor.g, aButtonColor.b,
+                                            Notes_alpha);
+                            break;
+                        case BTN_CDOWN:
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cDownButtonColor.r, cDownButtonColor.g,
+                                            cDownButtonColor.b, Notes_alpha);
+                            break;
+                        case BTN_CRIGHT:
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cRightButtonColor.r, cRightButtonColor.g,
+                                            cRightButtonColor.b, Notes_alpha);
+                            break;
+                        case BTN_CLEFT:
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cLeftButtonColor.r, cLeftButtonColor.g,
+                                            cLeftButtonColor.b, Notes_alpha);
+                            break;
+                        case BTN_CUP:
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cUpButtonColor.r, cUpButtonColor.g, cUpButtonColor.b,
+                                            Notes_alpha);
+                            break;
+                        default:
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cButtonsColor.r, cButtonsColor.g, cButtonsColor.b,
+                                            Notes_alpha);
+                            break;
+                    }
+                    /// OLD FUNCTIONALITY
+                    /*if (D_8082A124[sp218] == 0) {
+                        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, aButtonColor.r, aButtonColor.g, aButtonColor.b,
+                                        Notes_alpha);
                     } else {
                         if (D_8082A124[sp218] == OCARINA_NOTE_D5) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cUpButtonColor.r, cUpButtonColor.g, cUpButtonColor.b, Notes_alpha);
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cUpButtonColor.r, cUpButtonColor.g, cUpButtonColor.b,
+                                            Notes_alpha);
                         } else if (D_8082A124[sp218] == OCARINA_NOTE_B4) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cLeftButtonColor.r, cLeftButtonColor.g, cLeftButtonColor.b, Notes_alpha);
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cLeftButtonColor.r, cLeftButtonColor.g,
+                                            cLeftButtonColor.b, Notes_alpha);
                         } else if (D_8082A124[sp218] == OCARINA_NOTE_A4) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cRightButtonColor.r, cRightButtonColor.g, cRightButtonColor.b, Notes_alpha);
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cRightButtonColor.r, cRightButtonColor.g,
+                                            cRightButtonColor.b, Notes_alpha);
                         } else if (D_8082A124[sp218] == OCARINA_NOTE_F4) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cDownButtonColor.r, cDownButtonColor.g, cDownButtonColor.b, Notes_alpha);
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cDownButtonColor.r, cDownButtonColor.g,
+                                            cDownButtonColor.b, Notes_alpha);
                         } else {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cButtonsColor.r, cButtonsColor.g, cButtonsColor.b, Notes_alpha);
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cButtonsColor.r, cButtonsColor.g, cButtonsColor.b,
+                                            Notes_alpha);
                         }
-                    }
+                    }*/
 
                     gDPSetEnvColor(POLY_KAL_DISP++, 10, 10, 10, 0);
                     gSPVertex(POLY_KAL_DISP++, &pauseCtx->questVtx[sp21A], 4, 0);
 
-                    gDPLoadTextureBlock(POLY_KAL_DISP++, D_8082A130[D_8082A124[sp218]], G_IM_FMT_IA, G_IM_SIZ_8b, 16,
+                    gDPLoadTextureBlock(POLY_KAL_DISP++, sOcarinaNoteTextures[D_8082A124[sp218]], G_IM_FMT_IA, G_IM_SIZ_8b, 16,
                                         16, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
                                         G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
@@ -584,21 +647,55 @@ void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
 
                 if (pauseCtx->unk_1E4 == 8) {
                     s16 Notes_alpha = 200;
-                    if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == 0) {
-                        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, aButtonColor.r, aButtonColor.g, aButtonColor.b, Notes_alpha);
+                    // Quick hack for getting custom colors to work with custom ocarina controls
+                    switch (sOcarinaBtnMaps[gOcarinaSongNotes[sp224].notesIdx[phi_s3]]) {
+                        case BTN_A:
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, aButtonColor.r, aButtonColor.g, aButtonColor.b,
+                                            Notes_alpha);
+                            break;
+                        case BTN_CDOWN:
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cDownButtonColor.r, cDownButtonColor.g,
+                                            cDownButtonColor.b, Notes_alpha);
+                            break;
+                        case BTN_CRIGHT:
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cRightButtonColor.r, cRightButtonColor.g,
+                                            cRightButtonColor.b, Notes_alpha);
+                            break;
+                        case BTN_CLEFT:
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cLeftButtonColor.r, cLeftButtonColor.g,
+                                            cLeftButtonColor.b, Notes_alpha);
+                            break;
+                        case BTN_CUP:
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cUpButtonColor.r, cUpButtonColor.g, cUpButtonColor.b,
+                                            Notes_alpha);
+                            break;
+                        default:
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cButtonsColor.r, cButtonsColor.g, cButtonsColor.b,
+                                            Notes_alpha);
+                            break;
+                    }
+                    /// OLD FUNCTIONALITY
+                    /*if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == 0) {
+                        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, aButtonColor.r, aButtonColor.g, aButtonColor.b,
+                                        Notes_alpha);
                     } else {
                         if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == OCARINA_NOTE_D5) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cUpButtonColor.r, cUpButtonColor.g, cUpButtonColor.b, Notes_alpha);
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cUpButtonColor.r, cUpButtonColor.g, cUpButtonColor.b,
+                                            Notes_alpha);
                         } else if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == OCARINA_NOTE_B4) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cLeftButtonColor.r, cLeftButtonColor.g, cLeftButtonColor.b, Notes_alpha);
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cLeftButtonColor.r, cLeftButtonColor.g,
+                                            cLeftButtonColor.b, Notes_alpha);
                         } else if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == OCARINA_NOTE_A4) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cRightButtonColor.r, cRightButtonColor.g, cRightButtonColor.b, Notes_alpha);
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cRightButtonColor.r, cRightButtonColor.g,
+                                            cRightButtonColor.b, Notes_alpha);
                         } else if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == OCARINA_NOTE_F4) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cDownButtonColor.r, cDownButtonColor.g, cDownButtonColor.b, Notes_alpha);
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cDownButtonColor.r, cDownButtonColor.g,
+                                            cDownButtonColor.b, Notes_alpha);
                         } else {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cButtonsColor.r, cButtonsColor.g, cButtonsColor.b, Notes_alpha);
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cButtonsColor.r, cButtonsColor.g, cButtonsColor.b,
+                                            Notes_alpha);
                         }
-                    }
+                    }*/
                 } else {
                     gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 150, 150, 150, 150);
                 }
@@ -607,7 +704,7 @@ void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
 
                 gSPVertex(POLY_KAL_DISP++, &pauseCtx->questVtx[sp21A], 4, 0);
 
-                gDPLoadTextureBlock(POLY_KAL_DISP++, D_8082A130[gOcarinaSongNotes[sp224].notesIdx[phi_s3]], G_IM_FMT_IA,
+                gDPLoadTextureBlock(POLY_KAL_DISP++, sOcarinaNoteTextures[gOcarinaSongNotes[sp224].notesIdx[phi_s3]], G_IM_FMT_IA,
                                     G_IM_SIZ_8b, 16, 16, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
                                     G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
@@ -650,27 +747,61 @@ void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
                     gDPPipeSync(POLY_KAL_DISP++);
 
                     s16 Notes_alpha = D_8082A150[phi_s3];
-                    if (D_8082A124[phi_s3] == 0) {
-                        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, aButtonColor.r, aButtonColor.g, aButtonColor.b, Notes_alpha);
+                    // Quick hack for getting custom colors to work with custom ocarina controls
+                    switch (sOcarinaBtnMaps [gOcarinaSongNotes[sp224].notesIdx[phi_s3]]) {
+                        case BTN_A:
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, aButtonColor.r, aButtonColor.g, aButtonColor.b,
+                                            Notes_alpha);
+                            break;
+                        case BTN_CDOWN:
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cDownButtonColor.r, cDownButtonColor.g,
+                                            cDownButtonColor.b, Notes_alpha);
+                            break;
+                        case BTN_CRIGHT:
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cRightButtonColor.r, cRightButtonColor.g,
+                                            cRightButtonColor.b, Notes_alpha);
+                            break;
+                        case BTN_CLEFT:
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cLeftButtonColor.r, cLeftButtonColor.g,
+                                            cLeftButtonColor.b, Notes_alpha);
+                            break;
+                        case BTN_CUP:
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cUpButtonColor.r, cUpButtonColor.g, cUpButtonColor.b,
+                                            Notes_alpha);
+                            break;
+                        default:
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cButtonsColor.r, cButtonsColor.g, cButtonsColor.b,
+                                            Notes_alpha);
+                            break;
+                    }
+                    /// OLD FUNCTIONALITY
+                    /*if (D_8082A124[phi_s3] == 0) {
+                        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, aButtonColor.r, aButtonColor.g, aButtonColor.b,
+                                        Notes_alpha);
                     } else {
                         if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == OCARINA_NOTE_D5) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cUpButtonColor.r, cUpButtonColor.g, cUpButtonColor.b, Notes_alpha);
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cUpButtonColor.r, cUpButtonColor.g, cUpButtonColor.b,
+                                            Notes_alpha);
                         } else if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == OCARINA_NOTE_B4) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cLeftButtonColor.r, cLeftButtonColor.g, cLeftButtonColor.b, Notes_alpha);
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cLeftButtonColor.r, cLeftButtonColor.g,
+                                            cLeftButtonColor.b, Notes_alpha);
                         } else if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == OCARINA_NOTE_A4) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cRightButtonColor.r, cRightButtonColor.g, cRightButtonColor.b, Notes_alpha);
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cRightButtonColor.r, cRightButtonColor.g,
+                                            cRightButtonColor.b, Notes_alpha);
                         } else if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == OCARINA_NOTE_F4) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cDownButtonColor.r, cDownButtonColor.g, cDownButtonColor.b, Notes_alpha);
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cDownButtonColor.r, cDownButtonColor.g,
+                                            cDownButtonColor.b, Notes_alpha);
                         } else {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cButtonsColor.r, cButtonsColor.g, cButtonsColor.b, Notes_alpha);
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cButtonsColor.r, cButtonsColor.g, cButtonsColor.b,
+                                            Notes_alpha);
                         }
-                    }
+                    }*/
 
                     gDPSetEnvColor(POLY_KAL_DISP++, 10, 10, 10, 0);
 
                     gSPVertex(POLY_KAL_DISP++, &pauseCtx->questVtx[sp21A], 4, 0);
 
-                    gDPLoadTextureBlock(POLY_KAL_DISP++, D_8082A130[D_8082A124[phi_s3]], G_IM_FMT_IA, G_IM_SIZ_8b, 16,
+                    gDPLoadTextureBlock(POLY_KAL_DISP++, sOcarinaNoteTextures[D_8082A124[phi_s3]], G_IM_FMT_IA, G_IM_SIZ_8b, 16,
                                         16, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
                                         G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
