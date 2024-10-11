@@ -183,12 +183,6 @@ void EnPoSisters_Init(Actor* thisx, PlayState* play) {
 
     this->epoch++;
 
-    // Skip Poe Intro Cutscene
-    if (IS_RANDO && thisx->params == 4124 && !Randomizer_GetSettingValue(RSK_ENABLE_GLITCH_CUTSCENES)) {
-        Flags_SetSwitch(play, 0x1B);
-        Actor_Kill(thisx);
-    }
-
     Actor_ProcessInitChain(&this->actor, sInitChain);
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 50.0f);
     SkelAnime_Init(play, &this->skelAnime, &gPoeSistersSkel, &gPoeSistersSwayAnim, this->jointTable,
@@ -862,11 +856,6 @@ void func_80ADB338(EnPoSisters* this, PlayState* play) {
         if (Actor_WorldDistXZToPoint(&player->actor, &this->actor.home.pos) < 600.0f) {
             if (this->unk_19C != 0) {
                 this->unk_19C--;
-
-                // Force Meg to respawn instantly after getting hit
-                if (IS_RANDO) {
-                    this->unk_19C = 0;
-                }
             }
         } else {
             this->unk_19C = 100;

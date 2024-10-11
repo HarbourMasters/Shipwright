@@ -1,40 +1,77 @@
 #include "fill.hpp"
 
 #include "custom_messages.hpp"
-#include "dungeon.hpp"
-#include "item_location.hpp"
+#include "../dungeon.h"
+#include "../context.h"
 #include "item_pool.hpp"
-#include "location_access.hpp"
-#include "logic.hpp"
 #include "random.hpp"
 #include "spoiler_log.hpp"
 #include "starting_inventory.hpp"
 #include "hints.hpp"
-#include "hint_list.hpp"
-#include "entrance.hpp"
 #include "shops.hpp"
+#include "pool_functions.hpp"
+//#include "debug.hpp"
+#include "soh/Enhancements/randomizer/static_data.h"
+#include "soh/Enhancements/debugger/performanceTimer.h"
 
 #include <vector>
 #include <list>
+#include <set>
 #include <spdlog/spdlog.h>
 
 using namespace CustomMessages;
-using namespace Logic;
-using namespace Settings;
+using namespace Rando;
+
 
 static bool placementFailure = false;
 
+
+PriceSettingsStruct shopsanityPrices = {RSK_SHOPSANITY_PRICES, 
+                                        RSK_SHOPSANITY_PRICES_FIXED_PRICE,
+                                        RSK_SHOPSANITY_PRICES_RANGE_1,
+                                        RSK_SHOPSANITY_PRICES_RANGE_2,
+                                        RSK_SHOPSANITY_PRICES_NO_WALLET_WEIGHT,
+                                        RSK_SHOPSANITY_PRICES_CHILD_WALLET_WEIGHT,
+                                        RSK_SHOPSANITY_PRICES_ADULT_WALLET_WEIGHT,
+                                        RSK_SHOPSANITY_PRICES_GIANT_WALLET_WEIGHT,
+                                        RSK_SHOPSANITY_PRICES_TYCOON_WALLET_WEIGHT,
+                                        RSK_SHOPSANITY_PRICES_AFFORDABLE};
+  
+PriceSettingsStruct scrubPrices = {RSK_SCRUBS_PRICES, 
+                                   RSK_SCRUBS_PRICES_FIXED_PRICE,
+                                   RSK_SCRUBS_PRICES_RANGE_1,
+                                   RSK_SCRUBS_PRICES_RANGE_2,
+                                   RSK_SCRUBS_PRICES_NO_WALLET_WEIGHT,
+                                   RSK_SCRUBS_PRICES_CHILD_WALLET_WEIGHT,
+                                   RSK_SCRUBS_PRICES_ADULT_WALLET_WEIGHT,
+                                   RSK_SCRUBS_PRICES_GIANT_WALLET_WEIGHT,
+                                   RSK_SCRUBS_PRICES_TYCOON_WALLET_WEIGHT,
+                                   RSK_SCRUBS_PRICES_AFFORDABLE};
+
+PriceSettingsStruct merchantPrices = {RSK_MERCHANT_PRICES, 
+                                      RSK_MERCHANT_PRICES_FIXED_PRICE,
+                                      RSK_MERCHANT_PRICES_RANGE_1,
+                                      RSK_MERCHANT_PRICES_RANGE_2,
+                                      RSK_MERCHANT_PRICES_NO_WALLET_WEIGHT,
+                                      RSK_MERCHANT_PRICES_CHILD_WALLET_WEIGHT,
+                                      RSK_MERCHANT_PRICES_ADULT_WALLET_WEIGHT,
+                                      RSK_MERCHANT_PRICES_GIANT_WALLET_WEIGHT,
+                                      RSK_MERCHANT_PRICES_TYCOON_WALLET_WEIGHT,
+                                      RSK_MERCHANT_PRICES_AFFORDABLE};
+
 static void RemoveStartingItemsFromPool() {
-  for (uint32_t startingItem : StartingInventory) {
+  for (RandomizerGet startingItem : StartingInventory) {
     for (size_t i = 0; i < ItemPool.size(); i++) {
-      if (startingItem == BIGGORON_SWORD) {
-        if (ItemPool[i] == GIANTS_KNIFE || ItemPool[i] == BIGGORON_SWORD) {
+      if (startingItem == RG_BIGGORON_SWORD) {
+        if (ItemPool[i] == RG_GIANTS_KNIFE || ItemPool[i] == RG_BIGGORON_SWORD) {
           ItemPool[i] = GetJunkItem();
         }
         continue;
-      } else if (startingItem == ItemPool[i] || (ItemTable(startingItem).IsBottleItem() && ItemTable(ItemPool[i]).IsBottleItem())) {
-        if (AdditionalHeartContainers > 0 && (startingItem == PIECE_OF_HEART || startingItem == TREASURE_GAME_HEART)) {
-          ItemPool[i] = HEART_CONTAINER;
+      } else if (startingItem == ItemPool[i] || (Rando::StaticData::RetrieveItem(startingItem).IsBottleItem() &&
+                                                 Rando::StaticData::RetrieveItem(ItemPool[i]).IsBottleItem())) {
+        if (AdditionalHeartContainers > 0 && 
+          (startingItem == RG_PIECE_OF_HEART || startingItem == RG_TREASURE_GAME_HEART)) {
+          ItemPool[i] = RG_HEART_CONTAINER;
           AdditionalHeartContainers--;
         } else {
           ItemPool[i] = GetJunkItem();
@@ -45,128 +82,191 @@ static void RemoveStartingItemsFromPool() {
   }
 }
 
-//This function will propogate Time of Day access through the entrance
-static bool UpdateToDAccess(Entrance* entrance, SearchMode mode) {
+static void PropagateTimeTravel(GetAccessibleLocationsStruct& gals, RandomizerGet ignore = RG_NONE, 
+                              bool stopOnBeatable = false, bool addToPlaythrough = false){
+  //special check for temple of time
+  if(gals.haveTimeAccess && gals.foundTempleOfTime && gals.validatedStartingRegion){
+    if (!RegionTable(RR_ROOT)->Adult() && RegionTable(RR_TOT_BEYOND_DOOR_OF_TIME)->Child()) { //RANDOTODO: sphere weirdness, other age locations not propagated in this sphere
+      RegionTable(RR_ROOT)->adultDay   = RegionTable(RR_TOT_BEYOND_DOOR_OF_TIME)->childDay;
+      RegionTable(RR_ROOT)->adultNight = RegionTable(RR_TOT_BEYOND_DOOR_OF_TIME)->childNight;
+      ProcessRegion(RegionTable(RR_ROOT), gals, ignore, stopOnBeatable, addToPlaythrough);
+    } else if (!RegionTable(RR_ROOT)->Child() && RegionTable(RR_TOT_BEYOND_DOOR_OF_TIME)->Adult()){
+      RegionTable(RR_ROOT)->childDay   = RegionTable(RR_TOT_BEYOND_DOOR_OF_TIME)->adultDay;
+      RegionTable(RR_ROOT)->childNight = RegionTable(RR_TOT_BEYOND_DOOR_OF_TIME)->adultNight;
+      ProcessRegion(RegionTable(RR_ROOT), gals, ignore, stopOnBeatable, addToPlaythrough);
+    }
+  }
+}
+
+//This function will propagate Time of Day access through the entrance
+static bool UpdateToDAccess(Entrance* entrance, Region* connection) {
+  StartPerformanceTimer(PT_TOD_ACCESS);
 
   bool ageTimePropogated = false;
+  Region* parent = entrance->GetParentRegion();
 
-  //propogate childDay, childNight, adultDay, and adultNight separately
-  Area* parent = entrance->GetParentRegion();
-  Area* connection = entrance->GetConnectedRegion();
-
-  if (!connection->childDay && parent->childDay && entrance->CheckConditionAtAgeTime(Logic::IsChild, AtDay)) {
+  if (!connection->childDay && parent->childDay && entrance->CheckConditionAtAgeTime(logic->IsChild, logic->AtDay)) {
     connection->childDay = true;
     ageTimePropogated = true;
   }
-  if (!connection->childNight && parent->childNight && entrance->CheckConditionAtAgeTime(Logic::IsChild, AtNight)) {
+  if (!connection->childNight && parent->childNight && entrance->CheckConditionAtAgeTime(logic->IsChild, logic->AtNight)) {
     connection->childNight = true;
     ageTimePropogated = true;
   }
-  if (!connection->adultDay && parent->adultDay && entrance->CheckConditionAtAgeTime(IsAdult, AtDay)) {
+  if (!connection->adultDay && parent->adultDay && entrance->CheckConditionAtAgeTime(logic->IsAdult, logic->AtDay)) {
     connection->adultDay = true;
     ageTimePropogated = true;
   }
-  if (!connection->adultNight && parent->adultNight && entrance->CheckConditionAtAgeTime(IsAdult, AtNight)) {
+  if (!connection->adultNight && parent->adultNight && entrance->CheckConditionAtAgeTime(logic->IsAdult, logic->AtNight)) {
     connection->adultNight = true;
     ageTimePropogated = true;
   }
 
-  //special check for temple of time
-  bool propogateTimeTravel = mode != SearchMode::TimePassAccess && mode != SearchMode::TempleOfTimeAccess;
-  if (!AreaTable(ROOT)->Adult() && AreaTable(TOT_BEYOND_DOOR_OF_TIME)->Child() && propogateTimeTravel) {
-    AreaTable(ROOT)->adultDay   = AreaTable(TOT_BEYOND_DOOR_OF_TIME)->childDay;
-    AreaTable(ROOT)->adultNight = AreaTable(TOT_BEYOND_DOOR_OF_TIME)->childNight;
-  } else if (!AreaTable(ROOT)->Child() && AreaTable(TOT_BEYOND_DOOR_OF_TIME)->Adult() && propogateTimeTravel){
-    AreaTable(ROOT)->childDay   = AreaTable(TOT_BEYOND_DOOR_OF_TIME)->adultDay;
-    AreaTable(ROOT)->childNight = AreaTable(TOT_BEYOND_DOOR_OF_TIME)->adultNight;
-  }
-
+  StopPerformanceTimer(PT_TOD_ACCESS);
   return ageTimePropogated;
 }
 
-// Various checks that need to pass for the world to be validated as completable
-static void ValidateWorldChecks(SearchMode& mode, bool checkPoeCollectorAccess, bool checkOtherEntranceAccess, std::vector<uint32_t>& areaPool) {
+// Check if key locations in the overworld are accessable
+static void ValidateOtherEntrance(GetAccessibleLocationsStruct& gals) {
+  auto ctx = Rando::Context::GetInstance();
   // Condition for validating Temple of Time Access
-  if (mode == SearchMode::TempleOfTimeAccess && ((Settings::ResolvedStartingAge == AGE_CHILD && AreaTable(TEMPLE_OF_TIME)->Adult()) || (Settings::ResolvedStartingAge == AGE_ADULT && AreaTable(TEMPLE_OF_TIME)->Child()) || !checkOtherEntranceAccess)) {
-    mode = SearchMode::ValidStartingRegion;
+  if (!gals.foundTempleOfTime && ((ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_CHILD && RegionTable(RR_TEMPLE_OF_TIME)->Adult()) || 
+                            (ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_ADULT && RegionTable(RR_TEMPLE_OF_TIME)->Child()))) {
+    gals.foundTempleOfTime = true;
   }
   // Condition for validating a valid starting region
-  if (mode == SearchMode::ValidStartingRegion) {
-    bool childAccess = Settings::ResolvedStartingAge == AGE_CHILD || AreaTable(TOT_BEYOND_DOOR_OF_TIME)->Child();
-    bool adultAccess = Settings::ResolvedStartingAge == AGE_ADULT || AreaTable(TOT_BEYOND_DOOR_OF_TIME)->Adult();
+  if (!gals.validatedStartingRegion) {
+    bool childAccess = ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_CHILD || RegionTable(RR_TOT_BEYOND_DOOR_OF_TIME)->Child();
+    bool adultAccess = ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_ADULT || RegionTable(RR_TOT_BEYOND_DOOR_OF_TIME)->Adult();
 
-    Area* kokiri = AreaTable(KOKIRI_FOREST);
-    Area* kakariko = AreaTable(KAKARIKO_VILLAGE);
+    Region* kokiri = RegionTable(RR_KOKIRI_FOREST);
+    Region* kakariko = RegionTable(RR_KAKARIKO_VILLAGE);
 
-    if ((childAccess && (kokiri->Child() || kakariko->Child())) ||
-        (adultAccess && (kokiri->Adult() || kakariko->Adult())) ||
-        !checkOtherEntranceAccess) {
-       mode = SearchMode::PoeCollectorAccess;
-       ApplyStartingInventory();
-       Logic::NoBottles = true;
+    if ((childAccess && (kokiri->Child() || kakariko->Child())) ||// RANDOTODO when proper ammo logic is done, this could probably be made optional
+        (adultAccess && (kokiri->Adult() || kakariko->Adult()))) {
+       gals.validatedStartingRegion = true;
+       ApplyStartingInventory(); // RANDOTODO when proper ammo logic is done, this could be moved to the start
     }
-  }
-  // Condition for validating Poe Collector Access
-  if (mode == SearchMode::PoeCollectorAccess && (AreaTable(MARKET_GUARD_HOUSE)->Adult() || !checkPoeCollectorAccess)) {
-    // Apply all items that are necessary for checking all location access
-      std::vector<uint32_t> itemsToPlace =
-          FilterFromPool(ItemPool, [](const auto i) { return ItemTable(i).IsAdvancement(); });
-    for (uint32_t unplacedItem : itemsToPlace) {
-      ItemTable(unplacedItem).ApplyEffect();
-    }
-    // Reset access as the non-starting age
-    if (Settings::ResolvedStartingAge == AGE_CHILD) {
-      for (uint32_t areaKey : areaPool) {
-        AreaTable(areaKey)->adultDay = false;
-        AreaTable(areaKey)->adultNight = false;
-      }
-    } else {
-      for (uint32_t areaKey : areaPool) {
-        AreaTable(areaKey)->childDay = false;
-        AreaTable(areaKey)->childNight = false;
-      }
-    }
-    mode = SearchMode::AllLocationsReachable;
-  } else {
-    Logic::NoBottles = false;
   }
 }
 
+// Apply all items that are necessary for checking all location access
+static void ApplyAllAdvancmentItems(){
+  std::vector<RandomizerGet> itemsToPlace =
+      FilterFromPool(ItemPool, [](const auto i) { return Rando::StaticData::RetrieveItem(i).IsAdvancement(); });
+  for (RandomizerGet unplacedItem : itemsToPlace) {
+      Rando::StaticData::RetrieveItem(unplacedItem).ApplyEffect();
+  }
+}
+
+// Check if everything in an entrance rando seed that needs to be avalible without items, is,
+// and if so allow obtaining items in logic
+static void ValidateSphereZero(GetAccessibleLocationsStruct& gals){
+  auto ctx = Rando::Context::GetInstance();
+  // Condition for verifying everything required for sphere 0, expanding search to all locations
+  if (logic->CanEmptyBigPoes && gals.validatedStartingRegion && gals.foundTempleOfTime && gals.haveTimeAccess) {
+    // Apply all items that are necessary for checking all location access
+    ApplyAllAdvancmentItems();
+    // Reset access as the non-starting age
+    if (ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_CHILD) {
+      for (RandomizerRegion regionKey : gals.regionPool) {
+        RegionTable(regionKey)->adultDay = false;
+        RegionTable(regionKey)->adultNight = false;
+      }
+    } else {
+      for (RandomizerRegion regionKey : gals.regionPool) {
+        RegionTable(regionKey)->childDay = false;
+        RegionTable(regionKey)->childNight = false;
+      }
+    }
+    //RANDOTODO do we want to keep the region pool after this reset? 
+    //It's a lot of potential looping over regions we have no access to
+    gals.sphereZeroComplete = true;
+  } 
+}
+
+//This function handles each possible exit
+void ProcessExits(Region* region, GetAccessibleLocationsStruct& gals, RandomizerGet ignore = RG_NONE, 
+                  bool stopOnBeatable = false, bool addToPlaythrough = false){
+  auto ctx = Rando::Context::GetInstance();
+  for (auto& exit : region->exits) {
+    Region* exitRegion = exit.GetConnectedRegion();
+    //Update Time of Day Access for the exit
+    if (UpdateToDAccess(&exit, exitRegion)) {
+      gals.logicUpdated = true;
+      if (!gals.sphereZeroComplete){
+        if (!gals.foundTempleOfTime || !gals.validatedStartingRegion){
+          ValidateOtherEntrance(gals);
+        }
+        ValidateSphereZero(gals);
+      }
+      //process the region we just expanded to, to reduce looping
+      ProcessRegion(exitRegion, gals, ignore, stopOnBeatable, addToPlaythrough);
+    }
+
+    //If the exit is accessible and hasn't been added yet, add it to the pool
+    //RANDOTODO do we want to add the region after the loop now, considering we
+    //are processing the new region immediately. Maybe a reverse for loop in ProcessRegion?
+    if (!exitRegion->addedToPool && exit.ConditionsMet()) {
+      exitRegion->addedToPool = true;
+      gals.regionPool.push_back(exit.GetConnectedRegionKey());
+    }
+
+    if (addToPlaythrough){
+      // RANDOTODO Should this match the regular spheres?
+      // Add shuffled entrances to the entrance playthrough
+      // Include bluewarps when unshuffled but dungeon or boss shuffle is on
+      if((exit.IsShuffled() || (exit.GetType() == Rando::EntranceType::BlueWarp && 
+          (ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES) || ctx->GetOption(RSK_SHUFFLE_BOSS_ENTRANCES)))) &&
+          !exit.IsAddedToPool() && !ctx->GetEntranceShuffler()->HasNoRandomEntrances()) {
+        gals.entranceSphere.push_back(&exit);
+        exit.AddToPool();
+        // Don't list a two-way coupled entrance from both directions
+        if (exit.GetReverse() != nullptr && exit.GetReplacement()->GetReverse() != nullptr && !exit.IsDecoupled()) {
+          exit.GetReplacement()->GetReverse()->AddToPool();
+        }
+      }
+    }
+  }
+}
+
+
 //Get the max number of tokens that can possibly be useful
 static int GetMaxGSCount() {
+  auto ctx = Rando::Context::GetInstance();
   //If bridge or LACS is set to tokens, get how many are required
   int maxBridge = 0;
   int maxLACS = 0;
-  if (Settings::Bridge.Is(RAINBOWBRIDGE_TOKENS)) {
-    maxBridge = Settings::BridgeTokenCount.Value<uint8_t>();
+  if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_TOKENS)) {
+    maxBridge = ctx->GetOption(RSK_RAINBOW_BRIDGE_TOKEN_COUNT).Value<uint8_t>();
   }
-  if (Settings::GanonsBossKey.Is(GANONSBOSSKEY_LACS_TOKENS)) {
-    maxLACS = Settings::LACSTokenCount.Value<uint8_t>();
+  if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_TOKENS)) {
+    maxLACS = ctx->GetOption(RSK_LACS_TOKEN_COUNT).Value<uint8_t>();
   }
   maxBridge = std::max(maxBridge, maxLACS);
   //Get the max amount of GS which could be useful from token reward locations
   int maxUseful = 0;
   //If the highest advancement item is a token, we know it is useless since it won't lead to an otherwise useful item
-  if (Location(KAK_100_GOLD_SKULLTULA_REWARD)->GetPlacedItem().IsAdvancement() && Location(KAK_100_GOLD_SKULLTULA_REWARD)->GetPlacedItem().GetItemType() != ITEMTYPE_TOKEN) {
+  if (ctx->GetItemLocation(RC_KAK_100_GOLD_SKULLTULA_REWARD)->GetPlacedItem().IsAdvancement() && ctx->GetItemLocation(RC_KAK_100_GOLD_SKULLTULA_REWARD)->GetPlacedItem().GetItemType() != ITEMTYPE_TOKEN) {
     maxUseful = 100;
-  }
-  else if (Location(KAK_50_GOLD_SKULLTULA_REWARD)->GetPlacedItem().IsAdvancement() && Location(KAK_50_GOLD_SKULLTULA_REWARD)->GetPlacedItem().GetItemType() != ITEMTYPE_TOKEN) {
-    maxUseful = 50;
-  }
-  else if (Location(KAK_40_GOLD_SKULLTULA_REWARD)->GetPlacedItem().IsAdvancement() && Location(KAK_40_GOLD_SKULLTULA_REWARD)->GetPlacedItem().GetItemType() != ITEMTYPE_TOKEN) {
-    maxUseful = 40;
-  }
-  else if (Location(KAK_30_GOLD_SKULLTULA_REWARD)->GetPlacedItem().IsAdvancement() && Location(KAK_30_GOLD_SKULLTULA_REWARD)->GetPlacedItem().GetItemType() != ITEMTYPE_TOKEN) {
-    maxUseful = 30;
-  }
-  else if (Location(KAK_20_GOLD_SKULLTULA_REWARD)->GetPlacedItem().IsAdvancement() && Location(KAK_20_GOLD_SKULLTULA_REWARD)->GetPlacedItem().GetItemType() != ITEMTYPE_TOKEN) {
-    maxUseful = 20;
-  }
-  else if (Location(KAK_10_GOLD_SKULLTULA_REWARD)->GetPlacedItem().IsAdvancement() && Location(KAK_10_GOLD_SKULLTULA_REWARD)->GetPlacedItem().GetItemType() != ITEMTYPE_TOKEN) {
-    maxUseful = 10;
+  } else if (ctx->GetItemLocation(RC_KAK_50_GOLD_SKULLTULA_REWARD)->GetPlacedItem().IsAdvancement() &&
+             ctx->GetItemLocation(RC_KAK_50_GOLD_SKULLTULA_REWARD)->GetPlacedItem().GetItemType() != ITEMTYPE_TOKEN) {
+      maxUseful = 50;
+  } else if (ctx->GetItemLocation(RC_KAK_40_GOLD_SKULLTULA_REWARD)->GetPlacedItem().IsAdvancement() &&
+             ctx->GetItemLocation(RC_KAK_40_GOLD_SKULLTULA_REWARD)->GetPlacedItem().GetItemType() != ITEMTYPE_TOKEN) {
+      maxUseful = 40;
+  } else if (ctx->GetItemLocation(RC_KAK_30_GOLD_SKULLTULA_REWARD)->GetPlacedItem().IsAdvancement() &&
+             ctx->GetItemLocation(RC_KAK_30_GOLD_SKULLTULA_REWARD)->GetPlacedItem().GetItemType() != ITEMTYPE_TOKEN) {
+      maxUseful = 30;
+  } else if (ctx->GetItemLocation(RC_KAK_20_GOLD_SKULLTULA_REWARD)->GetPlacedItem().IsAdvancement() &&
+             ctx->GetItemLocation(RC_KAK_20_GOLD_SKULLTULA_REWARD)->GetPlacedItem().GetItemType() != ITEMTYPE_TOKEN) {
+      maxUseful = 20;
+  } else if (ctx->GetItemLocation(RC_KAK_10_GOLD_SKULLTULA_REWARD)->GetPlacedItem().IsAdvancement() &&
+             ctx->GetItemLocation(RC_KAK_10_GOLD_SKULLTULA_REWARD)->GetPlacedItem().GetItemType() != ITEMTYPE_TOKEN) {
+      maxUseful = 10;
   }
   //Return max of the two possible reasons tokens could be important, minus the tokens in the starting inventory
-  return std::max(maxUseful, maxBridge) - StartingSkulltulaToken.Value<uint8_t>();
+  return std::max(maxUseful, maxBridge) - ctx->GetOption(RSK_STARTING_SKULLTULA_TOKEN).Value<uint8_t>();
 }
 
 std::string GetShopItemBaseName(std::string itemName) {
@@ -182,383 +282,499 @@ std::string GetShopItemBaseName(std::string itemName) {
   return baseName;
 }
 
-std::vector<uint32_t> GetEmptyLocations(std::vector<uint32_t> allowedLocations) {
-  return FilterFromPool(allowedLocations, [](const auto loc){ return Location(loc)->GetPlaceduint32_t() == NONE;});
+std::vector<RandomizerCheck> GetEmptyLocations(std::vector<RandomizerCheck> targetLocations) {
+    auto ctx = Rando::Context::GetInstance();
+    return FilterFromPool(targetLocations, [ctx](const auto loc) {
+        return ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() == RG_NONE;
+    });
 }
 
-std::vector<uint32_t> GetAllEmptyLocations() {
-    return FilterFromPool(allLocations, [](const auto loc) { return Location(loc)->GetPlaceduint32_t() == NONE; });
+std::vector<RandomizerCheck> GetAllEmptyLocations() {
+    auto ctx = Rando::Context::GetInstance();
+    return FilterFromPool(ctx->allLocations, [ctx](const auto loc) {
+        return ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() == RG_NONE;
+    });
 }
 
-//This function will return a vector of ItemLocations that are accessible with
-//where items have been placed so far within the world. The allowedLocations argument
-//specifies the pool of locations that we're trying to search for an accessible location in
-std::vector<uint32_t> GetAccessibleLocations(const std::vector<uint32_t>& allowedLocations, SearchMode mode /* = SearchMode::ReachabilitySearch*/, std::string ignore /*= ""*/, bool checkPoeCollectorAccess /*= false*/, bool checkOtherEntranceAccess /*= false*/) {
-  std::vector<uint32_t> accessibleLocations;
-  // Reset all access to begin a new search
-  if (mode < SearchMode::ValidateWorld) {
+bool IsBombchus(RandomizerGet item, bool includeShops = false){
+  return (item >= RG_BOMBCHU_5 && item <= RG_BOMBCHU_20) || item == RG_PROGRESSIVE_BOMBCHUS || 
+    (includeShops && (item == RG_BUY_BOMBCHUS_10 || item == RG_BUY_BOMBCHUS_20));
+}
+
+bool IsBeatableWithout(RandomizerCheck excludedCheck, bool replaceItem, RandomizerGet ignore = RG_NONE){ //RANDOTODO make excludCheck an ItemLocation
+  auto ctx = Rando::Context::GetInstance();
+  RandomizerGet copy = ctx->GetItemLocation(excludedCheck)->GetPlacedRandomizerGet(); //Copy out item
+  ctx->GetItemLocation(excludedCheck)->SetPlacedItem(RG_NONE); //Write in empty item
+  ctx->playthroughBeatable = false;
+  logic->Reset();
+  CheckBeatable(ignore);
+  if (replaceItem){
+    ctx->GetItemLocation(excludedCheck)->SetPlacedItem(copy); //Immediately put item back
+  }
+  return ctx->playthroughBeatable;
+}
+
+// Reset non-Logic-class logic, and optionally apply the initial inventory
+void ResetLogic(std::shared_ptr<Context>& ctx, GetAccessibleLocationsStruct& gals, bool applyInventory = false){
+  gals.timePassChildDay = true;
+  gals.timePassChildNight = true;
+  gals.timePassAdultDay = true;
+  gals.timePassAdultNight = true;
+  gals.haveTimeAccess = true;
+  gals.foundTempleOfTime = true;
+  gals.validatedStartingRegion = true;
+  gals.sphereZeroComplete = true;
+  if (applyInventory){
     ApplyStartingInventory();
   }
-  Areas::AccessReset();
-  LocationReset();
-  std::vector<uint32_t> areaPool = {ROOT};
+  Regions::AccessReset();
+  ctx->LocationReset();
+} 
 
-  if (mode == SearchMode::ValidateWorld) {
-    mode = SearchMode::TimePassAccess;
-    AreaTable(ROOT)->childNight = true;
-    AreaTable(ROOT)->adultNight = true;
-    AreaTable(ROOT)->childDay = true;
-    AreaTable(ROOT)->adultDay = true;
-    allLocationsReachable = false;
+//Generate the playthrough, so we want to add advancement items, unless we know to ignore them
+void AddToPlaythrough(LocationAccess& locPair, GetAccessibleLocationsStruct& gals){
+  auto ctx = Rando::Context::GetInstance();
+  RandomizerCheck loc = locPair.GetLocation();
+  Rando::ItemLocation* location = ctx->GetItemLocation(loc);
+  RandomizerGet locItem = location->GetPlacedRandomizerGet();
+  //Item is an advancement item, figure out if it should be added to this sphere
+  if (!ctx->playthroughBeatable && location->GetPlacedItem().IsAdvancement()) {
+    ItemType type = location->GetPlacedItem().GetItemType();
+
+    //Decide whether to exclude this location
+    //This preprocessing is done to reduce the amount of searches performed in PareDownPlaythrough
+    //Want to exclude:
+    //1) Tokens after the last potentially useful one (the last one that gives an advancement item or last for token bridge)
+    //2) Buy items of the same type, after the first (So only see Buy Deku Nut of any amount once)
+    bool exclude = true;
+    //Exclude tokens after the last possibly useful one
+    if (type == ITEMTYPE_TOKEN && gals.gsCount < gals.maxGsCount) {
+      gals.gsCount++;
+      exclude = false;
+    }
+    //Handle buy items
+    //If ammo drops are off, don't do this step, since buyable ammo becomes logically important
+    // TODO: Reimplement Ammo Drops setting
+    else if (/*AmmoDrops.IsNot(AMMODROPS_NONE) &&*/ type == ITEMTYPE_SHOP) {
+      //Only check each buy item once
+      auto buyItem = location->GetPlacedItem().GetLogicVal();
+      //Buy item not in list to ignore, add it to list and write to playthrough
+      if (std::find(gals.buyIgnores.begin(), gals.buyIgnores.end(), buyItem) == gals.buyIgnores.end()) {
+        exclude = false;
+        gals.buyIgnores.push_back(buyItem);
+      }
+    }
+    //Add all other advancement items
+    else if (type != ITEMTYPE_TOKEN && (/*AmmoDrops.Is(AMMODROPS_NONE) ||*/ type != ITEMTYPE_SHOP)) {
+      exclude = false;
+    }
+    //Has not been excluded, add to playthrough
+    if (!exclude) {
+      gals.itemSphere.push_back(loc);
+    }
   }
+  //Triforce has been found, seed is beatable, nothing else in this or future spheres matters
+  else if (location->GetPlacedRandomizerGet() == RG_TRIFORCE) {
+    gals.itemSphere.clear();
+    gals.itemSphere.push_back(loc);
+    ctx->playthroughBeatable = true;
+  }
+}
 
-  //Variables for playthrough
-  int gsCount = 0;
-  const int maxGsCount = mode == SearchMode::GeneratePlaythrough ? GetMaxGSCount() : 0; //If generating playthrough want the max that's possibly useful, else doesn't matter
-  bool bombchusFound = false;
-  std::vector<std::string> buyIgnores;
+void ApplyOrStoreItem(Rando::ItemLocation* loc, GetAccessibleLocationsStruct& gals, bool addToPlaythrough){
+  if (addToPlaythrough){
+    gals.newItemLocations.push_back(loc);
+  } else {
+    loc->ApplyPlacedItemEffect();
+  }
+  gals.logicUpdated = true;
+}
 
-  //Variables for search
-  std::vector<ItemLocation*> newItemLocations;
-  bool updatedEvents = false;
-  bool ageTimePropogated = false;
-  bool firstIteration = true;
+// Adds the contents of a location to the current progression and optionally playthrough
+bool AddCheckToLogic(LocationAccess& locPair, GetAccessibleLocationsStruct& gals, RandomizerGet ignore, bool stopOnBeatable, bool addToPlaythrough=false){
+  auto ctx = Rando::Context::GetInstance();
+  StartPerformanceTimer(PT_LOCATION_LOGIC);
+  RandomizerCheck loc = locPair.GetLocation();
+  Rando::ItemLocation* location = ctx->GetItemLocation(loc);
+  RandomizerGet locItem = location->GetPlacedRandomizerGet();
 
-  //Variables for Time Pass access
-  bool timePassChildDay = false;
-  bool timePassChildNight = false;
-  bool timePassAdultDay = false;
-  bool timePassAdultNight = false;
+  if (!location->IsAddedToPool() && locPair.ConditionsMet()) {
+    location->AddToPool();
 
-  // Main access checking loop
-  while (newItemLocations.size() > 0 || updatedEvents || ageTimePropogated || firstIteration) {
-    firstIteration = false;
-    ageTimePropogated = false;
-    updatedEvents = false;
-
-    for (ItemLocation* location : newItemLocations) {
-      location->ApplyPlacedItemEffect();
-    }
-    newItemLocations.clear();
-
-    std::vector<uint32_t> itemSphere;
-    std::list<Entrance*> entranceSphere;
-
-    for (size_t i = 0; i < areaPool.size(); i++) {
-      Area* area = AreaTable(areaPool[i]);
-
-      if (area->UpdateEvents(mode)){
-        updatedEvents = true;
-      }
-
-      // If we're checking for TimePass access do that for each area as it's being updated.
-      // TimePass Access is satisfied when every AgeTime can reach an area with TimePass
-      // without the aid of TimePass. During this mode, TimePass won't update ToD access
-      // in any area.
-      if (mode == SearchMode::TimePassAccess) {
-        if (area->timePass) {
-          if (area->childDay) {
-            timePassChildDay = true;
-          }
-          if (area->childNight) {
-            timePassChildNight = true;
-          }
-          if (area->adultDay) {
-            timePassAdultDay = true;
-          }
-          if (area->adultNight) {
-            timePassAdultNight = true;
-          }
+    if (locItem == RG_NONE) {
+      gals.accessibleLocations.push_back(loc); //Empty location, consider for placement
+    } else {
+      //If ignore has a value, we want to check if the item location should be considered or not
+      //This is necessary due to the below preprocessing for playthrough generation
+      if (ignore != RG_NONE) {
+        ItemType type = location->GetPlacedItem().GetItemType();
+        //If we want to ignore tokens, only add if not a token
+        if (ignore == RG_GOLD_SKULLTULA_TOKEN && type != ITEMTYPE_TOKEN) {
+          ApplyOrStoreItem(location, gals, addToPlaythrough);
         }
-        // Condition for validating that all startring AgeTimes have timepass access
-        // Once satisifed, change the mode to begin checking for Temple of Time Access
-        if ((timePassChildDay && timePassChildNight && timePassAdultDay && timePassAdultNight) || !checkOtherEntranceAccess) {
-          mode = SearchMode::TempleOfTimeAccess;
+        //If we want to ignore bombchus, only add if bombchu is not in the name
+        else if (IsBombchus(ignore) && IsBombchus(locItem, true)) {
+          ApplyOrStoreItem(location, gals, addToPlaythrough);
         }
-      }
-
-      //for each exit in this area
-      for (auto& exit : area->exits) {
-
-        //Update Time of Day Access for the exit
-        if (UpdateToDAccess(&exit, mode)) {
-          ageTimePropogated = true;
-          ValidateWorldChecks(mode, checkPoeCollectorAccess, checkOtherEntranceAccess, areaPool);
-        }
-
-        //If the exit is accessible and hasn't been added yet, add it to the pool
-        Area* exitArea = exit.GetConnectedRegion();
-        if (!exitArea->addedToPool && exit.ConditionsMet()) {
-          exitArea->addedToPool = true;
-          areaPool.push_back(exit.Getuint32_t());
-        }
-
-        // Add shuffled entrances to the entrance playthrough
-        // Include bluewarps when unshuffled but dungeon or boss shuffle is on
-        if (mode == SearchMode::GeneratePlaythrough &&
-            (exit.IsShuffled() || (exit.GetType() == EntranceType::BlueWarp &&
-                                   (Settings::ShuffleDungeonEntrances.IsNot(SHUFFLEDUNGEONS_OFF) ||
-                                    Settings::ShuffleBossEntrances.IsNot(SHUFFLEBOSSES_OFF)))) &&
-            !exit.IsAddedToPool() && !noRandomEntrances) {
-          entranceSphere.push_back(&exit);
-          exit.AddToPool();
-          // Don't list a two-way coupled entrance from both directions
-          if (exit.GetReverse() != nullptr && exit.GetReplacement()->GetReverse() != nullptr && !exit.IsDecoupled()) {
-            exit.GetReplacement()->GetReverse()->AddToPool();
+        //We want to ignore a specific Buy item. Buy items with different RandomizerGets are recognised by a shared GetLogicVal
+        else if (ignore != RG_GOLD_SKULLTULA_TOKEN && IsBombchus(ignore)) {
+          if ((type == ITEMTYPE_SHOP && Rando::StaticData::GetItemTable()[ignore].GetLogicVal() != location->GetPlacedItem().GetLogicVal()) || type != ITEMTYPE_SHOP) {
+            ApplyOrStoreItem(location, gals, addToPlaythrough);
           }
         }
       }
-
-      //for each ItemLocation in this area
-      if (mode < SearchMode::ValidateWorld) {
-        for (size_t k = 0; k < area->locations.size(); k++) {
-          LocationAccess& locPair = area->locations[k];
-          uint32_t loc = locPair.GetLocation();
-          ItemLocation* location = Location(loc);
-
-          if (!location->IsAddedToPool() && locPair.ConditionsMet()) {
-
-            location->AddToPool();
-
-            if (location->GetPlaceduint32_t() == NONE) {
-              accessibleLocations.push_back(loc); //Empty location, consider for placement
-            } else {
-              //If ignore has a value, we want to check if the item location should be considered or not
-              //This is necessary due to the below preprocessing for playthrough generation
-              if (ignore != "") {
-                ItemType type = location->GetPlacedItem().GetItemType();
-                std::string itemName(location->GetPlacedItemName().GetEnglish());
-                //If we want to ignore tokens, only add if not a token
-                if (ignore == "Tokens" && type != ITEMTYPE_TOKEN) {
-                  newItemLocations.push_back(location);
-                }
-                //If we want to ignore bombchus, only add if bombchu is not in the name
-                else if (ignore == "Bombchus" && itemName.find("Bombchu") == std::string::npos) {
-                  newItemLocations.push_back(location);
-                }
-                //We want to ignore a specific Buy item name
-                else if (ignore != "Tokens" && ignore != "Bombchus") {
-                  if ((type == ITEMTYPE_SHOP && ignore != GetShopItemBaseName(itemName)) || type != ITEMTYPE_SHOP) {
-                    newItemLocations.push_back(location);
-                  }
-                }
-              }
-              //If it doesn't, we can just add the location
-              else {
-                newItemLocations.push_back(location); //Add item to cache to be considered in logic next iteration
-              }
-            }
-
-            //Playthrough stuff
-            //Generate the playthrough, so we want to add advancement items, unless we know to ignore them
-            if (mode == SearchMode::GeneratePlaythrough) {
-              //Item is an advancement item, figure out if it should be added to this sphere
-              if (!playthroughBeatable && location->GetPlacedItem().IsAdvancement()) {
-                ItemType type = location->GetPlacedItem().GetItemType();
-                std::string itemName(location->GetPlacedItemName().GetEnglish());
-                bool bombchus = itemName.find("Bombchu") != std::string::npos; //Is a bombchu location
-
-                //Decide whether to exclude this location
-                //This preprocessing is done to reduce the amount of searches performed in PareDownPlaythrough
-                //Want to exclude:
-                //1) Tokens after the last potentially useful one (the last one that gives an advancement item or last for token bridge)
-                //2) Bombchus after the first (including buy bombchus)
-                //3) Buy items of the same type, after the first (So only see Buy Deku Nut of any amount once)
-                bool exclude = true;
-                //Exclude tokens after the last possibly useful one
-                if (type == ITEMTYPE_TOKEN && gsCount < maxGsCount) {
-                  gsCount++;
-                  exclude = false;
-                }
-                //Only print first bombchu location found
-                else if (bombchus && !bombchusFound) {
-                  bombchusFound = true;
-                  exclude = false;
-                }
-                //Handle buy items
-                //If ammo drops are off, don't do this step, since buyable ammo becomes logically important
-                else if (AmmoDrops.IsNot(AMMODROPS_NONE) && !(bombchus && bombchusFound) && type == ITEMTYPE_SHOP) {
-                  //Only check each buy item once
-                  std::string buyItem = GetShopItemBaseName(itemName);
-                  //Buy item not in list to ignore, add it to list and write to playthrough
-                  if (std::find(buyIgnores.begin(), buyIgnores.end(), buyItem) == buyIgnores.end()) {
-                    exclude = false;
-                    buyIgnores.push_back(buyItem);
-                  }
-                }
-                //Add all other advancement items
-                else if (!bombchus && type != ITEMTYPE_TOKEN && (AmmoDrops.Is(AMMODROPS_NONE) || type != ITEMTYPE_SHOP)) {
-                  exclude = false;
-                }
-                //Has not been excluded, add to playthrough
-                if (!exclude) {
-                  itemSphere.push_back(loc);
-                }
-              }
-              //Triforce has been found, seed is beatable, nothing else in this or future spheres matters
-              else if (location->GetPlaceduint32_t() == TRIFORCE) {
-                itemSphere.clear();
-                itemSphere.push_back(loc);
-                playthroughBeatable = true;
-              }
-            }
-            //All we care about is if the game is beatable, used to pare down playthrough
-            else if (location->GetPlaceduint32_t() == TRIFORCE && mode == SearchMode::CheckBeatable) {
-              playthroughBeatable = true;
-              return {}; //Return early for efficiency
-            }
-          }
-        }
+      //If it doesn't, we can just add the location
+      else {
+        ApplyOrStoreItem(location, gals, addToPlaythrough); //Add item to cache to be considered in logic next iteration
       }
     }
-
-    if (mode == SearchMode::GeneratePlaythrough && itemSphere.size() > 0) {
-      playthroughLocations.push_back(itemSphere);
+    if (addToPlaythrough){
+      AddToPlaythrough(locPair, gals);
     }
-    if (mode == SearchMode::GeneratePlaythrough && entranceSphere.size() > 0 && !noRandomEntrances) {
-      playthroughEntrances.push_back(entranceSphere);
+    //All we care about is if the game is beatable, used to pare down playthrough
+    if (location->GetPlacedRandomizerGet() == RG_TRIFORCE && stopOnBeatable) {
+      StopPerformanceTimer(PT_LOCATION_LOGIC);
+      return true; //Return early for efficiency
+    }
+  }
+  StopPerformanceTimer(PT_LOCATION_LOGIC);
+  return false;
+}
+
+void ProcessRegion(Region* region, GetAccessibleLocationsStruct& gals, RandomizerGet ignore, 
+                   bool stopOnBeatable, bool addToPlaythrough){
+  
+  if (gals.haveTimeAccess) {
+    region->ApplyTimePass();
+  } else {
+    // If we're checking for TimePass access do that for each region as it's being updated.
+    // TimePass Access is satisfied when every AgeTime can reach a region with TimePass
+    // without the aid of TimePass. During this mode, TimePass won't update ToD access
+    // in any region.
+    //RANDOTODO can probably be removed after a ToD rework that accounts for having Dampe time access
+    if (region->timePass) {
+      if (region->childDay) {
+        gals.timePassChildDay = true;
+      }
+      if (region->childNight) {
+        gals.timePassChildNight = true;
+      }
+      if (region->adultDay) {
+        gals.timePassAdultDay = true;
+      }
+      if (region->adultNight) {
+        gals.timePassAdultNight = true;
+      }
+    }
+    // Condition for validating that all startring AgeTimes have timepass access
+    if (gals.timePassChildDay && gals.timePassChildNight && 
+        gals.timePassAdultDay && gals.timePassAdultNight) {
+      gals.haveTimeAccess = true;
+      region->ApplyTimePass();
     }
   }
 
-  //Check to see if all locations were reached
-  if (mode == SearchMode::AllLocationsReachable) {
-    allLocationsReachable = true;
-    for (const uint32_t loc : allLocations) {
-      if (!Location(loc)->IsAddedToPool()) {
-        allLocationsReachable = false;
-        auto message = "Location " + Location(loc)->GetName() + " not reachable\n";
-        SPDLOG_DEBUG(message);
-        #ifndef ENABLE_DEBUG
-          break;
-        #endif
-      }
+  if (region->UpdateEvents()){
+    gals.logicUpdated = true;
+    //if we are working in spheres, reset the sphere on an event being enabled to avoid sphere skipping
+    if (addToPlaythrough){
+      gals.resetSphere = true;
     }
-    return {};
   }
+  
+  ProcessExits(region, gals, ignore, stopOnBeatable, addToPlaythrough);
+  
+  PropagateTimeTravel(gals, ignore, stopOnBeatable, addToPlaythrough);
+  for (size_t k = 0; k < region->locations.size(); k++) {
+    if(AddCheckToLogic(region->locations[k], gals, ignore, stopOnBeatable, addToPlaythrough)){
+      Rando::Context::GetInstance()->playthroughBeatable = true;
+      return;
+    }
+  }
+}
 
-  erase_if(accessibleLocations, [&allowedLocations](uint32_t loc){
-    for (uint32_t allowedLocation : allowedLocations) {
-      if (loc == allowedLocation || Location(loc)->GetPlaceduint32_t() != NONE) {
+// Return any of the targetLocations that are accessible in logic
+std::vector<RandomizerCheck> ReachabilitySearch(const std::vector<RandomizerCheck>& targetLocations, RandomizerGet ignore /* = RG_NONE*/) {
+  auto ctx = Rando::Context::GetInstance();
+  GetAccessibleLocationsStruct gals(0);
+  ResetLogic(ctx, gals, true);
+  do {
+    gals.InitLoop();
+    for (size_t i = 0; i < gals.regionPool.size(); i++) {
+      ProcessRegion(RegionTable(gals.regionPool[i]), gals, ignore);
+    }
+  } while (gals.logicUpdated);
+  erase_if(gals.accessibleLocations, [&targetLocations, ctx](RandomizerCheck loc){
+    for (RandomizerCheck allowedLocation : targetLocations) {
+      if (loc == allowedLocation || ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() != RG_NONE) {
         return false;
       }
     }
     return true;
   });
-  return accessibleLocations;
+  return gals.accessibleLocations;
 }
 
-static void GeneratePlaythrough() {
-  playthroughBeatable = false;
-  LogicReset();
-  GetAccessibleLocations(allLocations, SearchMode::GeneratePlaythrough);
+// Create the playthrough for the seed
+void GeneratePlaythrough() {
+  auto ctx = Rando::Context::GetInstance();
+  ctx->playthroughBeatable = false;
+  logic->Reset();
+  GetAccessibleLocationsStruct gals(GetMaxGSCount());
+  ResetLogic(ctx, gals, true);
+  do {
+    gals.InitLoop();
+    for (size_t i = 0; i < gals.regionPool.size(); i++) {
+      ProcessRegion(RegionTable(gals.regionPool[i]), gals, RG_NONE, false, true);
+      if (gals.resetSphere){
+        gals.resetSphere = false;
+        i = -1;
+      }
+    }
+    if (gals.itemSphere.size() > 0) {
+      ctx->playthroughLocations.push_back(gals.itemSphere);
+    }
+    if (gals.entranceSphere.size() > 0 && !ctx->GetEntranceShuffler()->HasNoRandomEntrances()) {
+      ctx->GetEntranceShuffler()->playthroughEntrances.push_back(gals.entranceSphere);
+    }
+  } while (gals.logicUpdated);
+}
+
+// return if the seed is currently beatable or not
+bool CheckBeatable(RandomizerGet ignore /* = RG_NONE*/) {
+  auto ctx = Rando::Context::GetInstance();
+  GetAccessibleLocationsStruct gals(0);
+  ResetLogic(ctx, gals, true);
+  do {
+    gals.InitLoop();
+    for (size_t i = 0; i < gals.regionPool.size(); i++) {
+      ProcessRegion(RegionTable(gals.regionPool[i]), gals, ignore, true);
+      if (ctx->playthroughBeatable == true){
+        return true;
+      }
+    }
+  } while (gals.logicUpdated);
+  return false;
+}
+
+// Check if the currently randomised set of entrances is a valid game map.
+void ValidateEntrances(bool checkPoeCollectorAccess, bool checkOtherEntranceAccess) {
+  auto ctx = Rando::Context::GetInstance();
+  GetAccessibleLocationsStruct gals(0);
+  ResetLogic(ctx, gals, !checkOtherEntranceAccess);
+
+  ctx->allLocationsReachable = false;
+  if (checkPoeCollectorAccess){
+    logic->CanEmptyBigPoes = false;
+  }
+
+  if (checkOtherEntranceAccess){
+    gals.foundTempleOfTime = false;
+    gals.validatedStartingRegion = false;
+    //Variables for Time Pass access
+    gals.timePassChildDay = false;
+    gals.timePassChildNight = false;
+    gals.timePassAdultDay = false;
+    gals.timePassAdultNight = false;
+    gals.haveTimeAccess = false;
+    gals.sphereZeroComplete = false;
+    RegionTable(RR_ROOT)->childNight = true;
+    RegionTable(RR_ROOT)->adultNight = true;
+    RegionTable(RR_ROOT)->childDay = true;
+    RegionTable(RR_ROOT)->adultDay = true;
+  } else {
+    ApplyAllAdvancmentItems();
+  }
+
+  do {
+    gals.InitLoop();
+    for (size_t i = 0; i < gals.regionPool.size(); i++) {
+      ProcessRegion(RegionTable(gals.regionPool[i]), gals);
+    }
+  } while (gals.logicUpdated);
+  if (gals.sphereZeroComplete) {
+    ctx->allLocationsReachable = true;
+    //RANDOTODO a size check here before getting the exact fails would be a minor optimization
+    //and a full list of location failures would be useful for logging when it does fail
+    for (const RandomizerCheck loc : ctx->allLocations) {
+      if (!ctx->GetItemLocation(loc)->IsAddedToPool()) {
+          ctx->allLocationsReachable = false;
+          auto message = "Location " +
+                         Rando::StaticData::GetLocation(ctx->GetItemLocation(loc)->GetRandomizerCheck())->GetName() +
+                         " not reachable\n";
+          SPDLOG_DEBUG(message);
+        #ifndef ENABLE_DEBUG
+          break;
+        #endif
+      }
+    }
+  }
+}
+
+void LookForExternalArea(Region* currentRegion, std::set<Region*> &alreadyChecked, std::set<RandomizerArea> &areas, bool LowPriorityMode=false){
+  for (const auto& entrance : currentRegion->entrances) {
+    //if this entrance does not pass areas, only process it if we are in low priority mode
+    if (LowPriorityMode || entrance->DoesSpreadAreas()){
+      std::set<RandomizerArea> otherAreas = entrance->GetParentRegion()->GetAllAreas();
+      //if the region is arealess and hasn't already been checked, recursivly check what connects to it
+      if (otherAreas.size() == 0 && !alreadyChecked.contains(currentRegion)) {
+        alreadyChecked.insert(entrance->GetParentRegion());
+        LookForExternalArea(entrance->GetParentRegion(), alreadyChecked, areas, LowPriorityMode);
+      //if we find an area and it's not links pocket, we should try and add it.
+      //If it's Links Pocket or RA_NONE, do not propagate those, they are not real areas.
+      //This check is likely to fail if a region somehow is both in Link's Pocket and elsewhere, but this should never happen
+      } else if (*otherAreas.begin() > RA_LINKS_POCKET){
+        areas.merge(otherAreas);
+      }
+    }
+  }
+}
+
+void SetAreas(){
+  auto ctx = Rando::Context::GetInstance();
+//RANDOTODO give entrances an enum like RandomizerCheck, the give them all areas here,
+//then use those areas to not need to recursivly find ItemLocation areas when an identifying entrance's area
+  for (int regionType = 0; regionType < RR_MARKER_AREAS_END; regionType++) {
+    Region region = areaTable[regionType];
+    std::set<RandomizerArea> areas = region.GetAllAreas();
+    std::set<Region*> regionsToSet = {&region};
+    if (areas.empty()) {
+      LookForExternalArea(&region, regionsToSet, areas);
+      //If we found nothing, try again in low priority mode to try every entrance
+      if (areas.empty()) {
+        LookForExternalArea(&region, regionsToSet, areas, true);
+        //If we still found nothing, we're disconnected, use RA_NONE to represent that
+        if (areas.empty()){
+          areas.insert(RA_NONE);
+        }
+      }
+    }
+    for (auto regionToSet : regionsToSet) {
+      regionToSet->ReplaceAreas(areas);
+      for (auto& loc : regionToSet->locations){
+        ctx->GetItemLocation(loc.GetLocation())->MergeAreas(areas);
+      }
+    }
+  }
 }
 
 //Remove unnecessary items from playthrough by removing their location, and checking if game is still beatable
 //To reduce searches, some preprocessing is done in playthrough generation to avoid adding obviously unnecessary items
 static void PareDownPlaythrough() {
-  std::vector<uint32_t> toAddBackItem;
+  auto ctx = Rando::Context::GetInstance();
+  std::vector<RandomizerCheck> toAddBackItem;
   //Start at sphere before Ganon's and count down
-  for (int i = playthroughLocations.size() - 2; i >= 0; i--) {
+  for (int i = ctx->playthroughLocations.size() - 2; i >= 0; i--) {
     //Check each item location in sphere
     std::vector<int> erasableIndices;
-    std::vector<uint32_t> sphere = playthroughLocations.at(i);
+    std::vector<RandomizerCheck> sphere = ctx->playthroughLocations.at(i);
     for (int j = sphere.size() - 1; j >= 0; j--) {
-      uint32_t loc = sphere.at(j);
-      uint32_t copy = Location(loc)->GetPlaceduint32_t(); //Copy out item
-      Location(loc)->SetPlacedItem(NONE); //Write in empty item
-      playthroughBeatable = false;
-      LogicReset();
+      RandomizerCheck loc = sphere.at(j);
+      RandomizerGet locGet = ctx->GetItemLocation(loc)->GetPlacedRandomizerGet(); //Copy out item
 
-      std::string ignore = "";
-      if (ItemTable(copy).GetItemType() == ITEMTYPE_TOKEN) {
-        ignore = "Tokens";
+      RandomizerGet ignore = RG_NONE;
+      if (locGet == RG_GOLD_SKULLTULA_TOKEN || IsBombchus(locGet, true)
+        || Rando::StaticData::RetrieveItem(locGet).GetItemType() == ITEMTYPE_SHOP) {
+        ignore = locGet;
       }
-      else if (ItemTable(copy).GetName().GetEnglish().find("Bombchu") != std::string::npos) {
-        ignore = "Bombchus";
-      }
-      else if (ItemTable(copy).GetItemType() == ITEMTYPE_SHOP) {
-        ignore = GetShopItemBaseName(ItemTable(copy).GetName().GetEnglish());
-      }
-
-      GetAccessibleLocations(allLocations, SearchMode::CheckBeatable, ignore); //Check if game is still beatable
 
       //Playthrough is still beatable without this item, therefore it can be removed from playthrough section.
-      if (playthroughBeatable) {
-        //Uncomment to print playthrough deletion log in citra
-        // std::string itemname(ItemTable(copy).GetName().GetEnglish());
-        // std::string locationname(Location(loc)->GetName());
-        // std::string removallog = itemname + " at " + locationname + " removed from playthrough";
-        // CitraPrint(removallog);
-        playthroughLocations[i].erase(playthroughLocations[i].begin() + j);
-        Location(loc)->SetDelayedItem(copy); //Game is still beatable, don't add back until later
+      if (IsBeatableWithout(loc, false, ignore)) {
+        ctx->playthroughLocations[i].erase(ctx->playthroughLocations[i].begin() + j);
+        ctx->GetItemLocation(loc)->SetDelayedItem(locGet); //Game is still beatable, don't add back until later
         toAddBackItem.push_back(loc);
       }
       else {
-        Location(loc)->SetPlacedItem(copy); //Immediately put item back so game is beatable again
+        ctx->GetItemLocation(loc)->SetPlacedItem(locGet); //Immediately put item back so game is beatable again
       }
     }
   }
 
   //Some spheres may now be empty, remove these
-  for (int i = playthroughLocations.size() - 2; i >= 0; i--) {
-    if (playthroughLocations.at(i).size() == 0) {
-      playthroughLocations.erase(playthroughLocations.begin() + i);
+  for (int i = ctx->playthroughLocations.size() - 2; i >= 0; i--) {
+    if (ctx->playthroughLocations.at(i).size() == 0) {
+      ctx->playthroughLocations.erase(ctx->playthroughLocations.begin() + i);
     }
   }
 
   //Now we can add back items which were removed previously
-  for (uint32_t loc : toAddBackItem) {
-    Location(loc)->SaveDelayedItem();
+  for (RandomizerCheck loc : toAddBackItem) {
+    ctx->GetItemLocation(loc)->SaveDelayedItem();
   }
 }
 
-//Very similar to PareDownPlaythrough except it creates the list of Way of the Hero items
+//Very similar to PareDownPlaythrough except it sets WotH candidacy of Way of the Hero items
 //Way of the Hero items are more specific than playthrough items in that they are items which *must*
 // be obtained to logically be able to complete the seed, rather than playthrough items which
 // are just possible items you *can* collect to complete the seed.
 static void CalculateWotH() {
-  //First copy locations from the 2-dimensional playthroughLocations into the 1-dimensional wothLocations
+  auto ctx = Rando::Context::GetInstance();
   //size - 1 so Triforce is not counted
-  for (size_t i = 0; i < playthroughLocations.size() - 1; i++) {
-    for (size_t j = 0; j < playthroughLocations[i].size(); j++) {
-      if (Location(playthroughLocations[i][j])->IsHintable()) {
-        wothLocations.push_back(playthroughLocations[i][j]);
+  for (size_t i = 0; i < ctx->playthroughLocations.size() - 1; i++) {
+    for (size_t j = 0; j < ctx->playthroughLocations[i].size(); j++) {
+      //If removing this item and no other item caused the game to become unbeatable, then it is strictly necessary,
+      //so add it unless it is in Links Pocket or an isolated place.
+      auto itemLoc = ctx->GetItemLocation(ctx->playthroughLocations[i][j]);
+      if (itemLoc->IsHintable() && *itemLoc->GetAreas().begin() > RA_LINKS_POCKET &&
+          !(IsBeatableWithout(ctx->playthroughLocations[i][j], true))) {
+        itemLoc->SetWothCandidate();
       }
     }
   }
+  ctx->playthroughBeatable = true;
+  logic->Reset();
+  ReachabilitySearch(ctx->allLocations);
+}
 
-  //Now go through and check each location, seeing if it is strictly necessary for game completion
-  for (int i = wothLocations.size() - 1; i >= 0; i--) {
-    uint32_t loc = wothLocations[i];
-    uint32_t copy = Location(loc)->GetPlaceduint32_t(); //Copy out item
-    Location(loc)->SetPlacedItem(NONE); //Write in empty item
-    playthroughBeatable = false;
-    LogicReset();
-    GetAccessibleLocations(allLocations, SearchMode::CheckBeatable); //Check if game is still beatable
-    Location(loc)->SetPlacedItem(copy); //Immediately put item back
-    //If removing this item and no other item caused the game to become unbeatable, then it is strictly necessary, so keep it
-    //Else, delete from wothLocations
-    if (playthroughBeatable) {
-      wothLocations.erase(wothLocations.begin() + i);
+static bool FindIfBarren(Rando::ItemLocation* itemLoc, std::array<bool, RA_MAX> NotBarren){
+  std::set<RandomizerArea> locAreas = itemLoc->GetAreas();
+  for (auto locArea: locAreas){
+    if (NotBarren[locArea]){
+      return false;
+    }
+  }
+  return true;
+}
+
+//Calculate barren locations and assign Barren Candidacy to all locations inside those areas
+static void CalculateBarren() {
+  auto ctx = Rando::Context::GetInstance();
+  std::array<bool, RA_MAX> NotBarren = {}; //I would invert this but the "initialise all as true" syntax wasn't working
+  //Isolated Areas and Link's Pocket are never Hinted Barren
+  NotBarren[RA_NONE] = true;
+  NotBarren[RA_LINKS_POCKET] = true; 
+
+  for (RandomizerCheck loc : ctx->allLocations) {
+    Rando::ItemLocation* itemLoc = ctx->GetItemLocation(loc);
+    std::set<RandomizerArea> locAreas = itemLoc->GetAreas();
+    for (auto locArea: locAreas){
+      // If a location has a major item or is a way of the hero location, it is not barren
+      if (NotBarren[locArea] == false && (itemLoc->GetPlacedItem().IsMajorItem() || itemLoc->IsWothCandidate())) {
+        NotBarren[locArea] = true;
+      } 
     }
   }
 
-  playthroughBeatable = true;
-  LogicReset();
-  GetAccessibleLocations(allLocations);
+  for (RandomizerCheck loc : ctx->allLocations) {
+    Rando::ItemLocation* itemLoc = ctx->GetItemLocation(loc);
+    if (FindIfBarren(itemLoc, NotBarren)){
+      itemLoc->SetBarrenCandidate();
+    }
+  }
 }
 
 //Will place things completely randomly, no logic checks are performed
-static void FastFill(std::vector<uint32_t> items, std::vector<uint32_t> locations, bool endOnItemsEmpty = false) {
+static void FastFill(std::vector<RandomizerGet> items, std::vector<RandomizerCheck> locations, bool endOnItemsEmpty = false) {
+  auto ctx = Rando::Context::GetInstance();
   //Loop until locations are empty, or also end if items are empty and the parameters specify to end then
   while (!locations.empty() && (!endOnItemsEmpty || !items.empty())) {
     if (items.empty() && !endOnItemsEmpty) {
       items.push_back(GetJunkItem());
     }
 
-    uint32_t loc = RandomElement(locations, true);
-    Location(loc)->SetAsHintable();
-    PlaceItemInLocation(loc, RandomElement(items, true));
+    RandomizerCheck loc = RandomElement(locations, true);
+    ctx->GetItemLocation(loc)->SetAsHintable();
+    ctx->PlaceItemInLocation(loc, RandomElement(items, true));
   }
 }
 
@@ -569,28 +785,30 @@ static void FastFill(std::vector<uint32_t> items, std::vector<uint32_t> location
 | This method helps distribution of items locked behind many requirements.
 | - OoT Randomizer
 */
-static void AssumedFill(const std::vector<uint32_t>& items, const std::vector<uint32_t>& allowedLocations,
+static void AssumedFill(const std::vector<RandomizerGet>& items, const std::vector<RandomizerCheck>& allowedLocations,
                         bool setLocationsAsHintable = false) {
-
+    auto ctx = Rando::Context::GetInstance();
     if (items.size() > allowedLocations.size()) {
-        printf("\x1b[2;2HERROR: MORE ITEMS THAN LOCATIONS IN GIVEN LISTS");
+        SPDLOG_ERROR("ERROR: MORE ITEMS THAN LOCATIONS IN GIVEN LISTS");
         SPDLOG_DEBUG("Items:\n");
-        for (const uint32_t item : items) {
+        // NOLINTNEXTLINE(clang-diagnostic-unused-variable)
+        for (const RandomizerGet item : items) {
             SPDLOG_DEBUG("\t");
-            SPDLOG_DEBUG(ItemTable(item).GetName().GetEnglish());
+            SPDLOG_DEBUG(Rando::StaticData::RetrieveItem(item).GetName().GetEnglish());
             SPDLOG_DEBUG("\n");
         }
         SPDLOG_DEBUG("\nAllowed Locations:\n");
-        for (const uint32_t loc : allowedLocations) {
+        // NOLINTNEXTLINE(clang-diagnostic-unused-variable)
+        for (const RandomizerCheck loc : allowedLocations) {
             SPDLOG_DEBUG("\t");
-            SPDLOG_DEBUG(Location(loc)->GetName());
+            SPDLOG_DEBUG(Rando::StaticData::GetLocation(loc)->GetName());
             SPDLOG_DEBUG("\n");
         }
         placementFailure = true;
         return;
     }
 
-    if (Settings::Logic.Is(LOGIC_NONE)) {
+    if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_NO_LOGIC)) {
         FastFill(items, GetEmptyLocations(allowedLocations), true);
         return;
     }
@@ -598,7 +816,7 @@ static void AssumedFill(const std::vector<uint32_t>& items, const std::vector<ui
     // keep retrying to place everything until it works or takes too long
     int retries = 10;
     bool unsuccessfulPlacement = false;
-    std::vector<uint32_t> attemptedLocations;
+    std::vector<RandomizerCheck> attemptedLocations;
     do {
         retries--;
         if (retries <= 0) {
@@ -606,47 +824,47 @@ static void AssumedFill(const std::vector<uint32_t>& items, const std::vector<ui
             return;
         }
         unsuccessfulPlacement = false;
-        std::vector<uint32_t> itemsToPlace = items;
+        std::vector<RandomizerGet> itemsToPlace = items;
 
         // copy all not yet placed advancement items so that we can apply their effects for the fill algorithm
-        std::vector<uint32_t> itemsToNotPlace =
-            FilterFromPool(ItemPool, [](const auto i) { return ItemTable(i).IsAdvancement(); });
+        std::vector<RandomizerGet> itemsToNotPlace =
+            FilterFromPool(ItemPool, [](const auto i) { return Rando::StaticData::RetrieveItem(i).IsAdvancement(); });
 
         // shuffle the order of items to place
         Shuffle(itemsToPlace);
         while (!itemsToPlace.empty()) {
-            uint32_t item = std::move(itemsToPlace.back());
-            ItemTable(item).SetAsPlaythrough();
+            RandomizerGet item = std::move(itemsToPlace.back());
+            Rando::StaticData::RetrieveItem(item).SetAsPlaythrough();
             itemsToPlace.pop_back();
 
             // assume we have all unplaced items
-            LogicReset();
-            for (uint32_t unplacedItem : itemsToPlace) {
-                ItemTable(unplacedItem).ApplyEffect();
+            logic->Reset();
+            for (RandomizerGet unplacedItem : itemsToPlace) {
+                Rando::StaticData::RetrieveItem(unplacedItem).ApplyEffect();
             }
-            for (uint32_t unplacedItem : itemsToNotPlace) {
-                ItemTable(unplacedItem).ApplyEffect();
+            for (RandomizerGet unplacedItem : itemsToNotPlace) {
+                Rando::StaticData::RetrieveItem(unplacedItem).ApplyEffect();
             }
 
             // get all accessible locations that are allowed
-            const std::vector<uint32_t> accessibleLocations = GetAccessibleLocations(allowedLocations);
+            const std::vector<RandomizerCheck> accessibleLocations = ReachabilitySearch(allowedLocations);
 
             // retry if there are no more locations to place items
             if (accessibleLocations.empty()) {
 
                 SPDLOG_DEBUG("\nCANNOT PLACE ");
-                SPDLOG_DEBUG(ItemTable(item).GetName().GetEnglish());
+                SPDLOG_DEBUG(Rando::StaticData::RetrieveItem(item).GetName().GetEnglish());
                 SPDLOG_DEBUG(". TRYING AGAIN...\n");
 
 #ifdef ENABLE_DEBUG
-                Areas::DumpWorldGraph(ItemTable(item).GetName().GetEnglish());
+                Regions::DumpWorldGraph(Rando::StaticData::RetrieveItem(item).GetName().GetEnglish());
                 PlacementLog_Write();
 #endif
 
                 // reset any locations that got an item
-                for (uint32_t loc : attemptedLocations) {
-                    Location(loc)->SetPlacedItem(NONE);
-                    itemsPlaced--;
+                for (RandomizerCheck loc : attemptedLocations) {
+                    ctx->GetItemLocation(loc)->SetPlacedItem(RG_NONE);
+                    //itemsPlaced--;
                 }
                 attemptedLocations.clear();
 
@@ -655,24 +873,24 @@ static void AssumedFill(const std::vector<uint32_t>& items, const std::vector<ui
             }
 
             // place the item within one of the allowed locations
-            uint32_t selectedLocation = RandomElement(accessibleLocations);
-            PlaceItemInLocation(selectedLocation, item);
+            RandomizerCheck selectedLocation = RandomElement(accessibleLocations);
+            ctx->PlaceItemInLocation(selectedLocation, item);
             attemptedLocations.push_back(selectedLocation);
 
             // This tells us the location went through the randomization algorithm
             // to distinguish it from locations which did not or that the player already
             // knows
             if (setLocationsAsHintable) {
-                Location(selectedLocation)->SetAsHintable();
+                ctx->GetItemLocation(selectedLocation)->SetAsHintable();
             }
 
             // If ALR is off, then we check beatability after placing the item.
             // If the game is beatable, then we can stop placing items with logic.
-            if (!LocationsReachable) {
-                playthroughBeatable = false;
-                LogicReset();
-                GetAccessibleLocations(allLocations, SearchMode::CheckBeatable);
-                if (playthroughBeatable) {
+            if (!ctx->GetOption(RSK_ALL_LOCATIONS_REACHABLE)) {
+                ctx->playthroughBeatable = false;
+                logic->Reset();
+                CheckBeatable();
+                if (ctx->playthroughBeatable) {
                     SPDLOG_DEBUG("Game beatable, now placing items randomly. " + std::to_string(itemsToPlace.size()) +
                                 " major items remaining.\n\n");
                     FastFill(itemsToPlace, GetEmptyLocations(allowedLocations), true);
@@ -686,112 +904,118 @@ static void AssumedFill(const std::vector<uint32_t>& items, const std::vector<ui
 //This function will specifically randomize dungeon rewards for the End of Dungeons
 //setting, or randomize one dungeon reward to Link's Pocket if that setting is on
 static void RandomizeDungeonRewards() {
-
+  auto ctx = Rando::Context::GetInstance();
+  std::array<uint32_t, 9> rDungeonRewardOverrides{};
   //quest item bit mask of each stone/medallion for the savefile
-  static constexpr std::array<uint32_t, 9> bitMaskTable = {
-    0x00040000, //Kokiri Emerald
-    0x00080000, //Goron Ruby
-    0x00100000, //Zora Sapphire
-    0x00000001, //Forest Medallion
-    0x00000002, //Fire Medallion
-    0x00000004, //Water Medallion
-    0x00000008, //Spirit Medallion
-    0x00000010, //Shadow Medallion
-    0x00000020, //Light Medallion
-  };
-  int baseOffset = ItemTable(KOKIRI_EMERALD).GetItemID();
+  // static constexpr std::array<uint32_t, 9> bitMaskTable = {
+  //   0x00040000, //Kokiri Emerald
+  //   0x00080000, //Goron Ruby
+  //   0x00100000, //Zora Sapphire
+  //   0x00000001, //Forest Medallion
+  //   0x00000002, //Fire Medallion
+  //   0x00000004, //Water Medallion
+  //   0x00000008, //Spirit Medallion
+  //   0x00000010, //Shadow Medallion
+  //   0x00000020, //Light Medallion
+  // };
+  int baseOffset = Rando::StaticData::RetrieveItem(RG_KOKIRI_EMERALD).GetItemID();
 
   //End of Dungeons includes Link's Pocket
-  if (ShuffleRewards.Is(REWARDSHUFFLE_END_OF_DUNGEON)) {
+  if (ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON)) {
     //get stones and medallions
-    std::vector<uint32_t> rewards = FilterAndEraseFromPool(ItemPool, [](const auto i) {return ItemTable(i).GetItemType() == ITEMTYPE_DUNGEONREWARD;});
+    std::vector<RandomizerGet> rewards = FilterAndEraseFromPool(ItemPool, [](const auto i) {return Rando::StaticData::RetrieveItem(i).GetItemType() == ITEMTYPE_DUNGEONREWARD;});
 
     // If there are less than 9 dungeon rewards, prioritize the actual dungeons
     // for placement instead of Link's Pocket
     if (rewards.size() < 9) {
-      PlaceItemInLocation(LINKS_POCKET, GREEN_RUPEE);
+      ctx->PlaceItemInLocation(RC_LINKS_POCKET, RG_GREEN_RUPEE);
     }
 
-    if (Settings::Logic.Is(LOGIC_VANILLA)) { //Place dungeon rewards in vanilla locations
-      for (uint32_t loc : dungeonRewardLocations) {
-        Location(loc)->PlaceVanillaItem();
+    if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_VANILLA)) { //Place dungeon rewards in vanilla locations
+      for (RandomizerCheck loc : Rando::StaticData::dungeonRewardLocations) {
+        ctx->GetItemLocation(loc)->PlaceVanillaItem();
       }
     } else { //Randomize dungeon rewards with assumed fill
-      AssumedFill(rewards, dungeonRewardLocations);
+      AssumedFill(rewards, Rando::StaticData::dungeonRewardLocations);
     }
 
-    for (size_t i = 0; i < dungeonRewardLocations.size(); i++) {
-      const auto index = Location(dungeonRewardLocations[i])->GetPlacedItem().GetItemID() - baseOffset;
+    for (size_t i = 0; i < Rando::StaticData::dungeonRewardLocations.size(); i++) {
+      const auto index = ctx->GetItemLocation(Rando::StaticData::dungeonRewardLocations[i])->GetPlacedItem().GetItemID() - baseOffset;
       rDungeonRewardOverrides[i] = index;
 
       //set the player's dungeon reward on file creation instead of pushing it to them at the start.
       //This is done mainly because players are already familiar with seeing their dungeon reward
       //before opening up their file
-      if (i == dungeonRewardLocations.size()-1) {
-        LinksPocketRewardBitMask = bitMaskTable[index];
-      }
+      // if (i == Rando::StaticData::dungeonRewardLocations.size()-1) {
+      //   LinksPocketRewardBitMask = bitMaskTable[index];
+      // }
     }
-  } else if (LinksPocketItem.Is(LINKSPOCKETITEM_DUNGEON_REWARD)) {
+  } else if (ctx->GetOption(RSK_LINKS_POCKET).Is(RO_LINKS_POCKET_DUNGEON_REWARD)) {
     //get 1 stone/medallion
-    std::vector<uint32_t> rewards = FilterFromPool(ItemPool, [](const auto i) {return ItemTable(i).GetItemType() == ITEMTYPE_DUNGEONREWARD;});
+    std::vector<RandomizerGet> rewards = FilterFromPool(
+        ItemPool, [](const auto i) { return Rando::StaticData::RetrieveItem(i).GetItemType() == ITEMTYPE_DUNGEONREWARD; });
     // If there are no remaining stones/medallions, then Link's pocket won't get one
     if (rewards.empty()) {
-      PlaceItemInLocation(LINKS_POCKET, GREEN_RUPEE);
+      ctx->PlaceItemInLocation(RC_LINKS_POCKET, RG_GREEN_RUPEE);
       return;
     }
-    uint32_t startingReward = RandomElement(rewards, true);
+    RandomizerGet startingReward = RandomElement(rewards, true);
 
-    LinksPocketRewardBitMask = bitMaskTable[ItemTable(startingReward).GetItemID() - baseOffset];
-    PlaceItemInLocation(LINKS_POCKET, startingReward);
+    //LinksPocketRewardBitMask = bitMaskTable[Rando::StaticData::RetrieveItem(startingReward).GetItemID() - baseOffset];
+    ctx->PlaceItemInLocation(RC_LINKS_POCKET, startingReward);
     //erase the stone/medallion from the Item Pool
-    FilterAndEraseFromPool(ItemPool, [startingReward](const uint32_t i) {return i == startingReward;});
+    FilterAndEraseFromPool(ItemPool, [startingReward](const RandomizerGet i) {return i == startingReward;});
   }
 }
 
 //Fills any locations excluded by the player with junk items so that advancement items
 //can't be placed there.
 static void FillExcludedLocations() {
+  auto ctx = Rando::Context::GetInstance();
   //Only fill in excluded locations that don't already have something and are forbidden
-  std::vector<uint32_t> excludedLocations = FilterFromPool(allLocations, [](const auto loc){
-    return Location(loc)->IsExcluded();
+  std::vector<RandomizerCheck> excludedLocations = FilterFromPool(ctx->allLocations, [ctx](const auto loc){
+    return ctx->GetItemLocation(loc)->IsExcluded();
   });
 
-  for (uint32_t loc : excludedLocations) {
+  for (RandomizerCheck loc : excludedLocations) {
     PlaceJunkInExcludedLocation(loc);
   }
 }
 
 //Function to handle the Own Dungeon setting
-static void RandomizeOwnDungeon(const Dungeon::DungeonInfo* dungeon) {
-  std::vector<uint32_t> dungeonItems;
+static void RandomizeOwnDungeon(const Rando::DungeonInfo* dungeon) {
+  auto ctx = Rando::Context::GetInstance();
+  std::vector<RandomizerGet> dungeonItems;
 
   // Search and filter for locations that match the hint region of the dungeon
   // This accounts for boss room shuffle so that own dungeon items can be placed
   // in the shuffled boss room
-  std::vector<LocationKey> dungeonLocations = FilterFromPool(allLocations, [dungeon](const auto loc) {
-    return GetHintRegionHintKey(Location(loc)->GetParentRegionKey()) == dungeon->GetHintKey();
+  std::vector<RandomizerCheck> dungeonLocations = FilterFromPool(ctx->allLocations, [dungeon, ctx](const auto loc) {
+    return ctx->GetItemLocation(loc)->GetAreas().contains(dungeon->GetArea());
   });
 
   //filter out locations that may be required to have songs placed at them
-  dungeonLocations = FilterFromPool(dungeonLocations, [](const auto loc){
-    if (ShuffleSongs.Is(SONGSHUFFLE_SONG_LOCATIONS)) {
-      return !(Location(loc)->IsCategory(Category::cSong));
+  dungeonLocations = FilterFromPool(dungeonLocations, [ctx](const auto loc) {
+    if (ctx->GetOption(RSK_SHUFFLE_SONGS).Is(RO_SONG_SHUFFLE_SONG_LOCATIONS)) {
+      return !(Rando::StaticData::GetLocation(loc)->GetRCType() == RCTYPE_SONG_LOCATION);
     }
-    if (ShuffleSongs.Is(SONGSHUFFLE_DUNGEON_REWARDS)) {
-      return !(Location(loc)->IsCategory(Category::cSongDungeonReward));
+    if (ctx->GetOption(RSK_SHUFFLE_SONGS).Is(RO_SONG_SHUFFLE_DUNGEON_REWARDS)) {
+      return !(Rando::StaticData::GetLocation(loc)->GetRCType() == RCTYPE_BOSS_HEART_OR_OTHER_REWARD ||
+             loc == RC_SHEIK_IN_ICE_CAVERN ||
+             loc == RC_SONG_FROM_IMPA);
     }
     return true;
   });
 
   //Add specific items that need be randomized within this dungeon
-  if (Keysanity.Is(KEYSANITY_OWN_DUNGEON) && dungeon->GetSmallKey() != NONE) {
-    std::vector<uint32_t> dungeonSmallKeys = FilterAndEraseFromPool(ItemPool, [dungeon](const uint32_t i){ return (i == dungeon->GetSmallKey()) || (i == dungeon->GetKeyRing());});
+  if (ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_OWN_DUNGEON) && dungeon->GetSmallKey() != RG_NONE) {
+    std::vector<RandomizerGet> dungeonSmallKeys = FilterAndEraseFromPool(ItemPool, [dungeon](const RandomizerGet i){ return (i == dungeon->GetSmallKey()) || (i == dungeon->GetKeyRing());});
     AddElementsToPool(dungeonItems, dungeonSmallKeys);
   }
 
-  if ((BossKeysanity.Is(BOSSKEYSANITY_OWN_DUNGEON) && dungeon->GetBossKey() != GANONS_CASTLE_BOSS_KEY) ||
-      (GanonsBossKey.Is(GANONSBOSSKEY_OWN_DUNGEON) && dungeon->GetBossKey() == GANONS_CASTLE_BOSS_KEY)) {
-        auto dungeonBossKey = FilterAndEraseFromPool(ItemPool, [dungeon](const uint32_t i){ return i == dungeon->GetBossKey();});
+  if ((ctx->GetOption(RSK_BOSS_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_OWN_DUNGEON) && dungeon->GetBossKey() != RG_GANONS_CASTLE_BOSS_KEY) ||
+      (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_OWN_DUNGEON) && dungeon->GetBossKey() == RG_GANONS_CASTLE_BOSS_KEY)) {
+        auto dungeonBossKey = FilterAndEraseFromPool(ItemPool, [dungeon](const RandomizerGet i){ return i == dungeon->GetBossKey();});
         AddElementsToPool(dungeonItems, dungeonBossKey);
   }
 
@@ -799,8 +1023,8 @@ static void RandomizeOwnDungeon(const Dungeon::DungeonInfo* dungeon) {
   AssumedFill(dungeonItems, dungeonLocations);
 
   //randomize map and compass separately since they're not progressive
-  if (MapsAndCompasses.Is(MAPSANDCOMPASSES_OWN_DUNGEON) && dungeon->GetMap() != NONE && dungeon->GetCompass() != NONE) {
-    auto dungeonMapAndCompass = FilterAndEraseFromPool(ItemPool, [dungeon](const uint32_t i){ return i == dungeon->GetMap() || i == dungeon->GetCompass();});
+  if (ctx->GetOption(RSK_SHUFFLE_MAPANDCOMPASS).Is(RO_DUNGEON_ITEM_LOC_OWN_DUNGEON) && dungeon->GetMap() != RG_NONE && dungeon->GetCompass() != RG_NONE) {
+    auto dungeonMapAndCompass = FilterAndEraseFromPool(ItemPool, [dungeon](const RandomizerGet i){ return i == dungeon->GetMap() || i == dungeon->GetCompass();});
     AssumedFill(dungeonMapAndCompass, dungeonLocations);
   }
 }
@@ -814,138 +1038,136 @@ static void RandomizeOwnDungeon(const Dungeon::DungeonInfo* dungeon) {
   will be randomized together if they have the same setting. Maps and Compasses
   are randomized separately once the dungeon advancement items have all been placed.*/
 static void RandomizeDungeonItems() {
-  using namespace Dungeon;
+  auto ctx = Rando::Context::GetInstance();
 
   //Get Any Dungeon and Overworld group locations
-  std::vector<uint32_t> anyDungeonLocations = FilterFromPool(allLocations, [](const auto loc){return Location(loc)->IsDungeon();});
-  //overworldLocations defined in item_location.cpp
+  std::vector<RandomizerCheck> anyDungeonLocations = Rando::StaticData::GetDungeonLocations();
+  //Rando::StaticData::GetOverworldLocations() defined in item_location.cpp
 
   //Create Any Dungeon and Overworld item pools
-  std::vector<uint32_t> anyDungeonItems;
-  std::vector<uint32_t> overworldItems;
+  std::vector<RandomizerGet> anyDungeonItems;
+  std::vector<RandomizerGet> overworldItems;
 
-  for (auto dungeon : dungeonList) {
-    if (Keysanity.Is(KEYSANITY_ANY_DUNGEON)) {
-      auto dungeonKeys = FilterAndEraseFromPool(ItemPool, [dungeon](const uint32_t i){return (i == dungeon->GetSmallKey()) || (i == dungeon->GetKeyRing());});
+  for (auto dungeon : ctx->GetDungeons()->GetDungeonList()) {
+    if (ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_ANY_DUNGEON)) {
+      auto dungeonKeys = FilterAndEraseFromPool(ItemPool, [dungeon](const RandomizerGet i){return (i == dungeon->GetSmallKey()) || (i == dungeon->GetKeyRing());});
       AddElementsToPool(anyDungeonItems, dungeonKeys);
-    } else if (Keysanity.Is(KEYSANITY_OVERWORLD)) {
-      auto dungeonKeys = FilterAndEraseFromPool(ItemPool, [dungeon](const uint32_t i){return (i == dungeon->GetSmallKey()) || (i == dungeon->GetKeyRing());});
+    } else if (ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_OVERWORLD)) {
+      auto dungeonKeys = FilterAndEraseFromPool(ItemPool, [dungeon](const RandomizerGet i){return (i == dungeon->GetSmallKey()) || (i == dungeon->GetKeyRing());});
       AddElementsToPool(overworldItems, dungeonKeys);
     }
 
-    if (BossKeysanity.Is(BOSSKEYSANITY_ANY_DUNGEON) && dungeon->GetBossKey() != GANONS_CASTLE_BOSS_KEY) {
-      auto bossKey = FilterAndEraseFromPool(ItemPool, [dungeon](const uint32_t i){return i == dungeon->GetBossKey();});
+    if (ctx->GetOption(RSK_BOSS_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_ANY_DUNGEON) && dungeon->GetBossKey() != RG_GANONS_CASTLE_BOSS_KEY) {
+      auto bossKey = FilterAndEraseFromPool(ItemPool, [dungeon](const RandomizerGet i){return i == dungeon->GetBossKey();});
       AddElementsToPool(anyDungeonItems, bossKey);
-    } else if (BossKeysanity.Is(BOSSKEYSANITY_OVERWORLD) && dungeon->GetBossKey() != GANONS_CASTLE_BOSS_KEY) {
-      auto bossKey = FilterAndEraseFromPool(ItemPool, [dungeon](const uint32_t i){return i == dungeon->GetBossKey();});
+    } else if (ctx->GetOption(RSK_BOSS_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_OVERWORLD) && dungeon->GetBossKey() != RG_GANONS_CASTLE_BOSS_KEY) {
+      auto bossKey = FilterAndEraseFromPool(ItemPool, [dungeon](const RandomizerGet i){return i == dungeon->GetBossKey();});
       AddElementsToPool(overworldItems, bossKey);
     }
 
-    if (GanonsBossKey.Is(GANONSBOSSKEY_ANY_DUNGEON)) {
-      auto ganonBossKey = FilterAndEraseFromPool(ItemPool, [](const auto i){return i == GANONS_CASTLE_BOSS_KEY;});
+    if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_ANY_DUNGEON)) {
+      auto ganonBossKey = FilterAndEraseFromPool(ItemPool, [](const auto i){return i == RG_GANONS_CASTLE_BOSS_KEY;});
       AddElementsToPool(anyDungeonItems, ganonBossKey);
-    } else if (GanonsBossKey.Is(GANONSBOSSKEY_OVERWORLD)) {
-        auto ganonBossKey = FilterAndEraseFromPool(ItemPool, [](const auto i) { return i == GANONS_CASTLE_BOSS_KEY; });
+    } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_OVERWORLD)) {
+        auto ganonBossKey = FilterAndEraseFromPool(ItemPool, [](const auto i) { return i == RG_GANONS_CASTLE_BOSS_KEY; });
       AddElementsToPool(overworldItems, ganonBossKey);
     }
   }
 
-  if (GerudoKeys.Is(GERUDOKEYS_ANY_DUNGEON)) {
-      auto gerudoKeys = FilterAndEraseFromPool(ItemPool, [](const auto i) { return i == GERUDO_FORTRESS_SMALL_KEY || i == GERUDO_FORTRESS_KEY_RING; });
+  if (ctx->GetOption(RSK_GERUDO_KEYS).Is(RO_GERUDO_KEYS_ANY_DUNGEON)) {
+      auto gerudoKeys = FilterAndEraseFromPool(ItemPool, [](const auto i) { return i == RG_GERUDO_FORTRESS_SMALL_KEY || i == RG_GERUDO_FORTRESS_KEY_RING; });
     AddElementsToPool(anyDungeonItems, gerudoKeys);
-  } else if (GerudoKeys.Is(GERUDOKEYS_OVERWORLD)) {
-      auto gerudoKeys = FilterAndEraseFromPool(ItemPool, [](const auto i) { return i == GERUDO_FORTRESS_SMALL_KEY || i == GERUDO_FORTRESS_KEY_RING; });
+  } else if (ctx->GetOption(RSK_GERUDO_KEYS).Is(RO_GERUDO_KEYS_OVERWORLD)) {
+      auto gerudoKeys = FilterAndEraseFromPool(ItemPool, [](const auto i) { return i == RG_GERUDO_FORTRESS_SMALL_KEY || i == RG_GERUDO_FORTRESS_KEY_RING; });
     AddElementsToPool(overworldItems, gerudoKeys);
   }
 
-  if (ShuffleRewards.Is(REWARDSHUFFLE_ANY_DUNGEON)) {
+  if (ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_ANY_DUNGEON)) {
       auto rewards = FilterAndEraseFromPool(
-          ItemPool, [](const auto i) { return ItemTable(i).GetItemType() == ITEMTYPE_DUNGEONREWARD; });
+          ItemPool, [](const auto i) { return Rando::StaticData::RetrieveItem(i).GetItemType() == ITEMTYPE_DUNGEONREWARD; });
     AddElementsToPool(anyDungeonItems, rewards);
-  } else if (ShuffleRewards.Is(REWARDSHUFFLE_OVERWORLD)) {
+  } else if (ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_OVERWORLD)) {
       auto rewards = FilterAndEraseFromPool(
-          ItemPool, [](const auto i) { return ItemTable(i).GetItemType() == ITEMTYPE_DUNGEONREWARD; });
+          ItemPool, [](const auto i) { return Rando::StaticData::RetrieveItem(i).GetItemType() == ITEMTYPE_DUNGEONREWARD; });
     AddElementsToPool(overworldItems, rewards);
   }
 
   //Randomize Any Dungeon and Overworld pools
   AssumedFill(anyDungeonItems, anyDungeonLocations, true);
-  AssumedFill(overworldItems, overworldLocations, true);
+  AssumedFill(overworldItems, Rando::StaticData::GetOverworldLocations(), true);
 
   //Randomize maps and compasses after since they're not advancement items
-  for (auto dungeon : dungeonList) {
-    if (MapsAndCompasses.Is(MAPSANDCOMPASSES_ANY_DUNGEON)) {
-      auto mapAndCompassItems = FilterAndEraseFromPool(ItemPool, [dungeon](const uint32_t i){return i == dungeon->GetMap() || i == dungeon->GetCompass();});
+  for (auto dungeon : ctx->GetDungeons()->GetDungeonList()) {
+    if (ctx->GetOption(RSK_SHUFFLE_MAPANDCOMPASS).Is(RO_DUNGEON_ITEM_LOC_ANY_DUNGEON)) {
+      auto mapAndCompassItems = FilterAndEraseFromPool(ItemPool, [dungeon](const RandomizerGet i){return i == dungeon->GetMap() || i == dungeon->GetCompass();});
       AssumedFill(mapAndCompassItems, anyDungeonLocations, true);
-    } else if (MapsAndCompasses.Is(MAPSANDCOMPASSES_OVERWORLD)) {
-      auto mapAndCompassItems = FilterAndEraseFromPool(ItemPool, [dungeon](const uint32_t i){return i == dungeon->GetMap() || i == dungeon->GetCompass();});
-      AssumedFill(mapAndCompassItems, overworldLocations, true);
+    } else if (ctx->GetOption(RSK_SHUFFLE_MAPANDCOMPASS).Is(RO_DUNGEON_ITEM_LOC_OVERWORLD)) {
+      auto mapAndCompassItems = FilterAndEraseFromPool(ItemPool, [dungeon](const RandomizerGet i){return i == dungeon->GetMap() || i == dungeon->GetCompass();});
+      AssumedFill(mapAndCompassItems, Rando::StaticData::GetOverworldLocations(), true);
     }
   }
 }
 
 static void RandomizeLinksPocket() {
-  if (LinksPocketItem.Is(LINKSPOCKETITEM_ADVANCEMENT)) {
+  auto ctx = Rando::Context::GetInstance();
+  if (ctx->GetOption(RSK_LINKS_POCKET).Is(RO_LINKS_POCKET_ADVANCEMENT)) {
    //Get all the advancement items                                                                                                     don't include tokens
-      std::vector<uint32_t> advancementItems = FilterAndEraseFromPool(ItemPool, [](const auto i) {
-          return ItemTable(i).IsAdvancement() && ItemTable(i).GetItemType() != ITEMTYPE_TOKEN;
+      std::vector<RandomizerGet> advancementItems = FilterAndEraseFromPool(ItemPool, [](const auto i) {
+          return Rando::StaticData::RetrieveItem(i).IsAdvancement() && Rando::StaticData::RetrieveItem(i).GetItemType() != ITEMTYPE_TOKEN;
       });
    //select a random one
-   uint32_t startingItem = RandomElement(advancementItems, true);
+   RandomizerGet startingItem = RandomElement(advancementItems, true);
    //add the others back
    AddElementsToPool(ItemPool, advancementItems);
 
-   PlaceItemInLocation(LINKS_POCKET, startingItem);
- } else if (LinksPocketItem.Is(LINKSPOCKETITEM_NOTHING)) {
-   PlaceItemInLocation(LINKS_POCKET, GREEN_RUPEE);
+   ctx->PlaceItemInLocation(RC_LINKS_POCKET, startingItem);
+ } else if (ctx->GetOption(RSK_LINKS_POCKET).Is(RO_LINKS_POCKET_NOTHING)) {
+   ctx->PlaceItemInLocation(RC_LINKS_POCKET, RG_GREEN_RUPEE);
  }
 }
 
 void VanillaFill() {
+  auto ctx = Rando::Context::GetInstance();
   //Perform minimum needed initialization
-  AreaTable_Init();
-  GenerateLocationPool();
+  RegionTable_Init();
+  ctx->GenerateLocationPool();
   GenerateItemPool();
   GenerateStartingInventory();
   //Place vanilla item in each location
   RandomizeDungeonRewards();
-  for (uint32_t loc : allLocations) {
-    Location(loc)->PlaceVanillaItem();
+  for (RandomizerCheck loc : ctx->allLocations) {
+    ctx->GetItemLocation(loc)->PlaceVanillaItem();
   }
   //If necessary, handle ER stuff
-  if (ShuffleEntrances) {
-    printf("\x1b[7;10HShuffling Entrances...");
-    ShuffleAllEntrances();
-    printf("\x1b[7;32HDone");
+  if (ctx->GetOption(RSK_SHUFFLE_ENTRANCES)) {
+    SPDLOG_INFO("Shuffling Entrances...");
+    ctx->GetEntranceShuffler()->ShuffleAllEntrances();
+    SPDLOG_INFO("Shuffling Entrances Done");
   }
   // Populate the playthrough for entrances so they are placed in the spoiler log
   GeneratePlaythrough();
   //Finish up
-  CreateItemOverrides();
-  CreateEntranceOverrides();
+  ctx->CreateItemOverrides();
+  ctx->GetEntranceShuffler()->CreateEntranceOverrides();
   CreateWarpSongTexts();
 }
 
 void ClearProgress() {
-  printf("\x1b[7;32H    "); // Done
-  printf("\x1b[8;10H                    "); // Placing Items...Done
-  printf("\x1b[9;10H                              "); // Calculating Playthrough...Done
-  printf("\x1b[10;10H                     "); // Creating Hints...Done
-  printf("\x1b[11;10H                                  "); // Writing Spoiler Log...Done
 }
 
 int Fill() {
-
+  auto ctx = Rando::Context::GetInstance();
   int retries = 0;
+  SPDLOG_INFO("Starting seed generation...");
   while(retries < 5) {
+    SPDLOG_INFO("Attempt {}...", retries + 1);
     placementFailure = false;
-    showItemProgress = false;
-    playthroughLocations.clear();
-    playthroughEntrances.clear();
-    wothLocations.clear();
-    AreaTable_Init(); //Reset the world graph to intialize the proper locations
-    ItemReset(); //Reset shops incase of shopsanity random
-    GenerateLocationPool();
+    //showItemProgress = false;
+    ctx->playthroughLocations.clear();
+    ctx->GetEntranceShuffler()->playthroughEntrances.clear();
+    RegionTable_Init(); //Reset the world graph to intialize the proper locations
+    ctx->ItemReset(); //Reset shops incase of shopsanity random
+    ctx->GenerateLocationPool();
     GenerateItemPool();
     GenerateStartingInventory();
     RemoveStartingItemsFromPool();
@@ -953,89 +1175,146 @@ int Fill() {
 
     //Temporarily add shop items to the ItemPool so that entrance randomization
     //can validate the world using deku/hylian shields
-    AddElementsToPool(ItemPool, GetMinVanillaShopItems(32)); //assume worst case shopsanity 4
-    if (ShuffleEntrances) {
-      printf("\x1b[7;10HShuffling Entrances");
-      if (ShuffleAllEntrances() == ENTRANCE_SHUFFLE_FAILURE) {
+    StartPerformanceTimer(PT_ENTRANCE_SHUFFLE);
+    AddElementsToPool(ItemPool, GetMinVanillaShopItems(8)); //assume worst case shopsanity 7
+    if (ctx->GetOption(RSK_SHUFFLE_ENTRANCES)) {
+      SPDLOG_INFO("Shuffling Entrances...");
+      if (ctx->GetEntranceShuffler()->ShuffleAllEntrances() == ENTRANCE_SHUFFLE_FAILURE) {
         retries++;
         ClearProgress();
         continue;
       }
-      printf("\x1b[7;32HDone");
+      SPDLOG_INFO("Shuffling Entrances Done");
     }
+    SetAreas();
     //erase temporary shop items
-    FilterAndEraseFromPool(ItemPool, [](const auto item) { return ItemTable(item).GetItemType() == ITEMTYPE_SHOP; });
+    FilterAndEraseFromPool(ItemPool, [](const auto item) { return Rando::StaticData::RetrieveItem(item).GetItemType() == ITEMTYPE_SHOP; });
+    StopPerformanceTimer(PT_ENTRANCE_SHUFFLE);
 
-    showItemProgress = true;
+    //ctx->showItemProgress = true;
     //Place shop items first, since a buy shield is needed to place a dungeon reward on Gohma due to access
-    NonShopItems = {};
-    if (Shopsanity.Is(SHOPSANITY_OFF)) {
+
+    StartPerformanceTimer(PT_SHOPSANITY);
+    if (ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_OFF)) {
+      SPDLOG_INFO("Placing Vanilla Shop Items...");
       PlaceVanillaShopItems(); //Place vanilla shop items in vanilla location
     } else {
+      SPDLOG_INFO("Shuffling Shop Items");
       int total_replaced = 0;
-      if (Shopsanity.IsNot(SHOPSANITY_ZERO)) { //Shopsanity 1-4, random
-        //Initialize NonShopItems
-        ItemAndPrice init;
-        init.Name = Text{"No Item", "Sin objeto", "Pas d'objet"};
-        init.Price = -1;
-        init.Repurchaseable = false;
-        NonShopItems.assign(32, init);
-        //Indices from OoTR. So shopsanity one will overwrite 7, three will overwrite 7, 5, 8, etc.
-        const std::array<int, 4> indices = {7, 5, 8, 6};
+      if (ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_RANDOM) || ctx->GetOption(RSK_SHOPSANITY_COUNT).IsNot(RO_SHOPSANITY_COUNT_ZERO_ITEMS)) { //Shopsanity 1-7, random
+        /*
+        Indices from OoTR. So shopsanity one will overwrite 7, three will overwrite 7, 5, 8, etc.
+          8 6    2 4
+          7 5    1 3
+        */
+        const std::array<int, 8> indices = { 7, 5, 8, 6, 3, 1, 4, 2 };
         //Overwrite appropriate number of shop items
-        for (size_t i = 0; i < ShopLocationLists.size(); i++) {
-          int num_to_replace = GetShopsanityReplaceAmount(); //1-4 shop items will be overwritten, depending on settings
+        #define LOCATIONS_PER_SHOP 8
+        for (size_t i = 0; i < Rando::StaticData::GetShopLocations().size() / LOCATIONS_PER_SHOP; i++) {
+          int num_to_replace = GetShopsanityReplaceAmount(); //1-7 shop items will be overwritten, depending on settings
           total_replaced += num_to_replace;
           for (int j = 0; j < num_to_replace; j++) {
             int itemindex = indices[j];
-            int shopsanityPrice = GetRandomShopPrice();
-            NonShopItems[TransformShopIndex(i*8+itemindex-1)].Price = shopsanityPrice; //Set price to be retrieved by the patch and textboxes
-            Location(ShopLocationLists[i][itemindex - 1])->SetShopsanityPrice(shopsanityPrice);
+            RandomizerCheck rc = Rando::StaticData::GetShopLocations()[i * LOCATIONS_PER_SHOP + itemindex - 1];
+            Rando::ItemLocation* itemLoc = ctx->GetItemLocation(rc);
+            uint16_t shopsanityPrice = GetRandomPrice(Rando::StaticData::GetLocation(rc), shopsanityPrices);
+            itemLoc->SetCustomPrice(shopsanityPrice);
           }
         }
+        #undef LOCATIONS_PER_SHOP
       }
       //Get all locations and items that don't have a shopsanity price attached
-      std::vector<uint32_t> shopLocations = {};
+      std::vector<RandomizerCheck> shopLocations = {};
       //Get as many vanilla shop items as the total number of shop items minus the number of replaced items
       //So shopsanity 0 will get all 64 vanilla items, shopsanity 4 will get 32, etc.
-      std::vector<uint32_t> shopItems = GetMinVanillaShopItems(total_replaced);
+      std::vector<RandomizerGet> shopItems = GetMinVanillaShopItems(total_replaced);
 
-      for (size_t i = 0; i < ShopLocationLists.size(); i++) {
-        for (size_t j = 0; j < ShopLocationLists[i].size(); j++) {
-          uint32_t loc = ShopLocationLists[i][j];
-          if (!(Location(loc)->HasShopsanityPrice())) {
-            shopLocations.push_back(loc);
-          }
+      for (RandomizerCheck& randomizerCheck : Rando::StaticData::GetShopLocations()) {
+        if (!(ctx->GetItemLocation(randomizerCheck)->HasCustomPrice())) {
+          shopLocations.push_back(randomizerCheck);
         }
       }
       //Place the shop items which will still be at shop locations
       AssumedFill(shopItems, shopLocations);
     }
 
+    //Add prices to scrubs
+    auto scrubLoc = Rando::StaticData::GetScrubLocations();
+    if (ctx->GetOption(RSK_SHUFFLE_SCRUBS).Is(RO_SCRUBS_ALL)) {
+      for (size_t i = 0; i < scrubLoc.size(); i++) {
+        ctx->GetItemLocation(scrubLoc[i])->SetCustomPrice(
+          GetRandomPrice(Rando::StaticData::GetLocation(scrubLoc[i]), scrubPrices)
+        );
+      }
+    } else {
+      for (size_t i = 0; i < scrubLoc.size(); i++) {
+        ctx->GetItemLocation(scrubLoc[i])->SetCustomPrice(
+          Rando::StaticData::GetLocation(scrubLoc[i])->GetVanillaPrice()
+        );
+      }
+    }
+
+    //set merchant prices
+    if (ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_BEANS_ONLY) ||
+        ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL)){
+      ctx->GetItemLocation(RC_ZR_MAGIC_BEAN_SALESMAN)->SetCustomPrice(
+        GetRandomPrice(Rando::StaticData::GetLocation(RC_ZR_MAGIC_BEAN_SALESMAN), merchantPrices)
+      );
+    } else {
+      ctx->GetItemLocation(RC_ZR_MAGIC_BEAN_SALESMAN)->SetCustomPrice(
+        Rando::StaticData::GetLocation(RC_ZR_MAGIC_BEAN_SALESMAN)->GetVanillaPrice()
+      );
+    }
+
+    auto merchantLoc = Rando::StaticData::GetMerchantLocations();
+
+    if (ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL_BUT_BEANS) ||
+        ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL)){
+      for (size_t i = 0; i < merchantLoc.size(); i++) {
+        ctx->GetItemLocation(merchantLoc[i])->SetCustomPrice(
+          GetRandomPrice(Rando::StaticData::GetLocation(merchantLoc[i]), merchantPrices)
+        );
+      }
+    } else {
+      for (size_t i = 0; i < merchantLoc.size(); i++) {
+        ctx->GetItemLocation(merchantLoc[i])->SetCustomPrice(
+          Rando::StaticData::GetLocation(merchantLoc[i])->GetVanillaPrice()
+        );
+      }
+    }
+    StopPerformanceTimer(PT_SHOPSANITY);
+
+    StartPerformanceTimer(PT_OWN_DUNGEON);
     //Place dungeon rewards
+    SPDLOG_INFO("Shuffling and Placing Dungeon Items...");
     RandomizeDungeonRewards();
 
     //Place dungeon items restricted to their Own Dungeon
-    for (auto dungeon : Dungeon::dungeonList) {
+    for (auto dungeon : ctx->GetDungeons()->GetDungeonList()) {
       RandomizeOwnDungeon(dungeon);
     }
+    StopPerformanceTimer(PT_OWN_DUNGEON);
 
+    StartPerformanceTimer(PT_LIMITED_CHECKS);
     //Then Place songs if song shuffle is set to specific locations
-    if (ShuffleSongs.IsNot(SONGSHUFFLE_ANYWHERE)) {
+    if (ctx->GetOption(RSK_SHUFFLE_SONGS).IsNot(RO_SONG_SHUFFLE_ANYWHERE)) {
 
       //Get each song
-        std::vector<uint32_t> songs =
-            FilterAndEraseFromPool(ItemPool, [](const auto i) { return ItemTable(i).GetItemType() == ITEMTYPE_SONG; });
+      std::vector<RandomizerGet> songs = FilterAndEraseFromPool(
+          ItemPool, [](const auto i) { return Rando::StaticData::RetrieveItem(i).GetItemType() == ITEMTYPE_SONG; });
 
       //Get each song location
-      std::vector<uint32_t> songLocations;
-      if (ShuffleSongs.Is(SONGSHUFFLE_SONG_LOCATIONS)) {
-          songLocations =
-              FilterFromPool(allLocations, [](const auto loc) { return Location(loc)->IsCategory(Category::cSong); });
-
-      } else if (ShuffleSongs.Is(SONGSHUFFLE_DUNGEON_REWARDS)) {
+      std::vector<RandomizerCheck> songLocations;
+      if (ctx->GetOption(RSK_SHUFFLE_SONGS).Is(RO_SONG_SHUFFLE_SONG_LOCATIONS)) {
           songLocations = FilterFromPool(
-              allLocations, [](const auto loc) { return Location(loc)->IsCategory(Category::cSongDungeonReward); });
+              ctx->allLocations, [](const auto loc) { return Rando::StaticData::GetLocation(loc)->GetRCType() == RCTYPE_SONG_LOCATION; });
+
+      } else if (ctx->GetOption(RSK_SHUFFLE_SONGS).Is(RO_SONG_SHUFFLE_DUNGEON_REWARDS)) {
+          songLocations = FilterFromPool(ctx->allLocations, [](const auto loc) {
+            return Rando::StaticData::GetLocation(loc)->GetRCType() == RCTYPE_BOSS_HEART_OR_OTHER_REWARD ||
+                   loc == RC_SHEIK_IN_ICE_CAVERN ||
+                   loc == RC_SONG_FROM_IMPA;
+          });
       }
 
       AssumedFill(songs, songLocations, true);
@@ -1043,63 +1322,66 @@ int Fill() {
 
     //Then place dungeon items that are assigned to restrictive location pools
     RandomizeDungeonItems();
+    SPDLOG_INFO("Dungeon Items Done");
 
     //Then place Link's Pocket Item if it has to be an advancement item
     RandomizeLinksPocket();
+    StopPerformanceTimer(PT_LIMITED_CHECKS);
+
+
+    StartPerformanceTimer(PT_ADVANCEMENT_ITEMS);
+    SPDLOG_INFO("Shuffling Advancement Items");
     //Then place the rest of the advancement items
-    std::vector<uint32_t> remainingAdvancementItems =
-        FilterAndEraseFromPool(ItemPool, [](const auto i) { return ItemTable(i).IsAdvancement(); });
-    AssumedFill(remainingAdvancementItems, allLocations, true);
+    std::vector<RandomizerGet> remainingAdvancementItems =
+        FilterAndEraseFromPool(ItemPool, [](const auto i) { return Rando::StaticData::RetrieveItem(i).IsAdvancement(); });
+    AssumedFill(remainingAdvancementItems, ctx->allLocations, true);
+    StopPerformanceTimer(PT_ADVANCEMENT_ITEMS);
 
+    StartPerformanceTimer(PT_REMAINING_ITEMS);
     //Fast fill for the rest of the pool
-    std::vector<uint32_t> remainingPool = FilterAndEraseFromPool(ItemPool, [](const auto i) { return true; });
+    SPDLOG_INFO("Shuffling Remaining Items");
+    std::vector<RandomizerGet> remainingPool = FilterAndEraseFromPool(ItemPool, [](const auto i) { return true; });
     FastFill(remainingPool, GetAllEmptyLocations(), false);
+    StopPerformanceTimer(PT_REMAINING_ITEMS);
 
-    //Add prices for scrubsanity, this is unique to SoH because we write/read scrub prices to/from the spoilerfile.
-    if (Scrubsanity.Is(SCRUBSANITY_AFFORDABLE)) {
-      for (size_t i = 0; i < ScrubLocations.size(); i++) {
-        Location(ScrubLocations[i])->SetScrubsanityPrice(10);
-      }
-    } else if (Scrubsanity.Is(SCRUBSANITY_RANDOM_PRICES)) {
-      for (size_t i = 0; i < ScrubLocations.size(); i++) {
-        int randomPrice = GetRandomScrubPrice();
-        Location(ScrubLocations[i])->SetScrubsanityPrice(randomPrice);
-      }
-    }
 
+    StartPerformanceTimer(PT_PLAYTHROUGH_GENERATION);
     GeneratePlaythrough();
+    StopPerformanceTimer(PT_PLAYTHROUGH_GENERATION);
     //Successful placement, produced beatable result
-    if(playthroughBeatable && !placementFailure) {
-      printf("Done");
-      printf("\x1b[9;10HCalculating Playthrough...");
+    if(ctx->playthroughBeatable && !placementFailure) {
+
+      SPDLOG_INFO("Calculating Playthrough...");
+      StartPerformanceTimer(PT_PARE_DOWN_PLAYTHROUGH);
       PareDownPlaythrough();
+      StopPerformanceTimer(PT_PARE_DOWN_PLAYTHROUGH);
+
+      StartPerformanceTimer(PT_WOTH);
       CalculateWotH();
-      printf("Done");
-      CreateItemOverrides();
-      CreateEntranceOverrides();
-      if (GossipStoneHints.IsNot(HINTS_NO_HINTS)) {
-        printf("\x1b[10;10HCreating Hints...");
-        CreateAllHints();
-        printf("Done");
-      }
-      if (ShuffleMerchants.Is(SHUFFLEMERCHANTS_HINTS)) {
-        CreateMerchantsHints();
-      }
-      //Always execute ganon hint generation for the funny line
-      CreateGanonText();
-      CreateAltarText();
-      CreateDampesDiaryText();
-      CreateGregRupeeHint();
-      CreateSheikText();
-      CreateSariaText();
+      StopPerformanceTimer(PT_WOTH);
+
+      StartPerformanceTimer(PT_FOOLISH);
+      CalculateBarren(); 
+      StopPerformanceTimer(PT_FOOLISH);
+      SPDLOG_INFO("Calculating Playthrough Done");
+
+      StartPerformanceTimer(PT_OVERRIDES);
+      ctx->CreateItemOverrides();
+      ctx->GetEntranceShuffler()->CreateEntranceOverrides();
+      StopPerformanceTimer(PT_OVERRIDES);
+
+      StartPerformanceTimer(PT_HINTS);
+      CreateAllHints();
       CreateWarpSongTexts();
+      StopPerformanceTimer(PT_HINTS);
+      SPDLOG_DEBUG("Number of retries {}", retries);
       return 1;
     }
     //Unsuccessful placement
     if(retries < 4) {
-      SPDLOG_DEBUG("\nGOT STUCK. RETRYING...\n");
-      Areas::ResetAllLocations();
-      LogicReset();
+      SPDLOG_DEBUG("Failed to generate a beatable seed. Retrying...");
+      Regions::ResetAllLocations();
+      logic->Reset();
       ClearProgress();
     }
     retries++;

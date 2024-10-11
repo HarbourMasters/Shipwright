@@ -1,19 +1,33 @@
 ﻿#include "BossRush.h"
 #include "soh/OTRGlobals.h"
-#include "functions.h"
-#include "macros.h"
-#include "variables.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #include <array>
 #include <string>
 #include <vector>
+
+extern "C" {
+    #include "functions.h"
+    #include "macros.h"
+    #include "variables.h"
+    #include "src/overlays/actors/ovl_Boss_Goma/z_boss_goma.h"
+    #include "src/overlays/actors/ovl_Boss_Mo/z_boss_mo.h"
+    #include "src/overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
+    extern PlayState* gPlayState;
+
+    Gfx* KaleidoScope_QuadTextureIA8(Gfx* gfx, void* texture, s16 width, s16 height, u16 point);
+    #include "textures/icon_item_nes_static/icon_item_nes_static.h"
+    #include "textures/icon_item_ger_static/icon_item_ger_static.h"
+    #include "textures/icon_item_fra_static/icon_item_fra_static.h"
+}
 
 typedef struct BossRushSetting {
     std::array<std::string, LANGUAGE_MAX> name;
     std::vector<std::array<std::string, LANGUAGE_MAX>> choices;
 } BossRushSetting;
 
-BossRushSetting BossRushOptions[BOSSRUSH_OPTIONS_AMOUNT] = { 
+BossRushSetting BossRushOptions[BR_OPTIONS_MAX] = { 
     {
         { "BOSSES:", "BOSSE:", "BOSS:" },
         {
@@ -112,15 +126,15 @@ BossRushSetting BossRushOptions[BOSSRUSH_OPTIONS_AMOUNT] = {
     }
 };
 
-const char* BossRush_GetSettingName(uint8_t optionIndex, uint8_t language) {
+const char* BossRush_GetSettingName(u8 optionIndex, u8 language) {
     return BossRushOptions[optionIndex].name[language].c_str();
 }
 
-const char* BossRush_GetSettingChoiceName(uint8_t optionIndex, uint8_t choiceIndex, uint8_t language) {
+const char* BossRush_GetSettingChoiceName(u8 optionIndex, u8 choiceIndex, u8 language) {
     return BossRushOptions[optionIndex].choices[choiceIndex][language].c_str();
 }
 
-uint8_t BossRush_GetSettingOptionsAmount(uint8_t optionIndex) {
+u8 BossRush_GetSettingOptionsAmount(u8 optionIndex) {
     return BossRushOptions[optionIndex].choices.size();
 }
 
@@ -129,15 +143,15 @@ void BossRush_SpawnBlueWarps(PlayState* play) {
     // Spawn blue warps in Chamber of Sages based on what bosses have been defeated.
     if (gSaveContext.linkAge == LINK_AGE_CHILD) {
         // Forest Medallion (Gohma)
-        if (!Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_DEKU_TREE)) {
+        if (!Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP)) {
             Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, -100, 6, -170, 0, 0, 0, -1, false);
         }
         // Fire Medallion (King Dodongo)
-        if (!Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_DODONGOS_CAVERN)) {
+        if (!Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP)) {
             Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, 100, 6, -170, 0, 0, 0, -1, false);
         }
         // Water Medallion (Barinade)
-        if (!Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_JABU_JABUS_BELLY)) {
+        if (!Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP)) {
             Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, 199, 6, 0, 0, 0, 0, -1, false);
         }
     } else {
@@ -146,15 +160,15 @@ void BossRush_SpawnBlueWarps(PlayState* play) {
             Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, -199, 6, 0, 0, 0, 0, -1, false);
         }
         // Forest Medallion (Phantom Ganondorf)
-        if (!Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_FOREST_TEMPLE)) {
+        if (!Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP)) {
             Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, -100, 6, -170, 0, 0, 0, -1, false);
         }
         // Fire Medallion (Volvagia)
-        if (!Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE)) {
+        if (!Flags_GetEventChkInf(EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP)) {
             Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, 100, 6, -170, 0, 0, 0, -1, false);
         }
         // Water Medallion (Morpha)
-        if (!Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_WATER_TEMPLE)) {
+        if (!Flags_GetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP)) {
             Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, 199, 6, 0, 0, 0, 0, -1, false);
         }
         // Spirit Medallion (Twinrova)
@@ -168,8 +182,44 @@ void BossRush_SpawnBlueWarps(PlayState* play) {
     }
 }
 
-void BossRush_HandleBlueWarp(PlayState* play, f32 warpPosX, f32 warpPosZ) {
+void BossRush_SetEquipment(u8 linkAge) {
+    std::array<u8, 8> brButtonItems;
+    std::array<u8, 7> brCButtonSlots;
 
+    // Set Child Equipment.
+    if (linkAge == LINK_AGE_CHILD) {
+        brButtonItems = {
+            ITEM_SWORD_KOKIRI, ITEM_STICK, ITEM_NUT, ITEM_BOMB, ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_NONE
+        };
+
+        brCButtonSlots = { SLOT_STICK, SLOT_NUT, SLOT_BOMB, SLOT_NONE, SLOT_NONE, SLOT_NONE, SLOT_NONE };
+
+        Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_KOKIRI);
+        Inventory_ChangeEquipment(EQUIP_TYPE_SHIELD, EQUIP_VALUE_SHIELD_DEKU);
+    // Set Adult equipment.
+    } else {
+        brButtonItems = { ITEM_SWORD_MASTER, ITEM_BOW,  ITEM_HAMMER, ITEM_BOMB,
+                          ITEM_NONE,         ITEM_NONE, ITEM_NONE,   ITEM_NONE };
+
+        brCButtonSlots = { SLOT_BOW, SLOT_HAMMER, SLOT_BOMB, SLOT_NONE, SLOT_NONE, SLOT_NONE, SLOT_NONE };
+
+        Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_MASTER);
+        Inventory_ChangeEquipment(EQUIP_TYPE_SHIELD, EQUIP_VALUE_SHIELD_MIRROR);
+        Inventory_ChangeEquipment(EQUIP_TYPE_TUNIC, EQUIP_VALUE_TUNIC_GORON);
+    }
+
+    // Button Items
+    for (int button = 0; button < ARRAY_COUNT(gSaveContext.equips.buttonItems); button++) {
+        gSaveContext.equips.buttonItems[button] = brButtonItems[button];
+    }
+
+    // C buttons
+    for (int button = 0; button < ARRAY_COUNT(gSaveContext.equips.cButtonSlots); button++) {
+        gSaveContext.equips.cButtonSlots[button] = brCButtonSlots[button];
+    }
+}
+
+void BossRush_HandleBlueWarp(PlayState* play, f32 warpPosX, f32 warpPosZ) {
     // If warping from Chamber of Sages, choose the correct boss room to teleport to.
     if (play->sceneNum == SCENE_CHAMBER_OF_THE_SAGES) {
         // Gohma & Phantom Ganon
@@ -202,10 +252,13 @@ void BossRush_HandleBlueWarp(PlayState* play, f32 warpPosX, f32 warpPosZ) {
         // Ganondork
         } else if (warpPosX == -199 && warpPosZ == 0) {
             play->nextEntranceIndex = ENTR_GANONDORF_BOSS_0;
+        } else {
+            SPDLOG_ERROR("[BossRush]: Unknown blue warp in chamber of sages at position ({}, {}). Warping back to chamber of sages.", warpPosX, warpPosZ);
+            play->nextEntranceIndex = ENTR_CHAMBER_OF_THE_SAGES_0;
         }
     // If coming from a boss room, teleport back to Chamber of Sages and set flag.
     } else {
-        play->nextEntranceIndex = SCENE_HAIRAL_NIWA2;
+        play->nextEntranceIndex = ENTR_CHAMBER_OF_THE_SAGES_0;
 
         if (CheckDungeonCount() == 3) {
             play->linkAgeOnLoad = LINK_AGE_ADULT;
@@ -223,6 +276,10 @@ void BossRush_HandleBlueWarp(PlayState* play, f32 warpPosX, f32 warpPosZ) {
             }
         }
     }
+
+    play->transitionTrigger = TRANS_TRIGGER_START;
+    play->transitionType = TRANS_TYPE_FADE_WHITE;
+    gSaveContext.nextTransitionType = TRANS_TYPE_FADE_WHITE_SLOW;
 }
 
 void BossRush_HandleBlueWarpHeal(PlayState* play) {
@@ -235,29 +292,25 @@ void BossRush_HandleBlueWarpHeal(PlayState* play) {
 }
 
 void BossRush_HandleCompleteBoss(PlayState* play) {
-    if (!IS_BOSS_RUSH) {
-        return;
-    }
-
     gSaveContext.isBossRushPaused = 1;
     switch (play->sceneNum) {
         case SCENE_DEKU_TREE_BOSS:
-            Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_DEKU_TREE);
+            Flags_SetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP);
             break;
         case SCENE_DODONGOS_CAVERN_BOSS:
-            Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_DODONGOS_CAVERN);
+            Flags_SetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP);
             break;
         case SCENE_JABU_JABU_BOSS:
-            Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_JABU_JABUS_BELLY);
+            Flags_SetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP);
             break;
         case SCENE_FOREST_TEMPLE_BOSS:
-            Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_FOREST_TEMPLE);
+            Flags_SetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP);
             break;
         case SCENE_FIRE_TEMPLE_BOSS:
-            Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE);
+            Flags_SetEventChkInf(EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP);
             break;
         case SCENE_WATER_TEMPLE_BOSS:
-            Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_WATER_TEMPLE);
+            Flags_SetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP);
             break;
         case SCENE_SPIRIT_TEMPLE_BOSS:
             Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_SPIRIT_TEMPLE);
@@ -308,7 +361,7 @@ void BossRush_InitSave() {
     }
 
     // Set health
-    uint16_t health = 16;
+    u16 health = 16;
     switch (gSaveContext.bossRushOptions[BR_OPTIONS_HEARTS]) { 
         case BR_CHOICE_HEARTS_7:
             health *= 7;
@@ -418,7 +471,7 @@ void BossRush_InitSave() {
     }
 
     // Upgrades
-    uint8_t upgradeLevel = 1;
+    u8 upgradeLevel = 1;
     if (gSaveContext.bossRushOptions[BR_OPTIONS_AMMO] == BR_CHOICE_AMMO_MAXED) {
         upgradeLevel = 3;
     }
@@ -432,13 +485,13 @@ void BossRush_InitSave() {
     // Set flags and Link's age based on chosen settings.
     if (gSaveContext.bossRushOptions[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_ADULT ||
         gSaveContext.bossRushOptions[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_GANONDORF_GANON) {
-        Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_DEKU_TREE);
-        Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_DODONGOS_CAVERN);
-        Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_JABU_JABUS_BELLY);
+        Flags_SetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP);
+        Flags_SetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP);
+        Flags_SetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP);
         if (gSaveContext.bossRushOptions[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_GANONDORF_GANON) {
-            Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_FOREST_TEMPLE);
-            Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE);
-            Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_WATER_TEMPLE);
+            Flags_SetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP);
+            Flags_SetEventChkInf(EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP);
+            Flags_SetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP);
             Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_SPIRIT_TEMPLE);
             Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_SHADOW_TEMPLE);
         }
@@ -450,40 +503,214 @@ void BossRush_InitSave() {
     }
 }
 
-void BossRush_SetEquipment(uint8_t linkAge) {
+static void* sSavePromptNoChoiceTexs[] = {
+    (void*)gPauseNoENGTex,
+    (void*)gPauseNoGERTex,
+    (void*)gPauseNoFRATex
+};
 
-    std::array<u8, 8> brButtonItems;
-    std::array<u8, 7> brCButtonSlots;
+void BossRush_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_list originalArgs) {
+    va_list args;
+    va_copy(args, originalArgs);
 
-    // Set Child Equipment.
-    if (linkAge == LINK_AGE_CHILD) {
-        brButtonItems = {
-            ITEM_SWORD_KOKIRI, ITEM_STICK, ITEM_NUT, ITEM_BOMB, ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_NONE
-        };
+    switch (id) {
+        // Allow not healing before ganon
+        case VB_GANON_HEAL_BEFORE_FIGHT: {
+            if (gSaveContext.bossRushOptions[BR_OPTIONS_HEAL] == BR_CHOICE_HEAL_NEVER) {
+                *should = false;
+            }
+            break;
+        }
+        // Replace the blue warp transitions with ones that lead back to the chamber of sages
+        case VB_BLUE_WARP_APPLY_ENTRANCE_AND_CUTSCENE: {
+            DoorWarp1* blueWarp = va_arg(args, DoorWarp1*);
+            BossRush_HandleBlueWarp(gPlayState, blueWarp->actor.world.pos.x, blueWarp->actor.world.pos.z);
+            *should = false;
+            break;
+        }
+        // Spawn clean blue warps (no ruto, adult animation, etc)
+        case VB_SPAWN_BLUE_WARP: {
+            switch (gPlayState->sceneNum) {
+                case SCENE_DEKU_TREE_BOSS: {
+                    BossGoma* bossGoma = va_arg(args, BossGoma*);
+                    static Vec3f roomCenter = { -150.0f, 0.0f, -350.0f };
+                    Vec3f childPos = roomCenter;
 
-        brCButtonSlots = { SLOT_STICK, SLOT_NUT, SLOT_BOMB, SLOT_NONE, SLOT_NONE, SLOT_NONE, SLOT_NONE };
+                    for (s32 i = 0; i < 10000; i++) {
+                        if ((fabsf(childPos.x - GET_PLAYER(gPlayState)->actor.world.pos.x) < 100.0f &&
+                             fabsf(childPos.z - GET_PLAYER(gPlayState)->actor.world.pos.z) < 100.0f) ||
+                            (fabsf(childPos.x - bossGoma->actor.world.pos.x) < 150.0f &&
+                             fabsf(childPos.z - bossGoma->actor.world.pos.z) < 150.0f)) {
+                            childPos.x = Rand_CenteredFloat(400.0f) + -150.0f;
+                            childPos.z = Rand_CenteredFloat(400.0f) + -350.0f;
+                        } else {
+                            break;
+                        }
+                    }
+                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, childPos.x, bossGoma->actor.world.pos.y, childPos.z, 0, 0, 0, WARP_DUNGEON_ADULT, false);
+                    break;
+                }
+                case SCENE_DODONGOS_CAVERN_BOSS: {
+                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, -890.0f, -1523.76f, -3304.0f, 0, 0, 0, WARP_DUNGEON_ADULT, false);
+                    break;
+                }
+                case SCENE_JABU_JABU_BOSS: {
+                    static Vec3f sWarpPos[] = {
+                        { 10.0f, 0.0f, 30.0f },
+                        { 260.0f, 0.0f, -470.0f },
+                        { -240.0f, 0.0f, -470.0f },
+                    };
 
-        Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_KOKIRI);
-        Inventory_ChangeEquipment(EQUIP_TYPE_SHIELD, EQUIP_VALUE_SHIELD_DEKU);
-    // Set Adult equipment.
-    } else {
-        brButtonItems = { ITEM_SWORD_MASTER, ITEM_BOW,  ITEM_HAMMER, ITEM_BOMB,
-                          ITEM_NONE,         ITEM_NONE, ITEM_NONE,   ITEM_NONE };
+                    s32 sp7C = 2;
+                    for (s32 i = 2; i > 0; i -= 1) {
+                        if (Math_Vec3f_DistXYZ(&sWarpPos[i], &GET_PLAYER(gPlayState)->actor.world.pos) <
+                            Math_Vec3f_DistXYZ(&sWarpPos[i - 1], &GET_PLAYER(gPlayState)->actor.world.pos)) {
+                            sp7C = i - 1;
+                        }
+                    }
 
-        brCButtonSlots = { SLOT_BOW, SLOT_HAMMER, SLOT_BOMB, SLOT_NONE, SLOT_NONE, SLOT_NONE, SLOT_NONE };
-
-        Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_MASTER);
-        Inventory_ChangeEquipment(EQUIP_TYPE_SHIELD, EQUIP_VALUE_SHIELD_MIRROR);
-        Inventory_ChangeEquipment(EQUIP_TYPE_TUNIC, EQUIP_VALUE_TUNIC_GORON);
+                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, sWarpPos[sp7C].x, sWarpPos[sp7C].y, sWarpPos[sp7C].z, 0, 0, 0, WARP_DUNGEON_ADULT, false);
+                    break;
+                }
+                case SCENE_FOREST_TEMPLE_BOSS: {
+                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, 14.0f, -33.0f, -3315.0f, 0, 0, 0, WARP_DUNGEON_ADULT, true);
+                    break;
+                }
+                case SCENE_FIRE_TEMPLE_BOSS: {
+                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, 0.0f, 100.0f, 0.0f, 0, 0, 0, WARP_DUNGEON_ADULT, true);
+                    break;
+                }
+                case SCENE_WATER_TEMPLE_BOSS: {
+                    BossMo* bossMo = va_arg(args, BossMo*);
+                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, bossMo->actor.world.pos.x, -280.0f, bossMo->actor.world.pos.z, 0, 0, 0, WARP_DUNGEON_ADULT, true);
+                    break;
+                }
+                case SCENE_SPIRIT_TEMPLE_BOSS: {
+                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, 600.0f, 230.0f, 0.0f, 0, 0, 0, WARP_DUNGEON_ADULT, true);
+                    break;
+                }
+                case SCENE_SHADOW_TEMPLE_BOSS: {
+                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, -50.0f, 0.0f, 400.0f, 0, 0, 0, WARP_DUNGEON_ADULT, true);
+                    break;
+                }
+                default: {
+                    SPDLOG_WARN("[BossRush]: Blue warp spawned in unhandled scene, ignoring");
+                    return;
+                }
+            }
+            *should = false;
+            break;
+        }
+        // Skip past the "Save?" window when pressing B while paused and instead close the menu.
+        case VB_CLOSE_PAUSE_MENU: {
+            if (CHECK_BTN_ALL(gPlayState->state.input[0].press.button, BTN_B)) {
+                *should = true;
+            }
+            break;
+        }
+        // Show "No" twice because the player can't continue.
+        case VB_RENDER_YES_ON_CONTINUE_PROMPT: {
+            Gfx** disp = va_arg(args, Gfx**);
+            *disp = KaleidoScope_QuadTextureIA8(*disp, sSavePromptNoChoiceTexs[gSaveContext.language], 48, 16, 12);
+            *should = false;
+            break;
+        }
+        // Break the dodongo breakable floor immediately so the player can jump in the hole immediately.
+        case VB_BG_BREAKWALL_BREAK: {
+            *should = true;
+            break;
+        }
+        // Skip past the "Save?" window when dying and go to the "Continue?" screen immediately.
+        case VB_TRANSITION_TO_SAVE_SCREEN_ON_DEATH: {
+            PauseContext* pauseCtx = va_arg(args, PauseContext*);
+            pauseCtx->state = 0xF;
+            *should = false;
+            break;
+        }
+        // Prevent saving
+        case VB_BE_ABLE_TO_SAVE:
+        // Disable doors so the player can't leave the boss rooms backwards.
+        case VB_BE_ABLE_TO_OPEN_DOORS:
+        // There's no heart containers in boss rush
+        case VB_SPAWN_HEART_CONTAINER:
+        // Rupees are useless in boss rush
+        case VB_RENDER_RUPEE_COUNTER: {
+            *should = false;
+            break;
+        }
+        // Prevent warning spam
+        default: {
+            break;
+        }
     }
 
-    // Button Items
-    for (int button = 0; button < ARRAY_COUNT(gSaveContext.equips.buttonItems); button++) {
-        gSaveContext.equips.buttonItems[button] = brButtonItems[button];
+    va_end(args);
+}
+
+void BossRush_OnActorInitHandler(void* actorRef) {
+    Actor* actor = static_cast<Actor*>(actorRef);
+
+    if (actor->id == ACTOR_DEMO_SA && gPlayState->sceneNum == SCENE_CHAMBER_OF_THE_SAGES) {
+        BossRush_SpawnBlueWarps(gPlayState);
+        Actor_Kill(actor);
+        GET_PLAYER(gPlayState)->actor.world.rot.y = GET_PLAYER(gPlayState)->actor.shape.rot.y = 27306;
+        return;
     }
 
-    // C buttons
-    for (int button = 0; button < ARRAY_COUNT(gSaveContext.equips.cButtonSlots); button++) {
-        gSaveContext.equips.cButtonSlots[button] = brCButtonSlots[button];
+    // Remove chests, mainly for the chest in King Dodongo's boss room.
+    // Remove bushes, used in Gohma's arena.
+    // Remove pots, used in Barinade's and Ganondorf's arenas.
+    if (actor->id == ACTOR_EN_KUSA || actor->id == ACTOR_OBJ_TSUBO || actor->id == ACTOR_EN_BOX) {
+        Actor_Kill(actor);
+        return;
     }
+}
+
+void BossRush_OnSceneInitHandler(s16 sceneNum) {
+    // Unpause the timer when the scene loaded isn't the Chamber of Sages.
+    if (sceneNum != SCENE_CHAMBER_OF_THE_SAGES) {
+        gSaveContext.isBossRushPaused = 0;
+    }
+}
+
+void BossRush_OnBossDefeatHandler(void* refActor) {
+    BossRush_HandleCompleteBoss(gPlayState);
+}
+
+void BossRush_OnBlueWarpUpdate(void* actor) {
+    DoorWarp1* blueWarp = static_cast<DoorWarp1*>(actor);
+
+    if (blueWarp->warpTimer > 160) {
+        BossRush_HandleBlueWarp(gPlayState, blueWarp->actor.world.pos.x, blueWarp->actor.world.pos.z);
+    }
+}
+
+void BossRush_RegisterHooks() {
+    static u32 onVanillaBehaviorHook = 0;
+    static u32 onSceneInitHook = 0;
+    static u32 onActorInitHook = 0;
+    static u32 onBossDefeatHook = 0;
+    static u32 onActorUpdate = 0;
+
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) {
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnVanillaBehavior>(onVanillaBehaviorHook);
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(onSceneInitHook);
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorInit>(onActorInitHook);
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnBossDefeat>(onBossDefeatHook);
+        GameInteractor::Instance->UnregisterGameHookForID<GameInteractor::OnActorUpdate>(onActorUpdate);
+
+        onVanillaBehaviorHook = 0;
+        onSceneInitHook = 0;
+        onActorInitHook = 0;
+        onBossDefeatHook = 0;
+        onActorUpdate = 0;
+
+        if (!IS_BOSS_RUSH) return;
+
+        onVanillaBehaviorHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnVanillaBehavior>(BossRush_OnVanillaBehaviorHandler);
+        onSceneInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>(BossRush_OnSceneInitHandler);
+        onActorInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>(BossRush_OnActorInitHandler);
+        onBossDefeatHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnBossDefeat>(BossRush_OnBossDefeatHandler);
+        onActorUpdate = GameInteractor::Instance->RegisterGameHookForID<GameInteractor::OnActorUpdate>(ACTOR_DOOR_WARP1, BossRush_OnBlueWarpUpdate);
+    });
 }

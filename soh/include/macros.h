@@ -184,7 +184,6 @@ extern GraphicsContext* __gfxCtx;
 #define POLY_XLU_DISP      __gfxCtx->polyXlu.p
 // #region SOH [General]
 // Upstream TODO: Document reasoning for these only existing in SoH
-#define WORLD_OVERLAY_DISP __gfxCtx->worldOverlay.p
 #define POLY_KAL_DISP      __gfxCtx->polyKal.p
 // #endregion
 #define OVERLAY_DISP       __gfxCtx->overlay.p

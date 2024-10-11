@@ -7,6 +7,7 @@
 #include "z_bg_heavy_block.h"
 #include "objects/object_heavy_object/object_heavy_object.h"
 #include "vt.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS 0
 
@@ -320,18 +321,16 @@ void BgHeavyBlock_Wait(BgHeavyBlock* this, PlayState* play) {
     if (Actor_HasParent(&this->dyna.actor, play)) {
         this->timer = 0;
 
-        if (!CVarGetInteger(CVAR_ENHANCEMENT("FasterHeavyBlockLift"), 0)) {
-            switch (this->dyna.actor.params & 0xFF) {
-                case HEAVYBLOCK_BREAKABLE:
-                    OnePointCutscene_Init(play, 4020, 270, &this->dyna.actor, MAIN_CAM);
-                    break;
-                case HEAVYBLOCK_UNBREAKABLE:
-                    OnePointCutscene_Init(play, 4021, 220, &this->dyna.actor, MAIN_CAM);
-                    break;
-                case HEAVYBLOCK_UNBREAKABLE_OUTSIDE_CASTLE:
-                    OnePointCutscene_Init(play, 4022, 210, &this->dyna.actor, MAIN_CAM);
-                    break;
-            }
+        switch (this->dyna.actor.params & 0xFF) {
+            case HEAVYBLOCK_BREAKABLE:
+                OnePointCutscene_Init(play, 4020, 270, &this->dyna.actor, MAIN_CAM);
+                break;
+            case HEAVYBLOCK_UNBREAKABLE:
+                OnePointCutscene_Init(play, 4021, 220, &this->dyna.actor, MAIN_CAM);
+                break;
+            case HEAVYBLOCK_UNBREAKABLE_OUTSIDE_CASTLE:
+                OnePointCutscene_Init(play, 4022, 210, &this->dyna.actor, MAIN_CAM);
+                break;
         }
 
         quakeIndex = Quake_Add(GET_ACTIVE_CAM(play), 3);
@@ -369,8 +368,8 @@ void BgHeavyBlock_LiftedUp(BgHeavyBlock* this, PlayState* play) {
 
     this->timer++;
 
-    if (!CVarGetInteger(CVAR_ENHANCEMENT("FasterHeavyBlockLift"), 0)) {
-        func_8002DF54(play, &player->actor, 8);
+    if (GameInteractor_Should(VB_FREEZE_LINK_FOR_BLOCK_THROW, true, this)) {
+        Player_SetCsActionWithHaltedActors(play, &player->actor, 8);
     }
 
     // if parent is NULL, link threw it
@@ -408,13 +407,10 @@ void BgHeavyBlock_Fly(BgHeavyBlock* this, PlayState* play) {
                 Quake_SetQuakeValues(quakeIndex, 14, 2, 100, 0);
                 Quake_SetCountdown(quakeIndex, 30);
 
-                // We don't want this arbitrarily long quake with the enhancement enabled
-                if (!CVarGetInteger(CVAR_ENHANCEMENT("FasterHeavyBlockLift"), 0)) {
-                    quakeIndex = Quake_Add(GET_ACTIVE_CAM(play), 2);
-                    Quake_SetSpeed(quakeIndex, 12000);
-                    Quake_SetQuakeValues(quakeIndex, 5, 0, 0, 0);
-                    Quake_SetCountdown(quakeIndex, 999);
-                }
+                quakeIndex = Quake_Add(GET_ACTIVE_CAM(play), 2);
+                Quake_SetSpeed(quakeIndex, 12000);
+                Quake_SetQuakeValues(quakeIndex, 5, 0, 0, 0);
+                Quake_SetCountdown(quakeIndex, 999);
 
                 SoundSource_PlaySfxAtFixedWorldPos(play, &this->dyna.actor.world.pos, 30,
                                                    NA_SE_EV_ELECTRIC_EXPLOSION);

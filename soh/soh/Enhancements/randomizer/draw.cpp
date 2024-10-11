@@ -9,10 +9,15 @@
 #include <array>
 #include "objects/object_gi_key/object_gi_key.h"
 #include "objects/object_gi_bosskey/object_gi_bosskey.h"
+#include "objects/object_gi_compass/object_gi_compass.h"
 #include "objects/object_gi_hearts/object_gi_hearts.h"
+#include "objects/object_gi_scale/object_gi_scale.h"
+#include "objects/object_gi_fire/object_gi_fire.h"
+#include "objects/object_fish/object_fish.h"
 #include "objects/object_toki_objects/object_toki_objects.h"
 #include "objects/gameplay_field_keep/gameplay_field_keep.h"
 #include "soh_assets.h"
+#include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 
 extern "C" {
 extern SaveContext gSaveContext;
@@ -55,6 +60,49 @@ extern "C" void Randomizer_DrawSmallKey(PlayState* play, GetItemEntry* getItemEn
     if (isColoredKeysEnabled) {
         gSPGrayscale(POLY_OPA_DISP++, false);
     }
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
+extern "C" {
+    void GetItem_DrawCompass(PlayState* play, s16 drawId);
+    void ResourceMgr_PatchGfxByName(const char* path, const char* patchName, int index, Gfx instruction);
+    void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName);
+}
+
+extern "C" void Randomizer_DrawCompass(PlayState* play, GetItemEntry* getItemEntry) {
+
+    s16 color_slot = getItemEntry->getItemId - RG_DEKU_TREE_COMPASS;
+    s16 colors[12][3] = {
+        { 4, 100, 46 },    // Deku Tree
+        { 140, 30, 30 },   // Dodongo's Cavern
+        { 30, 60, 255 },   // Jabu Jabu's Belly
+        { 4, 195, 46 },    // Forest Temple
+        { 237, 95, 95 },   // Fire Temple
+        { 85, 180, 223 },  // Water Temple
+        { 222, 158, 47 },  // Spirit Temple
+        { 126, 16, 177 },  // Shadow Temple
+        { 227, 110, 255 }, // Bottom of the Well
+        { 221, 212, 60 },  // Gerudo Training Grounds
+        { 255, 255, 255 }, // Thieves' Hideout
+        { 80, 80, 80 }     // Ganon's Castle
+    };
+
+    OPEN_DISPS(play->state.gfxCtx);
+
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
+
+    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, colors[color_slot][0], colors[color_slot][1], colors[color_slot][2], 255);
+    gDPSetEnvColor(POLY_OPA_DISP++, colors[color_slot][0] / 2, colors[color_slot][1] / 2, colors[color_slot][2] / 2, 255);
+
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiCompassDL);
+
+    POLY_XLU_DISP = Gfx_SetupDL(POLY_XLU_DISP, 5);
+    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
+    gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiCompassGlassDL);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -158,7 +206,7 @@ extern "C" void Randomizer_DrawKeyRing(PlayState* play, GetItemEntry* getItemEnt
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
-extern "C" void Randomizer_DrawDoubleDefense(PlayState* play, GetItemEntry getItemEntry) {
+extern "C" void Randomizer_DrawDoubleDefense(PlayState* play, GetItemEntry* getItemEntry) {
     OPEN_DISPS(play->state.gfxCtx);
 
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
@@ -177,7 +225,7 @@ extern "C" void Randomizer_DrawDoubleDefense(PlayState* play, GetItemEntry getIt
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
-extern "C" void Randomizer_DrawMasterSword(PlayState* play, GetItemEntry getItemEntry) {
+extern "C" void Randomizer_DrawMasterSword(PlayState* play, GetItemEntry* getItemEntry) {
     OPEN_DISPS(play->state.gfxCtx);
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
@@ -239,7 +287,7 @@ extern "C" void Randomizer_DrawTriforcePieceGI(PlayState* play, GetItemEntry get
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     uint8_t current = gSaveContext.triforcePiecesCollected;
-    uint8_t required = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED);
+    uint8_t required = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED) + 1;
 
     Matrix_Scale(triforcePieceScale, triforcePieceScale, triforcePieceScale, MTXMODE_APPLY);
 
@@ -297,6 +345,251 @@ extern "C" void Randomizer_DrawMysteryItem(PlayState* play, GetItemEntry getItem
     gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gMysteryItemDL);
 
     gSPGrayscale(POLY_XLU_DISP++, false);
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
+extern "C" void Randomizer_DrawBossSoul(PlayState* play, GetItemEntry* getItemEntry) {
+    s16 slot = getItemEntry->getItemId - RG_GOHMA_SOUL;
+    s16 flameColors[9][3] = {
+        { 0, 255, 0 },     // Gohma
+        { 255, 0, 100 },   // King Dodongo
+        { 50, 255, 255},   // Barinade
+        { 4, 195, 46 },    // Phantom Ganon
+        { 237, 95, 95 },   // Volvagia
+        { 85, 180, 223 },  // Morpha
+        { 126, 16, 177 },  // Bongo Bongo
+        { 222, 158, 47 },  // Twinrova
+        { 80, 80, 80 },    // Ganon/Dorf
+    }; 
+    OPEN_DISPS(play->state.gfxCtx);
+
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
+    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
+    if (slot == 8) { // For Ganon only...
+        gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 0, 0, 0, 255);
+    } else {
+        gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, 255);
+    }
+    gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gBossSoulSkullDL);
+    
+    if (slot >= 0) {
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
+        gSPSegment(POLY_XLU_DISP++, 8, (uintptr_t)Gfx_TwoTexScroll(
+            play->state.gfxCtx, 0, 0 * (play->state.frames * 0),
+            0 * (play->state.frames * 0), 16, 32, 1, 1 * (play->state.frames * 1),
+            -1 * (play->state.frames * 8), 16, 32
+        ));
+        Matrix_Push();
+        Matrix_Translate(0.0f, -70.0f, 0.0f, MTXMODE_APPLY);
+        Matrix_Scale(5.0f, 5.0f, 5.0f, MTXMODE_APPLY);
+        Matrix_ReplaceRotation(&play->billboardMtxF);
+        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+                  G_MTX_MODELVIEW | G_MTX_LOAD);
+        gDPSetGrayscaleColor(POLY_XLU_DISP++, flameColors[slot][0], flameColors[slot][1], flameColors[slot][2], 255);
+        gSPGrayscale(POLY_XLU_DISP++, true);
+        gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiBlueFireFlameDL);
+        gSPGrayscale(POLY_XLU_DISP++, false);
+        Matrix_Pop();
+    }
+
+    CLOSE_DISPS(play->state.gfxCtx);
+
+}
+
+extern "C" void Randomizer_DrawOcarinaButton(PlayState* play, GetItemEntry* getItemEntry) {
+    Color_RGB8 aButtonColor = { 80, 150, 255 };
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.AButton.Changed"), 0)) {
+        aButtonColor = CVarGetColor24(CVAR_COSMETIC("HUD.AButton.Value"), aButtonColor);
+    } else if (CVarGetInteger(CVAR_COSMETIC("DefaultColorScheme"), COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
+        aButtonColor = { 80, 255, 150 };
+    }
+
+    Color_RGB8 cButtonsColor = { 255, 255, 50 };
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.CButtons.Changed"), 0)) {
+        cButtonsColor = CVarGetColor24(CVAR_COSMETIC("HUD.CButtons.Value"), cButtonsColor);
+    }
+    Color_RGB8 cUpButtonColor = cButtonsColor;
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.CUpButton.Changed"), 0)) {
+        cUpButtonColor = CVarGetColor24(CVAR_COSMETIC("HUD.CUpButton.Value"), cUpButtonColor);
+    }
+    Color_RGB8 cDownButtonColor = cButtonsColor;
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.CDownButton.Changed"), 0)) {
+        cDownButtonColor = CVarGetColor24(CVAR_COSMETIC("HUD.CDownButton.Value"), cDownButtonColor);
+    }
+    Color_RGB8 cLeftButtonColor = cButtonsColor;
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.CLeftButton.Changed"), 0)) {
+        cLeftButtonColor = CVarGetColor24(CVAR_COSMETIC("HUD.CLeftButton.Value"), cLeftButtonColor);
+    }
+    Color_RGB8 cRightButtonColor = cButtonsColor;
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.CRightButton.Changed"), 0)) {
+        cRightButtonColor = CVarGetColor24(CVAR_COSMETIC("HUD.CRightButton.Value"), cRightButtonColor);
+    }
+
+    s16 slot = getItemEntry->drawItemId - RG_OCARINA_A_BUTTON;
+
+    Gfx* dLists[] = {
+        (Gfx*)gOcarinaAButtonDL,
+        (Gfx*)gOcarinaCUpButtonDL,
+        (Gfx*)gOcarinaCDownButtonDL,
+        (Gfx*)gOcarinaCLeftButtonDL,
+        (Gfx*)gOcarinaCRightButtonDL,
+    };
+
+    Color_RGB8 colors[] = {
+        aButtonColor,
+        cUpButtonColor,
+        cDownButtonColor,
+        cLeftButtonColor,
+        cRightButtonColor,
+    };
+
+    OPEN_DISPS(play->state.gfxCtx);
+
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
+
+    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__), G_MTX_MODELVIEW | G_MTX_LOAD);
+
+    gDPSetGrayscaleColor(POLY_XLU_DISP++, colors[slot].r, colors[slot].g, colors[slot].b, 255);
+    gSPGrayscale(POLY_XLU_DISP++, true);
+
+    gSPDisplayList(POLY_XLU_DISP++, dLists[slot]);
+
+    gSPGrayscale(POLY_XLU_DISP++, false);
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
+static Gfx gGiBronzeScaleWaterColorDL[] = {
+    gsDPPipeSync(),
+    gsDPSetPrimColor(0, 0x60, 255, 255, 255, 255),
+    gsDPSetEnvColor(255, 123, 0, 255),
+    gsSPEndDisplayList(),
+};
+
+static Gfx gGiBronzeScaleColorDL[] = {
+    gsDPPipeSync(),
+    gsDPSetPrimColor(0, 0x80, 255, 255, 255, 255),
+    gsDPSetEnvColor(91, 51, 18, 255),
+    gsSPEndDisplayList(),
+};
+
+extern "C" void Randomizer_DrawBronzeScale(PlayState* play, GetItemEntry* getItemEntry) {
+    OPEN_DISPS(play->state.gfxCtx);
+
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
+
+    gSPSegment(POLY_XLU_DISP++, 0x08,
+                (uintptr_t)Gfx_TwoTexScroll(play->state.gfxCtx, 0, 1 * (play->state.frames * 2),
+                                -1 * (play->state.frames * 2), 64, 64, 1, 1 * (play->state.frames * 4),
+                                1 * -(play->state.frames * 4), 32, 32));
+
+    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__), G_MTX_MODELVIEW | G_MTX_LOAD);
+
+    gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiBronzeScaleColorDL);
+    gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiScaleDL);
+    gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiBronzeScaleWaterColorDL);
+    gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiScaleWaterDL);
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
+extern "C" void Randomizer_DrawFishingPoleGI(PlayState* play, GetItemEntry* getItemEntry) {
+    Vec3f pos;
+    OPEN_DISPS(play->state.gfxCtx);
+
+    // Draw rod
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+    Matrix_Scale(0.2, 0.2, 0.2, MTXMODE_APPLY);
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gFishingPoleGiDL);
+
+    // Draw lure
+    Matrix_Push();
+    Matrix_Scale(5.0f, 5.0f, 5.0f, MTXMODE_APPLY);
+    pos = { 0.0f, -25.5f, -4.0f };
+    Matrix_Translate(pos.x, pos.y, pos.z, MTXMODE_APPLY);
+    Matrix_RotateZ(-M_PI_2, MTXMODE_APPLY);
+    Matrix_RotateY(-M_PI_2 - 0.2f, MTXMODE_APPLY);
+    Matrix_Scale(0.006f, 0.006f, 0.006f, MTXMODE_APPLY);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_NOPUSH | G_MTX_MODELVIEW | G_MTX_LOAD);
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gFishingLureFloatDL);
+
+    // Draw hooks
+    Matrix_RotateY(0.2f, MTXMODE_APPLY);
+    Matrix_Translate(0.0f, 0.0f, -300.0f, MTXMODE_APPLY);
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gFishingLureHookDL);
+    Matrix_RotateZ(M_PI_2, MTXMODE_APPLY);
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gFishingLureHookDL);
+
+    Matrix_Translate(0.0f, -2200.0f, 700.0f, MTXMODE_APPLY);
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gFishingLureHookDL);
+    Matrix_RotateZ(M_PI / 2, MTXMODE_APPLY);
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gFishingLureHookDL);
+
+    Matrix_Pop();
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
+int skeletonKeyHue = 0;
+
+// Runs every frame to update rainbow hue, taken from CosmeticsEditor.cpp.
+Color_RGBA8 GetSkeletonKeyColor() {
+    float rainbowSpeed = 0.6f;
+    
+    float frequency = 2 * M_PI / (360 * rainbowSpeed);
+    Color_RGBA8 color;
+    color.r = sin(frequency * skeletonKeyHue + 0) * 127 + 128;
+    color.g = sin(frequency * skeletonKeyHue + (2 * M_PI / 3)) * 127 + 128;
+    color.b = sin(frequency * skeletonKeyHue + (4 * M_PI / 3)) * 127 + 128;
+    color.a = 255;
+
+    skeletonKeyHue++;
+    if (skeletonKeyHue >= (360 * rainbowSpeed)) skeletonKeyHue = 0;
+
+    return color;
+}
+
+int skeletonKeyRotation = 0;
+
+extern "C" void Randomizer_DrawSkeletonKey(PlayState* play, GetItemEntry* getItemEntry) {
+    OPEN_DISPS(play->state.gfxCtx);
+
+    Color_RGBA8 color = GetSkeletonKeyColor();
+
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+
+    skeletonKeyRotation += 1;
+
+    if (skeletonKeyRotation > 40) {
+        skeletonKeyRotation -= 80;
+    }
+
+    Matrix_RotateZ(M_PI / 40 * skeletonKeyRotation, MTXMODE_APPLY);
+    Matrix_RotateY(M_PI / 40 * skeletonKeyRotation, MTXMODE_APPLY);
+
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
+
+    gDPSetGrayscaleColor(POLY_OPA_DISP++, color.r, color.g, color.b, color.a);
+    gSPGrayscale(POLY_OPA_DISP++, true);
+
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiSmallKeyDL);
+
+    gSPGrayscale(POLY_OPA_DISP++, false);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
