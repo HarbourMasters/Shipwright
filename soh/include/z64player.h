@@ -416,40 +416,40 @@ typedef struct {
 // #endregion
 
 #define PLAYER_STATE1_LOADING (1 << 0) //Transitioning to a new scene
-#define PLAYER_STATE1_SWINGING_BOTTLE (1 << 1)
+#define PLAYER_STATE1_SWINGING_BOTTLE (1 << 1) // Bottle is swung; Bottle is active and can catch things
 #define PLAYER_STATE1_HOOKSHOT_FALLING (1 << 2)
 #define PLAYER_STATE1_ITEM_IN_HAND (1 << 3)
-#define PLAYER_STATE1_ENEMY_TARGET (1 << 4)
+#define PLAYER_STATE1_HOSTILE_LOCK_ON (1 << 4) // Currently locked onto a hostile actor. Triggers a "battle" variant of many actions.
 #define PLAYER_STATE1_INPUT_DISABLED (1 << 5)
-#define PLAYER_STATE1_TEXT_ON_SCREEN (1 << 6)
-#define PLAYER_STATE1_DEAD (1 << 7) 
-#define PLAYER_STATE1_START_PUTAWAY (1 << 8)
+#define PLAYER_STATE1_TALKING (1 << 6) // Currently talking to an actor. This includes item exchanges.
+#define PLAYER_STATE1_DEAD (1 << 7) // Player has died. Note that this gets set when the death cutscene has started, after landing from the air.
+#define PLAYER_STATE1_START_CHANGING_HELD_ITEM (1 << 8) // Item change process has begun
 #define PLAYER_STATE1_READY_TO_FIRE (1 << 9)
 #define PLAYER_STATE1_GETTING_ITEM (1 << 10)
-#define PLAYER_STATE1_ITEM_OVER_HEAD (1 << 11)
+#define PLAYER_STATE1_CARRYING_ACTOR (1 << 11) // Currently carrying an actor
 #define PLAYER_STATE1_CHARGING_SPIN_ATTACK (1 << 12)
 #define PLAYER_STATE1_HANGING_OFF_LEDGE (1 << 13)
-#define PLAYER_STATE1_CLIMBING_LEDGE (1 << 14) 
-#define PLAYER_STATE1_TARGETING (1 << 15)
-#define PLAYER_STATE1_TARGET_LOCKED (1 << 16)
-#define PLAYER_STATE1_TARGET_NOTHING (1 << 17)
+#define PLAYER_STATE1_CLIMBING_LEDGE (1 << 14)
+#define PLAYER_STATE1_Z_TARGETING (1 << 15) // Either lock-on or parallel is active. This flag is never checked for and is practically unused.
+#define PLAYER_STATE1_FRIENDLY_ACTOR_FOCUS (1 << 16) // Currently focusing on a friendly actor. Includes friendly lock-on, talking, and more. Usually does not include hostile actor lock-on, see `PLAYER_STATE1_HOSTILE_LOCK_ON`.
+#define PLAYER_STATE1_PARALLEL (1 << 17) // "Parallel" mode, Z-Target without an actor lock-on
 #define PLAYER_STATE1_JUMPING (1 << 18)
 #define PLAYER_STATE1_FREEFALL (1 << 19)
 #define PLAYER_STATE1_FIRST_PERSON (1 << 20)
 #define PLAYER_STATE1_CLIMBING_LADDER (1 << 21)
 #define PLAYER_STATE1_SHIELDING (1 << 22)
 #define PLAYER_STATE1_ON_HORSE (1 << 23)
-#define PLAYER_STATE1_BOOMERANG_IN_HAND (1 << 24)
-#define PLAYER_STATE1_THREW_BOOMERANG (1 << 25)
+#define PLAYER_STATE1_USING_BOOMERANG (1 << 24) // Currently using the boomerang. This includes all phases (aiming, throwing, and catching).
+#define PLAYER_STATE1_BOOMERANG_THROWN (1 << 25) // Boomerang has been thrown and is flying in the air
 #define PLAYER_STATE1_DAMAGED (1 << 26)
 #define PLAYER_STATE1_IN_WATER (1 << 27)
 #define PLAYER_STATE1_IN_ITEM_CS (1 << 28)
 #define PLAYER_STATE1_IN_CUTSCENE (1 << 29)
-#define PLAYER_STATE1_30 (1 << 30) //Unknown, potentially target related?
+#define PLAYER_STATE1_LOCK_ON_FORCED_TO_RELEASE (1 << 30) // Lock-on was released automatically, for example by leaving the lock-on leash range
 #define PLAYER_STATE1_FLOOR_DISABLED (1 << 31) //Used for grottos
 
 #define PLAYER_STATE2_DO_ACTION_GRAB (1 << 0)
-#define PLAYER_STATE2_SPEAK_OR_CHECK (1 << 1)
+#define PLAYER_STATE2_CAN_ACCEPT_TALK_OFFER (1 << 1) // Can accept a talk offer. "Speak" or "Check" is shown on the A button.
 #define PLAYER_STATE2_DO_ACTION_CLIMB (1 << 2)
 #define PLAYER_STATE2_FOOTSTEP (1 << 3)
 #define PLAYER_STATE2_MOVING_DYNAPOLY (1 << 4)
@@ -457,18 +457,18 @@ typedef struct {
 #define PLAYER_STATE2_DISABLE_ROTATION_ALWAYS (1 << 6)
 #define PLAYER_STATE2_GRABBED_BY_ENEMY (1 << 7)
 #define PLAYER_STATE2_GRABBING_DYNAPOLY (1 << 8)
-#define PLAYER_STATE2_SPAWN_DUST (1 << 9)
+#define PLAYER_STATE2_FORCE_SAND_FLOOR_SOUND (1 << 9) // Forces sand footstep sounds regardless of current floor type
 #define PLAYER_STATE2_UNDERWATER (1 << 10)
 #define PLAYER_STATE2_DIVING (1 << 11)
 #define PLAYER_STATE2_STATIONARY_LADDER (1 << 12)
-#define PLAYER_STATE2_SWITCH_TARGETING (1 << 13)
+#define PLAYER_STATE2_LOCK_ON_WITH_SWITCH (1 << 13) // Actor lock-on is active, specifically with Switch Targeting. Hold Targeting checks the state of the Z button instead of this flag.
 #define PLAYER_STATE2_FROZEN (1 << 14)
 #define PLAYER_STATE2_PAUSE_MOST_UPDATING (1 << 15)
-#define PLAYER_STATE2_DO_ACTION_ENTER (1 << 16) // Turns on the "Enter On A" DoAction
+#define PLAYER_STATE2_DO_ACTION_ENTER (1 << 16) // Sets the "Enter On A" DoAction
 #define PLAYER_STATE2_SPIN_ATTACKING (1 << 17) //w/o magic
 #define PLAYER_STATE2_CRAWLING (1 << 18) // Crawling through a crawlspace
 #define PLAYER_STATE2_HOPPING (1 << 19) //Sidehop/backflip
-#define PLAYER_STATE2_NAVI_OUT (1 << 20)
+#define PLAYER_STATE2_NAVI_ACTIVE (1 << 20) // Navi is visible and active. Could be hovering idle near Link or hovering over other actors.
 #define PLAYER_STATE2_NAVI_ALERT (1 << 21)
 #define PLAYER_STATE2_DO_ACTION_DOWN (1 << 22)
 #define PLAYER_STATE2_NEAR_OCARINA_ACTOR (1 << 23)
@@ -476,7 +476,7 @@ typedef struct {
 #define PLAYER_STATE2_PLAY_FOR_ACTOR (1 << 25)
 #define PLAYER_STATE2_REFLECTION (1 << 26) //Handles Dark Link's Reflection
 #define PLAYER_STATE2_OCARINA_PLAYING (1 << 27)
-#define PLAYER_STATE2_IDLE_FIDGET (1 << 28)
+#define PLAYER_STATE2_IDLE_FIDGET (1 << 28) // Playing a fidget idle animation (under typical circumstances, see `Player_ChooseNextIdleAnim` for more info)
 #define PLAYER_STATE2_DISABLE_DRAW (1 << 29)
 #define PLAYER_STATE2_SWORD_LUNGE (1 << 30)
 #define PLAYER_STATE2_FORCED_VOID_OUT (1 << 31)
@@ -486,9 +486,9 @@ typedef struct {
 #define PLAYER_STATE3_PAUSE_ACTION_FUNC (1 << 2)
 #define PLAYER_STATE3_FINISHED_ATTACKING (1 << 3)
 #define PLAYER_STATE3_CHECK_FLOOR_WATER_COLLISION (1 << 4)
-#define PLAYER_STATE3_FORCE_PULL_OCARINA (1 << 5) 
+#define PLAYER_STATE3_FORCE_PULL_OCARINA (1 << 5)
 #define PLAYER_STATE3_RESTORE_NAYRUS_LOVE (1 << 6) // Set by ocarina effects actors when destroyed to signal Nayru's Love may be restored (see `ACTOROVL_ALLOC_ABSOLUTE`)
-#define PLAYER_STATE3_HOOKSHOT_TRAVELLING (1 << 7) //Travelling to target
+#define PLAYER_STATE3_FLYING_WITH_HOOKSHOT (1 << 7) // Flying in the air with the hookshot as it pulls Player toward its destination
 
 typedef void (*PlayerActionFunc)(struct Player*, struct PlayState*);
 typedef s32 (*UpperActionFunc)(struct Player*, struct PlayState*);
