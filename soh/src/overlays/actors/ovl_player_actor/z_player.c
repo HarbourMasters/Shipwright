@@ -1562,7 +1562,7 @@ void func_80832224(Player* this) {
     this->unk_6AD = 0;
 }
 
-s32 func_8083224C(PlayState* play) {
+s32 Player_IsTalking(PlayState* play) {
     Player* this = GET_PLAYER(play);
 
     return CHECK_FLAG_ALL(this->actor.flags, ACTOR_FLAG_PLAYER_TALKED_TO);
@@ -1584,7 +1584,7 @@ void Player_AnimPlayOnceAdjusted(PlayState* play, Player* this, LinkAnimationHea
     LinkAnimation_PlayOnceSetSpeed(play, &this->skelAnime, anim, PLAYER_ANIM_ADJUSTED_SPEED);
 }
 
-void func_808322FC(Player* this) {
+void Player_ApplyYawFromAnim(Player* this) {
     this->actor.shape.rot.y += this->skelAnime.jointTable[1].y;
     this->skelAnime.jointTable[1].y = 0;
 }
@@ -1868,7 +1868,7 @@ void Player_ZeroRootLimbYaw(Player* this) {
 
 void func_80832DBC(Player* this) {
     if (this->skelAnime.moveFlags != 0) {
-        func_808322FC(this);
+        Player_ApplyYawFromAnim(this);
         this->skelAnime.jointTable[0].x = this->skelAnime.baseTransl.x;
         this->skelAnime.jointTable[0].z = this->skelAnime.baseTransl.z;
         if (this->skelAnime.moveFlags & 8) {
@@ -1906,7 +1906,7 @@ void func_80832E48(Player* this, s32 flags) {
         this->actor.world.pos.y += pos.y * this->actor.scale.y;
     }
 
-    func_808322FC(this);
+    Player_ApplyYawFromAnim(this);
 }
 
 #define ANIM_REPLACE_APPLY_FLAG_8 (1 << 8)
@@ -3558,7 +3558,7 @@ void func_80836BEC(Player* this, PlayState* play) {
         sp1C = 1;
     }
 
-    cond = func_8083224C(play);
+    cond = Player_IsTalking(play);
     if (cond || (this->unk_66C != 0) || (this->stateFlags1 & (PLAYER_STATE1_CHARGING_SPIN_ATTACK | PLAYER_STATE1_THREW_BOOMERANG))) {
         if (!cond) {
             if (!(this->stateFlags1 & PLAYER_STATE1_THREW_BOOMERANG) &&
@@ -13187,7 +13187,7 @@ void Player_Action_8084CC98(Player* this, PlayState* play) {
     }
 
     if (this->av2.actionVar2 == 1) {
-        if ((D_808535E0 != 0) || func_8083224C(play)) {
+        if ((D_808535E0 != 0) || Player_IsTalking(play)) {
             Player_AnimPlayOnce(play, this, &gPlayerAnim_link_uma_wait_3);
         } else if (LinkAnimation_Update(play, &this->skelAnime)) {
             this->av2.actionVar2 = 99;
@@ -13222,7 +13222,7 @@ void Player_Action_8084CC98(Player* this, PlayState* play) {
     this->yaw = this->actor.shape.rot.y = rideActor->actor.shape.rot.y;
 
     if ((this->csAction != 0) ||
-        (!func_8083224C(play) && ((rideActor->actor.speedXZ != 0.0f) || !Player_ActionChange_4(this, play)) &&
+        (!Player_IsTalking(play) && ((rideActor->actor.speedXZ != 0.0f) || !Player_ActionChange_4(this, play)) &&
          !Player_ActionChange_6(this, play))) {
         if (D_808535E0 == 0) {
             if (this->av1.actionVar1 != 0) {
@@ -13364,7 +13364,7 @@ void Player_Action_8084D610(Player* this, PlayState* play) {
     func_80832CB0(play, this, &gPlayerAnim_link_swimer_swim_wait);
     func_8084B000(this);
 
-    if (!func_8083224C(play) && !Player_TryActionChangeList(play, this, sActionChangeList11, true) &&
+    if (!Player_IsTalking(play) && !Player_TryActionChangeList(play, this, sActionChangeList11, true) &&
         !func_8083D12C(play, this, sControlInput)) {
         if (this->unk_6AD != 1) {
             this->unk_6AD = 0;
@@ -13587,7 +13587,7 @@ void func_8084DF6C(PlayState* play, Player* this) {
 
 void func_8084DFAC(PlayState* play, Player* this) {
     func_8084DF6C(play, this);
-    func_808322FC(this);
+    Player_ApplyYawFromAnim(this);
     func_8083C0E8(this, play);
     this->yaw = this->actor.shape.rot.y;
 }
