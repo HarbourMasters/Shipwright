@@ -5728,7 +5728,7 @@ void Interface_Draw(PlayState* play) {
             Interface_DrawAmmoCount(play, 3, interfaceCtx->cRightAlpha);
         }
 
-        if (CVarGetInteger(CVAR_SETTING("CVAR_ENHANCEMENT"), 0) != 0) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("DpadEquips"), 0) != 0) {
             // DPad is only greyed-out when all 4 DPad directions are too
             uint16_t dpadAlpha =
                 MAX(MAX(MAX(interfaceCtx->dpadUpAlpha, interfaceCtx->dpadDownAlpha), interfaceCtx->dpadLeftAlpha),
