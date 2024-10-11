@@ -24,7 +24,7 @@ namespace UIWidgets {
     // Automatically adds newlines to break up text longer than a specified number of characters
     // Manually included newlines will still be respected and reset the line length
     // If line is midword when it hits the limit, text should break at the last encountered space
-    char* WrappedText(const char* text, unsigned int charactersPerLine) {
+    std::string WrappedText(const char* text, unsigned int charactersPerLine) {
         std::string newText(text);
         const size_t tipLength = newText.length();
         int lastSpace = -1;
@@ -46,17 +46,17 @@ namespace UIWidgets {
             currentLineLength++;
         }
 
-        return strdup(newText.c_str());
+        return newText;
     }
 
-    char* WrappedText(const std::string& text, unsigned int charactersPerLine) {
+    std::string WrappedText(const std::string& text, unsigned int charactersPerLine) {
         return WrappedText(text.c_str(), charactersPerLine);
     }
 
     void SetLastItemHoverText(const std::string& text) {
         if (ImGui::IsItemHovered()) {
             ImGui::BeginTooltip();
-            ImGui::Text("%s", WrappedText(text, 60));
+            ImGui::Text("%s", WrappedText(text, 60).c_str());
             ImGui::EndTooltip();
         }
     }
@@ -64,7 +64,7 @@ namespace UIWidgets {
     void SetLastItemHoverText(const char* text) {
         if (ImGui::IsItemHovered()) {
             ImGui::BeginTooltip();
-            ImGui::Text("%s", WrappedText(text, 60));
+            ImGui::Text("%s", WrappedText(text, 60).c_str());
             ImGui::EndTooltip();
         }
     }
@@ -75,7 +75,7 @@ namespace UIWidgets {
         ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "?");
         if (ImGui::IsItemHovered()) {
             ImGui::BeginTooltip();
-            ImGui::Text("%s", WrappedText(text, 60));
+            ImGui::Text("%s", WrappedText(text, 60).c_str());
             ImGui::EndTooltip();
         }
     }
@@ -85,7 +85,7 @@ namespace UIWidgets {
         ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "?");
         if (ImGui::IsItemHovered()) {
             ImGui::BeginTooltip();
-            ImGui::Text("%s", WrappedText(text, 60));
+            ImGui::Text("%s", WrappedText(text, 60).c_str());
             ImGui::EndTooltip();
         }
     }
@@ -95,7 +95,7 @@ namespace UIWidgets {
 
     void Tooltip(const char* text) {
         if (ImGui::IsItemHovered()) {
-            ImGui::SetTooltip("%s", WrappedText(text));
+            ImGui::SetTooltip("%s", WrappedText(text).c_str());
         }
     }
 
@@ -127,7 +127,7 @@ namespace UIWidgets {
         draw_list->PathStroke(col, 0, thickness);
     }
 
-    bool CustomCheckbox(const char* label, bool* v, bool disabled, CheckboxGraphics disabledGraphic) {
+    bool CustomCheckbox(const char* label, bool* v, bool disabled, CheckboxGraphics disabledGraphic, bool renderCrossWhenOff) {
         ImGuiWindow* window = ImGui::GetCurrentWindow();
         if (window->SkipItems) {
             return false;
@@ -168,9 +168,9 @@ namespace UIWidgets {
         } else if ((!disabled && *v) || (disabled && disabledGraphic == CheckboxGraphics::Checkmark)) {
             const float pad = ImMax(1.0f, IM_FLOOR(square_sz / 6.0f));
             ImGui::RenderCheckMark(window->DrawList, check_bb.Min + ImVec2(pad, pad), check_col, square_sz - pad * 2.0f);
-        } else if (disabled && disabledGraphic == CheckboxGraphics::Cross) {
+        } else if ((!disabled && !*v && renderCrossWhenOff) || (disabled && disabledGraphic == CheckboxGraphics::Cross)) {
             const float pad = ImMax(1.0f, IM_FLOOR(square_sz / 6.0f));
-            RenderCross(window->DrawList, check_bb.Min + ImVec2(pad, pad), cross_col, square_sz - pad * 2.0f);
+            //RenderCross(window->DrawList, check_bb.Min + ImVec2(pad, pad), disabled ? cross_col : check_col, square_sz - pad * 2.0f); // Caused confusion as to status
         }
 
         ImVec2 label_pos = ImVec2(check_bb.Max.x + style.ItemInnerSpacing.x, check_bb.Min.y + style.FramePadding.y);
@@ -183,6 +183,36 @@ namespace UIWidgets {
 
         IMGUI_TEST_ENGINE_ITEM_INFO(id, label, g.LastItemData.StatusFlags | ImGuiItemStatusFlags_Checkable | (*v ? ImGuiItemStatusFlags_Checked : 0));
         return pressed;
+    }
+
+    bool CustomCheckboxTristate(const char* label, int* v, bool disabled, CheckboxGraphics disabledGraphic) {
+        bool ret;
+        if (*v == 0) {
+            bool b = false;
+            ret = CustomCheckbox(label, &b, disabled, disabledGraphic, true);
+            if (ret) {
+                *v = 1;
+            }
+        } else if (*v == 1) {
+            ImGui::PushItemFlag(ImGuiItemFlags_MixedValue, true);
+            bool b = true;
+            ret = CustomCheckbox(label, &b, disabled, disabledGraphic, true);
+            if (ret) {
+                *v = 2;
+            }
+            ImGui::PopItemFlag();
+        } else if (*v == 2) {
+            bool b = true;
+            ret = CustomCheckbox(label, &b, disabled, disabledGraphic, true);
+            if (ret) {
+                *v = 0;
+            }
+        } else {
+            SPDLOG_INFO("Invalid CheckBoxTristate value: {}", *v);
+            *v = 0;
+            return false;
+        }
+        return ret;
     }
 
     void ReEnableComponent(const char* disabledTooltipText) {
@@ -207,6 +237,25 @@ namespace UIWidgets {
 
         bool val = (bool)CVarGetInteger(cvarName, defaultValue);
         if (CustomCheckbox(text, &val, disabled, disabledGraphic)) {
+            CVarSetInteger(cvarName, val);
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+            changed = true;
+        }
+
+        if (disabled) {
+            ReEnableComponent(disabledTooltipText);
+        }
+        return changed;
+    }
+
+    bool EnhancementCheckboxTristate(const char* text, const char* cvarName, bool disabled, const char* disabledTooltipText, CheckboxGraphics disabledGraphic, bool defaultValue) {
+        bool changed = false;
+        if (disabled) {
+            DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
+        }
+
+        int val = CVarGetInteger(cvarName, defaultValue);
+        if (CustomCheckboxTristate(text, &val, disabled, disabledGraphic)) {
             CVarSetInteger(cvarName, val);
             Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
             changed = true;

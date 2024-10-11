@@ -12,7 +12,8 @@
 #include "vt.h"
 
 #include "soh/frame_interpolation.h"
-#include "soh/Enhancements/boss-rush/BossRush.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #include <string.h>
 
@@ -370,9 +371,13 @@ void BossMo_Init(Actor* thisx, PlayState* play2) {
         Collider_SetCylinder(play, &this->coreCollider, &this->actor, &sCylinderInit);
         if (Flags_GetClear(play, play->roomCtx.curRoom.num)) {
             Actor_Kill(&this->actor);
-            Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, 0.0f, -280.0f, 0.0f, 0,
-                               0, 0, WARP_DUNGEON_ADULT);
-            Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, -200.0f, -280.0f, 0.0f, 0, 0, 0, 0, true);
+            if (GameInteractor_Should(VB_SPAWN_BLUE_WARP, true, this)) {
+                Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, 0.0f, -280.0f, 0.0f, 0,
+                                   0, 0, WARP_DUNGEON_ADULT);
+            }
+            if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true)) {
+                Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, -200.0f, -280.0f, 0.0f, 0, 0, 0, 0, true);
+            }
             play->roomCtx.unk_74[0] = 0xFF;
             MO_WATER_LEVEL(play) = -500;
             return;
@@ -1116,16 +1121,17 @@ void BossMo_Tentacle(BossMo* this, PlayState* play) {
                         BossMo_SpawnDroplet(MO_FX_DROPLET, (BossMoEffect*)play->specialEffects, &spD4, &spE0,
                                             ((300 - indS1) * .0015f) + 0.13f);
                     }
-                    if (!IS_BOSS_RUSH) {
+                    if (GameInteractor_Should(VB_SPAWN_BLUE_WARP, true, this)) {
                         Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1,
                                            this->actor.world.pos.x, -280.0f, this->actor.world.pos.z, 0, 0, 0,
                                            WARP_DUNGEON_ADULT);
+                    }
+
+                    if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true)) {
                         Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, this->actor.world.pos.x + 200.0f,
                                     -280.0f, this->actor.world.pos.z, 0, 0, 0, 0, true);
-                    } else {
-                        Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, this->actor.world.pos.x, -280.0f,
-                                    this->actor.world.pos.z, 0, 0, 0, WARP_DUNGEON_ADULT, true);
                     }
+
                     Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_BOSS_CLEAR);
                     Flags_SetClear(play, play->roomCtx.curRoom.num);
                 }
@@ -1249,7 +1255,7 @@ void BossMo_IntroCs(BossMo* this, PlayState* play) {
                  (fabsf(player->actor.world.pos.x - -180.0f) < 40.0f))) {
                 // checks if Link is on one of the four platforms
                 func_80064520(play, &play->csCtx);
-                func_8002DF54(play, &this->actor, 8);
+                Player_SetCsActionWithHaltedActors(play, &this->actor, 8);
                 this->csCamera = Play_CreateSubCamera(play);
                 Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
                 Play_ChangeCameraStatus(play, this->csCamera, CAM_STAT_ACTIVE);
@@ -1357,11 +1363,11 @@ void BossMo_IntroCs(BossMo* this, PlayState* play) {
             Math_ApproachF(&this->actor.speedXZ, sp80, 1.0f, sp78);
             Math_ApproachF(&this->cameraYawRate, sp7C, 1.0f, 128.0f);
             if (this->work[MO_TENT_MOVE_TIMER] == 525) {
-                func_8002DF54(play, &this->actor, 2);
+                Player_SetCsActionWithHaltedActors(play, &this->actor, 2);
             }
             if (this->work[MO_TENT_MOVE_TIMER] > 540) {
                 this->csState = MO_INTRO_REVEAL;
-                func_8002DF54(play, &this->actor, 1);
+                Player_SetCsActionWithHaltedActors(play, &this->actor, 1);
                 sMorphaTent1->drawActor = true;
                 player->actor.world.pos.x = 180.0f;
                 player->actor.world.pos.z = -210.0f;
@@ -1468,7 +1474,7 @@ void BossMo_IntroCs(BossMo* this, PlayState* play) {
                 func_800C08AC(play, this->csCamera, 0);
                 this->csState = this->csCamera = MO_BATTLE;
                 func_80064534(play, &play->csCtx);
-                func_8002DF54(play, &this->actor, 7);
+                Player_SetCsActionWithHaltedActors(play, &this->actor, 7);
             }
             break;
     }
@@ -1533,7 +1539,7 @@ void BossMo_DeathCs(BossMo* this, PlayState* play) {
     switch (this->csState) {
         case MO_DEATH_START:
             func_80064520(play, &play->csCtx);
-            func_8002DF54(play, &this->actor, 8);
+            Player_SetCsActionWithHaltedActors(play, &this->actor, 8);
             this->csCamera = Play_CreateSubCamera(play);
             Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
             Play_ChangeCameraStatus(play, this->csCamera, CAM_STAT_ACTIVE);
@@ -1700,7 +1706,7 @@ void BossMo_DeathCs(BossMo* this, PlayState* play) {
                     func_800C08AC(play, this->csCamera, 0);
                     this->csCamera = 0;
                     func_80064534(play, &play->csCtx);
-                    func_8002DF54(play, &this->actor, 7);
+                    Player_SetCsActionWithHaltedActors(play, &this->actor, 7);
                     sMorphaTent1->actor.world.pos.y = -1000.0f;
                 }
             } else {
@@ -1793,8 +1799,7 @@ void BossMo_CoreCollisionCheck(BossMo* this, PlayState* play) {
                     if (((sMorphaTent1->csCamera == 0) && (sMorphaTent2 == NULL)) ||
                         ((sMorphaTent1->csCamera == 0) && (sMorphaTent2 != NULL) && (sMorphaTent2->csCamera == 0))) {
                         Enemy_StartFinishingBlow(play, &this->actor);
-                        gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_MORPHA] = GAMEPLAYSTAT_TOTAL_TIME;
-                        BossRush_HandleCompleteBoss(play);
+                        GameInteractor_ExecuteOnBossDefeat(&this->actor);
                         Audio_QueueSeqCmd(0x1 << 28 | SEQ_PLAYER_BGM_MAIN << 24 | 0x100FF);
                         this->csState = MO_DEATH_START;
                         sMorphaTent1->drawActor = false;

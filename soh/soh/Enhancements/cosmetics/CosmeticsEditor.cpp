@@ -220,6 +220,7 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Consumable.DDHeartBorder",      "DD Heart Border",      COSMETICS_GROUP_CONSUMABLE,   ImVec4(255, 255, 255, 255), false, true, true),
     COSMETIC_OPTION("Consumable.Magic",              "Magic",                COSMETICS_GROUP_CONSUMABLE,   ImVec4(  0, 200,   0, 255), false, true, false),
     COSMETIC_OPTION("Consumable.MagicActive",        "Magic Active",         COSMETICS_GROUP_CONSUMABLE,   ImVec4(250, 250,   0, 255), false, true, true),
+    COSMETIC_OPTION("Consumable_MagicInfinite",      "Infinite Magic",       COSMETICS_GROUP_CONSUMABLE,   ImVec4(  0,   0, 200, 255), false, true, true),
     COSMETIC_OPTION("Consumable.MagicBorder",        "Magic Border",         COSMETICS_GROUP_CONSUMABLE,   ImVec4(255, 255, 255, 255), false, false, true),
     COSMETIC_OPTION("Consumable.MagicBorderActive",  "Magic Border Active",  COSMETICS_GROUP_CONSUMABLE,   ImVec4(255, 255, 255, 255), false, false, true),
     COSMETIC_OPTION("Consumable.GreenRupee",         "Green Rupee",          COSMETICS_GROUP_CONSUMABLE,   ImVec4( 50, 255,  50, 255), false, true, true),
@@ -1687,12 +1688,6 @@ static const char* colorSchemes[2] = {
 };
 
 void CosmeticsEditorWindow::DrawElement() {
-    ImGui::SetNextWindowSize(ImVec2(550, 520), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Cosmetics Editor", &mIsVisible)) {
-        ImGui::End();
-        return;
-    }
-
     ImGui::Text("Color Scheme");
     ImGui::SameLine();
     UIWidgets::EnhancementCombobox(CVAR_COSMETIC("DefaultColorScheme"), colorSchemes, COLORSCHEME_N64);
@@ -1811,7 +1806,6 @@ void CosmeticsEditorWindow::DrawElement() {
         }
         ImGui::EndTabBar();
     }
-    ImGui::End();
 }
 
 void RegisterOnLoadGameHook() {

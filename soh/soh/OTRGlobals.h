@@ -29,6 +29,7 @@
 #include "Enhancements/savestates.h"
 #include "Enhancements/randomizer/randomizer.h"
 #include <vector>
+#include "Enhancements/randomizer/context.h"
 
 const std::string customMessageTableID = "BaseGameOverrides";
 const std::string appShortName = "soh";
@@ -49,6 +50,7 @@ public:
     std::shared_ptr<Ship::Context> context;
     std::shared_ptr<SaveStateMgr> gSaveStateMgr;
     std::shared_ptr<Randomizer> gRandomizer;
+    std::shared_ptr<Rando::Context> gRandoContext;
 
     ImFont* defaultFontSmaller;
     ImFont* defaultFontLarger;
@@ -161,6 +163,8 @@ float OTRGetDimensionFromLeftEdge(float v);
 float OTRGetDimensionFromRightEdge(float v);
 int16_t OTRGetRectDimensionFromLeftEdge(float v);
 int16_t OTRGetRectDimensionFromRightEdge(float v);
+uint32_t OTRGetGameRenderWidth();
+uint32_t OTRGetGameRenderHeight();
 int AudioPlayer_Buffered(void);
 int AudioPlayer_GetDesiredBuffered(void);
 void AudioPlayer_Play(const uint8_t* buf, uint32_t len);
@@ -172,26 +176,33 @@ void* getN64WeirdFrame(s32 i);
 int GetEquipNowMessage(char* buffer, char* src, const int maxBufferSize);
 u32 SpoilerFileExists(const char* spoilerFileName);
 Sprite* GetSeedTexture(uint8_t index);
-void Randomizer_LoadSettings(const char* spoilerFileName);
+uint8_t GetSeedIconIndex(uint8_t index);
 u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 RandomizerCheck Randomizer_GetCheckFromActor(s16 actorId, s16 sceneNum, s16 actorParams);
 ScrubIdentity Randomizer_IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respawnData);
+BeehiveIdentity Randomizer_IdentifyBeehive(s32 sceneNum, s16 xPosition, s32 respawnData);
 ShopItemIdentity Randomizer_IdentifyShopItem(s32 sceneNum, u8 slotIndex);
 CowIdentity Randomizer_IdentifyCow(s32 sceneNum, s32 posX, s32 posZ);
-void Randomizer_LoadHintLocations(const char* spoilerFileName);
-void Randomizer_LoadMerchantMessages(const char* spoilerFileName);
-void Randomizer_LoadRequiredTrials(const char* spoilerFileName);
-void Randomizer_LoadMasterQuestDungeons(const char* spoilerFileName);
-void Randomizer_LoadItemLocations(const char* spoilerFileName, bool silent);
-void Randomizer_LoadEntranceOverrides(const char* spoilerFileName, bool silent);
-bool Randomizer_IsTrialRequired(RandomizerInf trial);
+FishIdentity Randomizer_IdentifyFish(s32 sceneNum, s32 actorParams);
+void Randomizer_ParseSpoiler(const char* fileLoc);
+void Randomizer_LoadHintMessages();
+void Randomizer_LoadMerchantMessages();
+bool Randomizer_IsTrialRequired(s32 trialFlag);
 GetItemEntry Randomizer_GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogId);
 GetItemEntry Randomizer_GetItemFromActorWithoutObtainabilityCheck(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogId);
 GetItemEntry Randomizer_GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
 GetItemEntry Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
+RandomizerInf Randomizer_GetRandomizerInfFromCheck(RandomizerCheck randomizerCheck);
 bool Randomizer_IsCheckShuffled(RandomizerCheck check);
 GetItemEntry GetItemMystery();
 ItemObtainability Randomizer_GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck);
+void Randomizer_GenerateSeed();
+uint8_t Randomizer_IsSeedGenerated();
+void Randomizer_SetSeedGenerated(bool seedGenerated);
+uint8_t Randomizer_IsSpoilerLoaded();
+void Randomizer_SetSpoilerLoaded(bool spoilerLoaded);
+uint8_t Randomizer_IsPlandoLoaded();
+void Randomizer_SetPlandoLoaded(bool plandoLoaded);
 int CustomMessage_RetrieveIfExists(PlayState* play);
 void Overlay_DisplayText(float duration, const char* text);
 void Overlay_DisplayText_Seconds(int seconds, const char* text);

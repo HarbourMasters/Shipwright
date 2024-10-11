@@ -1,22 +1,33 @@
 #pragma once
-#include <string>
 #include <unordered_map>
 #include <cstdint>
 #include <exception>
+#include <vector>
+#include <string>
 
 #include "../../../include/z64item.h"
 #include "../../../include/message_data_textbox_types.h"
+#include "../randomizer/3drando/text.hpp"
 
 #undef MESSAGE_END
 
-#define QM_WHITE 0x00
-#define QM_RED 0x41
-#define QM_GREEN 0x42
-#define QM_BLUE 0x43
-#define QM_LBLUE 0x44
-#define QM_PINK 0x45
-#define QM_YELLOW 0x46
-#define QM_BLACK 0x47
+#define QM_WHITE "\x00"s
+#define QM_RED "\x41"
+#define QM_GREEN "\x42"
+#define QM_BLUE "\x43"
+#define QM_LBLUE "\x44"
+#define QM_PINK "\x45"
+#define QM_YELLOW "\x46"
+#define QM_BLACK "\x47"
+
+#define HS_HORSE_ARCHERY "\x00"s //HS_HBA is an enum already
+
+typedef enum {
+    MF_FORMATTED,
+    MF_CLEAN,
+    MF_RAW,
+    MF_AUTO_FORMAT
+} MessageFormat;
 
 /**
  * @brief Encapsulates logic surrounding languages, and formatting strings for OoT's textboxes and
@@ -29,17 +40,41 @@ class CustomMessage {
     CustomMessage() = default;
     CustomMessage(std::string english_, std::string german_, std::string french_,
                   TextBoxType type_ = TEXTBOX_TYPE_BLACK, TextBoxPosition position_ = TEXTBOX_POS_BOTTOM);
+    CustomMessage(std::string english_, std::string german_, std::string french_, std::vector<std::string> colors_, std::vector<bool> capital_ = {},
+              TextBoxType type_ = TEXTBOX_TYPE_BLACK, TextBoxPosition position_ = TEXTBOX_POS_BOTTOM);
+    CustomMessage(std::string english_, TextBoxType type_ = TEXTBOX_TYPE_BLACK, TextBoxPosition position_ = TEXTBOX_POS_BOTTOM);
+    CustomMessage(std::string english_, std::vector<std::string> colors_, std::vector<bool> capital_ = {}, TextBoxType type_ = TEXTBOX_TYPE_BLACK, TextBoxPosition position_ = TEXTBOX_POS_BOTTOM);
+    CustomMessage(Text text, TextBoxType type_ = TEXTBOX_TYPE_BLACK, TextBoxPosition position_ = TEXTBOX_POS_BOTTOM);
 
-    const std::string& GetEnglish() const;
-    const std::string& GetFrench() const;
-    const std::string& GetGerman() const;
+    static std::string MESSAGE_END() ;
+    static std::string ITEM_OBTAINED(uint8_t x) ;
+    static std::string NEWLINE() ;
+    static std::string COLOR(std::string x) ;
+    static std::string POINTS(std::string x) ;//HIGH_SCORE is also a macro
+    static std::string WAIT_FOR_INPUT() ;
+    static std::string PLAYER_NAME() ;
+
+    const std::string GetEnglish(MessageFormat format = MF_FORMATTED) const;
+    const std::string GetFrench(MessageFormat format = MF_FORMATTED) const;
+    const std::string GetGerman(MessageFormat format = MF_FORMATTED) const;
+    const std::string GetForCurrentLanguage(MessageFormat format = MF_FORMATTED) const;
+    const std::string GetForLanguage(uint8_t language, MessageFormat format = MF_FORMATTED) const;
+    const std::vector<std::string> GetAllMessages(MessageFormat format = MF_FORMATTED) const;
+    void ProcessMessageFormat(std::string& str, MessageFormat format) const;
+    const std::vector<std::string>& GetColors() const;
+    void SetColors(std::vector<std::string> colors_);
+    const std::vector<bool>& GetCapital() const;
+    void SetCapital(std::vector<bool> capital_);
     const TextBoxType& GetTextBoxType() const;
+    void SetTextBoxType(TextBoxType boxType);
     const TextBoxPosition& GetTextBoxPosition() const;
 
     CustomMessage operator+(const CustomMessage& right) const;
     CustomMessage operator+(const std::string& right) const;
     void operator+=(const std::string& right);
-    bool operator==(const CustomMessage& right) const;
+    void operator+=(const CustomMessage& right);
+    bool operator==(const CustomMessage& operand) const;
+    bool operator==(const std::string& operand) const;
     bool operator!=(const CustomMessage& right) const;
 
     /**
@@ -54,15 +89,13 @@ class CustomMessage {
 
     /**
      * @brief Finds an instance of oldStr in each language of the CustomMessage,
-     * and replaces it with the corresponding new string provided for each language.
+     * and replaces it with the corresponding string in the provided CustomMessage.
      * Typically used for dynamic variable replacement (i.e. gameplay stats, skulltula count)
      *
      * @param oldStr the string to be replaced
-     * @param newEnglish the new string for the English message
-     * @param newGerman the new string for the German message
-     * @param newFrench the new string for the French message
+     * @param newMessage the message containing the new strings.
      */
-    void Replace(std::string&& oldStr, std::string&& newEnglish, std::string&& newGerman, std::string&& newFrench);
+    void Replace(std::string&& oldStr, CustomMessage newMessage);
 
     /**
      * @brief Capitalizes the first letter of the string for each language.
@@ -73,12 +106,22 @@ class CustomMessage {
      * @brief Replaces special characters (things like diacritics for non-english langugages)
      * with the control codes used to display them in OoT's textboxes.
      */
-    void ReplaceSpecialCharacters();
+    void ReplaceSpecialCharacters(std::string& str) const;
 
     /**
      * @brief Replaces our color variable strings with the OoT control codes.
      */
-    void ReplaceColors();
+    void ReplaceColors(std::string& str) const;
+
+    /**
+     * @brief Replaces `$<char>` variable strings with OoT control codes.
+     */
+    void ReplaceAltarIcons(std::string& str) const;
+
+    /**
+     * @brief Replaces [[1]] style variable strings with the provided vector of customMessages
+     */
+    void InsertNames(std::vector<CustomMessage> toInsert);
 
     /**
      * @brief Replaces various symbols with the control codes necessary to
@@ -90,25 +133,59 @@ class CustomMessage {
     void Format(ItemID iid);
 
     /**
+     * @brief Replaces [[d]] in text with the supplied number, and if plural
+     * options exist (2 blocks of text surrounded by |) choose the former if it 1,
+     * and the latter otherwise, deleting the other and the |'s.
+     *
+     * @param num the number to insert.
+     */
+    void InsertNumber(uint8_t num);
+
+    /**
      * @brief Replaces various symbols with the control codes necessary to
      * display them in OoT's textboxes. i.e. special characters, colors, newlines,
      * wait for input, etc.
      */
     void Format();
 
-  private:
-    const std::string MESSAGE_END() const;
-    const std::string ITEM_OBTAINED(uint8_t x) const;
-    const std::string NEWLINE() const;
-    const std::string COLOR(uint8_t x) const;
-    const std::string WAIT_FOR_INPUT() const;
-    const std::string PLAYER_NAME() const;
+    /**
+     * @brief formats the message specifically to fit in OoT's 
+     * textboxes, and use it's formatting.
+     */
+    void AutoFormat();
 
-    std::string english = "";
-    std::string french = "";
-    std::string german = "";
+    /**
+     * @brief Removes all OoT formatting from the message, 
+     * making it a good form for writing into spoiler logs.
+     */
+    void Clean();
+
+    /**
+     * @brief Replaces various symbols with the control codes necessary to
+     * display them in OoT's textboxes for a single string
+     * . i.e. special characters, colors, newlines, wait for input, etc.
+     */
+    void FormatString(std::string& str) const;
+    
+    /**
+     * @brief formats the string specifically to fit in OoT's 
+     * textboxes, and use it's formatting.
+     * RANDOTODO whoever knows exactly what this does check my adaption
+     */
+    void AutoFormatString(std::string& str) const;
+
+    /**
+     * @brief Removes symbols used for control codes from the string,
+     * leaving raw text
+     */
+    void CleanString(std::string& str) const;
+
+  private:
+    std::vector<std::string> messages = {"","",""};
     TextBoxType type = TEXTBOX_TYPE_BLACK;
     TextBoxPosition position = TEXTBOX_POS_BOTTOM;
+    std::vector<std::string> colors = {};
+    std::vector<bool> capital = {};
 };
 
 typedef std::unordered_map<uint16_t, CustomMessage> CustomMessageTable;
@@ -165,9 +242,10 @@ class CustomMessageManager {
      *
      * @param tableID the ID of the custom message table
      * @param textID the ID of the message you want to retrieve
+     * @param format the type of formatting to apply to the retrieved message
      * @return CustomMessage
      */
-    CustomMessage RetrieveMessage(std::string tableID, uint16_t textID);
+    CustomMessage RetrieveMessage(std::string tableID, uint16_t textID, MessageFormat format = MF_RAW);
 
     /**
      * @brief Empties out the message table identified by tableID.

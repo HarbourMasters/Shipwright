@@ -20,7 +20,6 @@ void DoorAna_WaitClosed(DoorAna* this, PlayState* play);
 void DoorAna_WaitOpen(DoorAna* this, PlayState* play);
 void DoorAna_GrabPlayer(DoorAna* this, PlayState* play);
 
-s16 GetChestGameRandoGiDrawId(s8 room, s16 ogDrawId, PlayState* play);
 void Grotto_OverrideActorEntrance(Actor* thisx);
 
 const ActorInit Door_Ana_InitVars = {

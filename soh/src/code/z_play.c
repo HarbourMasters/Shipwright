@@ -12,6 +12,7 @@
 #include <overlays/misc/ovl_kaleido_scope/z_kaleido_scope.h>
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/framebuffer_effects.h"
 
 #include <libultraship/libultraship.h>
 
@@ -226,60 +227,6 @@ void Play_Destroy(GameState* thisx) {
     gPlayState = NULL;
 }
 
-void GivePlayerRandoRewardSongOfTime(PlayState* play, RandomizerCheck check) {
-    Player* player = GET_PLAYER(play);
-
-    if (gSaveContext.entranceIndex == ENTR_HYRULE_FIELD_16 && player != NULL && !Player_InBlockingCsMode(play, player) &&
-        !Flags_GetTreasure(play, 0x1F) && gSaveContext.nextTransitionType == TRANS_NEXT_TYPE_DEFAULT && !gSaveContext.pendingIceTrapCount) {
-        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_SONG_OF_TIME);
-        GiveItemEntryWithoutActor(play, getItemEntry);
-        player->pendingFlag.flagID = 0x1F;
-        player->pendingFlag.flagType = FLAG_SCENE_TREASURE;
-    }
-}
-
-void GivePlayerRandoRewardNocturne(PlayState* play, RandomizerCheck check) {
-    Player* player = GET_PLAYER(play);
-
-    if ((gSaveContext.entranceIndex == ENTR_KAKARIKO_VILLAGE_0 ||
-         gSaveContext.entranceIndex == ENTR_KAKARIKO_VILLAGE_1 ||
-         gSaveContext.entranceIndex == ENTR_KAKARIKO_VILLAGE_2) && LINK_IS_ADULT && CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST) &&
-        CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE) && CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER) && player != NULL &&
-        !Player_InBlockingCsMode(play, player) && !Flags_GetEventChkInf(EVENTCHKINF_BONGO_BONGO_ESCAPED_FROM_WELL)) {
-        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_NOCTURNE_OF_SHADOW);
-        GiveItemEntryWithoutActor(play, getItemEntry);
-        player->pendingFlag.flagID = 0xAA;
-        player->pendingFlag.flagType = FLAG_EVENT_CHECK_INF;
-    }
-}
-
-void GivePlayerRandoRewardRequiem(PlayState* play, RandomizerCheck check) {
-    Player* player = GET_PLAYER(play);
-
-    if ((gSaveContext.gameMode == 0) && (gSaveContext.respawnFlag <= 0) && (gSaveContext.cutsceneIndex < 0xFFF0)) {
-        if ((gSaveContext.entranceIndex == ENTR_DESERT_COLOSSUS_1) && !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_REQUIEM_OF_SPIRIT) && player != NULL &&
-            !Player_InBlockingCsMode(play, player)) {
-            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_SONG_OF_TIME);
-            GiveItemEntryWithoutActor(play, getItemEntry);
-            player->pendingFlag.flagID = 0xAC;
-            player->pendingFlag.flagType = FLAG_EVENT_CHECK_INF;
-        }
-    }
-}
-
-void GivePlayerRandoRewardMasterSword(PlayState* play, RandomizerCheck check) {
-    Player* player = GET_PLAYER(play);
-
-    if (gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_2 && LINK_IS_ADULT && player != NULL &&
-        !Player_InBlockingCsMode(play, player) && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) &&
-        !Flags_GetRandomizerInf(RAND_INF_TOT_MASTER_SWORD)) {
-        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_MASTER_SWORD);
-        GiveItemEntryWithoutActor(play, getItemEntry);
-        player->pendingFlag.flagID = RAND_INF_TOT_MASTER_SWORD;
-        player->pendingFlag.flagType = FLAG_RANDOMIZER_INF;
-    }
-}
-
 u8 CheckStoneCount() {
     u8 stoneCount = 0;
 
@@ -331,27 +278,27 @@ u8 CheckMedallionCount() {
 u8 CheckDungeonCount() {
     u8 dungeonCount = 0;
 
-    if (Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_DEKU_TREE)) {
+    if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP)) {
         dungeonCount++;
     }
 
-    if (Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_DODONGOS_CAVERN)) {
+    if (Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP)) {
         dungeonCount++;
     }
 
-    if (Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_JABU_JABUS_BELLY)) {
+    if (Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP)) {
         dungeonCount++;
     }
 
-    if (Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_FOREST_TEMPLE)) {
+    if (Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP)) {
         dungeonCount++;
     }
 
-    if (Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE)) {
+    if (Flags_GetEventChkInf(EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP)) {
         dungeonCount++;
     }
 
-    if (Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_WATER_TEMPLE)) {
+    if (Flags_GetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP)) {
         dungeonCount++;
     }
 
@@ -402,69 +349,6 @@ u8 CheckLACSRewardCount() {
     return lacsRewardCount;
 }
 
-void GivePlayerRandoRewardZeldaLightArrowsGift(PlayState* play, RandomizerCheck check) {
-    Player* player = GET_PLAYER(play);
-
-    u8 meetsRequirements = 0;
-
-    switch (Randomizer_GetSettingValue(RSK_GANONS_BOSS_KEY)) {
-        case RO_GANON_BOSS_KEY_LACS_STONES:
-            if ((CheckStoneCount() + CheckLACSRewardCount()) >= Randomizer_GetSettingValue(RSK_LACS_STONE_COUNT)) {
-                meetsRequirements = true;
-            }
-            break;
-        case RO_GANON_BOSS_KEY_LACS_MEDALLIONS:
-            if ((CheckMedallionCount() + CheckLACSRewardCount()) >= Randomizer_GetSettingValue(RSK_LACS_MEDALLION_COUNT)) {
-                meetsRequirements = true;
-            }
-            break;
-        case RO_GANON_BOSS_KEY_LACS_REWARDS:
-            if ((CheckMedallionCount() + CheckStoneCount() + CheckLACSRewardCount()) >= Randomizer_GetSettingValue(RSK_LACS_REWARD_COUNT)) {
-                meetsRequirements = true;
-            }
-            break;
-        case RO_GANON_BOSS_KEY_LACS_DUNGEONS:
-            if ((CheckDungeonCount() + CheckLACSRewardCount()) >= Randomizer_GetSettingValue(RSK_LACS_DUNGEON_COUNT)) {
-                meetsRequirements = true;
-            }
-            break;
-        case RO_GANON_BOSS_KEY_LACS_TOKENS:
-            if (gSaveContext.inventory.gsTokens >= Randomizer_GetSettingValue(RSK_LACS_TOKEN_COUNT)) {
-                meetsRequirements = true;
-            }
-            break;
-        default:
-            if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW)) {
-                meetsRequirements = true;
-            }
-            break;
-    }
-
-    if (meetsRequirements && LINK_IS_ADULT &&
-        (gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_TEMPLE_OF_TIME) &&
-        !Flags_GetTreasure(play, 0x1E) && player != NULL && !Player_InBlockingCsMode(play, player) &&
-        play->transitionTrigger == TRANS_TRIGGER_OFF) {
-        GetItemEntry getItem = Randomizer_GetItemFromKnownCheck(check, GI_ARROW_LIGHT);
-        if (GiveItemEntryWithoutActor(play, getItem)) {
-            player->pendingFlag.flagID = 0x1E;
-            player->pendingFlag.flagType = FLAG_SCENE_TREASURE;
-        }
-    }
-}
-
-void GivePlayerRandoRewardSariaGift(PlayState* play, RandomizerCheck check) {
-    Player* player = GET_PLAYER(play);
-    if (gSaveContext.entranceIndex == ENTR_LOST_WOODS_9) {
-        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_ZELDAS_LULLABY);
-
-        if (!Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_SARIA_ON_BRIDGE) && player != NULL && !Player_InBlockingCsMode(play, player)) {
-            GiveItemEntryWithoutActor(play, getItemEntry);
-            player->pendingFlag.flagType = FLAG_EVENT_CHECK_INF;
-            player->pendingFlag.flagID = 0xC1;
-        }
-    }
-}
-
 void Play_Init(GameState* thisx) {
     PlayState* play = (PlayState*)thisx;
     GraphicsContext* gfxCtx = play->state.gfxCtx;
@@ -479,18 +363,6 @@ void Play_Init(GameState* thisx) {
     s32 i;
     u8 tempSetupIndex;
     s32 pad[2];
-
-    // Skip Child Stealth when option is enabled, Zelda's Letter isn't obtained and Impa's reward hasn't been received
-    // eventChkInf[4] & 1 = Got Zelda's Letter
-    // eventChkInf[5] & 0x200 = Got Impa's reward
-    // entranceIndex 0x7A, ENTR_CASTLE_COURTYARD_GUARDS_DAY_0, Castle Courtyard - Day from crawlspace
-    // entranceIndex 0x400, ENTR_CASTLE_COURTYARD_ZELDA_0, Zelda's Courtyard
-    if (IS_RANDO && Randomizer_GetSettingValue(RSK_SKIP_CHILD_STEALTH) &&
-        !Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER) && !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_ZELDAS_LULLABY)) {
-        if (gSaveContext.entranceIndex == ENTR_CASTLE_COURTYARD_GUARDS_DAY_0) {
-            gSaveContext.entranceIndex = ENTR_CASTLE_COURTYARD_ZELDA_0;
-        }
-    }
 
     // Properly initialize the frame counter so it doesn't use garbage data
     if (!firstInit) {
@@ -668,14 +540,19 @@ void Play_Init(GameState* thisx) {
                  (s32)(zAllocAligned + zAllocSize) - (s32)(zAllocAligned - zAlloc));
 
     Fault_AddClient(&D_801614B8, ZeldaArena_Display, NULL, NULL);
-    // In order to keep bunny hood equipped on first load, we need to pre-set the age reqs for the item and slot
-    if ((CVarGetInteger(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA && CVarGetInteger(CVAR_ENHANCEMENT("AdultBunnyHood"), 0)) || CVarGetInteger(CVAR_CHEAT("TimelessEquipment"), 0)) {
-        gItemAgeReqs[ITEM_MASK_BUNNY] = AGE_REQ_NONE;
-        if(INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_MASK_BUNNY)
+    // In order to keep masks equipped on first load, we need to pre-set the age reqs for the item and slot
+    if (CVarGetInteger(CVAR_ENHANCEMENT("AdultMasks"), 0) || CVarGetInteger(CVAR_CHEAT("TimelessEquipment"), 0)) {
+        for (int i = ITEM_MASK_KEATON; i <= ITEM_MASK_TRUTH; i += 1) {
+            gItemAgeReqs[i] = AGE_REQ_NONE;
+        }
+        if (INV_CONTENT(ITEM_TRADE_CHILD) >= ITEM_MASK_KEATON && INV_CONTENT(ITEM_TRADE_CHILD) <= ITEM_MASK_TRUTH) {
             gSlotAgeReqs[SLOT_TRADE_CHILD] = AGE_REQ_NONE;
-    }
-    else {
-        gItemAgeReqs[ITEM_MASK_BUNNY] = gSlotAgeReqs[SLOT_TRADE_CHILD] = AGE_REQ_CHILD;
+        }
+    } else {
+        for (int i = ITEM_MASK_KEATON; i <= ITEM_MASK_TRUTH; i += 1) {
+            gItemAgeReqs[i] = AGE_REQ_CHILD;
+        }
+        gSlotAgeReqs[SLOT_TRADE_CHILD] = AGE_REQ_CHILD;
     }
     func_800304DC(play, &play->actorCtx, play->linkActorEntry);
 
@@ -1442,15 +1319,6 @@ skip:
 
     Environment_Update(play, &play->envCtx, &play->lightCtx, &play->pauseCtx, &play->msgCtx,
                        &play->gameOverCtx, play->state.gfxCtx);
-
-    if (IS_RANDO) {
-        GivePlayerRandoRewardSariaGift(play, RC_LW_GIFT_FROM_SARIA);
-        GivePlayerRandoRewardSongOfTime(play, RC_SONG_FROM_OCARINA_OF_TIME);
-        GivePlayerRandoRewardZeldaLightArrowsGift(play, RC_TOT_LIGHT_ARROWS_CUTSCENE);
-        GivePlayerRandoRewardNocturne(play, RC_SHEIK_IN_KAKARIKO);
-        GivePlayerRandoRewardRequiem(play, RC_SHEIK_AT_COLOSSUS);
-        GivePlayerRandoRewardMasterSword(play, RC_TOT_MASTER_SWORD);
-    }
 }
 
 void Play_DrawOverlayElements(PlayState* play) {
@@ -1473,6 +1341,24 @@ void Play_Draw(PlayState* play) {
     GraphicsContext* gfxCtx = play->state.gfxCtx;
     Lights* sp228;
     Vec3f sp21C;
+
+    // #region SOH [Port] Frame buffer effects for pause menu
+    // Track render size when paused and that a copy was performed
+    static u32 lastPauseWidth;
+    static u32 lastPauseHeight;
+    static u8 hasCapturedPauseBuffer;
+    u8 recapturePauseBuffer = false;
+
+    // If the size has changed or dropped frames leading to the buffer not being copied,
+    // set the prerender state back to setup to copy a new frame.
+    // This requires not rendering kaleido during this copy to avoid kaleido being copied
+    if ((R_PAUSE_MENU_MODE == 2 || R_PAUSE_MENU_MODE == 3) &&
+        (lastPauseWidth != OTRGetGameRenderWidth() || lastPauseHeight != OTRGetGameRenderHeight() ||
+         !hasCapturedPauseBuffer)) {
+        R_PAUSE_MENU_MODE = 1;
+        recapturePauseBuffer = true;
+    }
+    // #endregion
 
     OPEN_DISPS(gfxCtx);
 
@@ -1507,8 +1393,8 @@ void Play_Draw(PlayState* play) {
         func_800AAA50(&play->view, 15);
 
         // Flip the projections and invert culling for the OPA and XLU display buffers
-        // These manage the world and effects
-        if (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0)) {
+        // These manage the world and effects when we are not drawing kaleido
+        if (R_PAUSE_MENU_MODE <= 1 && CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0)) {
             gSPSetExtraGeometryMode(POLY_OPA_DISP++, G_EX_INVERT_CULLING);
             gSPSetExtraGeometryMode(POLY_XLU_DISP++, G_EX_INVERT_CULLING);
             gSPMatrix(POLY_OPA_DISP++, play->view.projectionFlippedPtr, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
@@ -1588,13 +1474,13 @@ void Play_Draw(PlayState* play) {
             if (R_PAUSE_MENU_MODE == 3) {
                 Gfx* sp84 = POLY_OPA_DISP;
 
+                // SOH [Port] Draw game framebuffer using our custom handling
                 //func_800C24BC(&play->pauseBgPreRender, &sp84);
+                FB_DrawFromFramebuffer(&sp84, gPauseFrameBuffer, 255);
                 POLY_OPA_DISP = sp84;
 
-                //goto Play_Draw_DrawOverlayElements;
-            }
-            //else
-            {
+                goto Play_Draw_DrawOverlayElements;
+            } else {
                 s32 sp80;
 
                 if ((HREG(80) != 10) || (HREG(83) != 0)) {
@@ -1668,10 +1554,6 @@ void Play_Draw(PlayState* play) {
                     Environment_FillScreen(gfxCtx, 0, 0, 0, play->unk_11E18, FILL_SCREEN_OPA);
                 }
 
-                if ((play->pauseCtx.state != 0) && (HREG(80) != 10) || (HREG(89) != 0)) {
-                    Play_DrawOverlayElements(play);
-                }
-
                 if ((HREG(80) != 10) || (HREG(85) != 0)) {
                     func_800315AC(play, &play->actorCtx);
                 }
@@ -1719,17 +1601,36 @@ void Play_Draw(PlayState* play) {
 
                     play->pauseBgPreRender.fbuf = gfxCtx->curFrameBuffer;
                     play->pauseBgPreRender.fbufSave = (u16*)gZBuffer;
-                    func_800C1F20(&play->pauseBgPreRender, &sp70);
+                    // SOH [Port] Use our custom copy method instead of the prerender system
+                    // func_800C1F20(&play->pauseBgPreRender, &sp70);
                     if (R_PAUSE_MENU_MODE == 1) {
                         play->pauseBgPreRender.cvgSave = (u8*)gfxCtx->curFrameBuffer;
-                        func_800C20B4(&play->pauseBgPreRender, &sp70);
+                        // func_800C20B4(&play->pauseBgPreRender, &sp70);
                         R_PAUSE_MENU_MODE = 2;
+
+                        // #region SOH [Port] Custom handling for pause prerender background capture
+                        lastPauseWidth = OTRGetGameRenderWidth();
+                        lastPauseHeight = OTRGetGameRenderHeight();
+                        hasCapturedPauseBuffer = false;
+
+                        FB_CopyToFramebuffer(&sp70, 0, gPauseFrameBuffer, false, &hasCapturedPauseBuffer);
+
+                        // Set the state back to ready after the recapture is done
+                        if (recapturePauseBuffer) {
+                            R_PAUSE_MENU_MODE = 3;
+                        }
+                        // #endregion
                     } else {
                         gTrnsnUnkState = 2;
                     }
                     OVERLAY_DISP = sp70;
                     play->unk_121C7 = 2;
                     SREG(33) |= 1;
+
+                    // 2S2H [Port] Continue to render the post world for pausing to avoid flashing the HUD
+                    if (!(gTrnsnUnkState == 1)) {
+                        goto Play_Draw_DrawOverlayElements;
+                    }
                 } else if (R_PAUSE_MENU_MODE != 3) {
                 Play_Draw_DrawOverlayElements:
                     if ((HREG(80) != 10) || (HREG(89) != 0)) {
@@ -1759,15 +1660,6 @@ void Play_Draw(PlayState* play) {
     }
 
     Camera_Finish(GET_ACTIVE_CAM(play));
-
-    {
-        Gfx* prevDisplayList = POLY_OPA_DISP;
-        Gfx* gfxP = Graph_GfxPlusOne(POLY_OPA_DISP);
-        gSPDisplayList(OVERLAY_DISP++, gfxP);
-        gSPEndDisplayList(gfxP++);
-        Graph_BranchDlist(prevDisplayList, gfxP);
-        POLY_OPA_DISP = gfxP;
-    }
 
     CLOSE_DISPS(gfxCtx);
 
@@ -1942,10 +1834,6 @@ void* Play_LoadFile(PlayState* play, RomFile* file) {
 }
 
 void Play_InitEnvironment(PlayState* play, s16 skyboxId) {
-    // For entrance rando, ensure the correct weather state and sky mode is applied
-    if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
-        Entrance_OverrideWeatherState();
-    }
     Skybox_Init(&play->state, &play->skyboxCtx, skyboxId);
     Environment_Init(play, &play->envCtx, 0);
 }
@@ -2356,7 +2244,7 @@ void Play_PerformSave(PlayState* play) {
 
         uint8_t triforceHuntCompleted =
             IS_RANDO &&
-            gSaveContext.triforcePiecesCollected == Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED) &&
+            gSaveContext.triforcePiecesCollected == (Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED) + 1) &&
             Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT);
         if (CVarGetInteger(CVAR_ENHANCEMENT("Autosave"), AUTOSAVE_OFF) != AUTOSAVE_OFF || triforceHuntCompleted) {
             Overlay_DisplayText(3.0f, "Game Saved");

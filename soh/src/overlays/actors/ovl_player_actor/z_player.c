@@ -30,6 +30,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/randomizer/randomizer_grotto.h"
 #include "soh/frame_interpolation.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -1088,7 +1089,6 @@ static s8 sItemActions[] = {
     PLAYER_IA_SWORD_BIGGORON,      // ITEM_SWORD_BIGGORON
 };
 
-static u8 sMaskMemory;
 u8 gWalkSpeedToggle1;
 u8 gWalkSpeedToggle2;
 
@@ -2250,36 +2250,19 @@ void Player_ProcessItemButtons(Player* this, PlayState* play) {
     s32 item;
     s32 i;
 
-    if (this->currentMask != PLAYER_MASK_NONE) {
-        if (CVarGetInteger(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA) {
-            s32 maskItem = this->currentMask - PLAYER_MASK_KEATON + ITEM_MASK_KEATON;
-            bool hasOnDpad = false;
-            if (CVarGetInteger(CVAR_ENHANCEMENT("DpadEquips"), 0) != 0) {
-                for (int buttonIndex = 4; buttonIndex < 8; buttonIndex++) {
-                    hasOnDpad |= gSaveContext.equips.buttonItems[buttonIndex] == maskItem;
-                }
-            }
+    if (this->currentMask != PLAYER_MASK_NONE && !CVarGetInteger(CVAR_ENHANCEMENT("PersistentMasks"), 0)) {
+        maskItemAction = this->currentMask - 1 + PLAYER_IA_MASK_KEATON;
 
-            if (gSaveContext.equips.buttonItems[0] != maskItem && gSaveContext.equips.buttonItems[1] != maskItem &&
-                gSaveContext.equips.buttonItems[2] != maskItem && gSaveContext.equips.buttonItems[3] != maskItem &&
-                !hasOnDpad) {
-                this->currentMask = sMaskMemory = PLAYER_MASK_NONE;
-                func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
+        bool hasOnDpad = false;
+        if (CVarGetInteger(CVAR_ENHANCEMENT("DpadEquips"), 0) != 0) {
+            for (int buttonIndex = 0; buttonIndex < 4; buttonIndex++) {
+                hasOnDpad |= Player_ItemIsItemAction(DPAD_ITEM(buttonIndex), maskItemAction);
             }
-        } else {
-            maskItemAction = this->currentMask - 1 + PLAYER_IA_MASK_KEATON;
-
-            bool hasOnDpad = false;
-            if (CVarGetInteger(CVAR_ENHANCEMENT("DpadEquips"), 0) != 0) {
-                for (int buttonIndex = 0; buttonIndex < 4; buttonIndex++) {
-                    hasOnDpad |= Player_ItemIsItemAction(DPAD_ITEM(buttonIndex), maskItemAction);
-                }
-            }
-            if (!Player_ItemIsItemAction(C_BTN_ITEM(0), maskItemAction) &&
-                !Player_ItemIsItemAction(C_BTN_ITEM(1), maskItemAction) &&
-                !Player_ItemIsItemAction(C_BTN_ITEM(2), maskItemAction) && !hasOnDpad) {
-                this->currentMask = PLAYER_MASK_NONE;
-            }
+        }
+        if (!Player_ItemIsItemAction(C_BTN_ITEM(0), maskItemAction) &&
+            !Player_ItemIsItemAction(C_BTN_ITEM(1), maskItemAction) &&
+            !Player_ItemIsItemAction(C_BTN_ITEM(2), maskItemAction) && !hasOnDpad) {
+            this->currentMask = PLAYER_MASK_NONE;
         }
     }
 
@@ -3220,7 +3203,8 @@ void Player_UseItem(PlayState* play, Player* this, s32 item) {
                     this->currentMask = itemAction - PLAYER_IA_MASK_KEATON + 1;
                 }
 
-                sMaskMemory = this->currentMask;
+                gSaveContext.maskMemory = this->currentMask;
+
                 func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
             } else if (((itemAction >= PLAYER_IA_OCARINA_FAIRY) && (itemAction <= PLAYER_IA_OCARINA_OF_TIME)) ||
                 (itemAction >= PLAYER_IA_BOTTLE_FISH)) {
@@ -4842,8 +4826,7 @@ s32 Player_ActionChange_1(Player* this, PlayState* play) {
     if ((this->doorType != PLAYER_DOORTYPE_NONE) &&
         (!(this->stateFlags1 & PLAYER_STATE1_ITEM_OVER_HEAD) ||
          ((this->heldActor != NULL) && (this->heldActor->id == ACTOR_EN_RU1)))) {
-        // Disable doors in Boss Rush so the player can't leave the boss rooms backwards.
-        if ((CHECK_BTN_ALL(sControlInput->press.button, BTN_A) || (Player_Action_8084F9A0 == this->actionFunc)) && !IS_BOSS_RUSH) {
+        if ((CHECK_BTN_ALL(sControlInput->press.button, BTN_A) || (Player_Action_8084F9A0 == this->actionFunc)) && GameInteractor_Should(VB_BE_ABLE_TO_OPEN_DOORS, true)) {
             doorActor = this->doorActor;
 
             if (this->doorType <= PLAYER_DOORTYPE_AJAR) {
@@ -5069,7 +5052,9 @@ void func_8083A0F4(PlayState* play, Player* this) {
             this->interactRangeActor->parent = &this->actor;
             Player_SetupAction(play, this, Player_Action_8084F608, 0);
             this->stateFlags1 |= PLAYER_STATE1_IN_CUTSCENE;
-            sMaskMemory = PLAYER_MASK_NONE;
+            if (!CVarGetInteger(CVAR_ENHANCEMENT("PersistentMasks"), 0) || !CVarGetInteger(CVAR_ENHANCEMENT("AdultMasks"), 0)) {
+                gSaveContext.maskMemory = PLAYER_MASK_NONE;
+            }
         } else {
             LinkAnimationHeader* anim;
 
@@ -5094,11 +5079,7 @@ void func_8083A0F4(PlayState* play, Player* this) {
                 anim = GET_PLAYER_ANIM(PLAYER_ANIMGROUP_carryB, this->modelAnimType);
             }
 
-            // Same actor is used for small and large silver rocks, use actor params to identify large ones
-            bool isLargeSilverRock = interactActorId == ACTOR_EN_ISHI && interactRangeActor->params & 1 == 1;
-            if (CVarGetInteger(CVAR_ENHANCEMENT("FasterHeavyBlockLift"), 0) && (isLargeSilverRock || interactActorId == ACTOR_BG_HEAVY_BLOCK)) {
-                LinkAnimation_PlayOnceSetSpeed(play, &this->skelAnime, anim, 5.0f);
-            } else {
+            if (GameInteractor_Should(VB_PLAY_THROW_ANIMATION, true, anim)) {
                 LinkAnimation_PlayOnce(play, &this->skelAnime, anim);
             }
         }
@@ -6799,7 +6780,14 @@ s32 Player_ActionChange_2(Player* this, PlayState* play) {
                 uint8_t showItemCutscene = play->sceneNum == SCENE_BOMBCHU_BOWLING_ALLEY || Item_CheckObtainability(giEntry.itemId) == ITEM_NONE || IS_RANDO;
 
                 // Only skip cutscenes for drops when they're items/consumables from bushes/rocks/enemies.
-                uint8_t isDropToSkip = (interactedActor->id == ACTOR_EN_ITEM00 && interactedActor->params != 6 && interactedActor->params != 17) || 
+                uint8_t isDropToSkip = 
+                                        (
+                                            interactedActor->id == ACTOR_EN_ITEM00 &&
+                                            interactedActor->params != ITEM00_HEART_PIECE &&
+                                            interactedActor->params != ITEM00_SMALL_KEY &&
+                                            interactedActor->params != ITEM00_SOH_GIVE_ITEM_ENTRY &&
+                                            interactedActor->params != ITEM00_SOH_GIVE_ITEM_ENTRY_GI
+                                        ) ||
                                         interactedActor->id == ACTOR_EN_KAREBABA || 
                                         interactedActor->id == ACTOR_EN_DEKUBABA;
 
@@ -6844,10 +6832,6 @@ s32 Player_ActionChange_2(Player* this, PlayState* play) {
                     giEntry = this->getItemEntry;
                 }
                 EnBox* chest = (EnBox*)interactedActor;
-                if (CVarGetInteger(CVAR_ENHANCEMENT("FastChests"), 0) != 0) {
-                    giEntry.gi = -1 * abs(giEntry.gi);
-                }
-
                 if (giEntry.itemId != ITEM_NONE) {
                     if (((Item_CheckObtainability(giEntry.itemId) == ITEM_NONE) && (giEntry.field & 0x40)) ||
                         ((Item_CheckObtainability(giEntry.itemId) != ITEM_NONE) && (giEntry.field & 0x20))) {
@@ -6856,9 +6840,12 @@ s32 Player_ActionChange_2(Player* this, PlayState* play) {
                     }
                 }
 
-                func_80836898(play, this, func_8083A434);
+                if (GameInteractor_Should(VB_GIVE_ITEM_FROM_CHEST, true, chest)) {
+                    func_80836898(play, this, func_8083A434);
+                }
                 this->stateFlags1 |= PLAYER_STATE1_GETTING_ITEM | PLAYER_STATE1_ITEM_OVER_HEAD | PLAYER_STATE1_IN_CUTSCENE;
                 func_8083AE40(this, giEntry.objectId);
+
                 this->actor.world.pos.x =
                     chest->dyna.actor.world.pos.x - (Math_SinS(chest->dyna.actor.shape.rot.y) * 29.4343f);
                 this->actor.world.pos.z =
@@ -6866,8 +6853,10 @@ s32 Player_ActionChange_2(Player* this, PlayState* play) {
                 this->yaw = this->actor.shape.rot.y = chest->dyna.actor.shape.rot.y;
                 func_80832224(this);
 
-                if ((giEntry.itemId != ITEM_NONE) && (giEntry.gi >= 0) &&
-                    (Item_CheckObtainability(giEntry.itemId) == ITEM_NONE)) {
+                bool vanillaPlaySlowChestCS = (giEntry.itemId != ITEM_NONE) && (giEntry.gi >= 0) &&
+                    (Item_CheckObtainability(giEntry.itemId) == ITEM_NONE);
+
+                if (GameInteractor_Should(VB_PLAY_SLOW_CHEST_CS, vanillaPlaySlowChestCS, chest)) {
                     Player_AnimPlayOnceAdjusted(play, this, this->ageProperties->unk_98);
                     Player_AnimReplaceApplyFlags(play, this, 0x28F);
                     chest->unk_1F4 = 1;
@@ -8504,15 +8493,14 @@ void func_80842A28(PlayState* play, Player* this) {
 }
 
 void func_80842A88(PlayState* play, Player* this) {
-    if (CVarGetInteger(CVAR_CHEAT("DekuStick"), DEKU_STICK_NORMAL) == DEKU_STICK_NORMAL) {
-        Inventory_ChangeAmmo(ITEM_STICK, -1);
-        Player_UseItem(play, this, ITEM_NONE);
-    }
+    Inventory_ChangeAmmo(ITEM_STICK, -1);
+    Player_UseItem(play, this, ITEM_NONE);
 }
 
 s32 func_80842AC4(PlayState* play, Player* this) {
     if ((this->heldItemAction == PLAYER_IA_DEKU_STICK) && (this->unk_85C > 0.5f)) {
-        if (AMMO(ITEM_STICK) != 0 && CVarGetInteger(CVAR_CHEAT("DekuStick"), DEKU_STICK_NORMAL) == DEKU_STICK_NORMAL) {
+
+        if (GameInteractor_Should(VB_DEKU_STICK_BREAK, AMMO(ITEM_STICK) != 0)) {
             EffectSsStick_Spawn(play, &this->bodyPartsPos[PLAYER_BODYPART_R_HAND],
                                 this->actor.shape.rot.y + 0x8000);
             this->unk_85C = 0.5f;
@@ -8937,7 +8925,9 @@ void func_80843AE8(PlayState* play, Player* this) {
         OnePointCutscene_Init(play, 9908, 125, &this->actor, MAIN_CAM);
     } else if (play->gameOverCtx.state == GAMEOVER_DEATH_WAIT_GROUND) {
         play->gameOverCtx.state = GAMEOVER_DEATH_DELAY_MENU;
-        sMaskMemory = PLAYER_MASK_NONE;
+        if (!CVarGetInteger(CVAR_ENHANCEMENT("PersistentMasks"), 0)) {
+            gSaveContext.maskMemory = PLAYER_MASK_NONE;
+        }
     }
 }
 
@@ -9833,14 +9823,12 @@ void Player_Action_80846120(Player* this, PlayState* play) {
     if (LinkAnimation_OnFrame(&this->skelAnime, 229.0f)) {
         Actor* heldActor = this->heldActor;
 
-        if (CVarGetInteger(CVAR_ENHANCEMENT("FasterHeavyBlockLift"), 0)) {
-            // This is the difference in rotation when the animation is sped up 5x
-            heldActor->shape.rot.x -= 3510;
+        if (GameInteractor_Should(VB_MOVE_THROWN_ACTOR, true, heldActor)) {
+            heldActor->speedXZ = Math_SinS(heldActor->shape.rot.x) * 40.0f;
+            heldActor->velocity.y = Math_CosS(heldActor->shape.rot.x) * 40.0f;
+            heldActor->gravity = -2.0f;
+            heldActor->minVelocityY = -30.0f;
         }
-        heldActor->speedXZ = Math_SinS(heldActor->shape.rot.x) * 40.0f;
-        heldActor->velocity.y = Math_CosS(heldActor->shape.rot.x) * 40.0f;
-        heldActor->gravity = -2.0f;
-        heldActor->minVelocityY = -30.0f;
         Player_DetachHeldActor(play, this);
         return;
     }
@@ -10190,11 +10178,12 @@ void Player_Init(Actor* thisx, PlayState* play2) {
     Player_UseItem(play, this, ITEM_NONE);
     Player_SetEquipmentData(play, this);
     this->prevBoots = this->currentBoots;
-    if (CVarGetInteger(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA) {
+    //keep masks thru loading zones
+    if (CVarGetInteger(CVAR_ENHANCEMENT("PersistentMasks"), 0)) {
         if (INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_SOLD_OUT) {
-            sMaskMemory = PLAYER_MASK_NONE;
+            gSaveContext.maskMemory = PLAYER_MASK_NONE;
         }
-        this->currentMask = sMaskMemory;
+        this->currentMask = gSaveContext.maskMemory;
     }
     Player_InitCommon(this, play, gPlayerSkelHeaders[((void)0, gSaveContext.linkAge)]);
     this->giObjectSegment = (void*)(((uintptr_t)ZELDA_ARENA_MALLOC_DEBUG(0x3008) + 8) & ~0xF);
@@ -10228,7 +10217,7 @@ void Player_Init(Actor* thisx, PlayState* play2) {
 
     if ((sp50 == 0) || (sp50 < -1)) {
         titleFileSize = scene->titleFile.vromEnd - scene->titleFile.vromStart;
-        if (gSaveContext.showTitleCard) {
+        if (GameInteractor_Should(VB_SHOW_TITLE_CARD, gSaveContext.showTitleCard)) {
             if ((gSaveContext.sceneSetupIndex < 4) &&
                 (gEntranceTable[((void)0, gSaveContext.entranceIndex) + ((void)0, gSaveContext.sceneSetupIndex)].field &
                  ENTRANCE_INFO_DISPLAY_TITLE_CARD_FLAG) &&
@@ -10931,37 +10920,30 @@ static Vec3f D_808547B0 = { 0.0f, 0.5f, 0.0f };
 static Color_RGBA8 D_808547BC = { 255, 255, 100, 255 };
 static Color_RGBA8 D_808547C0 = { 255, 50, 0, 0 };
 
-void func_80848A04(PlayState* play, Player* this) {
+void Player_UpdateBurningDekuStick(PlayState* play, Player* this) {
     f32 temp;
 
-    if (CVarGetInteger(CVAR_CHEAT("DekuStick"), DEKU_STICK_NORMAL) == DEKU_STICK_UNBREAKABLE_AND_ALWAYS_ON_FIRE) {
-        f32 temp2 = 1.0f;       // Secondary temporary variable to use with the alleged draw flame function
-        this->unk_860 = 200;    // Keeps the stick's flame lit
-        this->unk_85C = 1.0f;   // Ensures the stick is the proper length
-        func_8002836C(play, &this->meleeWeaponInfo[0].tip, &D_808547A4, &D_808547B0, &D_808547BC, &D_808547C0, temp2 * 200.0f,
-                      0, 8);      // I believe this draws the flame effect
-    }
-
-    if (this->unk_85C == 0.0f && CVarGetInteger(CVAR_CHEAT("DekuStick"), DEKU_STICK_NORMAL) == DEKU_STICK_NORMAL) {
-        Player_UseItem(play, this, 0xFF);
+    if (GameInteractor_Should(VB_DEKU_STICK_BURN_OUT, this->unk_85C == 0.0f)) {
+        Player_UseItem(play, this, ITEM_NONE);
         return;
     }
 
     temp = 1.0f;
-    if (DECR(this->unk_860) == 0 && CVarGetInteger(CVAR_CHEAT("DekuStick"), DEKU_STICK_NORMAL) == DEKU_STICK_NORMAL) {
+    uint8_t vanillaShouldBurnOutCondition = DECR(this->unk_860) == 0;
+    if (GameInteractor_Should(VB_DEKU_STICK_BURN_OUT, vanillaShouldBurnOutCondition)) {
         Inventory_ChangeAmmo(ITEM_STICK, -1);
         this->unk_860 = 1;
         temp = 0.0f;
         this->unk_85C = temp;
     } else if (this->unk_860 > 200) {
         temp = (210 - this->unk_860) / 10.0f;
-    } else if (this->unk_860 < 20 && CVarGetInteger(CVAR_CHEAT("DekuStick"), DEKU_STICK_NORMAL) == DEKU_STICK_NORMAL) {
+    } else if (GameInteractor_Should(VB_DEKU_STICK_BURN_DOWN, this->unk_860 < 20)) {
         temp = this->unk_860 / 20.0f;
         this->unk_85C = temp;
     }
 
-    func_8002836C(play, &this->meleeWeaponInfo[0].tip, &D_808547A4, &D_808547B0, &D_808547BC, &D_808547C0, temp * 200.0f,
-                  0, 8);
+    func_8002836C(play, &this->meleeWeaponInfo[0].tip, &D_808547A4, &D_808547B0, &D_808547BC, &D_808547C0,
+                  temp * 200.0f, 0, 8);
 }
 
 void Player_UpdateBodyShock(PlayState* play, Player* this) {
@@ -11256,8 +11238,9 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
     func_808473D4(play, this);
     func_80836BEC(this, play);
 
-    if ((this->heldItemAction == PLAYER_IA_DEKU_STICK) && ((this->unk_860 != 0) || CVarGetInteger(CVAR_CHEAT("DekuStick"), DEKU_STICK_NORMAL) == DEKU_STICK_UNBREAKABLE_AND_ALWAYS_ON_FIRE)) {
-        func_80848A04(play, this);
+    if (this->heldItemAction == PLAYER_IA_DEKU_STICK &&
+        GameInteractor_Should(VB_DEKU_STICK_BE_ON_FIRE, this->unk_860 != 0)) {
+        Player_UpdateBurningDekuStick(play, this);
     } else if ((this->heldItemAction == PLAYER_IA_FISHING_POLE) && (this->unk_860 < 0)) {
         this->unk_860++;
     }
@@ -11466,11 +11449,11 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
             CsCmdActorAction* linkActionCsCmd = play->csCtx.linkAction;
 
             if ((linkActionCsCmd != NULL) && (D_808547C4[linkActionCsCmd->action] != 0)) {
-                func_8002DF54(play, NULL, 6);
+                Player_SetCsActionWithHaltedActors(play, NULL, 6);
                 Player_ZeroSpeedXZ(this);
             } else if ((this->csAction == 0) && !(this->stateFlags2 & PLAYER_STATE2_UNDERWATER) &&
                        (play->csCtx.state != CS_STATE_UNSKIPPABLE_INIT)) {
-                func_8002DF54(play, NULL, 0x31);
+                Player_SetCsActionWithHaltedActors(play, NULL, 0x31);
                 Player_ZeroSpeedXZ(this);
             }
         }
@@ -13542,7 +13525,7 @@ s32 func_8084DFF4(PlayState* play, Player* this) {
         play->msgCtx.msgMode = MSGMODE_TEXT_DONE;
     } else {
         if (Message_GetState(&play->msgCtx) == TEXT_STATE_CLOSING) {
-            if (this->getItemId == GI_GAUNTLETS_SILVER && !IS_RANDO) {
+            if (GameInteractor_Should(VB_PLAY_NABOORU_CAPTURED_CS, this->getItemId == GI_GAUNTLETS_SILVER)) {
                 play->nextEntranceIndex = ENTR_DESERT_COLOSSUS_0;
                 play->transitionTrigger = TRANS_TRIGGER_START;
                 gSaveContext.nextCutsceneIndex = 0xFFF1;
@@ -13558,11 +13541,13 @@ s32 func_8084DFF4(PlayState* play, Player* this) {
                 this->unk_862 = 0;
             }
 
+            // #region SOH [Randomizer] TODO Better Ice trap handling?
             if (this->getItemEntry.itemId == RG_ICE_TRAP && this->getItemEntry.modIndex == MOD_RANDOMIZER) {
                 this->unk_862 = 0;
                 gSaveContext.pendingIceTrapCount++;
                 Player_SetPendingFlag(this, play);
             }
+            // #endregion
 
             this->getItemId = GI_NONE;
             this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
@@ -13952,9 +13937,12 @@ void Player_Action_8084ECA4(Player* this, PlayState* play) {
     struct_80854554* sp24;
     BottleCatchInfo* catchInfo;
     s32 temp;
-    s32 i;
+    s32 i, j;
+    FishIdentity fish;
+    GetItemEntry gi = GET_ITEM_NONE;
+    RandomizerCheck rc = RC_UNKNOWN_CHECK;
+    u8 catchId;
 
-    sp24 = &D_80854554[this->av2.actionVar2];
     func_8083721C(this);
 
     if (LinkAnimation_Update(play, &this->skelAnime)) {
@@ -13976,6 +13964,7 @@ void Player_Action_8084ECA4(Player* this, PlayState* play) {
         }
     } else {
         if (this->av1.actionVar1 == 0) {
+            sp24 = &D_80854554[this->av2.actionVar2];
             temp = this->skelAnime.curFrame - sp24->unk_08;
 
             if (temp >= 0) {
@@ -13994,7 +13983,7 @@ void Player_Action_8084ECA4(Player* this, PlayState* play) {
                             }
                         }
 
-                        if (i < 4) {
+                        if (GameInteractor_Should(VB_BOTTLE_ACTOR, i < 4, this->interactRangeActor)) {
                             this->av1.actionVar1 = i + 1;
                             this->av2.actionVar2 = 0;
                             this->interactRangeActor->parent = &this->actor;
@@ -15275,7 +15264,7 @@ void func_808515A4(PlayState* play, Player* this, CsCmdActorAction* arg2) {
 void func_80851688(PlayState* play, Player* this, CsCmdActorAction* arg2) {
     if (func_8084B3CC(play, this) == 0) {
         if ((this->csAction == 0x31) && (play->csCtx.state == CS_STATE_IDLE)) {
-            func_8002DF54(play, NULL, 7);
+            Player_SetCsActionWithHaltedActors(play, NULL, 7);
             return;
         }
 
@@ -15772,6 +15761,7 @@ void func_808526EC(PlayState* play, Player* this, CsCmdActorAction* arg2) {
 void func_8085283C(PlayState* play, Player* this, CsCmdActorAction* arg2) {
     if (LinkAnimation_Update(play, &this->skelAnime)) {
         func_80852944(play, this, arg2);
+    // This is when link picks up the sword in the Ganon fight
     } else if (this->av2.actionVar2 == 0) {
         Item_Give(play, ITEM_SWORD_MASTER);
         func_80846720(play, this, 0);
@@ -15855,7 +15845,7 @@ void func_80852C50(PlayState* play, Player* this, CsCmdActorAction* arg2) {
     s32 sp24;
 
     if (play->csCtx.state == CS_STATE_UNSKIPPABLE_INIT) {
-        func_8002DF54(play, NULL, 7);
+        Player_SetCsActionWithHaltedActors(play, NULL, 7);
         this->cueId = 0;
         Player_ZeroSpeedXZ(this);
         return;
@@ -15997,7 +15987,7 @@ void Player_StartTalking(PlayState* play, Actor* actor) {
     this->exchangeItemId = EXCH_ITEM_NONE;
 
     if (actor->textId == 0xFFFF) {
-        func_8002DF54(play, actor, 1);
+        Player_SetCsActionWithHaltedActors(play, actor, 1);
         actor->flags |= ACTOR_FLAG_PLAYER_TALKED_TO;
         func_80832528(play, this);
     } else {

@@ -1,238 +1,74 @@
 #pragma once
 
-#include <array>
 #include <string>
 #include <vector>
+#include <variant>
 
-#include "keys.hpp"
 #include "text.hpp"
 #include "random.hpp"
-#include "settings.hpp"
 #include <functional>
+#include "../randomizerTypes.h"
+#include "../../custom-message/CustomMessageManager.h"
 
 struct HintDistributionSetting {
+  std::string name;
   HintType type;
-  uint8_t order;
-  size_t weight;
+  uint32_t weight;
   uint8_t fixed;
   uint8_t copies;
+  std::function<bool(RandomizerCheck)> filter;
+  uint8_t dungeonLimit;
+
+  HintDistributionSetting(std::string _name, HintType _type, uint32_t _weight, uint8_t _fixed, uint8_t _copies, 
+                          std::function<bool(RandomizerCheck)> _filter, uint8_t _dungeonLimit = 40);
 };
 
 struct HintSetting {
-  using DistributionTable = std::array<HintDistributionSetting, static_cast<int>(HINT_TYPE_MAX)>;
-
-  uint8_t dungeonsWothLimit;
-  uint8_t dungeonsBarrenLimit;
-  bool namedItemsRequired;
-  DistributionTable distTable;
-};
-
-enum class HintCategory {
-  Item,
-  Always,
-  Sometimes,
-  Exclude,
-  Entrance,
-  Region,
-  Junk,
-  DungeonName,
-  Boss,
-  Bridge,
-  GanonsBossKey,
-  LACS,
-  Altar,
-  Validation,
-  LightArrow,
-  MasterSword,
-  GanonLine,
-  MerchantsDialogs,
+  uint8_t alwaysCopies;
+  uint8_t trialCopies;
+  uint8_t junkWeight;
+  std::vector<HintDistributionSetting> distTable;
 };
 
 class HintText {
 public:
     HintText() = default;
-    HintText(std::vector<Text> obscureText_, std::vector<Text> ambiguousText_, Text clearText_, HintCategory type_)
-    : obscureText(std::move(obscureText_)),
-      ambiguousText(std::move(ambiguousText_)),
-      clearText(std::move(clearText_)),
-      type(type_) {}
-
-    static auto Item(std::vector<Text>&& obscureText, std::vector<Text>&& ambiguousText = {}, Text&& clearText = {}) {
-        return HintText{std::move(obscureText), std::move(ambiguousText), std::move(clearText), HintCategory::Item};
-    }
-
-    static auto Always(std::vector<Text>&& obscureText, std::vector<Text>&& ambiguousText = {}, Text&& clearText = {}) {
-        return HintText{std::move(obscureText), std::move(ambiguousText), std::move(clearText), HintCategory::Always};
-    }
-
-    static auto Sometimes(std::vector<Text>&& obscureText, std::vector<Text>&& ambiguousText = {}, Text&& clearText = {}) {
-        return HintText{std::move(obscureText), std::move(ambiguousText), std::move(clearText), HintCategory::Sometimes};
-    }
-
-    static auto Exclude(std::vector<Text>&& obscureText, std::vector<Text>&& ambiguousText = {}, Text&& clearText = {}) {
-        return HintText{std::move(obscureText), std::move(ambiguousText), std::move(clearText), HintCategory::Exclude};
-    }
-
-    static auto Entrance(std::vector<Text>&& obscureText, std::vector<Text>&& ambiguousText = {}, Text&& clearText = {}) {
-        return HintText{std::move(obscureText), std::move(ambiguousText), std::move(clearText), HintCategory::Entrance};
-    }
-
-    static auto Region(std::vector<Text>&& obscureText, std::vector<Text>&& ambiguousText = {}, Text&& clearText = {}) {
-        return HintText{std::move(obscureText), std::move(ambiguousText), std::move(clearText), HintCategory::Region};
-    }
-
-    static auto Junk(std::vector<Text>&& obscureText, std::vector<Text>&& ambiguousText = {}, Text&& clearText = {}) {
-        return HintText{std::move(obscureText), std::move(ambiguousText), std::move(clearText), HintCategory::Junk};
-    }
-
-    static auto DungeonName(std::vector<Text>&& obscureText, std::vector<Text>&& ambiguousText = {}, Text&& clearText = {}) {
-        return HintText{std::move(obscureText), std::move(ambiguousText), std::move(clearText), HintCategory::DungeonName};
-    }
-
-    static auto Boss(std::vector<Text>&& obscureText, std::vector<Text>&& ambiguousText = {}, Text&& clearText = {}) {
-        return HintText{std::move(obscureText), std::move(ambiguousText), std::move(clearText), HintCategory::Boss};
-    }
-
-    static auto Bridge(std::vector<Text>&& obscureText, std::vector<Text>&& ambiguousText = {}, Text&& clearText = {}) {
-        return HintText{std::move(obscureText), std::move(ambiguousText), std::move(clearText), HintCategory::Bridge};
-    }
-
-    static auto GanonsBossKey(std::vector<Text>&& obscureText, std::vector<Text>&& ambiguousText = {}, Text&& clearText = {}) {
-        return HintText{std::move(obscureText), std::move(ambiguousText), std::move(clearText), HintCategory::GanonsBossKey};
-    }
-
-    static auto LACS(std::vector<Text>&& obscureText, std::vector<Text>&& ambiguousText = {}, Text&& clearText = {}) {
-        return HintText{std::move(obscureText), std::move(ambiguousText), std::move(clearText), HintCategory::LACS};
-    }
-
-    static auto Altar(std::vector<Text>&& obscureText, std::vector<Text>&& ambiguousText = {}, Text&& clearText = {}) {
-        return HintText{std::move(obscureText), std::move(ambiguousText), std::move(clearText), HintCategory::Altar};
-    }
-
-    static auto Validation(std::vector<Text>&& obscureText, std::vector<Text>&& ambiguousText = {}, Text&& clearText = {}) {
-        return HintText{std::move(obscureText), std::move(ambiguousText), std::move(clearText), HintCategory::Validation};
-    }
-
-    static auto LightArrow(std::vector<Text>&& obscureText, std::vector<Text>&& ambiguousText = {}, Text&& clearText = {}) {
-        return HintText{std::move(obscureText), std::move(ambiguousText), std::move(clearText), HintCategory::LightArrow};
-    }
-
-    static auto MasterSword(std::vector<Text>&& obscureText, std::vector<Text>&& ambiguousText = {}, Text&& clearText = {}) {
-        return HintText{std::move(obscureText), std::move(ambiguousText), std::move(clearText), HintCategory::MasterSword};
-    }
-
-    static auto GanonLine(std::vector<Text>&& obscureText, std::vector<Text>&& ambiguousText = {}, Text&& clearText = {}) {
-        return HintText{std::move(obscureText), std::move(ambiguousText), std::move(clearText), HintCategory::GanonLine};
-    }
-
-    static auto MerchantsDialogs(std::vector<Text>&& obscureText, std::vector<Text>&& ambiguousText = {}, Text&& clearText = {}) {
-        return HintText{std::move(obscureText), std::move(ambiguousText), std::move(clearText), HintCategory::MerchantsDialogs};
-    }
-
-    Text& GetObscure() {
-        return RandomElement(obscureText);
-    }
-
-    const Text& GetObscure() const {
-        return RandomElement(obscureText);
-    }
-
-    Text& GetAmbiguous() {
-        if (ambiguousText.size() > 0)   {
-            return RandomElement(ambiguousText);
-        }
-        return RandomElement(obscureText);
-    }
-
-    const Text& GetAmbiguous() const {
-        if (ambiguousText.size() > 0) {
-            return RandomElement(ambiguousText);
-        }
-        return RandomElement(obscureText);
-    }
-
-    const Text& GetClear() const {
-        if (clearText.GetEnglish().empty()) {
-            return GetObscure();
-        }
-        return clearText;
-    }
-
-    const Text& GetText() const {
-        if (Settings::ClearerHints.Is(HINTMODE_OBSCURE)) {
-            return GetObscure();
-        } else if (Settings::ClearerHints.Is(HINTMODE_AMBIGUOUS)){
-            return GetAmbiguous();
-        } else {
-            return GetClear();
-        }
-    }
-
-    const Text GetTextCopy() const {
-        if (Settings::ClearerHints.Is(HINTMODE_OBSCURE)) {
-            return GetObscure();
-        } else if (Settings::ClearerHints.Is(HINTMODE_AMBIGUOUS)){
-            return GetAmbiguous();
-        } else {
-            return GetClear();
-        }
-    }
-
-    HintCategory GetType() const {
-        return type;
-    }
-
-    bool operator==(const HintText& right) const {
-        return obscureText == right.obscureText &&
-               ambiguousText == right.ambiguousText &&
-               clearText == right.clearText;
-    }
-    bool operator!=(const HintText& right) const {
-        return !operator==(right);
-    }
+    HintText(CustomMessage clearText_, std::vector<CustomMessage> ambiguousText_ = {}, std::vector<CustomMessage> obscureText_ = {});
+    const CustomMessage& GetClear() const;
+    const CustomMessage& GetObscure() const;
+    const CustomMessage& GetObscure(uint8_t selection) const;
+    const CustomMessage& GetAmbiguous() const;
+    const CustomMessage& GetAmbiguous(uint8_t selection) const;
+    uint8_t GetAmbiguousSize() const;
+    uint8_t GetObscureSize() const;
+    const CustomMessage& GetHintMessage(uint8_t selection = 0) const;
+    const CustomMessage GetMessageCopy() const;
+    bool operator==(const HintText& right) const;
+    bool operator!=(const HintText& right) const;
 
 private:
-    std::vector<Text> obscureText = {};
-    std::vector<Text> ambiguousText = {};
-    Text clearText;
-    HintCategory type;
+    CustomMessage clearText;
+    std::vector<CustomMessage> ambiguousText = {};
+    std::vector<CustomMessage> obscureText = {};
 };
 
-using ConditionalAlwaysHint = std::pair<uint32_t, std::function<bool()>>;
+struct StaticHintInfo{
+  HintType type;
+  std::vector<RandomizerHintTextKey> hintKeys;
+  RandomizerSettingKey setting;
+  std::variant<bool, uint8_t> condition;
+  std::vector<RandomizerCheck> targetChecks;
+  std::vector<RandomizerGet> targetItems;
+  std::vector<RandomizerCheck> hintChecks;
+  bool yourPocket;
+  int num;
 
-//10 dungeons as GTG and GC are excluded
-extern std::array<DungeonInfo, 10> dungeonInfoData;
+  StaticHintInfo() = default;
+  StaticHintInfo(HintType _type, std::vector<RandomizerHintTextKey> _hintKeys, RandomizerSettingKey _setting, std::variant<bool, uint8_t> _condition,
+                 std::vector<RandomizerCheck> _targetChecks, std::vector<RandomizerGet> _targetItems = {},
+                 std::vector<RandomizerCheck> _hintChecks = {}, bool _yourPocket = false, int _num = 0);
+};
 
-extern std::array<ConditionalAlwaysHint, 9> conditionalAlwaysHints;
-
-extern uint32_t GetHintRegionHintKey(const uint32_t area);
 extern void CreateAllHints();
-extern void CreateMerchantsHints();
 extern void CreateWarpSongTexts();
-extern void CreateDampesDiaryText();
-extern void CreateGregRupeeHint();
-extern void CreateSheikText();
-extern void CreateSariaText();
-extern void CreateGanonText();
-extern void CreateAltarText();
-
-Text& GetChildAltarText();
-Text& GetAdultAltarText();
-Text& GetGanonText();
-Text& GetGanonHintText();
-Text& GetDampeHintText();
-Text& GetGregHintText();
-Text& GetSheikHintText();
-Text& GetSariaHintText();
-
-Text& GetWarpMinuetText();
-Text& GetWarpBoleroText();
-Text& GetWarpSerenadeText();
-Text& GetWarpRequiemText();
-Text& GetWarpNocturneText();
-Text& GetWarpPreludeText();
-
-std::string GetDampeHintLoc();
-std::string GetMasterSwordHintLoc();
-std::string GetLightArrowHintLoc();
-std::string GetSariaHintLoc();
+void CreateStaticHints();

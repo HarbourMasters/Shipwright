@@ -1,6 +1,8 @@
 #include <libultraship/libultra.h>
 #include "global.h"
 #include "soh/Enhancements/audio/AudioEditor.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 // TODO: can these macros be shared between files? code_800F9280 seems to use
 // versions without any casts...
@@ -1588,23 +1590,23 @@ void func_800ED458(s32 arg0) {
         }
 
         Audio_OcaUpdateBtnMap(customControls);
-        if (D_8016BA18 & sOcarinaD4BtnMap) {
+        if (D_8016BA18 & sOcarinaD4BtnMap && GameInteractor_Should(VB_HAVE_OCARINA_NOTE_D4, true)) {
             osSyncPrintf("Presss NA_KEY_D4 %08x\n", sOcarinaD4BtnMap);
             sCurOcarinaBtnVal = 2;
             sCurOcarinaBtnIdx = 0;
-        } else if (D_8016BA18 & sOcarinaF4BtnMap) {
+        } else if (D_8016BA18 & sOcarinaF4BtnMap && GameInteractor_Should(VB_HAVE_OCARINA_NOTE_F4, true)) {
             osSyncPrintf("Presss NA_KEY_F4 %08x\n", sOcarinaF4BtnMap);
             sCurOcarinaBtnVal = 5;
             sCurOcarinaBtnIdx = 1;
-        } else if (D_8016BA18 & sOcarinaA4BtnMap) {
+        } else if (D_8016BA18 & sOcarinaA4BtnMap && GameInteractor_Should(VB_HAVE_OCARINA_NOTE_A4, true)) {
             osSyncPrintf("Presss NA_KEY_A4 %08x\n", sOcarinaA4BtnMap);
             sCurOcarinaBtnVal = 9;
             sCurOcarinaBtnIdx = 2;
-        } else if (D_8016BA18 & sOcarinaB4BtnMap) {
+        } else if (D_8016BA18 & sOcarinaB4BtnMap && GameInteractor_Should(VB_HAVE_OCARINA_NOTE_B4, true)) {
             osSyncPrintf("Presss NA_KEY_B4 %08x\n", sOcarinaA4BtnMap);
             sCurOcarinaBtnVal = 0xB;
             sCurOcarinaBtnIdx = 3;
-        } else if (D_8016BA18 & sOcarinaD5BtnMap) {
+        } else if (D_8016BA18 & sOcarinaD5BtnMap && GameInteractor_Should(VB_HAVE_OCARINA_NOTE_D5, true)) {
             osSyncPrintf("Presss NA_KEY_D5 %08x\n", sOcarinaD5BtnMap);
             sCurOcarinaBtnVal = 0xE;
             sCurOcarinaBtnIdx = 4;

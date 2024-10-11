@@ -8,6 +8,7 @@
 #include "scenes/misc/hakaana_ouke/hakaana_ouke_scene.h"
 #include "scenes/overworld/spot02/spot02_scene.h"
 #include "vt.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA)
 
@@ -192,7 +193,7 @@ void func_80ABF28C(EnOkarinaTag* this, PlayState* play) {
     if ((this->ocarinaSong != 6) || (gSaveContext.scarecrowSpawnSongSet)) {
         if ((this->switchFlag >= 0) && Flags_GetSwitch(play, this->switchFlag)) {
             this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
-        } else if (((this->type != 4) || !Flags_GetEventChkInf(EVENTCHKINF_OPENED_THE_DOOR_OF_TIME)) &&
+        } else if (((this->type != 4) || GameInteractor_Should(VB_BE_ELIGIBLE_TO_OPEN_DOT, !Flags_GetEventChkInf(EVENTCHKINF_OPENED_THE_DOOR_OF_TIME), this)) &&
                    ((this->type != 6) || !Flags_GetEventChkInf(EVENTCHKINF_DESTROYED_ROYAL_FAMILY_TOMB)) &&
                    (this->actor.xzDistToPlayer < (90.0f + this->interactRange)) &&
                    (fabsf(player->actor.world.pos.y - this->actor.world.pos.y) < 80.0f)) {
@@ -234,47 +235,30 @@ void func_80ABF4C8(EnOkarinaTag* this, PlayState* play) {
     if (play->msgCtx.ocarinaMode == OCARINA_MODE_04) {
         this->actionFunc = func_80ABF28C;
     } else if (play->msgCtx.ocarinaMode == OCARINA_MODE_03) {
-        if (!IS_RANDO || (IS_RANDO && Randomizer_GetSettingValue(RSK_DOOR_OF_TIME) != RO_DOOROFTIME_CLOSED)) {
-            func_80078884(NA_SE_SY_CORRECT_CHIME);
-        }
+        func_80078884(NA_SE_SY_CORRECT_CHIME);
         if (this->switchFlag >= 0) {
             Flags_SetSwitch(play, this->switchFlag);
         }
         switch (this->type) {
-            case 1:
+            case 1: // Zora's River Waterfall
                 Flags_SetSwitch(play, this->switchFlag);
                 Flags_SetEventChkInf(EVENTCHKINF_OPENED_ZORAS_DOMAIN);
                 break;
-            case 2:
-                if (!IS_RANDO) {
+            case 2: // Kakariko Windmill
+                if (GameInteractor_Should(VB_PLAY_DRAIN_WELL_CS, true, this)) {
                     play->csCtx.segment = D_80ABF9D0;
                     gSaveContext.cutsceneTrigger = 1;
-                } else {
-                    Flags_SetEventChkInf(EVENTCHKINF_DRAINED_WELL_IN_KAKARIKO);
-                    Flags_SetEventChkInf(EVENTCHKINF_PLAYED_SONG_OF_STORMS_IN_WINDMILL);
                 }
                 func_800F574C(1.18921f, 0x5A);
                 break;
-            case 4:
-                if (IS_RANDO) {
-                    if (Randomizer_GetSettingValue(RSK_DOOR_OF_TIME) == RO_DOOROFTIME_CLOSED &&
-                        (INV_CONTENT(ITEM_OCARINA_FAIRY) != ITEM_OCARINA_TIME ||
-                         !CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) || !CHECK_QUEST_ITEM(QUEST_GORON_RUBY) ||
-                         !CHECK_QUEST_ITEM(QUEST_ZORA_SAPPHIRE))) {
-                        func_80078884(NA_SE_SY_OCARINA_ERROR);
-                        break;
-                    } else {
-                        Flags_SetEnv(play, 2);
-                        func_80078884(NA_SE_SY_CORRECT_CHIME);
-                    }
-                } else {
+            case 4: // Door of Time
+                if (GameInteractor_Should(VB_PLAY_DOOR_OF_TIME_CS, true, this)) {
                     play->csCtx.segment = D_80ABFB40;
                     gSaveContext.cutsceneTrigger = 1;
                 }
                 break;
-            case 6:
-                // Don't start the cutscene in a rando save.
-                if (!(IS_RANDO)) {
+            case 6: // Royal Family Tomb
+                if (GameInteractor_Should(VB_PLAY_ROYAL_FAMILY_TOMB_CS, true, this)) {
                     play->csCtx.segment = LINK_IS_ADULT ? SEGMENTED_TO_VIRTUAL(&spot02_scene_Cs_003C80)
                                                              : SEGMENTED_TO_VIRTUAL(&spot02_scene_Cs_005020);
                     gSaveContext.cutsceneTrigger = 1;
@@ -311,7 +295,7 @@ void func_80ABF708(EnOkarinaTag* this, PlayState* play) {
         yawDiff = this->actor.yawTowardsPlayer - this->actor.world.rot.y;
         this->unk_15A++;
         if (!(this->actor.xzDistToPlayer > 120.0f)) {
-            if (CHECK_QUEST_ITEM(QUEST_SONG_SUN) || IS_RANDO) {
+            if (CHECK_QUEST_ITEM(QUEST_SONG_SUN)) {
                 this->actor.textId = 0x5021;
             }
             yawDiffNew = ABS(yawDiff);
@@ -323,23 +307,15 @@ void func_80ABF708(EnOkarinaTag* this, PlayState* play) {
     }
 }
 
-void GivePlayerRandoRewardSunSong(EnOkarinaTag* song, PlayState* play, RandomizerCheck check) {
-    Flags_SetTreasure(play, 0x1F);
-    GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, GI_LETTER_ZELDA);
-    GiveItemEntryFromActor(&song->actor, play, getItemEntry, 10000.0f, 100.0f);
-}
-
 void func_80ABF7CC(EnOkarinaTag* this, PlayState* play) {
     // "Open sesame sesame!"
     osSyncPrintf(VT_FGCOL(PURPLE) "☆☆☆☆☆ 開けゴマゴマゴマ！ ☆☆☆☆☆ %d\n" VT_RST, Message_GetState(&play->msgCtx));
 
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(play)) {
         Message_CloseTextbox(play);
-        if (!IS_RANDO && !CHECK_QUEST_ITEM(QUEST_SONG_SUN)) {
+        if (GameInteractor_Should(VB_PLAY_SUNS_SONG_CS, !CHECK_QUEST_ITEM(QUEST_SONG_SUN), this)) {
             play->csCtx.segment = SEGMENTED_TO_VIRTUAL(&gSunSongGraveSunSongTeachCs);
             gSaveContext.cutsceneTrigger = 1;
-        } else if (IS_RANDO && !Flags_GetTreasure(play, 0x1F)) {
-            GivePlayerRandoRewardSunSong(this, play, RC_SONG_FROM_ROYAL_FAMILYS_TOMB);
         }
         this->actionFunc = func_80ABF708;
     }
