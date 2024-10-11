@@ -613,14 +613,14 @@ void ValidateEntrances(bool checkPoeCollectorAccess, bool checkOtherEntranceAcce
 
 void LookForExternalArea(Region* currentRegion, std::set<Region*> &alreadyChecked, std::set<RandomizerArea> &areas, bool LowPriorityMode=false){
   for (const auto& entrance : currentRegion->entrances) {
+    //if the region is arealess and hasn't already been checked, recursivly check what connects to it
     //if this entrance does not pass areas, only process it if we are in low priority mode
-    if (LowPriorityMode || entrance->DoesSpreadAreas()){
+    if ((LowPriorityMode || entrance->DoesSpreadAreas()) && !alreadyChecked.contains(entrance->GetParentRegion())){
       std::set<RandomizerArea> otherAreas = entrance->GetParentRegion()->GetAllAreas();
-      //if the region is arealess and hasn't already been checked, recursivly check what connects to it
-      if (otherAreas.size() == 0 && !alreadyChecked.contains(currentRegion)) {
-        alreadyChecked.insert(entrance->GetParentRegion());
+      alreadyChecked.insert(entrance->GetParentRegion());
+      if (otherAreas.size() == 0) {
         LookForExternalArea(entrance->GetParentRegion(), alreadyChecked, areas, LowPriorityMode);
-      //if we find an area and it's not links pocket, we should try and add it.
+      //If we find a valid area we should add it.
       //If it's Links Pocket or RA_NONE, do not propagate those, they are not real areas.
       //This check is likely to fail if a region somehow is both in Link's Pocket and elsewhere, but this should never happen
       } else if (*otherAreas.begin() > RA_LINKS_POCKET){
@@ -635,14 +635,14 @@ void SetAreas(){
 //RANDOTODO give entrances an enum like RandomizerCheck, the give them all areas here,
 //then use those areas to not need to recursivly find ItemLocation areas when an identifying entrance's area
   for (int regionType = 0; regionType < RR_MARKER_AREAS_END; regionType++) {
-    Region region = areaTable[regionType];
-    std::set<RandomizerArea> areas = region.GetAllAreas();
-    std::set<Region*> regionsToSet = {&region};
+    Region* region = &areaTable[regionType];
+    std::set<RandomizerArea> areas = region->GetAllAreas();
+    std::set<Region*> regionsToSet = {region};
     if (areas.empty()) {
-      LookForExternalArea(&region, regionsToSet, areas);
+      LookForExternalArea(region, regionsToSet, areas);
       //If we found nothing, try again in low priority mode to try every entrance
       if (areas.empty()) {
-        LookForExternalArea(&region, regionsToSet, areas, true);
+        LookForExternalArea(region, regionsToSet, areas, true);
         //If we still found nothing, we're disconnected, use RA_NONE to represent that
         if (areas.empty()){
           areas.insert(RA_NONE);
