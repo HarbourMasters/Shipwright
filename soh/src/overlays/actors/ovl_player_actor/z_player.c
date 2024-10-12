@@ -2998,8 +2998,8 @@ s32 func_808351D4(Player* this, PlayState* play) {
         sp2C = 1;
     }
 
-    Math_ScaledStepToS(&this->unk_6C0, 1200, 400);
-    this->unk_6AE |= 0x100;
+    Math_ScaledStepToS(&this->upperLimbRot.z, 1200, 400);
+    this->unk_6AE_rotFlags |= UNK6AE_ROT_UPPER_Z;
 
     if ((this->unk_836 == 0) && (Player_CheckForIdleAnim(this) == IDLE_ANIM_NONE) &&
         (this->skelAnime.animation == &gPlayerAnim_link_bow_side_walk)) {
@@ -3543,7 +3543,7 @@ s32 Player_UpdateUpperBody(Player* this, PlayState* play) {
         this->yaw = this->actor.shape.rot.y;
         this->actor.bgCheckFlags &= ~1;
         this->hoverBootsTimer = 0;
-        this->unk_6AE |= 0x43;
+        this->unk_6AE_rotFlags |= UNK6AE_ROT_FOCUS_X | UNK6AE_ROT_FOCUS_Y | UNK6AE_ROT_UPPER_X;
         Player_PlayVoiceSfx(this, NA_SE_VO_LI_LASH);
         return true;
     }
@@ -3593,8 +3593,8 @@ s32 Player_UpdateUpperBody(Player* this, PlayState* play) {
  *
  * @return  From `Player_PutAwayHeldItem`: true if an item needs to be put away, false if not.
  */
-s32 Player_SetupWaitForPutAway(PlayState* play, Player* this, PlayerFuncA74 func) {
-    this->func_A74 = func;
+s32 Player_SetupWaitForPutAway(PlayState* play, Player* this, AfterPutAwayFunc func) {
+    this->afterPutAwayFunc = func;
     Player_SetupAction(play, this, Player_Action_808458D0, 0);
     this->stateFlags2 |= PLAYER_STATE2_DISABLE_ROTATION_ALWAYS;
 
@@ -3656,18 +3656,19 @@ s32 func_80836AB8(Player* this, s32 arg1) {
     var = this->actor.shape.rot.y;
     if (arg1 != 0) {
         var = this->actor.focus.rot.y;
-        this->unk_6BC = this->actor.focus.rot.x;
-        this->unk_6AE |= 0x41;
+        this->upperLimbRot.x = this->actor.focus.rot.x;
+        this->unk_6AE_rotFlags |= UNK6AE_ROT_FOCUS_X | UNK6AE_ROT_UPPER_X;
     } else {
-        func_808369C8(&this->unk_6BC,
-                      func_808369C8(&this->unk_6B6, this->actor.focus.rot.x, 600, 10000, this->actor.focus.rot.x, 0),
-                      200, 4000, this->unk_6B6, 10000);
+        func_808369C8(&this->upperLimbRot.x,
+                      func_808369C8(&this->headLimbRot.x, this->actor.focus.rot.x, 600, 10000, this->actor.focus.rot.x, 0),
+                      200, 4000, this->headLimbRot.x, 10000);
         sp36 = this->actor.focus.rot.y - var;
-        func_808369C8(&sp36, 0, 200, 24000, this->unk_6BE, 8000);
+        func_808369C8(&sp36, 0, 200, 24000, this->upperLimbRot.y, 8000);
         var = this->actor.focus.rot.y - sp36;
-        func_808369C8(&this->unk_6B8, sp36 - this->unk_6BE, 200, 8000, sp36, 8000);
-        func_808369C8(&this->unk_6BE, sp36, 200, 8000, this->unk_6B8, 8000);
-        this->unk_6AE |= 0xD9;
+        func_808369C8(&this->headLimbRot.y, sp36 - this->upperLimbRot.y, 200, 8000, sp36, 8000);
+        func_808369C8(&this->upperLimbRot.y, sp36, 200, 8000, this->headLimbRot.y, 8000);
+        this->unk_6AE_rotFlags |=
+            UNK6AE_ROT_FOCUS_X | UNK6AE_ROT_HEAD_X | UNK6AE_ROT_HEAD_Y | UNK6AE_ROT_UPPER_X | UNK6AE_ROT_UPPER_Y;
     }
 
     return var;
@@ -4050,7 +4051,7 @@ s32 Player_TryActionHandlerList(PlayState* play, Player* this, s8* actionHandler
         }
 
         if (func_8008F128(this)) {
-            this->unk_6AE |= 0x41;
+            this->unk_6AE_rotFlags |= UNK6AE_ROT_FOCUS_X | UNK6AE_ROT_UPPER_X;
             return true;
         }
 
@@ -5157,7 +5158,7 @@ s32 Player_ActionHandler_1(Player* this, PlayState* play) {
                 }
 
                 if (doorShutter->dyna.actor.category == ACTORCAT_DOOR) {
-                    this->doorBgCamIndex = play->transiActorCtx.list[(u16)doorShutter->dyna.actor.params >> 10]
+                    this->cv.slidingDoorBgCamIndex = play->transiActorCtx.list[(u16)doorShutter->dyna.actor.params >> 10]
                                         .sides[(doorDirection > 0) ? 0 : 1]
                                         .effects;
 
@@ -5644,7 +5645,7 @@ s32 Player_StartCsAction(PlayState* play, Player* this) {
     // (with a special case for `PLAYER_CSACTION_7`)
     if (this->unk_6AD == 3) {
         Player_SetupAction(play, this, Player_Action_CsAction, 0);
-        if (this->doorBgCamIndex != 0) {
+        if (this->cv.haltActorsDuringCsAction) {
             this->stateFlags1 |= PLAYER_STATE1_IN_CUTSCENE;
         }
 
@@ -5705,8 +5706,8 @@ void func_8083AF44(PlayState* play, Player* this, s32 magicSpell) {
 }
 
 void func_8083B010(Player* this) {
-    this->actor.focus.rot.x = this->actor.focus.rot.z = this->unk_6B6 = this->unk_6B8 = this->unk_6BA = this->unk_6BC =
-        this->unk_6BE = this->unk_6C0 = 0;
+    this->actor.focus.rot.x = this->actor.focus.rot.z = this->headLimbRot.x = this->headLimbRot.y = this->headLimbRot.z = this->upperLimbRot.x =
+        this->upperLimbRot.y = this->upperLimbRot.z = 0;
 
     this->actor.focus.rot.y = this->actor.shape.rot.y;
 }
@@ -6212,7 +6213,7 @@ s32 Player_ActionHandler_11(Player* this, PlayState* play) {
                     this->unk_86C = 0.0f;
                     func_80833C3C(this);
                 }
-                this->unk_6BC = this->unk_6BE = this->unk_6C0 = 0;
+                this->upperLimbRot.x = this->upperLimbRot.y = this->upperLimbRot.z = 0;
             }
 
             frame = Animation_GetLastFrame(anim);
@@ -6761,7 +6762,7 @@ s32 func_8083DB98(Player* this, s32 arg1) {
 
     Math_SmoothStepToS(&this->actor.focus.rot.y, targetFocusRotY, 4, 10000, 0);
     Math_SmoothStepToS(&this->actor.focus.rot.x, targetFocusRotX, 4, 10000, 0);
-    this->unk_6AE |= 2;
+    this->unk_6AE_rotFlags |= UNK6AE_ROT_FOCUS_Y;
 
     return func_80836AB8(this, arg1);
 }
@@ -6810,13 +6811,13 @@ void func_8083DDC8(Player* this, PlayState* play) {
         targetPitch = CLAMP(targetPitch, -4000, 4000);
         targetRoll = CLAMP(-targetRoll, -4000, 4000);
 
-        Math_ScaledStepToS(&this->unk_6BC, targetPitch, 900);
-        this->unk_6B6 = -(f32)this->unk_6BC * 0.5f;
+        Math_ScaledStepToS(&this->upperLimbRot.x, targetPitch, 900);
+        this->headLimbRot.x = -(f32)this->upperLimbRot.x * 0.5f;
 
-        Math_ScaledStepToS(&this->unk_6BA, targetRoll, 300);
-        Math_ScaledStepToS(&this->unk_6C0, targetRoll, 200);
+        Math_ScaledStepToS(&this->headLimbRot.z, targetRoll, 300);
+        Math_ScaledStepToS(&this->upperLimbRot.z, targetRoll, 200);
 
-        this->unk_6AE |= 0x168;
+        this->unk_6AE_rotFlags |= UNK6AE_ROT_HEAD_X | UNK6AE_ROT_HEAD_Z | UNK6AE_ROT_UPPER_X | UNK6AE_ROT_UPPER_Z;
     } else {
         func_8083DC54(this, play);
     }
@@ -8807,7 +8808,7 @@ s32 func_808428D8(Player* this, PlayState* play) {
     Player_AnimPlayOnce(play, this, &gPlayerAnim_link_normal_defense_kiru);
     this->av1.actionVar1 = 1;
     this->meleeWeaponAnimation = PLAYER_MWA_STAB_1H;
-    this->yaw = this->actor.shape.rot.y + this->unk_6BE;
+    this->yaw = this->actor.shape.rot.y + this->upperLimbRot.y;
 
     if (!CVarGetInteger(CVAR_ENHANCEMENT("CrouchStabHammerFix"), 0)) {
         return 1;
@@ -9058,14 +9059,14 @@ void Player_Action_80843188(Player* this, PlayState* play) {
             sp48 = 100;
         }
 
-        sp46 = ABS(sp4A - this->unk_6BE) * 0.25f;
+        sp46 = ABS(sp4A - this->upperLimbRot.y) * 0.25f;
         if (sp46 < 50) {
             sp46 = 50;
         }
 
         Math_ScaledStepToS(&this->actor.focus.rot.x, sp4C, sp48);
-        this->unk_6BC = this->actor.focus.rot.x;
-        Math_ScaledStepToS(&this->unk_6BE, sp4A, sp46);
+        this->upperLimbRot.x = this->actor.focus.rot.x;
+        Math_ScaledStepToS(&this->upperLimbRot.y, sp4A, sp46);
 
         if (this->av1.actionVar1 != 0) {
             if (!func_80842DF4(play, this)) {
@@ -9107,7 +9108,7 @@ void Player_Action_80843188(Player* this, PlayState* play) {
     this->stateFlags1 |= PLAYER_STATE1_SHIELDING;
     Player_SetModelsForHoldingShield(this);
 
-    this->unk_6AE |= 0xC1;
+    this->unk_6AE_rotFlags |= UNK6AE_ROT_FOCUS_X | UNK6AE_ROT_UPPER_X | UNK6AE_ROT_UPPER_Y;
 }
 
 void Player_Action_808435C4(Player* this, PlayState* play) {
@@ -9966,7 +9967,7 @@ void Player_Action_808458D0(Player* this, PlayState* play) {
 
     if (((this->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR) && (this->heldActor != NULL) && (this->getItemId == GI_NONE)) ||
         !Player_UpdateUpperBody(this, play)) {
-        this->func_A74(play, this);
+        this->afterPutAwayFunc(play, this);
     }
 }
 
@@ -10643,49 +10644,50 @@ void func_808471F4(s16* pValue) {
 void func_80847298(Player* this) {
     s16 sp26;
 
-    if (!(this->unk_6AE & 2)) {
+    if (!(this->unk_6AE_rotFlags & UNK6AE_ROT_FOCUS_Y)) {
         sp26 = this->actor.focus.rot.y - this->actor.shape.rot.y;
+
         func_808471F4(&sp26);
         this->actor.focus.rot.y = this->actor.shape.rot.y + sp26;
     }
 
-    if (!(this->unk_6AE & 1)) {
+    if (!(this->unk_6AE_rotFlags & UNK6AE_ROT_FOCUS_X)) {
         func_808471F4(&this->actor.focus.rot.x);
     }
 
-    if (!(this->unk_6AE & 8)) {
-        func_808471F4(&this->unk_6B6);
+    if (!(this->unk_6AE_rotFlags & UNK6AE_ROT_HEAD_X)) {
+        func_808471F4(&this->headLimbRot.x);
     }
 
-    if (!(this->unk_6AE & 0x40)) {
-        func_808471F4(&this->unk_6BC);
+    if (!(this->unk_6AE_rotFlags & UNK6AE_ROT_UPPER_X)) {
+        func_808471F4(&this->upperLimbRot.x);
     }
 
-    if (!(this->unk_6AE & 4)) {
+    if (!(this->unk_6AE_rotFlags & UNK6AE_ROT_FOCUS_Z)) {
         func_808471F4(&this->actor.focus.rot.z);
     }
 
-    if (!(this->unk_6AE & 0x10)) {
-        func_808471F4(&this->unk_6B8);
+    if (!(this->unk_6AE_rotFlags & UNK6AE_ROT_HEAD_Y)) {
+        func_808471F4(&this->headLimbRot.y);
     }
 
-    if (!(this->unk_6AE & 0x20)) {
-        func_808471F4(&this->unk_6BA);
+    if (!(this->unk_6AE_rotFlags & UNK6AE_ROT_HEAD_Z)) {
+        func_808471F4(&this->headLimbRot.z);
     }
 
-    if (!(this->unk_6AE & 0x80)) {
+    if (!(this->unk_6AE_rotFlags & UNK6AE_ROT_UPPER_Y)) {
         if (this->upperLimbYawSecondary != 0) {
             func_808471F4(&this->upperLimbYawSecondary);
         } else {
-            func_808471F4(&this->unk_6BE);
+            func_808471F4(&this->upperLimbRot.y);
         }
     }
 
-    if (!(this->unk_6AE & 0x100)) {
-        func_808471F4(&this->unk_6C0);
+    if (!(this->unk_6AE_rotFlags & UNK6AE_ROT_UPPER_Z)) {
+        func_808471F4(&this->upperLimbRot.z);
     }
 
-    this->unk_6AE = 0;
+    this->unk_6AE_rotFlags = 0;
 }
 
 static f32 D_80854784[] = { 120.0f, 240.0f, 360.0f };
@@ -12434,7 +12436,7 @@ s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
         this->actor.world.pos.z += (relY2 * movementSpeed) + this->actor.colChkInfo.displacement.z;
     }
 
-    this->unk_6AE |= 2;
+    this->unk_6AE_rotFlags |= UNK6AE_ROT_FOCUS_Y;
     return func_80836AB8(this, (play->shootingGalleryStatus != 0) || func_8002DD78(this) || func_808334B4(this)) - arg3;
 }
 
@@ -12617,7 +12619,7 @@ void Player_Action_8084B1D8(Player* this, PlayState* play) {
         func_80078884(NA_SE_SY_CAMERA_ZOOM_UP);
     } else if ((DECR(this->av2.actionVar2) == 0) || (this->unk_6AD != 2)) {
         if (func_8008F128(this)) {
-            this->unk_6AE |= 0x43;
+            this->unk_6AE_rotFlags |= UNK6AE_ROT_FOCUS_X | UNK6AE_ROT_FOCUS_Y | UNK6AE_ROT_UPPER_X;
         } else {
             this->actor.shape.rot.y = func_8084ABD8(play, this, 0, 0);
         }
@@ -13465,8 +13467,8 @@ void Player_Action_8084CC98(Player* this, PlayState* play) {
                 this->unk_6AD = 0;
                 this->stateFlags1 &= ~PLAYER_STATE1_FIRST_PERSON;
             } else {
-                this->unk_6BE = func_8084ABD8(play, this, 1, -5000) - this->actor.shape.rot.y;
-                this->unk_6BE += 5000;
+                this->upperLimbRot.y = func_8084ABD8(play, this, 1, -5000) - this->actor.shape.rot.y;
+                this->upperLimbRot.y += 5000;
                 this->upperLimbYawSecondary = -5000;
             }
             return;
@@ -13475,18 +13477,18 @@ void Player_Action_8084CC98(Player* this, PlayState* play) {
         if ((this->csAction != 0) || (!func_8084C9BC(this, play) && !Player_ActionHandler_13(this, play))) {
             if (this->focusActor != NULL) {
                 if (func_8002DD78(this) != 0) {
-                    this->unk_6BE = func_8083DB98(this, 1) - this->actor.shape.rot.y;
-                    this->unk_6BE = CLAMP(this->unk_6BE, -0x4AAA, 0x4AAA);
-                    this->actor.focus.rot.y = this->actor.shape.rot.y + this->unk_6BE;
-                    this->unk_6BE += 5000;
-                    this->unk_6AE |= 0x80;
+                    this->upperLimbRot.y = func_8083DB98(this, 1) - this->actor.shape.rot.y;
+                    this->upperLimbRot.y = CLAMP(this->upperLimbRot.y, -0x4AAA, 0x4AAA);
+                    this->actor.focus.rot.y = this->actor.shape.rot.y + this->upperLimbRot.y;
+                    this->upperLimbRot.y += 5000;
+                    this->unk_6AE_rotFlags |= UNK6AE_ROT_UPPER_Y;
                 } else {
                     func_8083DB98(this, 0);
                 }
             } else {
                 if (func_8002DD78(this) != 0) {
-                    this->unk_6BE = func_8084ABD8(play, this, 1, -5000) - this->actor.shape.rot.y;
-                    this->unk_6BE += 5000;
+                    this->upperLimbRot.y = func_8084ABD8(play, this, 1, -5000) - this->actor.shape.rot.y;
+                    this->upperLimbRot.y += 5000;
                     this->upperLimbYawSecondary = -5000;
                 }
             }
@@ -14671,8 +14673,8 @@ void Player_Action_8084FA54(Player* this, PlayState* play) {
     LinkAnimation_Update(play, &this->skelAnime);
     Player_UpdateUpperBody(this, play);
 
-    this->unk_6BE = func_8084ABD8(play, this, 1, 0) - this->actor.shape.rot.y;
-    this->unk_6AE |= 0x80;
+    this->upperLimbRot.y = func_8084ABD8(play, this, 1, 0) - this->actor.shape.rot.y;
+    this->unk_6AE_rotFlags |= UNK6AE_ROT_UPPER_Y;
 
     if (play->shootingGalleryStatus < 0) {
         play->shootingGalleryStatus++;

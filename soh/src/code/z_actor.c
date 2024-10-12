@@ -1448,7 +1448,7 @@ s32 func_8002DF38(PlayState* play, Actor* actor, u8 csAction) {
 
     player->csAction = csAction;
     player->csActor = actor;
-    player->doorBgCamIndex = 0;
+    player->cv.haltActorsDuringCsAction = false;
 
     return true;
 }
@@ -1457,7 +1457,7 @@ s32 Player_SetCsActionWithHaltedActors(PlayState* play, Actor* actor, u8 csActio
     Player* player = GET_PLAYER(play);
 
     func_8002DF38(play, actor, csAction);
-    player->doorBgCamIndex = 1;
+    player->cv.haltActorsDuringCsAction = true;
 
     return true;
 }

@@ -427,7 +427,7 @@ typedef struct {
 #define PLAYER_STATE1_READY_TO_FIRE (1 << 9)
 #define PLAYER_STATE1_GETTING_ITEM (1 << 10)
 #define PLAYER_STATE1_CARRYING_ACTOR (1 << 11) // Currently carrying an actor
-#define PLAYER_STATE1_CHARGING_SPIN_ATTACK (1 << 12)
+#define PLAYER_STATE1_CHARGING_SPIN_ATTACK (1 << 12) // Currently charing a spin attack (by holding down the B button)
 #define PLAYER_STATE1_HANGING_OFF_LEDGE (1 << 13)
 #define PLAYER_STATE1_CLIMBING_LEDGE (1 << 14)
 #define PLAYER_STATE1_Z_TARGETING (1 << 15) // Either lock-on or parallel is active. This flag is never checked for and is practically unused.
@@ -492,7 +492,17 @@ typedef struct {
 
 typedef void (*PlayerActionFunc)(struct Player*, struct PlayState*);
 typedef s32 (*UpperActionFunc)(struct Player*, struct PlayState*);
-typedef void (*PlayerFuncA74)(struct PlayState*, struct Player*);
+typedef void (*AfterPutAwayFunc)(struct PlayState*, struct Player*);
+
+#define UNK6AE_ROT_FOCUS_X (1 << 0)
+#define UNK6AE_ROT_FOCUS_Y (1 << 1)
+#define UNK6AE_ROT_FOCUS_Z (1 << 2)
+#define UNK6AE_ROT_HEAD_X (1 << 3)
+#define UNK6AE_ROT_HEAD_Y (1 << 4)
+#define UNK6AE_ROT_HEAD_Z (1 << 5)
+#define UNK6AE_ROT_UPPER_X (1 << 6)
+#define UNK6AE_ROT_UPPER_Y (1 << 7)
+#define UNK6AE_ROT_UPPER_Z (1 << 8)
 
 typedef struct Player {
     /* 0x0000 */ Actor actor;
@@ -553,7 +563,10 @@ typedef struct Player {
     /* 0x0450 */ Vec3f unk_450;
     /* 0x045C */ Vec3f unk_45C;
     /* 0x0468 */ char unk_468[0x002];
-    /* 0x046A */ s16 doorBgCamIndex;
+    /* 0x046A */ union {
+        s16 haltActorsDuringCsAction; // If true, halt actors belonging to certain categories during a `csAction`
+        s16 slidingDoorBgCamIndex; // `BgCamIndex` used during a sliding door cutscene
+    } cv; // "Cutscene Variable": context dependent variable that has different meanings depending on what function is called
     /* 0x046C */ s16 subCamId;
     /* 0x046E */ char unk_46E[0x02A];
     /* 0x0498 */ ColliderCylinder cylinder;
@@ -581,15 +594,11 @@ typedef struct Player {
     /* 0x06A8 */ Actor* unk_6A8;
     /* 0x06AC */ s8 idleType;
     /* 0x06AD */ u8 unk_6AD;
-    /* 0x06AE */ u16 unk_6AE;
+    /* 0x06AE */ u16 unk_6AE_rotFlags; // See `UNK6AE_ROT_` macros. If its flag isn't set, a rot steps to 0.
     /* 0x06B0 */ s16 upperLimbYawSecondary;
     /* 0x06B2 */ char unk_6B4[0x004];
-    /* 0x06B6 */ s16 unk_6B6;
-    /* 0x06B8 */ s16 unk_6B8;
-    /* 0x06BA */ s16 unk_6BA;
-    /* 0x06BC */ s16 unk_6BC;
-    /* 0x06BE */ s16 unk_6BE;
-    /* 0x06C0 */ s16 unk_6C0;
+    /* 0x06B6 */ Vec3s headLimbRot;
+    /* 0x06BC */ Vec3s upperLimbRot;
     /* 0x06C2 */ s16 unk_6C2;
     /* 0x06C4 */ f32 unk_6C4;
     /* 0x06C8 */ SkelAnime upperSkelAnime;
@@ -664,7 +673,7 @@ typedef struct Player {
     /* 0x0A60 */ u8 bodyIsBurning;
     /* 0x0A61 */ u8 bodyFlameTimers[PLAYER_BODYPART_MAX]; // one flame per body part
     /* 0x0A73 */ u8 unk_A73;
-    /* 0x0A74 */ PlayerFuncA74 func_A74;
+    /* 0x0A74 */ AfterPutAwayFunc afterPutAwayFunc; // See `Player_SetupWaitForPutAway` and `Player_Action_WaitForPutAway`
     /* 0x0A78 */ s8 invincibilityTimer; // prevents damage when nonzero. Positive values are intangibility, negative are invulnerability
     /* 0x0A79 */ u8 floorTypeTimer; // counts up every frame the current floor type is the same as the last frame
     /* 0x0A7A */ u8 floorProperty;

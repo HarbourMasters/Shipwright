@@ -51,7 +51,7 @@ extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 extern void func_8084DFAC(PlayState* play, Player* player);
 extern void Player_SetupActionPreserveAnimMovement(PlayState* play, Player* player, PlayerActionFunc actionFunc, s32 flags);
-extern s32 Player_SetupWaitForPutAway(PlayState* play, Player* player, PlayerFuncA74 func);
+extern s32 Player_SetupWaitForPutAway(PlayState* play, Player* player, AfterPutAwayFunc func);
 }
 
 #define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).GetSelectedOptionIndex()
