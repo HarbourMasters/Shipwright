@@ -559,22 +559,22 @@ typedef struct Player {
     /* 0x0498 */ ColliderCylinder cylinder;
     /* 0x04E4 */ ColliderQuad meleeWeaponQuads[2];
     /* 0x05E4 */ ColliderQuad shieldQuad;
-    /* 0x0664 */ Actor* unk_664;
+    /* 0x0664 */ Actor* focusActor; // Actor that Player and the camera are looking at; Used for lock-on, talking, and more
     /* 0x0668 */ char unk_668[0x004];
-    /* 0x066C */ s32 unk_66C;
+    /* 0x066C */ s32 zTargetActiveTimer; // Non-zero values indicate Z-Targeting should update; Values under 5 indicate lock-on is releasing
     /* 0x0670 */ s32 meleeWeaponEffectIndex;
     /* 0x0674 */ PlayerActionFunc actionFunc;
     /* 0x0678 */ PlayerAgeProperties* ageProperties;
     /* 0x067C */ u32 stateFlags1;
     /* 0x0680 */ u32 stateFlags2;
-    /* 0x0684 */ Actor* unk_684;
+    /* 0x0684 */ Actor* autoLockOnActor; // Actor that is locked onto automatically without player input; see `Player_SetAutoLockOnActor`
     /* 0x0688 */ Actor* boomerangActor;
     /* 0x068C */ Actor* naviActor;
     /* 0x0690 */ s16 naviTextId;
     /* 0x0692 */ u8 stateFlags3;
     /* 0x0693 */ s8 exchangeItemId;
-    /* 0x0694 */ Actor* targetActor;
-    /* 0x0698 */ f32 targetActorDistance;
+    /* 0x0694 */ Actor* talkActor; // Actor offering to talk, or currently talking to, depending on context
+    /* 0x0698 */ f32 talkActorDistance; // xz distance away from `talkActor`
     /* 0x069C */ char unk_69C[0x004];
     /* 0x06A0 */ f32 unk_6A0;
     /* 0x06A4 */ f32 closestSecretDistSq;
@@ -582,7 +582,7 @@ typedef struct Player {
     /* 0x06AC */ s8 idleType;
     /* 0x06AD */ u8 unk_6AD;
     /* 0x06AE */ u16 unk_6AE;
-    /* 0x06B0 */ s16 unk_6B0;
+    /* 0x06B0 */ s16 upperLimbYawSecondary;
     /* 0x06B2 */ char unk_6B4[0x004];
     /* 0x06B6 */ s16 unk_6B6;
     /* 0x06B8 */ s16 unk_6B8;
@@ -596,21 +596,21 @@ typedef struct Player {
     /* 0x070C */ Vec3s upperJointTable[PLAYER_LIMB_BUF_COUNT];
     /* 0x079C */ Vec3s upperMorphTable[PLAYER_LIMB_BUF_COUNT];
     /* 0x082C */ UpperActionFunc upperActionFunc;
-    /* 0x0830 */ f32 upperAnimBlendWeight;
+    /* 0x0830 */ f32 upperAnimInterpWeight;
     /* 0x0834 */ s16 unk_834;
     /* 0x0836 */ s8 unk_836;
-    /* 0x0837 */ u8 unk_837;
-    /* 0x0838 */ f32 linearVelocity;
+    /* 0x0837 */ u8 putAwayCooldownTimer;
+    /* 0x0838 */ f32 linearVelocity; // Controls horizontal speed, used for `actor.speed`. Current or target value depending on context.
     /* 0x083C */ s16 yaw; // General yaw value, used both for world and shape rotation. Current or target value depending on context.
-    /* 0x083E */ s16 zTargetYaw; // yaw relating to Z targeting/"parallel" mode
+    /* 0x083E */ s16 parallelYaw; // yaw in "parallel" mode, Z-Target without an actor lock-on
     /* 0x0840 */ u16 underwaterTimer;
     /* 0x0842 */ s8 meleeWeaponAnimation;
     /* 0x0843 */ s8 meleeWeaponState;
     /* 0x0844 */ s8 unk_844;
     /* 0x0845 */ u8 unk_845;
-    /* 0x0846 */ u8 unk_846;
-    /* 0x0847 */ s8 unk_847[4];
-    /* 0x084B */ s8 unk_84B[4];
+    /* 0x0846 */ u8 controlStickDataIndex; // cycles between 0 - 3. Used to index `controlStickSpinAngles` and `controlStickDirections`
+    /* 0x0847 */ s8 controlStickSpinAngles[4]; // Stores a modified version of the control stick angle for the last 4 frames. Used for checking spins.
+    /* 0x084B */ s8 controlStickDirections[4]; // Stores the control stick direction (relative to shape yaw) for the last 4 frames. See `PlayerStickDirection`.
 
     /* 0x084F */ union {
         s8 actionVar1;
@@ -632,14 +632,14 @@ typedef struct Player {
     /* 0x0874 */ f32 unk_874;
     /* 0x0878 */ f32 unk_878;
     /* 0x087C */ s16 unk_87C;
-    /* 0x087E */ s16 unk_87E;
+    /* 0x087E */ s16 turnRate; // Amount angle is changed every frame when turning in place
     /* 0x0880 */ f32 unk_880;
     /* 0x0884 */ f32 yDistToLedge; // y distance to ground above an interact wall. LEDGE_DIST_MAX if no ground is found
     /* 0x0888 */ f32 distToInteractWall; // xyz distance to the interact wall
     /* 0x088C */ u8 ledgeClimbType;
     /* 0x088D */ u8 ledgeClimbDelayTimer;
-    /* 0x088E */ u8 unk_88E;
-    /* 0x088F */ u8 unk_88F;
+    /* 0x088E */ u8 textboxBtnCooldownTimer; // Prevents usage of A/B/C-up when counting down
+    /* 0x088F */ u8 damageFlickerAnimCounter; // Used to flicker Link after taking damage
     /* 0x0890 */ u8 unk_890;
     /* 0x0891 */ u8 bodyShockTimer;
     /* 0x0892 */ u8 unk_892;
@@ -650,11 +650,11 @@ typedef struct Player {
     /* 0x089A */ s16 floorPitchAlt; // the calculation for this value is bugged and doesn't represent anything meaningful
     /* 0x089C */ s16 unk_89C;
     /* 0x089E */ u16 floorSfxOffset;
-    /* 0x08A0 */ u8 unk_8A0;
-    /* 0x08A1 */ u8 unk_8A1;
-    /* 0x08A2 */ s16 unk_8A2;
-    /* 0x08A4 */ f32 unk_8A4;
-    /* 0x08A8 */ f32 unk_8A8;
+    /* 0x08A0 */ u8 knockbackDamage;
+    /* 0x08A1 */ u8 knockbackType;
+    /* 0x08A2 */ s16 knockbackRot;
+    /* 0x08A4 */ f32 knockbackSpeed;
+    /* 0x08A8 */ f32 knockbackYVelocity;
     /* 0x08AC */ f32 pushedSpeed; // Pushing player, examples include water currents, floor conveyors, climbing sloped surfaces
     /* 0x08B0 */ s16 pushedYaw; // Yaw direction of player being pushed
     /* 0x08B4 */ WeaponInfo meleeWeaponInfo[3];
@@ -665,7 +665,7 @@ typedef struct Player {
     /* 0x0A61 */ u8 bodyFlameTimers[PLAYER_BODYPART_MAX]; // one flame per body part
     /* 0x0A73 */ u8 unk_A73;
     /* 0x0A74 */ PlayerFuncA74 func_A74;
-    /* 0x0A78 */ s8 invincibilityTimer; // prevents damage when nonzero (positive = visible, counts towards zero each frame)
+    /* 0x0A78 */ s8 invincibilityTimer; // prevents damage when nonzero. Positive values are intangibility, negative are invulnerability
     /* 0x0A79 */ u8 floorTypeTimer; // counts up every frame the current floor type is the same as the last frame
     /* 0x0A7A */ u8 floorProperty;
     /* 0x0A7B */ u8 prevFloorType;
@@ -684,9 +684,9 @@ typedef struct Player {
     // #region SOH [Enhancements]
     // Upstream TODO: Rename this to make it more obvious it is apart of an enhancement
     /*        */ u8 boomerangQuickRecall; // Has the player pressed the boomerang button while it's in the air still?
+    /*        */ u8 ivanFloating;
+    /*        */ u8 ivanDamageMultiplier;
     // #endregion
-    u8 ivanFloating;
-    u8 ivanDamageMultiplier;
 } Player; // size = 0xA94
 
 #endif

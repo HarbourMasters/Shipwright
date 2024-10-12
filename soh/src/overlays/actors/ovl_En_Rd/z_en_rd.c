@@ -341,7 +341,7 @@ void func_80AE2C1C(EnRd* this, PlayState* play) {
                 if (!(this->unk_312 & PLAYER_STATE2_GRABBED_BY_ENEMY) && !CVarGetInteger(CVAR_CHEAT("NoRedeadFreeze"), 0)) {
                     player->actor.freezeTimer = 40;
                     Player_SetAutoLockOnActor(play, &this->actor);
-                    GET_PLAYER(play)->unk_684 = &this->actor;
+                    GET_PLAYER(play)->autoLockOnActor = &this->actor;
                     func_800AA000(this->actor.xzDistToPlayer, 0xFF, 0x14, 0x96);
                 }
                 this->unk_306 = 0x3C;

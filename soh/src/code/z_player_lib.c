@@ -743,7 +743,7 @@ void Player_UpdateBottleHeld(PlayState* play, Player* this, s32 item, s32 action
 }
 
 void Player_ReleaseLockOn(Player* this) {
-    this->unk_664 = NULL;
+    this->focusActor = NULL;
     this->stateFlags2 &= ~PLAYER_STATE2_LOCK_ON_WITH_SWITCH;
 }
 
@@ -781,8 +781,8 @@ void Player_SetAutoLockOnActor(PlayState* play, Actor* actor) {
     Player* this = GET_PLAYER(play);
 
     Player_ClearZTargeting(this);
-    this->unk_664 = actor;
-    this->unk_684 = actor;
+    this->focusActor = actor;
+    this->autoLockOnActor = actor;
     this->stateFlags1 |= PLAYER_STATE1_FRIENDLY_ACTOR_FOCUS;
     Camera_SetParam(Play_GetCamera(play, 0), 8, actor);
     Camera_ChangeMode(Play_GetCamera(play, 0), 2);
@@ -1355,9 +1355,9 @@ s32 Player_OverrideLimbDrawGameplayCommon(PlayState* play, s32 limbIndex, Gfx** 
                 Matrix_Translate(-((LINK_IS_ADULT ? 320.0f : 200.0f) * scale), 0.0f, 0.0f, MTXMODE_APPLY);
             }
         } else if (limbIndex == PLAYER_LIMB_UPPER) {
-            if (this->unk_6B0 != 0) {
+            if (this->upperLimbYawSecondary != 0) {
                 Matrix_RotateZ(0x44C * (M_PI / 0x8000), MTXMODE_APPLY);
-                Matrix_RotateY(this->unk_6B0 * (M_PI / 0x8000), MTXMODE_APPLY);
+                Matrix_RotateY(this->upperLimbYawSecondary * (M_PI / 0x8000), MTXMODE_APPLY);
             }
             if (this->unk_6BE != 0) {
                 Matrix_RotateY(this->unk_6BE * (M_PI / 0x8000), MTXMODE_APPLY);
