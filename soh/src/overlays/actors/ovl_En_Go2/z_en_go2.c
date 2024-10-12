@@ -3,7 +3,7 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_oF1d_map/object_oF1d_map.h"
 #include "soh/frame_interpolation.h"
-#include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
@@ -142,7 +142,6 @@ typedef enum {
     /* 10 */ ENGO2_ANIM_10,
     /* 11 */ ENGO2_ANIM_11,
     /* 12 */ ENGO2_ANIM_12,
-    /* 13 */ ENGO2_ANIM_13, // Added to fix spinning goron issue for biggoron
 } EnGo2Animation;
 
 static AnimationInfo sAnimationInfo[] = {
@@ -152,7 +151,7 @@ static AnimationInfo sAnimationInfo[] = {
     { &gGoronAnim_002D80, 1.0f, 0.0f, -1.0f, 0x02, -8.0f }, { &gGoronAnim_00161C, 1.0f, 0.0f, -1.0f, 0x00, -8.0f },
     { &gGoronAnim_001A00, 1.0f, 0.0f, -1.0f, 0x00, -8.0f }, { &gGoronAnim_0021D0, 1.0f, 0.0f, -1.0f, 0x00, -8.0f },
     { &gGoronAnim_004930, 0.0f, 0.0f, -1.0f, 0x01, -8.0f }, { &gGoronAnim_000750, 1.0f, 0.0f, -1.0f, 0x00, -8.0f },
-    { &gGoronAnim_000D5C, 1.0f, 0.0f, -1.0f, 0x00, -8.0f }, { &gGoronAnim_004930, 0.0f, 1.0f, -1.0f, 0x01,  0.0f },
+    { &gGoronAnim_000D5C, 1.0f, 0.0f, -1.0f, 0x00, -8.0f },
 };
 
 static EnGo2DustEffectData sDustEffectData[2][4] = {
@@ -284,15 +283,10 @@ s32 EnGo2_SpawnDust(EnGo2* this, u8 initialTimer, f32 scale, f32 scaleStep, s32 
 
 void EnGo2_GetItem(EnGo2* this, PlayState* play, s32 getItemId) {
     this->getItemId = getItemId;
-    func_8002F434(&this->actor, play, getItemId, this->actor.xzDistToPlayer + 1.0f,
-                  fabsf(this->actor.yDistToPlayer) + 1.0f);
-}
-
-void EnGo2_GetItemEntry(EnGo2* this, PlayState* play, GetItemEntry getItemEntry) {
-    this->getItemId = getItemEntry.getItemId;
-    this->getItemEntry = getItemEntry;
-    GiveItemEntryFromActor(&this->actor, play, getItemEntry, this->actor.xzDistToPlayer + 1.0f,
-                  fabsf(this->actor.yDistToPlayer) + 1.0f);
+    if (GameInteractor_Should(VB_GIVE_ITEM_FROM_GORON, true, this)) {
+        Actor_OfferGetItem(&this->actor, play, getItemId, this->actor.xzDistToPlayer + 1.0f,
+                    fabsf(this->actor.yDistToPlayer) + 1.0f);
+    }
 }
 
 s32 EnGo2_GetDialogState(EnGo2* this, PlayState* play) {
@@ -335,7 +329,8 @@ u16 EnGo2_GoronFireGenericGetTextId(EnGo2* this) {
 u16 EnGo2_GetTextIdGoronCityRollingBig(PlayState* play, EnGo2* this) {
     if (Flags_GetInfTable(INFTABLE_11E)) {
         return 0x3013;
-    } else if ((CUR_CAPACITY(UPG_BOMB_BAG) >= 20 || IS_RANDO) && this->waypoint > 7 && this->waypoint < 12) {
+    } else if (GameInteractor_Should(VB_BE_ELIGIBLE_FOR_CHILD_ROLLING_GORON_REWARD, CUR_CAPACITY(UPG_BOMB_BAG) >= 20, this)
+        && this->waypoint > 7 && this->waypoint < 12) {
         return 0x3012;
     } else {
         return 0x3011;
@@ -350,11 +345,7 @@ s16 EnGo2_UpdateTalkStateGoronCityRollingBig(PlayState* play, EnGo2* this) {
             if (Message_ShouldAdvance(play)) {
                 if (this->actor.textId == 0x3012) {
                     this->actionFunc = EnGo2_SetupGetItem;
-                    if(!IS_RANDO) {
-                        EnGo2_GetItem(this, play, CUR_CAPACITY(UPG_BOMB_BAG) == 30 ? GI_BOMB_BAG_40 : GI_BOMB_BAG_30);
-                    } else {
-                        EnGo2_GetItemEntry(this, play, Randomizer_GetItemFromKnownCheck(RC_GC_ROLLING_GORON_AS_CHILD, GI_BOMB_BAG_40));
-                    }
+                    EnGo2_GetItem(this, play, CUR_CAPACITY(UPG_BOMB_BAG) == 30 ? GI_BOMB_BAG_40 : GI_BOMB_BAG_30);
                     Message_CloseTextbox(play);
                     Flags_SetInfTable(INFTABLE_11E);
                     return NPC_TALK_STATE_ACTION;
@@ -416,11 +407,9 @@ s16 EnGo2_UpdateTalkStateGoronDmtRollingSmall(PlayState* play, EnGo2* this) {
 }
 
 u16 EnGo2_GetTextIdGoronDmtDcEntrance(PlayState* play, EnGo2* this) {
-    if (((!IS_RANDO && CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) ||
-         (IS_RANDO && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE))) && LINK_IS_ADULT) {
+    if (GameInteractor_Should(VB_GORONS_CONSIDER_FIRE_TEMPLE_FINISHED, CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) && LINK_IS_ADULT) {
         return 0x3043;
-    } else if ((!IS_RANDO && CHECK_QUEST_ITEM(QUEST_GORON_RUBY)) ||
-               (IS_RANDO && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_DODONGOS_CAVERN))) {
+    } else if (GameInteractor_Should(VB_GORONS_CONSIDER_DODONGOS_CAVERN_FINISHED, CHECK_QUEST_ITEM(QUEST_GORON_RUBY))) {
         return 0x3027;
     } else {
         return Flags_GetEventChkInf(EVENTCHKINF_BOMBED_DODONGOS_CAVERN_ENTRANCE) ? 0x3021 : Flags_GetInfTable(INFTABLE_E0) ? 0x302A : 0x3008;
@@ -439,11 +428,9 @@ s16 EnGo2_UpdateTalkStateGoronDmtDcEntrance(PlayState* play, EnGo2* this) {
 }
 
 u16 EnGo2_GetTextIdGoronCityEntrance(PlayState* play, EnGo2* this) {
-    if (((!IS_RANDO && CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) ||
-         (IS_RANDO && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE))) && LINK_IS_ADULT) {
+    if (GameInteractor_Should(VB_GORONS_CONSIDER_FIRE_TEMPLE_FINISHED, CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) && LINK_IS_ADULT) {
         return 0x3043;
-    } else if ((!IS_RANDO && CHECK_QUEST_ITEM(QUEST_GORON_RUBY)) ||
-               (IS_RANDO && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_DODONGOS_CAVERN))) {
+    } else if (GameInteractor_Should(VB_GORONS_CONSIDER_DODONGOS_CAVERN_FINISHED, CHECK_QUEST_ITEM(QUEST_GORON_RUBY))) {
         return 0x3027;
     } else {
         return Flags_GetInfTable(INFTABLE_F0) ? 0x3015 : 0x3014;
@@ -462,11 +449,9 @@ s16 EnGo2_UpdateTalkStateGoronCityEntrance(PlayState* play, EnGo2* this) {
 }
 
 u16 EnGo2_GetTextIdGoronCityIsland(PlayState* play, EnGo2* this) {
-    if (((!IS_RANDO && CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) ||
-         (IS_RANDO && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE))) && LINK_IS_ADULT) {
+    if (GameInteractor_Should(VB_GORONS_CONSIDER_FIRE_TEMPLE_FINISHED, CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) && LINK_IS_ADULT) {
         return 0x3043;
-    } else if ((!IS_RANDO && CHECK_QUEST_ITEM(QUEST_GORON_RUBY)) ||
-               (IS_RANDO && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_DODONGOS_CAVERN))) {
+    } else if (GameInteractor_Should(VB_GORONS_CONSIDER_DODONGOS_CAVERN_FINISHED, CHECK_QUEST_ITEM(QUEST_GORON_RUBY))) {
         return 0x3027;
     } else {
         return Flags_GetInfTable(INFTABLE_F4) ? 0x3017 : 0x3016;
@@ -485,11 +470,9 @@ s16 EnGo2_UpdateTalkStateGoronCityIsland(PlayState* play, EnGo2* this) {
 }
 
 u16 EnGo2_GetTextIdGoronCityLowestFloor(PlayState* play, EnGo2* this) {
-    if (((!IS_RANDO && CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) ||
-         (IS_RANDO && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE))) && LINK_IS_ADULT) {
+    if (GameInteractor_Should(VB_GORONS_CONSIDER_FIRE_TEMPLE_FINISHED, CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) && LINK_IS_ADULT) {
         return 0x3043;
-    } else if ((!IS_RANDO && CHECK_QUEST_ITEM(QUEST_GORON_RUBY)) ||
-               (IS_RANDO && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_DODONGOS_CAVERN))) {
+    } else if (GameInteractor_Should(VB_GORONS_CONSIDER_DODONGOS_CAVERN_FINISHED, CHECK_QUEST_ITEM(QUEST_GORON_RUBY))) {
         return 0x3027;
     } else {
         return CUR_UPG_VALUE(UPG_STRENGTH) != 0    ? 0x302C
@@ -511,23 +494,15 @@ s16 EnGo2_UpdateTalkStateGoronCityLowestFloor(PlayState* play, EnGo2* this) {
 }
 
 u16 EnGo2_GetTextIdGoronCityLink(PlayState* play, EnGo2* this) {
-    // For rando, prioritize opening the doors in GC when Link the goron has been stopped when
-    // the doors are not opened, otherwise let him talk about the DMC exit or that gorons are saved
-    if (IS_RANDO) {
-        if (!Flags_GetInfTable(INFTABLE_STOPPED_GORON_LINKS_ROLLING)) {
-            return 0x3030;
-        } else if (!Flags_GetInfTable(INFTABLE_GORON_CITY_DOORS_UNLOCKED)) {
-            return 0x3036;
-        } else if (Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE)) {
-            return 0x3041;
-        } else { 
-            return Flags_GetInfTable(INFTABLE_SPOKE_TO_GORON_LINK) ? 0x3038 : 0x3037;
-        }
+    // In case a hook neglects to set the override, fall back to the first dialogue
+    u16 overrideTextId = 0x3030;
+    if (GameInteractor_Should(VB_OVERRIDE_LINK_THE_GORON_DIALOGUE, false, &overrideTextId)) {
+        return overrideTextId;
     }
 
-    if (CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) {
+    if (GameInteractor_Should(VB_GORONS_CONSIDER_FIRE_TEMPLE_FINISHED, CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE))) {
         return Flags_GetInfTable(INFTABLE_10F) ? 0x3042 : 0x3041;
-    } else if (CHECK_OWNED_EQUIP(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_GORON)) {
+    } else if (GameInteractor_Should(VB_GORONS_CONSIDER_TUNIC_COLLECTED, CHECK_OWNED_EQUIP(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_GORON))) {
         return Flags_GetInfTable(INFTABLE_SPOKE_TO_GORON_LINK) ? 0x3038 : 0x3037;
     } else if (Flags_GetInfTable(INFTABLE_STOPPED_GORON_LINKS_ROLLING)) {
         this->unk_20C = 0;
@@ -543,21 +518,9 @@ s16 EnGo2_UpdateTalkStateGoronCityLink(PlayState* play, EnGo2* this) {
         case TEXT_STATE_CLOSING:
             switch (this->actor.textId) {
                 case 0x3036:
-                    if (!IS_RANDO) {
-                        EnGo2_GetItem(this, play, GI_TUNIC_GORON);
-                        this->actionFunc = EnGo2_SetupGetItem;
-                        return NPC_TALK_STATE_ACTION;
-                    } else {
-                        if (Flags_GetTreasure(play, 0x1F)) {
-                            return NPC_TALK_STATE_IDLE;
-                        }
-
-                        Flags_SetInfTable(INFTABLE_GORON_CITY_DOORS_UNLOCKED);
-                        EnGo2_GetItemEntry(this, play, Randomizer_GetItemFromKnownCheck(RC_GC_ROLLING_GORON_AS_ADULT, GI_TUNIC_GORON));
-                        this->actionFunc = EnGo2_SetupGetItem;
-                        Flags_SetTreasure(play, 0x1F);
-                        return NPC_TALK_STATE_ACTION;
-                    }
+                    EnGo2_GetItem(this, play, GI_TUNIC_GORON);
+                    this->actionFunc = EnGo2_SetupGetItem;
+                    return NPC_TALK_STATE_ACTION;
                 case 0x3037:
                     Flags_SetInfTable(INFTABLE_SPOKE_TO_GORON_LINK);
                 default:
@@ -605,7 +568,7 @@ s16 EnGo2_UpdateTalkStateGoronCityLink(PlayState* play, EnGo2* this) {
 u16 EnGo2_GetTextIdGoronDmtBiggoron(PlayState* play, EnGo2* this) {
     Player* player = GET_PLAYER(play);
 
-    if (!IS_RANDO && gSaveContext.bgsFlag) {
+    if (GameInteractor_Should(VB_BIGGORON_CONSIDER_TRADE_COMPLETE, gSaveContext.bgsFlag)) {
         player->exchangeItemId = EXCH_ITEM_CLAIM_CHECK;
         return 0x305E;
     } else if (INV_CONTENT(ITEM_TRADE_ADULT) >= ITEM_CLAIM_CHECK) {
@@ -627,18 +590,14 @@ s16 EnGo2_UpdateTalkStateGoronDmtBiggoron(PlayState* play, EnGo2* this) {
     switch (EnGo2_GetDialogState(this, play)) {
         case TEXT_STATE_DONE:
             if (this->actor.textId == 0x305E) {
-                if((!IS_RANDO && gSaveContext.bgsFlag) || (IS_RANDO && Flags_GetTreasure(play, 0x1F))) {
+                if (!GameInteractor_Should(VB_BIGGORON_CONSIDER_SWORD_COLLECTED, gSaveContext.bgsFlag)) {
+                    Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_DMT_TRADE_CLAIM_CHECK);
+                    EnGo2_GetItem(this, play, GI_SWORD_BGS);
+                    this->actionFunc = EnGo2_SetupGetItem;
+                    return NPC_TALK_STATE_ACTION;
+                } else {
                     return NPC_TALK_STATE_IDLE;
                 }
-                
-                if(IS_RANDO) {
-                    EnGo2_GetItemEntry(this, play, Randomizer_GetItemFromKnownCheck(RC_DMT_TRADE_CLAIM_CHECK, GI_SWORD_BGS));
-                    Flags_SetTreasure(play, 0x1F);
-                } else {
-                    EnGo2_GetItem(this, play, GI_SWORD_BGS);
-                }
-                this->actionFunc = EnGo2_SetupGetItem;
-                return NPC_TALK_STATE_ACTION;
             } else {
                 return NPC_TALK_STATE_IDLE;
             }
@@ -663,15 +622,8 @@ s16 EnGo2_UpdateTalkStateGoronDmtBiggoron(PlayState* play, EnGo2* this) {
             if (Message_ShouldAdvance(play)) {
                 if ((this->actor.textId == 0x3054) || (this->actor.textId == 0x3055)) {
                     if (play->msgCtx.choiceIndex == 0) {
-                        if (IS_RANDO) {
-                            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DMT_TRADE_BROKEN_SWORD, GI_PRESCRIPTION);
-                            Randomizer_ConsumeAdultTradeItem(play, ITEM_SWORD_BROKEN);
-                            EnGo2_GetItemEntry(this, play, getItemEntry);
-                            Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_DMT_TRADE_BROKEN_SWORD);
-                        } else {
-                            u32 getItemId = GI_PRESCRIPTION;
-                            EnGo2_GetItem(this, play, getItemId);
-                        }
+                        Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_DMT_TRADE_BROKEN_SWORD);
+                        EnGo2_GetItem(this, play, GI_PRESCRIPTION);
                         this->actionFunc = EnGo2_SetupGetItem;
                         return NPC_TALK_STATE_ACTION;
                     }
@@ -1070,7 +1022,7 @@ void EnGo2_BiggoronSetTextId(EnGo2* this, PlayState* play, Player* player) {
     u16 textId;
 
     if ((this->actor.params & 0x1F) == GORON_DMT_BIGGORON) {
-        if ((!IS_RANDO && gSaveContext.bgsFlag)) {
+        if (GameInteractor_Should(VB_BIGGORON_CONSIDER_TRADE_COMPLETE, gSaveContext.bgsFlag)) {
             if (func_8002F368(play) == EXCH_ITEM_CLAIM_CHECK) {
                 this->actor.textId = 0x3003;
             } else {
@@ -1078,20 +1030,19 @@ void EnGo2_BiggoronSetTextId(EnGo2* this, PlayState* play, Player* player) {
             }
             player->actor.textId = this->actor.textId;
 
-        } else if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_CLAIM_CHECK) {
+        } else if (
+            !GameInteractor_Should(VB_BIGGORON_CONSIDER_SWORD_COLLECTED, gSaveContext.bgsFlag) && 
+            (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_CLAIM_CHECK)
+        ) {
             if (func_8002F368(play) == EXCH_ITEM_CLAIM_CHECK) {
-                if (IS_RANDO && Flags_GetTreasure(play, 0x1F)) {
-                    textId = 0x3003;
-                } else if (Environment_GetBgsDayCount() >= CVarGetInteger(CVAR_ENHANCEMENT("ForgeTime"), 3)) {
+                if (GameInteractor_Should(VB_BIGGORON_CONSIDER_SWORD_FORGED, Environment_GetBgsDayCount() >= 3)) {
                     textId = 0x305E;
                 } else {
                     textId = 0x305D;
                 }
                 this->actor.textId = textId;
             } else {
-                if (IS_RANDO && Flags_GetTreasure(play, 0x1F)) {
-                    textId = 0x305E;
-                } else if (Environment_GetBgsDayCount() >= CVarGetInteger(CVAR_ENHANCEMENT("ForgeTime"), 3)) {
+                if (GameInteractor_Should(VB_BIGGORON_CONSIDER_SWORD_FORGED, Environment_GetBgsDayCount() >= 3)) {
                     textId = 0x3002;
                 } else {
                     textId = 0x305D;
@@ -1219,9 +1170,10 @@ s32 EnGo2_IsCameraModified(EnGo2* this, PlayState* play) {
         (this->actor.params & 0x1F) == GORON_CITY_STAIRWELL || (this->actor.params & 0x1F) == GORON_DMT_BIGGORON ||
         (this->actor.params & 0x1F) == GORON_MARKET_BAZAAR) {
         return true;
-    } else if (((!IS_RANDO && !CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) ||
-                (IS_RANDO && !Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE))) &&
-                CHECK_OWNED_EQUIP(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_GORON)) {
+    } else if (
+        !GameInteractor_Should(VB_GORONS_CONSIDER_FIRE_TEMPLE_FINISHED, CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) &&
+        GameInteractor_Should(VB_GORONS_CONSIDER_TUNIC_COLLECTED, CHECK_OWNED_EQUIP(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_GORON))
+    ) {
         return true;
     } else {
         return false;
@@ -1278,9 +1230,10 @@ void EnGo2_SelectGoronWakingUp(EnGo2* this) {
             EnGo2_BiggoronWakingUp(this);
             break;
         case GORON_CITY_LINK:
-            if (((!IS_RANDO && !CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) ||
-                 (IS_RANDO && !Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE))) &&
-                CHECK_OWNED_EQUIP(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_GORON)) {
+            if (
+                !GameInteractor_Should(VB_GORONS_CONSIDER_FIRE_TEMPLE_FINISHED, CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) &&
+                GameInteractor_Should(VB_GORONS_CONSIDER_TUNIC_COLLECTED, CHECK_OWNED_EQUIP(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_GORON))
+            ) {
                 EnGo2_WakingUp(this);
                 break;
             }
@@ -1377,25 +1330,10 @@ void EnGo2_WakeUp(EnGo2* this, PlayState* play) {
     }
     if ((this->actor.params & 0x1F) == GORON_DMT_BIGGORON) {
         OnePointCutscene_Init(play, 4200, -99, &this->actor, MAIN_CAM);
-        // There is an issue interpolating between ENGO2_ANIM_0 and ENGO2_ANIM_1/10, the goron
-        // is technically in the same position at the end of ANIM_0 and beginning of ANIM_1/10
-        // but something isn't getting translated correctly causing the 360 degree spin before
-        // then continuing the wake up animation like normal. One solution is to use ANIM_0
-        // which uses the same frame data as ANIM_1/10 but no morph frames, but only when the
-        // current animation frame is at 0, meaning no morphing is necessary anyway.
-        // ANIM_13 is ANIM_0 but with the startFrame and mode adjusted for biggoron.
-        if (this->skelAnime.curFrame == 0.0f && !CVarGetInteger(CVAR_COSMETIC("UnfixGoronSpin"), 0)) {
-            Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENGO2_ANIM_13);
-        } else {
-            Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENGO2_ANIM_10);
-        }
+        Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENGO2_ANIM_10);
         this->skelAnime.playSpeed = 0.5f;
     } else {
-        if (this->skelAnime.curFrame == 0.0f && !CVarGetInteger(CVAR_COSMETIC("UnfixGoronSpin"), 0)) {
-            Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENGO2_ANIM_0);
-        } else {
-            Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENGO2_ANIM_1);
-        }
+        Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENGO2_ANIM_1);
         this->skelAnime.playSpeed = 1.0f;
     }
     this->actionFunc = func_80A46B40;
@@ -1617,15 +1555,13 @@ void EnGo2_Init(Actor* thisx, PlayState* play) {
     this->unk_216 = this->actor.shape.rot.z;
     this->trackingMode = NPC_TRACKING_NONE;
     this->path = Path_GetByIndex(play, (this->actor.params & 0x3E0) >> 5, 0x1F);
-    this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
     switch (this->actor.params & 0x1F) {
         case GORON_CITY_ENTRANCE:
         case GORON_CITY_ISLAND:
         case GORON_CITY_LOWEST_FLOOR:
         case GORON_CITY_STAIRWELL:
         case GORON_CITY_LOST_WOODS:
-            if (((!IS_RANDO && !CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) ||
-                 (IS_RANDO && !Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE))) && LINK_IS_ADULT) {
+            if (!GameInteractor_Should(VB_GORONS_CONSIDER_FIRE_TEMPLE_FINISHED, CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) && LINK_IS_ADULT) {
                 Actor_Kill(&this->actor);
             }
             this->actionFunc = EnGo2_CurledUp;
@@ -1640,9 +1576,10 @@ void EnGo2_Init(Actor* thisx, PlayState* play) {
             if ((Flags_GetInfTable(INFTABLE_GORON_CITY_DOORS_UNLOCKED))) {
                 Path_CopyLastPoint(this->path, &this->actor.world.pos);
                 this->actor.home.pos = this->actor.world.pos;
-                if (((!IS_RANDO && !CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) ||
-                     (IS_RANDO && !Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE))) &&
-                    CHECK_OWNED_EQUIP(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_GORON)) {
+                if (
+                    !GameInteractor_Should(VB_GORONS_CONSIDER_FIRE_TEMPLE_FINISHED, CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) &&
+                    GameInteractor_Should(VB_GORONS_CONSIDER_TUNIC_COLLECTED, CHECK_OWNED_EQUIP(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_GORON))
+                ) {
                     EnGo2_GetItemAnimation(this, play);
                 } else {
                     this->actionFunc = EnGo2_CurledUp;
@@ -1858,44 +1795,17 @@ void EnGo2_ReverseRolling(EnGo2* this, PlayState* play) {
 }
 
 void EnGo2_SetupGetItem(EnGo2* this, PlayState* play) {
-    if (Actor_HasParent(&this->actor, play)) {
+    if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(VB_GIVE_ITEM_FROM_GORON, true)) {
         this->actor.parent = NULL;
         this->actionFunc = EnGo2_SetGetItem;
     } else {
-        if (!IS_RANDO || this->getItemEntry.getItemId == GI_NONE) {
-            func_8002F434(&this->actor, play, this->getItemId, this->actor.xzDistToPlayer + 1.0f, fabsf(this->actor.yDistToPlayer) + 1.0f);
-        } else {
-            GiveItemEntryFromActor(&this->actor, play, this->getItemEntry, this->actor.xzDistToPlayer + 1.0f, fabsf(this->actor.yDistToPlayer) + 1.0f);
-        }
+        Actor_OfferGetItem(&this->actor, play, this->getItemId, this->actor.xzDistToPlayer + 1.0f, fabsf(this->actor.yDistToPlayer) + 1.0f);
     }
 }
 
 void EnGo2_SetGetItem(EnGo2* this, PlayState* play) {
-    if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) {
+    if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play) || !GameInteractor_Should(VB_GIVE_ITEM_FROM_GORON, true)) {
         this->interactInfo.talkState = NPC_TALK_STATE_IDLE;
-
-        // For randomizer, handle updating the states for the gorons after receiving the item based on
-        // the goron type rather then the item being received
-        if (IS_RANDO) {
-            switch (this->actor.params & 0x1F) {
-                case GORON_DMT_BIGGORON:
-                    // Resolves #1301. unk_13EE is used to set the opacity of the HUD. The trade sequence discussion with Biggoron
-                    // sets the HUD to transparent, and it is restored at z_message_PAL:3549, but by specifically watching for
-                    // trade sequence items, this leaves it transparent for non-trade sequence items (in rando) so we fix that here
-                    gSaveContext.unk_13EE = 0x32;
-                    return;
-                case GORON_CITY_LINK:
-                    EnGo2_GetItemAnimation(this, play);
-                    return;
-                case GORON_CITY_ROLLING_BIG:
-                    EnGo2_RollingAnimation(this, play);
-                    this->actionFunc = EnGo2_GoronRollingBigContinueRolling;
-                    return;
-            }
-            this->actionFunc = func_80A46B40;
-            return;
-        }
-
         switch (this->getItemId) {
             case GI_CLAIM_CHECK:
                 Environment_ClearBgsDayCount();
@@ -1906,7 +1816,9 @@ void EnGo2_SetGetItem(EnGo2* this, PlayState* play) {
                 EnGo2_GetItemAnimation(this, play);
                 return;
             case GI_SWORD_BGS:
-                gSaveContext.bgsFlag = true;
+                if (GameInteractor_Should(VB_GIVE_ITEM_FROM_GORON, true)) {
+                    gSaveContext.bgsFlag = true;
+                }
                 break;
             case GI_BOMB_BAG_30:
             case GI_BOMB_BAG_40:
@@ -1925,12 +1837,12 @@ void EnGo2_BiggoronEyedrops(EnGo2* this, PlayState* play) {
             this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
             this->actor.shape.rot.y += 0x5B0;
             this->trackingMode = NPC_TRACKING_NONE;
-            this->animTimer = IS_RANDO ? 0 : (this->skelAnime.endFrame + 60.0f + 60.0f); // eyeDrops animation timer
+            this->animTimer = !GameInteractor_Should(VB_PLAY_EYEDROPS_CS, true) ? 0 : (this->skelAnime.endFrame + 60.0f + 60.0f); // eyeDrops animation timer
             this->eyeMouthTexState = 2;
             this->unk_20C = 0;
             this->goronState++;
             func_800F483C(0x28, 5);
-            if (!IS_RANDO) {
+            if (GameInteractor_Should(VB_PLAY_EYEDROPS_CS, true)) {
                 OnePointCutscene_Init(play, 4190, -99, &this->actor, MAIN_CAM);
             }
             break;
@@ -1959,15 +1871,8 @@ void EnGo2_BiggoronEyedrops(EnGo2* this, PlayState* play) {
                 this->trackingMode = NPC_TRACKING_HEAD_AND_TORSO;
                 this->skelAnime.playSpeed = 0.0f;
                 this->skelAnime.curFrame = this->skelAnime.endFrame;
-                if (IS_RANDO) {
-                    GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DMT_TRADE_EYEDROPS, GI_CLAIM_CHECK);
-                    Randomizer_ConsumeAdultTradeItem(play, ITEM_EYEDROPS);
-                    EnGo2_GetItemEntry(this, play, getItemEntry);
-                    Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_DMT_TRADE_EYEDROPS);
-                } else {
-                    u32 getItemId = GI_CLAIM_CHECK;
-                    EnGo2_GetItem(this, play, getItemId);
-                }
+                Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_DMT_TRADE_EYEDROPS);
+                EnGo2_GetItem(this, play, GI_CLAIM_CHECK);
                 this->actionFunc = EnGo2_SetupGetItem;
                 this->goronState = 0;
             }
@@ -2031,7 +1936,7 @@ void EnGo2_GoronFireGenericAction(EnGo2* this, PlayState* play) {
                     (f32)((Math_SinS(this->actor.world.rot.y) * -30.0f) + this->actor.world.pos.x);
                 player->actor.world.pos.z =
                     (f32)((Math_CosS(this->actor.world.rot.y) * -30.0f) + this->actor.world.pos.z);
-                func_8002DF54(play, &this->actor, 8);
+                Player_SetCsActionWithHaltedActors(play, &this->actor, 8);
                 Audio_PlayFanfare(NA_BGM_APPEAR);
             }
             break;
@@ -2068,7 +1973,7 @@ void EnGo2_GoronFireGenericAction(EnGo2* this, PlayState* play) {
         case 4: // Finalize walking away
             Message_CloseTextbox(play);
             EnGo2_GoronFireClearCamera(this, play);
-            func_8002DF54(play, &this->actor, 7);
+            Player_SetCsActionWithHaltedActors(play, &this->actor, 7);
             Actor_Kill(&this->actor);
             break;
         case 1:

@@ -3,8 +3,8 @@
 #include <stdint.h>
 #endif
 
-#define CHEST_ANIM_SHORT 0
-#define CHEST_ANIM_LONG 1
+#define CHEST_ANIM_SHORT (int16_t)0
+#define CHEST_ANIM_LONG (int16_t)1
 
 /**
  * Flag to indicate which type of Actor has given the player an item. ITEM_FROM_NPC by default,
@@ -30,10 +30,10 @@ typedef enum GetItemCategory {
 } GetItemCategory;
 
 #define GET_ITEM(itemId, objectId, drawId, textId, field, chestAnim, itemCategory, modIndex, getItemId) \
-    { itemId, field, (chestAnim != CHEST_ANIM_SHORT ? 1 : -1) * (drawId + 1), textId, objectId, modIndex, modIndex, getItemId, drawId, true, ITEM_FROM_NPC, itemCategory, NULL }
+    { itemId, field, (int16_t)((chestAnim != CHEST_ANIM_SHORT ? 1 : -1) * (drawId + 1)), textId, objectId, modIndex, modIndex, getItemId, drawId, true, ITEM_FROM_NPC, itemCategory, NULL }
 
 #define GET_ITEM_CUSTOM_TABLE(itemId, objectId, drawId, textId, field, chestAnim, itemCategory, modIndex, tableId, getItemId) \
-    { itemId, field, (chestAnim != CHEST_ANIM_SHORT ? 1 : -1) * (drawId + 1), textId, objectId, modIndex, tableId, getItemId, drawId, true, ITEM_FROM_NPC, itemCategory, NULL }
+    { itemId, field, (int16_t)((chestAnim != CHEST_ANIM_SHORT ? 1 : -1) * (drawId + 1)), textId, objectId, modIndex, tableId, getItemId, drawId, true, ITEM_FROM_NPC, itemCategory, NULL }
 
 #define GET_ITEM_NONE \
     { ITEM_NONE, 0, 0, 0, 0, 0, 0, 0, 0, false, ITEM_FROM_NPC, ITEM_CATEGORY_JUNK, NULL }
@@ -41,7 +41,7 @@ typedef enum GetItemCategory {
 typedef struct PlayState PlayState;
 typedef struct GetItemEntry GetItemEntry;
 
-typedef void (*CustomDrawFunc)(PlayState* play, GetItemEntry* getItemEntry);
+typedef void (*CustomDrawFunc)(PlayState*, GetItemEntry*);
 
 typedef struct GetItemEntry {
     /* 0x00 */ uint16_t itemId;

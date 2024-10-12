@@ -8,7 +8,21 @@ set(CMAKE_OSX_DEPLOYMENT_TARGET "10.15" CACHE STRING "Minimum OS X deployment ve
 project(Ship VERSION 8.0.6 LANGUAGES C CXX)
 include(CMake/soh-cvars.cmake)
 include(CMake/lus-cvars.cmake)
-set(PROJECT_BUILD_NAME "MacReady Golf" CACHE STRING "" FORCE)
+
+set(NATO_PHONETIC_ALPHABET
+  "Alfa" "Bravo" "Charlie" "Delta" "Echo" "Foxtrot" "Golf" "Hotel"
+  "India" "Juliett" "Kilo" "Lima" "Mike" "November" "Oscar" "Papa"
+  "Quebec" "Romeo" "Sierra" "Tango" "Uniform" "Victor" "Whiskey"
+  "Xray" "Yankee" "Zulu"
+)
+
+# Get the patch version number from the project version
+math(EXPR PATCH_INDEX "${PROJECT_VERSION_PATCH}")
+
+# Use the patch number to select the correct word
+list(GET NATO_PHONETIC_ALPHABET ${PATCH_INDEX} PROJECT_PATCH_WORD)
+
+set(PROJECT_BUILD_NAME "MacReady ${PROJECT_PATCH_WORD}" CACHE STRING "" FORCE)
 set(PROJECT_TEAM "github.com/harbourmasters" CACHE STRING "" FORCE)
 
 execute_process(

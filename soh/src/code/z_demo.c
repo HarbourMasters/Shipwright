@@ -32,6 +32,7 @@
 #include "scenes/misc/hakaana_ouke/hakaana_ouke_scene.h"
 
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 u16 D_8011E1C0 = 0;
 u16 D_8011E1C4 = 0;
@@ -485,6 +486,7 @@ void func_80065134(PlayState* play, CutsceneContext* csCtx, CsCmdDayTime* cmd) {
 
         gSaveContext.dayTime = temp1 + temp2;
         gSaveContext.skyboxTime = temp1 + temp2;
+        LUSLOG_INFO("SET TIME %d", gSaveContext.dayTime);
     }
 }
 
@@ -493,11 +495,16 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
     Player* player = GET_PLAYER(play);
     s32 temp = 0;
 
-    // Automatically skip certain cutscenes when in rando
-    // cmd->base == 8: Traveling back/forward in time cutscene
-    // cmd->base == 24: Dropping a fish for Jabu Jabu
-    // cmd->base == 33: Zelda escaping with impa cutscene
-    bool randoCsSkip = (IS_RANDO && (cmd->base == 8 || cmd->base == 24 || cmd->base == 33));
+    bool shouldSkipCommand = false;
+
+    if (cmd->base == 8 && !GameInteractor_Should(VB_PLAY_PULL_MASTER_SWORD_CS, true)) {
+        shouldSkipCommand = true;
+    }
+
+    if (cmd->base == 24 && !GameInteractor_Should(VB_PLAY_DROP_FISH_FOR_JABU_CS, true)) {
+        shouldSkipCommand = true;
+    }
+
     bool debugCsSkip = (CHECK_BTN_ALL(play->state.input[0].press.button, BTN_START) &&
                         (gSaveContext.fileNum != 0xFEDC) && CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0));
 
@@ -558,7 +565,7 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
         }
     }
 
-    if (playCutscene || (temp != 0) || ((csCtx->frames > 20) && (randoCsSkip || debugCsSkip))) {
+    if (playCutscene || (temp != 0) || ((csCtx->frames > 20) && (shouldSkipCommand || debugCsSkip))) {
 
         csCtx->state = CS_STATE_UNSKIPPABLE_EXEC;
         Audio_SetCutsceneFlag(0);
@@ -624,7 +631,7 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                     gSaveContext.fw.set = 0;
                     gSaveContext.respawn[RESPAWN_MODE_TOP].data = 0;
                 }
-                if (!Flags_GetEventChkInf(EVENTCHKINF_PULLED_MASTER_SWORD_FROM_PEDESTAL)) {
+                if (GameInteractor_Should(VB_PLAY_PULL_MASTER_SWORD_CS, !Flags_GetEventChkInf(EVENTCHKINF_PULLED_MASTER_SWORD_FROM_PEDESTAL))) {
                     Flags_SetEventChkInf(EVENTCHKINF_PULLED_MASTER_SWORD_FROM_PEDESTAL);
                     play->nextEntranceIndex = ENTR_CUTSCENE_MAP_0;
                     play->transitionTrigger = TRANS_TRIGGER_START;
@@ -716,7 +723,9 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                 play->transitionType = TRANS_TYPE_FADE_WHITE;
                 break;
             case 22:
-                Item_Give(play, ITEM_SONG_REQUIEM);
+                if (GameInteractor_Should(VB_GIVE_ITEM_REQUIEM_OF_SPIRIT, true)) {
+                    Item_Give(play, ITEM_SONG_REQUIEM);
+                }
                 play->nextEntranceIndex = ENTR_DESERT_COLOSSUS_0;
                 play->transitionTrigger = TRANS_TRIGGER_START;
                 gSaveContext.cutsceneIndex = 0xFFF0;
@@ -768,7 +777,9 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                 play->nextEntranceIndex = ENTR_CHAMBER_OF_THE_SAGES_0;
                 play->transitionTrigger = TRANS_TRIGGER_START;
                 play->transitionType = TRANS_TYPE_FADE_WHITE;
-                Item_Give(play, ITEM_MEDALLION_FIRE);
+                if (GameInteractor_Should(VB_GIVE_ITEM_FIRE_MEDALLION, true)) {
+                    Item_Give(play, ITEM_MEDALLION_FIRE);
+                }
                 gSaveContext.chamberCutsceneNum = 1;
                 break;
             case 31:
@@ -848,7 +859,9 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                 play->transitionType = TRANS_TYPE_FADE_BLACK_FAST;
                 break;
             case 47:
-                Item_Give(play, ITEM_SONG_NOCTURNE);
+                if (GameInteractor_Should(VB_GIVE_ITEM_NOCTURNE_OF_SHADOW, true)) {
+                    Item_Give(play, ITEM_SONG_NOCTURNE);
+                }
                 Flags_SetEventChkInf(EVENTCHKINF_LEARNED_NOCTURNE_OF_SHADOW);
                 play->nextEntranceIndex = ENTR_KAKARIKO_VILLAGE_0;
                 play->transitionTrigger = TRANS_TRIGGER_START;
@@ -1292,7 +1305,7 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                 break;
         }
 
-        if (randoCsSkip) {
+        if (shouldSkipCommand && IS_RANDO) {
             Entrance_OverrideCutsceneEntrance(cmd->base);
         }
     }
@@ -1561,7 +1574,49 @@ void Cutscene_Command_Textbox(PlayState* play, CutsceneContext* csCtx, CsCmdText
                 } else if ((cmd->type == 4) && CHECK_QUEST_ITEM(QUEST_GORON_RUBY)) {
                     Message_StartTextbox(play, cmd->textId1, NULL);
                 } else {
+                    GetItemEntry getItemEntry = GET_ITEM_NONE;
+                    if (IS_RANDO) {
+                        switch (cmd->base) {
+                            case 0x80:
+                                getItemEntry = Randomizer_GetItemFromKnownCheck(RC_QUEEN_GOHMA, RG_KOKIRI_EMERALD);
+                                break;
+                            case 0x81:
+                                getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KING_DODONGO, RG_GORON_RUBY);
+                                break;
+                            case 0x82:
+                                getItemEntry = Randomizer_GetItemFromKnownCheck(RC_BARINADE, RG_ZORA_SAPPHIRE);
+                                break;
+                            case 0x3E:
+                                getItemEntry = Randomizer_GetItemFromKnownCheck(RC_PHANTOM_GANON, RG_FOREST_MEDALLION);
+                                break;
+                            case 0x3C:
+                                getItemEntry = Randomizer_GetItemFromKnownCheck(RC_VOLVAGIA, RG_FIRE_MEDALLION);
+                                break;
+                            case 0x3D:
+                                getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MORPHA, RG_WATER_MEDALLION);
+                                break;
+                            case 0x3F:
+                                getItemEntry = Randomizer_GetItemFromKnownCheck(RC_TWINROVA, RG_SPIRIT_MEDALLION);
+                                break;
+                            case 0x41:
+                                getItemEntry = Randomizer_GetItemFromKnownCheck(RC_BONGO_BONGO, RG_SHADOW_MEDALLION);
+                                break;
+                            case 0x40:
+                                getItemEntry = Randomizer_GetItemFromKnownCheck(RC_GIFT_FROM_SAGES, RG_LIGHT_MEDALLION);
+                                break;
+                            case 0x72:
+                                getItemEntry = Randomizer_GetItemFromKnownCheck(RC_TOT_LIGHT_ARROWS_CUTSCENE, RG_LIGHT_ARROWS);
+                                break;
+                        }
+                        if (getItemEntry.getItemId != GI_NONE) {
+                            // cmd->base = getItemEntry.textId;
+                            // GET_PLAYER(play)->getItemEntry = getItemEntry;
+                        }
+                    }
                     Message_StartTextbox(play, cmd->base, NULL);
+                    if (IS_RANDO && getItemEntry.getItemId != GI_NONE) {
+                        // GET_PLAYER(play)->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
+                    }
                 }
                 return;
             }
@@ -1584,12 +1639,14 @@ void Cutscene_Command_Textbox(PlayState* play, CutsceneContext* csCtx, CsCmdText
                 if ((dialogState == TEXT_STATE_CHOICE) && Message_ShouldAdvance(play)) {
                     if (play->msgCtx.choiceIndex == 0) {
                         if (cmd->textId1 != 0xFFFF) {
+                            // LUSLOG_INFO("Cutscene_Command_Textbox D: base:0x%x textId1:0x%x textId2:0x%x", cmd->base, cmd->textId1, cmd->textId2);
                             Message_ContinueTextbox(play, cmd->textId1);
                         } else {
                             csCtx->frames++;
                         }
                     } else {
                         if (cmd->textId2 != 0xFFFF) {
+                            // LUSLOG_INFO("Cutscene_Command_Textbox E: base:0x%x textId1:0x%x textId2:0x%x", cmd->base, cmd->textId1, cmd->textId2);
                             Message_ContinueTextbox(play, cmd->textId2);
                         } else {
                             csCtx->frames++;
@@ -1599,6 +1656,7 @@ void Cutscene_Command_Textbox(PlayState* play, CutsceneContext* csCtx, CsCmdText
 
                 if (dialogState == TEXT_STATE_9) {
                     if (cmd->textId1 != 0xFFFF) {
+                        // LUSLOG_INFO("Cutscene_Command_Textbox F: base:0x%x textId1:0x%x textId2:0x%x", cmd->base, cmd->textId1, cmd->textId2);
                         Message_ContinueTextbox(play, cmd->textId1);
                     } else {
                         csCtx->frames++;
@@ -2113,34 +2171,23 @@ void Cutscene_HandleEntranceTriggers(PlayState* play) {
     u8 requiredAge;
     s16 i;
 
-    if (IS_RANDO &&
-        // don't skip epona escape cutscenes 
-        gSaveContext.entranceIndex != ENTR_HYRULE_FIELD_11 &&
-        gSaveContext.entranceIndex != ENTR_HYRULE_FIELD_12 &&
-        gSaveContext.entranceIndex != ENTR_HYRULE_FIELD_13 &&
-        gSaveContext.entranceIndex != ENTR_HYRULE_FIELD_15 &&
-        // don't skip nabooru iron knuckle cs
-        gSaveContext.entranceIndex != ENTR_SPIRIT_TEMPLE_BOSS_0) {
-        gSaveContext.showTitleCard = false;
-        return;
-    }
-
     for (i = 0; i < ARRAY_COUNT(sEntranceCutsceneTable); i++) {
         entranceCutscene = &sEntranceCutsceneTable[i];
-
         requiredAge = entranceCutscene->ageRestriction;
         if (requiredAge == 2) {
             requiredAge = gSaveContext.linkAge;
         }
 
         if ((gSaveContext.entranceIndex == entranceCutscene->entrance) &&
-            (!Flags_GetEventChkInf(entranceCutscene->flag) || (entranceCutscene->flag == 0x18)) &&
+            (!Flags_GetEventChkInf(entranceCutscene->flag) || (entranceCutscene->flag == EVENTCHKINF_EPONA_OBTAINED)) &&
             (gSaveContext.cutsceneIndex < 0xFFF0) && ((u8)gSaveContext.linkAge == requiredAge) &&
             (gSaveContext.respawnFlag <= 0)) {
             Flags_SetEventChkInf(entranceCutscene->flag);
-            Cutscene_SetSegment(play, entranceCutscene->segAddr);
-            gSaveContext.cutsceneTrigger = 2;
-            gSaveContext.showTitleCard = false;
+            if (GameInteractor_Should(VB_PLAY_ENTRANCE_CS, true, &entranceCutscene->flag)) {
+                Cutscene_SetSegment(play, entranceCutscene->segAddr);
+                gSaveContext.cutsceneTrigger = 2;
+                gSaveContext.showTitleCard = false;
+            }
             break;
         }
     }
@@ -2148,48 +2195,48 @@ void Cutscene_HandleEntranceTriggers(PlayState* play) {
 
 void Cutscene_HandleConditionalTriggers(PlayState* play) {
     osSyncPrintf("\ngame_info.mode=[%d] restart_flag", ((void)0, gSaveContext.respawnFlag));
+    LUSLOG_INFO("Cutscene_HandleConditionalTriggers - entranceIndex: %#x cutsceneIndex: %#x", gSaveContext.entranceIndex, gSaveContext.cutsceneIndex);
+
+    if (!GameInteractor_Should(VB_PLAY_TRANSITION_CS, true)) {
+        return;
+    }
 
     if ((gSaveContext.gameMode == 0) && (gSaveContext.respawnFlag <= 0) && (gSaveContext.cutsceneIndex < 0xFFF0)) {
-        const bool bShouldTowerRandoSkip =
-            (IS_RANDO && Randomizer_GetSettingValue(RSK_SKIP_TOWER_ESCAPE));
         if ((gSaveContext.entranceIndex == ENTR_DESERT_COLOSSUS_1) && !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_REQUIEM_OF_SPIRIT)) {
-            if (!IS_RANDO) {
-                Flags_SetEventChkInf(EVENTCHKINF_LEARNED_REQUIEM_OF_SPIRIT);
-                gSaveContext.entranceIndex = ENTR_DESERT_COLOSSUS_0;
-                gSaveContext.cutsceneIndex = 0xFFF0;
-            }
-        } else if ((gSaveContext.entranceIndex == ENTR_KAKARIKO_VILLAGE_0) && LINK_IS_ADULT && (Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP)) &&
-                   (Flags_GetEventChkInf(EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP)) && (Flags_GetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP)) &&
-                   !Flags_GetEventChkInf(EVENTCHKINF_BONGO_BONGO_ESCAPED_FROM_WELL)) {
-            if (!IS_RANDO) {
-                Flags_SetEventChkInf(EVENTCHKINF_BONGO_BONGO_ESCAPED_FROM_WELL);
-                gSaveContext.cutsceneIndex = 0xFFF0;
-            }
+            Flags_SetEventChkInf(EVENTCHKINF_LEARNED_REQUIEM_OF_SPIRIT);
+            gSaveContext.entranceIndex = ENTR_DESERT_COLOSSUS_0;
+            gSaveContext.cutsceneIndex = 0xFFF0;
+        } else if (GameInteractor_Should(VB_BE_ELIGIBLE_FOR_NOCTURNE_OF_SHADOW, (
+            (gSaveContext.entranceIndex == ENTR_KAKARIKO_VILLAGE_0) && 
+            LINK_IS_ADULT &&
+            Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP) && 
+            Flags_GetEventChkInf(EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP) &&
+            Flags_GetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP) && 
+            !Flags_GetEventChkInf(EVENTCHKINF_BONGO_BONGO_ESCAPED_FROM_WELL)
+        ))) {
+            Flags_SetEventChkInf(EVENTCHKINF_BONGO_BONGO_ESCAPED_FROM_WELL);
+            gSaveContext.cutsceneIndex = 0xFFF0;
         } else if ((gSaveContext.entranceIndex == ENTR_LOST_WOODS_9) && !Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_SARIA_ON_BRIDGE)) {
-            if (!IS_RANDO) {
-                Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_SARIA_ON_BRIDGE);
+            Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_SARIA_ON_BRIDGE);
+            if (GameInteractor_Should(VB_GIVE_ITEM_FAIRY_OCARINA, true)) {
                 Item_Give(play, ITEM_OCARINA_FAIRY);
-                gSaveContext.entranceIndex = ENTR_LOST_WOODS_0;
-                gSaveContext.cutsceneIndex = 0xFFF0;
             }
-        } else if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) &&
-                   LINK_IS_ADULT && !Flags_GetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS) &&
-                   (gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_TEMPLE_OF_TIME)) {
-            if (!IS_RANDO) {
-                Flags_SetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS);
-                gSaveContext.entranceIndex = ENTR_TEMPLE_OF_TIME_0;
-                gSaveContext.cutsceneIndex = 0xFFF8;
-            }
-        } else if ((!Flags_GetEventChkInf(EVENTCHKINF_WATCHED_GANONS_CASTLE_COLLAPSE_CAUGHT_BY_GERUDO) &&
-                       gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_GANON_BOSS) ||
-                   (bShouldTowerRandoSkip &&
-                    gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR)) {
+            gSaveContext.entranceIndex = ENTR_LOST_WOODS_0;
+            gSaveContext.cutsceneIndex = 0xFFF0;
+        } else if (GameInteractor_Should(VB_BE_ELIGIBLE_FOR_LIGHT_ARROWS, (
+            CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && 
+            CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) &&
+            LINK_IS_ADULT &&
+            !Flags_GetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS) &&
+            (gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_TEMPLE_OF_TIME)
+        ))) {
+            Flags_SetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS);
+            gSaveContext.entranceIndex = ENTR_TEMPLE_OF_TIME_0;
+            gSaveContext.cutsceneIndex = 0xFFF8;
+        } else if (!Flags_GetEventChkInf(EVENTCHKINF_WATCHED_GANONS_CASTLE_COLLAPSE_CAUGHT_BY_GERUDO) &&
+                   (gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_GANON_BOSS)) {
             Flags_SetEventChkInf(EVENTCHKINF_WATCHED_GANONS_CASTLE_COLLAPSE_CAUGHT_BY_GERUDO);
             gSaveContext.entranceIndex = ENTR_GANON_BOSS_0;
-            // In rando, skip the cutscene for the tower falling down after the escape.
-            if (IS_RANDO) {
-                return;
-            }
             gSaveContext.cutsceneIndex = 0xFFF0;
         }
     }
