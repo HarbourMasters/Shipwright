@@ -94,7 +94,7 @@ void RegionTable_Init_BottomOfTheWell() {
                   EventAccess(&logic->OpenedMiddleHoleMQBotw, {[]{return logic->HasExplosives();}}),
   }, {}, {
                   //Exits
-                  Entrance(RR_BOTTOM_OF_THE_WELL_MQ_LOCKED_CAGE, {[]{return logic->IsChild && logic->SmallKeys(RR_BOTTOM_OF_THE_WELL, 2);}}),
+                  Entrance(RR_BOTTOM_OF_THE_WELL_MQ_PERIMETER, {[]{return logic->IsChild && logic->SmallKeys(RR_BOTTOM_OF_THE_WELL, 2);}}),
   });
 
   areaTable[RR_BOTTOM_OF_THE_WELL_MQ_DEAD_HAND_ROOM] = Region("Bottom of the Well MQ Dead Hand Room", "Bottom of the Well", {RA_BOTTOM_OF_THE_WELL}, NO_DAY_NIGHT_CYCLE, {}, {
@@ -122,11 +122,12 @@ void RegionTable_Init_BottomOfTheWell() {
                   LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_GS_WEST_INNER_ROOM,               logic->OpenedWestRoomMQBotw && (logic->TakeDamage() || logic->CanUse(RG_NUTS)) && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)),
   }, {
                   //Exits
+                  //If a relevant trick causes you to be able to warp into here without going through PERIMETER, a new eventAccess will be needed for lowering the gates with ZL 
                   Entrance(RR_BOTTOM_OF_THE_WELL_MQ_BASEMENT_SWITCH_PLATFORM, {[]{return logic->OpenedMiddleHoleMQBotw;}}),
                   Entrance(RR_BOTTOM_OF_THE_WELL_MQ_BASEMENT,  {[]{return true;}}),
   });
 
-  areaTable[RR_BOTTOM_OF_THE_WELL_MQ_BASEMENT] = Region("Bottom of the Well MQ Perimeter", "Bottom of the Well", {RA_BOTTOM_OF_THE_WELL}, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[RR_BOTTOM_OF_THE_WELL_MQ_BASEMENT] = Region("Bottom of the Well MQ Basement", "Bottom of the Well", {RA_BOTTOM_OF_THE_WELL}, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   //behind invisible big skulltulas, but with navi spotting it's easy to avoid them, or at worst, take your way through as they do not block the path
                   LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_GS_BASEMENT,  logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)),
@@ -135,7 +136,7 @@ void RegionTable_Init_BottomOfTheWell() {
                   Entrance(RR_BOTTOM_OF_THE_WELL_MQ_PERIMETER, {[]{return true;}}),
   });
 
-  areaTable[RR_BOTTOM_OF_THE_WELL_MQ_BASEMENT_SWITCH_PLATFORM] = Region("Bottom of the Well MQ Perimeter", "Bottom of the Well", {RA_BOTTOM_OF_THE_WELL}, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[RR_BOTTOM_OF_THE_WELL_MQ_BASEMENT_SWITCH_PLATFORM] = Region("Bottom of the Well MQ Basement Switch Platform", "Bottom of the Well", {RA_BOTTOM_OF_THE_WELL}, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   //Assumes RR_BOTTOM_OF_THE_WELL_MQ_BASEMENT access
                   //it is technically possible to get the chest before you get screamed at without rolling, but hard enough to be a trick if that is the requirement for something to be logical
