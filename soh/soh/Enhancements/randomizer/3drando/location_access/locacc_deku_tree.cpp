@@ -21,8 +21,8 @@ void RegionTable_Init_DekuTree() {
   if (ctx->GetDungeon(DEKU_TREE)->IsVanilla()) {
   areaTable[RR_DEKU_TREE_LOBBY] = Region("Deku Tree Lobby", "Deku Tree", {RA_DEKU_TREE}, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&logic->DekuBabaSticks, {[]{return logic->DekuBabaSticks || (logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD) || logic->CanUse(RG_BOOMERANG));}}),
-                  EventAccess(&logic->DekuBabaNuts,   {[]{return logic->DekuBabaNuts   || (logic->CanJumpslash() || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_FAIRY_BOW) || logic->HasExplosives() || logic->CanUse(RG_DINS_FIRE));}}),
+                  EventAccess(&logic->DekuBabaSticks, {[]{return logic->CanGetDekuBabaSticks();}}),
+                  EventAccess(&logic->DekuBabaNuts,   {[]{return logic->CanGetDekuBabaNuts();}}),
                 }, {
                   //Locations
                   LOCATION(RC_DEKU_TREE_MAP_CHEST, true),
@@ -53,8 +53,8 @@ void RegionTable_Init_DekuTree() {
 
   areaTable[RR_DEKU_TREE_COMPASS_ROOM] = Region("Deku Tree Compass Room", "Deku Tree", {RA_DEKU_TREE}, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&logic->DekuBabaSticks, {[]{return logic->DekuBabaSticks || (logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD) || logic->CanUse(RG_BOOMERANG));}}),
-                  EventAccess(&logic->DekuBabaNuts,   {[]{return logic->DekuBabaNuts   || (logic->CanJumpslashExceptHammer() || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_MEGATON_HAMMER) || logic->HasExplosives() || logic->CanUse(RG_DINS_FIRE));}}),
+                  EventAccess(&logic->DekuBabaSticks, {[]{return logic->CanGetDekuBabaSticks();}}),
+                  EventAccess(&logic->DekuBabaNuts,   {[]{return logic->CanGetDekuBabaNuts();}}),
                 }, {
                   //Locations
                   LOCATION(RC_DEKU_TREE_COMPASS_CHEST,           true),
