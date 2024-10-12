@@ -2199,7 +2199,7 @@ s8 Player_ItemToItemAction(s32 item) {
     if (item >= ITEM_NONE_FE) {
         return PLAYER_IA_NONE;
     } else if (item == ITEM_LAST_USED) {
-        return PLAYER_IA_LAST_USED;
+        return PLAYER_IA_SWORD_CS;
     } else if (item == ITEM_FISHING_POLE) {
         return PLAYER_IA_FISHING_POLE;
     // #region SOH [Enhancement] Added to prevent crashes with assignable equipment
@@ -7196,8 +7196,8 @@ s32 Player_ActionHandler_2(Player* this, PlayState* play) {
                     Player_SetupWaitForPutAway(play, this, func_8083A0F4);
 
                     if (sp24 == PLAYER_IA_SWORD_MASTER) {
-                        this->nextModelGroup = Player_ActionToModelGroup(this, PLAYER_IA_LAST_USED);
-                        Player_InitItemAction(play, this, PLAYER_IA_LAST_USED);
+                        this->nextModelGroup = Player_ActionToModelGroup(this, PLAYER_IA_SWORD_CS);
+                        Player_InitItemAction(play, this, PLAYER_IA_SWORD_CS);
                     } else {
                         Player_UseItem(play, this, ITEM_LAST_USED);
                     }

@@ -7,9 +7,7 @@
 
 struct Player;
 
-extern GetItemEntry sGetItemTable[195];
-
-typedef enum {
+typedef enum PlayerSword {
     /* 0 */ PLAYER_SWORD_NONE,
     /* 1 */ PLAYER_SWORD_KOKIRI,
     /* 2 */ PLAYER_SWORD_MASTER,
@@ -17,7 +15,7 @@ typedef enum {
     /* 4 */ PLAYER_SWORD_MAX
 } PlayerSword;
 
-typedef enum {
+typedef enum PlayerShield {
     /* 0x00 */ PLAYER_SHIELD_NONE,
     /* 0x01 */ PLAYER_SHIELD_DEKU,
     /* 0x02 */ PLAYER_SHIELD_HYLIAN,
@@ -25,14 +23,14 @@ typedef enum {
     /* 0x04 */ PLAYER_SHIELD_MAX
 } PlayerShield;
 
-typedef enum {
+typedef enum PlayerTunic {
     /* 0x00 */ PLAYER_TUNIC_KOKIRI,
     /* 0x01 */ PLAYER_TUNIC_GORON,
     /* 0x02 */ PLAYER_TUNIC_ZORA,
     /* 0x03 */ PLAYER_TUNIC_MAX
 } PlayerTunic;
 
-typedef enum {
+typedef enum PlayerBoots {
     /* 0x00 */ PLAYER_BOOTS_KOKIRI,
     /* 0x01 */ PLAYER_BOOTS_IRON,
     /* 0x02 */ PLAYER_BOOTS_HOVER,
@@ -43,7 +41,7 @@ typedef enum {
     /* 0x06 */ PLAYER_BOOTS_MAX
 } PlayerBoots;
 
-typedef enum {
+typedef enum PlayerStrength {
     /* 0x00 */ PLAYER_STR_NONE,
     /* 0x01 */ PLAYER_STR_BRACELET,
     /* 0x02 */ PLAYER_STR_SILVER_G,
@@ -51,7 +49,7 @@ typedef enum {
     /* 0x04 */ PLAYER_STR_MAX
 } PlayerStrength;
 
-typedef enum {
+typedef enum PlayerMask {
     /* 0x00 */ PLAYER_MASK_NONE,
     /* 0x01 */ PLAYER_MASK_KEATON,
     /* 0x02 */ PLAYER_MASK_SKULL,
@@ -70,9 +68,9 @@ typedef enum PlayerIdleType {
     /*  0x1 */ PLAYER_IDLE_FIDGET
 } PlayerIdleType;
 
-typedef enum {
+typedef enum PlayerItemAction {
     /* 0x00 */ PLAYER_IA_NONE,
-    /* 0x01 */ PLAYER_IA_LAST_USED,
+    /* 0x01 */ PLAYER_IA_SWORD_CS, // Hold sword without shield in hand. The sword is not usable.
     /* 0x02 */ PLAYER_IA_FISHING_POLE,
     /* 0x03 */ PLAYER_IA_SWORD_MASTER,
     /* 0x04 */ PLAYER_IA_SWORD_KOKIRI,
@@ -138,10 +136,10 @@ typedef enum {
     /* 0x40 */ PLAYER_IA_MASK_GERUDO,
     /* 0x41 */ PLAYER_IA_MASK_TRUTH,
     /* 0x42 */ PLAYER_IA_LENS_OF_TRUTH,
-    /* 0x4C */ PLAYER_IA_MAX
+    /* 0x43 */ PLAYER_IA_MAX
 } PlayerItemAction;
 
-typedef enum {
+typedef enum PlayerLimb {
     /* 0x00 */ PLAYER_LIMB_NONE,
     /* 0x01 */ PLAYER_LIMB_ROOT,
     /* 0x02 */ PLAYER_LIMB_WAIST,
@@ -167,7 +165,7 @@ typedef enum {
     /* 0x16 */ PLAYER_LIMB_MAX
 } PlayerLimb;
 
-typedef enum {
+typedef enum PlayerBodyPart {
     /* 0x00 */ PLAYER_BODYPART_WAIST,      // PLAYER_LIMB_WAIST
     /* 0x01 */ PLAYER_BODYPART_R_THIGH,    // PLAYER_LIMB_R_THIGH
     /* 0x02 */ PLAYER_BODYPART_R_SHIN,     // PLAYER_LIMB_R_SHIN
@@ -189,7 +187,7 @@ typedef enum {
     /* 0x12 */ PLAYER_BODYPART_MAX
 } PlayerBodyPart;
 
-typedef enum {
+typedef enum PlayerMeleeWeaponAnimation {
     /*  0 */ PLAYER_MWA_FORWARD_SLASH_1H,
     /*  1 */ PLAYER_MWA_FORWARD_SLASH_2H,
     /*  2 */ PLAYER_MWA_FORWARD_COMBO_1H,
@@ -221,7 +219,7 @@ typedef enum {
     /* 28 */ PLAYER_MWA_MAX
 } PlayerMeleeWeaponAnimation;
 
-typedef enum {
+typedef enum PlayerDoorType {
     /* -1 */ PLAYER_DOORTYPE_AJAR = -1,
     /*  0 */ PLAYER_DOORTYPE_NONE,
     /*  1 */ PLAYER_DOORTYPE_HANDLE,
@@ -229,10 +227,10 @@ typedef enum {
     /*  3 */ PLAYER_DOORTYPE_FAKE
 } PlayerDoorType;
 
-typedef enum {
-    /* 0x00 */ PLAYER_MODELGROUP_0, // unused (except with the `Player_OverrideLimbDrawPause` bug)
-    /* 0x01 */ PLAYER_MODELGROUP_CHILD_HYLIAN_SHIELD, // kokiri/master sword, shield not in hand
-    /* 0x02 */ PLAYER_MODELGROUP_SWORD, // kokiri/master sword and possibly shield
+typedef enum PlayerModelGroup {
+    /* 0x00 */ PLAYER_MODELGROUP_0, // unused (except for a bug in `Player_OverrideLimbDrawPause`)
+    /* 0x01 */ PLAYER_MODELGROUP_CHILD_HYLIAN_SHIELD,  //hold sword only. used for holding sword only as child link with hylian shield equipped
+    /* 0x02 */ PLAYER_MODELGROUP_SWORD_AND_SHIELD, // hold sword and shield or just sword if no shield is equipped
     /* 0x03 */ PLAYER_MODELGROUP_DEFAULT, // non-specific models, for items that don't have particular link models
     /* 0x04 */ PLAYER_MODELGROUP_4, // unused, same as PLAYER_MODELGROUP_DEFAULT
     /* 0x05 */ PLAYER_MODELGROUP_BGS, // biggoron sword
@@ -245,11 +243,11 @@ typedef enum {
     /* 0x0C */ PLAYER_MODELGROUP_OCARINA, // ocarina
     /* 0x0D */ PLAYER_MODELGROUP_OOT, // ocarina of time
     /* 0x0E */ PLAYER_MODELGROUP_BOTTLE, // bottles (drawn separately)
-    /* 0x0F */ PLAYER_MODELGROUP_15, // "last used"
+    /* 0x0F */ PLAYER_MODELGROUP_SWORD, // hold sword and no shield, even if one is equipped
     /* 0x10 */ PLAYER_MODELGROUP_MAX
 } PlayerModelGroup;
 
-typedef enum {
+typedef enum PlayerModelGroupEntry {
     /* 0x00 */ PLAYER_MODELGROUPENTRY_ANIM,
     /* 0x01 */ PLAYER_MODELGROUPENTRY_LEFT_HAND,
     /* 0x02 */ PLAYER_MODELGROUPENTRY_RIGHT_HAND,
@@ -258,7 +256,7 @@ typedef enum {
     /* 0x05 */ PLAYER_MODELGROUPENTRY_MAX
 } PlayerModelGroupEntry;
 
-typedef enum {
+typedef enum PlayerModelType {
     // left hand
     /* 0x00 */ PLAYER_MODELTYPE_LH_OPEN, // empty open hand
     /* 0x01 */ PLAYER_MODELTYPE_LH_CLOSED, // empty closed hand
@@ -288,7 +286,7 @@ typedef enum {
     /* 0xFF */ PLAYER_MODELTYPE_RH_FF = 0xFF // disable shield collider, cutscene-specific
 } PlayerModelType;
 
-typedef enum {
+typedef enum PlayerAnimType {
     /* 0x00 */ PLAYER_ANIMTYPE_0,
     /* 0x01 */ PLAYER_ANIMTYPE_1,
     /* 0x02 */ PLAYER_ANIMTYPE_2,
@@ -298,7 +296,10 @@ typedef enum {
     /* 0x06 */ PLAYER_ANIMTYPE_MAX
 } PlayerAnimType;
 
-typedef enum {
+/**
+ * Temporary names, derived from original animation names in `D_80853914`
+ */
+typedef enum PlayerAnimGroup {
     /* 0x00 */ PLAYER_ANIMGROUP_wait,
     /* 0x01 */ PLAYER_ANIMGROUP_walk,
     /* 0x02 */ PLAYER_ANIMGROUP_run,
@@ -350,7 +351,7 @@ typedef enum {
 #define LIMB_BUF_COUNT(limbCount) ((ALIGN16((limbCount) * sizeof(Vec3s)) + sizeof(Vec3s) - 1) / sizeof(Vec3s))
 #define PLAYER_LIMB_BUF_COUNT LIMB_BUF_COUNT(PLAYER_LIMB_MAX)
 
-typedef struct {
+typedef struct PlayerAgeProperties {
     /* 0x00 */ f32 ceilingCheckHeight;
     /* 0x04 */ f32 unk_04;
     /* 0x08 */ f32 unk_08;
@@ -386,7 +387,7 @@ typedef struct {
     /* 0xCC */ LinkAnimationHeader* unk_CC[2];
 } PlayerAgeProperties; // size = 0xD4
 
-typedef struct {
+typedef struct WeaponInfo {
     /* 0x00 */ s32 active;
     /* 0x04 */ Vec3f tip;
     /* 0x10 */ Vec3f base;
@@ -395,7 +396,7 @@ typedef struct {
 // #region SOH [General]
 // Supporting pendingFlag
 // Upstream TODO: Rename these to be more obviously SoH specific
-typedef enum {
+typedef enum FlagType {
     FLAG_NONE,
     FLAG_SCENE_SWITCH,
     FLAG_SCENE_TREASURE,
@@ -409,7 +410,7 @@ typedef enum {
     FLAG_GS_TOKEN,
 } FlagType;
 
-typedef struct {
+typedef struct PendingFlag {
     /* 0x00 */ s32 flagID;     // which flag to set when Player_SetPendingFlag is called
     /* 0x04 */ FlagType flagType;  // type of flag to set when Player_SetPendingFlag is called
 } PendingFlag; // size = 0x06
