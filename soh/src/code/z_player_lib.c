@@ -575,7 +575,14 @@ s32 Player_InCsMode(PlayState* play) {
     return Player_InBlockingCsMode(play, this) || (this->unk_6AD == 4);
 }
 
-s32 func_8008E9C4(Player* this) {
+/**
+ * Checks if Player is currently locked onto a hostile actor.
+ * `PLAYER_STATE1_HOSTILE_LOCK_ON` controls Player's "battle" response to hostile actors.
+ *
+ * Note that within Player, `Player_UpdateHostileLockOn` exists, which updates the flag and also returns the check.
+ * Player can use this function instead if the flag should be checked, but not updated.
+ */
+s32 Player_CheckHostileLockOn(Player* this) {
     return (this->stateFlags1 & PLAYER_STATE1_HOSTILE_LOCK_ON);
 }
 
@@ -735,12 +742,17 @@ void Player_UpdateBottleHeld(PlayState* play, Player* this, s32 item, s32 action
     this->itemAction = actionParam;
 }
 
-void func_8008EDF0(Player* this) {
+void Player_ReleaseLockOn(Player* this) {
     this->unk_664 = NULL;
     this->stateFlags2 &= ~PLAYER_STATE2_LOCK_ON_WITH_SWITCH;
 }
 
-void func_8008EE08(Player* this) {
+/**
+ * This function aims to clear Z-Target related state when it isn't in use.
+ * It also handles setting a specific free fall related state that is interntwined with Z-Targeting.
+ * TODO: Learn more about this and give a name to PLAYER_STATE1_19
+ */
+void Player_ClearZTargeting(Player* this) {
     if ((this->actor.bgCheckFlags & 1) || (this->stateFlags1 & (PLAYER_STATE1_CLIMBING_LADDER | PLAYER_STATE1_ON_HORSE | PLAYER_STATE1_IN_WATER)) ||
         (!(this->stateFlags1 & (PLAYER_STATE1_JUMPING | PLAYER_STATE1_FREEFALL)) && ((this->actor.world.pos.y - this->actor.floorHeight) < 100.0f))) {
         this->stateFlags1 &= ~(PLAYER_STATE1_Z_TARGETING | PLAYER_STATE1_FRIENDLY_ACTOR_FOCUS | PLAYER_STATE1_PARALLEL | PLAYER_STATE1_JUMPING | PLAYER_STATE1_FREEFALL | PLAYER_STATE1_LOCK_ON_FORCED_TO_RELEASE);
@@ -748,13 +760,27 @@ void func_8008EE08(Player* this) {
         this->stateFlags1 |= PLAYER_STATE1_FREEFALL;
     }
 
-    func_8008EDF0(this);
+    Player_ReleaseLockOn(this);
 }
 
-void func_8008EEAC(PlayState* play, Actor* actor) {
+/**
+ * Sets the "auto lock-on actor" to lock onto an actor without Player's input.
+ * This function will first release any existing lock-on or (try to) release parallel.
+ *
+ * When using Switch Targeting, it is not possible to carry an auto lock-on actor into a normal
+ * lock-on when the auto lock-on is finished.
+ * This is because the `PLAYER_STATE2_LOCK_ON_WITH_SWITCH` flag is never set with an auto lock-on.
+ * With Hold Targeting it is possible to keep the auto lock-on going by keeping the Z button held down.
+ *
+ * The auto lock-on is considered "friendly" even if the actor is actually hostile. If the auto lock-on is hostile,
+ * Player's battle response will not occur (if he is actionable) and the camera behaves differently.
+ * When transitioning from auto lock-on to normal lock-on (with Hold Targeting) there will be a noticeable change
+ * when it switches from "friendly" mode to "hostile" mode.
+ */
+void Player_SetAutoLockOnActor(PlayState* play, Actor* actor) {
     Player* this = GET_PLAYER(play);
 
-    func_8008EE08(this);
+    Player_ClearZTargeting(this);
     this->unk_664 = actor;
     this->unk_684 = actor;
     this->stateFlags1 |= PLAYER_STATE1_FRIENDLY_ACTOR_FOCUS;

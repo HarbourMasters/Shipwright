@@ -8,12 +8,17 @@
 // #define __attribute__(x)
 // #endif
 
-// #ifndef AVOID_UB
-// #define BAD_RETURN(type) type
-// #else
-// #define BAD_RETURN(type) void
-// #endif
+// SoH [Port] Always use the AVOID_UB version (we don't set AVOID_UB while building yet)
+/*
+#ifndef AVOID_UB
+#define BAD_RETURN(type) type
+#else
+#define BAD_RETURN(type) void
+#endif
+*/
+#define BAD_RETURN(type) void
 
+// Upstream TODO: Document reasoning for change
 // #define UNUSED __attribute__((unused))
 // #define FALLTHROUGH __attribute__((fallthrough))
 

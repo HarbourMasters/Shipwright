@@ -2647,7 +2647,7 @@ void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
 
     if ((actor != NULL) && (actor->update == NULL)) {
         actor = NULL;
-        func_8008EDF0(player);
+        Player_ReleaseLockOn(player);
     }
 
     if ((actor == NULL) || (player->unk_66C < 5)) {
@@ -3430,7 +3430,7 @@ Actor* Actor_Delete(ActorContext* actorCtx, Actor* actor, PlayState* play) {
     }
 
     if ((player != NULL) && (actor == player->unk_664)) {
-        func_8008EDF0(player);
+        Player_ReleaseLockOn(player);
         Camera_ChangeMode(Play_GetCamera(play, Play_GetActiveCamId(play)), 0);
     }
 
