@@ -3,6 +3,7 @@
 #include "soh/resource/type/Scene.h"
 #include <utils/StringHelper.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/SceneDB.h"
 #include "global.h"
 #include "vt.h"
 #include <Vertex.h>
@@ -20,14 +21,10 @@ Ship::IResource* OTRPlay_LoadFile(PlayState* play, const char* fileName)
 }
 
 extern "C" void OTRPlay_SpawnScene(PlayState* play, s32 sceneNum, s32 spawn) {
-    SceneTableEntry* scene = &gSceneTable[sceneNum];
+    SceneDB::Entry& entry = SceneDB::Instance->RetrieveEntry(sceneNum);
 
-    scene->unk_13 = 0;
-    play->loadedScene = scene;
     play->sceneNum = sceneNum;
-    play->sceneConfig = scene->config;
-
-    //osSyncPrintf("\nSCENE SIZE %fK\n", (scene->sceneFile.vromEnd - scene->sceneFile.vromStart) / 1024.0f);
+    play->sceneConfig = entry.entry.sceneDrawConfig;
 
     // Scenes considered "dungeon" with a MQ variant
     int16_t inNonSharedScene = (sceneNum >= SCENE_DEKU_TREE && sceneNum <= SCENE_ICE_CAVERN) ||
@@ -37,7 +34,7 @@ extern "C" void OTRPlay_SpawnScene(PlayState* play, s32 sceneNum, s32 spawn) {
     if (inNonSharedScene) {
         sceneVersion = IsGameMasterQuest() ? "mq" : "nonmq";
     }
-    std::string scenePath = StringHelper::Sprintf("scenes/%s/%s/%s", sceneVersion.c_str(), scene->sceneFile.fileName, scene->sceneFile.fileName);
+    std::string scenePath = StringHelper::Sprintf("scenes/%s/%s/%s", sceneVersion.c_str(), entry.name.c_str(), entry.name.c_str());
 
     play->sceneSegment = OTRPlay_LoadFile(play, scenePath.c_str());
 
@@ -50,12 +47,8 @@ extern "C" void OTRPlay_SpawnScene(PlayState* play, s32 sceneNum, s32 spawn) {
         return;
     }
 
-    scene->unk_13 = 0;
-
-    //gSegments[2] = VIRTUAL_TO_PHYSICAL(play->sceneSegment);
-
     OTRPlay_InitScene(play, spawn);
-    auto roomSize = func_80096FE8(play, &play->roomCtx);
+    uint32_t roomSize = func_80096FE8(play, &play->roomCtx);
 
     osSyncPrintf("ROOM SIZE=%fK\n", roomSize / 1024.0f);
 }

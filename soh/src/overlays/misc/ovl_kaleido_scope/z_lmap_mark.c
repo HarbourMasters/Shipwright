@@ -1,4 +1,5 @@
 #include "z_kaleido_scope.h"
+#include "soh/SceneDB.h"
 #include "textures/parameter_static/parameter_static.h"
 
 typedef struct {
@@ -35,9 +36,21 @@ static const u32 sLineBytesImageSizes[] = { 0, 1, 2, 2 };
 extern PauseMapMarksData gPauseMapMarkDataTable[];
 extern PauseMapMarksData gPauseMapMarkDataTableMasterQuest[];
 
+static const Vtx sMarkBossVtx[] = {
+    VTX(-4, 4, 0, 0, 0, 255, 255, 255, 255),
+    VTX(-4, -4, 0, 0, 256, 255, 255, 255, 255),
+    VTX(4, 4, 0, 256, 0, 255, 255, 255, 255),
+    VTX(4, -4, 0, 256, 256, 255, 255, 255, 255),
+};
+
+static const Vtx sMarkChestVtx[] = {
+    VTX(-4, 4, 0, 0, 0, 255, 255, 255, 255),
+    VTX(-4, -4, 0, 0, 256, 255, 255, 255, 255),
+    VTX(4, 4, 0, 256, 0, 255, 255, 255, 255),
+    VTX(4, -4, 0, 256, 256, 255, 255, 255, 255),
+};
+
 void PauseMapMark_Init(PlayState* play) {
-    gBossMarkState = 0;
-    gBossMarkScale = 1.0f;
     if(ResourceMgr_IsGameMasterQuest()) {
         gLoadedPauseMarkDataTable = gPauseMapMarkDataTableMasterQuest;
     } else {
@@ -50,23 +63,106 @@ void PauseMapMark_Clear(PlayState* play) {
 }
 
 void PauseMapMark_DrawForDungeon(PlayState* play) {
-    PauseMapMarkData* mapMarkData;
-    PauseMapMarkPoint* markPoint;
-    PauseMapMarkInfo* markInfo;
     f32 scale;
-    s32 i = 0;
+    SceneDBEntry* entry = SceneDB_Retrieve(play->sceneNum);
+    SceneDBFloor* floor = &entry->dungeonData.floors[play->pauseCtx.dungeonMapSlot - 3];
 
-    mapMarkData = &gLoadedPauseMarkDataTable[R_MAP_TEX_INDEX >> 1][i];
+    if (SceneRB_IsBoss(play->sceneNum)) {
+        if (gBossMarkState == 0) {
+            Math_ApproachF(&gBossMarkScale, 1.5f, 1.0f, 0.041f);
+            if (gBossMarkScale == 1.5f) {
+                gBossMarkState = 1;
+            }
+        } else {
+            Math_ApproachF(&gBossMarkScale, 1.0f, 1.0f, 0.041f);
+            if (gBossMarkScale == 1.0f) {
+                gBossMarkState = 0;
+            }
+        }
+        scale = gBossMarkScale;
+    } else {
+        scale = 1.0f;
+    }
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    while (true) {
+    gDPPipeSync(POLY_KAL_DISP++);
+    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, 255);
+    gDPSetEnvColor(POLY_KAL_DISP++, 0, 0, 0, 255);
+
+    Matrix_Push();
+
+    if ((play->pauseCtx.state == 4) || (play->pauseCtx.state >= 0x12)) {
+        Matrix_Translate(-36.0f, 101.0f, 0.0f, MTXMODE_APPLY);
+    } else {
+        Matrix_Translate(-36.0f, 21.0f, 0.0f, MTXMODE_APPLY);
+    }
+
+    // TODO check G_IM_SIZ (is replacing it with the bit size equivalent to MARK)
+    gDPLoadTextureBlock(POLY_KAL_DISP++, gMapChestIconTex, G_IM_FMT_RGBA, G_IM_SIZ_16b,
+        8, 8, 0, G_TX_NOMIRROR | G_TX_WRAP,
+        G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+    for (s32 i = 0; i < floor->numChestMarks; i++) {
+        s32 display;
+
+        if (Flags_GetTreasure(play, floor->chestMarks[i].chestFlag)) {
+            display = false;
+        } else {
+            display = SceneRB_IsDungeon(play->sceneNum);
+        }
+
+        if (display) {
+            // Compute the offset to mirror icons over the map center (48) as an axis line
+            s16 mirrorOffset = CVarGetInteger("gMirroredWorld", 0) ? mirrorOffset = (48 - floor->chestMarks[i].x) * 2 + 1 : 0;
+
+            Matrix_Push();
+            Matrix_Translate(GREG(92) + floor->chestMarks[i].x + mirrorOffset, GREG(93) + floor->chestMarks[i].y, 0.0f, MTXMODE_APPLY);
+            Matrix_Scale(1.0f, 1.0f, 1.0f, MTXMODE_APPLY);
+            gSPMatrix(POLY_KAL_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            Matrix_Pop();
+
+            gSPVertex(POLY_KAL_DISP++, sMarkChestVtx, 4, 0);
+            gSP1Quadrangle(POLY_KAL_DISP++, 1, 3, 2, 0, 0);
+        }
+    }
+
+    Matrix_Pop();
+
+    Matrix_Push();
+
+    if ((play->pauseCtx.state == 4) || (play->pauseCtx.state >= 0x12)) {
+        Matrix_Translate(-36.0f, 101.0f, 0.0f, MTXMODE_APPLY);
+    } else {
+        Matrix_Translate(-36.0f, 21.0f, 0.0f, MTXMODE_APPLY);
+    }
+
+    gDPLoadTextureBlock(POLY_KAL_DISP++, gMapBossIconTex, G_IM_FMT_IA, G_IM_SIZ_8b,
+        8, 8, 0, G_TX_NOMIRROR | G_TX_WRAP,
+        G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+    for (s32 i = 0; i < floor->numBossMarks; i++) {
+        // Compute the offset to mirror icons over the map center (48) as an axis line
+        s16 mirrorOffset = CVarGetInteger("gMirroredWorld", 0) ? mirrorOffset = (48 - floor->bossMarks[i].x) * 2 + 1 : 0;
+
+        Matrix_Push();
+        Matrix_Translate(GREG(92) + floor->bossMarks[i].x + mirrorOffset, GREG(93) + floor->bossMarks[i].y, 0.0f, MTXMODE_APPLY);
+        Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
+        gSPMatrix(POLY_KAL_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+            G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        Matrix_Pop();
+
+        gSPVertex(POLY_KAL_DISP++, sMarkBossVtx, 4, 0);
+        gSP1Quadrangle(POLY_KAL_DISP++, 1, 3, 2, 0, 0);
+    }
+
+    Matrix_Pop();
+    /*
+    while (false) {
         if (mapMarkData->markType == PAUSE_MAP_MARK_NONE) {
             break;
         }
 
-        if ((mapMarkData->markType == PAUSE_MAP_MARK_BOSS) && (play->sceneNum >= SCENE_DEKU_TREE_BOSS) &&
-            (play->sceneNum <= SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR)) {
+        if ((mapMarkData->markType == PAUSE_MAP_MARK_BOSS) && SceneRB_IsBoss(play->sceneNum)) {
             if (gBossMarkState == 0) {
                 Math_ApproachF(&gBossMarkScale, 1.5f, 1.0f, 0.041f);
                 if (gBossMarkScale == 1.5f) {
@@ -91,33 +187,15 @@ void PauseMapMark_DrawForDungeon(PlayState* play) {
             Matrix_Translate(-36.0f, 21.0f, 0.0f, MTXMODE_APPLY);
         }
 
-        gDPPipeSync(POLY_KAL_DISP++);
-        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, 255);
-        gDPSetEnvColor(POLY_KAL_DISP++, 0, 0, 0, 255);
-
         markPoint = &mapMarkData->points[0];
-        for (i = 0; i < mapMarkData->count; i++) {
+        for (s32 i = 0; i < mapMarkData->count; i++) {
             s32 display;
 
             if (mapMarkData->markType == PAUSE_MAP_MARK_CHEST) {
                 if (Flags_GetTreasure(play, markPoint->chestFlag)) {
                     display = false;
                 } else {
-                    switch (play->sceneNum) {
-                        case SCENE_DEKU_TREE_BOSS:
-                        case SCENE_DODONGOS_CAVERN_BOSS:
-                        case SCENE_JABU_JABU_BOSS:
-                        case SCENE_FOREST_TEMPLE_BOSS:
-                        case SCENE_FIRE_TEMPLE_BOSS:
-                        case SCENE_WATER_TEMPLE_BOSS:
-                        case SCENE_SPIRIT_TEMPLE_BOSS:
-                        case SCENE_SHADOW_TEMPLE_BOSS:
-                            display = false;
-                            break;
-                        default:
-                            display = true;
-                            break;
-                    }
+                    display = SceneRB_IsDungeon(play->sceneNum);
                 }
             } else {
                 display = true;
@@ -151,6 +229,7 @@ void PauseMapMark_DrawForDungeon(PlayState* play) {
         mapMarkData++;
         Matrix_Pop();
     }
+    */
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -158,19 +237,8 @@ void PauseMapMark_DrawForDungeon(PlayState* play) {
 void PauseMapMark_Draw(PlayState* play) {
     PauseMapMark_Init(play);
 
-    switch (play->sceneNum) {
-        case SCENE_DEKU_TREE:
-        case SCENE_DODONGOS_CAVERN:
-        case SCENE_JABU_JABU:
-        case SCENE_FOREST_TEMPLE:
-        case SCENE_FIRE_TEMPLE:
-        case SCENE_WATER_TEMPLE:
-        case SCENE_SPIRIT_TEMPLE:
-        case SCENE_SHADOW_TEMPLE:
-        case SCENE_BOTTOM_OF_THE_WELL:
-        case SCENE_ICE_CAVERN:
-            PauseMapMark_DrawForDungeon(play);
-            break;
+    if (SceneRB_IsDungeon(play->sceneNum) || (CVarGetInteger("TODO.PulsateBossIcon", 0) != 0 && SceneRB_IsBoss(play->sceneNum))) {
+        PauseMapMark_DrawForDungeon(play);
     }
 
     PauseMapMark_Clear(play);

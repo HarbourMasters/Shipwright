@@ -513,7 +513,7 @@ ActorDB::Entry& ActorDB::AddEntry(const std::string& name, const std::string& de
     return entry;
 }
 
-// Adds an actor with the new ActorDBInit struct. The id assigned to the actor is dynamic. Use the return Entry or RetrieveId to get it.
+// Adds an actor with the new ActorDBInit struct. The id assigned to the actor is dynamic. Use the returned Entry or RetrieveId to get it.
 ActorDB::Entry& ActorDB::AddEntry(const ActorDBInit& init) {
     Entry& entry = AddEntry(init.name, init.desc, nextFreeId);
 

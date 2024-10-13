@@ -31,6 +31,7 @@
 #include "soh/Enhancements/randomizer/randomizer_grotto.h"
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/SceneDB.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -10147,8 +10148,6 @@ static Vec3f D_80854778 = { 0.0f, 50.0f, 0.0f };
 void Player_Init(Actor* thisx, PlayState* play2) {
     Player* this = (Player*)thisx;
     PlayState* play = play2;
-    SceneTableEntry* scene = play->loadedScene;
-    u32 titleFileSize;
     s32 initMode;
     s32 sp50;
     s32 sp4C;
@@ -10219,8 +10218,7 @@ void Player_Init(Actor* thisx, PlayState* play2) {
         titleFileSize = scene->titleFile.vromEnd - scene->titleFile.vromStart;
         if (GameInteractor_Should(VB_SHOW_TITLE_CARD, gSaveContext.showTitleCard)) {
             if ((gSaveContext.sceneSetupIndex < 4) &&
-                (gEntranceTable[((void)0, gSaveContext.entranceIndex) + ((void)0, gSaveContext.sceneSetupIndex)].field &
-                 ENTRANCE_INFO_DISPLAY_TITLE_CARD_FLAG) &&
+                EntranceDB_RetrieveLayer(gSaveContext.entranceIndex, gSaveContext.sceneSetupIndex)->displayTitleCard &&
                 ((play->sceneNum != SCENE_DODONGOS_CAVERN) || (Flags_GetEventChkInf(EVENTCHKINF_ENTERED_DODONGOS_CAVERN))) &&
                 ((play->sceneNum != SCENE_BOMBCHU_SHOP) || (Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP)))) {
                 TitleCard_InitPlaceName(play, &play->actorCtx.titleCtx, this->giObjectSegment, 160, 120, 144,

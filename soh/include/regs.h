@@ -102,20 +102,20 @@
 #define R_ENV_LIGHT1_DIR(i)         cREG(3 + i)
 #define R_ENV_LIGHT2_DIR(i)         cREG(6 + i)
 #define R_B_LABEL_DD                WREG(0)
-#define R_OW_MINIMAP_X              WREG(29)
-#define R_OW_MINIMAP_Y              WREG(30)
+#define R_OW_MINIMAP_X              WREG(29) // TODO test removal
+#define R_OW_MINIMAP_Y              WREG(30) // TODO test removal
 #define R_MINIMAP_DISABLED          WREG(31)
 #define R_B_LABEL_X(i)              WREG(40 + i)
 #define R_B_LABEL_Y(i)              WREG(43 + i)
 #define R_DGN_MINIMAP_X             WREG(68)
 #define R_DGN_MINIMAP_Y             WREG(69)
-#define R_MAP_INDEX                 VREG(11)
-#define R_MAP_TEX_INDEX_BASE        VREG(12)
-#define R_MAP_TEX_INDEX             VREG(13)
-#define R_COMPASS_SCALE_X           VREG(14)
-#define R_COMPASS_SCALE_Y           VREG(15)
-#define R_COMPASS_OFFSET_X          VREG(16)
-#define R_COMPASS_OFFSET_Y          VREG(17)
+#define R_MAP_INDEX                 VREG(11) // TODO test removal
+#define R_MAP_TEX_INDEX_BASE        VREG(12) // TODO test removal
+#define R_MAP_TEX_INDEX             VREG(13) // TODO test removal
+#define R_COMPASS_SCALE_X           VREG(14) // TODO test removal
+#define R_COMPASS_SCALE_Y           VREG(15) // TODO test removal
+#define R_COMPASS_OFFSET_X          VREG(16) // TODO test removal
+#define R_COMPASS_OFFSET_Y          VREG(17) // TODO test removal
 #define R_MINIMAP_COLOR(i)          VREG(18 + i)
 #define R_ITEM_AMMO_X(i)            VREG(64 + i)
 #define R_ITEM_AMMO_Y(i)            VREG(68 + i)

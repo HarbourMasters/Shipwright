@@ -11,6 +11,7 @@
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include "soh/Enhancements/randomizer/randomizer_grotto.h"
+#include "soh/SceneDB.h"
 
 void Select_SwitchBetterWarpMode(SelectContext* this, u8 isBetterWarpMode);
 void Sram_InitDebugSave(void);
@@ -54,7 +55,7 @@ void Select_LoadGame(SelectContext* this, s32 entranceIndex) {
             BetterSceneSelectEntrancePair entrancePair = this->betterScenes[this->currentScene].entrancePairs[this->pageDownIndex];
             // Check to see if the scene/entrance we just picked can be MQ'd
             if (entrancePair.canBeMQ) {
-                s16 scene = gEntranceTable[entrancePair.entranceIndex].scene;
+                s16 scene = EntranceDB_Retrieve(entrancePair.entranceIndex)->sceneId;
                 u8 isEntranceDefaultMQ = ResourceMgr_IsSceneMasterQuest(scene);
                 if (!isEntranceDefaultMQ && this->opt) { // Force vanilla for default MQ scene
                     CVarSetInteger(CVAR_GENERAL("BetterDebugWarpScreenMQMode"), WARP_MODE_OVERRIDE_MQ_AS_VANILLA);
@@ -1031,7 +1032,7 @@ void Better_Select_UpdateMenu(SelectContext* this) {
     if (sceneChanged) {
         BetterSceneSelectEntrancePair entrancePair = this->betterScenes[this->currentScene].entrancePairs[this->pageDownIndex];
         // Update the MQ status to match the new scene
-        if (entrancePair.canBeMQ && ResourceMgr_IsSceneMasterQuest(gEntranceTable[entrancePair.entranceIndex].scene)) {
+        if (entrancePair.canBeMQ && ResourceMgr_IsSceneMasterQuest(EntranceDB_Retrieve(entrancePair.entranceIndex)->sceneId)) {
             this->opt = 1;
         } else {
             this->opt = 0;
@@ -1573,7 +1574,7 @@ void Select_SwitchBetterWarpMode(SelectContext* this, u8 isBetterWarpMode) {
             this->pageDownIndex = CVarGetInteger(CVAR_GENERAL("BetterDebugWarpScreenPageDownIndex"), 0);
 
             BetterSceneSelectEntrancePair entrancePair = this->betterScenes[this->currentScene].entrancePairs[this->pageDownIndex];
-            if (entrancePair.canBeMQ && ResourceMgr_IsSceneMasterQuest(gEntranceTable[entrancePair.entranceIndex].scene)) {
+            if (entrancePair.canBeMQ && ResourceMgr_IsSceneMasterQuest(EntranceDB_Retrieve(entrancePair.entranceIndex)->sceneId)) {
                 this->opt = 1;
             }
         }

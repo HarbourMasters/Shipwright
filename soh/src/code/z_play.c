@@ -13,6 +13,7 @@
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/framebuffer_effects.h"
+#include "soh/SceneDB.h"
 
 #include <libultraship/libultraship.h>
 
@@ -452,23 +453,20 @@ void Play_Init(GameState* thisx) {
     }
 
     tempSetupIndex = gSaveContext.sceneSetupIndex;
-    if ((gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_HYRULE_FIELD) && !LINK_IS_ADULT &&
-        gSaveContext.sceneSetupIndex < 4) {
+    EntranceDBEntry* entrance = EntranceDB_Retrieve(gSaveContext.entranceIndex);
+    if ((entrance->sceneId == SCENE_HYRULE_FIELD) && !LINK_IS_ADULT && gSaveContext.sceneSetupIndex < 4) {
         if (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) && CHECK_QUEST_ITEM(QUEST_GORON_RUBY) &&
             CHECK_QUEST_ITEM(QUEST_ZORA_SAPPHIRE)) {
             gSaveContext.sceneSetupIndex = 1;
         } else {
             gSaveContext.sceneSetupIndex = 0;
         }
-    } else if ((gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_KOKIRI_FOREST) && LINK_IS_ADULT &&
-               gSaveContext.sceneSetupIndex < 4) {
+    } else if ((entrance->sceneId == SCENE_KOKIRI_FOREST) && LINK_IS_ADULT && gSaveContext.sceneSetupIndex < 4) {
         gSaveContext.sceneSetupIndex = (Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP)) ? 3 : 2;
     }
 
-    Play_SpawnScene(
-        play,
-        gEntranceTable[((void)0, gSaveContext.entranceIndex) + ((void)0, gSaveContext.sceneSetupIndex)].scene,
-        gEntranceTable[((void)0, gSaveContext.sceneSetupIndex) + ((void)0, gSaveContext.entranceIndex)].spawn);
+    EntranceDBEntry* adjustedEntrance = EntranceDB_RetrieveLayer(gSaveContext.entranceIndex, gSaveContext.sceneSetupIndex);
+    Play_SpawnScene(play, adjustedEntrance->sceneId, adjustedEntrance->spawn);
 
     osSyncPrintf("\nSCENE_NO=%d COUNTER=%d\n", ((void)0, gSaveContext.entranceIndex), gSaveContext.sceneSetupIndex);
 
@@ -511,8 +509,8 @@ void Play_Init(GameState* thisx) {
 
     if (gSaveContext.gameMode != 1) {
         if (gSaveContext.nextTransitionType == TRANS_NEXT_TYPE_DEFAULT) {
-            play->transitionType = ENTRANCE_INFO_END_TRANS_TYPE(
-                gEntranceTable[((void)0, gSaveContext.entranceIndex) + tempSetupIndex].field); // Fade In
+            EntranceDBEntry* transEntrance = EntranceDB_RetrieveLayer(gSaveContext.entranceIndex, tempSetupIndex);
+            play->transitionType = transEntrance->endTransition;
         } else {
             play->transitionType = gSaveContext.nextTransitionType;
             gSaveContext.nextTransitionType = TRANS_NEXT_TYPE_DEFAULT;
@@ -739,7 +737,7 @@ void Play_Update(PlayState* play) {
                             sp6E = (gSaveContext.cutsceneIndex & 0xF) + 4;
                         }
 
-                        if (!(gEntranceTable[play->nextEntranceIndex + sp6E].field & ENTRANCE_INFO_CONTINUE_BGM_FLAG)) { // Continue BGM Off
+                        if (!EntranceDB_RetrieveLayer(play->nextEntranceIndex, sp6E)->continueBgm) { // Continue BGM Off
                             // "Sound initalized. 111"
                             osSyncPrintf("\n\n\nサウンドイニシャル来ました。111");
                             if ((play->transitionType < TRANS_TYPE_MAX) && !Environment_IsForcedSequenceDisabled()) {

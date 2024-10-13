@@ -48,8 +48,8 @@ typedef struct {
     /* 0x28 */ u16 equipment; // a mask where each nibble corresponds to a type of equipment `EquipmentType`, and each bit to an owned piece `EquipInv*`
     /* 0x2C */ u32 upgrades;
     /* 0x30 */ u32 questItems;
-    /* 0x34 */ u8 dungeonItems[20];
-    /* 0x48 */ s8 dungeonKeys[19];
+    /* 0x34 */ u8* dungeonItems;
+    /* 0x48 */ s8* dungeonKeys;
     /* 0x5B */ s8 defenseHearts;
     /* 0x5C */ s16 gsTokens;
 } Inventory; // size = 0x5E
@@ -189,7 +189,7 @@ typedef struct {
     /* 0x0066 */ s16 savedSceneNum; // Upstream TODO: sceneId
     /* 0x0068 */ ItemEquips equips;
     /* 0x0074 */ Inventory inventory;
-    /* 0x00D4 */ SavedSceneFlags sceneFlags[124];
+    /* 0x00D4 */ SavedSceneFlags* sceneFlags;
     /* 0x0E64 */ FaroresWindData fw;
     /* 0x0E8C */ char unk_E8C[0x10];
     /* 0x0E9C */ s32 gsFlags[6];

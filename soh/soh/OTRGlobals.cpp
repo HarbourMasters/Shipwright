@@ -76,6 +76,7 @@
 #include "Enhancements/item-tables/ItemTableManager.h"
 #include "SohGui.hpp"
 #include "ActorDB.h"
+#include "SceneDB.h"
 
 #ifdef ENABLE_REMOTE_CONTROL
 #include "Enhancements/crowd-control/CrowdControl.h"
@@ -1141,6 +1142,8 @@ extern "C" void InitOTR() {
     SohGui::SetupGuiElements();
     AudioCollection::Instance = new AudioCollection();
     ActorDB::Instance = new ActorDB();
+    SceneDB::Instance = new SceneDB();
+    EntranceDB::Instance = new EntranceDB();
 #ifdef __APPLE__
     SpeechSynthesizer::Instance = new DarwinSpeechSynthesizer();
     SpeechSynthesizer::Instance->Init();

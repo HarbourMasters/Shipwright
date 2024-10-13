@@ -21,6 +21,7 @@
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/kaleido.h"
+#include "soh/SceneDB.h"
 
 
 static void* sEquipmentFRATexs[] = {
@@ -3416,6 +3417,7 @@ static uint8_t mapBlendMask[MAP_48x85_TEX_WIDTH * MAP_48x85_TEX_HEIGHT];
 // SoH [General] - Modified to account for our resource system and HD textures
 void KaleidoScope_LoadDungeonMap(PlayState* play) {
     InterfaceContext* interfaceCtx = &play->interfaceCtx;
+    SceneDBEntry* entry = SceneDB_Retrieve(gSaveContext.mapIndex);
 
     // Free old textures
     if (mapLeftTexModifiedRaw != NULL) {
@@ -3427,12 +3429,13 @@ void KaleidoScope_LoadDungeonMap(PlayState* play) {
         mapRightTexModifiedRaw = NULL;
     }
 
+    s16 floor = play->pauseCtx.cursorPoint[PAUSE_MAP] - 3; // TODO better way to find this?
     // Unload original textures to bypass cache result for lookups
-    ResourceMgr_UnloadOriginalWhenAltExists(sDungeonMapTexs[R_MAP_TEX_INDEX]);
-    ResourceMgr_UnloadOriginalWhenAltExists(sDungeonMapTexs[R_MAP_TEX_INDEX + 1]);
+    ResourceMgr_UnloadOriginalWhenAltExists(entry->dungeonData.floors[floor].mapLeftTexture);
+    ResourceMgr_UnloadOriginalWhenAltExists(entry->dungeonData.floors[floor].mapRightTexture);
 
-    interfaceCtx->mapSegmentName[0] = sDungeonMapTexs[R_MAP_TEX_INDEX];
-    interfaceCtx->mapSegmentName[1] = sDungeonMapTexs[R_MAP_TEX_INDEX + 1];
+    interfaceCtx->mapSegmentName[0] = entry->dungeonData.floors[floor].mapLeftTexture;
+    interfaceCtx->mapSegmentName[1] = entry->dungeonData.floors[floor].mapRightTexture;
 
     // When the texture is HD (raw) we need to copy a dynamic amount of data
     // Otherwise the original asset has a static size

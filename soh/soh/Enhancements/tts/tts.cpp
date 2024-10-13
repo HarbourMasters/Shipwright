@@ -9,13 +9,13 @@
 #include <spdlog/fmt/fmt.h>
 
 #include "soh/OTRGlobals.h"
+#include "soh/SceneDB.h"
 #include "message_data_static.h"
 #include "overlays/gamestates/ovl_file_choose/file_choose.h"
 #include "soh/Enhancements/boss-rush/BossRush.h"
 #include "soh/resource/type/SohResourceType.h"
 
 extern "C" {
-extern MapData* gMapData;
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 }
@@ -204,6 +204,7 @@ void RegisterOnKaleidoscopeUpdateHook() {
 
         PauseContext* pauseCtx = &gPlayState->pauseCtx;
         Input* input = &gPlayState->state.input[0];
+        SceneDB::Entry& scene = SceneDB::Instance->RetrieveEntry(gSaveContext.mapIndex);
 
         // Save game prompt
         if (pauseCtx->state == 7) {
@@ -452,7 +453,7 @@ void RegisterOnKaleidoscopeUpdateHook() {
 
                         // Cursor is on a dungeon floor position
                         if (cursorPoint >= 3 && cursorPoint < 11) {
-                            int floorID = gMapData->floorID[gPlayState->interfaceCtx.unk_25A][pauseCtx->dungeonMapSlot - 3];
+                            int floorID = scene.entry.dungeonData.floors[pauseCtx->dungeonMapSlot - 3].id; // TODO test
                             // Normalize so F1 == 0, and negative numbers are basement levels
                             int normalizedFloor = (floorID * -1) + 8;
                             if (normalizedFloor >= 0) {

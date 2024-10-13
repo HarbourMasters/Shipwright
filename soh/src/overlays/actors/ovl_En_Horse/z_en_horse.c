@@ -10,6 +10,7 @@
 #include "objects/object_hni/object_hni.h"
 #include "scenes/overworld/spot09/spot09_scene.h"
 #include <assert.h>
+#include "soh/SceneDB.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
@@ -677,34 +678,36 @@ s32 EnHorse_Spawn(EnHorse* this, PlayState* play) {
     Player* player;
     Vec3f spawnPos;
 
-    for (i = 0; i < 169; i++) {
-        if (sHorseSpawns[i].scene == play->sceneNum) {
-            player = GET_PLAYER(play);
-            if (play->sceneNum != SCENE_LON_LON_RANCH ||
-                //! Same flag checked twice
-                (Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED) && ((gSaveContext.eventInf[0] & 0xF) != 6 || Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED))) ||
-                // always load two spawns inside lon lon
-                ((sHorseSpawns[i].pos.x == 856 && sHorseSpawns[i].pos.y == 0 && sHorseSpawns[i].pos.z == -918) ||
-                 (sHorseSpawns[i].pos.x == -1003 && sHorseSpawns[i].pos.y == 0 && sHorseSpawns[i].pos.z == -755))) {
+    SceneDBEntry* entry = SceneDB_Retrieve(play->sceneNum);
+    if (!entry->epona.allowed) {
+        return false;
+    }
 
-                spawnPos.x = sHorseSpawns[i].pos.x;
-                spawnPos.y = sHorseSpawns[i].pos.y;
-                spawnPos.z = sHorseSpawns[i].pos.z;
-                dist = Math3D_Vec3f_DistXYZ(&player->actor.world.pos, &spawnPos);
+    for (i = 0; i < entry->epona.numSpawns; i++) {
+        player = GET_PLAYER(play);
+        if (play->sceneNum != SCENE_LON_LON_RANCH ||
+            //! Same flag checked twice
+            (Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED) && ((gSaveContext.eventInf[0] & 0xF) != 6 || Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED))) ||
+            // always load two spawns inside lon lon
+            ((entry->epona.spawnPos[i].x == 856 && entry->epona.spawnPos[i].y == 0 && entry->epona.spawnPos[i].z == -918) ||
+                (entry->epona.spawnPos[i].x == -1003 && entry->epona.spawnPos[i].y == 0 && entry->epona.spawnPos[i].z == -755))) {
 
-                if (play->sceneNum) {}
-                if (!(minDist < dist) && !func_80A5BBBC(play, this, &spawnPos)) {
-                    minDist = dist;
-                    this->actor.world.pos.x = sHorseSpawns[i].pos.x;
-                    this->actor.world.pos.y = sHorseSpawns[i].pos.y;
-                    this->actor.world.pos.z = sHorseSpawns[i].pos.z;
-                    this->actor.prevPos = this->actor.world.pos;
-                    this->actor.world.rot.y = sHorseSpawns[i].angle;
-                    this->actor.shape.rot.y = Actor_WorldYawTowardActor(&this->actor, &GET_PLAYER(play)->actor);
-                    spawn = true;
-                    SkinMatrix_Vec3fMtxFMultXYZW(&play->viewProjectionMtxF, &this->actor.world.pos,
-                                                 &this->actor.projectedPos, &this->actor.projectedW);
-                }
+            spawnPos.x = entry->epona.spawnPos[i].x;
+            spawnPos.y = entry->epona.spawnPos[i].y;
+            spawnPos.z = entry->epona.spawnPos[i].z;
+            dist = Math3D_Vec3f_DistXYZ(&player->actor.world.pos, &spawnPos);
+
+            if (!(minDist < dist) && !func_80A5BBBC(play, this, &spawnPos)) {
+                minDist = dist;
+                this->actor.world.pos.x = entry->epona.spawnPos[i].x;
+                this->actor.world.pos.y = entry->epona.spawnPos[i].y;
+                this->actor.world.pos.z = entry->epona.spawnPos[i].z;
+                this->actor.prevPos = this->actor.world.pos;
+                this->actor.world.rot.y = 0;
+                this->actor.shape.rot.y = Actor_WorldYawTowardActor(&this->actor, &GET_PLAYER(play)->actor);
+                spawn = true;
+                SkinMatrix_Vec3fMtxFMultXYZW(&play->viewProjectionMtxF, &this->actor.world.pos,
+                    &this->actor.projectedPos, &this->actor.projectedW);
             }
         }
     }

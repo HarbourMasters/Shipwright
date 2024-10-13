@@ -78,6 +78,7 @@ u8 Entrance_EntranceIsNull(EntranceOverride* entranceOverride) {
            entranceOverride->overrideDestination == 0;
 }
 
+// TODO all of this
 static void Entrance_SeparateOGCFairyFountainExit(void) {
     //Overwrite unused entrance 0x03E8 (ENTR_POTION_SHOP_KAKARIKO_1) with values from 0x0340 (ENTR_HYRULE_CASTLE_2) to use it as the
     //exit from OGC Great Fairy Fountain -> Castle Grounds

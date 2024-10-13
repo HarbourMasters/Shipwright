@@ -861,8 +861,6 @@ void TitleCard_InitBossName(PlayState* play, TitleCardContext* titleCtx, void* t
 
 void TitleCard_InitPlaceName(PlayState* play, TitleCardContext* titleCtx, void* texture, s32 x, s32 y,
                              s32 width, s32 height, s32 delay) {
-    SceneTableEntry* loadedScene = play->loadedScene;
-  //  size_t size = loadedScene->titleFile.vromEnd - loadedScene->titleFile.vromStart;
     switch (play->sceneNum) {
         case SCENE_DEKU_TREE:
             texture = gDekuTreeTitleCardENGTex;

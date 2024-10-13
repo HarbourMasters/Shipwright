@@ -25,6 +25,8 @@
 
 #include "soh/mq_asset_hacks.h"
 #include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
+#include "soh/SceneDB.h"
+#include "assert.h"
 
 // Entrance Table definition
 #define DEFINE_ENTRANCE(_0, sceneId, spawn, continueBgm, displayTitleCard, endTransType, startTransType) \
@@ -34,42 +36,12 @@
        (((endTransType) << ENTRANCE_INFO_END_TRANS_TYPE_SHIFT) & ENTRANCE_INFO_END_TRANS_TYPE_MASK) |    \
        (((startTransType) << ENTRANCE_INFO_START_TRANS_TYPE_SHIFT) & ENTRANCE_INFO_START_TRANS_TYPE_MASK)) },
 
+// TODO test removal
 EntranceInfo gEntranceTable[] = {
 #include "tables/entrance_table.h"
 };
 
 #undef DEFINE_ENTRANCE
-
-//#define TITLED_SCENE(name, title, unk_10, config, unk_12)                                            \
-//    {                                                                                                \
-//        (u32) _##name##SegmentRomStart, (u32)_##name##SegmentRomEnd, (u32)_##title##SegmentRomStart, \
-//            (u32)_##title##SegmentRomEnd, unk_10, config, unk_12, 0                                  \
-//    }
-
-//#define TITLED_SCENE(name, title, unk_10, config, unk_12)                                            \
-//    {                                                                                                \
-//        {0, 0, #name}, {0, 0, #title}, unk_10, config, unk_12, 0                                     \
-//    }
-
-//#define UNTITLED_SCENE(name, unk_10, config, unk_12) \
-    //{ (u32) _##name##SegmentRomStart, (u32)_##name##SegmentRomEnd, 0, 0, unk_10, config, unk_12, 0 }
-
-//#define UNTITLED_SCENE(name, unk_10, config, unk_12) \
-//    { { 0, 0, #name }, (u32)0, 0, 0, unk_10, config, unk_12, 0 }
-
-#define DEFINE_SCENE(name, title, _2, config, unk_10, unk_12) \
-    { { 0, 0, #name }, {0, 0, #title}, unk_10, config, unk_12, 0 },
-
-// Handle `none` as a special case for scenes without a title card
-#define none ""
-
-SceneTableEntry gSceneTable[] = {
-    #include "tables/scene_table.h"
-};
-
-#undef none
-
-#undef DEFINE_SCENE
 
 Gfx sDefaultDisplayList[] = {
     gsSPSegment(0x08, gEmptyDL),
@@ -86,23 +58,23 @@ Gfx sDefaultDisplayList[] = {
 
 // Computes next entrance index based on age and day time to set the fade out transition
 void Scene_SetTransitionForNextEntrance(PlayState* play) {
-    s16 entranceIndex;
+    s16 layer = 0;
 
     if (!IS_DAY) {
         if (!LINK_IS_ADULT) {
-            entranceIndex = play->nextEntranceIndex + 1;
+            layer = 1;
         } else {
-            entranceIndex = play->nextEntranceIndex + 3;
+            layer = 3;
         }
     } else {
         if (!LINK_IS_ADULT) {
-            entranceIndex = play->nextEntranceIndex;
+            layer = 0;
         } else {
-            entranceIndex = play->nextEntranceIndex + 2;
+            layer = 2;
         }
     }
 
-    play->transitionType = ENTRANCE_INFO_START_TRANS_TYPE(gEntranceTable[entranceIndex].field); // Fade out
+    play->transitionType = EntranceDB_RetrieveLayer(play->nextEntranceIndex, layer)->startTransition; // Fade out
 }
 
 // Scene Draw Config 0
@@ -1680,6 +1652,7 @@ void (*sSceneDrawHandlers[])(PlayState*) = {
 };
 
 void Scene_Draw(PlayState* play) {
+    assert(play->sceneConfig == SceneDB_Retrieve(play->sceneNum)->sceneDrawConfig);
     if (HREG(80) == 17) {
         if (HREG(95) != 17) {
             HREG(95) = 17;

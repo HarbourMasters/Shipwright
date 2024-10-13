@@ -8,6 +8,7 @@
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 
 #include "libultraship/bridge.h"
+#include "soh/SceneDB.h"
 #include "soh/Enhancements/gameplaystats.h"
 #include "soh/Enhancements/boss-rush/BossRushTypes.h"
 #include "soh/Enhancements/custom-message/CustomMessageInterfaceAddon.h"
@@ -34,117 +35,6 @@ s16 Top_HUD_Margin = 0;
 s16 Left_HUD_Margin = 0;
 s16 Right_HUD_Margin = 0;
 s16 Bottom_HUD_Margin = 0;
-
-typedef struct {
-    /* 0x00 */ u8 scene;
-    /* 0x01 */ u8 flags1;
-    /* 0x02 */ u8 flags2;
-    /* 0x03 */ u8 flags3;
-} RestrictionFlags;
-
-static RestrictionFlags sRestrictionFlags[] = {
-    { SCENE_HYRULE_FIELD, 0x00, 0x00, 0x10 },
-    { SCENE_KAKARIKO_VILLAGE, 0x00, 0x00, 0x10 },
-    { SCENE_GRAVEYARD, 0x00, 0x00, 0x10 },
-    { SCENE_ZORAS_RIVER, 0x00, 0x00, 0x10 },
-    { SCENE_KOKIRI_FOREST, 0x00, 0x00, 0x10 },
-    { SCENE_SACRED_FOREST_MEADOW, 0x00, 0x00, 0x10 },
-    { SCENE_LAKE_HYLIA, 0x00, 0x00, 0x10 },
-    { SCENE_ZORAS_DOMAIN, 0x00, 0x00, 0x10 },
-    { SCENE_ZORAS_FOUNTAIN, 0x00, 0x00, 0x10 },
-    { SCENE_GERUDO_VALLEY, 0x00, 0x00, 0x10 },
-    { SCENE_LOST_WOODS, 0x00, 0x00, 0x10 },
-    { SCENE_DESERT_COLOSSUS, 0x00, 0x00, 0x10 },
-    { SCENE_GERUDOS_FORTRESS, 0x00, 0x00, 0x10 },
-    { SCENE_HAUNTED_WASTELAND, 0x00, 0x00, 0x10 },
-    { SCENE_HYRULE_CASTLE, 0x00, 0x00, 0x10 },
-    { SCENE_OUTSIDE_GANONS_CASTLE, 0x00, 0x00, 0x10 },
-    { SCENE_DEATH_MOUNTAIN_TRAIL, 0x00, 0x00, 0x10 },
-    { SCENE_DEATH_MOUNTAIN_CRATER, 0x00, 0x00, 0x10 },
-    { SCENE_GORON_CITY, 0x00, 0x00, 0x10 },
-    { SCENE_LON_LON_RANCH, 0x00, 0x00, 0x10 },
-    { SCENE_TEMPLE_OF_TIME, 0x00, 0x10, 0x15 },
-    { SCENE_CHAMBER_OF_THE_SAGES, 0xA2, 0xAA, 0xAA },
-    { SCENE_SHOOTING_GALLERY, 0x11, 0x55, 0x55 },
-    { SCENE_CASTLE_COURTYARD_GUARDS_DAY, 0x11, 0x55, 0x55 },
-    { SCENE_CASTLE_COURTYARD_GUARDS_NIGHT, 0x11, 0x55, 0x55 },
-    { SCENE_REDEAD_GRAVE, 0x00, 0x00, 0xD0 },
-    { SCENE_GRAVE_WITH_FAIRYS_FOUNTAIN, 0x00, 0x00, 0xD0 },
-    { SCENE_ROYAL_FAMILYS_TOMB, 0x00, 0x00, 0xD0 },
-    { SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC, 0x00, 0x00, 0x10 },
-    { SCENE_FAIRYS_FOUNTAIN, 0x00, 0x00, 0xD0 },
-    { SCENE_GREAT_FAIRYS_FOUNTAIN_SPELLS, 0x00, 0x00, 0x10 },
-    { SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR, 0x00, 0x05, 0x50 },
-    { SCENE_CASTLE_COURTYARD_ZELDA, 0x00, 0x05, 0x54 },
-    { SCENE_FISHING_POND, 0x11, 0x55, 0x55 },
-    { SCENE_BOMBCHU_BOWLING_ALLEY, 0x11, 0x55, 0x55 },
-    { SCENE_LON_LON_BUILDINGS, 0x00, 0x10, 0x15 },
-    { SCENE_MARKET_GUARD_HOUSE, 0x00, 0x10, 0x14 },
-    { SCENE_POTION_SHOP_GRANNY, 0x10, 0x15, 0x55 },
-    { SCENE_TREASURE_BOX_SHOP, 0x10, 0x15, 0x55 },
-    { SCENE_HOUSE_OF_SKULLTULA, 0x00, 0x10, 0x15 },
-    { SCENE_MARKET_ENTRANCE_DAY, 0x00, 0x10, 0x15 },
-    { SCENE_MARKET_ENTRANCE_NIGHT, 0x00, 0x10, 0x15 },
-    { SCENE_MARKET_ENTRANCE_RUINS, 0x00, 0x10, 0xD5 },
-    { SCENE_MARKET_DAY, 0x00, 0x10, 0x15 },
-    { SCENE_MARKET_NIGHT, 0x00, 0x10, 0x15 },
-    { SCENE_MARKET_RUINS, 0x00, 0x10, 0xD5 },
-    { SCENE_BACK_ALLEY_DAY, 0x00, 0x10, 0x15 },
-    { SCENE_BACK_ALLEY_NIGHT, 0x00, 0x10, 0x15 },
-    { SCENE_TEMPLE_OF_TIME_EXTERIOR_DAY, 0x00, 0x10, 0x15 },
-    { SCENE_TEMPLE_OF_TIME_EXTERIOR_NIGHT, 0x00, 0x10, 0x15 },
-    { SCENE_TEMPLE_OF_TIME_EXTERIOR_RUINS, 0x00, 0x10, 0xD5 },
-    { SCENE_LINKS_HOUSE, 0x10, 0x10, 0x15 },
-    { SCENE_KAKARIKO_CENTER_GUEST_HOUSE, 0x10, 0x10, 0x15 },
-    { SCENE_BACK_ALLEY_HOUSE, 0x10, 0x10, 0x15 },
-    { SCENE_KNOW_IT_ALL_BROS_HOUSE, 0x10, 0x10, 0x15 },
-    { SCENE_TWINS_HOUSE, 0x10, 0x10, 0x15 },
-    { SCENE_MIDOS_HOUSE, 0x10, 0x10, 0x15 },
-    { SCENE_SARIAS_HOUSE, 0x10, 0x10, 0x15 },
-    { SCENE_STABLE, 0x10, 0x10, 0x15 },
-    { SCENE_GRAVEKEEPERS_HUT, 0x10, 0x10, 0x15 },
-    { SCENE_DOG_LADY_HOUSE, 0x10, 0x10, 0x15 },
-    { SCENE_IMPAS_HOUSE, 0x10, 0x10, 0x15 },
-    { SCENE_LAKESIDE_LABORATORY, 0x00, 0x10, 0x15 },
-    { SCENE_CARPENTERS_TENT, 0x10, 0x10, 0x15 },
-    { SCENE_BAZAAR, 0x10, 0x10, 0x15 },
-    { SCENE_KOKIRI_SHOP, 0x10, 0x10, 0x15 },
-    { SCENE_GORON_SHOP, 0x10, 0x10, 0x15 },
-    { SCENE_ZORA_SHOP, 0x10, 0x10, 0x15 },
-    { SCENE_POTION_SHOP_KAKARIKO, 0x10, 0x10, 0x15 },
-    { SCENE_POTION_SHOP_MARKET, 0x10, 0x10, 0x15 },
-    { SCENE_BOMBCHU_SHOP, 0x10, 0x10, 0x15 },
-    { SCENE_HAPPY_MASK_SHOP, 0x10, 0x10, 0x15 },
-    { SCENE_GERUDO_TRAINING_GROUND, 0x00, 0x03, 0x10 },
-    { SCENE_DEKU_TREE, 0x00, 0x00, 0x00 },
-    { SCENE_DEKU_TREE_BOSS, 0x00, 0x45, 0x50 },
-    { SCENE_DODONGOS_CAVERN, 0x00, 0x00, 0x00 },
-    { SCENE_DODONGOS_CAVERN_BOSS, 0x00, 0x45, 0x50 },
-    { SCENE_JABU_JABU, 0x00, 0x00, 0x00 },
-    { SCENE_JABU_JABU_BOSS, 0x00, 0x45, 0x50 },
-    { SCENE_FOREST_TEMPLE, 0x00, 0x00, 0x00 },
-    { SCENE_FOREST_TEMPLE_BOSS, 0x00, 0x45, 0x50 },
-    { SCENE_BOTTOM_OF_THE_WELL, 0x00, 0x00, 0x00 },
-    { SCENE_SHADOW_TEMPLE, 0x00, 0x00, 0x00 },
-    { SCENE_SHADOW_TEMPLE_BOSS, 0x00, 0x45, 0x50 },
-    { SCENE_FIRE_TEMPLE, 0x00, 0x00, 0x00 },
-    { SCENE_FIRE_TEMPLE_BOSS, 0x00, 0x45, 0x50 },
-    { SCENE_WATER_TEMPLE, 0x00, 0x00, 0x00 },
-    { SCENE_WATER_TEMPLE_BOSS, 0x00, 0x45, 0x50 },
-    { SCENE_SPIRIT_TEMPLE, 0x00, 0x00, 0x00 },
-    { SCENE_SPIRIT_TEMPLE_BOSS, 0x00, 0x45, 0x50 },
-    { SCENE_GANONS_TOWER, 0x00, 0x00, 0x00 },
-    { SCENE_GANONDORF_BOSS, 0x00, 0x45, 0x50 },
-    { SCENE_ICE_CAVERN, 0x00, 0x00, 0xC0 },
-    { SCENE_WINDMILL_AND_DAMPES_GRAVE, 0x00, 0x03, 0x14 },
-    { SCENE_INSIDE_GANONS_CASTLE, 0x00, 0x03, 0x10 },
-    { SCENE_GANON_BOSS, 0x00, 0x45, 0x50 },
-    { SCENE_GANONS_TOWER_COLLAPSE_INTERIOR, 0x00, 0x05, 0x50 },
-    { SCENE_INSIDE_GANONS_CASTLE_COLLAPSE, 0x00, 0x05, 0x50 },
-    { SCENE_THIEVES_HIDEOUT, 0x00, 0x00, 0x10 },
-    { SCENE_GROTTOS, 0x00, 0x00, 0xD0 },
-    { 0xFF, 0x00, 0x00, 0x00 },
-};
 
 static s16 sHBAScoreTier = 0;
 static u16 sHBAScoreDigits[] = { 0, 0, 0, 0 };
@@ -1079,7 +969,7 @@ void func_80083108(PlayState* play) {
 
                 Interface_ChangeAlpha(50);
             } else {
-                if (interfaceCtx->restrictions.bButton == 0) {
+                if (!interfaceCtx->restrictions.bButton) {
                     if ((gSaveContext.equips.buttonItems[0] == ITEM_SLINGSHOT) ||
                         (gSaveContext.equips.buttonItems[0] == ITEM_BOW) ||
                         (gSaveContext.equips.buttonItems[0] == ITEM_BOMBCHU) ||
@@ -1106,7 +996,7 @@ void func_80083108(PlayState* play) {
                             gSaveContext.equips.buttonItems[0] = gSaveContext.buttonStatus[0] & 0xFF;
                         }
                     }
-                } else if (interfaceCtx->restrictions.bButton == 1) {
+                } else {
                     if ((gSaveContext.equips.buttonItems[0] == ITEM_SLINGSHOT) ||
                         (gSaveContext.equips.buttonItems[0] == ITEM_BOW) ||
                         (gSaveContext.equips.buttonItems[0] == ITEM_BOMBCHU) ||
@@ -1144,7 +1034,7 @@ void func_80083108(PlayState* play) {
                     }
                 }
 
-                if (interfaceCtx->restrictions.bottles != 0) {
+                if (interfaceCtx->restrictions.bottles) {
                     for (i = 1; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
                         if ((gSaveContext.equips.buttonItems[i] >= ITEM_BOTTLE) &&
                             (gSaveContext.equips.buttonItems[i] <= ITEM_POE)) {
@@ -1155,7 +1045,7 @@ void func_80083108(PlayState* play) {
                             gSaveContext.buttonStatus[BUTTON_STATUS_INDEX(i)] = BTN_DISABLED;
                         }
                     }
-                } else if (interfaceCtx->restrictions.bottles == 0) {
+                } else {
                     for (i = 1; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
                         if ((gSaveContext.equips.buttonItems[i] >= ITEM_BOTTLE) &&
                             (gSaveContext.equips.buttonItems[i] <= ITEM_POE)) {
@@ -1168,7 +1058,7 @@ void func_80083108(PlayState* play) {
                     }
                 }
 
-                if (interfaceCtx->restrictions.tradeItems != 0) {
+                if (interfaceCtx->restrictions.tradeItems) {
                     for (i = 1; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
                         if ((CVarGetInteger(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA)
                             && (gSaveContext.equips.buttonItems[i] >= ITEM_MASK_KEATON)
@@ -1183,7 +1073,7 @@ void func_80083108(PlayState* play) {
                             gSaveContext.buttonStatus[BUTTON_STATUS_INDEX(i)] = BTN_DISABLED;
                         }
                     }
-                } else if (interfaceCtx->restrictions.tradeItems == 0) {
+                } else {
                     for (i = 1; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
                         if ((gSaveContext.equips.buttonItems[i] >= ITEM_WEIRD_EGG) &&
                             (gSaveContext.equips.buttonItems[i] <= ITEM_CLAIM_CHECK)) {
@@ -1196,7 +1086,7 @@ void func_80083108(PlayState* play) {
                     }
                 }
 
-                if (interfaceCtx->restrictions.hookshot != 0) {
+                if (interfaceCtx->restrictions.hookshot) {
                     for (i = 1; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
                         if ((gSaveContext.equips.buttonItems[i] == ITEM_HOOKSHOT) ||
                             (gSaveContext.equips.buttonItems[i] == ITEM_LONGSHOT)) {
@@ -1207,7 +1097,7 @@ void func_80083108(PlayState* play) {
                             gSaveContext.buttonStatus[BUTTON_STATUS_INDEX(i)] = BTN_DISABLED;
                         }
                     }
-                } else if (interfaceCtx->restrictions.hookshot == 0) {
+                } else {
                     for (i = 1; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
                         if ((gSaveContext.equips.buttonItems[i] == ITEM_HOOKSHOT) ||
                             (gSaveContext.equips.buttonItems[i] == ITEM_LONGSHOT)) {
@@ -1220,7 +1110,7 @@ void func_80083108(PlayState* play) {
                     }
                 }
 
-                if (interfaceCtx->restrictions.ocarina != 0) {
+                if (interfaceCtx->restrictions.ocarina) {
                     for (i = 1; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
                         if ((gSaveContext.equips.buttonItems[i] == ITEM_OCARINA_FAIRY) ||
                             (gSaveContext.equips.buttonItems[i] == ITEM_OCARINA_TIME)) {
@@ -1231,7 +1121,7 @@ void func_80083108(PlayState* play) {
                             gSaveContext.buttonStatus[BUTTON_STATUS_INDEX(i)] = BTN_DISABLED;
                         }
                     }
-                } else if (interfaceCtx->restrictions.ocarina == 0) {
+                } else {
                     for (i = 1; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
                         if ((gSaveContext.equips.buttonItems[i] == ITEM_OCARINA_FAIRY) ||
                             (gSaveContext.equips.buttonItems[i] == ITEM_OCARINA_TIME)) {
@@ -1244,7 +1134,7 @@ void func_80083108(PlayState* play) {
                     }
                 }
 
-                if (interfaceCtx->restrictions.farores != 0) {
+                if (interfaceCtx->restrictions.farores) {
                     for (i = 1; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
                         if (gSaveContext.equips.buttonItems[i] == ITEM_FARORES_WIND) {
                             if (gSaveContext.buttonStatus[BUTTON_STATUS_INDEX(i)] == BTN_ENABLED) {
@@ -1255,7 +1145,7 @@ void func_80083108(PlayState* play) {
                             osSyncPrintf("***(i=%d)***  ", i);
                         }
                     }
-                } else if (interfaceCtx->restrictions.farores == 0) {
+                } else {
                     for (i = 1; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
                         if (gSaveContext.equips.buttonItems[i] == ITEM_FARORES_WIND) {
                             if (gSaveContext.buttonStatus[BUTTON_STATUS_INDEX(i)] == BTN_DISABLED) {
@@ -1267,7 +1157,7 @@ void func_80083108(PlayState* play) {
                     }
                 }
 
-                if (interfaceCtx->restrictions.dinsNayrus != 0) {
+                if (interfaceCtx->restrictions.dinsNayrus) {
                     for (i = 1; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
                         if ((gSaveContext.equips.buttonItems[i] == ITEM_DINS_FIRE) ||
                             (gSaveContext.equips.buttonItems[i] == ITEM_NAYRUS_LOVE)) {
@@ -1278,7 +1168,7 @@ void func_80083108(PlayState* play) {
                             gSaveContext.buttonStatus[BUTTON_STATUS_INDEX(i)] = BTN_DISABLED;
                         }
                     }
-                } else if (interfaceCtx->restrictions.dinsNayrus == 0) {
+                } else {
                     for (i = 1; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
                         if ((gSaveContext.equips.buttonItems[i] == ITEM_DINS_FIRE) ||
                             (gSaveContext.equips.buttonItems[i] == ITEM_NAYRUS_LOVE)) {
@@ -1291,7 +1181,7 @@ void func_80083108(PlayState* play) {
                     }
                 }
 
-                if (interfaceCtx->restrictions.all != 0) {
+                if (interfaceCtx->restrictions.all) {
                     for (i = 1; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
                         if ((gSaveContext.equips.buttonItems[i] != ITEM_OCARINA_FAIRY) &&
                             (gSaveContext.equips.buttonItems[i] != ITEM_OCARINA_TIME) &&
@@ -1317,7 +1207,7 @@ void func_80083108(PlayState* play) {
                             }
                         }
                     }
-                } else if (interfaceCtx->restrictions.all == 0) {
+                } else {
                     for (i = 1; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
                         if ((gSaveContext.equips.buttonItems[i] != ITEM_DINS_FIRE) &&
                             (gSaveContext.equips.buttonItems[i] != ITEM_HOOKSHOT) &&
@@ -1355,61 +1245,26 @@ void func_80083108(PlayState* play) {
 
 void Interface_SetSceneRestrictions(PlayState* play) {
     InterfaceContext* interfaceCtx = &play->interfaceCtx;
-    s16 i;
-    u8 currentScene;
 
-    // clang-format off
-    interfaceCtx->restrictions.hGauge = interfaceCtx->restrictions.bButton =
-    interfaceCtx->restrictions.aButton = interfaceCtx->restrictions.bottles =
-    interfaceCtx->restrictions.tradeItems = interfaceCtx->restrictions.hookshot =
-    interfaceCtx->restrictions.ocarina = interfaceCtx->restrictions.warpSongs =
-    interfaceCtx->restrictions.sunsSong = interfaceCtx->restrictions.farores =
-    interfaceCtx->restrictions.dinsNayrus = interfaceCtx->restrictions.all = 0;
-    // clang-format on
+    SceneDBEntry* entry = SceneDB_Retrieve(play->sceneNum);
+    interfaceCtx->restrictions.hGauge = entry->restrictions.hGauge;
+    interfaceCtx->restrictions.bButton = entry->restrictions.bButton;
+    interfaceCtx->restrictions.aButton = entry->restrictions.aButton;
+    interfaceCtx->restrictions.bottles = entry->restrictions.bottles;
+    interfaceCtx->restrictions.tradeItems = entry->restrictions.tradeItems;
+    interfaceCtx->restrictions.hookshot = entry->restrictions.hookshot;
+    interfaceCtx->restrictions.ocarina = entry->restrictions.ocarina;
+    interfaceCtx->restrictions.warpSongs = entry->restrictions.warpSongs;
+    interfaceCtx->restrictions.sunsSong = entry->restrictions.sunsSong;
+    interfaceCtx->restrictions.farores = entry->restrictions.farores;
+    interfaceCtx->restrictions.dinsNayrus = entry->restrictions.dinsNayrus;
+    interfaceCtx->restrictions.all = entry->restrictions.all;
 
-    i = 0;
-
-    // "Data settings related to button display scene_data_ID=%d\n"
-    osSyncPrintf("ボタン表示関係データ設定 scene_data_ID=%d\n", play->sceneNum);
-
-    do {
-        currentScene = (u8)play->sceneNum;
-        if (sRestrictionFlags[i].scene == currentScene) {
-            interfaceCtx->restrictions.hGauge = (sRestrictionFlags[i].flags1 & 0xC0) >> 6;
-            interfaceCtx->restrictions.bButton = (sRestrictionFlags[i].flags1 & 0x30) >> 4;
-            interfaceCtx->restrictions.aButton = (sRestrictionFlags[i].flags1 & 0x0C) >> 2;
-            interfaceCtx->restrictions.bottles = (sRestrictionFlags[i].flags1 & 0x03) >> 0;
-            interfaceCtx->restrictions.tradeItems = (sRestrictionFlags[i].flags2 & 0xC0) >> 6;
-            interfaceCtx->restrictions.hookshot = (sRestrictionFlags[i].flags2 & 0x30) >> 4;
-            interfaceCtx->restrictions.ocarina = (sRestrictionFlags[i].flags2 & 0x0C) >> 2;
-            interfaceCtx->restrictions.warpSongs = (sRestrictionFlags[i].flags2 & 0x03) >> 0;
-            interfaceCtx->restrictions.sunsSong = (sRestrictionFlags[i].flags3 & 0xC0) >> 6;
-            interfaceCtx->restrictions.farores = (sRestrictionFlags[i].flags3 & 0x30) >> 4;
-            interfaceCtx->restrictions.dinsNayrus = (sRestrictionFlags[i].flags3 & 0x0C) >> 2;
-            interfaceCtx->restrictions.all = (sRestrictionFlags[i].flags3 & 0x03) >> 0;
-
-            osSyncPrintf(VT_FGCOL(YELLOW));
-            osSyncPrintf("parameter->button_status = %x,%x,%x\n", sRestrictionFlags[i].flags1,
-                         sRestrictionFlags[i].flags2, sRestrictionFlags[i].flags3);
-            osSyncPrintf("h_gage=%d, b_button=%d, a_button=%d, c_bottle=%d\n", interfaceCtx->restrictions.hGauge,
-                         interfaceCtx->restrictions.bButton, interfaceCtx->restrictions.aButton,
-                         interfaceCtx->restrictions.bottles);
-            osSyncPrintf("c_warasibe=%d, c_hook=%d, c_ocarina=%d, c_warp=%d\n", interfaceCtx->restrictions.tradeItems,
-                         interfaceCtx->restrictions.hookshot, interfaceCtx->restrictions.ocarina,
-                         interfaceCtx->restrictions.warpSongs);
-            osSyncPrintf("c_sunmoon=%d, m_wind=%d, m_magic=%d, another=%d\n", interfaceCtx->restrictions.sunsSong,
-                         interfaceCtx->restrictions.farores, interfaceCtx->restrictions.dinsNayrus,
-                         interfaceCtx->restrictions.all);
-            osSyncPrintf(VT_RST);
-            if (CVarGetInteger(CVAR_ENHANCEMENT("BetterFarore"), 0)) {
-                if (currentScene == SCENE_GERUDO_TRAINING_GROUND || currentScene == SCENE_INSIDE_GANONS_CASTLE) {
-                    interfaceCtx->restrictions.farores = 0;
-                }
-            }
-            return;
+    if (CVarGetInteger(CVAR_ENHANCEMENT("BetterFarore"), 0)) {
+        if (play->sceneNum == SCENE_GERUDO_TRAINING_GROUND || play->sceneNum == SCENE_INSIDE_GANONS_CASTLE) {
+            interfaceCtx->restrictions.farores = 0;
         }
-        i++;
-    } while (sRestrictionFlags[i].scene != 0xFF);
+    }
 }
 
 Gfx* Gfx_TextureIA8(Gfx* displayListHead, void* texture, s16 textureWidth, s16 textureHeight, s16 rectLeft, s16 rectTop,
@@ -6968,7 +6823,7 @@ void Interface_Update(PlayState* play) {
                 play->msgCtx.ocarinaMode = OCARINA_MODE_04;
             }
         } else if ((play->roomCtx.curRoom.behaviorType1 != ROOM_BEHAVIOR_TYPE1_1) &&
-                   (interfaceCtx->restrictions.sunsSong != 3)) {
+                   (!interfaceCtx->restrictions.sunsSong)) {
             if ((gSaveContext.dayTime >= 0x4555) && (gSaveContext.dayTime < 0xC001)) {
                 gSaveContext.nextDayTime = 0;
                 play->transitionType = TRANS_TYPE_FADE_BLACK_FAST;

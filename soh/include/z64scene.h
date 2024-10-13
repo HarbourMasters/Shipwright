@@ -1,5 +1,6 @@
 #ifndef Z64SCENE_H
 #define Z64SCENE_H
+#include "z64math.h"
 
 #include "command_macros_base.h"
 #include "libultraship/libultra.h"

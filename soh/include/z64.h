@@ -792,7 +792,7 @@ typedef struct {
     /* 0x0254 */ u16    minimapAlpha;
     /* 0x0256 */ s16    startAlpha;
     /* 0x0258 */ s16    unk_258;
-    /* 0x025A */ s16    unk_25A;
+    /* 0x025A */ s16    unk_25A; // TODO unneeded, just use mapIndex
     /* 0x025C */ s16    mapRoomNum;
     /* 0x025E */ s16    mapPaletteIndex; // "map_palete_no"
     /* 0x0260 */ u8     unk_260;
@@ -1482,7 +1482,6 @@ typedef struct PlayState {
     /* 0x1241C */ TransitionFade transitionFade;
     /* 0x12428 */ char unk_12428[0x3];
     /* 0x1242B */ u8 unk_1242B;
-    /* 0x1242C */ SceneTableEntry* loadedScene;
     /* 0x12430 */ char unk_12430[0xE8];
     // SOH [Custom Models] MTX tracker for flex based skeletons
     Mtx** flexLimbOverrideMTX;
