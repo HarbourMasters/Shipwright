@@ -6,6 +6,8 @@
 
 #include "z_en_okarina_effect.h"
 #include "vt.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA)
 
@@ -64,7 +66,9 @@ void EnOkarinaEffect_TriggerStorm(EnOkarinaEffect* this, PlayState* play) {
     if ((gWeatherMode != 0) || play->envCtx.unk_17 != 0) {
         play->envCtx.unk_DE = 1;
     }
-    play->envCtx.lightningMode = LIGHTNING_MODE_ON;
+    if (GameInteractor_Should(VB_DISABLE_LIGHT_SENSITIVITY, false)) {
+        play->envCtx.lightningMode = LIGHTNING_MODE_ON;
+    }
     Environment_PlayStormNatureAmbience(play);
     EnOkarinaEffect_SetupAction(this, EnOkarinaEffect_ManageStorm);
 }
