@@ -2230,13 +2230,13 @@ void Cutscene_HandleConditionalTriggers(PlayState* play) {
             CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) &&
             LINK_IS_ADULT &&
             !Flags_GetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS) &&
-            scene == SCENE_TEMPLE_OF_TIME)
+            (scene == SCENE_TEMPLE_OF_TIME)
         ))) {
             Flags_SetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS);
             gSaveContext.entranceIndex = ENTR_TEMPLE_OF_TIME_0;
             gSaveContext.cutsceneIndex = 0xFFF8;
         } else if (!Flags_GetEventChkInf(EVENTCHKINF_WATCHED_GANONS_CASTLE_COLLAPSE_CAUGHT_BY_GERUDO) &&
-                   scene == SCENE_GANON_BOSS)) {
+                   (scene == SCENE_GANON_BOSS)) {
             Flags_SetEventChkInf(EVENTCHKINF_WATCHED_GANONS_CASTLE_COLLAPSE_CAUGHT_BY_GERUDO);
             gSaveContext.entranceIndex = ENTR_GANON_BOSS_0;
             gSaveContext.cutsceneIndex = 0xFFF0;

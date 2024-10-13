@@ -10215,7 +10215,6 @@ void Player_Init(Actor* thisx, PlayState* play2) {
     }
 
     if ((sp50 == 0) || (sp50 < -1)) {
-        titleFileSize = scene->titleFile.vromEnd - scene->titleFile.vromStart;
         if (GameInteractor_Should(VB_SHOW_TITLE_CARD, gSaveContext.showTitleCard)) {
             if ((gSaveContext.sceneSetupIndex < 4) &&
                 EntranceDB_RetrieveLayer(gSaveContext.entranceIndex, gSaveContext.sceneSetupIndex)->displayTitleCard &&
