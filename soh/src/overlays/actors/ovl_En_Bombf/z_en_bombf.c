@@ -7,6 +7,8 @@
 #include "z_en_bombf.h"
 #include "objects/object_bombf/object_bombf.h"
 #include "overlays/effects/ovl_Effect_Ss_Dead_Sound/z_eff_ss_dead_sound.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
@@ -396,10 +398,12 @@ void EnBombf_Update(Actor* thisx, PlayState* play) {
                 this->flashSpeedScale >>= 1;
             }
 
-            if ((this->timer < 100) && ((this->timer & (this->flashSpeedScale + 1)) != 0)) {
-                Math_SmoothStepToF(&this->flashIntensity, 150.0f, 1.0f, 150.0f / this->flashSpeedScale, 0.0f);
-            } else {
-                Math_SmoothStepToF(&this->flashIntensity, 0.0f, 1.0f, 150.0f / this->flashSpeedScale, 0.0f);
+            if (GameInteractor_Should(VB_DISABLE_LIGHT_SENSITIVITY, false)) {
+                if ((this->timer < 100) && ((this->timer & (this->flashSpeedScale + 1)) != 0)) {
+                    Math_SmoothStepToF(&this->flashIntensity, 150.0f, 1.0f, 150.0f / this->flashSpeedScale, 0.0f);
+                } else {
+                    Math_SmoothStepToF(&this->flashIntensity, 0.0f, 1.0f, 150.0f / this->flashSpeedScale, 0.0f);
+                }
             }
 
             if (this->timer < 3) {
