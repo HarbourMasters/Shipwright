@@ -2013,6 +2013,19 @@ const SceneDBInit initDB[] = {
         {},
         {}
     },
+    { // TODO explain
+        "qq",
+        "qq",
+        "none",
+        SDC_DEFAULT,
+        SCENETYPE_OTHER,
+        { false, false, false, false, false, false, false, false, false, false, false, false },
+        { false, {0, 0, 0}, 0, {} },
+        { 0, 0, 0, 0 },
+        {},
+        {},
+        {}
+    },
 };
 
 struct EntranceTableInit {
@@ -2946,16 +2959,31 @@ size_t EntranceDB::GetNumEntries() {
     return db.size();
 }
 
+// TODO WW CVar
 s32 EntranceDB::CalcId(const s32 sceneId, const s32 spawn, const s32 layer) {
     auto entrance = idLookupTable.find({ sceneId, spawn, layer });
-    // TODO assert
+
+    // If the entrance does not exist, assume it is a wrong warp
+    if (entrance == idLookupTable.end()) {
+        auto wwEntrance = idLookupTable.find({ sceneId, spawn, 0 });
+        // TODO assert wwEntrance != idLookupTable.end()
+        return wwEntrance->second + layer;
+    }
+
     return entrance->second;
 }
 
 s32 EntranceDB::CalcId(const s32 entrance, const s32 newLayer) {
     Entry& entry = RetrieveEntry(entrance);
     auto newEntrance = idLookupTable.find({ entry.entry.sceneId, entry.entry.spawn, newLayer });
-    // TODO assert
+
+    // If the entrance does not exist, assume it is a wrong warp
+    if (newEntrance == idLookupTable.end()) {
+        auto wwEntrance = idLookupTable.find({ entry.entry.sceneId, entry.entry.spawn, 0 });
+        // TODO assert wwEntrance != idLookupTable.end()
+        return wwEntrance->second + newLayer;
+    }
+
     return newEntrance->second;
 }
 
