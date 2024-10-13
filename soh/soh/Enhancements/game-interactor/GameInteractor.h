@@ -481,8 +481,8 @@ typedef enum {
     VB_BOTTLE_ACTOR,
 
     /*** Accessibility ***/
-    // Vanilla Condition: false
-    VB_DISABLE_LIGHT_SENSITIVITY,
+    // Vanilla Condition: true
+    VB_ALLOW_FLASHING_LIGHTS,
 } GIVanillaBehavior;
 
 #ifdef __cplusplus

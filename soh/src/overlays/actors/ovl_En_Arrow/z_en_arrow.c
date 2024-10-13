@@ -317,7 +317,7 @@ void EnArrow_Fly(EnArrow* this, PlayState* play) {
             }
 
             if (this->actor.params == ARROW_NUT) {
-                if (GameInteractor_Should(VB_DISABLE_LIGHT_SENSITIVITY, false)) {
+                if (GameInteractor_Should(VB_ALLOW_FLASHING_LIGHTS, true)) {
                     iREG(50) = -1;
                 }
                 

@@ -66,7 +66,7 @@ void EnOkarinaEffect_TriggerStorm(EnOkarinaEffect* this, PlayState* play) {
     if ((gWeatherMode != 0) || play->envCtx.unk_17 != 0) {
         play->envCtx.unk_DE = 1;
     }
-    if (GameInteractor_Should(VB_DISABLE_LIGHT_SENSITIVITY, false)) {
+    if (GameInteractor_Should(VB_ALLOW_FLASHING_LIGHTS, true)) {
         play->envCtx.lightningMode = LIGHTNING_MODE_ON;
     }
     Environment_PlayStormNatureAmbience(play);

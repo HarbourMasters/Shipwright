@@ -12,28 +12,17 @@ extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 }
 
-void Accessibility_LightSensitivity(GIVanillaBehavior _, bool* should, va_list originalArgs) {
-	static uint32_t shouldHookId1 = 0;
-	GameInteractor::Instance->UnregisterGameHookForID<GameInteractor::OnVanillaBehavior>(shouldHookId1);
+void RegisterLightSensitivityBehavior() {
+    static uint32_t shouldHookId1 = 0;
+    GameInteractor::Instance->UnregisterGameHookForID<GameInteractor::OnVanillaBehavior>(shouldHookId1);
     shouldHookId1 = 0;
-	
-	if (!gPlayState) {
-		return;
-	}
 
 	if (CVarGetInteger(CVAR_SETTING("Lightsensitivity"), 0)) {
-		return;
-	}
+        return;
+    }
 
-	shouldHookId1 = REGISTER_VB_SHOULD(VB_DISABLE_LIGHT_SENSITIVITY, {
-		*should = true;
-		return;
-	});
-
-	*should = false;
-	return;
-}
-
-void RegisterLightSensitivityBehavior() {
-	GameInteractor::Instance->RegisterGameHookForID<GameInteractor::OnVanillaBehavior>(VB_DISABLE_LIGHT_SENSITIVITY, Accessibility_LightSensitivity);
+	shouldHookId1 = REGISTER_VB_SHOULD(VB_ALLOW_FLASHING_LIGHTS, {
+        *should = false;
+        return;
+    });
 }

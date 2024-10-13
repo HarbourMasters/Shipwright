@@ -499,7 +499,7 @@ void EnBomChu_Draw(Actor* thisx, PlayState* play) {
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     func_8002EBCC(&this->actor, play, 0);
-    if (GameInteractor_Should(VB_DISABLE_LIGHT_SENSITIVITY, false)) {
+    if (GameInteractor_Should(VB_ALLOW_FLASHING_LIGHTS, false)) {
         if (this->timer >= 40) {
             blinkTime = this->timer % 20;
             blinkHalfPeriod = 10;

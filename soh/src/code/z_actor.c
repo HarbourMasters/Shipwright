@@ -3582,7 +3582,7 @@ Actor* Actor_Find(ActorContext* actorCtx, s32 actorId, s32 actorCategory) {
  * While the screen flashes, the game freezes.
  */
 void Enemy_StartFinishingBlow(PlayState* play, Actor* actor) {
-    if (GameInteractor_Should(VB_DISABLE_LIGHT_SENSITIVITY, false)) {
+    if (GameInteractor_Should(VB_ALLOW_FLASHING_LIGHTS, true)) {
         play->actorCtx.freezeFlashTimer = 5;
     }
     SoundSource_PlaySfxAtFixedWorldPos(play, &actor->world.pos, 20, NA_SE_EN_LAST_DAMAGE);
@@ -4173,7 +4173,7 @@ void Actor_SetColorFilter(Actor* actor, s16 colorFlag, s16 colorIntensityMax, s1
     if ((colorFlag == 0x8000) && !(colorIntensityMax & 0x8000)) {
         Audio_PlayActorSound2(actor, NA_SE_EN_LIGHT_ARROW_HIT);
     }
-    if (GameInteractor_Should(VB_DISABLE_LIGHT_SENSITIVITY, false)) {
+    if (GameInteractor_Should(VB_ALLOW_FLASHING_LIGHTS, true)) {
         actor->colorFilterParams = colorFlag | xluFlag | ((colorIntensityMax & 0xF8) << 5) | duration;
         actor->colorFilterTimer = duration;
     }

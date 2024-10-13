@@ -40,6 +40,8 @@
 #include "Enhancements/resolution-editor/ResolutionEditor.h"
 #include "Enhancements/enemyrandomizer.h"
 
+#include "soh/Enhancements/accessibility/accessibility.h";
+
 // FA icons are kind of wonky, if they worked how I expected them to the "+ 2.0f" wouldn't be needed, but
 // they don't work how I expect them to so I added that because it looked good when I eyeballed it
 #define FA_ICON_BUTTON_FRAME_PADDING_X(icon) (((optionsButtonSize.x - ImGui::CalcTextSize(icon).x) / 2) + 2.0f)
@@ -550,7 +552,9 @@ void DrawSettingsMenu() {
             UIWidgets::PaddedEnhancementCheckbox("Disable Idle Camera Re-Centering", CVAR_SETTING("A11yDisableIdleCam"));
             UIWidgets::Tooltip("Disables the automatic re-centering of the camera when idle.");
 
-            UIWidgets::PaddedEnhancementCheckbox("Enable Lightsensitivity Assistance", CVAR_SETTING("Lightsensitivity"));
+            if (UIWidgets::PaddedEnhancementCheckbox("Enable Lightsensitivity Assistance", CVAR_SETTING("Lightsensitivity"))) {
+                RegisterLightSensitivityBehavior();
+            }
             UIWidgets::Tooltip("Reduces effects that would cause impact to those sensitive to Light.");
             
             ImGui::EndMenu();

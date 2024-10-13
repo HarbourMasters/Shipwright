@@ -398,7 +398,7 @@ void EnBombf_Update(Actor* thisx, PlayState* play) {
                 this->flashSpeedScale >>= 1;
             }
 
-            if (GameInteractor_Should(VB_DISABLE_LIGHT_SENSITIVITY, false)) {
+            if (GameInteractor_Should(VB_ALLOW_FLASHING_LIGHTS, false)) {
                 if ((this->timer < 100) && ((this->timer & (this->flashSpeedScale + 1)) != 0)) {
                     Math_SmoothStepToF(&this->flashIntensity, 150.0f, 1.0f, 150.0f / this->flashSpeedScale, 0.0f);
                 } else {
