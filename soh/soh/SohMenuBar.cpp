@@ -549,6 +549,9 @@ void DrawSettingsMenu() {
         #endif
             UIWidgets::PaddedEnhancementCheckbox("Disable Idle Camera Re-Centering", CVAR_SETTING("A11yDisableIdleCam"));
             UIWidgets::Tooltip("Disables the automatic re-centering of the camera when idle.");
+
+            UIWidgets::PaddedEnhancementCheckbox("Enable Lightsensitivity Assistance", CVAR_SETTING("Lightsensitivity"));
+            UIWidgets::Tooltip("Reduces effects that would cause impact to those sensitive to Light.");
             
             ImGui::EndMenu();
         }
