@@ -7,6 +7,9 @@
 #include "z_en_weather_tag.h"
 #include "vt.h"
 
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 void EnWeatherTag_Init(Actor* thisx, PlayState* play);
@@ -323,6 +326,8 @@ void EnWeatherTag_EnabledRainThunder(EnWeatherTag* this, PlayState* play) {
 
 void EnWeatherTag_Update(Actor* thisx, PlayState* play) {
     EnWeatherTag* this = (EnWeatherTag*)thisx;
+
+    GameInteractor_Should(VB_ALLOW_FLASHING_LIGHTS, false);
 
     this->actionFunc(this, play);
     if (BREG(0) != 0) {
