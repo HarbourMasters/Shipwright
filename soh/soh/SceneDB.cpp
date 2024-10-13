@@ -2367,6 +2367,493 @@ void SceneDB::Entry::SetWorldMinimapTexture(const std::string& newWorldMinimapTe
     entry.worldData.minimapTexture = worldMinimapTexture == "" ? nullptr : worldMinimapTexture.c_str(); // TODO all?
 }
 
+struct MqMapMarkInit {
+    struct Room {
+        std::vector<MapMarkPoint> chestMarks;
+        std::vector<MapMarkPoint> bossMarks;
+    };
+
+    std::vector<Room> rooms;
+};
+
+std::vector<MqMapMarkInit> mqMapMarkInit = {
+    // Deku Tree
+    {
+        {
+            { { { 3, 71, 50 } }, {} },
+            { {}, {} },
+            { { { 1, 64, 62 } }, {} },
+            { { { 4, 76, 37 } }, {} },
+            { {}, {} },
+            { { { 0, 46, 50 }, { 5, 76, 52 } }, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, { { -1, 50, 23 } } },
+            { { { 2, 46, 50 }, { 6, 58, 60 } }, {} },
+            { {}, {} },
+            { {}, {} }
+        },
+    },
+    // Dodongo's Cavern
+    {
+        {
+            { { { 0, 69, 14 }, { 4, 69, 30 } }, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { { { 5, 54, 54 } }, {} },
+            { { { 2, 69, 54 } }, {} },
+            { {}, { { -1, 37, 49 } } },
+            { {}, {} },
+            { { { 3, 59, 53 } }, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { { { 1, 68, 54 } }, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+        }
+    },
+    // Jabu-Jabu's Belly
+    {
+        {
+            { { { 3, 66, 50 }, { 5, 72, 47 } }, {} },
+            { { { 7, 72, 54 } }, {} },
+            { {}, {} },
+            { { { 4, 64, 62 }, { 8, 79, 38 } }, {} },
+            { {}, {} },
+            { { { 10, 64, 45 } }, { { -1, 67, 32 } } },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { { { 9, 68, 45 } }, {} },
+            { {}, {} },
+            { {}, {} },
+            { { { 1, 79, 33 }, { 6, 61, 41 } }, {} },
+            { { { 0, 48, 57 }, { 2, 77, 55 } }, {} },
+            // Jabu-Jabu's Belly minimap 16
+            // SoH [General] - This entry corresponds to Big Octorok's room and is missing in the MQ game
+            // N64 hardware does an OoB read and lands on MQ Forest Temple room 0
+            // To avoid UB with OoB for SoH, the correct entry is now added below
+            { {}, {} },
+        }
+    },
+    // Forest Temple
+    {
+        {
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { { { 0, 72, 57 } }, {} },
+            { { { 1, 69, 39 }, { 9, 62, 65 } }, {} },
+            { {}, {} },
+            { { { 9, 71, 59 } }, {} },
+            { {}, {} },
+            { {}, {} },
+            { { { 13, 80, 53 } }, {} },
+            { { { 15, 49, 50 } }, {} },
+            { {}, {} },
+            { { { 6, 65, 53 } }, {} },
+            { {}, {} },
+            { { { 11, 39, 35 } }, { { -1, 53, 5 } } },
+            { { { 2, 65, 54 } }, {} },
+            { { { 14, 64, 31 } }, {} },
+            { {}, {} },
+            { {}, {} },
+            { { { 3, 75, 53 } }, {} },
+            { { { 12, 69, 52 } }, {} },
+            { { { 5, 58, 27 } }, {} },
+            { {}, {} },
+            { {}, {} },
+        }
+    },
+    // Fire Temple
+    {
+        {
+            { {}, {} },
+            { {}, {} },
+            { { { 7, 53, 70 } }, { { -1, 40, 47 } } },
+            { {}, {} },
+            { { { 11, 57, 48 } }, {} },
+            { { { 3, 67, 73 }, { 6, 58, 76 } }, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { { { 2, 78, 62 }, { 12, 77, 58 } }, {} },
+            { {}, {} },
+            { { { 4, 60, 54 } }, {} },
+            { {}, {} },
+            { {}, {} },
+            { { { 1, 72, 68 } }, {} },
+            { { { 8, 66, 57 } }, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { { { 5, 51, 61 } }, {} },
+            { {}, {} },
+            { {}, {} },
+        }
+    },
+    // Water Temple
+    {
+        {
+            { {}, {} },
+            { {}, {} },
+            { { { 6, 81, 68 } }, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { { { 5, 75, 55 } }, {} },
+            { {}, {} },
+            { {}, { { -1, 77, 40 } } },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { { { 1, 74, 61 } }, {} },
+            { { { 2, 73, 65 } }, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { { { 0, 73, 63 } }, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+        }
+    },
+    // Spirit Temple
+    {
+        {
+            { { { 26, 27, 35 }, { 27, 36, 35 }, { 30, 27, 28 }, { 31, 36, 28 } }, {} },
+            { { { 29, 67, 63 } }, {} },
+            { {}, {} },
+            { { { 0, 71, 62 }, { 8, 71, 48 } }, {} },
+            { {}, {} },
+            { { { 3, 56, 54 }, { 15, 69, 42 } }, {} },
+            { { { 28, 60, 54 } }, {} },
+            { {}, {} },
+            { { { 1, 76, 40 } }, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { { { 7, 70, 53 } }, {} },
+            { {}, {} },
+            { { { 4, 68, 42 } }, {} },
+            { {}, {} },
+            { {}, {} },
+            { { { 25, 78, 58 } }, {} },
+            { { { 24, 78, 58 } }, {} },
+            { {}, {} },
+            { {}, {} },
+            { { { 5, 71, 55 } }, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { { { 18, 75, 54 } }, {} },
+            { {}, {} },
+            { { { 6, 78, 55 }, { 12, 70, 70 } }, {} },
+            { { { 2, 76, 37 } }, { { -1, 57, 23 } } },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+        }
+    },
+    // Shadow Temple
+    {
+        {
+            { {}, {} },
+            { { { 1, 77, 64 } }, {} },
+            { {}, {} },
+            { {}, { { -1, 77, 76 } } },
+            { { { 7, 76, 65 } }, {} },
+            { {}, {} },
+            { { { 2, 83, 67 }, { 14, 84, 59 } }, {} },
+            { { { 3, 76, 67 } }, {} },
+            { {}, {} },
+            { {}, {} },
+            { { { 4, 78, 62 }, { 5, 74, 62 }, { 6, 71, 68 } }, {} },
+            { { { 9, 77, 64 } }, {} },
+            { {}, {} },
+            { { { 10, 71, 65 }, { 11, 80, 65 } }, {} },
+            { { { 16, 73, 64 } }, {} },
+            { {}, {} },
+            { { { 12, 87, 64 }, { 22, 87, 68 } }, {} },
+            { { { 13, 77, 66 } }, {} },
+            { {}, {} },
+            { { { 21, 78, 66 } }, {} },
+            { { { 8, 76, 66 }, { 20, 78, 68 } }, {} },
+            { { { 14, 77, 62 } }, {} },
+            { {}, {} },
+            { { { 15, 56, 67 } }, {} },
+            { {}, {} },
+            { { { 16, 73, 64 } }, {} },
+            { { { 14, 77, 62 } }, {} },
+        }
+    },
+    // Bottom of the Well
+    {
+        {
+            { { { 3, 60, 18 } }, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { { { 2, 73, 61 } }, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { { { 1, 74, 66 } }, {} },
+        }
+    },
+    // Ice Cavern
+    {
+        {
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { { { 2, 71, 59 } }, {} },
+            { {}, {} },
+            { { { 0, 48, 36 } }, {} },
+            { {}, {} },
+            { { { 1, 73, 67 } }, {} },
+        }
+    },
+};
+
+void SceneDB::Entry::SetMapMarkData(const bool isMQ) {
+    if (isMQ) {
+        if (this->entry.id >= SCENE_DEKU_TREE && this->entry.id <= SCENE_ICE_CAVERN) {
+            s32 dungeonNum = this->entry.id - SCENE_DEKU_TREE;
+            for (size_t i = 0; i < mqMapMarkInit[dungeonNum].rooms.size(); i++) {
+                dungeonRoomInfo[i].chestMarks = mqMapMarkInit[dungeonNum].rooms[i].chestMarks;
+                dungeonRoomInfo[i].bossMarks = mqMapMarkInit[dungeonNum].rooms[i].bossMarks;
+
+                dungeonRooms[i].chestMarks = dungeonRoomInfo[i].chestMarks.data();
+                dungeonRooms[i].numChestMarks = dungeonRoomInfo[i].chestMarks.size();
+                dungeonRooms[i].bossMarks = dungeonRoomInfo[i].bossMarks.data();
+                dungeonRooms[i].numBossMarks = dungeonRoomInfo[i].bossMarks.size();
+            }
+        }
+    } else {
+        SetDungeonRooms(initDB[this->entry.id].dungeonData.rooms);
+    }
+}
+
+struct MqPauseMapMarkInit {
+    struct Floor {
+        std::vector<PauseMapMarkPoint> chestMarks;
+        std::vector<PauseMapMarkPoint> bossMarks;
+    };
+
+    Floor floors[8];
+};
+
+std::vector<MqPauseMapMarkInit> mqPauseMapMarkInit =
+{
+    // Deku Tree
+    {
+        {
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { { { 2, 40.0f, -33.0f }, { 6, 49.0f, -42.0f } }, {} }, // 3F
+            { { { 1, 48.0f, -63.0f } }, {} }, // 2F
+            { { { 3, 84.0f, -39.0f } }, {} }, // 1F
+            { { { 0, 46.0f, -59.0f }, { 4, 77.0f, -26.0f }, { 5, 65.0f, -61.0f } }, {} }, // B1
+            { {}, { { -1, 55.0f, 0.0f } } }, // B2
+        }
+    },
+    // Dodongo's Cavern
+    {
+        {
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { { { 2, 55.0f, -36.0f }, { 3, 54.0f, -51.0f }, { 5, 13.0f, -61.0f } }, {} }, // 2F
+            { { { 0, 47.0f, -40.0f }, { 1, 51.0f, -3.0f }, { 4, 47.0f, -47.0f } }, { { -1, 23.0f, -25.0f } } }, // 1F
+        }
+    },
+    // Jabu-Jabu's Belly
+    {
+        {
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { { { 3, 48.0f, -68.0f }, { 5, 50.0f, -66.0f }, { 7, 55.0f, -50.0f }, { 9, 58.0f, 1.0f }, { 10, 62.0f, -45.0f } }, { { -1, 65.0f, -37.0f } } }, // 1F
+            { { { 0, 37.0f, -49.0f }, { 1, 65.0f, -38.0f }, { 2, 52.0f, -48.0f }, { 4, 46.0f, -36.0f }, { 6, 59.0f, -41.0f }, { 8, 52.0f, -26.0f } }, {} }, // B1
+        }
+    },
+    // Forest Temple
+    {
+        {
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { { { 3, 53.0f, -64.0f }, { 5, 65.0f, -9.0f }, { 12, 49.0f, -1.0f }, { 13, 40.0f, 0.0f }, { 14, 18.0f, -2.0f }, { 15, 59.0f, 0.0f } }, {} }, // 2F
+            { { { 0, 49.0f, -1.0f }, { 1, 71.0f, -13.0f }, { 2, 11.0f, -25.0f }, { 6, 84.0f, -16.0f } }, {} }, // 1F
+            { { { 9, 65.0f, -30.0f } }, {} }, // B1
+            { { { 11, 41.0f, -24.0f } }, { { -1, 50.0f, -11.0f } } }, // B2
+        }
+    },
+    // Fire Temple
+    {
+        {
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { { { 5, 24.0f, -40.0f } }, {} }, // 5F
+            { {}, {} }, // 4F
+            { { { 3, 75.0f, -47.0f }, { 6, 72.0f, -51.0f }, { 8, 65.0f, -12.0f } }, {} }, // 3F
+            { { { 11, 78.0f, -35.0f } }, {} }, // 2F
+            { { { 1, 67.0f, -58.0f }, { 2, 48.0f, -30.0f }, { 4, 63.0f, -14.0f }, { 7, 36.0f, -45.0f }, { 12, 47.0f, -26.0f } }, { { -1, 26.0f, -34.0f } } }, // 1F
+        }
+    },
+    // Water Temple
+    {
+        {
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { { { 2, 88.0f, -60.0f } }, { { -1, 62.0f, -23.0f } } }, // 3F
+            { { { 0, 88.0f, -60.0f } }, {} }, // 2F
+            { { { 1, 88.0f, -60.0f }, { 5, 49.0f, -43.0f } }, {} }, // 1F
+            { { { 6, 75.0f, -65.0f } }, {} }, // B1
+        }
+    },
+    // Spirit Temple
+    {
+        {
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { { { 18, 46.0f, -30.0f } }, {} }, // 4F
+            { { { 1, 23.0f, -33.0f }, { 2, 56.0f, -11.0f }, { 5, 83.0f, -25.0f }, { 24, 84.0f, -39.0f }, { 25, 74.0f, -37.0f } }, { { -1, 47.0f, 0.0f } } }, // 3F
+            { { { 3, 46.0f, -20.0f }, { 6, 28.0f, -19.0f }, { 12, 25.0f, -25.0f }, { 15, 50.0f, -13.0f }, { 28, 48.0f, -29.0f } }, {} }, // 2F
+            { { { 0, 14.0f, -24.0f }, { 4, 55.0f, -14.0f }, { 7, 78.0f, -2.0f }, { 8, 14.0f, -16.0f }, { 26, 42.0f, -43.0f }, { 27, 50.0f, -43.0f }, { 29, 25.0f, -35.0f }, { 30, 42.0f, -36.0f }, { 31, 50.0f, -36.0f } }, {} }, // 1F
+        }
+    },
+    // Shadow Temple
+    {
+        {
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { { { 1, 41.0f, -17.0f }, { 7, 27.0f, -24.0f } }, {} }, // B1
+            { { { 2, 81.0f, -20.0f }, { 3, 74.0f, -37.0f } }, {} }, // B2
+            { { { 12, 96.0f, -51.0f }, { 16, 46.0f, -42.0f }, { 22, 96.0f, -55.0f } }, {} }, // B3
+            { { { 4, 43.0f, -66.0f }, { 5, 37.0f, -66.0f }, { 6, 33.0f, -72.0f }, { 8, 85.0f, -18.0f }, { 9, 61.0f, -42.0f }, { 10, 15.0f, -4.0f }, { 11, 25.0f, -4.0f }, { 13, 19.0f, -29.0f }, { 14, 78.0f, -15.0f }, { 15, 60.0f, -70.0f }, { 21, 92.0f, -29.0f }, { 20, 87.0f, -20.0f } }, { { -1, 31.0f, -45.0f } } }, // B4
+        }
+    },
+    // Bottom of the Well
+    {
+        {
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { { { 2, 84.0f, -38.0f }, { 3, 57.0f, -18.0f } }, {} }, // B1
+            { {}, {} }, // B2
+            { { { 1, 72.0f, -32.0f } }, {} }, // B3
+        }
+    },
+    // Ice Cavern
+    {
+        {
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { {}, {} },
+            { { { 0, 66.0f, -2.0f }, { 1, 77.0f, -46.0f }, { 2, 27.0f, -45.0f } }, {} }, // 1F
+        }
+    },
+};
+
+void SceneDB::Entry::SetPauseMapMarkData(const bool isMQ) {
+    if (isMQ) {
+        if (this->entry.id >= SCENE_DEKU_TREE && this->entry.id <= SCENE_ICE_CAVERN) {
+            s32 dungeonNum = this->entry.id - SCENE_DEKU_TREE;
+            for (size_t i = 0; i < 8; i++) {
+                dungeonFloorInfo[i].chestMarks = mqPauseMapMarkInit[dungeonNum].floors[i].chestMarks;
+                dungeonFloorInfo[i].bossMarks = mqPauseMapMarkInit[dungeonNum].floors[i].bossMarks;
+
+                dungeonFloors[i].numChestMarks = dungeonFloorInfo[i].chestMarks.size();
+                dungeonFloors[i].chestMarks = dungeonFloorInfo[i].chestMarks.data();
+                dungeonFloors[i].numBossMarks = dungeonFloorInfo[i].bossMarks.size();
+                dungeonFloors[i].bossMarks = dungeonFloorInfo[i].bossMarks.data();
+            }
+        }
+    } else {
+        SetDungeonFloors(initDB[this->entry.id].dungeonData.floors);
+    }
+}
+
 bool SceneDB::Entry::isBoss() {
     return this->entry.bossData.mapScene != -1;
 }
@@ -2540,16 +3027,24 @@ extern "C" int SceneDB_RetrieveId(const char* name) {
     return SceneDB::Instance->RetrieveId(name);
 }
 
-extern "C" int SceneRB_IsBoss(const int id) {
+extern "C" int SceneDB_IsBoss(const int id) {
     return SceneDB::Instance->RetrieveEntry(id).isBoss();
 }
 
-extern "C" int SceneRB_IsDungeon(const int id) {
+extern "C" int SceneDB_IsDungeon(const int id) {
     return SceneDB::Instance->RetrieveEntry(id).isDungeon();
 }
 
-extern "C" int SceneRB_IsOverworld(const int id) {
+extern "C" int SceneDB_IsOverworld(const int id) {
     return SceneDB::Instance->RetrieveEntry(id).isOverworld();
+}
+
+extern "C" void SceneDB_SetMapMarkData(const int id, const int isMQ) {
+    SceneDB::Instance->RetrieveEntry(id).SetMapMarkData(isMQ);
+}
+
+extern "C" void SceneDB_SetPauseMapMarkData(const int id, const int isMQ) {
+    SceneDB::Instance->RetrieveEntry(id).SetPauseMapMarkData(isMQ);
 }
 
 extern "C" EntranceDBEntry* EntranceDB_Retrieve(const int id) {

@@ -256,6 +256,8 @@ public:
         void SetDungeonIntraRoomTransitions(const std::vector<SceneDBInit::IntraRoomTransitionInit>& newDungeonIntraRoomTransitions);
         void SetDungeonIntraRoomTransitions(const std::vector<SceneDBIntraRoomTransition>& newDungeonIntraRoomTransitions);
         void SetWorldMinimapTexture(const std::string& newWorldMinimapTexture);
+        void SetMapMarkData(const bool isMQ);
+        void SetPauseMapMarkData(const bool isMQ);
 
         bool isBoss();
         bool isDungeon();
@@ -353,9 +355,11 @@ private:
 
 SceneDBEntry* SceneDB_Retrieve(const int id);
 int SceneDB_RetrieveId(const char* name);
-int SceneRB_IsBoss(const int id);
-int SceneRB_IsDungeon(const int id);
-int SceneRB_IsOverworld(const int id);
+int SceneDB_IsBoss(const int id);
+int SceneDB_IsDungeon(const int id);
+int SceneDB_IsOverworld(const int id);
+void SceneDB_SetMapMarkData(const int id, const int isMQ);
+void SceneDB_SetPauseMapMarkData(const int id, const int isMQ);
 
 EntranceDBEntry* EntranceDB_Retrieve(const int id);
 EntranceDBEntry* EntranceDB_RetrieveLayer(const int id, const int layer);

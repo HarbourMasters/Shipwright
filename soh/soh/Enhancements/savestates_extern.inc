@@ -2,7 +2,6 @@ extern "C" MtxF* sMatrixStack;
 extern "C" MtxF* sCurrentMatrix;
 extern "C" LightsBuffer sLightsBuffer;
 extern "C" s16 sWarpTimerTarget;
-extern "C" MapMarkData** sLoadedMarkDataTable;
 
 //Camera static data
 extern "C" int32_t sInitRegs;

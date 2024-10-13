@@ -51,15 +51,10 @@ static const Vtx sMarkChestVtx[] = {
 };
 
 void PauseMapMark_Init(PlayState* play) {
-    if(ResourceMgr_IsGameMasterQuest()) {
-        gLoadedPauseMarkDataTable = gPauseMapMarkDataTableMasterQuest;
-    } else {
-        gLoadedPauseMarkDataTable = gPauseMapMarkDataTable;
-    }
+    SceneDB_SetPauseMapMarkData(play->sceneNum, ResourceMgr_IsGameMasterQuest());
 }
 
 void PauseMapMark_Clear(PlayState* play) {
-    gLoadedPauseMarkDataTable = NULL;
 }
 
 void PauseMapMark_DrawForDungeon(PlayState* play) {
@@ -67,7 +62,7 @@ void PauseMapMark_DrawForDungeon(PlayState* play) {
     SceneDBEntry* entry = SceneDB_Retrieve(play->sceneNum);
     SceneDBFloor* floor = &entry->dungeonData.floors[play->pauseCtx.dungeonMapSlot - 3];
 
-    if (SceneRB_IsBoss(play->sceneNum)) {
+    if (SceneDB_IsBoss(play->sceneNum)) {
         if (gBossMarkState == 0) {
             Math_ApproachF(&gBossMarkScale, 1.5f, 1.0f, 0.041f);
             if (gBossMarkScale == 1.5f) {
@@ -108,7 +103,7 @@ void PauseMapMark_DrawForDungeon(PlayState* play) {
         if (Flags_GetTreasure(play, floor->chestMarks[i].chestFlag)) {
             display = false;
         } else {
-            display = SceneRB_IsDungeon(play->sceneNum);
+            display = SceneDB_IsDungeon(play->sceneNum);
         }
 
         if (display) {
@@ -162,7 +157,7 @@ void PauseMapMark_DrawForDungeon(PlayState* play) {
             break;
         }
 
-        if ((mapMarkData->markType == PAUSE_MAP_MARK_BOSS) && SceneRB_IsBoss(play->sceneNum)) {
+        if ((mapMarkData->markType == PAUSE_MAP_MARK_BOSS) && SceneDB_IsBoss(play->sceneNum)) {
             if (gBossMarkState == 0) {
                 Math_ApproachF(&gBossMarkScale, 1.5f, 1.0f, 0.041f);
                 if (gBossMarkScale == 1.5f) {
@@ -195,7 +190,7 @@ void PauseMapMark_DrawForDungeon(PlayState* play) {
                 if (Flags_GetTreasure(play, markPoint->chestFlag)) {
                     display = false;
                 } else {
-                    display = SceneRB_IsDungeon(play->sceneNum);
+                    display = SceneDB_IsDungeon(play->sceneNum);
                 }
             } else {
                 display = true;
@@ -237,7 +232,7 @@ void PauseMapMark_DrawForDungeon(PlayState* play) {
 void PauseMapMark_Draw(PlayState* play) {
     PauseMapMark_Init(play);
 
-    if (SceneRB_IsDungeon(play->sceneNum) || (CVarGetInteger("TODO.PulsateBossIcon", 0) != 0 && SceneRB_IsBoss(play->sceneNum))) {
+    if (SceneDB_IsDungeon(play->sceneNum) || (CVarGetInteger("TODO.PulsateBossIcon", 0) != 0 && SceneDB_IsBoss(play->sceneNum))) {
         PauseMapMark_DrawForDungeon(play);
     }
 

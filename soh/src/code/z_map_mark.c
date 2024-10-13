@@ -53,23 +53,15 @@ static MapMarkInfo sMapMarkInfoTable[] = {
 //    gMapMarkDataTableVanilla,
 //};
 
-MapMarkData** sLoadedMarkDataTable;
-
 void MapMark_Init(PlayState* play) {
-    if(ResourceMgr_IsGameMasterQuest()) {
-        sLoadedMarkDataTable = gMapMarkDataTableMq;
-    } else {
-        sLoadedMarkDataTable = gMapMarkDataTableVanilla;
-    }
+    SceneDB_SetMapMarkData(play->sceneNum, ResourceMgr_IsGameMasterQuest());
 }
 
 void MapMark_ClearPointers(PlayState* play) {
-    sLoadedMarkDataTable = NULL;
 }
 
 void MapMark_DrawForDungeon(PlayState* play) {
     InterfaceContext* interfaceCtx = &play->interfaceCtx;
-    MapMarkIconData* mapMarkIconData;
     MapMarkPoint* markPoint;
     MapMarkInfo* markInfo;
     u16 dungeon = gSaveContext.mapIndex;
@@ -78,8 +70,6 @@ void MapMark_DrawForDungeon(PlayState* play) {
     s32 rectTop;
     SceneDBEntry* entry = SceneDB_Retrieve(dungeon);
     SceneDBRoom* room = &entry->dungeonData.rooms[interfaceCtx->mapRoomNum];
-
-    mapMarkIconData = &sLoadedMarkDataTable[dungeon][interfaceCtx->mapRoomNum][0];
 
     s32 Top_MC_Margin = CVarGetInteger(CVAR_COSMETIC("HUD.Margin.T"), 0);
     s32 Left_MC_Margin = CVarGetInteger(CVAR_COSMETIC("HUD.Margin.L"), 0);

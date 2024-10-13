@@ -61,7 +61,6 @@ typedef struct SaveStateInfo {
     uint16_t gAudioSfxSwapTarget_copy[10];
     uint8_t gAudioSfxSwapMode_copy[10];
     void (*D_801755D0_copy)(void);
-    MapMarkData** sLoadedMarkDataTableCopy;
 
     //Static Data
 
@@ -698,7 +697,6 @@ void SaveState::LoadOverlayStaticData(void) {
 void SaveState::SaveMiscCodeData(void) {
     info->gGameOverTimer_copy = gGameOverTimer;
     info->gTimeIncrement_copy = gTimeIncrement;
-    info->sLoadedMarkDataTableCopy = sLoadedMarkDataTable;
 
     info->sPlayerInitialPosX_copy = sPlayerInitialPosX;
     info->sPlayerInitialPosZ_copy = sPlayerInitialPosZ;
@@ -759,7 +757,6 @@ void SaveState::SaveMiscCodeData(void) {
 void SaveState::LoadMiscCodeData(void) {
     gGameOverTimer = info->gGameOverTimer_copy;
     gTimeIncrement = info->gTimeIncrement_copy;
-    sLoadedMarkDataTable = info->sLoadedMarkDataTableCopy;
 
     sPlayerInitialPosX = info->sPlayerInitialPosX_copy;
     sPlayerInitialPosZ = info->sPlayerInitialPosZ_copy;
