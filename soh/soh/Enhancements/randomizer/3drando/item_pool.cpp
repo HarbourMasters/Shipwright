@@ -1283,7 +1283,7 @@ void GenerateItemPool() {
   for (uint8_t i = 0; i < bottleCount; i++) {
     if (i >= rutoBottles) {
       if ((i == bottleCount - 1) && 
-          (ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_BEANS_ONLY) ||
+          (ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL_BUT_BEANS) ||
            ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL))) {
         AddItemToMainPool(RG_BOTTLE_WITH_BLUE_POTION);
       } else {
