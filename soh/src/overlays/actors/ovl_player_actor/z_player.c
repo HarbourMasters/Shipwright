@@ -10632,59 +10632,57 @@ void Player_Init(Actor* thisx, PlayState* play2) {
     MREG(64) = 0;
 }
 
-void func_808471F4(s16* pValue) {
+void Player_ApproachZeroBinang(s16* pValue) {
     s16 step;
 
-    step = (ABS(*pValue) * 100.0f) / 1000.0f;
+    step = ABS(*pValue) * 100.0f / 1000.0f;
     step = CLAMP(step, 400, 4000);
 
     Math_ScaledStepToS(pValue, 0, step);
 }
 
 void func_80847298(Player* this) {
-    s16 sp26;
-
     if (!(this->unk_6AE_rotFlags & UNK6AE_ROT_FOCUS_Y)) {
-        sp26 = this->actor.focus.rot.y - this->actor.shape.rot.y;
+        s16 diff = this->actor.focus.rot.y - this->actor.shape.rot.y;
 
-        func_808471F4(&sp26);
-        this->actor.focus.rot.y = this->actor.shape.rot.y + sp26;
+        Player_ApproachZeroBinang(&diff);
+        this->actor.focus.rot.y = this->actor.shape.rot.y + diff;
     }
 
     if (!(this->unk_6AE_rotFlags & UNK6AE_ROT_FOCUS_X)) {
-        func_808471F4(&this->actor.focus.rot.x);
+        Player_ApproachZeroBinang(&this->actor.focus.rot.x);
     }
 
     if (!(this->unk_6AE_rotFlags & UNK6AE_ROT_HEAD_X)) {
-        func_808471F4(&this->headLimbRot.x);
+        Player_ApproachZeroBinang(&this->headLimbRot.x);
     }
 
     if (!(this->unk_6AE_rotFlags & UNK6AE_ROT_UPPER_X)) {
-        func_808471F4(&this->upperLimbRot.x);
+        Player_ApproachZeroBinang(&this->upperLimbRot.x);
     }
 
     if (!(this->unk_6AE_rotFlags & UNK6AE_ROT_FOCUS_Z)) {
-        func_808471F4(&this->actor.focus.rot.z);
+        Player_ApproachZeroBinang(&this->actor.focus.rot.z);
     }
 
     if (!(this->unk_6AE_rotFlags & UNK6AE_ROT_HEAD_Y)) {
-        func_808471F4(&this->headLimbRot.y);
+        Player_ApproachZeroBinang(&this->headLimbRot.y);
     }
 
     if (!(this->unk_6AE_rotFlags & UNK6AE_ROT_HEAD_Z)) {
-        func_808471F4(&this->headLimbRot.z);
+        Player_ApproachZeroBinang(&this->headLimbRot.z);
     }
 
     if (!(this->unk_6AE_rotFlags & UNK6AE_ROT_UPPER_Y)) {
         if (this->upperLimbYawSecondary != 0) {
-            func_808471F4(&this->upperLimbYawSecondary);
+            Player_ApproachZeroBinang(&this->upperLimbYawSecondary);
         } else {
-            func_808471F4(&this->upperLimbRot.y);
+            Player_ApproachZeroBinang(&this->upperLimbRot.y);
         }
     }
 
     if (!(this->unk_6AE_rotFlags & UNK6AE_ROT_UPPER_Z)) {
-        func_808471F4(&this->upperLimbRot.z);
+        Player_ApproachZeroBinang(&this->upperLimbRot.z);
     }
 
     this->unk_6AE_rotFlags = 0;
@@ -10692,10 +10690,12 @@ void func_80847298(Player* this) {
 
 static f32 D_80854784[] = { 120.0f, 240.0f, 360.0f };
 
-static u8 sDiveDoActions[] = { DO_ACTION_1, DO_ACTION_2, DO_ACTION_3, DO_ACTION_4,
-                               DO_ACTION_5, DO_ACTION_6, DO_ACTION_7, DO_ACTION_8 };
-
-void func_808473D4(PlayState* play, Player* this) {
+/**
+ * Updates the two main interface elements that player is responsible for:
+ *     - Do Action label on the A button
+ *     - Navi C-up icon for hints
+ */
+void Player_UpdateInterface(PlayState* play, Player* this) {
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_NONE) && (this->actor.category == ACTORCAT_PLAYER)) {
         Actor* heldActor = this->heldActor;
         Actor* interactRangeActor = this->interactRangeActor;
@@ -10767,9 +10767,12 @@ void func_808473D4(PlayState* play, Player* this) {
                            (this->getItemId < GI_MAX)) {
                     doAction = DO_ACTION_GRAB;
                 } else if (this->stateFlags2 & PLAYER_STATE2_DIVING) {
+                    static u8 sDiveNumberDoActions[] = { DO_ACTION_1, DO_ACTION_2, DO_ACTION_3, DO_ACTION_4,
+                                                         DO_ACTION_5, DO_ACTION_6, DO_ACTION_7, DO_ACTION_8 };
+
                     sp24 = (D_80854784[CUR_UPG_VALUE(UPG_SCALE)] - this->actor.yDistToWater) / 40.0f;
                     sp24 = CLAMP(sp24, 0, 7);
-                    doAction = sDiveDoActions[sp24];
+                    doAction = sDiveNumberDoActions[sp24];
                 } else if (sp1C && !(this->stateFlags2 & PLAYER_STATE2_UNDERWATER)) {
                     doAction = DO_ACTION_DIVE;
                 } else if (!sp1C && (!(this->stateFlags1 & PLAYER_STATE1_SHIELDING) || Player_IsZTargeting(this) ||
@@ -11595,7 +11598,7 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
         this->unk_890--;
     }
 
-    func_808473D4(play, this);
+    Player_UpdateInterface(play, this);
     func_80836BEC(this, play);
 
     if (this->heldItemAction == PLAYER_IA_DEKU_STICK &&
