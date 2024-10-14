@@ -4,6 +4,7 @@
 #include "objects/object_ossan/object_ossan.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include "soh/Enhancements/custom-message/CustomMessageTypes.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_NO_LOCKON)
 
@@ -156,15 +157,6 @@ void EnSyatekiMan_Init(Actor* thisx, PlayState* play) {
     s32 pad;
     EnSyatekiMan* this = (EnSyatekiMan*)thisx;
 
-    if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_INTERIOR_ENTRANCES)) {
-        // If child is in the adult shooting gallery or adult in the child shooting gallery, then despawn the shooting gallery man
-        if ((LINK_IS_CHILD && Entrance_SceneAndSpawnAre(SCENE_SHOOTING_GALLERY, 0x00)) || //Kakariko Village -> Adult Shooting Gallery, index 003B in the entrance table
-            (LINK_IS_ADULT && Entrance_SceneAndSpawnAre(SCENE_SHOOTING_GALLERY, 0x01))) { //Market -> Child Shooting Gallery,           index 016D in the entrance table
-            Actor_Kill(thisx);
-            return;
-        }
-    }
-
     osSyncPrintf("\n\n");
     // "Old man appeared!! Muhohohohohohohon"
     osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ 親父登場！！むほほほほほほほーん ☆☆☆☆☆ \n" VT_RST);
@@ -180,7 +172,6 @@ void EnSyatekiMan_Init(Actor* thisx, PlayState* play) {
     this->blinkFunc = EnSyatekiMan_BlinkWait;
     this->actor.colChkInfo.cylRadius = 100;
     this->actionFunc = EnSyatekiMan_Start;
-    this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
 }
 
 void EnSyatekiMan_Destroy(Actor* thisx, PlayState* play) {
@@ -355,11 +346,7 @@ void EnSyatekiMan_EndGame(EnSyatekiMan* this, PlayState* play) {
                     this->tempGallery = this->actor.parent;
                     this->actor.parent = NULL;
                     if (!LINK_IS_ADULT) {
-                        if(IS_RANDO && !Flags_GetTreasure(play, 0x1E)) {
-                            this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MARKET_SHOOTING_GALLERY_REWARD, GI_BULLET_BAG_50);
-                            this->getItemId = this->getItemEntry.getItemId;
-                            Flags_SetTreasure(play, 0x1E);
-                        } else if (!IS_RANDO && !Flags_GetItemGetInf(ITEMGETINF_0D)) {
+                        if (!Flags_GetItemGetInf(ITEMGETINF_0D)) {
                             osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ Equip_Pachinko ☆☆☆☆☆ %d\n" VT_RST,
                                          CUR_UPG_VALUE(UPG_BULLET_BAG));
                             if (CUR_UPG_VALUE(UPG_BULLET_BAG) == 1) {
@@ -368,16 +355,11 @@ void EnSyatekiMan_EndGame(EnSyatekiMan* this, PlayState* play) {
                                 this->getItemId = GI_BULLET_BAG_50;
                             }
                         } else {
-                            this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
                             this->getItemId = GI_RUPEE_PURPLE;
                         }
                     } else {
                         // Only give the adult rando reward when the player has a quiver
-                        if (IS_RANDO && !Flags_GetTreasure(play, 0x1F) && CUR_UPG_VALUE(UPG_QUIVER) > 0) {
-                            this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_SHOOTING_GALLERY_REWARD, GI_QUIVER_50);
-                            this->getItemId = this->getItemEntry.getItemId;
-                            Flags_SetTreasure(play, 0x1F);
-                        } else if (!IS_RANDO && !Flags_GetItemGetInf(ITEMGETINF_0E)) {
+                        if (!Flags_GetItemGetInf(ITEMGETINF_0E)) {
                             osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ Equip_Bow ☆☆☆☆☆ %d\n" VT_RST,
                                          CUR_UPG_VALUE(UPG_QUIVER));
                             switch (CUR_UPG_VALUE(UPG_QUIVER)) {
@@ -392,14 +374,11 @@ void EnSyatekiMan_EndGame(EnSyatekiMan* this, PlayState* play) {
                                     break;
                             }
                         } else {
-                            this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
                             this->getItemId = GI_RUPEE_PURPLE;
                         }
                     }
-                    if (!IS_RANDO || this->getItemEntry.getItemId == GI_NONE) {
-                        func_8002F434(&this->actor, play, this->getItemId, 2000.0f, 1000.0f);
-                    } else {
-                        GiveItemEntryFromActor(&this->actor, play, this->getItemEntry, 2000.0f, 1000.0f);
+                    if (GameInteractor_Should(VB_GIVE_ITEM_FROM_SHOOTING_GALLERY, true, this)) {
+                        Actor_OfferGetItem(&this->actor, play, this->getItemId, 2000.0f, 1000.0f);
                     }
                     this->actionFunc = EnSyatekiMan_GivePrize;
                     break;
@@ -426,33 +405,26 @@ void EnSyatekiMan_EndGame(EnSyatekiMan* this, PlayState* play) {
             }
         }
     }
-}
+} 
 
 void EnSyatekiMan_GivePrize(EnSyatekiMan* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
-    if (Actor_HasParent(&this->actor, play)) {
+    if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(VB_GIVE_ITEM_FROM_SHOOTING_GALLERY, true, this)) {
         this->actionFunc = EnSyatekiMan_FinishPrize;
-    } else {
-        if (!IS_RANDO || this->getItemEntry.getItemId == GI_NONE) {
-            func_8002F434(&this->actor, play, this->getItemId, 2000.0f, 1000.0f);
-        } else {
-            GiveItemEntryFromActor(&this->actor, play, this->getItemEntry, 2000.0f, 1000.0f);
-        }
+    } else { 
+        Actor_OfferGetItem(&this->actor, play, this->getItemId, 2000.0f, 1000.0f);
     }
 }
 
 void EnSyatekiMan_FinishPrize(EnSyatekiMan* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
-    if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) {
+    if (((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) || !GameInteractor_Should(VB_GIVE_ITEM_FROM_SHOOTING_GALLERY, true, this)) {
         // "Successful completion"
         osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ 正常終了 ☆☆☆☆☆ \n" VT_RST);
         if (!LINK_IS_ADULT) {
             Flags_SetItemGetInf(ITEMGETINF_0D);
-        } else if ((this->getItemId == GI_QUIVER_40) || (this->getItemId == GI_QUIVER_50)) {
+        } else if (GameInteractor_Should(VB_BE_ELIGIBLE_FOR_ADULT_SHOOTING_GAME_REWARD, (this->getItemId == GI_QUIVER_40) || (this->getItemId == GI_QUIVER_50), this)) {
             Flags_SetItemGetInf(ITEMGETINF_0E);
-        } else if (IS_RANDO && LINK_IS_ADULT && CUR_UPG_VALUE(UPG_QUIVER) == 0) {
-            // In Rando without a quiver, display a message reminding the player to come back with a bow
-            Message_StartTextbox(play, TEXT_SHOOTING_GALLERY_MAN_COME_BACK_WITH_BOW, NULL);
         }
         this->gameResult = SYATEKI_RESULT_NONE;
         this->actor.parent = this->tempGallery;

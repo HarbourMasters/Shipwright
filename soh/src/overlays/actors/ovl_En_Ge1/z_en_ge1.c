@@ -8,6 +8,7 @@
 #include "vt.h"
 #include "objects/object_ge1/object_ge1.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
 
@@ -133,7 +134,7 @@ void EnGe1_Init(Actor* thisx, PlayState* play) {
         case GE1_TYPE_GATE_OPERATOR:
             this->hairstyle = GE1_HAIR_STRAIGHT;
 
-            if (EnGe1_CheckCarpentersFreed()) {
+            if (GameInteractor_Should(VB_GERUDOS_BE_FRIENDLY, EnGe1_CheckCarpentersFreed())) {
                 this->actionFunc = EnGe1_CheckGate_GateOp;
             } else {
                 this->actionFunc = EnGe1_WatchForPlayerFrontOnly;
@@ -143,7 +144,7 @@ void EnGe1_Init(Actor* thisx, PlayState* play) {
         case GE1_TYPE_NORMAL:
             this->hairstyle = GE1_HAIR_STRAIGHT;
 
-            if (EnGe1_CheckCarpentersFreed()) {
+            if (GameInteractor_Should(VB_GERUDOS_BE_FRIENDLY, EnGe1_CheckCarpentersFreed())) {
                 this->actionFunc = EnGe1_SetNormalText;
             } else {
                 this->actionFunc = EnGe1_WatchForAndSensePlayer;
@@ -173,7 +174,7 @@ void EnGe1_Init(Actor* thisx, PlayState* play) {
 
             if (gSaveContext.eventInf[0] & 0x100) {
                 this->actionFunc = EnGe1_TalkAfterGame_Archery;
-            } else if (EnGe1_CheckCarpentersFreed()) {
+            } else if (GameInteractor_Should(VB_GERUDOS_BE_FRIENDLY, EnGe1_CheckCarpentersFreed())) {
                 this->actionFunc = EnGe1_Wait_Archery;
             } else {
                 this->actionFunc = EnGe1_WatchForPlayerFrontOnly;
@@ -183,13 +184,8 @@ void EnGe1_Init(Actor* thisx, PlayState* play) {
         case GE1_TYPE_TRAINING_GROUNDS_GUARD:
             this->hairstyle = GE1_HAIR_STRAIGHT;
 
-            if (EnGe1_CheckCarpentersFreed()) {
-                // If the gtg gate is permanently open, don't let the gaurd charge to open it again
-                if (IS_RANDO && gSaveContext.sceneFlags[93].swch & 0x00000004) {
-                    this->actionFunc = EnGe1_SetNormalText;
-                } else {
-                    this->actionFunc = EnGe1_CheckForCard_GTGGuard;
-                }
+            if (GameInteractor_Should(VB_GERUDOS_BE_FRIENDLY, EnGe1_CheckCarpentersFreed())) {
+                this->actionFunc = EnGe1_CheckForCard_GTGGuard;
             } else {
                 this->actionFunc = EnGe1_WatchForPlayerFrontOnly;
             }
@@ -235,14 +231,6 @@ void EnGe1_SetAnimationIdle(EnGe1* this) {
 }
 
 s32 EnGe1_CheckCarpentersFreed(void) {
-    if (IS_RANDO) {
-        if (CHECK_QUEST_ITEM(QUEST_GERUDO_CARD)) {
-            return 1;
-        } else {
-            return 0;
-        }
-    }
-
     u16 carpenterFlags = gSaveContext.eventChkInf[9];
     if (!((carpenterFlags & 1) && (carpenterFlags & 2) && (carpenterFlags & 4) && (carpenterFlags & 8))) {
         return 0;
@@ -281,7 +269,7 @@ void EnGe1_KickPlayer(EnGe1* this, PlayState* play) {
 void EnGe1_SpotPlayer(EnGe1* this, PlayState* play) {
     this->cutsceneTimer = 30;
     this->actionFunc = EnGe1_KickPlayer;
-    func_8002DF54(play, &this->actor, 0x5F);
+    Player_SetCsActionWithHaltedActors(play, &this->actor, 0x5F);
     func_80078884(NA_SE_SY_FOUND);
     Message_StartTextbox(play, 0x6000, &this->actor);
 }
@@ -531,16 +519,8 @@ void EnGe1_WaitTillItemGiven_Archery(EnGe1* this, PlayState* play) {
     GetItemEntry getItemEntry = (GetItemEntry)GET_ITEM_NONE;
     s32 getItemId;
 
-    if (Actor_HasParent(&this->actor, play)) {
-        if (IS_RANDO && gSaveContext.minigameScore >= 1500 && !Flags_GetInfTable(INFTABLE_190)) {
-            Flags_SetItemGetInf(ITEMGETINF_0F);
-            Flags_SetInfTable(INFTABLE_190);
-            this->stateFlags |= GE1_STATE_GIVE_QUIVER;
-            this->actor.parent = NULL;
-            return;
-        } else {
-            this->actionFunc = EnGe1_SetupWait_Archery;
-        }
+    if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(VB_GIVE_ITEM_FROM_HORSEBACK_ARCHERY, true, this)) {
+        this->actionFunc = EnGe1_SetupWait_Archery;
 
         if (this->stateFlags & GE1_STATE_GIVE_QUIVER) {
             Flags_SetItemGetInf(ITEMGETINF_0F);
@@ -549,33 +529,21 @@ void EnGe1_WaitTillItemGiven_Archery(EnGe1* this, PlayState* play) {
         }
     } else {
         if (this->stateFlags & GE1_STATE_GIVE_QUIVER) {
-            if (!IS_RANDO) {
-                switch (CUR_UPG_VALUE(UPG_QUIVER)) {
-                    //! @bug Asschest. See next function for details
-                    case 1:
-                        getItemId = GI_QUIVER_40;
-                        break;
-                    case 2:
-                        getItemId = GI_QUIVER_50;
-                        break;
-                }
-            } else {
-                getItemEntry = Randomizer_GetItemFromKnownCheck(RC_GF_HBA_1500_POINTS, CUR_UPG_VALUE(UPG_QUIVER) == 1 ? GI_QUIVER_40 : GI_QUIVER_50);
-                getItemId = getItemEntry.getItemId;
+            switch (CUR_UPG_VALUE(UPG_QUIVER)) {
+                //! @bug Asschest. See next function for details
+                case 1:
+                    getItemId = GI_QUIVER_40;
+                    break;
+                case 2:
+                    getItemId = GI_QUIVER_50;
+                    break;
             }
         } else {
-            if (!IS_RANDO) {
-                getItemId = GI_HEART_PIECE;
-            } else {
-                getItemEntry = Randomizer_GetItemFromKnownCheck(RC_GF_HBA_1000_POINTS, GI_HEART_PIECE);
-                getItemId = getItemEntry.getItemId;
-            }
+            getItemId = GI_HEART_PIECE;
         }
 
-        if (!IS_RANDO || getItemEntry.getItemId == GI_NONE) {
-            func_8002F434(&this->actor, play, getItemId, 10000.0f, 50.0f);
-        } else {
-            GiveItemEntryFromActor(&this->actor, play, getItemEntry, 10000.0f, 50.0f);
+        if (GameInteractor_Should(VB_GIVE_ITEM_FROM_HORSEBACK_ARCHERY, true, this)) {
+            Actor_OfferGetItem(&this->actor, play, getItemId, 10000.0f, 50.0f);
         }
     }
 }
@@ -590,33 +558,21 @@ void EnGe1_BeginGiveItem_Archery(EnGe1* this, PlayState* play) {
     }
 
     if (this->stateFlags & GE1_STATE_GIVE_QUIVER) {
-        if (!IS_RANDO) {
-            switch (CUR_UPG_VALUE(UPG_QUIVER)) {
-                //! @bug Asschest. See next function for details
-                case 1:
-                    getItemId = GI_QUIVER_40;
-                    break;
-                case 2:
-                    getItemId = GI_QUIVER_50;
-                    break;
-            }
-        } else {
-            getItemEntry = Randomizer_GetItemFromKnownCheck(RC_GF_HBA_1500_POINTS, CUR_UPG_VALUE(UPG_QUIVER) == 1 ? GI_QUIVER_40 : GI_QUIVER_50);
-            getItemId = getItemEntry.getItemId;
+        switch (CUR_UPG_VALUE(UPG_QUIVER)) {
+            //! @bug Asschest. See next function for details
+            case 1:
+                getItemId = GI_QUIVER_40;
+                break;
+            case 2:
+                getItemId = GI_QUIVER_50;
+                break;
         }
     } else {
-        if (!IS_RANDO) {
-            getItemId = GI_HEART_PIECE;
-        } else {
-            getItemEntry = Randomizer_GetItemFromKnownCheck(RC_GF_HBA_1000_POINTS, GI_HEART_PIECE);
-            getItemId = getItemEntry.getItemId;
-        }
+        getItemId = GI_HEART_PIECE;
     }
 
-    if (!IS_RANDO || getItemEntry.getItemId == GI_NONE) {
-        func_8002F434(&this->actor, play, getItemId, 10000.0f, 50.0f);
-    } else {
-        GiveItemEntryFromActor(&this->actor, play, getItemEntry, 10000.0f, 50.0f);
+    if (GameInteractor_Should(VB_GIVE_ITEM_FROM_HORSEBACK_ARCHERY, true, this)) {
+        Actor_OfferGetItem(&this->actor, play, getItemId, 10000.0f, 50.0f);
     }
 }
 
@@ -662,7 +618,7 @@ void EnGe1_BeginGame_Archery(EnGe1* this, PlayState* play) {
                     Flags_SetEventChkInf(EVENTCHKINF_PLAYED_HORSEBACK_ARCHERY);
 
                     if (!(player->stateFlags1 & PLAYER_STATE1_ON_HORSE)) {
-                        func_8002DF54(play, &this->actor, 1);
+                        Player_SetCsActionWithHaltedActors(play, &this->actor, 1);
                     } else {
                         horse = Actor_FindNearby(play, &player->actor, ACTOR_EN_HORSE, ACTORCAT_BG, 1200.0f);
                         player->actor.freezeTimer = 1200;

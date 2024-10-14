@@ -51,4 +51,6 @@ typedef struct DemoIm {
     /* 0x02D4 */ NpcInteractInfo interactInfo;
 } DemoIm; // size = 0x02FC
 
+void func_80986794(DemoIm* demoIm);
+
 #endif
