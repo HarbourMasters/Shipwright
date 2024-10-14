@@ -324,8 +324,8 @@ void ArmsHook_Draw(Actor* thisx, PlayState* play) {
 
         func_80090480(play, &this->collider, &this->hookInfo, &sp6C, &sp60);
         Gfx_SetupDL_25Opa(play->state.gfxCtx);
-        if (CVarGetInteger(CVAR_ENHANCEMENT("EquimentAlwaysVisible"), 0) &&
-            CVarGetInteger(CVAR_ENHANCEMENT("ScaleAdultEquimentAsChild"), 0) && LINK_IS_CHILD) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("EquipmentAlwaysVisible"), 0) &&
+            CVarGetInteger(CVAR_ENHANCEMENT("ScaleAdultEquipmentAsChild"), 0) && LINK_IS_CHILD) {
             Matrix_Scale(0.8, 0.8, 0.8, MTXMODE_APPLY);
         }
         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
@@ -337,8 +337,8 @@ void ArmsHook_Draw(Actor* thisx, PlayState* play) {
         sp5C = sqrtf(sp58);
         Matrix_RotateY(Math_FAtan2F(sp78.x, sp78.z), MTXMODE_APPLY);
         Matrix_RotateX(Math_FAtan2F(-sp78.y, sp5C), MTXMODE_APPLY);
-        if (CVarGetInteger(CVAR_ENHANCEMENT("EquimentAlwaysVisible"), 0) &&
-            CVarGetInteger(CVAR_ENHANCEMENT("ScaleAdultEquimentAsChild"), 0) && LINK_IS_CHILD) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("EquipmentAlwaysVisible"), 0) &&
+            CVarGetInteger(CVAR_ENHANCEMENT("ScaleAdultEquipmentAsChild"), 0) && LINK_IS_CHILD) {
             Matrix_Scale(0.012f, 0.012f, sqrtf(SQ(sp78.y) + sp58) * 0.01f, MTXMODE_APPLY);
         } else {
             Matrix_Scale(0.015f, 0.015f, sqrtf(SQ(sp78.y) + sp58) * 0.01f, MTXMODE_APPLY);
