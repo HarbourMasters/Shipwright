@@ -21,11 +21,6 @@ void MessageViewer::InitElement() {
 }
 
 void MessageViewer::DrawElement() {
-    ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Custom Message Debugger", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
-        ImGui::End();
-        return;
-    }
     ImGui::Text("Table ID");
     ImGui::SameLine();
     ImGui::InputText("##TableID", mTableIdBuf, MAX_STRING_SIZE, ImGuiInputTextFlags_CallbackCharFilter, UIWidgets::TextFilters::FilterAlphaNum);
@@ -75,7 +70,6 @@ void MessageViewer::DrawElement() {
     if (ImGui::Button("Display Message##CustomMessage")) {
         mDisplayCustomMessageClicked = true;
     }
-    ImGui::End();
     // ReSharper restore CppDFAUnreachableCode
 }
 
@@ -205,16 +199,7 @@ void MessageDebug_StartTextBox(const char* tableId, uint16_t textId, uint8_t lan
         const CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(tableId, textId);
         font->charTexBuf[0] = (messageEntry.GetTextBoxType() << 4) | messageEntry.GetTextBoxPosition();
         switch (language) {
-            case LANGUAGE_FRA:
-                font->msgLength = SohUtils::CopyStringToCharBuffer(buffer, messageEntry.GetFrench(), maxBufferSize);
-                break;
-            case LANGUAGE_GER:
-                font->msgLength = SohUtils::CopyStringToCharBuffer(buffer, messageEntry.GetGerman(), maxBufferSize);
-                break;
-            case LANGUAGE_ENG:
-            default:
-                font->msgLength = SohUtils::CopyStringToCharBuffer(buffer, messageEntry.GetEnglish(), maxBufferSize);
-                break;
+            font->msgLength = SohUtils::CopyStringToCharBuffer(buffer, messageEntry.GetForLanguage(language), maxBufferSize);
         }
         msgCtx->msgLength = static_cast<int32_t>(font->msgLength);
     }

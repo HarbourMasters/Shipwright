@@ -13,6 +13,9 @@ typedef struct EnSi {
     /* 0x014C */ EnSiActionFunc actionFunc;
     /* 0x0150 */ ColliderCylinder collider;
     /* 0x019C */ u8 unk_19C;
+    // #region SOH [Randomizer] Caching the get item entry for the draw function for performance
+    /*        */ GetItemEntry sohGetItemEntry;
+    // #endregion
 } EnSi; // size = 0x01A0
 
 #endif

@@ -13,6 +13,11 @@ typedef struct ItemBHeart {
     /* 0x015C */ char unk_15C[0x8];
     /* 0x0164 */ s16 unk_164;
     /* 0x0166 */ char unk_166[0x6];
+    // #region SOH [Randomizer] Cached for drawing for performance
+    /*        */ GetItemEntry sohItemEntry;
+    // #endregion
 } ItemBHeart; // size = 0x016C
+
+void func_80B85264(ItemBHeart* itemBHeart, PlayState* play);
 
 #endif

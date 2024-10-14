@@ -13,6 +13,8 @@
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/boss-rush/BossRush.h"
 #include "soh/ResourceManagerHelpers.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED | ACTOR_FLAG_DRAGGED_BY_HOOKSHOT)
 
@@ -294,10 +296,14 @@ void BossSst_Init(Actor* thisx, PlayState* play2) {
         this->actor.home.pos = this->actor.world.pos;
         this->actor.shape.rot.y = 0;
         if (Flags_GetClear(play, play->roomCtx.curRoom.num)) {
-            Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, ROOM_CENTER_X, ROOM_CENTER_Y,
-                        ROOM_CENTER_Z + 400.0f, 0, 0, 0, WARP_DUNGEON_ADULT, true);
-            Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, ROOM_CENTER_X, ROOM_CENTER_Y,
-                        ROOM_CENTER_Z - 200.0f, 0, 0, 0, 0, true);
+            if (GameInteractor_Should(VB_SPAWN_BLUE_WARP, true, this)) {
+                Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, ROOM_CENTER_X, ROOM_CENTER_Y,
+                            ROOM_CENTER_Z + 400.0f, 0, 0, 0, WARP_DUNGEON_ADULT, true);
+            }
+            if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true)) {
+                Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, ROOM_CENTER_X, ROOM_CENTER_Y,
+                            ROOM_CENTER_Z - 200.0f, 0, 0, 0, 0, true);
+            }
             Actor_Kill(&this->actor);
         } else {
             sHands[LEFT] =
@@ -391,7 +397,7 @@ void BossSst_HeadSetupIntro(BossSst* this, PlayState* play) {
     player->stateFlags1 |= PLAYER_STATE1_INPUT_DISABLED;
 
     func_80064520(play, &play->csCtx);
-    func_8002DF54(play, &this->actor, 8);
+    Player_SetCsActionWithHaltedActors(play, &this->actor, 8);
     sCutsceneCamera = Play_CreateSubCamera(play);
     Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
     Play_ChangeCameraStatus(play, sCutsceneCamera, CAM_STAT_ACTIVE);
@@ -424,7 +430,7 @@ void BossSst_HeadIntro(BossSst* this, PlayState* play) {
         sHands[LEFT]->actor.flags |= ACTOR_FLAG_TARGETABLE;
         player->stateFlags1 &= ~PLAYER_STATE1_INPUT_DISABLED;
         func_80064534(play, &play->csCtx);
-        func_8002DF54(play, &this->actor, 7);
+        Player_SetCsActionWithHaltedActors(play, &this->actor, 7);
         sCameraAt.y += 30.0f;
         sCameraAt.z += 300.0f;
         Play_CameraSetAtEye(play, sCutsceneCamera, &sCameraAt, &sCameraEye);
@@ -1033,7 +1039,7 @@ void BossSst_HeadSetupDeath(BossSst* this, PlayState* play) {
     Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
     Play_ChangeCameraStatus(play, sCutsceneCamera, CAM_STAT_ACTIVE);
     Play_CopyCamera(play, sCutsceneCamera, MAIN_CAM);
-    func_8002DF54(play, &player->actor, 8);
+    Player_SetCsActionWithHaltedActors(play, &player->actor, 8);
     func_80064520(play, &play->csCtx);
     Math_Vec3f_Copy(&sCameraEye, &GET_ACTIVE_CAM(play)->eye);
     this->actionFunc = BossSst_HeadDeath;
@@ -1195,7 +1201,7 @@ void BossSst_HeadFinish(BossSst* this, PlayState* play) {
             Play_ChangeCameraStatus(play, sCutsceneCamera, CAM_STAT_WAIT);
             Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_ACTIVE);
             Play_ClearCamera(play, sCutsceneCamera);
-            func_8002DF54(play, &GET_PLAYER(play)->actor, 7);
+            Player_SetCsActionWithHaltedActors(play, &GET_PLAYER(play)->actor, 7);
             func_80064534(play, &play->csCtx);
             Actor_Kill(&this->actor);
             Actor_Kill(&sHands[LEFT]->actor);
@@ -1203,9 +1209,11 @@ void BossSst_HeadFinish(BossSst* this, PlayState* play) {
             Flags_SetClear(play, play->roomCtx.curRoom.num);
         }
     } else if (this->effects[0].alpha == 0) {
-        Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, ROOM_CENTER_X, ROOM_CENTER_Y, ROOM_CENTER_Z, 0, 0, 0,
-                    WARP_DUNGEON_ADULT, true);
-        if (!IS_BOSS_RUSH) {
+        if (GameInteractor_Should(VB_SPAWN_BLUE_WARP, true, this)) {
+            Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, ROOM_CENTER_X, ROOM_CENTER_Y, ROOM_CENTER_Z, 0, 0, 0,
+                        WARP_DUNGEON_ADULT, true);
+        }
+        if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true)) {
             Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART,
                         (Math_SinS(this->actor.shape.rot.y) * 200.0f) + ROOM_CENTER_X, ROOM_CENTER_Y,
                         Math_CosS(this->actor.shape.rot.y) * 200.0f + ROOM_CENTER_Z, 0, 0, 0, 0, true);
@@ -2564,8 +2572,7 @@ void BossSst_HeadCollisionCheck(BossSst* this, PlayState* play) {
                 if (Actor_ApplyDamage(&this->actor) == 0) {
                     Enemy_StartFinishingBlow(play, &this->actor);
                     BossSst_HeadSetupDeath(this, play);
-                    gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_BONGO_BONGO] = GAMEPLAYSTAT_TOTAL_TIME;
-                    BossRush_HandleCompleteBoss(play);
+                    GameInteractor_ExecuteOnBossDefeat(&this->actor);
                 } else {
                     BossSst_HeadSetupDamage(this);
                 }

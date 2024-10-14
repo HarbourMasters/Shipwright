@@ -427,12 +427,6 @@ void DemoKankyo_KillDoorOfTimeCollision(DemoKankyo* this, PlayState* play) {
 void DemoKankyo_Update(Actor* thisx, PlayState* play) {
     DemoKankyo* this = (DemoKankyo*)thisx;
     this->actionFunc(this, play);
-
-    // In ER, override the warp song locations. Also removes the warp song cutscene
-    if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES) &&
-        thisx->params == 0x000F) { // Warp Song particles
-        Entrance_SetWarpSongEntrance();
-    }
 }
 
 void DemoKankyo_Draw(Actor* thisx, PlayState* play) {

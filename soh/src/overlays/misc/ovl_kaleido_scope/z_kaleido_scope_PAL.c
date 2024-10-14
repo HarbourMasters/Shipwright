@@ -23,6 +23,7 @@
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/SaveManager.h"
+#include "soh/Enhancements/kaleido.h"
 
 
 static void* sEquipmentFRATexs[] = {
@@ -1422,10 +1423,15 @@ void KaleidoScope_DrawPages(PlayState* play, GraphicsContext* gfxCtx) {
             gSPMatrix(POLY_KAL_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-            POLY_KAL_DISP = KaleidoScope_DrawPageSections(POLY_KAL_DISP, pauseCtx->questPageVtx,
-                                                          sQuestStatusTexs[gSaveContext.language]);
-
-            KaleidoScope_DrawQuestStatus(play, gfxCtx);
+            if (pauseCtx->randoQuestMode) {
+                POLY_KAL_DISP = KaleidoScope_DrawPageSections(POLY_KAL_DISP, pauseCtx->saveVtx,
+                                                              sSaveTexs[gSaveContext.language]);
+                RandoKaleido_DrawMiscCollectibles(play);
+            } else {
+                POLY_KAL_DISP = KaleidoScope_DrawPageSections(POLY_KAL_DISP, pauseCtx->questPageVtx,
+                                                              sQuestStatusTexs[gSaveContext.language]);
+                KaleidoScope_DrawQuestStatus(play, gfxCtx);
+            }
         }
 
         if (pauseCtx->pageIndex != PAUSE_MAP) {
@@ -1517,10 +1523,15 @@ void KaleidoScope_DrawPages(PlayState* play, GraphicsContext* gfxCtx) {
                 gSPMatrix(POLY_KAL_DISP++, MATRIX_NEWMTX(gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-                POLY_KAL_DISP = KaleidoScope_DrawPageSections(POLY_KAL_DISP, pauseCtx->questPageVtx,
-                                                              sQuestStatusTexs[gSaveContext.language]);
-
-                KaleidoScope_DrawQuestStatus(play, gfxCtx);
+                if (pauseCtx->randoQuestMode) {
+                    POLY_KAL_DISP = KaleidoScope_DrawPageSections(POLY_KAL_DISP, pauseCtx->saveVtx,
+                                                                  sSaveTexs[gSaveContext.language]);
+                    RandoKaleido_DrawMiscCollectibles(play);
+                } else {
+                    POLY_KAL_DISP = KaleidoScope_DrawPageSections(POLY_KAL_DISP, pauseCtx->questPageVtx,
+                                                                  sQuestStatusTexs[gSaveContext.language]);
+                    KaleidoScope_DrawQuestStatus(play, gfxCtx);
+                }
 
                 if (pauseCtx->cursorSpecialPos == 0) {
                     KaleidoScope_DrawCursor(play, PAUSE_QUEST);
@@ -1642,13 +1653,9 @@ void KaleidoScope_DrawPages(PlayState* play, GraphicsContext* gfxCtx) {
                 gDPSetCombineMode(POLY_KAL_DISP++, G_CC_MODULATEIA, G_CC_MODULATEIA);
                 gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, pauseCtx->alpha);
 
-                if (!IS_BOSS_RUSH) {
+                if (GameInteractor_Should(VB_RENDER_YES_ON_CONTINUE_PROMPT, true, &POLY_KAL_DISP)) {
                     POLY_KAL_DISP = KaleidoScope_QuadTextureIA8(
                         POLY_KAL_DISP, sPromptChoiceTexs[gSaveContext.language][0], 48, 16, 12);
-                } else {
-                    // Show "No" twice in Boss Rush because the player can't save within it.
-                    POLY_KAL_DISP = KaleidoScope_QuadTextureIA8(
-                        POLY_KAL_DISP, sPromptChoiceTexs[gSaveContext.language][1], 48, 16, 12);
                 }
 
                 POLY_KAL_DISP =
@@ -2063,8 +2070,8 @@ void KaleidoScope_DrawInfoPanel(PlayState* play) {
             }
         } else {
             bool pauseAnyCursor =
-                (CVarGetInteger(CVAR_SETTING("PauseAnyCursor"), 0) == PAUSE_ANY_CURSOR_RANDO_ONLY && IS_RANDO) ||
-                (CVarGetInteger(CVAR_SETTING("PauseAnyCursor"), 0) == PAUSE_ANY_CURSOR_ALWAYS_ON);
+                (CVarGetInteger(CVAR_ENHANCEMENT("PauseAnyCursor"), 0) == PAUSE_ANY_CURSOR_RANDO_ONLY && IS_RANDO) ||
+                (CVarGetInteger(CVAR_ENHANCEMENT("PauseAnyCursor"), 0) == PAUSE_ANY_CURSOR_ALWAYS_ON);
             if (!pauseCtx->pageIndex && (!pauseAnyCursor || (gSaveContext.inventory.items[pauseCtx->cursorPoint[PAUSE_ITEM]] != ITEM_NONE))) { // pageIndex == PAUSE_ITEM
                 pauseCtx->infoPanelVtx[16].v.ob[0] = pauseCtx->infoPanelVtx[18].v.ob[0] =
                     WREG(49 + gSaveContext.language);
@@ -2201,8 +2208,8 @@ void KaleidoScope_DrawInfoPanel(PlayState* play) {
 void KaleidoScope_UpdateNamePanel(PlayState* play) {
     PauseContext* pauseCtx = &play->pauseCtx;
     u16 sp2A;
-    bool pauseAnyCursor = (CVarGetInteger(CVAR_SETTING("PauseAnyCursor"), 0) == PAUSE_ANY_CURSOR_RANDO_ONLY && IS_RANDO) ||
-                          (CVarGetInteger(CVAR_SETTING("PauseAnyCursor"), 0) == PAUSE_ANY_CURSOR_ALWAYS_ON);
+    bool pauseAnyCursor = (CVarGetInteger(CVAR_ENHANCEMENT("PauseAnyCursor"), 0) == PAUSE_ANY_CURSOR_RANDO_ONLY && IS_RANDO) ||
+                          (CVarGetInteger(CVAR_ENHANCEMENT("PauseAnyCursor"), 0) == PAUSE_ANY_CURSOR_ALWAYS_ON);
 
     if ((pauseCtx->namedItem != pauseCtx->cursorItem[pauseCtx->pageIndex]) ||
         ((pauseCtx->pageIndex == PAUSE_MAP) && (pauseCtx->cursorSpecialPos != 0))) {
@@ -2870,7 +2877,7 @@ void KaleidoScope_InitVertices(PlayState* play, GraphicsContext* gfxCtx) {
 
     for (phi_t3 = 1; phi_t3 < ARRAY_COUNT(gSaveContext.equips.buttonItems); phi_t3++, phi_t2 += 4) {
         if (gSaveContext.equips.cButtonSlots[phi_t3 - 1] != ITEM_NONE &&
-            ((phi_t3 < 4) || CVarGetInteger(CVAR_SETTING("DpadEquips"), 0))) {
+            ((phi_t3 < 4) || CVarGetInteger(CVAR_ENHANCEMENT("DpadEquips"), 0))) {
             phi_t4 = gSaveContext.equips.cButtonSlots[phi_t3 - 1] * 4;
 
             pauseCtx->itemVtx[phi_t2 + 0].v.ob[0] = pauseCtx->itemVtx[phi_t2 + 2].v.ob[0] =
@@ -3267,14 +3274,6 @@ void KaleidoScope_Draw(PlayState* play) {
     }
 
     func_800AAA50(&play->view, 15);
-
-    // Flip the OPA and XLU projections again as the set view call above reset the original flips from z_play
-    if (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0)) {
-        gSPMatrix(POLY_OPA_DISP++, play->view.projectionFlippedPtr, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
-        gSPMatrix(POLY_XLU_DISP++, play->view.projectionFlippedPtr, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
-        gSPMatrix(POLY_OPA_DISP++, play->view.viewingPtr, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
-        gSPMatrix(POLY_XLU_DISP++, play->view.viewingPtr, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
-    }
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -3994,9 +3993,7 @@ void KaleidoScope_Update(PlayState* play)
         case 6:
             switch (pauseCtx->unk_1E4) {
                 case 0:
-                    // Boss Rush skips past the "Save?" window when pressing B while paused.
-                    if (CHECK_BTN_ALL(input->press.button, BTN_START) ||
-                        (CHECK_BTN_ALL(input->press.button, BTN_B) && IS_BOSS_RUSH)) {
+                    if (GameInteractor_Should(VB_CLOSE_PAUSE_MENU, CHECK_BTN_ALL(input->press.button, BTN_START))) {
                         if (CVarGetInteger(CVAR_CHEAT("EasyPauseBuffer"), 0) || CVarGetInteger(CVAR_CHEAT("EasyInputBuffer"), 0)) {
                             // Easy pause buffer is 13 frames, 12 for kaledio to end, and one more to advance a single frame
                             CVarSetInteger(CVAR_GENERAL("CheatEasyPauseBufferTimer"), 13);
@@ -4018,6 +4015,9 @@ void KaleidoScope_Update(PlayState* play)
                         Interface_ChangeAlpha(50);
                         pauseCtx->unk_1EC = 0;
                         pauseCtx->state = 7;
+                    } else if (CHECK_BTN_ALL(input->press.button, BTN_CUP) && pauseCtx->pageIndex == PAUSE_QUEST) {
+                        Audio_PlaySoundGeneral(NA_SE_SY_DECIDE, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                        pauseCtx->randoQuestMode ^= 1;
                     }
                     break;
 
@@ -4380,10 +4380,8 @@ void KaleidoScope_Update(PlayState* play)
                 VREG(88) = 66;
                 WREG(2) = 0;
                 pauseCtx->alpha = 255;
-                if (!IS_BOSS_RUSH) {
+                if (GameInteractor_Should(VB_TRANSITION_TO_SAVE_SCREEN_ON_DEATH, true, pauseCtx)) {
                     pauseCtx->state = 0xE;
-                } else {
-                    pauseCtx->state = 0xF;
                 }
                 gSaveContext.deaths++;
                 if (gSaveContext.deaths > 999) {
@@ -4428,7 +4426,7 @@ void KaleidoScope_Update(PlayState* play)
 
         case 0x10:
             if (CHECK_BTN_ALL(input->press.button, BTN_A) || CHECK_BTN_ALL(input->press.button, BTN_START)) {
-                if (pauseCtx->promptChoice == 0 && !IS_BOSS_RUSH) {
+                if (pauseCtx->promptChoice == 0 && GameInteractor_Should(VB_BE_ABLE_TO_SAVE, true)) {
                     Audio_PlaySoundGeneral(NA_SE_SY_PIECE_OF_HEART, &D_801333D4, 4, &D_801333E0, &D_801333E0,
                                            &D_801333E8);
                     Play_SaveSceneFlags(play);
@@ -4501,7 +4499,7 @@ void KaleidoScope_Update(PlayState* play)
                     R_PAUSE_MENU_MODE = 0;
                     func_800981B8(&play->objectCtx);
                     func_800418D0(&play->colCtx, play);
-                    if (pauseCtx->promptChoice == 0 && !IS_BOSS_RUSH) {
+                    if (pauseCtx->promptChoice == 0 && GameInteractor_Should(VB_BE_ABLE_TO_SAVE, true)) {
                         Play_TriggerRespawn(play);
                         gSaveContext.respawnFlag = -2;
                         // In ER, handle death warp to last entrance from grottos

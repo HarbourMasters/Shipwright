@@ -13,6 +13,7 @@
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/boss-rush/BossRush.h"
 #include "soh/OTRGlobals.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #include <string.h>
 
@@ -565,7 +566,7 @@ void BossGanon_IntroCutscene(BossGanon* this, PlayState* play) {
             this->actor.shape.rot.y = 0;
 
             func_80064520(play, &play->csCtx);
-            func_8002DF54(play, &this->actor, 8);
+            Player_SetCsActionWithHaltedActors(play, &this->actor, 8);
             this->csCamIndex = Play_CreateSubCamera(play);
             Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
             Play_ChangeCameraStatus(play, this->csCamIndex, CAM_STAT_ACTIVE);
@@ -582,7 +583,7 @@ void BossGanon_IntroCutscene(BossGanon* this, PlayState* play) {
                 BossGanon_SetIntroCsCamera(this, 11);
                 this->unk_198 = 2;
                 this->timers[2] = 110;
-                if (!(IS_BOSS_RUSH && gSaveContext.bossRushOptions[BR_OPTIONS_HEAL] == BR_CHOICE_HEAL_NEVER)) {
+                if (GameInteractor_Should(VB_GANON_HEAL_BEFORE_FIGHT, true)) {
                     gSaveContext.healthAccumulator = 0x140;
                 }
                 Audio_QueueSeqCmd(NA_BGM_STOP);
@@ -610,7 +611,7 @@ void BossGanon_IntroCutscene(BossGanon* this, PlayState* play) {
             BossGanon_SetIntroCsCamera(this, 1);
 
             if (this->csTimer == 10) {
-                func_8002DF54(play, &this->actor, 5);
+                Player_SetCsActionWithHaltedActors(play, &this->actor, 5);
             }
 
             if (this->csTimer == 13) {
@@ -643,7 +644,7 @@ void BossGanon_IntroCutscene(BossGanon* this, PlayState* play) {
                 break;
             }
 
-            func_8002DF54(play, &this->actor, 8);
+            Player_SetCsActionWithHaltedActors(play, &this->actor, 8);
             this->csState = 4;
             BossGanon_SetIntroCsCamera(this, 2);
             this->csTimer = 0;
@@ -675,7 +676,7 @@ void BossGanon_IntroCutscene(BossGanon* this, PlayState* play) {
             }
 
             if (this->csTimer == 10) {
-                func_8002DF54(play, &this->actor, 0x4B);
+                Player_SetCsActionWithHaltedActors(play, &this->actor, 0x4B);
             }
 
             if (this->csTimer == 70) {
@@ -741,7 +742,7 @@ void BossGanon_IntroCutscene(BossGanon* this, PlayState* play) {
 
             this->csState = 9;
             this->csTimer = 0;
-            func_8002DF54(play, &this->actor, 8);
+            Player_SetCsActionWithHaltedActors(play, &this->actor, 8);
             sBossGanonZelda->unk_3C8 = 0;
             this->triforceType = GDF_TRIFORCE_ZELDA;
             this->fwork[GDF_TRIFORCE_SCALE] = 10.0f;
@@ -795,7 +796,7 @@ void BossGanon_IntroCutscene(BossGanon* this, PlayState* play) {
             player->actor.world.pos.z = 20.0f;
 
             if (this->csTimer == 20) {
-                func_8002DF54(play, &this->actor, 0x17);
+                Player_SetCsActionWithHaltedActors(play, &this->actor, 0x17);
                 Interface_ChangeAlpha(11); // show hearts only
             }
 
@@ -1032,7 +1033,7 @@ void BossGanon_IntroCutscene(BossGanon* this, PlayState* play) {
             }
 
             if (this->csTimer == 30) {
-                func_8002DF54(play, &this->actor, 0x4A);
+                Player_SetCsActionWithHaltedActors(play, &this->actor, 0x4A);
             }
 
             if (this->csTimer <= 50) {
@@ -1155,7 +1156,7 @@ void BossGanon_IntroCutscene(BossGanon* this, PlayState* play) {
                 func_800C08AC(play, this->csCamIndex, 0);
                 this->csState = this->csCamIndex = 0;
                 func_80064534(play, &play->csCtx);
-                func_8002DF54(play, &this->actor, 7);
+                Player_SetCsActionWithHaltedActors(play, &this->actor, 7);
                 BossGanon_SetupWait(this, play);
             }
 
@@ -1268,7 +1269,7 @@ void BossGanon_DeathAndTowerCutscene(BossGanon* this, PlayState* play) {
     switch (this->csState) {
         case 0:
             func_80064520(play, &play->csCtx);
-            func_8002DF54(play, &this->actor, 8);
+            Player_SetCsActionWithHaltedActors(play, &this->actor, 8);
             this->csCamIndex = Play_CreateSubCamera(play);
             Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
             Play_ChangeCameraStatus(play, this->csCamIndex, CAM_STAT_ACTIVE);
@@ -1511,7 +1512,7 @@ void BossGanon_DeathAndTowerCutscene(BossGanon* this, PlayState* play) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_GANON_BODY_SPARK - SFX_FLAG);
 
             if (this->csTimer == 2) {
-                func_8002DF54(play, &this->actor, 0x39);
+                Player_SetCsActionWithHaltedActors(play, &this->actor, 0x39);
             }
 
             if (this->csTimer > 50) {
@@ -1540,20 +1541,14 @@ void BossGanon_DeathAndTowerCutscene(BossGanon* this, PlayState* play) {
 
             if (this->csTimer == 180) {
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                if ((IS_RANDO && Randomizer_GetSettingValue(RSK_SKIP_TOWER_ESCAPE) || IS_BOSS_RUSH)) {
-                    Flags_SetEventChkInf(EVENTCHKINF_WATCHED_GANONS_CASTLE_COLLAPSE_CAUGHT_BY_GERUDO);
-                    play->nextEntranceIndex = ENTR_GANON_BOSS_0;
-                }
-                else {
-                    play->nextEntranceIndex = ENTR_GANONS_TOWER_COLLAPSE_EXTERIOR_0;
-                }
+                play->nextEntranceIndex = ENTR_GANONS_TOWER_COLLAPSE_EXTERIOR_0;
                 play->transitionType = TRANS_TYPE_FADE_WHITE_FAST;
             }
             break;
 
         case 100:
             func_80064520(play, &play->csCtx);
-            func_8002DF54(play, &this->actor, 8);
+            Player_SetCsActionWithHaltedActors(play, &this->actor, 8);
             this->csCamIndex = Play_CreateSubCamera(play);
             Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
             Play_ChangeCameraStatus(play, this->csCamIndex, CAM_STAT_ACTIVE);
@@ -1652,11 +1647,11 @@ void BossGanon_DeathAndTowerCutscene(BossGanon* this, PlayState* play) {
             this->csCamAt.z = -135.0f;
 
             if (this->csTimer == 5) {
-                func_8002DF54(play, &this->actor, 0x4C);
+                Player_SetCsActionWithHaltedActors(play, &this->actor, 0x4C);
             }
 
             if (this->csTimer == 70) {
-                func_8002DF54(play, &this->actor, 0x4D);
+                Player_SetCsActionWithHaltedActors(play, &this->actor, 0x4D);
             }
 
             if (this->csTimer == 90) {
@@ -1755,7 +1750,7 @@ void BossGanon_DeathAndTowerCutscene(BossGanon* this, PlayState* play) {
 
             if (this->csTimer == 20) {
                 sBossGanonZelda->unk_3C8 = 5;
-                func_8002DF54(play, &this->actor, 0x39);
+                Player_SetCsActionWithHaltedActors(play, &this->actor, 0x39);
             }
 
             if (this->csTimer == 40) {
@@ -1822,7 +1817,7 @@ void BossGanon_DeathAndTowerCutscene(BossGanon* this, PlayState* play) {
                 this->csState = 107;
                 this->csTimer = 0;
                 Message_StartTextbox(play, 0x70D2, NULL);
-                func_8002DF54(play, &this->actor, 0x39);
+                Player_SetCsActionWithHaltedActors(play, &this->actor, 0x39);
             }
             break;
 
@@ -1864,7 +1859,7 @@ void BossGanon_DeathAndTowerCutscene(BossGanon* this, PlayState* play) {
                 this->csState = 109;
                 this->csCamIndex = 0;
                 func_80064534(play, &play->csCtx);
-                func_8002DF54(play, &this->actor, 7);
+                Player_SetCsActionWithHaltedActors(play, &this->actor, 7);
                 Flags_SetSwitch(play, 0x37);
             }
             break;
@@ -2813,8 +2808,7 @@ void BossGanon_UpdateDamage(BossGanon* this, PlayState* play) {
                     func_80078914(&sZeroVec, NA_SE_EN_LAST_DAMAGE);
                     Audio_QueueSeqCmd(0x100100FF);
                     this->screenFlashTimer = 4;
-                    gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_GANONDORF] = GAMEPLAYSTAT_TOTAL_TIME;
-                    BossRush_HandleCompleteBoss(play);
+                    GameInteractor_ExecuteOnBossDefeat(&this->actor);
                 } else {
                     Audio_PlayActorSound2(&this->actor, NA_SE_EN_GANON_DAMAGE2);
                     Audio_PlayActorSound2(&this->actor, NA_SE_EN_GANON_CUTBODY);

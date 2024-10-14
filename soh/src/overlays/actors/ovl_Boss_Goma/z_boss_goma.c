@@ -6,6 +6,8 @@
 #include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
 #include "soh/Enhancements/boss-rush/BossRush.h"
 #include "soh/OTRGlobals.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
@@ -340,9 +342,13 @@ void BossGoma_Init(Actor* thisx, PlayState* play) {
 
     if (Flags_GetClear(play, play->roomCtx.curRoom.num)) {
         Actor_Kill(&this->actor);
-        Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, 0.0f, -640.0f, 0.0f, 0, 0,
-                           0, WARP_DUNGEON_CHILD);
-        Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, 141.0f, -640.0f, -84.0f, 0, 0, 0, 0, true);
+        if (GameInteractor_Should(VB_SPAWN_BLUE_WARP, true, this)) {
+            Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, 0.0f, -640.0f, 0.0f, 0, 0,
+                               0, WARP_DUNGEON_CHILD);
+        }
+        if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true)) {
+            Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, 141.0f, -640.0f, -84.0f, 0, 0, 0, 0, true);
+        }
     }
 
     for (int i = 0; i < ARRAY_COUNT(sClearPixelTex16); i++) {
@@ -629,7 +635,7 @@ void BossGoma_SetupEncounterState4(BossGoma* this, PlayState* play) {
     this->actionState = 4;
     this->actor.flags |= ACTOR_FLAG_TARGETABLE;
     func_80064520(play, &play->csCtx);
-    func_8002DF54(play, &this->actor, 1);
+    Player_SetCsActionWithHaltedActors(play, &this->actor, 1);
     this->subCameraId = Play_CreateSubCamera(play);
     Play_ChangeCameraStatus(play, 0, 3);
     Play_ChangeCameraStatus(play, this->subCameraId, 7);
@@ -686,7 +692,7 @@ void BossGoma_Encounter(BossGoma* this, PlayState* play) {
                     Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_SHUTTER, 164.72f,
                                        -480.0f, 397.68002f, 0, -0x705C, 0, 0x180);
                 } else {
-                    func_8002DF54(play, &this->actor, 8);
+                    Player_SetCsActionWithHaltedActors(play, &this->actor, 8);
                     this->actionState = 1;
                 }
             }
@@ -757,7 +763,7 @@ void BossGoma_Encounter(BossGoma* this, PlayState* play) {
             }
 
             if (this->frameCount == 190) {
-                func_8002DF54(play, &this->actor, 2);
+                Player_SetCsActionWithHaltedActors(play, &this->actor, 2);
             }
 
             if (this->frameCount >= 228) {
@@ -768,7 +774,7 @@ void BossGoma_Encounter(BossGoma* this, PlayState* play) {
                 func_800C08AC(play, this->subCameraId, 0);
                 this->subCameraId = 0;
                 func_80064534(play, &play->csCtx);
-                func_8002DF54(play, &this->actor, 7);
+                Player_SetCsActionWithHaltedActors(play, &this->actor, 7);
                 this->actionState = 3;
             }
             break;
@@ -965,7 +971,7 @@ void BossGoma_Encounter(BossGoma* this, PlayState* play) {
                 this->disableGameplayLogic = false;
                 this->patienceTimer = 200;
                 func_80064534(play, &play->csCtx);
-                func_8002DF54(play, &this->actor, 7);
+                Player_SetCsActionWithHaltedActors(play, &this->actor, 7);
             }
             break;
     }
@@ -1055,7 +1061,7 @@ void BossGoma_Defeated(BossGoma* this, PlayState* play) {
         case 0:
             this->actionState = 1;
             func_80064520(play, &play->csCtx);
-            func_8002DF54(play, &this->actor, 1);
+            Player_SetCsActionWithHaltedActors(play, &this->actor, 1);
             this->subCameraId = Play_CreateSubCamera(play);
             Play_ChangeCameraStatus(play, 0, 3);
             Play_ChangeCameraStatus(play, this->subCameraId, 7);
@@ -1119,7 +1125,7 @@ void BossGoma_Defeated(BossGoma* this, PlayState* play) {
                 this->timer = 70;
                 this->decayingProgress = 0;
                 this->subCameraFollowSpeed = 0.0f;
-                if (!IS_BOSS_RUSH) {
+                if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true)) {
                     Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, this->actor.world.pos.x,
                                 this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0, true);
                 }
@@ -1153,12 +1159,9 @@ void BossGoma_Defeated(BossGoma* this, PlayState* play) {
                     }
                 }
 
-                if (!IS_BOSS_RUSH) {
+                if (GameInteractor_Should(VB_SPAWN_BLUE_WARP, true, this)) {
                     Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, childPos.x,
                                        this->actor.world.pos.y, childPos.z, 0, 0, 0, WARP_DUNGEON_CHILD);
-                } else {
-                    Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, childPos.x, this->actor.world.pos.y,
-                                childPos.z, 0, 0, 0, WARP_DUNGEON_ADULT, false);
                 }
                 Flags_SetClear(play, play->roomCtx.curRoom.num);
             }
@@ -1190,7 +1193,7 @@ void BossGoma_Defeated(BossGoma* this, PlayState* play) {
                     func_800C08AC(play, this->subCameraId, 0);
                     this->subCameraId = 0;
                     func_80064534(play, &play->csCtx);
-                    func_8002DF54(play, &this->actor, 7);
+                    Player_SetCsActionWithHaltedActors(play, &this->actor, 7);
                     Actor_Kill(&this->actor);
                 }
 
@@ -1842,8 +1845,7 @@ void BossGoma_UpdateHit(BossGoma* this, PlayState* play) {
                 } else {
                     BossGoma_SetupDefeated(this, play);
                     Enemy_StartFinishingBlow(play, &this->actor);
-                    gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_GOHMA] = GAMEPLAYSTAT_TOTAL_TIME;
-                    BossRush_HandleCompleteBoss(play);
+                    GameInteractor_ExecuteOnBossDefeat(&this->actor);
                 }
 
                 this->invincibilityFrames = 10;
