@@ -32,8 +32,8 @@ void RegionTable_Init_IceCavern() {
                   //Locations
                   LOCATION(RC_ICE_CAVERN_MAP_CHEST,               logic->BlueFire() && logic->IsAdult),
                   LOCATION(RC_ICE_CAVERN_COMPASS_CHEST,           logic->BlueFire()),
-                  LOCATION(RC_ICE_CAVERN_IRON_BOOTS_CHEST,        logic->BlueFire() && (logic->CanJumpslash() || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_MEGATON_HAMMER) || logic->CanUse(RG_DINS_FIRE))),
-                  LOCATION(RC_SHEIK_IN_ICE_CAVERN,                logic->BlueFire() && (logic->CanJumpslash() || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_MEGATON_HAMMER) || logic->CanUse(RG_DINS_FIRE)) && logic->IsAdult),
+                  LOCATION(RC_ICE_CAVERN_IRON_BOOTS_CHEST,        logic->BlueFire() && (logic->CanJumpslash() || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_DINS_FIRE))),
+                  LOCATION(RC_SHEIK_IN_ICE_CAVERN,                logic->BlueFire() && (logic->CanJumpslash() || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_DINS_FIRE)) && logic->IsAdult),
                   LOCATION(RC_ICE_CAVERN_FREESTANDING_POH,        logic->BlueFire()),
                   LOCATION(RC_ICE_CAVERN_GS_SPINNING_SCYTHE_ROOM, logic->HookshotOrBoomerang()),
                   LOCATION(RC_ICE_CAVERN_GS_HEART_PIECE_ROOM,     logic->BlueFire() && logic->HookshotOrBoomerang()),
@@ -58,16 +58,16 @@ void RegionTable_Init_IceCavern() {
 
   areaTable[RR_ICE_CAVERN_MQ_MAP_ROOM] = Region("Ice Cavern MQ Map Room", "Ice Cavern", {RA_ICE_CAVERN}, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&logic->BlueFireAccess,  {[]{return logic->BlueFireAccess || (logic->HasBottle() && logic->CanJumpslash());}}),
+                  EventAccess(&logic->BlueFireAccess,  {[]{return logic->BlueFireAccess || (logic->HasBottle() && logic->CanJumpslashExceptHammer());}}),
   }, {
                   //Locations
-                  LOCATION(RC_ICE_CAVERN_MQ_MAP_CHEST, logic->BlueFire() && (logic->CanJumpslash() || logic->CanUse(RG_MEGATON_HAMMER) || logic->HasExplosives() || logic->CanUseProjectile())),
+                  LOCATION(RC_ICE_CAVERN_MQ_MAP_CHEST, logic->BlueFire() && (logic->CanJumpslash() || logic->HasExplosives() || logic->CanUseProjectile())),
   }, {});
 
   areaTable[RR_ICE_CAVERN_MQ_IRON_BOOTS_REGION] = Region("Ice Cavern MQ Iron Boots Region", "Ice Cavern", {RA_ICE_CAVERN}, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LOCATION(RC_ICE_CAVERN_MQ_IRON_BOOTS_CHEST, logic->IsAdult && (logic->CanJumpslash() || logic->CanUse(RG_MEGATON_HAMMER))),
-                  LOCATION(RC_SHEIK_IN_ICE_CAVERN,            logic->IsAdult && (logic->CanJumpslash() || logic->CanUse(RG_MEGATON_HAMMER))),
+                  LOCATION(RC_ICE_CAVERN_MQ_IRON_BOOTS_CHEST, logic->IsAdult && (logic->CanJumpslash())),
+                  LOCATION(RC_SHEIK_IN_ICE_CAVERN,            logic->IsAdult && (logic->CanJumpslash())),
                   LOCATION(RC_ICE_CAVERN_MQ_GS_ICE_BLOCK,     logic->CanAttack()),
                   LOCATION(RC_ICE_CAVERN_MQ_GS_SCARECROW,     logic->CanUse(RG_SCARECROW) || (logic->CanUse(RG_HOVER_BOOTS) && logic->CanUse(RG_LONGSHOT)) || (ctx->GetTrickOption(RT_ICE_MQ_SCARECROW) && logic->IsAdult)),
                     //Tricks: (logic->CanUse(RG_SCARECROW) || (logic->CanUse(RG_HOVER_BOOTS) && logic->CanUse(RG_LONGSHOT)) || LogicIceMQScarecrow) && logic->IsAdult

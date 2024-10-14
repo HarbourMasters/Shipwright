@@ -18,7 +18,7 @@ void RegionTable_Init_Kakariko() {
                   LOCATION(RC_KAK_GS_SKULLTULA_HOUSE,          logic->IsChild && logic->AtNight && logic->CanGetNightTimeGS()),
                   LOCATION(RC_KAK_GS_GUARDS_HOUSE,             logic->IsChild && logic->AtNight && logic->CanGetNightTimeGS()),
                   LOCATION(RC_KAK_GS_TREE,                     logic->IsChild && logic->AtNight && logic->CanGetNightTimeGS()),
-                  LOCATION(RC_KAK_GS_WATCHTOWER,               logic->IsChild && (logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_BOMBCHU_5) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_LONGSHOT) || (ctx->GetTrickOption(RT_KAK_TOWER_GS) && logic->CanJumpslash())) && logic->AtNight && logic->CanGetNightTimeGS()),
+                  LOCATION(RC_KAK_GS_WATCHTOWER,               logic->IsChild && (logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_BOMBCHU_5) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_LONGSHOT) || (ctx->GetTrickOption(RT_KAK_TOWER_GS) && logic->CanJumpslashExceptHammer())) && logic->AtNight && logic->CanGetNightTimeGS()),
                 }, {
                   //Exits
                   Entrance(RR_HYRULE_FIELD,                {[]{return true;}}),
@@ -46,7 +46,7 @@ void RegionTable_Init_Kakariko() {
 
   areaTable[RR_KAK_IMPAS_ROOFTOP] = Region("Kak Impas Rooftop", "Kakariko Village", {RA_KAKARIKO_VILLAGE}, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LOCATION(RC_KAK_GS_ABOVE_IMPAS_HOUSE, logic->IsAdult && logic->AtNight && logic->CanGetNightTimeGS() && (logic->CanJumpslash() || logic->CanUseProjectile())),
+                  LOCATION(RC_KAK_GS_ABOVE_IMPAS_HOUSE, logic->IsAdult && logic->AtNight && logic->CanGetNightTimeGS() && (logic->CanJumpslashExceptHammer() || logic->CanUseProjectile())),
                 }, {
                   //Exits
                   Entrance(RR_KAK_IMPAS_LEDGE,  {[]{return true;}}),
@@ -112,7 +112,7 @@ void RegionTable_Init_Kakariko() {
                   EventAccess(&logic->DrainWell, {[]{return logic->DrainWell || (logic->IsChild && logic->CanUse(RG_SONG_OF_STORMS));}}),
                 }, {
                   //Locations
-                  LOCATION(RC_KAK_WINDMILL_FREESTANDING_POH, logic->CanUse(RG_BOOMERANG) || logic->DampesWindmillAccess || (logic->IsAdult && ctx->GetTrickOption(RT_KAK_ADULT_WINDMILL_POH)) || (logic->IsChild && logic->CanJumpslash() && ctx->GetTrickOption(RT_KAK_CHILD_WINDMILL_POH))),
+                  LOCATION(RC_KAK_WINDMILL_FREESTANDING_POH, logic->CanUse(RG_BOOMERANG) || logic->DampesWindmillAccess || (logic->IsAdult && ctx->GetTrickOption(RT_KAK_ADULT_WINDMILL_POH)) || (logic->IsChild && logic->CanJumpslashExceptHammer() && ctx->GetTrickOption(RT_KAK_CHILD_WINDMILL_POH))),
                     //PoH as child not added to trick options yet (needs uncommenting in randomizer_tricks.cpp)
                   LOCATION(RC_SONG_FROM_WINDMILL,            logic->IsAdult && logic->HasItem(RG_FAIRY_OCARINA)),
                 }, {
@@ -239,7 +239,7 @@ void RegionTable_Init_Kakariko() {
   areaTable[RR_GRAVEYARD_COMPOSERS_GRAVE] = Region("Graveyard Composers Grave", "Graveyard Composers Grave", {}, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LOCATION(RC_GRAVEYARD_ROYAL_FAMILYS_TOMB_CHEST, logic->HasFireSource()),
-                  LOCATION(RC_SONG_FROM_ROYAL_FAMILYS_TOMB,       logic->CanUseProjectile() || logic->CanJumpslash() || logic->CanUse(RG_MEGATON_HAMMER)),
+                  LOCATION(RC_SONG_FROM_ROYAL_FAMILYS_TOMB,       logic->CanUseProjectile() || logic->CanJumpslash()),
                 }, {
                   //Exits
                   Entrance(RR_THE_GRAVEYARD, {[]{return true;}}),

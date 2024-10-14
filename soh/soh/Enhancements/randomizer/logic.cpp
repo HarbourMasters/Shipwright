@@ -430,13 +430,17 @@ namespace Rando {
                 return CanDamage() || CanUse(RG_HOOKSHOT);
             case RE_DODONGO:
             case RE_LIZALFOS:
-                return CanJumpslash() || HasExplosives() || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_FAIRY_BOW) || CanUse(RG_MEGATON_HAMMER);
+                return CanJumpslash() || HasExplosives() || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_FAIRY_BOW);
             case RE_KEESE:
             case RE_FIRE_KEESE:
-                return CanJumpslash() || HasExplosives() || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_FAIRY_BOW) || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_HOOKSHOT) || CanUse(RG_BOOMERANG);
+                return CanJumpslash() || HasExplosives() || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_FAIRY_BOW) || CanUse(RG_HOOKSHOT) || CanUse(RG_BOOMERANG);
             case RE_BLUE_BUBBLE:
                 //RANDOTODO Trick to use shield hylian shield to stun these guys
-                return BlastOrSmash() || CanUse(RG_FAIRY_BOW) || ((CanJumpslash() || CanUse(RG_FAIRY_SLINGSHOT)) && (CanUse(RG_NUTS) || HookshotOrBoomerang() || CanStandingShield()));
+                //RANDOTODO check hammer damage
+                return BlastOrSmash() || CanUse(RG_FAIRY_BOW) || ((CanJumpslashExceptHammer() || CanUse(RG_FAIRY_SLINGSHOT)) && (CanUse(RG_NUTS) || HookshotOrBoomerang() || CanStandingShield()));
+            case RE_DEAD_HAND:
+                //RANDOTODO change Dead Hand trick to be sticks Dead Hand
+                return CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD) || (CanUse(RG_STICKS) && ctx->GetTrickOption(RT_BOTW_CHILD_DEADHAND));
             default:
                 SPDLOG_ERROR("CanKillEnemy reached `default`.");
                 assert(false);
@@ -457,6 +461,7 @@ namespace Rando {
             case RE_KEESE:
             case RE_FIRE_KEESE:
             case RE_BLUE_BUBBLE:
+            case RE_DEAD_HAND:
                 return true;
             case RE_BIG_SKULLTULA:
                 return CanUse(RG_NUTS) || CanUse(RG_BOOMERANG);
@@ -477,6 +482,7 @@ namespace Rando {
             case RE_LIZALFOS:
             case RE_DODONGO: //RANDOTODO do dodongos block the way in tight corridors?
             case RE_BIG_SKULLTULA:
+            case RE_DEAD_HAND:
                 return true;
             case RE_MAD_SCRUB:
             case RE_KEESE:
@@ -517,7 +523,11 @@ namespace Rando {
     }
 
     bool Logic::CanGetDekuBabaSticks() {
-        return DekuBabaSticks || (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD) || CanUse(RG_BOOMERANG));
+        return (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD) || CanUse(RG_BOOMERANG));
+    }
+
+    bool Logic::CanGetDekuBabaNuts() {
+        return CanJumpslash() || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_FAIRY_BOW) || HasExplosives() || CanUse(RG_DINS_FIRE);
     }
 
     bool Logic::CanHitEyeTargets() {
@@ -558,13 +568,18 @@ namespace Rando {
         return BottleCount() >= 1;
     }
 
-    bool Logic::CanJumpslash() {
+    bool Logic::CanJumpslashExceptHammer() {
         // Not including hammer as hammer jump attacks can be weird;
         return CanUse(RG_STICKS) || CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD);
     }
 
+
+    bool Logic::CanJumpslash() {
+        return CanJumpslashExceptHammer() || CanUse(RG_MEGATON_HAMMER);
+    }
+
     bool Logic::CanDamage() {
-        return CanUse(RG_FAIRY_SLINGSHOT) || CanJumpslash() || BlastOrSmash() || CanUse(RG_DINS_FIRE) || CanUse(RG_FAIRY_BOW);
+        return CanUse(RG_FAIRY_SLINGSHOT) || CanJumpslashExceptHammer() || BlastOrSmash() || CanUse(RG_DINS_FIRE) || CanUse(RG_FAIRY_BOW);
     }
 
     bool Logic::CanAttack() {
@@ -1772,6 +1787,10 @@ namespace Rando {
         FireLoopSwitch            = false;
         LinksCow                  = false;
         DeliverLetter             = false;
+        ClearMQDCUpperLobbyRocks  = false;
+        LoweredWaterInsideBotw    = false;
+        OpenedWestRoomMQBotw      = false;
+        OpenedMiddleHoleMQBotw    = false;
 
         StopPerformanceTimer(PT_LOGIC_RESET);
     }
