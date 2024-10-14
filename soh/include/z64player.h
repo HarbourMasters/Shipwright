@@ -351,6 +351,37 @@ typedef enum PlayerAnimGroup {
 #define LIMB_BUF_COUNT(limbCount) ((ALIGN16((limbCount) * sizeof(Vec3s)) + sizeof(Vec3s) - 1) / sizeof(Vec3s))
 #define PLAYER_LIMB_BUF_COUNT LIMB_BUF_COUNT(PLAYER_LIMB_MAX)
 
+typedef enum PlayerLedgeClimbType {
+    /* 0 */ PLAYER_LEDGE_CLIMB_NONE,
+    /* 1 */ PLAYER_LEDGE_CLIMB_1,
+    /* 2 */ PLAYER_LEDGE_CLIMB_2,
+    /* 3 */ PLAYER_LEDGE_CLIMB_3,
+    /* 4 */ PLAYER_LEDGE_CLIMB_4
+} PlayerLedgeClimbType;
+
+typedef enum PlayerStickDirection {
+    /* -1 */ PLAYER_STICK_DIR_NONE = -1,
+    /*  0 */ PLAYER_STICK_DIR_FORWARD,
+    /*  1 */ PLAYER_STICK_DIR_LEFT,
+    /*  2 */ PLAYER_STICK_DIR_BACKWARD,
+    /*  3 */ PLAYER_STICK_DIR_RIGHT
+} PlayerStickDirection;
+
+typedef enum {
+    /* 0 */ PLAYER_KNOCKBACK_NONE, // No knockback
+    /* 1 */ PLAYER_KNOCKBACK_SMALL, // A small hop, remains standing up
+    /* 2 */ PLAYER_KNOCKBACK_LARGE, // Sent flying in the air and lands laying down on the floor
+    /* 3 */ PLAYER_KNOCKBACK_LARGE_SHOCK // Same as`PLAYER_KNOCKBACK_LARGE` with a shock effect
+} PlayerKnockbackType;
+
+typedef enum {
+    /* 0 */ PLAYER_HIT_RESPONSE_NONE,
+    /* 1 */ PLAYER_HIT_RESPONSE_KNOCKBACK_LARGE,
+    /* 2 */ PLAYER_HIT_RESPONSE_KNOCKBACK_SMALL,
+    /* 3 */ PLAYER_HIT_RESPONSE_ICE_TRAP,
+    /* 4 */ PLAYER_HIT_RESPONSE_ELECTRIC_SHOCK
+} PlayerDamageResponseType;
+
 typedef struct PlayerAgeProperties {
     /* 0x00 */ f32 ceilingCheckHeight;
     /* 0x04 */ f32 unk_04;
