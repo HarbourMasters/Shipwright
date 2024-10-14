@@ -330,7 +330,18 @@ OTRGlobals::OTRGlobals() {
     prevAltAssets = CVarGetInteger(CVAR_ENHANCEMENT("AltAssets"), 0);
     context->GetResourceManager()->SetAltAssetsEnabled(prevAltAssets);
 
-    context->InitControlDeck({BTN_MODIFIER1, BTN_MODIFIER2});
+    context->InitControlDeck({
+        BTN_CUSTOM_MODIFIER1,
+        BTN_CUSTOM_MODIFIER2,
+        BTN_CUSTOM_OCARINA_NOTE_D4,
+        BTN_CUSTOM_OCARINA_NOTE_F4,
+        BTN_CUSTOM_OCARINA_NOTE_A4,
+        BTN_CUSTOM_OCARINA_NOTE_B4,
+        BTN_CUSTOM_OCARINA_NOTE_D5,
+        BTN_CUSTOM_OCARINA_DISABLE_SONGS,
+        BTN_CUSTOM_OCARINA_PITCH_UP,
+        BTN_CUSTOM_OCARINA_PITCH_DOWN,
+    });
     context->GetControlDeck()->SetSinglePlayerMappingMode(true);
 
     context->InitCrashHandler();
