@@ -3688,7 +3688,7 @@ void Player_UpdateShapeYaw(Player* this, PlayState* play) {
  *
  * @return The amount by which the value overflowed the absolute range defined by `overflowRange`
  */
-s32 Player_ScaledStepBinangClamped(s16* pValue, s16 target, s16 step, s16 arg3, s16 overflowRange,
+s32 Player_ScaledStepBinangClamped(s16* pValue, s16 target, s16 step, s16 overflowRange, s16 constraintMid,
                                    s16 constraintRange) {
     s16 diff;
     s16 clampedDiff;
@@ -3696,17 +3696,17 @@ s32 Player_ScaledStepBinangClamped(s16* pValue, s16 target, s16 step, s16 arg3, 
 
     // Clamp value to [constraintMid - constraintRange , constraintMid + constraintRange]
     // This is more involved than a simple `CLAMP`, to account for binang wrapping
-    diff = clampedDiff = overflowRange - *pValue;
+    diff = clampedDiff = constraintMid - *pValue;
     clampedDiff = CLAMP(clampedDiff, -constraintRange, constraintRange);
     *pValue += (s16)(diff - clampedDiff);
 
     Math_ScaledStepToS(pValue, target, step);
 
     valueBeforeOverflowClamp = *pValue;
-    if (*pValue < -arg3) {
-        *pValue = -arg3;
-    } else if (*pValue > arg3) {
-        *pValue = arg3;
+    if (*pValue < -overflowRange) {
+        *pValue = -overflowRange;
+    } else if (*pValue > overflowRange) {
+        *pValue = overflowRange;
     }
     return valueBeforeOverflowClamp - *pValue;
 }
@@ -9806,7 +9806,7 @@ void Player_Action_Roll(Player* this, PlayState* play) {
                     Player_RequestRumble(this, 255, 20, 150, 0);
                     Player_PlaySfx(this, NA_SE_PL_BODY_HIT);
                     Player_PlayVoiceSfx(this, NA_SE_VO_LI_CLIMB_END);
-                    this->bonked = 1;
+                    this->av2.bonked = 1;
 
                     gSaveContext.sohStats.count[COUNT_BONKS]++;
                     GameInteractor_ExecuteOnPlayerBonk();
