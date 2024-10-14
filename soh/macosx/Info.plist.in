@@ -38,5 +38,7 @@
         <string>arm64</string>
         <string>x86_64</string>
     </array>
+    <key>NSHighResolutionCapable</key>
+    <true/>
 </dict>
 </plist>
