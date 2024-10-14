@@ -150,7 +150,6 @@ s32 func_80835800(Player* this, PlayState* play);
 s32 func_80835884(Player* this, PlayState* play); // Start aiming boomerang
 s32 func_808358F0(Player* this, PlayState* play); // Aim boomerang
 s32 func_808359FC(Player* this, PlayState* play); // Throw boomerang
-s32 spawn_boomerang_ivan(EnPartner* this, PlayState* play); // Throw boomerang Ivan
 s32 func_80835B60(Player* this, PlayState* play); // Boomerang active
 s32 func_80835C08(Player* this, PlayState* play);
 
@@ -160,7 +159,6 @@ s32 func_8083C61C(PlayState* play, Player* this);
 void func_8083CA20(PlayState* play, Player* this);
 void func_8083CA54(PlayState* play, Player* this);
 void func_8083CA9C(PlayState* play, Player* this);
-void Player_SetPendingFlag(Player* this, PlayState* play);
 void func_80846648(PlayState* play, Player* this);
 void func_80846660(PlayState* play, Player* this);
 void func_808467D4(PlayState* play, Player* this);
@@ -344,6 +342,71 @@ void Player_Action_80850AEC(Player* this, PlayState* play);
 void Player_Action_80850C68(Player* this, PlayState* play);
 void Player_Action_80850E84(Player* this, PlayState* play);
 void Player_Action_CsAction(Player* this, PlayState* play);
+
+#pragma region [SoH]
+u8 gWalkSpeedToggle1;
+u8 gWalkSpeedToggle2;
+
+s32 spawn_boomerang_ivan(EnPartner* this, PlayState* play) {
+    if (!CVarGetInteger(CVAR_ENHANCEMENT("IvanCoopModeEnabled"), 0)) {
+        return 0;
+    }
+
+    f32 posX = (Math_SinS(this->actor.shape.rot.y) * 1.0f) + this->actor.world.pos.x;
+    f32 posZ = (Math_CosS(this->actor.shape.rot.y) * 1.0f) + this->actor.world.pos.z;
+    s32 yaw = this->actor.shape.rot.y;
+    EnBoom* boomerang =
+        (EnBoom*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOOM, posX, this->actor.world.pos.y + 7.0f, posZ,
+                             this->actor.focus.rot.x, yaw, 0, 0, true);
+
+    this->boomerangActor = &boomerang->actor;
+    if (boomerang != NULL) {
+        boomerang->returnTimer = 20;
+        Audio_PlayActorSound2(&this->actor, NA_SE_IT_BOOMERANG_THROW);
+    }
+
+    return 1;
+}
+
+// Sets a flag according to which type of flag is specified in player->pendingFlag.flagType
+// and which flag is specified in player->pendingFlag.flagID.
+void Player_SetPendingFlag(Player* this, PlayState* play) {
+    switch (this->pendingFlag.flagType) {
+        case FLAG_SCENE_SWITCH:
+            Flags_SetSwitch(play, this->pendingFlag.flagID);
+            break;
+        case FLAG_SCENE_TREASURE:
+            Flags_SetTreasure(play, this->pendingFlag.flagID);
+            break;
+        case FLAG_SCENE_CLEAR:
+            Flags_SetClear(play, this->pendingFlag.flagID);
+            break;
+        case FLAG_SCENE_COLLECTIBLE:
+            Flags_SetCollectible(play, this->pendingFlag.flagID);
+            break;
+        case FLAG_EVENT_CHECK_INF:
+            Flags_SetEventChkInf(this->pendingFlag.flagID);
+            break;
+        case FLAG_ITEM_GET_INF:
+            Flags_SetItemGetInf(this->pendingFlag.flagID);
+            break;
+        case FLAG_INF_TABLE:
+            Flags_SetInfTable(this->pendingFlag.flagID);
+            break;
+        case FLAG_EVENT_INF:
+            Flags_SetEventInf(this->pendingFlag.flagID);
+            break;
+        case FLAG_RANDOMIZER_INF:
+            Flags_SetRandomizerInf(this->pendingFlag.flagID);
+            break;
+        case FLAG_NONE:
+        default:
+            break;
+    }
+    this->pendingFlag.flagType = FLAG_NONE;
+    this->pendingFlag.flagID = 0;
+}
+#pragma endregion
 
 // .bss part 1
 static s32 D_80858AA0;
@@ -1175,9 +1238,6 @@ static s8 sItemActions[] = {
     PLAYER_IA_SWORD_MASTER,        // ITEM_SWORD_MASTER
     PLAYER_IA_SWORD_BIGGORON,      // ITEM_SWORD_BIGGORON
 };
-
-u8 gWalkSpeedToggle1;
-u8 gWalkSpeedToggle2;
 
 static s32 (*sItemActionUpdateFuncs[])(Player* this, PlayState* play) = {
     func_8083485C,                 // PLAYER_IA_NONE
@@ -3220,27 +3280,6 @@ s32 func_808359FC(Player* this, PlayState* play) {
     }
 
     return true;
-}
-
-s32 spawn_boomerang_ivan(EnPartner* this, PlayState* play) {
-    if (!CVarGetInteger(CVAR_ENHANCEMENT("IvanCoopModeEnabled"), 0)) {
-        return 0;
-    }
-
-    f32 posX = (Math_SinS(this->actor.shape.rot.y) * 1.0f) + this->actor.world.pos.x;
-    f32 posZ = (Math_CosS(this->actor.shape.rot.y) * 1.0f) + this->actor.world.pos.z;
-    s32 yaw = this->actor.shape.rot.y;
-    EnBoom* boomerang =
-        (EnBoom*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOOM, posX, this->actor.world.pos.y + 7.0f, posZ,
-                             this->actor.focus.rot.x, yaw, 0, 0, true);
-
-    this->boomerangActor = &boomerang->actor;
-    if (boomerang != NULL) {
-        boomerang->returnTimer = 20;
-        Audio_PlayActorSound2(&this->actor, NA_SE_IT_BOOMERANG_THROW);
-    }
-
-    return 1;
 }
 
 s32 func_80835B60(Player* this, PlayState* play) {
@@ -7200,45 +7239,6 @@ void func_8083E4C4(PlayState* play, Player* this, GetItemEntry* giEntry) {
         Item_Give(play, giEntry->itemId);
     }
     func_80078884((this->getItemId < 0 || this->getItemEntry.getItemId < 0) ? NA_SE_SY_GET_BOXITEM : NA_SE_SY_GET_ITEM);
-}
-
-// Sets a flag according to which type of flag is specified in player->pendingFlag.flagType
-// and which flag is specified in player->pendingFlag.flagID.
-void Player_SetPendingFlag(Player* this, PlayState* play) {
-    switch (this->pendingFlag.flagType) {
-        case FLAG_SCENE_SWITCH:
-            Flags_SetSwitch(play, this->pendingFlag.flagID);
-            break;
-        case FLAG_SCENE_TREASURE:
-            Flags_SetTreasure(play, this->pendingFlag.flagID);
-            break;
-        case FLAG_SCENE_CLEAR:
-            Flags_SetClear(play, this->pendingFlag.flagID);
-            break;
-        case FLAG_SCENE_COLLECTIBLE:
-            Flags_SetCollectible(play, this->pendingFlag.flagID);
-            break;
-        case FLAG_EVENT_CHECK_INF:
-            Flags_SetEventChkInf(this->pendingFlag.flagID);
-            break;
-        case FLAG_ITEM_GET_INF:
-            Flags_SetItemGetInf(this->pendingFlag.flagID);
-            break;
-        case FLAG_INF_TABLE:
-            Flags_SetInfTable(this->pendingFlag.flagID);
-            break;
-        case FLAG_EVENT_INF:
-            Flags_SetEventInf(this->pendingFlag.flagID);
-            break;
-        case FLAG_RANDOMIZER_INF:
-            Flags_SetRandomizerInf(this->pendingFlag.flagID);
-            break;
-        case FLAG_NONE:
-        default:
-            break;
-    }
-    this->pendingFlag.flagType = FLAG_NONE;
-    this->pendingFlag.flagID = 0;
 }
 
 s32 Player_ActionHandler_2(Player* this, PlayState* play) {
