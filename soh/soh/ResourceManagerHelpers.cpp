@@ -4,6 +4,7 @@
 #include "z64.h"
 #include "cvar_prefixes.h"
 #include "Enhancements/enhancementTypes.h"
+#include "Enhancements/randomizer/dungeon.h"
 #include <libultraship/libultraship.h>
 #include <GameVersions.h>
 #include "resource/type/SohResourceType.h"
@@ -69,30 +70,34 @@ extern "C" uint32_t ResourceMgr_GetGameRegion(int index) {
     }
 }
 
-uint32_t IsSceneMasterQuest(s16 sceneNum) {
-    uint32_t value = 0;
-    uint8_t mqMode = CVarGetInteger(CVAR_GENERAL("BetterDebugWarpScreenMQMode"), WARP_MODE_OVERRIDE_OFF);
+u32 IsSceneMasterQuest(s16 sceneNum) {
+    u8 mqMode = CVarGetInteger(CVAR_GENERAL("BetterDebugWarpScreenMQMode"), WARP_MODE_OVERRIDE_OFF);
     if (mqMode == WARP_MODE_OVERRIDE_MQ_AS_VANILLA) {
-        return 1;
-    } else if (mqMode == WARP_MODE_OVERRIDE_VANILLA_AS_MQ) {
-        return 0;
-    } else {
-        if (OTRGlobals::Instance->HasMasterQuest()) {
-            if (!OTRGlobals::Instance->HasOriginal()) {
-                value = 1;
-            } else if (IS_MASTER_QUEST) {
-                value = 1;
-            } else {
-                value = 0;
-                if (IS_RANDO &&
-                    !OTRGlobals::Instance->gRandomizer->masterQuestDungeons.empty() &&
-                    OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(sceneNum)) {
-                    value = 1;
-                }
+        return true;
+    }
+
+    if (mqMode == WARP_MODE_OVERRIDE_VANILLA_AS_MQ) {
+        return false;
+    }
+
+    if (OTRGlobals::Instance->HasMasterQuest()) {
+        if (!OTRGlobals::Instance->HasOriginal()) {
+            return true;
+        }
+
+        if (IS_MASTER_QUEST) {
+            return true;
+        }
+
+        if (IS_RANDO) {
+            auto dungeon = OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(sceneNum);
+            if (dungeon != nullptr && dungeon->IsMQ()) {
+                return true;
             }
         }
     }
-    return value;
+
+    return false;
 }
 
 extern "C" uint32_t ResourceMgr_GameHasMasterQuest() {

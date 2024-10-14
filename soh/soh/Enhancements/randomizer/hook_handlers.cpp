@@ -1,5 +1,6 @@
 #include <libultraship/bridge.h>
 #include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/custom-message/CustomMessageTypes.h"
 #include "soh/Enhancements/item-tables/ItemTableManager.h"
@@ -1790,7 +1791,7 @@ void RandomizerOnActorInitHandler(void* actorRef) {
     if (
         actor->id == ACTOR_OBJ_OSHIHIKI &&
         LINK_IS_CHILD &&
-        IsGameMasterQuest() &&
+        ResourceMgr_IsGameMasterQuest() &&
         gPlayState->sceneNum == SCENE_SPIRIT_TEMPLE && actor->room == 6 && // Spirit Temple silver block hallway
         actor->params == 0x9C7 // Silver block that is marked as in the hole
     ) {
