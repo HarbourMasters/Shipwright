@@ -963,7 +963,7 @@ void DrawSeedHashSprites(FileChooseContext* this) {
     if (this->configMode == CM_MAIN_MENU &&
          (this->selectMode != SM_CONFIRM_FILE || Save_GetSaveMetaInfo(this->selectedFileIndex)->randoSave == 1)) {
 
-        if (this->fileInfoAlpha[this->selectedFileIndex] > 0) {
+        if (this->fileInfoAlpha[this->selectedFileIndex] > 0 && Save_GetSaveMetaInfo(this->selectedFileIndex)->randoSave) {
             // Use file info alpha to match fading
             gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 0xFF, 0xFF, 0xFF, this->fileInfoAlpha[this->selectedFileIndex]);
 

@@ -2483,7 +2483,7 @@ s32 Player_ItemIsItemAction(s32 item1, s32 itemAction) {
 }
 
 s32 Player_GetItemOnButton(PlayState* play, s32 index) {
-    if (index >= ((CVarGetInteger(CVAR_SETTING("DpadEquips"), 0) != 0) ? 8 : 4)) {
+    if (index >= ((CVarGetInteger(CVAR_ENHANCEMENT("DpadEquips"), 0) != 0) ? 8 : 4)) {
         return ITEM_NONE;
     } else if (play->bombchuBowlingStatus != 0) {
         return (play->bombchuBowlingStatus > 0) ? ITEM_BOMBCHU : ITEM_NONE;
@@ -2524,7 +2524,7 @@ void Player_ProcessItemButtons(Player* this, PlayState* play) {
         maskItemAction = this->currentMask - 1 + PLAYER_IA_MASK_KEATON;
 
         bool hasOnDpad = false;
-        if (CVarGetInteger(CVAR_SETTING("DpadEquips"), 0) != 0) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("DpadEquips"), 0) != 0) {
             for (int buttonIndex = 0; buttonIndex < 4; buttonIndex++) {
                 hasOnDpad |= Player_ItemIsItemAction(DPAD_ITEM(buttonIndex), maskItemAction);
             }
@@ -2539,7 +2539,7 @@ void Player_ProcessItemButtons(Player* this, PlayState* play) {
     if (!(this->stateFlags1 & (PLAYER_STATE1_CARRYING_ACTOR | PLAYER_STATE1_IN_CUTSCENE)) && !func_8008F128(this)) {
         if (this->itemAction >= PLAYER_IA_FISHING_POLE) {
             bool hasOnDpad = false;
-            if (CVarGetInteger(CVAR_SETTING("DpadEquips"), 0) != 0) {
+            if (CVarGetInteger(CVAR_ENHANCEMENT("DpadEquips"), 0) != 0) {
                 for (int buttonIndex = 0; buttonIndex < 4; buttonIndex++) {
                     hasOnDpad |= Player_ItemIsInUse(this, DPAD_ITEM(buttonIndex));
                 }
@@ -2932,7 +2932,7 @@ int func_80834E44(PlayState* play) {
 
 int func_80834E7C(PlayState* play) {
     u16 buttonsToCheck = BTN_A | BTN_B | BTN_CUP | BTN_CLEFT | BTN_CRIGHT | BTN_CDOWN;
-    if (CVarGetInteger(CVAR_SETTING("DpadEquips"), 0) != 0) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("DpadEquips"), 0) != 0) {
         buttonsToCheck |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
     }
     return (play->shootingGalleryStatus != 0) &&
@@ -6149,7 +6149,7 @@ s32 Player_ActionHandler_Talk(Player* this, PlayState* play) {
                             this->stateFlags2 |= PLAYER_STATE2_NAVI_ALERT;
                         }
 
-                        if (!CHECK_BTN_ALL(sControlInput->press.button, CVarGetInteger(CVAR_SETTING("NaviOnL"), 0) ? BTN_L : BTN_CUP) && !forceTalkToNavi) {
+                        if (!CHECK_BTN_ALL(sControlInput->press.button, CVarGetInteger(CVAR_ENHANCEMENT("NaviOnL"), 0) ? BTN_L : BTN_CUP) && !forceTalkToNavi) {
                             return 0;
                         }
 
@@ -6205,7 +6205,7 @@ s32 Player_ActionHandler_0(Player* this, PlayState* play) {
     if ((this->focusActor != NULL) && (CHECK_FLAG_ALL(this->focusActor->flags, ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_NAVI_HAS_INFO) ||
                                     (this->focusActor->naviEnemyId != 0xFF))) {
         this->stateFlags2 |= PLAYER_STATE2_NAVI_ALERT;
-    } else if ((this->naviTextId == 0 || CVarGetInteger(CVAR_SETTING("NaviOnL"), 0)) && !Player_CheckHostileLockOn(this) && CHECK_BTN_ALL(sControlInput->press.button, BTN_CUP) &&
+    } else if ((this->naviTextId == 0 || CVarGetInteger(CVAR_ENHANCEMENT("NaviOnL"), 0)) && !Player_CheckHostileLockOn(this) && CHECK_BTN_ALL(sControlInput->press.button, BTN_CUP) &&
                (YREG(15) != 0x10) &&
                (YREG(15) != 0x20) && !func_8083B8F4(this, play)) {
         func_80078884(NA_SE_SY_ERROR);
@@ -7091,9 +7091,9 @@ void func_8083DFE0(Player* this, f32* arg1, s16* arg2) {
                     maxSpeed *= CVarGetFloat(CVAR_SETTING("WalkModifier.Mapping2"), 1.0f);
                 }
             } else {
-                if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_MODIFIER1)) {
+                if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_CUSTOM_MODIFIER1)) {
                     maxSpeed *= CVarGetFloat(CVAR_SETTING("WalkModifier.Mapping1"), 1.0f);
-                } else if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_MODIFIER2)) {
+                } else if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_CUSTOM_MODIFIER2)) {
                     maxSpeed *= CVarGetFloat(CVAR_SETTING("WalkModifier.Mapping2"), 1.0f);
                 }
             }
@@ -7435,7 +7435,7 @@ s32 func_8083EAF0(Player* this, Actor* actor) {
 
 s32 Player_ActionHandler_9(Player* this, PlayState* play) {
     u16 buttonsToCheck = BTN_A | BTN_B | BTN_CLEFT | BTN_CRIGHT | BTN_CDOWN;
-    if (CVarGetInteger(CVAR_SETTING("DpadEquips"), 0) != 0) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("DpadEquips"), 0) != 0) {
         buttonsToCheck |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
     }
     if ((this->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR) && (this->heldActor != NULL) &&
@@ -8860,9 +8860,9 @@ void Player_Action_80842180(Player* this, PlayState* play) {
                         sp2C *= CVarGetFloat(CVAR_SETTING("WalkModifier.Mapping2"), 1.0f);
                     }
                 } else {
-                    if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_MODIFIER1)) {
+                    if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_CUSTOM_MODIFIER1)) {
                         sp2C *= CVarGetFloat(CVAR_SETTING("WalkModifier.Mapping1"), 1.0f);
-                    } else if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_MODIFIER2)) {
+                    } else if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_CUSTOM_MODIFIER2)) {
                         sp2C *= CVarGetFloat(CVAR_SETTING("WalkModifier.Mapping2"), 1.0f);
                     }
                 }
@@ -9642,7 +9642,7 @@ void Player_Action_8084411C(Player* this, PlayState* play) {
             Actor* heldActor = this->heldActor;
 
             u16 buttonsToCheck = BTN_A | BTN_B | BTN_CLEFT | BTN_CRIGHT | BTN_CDOWN;
-            if (CVarGetInteger(CVAR_SETTING("DpadEquips"), 0) != 0) {
+            if (CVarGetInteger(CVAR_ENHANCEMENT("DpadEquips"), 0) != 0) {
                 buttonsToCheck |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
             }
             if (!func_80835644(play, this, heldActor) && (heldActor->id == ACTOR_EN_NIW) &&
@@ -10452,7 +10452,7 @@ void Player_Action_80846260(Player* this, PlayState* play) {
     }
 
     u16 buttonsToCheck = BTN_A | BTN_B | BTN_CLEFT | BTN_CRIGHT | BTN_CDOWN;
-    if (CVarGetInteger(CVAR_SETTING("DpadEquips"), 0) != 0) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("DpadEquips"), 0) != 0) {
         buttonsToCheck |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
     }
     if (this->av2.actionVar2 == 0) {
@@ -12362,10 +12362,10 @@ void Player_Update(Actor* thisx, PlayState* play) {
         }
 
         if (CVarGetInteger(CVAR_SETTING("WalkModifier.Enabled"), 0) && CVarGetInteger(CVAR_SETTING("WalkModifier.SpeedToggle"), 0)) {
-            if (CHECK_BTN_ALL(sControlInput->press.button, BTN_MODIFIER1)) {
+            if (CHECK_BTN_ALL(sControlInput->press.button, BTN_CUSTOM_MODIFIER1)) {
                 gWalkSpeedToggle1 = !gWalkSpeedToggle1;
             }
-            if (CHECK_BTN_ALL(sControlInput->press.button, BTN_MODIFIER2)) {
+            if (CHECK_BTN_ALL(sControlInput->press.button, BTN_CUSTOM_MODIFIER2)) {
                 gWalkSpeedToggle2 = !gWalkSpeedToggle2;
             }
         }
@@ -12813,9 +12813,9 @@ void func_8084AEEC(Player* this, f32* arg1, f32 arg2, s16 arg3) {
             }
         // sControlInput is NULL to prevent inputs while surfacing after obtaining an underwater item so we want to ignore it for that case
         } else if (sControlInput != NULL) {
-            if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_MODIFIER1)) {
+            if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_CUSTOM_MODIFIER1)) {
                 swimMod *= CVarGetFloat(CVAR_SETTING("WalkModifier.SwimMapping1"), 1.0f);
-            } else if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_MODIFIER2)) {
+            } else if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_CUSTOM_MODIFIER2)) {
                 swimMod *= CVarGetFloat(CVAR_SETTING("WalkModifier.SwimMapping2"), 1.0f);
             }
         }
@@ -12964,7 +12964,7 @@ void Player_Action_8084B1D8(Player* this, PlayState* play) {
     }
 
     u16 buttonsToCheck = BTN_A | BTN_B | BTN_R | BTN_CUP | BTN_CLEFT | BTN_CRIGHT | BTN_CDOWN;
-    if (CVarGetInteger(CVAR_SETTING("DpadEquips"), 0) != 0) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("DpadEquips"), 0) != 0) {
         buttonsToCheck |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
     }
     if ((this->csAction != 0) || (this->unk_6AD == 0) || (this->unk_6AD >= 4) || Player_UpdateHostileLockOn(this) ||
