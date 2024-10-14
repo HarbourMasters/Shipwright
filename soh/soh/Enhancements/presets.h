@@ -562,7 +562,7 @@ const std::vector<PresetEntry> vanillaPlusPresetEntries = {
     // Skip Text
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("SkipText"), 1),
     // King Zora Speed (1 to 5)
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MweepSpeed"), 2),
+    PRESET_ENTRY_FLOAT(CVAR_ENHANCEMENT("MweepSpeed"), 2.0f),
     // Faster Block Push (+0 to +5)
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FasterBlockPush"), 5),
     // Better Owl
@@ -633,7 +633,7 @@ const std::vector<PresetEntry> enhancedPresetEntries = {
     // Skip Text
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("SkipText"), 1),
     // King Zora Speed (1 to 5)
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MweepSpeed"), 5),
+    PRESET_ENTRY_FLOAT(CVAR_ENHANCEMENT("MweepSpeed"), 5.0f),
     // Faster Block Push (+0 to +5)
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FasterBlockPush"), 5),
     // Better Owl
@@ -765,7 +765,7 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     // Skip Text
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("SkipText"), 1),
     // King Zora Speed (1 to 5)
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MweepSpeed"), 5),
+    PRESET_ENTRY_FLOAT(CVAR_ENHANCEMENT("MweepSpeed"), 5.0f),
     // Faster Block Push (+0 to +5)
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FasterBlockPush"), 5),
     // Better Owl
@@ -914,7 +914,7 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
 const std::vector<PresetEntry> spockRacePresetEntries = {
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("LogicRules"), 0),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("TextSpeed"), 5),
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MweepSpeed"), 5),
+    PRESET_ENTRY_FLOAT(CVAR_ENHANCEMENT("MweepSpeed"), 5.0f),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("ClimbSpeed"), 4),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FasterBlockPush"), 5),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FasterHeavyBlockLift"), 1),
@@ -1034,7 +1034,7 @@ const std::vector<PresetEntry> spockRaceNoLogicPresetEntries = {
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_FAST),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MarketSneak"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MaskSelect"), 1),
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MweepSpeed"), 5),
+    PRESET_ENTRY_FLOAT(CVAR_ENHANCEMENT("MweepSpeed"), 5.0f),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("NoForcedNavi"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("NoInputForCredits"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("PauseAnyCursor"), 1),
