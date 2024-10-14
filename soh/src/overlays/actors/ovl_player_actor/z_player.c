@@ -10225,17 +10225,17 @@ s32 func_80845964(PlayState* play, Player* this, CsCmdActorCue* cue, f32 arg3, s
 
     if (arg5 != 2) {
         f32 sp34 = R_UPDATE_RATE * 0.5f;
-        f32 selfDistX = arg2->endPos.x - this->actor.world.pos.x;
-        f32 selfDistZ = arg2->endPos.z - this->actor.world.pos.z;
+        f32 selfDistX = cue->endPos.x - this->actor.world.pos.x;
+        f32 selfDistZ = cue->endPos.z - this->actor.world.pos.z;
         f32 sp28 = sqrtf(SQ(selfDistX) + SQ(selfDistZ)) / sp34;
-        s32 sp24 = (arg2->endFrame - play->csCtx.frames) + 1;
+        s32 sp24 = (cue->endFrame - play->csCtx.frames) + 1;
 
         arg4 = Math_Atan2S(selfDistZ, selfDistX);
 
         if (arg5 == 1) {
-            f32 distX = arg2->endPos.x - arg2->startPos.x;
-            f32 distZ = arg2->endPos.z - arg2->startPos.z;
-            s32 temp = (((sqrtf(SQ(distX) + SQ(distZ)) / sp34) / (arg2->endFrame - arg2->startFrame)) / 1.5f) * 4.0f;
+            f32 distX = cue->endPos.x - cue->startPos.x;
+            f32 distZ = cue->endPos.z - cue->startPos.z;
+            s32 temp = (((sqrtf(SQ(distX) + SQ(distZ)) / sp34) / (cue->endFrame - cue->startFrame)) / 1.5f) * 4.0f;
 
             if (temp >= sp24) {
                 arg4 = this->actor.shape.rot.y;
@@ -16107,11 +16107,11 @@ void func_8085190C(PlayState* play, Player* this, CsCmdActorCue* cue) {
 }
 
 void func_80851998(PlayState* play, Player* this, CsCmdActorCue* cue) {
-    func_80845964(play, this, arg2, 0.0f, 0, 0);
+    func_80845964(play, this, cue, 0.0f, 0, 0);
 }
 
 void func_808519C0(PlayState* play, Player* this, CsCmdActorCue* cue) {
-    func_80845964(play, this, arg2, 0.0f, 0, 1);
+    func_80845964(play, this, cue, 0.0f, 0, 1);
 }
 
 // unused
@@ -16299,13 +16299,13 @@ void func_80852080(PlayState* play, Player* this, CsCmdActorCue* cue) {
 }
 
 void func_808520BC(PlayState* play, Player* this, CsCmdActorCue* cue) {
-    f32 startX = arg2->startPos.x;
-    f32 startY = arg2->startPos.y;
-    f32 startZ = arg2->startPos.z;
-    f32 distX = (arg2->endPos.x - startX);
-    f32 distY = (arg2->endPos.y - startY);
-    f32 distZ = (arg2->endPos.z - startZ);
-    f32 sp4 = (f32)(play->csCtx.frames - arg2->startFrame) / (f32)(arg2->endFrame - arg2->startFrame);
+    f32 startX = cue->startPos.x;
+    f32 startY = cue->startPos.y;
+    f32 startZ = cue->startPos.z;
+    f32 distX = (cue->endPos.x - startX);
+    f32 distY = (cue->endPos.y - startY);
+    f32 distZ = (cue->endPos.z - startZ);
+    f32 sp4 = (f32)(play->csCtx.frames - cue->startFrame) / (f32)(cue->endFrame - cue->startFrame);
 
     this->actor.world.pos.x = distX * sp4 + startX;
     this->actor.world.pos.y = distY * sp4 + startY;
@@ -16318,14 +16318,14 @@ static AnimSfxEntry D_808551D8[] = {
 };
 
 void func_80852174(PlayState* play, Player* this, CsCmdActorCue* cue) {
-    func_808520BC(play, this, arg2);
+    func_808520BC(play, this, cue);
     LinkAnimation_Update(play, &this->skelAnime);
     Player_ProcessAnimSfxList(this, D_808551D8);
 }
 
 void func_808521B8(PlayState* play, Player* this, CsCmdActorCue* cue) {
-    if (arg2 != NULL) {
-        func_808520BC(play, this, arg2);
+    if (cue != NULL) {
+        func_808520BC(play, this, cue);
     }
     LinkAnimation_Update(play, &this->skelAnime);
 }
@@ -16520,7 +16520,7 @@ void func_808526EC(PlayState* play, Player* this, CsCmdActorCue* cue) {
 
 void func_8085283C(PlayState* play, Player* this, CsCmdActorCue* cue) {
     if (LinkAnimation_Update(play, &this->skelAnime)) {
-        func_80852944(play, this, arg2);
+        func_80852944(play, this, cue);
     // This is when link picks up the sword in the Ganon fight
     } else if (this->av2.actionVar2 == 0) {
         Item_Give(play, ITEM_SWORD_MASTER);
@@ -16556,24 +16556,24 @@ void func_80852944(PlayState* play, Player* this, CsCmdActorCue* cue) {
 }
 
 void func_808529D0(PlayState* play, Player* this, CsCmdActorCue* cue) {
-    this->actor.world.pos.x = arg2->startPos.x;
-    this->actor.world.pos.y = arg2->startPos.y;
+    this->actor.world.pos.x = cue->startPos.x;
+    this->actor.world.pos.y = cue->startPos.y;
     if ((play->sceneNum == SCENE_KOKIRI_FOREST) && !LINK_IS_ADULT) {
         this->actor.world.pos.y -= 1.0f;
     }
-    this->actor.world.pos.z = arg2->startPos.z;
-    this->yaw = this->actor.shape.rot.y = arg2->rot.y;
+    this->actor.world.pos.z = cue->startPos.z;
+    this->yaw = this->actor.shape.rot.y = cue->rot.y;
 }
 
 void func_80852A54(PlayState* play, Player* this, CsCmdActorCue* cue) {
-    f32 dx = arg2->startPos.x - (s32)this->actor.world.pos.x;
-    f32 dy = arg2->startPos.y - (s32)this->actor.world.pos.y;
-    f32 dz = arg2->startPos.z - (s32)this->actor.world.pos.z;
+    f32 dx = cue->startPos.x - (s32)this->actor.world.pos.x;
+    f32 dy = cue->startPos.y - (s32)this->actor.world.pos.y;
+    f32 dz = cue->startPos.z - (s32)this->actor.world.pos.z;
     f32 dist = sqrtf(SQ(dx) + SQ(dy) + SQ(dz));
-    s16 yawDiff = arg2->rot.y - this->actor.shape.rot.y;
+    s16 yawDiff = cue->rot.y - this->actor.shape.rot.y;
 
     if ((this->linearVelocity == 0.0f) && ((dist > 50.0f) || (ABS(yawDiff) > 0x4000))) {
-        func_808529D0(play, this, arg2);
+        func_808529D0(play, this, cue);
     }
 
     this->skelAnime.moveFlags = 0;
@@ -16584,7 +16584,7 @@ void func_80852B4C(PlayState* play, Player* this, CsCmdActorCue* cue, struct_808
     if (arg3->type > 0) {
         D_80854AA4[arg3->type](play, this, arg3->ptr);
     } else if (arg3->type < 0) {
-        arg3->func(play, this, arg2);
+        arg3->func(play, this, cue);
     }
 
     if ((D_80858AA0 & 4) && !(this->skelAnime.moveFlags & 4)) {
