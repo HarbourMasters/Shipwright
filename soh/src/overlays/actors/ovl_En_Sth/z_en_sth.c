@@ -257,66 +257,34 @@ void EnSth_ParentRewardObtainedWait(EnSth* this, PlayState* play) {
 
 void EnSth_GivePlayerItem(EnSth* this, PlayState* play) {
     u16 getItemId = sGetItemIds[this->actor.params];
-    GetItemEntry getItemEntry = (GetItemEntry)GET_ITEM_NONE;
-    
-    if (IS_RANDO) {
-        switch (getItemId) {
-            case GI_RUPEE_GOLD:
-                if (!Flags_GetRandomizerInf(RAND_INF_KAK_100_GOLD_SKULLTULA_REWARD)) {
-                    getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_100_GOLD_SKULLTULA_REWARD, GI_RUPEE_GOLD);
-                    Flags_SetRandomizerInf(RAND_INF_KAK_100_GOLD_SKULLTULA_REWARD);
-                }
-                break;
-            case GI_WALLET_ADULT:
-                getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_10_GOLD_SKULLTULA_REWARD, GI_WALLET_ADULT);
-                break;
-            case GI_STONE_OF_AGONY:
-                getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_20_GOLD_SKULLTULA_REWARD, GI_STONE_OF_AGONY);
-                break;
-            case GI_WALLET_GIANT:
-                getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_30_GOLD_SKULLTULA_REWARD, GI_WALLET_GIANT);
-                break;
-            case GI_BOMBCHUS_10:
-                getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_40_GOLD_SKULLTULA_REWARD, GI_BOMBCHUS_10);
-                break;
-            case GI_HEART_PIECE:
-                getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_50_GOLD_SKULLTULA_REWARD, GI_HEART_PIECE);
-                break;
-        }
-        getItemId = getItemEntry.getItemId;
-    } else {
-        switch (this->actor.params) {
-            case 1:
-            case 3:
-                switch (CUR_UPG_VALUE(UPG_WALLET)) {
-                    case 0:
-                        getItemId = GI_WALLET_ADULT;
-                        break;
 
-                    case 1:
-                        getItemId = GI_WALLET_GIANT;
-                        break;
-                }
-                break;
-        }
+    switch (this->actor.params) {
+        case 1:
+        case 3:
+            switch (CUR_UPG_VALUE(UPG_WALLET)) {
+                case 0:
+                    getItemId = GI_WALLET_ADULT;
+                    break;
+
+                case 1:
+                    getItemId = GI_WALLET_GIANT;
+                    break;
+            }
+            break;
     }
 
-    if (!IS_RANDO || getItemEntry.getItemId == GI_NONE) {
-        func_8002F434(&this->actor, play, getItemId, 10000.0f, 50.0f);
-    } else {
-        GiveItemEntryFromActor(&this->actor, play, getItemEntry, 10000.0f, 50.0f);
-    }
+    Actor_OfferGetItem(&this->actor, play, getItemId, 10000.0f, 50.0f);
 }
 
 void EnSth_GiveReward(EnSth* this, PlayState* play) {
-    if (Actor_HasParent(&this->actor, play)) {
+    if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(VB_GIVE_ITEM_FROM_SKULLTULA_REWARD, true, this)) {
         this->actor.parent = NULL;
         EnSth_SetupAction(this, EnSth_RewardObtainedTalk);
         gSaveContext.eventChkInf[EVENTCHKINF_SKULLTULA_REWARD_INDEX] |= this->eventFlag;
         if (this->eventFlag != 0) {
             GameInteractor_ExecuteOnFlagSet(FLAG_EVENT_CHECK_INF, (EVENTCHKINF_SKULLTULA_REWARD_INDEX << 4) + sEventFlagsShift[this->actor.params]);
         }
-    } else {
+    } else if (GameInteractor_Should(VB_GIVE_ITEM_FROM_SKULLTULA_REWARD, true, this)) {
         EnSth_GivePlayerItem(this, play);
     }
     EnSth_FacePlayer(this, play);
@@ -326,7 +294,9 @@ void EnSth_RewardUnobtainedTalk(EnSth* this, PlayState* play) {
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(play)) {
         Message_CloseTextbox(play);
         EnSth_SetupAction(this, EnSth_GiveReward);
-        EnSth_GivePlayerItem(this, play);
+        if (GameInteractor_Should(VB_GIVE_ITEM_FROM_SKULLTULA_REWARD, true, this)) {
+            EnSth_GivePlayerItem(this, play);
+        }
     }
     EnSth_FacePlayer(this, play);
 }

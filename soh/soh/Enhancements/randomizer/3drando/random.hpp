@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <utility>
 #include <vector>
+#include <set>
 
 void Random_Init(uint32_t seed);
 uint32_t Random(int min, int max);
@@ -29,7 +30,21 @@ const auto& RandomElement(const Container& container) {
     return container[Random(0, std::size(container))];
 }
 
+template <typename T>
+const T RandomElementFromSet(const std::set<T>& set) {
+    if (set.size() == 1) {
+        return *set.begin();
+    }
+    uint32_t rand = Random(0, set.size());
+    auto it = set.begin();
+    for (uint32_t i = 0; i < rand; i++) {
+        it++;
+    }
+    return *it;
+}
+
 //Shuffle items within a vector or array
+//RANDOTODO There's probably a more efficient way to do what this does.
 template <typename T>
 void Shuffle(std::vector<T>& vector) {
     for (std::size_t i = 0; i + 1 < vector.size(); i++)

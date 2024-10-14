@@ -3,12 +3,17 @@
 #include "game-interactor/GameInteractor.h"
 #include "tts/tts.h"
 #include "soh/OTRGlobals.h"
-#include "soh/Enhancements/boss-rush/BossRushTypes.h"
+#include "soh/Enhancements/boss-rush/BossRush.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/randomizer/3drando/random.hpp"
 #include "soh/Enhancements/cosmetics/authenticGfxPatches.h"
 #include <soh/Enhancements/item-tables/ItemTableManager.h>
 #include "soh/Enhancements/nametag.h"
+#include "soh/Enhancements/timesaver_hook_handlers.h"
+#include "soh/Enhancements/TimeSavers/TimeSavers.h"
+#include "soh/Enhancements/cheat_hook_handlers.h"
+#include "soh/Enhancements/randomizer/hook_handlers.h"
+#include "objects/object_gi_compass/object_gi_compass.h"
 
 #include "src/overlays/actors/ovl_En_Bb/z_en_bb.h"
 #include "src/overlays/actors/ovl_En_Dekubaba/z_en_dekubaba.h"
@@ -23,9 +28,14 @@
 #include "src/overlays/actors/ovl_En_Tp/z_en_tp.h"
 #include "src/overlays/actors/ovl_En_Firefly/z_en_firefly.h"
 #include "src/overlays/actors/ovl_En_Xc/z_en_xc.h"
+#include "src/overlays/actors/ovl_Fishing/z_fishing.h"
 #include "src/overlays/actors/ovl_Obj_Switch/z_obj_switch.h"
+#include "src/overlays/actors/ovl_Door_Shutter/z_door_shutter.h"
+#include "src/overlays/actors/ovl_Door_Gerudo/z_door_gerudo.h"
+#include "src/overlays/actors/ovl_En_Door/z_en_door.h"
 #include "objects/object_link_boy/object_link_boy.h"
 #include "objects/object_link_child/object_link_child.h"
+#include "kaleido.h"
 
 extern "C" {
 #include <z64.h>
@@ -66,7 +76,7 @@ void ReloadSceneTogglingLinkAge() {
 void RegisterInfiniteMoney() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
         if (!GameInteractor::IsSaveLoaded(true)) return;
-        if (CVarGetInteger(CVAR_CHEAT("InfiniteMoney"), 0) != 0) {
+        if (CVarGetInteger(CVAR_CHEAT("InfiniteMoney"), 0) != 0 && (!IS_RANDO || Flags_GetRandomizerInf(RAND_INF_HAS_WALLET))) {
             if (gSaveContext.rupees < CUR_CAPACITY(UPG_WALLET)) {
                 gSaveContext.rupees = CUR_CAPACITY(UPG_WALLET);
             }
@@ -335,7 +345,7 @@ void AutoSave(GetItemEntry itemEntry) {
                     case ITEM_BOMBCHU:
                     case ITEM_BOMBCHUS_5:
                     case ITEM_BOMBCHUS_20:
-                        if (!CVarGetInteger(CVAR_ENHANCEMENT("BombchuDrops"), 0)) {
+                        if (!CVarGetInteger(CVAR_ENHANCEMENT("EnableBombchuDrops"), 0)) {
                             performSave = true;
                         }
                         break;
@@ -428,7 +438,7 @@ void UpdatePermanentHeartLossState() {
     if (!CVarGetInteger(CVAR_ENHANCEMENT("PermanentHeartLoss"), 0) && hasAffectedHealth) {
         uint8_t heartContainers = gSaveContext.sohStats.heartContainers; // each worth 16 health
         uint8_t heartPieces = gSaveContext.sohStats.heartPieces; // each worth 4 health, but only in groups of 4
-        uint8_t startingHealth = 16 * 3;
+        uint8_t startingHealth = 16 * (IS_RANDO ? (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_STARTING_HEARTS) + 1) : 3);
 
 
         uint8_t newCapacity = startingHealth + (heartContainers * 16) + ((heartPieces - (heartPieces % 4)) * 4);
@@ -683,7 +693,8 @@ void UpdateMirrorModeState(int32_t sceneNum) {
                         (sceneNum == SCENE_GANON_BOSS);
 
     if (mirroredMode == MIRRORED_WORLD_RANDOM_SEEDED || mirroredMode == MIRRORED_WORLD_DUNGEONS_RANDOM_SEEDED) {
-        uint32_t seed = sceneNum + (IS_RANDO ? gSaveContext.finalSeed : gSaveContext.sohStats.fileCreatedAt);
+        uint32_t seed = sceneNum + (IS_RANDO ? Rando::Context::GetInstance()->GetSettings()->GetSeed()
+                                             : gSaveContext.sohStats.fileCreatedAt);
         Random_Init(seed);
     }
 
@@ -757,6 +768,13 @@ void UpdatePatchHand() {
         ResourceMgr_UnpatchGfxByName(gLinkChildLeftFistAndBoomerangNearDL, "adultBoomerang");
         ResourceMgr_UnpatchGfxByName(gLinkChildRightFistAndDekuShieldNearDL, "adultDekuShield");
     }
+    if (CVarGetInteger("gEnhancements.FixHammerHand", 0) && LINK_IS_ADULT) {
+        ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "hammerHand1", 92, gsSPDisplayListOTRFilePath(gLinkAdultLeftHandClosedNearDL));
+        ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "hammerHand2", 93, gsSPEndDisplayList());
+    } else {
+        ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "hammerHand1");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "hammerHand2");
+    }
 }
 
 void RegisterPatchHandHandler() {
@@ -771,48 +789,6 @@ void RegisterResetNaviTimer() {
 			gSaveContext.naviTimer = 0;
 		}
 	});
-}
-
-f32 triforcePieceScale;
-
-void RegisterTriforceHunt() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
-        if (!GameInteractor::IsGameplayPaused() &&
-            OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT)) {
-
-            // Warp to credits
-            if (GameInteractor::State::TriforceHuntCreditsWarpActive) {
-                gPlayState->nextEntranceIndex = ENTR_CHAMBER_OF_THE_SAGES_0;
-                gSaveContext.nextCutsceneIndex = 0xFFF2;
-                gPlayState->transitionTrigger = TRANS_TRIGGER_START;
-                gPlayState->transitionType = TRANS_TYPE_FADE_WHITE;
-                GameInteractor::State::TriforceHuntCreditsWarpActive = 0;
-            }
-
-            // Reset Triforce Piece scale for GI animation. Triforce Hunt allows for multiple triforce models,
-            // and cycles through them based on the amount of triforce pieces collected. It takes a little while
-            // for the count to increase during the GI animation, so the model is entirely hidden until that piece
-            // has been added. That scale has to be reset after the textbox is closed, and this is the best way
-            // to ensure it's done at that point in time specifically.
-            if (GameInteractor::State::TriforceHuntPieceGiven) {
-                triforcePieceScale = 0.0f;
-                GameInteractor::State::TriforceHuntPieceGiven = 0;
-            }
-        }
-    });
-}
-
-void RegisterGrantGanonsBossKey() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
-        // Triforce Hunt needs the check if the player isn't being teleported to the credits scene.
-        if (!GameInteractor::IsGameplayPaused() && IS_RANDO &&
-            Flags_GetRandomizerInf(RAND_INF_GRANT_GANONS_BOSSKEY) && gPlayState->transitionTrigger != TRANS_TRIGGER_START &&
-            (1 << 0 & gSaveContext.inventory.dungeonItems[SCENE_GANONS_TOWER]) == 0) {
-                GetItemEntry getItemEntry =
-                    ItemTableManager::Instance->RetrieveItemEntry(MOD_RANDOMIZER, RG_GANONS_CASTLE_BOSS_KEY);
-                GiveItemEntryWithoutActor(gPlayState, getItemEntry);
-        }
-    });
 }
 
 //this map is used for enemies that can be uniquely identified by their id
@@ -862,7 +838,7 @@ static std::unordered_map<u16, u16> uniqueEnemyIdToStatCount = {
 
 void RegisterEnemyDefeatCounts() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnEnemyDefeat>([](void* refActor) {
-        Actor* actor = (Actor*)refActor;
+        Actor* actor = static_cast<Actor*>(refActor);
         if (uniqueEnemyIdToStatCount.contains(actor->id)) {
             gSaveContext.sohStats.count[uniqueEnemyIdToStatCount[actor->id]]++;
         } else {
@@ -1002,6 +978,45 @@ void RegisterEnemyDefeatCounts() {
                     }
                     break;
             }
+        }
+    });
+}
+
+void RegisterBossDefeatTimestamps() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnBossDefeat>([](void* refActor) {
+        Actor* actor = static_cast<Actor*>(refActor);
+        switch (actor->id) {
+            case ACTOR_BOSS_DODONGO:
+                gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_KING_DODONGO] = GAMEPLAYSTAT_TOTAL_TIME;
+                break;
+            case ACTOR_BOSS_FD2:
+                gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_VOLVAGIA] = GAMEPLAYSTAT_TOTAL_TIME;
+                break;
+            case ACTOR_BOSS_GANON:
+                gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_GANONDORF] = GAMEPLAYSTAT_TOTAL_TIME;
+                break;
+            case ACTOR_BOSS_GANON2:
+                gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
+                gSaveContext.sohStats.gameComplete = true;
+                break;
+            case ACTOR_BOSS_GANONDROF:
+                gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_PHANTOM_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
+                break;
+            case ACTOR_BOSS_GOMA:
+                gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_GOHMA] = GAMEPLAYSTAT_TOTAL_TIME;
+                break;
+            case ACTOR_BOSS_MO:
+                gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_MORPHA] = GAMEPLAYSTAT_TOTAL_TIME;
+                break;
+            case ACTOR_BOSS_SST:
+                gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_BONGO_BONGO] = GAMEPLAYSTAT_TOTAL_TIME;
+                break;
+            case ACTOR_BOSS_TW:
+                gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_TWINROVA] = GAMEPLAYSTAT_TOTAL_TIME;
+                break;
+            case ACTOR_BOSS_VA:
+                gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_BARINADE] = GAMEPLAYSTAT_TOTAL_TIME;
+                break;
         }
     });
 }
@@ -1151,28 +1166,6 @@ void RegisterAltTrapTypes() {
         }
         statusTimer--;
         eventTimer--;
-    });
-}
-
-void RegisterRandomizerSheikSpawn() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneSpawnActors>([]() {
-        if (!gPlayState) return;
-        bool canSheik = (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIAL_COUNT) != RO_GANONS_TRIALS_SKIP && 
-          OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LIGHT_ARROWS_HINT));
-        if (!IS_RANDO || !LINK_IS_ADULT || !canSheik) return;
-        switch (gPlayState->sceneNum) {
-            case SCENE_TEMPLE_OF_TIME:
-                if (gPlayState->roomCtx.curRoom.num == 1) {
-                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_XC, -104, -40, 2382, 0, 0x8000, 0, SHEIK_TYPE_RANDO, false);
-                }
-                break;
-            case SCENE_INSIDE_GANONS_CASTLE:
-                if (gPlayState->roomCtx.curRoom.num == 1){
-                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_XC, 101, 150, 137, 0, 0, 0, SHEIK_TYPE_RANDO, false);
-                    }
-                break;
-            default: break;
-        }
     });
 }
 
@@ -1394,7 +1387,32 @@ void RegisterPauseMenuHooks() {
     });
 }
 
+extern "C" u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
+
+void PatchCompasses() {
+    s8 compassesCanBeOutsideDungeon = IS_RANDO && DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_SHUFFLE_MAPANDCOMPASS);
+    s8 isColoredCompassesEnabled = compassesCanBeOutsideDungeon && CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MatchCompassColors"), 1);
+    if (isColoredCompassesEnabled) {
+        ResourceMgr_PatchGfxByName(gGiCompassDL, "Compass_PrimColor", 5, gsDPNoOp());
+        ResourceMgr_PatchGfxByName(gGiCompassDL, "Compass_EnvColor", 6, gsDPNoOp());
+    } else {
+        ResourceMgr_UnpatchGfxByName(gGiCompassDL, "Compass_PrimColor");
+        ResourceMgr_UnpatchGfxByName(gGiCompassDL, "Compass_EnvColor");
+    }
+}
+
+void RegisterRandomizerCompasses() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadFile>([](int32_t _unused) {
+        PatchCompasses();
+    });
+}
+
 void InitMods() {
+    BossRush_RegisterHooks();
+    RandomizerRegisterHooks();
+    TimeSaverRegisterHooks();
+    CheatsRegisterHooks();
+    TimeSavers_Register();
     RegisterTTS();
     RegisterInfiniteMoney();
     RegisterInfiniteHealth();
@@ -1420,17 +1438,17 @@ void InitMods() {
     RegisterMenuPathFix();
     RegisterMirrorModeHandler();
     RegisterResetNaviTimer();
-    RegisterTriforceHunt();
-    RegisterGrantGanonsBossKey();
     RegisterEnemyDefeatCounts();
+    RegisterBossDefeatTimestamps();
     RegisterAltTrapTypes();
-    RegisterRandomizerSheikSpawn();
     RegisterRandomizedEnemySizes();
     RegisterOpenAllHours();
     RegisterToTMedallions();
+    RegisterRandomizerCompasses();
     NameTag_RegisterHooks();
     RegisterFloorSwitchesHook();
     RegisterPatchHandHandler();
     RegisterHurtContainerModeHandler();
     RegisterPauseMenuHooks();
+    RandoKaleido_RegisterHooks();
 }

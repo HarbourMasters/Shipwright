@@ -98,7 +98,7 @@ static ItemData itemData[88] = {
     {CREATE_SPRITE_32(dgItemIconMaskGerudoTex, 37),        ITEM_MASK_GERUDO,      INV_IC_POS(6, 1), SIZE_NORMAL},
     {CREATE_SPRITE_32(dgItemIconMaskTruthTex, 37),         ITEM_MASK_TRUTH,       INV_IC_POS(6, 1), SIZE_NORMAL},
     {CREATE_SPRITE_32(dgItemIconSoldOutTex, 37),           ITEM_SOLD_OUT,         INV_IC_POS(6, 1), SIZE_NORMAL},
-    
+
     {CREATE_SPRITE_32(dgItemIconBoomerangTex, 14),         ITEM_BOOMERANG,        INV_IC_POS(0, 2), SIZE_NORMAL},
     {CREATE_SPRITE_32(dgItemIconLensOfTruthTex, 15),       ITEM_LENS,             INV_IC_POS(1, 2), SIZE_NORMAL},
     {CREATE_SPRITE_32(dgItemIconMagicBeanTex, 16),         ITEM_BEAN,             INV_IC_POS(2, 2), SIZE_NORMAL},
@@ -116,19 +116,19 @@ static ItemData itemData[88] = {
     {CREATE_SPRITE_32(dgItemIconEyeballFrogTex, 53),       ITEM_FROG,             INV_IC_POS(6, 2), SIZE_NORMAL},
     {CREATE_SPRITE_32(dgItemIconEyeDropsTex, 53),          ITEM_EYEDROPS,         INV_IC_POS(6, 2), SIZE_NORMAL},
     {CREATE_SPRITE_32(dgItemIconClaimCheckTex, 53),        ITEM_CLAIM_CHECK,      INV_IC_POS(6, 2), SIZE_NORMAL},
-    
+
     {CREATE_SPRITE_32(dgItemIconSwordKokiriTex, 54),       ITEM_SWORD_KOKIRI,     EQP_IC_POS(0, 0), SIZE_NORMAL},
     {CREATE_SPRITE_32(dgItemIconSwordMasterTex, 55),       ITEM_SWORD_MASTER,     EQP_IC_POS(1, 0), SIZE_NORMAL},
     {CREATE_SPRITE_32(dgItemIconSwordBiggoronTex, 56),     ITEM_SWORD_BGS,        EQP_IC_POS(2, 0), SIZE_NORMAL},
-    
+
     {CREATE_SPRITE_32(dgItemIconShieldDekuTex, 57),        ITEM_SHIELD_DEKU,      EQP_IC_POS(0, 1), SIZE_NORMAL},
     {CREATE_SPRITE_32(dgItemIconShieldHylianTex, 58),      ITEM_SHIELD_HYLIAN,    EQP_IC_POS(1, 1), SIZE_NORMAL},
     {CREATE_SPRITE_32(dgItemIconShieldMirrorTex, 59),      ITEM_SHIELD_MIRROR,    EQP_IC_POS(2, 1), SIZE_NORMAL},
-    
+
     {CREATE_SPRITE_32(dgItemIconTunicKokiriTex, 60),       ITEM_TUNIC_KOKIRI,     EQP_IC_POS(0, 2), SIZE_NORMAL},
     {CREATE_SPRITE_32(dgItemIconTunicGoronTex, 61),        ITEM_TUNIC_GORON,      EQP_IC_POS(1, 2), SIZE_NORMAL},
     {CREATE_SPRITE_32(dgItemIconTunicZoraTex, 62),         ITEM_TUNIC_ZORA,       EQP_IC_POS(2, 2), SIZE_NORMAL},
-    
+
     {CREATE_SPRITE_32(dgItemIconBootsKokiriTex, 63),       ITEM_BOOTS_KOKIRI,     EQP_IC_POS(0, 3), SIZE_NORMAL},
     {CREATE_SPRITE_32(dgItemIconBootsIronTex, 64),         ITEM_BOOTS_IRON,       EQP_IC_POS(1, 3), SIZE_NORMAL},
     {CREATE_SPRITE_32(dgItemIconBootsHoverTex, 65),        ITEM_BOOTS_HOVER,      EQP_IC_POS(2, 3), SIZE_NORMAL},
@@ -136,7 +136,7 @@ static ItemData itemData[88] = {
     {CREATE_SPRITE_24(dgQuestIconKokiriEmeraldTex, 87),    ITEM_KOKIRI_EMERALD,   STN_IC_POS(-1),   SIZE_NORMAL},
     {CREATE_SPRITE_24(dgQuestIconGoronRubyTex, 88),        ITEM_GORON_RUBY,       STN_IC_POS(0),    SIZE_NORMAL},
     {CREATE_SPRITE_24(dgQuestIconZoraSapphireTex, 89),     ITEM_ZORA_SAPPHIRE,    STN_IC_POS(1),    SIZE_NORMAL},
-    
+
     {CREATE_SPRITE_24(dgQuestIconMedallionForestTex, 81),  ITEM_MEDALLION_FOREST, {0x37, 0x0A},     SIZE_NORMAL},
     {CREATE_SPRITE_24(dgQuestIconMedallionFireTex, 82),    ITEM_MEDALLION_FIRE,   {0x37, 0x1A},     SIZE_NORMAL},
     {CREATE_SPRITE_24(dgQuestIconMedallionWaterTex, 83),   ITEM_MEDALLION_WATER,  {0x29, 0x22},     SIZE_NORMAL},
@@ -394,39 +394,39 @@ u8 ShouldRenderItem(s16 fileIndex, u8 item) {
     if (item == ITEM_POCKET_CUCCO && !HasItem(fileIndex, ITEM_POCKET_CUCCO)) {
         return 0;
     }
-    
+
     if (item == ITEM_COJIRO && !HasItem(fileIndex, ITEM_COJIRO)) {
         return 0;
     }
-    
+
     if (item == ITEM_ODD_MUSHROOM && !HasItem(fileIndex, ITEM_ODD_MUSHROOM)) {
         return 0;
     }
-    
+
     if (item == ITEM_ODD_POTION && !HasItem(fileIndex, ITEM_ODD_POTION)) {
         return 0;
     }
-    
+
     if (item == ITEM_SAW && !HasItem(fileIndex, ITEM_SAW)) {
         return 0;
     }
-    
+
     if (item == ITEM_SWORD_BROKEN && !HasItem(fileIndex, ITEM_SWORD_BROKEN)) {
         return 0;
     }
-    
+
     if (item == ITEM_PRESCRIPTION && !HasItem(fileIndex, ITEM_PRESCRIPTION)) {
         return 0;
     }
-    
+
     if (item == ITEM_FROG && !HasItem(fileIndex, ITEM_FROG)) {
         return 0;
     }
-    
+
     if (item == ITEM_EYEDROPS && !HasItem(fileIndex, ITEM_EYEDROPS)) {
         return 0;
     }
-    
+
     if (item == ITEM_CLAIM_CHECK && !HasItem(fileIndex, ITEM_CLAIM_CHECK)) {
         return 0;
     }
@@ -457,7 +457,7 @@ static void DrawItems(FileChooseContext* this, s16 fileIndex, u8 alpha) {
             } else {
                 gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, color_product(data->color.r, DIM.r), color_product(data->color.g, DIM.g), color_product(data->color.b, DIM.b), color_product(color_product(data->color.a, DIM.a), alpha));
             }
-        
+
             SpriteLoad(this, &(data->sprite));
             SpriteDraw(this, &(data->sprite), LEFT_OFFSET + data->pos.left, TOP_OFFSET + data->pos.top, data->size.width, data->size.height);
         }
@@ -469,12 +469,13 @@ static void DrawItems(FileChooseContext* this, s16 fileIndex, u8 alpha) {
 
 typedef enum {
     /* 0x00 */ COUNTER_HEALTH,
-    /* 0x01 */ COUNTER_WALLET_CHILD,
-    /* 0x02 */ COUNTER_WALLET_ADULT,
-    /* 0x03 */ COUNTER_WALLET_GIANT,
-    /* 0x04 */ COUNTER_WALLET_TYCOON,
-    /* 0x04 */ COUNTER_SKULLTULLAS,
-    /* 0x04 */ COUNTER_DEATHS,
+    /* 0x01 */ COUNTER_WALLET_NONE,
+    /* 0x02 */ COUNTER_WALLET_CHILD,
+    /* 0x03 */ COUNTER_WALLET_ADULT,
+    /* 0x04 */ COUNTER_WALLET_GIANT,
+    /* 0x05 */ COUNTER_WALLET_TYCOON,
+    /* 0x06 */ COUNTER_SKULLTULLAS,
+    /* 0x07 */ COUNTER_DEATHS,
 } CounterID;
 
 typedef struct {
@@ -485,8 +486,9 @@ typedef struct {
     IconSize size;
 } CounterData;
 
-static CounterData counterData[7] = {
+static CounterData counterData[8] = {
     {CREATE_SPRITE_24(dgQuestIconHeartContainerTex, 101), COUNTER_HEALTH,        {0x05, 0x00}, SIZE_COUNTER},
+    {CREATE_SPRITE_RUPEE(0x32, 0x40, 0x19),               COUNTER_WALLET_NONE,   {0x05, 0x15}, SIZE_COUNTER},
     {CREATE_SPRITE_RUPEE(0xC8, 0xFF, 0x64),               COUNTER_WALLET_CHILD,  {0x05, 0x15}, SIZE_COUNTER},
     {CREATE_SPRITE_RUPEE(0x82, 0x82, 0xFF),               COUNTER_WALLET_ADULT,  {0x05, 0x15}, SIZE_COUNTER},
     {CREATE_SPRITE_RUPEE(0xFF, 0x64, 0x64),               COUNTER_WALLET_GIANT,  {0x05, 0x15}, SIZE_COUNTER},
@@ -509,20 +511,24 @@ static Sprite counterDigitSprites[10] = {
 };
 
 u8 ShouldRenderCounter(s16 fileIndex, u8 counterId) {
+    if (counterId == COUNTER_WALLET_NONE) {
+        return !Save_GetSaveMetaInfo(fileIndex)->hasWallet;
+    }
+
     if (counterId == COUNTER_WALLET_CHILD) {
-        return ((Save_GetSaveMetaInfo(fileIndex)->upgrades & gUpgradeMasks[UPG_WALLET]) >> gUpgradeShifts[UPG_WALLET]) == 0;
+        return Save_GetSaveMetaInfo(fileIndex)->hasWallet && ((Save_GetSaveMetaInfo(fileIndex)->upgrades & gUpgradeMasks[UPG_WALLET]) >> gUpgradeShifts[UPG_WALLET]) == 0;
     }
 
     if (counterId == COUNTER_WALLET_ADULT) {
-        return ((Save_GetSaveMetaInfo(fileIndex)->upgrades & gUpgradeMasks[UPG_WALLET]) >> gUpgradeShifts[UPG_WALLET]) == 1;
+        return Save_GetSaveMetaInfo(fileIndex)->hasWallet && ((Save_GetSaveMetaInfo(fileIndex)->upgrades & gUpgradeMasks[UPG_WALLET]) >> gUpgradeShifts[UPG_WALLET]) == 1;
     }
 
     if (counterId == COUNTER_WALLET_GIANT) {
-        return ((Save_GetSaveMetaInfo(fileIndex)->upgrades & gUpgradeMasks[UPG_WALLET]) >> gUpgradeShifts[UPG_WALLET]) == 2;
+        return Save_GetSaveMetaInfo(fileIndex)->hasWallet && ((Save_GetSaveMetaInfo(fileIndex)->upgrades & gUpgradeMasks[UPG_WALLET]) >> gUpgradeShifts[UPG_WALLET]) == 2;
     }
 
     if (counterId == COUNTER_WALLET_TYCOON) {
-        return ((Save_GetSaveMetaInfo(fileIndex)->upgrades & gUpgradeMasks[UPG_WALLET]) >> gUpgradeShifts[UPG_WALLET]) == 3;
+        return Save_GetSaveMetaInfo(fileIndex)->hasWallet && ((Save_GetSaveMetaInfo(fileIndex)->upgrades & gUpgradeMasks[UPG_WALLET]) >> gUpgradeShifts[UPG_WALLET]) == 3;
     }
 
     return 1;
@@ -671,13 +677,6 @@ static void DrawMoreInfo(FileChooseContext* this, s16 fileIndex, u8 alpha) {
 
 void Sram_InitDebugSave(void);
 void Sram_InitBossRushSave();
-
-u8 hasRandomizerQuest() {
-    if (strnlen(CVarGetString(CVAR_GENERAL("SpoilerLog"), ""), 1) != 0) {
-        return 1;
-    }
-    return 0;
-}
 
 void FileChoose_DrawTextureI8(GraphicsContext* gfxCtx, const void* texture, s16 texWidth, s16 texHeight, s16 rectLeft, s16 rectTop,
                          s16 rectWidth, s16 rectHeight, s16 dsdx, s16 dtdy) {
@@ -954,49 +953,49 @@ void SpriteDraw(FileChooseContext* this, Sprite* sprite, int left, int top, int 
     CLOSE_DISPS(this->state.gfxCtx);
 }
 
-bool fileSelectSpoilerFileLoaded = false;
 
 void DrawSeedHashSprites(FileChooseContext* this) {
     OPEN_DISPS(this->state.gfxCtx);
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
 
-    // Draw icons on the main menu, when a rando file is selected, and when quest selection is set to rando
-    if ((this->configMode == CM_MAIN_MENU &&
-        (this->selectMode != SM_CONFIRM_FILE || Save_GetSaveMetaInfo(this->selectedFileIndex)->randoSave == 1)) ||
-        (this->configMode == CM_QUEST_MENU && this->questType[this->buttonIndex] == QUEST_RANDOMIZER)) {
+    // Draw icons on the main menu, when a rando file is selected, and on name entry when quest selection is set to rando
+    if (this->configMode == CM_MAIN_MENU &&
+         (this->selectMode != SM_CONFIRM_FILE || Save_GetSaveMetaInfo(this->selectedFileIndex)->randoSave == 1)) {
 
-        if (this->fileInfoAlpha[this->selectedFileIndex] > 0) {
+        if (this->fileInfoAlpha[this->selectedFileIndex] > 0 && Save_GetSaveMetaInfo(this->selectedFileIndex)->randoSave) {
             // Use file info alpha to match fading
             gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 0xFF, 0xFF, 0xFF, this->fileInfoAlpha[this->selectedFileIndex]);
 
             u16 xStart = 64;
             // Draw Seed Icons for specific file
             for (unsigned int i = 0; i < 5; i++) {
-                if (Save_GetSaveMetaInfo(this->selectedFileIndex)->randoSave == 1) {
-                    SpriteLoad(this, GetSeedTexture(Save_GetSaveMetaInfo(this->selectedFileIndex)->seedHash[i]));
-                    SpriteDraw(this, GetSeedTexture(Save_GetSaveMetaInfo(this->selectedFileIndex)->seedHash[i]),
-                                xStart + (40 * i), 10, 24, 24);
-                }
+                SpriteLoad(this, GetSeedTexture(Save_GetSaveMetaInfo(this->selectedFileIndex)->seedHash[i]));
+                SpriteDraw(this, GetSeedTexture(Save_GetSaveMetaInfo(this->selectedFileIndex)->seedHash[i]),
+                            xStart + (40 * i), 10, 24, 24);
             }
         }
+    }
 
+    // Draw Seed Icons for spoiler log:
+    // 1. On Name Entry if a rando seed has been generated
+    // 2. On Quest Menu if a spoiler has been dropped and the Randomizer quest option is currently hovered.
+    if ((Randomizer_IsSeedGenerated() || Randomizer_IsSpoilerLoaded()) &&
+        ((this->configMode == CM_NAME_ENTRY && gSaveContext.questId == QUEST_RANDOMIZER) ||
+        (this->configMode == CM_GENERATE_SEED && Randomizer_IsSpoilerLoaded()) ||
+        (this->configMode == CM_QUEST_MENU && this->questType[this->buttonIndex] == QUEST_RANDOMIZER))) {
         // Fade top seed icons based on main menu fade and if save supports rando
-        u8 alpha = MAX(this->optionButtonAlpha, Save_GetSaveMetaInfo(this->selectedFileIndex)->randoSave == 1 ? 0xFF : 0);
+        u8 alpha =
+            MAX(this->optionButtonAlpha, Save_GetSaveMetaInfo(this->selectedFileIndex)->randoSave == 1 ? 0xFF : 0);
         if (alpha >= 200) {
             alpha = 0xFF;
         }
 
         gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 0xFF, 0xFF, 0xFF, alpha);
-
-        // Draw Seed Icons for spoiler log
-        if (this->configMode == CM_QUEST_MENU && this->questType[this->buttonIndex] == QUEST_RANDOMIZER &&
-            strnlen(CVarGetString(CVAR_GENERAL("SpoilerLog"), ""), 1) != 0 && fileSelectSpoilerFileLoaded) {
-            u16 xStart = 64;
-            for (unsigned int i = 0; i < 5; i++) {
-                SpriteLoad(this, GetSeedTexture(gSaveContext.seedIcons[i]));
-                SpriteDraw(this, GetSeedTexture(gSaveContext.seedIcons[i]), xStart + (40 * i), 10, 24, 24);
-            }
+        u16 xStart = 64;
+        for (unsigned int i = 0; i < 5; i++) {
+            SpriteLoad(this, GetSeedTexture(GetSeedIconIndex(i)));
+            SpriteDraw(this, GetSeedTexture(GetSeedIconIndex(i)), xStart + (40 * i), 10, 24, 24);
         }
     }
 
@@ -1006,6 +1005,7 @@ void DrawSeedHashSprites(FileChooseContext* this) {
 }
 
 u8 generating;
+bool fileSelectSpoilerFileLoaded = false;
 
 void FileChoose_UpdateRandomizer() {
     if (CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0) != 0 && generating == 0) {
@@ -1013,7 +1013,7 @@ void FileChoose_UpdateRandomizer() {
             func_800F5E18(SEQ_PLAYER_BGM_MAIN, NA_BGM_HORSE, 0, 7, 1);
             return;
     } else if (CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0) == 0 && generating) {
-            if (SpoilerFileExists(CVarGetString(CVAR_GENERAL("SpoilerLog"), ""))) {
+            if (Randomizer_IsSeedGenerated()) {
                 Audio_PlayFanfare(NA_BGM_HORSE_GOAL);
             } else {
                 func_80078884(NA_SE_SY_OCARINA_ERROR);
@@ -1027,30 +1027,17 @@ void FileChoose_UpdateRandomizer() {
 
     if (!SpoilerFileExists(CVarGetString(CVAR_GENERAL("SpoilerLog"), "")) && !CVarGetInteger(CVAR_RANDOMIZER_SETTING("DontGenerateSpoiler"), 0)) {
             CVarSetString(CVAR_GENERAL("SpoilerLog"), "");
-            fileSelectSpoilerFileLoaded = false;
     }
 
-    if ((CVarGetInteger(CVAR_GENERAL("RandomizerNewFileDropped"), 0) != 0) || (CVarGetInteger(CVAR_GENERAL("NewSeedGenerated"), 0) != 0) ||
-        (!fileSelectSpoilerFileLoaded && SpoilerFileExists(CVarGetString(CVAR_GENERAL("SpoilerLog"), "")))) {
+    if (CVarGetInteger(CVAR_GENERAL("RandomizerNewFileDropped"), 0) != 0 || !(Randomizer_IsSeedGenerated() || Randomizer_IsSpoilerLoaded()) &&
+        SpoilerFileExists(CVarGetString(CVAR_GENERAL("SpoilerLog"), "")) && !fileSelectSpoilerFileLoaded) {
             if (CVarGetInteger(CVAR_GENERAL("RandomizerNewFileDropped"), 0) != 0) {
-            CVarSetString(CVAR_GENERAL("SpoilerLog"), CVarGetString(CVAR_GENERAL("RandomizerDroppedFile"), "None"));
+                CVarSetString(CVAR_GENERAL("SpoilerLog"), CVarGetString(CVAR_GENERAL("RandomizerDroppedFile"), ""));
             }
-            bool silent = true;
-            if ((CVarGetInteger(CVAR_GENERAL("RandomizerNewFileDropped"), 0) != 0) || (CVarGetInteger(CVAR_GENERAL("NewSeedGenerated"), 0) != 0)) {
-            silent = false;
-            }
-            CVarSetInteger(CVAR_GENERAL("NewSeedGenerated"), 0);
+            const char* fileLoc = CVarGetString(CVAR_GENERAL("SpoilerLog"), "");
             CVarSetInteger(CVAR_GENERAL("RandomizerNewFileDropped"), 0);
             CVarSetString(CVAR_GENERAL("RandomizerDroppedFile"), "");
-            fileSelectSpoilerFileLoaded = false;
-            const char* fileLoc = CVarGetString(CVAR_GENERAL("SpoilerLog"), "");
-            Randomizer_LoadSettings(fileLoc);
-            Randomizer_LoadHintLocations(fileLoc);
-            Randomizer_LoadRequiredTrials(fileLoc);
-            Randomizer_LoadItemLocations(fileLoc, silent);
-            Randomizer_LoadMerchantMessages(fileLoc);
-            Randomizer_LoadMasterQuestDungeons(fileLoc);
-            Randomizer_LoadEntranceOverrides(fileLoc, silent);
+            Randomizer_ParseSpoiler(fileLoc);
             fileSelectSpoilerFileLoaded = true;
 
             if (SpoilerFileExists(CVarGetString(CVAR_GENERAL("SpoilerLog"), "")) && CVarGetInteger(CVAR_RANDOMIZER_SETTING("DontGenerateSpoiler"), 0)) {
@@ -1295,6 +1282,14 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
         GameInteractor_ExecuteOnUpdateFileQuestSelection(this->questType[this->buttonIndex]);
     }
 
+    if (CHECK_BTN_ALL(input->press.button, BTN_L)) {
+        if (this->questType[this->buttonIndex] == QUEST_RANDOMIZER) {
+            Randomizer_SetSpoilerLoaded(false);
+            this->prevConfigMode = this->configMode;
+            this->configMode = CM_GENERATE_SEED;
+        }
+    }
+
     if (CHECK_BTN_ALL(input->press.button, BTN_A)) {
         gSaveContext.questId = this->questType[this->buttonIndex];
 
@@ -1303,8 +1298,10 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
             this->prevConfigMode = this->configMode;
             this->configMode = CM_ROTATE_TO_BOSS_RUSH_MENU;
             return;
-        } else if (this->questType[this->buttonIndex] == QUEST_RANDOMIZER && !hasRandomizerQuest()) {
-            Audio_PlaySoundGeneral(NA_SE_SY_FSEL_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+        } else if (this->questType[this->buttonIndex] == QUEST_RANDOMIZER) {
+            Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            this->prevConfigMode = this->configMode;
+            this->configMode = CM_GENERATE_SEED;
         } else {
             Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
             osSyncPrintf("Selected Dungeon Quest: %d\n", IS_MASTER_QUEST);
@@ -1330,6 +1327,38 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
         this->configMode = CM_QUEST_TO_MAIN;
         sLastFileChooseButtonIndex = -1;
         return;
+    }
+}
+
+void FileChoose_GenerateRandoSeed(GameState* thisx) {
+    FileChooseContext* this = (FileChooseContext*)thisx;
+    FileChoose_UpdateRandomizer();
+    if (Randomizer_IsSeedGenerated() || Randomizer_IsPlandoLoaded()) {
+        Audio_PlayFanfare(NA_BGM_HORSE_GOAL);
+        func_800F5E18(SEQ_PLAYER_BGM_MAIN, NA_BGM_FILE_SELECT, 0, 7, 1);
+        generating = 0;
+        Randomizer_SetSpoilerLoaded(true);
+        static u8 emptyName[] = { 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E };
+        static u8 linkName[] = { 0x15, 0x2C, 0x31, 0x2E, 0x3E, 0x3E, 0x3E, 0x3E };
+        this->prevConfigMode = this->configMode;
+        this->configMode = CM_ROTATE_TO_NAME_ENTRY;
+        this->logoAlpha = 0;
+        CVarSetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 1);
+        this->kbdButton = FS_KBD_BTN_NONE;
+        this->charPage = FS_CHAR_PAGE_ENG;
+        this->kbdX = 0;
+        this->kbdY = 0;
+        this->charIndex = 0;
+        this->charBgAlpha = 0;
+        this->newFileNameCharCount = CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) ? 4 : 0;
+        this->nameEntryBoxPosX = 120;
+        this->nameEntryBoxAlpha = 0;
+        memcpy(Save_GetSaveMetaInfo(this->buttonIndex)->playerName,
+               CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) ? &linkName : &emptyName, 8);
+        return;
+    }
+    if (!generating) {
+        Randomizer_GenerateSeed();
     }
 }
 
@@ -1359,7 +1388,7 @@ void FileChoose_UpdateBossRushMenu(GameState* thisx) {
         // Move down
         if (this->stickRelY < -30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DDOWN))) {
             // When selecting past the last option, cycle back to the first option.
-            if ((this->bossRushIndex + 1) > BOSSRUSH_OPTIONS_AMOUNT - 1) {
+            if ((this->bossRushIndex + 1) > BR_OPTIONS_MAX - 1) {
                 this->bossRushIndex = 0;
                 this->bossRushOffset = 0;
             } else {
@@ -1372,7 +1401,7 @@ void FileChoose_UpdateBossRushMenu(GameState* thisx) {
         } else if (this->stickRelY > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DUP))) {
             // When selecting past the first option, cycle back to the last option and offset the list to view it properly.
             if ((this->bossRushIndex - 1) < 0) {
-                this->bossRushIndex = BOSSRUSH_OPTIONS_AMOUNT - 1;
+                this->bossRushIndex = BR_OPTIONS_MAX - 1;
                 this->bossRushOffset = this->bossRushIndex - BOSSRUSH_MAX_OPTIONS_ON_SCREEN + 1;
             } else {
                 // When first visible option is selected when moving up, offset the list up by one.
@@ -1565,6 +1594,7 @@ static void (*gConfigModeUpdateFuncs[])(GameState*) = {
     FileChoose_RotateToMain,       FileChoose_RotateToQuest,
     FileChoose_RotateToBossRush,   FileChoose_UpdateBossRushMenu,
     FileChoose_StartBossRushMenu,  FileChoose_RotateToQuest,
+    FileChoose_GenerateRandoSeed,
 };
 
 /**
@@ -2164,6 +2194,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
         case CM_QUEST_TO_MAIN:
         case CM_NAME_ENTRY_TO_QUEST_MENU:
         case CM_ROTATE_TO_BOSS_RUSH_MENU:
+        case CM_GENERATE_SEED:
             tex = FileChoose_GetQuestChooseTitleTexName(gSaveContext.language);
             break;
         case CM_BOSS_RUSH_MENU:
@@ -2177,6 +2208,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
     }
 
     OPEN_DISPS(this->state.gfxCtx);
+    DrawSeedHashSprites(this);
 
     // draw title label
     gDPPipeSync(POLY_OPA_DISP++);
@@ -2192,32 +2224,34 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
 
     // draw next title label
     if ((this->configMode == CM_QUEST_MENU) || (this->configMode == CM_START_QUEST_MENU) || 
-        this->configMode == CM_NAME_ENTRY_TO_QUEST_MENU) {
+        this->configMode == CM_NAME_ENTRY_TO_QUEST_MENU || this->configMode == CM_GENERATE_SEED) {
         // draw control stick prompts.
-        Gfx_SetupDL_39Opa(this->state.gfxCtx);
-        gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
-        gDPLoadTextureBlock(POLY_OPA_DISP++, gArrowCursorTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 24, 0,
-                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 4, G_TX_NOMASK, G_TX_NOLOD,
-                            G_TX_NOLOD);
-        FileChoose_DrawTextRec(this->state.gfxCtx, this->stickLeftPrompt.arrowColorR,
-                                this->stickLeftPrompt.arrowColorG, this->stickLeftPrompt.arrowColorB,
-                                this->stickLeftPrompt.arrowColorA, this->stickLeftPrompt.arrowTexX,
-                                this->stickLeftPrompt.arrowTexY, this->stickLeftPrompt.z, 0, 0, -1.0f, 1.0f);
-        FileChoose_DrawTextRec(this->state.gfxCtx, this->stickRightPrompt.arrowColorR,
-                                this->stickRightPrompt.arrowColorG, this->stickRightPrompt.arrowColorB,
-                                this->stickRightPrompt.arrowColorA, this->stickRightPrompt.arrowTexX,
-                                this->stickRightPrompt.arrowTexY, this->stickRightPrompt.z, 0, 0, 1.0f, 1.0f);
-        gDPLoadTextureBlock(POLY_OPA_DISP++, gControlStickTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 16, 0,
-                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 4, G_TX_NOMASK, G_TX_NOLOD,
-                            G_TX_NOLOD);
-        FileChoose_DrawTextRec(this->state.gfxCtx, this->stickLeftPrompt.stickColorR,
-                                this->stickLeftPrompt.stickColorG, this->stickLeftPrompt.stickColorB,
-                                this->stickLeftPrompt.stickColorA, this->stickLeftPrompt.stickTexX,
-                                this->stickLeftPrompt.stickTexY, this->stickLeftPrompt.z, 0, 0, -1.0f, 1.0f);
-        FileChoose_DrawTextRec(this->state.gfxCtx, this->stickRightPrompt.stickColorR,
-                                this->stickRightPrompt.stickColorG, this->stickRightPrompt.stickColorB,
-                                this->stickRightPrompt.stickColorA, this->stickRightPrompt.stickTexX,
-                                this->stickRightPrompt.stickTexY, this->stickRightPrompt.z, 0, 0, 1.0f, 1.0f);
+        if (this->configMode != CM_GENERATE_SEED) {
+            Gfx_SetupDL_39Opa(this->state.gfxCtx);
+            gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
+            gDPLoadTextureBlock(POLY_OPA_DISP++, gArrowCursorTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 24, 0,
+                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 4, G_TX_NOMASK, G_TX_NOLOD,
+                                G_TX_NOLOD);
+            FileChoose_DrawTextRec(this->state.gfxCtx, this->stickLeftPrompt.arrowColorR,
+                                    this->stickLeftPrompt.arrowColorG, this->stickLeftPrompt.arrowColorB,
+                                    this->stickLeftPrompt.arrowColorA, this->stickLeftPrompt.arrowTexX,
+                                    this->stickLeftPrompt.arrowTexY, this->stickLeftPrompt.z, 0, 0, -1.0f, 1.0f);
+            FileChoose_DrawTextRec(this->state.gfxCtx, this->stickRightPrompt.arrowColorR,
+                                    this->stickRightPrompt.arrowColorG, this->stickRightPrompt.arrowColorB,
+                                    this->stickRightPrompt.arrowColorA, this->stickRightPrompt.arrowTexX,
+                                    this->stickRightPrompt.arrowTexY, this->stickRightPrompt.z, 0, 0, 1.0f, 1.0f);
+            gDPLoadTextureBlock(POLY_OPA_DISP++, gControlStickTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 16, 0,
+                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 4, G_TX_NOMASK, G_TX_NOLOD,
+                                G_TX_NOLOD);
+            FileChoose_DrawTextRec(this->state.gfxCtx, this->stickLeftPrompt.stickColorR,
+                                    this->stickLeftPrompt.stickColorG, this->stickLeftPrompt.stickColorB,
+                                    this->stickLeftPrompt.stickColorA, this->stickLeftPrompt.stickTexX,
+                                    this->stickLeftPrompt.stickTexY, this->stickLeftPrompt.z, 0, 0, -1.0f, 1.0f);
+            FileChoose_DrawTextRec(this->state.gfxCtx, this->stickRightPrompt.stickColorR,
+                                    this->stickRightPrompt.stickColorG, this->stickRightPrompt.stickColorB,
+                                    this->stickRightPrompt.stickColorA, this->stickRightPrompt.stickTexX,
+                                    this->stickRightPrompt.stickTexY, this->stickRightPrompt.z, 0, 0, 1.0f, 1.0f);
+        }
         switch (this->questType[this->buttonIndex]) {
             case QUEST_NORMAL:
             default:
@@ -2236,11 +2270,10 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
                 break;
             
             case QUEST_RANDOMIZER:
-                DrawSeedHashSprites(this);
-                if (hasRandomizerQuest()) {
-                    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, this->logoAlpha);
+                if (this->configMode == CM_GENERATE_SEED) {
+                    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, this->logoAlpha / 2);
                 } else {
-                    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 0x40, 0x40, 0x40, this->logoAlpha);
+                    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, this->logoAlpha);
                 }
                 FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleTheLegendOfTextTex, 72, 8, 156, 108, 72, 8, 1024, 1024);
                 FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleOcarinaOfTimeTMTextTex, 96, 8, 154, 163, 96, 8, 1024, 1024);
@@ -2273,7 +2306,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
                                     (arrowUpY + 8) << 2, G_TX_RENDERTILE, 0, 0, (1 << 11), (1 << 11));
         }
         // Arrow down
-        if (BOSSRUSH_OPTIONS_AMOUNT - listOffset > BOSSRUSH_MAX_OPTIONS_ON_SCREEN) {
+        if (BR_OPTIONS_MAX - listOffset > BOSSRUSH_MAX_OPTIONS_ON_SCREEN) {
             uint16_t arrowDownX = 140;
             uint16_t arrowDownY = 181 + (this->bossRushArrowOffset / 10);
             gDPLoadTextureBlock(POLY_OPA_DISP++, gArrowDownTex, G_IM_FMT_IA,
@@ -2661,7 +2694,8 @@ void FileChoose_ConfigModeDraw(GameState* thisx) {
     // draw quest menu
     if ((this->configMode == CM_QUEST_MENU) || (this->configMode == CM_ROTATE_TO_QUEST_MENU) || 
         (this->configMode == CM_ROTATE_TO_NAME_ENTRY) || this->configMode == CM_QUEST_TO_MAIN ||
-        this->configMode == CM_NAME_ENTRY_TO_QUEST_MENU || this->configMode == CM_ROTATE_TO_BOSS_RUSH_MENU) {
+        this->configMode == CM_NAME_ENTRY_TO_QUEST_MENU || this->configMode == CM_ROTATE_TO_BOSS_RUSH_MENU ||
+        this->configMode == CM_GENERATE_SEED) {
         // window
         gDPPipeSync(POLY_OPA_DISP++);
         gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
@@ -2963,13 +2997,8 @@ void FileChoose_LoadGame(GameState* thisx) {
 
     this->state.running = false;
 
-    Randomizer_LoadSettings("");
-    Randomizer_LoadHintLocations("");
-    Randomizer_LoadItemLocations("", true);
-    Randomizer_LoadRequiredTrials("");
-    Randomizer_LoadMerchantMessages("");
-    Randomizer_LoadMasterQuestDungeons("");
-    Randomizer_LoadEntranceOverrides("", true);
+    Randomizer_LoadHintMessages();
+    Randomizer_LoadMerchantMessages();
 
     gSaveContext.respawn[0].entranceIndex = ENTR_LOAD_OPENING;
     gSaveContext.respawnFlag = 0;
@@ -3015,16 +3044,6 @@ void FileChoose_LoadGame(GameState* thisx) {
     osSyncPrintf(VT_RST);
 
     gSaveContext.naviTimer = 0;
-
-    if (IS_RANDO) {
-        // Setup the modified entrance table and entrance shuffle table for rando
-        Entrance_Init();
-
-        // Handle randomized spawn positions after the save context has been setup from load
-        if (Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
-            Entrance_SetSavewarpEntrance();
-        }
-    }
 
     GameInteractor_ExecuteOnLoadGame(gSaveContext.fileNum);
 }
@@ -3190,7 +3209,7 @@ void FileChoose_DrawNoRandoGeneratedWarning(GameState* thisx) {
     OPEN_DISPS(this->state.gfxCtx);
 
     // Draw rando seed warning when build version doesn't match for Major or Minor number
-    if (this->configMode == CM_QUEST_MENU && this->questType[this->buttonIndex] == QUEST_RANDOMIZER && !hasRandomizerQuest()) {
+    if (this->configMode == CM_QUEST_MENU && this->questType[this->buttonIndex] == QUEST_RANDOMIZER && !(Randomizer_IsSeedGenerated() || Randomizer_IsSpoilerLoaded())) {
         uint8_t textAlpha = 225;
         uint8_t textboxAlpha = 170;
         float textboxScale = 0.7f;
@@ -3644,7 +3663,6 @@ void FileChoose_Init(GameState* thisx) {
     this->questType[0] = MIN_QUEST;
     this->questType[1] = MIN_QUEST;
     this->questType[2] = MIN_QUEST;
-    fileSelectSpoilerFileLoaded = false;
     isFastFileIdIncompatible = 0;
     CVarSetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 0);
 
@@ -3672,7 +3690,7 @@ void FileChoose_Init(GameState* thisx) {
     Font_LoadOrderedFont(&this->font);
     Audio_QueueSeqCmd(0xF << 28 | SEQ_PLAYER_BGM_MAIN << 24 | 0xA);
     func_800F5E18(SEQ_PLAYER_BGM_MAIN, NA_BGM_FILE_SELECT, 0, 7, 1);
-    
+
     // Originally this was only set when transitioning from the title screen, but gSkipLogoTitle skips that process so we're ensuring it's set here
     gSaveContext.gameMode = GAMEMODE_FILE_SELECT;
 }

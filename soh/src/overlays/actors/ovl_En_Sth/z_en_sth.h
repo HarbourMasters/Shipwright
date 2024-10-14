@@ -25,4 +25,6 @@ typedef struct EnSth {
     /* 0x02B8 */ EnSthActionFunc actionFunc;
 } EnSth; // size = 0x02BC
 
+void EnSth_RewardObtainedTalk(EnSth* enSth, PlayState* play);
+
 #endif

@@ -1147,17 +1147,16 @@ void TitleCard_Draw(PlayState* play, TitleCardContext* titleCtx) {
 
         OPEN_DISPS(play->state.gfxCtx);
 
-        // WORLD_OVERLAY_DISP Goes over POLY_XLU_DISP but under POLY_KAL_DISP
-        WORLD_OVERLAY_DISP = Gfx_SetupDL_52NoCD(WORLD_OVERLAY_DISP);
+        OVERLAY_DISP = Gfx_SetupDL_52NoCD(OVERLAY_DISP);
 
-        gDPSetPrimColor(WORLD_OVERLAY_DISP++, 0, 0, (u8)titleCtx->intensityR, (u8)titleCtx->intensityG, (u8)titleCtx->intensityB,
+        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, (u8)titleCtx->intensityR, (u8)titleCtx->intensityG, (u8)titleCtx->intensityB,
                         (u8)titleCtx->alpha);
 
-        gDPLoadTextureBlock(WORLD_OVERLAY_DISP++, (uintptr_t)titleCtx->texture, G_IM_FMT_IA,
+        gDPLoadTextureBlock(OVERLAY_DISP++, (uintptr_t)titleCtx->texture, G_IM_FMT_IA,
                             G_IM_SIZ_8b,
                             width, height, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
                             G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-        gSPWideTextureRectangle(WORLD_OVERLAY_DISP++, titleX, titleY, ((doubleWidth * 2) + titleX) - 4, titleY + (height * 4),
+        gSPWideTextureRectangle(OVERLAY_DISP++, titleX, titleY, ((doubleWidth * 2) + titleX) - 4, titleY + (height * 4),
                             G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
 
         height = titleCtx->height - height;
@@ -1454,7 +1453,7 @@ s32 func_8002DF38(PlayState* play, Actor* actor, u8 csAction) {
     return true;
 }
 
-s32 func_8002DF54(PlayState* play, Actor* actor, u8 csAction) {
+s32 Player_SetCsActionWithHaltedActors(PlayState* play, Actor* actor, u8 csAction) {
     Player* player = GET_PLAYER(play);
 
     func_8002DF38(play, actor, csAction);
@@ -2072,13 +2071,12 @@ s32 GiveItemEntryFromActor(Actor* actor, PlayState* play, GetItemEntry getItemEn
  * \param play the Global Context
  * \param getItemEntry the GetItemEntry for the item you want the player to receive.
  */
-void GiveItemEntryFromActorWithFixedRange(Actor* actor, PlayState* play, GetItemEntry getItemEntry) {
-    GiveItemEntryFromActor(actor, play, getItemEntry, 50.0f, 10.0f);
+s32 GiveItemEntryFromActorWithFixedRange(Actor* actor, PlayState* play, GetItemEntry getItemEntry) {
+    return GiveItemEntryFromActor(actor, play, getItemEntry, 50.0f, 10.0f);
 }
 
-// TODO: Rename to GiveItemIdFromActor or similar
 // If you're doing something for randomizer, you're probably looking for GiveItemEntryFromActor
-s32 func_8002F434(Actor* actor, PlayState* play, s32 getItemId, f32 xzRange, f32 yRange) {
+s32 Actor_OfferGetItem(Actor* actor, PlayState* play, s32 getItemId, f32 xzRange, f32 yRange) {
     Player* player = GET_PLAYER(play);
 
     if (!(player->stateFlags1 & 
@@ -2108,7 +2106,7 @@ s32 func_8002F434(Actor* actor, PlayState* play, s32 getItemId, f32 xzRange, f32
 // TODO: Rename to GiveItemIdFromActorWithFixedRange or similar
 // If you're doing something for randomizer, you're probably looking for GiveItemEntryFromActorWithFixedRange
 void func_8002F554(Actor* actor, PlayState* play, s32 getItemId) {
-    func_8002F434(actor, play, getItemId, 50.0f, 10.0f);
+    Actor_OfferGetItem(actor, play, getItemId, 50.0f, 10.0f);
 }
 
 void func_8002F580(Actor* actor, PlayState* play) {
@@ -6350,59 +6348,4 @@ s32 func_80038290(PlayState* play, Actor* actor, Vec3s* arg2, Vec3s* arg3, Vec3f
     func_80037FC8(actor, &sp24, arg2, arg3);
 
     return true;
-}
-
-GetItemEntry GetChestGameRandoGetItem(s8 room, s16 ogDrawId, PlayState* play) {
-    if (Randomizer_GetSettingValue(RSK_SHUFFLE_CHEST_MINIGAME)) {
-        // RANDOTODO update this logic when we implement keysanity
-        // because 3drando replaces the keys not the rupees
-        if (ogDrawId == GID_RUPEE_GREEN ||
-            ogDrawId == GID_RUPEE_BLUE ||
-            ogDrawId == GID_RUPEE_RED)
-        {
-            switch(room) {
-                case 1:
-                    if(!Flags_GetCollectible(play, 0x1B)) {
-                        return Randomizer_GetItemFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_1, GI_RUPEE_GREEN);
-                    }
-                    break;
-                case 2:
-                    if(!Flags_GetCollectible(play, 0x1C)) {
-                        return Randomizer_GetItemFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_2, GI_RUPEE_GREEN);
-                    }
-                    break;
-                case 3:
-                    if(!Flags_GetCollectible(play, 0x1D)) {
-                        return Randomizer_GetItemFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_3, GI_RUPEE_BLUE);
-                    }
-                    break;
-                case 4:
-                    if(!Flags_GetCollectible(play, 0x1E)) {
-                        return Randomizer_GetItemFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_4, GI_RUPEE_BLUE);
-                    }
-                    break;
-                case 5:
-                    if(!Flags_GetCollectible(play, 0x1F)) {
-                        return Randomizer_GetItemFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_5, GI_RUPEE_RED);
-                    }
-                    break;
-            }
-        }
-    }
-
-    if(ogDrawId == GID_HEART_PIECE) {
-        return Randomizer_GetItemFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_REWARD, GI_HEART_PIECE);
-    }
-
-    return (GetItemEntry)GET_ITEM_NONE;
-}
-
-s16 GetChestGameRandoGiDrawId(s8 room, s16 ogDrawId, PlayState* play) {
-    GetItemEntry randoGetItem = GetChestGameRandoGetItem(room, ogDrawId, play);
-
-    if (randoGetItem.itemId != ITEM_NONE) {
-        return randoGetItem.gid;
-    }
-
-    return ogDrawId;
 }

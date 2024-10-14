@@ -104,14 +104,12 @@ void Graph_InitTHGA(GraphicsContext* gfxCtx) {
     pool->tailMagic = GFXPOOL_TAIL_MAGIC;
     THGA_Ct(&gfxCtx->polyOpa, pool->polyOpaBuffer, sizeof(pool->polyOpaBuffer));
     THGA_Ct(&gfxCtx->polyXlu, pool->polyXluBuffer, sizeof(pool->polyXluBuffer));
-    THGA_Ct(&gfxCtx->worldOverlay, pool->worldOverlayBuffer, sizeof(pool->worldOverlayBuffer));
     THGA_Ct(&gfxCtx->polyKal, pool->polyKalBuffer, sizeof(pool->polyKalBuffer));
     THGA_Ct(&gfxCtx->overlay, pool->overlayBuffer, sizeof(pool->overlayBuffer));
     THGA_Ct(&gfxCtx->work, pool->workBuffer, sizeof(pool->workBuffer));
 
     gfxCtx->polyOpaBuffer = pool->polyOpaBuffer;
     gfxCtx->polyXluBuffer = pool->polyXluBuffer;
-    gfxCtx->worldOverlayBuffer = pool->worldOverlayBuffer;
     gfxCtx->polyKalBuffer = pool->polyKalBuffer;
     gfxCtx->overlayBuffer = pool->overlayBuffer;
     gfxCtx->workBuffer = pool->workBuffer;
@@ -324,8 +322,7 @@ void Graph_Update(GraphicsContext* gfxCtx, GameState* gameState) {
 
     gSPBranchList(WORK_DISP++, gfxCtx->polyOpaBuffer);
     gSPBranchList(POLY_OPA_DISP++, gfxCtx->polyXluBuffer);
-    gSPBranchList(POLY_XLU_DISP++, gfxCtx->worldOverlayBuffer);
-    gSPBranchList(WORLD_OVERLAY_DISP++, gfxCtx->polyKalBuffer);
+    gSPBranchList(POLY_XLU_DISP++, gfxCtx->polyKalBuffer);
     gSPBranchList(POLY_KAL_DISP++, gfxCtx->overlayBuffer);
     gDPPipeSync(OVERLAY_DISP++);
     gDPFullSync(OVERLAY_DISP++);
