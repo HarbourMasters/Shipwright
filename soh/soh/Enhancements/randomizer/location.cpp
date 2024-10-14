@@ -53,7 +53,7 @@ const std::string& Rando::Location::GetShortName() const {
 
 bool Rando::Location::IsDungeon() const {
     return (checkType != RCTYPE_SKULL_TOKEN &&
-            (scene < SCENE_GANONS_TOWER_COLLAPSE_INTERIOR ||
+            (scene < SCENE_THIEVES_HIDEOUT || scene == SCENE_INSIDE_GANONS_CASTLE ||
              (scene > SCENE_TREASURE_BOX_SHOP && scene < SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR))) ||
            (checkType == RCTYPE_SKULL_TOKEN && scene < SCENE_GANONS_TOWER);
 }
