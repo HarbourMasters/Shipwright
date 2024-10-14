@@ -677,7 +677,7 @@ void func_80A0329C(EnElf* this, PlayState* play) {
 
         if (!(this->fairyFlags & FAIRY_FLAG_BIG)) {
             // GI_MAX in this case allows the player to catch the actor in a bottle
-            func_8002F434(&this->actor, play, GI_MAX, 80.0f, 60.0f);
+            Actor_OfferGetItem(&this->actor, play, GI_MAX, 80.0f, 60.0f);
         }
     }
 }
@@ -1540,7 +1540,7 @@ void EnElf_Draw(Actor* thisx, PlayState* play) {
             gSPEndDisplayList(dListHead++);
             gDPSetEnvColor(POLY_XLU_DISP++, (u8)this->outerColor.r, (u8)this->outerColor.g, (u8)this->outerColor.b,
                            (u8)(envAlpha * alphaScale));
-            POLY_XLU_DISP = SkelAnime_Draw(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
+            POLY_XLU_DISP = SkelAnime_DrawSkeleton2(play, &this->skelAnime,
                                            EnElf_OverrideLimbDraw, NULL, this, POLY_XLU_DISP);
 
             CLOSE_DISPS(play->state.gfxCtx);

@@ -391,7 +391,7 @@ void EnHeishi1_WaitNight(EnHeishi1* this, PlayState* play) {
         Message_StartTextbox(play, 0x702D, &this->actor);
         func_80078884(NA_SE_SY_FOUND);
         osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ 発見！ ☆☆☆☆☆ \n" VT_RST); // "Discovered!"
-        func_8002DF54(play, &this->actor, 1);
+        Player_SetCsActionWithHaltedActors(play, &this->actor, 1);
         this->actionFunc = EnHeishi1_SetupKick;
     }
 }
@@ -475,7 +475,7 @@ void EnHeishi1_Update(Actor* thisx, PlayState* play) {
                                     func_80078884(NA_SE_SY_FOUND);
                                     // "Discovered!"
                                     osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ 発見！ ☆☆☆☆☆ \n" VT_RST);
-                                    func_8002DF54(play, &this->actor, 1);
+                                    Player_SetCsActionWithHaltedActors(play, &this->actor, 1);
                                     sHeishi1PlayerIsCaught = true;
                                     this->actionFunc = EnHeishi1_SetupMoveToLink;
                                 }

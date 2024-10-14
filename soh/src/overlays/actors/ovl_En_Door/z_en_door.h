@@ -57,6 +57,9 @@ typedef struct EnDoor {
     /* 0x01D4 */ EnDoorActionFunc actionFunc;
 } EnDoor; // size = 0x01D8
 
+#ifdef __cplusplus
+extern "C"
+#endif
 void EnDoor_SetupType(EnDoor* enDoor, PlayState* play);
 
 #endif

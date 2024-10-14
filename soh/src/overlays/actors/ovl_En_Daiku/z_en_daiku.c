@@ -382,7 +382,7 @@ void EnDaiku_Jailed(EnDaiku* this, PlayState* play) {
 void EnDaiku_WaitFreedom(EnDaiku* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
 
-    if (Flags_GetSwitch(play, this->actor.params >> 8 & 0x3F)) {
+    if (Flags_GetSwitch(play, this->actor.params >> 8 & 0x3F) || (IS_RANDO && Flags_GetRandomizerInf(RAND_INF_HAS_SKELETON_KEY))) {
         this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY;
         EnDaiku_UpdateText(this, play);
     }
@@ -470,7 +470,7 @@ void EnDaiku_InitSubCamera(EnDaiku* this, PlayState* play) {
 
     Play_CameraSetAtEye(play, this->subCamId, &this->subCamAt, &this->subCamEye);
     Play_CameraSetFov(play, this->subCamId, play->mainCamera.fov);
-    func_8002DF54(play, &this->actor, 1);
+    Player_SetCsActionWithHaltedActors(play, &this->actor, 1);
 }
 
 void EnDaiku_UpdateSubCamera(EnDaiku* this, PlayState* play) {
@@ -507,7 +507,7 @@ void EnDaiku_EscapeSuccess(EnDaiku* this, PlayState* play) {
             Actor_Kill(&this->actor);
         }
     } else {
-        func_8002DF54(play, &this->actor, 7);
+        Player_SetCsActionWithHaltedActors(play, &this->actor, 7);
     }
 }
 

@@ -689,7 +689,7 @@ void EnPartner_Update(Actor* thisx, PlayState* play) {
 
         uint16_t partnerButtons[7] = { BTN_CLEFT, BTN_CDOWN, BTN_CRIGHT, BTN_DUP, BTN_DDOWN, BTN_DLEFT, BTN_DRIGHT};
         uint8_t buttonMax = 3;
-        if (CVarGetInteger(CVAR_SETTING("DpadEquips"), 0) != 0) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("DpadEquips"), 0) != 0) {
             buttonMax = ARRAY_COUNT(gSaveContext.equips.cButtonSlots);
         }
 
@@ -880,7 +880,7 @@ void EnPartner_Draw(Actor* thisx, PlayState* play) {
     gSPEndDisplayList(dListHead++);
     gDPSetEnvColor(POLY_XLU_DISP++, (u8)this->outerColor.r, (u8)this->outerColor.g, (u8)this->outerColor.b,
                    (u8)(envAlpha * alphaScale));
-    POLY_XLU_DISP = SkelAnime_Draw(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
+    POLY_XLU_DISP = SkelAnime_DrawSkeleton2(play, &this->skelAnime,
                                    EnPartner_OverrideLimbDraw, NULL, this, POLY_XLU_DISP);
 
     CLOSE_DISPS(play->state.gfxCtx);

@@ -6,6 +6,9 @@
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+
 u8 gAmmoItems[] = {
     ITEM_STICK,   ITEM_NUT,  ITEM_BOMB, ITEM_BOW,  ITEM_NONE, ITEM_NONE, ITEM_SLINGSHOT, ITEM_NONE,
     ITEM_BOMBCHU, ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_BEAN,      ITEM_NONE,
@@ -37,6 +40,10 @@ s8 ItemInSlotUsesAmmo(s16 slot) {
 }
 
 void KaleidoScope_DrawAmmoCount(PauseContext* pauseCtx, GraphicsContext* gfxCtx, s16 item, int slot) {
+    if (!GameInteractor_Should(VB_DRAW_AMMO_COUNT, true, &item)) {
+        return;
+    }
+
     s16 ammo;
     s16 i;
 
@@ -335,23 +342,24 @@ void KaleidoScope_HandleItemCycles(PlayState* play) {
     );
 
     //the slot age requirement for the child trade slot has to be updated
-    //in case it currently holds the bunny hood
+    //in case it currently holds a mask
     //to allow adult link to wear it if the setting is enabled
     gSlotAgeReqs[SLOT_TRADE_CHILD] =
         (
-            ((CVarGetInteger(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA) && CVarGetInteger(CVAR_ENHANCEMENT("AdultBunnyHood"), 0)) ||
+            CVarGetInteger(CVAR_ENHANCEMENT("AdultMasks"), 0) ||
             CVarGetInteger(CVAR_CHEAT("TimelessEquipment"), 0)
         ) &&
-        INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_MASK_BUNNY
+        INV_CONTENT(ITEM_TRADE_CHILD) >= ITEM_MASK_KEATON &&
+        INV_CONTENT(ITEM_TRADE_CHILD) <= ITEM_MASK_TRUTH
             ? AGE_REQ_NONE
             : AGE_REQ_CHILD;
-    
-    //also update the age requirement for the bunny hood itself
-    gItemAgeReqs[ITEM_MASK_BUNNY] =
-        ((CVarGetInteger(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA) && CVarGetInteger(CVAR_ENHANCEMENT("AdultBunnyHood"), 0)) ||
-        CVarGetInteger(CVAR_CHEAT("TimelessEquipment"), 0)
-            ? AGE_REQ_NONE
-            : AGE_REQ_CHILD;
+
+    //also update the age requirements for the masks itself
+    for (int i = ITEM_MASK_KEATON; i <= ITEM_MASK_TRUTH; i += 1) {
+        gItemAgeReqs[i] = CVarGetInteger(CVAR_ENHANCEMENT("AdultMasks"), 0) || CVarGetInteger(CVAR_CHEAT("TimelessEquipment"), 0)
+                ? AGE_REQ_NONE
+                : AGE_REQ_CHILD;
+    }
 
     //handle the adult trade select
     KaleidoScope_HandleItemCycleExtras(
@@ -415,8 +423,8 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
     s16 oldCursorPoint;
     s16 moveCursorResult;
     bool dpad = (CVarGetInteger(CVAR_SETTING("DPadOnPause"), 0) && !CHECK_BTN_ALL(input->cur.button, BTN_CUP));
-    bool pauseAnyCursor = pauseCtx->cursorSpecialPos == 0 && ((CVarGetInteger(CVAR_SETTING("PauseAnyCursor"), 0) == PAUSE_ANY_CURSOR_RANDO_ONLY && IS_RANDO) ||
-                          (CVarGetInteger(CVAR_SETTING("PauseAnyCursor"), 0) == PAUSE_ANY_CURSOR_ALWAYS_ON));
+    bool pauseAnyCursor = pauseCtx->cursorSpecialPos == 0 && ((CVarGetInteger(CVAR_ENHANCEMENT("PauseAnyCursor"), 0) == PAUSE_ANY_CURSOR_RANDO_ONLY && IS_RANDO) ||
+                          (CVarGetInteger(CVAR_ENHANCEMENT("PauseAnyCursor"), 0) == PAUSE_ANY_CURSOR_ALWAYS_ON));
 
     OPEN_DISPS(play->state.gfxCtx);
 
@@ -669,7 +677,7 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
                 if ((pauseCtx->debugState == 0) && (pauseCtx->state == 6) && (pauseCtx->unk_1E4 == 0)) {
                     KaleidoScope_HandleItemCycles(play);
                     u16 buttonsToCheck = BTN_CLEFT | BTN_CDOWN | BTN_CRIGHT;
-                    if (CVarGetInteger(CVAR_SETTING("DpadEquips"), 0) && (!CVarGetInteger(CVAR_SETTING("DPadOnPause"), 0) || CHECK_BTN_ALL(input->cur.button, BTN_CUP))) {
+                    if (CVarGetInteger(CVAR_ENHANCEMENT("DpadEquips"), 0) && (!CVarGetInteger(CVAR_SETTING("DPadOnPause"), 0) || CHECK_BTN_ALL(input->cur.button, BTN_CUP))) {
                         buttonsToCheck |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
                     }
                     if (CHECK_BTN_ANY(input->press.button, buttonsToCheck)) {
@@ -803,7 +811,7 @@ void KaleidoScope_SetupItemEquip(PlayState* play, u16 item, u16 slot, s16 animX,
         pauseCtx->equipTargetCBtn = 1;
     } else if (CHECK_BTN_ALL(input->press.button, BTN_CRIGHT)) {
         pauseCtx->equipTargetCBtn = 2;
-    } else if (CVarGetInteger(CVAR_SETTING("DpadEquips"), 0)) {
+    } else if (CVarGetInteger(CVAR_ENHANCEMENT("DpadEquips"), 0)) {
         if (CHECK_BTN_ALL(input->press.button, BTN_DUP)) {
             pauseCtx->equipTargetCBtn = 3;
         } else if (CHECK_BTN_ALL(input->press.button, BTN_DDOWN)) {

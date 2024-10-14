@@ -7,6 +7,7 @@
 #include "z_obj_comb.h"
 #include "overlays/effects/ovl_Effect_Ss_Kakera/z_eff_ss_kakera.h"
 #include "objects/gameplay_field_keep/gameplay_field_keep.h"
+#include "include/z64actor.h"
 
 #define FLAGS 0
 
