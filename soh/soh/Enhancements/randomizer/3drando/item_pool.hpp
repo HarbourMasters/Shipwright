@@ -1,18 +1,16 @@
 #pragma once
 
-#include "keys.hpp"
-
 #include <cstddef>
 #include <vector>
 #include <stdint.h>
+#include "../randomizerTypes.h"
 
 class ItemLocation;
 
-void AddItemToPool(std::vector<uint32_t>& pool, const uint32_t item, size_t count = 1);
-uint32_t GetJunkItem();
-void PlaceJunkInExcludedLocation(const uint32_t il);
+void AddItemToPool(std::vector<RandomizerGet>& pool, const RandomizerGet item, size_t count = 1);
+RandomizerGet GetJunkItem();
+void PlaceJunkInExcludedLocation(const RandomizerCheck il);
 void GenerateItemPool();
 void AddJunk();
 
-extern std::vector<uint32_t> ItemPool;
-extern std::vector<uint8_t> IceTrapModels;
+extern std::vector<RandomizerGet> ItemPool;

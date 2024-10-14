@@ -768,7 +768,7 @@ void EnBili_Draw(Actor* thisx, PlayState* play) {
         gSPSegment(POLY_XLU_DISP++, 0x09, D_809C1700);
     }
 
-    POLY_XLU_DISP = SkelAnime_Draw(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
+    POLY_XLU_DISP = SkelAnime_DrawSkeleton2(play, &this->skelAnime,
                                    EnBili_OverrideLimbDraw, NULL, this, POLY_XLU_DISP);
     CLOSE_DISPS(play->state.gfxCtx);
 }

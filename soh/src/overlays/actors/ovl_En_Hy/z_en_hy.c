@@ -14,6 +14,7 @@
 #include "objects/object_cne/object_cne.h"
 #include "objects/object_cob/object_cob.h"
 #include "objects/object_os_anime/object_os_anime.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
@@ -411,7 +412,7 @@ s32 EnHy_IsOsAnimeObjectLoaded(EnHy* this, PlayState* play) {
 
 void func_80A6F7CC(EnHy* this, PlayState* play, s32 getItemId) {
     this->unkGetItemId = getItemId;
-    func_8002F434(&this->actor, play, getItemId, this->actor.xzDistToPlayer + 1.0f,
+    Actor_OfferGetItem(&this->actor, play, getItemId, this->actor.xzDistToPlayer + 1.0f,
                   fabsf(this->actor.yDistToPlayer) + 1.0f);
 }
 
@@ -659,19 +660,10 @@ s16 func_80A70058(PlayState* play, Actor* thisx) {
                     gSaveContext.dogParams = 0;
                     break;
                 case 0x709F:
-                    if (Flags_GetInfTable(INFTABLE_191)) { // Already brought the lost dog back
-                        func_80A6F7CC(this, play, GI_RUPEE_BLUE);
-                    } else {
-                        if (!IS_RANDO) {
-                            func_80A6F7CC(this, play, GI_HEART_PIECE);
-                        } else {
-                            this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MARKET_LOST_DOG, GI_HEART_PIECE);
-                            // The follownig line and last arguments of GiveItemEntryFromActor are copied from func_80A6F7CC
-                            this->unkGetItemId = this->getItemEntry.getItemId;
-                            GiveItemEntryFromActor(&this->actor, play, this->getItemEntry, this->actor.xzDistToPlayer + 1.0f, fabsf(this->actor.yDistToPlayer) + 1.0f);
-                        }
+                    if (GameInteractor_Should(VB_GIVE_ITEM_FROM_LOST_DOG, true, this)) {
+                        func_80A6F7CC(this, play, Flags_GetInfTable(INFTABLE_191) ? GI_RUPEE_BLUE : GI_HEART_PIECE);
+                        this->actionFunc = func_80A714C4;
                     }
-                    this->actionFunc = func_80A714C4;
                     break;
             }
             return NPC_TALK_STATE_IDLE;
@@ -1068,36 +1060,26 @@ void func_80A714C4(EnHy* this, PlayState* play) {
     if (Actor_HasParent(&this->actor, play)) {
         this->actionFunc = func_80A71530;
     } else {
-        if (!IS_RANDO || this->getItemEntry.getItemId == GI_NONE) {
-            func_8002F434(&this->actor, play, this->unkGetItemId, this->actor.xzDistToPlayer + 1.0f, fabsf(this->actor.yDistToPlayer) + 1.0f);
-        } else {
-            GiveItemEntryFromActor(&this->actor, play, this->getItemEntry, this->actor.xzDistToPlayer + 1.0f, fabsf(this->actor.yDistToPlayer) + 1.0f);
-        }
+        Actor_OfferGetItem(&this->actor, play, this->unkGetItemId, this->actor.xzDistToPlayer + 1.0f,
+                           fabsf(this->actor.yDistToPlayer) + 1.0f);
     }
 }
 
 void func_80A71530(EnHy* this, PlayState* play) {
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) {
-        if (IS_RANDO) {
-            if (!Flags_GetInfTable(INFTABLE_191)) {
-                Flags_SetInfTable(INFTABLE_191);
-            }
-            gSaveContext.dogParams = 0;
-            gSaveContext.dogIsLost = false;
-        } else {
-            switch (this->unkGetItemId) {
-                case GI_HEART_PIECE:
-                    gSaveContext.dogParams = 0;
-                    gSaveContext.dogIsLost = false;
-                    Flags_SetInfTable(INFTABLE_191);
-                    break;
-                case GI_RUPEE_BLUE:
-                    Rupees_ChangeBy(5);
-                    gSaveContext.dogParams = 0;
-                    gSaveContext.dogIsLost = false;
-                    break;
-            }
+        switch (this->unkGetItemId) {
+            case GI_HEART_PIECE:
+                gSaveContext.dogParams = 0;
+                gSaveContext.dogIsLost = false;
+                SET_INFTABLE(INFTABLE_191);
+                break;
+            case GI_RUPEE_BLUE:
+                Rupees_ChangeBy(5);
+                gSaveContext.dogParams = 0;
+                gSaveContext.dogIsLost = false;
+                break;
         }
+
         this->actionFunc = func_80A7127C;
     }
 }

@@ -53,11 +53,6 @@ static std::vector<Vtx> sphereVtx;
 
 // Draws the ImGui window for the collision viewer
 void ColViewerWindow::DrawElement() {
-    ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Collision Viewer", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
-        ImGui::End();
-        return;
-    }
     UIWidgets::EnhancementCheckbox("Enabled", CVAR_DEVELOPER_TOOLS("ColViewer.Enabled"));
 
     UIWidgets::LabeledRightAlignedEnhancementCombobox("Scene", CVAR_DEVELOPER_TOOLS("ColViewer.Scene"), ColRenderSettingNames, COLVIEW_DISABLED);
@@ -95,8 +90,6 @@ void ColViewerWindow::DrawElement() {
     } else {
         UIWidgets::InsertHelpHoverText(colorHelpText);
     }
-
-    ImGui::End();
 }
 
 // Calculates the normal for a triangle at the 3 specified points

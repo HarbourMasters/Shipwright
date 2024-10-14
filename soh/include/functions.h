@@ -181,6 +181,8 @@ void __osSetWatchLo(u32);
 EnItem00* Item_DropCollectible(PlayState* play, Vec3f* spawnPos, s16 params);
 EnItem00* Item_DropCollectible2(PlayState* play, Vec3f* spawnPos, s16 params);
 void EnItem00_CustomItemsParticles(Actor* Parent, PlayState* play, GetItemEntry giEntry);
+void EnItem00_SetupAction(EnItem00* this, EnItem00ActionFunc actionFunc);
+void func_8001E5C8(EnItem00* this, PlayState* play);
 void Item_DropCollectibleRandom(PlayState* play, Actor* fromActor, Vec3f* spawnPos, s16 params);
 void EffectBlure_ChangeType(EffectBlure* this, int type);
 void EffectBlure_AddVertex(EffectBlure* this, Vec3f* p1, Vec3f* p2);
@@ -413,6 +415,7 @@ f32 Actor_WorldDistXZToPoint(Actor* actor, Vec3f* refPoint);
 void func_8002DBD0(Actor* actor, Vec3f* result, Vec3f* arg2);
 f32 Actor_HeightDiff(Actor* actorA, Actor* actorB);
 f32 Player_GetHeight(Player* player);
+s32 Player_ActionChange_2(Player* player, PlayState* play);
 f32 func_8002DCE4(Player* player);
 s32 func_8002DD6C(Player* player);
 s32 func_8002DD78(Player* player);
@@ -424,7 +427,7 @@ void Actor_MountHorse(PlayState* play, Player* player, Actor* horse);
 s32 func_8002DEEC(Player* player);
 void func_8002DF18(PlayState* play, Player* player);
 s32 func_8002DF38(PlayState* play, Actor* actor, u8 csMode);
-s32 func_8002DF54(PlayState* play, Actor* actor, u8 arg2);
+s32 Player_SetCsActionWithHaltedActors(PlayState* play, Actor* actor, u8 arg2);
 void func_8002DF90(DynaPolyActor* dynaActor);
 void func_8002DFA4(DynaPolyActor* dynaActor, f32 arg1, s16 arg2);
 s32 Player_IsFacingActor(Actor* actor, s16 angle, PlayState* play);
@@ -452,11 +455,11 @@ u32 Actor_TextboxIsClosing(Actor* actor, PlayState* play);
 s8 func_8002F368(PlayState* play);
 void Actor_GetScreenPos(PlayState* play, Actor* actor, s16* x, s16* y);
 u32 Actor_HasParent(Actor* actor, PlayState* play);
-// TODO: Rename the follwing 3 functions using whatever scheme we use when we rename func_8002F434 and func_8002F554.
+// TODO: Rename the follwing 3 functions using whatever scheme we use when we rename Actor_OfferGetItem and func_8002F554.
 s32 GiveItemEntryWithoutActor(PlayState* play, GetItemEntry getItemEntry);
 s32 GiveItemEntryFromActor(Actor* actor, PlayState* play, GetItemEntry getItemEntry, f32 xzRange, f32 yRange);
-void GiveItemEntryFromActorWithFixedRange(Actor* actor, PlayState* play, GetItemEntry getItemEntry);
-s32 func_8002F434(Actor* actor, PlayState* play, s32 getItemId, f32 xzRange, f32 yRange);
+s32 GiveItemEntryFromActorWithFixedRange(Actor* actor, PlayState* play, GetItemEntry getItemEntry);
+s32 Actor_OfferGetItem(Actor* actor, PlayState* play, s32 getItemId, f32 xzRange, f32 yRange);
 void func_8002F554(Actor* actor, PlayState* play, s32 getItemId);
 void func_8002F580(Actor* actor, PlayState* play);
 u32 Actor_HasNoParent(Actor* actor, PlayState* play);
@@ -570,8 +573,6 @@ void Flags_UnsetRandomizerInf(RandomizerInf flag);
 u16 func_80037C30(PlayState* play, s16 arg1);
 s32 func_80037D98(PlayState* play, Actor* actor, s16 arg2, s32* arg3);
 s32 func_80038290(PlayState* play, Actor* actor, Vec3s* arg2, Vec3s* arg3, Vec3f arg4);
-GetItemEntry GetChestGameRandoGetItem(s8 room, s16 ogDrawId, PlayState* play);
-s16 GetChestGameRandoGiDrawId(s8 room, s16 ogDrawId, PlayState* play);
 
 // ? func_80038600(?);
 u16 DynaSSNodeList_GetNextNodeIdx(DynaSSNodeList*);
@@ -1104,6 +1105,7 @@ s32 FrameAdvance_Update(FrameAdvanceContext* frameAdvCtx, Input* input);
 u8 PlayerGrounded(Player* player);
 void Player_SetBootData(PlayState* play, Player* player);
 s32 Player_InBlockingCsMode(PlayState* play, Player* player);
+s32 Player_TryCsAction(PlayState* play, Actor* actor, s32 csAction);
 s32 Player_InCsMode(PlayState* play);
 s32 func_8008E9C4(Player* player);
 s32 Player_IsChildWithHylianShield(Player* player);
@@ -1257,6 +1259,8 @@ void SkelAnime_DrawFlexLod(PlayState* play, void** skeleton, Vec3s* jointTable, 
                            s32 dListIndex);
 void SkelAnime_DrawSkeletonOpa(PlayState* play, SkelAnime* skelAnime, OverrideLimbDrawOpa overrideLimbDraw,
                                PostLimbDrawOpa postLimbDraw, void* arg);
+Gfx* SkelAnime_DrawSkeleton2(PlayState* play, SkelAnime* skelAnime, OverrideLimbDrawOpa overrideLimbDraw,
+                                PostLimbDrawOpa postLimbDraw, void* arg, Gfx* gfx);
 void SkelAnime_DrawOpa(PlayState* play, void** skeleton, Vec3s* jointTable,
                        OverrideLimbDrawOpa overrideLimbDraw, PostLimbDrawOpa postLimbDraw, void* arg);
 void SkelAnime_DrawFlexOpa(PlayState* play, void** skeleton, Vec3s* jointTable, s32 dListCount,
@@ -2462,6 +2466,8 @@ void Message_DrawText(PlayState* play, Gfx** gfxP);
 
 void Interface_CreateQuadVertexGroup(Vtx* vtxList, s32 xStart, s32 yStart, s32 width, s32 height, u8 flippedH);
 void Interface_RandoRestoreSwordless(void);
+s32 Ship_CalcShouldDrawAndUpdate(PlayState* play, Actor* actor, Vec3f* projectedPos, f32 projectedW, bool* shouldDraw,
+                                 bool* shouldUpdate);
 
 //Pause Warp
 void PauseWarp_HandleSelection();

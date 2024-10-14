@@ -54,8 +54,8 @@ namespace UIWidgets {
     constexpr float sliderButtonWidth = 30.0f;
 #endif
 
-    char* WrappedText(const char* text, unsigned int charactersPerLine = 60);
-    char* WrappedText(const std::string& text, unsigned int charactersPerLine);
+    std::string WrappedText(const char* text, unsigned int charactersPerLine = 60);
+    std::string WrappedText(const std::string& text, unsigned int charactersPerLine);
 
     void SetLastItemHoverText(const std::string& text);
     void SetLastItemHoverText(const char* text);
@@ -68,12 +68,14 @@ namespace UIWidgets {
     void PaddedSeparator(bool padTop = true, bool padBottom = true, float extraVerticalTopPadding = 0.0f, float extraVerticalBottomPadding = 0.0f);
 
     void RenderCross(ImDrawList* draw_list, ImVec2 pos, ImU32 col, float sz);
-    bool CustomCheckbox(const char* label, bool* v, bool disabled, CheckboxGraphics disabledGraphic);
+    bool CustomCheckbox(const char* label, bool* v, bool disabled, CheckboxGraphics disabledGraphic, bool renderCrossWhenOff = false);
+    bool CustomCheckboxTristate(const char* label, int* v, bool disabled, CheckboxGraphics disabledGraphic);
 
     void ReEnableComponent(const char* disabledTooltipText);
     void DisableComponent(const float alpha);
 
     bool EnhancementCheckbox(const char* text, const char* cvarName, bool disabled = false, const char* disabledTooltipText = "", CheckboxGraphics disabledGraphic = CheckboxGraphics::Cross, bool defaultValue = false);
+    bool EnhancementCheckboxTristate(const char* text, const char* cvarName, bool disabled = false, const char* disabledTooltipText = "", CheckboxGraphics disabledGraphic = CheckboxGraphics::Cross, bool defaultValue = false);
     bool PaddedEnhancementCheckbox(const char* text, const char* cvarName, bool padTop = true, bool padBottom = true, bool disabled = false, const char* disabledTooltipText = "", CheckboxGraphics disabledGraphic = CheckboxGraphics::Cross, bool defaultValue = false);
     
     bool EnhancementCombobox(const char* cvarName, std::span<const char*, std::dynamic_extent> comboArray, uint8_t defaultIndex, bool disabled = false, const char* disabledTooltipText = "", uint8_t disabledValue = -1);

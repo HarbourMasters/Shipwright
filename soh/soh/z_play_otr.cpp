@@ -77,10 +77,6 @@ void OTRPlay_InitScene(PlayState* play, s32 spawn) {
     gSaveContext.worldMapArea = 0;
     OTRScene_ExecuteCommands(play, (SOH::Scene*)play->sceneSegment);
     Play_InitEnvironment(play, play->skyboxId);
-    // Unpause the timer for Boss Rush when the scene loaded isn't the Chamber of Sages.
-    if (IS_BOSS_RUSH && play->sceneNum != SCENE_CHAMBER_OF_THE_SAGES) {
-        gSaveContext.isBossRushPaused = 0;
-    }
     /* auto data = static_cast<LUS::Vertex*>(Ship::Context::GetInstance()
                                                ->GetResourceManager()
                                                ->ResourceLoad("object_link_child\\object_link_childVtx_01FE08")
