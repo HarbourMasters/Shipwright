@@ -1551,7 +1551,7 @@ void EnElf_Draw(Actor* thisx, PlayState* play) {
 void EnElf_GetCutsceneNextPos(Vec3f* vec, PlayState* play, s32 action) {
     Vec3f startPos;
     Vec3f endPos;
-    CsCmdActorAction* npcAction = play->csCtx.npcActions[action];
+    CsCmdActorCue* npcAction = play->csCtx.npcActions[action];
     f32 lerp;
 
     startPos.x = npcAction->startPos.x;

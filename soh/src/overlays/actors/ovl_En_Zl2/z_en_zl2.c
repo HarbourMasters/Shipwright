@@ -212,7 +212,7 @@ s32 EnZl2_UpdateSkelAnime(EnZl2* this) {
     return SkelAnime_Update(&this->skelAnime);
 }
 
-CsCmdActorAction* EnZl2_GetNpcAction(PlayState* play, s32 idx) {
+CsCmdActorCue* EnZl2_GetNpcAction(PlayState* play, s32 idx) {
     if (play->csCtx.state != CS_STATE_IDLE) {
         return play->csCtx.npcActions[idx];
     }
@@ -220,7 +220,7 @@ CsCmdActorAction* EnZl2_GetNpcAction(PlayState* play, s32 idx) {
 }
 
 void func_80B4EDB8(EnZl2* this, PlayState* play, s32 arg2) {
-    CsCmdActorAction* npcAction = EnZl2_GetNpcAction(play, arg2);
+    CsCmdActorCue* npcAction = EnZl2_GetNpcAction(play, arg2);
 
     if (npcAction != NULL) {
         this->actor.world.pos.x = npcAction->startPos.x;
@@ -683,7 +683,7 @@ void func_80B5008C(EnZl2* this) {
 }
 
 void func_80B500E0(EnZl2* this, PlayState* play) {
-    CsCmdActorAction* npcAction = EnZl2_GetNpcAction(play, 0);
+    CsCmdActorCue* npcAction = EnZl2_GetNpcAction(play, 0);
     Vec3f* thisPos = &this->actor.world.pos;
     f32 startX;
     f32 startY;
@@ -715,7 +715,7 @@ void func_80B501C4(EnZl2* this, s32 alpha) {
 }
 
 void func_80B501E8(EnZl2* this, PlayState* play) {
-    CsCmdActorAction* npcAction = EnZl2_GetNpcAction(play, 0);
+    CsCmdActorCue* npcAction = EnZl2_GetNpcAction(play, 0);
 
     if (npcAction != NULL) {
         this->actor.shape.shadowAlpha = this->alpha =
@@ -732,7 +732,7 @@ void func_80B50260(EnZl2* this, PlayState* play) {
 }
 
 void func_80B50278(EnZl2* this, PlayState* play) {
-    CsCmdActorAction* npcAction = EnZl2_GetNpcAction(play, 0);
+    CsCmdActorCue* npcAction = EnZl2_GetNpcAction(play, 0);
 
     this->actor.world.pos.x = npcAction->startPos.x;
     this->actor.world.pos.y = npcAction->startPos.y;
@@ -746,7 +746,7 @@ void func_80B50278(EnZl2* this, PlayState* play) {
 void func_80B50304(EnZl2* this, PlayState* play) {
     s32 pad[2];
     ActorShape* shape = &this->actor.shape;
-    CsCmdActorAction* npcAction = EnZl2_GetNpcAction(play, 0);
+    CsCmdActorCue* npcAction = EnZl2_GetNpcAction(play, 0);
     f32 actionXDelta;
     f32 actionZDelta;
 
@@ -761,7 +761,7 @@ void func_80B50304(EnZl2* this, PlayState* play) {
 }
 
 void func_80B503DC(EnZl2* this, PlayState* play) {
-    CsCmdActorAction* npcAction = EnZl2_GetNpcAction(play, 0);
+    CsCmdActorCue* npcAction = EnZl2_GetNpcAction(play, 0);
 
     if ((npcAction != NULL) && (play->csCtx.frames >= npcAction->endFrame)) {
         this->action = 4;
@@ -906,7 +906,7 @@ void func_80B50980(EnZl2* this, PlayState* play) {
 }
 
 void func_80B509A0(EnZl2* this, PlayState* play) {
-    CsCmdActorAction* npcAction = EnZl2_GetNpcAction(play, 0);
+    CsCmdActorCue* npcAction = EnZl2_GetNpcAction(play, 0);
 
     if (npcAction != NULL) {
         if (play->csCtx.frames >= npcAction->endFrame) {
@@ -918,7 +918,7 @@ void func_80B509A0(EnZl2* this, PlayState* play) {
 }
 
 void func_80B50A04(EnZl2* this, PlayState* play) {
-    CsCmdActorAction* npcAction = EnZl2_GetNpcAction(play, 0);
+    CsCmdActorCue* npcAction = EnZl2_GetNpcAction(play, 0);
     s32 newAction;
     s32 unk_240;
 
@@ -1329,7 +1329,7 @@ void func_80B518C0(EnZl2* this) {
 }
 
 void func_80B51948(EnZl2* this, PlayState* play) {
-    CsCmdActorAction* npcAction = EnZl2_GetNpcAction(play, 0);
+    CsCmdActorCue* npcAction = EnZl2_GetNpcAction(play, 0);
     s32 newAction;
     s32 unk_240;
 
@@ -1450,7 +1450,7 @@ void func_80B51D24(EnZl2* this, PlayState* play) {
 }
 
 void func_80B51DA4(EnZl2* this, PlayState* play) {
-    CsCmdActorAction* npcAction = EnZl2_GetNpcAction(play, 0);
+    CsCmdActorCue* npcAction = EnZl2_GetNpcAction(play, 0);
     Vec3f* thisPos = &this->actor.world.pos;
     f32 startX;
     f32 startY;
@@ -1486,7 +1486,7 @@ void func_80B51EA8(EnZl2* this) {
 
 void func_80B51EBC(EnZl2* this, PlayState* play) {
     ActorShape* shape = &this->actor.shape;
-    CsCmdActorAction* npcAction = EnZl2_GetNpcAction(play, 0);
+    CsCmdActorCue* npcAction = EnZl2_GetNpcAction(play, 0);
     s32 pad[2];
 
     this->actor.world.rot.y = shape->rot.y = npcAction->rot.y;
@@ -1497,7 +1497,7 @@ void func_80B51EBC(EnZl2* this, PlayState* play) {
 }
 
 void func_80B51F38(EnZl2* this, PlayState* play) {
-    CsCmdActorAction* npcAction = EnZl2_GetNpcAction(play, 0);
+    CsCmdActorCue* npcAction = EnZl2_GetNpcAction(play, 0);
 
     if (npcAction != NULL) {
         if (play->csCtx.frames - 8 >= npcAction->endFrame) {
@@ -1508,7 +1508,7 @@ void func_80B51F38(EnZl2* this, PlayState* play) {
 }
 
 void func_80B51FA8(EnZl2* this, PlayState* play) {
-    CsCmdActorAction* npcAction = EnZl2_GetNpcAction(play, 0);
+    CsCmdActorCue* npcAction = EnZl2_GetNpcAction(play, 0);
     s32 action;
     s32 unk_240;
 

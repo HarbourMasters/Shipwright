@@ -1056,7 +1056,7 @@ s32 func_80A7707C(EnIk* this) {
     return SkelAnime_Update(&this->skelAnime);
 }
 
-CsCmdActorAction* EnIk_GetNpcAction(PlayState* play, s32 actionIdx) {
+CsCmdActorCue* EnIk_GetNpcAction(PlayState* play, s32 actionIdx) {
     if (play->csCtx.state != CS_STATE_IDLE) {
         return play->csCtx.npcActions[actionIdx];
     } else {
@@ -1065,7 +1065,7 @@ CsCmdActorAction* EnIk_GetNpcAction(PlayState* play, s32 actionIdx) {
 }
 
 void func_80A770C0(EnIk* this, PlayState* play, s32 actionIdx) {
-    CsCmdActorAction* npcAction = EnIk_GetNpcAction(play, actionIdx);
+    CsCmdActorCue* npcAction = EnIk_GetNpcAction(play, actionIdx);
 
     if (npcAction != NULL) {
         this->actor.world.pos.x = npcAction->startPos.x;
@@ -1247,7 +1247,7 @@ void func_80A77844(EnIk* this, PlayState* play) {
 }
 
 void func_80A779DC(EnIk* this, PlayState* play) {
-    CsCmdActorAction* npcAction = EnIk_GetNpcAction(play, 4);
+    CsCmdActorCue* npcAction = EnIk_GetNpcAction(play, 4);
     u32 action;
     u32 currentNpcAction;
 
