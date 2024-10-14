@@ -655,10 +655,16 @@ typedef struct Player {
 
     /* 0x084F */ union {
         s8 actionVar1;
+        s8 facingUpSlope; // Player_Action_SlideOnSlope: facing uphill when sliding on a slope
+        s8 bottleCatchType; // Player_Action_SwingBottle: entry type for `sBottleCatchInfo`, corresponds to actor caught in a bottle
     } av1; // "Action Variable 1": context dependent variable that has different meanings depending on what action is currently running
 
     /* 0x0850 */ union {
         s16 actionVar2;
+        s16 fallDamageStunTimer; // Player_Action_Idle: Prevents any movement and shakes model up and down quickly to indicate fall damage stun
+        s16 bonked; // Player_Action_Roll: set to true after bonking into a wall or an actor
+        s16 startedTextbox; // Player_Action_SwingBottle: set to true when the textbox is started
+        s16 inWater; // Player_Action_SwingBottle: true if a bottle is swung in water. Used to determine which bottle swing animation to use.
     } av2; // "Action Variable 2": context dependent variable that has different meanings depending on what action is currently running
 
     /* 0x0854 */ f32 unk_854;
