@@ -2789,6 +2789,8 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
                 case RSK_ALL_LOCATIONS_REACHABLE:
                 case RSK_TRIFORCE_HUNT:
                 case RSK_MQ_DUNGEON_SET:
+                case RSK_SHUFFLE_DEKU_NUT_BAG:
+                case RSK_SHUFFLE_DEKU_STICK_BAG:
                     if (it.value() == "Off") {
                         mOptions[index].SetSelectedIndex(RO_GENERIC_OFF);
                     } else if (it.value() == "On") {

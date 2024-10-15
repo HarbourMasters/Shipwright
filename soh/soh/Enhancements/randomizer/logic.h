@@ -133,6 +133,9 @@ class Logic {
     bool LinksCow = false;
     bool DeliverLetter = false;
     bool ClearMQDCUpperLobbyRocks = false;
+    bool LoweredWaterInsideBotw = false;
+    bool OpenedWestRoomMQBotw = false;
+    bool OpenedMiddleHoleMQBotw = false;
 
     /* --- END OF HELPERS AND LOCATION ACCESS --- */
 
@@ -152,12 +155,14 @@ class Logic {
     bool CanGetEnemyDrop(RandomizerEnemy enemy, EnemyDistance distance = ED_CLOSE, bool aboveLink = false);
     bool CanBreakMudWalls();
     bool CanGetDekuBabaSticks();
+    bool CanGetDekuBabaNuts();
     bool CanHitEyeTargets();
     bool CanDetonateBombFlowers();
     bool CanDetonateUprightBombFlower();
     uint8_t BottleCount();
     uint8_t OcarinaButtons();
     bool HasBottle();
+    bool CanJumpslashExceptHammer();
     bool CanJumpslash();
     bool CanDamage();
     bool CanAttack();

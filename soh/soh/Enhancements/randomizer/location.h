@@ -48,6 +48,7 @@ class SpoilerCollectionCheck {
 
 class Location {
   public:
+  //RANDOTODO fix wacky ordering
     Location() : rc(RC_UNKNOWN_CHECK), quest(RCQUEST_BOTH), checkType(RCTYPE_STANDARD), area(RCAREA_INVALID), actorId(ACTOR_ID_MAX), scene(SCENE_ID_MAX), actorParams(0),
                  hintKey(RHT_NONE), vanillaItem(RG_NONE), isVanillaCompletion(false), collectionCheck(SpoilerCollectionCheck()) {}
 

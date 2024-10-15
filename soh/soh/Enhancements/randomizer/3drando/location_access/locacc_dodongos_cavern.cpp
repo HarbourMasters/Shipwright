@@ -246,7 +246,7 @@ void RegionTable_Init_DodongosCavern() {
                   Entrance(RR_DODONGOS_CAVERN_MQ_LOBBY,                 {[]{return true;}}),
                   Entrance(RR_DODONGOS_CAVERN_MQ_TORCH_PUZZLE_UPPER,    {[]{return logic->ClearMQDCUpperLobbyRocks;}}),
                   //Bunny hood jump + jumpslash can also make it directly from the raising platform
-                  Entrance(RR_DODONGOS_CAVERN_MQ_POES_ROOM,             {[]{return logic->CanUse(RG_HOVER_BOOTS) || (ctx->GetTrickOption(RT_DC_MQ_CHILD_BOMBS) && logic->CanJumpslash() && logic->TakeDamage());}}), //RANDOTODO is this possible with equip swapped hammer?
+                  Entrance(RR_DODONGOS_CAVERN_MQ_POES_ROOM,             {[]{return logic->CanUse(RG_HOVER_BOOTS) || (ctx->GetTrickOption(RT_DC_MQ_CHILD_BOMBS) && logic->CanJumpslashExceptHammer() && logic->TakeDamage());}}), //RANDOTODO is this possible with equip swapped hammer?
                   //it is possible to use bunny hood speed, hovers and a jumpslash to go between here and the other bridge (included with TORCH_ROOM_LOWER), but this would be a trick
   });
 
@@ -455,7 +455,7 @@ void RegionTable_Init_DodongosCavern() {
                                   return logic->DodongosCavernClear || (logic->HasBossSoul(RG_KING_DODONGO_SOUL) &&
                                          (Here(RR_DODONGOS_CAVERN_BOSS_ROOM,
                                                [] { return logic->HasExplosives() || (logic->CanUse(RG_MEGATON_HAMMER) && ctx->GetTrickOption(RT_DC_HAMMER_FLOOR)); }) &&
-                                          (logic->CanUse(RG_BOMB_BAG) || logic->HasItem(RG_GORONS_BRACELET)) && logic->CanJumpslash())); /*todo add chu kill to tricks*/
+                                          (logic->CanUse(RG_BOMB_BAG) || logic->HasItem(RG_GORONS_BRACELET)) && logic->CanJumpslashExceptHammer())); /*todo add chu kill to tricks*/
                               }}),
              },
              {

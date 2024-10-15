@@ -12,6 +12,7 @@
 #include <overlays/misc/ovl_kaleido_scope/z_kaleido_scope.h>
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/framebuffer_effects.h"
 
 #include <libultraship/libultraship.h>
 
@@ -539,14 +540,19 @@ void Play_Init(GameState* thisx) {
                  (s32)(zAllocAligned + zAllocSize) - (s32)(zAllocAligned - zAlloc));
 
     Fault_AddClient(&D_801614B8, ZeldaArena_Display, NULL, NULL);
-    // In order to keep bunny hood equipped on first load, we need to pre-set the age reqs for the item and slot
-    if ((CVarGetInteger(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA && CVarGetInteger(CVAR_ENHANCEMENT("AdultBunnyHood"), 0)) || CVarGetInteger(CVAR_CHEAT("TimelessEquipment"), 0)) {
-        gItemAgeReqs[ITEM_MASK_BUNNY] = AGE_REQ_NONE;
-        if(INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_MASK_BUNNY)
+    // In order to keep masks equipped on first load, we need to pre-set the age reqs for the item and slot
+    if (CVarGetInteger(CVAR_ENHANCEMENT("AdultMasks"), 0) || CVarGetInteger(CVAR_CHEAT("TimelessEquipment"), 0)) {
+        for (int i = ITEM_MASK_KEATON; i <= ITEM_MASK_TRUTH; i += 1) {
+            gItemAgeReqs[i] = AGE_REQ_NONE;
+        }
+        if (INV_CONTENT(ITEM_TRADE_CHILD) >= ITEM_MASK_KEATON && INV_CONTENT(ITEM_TRADE_CHILD) <= ITEM_MASK_TRUTH) {
             gSlotAgeReqs[SLOT_TRADE_CHILD] = AGE_REQ_NONE;
-    }
-    else {
-        gItemAgeReqs[ITEM_MASK_BUNNY] = gSlotAgeReqs[SLOT_TRADE_CHILD] = AGE_REQ_CHILD;
+        }
+    } else {
+        for (int i = ITEM_MASK_KEATON; i <= ITEM_MASK_TRUTH; i += 1) {
+            gItemAgeReqs[i] = AGE_REQ_CHILD;
+        }
+        gSlotAgeReqs[SLOT_TRADE_CHILD] = AGE_REQ_CHILD;
     }
     func_800304DC(play, &play->actorCtx, play->linkActorEntry);
 
@@ -1336,6 +1342,24 @@ void Play_Draw(PlayState* play) {
     Lights* sp228;
     Vec3f sp21C;
 
+    // #region SOH [Port] Frame buffer effects for pause menu
+    // Track render size when paused and that a copy was performed
+    static u32 lastPauseWidth;
+    static u32 lastPauseHeight;
+    static u8 hasCapturedPauseBuffer;
+    u8 recapturePauseBuffer = false;
+
+    // If the size has changed or dropped frames leading to the buffer not being copied,
+    // set the prerender state back to setup to copy a new frame.
+    // This requires not rendering kaleido during this copy to avoid kaleido being copied
+    if ((R_PAUSE_MENU_MODE == 2 || R_PAUSE_MENU_MODE == 3) &&
+        (lastPauseWidth != OTRGetGameRenderWidth() || lastPauseHeight != OTRGetGameRenderHeight() ||
+         !hasCapturedPauseBuffer)) {
+        R_PAUSE_MENU_MODE = 1;
+        recapturePauseBuffer = true;
+    }
+    // #endregion
+
     OPEN_DISPS(gfxCtx);
 
     gSegments[4] = VIRTUAL_TO_PHYSICAL(play->objectCtx.status[play->objectCtx.mainKeepIndex].segment);
@@ -1369,8 +1393,8 @@ void Play_Draw(PlayState* play) {
         func_800AAA50(&play->view, 15);
 
         // Flip the projections and invert culling for the OPA and XLU display buffers
-        // These manage the world and effects
-        if (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0)) {
+        // These manage the world and effects when we are not drawing kaleido
+        if (R_PAUSE_MENU_MODE <= 1 && CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0)) {
             gSPSetExtraGeometryMode(POLY_OPA_DISP++, G_EX_INVERT_CULLING);
             gSPSetExtraGeometryMode(POLY_XLU_DISP++, G_EX_INVERT_CULLING);
             gSPMatrix(POLY_OPA_DISP++, play->view.projectionFlippedPtr, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
@@ -1450,13 +1474,13 @@ void Play_Draw(PlayState* play) {
             if (R_PAUSE_MENU_MODE == 3) {
                 Gfx* sp84 = POLY_OPA_DISP;
 
+                // SOH [Port] Draw game framebuffer using our custom handling
                 //func_800C24BC(&play->pauseBgPreRender, &sp84);
+                FB_DrawFromFramebuffer(&sp84, gPauseFrameBuffer, 255);
                 POLY_OPA_DISP = sp84;
 
-                //goto Play_Draw_DrawOverlayElements;
-            }
-            //else
-            {
+                goto Play_Draw_DrawOverlayElements;
+            } else {
                 s32 sp80;
 
                 if ((HREG(80) != 10) || (HREG(83) != 0)) {
@@ -1530,10 +1554,6 @@ void Play_Draw(PlayState* play) {
                     Environment_FillScreen(gfxCtx, 0, 0, 0, play->unk_11E18, FILL_SCREEN_OPA);
                 }
 
-                if ((play->pauseCtx.state != 0) && (HREG(80) != 10) || (HREG(89) != 0)) {
-                    Play_DrawOverlayElements(play);
-                }
-
                 if ((HREG(80) != 10) || (HREG(85) != 0)) {
                     func_800315AC(play, &play->actorCtx);
                 }
@@ -1581,17 +1601,36 @@ void Play_Draw(PlayState* play) {
 
                     play->pauseBgPreRender.fbuf = gfxCtx->curFrameBuffer;
                     play->pauseBgPreRender.fbufSave = (u16*)gZBuffer;
-                    func_800C1F20(&play->pauseBgPreRender, &sp70);
+                    // SOH [Port] Use our custom copy method instead of the prerender system
+                    // func_800C1F20(&play->pauseBgPreRender, &sp70);
                     if (R_PAUSE_MENU_MODE == 1) {
                         play->pauseBgPreRender.cvgSave = (u8*)gfxCtx->curFrameBuffer;
-                        func_800C20B4(&play->pauseBgPreRender, &sp70);
+                        // func_800C20B4(&play->pauseBgPreRender, &sp70);
                         R_PAUSE_MENU_MODE = 2;
+
+                        // #region SOH [Port] Custom handling for pause prerender background capture
+                        lastPauseWidth = OTRGetGameRenderWidth();
+                        lastPauseHeight = OTRGetGameRenderHeight();
+                        hasCapturedPauseBuffer = false;
+
+                        FB_CopyToFramebuffer(&sp70, 0, gPauseFrameBuffer, false, &hasCapturedPauseBuffer);
+
+                        // Set the state back to ready after the recapture is done
+                        if (recapturePauseBuffer) {
+                            R_PAUSE_MENU_MODE = 3;
+                        }
+                        // #endregion
                     } else {
                         gTrnsnUnkState = 2;
                     }
                     OVERLAY_DISP = sp70;
                     play->unk_121C7 = 2;
                     SREG(33) |= 1;
+
+                    // 2S2H [Port] Continue to render the post world for pausing to avoid flashing the HUD
+                    if (!(gTrnsnUnkState == 1)) {
+                        goto Play_Draw_DrawOverlayElements;
+                    }
                 } else if (R_PAUSE_MENU_MODE != 3) {
                 Play_Draw_DrawOverlayElements:
                     if ((HREG(80) != 10) || (HREG(89) != 0)) {
@@ -1621,15 +1660,6 @@ void Play_Draw(PlayState* play) {
     }
 
     Camera_Finish(GET_ACTIVE_CAM(play));
-
-    {
-        Gfx* prevDisplayList = POLY_OPA_DISP;
-        Gfx* gfxP = Graph_GfxPlusOne(POLY_OPA_DISP);
-        gSPDisplayList(OVERLAY_DISP++, gfxP);
-        gSPEndDisplayList(gfxP++);
-        Graph_BranchDlist(prevDisplayList, gfxP);
-        POLY_OPA_DISP = gfxP;
-    }
 
     CLOSE_DISPS(gfxCtx);
 

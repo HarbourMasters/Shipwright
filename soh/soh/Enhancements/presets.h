@@ -65,10 +65,10 @@ const std::vector<const char*> enhancementsCvars = {
     CVAR_SETTING("DpadInText"),
     CVAR_SETTING("OcarinaControl.Dpad"),
     CVAR_SETTING("OcarinaControl.RStick"),
-    CVAR_SETTING("DpadEquips"),
-    CVAR_SETTING("PauseAnyCursor"),
+    CVAR_ENHANCEMENT("DpadEquips"),
+    CVAR_ENHANCEMENT("PauseAnyCursor"),
     CVAR_ENHANCEMENT("DpadNoDropOcarinaInput"),
-    CVAR_SETTING("NaviOnL"),
+    CVAR_ENHANCEMENT("NaviOnL"),
     CVAR_SETTING("FreeLook.InvertXAxis"),
     CVAR_SETTING("FreeLook.InvertYAxis"),
     CVAR_SETTING("Controls.RightStickAim"),
@@ -83,7 +83,7 @@ const std::vector<const char*> enhancementsCvars = {
     CVAR_ENHANCEMENT("NoForcedNavi"),
     CVAR_ENHANCEMENT("SkulltulaFreeze"),
     CVAR_ENHANCEMENT("MMBunnyHood"),
-    CVAR_ENHANCEMENT("AdultBunnyHood"),
+    CVAR_ENHANCEMENT("AdultMasks"),
     CVAR_ENHANCEMENT("FastChests"),
     CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"),
     CVAR_ENHANCEMENT("FastDrops"),
@@ -551,7 +551,7 @@ const std::vector<PresetEntry> vanillaPlusPresetEntries = {
     // Play Ocarina with Right Stick
     PRESET_ENTRY_S32(CVAR_SETTING("OcarinaControl.RStick"), 1),
     // D-pad as Equip Items
-    PRESET_ENTRY_S32(CVAR_SETTING("DpadEquips"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DpadEquips"), 1),
     // Prevent Dropped Ocarina Inputs
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DpadNoDropOcarinaInput"), 1),
     // Right Stick Aiming
@@ -562,7 +562,7 @@ const std::vector<PresetEntry> vanillaPlusPresetEntries = {
     // Skip Text
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("SkipText"), 1),
     // King Zora Speed (1 to 5)
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MweepSpeed"), 2),
+    PRESET_ENTRY_FLOAT(CVAR_ENHANCEMENT("MweepSpeed"), 2.0f),
     // Faster Block Push (+0 to +5)
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FasterBlockPush"), 5),
     // Better Owl
@@ -622,7 +622,7 @@ const std::vector<PresetEntry> enhancedPresetEntries = {
     // Play Ocarina with Right Stick
     PRESET_ENTRY_S32(CVAR_SETTING("OcarinaControl.RStick"), 1),
     // D-pad as Equip Items
-    PRESET_ENTRY_S32(CVAR_SETTING("DpadEquips"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DpadEquips"), 1),
     // Prevent Dropped Ocarina Inputs
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DpadNoDropOcarinaInput"), 1),
     // Right Stick Aiming
@@ -633,7 +633,7 @@ const std::vector<PresetEntry> enhancedPresetEntries = {
     // Skip Text
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("SkipText"), 1),
     // King Zora Speed (1 to 5)
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MweepSpeed"), 5),
+    PRESET_ENTRY_FLOAT(CVAR_ENHANCEMENT("MweepSpeed"), 5.0f),
     // Faster Block Push (+0 to +5)
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FasterBlockPush"), 5),
     // Better Owl
@@ -698,7 +698,7 @@ const std::vector<PresetEntry> enhancedPresetEntries = {
     // MM Bunny Hood
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_FAST_AND_JUMP),
     // Adult Bunny Hood
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("AdultBunnyHood"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("AdultMasks"), 1),
     // Fast Chests
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FastChests"), 1),
     // Fast Drops
@@ -754,7 +754,7 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     // Play Ocarina with Right Stick
     PRESET_ENTRY_S32(CVAR_SETTING("OcarinaControl.RStick"), 1),
     // D-pad as Equip Items
-    PRESET_ENTRY_S32(CVAR_SETTING("DpadEquips"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DpadEquips"), 1),
     // Prevent Dropped Ocarina Inputs
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DpadNoDropOcarinaInput"), 1),
     // Right Stick Aiming
@@ -765,7 +765,7 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     // Skip Text
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("SkipText"), 1),
     // King Zora Speed (1 to 5)
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MweepSpeed"), 5),
+    PRESET_ENTRY_FLOAT(CVAR_ENHANCEMENT("MweepSpeed"), 5.0f),
     // Faster Block Push (+0 to +5)
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FasterBlockPush"), 5),
     // Better Owl
@@ -825,7 +825,7 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     // MM Bunny Hood
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_FAST_AND_JUMP),
     // Adult Bunny Hood
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("AdultBunnyHood"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("AdultMasks"), 1),
     // Fast Chests
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FastChests"), 1),
     // Fast Drops
@@ -914,7 +914,7 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
 const std::vector<PresetEntry> spockRacePresetEntries = {
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("LogicRules"), 0),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("TextSpeed"), 5),
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MweepSpeed"), 5),
+    PRESET_ENTRY_FLOAT(CVAR_ENHANCEMENT("MweepSpeed"), 5.0f),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("ClimbSpeed"), 4),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FasterBlockPush"), 5),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FasterHeavyBlockLift"), 1),
@@ -925,13 +925,13 @@ const std::vector<PresetEntry> spockRacePresetEntries = {
     PRESET_ENTRY_S32(CVAR_SETTING("DpadInText"), 1),
     PRESET_ENTRY_S32(CVAR_SETTING("OcarinaControl.Dpad"), 1),
     PRESET_ENTRY_S32(CVAR_SETTING("OcarinaControl.RStick"), 1),
-    PRESET_ENTRY_S32(CVAR_SETTING("DpadEquips"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DpadEquips"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FastOcarinaPlayback"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InstantScarecrow"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MarketSneak"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InstantPutaway"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FastBoomerang"), 1),
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("AdultBunnyHood"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("AdultMasks"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_FAST),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("SeparateArrows"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("AssignableTunicsAndBoots"), 1),
@@ -941,7 +941,7 @@ const std::vector<PresetEntry> spockRacePresetEntries = {
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("CreditsFix"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("SkipText"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("SkulltulaFreeze"), 1),
-    PRESET_ENTRY_S32(CVAR_SETTING("PauseAnyCursor"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("PauseAnyCursor"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FastFarores"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("NoInputForCredits"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MaskSelect"), 1),
@@ -1003,7 +1003,7 @@ const std::vector<PresetEntry> spockRacePresetEntries = {
 };
 
 const std::vector<PresetEntry> spockRaceNoLogicPresetEntries = {
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("AdultBunnyHood"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("AdultMasks"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MinimumFishWeightAdult"), 6),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("AssignableTunicsAndBoots"), 1),
     PRESET_ENTRY_S32(CVAR_CHEAT("EasyPauseBuffer"), 1),
@@ -1034,10 +1034,10 @@ const std::vector<PresetEntry> spockRaceNoLogicPresetEntries = {
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_FAST),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MarketSneak"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MaskSelect"), 1),
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MweepSpeed"), 5),
+    PRESET_ENTRY_FLOAT(CVAR_ENHANCEMENT("MweepSpeed"), 5.0f),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("NoForcedNavi"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("NoInputForCredits"), 1),
-    PRESET_ENTRY_S32(CVAR_SETTING("PauseAnyCursor"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("PauseAnyCursor"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("10GSHint"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("20GSHint"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("30GSHint"), 1),
@@ -1099,7 +1099,7 @@ const std::vector<PresetEntry> s6PresetEntries = {
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), CSMC_BOTH),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FastChests"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_FAST),
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("AdultBunnyHood"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("AdultMasks"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("BigPoeTargetCount"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("CuccosToReturn"), 4),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("DoorOfTime"), RO_DOOROFTIME_OPEN),
@@ -1133,7 +1133,7 @@ const std::vector<PresetEntry> hellModePresetEntries = {
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), CSMC_BOTH),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FastChests"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_FAST),
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("AdultBunnyHood"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("AdultMasks"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("BigPoeTargetCount"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("BlueFireArrows"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("BossKeysanity"), RO_DUNGEON_ITEM_LOC_ANYWHERE),
