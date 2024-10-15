@@ -1388,19 +1388,7 @@ void EnOssan_GiveItemWithFanfare(PlayState* play, EnOssan* this) {
     Player* player = GET_PLAYER(play);
 
     osSyncPrintf("\n" VT_FGCOL(YELLOW) "初めて手にいれた！！" VT_RST "\n\n");
-    if (!IS_RANDO) {
-        Actor_OfferGetItem(&this->actor, play, this->shelfSlots[this->cursorIndex]->getItemId, 120.0f, 120.0f);
-    } else {
-        ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(play->sceneNum, this->cursorIndex + 1);
-        // en_ossan/en_girla are also used for the happy mask shop, which never has randomized items
-        // and returns RC_UNKNOWN_CHECK, in which case we should fall back to vanilla logic
-        if (shopItemIdentity.randomizerCheck != RC_UNKNOWN_CHECK) {
-            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
-            GiveItemEntryFromActor(&this->actor, play, getItemEntry, 120.0f, 120.0f);
-        } else {
-            Actor_OfferGetItem(&this->actor, play, this->shelfSlots[this->cursorIndex]->getItemId, 120.0f, 120.0f);
-        }
-    }
+    Actor_OfferGetItem(&this->actor, play, this->shelfSlots[this->cursorIndex]->getItemId, 120.0f, 120.0f);
     play->msgCtx.msgMode = MSGMODE_TEXT_CLOSING;
     play->msgCtx.stateTimer = 4;
     player->stateFlags2 &= ~PLAYER_STATE2_DISABLE_DRAW;
@@ -1735,36 +1723,12 @@ void EnOssan_State_GiveItemWithFanfare(EnOssan* this, PlayState* play, Player* p
         this->stateFlag = OSSAN_STATE_ITEM_PURCHASED;
         return;
     }
-    if (!IS_RANDO) {
-        Actor_OfferGetItem(&this->actor, play, this->shelfSlots[this->cursorIndex]->getItemId, 120.0f, 120.0f);
-    } else {
-        ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(play->sceneNum, this->cursorIndex + 1);
-        // en_ossan/en_girla are also used for the happy mask shop, which never has randomized items
-        // and returns RC_UNKNOWN_CHECK, in which case we should fall back to vanilla logic
-        if (shopItemIdentity.randomizerCheck != RC_UNKNOWN_CHECK) {
-            GetItemEntry getItemEntry =
-                Randomizer_GetItemFromKnownCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
-            GiveItemEntryFromActor(&this->actor, play, getItemEntry, 120.0f, 120.0f);
-        } else {
-            Actor_OfferGetItem(&this->actor, play, this->shelfSlots[this->cursorIndex]->getItemId, 120.0f, 120.0f);
-        }
-    }
+    Actor_OfferGetItem(&this->actor, play, this->shelfSlots[this->cursorIndex]->getItemId, 120.0f, 120.0f);
 }
 
 void EnOssan_State_ItemPurchased(EnOssan* this, PlayState* play, Player* player) {
     EnGirlA* item;
     EnGirlA* itemTemp;
-    ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(play->sceneNum, this->cursorIndex + 1);
-    GetItemEntry getItemEntry;
-    if (shopItemIdentity.randomizerCheck != RC_UNKNOWN_CHECK) {
-        getItemEntry = Randomizer_GetItemFromKnownCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
-    } else {
-        getItemEntry = ItemTable_Retrieve(this->shelfSlots[this->cursorIndex]->getItemId);
-    }
-    if (gSaveContext.pendingSale == ITEM_NONE) {
-        gSaveContext.pendingSale = getItemEntry.itemId;
-        gSaveContext.pendingSaleMod = getItemEntry.modIndex;
-    }
 
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) {
         if (this->actor.params == OSSAN_TYPE_MASK) {
@@ -1786,12 +1750,6 @@ void EnOssan_State_ItemPurchased(EnOssan* this, PlayState* play, Player* player)
         }
         item = this->shelfSlots[this->cursorIndex];
         item->buyEventFunc(play, item);
-        if (getItemEntry.getItemId == RG_ICE_TRAP && getItemEntry.modIndex == MOD_RANDOMIZER) {
-            EnOssan_ResetItemPosition(this);
-            item->updateStockedItemFunc(play, item);
-            EnOssan_EndInteraction(play, this);
-            return;
-        }
         this->stateFlag = OSSAN_STATE_CONTINUE_SHOPPING_PROMPT;
         Message_ContinueTextbox(play, 0x6B);
     }
