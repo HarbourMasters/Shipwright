@@ -187,7 +187,7 @@ Dungeons::Dungeons() {
                         RC_DEKU_TREE_MQ_AFTER_SPINNING_LOG_CHEST,
                         RC_DEKU_TREE_MQ_DEKU_SCRUB,
                         RC_DEKU_TREE_MQ_GS_LOBBY,
-                        RC_DEKU_TREE_MQ_GS_COMPASS_ROOM,
+                        RC_DEKU_TREE_MQ_GS_PAST_BOULDER_VINES,
                         RC_DEKU_TREE_MQ_GS_BASEMENT_GRAVES_ROOM,
                         RC_DEKU_TREE_MQ_GS_BASEMENT_BACK_ROOM,
                     },
