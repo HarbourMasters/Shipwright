@@ -90,10 +90,10 @@ void Option::RestoreDelayedOption() {
     SetVariable();
 }
 
-void Option::SetSelectedIndex(const size_t idx) {
+void Option::SetSelectedIndex(size_t idx) {
     selectedOption = idx;
-    if (selectedOption >= options.size()) {
-        selectedOption = 0;
+    if (selectedOption > options.size() - 1) {
+        selectedOption = options.size() - 1;
     }
     SetVariable();
 }
@@ -133,7 +133,7 @@ bool Option::IsCategory(const OptionCategory category) const {
     return category == this->category;
 }
 
-bool Option::RenderImGui() const {
+bool Option::RenderImGui() {
     bool changed = false;
     ImGui::BeginGroup();
     switch (widgetType) {
@@ -179,7 +179,7 @@ Option::Option(uint8_t var_, std::string name_, std::vector<std::string> options
       defaultOption(defaultOption_), defaultHidden(defaultHidden_), imFlags(imFlags_) {
     selectedOption = defaultOption;
     hidden = defaultHidden;
-    SetVariable();
+    SetFromCVar();
 }
 Option::Option(bool var_, std::string name_, std::vector<std::string> options_, const OptionCategory category_,
                std::string cvarName_, std::string description_, WidgetType widgetType_, const uint8_t defaultOption_,
@@ -189,10 +189,10 @@ Option::Option(bool var_, std::string name_, std::vector<std::string> options_, 
       defaultOption(defaultOption_), defaultHidden(defaultHidden_), imFlags(imFlags_) {
     selectedOption = defaultOption;
     hidden = defaultHidden;
-    SetVariable();
+    SetFromCVar();
 }
 
-bool Option::RenderCheckbox() const {
+bool Option::RenderCheckbox() {
     bool changed = false;
     if (disabled) {
         UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
@@ -212,7 +212,7 @@ bool Option::RenderCheckbox() const {
     return changed;
 }
 
-bool Option::RenderTristateCheckbox() const {
+bool Option::RenderTristateCheckbox() {
     bool changed = false;
     if (disabled) {
         UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
@@ -232,7 +232,7 @@ bool Option::RenderTristateCheckbox() const {
     return changed;
 }
 
-bool Option::RenderCombobox() const {
+bool Option::RenderCombobox() {
     bool changed = false;
     if (disabled) {
         UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
@@ -268,11 +268,11 @@ bool Option::RenderCombobox() const {
     return changed;
 }
 
-bool Option::RenderSlider() const {
+bool Option::RenderSlider() {
     bool changed = false;
-    int val = CVarGetInteger(cvarName.c_str(), defaultOption);
-    if (val >= options.size()) {
-        val = options.size();
+    int val = GetSelectedOptionIndex();
+    if (val > options.size() - 1) {
+        val = options.size() - 1;
         CVarSetInteger(cvarName.c_str(), val);
         changed = true;
     }
@@ -320,6 +320,7 @@ bool Option::RenderSlider() const {
     }
     if (changed) {
         CVarSetInteger(cvarName.c_str(), val);
+        SetFromCVar();
         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
     return changed;
