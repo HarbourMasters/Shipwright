@@ -1580,6 +1580,9 @@ void Settings::UpdateOptionProperties() {
                 } else {
                     if (mOptions[RSK_RAINBOW_BRIDGE_STONE_COUNT].GetOptionCount() == 5) {
                         mOptions[RSK_RAINBOW_BRIDGE_STONE_COUNT].ChangeOptions(NumOpts(0, 3));
+                        if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("StoneCount"), 0) == 4) {
+                            CVarSetInteger(CVAR_RANDOMIZER_SETTING("StoneCount"), 3);
+                        }
                     }
                 }
                 break;
@@ -1595,6 +1598,9 @@ void Settings::UpdateOptionProperties() {
                 } else {
                     if (mOptions[RSK_RAINBOW_BRIDGE_MEDALLION_COUNT].GetOptionCount() == 8) {
                         mOptions[RSK_RAINBOW_BRIDGE_MEDALLION_COUNT].ChangeOptions(NumOpts(0, 6));
+                        if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("MedallionCount"), 0) == 7) {
+                            CVarSetInteger(CVAR_RANDOMIZER_SETTING("MedallionCount"), 6);
+                        }
                     }
                 }
                 break;
@@ -1610,6 +1616,9 @@ void Settings::UpdateOptionProperties() {
                 } else {
                     if (mOptions[RSK_RAINBOW_BRIDGE_REWARD_COUNT].GetOptionCount() == 11) {
                         mOptions[RSK_RAINBOW_BRIDGE_REWARD_COUNT].ChangeOptions(NumOpts(0, 9));
+                        if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("RewardCount"), 0) == 10) {
+                            CVarSetInteger(CVAR_RANDOMIZER_SETTING("RewardCount"), 9);
+                        }
                     }
                 }
                 break;
@@ -1625,6 +1634,9 @@ void Settings::UpdateOptionProperties() {
                 } else {
                     if (mOptions[RSK_RAINBOW_BRIDGE_DUNGEON_COUNT].GetOptionCount() == 10) {
                         mOptions[RSK_RAINBOW_BRIDGE_DUNGEON_COUNT].ChangeOptions(NumOpts(0, 8));
+                        if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("DungeonCount"), 0) == 9) {
+                            CVarSetInteger(CVAR_RANDOMIZER_SETTING("DungeonCount"), 8);
+                        }
                     }
                 }
                 break;
@@ -2059,6 +2071,9 @@ void Settings::UpdateOptionProperties() {
             } else {
                 if (mOptions[RSK_LACS_STONE_COUNT].GetOptionCount() == 5) {
                     mOptions[RSK_LACS_STONE_COUNT].ChangeOptions(NumOpts(0, 3));
+                    if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("LacsStoneCount"), 0) == 4) {
+                        CVarSetInteger(CVAR_RANDOMIZER_SETTING("LacsStoneCount"), 3);
+                    }
                 }
             }
             break;
@@ -2072,6 +2087,9 @@ void Settings::UpdateOptionProperties() {
             } else {
                 if (mOptions[RSK_LACS_MEDALLION_COUNT].GetOptionCount() == 8) {
                     mOptions[RSK_LACS_MEDALLION_COUNT].ChangeOptions(NumOpts(0, 6));
+                    if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("LacsMedallionCount"), 0) == 7) {
+                        CVarSetInteger(CVAR_RANDOMIZER_SETTING("LacsMedallionCount"), 6);
+                    }
                 }
             }
             break;
@@ -2085,6 +2103,9 @@ void Settings::UpdateOptionProperties() {
             } else {
                 if (mOptions[RSK_LACS_REWARD_COUNT].GetOptionCount() == 11) {
                     mOptions[RSK_LACS_REWARD_COUNT].ChangeOptions(NumOpts(0, 9));
+                    if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("LacsRewardCount"), 0) == 10) {
+                        CVarSetInteger(CVAR_RANDOMIZER_SETTING("LacsRewardCount"), 9);
+                    }
                 }
             }
             break;
@@ -2098,6 +2119,9 @@ void Settings::UpdateOptionProperties() {
             } else {
                 if (mOptions[RSK_LACS_DUNGEON_COUNT].GetOptionCount() == 10) {
                     mOptions[RSK_LACS_DUNGEON_COUNT].ChangeOptions(NumOpts(0, 8));
+                    if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("LacsDungeonCount"), 0) == 9) {
+                        CVarSetInteger(CVAR_RANDOMIZER_SETTING("LacsDungeonCount"), 8);
+                    }
                 }
             }
             break;
