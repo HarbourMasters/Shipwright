@@ -826,6 +826,16 @@ void DrawEnhancementsMenu() {
 
             UIWidgets::Spacer(0);
 
+            if (ImGui::BeginMenu("Item Count Messages")) {
+                UIWidgets::EnhancementCheckbox("Gold Skulltula Tokens", CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"));
+                UIWidgets::PaddedEnhancementCheckbox("Pieces of Heart", CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"), true, false);
+                UIWidgets::PaddedEnhancementCheckbox("Heart Containers", CVAR_ENHANCEMENT("InjectItemCounts.HeartContainer"), true, false);
+
+                ImGui::EndMenu();
+            }
+
+            UIWidgets::Spacer(0);
+
             if (ImGui::BeginMenu("Difficulty Options"))
             {
                 if (ImGui::BeginMenu("Potion Values"))
@@ -1165,8 +1175,6 @@ void DrawEnhancementsMenu() {
             UIWidgets::Tooltip("Allows the Lon Lon Ranch obstacle course reward to be shared across time periods");
             UIWidgets::PaddedEnhancementCheckbox("Enable visible guard vision", CVAR_ENHANCEMENT("GuardVision"), true, false);
             UIWidgets::PaddedEnhancementCheckbox("Enable passage of time on file select", CVAR_ENHANCEMENT("TimeFlowFileSelect"), true, false);
-            UIWidgets::PaddedEnhancementCheckbox("Item counts in messages", CVAR_ENHANCEMENT("InjectItemCounts"), true, false);
-            UIWidgets::Tooltip("Injects item counts in pickup messages, like golden skulltula tokens and heart pieces");
             UIWidgets::PaddedEnhancementCheckbox("Pull grave during the day", CVAR_ENHANCEMENT("DayGravePull"), true, false);
             UIWidgets::Tooltip("Allows graves to be pulled when child during the day");
             UIWidgets::PaddedEnhancementCheckbox("Dogs follow you everywhere", CVAR_ENHANCEMENT("DogFollowsEverywhere"), true, false);
