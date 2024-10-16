@@ -142,7 +142,9 @@ const std::vector<const char*> enhancementsCvars = {
     CVAR_ENHANCEMENT("CowOfTime"),
     CVAR_ENHANCEMENT("GuardVision"),
     CVAR_ENHANCEMENT("TimeFlowFileSelect"),
-    CVAR_ENHANCEMENT("InjectItemCounts"),
+    CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"),
+    CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"),
+    CVAR_ENHANCEMENT("InjectItemCounts.HeartContainer"),
     CVAR_ENHANCEMENT("DayGravePull"),
     CVAR_ENHANCEMENT("DampeAllNight"),
     CVAR_ENHANCEMENT("QuitFishingAtDoor"),
@@ -573,7 +575,9 @@ const std::vector<PresetEntry> vanillaPlusPresetEntries = {
     // Enable passage of time on file select
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("TimeFlowFileSelect"), 1),
     // Inject Item Counts in messages
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.HeartContainer"), 1),
 
     // Pause link animation (0 to 16)
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("PauseLiveLink"), 1),
@@ -644,7 +648,9 @@ const std::vector<PresetEntry> enhancedPresetEntries = {
     // Enable passage of time on file select
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("TimeFlowFileSelect"), 1),
     // Inject Item Counts in messages
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.HeartContainer"), 1),
 
     // Pause link animation (0 to 16)
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("PauseLiveLink"), 1),
@@ -776,7 +782,9 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     // Enable passage of time on file select
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("TimeFlowFileSelect"), 1),
     // Inject Item Counts in messages
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.HeartContainer"), 1),
 
     // Dynamic Wallet Icon
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DynamicWalletIcon"), 1),
@@ -945,7 +953,9 @@ const std::vector<PresetEntry> spockRacePresetEntries = {
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FastFarores"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("NoInputForCredits"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MaskSelect"), 1),
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.HeartContainer"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("CustomizeFishing"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FishNeverEscape"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InstantFishing"), 1),
@@ -1027,8 +1037,10 @@ const std::vector<PresetEntry> spockRaceNoLogicPresetEntries = {
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FishNeverEscape"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("ForgeTime"), 0),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("GoronPot"), 1),
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("GuaranteeFishingBite"), 1),
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("GuaranteeFishingBite"), 1)
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.HeartContainer"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InstantFishing"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InstantPutaway"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_FAST),
