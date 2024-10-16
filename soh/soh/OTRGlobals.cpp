@@ -59,6 +59,8 @@
 #include <Fast3D/gfx_rendering_api.h>
 
 #ifdef __APPLE__
+#include <unistd.h>
+#include <pwd.h>
 #include <SDL_scancode.h>
 #else
 #include <SDL2/SDL_scancode.h>
