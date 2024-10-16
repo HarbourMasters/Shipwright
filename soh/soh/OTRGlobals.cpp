@@ -264,6 +264,8 @@ const char* constCameraStrings[] = {
 };
 
 OTRGlobals::OTRGlobals() {
+    CheckAndCreateFoldersAndFile();
+    
     std::vector<std::string> OTRFiles;
     std::string mqPath = Ship::Context::LocateFileAcrossAppDirs("oot-mq.otr", appShortName);
     if (std::filesystem::exists(mqPath)) { 
@@ -2966,6 +2968,35 @@ void SoH_ProcessDroppedFiles(std::string filePath) {
         auto gui = Ship::Context::GetInstance()->GetWindow()->GetGui();
         gui->GetGameOverlay()->TextDrawNotification(30.0f, true, "Failed to load config file");
         return;
+    }
+}
+#if defined(__APPLE__)
+//Expanded tilde function to get the full path to the application user directory
+std::string ExpandTilde(const std::string& path) {
+    if (path[0] == '~') {
+        const char* home = getenv("HOME") ? getenv("HOME") : getpwuid(getuid())->pw_dir;
+        return std::string(home) + path.substr(1);
+    }
+    return path;
+}
+#endif
+
+#if defined(__APPLE__)
+void CheckAndCreateFoldersAndFile() {
+    if (char* fpath = std::getenv("SHIP_HOME")) {
+        std::string modsPath = ExpandTilde(fpath) + "/mods";
+        std::string filePath = modsPath + "/custom_mod_files_go_here.txt";
+
+        // Create SHIP_HOME and mods directory if they don't exist
+        std::filesystem::create_directories(modsPath);
+
+        // Create the text file if it doesn't exist
+        if (!std::filesystem::exists(filePath)) {
+            std::ofstream(filePath).close();
+            std::cout << "Text file created at: " << filePath << std::endl;
+        } else {
+            std::cout << "Text file already exists at: " << filePath << std::endl;
+        }
     }
 }
 // #endregion
