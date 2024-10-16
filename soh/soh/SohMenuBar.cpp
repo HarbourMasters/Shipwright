@@ -826,6 +826,16 @@ void DrawEnhancementsMenu() {
 
             UIWidgets::Spacer(0);
 
+            if (ImGui::BeginMenu("Item Count Messages")) {
+                UIWidgets::EnhancementCheckbox("Gold Skulltula Tokens", CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"));
+                UIWidgets::PaddedEnhancementCheckbox("Pieces of Heart", CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"), true, false);
+                UIWidgets::PaddedEnhancementCheckbox("Heart Containers", CVAR_ENHANCEMENT("InjectItemCounts.HeartContainer"), true, false);
+
+                ImGui::EndMenu();
+            }
+
+            UIWidgets::Spacer(0);
+
             if (ImGui::BeginMenu("Difficulty Options"))
             {
                 if (ImGui::BeginMenu("Potion Values"))
@@ -1135,16 +1145,6 @@ void DrawEnhancementsMenu() {
                 UIWidgets::PaddedEnhancementCheckbox("Remember Minimap State Between Areas", CVAR_ENHANCEMENT("RememberMapToggleState"));
                 UIWidgets::Tooltip("Preserves the minimap visibility state when going between areas rather than defaulting it to \"on\" when going through loading zones.");
 
-                ImGui::EndMenu();
-            }
-
-            UIWidgets::Spacer(0);
-
-            if (ImGui::BeginMenu("Item Count Messages")) {
-                UIWidgets::EnhancementCheckbox("Gold Skulltula Tokens", CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"));
-                UIWidgets::PaddedEnhancementCheckbox("Pieces of Heart", CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"), true, false);
-                UIWidgets::PaddedEnhancementCheckbox("Heart Containers", CVAR_ENHANCEMENT("InjectItemCounts.HeartContainer"), true, false);
-                
                 ImGui::EndMenu();
             }
 
