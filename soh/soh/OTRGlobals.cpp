@@ -265,20 +265,11 @@ const char* constCameraStrings[] = {
     GFXP_KATAKANA "ｷ-     /   ",
 };
 
-#if defined(__APPLE__)
-std::string ExpandTilde(const std::string& path) {
-    if (path[0] == '~') {
-        const char* home = getenv("HOME") ? getenv("HOME") : getpwuid(getuid())->pw_dir;
-        return std::string(home) + path.substr(1);
-    }
-    return path;
-}
-#endif
-
 void CheckAndCreateFoldersAndFile() {
 #if defined(__APPLE__)
     if (const char* fpath = std::getenv("SHIP_HOME")) {
-        std::string modsPath = ExpandTilde(fpath) + "/mods";
+        std::string modsPath = (fpath[0] == '~') ? (std::string(getenv("HOME") ? getenv("HOME") : getpwuid(getuid())->pw_dir) + std::string(fpath).substr(1)) : std::string(fpath);
+        modsPath += "/mods"; 
         std::string filePath = modsPath + "/custom_mod_files_go_here.txt";
         if (std::filesystem::create_directories(modsPath) || !std::filesystem::exists(filePath)) {
             std::ofstream(filePath).close();
