@@ -77,7 +77,7 @@ static const char* imguiScaleOptions[4] = { "Small", "Normal", "Large", "X-Large
 
     static const char* chestStyleMatchesContentsOptions[4] = { "Disabled", "Both", "Texture Only", "Size Only" };
     static const char* skipGetItemAnimationOptions[3] = { "Disabled", "Junk Items", "All Items" };
-    static const char* forcedDialogOptions[4] = { "Enable All", "Navi Only", "NPCs Only", "Disable All" };
+    static const char* skipForcedDialogOptions[4] = { "None", "Navi Only", "NPCs Only", "All" };
     static const char* bunnyHoodOptions[3] = { "Disabled", "Faster Run & Longer Jump", "Faster Run" };
     static const char* mirroredWorldModes[9] = {
         "Disabled",           "Always",        "Random",          "Random (Seeded)",          "Dungeons",
@@ -659,8 +659,8 @@ void DrawEnhancementsMenu() {
                     UIWidgets::Tooltip("The size of the item when it is picked up");
                 }
 
-                UIWidgets::PaddedText("Forced Dialog", true, false);
-                UIWidgets::EnhancementCombobox(CVAR_ENHANCEMENT("TimeSavers.ForcedDialogEnabled"), forcedDialogOptions, FORCED_DIALOG_ALL);
+                UIWidgets::PaddedText("Skip Forced Dialog", true, false);
+                UIWidgets::EnhancementCombobox(CVAR_ENHANCEMENT("TimeSavers.SkipForcedDialog"), skipForcedDialogOptions, FORCED_DIALOG_SKIP_NONE);
                 UIWidgets::Tooltip("Prevent forced conversations with Navi or other NPCs");
 
                 UIWidgets::PaddedEnhancementSliderInt("Text Speed: %dx", "##TEXTSPEED", CVAR_ENHANCEMENT("TextSpeed"), 1, 5, "", 1, true, false, true);

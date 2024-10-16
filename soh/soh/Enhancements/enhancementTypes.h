@@ -22,10 +22,10 @@ typedef enum {
 } SkipGetItemAnimationType;
 
 typedef enum {
-    FORCED_DIALOG_ALL,
-    FORCED_DIALOG_NPC_OFF,
-    FORCED_DIALOG_NAVI_OFF,
-    FORCED_DIALOG_NONE
+    FORCED_DIALOG_SKIP_NONE,
+    FORCED_DIALOG_SKIP_NAVI,
+    FORCED_DIALOG_SKIP_NPC,
+    FORCED_DIALOG_SKIP_ALL
 } ForcedDialogMode;
 
 typedef enum {
