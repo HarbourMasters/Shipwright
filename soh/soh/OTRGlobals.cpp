@@ -268,7 +268,8 @@ const char* constCameraStrings[] = {
 
 void CheckAndCreateFoldersAndFile() {
 #if defined(__APPLE__)
-        std::string appDirPath = Context::GetAppDirectoryPath();
+        std::shared_ptr<Ship::Context> context = Ship::Context::GetInstance();
+        std::string appDirPath = context->GetAppDirectoryPath()
         std::string modsPath = appDirPath + "/mods";
         std::string filePath = modsPath + "/custom_mod_files_go_here.txt";
 
