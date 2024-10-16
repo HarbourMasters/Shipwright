@@ -2979,7 +2979,7 @@ std::string ExpandTilde(const std::string& path) {
     }
     return path;
 }
-
+#endif
 
 void CheckAndCreateFoldersAndFile() {
 #if defined(__APPLE__)
