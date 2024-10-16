@@ -265,7 +265,7 @@ const char* constCameraStrings[] = {
 
 OTRGlobals::OTRGlobals() {
     CheckAndCreateFoldersAndFile();
-    
+
     std::vector<std::string> OTRFiles;
     std::string mqPath = Ship::Context::LocateFileAcrossAppDirs("oot-mq.otr", appShortName);
     if (std::filesystem::exists(mqPath)) { 
@@ -2979,10 +2979,10 @@ std::string ExpandTilde(const std::string& path) {
     }
     return path;
 }
-#endif
 
-#if defined(__APPLE__)
+
 void CheckAndCreateFoldersAndFile() {
+#if defined(__APPLE__)
     if (char* fpath = std::getenv("SHIP_HOME")) {
         std::string modsPath = ExpandTilde(fpath) + "/mods";
         std::string filePath = modsPath + "/custom_mod_files_go_here.txt";
@@ -2998,5 +2998,6 @@ void CheckAndCreateFoldersAndFile() {
             std::cout << "Text file already exists at: " << filePath << std::endl;
         }
     }
+    #endif
 }
 // #endregion
