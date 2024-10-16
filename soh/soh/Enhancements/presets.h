@@ -239,6 +239,8 @@ const std::vector<const char*> enhancementsCvars = {
     CVAR_ENHANCEMENT("AuthenticLogo"),
     CVAR_ENHANCEMENT("PauseLiveLinkRotationSpeed"),
     CVAR_ENHANCEMENT("BowReticle"),
+    CVAR_ENHANCEMENT("BoomerangFirstPerson"),
+    CVAR_ENHANCEMENT("BoomerangReticle"),
     CVAR_ENHANCEMENT("FixTexturesOOB"),
     CVAR_ENHANCEMENT("IvanCoopModeEnabled"),
     CVAR_ENHANCEMENT("EnemySpawnsOverWaterboxes"),
