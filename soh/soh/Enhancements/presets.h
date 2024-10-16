@@ -1037,7 +1037,7 @@ const std::vector<PresetEntry> spockRaceNoLogicPresetEntries = {
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FishNeverEscape"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("ForgeTime"), 0),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("GoronPot"), 1),
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("GuaranteeFishingBite"), 1)
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("GuaranteeFishingBite"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.HeartContainer"), 1),
