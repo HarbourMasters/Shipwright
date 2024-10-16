@@ -265,17 +265,29 @@ const char* constCameraStrings[] = {
     GFXP_KATAKANA "ｷ-     /   ",
 };
 
+
 void CheckAndCreateFoldersAndFile() {
 #if defined(__APPLE__)
-    std::string modsPath = Context::GetAppDirectoryPath() + "/mods";
-    std::string filePath = modsPath + "/custom_mod_files_go_here.txt";
-    std::filesystem::create_directories(modsPath);
-    if (!std::filesystem::exists(filePath)) {
-        std::ofstream(filePath).close();
-    }
+        std::string appDirPath = Context::GetAppDirectoryPath();
+        std::string modsPath = appDirPath + "/mods";
+        std::string filePath = modsPath + "/custom_mod_files_go_here.txt";
+
+        // Ensure SHIP_HOME and "mods" directory exist
+        if (std::filesystem::create_directories(modsPath)) {
+            std::cout << "Directory created at: " << modsPath << std::endl;
+        }
+
+        // Check if the text file exists, only create it if it doesn't
+        if (!std::filesystem::exists(filePath)) {
+            std::ofstream(filePath).close();
+            std::cout << "Text file created at: " << filePath << std::endl;
+        } else {
+            std::cout << "Text file already exists at: " << filePath << std::endl;
+        }
 #endif
 }
    
+
 OTRGlobals::OTRGlobals() {
 
     std::vector<std::string> OTRFiles;
