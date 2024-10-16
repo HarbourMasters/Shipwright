@@ -265,19 +265,6 @@ const char* constCameraStrings[] = {
     GFXP_KATAKANA "ｷ-     /   ",
 };
 
-void CheckAndCreateFoldersAndFile() {
-#if defined(__APPLE__)
-    if (const char* fpath = std::getenv("SHIP_HOME")) {
-        std::string modsPath = (fpath[0] == '~') ? (std::string(getenv("HOME") ? getenv("HOME") : getpwuid(getuid())->pw_dir) + std::string(fpath).substr(1)) : std::string(fpath);
-        modsPath += "/mods"; 
-        std::string filePath = modsPath + "/custom_mod_files_go_here.txt";
-        if (std::filesystem::create_directories(modsPath) || !std::filesystem::exists(filePath)) {
-            std::ofstream(filePath).close();
-        }
-    }
-#endif
-}
-
 OTRGlobals::OTRGlobals() {
 
     std::vector<std::string> OTRFiles;
@@ -1066,6 +1053,19 @@ bool PathTestCleanup(FILE* tfile) {
     }
     catch (std::filesystem::filesystem_error const& ex) { return false; }
     return true;
+}
+
+void CheckAndCreateFoldersAndFile() {
+#if defined(__APPLE__)
+    if (const char* fpath = std::getenv("SHIP_HOME")) {
+        std::string modsPath = (fpath[0] == '~') ? (std::string(getenv("HOME") ? getenv("HOME") : getpwuid(getuid())->pw_dir) + std::string(fpath).substr(1)) : std::string(fpath);
+        modsPath += "/mods"; 
+        std::string filePath = modsPath + "/custom_mod_files_go_here.txt";
+        if (std::filesystem::create_directories(modsPath) || !std::filesystem::exists(filePath)) {
+            std::ofstream(filePath).close();
+        }
+    }
+#endif
 }
 
 extern "C" void InitOTR() {
