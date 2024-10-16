@@ -279,13 +279,16 @@ std::string ExpandTilde(const std::string& path) {
 void CheckAndCreateFoldersAndFile() {
 #if defined(__APPLE__)
     if (char* fpath = std::getenv("SHIP_HOME")) {
-        std::string modsPath = ExpandTilde(fpath) + "/mods";
+        std::string expandedPath = ExpandTilde(fpath);
+        std::string modsPath = expandedPath + "/mods";
         std::string filePath = modsPath + "/custom_mod_files_go_here.txt";
 
-        // Create SHIP_HOME and mods directory if they don't exist
-        std::filesystem::create_directories(modsPath);
+        // Ensure SHIP_HOME and "mods" directory exist
+        if (std::filesystem::create_directories(modsPath)) {
+            std::cout << "Directory created at: " << modsPath << std::endl;
+        }
 
-        // Create the text file if it doesn't exist
+        // Check if the text file exists, only create it if it doesn't
         if (!std::filesystem::exists(filePath)) {
             std::ofstream(filePath).close();
             std::cout << "Text file created at: " << filePath << std::endl;
