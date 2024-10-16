@@ -300,6 +300,7 @@ const std::vector<const char*> enhancementsCvars = {
     CVAR_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"),
     CVAR_ENHANCEMENT("TimeSavers.SkipChildStealth"),
     CVAR_ENHANCEMENT("TimeSavers.SkipTowerEscape"),
+    CVAR_ENHANCEMENT("TimeSavers.ForcedDialogEnabled"),
 };
 
 const std::vector<const char*> cheatCvars = {

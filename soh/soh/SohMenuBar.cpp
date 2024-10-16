@@ -77,6 +77,7 @@ static const char* imguiScaleOptions[4] = { "Small", "Normal", "Large", "X-Large
 
     static const char* chestStyleMatchesContentsOptions[4] = { "Disabled", "Both", "Texture Only", "Size Only" };
     static const char* skipGetItemAnimationOptions[3] = { "Disabled", "Junk Items", "All Items" };
+    static const char* forcedDialogOptions[4] = { "Enable All", "Navi Only", "NPCs Only", "Disable All" };
     static const char* bunnyHoodOptions[3] = { "Disabled", "Faster Run & Longer Jump", "Faster Run" };
     static const char* mirroredWorldModes[9] = {
         "Disabled",           "Always",        "Random",          "Random (Seeded)",          "Dungeons",
@@ -589,7 +590,6 @@ void DrawEnhancementsMenu() {
                     CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.BossIntro"), IS_RANDO) &&
                     CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.QuickBossDeaths"), IS_RANDO) &&
                     CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint"), IS_RANDO) &&
-                    CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.NoForcedDialog"), IS_RANDO) &&
                     CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipOwlInteractions"), IS_RANDO) &&
                     CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO) &&
                     CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.DisableTitleCard"), IS_RANDO);
@@ -601,7 +601,6 @@ void DrawEnhancementsMenu() {
                     CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.BossIntro"), IS_RANDO) ||
                     CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.QuickBossDeaths"), IS_RANDO) ||
                     CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint"), IS_RANDO) ||
-                    CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.NoForcedDialog"), IS_RANDO) ||
                     CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipOwlInteractions"), IS_RANDO) ||
                     CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO) ||
                     CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.DisableTitleCard"), IS_RANDO);
@@ -618,7 +617,6 @@ void DrawEnhancementsMenu() {
                         CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.BossIntro"), 1);
                         CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.QuickBossDeaths"), 1);
                         CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint"), 1);
-                        CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.NoForcedDialog"), 1);
                         CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipOwlInteractions"), 1);
                         CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), 1);
                         CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.DisableTitleCard"), 1);
@@ -630,7 +628,6 @@ void DrawEnhancementsMenu() {
                         CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.BossIntro"), 0);
                         CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.QuickBossDeaths"), 0);
                         CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint"), 0);
-                        CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.NoForcedDialog"), 0);
                         CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipOwlInteractions"), 0);
                         CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), 0);
                         CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.DisableTitleCard"), 0);
@@ -645,8 +642,6 @@ void DrawEnhancementsMenu() {
                 UIWidgets::PaddedEnhancementCheckbox("Skip Boss Introductions", CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.BossIntro"), false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
                 UIWidgets::PaddedEnhancementCheckbox("Quick Boss Deaths", CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.QuickBossDeaths"), false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
                 UIWidgets::PaddedEnhancementCheckbox("Skip One Point Cutscenes (Chests, Door Unlocks, etc)", CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint"), false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
-                UIWidgets::PaddedEnhancementCheckbox("No Forced Dialog", CVAR_ENHANCEMENT("TimeSavers.NoForcedDialog"), false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
-                UIWidgets::Tooltip("Prevent forced conversations with Navi or other NPCs");
                 UIWidgets::PaddedEnhancementCheckbox("Skip Owl Interactions", CVAR_ENHANCEMENT("TimeSavers.SkipOwlInteractions"), false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
                 UIWidgets::PaddedEnhancementCheckbox("Skip Misc Interactions", CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
                 UIWidgets::PaddedEnhancementCheckbox("Disable Title Card", CVAR_ENHANCEMENT("TimeSavers.DisableTitleCard"), false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
@@ -663,6 +658,10 @@ void DrawEnhancementsMenu() {
                     UIWidgets::EnhancementSliderFloat("Item Scale: %f", "##ItemScale", CVAR_ENHANCEMENT("TimeSavers.SkipGetItemAnimationScale"), 5.0f, 15.0f, "", 10.0f, false);
                     UIWidgets::Tooltip("The size of the item when it is picked up");
                 }
+
+                UIWidgets::PaddedText("Forced Dialog", true, false);
+                UIWidgets::EnhancementCombobox(CVAR_ENHANCEMENT("TimeSavers.ForcedDialogEnabled"), forcedDialogOptions, FORCED_DIALOG_ALL);
+                UIWidgets::Tooltip("Prevent forced conversations with Navi or other NPCs");
 
                 UIWidgets::PaddedEnhancementSliderInt("Text Speed: %dx", "##TEXTSPEED", CVAR_ENHANCEMENT("TextSpeed"), 1, 5, "", 1, true, false, true);
                 UIWidgets::PaddedEnhancementCheckbox("Skip Text", CVAR_ENHANCEMENT("SkipText"), false, true);
@@ -700,8 +699,6 @@ void DrawEnhancementsMenu() {
                 UIWidgets::PaddedEnhancementCheckbox("Remember Save Location", CVAR_ENHANCEMENT("RememberSaveLocation"), false, false);
                 UIWidgets::Tooltip("When loading a save, places Link at the last entrance he went through.\n"
                         "This doesn't work if the save was made in grottos/fairy fountains or dungeons.");
-                UIWidgets::PaddedEnhancementCheckbox("No Forced Navi", CVAR_ENHANCEMENT("NoForcedNavi"), true, false);
-                UIWidgets::Tooltip("Prevent forced Navi conversations");
                 UIWidgets::PaddedEnhancementCheckbox("Navi Timer Resets", CVAR_ENHANCEMENT("ResetNaviTimer"), true, false);
                 UIWidgets::Tooltip("Resets the Navi timer on scene change. If you have already talked to her, she will try and talk to you again, instead of needing a save warp or death. ");
                 UIWidgets::PaddedEnhancementCheckbox("No Skulltula Freeze", CVAR_ENHANCEMENT("SkulltulaFreeze"), true, false);

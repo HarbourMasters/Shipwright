@@ -101,6 +101,12 @@ void RateLimitedSuccessChime() {
     }
 }
 
+bool ForcedDialogIsDisabled(ForcedDialogMode type) {
+    return (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.ForcedDialogEnabled"),
+                           IS_RANDO ? FORCED_DIALOG_NONE : FORCED_DIALOG_ALL) &
+            type) != 0;
+}
+
 void TimeSaverOnGameFrameUpdateHandler() {
     if (successChimeCooldown > 0) {
         successChimeCooldown--;
@@ -311,14 +317,14 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
             break;
         case VB_WONDER_TALK: {
             //We want to show the frog hint if it is on, regardless of cutscene settings
-            if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.NoForcedDialog"), IS_RANDO) && 
+            if (ForcedDialogIsDisabled(FORCED_DIALOG_NPC_OFF) &&
                 !(gPlayState->sceneNum == SCENE_ZORAS_RIVER && IS_RANDO && RAND_GET_OPTION(RSK_FROGS_HINT))) {
                 *should = false;
             }
             break;
         }
         case VB_NAVI_TALK: {
-            if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.NoForcedDialog"), IS_RANDO)) {
+            if (ForcedDialogIsDisabled(FORCED_DIALOG_NAVI_OFF)) {
                 ElfMsg* naviTalk = va_arg(args, ElfMsg*);
                 if (((naviTalk->actor.params >> 8) & 0x3F) != 0x3F) {
                     Flags_SetSwitch(gPlayState, (naviTalk->actor.params >> 8) & 0x3F);
