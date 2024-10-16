@@ -1,6 +1,5 @@
 ﻿#include "OTRGlobals.h"
 #include "OTRAudio.h"
-#include "Context.h"
 #include <iostream>
 #include <algorithm>
 #include <filesystem>
@@ -266,29 +265,27 @@ const char* constCameraStrings[] = {
     GFXP_KATAKANA "ｷ-     /   ",
 };
 
+#if defined(__APPLE__)
+std::string ExpandTilde(const std::string& path) {
+    if (path[0] == '~') {
+        const char* home = getenv("HOME") ? getenv("HOME") : getpwuid(getuid())->pw_dir;
+        return std::string(home) + path.substr(1);
+    }
+    return path;
+}
+#endif
 
 void CheckAndCreateFoldersAndFile() {
 #if defined(__APPLE__)
-        std::shared_ptr<Ship::Context> context = Ship::Context::GetInstance();
-        std::string appDirPath = context->GetAppDirectoryPath()
-        std::string modsPath = appDirPath + "/mods";
+    if (const char* fpath = std::getenv("SHIP_HOME")) {
+        std::string modsPath = ExpandTilde(fpath) + "/mods";
         std::string filePath = modsPath + "/custom_mod_files_go_here.txt";
-
-        // Ensure SHIP_HOME and "mods" directory exist
-        if (std::filesystem::create_directories(modsPath)) {
-            std::cout << "Directory created at: " << modsPath << std::endl;
-        }
-
-        // Check if the text file exists, only create it if it doesn't
-        if (!std::filesystem::exists(filePath)) {
+        if (std::filesystem::create_directories(modsPath) || !std::filesystem::exists(filePath)) {
             std::ofstream(filePath).close();
-            std::cout << "Text file created at: " << filePath << std::endl;
-        } else {
-            std::cout << "Text file already exists at: " << filePath << std::endl;
         }
+    }
 #endif
 }
-   
 
 OTRGlobals::OTRGlobals() {
 
