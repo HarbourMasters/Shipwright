@@ -300,7 +300,6 @@ void CheckAndCreateFoldersAndFile() {
 }
 
 OTRGlobals::OTRGlobals() {
-    CheckAndCreateFoldersAndFile();
 
     std::vector<std::string> OTRFiles;
     std::string mqPath = Ship::Context::LocateFileAcrossAppDirs("oot-mq.otr", appShortName);
@@ -1141,6 +1140,7 @@ extern "C" void InitOTR() {
         !std::filesystem::exists(Ship::Context::LocateFileAcrossAppDirs("oot.otr", appShortName))){
 
 #if not defined(__SWITCH__) && not defined(__WIIU__)
+        CheckAndCreateFoldersAndFile();
         std::string installPath = Ship::Context::GetAppBundlePath();
         if (!std::filesystem::exists(installPath + "/assets/extractor")) {
             Extractor::ShowErrorBox("Extractor assets not found",
