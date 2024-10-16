@@ -127,7 +127,7 @@
         <Texture Name="gDekuNutItemNameENGTex" OutName="dekunut_item_name_eng" Format="ia4" Width="128" Height="16" Offset="0x1F000"/>
         <Texture Name="gBombItemNameENGTex" OutName="bomb_item_name_item_name_eng" Format="ia4" Width="128" Height="16" Offset="0x1F400"/>
         <Texture Name="gFairyBowItemNameENGTex" OutName="fairy_bow_item_name_eng" Format="ia4" Width="128" Height="16" Offset="0x1F800"/>
-        <Texture Name="gFireArrowItemNameUnk2ENGTex" OutName="fire_arrow_item_name_unk2_eng" Format="ia4" Width="128" Height="16" Offset="0x1FC00"/>
+        <Texture Name="gFireArrowItemNameENGTex" OutName="fire_arrow_item_name_eng" Format="ia4" Width="128" Height="16" Offset="0x1FC00"/>
         <Texture Name="gDinsFireItemNameENGTex" OutName="dins_fire_item_name_eng" Format="ia4" Width="128" Height="16" Offset="0x20000"/>
         <Texture Name="gFairySlingshotItemNameENGTex" OutName="fairy_slingshot_item_name_eng" Format="ia4" Width="128" Height="16" Offset="0x20400"/>
         <Texture Name="gFairyOcarinaItemNameENGTex" OutName="fairy_ocarina_item_name_eng" Format="ia4" Width="128" Height="16" Offset="0x20800"/>
@@ -237,7 +237,7 @@
         <Texture Name="gStoneofAgonyItemNameENGTex" OutName="stone_of_agony_item_name_eng" Format="ia4" Width="128" Height="16" Offset="0x3A800"/>
         <Texture Name="gGerudosCardItemNameENGTex" OutName="gerudos_card_item_name_eng" Format="ia4" Width="128" Height="16" Offset="0x3AC00"/>
         <Texture Name="gGoldSkulltulaItemNameENGTex" OutName="gold_skulltula_item_name_eng" Format="ia4" Width="128" Height="16" Offset="0x3B000"/>
-        <Texture Name="gHeartContainerItemNameENGTex" OutName="heart_container_item_name_eng" Format="ia4" Width="128" Height="16" Offset="0x3B400"/>
+        <Texture Name="gPieceOfHeartItemNameENGTex" OutName="piece_of_heart_item_name_eng" Format="ia4" Width="128" Height="16" Offset="0x3B400"/>
         <Texture Name="gUnusedPieceOfHeartItemName2JPNTex" OutName="piece_of_heart_item_name_unused_jpn_2" Format="ia4" Width="128" Height="16" Offset="0x3B800"/>
         <Texture Name="gBigKeyItemNameENGTex" OutName="big_key_item_name_eng" Format="ia4" Width="128" Height="16" Offset="0x3BC00"/>
         <Texture Name="gCompassItemNameENGTex" OutName="compass_item_name_eng" Format="ia4" Width="128" Height="16" Offset="0x3C000"/>
