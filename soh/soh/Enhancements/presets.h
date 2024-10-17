@@ -302,6 +302,7 @@ const std::vector<const char*> enhancementsCvars = {
     CVAR_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"),
     CVAR_ENHANCEMENT("TimeSavers.SkipChildStealth"),
     CVAR_ENHANCEMENT("TimeSavers.SkipTowerEscape"),
+    CVAR_ENHANCEMENT("TimeSavers.SkipForcedDialog"),
     CVAR_ENHANCEMENT("SlowTextSpeed"),
 };
 
