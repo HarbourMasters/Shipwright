@@ -331,13 +331,13 @@ void func_80B4B240(EnZl1* this, PlayState* play) {
     func_80038290(play, &this->actor, &this->unk_200, &this->unk_206, this->actor.focus.pos);
 }
 
-void func_80B4B7F4(CsCmdActorAction* npcAction, Vec3f* pos) {
+void func_80B4B7F4(CsCmdActorCue* npcAction, Vec3f* pos) {
     pos->x = npcAction->startPos.x;
     pos->y = npcAction->startPos.y;
     pos->z = npcAction->startPos.z;
 }
 
-void func_80B4B834(CsCmdActorAction* npcAction, Vec3f* pos) {
+void func_80B4B834(CsCmdActorCue* npcAction, Vec3f* pos) {
     pos->x = npcAction->endPos.x;
     pos->y = npcAction->endPos.y;
     pos->z = npcAction->endPos.z;
@@ -368,7 +368,7 @@ void func_80B4B8B4(EnZl1* this, PlayState* play) {
     Vec3f sp8C = { -512.0f, 105.0f, -4.0f };
     s32 pad2;
     f32 actionLength;
-    CsCmdActorAction* npcAction;
+    CsCmdActorCue* npcAction;
     Vec3f sp74;
     Vec3f sp68;
     Vec3f velocity = { 0.0f, 0.0f, 0.0f };
@@ -450,7 +450,7 @@ void func_80B4BC78(EnZl1* this, PlayState* play) {
     Vec3f sp70;
     Vec3f sp64;
     Vec3f velocity = { 0.0f, 0.0f, 0.0f };
-    CsCmdActorAction* npcAction;
+    CsCmdActorCue* npcAction;
     s32 pad;
     f32 frameCount;
 

@@ -1060,7 +1060,7 @@ void ActorViewerWindow::DrawElement() {
 
             if (ImGui::Button("Fetch from Target")) {
                 Player* player = GET_PLAYER(gPlayState);
-                fetch = player->targetActor;
+                fetch = player->talkActor;
                 if (fetch != NULL) {
                     display = fetch;
                     category = fetch->category;

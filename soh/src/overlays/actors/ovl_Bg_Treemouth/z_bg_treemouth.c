@@ -92,7 +92,7 @@ void BgTreemouth_Destroy(Actor* thisx, PlayState* play) {
 }
 
 void func_808BC65C(BgTreemouth* this, PlayState* play) {
-    CsCmdActorAction* npcAction;
+    CsCmdActorCue* npcAction;
 
     if ((play->csCtx.state != CS_STATE_IDLE)) {
         npcAction = play->csCtx.npcActions[0];
@@ -198,7 +198,7 @@ void func_808BC9EC(BgTreemouth* this, PlayState* play) {
 }
 
 void func_808BCAF0(BgTreemouth* this, PlayState* play) {
-    CsCmdActorAction* npcAction;
+    CsCmdActorCue* npcAction;
 
     if (play->csCtx.state != CS_STATE_IDLE) {
         npcAction = play->csCtx.npcActions[0];

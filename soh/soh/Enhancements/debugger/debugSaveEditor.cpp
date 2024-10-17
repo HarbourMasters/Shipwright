@@ -613,8 +613,8 @@ void DrawFlagsTab() {
             ImGui::SameLine();
             
             DrawGroupWithBorder([&]() {
-                ImGui::Text("unk_6AE");
-                UIWidgets::DrawFlagArray16("unk_6AE", player->unk_6AE);
+                ImGui::Text("unk_6AE_rotFlags");
+                UIWidgets::DrawFlagArray16("unk_6AE_rotFlags", player->unk_6AE_rotFlags);
             });
         }
         ImGui::TreePop();

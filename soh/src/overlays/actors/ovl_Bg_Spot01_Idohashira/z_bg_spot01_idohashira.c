@@ -152,9 +152,9 @@ s32 BgSpot01Idohashira_NotInCsMode(PlayState* play) {
     return false;
 }
 
-CsCmdActorAction* BgSpot01Idohashira_GetNpcAction(PlayState* play, s32 actionIdx) {
+CsCmdActorCue* BgSpot01Idohashira_GetNpcAction(PlayState* play, s32 actionIdx) {
     s32 pad[2];
-    CsCmdActorAction* npcAction = NULL;
+    CsCmdActorCue* npcAction = NULL;
 
     if (!BgSpot01Idohashira_NotInCsMode(play)) {
         npcAction = play->csCtx.npcActions[actionIdx];
@@ -186,7 +186,7 @@ f32 func_808AB1DC(f32 arg0, f32 arg1, u16 arg2, u16 arg3, u16 arg4) {
 }
 
 s32 func_808AB29C(BgSpot01Idohashira* this, PlayState* play) {
-    CsCmdActorAction* npcAction;
+    CsCmdActorCue* npcAction;
     Vec3f* thisPos;
     f32 endX;
     f32 temp_f0;
@@ -237,7 +237,7 @@ void func_808AB414(BgSpot01Idohashira* this, PlayState* play) {
 }
 
 void func_808AB444(BgSpot01Idohashira* this, PlayState* play) {
-    CsCmdActorAction* npcAction = BgSpot01Idohashira_GetNpcAction(play, 2);
+    CsCmdActorCue* npcAction = BgSpot01Idohashira_GetNpcAction(play, 2);
     u32 action;
     u32 currentNpcAction;
 

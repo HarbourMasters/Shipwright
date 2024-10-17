@@ -725,7 +725,7 @@ void EnGoroiwa_Update(Actor* thisx, PlayState* play) {
     s32 pad;
     s32 sp30;
 
-    if (!(player->stateFlags1 & (PLAYER_STATE1_TEXT_ON_SCREEN | PLAYER_STATE1_DEAD | PLAYER_STATE1_IN_ITEM_CS | PLAYER_STATE1_IN_CUTSCENE))) {
+    if (!(player->stateFlags1 & (PLAYER_STATE1_TALKING | PLAYER_STATE1_DEAD | PLAYER_STATE1_IN_ITEM_CS | PLAYER_STATE1_IN_CUTSCENE))) {
         if (this->collisionDisabledTimer > 0) {
             this->collisionDisabledTimer--;
         }

@@ -622,7 +622,7 @@ void EnFish_Cutscene_WiggleFlyingThroughAir(EnFish* this, PlayState* play) {
 void EnFish_UpdateCutscene(EnFish* this, PlayState* play) {
     s32 pad;
     s32 pad2;
-    CsCmdActorAction* csAction = play->csCtx.npcActions[1];
+    CsCmdActorCue* csAction = play->csCtx.npcActions[1];
     Vec3f startPos;
     Vec3f endPos;
     f32 progress;

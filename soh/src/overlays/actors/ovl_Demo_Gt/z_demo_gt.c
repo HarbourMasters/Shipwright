@@ -297,9 +297,9 @@ u8 func_8097E69C(PlayState* play) {
     }
 }
 
-CsCmdActorAction* DemoGt_GetNpcAction(PlayState* play, u32 actionIdx) {
+CsCmdActorCue* DemoGt_GetNpcAction(PlayState* play, u32 actionIdx) {
     s32 pad[2];
-    CsCmdActorAction* ret = NULL;
+    CsCmdActorCue* ret = NULL;
 
     if (!func_8097E69C(play)) {
         ret = play->csCtx.npcActions[actionIdx];
@@ -309,7 +309,7 @@ CsCmdActorAction* DemoGt_GetNpcAction(PlayState* play, u32 actionIdx) {
 }
 
 u8 func_8097E704(PlayState* play, u16 arg1, s32 arg2) {
-    CsCmdActorAction* action = DemoGt_GetNpcAction(play, arg2);
+    CsCmdActorCue* action = DemoGt_GetNpcAction(play, arg2);
 
     if ((action != NULL) && (action->action == arg1)) {
         return true;
@@ -319,7 +319,7 @@ u8 func_8097E704(PlayState* play, u16 arg1, s32 arg2) {
 }
 
 void func_8097E744(DemoGt* this, PlayState* play, u32 actionIdx) {
-    CsCmdActorAction* npcAction = DemoGt_GetNpcAction(play, actionIdx);
+    CsCmdActorCue* npcAction = DemoGt_GetNpcAction(play, actionIdx);
     Vec3f* pos = &this->dyna.actor.world.pos;
     f32 startX;
     f32 startY;

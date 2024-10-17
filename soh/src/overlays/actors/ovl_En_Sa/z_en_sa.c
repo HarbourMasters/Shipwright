@@ -463,13 +463,13 @@ void func_80AF609C(EnSa* this) {
     }
 }
 
-void func_80AF6130(CsCmdActorAction* csAction, Vec3f* dst) {
+void func_80AF6130(CsCmdActorCue* csAction, Vec3f* dst) {
     dst->x = csAction->startPos.x;
     dst->y = csAction->startPos.y;
     dst->z = csAction->startPos.z;
 }
 
-void func_80AF6170(CsCmdActorAction* csAction, Vec3f* dst) {
+void func_80AF6170(CsCmdActorCue* csAction, Vec3f* dst) {
     dst->x = csAction->endPos.x;
     dst->y = csAction->endPos.y;
     dst->z = csAction->endPos.z;
@@ -639,7 +639,7 @@ void func_80AF68E4(EnSa* this, PlayState* play) {
     Vec3f startPos;
     Vec3f endPos;
     Vec3f D_80AF7448 = { 0.0f, 0.0f, 0.0f };
-    CsCmdActorAction* csAction;
+    CsCmdActorCue* csAction;
     f32 temp_f0;
     f32 gravity;
 

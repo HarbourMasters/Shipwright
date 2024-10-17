@@ -86,7 +86,7 @@ s32 func_80AE7494(EnRl* this) {
 }
 
 s32 func_80AE74B4(EnRl* this, PlayState* play, u16 arg2, s32 arg3) {
-    CsCmdActorAction* csCmdActorAction;
+    CsCmdActorCue* csCmdActorAction;
 
     if (play->csCtx.state != CS_STATE_IDLE) {
         csCmdActorAction = play->csCtx.npcActions[arg3];
@@ -98,7 +98,7 @@ s32 func_80AE74B4(EnRl* this, PlayState* play, u16 arg2, s32 arg3) {
 }
 
 s32 func_80AE74FC(EnRl* this, PlayState* play, u16 arg2, s32 arg3) {
-    CsCmdActorAction* csCmdActorAction;
+    CsCmdActorCue* csCmdActorAction;
 
     if (play->csCtx.state != CS_STATE_IDLE) {
         csCmdActorAction = play->csCtx.npcActions[arg3];
@@ -143,7 +143,7 @@ void func_80AE7668(EnRl* this, PlayState* play) {
 }
 
 void func_80AE7698(EnRl* this, PlayState* play) {
-    CsCmdActorAction* csCmdActorAction;
+    CsCmdActorCue* csCmdActorAction;
 
     if (play->csCtx.state != CS_STATE_IDLE) {
         csCmdActorAction = play->csCtx.npcActions[0];

@@ -232,7 +232,7 @@ s32 EnNb_UpdateSkelAnime(EnNb* this) {
     return SkelAnime_Update(&this->skelAnime);
 }
 
-CsCmdActorAction* EnNb_GetNpcCsAction(PlayState* play, s32 npcActionIdx) {
+CsCmdActorCue* EnNb_GetNpcCsAction(PlayState* play, s32 npcActionIdx) {
     if (play->csCtx.state != CS_STATE_IDLE) {
         return play->csCtx.npcActions[npcActionIdx];
     }
@@ -240,7 +240,7 @@ CsCmdActorAction* EnNb_GetNpcCsAction(PlayState* play, s32 npcActionIdx) {
 }
 
 void EnNb_SetupCsPosRot(EnNb* this, PlayState* play, s32 npcActionIdx) {
-    CsCmdActorAction* csCmdNPCAction = EnNb_GetNpcCsAction(play, npcActionIdx);
+    CsCmdActorCue* csCmdNPCAction = EnNb_GetNpcCsAction(play, npcActionIdx);
     s16 newRotY;
     Actor* thisx = &this->actor;
 
@@ -253,7 +253,7 @@ void EnNb_SetupCsPosRot(EnNb* this, PlayState* play, s32 npcActionIdx) {
 }
 
 s32 func_80AB1390(EnNb* this, PlayState* play, u16 arg2, s32 npcActionIdx) {
-    CsCmdActorAction* csCmdNPCAction;
+    CsCmdActorCue* csCmdNPCAction;
 
     if ((play->csCtx.state != CS_STATE_IDLE) &&
         (csCmdNPCAction = play->csCtx.npcActions[npcActionIdx], csCmdNPCAction != NULL) &&
@@ -264,7 +264,7 @@ s32 func_80AB1390(EnNb* this, PlayState* play, u16 arg2, s32 npcActionIdx) {
 }
 
 s32 func_80AB13D8(EnNb* this, PlayState* play, u16 arg2, s32 npcActionIdx) {
-    CsCmdActorAction* csCmdNPCAction;
+    CsCmdActorCue* csCmdNPCAction;
 
     if ((play->csCtx.state != CS_STATE_IDLE) &&
         (csCmdNPCAction = play->csCtx.npcActions[npcActionIdx], csCmdNPCAction != NULL) &&
@@ -275,7 +275,7 @@ s32 func_80AB13D8(EnNb* this, PlayState* play, u16 arg2, s32 npcActionIdx) {
 }
 
 void EnNb_SetInitialCsPosRot(EnNb* this, PlayState* play, s32 npcActionIdx) {
-    CsCmdActorAction* csCmdNPCAction = EnNb_GetNpcCsAction(play, npcActionIdx);
+    CsCmdActorCue* csCmdNPCAction = EnNb_GetNpcCsAction(play, npcActionIdx);
     Actor* thisx = &this->actor;
 
     if (csCmdNPCAction != NULL) {
@@ -354,7 +354,7 @@ void EnNb_SetupChamberCsImpl(EnNb* this, PlayState* play) {
 
 void EnNb_SetupChamberWarpImpl(EnNb* this, PlayState* play) {
     CutsceneContext* csCtx = &play->csCtx;
-    CsCmdActorAction* csCmdNPCAction;
+    CsCmdActorCue* csCmdNPCAction;
 
     if (csCtx->state != CS_STATE_IDLE) {
         csCmdNPCAction = csCtx->npcActions[1];
@@ -375,7 +375,7 @@ void EnNb_SetupDefaultChamberIdle(EnNb* this) {
 
 void EnNb_SetupArmRaise(EnNb* this, PlayState* play) {
     AnimationHeader* animation = &gNabooruRaisingArmsGivingMedallionAnim;
-    CsCmdActorAction* csCmdNPCAction;
+    CsCmdActorCue* csCmdNPCAction;
 
     if (play->csCtx.state != CS_STATE_IDLE) {
         csCmdNPCAction = play->csCtx.npcActions[1];
@@ -398,7 +398,7 @@ void EnNb_SetupRaisedArmTransition(EnNb* this, s32 animFinished) {
 }
 
 void EnNb_SetupMedallion(EnNb* this, PlayState* play) {
-    CsCmdActorAction* csCmdNPCAction;
+    CsCmdActorCue* csCmdNPCAction;
 
     if (play->csCtx.state != CS_STATE_IDLE) {
         csCmdNPCAction = play->csCtx.npcActions[6];
@@ -587,7 +587,7 @@ void EnNb_PlayAgonySFX(EnNb* this, PlayState* play) {
 }
 
 void EnNb_SetPosInPortal(EnNb* this, PlayState* play) {
-    CsCmdActorAction* csCmdNPCAction = EnNb_GetNpcCsAction(play, 1);
+    CsCmdActorCue* csCmdNPCAction = EnNb_GetNpcCsAction(play, 1);
     Vec3f* pos = &this->actor.world.pos;
     f32 f0;
     s32 pad;
@@ -642,7 +642,7 @@ void EnNb_SetupKidnap(EnNb* this) {
 }
 
 void EnNb_CheckKidnapCsMode(EnNb* this, PlayState* play) {
-    CsCmdActorAction* csCmdNPCAction = EnNb_GetNpcCsAction(play, 1);
+    CsCmdActorCue* csCmdNPCAction = EnNb_GetNpcCsAction(play, 1);
     s32 action;
     s32 previousCsAction;
 
@@ -849,7 +849,7 @@ void EnNb_SetupConfrontationDestroy(EnNb* this) {
 }
 
 void EnNb_CheckConfrontationCsMode(EnNb* this, PlayState* play) {
-    CsCmdActorAction* csCmdNPCAction;
+    CsCmdActorCue* csCmdNPCAction;
     s32 csAction;
     s32 previousCsAction;
 
@@ -1051,7 +1051,7 @@ void EnNb_CheckIfLookingUp(EnNb* this, s32 animFinished) {
 }
 
 void EnNb_CheckCreditsCsModeImpl(EnNb* this, PlayState* play) {
-    CsCmdActorAction* csCmdNPCAction = EnNb_GetNpcCsAction(play, 1);
+    CsCmdActorCue* csCmdNPCAction = EnNb_GetNpcCsAction(play, 1);
     s32 action;
     s32 previousCsAction;
 
