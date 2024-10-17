@@ -1,6 +1,8 @@
 #include "z_en_bom_chu.h"
 #include "overlays/actors/ovl_En_Bom/z_en_bom.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
@@ -497,23 +499,24 @@ void EnBomChu_Draw(Actor* thisx, PlayState* play) {
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     func_8002EBCC(&this->actor, play, 0);
+    if (GameInteractor_Should(VB_ALLOW_FLASHING_LIGHTS, false)) {
+        if (this->timer >= 40) {
+            blinkTime = this->timer % 20;
+            blinkHalfPeriod = 10;
+        } else if (this->timer >= 10) {
+            blinkTime = this->timer % 10;
+            blinkHalfPeriod = 5;
+        } else {
+            blinkTime = this->timer & 1;
+            blinkHalfPeriod = 1;
+        }
 
-    if (this->timer >= 40) {
-        blinkTime = this->timer % 20;
-        blinkHalfPeriod = 10;
-    } else if (this->timer >= 10) {
-        blinkTime = this->timer % 10;
-        blinkHalfPeriod = 5;
-    } else {
-        blinkTime = this->timer & 1;
-        blinkHalfPeriod = 1;
+        if (blinkTime > blinkHalfPeriod) {
+            blinkTime = 2 * blinkHalfPeriod - blinkTime;
+        }
+
+        colorIntensity = blinkTime / (f32)blinkHalfPeriod;
     }
-
-    if (blinkTime > blinkHalfPeriod) {
-        blinkTime = 2 * blinkHalfPeriod - blinkTime;
-    }
-
-    colorIntensity = blinkTime / (f32)blinkHalfPeriod;
 
     if (CVarGetInteger(CVAR_COSMETIC("Equipment.ChuBody.Changed"), 0)) {
         Color_RGB8 color = CVarGetColor24(CVAR_COSMETIC("Equipment.ChuBody.Value"), (Color_RGB8){ 209.0f, 34.0f, -35.0f });

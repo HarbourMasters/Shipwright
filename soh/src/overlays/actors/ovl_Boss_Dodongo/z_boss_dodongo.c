@@ -683,8 +683,8 @@ void BossDodongo_SetupInhale(BossDodongo* this) {
 
 void BossDodongo_Damaged(BossDodongo* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
-    Math_SmoothStepToF(&this->unk_1F8, 1.0f, 0.5f, 0.02f, 0.001f);
-    Math_SmoothStepToF(&this->unk_208, 0.05f, 1.0f, 0.005f, 0.0f);
+    //Math_SmoothStepToF(&this->unk_1F8, 1.0f, 0.5f, 0.02f, 0.001f);
+    //Math_SmoothStepToF(&this->unk_208, 0.05f, 1.0f, 0.005f, 0.0f);
 
     if (Animation_OnFrame(&this->skelAnime, Animation_GetLastFrame(&object_kingdodongo_Anim_001074))) {
         BossDodongo_SetupRoll(this);
@@ -1074,18 +1074,20 @@ void BossDodongo_Update(Actor* thisx, PlayState* play2) {
     }
 
     if (this->unk_1BE != 0) {
-        if (this->unk_1BE >= 1000) {
-            Math_SmoothStepToF(&this->colorFilterR, 30.0f, 1, 20.0f, 0.0);
-            Math_SmoothStepToF(&this->colorFilterG, 10.0f, 1, 20.0f, 0.0);
-        } else {
-            this->unk_1BE--;
-            Math_SmoothStepToF(&this->colorFilterR, 255.0f, 1, 20.0f, 0.0);
-            Math_SmoothStepToF(&this->colorFilterG, 0.0f, 1, 20.0f, 0.0);
+        if (GameInteractor_Should(VB_ALLOW_FLASHING_LIGHTS, true)) {
+            if (this->unk_1BE >= 1000) {
+                Math_SmoothStepToF(&this->colorFilterR, 30.0f, 1, 20.0f, 0.0);
+                Math_SmoothStepToF(&this->colorFilterG, 10.0f, 1, 20.0f, 0.0);
+            } else {
+                this->unk_1BE--;
+                Math_SmoothStepToF(&this->colorFilterR, 255.0f, 1, 20.0f, 0.0);
+                Math_SmoothStepToF(&this->colorFilterG, 0.0f, 1, 20.0f, 0.0);
+            }
+            
+            Math_SmoothStepToF(&this->colorFilterB, 0.0f, 1, 20.0f, 0.0);
+            Math_SmoothStepToF(&this->colorFilterMin, 900.0f, 1, 10.0f, 0.0);
+            Math_SmoothStepToF(&this->colorFilterMax, 1099.0f, 1, 10.0f, 0.0);
         }
-
-        Math_SmoothStepToF(&this->colorFilterB, 0.0f, 1, 20.0f, 0.0);
-        Math_SmoothStepToF(&this->colorFilterMin, 900.0f, 1, 10.0f, 0.0);
-        Math_SmoothStepToF(&this->colorFilterMax, 1099.0f, 1, 10.0f, 0.0);
     } else {
         Math_SmoothStepToF(&this->colorFilterR, play->lightCtx.fogColor[0], 1, 5.0f, 0.0);
         Math_SmoothStepToF(&this->colorFilterG, play->lightCtx.fogColor[1], 1.0f, 5.0f, 0.0);
