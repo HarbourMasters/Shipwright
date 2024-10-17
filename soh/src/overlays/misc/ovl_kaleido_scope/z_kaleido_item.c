@@ -1138,7 +1138,6 @@ void KaleidoScope_UpdateItemEquip(PlayState* play) {
             
             // If the item is on another button already, swap the two
             uint16_t targetButtonIndex = pauseCtx->equipTargetCBtn + 1;
-            bool swap = false;
             for (uint16_t otherSlotIndex = 0; otherSlotIndex < ARRAY_COUNT(gSaveContext.equips.cButtonSlots);
                  otherSlotIndex++) {
                 uint16_t otherButtonIndex = otherSlotIndex + 1;
@@ -1147,7 +1146,6 @@ void KaleidoScope_UpdateItemEquip(PlayState* play) {
                 }
 
                 if (pauseCtx->equipTargetSlot == gSaveContext.equips.cButtonSlots[otherSlotIndex]) {
-                    swap = true;
                     // Assign the other button to the target's current item
                     if (gSaveContext.equips.buttonItems[targetButtonIndex] != ITEM_NONE) {
                         gSaveContext.equips.buttonItems[otherButtonIndex] =
@@ -1171,12 +1169,6 @@ void KaleidoScope_UpdateItemEquip(PlayState* play) {
                             gSaveContext.equips.cButtonSlots[otherSlotIndex] = gSaveContext.equips.cButtonSlots[pauseCtx->equipTargetCBtn];
                             Interface_LoadItemIcon2(play, otherButtonIndex);
                         }
-                }
-            }
-
-            if (!swap && gSaveContext.equips.buttonItems[targetButtonIndex] == ITEM_LENS) {
-                if (play->actorCtx.lensActive) {
-                    Actor_DisableLens(play);
                 }
             }
 
