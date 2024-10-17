@@ -1,0 +1,21 @@
+<Root>
+    <File Name="hairal_niwa_n_scene" Segment="2">
+        <Texture Name="hairal_niwa_n_sceneTex_0010F0" OutName="hairal_niwa_n_sceneTex_0010F0" Format="rgba16" Width="32" Height="32" Offset="0x10F0" AddedByScript="true"/>
+        <Texture Name="hairal_niwa_n_sceneTex_0018F0" OutName="hairal_niwa_n_sceneTex_0018F0" Format="rgba16" Width="32" Height="32" Offset="0x18F0" AddedByScript="true"/>
+        <Texture Name="hairal_niwa_n_sceneTex_0020F0" OutName="hairal_niwa_n_sceneTex_0020F0" Format="rgba16" Width="32" Height="32" Offset="0x20F0" AddedByScript="true"/>
+        <Texture Name="hairal_niwa_n_sceneTex_0028F0" OutName="hairal_niwa_n_sceneTex_0028F0" Format="rgba16" Width="32" Height="64" Offset="0x28F0" AddedByScript="true"/>
+        <Texture Name="hairal_niwa_n_sceneTex_0038F0" OutName="hairal_niwa_n_sceneTex_0038F0" Format="i4" Width="64" Height="64" Offset="0x38F0" AddedByScript="true"/>
+        <Texture Name="hairal_niwa_n_sceneTex_0040F0" OutName="hairal_niwa_n_sceneTex_0040F0" Format="rgba16" Width="32" Height="64" Offset="0x40F0" AddedByScript="true"/>
+        <Texture Name="hairal_niwa_n_sceneTex_0050F0" OutName="hairal_niwa_n_sceneTex_0050F0" Format="rgba16" Width="32" Height="32" Offset="0x50F0" AddedByScript="true"/>
+        <Texture Name="hairal_niwa_n_sceneTex_0058F0" OutName="hairal_niwa_n_sceneTex_0058F0" Format="rgba16" Width="32" Height="32" Offset="0x58F0" AddedByScript="true"/>
+        <Texture Name="hairal_niwa_n_sceneTex_0060F0" OutName="hairal_niwa_n_sceneTex_0060F0" Format="ia4" Width="32" Height="128" Offset="0x60F0" AddedByScript="true"/>
+        <Texture Name="hairal_niwa_n_sceneTex_0068F0" OutName="hairal_niwa_n_sceneTex_0068F0" Format="rgba16" Width="32" Height="32" Offset="0x68F0" AddedByScript="true"/>
+        <Texture Name="hairal_niwa_n_sceneTex_0070F0" OutName="hairal_niwa_n_sceneTex_0070F0" Format="rgba16" Width="32" Height="32" Offset="0x70F0" AddedByScript="true"/>
+        <Texture Name="hairal_niwa_n_sceneTex_0078F0" OutName="hairal_niwa_n_sceneTex_0078F0" Format="rgba16" Width="32" Height="32" Offset="0x78F0" AddedByScript="true"/>
+        <Texture Name="hairal_niwa_n_sceneTex_0080F0" OutName="hairal_niwa_n_sceneTex_0080F0" Format="rgba16" Width="32" Height="64" Offset="0x80F0" AddedByScript="true"/>
+        <Scene Name="hairal_niwa_n_scene" Offset="0x0"/>
+    </File>
+    <File Name="hairal_niwa_n_room_0" Segment="3">
+        <Room Name="hairal_niwa_n_room_0" Offset="0x0"/>
+    </File>
+</Root>

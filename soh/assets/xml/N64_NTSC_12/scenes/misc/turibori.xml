@@ -1,0 +1,35 @@
+<Root>
+    <File Name="turibori_scene" Segment="2">
+        <Texture Name="turibori_sceneTex_001CE0" OutName="turibori_sceneTex_001CE0" Format="rgba16" Width="32" Height="64" Offset="0x1CE0" AddedByScript="true"/>
+        <Texture Name="turibori_sceneTex_002CE0" OutName="turibori_sceneTex_002CE0" Format="rgba16" Width="64" Height="32" Offset="0x2CE0" AddedByScript="true"/>
+        <Texture Name="turibori_sceneTex_003CE0" OutName="turibori_sceneTex_003CE0" Format="rgba16" Width="64" Height="32" Offset="0x3CE0" AddedByScript="true"/>
+        <Texture Name="turibori_sceneTex_004CE0" OutName="turibori_sceneTex_004CE0" Format="rgba16" Width="32" Height="4" Offset="0x4CE0" AddedByScript="true"/>
+        <Texture Name="turibori_sceneTex_004DE0" OutName="turibori_sceneTex_004DE0" Format="rgba16" Width="32" Height="16" Offset="0x4DE0" AddedByScript="true"/>
+        <Texture Name="turibori_sceneTex_0051E0" OutName="turibori_sceneTex_0051E0" Format="ia16" Width="32" Height="32" Offset="0x51E0" AddedByScript="true"/>
+        <Texture Name="turibori_sceneTex_0059E0" OutName="turibori_sceneTex_0059E0" Format="ia8" Width="64" Height="64" Offset="0x59E0" AddedByScript="true"/>
+        <Texture Name="turibori_sceneTex_0069E0" OutName="turibori_sceneTex_0069E0" Format="ia8" Width="32" Height="16" Offset="0x69E0" AddedByScript="true"/>
+        <Texture Name="turibori_sceneTex_006BE0" OutName="turibori_sceneTex_006BE0" Format="rgba16" Width="32" Height="64" Offset="0x6BE0" AddedByScript="true"/>
+        <Texture Name="turibori_sceneTex_007BE0" OutName="turibori_sceneTex_007BE0" Format="ia8" Width="64" Height="16" Offset="0x7BE0" AddedByScript="true"/>
+        <Texture Name="turibori_sceneTex_007FE0" OutName="turibori_sceneTex_007FE0" Format="rgba16" Width="32" Height="8" Offset="0x7FE0" AddedByScript="true"/>
+        <Texture Name="turibori_sceneTex_0081E0" OutName="turibori_sceneTex_0081E0" Format="rgba16" Width="64" Height="32" Offset="0x81E0" AddedByScript="true"/>
+        <Texture Name="turibori_sceneTex_0091E0" OutName="turibori_sceneTex_0091E0" Format="ia8" Width="16" Height="16" Offset="0x91E0" AddedByScript="true"/>
+        <Texture Name="turibori_sceneTex_0092E0" OutName="turibori_sceneTex_0092E0" Format="ia8" Width="16" Height="32" Offset="0x92E0" AddedByScript="true"/>
+        <Texture Name="turibori_sceneTex_0094E0" OutName="turibori_sceneTex_0094E0" Format="rgba16" Width="32" Height="32" Offset="0x94E0" AddedByScript="true"/>
+        <Texture Name="turibori_sceneTex_009CE0" OutName="turibori_sceneTex_009CE0" Format="rgba16" Width="32" Height="64" Offset="0x9CE0" AddedByScript="true"/>
+        <Texture Name="turibori_sceneTex_00ACE0" OutName="turibori_sceneTex_00ACE0" Format="rgba16" Width="64" Height="32" Offset="0xACE0" AddedByScript="true"/>
+        <Texture Name="turibori_sceneTex_00BCE0" OutName="turibori_sceneTex_00BCE0" Format="ia8" Width="32" Height="128" Offset="0xBCE0" AddedByScript="true"/>
+        <Texture Name="turibori_sceneTex_00CCE0" OutName="turibori_sceneTex_00CCE0" Format="rgba16" Width="64" Height="32" Offset="0xCCE0" AddedByScript="true"/>
+        <Texture Name="turibori_sceneTex_00DCE0" OutName="turibori_sceneTex_00DCE0" Format="rgba16" Width="32" Height="32" Offset="0xDCE0" AddedByScript="true"/>
+        <Texture Name="turibori_sceneTex_00E4E0" OutName="turibori_sceneTex_00E4E0" Format="rgba16" Width="32" Height="32" Offset="0xE4E0" AddedByScript="true"/>
+        <Texture Name="turibori_sceneTex_00ECE0" OutName="turibori_sceneTex_00ECE0" Format="rgba16" Width="32" Height="32" Offset="0xECE0" AddedByScript="true"/>
+        <Texture Name="turibori_sceneTex_00F4E0" OutName="turibori_sceneTex_00F4E0" Format="ia4" Width="64" Height="64" Offset="0xF4E0" AddedByScript="true"/>
+        <Texture Name="turibori_sceneTex_00FCE0" OutName="turibori_sceneTex_00FCE0" Format="rgba16" Width="32" Height="32" Offset="0xFCE0" AddedByScript="true"/>
+        <Texture Name="turibori_sceneTex_0104E0" OutName="turibori_sceneTex_0104E0" Format="rgba16" Width="64" Height="32" Offset="0x104E0" AddedByScript="true"/>
+        <Texture Name="turibori_sceneTex_0114E0" OutName="turibori_sceneTex_0114E0" Format="i4" Width="32" Height="32" Offset="0x114E0" AddedByScript="true"/>
+        <Texture Name="turibori_sceneTex_0116E0" OutName="turibori_sceneTex_0116E0" Format="rgba16" Width="32" Height="64" Offset="0x116E0" AddedByScript="true"/>
+        <Scene Name="turibori_scene" Offset="0x0"/>
+    </File>
+    <File Name="turibori_room_0" Segment="3">
+        <Room Name="turibori_room_0" Offset="0x0"/>
+    </File>
+</Root>

@@ -1,0 +1,9 @@
+<Root>
+    <File Name="object_heavy_object" Segment="6">
+        <Texture Name="gHeavyBlockTex" OutName="block" Format="i4" Width="64" Height="128" Offset="0x0"/>
+        <DList Name="gHeavyBlockEntirePillarDL" Offset="0x13C0"/>
+        <DList Name="gHeavyBlockBigPieceDL" Offset="0x18A0"/>
+        <DList Name="gHeavyBlockSmallPieceDL" Offset="0x1A30"/>
+        <Collision Name="gHeavyBlockCol" Offset="0x169C"/>
+    </File>
+</Root>

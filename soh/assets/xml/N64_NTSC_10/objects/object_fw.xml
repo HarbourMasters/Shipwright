@@ -1,0 +1,106 @@
+<Root>
+    <File Name="object_fw" Segment="6">
+        <Texture Name="object_fwTex_007A90" OutName="object_fwTex_007A90" Format="i8" Width="16" Height="16" Offset="0x7A90" AddedByScript="true"/>
+        <!-- Flare Dancer Enflamed Skeleton -->
+        <Skeleton Name="gFlareDancerSkel" Type="Flex" LimbType="Standard" Offset="0x5810"/>
+
+        <Limb Name="gFlareDancerRootLimb" LimbType="Standard" Offset="0x5670"/>
+        <Limb Name="gFlareDancerLowerBodyRootLimb" LimbType="Standard" Offset="0x567C"/>
+        <Limb Name="gFlareDancerUpperRightLegLimb" LimbType="Standard" Offset="0x5688"/>
+        <Limb Name="gFlareDancerLowerRightLegBaseLimb" LimbType="Standard" Offset="0x5694"/>
+        <Limb Name="gFlareDancerRightStiltLimb" LimbType="Standard" Offset="0x56A0"/>
+        <Limb Name="gFlareDancerLowerRightLegLimb" LimbType="Standard" Offset="0x56AC"/>
+        <Limb Name="gFlareDancerUpperLeftLegLimb" LimbType="Standard" Offset="0x56B8"/>
+        <Limb Name="gFlareDancerLowerLeftLegBaseLimb" LimbType="Standard" Offset="0x56C4"/>
+        <Limb Name="gFlareDancerLeftStiltLimb" LimbType="Standard" Offset="0x56D0"/>
+        <Limb Name="gFlareDancerLowerLeftLegLimb" LimbType="Standard" Offset="0x56DC"/>
+        <Limb Name="gFlareDancerUpperBodyRootLimb" LimbType="Standard" Offset="0x56E8"/>
+        <Limb Name="gFlareDancerDressLimb" LimbType="Standard" Offset="0x56F4"/>
+        <Limb Name="gFlareDancerFuseLimb" LimbType="Standard" Offset="0x5700"/>
+        <Limb Name="gFlareDancerRightUpperArmLimb" LimbType="Standard" Offset="0x570C"/>
+        <Limb Name="gFlareDancerRightForearmLimb" LimbType="Standard" Offset="0x5718"/>
+        <Limb Name="gFlareDancerRightSwordLimb" LimbType="Standard" Offset="0x5724"/>
+        <Limb Name="gFlareDancerLeftUpperArmLimb" LimbType="Standard" Offset="0x5730"/>
+        <Limb Name="gFlareDancerLeftForearmLimb" LimbType="Standard" Offset="0x573C"/>
+        <Limb Name="gFlareDancerLeftSwordLimb" LimbType="Standard" Offset="0x5748"/>
+        <Limb Name="gFlareDancerHeadLimb" LimbType="Standard" Offset="0x5754"/>
+        <Limb Name="gFlareDancerTorsoLimb" LimbType="Standard" Offset="0x5760"/>
+        <Limb Name="gFlareDancerUpperFireHairLimb" LimbType="Standard" Offset="0x576C"/>
+        <Limb Name="gFlareDancerMiddleFireHair1Limb" LimbType="Standard" Offset="0x5778"/>
+        <Limb Name="gFlareDancerMiddleFireHair2Limb" LimbType="Standard" Offset="0x5784"/>
+        <Limb Name="gFlareDancerMiddleFireHair3Limb" LimbType="Standard" Offset="0x5790"/>
+        <Limb Name="gFlareDancerLowerFireHairLimb" LimbType="Standard" Offset="0x579C"/>
+
+        <!-- Flare Dancer Enflamed DisplayLists -->
+        <DList Name="gFlareDancerUpperRightLegDL" Offset="0x3FC0"/>
+        <DList Name="gFlareDancerRightStiltDL" Offset="0x41B8"/>
+        <DList Name="gFlareDancerLowerRightLegDL" Offset="0x40C8"/>
+        <DList Name="gFlareDancerUpperLeftLegDL" Offset="0x4260"/>
+        <DList Name="gFlareDancerLeftStiltDL" Offset="0x4498"/>
+        <DList Name="gFlareDancerLowerLeftLegDL" Offset="0x4368"/>
+        <DList Name="gFlareDancerDressDL" Offset="0x4640"/>
+        <DList Name="gFlareDancerFuseDL" Offset="0x47B8"/>
+        <DList Name="gFlareDancerRightUpperArmDL" Offset="0x48C0"/>
+        <DList Name="gFlareDancerRightForearmDL" Offset="0x4A00"/>
+        <DList Name="gFlareDancerRightSwordDL" Offset="0x4B38"/>
+        <DList Name="gFlareDancerLeftUpperArmDL" Offset="0x4C98"/>
+        <DList Name="gFlareDancerLeftForearmDL" Offset="0x4DD8"/>
+        <DList Name="gFlareDancerLeftSwordDL" Offset="0x4F08"/>
+        <DList Name="gFlareDancerHeadDL" Offset="0x5058"/>
+        <DList Name="gFlareDancerTorsoDL" Offset="0x4540"/>
+        <DList Name="gFlareDancerUpperFireHairDL" Offset="0x5160"/>
+        <DList Name="gFlareDancerMiddleFireHair1DL" Offset="0x5248"/>
+        <DList Name="gFlareDancerMiddleFireHair2DL" Offset="0x5348"/>
+        <DList Name="gFlareDancerMiddleFireHair3DL" Offset="0x5448"/>
+        <DList Name="gFlareDancerLowerFireHairDL" Offset="0x5548"/>
+
+        <!-- Flare Dancer Core Skeleton -->
+        <Skeleton Name="gFlareDancerCoreSkel" Type="Flex" LimbType="Standard" Offset="0x7C30"/>
+
+        <!-- Flare Dancer Core Limbs -->
+        <Limb Name="gFlareDancerCoreRootLimb" LimbType="Standard" Offset="0x7B90"/>
+        <Limb Name="gFlareDancerCoreBodyLimb" LimbType="Standard" Offset="0x7B9C"/>
+        <Limb Name="gFlareDancerCoreFuseLimb" LimbType="Standard" Offset="0x7BA8"/>
+        <Limb Name="gFlareDancerCoreLegsRootLimb" LimbType="Standard" Offset="0x7BB4"/>
+        <Limb Name="gFlareDancerCoreUpperRightLegLimb" LimbType="Standard" Offset="0x7BC0"/>
+        <Limb Name="gFlareDancerCoreLowerRightLegLimb" LimbType="Standard" Offset="0x7BCC"/>
+        <Limb Name="gFlareDancerCoreRightFootLimb" LimbType="Standard" Offset="0x7BD8"/>
+        <Limb Name="gFlareDancerCoreUpperLeftLegLimb" LimbType="Standard" Offset="0x7BE4"/>
+        <Limb Name="gFlareDancerCoreLowerLeftLegLimb" LimbType="Standard" Offset="0x7BF0"/>
+        <Limb Name="gFlareDancerCoreLeftFootLimb" LimbType="Standard" Offset="0x7BFC"/>
+
+        <!-- Flare Dancer Core DisplayLists -->
+        <DList Name="gFlareDancerCoreBodyDL" Offset="0x7410"/>
+        <DList Name="gFlareDancerCoreFuseDL" Offset="0x7510"/>
+        <DList Name="gFlareDancerCoreUpperRightLegDL" Offset="0x7618"/>
+        <DList Name="gFlareDancerCoreLowerRightLegDL" Offset="0x7680"/>
+        <DList Name="gFlareDancerCoreRightFootDL" Offset="0x7708"/>
+        <DList Name="gFlareDancerCoreUpperLeftLegDL" Offset="0x7790"/>
+        <DList Name="gFlareDancerCoreLowerLeftLegDL" Offset="0x77F8"/>
+        <DList Name="gFlareDancerCoreLeftFootDL" Offset="0x7880"/>
+
+        <!-- Particle DisplayLists -->
+        <DList Name="gFlareDancerDL_7928" Offset="0x7928"/>
+        <DList Name="gFlareDancerSquareParticleDL" Offset="0x7938"/>
+        <DList Name="gFlareDancerDL_79F8" Offset="0x79F8"/>
+        <DList Name="gFlareDancerTriangleParticleDL" Offset="0x7A78"/>
+
+        <!-- Flare Dancer DisplayList Textures -->
+        <Texture Name="gFlareDancerBlueFlameTex" OutName="blue_flame" Format="rgba16" Width="4" Height="4" Offset="0x10D0"/>
+        <Texture Name="gFlareDancerFireTex" OutName="fire" Format="i8" Width="32" Height="64" Offset="0x10F0"/>
+        <Texture Name="gFlareDancerFirePatternTex" OutName="fire_pattern" Format="i8" Width="32" Height="64" Offset="0x18F0"/>
+        <Texture Name="gFlareDancerFuseTex" OutName="fuse" Format="rgba16" Width="16" Height="32" Offset="0x20F0"/>
+        <Texture Name="gFlareDancerSwordHiltTex" OutName="sword_hilt" Format="rgba16" Width="16" Height="16" Offset="0x24F0"/>
+        <Texture Name="gFlareDancerCoreBodyTex" OutName="core_body" Format="rgba16" Width="16" Height="32" Offset="0x26F0"/>
+        
+        <!-- Flare Dancer Animations -->
+        <Animation Name="gFlareDancerCastingFireAnim" Offset="0x10B4"/>
+        <Animation Name="gFlareDancerBackflipAnim" Offset="0x5C64"/>
+        <Animation Name="gFlareDancerGettingUpAnim" Offset="0x6044"/>
+        <Animation Name="gFlareDancerChasingAnim" Offset="0x6A18"/>
+        <Animation Name="gFlareDancerTwirlAnim" Offset="0x6B64"/>
+        <Animation Name="gFlareDancerCoreInitRunCycleAnim" Offset="0x6CF8"/>
+        <Animation Name="gFlareDancerCoreRunCycleAnim" Offset="0x7CD0"/>
+        <Animation Name="gFlareDancerCoreEndRunCycleAnim" Offset="0x7DC8"/>
+    </File>
+</Root>

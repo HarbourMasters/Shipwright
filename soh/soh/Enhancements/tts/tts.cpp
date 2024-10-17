@@ -140,10 +140,10 @@ void RegisterOnInterfaceUpdateHook() {
         static char ttsAnnounceBuf[32];
         
         uint32_t timer = 0;
-        if (gSaveContext.timer1State != 0) {
-            timer = gSaveContext.timer1Value;
-        } else if (gSaveContext.timer2State != 0) {
-            timer = gSaveContext.timer2Value;
+        if (gSaveContext.timerState != 0) {
+            timer = gSaveContext.timerSeconds;
+        } else if (gSaveContext.subTimerState != 0) {
+            timer = gSaveContext.subTimerSeconds;
         }
         
         if (timer > 0) {
@@ -813,9 +813,10 @@ void RegisterOnUpdateMainMenuSelection() {
 
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnUpdateFileBossRushOptionSelection>([](uint8_t optionIndex, uint8_t optionValue) {
         if (!CVarGetInteger(CVAR_SETTING("A11yTTS"), 0)) return;
+        uint8_t language = (gSaveContext.language == LANGUAGE_JPN) ? LANGUAGE_ENG : gSaveContext.language;
 
-        auto optionName = BossRush_GetSettingName(optionIndex, gSaveContext.language);
-        auto optionValueName = BossRush_GetSettingChoiceName(optionIndex, optionValue, gSaveContext.language);
+        auto optionName = BossRush_GetSettingName(optionIndex, language);
+        auto optionValueName = BossRush_GetSettingChoiceName(optionIndex, optionValue, language);
         auto translation = optionName + std::string(" - ") + optionValueName;
         SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
     });

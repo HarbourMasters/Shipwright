@@ -1,0 +1,6 @@
+<Root>
+    <File Name="object_bubble" Segment="6">
+        <Texture Name="gBubbleTex" OutName="bubble" Format="ia8" Width="64" Height="64" Offset="0x0"/>
+        <DList Name="gBubbleDL" Offset="0x1000"/>
+    </File>
+</Root>

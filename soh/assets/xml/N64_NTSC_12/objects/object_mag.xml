@@ -1,0 +1,20 @@
+<Root>
+    <File Name="object_mag" Segment="6">
+        <Texture Name="gTitleDiskTex" OutName="title_disk" Format="ia8" Width="48" Height="16" Offset="0x0"/>
+        <Texture Name="gTitleZeldaShieldLogoTex" OutName="title_zelda_shield_logo" Format="rgba32" Width="160" Height="160" Offset="0x300"/>
+        <Texture Name="gTitleCopyright1998Tex" OutName="title_copyright_1998" Format="ia8" Width="128" Height="16" Offset="0x19300"/>
+        <Texture Name="gTitleEffectMask00Tex" OutName="title_effect_mask_0_0" Format="i4" Width="64" Height="64" Offset="0x19B00"/>
+        <Texture Name="gTitleEffectMask01Tex" OutName="title_effect_mask_0_1" Format="i4" Width="64" Height="64" Offset="0x1A300"/>
+        <Texture Name="gTitleEffectMask02Tex" OutName="title_effect_mask_0_2" Format="i4" Width="64" Height="64" Offset="0x1AB00"/>
+        <Texture Name="gTitleEffectMask10Tex" OutName="title_effect_mask_1_0" Format="i4" Width="64" Height="64" Offset="0x1B300"/>
+        <Texture Name="gTitleEffectMask11Tex" OutName="title_effect_mask_1_1" Format="i4" Width="64" Height="64" Offset="0x1BB00"/>
+        <Texture Name="gTitleEffectMask12Tex" OutName="title_effect_mask_1_2" Format="i4" Width="64" Height="64" Offset="0x1C300"/>
+        <Texture Name="gTitleEffectMask20Tex" OutName="title_effect_mask_2_0" Format="i4" Width="64" Height="64" Offset="0x1CB00"/>
+        <Texture Name="gTitleEffectMask21Tex" OutName="title_effect_mask_2_1" Format="i4" Width="64" Height="64" Offset="0x1D300"/>
+        <Texture Name="gTitleEffectMask22Tex" OutName="title_effect_mask_2_2" Format="i4" Width="64" Height="64" Offset="0x1DB00"/>
+        <Texture Name="gTitleFlameEffectTex" OutName="title_flame_effect" Format="i8" Width="32" Height="32" Offset="0x1E300"/>
+        <Texture Name="gTitleTheLegendOfTextTex" OutName="title_the_legend_of_text" Format="i8" Width="72" Height="8" Offset="0x1E700"/>
+        <Texture Name="gTitleOcarinaOfTimeTMTextTex" OutName="title_ocarina_of_time_tm_text" Format="i8" Width="96" Height="8" Offset="0x1E940"/>
+        <Texture Name="gTitleTitleJPNTex" OutName="title_title_jpn" Format="i8" Width="128" Height="16" Offset="0x1EC40"/>
+    </File>
+</Root>

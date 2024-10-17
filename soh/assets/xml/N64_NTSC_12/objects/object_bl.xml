@@ -1,0 +1,32 @@
+<Root>
+    <File Name="object_bl" Segment="6">
+        <!-- Biri Animations -->
+        <Animation Name="gBiriDischargeLightningAnim" Offset="0x24"/>
+        <Animation Name="gBiriClimbAnim" Offset="0x64"/>
+        <Animation Name="gBiriDefaultAnim" Offset="0xA4"/><!-- Used in various states, not just as an idle -->
+
+        <!-- Biri DLists -->
+        <DList Name="gBiriTentaclesDL" Offset="0x3B0"/>
+        <DList Name="gBiriInnerHoodDL" Offset="0x448"/>
+        <DList Name="gBiriOuterHoodDL" Offset="0x530"/>
+
+        <!-- Biri Textures -->
+        <Texture Name="gBiriOuterHoodTex" OutName="biri_outer_hood" Format="ia16" Width="16" Height="64" Offset="0x608"/>
+        <Texture Name="gBiriTentacles0Tex" OutName="biri_tentacles_0" Format="ia8" Width="48" Height="48" Offset="0xE08"/>
+        <Texture Name="gBiriTentacles1Tex" OutName="biri_tentacles_1" Format="ia8" Width="48" Height="48" Offset="0x1708"/>
+        <Texture Name="gBiriTentacles2Tex" OutName="biri_tentacles_2" Format="ia8" Width="48" Height="48" Offset="0x2008"/>
+        <Texture Name="gBiriTentacles3Tex" OutName="biri_tentacles_3" Format="ia8" Width="48" Height="48" Offset="0x2908"/>
+        <Texture Name="gBiriTentacles4Tex" OutName="biri_tentacles_4" Format="ia8" Width="48" Height="48" Offset="0x3208"/>
+        <Texture Name="gBiriTentacles5Tex" OutName="biri_tentacles_5" Format="ia8" Width="48" Height="48" Offset="0x3B08"/>
+        <Texture Name="gBiriTentacles6Tex" OutName="biri_tentacles_6" Format="ia8" Width="48" Height="48" Offset="0x4408"/>
+        <Texture Name="gBiriTentacles7Tex" OutName="biri_tentacles_7" Format="ia8" Width="48" Height="48" Offset="0x4D08"/>
+        <Texture Name="gBiriInnerHoodTex" OutName="biri_inner_hood" Format="ia16" Width="16" Height="16" Offset="0x5608"/>
+
+        <!-- Biri Limbs and Skeleton -->
+        <Limb Name="gBiriRootLimb" LimbType="Standard" Offset="0x5808"/>
+        <Limb Name="gBiriInnerHoodLimb" LimbType="Standard" Offset="0x5814"/>
+        <Limb Name="gBiriOuterHoodLimb" LimbType="Standard" Offset="0x5820"/>
+        <Limb Name="gBiriTentaclesLimb" LimbType="Standard" Offset="0x582C"/>
+        <Skeleton Name="gBiriSkel" Type="Normal" LimbType="Standard" Offset="0x5848"/>
+    </File>
+</Root>

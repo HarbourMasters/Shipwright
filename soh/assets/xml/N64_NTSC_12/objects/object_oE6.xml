@@ -1,0 +1,15 @@
+<Root>
+    <File Name="object_oE6" Segment="6">
+        <DList Name="object_oE6_DL_000AE0" Offset="0xAE0"/>
+        <Texture Name="object_oE6_TLUT_000FD0" OutName="tlut_00000FD0" Format="rgba16" Width="16" Height="16" Offset="0xFD0"/>
+        <Texture Name="object_oE6_Tex_0011D0" OutName="tex_000011D0" Format="ci8" Width="32" Height="32" Offset="0x11D0" TlutOffset="0xFD0"/>
+        <Blob Name="object_oE6_Blob_0015D0" Size="0x800" Offset="0x15D0"/>
+        <Texture Name="object_oE6_TLUT_001DD0" OutName="tlut_00001DD0" Format="rgba16" Width="16" Height="16" Offset="0x1DD0"/>
+        <Texture Name="object_oE6_Tex_001FD0" OutName="tex_00001FD0" Format="ci8" Width="8" Height="8" Offset="0x1FD0" TlutOffset="0x1DD0"/>
+        <Texture Name="object_oE6_Tex_002010" OutName="tex_00002010" Format="ci8" Width="16" Height="16" Offset="0x2010" TlutOffset="0x1DD0"/>
+        <Texture Name="object_oE6_Tex_002110" OutName="tex_00002110" Format="rgba16" Width="8" Height="16" Offset="0x2110"/>
+        <Texture Name="object_oE6_Tex_002210" OutName="tex_00002210" Format="rgba16" Width="32" Height="32" Offset="0x2210"/>
+        <Texture Name="object_oE6_Tex_002A10" OutName="tex_00002A10" Format="rgba16" Width="32" Height="16" Offset="0x2A10"/>
+        <Texture Name="object_oE6_Tex_002E10" OutName="tex_00002E10" Format="i4" Width="16" Height="8" Offset="0x2E10"/>
+    </File>
+</Root>

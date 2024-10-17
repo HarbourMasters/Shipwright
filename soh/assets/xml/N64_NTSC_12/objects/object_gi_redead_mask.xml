@@ -1,0 +1,5 @@
+<Root>
+    <File Name="object_gi_redead_mask" Segment="6">
+        <DList Name="gGiSpookyMaskDL" Offset="0x07E0"/>
+    </File>
+</Root>

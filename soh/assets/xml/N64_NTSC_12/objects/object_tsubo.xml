@@ -1,0 +1,9 @@
+<Root>
+    <File Name="object_tsubo" Segment="6">
+        <Texture Name="object_tsubo_Tex_000000" OutName="tex_00000000" Format="rgba16" Width="32" Height="64" Offset="0x0"/>
+        <Texture Name="object_tsubo_Tex_001000" OutName="tex_00001000" Format="rgba16" Width="16" Height="16" Offset="0x1000"/>
+        <Texture Name="object_tsubo_Tex_001200" OutName="tex_00001200" Format="rgba16" Width="16" Height="16" Offset="0x1200"/>
+        <DList Name="object_tsubo_DL_0017C0" Offset="0x17C0"/>
+        <DList Name="object_tsubo_DL_001960" Offset="0x1960"/>
+    </File>
+</Root>

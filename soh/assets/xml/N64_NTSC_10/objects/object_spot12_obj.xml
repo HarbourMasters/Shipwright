@@ -1,0 +1,13 @@
+<Root>
+    <File Name="object_spot12_obj" Segment="6">
+        <!-- Gerudo Fortress Wasteland Gate -->
+        <DList Name="gGerudoFortressWastelandGateDL" Offset="0x1080"/>
+        <Texture Name="gGerudoFortressWastelandGateTex" OutName="wasteland_gate" Format="rgba16" Width="16" Height="128" Offset="0x0"/>
+        <Collision Name="gGerudoFortressWastelandGateCol" Offset="0x11EC"/>
+
+        <!-- Gerudo Fortress GTG Shutter -->
+        <DList Name="gGerudoFortressGTGShutterDL" Offset="0x2260"/>
+        <Texture Name="gGerudoFortressGTGShutterTex" OutName="gtg_shutter" Format="rgba16" Width="32" Height="64" Offset="0x1220"/>
+        <Collision Name="gGerudoFortressGTGShutterCol" Offset="0x238C"/>
+    </File>
+</Root>

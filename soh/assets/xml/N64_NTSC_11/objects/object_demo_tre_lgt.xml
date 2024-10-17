@@ -1,0 +1,6 @@
+<Root>
+    <File Name="object_demo_tre_lgt" Segment="6">
+        <!-- This file is empty -->
+        <Blob Name="gWarpDemoTreLgtBlob_000000" Size="0x10" Offset="0x0"/>
+    </File>
+</Root>

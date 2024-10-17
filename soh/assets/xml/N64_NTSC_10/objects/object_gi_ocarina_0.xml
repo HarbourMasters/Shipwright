@@ -1,0 +1,7 @@
+<Root>
+    <File Name="object_gi_ocarina_0" Segment="6">
+        <Texture Name="object_gi_ocarina_0Tex_000000" OutName="object_gi_ocarina_0Tex_000000" Format="i8" Width="16" Height="16" Offset="0x0" AddedByScript="true"/>
+        <DList Name="gGiOcarinaFairyDL" Offset="0x08E0"/>
+        <DList Name="gGiOcarinaFairyHolesDL" Offset="0x0B58"/>
+    </File>
+</Root>

@@ -1,0 +1,66 @@
+<Root>
+    <File Name="object_oA10" Segment="6">
+        <Limb Name="object_oA10_Limb_00000000" LimbType="Standard" Offset="0x0"/>
+        <Limb Name="object_oA10_Limb_0000000C" LimbType="Standard" Offset="0xC"/>
+        <Limb Name="object_oA10_Limb_00000018" LimbType="Standard" Offset="0x18"/>
+        <Limb Name="object_oA10_Limb_00000024" LimbType="Standard" Offset="0x24"/>
+        <Limb Name="object_oA10_Limb_00000030" LimbType="Standard" Offset="0x30"/>
+        <Limb Name="object_oA10_Limb_0000003C" LimbType="Standard" Offset="0x3C"/>
+        <Limb Name="object_oA10_Limb_00000048" LimbType="Standard" Offset="0x48"/>
+        <Limb Name="object_oA10_Limb_00000054" LimbType="Standard" Offset="0x54"/>
+        <Limb Name="object_oA10_Limb_00000060" LimbType="Standard" Offset="0x60"/>
+        <Limb Name="object_oA10_Limb_0000006C" LimbType="Standard" Offset="0x6C"/>
+        <Limb Name="object_oA10_Limb_00000078" LimbType="Standard" Offset="0x78"/>
+        <Limb Name="object_oA10_Limb_00000084" LimbType="Standard" Offset="0x84"/>
+        <Limb Name="object_oA10_Limb_00000090" LimbType="Standard" Offset="0x90"/>
+        <Limb Name="object_oA10_Limb_0000009C" LimbType="Standard" Offset="0x9C"/>
+        <Limb Name="object_oA10_Limb_000000A8" LimbType="Standard" Offset="0xA8"/>
+        <Limb Name="object_oA10_Limb_000000B4" LimbType="Standard" Offset="0xB4"/>
+        <Limb Name="object_oA10_Limb_000000C0" LimbType="Standard" Offset="0xC0"/>
+        <Limb Name="object_oA10_Limb_000000CC" LimbType="Standard" Offset="0xCC"/>
+        <Limb Name="object_oA10_Limb_000000D8" LimbType="Standard" Offset="0xD8"/>
+        <Limb Name="object_oA10_Limb_000000E4" LimbType="Standard" Offset="0xE4"/>
+        <Limb Name="object_oA10_Limb_000000F0" LimbType="Standard" Offset="0xF0"/>
+        <Limb Name="object_oA10_Limb_000000FC" LimbType="Standard" Offset="0xFC"/>
+        <Limb Name="object_oA10_Limb_00000108" LimbType="Standard" Offset="0x108"/>
+        <Limb Name="object_oA10_Limb_00000114" LimbType="Standard" Offset="0x114"/>
+        <Limb Name="object_oA10_Limb_00000120" LimbType="Standard" Offset="0x120"/>
+        <Limb Name="object_oA10_Limb_0000012C" LimbType="Standard" Offset="0x12C"/>
+        <Limb Name="object_oA10_Limb_00000138" LimbType="Standard" Offset="0x138"/>
+        <Limb Name="object_oA10_Limb_00000144" LimbType="Standard" Offset="0x144"/>
+        <Limb Name="object_oA10_Limb_00000150" LimbType="Standard" Offset="0x150"/>
+        <Limb Name="object_oA10_Limb_0000015C" LimbType="Standard" Offset="0x15C"/>
+        <Limb Name="object_oA10_Limb_00000168" LimbType="Standard" Offset="0x168"/>
+        <Limb Name="object_oA10_Limb_00000174" LimbType="Standard" Offset="0x174"/>
+        <Limb Name="object_oA10_Limb_00000180" LimbType="Standard" Offset="0x180"/>
+        <Limb Name="object_oA10_Limb_0000018C" LimbType="Standard" Offset="0x18C"/>
+        <Limb Name="object_oA10_Limb_00000198" LimbType="Standard" Offset="0x198"/>
+        <Limb Name="object_oA10_Limb_000001A4" LimbType="Standard" Offset="0x1A4"/>
+        <Limb Name="object_oA10_Limb_000001B0" LimbType="Standard" Offset="0x1B0"/>
+        <Limb Name="object_oA10_Limb_000001BC" LimbType="Standard" Offset="0x1BC"/>
+        <Skeleton Name="object_oA10_Skel_00000260" Type="Normal" LimbType="Standard" Offset="0x260"/>
+        <DList Name="object_oA10_DL_00001878" Offset="0x1878"/>
+        <DList Name="object_oA10_DL_00001990" Offset="0x1990"/>
+        <DList Name="object_oA10_DL_00001AE0" Offset="0x1AE0"/>
+        <DList Name="object_oA10_DL_00001D48" Offset="0x1D48"/>
+        <DList Name="object_oA10_DL_00001E68" Offset="0x1E68"/>
+        <DList Name="object_oA10_DL_00001F50" Offset="0x1F50"/>
+        <DList Name="object_oA10_DL_00001FF8" Offset="0x1FF8"/>
+        <DList Name="object_oA10_DL_00002088" Offset="0x2088"/>
+        <DList Name="object_oA10_DL_00002170" Offset="0x2170"/>
+        <DList Name="object_oA10_DL_00002220" Offset="0x2220"/>
+        <DList Name="object_oA10_DL_000022B8" Offset="0x22B8"/>
+        <DList Name="object_oA10_DL_000023A0" Offset="0x23A0"/>
+        <DList Name="object_oA10_DL_00002448" Offset="0x2448"/>
+        <DList Name="object_oA10_DL_000024D8" Offset="0x24D8"/>
+        <DList Name="object_oA10_DL_000025C0" Offset="0x25C0"/>
+        <Texture Name="object_oA10_Tex_00002670" OutName="tex_00002670" Format="rgba16" Width="8" Height="16" Offset="0x2670"/>
+        <Texture Name="object_oA10_Tex_00002770" OutName="tex_00002770" Format="rgba16" Width="8" Height="8" Offset="0x2770"/>
+        <Texture Name="object_oA10_Tex_000027F0" OutName="tex_000027F0" Format="i4" Width="16" Height="8" Offset="0x27F0"/>
+        <Texture Name="object_oA10_Tex_00002830" OutName="tex_00002830" Format="rgba16" Width="16" Height="8" Offset="0x2830"/>
+        <Texture Name="object_oA10_Tex_00002930" OutName="tex_00002930" Format="rgba16" Width="16" Height="32" Offset="0x2930"/>
+        <Texture Name="object_oA10_Tex_00002D30" OutName="tex_00002D30" Format="rgba16" Width="8" Height="8" Offset="0x2D30"/>
+        <Texture Name="object_oA10_Tex_00002DB0" OutName="tex_00002DB0" Format="rgba16" Width="8" Height="8" Offset="0x2DB0"/>
+        <Texture Name="object_oA10_Tex_00002E30" OutName="tex_00002E30" Format="rgba16" Width="8" Height="8" Offset="0x2E30"/>
+    </File>
+</Root>

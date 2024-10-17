@@ -1,0 +1,6 @@
+<Root>
+    <File Name="object_gi_eye_lotion" Segment="6">
+        <DList Name="gGiEyeDropsCapDL" Offset="0x0680"/>
+        <DList Name="gGiEyeDropsBottleDL" Offset="0x0768"/>
+    </File>
+</Root>

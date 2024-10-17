@@ -6,7 +6,7 @@
 typedef struct {
     u8 valid;
     u16 deaths;
-    char playerName[8];
+    u8 playerName[8];
     u16 healthCapacity;
     u32 questItems;
     s8 defense;
@@ -29,8 +29,15 @@ typedef struct {
     s16 gsTokens;
     u8 isDoubleDefenseAcquired;
     u8 gregFound;
+    u8 filenameLanguage;
     u8 hasWallet;
 } SaveFileMetaInfo;
+
+typedef enum {
+    /* 0 */ NAME_LANGUAGE_PAL,
+    /* 1 */ NAME_LANGUAGE_NTSC_JPN,
+    /* 2 */ NAME_LANGUAGE_NTSC_ENG,
+} FilenameLanguage;
 
 #ifdef __cplusplus
 

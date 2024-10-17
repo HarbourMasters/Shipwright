@@ -1,0 +1,15 @@
+<Root>
+    <File Name="object_gi_jewel" Segment="6">
+        <Texture Name="gGiKokiriEmeraldScintillationTex" OutName="kokiri_emerald_scintillation" Format="i4" Width="64" Height="64" Offset="0x0000"/>
+        <DList Name="gGiKokiriEmeraldSettingDL" Offset="0x10E0"/>
+        <DList Name="gGiKokiriEmeraldGemDL" Offset="0x1240"/>
+
+        <Texture Name="gGiGoronRubyScintillationTex" OutName="goron_ruby_scintillation" Format="i8" Width="32" Height="64" Offset="0x13E0"/>
+        <DList Name="gGiGoronRubySettingDL" Offset="0x1FB0"/>
+        <DList Name="gGiGoronRubyGemDL" Offset="0x20A0"/>
+
+        <Texture Name="gGiZoraSapphireScintillationTex" OutName="zora_sapphire_scintillation" Format="i4" Width="64" Height="64" Offset="0x21F0"/>
+        <DList Name="gGiZoraSapphireSettingDL" Offset="0x3370"/>
+        <DList Name="gGiZoraSapphireGemDL" Offset="0x3530"/>
+    </File>
+</Root>

@@ -1,0 +1,61 @@
+<Root>
+    <File Name="object_ssh" Segment="6">
+        <Animation Name="object_ssh_Anim_000304" Offset="0x304"/>
+        <Texture Name="object_ssh_TLUT_000320" OutName="tlut_00000320" Format="rgba16" Width="16" Height="16" Offset="0x320"/>
+        <Texture Name="object_ssh_Tex_000520" OutName="tex_00000520" Format="ci8" Width="8" Height="8" Offset="0x520" TlutOffset="0x320"/>
+        <Texture Name="object_ssh_Tex_000560" OutName="tex_00000560" Format="ci8" Width="16" Height="8" Offset="0x560" TlutOffset="0x320"/>
+        <Texture Name="object_ssh_Tex_0005E0" OutName="tex_000005E0" Format="ci8" Width="8" Height="8" Offset="0x5E0" TlutOffset="0x320"/>
+        <Texture Name="object_ssh_Tex_000620" OutName="tex_00000620" Format="i8" Width="16" Height="16" Offset="0x620"/>
+        <Texture Name="object_ssh_Tex_000720" OutName="tex_00000720" Format="ci8" Width="8" Height="16" Offset="0x720" TlutOffset="0x320"/>
+        <Texture Name="object_ssh_Tex_0007A0" OutName="tex_000007A0" Format="ci8" Width="8" Height="8" Offset="0x7A0" TlutOffset="0x320"/>
+        <Texture Name="object_ssh_Tex_0007E0" OutName="tex_000007E0" Format="ci8" Width="32" Height="32" Offset="0x7E0" TlutOffset="0x320"/>
+        <Texture Name="object_ssh_Tex_000BE0" OutName="tex_00000BE0" Format="ci8" Width="8" Height="16" Offset="0xBE0" TlutOffset="0x320"/>
+        <Texture Name="object_ssh_Tex_000C60" OutName="tex_00000C60" Format="ci8" Width="32" Height="32" Offset="0xC60" TlutOffset="0x320"/>
+        <Texture Name="object_ssh_Tex_001060" OutName="tex_00001060" Format="ci8" Width="32" Height="32" Offset="0x1060" TlutOffset="0x320"/>
+        <DList Name="object_ssh_DL_003CD0" Offset="0x3CD0"/>
+        <DList Name="object_ssh_DL_004080" Offset="0x4080"/>
+        <DList Name="object_ssh_DL_004510" Offset="0x4510"/>
+        <DList Name="object_ssh_DL_0046C0" Offset="0x46C0"/>
+        <DList Name="object_ssh_DL_004878" Offset="0x4878"/>
+        <DList Name="object_ssh_DL_004940" Offset="0x4940"/>
+        <DList Name="object_ssh_DL_004A08" Offset="0x4A08"/>
+        <DList Name="object_ssh_DL_004AD0" Offset="0x4AD0"/>
+        <DList Name="object_ssh_DL_004B98" Offset="0x4B98"/>
+        <DList Name="object_ssh_DL_004C60" Offset="0x4C60"/>
+        <DList Name="object_ssh_DL_004D28" Offset="0x4D28"/>
+        <DList Name="object_ssh_DL_004DE8" Offset="0x4DE8"/>
+        <DList Name="object_ssh_DL_005048" Offset="0x5048"/>
+        <Limb Name="object_ssh_Limb_005110" LimbType="Standard" Offset="0x5110"/>
+        <Limb Name="object_ssh_Limb_00511C" LimbType="Standard" Offset="0x511C"/>
+        <Limb Name="object_ssh_Limb_005128" LimbType="Standard" Offset="0x5128"/>
+        <Limb Name="object_ssh_Limb_005134" LimbType="Standard" Offset="0x5134"/>
+        <Limb Name="object_ssh_Limb_005140" LimbType="Standard" Offset="0x5140"/>
+        <Limb Name="object_ssh_Limb_00514C" LimbType="Standard" Offset="0x514C"/>
+        <Limb Name="object_ssh_Limb_005158" LimbType="Standard" Offset="0x5158"/>
+        <Limb Name="object_ssh_Limb_005164" LimbType="Standard" Offset="0x5164"/>
+        <Limb Name="object_ssh_Limb_005170" LimbType="Standard" Offset="0x5170"/>
+        <Limb Name="object_ssh_Limb_00517C" LimbType="Standard" Offset="0x517C"/>
+        <Limb Name="object_ssh_Limb_005188" LimbType="Standard" Offset="0x5188"/>
+        <Limb Name="object_ssh_Limb_005194" LimbType="Standard" Offset="0x5194"/>
+        <Limb Name="object_ssh_Limb_0051A0" LimbType="Standard" Offset="0x51A0"/>
+        <Limb Name="object_ssh_Limb_0051AC" LimbType="Standard" Offset="0x51AC"/>
+        <Limb Name="object_ssh_Limb_0051B8" LimbType="Standard" Offset="0x51B8"/>
+        <Limb Name="object_ssh_Limb_0051C4" LimbType="Standard" Offset="0x51C4"/>
+        <Limb Name="object_ssh_Limb_0051D0" LimbType="Standard" Offset="0x51D0"/>
+        <Limb Name="object_ssh_Limb_0051DC" LimbType="Standard" Offset="0x51DC"/>
+        <Limb Name="object_ssh_Limb_0051E8" LimbType="Standard" Offset="0x51E8"/>
+        <Limb Name="object_ssh_Limb_0051F4" LimbType="Standard" Offset="0x51F4"/>
+        <Limb Name="object_ssh_Limb_005200" LimbType="Standard" Offset="0x5200"/>
+        <Limb Name="object_ssh_Limb_00520C" LimbType="Standard" Offset="0x520C"/>
+        <Limb Name="object_ssh_Limb_005218" LimbType="Standard" Offset="0x5218"/>
+        <Limb Name="object_ssh_Limb_005224" LimbType="Standard" Offset="0x5224"/>
+        <Limb Name="object_ssh_Limb_005230" LimbType="Standard" Offset="0x5230"/>
+        <Limb Name="object_ssh_Limb_00523C" LimbType="Standard" Offset="0x523C"/>
+        <Limb Name="object_ssh_Limb_005248" LimbType="Standard" Offset="0x5248"/>
+        <Limb Name="object_ssh_Limb_005254" LimbType="Standard" Offset="0x5254"/>
+        <Limb Name="object_ssh_Limb_005260" LimbType="Standard" Offset="0x5260"/>
+        <Skeleton Name="object_ssh_Skel_0052E0" Type="Normal" LimbType="Standard" Offset="0x52E0"/>
+        <Animation Name="object_ssh_Anim_0055F8" Offset="0x55F8"/>
+        <Animation Name="object_ssh_Anim_005BE8" Offset="0x5BE8"/>
+    </File>
+</Root>

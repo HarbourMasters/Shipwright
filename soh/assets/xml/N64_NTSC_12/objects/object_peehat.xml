@@ -1,0 +1,53 @@
+<Root>
+    <File Name="object_peehat" Segment="6">
+        <!-- Peehat Skeleton -->
+        <Skeleton Name="gPeehatSkel" Type="Normal" LimbType="Standard" Offset="0x1C80"/>
+
+        <!-- Peehat Limbs -->
+        <Limb Name="gPeehatRootLimb" LimbType="Standard" Offset="0x1B10"/>
+        <Limb Name="gPeehatBodyRootLimb" LimbType="Standard" Offset="0x1B1C"/>
+        <Limb Name="gPeehatBodyLimb" LimbType="Standard" Offset="0x1B28"/>
+        <Limb Name="gPeehatWingStructureRootLimb" LimbType="Standard" Offset="0x1B34"/>
+        <Limb Name="gPeehatWing1RootLimb" LimbType="Standard" Offset="0x1B40"/>
+        <Limb Name="gPeehatLimb_1B4C" LimbType="Standard" Offset="0x1B4C"/>
+        <Limb Name="gPeehatWing1Limb" LimbType="Standard" Offset="0x1B58"/>
+        <Limb Name="gPeehatWing2RootLimb" LimbType="Standard" Offset="0x1B64"/>
+        <Limb Name="gPeehatLimb_1B70" LimbType="Standard" Offset="0x1B70"/>
+        <Limb Name="gPeehatWing2Limb" LimbType="Standard" Offset="0x1B7C"/>
+        <Limb Name="gPeehatWing3RootLimb" LimbType="Standard" Offset="0x1B88"/>
+        <Limb Name="gPeehatLimb_1B94" LimbType="Standard" Offset="0x1B94"/>
+        <Limb Name="gPeehatWing3Limb" LimbType="Standard" Offset="0x1BA0"/>
+        <Limb Name="gPeehatWing4RootLimb" LimbType="Standard" Offset="0x1BAC"/>
+        <Limb Name="gPeehatLimb_1BB8" LimbType="Standard" Offset="0x1BB8"/>
+        <Limb Name="gPeehatWing4Limb" LimbType="Standard" Offset="0x1BC4"/>
+        <Limb Name="gPeehatWing5RootLimb" LimbType="Standard" Offset="0x1BD0"/>
+        <Limb Name="gPeehatLimb_1BDC" LimbType="Standard" Offset="0x1BDC"/>
+        <Limb Name="gPeehatWing5Limb" LimbType="Standard" Offset="0x1BE8"/>
+        <Limb Name="gPeehatWing6RootLimb" LimbType="Standard" Offset="0x1BF4"/>
+        <Limb Name="gPeehatLimb_1C00" LimbType="Standard" Offset="0x1C00"/>
+        <Limb Name="gPeehatWing6Limb" LimbType="Standard" Offset="0x1C0C"/>
+        <Limb Name="gPeehatTopLimb" LimbType="Standard" Offset="0x1C18"/>
+
+        <!-- Peehat Limb DisplayLists -->
+        <DList Name="gPeehatBodyDL" Offset="0x12F0"/>
+        <DList Name="gPeehatWing1DL" Offset="0x0ED0"/>
+        <DList Name="gPeehatWing2DL" Offset="0x0F60"/>
+        <DList Name="gPeehatWing3DL" Offset="0x0FF0"/>
+        <DList Name="gPeehatWing4DL" Offset="0x1080"/>
+        <DList Name="gPeehatWing5DL" Offset="0x1110"/>
+        <DList Name="gPeehatWing6DL" Offset="0x11A0"/>
+        <DList Name="gPeehatTopDL" Offset="0x1230"/>
+
+        <!-- Peehat DisplayList Textures -->
+        <Texture Name="gPeehatLowerBodyTex" OutName="lower_body" Format="rgba16" Width="8" Height="8" Offset="0x1410"/>
+        <Texture Name="gPeehatLeafTopTex" OutName="leaf_top" Format="rgba16" Width="16" Height="32" Offset="0x1490"/>
+        <Texture Name="gPeehatWingTex" OutName="wing" Format="rgba16" Width="8" Height="32" Offset="0x1890"/>
+        <Texture Name="gPeehatUpperBodyTex" OutName="upper_body" Format="rgba16" Width="8" Height="8" Offset="0x1A90"/>
+
+        <!-- Peehat Animations -->
+        <Animation Name="gPeehatLandingAnim" Offset="0x350"/>
+        <Animation Name="gPeehatFlyingAnim" Offset="0x5C4"/>
+        <Animation Name="gPeehatRecoilAnim" Offset="0x844"/>
+        <Animation Name="gPeehatRisingAnim" Offset="0x9C4"/>
+    </File>
+</Root>

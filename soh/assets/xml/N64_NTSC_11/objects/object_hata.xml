@@ -1,0 +1,50 @@
+<Root>
+    <File Name="object_hata" Segment="6">
+        <!-- Flagpole Collision -->
+        <Collision Name="gFlagpoleCol" Offset="0xC0"/>
+
+        <!-- Flagpole Animation -->
+        <Animation Name="gFlagpoleFlapAnim" Offset="0x444"/>
+
+        <!-- Flagpole Skeleton -->
+        <Skeleton Name="gFlagpoleSkel" Type="Normal" LimbType="Standard" Offset="0x2FD0"/>
+
+        <!-- Flagpole Limbs -->
+        <Limb Name="gFlagpolePoleBaseLimb" LimbType="Standard" Offset="0x2E90"/>
+        <Limb Name="gFlagpolePoleLimb" LimbType="Standard" Offset="0x2E9C"/>
+        <Limb Name="gFlagpoleFlag1BaseLimb" LimbType="Standard" Offset="0x2EA8"/>
+        <Limb Name="gFlagpoleFlag1HoistEndBaseLimb" LimbType="Standard" Offset="0x2EB4"/>
+        <Limb Name="gFlagpoleFlag1HoistMidBaseLimb" LimbType="Standard" Offset="0x2EC0"/>
+        <Limb Name="gFlagpoleFlag1FlyMidBaseLimb" LimbType="Standard" Offset="0x2ECC"/>
+        <Limb Name="gFlagpoleFlag1FlyEndBaseLimb" LimbType="Standard" Offset="0x2ED8"/>
+        <Limb Name="gFlagpoleFlag1FlyEndLimb" LimbType="Standard" Offset="0x2EE4"/>
+        <Limb Name="gFlagpoleFlag1FlyMidLimb" LimbType="Standard" Offset="0x2EF0"/>
+        <Limb Name="gFlagpoleFlag1HoistMidLimb" LimbType="Standard" Offset="0x2EFC"/>
+        <Limb Name="gFlagpoleFlag1HoistEndLimb" LimbType="Standard" Offset="0x2F08"/>
+        <Limb Name="gFlagpoleFlag2BaseLimb" LimbType="Standard" Offset="0x2F14"/>
+        <Limb Name="gFlagpoleFlag2HoistEndBaseLimb" LimbType="Standard" Offset="0x2F20"/>
+        <Limb Name="gFlagpoleFlag2HoistMidBaseLimb" LimbType="Standard" Offset="0x2F2C"/>
+        <Limb Name="gFlagpoleFlag2FlyMidBaseLimb" LimbType="Standard" Offset="0x2F38"/>
+        <Limb Name="gFlagpoleFlag2FlyEndBaseLimb" LimbType="Standard" Offset="0x2F44"/>
+        <Limb Name="gFlagpoleFlag2FlyEndLimb" LimbType="Standard" Offset="0x2F50"/>
+        <Limb Name="gFlagpoleFlag2FlyMidLimb" LimbType="Standard" Offset="0x2F5C"/>
+        <Limb Name="gFlagpoleFlag2HoistMidLimb" LimbType="Standard" Offset="0x2F68"/>
+        <Limb Name="gFlagpoleFlag2HoistEndLimb" LimbType="Standard" Offset="0x2F74"/>
+
+        <!-- Flagpole DLists -->
+        <DList Name="gFlagpolePoleDL" Offset="0x26D0"/>
+        <DList Name="gFlagpoleFlag1FlyEndDL" Offset="0x2AC0"/>
+        <DList Name="gFlagpoleFlag1FlyMidDL" Offset="0x29F0"/>
+        <DList Name="gFlagpoleFlag1HoistMidDL" Offset="0x2920"/>
+        <DList Name="gFlagpoleFlag1HoistEndDL" Offset="0x2850"/>
+        <DList Name="gFlagpoleFlag2FlyEndDL" Offset="0x2E00"/>
+        <DList Name="gFlagpoleFlag2FlyMidDL" Offset="0x2D30"/>
+        <DList Name="gFlagpoleFlag2HoistMidDL" Offset="0x2C60"/>
+        <DList Name="gFlagpoleFlag2HoistEndDL" Offset="0x2B90"/>
+
+        <!-- Flagpole Textures -->
+        <Texture Name="gFlagpolePoleTex" OutName="flagpole_pole_tex" Format="rgba16" Width="32" Height="32" Offset="0x460"/>
+        <Texture Name="gFlagpoleTopTex" OutName="flagpole_top_tex" Format="rgba16" Width="32" Height="32" Offset="0xC60"/>
+        <Texture Name="gFlagpoleFlagTex" OutName="flagpole_flag_tex" Format="ia8" Width="128" Height="32" Offset="0x1460"/>
+    </File>
+</Root>

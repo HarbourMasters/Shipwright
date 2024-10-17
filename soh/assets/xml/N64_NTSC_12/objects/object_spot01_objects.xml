@@ -1,0 +1,16 @@
+<Root>
+    <File Name="object_spot01_objects" Segment="6">
+        <!-- Kakariko Windmill Sails-->
+        <DList Name="gKakarikoWindmillSailsDL" Offset="0x0100"/>
+        <Texture Name="gKakarikoWindmillSailsTex" OutName="windmill_sails" Format="rgba16" Width="32" Height="64" Offset="0x1090"/>
+
+        <!-- Kakariko Well Arch -->
+        <DList Name="gKakarikoWellArchDL" Offset="0x0420"/>
+        <Texture Name="gKakarikoWellArchTex" OutName="well_arch" Format="rgba16" Width="32" Height="16" Offset="0x2090"/>
+
+        <!-- Kakariko Well Water -->
+        <DList Name="gKakarikoWellWaterDL" Offset="0x07D0"/>
+        <Texture Name="gKakarikoWellWaterTex" OutName="well_water" Format="rgba16" Width="32" Height="32" Offset="0x0890"/>
+        <Collision Name="gKakarikoWellArchCol" Offset="0x075C"/>
+    </File>
+</Root>

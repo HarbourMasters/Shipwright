@@ -309,4 +309,107 @@ static const ALIGN_ASSET(2) char gQuestionMarkPositionNameFRATex[] = dgQuestionM
 #define dgGanonsCastlePositionNameFRATex "__OTR__textures/map_name_static/gGanonsCastlePositionNameFRATex"
 static const ALIGN_ASSET(2) char gGanonsCastlePositionNameFRATex[] = dgGanonsCastlePositionNameFRATex;
 
+#define dgHauntedWastelandPointNameJPNTex "__OTR__textures/map_name_static/gHauntedWastelandPointNameJPNTex"
+static const ALIGN_ASSET(2) char gHauntedWastelandPointNameJPNTex[] = dgHauntedWastelandPointNameJPNTex;
+
+#define dgGerudosFortressPointNameJPNTex "__OTR__textures/map_name_static/gGerudosFortressPointNameJPNTex"
+static const ALIGN_ASSET(2) char gGerudosFortressPointNameJPNTex[] = dgGerudosFortressPointNameJPNTex;
+
+#define dgGerudoValleyPointNameJPNTex "__OTR__textures/map_name_static/gGerudoValleyPointNameJPNTex"
+static const ALIGN_ASSET(2) char gGerudoValleyPointNameJPNTex[] = dgGerudoValleyPointNameJPNTex;
+
+#define dgHyliaLakesidePointNameJPNTex "__OTR__textures/map_name_static/gHyliaLakesidePointNameJPNTex"
+static const ALIGN_ASSET(2) char gHyliaLakesidePointNameJPNTex[] = dgHyliaLakesidePointNameJPNTex;
+
+#define dgLonLonRanchPointNameJPNTex "__OTR__textures/map_name_static/gLonLonRanchPointNameJPNTex"
+static const ALIGN_ASSET(2) char gLonLonRanchPointNameJPNTex[] = dgLonLonRanchPointNameJPNTex;
+
+#define dgMarketPointNameJPNTex "__OTR__textures/map_name_static/gMarketPointNameJPNTex"
+static const ALIGN_ASSET(2) char gMarketPointNameJPNTex[] = dgMarketPointNameJPNTex;
+
+#define dgHyruleFieldPointNameJPNTex "__OTR__textures/map_name_static/gHyruleFieldPointNameJPNTex"
+static const ALIGN_ASSET(2) char gHyruleFieldPointNameJPNTex[] = dgHyruleFieldPointNameJPNTex;
+
+#define dgDeathMountainPointNameJPNTex "__OTR__textures/map_name_static/gDeathMountainPointNameJPNTex"
+static const ALIGN_ASSET(2) char gDeathMountainPointNameJPNTex[] = dgDeathMountainPointNameJPNTex;
+
+#define dgKakarikoVillagePointNameJPNTex "__OTR__textures/map_name_static/gKakarikoVillagePointNameJPNTex"
+static const ALIGN_ASSET(2) char gKakarikoVillagePointNameJPNTex[] = dgKakarikoVillagePointNameJPNTex;
+
+#define dgLostWoodsPointNameJPNTex "__OTR__textures/map_name_static/gLostWoodsPointNameJPNTex"
+static const ALIGN_ASSET(2) char gLostWoodsPointNameJPNTex[] = dgLostWoodsPointNameJPNTex;
+
+#define dgKokiriForestPointNameJPNTex "__OTR__textures/map_name_static/gKokiriForestPointNameJPNTex"
+static const ALIGN_ASSET(2) char gKokiriForestPointNameJPNTex[] = dgKokiriForestPointNameJPNTex;
+
+#define dgZorasDomainPointNameJPNTex "__OTR__textures/map_name_static/gZorasDomainPointNameJPNTex"
+static const ALIGN_ASSET(2) char gZorasDomainPointNameJPNTex[] = dgZorasDomainPointNameJPNTex;
+
+#define dgHyruleFieldPositionNameJPNTex "__OTR__textures/map_name_static/gHyruleFieldPositionNameJPNTex"
+static const ALIGN_ASSET(2) char gHyruleFieldPositionNameJPNTex[] = dgHyruleFieldPositionNameJPNTex;
+
+#define dgKakarikoVillagePositionNameJPNTex "__OTR__textures/map_name_static/gKakarikoVillagePositionNameJPNTex"
+static const ALIGN_ASSET(2) char gKakarikoVillagePositionNameJPNTex[] = dgKakarikoVillagePositionNameJPNTex;
+
+#define dgGraveyardPositionNameJPNTex "__OTR__textures/map_name_static/gGraveyardPositionNameJPNTex"
+static const ALIGN_ASSET(2) char gGraveyardPositionNameJPNTex[] = dgGraveyardPositionNameJPNTex;
+
+#define dgZorasRiverPositionNameJPNTex "__OTR__textures/map_name_static/gZorasRiverPositionNameJPNTex"
+static const ALIGN_ASSET(2) char gZorasRiverPositionNameJPNTex[] = dgZorasRiverPositionNameJPNTex;
+
+#define dgKokiriForestPositionNameJPNTex "__OTR__textures/map_name_static/gKokiriForestPositionNameJPNTex"
+static const ALIGN_ASSET(2) char gKokiriForestPositionNameJPNTex[] = dgKokiriForestPositionNameJPNTex;
+
+#define dgSacredForestMeadowPositionNameJPNTex "__OTR__textures/map_name_static/gSacredForestMeadowPositionNameJPNTex"
+static const ALIGN_ASSET(2) char gSacredForestMeadowPositionNameJPNTex[] = dgSacredForestMeadowPositionNameJPNTex;
+
+#define dgLakeHyliaPositionNameJPNTex "__OTR__textures/map_name_static/gLakeHyliaPositionNameJPNTex"
+static const ALIGN_ASSET(2) char gLakeHyliaPositionNameJPNTex[] = dgLakeHyliaPositionNameJPNTex;
+
+#define dgZorasDomainPositionNameJPNTex "__OTR__textures/map_name_static/gZorasDomainPositionNameJPNTex"
+static const ALIGN_ASSET(2) char gZorasDomainPositionNameJPNTex[] = dgZorasDomainPositionNameJPNTex;
+
+#define dgZorasFountainPositionNameJPNTex "__OTR__textures/map_name_static/gZorasFountainPositionNameJPNTex"
+static const ALIGN_ASSET(2) char gZorasFountainPositionNameJPNTex[] = dgZorasFountainPositionNameJPNTex;
+
+#define dgGerudoValleyPositionNameJPNTex "__OTR__textures/map_name_static/gGerudoValleyPositionNameJPNTex"
+static const ALIGN_ASSET(2) char gGerudoValleyPositionNameJPNTex[] = dgGerudoValleyPositionNameJPNTex;
+
+#define dgLostWoodsPositionNameJPNTex "__OTR__textures/map_name_static/gLostWoodsPositionNameJPNTex"
+static const ALIGN_ASSET(2) char gLostWoodsPositionNameJPNTex[] = dgLostWoodsPositionNameJPNTex;
+
+#define dgDesertColossusPositionNameJPNTex "__OTR__textures/map_name_static/gDesertColossusPositionNameJPNTex"
+static const ALIGN_ASSET(2) char gDesertColossusPositionNameJPNTex[] = dgDesertColossusPositionNameJPNTex;
+
+#define dgGerudosFortressPositionNameJPNTex "__OTR__textures/map_name_static/gGerudosFortressPositionNameJPNTex"
+static const ALIGN_ASSET(2) char gGerudosFortressPositionNameJPNTex[] = dgGerudosFortressPositionNameJPNTex;
+
+#define dgHauntedWastelandPositionNameJPNTex "__OTR__textures/map_name_static/gHauntedWastelandPositionNameJPNTex"
+static const ALIGN_ASSET(2) char gHauntedWastelandPositionNameJPNTex[] = dgHauntedWastelandPositionNameJPNTex;
+
+#define dgMarketPositionNameJPNTex "__OTR__textures/map_name_static/gMarketPositionNameJPNTex"
+static const ALIGN_ASSET(2) char gMarketPositionNameJPNTex[] = dgMarketPositionNameJPNTex;
+
+#define dgHyruleCastlePositionNameJPNTex "__OTR__textures/map_name_static/gHyruleCastlePositionNameJPNTex"
+static const ALIGN_ASSET(2) char gHyruleCastlePositionNameJPNTex[] = dgHyruleCastlePositionNameJPNTex;
+
+#define dgDeathMountainTrailPositionNameJPNTex "__OTR__textures/map_name_static/gDeathMountainTrailPositionNameJPNTex"
+static const ALIGN_ASSET(2) char gDeathMountainTrailPositionNameJPNTex[] = dgDeathMountainTrailPositionNameJPNTex;
+
+#define dgDeathMountainCraterPositionNameJPNTex "__OTR__textures/map_name_static/gDeathMountainCraterPositionNameJPNTex"
+static const ALIGN_ASSET(2) char gDeathMountainCraterPositionNameJPNTex[] = dgDeathMountainCraterPositionNameJPNTex;
+
+#define dgGoronCityPositionNameJPNTex "__OTR__textures/map_name_static/gGoronCityPositionNameJPNTex"
+static const ALIGN_ASSET(2) char gGoronCityPositionNameJPNTex[] = dgGoronCityPositionNameJPNTex;
+
+#define dgLonLonRanchPositionNameJPNTex "__OTR__textures/map_name_static/gLonLonRanchPositionNameJPNTex"
+static const ALIGN_ASSET(2) char gLonLonRanchPositionNameJPNTex[] = dgLonLonRanchPositionNameJPNTex;
+
+#define dgQuestionMarkPositionNameJPNTex "__OTR__textures/map_name_static/gQuestionMarkPositionNameJPNTex"
+static const ALIGN_ASSET(2) char gQuestionMarkPositionNameJPNTex[] = dgQuestionMarkPositionNameJPNTex;
+
+#define dgGanonsCastlePositionNameJPNTex "__OTR__textures/map_name_static/gGanonsCastlePositionNameJPNTex"
+static const ALIGN_ASSET(2) char gGanonsCastlePositionNameJPNTex[] = dgGanonsCastlePositionNameJPNTex;
+
+
 #endif // TEXTURES_MAP_NAME_STATIC_H

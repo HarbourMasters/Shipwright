@@ -1,0 +1,47 @@
+<Root>
+    <File Name="object_hs" Segment="6">
+        <Animation Name="object_hs_Anim_000304" Offset="0x304"/>
+        <Animation Name="object_hs_Anim_000528" Offset="0x528"/>
+        <Animation Name="object_hs_Anim_0005C0" Offset="0x5C0"/>
+        <DList Name="object_hs_DL_003760" Offset="0x3760"/>
+        <DList Name="object_hs_DL_003AB0" Offset="0x3AB0"/>
+        <DList Name="object_hs_DL_004140" Offset="0x4140"/>
+        <DList Name="object_hs_DL_0042A0" Offset="0x42A0"/>
+        <DList Name="object_hs_DL_004380" Offset="0x4380"/>
+        <DList Name="object_hs_DL_004728" Offset="0x4728"/>
+        <DList Name="object_hs_DL_004860" Offset="0x4860"/>
+        <DList Name="object_hs_DL_004960" Offset="0x4960"/>
+        <DList Name="object_hs_DL_004AB8" Offset="0x4AB8"/>
+        <DList Name="object_hs_DL_004BF0" Offset="0x4BF0"/>
+        <DList Name="object_hs_DL_004CF0" Offset="0x4CF0"/>
+        <DList Name="object_hs_DL_004CF8" Offset="0x4CF8"/>
+        <Texture Name="object_hs_TLUT_004E50" OutName="tlut_00004E50" Format="rgba16" Width="16" Height="16" Offset="0x4E50"/>
+        <Texture Name="object_hs_Tex_005050" OutName="tex_00005050" Format="ci8" Width="16" Height="32" Offset="0x5050" TlutOffset="0x4E50"/>
+        <Texture Name="object_hs_Tex_005250" OutName="tex_00005250" Format="ci8" Width="8" Height="8" Offset="0x5250" TlutOffset="0x4E50"/>
+        <Texture Name="object_hs_Tex_005290" OutName="tex_00005290" Format="ci8" Width="32" Height="16" Offset="0x5290" TlutOffset="0x4E50"/>
+        <Texture Name="object_hs_Tex_005490" OutName="tex_00005490" Format="rgba16" Width="32" Height="16" Offset="0x5490"/>
+        <Texture Name="object_hs_Tex_005890" OutName="tex_00005890" Format="ci8" Width="16" Height="16" Offset="0x5890" TlutOffset="0x4E50"/>
+        <Texture Name="object_hs_Tex_005990" OutName="tex_00005990" Format="ci8" Width="16" Height="16" Offset="0x5990" TlutOffset="0x4E50"/>
+        <Texture Name="object_hs_Tex_005A90" OutName="tex_00005A90" Format="rgba16" Width="4" Height="4" Offset="0x5A90"/>
+        <Texture Name="object_hs_Tex_005AB0" OutName="tex_00005AB0" Format="ci8" Width="8" Height="8" Offset="0x5AB0" TlutOffset="0x4E50"/>
+        <Texture Name="object_hs_Tex_005AF0" OutName="tex_00005AF0" Format="ci8" Width="32" Height="32" Offset="0x5AF0" TlutOffset="0x4E50"/>
+        <Texture Name="object_hs_Tex_005EF0" OutName="tex_00005EF0" Format="ci8" Width="8" Height="16" Offset="0x5EF0" TlutOffset="0x4E50"/>
+        <Texture Name="object_hs_Tex_005F70" OutName="tex_00005F70" Format="ci8" Width="16" Height="32" Offset="0x5F70" TlutOffset="0x4E50"/>
+        <Limb Name="object_hs_Limb_006170" LimbType="Standard" Offset="0x6170"/>
+        <Limb Name="object_hs_Limb_00617C" LimbType="Standard" Offset="0x617C"/>
+        <Limb Name="object_hs_Limb_006188" LimbType="Standard" Offset="0x6188"/>
+        <Limb Name="object_hs_Limb_006194" LimbType="Standard" Offset="0x6194"/>
+        <Limb Name="object_hs_Limb_0061A0" LimbType="Standard" Offset="0x61A0"/>
+        <Limb Name="object_hs_Limb_0061AC" LimbType="Standard" Offset="0x61AC"/>
+        <Limb Name="object_hs_Limb_0061B8" LimbType="Standard" Offset="0x61B8"/>
+        <Limb Name="object_hs_Limb_0061C4" LimbType="Standard" Offset="0x61C4"/>
+        <Limb Name="object_hs_Limb_0061D0" LimbType="Standard" Offset="0x61D0"/>
+        <Limb Name="object_hs_Limb_0061DC" LimbType="Standard" Offset="0x61DC"/>
+        <Limb Name="object_hs_Limb_0061E8" LimbType="Standard" Offset="0x61E8"/>
+        <Limb Name="object_hs_Limb_0061F4" LimbType="Standard" Offset="0x61F4"/>
+        <Limb Name="object_hs_Limb_006200" LimbType="Standard" Offset="0x6200"/>
+        <Limb Name="object_hs_Limb_00620C" LimbType="Standard" Offset="0x620C"/>
+        <Limb Name="object_hs_Limb_006218" LimbType="Standard" Offset="0x6218"/>
+        <Skeleton Name="object_hs_Skel_006260" Type="Flex" LimbType="Standard" Offset="0x6260"/>
+    </File>
+</Root>

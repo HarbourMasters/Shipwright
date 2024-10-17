@@ -1,0 +1,6 @@
+<Root>
+    <File Name="object_efc_crystal_light" Segment="6">
+        <Texture Name="gCrystalLightTex" OutName="crystal_light" Format="i4" Width="64" Height="64" Offset="0x0000"/>
+        <DList Name="gCrystalLightDL" Offset="0x0980"/>
+    </File>
+</Root>

@@ -1,0 +1,55 @@
+<Root>
+    <File Name="object_mizu_objects" Segment="6">
+        <Texture Name="object_mizu_objectsTex_004C00" OutName="object_mizu_objectsTex_004C00" Format="rgba16" Width="32" Height="64" Offset="0x4C00" AddedByScript="true"/>
+        <Texture Name="object_mizu_objectsTex_005E70" OutName="object_mizu_objectsTex_005E70" Format="rgba16" Width="32" Height="64" Offset="0x5E70" AddedByScript="true"/>
+        <Texture Name="object_mizu_objectsTex_007520" OutName="object_mizu_objectsTex_007520" Format="ia16" Width="32" Height="32" Offset="0x7520" AddedByScript="true"/>
+        <Texture Name="object_mizu_objectsTex_007D20" OutName="object_mizu_objectsTex_007D20" Format="rgba16" Width="32" Height="32" Offset="0x7D20" AddedByScript="true"/>
+        <Texture Name="object_mizu_objectsTex_008520" OutName="object_mizu_objectsTex_008520" Format="rgba16" Width="32" Height="32" Offset="0x8520" AddedByScript="true"/>
+        <Texture Name="object_mizu_objectsTex_008D20" OutName="object_mizu_objectsTex_008D20" Format="rgba16" Width="32" Height="32" Offset="0x8D20" AddedByScript="true"/>
+        <Texture Name="object_mizu_objectsTex_009520" OutName="object_mizu_objectsTex_009520" Format="i4" Width="32" Height="32" Offset="0x9520" AddedByScript="true"/>
+        <Texture Name="object_mizu_objectsTex_009720" OutName="object_mizu_objectsTex_009720" Format="i4" Width="32" Height="32" Offset="0x9720" AddedByScript="true"/>
+        <Texture Name="object_mizu_objectsTex_009920" OutName="object_mizu_objectsTex_009920" Format="i4" Width="32" Height="32" Offset="0x9920" AddedByScript="true"/>
+        <Texture Name="object_mizu_objectsTex_009B20" OutName="object_mizu_objectsTex_009B20" Format="i4" Width="32" Height="32" Offset="0x9B20" AddedByScript="true"/>
+        <Texture Name="object_mizu_objectsTex_009D20" OutName="object_mizu_objectsTex_009D20" Format="i4" Width="32" Height="32" Offset="0x9D20" AddedByScript="true"/>
+        <Texture Name="object_mizu_objectsTex_009F20" OutName="object_mizu_objectsTex_009F20" Format="rgba16" Width="32" Height="32" Offset="0x9F20" AddedByScript="true"/>
+        <Texture Name="object_mizu_objectsTex_00A720" OutName="object_mizu_objectsTex_00A720" Format="rgba16" Width="16" Height="32" Offset="0xA720" AddedByScript="true"/>
+        <Texture Name="object_mizu_objectsTex_00AB20" OutName="object_mizu_objectsTex_00AB20" Format="i4" Width="64" Height="64" Offset="0xAB20" AddedByScript="true"/>
+        <DList Name="gObjectMizuObjectsMovebgDL_000190" Offset="0x0190"/>
+        <Collision Name="gObjectMizuObjectsMovebgCol_0003F0" Offset="0x03F0"/>
+        <DList Name="gObjectMizuObjectsMovebgDL_000680" Offset="0x0680"/>
+        <Collision Name="gObjectMizuObjectsMovebgCol_000998" Offset="0x0998"/>
+        <DList Name="gObjectMizuObjectsMovebgDL_000C20" Offset="0x0C20"/>
+        <Collision Name="gObjectMizuObjectsMovebgCol_000ED0" Offset="0x0ED0"/>
+        <DList Name="gObjectMizuObjectsMovebgDL_0011F0" Offset="0x11F0"/>
+        <Collision Name="gObjectMizuObjectsMovebgCol_0015F8" Offset="0x15F8"/>
+        <DList Name="gObjectMizuObjectsMovebgDL_002E10" Offset="0x2E10"/>
+        <Collision Name="gObjectMizuObjectsMovebgCol_003590" Offset="0x3590"/>
+        
+        <DList Name="gObjectMizuObjectsBwallDL_001770" Offset="0x1770"/>
+        <DList Name="gObjectMizuObjectsBwallDL_001A30" Offset="0x1A30"/>
+        <Collision Name="gObjectMizuObjectsBwallCol_001C58" Offset="0x1C58"/>
+        <DList Name="gObjectMizuObjectsBwallDL_001CD0" Offset="0x1CD0"/>
+        <Collision Name="gObjectMizuObjectsBwallCol_001DE8" Offset="0x1DE8"/>
+        <DList Name="gObjectMizuObjectsBwallDL_002090" Offset="0x2090"/>
+        <DList Name="gObjectMizuObjectsBwallDL_002390" Offset="0x2390"/>
+        <Collision Name="gObjectMizuObjectsBwallCol_0025A4" Offset="0x25A4"/>
+
+        <Texture Name="object_mizu_objects_Tex_0035C0" OutName="tex_000035C0" Format="rgba16" Width="32" Height="64" Offset="0x35C0"/>
+
+        <DList Name="gWaterTempleDoorDL_0048B0" Offset="0x48B0"/>
+        <DList Name="gWaterTempleDoorLeftDL" Offset="0x4958"/>
+        <DList Name="gWaterTempleDoorRightDL" Offset="0x4A10"/>
+        
+        <DList Name="gObjectMizuObjectsWaterDL_004B20" Offset="0x4B20"/>
+        
+        <DList Name="gObjectMizuObjectsDoorShutterDL_005D90" Offset="0x5D90"/>
+        <DList Name="gObjectMizuObjectsDoorShutterDL_007000" Offset="0x7000"/>
+        
+        <DList Name="gObjectMizuObjectsShutterDL_007130" Offset="0x7130"/>
+        <Collision Name="gObjectMizuObjectsShutterCol_007250" Offset="0x7250"/>
+        <DList Name="gObjectMizuObjectsShutterDL_0072D0" Offset="0x72D0"/>
+        <Collision Name="gObjectMizuObjectsShutterCol_0073F0" Offset="0x73F0"/>
+        
+        <Collision Name="gObjectMizuObjectsUzuCol_0074EC" Offset="0x74EC"/>
+    </File>
+</Root>

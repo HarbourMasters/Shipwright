@@ -248,16 +248,16 @@ void DrawInfoTab() {
     ImGui::InputScalar("Navi Timer", ImGuiDataType_U16, &gSaveContext.naviTimer);
     UIWidgets::InsertHelpHoverText("Navi wants to talk at 600 units, decides not to at 3000.");
 
-    ImGui::InputScalar("Timer 1 State", ImGuiDataType_S16, &gSaveContext.timer1State);
+    ImGui::InputScalar("Timer 1 State", ImGuiDataType_S16, &gSaveContext.timerState);
     UIWidgets::InsertHelpHoverText("Heat timer, race timer, etc. Has white font");
 
-    ImGui::InputScalar("Timer 1 Value", ImGuiDataType_S16, &gSaveContext.timer1Value, &one, NULL);
+    ImGui::InputScalar("Timer 1 Value", ImGuiDataType_S16, &gSaveContext.timerSeconds, &one, NULL);
     UIWidgets::InsertHelpHoverText("Time, in seconds");
 
-    ImGui::InputScalar("Timer 2 State", ImGuiDataType_S16, &gSaveContext.timer2State);
+    ImGui::InputScalar("Timer 2 State", ImGuiDataType_S16, &gSaveContext.subTimerState);
     UIWidgets::InsertHelpHoverText("Trade timer, Ganon collapse timer, etc. Has yellow font");
 
-    ImGui::InputScalar("Timer 2 Value", ImGuiDataType_S16, &gSaveContext.timer2Value, &one, NULL);
+    ImGui::InputScalar("Timer 2 Value", ImGuiDataType_S16, &gSaveContext.subTimerSeconds, &one, NULL);
     UIWidgets::InsertHelpHoverText("Time, in seconds");
      
     const char* audioName;

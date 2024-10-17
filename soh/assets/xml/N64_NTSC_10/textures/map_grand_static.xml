@@ -1,0 +1,28 @@
+<Root>
+     <File Name="map_grand_static" Segment="11">
+        <Texture Name="gHyruleFieldMinimapTex" OutName="hyrule_field_minimap" Format="ia4" Width="80" Height="73" Offset="0x0"/>
+        <Texture Name="gKakarikoVillageMinimapTex" OutName="kakariko_village_minimap" Format="ia4" Width="80" Height="64" Offset="0xB68"/>
+        <Texture Name="gGraveyardMinimapTex" OutName="graveyard_minimap" Format="ia4" Width="80" Height="39" Offset="0x1568"/>
+        <Texture Name="gZorasRiverMinimapTex" OutName="zoras_river_minimap" Format="ia4" Width="96" Height="58" Offset="0x1B80"/>
+        <Texture Name="gKokiriForestMinimapTex" OutName="kokiri_forest_minimap" Format="ia4" Width="96" Height="62" Offset="0x2660"/>
+        <Texture Name="gSacredMeadowMinimapTex" OutName="sacred_meadow_minimap" Format="ia4" Width="48" Height="85" Offset="0x3200"/>
+        <Texture Name="gLakeHyliaMinimapTex" OutName="lake_hylia_minimap" Format="ia4" Width="80" Height="81" Offset="0x39F8"/>
+        <Texture Name="gZorasDomainMinimapTex" OutName="zoras_domain_minimap" Format="ia4" Width="64" Height="73" Offset="0x46A0"/>
+        <Texture Name="gZorasFountainMinimapTex" OutName="zoras_fountain_minimap" Format="ia4" Width="64" Height="65" Offset="0x4FC0"/>
+        <Texture Name="gGerudoValleyMinimapTex" OutName="gerudo_valley_minimap" Format="ia4" Width="80" Height="65" Offset="0x57E0"/>
+        <Texture Name="gHauntedWastelandMinimapTex" OutName="haunted_wasteland_minimap" Format="ia4" Width="64" Height="56" Offset="0x6208"/>
+        <Texture Name="gDesertColossusMinimapTex" OutName="desert_colossus_minimap" Format="ia4" Width="64" Height="59" Offset="0x6908"/>
+        <Texture Name="gGerudosFortessMinimapTex" OutName="gerudos_fortess_minimap" Format="ia4" Width="80" Height="85" Offset="0x7068"/>
+        <Texture Name="gLostWoodsMinimapTex" OutName="lost_woods_minimap" Format="ia4" Width="64" Height="56" Offset="0x7DB0"/>
+        <Texture Name="gHyruleCastleAreaMinimapTex" OutName="hyrule_castle_area_minimap" Format="ia4" Width="64" Height="59" Offset="0x84B0"/>
+        <Texture Name="gDeathMountainTrailMinimapTex" OutName="death_mountain_trail_minimap" Format="ia4" Width="48" Height="85" Offset="0x8C10"/>
+        <Texture Name="gDeathMountainCraterMinimapTex" OutName="death_mountain_crater_minimap" Format="ia4" Width="80" Height="78" Offset="0x9408"/>
+        <Texture Name="gGoronCityMinimapTex" OutName="goron_city_minimap" Format="ia4" Width="64" Height="72" Offset="0xA038"/>
+        <Texture Name="gLonLonRanchMinimapTex" OutName="lon_lon_ranch_minimap" Format="ia4" Width="64" Height="68" Offset="0xA938"/>
+        <Texture Name="gOutsideGanonsCastleMinimapTex" OutName="outside_ganons_castle_minimap" Format="ia4" Width="64" Height="59" Offset="0xB1B8"/>
+        <Texture Name="gExploredShadowGraveyardMinimapTex" OutName="explored_shadow_graveyard_minimap" Format="ia4" Width="80" Height="39" Offset="0xB918"/>
+        <Texture Name="gDrainedLakeHyliaMinimapTex" OutName="drained_lake_hylia_minimap" Format="ia4" Width="80" Height="81" Offset="0xBF30"/>
+        <Texture Name="gGerudoValleyWithBrokenBridgeMinimapTex" OutName="gerudo_valley_with_broken_bridge_minimap" Format="ia4" Width="80" Height="65" Offset="0xCBD8"/>
+        <Texture Name="gGerudosFortressMinimapTex" OutName="gerudos_fortress_minimap" Format="ia4" Width="80" Height="85" Offset="0xD600"/>
+     </File>
+</Root>

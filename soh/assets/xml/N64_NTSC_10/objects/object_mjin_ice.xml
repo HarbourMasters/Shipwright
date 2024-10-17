@@ -1,0 +1,5 @@
+<Root>
+    <File Name="object_mjin_ice" Segment="6">
+        <Texture Name="gWaterMedallionPlatformTex" OutName="water_medallion" Format="i8" Width="64" Height="64" Offset="0x0"/>
+    </File>
+</Root>

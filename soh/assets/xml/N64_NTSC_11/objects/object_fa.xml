@@ -1,0 +1,15 @@
+<Root>
+    <File Name="object_fa" Segment="6">
+        <Texture Name="gFaTLUT" OutName="tlut" Format="rgba16" Width="256" Height="1" Offset="0x0"/>
+        <Texture Name="gFaSkinTex" OutName="skin" Format="ci8" Width="8" Height="8" Offset="0x200" TlutOffset="0x0"/>
+        <Texture Name="gFaEyeOpenTex" OutName="eye_open" Format="ci8" Width="32" Height="32" Offset="0x240" TlutOffset="0x0"/>
+        <Texture Name="gFaMouthTex" OutName="mouth" Format="ci8" Width="32" Height="16" Offset="0x640" TlutOffset="0x0"/>
+        <Texture Name="gFaHair1Tex" OutName="hair1" Format="ci8" Width="8" Height="16" Offset="0x840" TlutOffset="0x0"/>
+        <Texture Name="gFaEarTex" OutName="ear" Format="ci8" Width="8" Height="8" Offset="0x8C0" TlutOffset="0x0"/>
+        <Texture Name="gFaHair2Tex" OutName="hair2" Format="rgba16" Width="32" Height="16" Offset="0x900"/>
+        <Texture Name="gFaHeadbandTex" OutName="headband" Format="ci8" Width="8" Height="8" Offset="0xD00" TlutOffset="0x0"/>
+        <Texture Name="gFaEyeHalfTex" OutName="eye_half" Format="ci8" Width="32" Height="32" Offset="0xD40" TlutOffset="0x0"/>
+        <Texture Name="gFaEyeClosedTex" OutName="eye_closed" Format="ci8" Width="32" Height="32" Offset="0x1140" TlutOffset="0x0"/>
+        <DList Name="gFaDL" Offset="0x2940"/>
+    </File>
+</Root>

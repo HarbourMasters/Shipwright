@@ -1,0 +1,10 @@
+<Root>
+    <File Name="object_oE_anime" Segment="6">
+        <Animation Name="object_oE_anime_Anim_00001034" Offset="0x1034"/>
+        <Animation Name="object_oE_anime_Anim_000019BC" Offset="0x19BC"/>
+        <Animation Name="object_oE_anime_Anim_0000242C" Offset="0x242C"/>
+        <Animation Name="object_oE_anime_Anim_00002DC8" Offset="0x2DC8"/>
+        <Animation Name="object_oE_anime_Anim_000047D4" Offset="0x47D4"/>
+        <Animation Name="object_oE_anime_Anim_00005044" Offset="0x5044"/>
+    </File>
+</Root>

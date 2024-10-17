@@ -1,0 +1,55 @@
+<Root>
+    <File Name="object_cow" Segment="6">
+        <!-- Cow Body Skeleton -->
+        <Skeleton Name="gCowBodySkel" Type="Flex" LimbType="Standard" Offset="0x4010"/>
+
+        <!-- Cow Body Limbs -->
+        <Limb Name="gCowRootLimb" LimbType="Standard" Offset="0x3FC0"/>
+        <Limb Name="gCowHeadLimb" LimbType="Standard" Offset="0x3FCC"/>
+        <Limb Name="gCowJawLimb" LimbType="Standard" Offset="0x3FD8"/>
+        <Limb Name="gCowNoseLimb" LimbType="Standard" Offset="0x3FE4"/>
+        <Limb Name="gCowNoseRingLimb" LimbType="Standard" Offset="0x3FF0"/>
+
+        <!-- Cow Body Limb DisplayLists -->
+        <DList Name="gCowTorsoDL" Offset="0x1A80"/>
+        <DList Name="gCowHeadDL" Offset="0x1FE8"/>
+        <DList Name="gCowJawDL" Offset="0x2760"/>
+        <DList Name="gCowNoseDL" Offset="0x2368"/>
+        <DList Name="gCowNoseRingDL" Offset="0x2628"/>
+
+        <!-- Cow Tail Skeleton -->
+        <Skeleton Name="gCowTailSkel" Type="Flex" LimbType="Standard" Offset="0x4C30"/>
+
+        <!-- Cow Tail Limbs -->
+        <Limb Name="gCowTailRootLimb" LimbType="Standard" Offset="0x4BE0"/>
+        <Limb Name="gCowTailUpperLimb" LimbType="Standard" Offset="0x4BEC"/>
+        <Limb Name="gCowTailMiddleLimb" LimbType="Standard" Offset="0x4BF8"/>
+        <Limb Name="gCowTailLowerLimb" LimbType="Standard" Offset="0x4C04"/>
+        <Limb Name="gCowTailEndLimb" LimbType="Standard" Offset="0x4C10"/>
+
+        <!-- Cow Tail Limb DisplayLists -->
+        <DList Name="gCowTailConnectionDL" Offset="0x46F0"/>
+        <DList Name="gCowTailUpperDL" Offset="0x47D0"/>
+        <DList Name="gCowTailMiddleDL" Offset="0x48D0"/>
+        <DList Name="gCowTailLowerDL" Offset="0x49D0"/>
+        <DList Name="gCowTailEndDL" Offset="0x4AD0"/>
+
+        <!-- Cow Animations -->
+        <Animation Name="gCowBodyChewAnim" Offset="0x01CC"/>
+        <Animation Name="gCowBodyMoveHeadAnim" Offset="0x4264"/>
+        <Animation Name="gCowTailIdleAnim" Offset="0x4348"/>
+        <Animation Name="gCowTailSwishAnim" Offset="0x4E98"/>
+
+        <!-- Cow Palettes -->
+        <Texture Name="gCowTLUT" OutName="cow_tlut" Format="rgba16" Width="16" Height="16" Offset="0x2880"/>
+
+        <!-- Cow DisplayList Textures -->
+        <Texture Name="gCowUdderTex" OutName="cow_udder" Format="ci8" Width="16" Height="16" Offset="0x2A80" TlutOffset="0x2880"/>
+        <Texture Name="gCowNoseRingTex" OutName="cow_nose_ring" Format="ci8" Width="8" Height="8" Offset="0x2B80" TlutOffset="0x2880"/>
+        <Texture Name="gCowNoseTex" OutName="cow_nose" Format="ci8" Width="16" Height="16" Offset="0x2BC0" TlutOffset="0x2880"/>
+        <Texture Name="gCowSpottedPatternTex" OutName="cow_spotted_pattern" Format="i8" Width="64" Height="64" Offset="0x2CC0"/>
+        <Texture Name="gCowEarTex" OutName="cow_ear" Format="ci8" Width="8" Height="16" Offset="0x3CC0" TlutOffset="0x2880"/>
+        <Texture Name="gCowEyelidTex" OutName="cow_eyelid" Format="rgba16" Width="16" Height="16" Offset="0x3D40"/>
+        <Texture Name="gCowTailTex" OutName="cow_tail" Format="ci8" Width="8" Height="16" Offset="0x3F40" TlutOffset="0x2880"/>
+    </File>
+</Root>
