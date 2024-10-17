@@ -665,6 +665,10 @@ void DrawEnhancementsMenu() {
 
                 UIWidgets::PaddedEnhancementSliderInt("Text Speed: %dx", "##TEXTSPEED", CVAR_ENHANCEMENT("TextSpeed"), 1, 5, "", 1, true, false, true);
                 UIWidgets::PaddedEnhancementCheckbox("Skip Text", CVAR_ENHANCEMENT("SkipText"), false, true);
+                UIWidgets::PaddedEnhancementSliderInt("Slow Text Speed: %dx", "##SLOWTEXTSPEED", CVAR_ENHANCEMENT("SlowTextSpeed"), 1, 5, "", 1, true, false, true);
+                if (ImGui::Button("Match Normal Text")) {
+                    CVarSetInteger(CVAR_ENHANCEMENT("SlowTextSpeed"), CVarGetInteger(CVAR_ENHANCEMENT("TextSpeed"), 1));
+                }
                 UIWidgets::Tooltip("Holding down B skips text");
                 UIWidgets::PaddedEnhancementSliderFloat("King Zora Speed: %.2fx", "##MWEEPSPEED", CVAR_ENHANCEMENT("MweepSpeed"), 0.1f, 5.0f, "", 1.0f, false, false, true);
                 UIWidgets::PaddedEnhancementSliderInt("Vine/Ladder Climb speed +%d", "##CLIMBSPEED", CVAR_ENHANCEMENT("ClimbSpeed"), 0, 12, "", 0, true, false, true);
@@ -818,6 +822,16 @@ void DrawEnhancementsMenu() {
                     }
                 }
                 UIWidgets::Tooltip("Allows strength to be toggled on and off by pressing A on the strength upgrade in the equipment subscreen of the pause menu (This allows performing some glitches that require the player to not have strength).");
+                ImGui::EndMenu();
+            }
+
+            UIWidgets::Spacer(0);
+
+            if (ImGui::BeginMenu("Item Count Messages")) {
+                UIWidgets::EnhancementCheckbox("Gold Skulltula Tokens", CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"));
+                UIWidgets::PaddedEnhancementCheckbox("Pieces of Heart", CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"), true, false);
+                UIWidgets::PaddedEnhancementCheckbox("Heart Containers", CVAR_ENHANCEMENT("InjectItemCounts.HeartContainer"), true, false);
+
                 ImGui::EndMenu();
             }
 
@@ -1162,8 +1176,6 @@ void DrawEnhancementsMenu() {
             UIWidgets::Tooltip("Allows the Lon Lon Ranch obstacle course reward to be shared across time periods");
             UIWidgets::PaddedEnhancementCheckbox("Enable visible guard vision", CVAR_ENHANCEMENT("GuardVision"), true, false);
             UIWidgets::PaddedEnhancementCheckbox("Enable passage of time on file select", CVAR_ENHANCEMENT("TimeFlowFileSelect"), true, false);
-            UIWidgets::PaddedEnhancementCheckbox("Item counts in messages", CVAR_ENHANCEMENT("InjectItemCounts"), true, false);
-            UIWidgets::Tooltip("Injects item counts in pickup messages, like golden skulltula tokens and heart pieces");
             UIWidgets::PaddedEnhancementCheckbox("Pull grave during the day", CVAR_ENHANCEMENT("DayGravePull"), true, false);
             UIWidgets::Tooltip("Allows graves to be pulled when child during the day");
             UIWidgets::PaddedEnhancementCheckbox("Dogs follow you everywhere", CVAR_ENHANCEMENT("DogFollowsEverywhere"), true, false);
