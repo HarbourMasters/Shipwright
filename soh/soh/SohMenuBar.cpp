@@ -112,6 +112,16 @@ static const char* imguiScaleOptions[4] = { "Small", "Normal", "Large", "X-Large
     };
     static const char* timeTravelOptions[3] = { "Disabled", "Ocarina of Time", "Any Ocarina" };
     static const char* swordToggleModes[3] = { "Disabled", "Child Toggle", "Both Ages (May lead to unintended behaviour)"};
+    static const char* itemCountMessageCVars[3] = {
+        CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"),
+        CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"),
+        CVAR_ENHANCEMENT("InjectItemCounts.HeartContainer"),
+    };
+    static const char* itemCountMessageOptions[sizeof(itemCountMessageCVars) / sizeof(const char*)] = {
+        "Gold Skulltula Tokens",
+        "Pieces of Heart",
+        "Heart Containers",
+    };
 
 extern "C" SaveContext gSaveContext;
 
@@ -581,7 +591,7 @@ void DrawEnhancementsMenu() {
                 UIWidgets::Spacer(0);
                 ImGui::Text("Speed-ups:");
                 UIWidgets::PaddedSeparator();
-                bool allChecked =
+                bool allSkipsChecked =
                     CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Intro"), IS_RANDO) &&
                     CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Entrances"), IS_RANDO) &&
                     CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO) &&
@@ -593,7 +603,7 @@ void DrawEnhancementsMenu() {
                     CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipOwlInteractions"), IS_RANDO) &&
                     CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO) &&
                     CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.DisableTitleCard"), IS_RANDO);
-                bool someChecked =
+                bool someSkipsChecked =
                     CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Intro"), IS_RANDO) ||
                     CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Entrances"), IS_RANDO) ||
                     CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO) ||
@@ -608,33 +618,22 @@ void DrawEnhancementsMenu() {
 
                 ImGuiContext* g = ImGui::GetCurrentContext();
                 ImGuiItemFlags backup_item_flags = g->CurrentItemFlags;
-                if (!allChecked && someChecked) g->CurrentItemFlags |= ImGuiItemFlags_MixedValue;
-                if (ImGui::Checkbox("All", &allChecked)) {
-                    if (allChecked) {
-                        CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Intro"), 1);
-                        CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Entrances"), 1);
-                        CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), 1);
-                        CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.LearnSong"), 1);
-                        CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.BossIntro"), 1);
-                        CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.QuickBossDeaths"), 1);
-                        CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint"), 1);
-                        CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.NoForcedDialog"), 1);
-                        CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipOwlInteractions"), 1);
-                        CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), 1);
-                        CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.DisableTitleCard"), 1);
-                    } else {
-                        CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Intro"), 0);
-                        CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Entrances"), 0);
-                        CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), 0);
-                        CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.LearnSong"), 0);
-                        CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.BossIntro"), 0);
-                        CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.QuickBossDeaths"), 0);
-                        CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint"), 0);
-                        CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.NoForcedDialog"), 0);
-                        CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipOwlInteractions"), 0);
-                        CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), 0);
-                        CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.DisableTitleCard"), 0);
-                    }
+                if (!allSkipsChecked && someSkipsChecked) g->CurrentItemFlags |= ImGuiItemFlags_MixedValue;
+                if (ImGui::Checkbox("All", &allSkipsChecked)) {
+                    int32_t newValue = allSkipsChecked ? 1 : 0;
+
+                    CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Intro"), newValue);
+                    CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Entrances"), newValue);
+                    CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), newValue);
+                    CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.LearnSong"), newValue);
+                    CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.BossIntro"), newValue);
+                    CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.QuickBossDeaths"), newValue);
+                    CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint"), newValue);
+                    CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.NoForcedDialog"), newValue);
+                    CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipOwlInteractions"), newValue);
+                    CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), newValue);
+                    CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.DisableTitleCard"), newValue);
+
                     Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                 }
                 g->CurrentItemFlags = backup_item_flags;
@@ -831,9 +830,28 @@ void DrawEnhancementsMenu() {
             UIWidgets::Spacer(0);
 
             if (ImGui::BeginMenu("Item Count Messages")) {
-                UIWidgets::EnhancementCheckbox("Gold Skulltula Tokens", CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"));
-                UIWidgets::PaddedEnhancementCheckbox("Pieces of Heart", CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"), true, false);
-                UIWidgets::PaddedEnhancementCheckbox("Heart Containers", CVAR_ENHANCEMENT("InjectItemCounts.HeartContainer"), true, false);
+                int numOptions = sizeof(itemCountMessageCVars) / sizeof(const char*);
+                bool allItemCountsChecked = std::all_of(itemCountMessageCVars, itemCountMessageCVars + numOptions,
+                                                        [](const char* cvar) { return CVarGetInteger(cvar, 0); });
+                bool someItemCountsChecked = std::any_of(itemCountMessageCVars, itemCountMessageCVars + numOptions,
+                                                         [](const char* cvar) { return CVarGetInteger(cvar, 0); });
+
+                ImGuiContext* g = ImGui::GetCurrentContext();
+                ImGuiItemFlags backup_item_flags = g->CurrentItemFlags;
+                if (!allItemCountsChecked && someItemCountsChecked) g->CurrentItemFlags |= ImGuiItemFlags_MixedValue;
+                if (ImGui::Checkbox("All", &allItemCountsChecked)) {
+                    int32_t newValue = allItemCountsChecked ? 1 : 0;
+
+                    std::for_each(itemCountMessageCVars, itemCountMessageCVars + numOptions,
+                                  [newValue](const char* cvar) { CVarSetInteger(cvar, newValue); });
+
+                    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                }
+                g->CurrentItemFlags = backup_item_flags;
+
+                for (int i = 0; i < numOptions; i++) {
+                    UIWidgets::PaddedEnhancementCheckbox(itemCountMessageOptions[i], itemCountMessageCVars[i], true, false);
+                }
 
                 ImGui::EndMenu();
             }
