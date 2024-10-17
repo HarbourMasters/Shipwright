@@ -127,7 +127,7 @@ void func_8097CB0C(DemoGo* this, PlayState* play) {
     Actor* thisx = &this->actor;
     PosRot* world = &thisx->world;
     CutsceneContext* csCtx = &play->csCtx;
-    CsCmdActorAction* npcAction;
+    CsCmdActorCue* npcAction;
     f32 temp_ret;
     s32 pad;
     Vec3f startPos;
@@ -167,7 +167,7 @@ void func_8097CCC0(DemoGo* this) {
 }
 
 void func_8097CCE0(DemoGo* this, PlayState* play) {
-    CsCmdActorAction* npcAction;
+    CsCmdActorCue* npcAction;
     Actor* thisx = &this->actor;
     s32 rotYDelta;
     s32 newRotY;
@@ -221,7 +221,7 @@ void func_8097CE20(DemoGo* this, PlayState* play) {
 
 void func_8097CE78(DemoGo* this, PlayState* play) {
     CutsceneContext* csCtx = &play->csCtx;
-    CsCmdActorAction* npcAction;
+    CsCmdActorCue* npcAction;
 
     if (play->csCtx.state != CS_STATE_IDLE) {
         npcAction = csCtx->npcActions[func_8097C870(this)];

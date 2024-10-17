@@ -7,6 +7,8 @@
 #include "z_en_kakasi2.h"
 #include "vt.h"
 #include "objects/object_ka/object_ka.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA | ACTOR_FLAG_NO_LOCKON)
 
@@ -116,12 +118,8 @@ void func_80A90264(EnKakasi2* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     this->unk_194++;
-    
-    bool skipScarecrow = play->msgCtx.msgMode == MSGMODE_OCARINA_PLAYING &&
-                            ((CVarGetInteger(CVAR_ENHANCEMENT("InstantScarecrow"), 0) && gSaveContext.scarecrowSpawnSongSet) ||
-                            (IS_RANDO && Randomizer_GetSettingValue(RSK_SKIP_SCARECROWS_SONG)));
 
-    if ((BREG(1) != 0) || skipScarecrow && (this->actor.xzDistToPlayer < this->maxSpawnDistance.x) &&
+    if ((BREG(1) != 0) || GameInteractor_Should(VB_SKIP_SCARECROWS_SONG, false) && (this->actor.xzDistToPlayer < this->maxSpawnDistance.x) &&
         (fabsf(player->actor.world.pos.y - this->actor.world.pos.y) < this->maxSpawnDistance.y)) {
         this->actor.draw = func_80A90948;
         Collider_InitCylinder(play, &this->collider);

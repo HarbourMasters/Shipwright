@@ -147,7 +147,7 @@ void EfcErupc_Draw(Actor* thisx, PlayState* play) {
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     if (play->csCtx.state != 0) {
-        CsCmdActorAction* csActorAction = play->csCtx.npcActions[2];
+        CsCmdActorCue* csActorAction = play->csCtx.npcActions[2];
         if (csActorAction != 0) {
             csAction = csActorAction->action;
             if ((csAction == 2) || (csAction == 3)) {

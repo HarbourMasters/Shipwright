@@ -2,6 +2,8 @@
 #include "vt.h"
 
 #include <string.h>
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include "soh/Enhancements/randomizer/savefile.h"
 
@@ -138,6 +140,10 @@ void Sram_OpenSave() {
             break;
     }
 
+    if (!CVarGetInteger(CVAR_ENHANCEMENT("PersistentMasks"), 0)) {
+        gSaveContext.maskMemory = PLAYER_MASK_NONE;
+    }
+
     osSyncPrintf("scene_no = %d\n", gSaveContext.entranceIndex);
     osSyncPrintf(VT_RST);
 
@@ -198,7 +204,7 @@ void Sram_OpenSave() {
         }
     }
 
-    if (!(IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE))) {
+    if (GameInteractor_Should(VB_REVERT_SPOILING_ITEMS, true)) {
         for (i = 0; i < ARRAY_COUNT(gSpoilingItems); i++) {
             if (INV_CONTENT(ITEM_TRADE_ADULT) == gSpoilingItems[i]) {
                 INV_CONTENT(gSpoilingItemReverts[i]) = gSpoilingItemReverts[i];
@@ -244,13 +250,12 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
 
     u8 currentQuest = fileChooseCtx->questType[fileChooseCtx->buttonIndex];
 
-    if (currentQuest == QUEST_RANDOMIZER &&
-        strnlen(CVarGetString(CVAR_GENERAL("SpoilerLog"), ""), 1) != 0) {
+    if (currentQuest == QUEST_RANDOMIZER && (Randomizer_IsSeedGenerated() || Randomizer_IsPlandoLoaded())) {
         gSaveContext.questId = QUEST_RANDOMIZER;
 
         Randomizer_InitSaveFile();
-    } else if (currentQuest == QUEST_MASTER) {
-        gSaveContext.questId = QUEST_MASTER;
+    } else {
+        gSaveContext.questId = currentQuest;
     }
 
     Save_SaveFile();

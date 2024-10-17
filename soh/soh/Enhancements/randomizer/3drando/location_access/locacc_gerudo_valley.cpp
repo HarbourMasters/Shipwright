@@ -1,209 +1,207 @@
 #include "../location_access.hpp"
-#include "../logic.hpp"
-#include "../entrance.hpp"
+#include "../../entrance.h"
 
-using namespace Logic;
-using namespace Settings;
+using namespace Rando;
 
-void AreaTable_Init_GerudoValley() {
-  areaTable[GERUDO_VALLEY] = Area("Gerudo Valley", "Gerudo Valley", GERUDO_VALLEY, DAY_NIGHT_CYCLE, {
+void RegionTable_Init_GerudoValley() {
+  areaTable[RR_GERUDO_VALLEY] = Region("Gerudo Valley", "Gerudo Valley", {RA_GERUDO_VALLEY}, DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&BugRock, {[]{return BugRock || IsChild;}}),
+                  EventAccess(&logic->BugRock, {[]{return logic->BugRock || logic->IsChild;}}),
                 }, {
                   //Locations
-                  LocationAccess(GV_GS_SMALL_BRIDGE, {[]{return IsChild && HookshotOrBoomerang && AtNight && CanGetNightTimeGS;}}),
+                  LOCATION(RC_GV_GS_SMALL_BRIDGE, logic->IsChild && logic->HookshotOrBoomerang() && logic->AtNight && logic->CanGetNightTimeGS()),
                 }, {
                   //Exits
-                  Entrance(HYRULE_FIELD,      {[]{return true;}}),
-                  Entrance(GV_UPPER_STREAM,   {[]{return true;}}),
-                  Entrance(GV_CRATE_LEDGE,    {[]{return IsChild || CanUse(LONGSHOT);}}),
-                  Entrance(GV_GROTTO_LEDGE,   {[]{return true;}}),
-                  Entrance(GV_FORTRESS_SIDE,  {[]{return (IsAdult && (CanRideEpona || CanUse(LONGSHOT) || GerudoFortress.Is(GERUDOFORTRESS_OPEN) || CarpenterRescue)) || (IsChild && CanUse(HOOKSHOT));}}),
+                  Entrance(RR_HYRULE_FIELD,      {[]{return true;}}),
+                  Entrance(RR_GV_UPPER_STREAM,   {[]{return true;}}),
+                  Entrance(RR_GV_CRATE_LEDGE,    {[]{return logic->IsChild || logic->CanUse(RG_LONGSHOT);}}),
+                  Entrance(RR_GV_GROTTO_LEDGE,   {[]{return true;}}),
+                  Entrance(RR_GV_FORTRESS_SIDE,  {[]{return (logic->IsAdult && (logic->CanUse(RG_EPONA) || logic->CanUse(RG_LONGSHOT) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_OPEN) || logic->CarpenterRescue)) || (logic->IsChild && logic->CanUse(RG_HOOKSHOT));}}),
   });
 
-  areaTable[GV_UPPER_STREAM] = Area("GV Upper Stream", "Gerudo Valley", GERUDO_VALLEY, DAY_NIGHT_CYCLE, {
+  areaTable[RR_GV_UPPER_STREAM] = Region("GV Upper Stream", "Gerudo Valley", {RA_GERUDO_VALLEY}, DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&GossipStoneFairy, {[]{return GossipStoneFairy || CanSummonGossipFairy;}}),
-                  EventAccess(&BeanPlantFairy,   {[]{return BeanPlantFairy   || (CanPlantBean(GV_UPPER_STREAM) && CanPlay(SongOfStorms));}}),
+                  EventAccess(&logic->GossipStoneFairy, {[]{return logic->CallGossipFairy();}}),
+                  EventAccess(&logic->BeanPlantFairy,   {[]{return logic->BeanPlantFairy   || (CanPlantBean(RR_GV_UPPER_STREAM) && logic->CanUse(RG_SONG_OF_STORMS));}}),
                 }, {
                   //Locations
-                  LocationAccess(GV_WATERFALL_FREESTANDING_POH, {[]{return true;}}),
-                  LocationAccess(GV_GS_BEAN_PATCH,              {[]{return CanPlantBugs && CanChildAttack;}}),
-                  LocationAccess(GV_COW,                        {[]{return IsChild && CanPlay(EponasSong);}}),
-                  LocationAccess(GV_GOSSIP_STONE,               {[]{return true;}}),
+                  LOCATION(RC_GV_WATERFALL_FREESTANDING_POH, logic->IsChild || logic->HasItem(RG_BRONZE_SCALE)),//can use cucco as child
+                  LOCATION(RC_GV_GS_BEAN_PATCH,              logic->CanSpawnSoilSkull() && logic->CanAttack()),
+                  LOCATION(RC_GV_COW,                        logic->IsChild && logic->CanUse(RG_EPONAS_SONG)),
+                  LOCATION(RC_GV_GOSSIP_STONE,               true),
                 }, {
                   //Exits
-                  Entrance(GV_LOWER_STREAM, {[]{return true;}}),
+                  Entrance(RR_GV_LOWER_STREAM, {[]{return true;}}),
   });
 
-  areaTable[GV_LOWER_STREAM] = Area("GV Lower Stream", "Gerudo Valley", GERUDO_VALLEY, DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_GV_LOWER_STREAM] = Region("GV Lower Stream", "Gerudo Valley", {RA_GERUDO_VALLEY}, DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
-                  Entrance(LAKE_HYLIA, {[]{return true;}}),
+                  Entrance(RR_LAKE_HYLIA, {[]{return logic->IsChild || logic->HasItem(RG_BRONZE_SCALE);}}),//can use cucco as child
   });
 
-  areaTable[GV_GROTTO_LEDGE] = Area("GV Grotto Ledge", "Gerudo Valley", GERUDO_VALLEY, DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_GV_GROTTO_LEDGE] = Region("GV Grotto Ledge", "Gerudo Valley", {RA_GERUDO_VALLEY}, DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
-                  Entrance(GV_LOWER_STREAM,   {[]{return true;}}),
-                  Entrance(GV_OCTOROK_GROTTO, {[]{return CanUse(SILVER_GAUNTLETS);}}),
-                  Entrance(GV_CRATE_LEDGE,    {[]{return CanUse(LONGSHOT);}}),
+                  Entrance(RR_GV_LOWER_STREAM,   {[]{return true;}}),
+                  Entrance(RR_GV_OCTOROK_GROTTO, {[]{return logic->CanUse(RG_SILVER_GAUNTLETS);}}),
+                  Entrance(RR_GV_CRATE_LEDGE,    {[]{return logic->CanUse(RG_LONGSHOT);}}),
   });
 
-  areaTable[GV_CRATE_LEDGE] = Area("GV Crate Ledge", "Gerudo Valley", GERUDO_VALLEY, DAY_NIGHT_CYCLE, {}, {
+  areaTable[RR_GV_CRATE_LEDGE] = Region("GV Crate Ledge", "Gerudo Valley", {RA_GERUDO_VALLEY}, DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(GV_CRATE_FREESTANDING_POH, {[]{return true;}}),
+                  LOCATION(RC_GV_CRATE_FREESTANDING_POH, true),
                 }, {
                   //Exits
-                  Entrance(GV_LOWER_STREAM, {[]{return true;}}),
+                  Entrance(RR_GV_LOWER_STREAM, {[]{return true;}}),
   });
 
-  areaTable[GV_FORTRESS_SIDE] = Area("GV Fortress Side", "Gerudo Valley", GERUDO_VALLEY, DAY_NIGHT_CYCLE, {
-                  //Events
-                  EventAccess(&BrokenSwordAccess, {[]{return IsAdult && (PoachersSawAccess || PoachersSaw);}}),
-                }, {
+  areaTable[RR_GV_FORTRESS_SIDE] = Region("GV Fortress Side", "Gerudo Valley", {RA_GERUDO_VALLEY}, DAY_NIGHT_CYCLE, {}, {
                   //Locations                                       
-                  LocationAccess(GV_CHEST,          {[]{return IsAdult && CanUse(MEGATON_HAMMER);}}),
-                  LocationAccess(GV_TRADE_SAW,      {[]{return IsAdult && PoachersSaw;}}),
-                  LocationAccess(GV_GS_BEHIND_TENT, {[]{return IsAdult && HookshotOrBoomerang && AtNight && CanGetNightTimeGS;}}),
-                  LocationAccess(GV_GS_PILLAR,      {[]{return IsAdult && HookshotOrBoomerang && AtNight && CanGetNightTimeGS;}}),
+                  LOCATION(RC_GV_CHEST,          logic->IsAdult && logic->CanUse(RG_MEGATON_HAMMER)),
+                  LOCATION(RC_GV_TRADE_SAW,      logic->IsAdult && logic->CanUse(RG_POACHERS_SAW)),
+                  LOCATION(RC_GV_GS_BEHIND_TENT, logic->IsAdult && logic->HookshotOrBoomerang() && logic->AtNight && logic->CanGetNightTimeGS()),
+                  LOCATION(RC_GV_GS_PILLAR,      logic->IsAdult && logic->HookshotOrBoomerang() && logic->AtNight && logic->CanGetNightTimeGS()),
                 }, {
                   //Exits
-                  Entrance(GERUDO_FORTRESS,   {[]{return true;}}),
-                  Entrance(GV_UPPER_STREAM,   {[]{return true;}}),
-                  Entrance(GERUDO_VALLEY,     {[]{return IsChild || CanRideEpona || CanUse(LONGSHOT) || GerudoFortress.Is(GERUDOFORTRESS_OPEN) || CarpenterRescue;}}),
-                  Entrance(GV_CARPENTER_TENT, {[]{return IsAdult;}}),
-                  Entrance(GV_STORMS_GROTTO,  {[]{return IsAdult && CanOpenStormGrotto;}}),
-                  Entrance(GV_CRATE_LEDGE, {[]{return false;}}),
+                  Entrance(RR_GERUDO_FORTRESS,   {[]{return true;}}),
+                  Entrance(RR_GV_UPPER_STREAM,   {[]{return true;}}),
+                  Entrance(RR_GERUDO_VALLEY,     {[]{return logic->IsChild || logic->CanUse(RG_EPONA) || logic->CanUse(RG_LONGSHOT) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_OPEN) || logic->CarpenterRescue;}}),
+                  Entrance(RR_GV_CARPENTER_TENT, {[]{return logic->IsAdult;}}),
+                  Entrance(RR_GV_STORMS_GROTTO,  {[]{return logic->IsAdult && logic->CanOpenStormsGrotto();}}),
+                  Entrance(RR_GV_CRATE_LEDGE, {[]{return false;}}),
   });
 
-  areaTable[GV_CARPENTER_TENT] = Area("GV Carpenter Tent", "GV Carpenter Tent", NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_GV_CARPENTER_TENT] = Region("GV Carpenter Tent", "GV Carpenter Tent", {}, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
-                  Entrance(GV_FORTRESS_SIDE, {[]{return true;}}),
+                  Entrance(RR_GV_FORTRESS_SIDE, {[]{return true;}}),
   });
 
-  areaTable[GV_OCTOROK_GROTTO] = Area("GV Octorok Grotto", "GV Octorok Grotto", NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_GV_OCTOROK_GROTTO] = Region("GV Octorok Grotto", "GV Octorok Grotto", {}, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
-                  Entrance(GV_GROTTO_LEDGE, {[]{return true;}}),
+                  Entrance(RR_GV_GROTTO_LEDGE, {[]{return true;}}),
   });
 
-  areaTable[GV_STORMS_GROTTO] = Area("GV Storms Grotto", "GV Storms Grotto", NONE, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[RR_GV_STORMS_GROTTO] = Region("GV Storms Grotto", "GV Storms Grotto", {}, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(GV_DEKU_SCRUB_GROTTO_REAR,  {[]{return CanStunDeku;}}),
-                  LocationAccess(GV_DEKU_SCRUB_GROTTO_FRONT, {[]{return CanStunDeku;}}),
+                  LOCATION(RC_GV_DEKU_SCRUB_GROTTO_REAR,    logic->CanStunDeku()),
+                  LOCATION(RC_GV_DEKU_SCRUB_GROTTO_FRONT,   logic->CanStunDeku()),
+                  LOCATION(RC_GV_DEKU_SCRUB_GROTTO_BEEHIVE, logic->CanBreakUpperBeehives()),
                 }, {
                   //Exits
-                  Entrance(GV_FORTRESS_SIDE, {[]{return true;}}),
+                  Entrance(RR_GV_FORTRESS_SIDE, {[]{return true;}}),
   });
 
-  areaTable[GERUDO_FORTRESS] = Area("Gerudo Fortress", "Gerudo Fortress", GERUDO_FORTRESS, NO_DAY_NIGHT_CYCLE, {
+  areaTable[RR_GERUDO_FORTRESS] = Region("Gerudo Fortress", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&CarpenterRescue, {[]{return CanFinishGerudoFortress;}}),
-                  EventAccess(&GF_GateOpen,     {[]{return IsAdult && GerudoToken;}}),
-                  EventAccess(&GtG_GateOpen,    {[]{return GtG_GateOpen || (IsAdult && GerudoToken);}}),
+                  EventAccess(&logic->CarpenterRescue, {[]{return logic->CanFinishGerudoFortress();}}),
+                  EventAccess(&logic->GF_GateOpen,     {[]{return logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD);}}),
+                  EventAccess(&logic->GtG_GateOpen,    {[]{return logic->GtG_GateOpen || (logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->HasItem(RG_CHILD_WALLET));}}),
                 }, {
                   //Locations
-                  LocationAccess(GF_CHEST,              {[]{return CanUse(HOVER_BOOTS) || (IsAdult && CanUse(SCARECROW)) || CanUse(LONGSHOT);}}),
-                  LocationAccess(GF_HBA_1000_POINTS,    {[]{return GerudoToken && CanRideEpona && Bow && AtDay;}}),
-                  LocationAccess(GF_HBA_1500_POINTS,    {[]{return GerudoToken && CanRideEpona && Bow && AtDay;}}),
-                  LocationAccess(GF_NORTH_F1_CARPENTER, {[]{return  CanUse(KOKIRI_SWORD) || CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD);}}),
-                  LocationAccess(GF_NORTH_F2_CARPENTER, {[]{return (CanUse(KOKIRI_SWORD) || CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD)) && (GerudoToken || CanUse(BOW) || CanUse(HOOKSHOT) || CanUse(HOVER_BOOTS) || LogicGerudoKitchen);}}),
-                  LocationAccess(GF_SOUTH_F1_CARPENTER, {[]{return  CanUse(KOKIRI_SWORD) || CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD);}}),
-                  LocationAccess(GF_SOUTH_F2_CARPENTER, {[]{return  CanUse(KOKIRI_SWORD) || CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD);}}),
-                  LocationAccess(GF_GERUDO_MEMBERSHIP_CARD,       {[]{return CanFinishGerudoFortress;}}),
-                  LocationAccess(GF_GS_ARCHERY_RANGE,   {[]{return IsAdult && HookshotOrBoomerang && GerudoToken && AtNight && CanGetNightTimeGS;}}),
-                  LocationAccess(GF_GS_TOP_FLOOR,       {[]{return IsAdult && AtNight && (CanJumpslash || CanUse(SLINGSHOT) || CanUse(BOOMERANG) || HasExplosives || CanUse(BOW) || CanUse(HOOKSHOT) || CanUse(DINS_FIRE)) && (GerudoToken || CanUse(BOW) || CanUse(HOOKSHOT) || CanUse(HOVER_BOOTS) || LogicGerudoKitchen || LogicGFJump) && CanGetNightTimeGS;}}),
+                  LOCATION(RC_GF_CHEST,              logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && logic->CanUse(RG_SCARECROW)) || logic->CanUse(RG_LONGSHOT)),
+                  LOCATION(RC_GF_HBA_1000_POINTS,    logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->CanUse(RG_EPONA) && logic->CanUse(RG_FAIRY_BOW) && logic->AtDay),
+                  LOCATION(RC_GF_HBA_1500_POINTS,    logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->CanUse(RG_EPONA) && logic->CanUse(RG_FAIRY_BOW) && logic->AtDay),
+                  LOCATION(RC_GF_NORTH_F1_CARPENTER,  logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD)),
+                  LOCATION(RC_GF_NORTH_F2_CARPENTER, (logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD)) && (logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS) || ctx->GetTrickOption(RT_GF_KITCHEN))),
+                  LOCATION(RC_GF_SOUTH_F1_CARPENTER,  logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD)),
+                  LOCATION(RC_GF_SOUTH_F2_CARPENTER,  logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD)),
+                  LOCATION(RC_GF_GERUDO_MEMBERSHIP_CARD,       logic->CanFinishGerudoFortress()),
+                  LOCATION(RC_GF_GS_ARCHERY_RANGE,   logic->IsAdult && logic->HookshotOrBoomerang() && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->AtNight && logic->CanGetNightTimeGS()),
+                  LOCATION(RC_GF_GS_TOP_FLOOR,       logic->IsAdult && logic->AtNight && (logic->CanJumpslashExceptHammer() || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_BOOMERANG) || logic->HasExplosives() || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_DINS_FIRE)) && (logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS) || ctx->GetTrickOption(RT_GF_KITCHEN) || ctx->GetTrickOption(RT_GF_JUMP)) && logic->CanGetNightTimeGS()),
                 }, {
                   //Exits
-                  Entrance(GV_FORTRESS_SIDE,                 {[]{return true;}}),
-                  Entrance(GF_OUTSIDE_GATE,                  {[]{return GF_GateOpen;}}),
-                  Entrance(GERUDO_TRAINING_GROUNDS_ENTRYWAY, {[]{return GtG_GateOpen && (IsAdult || ShuffleDungeonEntrances);}}),
-                  Entrance(GF_STORMS_GROTTO,                 {[]{return IsAdult && CanOpenStormGrotto;}}),
+                  Entrance(RR_GV_FORTRESS_SIDE,                 {[]{return true;}}),
+                  Entrance(RR_GF_OUTSIDE_GATE,                  {[]{return logic->GF_GateOpen;}}),
+                  Entrance(RR_GERUDO_TRAINING_GROUNDS_ENTRYWAY, {[]{return logic->GtG_GateOpen && (logic->IsAdult || ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES));}}),
+                  Entrance(RR_GF_STORMS_GROTTO,                 {[]{return logic->IsAdult && logic->CanOpenStormsGrotto();}}),
   });
 
-  areaTable[GF_OUTSIDE_GATE] = Area("GF Outside Gate", "Gerudo Fortress", GERUDO_FORTRESS, NO_DAY_NIGHT_CYCLE, {
+  areaTable[RR_GF_OUTSIDE_GATE] = Region("GF Outside Gate", "Gerudo Fortress", {RA_GERUDO_FORTRESS}, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&GF_GateOpen, {[]{return IsAdult && GerudoToken && (ShuffleGerudoToken || ShuffleOverworldEntrances /*|| ShuffleSpecialIndoorEntrances*/);}}),
+                  EventAccess(&logic->GF_GateOpen, {[]{return logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && (ctx->GetOption(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD) || ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES) /*|| ShuffleSpecialIndoorEntrances*/);}}),
                 }, {}, {
                   //Exits
-                  Entrance(GERUDO_FORTRESS,         {[]{return (IsAdult && (Hookshot || !ShuffleOverworldEntrances)) || GF_GateOpen;}}),
-                  Entrance(WASTELAND_NEAR_FORTRESS, {[]{return true;}}),
+                  Entrance(RR_GERUDO_FORTRESS,         {[]{return (logic->IsAdult && (logic->CanUse(RG_HOOKSHOT) || !ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES))) || logic->GF_GateOpen;}}),
+                  Entrance(RR_WASTELAND_NEAR_FORTRESS, {[]{return true;}}),
   });
 
-  areaTable[GF_STORMS_GROTTO] = Area("GF Storms Grotto", "GF Storms Grotto", NONE, NO_DAY_NIGHT_CYCLE, {
+  areaTable[RR_GF_STORMS_GROTTO] = Region("GF Storms Grotto", "GF Storms Grotto", {}, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&FreeFairies, {[]{return true;}}),
+                  EventAccess(&logic->FreeFairies, {[]{return true;}}),
                 }, {}, {
                   //Exits
-                  Entrance(GERUDO_FORTRESS, {[]{return true;}}),
+                  Entrance(RR_GERUDO_FORTRESS, {[]{return true;}}),
   });
 
-  areaTable[WASTELAND_NEAR_FORTRESS] = Area("Wasteland Near Fortress", "Haunted Wasteland", HAUNTED_WASTELAND, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_WASTELAND_NEAR_FORTRESS] = Region("Wasteland Near Fortress", "Haunted Wasteland", {RA_HAUNTED_WASTELAND}, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
-                  Entrance(GF_OUTSIDE_GATE,   {[]{return true;}}),
-                  Entrance(HAUNTED_WASTELAND, {[]{return CanUse(HOVER_BOOTS) || CanUse(LONGSHOT) || LogicWastelandCrossing;}}),
+                  Entrance(RR_GF_OUTSIDE_GATE,   {[]{return true;}}),
+                  Entrance(RR_HAUNTED_WASTELAND, {[]{return logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_LONGSHOT) || ctx->GetTrickOption(RT_HW_CROSSING);}}),
   });
 
-  areaTable[HAUNTED_WASTELAND] = Area("Haunted Wasteland", "Haunted Wasteland", HAUNTED_WASTELAND, NO_DAY_NIGHT_CYCLE, {
+  areaTable[RR_HAUNTED_WASTELAND] = Region("Haunted Wasteland", "Haunted Wasteland", {RA_HAUNTED_WASTELAND}, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&FairyPot, {[]{return true;}}),
-                  EventAccess(&NutPot,   {[]{return true;}}),
+                  EventAccess(&logic->FairyPot,       {[]{return true;}}),
+                  EventAccess(&logic->NutPot,         {[]{return true;}}),
+                  EventAccess(&logic->CarpetMerchant, {[]{return logic->HasItem(RG_ADULT_WALLET) && CanBuyAnother(RC_WASTELAND_BOMBCHU_SALESMAN) && (logic->CanJumpslashExceptHammer() || logic->CanUse(RG_HOVER_BOOTS));}}),
                 }, {
                   //Locations
-                  LocationAccess(WASTELAND_CHEST,            {[]{return HasFireSource;}}),
-                  LocationAccess(WASTELAND_BOMBCHU_SALESMAN, {[]{return AdultsWallet && (CanJumpslash || CanUse(HOVER_BOOTS)) ;}}),
-                  LocationAccess(WASTELAND_GS,               {[]{return HookshotOrBoomerang;}}),
+                  LOCATION(RC_WASTELAND_CHEST,            logic->HasFireSource()),
+                  LOCATION(RC_WASTELAND_BOMBCHU_SALESMAN, logic->CanJumpslashExceptHammer() || logic->CanUse(RG_HOVER_BOOTS)),
+                  LOCATION(RC_WASTELAND_GS,               logic->HookshotOrBoomerang()),
                 }, {
                   //Exits
-                  Entrance(WASTELAND_NEAR_COLOSSUS, {[]{return LogicLensWasteland || CanUse(LENS_OF_TRUTH);}}),
-                  Entrance(WASTELAND_NEAR_FORTRESS, {[]{return CanUse(HOVER_BOOTS) || CanUse(LONGSHOT) || LogicWastelandCrossing;}}),
+                  Entrance(RR_WASTELAND_NEAR_COLOSSUS, {[]{return ctx->GetTrickOption(RT_LENS_HW) || logic->CanUse(RG_LENS_OF_TRUTH);}}),
+                  Entrance(RR_WASTELAND_NEAR_FORTRESS, {[]{return logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_LONGSHOT) || ctx->GetTrickOption(RT_HW_CROSSING);}}),
   });
 
-  areaTable[WASTELAND_NEAR_COLOSSUS] = Area("Wasteland Near Colossus", "Haunted Wasteland", HAUNTED_WASTELAND, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_WASTELAND_NEAR_COLOSSUS] = Region("Wasteland Near Colossus", "Haunted Wasteland", {RA_HAUNTED_WASTELAND}, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
-                  Entrance(DESERT_COLOSSUS,   {[]{return true;}}),
-                  Entrance(HAUNTED_WASTELAND, {[]{return LogicReverseWasteland || false;}}),
+                  Entrance(RR_DESERT_COLOSSUS,   {[]{return true;}}),
+                  Entrance(RR_HAUNTED_WASTELAND, {[]{return ctx->GetTrickOption(RT_HW_REVERSE) || false;}}),
   });
 
-  areaTable[DESERT_COLOSSUS] = Area("Desert Colossus", "Desert Colossus", DESERT_COLOSSUS, DAY_NIGHT_CYCLE, {
+  areaTable[RR_DESERT_COLOSSUS] = Region("Desert Colossus", "Desert Colossus", {RA_DESERT_COLOSSUS}, DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&FairyPond, {[]{return FairyPond || CanPlay(SongOfStorms);}}),
-                  EventAccess(&BugRock,   {[]{return true;}}),
+                  EventAccess(&logic->FairyPond, {[]{return logic->FairyPond || logic->CanUse(RG_SONG_OF_STORMS);}}),
+                  EventAccess(&logic->BugRock,   {[]{return true;}}),
                 }, {
                   //Locations
-                  LocationAccess(COLOSSUS_FREESTANDING_POH, {[]{return IsAdult && CanPlantBean(DESERT_COLOSSUS);}}),
-                  LocationAccess(COLOSSUS_GS_BEAN_PATCH,    {[]{return CanPlantBugs && CanChildAttack;}}),
-                  LocationAccess(COLOSSUS_GS_TREE,          {[]{return IsAdult && HookshotOrBoomerang && AtNight && CanGetNightTimeGS;}}),
-                  LocationAccess(COLOSSUS_GS_HILL,          {[]{return IsAdult && AtNight && ((CanPlantBean(DESERT_COLOSSUS) && CanAdultAttack) || CanUse(LONGSHOT) || (LogicColossusGS && CanUse(HOOKSHOT))) && CanGetNightTimeGS;}}),
-                  LocationAccess(COLOSSUS_GOSSIP_STONE,     {[]{return true;}}),
+                  LOCATION(RC_COLOSSUS_FREESTANDING_POH, logic->IsAdult && CanPlantBean(RR_DESERT_COLOSSUS)),
+                  LOCATION(RC_COLOSSUS_GS_BEAN_PATCH,    logic->CanSpawnSoilSkull() && logic->CanAttack()),
+                  LOCATION(RC_COLOSSUS_GS_TREE,          logic->IsAdult && logic->HookshotOrBoomerang() && logic->AtNight && logic->CanGetNightTimeGS()),
+                  LOCATION(RC_COLOSSUS_GS_HILL,          logic->IsAdult && logic->AtNight && ((CanPlantBean(RR_DESERT_COLOSSUS) && logic->CanAttack()) || logic->CanUse(RG_LONGSHOT) || (ctx->GetTrickOption(RT_COLOSSUS_GS) && logic->CanUse(RG_HOOKSHOT))) && logic->CanGetNightTimeGS()),
+                  LOCATION(RC_COLOSSUS_GOSSIP_STONE,     true),
                 }, {
                   //Exits
-                  Entrance(COLOSSUS_GREAT_FAIRY_FOUNTAIN, {[]{return HasExplosives;}}),
-                  Entrance(SPIRIT_TEMPLE_ENTRYWAY,        {[]{return true;}}),
-                  Entrance(WASTELAND_NEAR_COLOSSUS,       {[]{return true;}}),
-                  Entrance(COLOSSUS_GROTTO,               {[]{return CanUse(SILVER_GAUNTLETS);}}),
+                  Entrance(RR_COLOSSUS_GREAT_FAIRY_FOUNTAIN, {[]{return logic->HasExplosives();}}),
+                  Entrance(RR_SPIRIT_TEMPLE_ENTRYWAY,        {[]{return true;}}),
+                  Entrance(RR_WASTELAND_NEAR_COLOSSUS,       {[]{return true;}}),
+                  Entrance(RR_COLOSSUS_GROTTO,               {[]{return logic->CanUse(RG_SILVER_GAUNTLETS);}}),
   });
 
-  areaTable[DESERT_COLOSSUS_FROM_SPIRIT_ENTRYWAY] = Area("Desert Colossus From Spirit Entryway", "Desert Colossus", DESERT_COLOSSUS, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[RR_DESERT_COLOSSUS_FROM_SPIRIT_ENTRYWAY] = Region("Desert Colossus From Spirit Entryway", "Desert Colossus", {RA_DESERT_COLOSSUS}, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(SHEIK_AT_COLOSSUS, {[]{return true;}}),
+                  LOCATION(RC_SHEIK_AT_COLOSSUS, true),
                 }, {
                   //Exist
-                  Entrance(DESERT_COLOSSUS, {[]{return true;}}),
+                  Entrance(RR_DESERT_COLOSSUS, {[]{return true;}}),
   });
 
-  areaTable[COLOSSUS_GREAT_FAIRY_FOUNTAIN] = Area("Colossus Great Fairy Fountain", "Colossus Great Fairy Fountain", NONE, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[RR_COLOSSUS_GREAT_FAIRY_FOUNTAIN] = Region("Colossus Great Fairy Fountain", "Colossus Great Fairy Fountain", {}, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(COLOSSUS_GREAT_FAIRY_REWARD, {[]{return CanPlay(ZeldasLullaby);}}),
+                  LOCATION(RC_COLOSSUS_GREAT_FAIRY_REWARD, logic->CanUse(RG_ZELDAS_LULLABY)),
                 }, {
                   //Exits
-                  Entrance(DESERT_COLOSSUS, {[]{return true;}}),
+                  Entrance(RR_DESERT_COLOSSUS, {[]{return true;}}),
   });
 
-  areaTable[COLOSSUS_GROTTO] = Area("Colossus Grotto", "Colossus Grotto", NONE, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[RR_COLOSSUS_GROTTO] = Region("Colossus Grotto", "Colossus Grotto", {}, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(COLOSSUS_DEKU_SCRUB_GROTTO_REAR,  {[]{return CanStunDeku;}}),
-                  LocationAccess(COLOSSUS_DEKU_SCRUB_GROTTO_FRONT, {[]{return CanStunDeku;}}),
+                  LOCATION(RC_COLOSSUS_DEKU_SCRUB_GROTTO_REAR,  logic->CanStunDeku()),
+                  LOCATION(RC_COLOSSUS_DEKU_SCRUB_GROTTO_FRONT, logic->CanStunDeku()),
+                  LOCATION(RC_COLOSSUS_GROTTO_BEEHIVE,          logic->CanBreakUpperBeehives()),
                 }, {
                   //Exits
-                  Entrance(DESERT_COLOSSUS, {[]{return true;}}),
+                  Entrance(RR_DESERT_COLOSSUS, {[]{return true;}}),
   });
 }

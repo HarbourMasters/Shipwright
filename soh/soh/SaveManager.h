@@ -29,6 +29,7 @@ typedef struct {
     s16 gsTokens;
     u8 isDoubleDefenseAcquired;
     u8 gregFound;
+    u8 hasWallet;
 } SaveFileMetaInfo;
 
 #ifdef __cplusplus
@@ -161,6 +162,9 @@ class SaveManager {
 
     static void LoadRandomizerVersion1();
     static void LoadRandomizerVersion2();
+    static void LoadRandomizerVersion3();
+    static void LoadTrackerData();
+    static void SaveTrackerData(SaveContext* saveContext, int sectionID, bool fullSave);
     static void SaveRandomizer(SaveContext* saveContext, int sectionID, bool fullSave);
 
     static void LoadBaseVersion1();

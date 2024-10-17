@@ -123,12 +123,14 @@ namespace SohGui {
     std::shared_ptr<ActorViewerWindow> mActorViewerWindow;
     std::shared_ptr<ColViewerWindow> mColViewerWindow;
     std::shared_ptr<SaveEditorWindow> mSaveEditorWindow;
+    std::shared_ptr<HookDebuggerWindow> mHookDebuggerWindow;
     std::shared_ptr<DLViewerWindow> mDLViewerWindow;
     std::shared_ptr<ValueViewerWindow> mValueViewerWindow;
     std::shared_ptr<MessageViewer> mMessageViewerWindow;
     std::shared_ptr<GameplayStatsWindow> mGameplayStatsWindow;
     std::shared_ptr<CheckTracker::CheckTrackerSettingsWindow> mCheckTrackerSettingsWindow;
     std::shared_ptr<CheckTracker::CheckTrackerWindow> mCheckTrackerWindow;
+    std::shared_ptr<EntranceTrackerSettingsWindow> mEntranceTrackerSettingsWindow;
     std::shared_ptr<EntranceTrackerWindow> mEntranceTrackerWindow;
     std::shared_ptr<ItemTrackerSettingsWindow> mItemTrackerSettingsWindow;
     std::shared_ptr<ItemTrackerWindow> mItemTrackerWindow;
@@ -165,7 +167,7 @@ namespace SohGui {
             SPDLOG_ERROR("Could not find input GfxDebuggerWindow");
         }
 
-        mInputEditorWindow = gui->GetGuiWindow("Input Editor");
+        mInputEditorWindow = gui->GetGuiWindow("Controller Configuration");
         if (mInputEditorWindow == nullptr) {
             SPDLOG_ERROR("Could not find input editor window");
         }
@@ -184,6 +186,8 @@ namespace SohGui {
         gui->AddGuiWindow(mColViewerWindow);
         mSaveEditorWindow = std::make_shared<SaveEditorWindow>(CVAR_WINDOW("SaveEditor"), "Save Editor", ImVec2(520, 600));
         gui->AddGuiWindow(mSaveEditorWindow);
+        mHookDebuggerWindow = std::make_shared<HookDebuggerWindow>(CVAR_WINDOW("HookDebugger"), "Hook Debugger", ImVec2(1250, 850));
+        gui->AddGuiWindow(mHookDebuggerWindow);
         mDLViewerWindow = std::make_shared<DLViewerWindow>(CVAR_WINDOW("DLViewer"), "Display List Viewer", ImVec2(520, 600));
         gui->AddGuiWindow(mDLViewerWindow);
         mValueViewerWindow = std::make_shared<ValueViewerWindow>(CVAR_WINDOW("ValueViewer"), "Value Viewer", ImVec2(520, 600));
@@ -196,8 +200,10 @@ namespace SohGui {
         gui->AddGuiWindow(mCheckTrackerWindow);
         mCheckTrackerSettingsWindow = std::make_shared<CheckTracker::CheckTrackerSettingsWindow>(CVAR_WINDOW("CheckTrackerSettings"), "Check Tracker Settings", ImVec2(600, 375));
         gui->AddGuiWindow(mCheckTrackerSettingsWindow);
-        mEntranceTrackerWindow = std::make_shared<EntranceTrackerWindow>(CVAR_WINDOW("EntranceTracker"),"Entrance Tracker");
+        mEntranceTrackerWindow = std::make_shared<EntranceTrackerWindow>(CVAR_WINDOW("EntranceTracker"), "Entrance Tracker");
         gui->AddGuiWindow(mEntranceTrackerWindow);
+        mEntranceTrackerSettingsWindow = std::make_shared<EntranceTrackerSettingsWindow>(CVAR_WINDOW("EntranceTrackerSettings"), "Entrance Tracker Settings", ImVec2(600, 375));
+        gui->AddGuiWindow(mEntranceTrackerSettingsWindow);
         mItemTrackerWindow = std::make_shared<ItemTrackerWindow>(CVAR_WINDOW("ItemTracker"), "Item Tracker");
         gui->AddGuiWindow(mItemTrackerWindow);
         mItemTrackerSettingsWindow = std::make_shared<ItemTrackerSettingsWindow>(CVAR_WINDOW("ItemTrackerSettings"), "Item Tracker Settings", ImVec2(733, 472));
@@ -221,6 +227,7 @@ namespace SohGui {
         mItemTrackerWindow = nullptr;
         mItemTrackerSettingsWindow = nullptr;
         mEntranceTrackerWindow = nullptr;
+        mEntranceTrackerSettingsWindow = nullptr;
         mCheckTrackerWindow = nullptr;
         mCheckTrackerSettingsWindow = nullptr;
         mGameplayStatsWindow = nullptr;
@@ -228,6 +235,7 @@ namespace SohGui {
         mValueViewerWindow = nullptr;
         mMessageViewerWindow = nullptr;
         mSaveEditorWindow = nullptr;
+        mHookDebuggerWindow = nullptr;
         mColViewerWindow = nullptr;
         mActorViewerWindow = nullptr;
         mCosmeticsEditorWindow = nullptr;

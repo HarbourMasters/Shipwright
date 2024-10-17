@@ -73,12 +73,14 @@ typedef struct EnFr {
     /* 0x03AA */ s16 xyAngleButterfly; // Butterfly Travels along random angles in the x-y plane
     /* 0x03AC */ Vec3f posButterfly; // Position/Coordinates of the Butterfly
     /* 0x03B8 */ Vec3f posButterflyLight; // Used in Lights_PointNoGlowSetInfo()
-    /*        */ GetItemEntry getItemEntry;
 } EnFr; // size = 0x03C4
 
 typedef struct {
     u8 flags;
     EnFr* frogs[5];
 } EnFrPointers;
+
+void EnFr_Idle(EnFr* enFr, PlayState* play);
+void EnFr_GiveReward(EnFr* enFr, PlayState* play);
 
 #endif

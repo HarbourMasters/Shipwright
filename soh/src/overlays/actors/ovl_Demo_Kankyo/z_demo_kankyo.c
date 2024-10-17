@@ -376,7 +376,7 @@ void DemoKankyo_DoNothing2(DemoKankyo* this, PlayState* play) {
 void DemoKankyo_SetRockPos(DemoKankyo* this, PlayState* play, s32 params) {
     Vec3f startPos;
     Vec3f endPos;
-    CsCmdActorAction* csAction = play->csCtx.npcActions[params];
+    CsCmdActorCue* csAction = play->csCtx.npcActions[params];
     f32 temp_f0;
 
     startPos.x = csAction->startPos.x;
@@ -426,12 +426,6 @@ void DemoKankyo_KillDoorOfTimeCollision(DemoKankyo* this, PlayState* play) {
 void DemoKankyo_Update(Actor* thisx, PlayState* play) {
     DemoKankyo* this = (DemoKankyo*)thisx;
     this->actionFunc(this, play);
-
-    // In ER, override the warp song locations. Also removes the warp song cutscene
-    if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES) &&
-        thisx->params == 0x000F) { // Warp Song particles
-        Entrance_SetWarpSongEntrance();
-    }
 }
 
 void DemoKankyo_Draw(Actor* thisx, PlayState* play) {

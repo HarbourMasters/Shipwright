@@ -331,7 +331,7 @@ void DemoEc_UseAnimationObject(DemoEc* this, PlayState* play) {
     gSegments[6] = PHYSICAL_TO_VIRTUAL(play->objectCtx.status[animObjBankIndex].segment);
 }
 
-CsCmdActorAction* DemoEc_GetNpcAction(PlayState* play, s32 actionIndex) {
+CsCmdActorCue* DemoEc_GetNpcAction(PlayState* play, s32 actionIndex) {
     if (play->csCtx.state != CS_STATE_IDLE) {
         return play->csCtx.npcActions[actionIndex];
     } else {
@@ -340,7 +340,7 @@ CsCmdActorAction* DemoEc_GetNpcAction(PlayState* play, s32 actionIndex) {
 }
 
 void DemoEc_SetNpcActionPosRot(DemoEc* this, PlayState* play, s32 actionIndex) {
-    CsCmdActorAction* npcAction = DemoEc_GetNpcAction(play, actionIndex);
+    CsCmdActorCue* npcAction = DemoEc_GetNpcAction(play, actionIndex);
 
     if (npcAction != NULL) {
         this->actor.world.pos.x = npcAction->startPos.x;
@@ -821,7 +821,7 @@ void func_8096F26C(DemoEc* this, s32 arg1) {
 }
 
 void func_8096F2B0(DemoEc* this, PlayState* play, s32 arg2) {
-    CsCmdActorAction* npcAction;
+    CsCmdActorCue* npcAction;
     s32 sp18;
 
     npcAction = DemoEc_GetNpcAction(play, arg2);
@@ -895,7 +895,7 @@ void func_8096F544(DemoEc* this, s32 changeAnim) {
 }
 
 void func_8096F578(DemoEc* this, PlayState* play, s32 arg2) {
-    CsCmdActorAction* npcAction;
+    CsCmdActorCue* npcAction;
     s32 sp18;
 
     npcAction = DemoEc_GetNpcAction(play, arg2);
