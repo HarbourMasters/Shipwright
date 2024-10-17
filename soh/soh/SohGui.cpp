@@ -113,6 +113,7 @@ namespace SohGui {
 
     std::shared_ptr<Ship::GuiWindow> mConsoleWindow;
     std::shared_ptr<Ship::GuiWindow> mStatsWindow;
+    std::shared_ptr<Ship::GuiWindow> mGfxDebuggerWindow;
     std::shared_ptr<Ship::GuiWindow> mInputEditorWindow;
 
     std::shared_ptr<AudioEditor> mAudioEditorWindow;
@@ -159,6 +160,11 @@ namespace SohGui {
         mConsoleWindow = gui->GetGuiWindow("Console");
         if (mConsoleWindow == nullptr) {
             SPDLOG_ERROR("Could not find console window");
+        }
+
+        mGfxDebuggerWindow = gui->GetGuiWindow("GfxDebuggerWindow");
+        if (mGfxDebuggerWindow == nullptr) {
+            SPDLOG_ERROR("Could not find input GfxDebuggerWindow");
         }
 
         mInputEditorWindow = gui->GetGuiWindow("Controller Configuration");
@@ -237,6 +243,7 @@ namespace SohGui {
         mInputEditorWindow = nullptr;
         mStatsWindow = nullptr;
         mConsoleWindow = nullptr;
+        mGfxDebuggerWindow = nullptr;
         mSohMenuBar = nullptr;
         mInputViewer = nullptr;
         mInputViewerSettings = nullptr;
