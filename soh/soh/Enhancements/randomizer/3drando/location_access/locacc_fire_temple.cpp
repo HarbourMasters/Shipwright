@@ -11,7 +11,7 @@ void RegionTable_Init_FireTemple() {
   areaTable[RR_FIRE_TEMPLE_ENTRYWAY] = Region("Fire Temple Entryway", "Fire Temple", {RA_FIRE_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_FIRE_TEMPLE_FIRST_ROOM, {[]{return ctx->GetDungeon(FIRE_TEMPLE)->IsVanilla();}}),
-                  Entrance(RR_FIRE_TEMPLE_MQ_LOWER,   {[]{return ctx->GetDungeon(FIRE_TEMPLE)->IsMQ();}}),
+                  Entrance(RR_FIRE_TEMPLE_MQ_FIRST_ROOM_LOWER,   {[]{return ctx->GetDungeon(FIRE_TEMPLE)->IsMQ();}}),
                   Entrance(RR_DMC_CENTRAL_LOCAL,      {[]{return true;}}),
   });
 
@@ -314,18 +314,37 @@ void RegionTable_Init_FireTemple() {
   |   MASTER QUEST DUNGEON    |
   ---------------------------*/
   if (ctx->GetDungeon(FIRE_TEMPLE)->IsMQ()) {
-  areaTable[RR_FIRE_TEMPLE_MQ_LOWER] = Region("Fire Temple MQ Lower", "Fire Temple", {RA_FIRE_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {
-                  //Locations
-                  LOCATION(RC_FIRE_TEMPLE_MQ_MAP_ROOM_SIDE_CHEST, logic->CanJumpslashExceptHammer() || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_BOMB_BAG) || logic->CanUse(RG_DINS_FIRE)),
-                  LOCATION(RC_FIRE_TEMPLE_MQ_NEAR_BOSS_CHEST,     logic->IsAdult && (ctx->GetTrickOption(RT_FEWER_TUNIC_REQUIREMENTS) || logic->CanUse(RG_GORON_TUNIC)) && (((logic->CanUse(RG_HOVER_BOOTS) || (ctx->GetTrickOption(RT_FIRE_MQ_NEAR_BOSS) && logic->CanUse(RG_FAIRY_BOW))) && logic->HasFireSource()) || (logic->CanUse(RG_HOOKSHOT) && logic->CanUse(RG_FIRE_ARROWS) || (logic->CanUse(RG_DINS_FIRE) && ((ctx->GetOption(RSK_DAMAGE_MULTIPLIER).IsNot(RO_DAMAGE_MULTIPLIER_OHKO) && ctx->GetOption(RSK_DAMAGE_MULTIPLIER).IsNot(RO_DAMAGE_MULTIPLIER_QUADRUPLE) && ctx->GetOption(RSK_DAMAGE_MULTIPLIER).IsNot(RO_DAMAGE_MULTIPLIER_OCTUPLE) && ctx->GetOption(RSK_DAMAGE_MULTIPLIER).IsNot(RO_DAMAGE_MULTIPLIER_SEXDECUPLE)) || logic->CanUse(RG_GORON_TUNIC) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_LONGSHOT)))))),
-                    //Trick: logic->IsAdult && (LogicFewerTunicRequirements || logic->CanUse(RG_GORON_TUNIC)) && (((logic->CanUse(RG_HOVER_BOOTS) || (LogicFireMQNearBoss && logic->CanUse(RG_FAIRY_BOW))) && logic->HasFireSource()) || (logic->CanUse(RG_HOOKSHOT) && logic->CanUse(RG_FIRE_ARROWS) || (logic->CanUse(RG_DINS_FIRE) && ((DamageMultiplier.IsNot(DAMAGEMULTIPLIER_OHKO) && DamageMultiplier.IsNot(DAMAGEMULTIPLIER_QUADRUPLE) && DamageMultiplier.IsNot(DAMAGEMULTIPLIER_OCTUPLE) && DamageMultiplier.IsNot(DAMAGEMULTIPLIER_SEXDECUPLE)) || logic->CanUse(RG_GORON_TUNIC) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_LONGSHOT)))))
-  }, {
+  //potentially dangerous temp flag on the first room's torches, should be made parament if possible
+  areaTable[RR_FIRE_TEMPLE_MQ_FIRST_ROOM_LOWER] = Region("Fire Temple MQ First Room Lower", "Fire Temple", {RA_FIRE_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
-                  Entrance(RR_FIRE_TEMPLE_ENTRYWAY,             {[]{return true;}}),
-                  Entrance(RR_FIRE_TEMPLE_BOSS_ENTRYWAY,        {[]{return logic->IsAdult && logic->CanUse(RG_GORON_TUNIC) && logic->CanUse(RG_MEGATON_HAMMER) && logic->HasItem(RG_FIRE_TEMPLE_BOSS_KEY) && ((logic->HasFireSource() && (ctx->GetTrickOption(RT_FIRE_BOSS_DOOR_JUMP) || logic->CanUse(RG_HOVER_BOOTS))) || HasAccessTo(RR_FIRE_TEMPLE_MQ_UPPER));}}),
-                  Entrance(RR_FIRE_TEMPLE_MQ_LOWER_LOCKED_DOOR, {[]{return logic->SmallKeys(RR_FIRE_TEMPLE, 5) && (logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD));}}),
+                  Entrance(RR_FIRE_TEMPLE_ENTRYWAY,            {[]{return true;}}),
+                  Entrance(RR_FIRE_TEMPLE_MQ_MAP_ROOM_SOUTH,   {[]{return true;}}),
+                  Entrance(RR_FIRE_TEMPLE_MQ_FIRST_ROOM_UPPER, {[]{return logic->IsAdult || logic->CanUse(RG_HOOKSHOT);}}),
+                  Entrance(RR_FIRE_TEMPLE_MQ_STALFOS_ROOM,     {[]{return logic->SmallKeys(RR_FIRE_TEMPLE, 5);}}),
+  });
+
+ 
+  areaTable[RR_FIRE_TEMPLE_MQ_FIRST_ROOM_UPPER] = Region("Fire Temple MQ First Room Upper", "Fire Temple", {RA_FIRE_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+                  //Exits
+                  Entrance(RR_FIRE_TEMPLE_MQ_FIRST_ROOM_LOWER,  {[]{return true;}}),
+                  Entrance(RR_FIRE_TEMPLE_NEAR_BOSS_ROOM,       {[]{return logic->IsAdult && logic->CanUse(RG_GORON_TUNIC) && logic->CanUse(RG_MEGATON_HAMMER) && logic->HasItem(RG_FIRE_TEMPLE_BOSS_KEY) && ((logic->HasFireSource() && (ctx->GetTrickOption(RT_FIRE_BOSS_DOOR_JUMP) || logic->CanUse(RG_HOVER_BOOTS))) || HasAccessTo(RR_FIRE_TEMPLE_MQ_UPPER));}}),
                   Entrance(RR_FIRE_TEMPLE_MQ_BIG_LAVA_ROOM,     {[]{return logic->IsAdult && logic->FireTimer() >= 24 && logic->CanUse(RG_MEGATON_HAMMER);}}),
   });
+
+  areaTable[RR_FIRE_TEMPLE_MQ_MAP_ROOM_SOUTH] = Region("Fire Temple MQ Map Room South", "Fire Temple", {RA_FIRE_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {
+                  //Locations
+                  LOCATION(RC_FIRE_TEMPLE_MQ_MAP_ROOM_SIDE_CHEST, logic->CanKillEnemy(RE_LIKE_LIKE)),
+          }, {
+                  //Exits
+                  Entrance(RR_FIRE_TEMPLE_MQ_FIRST_ROOM_LOWER, {[]{return Here(RR_FIRE_TEMPLE_MQ_FIRST_ROOM_LOWER, {[]{return logic->CanKillEnemy(RE_LIKE_LIKE);}});}}),
+                  //TODO add event for cage
+                  Entrance(RR_FIRE_TEMPLE_MQ_MAP_ROOM_CAGE,    {[]{return true;}}),
+  });
+
+  areaTable[RR_FIRE_TEMPLE_MQ_STALFOS_ROOM] = Region("Fire Temple MQ Stalfo Room", "Fire Temple", {RA_FIRE_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+                  //Exits
+                  Entrance(RR_FIRE_TEMPLE_MQ_FIRST_ROOM_LOWER, {[]{return Here(RR_FIRE_TEMPLE_MQ_FIRST_ROOM_LOWER, {[]{return logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, 2);}});}}),
+});
 
   areaTable[RR_FIRE_TEMPLE_MQ_LOWER_LOCKED_DOOR] = Region("Fire Temple MQ Lower Locked Door", "Fire Temple", {RA_FIRE_TEMPLE}, NO_DAY_NIGHT_CYCLE, {
                   //Events
@@ -335,6 +354,41 @@ void RegionTable_Init_FireTemple() {
                   LOCATION(RC_FIRE_TEMPLE_MQ_MEGATON_HAMMER_CHEST, logic->IsAdult && (logic->CanUse(RG_MEGATON_HAMMER) || logic->CanUse(RG_HOOKSHOT) || (logic->HasExplosives() && (logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_BIGGORON_SWORD) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_BOOMERANG))))),
                   LOCATION(RC_FIRE_TEMPLE_MQ_MAP_CHEST,            logic->IsAdult && logic->CanUse(RG_MEGATON_HAMMER)),
   }, {});
+
+  areaTable[RR_FIRE_TEMPLE_MQ_LOWER_LOCKED_DOOR] = Region("Fire Temple MQ Lower Locked Door", "Fire Temple", {RA_FIRE_TEMPLE}, NO_DAY_NIGHT_CYCLE, {
+                  //Events
+                  EventAccess(&logic->FairyPot, {[]{return true;}}),
+  }, {
+                  //Locations
+                  LOCATION(RC_FIRE_TEMPLE_MQ_MEGATON_HAMMER_CHEST, logic->IsAdult && (logic->CanUse(RG_MEGATON_HAMMER) || logic->CanUse(RG_HOOKSHOT) || (logic->HasExplosives() && (logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_BIGGORON_SWORD) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_BOOMERANG))))),
+                  LOCATION(RC_FIRE_TEMPLE_MQ_MAP_CHEST,            logic->IsAdult && logic->CanUse(RG_MEGATON_HAMMER)),
+  }, {});
+
+  areaTable[RR_FIRE_TEMPLE_MQ_LOWER_LOCKED_DOOR] = Region("Fire Temple MQ Lower Locked Door", "Fire Temple", {RA_FIRE_TEMPLE}, NO_DAY_NIGHT_CYCLE, {
+                  //Events
+                  EventAccess(&logic->FairyPot, {[]{return true;}}),
+  }, {
+                  //Locations
+                  LOCATION(RC_FIRE_TEMPLE_MQ_MEGATON_HAMMER_CHEST, logic->IsAdult && (logic->CanUse(RG_MEGATON_HAMMER) || logic->CanUse(RG_HOOKSHOT) || (logic->HasExplosives() && (logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_BIGGORON_SWORD) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_BOOMERANG))))),
+                  LOCATION(RC_FIRE_TEMPLE_MQ_MAP_CHEST,            logic->IsAdult && logic->CanUse(RG_MEGATON_HAMMER)),
+  }, {});
+
+    areaTable[RR_FIRE_TEMPLE_NEAR_BOSS_ROOM] = Region("Fire Temple MQ Lower", "Fire Temple", {RA_FIRE_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {
+                  //Locations
+                  LOCATION(RC_FIRE_TEMPLE_MQ_MAP_ROOM_SIDE_CHEST, logic->CanJumpslashExceptHammer() || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_BOMB_BAG) || logic->CanUse(RG_DINS_FIRE)),
+                  LOCATION(RC_FIRE_TEMPLE_MQ_NEAR_BOSS_CHEST,     logic->IsAdult && 
+                                                                  (ctx->GetTrickOption(RT_FEWER_TUNIC_REQUIREMENTS) || logic->CanUse(RG_GORON_TUNIC)) && 
+                                                                   (((logic->CanUse(RG_HOVER_BOOTS) || (ctx->GetTrickOption(RT_FIRE_MQ_NEAR_BOSS) && logic->CanUse(RG_FAIRY_BOW))) && logic->HasFireSource()) || 
+                                                                    (logic->CanUse(RG_HOOKSHOT) && logic->CanUse(RG_FIRE_ARROWS) || (logic->CanUse(RG_DINS_FIRE) && ((ctx->GetOption(RSK_DAMAGE_MULTIPLIER).IsNot(RO_DAMAGE_MULTIPLIER_OHKO) && ctx->GetOption(RSK_DAMAGE_MULTIPLIER).IsNot(RO_DAMAGE_MULTIPLIER_QUADRUPLE) && ctx->GetOption(RSK_DAMAGE_MULTIPLIER).IsNot(RO_DAMAGE_MULTIPLIER_OCTUPLE) && ctx->GetOption(RSK_DAMAGE_MULTIPLIER).IsNot(RO_DAMAGE_MULTIPLIER_SEXDECUPLE)) || logic->CanUse(RG_GORON_TUNIC) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_LONGSHOT)))))),
+                    //Trick: logic->IsAdult && (LogicFewerTunicRequirements || logic->CanUse(RG_GORON_TUNIC)) && (((logic->CanUse(RG_HOVER_BOOTS) || (LogicFireMQNearBoss && logic->CanUse(RG_FAIRY_BOW))) && logic->HasFireSource()) || (logic->CanUse(RG_HOOKSHOT) && logic->CanUse(RG_FIRE_ARROWS) || (logic->CanUse(RG_DINS_FIRE) && ((DamageMultiplier.IsNot(DAMAGEMULTIPLIER_OHKO) && DamageMultiplier.IsNot(DAMAGEMULTIPLIER_QUADRUPLE) && DamageMultiplier.IsNot(DAMAGEMULTIPLIER_OCTUPLE) && DamageMultiplier.IsNot(DAMAGEMULTIPLIER_SEXDECUPLE)) || logic->CanUse(RG_GORON_TUNIC) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_LONGSHOT)))))
+  }, {
+                  //Exits
+                  Entrance(RR_FIRE_TEMPLE_ENTRYWAY,             {[]{return true;}}),
+                  Entrance(RR_FIRE_TEMPLE_BOSS_ENTRYWAY,        {[]{return logic->IsAdult && logic->CanUse(RG_GORON_TUNIC) && logic->CanUse(RG_MEGATON_HAMMER) && logic->HasItem(RG_FIRE_TEMPLE_BOSS_KEY) && ((logic->HasFireSource() && (ctx->GetTrickOption(RT_FIRE_BOSS_DOOR_JUMP) || logic->CanUse(RG_HOVER_BOOTS))) || HasAccessTo(RR_FIRE_TEMPLE_MQ_UPPER));}}),
+                  Entrance(RR_FIRE_TEMPLE_MQ_LOWER_LOCKED_DOOR, {[]{return logic->SmallKeys(RR_FIRE_TEMPLE, 5) && (logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD));}}),
+                  Entrance(RR_FIRE_TEMPLE_MQ_BIG_LAVA_ROOM,     {[]{return logic->IsAdult && logic->FireTimer() >= 24 && logic->CanUse(RG_MEGATON_HAMMER);}}),
+  });
+ 
 
   areaTable[RR_FIRE_TEMPLE_MQ_BIG_LAVA_ROOM] = Region("Fire Temple MQ Big Lava Room", "Fire Temple", {RA_FIRE_TEMPLE}, NO_DAY_NIGHT_CYCLE, {
                   //Events
@@ -400,7 +454,7 @@ void RegionTable_Init_FireTemple() {
              {
                  // Exits
                  Entrance(RR_FIRE_TEMPLE_NEAR_BOSS_ROOM, { [] { return ctx->GetDungeon(FIRE_TEMPLE)->IsVanilla() && false; } }),
-                 Entrance(RR_FIRE_TEMPLE_MQ_LOWER, { [] { return ctx->GetDungeon(FIRE_TEMPLE)->IsMQ() && false; } }),
+                 Entrance(RR_FIRE_TEMPLE_MQ_NEAR_BOSS_DOOR, { [] { return ctx->GetDungeon(FIRE_TEMPLE)->IsMQ() && false; } }),
                  Entrance(RR_FIRE_TEMPLE_BOSS_ROOM, { [] { return true; } }),
              });
 

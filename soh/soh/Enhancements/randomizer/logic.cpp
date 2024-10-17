@@ -420,7 +420,8 @@ namespace Rando {
         return false;
     }
 
-    bool Logic::CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance) {
+//RANDOTODO quantity is a placeholder for proper ammo use calculation logic. in time will want updating to account for ammo capacity
+    bool Logic::CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance, uint8_t quantity) {
         switch(enemy) {
             case RE_GOLD_SKULLTULA:
             case RE_GOHMA_LARVA:
@@ -441,6 +442,12 @@ namespace Rando {
             case RE_DEAD_HAND:
                 //RANDOTODO change Dead Hand trick to be sticks Dead Hand
                 return CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD) || (CanUse(RG_STICKS) && ctx->GetTrickOption(RT_BOTW_CHILD_DEADHAND));
+            case RE_LIKE_LIKE:
+                return CanDamage();
+            case RE_STALFOS:
+                //RANDOTODO Add trick to kill stalfos with sticks, and a second one for bombs without stunning. Higher ammo logic for bombs is also plausible
+                return CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD) || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_FAIRY_BOW) || CanUse(RG_BOMBCHU_5) || 
+                       (quantity <= 2 && (CanUse(RG_NUTS) || HookshotOrBoomerang()) && CanUse(RG_BOMB_BAG)) || (quantity <= 1 && CanUse(RG_STICKS));
             default:
                 SPDLOG_ERROR("CanKillEnemy reached `default`.");
                 assert(false);
@@ -465,6 +472,8 @@ namespace Rando {
                 return true;
             case RE_BIG_SKULLTULA:
                 return CanUse(RG_NUTS) || CanUse(RG_BOOMERANG);
+            case RE_LIKE_LIKE:
+                return CanUse(RG_HOOKSHOT) || CanUse(RG_BOOMERANG);
             default:
                 SPDLOG_ERROR("CanPassEnemy reached `default`.");
                 assert(false);
@@ -483,6 +492,7 @@ namespace Rando {
             case RE_DODONGO: //RANDOTODO do dodongos block the way in tight corridors?
             case RE_BIG_SKULLTULA:
             case RE_DEAD_HAND:
+            case RE_LIKE_LIKE:
                 return true;
             case RE_MAD_SCRUB:
             case RE_KEESE:
