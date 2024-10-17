@@ -16,6 +16,8 @@ void UpdatePermanentHeartLossState();
 void UpdateHyperEnemiesState();
 void UpdateHyperBossesState();
 void InitMods();
+void UpdatePatchChildHylianShield();
+void UpdateChildHylianShieldState();
 void UpdatePatchHand(); 
 
 #ifdef __cplusplus

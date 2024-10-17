@@ -728,6 +728,50 @@ void RegisterMirrorModeHandler() {
     });
 }
 
+void UpdatePatchChildHylianShield() {
+    if ((CVarGetInteger(CVAR_ENHANCEMENT("RotateScaleChildHylianShield"), 0) && LINK_IS_CHILD) &&
+        (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_KOKIRI || gSaveContext.equips.buttonItems[0] == ITEM_FISHING_POLE)) {
+        ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "childHylianShield1", 82, gsSPDisplayListOTRFilePath(gLinkChildSwordAndSheathNearDL));
+        ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "childHylianShield2", 83, gsSPEndDisplayList());
+    } else {
+        ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "childHylianShield1");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "childHylianShield2");
+    }
+    if ((CVarGetInteger(CVAR_ENHANCEMENT("RotateScaleChildHylianShield"), 0) && LINK_IS_CHILD) &&
+        (gSaveContext.equips.buttonItems[0] == ITEM_NONE || gSaveContext.equips.buttonItems[0] == ITEM_STICK)) {
+        ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "childHylianShield3", 82, gsSPEndDisplayList());
+    } else {
+        ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "childHylianShield3");
+    }
+}
+
+void RegisterPatchChildHylianShieldHandler() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
+        static uint16_t lastItemOnB = gSaveContext.equips.buttonItems[0];
+        if (lastItemOnB != gSaveContext.equips.buttonItems[0]) {
+            UpdatePatchChildHylianShield();
+            lastItemOnB = gSaveContext.equips.buttonItems[0];
+        }
+    });
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int32_t sceneNum) {
+        UpdatePatchChildHylianShield();
+    });
+}
+
+void UpdateChildHylianShieldState() {
+    if (gPlayState == nullptr) {
+        return;
+    }
+    Player* player = GET_PLAYER(gPlayState);
+    Player_SetModels(player, Player_ActionToModelGroup(player, player->heldItemAction));
+}
+
+void RegisterChildHylianShielStatedHandler() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) {
+        UpdateChildHylianShieldState();
+    });
+}
+
 void UpdatePatchHand() {
     if ((CVarGetInteger(CVAR_ENHANCEMENT("EquimentAlwaysVisible"), 0)) && LINK_IS_CHILD) {
         ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "childHammer1", 92, gsSPDisplayListOTRFilePath(gLinkChildLeftFistNearDL));
@@ -1446,6 +1490,8 @@ void InitMods() {
     RegisterToTMedallions();
     RegisterRandomizerCompasses();
     NameTag_RegisterHooks();
+    RegisterPatchChildHylianShieldHandler();
+    RegisterChildHylianShielStatedHandler();
     RegisterFloorSwitchesHook();
     RegisterPatchHandHandler();
     RegisterHurtContainerModeHandler();

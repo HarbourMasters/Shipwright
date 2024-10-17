@@ -580,7 +580,11 @@ s32 func_8008E9C4(Player* this) {
 }
 
 s32 Player_IsChildWithHylianShield(Player* this) {
-    return gSaveContext.linkAge != 0 && (this->currentShield == PLAYER_SHIELD_HYLIAN);
+    if (CVarGetInteger(CVAR_ENHANCEMENT("ChildHoldsHylianShield"), 0)) {
+        return false;      // Skip vanilla check for making child Link have the Hylian Shield on his back, allowing for it to be used in hand
+    } else {
+        return gSaveContext.linkAge != 0 && (this->currentShield == PLAYER_SHIELD_HYLIAN);
+    }
 }
 
 s32 Player_ActionToModelGroup(Player* this, s32 actionParam) {
@@ -600,12 +604,15 @@ void Player_SetModelsForHoldingShield(Player* this) {
         if ((CVarGetInteger(CVAR_CHEAT("ShieldTwoHanded"), 0) && (this->heldItemAction != PLAYER_IA_DEKU_STICK) ||
             !Player_HoldsTwoHandedWeapon(this)) && !Player_IsChildWithHylianShield(this)) {
             this->rightHandType = PLAYER_MODELTYPE_RH_SHIELD;
-            if (LINK_IS_CHILD && (CVarGetInteger(CVAR_ENHANCEMENT("EquimentAlwaysVisible"), 0)) && (this->currentShield == PLAYER_SHIELD_MIRROR)) {
+            if (LINK_IS_CHILD && CVarGetInteger(CVAR_ENHANCEMENT("ChildHoldsHylianShield"), 0) &&
+                this->currentShield == PLAYER_SHIELD_HYLIAN) {
+                this->rightHandDLists = &sPlayerDListGroups[PLAYER_MODELTYPE_RH_SHIELD][LINK_AGE_ADULT];
+            } else if (LINK_IS_CHILD && (CVarGetInteger(CVAR_ENHANCEMENT("EquimentAlwaysVisible"), 0)) && (this->currentShield == PLAYER_SHIELD_MIRROR)) {
                 this->rightHandDLists = &sPlayerDListGroups[PLAYER_MODELTYPE_RH_SHIELD][0];
-                } else if (LINK_IS_ADULT && (CVarGetInteger(CVAR_ENHANCEMENT("EquimentAlwaysVisible"), 0)) && (this->currentShield == PLAYER_SHIELD_DEKU)) {
-                    this->rightHandDLists = &sPlayerDListGroups[PLAYER_MODELTYPE_RH_SHIELD][1];
-                } else {
-                    this->rightHandDLists = &sPlayerDListGroups[PLAYER_MODELTYPE_RH_SHIELD][gSaveContext.linkAge];
+            } else if (LINK_IS_ADULT && (CVarGetInteger(CVAR_ENHANCEMENT("EquimentAlwaysVisible"), 0)) && (this->currentShield == PLAYER_SHIELD_DEKU)) {
+                this->rightHandDLists = &sPlayerDListGroups[PLAYER_MODELTYPE_RH_SHIELD][1];
+            } else {
+                this->rightHandDLists = &sPlayerDListGroups[PLAYER_MODELTYPE_RH_SHIELD][gSaveContext.linkAge];
             }
             if (this->sheathType == PLAYER_MODELTYPE_SHEATH_18) {
                 this->sheathType = PLAYER_MODELTYPE_SHEATH_16;
@@ -646,8 +653,10 @@ void Player_SetModels(Player* this, s32 modelGroup) {
     this->rightHandType = gPlayerModelTypes[modelGroup][PLAYER_MODELGROUPENTRY_RIGHT_HAND];
     this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][gSaveContext.linkAge];
 
-    this->rightHandType = gPlayerModelTypes[modelGroup][PLAYER_MODELGROUPENTRY_RIGHT_HAND];
-    this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][gSaveContext.linkAge];
+    if (LINK_IS_CHILD && CVarGetInteger(CVAR_ENHANCEMENT("ChildHoldsHylianShield"), 0) &&
+        this->rightHandType == PLAYER_MODELTYPE_RH_SHIELD && this->currentShield == PLAYER_SHIELD_HYLIAN) {
+        this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][LINK_AGE_ADULT];
+    }
 
     if (CVarGetInteger(CVAR_ENHANCEMENT("EquimentAlwaysVisible"), 0)) {
         if (LINK_IS_CHILD &&
@@ -667,6 +676,12 @@ void Player_SetModels(Player* this, s32 modelGroup) {
     // Sheath
     this->sheathType = gPlayerModelTypes[modelGroup][PLAYER_MODELGROUPENTRY_SHEATH];
     this->sheathDLists = &sPlayerDListGroups[this->sheathType][gSaveContext.linkAge];
+
+    if (CVarGetInteger(CVAR_ENHANCEMENT("RotateScaleChildHylianShield"), 0)) {
+        if (LINK_IS_CHILD && this->sheathType == PLAYER_MODELTYPE_SHEATH_18 && this->currentShield == PLAYER_SHIELD_HYLIAN) {
+            this->sheathDLists = &sPlayerDListGroups[this->sheathType][LINK_AGE_ADULT];
+        }
+    }
 
     if (CVarGetInteger(CVAR_ENHANCEMENT("EquimentAlwaysVisible"), 0)) {
         if (LINK_IS_CHILD &&
@@ -1274,6 +1289,28 @@ s32 Player_OverrideLimbDrawGameplayCommon(PlayState* play, s32 limbIndex, Gfx** 
                 (this->sheathType == PLAYER_MODELTYPE_SHEATH_16 ||
                  this->sheathType == PLAYER_MODELTYPE_SHEATH_17))) {
                 Matrix_Translate(218, -100, 62, MTXMODE_APPLY);
+                Matrix_Scale(0.8, 0.8, 0.8, MTXMODE_APPLY);
+            }
+        }
+    }
+
+    if (CVarGetInteger(CVAR_ENHANCEMENT("ChildHoldsHylianShield"), 0) && CVarGetInteger(CVAR_ENHANCEMENT("RotateScaleChildHylianShield"), 0) &&
+        LINK_IS_CHILD) {
+        if (limbIndex == PLAYER_LIMB_SHEATH) {
+            if (this->currentShield == PLAYER_SHIELD_HYLIAN &&
+                (this->sheathType == PLAYER_MODELTYPE_SHEATH_18 || this->sheathType == PLAYER_MODELTYPE_SHEATH_19) &&
+                (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_KOKIRI ||
+                 gSaveContext.equips.buttonItems[0] == ITEM_NONE ||
+                 gSaveContext.equips.buttonItems[0] == ITEM_FISHING_POLE)) {
+                Matrix_Translate(218, 0, 62, MTXMODE_APPLY);
+                Matrix_Scale(0.8, 0.8, 0.8, MTXMODE_APPLY);
+            }
+        }
+        if (limbIndex == PLAYER_LIMB_R_HAND) {
+            if ((this->currentShield == PLAYER_SHIELD_HYLIAN && sRightHandType == PLAYER_MODELTYPE_RH_SHIELD) &&
+                (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_KOKIRI ||
+                 gSaveContext.equips.buttonItems[0] == ITEM_NONE ||
+                 gSaveContext.equips.buttonItems[0] == ITEM_FISHING_POLE)) {
                 Matrix_Scale(0.8, 0.8, 0.8, MTXMODE_APPLY);
             }
         }
