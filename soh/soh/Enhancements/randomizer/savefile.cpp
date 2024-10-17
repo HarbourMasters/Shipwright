@@ -97,6 +97,9 @@ void GiveLinksPocketItem() {
     if (Randomizer_GetSettingValue(RSK_LINKS_POCKET) != RO_LINKS_POCKET_NOTHING) {
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LINKS_POCKET, (GetItemID)RG_NONE);
         StartingItemGive(getItemEntry);
+        Rando::Context::GetInstance()->GetItemLocation(RC_LINKS_POCKET)->SetCheckStatus(RCSHOW_SAVED);
+        // If we re-add the above, we'll get the item on save creation, now it's given on first load
+        Flags_SetRandomizerInf(RAND_INF_LINKS_POCKET);
     }
 }
 
@@ -137,20 +140,29 @@ void SetStartingItems() {
         gSaveContext.inventory.gsTokens = Randomizer_GetSettingValue(RSK_STARTING_SKULLTULA_TOKEN);
     }
 
+    if ((Randomizer_GetSettingValue(RSK_STARTING_HEARTS) + 1) != 3) {
+        gSaveContext.healthCapacity = (Randomizer_GetSettingValue(RSK_STARTING_HEARTS) + 1) * 16;
+        gSaveContext.health = gSaveContext.healthCapacity;
+    }
+
     if (Randomizer_GetSettingValue(RSK_STARTING_OCARINA)) {
         INV_CONTENT(ITEM_OCARINA_FAIRY) = ITEM_OCARINA_FAIRY;
     }
 
     if (Randomizer_GetSettingValue(RSK_STARTING_CONSUMABLES)) {
-        GiveLinkDekuSticks(10);
-        GiveLinkDekuNuts(20);
+        if (!Randomizer_GetSettingValue(RSK_SHUFFLE_DEKU_STICK_BAG)) {
+            GiveLinkDekuSticks(10);
+        }
+        if (!Randomizer_GetSettingValue(RSK_SHUFFLE_DEKU_NUT_BAG)) {
+            GiveLinkDekuNuts(20);
+        }
     }
 
     if (Randomizer_GetSettingValue(RSK_FULL_WALLETS)) {
         GiveLinkRupees(9001);
     }
 
-    if (Randomizer_GetSettingValue(RSK_STARTING_MAPS_COMPASSES) == RO_DUNGEON_ITEM_LOC_STARTWITH) {
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_MAPANDCOMPASS) == RO_DUNGEON_ITEM_LOC_STARTWITH) {
         uint32_t mapBitMask = 1 << 1;
         uint32_t compassBitMask = 1 << 2;
         uint32_t startingDungeonItemsBitMask = mapBitMask | compassBitMask;
@@ -202,98 +214,121 @@ void SetStartingItems() {
 }
 
 extern "C" void Randomizer_InitSaveFile() {
-    // Sets all rando flags to false
-    for (s32 i = 0; i < ARRAY_COUNT(gSaveContext.randomizerInf); i++) {
-        gSaveContext.randomizerInf[i] = 0;
-    }
+    // Now handled by cutscene skips
+    // gSaveContext.cutsceneIndex = 0; // no intro cutscene
+    // Starts pending ice traps out at 0 before potentially incrementing them down the line.
+    gSaveContext.pendingIceTrapCount = 0;
 
     // Reset triforce pieces collected
     gSaveContext.triforcePiecesCollected = 0;
 
-    gSaveContext.cutsceneIndex = 0; // no intro cutscene
-    // Starts pending ice traps out at 0 before potentially incrementing them down the line.
-    gSaveContext.pendingIceTrapCount = 0;
-
     // Set Cutscene flags and texts to skip them
-    Flags_SetInfTable(INFTABLE_GREETED_BY_SARIA);
+    // Now handled by cutscene skips
+    // Flags_SetInfTable(INFTABLE_GREETED_BY_SARIA);
     Flags_SetEventChkInf(EVENTCHKINF_FIRST_SPOKE_TO_MIDO);
-    Flags_SetEventChkInf(EVENTCHKINF_MET_DEKU_TREE);
-    Flags_SetEventChkInf(EVENTCHKINF_DEKU_TREE_OPENED_MOUTH);
+    // Now handled by cutscene skips
+    // Flags_SetEventChkInf(EVENTCHKINF_MET_DEKU_TREE);
+    // Flags_SetEventChkInf(EVENTCHKINF_DEKU_TREE_OPENED_MOUTH);
     Flags_SetInfTable(INFTABLE_SPOKE_TO_KAEPORA_IN_LAKE_HYLIA);
-    Flags_SetEventChkInf(EVENTCHKINF_ENTERED_MASTER_SWORD_CHAMBER);
-    Flags_SetEventChkInf(EVENTCHKINF_PULLED_MASTER_SWORD_FROM_PEDESTAL);
+    // Now handled by cutscene skips
+    // Flags_SetEventChkInf(EVENTCHKINF_ENTERED_MASTER_SWORD_CHAMBER);
+    // Now using this to grant master sword check
+    // Flags_SetEventChkInf(EVENTCHKINF_PULLED_MASTER_SWORD_FROM_PEDESTAL);
     Flags_SetEventChkInf(EVENTCHKINF_SHEIK_SPAWNED_AT_MASTER_SWORD_PEDESTAL);
-    Flags_SetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS);
+    // Now used to give player LACS rewards
+    // Flags_SetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS);
     Flags_SetEventChkInf(EVENTCHKINF_RENTED_HORSE_FROM_INGO);
     Flags_SetInfTable(INFTABLE_SPOKE_TO_POE_COLLECTOR_IN_RUINED_MARKET);
     Flags_SetEventChkInf(EVENTCHKINF_WATCHED_GANONS_CASTLE_COLLAPSE_CAUGHT_BY_GERUDO);
     Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_NABOORU_IN_SPIRIT_TEMPLE);
 
-    Flags_SetInfTable(INFTABLE_MET_CHILD_MALON_AT_CASTLE_OR_MARKET);
-    Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_CHILD_MALON_AT_CASTLE_OR_MARKET);
-    Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_INGO_AT_RANCH_BEFORE_TALON_RETURNS);
-    Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_CHILD_MALON_AT_RANCH);
-    Flags_SetEventChkInf(EVENTCHKINF_INVITED_TO_SING_WITH_CHILD_MALON);
-    Flags_SetInfTable(INFTABLE_CHILD_MALON_SAID_EPONA_WAS_AFRAID_OF_YOU);
-    Flags_SetInfTable(INFTABLE_SPOKE_TO_INGO_ONCE_AS_ADULT);
+    // Now handled by cutscene skips
+    // Flags_SetInfTable(INFTABLE_MET_CHILD_MALON_AT_CASTLE_OR_MARKET);
+    // Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_CHILD_MALON_AT_CASTLE_OR_MARKET);
+    // Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_INGO_AT_RANCH_BEFORE_TALON_RETURNS);
+    // Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_CHILD_MALON_AT_RANCH);
+    // Flags_SetEventChkInf(EVENTCHKINF_INVITED_TO_SING_WITH_CHILD_MALON);
+    // Flags_SetInfTable(INFTABLE_CHILD_MALON_SAID_EPONA_WAS_AFRAID_OF_YOU);
+    // Flags_SetInfTable(INFTABLE_SPOKE_TO_INGO_ONCE_AS_ADULT);
 
     // Ruto already met in jabu and spawns down the hole immediately
     Flags_SetInfTable(INFTABLE_RUTO_IN_JJ_MEET_RUTO);
     Flags_SetInfTable(INFTABLE_RUTO_IN_JJ_TALK_FIRST_TIME);
     Flags_SetInfTable(INFTABLE_RUTO_IN_JJ_WANTS_TO_BE_TOSSED_TO_SAPPHIRE);
 
+    // Now handled by cutscene skips
     // Skip cutscenes before Nabooru fight
-    Flags_SetEventChkInf(EVENTCHKINF_BEGAN_NABOORU_BATTLE);
-    Flags_SetEventChkInf(EVENTCHKINF_NABOORU_ORDERED_TO_FIGHT_BY_TWINROVA);
+    // Flags_SetEventChkInf(EVENTCHKINF_BEGAN_NABOORU_BATTLE);
+    // Flags_SetEventChkInf(EVENTCHKINF_NABOORU_ORDERED_TO_FIGHT_BY_TWINROVA);
 
+    // Now handled by cutscene skips
     // Skip boss cutscenes
-    Flags_SetEventChkInf(EVENTCHKINF_BEGAN_GOHMA_BATTLE);
-    Flags_SetEventChkInf(EVENTCHKINF_BEGAN_KING_DODONGO_BATTLE);
-    Flags_SetEventChkInf(EVENTCHKINF_BEGAN_PHANTOM_GANON_BATTLE);
-    Flags_SetEventChkInf(EVENTCHKINF_BEGAN_VOLVAGIA_BATTLE);
-    Flags_SetEventChkInf(EVENTCHKINF_BEGAN_MORPHA_BATTLE);
-    Flags_SetEventChkInf(EVENTCHKINF_BEGAN_TWINROVA_BATTLE);
-    Flags_SetEventChkInf(EVENTCHKINF_BEGAN_BARINA_BATTLE);
-    Flags_SetEventChkInf(EVENTCHKINF_BEGAN_BONGO_BONGO_BATTLE);
+    // Flags_SetEventChkInf(EVENTCHKINF_BEGAN_GOHMA_BATTLE);
+    // Flags_SetEventChkInf(EVENTCHKINF_BEGAN_KING_DODONGO_BATTLE);
+    // Flags_SetEventChkInf(EVENTCHKINF_BEGAN_PHANTOM_GANON_BATTLE);
+    // Flags_SetEventChkInf(EVENTCHKINF_BEGAN_VOLVAGIA_BATTLE);
+    // Flags_SetEventChkInf(EVENTCHKINF_BEGAN_MORPHA_BATTLE);
+    // Flags_SetEventChkInf(EVENTCHKINF_BEGAN_TWINROVA_BATTLE);
+    // Flags_SetEventChkInf(EVENTCHKINF_BEGAN_BARINA_BATTLE);
+    // Flags_SetEventChkInf(EVENTCHKINF_BEGAN_BONGO_BONGO_BATTLE);
 
-    // Entered areas
-    Flags_SetEventChkInf(EVENTCHKINF_ENTERED_HYRULE_FIELD);
-    Flags_SetEventChkInf(EVENTCHKINF_ENTERED_DEATH_MOUNTAIN_TRAIL);
-    Flags_SetEventChkInf(EVENTCHKINF_ENTERED_KAKARIKO_VILLAGE);
-    Flags_SetEventChkInf(EVENTCHKINF_ENTERED_ZORAS_DOMAIN);
-    Flags_SetEventChkInf(EVENTCHKINF_ENTERED_HYRULE_CASTLE);
-    Flags_SetEventChkInf(EVENTCHKINF_ENTERED_GORON_CITY);
-    Flags_SetEventChkInf(EVENTCHKINF_ENTERED_TEMPLE_OF_TIME);
-    Flags_SetEventChkInf(EVENTCHKINF_ENTERED_DEKU_TREE);
-    Flags_SetEventChkInf(EVENTCHKINF_ENTERED_DODONGOS_CAVERN);
-    Flags_SetEventChkInf(EVENTCHKINF_ENTERED_LAKE_HYLIA);
-    Flags_SetEventChkInf(EVENTCHKINF_ENTERED_GERUDO_VALLEY);
-    Flags_SetEventChkInf(EVENTCHKINF_ENTERED_GERUDOS_FORTRESS);
-    Flags_SetEventChkInf(EVENTCHKINF_ENTERED_LON_LON_RANCH);
-    Flags_SetEventChkInf(EVENTCHKINF_ENTERED_JABU_JABUS_BELLY);
-    Flags_SetEventChkInf(EVENTCHKINF_ENTERED_GRAVEYARD);
-    Flags_SetEventChkInf(EVENTCHKINF_ENTERED_ZORAS_FOUNTAIN);
-    Flags_SetEventChkInf(EVENTCHKINF_ENTERED_DESERT_COLOSSUS);
-    Flags_SetEventChkInf(EVENTCHKINF_ENTERED_DEATH_MOUNTAIN_CRATER);
-    Flags_SetEventChkInf(EVENTCHKINF_ENTERED_GANONS_CASTLE_EXTERIOR);
-    Flags_SetInfTable(INFTABLE_ENTERED_HYRULE_CASTLE);
+    // Now handled by cutscene skips
+    // Flags_SetEventChkInf(EVENTCHKINF_ENTERED_HYRULE_FIELD);
+    // Flags_SetEventChkInf(EVENTCHKINF_ENTERED_DEATH_MOUNTAIN_TRAIL);
+    // Flags_SetEventChkInf(EVENTCHKINF_ENTERED_KAKARIKO_VILLAGE);
+    // Flags_SetEventChkInf(EVENTCHKINF_ENTERED_ZORAS_DOMAIN);
+    // Flags_SetEventChkInf(EVENTCHKINF_ENTERED_HYRULE_CASTLE);
+    // Flags_SetEventChkInf(EVENTCHKINF_ENTERED_GORON_CITY);
+    // Flags_SetEventChkInf(EVENTCHKINF_ENTERED_TEMPLE_OF_TIME);
+    // Flags_SetEventChkInf(EVENTCHKINF_ENTERED_DEKU_TREE);
+    // Flags_SetEventChkInf(EVENTCHKINF_ENTERED_DODONGOS_CAVERN);
+    // Flags_SetEventChkInf(EVENTCHKINF_ENTERED_LAKE_HYLIA);
+    // Flags_SetEventChkInf(EVENTCHKINF_ENTERED_GERUDO_VALLEY);
+    // Flags_SetEventChkInf(EVENTCHKINF_ENTERED_GERUDOS_FORTRESS);
+    // Flags_SetEventChkInf(EVENTCHKINF_ENTERED_LON_LON_RANCH);
+    // Flags_SetEventChkInf(EVENTCHKINF_ENTERED_JABU_JABUS_BELLY);
+    // Flags_SetEventChkInf(EVENTCHKINF_ENTERED_GRAVEYARD);
+    // Flags_SetEventChkInf(EVENTCHKINF_ENTERED_ZORAS_FOUNTAIN);
+    // Flags_SetEventChkInf(EVENTCHKINF_ENTERED_DESERT_COLOSSUS);
+    // Flags_SetEventChkInf(EVENTCHKINF_ENTERED_DEATH_MOUNTAIN_CRATER);
+    // Flags_SetEventChkInf(EVENTCHKINF_ENTERED_GANONS_CASTLE_EXTERIOR);
+    // Ensure Malon appears at castle first time you enter
+    // Flags_SetInfTable(INFTABLE_ENTERED_HYRULE_CASTLE);
 
     // skip the z target talk instructions by the kokiri shop
-    gSaveContext.sceneFlags[SCENE_KOKIRI_FOREST].swch |= (1 << 0x1F);
+    // Now handled by cutscene skips
+    // gSaveContext.sceneFlags[SCENE_KOKIRI_FOREST].swch |= (1 << 0x1F);
 
     // Go away ruto (water temple first cutscene)
     gSaveContext.sceneFlags[SCENE_WATER_TEMPLE].swch |= (1 << 0x10);
 
+    // Now handled by cutscene skips
     // no more kaepora
-    gSaveContext.sceneFlags[SCENE_HYRULE_FIELD].swch |= (1 << 0xC);  // hyrule field kaepora outside kokiri forest
-    gSaveContext.sceneFlags[SCENE_HYRULE_FIELD].swch |= (1 << 0xB);  // hyrule field kaepora outside lake hylia
-    gSaveContext.sceneFlags[SCENE_LOST_WOODS].swch |= (1 << 0x7);  // lost woods kaepora pre-saria
-    gSaveContext.sceneFlags[SCENE_LOST_WOODS].swch |= (1 << 0x8);  // lost woods kaepora post-saria
-    gSaveContext.sceneFlags[SCENE_DESERT_COLOSSUS].swch |= (1 << 0x1F); // desert colossus kaepora
-    gSaveContext.sceneFlags[SCENE_HYRULE_CASTLE].swch |= (1 << 0x5);  // hyrule castle kaepora
+    // gSaveContext.sceneFlags[SCENE_HYRULE_FIELD].swch |= (1 << 0xC);  // hyrule field kaepora outside kokiri forest
+    // gSaveContext.sceneFlags[SCENE_HYRULE_FIELD].swch |= (1 << 0xB);  // hyrule field kaepora outside lake hylia
+    // gSaveContext.sceneFlags[SCENE_LOST_WOODS].swch |= (1 << 0x7);  // lost woods kaepora pre-saria
+    // gSaveContext.sceneFlags[SCENE_LOST_WOODS].swch |= (1 << 0x8);  // lost woods kaepora post-saria
+    // gSaveContext.sceneFlags[SCENE_DESERT_COLOSSUS].swch |= (1 << 0x1F); // desert colossus kaepora
+    // gSaveContext.sceneFlags[SCENE_HYRULE_CASTLE].swch |= (1 << 0x5);  // hyrule castle kaepora
 
-    if (!Randomizer_GetSettingValue(RSK_ENABLE_GLITCH_CUTSCENES)) {
-        Flags_SetInfTable(INFTABLE_SPOKE_TO_DARUNIA_IN_FIRE_TEMPLE); // Darunia in Fire Temple
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_OCARINA_BUTTONS) == RO_GENERIC_OFF) {
+        Flags_SetRandomizerInf(RAND_INF_HAS_OCARINA_A);
+        Flags_SetRandomizerInf(RAND_INF_HAS_OCARINA_C_LEFT);
+        Flags_SetRandomizerInf(RAND_INF_HAS_OCARINA_C_RIGHT);
+        Flags_SetRandomizerInf(RAND_INF_HAS_OCARINA_C_UP);
+        Flags_SetRandomizerInf(RAND_INF_HAS_OCARINA_C_DOWN);
+    }
+
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_SWIM) == RO_GENERIC_OFF) {
+        Flags_SetRandomizerInf(RAND_INF_CAN_SWIM);
+    }
+
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_CHILD_WALLET) == RO_GENERIC_OFF) {
+        Flags_SetRandomizerInf(RAND_INF_HAS_WALLET);
+    }
+
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_FISHING_POLE) == RO_GENERIC_OFF) {
+        Flags_SetRandomizerInf(RAND_INF_FISHING_POLE_FOUND);
     }
 
     // Give Link's pocket item
@@ -304,7 +339,14 @@ extern "C" void Randomizer_InitSaveFile() {
         gSaveContext.adultTradeItems = 0;
     }
 
-    int startingAge = Randomizer_GetSettingValue(RSK_STARTING_AGE);
+    // remove One Time scrubs with scrubsanity off
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_SCRUBS) == RO_SCRUBS_OFF) {
+        Flags_SetRandomizerInf(RAND_INF_SCRUBS_PURCHASED_LW_DEKU_SCRUB_NEAR_BRIDGE);
+        Flags_SetRandomizerInf(RAND_INF_SCRUBS_PURCHASED_LW_DEKU_SCRUB_GROTTO_FRONT);
+        Flags_SetRandomizerInf(RAND_INF_SCRUBS_PURCHASED_HF_DEKU_SCRUB_GROTTO);
+    }
+
+    int startingAge = OTRGlobals::Instance->gRandoContext->GetSettings()->ResolvedStartingAge();
     switch (startingAge) {
         case RO_AGE_ADULT: // Adult
             gSaveContext.linkAge = LINK_AGE_ADULT;
@@ -325,10 +367,15 @@ extern "C" void Randomizer_InitSaveFile() {
         gSaveContext.entranceIndex = -1;
     }
 
-    // If any trials aren't required, set them as completed
-    for (u16 i = RAND_INF_TRIALS_DONE_LIGHT_TRIAL; i <= RAND_INF_TRIALS_DONE_SHADOW_TRIAL; i++) {
-        if (!OTRGlobals::Instance->gRandomizer->IsTrialRequired((RandomizerInf)i)) {
-            Flags_SetRandomizerInf((RandomizerInf)i);
+    for (auto trialFlag : { EVENTCHKINF_COMPLETED_LIGHT_TRIAL,
+                        EVENTCHKINF_COMPLETED_FOREST_TRIAL,
+                        EVENTCHKINF_COMPLETED_FIRE_TRIAL,
+                        EVENTCHKINF_COMPLETED_WATER_TRIAL,
+                        EVENTCHKINF_COMPLETED_SPIRIT_TRIAL,
+                        EVENTCHKINF_COMPLETED_SHADOW_TRIAL }
+    ) {
+        if (!OTRGlobals::Instance->gRandomizer->IsTrialRequired(trialFlag)) {
+            Flags_SetEventChkInf(trialFlag);
         }
     }
 
@@ -360,7 +407,7 @@ extern "C" void Randomizer_InitSaveFile() {
         Flags_SetRandomizerInf(RAND_INF_TOT_MASTER_SWORD);
     }
 
-    HIGH_SCORE(HS_POE_POINTS) = 1000 - (100 * Randomizer_GetSettingValue(RSK_BIG_POE_COUNT));
+    HIGH_SCORE(HS_POE_POINTS) = 1000 - (100 * (Randomizer_GetSettingValue(RSK_BIG_POE_COUNT) + 1));
 
     if (Randomizer_GetSettingValue(RSK_SKIP_EPONA_RACE)) {
         Flags_SetEventChkInf(EVENTCHKINF_EPONA_OBTAINED);
@@ -382,15 +429,16 @@ extern "C" void Randomizer_InitSaveFile() {
         gSaveContext.sceneFlags[SCENE_WATER_TEMPLE].swch |= (1 << 0x15);
     }
 
-    int openForest = Randomizer_GetSettingValue(RSK_FOREST);
-    switch (openForest) {
-        case RO_FOREST_OPEN:
-            Flags_SetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD);
-            // Fallthrough
-        case RO_FOREST_CLOSED_DEKU:
-            Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD);
-            break;
-    }
+    // Now handled on the fly
+    // int openForest = Randomizer_GetSettingValue(RSK_FOREST);
+    // switch (openForest) {
+    //     case RO_FOREST_OPEN:
+    //         Flags_SetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD);
+    //         // Fallthrough
+    //     case RO_FOREST_CLOSED_DEKU:
+    //         Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD);
+    //         break;
+    // }
 
     int doorOfTime = Randomizer_GetSettingValue(RSK_DOOR_OF_TIME);
     switch (doorOfTime) {

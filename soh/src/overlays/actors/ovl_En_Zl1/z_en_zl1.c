@@ -331,13 +331,13 @@ void func_80B4B240(EnZl1* this, PlayState* play) {
     func_80038290(play, &this->actor, &this->unk_200, &this->unk_206, this->actor.focus.pos);
 }
 
-void func_80B4B7F4(CsCmdActorAction* npcAction, Vec3f* pos) {
+void func_80B4B7F4(CsCmdActorCue* npcAction, Vec3f* pos) {
     pos->x = npcAction->startPos.x;
     pos->y = npcAction->startPos.y;
     pos->z = npcAction->startPos.z;
 }
 
-void func_80B4B834(CsCmdActorAction* npcAction, Vec3f* pos) {
+void func_80B4B834(CsCmdActorCue* npcAction, Vec3f* pos) {
     pos->x = npcAction->endPos.x;
     pos->y = npcAction->endPos.y;
     pos->z = npcAction->endPos.z;
@@ -368,7 +368,7 @@ void func_80B4B8B4(EnZl1* this, PlayState* play) {
     Vec3f sp8C = { -512.0f, 105.0f, -4.0f };
     s32 pad2;
     f32 actionLength;
-    CsCmdActorAction* npcAction;
+    CsCmdActorCue* npcAction;
     Vec3f sp74;
     Vec3f sp68;
     Vec3f velocity = { 0.0f, 0.0f, 0.0f };
@@ -421,7 +421,7 @@ void func_80B4BBC4(EnZl1* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     Animation_Change(&this->skelAnime, &gChildZelda1Anim_00438, 1.0f, 0.0f, frameCount, ANIMMODE_LOOP, 0.0f);
-    func_8002DF54(play, &this->actor, 1);
+    Player_SetCsActionWithHaltedActors(play, &this->actor, 1);
     Player_PlaySfx(&player->actor, NA_SE_VO_LI_SURPRISE_KID);
     this->actor.textId = 0x7039;
     Message_StartTextbox(play, this->actor.textId, NULL);
@@ -450,7 +450,7 @@ void func_80B4BC78(EnZl1* this, PlayState* play) {
     Vec3f sp70;
     Vec3f sp64;
     Vec3f velocity = { 0.0f, 0.0f, 0.0f };
-    CsCmdActorAction* npcAction;
+    CsCmdActorCue* npcAction;
     s32 pad;
     f32 frameCount;
 
@@ -510,7 +510,7 @@ void func_80B4BF2C(EnZl1* this, PlayState* play) {
             if ((Message_GetState(msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(play)) {
                 this->actor.textId = 0xFFFF;
                 play->talkWithPlayer(play, &this->actor);
-                func_8002F434(&this->actor, play, GI_LETTER_ZELDA, 120.0f, 10.0f);
+                Actor_OfferGetItem(&this->actor, play, GI_LETTER_ZELDA, 120.0f, 10.0f);
                 play->msgCtx.msgMode = MSGMODE_TEXT_CLOSING;
                 play->msgCtx.stateTimer = 4;
                 this->unk_1E2++;
@@ -525,7 +525,7 @@ void func_80B4BF2C(EnZl1* this, PlayState* play) {
                 this->actor.parent = NULL;
                 this->unk_1E2++;
             } else {
-                func_8002F434(&this->actor, play, GI_LETTER_ZELDA, 120.0f, 10.0f);
+                Actor_OfferGetItem(&this->actor, play, GI_LETTER_ZELDA, 120.0f, 10.0f);
             }
             break;
         case 3:
@@ -554,7 +554,7 @@ void func_80B4BF2C(EnZl1* this, PlayState* play) {
             break;
         case 6:
             if (Actor_TextboxIsClosing(&this->actor, play)) {
-                func_8002DF54(play, &this->actor, 7);
+                Player_SetCsActionWithHaltedActors(play, &this->actor, 7);
                 Interface_ChangeAlpha(50);
                 this->actor.flags &= ~ACTOR_FLAG_PLAYER_TALKED_TO;
                 this->unk_1E2 = 4;

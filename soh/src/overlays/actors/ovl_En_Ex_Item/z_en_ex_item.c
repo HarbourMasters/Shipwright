@@ -8,6 +8,7 @@
 #include "overlays/actors/ovl_En_Bom_Bowl_Pit/z_en_bom_bowl_pit.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "vt.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
@@ -137,12 +138,7 @@ void EnExItem_WaitForObject(EnExItem* this, PlayState* play) {
                 onCounter = true;
             case EXITEM_BOMB_BAG_BOWLING:
                 this->unk_17C = func_8002EBCC;
-                if (IS_RANDO) {
-                    this->giDrawId =
-                        Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_FIRST_PRIZE, GI_BOMB_BAG_20).gid;
-                } else {
-                    this->giDrawId = GID_BOMB_BAG_30;
-                }
+                this->giDrawId = GID_BOMB_BAG_30;
                 this->timer = 65;
                 this->prizeRotateTimer = 35;
                 this->scale = 0.5f;
@@ -150,7 +146,7 @@ void EnExItem_WaitForObject(EnExItem* this, PlayState* play) {
                     this->actionFunc = EnExItem_BowlPrize;
                 } else {
                     this->actionFunc = EnExItem_SetupBowlCounter;
-                    this->actor.shape.yOffset = IS_RANDO ? -10.0f : -18.0f;
+                    this->actor.shape.yOffset = -18.0f;
                 }
                 break;
             case EXITEM_HEART_PIECE_COUNTER:
@@ -172,11 +168,7 @@ void EnExItem_WaitForObject(EnExItem* this, PlayState* play) {
                 onCounter = true;
             case EXITEM_BOMBCHUS_BOWLING:
                 this->unk_17C = func_8002EBCC;
-                if (IS_RANDO) {
-                    this->giDrawId = Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS, GI_BOMBCHUS_10).gid;
-                } else {
-                    this->giDrawId = GID_BOMBCHU;
-                }
+                this->giDrawId = GID_BOMBCHU;
                 this->timer = 65;
                 this->prizeRotateTimer = 35;
                 this->scale = 0.5f;
@@ -228,25 +220,19 @@ void EnExItem_WaitForObject(EnExItem* this, PlayState* play) {
                 this->scale = 0.5f;
                 this->unkFloat = 0.5f;
                 this->actor.velocity.y = 10.0f;
-                if (!IS_RANDO || !Randomizer_GetSettingValue(RSK_SHUFFLE_CHEST_MINIGAME)) {
-                    switch (this->type) {
-                        case EXITEM_GREEN_RUPEE_CHEST:
-                            this->giDrawId = GID_RUPEE_GREEN;
-                            break;
-                        case EXITEM_BLUE_RUPEE_CHEST:
-                            this->giDrawId = GID_RUPEE_BLUE;
-                            break;
-                        case EXITEM_RED_RUPEE_CHEST:
-                            this->giDrawId = GID_RUPEE_RED;
-                            break;
-                        case EXITEM_14:
-                            this->giDrawId = GID_RUPEE_PURPLE;
-                            break;
-                    }
-                } else {
-                    if (play->sceneNum == SCENE_TREASURE_BOX_SHOP) {
-                        this->giDrawId = GetChestGameRandoGiDrawId(play->roomCtx.curRoom.num, GID_RUPEE_GREEN, play);
-                    }
+                switch (this->type) {
+                    case EXITEM_GREEN_RUPEE_CHEST:
+                        this->giDrawId = GID_RUPEE_GREEN;
+                        break;
+                    case EXITEM_BLUE_RUPEE_CHEST:
+                        this->giDrawId = GID_RUPEE_BLUE;
+                        break;
+                    case EXITEM_RED_RUPEE_CHEST:
+                        this->giDrawId = GID_RUPEE_RED;
+                        break;
+                    case EXITEM_14:
+                        this->giDrawId = GID_RUPEE_PURPLE;
+                        break;
                 }
                 this->actionFunc = EnExItem_ExitChest;
                 break;
@@ -376,7 +362,7 @@ void EnExItem_TargetPrizeApproach(EnExItem* this, PlayState* play) {
         Math_SmoothStepToS(&this->actor.shape.rot.y, -0x4000, 5, 0x1000, 0);
     }
 
-    if (!IS_RANDO && this->timer != 0) {
+    if (GameInteractor_Should(VB_PLAY_ONEPOINT_ACTOR_CS, true, &this->actor) && this->timer != 0) {
         if (this->prizeRotateTimer != 0) {
             tmpf1 = play->view.lookAt.x - play->view.eye.x;
             tmpf2 = play->view.lookAt.y - 10.0f - play->view.eye.y;
@@ -396,50 +382,41 @@ void EnExItem_TargetPrizeApproach(EnExItem* this, PlayState* play) {
             this->actor.world.pos.z += (tmpf3 / tmpf4) * 5.0f;
         }
     } else {
-        GetItemEntry getItemEntry = (GetItemEntry)GET_ITEM_NONE;
         s32 getItemId;
 
         this->actor.draw = NULL;
-        func_8002DF54(play, NULL, 7);
+        Player_SetCsActionWithHaltedActors(play, NULL, 7);
         this->actor.parent = NULL;
-        if (IS_RANDO) {
-            GET_PLAYER(play)->stateFlags1 &= ~(PLAYER_STATE1_GETTING_ITEM | PLAYER_STATE1_ITEM_OVER_HEAD);
-            getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LW_TARGET_IN_WOODS, GI_BULLET_BAG_50);
-            getItemId = getItemEntry.getItemId;
-        } else {
-            if (CUR_UPG_VALUE(UPG_BULLET_BAG) == 1) {
-                getItemId = GI_BULLET_BAG_40;
-            } else {
-                getItemId = GI_BULLET_BAG_50;
-            }
+
+        if (!GameInteractor_Should(VB_PLAY_ONEPOINT_ACTOR_CS, true, &this->actor)) {
+            GET_PLAYER(play)->stateFlags1 &= ~(PLAYER_STATE1_GETTING_ITEM | PLAYER_STATE1_CARRYING_ACTOR);
         }
 
-        if (!IS_RANDO || getItemEntry.getItemId == GI_NONE) {
-            func_8002F434(&this->actor, play, getItemId, 2000.0f, 1000.0f);
+        if (CUR_UPG_VALUE(UPG_BULLET_BAG) == 1) {
+            getItemId = GI_BULLET_BAG_40;
         } else {
-            GiveItemEntryFromActor(&this->actor, play, getItemEntry, 2000.0f, 1000.0f);
+            getItemId = GI_BULLET_BAG_50;
         }
+
+        if (GameInteractor_Should(VB_GIVE_ITEM_FROM_TARGET_IN_WOODS, true, &this->actor)) {
+            Actor_OfferGetItem(&this->actor, play, getItemId, 2000.0f, 1000.0f);
+        }
+
         this->actionFunc = EnExItem_TargetPrizeGive;
     }
 }
 
 void EnExItem_TargetPrizeGive(EnExItem* this, PlayState* play) {
-    if (Actor_HasParent(&this->actor, play)) {
+    if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(VB_GIVE_ITEM_FROM_TARGET_IN_WOODS, true, &this->actor)) {
         this->actionFunc = EnExItem_TargetPrizeFinish;
     } else {
-        if (!IS_RANDO) {
-            s32 getItemId = (CUR_UPG_VALUE(UPG_BULLET_BAG) == 2) ? GI_BULLET_BAG_50 : GI_BULLET_BAG_40;
-            func_8002F434(&this->actor, play, getItemId, 2000.0f, 1000.0f);
-        } else {
-            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LW_TARGET_IN_WOODS, GI_BULLET_BAG_50);
-            GiveItemEntryFromActor(&this->actor, play, getItemEntry, 2000.0f, 1000.0f);
-        }
-
+        s32 getItemId = (CUR_UPG_VALUE(UPG_BULLET_BAG) == 2) ? GI_BULLET_BAG_50 : GI_BULLET_BAG_40;
+        Actor_OfferGetItem(&this->actor, play, getItemId, 2000.0f, 1000.0f);
     }
 }
 
 void EnExItem_TargetPrizeFinish(EnExItem* this, PlayState* play) {
-    if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) {
+    if (!GameInteractor_Should(VB_GIVE_ITEM_FROM_TARGET_IN_WOODS, true, &this->actor) || (Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) {
         // "Successful completion"
         osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ 正常終了 ☆☆☆☆☆ \n" VT_RST);
         Flags_SetItemGetInf(ITEMGETINF_1D);
@@ -510,46 +487,13 @@ void EnExItem_DrawItems(EnExItem* this, PlayState* play) {
     }
     if (this) {}
     func_8002ED80(&this->actor, play, 0);
-    if (IS_RANDO) {
-        GetItemEntry randoGetItem = (GetItemEntry)GET_ITEM_NONE;
-        switch (this->type) {
-            case EXITEM_BOMB_BAG_BOWLING:
-            case EXITEM_BOMB_BAG_COUNTER:
-                randoGetItem = (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0) && Randomizer_IsCheckShuffled(RC_MARKET_BOMBCHU_BOWLING_FIRST_PRIZE))
-                        ? GetItemMystery()
-                        : Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_FIRST_PRIZE, GI_BOMB_BAG_20);
-                break;
-            case EXITEM_BOMBCHUS_BOWLING:
-            case EXITEM_BOMBCHUS_COUNTER:
-                randoGetItem = Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS, GI_BOMBCHUS_10);
-                break;
-            case EXITEM_BULLET_BAG:
-                randoGetItem = (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0) && Randomizer_IsCheckShuffled(RC_LW_TARGET_IN_WOODS))
-                                ? GetItemMystery() : Randomizer_GetItemFromKnownCheck(RC_LW_TARGET_IN_WOODS, GI_BULLET_BAG_50);
-                break;
-        }
-
-        if (randoGetItem.getItemId != GI_NONE) {
-            EnItem00_CustomItemsParticles(&this->actor, play, randoGetItem);
-            GetItemEntry_Draw(play, randoGetItem);
-            return;
-        }
-    }
 
     GetItem_Draw(play, this->giDrawId);
 }
 
 void EnExItem_DrawHeartPiece(EnExItem* this, PlayState* play) {
     func_8002ED80(&this->actor, play, 0);
-
-    if (IS_RANDO) {
-        GetItemEntry randoGetItem = (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0) && Randomizer_IsCheckShuffled(RC_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE))
-                                    ? GetItemMystery() : Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE, GI_HEART_PIECE);
-        EnItem00_CustomItemsParticles(&this->actor, play, randoGetItem);
-        GetItemEntry_Draw(play, randoGetItem);
-    } else {
-        GetItem_Draw(play, GID_HEART_PIECE);
-    }
+    GetItem_Draw(play, GID_HEART_PIECE);
 }
 
 void EnExItem_DrawMagic(EnExItem* this, PlayState* play, s16 magicIndex) {

@@ -8,7 +8,7 @@
 #include "overlays/actors/ovl_En_Elf/z_en_elf.h"
 #include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
 #include "objects/object_sa/object_sa.h"
-#include "soh/Enhancements/boss-rush/BossRush.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #include "vt.h"
 
@@ -160,7 +160,7 @@ s32 DemoSa_UpdateSkelAnime(DemoSa* this) {
     return SkelAnime_Update(&this->skelAnime);
 }
 
-CsCmdActorAction* DemoSa_GetNpcAction(PlayState* play, s32 idx) {
+CsCmdActorCue* DemoSa_GetNpcAction(PlayState* play, s32 idx) {
     if (play->csCtx.state != CS_STATE_IDLE) {
         return play->csCtx.npcActions[idx];
     }
@@ -168,7 +168,7 @@ CsCmdActorAction* DemoSa_GetNpcAction(PlayState* play, s32 idx) {
 }
 
 s32 func_8098E654(DemoSa* this, PlayState* play, u16 arg2, s32 arg3) {
-    CsCmdActorAction* npcAction = DemoSa_GetNpcAction(play, arg3);
+    CsCmdActorCue* npcAction = DemoSa_GetNpcAction(play, arg3);
 
     if ((npcAction != NULL) && (npcAction->action == arg2)) {
         return 1;
@@ -177,7 +177,7 @@ s32 func_8098E654(DemoSa* this, PlayState* play, u16 arg2, s32 arg3) {
 }
 
 s32 func_8098E6A0(DemoSa* this, PlayState* play, u16 arg2, s32 arg3) {
-    CsCmdActorAction* npcAction = DemoSa_GetNpcAction(play, arg3);
+    CsCmdActorCue* npcAction = DemoSa_GetNpcAction(play, arg3);
 
     if ((npcAction != NULL) && (npcAction->action != arg2)) {
         return 1;
@@ -186,7 +186,7 @@ s32 func_8098E6A0(DemoSa* this, PlayState* play, u16 arg2, s32 arg3) {
 }
 
 void func_8098E6EC(DemoSa* this, PlayState* play, s32 actionIdx) {
-    CsCmdActorAction* npcAction = DemoSa_GetNpcAction(play, actionIdx);
+    CsCmdActorCue* npcAction = DemoSa_GetNpcAction(play, actionIdx);
 
     if (npcAction != NULL) {
         this->actor.world.pos.x = npcAction->startPos.x;
@@ -241,7 +241,9 @@ void func_8098E8C8(DemoSa* this, PlayState* play) {
 
     Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DEMO_EFFECT, posX, posY, posZ, 0, 0, 0,
                        0xB);
-    Item_Give(play, ITEM_MEDALLION_FOREST);
+    if (GameInteractor_Should(VB_GIVE_ITEM_FOREST_MEDALLION, true)) {
+        Item_Give(play, ITEM_MEDALLION_FOREST);
+    }
 }
 
 void func_8098E944(DemoSa* this, PlayState* play) {
@@ -254,24 +256,18 @@ void func_8098E960(DemoSa* this, PlayState* play) {
 
     if ((gSaveContext.chamberCutsceneNum == 0) && (gSaveContext.sceneSetupIndex < 4)) {
         player = GET_PLAYER(play);
-        if (!IS_BOSS_RUSH) {
-            this->action = 1;
-            play->csCtx.segment = D_8099010C;
-            gSaveContext.cutsceneTrigger = 2;
+        this->action = 1;
+        play->csCtx.segment = D_8099010C;
+        gSaveContext.cutsceneTrigger = 2;
+        if (GameInteractor_Should(VB_GIVE_ITEM_FOREST_MEDALLION, true)) {
             Item_Give(play, ITEM_MEDALLION_FOREST);
-            player->actor.world.rot.y = player->actor.shape.rot.y = this->actor.world.rot.y + 0x8000;
-        } else {
-            this->action = 1;
-            if (gSaveContext.linkAge == LINK_AGE_CHILD) {
-                player->actor.world.rot.y = player->actor.shape.rot.y = -5461 + 0x8000;
-            }
-            BossRush_SpawnBlueWarps(play);
         }
+        player->actor.world.rot.y = player->actor.shape.rot.y = this->actor.world.rot.y + 0x8000;
     }
 }
 
 void func_8098E9EC(DemoSa* this, PlayState* play) {
-    CsCmdActorAction* npcAction;
+    CsCmdActorCue* npcAction;
 
     if (play->csCtx.state != CS_STATE_IDLE) {
         npcAction = play->csCtx.npcActions[4];
@@ -291,7 +287,7 @@ void func_8098EA3C(DemoSa* this) {
 }
 
 void func_8098EA68(DemoSa* this, PlayState* play) {
-    CsCmdActorAction* npcAction;
+    CsCmdActorCue* npcAction;
 
     if (play->csCtx.state != CS_STATE_IDLE) {
         npcAction = play->csCtx.npcActions[4];
@@ -312,7 +308,7 @@ void func_8098EB00(DemoSa* this, s32 arg1) {
 }
 
 void func_8098EB6C(DemoSa* this, PlayState* play) {
-    CsCmdActorAction* npcAction;
+    CsCmdActorCue* npcAction;
 
     if (play->csCtx.state != CS_STATE_IDLE) {
         npcAction = play->csCtx.npcActions[6];
@@ -556,7 +552,7 @@ void func_8098F610(DemoSa* this, s32 arg1) {
 void func_8098F654(DemoSa* this, PlayState* play) {
     s32 unk_1AC;
     s32 action;
-    CsCmdActorAction* npcAction = DemoSa_GetNpcAction(play, 4);
+    CsCmdActorCue* npcAction = DemoSa_GetNpcAction(play, 4);
 
     if (npcAction != NULL) {
         action = npcAction->action;
@@ -701,7 +697,7 @@ void func_8098FB34(DemoSa* this, s32 arg1) {
 void func_8098FB68(DemoSa* this, PlayState* play) {
     s32 unk_1AC;
     s32 action;
-    CsCmdActorAction* npcAction = DemoSa_GetNpcAction(play, 1);
+    CsCmdActorCue* npcAction = DemoSa_GetNpcAction(play, 1);
 
     if (npcAction != NULL) {
         action = npcAction->action;

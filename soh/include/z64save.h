@@ -68,6 +68,7 @@ typedef enum { // Pre-existing IDs for save sections in base code
     SECTION_ID_STATS,
     SECTION_ID_ENTRANCES,
     SECTION_ID_SCENES,
+    SECTION_ID_TRACKER_DATA,
     SECTION_ID_MAX
 } SaveFuncIDs;
 
@@ -149,22 +150,12 @@ typedef struct {
 
 typedef struct {
     RandomizerCheck check;
-    RandomizerGetData get;
-} ItemLocationRando;
-
-typedef struct {
-    RandomizerCheck check;
     RandomizerCheck hintedCheck;
     RandomizerGet rGet;
     RandomizerCheckArea area;
     HintType type;
     char hintText[200];
 } HintLocationRando;
-
-typedef struct {
-    RandomizerSettingKey key;
-    u8 value;
-} RandoSetting;
 
 typedef struct {
     /* 0x0000 */ s32 entranceIndex; // start of `save` substruct, originally called "memory"
@@ -285,42 +276,15 @@ typedef struct {
     /*        */ u16 pendingSaleMod;
     /*        */ uint8_t questId;
     /*        */ uint32_t isBossRushPaused;
-    /*        */ uint8_t bossRushOptions[BOSSRUSH_OPTIONS_AMOUNT];
+    /*        */ uint8_t bossRushOptions[BR_OPTIONS_MAX];
     /*        */ u8 pendingIceTrapCount;
     /*        */ SohStats sohStats;
     /*        */ FaroresWindData backupFW;
-    /*        */ RandomizerCheckTrackerData checkTrackerData[RC_MAX];
+    /*        */ u8 maskMemory;
     // #endregion
     // #region SOH [Randomizer]
     // Upstream TODO: Move these to their own struct or name to more obviously specific to Randomizer
-    /*        */ RandoSetting randoSettings[300];
-    /*        */ ItemLocationRando itemLocations[RC_MAX];
-    /*        */ HintLocationRando hintLocations[50];
-    /*        */ EntranceOverride entranceOverrides[ENTRANCE_OVERRIDES_MAX_COUNT];
-    /*        */ char childAltarText[250];
-    /*        */ char adultAltarText[750];
-    /*        */ RandomizerCheck rewardCheck[9];
-    /*        */ char ganonHintText[300];
-    /*        */ char gregHintText[250];
-    /*        */ char ganonText[250];
-    /*        */ char dampeText[150];
-    /*        */ char sheikText[200];
-    /*        */ char sariaText[150];
-    /*        */ char warpMinuetText[100];
-    /*        */ char warpBoleroText[100];
-    /*        */ char warpSerenadeText[100];
-    /*        */ char warpRequiemText[100];
-    /*        */ char warpNocturneText[100];
-    /*        */ char warpPreludeText[100];
-    /*        */ RandomizerCheck masterSwordHintCheck;
-    /*        */ RandomizerCheck lightArrowHintCheck;
-    /*        */ RandomizerCheck sariaCheck;
-    /*        */ RandomizerCheck gregCheck;
-    /*        */ RandomizerCheck dampeCheck;
-    /*        */ char inputSeed[1024];
-    /*        */ u32 finalSeed;
-    /*        */ u8 seedIcons[5];
-    /*        */ u16 randomizerInf[10];
+    /*        */ u16 randomizerInf[17];
     /*        */ u8 mqDungeonCount;
     /*        */ u16 adultTradeItems;
     /*        */ u8 triforcePiecesCollected;
@@ -362,6 +326,18 @@ typedef enum {
     /* 0x05 */ HS_UNK_05,
     /* 0x06 */ HS_DAMPE_RACE
 } HighScores;
+
+// the score value for the fishing minigame also stores many flags.
+#define HS_FISH_LENGTH_CHILD 0x7F       // mask for record length of catch as child.
+#define HS_FISH_LENGTH_ADULT 0x7F000000 // mask for record length of catch as adult.
+#define HS_FISH_PLAYED_CHILD 0x100      // set when first talking to owner as child
+#define HS_FISH_PLAYED_ADULT 0x200      // set when first talking to owner as adult
+#define HS_FISH_PRIZE_CHILD 0x400       // won the Piece of Heart
+#define HS_FISH_PRIZE_ADULT 0x800       // won the Golden Scale
+#define HS_FISH_STOLE_HAT 0x1000        // Pond owner is visibly bald as Adult Link.
+#define HS_FISH_CHEAT_CHILD 0x80        // used Sinking Lure as child to catch record fish
+#define HS_FISH_CHEAT_ADULT 0x80000000  // used Sinking Lure as adult to catch record fish
+#define HS_FISH_PLAYED 0x10000          // incremented for every play. controls weather.
 
 typedef enum {
     /* 0 */ SUNSSONG_INACTIVE,

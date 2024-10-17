@@ -8,6 +8,7 @@
 #include "objects/object_ru2/object_ru2.h"
 #include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
 #include "vt.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
@@ -175,7 +176,7 @@ s32 EnRu2_UpdateSkelAnime(EnRu2* this) {
     return SkelAnime_Update(&this->skelAnime);
 }
 
-CsCmdActorAction* func_80AF27AC(PlayState* play, s32 npcActionIdx) {
+CsCmdActorCue* func_80AF27AC(PlayState* play, s32 npcActionIdx) {
     if (play->csCtx.state != CS_STATE_IDLE) {
         return play->csCtx.npcActions[npcActionIdx];
     }
@@ -183,7 +184,7 @@ CsCmdActorAction* func_80AF27AC(PlayState* play, s32 npcActionIdx) {
 }
 
 s32 func_80AF27D0(EnRu2* this, PlayState* play, u16 arg2, s32 npcActionIdx) {
-    CsCmdActorAction* csCmdActorAction = func_80AF27AC(play, npcActionIdx);
+    CsCmdActorCue* csCmdActorAction = func_80AF27AC(play, npcActionIdx);
 
     if ((csCmdActorAction != NULL) && (csCmdActorAction->action == arg2)) {
         return true;
@@ -192,7 +193,7 @@ s32 func_80AF27D0(EnRu2* this, PlayState* play, u16 arg2, s32 npcActionIdx) {
 }
 
 s32 func_80AF281C(EnRu2* this, PlayState* play, u16 arg2, s32 npcActionIdx) {
-    CsCmdActorAction* csCmdNPCAction = func_80AF27AC(play, npcActionIdx);
+    CsCmdActorCue* csCmdNPCAction = func_80AF27AC(play, npcActionIdx);
 
     if ((csCmdNPCAction != NULL) && (csCmdNPCAction->action != arg2)) {
         return true;
@@ -201,7 +202,7 @@ s32 func_80AF281C(EnRu2* this, PlayState* play, u16 arg2, s32 npcActionIdx) {
 }
 
 void func_80AF2868(EnRu2* this, PlayState* play, u32 npcActionIdx) {
-    CsCmdActorAction* csCmdNPCAction = func_80AF27AC(play, npcActionIdx);
+    CsCmdActorCue* csCmdNPCAction = func_80AF27AC(play, npcActionIdx);
     s16 newRotY;
     Actor* thisx = &this->actor;
 
@@ -260,7 +261,9 @@ void func_80AF2A38(EnRu2* this, PlayState* play) {
     f32 posZ = player->actor.world.pos.z;
 
     Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DEMO_EFFECT, posX, posY, posZ, 0, 0, 0, 10);
-    Item_Give(play, ITEM_MEDALLION_WATER);
+    if (GameInteractor_Should(VB_GIVE_ITEM_WATER_MEDALLION, true)) {
+        Item_Give(play, ITEM_MEDALLION_WATER);
+    }
 }
 
 void func_80AF2AB4(EnRu2* this, PlayState* play) {
@@ -273,7 +276,9 @@ void func_80AF2AB4(EnRu2* this, PlayState* play) {
         this->action = 1;
         play->csCtx.segment = &D_80AF411C;
         gSaveContext.cutsceneTrigger = 2;
-        Item_Give(play, ITEM_MEDALLION_WATER);
+        if (GameInteractor_Should(VB_GIVE_ITEM_WATER_MEDALLION, true)) {
+            Item_Give(play, ITEM_MEDALLION_WATER);
+        }
         temp = this->actor.world.rot.y + 0x8000;
         player->actor.shape.rot.y = temp;
         player->actor.world.rot.y = temp;
@@ -282,7 +287,7 @@ void func_80AF2AB4(EnRu2* this, PlayState* play) {
 
 void func_80AF2B44(EnRu2* this, PlayState* play) {
     CutsceneContext* csCtx = &play->csCtx;
-    CsCmdActorAction* csCmdNPCAction;
+    CsCmdActorCue* csCmdNPCAction;
 
     if (csCtx->state != CS_STATE_IDLE) {
         csCmdNPCAction = csCtx->npcActions[3];
@@ -303,7 +308,7 @@ void func_80AF2B94(EnRu2* this) {
 
 void func_80AF2BC0(EnRu2* this, PlayState* play) {
     AnimationHeader* animation = &gAdultRutoRaisingArmsUpAnim;
-    CsCmdActorAction* csCmdNPCAction;
+    CsCmdActorCue* csCmdNPCAction;
 
     if (play->csCtx.state != CS_STATE_IDLE) {
         csCmdNPCAction = play->csCtx.npcActions[3];
@@ -322,7 +327,7 @@ void func_80AF2C54(EnRu2* this, s32 arg1) {
 }
 
 void func_80AF2C68(EnRu2* this, PlayState* play) {
-    CsCmdActorAction* csCmdNPCAction;
+    CsCmdActorCue* csCmdNPCAction;
 
     if (play->csCtx.state != CS_STATE_IDLE) {
         csCmdNPCAction = play->csCtx.npcActions[6];
@@ -539,7 +544,7 @@ void func_80AF3530(EnRu2* this, s32 arg1) {
 }
 
 void func_80AF3564(EnRu2* this, PlayState* play) {
-    CsCmdActorAction* csCmdNPCAction = func_80AF27AC(play, 3);
+    CsCmdActorCue* csCmdNPCAction = func_80AF27AC(play, 3);
     s32 action;
     s32 unk_2BC;
 

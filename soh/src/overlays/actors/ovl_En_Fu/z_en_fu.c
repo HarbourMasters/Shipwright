@@ -161,19 +161,11 @@ void GivePlayerRandoRewardSongOfStorms(EnFu* windmillGuy, PlayState* play, Rando
     }
 }
 
-void func_WaitForSongGive(EnFu* this, PlayState* play) {
-    GivePlayerRandoRewardSongOfStorms(this, play, RC_SONG_FROM_WINDMILL);
-}
-
 void func_80A1DB60(EnFu* this, PlayState* play) {
     if (play->csCtx.state == CS_STATE_IDLE) {
         this->actionFunc = EnFu_WaitAdult;
         Flags_SetEventChkInf(EVENTCHKINF_LEARNED_SONG_OF_STORMS);
         play->msgCtx.ocarinaMode = OCARINA_MODE_04;
-    }
-
-    if (IS_RANDO) {
-        this->actionFunc = func_WaitForSongGive;
     }
 }
 
@@ -186,10 +178,6 @@ void func_80A1DBA0(EnFu* this, PlayState* play) {
 void func_80A1DBD4(EnFu* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    if (IS_RANDO && (Message_GetState(&play->msgCtx) == TEXT_STATE_CLOSING)) {
-        play->msgCtx.ocarinaMode = OCARINA_MODE_03;
-    }
-
     if (play->msgCtx.ocarinaMode >= OCARINA_MODE_04) {
         this->actionFunc = EnFu_WaitAdult;
         play->msgCtx.ocarinaMode = OCARINA_MODE_04;
@@ -198,12 +186,6 @@ void func_80A1DBD4(EnFu* this, PlayState* play) {
         func_80078884(NA_SE_SY_CORRECT_CHIME);
         this->actionFunc = func_80A1DB60;
         this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
-
-        if (!IS_RANDO) {
-            play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gSongOfStormsCs);
-            gSaveContext.cutsceneTrigger = 1;
-            Item_Give(play, ITEM_SONG_STORMS);
-        }
 
         play->msgCtx.ocarinaMode = OCARINA_MODE_00;
         Flags_SetEventChkInf(EVENTCHKINF_PLAYED_SONG_OF_STORMS_IN_WINDMILL);
@@ -249,7 +231,7 @@ void EnFu_WaitAdult(EnFu* this, PlayState* play) {
     } else if (player->stateFlags2 & PLAYER_STATE2_ATTEMPT_PLAY_FOR_ACTOR) {
         this->actor.textId = 0x5035;
         Message_StartTextbox(play, this->actor.textId, NULL);
-        this->actionFunc = IS_RANDO ? func_80A1DBD4 : EnFu_TeachSong;
+        this->actionFunc = EnFu_TeachSong;
         this->behaviorFlags |= FU_WAIT;
     } else if (Actor_ProcessTalkRequest(&this->actor, play)) {
         this->actionFunc = func_80A1DBA0;

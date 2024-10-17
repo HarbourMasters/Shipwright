@@ -1,9 +1,11 @@
 #include "ConfigUpdaters.h"
+#include "ConfigMigrators.h"
 #include "soh/Enhancements/audio/AudioCollection.h"
 
 namespace SOH {
     ConfigVersion1Updater::ConfigVersion1Updater() : ConfigVersionUpdater(1) {}
     ConfigVersion2Updater::ConfigVersion2Updater() : ConfigVersionUpdater(2) {}
+    ConfigVersion3Updater::ConfigVersion3Updater() : ConfigVersionUpdater(3) {}
     
     void ConfigVersion1Updater::Update(Ship::Config* conf) {
         if (conf->GetInt("Window.Width", 640) == 640) {
@@ -66,6 +68,16 @@ namespace SOH {
     void ConfigVersion2Updater::Update(Ship::Config* conf) {
         for (auto seq : AudioCollection::Instance->GetAllSequences()) {
             CVarClear(std::string("gAudioEditor.ReplacedSequences." + seq.second.sfxKey).c_str());
+        }
+    }
+
+    void ConfigVersion3Updater::Update(Ship::Config* conf) {
+        conf->EraseBlock("Controllers");
+        for (Migration migration : version3Migrations) {
+            if (migration.action == MigrationAction::Rename) {
+                CVarCopy(migration.from.c_str(), migration.to.value().c_str());
+            }
+            CVarClear(migration.from.c_str());
         }
     }
 }

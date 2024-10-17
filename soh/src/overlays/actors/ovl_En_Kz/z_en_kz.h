@@ -28,4 +28,6 @@ typedef struct EnKz {
     /* 0x02BE */ s16 unk_2BE[12];
 } EnKz; // size = 0x02D8
 
+void EnKz_SetupGetItem(EnKz* enKz, PlayState* play);
+
 #endif

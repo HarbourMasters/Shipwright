@@ -14,6 +14,8 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 
 #include "soh/frame_interpolation.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
@@ -227,7 +229,9 @@ void BossFd_Init(Actor* thisx, PlayState* play) {
         Actor_Kill(&this->actor);
         Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, 0.0f, 100.0f, 0.0f, 0, 0, 0,
                            WARP_DUNGEON_ADULT);
-        Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, 0.0f, 100.0f, 200.0f, 0, 0, 0, 0, true);
+        if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true)) {
+            Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, 0.0f, 100.0f, 200.0f, 0, 0, 0, 0, true);
+        }
     } else {
         Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_BOSS_FD2, this->actor.world.pos.x,
                            this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, this->introState);
@@ -323,7 +327,7 @@ void BossFd_Fly(BossFd* this, PlayState* play) {
 
                     this->introState = BFD_CS_START;
                     func_80064520(play, &play->csCtx);
-                    func_8002DF54(play, &this->actor, 8);
+                    Player_SetCsActionWithHaltedActors(play, &this->actor, 8);
                     this->introCamera = Play_CreateSubCamera(play);
                     Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
                     Play_ChangeCameraStatus(play, this->introCamera, CAM_STAT_ACTIVE);
@@ -399,7 +403,7 @@ void BossFd_Fly(BossFd* this, PlayState* play) {
                     Math_ApproachF(&this->camData.shake, 2.0f, 1.0f, 0.8 * 0.01f);
                 }
                 if (this->timers[0] == 40) {
-                    func_8002DF54(play, &this->actor, 0x13);
+                    Player_SetCsActionWithHaltedActors(play, &this->actor, 0x13);
                 }
                 if (this->timers[0] == 0) {
                     this->introState = BFD_CS_LOOK_GROUND;
@@ -428,7 +432,7 @@ void BossFd_Fly(BossFd* this, PlayState* play) {
                     this->timers[0] = 170;
                     this->camData.speedMod = 0.0f;
                     this->camData.accel = 0.0f;
-                    func_8002DF54(play, &this->actor, 0x14);
+                    Player_SetCsActionWithHaltedActors(play, &this->actor, 0x14);
                 }
                 break;
             case BFD_CS_COLLAPSE:
@@ -478,7 +482,7 @@ void BossFd_Fly(BossFd* this, PlayState* play) {
                 if (this->timers[3] == 190) {
                     this->camData.atMaxVel.x = this->camData.atMaxVel.y = this->camData.atMaxVel.z = 0.05f;
                     this->platformSignal = VBSIMA_KILL;
-                    func_8002DF54(play, &this->actor, 1);
+                    Player_SetCsActionWithHaltedActors(play, &this->actor, 1);
                 }
                 if (this->actor.world.pos.y > 120.0f) {
                     this->camData.nextAt = this->actor.world.pos;
@@ -546,7 +550,7 @@ void BossFd_Fly(BossFd* this, PlayState* play) {
                     func_800C08AC(play, this->introCamera, 0);
                     this->introState = this->introFlyState = this->introCamera = BFD_CS_NONE;
                     func_80064534(play, &play->csCtx);
-                    func_8002DF54(play, &this->actor, 7);
+                    Player_SetCsActionWithHaltedActors(play, &this->actor, 7);
                     this->actionFunc = BossFd_Wait;
                     this->handoffSignal = FD2_SIGNAL_GROUND;
                     Flags_SetEventChkInf(EVENTCHKINF_BEGAN_VOLVAGIA_BATTLE);
@@ -854,7 +858,7 @@ void BossFd_Fly(BossFd* this, PlayState* play) {
                         this->work[BFD_CAM_SHAKE_TIMER] = 20;
                         Audio_PlaySoundGeneral(NA_SE_EN_VALVAISA_LAND2, &this->actor.projectedPos, 4, &D_801333E0,
                                                &D_801333E0, &D_801333E8);
-                        func_8002DF54(play, &this->actor, 5);
+                        Player_SetCsActionWithHaltedActors(play, &this->actor, 5);
                         for (i1 = 0; i1 < 15; i1++) {
                             Vec3f sp144 = { 0.0f, 0.0f, 0.0f };
                             Vec3f sp138 = { 0.0f, 0.0f, 0.0f };
@@ -913,7 +917,7 @@ void BossFd_Fly(BossFd* this, PlayState* play) {
                 this->actionFunc = BossFd_Wait;
                 this->actor.world.pos.y -= 1000.0f;
             }
-            if (this->timers[0] == 7 && !IS_BOSS_RUSH) {
+            if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, this->timers[0] == 7)) {
                 Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, this->actor.world.pos.x,
                             this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0, true);
             }

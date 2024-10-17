@@ -223,7 +223,7 @@ void BgSpot00Hanebasi_Update(Actor* thisx, PlayState* play) {
                     Flags_SetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE);
                     Flags_SetEventChkInf(EVENTCHKINF_DRAWBRIDGE_OPENED_AFTER_ZELDA_FLED);
                     this->actionFunc = BgSpot00Hanebasi_DoNothing;
-                    func_8002DF54(play, &player->actor, 8);
+                    Player_SetCsActionWithHaltedActors(play, &player->actor, 8);
                     play->nextEntranceIndex = ENTR_HYRULE_FIELD_0;
                     gSaveContext.nextCutsceneIndex = 0xFFF1;
                     play->transitionTrigger = TRANS_TRIGGER_START;

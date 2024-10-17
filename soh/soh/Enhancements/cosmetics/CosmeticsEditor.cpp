@@ -220,6 +220,7 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Consumable.DDHeartBorder",      "DD Heart Border",      COSMETICS_GROUP_CONSUMABLE,   ImVec4(255, 255, 255, 255), false, true, true),
     COSMETIC_OPTION("Consumable.Magic",              "Magic",                COSMETICS_GROUP_CONSUMABLE,   ImVec4(  0, 200,   0, 255), false, true, false),
     COSMETIC_OPTION("Consumable.MagicActive",        "Magic Active",         COSMETICS_GROUP_CONSUMABLE,   ImVec4(250, 250,   0, 255), false, true, true),
+    COSMETIC_OPTION("Consumable_MagicInfinite",      "Infinite Magic",       COSMETICS_GROUP_CONSUMABLE,   ImVec4(  0,   0, 200, 255), false, true, true),
     COSMETIC_OPTION("Consumable.MagicBorder",        "Magic Border",         COSMETICS_GROUP_CONSUMABLE,   ImVec4(255, 255, 255, 255), false, false, true),
     COSMETIC_OPTION("Consumable.MagicBorderActive",  "Magic Border Active",  COSMETICS_GROUP_CONSUMABLE,   ImVec4(255, 255, 255, 255), false, false, true),
     COSMETIC_OPTION("Consumable.GreenRupee",         "Green Rupee",          COSMETICS_GROUP_CONSUMABLE,   ImVec4( 50, 255,  50, 255), false, true, true),
@@ -1276,7 +1277,7 @@ void Draw_Placements(){
     C_Button_Dropdown("C Button Down position", "tablecdbtn", "C Button Down settings", "C Button Down", CVAR_COSMETIC("HUD.CDownButton"), CVAR_COSMETIC("HUD.CDownButton.PosType"), 0.87f);
     C_Button_Dropdown("C Button Left position", "tableclbtn", "C Button Left settings", "C Button Left", CVAR_COSMETIC("HUD.CLeftButton"), CVAR_COSMETIC("HUD.CLeftButton.PosType"), 0.87f);
     C_Button_Dropdown("C Button Right position", "tablecrbtn", "C Button Right settings", "C Button Right", CVAR_COSMETIC("HUD.CRightButton"), CVAR_COSMETIC("HUD.CRightButton.PosType"), 0.87f);
-    if (CVarGetInteger(CVAR_SETTING("DpadEquips"),0) && ImGui::CollapsingHeader("DPad items position")) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("DpadEquips"), 0) && ImGui::CollapsingHeader("DPad items position")) {
         if (ImGui::BeginTable("tabledpaditems", 1, FlagsTable)) {
             ImGui::TableSetupColumn("DPad items settings", FlagsCell, TablesCellsWidth);
             Table_InitHeader(false);

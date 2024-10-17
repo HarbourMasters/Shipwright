@@ -6,6 +6,7 @@
 
 #include "z_obj_dekujr.h"
 #include "objects/object_dekujr/object_dekujr.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
 
@@ -56,7 +57,7 @@ void ObjDekujr_Init(Actor* thisx, PlayState* play) {
         this->unk_19C = 0;
         this->unk_19B = 1;
     }
-    if (!CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST)) {
+    if (!GameInteractor_Should(VB_DEKU_JR_CONSIDER_FOREST_TEMPLE_FINISHED, CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST), this)) {
         Actor_Kill(thisx);
     } else {
         ActorShape_Init(&thisx->shape, 0.0f, NULL, 0.0f);
@@ -72,20 +73,20 @@ void ObjDekujr_Init(Actor* thisx, PlayState* play) {
 void ObjDekujr_Destroy(Actor* thisx, PlayState* play) {
 }
 
-void ObjDekujr_SetInitialPos(CsCmdActorAction* npcAction, Vec3f* initPos) {
+void ObjDekujr_SetInitialPos(CsCmdActorCue* npcAction, Vec3f* initPos) {
     initPos->x = npcAction->startPos.x;
     initPos->y = npcAction->startPos.y;
     initPos->z = npcAction->startPos.z;
 }
 
-void ObjDekujr_SetFinalPos(CsCmdActorAction* npcAction, Vec3f* finalPos) {
+void ObjDekujr_SetFinalPos(CsCmdActorCue* npcAction, Vec3f* finalPos) {
     finalPos->x = npcAction->endPos.x;
     finalPos->y = npcAction->endPos.y;
     finalPos->z = npcAction->endPos.z;
 }
 
 void ObjDekujr_ComeUp(ObjDekujr* this, PlayState* play) {
-    CsCmdActorAction* csCmdNPCAction;
+    CsCmdActorCue* csCmdNPCAction;
     Vec3f initPos;
     Vec3f finalPos;
     Vec3f velocity = { 0.0f, 0.0f, 0.0f };

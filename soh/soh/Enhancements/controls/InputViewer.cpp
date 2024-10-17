@@ -311,7 +311,7 @@ void InputViewer::DrawElement() {
             if (CVarGetInteger(CVAR_INPUT_VIEWER("Mod1"), 0)) {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
-                RenderButton("Modifier-1", "Modifier-1 Outline", pads[0].button & BTN_MODIFIER1, scaledBGSize,
+                RenderButton("Modifier-1", "Modifier-1 Outline", pads[0].button & BTN_CUSTOM_MODIFIER1, scaledBGSize,
                     useGlobalOutlineMode
                     ? buttonOutlineMode
                     : CVarGetInteger(CVAR_INPUT_VIEWER("Mod1OutlineMode"), BUTTON_OUTLINE_NOT_PRESSED));
@@ -320,7 +320,7 @@ void InputViewer::DrawElement() {
             if (CVarGetInteger(CVAR_INPUT_VIEWER("Mod2"), 0)) {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
-                RenderButton("Modifier-2", "Modifier-2 Outline", pads[0].button & BTN_MODIFIER2, scaledBGSize,
+                RenderButton("Modifier-2", "Modifier-2 Outline", pads[0].button & BTN_CUSTOM_MODIFIER2, scaledBGSize,
                     useGlobalOutlineMode
                     ? buttonOutlineMode
                     : CVarGetInteger(CVAR_INPUT_VIEWER("Mod2OutlineMode"), BUTTON_OUTLINE_NOT_PRESSED));

@@ -27,7 +27,7 @@ class CheckTrackerWindow : public Ship::GuiWindow {
   protected:
     void InitElement() override;
     void DrawElement() override;
-    void UpdateElement() override {};
+    void UpdateElement() override;
 };
 
 //Converts an index into a Little Endian bitmask, as follows:
@@ -44,18 +44,19 @@ class CheckTrackerWindow : public Ship::GuiWindow {
 //repeat...
 #define INDEX_TO_16BIT_LITTLE_ENDIAN_BITMASK(idx) (0x8000 >> (7 - (idx % 8) + ((idx % 16) / 8) * 8))
 
-void DefaultCheckData(RandomizerCheck rc);
 void Teardown();
 void UpdateAllOrdering();
-bool IsVisibleInCheckTracker(RandomizerCheckObject rcObj);
-bool IsCheckShuffled(RandomizerCheckObject check);
+bool IsVisibleInCheckTracker(RandomizerCheck rc);
+bool IsCheckShuffled(RandomizerCheck rc);
 void InitTrackerData(bool isDebug);
 RandomizerCheckArea GetCheckArea();
-void UpdateCheck(uint32_t, RandomizerCheckTrackerData);
+uint16_t GetTotalChecks();
+uint16_t GetTotalChecksGotten();
 bool IsAreaSpoiled(RandomizerCheckArea rcArea);
 void SetAreaSpoiled(RandomizerCheckArea rcArea);
+void UpdateInventoryChecks();
+void UpdateAreas(RandomizerCheckArea area);
+void UpdateAllOrdering();
+void UpdateAllAreas();
+void RecalculateAllAreaTotals();
 } // namespace CheckTracker
-
-
-void to_json(nlohmann::json & j, const RandomizerCheckTrackerData& rctd);
-void from_json(const nlohmann::json& j, RandomizerCheckTrackerData& rctd);

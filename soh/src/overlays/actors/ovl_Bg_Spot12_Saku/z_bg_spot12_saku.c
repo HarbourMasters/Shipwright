@@ -6,6 +6,7 @@
 
 #include "z_bg_spot12_saku.h"
 #include "objects/object_spot12_obj/object_spot12_obj.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS 0
 
@@ -58,15 +59,9 @@ void func_808B3420(BgSpot12Saku* this, PlayState* play, CollisionHeader* collisi
 void BgSpot12Saku_Init(Actor* thisx, PlayState* play) {
     BgSpot12Saku* this = (BgSpot12Saku*)thisx;
 
-    // If ER is on, force the gate to always use its permanent flag
-    // (which it only uses in Child Gerudo Fortress in the vanilla game)
-    if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES) != RO_DUNGEON_ENTRANCE_SHUFFLE_OFF) {
-        thisx->params = 0x0002;
-    }
-
     func_808B3420(this, play, &gGerudoFortressGTGShutterCol, DPM_UNK);
     Actor_ProcessInitChain(&this->dyna.actor, sInitChain);
-    if (Flags_GetSwitch(play, this->dyna.actor.params & 0x3F)) {
+    if (GameInteractor_Should(VB_GTG_GATE_BE_OPEN, Flags_GetSwitch(play, this->dyna.actor.params & 0x3F))) {
         func_808B3714(this);
     } else {
         func_808B3550(this);
@@ -87,7 +82,7 @@ void func_808B3550(BgSpot12Saku* this) {
 }
 
 void func_808B357C(BgSpot12Saku* this, PlayState* play) {
-    if (Flags_GetSwitch(play, this->dyna.actor.params & 0x3F)) {
+    if (GameInteractor_Should(VB_GTG_GATE_BE_OPEN, Flags_GetSwitch(play, this->dyna.actor.params & 0x3F))) {
         func_808B35E4(this);
         this->timer = 20;
         OnePointCutscene_Init(play, 4170, -99, &this->dyna.actor, MAIN_CAM);
@@ -130,12 +125,6 @@ void func_808B37AC(BgSpot12Saku* this, PlayState* play) {
 
 void BgSpot12Saku_Update(Actor* thisx, PlayState* play) {
     BgSpot12Saku* this = (BgSpot12Saku*)thisx;
-
-    // If ER is on, when the guard opens the GtG gate its permanent flag will be set.
-    if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES) != RO_DUNGEON_ENTRANCE_SHUFFLE_OFF &&
-        Flags_GetSwitch(play, 0x3A)) {
-        Flags_SetSwitch(play, 0x2);
-    }
 
     if (this->timer > 0) {
         this->timer--;

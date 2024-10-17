@@ -20,7 +20,7 @@ It is recommended that you install Python and Git standalone, the install proces
 
 1. Clone the Ship of Harkinian repository
 
-_Note: Be sure to either clone with the ``--recursive`` flag or do ``git submodule init`` after cloning to pull in the libultraship submodule!_
+_Note: Be sure to either clone with the ``--recursive`` flag or do ``git submodule update --init`` after cloning to pull in the libultraship submodule!_
 
 2. Place one or more [compatible](#compatible-roms) roms in the `OTRExporter` directory with namings of your choice
 

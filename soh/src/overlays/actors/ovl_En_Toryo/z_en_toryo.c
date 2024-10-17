@@ -6,7 +6,7 @@
 
 #include "z_en_toryo.h"
 #include "objects/object_toryo/object_toryo.h"
-#include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
 
@@ -291,10 +291,7 @@ void func_80B20768(EnToryo* this, PlayState* play) {
     s16 sp32;
     s16 sp30;
 
-    // Animation Count should be no more than 1 to guarantee putaway is complete after giving the saw
-    // As this is vanilla behavior, it only applies with the Fix toggle or Skip Text enabled.
-    bool checkAnim = (CVarGetInteger(CVAR_ENHANCEMENT("FixSawSoftlock"), 0) != 0 || CVarGetInteger(CVAR_ENHANCEMENT("SkipText"), 0) != 0) ? play->animationCtx.animationCount <= 1 : true;
-    if (this->unk_1E4 == 3 && checkAnim) {
+    if (this->unk_1E4 == 3 && !GameInteractor_Should(VB_FIX_SAW_SOFTLOCK, false)) {
         Actor_ProcessTalkRequest(&this->actor, play);
         Message_ContinueTextbox(play, this->actor.textId);
         this->unk_1E4 = 1;
@@ -315,19 +312,12 @@ void func_80B20768(EnToryo* this, PlayState* play) {
     }
 
     if (this->unk_1E4 == 4) {
-        if (Actor_HasParent(&this->actor, play)) {
+        if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(VB_TRADE_SAW, true, this)) {
             this->actor.parent = NULL;
             this->unk_1E4 = 5;
+            Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_GV_TRADE_SAW);
         } else {
-            if (IS_RANDO) {
-                GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_GV_TRADE_SAW, GI_SWORD_BROKEN);
-                Randomizer_ConsumeAdultTradeItem(play, ITEM_SAW);
-                GiveItemEntryFromActor(&this->actor, play, itemEntry, 100.0f, 10.0f);
-                Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_GV_TRADE_SAW);
-            } else {
-                s32 itemId = GI_SWORD_BROKEN;
-                func_8002F434(&this->actor, play, itemId, 100.0f, 10.0f);
-            }
+            Actor_OfferGetItem(&this->actor, play, GI_SWORD_BROKEN, 100.0f, 10.0f);
         }
         return;
     }

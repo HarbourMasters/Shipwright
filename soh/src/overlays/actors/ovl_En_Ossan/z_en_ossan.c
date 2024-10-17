@@ -206,7 +206,7 @@ ShopItem sShopkeeperStores[][8] = {
       { SI_DEKU_SEEDS_30, -50, 52, -20 },
       { SI_ARROWS_10, -50, 76, -20 },
       { SI_ARROWS_30, -80, 52, -3 },
-      { SI_HEART, -80, 76, -3 } },
+      { SI_RECOVERY_HEART, -80, 76, -3 } },
 
     { { SI_GREEN_POTION, 50, 52, -20 },
       { SI_BLUE_FIRE, 50, 76, -20 },
@@ -238,7 +238,7 @@ ShopItem sShopkeeperStores[][8] = {
     { { SI_HYLIAN_SHIELD, 50, 52, -20 },
       { SI_BOMBS_5_R35, 50, 76, -20 },
       { SI_DEKU_NUTS_5, 80, 52, -3 },
-      { SI_HEART, 80, 76, -3 },
+      { SI_RECOVERY_HEART, 80, 76, -3 },
       { SI_ARROWS_10, -50, 52, -20 },
       { SI_ARROWS_50, -50, 76, -20 },
       { SI_DEKU_STICK, -80, 52, -3 },
@@ -247,7 +247,7 @@ ShopItem sShopkeeperStores[][8] = {
     { { SI_HYLIAN_SHIELD, 50, 52, -20 },
       { SI_BOMBS_5_R25, 50, 76, -20 },
       { SI_DEKU_NUTS_5, 80, 52, -3 },
-      { SI_HEART, 80, 76, -3 },
+      { SI_RECOVERY_HEART, 80, 76, -3 },
       { SI_ARROWS_10, -50, 52, -20 },
       { SI_ARROWS_50, -50, 76, -20 },
       { SI_DEKU_STICK, -80, 52, -3 },
@@ -256,15 +256,15 @@ ShopItem sShopkeeperStores[][8] = {
     { { SI_MILK_BOTTLE, 50, 52, -20 },
       { SI_DEKU_NUTS_5, 50, 76, -20 },
       { SI_DEKU_NUTS_10, 80, 52, -3 },
-      { SI_HEART, 80, 76, -3 },
+      { SI_RECOVERY_HEART, 80, 76, -3 },
       { SI_WEIRD_EGG, -50, 52, -20 },
       { SI_DEKU_STICK, -50, 76, -20 },
-      { SI_HEART, -80, 52, -3 },
-      { SI_HEART, -80, 76, -3 } },
+      { SI_RECOVERY_HEART, -80, 52, -3 },
+      { SI_RECOVERY_HEART, -80, 76, -3 } },
 
     { { SI_ZORA_TUNIC, 50, 52, -20 },
       { SI_ARROWS_10, 50, 76, -20 },
-      { SI_HEART, 80, 52, -3 },
+      { SI_RECOVERY_HEART, 80, 52, -3 },
       { SI_ARROWS_30, 80, 76, -3 },
       { SI_DEKU_NUTS_5, -50, 52, -20 },
       { SI_ARROWS_50, -50, 76, -20 },
@@ -276,9 +276,9 @@ ShopItem sShopkeeperStores[][8] = {
       { SI_BOMBS_20, 80, 52, -3 },
       { SI_BOMBS_30, 80, 76, -3 },
       { SI_GORON_TUNIC, -50, 52, -20 },
-      { SI_HEART, -50, 76, -20 },
+      { SI_RECOVERY_HEART, -50, 76, -20 },
       { SI_RED_POTION_R40, -80, 52, -3 },
-      { SI_HEART, -80, 76, -3 } },
+      { SI_RECOVERY_HEART, -80, 76, -3 } },
 
     { { SI_19, 50, 52, -20 },
       { SI_19, 50, 76, -20 },
@@ -432,7 +432,7 @@ void EnOssan_SpawnItemsOnShelves(EnOssan* this, PlayState* play, ShopItem* shopI
         } else {
             itemParams = sShopItemReplaceFunc[shopItems->shopItemIndex](shopItems->shopItemIndex);
             if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHOPSANITY) != RO_SHOPSANITY_OFF) {
-                ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(play->sceneNum, i);
+                ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(play->sceneNum, i + 1);
                 if (shopItemIdentity.randomizerCheck != RC_UNKNOWN_CHECK) {
                     itemParams = shopItemIdentity.enGirlAShopItem;
 
@@ -452,7 +452,7 @@ void EnOssan_SpawnItemsOnShelves(EnOssan* this, PlayState* play, ShopItem* shopI
                     shelves->actor.shape.rot.x, shelves->actor.shape.rot.y + sItemShelfRot[i],
                     shelves->actor.shape.rot.z, itemParams, true);
                 if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHOPSANITY) != RO_SHOPSANITY_OFF) {
-                    this->shelfSlots[i]->randoSlotIndex = i;
+                    this->shelfSlots[i]->randoSlotIndex = i + 1;
                 }
             }
         }
@@ -535,7 +535,7 @@ void EnOssan_TalkGoronShopkeeper(PlayState* play) {
             Message_ContinueTextbox(play, 0x300F);
         }
     } else if ((!IS_RANDO && !CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) ||
-               (IS_RANDO && !Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE))) {
+               (IS_RANDO && !Flags_GetEventChkInf(EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP))) {
         Message_ContinueTextbox(play, 0x3057);
     } else {
         Message_ContinueTextbox(play, 0x305B);
@@ -1388,19 +1388,7 @@ void EnOssan_GiveItemWithFanfare(PlayState* play, EnOssan* this) {
     Player* player = GET_PLAYER(play);
 
     osSyncPrintf("\n" VT_FGCOL(YELLOW) "初めて手にいれた！！" VT_RST "\n\n");
-    if (!IS_RANDO) {
-        func_8002F434(&this->actor, play, this->shelfSlots[this->cursorIndex]->getItemId, 120.0f, 120.0f);
-    } else {
-        ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(play->sceneNum, this->cursorIndex);
-        // en_ossan/en_girla are also used for the happy mask shop, which never has randomized items
-        // and returns RC_UNKNOWN_CHECK, in which case we should fall back to vanilla logic
-        if (shopItemIdentity.randomizerCheck != RC_UNKNOWN_CHECK) {
-            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
-            GiveItemEntryFromActor(&this->actor, play, getItemEntry, 120.0f, 120.0f);
-        } else {
-            func_8002F434(&this->actor, play, this->shelfSlots[this->cursorIndex]->getItemId, 120.0f, 120.0f);
-        }
-    }
+    Actor_OfferGetItem(&this->actor, play, this->shelfSlots[this->cursorIndex]->getItemId, 120.0f, 120.0f);
     play->msgCtx.msgMode = MSGMODE_TEXT_CLOSING;
     play->msgCtx.stateTimer = 4;
     player->stateFlags2 &= ~PLAYER_STATE2_DISABLE_DRAW;
@@ -1735,36 +1723,12 @@ void EnOssan_State_GiveItemWithFanfare(EnOssan* this, PlayState* play, Player* p
         this->stateFlag = OSSAN_STATE_ITEM_PURCHASED;
         return;
     }
-    if (!IS_RANDO) {
-        func_8002F434(&this->actor, play, this->shelfSlots[this->cursorIndex]->getItemId, 120.0f, 120.0f);
-    } else {
-        ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(play->sceneNum, this->cursorIndex);
-        // en_ossan/en_girla are also used for the happy mask shop, which never has randomized items
-        // and returns RC_UNKNOWN_CHECK, in which case we should fall back to vanilla logic
-        if (shopItemIdentity.randomizerCheck != RC_UNKNOWN_CHECK) {
-            GetItemEntry getItemEntry =
-                Randomizer_GetItemFromKnownCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
-            GiveItemEntryFromActor(&this->actor, play, getItemEntry, 120.0f, 120.0f);
-        } else {
-            func_8002F434(&this->actor, play, this->shelfSlots[this->cursorIndex]->getItemId, 120.0f, 120.0f);
-        }
-    }
+    Actor_OfferGetItem(&this->actor, play, this->shelfSlots[this->cursorIndex]->getItemId, 120.0f, 120.0f);
 }
 
 void EnOssan_State_ItemPurchased(EnOssan* this, PlayState* play, Player* player) {
     EnGirlA* item;
     EnGirlA* itemTemp;
-    ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(play->sceneNum, this->cursorIndex);
-    GetItemEntry getItemEntry;
-    if (shopItemIdentity.randomizerCheck != RC_UNKNOWN_CHECK) {
-        getItemEntry = Randomizer_GetItemFromKnownCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
-    } else {
-        getItemEntry = ItemTable_Retrieve(this->shelfSlots[this->cursorIndex]->getItemId);
-    }
-    if (gSaveContext.pendingSale == ITEM_NONE) {
-        gSaveContext.pendingSale = getItemEntry.itemId;
-        gSaveContext.pendingSaleMod = getItemEntry.modIndex;
-    }
 
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) {
         if (this->actor.params == OSSAN_TYPE_MASK) {
@@ -1786,12 +1750,6 @@ void EnOssan_State_ItemPurchased(EnOssan* this, PlayState* play, Player* player)
         }
         item = this->shelfSlots[this->cursorIndex];
         item->buyEventFunc(play, item);
-        if (getItemEntry.getItemId == RG_ICE_TRAP && getItemEntry.modIndex == MOD_RANDOMIZER) {
-            EnOssan_ResetItemPosition(this);
-            item->updateStockedItemFunc(play, item);
-            EnOssan_EndInteraction(play, this);
-            return;
-        }
         this->stateFlag = OSSAN_STATE_CONTINUE_SHOPPING_PROMPT;
         Message_ContinueTextbox(play, 0x6B);
     }

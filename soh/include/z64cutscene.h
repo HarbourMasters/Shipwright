@@ -92,7 +92,7 @@ typedef struct {
     /* 0x0C */ Vec3i startPos;
     /* 0x18 */ Vec3i endPos;
     /* 0x24 */ Vec3i normal;
-} CsCmdActorAction; // size = 0x30
+} CsCmdActorCue; // size = 0x30
 
 typedef enum {
     CS_STATE_IDLE,
