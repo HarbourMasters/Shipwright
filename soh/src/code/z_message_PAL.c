@@ -835,7 +835,7 @@ void Message_DrawText(PlayState* play, Gfx** gfxP) {
     u16 i;
     u16 sfxHi;
     u16 charTexIdx;
-    int gTextSpeed;
+    int gTextSpeed, gSlowTextSpeed;
     Font* font = &play->msgCtx.font;
     Gfx* gfx = *gfxP;
 
@@ -857,7 +857,8 @@ void Message_DrawText(PlayState* play, Gfx** gfxP) {
     charTexIdx = 0;
 
     gTextSpeed = CVarGetInteger(CVAR_ENHANCEMENT("TextSpeed"), 1);
-
+    gSlowTextSpeed = CVarGetInteger(CVAR_ENHANCEMENT("SlowTextSpeed"), gTextSpeed);
+    
     for (i = 0; i < msgCtx->textDrawPos; i++) {
         character = msgCtx->msgBufDecoded[i];
 
@@ -1125,10 +1126,10 @@ void Message_DrawText(PlayState* play, Gfx** gfxP) {
     } else if (msgCtx->textDelayTimer == 0) {
         msgCtx->textDrawPos = i + 1;
         msgCtx->textDelayTimer = msgCtx->textDelay;
-    } else if (msgCtx->textDelayTimer <= gTextSpeed) {
+    } else if (msgCtx->textDelayTimer <= gSlowTextSpeed) {
         msgCtx->textDelayTimer = 0;
     } else {
-        msgCtx->textDelayTimer -= gTextSpeed;
+        msgCtx->textDelayTimer -= gSlowTextSpeed;
     }
     *gfxP = gfx;
 }

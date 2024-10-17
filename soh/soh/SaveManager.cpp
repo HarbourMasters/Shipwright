@@ -2842,6 +2842,7 @@ extern "C" void Save_SaveGlobal(void) {
 
 extern "C" void Save_LoadFile(void) {
     // Handle vanilla context reset
+    OTRGlobals::Instance->gRandoContext->GetLogic()->SetContext(nullptr);
     OTRGlobals::Instance->gRandoContext.reset();
     OTRGlobals::Instance->gRandoContext = Rando::Context::CreateInstance();
     OTRGlobals::Instance->gRandoContext->GetLogic()->SetSaveContext(&gSaveContext);
