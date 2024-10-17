@@ -73,7 +73,7 @@ void GenerateStartingInventory() {
   // AddItemToInventory(RG_PROGRESSIVE_STICK_UPGRADE, StartingStickCapacity.Value<uint8_t>());
   // AddItemToInventory(RG_PROGRESSIVE_NUT_UPGRADE, StartingNutCapacity.Value<uint8_t>());
   // AddItemToInventory(RG_PROGRESSIVE_BOMB_BAG, StartingBombBag.Value<uint8_t>());
-  // AddItemToInventory((BombchusInLogic ? RG_PROGRESSIVE_BOMBCHUS : RG_BOMBCHU_20), StartingBombchus.Value<uint8_t>());
+  // AddItemToInventory((BombchuBag ? RG_PROGRESSIVE_BOMBCHUS : RG_BOMBCHU_20), StartingBombchus.Value<uint8_t>());
   // AddItemToInventory(RG_PROGRESSIVE_BOW, StartingBow.Value<uint8_t>());
   // AddItemToInventory(RG_FIRE_ARROWS, StartingFireArrows.Value<uint8_t>());
   // AddItemToInventory(RG_ICE_ARROWS, StartingIceArrows.Value<uint8_t>());

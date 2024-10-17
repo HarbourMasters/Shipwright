@@ -1512,6 +1512,16 @@ void StaticData::HintTable_Init_Item() {
                                                           CustomMessage("a gambler's lockpick", /*german*/"ein Spieler-Dietrich", /*french*/"un crochet à serrure de parieur")});
                                                            // /*spanish*/una apertura portentosa del juego de azar
 
+     hintTextTable[RHT_TREASURE_GAME_KEY_RING] = HintText(CustomMessage("a Chest Game Key Ring"),
+                                                         {
+                                                         CustomMessage("a key ring", /*german*/"ein Schlüsselbund", /*french*/"un trousseau de clés")
+                                                          // /*spanish*/un llavero
+                                                         }, {
+                                                         CustomMessage("a gambler's toolbox for unlocking"),
+                                                         CustomMessage("a gambler's season pass"),
+                                                         CustomMessage("a gambler's jingling ring"),
+                                                         CustomMessage("a gambler's skeleton key")});
+
     hintTextTable[RHT_KOKIRI_EMERALD] = HintText(CustomMessage("the Kokiri Emerald", /*german*/"der Kokiri-Smaragd", /*french*/"l'Émeraude Kokiri"),
                                                  // /*spanish*/la Esmeralda de los Kokiri
                                                  {
