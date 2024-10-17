@@ -1,5 +1,6 @@
 #include "global.h"
 #include <assert.h>
+#include "soh/OTRGlobals.h"
 
 Gfx sSetupDL[SETUPDL_MAX][6] = {
     {

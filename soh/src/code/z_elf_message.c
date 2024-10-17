@@ -1,6 +1,7 @@
 #include "global.h"
 #include "z64elf_message.h"
 #include <assert.h>
+#include "soh/OTRGlobals.h"
 
 ElfMessage sChildSariaMsgs[] = {
     ELF_MSG_STRENGTH_UPG(SKIP, 3, false, 0),

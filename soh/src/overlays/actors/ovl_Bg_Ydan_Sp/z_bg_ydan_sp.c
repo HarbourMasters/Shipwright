@@ -6,6 +6,7 @@
 
 #include "z_bg_ydan_sp.h"
 #include "objects/object_ydan_objects/object_ydan_objects.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS 0
 

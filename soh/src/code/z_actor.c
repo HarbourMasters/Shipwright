@@ -13,6 +13,7 @@
 #include "soh/Enhancements/nametag.h"
 
 #include "soh/ActorDB.h"
+#include "soh/OTRGlobals.h"
 
 #include <string.h>
 #include <stdlib.h>

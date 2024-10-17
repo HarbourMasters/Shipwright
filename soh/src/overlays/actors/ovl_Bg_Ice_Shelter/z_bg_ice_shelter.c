@@ -1,5 +1,6 @@
 #include "z_bg_ice_shelter.h"
 #include "objects/object_ice_objects/object_ice_objects.h"
+#include "soh/OTRGlobals.h"
 
 #define FLAGS 0
 

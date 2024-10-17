@@ -3,6 +3,8 @@
 #include <string.h>
 
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 
 s32 D_8012D280 = 1;
 

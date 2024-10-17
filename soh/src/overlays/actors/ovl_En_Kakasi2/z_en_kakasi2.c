@@ -7,6 +7,7 @@
 #include "z_en_kakasi2.h"
 #include "vt.h"
 #include "objects/object_ka/object_ka.h"
+#include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 

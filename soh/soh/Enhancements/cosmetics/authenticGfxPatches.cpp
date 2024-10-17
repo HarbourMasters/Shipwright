@@ -1,6 +1,8 @@
 #include <libultraship/bridge.h>
 #include <string>
 #include "soh/OTRGlobals.h"
+#include "soh/cvar_prefixes.h"
+#include "soh/ResourceManagerHelpers.h"
 
 extern "C" {
 #include <libultraship/libultra.h>
@@ -9,11 +11,6 @@ extern "C" {
 #include "objects/object_gi_soldout/object_gi_soldout.h"
 #include "objects/object_ik/object_ik.h"
 #include "objects/object_link_child/object_link_child.h"
-
-uint32_t ResourceMgr_GameHasMasterQuest();
-uint32_t ResourceMgr_GameHasOriginal();
-void ResourceMgr_PatchGfxByName(const char* path, const char* patchName, int index, Gfx instruction);
-void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName);
 }
 
 typedef struct {

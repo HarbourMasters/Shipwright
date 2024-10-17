@@ -3,6 +3,8 @@
 #include "soh_assets.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include <assert.h>
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS 0

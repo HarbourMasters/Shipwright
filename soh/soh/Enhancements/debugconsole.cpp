@@ -6,6 +6,7 @@
 #include <vector>
 #include <string>
 #include "soh/OTRGlobals.h"
+#include "soh/cvar_prefixes.h"
 #include <soh/Enhancements/item-tables/ItemTableManager.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/cosmetics/CosmeticsEditor.h"

@@ -6,6 +6,7 @@
 
 #include "z_bg_spot01_idosoko.h"
 #include "objects/object_spot01_matoya/object_spot01_matoya.h"
+#include "soh/OTRGlobals.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 

@@ -8,9 +8,10 @@
 #include <libultraship/libultraship.h>
 #include <functions.h>
 #include "../randomizer/3drando/random.hpp"
-#include "../../OTRGlobals.h"
+#include "soh/OTRGlobals.h"
+#include "soh/cvar_prefixes.h"
 #include <utils/StringHelper.h>
-#include "../../UIWidgets.hpp"
+#include "soh/UIWidgets.hpp"
 #include "AudioCollection.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 

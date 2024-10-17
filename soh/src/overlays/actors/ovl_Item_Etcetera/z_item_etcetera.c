@@ -6,6 +6,7 @@
 
 #include "z_item_etcetera.h"
 #include <assert.h>
+#include "soh/OTRGlobals.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 

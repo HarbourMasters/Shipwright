@@ -7,8 +7,14 @@
  * A modified dynamicExitList is manually included since we can't read it from addressing like 3ds rando.
  */
 
+#include "z64save.h"
 #include "randomizer_entrance.h"
+#include "randomizerTypes.h"
 #include "randomizer_grotto.h"
+#include "soh/Enhancements/item-tables/ItemTableTypes.h"
+#include "z64.h"
+#include "soh/OTRGlobals.h"
+#include "soh/SaveManager.h"
 #include <string.h>
 
 #include "global.h"

@@ -1,6 +1,7 @@
 #include "z_en_cs.h"
 #include "objects/object_cs/object_cs.h"
 #include "objects/object_link_child/object_link_child.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
 

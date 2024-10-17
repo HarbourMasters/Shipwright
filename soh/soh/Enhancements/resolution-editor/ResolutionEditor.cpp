@@ -5,6 +5,7 @@
 #include <soh/UIWidgets.hpp>
 #include <graphic/Fast3D/gfx_pc.h>
 #include "soh/OTRGlobals.h"
+#include "soh/cvar_prefixes.h"
 
 /*  Console Variables are grouped under gAdvancedResolution. (e.g. CVAR_PREFIX_ADVANCED_RESOLUTION ".Enabled")
 

@@ -1,6 +1,8 @@
 #include "global.h"
 #include "vt.h"
 #include "textures/parameter_static/parameter_static.h"
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 
 typedef struct {
     /* 0x00 */ void* texture;

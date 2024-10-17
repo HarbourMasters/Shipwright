@@ -10,6 +10,7 @@
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "variables.h"
 #include "soh/OTRGlobals.h"
+#include "soh/cvar_prefixes.h"
 #include "../option.h"
 #include "soh/Enhancements/debugger/performanceTimer.h"
 

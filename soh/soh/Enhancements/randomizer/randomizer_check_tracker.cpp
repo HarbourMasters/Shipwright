@@ -2,9 +2,12 @@
 #include "randomizer_entrance_tracker.h"
 #include "randomizer_item_tracker.h"
 #include "randomizerTypes.h"
+#include "soh/OTRGlobals.h"
+#include "soh/cvar_prefixes.h"
+#include "soh/SaveManager.h"
+#include "soh/ResourceManagerHelpers.h"
+#include "soh/UIWidgets.hpp"
 #include "dungeon.h"
-#include "../../OTRGlobals.h"
-#include "../../UIWidgets.hpp"
 #include "3drando/location_access.hpp"
 
 #include <string>
@@ -24,7 +27,6 @@ extern "C" {
 #include "macros.h"
 extern PlayState* gPlayState;
 }
-extern "C" uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
 extern "C" GetItemEntry ItemTable_RetrieveEntry(s16 modIndex, s16 getItemID);
 
 extern std::vector<ItemTrackerItem> dungeonRewardStones;

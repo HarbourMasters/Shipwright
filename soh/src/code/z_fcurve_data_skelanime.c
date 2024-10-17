@@ -1,5 +1,6 @@
 #include "global.h"
 #include <assert.h>
+#include "soh/ResourceManagerHelpers.h"
 
 void SkelCurve_Clear(SkelAnimeCurve* skelCurve) {
     skelCurve->limbCount = 0;

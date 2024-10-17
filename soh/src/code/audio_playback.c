@@ -1,4 +1,5 @@
 #include "global.h"
+#include "soh/ResourceManagerHelpers.h"
 #include <libultraship/bridge.h>
 
 extern bool gUseLegacySD;

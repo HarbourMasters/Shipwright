@@ -13,6 +13,7 @@
 #include <soh/Enhancements/bootcommands.h>
 #include <GameVersions.h>
 #include <soh/SaveManager.h>
+#include "soh/ResourceManagerHelpers.h"
 #include <string.h>
 
 #include "time.h"

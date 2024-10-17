@@ -5,6 +5,7 @@
 #include "textures/map_i_static/map_i_static.h"
 #include "textures/map_grand_static/map_grand_static.h"
 #include <assert.h>
+#include "soh/OTRGlobals.h"
 
 MapData* gMapData;
 
