@@ -267,6 +267,14 @@ std::string formatTimestampGameplayStat(uint32_t value) {
     return fmt::format("{}:{:0>2}:{:0>2}.{}", hh, mm, ss, ds);
 }
 
+std::string convertTime(uint32_t dayTime) {
+    uint32_t totalSeconds = 24 * 60 * 60;
+    uint32_t seconds = static_cast<uint32_t>(static_cast<double>(dayTime) * (totalSeconds - 1) / 65535);
+    uint32_t hh = seconds / 3600;
+    uint32_t mm = (seconds % 3600) / 60;
+    return fmt::format("{:0>2}:{:0>2}", hh, mm);
+}
+
 std::string formatIntGameplayStat(uint32_t value) {
     return fmt::format("{}", value);
 }
@@ -280,7 +288,12 @@ std::string formatHexOnlyGameplayStat(uint32_t value) {
 }
 
 extern "C" char* GameplayStats_GetCurrentTime() {
-    std::string timeString = formatTimestampGameplayStat(GAMEPLAYSTAT_TOTAL_TIME).c_str();
+    std::string timeString;
+    if (CVarGetInteger(CVAR_ENHANCEMENT("TimeDisplay"), 0) == 1) {
+        timeString = convertTime(gSaveContext.dayTime).c_str();
+    } else {
+        timeString = formatTimestampGameplayStat(GAMEPLAYSTAT_TOTAL_TIME).c_str();
+    }
     const size_t stringLength = timeString.length();
     char* timeChar = (char*)malloc(stringLength + 1); // We need to use malloc so we can free this from a C file.
     strcpy(timeChar, timeString.c_str());
@@ -608,6 +621,9 @@ void DrawGameplayStatsBreakdownTab() {
 
 void DrawGameplayStatsOptionsTab() {
     UIWidgets::PaddedEnhancementCheckbox("Show in-game total timer", CVAR_ENHANCEMENT("GameplayStats.ShowIngameTimer"), true, false);
+    if (CVarGetInteger(CVAR_ENHANCEMENT("GameplayStats.ShowIngameTimer"), 0)) {
+        UIWidgets::PaddedEnhancementCheckbox("Show Day/Night Instead", CVAR_ENHANCEMENT("TimeDisplay"), true, false);
+    }
     UIWidgets::InsertHelpHoverText("Keep track of the timer as an in-game HUD element. The position of the timer can be changed in the Cosmetics Editor.");
     UIWidgets::PaddedEnhancementCheckbox("Show latest timestamps on top", CVAR_ENHANCEMENT("GameplayStats.ReverseTimestamps"), true, false);
     UIWidgets::PaddedEnhancementCheckbox("Room Breakdown", CVAR_ENHANCEMENT("GameplayStats.RoomBreakdown"), true, false);
