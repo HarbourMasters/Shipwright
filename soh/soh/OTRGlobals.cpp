@@ -59,6 +59,8 @@
 #include <Fast3D/gfx_rendering_api.h>
 
 #ifdef __APPLE__
+#include <unistd.h>
+#include <pwd.h>
 #include <SDL_scancode.h>
 #else
 #include <SDL2/SDL_scancode.h>
@@ -264,6 +266,7 @@ const char* constCameraStrings[] = {
 };
 
 OTRGlobals::OTRGlobals() {
+
     std::vector<std::string> OTRFiles;
     std::string mqPath = Ship::Context::LocateFileAcrossAppDirs("oot-mq.otr", appShortName);
     if (std::filesystem::exists(mqPath)) { 
@@ -1052,6 +1055,19 @@ bool PathTestCleanup(FILE* tfile) {
     return true;
 }
 
+void CheckAndCreateFoldersAndFile() {
+#if defined(__APPLE__)
+    if (const char* fpath = std::getenv("SHIP_HOME")) {
+        std::string modsPath = (fpath[0] == '~') ? (std::string(getenv("HOME") ? getenv("HOME") : getpwuid(getuid())->pw_dir) + std::string(fpath).substr(1)) : std::string(fpath);
+        modsPath += "/mods"; 
+        std::string filePath = modsPath + "/custom_mod_files_go_here.txt";
+        if (std::filesystem::create_directories(modsPath) || !std::filesystem::exists(filePath)) {
+            std::ofstream(filePath).close();
+        }
+    }
+#endif
+}
+
 extern "C" void InitOTR() {
 
 #ifdef __SWITCH__
@@ -1103,6 +1119,7 @@ extern "C" void InitOTR() {
         !std::filesystem::exists(Ship::Context::LocateFileAcrossAppDirs("oot.otr", appShortName))){
 
 #if not defined(__SWITCH__) && not defined(__WIIU__)
+        CheckAndCreateFoldersAndFile();
         std::string installPath = Ship::Context::GetAppBundlePath();
         if (!std::filesystem::exists(installPath + "/assets/extractor")) {
             Extractor::ShowErrorBox("Extractor assets not found",
