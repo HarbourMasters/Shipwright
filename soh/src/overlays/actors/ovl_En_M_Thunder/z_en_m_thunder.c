@@ -125,6 +125,10 @@ void EnMThunder_Destroy(Actor* thisx, PlayState* play) {
 }
 
 void func_80A9F314(PlayState* play, f32 arg1) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("RemoveSpinAttackDarkness"), 0)) {
+        return;
+    }
+
     Environment_AdjustLights(play, arg1, 850.0f, 0.2f, 0.0f);
 }
 
