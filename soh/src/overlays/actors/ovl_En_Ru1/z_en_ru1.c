@@ -248,9 +248,9 @@ s32 EnRu1_IsCsStateIdle(PlayState* play) {
     return false;
 }
 
-CsCmdActorAction* func_80AEAF58(PlayState* play, s32 npcActionIdx) {
+CsCmdActorCue* func_80AEAF58(PlayState* play, s32 npcActionIdx) {
     s32 pad[2];
-    CsCmdActorAction* ret = NULL;
+    CsCmdActorCue* ret = NULL;
 
     if (!EnRu1_IsCsStateIdle(play)) {
         ret = play->csCtx.npcActions[npcActionIdx];
@@ -259,7 +259,7 @@ CsCmdActorAction* func_80AEAF58(PlayState* play, s32 npcActionIdx) {
 }
 
 s32 func_80AEAFA0(PlayState* play, u16 action, s32 npcActionIdx) {
-    CsCmdActorAction* csCmdNPCAction = func_80AEAF58(play, npcActionIdx);
+    CsCmdActorCue* csCmdNPCAction = func_80AEAF58(play, npcActionIdx);
 
     if ((csCmdNPCAction != NULL) && (csCmdNPCAction->action == action)) {
         return true;
@@ -268,7 +268,7 @@ s32 func_80AEAFA0(PlayState* play, u16 action, s32 npcActionIdx) {
 }
 
 s32 func_80AEAFE0(PlayState* play, u16 action, s32 npcActionIdx) {
-    CsCmdActorAction* csCmdNPCAction = func_80AEAF58(play, npcActionIdx);
+    CsCmdActorCue* csCmdNPCAction = func_80AEAF58(play, npcActionIdx);
 
     if ((csCmdNPCAction != NULL) && (csCmdNPCAction->action != action)) {
         return true;
@@ -412,7 +412,7 @@ void func_80AEB3DC(EnRu1* this, PlayState* play) {
     EnRu1_SetMouthIndex(this, 0);
 }
 
-CsCmdActorAction* func_80AEB438(PlayState* play) {
+CsCmdActorCue* func_80AEB438(PlayState* play) {
     return func_80AEAF58(play, 3);
 }
 
@@ -482,7 +482,7 @@ void func_80AEB7D0(EnRu1* this) {
     this->skelAnime.moveFlags &= ~0x3;
 }
 
-f32 func_80AEB7E0(CsCmdActorAction* csCmdNPCAction, PlayState* play) {
+f32 func_80AEB7E0(CsCmdActorCue* csCmdNPCAction, PlayState* play) {
     s32 csCtxFrames = play->csCtx.frames;
 
     if ((csCtxFrames < csCmdNPCAction->endFrame) && (csCmdNPCAction->endFrame - csCmdNPCAction->startFrame > 0)) {
@@ -500,7 +500,7 @@ f32 func_80AEB87C(f32 arg0, s32 arg1, s32 arg2) {
 }
 
 void func_80AEB89C(EnRu1* this, PlayState* play) {
-    CsCmdActorAction* npcAction = func_80AEB438(play);
+    CsCmdActorCue* npcAction = func_80AEB438(play);
     s16 npcActionRotY;
 
     if (npcAction != NULL) {
@@ -528,7 +528,7 @@ void func_80AEB954(EnRu1* this, PlayState* play) {
 void func_80AEB974(EnRu1* this, PlayState* play) {
     Vec3f* thisPos;
     f32 sp30;
-    CsCmdActorAction* csCmdNPCAction = func_80AEB438(play);
+    CsCmdActorCue* csCmdNPCAction = func_80AEB438(play);
     s32 pad;
 
     if (csCmdNPCAction != NULL) {
@@ -549,7 +549,7 @@ void func_80AEBA2C(EnRu1* this, PlayState* play) {
     Vec3f* unk_364 = &this->unk_364;
     Vec3f* thisPos;
     f32 temp_ret_2;
-    CsCmdActorAction* csCmdNPCAction = func_80AEB438(play);
+    CsCmdActorCue* csCmdNPCAction = func_80AEB438(play);
     s32 pad2;
 
     if (csCmdNPCAction != NULL) {
@@ -675,7 +675,7 @@ void func_80AEBF60(EnRu1* this, PlayState* play) {
 }
 
 void func_80AEBFD8(EnRu1* this, PlayState* play) {
-    CsCmdActorAction* csCmdNPCAction = func_80AEB438(play);
+    CsCmdActorCue* csCmdNPCAction = func_80AEB438(play);
     f32 frameCount;
     u16 csCtxFrames;
     u16 endFrame;
@@ -878,7 +878,7 @@ void func_80AEC780(EnRu1* this, PlayState* play) {
 }
 
 void func_80AEC81C(EnRu1* this, PlayState* play) {
-    CsCmdActorAction* csCmdNPCAction;
+    CsCmdActorCue* csCmdNPCAction;
     s16 newRotY;
 
     if (func_80AEAFE0(play, 1, 3)) {
@@ -1653,7 +1653,7 @@ void func_80AEE7C4(EnRu1* this, PlayState* play) {
     }
 
     player = GET_PLAYER(play);
-    if (player->stateFlags2 & PLAYER_STATE2_IDLING) {
+    if (player->stateFlags2 & PLAYER_STATE2_IDLE_FIDGET) {
         this->unk_370 += 1.0f;
         if (this->action != 32) {
             if (*unk_370 > 30.0f) {
@@ -1953,8 +1953,8 @@ void func_80AEF5B8(EnRu1* this) {
 
 void func_80AEF624(EnRu1* this, PlayState* play) {
     f32 frameCount;
-    CsCmdActorAction* csCmdNPCAction;
-    CsCmdActorAction* csCmdNPCAction2;
+    CsCmdActorCue* csCmdNPCAction;
+    CsCmdActorCue* csCmdNPCAction2;
     s16 newRotTmp;
 
     if (func_80AEAFE0(play, 1, 3)) {

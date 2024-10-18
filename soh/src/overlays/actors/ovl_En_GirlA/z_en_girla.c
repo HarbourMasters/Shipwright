@@ -72,7 +72,6 @@ void EnGirlA_BuyEvent_ShieldDiscount(PlayState* play, EnGirlA* this);
 void EnGirlA_BuyEvent_ObtainBombchuPack(PlayState* play, EnGirlA* this);
 void EnGirlA_BuyEvent_GoronTunic(PlayState* play, EnGirlA* this);
 void EnGirlA_BuyEvent_ZoraTunic(PlayState* play, EnGirlA* this);
-void EnGirlA_BuyEvent_Randomizer(PlayState* play, EnGirlA* this);
 
 s32 Object_Spawn(ObjectContext* objectCtx, s16 objectId);
 
@@ -317,7 +316,7 @@ static ShopItemEntry shopItemEntries[] = {
       EnGirlA_ItemGive_BottledItem, EnGirlA_BuyEvent_ShieldDiscount },
     /* SI_RANDOMIZED_ITEM */
     { OBJECT_INVALID, GID_MAXIMUM, NULL, 40, 1, 0x9100, 0x9100 + NUM_SHOP_ITEMS, GI_NONE, EnGirlA_CanBuy_Randomizer,
-      EnGirlA_ItemGive_Randomizer, EnGirlA_BuyEvent_Randomizer }
+      EnGirlA_ItemGive_Randomizer, NULL }
 };
 
 // Defines the Hylian Shield discount amount
@@ -876,7 +875,7 @@ s32 EnGirlA_CanBuy_Randomizer(PlayState* play, EnGirlA* this) {
         return CANBUY_RESULT_NEED_RUPEES;
     }
 
-    return CANBUY_RESULT_SUCCESS_FANFARE;
+    return CANBUY_RESULT_SUCCESS;
 }
 
 void EnGirlA_ItemGive_Arrows(PlayState* play, EnGirlA* this) {
@@ -1061,18 +1060,6 @@ void EnGirlA_ItemGive_Randomizer(PlayState* play, EnGirlA* this) {
     ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(play->sceneNum, this->randoSlotIndex);
     GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
 
-    gSaveContext.pendingSale = getItemEntry.itemId;
-    gSaveContext.pendingSaleMod = getItemEntry.modIndex;
-    if (getItemEntry.modIndex == MOD_NONE) {
-        // RANDOTOD: Move this into Item_Give() or some other more central location
-        if (getItemEntry.getItemId == GI_SWORD_BGS) {
-            gSaveContext.bgsFlag = true;
-        }
-        Item_Give(play, getItemEntry.itemId);
-    } else if (getItemEntry.modIndex == MOD_RANDOMIZER && getItemEntry.getItemId != RG_ICE_TRAP) {
-        Randomizer_Item_Give(play, getItemEntry);
-    }
-
     Flags_SetRandomizerInf(shopItemIdentity.randomizerInf);
     Rupees_ChangeBy(-this->basePrice);
 }
@@ -1143,25 +1130,6 @@ void EnGirlA_BuyEvent_ObtainBombchuPack(PlayState* play, EnGirlA* this) {
         case SI_BOMBCHU_20_2:
             Flags_SetItemGetInf(ITEMGETINF_05);
             break;
-    }
-}
-
-// This is called when EnGirlA_CanBuy_Randomizer returns CANBUY_RESULT_SUCCESS_FANFARE
-// The giving of the item is handled in ossan.c, and a fanfare is played
-void EnGirlA_BuyEvent_Randomizer(PlayState* play, EnGirlA* this) {
-    ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(play->sceneNum, this->randoSlotIndex);
-    GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
-    gSaveContext.pendingSale = getItemEntry.itemId;
-    gSaveContext.pendingSaleMod = getItemEntry.modIndex;
-    Flags_SetRandomizerInf(shopItemIdentity.randomizerInf);
-    Rupees_ChangeBy(-this->basePrice);
-
-    // Heart Pieces and Heart Containers refill Links health when the text box is closed on their text IDs.
-    // In Shopsanity the textbox does not close, as the shop keeper continues the text bos asking to buy more.
-    // So here we detect when a Heart Piece/Container is granted to refil Links health manually
-    if (getItemEntry.itemId == ITEM_HEART_PIECE || getItemEntry.itemId == ITEM_HEART_PIECE_2 ||
-        getItemEntry.itemId == ITEM_HEART_CONTAINER) {
-        gSaveContext.healthAccumulator = 0x140; // Refill 20 hearts
     }
 }
 

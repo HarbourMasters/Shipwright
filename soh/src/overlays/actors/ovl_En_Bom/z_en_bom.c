@@ -238,11 +238,11 @@ void EnBom_Explode(EnBom* this, PlayState* play) {
     if (this->timer == 0) {
         player = GET_PLAYER(play);
 
-        if ((player->stateFlags1 & PLAYER_STATE1_ITEM_OVER_HEAD) && (player->heldActor == &this->actor)) {
+        if ((player->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR) && (player->heldActor == &this->actor)) {
             player->actor.child = NULL;
             player->heldActor = NULL;
             player->interactRangeActor = NULL;
-            player->stateFlags1 &= ~PLAYER_STATE1_ITEM_OVER_HEAD;
+            player->stateFlags1 &= ~PLAYER_STATE1_CARRYING_ACTOR;
         }
 
         Actor_Kill(&this->actor);

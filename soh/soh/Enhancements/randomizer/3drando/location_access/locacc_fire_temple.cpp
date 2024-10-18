@@ -203,7 +203,7 @@ void RegionTable_Init_FireTemple() {
 
   areaTable[RR_FIRE_TEMPLE_SCARECROW_ROOM] = Region("Fire Temple Scarecrow Room", "Fire Temple", {RA_FIRE_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LOCATION(RC_FIRE_TEMPLE_GS_SCARECROW_CLIMB, logic->CanJumpslash() || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_BOOMERANG) || logic->HasExplosives() || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_DINS_FIRE)),
+                  LOCATION(RC_FIRE_TEMPLE_GS_SCARECROW_CLIMB, logic->CanJumpslashExceptHammer() || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_BOOMERANG) || logic->HasExplosives() || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_DINS_FIRE)),
                 }, {
                   //Exits
                   Entrance(RR_FIRE_TEMPLE_BOULDER_MAZE_UPPER, {[]{return true;}}),
@@ -316,7 +316,7 @@ void RegionTable_Init_FireTemple() {
   if (ctx->GetDungeon(FIRE_TEMPLE)->IsMQ()) {
   areaTable[RR_FIRE_TEMPLE_MQ_LOWER] = Region("Fire Temple MQ Lower", "Fire Temple", {RA_FIRE_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LOCATION(RC_FIRE_TEMPLE_MQ_MAP_ROOM_SIDE_CHEST, logic->CanJumpslash() || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_BOMB_BAG) || logic->CanUse(RG_DINS_FIRE)),
+                  LOCATION(RC_FIRE_TEMPLE_MQ_MAP_ROOM_SIDE_CHEST, logic->CanJumpslashExceptHammer() || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_BOMB_BAG) || logic->CanUse(RG_DINS_FIRE)),
                   LOCATION(RC_FIRE_TEMPLE_MQ_NEAR_BOSS_CHEST,     logic->IsAdult && (ctx->GetTrickOption(RT_FEWER_TUNIC_REQUIREMENTS) || logic->CanUse(RG_GORON_TUNIC)) && (((logic->CanUse(RG_HOVER_BOOTS) || (ctx->GetTrickOption(RT_FIRE_MQ_NEAR_BOSS) && logic->CanUse(RG_FAIRY_BOW))) && logic->HasFireSource()) || (logic->CanUse(RG_HOOKSHOT) && logic->CanUse(RG_FIRE_ARROWS) || (logic->CanUse(RG_DINS_FIRE) && ((ctx->GetOption(RSK_DAMAGE_MULTIPLIER).IsNot(RO_DAMAGE_MULTIPLIER_OHKO) && ctx->GetOption(RSK_DAMAGE_MULTIPLIER).IsNot(RO_DAMAGE_MULTIPLIER_QUADRUPLE) && ctx->GetOption(RSK_DAMAGE_MULTIPLIER).IsNot(RO_DAMAGE_MULTIPLIER_OCTUPLE) && ctx->GetOption(RSK_DAMAGE_MULTIPLIER).IsNot(RO_DAMAGE_MULTIPLIER_SEXDECUPLE)) || logic->CanUse(RG_GORON_TUNIC) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_LONGSHOT)))))),
                     //Trick: logic->IsAdult && (LogicFewerTunicRequirements || logic->CanUse(RG_GORON_TUNIC)) && (((logic->CanUse(RG_HOVER_BOOTS) || (LogicFireMQNearBoss && logic->CanUse(RG_FAIRY_BOW))) && logic->HasFireSource()) || (logic->CanUse(RG_HOOKSHOT) && logic->CanUse(RG_FIRE_ARROWS) || (logic->CanUse(RG_DINS_FIRE) && ((DamageMultiplier.IsNot(DAMAGEMULTIPLIER_OHKO) && DamageMultiplier.IsNot(DAMAGEMULTIPLIER_QUADRUPLE) && DamageMultiplier.IsNot(DAMAGEMULTIPLIER_OCTUPLE) && DamageMultiplier.IsNot(DAMAGEMULTIPLIER_SEXDECUPLE)) || logic->CanUse(RG_GORON_TUNIC) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_LONGSHOT)))))
   }, {

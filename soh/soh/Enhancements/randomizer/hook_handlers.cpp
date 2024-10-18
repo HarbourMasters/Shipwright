@@ -50,8 +50,8 @@ extern "C" {
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 extern void func_8084DFAC(PlayState* play, Player* player);
-extern void func_80835DAC(PlayState* play, Player* player, PlayerActionFunc actionFunc, s32 flags);
-extern s32 func_80836898(PlayState* play, Player* player, PlayerFuncA74 func);
+extern void Player_SetupActionPreserveAnimMovement(PlayState* play, Player* player, PlayerActionFunc actionFunc, s32 flags);
+extern s32 Player_SetupWaitForPutAway(PlayState* play, Player* player, AfterPutAwayFunc func);
 }
 
 #define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).GetSelectedOptionIndex()
@@ -252,7 +252,7 @@ void RandomizerOnPlayerUpdateForRCQueueHandler() {
 
     // If we're in a cutscene, don't queue
     Player* player = GET_PLAYER(gPlayState);
-    if (Player_InBlockingCsMode(gPlayState, player) || player->stateFlags1 & PLAYER_STATE1_IN_ITEM_CS || player->stateFlags1 & PLAYER_STATE1_GETTING_ITEM || player->stateFlags1 & PLAYER_STATE1_ITEM_OVER_HEAD) {
+    if (Player_InBlockingCsMode(gPlayState, player) || player->stateFlags1 & PLAYER_STATE1_IN_ITEM_CS || player->stateFlags1 & PLAYER_STATE1_GETTING_ITEM || player->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR) {
         return;
     }
 
@@ -297,7 +297,7 @@ void RandomizerOnPlayerUpdateForItemQueueHandler() {
     if (randomizerQueuedCheck == RC_UNKNOWN_CHECK) return;
 
     Player* player = GET_PLAYER(gPlayState);
-    if (player == NULL || Player_InBlockingCsMode(gPlayState, player) || player->stateFlags1 & PLAYER_STATE1_IN_ITEM_CS || player->stateFlags1 & PLAYER_STATE1_GETTING_ITEM || player->stateFlags1 & PLAYER_STATE1_ITEM_OVER_HEAD) {
+    if (player == NULL || Player_InBlockingCsMode(gPlayState, player) || player->stateFlags1 & PLAYER_STATE1_IN_ITEM_CS || player->stateFlags1 & PLAYER_STATE1_GETTING_ITEM || player->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR) {
         return;
     }
 
@@ -306,7 +306,7 @@ void RandomizerOnPlayerUpdateForItemQueueHandler() {
     if (player->stateFlags1 & PLAYER_STATE1_IN_WATER) {
         // Allow the player to receive the item while swimming
         player->stateFlags2 |= PLAYER_STATE2_UNDERWATER;
-        Player_ActionChange_2(player, gPlayState);
+        Player_ActionHandler_2(player, gPlayState);
     }
 }
 
@@ -342,7 +342,7 @@ void RandomizerOnItemReceiveHandler(GetItemEntry receivedItemEntry) {
         static uint32_t updateHook;
         updateHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
             Player* player = GET_PLAYER(gPlayState);
-            if (player == NULL || Player_InBlockingCsMode(gPlayState, player) || player->stateFlags1 & PLAYER_STATE1_IN_ITEM_CS || player->stateFlags1 & PLAYER_STATE1_GETTING_ITEM || player->stateFlags1 & PLAYER_STATE1_ITEM_OVER_HEAD) {
+            if (player == NULL || Player_InBlockingCsMode(gPlayState, player) || player->stateFlags1 & PLAYER_STATE1_IN_ITEM_CS || player->stateFlags1 & PLAYER_STATE1_GETTING_ITEM || player->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR) {
                 return;
             }
 
@@ -604,7 +604,7 @@ void Player_Action_8084E6D4_override(Player* player, PlayState* play) {
 }
 
 void func_8083A434_override(PlayState* play, Player* player) {
-    func_80835DAC(play, player, Player_Action_8084E6D4_override, 0);
+    Player_SetupActionPreserveAnimMovement(play, player, Player_Action_8084E6D4_override, 0);
     player->stateFlags1 |= PLAYER_STATE1_GETTING_ITEM | PLAYER_STATE1_IN_CUTSCENE;
 }
 
@@ -643,7 +643,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             RandomizerSetChestGameRandomizerInf(rc);
 
             Player* player = GET_PLAYER(gPlayState);
-            func_80836898(gPlayState, player, func_8083A434_override);
+            Player_SetupWaitForPutAway(gPlayState, player, func_8083A434_override);
 
             *should = false;
             break;

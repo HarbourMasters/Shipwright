@@ -3692,7 +3692,8 @@ void Interface_UpdateMagicBar(PlayState* play) {
                 (msgCtx->msgMode == MSGMODE_NONE) && (play->gameOverCtx.state == GAMEOVER_INACTIVE) &&
                 (play->transitionTrigger == TRANS_TRIGGER_OFF) && (play->transitionMode == TRANS_MODE_OFF) && !Play_InCsMode(play)) {
                 bool hasLens = false;
-                for (int buttonIndex = 1; buttonIndex < (CVarGetInteger(CVAR_SETTING("DpadEquips"), 0) != 0) ? ARRAY_COUNT(gSaveContext.equips.buttonItems) : 4; buttonIndex++) {
+                for (int buttonIndex = 1; buttonIndex < ((CVarGetInteger(CVAR_ENHANCEMENT("DpadEquips"), 0) != 0) ? ARRAY_COUNT(gSaveContext.equips.buttonItems) : 4);
+                     buttonIndex++) {
                     if (gSaveContext.equips.buttonItems[buttonIndex] == ITEM_LENS) {
                         hasLens = true;
                         break;
@@ -4050,7 +4051,7 @@ void Interface_DrawEnemyHealthBar(TargetContext* targetCtx, PlayState* play) {
         Interface_CreateQuadVertexGroup(&sEnemyHealthVtx[12], -floorf(halfBarWidth) + endTexWidth, (-texHeight / 2) + 3,
                                         healthBarFill, 7, 0);
 
-        if (((!(player->stateFlags1 & PLAYER_STATE1_TEXT_ON_SCREEN)) || (actor != player->unk_664)) && targetCtx->unk_44 < 500.0f) {
+        if (((!(player->stateFlags1 & PLAYER_STATE1_TALKING)) || (actor != player->focusActor)) && targetCtx->unk_44 < 500.0f) {
             f32 slideInOffsetY = 0;
 
             // Slide in the health bar from edge of the screen (mimic the Z-Target triangles fly in)
@@ -5727,7 +5728,7 @@ void Interface_Draw(PlayState* play) {
             Interface_DrawAmmoCount(play, 3, interfaceCtx->cRightAlpha);
         }
 
-        if (CVarGetInteger(CVAR_SETTING("DpadEquips"), 0) != 0) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("DpadEquips"), 0) != 0) {
             // DPad is only greyed-out when all 4 DPad directions are too
             uint16_t dpadAlpha =
                 MAX(MAX(MAX(interfaceCtx->dpadUpAlpha, interfaceCtx->dpadDownAlpha), interfaceCtx->dpadLeftAlpha),

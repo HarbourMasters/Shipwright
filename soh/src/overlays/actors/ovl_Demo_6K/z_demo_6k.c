@@ -807,7 +807,7 @@ void func_809691BC(Demo6K* this, PlayState* play, s32 params) {
     Vec3f startPos;
     Vec3f endPos;
     f32 temp;
-    CsCmdActorAction* csAction = play->csCtx.npcActions[params];
+    CsCmdActorCue* csAction = play->csCtx.npcActions[params];
 
     startPos.x = csAction->startPos.x;
     startPos.y = csAction->startPos.y;

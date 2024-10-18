@@ -389,7 +389,7 @@ void BossSst_HeadSetupIntro(BossSst* this, PlayState* play) {
     player->actor.world.pos.z = sRoomCenter.z;
     player->linearVelocity = player->actor.velocity.y = 0.0f;
     player->actor.shape.rot.y = -0x8000;
-    player->zTargetYaw = -0x8000;
+    player->parallelYaw = -0x8000;
     player->yaw = -0x8000;
     player->fallStartHeight = 0;
     player->stateFlags1 |= PLAYER_STATE1_INPUT_DISABLED;
@@ -448,7 +448,7 @@ void BossSst_HeadIntro(BossSst* this, PlayState* play) {
             player->actor.world.pos.z = sRoomCenter.z;
             player->linearVelocity = 0;
             player->actor.shape.rot.y = -0x8000;
-            player->zTargetYaw = -0x8000;
+            player->parallelYaw = -0x8000;
             player->yaw = -0x8000;
         }
 

@@ -6182,7 +6182,7 @@ s32 Camera_Demo5(Camera* camera) {
         sp4A = playerhead.rot.y - playerTargetGeo.yaw;
         if (camera->target->category == ACTORCAT_PLAYER) {
             pad = camera->play->state.frames - sDemo5PrevAction12Frame;
-            if (player->stateFlags1 & PLAYER_STATE1_ITEM_OVER_HEAD) {
+            if (player->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR) {
                 // holding object over head.
                 Player_SetCsActionWithHaltedActors(camera->play, camera->target, 8);
             } else if (ABS(pad) > 3000) {

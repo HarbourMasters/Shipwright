@@ -421,22 +421,50 @@ namespace Rando {
     }
 
     bool Logic::CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance) {
+        bool killed = false;
         switch(enemy) {
             case RE_GOLD_SKULLTULA:
             case RE_GOHMA_LARVA:
             case RE_MAD_SCRUB:
+            case RE_DEKU_BABA:
                 return CanAttack();
             case RE_BIG_SKULLTULA:
-                return CanDamage() || CanUse(RG_HOOKSHOT);
+                switch (distance){
+                    case ED_CLOSE:
+                        //hammer jumpslash cannot damage these, but hammer swing can
+                        killed = killed || CanUse(RG_MEGATON_HAMMER);
+                        [[fallthrough]];
+                    case ED_HAMMER_JUMPSLASH:
+                    case ED_MASTER_SWORD_JUMPSLASH:
+                        killed = killed || CanJumpslashExceptHammer();
+                        [[fallthrough]];
+                    case ED_RANG_OR_HOOKSHOT:
+                        //RANDOTODO test dins, bomb and chu range in a practical example, might need a wall var to handle chus
+                        killed = killed || CanUse(RG_HOOKSHOT) || HasExplosives() || CanUse(RG_DINS_FIRE);
+                        [[fallthrough]];
+                    case ED_LONGSHOT:
+                        killed = killed || CanUse(RG_LONGSHOT);
+                        [[fallthrough]];
+                    case ED_FAR:
+                        killed = CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_FAIRY_BOW);
+                        break;
+                }
+                return killed;
             case RE_DODONGO:
             case RE_LIZALFOS:
-                return CanJumpslash() || HasExplosives() || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_FAIRY_BOW) || CanUse(RG_MEGATON_HAMMER);
+                return CanJumpslash() || HasExplosives() || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_FAIRY_BOW);
             case RE_KEESE:
             case RE_FIRE_KEESE:
-                return CanJumpslash() || HasExplosives() || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_FAIRY_BOW) || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_HOOKSHOT) || CanUse(RG_BOOMERANG);
+                return CanJumpslash() || HasExplosives() || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_FAIRY_BOW) || CanUse(RG_HOOKSHOT) || CanUse(RG_BOOMERANG);
             case RE_BLUE_BUBBLE:
-                //RANDOTODO Trick to use shield hylian shield to stun these guys
-                return BlastOrSmash() || CanUse(RG_FAIRY_BOW) || ((CanJumpslash() || CanUse(RG_FAIRY_SLINGSHOT)) && (CanUse(RG_NUTS) || HookshotOrBoomerang() || CanStandingShield()));
+                //RANDOTODO Trick to use shield hylian shield as child to stun these guys
+                //RANDOTODO check hammer damage
+                return BlastOrSmash() || CanUse(RG_FAIRY_BOW) || ((CanJumpslashExceptHammer() || CanUse(RG_FAIRY_SLINGSHOT)) && (CanUse(RG_NUTS) || HookshotOrBoomerang() || CanStandingShield()));
+            case RE_DEAD_HAND:
+                //RANDOTODO change Dead Hand trick to be sticks Dead Hand
+                return CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD) || (CanUse(RG_STICKS) && ctx->GetTrickOption(RT_BOTW_CHILD_DEADHAND));
+            case RE_WITHERED_DEKU_BABA:
+                return CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD) || CanUse(RG_BOOMERANG);
             default:
                 SPDLOG_ERROR("CanKillEnemy reached `default`.");
                 assert(false);
@@ -444,8 +472,10 @@ namespace Rando {
         }
     }
 
-    bool Logic::CanPassEnemy(RandomizerEnemy enemy) {
-        if (CanKillEnemy(enemy)){
+//It is rare for Pass Enemy to need distance, this only happens when the enemy blocks a platform and you can't reach it before it blocks you
+//an example is the Big Skulltula in water room of MQ deku, which is out of sword swing height but blocks off the whole SoT block
+    bool Logic::CanPassEnemy(RandomizerEnemy enemy, EnemyDistance distance) {
+        if (CanKillEnemy(enemy, distance)){
             return true;
         }
         switch(enemy) {
@@ -457,8 +487,12 @@ namespace Rando {
             case RE_KEESE:
             case RE_FIRE_KEESE:
             case RE_BLUE_BUBBLE:
+            case RE_DEAD_HAND:
+            case RE_DEKU_BABA:
+            case RE_WITHERED_DEKU_BABA:
                 return true;
             case RE_BIG_SKULLTULA:
+                //hammer jumpslash can pass, but only on flat land where you can kill with hammer swing
                 return CanUse(RG_NUTS) || CanUse(RG_BOOMERANG);
             default:
                 SPDLOG_ERROR("CanPassEnemy reached `default`.");
@@ -477,13 +511,16 @@ namespace Rando {
             case RE_LIZALFOS:
             case RE_DODONGO: //RANDOTODO do dodongos block the way in tight corridors?
             case RE_BIG_SKULLTULA:
+            case RE_DEAD_HAND:
+            case RE_DEKU_BABA:
+            case RE_WITHERED_DEKU_BABA:
                 return true;
             case RE_MAD_SCRUB:
             case RE_KEESE:
             case RE_FIRE_KEESE:
                 return CanUse(RG_NUTS);
             case RE_BLUE_BUBBLE:
-                //RANDOTODO Trick to use shield hylian shield to stun these guys
+                //RANDOTODO Trick to use shield hylian shield as child to stun these guys
                 return CanUse(RG_NUTS) || HookshotOrBoomerang() || CanStandingShield();
             default:
                 SPDLOG_ERROR("CanPassEnemy reached `default`.");
@@ -517,7 +554,11 @@ namespace Rando {
     }
 
     bool Logic::CanGetDekuBabaSticks() {
-        return DekuBabaSticks || (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD) || CanUse(RG_BOOMERANG));
+        return (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD) || CanUse(RG_BOOMERANG));
+    }
+
+    bool Logic::CanGetDekuBabaNuts() {
+        return CanJumpslash() || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_FAIRY_BOW) || HasExplosives() || CanUse(RG_DINS_FIRE);
     }
 
     bool Logic::CanHitEyeTargets() {
@@ -558,13 +599,18 @@ namespace Rando {
         return BottleCount() >= 1;
     }
 
-    bool Logic::CanJumpslash() {
+    bool Logic::CanJumpslashExceptHammer() {
         // Not including hammer as hammer jump attacks can be weird;
         return CanUse(RG_STICKS) || CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD);
     }
 
+
+    bool Logic::CanJumpslash() {
+        return CanJumpslashExceptHammer() || CanUse(RG_MEGATON_HAMMER);
+    }
+
     bool Logic::CanDamage() {
-        return CanUse(RG_FAIRY_SLINGSHOT) || CanJumpslash() || BlastOrSmash() || CanUse(RG_DINS_FIRE) || CanUse(RG_FAIRY_BOW);
+        return CanUse(RG_FAIRY_SLINGSHOT) || CanJumpslashExceptHammer() || BlastOrSmash() || CanUse(RG_DINS_FIRE) || CanUse(RG_FAIRY_BOW);
     }
 
     bool Logic::CanAttack() {
@@ -629,9 +675,26 @@ namespace Rando {
         return CallGossipFairyExceptSuns() || CanUse(RG_SUNS_SONG);
     }
 
+    //the number returned by this is in half heart hits taken.
+    //RANDOTODO work in OoT side health instead for greater applicability (16 per heart)
     uint8_t Logic::EffectiveHealth(){
+        /* Multiplier will be:
+        0 for half daamge
+        1 for normal damage
+        2 for double damage
+        3 for quad damage
+        4 for 8* damage
+        5 for 16* damage
+        10 for OHKO.
+        This is the number of shifts to apply, not a real multiplier
+        */
         uint8_t Multiplier = (ctx->GetOption(RSK_DAMAGE_MULTIPLIER).Value<uint8_t>() < 6) ? ctx->GetOption(RSK_DAMAGE_MULTIPLIER).Value<uint8_t>() : 10;
-        return ((Hearts() << (2 + HasItem(RG_DOUBLE_DEFENSE))) >> Multiplier) + ((Hearts() << (2 + HasItem(RG_DOUBLE_DEFENSE))) % (1 << Multiplier) > 0);
+        //(Hearts() << (2 + HasItem(RG_DOUBLE_DEFENSE))) is quarter hearts after DD
+        //>> Multiplier halves on normal and does nothing on half, meaning we're working with half hearts on normal damage 
+        return ((Hearts() << (2 + HasItem(RG_DOUBLE_DEFENSE))) >> Multiplier) + 
+                //As 1 is a quarter heart, (1 << Multiplier) is effectivly half-hearts of unmodified damage
+                //Adds an extra hit if the damage is not exact lethal
+                ((Hearts() << (2 + HasItem(RG_DOUBLE_DEFENSE))) % (1 << Multiplier) > 0);
     }
 
     uint8_t Logic::Hearts(){
@@ -1772,6 +1835,14 @@ namespace Rando {
         FireLoopSwitch            = false;
         LinksCow                  = false;
         DeliverLetter             = false;
+        ClearMQDCUpperLobbyRocks  = false;
+        LoweredWaterInsideBotw    = false;
+        OpenedWestRoomMQBotw      = false;
+        OpenedMiddleHoleMQBotw    = false;
+        BrokeDeku1FWeb            = false;
+        ClearedMQDekuSERoom       = false;
+        MQDekuWaterRoomTorches    = false;
+        PushedDekuBasementBlock   = false;
 
         StopPerformanceTimer(PT_LOGIC_RESET);
     }

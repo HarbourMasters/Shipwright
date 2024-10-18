@@ -130,10 +130,19 @@ include(CMake/GlobalSettingsInclude.cmake OPTIONAL)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 ################################################################################
-# Set GBI version
+# Set LUS vars
 ################################################################################
 
+# Enable the Gfx debugger in LUS to use libgfxd from ZAPDTR
+set(GFX_DEBUG_DISASSEMBLER ON)
+
+# Tell LUS we're using F3DEX_GBI_2 (in a way that doesn't break libgfxd)
 set(GBI_UCODE F3DEX_GBI_2)
+
+################################################################################
+# Set CONTROLLERBUTTONS_T
+################################################################################
+add_compile_definitions(CONTROLLERBUTTONS_T=uint32_t)
 
 ################################################################################
 # Sub-projects

@@ -2067,8 +2067,8 @@ void KaleidoScope_DrawInfoPanel(PlayState* play) {
             }
         } else {
             bool pauseAnyCursor =
-                (CVarGetInteger(CVAR_SETTING("PauseAnyCursor"), 0) == PAUSE_ANY_CURSOR_RANDO_ONLY && IS_RANDO) ||
-                (CVarGetInteger(CVAR_SETTING("PauseAnyCursor"), 0) == PAUSE_ANY_CURSOR_ALWAYS_ON);
+                (CVarGetInteger(CVAR_ENHANCEMENT("PauseAnyCursor"), 0) == PAUSE_ANY_CURSOR_RANDO_ONLY && IS_RANDO) ||
+                (CVarGetInteger(CVAR_ENHANCEMENT("PauseAnyCursor"), 0) == PAUSE_ANY_CURSOR_ALWAYS_ON);
             if (!pauseCtx->pageIndex && (!pauseAnyCursor || (gSaveContext.inventory.items[pauseCtx->cursorPoint[PAUSE_ITEM]] != ITEM_NONE))) { // pageIndex == PAUSE_ITEM
                 pauseCtx->infoPanelVtx[16].v.ob[0] = pauseCtx->infoPanelVtx[18].v.ob[0] =
                     WREG(49 + gSaveContext.language);
@@ -2205,8 +2205,8 @@ void KaleidoScope_DrawInfoPanel(PlayState* play) {
 void KaleidoScope_UpdateNamePanel(PlayState* play) {
     PauseContext* pauseCtx = &play->pauseCtx;
     u16 sp2A;
-    bool pauseAnyCursor = (CVarGetInteger(CVAR_SETTING("PauseAnyCursor"), 0) == PAUSE_ANY_CURSOR_RANDO_ONLY && IS_RANDO) ||
-                          (CVarGetInteger(CVAR_SETTING("PauseAnyCursor"), 0) == PAUSE_ANY_CURSOR_ALWAYS_ON);
+    bool pauseAnyCursor = (CVarGetInteger(CVAR_ENHANCEMENT("PauseAnyCursor"), 0) == PAUSE_ANY_CURSOR_RANDO_ONLY && IS_RANDO) ||
+                          (CVarGetInteger(CVAR_ENHANCEMENT("PauseAnyCursor"), 0) == PAUSE_ANY_CURSOR_ALWAYS_ON);
 
     if ((pauseCtx->namedItem != pauseCtx->cursorItem[pauseCtx->pageIndex]) ||
         ((pauseCtx->pageIndex == PAUSE_MAP) && (pauseCtx->cursorSpecialPos != 0))) {
@@ -2874,7 +2874,7 @@ void KaleidoScope_InitVertices(PlayState* play, GraphicsContext* gfxCtx) {
 
     for (phi_t3 = 1; phi_t3 < ARRAY_COUNT(gSaveContext.equips.buttonItems); phi_t3++, phi_t2 += 4) {
         if (gSaveContext.equips.cButtonSlots[phi_t3 - 1] != ITEM_NONE &&
-            ((phi_t3 < 4) || CVarGetInteger(CVAR_SETTING("DpadEquips"), 0))) {
+            ((phi_t3 < 4) || CVarGetInteger(CVAR_ENHANCEMENT("DpadEquips"), 0))) {
             phi_t4 = gSaveContext.equips.cButtonSlots[phi_t3 - 1] * 4;
 
             pauseCtx->itemVtx[phi_t2 + 0].v.ob[0] = pauseCtx->itemVtx[phi_t2 + 2].v.ob[0] =
@@ -4598,7 +4598,7 @@ void KaleidoScope_Update(PlayState* play)
             osSyncPrintf("i=%d  LAST_TIME_TYPE=%d\n", i, gSaveContext.unk_13EE);
             gSaveContext.unk_13EA = 0;
             Interface_ChangeAlpha(gSaveContext.unk_13EE);
-            player->targetActor = NULL;
+            player->talkActor = NULL;
             Player_SetEquipmentData(play, player);
             osSyncPrintf(VT_RST);
             break;

@@ -101,6 +101,12 @@ void RateLimitedSuccessChime() {
     }
 }
 
+bool ForcedDialogIsDisabled(ForcedDialogMode type) {
+    return (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipForcedDialog"),
+                           IS_RANDO ? FORCED_DIALOG_SKIP_ALL : FORCED_DIALOG_SKIP_NONE) &
+            type) != 0;
+}
+
 void TimeSaverOnGameFrameUpdateHandler() {
     if (successChimeCooldown > 0) {
         successChimeCooldown--;
@@ -311,14 +317,14 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
             break;
         case VB_WONDER_TALK: {
             //We want to show the frog hint if it is on, regardless of cutscene settings
-            if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.NoForcedDialog"), IS_RANDO) && 
+            if (ForcedDialogIsDisabled(FORCED_DIALOG_SKIP_NPC) &&
                 !(gPlayState->sceneNum == SCENE_ZORAS_RIVER && IS_RANDO && RAND_GET_OPTION(RSK_FROGS_HINT))) {
                 *should = false;
             }
             break;
         }
         case VB_NAVI_TALK: {
-            if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.NoForcedDialog"), IS_RANDO)) {
+            if (ForcedDialogIsDisabled(FORCED_DIALOG_SKIP_NAVI)) {
                 ElfMsg* naviTalk = va_arg(args, ElfMsg*);
                 if (((naviTalk->actor.params >> 8) & 0x3F) != 0x3F) {
                     Flags_SetSwitch(gPlayState, (naviTalk->actor.params >> 8) & 0x3F);
@@ -985,7 +991,7 @@ void TimeSaverOnPlayerUpdateHandler() {
     if (vanillaQueuedItemEntry.itemId == ITEM_NONE) return;
 
     Player* player = GET_PLAYER(gPlayState);
-    if (player == NULL || Player_InBlockingCsMode(gPlayState, player) || player->stateFlags1 & PLAYER_STATE1_IN_ITEM_CS || player->stateFlags1 & PLAYER_STATE1_GETTING_ITEM || player->stateFlags1 & PLAYER_STATE1_ITEM_OVER_HEAD) {
+    if (player == NULL || Player_InBlockingCsMode(gPlayState, player) || player->stateFlags1 & PLAYER_STATE1_IN_ITEM_CS || player->stateFlags1 & PLAYER_STATE1_GETTING_ITEM || player->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR) {
         return;
     }
 
@@ -994,7 +1000,7 @@ void TimeSaverOnPlayerUpdateHandler() {
     if (player->stateFlags1 & PLAYER_STATE1_IN_WATER) {
         // Allow the player to receive the item while swimming
         player->stateFlags2 |= PLAYER_STATE2_UNDERWATER;
-        Player_ActionChange_2(player, gPlayState);
+        Player_ActionHandler_2(player, gPlayState);
     }
 }
 

@@ -59,7 +59,7 @@ void func_80991298(DemoShd* this, PlayState* play) {
     }
 
     if (play->csCtx.state != CS_STATE_IDLE) {
-        CsCmdActorAction* npcAction0 = play->csCtx.npcActions[0];
+        CsCmdActorCue* npcAction0 = play->csCtx.npcActions[0];
 
         if (npcAction0 != NULL) {
             if (npcAction0->action == 2) {
@@ -74,7 +74,7 @@ void func_80991298(DemoShd* this, PlayState* play) {
     }
 
     if (play->csCtx.state != CS_STATE_IDLE) {
-        CsCmdActorAction* npcAction1 = play->csCtx.npcActions[1];
+        CsCmdActorCue* npcAction1 = play->csCtx.npcActions[1];
 
         if (npcAction1 != NULL) {
             if (npcAction1->action == 2) {

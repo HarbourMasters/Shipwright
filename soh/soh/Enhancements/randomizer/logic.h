@@ -133,6 +133,13 @@ class Logic {
     bool LinksCow = false;
     bool DeliverLetter = false;
     bool ClearMQDCUpperLobbyRocks = false;
+    bool LoweredWaterInsideBotw = false;
+    bool OpenedWestRoomMQBotw = false;
+    bool OpenedMiddleHoleMQBotw = false;
+    bool BrokeDeku1FWeb = false;
+    bool ClearedMQDekuSERoom = false;
+    bool MQDekuWaterRoomTorches = false;
+    bool PushedDekuBasementBlock = false;
 
     /* --- END OF HELPERS AND LOCATION ACCESS --- */
 
@@ -147,17 +154,19 @@ class Logic {
     bool CanDoGlitch(GlitchType glitch);
     bool CanEquipSwap(RandomizerGet itemName);
     bool CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance = ED_CLOSE);
-    bool CanPassEnemy(RandomizerEnemy enemy);
+    bool CanPassEnemy(RandomizerEnemy enemy, EnemyDistance distance = ED_CLOSE);
     bool CanAvoidEnemy(RandomizerEnemy enemy);
     bool CanGetEnemyDrop(RandomizerEnemy enemy, EnemyDistance distance = ED_CLOSE, bool aboveLink = false);
     bool CanBreakMudWalls();
     bool CanGetDekuBabaSticks();
+    bool CanGetDekuBabaNuts();
     bool CanHitEyeTargets();
     bool CanDetonateBombFlowers();
     bool CanDetonateUprightBombFlower();
     uint8_t BottleCount();
     uint8_t OcarinaButtons();
     bool HasBottle();
+    bool CanJumpslashExceptHammer();
     bool CanJumpslash();
     bool CanDamage();
     bool CanAttack();

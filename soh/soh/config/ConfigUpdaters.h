@@ -12,4 +12,10 @@ namespace SOH {
         ConfigVersion2Updater();
         void Update(Ship::Config* conf);
     };
+
+    class ConfigVersion3Updater : public Ship::ConfigVersionUpdater {
+      public:
+        ConfigVersion3Updater();
+        void Update(Ship::Config* conf);
+    };
 }

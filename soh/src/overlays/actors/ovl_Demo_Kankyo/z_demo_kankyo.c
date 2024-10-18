@@ -376,7 +376,7 @@ void DemoKankyo_DoNothing2(DemoKankyo* this, PlayState* play) {
 void DemoKankyo_SetRockPos(DemoKankyo* this, PlayState* play, s32 params) {
     Vec3f startPos;
     Vec3f endPos;
-    CsCmdActorAction* csAction = play->csCtx.npcActions[params];
+    CsCmdActorCue* csAction = play->csCtx.npcActions[params];
     f32 temp_f0;
 
     startPos.x = csAction->startPos.x;

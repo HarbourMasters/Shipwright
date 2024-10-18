@@ -123,7 +123,7 @@ void RegionTable_Init_HyruleField() {
                   LOCATION(RC_LH_SUN,                    logic->IsAdult && logic->WaterTempleClear && logic->CanUse(RG_FAIRY_BOW)),
                   LOCATION(RC_LH_FREESTANDING_POH,       logic->IsAdult && (logic->CanUse(RG_SCARECROW) || CanPlantBean(RR_LAKE_HYLIA))),
                   LOCATION(RC_LH_GS_BEAN_PATCH,          logic->CanSpawnSoilSkull() && logic->CanAttack()),
-                  LOCATION(RC_LH_GS_LAB_WALL,            logic->IsChild && (logic->HookshotOrBoomerang() || (ctx->GetTrickOption(RT_LH_LAB_WALL_GS) && logic->CanJumpslash())) && logic->AtNight && logic->CanGetNightTimeGS()),
+                  LOCATION(RC_LH_GS_LAB_WALL,            logic->IsChild && (logic->HookshotOrBoomerang() || (ctx->GetTrickOption(RT_LH_LAB_WALL_GS) && logic->CanJumpslashExceptHammer())) && logic->AtNight && logic->CanGetNightTimeGS()),
                   LOCATION(RC_LH_GS_SMALL_ISLAND,        logic->IsChild && logic->CanAttack() && logic->AtNight && logic->CanGetNightTimeGS()),
                   LOCATION(RC_LH_GS_TREE,                logic->IsAdult && logic->CanUse(RG_LONGSHOT) && logic->AtNight && logic->CanGetNightTimeGS()),
                   LOCATION(RC_LH_LAB_GOSSIP_STONE,       true),

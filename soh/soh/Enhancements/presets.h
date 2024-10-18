@@ -65,10 +65,10 @@ const std::vector<const char*> enhancementsCvars = {
     CVAR_SETTING("DpadInText"),
     CVAR_SETTING("OcarinaControl.Dpad"),
     CVAR_SETTING("OcarinaControl.RStick"),
-    CVAR_SETTING("DpadEquips"),
-    CVAR_SETTING("PauseAnyCursor"),
+    CVAR_ENHANCEMENT("DpadEquips"),
+    CVAR_ENHANCEMENT("PauseAnyCursor"),
     CVAR_ENHANCEMENT("DpadNoDropOcarinaInput"),
-    CVAR_SETTING("NaviOnL"),
+    CVAR_ENHANCEMENT("NaviOnL"),
     CVAR_SETTING("FreeLook.InvertXAxis"),
     CVAR_SETTING("FreeLook.InvertYAxis"),
     CVAR_SETTING("Controls.RightStickAim"),
@@ -142,7 +142,9 @@ const std::vector<const char*> enhancementsCvars = {
     CVAR_ENHANCEMENT("CowOfTime"),
     CVAR_ENHANCEMENT("GuardVision"),
     CVAR_ENHANCEMENT("TimeFlowFileSelect"),
-    CVAR_ENHANCEMENT("InjectItemCounts"),
+    CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"),
+    CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"),
+    CVAR_ENHANCEMENT("InjectItemCounts.HeartContainer"),
     CVAR_ENHANCEMENT("DayGravePull"),
     CVAR_ENHANCEMENT("DampeAllNight"),
     CVAR_ENHANCEMENT("QuitFishingAtDoor"),
@@ -272,11 +274,11 @@ const std::vector<const char*> enhancementsCvars = {
     CVAR_ENHANCEMENT("DeleteFileOnDeath"),
     CVAR_ENHANCEMENT("EnemySizeScalesHealth"),
     CVAR_ENHANCEMENT("BetterAmmoRendering"),
-    CVAR_ENHANCEMENT("EquimentAlwaysVisible"),
+    CVAR_ENHANCEMENT("EquipmentAlwaysVisible"),
     CVAR_ENHANCEMENT("FixDaruniaDanceSpeed"),
     CVAR_ENHANCEMENT("OpenAllHours"),
     CVAR_ENHANCEMENT("ResetNaviTimer"),
-    CVAR_ENHANCEMENT("ScaleAdultEquimentAsChild"),
+    CVAR_ENHANCEMENT("ScaleAdultEquipmentAsChild"),
     CVAR_ENHANCEMENT("LeeverSpawnRate"),
     CVAR_ENHANCEMENT("SwordToggle"),
     CVAR_ENHANCEMENT("FixFloorSwitches"), 
@@ -300,6 +302,8 @@ const std::vector<const char*> enhancementsCvars = {
     CVAR_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"),
     CVAR_ENHANCEMENT("TimeSavers.SkipChildStealth"),
     CVAR_ENHANCEMENT("TimeSavers.SkipTowerEscape"),
+    CVAR_ENHANCEMENT("TimeSavers.SkipForcedDialog"),
+    CVAR_ENHANCEMENT("SlowTextSpeed"),
 };
 
 const std::vector<const char*> cheatCvars = {
@@ -551,7 +555,7 @@ const std::vector<PresetEntry> vanillaPlusPresetEntries = {
     // Play Ocarina with Right Stick
     PRESET_ENTRY_S32(CVAR_SETTING("OcarinaControl.RStick"), 1),
     // D-pad as Equip Items
-    PRESET_ENTRY_S32(CVAR_SETTING("DpadEquips"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DpadEquips"), 1),
     // Prevent Dropped Ocarina Inputs
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DpadNoDropOcarinaInput"), 1),
     // Right Stick Aiming
@@ -559,10 +563,12 @@ const std::vector<PresetEntry> vanillaPlusPresetEntries = {
 
     // Text Speed (1 to 5)
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("TextSpeed"), 5),
+    // Slow Text Speed (1 to 5)
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("SlowTextSpeed"), 5),
     // Skip Text
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("SkipText"), 1),
     // King Zora Speed (1 to 5)
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MweepSpeed"), 2),
+    PRESET_ENTRY_FLOAT(CVAR_ENHANCEMENT("MweepSpeed"), 2.0f),
     // Faster Block Push (+0 to +5)
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FasterBlockPush"), 5),
     // Better Owl
@@ -573,7 +579,9 @@ const std::vector<PresetEntry> vanillaPlusPresetEntries = {
     // Enable passage of time on file select
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("TimeFlowFileSelect"), 1),
     // Inject Item Counts in messages
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.HeartContainer"), 1),
 
     // Pause link animation (0 to 16)
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("PauseLiveLink"), 1),
@@ -622,7 +630,7 @@ const std::vector<PresetEntry> enhancedPresetEntries = {
     // Play Ocarina with Right Stick
     PRESET_ENTRY_S32(CVAR_SETTING("OcarinaControl.RStick"), 1),
     // D-pad as Equip Items
-    PRESET_ENTRY_S32(CVAR_SETTING("DpadEquips"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DpadEquips"), 1),
     // Prevent Dropped Ocarina Inputs
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DpadNoDropOcarinaInput"), 1),
     // Right Stick Aiming
@@ -630,10 +638,12 @@ const std::vector<PresetEntry> enhancedPresetEntries = {
 
     // Text Speed (1 to 5)
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("TextSpeed"), 5),
+    // Slow Text Speed (1 to 5)
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("SlowTextSpeed"), 5),
     // Skip Text
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("SkipText"), 1),
     // King Zora Speed (1 to 5)
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MweepSpeed"), 5),
+    PRESET_ENTRY_FLOAT(CVAR_ENHANCEMENT("MweepSpeed"), 5.0f),
     // Faster Block Push (+0 to +5)
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FasterBlockPush"), 5),
     // Better Owl
@@ -644,7 +654,9 @@ const std::vector<PresetEntry> enhancedPresetEntries = {
     // Enable passage of time on file select
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("TimeFlowFileSelect"), 1),
     // Inject Item Counts in messages
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.HeartContainer"), 1),
 
     // Pause link animation (0 to 16)
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("PauseLiveLink"), 1),
@@ -754,7 +766,7 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     // Play Ocarina with Right Stick
     PRESET_ENTRY_S32(CVAR_SETTING("OcarinaControl.RStick"), 1),
     // D-pad as Equip Items
-    PRESET_ENTRY_S32(CVAR_SETTING("DpadEquips"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DpadEquips"), 1),
     // Prevent Dropped Ocarina Inputs
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DpadNoDropOcarinaInput"), 1),
     // Right Stick Aiming
@@ -762,10 +774,12 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
 
     // Text Speed (1 to 5)
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("TextSpeed"), 5),
+    // Slow Text Speed (1 to 5)
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("SlowTextSpeed"), 5),
     // Skip Text
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("SkipText"), 1),
     // King Zora Speed (1 to 5)
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MweepSpeed"), 5),
+    PRESET_ENTRY_FLOAT(CVAR_ENHANCEMENT("MweepSpeed"), 5.0f),
     // Faster Block Push (+0 to +5)
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FasterBlockPush"), 5),
     // Better Owl
@@ -776,7 +790,9 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     // Enable passage of time on file select
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("TimeFlowFileSelect"), 1),
     // Inject Item Counts in messages
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.HeartContainer"), 1),
 
     // Dynamic Wallet Icon
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DynamicWalletIcon"), 1),
@@ -914,7 +930,8 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
 const std::vector<PresetEntry> spockRacePresetEntries = {
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("LogicRules"), 0),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("TextSpeed"), 5),
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MweepSpeed"), 5),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("SlowTextSpeed"), 5),
+    PRESET_ENTRY_FLOAT(CVAR_ENHANCEMENT("MweepSpeed"), 5.0f),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("ClimbSpeed"), 4),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FasterBlockPush"), 5),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FasterHeavyBlockLift"), 1),
@@ -925,7 +942,7 @@ const std::vector<PresetEntry> spockRacePresetEntries = {
     PRESET_ENTRY_S32(CVAR_SETTING("DpadInText"), 1),
     PRESET_ENTRY_S32(CVAR_SETTING("OcarinaControl.Dpad"), 1),
     PRESET_ENTRY_S32(CVAR_SETTING("OcarinaControl.RStick"), 1),
-    PRESET_ENTRY_S32(CVAR_SETTING("DpadEquips"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("DpadEquips"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FastOcarinaPlayback"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InstantScarecrow"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MarketSneak"), 1),
@@ -941,11 +958,13 @@ const std::vector<PresetEntry> spockRacePresetEntries = {
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("CreditsFix"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("SkipText"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("SkulltulaFreeze"), 1),
-    PRESET_ENTRY_S32(CVAR_SETTING("PauseAnyCursor"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("PauseAnyCursor"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FastFarores"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("NoInputForCredits"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MaskSelect"), 1),
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.HeartContainer"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("CustomizeFishing"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("FishNeverEscape"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InstantFishing"), 1),
@@ -1028,16 +1047,18 @@ const std::vector<PresetEntry> spockRaceNoLogicPresetEntries = {
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("ForgeTime"), 0),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("GoronPot"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("GuaranteeFishingBite"), 1),
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InjectItemCounts.HeartContainer"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InstantFishing"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("InstantPutaway"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_FAST),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MarketSneak"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MaskSelect"), 1),
-    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("MweepSpeed"), 5),
+    PRESET_ENTRY_FLOAT(CVAR_ENHANCEMENT("MweepSpeed"), 5.0f),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("NoForcedNavi"), 1),
     PRESET_ENTRY_S32(CVAR_ENHANCEMENT("NoInputForCredits"), 1),
-    PRESET_ENTRY_S32(CVAR_SETTING("PauseAnyCursor"), 1),
+    PRESET_ENTRY_S32(CVAR_ENHANCEMENT("PauseAnyCursor"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("10GSHint"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("20GSHint"), 1),
     PRESET_ENTRY_S32(CVAR_RANDOMIZER_SETTING("30GSHint"), 1),

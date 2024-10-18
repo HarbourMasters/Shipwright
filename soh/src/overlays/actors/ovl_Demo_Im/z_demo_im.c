@@ -223,9 +223,9 @@ s32 DemoIm_IsCsStateIdle(PlayState* play) {
     }
 }
 
-CsCmdActorAction* DemoIm_GetNpcAction(PlayState* play, s32 actionIdx) {
+CsCmdActorCue* DemoIm_GetNpcAction(PlayState* play, s32 actionIdx) {
     s32 pad[2];
-    CsCmdActorAction* ret = NULL;
+    CsCmdActorCue* ret = NULL;
 
     if (!DemoIm_IsCsStateIdle(play)) {
         ret = play->csCtx.npcActions[actionIdx];
@@ -234,7 +234,7 @@ CsCmdActorAction* DemoIm_GetNpcAction(PlayState* play, s32 actionIdx) {
 }
 
 s32 func_809850E8(DemoIm* this, PlayState* play, u16 action, s32 actionIdx) {
-    CsCmdActorAction* npcAction = DemoIm_GetNpcAction(play, actionIdx);
+    CsCmdActorCue* npcAction = DemoIm_GetNpcAction(play, actionIdx);
 
     if (npcAction != NULL) {
         if (npcAction->action == action) {
@@ -245,7 +245,7 @@ s32 func_809850E8(DemoIm* this, PlayState* play, u16 action, s32 actionIdx) {
 }
 
 s32 func_80985134(DemoIm* this, PlayState* play, u16 action, s32 actionIdx) {
-    CsCmdActorAction* npcAction = DemoIm_GetNpcAction(play, actionIdx);
+    CsCmdActorCue* npcAction = DemoIm_GetNpcAction(play, actionIdx);
 
     if (npcAction != NULL) {
         if (npcAction->action != action) {
@@ -256,7 +256,7 @@ s32 func_80985134(DemoIm* this, PlayState* play, u16 action, s32 actionIdx) {
 }
 
 void func_80985180(DemoIm* this, PlayState* play, s32 actionIdx) {
-    CsCmdActorAction* npcAction = DemoIm_GetNpcAction(play, actionIdx);
+    CsCmdActorCue* npcAction = DemoIm_GetNpcAction(play, actionIdx);
 
     if (npcAction != NULL) {
         this->actor.world.pos.x = npcAction->startPos.x;
@@ -267,7 +267,7 @@ void func_80985180(DemoIm* this, PlayState* play, s32 actionIdx) {
 }
 
 void func_80985200(DemoIm* this, PlayState* play, s32 actionIdx) {
-    CsCmdActorAction* npcAction = DemoIm_GetNpcAction(play, actionIdx);
+    CsCmdActorCue* npcAction = DemoIm_GetNpcAction(play, actionIdx);
 
     if (npcAction != NULL) {
         this->actor.world.pos.x = npcAction->startPos.x;
@@ -614,7 +614,7 @@ void func_80986148(DemoIm* this) {
 }
 
 void func_809861C4(DemoIm* this, PlayState* play) {
-    CsCmdActorAction* npcAction = DemoIm_GetNpcAction(play, 5);
+    CsCmdActorCue* npcAction = DemoIm_GetNpcAction(play, 5);
 
     if (npcAction != NULL) {
         u32 action = npcAction->action;
@@ -647,7 +647,7 @@ void func_8098629C(DemoIm* this, PlayState* play) {
 }
 
 void func_809862E0(DemoIm* this, PlayState* play) {
-    CsCmdActorAction* npcAction = DemoIm_GetNpcAction(play, 5);
+    CsCmdActorCue* npcAction = DemoIm_GetNpcAction(play, 5);
 
     if (npcAction != NULL) {
         u32 action = npcAction->action;
@@ -777,7 +777,7 @@ void func_80986794(DemoIm* this) {
 }
 
 void func_8098680C(DemoIm* this, PlayState* play) {
-    CsCmdActorAction* npcAction = DemoIm_GetNpcAction(play, 5);
+    CsCmdActorCue* npcAction = DemoIm_GetNpcAction(play, 5);
 
     if (npcAction != NULL) {
         u32 action = npcAction->action;
@@ -1055,7 +1055,7 @@ void func_809871B4(DemoIm* this, s32 arg1) {
 }
 
 void func_809871E8(DemoIm* this, PlayState* play) {
-    CsCmdActorAction* npcAction = DemoIm_GetNpcAction(play, 5);
+    CsCmdActorCue* npcAction = DemoIm_GetNpcAction(play, 5);
 
     if (npcAction != NULL) {
         u32 action = npcAction->action;

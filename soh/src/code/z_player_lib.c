@@ -34,73 +34,73 @@ s16 sBootData[PLAYER_BOOTS_MAX][17] = {
 
 // Used to map action params to model groups
 u8 sActionModelGroups[] = {
-    PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_NONE
-    PLAYER_MODELGROUP_15,            // PLAYER_IA_LAST_USED
-    PLAYER_MODELGROUP_10,            // PLAYER_IA_FISHING_POLE
-    PLAYER_MODELGROUP_SWORD,         // PLAYER_IA_SWORD_MASTER
-    PLAYER_MODELGROUP_SWORD,         // PLAYER_IA_SWORD_KOKIRI
-    PLAYER_MODELGROUP_BGS,           // PLAYER_IA_SWORD_BIGGORON
-    PLAYER_MODELGROUP_10,            // PLAYER_IA_DEKU_STICK
-    PLAYER_MODELGROUP_HAMMER,        // PLAYER_IA_HAMMER
-    PLAYER_MODELGROUP_BOW_SLINGSHOT, // PLAYER_IA_BOW
-    PLAYER_MODELGROUP_BOW_SLINGSHOT, // PLAYER_IA_BOW_FIRE
-    PLAYER_MODELGROUP_BOW_SLINGSHOT, // PLAYER_IA_BOW_ICE
-    PLAYER_MODELGROUP_BOW_SLINGSHOT, // PLAYER_IA_BOW_LIGHT
-    PLAYER_MODELGROUP_BOW_SLINGSHOT, // PLAYER_IA_BOW_0C
-    PLAYER_MODELGROUP_BOW_SLINGSHOT, // PLAYER_IA_BOW_0D
-    PLAYER_MODELGROUP_BOW_SLINGSHOT, // PLAYER_IA_BOW_0E
-    PLAYER_MODELGROUP_BOW_SLINGSHOT, // PLAYER_IA_SLINGSHOT
-    PLAYER_MODELGROUP_HOOKSHOT,      // PLAYER_IA_HOOKSHOT
-    PLAYER_MODELGROUP_HOOKSHOT,      // PLAYER_IA_LONGSHOT
-    PLAYER_MODELGROUP_EXPLOSIVES,    // PLAYER_IA_BOMB
-    PLAYER_MODELGROUP_EXPLOSIVES,    // PLAYER_IA_BOMBCHU
-    PLAYER_MODELGROUP_BOOMERANG,     // PLAYER_IA_BOOMERANG
-    PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_MAGIC_SPELL_15
-    PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_MAGIC_SPELL_16
-    PLAYER_MODELGROUP_BOW_SLINGSHOT, // PLAYER_IA_MAGIC_SPELL_17
-    PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_FARORES_WIND
-    PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_NAYRUS_LOVE
-    PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_DINS_FIRE
-    PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_DEKU_NUT
-    PLAYER_MODELGROUP_OCARINA,       // PLAYER_IA_OCARINA_FAIRY
-    PLAYER_MODELGROUP_OOT,           // PLAYER_IA_OCARINA_OF_TIME
-    PLAYER_MODELGROUP_BOTTLE,        // PLAYER_IA_BOTTLE
-    PLAYER_MODELGROUP_BOTTLE,        // PLAYER_IA_BOTTLE_FISH
-    PLAYER_MODELGROUP_BOTTLE,        // PLAYER_IA_BOTTLE_FIRE
-    PLAYER_MODELGROUP_BOTTLE,        // PLAYER_IA_BOTTLE_BUG
-    PLAYER_MODELGROUP_BOTTLE,        // PLAYER_IA_BOTTLE_POE
-    PLAYER_MODELGROUP_BOTTLE,        // PLAYER_IA_BOTTLE_BIG_POE
-    PLAYER_MODELGROUP_BOTTLE,        // PLAYER_IA_BOTTLE_RUTOS_LETTER
-    PLAYER_MODELGROUP_BOTTLE,        // PLAYER_IA_BOTTLE_POTION_RED
-    PLAYER_MODELGROUP_BOTTLE,        // PLAYER_IA_BOTTLE_POTION_BLUE
-    PLAYER_MODELGROUP_BOTTLE,        // PLAYER_IA_BOTTLE_POTION_GREEN
-    PLAYER_MODELGROUP_BOTTLE,        // PLAYER_IA_BOTTLE_MILK_FULL
-    PLAYER_MODELGROUP_BOTTLE,        // PLAYER_IA_BOTTLE_MILK_HALF
-    PLAYER_MODELGROUP_BOTTLE,        // PLAYER_IA_BOTTLE_FAIRY
-    PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_ZELDAS_LETTER
-    PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_WEIRD_EGG
-    PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_CHICKEN
-    PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_MAGIC_BEAN
-    PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_POCKET_EGG
-    PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_POCKET_CUCCO
-    PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_COJIRO
-    PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_ODD_MUSHROOM
-    PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_ODD_POTION
-    PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_POACHERS_SAW
-    PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_BROKEN_GORONS_SWORD
-    PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_PRESCRIPTION
-    PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_FROG
-    PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_EYEDROPS
-    PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_CLAIM_CHECK
-    PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_MASK_KEATON
-    PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_MASK_SKULL
-    PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_MASK_SPOOKY
-    PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_MASK_BUNNY_HOOD
-    PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_MASK_GORON
-    PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_MASK_ZORA
-    PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_MASK_GERUDO
-    PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_MASK_TRUTH
-    PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_LENS_OF_TRUTH
+    PLAYER_MODELGROUP_DEFAULT,          // PLAYER_IA_NONE
+    PLAYER_MODELGROUP_SWORD,            // PLAYER_IA_SWORD_CS
+    PLAYER_MODELGROUP_10,               // PLAYER_IA_FISHING_POLE
+    PLAYER_MODELGROUP_SWORD_AND_SHIELD, // PLAYER_IA_SWORD_MASTER
+    PLAYER_MODELGROUP_SWORD_AND_SHIELD, // PLAYER_IA_SWORD_KOKIRI
+    PLAYER_MODELGROUP_BGS,              // PLAYER_IA_SWORD_BIGGORON
+    PLAYER_MODELGROUP_10,               // PLAYER_IA_DEKU_STICK
+    PLAYER_MODELGROUP_HAMMER,           // PLAYER_IA_HAMMER
+    PLAYER_MODELGROUP_BOW_SLINGSHOT,    // PLAYER_IA_BOW
+    PLAYER_MODELGROUP_BOW_SLINGSHOT,    // PLAYER_IA_BOW_FIRE
+    PLAYER_MODELGROUP_BOW_SLINGSHOT,    // PLAYER_IA_BOW_ICE
+    PLAYER_MODELGROUP_BOW_SLINGSHOT,    // PLAYER_IA_BOW_LIGHT
+    PLAYER_MODELGROUP_BOW_SLINGSHOT,    // PLAYER_IA_BOW_0C
+    PLAYER_MODELGROUP_BOW_SLINGSHOT,    // PLAYER_IA_BOW_0D
+    PLAYER_MODELGROUP_BOW_SLINGSHOT,    // PLAYER_IA_BOW_0E
+    PLAYER_MODELGROUP_BOW_SLINGSHOT,    // PLAYER_IA_SLINGSHOT
+    PLAYER_MODELGROUP_HOOKSHOT,         // PLAYER_IA_HOOKSHOT
+    PLAYER_MODELGROUP_HOOKSHOT,         // PLAYER_IA_LONGSHOT
+    PLAYER_MODELGROUP_EXPLOSIVES,       // PLAYER_IA_BOMB
+    PLAYER_MODELGROUP_EXPLOSIVES,       // PLAYER_IA_BOMBCHU
+    PLAYER_MODELGROUP_BOOMERANG,        // PLAYER_IA_BOOMERANG
+    PLAYER_MODELGROUP_DEFAULT,          // PLAYER_IA_MAGIC_SPELL_15
+    PLAYER_MODELGROUP_DEFAULT,          // PLAYER_IA_MAGIC_SPELL_16
+    PLAYER_MODELGROUP_BOW_SLINGSHOT,    // PLAYER_IA_MAGIC_SPELL_17
+    PLAYER_MODELGROUP_DEFAULT,          // PLAYER_IA_FARORES_WIND
+    PLAYER_MODELGROUP_DEFAULT,          // PLAYER_IA_NAYRUS_LOVE
+    PLAYER_MODELGROUP_DEFAULT,          // PLAYER_IA_DINS_FIRE
+    PLAYER_MODELGROUP_DEFAULT,          // PLAYER_IA_DEKU_NUT
+    PLAYER_MODELGROUP_OCARINA,          // PLAYER_IA_OCARINA_FAIRY
+    PLAYER_MODELGROUP_OOT,              // PLAYER_IA_OCARINA_OF_TIME
+    PLAYER_MODELGROUP_BOTTLE,           // PLAYER_IA_BOTTLE
+    PLAYER_MODELGROUP_BOTTLE,           // PLAYER_IA_BOTTLE_FISH
+    PLAYER_MODELGROUP_BOTTLE,           // PLAYER_IA_BOTTLE_FIRE
+    PLAYER_MODELGROUP_BOTTLE,           // PLAYER_IA_BOTTLE_BUG
+    PLAYER_MODELGROUP_BOTTLE,           // PLAYER_IA_BOTTLE_POE
+    PLAYER_MODELGROUP_BOTTLE,           // PLAYER_IA_BOTTLE_BIG_POE
+    PLAYER_MODELGROUP_BOTTLE,           // PLAYER_IA_BOTTLE_RUTOS_LETTER
+    PLAYER_MODELGROUP_BOTTLE,           // PLAYER_IA_BOTTLE_POTION_RED
+    PLAYER_MODELGROUP_BOTTLE,           // PLAYER_IA_BOTTLE_POTION_BLUE
+    PLAYER_MODELGROUP_BOTTLE,           // PLAYER_IA_BOTTLE_POTION_GREEN
+    PLAYER_MODELGROUP_BOTTLE,           // PLAYER_IA_BOTTLE_MILK_FULL
+    PLAYER_MODELGROUP_BOTTLE,           // PLAYER_IA_BOTTLE_MILK_HALF
+    PLAYER_MODELGROUP_BOTTLE,           // PLAYER_IA_BOTTLE_FAIRY
+    PLAYER_MODELGROUP_DEFAULT,          // PLAYER_IA_ZELDAS_LETTER
+    PLAYER_MODELGROUP_DEFAULT,          // PLAYER_IA_WEIRD_EGG
+    PLAYER_MODELGROUP_DEFAULT,          // PLAYER_IA_CHICKEN
+    PLAYER_MODELGROUP_DEFAULT,          // PLAYER_IA_MAGIC_BEAN
+    PLAYER_MODELGROUP_DEFAULT,          // PLAYER_IA_POCKET_EGG
+    PLAYER_MODELGROUP_DEFAULT,          // PLAYER_IA_POCKET_CUCCO
+    PLAYER_MODELGROUP_DEFAULT,          // PLAYER_IA_COJIRO
+    PLAYER_MODELGROUP_DEFAULT,          // PLAYER_IA_ODD_MUSHROOM
+    PLAYER_MODELGROUP_DEFAULT,          // PLAYER_IA_ODD_POTION
+    PLAYER_MODELGROUP_DEFAULT,          // PLAYER_IA_POACHERS_SAW
+    PLAYER_MODELGROUP_DEFAULT,          // PLAYER_IA_BROKEN_GORONS_SWORD
+    PLAYER_MODELGROUP_DEFAULT,          // PLAYER_IA_PRESCRIPTION
+    PLAYER_MODELGROUP_DEFAULT,          // PLAYER_IA_FROG
+    PLAYER_MODELGROUP_DEFAULT,          // PLAYER_IA_EYEDROPS
+    PLAYER_MODELGROUP_DEFAULT,          // PLAYER_IA_CLAIM_CHECK
+    PLAYER_MODELGROUP_DEFAULT,          // PLAYER_IA_MASK_KEATON
+    PLAYER_MODELGROUP_DEFAULT,          // PLAYER_IA_MASK_SKULL
+    PLAYER_MODELGROUP_DEFAULT,          // PLAYER_IA_MASK_SPOOKY
+    PLAYER_MODELGROUP_DEFAULT,          // PLAYER_IA_MASK_BUNNY_HOOD
+    PLAYER_MODELGROUP_DEFAULT,          // PLAYER_IA_MASK_GORON
+    PLAYER_MODELGROUP_DEFAULT,          // PLAYER_IA_MASK_ZORA
+    PLAYER_MODELGROUP_DEFAULT,          // PLAYER_IA_MASK_GERUDO
+    PLAYER_MODELGROUP_DEFAULT,          // PLAYER_IA_MASK_TRUTH
+    PLAYER_MODELGROUP_DEFAULT,          // PLAYER_IA_LENS_OF_TRUTH
 };
 
 TextTriggerEntry sTextTriggers[] = {
@@ -128,7 +128,7 @@ u8 gPlayerModelTypes[PLAYER_MODELGROUP_MAX][PLAYER_MODELGROUPENTRY_MAX] = {
         PLAYER_MODELTYPE_SHEATH_19,
         PLAYER_MODELTYPE_WAIST
     },
-    /* PLAYER_MODELGROUP_SWORD */
+    /* PLAYER_MODELGROUP_SWORD_AND_SHIELD */
     {
         PLAYER_ANIMTYPE_1,
         PLAYER_MODELTYPE_LH_SWORD,
@@ -232,7 +232,7 @@ u8 gPlayerModelTypes[PLAYER_MODELGROUP_MAX][PLAYER_MODELGROUPENTRY_MAX] = {
         PLAYER_MODELTYPE_SHEATH_18,
         PLAYER_MODELTYPE_WAIST
     },
-    /* PLAYER_MODELGROUP_15 */
+    /* PLAYER_MODELGROUP_SWORD */
     {
         PLAYER_ANIMTYPE_0,
         PLAYER_MODELTYPE_LH_SWORD,
@@ -565,7 +565,7 @@ uint8_t Player_IsCustomLinkModel() {
 
 s32 Player_InBlockingCsMode(PlayState* play, Player* this) {
     return (this->stateFlags1 & (PLAYER_STATE1_DEAD | PLAYER_STATE1_IN_CUTSCENE)) || (this->csAction != 0) || (play->transitionTrigger == TRANS_TRIGGER_START) ||
-           (this->stateFlags1 & PLAYER_STATE1_LOADING) || (this->stateFlags3 & PLAYER_STATE3_HOOKSHOT_TRAVELLING) ||
+           (this->stateFlags1 & PLAYER_STATE1_LOADING) || (this->stateFlags3 & PLAYER_STATE3_FLYING_WITH_HOOKSHOT) ||
            ((gSaveContext.magicState != MAGIC_STATE_IDLE) && (Player_ActionToMagicSpell(this, this->itemAction) >= 0));
 }
 
@@ -575,8 +575,15 @@ s32 Player_InCsMode(PlayState* play) {
     return Player_InBlockingCsMode(play, this) || (this->unk_6AD == 4);
 }
 
-s32 func_8008E9C4(Player* this) {
-    return (this->stateFlags1 & PLAYER_STATE1_ENEMY_TARGET);
+/**
+ * Checks if Player is currently locked onto a hostile actor.
+ * `PLAYER_STATE1_HOSTILE_LOCK_ON` controls Player's "battle" response to hostile actors.
+ *
+ * Note that within Player, `Player_UpdateHostileLockOn` exists, which updates the flag and also returns the check.
+ * Player can use this function instead if the flag should be checked, but not updated.
+ */
+s32 Player_CheckHostileLockOn(Player* this) {
+    return (this->stateFlags1 & PLAYER_STATE1_HOSTILE_LOCK_ON);
 }
 
 s32 Player_IsChildWithHylianShield(Player* this) {
@@ -586,7 +593,7 @@ s32 Player_IsChildWithHylianShield(Player* this) {
 s32 Player_ActionToModelGroup(Player* this, s32 actionParam) {
     s32 modelGroup = sActionModelGroups[actionParam];
 
-    if ((modelGroup == PLAYER_MODELGROUP_SWORD) && Player_IsChildWithHylianShield(this)) {
+    if ((modelGroup == PLAYER_MODELGROUP_SWORD_AND_SHIELD) && Player_IsChildWithHylianShield(this)) {
         // child, using kokiri sword with hylian shield equipped
         return PLAYER_MODELGROUP_CHILD_HYLIAN_SHIELD;
     } else {
@@ -600,9 +607,9 @@ void Player_SetModelsForHoldingShield(Player* this) {
         if ((CVarGetInteger(CVAR_CHEAT("ShieldTwoHanded"), 0) && (this->heldItemAction != PLAYER_IA_DEKU_STICK) ||
             !Player_HoldsTwoHandedWeapon(this)) && !Player_IsChildWithHylianShield(this)) {
             this->rightHandType = PLAYER_MODELTYPE_RH_SHIELD;
-            if (LINK_IS_CHILD && (CVarGetInteger(CVAR_ENHANCEMENT("EquimentAlwaysVisible"), 0)) && (this->currentShield == PLAYER_SHIELD_MIRROR)) {
+            if (LINK_IS_CHILD && (CVarGetInteger(CVAR_ENHANCEMENT("EquipmentAlwaysVisible"), 0)) && (this->currentShield == PLAYER_SHIELD_MIRROR)) {
                 this->rightHandDLists = &sPlayerDListGroups[PLAYER_MODELTYPE_RH_SHIELD][0];
-                } else if (LINK_IS_ADULT && (CVarGetInteger(CVAR_ENHANCEMENT("EquimentAlwaysVisible"), 0)) && (this->currentShield == PLAYER_SHIELD_DEKU)) {
+                } else if (LINK_IS_ADULT && (CVarGetInteger(CVAR_ENHANCEMENT("EquipmentAlwaysVisible"), 0)) && (this->currentShield == PLAYER_SHIELD_DEKU)) {
                     this->rightHandDLists = &sPlayerDListGroups[PLAYER_MODELTYPE_RH_SHIELD][1];
                 } else {
                     this->rightHandDLists = &sPlayerDListGroups[PLAYER_MODELTYPE_RH_SHIELD][gSaveContext.linkAge];
@@ -613,9 +620,12 @@ void Player_SetModelsForHoldingShield(Player* this) {
                 this->sheathType = PLAYER_MODELTYPE_SHEATH_17;
             }
             this->sheathDLists = &sPlayerDListGroups[this->sheathType][gSaveContext.linkAge];
-            if ((CVarGetInteger(CVAR_ENHANCEMENT("EquimentAlwaysVisible"), 0)) && LINK_IS_CHILD &&
+            if ((CVarGetInteger(CVAR_ENHANCEMENT("EquipmentAlwaysVisible"), 0)) && LINK_IS_CHILD &&
                 gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KOKIRI) {
                 this->sheathDLists = &sPlayerDListGroups[this->sheathType][0]; 
+            } else if ((CVarGetInteger(CVAR_ENHANCEMENT("EquipmentAlwaysVisible"), 0)) && LINK_IS_ADULT &&
+                gSaveContext.equips.buttonItems[0] == ITEM_SWORD_KOKIRI) {
+                this->sheathDLists = &sPlayerDListGroups[this->sheathType][1]; 
             }
             this->modelAnimType = PLAYER_ANIMTYPE_2;
             this->itemAction = -1;
@@ -628,7 +638,7 @@ void Player_SetModels(Player* this, s32 modelGroup) {
     this->leftHandType = gPlayerModelTypes[modelGroup][PLAYER_MODELGROUPENTRY_LEFT_HAND];
     this->leftHandDLists = &sPlayerDListGroups[this->leftHandType][gSaveContext.linkAge];
 
-    if (CVarGetInteger(CVAR_ENHANCEMENT("EquimentAlwaysVisible"), 0)) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("EquipmentAlwaysVisible"), 0)) {
         if (LINK_IS_CHILD &&
             (this->leftHandType == PLAYER_MODELTYPE_LH_HAMMER ||
             ((this->leftHandType == PLAYER_MODELTYPE_LH_SWORD || this->leftHandType == PLAYER_MODELTYPE_LH_BGS) &&
@@ -649,7 +659,7 @@ void Player_SetModels(Player* this, s32 modelGroup) {
     this->rightHandType = gPlayerModelTypes[modelGroup][PLAYER_MODELGROUPENTRY_RIGHT_HAND];
     this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][gSaveContext.linkAge];
 
-    if (CVarGetInteger(CVAR_ENHANCEMENT("EquimentAlwaysVisible"), 0)) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("EquipmentAlwaysVisible"), 0)) {
         if (LINK_IS_CHILD &&
             (this->rightHandType == PLAYER_MODELTYPE_RH_HOOKSHOT ||
             (this->rightHandType == PLAYER_MODELTYPE_RH_SHIELD && this->currentShield == PLAYER_SHIELD_MIRROR))) {
@@ -660,7 +670,7 @@ void Player_SetModels(Player* this, s32 modelGroup) {
             this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][1];
         }
     }
-    if ((CVarGetInteger(CVAR_ENHANCEMENT("BowSlingshotAmmoFix"), 0) || CVarGetInteger(CVAR_ENHANCEMENT("EquimentAlwaysVisible"), 0)) && this->rightHandType == 11) { // If holding Bow/Slingshot
+    if ((CVarGetInteger(CVAR_ENHANCEMENT("BowSlingshotAmmoFix"), 0) || CVarGetInteger(CVAR_ENHANCEMENT("EquipmentAlwaysVisible"), 0)) && this->rightHandType == 11) { // If holding Bow/Slingshot
         this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][Player_HoldsSlingshot(this)];
     }
 
@@ -668,16 +678,15 @@ void Player_SetModels(Player* this, s32 modelGroup) {
     this->sheathType = gPlayerModelTypes[modelGroup][PLAYER_MODELGROUPENTRY_SHEATH];
     this->sheathDLists = &sPlayerDListGroups[this->sheathType][gSaveContext.linkAge];
 
-    if (CVarGetInteger(CVAR_ENHANCEMENT("EquimentAlwaysVisible"), 0)) {
-        if (LINK_IS_CHILD &&
-            (this->currentShield == PLAYER_SHIELD_HYLIAN || this->currentShield == PLAYER_SHIELD_MIRROR) &&
-            ((gSaveContext.equips.buttonItems[0] == ITEM_SWORD_MASTER) ||
-             (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_BGS))) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("EquipmentAlwaysVisible"), 0)) {
+        if (LINK_IS_CHILD && (this->currentShield == PLAYER_SHIELD_HYLIAN && ((gSaveContext.equips.buttonItems[0] == ITEM_SWORD_MASTER) || 
+            (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_BGS)) || (this->currentShield == PLAYER_SHIELD_MIRROR) && (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KOKIRI))) {
             this->sheathDLists = &sPlayerDListGroups[this->sheathType][0];
         } else if (LINK_IS_CHILD && this->currentShield == PLAYER_SHIELD_MIRROR && gSaveContext.equips.buttonItems[0] == ITEM_SWORD_KOKIRI &&
             this->sheathType == PLAYER_MODELTYPE_SHEATH_18) {
             this->sheathDLists = &sPlayerDListGroups[this->sheathType][0];
-        } else if (LINK_IS_ADULT && this->currentShield == PLAYER_SHIELD_DEKU) {
+        } else if (LINK_IS_ADULT && (this->currentShield == PLAYER_SHIELD_DEKU && gSaveContext.equips.buttonItems[0] != ITEM_SWORD_MASTER) ||
+        (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_MASTER && this->sheathType == PLAYER_MODELTYPE_SHEATH_18 && this->currentShield == PLAYER_SHIELD_DEKU)) {
             this->sheathDLists = &sPlayerDListGroups[this->sheathType][1];
         } else if (LINK_IS_CHILD && this->sheathType == PLAYER_MODELTYPE_SHEATH_17 && 
 			((gSaveContext.equips.buttonItems[0] == ITEM_SWORD_MASTER) || (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_BGS))) {
@@ -735,29 +744,48 @@ void Player_UpdateBottleHeld(PlayState* play, Player* this, s32 item, s32 action
     this->itemAction = actionParam;
 }
 
-void func_8008EDF0(Player* this) {
-    this->unk_664 = NULL;
-    this->stateFlags2 &= ~PLAYER_STATE2_SWITCH_TARGETING;
+void Player_ReleaseLockOn(Player* this) {
+    this->focusActor = NULL;
+    this->stateFlags2 &= ~PLAYER_STATE2_LOCK_ON_WITH_SWITCH;
 }
 
-void func_8008EE08(Player* this) {
+/**
+ * This function aims to clear Z-Target related state when it isn't in use.
+ * It also handles setting a specific free fall related state that is interntwined with Z-Targeting.
+ * TODO: Learn more about this and give a name to PLAYER_STATE1_19
+ */
+void Player_ClearZTargeting(Player* this) {
     if ((this->actor.bgCheckFlags & 1) || (this->stateFlags1 & (PLAYER_STATE1_CLIMBING_LADDER | PLAYER_STATE1_ON_HORSE | PLAYER_STATE1_IN_WATER)) ||
         (!(this->stateFlags1 & (PLAYER_STATE1_JUMPING | PLAYER_STATE1_FREEFALL)) && ((this->actor.world.pos.y - this->actor.floorHeight) < 100.0f))) {
-        this->stateFlags1 &= ~(PLAYER_STATE1_TARGETING | PLAYER_STATE1_TARGET_LOCKED | PLAYER_STATE1_TARGET_NOTHING | PLAYER_STATE1_JUMPING | PLAYER_STATE1_FREEFALL | PLAYER_STATE1_30);
+        this->stateFlags1 &= ~(PLAYER_STATE1_Z_TARGETING | PLAYER_STATE1_FRIENDLY_ACTOR_FOCUS | PLAYER_STATE1_PARALLEL | PLAYER_STATE1_JUMPING | PLAYER_STATE1_FREEFALL | PLAYER_STATE1_LOCK_ON_FORCED_TO_RELEASE);
     } else if (!(this->stateFlags1 & (PLAYER_STATE1_JUMPING | PLAYER_STATE1_FREEFALL | PLAYER_STATE1_CLIMBING_LADDER))) {
         this->stateFlags1 |= PLAYER_STATE1_FREEFALL;
     }
 
-    func_8008EDF0(this);
+    Player_ReleaseLockOn(this);
 }
 
-void func_8008EEAC(PlayState* play, Actor* actor) {
+/**
+ * Sets the "auto lock-on actor" to lock onto an actor without Player's input.
+ * This function will first release any existing lock-on or (try to) release parallel.
+ *
+ * When using Switch Targeting, it is not possible to carry an auto lock-on actor into a normal
+ * lock-on when the auto lock-on is finished.
+ * This is because the `PLAYER_STATE2_LOCK_ON_WITH_SWITCH` flag is never set with an auto lock-on.
+ * With Hold Targeting it is possible to keep the auto lock-on going by keeping the Z button held down.
+ *
+ * The auto lock-on is considered "friendly" even if the actor is actually hostile. If the auto lock-on is hostile,
+ * Player's battle response will not occur (if he is actionable) and the camera behaves differently.
+ * When transitioning from auto lock-on to normal lock-on (with Hold Targeting) there will be a noticeable change
+ * when it switches from "friendly" mode to "hostile" mode.
+ */
+void Player_SetAutoLockOnActor(PlayState* play, Actor* actor) {
     Player* this = GET_PLAYER(play);
 
-    func_8008EE08(this);
-    this->unk_664 = actor;
-    this->unk_684 = actor;
-    this->stateFlags1 |= PLAYER_STATE1_TARGET_LOCKED;
+    Player_ClearZTargeting(this);
+    this->focusActor = actor;
+    this->autoLockOnActor = actor;
+    this->stateFlags1 |= PLAYER_STATE1_FRIENDLY_ACTOR_FOCUS;
     Camera_SetParam(Play_GetCamera(play, 0), 8, actor);
     Camera_ChangeMode(Play_GetCamera(play, 0), 2);
 }
@@ -919,7 +947,7 @@ s32 Player_GetExplosiveHeld(Player* this) {
 s32 func_8008F2BC(Player* this, s32 actionParam) {
     s32 sword = 0;
 
-    if (actionParam != PLAYER_IA_LAST_USED) {
+    if (actionParam != PLAYER_IA_SWORD_CS) {
         sword = actionParam - PLAYER_IA_SWORD_MASTER;
         if ((sword < 0) || (sword >= 3)) {
             goto return_neg;
@@ -1243,7 +1271,7 @@ void func_8008F87C(PlayState* play, Player* this, SkelAnime* skelAnime, Vec3f* p
 s32 Player_OverrideLimbDrawGameplayCommon(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     Player* this = (Player*)thisx;
     
-    if (CVarGetInteger(CVAR_ENHANCEMENT("EquimentAlwaysVisible"), 0) && CVarGetInteger(CVAR_ENHANCEMENT("ScaleAdultEquimentAsChild"), 0) && LINK_IS_CHILD) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("EquipmentAlwaysVisible"), 0) && CVarGetInteger(CVAR_ENHANCEMENT("ScaleAdultEquipmentAsChild"), 0) && LINK_IS_CHILD) {
         if (limbIndex == PLAYER_LIMB_L_HAND) {
             if ((gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KOKIRI && sLeftHandType == PLAYER_MODELTYPE_LH_SWORD) ||
                 (sLeftHandType == PLAYER_MODELTYPE_LH_BGS) || (sLeftHandType == PLAYER_MODELTYPE_LH_HAMMER)) {
@@ -1252,8 +1280,7 @@ s32 Player_OverrideLimbDrawGameplayCommon(PlayState* play, s32 limbIndex, Gfx** 
         }
         if (limbIndex == PLAYER_LIMB_R_HAND) {
             if ((this->currentShield == PLAYER_SHIELD_MIRROR && sRightHandType == PLAYER_MODELTYPE_RH_SHIELD) || 
-                (this->currentShield == PLAYER_SHIELD_HYLIAN && (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_MASTER || 
-                gSaveContext.equips.buttonItems[0] == ITEM_SWORD_BGS)) || (sRightHandType == PLAYER_MODELTYPE_RH_HOOKSHOT) ||
+                sRightHandType == PLAYER_MODELTYPE_RH_HOOKSHOT ||
                 (sRightHandType == PLAYER_MODELTYPE_RH_BOW_SLINGSHOT && Player_HoldsBow(this))) {
                 Matrix_Scale(0.8, 0.8, 0.8, MTXMODE_APPLY);
             }
@@ -1319,9 +1346,9 @@ s32 Player_OverrideLimbDrawGameplayCommon(PlayState* play, s32 limbIndex, Gfx** 
                     Matrix_Translate((LINK_IS_ADULT ? 3600.0f : 2900.0f) * ABS(scale - 1.0f), 0.0f, 0.0f, MTXMODE_APPLY);
                 }
             }
-            rot->x += this->unk_6BA;
-            rot->y -= this->unk_6B8;
-            rot->z += this->unk_6B6;
+            rot->x += this->headLimbRot.z;
+            rot->y -= this->headLimbRot.y;
+            rot->z += this->headLimbRot.x;
         } else if (limbIndex == PLAYER_LIMB_L_HAND) {
             if (CVarGetInteger(CVAR_COSMETIC("Link.SwordScale.Changed"), 0)) {
                 f32 scale = CVarGetFloat(CVAR_COSMETIC("Link.SwordScale.Value"), 1.0f);
@@ -1329,18 +1356,18 @@ s32 Player_OverrideLimbDrawGameplayCommon(PlayState* play, s32 limbIndex, Gfx** 
                 Matrix_Translate(-((LINK_IS_ADULT ? 320.0f : 200.0f) * scale), 0.0f, 0.0f, MTXMODE_APPLY);
             }
         } else if (limbIndex == PLAYER_LIMB_UPPER) {
-            if (this->unk_6B0 != 0) {
+            if (this->upperLimbYawSecondary != 0) {
                 Matrix_RotateZ(0x44C * (M_PI / 0x8000), MTXMODE_APPLY);
-                Matrix_RotateY(this->unk_6B0 * (M_PI / 0x8000), MTXMODE_APPLY);
+                Matrix_RotateY(this->upperLimbYawSecondary * (M_PI / 0x8000), MTXMODE_APPLY);
             }
-            if (this->unk_6BE != 0) {
-                Matrix_RotateY(this->unk_6BE * (M_PI / 0x8000), MTXMODE_APPLY);
+            if (this->upperLimbRot.y != 0) {
+                Matrix_RotateY(this->upperLimbRot.y * (M_PI / 0x8000), MTXMODE_APPLY);
             }
-            if (this->unk_6BC != 0) {
-                Matrix_RotateX(this->unk_6BC * (M_PI / 0x8000), MTXMODE_APPLY);
+            if (this->upperLimbRot.x != 0) {
+                Matrix_RotateX(this->upperLimbRot.x * (M_PI / 0x8000), MTXMODE_APPLY);
             }
-            if (this->unk_6C0 != 0) {
-                Matrix_RotateZ(this->unk_6C0 * (M_PI / 0x8000), MTXMODE_APPLY);
+            if (this->upperLimbRot.z != 0) {
+                Matrix_RotateZ(this->upperLimbRot.z * (M_PI / 0x8000), MTXMODE_APPLY);
             }
         } else if (limbIndex == PLAYER_LIMB_L_THIGH) {
             func_8008F87C(play, this, &this->skelAnime, pos, rot, PLAYER_LIMB_L_THIGH, PLAYER_LIMB_L_SHIN,
@@ -1367,7 +1394,7 @@ s32 Player_OverrideLimbDrawGameplayDefault(PlayState* play, s32 limbIndex, Gfx**
 
             if ((sLeftHandType == PLAYER_MODELTYPE_LH_BGS) && (gSaveContext.swordHealth <= 0.0f)) {
                 dLists += 4;
-            } else if ((sLeftHandType == PLAYER_MODELTYPE_LH_BOOMERANG) && (this->stateFlags1 & PLAYER_STATE1_THREW_BOOMERANG)) {
+            } else if ((sLeftHandType == PLAYER_MODELTYPE_LH_BOOMERANG) && (this->stateFlags1 & PLAYER_STATE1_BOOMERANG_THROWN)) {
                 dLists = &gPlayerLeftHandOpenDLs[gSaveContext.linkAge];
                 sLeftHandType = PLAYER_MODELTYPE_LH_OPEN;
             } else if ((this->leftHandType == PLAYER_MODELTYPE_LH_OPEN) && (this->actor.speedXZ > 2.0f) && !(this->stateFlags1 & PLAYER_STATE1_IN_WATER)) {
@@ -1396,7 +1423,8 @@ s32 Player_OverrideLimbDrawGameplayDefault(PlayState* play, s32 limbIndex, Gfx**
                     (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KOKIRI)) {
                     dLists += PLAYER_SHIELD_MAX * 4;
                 }
-            } else if (!CVarGetInteger(CVAR_ENHANCEMENT("EquimentAlwaysVisible"), 0)) {
+            } else if (!CVarGetInteger(CVAR_ENHANCEMENT("EquipmentAlwaysVisible"), 0) || (CVarGetInteger(CVAR_ENHANCEMENT("EquipmentAlwaysVisible"), 0) && 
+                ((gSaveContext.equips.buttonItems[0] != ITEM_SWORD_MASTER && gSaveContext.equips.buttonItems[0] != ITEM_SWORD_BGS) && this->currentShield == PLAYER_SHIELD_DEKU))) {
                 if (!LINK_IS_ADULT && ((this->sheathType == PLAYER_MODELTYPE_SHEATH_16) || (this->sheathType == PLAYER_MODELTYPE_SHEATH_17)) &&
                     (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KOKIRI)) {
                     dLists = &sSheathWithSwordDLs[PLAYER_SHIELD_MAX * 4];
@@ -1438,7 +1466,7 @@ s32 Player_OverrideLimbDrawGameplayFirstPerson(PlayState* play, s32 limbIndex, G
             *dList = sFirstPersonLeftForearmDLs[gSaveContext.linkAge];
         } else if (limbIndex == PLAYER_LIMB_L_HAND) {
             s32 handOutDlIndex = gSaveContext.linkAge;
-            if ((CVarGetInteger(CVAR_ENHANCEMENT("BowSlingshotAmmoFix"), 0) || CVarGetInteger(CVAR_ENHANCEMENT("EquimentAlwaysVisible"), 0)) && LINK_IS_ADULT && Player_HoldsSlingshot(this)) {
+            if ((CVarGetInteger(CVAR_ENHANCEMENT("BowSlingshotAmmoFix"), 0) || CVarGetInteger(CVAR_ENHANCEMENT("EquipmentAlwaysVisible"), 0)) && LINK_IS_ADULT && Player_HoldsSlingshot(this)) {
                 handOutDlIndex = 1;
             }
             *dList = sFirstPersonLeftHandDLs[handOutDlIndex];
@@ -1448,7 +1476,7 @@ s32 Player_OverrideLimbDrawGameplayFirstPerson(PlayState* play, s32 limbIndex, G
             *dList = sFirstPersonForearmDLs[gSaveContext.linkAge];
         } else if (limbIndex == PLAYER_LIMB_R_HAND) {
             s32 firstPersonWeaponIndex = gSaveContext.linkAge;
-            if (CVarGetInteger(CVAR_ENHANCEMENT("BowSlingshotAmmoFix"), 0) || CVarGetInteger(CVAR_ENHANCEMENT("EquimentAlwaysVisible"), 0)) {
+            if (CVarGetInteger(CVAR_ENHANCEMENT("BowSlingshotAmmoFix"), 0) || CVarGetInteger(CVAR_ENHANCEMENT("EquipmentAlwaysVisible"), 0)) {
                 if (Player_HoldsBow(this)) {
                     firstPersonWeaponIndex = 0;
                 } else if (Player_HoldsSlingshot(this)) {
@@ -1828,7 +1856,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                     Matrix_Get(&sp14C);
                     Matrix_MtxFToYXZRotS(&sp14C, &hookedActor->world.rot, 0);
                     hookedActor->shape.rot = hookedActor->world.rot;
-                } else if (this->stateFlags1 & PLAYER_STATE1_ITEM_OVER_HEAD) {
+                } else if (this->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR) {
                     Vec3s spB8;
 
                     Matrix_Get(&sp14C);
@@ -1852,7 +1880,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
             Matrix_Get(&this->shieldMf);
         } else if ((this->rightHandType == PLAYER_MODELTYPE_RH_BOW_SLINGSHOT) || (this->rightHandType == PLAYER_MODELTYPE_RH_BOW_SLINGSHOT_2)) {
             s32 stringModelToUse = gSaveContext.linkAge;
-            if (CVarGetInteger(CVAR_ENHANCEMENT("BowSlingshotAmmoFix"), 0) || CVarGetInteger(CVAR_ENHANCEMENT("EquimentAlwaysVisible"), 0)) {
+            if (CVarGetInteger(CVAR_ENHANCEMENT("BowSlingshotAmmoFix"), 0) || CVarGetInteger(CVAR_ENHANCEMENT("EquipmentAlwaysVisible"), 0)) {
                 stringModelToUse = Player_HoldsSlingshot(this);
             }
             BowStringData* stringData = &sBowStringData[stringModelToUse];
@@ -2000,9 +2028,9 @@ u32 func_80091738(PlayState* play, u8* segment, SkelAnime* skelAnime) {
 }
 
 u8 sPauseModelGroupBySword[] = { 
-    PLAYER_MODELGROUP_SWORD, // PLAYER_SWORD_KOKIRI
-    PLAYER_MODELGROUP_SWORD, // PLAYER_SWORD_MASTER
-    PLAYER_MODELGROUP_BGS,   // PLAYER_SWORD_BIGGORON
+    PLAYER_MODELGROUP_SWORD_AND_SHIELD, // PLAYER_SWORD_KOKIRI
+    PLAYER_MODELGROUP_SWORD_AND_SHIELD, // PLAYER_SWORD_MASTER
+    PLAYER_MODELGROUP_BGS,              // PLAYER_SWORD_BIGGORON
 };
 
 s32 Player_OverrideLimbDrawPause(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* arg) {
@@ -2015,7 +2043,7 @@ s32 Player_OverrideLimbDrawPause(PlayState* play, s32 limbIndex, Gfx** dList, Ve
     Gfx** dLists;
     size_t ptrSize = sizeof(uint32_t);
 
-    if ((modelGroup == PLAYER_MODELGROUP_SWORD) && !LINK_IS_ADULT && (playerSwordAndShield[1] == PLAYER_SHIELD_HYLIAN)) {
+    if ((modelGroup == PLAYER_MODELGROUP_SWORD_AND_SHIELD) && !LINK_IS_ADULT && (playerSwordAndShield[1] == PLAYER_SHIELD_HYLIAN)) {
         modelGroup = PLAYER_MODELGROUP_CHILD_HYLIAN_SHIELD;
     }
 

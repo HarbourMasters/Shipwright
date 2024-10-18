@@ -87,11 +87,11 @@ void RegionTable_Init_GanonsCastle() {
 
   areaTable[RR_GANONS_CASTLE_SPIRIT_TRIAL] = Region("Ganon's Castle Spirit Trial", "Ganon's Castle", {RA_GANONS_CASTLE}, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&logic->NutPot,           {[]{return logic->NutPot || (((ctx->GetTrickOption(RT_GANON_SPIRIT_TRIAL_HOOKSHOT) && logic->CanJumpslash()) || logic->CanUse(RG_HOOKSHOT)) && logic->CanUse(RG_BOMBCHU_5) && logic->CanUse(RG_FAIRY_BOW) && (logic->CanUse(RG_MIRROR_SHIELD) || (ctx->GetOption(RSK_SUNLIGHT_ARROWS) && logic->CanUse(RG_LIGHT_ARROWS))));}}),
-                  EventAccess(&logic->SpiritTrialClear, {[]{return logic->CanUse(RG_LIGHT_ARROWS) && (logic->CanUse(RG_MIRROR_SHIELD) || ctx->GetOption(RSK_SUNLIGHT_ARROWS)) && logic->CanUse(RG_BOMBCHU_5) && ((ctx->GetTrickOption(RT_GANON_SPIRIT_TRIAL_HOOKSHOT) && logic->CanJumpslash()) || logic->CanUse(RG_HOOKSHOT));}}),
+                  EventAccess(&logic->NutPot,           {[]{return logic->NutPot || (((ctx->GetTrickOption(RT_GANON_SPIRIT_TRIAL_HOOKSHOT) && logic->CanJumpslashExceptHammer()) || logic->CanUse(RG_HOOKSHOT)) && logic->CanUse(RG_BOMBCHU_5) && logic->CanUse(RG_FAIRY_BOW) && (logic->CanUse(RG_MIRROR_SHIELD) || (ctx->GetOption(RSK_SUNLIGHT_ARROWS) && logic->CanUse(RG_LIGHT_ARROWS))));}}),
+                  EventAccess(&logic->SpiritTrialClear, {[]{return logic->CanUse(RG_LIGHT_ARROWS) && (logic->CanUse(RG_MIRROR_SHIELD) || ctx->GetOption(RSK_SUNLIGHT_ARROWS)) && logic->CanUse(RG_BOMBCHU_5) && ((ctx->GetTrickOption(RT_GANON_SPIRIT_TRIAL_HOOKSHOT) && logic->CanJumpslashExceptHammer()) || logic->CanUse(RG_HOOKSHOT));}}),
                 }, {
                   //Locations
-                  LOCATION(RC_GANONS_CASTLE_SPIRIT_TRIAL_CRYSTAL_SWITCH_CHEST, (ctx->GetTrickOption(RT_GANON_SPIRIT_TRIAL_HOOKSHOT) || logic->CanUse(RG_HOOKSHOT)) && logic->CanJumpslash()),
+                  LOCATION(RC_GANONS_CASTLE_SPIRIT_TRIAL_CRYSTAL_SWITCH_CHEST, (ctx->GetTrickOption(RT_GANON_SPIRIT_TRIAL_HOOKSHOT) || logic->CanUse(RG_HOOKSHOT)) && logic->CanJumpslashExceptHammer()),
                   LOCATION(RC_GANONS_CASTLE_SPIRIT_TRIAL_INVISIBLE_CHEST,      (ctx->GetTrickOption(RT_GANON_SPIRIT_TRIAL_HOOKSHOT) || logic->CanUse(RG_HOOKSHOT)) && logic->CanUse(RG_BOMBCHU_5) && (ctx->GetTrickOption(RT_LENS_GANON) || logic->CanUse(RG_LENS_OF_TRUTH))),
   }, {});
 
@@ -174,7 +174,7 @@ void RegionTable_Init_GanonsCastle() {
   areaTable[RR_GANONS_CASTLE_MQ_WATER_TRIAL] = Region("Ganon's Castle MQ Water Trial", "Ganons Castle", {RA_GANONS_CASTLE}, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&logic->WaterTrialClear, {[]{return logic->BlueFire() && logic->IsAdult && logic->CanUse(RG_LIGHT_ARROWS) && logic->SmallKeys(RR_GANONS_CASTLE, 3);}}),
-                  EventAccess(&logic->BlueFireAccess,  {[]{return logic->BlueFireAccess || (logic->HasBottle() && logic->CanJumpslash());}}),
+                  EventAccess(&logic->BlueFireAccess,  {[]{return logic->BlueFireAccess || (logic->HasBottle() && logic->CanJumpslashExceptHammer());}}),
   }, {
                   //Locations
                   LOCATION(RC_GANONS_CASTLE_MQ_WATER_TRIAL_CHEST, logic->BlueFire()),

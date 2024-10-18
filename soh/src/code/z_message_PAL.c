@@ -835,6 +835,7 @@ void Message_DrawText(PlayState* play, Gfx** gfxP) {
     u16 i;
     u16 sfxHi;
     u16 charTexIdx;
+    int gTextSpeed, gSlowTextSpeed;
     Font* font = &play->msgCtx.font;
     Gfx* gfx = *gfxP;
 
@@ -855,6 +856,9 @@ void Message_DrawText(PlayState* play, Gfx** gfxP) {
     msgCtx->unk_E3D0 = 0;
     charTexIdx = 0;
 
+    gTextSpeed = CVarGetInteger(CVAR_ENHANCEMENT("TextSpeed"), 1);
+    gSlowTextSpeed = CVarGetInteger(CVAR_ENHANCEMENT("SlowTextSpeed"), gTextSpeed);
+    
     for (i = 0; i < msgCtx->textDrawPos; i++) {
         character = msgCtx->msgBufDecoded[i];
 
@@ -902,9 +906,9 @@ void Message_DrawText(PlayState* play, Gfx** gfxP) {
                 *gfxP = gfx;
                 return;
             case MESSAGE_QUICKTEXT_ENABLE:
-                if (i + 1 == msgCtx->textDrawPos && (msgCtx->msgMode == MSGMODE_TEXT_DISPLAYING ||
-                                                     (msgCtx->msgMode >= MSGMODE_OCARINA_STARTING &&
-                                                      msgCtx->msgMode < MSGMODE_SCARECROW_LONG_RECORDING_START))) {
+                if (i < msgCtx->textDrawPos && i + gTextSpeed >= msgCtx->textDrawPos && (msgCtx->msgMode == MSGMODE_TEXT_DISPLAYING ||
+                                                                                         (msgCtx->msgMode >= MSGMODE_OCARINA_STARTING &&
+                                                                                          msgCtx->msgMode < MSGMODE_SCARECROW_LONG_RECORDING_START))) {
                     j = i;
                     while (true) {
                         lookAheadCharacter = msgCtx->msgBufDecoded[j];
@@ -921,8 +925,10 @@ void Message_DrawText(PlayState* play, Gfx** gfxP) {
                             break;
                         }
                     }
-                    i = j - 1;
-                    msgCtx->textDrawPos = i + 1;
+                    if (j > msgCtx->textDrawPos) {
+                        i = j - 1;
+                        msgCtx->textDrawPos = j;
+                    }
 
                     if (character) {}
                 }
@@ -1115,11 +1121,15 @@ void Message_DrawText(PlayState* play, Gfx** gfxP) {
                 break;
         }
     }
-    if (msgCtx->textDelayTimer == 0) {
-        msgCtx->textDrawPos = i + CVarGetInteger(CVAR_ENHANCEMENT("TextSpeed"), 1);
+    if (msgCtx->textDelay == 0) {
+        msgCtx->textDrawPos = i + gTextSpeed;
+    } else if (msgCtx->textDelayTimer == 0) {
+        msgCtx->textDrawPos = i + 1;
         msgCtx->textDelayTimer = msgCtx->textDelay;
+    } else if (msgCtx->textDelayTimer <= gSlowTextSpeed) {
+        msgCtx->textDelayTimer = 0;
     } else {
-        msgCtx->textDelayTimer--;
+        msgCtx->textDelayTimer -= gSlowTextSpeed;
     }
     *gfxP = gfx;
 }

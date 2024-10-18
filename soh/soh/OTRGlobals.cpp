@@ -46,6 +46,7 @@
 #include "Fonts.h"
 #include <utils/StringHelper.h>
 #include "Enhancements/custom-message/CustomMessageManager.h"
+#include "ImGuiUtils.h"
 #include "Enhancements/presets.h"
 #include "util.h"
 #include <boost_custom/container_hash/hash_32.hpp>
@@ -330,13 +331,24 @@ OTRGlobals::OTRGlobals() {
     prevAltAssets = CVarGetInteger(CVAR_ENHANCEMENT("AltAssets"), 0);
     context->GetResourceManager()->SetAltAssetsEnabled(prevAltAssets);
 
-    context->InitControlDeck({BTN_MODIFIER1, BTN_MODIFIER2});
+    context->InitControlDeck({
+        BTN_CUSTOM_MODIFIER1,
+        BTN_CUSTOM_MODIFIER2,
+        BTN_CUSTOM_OCARINA_NOTE_D4,
+        BTN_CUSTOM_OCARINA_NOTE_F4,
+        BTN_CUSTOM_OCARINA_NOTE_A4,
+        BTN_CUSTOM_OCARINA_NOTE_B4,
+        BTN_CUSTOM_OCARINA_NOTE_D5,
+        BTN_CUSTOM_OCARINA_DISABLE_SONGS,
+        BTN_CUSTOM_OCARINA_PITCH_UP,
+        BTN_CUSTOM_OCARINA_PITCH_DOWN,
+    });
     context->GetControlDeck()->SetSinglePlayerMappingMode(true);
 
     context->InitCrashHandler();
     context->InitConsole();
 
-    auto sohInputEditorWindow = std::make_shared<SohInputEditorWindow>(CVAR_CONTROLLER_CONFIGURATION_WINDOW_OPEN, "Controller Configuration");
+    auto sohInputEditorWindow = std::make_shared<SohInputEditorWindow>(CVAR_WINDOW("ControllerConfiguration"), "Controller Configuration");
     context->InitWindow({ sohInputEditorWindow });
 
     auto overlay = context->GetInstance()->GetWindow()->GetGui()->GetGameOverlay();
@@ -1138,6 +1150,13 @@ extern "C" void InitOTR() {
     ItemTableManager::Instance = new ItemTableManager();
     GameInteractor::Instance = new GameInteractor();
     SaveManager::Instance = new SaveManager();
+
+    std::shared_ptr<Ship::Config> conf = OTRGlobals::Instance->context->GetConfig();
+    conf->RegisterConfigVersionUpdater(std::make_shared<SOH::ConfigVersion1Updater>());
+    conf->RegisterConfigVersionUpdater(std::make_shared<SOH::ConfigVersion2Updater>());
+    conf->RegisterConfigVersionUpdater(std::make_shared<SOH::ConfigVersion3Updater>());
+    conf->RunVersionUpdates();
+
     SohGui::SetupGuiElements();
     AudioCollection::Instance = new AudioCollection();
     ActorDB::Instance = new ActorDB();
@@ -1171,6 +1190,8 @@ extern "C" void InitOTR() {
     // #endregion
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnFileDropped>(SoH_ProcessDroppedFiles);
 
+    RegisterImGuiItemIcons();
+
     time_t now = time(NULL);
     tm *tm_now = localtime(&now);
     if (tm_now->tm_mon == 11 && tm_now->tm_mday >= 24 && tm_now->tm_mday <= 25) {
@@ -1193,11 +1214,6 @@ extern "C" void InitOTR() {
         }
     }
 #endif
-
-    std::shared_ptr<Ship::Config> conf = OTRGlobals::Instance->context->GetConfig(); 
-    conf->RegisterConfigVersionUpdater(std::make_shared<SOH::ConfigVersion1Updater>());
-    conf->RegisterConfigVersionUpdater(std::make_shared<SOH::ConfigVersion2Updater>());
-    conf->RunVersionUpdates();
 }
 
 extern "C" void SaveManager_ThreadPoolWait() {
@@ -1416,6 +1432,12 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
 
     int threshold = CVarGetInteger(CVAR_SETTING("ExtraLatencyThreshold"), 80);
     wnd->SetMaximumFrameLatency(threshold > 0 && target_fps >= threshold ? 2 : 1);
+
+    // When the gfx debugger is active, only run with the final mtx
+    if (GfxDebuggerIsDebugging()) {
+        mtx_replacements.clear();
+        mtx_replacements.emplace_back();
+    }
 
     RunCommands(commands, mtx_replacements);
 
@@ -2259,7 +2281,7 @@ extern "C" void OTRControllerCallback(uint8_t rumble) {
 
     static std::shared_ptr<SohInputEditorWindow> controllerConfigWindow = nullptr;
     if (controllerConfigWindow == nullptr) {
-        controllerConfigWindow = std::dynamic_pointer_cast<SohInputEditorWindow>(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Input Editor"));
+        controllerConfigWindow = std::dynamic_pointer_cast<SohInputEditorWindow>(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Controller Configuration"));
     } else if (controllerConfigWindow->TestingRumble()) {
         return;
     }
@@ -2572,7 +2594,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
               Player_GetMask(play) == PLAYER_MASK_TRUTH) ||
              (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == RO_GOSSIP_STONES_NEED_STONE && CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)))) {
 
-            Actor* stone = GET_PLAYER(play)->targetActor; 
+            Actor* stone = GET_PLAYER(play)->talkActor; 
             RandomizerHint stoneHint = RH_NONE;
             s16 hintParams = stone->params & 0xFF;
             
@@ -2626,7 +2648,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(rc, TEXT_SHOP_ITEM_RANDOM_CONFIRM);
         // textId: TEXT_SCRUB_RANDOM + (randomizerInf - RAND_INF_SCRUBS_PURCHASED_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_LEFT)
         } else if (textId == TEXT_SCRUB_RANDOM) {
-            EnDns* enDns = (EnDns*)GET_PLAYER(play)->targetActor;
+            EnDns* enDns = (EnDns*)GET_PLAYER(play)->talkActor;
             RandomizerCheck rc = OTRGlobals::Instance->gRandomizer->GetCheckFromRandomizerInf((RandomizerInf)enDns->sohScrubIdentity.randomizerInf);
             messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(rc, TEXT_SCRUB_RANDOM, TEXT_SCRUB_RANDOM_FREE, Randomizer_GetSettingValue(RSK_SCRUB_TEXT_HINT) == RO_GENERIC_OFF);
         } else if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("RandomizeRupeeNames"), 1) &&
@@ -2663,7 +2685,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
         else if (textId == TEXT_CARPET_SALESMAN_ARMS_DEALER){
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, textId, MF_AUTO_FORMAT);
         } else if (textId == TEXT_SKULLTULA_PEOPLE_IM_CURSED) {
-            actorParams = GET_PLAYER(play)->targetActor->params;
+            actorParams = GET_PLAYER(play)->talkActor->params;
             if (actorParams == 1 && ctx->GetOption(RSK_KAK_10_SKULLS_HINT)){
                 messageEntry = ctx->GetHint(RH_KAK_10_SKULLS_HINT)->GetHintMessage(MF_AUTO_FORMAT);
             } else if (actorParams == 2 && ctx->GetOption(RSK_KAK_20_SKULLS_HINT)){
@@ -2786,7 +2808,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
         }
     }
     if (textId == TEXT_GS_NO_FREEZE || textId == TEXT_GS_FREEZE) {
-        if (CVarGetInteger(CVAR_ENHANCEMENT("InjectItemCounts"), 0) != 0) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"), 0) != 0) {
             // The freeze text cannot be manually dismissed and must be auto-dismissed.
             // This is fine and even wanted when skull tokens are not shuffled, but when
             // when they are shuffled we don't want to be able to manually dismiss the box.
@@ -2809,10 +2831,10 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
     } else if ((IS_RANDO || CVarGetInteger(CVAR_ENHANCEMENT("BetterBombchuShopping"), 0)) &&
                 (textId == TEXT_BUY_BOMBCHUS_10_DESC || textId == TEXT_BUY_BOMBCHUS_10_PROMPT)) {
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId, MF_FORMATTED);
-    } else if (textId == TEXT_HEART_CONTAINER && CVarGetInteger(CVAR_ENHANCEMENT("InjectItemCounts"), 0)) {
+    } else if (textId == TEXT_HEART_CONTAINER && CVarGetInteger(CVAR_ENHANCEMENT("InjectItemCounts.HeartContainer"), 0)) {
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_HEART_CONTAINER, MF_FORMATTED);
         messageEntry.Replace("[[heartContainerCount]]", std::to_string(gSaveContext.sohStats.heartContainers + 1));
-    } else if (textId == TEXT_HEART_PIECE && CVarGetInteger(CVAR_ENHANCEMENT("InjectItemCounts"), 0)) {
+    } else if (textId >= TEXT_HEART_PIECE && textId < TEXT_HEART_CONTAINER && CVarGetInteger(CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"), 0)) {
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_HEART_PIECE, MF_FORMATTED);
         messageEntry.Replace("[[heartPieceCount]]", std::to_string(gSaveContext.sohStats.heartPieces + 1));
     } else if (textId == TEXT_MARKET_GUARD_NIGHT && CVarGetInteger(CVAR_ENHANCEMENT("MarketSneak"), 0) && play->sceneNum == SCENE_MARKET_ENTRANCE_NIGHT) {

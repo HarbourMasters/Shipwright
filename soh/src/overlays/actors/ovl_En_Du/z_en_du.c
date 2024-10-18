@@ -254,13 +254,13 @@ void func_809FDE9C(EnDu* this) {
     }
 }
 
-void func_809FDFC0(CsCmdActorAction* csAction, Vec3f* dst) {
+void func_809FDFC0(CsCmdActorCue* csAction, Vec3f* dst) {
     dst->x = csAction->startPos.x;
     dst->y = csAction->startPos.y;
     dst->z = csAction->startPos.z;
 }
 
-void func_809FE000(CsCmdActorAction* csAction, Vec3f* dst) {
+void func_809FE000(CsCmdActorCue* csAction, Vec3f* dst) {
     dst->x = csAction->endPos.x;
     dst->y = csAction->endPos.y;
     dst->z = csAction->endPos.z;
@@ -473,7 +473,7 @@ void func_809FE890(EnDu* this, PlayState* play) {
     Vec3f startPos;
     Vec3f endPos;
     Vec3f velocity = { 0.0f, 0.0f, 0.0f };
-    CsCmdActorAction* csAction;
+    CsCmdActorCue* csAction;
 
     if (play->csCtx.state == CS_STATE_IDLE) {
         Player_SetCsActionWithHaltedActors(play, &this->actor, 1);
