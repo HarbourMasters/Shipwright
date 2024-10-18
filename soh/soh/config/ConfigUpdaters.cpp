@@ -66,9 +66,7 @@ namespace SOH {
     }
 
     void ConfigVersion2Updater::Update(Ship::Config* conf) {
-        for (auto seq : AudioCollection::Instance->GetAllSequences()) {
-            CVarClear(std::string("gAudioEditor.ReplacedSequences." + seq.second.sfxKey).c_str());
-        }
+        CVarClearBlock("gAudioEditor.ReplacedSequences");
     }
 
     void ConfigVersion3Updater::Update(Ship::Config* conf) {
