@@ -33,6 +33,13 @@
     <string>public.app-category.games</string>
     <key>LSMinimumSystemVersion</key>
     <string>10.15</string>
+    <key>LSEnvironment</key>
+    <dict>
+        <key>SHIP_HOME</key>
+        <string>~/Library/Application Support/com.shipofharkinian.soh</string>
+        <key>DYLD_LIBRARY_PATH</key>
+        <string>@executable_path/../Frameworks</string>
+    </dict>
     <key>LSArchitecturePriority</key>
     <array>
         <string>arm64</string>
