@@ -217,6 +217,7 @@ void DrawShipMenu() {
 }
 
 extern std::shared_ptr<Ship::GuiWindow> mInputEditorWindow;
+extern std::shared_ptr<Ship::GuiWindow> mGfxDebuggerWindow;
 extern std::shared_ptr<InputViewer> mInputViewer;
 extern std::shared_ptr<InputViewerSettingsWindow> mInputViewerSettings;
 extern std::shared_ptr<AdvancedResolutionSettings::AdvancedResolutionSettingsWindow> mAdvancedResolutionSettingsWindow;
@@ -1969,6 +1970,12 @@ void DrawDeveloperToolsMenu() {
         if (mMessageViewerWindow) {
             if (ImGui::Button(GetWindowButtonText("Message Viewer", CVarGetInteger(CVAR_WINDOW("MessageViewer"), 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
                 mMessageViewerWindow->ToggleVisibility();
+            }
+        }
+        UIWidgets::Spacer(0);
+        if (mGfxDebuggerWindow) {
+            if (ImGui::Button(GetWindowButtonText("Gfx Debugger", CVarGetInteger(CVAR_WINDOW("GfxDebugger"), 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
+                mGfxDebuggerWindow->ToggleVisibility();
             }
         }
 
