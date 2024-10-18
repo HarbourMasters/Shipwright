@@ -232,6 +232,7 @@ namespace Rando {
     }
 
     //Can the passed in item be used?
+    //RANDOTODO catch magic items explicitly and add an assert on miss.
     bool Logic::CanUse(RandomizerGet itemName) {
         if (!HasItem(itemName))
             return false;
@@ -420,7 +421,8 @@ namespace Rando {
         return false;
     }
 
-    bool Logic::CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance) {
+//RANDOTODO quantity is a placeholder for proper ammo use calculation logic. in time will want updating to account for ammo capacity
+    bool Logic::CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance, uint8_t quantity) {
         bool killed = false;
         switch(enemy) {
             case RE_GOLD_SKULLTULA:
@@ -465,6 +467,23 @@ namespace Rando {
                 return CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD) || (CanUse(RG_STICKS) && ctx->GetTrickOption(RT_BOTW_CHILD_DEADHAND));
             case RE_WITHERED_DEKU_BABA:
                 return CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD) || CanUse(RG_BOOMERANG);
+            case RE_LIKE_LIKE:
+                return CanDamage();
+            case RE_STALFOS:
+                //RANDOTODO Add trick to kill stalfos with sticks, and a second one for bombs without stunning. Higher ammo logic for bombs is also plausible
+                return CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD) || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_FAIRY_BOW) || CanUse(RG_BOMBCHU_5) || 
+                       (quantity <= 2 && (CanUse(RG_NUTS) || HookshotOrBoomerang()) && CanUse(RG_BOMB_BAG)) || (quantity <= 1 && CanUse(RG_STICKS));
+            //Needs 16 bombs, but is in default logic in N64, probably because getting the hits is quite easy.
+            //bow and sling can wake them and damage after they shed their armour, so could reduce ammo requirements for explosives to 10.
+            //requires 8 sticks to kill so would be a trick unless we apply higher stick bag logic
+            case RE_IRON_KNUCKLE:
+                return CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD) || CanUse(RG_MEGATON_HAMMER) || HasExplosives();
+            //To stun flare dancer with chus, you have to hit the flame under it while it is spinning. It should eventually return to spinning after dashing for a while if you miss the window
+            //it is possible to damage the core with explosives, but difficult to get all 4 hits in even with chus, and if it reconstructs the core heals, so it would be a trick.
+            //the core takes damage from hookshot even if it doesn't show
+            //Dins killing isn't hard, but is obscure and tight on single magic, so is a trick
+            case RE_FLARE_DANCER:
+                return CanUse(RG_MEGATON_HAMMER) || CanUse(RG_HOOKSHOT) || (HasExplosives() && (CanJumpslashExceptHammer() || CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_BOOMERANG)));
             default:
                 SPDLOG_ERROR("CanKillEnemy reached `default`.");
                 assert(false);
@@ -490,10 +509,16 @@ namespace Rando {
             case RE_DEAD_HAND:
             case RE_DEKU_BABA:
             case RE_WITHERED_DEKU_BABA:
+            case RE_STALFOS:
+            case RE_FLARE_DANCER:
                 return true;
             case RE_BIG_SKULLTULA:
                 //hammer jumpslash can pass, but only on flat land where you can kill with hammer swing
                 return CanUse(RG_NUTS) || CanUse(RG_BOOMERANG);
+            case RE_LIKE_LIKE:
+                return CanUse(RG_HOOKSHOT) || CanUse(RG_BOOMERANG);
+            case RE_IRON_KNUCKLE:
+                return false;
             default:
                 SPDLOG_ERROR("CanPassEnemy reached `default`.");
                 assert(false);
@@ -514,6 +539,10 @@ namespace Rando {
             case RE_DEAD_HAND:
             case RE_DEKU_BABA:
             case RE_WITHERED_DEKU_BABA:
+            case RE_LIKE_LIKE:
+            case RE_STALFOS:
+            case RE_IRON_KNUCKLE:
+            case RE_FLARE_DANCER:
                 return true;
             case RE_MAD_SCRUB:
             case RE_KEESE:
@@ -1843,6 +1872,10 @@ namespace Rando {
         ClearedMQDekuSERoom       = false;
         MQDekuWaterRoomTorches    = false;
         PushedDekuBasementBlock   = false;
+        OpenedLowestGoronCage     = false;
+        OpenedUpperFireShortcut   = false;
+        HitFireTemplePlatform     = false;
+        OpenedFireMQFireMazeDoor  = false;
 
         StopPerformanceTimer(PT_LOGIC_RESET);
     }
