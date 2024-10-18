@@ -120,94 +120,55 @@ source_group("include" FILES ${Header_Files__include})
 # }}}
 
 # soh (root)
-file(GLOB soh__ RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "soh/*.c" "soh/*.cpp" "soh/*.h")
-source_group("soh" FILES ${soh__})
+file(GLOB_RECURSE soh__ RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "soh/*.c" "soh/*.cpp" "soh/*.h" "soh/*.hpp")
 
+# Add specific files that don't match the pattern
+list(APPEND soh__ ${CMAKE_CURRENT_SOURCE_DIR}/soh/Enhancements/savestates_extern.inc)
+list(APPEND soh__ ${CMAKE_CURRENT_SOURCE_DIR}/soh/Enhancements/speechsynthesizer/DarwinSpeechSynthesizer.mm)
+
+# Create source groups that match the real file directory paths
+foreach(source IN LISTS soh__)
+    get_filename_component(source_path "${source}" PATH)
+    string(REPLACE "/" "\\" source_path_adjusted "${source_path}")
+    source_group("${source_path_adjusted}" FILES "${source}")
+endforeach()
+
+# Fix UTF-8 issues for MSVC
 if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     set_source_files_properties(soh/OTRGlobals.cpp PROPERTIES COMPILE_FLAGS "/utf-8")
+    set_source_files_properties(soh/Enhancements/tts/tts.cpp PROPERTIES COMPILE_FLAGS "/utf-8")
 endif()
 
-# soh/config {{{
-file(GLOB_RECURSE soh__config RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
-    "soh/config/*.h"
-    "soh/config/*.cpp"
-)
-# }}}
-
-# soh/enhancements {{{
-file(GLOB_RECURSE soh__Enhancements RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
-    "soh/Enhancements/*.c"
-    "soh/Enhancements/*.cpp"
-    "soh/Enhancements/*.h"
-    "soh/Enhancements/*.hpp"
-    "soh/Enhancements/*_extern.inc"
-    "soh/Enhancements/*.mm"
-)
-
-list(REMOVE_ITEM soh__Enhancements "soh/Enhancements/gamecommand.h")
-list(FILTER soh__Enhancements EXCLUDE REGEX "soh/Enhancements/gfx.*")
-
-# handle crowd control removals
-list(REMOVE_ITEM soh__Enhancements "soh/Enhancements/crowd-control/soh.cs")
-list(REMOVE_ITEM soh__Enhancements "soh/Enhancements/crowd-control/soh.ccpak")
+# handle Network removals
 if (!BUILD_REMOTE_CONTROL)
-    list(FILTER soh__Enhancements EXCLUDE REGEX "soh/Enhancements/crowd-control/*")
+    list(FILTER soh__ EXCLUDE REGEX "soh/Enhancements/crowd-control/*")
 endif()
 
 # handle speechsynthesizer removals
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
-    list(FILTER soh__Enhancements EXCLUDE REGEX "soh/Enhancements/speechsynthesizer/Darwin*")
+    list(FILTER soh__ EXCLUDE REGEX "soh/Enhancements/speechsynthesizer/Darwin*")
 elseif (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-    list(FILTER soh__Enhancements EXCLUDE REGEX "soh/Enhancements/speechsynthesizer/SAPI*")
+    list(FILTER soh__ EXCLUDE REGEX "soh/Enhancements/speechsynthesizer/SAPI*")
 else()
-    list(FILTER soh__Enhancements EXCLUDE REGEX "soh/Enhancements/speechsynthesizer/(Darwin|SAPI).*")
+    list(FILTER soh__ EXCLUDE REGEX "soh/Enhancements/speechsynthesizer/(Darwin|SAPI).*")
 endif()
 
-source_group("soh\\Enhancements" REGULAR_EXPRESSION "soh/Enhancements/*")
-source_group("soh\\Enhancements\\audio" REGULAR_EXPRESSION "soh/Enhancements/audio/*")
-source_group("soh\\Enhancements\\controls" REGULAR_EXPRESSION "soh/Enhancements/controls/*")
-source_group("soh\\Enhancements\\cosmetics" REGULAR_EXPRESSION "soh/Enhancements/cosmetics/*")
-source_group("soh\\Enhancements\\crowd-control" REGULAR_EXPRESSION "soh/Enhancements/crowd-control/*")
-source_group("soh\\Enhancements\\custom-message" REGULAR_EXPRESSION "soh/Enhancements/custom-message/*")
-source_group("soh\\Enhancements\\debugger" REGULAR_EXPRESSION "soh/Enhancements/debugger/*")
-source_group("soh\\Enhancements\\game-interactor" REGULAR_EXPRESSION "soh/Enhancements/game-interactor/*")
-source_group("soh\\Enhancements\\item-tables" REGULAR_EXPRESSION "soh/Enhancements/item-tables/*")
-source_group("soh\\Enhancements\\randomizer" REGULAR_EXPRESSION "soh/Enhancements/randomizer/*")
-source_group("soh\\Enhancements\\randomizer\\3drando" REGULAR_EXPRESSION "soh/Enhancements/randomizer/3drando/*")
-source_group("soh\\Enhancements\\randomizer\\3drando\\hint_list" REGULAR_EXPRESSION "soh/Enhancements/randomizer/3drando/hint_list/*")
-source_group("soh\\Enhancements\\randomizer\\3drando\\location_access" REGULAR_EXPRESSION "soh/Enhancements/randomizer/3drando/location_access/*")
-source_group("soh\\Enhancements\\speechsynthesizer" REGULAR_EXPRESSION "soh/Enhancements/speechsynthesizer/*")
-source_group("soh\\Enhancements\\tts" REGULAR_EXPRESSION "soh/Enhancements/tts/*")
-
-if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    set_source_files_properties(soh/Enhancements/tts/tts.cpp PROPERTIES COMPILE_FLAGS "/utf-8")
-endif()
-# }}}
+# soh/Extractor {{{
+list(FILTER ship__ EXCLUDE REGEX "soh/Extractor/*")
 
 if(NOT CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch|CafeOS")
-    # soh/Extractor {{{
     file(GLOB_RECURSE soh__Extractor RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
         "soh/Extractor/*.c"
         "soh/Extractor/*.cpp"
         "soh/Extractor/*.h"
         "soh/Extractor/*.hpp"
     )
-    # }}}
 else()
     file(GLOB_RECURSE soh__Extractor RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
         "soh/Extractor/*.h"
         "soh/Extractor/*.hpp"
     )
-# }}}
 endif()
-
-# soh/resource {{{
-file(GLOB_RECURSE soh__Resource RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "soh/resource/*.cpp" "soh/resource/*.h")
-
-source_group("soh\\resource\\type" REGULAR_EXPRESSION "soh/resource/type/*")
-source_group("soh\\resource\\type\\scenecommand" REGULAR_EXPRESSION "soh/resource/type/scenecommand/*")
-source_group("soh\\resource\\importer" REGULAR_EXPRESSION "soh/resource/importer/*")
-source_group("soh\\resource\\importer\\scenecommand" REGULAR_EXPRESSION "soh/resource/importer/scenecommand/*")
 # }}}
 
 # src (decomp) {{{
@@ -246,10 +207,7 @@ set(ALL_FILES
     ${Header_Files}
     ${Header_Files__include}
     ${soh__}
-    ${soh__config}
-    ${soh__Enhancements}
     ${soh__Extractor}
-    ${soh__Resource}
     ${src__}
 )
 
