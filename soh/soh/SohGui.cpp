@@ -33,11 +33,6 @@
 #include "soh/resource/type/Skeleton.h"
 #include "libultraship/libultraship.h"
 
-#ifdef ENABLE_REMOTE_CONTROL
-#include "Enhancements/crowd-control/CrowdControl.h"
-#include "Enhancements/game-interactor/GameInteractor_Sail.h"
-#endif
-
 #include "Enhancements/game-interactor/GameInteractor.h"
 #include "Enhancements/cosmetics/authenticGfxPatches.h"
 #include "Enhancements/resolution-editor/ResolutionEditor.h"

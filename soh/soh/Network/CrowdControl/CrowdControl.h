@@ -1,25 +1,16 @@
 #ifdef ENABLE_REMOTE_CONTROL
-
-#ifndef _CROWDCONTROL_C
-#define _CROWDCONTROL_C
-#endif
-
-#include "stdint.h"
-
+#ifndef NETWORK_CROWD_CONTROL_H
+#define NETWORK_CROWD_CONTROL_H
 #ifdef __cplusplus
-#include <SDL2/SDL_net.h>
-#include <cstdint>
+
 #include <thread>
 #include <memory>
-#include <map>
 #include <vector>
-#include <iostream>
-#include <chrono>
-#include <future>
 
-#include "../game-interactor/GameInteractor.h"
+#include "soh/Network/Network.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
-class CrowdControl {
+class CrowdControl : public Network {
     private:
         enum EffectResult {
             /// <summary>The effect executed successfully.</summary>
@@ -75,8 +66,6 @@ class CrowdControl {
         
         std::thread ccThreadProcess;
 
-        bool isEnabled;
-
         std::vector<Effect*> activeEffects;
         std::mutex activeEffectsMutex;
 
@@ -92,7 +81,12 @@ class CrowdControl {
     public:
         static CrowdControl* Instance;
         void Enable();
-        void Disable();
+        void OnIncomingJson(nlohmann::json payload);
+        void OnConnected();
+        void OnDisconnected();
+        void DrawMenu();
 };
-#endif
-#endif
+
+#endif // __cplusplus
+#endif // NETWORK_CROWD_CONTROL_H
+#endif // ENABLE_REMOTE_CONTROL

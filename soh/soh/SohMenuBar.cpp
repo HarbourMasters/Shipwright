@@ -17,8 +17,8 @@
 #include "soh/Enhancements/mods.h"
 #include "Enhancements/cosmetics/authenticGfxPatches.h"
 #ifdef ENABLE_REMOTE_CONTROL
-#include "Enhancements/crowd-control/CrowdControl.h"
-#include "Enhancements/game-interactor/GameInteractor_Sail.h"
+#include "soh/Network/CrowdControl/CrowdControl.h"
+#include "soh/Network/Sail/Sail.h"
 #endif
 
 
@@ -1990,132 +1990,11 @@ void DrawDeveloperToolsMenu() {
     }
 }
 
-bool isStringEmpty(std::string str) {
-    // Remove spaces at the beginning of the string
-    std::string::size_type start = str.find_first_not_of(' ');
-    // Remove spaces at the end of the string
-    std::string::size_type end = str.find_last_not_of(' ');
-
-    // Check if the string is empty after stripping spaces
-    if (start == std::string::npos || end == std::string::npos)
-        return true; // The string is empty
-    else
-        return false; // The string is not empty
-}
-
 #ifdef ENABLE_REMOTE_CONTROL
 void DrawRemoteControlMenu() {
     if (ImGui::BeginMenu("Network")) {
-        static std::string ip = CVarGetString(CVAR_REMOTE("IP"), "127.0.0.1");
-        static uint16_t port = CVarGetInteger(CVAR_REMOTE("Port"), 43384);
-        bool isFormValid = !isStringEmpty(CVarGetString(CVAR_REMOTE("IP"), "127.0.0.1")) && port > 1024 && port < 65535;
-
-        const char* remoteOptions[2] = { "Sail", "Crowd Control"};
-
-        ImGui::BeginDisabled(GameInteractor::Instance->isRemoteInteractorEnabled);
-        ImGui::Text("Remote Interaction Scheme");
-        if (UIWidgets::EnhancementCombobox(CVAR_REMOTE("Scheme"), remoteOptions, GI_SCHEME_SAIL)) {
-            auto scheme = CVarGetInteger(CVAR_REMOTE("Scheme"), GI_SCHEME_SAIL);
-            switch (scheme) {
-                case GI_SCHEME_SAIL:
-                case GI_SCHEME_CROWD_CONTROL:
-                    CVarSetString(CVAR_REMOTE("IP"), "127.0.0.1");
-                    CVarSetInteger(CVAR_REMOTE("Port"), 43384);
-                    ip = "127.0.0.1";
-                    port = 43384;
-                    break;
-            }
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-        }
-        switch (CVarGetInteger(CVAR_REMOTE("Scheme"), GI_SCHEME_SAIL)) {
-            case GI_SCHEME_SAIL:
-                UIWidgets::InsertHelpHoverText(
-                    "Sail is a networking protocol designed to facilitate remote "
-                    "control of the Ship of Harkinian client. It is intended to "
-                    "be utilized alongside a Sail server, for which we provide a "
-                    "few straightforward implementations on our GitHub. The current "
-                    "implementations available allow integration with Twitch chat "
-                    "and SAMMI Bot, feel free to contribute your own!\n"
-                    "\n"
-                    "Click the question mark to copy the link to the Sail Github "
-                    "page to your clipboard."
-                );
-                if (ImGui::IsItemClicked()) {
-                    ImGui::SetClipboardText("https://github.com/HarbourMasters/sail");
-                }
-                break;
-            case GI_SCHEME_CROWD_CONTROL:
-                UIWidgets::InsertHelpHoverText(
-                    "Crowd Control is a platform that allows viewers to interact "
-                    "with a streamer's game in real time.\n"
-                    "\n"
-                    "Click the question mark to copy the link to the Crowd Control "
-                    "website to your clipboard."
-                );
-                if (ImGui::IsItemClicked()) {
-                    ImGui::SetClipboardText("https://crowdcontrol.live");
-                }
-                break;
-        }
-
-        ImGui::Text("Remote IP & Port");
-        if (ImGui::InputText("##gRemote.IP", (char*)ip.c_str(), ip.capacity() + 1)) {
-            CVarSetString(CVAR_REMOTE("IP"), ip.c_str());
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-        }
-
-        ImGui::SameLine();
-        ImGui::PushItemWidth(ImGui::GetFontSize() * 5);
-        if (ImGui::InputScalar("##gRemote.Port", ImGuiDataType_U16, &port)) {
-            CVarSetInteger(CVAR_REMOTE("Port"), port);
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-        }
-
-        ImGui::PopItemWidth();
-        ImGui::EndDisabled();
-
-        ImGui::Spacing();
-
-        ImGui::BeginDisabled(!isFormValid);
-        const char* buttonLabel = GameInteractor::Instance->isRemoteInteractorEnabled ? "Disable" : "Enable";
-        if (ImGui::Button(buttonLabel, ImVec2(-1.0f, 0.0f))) {
-            if (GameInteractor::Instance->isRemoteInteractorEnabled) {
-                CVarClear(CVAR_REMOTE("Enabled"));
-                CVarClear(CVAR_REMOTE("CrowdControl"));
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-                switch (CVarGetInteger(CVAR_REMOTE("Scheme"), GI_SCHEME_SAIL)) {
-                    case GI_SCHEME_SAIL:
-                        GameInteractorSail::Instance->Disable();
-                        break;
-                    case GI_SCHEME_CROWD_CONTROL:
-                        CrowdControl::Instance->Disable();
-                        break;
-                }
-            } else {
-                CVarSetInteger(CVAR_REMOTE("Enabled"), 1);
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-                switch (CVarGetInteger(CVAR_REMOTE("Scheme"), GI_SCHEME_SAIL)) {
-                    case GI_SCHEME_SAIL:
-                        GameInteractorSail::Instance->Enable();
-                        break;
-                    case GI_SCHEME_CROWD_CONTROL:
-                        CrowdControl::Instance->Enable();
-                        break;
-                }
-            }
-        }
-        ImGui::EndDisabled();
-
-        if (GameInteractor::Instance->isRemoteInteractorEnabled) {
-            ImGui::Spacing();
-            if (GameInteractor::Instance->isRemoteInteractorConnected) {
-                ImGui::Text("Connected");
-            } else {
-                ImGui::Text("Connecting...");
-            }
-        }
-
-        ImGui::Dummy(ImVec2(0.0f, 0.0f));
+        Sail::Instance->DrawMenu();
+        CrowdControl::Instance->DrawMenu();
         ImGui::EndMenu();
     }
 }
