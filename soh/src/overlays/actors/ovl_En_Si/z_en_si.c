@@ -96,7 +96,9 @@ void func_80AFB768(EnSi* this, PlayState* play) {
                 this->collider.base.ocFlags2 &= ~OC2_HIT_PLAYER;
                 if (GameInteractor_Should(VB_GIVE_ITEM_SKULL_TOKEN, true, this)) {
                     Item_Give(play, ITEM_SKULL_TOKEN);
-                    player->actor.freezeTimer = 10;
+                    if (!CVarGetInteger(CVAR_ENHANCEMENT("SkulltulaFreeze"), 0)) {
+                        player->actor.freezeTimer = 10;
+                    }
                     Message_StartTextbox(play, 0xB4, NULL);
                     Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
                 }
@@ -120,7 +122,9 @@ void func_80AFB89C(EnSi* this, PlayState* play) {
     if (!CHECK_FLAG_ALL(this->actor.flags, ACTOR_FLAG_HOOKSHOT_ATTACHED)) {
         if (GameInteractor_Should(VB_GIVE_ITEM_SKULL_TOKEN, true, this)) {
             Item_Give(play, ITEM_SKULL_TOKEN);
-            player->actor.freezeTimer = 10;
+            if (!CVarGetInteger(CVAR_ENHANCEMENT("SkulltulaFreeze"), 0)) {
+                player->actor.freezeTimer = 10;
+            }
             Message_StartTextbox(play, 0xB4, NULL);
             Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
         }
@@ -131,7 +135,11 @@ void func_80AFB89C(EnSi* this, PlayState* play) {
 void func_80AFB950(EnSi* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    if (Message_GetState(&play->msgCtx) != TEXT_STATE_CLOSING && GameInteractor_Should(VB_GIVE_ITEM_SKULL_TOKEN, true, this)) {
+    if (
+        Message_GetState(&play->msgCtx) != TEXT_STATE_CLOSING &&
+        GameInteractor_Should(VB_GIVE_ITEM_SKULL_TOKEN, true, this) &&
+        !CVarGetInteger(CVAR_ENHANCEMENT("SkulltulaFreeze"), 0)
+    ) {
         player->actor.freezeTimer = 10;
     } else {
         SET_GS_FLAGS((this->actor.params & 0x1F00) >> 8, this->actor.params & 0xFF);
