@@ -1,29 +1,26 @@
 #ifdef ENABLE_REMOTE_CONTROL
-
+#ifndef NETWORK_SAIL_H
+#define NETWORK_SAIL_H
 #ifdef __cplusplus
-#include <SDL2/SDL_net.h>
-#include <cstdint>
-#include <thread>
-#include <memory>
-#include <map>
-#include <vector>
-#include <iostream>
-#include <chrono>
-#include <future>
 
-#include "./GameInteractor.h"
+#include "soh/Network/Network.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
-class GameInteractorSail {
-    private:
-        bool isEnabled;
+class Sail : public Network {
+  private:
+    GameInteractionEffectBase* EffectFromJson(nlohmann::json payload);
+    void RegisterHooks();
 
-        void HandleRemoteJson(nlohmann::json payload);
-        GameInteractionEffectBase* EffectFromJson(nlohmann::json payload);
-        void RegisterHooks();
-    public:
-        static GameInteractorSail* Instance;
-        void Enable();
-        void Disable();
+  public:
+    static Sail* Instance;
+
+    void Enable();
+    void OnIncomingJson(nlohmann::json payload);
+    void OnConnected();
+    void OnDisconnected();
+    void DrawMenu();
 };
-#endif
-#endif
+
+#endif // __cplusplus
+#endif // NETWORK_SAIL_H
+#endif // ENABLE_REMOTE_CONTROL

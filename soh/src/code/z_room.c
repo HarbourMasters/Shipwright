@@ -413,7 +413,7 @@ BgImage* func_80096A74(PolygonType1* polygon1, PlayState* play) {
 
     camera = GET_ACTIVE_CAM(play);
     camId = camera->camDataIdx;
-    if (camId == -1 && (CVarGetInteger(CVAR_CHEAT("NoRestrictItems"), 0) || (CVarGetInteger(CVAR_REMOTE("Scheme"), GI_SCHEME_SAIL) == GI_SCHEME_CROWD_CONTROL && CVarGetInteger(CVAR_REMOTE("Enabled"), 0)))) {
+    if (camId == -1 && (CVarGetInteger(CVAR_CHEAT("NoRestrictItems"), 0) || (CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("Enabled"), 0)))) {
         // This prevents a crash when using items that change the
         // camera (such as din's fire), voiding out or dying on 
         // scenes with prerendered backgrounds.
