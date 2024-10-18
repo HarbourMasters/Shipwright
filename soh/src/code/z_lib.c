@@ -205,6 +205,33 @@ void func_80077D10(f32* arg0, s16* arg1, Input* input) {
         relX = -input->rel.stick_x;
     }
 
+    static uint16_t lastFoot = 0;
+    static uint8_t takingAStep = 0;
+
+    if (1) {
+        uint16_t blargL = input->press.button & BTN_DLEFT;
+        uint16_t blargR = input->press.button & BTN_DRIGHT;
+
+        if (blargL && (lastFoot != blargL)) {
+            lastFoot = blargL;
+            takingAStep = 3;
+        } else if (blargR && (lastFoot != blargR)) {
+            lastFoot = blargR;
+            takingAStep = 3;
+        }
+
+        if (takingAStep > 0) {
+            *arg1 = Math_Atan2S(relY, -relX);
+            *arg0 = 60.0f;
+            takingAStep--;
+            return;
+        }
+
+        *arg1 = Math_Atan2S(relY, -relX);
+        *arg0 = 0.0f;
+        return;
+    }
+
     *arg0 = sqrtf(SQ(relX) + SQ(relY));
     *arg0 = (60.0f < *arg0) ? 60.0f : *arg0;
 
