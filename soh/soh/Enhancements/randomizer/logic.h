@@ -140,6 +140,10 @@ class Logic {
     bool ClearedMQDekuSERoom = false;
     bool MQDekuWaterRoomTorches = false;
     bool PushedDekuBasementBlock = false;
+    bool OpenedLowestGoronCage = false;
+    bool OpenedUpperFireShortcut = false;
+    bool HitFireTemplePlatform = false;
+    bool OpenedFireMQFireMazeDoor = false;
 
     /* --- END OF HELPERS AND LOCATION ACCESS --- */
 

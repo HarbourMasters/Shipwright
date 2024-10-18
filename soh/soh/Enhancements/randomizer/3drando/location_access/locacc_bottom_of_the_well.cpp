@@ -37,7 +37,7 @@ void RegionTable_Init_BottomOfTheWell() {
                   Entrance(RR_BOTTOM_OF_THE_WELL_BEHIND_FAKE_WALLS, {[]{return ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH);}}),
                   Entrance(RR_BOTTOM_OF_THE_WELL_SOUTHWEST_ROOM,    {[]{return ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH);}}),
                   Entrance(RR_BOTTOM_OF_THE_WELL_KEESE_BEAMOS_ROOM, {[]{return logic->IsChild && logic->SmallKeys(RR_BOTTOM_OF_THE_WELL, 3);}}),
-                  Entrance(RR_BOTTOM_OF_THE_WELL_COFFIN_ROOM,       {[]{return logic->LoweredWaterInsideBotw || logic->CanUse(RG_BRONZE_SCALE);}}),
+                  Entrance(RR_BOTTOM_OF_THE_WELL_COFFIN_ROOM,       {[]{return logic->LoweredWaterInsideBotw || logic->HasItem(RG_BRONZE_SCALE);}}),
                   Entrance(RR_BOTTOM_OF_THE_WELL_DEAD_HAND_ROOM,    {[]{return logic->LoweredWaterInsideBotw && logic->IsChild;}}),
                   //Falling down into basement requires nothing, but falling down somewhere specific requires lens or lens trick
                   //kinda questionable given several drops are blocked by rocks, but that's how it was handled before and on N64
@@ -108,7 +108,7 @@ void RegionTable_Init_BottomOfTheWell() {
                   LOCATION(RC_BOTTOM_OF_THE_WELL_FREESTANDING_KEY, logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW)),
                 }, {
                   //Exits
-                  Entrance(RR_BOTTOM_OF_THE_WELL_PERIMETER, {[]{return logic->LoweredWaterInsideBotw || logic->CanUse(RG_BRONZE_SCALE);}}),
+                  Entrance(RR_BOTTOM_OF_THE_WELL_PERIMETER, {[]{return logic->LoweredWaterInsideBotw || logic->HasItem(RG_BRONZE_SCALE);}}),
   });
 
   areaTable[RR_BOTTOM_OF_THE_WELL_DEAD_HAND_ROOM] = Region("Bottom of the Well Dead Hand Room", "Bottom of the Well", {RA_BOTTOM_OF_THE_WELL}, NO_DAY_NIGHT_CYCLE, {}, {
