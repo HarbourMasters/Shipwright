@@ -64,6 +64,7 @@ std::map<CosmeticGroup, const char*> groupLabels = {
     { COSMETICS_GROUP_SWORDS, "Swords" },
     { COSMETICS_GROUP_GLOVES, "Gloves" },
     { COSMETICS_GROUP_EQUIPMENT, "Equipment" },
+    { COSMETICS_GROUP_KEY, "Keys" },
     { COSMETICS_GROUP_CONSUMABLE, "Consumables" },
     { COSMETICS_GROUP_HUD, "HUD" },
     { COSMETICS_GROUP_KALEIDO, "Pause Menu" },
@@ -102,7 +103,7 @@ typedef struct {
 /*
     So, you would like to add a new cosmetic option? BUCKLE UP
 
-    To preface this, if you have any questions or concerns ping @ProxySaw on discord, if I'm no longer available ask around in the #development-chat
+    To preface this, if you have any questions or concerns ping @ProxySaw on discord, if I'm no longer available ask around in the #soh-development
 
     # Silly Options
     Lets get this one out of the way, probably the only thing that will be consistent between silly options is how they are rendered
@@ -230,6 +231,35 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Consumable.GoldRupee",          "Gold Rupee",           COSMETICS_GROUP_CONSUMABLE,   ImVec4(255, 190,  55, 255), false, true, true),
     COSMETIC_OPTION("Consumable.SilverRupee",        "Silver Rupee",         COSMETICS_GROUP_CONSUMABLE,   ImVec4(255, 255, 255, 255), false, true, true),
 
+    COSMETIC_OPTION("Key.KeyringRing",               "Key Ring Ring",        COSMETICS_GROUP_KEY,          ImVec4(255, 255, 255, 255), true, true, false),
+    COSMETIC_OPTION("Key.ForestSmallBase",           "Forest Small Key",     COSMETICS_GROUP_KEY,          ImVec4(255, 255, 255, 255), true, true, false),
+    COSMETIC_OPTION("Key.ForestIcon",                "Forest Key Gem/Icon",  COSMETICS_GROUP_KEY,          ImVec4(255, 0,   0,   255), true, true, true),
+    COSMETIC_OPTION("Key.ForestBossBase",            "Forest Boss Key",      COSMETICS_GROUP_KEY,          ImVec4(255, 255, 0,   255), true, true, false),
+    COSMETIC_OPTION("Key.FireSmallBase",             "Fire Small Key",       COSMETICS_GROUP_KEY,          ImVec4(255, 255, 255, 255), true, true, false),
+    COSMETIC_OPTION("Key.FireIcon",                  "Fire Key Gem/Icon",    COSMETICS_GROUP_KEY,          ImVec4(255, 0,   0,   255), true, true, true),
+    COSMETIC_OPTION("Key.FireBossBase",              "Fire Boss Key",        COSMETICS_GROUP_KEY,          ImVec4(255, 255, 0,   255), true, true, false),
+    COSMETIC_OPTION("Key.WaterSmallBase",            "Water Small Key",      COSMETICS_GROUP_KEY,          ImVec4(255, 255, 255, 255), true, true, false),
+    COSMETIC_OPTION("Key.WaterIcon",                 "Water Key Gem/Icon",   COSMETICS_GROUP_KEY,          ImVec4(255, 0,   0,   255), true, true, true),
+    COSMETIC_OPTION("Key.WaterBossBase",             "Water Boss Key",       COSMETICS_GROUP_KEY,          ImVec4(255, 255, 0,   255), true, true, false),
+    COSMETIC_OPTION("Key.SpiritSmallBase",           "Spirit Small Key",     COSMETICS_GROUP_KEY,          ImVec4(255, 255, 255, 255), true, true, false),
+    COSMETIC_OPTION("Key.SpiritIcon",                "Spirit Key Gem/Icon",  COSMETICS_GROUP_KEY,          ImVec4(255, 0,   0,   255), true, true, true),
+    COSMETIC_OPTION("Key.SpiritBossBase",            "Spirit Boss Key",      COSMETICS_GROUP_KEY,          ImVec4(255, 255, 0,   255), true, true, false),
+    COSMETIC_OPTION("Key.ShadowSmallBase",           "Shadow Small Key",     COSMETICS_GROUP_KEY,          ImVec4(255, 255, 255, 255), true, true, false),
+    COSMETIC_OPTION("Key.ShadowIcon",                "Shadow Key Gem/Icon",  COSMETICS_GROUP_KEY,          ImVec4(255, 0,   0,   255), true, true, true),
+    COSMETIC_OPTION("Key.ShadowBossBase",            "Shadow Boss Key",      COSMETICS_GROUP_KEY,          ImVec4(255, 255, 0,   255), true, true, false),
+    COSMETIC_OPTION("Key.WellSmallBase",             "Well Small Key",       COSMETICS_GROUP_KEY,          ImVec4(255, 255, 255, 255), true, true, false),
+    COSMETIC_OPTION("Key.WellIcon",                  "Well Key Icon",        COSMETICS_GROUP_KEY,          ImVec4(255, 0,   0,   255), true, true, true),
+    COSMETIC_OPTION("Key.FortSmallBase",             "Fortress Small Key",   COSMETICS_GROUP_KEY,          ImVec4(255, 255, 255, 255), true, true, false),
+    COSMETIC_OPTION("Key.FortIcon",                  "Fortress Key Icon",    COSMETICS_GROUP_KEY,          ImVec4(255, 0,   0,   255), true, true, true),
+    COSMETIC_OPTION("Key.GTGSmallBase",              "GTG Small Key",        COSMETICS_GROUP_KEY,          ImVec4(255, 255, 255, 255), true, true, false),
+    COSMETIC_OPTION("Key.GTGIcon",                   "GTG Key Icon",         COSMETICS_GROUP_KEY,          ImVec4(255, 0,   0,   255), true, true, true),
+    COSMETIC_OPTION("Key.GanonsSmallBase",           "Ganon's Small Key",    COSMETICS_GROUP_KEY,          ImVec4(255, 255, 255, 255), true, true, false),
+    COSMETIC_OPTION("Key.GanonsIcon",                "Ganon's Key Gem/Icon", COSMETICS_GROUP_KEY,          ImVec4(255, 0,   0,   255), true, true, true),
+    COSMETIC_OPTION("Key.GanonsBossBase",            "Ganon's Boss Key",     COSMETICS_GROUP_KEY,          ImVec4(255, 255, 0,   255), true, true, false),
+    COSMETIC_OPTION("Key.ChestSmallBase",            "Chest Game Key",       COSMETICS_GROUP_KEY,          ImVec4(255, 255, 255, 255), true, true, false),
+    COSMETIC_OPTION("Key.ChestIcon",                 "Chest Game Key Icon",  COSMETICS_GROUP_KEY,          ImVec4(255, 0,   0,   255), true, true, true),
+    COSMETIC_OPTION("Key.Skeleton",                  "Skeleton Key",         COSMETICS_GROUP_KEY,          ImVec4(255, 255, 170, 255), true, true, false),
+    
     COSMETIC_OPTION("HUD.AButton",                   "A Button",             COSMETICS_GROUP_HUD,          ImVec4( 90,  90, 255, 255), false, true, false),
     COSMETIC_OPTION("HUD.BButton",                   "B Button",             COSMETICS_GROUP_HUD,          ImVec4(  0, 150,   0, 255), false, true, false),
     COSMETIC_OPTION("HUD.CButtons",                  "C Buttons",            COSMETICS_GROUP_HUD,          ImVec4(255, 160,   0, 255), false, true, false),
@@ -1759,6 +1789,7 @@ void CosmeticsEditorWindow::DrawElement() {
             DrawCosmeticGroup(COSMETICS_GROUP_MIRRORSHIELD);
             DrawCosmeticGroup(COSMETICS_GROUP_EQUIPMENT);
             DrawCosmeticGroup(COSMETICS_GROUP_SWORDS);
+            DrawCosmeticGroup(COSMETICS_GROUP_KEY);
             DrawCosmeticGroup(COSMETICS_GROUP_CONSUMABLE);
             ImGui::EndTabItem();
         }
