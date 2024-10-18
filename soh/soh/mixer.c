@@ -1,8 +1,21 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <string.h>
+#include <stdio.h>
 
 #include "mixer.h"
+
+#if defined(__SSE2__) || defined(__aarch64__)
+  #define SSE2_AVAILABLE
+#else
+  #pragma message("Warning: SSE2 support is not available. Code will not compile")
+#endif
+
+#if defined(__SSE2__)
+  #include <emmintrin.h>
+#elif defined(__aarch64__)
+  #include "sse2neon.h"
+#endif
 
 #ifndef __clang__
 #pragma GCC optimize ("unroll-loops")
@@ -272,6 +285,8 @@ void aEnvSetup2Impl(uint16_t initial_vol_left, uint16_t initial_vol_right) {
     rspa.vol[1] = initial_vol_right;
 }
 
+#ifndef SSE2_AVAILABLE
+// Base implementation for non SSE2 compatible CPUs
 void aEnvMixerImpl(uint16_t in_addr, uint16_t n_samples, bool swap_reverb,
 				   bool neg_3, bool neg_2,
                    bool neg_left, bool neg_right,
@@ -295,7 +310,7 @@ void aEnvMixerImpl(uint16_t in_addr, uint16_t n_samples, bool swap_reverb,
             for (int j = 0; j < 2; j++) {
                 samples[j] = (samples[j] * vols[j] >> 16) ^ negs[j];
             }
-        	for (int j = 0; j < 2; j++) {
+            for (int j = 0; j < 2; j++) {
                 *dry[j] = clamp16(*dry[j] + samples[j]); dry[j]++;
                 *wet[j] = clamp16(*wet[j] + ((samples[swapped[j]] * vol_wet >> 16) ^ negs[2 + j])); wet[j]++;
             }
@@ -307,6 +322,61 @@ void aEnvMixerImpl(uint16_t in_addr, uint16_t n_samples, bool swap_reverb,
         n -= 8;
     } while (n > 0);
 }
+#else
+// SSE2 optimized version of algorithm
+void aEnvMixerImpl(uint16_t in_addr, uint16_t n_samples, bool swap_reverb,
+				   bool neg_3, bool neg_2,
+                   bool neg_left, bool neg_right,
+                   int32_t wet_dry_addr, u32 unk)
+{
+    int16_t *in = BUF_S16(in_addr);
+    int16_t *dry[2] = {BUF_S16(((wet_dry_addr >> 24) & 0xFF) << 4), BUF_S16(((wet_dry_addr >> 16) & 0xFF) << 4)};
+    int16_t *wet[2] = {BUF_S16(((wet_dry_addr >> 8) & 0xFF) << 4), BUF_S16(((wet_dry_addr) & 0xFF) << 4)};
+    int16_t negs[4] = {neg_left ? -1 : 0, neg_right ? -1 : 0, neg_3 ? -4 : 0, neg_2 ? -2 : 0};
+    int n = ROUND_UP_16(n_samples);
+    const int n_aligned = n - (n % 8);
+
+    uint16_t vols[2] = {rspa.vol[0], rspa.vol[1]};
+    uint16_t rates[2] = {rspa.rate[0], rspa.rate[1]};
+    uint16_t vol_wet = rspa.vol_wet;
+    uint16_t rate_wet = rspa.rate_wet;
+
+    const __m128i* in_ptr = (__m128i*)in;
+    const __m128i* d_ptr[2] = { (__m128i*) dry[0], (__m128i*) dry[1] };
+    const __m128i* w_ptr[2] = { (__m128i*) wet[0], (__m128i*) wet[1] };
+
+    // Aligned loop
+    for (int N = 0; N < n_aligned; N+=8) {
+
+        // Init vectors
+        const __m128i in_channels = _mm_load_si128(in_ptr++);
+        __m128i d[2] = { _mm_load_si128(d_ptr[0]), _mm_load_si128(d_ptr[1]) };
+        __m128i w[2] = { _mm_load_si128(w_ptr[0]), _mm_load_si128(w_ptr[1]) };
+
+        // Compute base samples
+        // sample = ((in * vols) >> 16) ^ negs
+        __m128i s[2] = {
+            _mm_xor_si128(_mm_mulhi_epi16(in_channels, _mm_set1_epi16(vols[0])), _mm_set1_epi16(negs[0])),
+            _mm_xor_si128(_mm_mulhi_epi16(in_channels, _mm_set1_epi16(vols[1])), _mm_set1_epi16(negs[1]))
+        };
+
+        // Compute left swapped samples
+        // (sample * vol_wet) >> 16) ^ negs
+        __m128i ss[2] = {
+            _mm_xor_si128(_mm_mulhi_epi16(s[swap_reverb], _mm_set1_epi16(vol_wet)), _mm_set1_epi16(negs[2])),
+            _mm_xor_si128(_mm_mulhi_epi16(s[!swap_reverb], _mm_set1_epi16(vol_wet)), _mm_set1_epi16(negs[3]))
+        };
+
+        // Store values to buffers
+        for (int j = 0; j < 2; j++) {
+            _mm_store_si128(d_ptr[j]++, _mm_adds_epi16(s[j], d[j]));
+            _mm_store_si128(w_ptr[j]++, _mm_adds_epi16(ss[j], w[j]));
+            vols[j] += rates[j];
+        }
+        vol_wet += rate_wet;
+    }
+}
+#endif
 
 void aMixImpl(uint16_t count, int16_t gain, uint16_t in_addr, uint16_t out_addr) {
     int nbytes = ROUND_UP_32(ROUND_DOWN_16(count << 4));
