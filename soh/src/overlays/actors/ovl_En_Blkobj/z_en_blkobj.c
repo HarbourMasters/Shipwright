@@ -106,9 +106,9 @@ void EnBlkobj_DarkLinkFight(EnBlkobj* this, PlayState* play) {
         // Check for if all enemies are defeated with enemy randomizer or crowd control on.
         uint8_t roomCleared = 
             (!CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) && 
-                !(CVarGetInteger(CVAR_REMOTE("Scheme"), GI_SCHEME_SAIL) == GI_SCHEME_CROWD_CONTROL && CVarGetInteger(CVAR_REMOTE("Enabled"), 0)) && 
+                !(CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("Enabled"), 0)) && 
                 Actor_Find(&play->actorCtx, ACTOR_EN_TORCH2, ACTORCAT_BOSS) == NULL) ||
-            ((CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) || (CVarGetInteger(CVAR_REMOTE("Scheme"), GI_SCHEME_SAIL) == GI_SCHEME_CROWD_CONTROL && CVarGetInteger(CVAR_REMOTE("Enabled"), 0))) && 
+            ((CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) || (CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("Enabled"), 0))) && 
                 Flags_GetTempClear(play, this->dyna.actor.room));
         if (roomCleared) {
             Flags_SetClear(play, this->dyna.actor.room);

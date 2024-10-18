@@ -8,6 +8,7 @@
 #include <spdlog/spdlog.h>
 #include <spdlog/fmt/fmt.h>
 #include <regex>
+#include "soh/OTRGlobals.h"
 
 extern "C" {
 #include <z64.h>
@@ -18,30 +19,18 @@ extern PlayState* gPlayState;
 }
 
 void CrowdControl::Enable() {
-    if (isEnabled) {
-        return;
-    }
+    Network::Enable(CVarGetString(CVAR_REMOTE_CROWD_CONTROL("Host"), "127.0.0.1"), CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("Port"), 43384));
+}
 
-    isEnabled = true;
-    GameInteractor::Instance->EnableRemoteInteractor();
-    GameInteractor::Instance->RegisterRemoteJsonHandler([&](nlohmann::json payload) {
-        HandleRemoteData(payload);
-    });
-
+void CrowdControl::OnConnected() {
     ccThreadProcess = std::thread(&CrowdControl::ProcessActiveEffects, this);
 }
 
-void CrowdControl::Disable() {
-    if (!isEnabled) {
-        return;
-    }
-
-    isEnabled = false;
+void CrowdControl::OnDisconnected() {
     ccThreadProcess.join();
-    GameInteractor::Instance->DisableRemoteInteractor();
 }
 
-void CrowdControl::HandleRemoteData(nlohmann::json payload) {
+void CrowdControl::OnIncomingJson(nlohmann::json payload) {
     Effect* incomingEffect = ParseMessage(payload);
     if (!incomingEffect) {
         return;
@@ -139,7 +128,7 @@ void CrowdControl::EmitMessage(uint32_t eventId, long timeRemaining, EffectResul
 
     SPDLOG_INFO("[CrowdControl] Sending payload:\n{}", payload.dump());
 
-    GameInteractor::Instance->TransmitJsonToRemote(payload);
+    SendJsonToRemote(payload);
 }
 
 CrowdControl::EffectResult CrowdControl::ExecuteEffect(Effect* effect) {
@@ -184,6 +173,12 @@ CrowdControl::Effect* CrowdControl::ParseMessage(nlohmann::json dataReceived) {
     }
 
     SPDLOG_INFO("[CrowdControl] Received payload:\n{}", dataReceived.dump());
+
+    if (!dataReceived.contains("code")) {
+        // This seems to happen when the CC session ends
+        SPDLOG_ERROR("[CrowdControl] Payload does not contain code, ignoring.");
+        return nullptr;
+    }
 
     Effect* effect = new Effect();
     effect->lastExecutionResult = EffectResult::Initiate;
@@ -768,6 +763,70 @@ CrowdControl::Effect* CrowdControl::ParseMessage(nlohmann::json dataReceived) {
     }
 
     return effect;
+}
+
+void CrowdControl::DrawMenu() {
+    ImGui::PushID("CrowdControl");
+
+    static std::string host = CVarGetString(CVAR_REMOTE_CROWD_CONTROL("Host"), "127.0.0.1");
+    static uint16_t port = CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("Port"), 43384);
+    bool isFormValid = !SohUtils::IsStringEmpty(host) && port > 1024 && port < 65535;
+
+    ImGui::SeparatorText("Crowd Control");
+    UIWidgets::Tooltip(
+        "Crowd Control is a platform that allows viewers to interact "
+        "with a streamer's game in real time.\n"
+        "\n"
+        "Click the question mark to copy the link to the Crowd Control "
+        "website to your clipboard."
+    );
+    if (ImGui::IsItemClicked()) {
+        ImGui::SetClipboardText("https://crowdcontrol.live");
+    }
+
+    ImGui::BeginDisabled(isEnabled);
+    ImGui::Text("Host & Port");
+    if (UIWidgets::InputString("##Host", &host)) {
+        CVarSetString(CVAR_REMOTE_CROWD_CONTROL("Host"), host.c_str());
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+
+    ImGui::SameLine();
+    ImGui::PushItemWidth(ImGui::GetFontSize() * 5);
+    if (ImGui::InputScalar("##Port", ImGuiDataType_U16, &port)) {
+        CVarSetInteger(CVAR_REMOTE_CROWD_CONTROL("Port"), port);
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+    ImGui::PopItemWidth();
+    ImGui::EndDisabled();
+
+    ImGui::Spacing();
+
+    ImGui::BeginDisabled(!isFormValid);
+    const char* buttonLabel = isEnabled ? "Disable" : "Enable";
+    if (ImGui::Button(buttonLabel, ImVec2(-1.0f, 0.0f))) {
+        if (isEnabled) {
+            CVarClear(CVAR_REMOTE_CROWD_CONTROL("Enabled"));
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+            Disable();
+        } else {
+            CVarSetInteger(CVAR_REMOTE_CROWD_CONTROL("Enabled"), 1);
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+            Enable();
+        }
+    }
+    ImGui::EndDisabled();
+
+    if (isEnabled) {
+        ImGui::Spacing();
+        if (isConnected) {
+            ImGui::Text("Connected");
+        } else {
+            ImGui::Text("Connecting...");
+        }
+    }
+    
+    ImGui::PopID();
 }
 
 #endif

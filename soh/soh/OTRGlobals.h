@@ -91,6 +91,8 @@ uint32_t IsGameMasterQuest();
 #define CVAR_DEVELOPER_TOOLS(var) CVAR_PREFIX_DEVELOPER_TOOLS "." var
 #define CVAR_GENERAL(var) CVAR_PREFIX_GENERAL "." var
 #define CVAR_REMOTE(var) CVAR_PREFIX_REMOTE "." var
+#define CVAR_REMOTE_CROWD_CONTROL(var) CVAR_REMOTE(".CrowdControl." var)
+#define CVAR_REMOTE_SAIL(var) CVAR_REMOTE(".Sail." var)
 
 #ifndef __cplusplus
     void InitOTR(void);

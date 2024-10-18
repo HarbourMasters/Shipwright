@@ -128,7 +128,7 @@ void EnTorch2_Init(Actor* thisx, PlayState* play2) {
 
     // Change Dark Link to regular enemy instead of boss with enemy randomizer and crowd control.
     // This way Dark Link will be considered for "clear enemy" rooms properly.
-    if (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) || (CVarGetInteger(CVAR_REMOTE("Scheme"), GI_SCHEME_SAIL) == GI_SCHEME_CROWD_CONTROL && CVarGetInteger(CVAR_REMOTE("Enabled"), 0))) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) || (CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("Enabled"), 0))) {
         Actor_ChangeCategory(play, &play->actorCtx, thisx, ACTORCAT_ENEMY);
     }
 

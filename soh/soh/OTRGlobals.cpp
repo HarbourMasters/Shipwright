@@ -79,10 +79,10 @@
 #include "ActorDB.h"
 
 #ifdef ENABLE_REMOTE_CONTROL
-#include "Enhancements/crowd-control/CrowdControl.h"
-#include "Enhancements/game-interactor/GameInteractor_Sail.h"
+#include "soh/Network/CrowdControl/CrowdControl.h"
+#include "soh/Network/Sail/Sail.h"
 CrowdControl* CrowdControl::Instance;
-GameInteractorSail* GameInteractorSail::Instance;
+Sail* Sail::Instance;
 #endif
 
 #include "Enhancements/mods.h"
@@ -1173,7 +1173,7 @@ extern "C" void InitOTR() {
 
 #ifdef ENABLE_REMOTE_CONTROL
     CrowdControl::Instance = new CrowdControl();
-    GameInteractorSail::Instance = new GameInteractorSail();
+    Sail::Instance = new Sail();
 #endif
 
     OTRMessage_Init();
@@ -1203,15 +1203,11 @@ extern "C" void InitOTR() {
     srand(now);
 #ifdef ENABLE_REMOTE_CONTROL
     SDLNet_Init();
-    if (CVarGetInteger(CVAR_REMOTE("Enabled"), 0)) {
-        switch (CVarGetInteger(CVAR_REMOTE("Scheme"), GI_SCHEME_SAIL)) {
-            case GI_SCHEME_SAIL:
-                GameInteractorSail::Instance->Enable();
-                break;
-            case GI_SCHEME_CROWD_CONTROL:
-                CrowdControl::Instance->Enable();
-                break;
-        }
+    if (CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("Enabled"), 0)) {
+        CrowdControl::Instance->Enable();
+    }
+    if (CVarGetInteger(CVAR_REMOTE_SAIL("Enabled"), 0)) {
+        Sail::Instance->Enable();
     }
 #endif
 }
@@ -1224,15 +1220,11 @@ extern "C" void DeinitOTR() {
     SaveManager_ThreadPoolWait();
     OTRAudio_Exit();
 #ifdef ENABLE_REMOTE_CONTROL
-    if (CVarGetInteger(CVAR_REMOTE("Enabled"), 0)) {
-        switch (CVarGetInteger(CVAR_REMOTE("Scheme"), GI_SCHEME_SAIL)) {
-            case GI_SCHEME_SAIL:
-                GameInteractorSail::Instance->Disable();
-                break;
-            case GI_SCHEME_CROWD_CONTROL:
-                CrowdControl::Instance->Disable();
-                break;
-        }
+    if (CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("Enabled"), 0)) {
+        CrowdControl::Instance->Disable();
+    }
+    if (CVarGetInteger(CVAR_REMOTE_SAIL("Enabled"), 0)) {
+        Sail::Instance->Disable();
     }
     SDLNet_Quit();
 #endif
