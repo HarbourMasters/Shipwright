@@ -1,13 +1,6 @@
 #pragma once
 #include <libultraship/libultraship.h>
 
-#define PATCH_GFX(path, name, cvar, index, instruction) \
-    if (CVarGetInteger(cvar, 0)) { \
-        ResourceMgr_PatchGfxByName(path, name, index, instruction); \
-    } else { \
-        ResourceMgr_UnpatchGfxByName(path, name); \
-    }
-
 // Not to be confused with tabs, groups are 1:1 with the boxes shown in the UI, grouping them allows us to reset/randomize
 // every item in a group at once. If you are looking for tabs they are rendered manually in ImGui in `DrawCosmeticsEditor`
 typedef enum {
@@ -28,8 +21,18 @@ typedef enum {
     COSMETICS_GROUP_TRAILS,
     COSMETICS_GROUP_NAVI,
     COSMETICS_GROUP_IVAN,
+    COSMETICS_GROUP_MESSAGE,
     COSMETICS_GROUP_MAX
 } CosmeticGroup;
+
+#ifdef __cplusplus
+extern "C" {
+#endif //__cplusplus
+
+    Color_RGBA8 CosmeticsEditor_GetDefaultValue(const char* id);
+
+#ifdef __cplusplus
+}
 
 typedef struct {
     const std::string Name;
@@ -46,8 +49,7 @@ static float TablesCellsWidth = 300.0f;
 static ImGuiTableColumnFlags FlagsTable = ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV;
 static ImGuiTableColumnFlags FlagsCell = ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort;
 
-void InitCosmeticsEditor();//Init the menu itself
-ImVec4 GetRandomValue(int MaximumPossible);
+ImVec4 GetRandomValue();
 void CosmeticsEditor_RandomizeAll();
 void CosmeticsEditor_RandomizeGroup(CosmeticGroup group);
 void CosmeticsEditor_ResetAll();
@@ -62,3 +64,4 @@ class CosmeticsEditorWindow : public Ship::GuiWindow {
     void DrawElement() override;
     void UpdateElement() override {};
 };
+#endif //__cplusplus
