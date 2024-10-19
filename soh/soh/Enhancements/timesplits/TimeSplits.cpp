@@ -391,6 +391,9 @@ void TimeSplitsPopUpContext() {
             }
 
             SplitObject& popupObject = *findID;
+            if (popupObject.splitID == ITEM_SKULL_TOKEN) {
+
+            }
             if (ImGui::ImageButton(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(popupObject.splitImage),
                 ImVec2(26.0f, 26.0f), ImVec2(0, 0), ImVec2(1, 1), 2.0f, ImVec4(0, 0, 0, 0), popupObject.splitTint)) {
                 splitList.push_back(popupObject);
@@ -809,11 +812,6 @@ void TimeSplitWindow::DrawElement() {
     }
 
     ImGui::PushStyleColor(ImGuiCol_WindowBg, windowColor);
-    if (!ImGui::Begin("Time Splitter Window", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
-        ImGui::End();
-        ImGui::PopStyleColor(1);
-        return;
-    }
     ImGui::BeginTabBar("Split Tabs");
     if (ImGui::BeginTabItem("Splits")) {
         TimeSplitsDrawSplitsList();
@@ -828,8 +826,8 @@ void TimeSplitWindow::DrawElement() {
         ImGui::EndTabItem();
     }
     ImGui::EndTabBar();
-    ImGui::End();
     ImGui::PopStyleColor(1);
+    
 }
 
 void TimeSplitWindow::InitElement() {

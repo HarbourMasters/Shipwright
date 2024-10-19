@@ -1658,7 +1658,6 @@ void DrawEnhancementsMenu() {
                 mTimeSplitWindow->ToggleVisibility();
             }
         }
-}
         ImGui::PopStyleVar(3);
         ImGui::PopStyleColor(1);
 
