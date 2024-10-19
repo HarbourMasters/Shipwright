@@ -80,8 +80,6 @@ s32 func_80AFB748(EnSi* this, PlayState* play) {
 }
 
 void func_80AFB768(EnSi* this, PlayState* play) {
-    Player* player = GET_PLAYER(play);
-
     if (CHECK_FLAG_ALL(this->actor.flags, ACTOR_FLAG_HOOKSHOT_ATTACHED)) {
         this->actionFunc = func_80AFB89C;
     } else {
@@ -110,8 +108,6 @@ void func_80AFB768(EnSi* this, PlayState* play) {
 }
 
 void func_80AFB89C(EnSi* this, PlayState* play) {
-    Player* player = GET_PLAYER(play);
-
     Math_SmoothStepToF(&this->actor.scale.x, 0.25f, 0.4f, 1.0f, 0.0f);
     Actor_SetScale(&this->actor, this->actor.scale.x);
     this->actor.shape.rot.y += 0x400;
@@ -127,8 +123,6 @@ void func_80AFB89C(EnSi* this, PlayState* play) {
 }
 
 void func_80AFB950(EnSi* this, PlayState* play) {
-    Player* player = GET_PLAYER(play);
-
     if (
         Message_GetState(&play->msgCtx) == TEXT_STATE_CLOSING ||
         !GameInteractor_Should(VB_GIVE_ITEM_SKULL_TOKEN, !CVarGetInteger(CVAR_ENHANCEMENT("SkulltulaFreeze"), 0), this)
