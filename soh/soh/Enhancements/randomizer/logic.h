@@ -243,8 +243,6 @@ class Logic {
     static std::map<RandomizerGet, uint32_t> RandoGetToRandInf;
 
   private:
-    static bool IsMagicItem(RandomizerGet item);
-    static bool IsMagicArrow(RandomizerGet item);
     std::shared_ptr<Context> ctx;
     bool inLogic[LOGIC_MAX];
 }; // class Logic

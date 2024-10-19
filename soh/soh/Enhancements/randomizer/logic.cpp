@@ -15,18 +15,6 @@
 #include <spdlog/spdlog.h>
 
 namespace Rando {
-    bool Logic::IsMagicItem(RandomizerGet item) {
-        return item == RG_DINS_FIRE    ||
-                item == RG_FARORES_WIND ||
-                item == RG_NAYRUS_LOVE  ||
-                item == RG_LENS_OF_TRUTH;
-    }
-
-    bool Logic::IsMagicArrow(RandomizerGet item) {
-        return item == RG_FIRE_ARROWS ||
-                item == RG_ICE_ARROWS  ||
-                item == RG_LIGHT_ARROWS;
-    }
 
     bool Logic::HasItem(RandomizerGet itemName) {
         switch (itemName) {
@@ -237,6 +225,19 @@ namespace Rando {
             return false;
 
         switch (itemName) {
+            // Magic items
+            case RG_MAGIC_SINGLE:
+                return AmmoCanDrop || (HasBottle() && GetInLogic(LOGIC_BUY_MAGIC_POTION));
+            case RG_DINS_FIRE:
+            case RG_FARORES_WIND:
+            case RG_NAYRUS_LOVE:
+            case RG_LENS_OF_TRUTH:
+                return CanUse(RG_MAGIC_SINGLE);
+            case RG_FIRE_ARROWS:
+            case RG_ICE_ARROWS:
+            case RG_LIGHT_ARROWS:
+                return CanUse(RG_MAGIC_SINGLE) && CanUse(RG_FAIRY_BOW);
+
             // Adult items
             // TODO: Uncomment those if we ever implement more item usability settings
             case RG_FAIRY_BOW:
@@ -248,28 +249,34 @@ namespace Rando {
             case RG_HOVER_BOOTS:
                 return IsAdult;// || HoverBootsAsChild;
             case RG_HOOKSHOT:
-                return IsAdult;// || HookshotAsChild;
             case RG_LONGSHOT:
+            case RG_SCARECROW:
+            case RG_DISTANT_SCARECROW:
                 return IsAdult;// || HookshotAsChild;
-            case RG_SILVER_GAUNTLETS:
-            case RG_GOLDEN_GAUNTLETS:
-                return IsAdult;
             case RG_GORON_TUNIC:
                 return IsAdult;// || GoronTunicAsChild;
             case RG_ZORA_TUNIC:
                 return IsAdult;// || ZoraTunicAsChild;
-            case RG_SCARECROW:
-                return IsAdult;// || HookshotAsChild;
-            case RG_DISTANT_SCARECROW:
-                return IsAdult;// || HookshotAsChild;
-            case RG_HYLIAN_SHIELD:
-                return true;
             case RG_MIRROR_SHIELD:
                 return IsAdult;// || MirrorShieldAsChild;
             case RG_MASTER_SWORD:
                 return IsAdult;// || MasterSwordAsChild;
             case RG_BIGGORON_SWORD:
                 return IsAdult;// || BiggoronSwordAsChild;
+            case RG_SILVER_GAUNTLETS:
+            case RG_GOLDEN_GAUNTLETS:
+            // Adult Trade
+            case RG_POCKET_EGG:
+            case RG_COJIRO:
+            case RG_ODD_MUSHROOM:
+            case RG_ODD_POTION:
+            case RG_POACHERS_SAW:
+            case RG_BROKEN_SWORD:
+            case RG_PRESCRIPTION:
+            case RG_EYEBALL_FROG:
+            case RG_EYEDROPS:
+            case RG_CLAIM_CHECK:
+                return IsAdult;
 
             // Child items
             case RG_FAIRY_SLINGSHOT:
@@ -284,8 +291,6 @@ namespace Rando {
                 return IsChild /* || StickAsAdult;*/&& (StickPot || DekuBabaSticks);
             case RG_DEKU_SHIELD:
                 return IsChild;// || DekuShieldAsAdult;
-            case RG_WEIRD_EGG:
-                return IsChild;
             case RG_PROGRESSIVE_BOMB_BAG:
             case RG_BOMB_BAG:
                 return AmmoCanDrop || GetInLogic(LOGIC_BUY_BOMB);
@@ -294,48 +299,31 @@ namespace Rando {
             case RG_BOMBCHU_10:
             case RG_BOMBCHU_20:
                 return BombchuRefill() && BombchusEnabled();
+            case RG_WEIRD_EGG:
             case RG_RUTOS_LETTER:
                 return IsChild;
 
-                // Adult Trade
-            case RG_POCKET_EGG:
-            case RG_COJIRO:
-            case RG_ODD_MUSHROOM:
-            case RG_ODD_POTION:
-            case RG_POACHERS_SAW:
-            case RG_BROKEN_SWORD:
-            case RG_PRESCRIPTION:
-            case RG_EYEBALL_FROG:
-            case RG_EYEDROPS:
-            case RG_CLAIM_CHECK:
-                return IsAdult;
-
             // Songs
             case RG_ZELDAS_LULLABY:
-                return HasItem(RG_FAIRY_OCARINA) && HasItem(RG_OCARINA_C_LEFT_BUTTON) && HasItem(RG_OCARINA_C_RIGHT_BUTTON) && HasItem(RG_OCARINA_C_UP_BUTTON);
             case RG_EPONAS_SONG:
+            case RG_PRELUDE_OF_LIGHT:
                 return HasItem(RG_FAIRY_OCARINA) && HasItem(RG_OCARINA_C_LEFT_BUTTON) && HasItem(RG_OCARINA_C_RIGHT_BUTTON) && HasItem(RG_OCARINA_C_UP_BUTTON);
             case RG_SARIAS_SONG:
                 return HasItem(RG_FAIRY_OCARINA) && HasItem(RG_OCARINA_C_LEFT_BUTTON) && HasItem(RG_OCARINA_C_RIGHT_BUTTON) && HasItem(RG_OCARINA_C_DOWN_BUTTON);
             case RG_SUNS_SONG:
                 return HasItem(RG_FAIRY_OCARINA) && HasItem(RG_OCARINA_C_RIGHT_BUTTON) && HasItem(RG_OCARINA_C_UP_BUTTON) && HasItem(RG_OCARINA_C_DOWN_BUTTON);
             case RG_SONG_OF_TIME:
+            case RG_BOLERO_OF_FIRE:
+            case RG_REQUIEM_OF_SPIRIT:
                 return HasItem(RG_FAIRY_OCARINA) && HasItem(RG_OCARINA_A_BUTTON) && HasItem(RG_OCARINA_C_RIGHT_BUTTON) && HasItem(RG_OCARINA_C_DOWN_BUTTON);
             case RG_SONG_OF_STORMS:
                 return HasItem(RG_FAIRY_OCARINA) && HasItem(RG_OCARINA_A_BUTTON) && HasItem(RG_OCARINA_C_UP_BUTTON) && HasItem(RG_OCARINA_C_DOWN_BUTTON);
             case RG_MINUET_OF_FOREST:
                 return HasItem(RG_FAIRY_OCARINA) && HasItem(RG_OCARINA_A_BUTTON) && HasItem(RG_OCARINA_C_LEFT_BUTTON) && HasItem(RG_OCARINA_C_RIGHT_BUTTON) && HasItem(RG_OCARINA_C_UP_BUTTON);
-            case RG_BOLERO_OF_FIRE:
-                return HasItem(RG_FAIRY_OCARINA) && HasItem(RG_OCARINA_A_BUTTON) && HasItem(RG_OCARINA_C_RIGHT_BUTTON) && HasItem(RG_OCARINA_C_DOWN_BUTTON);
             case RG_SERENADE_OF_WATER:
-                return HasItem(RG_FAIRY_OCARINA) && HasItem(RG_OCARINA_A_BUTTON) && HasItem(RG_OCARINA_C_LEFT_BUTTON) && HasItem(RG_OCARINA_C_RIGHT_BUTTON) && HasItem(RG_OCARINA_C_DOWN_BUTTON);
-            case RG_REQUIEM_OF_SPIRIT:
-                return HasItem(RG_FAIRY_OCARINA) && HasItem(RG_OCARINA_A_BUTTON) && HasItem(RG_OCARINA_C_RIGHT_BUTTON) && HasItem(RG_OCARINA_C_DOWN_BUTTON);
             case RG_NOCTURNE_OF_SHADOW:
                 return HasItem(RG_FAIRY_OCARINA) && HasItem(RG_OCARINA_A_BUTTON) && HasItem(RG_OCARINA_C_LEFT_BUTTON) && HasItem(RG_OCARINA_C_RIGHT_BUTTON) && HasItem(RG_OCARINA_C_DOWN_BUTTON);
-            case RG_PRELUDE_OF_LIGHT:
-                return HasItem(RG_FAIRY_OCARINA) && HasItem(RG_OCARINA_C_LEFT_BUTTON) && HasItem(RG_OCARINA_C_RIGHT_BUTTON) && HasItem(RG_OCARINA_C_UP_BUTTON);
-
+            
             // Misc. Items
             case RG_FISHING_POLE:
                 return HasItem(RG_CHILD_WALLET); // as long as you have enough rubies
@@ -352,11 +340,10 @@ namespace Rando {
             case RG_BOTTLE_WITH_FAIRY:
                 return FairyPot || GossipStoneFairy || BeanPlantFairy || ButterflyFairy || FreeFairies || FairyPond || GetInLogic(LOGIC_FAIRY_ACCESS);
 
-            // Magic items
-            case RG_MAGIC_SINGLE:
-                return AmmoCanDrop || (HasBottle() && GetInLogic(LOGIC_BUY_MAGIC_POTION));
             default:
-                return CanUse(RG_MAGIC_SINGLE) && (IsMagicItem(itemName) || (IsMagicArrow(itemName) && CanUse(RG_FAIRY_BOW)));
+                SPDLOG_ERROR("CanUse reached `default` for {}. Assuming intention is no extra requirements for use so returning true, but HasItem should be used instead.", static_cast<uint32_t>(itemName));
+                assert(false);
+                return true;
         }
     }
 
@@ -570,7 +557,7 @@ namespace Rando {
     }
 
     bool Logic::CanDetonateUprightBombFlower() {
-        return CanDetonateBombFlowers() || CanUse(RG_GORONS_BRACELET);
+        return CanDetonateBombFlowers() || HasItem(RG_GORONS_BRACELET);
     }
 
     Logic::Logic() {
@@ -652,7 +639,7 @@ namespace Rando {
     }
 
     bool Logic::CanReflectNuts(){
-        return CanUse(RG_DEKU_SHIELD) || (IsAdult && CanUse(RG_HYLIAN_SHIELD));
+        return CanUse(RG_DEKU_SHIELD) || (IsAdult && HasItem(RG_HYLIAN_SHIELD));
     }
 
     bool Logic::CanCutShrubs(){
@@ -803,11 +790,11 @@ namespace Rando {
     }
 
     bool Logic::CanStandingShield(){
-        return CanUse(RG_MIRROR_SHIELD) || (IsAdult && CanUse(RG_HYLIAN_SHIELD)) || CanUse(RG_DEKU_SHIELD);
+        return CanUse(RG_MIRROR_SHIELD) || (IsAdult && HasItem(RG_HYLIAN_SHIELD)) || CanUse(RG_DEKU_SHIELD);
     }
 
     bool Logic::CanShield(){
-        return CanUse(RG_MIRROR_SHIELD) || CanUse(RG_HYLIAN_SHIELD) || CanUse(RG_DEKU_SHIELD);
+        return CanUse(RG_MIRROR_SHIELD) || HasItem(RG_HYLIAN_SHIELD) || CanUse(RG_DEKU_SHIELD);
     }
 
     bool Logic::CanUseProjectile(){

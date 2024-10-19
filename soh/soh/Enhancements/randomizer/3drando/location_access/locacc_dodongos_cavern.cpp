@@ -219,17 +219,17 @@ void RegionTable_Init_DodongosCavern() {
 
   areaTable[RR_DODONGOS_CAVERN_MQ_LOBBY] = Region("Dodongos Cavern MQ Lobby", "Dodongos Cavern", {RA_DODONGOS_CAVERN}, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&logic->GossipStoneFairy, {[]{return (Here(RR_DODONGOS_CAVERN_MQ_LOBBY, []{return logic->CanBreakMudWalls();}) || logic->CanUse(RG_GORONS_BRACELET)) && logic->CallGossipFairy();}}),
+                  EventAccess(&logic->GossipStoneFairy, {[]{return (Here(RR_DODONGOS_CAVERN_MQ_LOBBY, []{return logic->CanBreakMudWalls();}) || logic->HasItem(RG_GORONS_BRACELET)) && logic->CallGossipFairy();}}),
   }, {
                   //Locations
-                  LOCATION(RC_DODONGOS_CAVERN_MQ_MAP_CHEST,                 logic->CanBreakMudWalls() || logic->CanUse(RG_GORONS_BRACELET)),
+                  LOCATION(RC_DODONGOS_CAVERN_MQ_MAP_CHEST,                 logic->CanBreakMudWalls() || logic->HasItem(RG_GORONS_BRACELET)),
                   LOCATION(RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_LOBBY_REAR,     logic->CanStunDeku()),
                   LOCATION(RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_LOBBY_FRONT,    logic->CanStunDeku()),
-                  LOCATION(RC_DODONGOS_CAVERN_GOSSIP_STONE,                 Here(RR_DODONGOS_CAVERN_MQ_LOBBY, []{return logic->CanBreakMudWalls() || logic->CanUse(RG_GORONS_BRACELET);})),
+                  LOCATION(RC_DODONGOS_CAVERN_GOSSIP_STONE,                 Here(RR_DODONGOS_CAVERN_MQ_LOBBY, []{return logic->CanBreakMudWalls() || logic->HasItem(RG_GORONS_BRACELET);})),
   }, {
                   //Exits
-                  Entrance(RR_DODONGOS_CAVERN_MQ_MOUTH_SIDE_BRIDGE,     {[]{return Here(RR_DODONGOS_CAVERN_MQ_LOBBY, []{return logic->BlastOrSmash() || logic->CanUse(RG_GORONS_BRACELET);});}}),
-                  Entrance(RR_DODONGOS_CAVERN_MQ_STAIRS_LOWER,          {[]{return Here(RR_DODONGOS_CAVERN_MQ_LOBBY, []{return logic->BlastOrSmash() || logic->CanUse(RG_GORONS_BRACELET);});}}),
+                  Entrance(RR_DODONGOS_CAVERN_MQ_MOUTH_SIDE_BRIDGE,     {[]{return Here(RR_DODONGOS_CAVERN_MQ_LOBBY, []{return logic->BlastOrSmash() || logic->HasItem(RG_GORONS_BRACELET);});}}),
+                  Entrance(RR_DODONGOS_CAVERN_MQ_STAIRS_LOWER,          {[]{return Here(RR_DODONGOS_CAVERN_MQ_LOBBY, []{return logic->BlastOrSmash() || logic->HasItem(RG_GORONS_BRACELET);});}}),
                   Entrance(RR_DODONGOS_CAVERN_MQ_LOWER_RIGHT_SIDE,      {[]{return Here(RR_DODONGOS_CAVERN_MQ_LOBBY, []{return logic->CanBreakMudWalls();}) ||
                                                                                    Here(RR_DODONGOS_CAVERN_MQ_TORCH_PUZZLE_UPPER, []{return logic->HasItem(RG_GORONS_BRACELET) && logic->TakeDamage();});}}), //strength 1 and bunny speed works too
                   Entrance(RR_DODONGOS_CAVERN_MQ_POES_ROOM,             {[]{return logic->IsAdult;}}),
@@ -264,13 +264,13 @@ void RegionTable_Init_DodongosCavern() {
   areaTable[RR_DODONGOS_CAVERN_MQ_STAIRS_PAST_MUD_WALL] = Region("Dodongos Cavern MQ Stairs Past Mud Wall", "Dodongos Cavern", {RA_DODONGOS_CAVERN}, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&logic->DekuBabaSticks, {[]{return logic->CanGetDekuBabaSticks();}}),
-                  //EventAccess(&logic->CanClimbDCStairs, {[]{return logic->CanUse(RG_GORONS_BRACELET) && (logic->CanUse(RG_STICKS));}}),
+                  //EventAccess(&logic->CanClimbDCStairs, {[]{return logic->HasItem(RG_GORONS_BRACELET) && (logic->CanUse(RG_STICKS));}}),
   }, {
                   //Locations
                   LOCATION(RC_DODONGOS_CAVERN_MQ_GS_SONG_OF_TIME_BLOCK_ROOM, logic->CanUse(RG_SONG_OF_TIME) && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)),
   }, {
                   //Exits
-                  Entrance(RR_DODONGOS_CAVERN_MQ_STAIRS_UPPER, {[]{return logic->CanUse(RG_GORONS_BRACELET) && (logic->CanUse(RG_STICKS));}}),
+                  Entrance(RR_DODONGOS_CAVERN_MQ_STAIRS_UPPER, {[]{return logic->HasItem(RG_GORONS_BRACELET) && (logic->CanUse(RG_STICKS));}}),
                   Entrance(RR_DODONGOS_CAVERN_MQ_STAIRS_LOWER, {[]{return true;}}),
   });
 
