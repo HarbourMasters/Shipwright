@@ -37,6 +37,7 @@ using json = nlohmann::json;
 
 static uint32_t splitBestTimeDisplay;
 static int32_t popupID = -1;
+static int32_t removeIndex = -1;
 static uint32_t tableSize = 0;
 static int skullTokenCount = 0;
 static float timeSplitsWindowSize = 1.0f;
@@ -463,6 +464,25 @@ void TimeSplitsPopUpContext() {
     }
 }
 
+void TimeSplitsPostDragAndDrop() {
+    if (dragTargetIndex != -1) {
+        SplitObject tempSourceSplitObject = splitList[dragSourceIndex];
+        if (tempSourceSplitObject.splitTimeStatus == SPLIT_ACTIVE) {
+            tempSourceSplitObject.splitTimeStatus = SPLIT_INACTIVE;
+        }
+        if (splitList[dragTargetIndex].splitTimeStatus == SPLIT_ACTIVE) {
+            splitList[dragTargetIndex].splitTimeStatus = SPLIT_INACTIVE;
+        }
+
+        splitList.erase(splitList.begin() + dragSourceIndex);
+        splitList.insert(splitList.begin() + dragTargetIndex, tempSourceSplitObject);
+        dragTargetIndex = -1;
+        dragSourceIndex = -1;
+
+        TimeSplitsUpdateSplitStatus();
+    }
+}
+
 void TimeSplitsItemSplitEvent(uint32_t type, u8 item) {
     uint32_t index = 0;
     if (type <= SPLIT_QUEST) {
@@ -599,26 +619,11 @@ void TimeSplitsDrawSplitsList() {
         ImGui::Text((split.splitTimePreviousBest != 0) ? formatTimestampTimeSplit(split.splitTimePreviousBest).c_str() : "--:--:-");
         ImGui::PopID();
         ImGui::PopStyleVar(1);
-        
+
         dragIndex++;
     }
 
-    if (dragTargetIndex != -1) {
-        SplitObject tempSourceSplitObject = splitList[dragSourceIndex];
-        if (tempSourceSplitObject.splitTimeStatus == SPLIT_ACTIVE) {
-            tempSourceSplitObject.splitTimeStatus = SPLIT_INACTIVE;
-        }
-        if (splitList[dragTargetIndex].splitTimeStatus == SPLIT_ACTIVE) {
-            splitList[dragTargetIndex].splitTimeStatus = SPLIT_INACTIVE;
-        }
-
-        splitList.erase(splitList.begin() + dragSourceIndex);
-        splitList.insert(splitList.begin() + dragTargetIndex, tempSourceSplitObject);
-        dragTargetIndex = -1;
-        dragSourceIndex = -1;
-
-        TimeSplitsUpdateSplitStatus();
-    }
+    TimeSplitsPostDragAndDrop();
 
     ImGui::PopStyleColor(3);
     ImGui::PopStyleVar(1);
@@ -781,7 +786,51 @@ void TimeSplitsDrawOptionsMenu() {
     }
 }
 
+void TimeSplitsRemoveSplitEntry(uint32_t index) {
+    if (removeIndex != -1) {
+        splitList.erase(splitList.begin() + index);
+        removeIndex = -1;
+    }
+}
+
 void TimeSplitsDrawManageList() {
+    uint32_t index = 0;
+    ImGui::BeginTable("List Management", 2, ImGuiTableFlags_BordersInnerV);
+    ImGui::TableSetupColumn("Preview", ImGuiTableColumnFlags_WidthFixed, 60.0f);
+    ImGui::TableSetupColumn("Options", ImGuiTableColumnFlags_NoHeaderLabel);
+
+    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.0f, 1.0f, 1.0f, 0.0f));
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(1.0f, 1.0f, 1.0f, 0.2f));
+    ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(1.0f, 1.0f, 1.0f, 0.1f));
+
+    ImGui::TableNextColumn();
+    ImGui::BeginTabBar("List Preview");
+    if (ImGui::BeginTabItem("Preview")) {
+        ImGui::BeginChild("PreviewChild");
+        for (auto& data : splitList) {
+            float availableWidth = ImGui::GetContentRegionAvail().x;
+            float imageWidth = 38.0f; // Width of your image button
+            float offsetX = (availableWidth - imageWidth) * 0.5f; // Centering offset
+
+            if (offsetX > 0.0f) {
+                ImGui::SetCursorPosX(ImGui::GetCursorPosX() + offsetX); // Apply the offset to center
+            }
+
+            if (ImGui::ImageButton(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(data.splitImage),
+                                   ImVec2(38.0f, 38.0f), ImVec2(0, 0), ImVec2(1, 1), 2.0f, ImVec4(0, 0, 0, 0), data.splitTint)) {
+                removeIndex = index;
+            }
+            HandleDragAndDrop(splitList, index, splitList[index].splitName);
+            index++;
+        }
+        TimeSplitsRemoveSplitEntry(removeIndex);
+        ImGui::EndChild();
+        ImGui::EndTabItem();
+    }
+    ImGui::EndTabBar();
+    
+    ImGui::PopStyleColor(3);
+    ImGui::TableNextColumn();
     ImGui::BeginTabBar("List Options");
     if (ImGui::BeginTabItem("Equipment")) {
         TimeSplitsDrawItemList(SPLIT_EQUIPMENT);
@@ -791,7 +840,7 @@ void TimeSplitsDrawManageList() {
         TimeSplitsDrawItemList(SPLIT_ITEM);
         ImGui::EndTabItem();
     }
-    if (ImGui::BeginTabItem("Quest Items")) {
+    if (ImGui::BeginTabItem("Quest")) {
         TimeSplitsDrawItemList(SPLIT_QUEST);
         ImGui::EndTabItem();
     }
@@ -807,7 +856,11 @@ void TimeSplitsDrawManageList() {
         TimeSplitsDrawItemList(SPLIT_MISC);
         ImGui::EndTabItem();
     }
+
+    TimeSplitsPostDragAndDrop();
+
     ImGui::EndTabBar();
+    ImGui::EndTable();
 }
 
 void InitializeSplitDataFile() {
