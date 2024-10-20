@@ -868,7 +868,8 @@ void TimeSplitWindow::InitElement() {
 
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>([](GetItemEntry itemEntry) {
         GetItemEntry testItem = itemEntry;
-        if (itemEntry.itemId == ITEM_SKULL_TOKEN || itemEntry.itemId == ITEM_BOTTLE || itemEntry.itemId == ITEM_POE) {
+        if (itemEntry.itemId == ITEM_SKULL_TOKEN || itemEntry.itemId == ITEM_BOTTLE || itemEntry.itemId == ITEM_POE 
+            || itemEntry.itemId == ITEM_BIG_POE) {
             uint32_t tempType = SPLIT_ITEM;
             for (auto& data : splitList) {
                 if (data.splitID == itemEntry.itemId) {
