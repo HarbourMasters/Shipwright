@@ -580,9 +580,9 @@ void TimeSplitsDrawSplitsList() {
     ImGui::BeginTable("Splits", 5, ImGuiTableFlags_Hideable | ImGuiTableFlags_Reorderable);
     ImGui::TableSetupColumn("Item Image", ImGuiTableColumnFlags_WidthFixed | ImGuiTableColumnFlags_NoHeaderLabel, 34.0f);
     ImGui::TableSetupColumn("Item Name");
-    ImGui::TableSetupColumn("Current Time", ImGuiTableColumnFlags_WidthFixed, 90.0f);
-    ImGui::TableSetupColumn("+/-", ImGuiTableColumnFlags_WidthFixed, 80.0f);
-    ImGui::TableSetupColumn("Prev. Best", ImGuiTableColumnFlags_WidthFixed, 90.0f);
+    ImGui::TableSetupColumn("Current Time");
+    ImGui::TableSetupColumn("+/-");
+    ImGui::TableSetupColumn("Prev. Best");
     ImGui::TableHeadersRow();
 
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.0f, 1.0f, 1.0f, 0.0f));
@@ -880,24 +880,23 @@ void TimeSplitWindow::DrawElement() {
         InitializeSplitDataFile();
         initialized = true;
     }
-
     ImGui::PushStyleColor(ImGuiCol_WindowBg, windowColor);
-    ImGui::BeginTabBar("Split Tabs");
-    if (ImGui::BeginTabItem("Splits")) {
-        TimeSplitsDrawSplitsList();
-        ImGui::EndTabItem();
+    if (ImGui::BeginTabBar("Split Tabs")) {
+        if (ImGui::BeginTabItem("Splits")) {
+            TimeSplitsDrawSplitsList();
+            ImGui::EndTabItem();
+        }
+        if (ImGui::BeginTabItem("Manage List")) {
+            TimeSplitsDrawManageList();
+            ImGui::EndTabItem();
+        }
+        if (ImGui::BeginTabItem("Options")) {
+            TimeSplitsDrawOptionsMenu();
+            ImGui::EndTabItem();
+        }
+        ImGui::EndTabBar();
     }
-    if (ImGui::BeginTabItem("Manage List")) {
-        TimeSplitsDrawManageList();
-        ImGui::EndTabItem();
-    }
-    if (ImGui::BeginTabItem("Options")) {
-        TimeSplitsDrawOptionsMenu();
-        ImGui::EndTabItem();
-    }
-    ImGui::EndTabBar();
-    ImGui::PopStyleColor(1);
-    
+    ImGui::PopStyleColor();
 }
 
 void TimeSplitWindow::InitElement() {
