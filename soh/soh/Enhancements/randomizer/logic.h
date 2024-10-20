@@ -140,6 +140,10 @@ class Logic {
     bool ClearedMQDekuSERoom = false;
     bool MQDekuWaterRoomTorches = false;
     bool PushedDekuBasementBlock = false;
+    bool OpenedLowestGoronCage = false;
+    bool OpenedUpperFireShortcut = false;
+    bool HitFireTemplePlatform = false;
+    bool OpenedFireMQFireMazeDoor = false;
 
     /* --- END OF HELPERS AND LOCATION ACCESS --- */
 
@@ -153,7 +157,7 @@ class Logic {
     bool SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmountGlitchless, uint8_t requiredAmountGlitched);
     bool CanDoGlitch(GlitchType glitch);
     bool CanEquipSwap(RandomizerGet itemName);
-    bool CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance = ED_CLOSE);
+    bool CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance = ED_CLOSE, uint8_t quantity = 1);
     bool CanPassEnemy(RandomizerEnemy enemy, EnemyDistance distance = ED_CLOSE);
     bool CanAvoidEnemy(RandomizerEnemy enemy);
     bool CanGetEnemyDrop(RandomizerEnemy enemy, EnemyDistance distance = ED_CLOSE, bool aboveLink = false);
