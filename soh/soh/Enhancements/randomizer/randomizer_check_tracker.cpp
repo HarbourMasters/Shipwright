@@ -1398,7 +1398,7 @@ void DrawLocation(RandomizerCheck rc) {
         mainColor =
             !IsHeartPiece((GetItemID)Rando::StaticData::RetrieveItem(loc->GetVanillaItem()).GetItemID()) && !IS_RANDO
                 ? Color_Collected_Extra_Default
-                : Color_Main_Default;
+                : Color_Collected_Main;
         extraColor = Color_Collected_Extra_Default;
     } else if (status == RCSHOW_SAVED) {
         if (!showHidden && hideSaved) {
@@ -1407,7 +1407,7 @@ void DrawLocation(RandomizerCheck rc) {
         mainColor =
             !IsHeartPiece((GetItemID)Rando::StaticData::RetrieveItem(loc->GetVanillaItem()).GetItemID()) && !IS_RANDO
                 ? Color_Saved_Extra_Default
-                : Color_Main_Default;
+                : Color_Saved_Main;
         extraColor = Color_Saved_Extra_Default;
     } else if (skipped) {
         if (!showHidden && hideSkipped) {
@@ -1416,7 +1416,7 @@ void DrawLocation(RandomizerCheck rc) {
         mainColor =
             !IsHeartPiece((GetItemID)Rando::StaticData::RetrieveItem(loc->GetVanillaItem()).GetItemID()) && !IS_RANDO
                 ? Color_Skipped_Extra_Default
-                : Color_Main_Default;
+                : Color_Skipped_Main;
         extraColor = Color_Skipped_Extra_Default;
     } else if (status == RCSHOW_SEEN || status == RCSHOW_IDENTIFIED) {
         if (!showHidden && hideSeen) {
@@ -1425,7 +1425,7 @@ void DrawLocation(RandomizerCheck rc) {
         mainColor =
             !IsHeartPiece((GetItemID)Rando::StaticData::RetrieveItem(loc->GetVanillaItem()).GetItemID()) && !IS_RANDO
                 ? Color_Seen_Extra_Default
-                : Color_Main_Default;
+                : Color_Seen_Main;
         extraColor = Color_Seen_Extra_Default;
     } else if (status == RCSHOW_SCUMMED) {
         if (!showHidden && hideScummed) {
@@ -1434,7 +1434,7 @@ void DrawLocation(RandomizerCheck rc) {
         mainColor =
             !IsHeartPiece((GetItemID)Rando::StaticData::RetrieveItem(loc->GetVanillaItem()).GetItemID()) && !IS_RANDO
             ? Color_Scummed_Extra_Default
-            : Color_Main_Default;
+            : Color_Scummed_Main;
         extraColor = Color_Scummed_Extra_Default;
     } else if (status == RCSHOW_UNCHECKED) {
         if (!showHidden && hideUnchecked) {
@@ -1443,7 +1443,7 @@ void DrawLocation(RandomizerCheck rc) {
         mainColor =
             !IsHeartPiece((GetItemID)Rando::StaticData::RetrieveItem(loc->GetVanillaItem()).GetItemID()) && !IS_RANDO
                 ? Color_Unchecked_Extra_Default
-                : Color_Main_Default;
+                : Color_Unchecked_Main;
         extraColor = Color_Unchecked_Extra_Default;
     }
 
