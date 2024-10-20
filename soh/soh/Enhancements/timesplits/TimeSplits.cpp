@@ -729,13 +729,6 @@ void TimeSplitsDrawOptionsMenu() {
     }
 
     ImGui::SeparatorText("Split List Management");
-    if (ImGui::Button("New Attempt")) {
-        for (auto& data : splitList) {
-            data.splitTimeStatus = SPLIT_INACTIVE;
-        }
-        splitList[0].splitTimeStatus = SPLIT_ACTIVE;
-    }
-    UIWidgets::PaddedSeparator();
 
     ImGui::Text("New List Name: ");
     ImGui::PushItemWidth(150.0f);
@@ -746,7 +739,7 @@ void TimeSplitsDrawOptionsMenu() {
         TimeSplitsFileManagement(ACTION_SAVE, listNameBuf, splitList);
     }
     UIWidgets::PaddedSeparator();
-    
+
     TimeSplitsFileManagement(ACTION_COLLECT, "", emptyList);
     static uint32_t selectedItem = 0;
     static std::string listItem = keys[0];
@@ -770,14 +763,21 @@ void TimeSplitsDrawOptionsMenu() {
     if (ImGui::Button("Load List")) {
         TimeSplitsFileManagement(ACTION_LOAD, keys[selectedItem].c_str(), emptyList);
     }
-    UIWidgets::PaddedSeparator();
-
-    if (ImGui::Button("Update Splits")) {
-        TimeSplitsFileManagement(ACTION_UPDATE, keys[selectedItem].c_str(), splitList);
-    }
     ImGui::SameLine();
     if (ImGui::Button("Save List")) {
         TimeSplitsFileManagement(ACTION_SAVE, keys[selectedItem].c_str(), splitList);
+    }
+    UIWidgets::PaddedSeparator();
+
+    if (ImGui::Button("New Attempt")) {
+        for (auto& data : splitList) {
+            data.splitTimeStatus = SPLIT_INACTIVE;
+        }
+        splitList[0].splitTimeStatus = SPLIT_ACTIVE;
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Update Splits")) {
+        TimeSplitsFileManagement(ACTION_UPDATE, keys[selectedItem].c_str(), splitList);
     }
 }
 
