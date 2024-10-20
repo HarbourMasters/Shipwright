@@ -522,10 +522,9 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                 *should = false;
             }
             break;
-        case VB_GIVE_ITEM_SKULL_TOKEN:
-            if (!CVarGetInteger(CVAR_ENHANCEMENT("SkulltulaFreeze"), 0)) {
-                Player* player = GET_PLAYER(gPlayState);
-                player->actor.freezeTimer = 10;
+        case VB_FREEZE_ON_SKULL_TOKEN:
+            if (CVarGetInteger(CVAR_ENHANCEMENT("SkulltulaFreeze"), 0)) {
+                *should = false;
             }
             break;
         case VB_DAMPE_IN_GRAVEYARD_DESPAWN:
