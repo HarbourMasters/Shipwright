@@ -166,7 +166,7 @@ void RegionTable_Init_DekuTree() {
                   Entrance(RR_DEKU_TREE_MQ_2F,       {[]{return true;}}),
                   //Swim is not required because you can jump with enough momentum to hit land. 
                   //You even avoid fall damage if you hit the shallow water, though it's obscure knowledge so may be a trick
-                  //if it is, then we need a landing room with (IsAdult || CanUse(RG_BRONZE_SCALE) || TakeDamage() || that trick) to reach basement
+                  //if it is, then we need a landing room with (IsAdult || HasItem(RG_BRONZE_SCALE) || TakeDamage() || that trick) to reach basement
                   Entrance(RR_DEKU_TREE_MQ_BASEMENT, {[]{return logic->BrokeDeku1FWeb;}}),
                   //is it possible to recoil from here to the ledge with a trick?
   });
