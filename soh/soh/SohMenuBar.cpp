@@ -673,7 +673,7 @@ void DrawEnhancementsMenu() {
                     CVarSetInteger(CVAR_ENHANCEMENT("SlowTextSpeed"), CVarGetInteger(CVAR_ENHANCEMENT("TextSpeed"), 1));
                 }
                 UIWidgets::Tooltip("Makes the speed of slow text match the normal text speed above.");
-                UIWidgets::PaddedEnhancementSliderFloat("King Zora Speed: %.2fx", "##MWEEPSPEED", CVAR_ENHANCEMENT("MweepSpeed"), 0.1f, 5.0f, "", 1.0f, false, false, true);
+                UIWidgets::PaddedEnhancementSliderFloat("King Zora Speed: %.2fx", "##MWEEPSPEED", CVAR_ENHANCEMENT("MweepSpeed"), 0.1f, 5.0f, "", 1.0f, false, true, false, true);
                 UIWidgets::PaddedEnhancementSliderInt("Vine/Ladder Climb speed +%d", "##CLIMBSPEED", CVAR_ENHANCEMENT("ClimbSpeed"), 0, 12, "", 0, true, false, true);
                 UIWidgets::PaddedEnhancementSliderInt("Block pushing speed +%d", "##BLOCKSPEED", CVAR_ENHANCEMENT("FasterBlockPush"), 0, 5, "", 0, true, false, true);
                 UIWidgets::PaddedEnhancementSliderInt("Crawl speed %dx", "##CRAWLSPEED", CVAR_ENHANCEMENT("CrawlSpeed"), 1, 4, "", 1, true, false, true);
