@@ -5,6 +5,7 @@
  */
 
 #include "z_en_si.h"
+#include "soh/Enhancements/custom-message/CustomMessageTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOOKSHOT_DRAGS)
@@ -94,7 +95,7 @@ void func_80AFB768(EnSi* this, PlayState* play) {
                 this->collider.base.ocFlags2 &= ~OC2_HIT_PLAYER;
                 if (GameInteractor_Should(VB_GIVE_ITEM_SKULL_TOKEN, true, this)) {
                     Item_Give(play, ITEM_SKULL_TOKEN);
-                    Message_StartTextbox(play, 0xB4, NULL);
+                    Message_StartTextbox(play, TEXT_GS_NO_FREEZE, NULL);
                     Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
                 }
                 this->actionFunc = func_80AFB950;
@@ -115,7 +116,7 @@ void func_80AFB89C(EnSi* this, PlayState* play) {
     if (!CHECK_FLAG_ALL(this->actor.flags, ACTOR_FLAG_HOOKSHOT_ATTACHED)) {
         if (GameInteractor_Should(VB_GIVE_ITEM_SKULL_TOKEN, true, this)) {
             Item_Give(play, ITEM_SKULL_TOKEN);
-            Message_StartTextbox(play, 0xB4, NULL);
+            Message_StartTextbox(play, TEXT_GS_NO_FREEZE, NULL);
             Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
         }
         this->actionFunc = func_80AFB950;
