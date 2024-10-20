@@ -6,7 +6,7 @@
 
 #include "z_bg_spot03_taki.h"
 #include "objects/object_spot03_object/object_spot03_object.h"
-#include "soh/Enhancements/enhancementTypes.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
@@ -46,17 +46,6 @@ void BgSpot03Taki_ApplyOpeningAlpha(BgSpot03Taki* this, s32 bufferIndex) {
     }
 }
 
-static bool BgSpot03Taki_ShouldKeepOpen() {
-    switch (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.ZoraWaterfall"), 0)) {
-        case ZORA_WATERFALL_OPEN_ALWAYS:
-            return true;
-        case ZORA_WATERFALL_OPEN_ADULT:
-            return LINK_IS_ADULT;
-        default:
-            return false;
-    }
-}
-
 void BgSpot03Taki_Init(Actor* thisx, PlayState* play) {
     BgSpot03Taki* this = (BgSpot03Taki*)thisx;
     s16 pad;
@@ -65,7 +54,7 @@ void BgSpot03Taki_Init(Actor* thisx, PlayState* play) {
     this->switchFlag = (this->dyna.actor.params & 0x3F);
     DynaPolyActor_Init(&this->dyna, DPM_UNK);
 
-    if (BgSpot03Taki_ShouldKeepOpen()) {
+    if (GameInteractor_Should(VB_KEEP_ZORA_WATERFALL_OPEN, false)) {
         this->state = WATERFALL_OPENED;
         Flags_SetSwitch(play, this->switchFlag);
         this->openingAlpha = 0.0f;
@@ -111,7 +100,7 @@ void func_808ADEF0(BgSpot03Taki* this, PlayState* play) {
                 this->openingAlpha = 0;
             }
         }
-    } else if (this->state == WATERFALL_OPENED && !BgSpot03Taki_ShouldKeepOpen()) {
+    } else if (this->state == WATERFALL_OPENED && !GameInteractor_Should(VB_KEEP_ZORA_WATERFALL_OPEN, false)) {
         this->timer--;
         if (this->timer < 0) {
             this->state = WATERFALL_CLOSING;

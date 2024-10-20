@@ -665,6 +665,20 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
             }
             break;
         }
+        case VB_KEEP_ZORA_WATERFALL_OPEN: {
+            switch (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.ZoraWaterfall"), ZORA_WATERFALL_CLOSED)) {
+                case ZORA_WATERFALL_CLOSED:
+                    *should = false;
+                    break;
+                case ZORA_WATERFALL_OPEN_ADULT:
+                    *should = LINK_IS_ADULT;
+                    break;
+                case ZORA_WATERFALL_OPEN_ALWAYS:
+                    *should = true;
+                    break;
+            }
+            break;
+        }
     }
 
     va_end(args);

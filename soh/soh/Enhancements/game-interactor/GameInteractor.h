@@ -291,6 +291,8 @@ typedef enum {
     VB_GANON_HEAL_BEFORE_FIGHT,
     VB_FREEZE_LINK_FOR_BLOCK_THROW,
     VB_MOVE_THROWN_ACTOR,
+    // Vanilla condition: false
+    VB_KEEP_ZORA_WATERFALL_OPEN,
 
     /*** Play Cutscenes ***/
 
