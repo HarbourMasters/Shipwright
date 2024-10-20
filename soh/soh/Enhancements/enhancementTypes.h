@@ -35,6 +35,12 @@ typedef enum {
 } BunnyHoodMode;
 
 typedef enum {
+    ZORA_WATERFALL_CLOSED,
+    ZORA_WATERFALL_OPEN_ADULT,
+    ZORA_WATERFALL_OPEN_ALWAYS
+} ZoraWaterfallMode;
+
+typedef enum {
     MIRRORED_WORLD_OFF,
     MIRRORED_WORLD_ALWAYS,
     MIRRORED_WORLD_RANDOM,

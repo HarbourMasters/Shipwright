@@ -78,6 +78,7 @@ static const char* imguiScaleOptions[4] = { "Small", "Normal", "Large", "X-Large
     static const char* chestStyleMatchesContentsOptions[4] = { "Disabled", "Both", "Texture Only", "Size Only" };
     static const char* skipGetItemAnimationOptions[3] = { "Disabled", "Junk Items", "All Items" };
     static const char* skipForcedDialogOptions[4] = { "None", "Navi Only", "NPCs Only", "All" };
+    static const char* zoraWaterfallOptions[3] = { "Closed", "Open As Adult", "Always Open" };
     static const char* bunnyHoodOptions[3] = { "Disabled", "Faster Run & Longer Jump", "Faster Run" };
     static const char* mirroredWorldModes[9] = {
         "Disabled",           "Always",        "Random",          "Random (Seeded)",          "Dungeons",
@@ -761,6 +762,14 @@ void DrawEnhancementsMenu() {
                     "- Not within range of Ocarina playing spots");
                 UIWidgets::PaddedEnhancementCheckbox("Pause Warp", CVAR_ENHANCEMENT("PauseWarp"), true, false);
                 UIWidgets::Tooltip("Selection of warp song in pause menu initiates warp. Disables song playback.");
+
+                UIWidgets::PaddedText("Zora's River Waterfall", true, false);
+                UIWidgets::EnhancementCombobox(CVAR_ENHANCEMENT("TimeSavers.ZoraWaterfall"), zoraWaterfallOptions, ZORA_WATERFALL_CLOSED);
+                UIWidgets::Tooltip("Skips having to play Zelda's Lullaby to enter Zora's Domain.\n\n"
+                                   "Closed: Link must always play Zelda's Lullaby.\n"
+                                   "Open As Adult: Child Link must always play Zelda's Lullaby, but Adult Link may "
+                                   "enter without playing it.\n"
+                                   "Open Always: Link may always enter Zora's Domain.");
                 
                 ImGui::EndTable();
                 ImGui::EndMenu();
