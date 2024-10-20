@@ -119,6 +119,10 @@ void GameInteractor_ExecuteOnPlayerHealthChange(int16_t amount) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerHealthChange>(amount);
 }
 
+void GameInteractor_ExecuteOnPlayerBottleUpdate(int16_t contents) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerBottleUpdate>(contents);
+}
+
 void GameInteractor_ExecuteOnPlayDestroy() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayDestroy>();
 }

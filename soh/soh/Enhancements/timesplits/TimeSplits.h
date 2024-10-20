@@ -36,7 +36,8 @@ typedef enum {
 typedef enum {
     SPLIT_ACTIVE,
     SPLIT_INACTIVE,
-    SPLIT_COLLECTED
+    SPLIT_COLLECTED,
+    SPLIT_SKIPPED
 };
 
 typedef enum {

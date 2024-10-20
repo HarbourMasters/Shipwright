@@ -36,18 +36,19 @@ extern "C" {
 using json = nlohmann::json;
 
 static uint32_t splitBestTimeDisplay;
-static uint32_t popupID = 0;
+static int32_t popupID = -1;
 static uint32_t tableSize = 0;
+static int skullTokenCount = 0;
 static float timeSplitsWindowSize = 1.0f;
 
 static ImVec4 windowColor = ImVec4(0.0f, 0.0f, 0.0f, 1.0f);
 static ImVec4 splitStatusColor = ImVec4(0.0f, 0.0f, 0.0f, 1.0f);
 static ImVec4 splitTimeColor = ImVec4(0.0f, 0.0f, 0.0f, 1.0f);
+static ImVec4 activeSplitHighlight = ImVec4(0.0f, 0.0f, 0.0f, 1.0f);
 
 std::vector<std::string> keys;
 
 char listNameBuf[25];
-const char* lastLoadedlistName;
 int dragSourceIndex = -1;
 int dragTargetIndex = -1;
 
@@ -200,14 +201,16 @@ std::vector<SplitObject> splitObjectList = {
 };
 
 std::map<uint32_t, std::vector<uint32_t>> popupList = {
-    // { ITEM_STICK,          { ITEM_STICK, ITEM_STICK_UPGRADE_20, ITEM_STICK_UPGRADE_30, ITEM_STICK } },
-    // { ITEM_NUT,            { ITEM_NUT, ITEM_NUT_UPGRADE_30, ITEM_NUT_UPGRADE_40 } },
+    { ITEM_STICK,           { ITEM_STICK, ITEM_STICK_UPGRADE_20, ITEM_STICK_UPGRADE_30 } },
+    { ITEM_NUT,             { ITEM_NUT, ITEM_NUT_UPGRADE_30, ITEM_NUT_UPGRADE_40 } },
     { ITEM_BOMB,            { ITEM_BOMB_BAG_20, ITEM_BOMB_BAG_30, ITEM_BOMB_BAG_40 } },
     { ITEM_BOW,             { ITEM_QUIVER_30, ITEM_QUIVER_40, ITEM_QUIVER_50 } },
     { ITEM_SLINGSHOT,       { ITEM_BULLET_BAG_30, ITEM_BULLET_BAG_40, ITEM_BULLET_BAG_50 } },
     { ITEM_OCARINA_FAIRY,   { ITEM_OCARINA_FAIRY, ITEM_OCARINA_TIME } },
     { ITEM_HOOKSHOT,        { ITEM_HOOKSHOT, ITEM_LONGSHOT } },
-    // { ITEM_BOTTLE,         { } },
+    { ITEM_BOTTLE,          { ITEM_BOTTLE, ITEM_POTION_RED, ITEM_POTION_GREEN, ITEM_POTION_BLUE,	
+                              ITEM_FAIRY, ITEM_FISH, ITEM_MILK_BOTTLE, ITEM_LETTER_RUTO,
+                              ITEM_BLUE_FIRE, ITEM_BUG, ITEM_BIG_POE, ITEM_POE } },
     { ITEM_WEIRD_EGG,       { ITEM_WEIRD_EGG, ITEM_CHICKEN, ITEM_LETTER_ZELDA, ITEM_MASK_KEATON, 
                               ITEM_MASK_SKULL, ITEM_MASK_SPOOKY, ITEM_MASK_BUNNY, ITEM_MASK_GORON,
                               ITEM_MASK_ZORA, ITEM_MASK_GERUDO, ITEM_MASK_TRUTH } },
@@ -216,7 +219,21 @@ std::map<uint32_t, std::vector<uint32_t>> popupList = {
                               ITEM_FROG, ITEM_EYEDROPS, ITEM_CLAIM_CHECK } },
     { ITEM_BRACELET,        { ITEM_BRACELET, ITEM_GAUNTLETS_SILVER, ITEM_GAUNTLETS_GOLD } },
     { ITEM_SCALE_SILVER,    { ITEM_SCALE_SILVER, ITEM_SCALE_GOLDEN } },
+    { ITEM_WALLET_ADULT,    { ITEM_WALLET_ADULT, ITEM_WALLET_GIANT } },
+    { ITEM_SINGLE_MAGIC,    { ITEM_SINGLE_MAGIC, ITEM_DOUBLE_MAGIC } },
+    { ITEM_SKULL_TOKEN,     { } }
 };
+
+std::string removeSpecialCharacters(const std::string& str) {
+    std::string result;
+    for (char ch : str) {
+        // Only keep alphanumeric characters (letters and digits)
+        if (std::isalnum(static_cast<unsigned char>(ch))) {
+            result += ch;
+        }
+    }
+    return result;
+}
 
 std::string formatTimestampTimeSplit(uint32_t value) {
     uint32_t sec = value / 10;
@@ -226,62 +243,6 @@ std::string formatTimestampTimeSplit(uint32_t value) {
     uint32_t ds = value % 10;
     return fmt::format("{}:{:0>2}:{:0>2}.{}", hh, mm, ss, ds);
 }
-
-void TimeSplitsUpdateStatus(uint32_t index) {
-    for (int i = index + 1; i < splitList.size(); i++) {
-        if (splitList[i].splitTimeStatus != SPLIT_COLLECTED) {
-            splitList[i].splitTimeStatus = SPLIT_INACTIVE;
-        }
-    }
-}
-
-uint32_t findFirstInactiveSplit(const std::vector<SplitObject>& splitList) {
-    uint32_t index = 0;
-    for (const auto& split : splitList) {
-        if (split.splitTimeStatus == SPLIT_ACTIVE) {
-            return UINT32_MAX;
-        } else {
-            if (split.splitTimeStatus == SPLIT_INACTIVE && 
-                split.splitTimeStatus != SPLIT_COLLECTED) {
-                return index;
-            }
-            index++;
-        }
-    }
-    return UINT32_MAX;
-}
-
-void HandleDragAndDrop(std::vector<SplitObject>& objectList, int targetIndex, const std::string& itemName, ImGuiDragDropFlags flags = ImGuiDragDropFlags_None) {
-    if (ImGui::BeginDragDropSource(flags)) {
-        ImGui::SetDragDropPayload("DragMove", &targetIndex, sizeof(uint32_t));
-        ImGui::Text("Move %s", itemName.c_str());
-        ImGui::EndDragDropSource();
-    }
-
-    if (ImGui::BeginDragDropTarget()) {
-        if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragMove")) {
-            IM_ASSERT(payload->DataSize == sizeof(uint32_t));
-            dragSourceIndex = *(const int*)payload->Data;
-            dragTargetIndex = targetIndex;
-        }
-        ImGui::EndDragDropTarget();
-    }
-}
-
-void TimeSplitCompleteSplits() {
-    gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
-    gSaveContext.sohStats.gameComplete = true;
-}
-
-//void TimeSplitSkipSplit(uint32_t splitID) {
-//    splitStatus[splitID] = 3;
-//    if (splitID + 1 == splitItem.size()) {
-//        TimeSplitCompleteSplits();
-//    } else {
-//        splitStatus[splitID + 1] = 2;
-//    }
-//    
-//}
 
 nlohmann::json ImVec4_to_json(const ImVec4& vec) {
     return nlohmann::json{
@@ -307,7 +268,7 @@ nlohmann::json SplitObject_to_json(const SplitObject& split) {
         {"splitTimeBest", split.splitTimeBest},
         {"splitTimePreviousBest", split.splitTimePreviousBest},
         {"splitTimeStatus", split.splitTimeStatus},
-        {"splitSkullTokencount", split.splitSkullTokenCount}
+        {"splitSkullTokenCount", split.splitSkullTokenCount}
     };
 }
 
@@ -324,6 +285,53 @@ SplitObject json_to_SplitObject(const nlohmann::json& jsonSplit) {
     split.splitTimeStatus = jsonSplit["splitTimeStatus"];
     split.splitSkullTokenCount = jsonSplit["splitSkullTokenCount"];
     return split;
+}
+
+void TimeSplitsUpdateSplitStatus() {
+    uint32_t index = 0;
+    for (auto& data : splitList) {
+        if (data.splitTimeStatus == SPLIT_INACTIVE || data.splitTimeStatus == SPLIT_ACTIVE) {
+            data.splitTimeStatus = SPLIT_ACTIVE;
+            break;
+        }
+        index++;
+    }
+    for (int i = index; i < splitList.size(); i++) {
+        if (splitList[i].splitTimeStatus != SPLIT_ACTIVE && splitList[i].splitTimeStatus != SPLIT_COLLECTED) {
+            splitList[i].splitTimeStatus = SPLIT_INACTIVE;
+        }
+    }
+}
+
+void HandleDragAndDrop(std::vector<SplitObject>& objectList, int targetIndex, const std::string& itemName, ImGuiDragDropFlags flags = ImGuiDragDropFlags_None) {
+    if (ImGui::BeginDragDropSource(flags)) {
+        ImGui::SetDragDropPayload("DragMove", &targetIndex, sizeof(uint32_t));
+        ImGui::Text("Move %s", itemName.c_str());
+        ImGui::EndDragDropSource();
+    }
+
+    if (ImGui::BeginDragDropTarget()) {
+        if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragMove")) {
+            IM_ASSERT(payload->DataSize == sizeof(uint32_t));
+            dragSourceIndex = *(const int*)payload->Data;
+            dragTargetIndex = targetIndex;
+        }
+        ImGui::EndDragDropTarget();
+    }
+}
+
+void TimeSplitCompleteSplits() {
+    gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
+    gSaveContext.sohStats.gameComplete = true;
+}
+
+void TimeSplitsSkipSplit(uint32_t index) {
+    splitList[index].splitTimeStatus = SPLIT_SKIPPED;
+    if (index + 1 == splitList.size()) {
+        TimeSplitCompleteSplits();
+    } else {
+        TimeSplitsUpdateSplitStatus();
+    }
 }
 
 void TimeSplitsFileManagement(uint32_t action, const char* listEntry, std::vector<SplitObject> listData) {
@@ -382,57 +390,109 @@ void TimeSplitsFileManagement(uint32_t action, const char* listEntry, std::vecto
 }
 
 void TimeSplitsPopUpContext() {
-    int rowIndex = 0;
-    if (ImGui::BeginPopup("TimeSplitsPopUp") && popupID) {
-        for (auto item : popupList[popupID]) {
-            auto findID = std::find_if(splitObjectList.begin(), splitObjectList.end(), [&](const SplitObject& obj) { return obj.splitID == item; });
-            if (findID == splitObjectList.end()) {
-                continue;
-            }
+    if ((popupID != -1) && ImGui::BeginPopup("TimeSplitsPopUp")) {
+        if (popupID == ITEM_SKULL_TOKEN) {
+            ImGui::BeginTable("Token Table", 2);
+            ImGui::TableNextColumn();
+            ImGui::ImageButton(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("QUEST_SKULL_TOKEN"),
+                    ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), 2.0f, ImVec4(0, 0, 0, 0));
+            ImGui::TableNextColumn();
+            ImGui::PushItemWidth(150.0f);
+            ImGui::SliderInt("##count", &skullTokenCount, 0, 100, "%d Tokens");
+            ImGui::PopItemWidth();
+            if (ImGui::Button("Set Tokens")) {
+                auto findID = std::find_if(splitObjectList.begin(), splitObjectList.end(), [&](const SplitObject& obj) { return obj.splitID == ITEM_SKULL_TOKEN; });
+                SplitObject& buildTokenObject = *findID;
+                std::string tokenStr = " (" + std::to_string(skullTokenCount) + ")";
+                buildTokenObject.splitName += tokenStr.c_str();
+                buildTokenObject.splitSkullTokenCount = skullTokenCount;
 
-            SplitObject& popupObject = *findID;
-            if (popupObject.splitID == ITEM_SKULL_TOKEN) {
-
-            }
-            if (ImGui::ImageButton(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(popupObject.splitImage),
-                ImVec2(26.0f, 26.0f), ImVec2(0, 0), ImVec2(1, 1), 2.0f, ImVec4(0, 0, 0, 0), popupObject.splitTint)) {
-                splitList.push_back(popupObject);
-                if (splitList.size() == 1) {
-                    splitList[0].splitTimeStatus = SPLIT_ACTIVE;
-                } else {
-                    splitList[splitList.size() - 1].splitTimeStatus = SPLIT_INACTIVE;
-                }
+                splitList.push_back(buildTokenObject);
+                TimeSplitsUpdateSplitStatus();
                 ImGui::CloseCurrentPopup();
+                popupID = -1;
             }
-            if (rowIndex != 5) {
-                ImGui::SameLine();
+            ImGui::EndTable();
+        }  else {
+            int rowIndex = 0;
+            for (auto item : popupList[popupID]) {
+                auto findID = std::find_if(splitObjectList.begin(), splitObjectList.end(), [&](const SplitObject& obj) { return obj.splitID == item; });
+                if (findID == splitObjectList.end()) {
+                    continue;
+                }
+
+                SplitObject& popupObject = *findID;
+                ImGui::BeginGroup();
+                ImGui::PushID(popupObject.splitID);
+                if (ImGui::ImageButton(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(popupObject.splitImage),
+                ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), 2, ImVec4(0, 0, 0, 0), popupObject.splitTint)) {
+                    splitList.push_back(popupObject);
+                    if (splitList.size() == 1) {
+                        splitList[0].splitTimeStatus = SPLIT_ACTIVE;
+                    } else {
+                        splitList[splitList.size() - 1].splitTimeStatus = SPLIT_INACTIVE;
+                    }
+                    ImGui::CloseCurrentPopup();
+                    popupID = -1;
+                }
+                ImGui::PopID();
+
+                if (popupObject.splitType == SPLIT_UPGRADE) {
+                    if (popupID <= ITEM_SLINGSHOT && popupID != -1) {
+                        ImVec2 imageMin = ImGui::GetItemRectMin();
+                        ImVec2 imageMax = ImGui::GetItemRectMax();
+                        ImVec2 imageSize = ImVec2(imageMax.x - imageMin.x, imageMax.y - imageMin.y);
+                        ImVec2 textPos = ImVec2(imageMax.x - ImGui::CalcTextSize("00").x - 5,
+                                                imageMax.y - ImGui::CalcTextSize("00").y - 5);
+
+                        ImGui::SetCursorScreenPos(textPos);
+                        std::string upgSubstr = popupObject.splitName.substr(popupObject.splitName.size() - 4);
+                        std::string upgOutput = removeSpecialCharacters(upgSubstr);
+                        ImGui::Text(upgOutput.c_str());
+                    }
+                }
+                ImGui::EndGroup();
+                if (rowIndex != 5) {
+                    ImGui::SameLine();
+                }
+                rowIndex++;
             }
-            rowIndex++;
         }
         ImGui::EndPopup();
     }
 }
 
-void TimeSplitsItemSplitEvent(u8 item) {
+void TimeSplitsItemSplitEvent(uint32_t type, u8 item) {
     uint32_t index = 0;
-    if (item == ITEM_NUTS_5 || item == ITEM_NUTS_10) {
-        item = ITEM_NUT;
-    } else if (item == ITEM_STICKS_5 || item == ITEM_STICKS_10) {
-        item = ITEM_STICK;
+    if (type <= SPLIT_QUEST) {
+        if (item == ITEM_NUTS_5 || item == ITEM_NUTS_10) {
+            item = ITEM_NUT;
+        } else if (item == ITEM_STICKS_5 || item == ITEM_STICKS_10) {
+            item = ITEM_STICK;
+        }
+        if (item == ITEM_SKULL_TOKEN) {
+            auto it = std::find_if(splitList.begin(), splitList.end(), [item](const SplitObject& split) {
+                if (split.splitSkullTokenCount == gSaveContext.inventory.gsTokens) {
+                    return split.splitID == item;
+                } else {
+                    return split.splitID == ITEM_NONE;
+                }
+            });
+            if (it == splitList.end()) {
+                return;
+            }
+        }
     }
-    if (item == ITEM_SKULL_TOKEN) {
-        auto it = std::find_if(splitList.begin(), splitList.end(), [item](const SplitObject& split) {
-            if (split.splitSkullTokenCount == gSaveContext.inventory.gsTokens + 1) {
-                return split.splitID == item;
-            } 
-        });
-        if (it == splitList.end()) {
-            return;
+    if (type == SPLIT_ENTRANCE) {
+        if ((item == SCENE_ZORAS_RIVER && gSaveContext.entranceIndex == ENTR_ZORAS_RIVER_4) ||
+            (item == SCENE_LOST_WOODS &&
+             (gSaveContext.entranceIndex == ENTR_LOST_WOODS_9 || gSaveContext.entranceIndex == ENTR_LOST_WOODS_0))) {
+            type = SPLIT_MISC;
         }
     }
         
     for (auto& split : splitList) {
-        if (split.splitType <= SPLIT_QUEST) {
+        if (split.splitType == type) {
             if (item == split.splitID) {
                 if (split.splitTimeStatus == SPLIT_ACTIVE) {
                     split.splitTimeCurrent = GAMEPLAYSTAT_TOTAL_TIME;
@@ -444,69 +504,6 @@ void TimeSplitsItemSplitEvent(u8 item) {
                         split.splitTimePreviousBest = GAMEPLAYSTAT_TOTAL_TIME;
                     }
                     if (index == splitList.size() - 1) {
-                        // Completed List
-                        TimeSplitCompleteSplits();
-                    } else {
-                        splitList[index + 1].splitTimeStatus = SPLIT_ACTIVE;
-                    }
-                }
-            }
-        }
-        index++;
-    }
-}
-
-void TimeSplitsBossSplitEvent(Actor* actor) {
-    uint32_t index = 0;
-    for (auto& split : splitList) {
-        if (split.splitType == SPLIT_BOSS) {
-            if (actor->id == split.splitID) {
-                if (split.splitTimeStatus == SPLIT_ACTIVE) {
-                    split.splitTimeCurrent = GAMEPLAYSTAT_TOTAL_TIME;
-                    split.splitTimeStatus = SPLIT_COLLECTED;
-                    if (split.splitTimeBest > GAMEPLAYSTAT_TOTAL_TIME || split.splitTimeBest == 0) {
-                        split.splitTimeBest = GAMEPLAYSTAT_TOTAL_TIME;
-                    }
-                    if (split.splitTimePreviousBest == 0) {
-                        split.splitTimePreviousBest = GAMEPLAYSTAT_TOTAL_TIME;
-                    }
-                    if (index == splitList.size() - 1) {
-                        // Completed List
-                        TimeSplitCompleteSplits();
-                    } else {
-                        splitList[index + 1].splitTimeStatus = SPLIT_ACTIVE;
-                    }
-                }
-            }
-        }
-        index++;
-    }
-}
-
-void TimeSplitsSceneSplitEvent(int16_t scene) {
-    uint32_t setType = SPLIT_ENTRANCE;
-
-    if ((scene == SCENE_ZORAS_RIVER && gSaveContext.entranceIndex == ENTR_ZORAS_RIVER_4) || 
-        (scene == SCENE_LOST_WOODS && (gSaveContext.entranceIndex == ENTR_LOST_WOODS_9 || 
-            gSaveContext.entranceIndex == ENTR_LOST_WOODS_0)) || scene == SCENE_KAKARIKO_VILLAGE) {
-        setType = SPLIT_MISC;
-    }
-
-    uint32_t index = 0;
-    for (auto& split : splitList) {
-        if (split.splitType == setType) {
-            if (scene == split.splitID) {
-                if (split.splitTimeStatus == SPLIT_ACTIVE) {
-                    split.splitTimeCurrent = GAMEPLAYSTAT_TOTAL_TIME;
-                    split.splitTimeStatus = SPLIT_COLLECTED;
-                    if (split.splitTimeBest > GAMEPLAYSTAT_TOTAL_TIME || split.splitTimeBest == 0) {
-                        split.splitTimeBest = GAMEPLAYSTAT_TOTAL_TIME;
-                    }
-                    if (split.splitTimePreviousBest == 0) {
-                        split.splitTimePreviousBest = GAMEPLAYSTAT_TOTAL_TIME;
-                    }
-                    if (index == splitList.size() - 1) {
-                        // Completed List
                         TimeSplitCompleteSplits();
                     } else {
                         splitList[index + 1].splitTimeStatus = SPLIT_ACTIVE;
@@ -519,6 +516,7 @@ void TimeSplitsSceneSplitEvent(int16_t scene) {
 }
 
 void TimeSplitsSplitBestTimeDisplay(uint32_t status, uint32_t currentBestTime, uint32_t previousBestTime) {
+    activeSplitHighlight = ImVec4(0.0f, 0.0f, 0.0f, 1.0f);
     if (status == SPLIT_ACTIVE) {
         if (GAMEPLAYSTAT_TOTAL_TIME > previousBestTime) {
             splitTimeColor = COLOR_RED;
@@ -532,6 +530,7 @@ void TimeSplitsSplitBestTimeDisplay(uint32_t status, uint32_t currentBestTime, u
             splitTimeColor = COLOR_GREEN;
             splitBestTimeDisplay = (previousBestTime - GAMEPLAYSTAT_TOTAL_TIME);
         }
+        activeSplitHighlight = COLOR_LIGHT_BLUE;
     }
     if (status == SPLIT_INACTIVE) {
         splitTimeColor = COLOR_WHITE;
@@ -569,9 +568,13 @@ void TimeSplitsDrawSplitsList() {
 
     for (auto& split : splitList) {
         ImGui::TableNextColumn();
+        TimeSplitsSplitBestTimeDisplay(split.splitTimeStatus, split.splitTimeBest, split.splitTimePreviousBest);
+        ImGui::PushStyleColor(ImGuiTableBgTarget_RowBg0, activeSplitHighlight);
         ImGui::PushID(split.splitID);
-        ImGui::ImageButton(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(split.splitImage),
-                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), 2.0f, ImVec4(0, 0, 0, 0), split.splitTint);
+        if (ImGui::ImageButton(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(split.splitImage),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), 2.0f, ImVec4(0, 0, 0, 0), split.splitTint)) {
+            TimeSplitsSkipSplit(dragIndex);
+        }
         HandleDragAndDrop(splitList, dragIndex, split.splitName);
         ImGui::TableNextColumn();
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0.0f, 5.0f));
@@ -584,29 +587,31 @@ void TimeSplitsDrawSplitsList() {
             ? formatTimestampTimeSplit(split.splitTimeCurrent).c_str() : "--:--:-");
         ImGui::TableNextColumn();
         // +/- Difference
-        TimeSplitsSplitBestTimeDisplay(split.splitTimeStatus, split.splitTimeBest, split.splitTimePreviousBest);
         ImGui::TextColored(splitTimeColor, formatTimestampTimeSplit(splitBestTimeDisplay).c_str());
         ImGui::TableNextColumn();
         // Previous Best
         ImGui::Text((split.splitTimePreviousBest != 0) ? formatTimestampTimeSplit(split.splitTimePreviousBest).c_str() : "--:--:-");
         ImGui::PopID();
         ImGui::PopStyleVar(1);
+        ImGui::PopStyleColor(1);
         dragIndex++;
     }
 
     if (dragTargetIndex != -1) {
         SplitObject tempSourceSplitObject = splitList[dragSourceIndex];
+        if (tempSourceSplitObject.splitTimeStatus == SPLIT_ACTIVE) {
+            tempSourceSplitObject.splitTimeStatus = SPLIT_INACTIVE;
+        }
+        if (splitList[dragTargetIndex].splitTimeStatus == SPLIT_ACTIVE) {
+            splitList[dragTargetIndex].splitTimeStatus = SPLIT_INACTIVE;
+        }
 
         splitList.erase(splitList.begin() + dragSourceIndex);
         splitList.insert(splitList.begin() + dragTargetIndex, tempSourceSplitObject);
         dragTargetIndex = -1;
         dragSourceIndex = -1;
 
-        uint32_t firstInactiveID = findFirstInactiveSplit(splitList);
-        if (firstInactiveID != UINT32_MAX) {
-            splitList[firstInactiveID].splitTimeStatus = SPLIT_ACTIVE;
-            TimeSplitsUpdateStatus(firstInactiveID);
-        }
+        TimeSplitsUpdateSplitStatus();
     }
 
     ImGui::PopStyleColor(3);
@@ -751,16 +756,15 @@ void TimeSplitsDrawOptionsMenu() {
     ImGui::SameLine();
     if (ImGui::Button("Load List")) {
         TimeSplitsFileManagement(ACTION_LOAD, keys[selectedItem].c_str(), emptyList);
-        lastLoadedlistName = keys[selectedItem].c_str();
     }
     UIWidgets::PaddedSeparator();
 
     if (ImGui::Button("Update Splits")) {
-        TimeSplitsFileManagement(ACTION_UPDATE, lastLoadedlistName, splitList);
+        TimeSplitsFileManagement(ACTION_UPDATE, keys[selectedItem].c_str(), splitList);
     }
     ImGui::SameLine();
     if (ImGui::Button("Save List")) {
-        TimeSplitsFileManagement(ACTION_SAVE, lastLoadedlistName, splitList);
+        TimeSplitsFileManagement(ACTION_SAVE, keys[selectedItem].c_str(), splitList);
     }
 }
 
@@ -837,16 +841,44 @@ void TimeSplitWindow::InitElement() {
     Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("SPECIAL_SPLIT_ENTRANCE", gSplitEntranceTex, ImVec4(1, 1, 1, 1));
     
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnTimestamp>([](u8 item) {
-        TimeSplitsItemSplitEvent(item);
+        if (item != ITEM_SKULL_TOKEN) {
+            uint32_t tempType = SPLIT_ITEM;
+            for (auto& data : splitList) {
+                if (data.splitID == item) {
+                    tempType = data.splitType;
+                    break;
+                }
+            }
+            TimeSplitsItemSplitEvent(tempType, item);
+        }
+    });
+
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>([](GetItemEntry itemEntry) {
+        GetItemEntry testItem = itemEntry;
+        if (itemEntry.itemId == ITEM_SKULL_TOKEN || itemEntry.itemId == ITEM_BOTTLE || itemEntry.itemId == ITEM_POE) {
+            uint32_t tempType = SPLIT_ITEM;
+            for (auto& data : splitList) {
+                if (data.splitID == itemEntry.itemId) {
+                    tempType = data.splitType;
+                    break;
+                }
+            }
+            TimeSplitsItemSplitEvent(tempType, itemEntry.itemId);
+        }
+    });
+
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerBottleUpdate>([](int16_t contents) {
+        TimeSplitsItemSplitEvent(SPLIT_UPGRADE, contents);
     });
 
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnBossDefeat>([](void* refActor) {
-        TimeSplitsBossSplitEvent((Actor*)refActor);
+        Actor* bossActor = (Actor*)refActor;
+        TimeSplitsItemSplitEvent(SPLIT_BOSS, bossActor->id);
     });
 
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) {
         if (gPlayState->sceneNum != SCENE_KAKARIKO_VILLAGE) {
-            TimeSplitsSceneSplitEvent(sceneNum);
+            TimeSplitsItemSplitEvent(SPLIT_ENTRANCE, sceneNum);
         }
     });
 
@@ -854,7 +886,7 @@ void TimeSplitWindow::InitElement() {
         if (gPlayState->sceneNum == SCENE_KAKARIKO_VILLAGE) {
             Player* player = GET_PLAYER(gPlayState);
             if (player->fallDistance > 500 && gSaveContext.health <= 0) {
-                TimeSplitsSceneSplitEvent(gPlayState->sceneNum);
+                TimeSplitsItemSplitEvent(SPLIT_MISC, gPlayState->sceneNum);
             }
         }
     });
