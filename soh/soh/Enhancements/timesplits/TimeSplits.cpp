@@ -267,7 +267,7 @@ nlohmann::json SplitObject_to_json(const SplitObject& split) {
         {"splitTimeCurrent", split.splitTimeCurrent},
         {"splitTimeBest", split.splitTimeBest},
         {"splitTimePreviousBest", split.splitTimePreviousBest},
-        {"splitTimeStatus", split.splitTimeStatus},
+        {"splitTimeStatus", SPLIT_INACTIVE},
         {"splitSkullTokenCount", split.splitSkullTokenCount}
     };
 }
@@ -367,6 +367,7 @@ void TimeSplitsFileManagement(uint32_t action, const char* listEntry, std::vecto
             for (auto& data : listArray) {
                 splitList.push_back(json_to_SplitObject(data));
             }
+            splitList[0].splitTimeStatus = SPLIT_ACTIVE;
         }
     }
 
@@ -515,38 +516,40 @@ void TimeSplitsItemSplitEvent(uint32_t type, u8 item) {
     }
 }
 
-void TimeSplitsSplitBestTimeDisplay(uint32_t status, uint32_t currentBestTime, uint32_t previousBestTime) {
+void TimeSplitsSplitBestTimeDisplay(SplitObject split) {
     activeSplitHighlight = ImVec4(0.0f, 0.0f, 0.0f, 1.0f);
-    if (status == SPLIT_ACTIVE) {
-        if (GAMEPLAYSTAT_TOTAL_TIME > previousBestTime) {
+    if (split.splitTimeStatus == SPLIT_ACTIVE) {
+        if (GAMEPLAYSTAT_TOTAL_TIME > split.splitTimePreviousBest) {
             splitTimeColor = COLOR_RED;
-            splitBestTimeDisplay = (GAMEPLAYSTAT_TOTAL_TIME - previousBestTime);
+            splitBestTimeDisplay = (GAMEPLAYSTAT_TOTAL_TIME - split.splitTimePreviousBest);
         }
-        if (GAMEPLAYSTAT_TOTAL_TIME == previousBestTime) {
+        if (GAMEPLAYSTAT_TOTAL_TIME == split.splitTimePreviousBest) {
             splitTimeColor = COLOR_WHITE;
             splitBestTimeDisplay = GAMEPLAYSTAT_TOTAL_TIME;
         }
-        if (GAMEPLAYSTAT_TOTAL_TIME < previousBestTime) {
+        if (GAMEPLAYSTAT_TOTAL_TIME < split.splitTimePreviousBest) {
             splitTimeColor = COLOR_GREEN;
-            splitBestTimeDisplay = (previousBestTime - GAMEPLAYSTAT_TOTAL_TIME);
+            splitBestTimeDisplay = (split.splitTimePreviousBest - GAMEPLAYSTAT_TOTAL_TIME);
         }
         activeSplitHighlight = COLOR_LIGHT_BLUE;
     }
-    if (status == SPLIT_INACTIVE) {
+    if (split.splitTimeStatus == SPLIT_INACTIVE) {
         splitTimeColor = COLOR_WHITE;
-        splitBestTimeDisplay = currentBestTime;
+        splitBestTimeDisplay = split.splitTimeBest;
     }
-    if (status == SPLIT_COLLECTED) {
-        if (currentBestTime > previousBestTime) {
+    if (split.splitTimeStatus == SPLIT_COLLECTED) {
+        if (split.splitTimeCurrent > split.splitTimePreviousBest) {
             splitTimeColor = COLOR_RED;
+            splitBestTimeDisplay = (split.splitTimeCurrent - split.splitTimePreviousBest);
         }
-        if (currentBestTime == previousBestTime) {
+        if (split.splitTimeCurrent == split.splitTimePreviousBest) {
             splitTimeColor = COLOR_WHITE;
+            splitBestTimeDisplay = split.splitTimeCurrent;
         }
-        if (currentBestTime < previousBestTime) {
+        if (split.splitTimeCurrent < split.splitTimePreviousBest) {
             splitTimeColor = COLOR_GREEN;
+            splitBestTimeDisplay = (split.splitTimePreviousBest - split.splitTimeCurrent);
         }
-        splitBestTimeDisplay = currentBestTime;
     }
 }
 
@@ -568,9 +571,12 @@ void TimeSplitsDrawSplitsList() {
 
     for (auto& split : splitList) {
         ImGui::TableNextColumn();
-        TimeSplitsSplitBestTimeDisplay(split.splitTimeStatus, split.splitTimeBest, split.splitTimePreviousBest);
-        ImGui::PushStyleColor(ImGuiTableBgTarget_RowBg0, activeSplitHighlight);
+        TimeSplitsSplitBestTimeDisplay(split);
+        
         ImGui::PushID(split.splitID);
+        if (split.splitTimeStatus == SPLIT_ACTIVE) {
+            ImGui::TableSetBgColor(ImGuiTableBgTarget_RowBg0, IM_COL32(47, 79, 90, 255));
+        }
         if (ImGui::ImageButton(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(split.splitImage),
                                ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), 2.0f, ImVec4(0, 0, 0, 0), split.splitTint)) {
             TimeSplitsSkipSplit(dragIndex);
@@ -593,7 +599,7 @@ void TimeSplitsDrawSplitsList() {
         ImGui::Text((split.splitTimePreviousBest != 0) ? formatTimestampTimeSplit(split.splitTimePreviousBest).c_str() : "--:--:-");
         ImGui::PopID();
         ImGui::PopStyleVar(1);
-        ImGui::PopStyleColor(1);
+        
         dragIndex++;
     }
 
@@ -721,11 +727,18 @@ void TimeSplitsDrawOptionsMenu() {
         CVAR_ENHANCEMENT("TimeSplits.WindowSize"), 1.0f, 3.0f, "", 1.0f, false, false, true, false)) {
         TimeSplitsUpdateWindowSize();
     }
-    //UIWidgets::PaddedEnhancementCheckbox("Set Last Split as Goal", CVAR_SETTING("TimesplitGoal"));
 
     ImGui::SeparatorText("Split List Management");
+    if (ImGui::Button("New Attempt")) {
+        for (auto& data : splitList) {
+            data.splitTimeStatus = SPLIT_INACTIVE;
+        }
+        splitList[0].splitTimeStatus = SPLIT_ACTIVE;
+    }
+    UIWidgets::PaddedSeparator();
+
     ImGui::Text("New List Name: ");
-    ImGui::PushItemWidth(100.0f);
+    ImGui::PushItemWidth(150.0f);
     ImGui::InputText("##listName", listNameBuf, 25);
     ImGui::PopItemWidth();
     ImGui::SameLine();
