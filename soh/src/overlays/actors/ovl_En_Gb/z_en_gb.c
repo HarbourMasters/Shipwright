@@ -369,9 +369,7 @@ void func_80A2FBB0(EnGb* this, PlayState* play) {
         this->actionFunc = func_80A2FC0C;
     }
     else {
-        if (GameInteractor_Should(VB_GIVE_ITEM_FROM_POE_COLLECTOR, true, this)) {
-            Actor_OfferGetItem(&this->dyna.actor, play, GI_BOTTLE, 100.0f, 10.0f);
-        }
+        Actor_OfferGetItem(&this->dyna.actor, play, GI_BOTTLE, 100.0f, 10.0f);
     }
 }
 
