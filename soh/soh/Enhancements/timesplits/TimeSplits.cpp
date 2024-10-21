@@ -47,6 +47,9 @@ static ImVec4 splitStatusColor = ImVec4(0.0f, 0.0f, 0.0f, 1.0f);
 static ImVec4 splitTimeColor = ImVec4(0.0f, 0.0f, 0.0f, 1.0f);
 static ImVec4 activeSplitHighlight = ImVec4(0.0f, 0.0f, 0.0f, 1.0f);
 
+static ImVec2 imageSize = ImVec2(38.0f, 38.0f);
+static float imagePadding = 2.0f;
+
 std::vector<std::string> keys;
 
 char listNameBuf[25];
@@ -286,6 +289,16 @@ SplitObject json_to_SplitObject(const nlohmann::json& jsonSplit) {
     split.splitTimeStatus = jsonSplit["splitTimeStatus"];
     split.splitSkullTokenCount = jsonSplit["splitSkullTokenCount"];
     return split;
+}
+
+void TimeSplitsGetImageSize(uint32_t item) {
+    if (item >= ITEM_SONG_MINUET && item <= ITEM_SONG_STORMS) {
+        imageSize = ImVec2(30.0f, 38.0f);
+        imagePadding = 6.0f;
+    } else {
+        imageSize = ImVec2(38.0f, 38.0f);
+        imagePadding = 2.0f;
+    }
 }
 
 void TimeSplitsUpdateSplitStatus() {
@@ -609,8 +622,9 @@ void TimeSplitsDrawSplitsList() {
         if (split.splitTimeStatus == SPLIT_ACTIVE) {
             ImGui::TableSetBgColor(ImGuiTableBgTarget_RowBg0, IM_COL32(47, 79, 90, 255));
         }
+        TimeSplitsGetImageSize(split.splitID);
         if (ImGui::ImageButton(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(split.splitImage),
-                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), 2.0f, ImVec4(0, 0, 0, 0), split.splitTint)) {
+                               imageSize, ImVec2(0, 0), ImVec2(1, 1), imagePadding, ImVec4(0, 0, 0, 0), split.splitTint)) {
             TimeSplitsSkipSplit(dragIndex);
         }
         HandleDragAndDrop(splitList, dragIndex, split.splitName);
@@ -683,8 +697,9 @@ void TimeSplitsDrawItemList(uint32_t type) {
         if (split.splitType == type) {
             ImGui::TableNextColumn();
             ImGui::PushID(split.splitID);
+            TimeSplitsGetImageSize(split.splitID);
             if (ImGui::ImageButton(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(split.splitImage),
-                               ImVec2(38.0f, 38.0f), ImVec2(0, 0), ImVec2(1, 1), 2.0f, ImVec4(0, 0, 0, 0), split.splitTint)) {
+                               imageSize, ImVec2(0, 0), ImVec2(1, 1), imagePadding, ImVec4(0, 0, 0, 0), split.splitTint)) {
                 
                 if (popupList.contains(split.splitID) && (split.splitType < SPLIT_BOSS)) {
                     popupID = split.splitID;
@@ -831,9 +846,9 @@ void TimeSplitsDrawManageList() {
             if (offsetX > 0.0f) {
                 ImGui::SetCursorPosX(ImGui::GetCursorPosX() + offsetX); // Apply the offset to center
             }
-
+            TimeSplitsGetImageSize(data.splitID);
             if (ImGui::ImageButton(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(data.splitImage),
-                                   ImVec2(38.0f, 38.0f), ImVec2(0, 0), ImVec2(1, 1), 2.0f, ImVec4(0, 0, 0, 0), data.splitTint)) {
+                                   imageSize, ImVec2(0, 0), ImVec2(1, 1), imagePadding, ImVec4(0, 0, 0, 0), data.splitTint)) {
                 removeIndex = index;
             }
             HandleDragAndDrop(splitList, index, splitList[index].splitName);
@@ -902,7 +917,6 @@ void TimeSplitWindow::DrawElement() {
         InitializeSplitDataFile();
         initialized = true;
     }
-
     
     if (ImGui::BeginTabBar("Split Tabs")) {
         if (ImGui::BeginTabItem("Splits")) {
@@ -919,7 +933,6 @@ void TimeSplitWindow::DrawElement() {
         }
         ImGui::EndTabBar();
     }
-    
 }
 
 void TimeSplitWindow::InitElement() {
