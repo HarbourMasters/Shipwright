@@ -2134,16 +2134,8 @@ void DrawRandomizerMenu() {
                 disableKeyColors = false;
             }
 
-            static const char* disableKeyColorsText =
-                "This setting is disabled because a savefile is loaded without any key\n"
-                "shuffle settings set to \"Any Dungeon\", \"Overworld\" or \"Anywhere\"";
-
-            UIWidgets::PaddedEnhancementCheckbox("Key Colors Match Dungeon", CVAR_RANDOMIZER_ENHANCEMENT("MatchKeyColors"), true, false,
-                                                  disableKeyColors, disableKeyColorsText, UIWidgets::CheckboxGraphics::Cross, true);
-            UIWidgets::Tooltip(
-                "Matches the color of small keys and boss keys to the dungeon they belong to. "
-                "This helps identify keys from afar and adds a little bit of flair.\n\nThis only "
-                "applies to seeds with keys and boss keys shuffled to \"Any Dungeon\", \"Overworld\", or \"Anywhere\".");
+            UIWidgets::PaddedEnhancementCheckbox("Key Models Match Dungeon", CVAR_RANDOMIZER_ENHANCEMENT("CustomKeyModels"), true, false);
+            UIWidgets::Tooltip("Use Custom graphics for dungeon keys, Big and Small, so that they can be easily told apart");
 
             bool disableCompassColors = !DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_SHUFFLE_MAPANDCOMPASS);
 

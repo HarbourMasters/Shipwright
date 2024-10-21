@@ -1295,6 +1295,7 @@ static constexpr std::array<std::pair<const char*, CosmeticGroup>, COSMETICS_GRO
     {"swords", COSMETICS_GROUP_SWORDS},
     {"gloves", COSMETICS_GROUP_GLOVES},
     {"equipment", COSMETICS_GROUP_EQUIPMENT},
+    {"key", COSMETICS_GROUP_KEY},
     {"consumable", COSMETICS_GROUP_CONSUMABLE},
     {"hud", COSMETICS_GROUP_HUD},
     {"kaleido", COSMETICS_GROUP_KALEIDO},
