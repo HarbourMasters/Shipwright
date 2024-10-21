@@ -126,9 +126,9 @@ void func_80AFB89C(EnSi* this, PlayState* play) {
             if (GameInteractor_Should(VB_FREEZE_ON_SKULL_TOKEN, true, this)) {
                 player->actor.freezeTimer = 10;
             }
+            Message_StartTextbox(play, TEXT_GS_NO_FREEZE, NULL);
+            Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
         }
-        Message_StartTextbox(play, TEXT_GS_NO_FREEZE, NULL);
-        Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
         this->actionFunc = func_80AFB950;
     }
 }
