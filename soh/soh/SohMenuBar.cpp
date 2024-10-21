@@ -15,6 +15,7 @@
 #include "Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/presets.h"
 #include "soh/Enhancements/mods.h"
+#include "soh/Notification/Notification.h"
 #include "Enhancements/cosmetics/authenticGfxPatches.h"
 #ifdef ENABLE_REMOTE_CONTROL
 #include "Enhancements/crowd-control/CrowdControl.h"
@@ -564,6 +565,35 @@ void DrawSettingsMenu() {
             
             ImGui::EndMenu();
         }
+
+        UIWidgets::Spacer(0);
+
+        if (ImGui::BeginMenu("Notifications")) {
+            static const char* notificationPosition[] = {
+                "Top Left",
+                "Top Right",
+                "Bottom Left",
+                "Bottom Right",
+                "Hidden",
+            };
+
+            ImGui::Text("Position");
+            UIWidgets::EnhancementCombobox(CVAR_SETTING("Notifications.Position"), notificationPosition, 0);
+            UIWidgets::EnhancementSliderFloat("Duration: %.0f seconds", "##NotificationDuration", CVAR_SETTING("Notifications.Duration"), 3.0f, 30.0f, "", 10.0f, false, false, false);
+            UIWidgets::EnhancementSliderFloat("BG Opacity: %.1f %%", "##NotificaitonBgOpacity", CVAR_SETTING("Notifications.BgOpacity"), 0.0f, 1.0f, "", 0.5f, true, false, false);
+            UIWidgets::EnhancementSliderFloat("Size: %.1f", "##NotificaitonSize", CVAR_SETTING("Notifications.Size"), 1.0f, 5.0f, "", 1.8f, false, false, false);
+
+            UIWidgets::Spacer(0);
+
+            if (ImGui::Button("Test Notification", ImVec2(-1.0f, 0.0f))) {
+                Notification::Emit({
+                    .message = (gPlayState != NULL ? SohUtils::GetSceneName(gPlayState->sceneNum) : "Hyrule") + " looks beautiful today!",
+                });
+            }
+
+            ImGui::EndMenu();
+        }
+
         ImGui::EndMenu();
     }
 }

@@ -8,6 +8,8 @@
 #include "soh/Enhancements/randomizer/fishsanity.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/ImGuiUtils.h"
+#include "soh/Notification/Notification.h"
 
 extern "C" {
 #include "macros.h"
@@ -836,6 +838,20 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
                         Randomizer_Item_Give(gPlayState, item00->itemEntry);
                     }
                 }
+
+                if (item00->itemEntry.modIndex == MOD_NONE) {
+                    Notification::Emit({
+                        .itemIcon = GetTextureForItemId(item00->itemEntry.itemId),
+                        .message = "You found ",
+                        .suffix = SohUtils::GetItemName(item00->itemEntry.itemId),
+                    });
+                } else if (item00->itemEntry.modIndex == MOD_RANDOMIZER) {
+                    Notification::Emit({
+                        .message = "You found ",
+                        .suffix = Rando::StaticData::RetrieveItem((RandomizerGet)item00->itemEntry.getItemId).GetName().english,
+                    });
+                }
+
                 // This is typically called when you close the text box after getting an item, in case a previous
                 // function hid the interface.
                 Interface_ChangeAlpha(gSaveContext.unk_13EE);
