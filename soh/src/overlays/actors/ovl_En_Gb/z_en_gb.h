@@ -47,4 +47,6 @@ typedef struct EnGb {
     /* 0x0388 */ EnGbCagedSoul cagedSouls[4];
 } EnGb; // size = 0x0438
 
+void func_80A2FC0C(EnGb* actor, PlayState* play);
+
 #endif
