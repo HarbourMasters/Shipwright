@@ -338,31 +338,27 @@ void func_80A2FA50(EnGb* this, PlayState* play) {
         Player_UpdateBottleHeld(play, GET_PLAYER(play), ITEM_BOTTLE, PLAYER_IA_BOTTLE);
         Rupees_ChangeBy(50);
         HIGH_SCORE(HS_POE_POINTS) += 100;
-        if (
-            (!IS_RANDO && HIGH_SCORE(HS_POE_POINTS) != 1000) ||
-            (IS_RANDO && (HIGH_SCORE(HS_POE_POINTS) != 1000 || Flags_GetRandomizerInf(RAND_INF_10_BIG_POES)))
-        ) {
+        if (HIGH_SCORE(HS_POE_POINTS) != 1000) {
             if (HIGH_SCORE(HS_POE_POINTS) > 1100) {
                 HIGH_SCORE(HS_POE_POINTS) = 1100;
             }
             this->actionFunc = func_80A2F83C;
         } else {
-            Player* player = GET_PLAYER(play);
+            if (GameInteractor_Should(VB_GIVE_ITEM_FROM_POE_COLLECTOR, true, this)) {
+                Player* player = GET_PLAYER(play);
 
-            Flags_SetRandomizerInf(RAND_INF_10_BIG_POES);
-            player->exchangeItemId = EXCH_ITEM_NONE;
-            this->textId = 0x70F8;
-            Message_ContinueTextbox(play, this->textId);
-            this->actionFunc = func_80A2FB40;
+                player->exchangeItemId = EXCH_ITEM_NONE;
+                this->textId = 0x70F8;
+                Message_ContinueTextbox(play, this->textId);
+                this->actionFunc = func_80A2FB40;
+            }
         }
     }
 }
 
 void func_80A2FB40(EnGb* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_DONE && Message_ShouldAdvance(play)) {
-        if (GameInteractor_Should(VB_GIVE_ITEM_FROM_POE_COLLECTOR, true, this)) {
-            Actor_OfferGetItem(&this->dyna.actor, play, GI_BOTTLE, 100.0f, 10.0f);
-        }
+        Actor_OfferGetItem(&this->dyna.actor, play, GI_BOTTLE, 100.0f, 10.0f);
         this->actionFunc = func_80A2FBB0;
     }
 }
@@ -373,9 +369,7 @@ void func_80A2FBB0(EnGb* this, PlayState* play) {
         this->actionFunc = func_80A2FC0C;
     }
     else {
-        if (GameInteractor_Should(VB_GIVE_ITEM_FROM_POE_COLLECTOR, true, this)) {
-            Actor_OfferGetItem(&this->dyna.actor, play, GI_BOTTLE, 100.0f, 10.0f);
-        }
+        Actor_OfferGetItem(&this->dyna.actor, play, GI_BOTTLE, 100.0f, 10.0f);
     }
 }
 

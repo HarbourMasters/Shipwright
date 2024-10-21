@@ -19,6 +19,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Cow/z_en_cow.h"
 #include "src/overlays/actors/ovl_En_Shopnuts/z_en_shopnuts.h"
 #include "src/overlays/actors/ovl_En_Dns/z_en_dns.h"
+#include "src/overlays/actors/ovl_En_Gb/z_en_gb.h"
 #include "src/overlays/actors/ovl_Item_B_Heart/z_item_b_heart.h"
 #include "src/overlays/actors/ovl_En_Ko/z_en_ko.h"
 #include "src/overlays/actors/ovl_En_Mk/z_en_mk.h"
@@ -905,7 +906,13 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             break;
         }
         case VB_GIVE_ITEM_FROM_POE_COLLECTOR: {
-            *should = OTRGlobals::Instance->gRandoContext->GetItemLocation(RC_MARKET_10_BIG_POES)->IsAddedToPool();
+            EnGb* enGb = va_arg(args, EnGb*);
+            if (!Flags_GetRandomizerInf(RAND_INF_10_BIG_POES)) {
+                Flags_SetRandomizerInf(RAND_INF_10_BIG_POES);
+                enGb->dyna.actor.parent = NULL;
+                enGb->actionFunc = func_80A2FC0C;
+                *should = false;
+            }
             break;
         }
         case VB_CHECK_RANDO_PRICE_OF_CARPET_SALESMAN: {
