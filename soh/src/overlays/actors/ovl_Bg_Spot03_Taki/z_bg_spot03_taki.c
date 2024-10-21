@@ -73,9 +73,7 @@ void func_808ADEF0(BgSpot03Taki* this, PlayState* play) {
         if (Flags_GetSwitch(play, this->switchFlag)) {
             this->state = WATERFALL_OPENING_ANIMATED;
             this->timer = 40;
-            if (OnePointCutscene_Init(play, 4100, -99, NULL, MAIN_CAM) == SUBCAM_NONE) {
-                func_8003EBF8(play, &play->colCtx.dyna, this->dyna.bgId);
-            }
+            OnePointCutscene_Init(play, 4100, -99, NULL, MAIN_CAM);
         }
     } else if (this->state == WATERFALL_OPENING_IDLE) {
         this->timer--;
