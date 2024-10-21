@@ -111,7 +111,6 @@ extern "C"
 	extern s16 gLinkObjectIds[2];
 	extern u32 gObjectTableSize;
 	extern RomFile gObjectTable[OBJECT_ID_MAX];
-	extern EntranceInfo gEntranceTable[ENTR_MAX];
 	extern u16 gSramSlotOffsets[];
 	// 4 16-colors palettes
 	extern u64 gMojiFontTLUTs[4][4]; // original name: "moji_tlut"

@@ -1,5 +1,6 @@
 #include <libultraship/bridge.h>
 #include "soh/OTRGlobals.h"
+#include "soh/SceneDB.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/custom-message/CustomMessageTypes.h"
 #include "soh/Enhancements/item-tables/ItemTableManager.h"
@@ -684,7 +685,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         case VB_BE_ELIGIBLE_FOR_LIGHT_ARROWS:
             *should =
                 LINK_IS_ADULT &&
-                (gEntranceTable[gSaveContext.entranceIndex].scene == SCENE_TEMPLE_OF_TIME) &&
+                (EntranceDB::Instance->RetrieveEntry(gSaveContext.entranceIndex).entry.sceneId == SCENE_TEMPLE_OF_TIME) &&
                 !Flags_GetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS) &&
                 MeetsLACSRequirements();
             break;
@@ -692,7 +693,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             *should =
                     !Flags_GetEventChkInf(EVENTCHKINF_BONGO_BONGO_ESCAPED_FROM_WELL) &&
                     LINK_IS_ADULT &&
-                    gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_KAKARIKO_VILLAGE &&
+                    (EntranceDB::Instance->RetrieveEntry(gSaveContext.entranceIndex).entry.sceneId == SCENE_KAKARIKO_VILLAGE) &&
                     CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST) &&
                     CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE) &&
                     CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER);

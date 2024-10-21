@@ -315,6 +315,8 @@ public:
     };
     Entry& AddEntry(const EntranceDBInit& init);
 
+    void ResetVanillaEntrances();
+
     Entry& RetrieveEntry(const int id);
     Entry& RetrieveEntry(const int id, const int layer);
     int RetrieveId(const std::string& name);
@@ -323,6 +325,8 @@ public:
 
     s32 CalcId(s32 sceneId, s32 spawn, s32 layer);
     s32 CalcId(s32 entrance, s32 newLayer);
+
+    void Copy(s32 from, s32 to);
 private:
     Entry& AddEntry(const std::string& name, const std::string& desc, size_t index);
 
@@ -366,5 +370,7 @@ EntranceDBEntry* EntranceDB_RetrieveLayer(const int id, const int layer);
 int EntranceDB_RetrieveId(const char* name);
 int EntranceDB_CalcId(const int sceneId, const int spawn, const int layer);
 int EntranceDB_CalcIdWithEntrance(const int entrance, const int newLayer);
+void EntranceDB_ResetVanillaEntrances(void);
+void EntranceDB_Copy(const int from, const int to);
 
 #endif

@@ -33,6 +33,7 @@ shipofharkinian.ini
 imgui.ini
 oot.otr
 oot_save.sav
+build.c
 
 # Tool artifacts
 tools/mipspro7.2_compiler/

@@ -1,6 +1,7 @@
 #include "SceneDB.h"
 
 #include <assert.h>
+#include <algorithm>
 
 #include "variables.h"
 #include "textures/map_48x85_static/map_48x85_static.h"
@@ -2917,7 +2918,7 @@ EntranceDB::Entry& EntranceDB::AddEntry(const EntranceDBInit& init) {
     entry.entry.endTransition = init.endTransition;
     entry.entry.startTransition = init.startTransition;
 
-    // TODO comment
+    // Add this entrance to the list of layers for the scene and spawn
     NextLayerLookupKey nextLayerKey{ entry.entry.sceneId, entry.entry.spawn };
     auto nextLayer = nextLayerLookupTable.find(nextLayerKey);
     if (nextLayer == nextLayerLookupTable.end()) {
@@ -2927,6 +2928,7 @@ EntranceDB::Entry& EntranceDB::AddEntry(const EntranceDBInit& init) {
         entry.entry.layer = nextLayer->second++;
     }
 
+    // Add the entrance to the lookup of scene, spawn, and layer -> base scene
     idLookupTable.insert({ { entry.entry.sceneId, entry.entry.spawn, entry.entry.layer }, entry.entry.id });
 
     return entry;
@@ -2985,6 +2987,59 @@ s32 EntranceDB::CalcId(const s32 entrance, const s32 newLayer) {
     }
 
     return newEntrance->second;
+}
+
+void EntranceDB::ResetVanillaEntrances() {
+    // Erase all instances of vanilla entrances in the lookup tables
+    for (size_t i = 0; i < ENTR_MAX; i++) {
+        // For this entrance, reset the next layer. This will cause problems with mods that add a new layer (like for a cutscene)
+        // However, we will treat this as fine for now because we don't have such mods
+        // A more robust solution is to use a local nextLayerLookupTable to reestablish the vanilla layers
+        NextLayerLookupKey nextLayerKey{ sEntranceTableInit[i].scene, sEntranceTableInit[i].spawn };
+        nextLayerLookupTable.erase(nextLayerKey);
+
+        std::remove(idLookupTable.begin(), idLookupTable.end(), i);
+    }
+
+    for (size_t i = 0; i < ENTR_MAX; i++) {
+        // This entrance should already ezist. Look it up and set its' values to vanilla
+        Entry& entry = RetrieveEntry(i);
+        EntranceTableInit& init = sEntranceTableInit[i];
+
+        entry.entry.sceneId = SceneDB::Instance->RetrieveEntry(init.scene).entry.id;
+        entry.entry.spawn = init.spawn;
+        entry.entry.continueBgm = init.continueBgm;
+        entry.entry.displayTitleCard = init.displayTitleCard;
+        entry.entry.endTransition = init.endTransition;
+        entry.entry.startTransition = init.startTransition;
+
+        // Add this entrance to the list of layers for the scene and spawn
+        NextLayerLookupKey nextLayerKey{ entry.entry.sceneId, entry.entry.spawn };
+        auto nextLayer = nextLayerLookupTable.find(nextLayerKey);
+        if (nextLayer == nextLayerLookupTable.end()) {
+            entry.entry.layer = 0;
+            nextLayerLookupTable.insert({ nextLayerKey, 1 });
+        } else {
+            entry.entry.layer = nextLayer->second++;
+        }
+
+        // Add the entrance to the lookup of scene, spawn, and layer -> base scene
+        idLookupTable.insert({ { entry.entry.sceneId, entry.entry.spawn, entry.entry.layer }, entry.entry.id });
+    }
+}
+
+void EntranceDB::Copy(s32 from, s32 to) {
+    Entry& entryFrom = RetrieveEntry(from);
+    Entry& entryTo = RetrieveEntry(to);
+
+    // Remove entrance that is about to be overridden
+    std::remove(idLookupTable.begin(), idLookupTable.end(), to);
+
+    // Add a lookup so that the overridden entrance returns the new one
+    idLookupTable.insert({ { entryTo.entry.sceneId, entryTo.entry.spawn, entryTo.entry.layer }, entryFrom.entry.id });
+
+    // Replace the entrance
+    entryTo = entryFrom;
 }
 
 EntranceDB::Entry& EntranceDB::AddEntry(const std::string& name, const std::string& desc, size_t index) {
@@ -3093,4 +3148,12 @@ extern "C" int EntranceDB_CalcId(const int sceneId, const int spawn, const int l
 
 extern "C" int EntranceDB_CalcIdWithEntrance(const int entrance, const int newLayer) {
     return EntranceDB::Instance->CalcId(entrance, newLayer);
+}
+
+extern "C" void EntranceDB_ResetVanillaEntrances(void) {
+    return EntranceDB::Instance->ResetVanillaEntrances();
+}
+
+extern "C" void EntranceDB_Copy(const int from, const int to) {
+    return EntranceDB::Instance->Copy(from, to);
 }

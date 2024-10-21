@@ -9,6 +9,7 @@
 
 #include "randomizer_entrance.h"
 #include "randomizer_grotto.h"
+#include "soh/SceneDB.h"
 #include <string.h>
 
 #include "global.h"
@@ -43,8 +44,6 @@ static s16 entranceOverrideTable[ENTRANCE_TABLE_SIZE] = {0};
 // Boss scenes (normalize boss scene range to 0 on lookup) mapped to save/death warp entrance
 static s16 bossSceneSaveDeathWarps[SHUFFLEABLE_BOSS_COUNT] = {0};
 static ActorEntry modifiedLinkActorEntry = {0};
-
-EntranceInfo originalEntranceTable[ENTRANCE_TABLE_SIZE] = {0};
 
 typedef struct {
     s16 entryway;
@@ -83,7 +82,7 @@ static void Entrance_SeparateOGCFairyFountainExit(void) {
     //Overwrite unused entrance 0x03E8 (ENTR_POTION_SHOP_KAKARIKO_1) with values from 0x0340 (ENTR_HYRULE_CASTLE_2) to use it as the
     //exit from OGC Great Fairy Fountain -> Castle Grounds
     for (size_t i = 0; i < 4; ++i) {
-        gEntranceTable[ENTR_POTION_SHOP_KAKARIKO_1 + i] = gEntranceTable[ENTR_HYRULE_CASTLE_2 + i];
+        EntranceDB_Copy(ENTR_HYRULE_CASTLE_2 + i, ENTR_POTION_SHOP_KAKARIKO_1 + i);
     }
 }
 
@@ -91,7 +90,7 @@ static void Entrance_SeparateAdultSpawnAndPrelude() {
     // Overwrite unused entrance 0x0282 (ENTR_HYRULE_FIELD_10) with values from 0x05F4 (ENTR_TEMPLE_OF_TIME_7) to use it as the
     // Adult Spawn index and separate it from Prelude of Light
     for (size_t i = 0; i < 4; ++i) {
-        gEntranceTable[ENTR_HYRULE_FIELD_10 + i] = gEntranceTable[ENTR_TEMPLE_OF_TIME_7 + i];
+        EntranceDB_Copy(ENTR_TEMPLE_OF_TIME_7 + i, ENTR_HYRULE_FIELD_10 + i);
     }
 }
 
@@ -100,53 +99,43 @@ static void Entrance_ReplaceChildTempleWarps() {
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES) != RO_DUNGEON_ENTRANCE_SHUFFLE_OFF ||
         Randomizer_GetSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) != RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF) {
         // Forest Temple
-        gEntranceTable[ENTR_SACRED_FOREST_MEADOW_3] = gEntranceTable[ENTR_SACRED_FOREST_MEADOW_2];
-        gEntranceTable[ENTR_SACRED_FOREST_MEADOW_3_1] = gEntranceTable[ENTR_SACRED_FOREST_MEADOW_2_1];
+        EntranceDB_Copy(ENTR_SACRED_FOREST_MEADOW_2, ENTR_SACRED_FOREST_MEADOW_3);
+        EntranceDB_Copy(ENTR_SACRED_FOREST_MEADOW_2_1, ENTR_SACRED_FOREST_MEADOW_3_1);
         // Fire Temple
-        gEntranceTable[ENTR_DEATH_MOUNTAIN_CRATER_5] = gEntranceTable[ENTR_DEATH_MOUNTAIN_CRATER_4];
-        gEntranceTable[ENTR_DEATH_MOUNTAIN_CRATER_5_1] = gEntranceTable[ENTR_DEATH_MOUNTAIN_CRATER_4_1];
+        EntranceDB_Copy(ENTR_DEATH_MOUNTAIN_CRATER_4, ENTR_DEATH_MOUNTAIN_CRATER_5);
+        EntranceDB_Copy(ENTR_DEATH_MOUNTAIN_CRATER_4_1, ENTR_DEATH_MOUNTAIN_CRATER_5_1);
         // Water Temple
-        gEntranceTable[ENTR_LAKE_HYLIA_9] = gEntranceTable[ENTR_LAKE_HYLIA_8];
-        gEntranceTable[ENTR_LAKE_HYLIA_9_1] = gEntranceTable[ENTR_LAKE_HYLIA_8_1];
+        EntranceDB_Copy(ENTR_LAKE_HYLIA_8, ENTR_LAKE_HYLIA_9);
+        EntranceDB_Copy(ENTR_LAKE_HYLIA_8_1, ENTR_LAKE_HYLIA_9_1);
         // Shadow Temple
-        gEntranceTable[ENTR_GRAVEYARD_8] = gEntranceTable[ENTR_GRAVEYARD_7];
-        gEntranceTable[ENTR_GRAVEYARD_8_1] = gEntranceTable[ENTR_GRAVEYARD_7_1];
+        EntranceDB_Copy(ENTR_GRAVEYARD_7, ENTR_GRAVEYARD_8);
+        EntranceDB_Copy(ENTR_GRAVEYARD_7_1, ENTR_GRAVEYARD_8_1);
         // Spirit Temple
-        gEntranceTable[ENTR_DESERT_COLOSSUS_8] = gEntranceTable[ENTR_DESERT_COLOSSUS_5];
-        gEntranceTable[ENTR_DESERT_COLOSSUS_8_1] = gEntranceTable[ENTR_DESERT_COLOSSUS_5_1];
-    }
-}
-
-void Entrance_CopyOriginalEntranceTable(void) {
-    if (!hasCopiedEntranceTable) {
-        memcpy(originalEntranceTable, gEntranceTable, sizeof(EntranceInfo) * ENTRANCE_TABLE_SIZE);
-        hasCopiedEntranceTable = 1;
+        EntranceDB_Copy(ENTR_DESERT_COLOSSUS_5, ENTR_DESERT_COLOSSUS_8);
+        EntranceDB_Copy(ENTR_DESERT_COLOSSUS_5_1, ENTR_DESERT_COLOSSUS_8_1);
     }
 }
 
 void Entrance_ResetEntranceTable(void) {
-    if (hasCopiedEntranceTable && hasModifiedEntranceTable) {
-        memcpy(gEntranceTable, originalEntranceTable, sizeof(EntranceInfo) * ENTRANCE_TABLE_SIZE);
-        hasModifiedEntranceTable = 0;
-    }
+    EntranceDB_ResetVanillaEntrances();
 }
 
 void Entrance_Init(void) {
     EntranceOverride* entranceOverrides = Randomizer_GetEntranceOverrides();
     s32 index;
 
-    Entrance_CopyOriginalEntranceTable();
-
     // Skip Child Stealth if given by settings
     if (Randomizer_GetSettingValue(RSK_SKIP_CHILD_STEALTH)) {
-        gEntranceTable[ENTR_CASTLE_COURTYARD_GUARDS_DAY_0].scene = SCENE_CASTLE_COURTYARD_ZELDA;
-        gEntranceTable[ENTR_CASTLE_COURTYARD_GUARDS_DAY_0].spawn = 0;
-        gEntranceTable[ENTR_CASTLE_COURTYARD_GUARDS_DAY_0].field = ENTRANCE_INFO_FIELD(false, false, TRANS_TYPE_FADE_WHITE, TRANS_TYPE_FADE_WHITE);
+        EntranceDB_Copy(ENTR_CASTLE_COURTYARD_ZELDA_0, ENTR_CASTLE_COURTYARD_GUARDS_DAY_0);
     }
 
     // Delete the title card and add a fade in for Hyrule Field from Ocarina of Time cutscene
     for (index = ENTR_HYRULE_FIELD_16; index <= ENTR_HYRULE_FIELD_16_3; ++index) {
-        gEntranceTable[index].field = ENTRANCE_INFO_FIELD(false, false, TRANS_TYPE_FADE_BLACK, TRANS_TYPE_INSTANT);
+        EntranceDBEntry* entry = EntranceDB_Retrieve(index);
+        entry->continueBgm = false;
+        entry->displayTitleCard = false;
+        entry->endTransition = TRANS_TYPE_FADE_BLACK;
+        entry->startTransition = TRANS_TYPE_INSTANT;
     }
 
     Entrance_SeparateOGCFairyFountainExit();
@@ -239,9 +228,7 @@ void Entrance_Init(void) {
 
             s16 override = indicesToSilenceBackgroundMusic[j];
             for (s16 i = 0; i < 4; i++) {
-                // Zero out the bit in the field which tells the game to keep playing
-                // background music for all four scene setups at each index
-                gEntranceTable[override + i].field &= ~ENTRANCE_INFO_CONTINUE_BGM_FLAG;
+                EntranceDB_Retrieve(override + i)->continueBgm = false;
             }
         }
     }
@@ -309,8 +296,8 @@ u32 Entrance_SceneAndSpawnAre(u8 scene, u8 spawn) {
         }
     }
 
-    EntranceInfo currentEntrance = gEntranceTable[entranceIndex];
-    return currentEntrance.scene == scene && currentEntrance.spawn == spawn;
+    EntranceDBEntry* entry = EntranceDB_Retrieve(entranceIndex);
+    return entry->sceneId == scene && entry->spawn == spawn;
 }
 
 // Properly respawn the player after a game over, accounting for dungeon entrance randomizer
