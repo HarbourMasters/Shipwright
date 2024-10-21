@@ -28,8 +28,8 @@ typedef struct {
     s16 rupees;
     s16 gsTokens;
     u8 isDoubleDefenseAcquired;
-    u8 gregFound;
-    u8 hasWallet;
+    s32 gregFound;
+    s32 hasWallet;
 } SaveFileMetaInfo;
 
 #ifdef __cplusplus
