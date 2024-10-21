@@ -1,0 +1,10 @@
+<Root>
+    <File Name="object_haka" Segment="6">
+        <Texture Name="gGravestoneGrassTex" OutName="grass" Format="rgba16" Width="16" Height="32" Offset="0x460"/>
+        <Texture Name="gGravestoneEarthTex" OutName="earth" Format="ia8" Width="32" Height="32" Offset="0x860"/>
+        <Texture Name="gGravestoneTombTex" OutName="tomb" Format="rgba16" Width="32" Height="32" Offset="0xC60"/>
+        <DList Name="gGravestoneStoneDL" Offset="0x1B0"/>
+        <DList Name="gGravestoneEarthDL" Offset="0x2A8"/>
+        <Collision Name="gGravestoneCol" Offset="0x428"/>
+    </File>
+</Root>

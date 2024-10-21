@@ -1,0 +1,6 @@
+<Root>
+    <File Name="object_gi_hookshot" Segment="6">
+        <DList Name="gGiHookshotDL" Offset="0x0750"/>
+        <DList Name="gGiLongshotDL" Offset="0x1240"/>
+    </File>
+</Root>

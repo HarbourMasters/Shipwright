@@ -1,0 +1,59 @@
+<Root>
+    <File Name="object_aob" Segment="6">
+        <!-- Dog Lady Skeleton -->
+        <Skeleton Name="gDogLadySkel" Type="Flex" LimbType="Standard" Offset="0xF0"/>
+
+        <!-- Dog Lady Limbs -->
+        <Limb Name="gDogLadyRootLimb" LimbType="Standard" Offset="0x000"/>
+        <Limb Name="gDogLadyLimb_00C" LimbType="Standard" Offset="0x00C"/>
+        <Limb Name="gDogLadyLimb_018" LimbType="Standard" Offset="0x018"/>
+        <Limb Name="gDogLadyLimb_024" LimbType="Standard" Offset="0x024"/>
+        <Limb Name="gDogLadyLimb_030" LimbType="Standard" Offset="0x030"/>
+        <Limb Name="gDogLadyLimb_03C" LimbType="Standard" Offset="0x03C"/>
+        <Limb Name="gDogLadyLimb_048" LimbType="Standard" Offset="0x048"/>
+        <Limb Name="gDogLadyTorsoLimb" LimbType="Standard" Offset="0x054"/>
+        <Limb Name="gDogLadyLimb_060" LimbType="Standard" Offset="0x060"/>
+        <Limb Name="gDogLadyLimb_06C" LimbType="Standard" Offset="0x06C"/>
+        <Limb Name="gDogLadyLimb_078" LimbType="Standard" Offset="0x078"/>
+        <Limb Name="gDogLadyLimb_084" LimbType="Standard" Offset="0x084"/>
+        <Limb Name="gDogLadyLimb_090" LimbType="Standard" Offset="0x090"/>
+        <Limb Name="gDogLadyLimb_09C" LimbType="Standard" Offset="0x09C"/>
+        <Limb Name="gDogLadyHeadLimb" LimbType="Standard" Offset="0x0A8"/>
+
+        
+        <!-- Dog Lady Limb DisplayLists -->
+        <DList Name="gDogLadyDressDL" Offset="0x5588"/>
+        <DList Name="gDogLadyDL_54B8" Offset="0x54B8"/>
+        <DList Name="gDogLadyDL_53E8" Offset="0x53E8"/>
+        <DList Name="gDogLadyDL_5318" Offset="0x5318"/>
+        <DList Name="gDogLadyDL_5248" Offset="0x5248"/>
+        <DList Name="gDogLadyDL_5178" Offset="0x5178"/>
+        <DList Name="gDogLadyDL_50A8" Offset="0x50A8"/>
+        <DList Name="gDogLadyTorsoDL" Offset="0x4E08"/>
+        <DList Name="gDogLadyDL_4C60" Offset="0x4C60"/>
+        <DList Name="gDogLadyDL_4B30" Offset="0x4B30"/>
+        <DList Name="gDogLadyDL_4928" Offset="0x4928"/>
+        <DList Name="gDogLadyDL_4780" Offset="0x4780"/>
+        <DList Name="gDogLadyDL_4650" Offset="0x4650"/>
+        <DList Name="gDogLadyDL_4448" Offset="0x4448"/>
+        <DList Name="gDogLadyHeadDL" Offset="0x3C88"/>
+
+        <!-- Palettes -->
+        <Texture Name="gDogLadyTLUT" OutName="tlut" Format="rgba16" Width="16" Height="16" Offset="0x0108"/>
+
+        <!-- Textures -->
+        <Texture Name="gDogLadyHairTex" OutName="hair" Format="ci8" Width="16" Height="16" Offset="0x0308" TlutOffset="0x0108"/>
+        <Texture Name="gDogLadySkinGradientTex" OutName="skin_gradient" Format="ci8" Width="8" Height="8" Offset="0x0408" TlutOffset="0x0108"/>
+        <Texture Name="gDogLadyEarTex" OutName="ear" Format="ci8" Width="16" Height="16" Offset="0x0448" TlutOffset="0x0108"/>
+        <Texture Name="gDogLadyLipGradientTex" OutName="lip_gradient" Format="ci8" Width="8" Height="8" Offset="0x0548" TlutOffset="0x0108"/>
+        <Texture Name="gDogLadyNostrilTex" OutName="nostril" Format="ci8" Width="8" Height="8" Offset="0x0588" TlutOffset="0x0108"/>
+        <Texture Name="gDogLadyBackOfHandTex" OutName="back_of_hand" Format="ci8" Width="16" Height="16" Offset="0x1DC8" TlutOffset="0x0108"/>
+        <Texture Name="gDogLadyDressShoulderPatternTex" OutName="dress_shoulder_pattern" Format="ci8" Width="8" Height="8" Offset="0x1EC8" TlutOffset="0x0108"/>
+        <Texture Name="gDogLadyDressTex" OutName="dress" Format="ci8" Width="8" Height="8" Offset="0x1F08" TlutOffset="0x0108"/>
+
+        <!-- Dog Lady Eye Textures -->
+        <Texture Name="gDogLadyEyeOpenTex" OutName="dog_lady_eye_open" Format="rgba16" Width="32" Height="32" Offset="0x05C8"/>
+        <Texture Name="gDogLadyEyeHalfTex" OutName="dog_lady_eye_half" Format="rgba16" Width="32" Height="32" Offset="0x0DC8"/>
+        <Texture Name="gDogLadyEyeClosedTex" OutName="dog_lady_eye_closed" Format="rgba16" Width="32" Height="32" Offset="0x15C8"/>
+    </File>
+</Root>

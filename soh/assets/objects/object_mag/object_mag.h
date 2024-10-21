@@ -9,6 +9,9 @@ static const ALIGN_ASSET(2) char gTitleZeldaShieldLogoMQTex[] = dgTitleZeldaShie
 #define dgTitleZeldaShieldLogoTex "__OTR__objects/object_mag/gTitleZeldaShieldLogoTex"
 static const ALIGN_ASSET(2) char gTitleZeldaShieldLogoTex[] = dgTitleZeldaShieldLogoTex;
 
+#define dgTitleCopyright1998Tex "__OTR__objects/object_mag/gTitleCopyright1998Tex"
+static const ALIGN_ASSET(2) char gTitleCopyright1998Tex[] = dgTitleCopyright1998Tex;
+
 #define dgTitleCopyright19982002Tex "__OTR__objects/object_mag/gTitleCopyright19982002Tex"
 static const ALIGN_ASSET(2) char gTitleCopyright19982002Tex[] = dgTitleCopyright19982002Tex;
 

@@ -1,0 +1,5 @@
+<Root>
+    <File Name="object_gi_key" Segment="6">
+        <DList Name="gGiSmallKeyDL" Offset="0x0800"/>
+    </File>
+</Root>

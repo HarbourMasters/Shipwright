@@ -1,0 +1,33 @@
+<Root>
+    <File Name="moribossroom_scene" Segment="2">
+        <Texture Name="moribossroom_sceneTex_000CF8" OutName="moribossroom_sceneTex_000CF8" Format="ci8" Width="32" Height="32" Offset="0xCF8" TlutOffset="0xB50" AddedByScript="true"/>
+        <Texture Name="moribossroom_sceneTex_0010F8" OutName="moribossroom_sceneTex_0010F8" Format="ci8" Width="32" Height="64" Offset="0x10F8" TlutOffset="0xB50" AddedByScript="true"/>
+        <Texture Name="moribossroom_sceneTLUT_000B50" OutName="moribossroom_sceneTLUT_000B50" Format="rgba16" Width="16" Height="16" Offset="0xB50" AddedByScript="true"/>
+        <Scene Name="moribossroom_scene" Offset="0x0"/>
+    </File>
+    <File Name="moribossroom_room_0" Segment="3">
+        <Texture Name="moribossroom_room_0Tex_0038B8" OutName="moribossroom_room_0Tex_0038B8" Format="rgba16" Width="32" Height="32" Offset="0x38B8" AddedByScript="true"/>
+        <Texture Name="moribossroom_room_0Tex_0040B8" OutName="moribossroom_room_0Tex_0040B8" Format="ci8" Width="32" Height="32" Offset="0x40B8" ExternalTlut="moribossroom_scene" ExternalTlutOffset="0xB50" AddedByScript="true"/>
+        <Texture Name="moribossroom_room_0Tex_0044B8" OutName="moribossroom_room_0Tex_0044B8" Format="rgba16" Width="64" Height="32" Offset="0x44B8" AddedByScript="true"/>
+        <Texture Name="moribossroom_room_0Tex_0054B8" OutName="moribossroom_room_0Tex_0054B8" Format="rgba16" Width="16" Height="16" Offset="0x54B8" AddedByScript="true"/>
+        <Texture Name="moribossroom_room_0Tex_0056B8" OutName="moribossroom_room_0Tex_0056B8" Format="ci8" Width="32" Height="64" Offset="0x56B8" ExternalTlut="moribossroom_scene" ExternalTlutOffset="0xB50" AddedByScript="true"/>
+        <Room Name="moribossroom_room_0" Offset="0x0"/>
+    </File>
+    <File Name="moribossroom_room_1" Segment="3">
+        <Texture Name="moribossroom_room_1Tex_006A20" OutName="moribossroom_room_1Tex_006A20" Format="rgba16" Width="32" Height="64" Offset="0x6A20" AddedByScript="true"/>
+        <Texture Name="moribossroom_room_1Tex_007A20" OutName="moribossroom_room_1Tex_007A20" Format="rgba16" Width="64" Height="32" Offset="0x7A20" AddedByScript="true"/>
+        <Texture Name="moribossroom_room_1Tex_008A20" OutName="moribossroom_room_1Tex_008A20" Format="rgba16" Width="64" Height="32" Offset="0x8A20" AddedByScript="true"/>
+        <Texture Name="moribossroom_room_1Tex_009A20" OutName="moribossroom_room_1Tex_009A20" Format="rgba16" Width="8" Height="16" Offset="0x9A20" AddedByScript="true"/>
+        <Texture Name="moribossroom_room_1Tex_009B20" OutName="moribossroom_room_1Tex_009B20" Format="rgba16" Width="16" Height="16" Offset="0x9B20" AddedByScript="true"/>
+        <Texture Name="moribossroom_room_1Tex_009D20" OutName="moribossroom_room_1Tex_009D20" Format="ci8" Width="32" Height="64" Offset="0x9D20" TlutOffset="0x6828" AddedByScript="true"/>
+        <Texture Name="moribossroom_room_1Tex_00A520" OutName="moribossroom_room_1Tex_00A520" Format="ci8" Width="64" Height="32" Offset="0xA520" TlutOffset="0x6828" AddedByScript="true"/>
+        <Texture Name="moribossroom_room_1Tex_00AD20" OutName="moribossroom_room_1Tex_00AD20" Format="ci8" Width="64" Height="32" Offset="0xAD20" TlutOffset="0x6828" AddedByScript="true"/>
+        <Texture Name="moribossroom_room_1Tex_00B520" OutName="moribossroom_room_1Tex_00B520" Format="ci8" Width="64" Height="32" Offset="0xB520" ExternalTlut="moribossroom_scene" ExternalTlutOffset="0xB50" AddedByScript="true"/>
+        <Texture Name="moribossroom_room_1Tex_00BD20" OutName="moribossroom_room_1Tex_00BD20" Format="ci8" Width="32" Height="64" Offset="0xBD20" TlutOffset="0x6828" AddedByScript="true"/>
+        <Texture Name="moribossroom_room_1Tex_00C520" OutName="moribossroom_room_1Tex_00C520" Format="ci8" Width="64" Height="32" Offset="0xC520" TlutOffset="0x6828" AddedByScript="true"/>
+        <Texture Name="moribossroom_room_1Tex_00CD20" OutName="moribossroom_room_1Tex_00CD20" Format="ci8" Width="64" Height="32" Offset="0xCD20" TlutOffset="0x6828" AddedByScript="true"/>
+        <Texture Name="moribossroom_room_1Tex_00D6A8" OutName="moribossroom_room_1Tex_00D6A8" Format="rgba16" Width="16" Height="32" Offset="0xD6A8" AddedByScript="true"/>
+        <Texture Name="moribossroom_room_1TLUT_006828" OutName="moribossroom_room_1TLUT_006828" Format="rgba16" Width="16" Height="16" Offset="0x6828" AddedByScript="true"/>
+        <Room Name="moribossroom_room_1" Offset="0x0"/>
+    </File>
+</Root>

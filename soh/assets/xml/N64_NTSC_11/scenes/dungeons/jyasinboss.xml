@@ -1,0 +1,49 @@
+<Root>
+    <File Name="jyasinboss_scene" Segment="2">
+        <Texture Name="jyasinboss_sceneTex_006CF0" OutName="jyasinboss_sceneTex_006CF0" Format="rgba16" Width="64" Height="32" Offset="0x6CF0" AddedByScript="true"/>
+        <Texture Name="jyasinboss_sceneTex_007CF0" OutName="jyasinboss_sceneTex_007CF0" Format="rgba16" Width="64" Height="32" Offset="0x7CF0" AddedByScript="true"/>
+        <Cutscene Name="gSpiritBossNabooruKnuckleIntroCs" Offset="0x2BB0"/>
+        <Cutscene Name="gSpiritBossNabooruKnuckleDefeatCs" Offset="0x3F80"/>
+        <Scene Name="jyasinboss_scene" Offset="0x0"/>
+    </File>
+    <File Name="jyasinboss_room_0" Segment="3">
+        <Texture Name="jyasinboss_room_0Tex_0007C8" OutName="jyasinboss_room_0Tex_0007C8" Format="rgba16" Width="32" Height="32" Offset="0x7C8" AddedByScript="true"/>
+        <Room Name="jyasinboss_room_0" Offset="0x0"/>
+    </File>
+    <File Name="jyasinboss_room_1" Segment="3">
+        <Texture Name="jyasinboss_room_1Tex_002E38" OutName="jyasinboss_room_1Tex_002E38" Format="rgba16" Width="64" Height="32" Offset="0x2E38" AddedByScript="true"/>
+        <Texture Name="jyasinboss_room_1Tex_003E38" OutName="jyasinboss_room_1Tex_003E38" Format="rgba16" Width="64" Height="32" Offset="0x3E38" AddedByScript="true"/>
+        <Texture Name="jyasinboss_room_1Tex_004E38" OutName="jyasinboss_room_1Tex_004E38" Format="rgba16" Width="32" Height="32" Offset="0x4E38" AddedByScript="true"/>
+        <Texture Name="jyasinboss_room_1Tex_005638" OutName="jyasinboss_room_1Tex_005638" Format="rgba16" Width="64" Height="32" Offset="0x5638" AddedByScript="true"/>
+        <Texture Name="jyasinboss_room_1Tex_006638" OutName="jyasinboss_room_1Tex_006638" Format="rgba16" Width="64" Height="16" Offset="0x6638" AddedByScript="true"/>
+        <Texture Name="jyasinboss_room_1Tex_006E38" OutName="jyasinboss_room_1Tex_006E38" Format="ci4" Width="64" Height="64" Offset="0x6E38" TlutOffset="0x2E18" AddedByScript="true"/>
+        <Texture Name="jyasinboss_room_1Tex_007638" OutName="jyasinboss_room_1Tex_007638" Format="rgba16" Width="32" Height="32" Offset="0x7638" AddedByScript="true"/>
+        <Texture Name="jyasinboss_room_1TLUT_002E18" OutName="jyasinboss_room_1TLUT_002E18" Format="rgba16" Width="4" Height="4" Offset="0x2E18" AddedByScript="true"/>
+        <Room Name="jyasinboss_room_1" Offset="0x0"/>
+    </File>
+    <File Name="jyasinboss_room_2" Segment="3">
+        <Texture Name="jyasinboss_room_2Tex_0021C0" OutName="jyasinboss_room_2Tex_0021C0" Format="rgba16" Width="64" Height="16" Offset="0x21C0" AddedByScript="true"/>
+        <Texture Name="jyasinboss_room_2Tex_0029C0" OutName="jyasinboss_room_2Tex_0029C0" Format="rgba16" Width="32" Height="64" Offset="0x29C0" AddedByScript="true"/>
+        <Texture Name="jyasinboss_room_2Tex_0039C0" OutName="jyasinboss_room_2Tex_0039C0" Format="rgba16" Width="16" Height="32" Offset="0x39C0" AddedByScript="true"/>
+        <Room Name="jyasinboss_room_2" Offset="0x0"/>
+    </File>
+    <File Name="jyasinboss_room_3" Segment="3">
+        <Texture Name="jyasinboss_room_3Tex_003F00" OutName="jyasinboss_room_3Tex_003F00" Format="ci8" Width="32" Height="32" Offset="0x3F00" TlutOffset="0x3CE0" AddedByScript="true"/>
+        <Texture Name="jyasinboss_room_3Tex_004300" OutName="jyasinboss_room_3Tex_004300" Format="ci8" Width="32" Height="32" Offset="0x4300" TlutOffset="0x3CE0" AddedByScript="true"/>
+        <Texture Name="jyasinboss_room_3Tex_004700" OutName="jyasinboss_room_3Tex_004700" Format="ci8" Width="64" Height="32" Offset="0x4700" TlutOffset="0x3CE0" AddedByScript="true"/>
+        <Texture Name="jyasinboss_room_3Tex_004F00" OutName="jyasinboss_room_3Tex_004F00" Format="ci8" Width="32" Height="32" Offset="0x4F00" TlutOffset="0x3CE0" AddedByScript="true"/>
+        <Texture Name="jyasinboss_room_3Tex_005300" OutName="jyasinboss_room_3Tex_005300" Format="ci8" Width="32" Height="32" Offset="0x5300" TlutOffset="0x3CE0" AddedByScript="true"/>
+        <Texture Name="jyasinboss_room_3Tex_005700" OutName="jyasinboss_room_3Tex_005700" Format="ci8" Width="32" Height="64" Offset="0x5700" TlutOffset="0x3CE0" AddedByScript="true"/>
+        <Texture Name="jyasinboss_room_3Tex_005F00" OutName="jyasinboss_room_3Tex_005F00" Format="rgba16" Width="32" Height="32" Offset="0x5F00" AddedByScript="true"/>
+        <Texture Name="jyasinboss_room_3Tex_006700" OutName="jyasinboss_room_3Tex_006700" Format="rgba16" Width="64" Height="32" Offset="0x6700" AddedByScript="true"/>
+        <Texture Name="jyasinboss_room_3Tex_007700" OutName="jyasinboss_room_3Tex_007700" Format="rgba16" Width="32" Height="32" Offset="0x7700" AddedByScript="true"/>
+        <Texture Name="jyasinboss_room_3Tex_007F00" OutName="jyasinboss_room_3Tex_007F00" Format="rgba16" Width="16" Height="128" Offset="0x7F00" AddedByScript="true"/>
+        <Texture Name="jyasinboss_room_3Tex_008F00" OutName="jyasinboss_room_3Tex_008F00" Format="rgba16" Width="64" Height="32" Offset="0x8F00" AddedByScript="true"/>
+        <Texture Name="jyasinboss_room_3Tex_009F00" OutName="jyasinboss_room_3Tex_009F00" Format="ci4" Width="64" Height="64" Offset="0x9F00" TlutOffset="0x3EE0" AddedByScript="true"/>
+        <Texture Name="jyasinboss_room_3Tex_00A700" OutName="jyasinboss_room_3Tex_00A700" Format="rgba16" Width="32" Height="32" Offset="0xA700" AddedByScript="true"/>
+        <Texture Name="jyasinboss_room_3Tex_00AF00" OutName="jyasinboss_room_3Tex_00AF00" Format="rgba16" Width="32" Height="32" Offset="0xAF00" AddedByScript="true"/>
+        <Texture Name="jyasinboss_room_3TLUT_003CE0" OutName="jyasinboss_room_3TLUT_003CE0" Format="rgba16" Width="16" Height="16" Offset="0x3CE0" AddedByScript="true"/>
+        <Texture Name="jyasinboss_room_3TLUT_003EE0" OutName="jyasinboss_room_3TLUT_003EE0" Format="rgba16" Width="4" Height="4" Offset="0x3EE0" AddedByScript="true"/>
+        <Room Name="jyasinboss_room_3" Offset="0x0"/>
+    </File>
+</Root>

@@ -1,0 +1,35 @@
+<Root>
+    <File Name="icon_item_jpn_static" Segment="13">
+        <Texture Name="gPauseDekuTitleJPNTex" OutName="pause_deku_title_jpn" Format="ia8" Width="96" Height="16" Offset="0x0"/>
+        <Texture Name="gPauseDodongoTitleJPNTex" OutName="pause_dodongo_title_jpn" Format="ia8" Width="96" Height="16" Offset="0x600"/>
+        <Texture Name="gPauseJabuTitleJPNTex" OutName="pause_inside_jabu_title_jpn" Format="ia8" Width="96" Height="16" Offset="0xC00"/>
+        <Texture Name="gPauseForestTitleJPNTex" OutName="pause_forest_title_jpn" Format="ia8" Width="96" Height="16" Offset="0x1200"/>
+        <Texture Name="gPauseFireTitleJPNTex" OutName="pause_fire_title_jpn" Format="ia8" Width="96" Height="16" Offset="0x1800"/>
+        <Texture Name="gPauseWaterTitleJPNTex" OutName="pause_water_title_jpn" Format="ia8" Width="96" Height="16" Offset="0x1E00"/>
+        <Texture Name="gPauseSpiritTitleJPNTex" OutName="pause_spirit_title_jpn" Format="ia8" Width="96" Height="16" Offset="0x2400"/>
+        <Texture Name="gPauseShadowTitleJPNTex" OutName="pause_shadow_title_jpn" Format="ia8" Width="96" Height="16" Offset="0x2A00"/>
+        <Texture Name="gPauseBotWTitleJPNTex" OutName="pause_botw_title_jpn" Format="ia8" Width="96" Height="16" Offset="0x3000"/>
+        <Texture Name="gPauseIceCavernTitleJPNTex" OutName="pause_ice_cavern_title_jpn" Format="ia8" Width="96" Height="16" Offset="0x3600"/>
+        <Texture Name="gPauseToEquipJPNTex" OutName="pause_to_equip_jpn" Format="ia8" Width="56" Height="16" Offset="0x3C00"/>
+        <Texture Name="gPauseToDecideJPNTex" OutName="pause_to_decide_jpn" Format="ia8" Width="48" Height="16" Offset="0x3F80"/>
+        <Texture Name="gPauseToPlayMelodyJPNTex" OutName="pause_to_play_melody_jpn" Format="ia8" Width="96" Height="16" Offset="0x4280"/>
+        <Texture Name="gPauseToSelectItemJPNTex" OutName="pause_to_select_item_jpn" Format="ia8" Width="128" Height="16" Offset="0x4880"/>
+        <Texture Name="gPauseToMapJPNTex" OutName="pause_to_map_jpn" Format="ia8" Width="128" Height="16" Offset="0x5080"/>
+        <Texture Name="gPauseToQuestStatusJPNTex" OutName="pause_to_quest_status_jpn" Format="ia8" Width="128" Height="16" Offset="0x5880"/>
+        <Texture Name="gPauseToEquipmentJPNTex" OutName="pause_to_equipment_jpn" Format="ia8" Width="128" Height="16" Offset="0x6080"/>
+        <Texture Name="gPauseSavePromptJPNTex" OutName="pause_save_prompt_jpn" Format="ia8" Width="152" Height="16" Offset="0x6880"/>
+        <Texture Name="gPauseSaveConfirmationJPNTex" OutName="pause_save_confirmation_jpn" Format="ia8" Width="152" Height="16" Offset="0x7200"/>
+        <Texture Name="gPauseYesJPNTex" OutName="pause_yes_jpn" Format="ia8" Width="48" Height="16" Offset="0x7B80"/>
+        <Texture Name="gPauseNoJPNTex" OutName="pause_no_jpn" Format="ia8" Width="48" Height="16" Offset="0x7E80"/>
+        <Texture Name="gPauseCurrentPositionJPNTex" OutName="pause_current_position_jpn" Format="i4" Width="64" Height="8" Offset="0x8180"/>
+        <Texture Name="gPauseEquipment10JPNTex" OutName="pause_equipment_1_0_jpn" Format="ia8" Width="80" Height="32" Offset="0x8280"/>
+        <Texture Name="gPauseSelectItem00JPNTex" OutName="pause_select_item_0_0_jpn" Format="ia8" Width="80" Height="32" Offset="0x8C80"/>
+        <Texture Name="gPauseSelectItem10JPNTex" OutName="pause_select_item_1_0_jpn" Format="ia8" Width="80" Height="32" Offset="0x9680"/>
+        <Texture Name="gPauseSelectItem20JPNTex" OutName="pause_select_item_2_0_jpn" Format="ia8" Width="80" Height="32" Offset="0xA080"/>
+        <Texture Name="gPauseMap10JPNTex" OutName="pause_map_1_0_jpn" Format="ia8" Width="80" Height="32" Offset="0xAA80"/>
+        <Texture Name="gPauseQuestStatus00JPNTex" OutName="pause_quest_status_0_0_jpn" Format="ia8" Width="80" Height="32" Offset="0xB480"/>
+        <Texture Name="gPauseQuestStatus10JPNTex" OutName="pause_quest_status_1_0_jpn" Format="ia8" Width="80" Height="32" Offset="0xBE80"/>
+        <Texture Name="gPauseQuestStatus20JPNTex" OutName="pause_quest_status_2_0_jpn" Format="ia8" Width="80" Height="32" Offset="0xC880"/>
+        <Texture Name="gPauseSave10JPNTex" OutName="pause_save_1_0_jpn" Format="ia8" Width="80" Height="32" Offset="0xD280"/>
+    </File>
+</Root>

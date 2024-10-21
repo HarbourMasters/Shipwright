@@ -1,0 +1,7 @@
+<Root>
+    <File Name="object_efc_fire_ball" Segment="6">
+        <DList Name="gCreationFireBallDL" Offset="0x0040"/>
+        <Texture Name="gCreationFireBallMaskTex" OutName="fire_ball_mask" Format="i8" Width="32" Height="32" Offset="0x0100"/>
+        <Texture Name="gCreationFireBallFlameEffectTex" OutName="fire_ball_flame_effect" Format="i8" Width="32" Height="64" Offset="0x0500"/>
+    </File>
+</Root>

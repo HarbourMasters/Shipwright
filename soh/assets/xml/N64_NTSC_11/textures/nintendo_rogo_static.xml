@@ -1,0 +1,9 @@
+<Root>
+     <File Name="nintendo_rogo_static" Segment="1">
+
+         <Texture Name="nintendo_rogo_staticTex_0029C0" OutName="nintendo_rogo_staticTex_0029C0" Format="i8" Width="32" Height="32" Offset="0x29C0" AddedByScript="true"/>
+        <Texture Name="nintendo_rogo_static_Tex_000000" OutName="tex_00000000" Format="i8" Width="192" Height="32" Offset="0x0000"/>
+         <Texture Name="nintendo_rogo_static_Tex_001800" OutName="tex_00001800" Format="i8" Width="32" Height="32" Offset="0x1800"/>
+         <DList Name="gNintendo64LogoDL" Offset="0x2720"/>
+     </File>
+</Root>

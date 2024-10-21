@@ -1,0 +1,7 @@
+<Root>
+    <File Name="object_gi_frog" Segment="6">
+        <Texture Name="object_gi_frogTex_000000" OutName="object_gi_frogTex_000000" Format="i8" Width="32" Height="32" Offset="0x0" AddedByScript="true"/>
+        <DList Name="gGiFrogDL" Offset="0x0D60"/>
+        <DList Name="gGiFrogEyesDL" Offset="0x1060"/>
+    </File>
+</Root>

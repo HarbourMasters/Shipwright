@@ -1,0 +1,12 @@
+<Root>
+    <File Name="object_haka_door" Segment="6">
+        <Texture Name="object_haka_door_Tex_000000" OutName="tex_00000000" Format="rgba16" Width="32" Height="64" Offset="0x0"/>
+        <DList Name="object_haka_door_DL_001310" Offset="0x1310"/>
+        <DList Name="gShadowDoorLeftDL" Offset="0x13B8"/>
+        <DList Name="gShadowDoorRightDL" Offset="0x1420"/>
+        <Texture Name="object_haka_door_Tex_001490" OutName="tex_00001490" Format="rgba16" Width="32" Height="64" Offset="0x1490"/>
+        <DList Name="object_haka_door_DL_002620" Offset="0x2620"/>
+        <Texture Name="object_haka_door_Tex_002700" OutName="tex_00002700" Format="rgba16" Width="32" Height="64" Offset="0x2700"/>
+        <DList Name="object_haka_door_DL_003890" Offset="0x3890"/>
+    </File>
+</Root>

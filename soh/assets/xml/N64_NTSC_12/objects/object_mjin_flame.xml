@@ -1,0 +1,5 @@
+<Root>
+    <File Name="object_mjin_flame" Segment="6">
+        <Texture Name="gFireMedallionPlatformTex" OutName="fire_medallion" Format="i8" Width="64" Height="64" Offset="0x0"/>
+    </File>
+</Root>

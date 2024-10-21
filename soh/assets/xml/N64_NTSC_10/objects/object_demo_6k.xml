@@ -1,0 +1,13 @@
+<Root>
+    <File Name="object_demo_6k" Segment="6">
+        <Texture Name="object_demo_6k_Tex_000000" OutName="tex_00000000" Format="i8" Width="64" Height="64" Offset="0x0"/>
+        <DList Name="object_demo_6k_DL_001040" Offset="0x1040"/>
+        <Texture Name="object_demo_6k_Tex_0010D0" OutName="tex_000010D0" Format="i8" Width="16" Height="128" Offset="0x10D0"/>
+        <DList Name="object_demo_6k_DL_0022B0" Offset="0x22B0"/>
+        <Texture Name="object_demo_6k_Tex_0025E0" OutName="tex_000025E0" Format="i8" Width="64" Height="64" Offset="0x25E0"/>
+        <Array Name="object_demo_6kVtx_0035E0" Count="63" Offset="0x35E0">
+            <Vtx/>
+        </Array>
+        <DList Name="object_demo_6k_DL_0039D0" Offset="0x39D0"/>
+    </File>
+</Root>

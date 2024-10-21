@@ -1,0 +1,13 @@
+<Root>
+    <File Name="object_ganon_anime3" Segment="6">
+        <Animation Name="gGanondorfShowTriforceStartAnim" Offset="0xBFC"/>
+        <Animation Name="gGanondorfBurstOutAnim" Offset="0x2168"/>
+        <Animation Name="gGanondorfTransformEndAnim" Offset="0x28A8"/>
+        <Animation Name="gGanondorfFloatingHeavyBreathingAnim" Offset="0x2E6C"/>
+        <Animation Name="gGanondorfTransformStartAnim" Offset="0x3754"/>
+        <Animation Name="gGanondorfTransformLoopAnim" Offset="0x3884"/>
+        <Animation Name="gGanondorfShowTriforceLoopAnim" Offset="0x3F38"/>
+        <Animation Name="gGanonUncurlAndFlailAnim" Offset="0x10380"/>
+        <Animation Name="gGanonRoarAnim" Offset="0x147E0"/>
+    </File>
+</Root>

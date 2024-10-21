@@ -1,0 +1,13 @@
+<Root>
+    <File Name="object_bxa" Segment="6">
+        <DList Name="object_bxa_DL_000890" Offset="0x890"/>
+        <Texture Name="object_bxa_Tex_000C40" OutName="tex_00000C40" Format="rgba16" Width="32" Height="32" Offset="0xC40"/>
+        <Texture Name="object_bxa_Tex_001440" OutName="tex_00001440" Format="rgba16" Width="32" Height="32" Offset="0x1440"/>
+        <DList Name="object_bxa_DL_001D80" Offset="0x1D80"/>
+        <DList Name="object_bxa_DL_0022F0" Offset="0x22F0"/>
+        <Texture Name="object_bxa_Tex_0024F0" OutName="tex_000024F0" Format="rgba16" Width="16" Height="16" Offset="0x24F0"/>
+        <Texture Name="object_bxa_Tex_0026F0" OutName="tex_000026F0" Format="i8" Width="16" Height="16" Offset="0x26F0"/>
+        <Texture Name="object_bxa_Tex_0027F0" OutName="tex_000027F0" Format="rgba16" Width="16" Height="16" Offset="0x27F0"/>
+        <Texture Name="object_bxa_Tex_0029F0" OutName="tex_000029F0" Format="rgba16" Width="16" Height="16" Offset="0x29F0"/>
+    </File>
+</Root>

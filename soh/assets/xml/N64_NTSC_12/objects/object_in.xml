@@ -1,0 +1,142 @@
+<Root>
+    <File Name="object_in" Segment="6">
+        <Animation Name="object_in_Anim_0003B4" Offset="0x3B4"/>
+        <Animation Name="object_in_Anim_000CB0" Offset="0xCB0"/>
+        <Animation Name="object_in_Anim_001BE0" Offset="0x1BE0"/>
+        <Animation Name="object_in_Anim_001CC0" Offset="0x1CC0"/>
+        <Texture Name="gIngoTLUT" OutName="tlut" Format="rgba16" Width="16" Height="16" Offset="0x1CD0"/>
+        <Texture Name="gIngoSkinGradientTLUT" OutName="skin_gradient_tlut" Format="rgba16" Width="16" Height="16" Offset="0x1ED0"/>
+        <Texture Name="gIngoUnusedEyeTex" OutName="unused_eye" Format="rgba16" Width="32" Height="32" Offset="0x2150"/>
+        <Texture Name="gIngoSkinGradientTex" OutName="skin_gradient" Format="ci8" Width="8" Height="8" Offset="0x2950" TlutOffset="0x1ED0"/>
+        <Texture Name="gIngoArmHairTex" OutName="arm_hair" Format="ci8" Width="16" Height="32" Offset="0x2990" TlutOffset="0x1CD0"/>
+        <Texture Name="gIngoFingersTex" OutName="fingers" Format="ci8" Width="16" Height="16" Offset="0x2B90" TlutOffset="0x1CD0"/>
+        <Texture Name="gIngoShirtSleeveTex" OutName="sleeve" Format="ci8" Width="8" Height="8" Offset="0x2C90" TlutOffset="0x1CD0"/>
+        <Texture Name="gIngoShirtButtonsTex" OutName="shirt_buttons" Format="ci8" Width="32" Height="32" Offset="0x2CD0" TlutOffset="0x1CD0"/>
+        <Texture Name="gIngoClothTex" OutName="cloth" Format="ci8" Width="8" Height="8" Offset="0x30D0" TlutOffset="0x1CD0"/>
+        <Texture Name="gIngoClothStainTex" OutName="cloth_stain" Format="ci8" Width="8" Height="8" Offset="0x3110" TlutOffset="0x1CD0"/>
+        <Texture Name="gIngoPocketTex" OutName="pocket" Format="ci8" Width="8" Height="8" Offset="0x31D0" TlutOffset="0x1CD0"/>
+        <Texture Name="gIngoHeadTLUT" OutName="head_tlut" Format="rgba16" Width="252" Height="1" Offset="0x3210"/>
+        <Texture Name="gIngoTLUT2" OutName="tlut2" Format="rgba16" Width="100" Height="1" Offset="0x3408"/>
+        <Texture Name="gIngoHeadGradient2Tex" OutName="head_gradient_2" Format="ci8" Width="8" Height="8" Offset="0x34D0" TlutOffset="0x3210"/>
+        <Texture Name="gIngoEarTex" OutName="ear" Format="ci8" Width="8" Height="8" Offset="0x3510" TlutOffset="0x3408"/>
+        <Texture Name="gIngoBrownTex" OutName="brown" Format="ci8" Width="8" Height="8" Offset="0x3550" TlutOffset="0x3408"/> <!-- Used in his mustache, eyebrows, pitchfork -->
+        <Texture Name="gIngoEyebrowEdgeTex" OutName="eyebrow_edge" Format="rgba16" Width="16" Height="16" Offset="0x3990"/>
+        <Texture Name="gIngoHairTex" OutName="hair" Format="ci8" Width="16" Height="16" Offset="0x3B90" TlutOffset="0x3408"/>
+        <Texture Name="gIngoSideburnsTex" OutName="sideburns" Format="ci8" Width="16" Height="16" Offset="0x3C90" TlutOffset="0x3408"/>
+        <Texture Name="gIngoPitchforkTex" OutName="pitchfork" Format="i8" Width="8" Height="8" Offset="0x3D90"/>
+        <Texture Name="gIngoBasketTex" OutName="basket" Format="rgba16" Width="8" Height="16" Offset="0x3DD0"/>
+        <Texture Name="gIngoBeardTex" OutName="beard" Format="ci8" Width="16" Height="32" Offset="0x3ED0" TlutOffset="0x3408"/>
+        <Texture Name="gIngoBasketInsideTex" OutName="basket_inside" Format="rgba16" Width="8" Height="16" Offset="0x40D0"/>
+        <Texture Name="gIngoBootSideTex" OutName="boot_side" Format="ci8" Width="8" Height="16" Offset="0x41D0" TlutOffset="0x3408"/>
+        <Texture Name="gIngoBootTopTex" OutName="boot_top" Format="ci8" Width="16" Height="16" Offset="0x4250" TlutOffset="0x3408"/>
+        <Texture Name="gIngoHeadGradientTex" OutName="head_gradient" Format="ci8" Width="8" Height="8" Offset="0x4790" TlutOffset="0x3408"/>
+
+        <Texture Name="gIngoEyeOpenTex" OutName="eye_open" Format="ci8" Width="32" Height="32" Offset="0x3590" TlutOffset="0x3210"/>
+        <Texture Name="gIngoRedTex" OutName="red" Format="ci8" Width="8" Height="8" Offset="0x4350" TlutOffset="0x3210"/>
+        <Texture Name="gIngoEyeHalfTex" OutName="eye_half" Format="ci8" Width="32" Height="32" Offset="0x47D0" TlutOffset="0x3210"/>
+        <Texture Name="gIngoEyeClosedTex" OutName="eye_closed" Format="ci8" Width="32" Height="32" Offset="0x4BD0" TlutOffset="0x3210"/>
+        <Texture Name="gIngoEyeClosed2Tex" OutName="eye_closed_2" Format="ci8" Width="32" Height="32" Offset="0x4390" TlutOffset="0x3210"/>
+
+        <DList Name="gIngoChildEraHeadDL" Offset="0x6730"/>
+        <DList Name="gIngoChildEraRightEyebrowDL" Offset="0x7398"/>
+        <DList Name="gIngoChildEraLeftEyebrowDL" Offset="0x74C0"/>
+        <DList Name="gIngoChildEraMustacheDL" Offset="0x75E8"/>
+        <DList Name="gIngoChildEraLeftFootDL" Offset="0x76E0"/>
+        <DList Name="gIngoChildEraRightFootDL" Offset="0x7880"/>
+        <DList Name="gIngoChildEraBasketDL" Offset="0x7A20"/>
+        <DList Name="gIngoChildEraPitchForkDL" Offset="0x7BF8"/>
+        <DList Name="gIngoChildEraChestDL" Offset="0xA0D8"/>
+        <DList Name="gIngoChildEraRightShoulderDL" Offset="0xA408"/>
+        <DList Name="gIngoChildEraRightArmDL" Offset="0xA630"/>
+        <DList Name="gIngoChildEraRightHandDL" Offset="0xA8E0"/>
+        <DList Name="gIngoChildEraLeftShoulderDL" Offset="0xACA0"/>
+        <DList Name="gIngoChildEraLeftArmDL" Offset="0xAEC8"/>
+        <DList Name="gIngoChildEraLeftHandDL" Offset="0xB178"/>
+        <DList Name="gIngoChildEraTorsoDL" Offset="0xB5B8"/>
+        <DList Name="gIngoChildEraRightThighDL" Offset="0xB7E0"/>
+        <DList Name="gIngoChildEraRightLegDL" Offset="0xBB28"/>
+        <DList Name="gIngoChildEraLeftThighDL" Offset="0xBD80"/>
+        <DList Name="gIngoChildEraLeftLegDL" Offset="0xC0C8"/>
+
+        <Texture Name="gIngoAdultEraTLUT" OutName="adult_era_tlut" Format="rgba16" Width="16" Height="16" Offset="0xC298"/>
+        <Texture Name="gIngoAdultEraEyebrowEdgeTex" OutName="adult_era_eyebrow_edge" Format="rgba16" Width="16" Height="16" Offset="0xC498"/>
+        <Texture Name="gIngoAdultEraFaceHairTex" OutName="adult_era_face_hair" Format="ci8" Width="8" Height="8" Offset="0xC698" TlutOffset="0xC298"/>
+        <Texture Name="gIngoAdultEraGradientTex" OutName="adult_era_gradient" Format="ci8" Width="8" Height="8" Offset="0xC6D8" TlutOffset="0xC298"/>
+        <Texture Name="gIngoAdultEraEarTex" OutName="adult_era_ear" Format="ci8" Width="8" Height="8" Offset="0xC718" TlutOffset="0xC298"/>
+        <Texture Name="object_in_Tex_00C758" OutName="tex_0000C758" Format="ci8" Width="16" Height="32" Offset="0xC758" TlutOffset="0xC298"/>
+        <Texture Name="gIngoAdultEraHairTex" OutName="adult_era_hair" Format="ci8" Width="16" Height="16" Offset="0xC958" TlutOffset="0xC298"/>
+        <Texture Name="gIngoAdultEraSideburnsTex" OutName="adult_era_sideburns" Format="ci8" Width="16" Height="16" Offset="0xCA58" TlutOffset="0xC298"/>
+        <Texture Name="gIngoAdultEraGradient2Tex" OutName="adult_era_gradient_2" Format="ci8" Width="8" Height="8" Offset="0xCB58" TlutOffset="0xC298"/>
+
+        <Texture Name="gIngoUnusedEyeOpenTex" OutName="unused_eye_open" Format="rgba16" Width="32" Height="32" Offset="0xCB98"/>
+        <Texture Name="gIngoUnusedEyeHalfTex" OutName="unused_eye_half" Format="rgba16" Width="32" Height="32" Offset="0xD398"/>
+        <Texture Name="gIngoUnusedEyeClosedTex" OutName="unused_eye_closed" Format="rgba16" Width="32" Height="32" Offset="0xDB98"/>
+
+        <Texture Name="gIngoAdultEraFingersTex" OutName="adult_era_fingers" Format="ci8" Width="16" Height="16" Offset="0xE398" TlutOffset="0xC298"/>
+        <Texture Name="gIngoAdultEraArmHairTex" OutName="adult_era_arm_har" Format="ci8" Width="16" Height="32" Offset="0xE498" TlutOffset="0xC298"/>
+        <Texture Name="gIngoAdultEraSleeveTex" OutName="adult_era_sleeve" Format="ci8" Width="16" Height="16" Offset="0xE698" TlutOffset="0xC298"/>
+        <Texture Name="gIngoAdultEraCollarTex" OutName="adult_era_collar" Format="ci8" Width="16" Height="16" Offset="0xE798" TlutOffset="0xC298"/>
+        <Texture Name="gIngoAdultEraCollar2Tex" OutName="adult_era_collar_2" Format="ci8" Width="16" Height="16" Offset="0xE898" TlutOffset="0xC298"/>
+        <Texture Name="gIngoAdultEraShirtTex" OutName="adult_era_shirt" Format="ci8" Width="16" Height="16" Offset="0xE998" TlutOffset="0xC298"/>
+        <Texture Name="gIngoAdultEraShoesTex" OutName="adult_era_shoes" Format="ci8" Width="8" Height="8" Offset="0xEA98" TlutOffset="0xC298"/>
+        <Texture Name="gIngoAdultEraPantsTex" OutName="adult_era_pants" Format="ci8" Width="8" Height="8" Offset="0xEAD8" TlutOffset="0xC298"/>
+
+        <DList Name="gIngoAdultEraChestDL" Offset="0x11758"/>
+        <DList Name="gIngoAdultEraHeadDL" Offset="0x11AD8"/>
+        <DList Name="gIngoAdultEraMustacheDL" Offset="0x12120"/>
+        <DList Name="gIngoAdultEraRightEyebrowDL" Offset="0x12220"/>
+        <DList Name="gIngoAdultEraLeftEyebrowDL" Offset="0x12350"/>
+        <DList Name="gIngoAdultEraRightShoulderDL" Offset="0x12480"/>
+        <DList Name="gIngoAdultEraRightArmDL" Offset="0x125B0"/>
+        <DList Name="gIngoAdultEraRightHandDL" Offset="0x126E0"/>
+        <DList Name="gIngoAdultEraLeftShoulderDL" Offset="0x12AC0"/>
+        <DList Name="gIngoAdultEraLeftArmDL" Offset="0x12BF0"/>
+        <DList Name="gIngoAdultEraLeftHandDL" Offset="0x12D20"/>
+        <DList Name="gIngoAdultEraTorsoDL" Offset="0x13100"/>
+        <DList Name="gIngoAdultEraRightThighDL" Offset="0x132B8"/>
+        <DList Name="gIngoAdultEraRightLegDL" Offset="0x133F0"/>
+        <DList Name="gIngoAdultEraRightFootDL" Offset="0x13540"/>
+        <DList Name="gIngoAdultEraLeftThighDL" Offset="0x13688"/>
+        <DList Name="gIngoAdultEraLeftLegDL" Offset="0x137C0"/>
+        <DList Name="gIngoAdultEraLeftFootDL" Offset="0x13910"/>
+
+        <Limb Name="gIngoRootLimb" LimbType="Standard" Offset="0x13A58"/>
+        <Limb Name="gIngoLeftThighLimb" LimbType="Standard" Offset="0x13A64"/>
+        <Limb Name="gIngoLeftLegLimb" LimbType="Standard" Offset="0x13A70"/>
+        <Limb Name="gIngoLeftFootLimb" LimbType="Standard" Offset="0x13A7C"/>
+        <Limb Name="gIngoRightThighLimb" LimbType="Standard" Offset="0x13A88"/>
+        <Limb Name="gIngoRightLegLimb" LimbType="Standard" Offset="0x13A94"/>
+        <Limb Name="gIngoRightFootLimb" LimbType="Standard" Offset="0x13AA0"/>
+        <Limb Name="gIngoTorsoLimb" LimbType="Standard" Offset="0x13AAC"/>
+        <Limb Name="gIngoChestLimb" LimbType="Standard" Offset="0x13AB8"/>
+        <Limb Name="gIngoLeftShoulderLimb" LimbType="Standard" Offset="0x13AC4"/>
+        <Limb Name="gIngoLeftArmLimb" LimbType="Standard" Offset="0x13AD0"/>
+        <Limb Name="gIngoLeftHandLimb" LimbType="Standard" Offset="0x13ADC"/>
+        <Limb Name="gIngoRightShoulderLimb" LimbType="Standard" Offset="0x13AE8"/>
+        <Limb Name="gIngoRightArmLimb" LimbType="Standard" Offset="0x13AF4"/>
+        <Limb Name="gIngoRightHandLimb" LimbType="Standard" Offset="0x13B00"/>
+        <Limb Name="gIngoHeadLimb" LimbType="Standard" Offset="0x13B0C"/>
+        <Limb Name="gIngoLeftEyebrowLimb" LimbType="Standard" Offset="0x13B18"/>
+        <Limb Name="gIngoRightEyebrowLimb" LimbType="Standard" Offset="0x13B24"/>
+        <Limb Name="gIngoMustacheLimb" LimbType="Standard" Offset="0x13B30"/>
+        
+        <Skeleton Name="gIngoSkel" Type="Flex" LimbType="Standard" Offset="0x13B88"/>
+
+        <Animation Name="object_in_Anim_013C6C" Offset="0x13C6C"/>
+        <Animation Name="object_in_Anim_013D60" Offset="0x13D60"/>
+        <Animation Name="object_in_Anim_01431C" Offset="0x1431C"/>
+        <Animation Name="object_in_Anim_014CA8" Offset="0x14CA8"/>
+        <Animation Name="object_in_Anim_0151C8" Offset="0x151C8"/>
+        <Animation Name="object_in_Anim_015814" Offset="0x15814"/>
+        <Animation Name="object_in_Anim_015DF0" Offset="0x15DF0"/>
+        <Animation Name="object_in_Anim_01646C" Offset="0x1646C"/>
+        <Animation Name="object_in_Anim_016B3C" Offset="0x16B3C"/>
+        <Animation Name="object_in_Anim_0175D0" Offset="0x175D0"/>
+        <Animation Name="object_in_Anim_017B58" Offset="0x17B58"/>
+        <Animation Name="object_in_Anim_018C38" Offset="0x18C38"/>
+
+        <!-- No idea what these are -->
+        <Blob Name="gIngoBlob_0020D0" Size="0x80" Offset="0x20D0"/>
+        <Blob Name="gIngoBlob_003150" Size="0x80" Offset="0x3150"/>
+    </File>
+</Root>

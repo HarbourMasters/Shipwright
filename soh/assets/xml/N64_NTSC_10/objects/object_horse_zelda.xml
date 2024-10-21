@@ -1,0 +1,26 @@
+<Root>
+    <File Name="object_horse_zelda" Segment="6">
+        <Texture Name="object_horse_zeldaTex_000408" OutName="object_horse_zeldaTex_000408" Format="rgba16" Width="8" Height="8" Offset="0x408" AddedByScript="true"/>
+        <Texture Name="object_horse_zeldaTex_000888" OutName="object_horse_zeldaTex_000888" Format="rgba16" Width="8" Height="16" Offset="0x888" AddedByScript="true"/>
+        <Texture Name="object_horse_zeldaTex_000988" OutName="object_horse_zeldaTex_000988" Format="rgba16" Width="4" Height="4" Offset="0x988" AddedByScript="true"/>
+        <Texture Name="object_horse_zeldaTex_002578" OutName="object_horse_zeldaTex_002578" Format="rgba16" Width="8" Height="16" Offset="0x2578" AddedByScript="true"/>
+        <Texture Name="object_horse_zeldaTex_002678" OutName="object_horse_zeldaTex_002678" Format="rgba16" Width="16" Height="8" Offset="0x2678" AddedByScript="true"/>
+        <Texture Name="object_horse_zeldaTex_002778" OutName="object_horse_zeldaTex_002778" Format="rgba16" Width="16" Height="16" Offset="0x2778" AddedByScript="true"/>
+        <Texture Name="object_horse_zeldaTex_002978" OutName="object_horse_zeldaTex_002978" Format="rgba16" Width="32" Height="32" Offset="0x2978" AddedByScript="true"/>
+        <Texture Name="object_horse_zeldaTex_003178" OutName="object_horse_zeldaTex_003178" Format="rgba16" Width="16" Height="8" Offset="0x3178" AddedByScript="true"/>
+        <Texture Name="object_horse_zeldaTex_003278" OutName="object_horse_zeldaTex_003278" Format="rgba16" Width="8" Height="16" Offset="0x3278" AddedByScript="true"/>
+        <Texture Name="object_horse_zeldaTex_003378" OutName="object_horse_zeldaTex_003378" Format="rgba16" Width="8" Height="8" Offset="0x3378" AddedByScript="true"/>
+        <Texture Name="object_horse_zeldaTex_0033F8" OutName="object_horse_zeldaTex_0033F8" Format="rgba16" Width="8" Height="16" Offset="0x33F8" AddedByScript="true"/>
+        <Texture Name="object_horse_zeldaTex_0034F8" OutName="object_horse_zeldaTex_0034F8" Format="rgba16" Width="16" Height="16" Offset="0x34F8" AddedByScript="true"/>
+        <Skeleton Name="gHorseZeldaSkel" Type="Normal" LimbType="Skin" Offset="0x6B2C"/>
+
+        <!-- Running. -->
+        <Animation Name="gHorseZeldaGallopingAnim" Offset="0x7148"/>
+
+        <Texture Name="gHorseZeldaEyeTex" OutName="horse_zelda_eye" Format="rgba16" Width="32" Height="16" Offset="0x8"/>
+        <Texture Name="gHorseZeldaHeadHairTex" OutName="horse_zelda_head_hair" Format="rgba16" Width="16" Height="16" Offset="0x688"/>
+        <Texture Name="gHorseZeldaNoseTex" OutName="horse_zelda_nose" Format="rgba16" Width="16" Height="16" Offset="0x488"/>
+
+        <Texture Name="gHorseZeldaLegTex" OutName="horse_zelda_leg" Format="rgba16" Width="16" Height="16" Offset="0x9A8"/>
+    </File>
+</Root>

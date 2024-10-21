@@ -512,6 +512,7 @@ struct ExtensionEntry {
 };
 
 extern "C" void OTRMessage_Init();
+extern "C" uint32_t ResourceMgr_GetGameRegion(int index);
 extern "C" void AudioMgr_CreateNextAudioBuffer(s16* samples, u32 num_samples);
 extern "C" void AudioPlayer_Play(const uint8_t* buf, uint32_t len);
 extern "C" int AudioPlayer_Buffered(void);
@@ -1530,6 +1531,52 @@ extern "C" uint32_t ResourceMgr_GetGameRegion(int index) {
         case OOT_PAL_GC_MQ_DBG:
             return GAME_REGION_PAL;
     }
+}
+
+// NTSC TODO: Implement actually good checks here
+typedef enum {
+    LOADED_UNDEFINED,
+    LOADED_FALSE,
+    LOADED_TRUE,
+} ResourceLoaded;
+
+extern "C" {
+#include "message_data_static.h"
+}
+extern "C" bool ResourceMgr_IsPalLoaded() {
+    return _message_0xFFFC_nes != NULL;
+    // static uint8_t isPalLoaded = LOADED_UNDEFINED;
+
+    // if (isPalLoaded != LOADED_UNDEFINED) {
+    //     return isPalLoaded == LOADED_TRUE;
+    // }
+
+    // isPalLoaded = LOADED_FALSE;
+    // for (size_t i = 0; i < Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->GetGameVersions().size(); i++) {
+    //     if (ResourceMgr_GetGameRegion(i) == GAME_REGION_PAL) {
+    //         isPalLoaded = LOADED_TRUE;
+    //     }
+    // }
+
+    // return isPalLoaded == LOADED_TRUE;
+}
+extern "C" MessageTableEntry* sJpnMessageEntryTablePtr;
+extern "C" bool ResourceMgr_IsNtscLoaded() {
+    return sJpnMessageEntryTablePtr != NULL;
+    // static uint8_t isNtscLoaded = LOADED_UNDEFINED;
+
+    // if (isNtscLoaded != LOADED_UNDEFINED) {
+    //     return isNtscLoaded == LOADED_TRUE;
+    // }
+
+    // isNtscLoaded = LOADED_FALSE;
+    // for (size_t i = 0; i < Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->GetGameVersions().size(); i++) {
+    //     if (ResourceMgr_GetGameRegion(i) == GAME_REGION_NTSC) {
+    //         isNtscLoaded = LOADED_TRUE;
+    //     }
+    // }
+
+    // return isNtscLoaded == LOADED_TRUE;
 }
 
 uint32_t IsSceneMasterQuest(s16 sceneNum) {

@@ -1,0 +1,79 @@
+<Root>
+    <File Name="object_im" Segment="6">
+        <Animation Name="gImpaRaiseArmsAnim" Offset="0x710"/>
+        <Animation Name="gImpaPresentShadowMedallionAnim" Offset="0xAFC"/>
+        <Animation Name="gImpaThrowDekuNutAnim" Offset="0x14E4"/>
+        <Animation Name="gImpaIdleAnim" Offset="0x1868"/>
+        <Texture Name="object_im_TLUT_001880" OutName="tlut_00001880" Format="rgba16" Width="16" Height="16" Offset="0x1880"/>
+        <Texture Name="gImpaBrownGradientTex" OutName="brown_gradient" Format="ci8" Width="8" Height="8" Offset="0x1A80" TlutOffset="0x1880"/>
+        <Texture Name="gImpaSkinAndArmGuardTex" OutName="skin_and_armguard" Format="ci8" Width="16" Height="32" Offset="0x1AC0" TlutOffset="0x1880"/>
+        <Texture Name="gImpaElbowTex" OutName="elbow" Format="ci8" Width="16" Height="16" Offset="0x1CC0" TlutOffset="0x1880"/>
+        <Texture Name="gImpaShoulderPadBottomEdgeTex" OutName="shoulder_pad_bottom_edge" Format="ci8" Width="8" Height="8" Offset="0x1DC0" TlutOffset="0x1880"/>
+        <Texture Name="gImpaShoulderSkinTex" OutName="shoulder_skin" Format="ci8" Width="8" Height="16" Offset="0x1E00" TlutOffset="0x1880"/>
+        <Texture Name="gImpaChestPlateTex" OutName="chest_plate" Format="ci8" Width="8" Height="16" Offset="0x1E80" TlutOffset="0x1880"/>
+        <Texture Name="gImpaEmblemTex" OutName="emblem" Format="ci8" Width="16" Height="32" Offset="0x1F00" TlutOffset="0x1880"/>
+        <Texture Name="gImpaSpearEmblemTex" OutName="spear_emblem" Format="ci8" Width="16" Height="32" Offset="0x2100" TlutOffset="0x1880"/>
+        <Texture Name="gImpaChestPlateStrapTex" OutName="chest_plate_strap" Format="ci8" Width="16" Height="16" Offset="0x2300" TlutOffset="0x1880"/>
+        <Texture Name="gImpaChestPlateEdgeTex" OutName="chest_plate_edge" Format="ci8" Width="8" Height="16" Offset="0x2400" TlutOffset="0x1880"/>
+        <Texture Name="gImpaNeckTex" OutName="neck" Format="ci8" Width="32" Height="32" Offset="0x2480" TlutOffset="0x1880"/>
+        <Texture Name="gImpaSwordHandleTex" OutName="sword_handle" Format="rgba16" Width="8" Height="16" Offset="0x2880"/>
+        <Texture Name="gImpaPantsAndSkinTex" OutName="pants_and_skin" Format="rgba16" Width="16" Height="32" Offset="0x2980"/>
+        <Texture Name="gImpaBlackTex" OutName="black_square" Format="ci8" Width="8" Height="8" Offset="0x2D80" TlutOffset="0x1880"/> <!-- Used on the bottom of the leg -->
+        <DList Name="gImpaChestDL" Offset="0x5040"/>
+        <DList Name="gImpaRightShoulderDL" Offset="0x5D60"/>
+        <DList Name="gImpaRightArmDL" Offset="0x6048"/>
+        <DList Name="gImpaLeftShoulderDL" Offset="0x6200"/>
+        <DList Name="gImpaLeftArmDL" Offset="0x64E8"/>
+        <DList Name="gImpaTorsoDL" Offset="0x6720"/>
+        <DList Name="gImpaRightThighDL" Offset="0x6880"/>
+        <DList Name="gImpaRightLegDL" Offset="0x69E8"/>
+        <DList Name="gImpaLeftThighDL" Offset="0x6BB8"/>
+        <DList Name="gImpaLeftLegDL" Offset="0x6D70"/>
+        <Texture Name="gImpaEyesTLUT" OutName="eyes_tlut" Format="rgba16" Width="16" Height="16" Offset="0x6F40"/>
+        <Texture Name="object_im_TLUT_007140" OutName="tlut_00007140" Format="rgba16" Width="26" Height="4" Offset="0x7140"/>
+        <Texture Name="gImpaEyeOpenTex" OutName="eye_open" Format="ci8" Width="32" Height="32" Offset="0x7210" TlutOffset="0x6F40"/>
+        <Texture Name="gImpaEyeHalfTex" OutName="eye_half" Format="ci8" Width="32" Height="32" Offset="0x7D50" TlutOffset="0x6F40"/>
+        <Texture Name="gImpaEyeClosedTex" OutName="eye_closed" Format="ci8" Width="32" Height="32" Offset="0x8150" TlutOffset="0x6F40"/>
+
+        <Texture Name="gImpaEarTex" OutName="ear" Format="ci8" Width="16" Height="16" Offset="0x7610" TlutOffset="0x7140"/> <!-- Also used in gImpaHandPointingDL DList -->
+        <DList Name="gImpaHeadUnmaskedDL" Offset="0xBDC0"/>
+        <Texture Name="gImpaHeadGradientTex" OutName="head_gradient" Format="ci8" Width="8" Height="8" Offset="0x7710" TlutOffset="0x7140"/>
+
+        <Texture Name="object_im_Tex_007750" OutName="tex_00007750" Format="rgba16" Width="8" Height="8" Offset="0x7750"/>
+        <Texture Name="gImpaHair2Tex" OutName="hair_2" Format="rgba16" Width="16" Height="16" Offset="0x77D0"/>
+        <Texture Name="object_im_Tex_0079D0" OutName="tex_000079D0" Format="ci8" Width="8" Height="8" Offset="0x79D0" TlutOffset="0x7140"/>
+        <Texture Name="gImpaShoulderPadTopTex" OutName="shoulder_pad_top" Format="rgba16" Width="8" Height="16" Offset="0x7A10"/>
+        <Texture Name="object_im_Tex_007B10" OutName="tex_00007B10" Format="ci8" Width="8" Height="8" Offset="0x7B10" TlutOffset="0x7140"/>
+        <Texture Name="object_im_Tex_007B50" OutName="tex_00007B50" Format="ci8" Width="16" Height="16" Offset="0x7B50" TlutOffset="0x7140"/>
+        <Texture Name="gImpaFingers2Tex" OutName="fingers_2" Format="ci8" Width="16" Height="16" Offset="0x7C50" TlutOffset="0x7140"/> <!-- Used in the gImpaHandPointingDL DList -->
+        <DList Name="gImpaHeadMaskedDL" Offset="0xD0D8"/>
+        <DList Name="gImpaLeftFootDL" Offset="0xDDB8"/>
+        <DList Name="gImpaLeftHandDL" Offset="0xE0F0"/>
+        <DList Name="gImpaRightFootDL" Offset="0xE5D0"/>
+        <DList Name="gImpaRightHandDL" Offset="0xE908"/>
+        <DList Name="gImpaHandPointingDL" Offset="0xEDE8"/>
+        <Limb Name="gImpaRootLimb" LimbType="Standard" Offset="0xF688"/>
+        <Limb Name="gImpaTorsoLimb" LimbType="Standard" Offset="0xF694"/>
+        <Limb Name="gImpaLeftThighLimb" LimbType="Standard" Offset="0xF6A0"/>
+        <Limb Name="gImpaLeftLegLimb" LimbType="Standard" Offset="0xF6AC"/>
+        <Limb Name="gImpaLeftFootLimb" LimbType="Standard" Offset="0xF6B8"/>
+        <Limb Name="gImpaRightThighLimb" LimbType="Standard" Offset="0xF6C4"/>
+        <Limb Name="gImpaRightLegLimb" LimbType="Standard" Offset="0xF6D0"/>
+        <Limb Name="gImpaRightFootLimb" LimbType="Standard" Offset="0xF6DC"/>
+        <Limb Name="gImpaChestLimb" LimbType="Standard" Offset="0xF6E8"/>
+        <Limb Name="gImpaLeftShoulderLimb" LimbType="Standard" Offset="0xF6F4"/>
+        <Limb Name="gImpaLeftArmLimb" LimbType="Standard" Offset="0xF700"/>
+        <Limb Name="gImpaLeftHandLimb" LimbType="Standard" Offset="0xF70C"/>
+        <Limb Name="gImpaRightShoulderLimb" LimbType="Standard" Offset="0xF718"/>
+        <Limb Name="gImpaRightArmLimb" LimbType="Standard" Offset="0xF724"/>
+        <Limb Name="gImpaRightHandLimb" LimbType="Standard" Offset="0xF730"/>
+        <Limb Name="gImpaHeadLimb" LimbType="Standard" Offset="0xF73C"/>
+        <Skeleton Name="gImpaSkel" Type="Flex" LimbType="Standard" Offset="0xF788"/>
+        <Animation Name="object_im_Anim_00FB10" Offset="0xFB10"/>
+        <Animation Name="object_im_Anim_0101C8" Offset="0x101C8"/>
+        <Animation Name="gImpaStartWhistlingAnim" Offset="0x10EE0"/>
+        <Animation Name="gImpaWhistlingAnim" Offset="0x1182C"/>
+        <Animation Name="gImpaPrepareSealGanonAnim" Offset="0x11C08"/>
+        <Animation Name="gImpaSealGanonAnim" Offset="0x12218"/>
+    </File>
+</Root>

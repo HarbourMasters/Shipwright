@@ -1,0 +1,17 @@
+<Root>
+    <File Name="object_medal" Segment="6">
+        <DList Name="object_medal_DL_000360" Offset="0x360"/>
+        <DList Name="object_medal_DL_000840" Offset="0x840"/>
+        <DList Name="object_medal_DL_000D20" Offset="0xD20"/>
+        <DList Name="object_medal_DL_001200" Offset="0x1200"/>
+        <DList Name="object_medal_DL_0016E0" Offset="0x16E0"/>
+        <DList Name="object_medal_DL_001BC0" Offset="0x1BC0"/>
+        <Blob Name="object_medal_Blob_001D40" Size="0x400" Offset="0x1D40"/>
+        <Texture Name="object_medal_Tex_002140" OutName="tex_00002140" Format="rgba16" Width="32" Height="32" Offset="0x2140"/>
+        <Texture Name="object_medal_Tex_002940" OutName="tex_00002940" Format="rgba16" Width="32" Height="32" Offset="0x2940"/>
+        <Texture Name="object_medal_Tex_003140" OutName="tex_00003140" Format="rgba16" Width="32" Height="32" Offset="0x3140"/>
+        <Texture Name="object_medal_Tex_003940" OutName="tex_00003940" Format="rgba16" Width="32" Height="32" Offset="0x3940"/>
+        <Texture Name="object_medal_Tex_004140" OutName="tex_00004140" Format="rgba16" Width="32" Height="32" Offset="0x4140"/>
+        <Texture Name="object_medal_Tex_004940" OutName="tex_00004940" Format="rgba16" Width="32" Height="32" Offset="0x4940"/>
+    </File>
+</Root>

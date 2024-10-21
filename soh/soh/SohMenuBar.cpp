@@ -47,6 +47,14 @@
 extern bool isBetaQuestEnabled;
 
 extern "C" PlayState* gPlayState;
+extern "C" uint32_t ResourceMgr_GetGameRegion(int index);
+extern "C" bool ResourceMgr_IsPalLoaded(void);
+extern "C" bool ResourceMgr_IsNtscLoaded(void);
+#include "message_data_static.h"
+extern "C" MessageTableEntry* sNesMessageEntryTablePtr;
+extern "C" MessageTableEntry* sGerMessageEntryTablePtr;
+extern "C" MessageTableEntry* sFraMessageEntryTablePtr;
+extern "C" MessageTableEntry* sJpnMessageEntryTablePtr;
 
 std::string GetWindowButtonText(const char* text, bool menuOpen) {
     char buttonText[100] = "";
@@ -539,15 +547,28 @@ void DrawSettingsMenu() {
         UIWidgets::Spacer(0);
 
         if (ImGui::BeginMenu("Languages")) {
-            UIWidgets::PaddedEnhancementCheckbox("Translate Title Screen", CVAR_SETTING("TitleScreenTranslation"));
-            if (UIWidgets::EnhancementRadioButton("English", CVAR_SETTING("Languages"), LANGUAGE_ENG)) {
-                GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSetGameLanguage>();
+            if (ResourceMgr_IsPalLoaded()) {
+                UIWidgets::PaddedEnhancementCheckbox("Translate Title Screen", CVAR_SETTING("TitleScreenTranslation"));
             }
-            if (UIWidgets::EnhancementRadioButton("German", CVAR_SETTING("Languages"), LANGUAGE_GER)) {
-                GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSetGameLanguage>();
+            if (sNesMessageEntryTablePtr != NULL) {
+                if (UIWidgets::EnhancementRadioButton("English", CVAR_SETTING("Languages"), LANGUAGE_ENG)) {
+                    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSetGameLanguage>();
+                }
             }
-            if (UIWidgets::EnhancementRadioButton("French", CVAR_SETTING("Languages"), LANGUAGE_FRA)) {
-                GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSetGameLanguage>();
+            if (sGerMessageEntryTablePtr != NULL) {
+                if (UIWidgets::EnhancementRadioButton("German", CVAR_SETTING("Languages"), LANGUAGE_GER)) {
+                    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSetGameLanguage>();
+                }
+            }
+            if (sFraMessageEntryTablePtr != NULL) {
+                if (UIWidgets::EnhancementRadioButton("French", CVAR_SETTING("Languages"), LANGUAGE_FRA)) {
+                    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSetGameLanguage>();
+                }
+            }
+            if (sJpnMessageEntryTablePtr != NULL) {
+                if (UIWidgets::EnhancementRadioButton("Japanese", CVAR_SETTING("Languages"), LANGUAGE_JPN)) {
+                    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSetGameLanguage>();
+                }
             }
             ImGui::EndMenu();
         }
@@ -1416,8 +1437,10 @@ void DrawEnhancementsMenu() {
                 UIWidgets::PaddedEnhancementCheckbox("Remove power crouch stab", CVAR_ENHANCEMENT("CrouchStabFix"), true, false);
                 UIWidgets::Tooltip("Make crouch stabbing always do the same damage as a regular slash");
             }
-            UIWidgets::PaddedEnhancementCheckbox("Fix credits timing", CVAR_ENHANCEMENT("CreditsFix"), true, false);
-            UIWidgets::Tooltip("Extend certain credits scenes so the music lines up properly with the visuals");
+            if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL) {
+                UIWidgets::PaddedEnhancementCheckbox("Fix credits timing", CVAR_ENHANCEMENT("CreditsFix"), true, false);
+                UIWidgets::Tooltip("Extend certain credits scenes so the music lines up properly with the visuals");
+            }
             UIWidgets::PaddedEnhancementCheckbox("Fix Gerudo Warrior's clothing colors", CVAR_ENHANCEMENT("GerudoWarriorClothingFix"), true, false);
             UIWidgets::Tooltip("Prevent the Gerudo Warrior's clothes changing color when changing Link's tunic or using bombs in front of her");
             UIWidgets::PaddedEnhancementCheckbox("Fix Camera Drift", CVAR_ENHANCEMENT("FixCameraDrift"), true, false);

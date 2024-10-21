@@ -1,0 +1,13 @@
+<Root>
+    <File Name="object_pu_box" Segment="6">
+        <DList Name="gBlockSmallDL" Offset="0x0"/>
+        <Collision Name="gBlockSmallCol" Offset="0x350"/>
+        <DList Name="gBlockMediumDL" Offset="0x380"/>
+        <Collision Name="gBlockMediumCol" Offset="0x6D0"/>
+        <DList Name="gBlockTallDL" Offset="0x700"/>
+        <Collision Name="gBlockTallCol" Offset="0xA50"/>
+        <DList Name="gBlockTallestDL" Offset="0xA80"/>
+        <Collision Name="gBlockTallestCol" Offset="0x15D0"/>
+        <Texture Name="gBlockTex" OutName="block" Format="rgba16" Width="32" Height="32" Offset="0xCC8"/>
+    </File>
+</Root>

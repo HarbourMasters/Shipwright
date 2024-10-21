@@ -1,0 +1,73 @@
+<Root>
+    <File Name="object_oE3" Segment="6">
+        <Limb Name="object_oE3_Limb_000000" LimbType="Standard" Offset="0x0"/>
+        <Limb Name="object_oE3_Limb_00000C" LimbType="Standard" Offset="0xC"/>
+        <Limb Name="object_oE3_Limb_000018" LimbType="Standard" Offset="0x18"/>
+        <Limb Name="object_oE3_Limb_000024" LimbType="Standard" Offset="0x24"/>
+        <Limb Name="object_oE3_Limb_000030" LimbType="Standard" Offset="0x30"/>
+        <Limb Name="object_oE3_Limb_00003C" LimbType="Standard" Offset="0x3C"/>
+        <Limb Name="object_oE3_Limb_000048" LimbType="Standard" Offset="0x48"/>
+        <Limb Name="object_oE3_Limb_000054" LimbType="Standard" Offset="0x54"/>
+        <Limb Name="object_oE3_Limb_000060" LimbType="Standard" Offset="0x60"/>
+        <Limb Name="object_oE3_Limb_00006C" LimbType="Standard" Offset="0x6C"/>
+        <Limb Name="object_oE3_Limb_000078" LimbType="Standard" Offset="0x78"/>
+        <Limb Name="object_oE3_Limb_000084" LimbType="Standard" Offset="0x84"/>
+        <Limb Name="object_oE3_Limb_000090" LimbType="Standard" Offset="0x90"/>
+        <Limb Name="object_oE3_Limb_00009C" LimbType="Standard" Offset="0x9C"/>
+        <Limb Name="object_oE3_Limb_0000A8" LimbType="Standard" Offset="0xA8"/>
+        <Limb Name="object_oE3_Limb_0000B4" LimbType="Standard" Offset="0xB4"/>
+        <Limb Name="object_oE3_Limb_0000C0" LimbType="Standard" Offset="0xC0"/>
+        <Limb Name="object_oE3_Limb_0000CC" LimbType="Standard" Offset="0xCC"/>
+        <Limb Name="object_oE3_Limb_0000D8" LimbType="Standard" Offset="0xD8"/>
+        <Limb Name="object_oE3_Limb_0000E4" LimbType="Standard" Offset="0xE4"/>
+        <Limb Name="object_oE3_Limb_0000F0" LimbType="Standard" Offset="0xF0"/>
+        <Limb Name="object_oE3_Limb_0000FC" LimbType="Standard" Offset="0xFC"/>
+        <Limb Name="object_oE3_Limb_000108" LimbType="Standard" Offset="0x108"/>
+        <Limb Name="object_oE3_Limb_000114" LimbType="Standard" Offset="0x114"/>
+        <Limb Name="object_oE3_Limb_000120" LimbType="Standard" Offset="0x120"/>
+        <Limb Name="object_oE3_Limb_00012C" LimbType="Standard" Offset="0x12C"/>
+        <Limb Name="object_oE3_Limb_000138" LimbType="Standard" Offset="0x138"/>
+        <Limb Name="object_oE3_Limb_000144" LimbType="Standard" Offset="0x144"/>
+        <Limb Name="object_oE3_Limb_000150" LimbType="Standard" Offset="0x150"/>
+        <Limb Name="object_oE3_Limb_00015C" LimbType="Standard" Offset="0x15C"/>
+        <Limb Name="object_oE3_Limb_000168" LimbType="Standard" Offset="0x168"/>
+        <Limb Name="object_oE3_Limb_000174" LimbType="Standard" Offset="0x174"/>
+        <Limb Name="object_oE3_Limb_000180" LimbType="Standard" Offset="0x180"/>
+        <Limb Name="object_oE3_Limb_00018C" LimbType="Standard" Offset="0x18C"/>
+        <Limb Name="object_oE3_Limb_000198" LimbType="Standard" Offset="0x198"/>
+        <Limb Name="object_oE3_Limb_0001A4" LimbType="Standard" Offset="0x1A4"/>
+        <Limb Name="object_oE3_Limb_0001B0" LimbType="Standard" Offset="0x1B0"/>
+        <Limb Name="object_oE3_Limb_0001BC" LimbType="Standard" Offset="0x1BC"/>
+        <Skeleton Name="object_oE3_Skel_000260" Type="Normal" LimbType="Standard" Offset="0x260"/>
+        <DList Name="object_oE3_DL_003788" Offset="0x3788"/>
+        <DList Name="object_oE3_DL_003938" Offset="0x3938"/>
+        <DList Name="object_oE3_DL_003A30" Offset="0x3A30"/>
+        <DList Name="object_oE3_DL_004000" Offset="0x4000"/>
+        <DList Name="object_oE3_DL_0041B0" Offset="0x41B0"/>
+        <DList Name="object_oE3_DL_004270" Offset="0x4270"/>
+        <DList Name="object_oE3_DL_004348" Offset="0x4348"/>
+        <DList Name="object_oE3_DL_0044A0" Offset="0x44A0"/>
+        <DList Name="object_oE3_DL_0045E0" Offset="0x45E0"/>
+        <DList Name="object_oE3_DL_004790" Offset="0x4790"/>
+        <DList Name="object_oE3_DL_004940" Offset="0x4940"/>
+        <DList Name="object_oE3_DL_004A00" Offset="0x4A00"/>
+        <DList Name="object_oE3_DL_004AD8" Offset="0x4AD8"/>
+        <DList Name="object_oE3_DL_004C30" Offset="0x4C30"/>
+        <DList Name="object_oE3_DL_004D70" Offset="0x4D70"/>
+        <Texture Name="object_oE3_TLUT_004F20" OutName="tlut_00004F20" Format="rgba16" Width="16" Height="16" Offset="0x4F20"/>
+        <Texture Name="object_oE3_Tex_005120" OutName="tex_00005120" Format="ci8" Width="32" Height="32" Offset="0x5120" TlutOffset="0x4F20"/>
+        <Blob Name="object_oE3_Blob_005520" Size="0x800" Offset="0x5520"/>
+        <Texture Name="object_oE3_TLUT_005D20" OutName="tlut_00005D20" Format="rgba16" Width="16" Height="16" Offset="0x5D20"/>
+        <Texture Name="object_oE3_Tex_005F20" OutName="tex_00005F20" Format="ci8" Width="8" Height="8" Offset="0x5F20" TlutOffset="0x5D20"/>
+        <Blob Name="object_oE3_Blob_005F60" Size="0x200" Offset="0x5F60"/>
+        <Texture Name="object_oE3_Tex_006160" OutName="tex_00006160" Format="ci8" Width="16" Height="16" Offset="0x6160" TlutOffset="0x5D20"/>
+        <Texture Name="object_oE3_Tex_006260" OutName="tex_00006260" Format="ci8" Width="16" Height="16" Offset="0x6260" TlutOffset="0x5D20"/>
+        <Blob Name="object_oE3_Blob_006360" Size="0x200" Offset="0x6360"/>
+        <Texture Name="object_oE3_Tex_006560" OutName="tex_00006560" Format="rgba16" Width="8" Height="16" Offset="0x6560"/>
+        <Texture Name="object_oE3_Tex_006660" OutName="tex_00006660" Format="rgba16" Width="32" Height="32" Offset="0x6660"/>
+        <Texture Name="object_oE3_Tex_006E60" OutName="tex_00006E60" Format="i4" Width="16" Height="8" Offset="0x6E60"/>
+        <Texture Name="object_oE3_Tex_006EA0" OutName="tex_00006EA0" Format="rgba16" Width="16" Height="16" Offset="0x6EA0"/>
+        <Texture Name="object_oE3_Tex_0070A0" OutName="tex_000070A0" Format="i4" Width="16" Height="8" Offset="0x70A0"/>
+        <Texture Name="object_oE3_Tex_0070E0" OutName="tex_000070E0" Format="i4" Width="16" Height="8" Offset="0x70E0"/>
+    </File>
+</Root>

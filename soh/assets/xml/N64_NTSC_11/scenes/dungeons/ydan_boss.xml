@@ -1,0 +1,26 @@
+<Root>
+    <File Name="ydan_boss_scene" Segment="2">
+        <Texture Name="ydan_boss_sceneTex_000F38" OutName="ydan_boss_sceneTex_000F38" Format="ci8" Width="32" Height="64" Offset="0xF38" TlutOffset="0xD30" AddedByScript="true"/>
+        <Texture Name="ydan_boss_sceneTLUT_000D30" OutName="ydan_boss_sceneTLUT_000D30" Format="rgba16" Width="16" Height="16" Offset="0xD30" AddedByScript="true"/>
+        <Scene Name="ydan_boss_scene" Offset="0x0"/>
+    </File>
+    <File Name="ydan_boss_room_0" Segment="3">
+        <Texture Name="ydan_boss_room_0Tex_001790" OutName="ydan_boss_room_0Tex_001790" Format="ci8" Width="32" Height="64" Offset="0x1790" ExternalTlut="ydan_boss_scene" ExternalTlutOffset="0xD30" AddedByScript="true"/>
+        <Texture Name="ydan_boss_room_0Tex_001F90" OutName="ydan_boss_room_0Tex_001F90" Format="ci8" Width="32" Height="64" Offset="0x1F90" ExternalTlut="ydan_boss_scene" ExternalTlutOffset="0xD30" AddedByScript="true"/>
+        <Texture Name="ydan_boss_room_0Tex_002790" OutName="ydan_boss_room_0Tex_002790" Format="ci8" Width="32" Height="64" Offset="0x2790" ExternalTlut="ydan_boss_scene" ExternalTlutOffset="0xD30" AddedByScript="true"/>
+        <Texture Name="ydan_boss_room_0Tex_002F90" OutName="ydan_boss_room_0Tex_002F90" Format="ci8" Width="32" Height="64" Offset="0x2F90" ExternalTlut="ydan_boss_scene" ExternalTlutOffset="0xD30" AddedByScript="true"/>
+        <Texture Name="ydan_boss_room_0Tex_003790" OutName="ydan_boss_room_0Tex_003790" Format="ci8" Width="32" Height="64" Offset="0x3790" ExternalTlut="ydan_boss_scene" ExternalTlutOffset="0xD30" AddedByScript="true"/>
+        <Texture Name="ydan_boss_room_0Tex_003F90" OutName="ydan_boss_room_0Tex_003F90" Format="ci8" Width="32" Height="64" Offset="0x3F90" ExternalTlut="ydan_boss_scene" ExternalTlutOffset="0xD30" AddedByScript="true"/>
+        <Texture Name="ydan_boss_room_0Tex_004BF0" OutName="ydan_boss_room_0Tex_004BF0" Format="rgba16" Width="32" Height="64" Offset="0x4BF0" AddedByScript="true"/>
+        <Texture Name="ydan_boss_room_0Tex_005BF0" OutName="ydan_boss_room_0Tex_005BF0" Format="ci8" Width="32" Height="32" Offset="0x5BF0" ExternalTlut="ydan_boss_scene" ExternalTlutOffset="0xD30" AddedByScript="true"/>
+        <Texture Name="ydan_boss_room_0Tex_005FF0" OutName="ydan_boss_room_0Tex_005FF0" Format="ia16" Width="32" Height="64" Offset="0x5FF0" AddedByScript="true"/>
+        <Room Name="ydan_boss_room_0" Offset="0x0"/>
+    </File>
+    <File Name="ydan_boss_room_1" Segment="3">
+        <Texture Name="ydan_boss_room_1Tex_003B38" OutName="ydan_boss_room_1Tex_003B38" Format="rgba16" Width="32" Height="64" Offset="0x3B38" AddedByScript="true"/>
+        <Texture Name="ydan_boss_room_1Tex_004B38" OutName="ydan_boss_room_1Tex_004B38" Format="ci8" Width="32" Height="64" Offset="0x4B38" ExternalTlut="ydan_boss_scene" ExternalTlutOffset="0xD30" AddedByScript="true"/>
+        <Texture Name="ydan_boss_room_1Tex_005338" OutName="ydan_boss_room_1Tex_005338" Format="ci8" Width="32" Height="32" Offset="0x5338" ExternalTlut="ydan_boss_scene" ExternalTlutOffset="0xD30" AddedByScript="true"/>
+        <Texture Name="ydan_boss_room_1Tex_005FE8" OutName="ydan_boss_room_1Tex_005FE8" Format="ia8" Width="64" Height="32" Offset="0x5FE8" AddedByScript="true"/>
+        <Room Name="ydan_boss_room_1" Offset="0x0"/>
+    </File>
+</Root>

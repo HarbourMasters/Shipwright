@@ -1,0 +1,56 @@
+<Root>
+    <File Name="object_bji" Segment="6">
+        <!-- The textures used by these limbs aren't 64-bit aligned -->
+        <Limb Name="object_bji_Limb_000000" LimbType="Standard" Offset="0x0"/>
+        <Limb Name="object_bji_Limb_00000C" LimbType="Standard" Offset="0xC"/>
+        <Limb Name="object_bji_Limb_000018" LimbType="Standard" Offset="0x18"/>
+        <Limb Name="object_bji_Limb_000024" LimbType="Standard" Offset="0x24"/>
+        <Limb Name="object_bji_Limb_000030" LimbType="Standard" Offset="0x30"/>
+        <Limb Name="object_bji_Limb_00003C" LimbType="Standard" Offset="0x3C"/>
+        <Limb Name="object_bji_Limb_000048" LimbType="Standard" Offset="0x48"/>
+        <Limb Name="object_bji_Limb_000054" LimbType="Standard" Offset="0x54"/>
+        <Limb Name="object_bji_Limb_000060" LimbType="Standard" Offset="0x60"/>
+        <Limb Name="object_bji_Limb_00006C" LimbType="Standard" Offset="0x6C"/>
+        <Limb Name="object_bji_Limb_000078" LimbType="Standard" Offset="0x78"/>
+        <Limb Name="object_bji_Limb_000084" LimbType="Standard" Offset="0x84"/>
+        <Limb Name="object_bji_Limb_000090" LimbType="Standard" Offset="0x90"/>
+        <Limb Name="object_bji_Limb_00009C" LimbType="Standard" Offset="0x9C"/>
+        <Limb Name="object_bji_Limb_0000A8" LimbType="Standard" Offset="0xA8"/>
+
+        <Skeleton Name="object_bji_Skel_0000F0" Type="Flex" LimbType="Standard" Offset="0xF0"/>
+
+        <!-- 32-bit aligned textures. -->
+        <Texture Name="object_bji_TLUT_0000FC" OutName="tlut_000000FC" Format="rgba16" Width="16" Height="16" Offset="0xFC"/>
+        <Texture Name="object_bji_Tex_0002FC" OutName="tex_000002FC" Format="ci8" Width="8" Height="8" Offset="0x2FC" TlutOffset="0xFC"/>
+        <Texture Name="object_bji_Tex_00033C" OutName="tex_0000033C" Format="ci8" Width="8" Height="8" Offset="0x33C" TlutOffset="0xFC"/>
+        <Texture Name="object_bji_Tex_00037C" OutName="tex_0000037C" Format="ci8" Width="16" Height="16" Offset="0x37C" TlutOffset="0xFC"/>
+        <Texture Name="object_bji_Tex_00047C" OutName="tex_0000047C" Format="ci8" Width="8" Height="8" Offset="0x47C" TlutOffset="0xFC"/>
+        <Texture Name="object_bji_Tex_0004BC" OutName="tex_000004BC" Format="ci8" Width="8" Height="8" Offset="0x4BC" TlutOffset="0xFC"/>
+        <Texture Name="object_bji_Tex_0004FC" OutName="tex_000004FC" Format="i8" Width="16" Height="16" Offset="0x4FC"/>
+        <Texture Name="object_bji_Tex_0005FC" OutName="tex_000005FC" Format="ci8" Width="32" Height="32" Offset="0x5FC" TlutOffset="0xFC"/>
+        <Texture Name="object_bji_Tex_0009FC" OutName="tex_000009FC" Format="ci8" Width="32" Height="32" Offset="0x9FC" TlutOffset="0xFC"/>
+        <Texture Name="object_bji_Tex_000DFC" OutName="tex_00000DFC" Format="ci8" Width="32" Height="32" Offset="0xDFC" TlutOffset="0xFC"/>
+        <Texture Name="object_bji_Tex_0011FC" OutName="tex_000011FC" Format="i8" Width="8" Height="8" Offset="0x11FC"/>
+
+        <DList Name="object_bji_DL_002560" Offset="0x2560"/>
+        <DList Name="object_bji_DL_002B88" Offset="0x2B88"/>
+        <DList Name="object_bji_DL_002C50" Offset="0x2C50"/>
+        <DList Name="object_bji_DL_002D40" Offset="0x2D40"/>
+        <DList Name="object_bji_DL_002E40" Offset="0x2E40"/>
+        <DList Name="object_bji_DL_002F08" Offset="0x2F08"/>
+        <DList Name="object_bji_DL_002FF8" Offset="0x2FF8"/>
+        <DList Name="object_bji_DL_0030F8" Offset="0x30F8"/>
+        <DList Name="object_bji_DL_003328" Offset="0x3328"/>
+        <DList Name="object_bji_DL_0033F0" Offset="0x33F0"/>
+        <DList Name="object_bji_DL_0034B8" Offset="0x34B8"/>
+        <DList Name="object_bji_DL_003580" Offset="0x3580"/>
+        <DList Name="object_bji_DL_003648" Offset="0x3648"/>
+        <DList Name="object_bji_DL_003710" Offset="0x3710"/>
+        <DList Name="object_bji_DL_0037D8" Offset="0x37D8"/>
+
+        <Texture Name="object_bji_Tex_003908" OutName="tex_00003908" Format="rgba16" Width="8" Height="8" Offset="0x3908"/>
+        <Texture Name="object_bji_Tex_003988" OutName="tex_00003988" Format="rgba16" Width="8" Height="8" Offset="0x3988"/>
+        <Texture Name="object_bji_Tex_003A08" OutName="tex_00003A08" Format="rgba16" Width="8" Height="8" Offset="0x3A08"/>
+        <DList Name="object_bji_DL_003F68" Offset="0x3F68"/>
+    </File>
+</Root>
