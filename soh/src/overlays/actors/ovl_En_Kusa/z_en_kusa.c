@@ -266,6 +266,12 @@ void EnKusa_Init(Actor* thisx, PlayState* play) {
         return;
     }
 
+    if (gPlayState->sceneNum == SCENE_KAKARIKO_VILLAGE && this->actor.world.pos.z < 600.0) {
+        this->actor.world.pos.x += 1620.672;
+        this->actor.world.pos.y += 80;
+        this->actor.world.pos.z += 900.884;
+    }
+
     EnKusa_SetupWaitObject(this);
 }
 

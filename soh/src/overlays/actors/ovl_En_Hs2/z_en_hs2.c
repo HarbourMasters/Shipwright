@@ -7,6 +7,7 @@
 #include "z_en_hs2.h"
 #include "vt.h"
 #include "objects/object_hs/object_hs.h"
+#include "soh_assets.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
 
@@ -65,6 +66,14 @@ void EnHs2_Init(Actor* thisx, PlayState* play) {
     this->actionFunc = func_80A6F1A4;
     this->unk_2A8 = 0;
     this->actor.targetMode = 6;
+
+    if (play->sceneNum == SCENE_KAKARIKO_VILLAGE) {
+        this->actor.world.pos.x = 756.0;
+        this->actor.world.pos.y = 80.0;
+        this->actor.world.pos.z = 1378.0;
+        this->actor.shape.rot.y = 32534;
+    }
+    
 }
 
 void EnHs2_Destroy(Actor* thisx, PlayState* play) {
@@ -159,6 +168,21 @@ void EnHs2_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot,
 
     if (limbIndex == 9) {
         Matrix_MultVec3f(&D_80A6F4CC, &this->actor.focus.pos);
+    }
+
+    if (CVarGetInteger("gLetItSnow", 0)) {
+        if (limbIndex == 9) {
+            OPEN_DISPS(play->state.gfxCtx);
+            Matrix_Push();
+            Matrix_RotateZYX(0, 0, -6421, MTXMODE_APPLY);
+            Matrix_Translate(621.622f, 378.378f, 0.0f, MTXMODE_APPLY);
+            Matrix_Scale(0.763f, 0.763f, 0.763f, MTXMODE_APPLY);
+            gDPSetEnvColor(POLY_OPA_DISP++, 0, 255, 255, 255);
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPDisplayList(POLY_OPA_DISP++, gPaperCrownGenericDL);
+            Matrix_Pop();
+            CLOSE_DISPS(play->state.gfxCtx);
+        }
     }
 }
 

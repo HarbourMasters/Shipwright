@@ -1,7 +1,7 @@
 <DisplayList Version="0">
-	<CallDisplayList Path="objects/object_triforce_piece_1/mat_gTriforcePiece1DL_f3dlite_triforce_surface"/>
+	<CallDisplayList Path="objects/object_triforce_piece_1/mat_gTriforcePiece1DL_silver_002"/>
 	<CallDisplayList Path="objects/object_triforce_piece_1/gTriforcePiece1DL_tri_0"/>
-	<CallDisplayList Path="objects/object_triforce_piece_1/mat_gTriforcePiece1DL_f3dlite_shard_edge"/>
+	<CallDisplayList Path="objects/object_triforce_piece_1/mat_gTriforcePiece1DL_blue_mat"/>
 	<CallDisplayList Path="objects/object_triforce_piece_1/gTriforcePiece1DL_tri_1"/>
 	<PipeSync/>
 	<SetGeometryMode G_LIGHTING="1" />

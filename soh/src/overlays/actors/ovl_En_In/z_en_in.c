@@ -1,6 +1,7 @@
 #include "z_en_in.h"
 #include "overlays/actors/ovl_En_Horse/z_en_horse.h"
 #include "objects/object_in/object_in.h"
+#include "soh_assets.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
@@ -985,6 +986,18 @@ void EnIn_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, 
     }
     if (limbIndex == INGO_RIGHT_HAND_LIMB && this->skelAnime.animation == &object_in_Anim_014CA8) {
         gSPDisplayList(POLY_OPA_DISP++, gIngoChildEraPitchForkDL);
+    }
+
+    if (CVarGetInteger("gLetItSnow", 0)) {
+        if (limbIndex == 16) {
+            Matrix_Push();
+            Matrix_RotateZYX(-8192, -222, -11513, MTXMODE_APPLY);
+            Matrix_Translate(770.0f, 837.0f, 878.0f, MTXMODE_APPLY);
+            Matrix_Scale(1.068f, 1.068f, 1.068f, MTXMODE_APPLY);
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPDisplayList(POLY_OPA_DISP++, gSantaHatGenericDL);
+            Matrix_Pop();
+        }
     }
 
     CLOSE_DISPS(play->state.gfxCtx);

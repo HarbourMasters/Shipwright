@@ -7,6 +7,7 @@
 #include "z_en_jj.h"
 #include "objects/object_jj/object_jj.h"
 #include "overlays/actors/ovl_Eff_Dust/z_eff_dust.h"
+#include "soh_assets.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
@@ -307,6 +308,26 @@ void EnJj_Update(Actor* thisx, PlayState* play) {
     this->skelAnime.jointTable[10].z = this->mouthOpenAngle;
 }
 
+s32 EnJj_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
+    EnJj* this = (EnJj*)thisx;
+
+    if (CVarGetInteger("gLetItSnow", 0)) {
+        if (limbIndex == 13) {
+            OPEN_DISPS(play->state.gfxCtx);
+            Matrix_Push();
+            Matrix_RotateZYX(4649, -8635, 15276, MTXMODE_APPLY);
+            Matrix_Translate(27.027f, 135.135f, -81.081f, MTXMODE_APPLY);
+            Matrix_Scale(0.304f, 0.304f, 0.304f, MTXMODE_APPLY);
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPDisplayList(POLY_OPA_DISP++, gSantaHatGenericDL);
+            Matrix_Pop();
+            CLOSE_DISPS(play->state.gfxCtx);
+        }
+    }
+
+    return false;
+}
+
 void EnJj_Draw(Actor* thisx, PlayState* play2) {
     static void* eyeTextures[] = { gJabuJabuEyeOpenTex, gJabuJabuEyeHalfTex, gJabuJabuEyeClosedTex };
     PlayState* play = play2;
@@ -318,7 +339,7 @@ void EnJj_Draw(Actor* thisx, PlayState* play2) {
     Matrix_Translate(0.0f, (cosf(this->skelAnime.curFrame * (M_PI / 41.0f)) * 10.0f) - 10.0f, 0.0f, MTXMODE_APPLY);
     Matrix_Scale(10.0f, 10.0f, 10.0f, MTXMODE_APPLY);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTextures[this->eyeIndex]));
-    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, NULL, NULL, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, NULL, EnJj_PostLimbDraw, this);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

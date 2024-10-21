@@ -1,0 +1,25 @@
+<DisplayList Version="0">
+	<LoadVertices Path="objects/object_kakariko_decor/gKakarikoDecorDL_vtx_3" VertexBufferIndex="0" VertexOffset="0" Count="32"/>
+	<Triangles2 V00="0" V01="1" V02="2" Flag0="0" V10="0" V11="2" V12="3" Flag1="0"/>
+	<Triangles2 V00="4" V01="5" V02="6" Flag0="0" V10="4" V11="6" V12="7" Flag1="0"/>
+	<Triangles2 V00="8" V01="9" V02="10" Flag0="0" V10="8" V11="10" V12="11" Flag1="0"/>
+	<Triangles2 V00="12" V01="13" V02="14" Flag0="0" V10="12" V11="14" V12="15" Flag1="0"/>
+	<Triangles2 V00="16" V01="17" V02="18" Flag0="0" V10="16" V11="18" V12="19" Flag1="0"/>
+	<Triangles2 V00="20" V01="21" V02="22" Flag0="0" V10="20" V11="22" V12="23" Flag1="0"/>
+	<Triangles2 V00="24" V01="25" V02="26" Flag0="0" V10="24" V11="26" V12="27" Flag1="0"/>
+	<Triangles2 V00="28" V01="29" V02="30" Flag0="0" V10="28" V11="30" V12="31" Flag1="0"/>
+	<LoadVertices Path="objects/object_kakariko_decor/gKakarikoDecorDL_vtx_3" VertexBufferIndex="0" VertexOffset="32" Count="32"/>
+	<Triangles2 V00="0" V01="1" V02="2" Flag0="0" V10="0" V11="2" V12="3" Flag1="0"/>
+	<Triangles2 V00="4" V01="5" V02="6" Flag0="0" V10="4" V11="6" V12="7" Flag1="0"/>
+	<Triangles2 V00="8" V01="9" V02="10" Flag0="0" V10="8" V11="10" V12="11" Flag1="0"/>
+	<Triangles2 V00="12" V01="13" V02="14" Flag0="0" V10="12" V11="14" V12="15" Flag1="0"/>
+	<Triangles2 V00="16" V01="17" V02="18" Flag0="0" V10="16" V11="18" V12="19" Flag1="0"/>
+	<Triangles2 V00="20" V01="21" V02="22" Flag0="0" V10="20" V11="22" V12="23" Flag1="0"/>
+	<Triangles2 V00="24" V01="25" V02="26" Flag0="0" V10="24" V11="26" V12="27" Flag1="0"/>
+	<Triangles2 V00="28" V01="29" V02="30" Flag0="0" V10="28" V11="30" V12="31" Flag1="0"/>
+	<LoadVertices Path="objects/object_kakariko_decor/gKakarikoDecorDL_vtx_3" VertexBufferIndex="0" VertexOffset="64" Count="8"/>
+	<Triangles2 V00="0" V01="1" V02="2" Flag0="0" V10="0" V11="2" V12="3" Flag1="0"/>
+	<Triangles2 V00="4" V01="5" V02="6" Flag0="0" V10="4" V11="6" V12="7" Flag1="0"/>
+	<EndDisplayList/>
+</DisplayList>
+

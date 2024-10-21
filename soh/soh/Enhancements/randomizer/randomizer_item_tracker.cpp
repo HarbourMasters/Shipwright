@@ -683,7 +683,7 @@ void DrawItem(ItemTrackerItem item) {
         case RG_TRIFORCE_PIECE:
             actualItemId = item.id;
             hasItem = IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT);
-            itemName = "Triforce Piece";
+            itemName = "Christmas Ornament";
             break;
         case RG_GOHMA_SOUL:
             actualItemId = item.id;
@@ -1426,7 +1426,7 @@ void ItemTrackerSettingsWindow::DrawElement() {
 
     UIWidgets::Spacer(0);
 
-    ImGui::Text("Triforce Piece Count Tracking");
+    ImGui::Text("Christmas ornament Count Tracking");
     UIWidgets::EnhancementCombobox(CVAR_TRACKER_ITEM("TriforcePieceCounts"), itemTrackerTriforcePieceTrackOptions, TRIFORCE_PIECE_COLLECTED_REQUIRED_MAX);
     UIWidgets::InsertHelpHoverText("Customize what numbers are shown for triforce piece tracking.");
 
@@ -1469,7 +1469,7 @@ void ItemTrackerSettingsWindow::DrawElement() {
         shouldUpdateVectors = true;
     }
 
-    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Triforce Pieces", CVAR_TRACKER_ITEM("DisplayType.TriforcePieces"), displayTypes, SECTION_DISPLAY_HIDDEN)) {
+    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Christmas Ornaments", CVAR_TRACKER_ITEM("DisplayType.TriforcePieces"), displayTypes, SECTION_DISPLAY_HIDDEN)) {
         shouldUpdateVectors = true;
     }
 

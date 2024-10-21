@@ -134,6 +134,10 @@ u8 WeatherTag_CheckEnableWeatherEffect(EnWeatherTag* this, PlayState* play, u8 a
     u8 ret = false;
     Player* player = GET_PLAYER(play);
 
+    if (LINK_IS_ADULT && gPlayState != NULL && gPlayState->sceneNum == SCENE_KAKARIKO_VILLAGE) {
+        return ret;
+    }
+
     if (Actor_WorldDistXZToActor(&player->actor, &this->actor) < WEATHER_TAG_RANGE100(this->actor.params)) {
         if ((play->envCtx.indoors != 0) || !gSkyboxBlendingEnabled ||
             (play->skyboxId != SKYBOX_NORMAL_SKY && play->envCtx.unk_1F == play->envCtx.unk_20)) {

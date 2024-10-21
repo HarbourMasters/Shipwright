@@ -3,6 +3,7 @@
 #include "overlays/actors/ovl_En_Bombf/z_en_bombf.h"
 #include "objects/object_dodongo/object_dodongo.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh_assets.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
@@ -913,6 +914,21 @@ void EnDodongo_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* 
         }
         if (i >= 0) {
             Matrix_MultVec3f(&baseOffset, &this->icePos[i]);
+        }
+    }
+
+    if (CVarGetInteger("gLetItSnow", 0)) {
+        if (limbIndex == 7) {
+            OPEN_DISPS(play->state.gfxCtx);
+            Matrix_Push();
+            Matrix_RotateZYX(0, 0, -13063, MTXMODE_APPLY);
+            Matrix_Translate(864.865f, 756.757f, 0.0f, MTXMODE_APPLY);
+            Matrix_Scale(0.662f, 0.662f, 0.662f, MTXMODE_APPLY);
+            gDPSetEnvColor(POLY_OPA_DISP++, 255, 0, 0, 255);
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPDisplayList(POLY_OPA_DISP++, gPaperCrownGenericDL);
+            Matrix_Pop();
+            CLOSE_DISPS(play->state.gfxCtx);
         }
     }
 }

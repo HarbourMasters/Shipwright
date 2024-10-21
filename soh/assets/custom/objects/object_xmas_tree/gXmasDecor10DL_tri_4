@@ -1,0 +1,7 @@
+<DisplayList Version="0">
+	<LoadVertices Path="objects/object_xmas_tree/gXmasDecor10DL_vtx_4" VertexBufferIndex="0" VertexOffset="0" Count="4"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="0" V01="3" V02="1"/>
+	<EndDisplayList/>
+</DisplayList>
+

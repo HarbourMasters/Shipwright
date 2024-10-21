@@ -609,8 +609,59 @@ static ActorDBInit EnPartnerInit = {
 };
 extern "C" s16 gEnPartnerId;
 
+#include "src/overlays/actors/ovl_En_Snowball/z_en_snowball.h"
+static ActorDBInit EnSnowballInit = {
+    "En_Snowball",
+    "Snowball",
+    ACTORCAT_ITEMACTION,
+    (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED | ACTOR_FLAG_DRAGGED_BY_HOOKSHOT | ACTOR_FLAG_CAN_PRESS_SWITCH),
+    OBJECT_GAMEPLAY_KEEP,
+    sizeof(EnSnowball),
+    (ActorFunc)EnSnowball_Init,
+    (ActorFunc)EnSnowball_Destroy,
+    (ActorFunc)EnSnowball_Update,
+    (ActorFunc)EnSnowball_Draw,
+    nullptr,
+};
+extern "C" s16 gEnSnowballId;
+
+#include "src/overlays/actors/ovl_En_ChristmasTree/z_en_christmastree.h"
+static ActorDBInit EnChristmasTreeInit = {
+    "En_ChristmasTree",
+    "Christmas Tree",
+    ACTORCAT_PROP,
+    (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED),
+    OBJECT_GAMEPLAY_KEEP,
+    sizeof(EnChristmasTree),
+    (ActorFunc)EnChristmasTree_Init,
+    (ActorFunc)EnChristmasTree_Destroy,
+    (ActorFunc)EnChristmasTree_Update,
+    (ActorFunc)EnChristmasTree_Draw,
+    nullptr,
+};
+extern "C" s16 gEnChristmasTreeId;
+
+#include "src/overlays/actors/ovl_En_ChristmasDeco/z_en_christmasdeco.h"
+static ActorDBInit EnChristmasDecoInit = {
+    "En_ChristmasDeco",
+    "Christmas Decos",
+    ACTORCAT_PROP,
+    (ACTOR_FLAG_DRAW_WHILE_CULLED),
+    OBJECT_GAMEPLAY_KEEP,
+    sizeof(EnChristmasDeco),
+    (ActorFunc)EnChristmasDeco_Init,
+    (ActorFunc)EnChristmasDeco_Destroy,
+    (ActorFunc)EnChristmasDeco_Update,
+    (ActorFunc)EnChristmasDeco_Draw,
+    nullptr,
+};
+extern "C" s16 gEnChristmasDecoId;
+
 void ActorDB::AddBuiltInCustomActors() {
     gEnPartnerId = ActorDB::Instance->AddEntry(EnPartnerInit).entry.id;
+    gEnSnowballId = ActorDB::Instance->AddEntry(EnSnowballInit).entry.id;
+    gEnChristmasTreeId = ActorDB::Instance->AddEntry(EnChristmasTreeInit).entry.id;
+    gEnChristmasDecoId = ActorDB::Instance->AddEntry(EnChristmasDecoInit).entry.id;
 }
 
 extern "C" ActorDBEntry* ActorDB_Retrieve(const int id) {

@@ -9,6 +9,7 @@
 #include "overlays/actors/ovl_En_Bom/z_en_bom.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh_assets.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
@@ -516,6 +517,20 @@ void EnVm_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, 
         Collider_SetQuadVertices(&this->colliderQuad2, &this->colliderQuad2.dim.quad[0],
                                  &this->colliderQuad2.dim.quad[1], &this->colliderQuad2.dim.quad[2],
                                  &this->colliderQuad2.dim.quad[3]);
+    }
+
+    if (CVarGetInteger("gLetItSnow", 0)) {
+        if (limbIndex == 6) {
+            OPEN_DISPS(play->state.gfxCtx);
+            Matrix_Push();
+            Matrix_RotateZYX(19704, -1329, 11734, MTXMODE_APPLY);
+            Matrix_Translate(310.811f, -108.108f, -81.081f, MTXMODE_APPLY);
+            Matrix_Scale(2.297f, 2.297f, 2.297f, MTXMODE_APPLY);
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPDisplayList(POLY_OPA_DISP++, gSantaHatGenericDL);
+            Matrix_Pop();
+            CLOSE_DISPS(play->state.gfxCtx);
+        }
     }
 }
 

@@ -1,6 +1,7 @@
 #include "z_en_heishi4.h"
 #include "objects/object_sd/object_sd.h"
 #include "vt.h"
+#include "soh_assets.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
 
@@ -414,9 +415,29 @@ s32 EnHeishi_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f
     return false;
 }
 
+s32 EnHeishi4_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
+    EnHeishi4* this = (EnHeishi4*)thisx;
+
+    if (CVarGetInteger("gLetItSnow", 0)) {
+        if (limbIndex == 16) {
+            OPEN_DISPS(play->state.gfxCtx);
+            Matrix_Push();
+            Matrix_RotateZYX(0, 0, 442, MTXMODE_APPLY);
+            Matrix_Translate(256.757f, 121.621f, 0.0f, MTXMODE_APPLY);
+            Matrix_Scale(1.337f, 1.337f, 1.337f, MTXMODE_APPLY);
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPDisplayList(POLY_OPA_DISP++, gSantaHatGenericDL);
+            Matrix_Pop();
+            CLOSE_DISPS(play->state.gfxCtx);
+        }
+    }
+
+    return false;
+}
+
 void EnHeishi4_Draw(Actor* thisx, PlayState* play) {
     EnHeishi4* this = (EnHeishi4*)thisx;
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnHeishi_OverrideLimbDraw, NULL, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnHeishi_OverrideLimbDraw, EnHeishi4_PostLimbDraw, this);
 }

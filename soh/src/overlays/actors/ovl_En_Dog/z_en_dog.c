@@ -6,6 +6,7 @@
 
 #include "z_en_dog.h"
 #include "objects/object_dog/object_dog.h"
+#include "soh_assets.h"
 
 #define FLAGS 0
 
@@ -494,6 +495,19 @@ s32 EnDog_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* p
 }
 
 void EnDog_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
+    if (CVarGetInteger("gLetItSnow", 0)) {
+        if (limbIndex == 4) {
+            OPEN_DISPS(play->state.gfxCtx);
+            Matrix_Push();
+            Matrix_RotateZYX(20811, -32768, 3985, MTXMODE_APPLY);
+            Matrix_Translate(0.0f, 0.0f, 0.0f, MTXMODE_APPLY);
+            Matrix_Scale(1.25f, 1.25f, 1.25f, MTXMODE_APPLY);
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPDisplayList(POLY_OPA_DISP++, gSantaHatGenericDL);
+            Matrix_Pop();
+            CLOSE_DISPS(play->state.gfxCtx);
+        }
+    }
 }
 
 void EnDog_Draw(Actor* thisx, PlayState* play) {

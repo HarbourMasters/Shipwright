@@ -8,6 +8,27 @@
 // On Mac, not using aligned resource names was causing crashes in release builds
 
 // objects
+#define dgLinkAdultHatTrimDL "__OTR__objects/object_festivehats/gLinkAdultHatTrimDL"
+static const ALIGN_ASSET(2) char gLinkAdultHatTrimDL[] = dgLinkAdultHatTrimDL;
+
+#define dgLinkAdultPompomDL "__OTR__objects/object_festivehats/gLinkAdultPompomDL"
+static const ALIGN_ASSET(2) char gLinkAdultPompomDL[] = dgLinkAdultPompomDL;
+
+#define dgLinkChildHatTrimDL "__OTR__objects/object_festivehats/gLinkChildHatTrimDL"
+static const ALIGN_ASSET(2) char gLinkChildHatTrimDL[] = dgLinkChildHatTrimDL;
+
+#define dgPaperCrownGenericDL "__OTR__objects/object_festivehats/gPaperCrownGenericDL"
+static const ALIGN_ASSET(2) char gPaperCrownGenericDL[] = dgPaperCrownGenericDL;
+
+#define dgSantaHatGenericDL "__OTR__objects/object_festivehats/gSantaHatGenericDL"
+static const ALIGN_ASSET(2) char gSantaHatGenericDL[] = dgSantaHatGenericDL;
+
+#define dgHorseAntlersDL "__OTR__objects/object_festivehats/gHorseAntlersDL"
+static const ALIGN_ASSET(2) char gHorseAntlersDL[] = dgHorseAntlersDL;
+
+#define dgEponaRudolphHatDL "__OTR__objects/object_festivehats/gEponaRudolphHatDL"
+static const ALIGN_ASSET(2) char gEponaRudolphHatDL[] = dgEponaRudolphHatDL;
+
 #define dgChristmasGreenTreasureChestFrontTex "__OTR__objects/object_box/gChristmasGreenTreasureChestFrontTex"
 static const ALIGN_ASSET(2) char gChristmasGreenTreasureChestFrontTex[] = dgChristmasGreenTreasureChestFrontTex;
 
@@ -79,6 +100,54 @@ static const ALIGN_ASSET(2) char gFishingPoleGiDL[] = dgFishingPoleGiDL;
 
 #define dgMysteryItemDL "__OTR__objects/object_mystery_item/gMysteryItemDL"
 static const ALIGN_ASSET(2) char gMysteryItemDL[] = dgMysteryItemDL;
+
+#define dgXmasTreeDL "__OTR__objects/object_xmas_tree/gXmasTreeDL"
+static const ALIGN_ASSET(2) char gXmasTreeDL[] = dgXmasTreeDL;
+
+#define dgXmasDecor10DL "__OTR__objects/object_xmas_tree/gXmasDecor10DL"
+static const ALIGN_ASSET(2) char gXmasDecor10DL[] = dgXmasDecor10DL;
+
+#define dgXmasDecor20DL "__OTR__objects/object_xmas_tree/gXmasDecor20DL"
+static const ALIGN_ASSET(2) char gXmasDecor20DL[] = dgXmasDecor20DL;
+
+#define dgXmasDecor30DL "__OTR__objects/object_xmas_tree/gXmasDecor30DL"
+static const ALIGN_ASSET(2) char gXmasDecor30DL[] = dgXmasDecor30DL;
+
+#define dgXmasDecor40DL "__OTR__objects/object_xmas_tree/gXmasDecor40DL"
+static const ALIGN_ASSET(2) char gXmasDecor40DL[] = dgXmasDecor40DL;
+
+#define dgXmasDecor50DL "__OTR__objects/object_xmas_tree/gXmasDecor50DL"
+static const ALIGN_ASSET(2) char gXmasDecor50DL[] = dgXmasDecor50DL;
+
+#define dgXmasDecor60DL "__OTR__objects/object_xmas_tree/gXmasDecor60DL"
+static const ALIGN_ASSET(2) char gXmasDecor60DL[] = dgXmasDecor60DL;
+
+#define dgXmasDecor70DL "__OTR__objects/object_xmas_tree/gXmasDecor70DL"
+static const ALIGN_ASSET(2) char gXmasDecor70DL[] = dgXmasDecor70DL;
+
+#define dgXmasDecor80DL "__OTR__objects/object_xmas_tree/gXmasDecor80DL"
+static const ALIGN_ASSET(2) char gXmasDecor80DL[] = dgXmasDecor80DL;
+
+#define dgXmasDecor90DL "__OTR__objects/object_xmas_tree/gXmasDecor90DL"
+static const ALIGN_ASSET(2) char gXmasDecor90DL[] = dgXmasDecor90DL;
+
+#define dgXmasDecor100DL "__OTR__objects/object_xmas_tree/gXmasDecor100DL"
+static const ALIGN_ASSET(2) char gXmasDecor100DL[] = dgXmasDecor100DL;
+
+#define dgXmasStarDL "__OTR__objects/object_xmas_tree/gXmasStarDL"
+static const ALIGN_ASSET(2) char gXmasStarDL[] = dgXmasStarDL;
+
+#define dgKakarikoDecorDL "__OTR__objects/object_kakariko_decor/gKakarikoDecorDL"
+static const ALIGN_ASSET(2) char gKakarikoDecorDL[] = dgKakarikoDecorDL;
+
+#define dgTempleOfTimeDecorDL "__OTR__objects/object_temple_of_time_decor/gTempleOfTimeDecorDL"
+static const ALIGN_ASSET(2) char gTempleOfTimeDecorDL[] = dgTempleOfTimeDecorDL;
+
+#define dgKakarikoChildDecorDL "__OTR__objects/object_kakariko_decor/gKakarikoChildDecorDL"
+static const ALIGN_ASSET(2) char gKakarikoChildDecorDL[] = dgKakarikoChildDecorDL;
+
+#define dgKakarikoAdultDecorDL "__OTR__objects/object_kakariko_decor/gKakarikoAdultDecorDL"
+static const ALIGN_ASSET(2) char gKakarikoAdultDecorDL[] = dgKakarikoAdultDecorDL;
 
 // overlays
 #define dgOptionsDividerChangeLangVtx "__OTR__overlays/ovl_file_choose/gOptionsDividerChangeLangVtx"

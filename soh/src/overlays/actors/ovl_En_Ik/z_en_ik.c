@@ -9,6 +9,7 @@
 #include "objects/object_ik/object_ik.h"
 #include "vt.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh_assets.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
@@ -944,6 +945,19 @@ void EnIk_PostLimbDraw3(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot,
             break;
     }
 
+    if (CVarGetInteger("gLetItSnow", 0)) {
+        if (limbIndex == 11) {
+            Matrix_Push();
+            Matrix_RotateZYX(0, 0, -15056, MTXMODE_APPLY);
+            Matrix_Translate(824.324f, 472.973f, 0.0f, MTXMODE_APPLY);
+            Matrix_Scale(0.845f, 0.845f, 0.845f, MTXMODE_APPLY);
+            gDPSetEnvColor(POLY_OPA_DISP++, 255, 100, 100, 255);
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPDisplayList(POLY_OPA_DISP++, gPaperCrownGenericDL);
+            Matrix_Pop();
+        }
+    }
+
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
@@ -1225,6 +1239,20 @@ void EnIk_PostLimbDraw2(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot,
             }
         } break;
     }
+
+    if (CVarGetInteger("gLetItSnow", 0)) {
+        if (limbIndex == 11) {
+            Matrix_Push();
+            Matrix_RotateZYX(0, 0, -15056, MTXMODE_APPLY);
+            Matrix_Translate(824.324f, 472.973f, 0.0f, MTXMODE_APPLY);
+            Matrix_Scale(0.845f, 0.845f, 0.845f, MTXMODE_APPLY);
+            gDPSetEnvColor(POLY_OPA_DISP++, 255, 100, 100, 255);
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPDisplayList(POLY_OPA_DISP++, gPaperCrownGenericDL);
+            Matrix_Pop();
+        }
+    }
+
     CLOSE_DISPS(gfxCtx);
 }
 
@@ -1373,6 +1401,19 @@ void EnIk_PostLimbDraw1(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot,
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, object_ik_DL_016CD8);
             break;
+    }
+
+    if (CVarGetInteger("gLetItSnow", 0)) {
+        if (limbIndex == 11) {
+            Matrix_Push();
+            Matrix_RotateZYX(0, 0, -15056, MTXMODE_APPLY);
+            Matrix_Translate(824.324f, 472.973f, 0.0f, MTXMODE_APPLY);
+            Matrix_Scale(0.845f, 0.845f, 0.845f, MTXMODE_APPLY);
+            gDPSetEnvColor(POLY_OPA_DISP++, 255, 100, 100, 255);
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPDisplayList(POLY_OPA_DISP++, gPaperCrownGenericDL);
+            Matrix_Pop();
+        }
     }
 
     CLOSE_DISPS(gfxCtx);
