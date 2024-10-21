@@ -22,6 +22,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Tk/z_en_tk.h"
 #include "src/overlays/actors/ovl_En_Fu/z_en_fu.h"
 #include "src/overlays/actors/ovl_Bg_Spot02_Objects/z_bg_spot02_objects.h"
+#include "src/overlays/actors/ovl_Bg_Spot03_Taki/z_bg_spot03_taki.h"
 #include "src/overlays/actors/ovl_Bg_Hidan_Kousi/z_bg_hidan_kousi.h"
 #include "src/overlays/actors/ovl_Bg_Dy_Yoseizo/z_bg_dy_yoseizo.h"
 #include "src/overlays/actors/ovl_En_Dnt_Demo/z_en_dnt_demo.h"
@@ -90,6 +91,9 @@ void EnDntDemo_JudgeSkipToReward(EnDntDemo* enDntDemo, PlayState* play) {
             return;
         }
     }
+}
+
+void BgSpot03Taki_KeepOpen(BgSpot03Taki* bgSpot03Taki, PlayState* play) {
 }
 
 static int successChimeCooldown = 0;
@@ -676,6 +680,8 @@ static uint32_t enFuUpdateHook = 0;
 static uint32_t enFuKillHook = 0;
 static uint32_t bgSpot02UpdateHook = 0;
 static uint32_t bgSpot02KillHook = 0;
+static uint32_t bgSpot03UpdateHook = 0;
+static uint32_t bgSpot03KillHook = 0;
 static uint32_t enPoSistersUpdateHook = 0;
 static uint32_t enPoSistersKillHook = 0;
 void TimeSaverOnActorInitHandler(void* actorRef) {
@@ -750,6 +756,41 @@ void TimeSaverOnActorInitHandler(void* actorRef) {
             GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(bgSpot02KillHook);
             bgSpot02UpdateHook = 0;
             bgSpot02KillHook = 0;
+        });
+    }
+
+    if (actor->id == ACTOR_BG_SPOT03_TAKI && Flags_GetEventChkInf(EVENTCHKINF_LEARNED_ZELDAS_LULLABY) &&
+        (INV_CONTENT(ITEM_OCARINA_TIME) == ITEM_OCARINA_TIME ||
+         INV_CONTENT(ITEM_OCARINA_FAIRY) == ITEM_OCARINA_FAIRY)) {
+        bgSpot03UpdateHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* innerActorRef) mutable {
+            Actor* innerActor = static_cast<Actor*>(innerActorRef);
+            if (innerActor->id == ACTOR_BG_SPOT03_TAKI && Flags_GetEventChkInf(EVENTCHKINF_LEARNED_ZELDAS_LULLABY) &&
+                (INV_CONTENT(ITEM_OCARINA_TIME) == ITEM_OCARINA_TIME ||
+                 INV_CONTENT(ITEM_OCARINA_FAIRY) == ITEM_OCARINA_FAIRY) &&
+                (IS_RANDO || CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SleepingWaterfall"), IS_RANDO))
+            ) {
+                BgSpot03Taki* bgSpot03 = static_cast<BgSpot03Taki*>(innerActorRef);
+                if (bgSpot03->actionFunc == func_808ADEF0) {
+                    bgSpot03->actionFunc = BgSpot03Taki_KeepOpen;
+                    bgSpot03->state = WATERFALL_OPENED;
+                    bgSpot03->openingAlpha = 0.0f;
+                    Flags_SetSwitch(gPlayState, bgSpot03->switchFlag);
+                    func_8003EBF8(gPlayState, &gPlayState->colCtx.dyna, bgSpot03->dyna.bgId);
+                    BgSpot03Taki_ApplyOpeningAlpha(bgSpot03, 0);
+                    BgSpot03Taki_ApplyOpeningAlpha(bgSpot03, 1);
+
+                    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(bgSpot03UpdateHook);
+                    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(bgSpot03KillHook);
+                    bgSpot03UpdateHook = 0;
+                    bgSpot03KillHook = 0;
+                }
+            }
+        });
+        bgSpot03KillHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) mutable {
+            GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(bgSpot03UpdateHook);
+            GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(bgSpot03KillHook);
+            bgSpot03UpdateHook = 0;
+            bgSpot03KillHook = 0;
         });
     }
 

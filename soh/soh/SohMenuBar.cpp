@@ -761,6 +761,9 @@ void DrawEnhancementsMenu() {
                     "- Not within range of Ocarina playing spots");
                 UIWidgets::PaddedEnhancementCheckbox("Pause Warp", CVAR_ENHANCEMENT("PauseWarp"), true, false);
                 UIWidgets::Tooltip("Selection of warp song in pause menu initiates warp. Disables song playback.");
+                UIWidgets::PaddedEnhancementCheckbox("Open Sleeping Waterfall", CVAR_ENHANCEMENT("TimeSavers.SleepingWaterfall"), true, false);
+                UIWidgets::Tooltip("If Link has an ocarina and has learned Zelda's Lullaby, "
+                                   "the waterfall in Zora's River will be open without having to play it.");
                 
                 ImGui::EndTable();
                 ImGui::EndMenu();
