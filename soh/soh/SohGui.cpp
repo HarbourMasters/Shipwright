@@ -37,6 +37,7 @@
 #include "Enhancements/cosmetics/authenticGfxPatches.h"
 #include "Enhancements/resolution-editor/ResolutionEditor.h"
 #include "Enhancements/debugger/MessageViewer.h"
+#include "soh/Notification/Notification.h"
 
 bool isBetaQuestEnabled = false;
 
@@ -132,6 +133,7 @@ namespace SohGui {
     std::shared_ptr<RandomizerSettingsWindow> mRandomizerSettingsWindow;
     std::shared_ptr<AdvancedResolutionSettings::AdvancedResolutionSettingsWindow> mAdvancedResolutionSettingsWindow;
     std::shared_ptr<SohModalWindow> mModalWindow;
+    std::shared_ptr<Notification::Window> mNotificationWindow;
 
     void SetupGuiElements() {
         auto gui = Ship::Context::GetInstance()->GetWindow()->GetGui();
@@ -141,9 +143,9 @@ namespace SohGui {
 
         if (gui->GetMenuBar() && !gui->GetMenuBar()->IsVisible()) {
 #if defined(__SWITCH__) || defined(__WIIU__)
-            gui->GetGameOverlay()->TextDrawNotification(30.0f, true, "Press - to access enhancements menu");
+            Notification::Emit({ .message = "Press - to access enhancements menu", .remainingTime = 10.0f });
 #else
-            gui->GetGameOverlay()->TextDrawNotification(30.0f, true, "Press F1 to access enhancements menu");
+            Notification::Emit({ .message = "Press F1 to access enhancements menu", .remainingTime = 10.0f });
 #endif
         }
 
@@ -210,12 +212,16 @@ namespace SohGui {
         mModalWindow = std::make_shared<SohModalWindow>(CVAR_WINDOW("ModalWindow"), "Modal Window");
         gui->AddGuiWindow(mModalWindow);
         mModalWindow->Show();
+        mNotificationWindow = std::make_shared<Notification::Window>(CVAR_WINDOW("Notifications"), "Notifications Window");
+        gui->AddGuiWindow(mNotificationWindow);
+        mNotificationWindow->Show();
     }
 
     void Destroy() {
         auto gui = Ship::Context::GetInstance()->GetWindow()->GetGui();
         gui->RemoveAllGuiWindows();
         
+        mNotificationWindow = nullptr;
         mModalWindow = nullptr;
         mAdvancedResolutionSettingsWindow = nullptr;
         mRandomizerSettingsWindow = nullptr;
