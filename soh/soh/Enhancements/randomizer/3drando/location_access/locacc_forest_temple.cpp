@@ -533,9 +533,9 @@ void RegionTable_Init_ForestTemple() {
         Region("Forest Temple Boss Entryway", "Forest Temple", {RA_FOREST_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {},
              {
                  // Exits
-                 Entrance(RR_FOREST_TEMPLE_BOSS_REGION, { [] { return ctx->GetDungeon(FOREST_TEMPLE)->IsVanilla() && false; } }),
-                 Entrance(RR_FOREST_TEMPLE_MQ_BASEMENT, { [] { return ctx->GetDungeon(FOREST_TEMPLE)->IsMQ() && false; } }),
-                 Entrance(RR_FOREST_TEMPLE_BOSS_ROOM, { [] { return true; } }),
+                 Entrance(RR_FOREST_TEMPLE_BOSS_REGION,    { [] { return ctx->GetDungeon(FOREST_TEMPLE)->IsVanilla() && false; } }),
+                 Entrance(RR_FOREST_TEMPLE_MQ_BOSS_REGION, { [] { return ctx->GetDungeon(FOREST_TEMPLE)->IsMQ() && false; } }),
+                 Entrance(RR_FOREST_TEMPLE_BOSS_ROOM,      { [] { return true; } }),
              });
 
     areaTable[RR_FOREST_TEMPLE_BOSS_ROOM] = Region("Forest Temple Boss Room", "Forest Temple", {}, NO_DAY_NIGHT_CYCLE,
