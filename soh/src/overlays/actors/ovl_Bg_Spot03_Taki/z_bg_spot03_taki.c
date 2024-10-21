@@ -73,8 +73,9 @@ void func_808ADEF0(BgSpot03Taki* this, PlayState* play) {
         if (Flags_GetSwitch(play, this->switchFlag)) {
             this->state = WATERFALL_OPENING_ANIMATED;
             this->timer = 40;
-            OnePointCutscene_Init(play, 4100, -99, NULL, MAIN_CAM);
-            func_8003EBF8(play, &play->colCtx.dyna, this->dyna.bgId);
+            if (OnePointCutscene_Init(play, 4100, -99, NULL, MAIN_CAM) == SUBCAM_NONE) {
+                func_8003EBF8(play, &play->colCtx.dyna, this->dyna.bgId);
+            }
         }
     } else if (this->state == WATERFALL_OPENING_IDLE) {
         this->timer--;
@@ -85,6 +86,7 @@ void func_808ADEF0(BgSpot03Taki* this, PlayState* play) {
         if (this->openingAlpha > 0) {
             this->openingAlpha -= 5;
             if (this->openingAlpha <= 0.0f) {
+                func_8003EBF8(play, &play->colCtx.dyna, this->dyna.bgId);
                 this->timer = 400;
                 this->state = WATERFALL_OPENED;
                 this->openingAlpha = 0;
