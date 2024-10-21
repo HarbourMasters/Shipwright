@@ -344,22 +344,22 @@ void func_80A2FA50(EnGb* this, PlayState* play) {
             }
             this->actionFunc = func_80A2F83C;
         } else {
-            if (GameInteractor_Should(VB_GIVE_ITEM_FROM_POE_COLLECTOR, true, this)) {
-                Player* player = GET_PLAYER(play);
+            Player* player = GET_PLAYER(play);
 
-                player->exchangeItemId = EXCH_ITEM_NONE;
-                this->textId = 0x70F8;
-                Message_ContinueTextbox(play, this->textId);
-                this->actionFunc = func_80A2FB40;
-            }
+            player->exchangeItemId = EXCH_ITEM_NONE;
+            this->textId = 0x70F8;
+            Message_ContinueTextbox(play, this->textId);
+            this->actionFunc = func_80A2FB40;
         }
     }
 }
 
 void func_80A2FB40(EnGb* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_DONE && Message_ShouldAdvance(play)) {
-        Actor_OfferGetItem(&this->dyna.actor, play, GI_BOTTLE, 100.0f, 10.0f);
-        this->actionFunc = func_80A2FBB0;
+        if (GameInteractor_Should(VB_GIVE_ITEM_FROM_POE_COLLECTOR, true, this)) {
+            Actor_OfferGetItem(&this->dyna.actor, play, GI_BOTTLE, 100.0f, 10.0f);
+            this->actionFunc = func_80A2FBB0;
+        }
     }
 }
 
@@ -369,7 +369,9 @@ void func_80A2FBB0(EnGb* this, PlayState* play) {
         this->actionFunc = func_80A2FC0C;
     }
     else {
-        Actor_OfferGetItem(&this->dyna.actor, play, GI_BOTTLE, 100.0f, 10.0f);
+        if (GameInteractor_Should(VB_GIVE_ITEM_FROM_POE_COLLECTOR, true, this)) {
+            Actor_OfferGetItem(&this->dyna.actor, play, GI_BOTTLE, 100.0f, 10.0f);
+        }
     }
 }
 
