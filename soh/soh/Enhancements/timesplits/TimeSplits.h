@@ -22,6 +22,7 @@ class TimeSplitWindow : public Ship::GuiWindow {
     using GuiWindow::GuiWindow;
 
     void InitElement() override;
+    void Draw() override;
     void DrawElement() override;
     void UpdateElement() override{};
 };
@@ -30,7 +31,8 @@ typedef enum {
     ACTION_SAVE,
     ACTION_LOAD,
     ACTION_UPDATE,
-    ACTION_COLLECT
+    ACTION_COLLECT,
+    ACTION_DELETE
 };
 
 typedef enum {

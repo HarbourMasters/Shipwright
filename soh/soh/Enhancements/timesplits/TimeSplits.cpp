@@ -389,6 +389,18 @@ void TimeSplitsFileManagement(uint32_t action, const char* listEntry, std::vecto
             keys.push_back("No Saved Lists");
         }
     }
+
+    if (action == ACTION_DELETE) {
+        if (saveFile.contains(listEntry)) {
+            saveFile.erase(listEntry);
+
+            std::ofstream outputFile(filename);
+            if (outputFile.is_open()) {
+                outputFile << saveFile.dump(4);
+                outputFile.close();
+            }
+        }
+    }
 }
 
 void TimeSplitsPopUpContext() {
@@ -674,7 +686,7 @@ void TimeSplitsDrawItemList(uint32_t type) {
             if (ImGui::ImageButton(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(split.splitImage),
                                ImVec2(38.0f, 38.0f), ImVec2(0, 0), ImVec2(1, 1), 2.0f, ImVec4(0, 0, 0, 0), split.splitTint)) {
                 
-                if (popupList.contains(split.splitID)) {
+                if (popupList.contains(split.splitID) && (split.splitType < SPLIT_BOSS)) {
                     popupID = split.splitID;
                     ImGui::OpenPopup("TimeSplitsPopUp");
                 } else {
@@ -729,7 +741,7 @@ void TimeSplitsDrawOptionsMenu() {
     }
 
     if (UIWidgets::PaddedEnhancementSliderFloat("Window Size: %.1fx", "##windowSize",
-        CVAR_ENHANCEMENT("TimeSplits.WindowSize"), 1.0f, 3.0f, "", 1.0f, false, false, true, false)) {
+        CVAR_ENHANCEMENT("TimeSplits.WindowSize"), 1.0f, 3.0f, "", 1.0f, false, true, true, false)) {
         TimeSplitsUpdateWindowSize();
     }
 
@@ -771,6 +783,10 @@ void TimeSplitsDrawOptionsMenu() {
     ImGui::SameLine();
     if (ImGui::Button("Save List")) {
         TimeSplitsFileManagement(ACTION_SAVE, keys[selectedItem].c_str(), splitList);
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Delete List")) {
+        TimeSplitsFileManagement(ACTION_DELETE, keys[selectedItem].c_str(), emptyList);
     }
     UIWidgets::PaddedSeparator();
 
@@ -872,6 +888,12 @@ void InitializeSplitDataFile() {
     }
 }
 
+void TimeSplitWindow::Draw() {
+    ImGui::PushStyleColor(ImGuiCol_WindowBg, windowColor);
+    GuiWindow::Draw();
+    ImGui::PopStyleColor();
+}
+
 static bool initialized = false;
 
 void TimeSplitWindow::DrawElement() {
@@ -880,7 +902,8 @@ void TimeSplitWindow::DrawElement() {
         InitializeSplitDataFile();
         initialized = true;
     }
-    ImGui::PushStyleColor(ImGuiCol_WindowBg, windowColor);
+
+    
     if (ImGui::BeginTabBar("Split Tabs")) {
         if (ImGui::BeginTabItem("Splits")) {
             TimeSplitsDrawSplitsList();
@@ -896,7 +919,7 @@ void TimeSplitWindow::DrawElement() {
         }
         ImGui::EndTabBar();
     }
-    ImGui::PopStyleColor();
+    
 }
 
 void TimeSplitWindow::InitElement() {
