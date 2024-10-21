@@ -209,7 +209,9 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                         RateLimitedSuccessChime();
                         taki = (BgSpot03Taki*)Actor_FindNearby(gPlayState, &GET_PLAYER(gPlayState)->actor,
                                                                ACTOR_BG_SPOT03_TAKI, ACTORCAT_BG, 999.0f);
-                        func_8003EBF8(gPlayState, &gPlayState->colCtx.dyna, taki->dyna.bgId);
+                        if (taki != NULL) {
+                            func_8003EBF8(gPlayState, &gPlayState->colCtx.dyna, taki->dyna.bgId);
+                        }
                         break;
                     default:
                         SPDLOG_INFO("VB_PLAY_ONEPOINT_CS {}", *csId);
