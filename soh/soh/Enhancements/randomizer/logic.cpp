@@ -409,7 +409,8 @@ namespace Rando {
     }
 
 //RANDOTODO quantity is a placeholder for proper ammo use calculation logic. in time will want updating to account for ammo capacity
-    bool Logic::CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance, uint8_t quantity) {
+//Can we kill this enemy
+    bool Logic::CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance, bool wallOrFloor, uint8_t quantity) {
         bool killed = false;
         switch(enemy) {
             case RE_GOLD_SKULLTULA:
@@ -428,8 +429,8 @@ namespace Rando {
                         killed = killed || CanJumpslashExceptHammer();
                         [[fallthrough]];
                     case ED_RANG_OR_HOOKSHOT:
-                        //RANDOTODO test dins, bomb and chu range in a practical example, might need a wall var to handle chus
-                        killed = killed || CanUse(RG_HOOKSHOT) || HasExplosives() || CanUse(RG_DINS_FIRE);
+                        //RANDOTODO test dins, bomb and chu range in a practical example
+                        killed = killed || CanUse(RG_HOOKSHOT) || CanUse(RG_BOMB_BAG) || (wallOrFloor && CanUse(RG_BOMBCHU_5)) || CanUse(RG_DINS_FIRE);
                         [[fallthrough]];
                     case ED_LONGSHOT:
                         killed = killed || CanUse(RG_LONGSHOT);
@@ -455,6 +456,7 @@ namespace Rando {
             case RE_WITHERED_DEKU_BABA:
                 return CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD) || CanUse(RG_BOOMERANG);
             case RE_LIKE_LIKE:
+            case RE_FLOORMASTER:
                 return CanDamage();
             case RE_STALFOS:
                 //RANDOTODO Add trick to kill stalfos with sticks, and a second one for bombs without stunning. Higher ammo logic for bombs is also plausible
@@ -471,6 +473,12 @@ namespace Rando {
             //Dins killing isn't hard, but is obscure and tight on single magic, so is a trick
             case RE_FLARE_DANCER:
                 return CanUse(RG_MEGATON_HAMMER) || CanUse(RG_HOOKSHOT) || (HasExplosives() && (CanJumpslashExceptHammer() || CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_BOOMERANG)));
+            case RE_WOLFOS:
+                return CanJumpslash() || CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_BOMBCHU_5) || (CanUse(RG_BOMB_BAG) && (CanUse(RG_NUTS) || CanUse(RG_HOOKSHOT) || CanUse(RG_BOOMERANG)));
+            case RE_REDEAD:
+                return CanJumpslash() || CanUse(RG_DINS_FIRE);
+            case RE_MEG:
+                return CanUse(RG_FAIRY_BOW) || CanUse(RG_HOOKSHOT) || HasExplosives();
             default:
                 SPDLOG_ERROR("CanKillEnemy reached `default`.");
                 assert(false);
@@ -480,8 +488,9 @@ namespace Rando {
 
 //It is rare for Pass Enemy to need distance, this only happens when the enemy blocks a platform and you can't reach it before it blocks you
 //an example is the Big Skulltula in water room of MQ deku, which is out of sword swing height but blocks off the whole SoT block
-    bool Logic::CanPassEnemy(RandomizerEnemy enemy, EnemyDistance distance) {
-        if (CanKillEnemy(enemy, distance)){
+//Can we get past this enemy in a tight space?
+    bool Logic::CanPassEnemy(RandomizerEnemy enemy, EnemyDistance distance, bool wallOrFloor) {
+        if (CanKillEnemy(enemy, distance, wallOrFloor)){
             return true;
         }
         switch(enemy) {
@@ -498,12 +507,18 @@ namespace Rando {
             case RE_WITHERED_DEKU_BABA:
             case RE_STALFOS:
             case RE_FLARE_DANCER:
+            case RE_WOLFOS:
+            case RE_FLOORMASTER:
+            case RE_MEG:
                 return true;
             case RE_BIG_SKULLTULA:
                 //hammer jumpslash can pass, but only on flat land where you can kill with hammer swing
                 return CanUse(RG_NUTS) || CanUse(RG_BOOMERANG);
             case RE_LIKE_LIKE:
                 return CanUse(RG_HOOKSHOT) || CanUse(RG_BOOMERANG);
+            case RE_REDEAD:
+                // we need a way to check if suns won't force a reload
+                return CanUse(RG_HOOKSHOT) || CanUse(RG_SUNS_SONG);
             case RE_IRON_KNUCKLE:
                 return false;
             default:
@@ -513,6 +528,7 @@ namespace Rando {
         }
     }
 
+//Can we avoid this enemy while climbing up a wall, or doing a difficult platforming challenge?
     bool Logic::CanAvoidEnemy(RandomizerEnemy enemy) {
         if (CanKillEnemy(enemy)){
             return true;
@@ -530,6 +546,10 @@ namespace Rando {
             case RE_STALFOS:
             case RE_IRON_KNUCKLE:
             case RE_FLARE_DANCER:
+            case RE_WOLFOS:
+            case RE_FLOORMASTER:
+            case RE_REDEAD:
+            case RE_MEG:
                 return true;
             case RE_MAD_SCRUB:
             case RE_KEESE:
@@ -620,13 +640,16 @@ namespace Rando {
         return CanUse(RG_STICKS) || CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD);
     }
 
-
     bool Logic::CanJumpslash() {
         return CanJumpslashExceptHammer() || CanUse(RG_MEGATON_HAMMER);
     }
 
+    bool Logic::CanHitSwitch() {
+        CanUse(RG_FAIRY_SLINGSHOT) || CanJumpslash() || HasExplosives() || CanUse(RG_FAIRY_BOW) || CanUse(RG_BOOMERANG) || CanUse(RG_HOOKSHOT);
+    }
+
     bool Logic::CanDamage() {
-        return CanUse(RG_FAIRY_SLINGSHOT) || CanJumpslashExceptHammer() || BlastOrSmash() || CanUse(RG_DINS_FIRE) || CanUse(RG_FAIRY_BOW);
+        return CanUse(RG_FAIRY_SLINGSHOT) || CanJumpslash() || HasExplosives() || CanUse(RG_DINS_FIRE) || CanUse(RG_FAIRY_BOW);
     }
 
     bool Logic::CanAttack() {
@@ -1844,10 +1867,8 @@ namespace Rando {
         KingZoraThawed            = false;
         ForestTempleJoelle        = false;
         ForestTempleBeth          = false;
-        ForestTempleJoAndBeth     = false;
         ForestTempleAmy           = false;
         ForestTempleMeg           = false;
-        ForestTempleAmyAndMeg     = false;
         FireLoopSwitch            = false;
         LinksCow                  = false;
         DeliverLetter             = false;
@@ -1863,6 +1884,10 @@ namespace Rando {
         OpenedUpperFireShortcut   = false;
         HitFireTemplePlatform     = false;
         OpenedFireMQFireMazeDoor  = false;
+        MQForestBlockRoomTargets  = false;
+        ForestCanTwistHallway     = false;
+        ForestClearBelowBowChest  = false;
+        ForestOpenBossCorridor    = false;
 
         StopPerformanceTimer(PT_LOGIC_RESET);
     }
