@@ -904,6 +904,10 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             *should = false;
             break;
         }
+        case VB_GIVE_ITEM_FROM_POE_COLLECTOR: {
+            *should = OTRGlobals::Instance->gRandoContext->GetItemLocation(RC_MARKET_10_BIG_POES)->IsAddedToPool();
+            break;
+        }
         case VB_CHECK_RANDO_PRICE_OF_CARPET_SALESMAN: {
             if (EnJs_RandoCanGetCarpetMerchantItem()){
                 *should = gSaveContext.rupees < OTRGlobals::Instance->gRandoContext->GetItemLocation(RC_WASTELAND_BOMBCHU_SALESMAN)->GetPrice();
