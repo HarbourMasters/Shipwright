@@ -529,6 +529,11 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                 *should = false;
             }
             break;
+        case VB_FREEZE_ON_SKULL_TOKEN:
+            if (CVarGetInteger(CVAR_ENHANCEMENT("SkulltulaFreeze"), 0)) {
+                *should = false;
+            }
+            break;
         case VB_DAMPE_IN_GRAVEYARD_DESPAWN:
             if (CVarGetInteger(CVAR_ENHANCEMENT("DampeAllNight"), 0)) {
                 *should = LINK_IS_ADULT || gPlayState->sceneNum != SCENE_GRAVEYARD;

@@ -348,6 +348,7 @@ typedef enum {
     VB_GIVE_ITEM_FROM_ITEM_00,
     // Opt: *EnSi
     VB_GIVE_ITEM_SKULL_TOKEN,
+    VB_FREEZE_ON_SKULL_TOKEN,
     // Opt: *EnCow
     VB_GIVE_ITEM_FROM_COW,
     // Opt: *EnDns
