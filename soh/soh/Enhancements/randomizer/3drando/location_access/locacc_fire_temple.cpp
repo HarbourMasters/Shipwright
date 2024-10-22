@@ -342,7 +342,7 @@ void RegionTable_Init_FireTemple() {
   areaTable[RR_FIRE_TEMPLE_MQ_STALFOS_ROOM] = Region("Fire Temple MQ Stalfos Room", "Fire Temple", {RA_FIRE_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_FIRE_TEMPLE_MQ_FIRST_ROOM_LOWER,  {[]{return true;}}),
-                  Entrance(RR_FIRE_TEMPLE_MQ_IRON_KNUCKLE_ROOM, {[]{return Here(RR_FIRE_TEMPLE_MQ_FIRST_ROOM_LOWER, {[]{return logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, 2);}});}}),
+                  Entrance(RR_FIRE_TEMPLE_MQ_IRON_KNUCKLE_ROOM, {[]{return Here(RR_FIRE_TEMPLE_MQ_FIRST_ROOM_LOWER, {[]{return logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 2);}});}}),
 });
 
   areaTable[RR_FIRE_TEMPLE_MQ_IRON_KNUCKLE_ROOM] = Region("Fire Temple MQ Iron Knuckle Room", "Fire Temple", {RA_FIRE_TEMPLE}, NO_DAY_NIGHT_CYCLE, {
