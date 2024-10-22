@@ -130,6 +130,7 @@ namespace SohGui {
     std::shared_ptr<EntranceTrackerWindow> mEntranceTrackerWindow;
     std::shared_ptr<ItemTrackerSettingsWindow> mItemTrackerSettingsWindow;
     std::shared_ptr<ItemTrackerWindow> mItemTrackerWindow;
+    std::shared_ptr<TimeSplitWindow> mTimeSplitWindow;
     std::shared_ptr<RandomizerSettingsWindow> mRandomizerSettingsWindow;
     std::shared_ptr<AdvancedResolutionSettings::AdvancedResolutionSettingsWindow> mAdvancedResolutionSettingsWindow;
     std::shared_ptr<SohModalWindow> mModalWindow;
@@ -207,6 +208,8 @@ namespace SohGui {
         gui->AddGuiWindow(mItemTrackerSettingsWindow);
         mRandomizerSettingsWindow = std::make_shared<RandomizerSettingsWindow>(CVAR_WINDOW("RandomizerSettings"), "Randomizer Settings", ImVec2(920, 600));
         gui->AddGuiWindow(mRandomizerSettingsWindow);
+        mTimeSplitWindow = std::make_shared<TimeSplitWindow>(CVAR_WINDOW("TimeSplitEnabled"), "Time Splits", ImVec2(450, 660));
+        gui->AddGuiWindow(mTimeSplitWindow);
         mAdvancedResolutionSettingsWindow = std::make_shared<AdvancedResolutionSettings::AdvancedResolutionSettingsWindow>(CVAR_WINDOW("AdvancedResolutionEditor"), "Advanced Resolution Settings", ImVec2(497, 599));
         gui->AddGuiWindow(mAdvancedResolutionSettingsWindow);
         mModalWindow = std::make_shared<SohModalWindow>(CVAR_WINDOW("ModalWindow"), "Modal Window");
@@ -248,6 +251,7 @@ namespace SohGui {
         mSohMenuBar = nullptr;
         mInputViewer = nullptr;
         mInputViewerSettings = nullptr;
+        mTimeSplitWindow = nullptr;
     }
 
     void RegisterPopup(std::string title, std::string message, std::string button1, std::string button2, std::function<void()> button1callback, std::function<void()> button2callback) {
