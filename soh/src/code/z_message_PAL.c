@@ -80,6 +80,10 @@ Color_RGB8 sOcarinaNoteCBtnEnv;
 Color_RGB8 sOcarinaNoteABtnPrim;
 Color_RGB8 sOcarinaNoteCBtnPrim;
 
+Color_RGB8 sOcarinaNoteCUpBtnEnv;
+Color_RGB8 sOcarinaNoteCLeftBtnEnv;
+Color_RGB8 sOcarinaNoteCRightBtnEnv;
+Color_RGB8 sOcarinaNoteCDownBtnEnv;
 Color_RGB8 sOcarinaNoteCUpBtnPrim;
 Color_RGB8 sOcarinaNoteCLeftBtnPrim;
 Color_RGB8 sOcarinaNoteCRightBtnPrim;
@@ -2015,9 +2019,37 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
         ACTOR_OCEFF_WIPE,  ACTOR_OCEFF_STORM, ACTOR_OCEFF_WIPE4,
     };
     static s16 sOcarinaEffectActorParams[] = { 0x0000, 0x0000, 0x0000, 0x0000, 0x0001, 0x0000, 0x0000 };
-    static void* sOcarinaNoteTextures[] = {
-        gOcarinaBtnIconATex, gOcarinaBtnIconCDownTex, gOcarinaBtnIconCRightTex, gOcarinaBtnIconCLeftTex, gOcarinaBtnIconCUpTex,
+
+    int32_t sOcarinaBtnMaps[5] = {
+        CVarGetInteger("gOcarinaD4BtnMap", BTN_A),
+        CVarGetInteger("gOcarinaF4BtnMap", BTN_CDOWN),
+        CVarGetInteger("gOcarinaA4BtnMap", BTN_CRIGHT),
+        CVarGetInteger("gOcarinaB4BtnMap", BTN_CLEFT),
+        CVarGetInteger("gOcarinaD5BtnMap", BTN_CUP)
     };
+
+    static void* sOcarinaNoteTextures[5];
+
+    for (int i = 0; i < 5; i++) {
+        switch (sOcarinaBtnMaps[i]) {
+            default:
+            case BTN_A:
+                sOcarinaNoteTextures[i] = gOcarinaBtnIconATex;
+                break;
+            case BTN_CDOWN:
+                sOcarinaNoteTextures[i] = gOcarinaBtnIconCDownTex;
+                break;
+            case BTN_CRIGHT:
+                sOcarinaNoteTextures[i] = gOcarinaBtnIconCRightTex;
+                break;
+            case BTN_CLEFT:
+                sOcarinaNoteTextures[i] = gOcarinaBtnIconCLeftTex;
+                break;
+            case BTN_CUP:
+                sOcarinaNoteTextures[i] = gOcarinaBtnIconCUpTex;
+                break;
+        }
+    }
 
     // SoH [Cosmetics] The following Color_RGB8 were originally static
     Color_RGB8 sOcarinaNoteAPrimColors[2] = {
@@ -2335,13 +2367,13 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                 FLASH_NOTE_COLORS(sOcarinaNoteCBtnPrim, sOcarinaNoteCPrimColors)
                 FLASH_NOTE_COLORS(sOcarinaNoteCBtnEnv, sOcarinaNoteCEnvColors)
                 FLASH_NOTE_COLORS(sOcarinaNoteCUpBtnPrim, sOcarinaNoteCUpPrimColors)
-                FLASH_NOTE_COLORS(sOcarinaNoteCBtnEnv, sOcarinaNoteCUpEnvColors)
+                FLASH_NOTE_COLORS(sOcarinaNoteCUpBtnEnv, sOcarinaNoteCUpEnvColors)
                 FLASH_NOTE_COLORS(sOcarinaNoteCDownBtnPrim, sOcarinaNoteCDownPrimColors)
-                FLASH_NOTE_COLORS(sOcarinaNoteCBtnEnv, sOcarinaNoteCDownEnvColors)
+                FLASH_NOTE_COLORS(sOcarinaNoteCDownBtnEnv, sOcarinaNoteCDownEnvColors)
                 FLASH_NOTE_COLORS(sOcarinaNoteCLeftBtnPrim, sOcarinaNoteCLeftPrimColors)
-                FLASH_NOTE_COLORS(sOcarinaNoteCBtnEnv, sOcarinaNoteCLeftEnvColors)
+                FLASH_NOTE_COLORS(sOcarinaNoteCLeftBtnEnv, sOcarinaNoteCLeftEnvColors)
                 FLASH_NOTE_COLORS(sOcarinaNoteCRightBtnPrim, sOcarinaNoteCRightPrimColors)
-                FLASH_NOTE_COLORS(sOcarinaNoteCBtnEnv, sOcarinaNoteCRightEnvColors)
+                FLASH_NOTE_COLORS(sOcarinaNoteCRightBtnEnv, sOcarinaNoteCRightEnvColors)
 
                 sOcarinaNoteFlashTimer--;
                 if (sOcarinaNoteFlashTimer == 0) {
@@ -2993,23 +3025,39 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
 
                     gDPPipeSync(gfx++);
 
-                    // Since I don't know what exactly these Env vars are used for, I elected keep their usage
-                    // consistent with the note played, rather than having AEnv be used for whatever note A happens to
-                    // play at the moment and CEnv for everything else, even with custom controls enabled.
-                    if (sOcarinaNoteBuf[i] == OCARINA_NOTE_D4) {
-                        gDPSetPrimColor(gfx++, 0, 0, sOcarinaNoteABtnPrim.r, sOcarinaNoteABtnPrim.g, sOcarinaNoteABtnPrim.b, sOcarinaNotesAlphaValues[i]);
-                        gDPSetEnvColor(gfx++, sOcarinaNoteABtnEnv.r, sOcarinaNoteABtnEnv.g, sOcarinaNoteABtnEnv.b, 0);
-                    } else {
-                        if (sOcarinaNoteBuf[i] == OCARINA_NOTE_D5) {
-                            gDPSetPrimColor(gfx++, 0, 0, sOcarinaNoteCUpBtnPrim.r, sOcarinaNoteCUpBtnPrim.g, sOcarinaNoteCUpBtnPrim.b, sOcarinaNotesAlphaValues[i]);
-                        } else if (sOcarinaNoteBuf[i] == OCARINA_NOTE_B4) {
-                            gDPSetPrimColor(gfx++, 0, 0, sOcarinaNoteCLeftBtnPrim.r, sOcarinaNoteCLeftBtnPrim.g, sOcarinaNoteCLeftBtnPrim.b, sOcarinaNotesAlphaValues[i]);
-                        } else if (sOcarinaNoteBuf[i] == OCARINA_NOTE_A4) {
-                            gDPSetPrimColor(gfx++, 0, 0, sOcarinaNoteCRightBtnPrim.r, sOcarinaNoteCRightBtnPrim.g, sOcarinaNoteCRightBtnPrim.b, sOcarinaNotesAlphaValues[i]);
-                        } else if (sOcarinaNoteBuf[i] == OCARINA_NOTE_F4) {
-                            gDPSetPrimColor(gfx++, 0, 0, sOcarinaNoteCDownBtnPrim.r, sOcarinaNoteCDownBtnPrim.g, sOcarinaNoteCDownBtnPrim.b, sOcarinaNotesAlphaValues[i]);
-                        }
-                        gDPSetEnvColor(gfx++, sOcarinaNoteCBtnEnv.r, sOcarinaNoteCBtnEnv.g, sOcarinaNoteCBtnEnv.b, 0);
+                    // Quick hack for getting custom colors to work with custom ocarina controls
+                    switch (sOcarinaBtnMaps[sOcarinaNoteBuf[i]]) {
+                        default:
+                        case BTN_A:
+                            gDPSetPrimColor(gfx++, 0, 0, sOcarinaNoteABtnPrim.r, sOcarinaNoteABtnPrim.g,
+                                            sOcarinaNoteABtnPrim.b, sOcarinaNotesAlphaValues[i]);
+                            gDPSetEnvColor(gfx++, sOcarinaNoteABtnEnv.r, sOcarinaNoteABtnEnv.g, sOcarinaNoteABtnEnv.b,
+                                           0);
+                            break;
+                        case BTN_CDOWN:
+                            gDPSetPrimColor(gfx++, 0, 0, sOcarinaNoteCDownBtnPrim.r, sOcarinaNoteCDownBtnPrim.g,
+                                            sOcarinaNoteCDownBtnPrim.b, sOcarinaNotesAlphaValues[i]);
+                            gDPSetEnvColor(gfx++, sOcarinaNoteCDownBtnEnv.r, sOcarinaNoteCDownBtnEnv.g, sOcarinaNoteCDownBtnEnv.b,
+                                           0);
+                            break;
+                        case BTN_CRIGHT:
+                            gDPSetPrimColor(gfx++, 0, 0, sOcarinaNoteCRightBtnPrim.r, sOcarinaNoteCRightBtnPrim.g,
+                                            sOcarinaNoteCRightBtnPrim.b, sOcarinaNotesAlphaValues[i]);
+                            gDPSetEnvColor(gfx++, sOcarinaNoteCRightBtnEnv.r, sOcarinaNoteCRightBtnEnv.g,
+                                           sOcarinaNoteCRightBtnEnv.b, 0);
+                            break;
+                        case BTN_CLEFT:
+                            gDPSetPrimColor(gfx++, 0, 0, sOcarinaNoteCLeftBtnPrim.r, sOcarinaNoteCLeftBtnPrim.g,
+                                            sOcarinaNoteCLeftBtnPrim.b, sOcarinaNotesAlphaValues[i]);
+                            gDPSetEnvColor(gfx++, sOcarinaNoteCLeftBtnEnv.r, sOcarinaNoteCLeftBtnEnv.g,
+                                           sOcarinaNoteCLeftBtnEnv.b, 0);
+                            break;
+                        case BTN_CUP:
+                            gDPSetPrimColor(gfx++, 0, 0, sOcarinaNoteCUpBtnPrim.r, sOcarinaNoteCUpBtnPrim.g,
+                                            sOcarinaNoteCUpBtnPrim.b, sOcarinaNotesAlphaValues[i]);
+                            gDPSetEnvColor(gfx++, sOcarinaNoteCUpBtnEnv.r, sOcarinaNoteCUpBtnEnv.g,
+                                           sOcarinaNoteCUpBtnEnv.b, 0);
+                            break;
                     }
 
                     gDPLoadTextureBlock(gfx++, sOcarinaNoteTextures[sOcarinaNoteBuf[i]], G_IM_FMT_IA, G_IM_SIZ_8b, 16,
