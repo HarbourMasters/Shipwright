@@ -7,6 +7,7 @@
 #include "textures/parameter_static/parameter_static.h"
 #include "textures/message_static/message_static.h"
 #include "textures/message_texture_static/message_texture_static.h"
+#include "soh/Enhancements/cosmetics/CosmeticsEditor.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
@@ -367,6 +368,80 @@ void Message_FindCreditsMessage(PlayState* play, u16 textId) {
     }
 }
 
+#pragma region [SoH] Cosmetics
+
+#define MESSAGE_COSMETICS_HANDLE_COLOR(id)                                                                                       \
+    if (CVarGetInteger(CVAR_COSMETIC("Message." id ".Changed"), 0)) {                                                            \
+        Color_RGBA8 color = CVarGetColor(CVAR_COSMETIC("Message." id ".Value"), CosmeticsEditor_GetDefaultValue("Message." id)); \
+        msgCtx->textColorR = color.r;                                                                                            \
+        msgCtx->textColorG = color.g;                                                                                            \
+        msgCtx->textColorB = color.b;                                                                                            \
+    }
+
+void Cosmetics_MaybeSetTextColor(MessageContext* msgCtx, u16 colorParameter) {
+    switch (colorParameter) {
+        case MSGCOL_RED:
+            if (msgCtx->textBoxType == TEXTBOX_TYPE_WOODEN) {
+                MESSAGE_COSMETICS_HANDLE_COLOR("Red.Wooden")
+            } else {
+                MESSAGE_COSMETICS_HANDLE_COLOR("Red.Normal")
+            }
+            break;
+        case MSGCOL_ADJUSTABLE:
+            if (msgCtx->textBoxType == TEXTBOX_TYPE_WOODEN) {
+                MESSAGE_COSMETICS_HANDLE_COLOR("Adjustable.Wooden")
+            } else {
+                MESSAGE_COSMETICS_HANDLE_COLOR("Adjustable.Normal")
+            }
+            break;
+        case MSGCOL_BLUE:
+            if (msgCtx->textBoxType == TEXTBOX_TYPE_WOODEN) {
+                MESSAGE_COSMETICS_HANDLE_COLOR("Blue.Wooden")
+            } else {
+                MESSAGE_COSMETICS_HANDLE_COLOR("Blue.Normal")
+            }
+            break;
+        case MSGCOL_LIGHTBLUE:
+            if (msgCtx->textBoxType == TEXTBOX_TYPE_WOODEN) {
+                MESSAGE_COSMETICS_HANDLE_COLOR("LightBlue.Wooden")
+            } else if (msgCtx->textBoxType == TEXTBOX_TYPE_NONE_NO_SHADOW) {
+                MESSAGE_COSMETICS_HANDLE_COLOR("LightBlue.NoneNoShadow")
+            } else {
+                MESSAGE_COSMETICS_HANDLE_COLOR("LightBlue.Normal")
+            }
+            break;
+        case MSGCOL_PURPLE:
+            if (msgCtx->textBoxType == TEXTBOX_TYPE_WOODEN) {
+                MESSAGE_COSMETICS_HANDLE_COLOR("Purple.Wooden")
+            } else {
+                MESSAGE_COSMETICS_HANDLE_COLOR("Purple.Normal")
+            }
+            break;
+        case MSGCOL_YELLOW:
+            if (msgCtx->textBoxType == TEXTBOX_TYPE_WOODEN) {
+                MESSAGE_COSMETICS_HANDLE_COLOR("Yellow.Wooden")
+            } else {
+                MESSAGE_COSMETICS_HANDLE_COLOR("Yellow.Normal")
+            }
+            break;
+        case MSGCOL_BLACK:
+            MESSAGE_COSMETICS_HANDLE_COLOR("Black")
+            break;
+        case MSGCOL_DEFAULT:
+        default:
+            if (msgCtx->textBoxType == TEXTBOX_TYPE_NONE_NO_SHADOW) {
+                MESSAGE_COSMETICS_HANDLE_COLOR("Default.NoneNoShadow")
+            } else {
+                MESSAGE_COSMETICS_HANDLE_COLOR("Default.Normal")
+            }
+            break;
+    }
+}
+
+#undef MESSAGE_COSMETICS_HANDLE_COLOR
+
+#pragma endregion
+
 void Message_SetTextColor(MessageContext* msgCtx, u16 colorParameter) {
     switch (colorParameter) {
         case MSGCOL_RED:
@@ -451,6 +526,7 @@ void Message_SetTextColor(MessageContext* msgCtx, u16 colorParameter) {
             }
             break;
     }
+    Cosmetics_MaybeSetTextColor(msgCtx, colorParameter);
 }
 
 void Message_DrawTextboxIcon(PlayState* play, Gfx** p, s16 x, s16 y) {
@@ -852,6 +928,8 @@ void Message_DrawText(PlayState* play, Gfx** gfxP) {
     } else {
         msgCtx->textColorR = msgCtx->textColorG = msgCtx->textColorB = 255;
     }
+
+    Cosmetics_MaybeSetTextColor(msgCtx, MSGCOL_DEFAULT);
 
     msgCtx->unk_E3D0 = 0;
     charTexIdx = 0;
