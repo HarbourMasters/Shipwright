@@ -166,7 +166,7 @@ void RegionTable_Init_DekuTree() {
                   Entrance(RR_DEKU_TREE_MQ_2F,       {[]{return true;}}),
                   //Swim is not required because you can jump with enough momentum to hit land. 
                   //You even avoid fall damage if you hit the shallow water, though it's obscure knowledge so may be a trick
-                  //if it is, then we need a landing room with (IsAdult || CanUse(RG_BRONZE_SCALE) || TakeDamage() || that trick) to reach basement
+                  //if it is, then we need a landing room with (IsAdult || HasItem(RG_BRONZE_SCALE) || TakeDamage() || that trick) to reach basement
                   Entrance(RR_DEKU_TREE_MQ_BASEMENT, {[]{return logic->BrokeDeku1FWeb;}}),
                   //is it possible to recoil from here to the ledge with a trick?
   });
@@ -256,7 +256,7 @@ void RegionTable_Init_DekuTree() {
   areaTable[RR_DEKU_TREE_MQ_BASEMENT_WATER_ROOM_FRONT] = Region("Deku Tree MQ Basement Water Room Front", "Deku Tree", {RA_DEKU_TREE}, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   //It's possible to get this with bow if you have move while in first person and one-point skips on, noticeably harder and jankier as child, but that's a trick
-                  EventAccess(&logic->MQDekuWaterRoomTorches, {[]{return logic->CanUse(RG_FIRE_ARROWS) || (logic->IsChild && logic->CanUse(RG_STICKS) && logic->CanShield());}}),
+                  EventAccess(&logic->MQDekuWaterRoomTorches, {[]{return logic->CanUse(RG_FIRE_ARROWS) || (logic->CanUse(RG_STICKS) && (ctx->GetTrickOption(RT_DEKU_MQ_LOG) || (logic->IsChild && logic->CanShield())));}}),
   }, {
                   //Locations
                   LOCATION(RC_DEKU_TREE_MQ_BEFORE_SPINNING_LOG_CHEST, true),
@@ -279,7 +279,7 @@ void RegionTable_Init_DekuTree() {
                   //Exits
                   Entrance(RR_DEKU_TREE_MQ_BASEMENT_SOUTHWEST_ROOM,   {[]{return logic->MQDekuWaterRoomTorches && logic->CanPassEnemy(RE_BIG_SKULLTULA, logic->CanUse(RG_SONG_OF_TIME) ? ED_CLOSE : ED_HAMMER_JUMPSLASH);}}),
                   Entrance(RR_DEKU_TREE_MQ_BASEMENT_WATER_ROOM_FRONT, {[]{return ctx->GetTrickOption(RT_DEKU_MQ_LOG) || (logic->IsChild && logic->CanShield()) ||
-                                                                                 logic->CanUse(RG_LONGSHOT) || logic->CanUse(RG_BRONZE_SCALE) ||
+                                                                                 logic->CanUse(RG_LONGSHOT) || logic->HasItem(RG_BRONZE_SCALE) ||
                                                                                  (logic->CanUse(RG_IRON_BOOTS) && (logic->IsAdult || logic->CanUse(RG_HOOKSHOT)));}}),
   });
 
@@ -321,19 +321,19 @@ void RegionTable_Init_DekuTree() {
                   LOCATION(RC_DEKU_TREE_MQ_DEKU_SCRUB, logic->CanStunDeku()),
   }, {
                   //Exits
-                  Entrance(RR_DEKU_TREE_MQ_BASEMENT_BACK_ROOM, {[]{return logic->IsChild;}}),
-                  Entrance(RR_DEKU_TREE_MQ_BASEMENT,           {[]{return true;}}),
+                  Entrance(RR_DEKU_TREE_MQ_BASEMENT_GRAVE_ROOM, {[]{return logic->IsChild;}}),
+                  Entrance(RR_DEKU_TREE_MQ_BASEMENT,            {[]{return true;}}),
                   //If strength 0 is shuffled, add hovers or block push to the stick check
                   //recoiling to skip swim is possible, but would be a trick
                   Entrance(RR_DEKU_TREE_MQ_OUTSIDE_BOSS_ROOM,  {[]{return Here(RR_DEKU_TREE_MQ_BASEMENT_LEDGE, []{return logic->HasFireSource() || (/*logic->PushedDekuBasementBlock && */logic->CanUse(RG_STICKS));})
-                                                                          && (logic->CanUse(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS));}}),
+                                                                          && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS));}}),
   });
 
     areaTable[RR_DEKU_TREE_MQ_OUTSIDE_BOSS_ROOM] =
             Region("Deku Tree MQ Outside Boss Room", "Deku Tree", {RA_DEKU_TREE}, NO_DAY_NIGHT_CYCLE, {}, {},
                  {
                      // Exits
-                     Entrance(RR_DEKU_TREE_MQ_BASEMENT_LEDGE, {[]{return logic->CanUse(RG_BRONZE_SCALE);}}),
+                     Entrance(RR_DEKU_TREE_MQ_BASEMENT_LEDGE, {[]{return logic->HasItem(RG_BRONZE_SCALE);}}),
                      Entrance(RR_DEKU_TREE_BOSS_ENTRYWAY,     {[]{return Here(RR_DEKU_TREE_MQ_OUTSIDE_BOSS_ROOM, []{return logic->CanReflectNuts();});}}),
                  });
   }

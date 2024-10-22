@@ -19,6 +19,7 @@ extern "C" {
 #include "textures/parameter_static/parameter_static.h"
 }
 
+const char* GetTextureForItemId(uint32_t itemId);
 void RegisterImGuiItemIcons();
 
 typedef struct {

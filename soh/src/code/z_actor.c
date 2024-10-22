@@ -4971,7 +4971,7 @@ s32 Flags_GetRandomizerInf(RandomizerInf flag) {
  * Sets "randomizerInf" flag.
  */
 void Flags_SetRandomizerInf(RandomizerInf flag) {
-    u8 previouslyOff = !Flags_GetRandomizerInf(flag);
+    s32 previouslyOff = !Flags_GetRandomizerInf(flag);
     gSaveContext.randomizerInf[flag >> 4] |= (1 << (flag & 0xF));
     if (previouslyOff) {
         LUSLOG_INFO("RandomizerInf Flag Set - %#x", flag);
@@ -4983,7 +4983,7 @@ void Flags_SetRandomizerInf(RandomizerInf flag) {
  * Unsets "randomizerInf" flag.
  */
 void Flags_UnsetRandomizerInf(RandomizerInf flag) {
-    u8 previouslyOn = Flags_GetRandomizerInf(flag);
+    s32 previouslyOn = Flags_GetRandomizerInf(flag);
     gSaveContext.randomizerInf[flag >> 4] &= ~(1 << (flag & 0xF));
     if (previouslyOn) {
         LUSLOG_INFO("RandomizerInf Flag Unset - %#x", flag);

@@ -14686,6 +14686,7 @@ void Player_Action_SwingBottle(Player* this, PlayState* play) {
                     Message_StartTextbox(play, sBottleCatchInfo[this->av1.bottleCatchType - 1].textId, &this->actor);
                 }
                 Audio_PlayFanfare(NA_BGM_ITEM_GET | 0x900);
+                GameInteractor_ExecuteOnPlayerBottleUpdate((sBottleCatchInfo[this->av1.bottleCatchType - 1].itemId));
                 this->av2.startedTextbox = true;
             } else if (Message_GetState(&play->msgCtx) == TEXT_STATE_CLOSING) {
                 this->av1.bottleCatchType = BOTTLE_CATCH_NONE;

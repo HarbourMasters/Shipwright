@@ -22,6 +22,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Tk/z_en_tk.h"
 #include "src/overlays/actors/ovl_En_Fu/z_en_fu.h"
 #include "src/overlays/actors/ovl_Bg_Spot02_Objects/z_bg_spot02_objects.h"
+#include "src/overlays/actors/ovl_Bg_Spot03_Taki/z_bg_spot03_taki.h"
 #include "src/overlays/actors/ovl_Bg_Hidan_Kousi/z_bg_hidan_kousi.h"
 #include "src/overlays/actors/ovl_Bg_Dy_Yoseizo/z_bg_dy_yoseizo.h"
 #include "src/overlays/actors/ovl_En_Dnt_Demo/z_en_dnt_demo.h"
@@ -200,11 +201,17 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
         case VB_PLAY_ONEPOINT_CS: {
             if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint"), IS_RANDO)) {
                 s16* csId = va_arg(args, s16*);
+                BgSpot03Taki* taki = NULL;
                 switch (*csId) {
                     case 4180:
                     case 4100:
                         *should = false;
                         RateLimitedSuccessChime();
+                        taki = (BgSpot03Taki*)Actor_FindNearby(gPlayState, &GET_PLAYER(gPlayState)->actor,
+                                                               ACTOR_BG_SPOT03_TAKI, ACTORCAT_BG, 999.0f);
+                        if (taki != NULL) {
+                            func_8003EBF8(gPlayState, &gPlayState->colCtx.dyna, taki->dyna.bgId);
+                        }
                         break;
                     default:
                         SPDLOG_INFO("VB_PLAY_ONEPOINT_CS {}", *csId);
@@ -519,6 +526,11 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
         case VB_PLAY_SERENADE_OF_WATER_CS:
         case VB_PLAY_PRELUDE_OF_LIGHT_CS:
             if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.LearnSong"), IS_RANDO) || IS_RANDO) {
+                *should = false;
+            }
+            break;
+        case VB_FREEZE_ON_SKULL_TOKEN:
+            if (CVarGetInteger(CVAR_ENHANCEMENT("SkulltulaFreeze"), 0)) {
                 *should = false;
             }
             break;

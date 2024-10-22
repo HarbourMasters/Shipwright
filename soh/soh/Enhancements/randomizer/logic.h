@@ -125,10 +125,8 @@ class Logic {
     bool KingZoraThawed = false;
     bool ForestTempleJoelle = false;
     bool ForestTempleBeth = false;
-    bool ForestTempleJoAndBeth = false;
     bool ForestTempleAmy = false;
     bool ForestTempleMeg = false;
-    bool ForestTempleAmyAndMeg = false;
     bool FireLoopSwitch = false;
     bool LinksCow = false;
     bool DeliverLetter = false;
@@ -140,6 +138,14 @@ class Logic {
     bool ClearedMQDekuSERoom = false;
     bool MQDekuWaterRoomTorches = false;
     bool PushedDekuBasementBlock = false;
+    bool OpenedLowestGoronCage = false;
+    bool OpenedUpperFireShortcut = false;
+    bool HitFireTemplePlatform = false;
+    bool OpenedFireMQFireMazeDoor = false;
+    bool MQForestBlockRoomTargets = false;
+    bool ForestCanTwistHallway = false;
+    bool ForestClearBelowBowChest = false; //a better name that covers both versions would be nice
+    bool ForestOpenBossCorridor = false;
 
     /* --- END OF HELPERS AND LOCATION ACCESS --- */
 
@@ -153,8 +159,8 @@ class Logic {
     bool SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmountGlitchless, uint8_t requiredAmountGlitched);
     bool CanDoGlitch(GlitchType glitch);
     bool CanEquipSwap(RandomizerGet itemName);
-    bool CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance = ED_CLOSE);
-    bool CanPassEnemy(RandomizerEnemy enemy, EnemyDistance distance = ED_CLOSE);
+    bool CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance = ED_CLOSE, bool wallOrFloor = true, uint8_t quantity = 1);
+    bool CanPassEnemy(RandomizerEnemy enemy, EnemyDistance distance = ED_CLOSE, bool wallOrFloor = true);
     bool CanAvoidEnemy(RandomizerEnemy enemy);
     bool CanGetEnemyDrop(RandomizerEnemy enemy, EnemyDistance distance = ED_CLOSE, bool aboveLink = false);
     bool CanBreakMudWalls();
@@ -168,6 +174,7 @@ class Logic {
     bool HasBottle();
     bool CanJumpslashExceptHammer();
     bool CanJumpslash();
+    bool CanHitSwitch();
     bool CanDamage();
     bool CanAttack();
     bool BombchusEnabled();
@@ -243,8 +250,6 @@ class Logic {
     static std::map<RandomizerGet, uint32_t> RandoGetToRandInf;
 
   private:
-    static bool IsMagicItem(RandomizerGet item);
-    static bool IsMagicArrow(RandomizerGet item);
     std::shared_ptr<Context> ctx;
     bool inLogic[LOGIC_MAX];
 }; // class Logic

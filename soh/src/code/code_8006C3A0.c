@@ -29,5 +29,5 @@ s32 Flags_GetEnv(PlayState* play, s16 flag) {
     s16 bit = flag % 16;
     s16 mask = 1 << bit;
 
-    return play->envFlags[index] & mask;
+    return (play->envFlags[index] & mask) != 0;
 }
