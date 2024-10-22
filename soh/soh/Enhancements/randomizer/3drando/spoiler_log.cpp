@@ -171,24 +171,10 @@ static void WriteShuffledEntrance(std::string sphereString, Entrance* entrance) 
 }
 
 // Writes the settings (without excluded locations, starting inventory and tricks) to the spoilerLog document.
-static void WriteSettings(const bool printAll = false) {
-    // auto parentNode = spoilerLog.NewElement("settings");
+static void WriteSettings() {
     auto ctx = Rando::Context::GetInstance();
     auto allOptionGroups = ctx->GetSettings()->GetOptionGroups();
     for (const Rando::OptionGroup& optionGroup : allOptionGroups) {
-        if (optionGroup.GetName() == "Timesaver Settings") {
-            for (const Rando::Option* option : optionGroup.GetOptions()) {
-                if (option->GetName() == "Big Poe Target Count" || option->GetName() == "Cuccos to return" ||
-                    option->GetName() == "Skip Epona Race" || option->GetName() == "Skip Tower Escape" ||
-                    option->GetName() == "Skip Child Stealth" || option->GetName() == "Complete Mask Quest" ||
-                    option->GetName() == "Skip Scarecrow's Song" ||
-                    option->GetName() == "Enable Glitch-Useful Cutscenes") {
-                    std::string settingName = optionGroup.GetName() + ":" + option->GetName();
-                    jsonData["settings"][settingName] = option->GetSelectedOptionText();
-                }
-            }
-            continue;
-        }
         if (optionGroup.GetContainsType() == Rando::OptionGroupType::DEFAULT && optionGroup.PrintInSpoiler()) {
             for (const Rando::Option* option : optionGroup.GetOptions()) {
                 std::string settingName = optionGroup.GetName() + ":" + option->GetName();
@@ -196,13 +182,6 @@ static void WriteSettings(const bool printAll = false) {
             }
         }
     }
-
-    // spoilerLog.RootElement()->InsertEndChild(parentNode);
-
-    //     for (const uint32_t key : allLocations) {
-    //       ItemLocation* location = GetLocation(key);
-    //       settingsJsonData["locations"][location->GetName()] = location->GetPlacedItemName().english;
-    //   }
 }
 
 // Writes the excluded locations to the spoiler log, if there are any.
