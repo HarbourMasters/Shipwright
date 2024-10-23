@@ -1292,7 +1292,7 @@ namespace SOH {
         { MigrationAction::Rename, "gCheckTrackerHudEditMode", "gTrackers.CheckTracker.Draggable" },
         { MigrationAction::Rename, "gCheckTrackerKnownHide", "gTrackers.CheckTracker.Scummed.Hide" },
         { MigrationAction::Rename, "gCheckTrackerOptionAlwaysShowGSLocs", "gTrackers.CheckTracker.AlwaysShowGSLocs" },
-        { MigrationAction::Rename, "gCheckTrackerOptionHideRightShopChecks", "gTrackers.CheckTracker.HideRightShopChecks" },
+        { MigrationAction::Rename, "gCheckTrackerOptionHideRightShopChecks", "gTrackers.CheckTracker.HideUnshuffledShopChecks" },
         { MigrationAction::Rename, "gCheckTrackerOptionMQSpoilers", "gTrackers.CheckTracker.MQSpoilers" },
         { MigrationAction::Rename, "gCheckTrackerOptionShowHidden", "gTrackers.CheckTracker.ShowHidden" },
         { MigrationAction::Rename, "gCheckTrackerSavedExtraColor", "gTrackers.CheckTracker.Saved.ExtraColor" },
