@@ -288,6 +288,7 @@ const std::vector<const char*> enhancementsCvars = {
     CVAR_ENHANCEMENT("PermanentHeartLoss"),
     CVAR_ENHANCEMENT("RemoveExplosiveLimit"),
     CVAR_ENHANCEMENT("ToggleStrength"),
+    CVAR_ENHANCEMENT("UnequipCItems"),
     CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Intro"),
     CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Entrances"),
     CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"),

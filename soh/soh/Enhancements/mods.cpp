@@ -1387,6 +1387,72 @@ void RegisterPauseMenuHooks() {
     });
 }
 
+int ButtonsToCheck[] = {
+    BTN_CLEFT, 
+    BTN_CDOWN,
+    BTN_CRIGHT,
+    BTN_DUP,
+    BTN_DDOWN,
+    BTN_DLEFT,
+    BTN_DRIGHT
+};
+
+void RegisterUnequipCItems() {
+    static bool canUnequip = false;
+    static int8_t unequipTimer = 13;
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnKaleidoUpdate>([](){
+        if (!CVarGetInteger(CVAR_ENHANCEMENT("UnequipCItems"),0)) return;
+        int8_t buttonIndex = -1;
+        uint8_t slotIndex;
+
+        PauseContext* pauseCtx = &gPlayState->pauseCtx;
+        Input* input = &gPlayState->state.input[0];
+
+        switch (pauseCtx->pageIndex) {
+            case PAUSE_ITEM:
+            {
+                if (pauseCtx->cursorItem[PAUSE_ITEM] != PAUSE_ITEM_NONE){
+                    for (slotIndex = 0; slotIndex < ARRAY_COUNT(gSaveContext.equips.cButtonSlots); slotIndex++) {
+                        if (gSaveContext.equips.buttonItems[slotIndex + 1] == pauseCtx->cursorItem[PAUSE_ITEM]) {
+                            buttonIndex = slotIndex + 1;
+                            break;
+                        }
+                    }
+                }
+                break;
+            }
+            case PAUSE_EQUIP:
+            {
+                if (CVarGetInteger(CVAR_ENHANCEMENT("AssignableTunicsAndBoots"),0) != 0) {
+                    if (pauseCtx->cursorY[PAUSE_EQUIP] > 1){
+                        for (slotIndex = 0; slotIndex < ARRAY_COUNT(gSaveContext.equips.cButtonSlots); slotIndex++) {
+                            if (gSaveContext.equips.buttonItems[slotIndex + 1] == pauseCtx->cursorItem[PAUSE_EQUIP]) {
+                                buttonIndex = slotIndex + 1;
+                                break;
+                            }
+                        }
+                    }
+                }
+                break;
+            }
+        }
+
+        if (buttonIndex != -1 && CHECK_BTN_ANY(input->press.button, ButtonsToCheck[buttonIndex-1])) {
+            canUnequip = true;
+        }
+
+        if (canUnequip){
+            if (unequipTimer == 0){
+                gSaveContext.equips.buttonItems[buttonIndex] = ITEM_NONE;
+                gSaveContext.equips.cButtonSlots[slotIndex] = SLOT_NONE;
+                canUnequip = false;
+                unequipTimer = 13;
+            } else { unequipTimer--; }
+        }
+    });
+}
+
+
 extern "C" u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 
 void PatchCompasses() {
@@ -1450,5 +1516,6 @@ void InitMods() {
     RegisterPatchHandHandler();
     RegisterHurtContainerModeHandler();
     RegisterPauseMenuHooks();
+    RegisterUnequipCItems();
     RandoKaleido_RegisterHooks();
 }
