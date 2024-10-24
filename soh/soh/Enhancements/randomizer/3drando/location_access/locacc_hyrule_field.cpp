@@ -143,7 +143,7 @@ void RegionTable_Init_HyruleField() {
   areaTable[RR_LH_FISHING_ISLAND] = Region("LH Fishing Island", "Lake Hylia", {RA_LAKE_HYLIA}, DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_LAKE_HYLIA,      {[]{return logic->HasItem(RG_BRONZE_SCALE);}}),
-                  Entrance(RR_LH_FISHING_HOLE, {[]{return true;}}),
+                  Entrance(RR_LH_FISHING_POND, {[]{return true;}}),
   });
 
   areaTable[RR_LH_OWL_FLIGHT] = Region("LH Owl Flight", "Lake Hylia", {RA_LAKE_HYLIA}, NO_DAY_NIGHT_CYCLE, {}, {}, {
@@ -162,7 +162,7 @@ void RegionTable_Init_HyruleField() {
   });
 
   // TODO: should some of these helpers be done via events instead?
-  areaTable[RR_LH_FISHING_HOLE] = Region("LH Fishing Hole", "LH Fishing Hole", {}, DAY_NIGHT_CYCLE, {}, {
+  areaTable[RR_LH_FISHING_POND] = Region("LH Fishing Hole", "LH Fishing Hole", {}, DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LOCATION(RC_LH_CHILD_FISHING,  logic->CanUse(RG_FISHING_POLE) && logic->IsChild),
                   LOCATION(RC_LH_CHILD_FISH_1,   logic->CanUse(RG_FISHING_POLE) && (logic->IsChild || ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT))),

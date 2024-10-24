@@ -31,7 +31,7 @@ s16 dynamicExitList[] = {
     ENTR_KAKARIKO_VILLAGE_OUTSIDE_SHOOTING_GALLERY,
     ENTR_MARKET_OUTSIDE_SHOOTING_GALLERY,
     ENTR_ZORAS_FOUNTAIN_OUTSIDE_GREAT_FAIRY,
-    ENTR_CASTLE_GROUNDS_CHILD_CRAWLSPACE, // HC Fairy
+    ENTR_CASTLE_GROUNDS_GREAT_FAIRY_EXIT, // HC Fairy
     ENTR_DESERT_COLOSSUS_GREAT_FAIRY_EXIT
 };
 
@@ -79,10 +79,10 @@ u8 Entrance_EntranceIsNull(EntranceOverride* entranceOverride) {
 }
 
 static void Entrance_SeparateOGCFairyFountainExit(void) {
-    //Overwrite unused entrance 0x03E8 (ENTR_POTION_SHOP_KAKARIKO_1) with values from 0x0340 (ENTR_CASTLE_GROUNDS_CHILD_CRAWLSPACE) to use it as the
+    //Overwrite unused entrance 0x03E8 (ENTR_POTION_SHOP_KAKARIKO_1) with values from 0x0340 (ENTR_CASTLE_GROUNDS_GREAT_FAIRY_EXIT) to use it as the
     //exit from OGC Great Fairy Fountain -> Castle Grounds
     for (size_t i = 0; i < 4; ++i) {
-        gEntranceTable[ENTR_POTION_SHOP_KAKARIKO_1 + i] = gEntranceTable[ENTR_CASTLE_GROUNDS_CHILD_CRAWLSPACE + i];
+        gEntranceTable[ENTR_POTION_SHOP_KAKARIKO_1 + i] = gEntranceTable[ENTR_CASTLE_GROUNDS_GREAT_FAIRY_EXIT + i];
     }
 }
 

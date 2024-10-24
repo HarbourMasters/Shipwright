@@ -1202,6 +1202,19 @@ void C_Button_Dropdown(const char* Header_Title, const char* Table_ID, const cha
             ImGui::NewLine();
             ImGui::EndTable();
         }
+        std::shared_ptr<Ship::Controller> controller = Ship::Context::GetInstance()->GetControlDeck()->GetControllerByPort(0);
+        for (auto [id, mapping] : controller->GetButton(BTN_DDOWN)->GetAllButtonMappings()) {
+            controller->GetButton(BTN_CUSTOM_OCARINA_NOTE_F4)->AddButtonMapping(mapping);
+        }
+        for (auto [id, mapping] : controller->GetButton(BTN_DRIGHT)->GetAllButtonMappings()) {
+            controller->GetButton(BTN_CUSTOM_OCARINA_NOTE_A4)->AddButtonMapping(mapping);
+        }
+        for (auto [id, mapping] : controller->GetButton(BTN_DLEFT)->GetAllButtonMappings()) {
+            controller->GetButton(BTN_CUSTOM_OCARINA_NOTE_B4)->AddButtonMapping(mapping);
+        }
+        for (auto [id, mapping] : controller->GetButton(BTN_DUP)->GetAllButtonMappings()) {
+            controller->GetButton(BTN_CUSTOM_OCARINA_NOTE_D5)->AddButtonMapping(mapping);
+        }
     }
 }
 void Draw_Placements(){

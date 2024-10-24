@@ -1101,7 +1101,7 @@ void StaticData::HintTable_Init() {
                                             /*french*/ "le #Laboratoire du Lac#"));
                                          // /*spanish*/el laboratorio del lago
 
-    hintTextTable[RHT_LH_FISHING_HOLE] = HintText(CustomMessage("the #Fishing Pond#",
+    hintTextTable[RHT_LH_FISHING_POND] = HintText(CustomMessage("the #Fishing Pond#",
                                                      /*german*/ "der #Angelteich#",
                                                      /*french*/ "l'#Étang#"));
                                                   // /*spanish*/el estanque
