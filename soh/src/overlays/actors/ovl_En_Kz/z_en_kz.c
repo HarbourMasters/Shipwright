@@ -433,6 +433,7 @@ void EnKz_SetupMweep(EnKz* this, PlayState* play) {
     Vec3f unused = { 0.0f, 0.0f, 0.0f };
     Vec3f pos;
     Vec3f initPos;
+    float mweepSpeed = CVarGetFloat(CVAR_ENHANCEMENT("MweepSpeed"), 1.0f);
 
     this->cutsceneCamera = Play_CreateSubCamera(play);
     this->gameplayCamera = play->activeCamera;
@@ -445,7 +446,8 @@ void EnKz_SetupMweep(EnKz* this, PlayState* play) {
     initPos.z += 260.0f;
     Play_CameraSetAtEye(play, this->cutsceneCamera, &pos, &initPos);
     Player_SetCsActionWithHaltedActors(play, &this->actor, 8);
-    this->actor.speedXZ = 0.1f * CVarGetFloat(CVAR_ENHANCEMENT("MweepSpeed"), 1.0f);
+    this->actor.speedXZ = 0.1f * mweepSpeed;
+    this->skelanime.playSpeed = mweepSpeed;
     this->actionFunc = EnKz_Mweep;
 }
 
@@ -453,6 +455,7 @@ void EnKz_Mweep(EnKz* this, PlayState* play) {
     Vec3f unused = { 0.0f, 0.0f, 0.0f };
     Vec3f pos;
     Vec3f initPos;
+    float mweepSpeed = CVarGetFloat(CVAR_ENHANCEMENT("MweepSpeed"), 1.0f);
 
     pos = this->actor.world.pos;
     initPos = this->actor.home.pos;
@@ -468,12 +471,18 @@ void EnKz_Mweep(EnKz* this, PlayState* play) {
         this->actor.speedXZ = 0.0;
         this->actionFunc = EnKz_StopMweep;
     }
-    if (this->skelanime.curFrame == 13.0f) {
+
+    float mweepSoundFrame = 13.0f;
+    float mweepSoundFrameMin = mweepSoundFrame - mweepSpeed / 2;
+    float mweepSoundFrameMax = mweepSoundFrame + mweepSpeed / 2;
+
+    if (this->skelanime.curFrame >= mweepSoundFrameMin && this->skelanime.curFrame <= mweepSoundFrameMax) {
         Audio_PlayActorSound2(&this->actor, NA_SE_VO_KZ_MOVE);
     }
 }
 
 void EnKz_StopMweep(EnKz* this, PlayState* play) {
+    this->skelanime.playSpeed = 1.0f;
     Play_ChangeCameraStatus(play, this->gameplayCamera, CAM_STAT_ACTIVE);
     Play_ClearCamera(play, this->cutsceneCamera);
     Player_SetCsActionWithHaltedActors(play, &this->actor, 7);
