@@ -2658,7 +2658,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(RC_ZR_MAGIC_BEAN_SALESMAN, TEXT_BEAN_SALESMAN_BUY_FOR_10, TEXT_NONE, Randomizer_GetSettingValue(RSK_MERCHANT_TEXT_HINT) == RO_GENERIC_OFF);
         } 
         else if (textId == TEXT_BEAN_SALESMAN_BUY_FOR_100) {
-            messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN_BUY_FOR_100);
+            messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN_BUY_FOR_100, MF_AUTO_FORMAT);
         } 
         else if (textId == TEXT_GRANNYS_SHOP && !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_GRANNYS_SHOP) && nonBeanMerchants &&
             (ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) || INV_CONTENT(ITEM_CLAIM_CHECK) == ITEM_CLAIM_CHECK)){
@@ -2716,7 +2716,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
         }
         else if (textId >= TEXT_WARP_MINUET_OF_FOREST &&  textId <= TEXT_WARP_PRELUDE_OF_LIGHT 
                  && ctx->GetOption(RSK_SHUFFLE_WARP_SONGS)) {
-            messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_WARP_MINUET_OF_FOREST);
+            messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_WARP_MINUET_OF_FOREST, MF_FORMATTED);
         }
         else if (textId == TEXT_LAKE_HYLIA_WATER_SWITCH_NAVI || textId == TEXT_LAKE_HYLIA_WATER_SWITCH_SIGN) {
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, textId, MF_AUTO_FORMAT);

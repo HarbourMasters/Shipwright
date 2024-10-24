@@ -350,7 +350,7 @@ void Randomizer::LoadMerchantMessages() {
 
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN_BUY_FOR_100,
-        CustomMessage("I never thought I'd say this, but I'm selling the last #Magic Bean#. #99 Rupees#...\x1B#Yes&No#",
+        CustomMessage("I never thought I'd say this, but I'm selling the last #Magic Bean#.^#99 Rupees#, no less.\x1B#Yes&No#",
                       "Ich hätte nie gedacht, daß ich das sage, aber ich verkaufe die letzte^#Wundererbse# für #99 Rubine#.\x1B&#Ja&Nein#",
                       "Je te vends mon dernier #Haricot&magique# pour #99 Rubis#.\x1B&#AcheterNe pas acheter#",
                       {QM_RED, QM_YELLOW, QM_GREEN}));
