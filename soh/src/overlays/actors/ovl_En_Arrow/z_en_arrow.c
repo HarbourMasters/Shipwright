@@ -7,6 +7,8 @@
 #include "z_en_arrow.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_gi_nuts/object_gi_nuts.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
@@ -315,7 +317,10 @@ void EnArrow_Fly(EnArrow* this, PlayState* play) {
             }
 
             if (this->actor.params == ARROW_NUT) {
-                iREG(50) = -1;
+                if (GameInteractor_Should(VB_ALLOW_FLASHING_LIGHTS, true)) {
+                    iREG(50) = -1;
+                }
+                
                 Actor_Spawn(&play->actorCtx, play, ACTOR_EN_M_FIRE1, this->actor.world.pos.x,
                             this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0, true);
                 sfxId = NA_SE_IT_DEKU;

@@ -1878,24 +1878,26 @@ void BossGoma_UpdateMainEnvColor(BossGoma* this) {
         { 0.0f, 255.0f, 170.0f }, { 0.0f, 0.0f, 255.0f },   { 255.0f, 17.0f, 0.0f },
     };
 
-    if (this->visualState == VISUALSTATE_DEFAULT && this->frameCount & 0x10) {
-        Math_ApproachF(&this->mainEnvColor[0], 50.0f, 0.5f, 20.0f);
-        Math_ApproachF(&this->mainEnvColor[1], 50.0f, 0.5f, 20.0f);
-        Math_ApproachF(&this->mainEnvColor[2], 50.0f, 0.5f, 20.0f);
-    } else if (this->invincibilityFrames != 0) {
-        if (this->invincibilityFrames & 2) {
-            this->mainEnvColor[0] = colors2[this->visualState][0];
-            this->mainEnvColor[1] = colors2[this->visualState][1];
-            this->mainEnvColor[2] = colors2[this->visualState][2];
-        } else {
-            this->mainEnvColor[0] = colors1[this->visualState][0];
-            this->mainEnvColor[1] = colors1[this->visualState][1];
-            this->mainEnvColor[2] = colors1[this->visualState][2];
+    if (GameInteractor_Should(VB_ALLOW_FLASHING_LIGHTS, true)) {
+        if (this->visualState == VISUALSTATE_DEFAULT && this->frameCount & 0x10) {
+            Math_ApproachF(&this->mainEnvColor[0], 50.0f, 0.5f, 20.0f);
+            Math_ApproachF(&this->mainEnvColor[1], 50.0f, 0.5f, 20.0f);
+            Math_ApproachF(&this->mainEnvColor[2], 50.0f, 0.5f, 20.0f);
+        } else if (this->invincibilityFrames != 0) {
+            if (this->invincibilityFrames & 2) {
+                this->mainEnvColor[0] = colors2[this->visualState][0];
+                this->mainEnvColor[1] = colors2[this->visualState][1];
+                this->mainEnvColor[2] = colors2[this->visualState][2];
+            } else {
+                this->mainEnvColor[0] = colors1[this->visualState][0];
+                this->mainEnvColor[1] = colors1[this->visualState][1];
+                this->mainEnvColor[2] = colors1[this->visualState][2];
+            }
         }
     } else {
-        Math_ApproachF(&this->mainEnvColor[0], colors1[this->visualState][0], 0.5f, 20.0f);
-        Math_ApproachF(&this->mainEnvColor[1], colors1[this->visualState][1], 0.5f, 20.0f);
-        Math_ApproachF(&this->mainEnvColor[2], colors1[this->visualState][2], 0.5f, 20.0f);
+            Math_ApproachF(&this->mainEnvColor[0], colors1[this->visualState][0], 0.5f, 20.0f);
+            Math_ApproachF(&this->mainEnvColor[1], colors1[this->visualState][1], 0.5f, 20.0f);
+            Math_ApproachF(&this->mainEnvColor[2], colors1[this->visualState][2], 0.5f, 20.0f);
     }
 }
 
@@ -1982,8 +1984,10 @@ s32 BossGoma_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f
             if (this->eyeState == EYESTATE_IRIS_FOLLOW_BONUS_IFRAMES && this->eyeLidBottomRotX < -0xA8C) {
                 *dList = NULL;
             } else if (this->invincibilityFrames != 0) {
-                gDPSetEnvColor(POLY_OPA_DISP++, (s16)(Rand_ZeroOne() * 255.0f), (s16)(Rand_ZeroOne() * 255.0f),
-                               (s16)(Rand_ZeroOne() * 255.0f), 63);
+                if (GameInteractor_Should(VB_ALLOW_FLASHING_LIGHTS, true)) {
+                    gDPSetEnvColor(POLY_OPA_DISP++, (s16)(Rand_ZeroOne() * 255.0f), (s16)(Rand_ZeroOne() * 255.0f),
+                                   (s16)(Rand_ZeroOne() * 255.0f), 63);
+                }
             } else {
                 gDPSetEnvColor(POLY_OPA_DISP++, (s16)this->eyeEnvColor[0], (s16)this->eyeEnvColor[1],
                                (s16)this->eyeEnvColor[2], 63);

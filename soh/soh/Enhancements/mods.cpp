@@ -37,6 +37,8 @@
 #include "objects/object_link_child/object_link_child.h"
 #include "kaleido.h"
 
+#include "soh/Enhancements/accessibility/accessibility.h"
+
 extern "C" {
 #include <z64.h>
 #include "align_asset_macro.h"
@@ -1451,4 +1453,7 @@ void InitMods() {
     RegisterHurtContainerModeHandler();
     RegisterPauseMenuHooks();
     RandoKaleido_RegisterHooks();
+
+    // Accessibility Mod Inits
+    RegisterLightSensitivityBehavior();
 }

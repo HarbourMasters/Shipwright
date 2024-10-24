@@ -477,6 +477,10 @@ typedef enum {
     // Vanilla condition: Actor is ACTOR_EN_ELF, ACTOR_EN_FISH, ACTOR_EN_ICE_HONO, or ACTOR_EN_INSECT
     // Opt: *Actor
     VB_BOTTLE_ACTOR,
+
+    /*** Accessibility ***/
+    // Vanilla Condition: true
+    VB_ALLOW_FLASHING_LIGHTS,
 } GIVanillaBehavior;
 
 #ifdef __cplusplus

@@ -64,6 +64,10 @@ void GameInteractor_ExecuteOnPlayerUpdate() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerUpdate>();
 }
 
+void GameInteractor_ExecuteOnPlayerHealthChange() {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerHealthChange>();
+}
+
 void GameInteractor_ExecuteOnOcarinaSongAction() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnOcarinaSongAction>();
 }
