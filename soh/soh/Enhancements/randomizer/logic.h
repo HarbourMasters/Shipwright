@@ -146,6 +146,7 @@ class Logic {
     bool ForestCanTwistHallway = false;
     bool ForestClearBelowBowChest = false; //a better name that covers both versions would be nice
     bool ForestOpenBossCorridor = false;
+    bool ShadowTrialFirstChest = false;
 
     /* --- END OF HELPERS AND LOCATION ACCESS --- */
 

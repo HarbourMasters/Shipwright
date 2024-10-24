@@ -479,6 +479,17 @@ namespace Rando {
                 return CanJumpslash() || CanUse(RG_DINS_FIRE);
             case RE_MEG:
                 return CanUse(RG_FAIRY_BOW) || CanUse(RG_HOOKSHOT) || HasExplosives();
+            case RE_ARMOS:
+                return BlastOrSmash() || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD) || CanUse(RG_STICKS) || CanUse(RG_FAIRY_BOW) || ((CanUse(RG_NUTS) || CanUse(RG_HOOKSHOT) || CanUse(RG_BOOMERANG)) && (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_FAIRY_SLINGSHOT)));
+            case RE_GREEN_BUBBLE:
+                //does not technically need to be stunned to kill with dins, but the flame must be off and timing it is awkward
+                //Also they don't trigger the kill room in ganons MQ if they die from dins? Vanilla bug?
+                return CanJumpslash() || CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT) || HasExplosives()/* || (CanUse(RG_DINS_FIRE) && (CanUse(RG_NUTS) || CanUse(RG_HOOKSHOT) || CanUse(RG_BOOMERANG)))*/;
+            case RE_DINOLFOS:
+                //stunning + bombs is possible but painful, as it loves to dodge the bombs and hookshot. it also dodges chus but if you cook it so it detonates under the dodge it usually gets caught on landing
+                return CanJumpslash() || CanUse(RG_FAIRY_BOW) || CanUse(RG_BOMBCHU_5) || CanUse(RG_FAIRY_SLINGSHOT);
+            case RE_TORCH_SLUG:
+                return CanJumpslash() || HasExplosives() || CanUse(RG_FAIRY_BOW);
             default:
                 SPDLOG_ERROR("CanKillEnemy reached `default`.");
                 assert(false);
@@ -510,6 +521,7 @@ namespace Rando {
             case RE_WOLFOS:
             case RE_FLOORMASTER:
             case RE_MEG:
+            case RE_ARMOS:
                 return true;
             case RE_BIG_SKULLTULA:
                 //hammer jumpslash can pass, but only on flat land where you can kill with hammer swing
@@ -521,6 +533,8 @@ namespace Rando {
                 return CanUse(RG_HOOKSHOT) || CanUse(RG_SUNS_SONG);
             case RE_IRON_KNUCKLE:
                 return false;
+            case RE_GREEN_BUBBLE:
+                return TakeDamage() || CanUse(RG_NUTS) || CanUse(RG_BOOMERANG) || CanUse(RG_HOOKSHOT);
             default:
                 SPDLOG_ERROR("CanPassEnemy reached `default`.");
                 assert(false);
@@ -550,6 +564,8 @@ namespace Rando {
             case RE_FLOORMASTER:
             case RE_REDEAD:
             case RE_MEG:
+            case RE_ARMOS:
+            case RE_GREEN_BUBBLE:
                 return true;
             case RE_MAD_SCRUB:
             case RE_KEESE:
@@ -1888,6 +1904,7 @@ namespace Rando {
         ForestCanTwistHallway     = false;
         ForestClearBelowBowChest  = false;
         ForestOpenBossCorridor    = false;
+        ShadowTrialFirstChest     = false;
 
         StopPerformanceTimer(PT_LOGIC_RESET);
     }
