@@ -404,9 +404,9 @@ void RegionTable_Init_FireTemple() {
                   //Exits
                   Entrance(RR_FIRE_TEMPLE_MQ_FIRST_ROOM_UPPER,  {[]{return true;}}),
                   Entrance(RR_FIRE_TEMPLE_BOSS_ENTRYWAY,        {[]{return logic->HasItem(RG_FIRE_TEMPLE_BOSS_KEY) && logic->FireTimer() >= 15 &&
-                                                                           (logic->IsAdult && (ctx->GetTrickOption(RT_FIRE_BOSS_DOOR_JUMP) || logic->CanUse(RG_HOVER_BOOTS))) || 
+                                                                           ((logic->IsAdult && (ctx->GetTrickOption(RT_FIRE_BOSS_DOOR_JUMP) || logic->CanUse(RG_HOVER_BOOTS))) || 
                                                                            (logic->IsAdult && logic->HitFireTemplePlatform) ||
-                                                                           (logic->HitFireTemplePlatform && logic->CanUse(RG_HOVER_BOOTS))
+                                                                           (logic->HitFireTemplePlatform && logic->CanUse(RG_HOVER_BOOTS)))
                                                                         ;}}),
   });
  
