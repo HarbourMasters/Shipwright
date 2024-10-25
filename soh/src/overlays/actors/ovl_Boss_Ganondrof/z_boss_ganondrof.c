@@ -966,7 +966,7 @@ void BossGanondrof_Death(BossGanondrof* this, PlayState* play) {
                     bodyDecayLevel = 1;
                     break;
             }
-            if (GameInteractor_Should(VB_PHANTOM_GANON_DEATH_SCENE, true)) {
+            if (GameInteractor_Should(VB_PHANTOM_GANON_DEATH_SCENE, true, this)) {
                 Math_ApproachS(&this->actor.shape.rot.y, this->work[GND_VARIANCE_TIMER] * -100, 5, 0xBB8);
                 Math_ApproachF(&this->cameraNextEye.z, this->targetPos.z + 60.0f, 0.02f, 0.5f);
                 Math_ApproachF(&this->actor.world.pos.y, GND_BOSSROOM_CENTER_Y + 133.0f, 0.05f, 100.0f);
