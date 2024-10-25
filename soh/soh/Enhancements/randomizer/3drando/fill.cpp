@@ -1041,11 +1041,7 @@ static void RandomizeDungeonItems() {
   auto ctx = Rando::Context::GetInstance();
 
   //Get Any Dungeon and Overworld group locations
-  std::vector<RandomizerCheck> anyDungeonLocations;
-  for (const auto dungeon : ctx->GetDungeons()->GetDungeonList()) {
-    std::vector<RandomizerCheck> dungeonLoc = dungeon->GetDungeonLocations();
-    anyDungeonLocations.insert(anyDungeonLocations.end(), dungeonLoc.begin(), dungeonLoc.end());
-  }
+  std::vector<RandomizerCheck> anyDungeonLocations = Rando::StaticData::GetDungeonLocations();
 
   //Create Any Dungeon and Overworld item pools
   std::vector<RandomizerGet> anyDungeonItems;
