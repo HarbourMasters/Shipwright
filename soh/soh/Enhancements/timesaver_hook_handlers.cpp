@@ -333,8 +333,9 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
         case VB_NAVI_TALK: {
             if (ForcedDialogIsDisabled(FORCED_DIALOG_SKIP_NAVI)) {
                 ElfMsg* naviTalk = va_arg(args, ElfMsg*);
-                if (((naviTalk->actor.params >> 8) & 0x3F) != 0x3F) {
-                    Flags_SetSwitch(gPlayState, (naviTalk->actor.params >> 8) & 0x3F);
+                int32_t paramsHighByte = naviTalk->actor.params >> 8;
+                if ((paramsHighByte & 0x80) == 0 && (paramsHighByte & 0x3F) != 0x3F) {
+                    Flags_SetSwitch(gPlayState, paramsHighByte & 0x3F);
                     Actor_Kill(&naviTalk->actor);
                     *should = false;
                 }
