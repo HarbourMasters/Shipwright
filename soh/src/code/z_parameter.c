@@ -1844,6 +1844,7 @@ void GameplayStats_SetTimestamp(PlayState* play, u8 item) {
     }
 
     gSaveContext.sohStats.itemTimestamp[item] = time;
+    GameInteractor_ExecuteOnTimestamp(item);
 }
 
 // Gameplay stat tracking: Update time the item was acquired
@@ -3320,6 +3321,8 @@ s32 Health_ChangeBy(PlayState* play, s16 healthChange) {
 
     // "Life=%d ＊＊＊  %d ＊＊＊＊＊＊"
     osSyncPrintf("  ライフ=%d  ＊＊＊  %d  ＊＊＊＊＊＊\n", gSaveContext.health, healthLevel);
+
+    GameInteractor_ExecuteOnPlayerHealthChange(healthChange);
 
     if (gSaveContext.health <= 0) {
         gSaveContext.health = 0;

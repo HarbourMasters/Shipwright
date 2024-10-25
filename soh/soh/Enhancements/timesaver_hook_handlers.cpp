@@ -619,7 +619,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                 *should = false;
                 BossGanondrof* pg = va_arg(args, BossGanondrof*);
                 Player* player = GET_PLAYER(gPlayState);
-                if (pg != nullptr && pg->work[GND_ACTION_STATE] == DEATH_SPASM) {
+                if (pg->work[GND_ACTION_STATE] == DEATH_SPASM) {
                     // Skip to death scream animation and move ganondrof to middle
                     pg->deathState = DEATH_SCREAM;
                     pg->timers[0] = 50;

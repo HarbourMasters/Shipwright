@@ -343,6 +343,7 @@ typedef enum {
 
     // Opt: *EnBox
     VB_GIVE_ITEM_FROM_CHEST,
+    // Opt: ItemID
     VB_GIVE_ITEM_FROM_BLUE_WARP,
     // Opt: *EnItem00
     VB_GIVE_ITEM_FROM_ITEM_00,
@@ -469,8 +470,9 @@ typedef enum {
     VB_DEKU_UPDATE_BURNING_DEKU_STICK,
 
     /*** Quick Boss Deaths ***/
-    // Vanilla condition: true
+    // Vanilla condition: true; Opt: *BossGanondrof
     VB_PHANTOM_GANON_DEATH_SCENE,
+    // Opt: *EnIk
     VB_NABOORU_KNUCKLE_DEATH_SCENE,
 
     /*** Fishsanity ***/
