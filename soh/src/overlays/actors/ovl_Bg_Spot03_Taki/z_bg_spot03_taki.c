@@ -14,8 +14,6 @@ void BgSpot03Taki_Destroy(Actor* thisx, PlayState* play);
 void BgSpot03Taki_Update(Actor* thisx, PlayState* play);
 void BgSpot03Taki_Draw(Actor* thisx, PlayState* play);
 
-void func_808ADEF0(BgSpot03Taki* this, PlayState* play);
-
 const ActorInit Bg_Spot03_Taki_InitVars = {
     ACTOR_BG_SPOT03_TAKI,
     ACTORCAT_BG,
