@@ -124,9 +124,9 @@ void RegionTable_Init_GanonsCastle() {
   if (ctx->GetDungeon(GANONS_CASTLE)->IsMQ()) {
   areaTable[RR_GANONS_CASTLE_MQ_LOBBY] = Region("Ganon's Castle MQ Lobby", "Ganons Castle", {RA_GANONS_CASTLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
-                  Entrance(RR_GANONS_CASTLE_ENTRYWAY, {[]{return logic->CanPassEnemy(RE_GREEN_BUBBLE) || Here(RR_GANONS_CASTLE_MQ_LOBBY, {[]{return logic->CanKillEnemy(RE_IRON_KNUCKLE) && logic->CanKillEnemy(RE_ARMOS);}});}}),
+                  Entrance(RR_GANONS_CASTLE_ENTRYWAY, {[]{return logic->CanPassEnemy(RE_GREEN_BUBBLE) || Here(RR_GANONS_CASTLE_MQ_LOBBY, []{return logic->CanKillEnemy(RE_IRON_KNUCKLE) && logic->CanKillEnemy(RE_ARMOS);});}}),
                   //Implies CanKillEnemy(RE_GREEN_BUBBLE)
-                  Entrance(RR_GANONS_CASTLE_MQ_MAIN,  {[]{return Here(RR_GANONS_CASTLE_MQ_LOBBY, {[]{return logic->CanKillEnemy(RE_IRON_KNUCKLE) && logic->CanKillEnemy(RE_ARMOS);}});}}),
+                  Entrance(RR_GANONS_CASTLE_MQ_MAIN,  {[]{return Here(RR_GANONS_CASTLE_MQ_LOBBY, []{return logic->CanKillEnemy(RE_IRON_KNUCKLE) && logic->CanKillEnemy(RE_ARMOS);});}}),
   });
 
   areaTable[RR_GANONS_CASTLE_MQ_MAIN] = Region("Ganon's Castle MQ Main", "Ganons Castle", {RA_GANONS_CASTLE}, NO_DAY_NIGHT_CYCLE, {}, {
@@ -140,7 +140,7 @@ void RegionTable_Init_GanonsCastle() {
                   Entrance(RR_GANONS_CASTLE_MQ_WATER_TRIAL_GEYSER_ROOM,     {[]{return true;}}),
                   Entrance(RR_GANONS_CASTLE_MQ_SHADOW_TRIAL_STARTING_LEDGE, {[]{return true;}}),
                   Entrance(RR_GANONS_CASTLE_MQ_SPIRIT_TRIAL_CHAIRS_ROOM,    {[]{return true;}}),
-                  Entrance(RR_GANONS_CASTLE_MQ_LIGHT_TRIAL_DINOLFOS_ROOM,   {[]{return Here(RR_GANONS_CASTLE_MQ_MAIN, {[]{return logic->CanUse(RG_GOLDEN_GAUNTLETS);}});}}),
+                  Entrance(RR_GANONS_CASTLE_MQ_LIGHT_TRIAL_DINOLFOS_ROOM,   {[]{return Here(RR_GANONS_CASTLE_MQ_MAIN, []{return logic->CanUse(RG_GOLDEN_GAUNTLETS);});}}),
                   //RANDOTODO could we just set these events automatically based on the setting?
                   Entrance(RR_GANONS_CASTLE_TOWER,                          {[]{return (logic->ForestTrialClear || ctx->GetTrial(TK_FOREST_TRIAL)->IsSkipped()) &&
                                                                                        (logic->FireTrialClear   || ctx->GetTrial(TK_FIRE_TRIAL)->IsSkipped())   &&
@@ -172,7 +172,7 @@ void RegionTable_Init_GanonsCastle() {
   }, {
                   //Exits
                   Entrance(RR_GANONS_CASTLE_MQ_MAIN,                     {[]{return true;}}),
-                  Entrance(RR_GANONS_CASTLE_MQ_FOREST_TRIAL_BEAMOS_ROOM, {[]{return Here(RR_GANONS_CASTLE_MQ_FOREST_TRIAL_STALFOS_ROOM, {[]{return logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 2);}});}}),
+                  Entrance(RR_GANONS_CASTLE_MQ_FOREST_TRIAL_BEAMOS_ROOM, {[]{return Here(RR_GANONS_CASTLE_MQ_FOREST_TRIAL_STALFOS_ROOM, []{return logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 2);});}}),
   });
 
 //If it is ever possible to warp into the RR_GANONS_CASTLE_MQ_FOREST_TRIAL_FINAL_ROOM, this needs splitting up as the requirements to reach things from the other side are more complex
@@ -199,7 +199,7 @@ void RegionTable_Init_GanonsCastle() {
                   //Exits
                   Entrance(RR_GANONS_CASTLE_MQ_MAIN,                  {[]{return true;}}),
                                                                                 //2 checks, 1 for the rupees, 1 for actually making it, as the rupees are permanent but throwing a pillar is not
-                  Entrance(RR_GANONS_CASTLE_MQ_FIRE_TRIAL_FINAL_ROOM, {[]{return Here(RR_GANONS_CASTLE_MQ_FIRE_TRIAL_MAIN_ROOM, {[]{return logic->CanUse(RG_GORON_TUNIC) && logic->CanUse(RG_GOLDEN_GAUNTLETS);}}) &&
+                  Entrance(RR_GANONS_CASTLE_MQ_FIRE_TRIAL_FINAL_ROOM, {[]{return Here(RR_GANONS_CASTLE_MQ_FIRE_TRIAL_MAIN_ROOM, []{return logic->CanUse(RG_GORON_TUNIC) && logic->CanUse(RG_GOLDEN_GAUNTLETS);}) &&
                                                                                 logic->CanUse(RG_GORON_TUNIC) && (logic->CanUse(RG_LONGSHOT) || (logic->CanUse(RG_GOLDEN_GAUNTLETS) && (logic->CanUse(RG_HOVER_BOOTS) || (ctx->GetTrickOption(RT_GANON_MQ_FIRE_TRIAL) && logic->IsAdult && logic->CanUse(RG_HOOKSHOT)))));}}),
   });
 
@@ -218,7 +218,7 @@ void RegionTable_Init_GanonsCastle() {
   }, {
                   //Exits
                   Entrance(RR_GANONS_CASTLE_MQ_MAIN,                   {[]{return true;}}),
-                  Entrance(RR_GANONS_CASTLE_MQ_WATER_TRIAL_BLOCK_ROOM, {[]{return logic->SmallKeys(RR_GANONS_CASTLE, 3) && Here(RR_GANONS_CASTLE_MQ_WATER_TRIAL_GEYSER_ROOM, {[]{return logic->BlueFire();}});}}),
+                  Entrance(RR_GANONS_CASTLE_MQ_WATER_TRIAL_BLOCK_ROOM, {[]{return logic->SmallKeys(RR_GANONS_CASTLE, 3) && Here(RR_GANONS_CASTLE_MQ_WATER_TRIAL_GEYSER_ROOM, []{return logic->BlueFire();});}}),
   });
 
   areaTable[RR_GANONS_CASTLE_MQ_WATER_TRIAL_BLOCK_ROOM] = Region("Ganon's Castle MQ Water Trial Block Room", "Ganons Castle", {RA_GANONS_CASTLE}, NO_DAY_NIGHT_CYCLE, {}, {}, { 
@@ -236,7 +236,7 @@ void RegionTable_Init_GanonsCastle() {
                   LOCATION(RC_GANONS_CASTLE_MQ_WATER_TRIAL_CHEST, logic->BlueFire()),
   }, {
                   //Exits
-                  Entrance(RR_GANONS_CASTLE_MQ_WATER_TRIAL_BLOCK_ROOM, {[]{return Here(RR_GANONS_CASTLE_MQ_WATER_TRIAL_FINAL_ROOM, {[]{return logic->BlueFire();}});}}),
+                  Entrance(RR_GANONS_CASTLE_MQ_WATER_TRIAL_BLOCK_ROOM, {[]{return Here(RR_GANONS_CASTLE_MQ_WATER_TRIAL_FINAL_ROOM, []{return logic->BlueFire();});}}),
   });
 
   areaTable[RR_GANONS_CASTLE_MQ_SHADOW_TRIAL_STARTING_LEDGE] = Region("Ganon's Castle MQ Shadow Trial Starting Ledge", "Ganons Castle", {RA_GANONS_CASTLE}, NO_DAY_NIGHT_CYCLE, {
@@ -306,7 +306,7 @@ void RegionTable_Init_GanonsCastle() {
   areaTable[RR_GANONS_CASTLE_MQ_SPIRIT_TRIAL_CHAIRS_ROOM] = Region("Ganon's Castle MQ Spirit Trial Chairs Room", "Ganons Castle", {RA_GANONS_CASTLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_GANONS_CASTLE_MQ_MAIN,                       {[]{return true;}}),
-                  Entrance(RR_GANONS_CASTLE_MQ_SPIRIT_TRIAL_BEFORE_SWITCH, {[]{return Here(RR_GANONS_CASTLE_MQ_SPIRIT_TRIAL_CHAIRS_ROOM, {[]{return (logic->CanHitEyeTargets() || ctx->GetTrickOption(RT_RUSTED_SWITCHES)) && logic->CanUse(RG_MEGATON_HAMMER);}});}}),
+                  Entrance(RR_GANONS_CASTLE_MQ_SPIRIT_TRIAL_BEFORE_SWITCH, {[]{return Here(RR_GANONS_CASTLE_MQ_SPIRIT_TRIAL_CHAIRS_ROOM, []{return (logic->CanHitEyeTargets() || ctx->GetTrickOption(RT_RUSTED_SWITCHES)) && logic->CanUse(RG_MEGATON_HAMMER);});}}),
   });
 
   areaTable[RR_GANONS_CASTLE_MQ_SPIRIT_TRIAL_BEFORE_SWITCH] = Region("Ganon's Castle MQ Spirit Trial Before Switch", "Ganons Castle", {RA_GANONS_CASTLE}, NO_DAY_NIGHT_CYCLE, {}, {
@@ -315,7 +315,7 @@ void RegionTable_Init_GanonsCastle() {
   }, {
                   //Exits
                   Entrance(RR_GANONS_CASTLE_MQ_SPIRIT_TRIAL_CHAIRS_ROOM,  {[]{return true;}}),
-                  Entrance(RR_GANONS_CASTLE_MQ_SPIRIT_TRIAL_AFTER_SWITCH, {[]{return Here(RR_GANONS_CASTLE_MQ_SPIRIT_TRIAL_BEFORE_SWITCH, {[]{return logic->CanUse(RG_BOMBCHU_5);}});}}),
+                  Entrance(RR_GANONS_CASTLE_MQ_SPIRIT_TRIAL_AFTER_SWITCH, {[]{return Here(RR_GANONS_CASTLE_MQ_SPIRIT_TRIAL_BEFORE_SWITCH, []{return logic->CanUse(RG_BOMBCHU_5);});}}),
   });
 
   areaTable[RR_GANONS_CASTLE_MQ_SPIRIT_TRIAL_AFTER_SWITCH] = Region("Ganon's Castle MQ Spirit Trial After Switch", "Ganons Castle", {RA_GANONS_CASTLE}, NO_DAY_NIGHT_CYCLE, {}, {
@@ -328,9 +328,9 @@ void RegionTable_Init_GanonsCastle() {
                   LOCATION(RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_SUN_BACK_RIGHT_CHEST,    (logic->CanUse(RG_FIRE_ARROWS) && logic->CanUse(RG_MIRROR_SHIELD)) || (ctx->GetOption(RSK_SUNLIGHT_ARROWS) && logic->CanUse(RG_LIGHT_ARROWS))),
   }, {
                   //Exits
-                  Entrance(RR_GANONS_CASTLE_MQ_SPIRIT_TRIAL_BEFORE_SWITCH, {[]{return Here(RR_GANONS_CASTLE_MQ_SPIRIT_TRIAL_AFTER_SWITCH, {[]{return logic->CanUse(RG_BOMBCHU_5);}});}}),
+                  Entrance(RR_GANONS_CASTLE_MQ_SPIRIT_TRIAL_BEFORE_SWITCH, {[]{return Here(RR_GANONS_CASTLE_MQ_SPIRIT_TRIAL_AFTER_SWITCH, []{return logic->CanUse(RG_BOMBCHU_5);});}}),
                   //Sunlight arrows are bugged, should set a perm flag like mirror shield
-                  Entrance(RR_GANONS_CASTLE_MQ_SPIRIT_TRIAL_FINAL_ROOM,    {[]{return Here(RR_GANONS_CASTLE_MQ_SPIRIT_TRIAL_AFTER_SWITCH, {[]{return (logic->CanUse(RG_FIRE_ARROWS) && logic->CanUse(RG_MIRROR_SHIELD));}}) || (ctx->GetOption(RSK_SUNLIGHT_ARROWS) && logic->CanUse(RG_LIGHT_ARROWS));}}),
+                  Entrance(RR_GANONS_CASTLE_MQ_SPIRIT_TRIAL_FINAL_ROOM,    {[]{return Here(RR_GANONS_CASTLE_MQ_SPIRIT_TRIAL_AFTER_SWITCH, []{return (logic->CanUse(RG_FIRE_ARROWS) && logic->CanUse(RG_MIRROR_SHIELD));}) || (ctx->GetOption(RSK_SUNLIGHT_ARROWS) && logic->CanUse(RG_LIGHT_ARROWS));}}),
   });
 
   areaTable[RR_GANONS_CASTLE_MQ_SPIRIT_TRIAL_FINAL_ROOM] = Region("Ganon's Castle MQ Spirit Trial Final Room", "Ganons Castle", {RA_GANONS_CASTLE}, NO_DAY_NIGHT_CYCLE, {
@@ -345,7 +345,7 @@ void RegionTable_Init_GanonsCastle() {
   areaTable[RR_GANONS_CASTLE_MQ_LIGHT_TRIAL_DINOLFOS_ROOM] = Region("Ganon's Castle MQ Light Trial Dinolfos Room", "Ganons Castle", {RA_GANONS_CASTLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_GANONS_CASTLE_MQ_MAIN,                      {[]{return true;}}),
-                  Entrance(RR_GANONS_CASTLE_MQ_LIGHT_TRIAL_TRIFORCE_ROOM, {[]{return Here(RR_GANONS_CASTLE_MQ_LIGHT_TRIAL_DINOLFOS_ROOM, {[]{return logic->CanKillEnemy(RE_DINOLFOS) && logic->CanKillEnemy(RE_TORCH_SLUG);}});}}),
+                  Entrance(RR_GANONS_CASTLE_MQ_LIGHT_TRIAL_TRIFORCE_ROOM, {[]{return Here(RR_GANONS_CASTLE_MQ_LIGHT_TRIAL_DINOLFOS_ROOM, []{return logic->CanKillEnemy(RE_DINOLFOS) && logic->CanKillEnemy(RE_TORCH_SLUG);});}}),
   });
 
   areaTable[RR_GANONS_CASTLE_MQ_LIGHT_TRIAL_TRIFORCE_ROOM] = Region("Ganon's Castle MQ Light Trial Triforce Room", "Ganons Castle", {RA_GANONS_CASTLE}, NO_DAY_NIGHT_CYCLE, {}, {
