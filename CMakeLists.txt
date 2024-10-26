@@ -9,6 +9,12 @@ project(Ship VERSION 8.0.6 LANGUAGES C CXX)
 include(CMake/soh-cvars.cmake)
 include(CMake/lus-cvars.cmake)
 
+if(MSVC)
+    set(WARNING_OVERRIDE /w CACHE STRING "" FORCE)
+else()
+    set(WARNING_OVERRIDE -w CACHE STRING "" FORCE)
+endif()
+
 set(NATO_PHONETIC_ALPHABET
   "Alfa" "Bravo" "Charlie" "Delta" "Echo" "Foxtrot" "Golf" "Hotel"
   "India" "Juliett" "Kilo" "Lima" "Mike" "November" "Oscar" "Papa"
@@ -148,6 +154,7 @@ add_compile_definitions(CONTROLLERBUTTONS_T=uint32_t)
 # Sub-projects
 ################################################################################
 add_subdirectory(libultraship ${CMAKE_BINARY_DIR}/libultraship)
+set_target_properties(libultraship PROPERTIES COMPILE_OPTIONS ${WARNING_OVERRIDE})
 add_subdirectory(ZAPDTR/ZAPD ${CMAKE_BINARY_DIR}/ZAPD)
 add_subdirectory(OTRExporter)
 add_subdirectory(soh)

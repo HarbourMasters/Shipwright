@@ -14,12 +14,6 @@ endif()
 set (BUILD_UTILS OFF CACHE STRING "no utilities")
 set (BUILD_SHARED_LIBS OFF CACHE STRING "install/link shared instead of static libs")
 
-if(MSVC)
-    set(WARNING_OVERRIDE "/W0" CACHE STRING "" FORCE)
-else()
-    set(WARNING_OVERRIDE "-w" CACHE STRING "" FORCE)
-endif()
-
 ################################################################################
 # Set target arch type if empty. Visual studio solution generator provides it.
 ################################################################################
@@ -179,7 +173,7 @@ endif()
 
 # src (decomp) {{{
 file(GLOB_RECURSE src__ RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "src/*.c" "src/*.h")
-set_source_files_properties(${src__} PROPERTIES COMPILE_OPTIONS ${WARNING_OVERRIDE})
+set_source_files_properties(${src__} PROPERTIES COMPILE_OPTIONS "${WARNING_OVERRIDE}")
 
 list(APPEND src__ ${CMAKE_CURRENT_SOURCE_DIR}/Resource.rc)
 list(FILTER src__ EXCLUDE REGEX "src/dmadata/*")
