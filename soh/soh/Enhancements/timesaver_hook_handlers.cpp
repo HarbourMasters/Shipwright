@@ -610,7 +610,11 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
         case VB_PLAY_RAINBOW_BRIDGE_CS: {
             if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO)) {
                 *should = false;
-                func_800F595C(NA_BGM_BRIDGE_TO_GANONS);
+                if (!Flags_GetEventChkInf(EVENTCHKINF_RAINBOW_BRIDGE_BUILT)) {
+                    func_800F595C(NA_BGM_BRIDGE_TO_GANONS);
+                    // This would have been set 2 frames later, but we're skipping now so the sound doesn't play twice
+                    Flags_SetEventChkInf(EVENTCHKINF_RAINBOW_BRIDGE_BUILT);
+                }
             }
             break;
         }
