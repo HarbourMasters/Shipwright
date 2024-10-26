@@ -136,7 +136,7 @@ void Context::GenerateLocationPool() {
         AddLocations(mFishsanity->GetFishsanityLocations().first);
     }
 
-    AddLocations(StaticData::GetDungeonLocations());
+    AddLocations(StaticData::GetAllDungeonLocations());
 }
 
 void Context::AddExcludedOptions() {

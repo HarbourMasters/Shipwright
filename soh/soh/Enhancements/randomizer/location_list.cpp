@@ -118,7 +118,7 @@ std::vector<RandomizerCheck> Rando::StaticData::GetOverworldLocations() {
     return overworldLocations;
 }
 
-std::vector<RandomizerCheck> Rando::StaticData::GetDungeonLocations() {
+std::vector<RandomizerCheck> Rando::StaticData::GetAllDungeonLocations() {
     auto ctx = Rando::Context::GetInstance();
     std::vector<RandomizerCheck> dungeonLocations;
     for (const auto dungeon : ctx->GetDungeons()->GetDungeonList()) {
