@@ -994,19 +994,15 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             }
             break;
         }
-        case VB_GIVE_ITEM_FROM_FROGS: {
+        case VB_FROGS_GO_TO_IDLE: {
             EnFr* enFr = va_arg(args, EnFr*);
 
-            // Skip GiveReward+SetIdle action func if the reward is an ice trap
-            if (enFr->actionFunc == (EnFrActionFunc)EnFr_GiveReward) {
-                RandomizerCheck rc = EnFr_RandomizerCheckFromSongIndex(enFr->songIndex);
-                GetItemEntry gi = Rando::Context::GetInstance()->GetFinalGIEntry(rc, true, (GetItemID)Rando::StaticData::GetLocation(rc)->GetVanillaItem());
-                if (gi.getItemId == RG_ICE_TRAP) {
-                    enFr->actionFunc = (EnFrActionFunc)EnFr_Idle;
-                }
+            if (
+                (enFr->songIndex >= FROG_STORMS && enFr->reward == GI_HEART_PIECE) || 
+                (enFr->songIndex < FROG_STORMS && enFr->reward == GI_RUPEE_PURPLE)
+            ) {
+                *should = true;
             }
-
-            *should = false;
             break;
         }
         case VB_TRADE_POCKET_CUCCO: {

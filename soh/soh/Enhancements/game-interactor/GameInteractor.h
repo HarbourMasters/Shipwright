@@ -286,6 +286,9 @@ typedef enum {
     VB_GANON_HEAL_BEFORE_FIGHT,
     VB_FREEZE_LINK_FOR_BLOCK_THROW,
     VB_MOVE_THROWN_ACTOR,
+    // Opt: *EnFr
+    // Vanilla condition: this->reward == GI_NONE
+    VB_FROGS_GO_TO_IDLE,
 
     /*** Play Cutscenes ***/
 
@@ -378,8 +381,6 @@ typedef enum {
     VB_GIVE_ITEM_FROM_MEDIGORON,
     // Opt: *EnMs
     VB_GIVE_ITEM_FROM_MAGIC_BEAN_SALESMAN,
-    // Opt: *EnFr
-    VB_GIVE_ITEM_FROM_FROGS,
     // Opt: *EnSkj
     VB_GIVE_ITEM_FROM_OCARINA_MEMORY_GAME,
     // Opt: *EnSkj
