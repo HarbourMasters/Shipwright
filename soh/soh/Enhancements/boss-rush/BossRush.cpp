@@ -241,7 +241,7 @@ void BossRush_HandleBlueWarp(PlayState* play, f32 warpPosX, f32 warpPosZ) {
             if (gSaveContext.linkAge == LINK_AGE_CHILD) {
                 play->nextEntranceIndex = ENTR_JABU_JABU_BOSS_ENTRANCE;
             } else {
-                play->nextEntranceIndex = ENTR_WATER_TEMPLE_BOSS_0;
+                play->nextEntranceIndex = ENTR_WATER_TEMPLE_BOSS_ENTRANCE;
             }
         // Twinrova
         } else if (warpPosX == 100 && warpPosZ == 170) {

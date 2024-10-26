@@ -128,7 +128,7 @@ void Select_Grotto_LoadGame(SelectContext* this, s32 grottoIndex) {
 }
 
 static SceneSelectEntry sScenes[] = {
-    { " 1:SPOT00", " 1:Hyrule Field", " 1:Hylianische Steppe", " 1:Plaine d'Hyrule", Select_LoadGame, ENTR_HYRULE_FIELD_0 },
+    { " 1:SPOT00", " 1:Hyrule Field", " 1:Hylianische Steppe", " 1:Plaine d'Hyrule", Select_LoadGame, ENTR_HYRULE_FIELD_PAST_BRIDGE_SPAWN },
     { " 2:SPOT01", " 2:Kakariko Village", " 2:Kakariko", " 2:Village Cocorico", Select_LoadGame, ENTR_KAKARIKO_VILLAGE_FRONT_GATE },
     { " 3:SPOT02", " 3:Graveyard", " 3:Friedhof", " 3:Cimetiere", Select_LoadGame, ENTR_GRAVEYARD_ENTRANCE },
     { " 4:SPOT03", " 4:Zora's River", " 4:Zora-Fluss", " 4:Riviere Zora", Select_LoadGame, ENTR_ZORAS_RIVER_WEST_EXIT },
@@ -171,7 +171,7 @@ static SceneSelectEntry sScenes[] = {
     { "41:" GFXP_HIRAGANA "ｼﾞｮｳｶﾏﾁ", "41:Market", "41:Marktplatz", "41:Place du Marche", Select_LoadGame, ENTR_MARKET_SOUTH_EXIT },
     { "42:" GFXP_HIRAGANA "ｳﾗﾛｼﾞ", "42:Back Alley", "42:Seitenstrasse", "42:Ruelle", Select_LoadGame, ENTR_BACK_ALLEY_DAY_0 },
     { "43:" GFXP_HIRAGANA "ﾄｷﾉｼﾝﾃﾞﾝ ﾏｴ", "43:Temple of Time Exterior", "43:Vor der Zitadelle der Zeit", "43:Exterieur du Temple du Temps", Select_LoadGame, ENTR_TEMPLE_OF_TIME_EXTERIOR_GOSSIP_STONE_EXIT },
-    { "44:" GFXP_HIRAGANA "ﾘﾝｸﾉｲｴ", "44:Link's House", "44:Links Haus", "44:Cabane de Link", Select_LoadGame, ENTR_LINKS_HOUSE_0 },
+    { "44:" GFXP_HIRAGANA "ﾘﾝｸﾉｲｴ", "44:Link's House", "44:Links Haus", "44:Cabane de Link", Select_LoadGame, ENTR_LINKS_HOUSE_CHILD_SPAWN },
     { "45:" GFXP_KATAKANA "ｶｶﾘｺ" GFXP_HIRAGANA "ﾑﾗﾉﾅｶﾞﾔ", "45:Kakariko House 1", "45:Kakariko Haus 1", "45:Maison du Village Cocorico 1", Select_LoadGame, ENTR_KAKARIKO_CENTER_GUEST_HOUSE_0 },
     { "46:" GFXP_HIRAGANA "ｳﾗﾛｼﾞﾉ ｲｴ", "46:Back Alley House 1", "46:Seitenstrasse Haus 1", "46:Maison de la Ruelle 1", Select_LoadGame, ENTR_BACK_ALLEY_MAN_IN_GREEN_HOUSE },
     { "47:" GFXP_HIRAGANA "ｺｷﾘﾉﾑﾗ ﾓﾉｼﾘｷｮｳﾀﾞｲﾉｲｴ", "47:House of the Know-it-All Brothers", "47:Haus der Allwissenden Brueder", "47:Cabane des Freres Je-Sais-Tout", Select_LoadGame, ENTR_KNOW_IT_ALL_BROS_HOUSE_0 },
@@ -207,7 +207,7 @@ static SceneSelectEntry sScenes[] = {
     { "77:" GFXP_HIRAGANA "ﾋﾉｼﾝﾃﾞﾝ", "77:Fire Temple", "77:Feuertempel", "77:Temple du Feu", Select_LoadGame, ENTR_FIRE_TEMPLE_ENTRANCE },
     { "78:" GFXP_HIRAGANA "ﾋﾉｼﾝﾃﾞﾝ " GFXP_KATAKANA "ﾎﾞｽ", "78:Volvagia's Lair", "78:Volvagias Verlies", "78:Repaire de Volcania", Select_LoadGame, ENTR_FIRE_TEMPLE_BOSS_ENTRANCE },
     { "79:" GFXP_HIRAGANA "ﾐｽﾞﾉｼﾝﾃﾞﾝ", "79:Water Temple", "79:Wassertempel", "79:Temple de l'Eau", Select_LoadGame, ENTR_WATER_TEMPLE_ENTRANCE },
-    { "80:" GFXP_HIRAGANA "ﾐｽﾞﾉｼﾝﾃﾞﾝ " GFXP_KATAKANA "ﾎﾞｽ", "80:Morpha's Lair", "80:Morphas Verlies", "80:Repaire de Morpha", Select_LoadGame, ENTR_WATER_TEMPLE_BOSS_0 },
+    { "80:" GFXP_HIRAGANA "ﾐｽﾞﾉｼﾝﾃﾞﾝ " GFXP_KATAKANA "ﾎﾞｽ", "80:Morpha's Lair", "80:Morphas Verlies", "80:Repaire de Morpha", Select_LoadGame, ENTR_WATER_TEMPLE_BOSS_ENTRANCE },
     { "81:" GFXP_HIRAGANA "ｼﾞｬｼﾝｿﾞｳ " GFXP_KATAKANA "ﾀﾞﾝｼﾞｮﾝ", "81:Spirit Temple", "81:Geistertempel", "81:Temple de l'Esprit", Select_LoadGame, ENTR_SPIRIT_TEMPLE_ENTRANCE },
     { "82:" GFXP_HIRAGANA "ｼﾞｬｼﾝｿﾞｳ " GFXP_KATAKANA "ﾀﾞﾝｼﾞｮﾝ ｱｲｱﾝﾅｯｸ", "82:Iron Knuckle's Lair", "82:Eisenprinz' Verlies", "82:Repaire du Hache Viande", Select_LoadGame, ENTR_SPIRIT_TEMPLE_BOSS_ENTRANCE },
     { "83:" GFXP_HIRAGANA "ｼﾞｬｼﾝｿﾞｳ " GFXP_KATAKANA "ﾀﾞﾝｼﾞｮﾝ ﾎﾞｽ", "83:Twinrova's Lair", "83:Killa Ohmaz' Verlies", "83:Repaire du Duo Malefique", Select_LoadGame, ENTR_SPIRIT_TEMPLE_BOSS_2 },
@@ -259,7 +259,7 @@ static SceneSelectEntry sScenes[] = {
 
 static BetterSceneSelectEntry sBetterScenes[] = {
     { " 1:Hyrule Field", " 1:Hylianische Steppe", " 1:Plaine d'Hyrule", Select_LoadGame, 8, { 
-        { "Near Drawbridge", "Nahe der Zugbruecke", "Pres du Pont-levis", ENTR_HYRULE_FIELD_0, 0 },
+        { "Near Drawbridge", "Nahe der Zugbruecke", "Pres du Pont-levis", ENTR_HYRULE_FIELD_PAST_BRIDGE_SPAWN, 0 },
         { "From Drawbridge", "Von der Zugbruecke", "Depuis le Pont-levis", ENTR_HYRULE_FIELD_ON_BRIDGE_SPAWN, 0 },
         { "From Kakariko Village", "Von Kakariko", "Depuis le Village Cocorico", ENTR_HYRULE_FIELD_STAIRS_EXIT, 0 },
         { "From Zora River", "Vom Zora-Fluss", "Depuis la Riviere Zora", ENTR_HYRULE_FIELD_RIVER_EXIT, 0 },
@@ -280,7 +280,7 @@ static BetterSceneSelectEntry sBetterScenes[] = {
         { "From Sarias House", "Von Salias Haus", "Depuis la Cabane de Saria", ENTR_KOKIRI_FOREST_OUTSIDE_SARIAS_HOUSE, 0 },
     }},
     { " 3:Kokiri Buildings", " 3:Kokiri Gebaeude", " 3:Cabanes des Kokiris", Select_LoadGame, 6, {
-        { "Links Bed", "Links Bett", "Lit de Link", ENTR_LINKS_HOUSE_0, 0 },
+        { "Links Bed", "Links Bett", "Lit de Link", ENTR_LINKS_HOUSE_CHILD_SPAWN, 0 },
         { "Kokiri Shop", "Kokiri-Laden", "Boutique Kokiri", ENTR_KOKIRI_SHOP_0, 0 },
         { "Twins House", "Haus der Zwillinge", "Cabane des Jumeaux", ENTR_TWINS_HOUSE_0, 0 },
         { "Know-It-All Brothers House", "Haus der Allwissenden Brueder", "Cabane des Freres Je-Sais-Tout", ENTR_KNOW_IT_ALL_BROS_HOUSE_0, 0 },
@@ -297,10 +297,10 @@ static BetterSceneSelectEntry sBetterScenes[] = {
     { " 5:Sacred Forest Meadow", " 5:Waldlichtung", " 5:Bosquet Sacre", Select_LoadGame, 3, { 
         { "From Lost Woods", "Von den Verlorenen Waeldern", "Depuis les Bois Perdus", ENTR_SACRED_FOREST_MEADOW_SOUTH_EXIT, 0 },
         { "From Forest Temple", "Vom Waldtempel", "Depuis le Temple de la Foret", ENTR_SACRED_FOREST_MEADOW_OUTSIDE_TEMPLE, 0 },
-        { "Minuet of Forest Warp", "Menuett des Waldes Teleport", "Teleporteur du Menuet des Bois", ENTR_SACRED_FOREST_MEADOW_2, 0 },
+        { "Minuet of Forest Warp", "Menuett des Waldes Teleport", "Teleporteur du Menuet des Bois", ENTR_SACRED_FOREST_MEADOW_WARP_PAD, 0 },
     }},
     { " 6:Castle Town Entrance", " 6:Eingang zum Marktplatz", " 6:Entree du Bourg d'Hyrule", Select_LoadGame, 3, {
-        { "From Hyrule Field", "Von der Hylianischen Steppe", "Depuis la Plaine d'Hyrule", ENTR_MARKET_ENTRANCE_EAST_EXIT, 0 },
+        { "From Hyrule Field", "Von der Hylianischen Steppe", "Depuis la Plaine d'Hyrule", ENTR_MARKET_ENTRANCE_NEAR_GUARD_EXIT, 0 },
         { "From Market", "Vom Marktplatz", "Depuis la Place du Marche", ENTR_MARKET_ENTRANCE_NORTH_EXIT, 0 },
         { "From Pot House", "Vom Wachposten", "Depuis la Maison des Jarres", ENTR_MARKET_ENTRANCE_OUTSIDE_GUARD_HOUSE, 0 },
     }},
@@ -339,16 +339,16 @@ static BetterSceneSelectEntry sBetterScenes[] = {
     { "10:Temple of Time", "10:Zitadelle der Zeit", "10:Temple du Temps", Select_LoadGame, 5, { 
         { "From Outside", "Von draussen", "Depuis l'Entree", ENTR_TEMPLE_OF_TIME_ENTRANCE, 0 },
         { "From Master Sword Pedestal", "Vom Podest des Master-Schwerts", "Depuis le Piedestal de l'Epee de Legende", ENTR_TEMPLE_OF_TIME_2, 0 },
-        { "Prelude of Light Warp", "Kantate des Lichts Teleport", "Teleporteur du Prelude de la Lumiere", ENTR_TEMPLE_OF_TIME_7, 0 },
+        { "Prelude of Light Warp", "Kantate des Lichts Teleport", "Teleporteur du Prelude de la Lumiere", ENTR_TEMPLE_OF_TIME_WARP_PAD, 0 },
         { "Outside Temple of Time - From Market", "Vor der Zitadelle der Zeit - Vom Marktplatz", "Exterieur du Temple - Depuis la Place du Marche", ENTR_TEMPLE_OF_TIME_EXTERIOR_GOSSIP_STONE_EXIT, 0 },
         { "Outside Temple of Time - From Temple of Time", "Vor der Zitadelle der Zeit - Von der Zitadelle der Zeit", "Exterieur du Temple - Depuis le Temple", ENTR_TEMPLE_OF_TIME_EXTERIOR_OUTSIDE_TEMPLE, 0 },
     }},
     { "11:Hyrule Castle", "11:Schloss Hyrule", "11:Chateau d'Hyrule", Select_LoadGame, 5, {
         { "From Market", "Vom Marktplatz", "Depuis la Place du Marche", ENTR_CASTLE_GROUNDS_SOUTH_EXIT, 0 },
         { "From Castle Courtyard", "Vom Burghof", "Depuis la Cour du Chateau", ENTR_CASTLE_GROUNDS_RAINBOW_BRIDGE_EXIT, 0 },
-        { "From Great Fairy", "Von der Feen-Quelle", "Depuis la Grande Fee", ENTR_CASTLE_GROUNDS_CHILD_CRAWLSPACE, 0 },
+        { "From Great Fairy", "Von der Feen-Quelle", "Depuis la Grande Fee", ENTR_CASTLE_GROUNDS_GREAT_FAIRY_EXIT, 0 },
         { "From Courtyard Guard Capture", "Von der Wachen-Festnahme", "Depuis la capture d'un Garde de la Cour", ENTR_HYRULE_CASTLE_3, 0 },
-        { "Great Fairy", "Feen-Quelle", "Grande Fee", ENTR_GREAT_FAIRYS_FOUNTAIN_MAGIC_2, 0 },
+        { "Great Fairy", "Feen-Quelle", "Grande Fee", ENTR_GREAT_FAIRYS_FOUNTAIN_HC_DINS, 0 },
     }},
     { "12:Hyrule Castle Courtyard", "12:Burghof", "12:Cour du Chateau", Select_LoadGame, 3, {
         { "From Crawlspace", "Vom Kriechtunnel", "Depuis l'Entree", ENTR_CASTLE_COURTYARD_GUARDS_DAY_0, 0 },
@@ -382,7 +382,7 @@ static BetterSceneSelectEntry sBetterScenes[] = {
         { "From Windmill", "Von der Windmuehle", "Depuis le Moulin", ENTR_KAKARIKO_VILLAGE_OUTSIDE_WINDMILL, 0 },
         { "From Shooting Gallery", "Von der Schiessbude", "Depuis le Jeu d'adresse", ENTR_KAKARIKO_VILLAGE_OUTSIDE_SHOOTING_GALLERY, 0 },
         { "From Skulltula House", "Vom Haus der Skulltulas", "Depuis la Maison des Skulltulas", ENTR_KAKARIKO_VILLAGE_OUTSIDE_SKULKLTULA_HOUSE, 0 },
-        { "Owl Drop Spot from Death Mountain", "Eulen-Absetzpunkt vom Todesberg", "Point de chute du Hibou depuis le Mont du Peril", ENTR_KAKARIKO_VILLAGE_14, 0 },
+        { "Owl Drop Spot from Death Mountain", "Eulen-Absetzpunkt vom Todesberg", "Point de chute du Hibou depuis le Mont du Peril", ENTR_KAKARIKO_VILLAGE_OWL_DROP, 0 },
     }},
     { "16:Kakariko Buildings", "16:Kakariko Gebaeude", "16:Batiments du Village Cocorico", Select_LoadGame, 9, {
         { "Shooting Gallery Minigame", "Schiessbude", "Jeu d'adresse", ENTR_SHOOTING_GALLERY_0, 0 },
@@ -404,7 +404,7 @@ static BetterSceneSelectEntry sBetterScenes[] = {
         { "From Redead Grave", "Vom Zombie-Grab", "Depuis la Tombe au Effrois", ENTR_GRAVEYARD_HEART_PIECE_GRAVE_EXIT, 0 },
         { "From Royal Familys Tomb", "Vom Koenigsgrab", "Depuis la Tombe Royale", ENTR_GRAVEYARD_ROYAL_TOMB_EXIT, 0 },
         { "Inside Dampe's Hut", "Huette des Totengraebers", "A l'interieur de la Cabane du Fossoyeur", ENTR_GRAVEKEEPERS_HUT_0, 0 },
-        { "Nocturne of Shadow Warp", "Nocturne des Schattens Teleport", "Teleporteur du Nocturne de l'Ombre", ENTR_GRAVEYARD_7, 0 },
+        { "Nocturne of Shadow Warp", "Nocturne des Schattens Teleport", "Teleporteur du Nocturne de l'Ombre", ENTR_GRAVEYARD_WARP_PAD, 0 },
     }},
     { "18:Graves", "18:Graeber", "18:Tombes", Select_LoadGame, 5, {
         { "Dampes Grave Minigame", "Boris' Grab-Minispiel", "Tour du Cimetiere d'Igor", ENTR_WINDMILL_AND_DAMPES_GRAVE_GRAVE, 0 },
@@ -415,8 +415,8 @@ static BetterSceneSelectEntry sBetterScenes[] = {
     }},
     { "19:Death Mountain Trail", "19:Gebirgspfad", "19:Mont du Peril", Select_LoadGame, 6, {
         { "From Kakariko Village", "Von Kakariko", "Depuis le Village Cocorico", ENTR_DEATH_MOUNTAIN_TRAIL_BOTTOM_EXIT, 0 },
-        { "From Goron City", "Von Goronia", "Depuis le Village Goron", ENTR_DEATH_MOUNTAIN_TRAIL_MIDDLE_EXIT, 0 },
-        { "From Death Mountain Crater", "Vom Todeskrater", "Depuis le Cratere du Peril", ENTR_DEATH_MOUNTAIN_TRAIL_TOP_EXIT, 0 },
+        { "From Goron City", "Von Goronia", "Depuis le Village Goron", ENTR_DEATH_MOUNTAIN_TRAIL_GC_EXIT, 0 },
+        { "From Death Mountain Crater", "Vom Todeskrater", "Depuis le Cratere du Peril", ENTR_DEATH_MOUNTAIN_TRAIL_SUMMIT_EXIT, 0 },
         { "From Dodongos Cavern", "Von Dodongos Hoehle", "Depuis la Caverne Dodongo", ENTR_DEATH_MOUNTAIN_TRAIL_OUTSIDE_DODONGOS_CAVERN, 0 },
         { "From Great Fairy", "Von der Feen-Quelle", "Depuis la Grande Fee", ENTR_DEATH_MOUNTAIN_TRAIL_GREAT_FAIRY_EXIT, 0 },
         { "Great Fairy", "Feen-Quelle", "Grande Fee", ENTR_GREAT_FAIRYS_FOUNTAIN_DMT_MAGIC, 0 },
@@ -430,11 +430,11 @@ static BetterSceneSelectEntry sBetterScenes[] = {
     }},
     { "21:Death Mountain Crater", "21:Todeskrater", "21:Cratere du Peril", Select_LoadGame, 6, {
         { "From Death Mountain Trail", "Vom Gebirgspfad", "Depuis le Mont du Peril", ENTR_DEATH_MOUNTAIN_CRATER_UPPER_EXIT, 0 },
-        { "From Goron City", "Von Goronia", "Depuis le Village Goron", ENTR_DEATH_MOUNTAIN_CRATER_BRIDGE_EXIT, 0 },
+        { "From Goron City", "Von Goronia", "Depuis le Village Goron", ENTR_DEATH_MOUNTAIN_CRATER_GC_EXIT, 0 },
         { "From Fire Temple", "Vom Feuertempel", "Depuis le Temple du Feu", ENTR_DEATH_MOUNTAIN_CRATER_OUTSIDE_TEMPLE, 0 },
         { "From Fairy Fountain", "Von der Feen-Quelle", "Depuis la Fontaine des Fees", ENTR_DEATH_MOUNTAIN_CRATER_GREAT_FAIRY_EXIT, 0 },
         { "Great Fairy", "Feen-Quelle", "Depuis la Grande Fee", ENTR_GREAT_FAIRYS_FOUNTAIN_DMC_MAGIC, 0 },
-        { "Bolero of Fire Warp", "Bolero des Feuers Teleport", "Teleporteur du Bolero du Feu", ENTR_DEATH_MOUNTAIN_CRATER_4, 0 },
+        { "Bolero of Fire Warp", "Bolero des Feuers Teleport", "Teleporteur du Bolero du Feu", ENTR_DEATH_MOUNTAIN_CRATER_WARP_PAD, 0 },
     }},
     { "22:Zora River", "22:Zora-Fluss", "22:Riviere Zora", Select_LoadGame, 3, {
         { "From Hyrule Field", "Von der Hylianischen Steppe", "Depuis la Plaine d'Hyrule", ENTR_ZORAS_RIVER_WEST_EXIT, 0 },
@@ -462,7 +462,7 @@ static BetterSceneSelectEntry sBetterScenes[] = {
         { "From Fishing Pond", "Vom Fischweiher", "Depuis l'Etang", ENTR_LAKE_HYLIA_OUTSIDE_FISHING_POND, 0 },
         { "From Laboratory", "Vom Laboratorium", "Depuis le Laboratoire du Lac", ENTR_LAKE_HYLIA_OUTSIDE_LAB, 0 },
         { "From Zoras Domain", "Von Zoras Reich", "Depuis le Domaine Zora", ENTR_LAKE_HYLIA_UNDERWATER_SHORTCUT, 0 },
-        { "Serenade Of Water Warp", "Serenade des Wassers Teleport", "Teleporteur de la Serenade de l'Eau", ENTR_LAKE_HYLIA_8, 0 },
+        { "Serenade Of Water Warp", "Serenade des Wassers Teleport", "Teleporteur de la Serenade de l'Eau", ENTR_LAKE_HYLIA_WARP_PAD, 0 },
     }},
     { "26:Lake Hylia Buildings", "26:Hylia-See Gebaeude", "26:Batiments du Lac Hylia", Select_LoadGame, 2, { 
         { "Laboratory", "Laboratorium", "Laboratoire du Lac", ENTR_LAKESIDE_LABORATORY_0, 0 }, 
@@ -521,16 +521,16 @@ static BetterSceneSelectEntry sBetterScenes[] = {
         { "From Spirit Temple (Right Hand)", "Vom Geistertempel (Rechte Hand)", "Depuis le Temple de l'Esprit (Main Droite)", ENTR_DESERT_COLOSSUS_3, 0 },
         { "From Fairy Fountain", "Von der Feen-Quelle", "Depuis la Fontaine des Fees", ENTR_DESERT_COLOSSUS_GREAT_FAIRY_EXIT, 0 },
         { "Great Fairy", "Feen-Quelle", "Grande Fee", ENTR_GREAT_FAIRYS_FOUNTAIN_COLOSSUS_NAYRU, 0 },
-        { "Requiem of Spirit Warp", "Requiem der Geister Teleport", "Teleporteur du Requiem de l'Esprit", ENTR_DESERT_COLOSSUS_5, 0 },
+        { "Requiem of Spirit Warp", "Requiem der Geister Teleport", "Teleporteur du Requiem de l'Esprit", ENTR_DESERT_COLOSSUS_WARP_PAD, 0 },
     }},
     { "32:Deku Tree", "32:Deku-Baum", "32:Arbre Mojo", Select_LoadGame, 3, {
         { "Entrance", "Eingang", "Entree", ENTR_DEKU_TREE_ENTRANCE, 1 },
-        { "From Gohma's Lair", "Von Gohmas Kampf", "Depuis le Repaire de Gohma", ENTR_DEKU_TREE_OUTSIDE_BOSS_DOOR, 1 },
+        { "From Gohma's Lair", "Von Gohmas Kampf", "Depuis le Repaire de Gohma", ENTR_DEKU_TREE_BOSS_DOOR, 1 },
         { "Gohma's Lair", "Gohmas Kampf", "Repaire de Gohma", ENTR_DEKU_TREE_BOSS_ENTRANCE, 0 },
     }},
     { "33:Dodongos Cavern", "33:Dodongos Hoehle", "33:Caverne Dodongo", Select_LoadGame, 3, {
         { "Entrance", "Eingang", "Entree", ENTR_DODONGOS_CAVERN_ENTRANCE, 1 },
-        { "From King Dodongo", "Von Koenig Dodongo", "Depuis le Repaire du Roi Dodongo", ENTR_DODONGOS_CAVERN_OUTSIDE_BOSS_DOOR, 1 },
+        { "From King Dodongo", "Von Koenig Dodongo", "Depuis le Repaire du Roi Dodongo", ENTR_DODONGOS_CAVERN_BOSS_DOOR, 1 },
         { "King Dodongo's Lair", "Koenig Dodongos Kampf", "Repaire du Roi Dodongo", ENTR_DODONGOS_CAVERN_BOSS_ENTRANCE, 0 },
     }},
     { "34:Jabu Jabu", "34:Jabu-Jabu", "34:Jabu-Jabu", Select_LoadGame, 2, {
@@ -540,28 +540,28 @@ static BetterSceneSelectEntry sBetterScenes[] = {
     { "35:Forest Temple", "35:Waldtempel", "35:Temple de la Foret", Select_LoadGame, 4, {
         { "Entrance", "Eingang", "Entree", ENTR_FOREST_TEMPLE_ENTRANCE, 1 },
         { "Crushing Room", "Der Fallende Decke Raum", "Salle de Broyage", ENTR_FOREST_TEMPLE_2, 1 },
-        { "Before Phantom Ganon", "Vor Phantom-Ganon", "Avant Ganon Spectral", ENTR_FOREST_TEMPLE_OUTSIDE_BOSS_DOOR, 1 },
+        { "Before Phantom Ganon", "Vor Phantom-Ganon", "Avant Ganon Spectral", ENTR_FOREST_TEMPLE_BOSS_DOOR, 1 },
         { "Phantom Ganon's Lair", "Phantom-Ganons Kampf", "Repaire de Ganon Spectral", ENTR_FOREST_TEMPLE_BOSS_ENTRANCE, 0 },
     }},
     { "36:Fire Temple", "36:Feuertempel", "36:Temple du Feu", Select_LoadGame, 3, {
         { "Entrance", "Eingang", "Entrance", ENTR_FIRE_TEMPLE_ENTRANCE, 1 },
-        { "Before Volvagia", "Vor Volvagia", "Avant Volvagia", ENTR_FIRE_TEMPLE_OUTSIDE_BOSS_DOOR, 1 },
+        { "Before Volvagia", "Vor Volvagia", "Avant Volvagia", ENTR_FIRE_TEMPLE_BOSS_DOOR, 1 },
         { "Volvagia's Lair", "Volvagias Kampf", "Repaire de Volcania", ENTR_FIRE_TEMPLE_BOSS_ENTRANCE, 0 },
     }},
     { "37:Water Temple", "37:Wassertempel", "37:Temple de l'Eau", Select_LoadGame, 2, { 
         { "Entrance", "Eingang", "Entree", ENTR_WATER_TEMPLE_ENTRANCE, 1 },
-        { "Morpha's Lair", "Morphas Kampf", "Repaire de Morpha", ENTR_WATER_TEMPLE_BOSS_0, 0 },
+        { "Morpha's Lair", "Morphas Kampf", "Repaire de Morpha", ENTR_WATER_TEMPLE_BOSS_ENTRANCE, 0 },
     }},
     { "38:Shadow Temple", "38:Schattentempel", "38:Temple de l'Ombre", Select_LoadGame, 3, {
         { "Entrance", "Eingang", "Entree", ENTR_SHADOW_TEMPLE_ENTRANCE, 1 },
-        { "Outside Bongo Bongo", "Vor Bongo Bongo", "Avant Bongo Bongo", ENTR_SHADOW_TEMPLE_OUTSIDE_BOSS_DOOR, 1 },
+        { "Outside Bongo Bongo", "Vor Bongo Bongo", "Avant Bongo Bongo", ENTR_SHADOW_TEMPLE_BOSS_DOOR, 1 },
         { "Bongo Bongo's Lair", "Bongo Bongos Kampf", "Repaire de Bongo Bongo", ENTR_SHADOW_TEMPLE_BOSS_ENTRANCE, 1 },
     }},
     { "39:Spirit Temple", "39:Geistertempel", "39:Temple de l'Esprit", Select_LoadGame, 6, {
         { "Entrance", "Eingang", "Entree", ENTR_SPIRIT_TEMPLE_ENTRANCE, 1 },
         { "From Left Hand", "Von der linken Hand", "Depuis la Main Gauche", ENTR_SPIRIT_TEMPLE_2, 1 },
         { "From Right Hand", "Von der rechten Hand", "Depuis la Main Droite", ENTR_SPIRIT_TEMPLE_3, 1 },
-        { "Before Twinrova", "Vor den Killa Ohmaz", "Avant le Duo Malefique", ENTR_SPIRIT_TEMPLE_OUTSIDE_BOSS_DOOR, 1 },
+        { "Before Twinrova", "Vor den Killa Ohmaz", "Avant le Duo Malefique", ENTR_SPIRIT_TEMPLE_BOSS_DOOR, 1 },
         { "Nabooru Fight", "Naborus Kampf", "Combat contre Nabooru", ENTR_SPIRIT_TEMPLE_BOSS_ENTRANCE, 0 },
         { "Twinrova's Lair", "Killa Ohmaz' Kampf", "Repaire du Duo Malefique", ENTR_SPIRIT_TEMPLE_BOSS_2, 0 },
     }},
@@ -586,12 +586,12 @@ static BetterSceneSelectEntry sBetterScenes[] = {
         { "Entrance", "Eingang", "Entree", ENTR_GERUDO_TRAINING_GROUND_ENTRANCE, 1 },
     }},
     { "44:Warps", "44:Teleportpunkte", "44:Teleporteurs", Select_LoadGame, 6, {
-        { "Prelude of Light Warp", "Kantate des Lichts Teleport", "Teleporteur du Prelude de la Lumiere", ENTR_TEMPLE_OF_TIME_7, 0 },
-        { "Minuet of Forest Warp", "Menuett des Waldes Teleport", "Teleporteur du Menuet des Bois", ENTR_SACRED_FOREST_MEADOW_2, 0 },
-        { "Bolero of Fire Warp", "Bolero des Feuers Teleport", "Teleporteur du Bolero du Feu", ENTR_DEATH_MOUNTAIN_CRATER_4, 0 },
-        { "Serenade Of Water Warp", "Serenade des Wassers Teleport", "Teleporteur de la Serenade de l'Eau", ENTR_LAKE_HYLIA_8, 0 },
-        { "Nocturne of Shadow Warp", "Nocturne des Schattens Teleport", "Teleporteur du Nocturne de l'Ombre", ENTR_GRAVEYARD_7, 0 },
-        { "Requiem of Spirit Warp", "Requiem der Geister Teleport", "Teleporteur du Requiem de l'Esprit", ENTR_DESERT_COLOSSUS_5, 0 },
+        { "Prelude of Light Warp", "Kantate des Lichts Teleport", "Teleporteur du Prelude de la Lumiere", ENTR_TEMPLE_OF_TIME_WARP_PAD, 0 },
+        { "Minuet of Forest Warp", "Menuett des Waldes Teleport", "Teleporteur du Menuet des Bois", ENTR_SACRED_FOREST_MEADOW_WARP_PAD, 0 },
+        { "Bolero of Fire Warp", "Bolero des Feuers Teleport", "Teleporteur du Bolero du Feu", ENTR_DEATH_MOUNTAIN_CRATER_WARP_PAD, 0 },
+        { "Serenade Of Water Warp", "Serenade des Wassers Teleport", "Teleporteur de la Serenade de l'Eau", ENTR_LAKE_HYLIA_WARP_PAD, 0 },
+        { "Nocturne of Shadow Warp", "Nocturne des Schattens Teleport", "Teleporteur du Nocturne de l'Ombre", ENTR_GRAVEYARD_WARP_PAD, 0 },
+        { "Requiem of Spirit Warp", "Requiem der Geister Teleport", "Teleporteur du Requiem de l'Esprit", ENTR_DESERT_COLOSSUS_WARP_PAD, 0 },
     }},
     { "45:Shops", "45:Laeden", "45:Boutiques", Select_LoadGame, 9, {
         { "Kokiri Shop", "Kokiri-Laden", "Boutique Kokiri", ENTR_KOKIRI_SHOP_0 },
@@ -605,8 +605,8 @@ static BetterSceneSelectEntry sBetterScenes[] = {
         { "Zora Shop", "Zora-Laden", "Boutique Zora", ENTR_ZORA_SHOP_0, 0 },
     }},
     { "46:Great Fairies", "46:Feen-Quellen", "46:Grandes Fees", Select_LoadGame, 6, {
-        { "Hyrule Castle (Child)", "Schloss Hyrule (Kind)", "Chateau d'Hyrule (Enfant)", ENTR_GREAT_FAIRYS_FOUNTAIN_DINS, 0 },
-        { "Hyrule Castle (Adult)", "Schloss Hyrule (Erwachsener)", "Chateau d'Hyrule (Adult)", ENTR_GREAT_FAIRYS_FOUNTAIN_MAGIC_2, 0 },
+        { "Hyrule Castle (Child)", "Schloss Hyrule (Kind)", "Chateau d'Hyrule (Enfant)", ENTR_GREAT_FAIRYS_FOUNTAIN_HC_DINS, 0 },
+        { "Hyrule Castle (Adult)", "Schloss Hyrule (Erwachsener)", "Chateau d'Hyrule (Adult)", ENTR_GREAT_FAIRYS_FOUNTAIN_OGC_DD, 0 },
         { "Death Mountain Trail", "Gebirgspfad", "Mont du Peril", ENTR_GREAT_FAIRYS_FOUNTAIN_DMT_MAGIC, 0 },
         { "Death Mountain Crater", "Todeskrater", "Cratere du Peril", ENTR_GREAT_FAIRYS_FOUNTAIN_DMC_MAGIC, 0 },
         { "Zoras Fountain", "Zoras Quelle", "Fontaine Zora", ENTR_GREAT_FAIRYS_FOUNTAIN_ZF_FARORE, 0 },
@@ -664,16 +664,16 @@ static BetterSceneSelectGrottoData sBetterGrottos[] = {
     { ENTR_GROTTOS_0,  ENTR_KOKIRI_FOREST_0,         0, 0x2C, SCENE_KOKIRI_FOREST,         {  -504.0,   380.0, -1224.0 }}, // Kokiri Forest -> KF Storms Grotto
     { ENTR_GROTTOS_0,  ENTR_LOST_WOODS_TUNNEL_SHORTCUT,            2, 0x14, SCENE_LOST_WOODS,            {   922.0,     0.0,  -933.0 }}, // Lost Woods -> LW Near Shortcuts Grotto
     { ENTR_GROTTOS_8,  ENTR_SACRED_FOREST_MEADOW_SOUTH_EXIT,  0, 0xED, SCENE_SACRED_FOREST_MEADOW,  {  -201.0,     0.0,  1906.0 }}, // SFM Entryway -> SFM Wolfos Grotto
-    { ENTR_GROTTOS_0,  ENTR_HYRULE_FIELD_0,          0, 0x00, SCENE_HYRULE_FIELD,          { -1428.0,     0.0,   790.0 }}, // Hyrule Field -> HF Near Market Grotto
+    { ENTR_GROTTOS_0,  ENTR_HYRULE_FIELD_PAST_BRIDGE_SPAWN,          0, 0x00, SCENE_HYRULE_FIELD,          { -1428.0,     0.0,   790.0 }}, // Hyrule Field -> HF Near Market Grotto
     { ENTR_GROTTOS_0,  ENTR_HYRULE_FIELD_FENCE_EXIT,          0, 0x03, SCENE_HYRULE_FIELD,          { -4026.0,  -700.0, 13858.0 }}, // Hyrule Field -> HF Open Grotto
     { ENTR_GROTTOS_0,  ENTR_HYRULE_FIELD_FENCE_EXIT,          0, 0x22, SCENE_HYRULE_FIELD,          {  -259.0,  -500.0, 12356.0 }}, // Hyrule Field -> HF Southeast Grotto
     { ENTR_GROTTOS_0,  ENTR_KAKARIKO_VILLAGE_OUTSIDE_SHOP_GRANNY,      0, 0x28, SCENE_KAKARIKO_VILLAGE,      {   861.0,    80.0,  -253.0 }}, // Kak Backyard -> Kak Open Grotto
     { ENTR_GROTTOS_3,  ENTR_KAKARIKO_VILLAGE_OUTSIDE_SHOP_GRANNY,      0, 0xE7, SCENE_KAKARIKO_VILLAGE,      {  -400.0,     0.0,   408.0 }}, // Kakariko Village -> Kak Redead Grotto
-    { ENTR_GROTTOS_0,  ENTR_DEATH_MOUNTAIN_TRAIL_MIDDLE_EXIT,  0, 0x57, SCENE_DEATH_MOUNTAIN_TRAIL,  {  -389.0,  1386.0, -1202.0 }}, // Death Mountain -> DMT Storms Grotto
+    { ENTR_GROTTOS_0,  ENTR_DEATH_MOUNTAIN_TRAIL_GC_EXIT,  0, 0x57, SCENE_DEATH_MOUNTAIN_TRAIL,  {  -389.0,  1386.0, -1202.0 }}, // Death Mountain -> DMT Storms Grotto
     { ENTR_GROTTOS_0,  ENTR_DEATH_MOUNTAIN_CRATER_UPPER_EXIT, 1, 0x7A, SCENE_DEATH_MOUNTAIN_CRATER, {    50.0,  1233.0,  1776.0 }}, // DMC Upper Nearby -> DMC Upper Grotto
     { ENTR_GROTTOS_0,  ENTR_ZORAS_RIVER_WATERFALL_EXIT,           0, 0x29, SCENE_ZORAS_RIVER,           {   369.0,   570.0,   128.0 }}, // Zora River -> ZR Open Grotto
     { ENTR_GROTTOS_2,  ENTR_HYRULE_FIELD_FENCE_EXIT,          0, 0xE6, SCENE_HYRULE_FIELD,          { -5002.0,  -700.0, 13823.0 }}, // Hyrule Field -> HF Inside Fence Grotto
-    { ENTR_GROTTOS_4,  ENTR_DEATH_MOUNTAIN_CRATER_BRIDGE_EXIT, 1, 0xF9, SCENE_DEATH_MOUNTAIN_CRATER, { -1703.0,   722.0,  -481.0 }}, // DMC Lower Nearby -> DMC Hammer Grotto
+    { ENTR_GROTTOS_4,  ENTR_DEATH_MOUNTAIN_CRATER_GC_EXIT, 1, 0xF9, SCENE_DEATH_MOUNTAIN_CRATER, { -1703.0,   722.0,  -481.0 }}, // DMC Lower Nearby -> DMC Hammer Grotto
     { ENTR_GROTTOS_4,  ENTR_GORON_CITY_UPPER_EXIT,            3, 0xFB, SCENE_GORON_CITY,            {  1091.0,   580.0, -1192.0 }}, // GC Grotto Platform -> GC Grotto
     { ENTR_GROTTOS_4,  ENTR_LON_LON_RANCH_OUTSIDE_TOWER,        0, 0xFC, SCENE_LON_LON_RANCH,         {  1798.0,     0.0,  1498.0 }}, // Lon Lon Ranch -> LLR Grotto
     { ENTR_GROTTOS_4,  ENTR_LAKE_HYLIA_OUTSIDE_TEMPLE,            0, 0xEF, SCENE_LAKE_HYLIA,            { -3044.0, -1033.0,  6070.0 }}, // Lake Hylia -> LH Grotto
@@ -681,14 +681,14 @@ static BetterSceneSelectGrottoData sBetterGrottos[] = {
     { ENTR_GROTTOS_10, ENTR_ZORAS_RIVER_WEST_EXIT,           0, 0xEB, SCENE_ZORAS_RIVER,           { -1632.0,   100.0,  -123.0 }}, // Zora River -> ZR Storms Grotto
     { ENTR_GROTTOS_10, ENTR_SACRED_FOREST_MEADOW_OUTSIDE_TEMPLE,  0, 0xEE, SCENE_SACRED_FOREST_MEADOW,  {   317.0,   480.0, -2303.0 }}, // Sacred Forest Meadow -> SFM Storms Grotto
     { ENTR_GROTTOS_10, ENTR_GERUDO_VALLEY_OUTSIDE_TENT,         0, 0xF0, SCENE_GERUDO_VALLEY,         { -1321.0,    15.0,  -968.0 }}, // GV Fortress Side -> GV Storms Grotto
-    { ENTR_GROTTOS_10, ENTR_DESERT_COLOSSUS_5,       0, 0xFD, SCENE_DESERT_COLOSSUS,       {    71.0,   -32.0, -1303.0 }}, // Desert Colossus -> Colossus Grotto
+    { ENTR_GROTTOS_10, ENTR_DESERT_COLOSSUS_WARP_PAD,       0, 0xFD, SCENE_DESERT_COLOSSUS,       {    71.0,   -32.0, -1303.0 }}, // Desert Colossus -> Colossus Grotto
     { ENTR_GROTTOS_12, ENTR_LOST_WOODS_TUNNEL_SHORTCUT,            6, 0xF3, SCENE_LOST_WOODS,            {    75.0,   -20.0, -1596.0 }}, // LW Beyond Mido -> Deku Theater
     { ENTR_GROTTOS_1,  ENTR_HYRULE_FIELD_STAIRS_EXIT,          0, 0xE5, SCENE_HYRULE_FIELD,          {  2059.0,    20.0,  -174.0 }}, // Hyrule Field -> HF Near Kak Grotto
     { ENTR_GROTTOS_9,  ENTR_CASTLE_GROUNDS_RAINBOW_BRIDGE_EXIT,         0, 0xF6, SCENE_HYRULE_CASTLE,         {   986.0,  1571.0,   837.0 }}, // Hyrule Castle Grounds -> HC Storms Grotto
     { ENTR_GROTTOS_5,  ENTR_HYRULE_FIELD_ROCKY_PATH,          0, 0xE4, SCENE_HYRULE_FIELD,          { -7873.0,  -300.0,  6916.0 }}, // Hyrule Field -> HF Cow Grotto
-    { ENTR_GROTTOS_13, ENTR_DEATH_MOUNTAIN_TRAIL_MIDDLE_EXIT,  0, 0xF8, SCENE_DEATH_MOUNTAIN_TRAIL,  {  -678.0,  1946.0,  -284.0 }}, // Death Mountain Summit -> DMT Cow Grotto
+    { ENTR_GROTTOS_13, ENTR_DEATH_MOUNTAIN_TRAIL_GC_EXIT,  0, 0xF8, SCENE_DEATH_MOUNTAIN_TRAIL,  {  -678.0,  1946.0,  -284.0 }}, // Death Mountain Summit -> DMT Cow Grotto
     { ENTR_GROTTOS_6,  ENTR_GERUDO_VALLEY_EAST_EXIT,         0, 0xF2, SCENE_GERUDO_VALLEY,         {   271.0,  -555.0,  1465.0 }}, // GV Grotto Ledge -> GV Octorok Grotto
-    { ENTR_GROTTOS_11, ENTR_HYRULE_FIELD_0,          0, 0xE1, SCENE_HYRULE_FIELD,          { -4945.0,  -300.0,  2841.0 }}, // Hyrule Field -> HF Tektite Grotto
+    { ENTR_GROTTOS_11, ENTR_HYRULE_FIELD_PAST_BRIDGE_SPAWN,          0, 0xE1, SCENE_HYRULE_FIELD,          { -4945.0,  -300.0,  2841.0 }}, // Hyrule Field -> HF Tektite Grotto
 };
 
 void Select_UpdateMenu(SelectContext* this) {

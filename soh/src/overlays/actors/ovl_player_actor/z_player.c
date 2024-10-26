@@ -5055,7 +5055,7 @@ static s16 sReturnEntranceGroupData[] = {
     // ENTR_RETURN_GREAT_FAIRYS_FOUNTAIN_MAGIC
     /*  0 */ ENTR_DEATH_MOUNTAIN_TRAIL_GREAT_FAIRY_EXIT,  // from Magic Fairy Fountain
     /*  1 */ ENTR_DEATH_MOUNTAIN_CRATER_GREAT_FAIRY_EXIT, // from Double Magic Fairy Fountain
-    /*  2 */ ENTR_CASTLE_GROUNDS_CHILD_CRAWLSPACE,         // from Double Defense Fairy Fountain (as adult)
+    /*  2 */ ENTR_CASTLE_GROUNDS_GREAT_FAIRY_EXIT,        // from Double Defense Fairy Fountain (as adult)
 
     // ENTR_RETURN_2
     /*  3 */ ENTR_KAKARIKO_VILLAGE_OUTSIDE_POTION_SHOP_FRONT, // from Potion Shop in Kakariko
@@ -5075,7 +5075,7 @@ static s16 sReturnEntranceGroupData[] = {
 
     // ENTR_RETURN_GREAT_FAIRYS_FOUNTAIN_SPELLS
     /* 11 */ ENTR_ZORAS_FOUNTAIN_OUTSIDE_GREAT_FAIRY,  // from Farores Wind Fairy Fountain
-    /* 12 */ ENTR_CASTLE_GROUNDS_CHILD_CRAWLSPACE,   // from Dins Fire Fairy Fountain (as child)
+    /* 12 */ ENTR_CASTLE_GROUNDS_GREAT_FAIRY_EXIT,   // from Dins Fire Fairy Fountain (as child)
     /* 13 */ ENTR_DESERT_COLOSSUS_GREAT_FAIRY_EXIT, // from Nayrus Love Fairy Fountain
 };
 
@@ -14321,12 +14321,12 @@ void Player_Action_8084E368(Player* this, PlayState* play) {
 }
 
 static s16 sWarpSongEntrances[] = {
-    ENTR_SACRED_FOREST_MEADOW_2,
-    ENTR_DEATH_MOUNTAIN_CRATER_4,
-    ENTR_LAKE_HYLIA_8,
-    ENTR_DESERT_COLOSSUS_5,
-    ENTR_GRAVEYARD_7,
-    ENTR_TEMPLE_OF_TIME_7,
+    ENTR_SACRED_FOREST_MEADOW_WARP_PAD,
+    ENTR_DEATH_MOUNTAIN_CRATER_WARP_PAD,
+    ENTR_LAKE_HYLIA_WARP_PAD,
+    ENTR_DESERT_COLOSSUS_WARP_PAD,
+    ENTR_GRAVEYARD_WARP_PAD,
+    ENTR_TEMPLE_OF_TIME_WARP_PAD,
 };
 
 void Player_Action_8084E3C4(Player* this, PlayState* play) {

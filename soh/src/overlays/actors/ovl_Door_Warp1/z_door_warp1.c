@@ -178,9 +178,9 @@ void DoorWarp1_SetupWarp(DoorWarp1* this, PlayState* play) {
             DoorWarp1_SetupAction(this, DoorWarp1_AwaitClearFlag);
             break;
         case WARP_DESTINATION:
-            if ((!(gSaveContext.entranceIndex == ENTR_SACRED_FOREST_MEADOW_BLUE_WARP ||  // sacred forest meadow
+            if ((!(gSaveContext.entranceIndex == ENTR_SACRED_FOREST_MEADOW_FOREST_TEMPLE_BLUE_WARP ||  // sacred forest meadow
                    gSaveContext.entranceIndex == ENTR_DEATH_MOUNTAIN_CRATER_FIRE_TEMPLE_BLUE_WARP ||  // death mountain crater
-                   gSaveContext.entranceIndex == ENTR_LAKE_HYLIA_9 ||  // lake hylia
+                   gSaveContext.entranceIndex == ENTR_LAKE_HYLIA_WATER_TEMPLE_BLUE_WARP ||  // lake hylia
                    gSaveContext.entranceIndex == ENTR_DESERT_COLOSSUS_SPIRIT_TEMPLE_BLUE_WARP ||  // desert colossus
                    gSaveContext.entranceIndex == ENTR_GRAVEYARD_SHADOW_TEMPLE_BLUE_WARP) && // graveyard
                  gSaveContext.sceneSetupIndex < 4) ||
@@ -536,7 +536,7 @@ void DoorWarp1_ChildWarpOut(DoorWarp1* this, PlayState* play) {
                 play->nextEntranceIndex = ENTR_DEATH_MOUNTAIN_TRAIL_BOTTOM_EXIT;
                 gSaveContext.nextCutsceneIndex = 0xFFF1;
             } else {
-                play->nextEntranceIndex = ENTR_DEATH_MOUNTAIN_TRAIL_5;
+                play->nextEntranceIndex = ENTR_DEATH_MOUNTAIN_TRAIL_DODONGO_BLUE_WARP;
                 gSaveContext.nextCutsceneIndex = 0;
             }
         } else if (play->sceneNum == SCENE_DEKU_TREE_BOSS) {
@@ -760,9 +760,9 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, PlayState* play) {
                 gSaveContext.chamberCutsceneNum = CHAMBER_CS_FOREST;
             } else {
                 if (!LINK_IS_ADULT) {
-                    play->nextEntranceIndex = ENTR_SACRED_FOREST_MEADOW_2;
+                    play->nextEntranceIndex = ENTR_SACRED_FOREST_MEADOW_WARP_PAD;
                 } else {
-                    play->nextEntranceIndex = ENTR_SACRED_FOREST_MEADOW_BLUE_WARP;
+                    play->nextEntranceIndex = ENTR_SACRED_FOREST_MEADOW_FOREST_TEMPLE_BLUE_WARP;
                 }
                 gSaveContext.nextCutsceneIndex = 0;
             }
@@ -776,7 +776,7 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, PlayState* play) {
                 gSaveContext.nextCutsceneIndex = 0xFFF3;
             } else {
                 if (!LINK_IS_ADULT) {
-                    play->nextEntranceIndex = ENTR_DEATH_MOUNTAIN_CRATER_4;
+                    play->nextEntranceIndex = ENTR_DEATH_MOUNTAIN_CRATER_WARP_PAD;
                 } else {
                     play->nextEntranceIndex = ENTR_DEATH_MOUNTAIN_CRATER_FIRE_TEMPLE_BLUE_WARP;
                 }
@@ -793,9 +793,9 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, PlayState* play) {
                 gSaveContext.chamberCutsceneNum = CHAMBER_CS_WATER;
             } else {
                 if (!LINK_IS_ADULT) {
-                    play->nextEntranceIndex = ENTR_LAKE_HYLIA_8;
+                    play->nextEntranceIndex = ENTR_LAKE_HYLIA_WARP_PAD;
                 } else {
-                    play->nextEntranceIndex = ENTR_LAKE_HYLIA_9;
+                    play->nextEntranceIndex = ENTR_LAKE_HYLIA_WATER_TEMPLE_BLUE_WARP;
                 }
                 gSaveContext.nextCutsceneIndex = 0;
             }
@@ -810,7 +810,7 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, PlayState* play) {
                 gSaveContext.chamberCutsceneNum = CHAMBER_CS_SPIRIT;
             } else {
                 if (!LINK_IS_ADULT) {
-                    play->nextEntranceIndex = ENTR_DESERT_COLOSSUS_5;
+                    play->nextEntranceIndex = ENTR_DESERT_COLOSSUS_WARP_PAD;
                 } else {
                     play->nextEntranceIndex = ENTR_DESERT_COLOSSUS_SPIRIT_TEMPLE_BLUE_WARP;
                 }
@@ -827,7 +827,7 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, PlayState* play) {
                 gSaveContext.chamberCutsceneNum = CHAMBER_CS_SHADOW;
             } else {
                 if (!LINK_IS_ADULT) {
-                    play->nextEntranceIndex = ENTR_GRAVEYARD_7;
+                    play->nextEntranceIndex = ENTR_GRAVEYARD_WARP_PAD;
                 } else {
                     play->nextEntranceIndex = ENTR_GRAVEYARD_SHADOW_TEMPLE_BLUE_WARP;
                 }

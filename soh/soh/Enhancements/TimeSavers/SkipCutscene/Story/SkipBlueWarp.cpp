@@ -26,7 +26,7 @@ void SkipBlueWarp_ShouldPlayTransitionCS(GIVanillaBehavior _, bool* should, va_l
             isBlueWarpCutscene = 1;
         // Dodongo's Cavern Blue warp
         } else if (gSaveContext.entranceIndex == ENTR_DEATH_MOUNTAIN_TRAIL_BOTTOM_EXIT && gSaveContext.cutsceneIndex == 0xFFF1) {
-            gSaveContext.entranceIndex = ENTR_DEATH_MOUNTAIN_TRAIL_5;
+            gSaveContext.entranceIndex = ENTR_DEATH_MOUNTAIN_TRAIL_DODONGO_BLUE_WARP;
             isBlueWarpCutscene = 1;
         // Jabu Jabu's Blue warp
         } else if (gSaveContext.entranceIndex == ENTR_ZORAS_FOUNTAIN_JABU_JABU_BLUE_WARP && gSaveContext.cutsceneIndex == 0xFFF0) {
@@ -38,7 +38,7 @@ void SkipBlueWarp_ShouldPlayTransitionCS(GIVanillaBehavior _, bool* should, va_l
             Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_DEKU_TREE_SPROUT);
 
             if (IS_RANDO) {
-                gSaveContext.entranceIndex = ENTR_SACRED_FOREST_MEADOW_BLUE_WARP;
+                gSaveContext.entranceIndex = ENTR_SACRED_FOREST_MEADOW_FOREST_TEMPLE_BLUE_WARP;
             } else {
                 gSaveContext.entranceIndex = ENTR_KOKIRI_FOREST_12;
             }
@@ -57,7 +57,7 @@ void SkipBlueWarp_ShouldPlayTransitionCS(GIVanillaBehavior _, bool* should, va_l
             gSaveContext.dayTime = gSaveContext.skyboxTime = 0x4800;
             Flags_SetEventChkInf(EVENTCHKINF_RAISED_LAKE_HYLIA_WATER);
 
-            gSaveContext.entranceIndex = ENTR_LAKE_HYLIA_9;
+            gSaveContext.entranceIndex = ENTR_LAKE_HYLIA_WATER_TEMPLE_BLUE_WARP;
             isBlueWarpCutscene = 1;
         // Spirit Temple Blue warp
         } else if (gSaveContext.entranceIndex == ENTR_CHAMBER_OF_THE_SAGES_0 && gSaveContext.cutsceneIndex == 0x0 && gSaveContext.chamberCutsceneNum == CHAMBER_CS_SPIRIT) {
@@ -70,7 +70,7 @@ void SkipBlueWarp_ShouldPlayTransitionCS(GIVanillaBehavior _, bool* should, va_l
         }
 
         if (isBlueWarpCutscene) {
-            if (gSaveContext.entranceIndex != ENTR_LAKE_HYLIA_9) {
+            if (gSaveContext.entranceIndex != ENTR_LAKE_HYLIA_WATER_TEMPLE_BLUE_WARP) {
                 // Normally set in the blue warp cutscene
                 gSaveContext.dayTime = gSaveContext.skyboxTime = 0x8000;
             }

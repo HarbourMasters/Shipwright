@@ -100,7 +100,7 @@ void Sram_OpenSave() {
             gSaveContext.entranceIndex = ENTR_DODONGOS_CAVERN_ENTRANCE;
             break;
         case SCENE_JABU_JABU_BOSS:
-            gSaveContext.entranceIndex = ENTR_JABU_JABU_OUTSIDE_BOSS_DOOR;
+            gSaveContext.entranceIndex = ENTR_JABU_JABU_BOSS_DOOR;
             break;
         case SCENE_FOREST_TEMPLE_BOSS:
             gSaveContext.entranceIndex = ENTR_FOREST_TEMPLE_ENTRANCE;
@@ -133,9 +133,9 @@ void Sram_OpenSave() {
             }
 
             if (gSaveContext.savedSceneNum != SCENE_LINKS_HOUSE) {
-                gSaveContext.entranceIndex = (LINK_AGE_IN_YEARS == YEARS_CHILD) ? ENTR_LINKS_HOUSE_0 : ENTR_TEMPLE_OF_TIME_7;
+                gSaveContext.entranceIndex = (LINK_AGE_IN_YEARS == YEARS_CHILD) ? ENTR_LINKS_HOUSE_CHILD_SPAWN : ENTR_TEMPLE_OF_TIME_WARP_PAD;
             } else {
-                gSaveContext.entranceIndex = ENTR_LINKS_HOUSE_0;
+                gSaveContext.entranceIndex = ENTR_LINKS_HOUSE_CHILD_SPAWN;
             }
             break;
     }
@@ -233,7 +233,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         Sram_InitDebugSave();
     }
 
-    gSaveContext.entranceIndex = ENTR_LINKS_HOUSE_0;
+    gSaveContext.entranceIndex = ENTR_LINKS_HOUSE_CHILD_SPAWN;
     gSaveContext.linkAge = 1;
     gSaveContext.dayTime = 0x6AAB;
     gSaveContext.cutsceneIndex = 0xFFF1;

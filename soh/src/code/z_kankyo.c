@@ -1322,7 +1322,7 @@ void Environment_DrawSunAndMoon(PlayState* play) {
         play->envCtx.sunPos.z = +(Math_CosS(((void)0, gSaveContext.dayTime) - 0x8000) * 20.0f) * 25.0f;
     }
 
-    if (gSaveContext.entranceIndex != ENTR_HYRULE_FIELD_0 || ((void)0, gSaveContext.sceneSetupIndex) != 5) {
+    if (gSaveContext.entranceIndex != ENTR_HYRULE_FIELD_PAST_BRIDGE_SPAWN || ((void)0, gSaveContext.sceneSetupIndex) != 5) {
         Matrix_Translate(play->view.eye.x + play->envCtx.sunPos.x,
                          play->view.eye.y + play->envCtx.sunPos.y,
                          play->view.eye.z + play->envCtx.sunPos.z, MTXMODE_NEW);

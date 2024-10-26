@@ -4460,7 +4460,7 @@ void KaleidoScope_Update(PlayState* play)
                         case ENTR_FIRE_TEMPLE_BOSS_ENTRANCE:
                             gSaveContext.entranceIndex = ENTR_FIRE_TEMPLE_ENTRANCE;
                             break;
-                        case ENTR_WATER_TEMPLE_BOSS_0:
+                        case ENTR_WATER_TEMPLE_BOSS_ENTRANCE:
                             gSaveContext.entranceIndex = ENTR_WATER_TEMPLE_ENTRANCE;
                             break;
                         case ENTR_SPIRIT_TEMPLE_BOSS_ENTRANCE:

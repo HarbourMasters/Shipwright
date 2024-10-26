@@ -53,11 +53,11 @@ static const GrottoReturnInfo grottoReturnTable[NUM_GROTTOS] = {
     {.entranceIndex = ENTR_ZORAS_RIVER_WEST_EXIT,           .room = 0x00, .angle = 0x0000, .pos = {.x = -1630.05f,   .y =   100.0f, .z =  -132.104f}}, // ZR Storms Grotto -> Zora River
     {.entranceIndex = ENTR_ZORAS_RIVER_WEST_EXIT,           .room = 0x00, .angle = 0xE000, .pos = {.x =   649.507f,  .y =   570.0f, .z =  -346.853f}}, // ZR Fairy Grotto -> Zora River
     {.entranceIndex = ENTR_ZORAS_RIVER_WEST_EXIT,           .room = 0x00, .angle = 0x8000, .pos = {.x =   362.29f,   .y =   570.0f, .z =   111.48f}},  // ZR Open Grotto -> Zora River
-    {.entranceIndex = ENTR_DEATH_MOUNTAIN_CRATER_BRIDGE_EXIT, .room = 0x01, .angle = 0x31C7, .pos = {.x = -1666.73f,   .y =   721.0f, .z =  -459.21f}},  // DMC Hammer Grotto -> DMC Lower Local
+    {.entranceIndex = ENTR_DEATH_MOUNTAIN_CRATER_GC_EXIT, .room = 0x01, .angle = 0x31C7, .pos = {.x = -1666.73f,   .y =   721.0f, .z =  -459.21f}},  // DMC Hammer Grotto -> DMC Lower Local
     {.entranceIndex = ENTR_DEATH_MOUNTAIN_CRATER_UPPER_EXIT, .room = 0x01, .angle = 0x238E, .pos = {.x =    63.723f,  .y =  1265.0f, .z =  1791.39f}},  // DMC Upper Grotto -> DMC Upper Local
     {.entranceIndex = ENTR_GORON_CITY_UPPER_EXIT,            .room = 0x03, .angle = 0x0000, .pos = {.x =  1104.73f,   .y =   580.0f, .z = -1159.95f}},  // GC Grotto -> GC Grotto Platform
-    {.entranceIndex = ENTR_DEATH_MOUNTAIN_TRAIL_MIDDLE_EXIT,  .room = 0x00, .angle = 0x8000, .pos = {.x =  -387.584f,  .y =  1386.0f, .z = -1213.05f}},  // DMT Storms Grotto -> Death Mountain
-    {.entranceIndex = ENTR_DEATH_MOUNTAIN_TRAIL_MIDDLE_EXIT,  .room = 0x00, .angle = 0x8000, .pos = {.x =  -691.022f,  .y =  1946.0f, .z =  -312.969f}}, // DMT Cow Grotto -> Death Mountain Summit
+    {.entranceIndex = ENTR_DEATH_MOUNTAIN_TRAIL_GC_EXIT,  .room = 0x00, .angle = 0x8000, .pos = {.x =  -387.584f,  .y =  1386.0f, .z = -1213.05f}},  // DMT Storms Grotto -> Death Mountain
+    {.entranceIndex = ENTR_DEATH_MOUNTAIN_TRAIL_GC_EXIT,  .room = 0x00, .angle = 0x8000, .pos = {.x =  -691.022f,  .y =  1946.0f, .z =  -312.969f}}, // DMT Cow Grotto -> Death Mountain Summit
     {.entranceIndex = ENTR_KAKARIKO_VILLAGE_FRONT_GATE,      .room = 0x00, .angle = 0x0000, .pos = {.x =   855.238f,  .y =    80.0f, .z =  -234.095f}}, // Kak Open Grotto -> Kak Backyard
     {.entranceIndex = ENTR_KAKARIKO_VILLAGE_FRONT_GATE,      .room = 0x00, .angle = 0x0000, .pos = {.x =  -401.873f,  .y =     0.0f, .z =   402.792f}}, // Kak Redead Grotto -> Kakariko Village
     {.entranceIndex = ENTR_CASTLE_GROUNDS_SOUTH_EXIT,         .room = 0x00, .angle = 0x9555, .pos = {.x =  1009.02f,   .y =  1571.0f, .z =   855.532f}}, // HC Storms Grotto -> Castle Grounds
