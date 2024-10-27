@@ -715,7 +715,7 @@ static void CalculateWotH() {
       //If removing this item and no other item caused the game to become unbeatable, then it is strictly necessary,
       //so add it unless it is in Links Pocket or an isolated place.
       auto itemLoc = ctx->GetItemLocation(ctx->playthroughLocations[i][j]);
-      if (itemLoc->IsHintable() && *itemLoc->GetAreas().begin() > RA_LINKS_POCKET &&
+      if (itemLoc->IsHintable() && itemLoc->GetFirstArea() > RA_LINKS_POCKET &&
           !(IsBeatableWithout(ctx->playthroughLocations[i][j], true))) {
         itemLoc->SetWothCandidate();
       }

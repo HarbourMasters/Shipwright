@@ -501,10 +501,7 @@ void CreateWarpSongTexts() {
     auto warpSongEntrances = GetShuffleableEntrances(EntranceType::WarpSong, false);
     for (auto entrance : warpSongEntrances) {
       //RANDOTODO make random
-      RandomizerArea destination = RA_NONE;
-      if (!entrance->GetConnectedRegion()->GetAllAreas().empty()){
-        destination = *entrance->GetConnectedRegion()->GetAllAreas().begin();
-      }
+      RandomizerArea destination = entrance->GetConnectedRegion()->GetFirstArea();
       switch (entrance->GetIndex()) {
         case 0x0600: // minuet RANDOTODO make into entrance hints when they are added
           ctx->AddHint(RH_MINUET_WARP_LOC, Hint(RH_MINUET_WARP_LOC, HINT_TYPE_AREA, "", {RHT_WARP_SONG}, {}, {destination}));
@@ -748,12 +745,14 @@ void CreateStaticHintFromData(RandomizerHint hint, StaticHintInfo staticData){
       std::vector<RandomizerCheck> locations = {};
       if (staticData.targetItems.size() > 0){
         locations = FindItemsAndMarkHinted(staticData.targetItems, staticData.hintChecks);
-      }
-      for(auto check: staticData.targetChecks){
-        ctx->GetItemLocation(check)->SetHintAccesible();
+      } else {
+        for(auto check: staticData.targetChecks){
+          locations.push_back(check);
+        }
       }
       std::vector<RandomizerArea> areas = {};
       for (auto loc : locations){
+        ctx->GetItemLocation(loc)->SetHintAccesible();
         areas.push_back(RandomElementFromSet(ctx->GetItemLocation(loc)->GetAreas()));
       }
       //hintKeys are defaulted to in the hint object and do not need to be specified

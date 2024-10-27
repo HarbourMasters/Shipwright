@@ -23,6 +23,7 @@ class ItemLocation {
     RandomizerRegion GetParentRegionKey() const;
     void SetParentRegion (RandomizerRegion region);
     std::set<RandomizerArea> GetAreas() const;
+    RandomizerArea GetFirstArea() const;
     void MergeAreas (std::set<RandomizerArea> newAreas);
     void PlaceVanillaItem();
     void ApplyPlacedItemEffect() const;
