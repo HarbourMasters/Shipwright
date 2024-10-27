@@ -22,8 +22,6 @@ It is recommended that you install Python and Git standalone, the install proces
 
 _Note: Be sure to either clone with the ``--recursive`` flag or do ``git submodule update --init`` after cloning to pull in the libultraship submodule!_
 
-2. Place one or more [compatible](#compatible-roms) roms in the `OTRExporter` directory with namings of your choice
-
 _Note: Instructions assume using powershell_
 ```powershell
 # Navigate to the Shipwright repo within powershell. ie: cd "C:\yourpath\Shipwright"
@@ -31,8 +29,10 @@ cd Shipwright
 
 # Setup cmake project
 & 'C:\Program Files\CMake\bin\cmake' -S . -B "build/x64" -G "Visual Studio 17 2022" -T v143 -A x64 # -DCMAKE_BUILD_TYPE:STRING=Release (if you're packaging)
-# Extract assets & generate OTR (run this anytime you need to regenerate OTR)
-& 'C:\Program Files\CMake\bin\cmake.exe' --build .\build\x64 --target ExtractAssets # --config Release (if you're packaging)
+
+# To generate soh.otr
+& 'C:\Program Files\CMake\bin\cmake.exe' --build .\build\x64 --target GenerateSohOtr
+
 # Compile project
 & 'C:\Program Files\CMake\bin\cmake.exe' --build .\build\x64 # --config Release (if you're packaging)
 
@@ -43,9 +43,6 @@ cd Shipwright
 
 # If you need to regenerate the asset headers to check them into source
 & 'C:\Program Files\CMake\bin\cmake.exe' --build .\build\x64 --target ExtractAssetHeaders
-
-# If you need a newer soh.otr only
-& 'C:\Program Files\CMake\bin\cmake.exe' --build .\build\x64 --target GenerateSohOtr
 ```
 
 ### Developing SoH
