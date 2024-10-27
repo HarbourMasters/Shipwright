@@ -424,9 +424,14 @@ namespace Rando {
                         //hammer jumpslash cannot damage these, but hammer swing can
                         killed = killed || CanUse(RG_MEGATON_HAMMER);
                         [[fallthrough]];
-                    case ED_HAMMER_JUMPSLASH:
+                    case ED_SHORT_JUMPSLASH:
+                        killed = killed || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_KOKIRI_SWORD);
+                        [[fallthrough]];
                     case ED_MASTER_SWORD_JUMPSLASH:
-                        killed = killed || CanJumpslashExceptHammer();
+                        killed = killed || CanUse(RG_MASTER_SWORD);
+                        [[fallthrough]];
+                    case ED_LONG_JUMPSLASH:
+                        killed = killed || CanUse(RG_BIGGORON_SWORD) || CanUse(RG_STICKS);
                         [[fallthrough]];
                     case ED_RANG_OR_HOOKSHOT:
                         //RANDOTODO test dins, bomb and chu range in a practical example
@@ -474,7 +479,8 @@ namespace Rando {
             case RE_FLARE_DANCER:
                 return CanUse(RG_MEGATON_HAMMER) || CanUse(RG_HOOKSHOT) || (HasExplosives() && (CanJumpslashExceptHammer() || CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_BOOMERANG)));
             case RE_WOLFOS:
-                return CanJumpslash() || CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_BOMBCHU_5) || (CanUse(RG_BOMB_BAG) && (CanUse(RG_NUTS) || CanUse(RG_HOOKSHOT) || CanUse(RG_BOOMERANG)));
+            case RE_WHITE_WOLFOS:
+                return CanJumpslash() || CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_BOMBCHU_5) || CanUse(RG_DINS_FIRE) || (CanUse(RG_BOMB_BAG) && (CanUse(RG_NUTS) || CanUse(RG_HOOKSHOT) || CanUse(RG_BOOMERANG)));
             case RE_REDEAD:
                 return CanJumpslash() || CanUse(RG_DINS_FIRE);
             case RE_MEG:
@@ -523,6 +529,7 @@ namespace Rando {
             case RE_STALFOS:
             case RE_FLARE_DANCER:
             case RE_WOLFOS:
+            case RE_WHITE_WOLFOS:
             case RE_FLOORMASTER:
             case RE_MEG:
             case RE_ARMOS:
@@ -567,6 +574,7 @@ namespace Rando {
             case RE_IRON_KNUCKLE:
             case RE_FLARE_DANCER:
             case RE_WOLFOS:
+            case RE_WHITE_WOLFOS:
             case RE_FLOORMASTER:
             case RE_REDEAD:
             case RE_MEG:
@@ -599,7 +607,7 @@ namespace Rando {
         switch(enemy) {
             case RE_GOLD_SKULLTULA:
                 //RANDOTODO double check all jumpslash kills that might be out of jump/backflip range
-                return distance <= ED_HAMMER_JUMPSLASH || (distance <= ED_RANG_OR_HOOKSHOT && (CanUse(RG_HOOKSHOT) || CanUse(RG_BOOMERANG))) || (distance == ED_LONGSHOT && CanUse(RG_LONGSHOT));
+                return distance <= ED_SHORT_JUMPSLASH || (distance <= ED_RANG_OR_HOOKSHOT && (CanUse(RG_HOOKSHOT) || CanUse(RG_BOOMERANG))) || (distance == ED_LONGSHOT && CanUse(RG_LONGSHOT));
             case RE_KEESE:
             case RE_FIRE_KEESE:
                 return true;
@@ -672,13 +680,18 @@ namespace Rando {
         bool hit = false;
         switch (distance){
             case ED_CLOSE:
-            case ED_HAMMER_JUMPSLASH:
+            case ED_SHORT_JUMPSLASH:
+                hit = hit || CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MEGATON_HAMMER);
+                [[fallthrough]];
             case ED_MASTER_SWORD_JUMPSLASH:
-                hit = hit || CanJumpslash();
+                hit = hit || CanUse(RG_MASTER_SWORD);
+                [[fallthrough]];
+            case ED_LONG_JUMPSLASH:
+                hit = hit || CanUse(RG_BIGGORON_SWORD) || CanUse(RG_STICKS);
                 [[fallthrough]];
             case ED_RANG_OR_HOOKSHOT:
                 //RANDOTODO test bomb and chu range in a practical example
-                hit = hit || CanUse(RG_HOOKSHOT) || CanUse(RG_BOMB_BAG) ||CanUse(RG_BOMBCHU_5);
+                hit = hit || HookshotOrBoomerang() || HasExplosives() ;
                 [[fallthrough]];
             case ED_LONGSHOT:
                 hit = hit || CanUse(RG_LONGSHOT);

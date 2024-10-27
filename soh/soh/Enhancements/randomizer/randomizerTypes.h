@@ -820,8 +820,10 @@ typedef enum {
     RR_ICE_CAVERN_MAIN,
 
     RR_ICE_CAVERN_MQ_BEGINNING,
+    RR_ICE_CAVERN_MQ_HUB,
     RR_ICE_CAVERN_MQ_MAP_ROOM,
-    RR_ICE_CAVERN_MQ_IRON_BOOTS_REGION,
+    RR_ICE_CAVERN_MQ_SCARECROW_ROOM,
+    RR_ICE_CAVERN_MQ_STALFOS_ROOM,
     RR_ICE_CAVERN_MQ_COMPASS_ROOM,
 
     RR_GERUDO_TRAINING_GROUNDS_LOBBY,
@@ -4497,12 +4499,17 @@ typedef enum {
     RE_TORCH_SLUG,
     RE_FREEZARD,
     RE_SPIKE,
+    RE_WHITE_WOLFOS,
 } RandomizerEnemy;
 
+//RANDOTODO compare child long jumpslash range with adult short
 typedef enum {
     ED_CLOSE,
-    ED_HAMMER_JUMPSLASH,
+    //hammer or kokiri sword
+    ED_SHORT_JUMPSLASH,
     ED_MASTER_SWORD_JUMPSLASH,
+    //sticks or BGS
+    ED_LONG_JUMPSLASH,
     ED_RANG_OR_HOOKSHOT,
     ED_LONGSHOT,
     ED_FAR,
