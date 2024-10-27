@@ -903,7 +903,7 @@ void EntranceTrackerWindow::DrawElement() {
 
                     // Use a non-breaking space to keep the arrow from wrapping to a newline by itself
                     auto nbsp = u8"\u00A0";
-                    ImGui::TextWrapped("%s%s->%s", origSrcName, nbsp, rplcDstName);
+                    ImGui::TextWrapped("%s%s-> %s", origSrcName, nbsp, rplcDstName);
 
                     ImGui::PopStyleColor();
                 }
