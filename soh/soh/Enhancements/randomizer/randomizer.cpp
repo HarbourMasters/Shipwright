@@ -1393,7 +1393,8 @@ void RandomizerSettingsWindow::DrawElement() {
     }
 
     UIWidgets::Spacer(0);
-    ImGui::BeginDisabled(CVarGetInteger(CVAR_RANDOMIZER_SETTING("DontGenerateSpoiler"), 0) && gSaveContext.gameMode != GAMEMODE_FILE_SELECT);
+    ImGui::BeginDisabled((CVarGetInteger(CVAR_RANDOMIZER_SETTING("DontGenerateSpoiler"), 0) && gSaveContext.gameMode != GAMEMODE_FILE_SELECT) ||
+                          GameInteractor::IsSaveLoaded());
     if (ImGui::Button("Generate Randomizer")) {
         ctx->SetSpoilerLoaded(false);
         GenerateRandomizer(CVarGetInteger(CVAR_RANDOMIZER_SETTING("ManualSeedEntry"), 0) ? seedString : "");
