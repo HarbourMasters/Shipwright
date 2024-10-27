@@ -1064,12 +1064,22 @@ bool UpdateFilters() {
 }
 
 bool ShouldShowCheck(RandomizerCheck check) {
+    auto itemLoc = Rando::Context::GetInstance()->GetItemLocation(check);
+    std::string search = (Rando::StaticData::GetLocation(check)->GetShortName() + " " +
+        Rando::StaticData::GetLocation(check)->GetName() + " " +
+        RandomizerCheckObjects::GetRCAreaName(Rando::StaticData::GetLocation(check)->GetArea()));
+    if (itemLoc->HasObtained() || itemLoc->GetCheckStatus() == RCSHOW_SCUMMED || 
+        (!mystery && (itemLoc->GetCheckStatus() == RCSHOW_IDENTIFIED || itemLoc->GetCheckStatus() == RCSHOW_SEEN) && itemLoc->GetPlacedRandomizerGet() != RG_ICE_TRAP)) {
+        search += " " + itemLoc->GetPlacedItemName().GetForLanguage(gSaveContext.language);
+    } else if (itemLoc->GetCheckStatus() == RCSHOW_IDENTIFIED && !mystery) {
+        search += OTRGlobals::Instance->gRandoContext->overrides[check].GetTrickName().GetForLanguage(gSaveContext.language);
+    } else if (itemLoc->GetCheckStatus() == RCSHOW_SEEN && !mystery) {
+        search += Rando::StaticData::RetrieveItem(OTRGlobals::Instance->gRandoContext->overrides[check].LooksLike()).GetName().GetForLanguage(gSaveContext.language);
+    }
     return (
-        IsVisibleInCheckTracker(check) && 
+        IsVisibleInCheckTracker(check) &&
         (checkSearch.Filters.Size == 0 ||
-        checkSearch.PassFilter((Rando::StaticData::GetLocation(check)->GetShortName() + " " +
-            Rando::StaticData::GetLocation(check)->GetName() + " " +
-            RandomizerCheckObjects::GetRCAreaName(Rando::StaticData::GetLocation(check)->GetArea())).c_str()))
+            checkSearch.PassFilter(search.c_str()))
     );
 }
 
