@@ -1184,7 +1184,7 @@ ScrubIdentity Randomizer::IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respa
         scrubIdentity.isShuffled = GetRandoSettingValue(RSK_SHUFFLE_SCRUBS) == RO_SCRUBS_ALL;
 
         if (location->GetRandomizerCheck() == RC_HF_DEKU_SCRUB_GROTTO || location->GetRandomizerCheck() == RC_LW_DEKU_SCRUB_GROTTO_FRONT || location->GetRandomizerCheck() == RC_LW_DEKU_SCRUB_NEAR_BRIDGE) {
-            scrubIdentity.isShuffled = GetRandoSettingValue(RSK_SHUFFLE_SCRUBS) != RO_SCRUBS_OFF;;
+            scrubIdentity.isShuffled = GetRandoSettingValue(RSK_SHUFFLE_SCRUBS) != RO_SCRUBS_OFF;
         }
 
         scrubIdentity.itemPrice = OTRGlobals::Instance->gRandoContext->GetItemLocation(scrubIdentity.randomizerCheck)->GetPrice();
@@ -3025,4 +3025,349 @@ void RandomizerSettingsWindow::InitElement() {
     Randomizer::CreateCustomMessages();
     seedString = (char*)calloc(MAX_SEED_STRING_SIZE, sizeof(char));
     Rando::Context::GetInstance()->GetSettings()->UpdateOptionProperties();
+}
+
+// Gameplay stat tracking: Update time the item was acquired
+// (special cases for rando items)
+void Randomizer_GameplayStats_SetTimestamp(uint16_t item) {
+
+    u32 time = GAMEPLAYSTAT_TOTAL_TIME;
+
+    // Have items in Link's pocket shown as being obtained at 0.1 seconds
+    if (time == 0) {
+        time = 1;
+    }
+
+    // Use ITEM_KEY_BOSS to timestamp Ganon's boss key
+    if (item == RG_GANONS_CASTLE_BOSS_KEY) {
+        gSaveContext.sohStats.itemTimestamp[ITEM_KEY_BOSS] = time;
+    }
+
+    // Count any bottled item as a bottle
+    if (item >= RG_EMPTY_BOTTLE && item <= RG_BOTTLE_WITH_BIG_POE) {
+        if (gSaveContext.sohStats.itemTimestamp[ITEM_BOTTLE] == 0) {
+            gSaveContext.sohStats.itemTimestamp[ITEM_BOTTLE] = time;
+        }
+        return;
+    }
+    // Count any bombchu pack as bombchus
+    if ((item >= RG_BOMBCHU_5 && item <= RG_BOMBCHU_20) || item == RG_PROGRESSIVE_BOMBCHUS) {
+        if (gSaveContext.sohStats.itemTimestamp[ITEM_BOMBCHU] = 0) {
+            gSaveContext.sohStats.itemTimestamp[ITEM_BOMBCHU] = time;
+        }
+        return;
+    }
+    if (item == RG_MAGIC_SINGLE) {
+        gSaveContext.sohStats.itemTimestamp[ITEM_SINGLE_MAGIC] = time;
+    }
+    if (item == RG_DOUBLE_DEFENSE) {
+        gSaveContext.sohStats.itemTimestamp[ITEM_DOUBLE_DEFENSE] = time;
+    }
+}
+
+extern "C" u8 Return_Item_Entry(GetItemEntry itemEntry, u8 returnItem);
+
+// used for items that only set a rand inf when obtained
+std::map<RandomizerGet, RandomizerInf> randomizerGetToRandInf = {
+    { RG_FISHING_POLE,           RAND_INF_FISHING_POLE_FOUND },
+    { RG_BRONZE_SCALE,           RAND_INF_CAN_SWIM },
+    { RG_QUIVER_INF,             RAND_INF_HAS_INFINITE_QUIVER },
+    { RG_BOMB_BAG_INF,           RAND_INF_HAS_INFINITE_BOMB_BAG },
+    { RG_BULLET_BAG_INF,         RAND_INF_HAS_INFINITE_BULLET_BAG },
+    { RG_STICK_UPGRADE_INF,      RAND_INF_HAS_INFINITE_STICK_UPGRADE },
+    { RG_NUT_UPGRADE_INF,        RAND_INF_HAS_INFINITE_NUT_UPGRADE },
+    { RG_MAGIC_INF,              RAND_INF_HAS_INFINITE_MAGIC_METER },
+    { RG_BOMBCHU_INF,            RAND_INF_HAS_INFINITE_BOMBCHUS },
+    { RG_WALLET_INF,             RAND_INF_HAS_INFINITE_MONEY },
+    { RG_SKELETON_KEY,           RAND_INF_HAS_SKELETON_KEY },
+    { RG_OCARINA_A_BUTTON,       RAND_INF_HAS_OCARINA_A },
+    { RG_OCARINA_C_UP_BUTTON,    RAND_INF_HAS_OCARINA_C_UP },
+    { RG_OCARINA_C_DOWN_BUTTON,  RAND_INF_HAS_OCARINA_C_DOWN },
+    { RG_OCARINA_C_LEFT_BUTTON,  RAND_INF_HAS_OCARINA_C_LEFT },
+    { RG_OCARINA_C_RIGHT_BUTTON, RAND_INF_HAS_OCARINA_C_RIGHT },
+    { RG_GOHMA_SOUL,             RAND_INF_GOHMA_SOUL },
+    { RG_KING_DODONGO_SOUL,      RAND_INF_KING_DODONGO_SOUL },
+    { RG_BARINADE_SOUL,          RAND_INF_BARINADE_SOUL },
+    { RG_PHANTOM_GANON_SOUL,     RAND_INF_PHANTOM_GANON_SOUL },
+    { RG_VOLVAGIA_SOUL,          RAND_INF_VOLVAGIA_SOUL },
+    { RG_MORPHA_SOUL,            RAND_INF_MORPHA_SOUL },
+    { RG_BONGO_BONGO_SOUL,       RAND_INF_BONGO_BONGO_SOUL },
+    { RG_TWINROVA_SOUL,          RAND_INF_TWINROVA_SOUL },
+    { RG_GANON_SOUL,             RAND_INF_GANON_SOUL },
+};
+
+extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
+    if (giEntry.modIndex != MOD_RANDOMIZER) {
+        LUSLOG_WARN("Randomizer_Item_Give was called with a GetItemEntry with a mod index different from MOD_RANDOMIZER (%d)", giEntry.modIndex);
+        assert(false);
+        return -1;
+    }
+
+    RandomizerGet item = (RandomizerGet)giEntry.getItemId;
+
+    // Gameplay stats: Update the time the item was obtained
+    Randomizer_GameplayStats_SetTimestamp(item);
+
+    //if it's an item that just sets a randomizerInf, set it
+    if (randomizerGetToRandInf.find(item) != randomizerGetToRandInf.end()) {
+        Flags_SetRandomizerInf(randomizerGetToRandInf.find(item)->second);
+        return Return_Item_Entry(giEntry, RG_NONE);
+    }
+
+    //bottle items
+    if (item >= RG_BOTTLE_WITH_RED_POTION && item <= RG_BOTTLE_WITH_BIG_POE) {
+        for (u16 i = 0; i < 4; i++) {
+            if (gSaveContext.inventory.items[SLOT_BOTTLE_1 + i] == ITEM_NONE) {
+                ItemID bottleItem = ITEM_NONE;
+                switch (item) {
+                    case RG_BOTTLE_WITH_RED_POTION:
+                        bottleItem = ITEM_POTION_RED;
+                        break;
+                    case RG_BOTTLE_WITH_GREEN_POTION:
+                        bottleItem = ITEM_POTION_GREEN;
+                        break;
+                    case RG_BOTTLE_WITH_BLUE_POTION:
+                        bottleItem = ITEM_POTION_BLUE;
+                        break;
+                    case RG_BOTTLE_WITH_FAIRY:
+                        bottleItem = ITEM_FAIRY;
+                        break;
+                    case RG_BOTTLE_WITH_FISH:
+                        bottleItem = ITEM_FISH;
+                        break;
+                    case RG_BOTTLE_WITH_BLUE_FIRE:
+                        bottleItem = ITEM_BLUE_FIRE;
+                        break;
+                    case RG_BOTTLE_WITH_BUGS:
+                        bottleItem = ITEM_BUG;
+                        break;
+                    case RG_BOTTLE_WITH_POE:
+                        bottleItem = ITEM_POE;
+                        break;
+                    case RG_BOTTLE_WITH_BIG_POE:
+                        bottleItem = ITEM_BIG_POE;
+                        break;
+                }
+
+                gSaveContext.inventory.items[SLOT_BOTTLE_1 + i] = bottleItem;
+                return Return_Item_Entry(giEntry, RG_NONE);
+            }
+        }
+    }
+
+    //dungeon items
+    if (
+        (item >= RG_FOREST_TEMPLE_SMALL_KEY && item <= RG_GANONS_CASTLE_SMALL_KEY) ||
+        (item >= RG_FOREST_TEMPLE_KEY_RING && item <= RG_GANONS_CASTLE_KEY_RING) ||
+        (item >= RG_FOREST_TEMPLE_BOSS_KEY && item <= RG_GANONS_CASTLE_BOSS_KEY) ||
+        (item >= RG_DEKU_TREE_MAP && item <= RG_ICE_CAVERN_MAP) ||
+        (item >= RG_DEKU_TREE_COMPASS && item <= RG_ICE_CAVERN_COMPASS)
+    ) {
+        u16 mapIndex = gSaveContext.mapIndex;
+        u8 numOfKeysOnKeyring = 0;
+        switch (item) {
+            case RG_DEKU_TREE_MAP:
+            case RG_DEKU_TREE_COMPASS:
+                mapIndex = SCENE_DEKU_TREE;
+                break;
+            case RG_DODONGOS_CAVERN_MAP:
+            case RG_DODONGOS_CAVERN_COMPASS:
+                mapIndex = SCENE_DODONGOS_CAVERN;
+                break;
+            case RG_JABU_JABUS_BELLY_MAP:
+            case RG_JABU_JABUS_BELLY_COMPASS:
+                mapIndex = SCENE_JABU_JABU;
+                break;
+            case RG_FOREST_TEMPLE_MAP:
+            case RG_FOREST_TEMPLE_COMPASS:
+            case RG_FOREST_TEMPLE_SMALL_KEY:
+            case RG_FOREST_TEMPLE_KEY_RING:
+            case RG_FOREST_TEMPLE_BOSS_KEY:
+                mapIndex = SCENE_FOREST_TEMPLE;
+                numOfKeysOnKeyring = FOREST_TEMPLE_SMALL_KEY_MAX;
+                break;
+            case RG_FIRE_TEMPLE_MAP:
+            case RG_FIRE_TEMPLE_COMPASS:
+            case RG_FIRE_TEMPLE_SMALL_KEY:
+            case RG_FIRE_TEMPLE_KEY_RING:
+            case RG_FIRE_TEMPLE_BOSS_KEY:
+                mapIndex = SCENE_FIRE_TEMPLE;
+                numOfKeysOnKeyring = FIRE_TEMPLE_SMALL_KEY_MAX;
+                break;
+            case RG_WATER_TEMPLE_MAP:
+            case RG_WATER_TEMPLE_COMPASS:
+            case RG_WATER_TEMPLE_SMALL_KEY:
+            case RG_WATER_TEMPLE_KEY_RING:
+            case RG_WATER_TEMPLE_BOSS_KEY:
+                mapIndex = SCENE_WATER_TEMPLE;
+                numOfKeysOnKeyring = WATER_TEMPLE_SMALL_KEY_MAX;
+                break;
+            case RG_SPIRIT_TEMPLE_MAP:
+            case RG_SPIRIT_TEMPLE_COMPASS:
+            case RG_SPIRIT_TEMPLE_SMALL_KEY:
+            case RG_SPIRIT_TEMPLE_KEY_RING:
+            case RG_SPIRIT_TEMPLE_BOSS_KEY:
+                mapIndex = SCENE_SPIRIT_TEMPLE;
+                numOfKeysOnKeyring = SPIRIT_TEMPLE_SMALL_KEY_MAX;
+                break;
+            case RG_SHADOW_TEMPLE_MAP:
+            case RG_SHADOW_TEMPLE_COMPASS:
+            case RG_SHADOW_TEMPLE_SMALL_KEY:
+            case RG_SHADOW_TEMPLE_KEY_RING:
+            case RG_SHADOW_TEMPLE_BOSS_KEY:
+                mapIndex = SCENE_SHADOW_TEMPLE;
+                numOfKeysOnKeyring = SHADOW_TEMPLE_SMALL_KEY_MAX;
+                break;
+            case RG_BOTTOM_OF_THE_WELL_MAP:
+            case RG_BOTTOM_OF_THE_WELL_COMPASS:
+            case RG_BOTTOM_OF_THE_WELL_SMALL_KEY:
+            case RG_BOTTOM_OF_THE_WELL_KEY_RING:
+                mapIndex = SCENE_BOTTOM_OF_THE_WELL;
+                numOfKeysOnKeyring = BOTTOM_OF_THE_WELL_SMALL_KEY_MAX;
+                break;
+            case RG_ICE_CAVERN_MAP:
+            case RG_ICE_CAVERN_COMPASS:
+                mapIndex = SCENE_ICE_CAVERN;
+                break;
+            case RG_GANONS_CASTLE_BOSS_KEY:
+                mapIndex = SCENE_GANONS_TOWER;
+                break;
+            case RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY:
+            case RG_GERUDO_TRAINING_GROUNDS_KEY_RING:
+                mapIndex = SCENE_GERUDO_TRAINING_GROUND;
+                numOfKeysOnKeyring = GERUDO_TRAINING_GROUNDS_SMALL_KEY_MAX;
+                break;
+            case RG_GERUDO_FORTRESS_SMALL_KEY:
+            case RG_GERUDO_FORTRESS_KEY_RING:
+                mapIndex = SCENE_THIEVES_HIDEOUT;
+                numOfKeysOnKeyring = GERUDO_FORTRESS_SMALL_KEY_MAX;
+                break;
+            case RG_GANONS_CASTLE_SMALL_KEY:
+            case RG_GANONS_CASTLE_KEY_RING:
+                mapIndex = SCENE_INSIDE_GANONS_CASTLE;
+                numOfKeysOnKeyring = GANONS_CASTLE_SMALL_KEY_MAX;
+                break;
+        }
+
+        if ((item >= RG_FOREST_TEMPLE_SMALL_KEY) && (item <= RG_GANONS_CASTLE_SMALL_KEY)) {
+            gSaveContext.sohStats.dungeonKeys[mapIndex]++;
+            if (gSaveContext.inventory.dungeonKeys[mapIndex] < 0) {
+                gSaveContext.inventory.dungeonKeys[mapIndex] = 1;
+            } else {
+                gSaveContext.inventory.dungeonKeys[mapIndex]++;
+            }
+            return Return_Item_Entry(giEntry, RG_NONE);
+        }
+
+        if ((item >= RG_FOREST_TEMPLE_KEY_RING) && (item <= RG_GANONS_CASTLE_KEY_RING)) {
+            gSaveContext.sohStats.dungeonKeys[mapIndex] = numOfKeysOnKeyring;
+            gSaveContext.inventory.dungeonKeys[mapIndex] = numOfKeysOnKeyring;
+            return Return_Item_Entry(giEntry, RG_NONE);
+        }
+
+        u32 bitmask;
+        if ((item >= RG_DEKU_TREE_MAP) && (item <= RG_ICE_CAVERN_MAP)) {
+            bitmask = gBitFlags[2];
+        } else if ((item >= RG_DEKU_TREE_COMPASS) && (item <= RG_ICE_CAVERN_COMPASS)) {
+            bitmask = gBitFlags[1];
+        } else {
+            bitmask = gBitFlags[0];
+        }
+
+        gSaveContext.inventory.dungeonItems[mapIndex] |= bitmask;
+        return Return_Item_Entry(giEntry, RG_NONE);
+    }
+
+    switch (item) {
+        case RG_MAGIC_SINGLE:
+            gSaveContext.isMagicAcquired = true;
+            gSaveContext.magicFillTarget = MAGIC_NORMAL_METER;
+            Magic_Fill(play);
+            break;
+        case RG_MAGIC_DOUBLE:
+            if (!gSaveContext.isMagicAcquired) {
+                gSaveContext.isMagicAcquired = true;
+            }
+            gSaveContext.isDoubleMagicAcquired = true;
+            gSaveContext.magicFillTarget = MAGIC_DOUBLE_METER;
+            gSaveContext.magicLevel = 0;
+            Magic_Fill(play);
+            break;
+        case RG_MAGIC_BEAN_PACK:
+            if (INV_CONTENT(ITEM_BEAN) == ITEM_NONE) {
+                INV_CONTENT(ITEM_BEAN) = ITEM_BEAN;
+                AMMO(ITEM_BEAN) = 10;
+            }
+            break;
+        case RG_DOUBLE_DEFENSE:
+            gSaveContext.isDoubleDefenseAcquired = true;
+            gSaveContext.inventory.defenseHearts = 20;
+            gSaveContext.healthAccumulator = 0x140;
+            break;
+        case RG_TYCOON_WALLET:
+            Inventory_ChangeUpgrade(UPG_WALLET, 3);
+            if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FULL_WALLETS)) {
+                Rupees_ChangeBy(999);
+            }
+            break;
+        case RG_CHILD_WALLET:
+            Flags_SetRandomizerInf(RAND_INF_HAS_WALLET);
+            if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FULL_WALLETS)) {
+                Rupees_ChangeBy(99);
+            }
+            break;
+        case RG_GREG_RUPEE:
+            Rupees_ChangeBy(1);
+            Flags_SetRandomizerInf(RAND_INF_GREG_FOUND);
+            gSaveContext.sohStats.itemTimestamp[TIMESTAMP_FOUND_GREG] = GAMEPLAYSTAT_TOTAL_TIME;
+            break;
+        case RG_TRIFORCE_PIECE:
+            gSaveContext.triforcePiecesCollected++;
+            GameInteractor_SetTriforceHuntPieceGiven(true);
+
+            // Teleport to credits when goal is reached.
+            if (gSaveContext.triforcePiecesCollected == (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED) + 1)) {
+                gSaveContext.sohStats.itemTimestamp[TIMESTAMP_TRIFORCE_COMPLETED] = GAMEPLAYSTAT_TOTAL_TIME;
+                gSaveContext.sohStats.gameComplete = 1;
+                Flags_SetRandomizerInf(RAND_INF_GRANT_GANONS_BOSSKEY);
+                Play_PerformSave(play);
+                GameInteractor_SetTriforceHuntCreditsWarpActive(true);
+            }
+
+            break;
+        case RG_PROGRESSIVE_BOMBCHUS:
+            if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_NONE) {
+                INV_CONTENT(ITEM_BOMBCHU) = ITEM_BOMBCHU;
+                AMMO(ITEM_BOMBCHU) = 20;
+            } else if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_INFINITE_UPGRADES)) {
+                Flags_SetRandomizerInf(RAND_INF_HAS_INFINITE_BOMBCHUS);
+            } else {
+                AMMO(ITEM_BOMBCHU) += AMMO(ITEM_BOMBCHU) < 5 ? 10 : 5;
+                if (AMMO(ITEM_BOMBCHU) > 50) {
+                    AMMO(ITEM_BOMBCHU) = 50;
+                }
+            }
+            break;
+        case RG_MASTER_SWORD:
+            if (!CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER)) {
+                gSaveContext.inventory.equipment |= gBitFlags[1] << gEquipShifts[EQUIP_TYPE_SWORD];
+            }
+            break;
+        case RG_DEKU_STICK_BAG:
+            Inventory_ChangeUpgrade(UPG_STICKS, 1);
+            INV_CONTENT(ITEM_STICK) = ITEM_STICK;
+            AMMO(ITEM_STICK) = CUR_CAPACITY(UPG_STICKS);
+            break;
+        case RG_DEKU_NUT_BAG:
+            Inventory_ChangeUpgrade(UPG_NUTS, 1);
+            INV_CONTENT(ITEM_NUT) = ITEM_NUT;
+            AMMO(ITEM_NUT) = CUR_CAPACITY(UPG_NUTS);
+            break;
+        default:
+            LUSLOG_WARN("Randomizer_Item_Give didn't have behaviour specified for getItemId=%d", item);
+            assert(false);
+            return -1;
+    }
+
+    return Return_Item_Entry(giEntry, RG_NONE);
 }
