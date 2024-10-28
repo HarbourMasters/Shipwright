@@ -636,7 +636,6 @@ void SetAreas(){
 //then use those areas to not need to recursivly find ItemLocation areas when an identifying entrance's area
   for (int regionType = 0; regionType < RR_MARKER_AREAS_END; regionType++) {
     Region* region = &areaTable[regionType];
-    //regionType == RR_FIRE_TEMPLE_BOSS_ROOM
     std::set<RandomizerArea> areas = region->GetAllAreas();
     std::set<Region*> regionsToSet = {region};
     if (areas.empty()) {
