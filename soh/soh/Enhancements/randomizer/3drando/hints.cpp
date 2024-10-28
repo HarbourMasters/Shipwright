@@ -411,7 +411,7 @@ static bool CreateHint(RandomizerCheck location, uint8_t copies, HintType type, 
       return false;
   }
   RandomizerCheck gossipStone = RandomElement(gossipStoneLocations);
-  RandomizerArea area = RandomElementFromSet(ctx->GetItemLocation(location)->GetAreas());
+  RandomizerArea area = ctx->GetItemLocation(location)->GetRandomArea();
 
   //Set that hints are accesible
   ctx->GetItemLocation(location)->SetHintAccesible();
@@ -707,7 +707,7 @@ void CreateChildAltarHint() {
     }
     std::vector<RandomizerArea> stoneAreas = {};
     for (auto loc : stoneLocs){
-      stoneAreas.push_back(RandomElementFromSet(ctx->GetItemLocation(loc)->GetAreas()));
+      stoneAreas.push_back(ctx->GetItemLocation(loc)->GetRandomArea());
     }
     ctx->AddHint(RH_ALTAR_CHILD, Hint(RH_ALTAR_CHILD, HINT_TYPE_ALTAR_CHILD, {}, stoneLocs, stoneAreas));
   }
@@ -729,7 +729,7 @@ void CreateAdultAltarHint() {
     }
     std::vector<RandomizerArea> medallionAreas = {};
     for (auto loc : medallionLocs){
-      medallionAreas.push_back(RandomElementFromSet(ctx->GetItemLocation(loc)->GetAreas()));
+      medallionAreas.push_back(ctx->GetItemLocation(loc)->GetRandomArea());
     }
     ctx->AddHint(RH_ALTAR_ADULT, Hint(RH_ALTAR_ADULT, HINT_TYPE_ALTAR_ADULT, {}, medallionLocs, medallionAreas));
   }
@@ -753,7 +753,15 @@ void CreateStaticHintFromData(RandomizerHint hint, StaticHintInfo staticData){
       std::vector<RandomizerArea> areas = {};
       for (auto loc : locations){
         ctx->GetItemLocation(loc)->SetHintAccesible();
-        areas.push_back(RandomElementFromSet(ctx->GetItemLocation(loc)->GetAreas()));
+        if (ctx->GetItemLocation(loc)->GetAreas().empty()){
+          //If we get to here then it means a location got through with no area assignment, which means something went wrong elsewhere.
+          SPDLOG_DEBUG("Attempted to hint location with no areas: ");
+          SPDLOG_DEBUG(Rando::StaticData::GetLocation(loc)->GetName());
+          assert(false);
+          areas.push_back(RA_NONE);
+        } else {
+          areas.push_back(ctx->GetItemLocation(loc)->GetRandomArea());
+        }
       }
       //hintKeys are defaulted to in the hint object and do not need to be specified
       ctx->AddHint(hint, Hint(hint, staticData.type, {}, locations, areas, {}, staticData.yourPocket, staticData.num));
@@ -768,7 +776,7 @@ void CreateStaticItemHint(RandomizerHint hintKey, std::vector<RandomizerHintText
   std::vector<RandomizerCheck> locations = FindItemsAndMarkHinted(items, hintChecks);
   std::vector<RandomizerArea> areas = {};
   for (auto loc : locations){
-    areas.push_back(RandomElementFromSet(ctx->GetItemLocation(loc)->GetAreas()));
+    areas.push_back(ctx->GetItemLocation(loc)->GetRandomArea());
   }
   ctx->AddHint(hintKey, Hint(hintKey, HINT_TYPE_AREA, hintTextKeys, locations, areas, {}, yourPocket));
 }

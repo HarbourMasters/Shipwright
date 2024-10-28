@@ -617,8 +617,8 @@ void LookForExternalArea(Region* currentRegion, std::set<Region*> &alreadyChecke
     //if this entrance does not pass areas, only process it if we are in low priority mode
     if ((LowPriorityMode || entrance->DoesSpreadAreas()) && !alreadyChecked.contains(entrance->GetParentRegion())){
       std::set<RandomizerArea> otherAreas = entrance->GetParentRegion()->GetAllAreas();
-      alreadyChecked.insert(entrance->GetParentRegion());
       if (otherAreas.size() == 0) {
+        alreadyChecked.insert(entrance->GetParentRegion());
         LookForExternalArea(entrance->GetParentRegion(), alreadyChecked, areas, LowPriorityMode);
       //If we find a valid area we should add it.
       //If it's Links Pocket or RA_NONE, do not propagate those, they are not real areas.
@@ -636,6 +636,7 @@ void SetAreas(){
 //then use those areas to not need to recursivly find ItemLocation areas when an identifying entrance's area
   for (int regionType = 0; regionType < RR_MARKER_AREAS_END; regionType++) {
     Region* region = &areaTable[regionType];
+    //regionType == RR_FIRE_TEMPLE_BOSS_ROOM
     std::set<RandomizerArea> areas = region->GetAllAreas();
     std::set<Region*> regionsToSet = {region};
     if (areas.empty()) {

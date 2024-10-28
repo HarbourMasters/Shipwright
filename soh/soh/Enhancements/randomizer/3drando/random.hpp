@@ -40,6 +40,7 @@ const T RandomElementFromSet(const std::set<T>& set) {
     for (uint32_t i = 0; i < rand; i++) {
         it++;
     }
+    auto test = *it;
     return *it;
 }
 
