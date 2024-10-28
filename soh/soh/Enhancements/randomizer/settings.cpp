@@ -3149,4 +3149,10 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
         GetTrickOption(rt).SetSelectedIndex(RO_GENERIC_ON);
     }
 }
+
+void Settings::ReloadOptions() {
+    for (int i = 0; i < RSK_MAX; i++) {
+        mOptions[i].SetFromCVar();
+    }
+}
 } // namespace Rando
