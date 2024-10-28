@@ -180,9 +180,8 @@ void RegionTable_Init_GerudoTrainingGrounds() {
                   LOCATION(RC_GERUDO_TRAINING_GROUND_MQ_BEFORE_HEAVY_BLOCK_CHEST, logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 2, true)),
   }, {
                   //Exits
-                  //The here check needs to be before the age check here
                   Entrance(RR_GERUDO_TRAINING_GROUNDS_MQ_BEHIND_BLOCK,      {[]{return Here(RR_GERUDO_TRAINING_GROUNDS_MQ_STALFOS_ROOM, []{return logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 2, true);}) && logic->CanUse(RG_SILVER_GAUNTLETS);}}),
-                  Entrance(RR_GERUDO_TRAINING_GROUNDS_MQ_STATUE_ROOM_LEDGE, {[]{return Here(RR_GERUDO_TRAINING_GROUNDS_MQ_STALFOS_ROOM, []{return logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 2, true);}) && logic->IsAdult &&
+                  Entrance(RR_GERUDO_TRAINING_GROUNDS_MQ_STATUE_ROOM_LEDGE, {[]{return logic->IsAdult && Here(RR_GERUDO_TRAINING_GROUNDS_MQ_STALFOS_ROOM, []{return logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 2, true);}) && 
                                                                                   (ctx->GetTrickOption(RT_LENS_GTG_MQ) || logic->CanUse(RG_LENS_OF_TRUTH)) && logic->BlueFire() && 
                                                                                   (logic->CanUse(RG_SONG_OF_TIME) || (ctx->GetTrickOption(RT_GTG_FAKE_WALL) && logic->CanUse(RG_HOVER_BOOTS)));}}),
   });
@@ -221,7 +220,7 @@ void RegionTable_Init_GerudoTrainingGrounds() {
                   //Locations
                   //implies logic->CanKillEnemy(RE_TORCH_SLUG)
                   LOCATION(RC_GERUDO_TRAINING_GROUND_MQ_SECOND_IRON_KNUCKLE_CHEST, logic->CanKillEnemy(RE_IRON_KNUCKLE)),
-                  LOCATION(RC_GERUDO_TRAINING_GROUND_MQ_FLAME_CIRCLE_CHEST,        logic->CanHitSwitch(ED_RANG_OR_HOOKSHOT)),
+                  LOCATION(RC_GERUDO_TRAINING_GROUND_MQ_FLAME_CIRCLE_CHEST,        logic->CanHitSwitch(ED_BOOMERANG)),
   }, {
                   //Exits
                   Entrance(RR_GERUDO_TRAINING_GROUNDS_MQ_STATUE_ROOM,   {[]{return Here(RR_GERUDO_TRAINING_GROUNDS_MQ_TORCH_SLUG_ROOM, []{return logic->CanKillEnemy(RE_IRON_KNUCKLE);});}}),
