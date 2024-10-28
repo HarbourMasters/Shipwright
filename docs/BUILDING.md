@@ -33,7 +33,7 @@ cd Shipwright
 # Add `-DCMAKE_BUILD_TYPE:STRING=Release` if you're packaging
 & 'C:\Program Files\CMake\bin\cmake' -S . -B "build/x64" -G "Visual Studio 17 2022" -T v143 -A x64
 
-# To generate soh.otr
+# Generate soh.otr
 & 'C:\Program Files\CMake\bin\cmake.exe' --build .\build\x64 --target GenerateSohOtr
 
 # Compile project
@@ -76,6 +76,12 @@ cd "build/x64"
 ```powershell
 # If you need to clean the project you can run
 C:\Program Files\CMake\bin\cmake.exe --build build-cmake --target clean
+```
+
+#### Regenerate Asset Headers
+```powershell
+# If you need to regenerate the asset headers to check them into source
+C:\Program Files\CMake\bin\cmake.exe --build build-cmake --target ExtractAssetHeaders
 ```
 
 ## Linux
@@ -158,6 +164,11 @@ cpack -G External (creates appimage)
 # If you need to clean the project you can run
 cmake --build build-cmake --target clean
 ```
+#### Regenerate Asset Headers
+```bash
+# If you need to regenerate the asset headers to check them into source
+cmake --build build-cmake --target ExtractAssetHeaders
+```
 
 ## macOS
 Requires Xcode (or xcode-tools) && `sdl2, libpng, glew, ninja, cmake` (can be installed via homebrew, macports, etc)
@@ -178,15 +189,12 @@ git submodule update --init
 # Add `-DCMAKE_BUILD_TYPE:STRING=Release` if you're packaging
 cmake -H. -Bbuild-cmake -GNinja
 
-# If you need a newer soh.otr only
+# Generate soh.otr
 cmake --build build-cmake --target GenerateSohOtr
 
 # Compile the project
 # Add `--config Release` if you're packaging
 cmake --build build-cmake
-
-# Copy oot.otr into the Application Support directory
-cp build-cmake/soh/oot.otr ~/Library/Application\ Support/com.shipofharkinian.soh/
 
 # Now you can run the executable file:
 ./build-cmake/soh/soh-macos
