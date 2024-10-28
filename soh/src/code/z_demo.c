@@ -1332,7 +1332,7 @@ void Cutscene_Command_TransitionFX(PlayState* play, CutsceneContext* csCtx, CsCm
                                                &D_801333E8);
                     } else if ((temp == 0.0f) &&
                                ((gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_ENTRANCE) || (gSaveContext.entranceIndex == ENTR_CASTLE_GROUNDS_SOUTH_EXIT) ||
-                                (gSaveContext.entranceIndex == ENTR_GREAT_FAIRYS_FOUNTAIN_ZF_FARORE))) {
+                                (gSaveContext.entranceIndex == ENTR_GREAT_FAIRYS_FOUNTAIN_SPELLS_FARORES_ZF))) {
                         Audio_PlaySoundGeneral(NA_SE_EV_WHITE_OUT, &D_801333D4, 4, &D_801333E0, &D_801333E0,
                                                &D_801333E8);
                     } else if ((temp == 0.0f) && (play->sceneNum == SCENE_INSIDE_GANONS_CASTLE)) {

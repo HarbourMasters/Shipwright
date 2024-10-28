@@ -23,13 +23,13 @@ s16 dynamicExitList[] = {
     ENTR_DEATH_MOUNTAIN_CRATER_GREAT_FAIRY_EXIT,
     ENTR_POTION_SHOP_KAKARIKO_1, // OGC Fairy -- ENTR_POTION_SHOP_KAKARIKO_1 unused
     ENTR_KAKARIKO_VILLAGE_OUTSIDE_POTION_SHOP_FRONT,
-    ENTR_MARKET_OUTSIDE_POTION_SHOP,
+    ENTR_MARKET_DAY_OUTSIDE_POTION_SHOP,
     ENTR_KAKARIKO_VILLAGE_OUTSIDE_BAZAAR,
-    ENTR_MARKET_OUTSIDE_BAZAAR,
+    ENTR_MARKET_DAY_OUTSIDE_BAZAAR,
     ENTR_KAKARIKO_VILLAGE_OUTSIDE_SKULKLTULA_HOUSE,
-    ENTR_BACK_ALLEY_OUTSIDE_BOMBCHU_SHOP,
+    ENTR_BACK_ALLEY_DAY_OUTSIDE_BOMBCHU_SHOP,
     ENTR_KAKARIKO_VILLAGE_OUTSIDE_SHOOTING_GALLERY,
-    ENTR_MARKET_OUTSIDE_SHOOTING_GALLERY,
+    ENTR_MARKET_DAY_OUTSIDE_SHOOTING_GALLERY,
     ENTR_ZORAS_FOUNTAIN_OUTSIDE_GREAT_FAIRY,
     ENTR_CASTLE_GROUNDS_GREAT_FAIRY_EXIT, // HC Fairy
     ENTR_DESERT_COLOSSUS_GREAT_FAIRY_EXIT
@@ -231,7 +231,7 @@ void Entrance_Init(void) {
 
             // If Malon is singing at night, then her singing will be transferred
             // to the next area if it allows the background music to keep playing
-            entranceOverrideTable[ENTR_MARKET_CASTLE_EXIT], // Castle Grounds -> Market override
+            entranceOverrideTable[ENTR_MARKET_DAY_CASTLE_EXIT], // Castle Grounds -> Market override
         };
 
         for (size_t j = 0; j < sizeof(indicesToSilenceBackgroundMusic) / sizeof(s16); j++) {
