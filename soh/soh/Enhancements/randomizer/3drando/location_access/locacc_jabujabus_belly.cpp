@@ -193,7 +193,7 @@ void RegionTable_Init_JabuJabusBelly() {
                   EventAccess(&logic->MQJabuHolesRoomDoor, {[]{return true;}}),
   }, {
                   //Locations
-                  LOCATION(RC_JABU_JABUS_BELLY_MQ_COMPASS_CHEST, logic->CanHitSwitch(ED_HOOKSHOT, true) || (ctx->GetTrickOption(RT_JABU_MQ_RANG_JUMP) && logic->CanUse(RG_BOOMERANG))),
+                  LOCATION(RC_JABU_JABUS_BELLY_MQ_COMPASS_CHEST, logic->CanHitSwitch(ED_HOOKSHOT, true) || (ctx->GetTrickOption(RT_JABU_MQ_RANG_JUMP) && logic->CanUse(RG_BOOMERANG) && logic->HasItem(RG_BRONZE_SCALE))),
   }, {
                   //Exits
                   Entrance(RR_JABU_JABUS_BELLY_MQ_LIFT_ROOM, {[]{return logic->HasItem(RG_BRONZE_SCALE);}}),
