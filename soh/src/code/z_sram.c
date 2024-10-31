@@ -99,7 +99,7 @@ void Sram_OpenSave() {
             gSaveContext.entranceIndex = ENTR_DODONGOS_CAVERN_ENTRANCE;
             break;
         case SCENE_JABU_JABU_BOSS:
-            gSaveContext.entranceIndex = ENTR_JABU_JABU_BOSS_DOOR;
+            gSaveContext.entranceIndex = ENTR_JABU_JABU_ENTRANCE;
             break;
         case SCENE_FOREST_TEMPLE_BOSS:
             gSaveContext.entranceIndex = ENTR_FOREST_TEMPLE_ENTRANCE;

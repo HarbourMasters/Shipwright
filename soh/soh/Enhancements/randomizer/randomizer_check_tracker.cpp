@@ -105,7 +105,7 @@ std::map<SceneID, RandomizerCheckArea> DungeonRCAreasBySceneID = {
 std::vector<uint32_t> spoilingEntrances = {
     ENTR_DEKU_TREE_ENTRANCE,
     ENTR_DODONGOS_CAVERN_BOSS_DOOR,
-    ENTR_JABU_JABU_BOSS_DOOR,
+    ENTR_JABU_JABU_ENTRANCE,
     ENTR_JABU_JABU_BOSS_DOOR,
     ENTR_FOREST_TEMPLE_ENTRANCE,
     ENTR_FIRE_TEMPLE_ENTRANCE,
