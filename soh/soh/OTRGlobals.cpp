@@ -2078,7 +2078,7 @@ std::wstring StringToU16(const std::string& s) {
     size_t i = 0;
     while (i < s.size()) {
         unsigned long uni;
-        size_t nbytes;
+        size_t nbytes = 0;
         bool error = false;
         unsigned char c = s[i++];
         if (c < 0x80) { // ascii

@@ -682,6 +682,8 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
             }
             break;
         }
+        default:
+            break;
     }
 
     va_end(args);

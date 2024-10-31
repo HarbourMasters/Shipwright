@@ -467,7 +467,7 @@ void RegisterPermanentHeartLoss() {
 
 void RegisterDeleteFileOnDeath() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!CVarGetInteger(CVAR_ENHANCEMENT("DeleteFileOnDeath"), 0) || !GameInteractor::IsSaveLoaded() || &gPlayState->gameOverCtx == NULL || &gPlayState->pauseCtx == NULL) return;
+        if (!CVarGetInteger(CVAR_ENHANCEMENT("DeleteFileOnDeath"), 0) || !GameInteractor::IsSaveLoaded() || gPlayState == NULL) return;
 
         if (gPlayState->gameOverCtx.state == GAMEOVER_DEATH_MENU && gPlayState->pauseCtx.state == 9) {
             SaveManager::Instance->DeleteZeldaFile(gSaveContext.fileNum);
@@ -1095,7 +1095,7 @@ void RegisterAltTrapTypes() {
                 break;
             case ADD_VOID_TRAP:
                 Audio_PlaySoundGeneral(NA_SE_EN_GANON_LAUGH, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-                eventTimer = 3;                    
+                eventTimer = 3;
                 break;
             case ADD_AMMO_TRAP:
                 eventTimer = 3;
@@ -1106,6 +1106,8 @@ void RegisterAltTrapTypes() {
                 break;
             case ADD_TELEPORT_TRAP:
                 eventTimer = 3;
+                break;
+            default:
                 break;
         }
     });
@@ -1134,7 +1136,7 @@ void RegisterAltTrapTypes() {
                     AMMO(ITEM_BOMBCHU) = AMMO(ITEM_BOMBCHU) * 0.5;
                     Audio_PlaySoundGeneral(NA_SE_VO_FR_SMILE_0, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
                     break;
-                case ADD_TELEPORT_TRAP:
+                case ADD_TELEPORT_TRAP: {
                     int entrance;
                     int index = 1 + rand() % 10;
                     switch (index) {
@@ -1161,6 +1163,9 @@ void RegisterAltTrapTypes() {
                             break;
                     }
                     GameInteractor::RawAction::TeleportPlayer(entrance);
+                    break;
+                }
+                default:
                     break;
             }
         }

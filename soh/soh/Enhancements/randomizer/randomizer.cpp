@@ -3147,6 +3147,8 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
                     case RG_BOTTLE_WITH_BIG_POE:
                         bottleItem = ITEM_BIG_POE;
                         break;
+                    default:
+                        break;
                 }
 
                 gSaveContext.inventory.items[SLOT_BOTTLE_1 + i] = bottleItem;
@@ -3246,6 +3248,8 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             case RG_GANONS_CASTLE_KEY_RING:
                 mapIndex = SCENE_INSIDE_GANONS_CASTLE;
                 numOfKeysOnKeyring = GANONS_CASTLE_SMALL_KEY_MAX;
+                break;
+            default:
                 break;
         }
 

@@ -1473,6 +1473,8 @@ namespace Rando {
             case RG_BOMBCHU_20:
                 SetInventory(ITEM_BOMBCHU, (!state ? ITEM_NONE : ITEM_BOMBCHU));
                 break;
+            default:
+                break;
             }
         }
         break;
@@ -1570,6 +1572,8 @@ namespace Rando {
             case RG_BOMBCHU_10:
             case RG_BOMBCHU_20:
                 SetInventory(ITEM_BOMBCHU, (!state ? ITEM_NONE : ITEM_BOMBCHU));
+                break;
+            default:
                 break;
             }
         } break;

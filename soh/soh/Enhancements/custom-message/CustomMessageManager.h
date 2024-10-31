@@ -280,7 +280,7 @@ class MessageNotFoundException : public std::exception {
         : messageTableId(std::move(messageTableId_)), textId(textId_) {
     }
     virtual const char* what() const noexcept {
-        char* message;
+        static char message[500];
         sprintf(message, "Message from table %s with textId %u was not found", messageTableId.c_str(), textId);
         return message;
     }
