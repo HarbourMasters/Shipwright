@@ -511,6 +511,7 @@ namespace Rando {
             case RE_WOLFOS:
             case RE_WHITE_WOLFOS:
                 return CanJumpslash() || CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_BOMBCHU_5) || CanUse(RG_DINS_FIRE) || (CanUse(RG_BOMB_BAG) && (CanUse(RG_NUTS) || CanUse(RG_HOOKSHOT) || CanUse(RG_BOOMERANG)));
+            case RE_GIBDO:
             case RE_REDEAD:
                 return CanJumpslash() || CanUse(RG_DINS_FIRE);
             case RE_MEG:
@@ -602,6 +603,7 @@ namespace Rando {
                 return CanUse(RG_NUTS) || CanUse(RG_BOOMERANG);
             case RE_LIKE_LIKE:
                 return CanUse(RG_HOOKSHOT) || CanUse(RG_BOOMERANG);
+            case RE_GIBDO:
             case RE_REDEAD:
                 // we need a way to check if suns won't force a reload
                 return CanUse(RG_HOOKSHOT) || CanUse(RG_SUNS_SONG);
@@ -645,6 +647,7 @@ namespace Rando {
             case RE_FREEZARD:
             case RE_SPIKE:
             case RE_BIG_OCTO:
+            case RE_GIBDO:
                 return true;
             case RE_MAD_SCRUB:
             case RE_KEESE:
@@ -2036,6 +2039,8 @@ namespace Rando {
         JabuNorthTentacle         = false;
         LoweredJabuPath           = false;
         MQJabuLiftRoomCow         = false;
+        MQShadowFloorSpikeRupees  = false;
+        ShadowShortcutBlock       = false;
 
         StopPerformanceTimer(PT_LOGIC_RESET);
     }

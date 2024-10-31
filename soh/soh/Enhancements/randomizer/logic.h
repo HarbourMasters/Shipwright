@@ -155,6 +155,8 @@ class Logic {
     bool JabuNorthTentacle = false;
     bool LoweredJabuPath = false;
     bool MQJabuLiftRoomCow = false;
+    bool MQShadowFloorSpikeRupees = false;
+    bool ShadowShortcutBlock = false;
 
     /* --- END OF HELPERS AND LOCATION ACCESS --- */
 

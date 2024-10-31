@@ -92,12 +92,8 @@ ItemOverride& Context::GetItemOverride(size_t locKey) {
 void Context::PlaceItemInLocation(const RandomizerCheck locKey, const RandomizerGet item, const bool applyEffectImmediately,
                                   const bool setHidden) {
     const auto loc = GetItemLocation(locKey);
-    SPDLOG_DEBUG("\n");
-    SPDLOG_DEBUG(StaticData::RetrieveItem(item).GetName().GetEnglish());
-    SPDLOG_DEBUG(" placed at ");
-    SPDLOG_DEBUG(StaticData::GetLocation(locKey)->GetName());
-    SPDLOG_DEBUG("\n\n");
-
+    SPDLOG_DEBUG(StaticData::RetrieveItem(item).GetName().GetEnglish() + " placed at " + StaticData::GetLocation(locKey)->GetName() + "\n");
+    
     if (applyEffectImmediately || mSettings->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_GLITCHLESS) || mSettings->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_VANILLA)) {
         StaticData::RetrieveItem(item).ApplyEffect();
     }
