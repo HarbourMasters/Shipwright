@@ -481,18 +481,6 @@ void Entrance_OverrideBlueWarp(void) {
     }
 }
 
-void Entrance_OverrideCutsceneEntrance(u16 cutsceneCmd) {
-    switch (cutsceneCmd) {
-        case 24: // Dropping a fish for Jabu Jabu
-            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(ENTR_JABU_JABU_BOSS_DOOR);
-            gPlayState->transitionTrigger = TRANS_TRIGGER_START;
-            gPlayState->transitionType = TRANS_TYPE_FADE_BLACK;
-            // In case Jabu's mouth leads to a grotto return
-            Grotto_ForceGrottoReturnOnSpecialEntrance();
-            break;
-    }
-}
-
 void Entrance_EnableFW(void) {
     Player* player = GET_PLAYER(gPlayState);
     // Leave restriction in Tower Collapse Interior, Castle Collapse, Treasure Box Shop, Tower Collapse Exterior,

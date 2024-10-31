@@ -4,7 +4,6 @@
 #include <string.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include "soh/Enhancements/randomizer/savefile.h"
 
 #define NUM_DUNGEONS 8
@@ -266,8 +265,4 @@ void Sram_InitSram(GameState* gameState) {
     Save_Init();
 
     func_800F6700(gSaveContext.audioSetting);
-
-    // When going from a rando save to a vanilla save within the same game instance
-    // we need to reset the entrance table back to its vanilla state
-    Entrance_ResetEntranceTable();
 }

@@ -45,7 +45,6 @@ void Entrance_SetGameOverEntrance(void);
 void Entrance_SetSavewarpEntrance(void);
 void Entrance_SetWarpSongEntrance(void);
 void Entrance_OverrideBlueWarp(void);
-void Entrance_OverrideCutsceneEntrance(uint16_t cutsceneCmd);
 void Entrance_HandleEponaState(void);
 void Entrance_OverrideWeatherState(void);
 void Entrance_OverrideGeurdoGuardCapture(void);

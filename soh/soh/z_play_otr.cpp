@@ -58,6 +58,9 @@ extern "C" void OTRPlay_SpawnScene(PlayState* play, s32 sceneNum, s32 spawn) {
     auto roomSize = func_80096FE8(play, &play->roomCtx);
 
     osSyncPrintf("ROOM SIZE=%fK\n", roomSize / 1024.0f);
+
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSceneInit>(play->sceneNum);
+    SPDLOG_INFO("Scene Init - sceneNum: {0:#x}, entranceIndex: {1:#x}", play->sceneNum, gSaveContext.entranceIndex);
 }
 
 void OTRPlay_InitScene(PlayState* play, s32 spawn) {
@@ -83,9 +86,6 @@ void OTRPlay_InitScene(PlayState* play, s32 spawn) {
                                                .get());
 
     auto data2 = ResourceMgr_LoadVtxByCRC(0x68d4ea06044e228f);*/
-    
-    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSceneInit>(play->sceneNum);
-    SPDLOG_INFO("Scene Init - sceneNum: {0:#x}, entranceIndex: {1:#x}", play->sceneNum, gSaveContext.entranceIndex);
 
     volatile int a = 0;
 }

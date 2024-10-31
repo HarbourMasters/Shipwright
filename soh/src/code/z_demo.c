@@ -738,7 +738,11 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                 play->transitionType = TRANS_TYPE_FADE_WHITE;
                 break;
             case 24:
-                play->nextEntranceIndex = ENTR_JABU_JABU_ENTRANCE;
+                if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
+                    play->nextEntranceIndex = Entrance_OverrideNextIndex(ENTR_JABU_JABU_ENTRANCE);
+                } else {
+                    play->nextEntranceIndex = ENTR_JABU_JABU_ENTRANCE;
+                }
                 play->transitionTrigger = TRANS_TRIGGER_START;
                 play->transitionType = TRANS_TYPE_FADE_BLACK;
                 break;
@@ -1303,10 +1307,6 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                 play->transitionTrigger = TRANS_TRIGGER_START;
                 play->transitionType = TRANS_TYPE_FADE_WHITE;
                 break;
-        }
-
-        if (shouldSkipCommand && IS_RANDO) {
-            Entrance_OverrideCutsceneEntrance(cmd->base);
         }
     }
 }

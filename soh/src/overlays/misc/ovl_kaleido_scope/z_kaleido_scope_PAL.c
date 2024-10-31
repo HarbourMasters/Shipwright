@@ -16,8 +16,6 @@
 
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
-#include "soh/Enhancements/randomizer/randomizer_entrance.h"
-#include "soh/Enhancements/randomizer/randomizer_grotto.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/kaleido.h"
@@ -4473,11 +4471,6 @@ void KaleidoScope_Update(PlayState* play)
                             gSaveContext.entranceIndex = ENTR_GANONS_TOWER_0;
                             break;
                     }
-
-                    // In ER, handle overriding the game over respawn entrance
-                    if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
-                        Entrance_SetGameOverEntrance();
-                    }
                 } else {
                     Audio_PlaySoundGeneral(NA_SE_SY_DECIDE, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
                 }
@@ -4499,10 +4492,6 @@ void KaleidoScope_Update(PlayState* play)
                     if (pauseCtx->promptChoice == 0 && GameInteractor_Should(VB_BE_ABLE_TO_SAVE, true)) {
                         Play_TriggerRespawn(play);
                         gSaveContext.respawnFlag = -2;
-                        // In ER, handle death warp to last entrance from grottos
-                        if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
-                            Grotto_ForceGrottoReturn();
-                        }
                         // Reset frame counter to prevent autosave on respawn
                         play->gameplayFrames = 0;
                         gSaveContext.nextTransitionType = TRANS_TYPE_FADE_BLACK;
