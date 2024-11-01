@@ -10,7 +10,7 @@
 #include "soh/util.h"
 
 extern "C" {
-    PlayState* gPlayState;
+extern PlayState* gPlayState;
 }
 
 using namespace std::literals::string_literals;
