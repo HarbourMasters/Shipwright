@@ -30,4 +30,7 @@ void func_808ADEF0(BgSpot03Taki* bgSpot03Taki, PlayState* play);
 
 void BgSpot03Taki_ApplyOpeningAlpha(BgSpot03Taki* bgSpot03Taki, s32 bufferIndex);
 
+// USED IN HOOK HANDLERS ONLY -- DO NOT REFERENCE FROM z_bg_spot03_taki.c
+void BgSpot03Taki_KeepOpen(BgSpot03Taki* bgSpot03Taki, PlayState* play);
+
 #endif
