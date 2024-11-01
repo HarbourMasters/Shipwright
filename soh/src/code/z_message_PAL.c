@@ -1594,6 +1594,9 @@ void Message_OpenText(PlayState* play, u16 textId) {
     Font* font = &msgCtx->font;
     s16 textBoxType;
 
+    bool loadFromMessageTable = true;
+    GameInteractor_ExecuteOnOpenText(&textId, &loadFromMessageTable);
+
     if (msgCtx->msgMode == MSGMODE_NONE) {
         gSaveContext.unk_13EE = gSaveContext.unk_13EA;
     }
@@ -1652,7 +1655,9 @@ void Message_OpenText(PlayState* play, u16 textId) {
     }
 
     // RANDOTODO: Use this for ice trap messages
-    if (CustomMessage_RetrieveIfExists(play)) {
+    if (!loadFromMessageTable) {
+        // no-op
+    } else if (CustomMessage_RetrieveIfExists(play)) {
         osSyncPrintf("Found custom message");
     } else if (sTextIsCredits) {
         Message_FindCreditsMessage(play, textId);

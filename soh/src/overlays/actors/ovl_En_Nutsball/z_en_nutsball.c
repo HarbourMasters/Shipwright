@@ -78,7 +78,7 @@ void EnNutsball_Init(Actor* thisx, PlayState* play) {
     ActorShape_Init(&this->actor.shape, 400.0f, ActorShadow_DrawCircle, 13.0f);
     Collider_InitCylinder(play, &this->collider);
     Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
-    if (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0)) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) || CVarGetInteger("gLetItSnow", 0)) {
         this->objBankIndex = 0;
     } else {
         this->objBankIndex = Object_GetIndex(&play->objectCtx, sObjectIDs[this->actor.params]);

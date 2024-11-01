@@ -7,6 +7,12 @@
 #include <spdlog/spdlog.h>
 #include <variables.h>
 
+#include "soh/util.h"
+
+extern "C" {
+    PlayState* gPlayState;
+}
+
 using namespace std::literals::string_literals;
 
 static const std::unordered_map<std::string, char> textBoxSpecialCharacters = {
@@ -175,6 +181,15 @@ void CustomMessage::SetTextBoxType(TextBoxType boxType){
 
 const TextBoxPosition& CustomMessage::GetTextBoxPosition() const {
     return position;
+}
+
+void CustomMessage::LoadIntoFont() {
+    MessageContext* msgCtx = &gPlayState->msgCtx;
+    Font* font = &msgCtx->font;
+    char* buffer = font->msgBuf;
+    const int maxBufferSize = sizeof(font->msgBuf);
+    font->charTexBuf[0] = (type << 4) | position;
+    msgCtx->msgLength = font->msgLength = SohUtils::CopyStringToCharBuffer(GetEnglish(MF_RAW), buffer, maxBufferSize);
 }
 
 CustomMessage CustomMessage::operator+(const CustomMessage& right) const {

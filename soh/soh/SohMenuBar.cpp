@@ -41,6 +41,7 @@
 #include "Enhancements/resolution-editor/ResolutionEditor.h"
 #include "Enhancements/enemyrandomizer.h"
 #include "Enhancements/timesplits/TimeSplits.h"
+#include "Enhancements/Holiday/Holiday.hpp"
 
 // FA icons are kind of wonky, if they worked how I expected them to the "+ 2.0f" wouldn't be needed, but
 // they don't work how I expect them to so I added that because it looked good when I eyeballed it
@@ -2255,6 +2256,10 @@ void SohMenuBar::DrawElement() {
         #endif
 
         DrawRandomizerMenu();
+
+        ImGui::SetCursorPosY(0.0f);
+
+        DrawHolidayMenu();
 
         ImGui::PopStyleVar(1);
         ImGui::EndMenuBar();

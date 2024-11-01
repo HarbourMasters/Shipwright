@@ -20,6 +20,7 @@ namespace SohUtils {
     // Copies a string into a char buffer up to maxBufferSize characters. This does NOT insert a null terminator
     // on the end, as this is used for in-game messages which are not null-terminated.
     size_t CopyStringToCharBuffer(char* buffer, const std::string& source, size_t maxBufferSize);
+    int CopyStringToCharBuffer(const std::string& inputStr, char* buffer, const int maxBufferSize);
 
     bool IsStringEmpty(std::string str);
 } // namespace SohUtils

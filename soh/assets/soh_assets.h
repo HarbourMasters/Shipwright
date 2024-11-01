@@ -137,6 +137,9 @@ static const ALIGN_ASSET(2) char gXmasDecor100DL[] = dgXmasDecor100DL;
 #define dgXmasStarDL "__OTR__objects/object_xmas_tree/gXmasStarDL"
 static const ALIGN_ASSET(2) char gXmasStarDL[] = dgXmasStarDL;
 
+#define dgPenguinDL "__OTR__objects/object_penguin/object_penguin_DL"
+static const ALIGN_ASSET(2) char gPenguinDL[] = dgPenguinDL;
+
 #define dgKakarikoDecorDL "__OTR__objects/object_kakariko_decor/gKakarikoDecorDL"
 static const ALIGN_ASSET(2) char gKakarikoDecorDL[] = dgKakarikoDecorDL;
 

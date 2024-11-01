@@ -391,6 +391,19 @@ size_t SohUtils::CopyStringToCharBuffer(char* buffer, const std::string& source,
     return 0;
 }
 
+int SohUtils::CopyStringToCharBuffer(const std::string& inputStr, char* buffer, const int maxBufferSize) {
+    if (!inputStr.empty()) {
+        // Prevent potential horrible overflow due to implicit conversion of maxBufferSize to an unsigned. Prevents negatives.
+        memset(buffer, 0, std::max<int>(0, maxBufferSize));
+        // Gaurentee that this value will be greater than 0, regardless of passed variables.
+        const int copiedCharLen = std::min<int>(std::max<int>(0, maxBufferSize - 1), inputStr.length());
+        memcpy(buffer, inputStr.c_str(), copiedCharLen);
+        return copiedCharLen;
+    }
+
+    return 0;
+}
+
 bool SohUtils::IsStringEmpty(std::string str) {
     // Remove spaces at the beginning of the string
     std::string::size_type start = str.find_first_not_of(' ');

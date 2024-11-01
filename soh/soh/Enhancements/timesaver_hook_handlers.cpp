@@ -892,7 +892,7 @@ void TimeSaverOnSceneInitHandler(int16_t sceneNum) {
     }
 }
 
-static GetItemEntry vanillaQueuedItemEntry = GET_ITEM_NONE;
+GetItemEntry vanillaQueuedItemEntry = GET_ITEM_NONE;
 
 void TimeSaverOnFlagSetHandler(int16_t flagType, int16_t flag) {
     if (!CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO)) return;
@@ -1063,11 +1063,11 @@ void TimeSaverRegisterHooks() {
         onVanillaBehaviorHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnVanillaBehavior>(TimeSaverOnVanillaBehaviorHandler);
         onActorInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>(TimeSaverOnActorInitHandler);
         onGameFrameUpdate = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>(TimeSaverOnGameFrameUpdateHandler);
+        onPlayerUpdateHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>(TimeSaverOnPlayerUpdateHandler);
+        onItemReceiveHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>(TimeSaverOnItemReceiveHandler);
 
         if (IS_RANDO) return;
 
         onFlagSetHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnFlagSet>(TimeSaverOnFlagSetHandler);
-        onPlayerUpdateHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>(TimeSaverOnPlayerUpdateHandler);
-        onItemReceiveHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>(TimeSaverOnItemReceiveHandler);
     });
 }

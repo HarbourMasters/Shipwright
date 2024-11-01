@@ -244,15 +244,22 @@ void EnClearTag_Init(Actor* thisx, PlayState* play) {
     if (this->actor.params == CLEAR_TAG_LASER) {
         this->state = CLEAR_TAG_STATE_LASER;
         this->timers[CLEAR_TAG_TIMER_LASER_DEATH] = 70;
-        this->actor.speedXZ = 35.0f;
-        func_8002D908(&this->actor);
-        for (j = 0; j <= 0; j++) {
-            func_8002D7EC(&this->actor);
+        if (CVarGetInteger("gHoliday.AGreenSpoon.EvilGossipStone", 0)) {
+            this->actor.scale.x = 0.4f;
+            this->actor.scale.y = 0.4f;
+            this->actor.scale.z = 2.0f;
+            this->actor.speedXZ = MAX(10.0f, Actor_WorldDistXZToActor(thisx, &GET_PLAYER(gPlayState)->actor) * 0.33f);
+        } else {
+            this->actor.speedXZ = 35.0f;
+            func_8002D908(&this->actor);
+            for (j = 0; j <= 0; j++) {
+                func_8002D7EC(&this->actor);
+            }
+            this->actor.scale.x = 0.4f;
+            this->actor.scale.y = 0.4f;
+            this->actor.scale.z = 2.0f;
+            this->actor.speedXZ = 70.0f;
         }
-        this->actor.scale.x = 0.4f;
-        this->actor.scale.y = 0.4f;
-        this->actor.scale.z = 2.0f;
-        this->actor.speedXZ = 70.0f;
         this->actor.shape.rot.x = -this->actor.shape.rot.x;
 
         func_8002D908(&this->actor);
@@ -570,12 +577,21 @@ void EnClearTag_Update(Actor* thisx, PlayState* play2) {
                 }
 
                 // Set laser collider properties.
-                this->collider.dim.radius = 23;
-                this->collider.dim.height = 25;
-                this->collider.dim.yShift = -10;
-                Collider_UpdateCylinder(&this->actor, &this->collider);
-                CollisionCheck_SetAT(play, &play->colChkCtx, &this->collider.base);
-                Actor_UpdateBgCheckInfo(play, &this->actor, 50.0f, 80.0f, 100.0f, 5);
+                if (CVarGetInteger("gHoliday.AGreenSpoon.EvilGossipStone", 0)) {
+                    this->collider.dim.radius = 10;
+                    this->collider.dim.height = 25;
+                    this->collider.dim.yShift = -10;
+                    Collider_UpdateCylinder(&this->actor, &this->collider);
+                    CollisionCheck_SetAT(play, &play->colChkCtx, &this->collider.base);
+                    Actor_UpdateBgCheckInfo(play, &this->actor, 10.0f, 10.0f, 10.0f, 5);
+                } else {
+                    this->collider.dim.radius = 23;
+                    this->collider.dim.height = 25;
+                    this->collider.dim.yShift = -10;
+                    Collider_UpdateCylinder(&this->actor, &this->collider);
+                    CollisionCheck_SetAT(play, &play->colChkCtx, &this->collider.base);
+                    Actor_UpdateBgCheckInfo(play, &this->actor, 50.0f, 80.0f, 100.0f, 5);
+                }
 
                 // Check if the laser has hit a target, timed out, or hit the ground.
                 if (this->actor.bgCheckFlags & 9 || hasAtHit || this->timers[CLEAR_TAG_TIMER_LASER_DEATH] == 0) {

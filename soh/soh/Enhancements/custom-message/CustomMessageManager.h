@@ -69,6 +69,9 @@ class CustomMessage {
     void SetTextBoxType(TextBoxType boxType);
     const TextBoxPosition& GetTextBoxPosition() const;
 
+    // To only be used with OnOpenText hook
+    void LoadIntoFont();
+
     CustomMessage operator+(const CustomMessage& right) const;
     CustomMessage operator+(const std::string& right) const;
     void operator+=(const std::string& right);
