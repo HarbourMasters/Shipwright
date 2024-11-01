@@ -109,6 +109,7 @@ void Settings::CreateOptions() {
     mOptions[RSK_KAK_GATE] = Option::U8("Kakariko Gate", {"Closed", "Open"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("KakarikoGate"), mOptionDescriptions[RSK_KAK_GATE]);
     mOptions[RSK_DOOR_OF_TIME] = Option::U8("Door of Time", {"Closed", "Song only", "Open"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("DoorOfTime"), mOptionDescriptions[RSK_DOOR_OF_TIME], WidgetType::Combobox);
     mOptions[RSK_ZORAS_FOUNTAIN] = Option::U8("Zora's Fountain", {"Closed", "Closed as child", "Open"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ZorasFountain"), mOptionDescriptions[RSK_ZORAS_FOUNTAIN]);
+    mOptions[RSK_SLEEPING_WATERFALL] = Option::U8("Sleeping Waterfall", {"Closed", "Closed as child", "Open"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("SleepingWaterfall"), mOptionDescriptions[RSK_SLEEPING_WATERFALL]);
     mOptions[RSK_GERUDO_FORTRESS] = Option::U8("Gerudo Fortress", {"Normal", "Fast", "Open"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("GerudoFortress"), mOptionDescriptions[RSK_GERUDO_FORTRESS]);
     mOptions[RSK_RAINBOW_BRIDGE] = Option::U8("Rainbow Bridge", {"Vanilla", "Always open", "Stones", "Medallions", "Dungeon rewards", "Dungeons", "Tokens", "Greg"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("RainbowBridge"), mOptionDescriptions[RSK_RAINBOW_BRIDGE], WidgetType::Combobox, RO_BRIDGE_VANILLA, false, IMFLAG_NONE);
     mOptions[RSK_RAINBOW_BRIDGE_STONE_COUNT] = Option::U8("Stone Count", {NumOpts(0, 4)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("StoneCount"), "", WidgetType::Slider, 3, true);
@@ -695,6 +696,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_KAK_GATE],
         &mOptions[RSK_DOOR_OF_TIME],
         &mOptions[RSK_ZORAS_FOUNTAIN],
+        &mOptions[RSK_SLEEPING_WATERFALL],
     }, false, WidgetContainerType::COLUMN);
     mOptionGroups[RSG_WORLD_IMGUI] = OptionGroup::SubGroup("World Settings", {
         &mOptions[RSK_STARTING_AGE],
@@ -944,6 +946,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_KAK_GATE],
         &mOptions[RSK_DOOR_OF_TIME],
         &mOptions[RSK_ZORAS_FOUNTAIN],
+        &mOptions[RSK_SLEEPING_WATERFALL],
         &mOptions[RSK_GERUDO_FORTRESS],
         &mOptions[RSK_RAINBOW_BRIDGE],
         &mOptions[RSK_RAINBOW_BRIDGE_STONE_COUNT],
@@ -1261,6 +1264,7 @@ void Settings::CreateOptions() {
         { "Open Settings:Kakariko Gate", RSK_KAK_GATE },
         { "Open Settings:Door of Time", RSK_DOOR_OF_TIME },
         { "Open Settings:Zora's Fountain", RSK_ZORAS_FOUNTAIN },
+        { "Open Settings:Sleeping Waterfall", RSK_SLEEPING_WATERFALL },
         { "World Settings:Starting Age", RSK_STARTING_AGE },
         { "Open Settings:Gerudo Fortress", RSK_GERUDO_FORTRESS },
         { "Open Settings:Rainbow Bridge", RSK_RAINBOW_BRIDGE },
@@ -2574,6 +2578,15 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
                         mOptions[index].SetSelectedIndex(RO_ZF_CLOSED_CHILD);
                     } else if (it.value() == "Open") {
                         mOptions[index].SetSelectedIndex(RO_ZF_OPEN);
+                    }
+                    break;
+                case RSK_SLEEPING_WATERFALL:
+                    if (it.value() == "Closed") {
+                        mOptions[index].SetSelectedIndex(RO_WATERFALL_CLOSED);
+                    } else if (it.value() == "Closed as child") {
+                        mOptions[index].SetSelectedIndex(RO_WATERFALL_CLOSED_CHILD);
+                    } else if (it.value() == "Open") {
+                        mOptions[index].SetSelectedIndex(RO_WATERFALL_OPEN);
                     }
                     break;
                 case RSK_STARTING_AGE:
