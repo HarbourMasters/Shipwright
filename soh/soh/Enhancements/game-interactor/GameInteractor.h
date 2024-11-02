@@ -341,6 +341,7 @@ typedef enum {
     VB_SHOULD_GIVE_VANILLA_FISHING_PRIZE,
     VB_GIVE_RANDO_FISHING_PRIZE,
     VB_PLAY_THROW_ANIMATION,
+    VB_GANONDORF_DECIDE_TO_FIGHT,
 
     /*** Give Items ***/
 
@@ -592,7 +593,7 @@ struct HookInfo {
 #define COND_VB_SHOULD(id, condition, body)                                                               \
     {                                                                                                     \
         static HOOK_ID hookId = 0;                                                                        \
-        GameInteractor::Instance->UnregisterGameHookForID<GameInteractor::ShouldVanillaBehavior>(hookId); \
+        GameInteractor::Instance->UnregisterGameHookForID<GameInteractor::OnVanillaBehavior>(hookId); \
         hookId = 0;                                                                                       \
         if (condition) {                                                                                  \
             hookId = REGISTER_VB_SHOULD(id, body);                                                        \
