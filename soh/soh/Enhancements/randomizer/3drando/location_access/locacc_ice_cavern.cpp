@@ -38,6 +38,14 @@ void AreaTable_Init_IceCavern() {
                   LOCATION(RC_ICE_CAVERN_GS_SPINNING_SCYTHE_ROOM, logic->HookshotOrBoomerang),
                   LOCATION(RC_ICE_CAVERN_GS_HEART_PIECE_ROOM,     logic->BlueFire && logic->HookshotOrBoomerang),
                   LOCATION(RC_ICE_CAVERN_GS_PUSH_BLOCK_ROOM,      logic->BlueFire && (logic->HookshotOrBoomerang || (randoCtx->GetTrickOption(RT_ICE_BLOCK_GS) && logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)))),
+                  LOCATION(RC_ICE_CAVERN_HALL_POT_1,              logic->CanBreakPots),
+                  LOCATION(RC_ICE_CAVERN_HALL_POT_2,              logic->CanBreakPots),
+                  LOCATION(RC_ICE_CAVERN_SPINNING_BLADE_POT_1,    logic->CanBreakPots),
+                  LOCATION(RC_ICE_CAVERN_SPINNING_BLADE_POT_2,    logic->CanBreakPots),
+                  LOCATION(RC_ICE_CAVERN_SPINNING_BLADE_POT_3,    logic->CanBreakPots),
+                  LOCATION(RC_ICE_CAVERN_NEAR_END_POT_1,          logic->CanBreakPots),
+                  LOCATION(RC_ICE_CAVERN_NEAR_END_POT_2,          logic->CanBreakPots),
+                  LOCATION(RC_ICE_CAVERN_FROZEN_POT_1,            logic->CanBreakPots),
   }, {});
   }
 

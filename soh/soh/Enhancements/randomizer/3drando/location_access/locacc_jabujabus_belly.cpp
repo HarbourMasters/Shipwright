@@ -58,6 +58,9 @@ void AreaTable_Init_JabuJabusBelly() {
                 }, {
                   //Locations
                   LOCATION(RC_JABU_JABUS_BELLY_GS_WATER_SWITCH_ROOM, true),
+                  LOCATION(RC_JABU_JABUS_BELLY_BASEMENT_POT_1, logic->CanBreakPots),
+                  LOCATION(RC_JABU_JABUS_BELLY_BASEMENT_POT_2, logic->CanBreakPots),
+                  LOCATION(RC_JABU_JABUS_BELLY_BASEMENT_POT_3, logic->CanBreakPots),
                 }, {
                   //Exits
                   Entrance(RR_JABU_JABUS_BELLY_MAIN_LOWER, {[]{return logic->Swim;}}),
@@ -67,7 +70,14 @@ void AreaTable_Init_JabuJabusBelly() {
   areaTable[RR_JABU_JABUS_BELLY_LOWER_SIDE_ROOM] = Area("Jabu Jabus Belly Lower Side Room", "Jabu Jabus Belly", RA_JABU_JABUS_BELLY, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&logic->FairyPot, {[]{return logic->FairyPot || (logic->CanUse(RG_BOOMERANG) || logic->CanUse(RG_HOVER_BOOTS));}}),
-                }, {}, {
+                }, {
+                  //Locations
+                  LOCATION(RC_JABU_JABUS_BELLY_TWO_OCTOROK_POT_1, logic->CanBreakPots),
+                  LOCATION(RC_JABU_JABUS_BELLY_TWO_OCTOROK_POT_2, logic->CanBreakPots),
+                  LOCATION(RC_JABU_JABUS_BELLY_TWO_OCTOROK_POT_3, logic->CanBreakPots),
+                  LOCATION(RC_JABU_JABUS_BELLY_TWO_OCTOROK_POT_4, logic->CanBreakPots),
+                  LOCATION(RC_JABU_JABUS_BELLY_TWO_OCTOROK_POT_5, logic->CanBreakPots),
+                }, {
                   //Exits
                   Entrance(RR_JABU_JABUS_BELLY_MAIN_LOWER, {[]{return true;}}),
   });
@@ -135,7 +145,12 @@ void AreaTable_Init_JabuJabusBelly() {
                   //Events
                   EventAccess(&logic->FairyPot, {[]{return true;}}),
                   EventAccess(&logic->NutPot,   {[]{return true;}}),
-                }, {}, {
+                }, {
+                  //Locations
+                  LOCATION(RC_JABU_JABUS_BELLY_ABOVE_BIG_OCTO_POT_1, logic->CanBreakPots),
+                  LOCATION(RC_JABU_JABUS_BELLY_ABOVE_BIG_OCTO_POT_2, logic->CanBreakPots),
+                  LOCATION(RC_JABU_JABUS_BELLY_ABOVE_BIG_OCTO_POT_3, logic->CanBreakPots),
+                }, {
                   //Exits
                   Entrance(RR_JABU_JABUS_BELLY_LIFT_UPPER, {[]{return logic->CanUse(RG_BOOMERANG);}}),
   });
@@ -221,7 +236,15 @@ void AreaTable_Init_JabuJabusBelly() {
     |         BOSS ROOM         |
     ---------------------------*/
     areaTable[RR_JABU_JABUS_BELLY_BOSS_ENTRYWAY] =
-        Area("Jabu Jabus Belly Boss Entryway", "Jabu Jabus Belly", RA_JABU_JABUS_BELLY, NO_DAY_NIGHT_CYCLE, {}, {},
+        Area("Jabu Jabus Belly Boss Entryway", "Jabu Jabus Belly", RA_JABU_JABUS_BELLY, NO_DAY_NIGHT_CYCLE, {}, {
+                 //Locations
+                 LOCATION(RC_JABU_JABUS_BELLY_BARINADE_POT_1, logic->CanBreakPots),
+                 LOCATION(RC_JABU_JABUS_BELLY_BARINADE_POT_2, logic->CanBreakPots),
+                 LOCATION(RC_JABU_JABUS_BELLY_BARINADE_POT_3, logic->CanBreakPots),
+                 LOCATION(RC_JABU_JABUS_BELLY_BARINADE_POT_4, logic->CanBreakPots),
+                 LOCATION(RC_JABU_JABUS_BELLY_BARINADE_POT_5, logic->CanBreakPots),
+                 LOCATION(RC_JABU_JABUS_BELLY_BARINADE_POT_6, logic->CanBreakPots),
+            },
              {
                  // Exits
                  Entrance(RR_JABU_JABUS_BELLY_NEAR_BOSS_ROOM, { [] { return randoCtx->GetDungeon(JABU_JABUS_BELLY)->IsVanilla(); } }),
