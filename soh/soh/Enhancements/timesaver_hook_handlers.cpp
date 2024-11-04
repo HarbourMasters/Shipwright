@@ -14,6 +14,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Owl/z_en_owl.h"
 #include "src/overlays/actors/ovl_En_Ko/z_en_ko.h"
 #include "src/overlays/actors/ovl_En_Ma1/z_en_ma1.h"
+#include "src/overlays/actors/ovl_En_Ru2/z_en_ru2.h"
 #include "src/overlays/actors/ovl_En_Zl4/z_en_zl4.h"
 #include "src/overlays/actors/ovl_En_Box/z_en_box.h"
 #include "src/overlays/actors/ovl_Demo_Im/z_demo_im.h"
@@ -278,6 +279,12 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                         break;
                     }
                     case ACTOR_BG_HIDAN_FWBIG: {
+                        *should = false;
+                        break;
+                    }
+                    case ACTOR_EN_RU2: {
+                        EnRu2* enRu2 = (EnRu2*)actor;
+                        enRu2->action = 18;
                         *should = false;
                         break;
                     }

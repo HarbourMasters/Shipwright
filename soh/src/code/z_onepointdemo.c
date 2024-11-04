@@ -1256,7 +1256,7 @@ s16 OnePointCutscene_EndCutscene(PlayState* play, s16 camIdx) {
     if (camIdx == SUBCAM_ACTIVE) {
         camIdx = play->activeCamera;
     }
-    if (play->cameraPtrs[camIdx] != NULL) {
+    if (camIdx != SUBCAM_FREE && play->cameraPtrs[camIdx] != NULL) {
         osSyncPrintf("onepointdemo camera[%d]: delete timer=%d next=%d\n", camIdx, play->cameraPtrs[camIdx]->timer,
                      play->cameraPtrs[camIdx]->parentCamIdx);
         if (play->cameraPtrs[camIdx]->csId == 5010) {
