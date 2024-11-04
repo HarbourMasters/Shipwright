@@ -18,20 +18,26 @@ extern "C" {
  * should also account for the difference between your first and following visits to the blue warp.
  */
 void SkipBlueWarp_ShouldPlayTransitionCS(GIVanillaBehavior _, bool* should, va_list originalArgs) {
-    if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO)) {
-        uint8_t isBlueWarpCutscene = 0;
+    bool overrideBlueWarpDestinations =
+        IS_RANDO && (RAND_GET_OPTION(RSK_SHUFFLE_DUNGEON_ENTRANCES) != RO_DUNGEON_ENTRANCE_SHUFFLE_OFF ||
+                     RAND_GET_OPTION(RSK_SHUFFLE_BOSS_ENTRANCES) != RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF);
+
+    // Force blue warp skip on when ER needs to place Link somewhere else.
+    // This is preferred over having story cutscenes play in the overworld and then reloading Link somewhere else after.
+    if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO) || overrideBlueWarpDestinations) {
+        bool isBlueWarpCutscene = false;
         // Deku Tree Blue warp
         if (gSaveContext.entranceIndex == ENTR_KOKIRI_FOREST_0 && gSaveContext.cutsceneIndex == 0xFFF1) {
             gSaveContext.entranceIndex = ENTR_KOKIRI_FOREST_DEKU_TREE_BLUE_WARP;
-            isBlueWarpCutscene = 1;
+            isBlueWarpCutscene = true;
         // Dodongo's Cavern Blue warp
         } else if (gSaveContext.entranceIndex == ENTR_DEATH_MOUNTAIN_TRAIL_BOTTOM_EXIT && gSaveContext.cutsceneIndex == 0xFFF1) {
             gSaveContext.entranceIndex = ENTR_DEATH_MOUNTAIN_TRAIL_DODONGO_BLUE_WARP;
-            isBlueWarpCutscene = 1;
+            isBlueWarpCutscene = true;
         // Jabu Jabu's Blue warp
         } else if (gSaveContext.entranceIndex == ENTR_ZORAS_FOUNTAIN_JABU_JABU_BLUE_WARP && gSaveContext.cutsceneIndex == 0xFFF0) {
             gSaveContext.entranceIndex = ENTR_ZORAS_FOUNTAIN_JABU_JABU_BLUE_WARP;
-            isBlueWarpCutscene = 1;
+            isBlueWarpCutscene = true;
         // Forest Temple Blue warp
         } else if (gSaveContext.entranceIndex == ENTR_CHAMBER_OF_THE_SAGES_0 && gSaveContext.cutsceneIndex == 0x0 && gSaveContext.chamberCutsceneNum == CHAMBER_CS_FOREST) {
             // Normally set in the blue warp cutscene
@@ -43,14 +49,14 @@ void SkipBlueWarp_ShouldPlayTransitionCS(GIVanillaBehavior _, bool* should, va_l
                 gSaveContext.entranceIndex = ENTR_KOKIRI_FOREST_12;
             }
 
-            isBlueWarpCutscene = 1;
+            isBlueWarpCutscene = true;
         // Fire Temple Blue warp
         } else if (gSaveContext.entranceIndex == ENTR_KAKARIKO_VILLAGE_FRONT_GATE && gSaveContext.cutsceneIndex == 0xFFF3) {
             // Normally set in the blue warp cutscene
             Flags_SetEventChkInf(EVENTCHKINF_DEATH_MOUNTAIN_ERUPTED);
 
             gSaveContext.entranceIndex = ENTR_DEATH_MOUNTAIN_CRATER_FIRE_TEMPLE_BLUE_WARP;
-            isBlueWarpCutscene = 1;
+            isBlueWarpCutscene = true;
         // Water Temple Blue warp
         } else if (gSaveContext.entranceIndex == ENTR_CHAMBER_OF_THE_SAGES_0 && gSaveContext.cutsceneIndex == 0x0 && gSaveContext.chamberCutsceneNum == CHAMBER_CS_WATER) {
             // Normally set in the blue warp cutscene
@@ -58,15 +64,15 @@ void SkipBlueWarp_ShouldPlayTransitionCS(GIVanillaBehavior _, bool* should, va_l
             Flags_SetEventChkInf(EVENTCHKINF_RAISED_LAKE_HYLIA_WATER);
 
             gSaveContext.entranceIndex = ENTR_LAKE_HYLIA_WATER_TEMPLE_BLUE_WARP;
-            isBlueWarpCutscene = 1;
+            isBlueWarpCutscene = true;
         // Spirit Temple Blue warp
         } else if (gSaveContext.entranceIndex == ENTR_CHAMBER_OF_THE_SAGES_0 && gSaveContext.cutsceneIndex == 0x0 && gSaveContext.chamberCutsceneNum == CHAMBER_CS_SPIRIT) {
             gSaveContext.entranceIndex = ENTR_DESERT_COLOSSUS_SPIRIT_TEMPLE_BLUE_WARP;
-            isBlueWarpCutscene = 1;
+            isBlueWarpCutscene = true;
         // Shadow Temple Blue warp
         } else if (gSaveContext.entranceIndex == ENTR_CHAMBER_OF_THE_SAGES_0 && gSaveContext.cutsceneIndex == 0x0 && gSaveContext.chamberCutsceneNum == CHAMBER_CS_SHADOW) {
             gSaveContext.entranceIndex = ENTR_GRAVEYARD_SHADOW_TEMPLE_BLUE_WARP;
-            isBlueWarpCutscene = 1;
+            isBlueWarpCutscene = true;
         }
 
         if (isBlueWarpCutscene) {
@@ -80,7 +86,7 @@ void SkipBlueWarp_ShouldPlayTransitionCS(GIVanillaBehavior _, bool* should, va_l
         }
 
         // This is outside the above condition because we want to handle both first and following visits to the blue warp
-        if (IS_RANDO && (RAND_GET_OPTION(RSK_SHUFFLE_DUNGEON_ENTRANCES) != RO_DUNGEON_ENTRANCE_SHUFFLE_OFF || RAND_GET_OPTION(RSK_SHUFFLE_BOSS_ENTRANCES) != RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF)) {
+        if (overrideBlueWarpDestinations) {
             Entrance_OverrideBlueWarp();
         }
     }
