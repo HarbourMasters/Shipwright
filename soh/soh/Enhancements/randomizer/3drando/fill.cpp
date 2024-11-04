@@ -617,8 +617,8 @@ void LookForExternalArea(Region* currentRegion, std::set<Region*> &alreadyChecke
     //if this entrance does not pass areas, only process it if we are in low priority mode
     if ((LowPriorityMode || entrance->DoesSpreadAreas()) && !alreadyChecked.contains(entrance->GetParentRegion())){
       std::set<RandomizerArea> otherAreas = entrance->GetParentRegion()->GetAllAreas();
-      alreadyChecked.insert(entrance->GetParentRegion());
       if (otherAreas.size() == 0) {
+        alreadyChecked.insert(entrance->GetParentRegion());
         LookForExternalArea(entrance->GetParentRegion(), alreadyChecked, areas, LowPriorityMode);
       //If we find a valid area we should add it.
       //If it's Links Pocket or RA_NONE, do not propagate those, they are not real areas.
@@ -715,7 +715,7 @@ static void CalculateWotH() {
       //If removing this item and no other item caused the game to become unbeatable, then it is strictly necessary,
       //so add it unless it is in Links Pocket or an isolated place.
       auto itemLoc = ctx->GetItemLocation(ctx->playthroughLocations[i][j]);
-      if (itemLoc->IsHintable() && *itemLoc->GetAreas().begin() > RA_LINKS_POCKET &&
+      if (itemLoc->IsHintable() && itemLoc->GetFirstArea() > RA_LINKS_POCKET &&
           !(IsBeatableWithout(ctx->playthroughLocations[i][j], true))) {
         itemLoc->SetWothCandidate();
       }
@@ -1041,8 +1041,7 @@ static void RandomizeDungeonItems() {
   auto ctx = Rando::Context::GetInstance();
 
   //Get Any Dungeon and Overworld group locations
-  std::vector<RandomizerCheck> anyDungeonLocations = Rando::StaticData::GetDungeonLocations();
-  //Rando::StaticData::GetOverworldLocations() defined in item_location.cpp
+  std::vector<RandomizerCheck> anyDungeonLocations = Rando::StaticData::GetAllDungeonLocations();
 
   //Create Any Dungeon and Overworld item pools
   std::vector<RandomizerGet> anyDungeonItems;

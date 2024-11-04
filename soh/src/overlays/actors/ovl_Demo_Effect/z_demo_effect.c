@@ -332,7 +332,7 @@ void DemoEffect_Init(Actor* thisx, PlayState* play2) {
             break;
 
         case DEMO_EFFECT_GOD_LGT_NAYRU:
-            if (gSaveContext.entranceIndex == ENTR_DEATH_MOUNTAIN_TRAIL_0) {
+            if (gSaveContext.entranceIndex == ENTR_DEATH_MOUNTAIN_TRAIL_BOTTOM_EXIT) {
                 Actor_SetScale(&this->actor, 1.0f);
             } else {
                 Actor_SetScale(&this->actor, 0.1f);
@@ -635,7 +635,7 @@ void DemoEffect_UpdateGetItem(DemoEffect* this, PlayState* play) {
 
         Actor_SetScale(thisx, 0.20f);
 
-        if (gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_0 || (IS_RANDO && gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_7)) {
+        if (gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_ENTRANCE || (IS_RANDO && gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_WARP_PAD)) {
             switch (play->csCtx.npcActions[this->csActionId]->action) {
                 case 2:
                     DemoEffect_MedalSparkle(this, play, 0);
@@ -647,8 +647,8 @@ void DemoEffect_UpdateGetItem(DemoEffect* this, PlayState* play) {
         }
         switch (play->csCtx.npcActions[this->csActionId]->action) {
             case 2:
-                if (gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_0 ||
-                    (IS_RANDO && gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_7)) {
+                if (gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_ENTRANCE ||
+                    (IS_RANDO && gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_WARP_PAD)) {
                     Audio_PlayActorSound2(thisx, NA_SE_EV_MEDAL_APPEAR_L - SFX_FLAG);
                 } else {
                     func_800788CC(NA_SE_EV_MEDAL_APPEAR_S - SFX_FLAG);
@@ -663,8 +663,8 @@ void DemoEffect_UpdateGetItem(DemoEffect* this, PlayState* play) {
                 if (this->getItem.drawId != GID_ARROW_LIGHT) {
                     this->actor.shape.rot.y += this->getItem.rotation;
                 }
-                if (gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_0 ||
-                    (IS_RANDO && gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_7)) {
+                if (gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_ENTRANCE ||
+                    (IS_RANDO && gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_WARP_PAD)) {
                     Audio_PlayActorSound2(thisx, NA_SE_EV_MEDAL_APPEAR_L - SFX_FLAG);
                 } else {
                     func_800788CC(NA_SE_EV_MEDAL_APPEAR_S - SFX_FLAG);
@@ -1230,7 +1230,7 @@ void DemoEffect_UpdateGodLgtNayru(DemoEffect* this, PlayState* play) {
             }
         }
 
-        if (gSaveContext.entranceIndex == ENTR_DEATH_MOUNTAIN_TRAIL_0 && gSaveContext.sceneSetupIndex == 4) {
+        if (gSaveContext.entranceIndex == ENTR_DEATH_MOUNTAIN_TRAIL_BOTTOM_EXIT && gSaveContext.sceneSetupIndex == 4) {
             if (play->csCtx.frames == 72) {
                 Audio_PlayActorSound2(&this->actor, NA_SE_IT_DM_FLYING_GOD_DASH);
             }
@@ -1614,15 +1614,15 @@ void DemoEffect_UpdateJewelChild(DemoEffect* this, PlayState* play) {
                 return;
             default:
                 DemoEffect_MoveToCsEndpoint(this, play, this->csActionId, 0);
-                if (gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_0 ||
-                    (IS_RANDO && gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_7)) {
+                if (gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_ENTRANCE ||
+                    (IS_RANDO && gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_WARP_PAD)) {
                     DemoEffect_MoveJewelSplit(&thisx->world, this);
                 }
                 break;
         }
     }
 
-    if (gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_0 || (IS_RANDO && gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_7)) {
+    if (gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_ENTRANCE || (IS_RANDO && gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_WARP_PAD)) {
         if (!Flags_GetEventChkInf(EVENTCHKINF_OPENED_THE_DOOR_OF_TIME)) {
             hasCmdAction = play->csCtx.state && play->csCtx.npcActions[this->csActionId];
             if (!hasCmdAction) {

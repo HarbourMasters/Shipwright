@@ -426,7 +426,7 @@ void func_80A79AB4(EnIn* this, PlayState* play) {
 }
 
 void func_80A79BAC(EnIn* this, PlayState* play, s32 index, u32 transitionType) {
-    s16 entrances[] = { ENTR_LON_LON_RANCH_8, ENTR_LON_LON_RANCH_6, ENTR_LON_LON_RANCH_0 };
+    s16 entrances[] = { ENTR_LON_LON_RANCH_8, ENTR_LON_LON_RANCH_6, ENTR_LON_LON_RANCH_ENTRANCE };
 
     play->nextEntranceIndex = entrances[index];
     if (index == 2) {

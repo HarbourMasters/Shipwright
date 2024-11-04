@@ -5053,30 +5053,30 @@ s32 func_80838FB8(PlayState* play, Player* this) {
  */
 static s16 sReturnEntranceGroupData[] = {
     // ENTR_RETURN_GREAT_FAIRYS_FOUNTAIN_MAGIC
-    /*  0 */ ENTR_DEATH_MOUNTAIN_TRAIL_4,  // from Magic Fairy Fountain
-    /*  1 */ ENTR_DEATH_MOUNTAIN_CRATER_3, // from Double Magic Fairy Fountain
-    /*  2 */ ENTR_HYRULE_CASTLE_2,         // from Double Defense Fairy Fountain (as adult)
+    /*  0 */ ENTR_DEATH_MOUNTAIN_TRAIL_GREAT_FAIRY_EXIT,  // from Magic Fairy Fountain
+    /*  1 */ ENTR_DEATH_MOUNTAIN_CRATER_GREAT_FAIRY_EXIT, // from Double Magic Fairy Fountain
+    /*  2 */ ENTR_CASTLE_GROUNDS_GREAT_FAIRY_EXIT,        // from Double Defense Fairy Fountain (as adult)
 
     // ENTR_RETURN_2
-    /*  3 */ ENTR_KAKARIKO_VILLAGE_9, // from Potion Shop in Kakariko
-    /*  4 */ ENTR_MARKET_DAY_5,       // from Potion Shop in Market
+    /*  3 */ ENTR_KAKARIKO_VILLAGE_OUTSIDE_POTION_SHOP_FRONT, // from Potion Shop in Kakariko
+    /*  4 */ ENTR_MARKET_DAY_OUTSIDE_POTION_SHOP,       // from Potion Shop in Market
 
     // ENTR_RETURN_BAZAAR
-    /*  5 */ ENTR_KAKARIKO_VILLAGE_3,
-    /*  6 */ ENTR_MARKET_DAY_6,
+    /*  5 */ ENTR_KAKARIKO_VILLAGE_OUTSIDE_BAZAAR,
+    /*  6 */ ENTR_MARKET_DAY_OUTSIDE_BAZAAR,
 
     // ENTR_RETURN_4
-    /*  7 */ ENTR_KAKARIKO_VILLAGE_11, // from House of Skulltulas
-    /*  8 */ ENTR_BACK_ALLEY_DAY_2,    // from Bombchu Shop
+    /*  7 */ ENTR_KAKARIKO_VILLAGE_OUTSIDE_SKULKLTULA_HOUSE, // from House of Skulltulas
+    /*  8 */ ENTR_BACK_ALLEY_DAY_OUTSIDE_BOMBCHU_SHOP,    // from Bombchu Shop
 
     // ENTR_RETURN_SHOOTING_GALLERY
-    /*  9 */ ENTR_KAKARIKO_VILLAGE_10,
-    /* 10 */ ENTR_MARKET_DAY_8,
+    /*  9 */ ENTR_KAKARIKO_VILLAGE_OUTSIDE_SHOOTING_GALLERY,
+    /* 10 */ ENTR_MARKET_DAY_OUTSIDE_SHOOTING_GALLERY,
 
     // ENTR_RETURN_GREAT_FAIRYS_FOUNTAIN_SPELLS
-    /* 11 */ ENTR_ZORAS_FOUNTAIN_5,  // from Farores Wind Fairy Fountain
-    /* 12 */ ENTR_HYRULE_CASTLE_2,   // from Dins Fire Fairy Fountain (as child)
-    /* 13 */ ENTR_DESERT_COLOSSUS_7, // from Nayrus Love Fairy Fountain
+    /* 11 */ ENTR_ZORAS_FOUNTAIN_OUTSIDE_GREAT_FAIRY,  // from Farores Wind Fairy Fountain
+    /* 12 */ ENTR_CASTLE_GROUNDS_GREAT_FAIRY_EXIT,   // from Dins Fire Fairy Fountain (as child)
+    /* 13 */ ENTR_DESERT_COLOSSUS_GREAT_FAIRY_EXIT, // from Nayrus Love Fairy Fountain
 };
 
 /**
@@ -10772,11 +10772,6 @@ void Player_Init(Actor* thisx, PlayState* play2) {
     s32 respawnFlag;
     s32 respawnMode;
 
-    // In ER, once Link has spawned we know the scene has loaded, so we can sanitize the last known entrance type
-    if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
-        Grotto_SanitizeEntranceType();
-    }
-
     play->shootingGalleryStatus = play->bombchuBowlingStatus = 0;
 
     play->playerInit = Player_InitCommon;
@@ -14246,7 +14241,7 @@ s32 func_8084DFF4(PlayState* play, Player* this) {
     } else {
         if (Message_GetState(&play->msgCtx) == TEXT_STATE_CLOSING) {
             if (GameInteractor_Should(VB_PLAY_NABOORU_CAPTURED_CS, this->getItemId == GI_GAUNTLETS_SILVER)) {
-                play->nextEntranceIndex = ENTR_DESERT_COLOSSUS_0;
+                play->nextEntranceIndex = ENTR_DESERT_COLOSSUS_EAST_EXIT;
                 play->transitionTrigger = TRANS_TRIGGER_START;
                 gSaveContext.nextCutsceneIndex = 0xFFF1;
                 play->transitionType = TRANS_TYPE_SANDSTORM_END;
@@ -14321,12 +14316,12 @@ void Player_Action_8084E368(Player* this, PlayState* play) {
 }
 
 static s16 sWarpSongEntrances[] = {
-    ENTR_SACRED_FOREST_MEADOW_2,
-    ENTR_DEATH_MOUNTAIN_CRATER_4,
-    ENTR_LAKE_HYLIA_8,
-    ENTR_DESERT_COLOSSUS_5,
-    ENTR_GRAVEYARD_7,
-    ENTR_TEMPLE_OF_TIME_7,
+    ENTR_SACRED_FOREST_MEADOW_WARP_PAD,
+    ENTR_DEATH_MOUNTAIN_CRATER_WARP_PAD,
+    ENTR_LAKE_HYLIA_WARP_PAD,
+    ENTR_DESERT_COLOSSUS_WARP_PAD,
+    ENTR_GRAVEYARD_WARP_PAD,
+    ENTR_TEMPLE_OF_TIME_WARP_PAD,
 };
 
 void Player_Action_8084E3C4(Player* this, PlayState* play) {
@@ -14686,6 +14681,7 @@ void Player_Action_SwingBottle(Player* this, PlayState* play) {
                     Message_StartTextbox(play, sBottleCatchInfo[this->av1.bottleCatchType - 1].textId, &this->actor);
                 }
                 Audio_PlayFanfare(NA_BGM_ITEM_GET | 0x900);
+                GameInteractor_ExecuteOnPlayerBottleUpdate((sBottleCatchInfo[this->av1.bottleCatchType - 1].itemId));
                 this->av2.startedTextbox = true;
             } else if (Message_GetState(&play->msgCtx) == TEXT_STATE_CLOSING) {
                 this->av1.bottleCatchType = BOTTLE_CATCH_NONE;
@@ -15000,7 +14996,7 @@ void Player_Action_8084F88C(Player* this, PlayState* play) {
         if (this->av1.actionVar1 != 0) {
             if (play->sceneNum == SCENE_ICE_CAVERN) {
                 Play_TriggerRespawn(play);
-                play->nextEntranceIndex = ENTR_ICE_CAVERN_0;
+                play->nextEntranceIndex = ENTR_ICE_CAVERN_ENTRANCE;
             } else if (this->av1.actionVar1 < 0) {
                 Play_TriggerRespawn(play);
                 // In ER, handle DMT and other special void outs to respawn from last entrance from grotto 

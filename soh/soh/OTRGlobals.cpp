@@ -79,10 +79,10 @@
 #include "ActorDB.h"
 
 #ifdef ENABLE_REMOTE_CONTROL
-#include "Enhancements/crowd-control/CrowdControl.h"
-#include "Enhancements/game-interactor/GameInteractor_Sail.h"
+#include "soh/Network/CrowdControl/CrowdControl.h"
+#include "soh/Network/Sail/Sail.h"
 CrowdControl* CrowdControl::Instance;
-GameInteractorSail* GameInteractorSail::Instance;
+Sail* Sail::Instance;
 #endif
 
 #include "Enhancements/mods.h"
@@ -1173,7 +1173,7 @@ extern "C" void InitOTR() {
 
 #ifdef ENABLE_REMOTE_CONTROL
     CrowdControl::Instance = new CrowdControl();
-    GameInteractorSail::Instance = new GameInteractorSail();
+    Sail::Instance = new Sail();
 #endif
 
     OTRMessage_Init();
@@ -1203,15 +1203,11 @@ extern "C" void InitOTR() {
     srand(now);
 #ifdef ENABLE_REMOTE_CONTROL
     SDLNet_Init();
-    if (CVarGetInteger(CVAR_REMOTE("Enabled"), 0)) {
-        switch (CVarGetInteger(CVAR_REMOTE("Scheme"), GI_SCHEME_SAIL)) {
-            case GI_SCHEME_SAIL:
-                GameInteractorSail::Instance->Enable();
-                break;
-            case GI_SCHEME_CROWD_CONTROL:
-                CrowdControl::Instance->Enable();
-                break;
-        }
+    if (CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("Enabled"), 0)) {
+        CrowdControl::Instance->Enable();
+    }
+    if (CVarGetInteger(CVAR_REMOTE_SAIL("Enabled"), 0)) {
+        Sail::Instance->Enable();
     }
 #endif
 }
@@ -1224,15 +1220,11 @@ extern "C" void DeinitOTR() {
     SaveManager_ThreadPoolWait();
     OTRAudio_Exit();
 #ifdef ENABLE_REMOTE_CONTROL
-    if (CVarGetInteger(CVAR_REMOTE("Enabled"), 0)) {
-        switch (CVarGetInteger(CVAR_REMOTE("Scheme"), GI_SCHEME_SAIL)) {
-            case GI_SCHEME_SAIL:
-                GameInteractorSail::Instance->Disable();
-                break;
-            case GI_SCHEME_CROWD_CONTROL:
-                CrowdControl::Instance->Disable();
-                break;
-        }
+    if (CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("Enabled"), 0)) {
+        CrowdControl::Instance->Disable();
+    }
+    if (CVarGetInteger(CVAR_REMOTE_SAIL("Enabled"), 0)) {
+        Sail::Instance->Disable();
     }
     SDLNet_Quit();
 #endif
@@ -2086,7 +2078,7 @@ std::wstring StringToU16(const std::string& s) {
     size_t i = 0;
     while (i < s.size()) {
         unsigned long uni;
-        size_t nbytes;
+        size_t nbytes = 0;
         bool error = false;
         unsigned char c = s[i++];
         if (c < 0x80) { // ascii
@@ -2666,7 +2658,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(RC_ZR_MAGIC_BEAN_SALESMAN, TEXT_BEAN_SALESMAN_BUY_FOR_10, TEXT_NONE, Randomizer_GetSettingValue(RSK_MERCHANT_TEXT_HINT) == RO_GENERIC_OFF);
         } 
         else if (textId == TEXT_BEAN_SALESMAN_BUY_FOR_100) {
-            messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN_BUY_FOR_100);
+            messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN_BUY_FOR_100, MF_AUTO_FORMAT);
         } 
         else if (textId == TEXT_GRANNYS_SHOP && !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_GRANNYS_SHOP) && nonBeanMerchants &&
             (ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) || INV_CONTENT(ITEM_CLAIM_CHECK) == ITEM_CLAIM_CHECK)){
@@ -2724,7 +2716,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
         }
         else if (textId >= TEXT_WARP_MINUET_OF_FOREST &&  textId <= TEXT_WARP_PRELUDE_OF_LIGHT 
                  && ctx->GetOption(RSK_SHUFFLE_WARP_SONGS)) {
-            messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_WARP_MINUET_OF_FOREST);
+            messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_WARP_MINUET_OF_FOREST, MF_FORMATTED);
         }
         else if (textId == TEXT_LAKE_HYLIA_WATER_SWITCH_NAVI || textId == TEXT_LAKE_HYLIA_WATER_SWITCH_SIGN) {
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, textId, MF_AUTO_FORMAT);
@@ -2866,14 +2858,6 @@ extern "C" void Overlay_DisplayText(float duration, const char* text) {
 extern "C" void Overlay_DisplayText_Seconds(int seconds, const char* text) {
     float duration = seconds * OTRGlobals::Instance->GetInterpolationFPS() * 0.05;
     Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(duration, true, text);
-}
-
-extern "C" void Entrance_ClearEntranceTrackingData(void) {
-    ClearEntranceTrackingData();
-}
-
-extern "C" void Entrance_InitEntranceTrackingData(void) {
-    InitEntranceTrackingData();
 }
 
 extern "C" void EntranceTracker_SetCurrentGrottoID(s16 entranceIndex) {

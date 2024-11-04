@@ -20,8 +20,6 @@ void DoorAna_WaitClosed(DoorAna* this, PlayState* play);
 void DoorAna_WaitOpen(DoorAna* this, PlayState* play);
 void DoorAna_GrabPlayer(DoorAna* this, PlayState* play);
 
-void Grotto_OverrideActorEntrance(Actor* thisx);
-
 const ActorInit Door_Ana_InitVars = {
     ACTOR_DOOR_ANA,
     ACTORCAT_ITEMACTION,

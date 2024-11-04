@@ -19,23 +19,23 @@ extern PlayState* gPlayState;
 //Overwrite the dynamic exit for the OGC Fairy Fountain to be 0x3E8 instead
 //of 0x340 (0x340 will stay as the exit for the HC Fairy Fountain -> Castle Grounds)
 s16 dynamicExitList[] = {
-    ENTR_DEATH_MOUNTAIN_TRAIL_4,
-    ENTR_DEATH_MOUNTAIN_CRATER_3,
+    ENTR_DEATH_MOUNTAIN_TRAIL_GREAT_FAIRY_EXIT,
+    ENTR_DEATH_MOUNTAIN_CRATER_GREAT_FAIRY_EXIT,
     ENTR_POTION_SHOP_KAKARIKO_1, // OGC Fairy -- ENTR_POTION_SHOP_KAKARIKO_1 unused
-    ENTR_KAKARIKO_VILLAGE_9,
-    ENTR_MARKET_DAY_5,
-    ENTR_KAKARIKO_VILLAGE_3,
-    ENTR_MARKET_DAY_6,
-    ENTR_KAKARIKO_VILLAGE_11,
-    ENTR_BACK_ALLEY_DAY_2,
-    ENTR_KAKARIKO_VILLAGE_10,
-    ENTR_MARKET_DAY_8,
-    ENTR_ZORAS_FOUNTAIN_5,
-    ENTR_HYRULE_CASTLE_2, // HC Fairy
-    ENTR_DESERT_COLOSSUS_7
+    ENTR_KAKARIKO_VILLAGE_OUTSIDE_POTION_SHOP_FRONT,
+    ENTR_MARKET_DAY_OUTSIDE_POTION_SHOP,
+    ENTR_KAKARIKO_VILLAGE_OUTSIDE_BAZAAR,
+    ENTR_MARKET_DAY_OUTSIDE_BAZAAR,
+    ENTR_KAKARIKO_VILLAGE_OUTSIDE_SKULKLTULA_HOUSE,
+    ENTR_BACK_ALLEY_DAY_OUTSIDE_BOMBCHU_SHOP,
+    ENTR_KAKARIKO_VILLAGE_OUTSIDE_SHOOTING_GALLERY,
+    ENTR_MARKET_DAY_OUTSIDE_SHOOTING_GALLERY,
+    ENTR_ZORAS_FOUNTAIN_OUTSIDE_GREAT_FAIRY,
+    ENTR_CASTLE_GROUNDS_GREAT_FAIRY_EXIT, // HC Fairy
+    ENTR_DESERT_COLOSSUS_GREAT_FAIRY_EXIT
 };
 
-// Warp Song indices array : 0x53C33C = { ENTR_SACRED_FOREST_MEADOW_2, ENTR_DEATH_MOUNTAIN_CRATER_4, ENTR_LAKE_HYLIA_8, ENTR_DESERT_COLOSSUS_5, ENTR_GRAVEYARD_7, ENTR_TEMPLE_OF_TIME_7 }
+// Warp Song indices array : 0x53C33C = { ENTR_SACRED_FOREST_MEADOW_WARP_PAD, ENTR_DEATH_MOUNTAIN_CRATER_WARP_PAD, ENTR_LAKE_HYLIA_WARP_PAD, ENTR_DESERT_COLOSSUS_WARP_PAD, ENTR_GRAVEYARD_WARP_PAD, ENTR_TEMPLE_OF_TIME_WARP_PAD }
 
 // Owl Flights : 0x492064 and 0x492080
 
@@ -57,15 +57,15 @@ typedef struct {
 } DungeonEntranceInfo;
 
 static DungeonEntranceInfo dungeons[] = {
-    //entryway                exit,                         boss,                        reverse,                bluewarp,                     dungeon scene,         boss scene
-    { ENTR_DEKU_TREE_0,       ENTR_KOKIRI_FOREST_1,         ENTR_DEKU_TREE_BOSS_0,       ENTR_DEKU_TREE_1,       ENTR_KOKIRI_FOREST_11,        SCENE_DEKU_TREE,       SCENE_DEKU_TREE_BOSS },
-    { ENTR_DODONGOS_CAVERN_0, ENTR_DEATH_MOUNTAIN_TRAIL_3,  ENTR_DODONGOS_CAVERN_BOSS_0, ENTR_DODONGOS_CAVERN_1, ENTR_DEATH_MOUNTAIN_TRAIL_5,  SCENE_DODONGOS_CAVERN, SCENE_DODONGOS_CAVERN_BOSS },
-    { ENTR_JABU_JABU_0,       ENTR_ZORAS_FOUNTAIN_1,        ENTR_JABU_JABU_BOSS_0,       ENTR_JABU_JABU_1,       ENTR_ZORAS_FOUNTAIN_0,        SCENE_JABU_JABU,       SCENE_JABU_JABU_BOSS },
-    { ENTR_FOREST_TEMPLE_0,   ENTR_SACRED_FOREST_MEADOW_1,  ENTR_FOREST_TEMPLE_BOSS_0,   ENTR_FOREST_TEMPLE_1,   ENTR_SACRED_FOREST_MEADOW_3,  SCENE_FOREST_TEMPLE,   SCENE_FOREST_TEMPLE_BOSS },
-    { ENTR_FIRE_TEMPLE_0,     ENTR_DEATH_MOUNTAIN_CRATER_2, ENTR_FIRE_TEMPLE_BOSS_0,     ENTR_FIRE_TEMPLE_1,     ENTR_DEATH_MOUNTAIN_CRATER_5, SCENE_FIRE_TEMPLE,     SCENE_FIRE_TEMPLE_BOSS },
-    { ENTR_WATER_TEMPLE_0,    ENTR_LAKE_HYLIA_2,            ENTR_WATER_TEMPLE_BOSS_0,    ENTR_WATER_TEMPLE_1,    ENTR_LAKE_HYLIA_9,            SCENE_WATER_TEMPLE,    SCENE_WATER_TEMPLE_BOSS },
-    { ENTR_SPIRIT_TEMPLE_0,   ENTR_DESERT_COLOSSUS_1,       ENTR_SPIRIT_TEMPLE_BOSS_0,   ENTR_SPIRIT_TEMPLE_1,   ENTR_DESERT_COLOSSUS_8,       SCENE_SPIRIT_TEMPLE,   SCENE_SPIRIT_TEMPLE_BOSS },
-    { ENTR_SHADOW_TEMPLE_0,   ENTR_GRAVEYARD_1,             ENTR_SHADOW_TEMPLE_BOSS_0,   ENTR_SHADOW_TEMPLE_1,   ENTR_GRAVEYARD_8,             SCENE_SHADOW_TEMPLE,   SCENE_SHADOW_TEMPLE_BOSS },
+    //entryway                       exit,                                              boss,                               reverse,                        bluewarp,                                          dungeon scene,         boss scene
+    { ENTR_DEKU_TREE_ENTRANCE,       ENTR_KOKIRI_FOREST_OUTSIDE_DEKU_TREE,              ENTR_DEKU_TREE_BOSS_ENTRANCE,       ENTR_DEKU_TREE_BOSS_DOOR,       ENTR_KOKIRI_FOREST_DEKU_TREE_BLUE_WARP,            SCENE_DEKU_TREE,       SCENE_DEKU_TREE_BOSS },
+    { ENTR_DODONGOS_CAVERN_ENTRANCE, ENTR_DEATH_MOUNTAIN_TRAIL_OUTSIDE_DODONGOS_CAVERN, ENTR_DODONGOS_CAVERN_BOSS_ENTRANCE, ENTR_DODONGOS_CAVERN_BOSS_DOOR, ENTR_DEATH_MOUNTAIN_TRAIL_DODONGO_BLUE_WARP,       SCENE_DODONGOS_CAVERN, SCENE_DODONGOS_CAVERN_BOSS },
+    { ENTR_JABU_JABU_ENTRANCE,       ENTR_ZORAS_FOUNTAIN_OUTSIDE_JABU_JABU,             ENTR_JABU_JABU_BOSS_ENTRANCE,       ENTR_JABU_JABU_BOSS_DOOR,       ENTR_ZORAS_FOUNTAIN_JABU_JABU_BLUE_WARP,           SCENE_JABU_JABU,       SCENE_JABU_JABU_BOSS },
+    { ENTR_FOREST_TEMPLE_ENTRANCE,   ENTR_SACRED_FOREST_MEADOW_OUTSIDE_TEMPLE,          ENTR_FOREST_TEMPLE_BOSS_ENTRANCE,   ENTR_FOREST_TEMPLE_BOSS_DOOR,   ENTR_SACRED_FOREST_MEADOW_FOREST_TEMPLE_BLUE_WARP, SCENE_FOREST_TEMPLE,   SCENE_FOREST_TEMPLE_BOSS },
+    { ENTR_FIRE_TEMPLE_ENTRANCE,     ENTR_DEATH_MOUNTAIN_CRATER_OUTSIDE_TEMPLE,         ENTR_FIRE_TEMPLE_BOSS_ENTRANCE,     ENTR_FIRE_TEMPLE_BOSS_DOOR,     ENTR_DEATH_MOUNTAIN_CRATER_FIRE_TEMPLE_BLUE_WARP,  SCENE_FIRE_TEMPLE,     SCENE_FIRE_TEMPLE_BOSS },
+    { ENTR_WATER_TEMPLE_ENTRANCE,    ENTR_LAKE_HYLIA_OUTSIDE_TEMPLE,                    ENTR_WATER_TEMPLE_BOSS_ENTRANCE,    ENTR_WATER_TEMPLE_BOSS_DOOR,    ENTR_LAKE_HYLIA_WATER_TEMPLE_BLUE_WARP,            SCENE_WATER_TEMPLE,    SCENE_WATER_TEMPLE_BOSS },
+    { ENTR_SPIRIT_TEMPLE_ENTRANCE,   ENTR_DESERT_COLOSSUS_OUTSIDE_TEMPLE,               ENTR_SPIRIT_TEMPLE_BOSS_ENTRANCE,   ENTR_SPIRIT_TEMPLE_BOSS_DOOR,   ENTR_DESERT_COLOSSUS_SPIRIT_TEMPLE_BLUE_WARP,      SCENE_SPIRIT_TEMPLE,   SCENE_SPIRIT_TEMPLE_BOSS },
+    { ENTR_SHADOW_TEMPLE_ENTRANCE,   ENTR_GRAVEYARD_OUTSIDE_TEMPLE,                     ENTR_SHADOW_TEMPLE_BOSS_ENTRANCE,   ENTR_SHADOW_TEMPLE_BOSS_DOOR,   ENTR_GRAVEYARD_SHADOW_TEMPLE_BLUE_WARP,            SCENE_SHADOW_TEMPLE,   SCENE_SHADOW_TEMPLE_BOSS },
 };
 
 static s8 hasCopiedEntranceTable = 0;
@@ -79,18 +79,18 @@ u8 Entrance_EntranceIsNull(EntranceOverride* entranceOverride) {
 }
 
 static void Entrance_SeparateOGCFairyFountainExit(void) {
-    //Overwrite unused entrance 0x03E8 (ENTR_POTION_SHOP_KAKARIKO_1) with values from 0x0340 (ENTR_HYRULE_CASTLE_2) to use it as the
+    //Overwrite unused entrance 0x03E8 (ENTR_POTION_SHOP_KAKARIKO_1) with values from 0x0340 (ENTR_CASTLE_GROUNDS_GREAT_FAIRY_EXIT) to use it as the
     //exit from OGC Great Fairy Fountain -> Castle Grounds
     for (size_t i = 0; i < 4; ++i) {
-        gEntranceTable[ENTR_POTION_SHOP_KAKARIKO_1 + i] = gEntranceTable[ENTR_HYRULE_CASTLE_2 + i];
+        gEntranceTable[ENTR_POTION_SHOP_KAKARIKO_1 + i] = gEntranceTable[ENTR_CASTLE_GROUNDS_GREAT_FAIRY_EXIT + i];
     }
 }
 
 static void Entrance_SeparateAdultSpawnAndPrelude() {
-    // Overwrite unused entrance 0x0282 (ENTR_HYRULE_FIELD_10) with values from 0x05F4 (ENTR_TEMPLE_OF_TIME_7) to use it as the
+    // Overwrite unused entrance 0x0282 (ENTR_HYRULE_FIELD_10) with values from 0x05F4 (ENTR_TEMPLE_OF_TIME_WARP_PAD) to use it as the
     // Adult Spawn index and separate it from Prelude of Light
     for (size_t i = 0; i < 4; ++i) {
-        gEntranceTable[ENTR_HYRULE_FIELD_10 + i] = gEntranceTable[ENTR_TEMPLE_OF_TIME_7 + i];
+        gEntranceTable[ENTR_HYRULE_FIELD_10 + i] = gEntranceTable[ENTR_TEMPLE_OF_TIME_WARP_PAD + i];
     }
 }
 
@@ -99,19 +99,19 @@ static void Entrance_ReplaceChildTempleWarps() {
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES) != RO_DUNGEON_ENTRANCE_SHUFFLE_OFF ||
         Randomizer_GetSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) != RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF) {
         // Forest Temple
-        gEntranceTable[ENTR_SACRED_FOREST_MEADOW_3] = gEntranceTable[ENTR_SACRED_FOREST_MEADOW_2];
+        gEntranceTable[ENTR_SACRED_FOREST_MEADOW_FOREST_TEMPLE_BLUE_WARP] = gEntranceTable[ENTR_SACRED_FOREST_MEADOW_WARP_PAD];
         gEntranceTable[ENTR_SACRED_FOREST_MEADOW_3_1] = gEntranceTable[ENTR_SACRED_FOREST_MEADOW_2_1];
         // Fire Temple
-        gEntranceTable[ENTR_DEATH_MOUNTAIN_CRATER_5] = gEntranceTable[ENTR_DEATH_MOUNTAIN_CRATER_4];
+        gEntranceTable[ENTR_DEATH_MOUNTAIN_CRATER_FIRE_TEMPLE_BLUE_WARP] = gEntranceTable[ENTR_DEATH_MOUNTAIN_CRATER_WARP_PAD];
         gEntranceTable[ENTR_DEATH_MOUNTAIN_CRATER_5_1] = gEntranceTable[ENTR_DEATH_MOUNTAIN_CRATER_4_1];
         // Water Temple
-        gEntranceTable[ENTR_LAKE_HYLIA_9] = gEntranceTable[ENTR_LAKE_HYLIA_8];
+        gEntranceTable[ENTR_LAKE_HYLIA_WATER_TEMPLE_BLUE_WARP] = gEntranceTable[ENTR_LAKE_HYLIA_WARP_PAD];
         gEntranceTable[ENTR_LAKE_HYLIA_9_1] = gEntranceTable[ENTR_LAKE_HYLIA_8_1];
         // Shadow Temple
-        gEntranceTable[ENTR_GRAVEYARD_8] = gEntranceTable[ENTR_GRAVEYARD_7];
+        gEntranceTable[ENTR_GRAVEYARD_SHADOW_TEMPLE_BLUE_WARP] = gEntranceTable[ENTR_GRAVEYARD_WARP_PAD];
         gEntranceTable[ENTR_GRAVEYARD_8_1] = gEntranceTable[ENTR_GRAVEYARD_7_1];
         // Spirit Temple
-        gEntranceTable[ENTR_DESERT_COLOSSUS_8] = gEntranceTable[ENTR_DESERT_COLOSSUS_5];
+        gEntranceTable[ENTR_DESERT_COLOSSUS_SPIRIT_TEMPLE_BLUE_WARP] = gEntranceTable[ENTR_DESERT_COLOSSUS_WARP_PAD];
         gEntranceTable[ENTR_DESERT_COLOSSUS_8_1] = gEntranceTable[ENTR_DESERT_COLOSSUS_5_1];
     }
 }
@@ -199,12 +199,12 @@ void Entrance_Init(void) {
         }
 
         //Overwrite grotto related indices
-        if (originalIndex >= ENTRANCE_RANDO_GROTTO_EXIT_START) {
+        if (originalIndex >= ENTRANCE_GROTTO_EXIT_START) {
             Grotto_SetExitOverride(originalIndex, overrideIndex);
             continue;
         }
 
-        if (originalIndex >= ENTRANCE_RANDO_GROTTO_LOAD_START && originalIndex < ENTRANCE_RANDO_GROTTO_EXIT_START) {
+        if (originalIndex >= ENTRANCE_GROTTO_LOAD_START && originalIndex < ENTRANCE_GROTTO_EXIT_START) {
             Grotto_SetLoadOverride(originalIndex, overrideIndex);
             continue;
         }
@@ -213,9 +213,9 @@ void Entrance_Init(void) {
         entranceOverrideTable[originalIndex] = overrideIndex;
 
         //Override both land and water entrances for Hyrule Field -> ZR Front and vice versa
-        if (originalIndex == ENTR_ZORAS_RIVER_0) { //Hyrule Field -> ZR Front land entrance
+        if (originalIndex == ENTR_ZORAS_RIVER_WEST_EXIT) { //Hyrule Field -> ZR Front land entrance
             entranceOverrideTable[ENTR_ZORAS_RIVER_3] = overrideIndex;
-        } else if (originalIndex == ENTR_HYRULE_FIELD_2) { //ZR Front -> Hyrule Field land entrance
+        } else if (originalIndex == ENTR_HYRULE_FIELD_RIVER_EXIT) { //ZR Front -> Hyrule Field land entrance
             entranceOverrideTable[ENTR_HYRULE_FIELD_14] = overrideIndex;
         }
     }
@@ -227,11 +227,11 @@ void Entrance_Init(void) {
         s16 indicesToSilenceBackgroundMusic[2] = {
             // The lost woods music playing near the GC Woods Warp keeps playing
             // in the next area if the bvackground music is allowed to keep playing
-            entranceOverrideTable[ENTR_LOST_WOODS_6], // Goron City -> Lost Woods override
+            entranceOverrideTable[ENTR_LOST_WOODS_TUNNEL_SHORTCUT], // Goron City -> Lost Woods override
 
             // If Malon is singing at night, then her singing will be transferred
             // to the next area if it allows the background music to keep playing
-            entranceOverrideTable[ENTR_MARKET_DAY_1], // Castle Grounds -> Market override
+            entranceOverrideTable[ENTR_MARKET_DAY_CASTLE_EXIT], // Castle Grounds -> Market override
         };
 
         for (size_t j = 0; j < sizeof(indicesToSilenceBackgroundMusic) / sizeof(s16); j++) {
@@ -266,7 +266,7 @@ s16 Entrance_PeekNextIndexOverride(int16_t nextEntranceIndex) {
 
 s16 Entrance_OverrideNextIndex(s16 nextEntranceIndex) {
     // When entering Spirit Temple, clear temp flags so they don't carry over to the randomized dungeon
-    if (nextEntranceIndex == ENTR_SPIRIT_TEMPLE_0 && Entrance_GetOverride(nextEntranceIndex) != nextEntranceIndex &&
+    if (nextEntranceIndex == ENTR_SPIRIT_TEMPLE_ENTRANCE && Entrance_GetOverride(nextEntranceIndex) != nextEntranceIndex &&
         gPlayState != NULL) {
         gPlayState->actorCtx.flags.tempSwch = 0;
         gPlayState->actorCtx.flags.tempCollect = 0;
@@ -275,7 +275,7 @@ s16 Entrance_OverrideNextIndex(s16 nextEntranceIndex) {
     // Exiting through the crawl space from Hyrule Castle courtyard is the same exit as leaving Ganon's castle
     // Don't override the entrance if we came from the Castle courtyard (day and night scenes)
     if (gPlayState != NULL && (gPlayState->sceneNum == SCENE_CASTLE_COURTYARD_GUARDS_DAY || gPlayState->sceneNum == SCENE_CASTLE_COURTYARD_GUARDS_NIGHT) &&
-        nextEntranceIndex == ENTR_HYRULE_CASTLE_1) {
+        nextEntranceIndex == ENTR_CASTLE_GROUNDS_RAINBOW_BRIDGE_EXIT) {
         return nextEntranceIndex;
     }
 
@@ -327,29 +327,29 @@ void Entrance_SetGameOverEntrance(void) {
 
     //Set the current entrance depending on which entrance the player last came through
     switch (gSaveContext.entranceIndex) {
-        case ENTR_DEKU_TREE_BOSS_0 : //Deku Tree Boss Room
-            gSaveContext.entranceIndex = ENTR_DEKU_TREE_0;
+        case ENTR_DEKU_TREE_BOSS_ENTRANCE : //Deku Tree Boss Room
+            gSaveContext.entranceIndex = ENTR_DEKU_TREE_ENTRANCE;
             return;
-        case ENTR_DODONGOS_CAVERN_BOSS_0 : //Dodongos Cavern Boss Room
-            gSaveContext.entranceIndex = ENTR_DODONGOS_CAVERN_0;
+        case ENTR_DODONGOS_CAVERN_BOSS_ENTRANCE : //Dodongos Cavern Boss Room
+            gSaveContext.entranceIndex = ENTR_DODONGOS_CAVERN_ENTRANCE;
             return;
-        case ENTR_JABU_JABU_BOSS_0 : //Jabu Jabus Belly Boss Room
-            gSaveContext.entranceIndex = ENTR_JABU_JABU_0;
+        case ENTR_JABU_JABU_BOSS_ENTRANCE : //Jabu Jabus Belly Boss Room
+            gSaveContext.entranceIndex = ENTR_JABU_JABU_ENTRANCE;
             return;
-        case ENTR_FOREST_TEMPLE_BOSS_0 : //Forest Temple Boss Room
-            gSaveContext.entranceIndex = ENTR_FOREST_TEMPLE_0;
+        case ENTR_FOREST_TEMPLE_BOSS_ENTRANCE : //Forest Temple Boss Room
+            gSaveContext.entranceIndex = ENTR_FOREST_TEMPLE_ENTRANCE;
             return;
-        case ENTR_FIRE_TEMPLE_BOSS_0 : //Fire Temple Boss Room
-            gSaveContext.entranceIndex = ENTR_FIRE_TEMPLE_0;
+        case ENTR_FIRE_TEMPLE_BOSS_ENTRANCE : //Fire Temple Boss Room
+            gSaveContext.entranceIndex = ENTR_FIRE_TEMPLE_ENTRANCE;
             return;
-        case ENTR_WATER_TEMPLE_BOSS_0 : //Water Temple Boss Room
-            gSaveContext.entranceIndex = ENTR_WATER_TEMPLE_0;
+        case ENTR_WATER_TEMPLE_BOSS_ENTRANCE : //Water Temple Boss Room
+            gSaveContext.entranceIndex = ENTR_WATER_TEMPLE_ENTRANCE;
             return;
-        case ENTR_SPIRIT_TEMPLE_BOSS_0 : //Spirit Temple Boss Room
-            gSaveContext.entranceIndex = ENTR_SPIRIT_TEMPLE_0;
+        case ENTR_SPIRIT_TEMPLE_BOSS_ENTRANCE : //Spirit Temple Boss Room
+            gSaveContext.entranceIndex = ENTR_SPIRIT_TEMPLE_ENTRANCE;
             return;
-        case ENTR_SHADOW_TEMPLE_BOSS_0 : //Shadow Temple Boss Room
-            gSaveContext.entranceIndex = ENTR_SHADOW_TEMPLE_0;
+        case ENTR_SHADOW_TEMPLE_BOSS_ENTRANCE : //Shadow Temple Boss Room
+            gSaveContext.entranceIndex = ENTR_SHADOW_TEMPLE_ENTRANCE;
             return;
         case ENTR_GANONDORF_BOSS_0 : //Ganondorf Boss Room
             gSaveContext.entranceIndex = ENTR_GANONS_TOWER_0; // Inside Ganon's Castle -> Ganon's Tower Climb
@@ -371,44 +371,44 @@ void Entrance_SetSavewarpEntrance(void) {
     }
 
     if (scene == SCENE_DEKU_TREE || scene == SCENE_DEKU_TREE_BOSS) {
-        gSaveContext.entranceIndex = ENTR_DEKU_TREE_0;
+        gSaveContext.entranceIndex = ENTR_DEKU_TREE_ENTRANCE;
     } else if (scene == SCENE_DODONGOS_CAVERN || scene == SCENE_DODONGOS_CAVERN_BOSS) {
-        gSaveContext.entranceIndex = ENTR_DODONGOS_CAVERN_0;
+        gSaveContext.entranceIndex = ENTR_DODONGOS_CAVERN_ENTRANCE;
     } else if (scene == SCENE_JABU_JABU || scene == SCENE_JABU_JABU_BOSS) {
-        gSaveContext.entranceIndex = ENTR_JABU_JABU_0;
+        gSaveContext.entranceIndex = ENTR_JABU_JABU_ENTRANCE;
     } else if (scene == SCENE_FOREST_TEMPLE || scene == SCENE_FOREST_TEMPLE_BOSS) { //Forest Temple Boss Room
-        gSaveContext.entranceIndex = ENTR_FOREST_TEMPLE_0;
+        gSaveContext.entranceIndex = ENTR_FOREST_TEMPLE_ENTRANCE;
     } else if (scene == SCENE_FIRE_TEMPLE || scene == SCENE_FIRE_TEMPLE_BOSS) { //Fire Temple Boss Room
-        gSaveContext.entranceIndex = ENTR_FIRE_TEMPLE_0;
+        gSaveContext.entranceIndex = ENTR_FIRE_TEMPLE_ENTRANCE;
     } else if (scene == SCENE_WATER_TEMPLE || scene == SCENE_WATER_TEMPLE_BOSS) { //Water Temple Boss Room
-        gSaveContext.entranceIndex = ENTR_WATER_TEMPLE_0;
+        gSaveContext.entranceIndex = ENTR_WATER_TEMPLE_ENTRANCE;
     } else if (scene == SCENE_SPIRIT_TEMPLE || scene == SCENE_SPIRIT_TEMPLE_BOSS) { //Spirit Temple Boss Room
-        gSaveContext.entranceIndex = ENTR_SPIRIT_TEMPLE_0;
+        gSaveContext.entranceIndex = ENTR_SPIRIT_TEMPLE_ENTRANCE;
     } else if (scene == SCENE_SHADOW_TEMPLE || scene == SCENE_SHADOW_TEMPLE_BOSS) { //Shadow Temple Boss Room
-        gSaveContext.entranceIndex = ENTR_SHADOW_TEMPLE_0;
+        gSaveContext.entranceIndex = ENTR_SHADOW_TEMPLE_ENTRANCE;
     } else if (scene == SCENE_BOTTOM_OF_THE_WELL) { // BOTW
-        gSaveContext.entranceIndex = ENTR_BOTTOM_OF_THE_WELL_0;
+        gSaveContext.entranceIndex = ENTR_BOTTOM_OF_THE_WELL_ENTRANCE;
     } else if (scene == SCENE_GERUDO_TRAINING_GROUND) { // GTG
-        gSaveContext.entranceIndex = ENTR_GERUDO_TRAINING_GROUND_0;
+        gSaveContext.entranceIndex = ENTR_GERUDO_TRAINING_GROUND_ENTRANCE;
     } else if (scene == SCENE_ICE_CAVERN) { // Ice cavern
-        gSaveContext.entranceIndex = ENTR_ICE_CAVERN_0;
+        gSaveContext.entranceIndex = ENTR_ICE_CAVERN_ENTRANCE;
     } else if (scene == SCENE_INSIDE_GANONS_CASTLE) {
-        gSaveContext.entranceIndex = ENTR_INSIDE_GANONS_CASTLE_0;
+        gSaveContext.entranceIndex = ENTR_INSIDE_GANONS_CASTLE_ENTRANCE;
     } else if (scene == SCENE_GANONS_TOWER || scene == SCENE_INSIDE_GANONS_CASTLE_COLLAPSE || scene == SCENE_GANONS_TOWER_COLLAPSE_INTERIOR || scene == SCENE_GANON_BOSS || scene == SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR) {
         gSaveContext.entranceIndex = ENTR_GANONS_TOWER_0; // Inside Ganon's Castle -> Ganon's Tower Climb
     } else if (scene == SCENE_THIEVES_HIDEOUT) { // Theives hideout
         gSaveContext.entranceIndex = ENTR_THIEVES_HIDEOUT_0; // Gerudo Fortress -> Thieve's Hideout spawn 0
     } else if (scene == SCENE_LINKS_HOUSE) {
-        gSaveContext.entranceIndex = Entrance_OverrideNextIndex(ENTR_LINKS_HOUSE_0);
+        gSaveContext.entranceIndex = Entrance_OverrideNextIndex(ENTR_LINKS_HOUSE_CHILD_SPAWN);
     } else if (CVarGetInteger(CVAR_ENHANCEMENT("RememberSaveLocation"), 0) && scene != SCENE_FAIRYS_FOUNTAIN && scene != SCENE_GROTTOS &&
                gSaveContext.entranceIndex != ENTR_LOAD_OPENING) {
         // Use the saved entrance value with remember save location, except when in grottos/fairy fountains or if
         // the entrance index is -1 (new save)
         return;
     } else if (LINK_IS_CHILD) {
-        gSaveContext.entranceIndex = Entrance_OverrideNextIndex(ENTR_LINKS_HOUSE_0); // Child Overworld Spawn
+        gSaveContext.entranceIndex = Entrance_OverrideNextIndex(ENTR_LINKS_HOUSE_CHILD_SPAWN); // Child Overworld Spawn
     } else {
-        gSaveContext.entranceIndex = Entrance_OverrideNextIndex(ENTR_HYRULE_FIELD_10); // Adult Overworld Spawn (Normally 0x5F4 (ENTR_TEMPLE_OF_TIME_7), but 0x282 (ENTR_HYRULE_FIELD_10) has been repurposed to differentiate from Prelude which also uses 0x5F4)
+        gSaveContext.entranceIndex = Entrance_OverrideNextIndex(ENTR_HYRULE_FIELD_10); // Adult Overworld Spawn (Normally 0x5F4 (ENTR_TEMPLE_OF_TIME_WARP_PAD), but 0x282 (ENTR_HYRULE_FIELD_10) has been repurposed to differentiate from Prelude which also uses 0x5F4)
     }
 }
 
@@ -417,22 +417,22 @@ void Entrance_SetWarpSongEntrance(void) {
     gPlayState->transitionType = TRANS_TYPE_FADE_WHITE_FAST;
     switch (gPlayState->msgCtx.lastPlayedSong) {
         case OCARINA_SONG_MINUET:
-            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(ENTR_SACRED_FOREST_MEADOW_2); // Minuet
+            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(ENTR_SACRED_FOREST_MEADOW_WARP_PAD); // Minuet
             break;
         case OCARINA_SONG_BOLERO:
-            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(ENTR_DEATH_MOUNTAIN_CRATER_4); // Bolero
+            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(ENTR_DEATH_MOUNTAIN_CRATER_WARP_PAD); // Bolero
             break;
         case OCARINA_SONG_SERENADE:
-            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(ENTR_LAKE_HYLIA_8); // Serenade
+            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(ENTR_LAKE_HYLIA_WARP_PAD); // Serenade
             break;
         case OCARINA_SONG_REQUIEM:
-            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(ENTR_DESERT_COLOSSUS_5); // Requiem
+            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(ENTR_DESERT_COLOSSUS_WARP_PAD); // Requiem
             break;
         case OCARINA_SONG_NOCTURNE:
-            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(ENTR_GRAVEYARD_7); // Nocturne
+            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(ENTR_GRAVEYARD_WARP_PAD); // Nocturne
             break;
         case OCARINA_SONG_PRELUDE:
-            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(ENTR_TEMPLE_OF_TIME_7); // Prelude
+            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(ENTR_TEMPLE_OF_TIME_WARP_PAD); // Prelude
             break;
         default:
             gPlayState->transitionTrigger = TRANS_TRIGGER_OFF; // if something goes wrong, the animation plays normally
@@ -454,42 +454,30 @@ void Entrance_SetWarpSongEntrance(void) {
 void Entrance_OverrideBlueWarp(void) {
     // Handles first time entering bluewarp (with item give)
     switch (gSaveContext.entranceIndex) {
-        case ENTR_KOKIRI_FOREST_11: // Gohma blue warp
-        case ENTR_DEATH_MOUNTAIN_TRAIL_5: // KD blue warp
-        case ENTR_ZORAS_FOUNTAIN_0: // Barinade blue warp
-        case ENTR_SACRED_FOREST_MEADOW_3: // Phantom Ganon blue warp
-        case ENTR_DEATH_MOUNTAIN_CRATER_5: // Volvagia blue warp
-        case ENTR_LAKE_HYLIA_9: // Morpha blue warp
-        case ENTR_DESERT_COLOSSUS_8: // Bongo-Bongo blue warp
-        case ENTR_GRAVEYARD_8: // Twinrova blue warp
+        case ENTR_KOKIRI_FOREST_DEKU_TREE_BLUE_WARP: // Gohma blue warp
+        case ENTR_DEATH_MOUNTAIN_TRAIL_DODONGO_BLUE_WARP: // KD blue warp
+        case ENTR_ZORAS_FOUNTAIN_JABU_JABU_BLUE_WARP: // Barinade blue warp
+        case ENTR_SACRED_FOREST_MEADOW_FOREST_TEMPLE_BLUE_WARP: // Phantom Ganon blue warp
+        case ENTR_DEATH_MOUNTAIN_CRATER_FIRE_TEMPLE_BLUE_WARP: // Volvagia blue warp
+        case ENTR_LAKE_HYLIA_WATER_TEMPLE_BLUE_WARP: // Morpha blue warp
+        case ENTR_DESERT_COLOSSUS_SPIRIT_TEMPLE_BLUE_WARP: // Bongo-Bongo blue warp
+        case ENTR_GRAVEYARD_SHADOW_TEMPLE_BLUE_WARP: // Twinrova blue warp
             gSaveContext.entranceIndex = Entrance_OverrideNextIndex(gSaveContext.entranceIndex);
             return;
     }
 
     // Handles second+ times entering bluewarp
     switch (gPlayState->nextEntranceIndex) {
-        case ENTR_KOKIRI_FOREST_11: // Gohma blue warp
-        case ENTR_DEATH_MOUNTAIN_TRAIL_5: // KD blue warp
-        case ENTR_ZORAS_FOUNTAIN_0: // Barinade blue warp
-        case ENTR_SACRED_FOREST_MEADOW_3: // Phantom Ganon blue warp
-        case ENTR_DEATH_MOUNTAIN_CRATER_5: // Volvagia blue warp
-        case ENTR_LAKE_HYLIA_9: // Morpha blue warp
-        case ENTR_DESERT_COLOSSUS_8: // Bongo-Bongo blue warp
-        case ENTR_GRAVEYARD_8: // Twinrova blue warp
+        case ENTR_KOKIRI_FOREST_DEKU_TREE_BLUE_WARP: // Gohma blue warp
+        case ENTR_DEATH_MOUNTAIN_TRAIL_DODONGO_BLUE_WARP: // KD blue warp
+        case ENTR_ZORAS_FOUNTAIN_JABU_JABU_BLUE_WARP: // Barinade blue warp
+        case ENTR_SACRED_FOREST_MEADOW_FOREST_TEMPLE_BLUE_WARP: // Phantom Ganon blue warp
+        case ENTR_DEATH_MOUNTAIN_CRATER_FIRE_TEMPLE_BLUE_WARP: // Volvagia blue warp
+        case ENTR_LAKE_HYLIA_WATER_TEMPLE_BLUE_WARP: // Morpha blue warp
+        case ENTR_DESERT_COLOSSUS_SPIRIT_TEMPLE_BLUE_WARP: // Bongo-Bongo blue warp
+        case ENTR_GRAVEYARD_SHADOW_TEMPLE_BLUE_WARP: // Twinrova blue warp
             gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(gPlayState->nextEntranceIndex);
             return;
-    }
-}
-
-void Entrance_OverrideCutsceneEntrance(u16 cutsceneCmd) {
-    switch (cutsceneCmd) {
-        case 24: // Dropping a fish for Jabu Jabu
-            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(ENTR_JABU_JABU_0);
-            gPlayState->transitionTrigger = TRANS_TRIGGER_START;
-            gPlayState->transitionType = TRANS_TYPE_FADE_BLACK;
-            // In case Jabu's mouth leads to a grotto return
-            Grotto_ForceGrottoReturnOnSpecialEntrance();
-            break;
     }
 }
 
@@ -530,23 +518,23 @@ void Entrance_HandleEponaState(void) {
         }
 
         static const s16 validEponaEntrances[] = {
-            ENTR_LAKE_HYLIA_0,       // Hyrule Field -> Lake Hylia
-            ENTR_HYRULE_FIELD_4,     // Lake Hylia -> Hyrule Field
-            ENTR_LAKE_HYLIA_6,       // LH Fishing Hole -> LH Fishing Island
-            ENTR_LAKE_HYLIA_4,       // LH Lab -> Lake Hylia
-            ENTR_GERUDO_VALLEY_0,    // Hyrule Field -> Gerudo Valley
-            ENTR_HYRULE_FIELD_5,     // Gerudo Valley -> Hyrule Field
-            ENTR_LON_LON_RANCH_0,    // Hyrule Field -> Lon Lon Ranch
-            ENTR_HYRULE_FIELD_6,     // Lon Lon Ranch -> Hyrule Field
-            ENTR_HYRULE_FIELD_7,     // Market Entrance -> Hyrule Field
-            ENTR_HYRULE_FIELD_2,     // ZR Front -> Hyrule Field
-            ENTR_HYRULE_FIELD_3,     // LW Bridge -> Hyrule Field
-            ENTR_GERUDOS_FORTRESS_0, // GV Fortress Side -> Gerudo Fortress
-            ENTR_GERUDO_VALLEY_3,    // Gerudo Fortress -> GV Fortress Side
-            ENTR_GERUDO_VALLEY_4,    // GV Carpenter Tent -> GV Fortress Side
-            ENTR_LON_LON_RANCH_5,    // LLR Stables -> Lon Lon Ranch
-            ENTR_LON_LON_RANCH_10,   // LLR Tower -> Lon Lon Ranch
-            ENTR_LON_LON_RANCH_4,    // LLR Talons House -> Lon Lon Ranch
+            ENTR_LAKE_HYLIA_NORTH_EXIT,       // Hyrule Field -> Lake Hylia
+            ENTR_HYRULE_FIELD_FENCE_EXIT,     // Lake Hylia -> Hyrule Field
+            ENTR_LAKE_HYLIA_OUTSIDE_FISHING_POND,       // LH Fishing Hole -> LH Fishing Island
+            ENTR_LAKE_HYLIA_OUTSIDE_LAB,       // LH Lab -> Lake Hylia
+            ENTR_GERUDO_VALLEY_EAST_EXIT,    // Hyrule Field -> Gerudo Valley
+            ENTR_HYRULE_FIELD_ROCKY_PATH,     // Gerudo Valley -> Hyrule Field
+            ENTR_LON_LON_RANCH_ENTRANCE,    // Hyrule Field -> Lon Lon Ranch
+            ENTR_HYRULE_FIELD_CENTER_EXIT,     // Lon Lon Ranch -> Hyrule Field
+            ENTR_HYRULE_FIELD_ON_BRIDGE_SPAWN,     // Market Entrance -> Hyrule Field
+            ENTR_HYRULE_FIELD_RIVER_EXIT,     // ZR Front -> Hyrule Field
+            ENTR_HYRULE_FIELD_WOODED_EXIT,     // LW Bridge -> Hyrule Field
+            ENTR_GERUDOS_FORTRESS_EAST_EXIT, // GV Fortress Side -> Gerudo Fortress
+            ENTR_GERUDO_VALLEY_WEST_EXIT,    // Gerudo Fortress -> GV Fortress Side
+            ENTR_GERUDO_VALLEY_OUTSIDE_TENT,    // GV Carpenter Tent -> GV Fortress Side
+            ENTR_LON_LON_RANCH_OUTSIDE_STABLES,    // LLR Stables -> Lon Lon Ranch
+            ENTR_LON_LON_RANCH_OUTSIDE_TOWER,   // LLR Tower -> Lon Lon Ranch
+            ENTR_LON_LON_RANCH_OUTSIDE_TALONS_HOUSE,    // LLR Talons House -> Lon Lon Ranch
             ENTR_HYRULE_FIELD_11,    // LLR Southern Fence Jump
             ENTR_HYRULE_FIELD_12,    // LLR Western Fence Jump
             ENTR_HYRULE_FIELD_13,    // LLR Eastern Fence Jump
@@ -588,15 +576,15 @@ void Entrance_OverrideWeatherState() {
     }
 
     // Hyrule Market
-    if (gSaveContext.entranceIndex == ENTR_HYRULE_FIELD_7) { // Hyrule Field by Market Entrance
+    if (gSaveContext.entranceIndex == ENTR_HYRULE_FIELD_ON_BRIDGE_SPAWN) { // Hyrule Field by Market Entrance
         gWeatherMode = 1;
         return;
     }
     // Lon Lon Ranch (No Epona)
     if (!Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED)){ // if you don't have Epona
         switch (gSaveContext.entranceIndex) {
-            case ENTR_LON_LON_RANCH_0: // Lon Lon Ranch from HF
-            case ENTR_HYRULE_FIELD_6: // Hyrule Field from LLR
+            case ENTR_LON_LON_RANCH_ENTRANCE: // Lon Lon Ranch from HF
+            case ENTR_HYRULE_FIELD_CENTER_EXIT: // Hyrule Field from LLR
                 gWeatherMode = 2;
                 return;
         }
@@ -604,9 +592,9 @@ void Entrance_OverrideWeatherState() {
     // Water Temple
     if (!Flags_GetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP)) { // have not beaten Water Temple
         switch (gSaveContext.entranceIndex) {
-            case ENTR_ZORAS_RIVER_2: // Zora River from behind waterfall
-            case ENTR_ZORAS_RIVER_4: // Zora River from LW water shortcut
-            case ENTR_LOST_WOODS_7: // Lost Woods water shortcut from ZR
+            case ENTR_ZORAS_RIVER_WATERFALL_EXIT: // Zora River from behind waterfall
+            case ENTR_ZORAS_RIVER_UNDERWATER_SHORTCUT: // Zora River from LW water shortcut
+            case ENTR_LOST_WOODS_UNDERWATER_SHORTCUT: // Lost Woods water shortcut from ZR
                 gWeatherMode = 3;
                 return;
         }
@@ -625,9 +613,9 @@ void Entrance_OverrideWeatherState() {
             case SCENE_GRAVEYARD: // Graveyard
                 gPlayState->envCtx.gloomySkyMode = 2;
                 switch (gSaveContext.entranceIndex) {
-                    case ENTR_KAKARIKO_VILLAGE_0: // Kakariko from HF
-                    case ENTR_KAKARIKO_VILLAGE_1: // Kakariko from Death Mountain Trail
-                    case ENTR_GRAVEYARD_1: // Graveyard from Shadow Temple
+                    case ENTR_KAKARIKO_VILLAGE_FRONT_GATE: // Kakariko from HF
+                    case ENTR_KAKARIKO_VILLAGE_GUARD_GATE: // Kakariko from Death Mountain Trail
+                    case ENTR_GRAVEYARD_OUTSIDE_TEMPLE: // Graveyard from Shadow Temple
                         break;
                     default:
                         gWeatherMode = 5;
@@ -637,7 +625,7 @@ void Entrance_OverrideWeatherState() {
     }
     // Death Mountain Cloudy
     if (!Flags_GetEventChkInf(EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP)) { // have not beaten Fire Temple
-        if (gPlayState->nextEntranceIndex == ENTR_LOST_WOODS_6) { // Lost Woods Goron City Shortcut
+        if (gPlayState->nextEntranceIndex == ENTR_LOST_WOODS_TUNNEL_SHORTCUT) { // Lost Woods Goron City Shortcut
             gWeatherMode = 2;
             return;
         }
@@ -650,8 +638,8 @@ void Entrance_OverrideWeatherState() {
                     gPlayState->envCtx.gloomySkyMode = 1;
                 }
                 switch (gSaveContext.entranceIndex) {
-                    case ENTR_KAKARIKO_VILLAGE_0: // Kakariko from HF
-                    case ENTR_KAKARIKO_VILLAGE_2: // Kakariko from Graveyard
+                    case ENTR_KAKARIKO_VILLAGE_FRONT_GATE: // Kakariko from HF
+                    case ENTR_KAKARIKO_VILLAGE_SOUTHEAST_EXIT: // Kakariko from Graveyard
                         break;
                     default:
                         gWeatherMode = 2;
@@ -672,7 +660,7 @@ void Entrance_OverrideGeurdoGuardCapture(void) {
     if ((LINK_IS_CHILD || Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) &&
         gPlayState->nextEntranceIndex == ENTR_GERUDO_VALLEY_1) { // Geurdo Valley thrown out
         if (gPlayState->sceneNum != SCENE_GERUDO_VALLEY) { // Geurdo Valley
-            gPlayState->nextEntranceIndex = ENTR_GERUDOS_FORTRESS_0; // Gerudo Fortress
+            gPlayState->nextEntranceIndex = ENTR_GERUDOS_FORTRESS_EAST_EXIT; // Gerudo Fortress
         }
     }
 }

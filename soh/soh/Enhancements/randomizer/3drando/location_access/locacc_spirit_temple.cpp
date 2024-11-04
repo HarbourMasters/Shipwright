@@ -12,7 +12,7 @@ void RegionTable_Init_SpiritTemple() {
                   //Exits
                   Entrance(RR_SPIRIT_TEMPLE_LOBBY,                  {[]{return ctx->GetDungeon(SPIRIT_TEMPLE)->IsVanilla();}}),
                   Entrance(RR_SPIRIT_TEMPLE_MQ_LOBBY,               {[]{return ctx->GetDungeon(SPIRIT_TEMPLE)->IsMQ();}}),
-                  Entrance(RR_DESERT_COLOSSUS_FROM_SPIRIT_ENTRYWAY, {[]{return true;}}),
+                  Entrance(RR_DESERT_COLOSSUS_OUTSIDE_TEMPLE, {[]{return true;}}),
   });
 
   /*--------------------------

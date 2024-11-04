@@ -178,11 +178,11 @@ void DoorWarp1_SetupWarp(DoorWarp1* this, PlayState* play) {
             DoorWarp1_SetupAction(this, DoorWarp1_AwaitClearFlag);
             break;
         case WARP_DESTINATION:
-            if ((!(gSaveContext.entranceIndex == ENTR_SACRED_FOREST_MEADOW_3 ||  // sacred forest meadow
-                   gSaveContext.entranceIndex == ENTR_DEATH_MOUNTAIN_CRATER_5 ||  // death mountain crater
-                   gSaveContext.entranceIndex == ENTR_LAKE_HYLIA_9 ||  // lake hylia
-                   gSaveContext.entranceIndex == ENTR_DESERT_COLOSSUS_8 ||  // desert colossus
-                   gSaveContext.entranceIndex == ENTR_GRAVEYARD_8) && // graveyard
+            if ((!(gSaveContext.entranceIndex == ENTR_SACRED_FOREST_MEADOW_FOREST_TEMPLE_BLUE_WARP ||  // sacred forest meadow
+                   gSaveContext.entranceIndex == ENTR_DEATH_MOUNTAIN_CRATER_FIRE_TEMPLE_BLUE_WARP ||  // death mountain crater
+                   gSaveContext.entranceIndex == ENTR_LAKE_HYLIA_WATER_TEMPLE_BLUE_WARP ||  // lake hylia
+                   gSaveContext.entranceIndex == ENTR_DESERT_COLOSSUS_SPIRIT_TEMPLE_BLUE_WARP ||  // desert colossus
+                   gSaveContext.entranceIndex == ENTR_GRAVEYARD_SHADOW_TEMPLE_BLUE_WARP) && // graveyard
                  gSaveContext.sceneSetupIndex < 4) ||
                 (GET_PLAYER(play)->actor.params & 0xF00) != 0x200) {
                 Actor_Kill(&this->actor);
@@ -284,7 +284,7 @@ void DoorWarp1_SetupPurpleCrystal(DoorWarp1* this, PlayState* play) {
     this->unk_1BC = 1.f;
     this->actor.shape.yOffset = 800.0f;
 
-    if (gSaveContext.entranceIndex != ENTR_TEMPLE_OF_TIME_0) {
+    if (gSaveContext.entranceIndex != ENTR_TEMPLE_OF_TIME_ENTRANCE) {
         this->actor.scale.x = 0.0499f;
         this->actor.scale.y = 0.077f;
         this->actor.scale.z = 0.09f;
@@ -533,10 +533,10 @@ void DoorWarp1_ChildWarpOut(DoorWarp1* this, PlayState* play) {
                 if (GameInteractor_Should(VB_GIVE_ITEM_FROM_BLUE_WARP, true, ITEM_GORON_RUBY)) {
                     Item_Give(play, ITEM_GORON_RUBY);
                 }
-                play->nextEntranceIndex = ENTR_DEATH_MOUNTAIN_TRAIL_0;
+                play->nextEntranceIndex = ENTR_DEATH_MOUNTAIN_TRAIL_BOTTOM_EXIT;
                 gSaveContext.nextCutsceneIndex = 0xFFF1;
             } else {
-                play->nextEntranceIndex = ENTR_DEATH_MOUNTAIN_TRAIL_5;
+                play->nextEntranceIndex = ENTR_DEATH_MOUNTAIN_TRAIL_DODONGO_BLUE_WARP;
                 gSaveContext.nextCutsceneIndex = 0;
             }
         } else if (play->sceneNum == SCENE_DEKU_TREE_BOSS) {
@@ -549,11 +549,11 @@ void DoorWarp1_ChildWarpOut(DoorWarp1* this, PlayState* play) {
                 play->nextEntranceIndex = ENTR_KOKIRI_FOREST_0;
                 gSaveContext.nextCutsceneIndex = 0xFFF1;
             } else {
-                play->nextEntranceIndex = ENTR_KOKIRI_FOREST_11;
+                play->nextEntranceIndex = ENTR_KOKIRI_FOREST_DEKU_TREE_BLUE_WARP;
                 gSaveContext.nextCutsceneIndex = 0;
             }
         } else if (play->sceneNum == SCENE_JABU_JABU_BOSS) {
-            play->nextEntranceIndex = ENTR_ZORAS_FOUNTAIN_0;
+            play->nextEntranceIndex = ENTR_ZORAS_FOUNTAIN_JABU_JABU_BLUE_WARP;
             gSaveContext.nextCutsceneIndex = 0;
         }
 
@@ -647,7 +647,7 @@ void DoorWarp1_RutoWarpOut(DoorWarp1* this, PlayState* play) {
             }
             gSaveContext.nextCutsceneIndex = 0xFFF0;
         }
-        play->nextEntranceIndex = ENTR_ZORAS_FOUNTAIN_0;
+        play->nextEntranceIndex = ENTR_ZORAS_FOUNTAIN_JABU_JABU_BLUE_WARP;
 
         play->transitionTrigger = TRANS_TRIGGER_START;
         play->transitionType = TRANS_TYPE_FADE_WHITE_SLOW;
@@ -760,9 +760,9 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, PlayState* play) {
                 gSaveContext.chamberCutsceneNum = CHAMBER_CS_FOREST;
             } else {
                 if (!LINK_IS_ADULT) {
-                    play->nextEntranceIndex = ENTR_SACRED_FOREST_MEADOW_2;
+                    play->nextEntranceIndex = ENTR_SACRED_FOREST_MEADOW_WARP_PAD;
                 } else {
-                    play->nextEntranceIndex = ENTR_SACRED_FOREST_MEADOW_3;
+                    play->nextEntranceIndex = ENTR_SACRED_FOREST_MEADOW_FOREST_TEMPLE_BLUE_WARP;
                 }
                 gSaveContext.nextCutsceneIndex = 0;
             }
@@ -772,13 +772,13 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, PlayState* play) {
                 if (GameInteractor_Should(VB_GIVE_ITEM_FROM_BLUE_WARP, true, ITEM_MEDALLION_FIRE)) {
                     Item_Give(play, ITEM_MEDALLION_FIRE);
                 }
-                play->nextEntranceIndex = ENTR_KAKARIKO_VILLAGE_0;
+                play->nextEntranceIndex = ENTR_KAKARIKO_VILLAGE_FRONT_GATE;
                 gSaveContext.nextCutsceneIndex = 0xFFF3;
             } else {
                 if (!LINK_IS_ADULT) {
-                    play->nextEntranceIndex = ENTR_DEATH_MOUNTAIN_CRATER_4;
+                    play->nextEntranceIndex = ENTR_DEATH_MOUNTAIN_CRATER_WARP_PAD;
                 } else {
-                    play->nextEntranceIndex = ENTR_DEATH_MOUNTAIN_CRATER_5;
+                    play->nextEntranceIndex = ENTR_DEATH_MOUNTAIN_CRATER_FIRE_TEMPLE_BLUE_WARP;
                 }
                 gSaveContext.nextCutsceneIndex = 0;
             }
@@ -793,9 +793,9 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, PlayState* play) {
                 gSaveContext.chamberCutsceneNum = CHAMBER_CS_WATER;
             } else {
                 if (!LINK_IS_ADULT) {
-                    play->nextEntranceIndex = ENTR_LAKE_HYLIA_8;
+                    play->nextEntranceIndex = ENTR_LAKE_HYLIA_WARP_PAD;
                 } else {
-                    play->nextEntranceIndex = ENTR_LAKE_HYLIA_9;
+                    play->nextEntranceIndex = ENTR_LAKE_HYLIA_WATER_TEMPLE_BLUE_WARP;
                 }
                 gSaveContext.nextCutsceneIndex = 0;
             }
@@ -810,9 +810,9 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, PlayState* play) {
                 gSaveContext.chamberCutsceneNum = CHAMBER_CS_SPIRIT;
             } else {
                 if (!LINK_IS_ADULT) {
-                    play->nextEntranceIndex = ENTR_DESERT_COLOSSUS_5;
+                    play->nextEntranceIndex = ENTR_DESERT_COLOSSUS_WARP_PAD;
                 } else {
-                    play->nextEntranceIndex = ENTR_DESERT_COLOSSUS_8;
+                    play->nextEntranceIndex = ENTR_DESERT_COLOSSUS_SPIRIT_TEMPLE_BLUE_WARP;
                 }
                 gSaveContext.nextCutsceneIndex = 0;
             }
@@ -827,9 +827,9 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, PlayState* play) {
                 gSaveContext.chamberCutsceneNum = CHAMBER_CS_SHADOW;
             } else {
                 if (!LINK_IS_ADULT) {
-                    play->nextEntranceIndex = ENTR_GRAVEYARD_7;
+                    play->nextEntranceIndex = ENTR_GRAVEYARD_WARP_PAD;
                 } else {
-                    play->nextEntranceIndex = ENTR_GRAVEYARD_8;
+                    play->nextEntranceIndex = ENTR_GRAVEYARD_SHADOW_TEMPLE_BLUE_WARP;
                 }
                 gSaveContext.nextCutsceneIndex = 0;
             }

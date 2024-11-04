@@ -173,6 +173,7 @@ endif()
 
 # src (decomp) {{{
 file(GLOB_RECURSE src__ RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "src/*.c" "src/*.h")
+set_source_files_properties(${src__} PROPERTIES COMPILE_OPTIONS "${WARNING_OVERRIDE}")
 
 list(APPEND src__ ${CMAKE_CURRENT_SOURCE_DIR}/Resource.rc)
 list(FILTER src__ EXCLUDE REGEX "src/dmadata/*")
@@ -606,6 +607,9 @@ endif()
 ################################################################################
 # Pre build events
 ################################################################################
+if (MSVC)
+	set(MSVC_CMD ${CMAKE_COMMAND} -E copy_directory $<TARGET_FILE_DIR:soh>/assets ${CMAKE_BINARY_DIR}/soh/assets)
+endif()
 if(NOT CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch|CafeOS")
     add_custom_command(
 		TARGET ${PROJECT_NAME}
@@ -618,6 +622,7 @@ if(NOT CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch|CafeOS")
         COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/OTRExporter/CFG/ActorList_OoTMqDbg.txt $<TARGET_FILE_DIR:soh>/assets/extractor/symbols
         COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/OTRExporter/CFG/ObjectList_OoTMqDbg.txt $<TARGET_FILE_DIR:soh>/assets/extractor/symbols
 	    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/OTRExporter/CFG/SymbolMap_OoTMqDbg.txt $<TARGET_FILE_DIR:soh>/assets/extractor/symbols
+		COMMAND ${MSVC_CMD}
     )
 endif()
 ################################################################################

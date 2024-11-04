@@ -7,7 +7,6 @@
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/debugconsole.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
-#include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include <overlays/actors/ovl_En_Niw/z_en_niw.h>
 #include <overlays/misc/ovl_kaleido_scope/z_kaleido_scope.h>
 #include "soh/Enhancements/enhancementTypes.h"
@@ -180,11 +179,6 @@ void Play_Destroy(GameState* thisx) {
     // Only initialize the frame counter when exiting the title screen
     if (gSaveContext.fileNum == 0xFF) {
         play->gameplayFrames = 0;
-    }
-
-    // In ER, remove link from epona when entering somewhere that doesn't support epona
-    if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {
-        Entrance_HandleEponaState();
     }
 
     play->state.gfxCtx->callback = NULL;
@@ -1867,10 +1861,6 @@ void Play_SpawnScene(PlayState* play, s32 sceneNum, s32 spawn) {
     }
 
     OTRPlay_SpawnScene(play, sceneNum, spawn);
-
-    if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
-        Entrance_OverrideSpawnScene(sceneNum, spawn);
-    }
 }
 
 void func_800C016C(PlayState* play, Vec3f* src, Vec3f* dest) {
@@ -2152,7 +2142,7 @@ void Play_LoadToLastEntrance(PlayState* play) {
         Item_Give(play, ITEM_SWORD_MASTER);
     } else if ((gSaveContext.entranceIndex == ENTR_HYRULE_FIELD_11) || (gSaveContext.entranceIndex == ENTR_HYRULE_FIELD_12) ||
                (gSaveContext.entranceIndex == ENTR_HYRULE_FIELD_13) || (gSaveContext.entranceIndex == ENTR_HYRULE_FIELD_15)) {
-        play->nextEntranceIndex = ENTR_HYRULE_FIELD_6;
+        play->nextEntranceIndex = ENTR_HYRULE_FIELD_CENTER_EXIT;
     } else {
         play->nextEntranceIndex = gSaveContext.entranceIndex;
     }

@@ -22,7 +22,7 @@ It is recommended that you install Python and Git standalone, the install proces
 
 _Note: Be sure to either clone with the ``--recursive`` flag or do ``git submodule update --init`` after cloning to pull in the libultraship submodule!_
 
-2. Place one or more [compatible](#compatible-roms) roms in the `OTRExporter` directory with namings of your choice
+2. After setup and initial build, use the built-in OTR extraction to make your oot.otr/oot-mq.otr files.
 
 _Note: Instructions assume using powershell_
 ```powershell
@@ -30,22 +30,18 @@ _Note: Instructions assume using powershell_
 cd Shipwright
 
 # Setup cmake project
-& 'C:\Program Files\CMake\bin\cmake' -S . -B "build/x64" -G "Visual Studio 17 2022" -T v143 -A x64 # -DCMAKE_BUILD_TYPE:STRING=Release (if you're packaging)
-# Extract assets & generate OTR (run this anytime you need to regenerate OTR)
-& 'C:\Program Files\CMake\bin\cmake.exe' --build .\build\x64 --target ExtractAssets # --config Release (if you're packaging)
-# Compile project
-& 'C:\Program Files\CMake\bin\cmake.exe' --build .\build\x64 # --config Release (if you're packaging)
+# Add `-DCMAKE_BUILD_TYPE:STRING=Release` if you're packaging
+# Add `-DSUPPRESS_WARNINGS=0` to prevent suppression of warnings from LUS and decomp (src) files. set to 1 to re-enable suppression
+& 'C:\Program Files\CMake\bin\cmake' -S . -B "build/x64" -G "Visual Studio 17 2022" -T v143 -A x64
 
-# Now you can run the executable in .\build\x64
-
-# If you need to clean the project you can run
-& 'C:\Program Files\CMake\bin\cmake.exe' --build .\build\x64 --target clean
-
-# If you need to regenerate the asset headers to check them into source
-& 'C:\Program Files\CMake\bin\cmake.exe' --build .\build\x64 --target ExtractAssetHeaders
-
-# If you need a newer soh.otr only
+# Generate soh.otr
 & 'C:\Program Files\CMake\bin\cmake.exe' --build .\build\x64 --target GenerateSohOtr
+
+# Compile project
+# Add `--config Release` if you're packaging
+& 'C:\Program Files\CMake\bin\cmake.exe' --build .\build\x64
+
+# Now you can run the executable in .\build\x64 or run in Visual Studio
 ```
 
 ### Developing SoH
@@ -74,6 +70,19 @@ After compiling the project you can generate the distributable by running:
 cd "build/x64"
 # Generate
 & 'C:\Program Files\CMake\bin\cpack.exe' -G ZIP
+```
+
+### Additional CMake Targets
+#### Clean
+```powershell
+# If you need to clean the project you can run
+C:\Program Files\CMake\bin\cmake.exe --build build-cmake --target clean
+```
+
+#### Regenerate Asset Headers
+```powershell
+# If you need to regenerate the asset headers to check them into source
+C:\Program Files\CMake\bin\cmake.exe --build build-cmake --target ExtractAssetHeaders
 ```
 
 ## Linux
@@ -124,13 +133,17 @@ cd Shipwright
 git submodule update --init
 
 # Generate Ninja project
-cmake -H. -Bbuild-cmake -GNinja # -DCMAKE_BUILD_TYPE:STRING=Release (if you're packaging) -DPython3_EXECUTABLE=$(which python3) (if you are using non-standard Python installations such as PyEnv)
+# Add `-DCMAKE_BUILD_TYPE:STRING=Release` if you're packaging
+# Add `-DSUPPRESS_WARNINGS=0` to prevent suppression of warnings from LUS and decomp (src) files. set to 1 to re-enable suppression
+# Add `-DPython3_EXECUTABLE=$(which python3)` if you are using non-standard Python installations such as PyEnv
+cmake -H. -Bbuild-cmake -GNinja
 
 # Generate soh.otr
 cmake --build build-cmake --target GenerateSohOtr
 
 # Compile the project
-cmake --build build-cmake # --config Release (if you're packaging)
+# Add `--config Release` if you're packaging
+cmake --build build-cmake
 
 # Now you can run the executable in ./build-cmake/soh/soh.elf
 # To develop the project open the repository in VSCode (or your preferred editor)
@@ -153,11 +166,9 @@ cpack -G External (creates appimage)
 # If you need to clean the project you can run
 cmake --build build-cmake --target clean
 ```
-
 #### Regenerate Asset Headers
 ```bash
 # If you need to regenerate the asset headers to check them into source
-cp <path to your ROM> OTRExporter
 cmake --build build-cmake --target ExtractAssetHeaders
 ```
 
@@ -172,32 +183,25 @@ _Note: If you're using Visual Studio Code, the [cpack plugin](https://marketplac
 # Clone the repo
 git clone https://github.com/HarbourMasters/Shipwright.git
 cd ShipWright
+
 # Clone the submodule libultraship
 git submodule update --init
-# Copy the baserom to the OTRExporter folder
-cp <path to your ROM> OTRExporter
-# Generate Ninja project
-cmake -H. -Bbuild-cmake -GNinja # -DCMAKE_BUILD_TYPE:STRING=Release (if you're packaging)
-# Extract assets & generate OTR (run this anytime you need to regenerate OTR)
-cmake --build build-cmake --target ExtractAssets
-# Compile the project
-cmake --build build-cmake # --config Release (if you're packaging)
 
-# Copy oot.otr into the Application Support directory
-cp build-cmake/soh/oot.otr ~/Library/Application\ Support/com.shipofharkinian.soh/
+# Generate Ninja project
+# Add `-DCMAKE_BUILD_TYPE:STRING=Release` if you're packaging
+# Add `-DSUPPRESS_WARNINGS=0` to prevent suppression of warnings from LUS and decomp (src) files. set to 1 to re-enable suppression
+cmake -H. -Bbuild-cmake -GNinja
+
+# Generate soh.otr
+cmake --build build-cmake --target GenerateSohOtr
+
+# Compile the project
+# Add `--config Release` if you're packaging
+cmake --build build-cmake
 
 # Now you can run the executable file:
 ./build-cmake/soh/soh-macos
 # To develop the project open the repository in VSCode (or your preferred editor)
-
-# If you need to clean the project you can run
-cmake --build build-cmake --target clean
-
-# If you need to regenerate the asset headers to check them into source
-cmake --build build-cmake --target ExtractAssetHeaders
-
-# If you need a newer soh.otr only
-cmake --build build-cmake --target GenerateSohOtr
 ```
 
 ### Generating a distributable
@@ -207,6 +211,19 @@ After compiling the project you can generate a distributable by running of the f
 cd build-cmake
 # Generate
 cpack
+```
+
+### Additional CMake Targets
+#### Clean
+```bash
+# If you need to clean the project you can run
+cmake --build build-cmake --target clean
+```
+
+#### Regenerate Asset Headers
+```bash
+# If you need to regenerate the asset headers to check them into source
+cmake --build build-cmake --target ExtractAssetHeaders
 ```
 
 ## Switch

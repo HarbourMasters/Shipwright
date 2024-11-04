@@ -32,7 +32,7 @@ void StartingItemGive(GetItemEntry getItemEntry) {
 // Item_Give in z_parameter, we'll need to update Item_Give to ensure
 // nothing breaks when calling it without a valid play first
 void GiveLinkRupees(int numOfRupees) {
-    int maxRupeeCount;
+    int maxRupeeCount = 0;
     if (CUR_UPG_VALUE(UPG_WALLET) == 0) {
         maxRupeeCount = 99;
     } else if (CUR_UPG_VALUE(UPG_WALLET) == 1) {
@@ -52,7 +52,7 @@ void GiveLinkRupees(int numOfRupees) {
 }
 
 void GiveLinkDekuSticks(int howManySticks) {
-    int maxStickCount;
+    int maxStickCount = 0;
     if (CUR_UPG_VALUE(UPG_STICKS) == 0) {
         INV_CONTENT(ITEM_STICK) = ITEM_STICK;
         Inventory_ChangeUpgrade(UPG_STICKS, 1);
@@ -73,7 +73,7 @@ void GiveLinkDekuSticks(int howManySticks) {
 }
 
 void GiveLinkDekuNuts(int howManyNuts) {
-    int maxNutCount;
+    int maxNutCount = 0;
     if (CUR_UPG_VALUE(UPG_NUTS) == 0) {
         INV_CONTENT(ITEM_NUT) = ITEM_NUT;
         Inventory_ChangeUpgrade(UPG_NUTS, 1);
@@ -350,7 +350,7 @@ extern "C" void Randomizer_InitSaveFile() {
     switch (startingAge) {
         case RO_AGE_ADULT: // Adult
             gSaveContext.linkAge = LINK_AGE_ADULT;
-            gSaveContext.entranceIndex = ENTR_TEMPLE_OF_TIME_7;
+            gSaveContext.entranceIndex = ENTR_TEMPLE_OF_TIME_WARP_PAD;
             gSaveContext.savedSceneNum = SCENE_LON_LON_RANCH; // Set scene num manually to ToT
             break;
         case RO_AGE_CHILD: // Child

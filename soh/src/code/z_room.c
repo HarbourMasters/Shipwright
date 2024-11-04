@@ -4,7 +4,6 @@
 
 #include "global.h"
 #include "vt.h"
-#include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include <string.h>
 #include <assert.h>
@@ -413,7 +412,7 @@ BgImage* func_80096A74(PolygonType1* polygon1, PlayState* play) {
 
     camera = GET_ACTIVE_CAM(play);
     camId = camera->camDataIdx;
-    if (camId == -1 && (CVarGetInteger(CVAR_CHEAT("NoRestrictItems"), 0) || (CVarGetInteger(CVAR_REMOTE("Scheme"), GI_SCHEME_SAIL) == GI_SCHEME_CROWD_CONTROL && CVarGetInteger(CVAR_REMOTE("Enabled"), 0)))) {
+    if (camId == -1 && (CVarGetInteger(CVAR_CHEAT("NoRestrictItems"), 0) || (CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("Enabled"), 0)))) {
         // This prevents a crash when using items that change the
         // camera (such as din's fire), voiding out or dying on 
         // scenes with prerendered backgrounds.
@@ -578,13 +577,6 @@ u32 func_80096FE8(PlayState* play, RoomContext* roomCtx) {
 
     frontRoom = gSaveContext.respawnFlag > 0 ? ((void)0, gSaveContext.respawn[gSaveContext.respawnFlag - 1].roomIndex)
                                              : play->setupEntranceList[play->curSpawn].room;
-
-    // In ER, override roomNum to load based on scene and spawn during scene init
-    if (IS_RANDO && gSaveContext.respawnFlag <= 0 &&
-        Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
-        frontRoom = Entrance_OverrideSpawnSceneRoom(play->sceneNum, play->curSpawn, frontRoom);
-    }
-
     func_8009728C(play, roomCtx, frontRoom);
 
     return maxRoomSize;

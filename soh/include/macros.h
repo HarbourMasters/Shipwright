@@ -32,8 +32,12 @@
 //#define SEGMENTED_TO_VIRTUAL(addr) PHYSICAL_TO_VIRTUAL(gSegments[SEGMENT_NUMBER(addr)] + SEGMENT_OFFSET(addr))
 #define SEGMENTED_TO_VIRTUAL(addr) addr
 
+#ifndef SQ
 #define SQ(x) ((x)*(x))
+#endif
+#ifndef ABS
 #define ABS(x) ((x) >= 0 ? (x) : -(x))
+#endif
 #define DECR(x) ((x) == 0 ? 0 : --(x))
 #define CLAMP(x, min, max) ((x) < (min) ? (min) : (x) > (max) ? (max) : (x))
 #define CLAMP_MAX(x, max) ((x) > (max) ? (max) : (x))

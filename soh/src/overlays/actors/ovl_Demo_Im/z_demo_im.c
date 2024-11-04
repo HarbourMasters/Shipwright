@@ -874,9 +874,9 @@ void func_80986B2C(PlayState* play) {
 
         // In entrance rando have impa bring link back to the front of castle grounds
         if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {
-            play->nextEntranceIndex = ENTR_HYRULE_CASTLE_0;
+            play->nextEntranceIndex = ENTR_CASTLE_GROUNDS_SOUTH_EXIT;
         } else {
-            play->nextEntranceIndex = ENTR_HYRULE_FIELD_0;
+            play->nextEntranceIndex = ENTR_HYRULE_FIELD_PAST_BRIDGE_SPAWN;
         }
         play->transitionType = TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_BLACK, TCS_FAST);
         play->transitionTrigger = TRANS_TRIGGER_START;

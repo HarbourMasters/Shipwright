@@ -1,6 +1,7 @@
 #include "static_data.h"
 #include "z64save.h"
 #include "context.h"
+#include "dungeon.h"
 
 #define TWO_ACTOR_PARAMS(a, b) (abs(a) << 16) | abs(b)
 
@@ -117,18 +118,14 @@ std::vector<RandomizerCheck> Rando::StaticData::GetOverworldLocations() {
     return overworldLocations;
 }
 
-std::vector<RandomizerCheck> Rando::StaticData::GetDungeonLocations() {
-    std::vector<RandomizerCheck> overworldLocations = {};
-    for (Location& location : locationTable) {
-        if (
-            location.IsDungeon() &&
-            location.GetRCType() != RCTYPE_STATIC_HINT && 
-            location.GetRCType() != RCTYPE_GOSSIP_STONE  //don't put items on hints
-        ) {
-            overworldLocations.push_back(location.GetRandomizerCheck());
-        }
+std::vector<RandomizerCheck> Rando::StaticData::GetAllDungeonLocations() {
+    auto ctx = Rando::Context::GetInstance();
+    std::vector<RandomizerCheck> dungeonLocations;
+    for (const auto dungeon : ctx->GetDungeons()->GetDungeonList()) {
+        std::vector<RandomizerCheck> dungeonLoc = dungeon->GetDungeonLocations();
+        dungeonLocations.insert(dungeonLocations.end(), dungeonLoc.begin(), dungeonLoc.end());
     }
-    return overworldLocations;
+    return dungeonLocations;
 }
 
 void Rando::StaticData::InitLocationTable() { //                                                      Randomizer Check                                                 Quest            Type                                Area                                 Actor ID              Scene ID                            Params                        Flags Short Name                                     Hint Text Key                                                    Vanilla Item                                                        Spoiler Collection Check                                                                                                      Vanilla Progression  Price

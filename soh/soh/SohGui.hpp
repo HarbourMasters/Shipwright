@@ -24,6 +24,7 @@
 #include "Enhancements/randomizer/randomizer_entrance_tracker.h"
 #include "Enhancements/randomizer/randomizer_item_tracker.h"
 #include "Enhancements/randomizer/randomizer_settings_window.h"
+#include "Enhancements/timesplits/TimeSplits.h"
 #include "SohModals.h"
 
 #ifdef __cplusplus

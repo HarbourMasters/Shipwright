@@ -72,6 +72,26 @@ std::set<RandomizerArea> ItemLocation::GetAreas() const {
     return areas;
 }
 
+RandomizerArea ItemLocation::GetFirstArea() const {
+    if (areas.empty()){
+        assert(false);
+        return RA_NONE;
+    } else {
+        return *areas.begin();
+    }
+}
+
+RandomizerArea ItemLocation::GetRandomArea() const {
+    if (areas.empty()){
+        SPDLOG_DEBUG("Attempted to get random area of location with no areas: ");
+        SPDLOG_DEBUG(Rando::StaticData::GetLocation(rc)->GetName());
+        assert(false);
+        return RA_NONE;
+    } else {
+        return RandomElementFromSet(areas);
+    }
+}
+
 void ItemLocation::PlaceVanillaItem() {
     placedItem = StaticData::GetLocation(rc)->GetVanillaItem();
 }
