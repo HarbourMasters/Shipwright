@@ -3,14 +3,16 @@
 #include "soh/OTRGlobals.h"
 
 extern "C" {
-    #include "macros.h"
-    #include "src/overlays/actors/ovl_En_Ko/z_en_ko.h"
-    #include "z64save.h"
-    #include "functions.h"
-    #include "variables.h"
+#include "macros.h"
+#include "src/overlays/actors/ovl_En_Ko/z_en_ko.h"
+#include "z64save.h"
+#include "functions.h"
+#include "variables.h"
 }
 
 #define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).GetSelectedOptionIndex()
+
+static bool sEnteredBlueWarp = false;
 
 /**
  * This will override the transitions into the blue warp cutscenes, set any appropriate flags, and
@@ -86,10 +88,20 @@ void SkipBlueWarp_ShouldPlayTransitionCS(GIVanillaBehavior _, bool* should, va_l
         }
 
         // This is outside the above condition because we want to handle both first and following visits to the blue warp
-        if (overrideBlueWarpDestinations) {
+        if (sEnteredBlueWarp && overrideBlueWarpDestinations) {
             Entrance_OverrideBlueWarp();
         }
     }
+
+    sEnteredBlueWarp = false;
+}
+
+/**
+ * Using this hook to simply observe that Link has entered a bluewarp
+ * This way we know to allow entrance rando overrides to be processed on the next tranisition hook
+ */
+void SkipBlueWarp_ShouldPlayBlueWarpCS(GIVanillaBehavior _, bool* should, va_list originalArgs) {
+    sEnteredBlueWarp = true;
 }
 
 /**
@@ -149,6 +161,7 @@ void SkipBlueWarp_ShouldDekuJrConsiderForestTempleFinished(GIVanillaBehavior _, 
 void SkipBlueWarp_Register() {
     GameInteractor::Instance->RegisterGameHookForID<GameInteractor::OnActorUpdate>(ACTOR_EN_KO, SkipBlueWarp_OnActorUpdate);
     GameInteractor::Instance->RegisterGameHookForID<GameInteractor::OnVanillaBehavior>(VB_PLAY_TRANSITION_CS, SkipBlueWarp_ShouldPlayTransitionCS);
+    GameInteractor::Instance->RegisterGameHookForID<GameInteractor::OnVanillaBehavior>(VB_PLAY_BLUE_WARP_CS, SkipBlueWarp_ShouldPlayBlueWarpCS);
     GameInteractor::Instance->RegisterGameHookForID<GameInteractor::OnVanillaBehavior>(VB_DEKU_JR_CONSIDER_FOREST_TEMPLE_FINISHED, SkipBlueWarp_ShouldDekuJrConsiderForestTempleFinished);
     GameInteractor::Instance->RegisterGameHookForID<GameInteractor::OnVanillaBehavior>(VB_GIVE_ITEM_FROM_BLUE_WARP, SkipBlueWarp_ShouldGiveItem);
 }
