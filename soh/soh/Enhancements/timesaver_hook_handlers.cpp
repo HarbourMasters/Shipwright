@@ -817,7 +817,7 @@ void TimeSaverOnActorInitHandler(void* actorRef) {
 
     // Water Temple Ruto cutscene
     if (actor->id == ACTOR_EN_RU2 && gPlayState->sceneNum == SCENE_WATER_TEMPLE) {
-        if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint"), IS_RANDO)) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO)) {
             EnRu2* enRu2 = (EnRu2*)actor;
             func_80AF36EC(enRu2, gPlayState);
             Actor_Kill(actor);
