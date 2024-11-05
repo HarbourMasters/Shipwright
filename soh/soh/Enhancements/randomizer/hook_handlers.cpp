@@ -59,6 +59,10 @@ extern void func_8084DFAC(PlayState* play, Player* player);
 extern void Player_SetupActionPreserveAnimMovement(PlayState* play, Player* player, PlayerActionFunc actionFunc, s32 flags);
 extern s32 Player_SetupWaitForPutAway(PlayState* play, Player* player, AfterPutAwayFunc func);
 extern void Play_InitEnvironment(PlayState * play, s16 skyboxId);
+
+extern void func_808ADEF0(BgSpot03Taki* bgSpot03Taki, PlayState* play);
+extern void BgSpot03Taki_ApplyOpeningAlpha(BgSpot03Taki* bgSpot03Taki, s32 bufferIndex);
+extern void BgSpot03Taki_KeepOpen(BgSpot03Taki* bgSpot03Taki, PlayState* play);
 }
 
 #define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).GetSelectedOptionIndex()
