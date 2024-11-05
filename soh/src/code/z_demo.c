@@ -307,7 +307,7 @@ void func_80064824(PlayState* play, CutsceneContext* csCtx, CsCmdBase* cmd) {
             break;
         case 14:
             if (sp3F != 0) {
-                func_800BC490(play, 1);
+                Play_SetViewpoint(play, 1);
             }
             break;
         case 15:
@@ -2052,7 +2052,7 @@ void func_80068C3C(PlayState* play, CutsceneContext* csCtx) {
 
         csCtx->frames++;
         if (dREG(95) != 0) {
-            Cutscene_ProcessCommands(play, csCtx, D_8012D1F0);
+            Cutscene_ProcessCommands(play, csCtx, gDebugCutsceneScript);
         } else {
             Cutscene_ProcessCommands(play, csCtx, play->csCtx.segment);
         }

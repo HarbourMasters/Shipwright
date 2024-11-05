@@ -679,7 +679,7 @@ void EnOssan_EndInteraction(PlayState* play, EnOssan* this) {
     play->msgCtx.msgMode = MSGMODE_TEXT_CLOSING;
     play->msgCtx.stateTimer = 4;
     player->stateFlags2 &= ~PLAYER_STATE2_DISABLE_DRAW;
-    func_800BC490(play, 1);
+    Play_SetViewpoint(play, 1);
     Interface_ChangeAlpha(50);
     this->drawCursor = 0;
     this->stickLeftPrompt.isEnabled = false;
@@ -763,7 +763,7 @@ void EnOssan_State_Idle(EnOssan* this, PlayState* play, Player* player) {
         // "Start conversation!!"
         osSyncPrintf(VT_FGCOL(YELLOW) "★★★ 会話開始！！ ★★★" VT_RST "\n");
         player->stateFlags2 |= PLAYER_STATE2_DISABLE_DRAW;
-        func_800BC590(play);
+        Play_SetShopBrowsingViewpoint(play);
         EnOssan_SetStateStartShopping(play, this, false);
     } else if (this->actor.xzDistToPlayer < 100.0f) {
         func_8002F2CC(&this->actor, play, 100);
@@ -1392,7 +1392,7 @@ void EnOssan_GiveItemWithFanfare(PlayState* play, EnOssan* this) {
     play->msgCtx.msgMode = MSGMODE_TEXT_CLOSING;
     play->msgCtx.stateTimer = 4;
     player->stateFlags2 &= ~PLAYER_STATE2_DISABLE_DRAW;
-    func_800BC490(play, 1);
+    Play_SetViewpoint(play, 1);
     Interface_ChangeAlpha(50);
     this->drawCursor = 0;
     EnOssan_UpdateCameraDirection(this, play, 0.0f);
@@ -1770,7 +1770,7 @@ void EnOssan_State_ContinueShoppingPrompt(EnOssan* this, PlayState* play, Player
                         osSyncPrintf(VT_FGCOL(YELLOW) "★★★ 続けるよ！！ ★★★" VT_RST "\n");
                         player->actor.shape.rot.y += 0x8000;
                         player->stateFlags2 |= PLAYER_STATE2_DISABLE_DRAW;
-                        func_800BC490(play, 2);
+                        Play_SetViewpoint(play, 2);
                         Message_StartTextbox(play, this->actor.textId, &this->actor);
                         EnOssan_SetStateStartShopping(play, this, true);
                         func_8002F298(&this->actor, play, 100.0f, -1);
@@ -1789,7 +1789,7 @@ void EnOssan_State_ContinueShoppingPrompt(EnOssan* this, PlayState* play, Player
         selectedItem->updateStockedItemFunc(play, selectedItem);
         player->actor.shape.rot.y += 0x8000;
         player->stateFlags2 |= PLAYER_STATE2_DISABLE_DRAW;
-        func_800BC490(play, 2);
+        Play_SetViewpoint(play, 2);
         Message_StartTextbox(play, this->actor.textId, &this->actor);
         EnOssan_SetStateStartShopping(play, this, true);
         func_8002F298(&this->actor, play, 100.0f, -1);
