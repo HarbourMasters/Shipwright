@@ -282,12 +282,6 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                         *should = false;
                         break;
                     }
-                    case ACTOR_EN_RU2: {
-                        EnRu2* enRu2 = (EnRu2*)actor;
-                        enRu2->action = 18;
-                        *should = false;
-                        break;
-                    }
                     case ACTOR_EN_EX_ITEM: {
                         *should = false;
                         break;
@@ -817,6 +811,15 @@ void TimeSaverOnActorInitHandler(void* actorRef) {
     if (actor->id == ACTOR_EN_DU && gPlayState->sceneNum == SCENE_FIRE_TEMPLE) {
         if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.GlitchAiding"), 0)) {
             Flags_SetInfTable(INFTABLE_SPOKE_TO_DARUNIA_IN_FIRE_TEMPLE);
+            Actor_Kill(actor);
+        }
+    }
+
+    // Water Temple Ruto cutscene
+    if (actor->id == ACTOR_EN_RU2 && gPlayState->sceneNum == SCENE_WATER_TEMPLE) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint"), IS_RANDO)) {
+            EnRu2* enRu2 = (EnRu2*)actor;
+            func_80AF36EC(enRu2, gPlayState);
             Actor_Kill(actor);
         }
     }
