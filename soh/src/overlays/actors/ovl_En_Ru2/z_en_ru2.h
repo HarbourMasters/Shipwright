@@ -30,6 +30,4 @@ typedef struct EnRu2 {
     /* 0x02C8 */ s16 subCamId;
 } EnRu2; // size = 0x0314
 
-void func_80AF36EC(EnRu2* enRu2, PlayState* play);
-
 #endif
