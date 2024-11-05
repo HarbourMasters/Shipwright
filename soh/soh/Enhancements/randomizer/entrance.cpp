@@ -923,7 +923,7 @@ int EntranceShuffler::ShuffleAllEntrances() {
           { EntranceType::Interior, RR_MARKET_POTION_SHOP,            RR_THE_MARKET,                    ENTR_MARKET_DAY_OUTSIDE_POTION_SHOP } },
         { { EntranceType::Interior, RR_THE_MARKET,                    RR_MARKET_TREASURE_CHEST_GAME,    ENTR_TREASURE_BOX_SHOP_0 },
           { EntranceType::Interior, RR_MARKET_TREASURE_CHEST_GAME,    RR_THE_MARKET,                    ENTR_MARKET_DAY_OUTSIDE_TREASURE_BOX_SHOP } },
-        { { EntranceType::Interior, RR_MARKET_BACK_ALLEY,             RR_MARKET_BOMBCHU_SHOP,           ENTR_BOMBCHU_SHOP_0 },
+        { { EntranceType::Interior, RR_MARKET_BACK_ALLEY,             RR_MARKET_BOMBCHU_SHOP,           ENTR_BOMBCHU_SHOP_1 },
           { EntranceType::Interior, RR_MARKET_BOMBCHU_SHOP,           RR_MARKET_BACK_ALLEY,             ENTR_BACK_ALLEY_DAY_OUTSIDE_BOMBCHU_SHOP } },
         { { EntranceType::Interior, RR_MARKET_BACK_ALLEY,             RR_MARKET_MAN_IN_GREEN_HOUSE,     ENTR_BACK_ALLEY_MAN_IN_GREEN_HOUSE },
           { EntranceType::Interior, RR_MARKET_MAN_IN_GREEN_HOUSE,     RR_MARKET_BACK_ALLEY,             ENTR_BACK_ALLEY_DAY_OUTSIDE_MAN_IN_GREEN_HOUSE } },
