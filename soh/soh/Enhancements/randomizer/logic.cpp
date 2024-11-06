@@ -756,30 +756,31 @@ namespace Rando {
     }
 
     bool Logic::MQWaterLevel(RandoWaterLevel level) {
-        //For ease of reading, I will call the triforce emblem that sets the water to low the "Low Emblem", the one that sets it to mid the "Mid Emblem", and the one that sets it to high the "High Emblem"
+        //For ease of reading, I will call the triforce emblem that sets the water to WL_LOW the "Low Emblem", the one that sets it to WL_MID the "Mid Emblem", and the one that sets it to WL_HIGH the "High Emblem"
         switch(level){
-            //While you have to go through Low to get to Mid, the requirements for Low are stricter than Mid because you can always go up to Mid and then could need to go back to High to reach the Low Emblem again
-            //Thanks to this caveat you need to be able to reach and play ZL to both the High and Low Emblems to have Low in logic.
-            //Alternativly a way to reach low from mid could exist, but all glitchless methods need you to do a Low-locked action
+            //While you have to go through WL_LOW to get to Mid, the requirements for WL_LOW are stricter than WL_MID because you can always go up to WL_MID and then could need to go back to WL_HIGH to reach the Low Emblem again
+            //Thanks to this caveat you need to be able to reach and play ZL to both the High and Low Emblems to have WL_LOW in logic.
+            //Alternativly a way to reach WL_LOW from WL_MID could exist, but all glitchless methods need you to do a Low-locked action
             case WL_LOW:
                 return (CanWaterTempleHigh && CanWaterTempleLowFromHigh) || (CanWaterTempleLowFromMid && CanWaterTempleLowFromHigh);
             case WL_LOW_OR_MID:
                 return (CanWaterTempleHigh && CanWaterTempleLowFromHigh) || (CanWaterTempleLowFromHigh && CanWaterTempleMiddle) || (CanWaterTempleLowFromMid && CanWaterTempleLowFromHigh);
             //If we can set it to High out of logic we can just repeat what we did to lower the water in the first place as High is the default. 
-            //Because of this you only need to be able to use the Low and Mid Emblems, Low could be skipped if it was ever possible to play ZL underwater.
+            //Because of this you only need to be able to use the Low and Mid Emblems, WL_LOW could be skipped if it was ever possible to play ZL underwater.
             case WL_MID:
                 return CanWaterTempleLowFromHigh && CanWaterTempleMiddle;
-            //Despite being the initial state of water temple, High has the extra requirement of making sure that, if we were to lower the water out of logic, we could put it back to High
-            //However because it is the default state, we do not need to check if we can actually change the water level, only to make sure we can return to high if we found the means to play ZL out of logic.
+            //Despite being the initial state of water temple, WL_HIGH has the extra requirement of making sure that, if we were to lower the water out of logic, we could put it back to WL_HIGH
+            //However because it is the default state, we do not need to check if we can actually change the water level, only to make sure we can return to WL_HIGH if we found the means to play ZL out of logic.
             //There are 2 methods to lock yourself out after playing ZL already: Not being able to reach the High Emblem and being unable to replay ZL. (I will be ignoring other-age-access shenanigains)
-            //The former check would simply be a check to see if we can reach High Emblem, but we assume the water is Mid (as if we can set it to Low, we can set it to Mid, as Mid Emblem has no requirements)
+            //The former check would simply be a check to see if we can reach High Emblem, but we assume the water is WL_MID (as if we can set it to WL_LOW, we can set it to WL_MID, as Mid Emblem has no requirements)
             //The latter check can be assumed for now but will want a revisit once OI tricks are added.
             case WL_HIGH:
                 return ReachedWaterHighEmblem;
             case WL_HIGH_OR_MID:
                 return ReachedWaterHighEmblem || (CanWaterTempleLowFromHigh && CanWaterTempleMiddle);
         }
-        //TODO assert
+        SPDLOG_ERROR("MQWaterLevel reached `return false;`. Missing case for a Water Level");
+        assert(false);
         return false;
     }
 

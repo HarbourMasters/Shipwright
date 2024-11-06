@@ -255,7 +255,7 @@ void RegionTable_Init_WaterTemple() {
                   //Exits
                   Entrance(RR_WATER_TEMPLE_ENTRYWAY,      {[]{return logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS);}}),
                   Entrance(RR_WATER_TEMPLE_MQ_MAIN,       {[]{return true;}}),
-                  //If we are not on high, we reach RR_WATER_TEMPLE_MQ_3F_MAIN with hookshot via 2F, otherwise we can reach the platform
+                  //If we are not on WL_HIGH, we reach RR_WATER_TEMPLE_MQ_3F_MAIN with hookshot via 2F, otherwise we can reach the platform
                   Entrance(RR_WATER_TEMPLE_MQ_3F_CENTRAL, {[]{return logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS);}}),
                   Entrance(RR_WATER_TEMPLE_MQ_2F_CENTRAL, {[]{return logic->MQWaterLevel(WL_LOW_OR_MID);}}),
   });
@@ -330,9 +330,8 @@ void RegionTable_Init_WaterTemple() {
 
   areaTable[RR_WATER_TEMPLE_MQ_3F_NORTH_LEDGE] = Region("Water Temple MQ 3F North Ledge", "Water Temple", {RA_WATER_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
-                  //what we need if the water is low, we can't guarantee repeated access otherwise.
+                  //what we need if WL_LOW, we can't guarantee repeated access otherwise.
                   Entrance(RR_WATER_TEMPLE_MQ_MAIN,       {[]{return logic->HasItem(RG_BRONZE_SCALE) || logic->TakeDamage();}}),
-                  //We can't rely on the water here unless we have hookshot to fix it if it's down as we can't reach middle from this side without one.
                   Entrance(RR_WATER_TEMPLE_MQ_3F_CENTRAL, {[]{return logic->CanUse(RG_LONGSHOT);}}),
                   Entrance(RR_WATER_TEMPLE_MQ_BOSS_DOOR,  {[]{return logic->CanUse(RG_LONGSHOT) || logic->CanUse(RG_ICE_ARROWS) || logic->CanUse(RG_NAYRUS_LOVE);}}),
   });
@@ -345,7 +344,7 @@ void RegionTable_Init_WaterTemple() {
 
   areaTable[RR_WATER_TEMPLE_MQ_EAST_TOWER] = Region("Water Temple MQ East Tower", "Water Temple", {RA_WATER_TEMPLE}, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  //if we can't reach these, we can't move the water at all, so no need to specify level or account for low access here
+                  //if we can't reach these, we can't move the water at all, so no need to specify level or account for WL_LOW access here
                   //review is some way to play ocarina underwater exists
                   EventAccess(&logic->CouldWaterTempleLow,       {[]{return true;}}),
                   EventAccess(&logic->CanWaterTempleLowFromHigh, {[]{return logic->CanUse(RG_ZELDAS_LULLABY);}}),
@@ -385,7 +384,7 @@ void RegionTable_Init_WaterTemple() {
                                                                               logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_ZORA_TUNIC);}}),
   });
 
-//If we enter here in High, go to RR_WATER_TEMPLE_MQ_CENTRAL_PILLAR_HIGH instead, Assumes Mid or Low
+//If we enter here in WL_HIGH, go to RR_WATER_TEMPLE_MQ_CENTRAL_PILLAR_HIGH instead, Assumes WL_MID_OR_LOW
   areaTable[RR_WATER_TEMPLE_MQ_CENTRAL_PILLAR_2F] = Region("Water Temple MQ Central Pillar 2F", "Water Temple", {RA_WATER_TEMPLE}, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&logic->CouldWaterTempleMiddle, {[]{return true;}}),
