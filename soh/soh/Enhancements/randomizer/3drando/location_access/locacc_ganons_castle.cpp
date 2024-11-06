@@ -376,7 +376,7 @@ void RegionTable_Init_GanonsCastle() {
   areaTable[RR_GANONS_TOWER_FLOOR_1] = Region("Ganon's Tower Floor 1", "Ganons Castle", {RA_GANONS_CASTLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_GANONS_CASTLE_LOBBY,  {[]{return true;}}),
-                  Entrance(RR_GANONS_TOWER_FLOOR_2, {[]{return logic->CanKillEnemy(RE_DINOLFOS, ED_CLOSE, true, 2);}}),
+                  Entrance(RR_GANONS_TOWER_FLOOR_2, {[]{return Here(RR_GANONS_TOWER_FLOOR_2, []{return logic->CanKillEnemy(RE_DINOLFOS, ED_CLOSE, true, 2);});}}),
   });
 
   areaTable[RR_GANONS_TOWER_FLOOR_2] = Region("Ganon's Tower Floor 2", "Ganons Castle", {RA_GANONS_CASTLE}, NO_DAY_NIGHT_CYCLE, {}, {
@@ -385,7 +385,7 @@ void RegionTable_Init_GanonsCastle() {
   }, {
                   //Exits
                   Entrance(RR_GANONS_TOWER_FLOOR_1, {[]{return true;}}),
-                  Entrance(RR_GANONS_TOWER_FLOOR_3, {[]{return logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 2);}}),
+                  Entrance(RR_GANONS_TOWER_FLOOR_3, {[]{return Here(RR_GANONS_TOWER_FLOOR_2, []{return logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 2);});}}),
   });
 
   areaTable[RR_GANONS_TOWER_FLOOR_3] = Region("Ganon's Tower Floor 3", "Ganons Castle", {RA_GANONS_CASTLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
@@ -412,7 +412,7 @@ void RegionTable_Init_GanonsCastle() {
                   //temporary
                   Entrance(RR_GANONS_CASTLE_GANON_ARENA, {[]{return true;}}),
                   //real logic once we figure out how to deal with castle escape skip
-                  //Entrance(RR_GANONS_CASTLE_GANON_ARENA, {[]{return logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 2, true) && logic->CanAvoidEnemy(RE_GIBDO);}}),
+                  //Entrance(RR_GANONS_CASTLE_GANON_ARENA, {[]{return logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 2, true);}}),
   });
 
   areaTable[RR_GANONS_CASTLE_GANON_ARENA] = Region("Ganon's Arena", "Ganons Castle", {RA_GANONS_CASTLE}, NO_DAY_NIGHT_CYCLE, {}, {

@@ -570,7 +570,7 @@ namespace Rando {
                 // for killing ganondorf and all of those can reflect the energy ball
                 return HasBossSoul(RG_GANON_SOUL) && CanUse(RG_LIGHT_ARROWS) && (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD));
             case RE_GANON:
-                return HasBossSoul(RG_GANON_SOUL) && logic->CanUse(RG_MASTER_SWORD);
+                return HasBossSoul(RG_GANON_SOUL) && CanUse(RG_MASTER_SWORD);
             default:
                 SPDLOG_ERROR("CanKillEnemy reached `default`.");
                 assert(false);
