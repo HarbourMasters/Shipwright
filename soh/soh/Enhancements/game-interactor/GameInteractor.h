@@ -76,6 +76,7 @@ typedef enum {
     VB_MIDO_SPAWN,
     // Opt: *EnMd
     // Vanilla condition: EnMd->interactInfo.talkState == NPC_TALK_STATE_ACTION
+    // Note: When overriding this, ensure you're not in the intro cutscene as Mido's path has not been loaded
     VB_MOVE_MIDO_IN_KOKIRI_FOREST,
     // Opt: *EnMd
     // Vanilla condition: CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)

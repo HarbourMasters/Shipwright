@@ -674,7 +674,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             }
             break;
         case VB_MOVE_MIDO_IN_KOKIRI_FOREST:
-            if (RAND_GET_OPTION(RSK_FOREST) == RO_FOREST_OPEN) {
+            if (RAND_GET_OPTION(RSK_FOREST) == RO_FOREST_OPEN && gSaveContext.cutsceneIndex == 0) {
                 *should = true;
             }
             break;
