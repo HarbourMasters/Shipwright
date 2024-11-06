@@ -653,9 +653,9 @@ void RegionTable_Init_WaterTemple() {
         Region("Water Temple Boss Entryway", "Water Temple", {RA_WATER_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {},
              {
                  // Exits
-                 Entrance(RR_WATER_TEMPLE_PRE_BOSS_ROOM, { [] { return ctx->GetDungeon(WATER_TEMPLE)->IsVanilla() && false; } }),
-                 Entrance(RR_WATER_TEMPLE_MQ_3F_CENTRAL, { [] { return ctx->GetDungeon(WATER_TEMPLE)->IsMQ() && false; } }),
-                 Entrance(RR_WATER_TEMPLE_BOSS_ROOM, { [] { return true; } }),
+                 Entrance(RR_WATER_TEMPLE_PRE_BOSS_ROOM, {[]{return ctx->GetDungeon(WATER_TEMPLE)->IsVanilla() && false;}}),
+                 Entrance(RR_WATER_TEMPLE_MQ_BOSS_DOOR,  {[]{return ctx->GetDungeon(WATER_TEMPLE)->IsMQ() && false;}}),
+                 Entrance(RR_WATER_TEMPLE_BOSS_ROOM,     {[]{return true;}}),
              });
 
     areaTable[RR_WATER_TEMPLE_BOSS_ROOM] = Region("Water Temple Boss Room", "Water Temple", {}, NO_DAY_NIGHT_CYCLE,

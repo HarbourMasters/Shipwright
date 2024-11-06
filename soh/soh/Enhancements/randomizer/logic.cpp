@@ -773,7 +773,7 @@ namespace Rando {
             //However because it is the default state, we do not need to check if we can actually change the water level, only to make sure we can return to high if we found the means to play ZL out of logic.
             //There are 2 methods to lock yourself out after playing ZL already: Not being able to reach the High Emblem and being unable to replay ZL. (I will be ignoring other-age-access shenanigains)
             //The former check would simply be a check to see if we can reach High Emblem, but we assume the water is Mid (as if we can set it to Low, we can set it to Mid, as Mid Emblem has no requirements)
-            //The latter check, as with Mid, can be assumed for now but will want a revisit once OI tricks are added.
+            //The latter check can be assumed for now but will want a revisit once OI tricks are added.
             case WL_HIGH:
                 return ReachedWaterHighEmblem;
             case WL_HIGH_OR_MID:
