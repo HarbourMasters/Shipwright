@@ -562,6 +562,15 @@ namespace Rando {
             case RE_BIG_OCTO:
                 //If chasing octo is annoying but with rolls you can catch him, and you need rang to get into this room without shenanigains anyway. Bunny makes it free
                 return CanUse(RG_KOKIRI_SWORD) || CanUse(RG_STICKS) || CanUse(RG_MASTER_SWORD);
+            case RE_GANONDORF:
+                // RANDOTODO: Trick to use hammer (no jumpslash) or stick (only jumpslash) instead of a sword to reflect the energy ball
+                // and either of them regardless of jumpslashing to damage and kill ganondorf
+
+                // Bottle is not taken into account since a sword, hammer or stick are required
+                // for killing ganondorf and all of those can reflect the energy ball
+                return HasBossSoul(RG_GANON_SOUL) && CanUse(RG_LIGHT_ARROWS) && (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD));
+            case RE_GANON:
+                return HasBossSoul(RG_GANON_SOUL) && logic->CanUse(RG_MASTER_SWORD);
             default:
                 SPDLOG_ERROR("CanKillEnemy reached `default`.");
                 assert(false);
