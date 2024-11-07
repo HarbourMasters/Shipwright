@@ -162,7 +162,7 @@ void EnSyatekiItm_StartRound(EnSyatekiItm* this, PlayState* play) {
 
         this->timer = (this->roundNum == 1) ? 50 : 30;
 
-        func_80078884(NA_SE_SY_FOUND);
+        Sfx_PlaySfxCentered(NA_SE_SY_FOUND);
         this->actionFunc = EnSyatekiItm_SpawnTargets;
     }
 }

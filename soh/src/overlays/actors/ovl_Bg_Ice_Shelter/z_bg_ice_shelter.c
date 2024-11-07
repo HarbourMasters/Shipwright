@@ -428,7 +428,7 @@ void func_808911D4(BgIceShelter* this, PlayState* play) {
         }
 
         if (type == 4) {
-            func_80078884(NA_SE_SY_CORRECT_CHIME);
+            Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
         }
 
         Actor_Kill(&this->dyna.actor);

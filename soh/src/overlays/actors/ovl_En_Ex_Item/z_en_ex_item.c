@@ -157,7 +157,7 @@ void EnExItem_WaitForObject(EnExItem* this, PlayState* play) {
                 this->prizeRotateTimer = 35;
                 this->scale = 0.5f;
                 if (!onCounter) {
-                    func_80078884(NA_SE_SY_PIECE_OF_HEART);
+                    Sfx_PlaySfxCentered(NA_SE_SY_PIECE_OF_HEART);
                     this->actionFunc = EnExItem_BowlPrize;
                 } else {
                     this->actionFunc = EnExItem_SetupBowlCounter;

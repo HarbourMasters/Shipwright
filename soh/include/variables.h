@@ -158,9 +158,9 @@ extern "C"
 	extern char D_80133398[];
 	extern SoundBankEntry* gSoundBanks[7];
 	extern u8 gSfxChannelLayout;
-	extern Vec3f D_801333D4;
-	extern f32 D_801333E0;
-	extern s8 D_801333E8;
+	extern Vec3f gSfxDefaultPos;
+	extern f32 gSfxDefaultFreqAndVolScale;
+	extern s8 gSfxDefaultReverb;
 	extern u8 D_801333F0;
 	extern u8 gAudioSfxSwapOff;
 	extern u8 D_80133408;

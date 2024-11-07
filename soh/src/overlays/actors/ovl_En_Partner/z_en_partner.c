@@ -196,7 +196,7 @@ void UseBow(Actor* thisx, PlayState* play, u8 started, u8 arrowType) {
         if (this->itemTimer <= 0) {
             if (AMMO(ITEM_BOW) > 0) {
                 if (arrowType >= 1 && !Magic_RequestChange(play, magicArrowCosts[arrowType], MAGIC_CONSUME_NOW)) {
-                    func_80078884(NA_SE_SY_ERROR);
+                    Sfx_PlaySfxCentered(NA_SE_SY_ERROR);
                     this->canMove = 1;
                     return;
                 }
@@ -244,7 +244,7 @@ void UseSlingshot(Actor* thisx, PlayState* play, u8 started) {
                 newarrow->parent = NULL;
                 Inventory_ChangeAmmo(ITEM_SLINGSHOT, -1);
             } else {
-                func_80078884(NA_SE_SY_ERROR);
+                Sfx_PlaySfxCentered(NA_SE_SY_ERROR);
             }
         }
     }
@@ -261,7 +261,7 @@ void UseBombs(Actor* thisx, PlayState* play, u8 started) {
                             this->actor.world.pos.z, 0, 0, 0, 0, false);
                 Inventory_ChangeAmmo(ITEM_BOMB, -1);
             } else {
-                func_80078884(NA_SE_SY_ERROR);
+                Sfx_PlaySfxCentered(NA_SE_SY_ERROR);
             }
         }
     }
@@ -302,7 +302,7 @@ void UseBombchus(Actor* thisx, PlayState* play, u8 started) {
                 bomb->timer = 0;
                 Inventory_ChangeAmmo(ITEM_BOMBCHU, -1);
             } else {
-                func_80078884(NA_SE_SY_ERROR);
+                Sfx_PlaySfxCentered(NA_SE_SY_ERROR);
             }
         }
     }
@@ -322,7 +322,7 @@ void UseDekuStick(Actor* thisx, PlayState* play, u8 started) {
             if (AMMO(ITEM_STICK) > 0) {
                 func_808328EC(this, NA_SE_EV_FLAME_IGNITION);
             } else {
-                func_80078884(NA_SE_SY_ERROR);
+                Sfx_PlaySfxCentered(NA_SE_SY_ERROR);
             }
         }
 
@@ -358,7 +358,7 @@ void UseNuts(Actor* thisx, PlayState* play, u8 started) {
                             this->actor.world.pos.z, 0x1000, this->actor.world.rot.y, 0, ARROW_NUT, false);
                 Inventory_ChangeAmmo(ITEM_NUT, -1);
             } else {
-                func_80078884(NA_SE_SY_ERROR);
+                Sfx_PlaySfxCentered(NA_SE_SY_ERROR);
             }
         }
     }
@@ -415,12 +415,12 @@ void UseLens(Actor* thisx, PlayState* play, u8 started) {
 
     if (this->itemTimer <= 0) {
         if (started == 1) {
-            func_80078884(NA_SE_SY_GLASSMODE_ON);
+            Sfx_PlaySfxCentered(NA_SE_SY_GLASSMODE_ON);
             this->shouldDraw = 0;
         }
 
         if (started == 0) {
-            func_80078884(NA_SE_SY_GLASSMODE_OFF);
+            Sfx_PlaySfxCentered(NA_SE_SY_GLASSMODE_OFF);
             this->shouldDraw = 1;
         }
     }
@@ -436,7 +436,7 @@ void UseBeans(Actor* thisx, PlayState* play, u8 started) {
                 if (gSaveContext.rupees >= 100 && GiveItemEntryWithoutActor(play, this->entry)) {
                     Rupees_ChangeBy(-100);
                 } else {
-                    func_80078884(NA_SE_SY_ERROR);
+                    Sfx_PlaySfxCentered(NA_SE_SY_ERROR);
                 }
             }
         }

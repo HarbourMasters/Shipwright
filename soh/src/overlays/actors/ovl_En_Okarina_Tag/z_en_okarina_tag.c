@@ -156,7 +156,7 @@ void func_80ABF0CC(EnOkarinaTag* this, PlayState* play) {
             if ((play->sceneNum != SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC) && (play->sceneNum != SCENE_GREAT_FAIRYS_FOUNTAIN_SPELLS)) {
                 play->msgCtx.ocarinaMode = OCARINA_MODE_04;
             }
-            func_80078884(NA_SE_SY_CORRECT_CHIME);
+            Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
             this->actionFunc = func_80ABEF2C;
             return;
         }
@@ -172,7 +172,7 @@ void func_80ABF0CC(EnOkarinaTag* this, PlayState* play) {
                     Flags_SetSwitch(play, this->switchFlag);
                 }
                 play->msgCtx.ocarinaMode = OCARINA_MODE_04;
-                func_80078884(NA_SE_SY_CORRECT_CHIME);
+                Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
                 this->actionFunc = func_80ABEF2C;
                 return;
             }
@@ -235,7 +235,7 @@ void func_80ABF4C8(EnOkarinaTag* this, PlayState* play) {
     if (play->msgCtx.ocarinaMode == OCARINA_MODE_04) {
         this->actionFunc = func_80ABF28C;
     } else if (play->msgCtx.ocarinaMode == OCARINA_MODE_03) {
-        func_80078884(NA_SE_SY_CORRECT_CHIME);
+        Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
         if (this->switchFlag >= 0) {
             Flags_SetSwitch(play, this->switchFlag);
         }
@@ -264,7 +264,7 @@ void func_80ABF4C8(EnOkarinaTag* this, PlayState* play) {
                     gSaveContext.cutsceneTrigger = 1;
                 }
                 Flags_SetEventChkInf(EVENTCHKINF_DESTROYED_ROYAL_FAMILY_TOMB);
-                func_80078884(NA_SE_SY_CORRECT_CHIME);
+                Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
                 break;
             default:
                 break;

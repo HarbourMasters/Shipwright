@@ -980,9 +980,9 @@ f32 Math_SmoothStepToDegF(f32* pValue, f32 target, f32 fraction, f32 step, f32 m
 s16 Math_SmoothStepToS(s16* pValue, s16 target, s16 scale, s16 step, s16 minStep);
 void Math_ApproachS(s16* pValue, s16 target, s16 scale, s16 step);
 void Color_RGBA8_Copy(Color_RGBA8* dst, Color_RGBA8* src);
-void func_80078884(u16 sfxId);
-void func_800788CC(u16 sfxId);
-void func_80078914(Vec3f* arg0, u16 sfxId);
+void Sfx_PlaySfxCentered(u16 sfxId);
+void Sfx_PlaySfxCentered2(u16 sfxId);
+void Sfx_PlaySfxAtPos(Vec3f* arg0, u16 sfxId);
 s16 getHealthMeterXOffset();
 s16 getHealthMeterYOffset();
 void HealthMeter_Init(PlayState* play);

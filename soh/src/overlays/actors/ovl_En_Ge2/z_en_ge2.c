@@ -496,7 +496,7 @@ void EnGe2_SetupCapturePlayer(EnGe2* this, PlayState* play) {
     this->actor.speedXZ = 0.0f;
     EnGe2_ChangeAction(this, GE2_ACTION_CAPTURETURN);
     Player_SetCsActionWithHaltedActors(play, &this->actor, 95);
-    func_80078884(NA_SE_SY_FOUND);
+    Sfx_PlaySfxCentered(NA_SE_SY_FOUND);
     Message_StartTextbox(play, 0x6000, &this->actor);
 }
 
