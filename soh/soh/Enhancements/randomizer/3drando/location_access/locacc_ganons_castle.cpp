@@ -375,7 +375,7 @@ void RegionTable_Init_GanonsCastle() {
   ---------------------------*/
   areaTable[RR_GANONS_TOWER_FLOOR_1] = Region("Ganon's Tower Floor 1", "Ganons Castle", {RA_GANONS_CASTLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
-                  Entrance(RR_GANONS_CASTLE_LOBBY,  {[]{return true;}}),
+                  Entrance(RR_GANONS_CASTLE_LOBBY,  {[]{return Here(RR_GANONS_TOWER_FLOOR_1, []{return logic->CanKillEnemy(RE_DINOLFOS, ED_CLOSE, true, 2);});}}),
                   Entrance(RR_GANONS_TOWER_FLOOR_2, {[]{return Here(RR_GANONS_TOWER_FLOOR_1, []{return logic->CanKillEnemy(RE_DINOLFOS, ED_CLOSE, true, 2);});}}),
   });
 
@@ -384,13 +384,13 @@ void RegionTable_Init_GanonsCastle() {
                   LOCATION(RC_GANONS_TOWER_BOSS_KEY_CHEST, logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 2)),
   }, {
                   //Exits
-                  Entrance(RR_GANONS_TOWER_FLOOR_1, {[]{return true;}}),
+                  Entrance(RR_GANONS_TOWER_FLOOR_1, {[]{return Here(RR_GANONS_TOWER_FLOOR_2, []{return logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 2);});}}),
                   Entrance(RR_GANONS_TOWER_FLOOR_3, {[]{return Here(RR_GANONS_TOWER_FLOOR_2, []{return logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 2);});}}),
   });
 
   areaTable[RR_GANONS_TOWER_FLOOR_3] = Region("Ganon's Tower Floor 3", "Ganons Castle", {RA_GANONS_CASTLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
-                  Entrance(RR_GANONS_TOWER_FLOOR_2,        {[]{return true;}}),
+                  Entrance(RR_GANONS_TOWER_FLOOR_2,        {[]{return Here(RR_GANONS_TOWER_FLOOR_3, []{return logic->CanKillEnemy(RE_IRON_KNUCKLE, ED_CLOSE, true, 2);});}}),
                   Entrance(RR_GANONS_TOWER_GANONDORF_LAIR, {[]{return Here(RR_GANONS_TOWER_FLOOR_3, []{return logic->CanKillEnemy(RE_IRON_KNUCKLE, ED_CLOSE, true, 2);}) && logic->HasItem(RG_GANONS_CASTLE_BOSS_KEY);}}),
   });
 
