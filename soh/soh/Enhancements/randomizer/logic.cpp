@@ -568,6 +568,8 @@ namespace Rando {
 
                 // Bottle is not taken into account since a sword, hammer or stick are required
                 // for killing ganondorf and all of those can reflect the energy ball
+                // This will not be the case once ammo logic in taken into account as
+                // sticks are limited and using a bottle might become a requirement in that case
                 return HasBossSoul(RG_GANON_SOUL) && CanUse(RG_LIGHT_ARROWS) && (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD));
             case RE_GANON:
                 return HasBossSoul(RG_GANON_SOUL) && CanUse(RG_MASTER_SWORD);
