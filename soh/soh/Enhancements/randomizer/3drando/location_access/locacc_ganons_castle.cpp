@@ -400,7 +400,6 @@ void RegionTable_Init_GanonsCastle() {
                   //18 pots
   }, {
                   //Exits
-                  Entrance(RR_GANONS_TOWER_FLOOR_3, {[]{return true;}}),
                   Entrance(RR_GANONS_CASTLE_ESCAPE, {[]{return logic->CanKillEnemy(RE_GANONDORF);}}),
   });
 
