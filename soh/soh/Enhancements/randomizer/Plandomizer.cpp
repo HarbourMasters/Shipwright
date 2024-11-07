@@ -24,6 +24,7 @@ static int32_t getTabID = TAB_HINTS;
 
 Rando::Item temporaryItem;
 std::string shortName = "";
+std::string logTemp = "";
 std::string lastLoadedSpoiler = "";
 int32_t temporaryItemIndex = -1;
 RandomizerCheckArea selectedArea = RCAREA_INVALID; 
@@ -38,8 +39,10 @@ bool shouldPopup = false;
 bool shouldTrapPopup = false;
 bool shouldRemove = false;
 
-std::vector<int32_t> spoilerHash;
+namespace fs = std::filesystem;
+std::vector<std::string> existingSeedList;
 
+std::vector<int32_t> spoilerHash;
 std::vector<SpoilerCheckObject> spoilerLogData;
 std::vector<SpoilerCheckObject> plandoLogData;
 std::vector<std::pair<Rando::Item, int32_t>> drawnItemsList;
@@ -297,6 +300,16 @@ ImVec4 plandomizerGetItemTint(Rando::Item randoItem) {
     return itemTint;
 }
 
+void PlandomizerPopulateSeedList() {
+    existingSeedList.clear();
+
+    for (const auto& entry : fs::directory_iterator("Randomizer")) {
+        if (entry.is_regular_file() && entry.path().extension() == ".json") {
+            existingSeedList.push_back(entry.path().stem().string());
+        }
+    }
+}
+
 void PlandomizerItemImageCorrection(Rando::Item randoItem) {
     textureID = 0;
     textureUV0 = ImVec2( 0, 0 );
@@ -454,7 +467,7 @@ void PlandomizerSaveSpoilerLog() {
     }    
 }
 
-void PlandomizerLoadSpoilerLog(const char* logId) {
+void PlandomizerLoadSpoilerLog(std::string logFile) {
     spoilerHash.clear();
     spoilerLogData.clear();
     plandoLogData.clear();
@@ -464,7 +477,7 @@ void PlandomizerLoadSpoilerLog(const char* logId) {
 
     nlohmann::json spoilerLogInput;
     std::string spoilerStr = "./Randomizer/";
-    spoilerStr += std::string(logID).c_str();
+    spoilerStr += logFile.c_str();
     spoilerStr += ".json";
 
     if (!std::filesystem::exists(spoilerStr)) {
@@ -689,8 +702,37 @@ void PlandomizerDrawIceTrapSetup(uint32_t index) {
 }
 
 void PlandomizerDrawOptions() {
+    ImGui::BeginTable("LoadSpoiler", 2);
+    ImGui::TableNextColumn();
+    ImGui::SeparatorText("Load/Save Spoiler Log");
+    //ImGui::InputText("##logID", logID, 15);
+    PlandomizerPopulateSeedList();
+    static int32_t selectedList = 0;
+    if (ImGui::BeginCombo("##JsonFiles", existingSeedList[selectedList].c_str())) {
+        for (size_t i = 0; i < existingSeedList.size(); i++) {
+            bool isSelected = (selectedList == i);
+            if (ImGui::Selectable(existingSeedList[i].c_str(), isSelected)) {
+                selectedList = i;
+            }
+            if (isSelected) {
+                ImGui::SetItemDefaultFocus();
+            }
+        }
+        ImGui::EndCombo();
+    }
+
+    if (ImGui::Button("Load")) {
+        logTemp = existingSeedList[selectedList].c_str();
+        PlandomizerLoadSpoilerLog(logTemp.c_str());
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Save")) {
+        PlandomizerSaveSpoilerLog();
+    }
+
+    ImGui::TableNextColumn();
+    ImGui::SeparatorText("Current Seed Hash");
     if (spoilerLogData.size() > 0) {
-        ImGui::SeparatorText("Seed Hash");
         ImGui::SetCursorPosX(ImGui::GetCursorPosX() + (ImGui::GetContentRegionAvail().x * 0.5f) - (32.0f * 4.0f));
         int32_t index = 0;
         for (auto& hash : spoilerHash) {
@@ -702,17 +744,10 @@ void PlandomizerDrawOptions() {
             }
             index++;
         }
+    } else {
+        ImGui::Text("No Spoiler Log Loaded");
     }
-    ImGui::SeparatorText("Load Spoiler Log");
-    ImGui::InputText("##logID", logID, 15);
-    if (ImGui::Button("Load")) {
-        std::string logTemp = std::string(logID).c_str();
-        PlandomizerLoadSpoilerLog(logTemp.c_str());
-    }
-    ImGui::SameLine();
-    if (ImGui::Button("Save")) {
-        PlandomizerSaveSpoilerLog();
-    }
+    ImGui::EndTable();
     
     ImGui::SeparatorText("Options");
     if (plandoLogData.size() == 0) {
@@ -735,9 +770,8 @@ void PlandomizerDrawOptions() {
             if (selectedArea == RCAREA_INVALID) {
                 comboLabel = "All";
             }
-
+            ImGui::PushItemWidth(300.0f);
             if (ImGui::BeginCombo("Filter by Area", comboLabel)) {
-                
                 for (const auto& [area, name] : rcAreaNames) {
                     bool isSelected = (selectedArea == area);
 
@@ -754,6 +788,7 @@ void PlandomizerDrawOptions() {
                 }
                 ImGui::EndCombo();
             }
+            ImGui::PopItemWidth();
     
             ImGui::SameLine();
             if (ImGui::Button("Empty All Rewards")) {
