@@ -22,12 +22,12 @@ static const int ocarinaSongMap[] = {
 };
 
 static const int entranceIndexMap[] = {
-    ENTR_SACRED_FOREST_MEADOW_2, // Minuet
-    ENTR_DEATH_MOUNTAIN_CRATER_4, // Bolero
-    ENTR_LAKE_HYLIA_8, // Serenade
-    ENTR_DESERT_COLOSSUS_5, // Requiem
-    ENTR_GRAVEYARD_7, // Nocturne
-    ENTR_TEMPLE_OF_TIME_7 // Prelude
+    ENTR_SACRED_FOREST_MEADOW_WARP_PAD, // Minuet
+    ENTR_DEATH_MOUNTAIN_CRATER_WARP_PAD, // Bolero
+    ENTR_LAKE_HYLIA_WARP_PAD, // Serenade
+    ENTR_DESERT_COLOSSUS_WARP_PAD, // Requiem
+    ENTR_GRAVEYARD_WARP_PAD, // Nocturne
+    ENTR_TEMPLE_OF_TIME_WARP_PAD // Prelude
 };
 
 static const int songAudioMap[] = { 

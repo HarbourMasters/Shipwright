@@ -210,8 +210,6 @@ void Overlay_DisplayText(float duration, const char* text);
 void Overlay_DisplayText_Seconds(int seconds, const char* text);
 GetItemEntry ItemTable_Retrieve(int16_t getItemID);
 GetItemEntry ItemTable_RetrieveEntry(s16 modIndex, s16 getItemID);
-void Entrance_ClearEntranceTrackingData(void);
-void Entrance_InitEntranceTrackingData(void);
 void EntranceTracker_SetCurrentGrottoID(s16 entranceIndex);
 void EntranceTracker_SetLastEntranceOverride(s16 entranceIndex);
 void Gfx_RegisterBlendedTexture(const char* name, u8* mask, u8* replacement);

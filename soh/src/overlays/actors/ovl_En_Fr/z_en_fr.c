@@ -974,9 +974,7 @@ void EnFr_SetReward(EnFr* this, PlayState* play) {
         if (!(gSaveContext.eventChkInf[13] & sSongIndex[songIndex])) {
             gSaveContext.eventChkInf[13] |= sSongIndex[songIndex];
             GameInteractor_ExecuteOnFlagSet(FLAG_EVENT_CHECK_INF, (EVENTCHKINF_SONGS_FOR_FROGS_INDEX << 4) + sSongIndexShift[songIndex]);
-            if (GameInteractor_Should(VB_GIVE_ITEM_FROM_FROGS, true, this)) {
-                this->reward = GI_RUPEE_PURPLE;
-            }
+            this->reward = GI_RUPEE_PURPLE;
         } else {
             this->reward = GI_RUPEE_BLUE;
         }
@@ -984,9 +982,7 @@ void EnFr_SetReward(EnFr* this, PlayState* play) {
         if (!(gSaveContext.eventChkInf[13] & sSongIndex[songIndex])) {
             gSaveContext.eventChkInf[13] |= sSongIndex[songIndex];
             GameInteractor_ExecuteOnFlagSet(FLAG_EVENT_CHECK_INF, (EVENTCHKINF_SONGS_FOR_FROGS_INDEX << 4) + sSongIndexShift[songIndex]);
-            if (GameInteractor_Should(VB_GIVE_ITEM_FROM_FROGS, true, this)) {
-                this->reward = GI_HEART_PIECE;
-            }
+            this->reward = GI_HEART_PIECE;
         } else {
             this->reward = GI_RUPEE_BLUE;
         }
@@ -994,9 +990,7 @@ void EnFr_SetReward(EnFr* this, PlayState* play) {
         if (!(gSaveContext.eventChkInf[13] & sSongIndex[songIndex])) {
             gSaveContext.eventChkInf[13] |= sSongIndex[songIndex];
             GameInteractor_ExecuteOnFlagSet(FLAG_EVENT_CHECK_INF, (EVENTCHKINF_SONGS_FOR_FROGS_INDEX << 4) + sSongIndexShift[songIndex]);
-            if (GameInteractor_Should(VB_GIVE_ITEM_FROM_FROGS, true, this)) {
-                this->reward = GI_HEART_PIECE;
-            }
+            this->reward = GI_HEART_PIECE;
         } else {
             this->reward = GI_RUPEE_PURPLE;
         }
@@ -1042,18 +1036,16 @@ void EnFr_Deactivate(EnFr* this, PlayState* play) {
 
     play->msgCtx.ocarinaMode = OCARINA_MODE_04;
     Audio_PlayActorSound2(&this->actor, NA_SE_EV_FROG_CRY_0);
-    if (this->reward == GI_NONE) {
+    if (GameInteractor_Should(VB_FROGS_GO_TO_IDLE, this->reward == GI_NONE, this)) {
         this->actionFunc = EnFr_Idle;
     } else {
         this->actionFunc = EnFr_GiveReward;
-        if (GameInteractor_Should(VB_GIVE_ITEM_FROM_FROGS, true, this)) {
-            Actor_OfferGetItem(&this->actor, play, this->reward, 30.0f, 100.0f);
-        }
+        Actor_OfferGetItem(&this->actor, play, this->reward, 30.0f, 100.0f);
     }
 }
 
 void EnFr_GiveReward(EnFr* this, PlayState* play) {
-    if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(VB_GIVE_ITEM_FROM_FROGS, true, this)) {
+    if (Actor_HasParent(&this->actor, play)) {
         this->actor.parent = NULL;
         this->actionFunc = EnFr_SetIdle;
     } else {

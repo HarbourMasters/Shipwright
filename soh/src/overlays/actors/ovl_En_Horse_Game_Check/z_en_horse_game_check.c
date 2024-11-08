@@ -307,7 +307,7 @@ void EnHorseGameCheck_FinishMalonRace(EnHorseGameCheckMalonRace* this, PlayState
         // "not supported"
         osSyncPrintf("En_HGC_Spot20_Ta_end():対応せず\n");
         gSaveContext.cutsceneIndex = 0;
-        play->nextEntranceIndex = ENTR_LON_LON_RANCH_0;
+        play->nextEntranceIndex = ENTR_LON_LON_RANCH_ENTRANCE;
         play->transitionType = TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_WHITE, TCS_FAST);
         play->transitionTrigger = TRANS_TRIGGER_START;
     }

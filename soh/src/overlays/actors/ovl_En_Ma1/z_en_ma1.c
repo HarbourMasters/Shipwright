@@ -399,7 +399,7 @@ void func_80AA1150(EnMa1* this, PlayState* play) {
 
     if (play->msgCtx.ocarinaMode == OCARINA_MODE_03) {
         Flags_SetRandomizerInf(RAND_INF_LEARNED_EPONA_SONG);
-        play->nextEntranceIndex = ENTR_LON_LON_RANCH_0;
+        play->nextEntranceIndex = ENTR_LON_LON_RANCH_ENTRANCE;
         gSaveContext.nextCutsceneIndex = 0xFFF1;
         play->transitionType = TRANS_TYPE_CIRCLE(TCA_WAVE, TCC_WHITE, TCS_FAST);
         play->transitionTrigger = TRANS_TRIGGER_START;

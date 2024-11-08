@@ -14,6 +14,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Owl/z_en_owl.h"
 #include "src/overlays/actors/ovl_En_Ko/z_en_ko.h"
 #include "src/overlays/actors/ovl_En_Ma1/z_en_ma1.h"
+#include "src/overlays/actors/ovl_En_Ru2/z_en_ru2.h"
 #include "src/overlays/actors/ovl_En_Zl4/z_en_zl4.h"
 #include "src/overlays/actors/ovl_En_Box/z_en_box.h"
 #include "src/overlays/actors/ovl_Demo_Im/z_demo_im.h"
@@ -33,6 +34,8 @@ extern "C" {
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 extern int32_t D_8011D3AC;
+
+extern void func_80AF36EC(EnRu2* enRu2, PlayState* play);
 }
 
 #define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).GetSelectedOptionIndex()
@@ -122,7 +125,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
         case VB_PLAY_TRANSITION_CS: {
             if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.LearnSong"), IS_RANDO) || IS_RANDO) {
                 // Song of Time
-                if (gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_0 && gSaveContext.cutsceneIndex == 0xFFF7) {
+                if (gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_ENTRANCE && gSaveContext.cutsceneIndex == 0xFFF7) {
                     gSaveContext.entranceIndex = ENTR_HYRULE_FIELD_16;
                     gSaveContext.cutsceneIndex = 0;
                     gSaveContext.nextTransitionType = 3;
@@ -130,7 +133,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                 }
 
                 // Requiem of Spirit
-                if ((gSaveContext.entranceIndex == ENTR_DESERT_COLOSSUS_1) && !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_REQUIEM_OF_SPIRIT)) {
+                if ((gSaveContext.entranceIndex == ENTR_DESERT_COLOSSUS_OUTSIDE_TEMPLE) && !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_REQUIEM_OF_SPIRIT)) {
                     Flags_SetEventChkInf(EVENTCHKINF_LEARNED_REQUIEM_OF_SPIRIT);
                     // Normally happens in the cutscene
                     gSaveContext.dayTime = gSaveContext.skyboxTime = 0xAC60;
@@ -142,7 +145,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                 
                 u8 meetsBurningKakRequirements = 
                     LINK_IS_ADULT &&
-                    gSaveContext.entranceIndex == ENTR_KAKARIKO_VILLAGE_0 &&
+                    gSaveContext.entranceIndex == ENTR_KAKARIKO_VILLAGE_FRONT_GATE &&
                     Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP) &&
                     Flags_GetEventChkInf(EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP) &&
                     Flags_GetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP) &&
@@ -333,8 +336,9 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
         case VB_NAVI_TALK: {
             if (ForcedDialogIsDisabled(FORCED_DIALOG_SKIP_NAVI)) {
                 ElfMsg* naviTalk = va_arg(args, ElfMsg*);
-                if (((naviTalk->actor.params >> 8) & 0x3F) != 0x3F) {
-                    Flags_SetSwitch(gPlayState, (naviTalk->actor.params >> 8) & 0x3F);
+                int32_t paramsHighByte = naviTalk->actor.params >> 8;
+                if ((paramsHighByte & 0x80) == 0 && (paramsHighByte & 0x3F) != 0x3F) {
+                    Flags_SetSwitch(gPlayState, paramsHighByte & 0x3F);
                     Actor_Kill(&naviTalk->actor);
                     *should = false;
                 }
@@ -435,7 +439,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                             Player* player = GET_PLAYER(gPlayState);
                             // SOH [Randomizer] In entrance rando have impa bring link back to the front of castle grounds
                             if (IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {
-                                gPlayState->nextEntranceIndex = ENTR_HYRULE_CASTLE_0;
+                                gPlayState->nextEntranceIndex = ENTR_CASTLE_GROUNDS_SOUTH_EXIT;
                             } else {
                                 gPlayState->nextEntranceIndex = ENTR_HYRULE_FIELD_17;
                             }
@@ -610,7 +614,11 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
         case VB_PLAY_RAINBOW_BRIDGE_CS: {
             if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO)) {
                 *should = false;
-                func_800F595C(NA_BGM_BRIDGE_TO_GANONS);
+                if (!Flags_GetEventChkInf(EVENTCHKINF_RAINBOW_BRIDGE_BUILT)) {
+                    func_800F595C(NA_BGM_BRIDGE_TO_GANONS);
+                    // This would have been set 2 frames later, but we're skipping now so the sound doesn't play twice
+                    Flags_SetEventChkInf(EVENTCHKINF_RAINBOW_BRIDGE_BUILT);
+                }
             }
             break;
         }
@@ -619,7 +627,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                 *should = false;
                 BossGanondrof* pg = va_arg(args, BossGanondrof*);
                 Player* player = GET_PLAYER(gPlayState);
-                if (pg != nullptr && pg->work[GND_ACTION_STATE] == DEATH_SPASM) {
+                if (pg->work[GND_ACTION_STATE] == DEATH_SPASM) {
                     // Skip to death scream animation and move ganondrof to middle
                     pg->deathState = DEATH_SCREAM;
                     pg->timers[0] = 50;
@@ -677,6 +685,8 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
             }
             break;
         }
+        default:
+            break;
     }
 
     va_end(args);
@@ -803,6 +813,15 @@ void TimeSaverOnActorInitHandler(void* actorRef) {
     if (actor->id == ACTOR_EN_DU && gPlayState->sceneNum == SCENE_FIRE_TEMPLE) {
         if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.GlitchAiding"), 0)) {
             Flags_SetInfTable(INFTABLE_SPOKE_TO_DARUNIA_IN_FIRE_TEMPLE);
+            Actor_Kill(actor);
+        }
+    }
+
+    // Water Temple Ruto cutscene
+    if (actor->id == ACTOR_EN_RU2 && gPlayState->sceneNum == SCENE_WATER_TEMPLE) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO)) {
+            EnRu2* enRu2 = (EnRu2*)actor;
+            func_80AF36EC(enRu2, gPlayState);
             Actor_Kill(actor);
         }
     }

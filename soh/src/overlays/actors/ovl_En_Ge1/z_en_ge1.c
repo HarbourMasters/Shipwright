@@ -610,7 +610,7 @@ void EnGe1_BeginGame_Archery(EnGe1* this, PlayState* play) {
                     this->actionFunc = EnGe1_TalkTooPoor_Archery;
                 } else {
                     Rupees_ChangeBy(-20);
-                    play->nextEntranceIndex = ENTR_GERUDOS_FORTRESS_0;
+                    play->nextEntranceIndex = ENTR_GERUDOS_FORTRESS_EAST_EXIT;
                     gSaveContext.nextCutsceneIndex = 0xFFF0;
                     play->transitionType = TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_BLACK, TCS_FAST);
                     play->transitionTrigger = TRANS_TRIGGER_START;

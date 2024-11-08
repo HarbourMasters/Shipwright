@@ -16,8 +16,6 @@
 
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
-#include "soh/Enhancements/randomizer/randomizer_entrance.h"
-#include "soh/Enhancements/randomizer/randomizer_grotto.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/kaleido.h"
@@ -4429,54 +4427,49 @@ void KaleidoScope_Update(PlayState* play)
                     Play_SaveSceneFlags(play);
 
                     switch (gSaveContext.entranceIndex) {
-                        case ENTR_DEKU_TREE_0:
-                        case ENTR_DODONGOS_CAVERN_0:
-                        case ENTR_JABU_JABU_0:
-                        case ENTR_FOREST_TEMPLE_0:
-                        case ENTR_FIRE_TEMPLE_0:
-                        case ENTR_WATER_TEMPLE_0:
-                        case ENTR_SPIRIT_TEMPLE_0:
-                        case ENTR_SHADOW_TEMPLE_0:
+                        case ENTR_DEKU_TREE_ENTRANCE:
+                        case ENTR_DODONGOS_CAVERN_ENTRANCE:
+                        case ENTR_JABU_JABU_ENTRANCE:
+                        case ENTR_FOREST_TEMPLE_ENTRANCE:
+                        case ENTR_FIRE_TEMPLE_ENTRANCE:
+                        case ENTR_WATER_TEMPLE_ENTRANCE:
+                        case ENTR_SPIRIT_TEMPLE_ENTRANCE:
+                        case ENTR_SHADOW_TEMPLE_ENTRANCE:
                         case ENTR_GANONS_TOWER_0:
-                        case ENTR_GERUDO_TRAINING_GROUND_0:
-                        case ENTR_ICE_CAVERN_0:
+                        case ENTR_GERUDO_TRAINING_GROUND_ENTRANCE:
+                        case ENTR_ICE_CAVERN_ENTRANCE:
                         case ENTR_THIEVES_HIDEOUT_0:
-                        case ENTR_BOTTOM_OF_THE_WELL_0:
-                        case ENTR_INSIDE_GANONS_CASTLE_0:
+                        case ENTR_BOTTOM_OF_THE_WELL_ENTRANCE:
+                        case ENTR_INSIDE_GANONS_CASTLE_ENTRANCE:
                         case ENTR_GANONS_TOWER_COLLAPSE_INTERIOR_0:
                             break;
-                        case ENTR_DEKU_TREE_BOSS_0:
-                            gSaveContext.entranceIndex = ENTR_DEKU_TREE_0;
+                        case ENTR_DEKU_TREE_BOSS_ENTRANCE:
+                            gSaveContext.entranceIndex = ENTR_DEKU_TREE_ENTRANCE;
                             break;
-                        case ENTR_DODONGOS_CAVERN_BOSS_0:
-                            gSaveContext.entranceIndex = ENTR_DODONGOS_CAVERN_0;
+                        case ENTR_DODONGOS_CAVERN_BOSS_ENTRANCE:
+                            gSaveContext.entranceIndex = ENTR_DODONGOS_CAVERN_ENTRANCE;
                             break;
-                        case ENTR_JABU_JABU_BOSS_0:
-                            gSaveContext.entranceIndex = ENTR_JABU_JABU_0;
+                        case ENTR_JABU_JABU_BOSS_ENTRANCE:
+                            gSaveContext.entranceIndex = ENTR_JABU_JABU_ENTRANCE;
                             break;
-                        case ENTR_FOREST_TEMPLE_BOSS_0:
-                            gSaveContext.entranceIndex = ENTR_FOREST_TEMPLE_0;
+                        case ENTR_FOREST_TEMPLE_BOSS_ENTRANCE:
+                            gSaveContext.entranceIndex = ENTR_FOREST_TEMPLE_ENTRANCE;
                             break;
-                        case ENTR_FIRE_TEMPLE_BOSS_0:
-                            gSaveContext.entranceIndex = ENTR_FIRE_TEMPLE_0;
+                        case ENTR_FIRE_TEMPLE_BOSS_ENTRANCE:
+                            gSaveContext.entranceIndex = ENTR_FIRE_TEMPLE_ENTRANCE;
                             break;
-                        case ENTR_WATER_TEMPLE_BOSS_0:
-                            gSaveContext.entranceIndex = ENTR_WATER_TEMPLE_0;
+                        case ENTR_WATER_TEMPLE_BOSS_ENTRANCE:
+                            gSaveContext.entranceIndex = ENTR_WATER_TEMPLE_ENTRANCE;
                             break;
-                        case ENTR_SPIRIT_TEMPLE_BOSS_0:
-                            gSaveContext.entranceIndex = ENTR_SPIRIT_TEMPLE_0;
+                        case ENTR_SPIRIT_TEMPLE_BOSS_ENTRANCE:
+                            gSaveContext.entranceIndex = ENTR_SPIRIT_TEMPLE_ENTRANCE;
                             break;
-                        case ENTR_SHADOW_TEMPLE_BOSS_0:
-                            gSaveContext.entranceIndex = ENTR_SHADOW_TEMPLE_0;
+                        case ENTR_SHADOW_TEMPLE_BOSS_ENTRANCE:
+                            gSaveContext.entranceIndex = ENTR_SHADOW_TEMPLE_ENTRANCE;
                             break;
                         case ENTR_GANONDORF_BOSS_0:
                             gSaveContext.entranceIndex = ENTR_GANONS_TOWER_0;
                             break;
-                    }
-
-                    // In ER, handle overriding the game over respawn entrance
-                    if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
-                        Entrance_SetGameOverEntrance();
                     }
                 } else {
                     Audio_PlaySoundGeneral(NA_SE_SY_DECIDE, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
@@ -4499,10 +4492,6 @@ void KaleidoScope_Update(PlayState* play)
                     if (pauseCtx->promptChoice == 0 && GameInteractor_Should(VB_BE_ABLE_TO_SAVE, true)) {
                         Play_TriggerRespawn(play);
                         gSaveContext.respawnFlag = -2;
-                        // In ER, handle death warp to last entrance from grottos
-                        if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
-                            Grotto_ForceGrottoReturn();
-                        }
                         // Reset frame counter to prevent autosave on respawn
                         play->gameplayFrames = 0;
                         gSaveContext.nextTransitionType = TRANS_TYPE_FADE_BLACK;

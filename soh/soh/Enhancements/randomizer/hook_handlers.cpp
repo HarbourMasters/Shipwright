@@ -16,6 +16,8 @@ extern "C" {
 #include "functions.h"
 #include "variables.h"
 #include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
+#include "soh/Enhancements/randomizer/randomizer_entrance.h"
+#include "soh/Enhancements/randomizer/randomizer_grotto.h"
 #include "src/overlays/actors/ovl_Bg_Treemouth/z_bg_treemouth.h"
 #include "src/overlays/actors/ovl_En_Si/z_en_si.h"
 #include "src/overlays/actors/ovl_En_Cow/z_en_cow.h"
@@ -55,6 +57,7 @@ extern PlayState* gPlayState;
 extern void func_8084DFAC(PlayState* play, Player* player);
 extern void Player_SetupActionPreserveAnimMovement(PlayState* play, Player* player, PlayerActionFunc actionFunc, s32 flags);
 extern s32 Player_SetupWaitForPutAway(PlayState* play, Player* player, AfterPutAwayFunc func);
+extern void Play_InitEnvironment(PlayState * play, s16 skyboxId);
 }
 
 #define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).GetSelectedOptionIndex()
@@ -349,7 +352,7 @@ void RandomizerOnItemReceiveHandler(GetItemEntry receivedItemEntry) {
                 return;
             }
 
-            gPlayState->nextEntranceIndex = ENTR_DESERT_COLOSSUS_0;
+            gPlayState->nextEntranceIndex = ENTR_DESERT_COLOSSUS_EAST_EXIT;
             gPlayState->transitionTrigger = TRANS_TRIGGER_START;
             gSaveContext.nextCutsceneIndex = 0xFFF1;
             gPlayState->transitionType = TRANS_TYPE_SANDSTORM_END;
@@ -671,7 +674,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             }
             break;
         case VB_MOVE_MIDO_IN_KOKIRI_FOREST:
-            if (RAND_GET_OPTION(RSK_FOREST) == RO_FOREST_OPEN) {
+            if (RAND_GET_OPTION(RSK_FOREST) == RO_FOREST_OPEN && gSaveContext.cutsceneIndex == 0) {
                 *should = true;
             }
             break;
@@ -994,19 +997,15 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             }
             break;
         }
-        case VB_GIVE_ITEM_FROM_FROGS: {
+        case VB_FROGS_GO_TO_IDLE: {
             EnFr* enFr = va_arg(args, EnFr*);
 
-            // Skip GiveReward+SetIdle action func if the reward is an ice trap
-            if (enFr->actionFunc == (EnFrActionFunc)EnFr_GiveReward) {
-                RandomizerCheck rc = EnFr_RandomizerCheckFromSongIndex(enFr->songIndex);
-                GetItemEntry gi = Rando::Context::GetInstance()->GetFinalGIEntry(rc, true, (GetItemID)Rando::StaticData::GetLocation(rc)->GetVanillaItem());
-                if (gi.getItemId == RG_ICE_TRAP) {
-                    enFr->actionFunc = (EnFrActionFunc)EnFr_Idle;
-                }
+            if (
+                (enFr->songIndex >= FROG_STORMS && enFr->reward == GI_HEART_PIECE) || 
+                (enFr->songIndex < FROG_STORMS && enFr->reward == GI_RUPEE_PURPLE)
+            ) {
+                *should = true;
             }
-
-            *should = false;
             break;
         }
         case VB_TRADE_POCKET_CUCCO: {
@@ -1464,7 +1463,25 @@ void RandomizerOnSceneInitHandler(int16_t sceneNum) {
     }
 
     if (RAND_GET_OPTION(RSK_SHUFFLE_ENTRANCES)) {
+        // In ER, override roomNum to load based on scene and spawn during scene init
+        if (gSaveContext.respawnFlag <= 0) {
+            s8 origRoom = gPlayState->roomCtx.curRoom.num;
+            s8 replacedRoom = Entrance_OverrideSpawnSceneRoom(gPlayState->sceneNum, gPlayState->curSpawn, origRoom);
+
+            if (origRoom != replacedRoom) {
+                // Reset room ctx back to prev room and then load the new room
+                gPlayState->roomCtx.status = 0;
+                gPlayState->roomCtx.curRoom = gPlayState->roomCtx.prevRoom;
+                func_8009728C(gPlayState, &gPlayState->roomCtx, replacedRoom);
+            }
+        }
+
+        // Handle updated link spawn positions
+        Entrance_OverrideSpawnScene(sceneNum, gPlayState->curSpawn);
+
         Entrance_OverrideWeatherState();
+        // Need to reinitialize the environment after replacing the weather mode
+        Play_InitEnvironment(gPlayState, gPlayState->skyboxId);
     }
 
     // LACs & Prelude checks
@@ -1837,6 +1854,11 @@ void RandomizerOnActorInitHandler(void* actorRef) {
         Actor_Kill(actor);
         return;
     }
+
+    // In ER, once Link has spawned we know the scene has loaded, so we can sanitize the last known entrance type
+    if (actor->id == ACTOR_PLAYER && RAND_GET_OPTION(RSK_SHUFFLE_ENTRANCES)) {
+        Grotto_SanitizeEntranceType();
+    }
 }
 
 void RandomizerOnGameFrameUpdateHandler() {
@@ -1926,31 +1948,31 @@ std::map<s32, SpecialRespawnInfo> swimSpecialRespawnInfo = {
         { { 5730.209, -20, 3725.911 }, -20025 }
     },
     {
-        ENTR_LOST_WOODS_7,//zr to lw
+        ENTR_LOST_WOODS_UNDERWATER_SHORTCUT,//zr to lw
         { { 1978.718, -36.908, -855 }, -16384 }
     },
     {
-        ENTR_ZORAS_RIVER_4,//lw to zr
+        ENTR_ZORAS_RIVER_UNDERWATER_SHORTCUT,//lw to zr
         { { 4082.366, 860.442, -1018.949 }, -32768 }
     },
     {
-        ENTR_LAKE_HYLIA_1,//gv to lh
+        ENTR_LAKE_HYLIA_RIVER_EXIT,//gv to lh
         { { -3276.416, -1033, 2908.421 }, 11228 }
     },
     {
-        ENTR_WATER_TEMPLE_0,//lh to water temple
+        ENTR_WATER_TEMPLE_ENTRANCE,//lh to water temple
         { { -182, 780, 759.5 }, -32768 }
     },
     {
-        ENTR_LAKE_HYLIA_2,//water temple to lh
+        ENTR_LAKE_HYLIA_OUTSIDE_TEMPLE,//water temple to lh
         { { -955.028, -1306.9, 6768.954 }, -32768 }
     },
     {
-        ENTR_ZORAS_DOMAIN_4,//lh to zd
+        ENTR_ZORAS_DOMAIN_UNDERWATER_SHORTCUT,//lh to zd
         { { -109.86, 11.396, -9.933 }, -29131 }
     },
     {
-        ENTR_LAKE_HYLIA_7,//zd to lh
+        ENTR_LAKE_HYLIA_UNDERWATER_SHORTCUT,//zd to lh
         { { -912, -1326.967, 3391 }, 0 }
     },
     {
@@ -1958,11 +1980,11 @@ std::map<s32, SpecialRespawnInfo> swimSpecialRespawnInfo = {
         { { -424, -2051, -74 }, 16384 }
     },
     {
-        ENTR_HYRULE_FIELD_7,//mk to hf (can be a problem when it then turns night)
+        ENTR_HYRULE_FIELD_ON_BRIDGE_SPAWN,//mk to hf (can be a problem when it then turns night)
         { { 0, 0, 1100 }, 0 }
     },
     {
-        ENTR_ZORAS_FOUNTAIN_0,//jabu blue warp to zf
+        ENTR_ZORAS_FOUNTAIN_JABU_JABU_BLUE_WARP,//jabu blue warp to zf
         { { -1580, 150, 1670 }, 8000 }
     },
 };
@@ -1977,7 +1999,7 @@ void RandomizerOnPlayerUpdateHandler() {
     ) {
         //if you void out in water temple without swim you get instantly kicked out to prevent softlocks
         if (gPlayState->sceneNum == SCENE_WATER_TEMPLE) {
-            GameInteractor::RawAction::TeleportPlayer(Entrance_OverrideNextIndex(ENTR_LAKE_HYLIA_2));//lake hylia from water temple
+            GameInteractor::RawAction::TeleportPlayer(Entrance_OverrideNextIndex(ENTR_LAKE_HYLIA_OUTSIDE_TEMPLE));//lake hylia from water temple
         } else {
             if (swimSpecialRespawnInfo.find(gSaveContext.entranceIndex) != swimSpecialRespawnInfo.end()) {
                 SpecialRespawnInfo* respawnInfo = &swimSpecialRespawnInfo.at(gSaveContext.entranceIndex);
@@ -2045,6 +2067,37 @@ void RandomizerOnSceneSpawnActorsHandler() {
     }
 }
 
+void RandomizerOnPlayDestroyHandler() {
+    // In ER, remove link from epona when entering somewhere that doesn't support epona
+    if (RAND_GET_OPTION(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {
+        Entrance_HandleEponaState();
+    }
+}
+
+void RandomizerOnExitGameHandler(int32_t fileNum) {
+    // When going from a rando save to a vanilla save within the same game instance
+    // we need to reset the entrance table back to its vanilla state
+    Entrance_ResetEntranceTable();
+}
+
+void RandomizerOnKaleidoscopeUpdateHandler(int16_t inDungeonScene) {
+    static uint16_t prevKaleidoState = 0;
+
+    // In ER, handle overriding the game over respawn entrance and dealing with death warp to from grottos
+    if (RAND_GET_OPTION(RSK_SHUFFLE_ENTRANCES)) {
+        if (prevKaleidoState == 0x10 && gPlayState->pauseCtx.state == 0x11 && gPlayState->pauseCtx.promptChoice == 0) {
+            // Needs to be called before Play_TriggerRespawn when transitioning from state 0x10 to 0x11
+            Entrance_SetGameOverEntrance();
+        }
+        if (prevKaleidoState == 0x11 && gPlayState->pauseCtx.state == 0 && gPlayState->pauseCtx.promptChoice == 0) {
+            // Needs to be called after Play_TriggerRespawn when transitioning from state 0x11 to 0
+            Grotto_ForceGrottoReturn();
+        }
+    }
+
+    prevKaleidoState = gPlayState->pauseCtx.state;
+}
+
 void RandomizerRegisterHooks() {
     static uint32_t onFlagSetHook = 0;
     static uint32_t onSceneFlagSetHook = 0;
@@ -2058,6 +2111,9 @@ void RandomizerRegisterHooks() {
     static uint32_t onPlayerUpdateHook = 0;
     static uint32_t onGameFrameUpdateHook = 0;
     static uint32_t onSceneSpawnActorsHook = 0;
+    static uint32_t onPlayDestroyHook = 0;
+    static uint32_t onExitGameHook = 0;
+    static uint32_t onKaleidoUpdateHook = 0;
 
     static uint32_t fishsanityOnActorInitHook = 0;
     static uint32_t fishsanityOnFlagSetHook = 0;
@@ -2082,6 +2138,9 @@ void RandomizerRegisterHooks() {
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnPlayerUpdate>(onPlayerUpdateHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnGameFrameUpdate>(onGameFrameUpdateHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneSpawnActors>(onSceneSpawnActorsHook);
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnPlayDestroy>(onPlayDestroyHook);
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnExitGame>(onExitGameHook);
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnKaleidoscopeUpdate>(onKaleidoUpdateHook);
 
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorInit>(fishsanityOnActorInitHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnFlagSet>(fishsanityOnFlagSetHook);
@@ -2101,6 +2160,9 @@ void RandomizerRegisterHooks() {
         onPlayerUpdateHook = 0;
         onGameFrameUpdateHook = 0;
         onSceneSpawnActorsHook = 0;
+        onPlayDestroyHook = 0;
+        onExitGameHook = 0;
+        onKaleidoUpdateHook = 0;
 
         fishsanityOnActorInitHook = 0;
         fishsanityOnFlagSetHook = 0;
@@ -2130,6 +2192,9 @@ void RandomizerRegisterHooks() {
         onPlayerUpdateHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>(RandomizerOnPlayerUpdateHandler);
         onGameFrameUpdateHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>(RandomizerOnGameFrameUpdateHandler);
         onSceneSpawnActorsHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneSpawnActors>(RandomizerOnSceneSpawnActorsHandler);
+        onPlayDestroyHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayDestroy>(RandomizerOnPlayDestroyHandler);
+        onPlayDestroyHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnExitGame>(RandomizerOnExitGameHandler);
+        onKaleidoUpdateHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnKaleidoscopeUpdate>(RandomizerOnKaleidoscopeUpdateHandler);
 
         if (RAND_GET_OPTION(RSK_FISHSANITY) != RO_FISHSANITY_OFF) {
             OTRGlobals::Instance->gRandoContext->GetFishsanity()->InitializeFromSave();

@@ -4,7 +4,6 @@
 
 #include "global.h"
 #include "vt.h"
-#include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include <string.h>
 #include <assert.h>
@@ -578,13 +577,6 @@ u32 func_80096FE8(PlayState* play, RoomContext* roomCtx) {
 
     frontRoom = gSaveContext.respawnFlag > 0 ? ((void)0, gSaveContext.respawn[gSaveContext.respawnFlag - 1].roomIndex)
                                              : play->setupEntranceList[play->curSpawn].room;
-
-    // In ER, override roomNum to load based on scene and spawn during scene init
-    if (IS_RANDO && gSaveContext.respawnFlag <= 0 &&
-        Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
-        frontRoom = Entrance_OverrideSpawnSceneRoom(play->sceneNum, play->curSpawn, frontRoom);
-    }
-
     func_8009728C(play, roomCtx, frontRoom);
 
     return maxRoomSize;

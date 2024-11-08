@@ -27,30 +27,30 @@ class TimeSplitWindow : public Ship::GuiWindow {
     void UpdateElement() override{};
 };
 
-typedef enum {
-    ACTION_SAVE,
-    ACTION_LOAD,
-    ACTION_UPDATE,
-    ACTION_COLLECT,
-    ACTION_DELETE
-};
+typedef enum SplitAction {
+    SPLIT_ACTION_SAVE,
+    SPLIT_ACTION_LOAD,
+    SPLIT_ACTION_UPDATE,
+    SPLIT_ACTION_COLLECT,
+    SPLIT_ACTION_DELETE
+} SplitAction;
 
-typedef enum {
-    SPLIT_ACTIVE,
-    SPLIT_INACTIVE,
-    SPLIT_COLLECTED,
-    SPLIT_SKIPPED
-};
+typedef enum SplitStatus {
+    SPLIT_STATUS_ACTIVE,
+    SPLIT_STATUS_INACTIVE,
+    SPLIT_STATUS_COLLECTED,
+    SPLIT_STATUS_SKIPPED
+} SplitStatus;
 
-typedef enum {
-    SPLIT_ITEM,
-    SPLIT_UPGRADE,
-    SPLIT_EQUIPMENT,
-    SPLIT_QUEST,
-    SPLIT_BOSS,
-    SPLIT_ENTRANCE,
-    SPLIT_MISC
-};
+typedef enum SplitType {
+    SPLIT_TYPE_ITEM,
+    SPLIT_TYPE_UPGRADE,
+    SPLIT_TYPE_EQUIPMENT,
+    SPLIT_TYPE_QUEST,
+    SPLIT_TYPE_BOSS,
+    SPLIT_TYPE_ENTRANCE,
+    SPLIT_TYPE_MISC
+} SplitType;
 
 typedef struct {
     uint32_t splitType;

@@ -60,148 +60,148 @@ std::vector<SplitObject> splitList;
 std::vector<SplitObject> emptyList;
 
 std::vector<SplitObject> splitObjectList = {
-    { SPLIT_ITEM, 	    ITEM_STICK, 	 		                "Deku Stick", 							"ITEM_STICK", 					COLOR_WHITE },
-    { SPLIT_ITEM, 	    ITEM_NUT,				                "Deku Nut", 							"ITEM_NUT", 					COLOR_WHITE },
-    { SPLIT_ITEM,       ITEM_BOMB,                              "Bomb",                                 "ITEM_BOMB",                    COLOR_WHITE },
-    { SPLIT_ITEM, 	    ITEM_BOW, 	 			                "Fairy Bow", 							"ITEM_BOW", 					COLOR_WHITE },
-    { SPLIT_ITEM, 	    ITEM_ARROW_FIRE, 		                "Fire Arrow", 							"ITEM_ARROW_FIRE", 				COLOR_WHITE },
-    { SPLIT_ITEM, 	    ITEM_DINS_FIRE, 		                "Din's Fire", 							"ITEM_DINS_FIRE", 				COLOR_WHITE },
-    { SPLIT_ITEM, 	    ITEM_SLINGSHOT, 		                "Fairy Slingshot", 						"ITEM_SLINGSHOT", 				COLOR_WHITE },
-    { SPLIT_ITEM, 	    ITEM_OCARINA_FAIRY, 	                "Fairy Ocarina", 						"ITEM_OCARINA_FAIRY", 			COLOR_WHITE },
-    { SPLIT_UPGRADE, 	ITEM_OCARINA_TIME, 		                "Ocarina of Time", 						"ITEM_OCARINA_TIME", 			COLOR_WHITE },
-    { SPLIT_ITEM, 	    ITEM_BOMBCHU, 	 		                "Bombchu", 								"ITEM_BOMBCHU", 				COLOR_WHITE },
-    { SPLIT_ITEM, 	    ITEM_HOOKSHOT,  		                "Hookshot", 							"ITEM_HOOKSHOT", 				COLOR_WHITE },
-    { SPLIT_UPGRADE, 	ITEM_LONGSHOT,  		                "Longshot", 							"ITEM_LONGSHOT", 				COLOR_WHITE },
-    { SPLIT_ITEM, 	    ITEM_ARROW_ICE,  		                "Ice Arrow", 							"ITEM_ARROW_ICE", 				COLOR_WHITE },
-    { SPLIT_ITEM, 	    ITEM_FARORES_WIND,  	                "Farore's Wind", 						"ITEM_FARORES_WIND", 			COLOR_WHITE },
-    { SPLIT_ITEM, 	    ITEM_BOOMERANG,  		                "Boomerang", 							"ITEM_BOOMERANG", 				COLOR_WHITE },
-    { SPLIT_ITEM, 	    ITEM_LENS,  			                "Lens of Truth", 						"ITEM_LENS", 					COLOR_WHITE },
-    { SPLIT_ITEM, 	    ITEM_BEAN,  			                "Magic Bean", 							"ITEM_BEAN", 					COLOR_WHITE },
-    { SPLIT_ITEM, 	    ITEM_HAMMER,  			                "Megaton Hammer", 						"ITEM_HAMMER", 					COLOR_WHITE },
-    { SPLIT_ITEM, 	    ITEM_ARROW_LIGHT,  		                "Light Arrow", 							"ITEM_ARROW_LIGHT", 			COLOR_WHITE },
-    { SPLIT_ITEM, 	    ITEM_NAYRUS_LOVE,  		                "Nayru's Love", 						"ITEM_NAYRUS_LOVE", 			COLOR_WHITE },
-    { SPLIT_ITEM, 	    ITEM_BOTTLE,  			                "Empty Bottle", 						"ITEM_BOTTLE", 					COLOR_WHITE },
-    { SPLIT_UPGRADE, 	ITEM_POTION_RED,  		                "Red Potion", 							"ITEM_POTION_RED", 				COLOR_WHITE },
-    { SPLIT_UPGRADE, 	ITEM_POTION_GREEN,  	                "Green Potion", 						"ITEM_POTION_GREEN", 			COLOR_WHITE },
-    { SPLIT_UPGRADE, 	ITEM_POTION_BLUE,  		                "Blue Potion", 							"ITEM_POTION_BLUE", 			COLOR_WHITE },
-    { SPLIT_UPGRADE, 	ITEM_FAIRY,  			                "Bottled Fairy", 						"ITEM_FAIRY", 					COLOR_WHITE },
-    { SPLIT_UPGRADE, 	ITEM_FISH,  			                "Fish", 								"ITEM_FISH", 					COLOR_WHITE },
-    { SPLIT_UPGRADE, 	ITEM_MILK_BOTTLE,  		                "Milk", 				                "ITEM_MILK_BOTTLE", 			COLOR_WHITE },
-    { SPLIT_UPGRADE, 	ITEM_LETTER_RUTO,  		                "Ruto's Letter", 						"ITEM_LETTER_RUTO", 			COLOR_WHITE },
-    { SPLIT_UPGRADE, 	ITEM_BLUE_FIRE,  		                "Blue Fire", 							"ITEM_BLUE_FIRE", 				COLOR_WHITE },
-    { SPLIT_UPGRADE, 	ITEM_BUG,  				                "Bug", 									"ITEM_BUG", 					COLOR_WHITE },
-    { SPLIT_UPGRADE, 	ITEM_BIG_POE,  			                "Big Poe", 								"ITEM_BIG_POE", 				COLOR_WHITE },
-    { SPLIT_UPGRADE, 	ITEM_POE,  				                "Poe", 									"ITEM_POE", 					COLOR_WHITE },
-    { SPLIT_ITEM, 	    ITEM_WEIRD_EGG,  		                "Weird Egg", 							"ITEM_WEIRD_EGG", 				COLOR_WHITE },
-    { SPLIT_UPGRADE, 	ITEM_CHICKEN,  			                "Chicken", 								"ITEM_CHICKEN", 				COLOR_WHITE },
-    { SPLIT_UPGRADE, 	ITEM_LETTER_ZELDA,  	                "Zelda's Letter", 						"ITEM_LETTER_ZELDA", 			COLOR_WHITE },
-    { SPLIT_UPGRADE, 	ITEM_MASK_KEATON,  		                "Keaton Mask", 							"ITEM_MASK_KEATON", 			COLOR_WHITE },
-    { SPLIT_UPGRADE, 	ITEM_MASK_SKULL,  		                "Skull Mask", 							"ITEM_MASK_SKULL", 				COLOR_WHITE },
-    { SPLIT_UPGRADE, 	ITEM_MASK_SPOOKY,  		                "Spooky Mask", 							"ITEM_MASK_SPOOKY", 			COLOR_WHITE },
-    { SPLIT_UPGRADE, 	ITEM_MASK_BUNNY,  		                "Bunny Hood", 							"ITEM_MASK_BUNNY", 				COLOR_WHITE },
-    { SPLIT_UPGRADE, 	ITEM_MASK_GORON,  		                "Goron Mask", 							"ITEM_MASK_GORON", 				COLOR_WHITE },
-    { SPLIT_UPGRADE, 	ITEM_MASK_ZORA,  		                "Zora Mask", 							"ITEM_MASK_ZORA", 				COLOR_WHITE },
-    { SPLIT_UPGRADE, 	ITEM_MASK_GERUDO,  		                "Gerudo Mask", 							"ITEM_MASK_GERUDO", 			COLOR_WHITE },
-    { SPLIT_UPGRADE, 	ITEM_MASK_TRUTH,  		                "Mask of Truth", 						"ITEM_MASK_TRUTH", 				COLOR_WHITE },
-    { SPLIT_ITEM, 	    ITEM_POCKET_EGG,  		                "Pocket Egg", 							"ITEM_POCKET_EGG", 				COLOR_WHITE },
-    { SPLIT_UPGRADE, 	ITEM_POCKET_CUCCO,  	                "Pocket Cucco", 						"ITEM_POCKET_CUCCO", 			COLOR_WHITE },
-    { SPLIT_UPGRADE, 	ITEM_COJIRO,  			                "Cojiro", 								"ITEM_COJIRO", 					COLOR_WHITE },
-    { SPLIT_UPGRADE, 	ITEM_ODD_MUSHROOM,  	                "Odd Mushroom", 						"ITEM_ODD_MUSHROOM", 			COLOR_WHITE },
-    { SPLIT_UPGRADE, 	ITEM_ODD_POTION,  		                "Odd Potion", 							"ITEM_ODD_POTION", 				COLOR_WHITE },
-    { SPLIT_UPGRADE, 	ITEM_SAW,  				                "Poacher's Saw", 						"ITEM_SAW", 					COLOR_WHITE },
-    { SPLIT_UPGRADE, 	ITEM_SWORD_BROKEN,  	                "Goron's Sword (Broken)", 				"ITEM_SWORD_BROKEN", 			COLOR_WHITE },
-    { SPLIT_UPGRADE, 	ITEM_PRESCRIPTION,  	                "Prescription", 						"ITEM_PRESCRIPTION", 			COLOR_WHITE },
-    { SPLIT_UPGRADE, 	ITEM_FROG,  			                "Eyeball Frog", 						"ITEM_FROG", 					COLOR_WHITE },
-    { SPLIT_UPGRADE, 	ITEM_EYEDROPS,  		                "Eye Drops", 							"ITEM_EYEDROPS", 				COLOR_WHITE },
-    { SPLIT_UPGRADE, 	ITEM_CLAIM_CHECK,  		                "Claim Check",  						"ITEM_CLAIM_CHECK", 			COLOR_WHITE },
-    { SPLIT_EQUIPMENT, 	ITEM_SWORD_KOKIRI,  	                "Kokiri Sword", 						"ITEM_SWORD_KOKIRI", 			COLOR_WHITE },
-    { SPLIT_EQUIPMENT, 	ITEM_SWORD_MASTER,  	                "Master Sword", 						"ITEM_SWORD_MASTER", 			COLOR_WHITE },
-    { SPLIT_EQUIPMENT, 	ITEM_SWORD_BGS,  		                "Giant's Knife & Biggoron's Sword", 	"ITEM_SWORD_BGS", 				COLOR_WHITE },
-    { SPLIT_EQUIPMENT, 	ITEM_SHIELD_DEKU,  		                "Deku Shield", 							"ITEM_SHIELD_DEKU", 			COLOR_WHITE },
-    { SPLIT_EQUIPMENT, 	ITEM_SHIELD_HYLIAN, 	                "Hylian Shield", 						"ITEM_SHIELD_HYLIAN", 			COLOR_WHITE },
-    { SPLIT_EQUIPMENT, 	ITEM_SHIELD_MIRROR, 	                "Mirror Shield", 						"ITEM_SHIELD_MIRROR", 			COLOR_WHITE },
-    { SPLIT_EQUIPMENT, 	ITEM_TUNIC_GORON,  		                "Goron Tunic", 							"ITEM_TUNIC_GORON", 			COLOR_WHITE },
-    { SPLIT_EQUIPMENT, 	ITEM_TUNIC_ZORA,  		                "Zora Tunic", 							"ITEM_TUNIC_ZORA", 				COLOR_WHITE },
-    { SPLIT_EQUIPMENT, 	ITEM_BOOTS_IRON,  		                "Iron Boots", 							"ITEM_BOOTS_IRON", 				COLOR_WHITE },
-    { SPLIT_EQUIPMENT, 	ITEM_BOOTS_HOVER,  		                "Hover Boots", 							"ITEM_BOOTS_HOVER", 			COLOR_WHITE },
-    { SPLIT_UPGRADE, 	ITEM_BULLET_BAG_30, 	                "Bullet Bag (30)", 						"ITEM_BULLET_BAG_30", 			COLOR_WHITE },
-    { SPLIT_UPGRADE, 	ITEM_BULLET_BAG_40, 	                "Bullet Bag (40)", 						"ITEM_BULLET_BAG_40", 			COLOR_WHITE },
-    { SPLIT_UPGRADE, 	ITEM_BULLET_BAG_50, 	                "Bullet Bag (50)", 						"ITEM_BULLET_BAG_50", 			COLOR_WHITE },
-    { SPLIT_UPGRADE, 	ITEM_QUIVER_30,  		                "Quiver (30)", 							"ITEM_QUIVER_30", 				COLOR_WHITE },
-    { SPLIT_UPGRADE, 	ITEM_QUIVER_40,  		                "Big Quiver (40)", 						"ITEM_QUIVER_40", 				COLOR_WHITE },
-    { SPLIT_UPGRADE, 	ITEM_QUIVER_50,  		                "Biggest Quiver (50)", 					"ITEM_QUIVER_50", 				COLOR_WHITE },
-    { SPLIT_UPGRADE, 	ITEM_BOMB_BAG_20,  		                "Bomb Bag (20)", 						"ITEM_BOMB_BAG_20", 			COLOR_WHITE },
-    { SPLIT_UPGRADE, 	ITEM_BOMB_BAG_30,  		                "Big Bomb Bag (30)", 					"ITEM_BOMB_BAG_30", 			COLOR_WHITE },
-    { SPLIT_UPGRADE, 	ITEM_BOMB_BAG_40,  		                "Biggest Bomb Bag (40)", 				"ITEM_BOMB_BAG_40", 			COLOR_WHITE },
-    { SPLIT_ITEM, 	    ITEM_BRACELET,  		                "Goron's Bracelet", 					"ITEM_BRACELET", 				COLOR_WHITE },
-    { SPLIT_UPGRADE, 	ITEM_GAUNTLETS_SILVER,                  "Silver Gauntlets", 					"ITEM_GAUNTLETS_SILVER", 		COLOR_WHITE },
-    { SPLIT_UPGRADE, 	ITEM_GAUNTLETS_GOLD,  	                "Golden Gauntlets", 					"ITEM_GAUNTLETS_GOLD", 			COLOR_WHITE },
-    { SPLIT_ITEM, 	    ITEM_SCALE_SILVER,  	                "Silver Scale", 						"ITEM_SCALE_SILVER", 			COLOR_WHITE },
-    { SPLIT_UPGRADE, 	ITEM_SCALE_GOLDEN,  	                "Golden Scale", 						"ITEM_SCALE_GOLDEN", 			COLOR_WHITE },
-    { SPLIT_ITEM, 	    ITEM_SWORD_KNIFE,  		                "Giant's Knife (Broken)", 				"ITEM_SWORD_KNIFE", 			COLOR_WHITE },
-    { SPLIT_ITEM, 	    ITEM_WALLET_ADULT,  	                "Adult's Wallet", 						"ITEM_WALLET_ADULT", 			COLOR_WHITE },
-    { SPLIT_UPGRADE, 	ITEM_WALLET_GIANT,  	                "Giant's Wallet", 						"ITEM_WALLET_GIANT", 			COLOR_WHITE },
-    { SPLIT_ITEM, 	    ITEM_FISHING_POLE,  	                "Fishing Pole", 						"ITEM_FISHING_POLE", 			COLOR_WHITE },
-    { SPLIT_QUEST, 	    ITEM_SONG_MINUET,  		                "Minuet of Forest",						"QUEST_SONG_MINUET", 			COLOR_WHITE },
-    { SPLIT_QUEST, 	    ITEM_SONG_BOLERO,  		                "Bolero of Fire", 						"QUEST_SONG_BOLERO", 			COLOR_WHITE },
-    { SPLIT_QUEST, 	    ITEM_SONG_SERENADE,  	                "Serenade of Water", 					"QUEST_SONG_SERENADE", 			COLOR_WHITE },
-    { SPLIT_QUEST, 	    ITEM_SONG_REQUIEM,  	                "Requiem of Spirit", 					"QUEST_SONG_REQUIEM", 			COLOR_WHITE },
-    { SPLIT_QUEST, 	    ITEM_SONG_NOCTURNE,  	                "Nocturne of Shadow", 					"QUEST_SONG_NOCTURNE", 			COLOR_WHITE },
-    { SPLIT_QUEST, 	    ITEM_SONG_PRELUDE,  	                "Prelude of Light", 					"QUEST_SONG_PRELUDE", 			COLOR_WHITE },
-    { SPLIT_QUEST, 	    ITEM_SONG_LULLABY,  	                "Zelda's Lullaby", 						"QUEST_SONG_LULLABY", 			COLOR_WHITE },
-    { SPLIT_QUEST, 	    ITEM_SONG_EPONA,  		                "Epona's Song", 						"QUEST_SONG_EPONA", 			COLOR_WHITE },
-    { SPLIT_QUEST, 	    ITEM_SONG_SARIA,  		                "Saria's Song", 						"QUEST_SONG_SARIA", 			COLOR_WHITE },
-    { SPLIT_QUEST, 	    ITEM_SONG_SUN,  		                "Sun's Song", 							"QUEST_SONG_SUN", 				COLOR_WHITE },
-    { SPLIT_QUEST, 	    ITEM_SONG_TIME, 		                "Song of Time", 						"QUEST_SONG_TIME", 				COLOR_WHITE },
-    { SPLIT_QUEST, 	    ITEM_SONG_STORMS, 		                "Song of Storms", 						"QUEST_SONG_STORMS", 			COLOR_WHITE },
-    { SPLIT_QUEST, 	    ITEM_MEDALLION_FOREST, 	                "Forest Medallion", 					"QUEST_MEDALLION_FOREST", 		COLOR_WHITE },
-    { SPLIT_QUEST, 	    ITEM_MEDALLION_FIRE, 	                "Fire Medallion", 						"QUEST_MEDALLION_FIRE", 		COLOR_WHITE },
-    { SPLIT_QUEST, 	    ITEM_MEDALLION_WATER, 	                "Water Medallion", 						"QUEST_MEDALLION_WATER", 		COLOR_WHITE },
-    { SPLIT_QUEST, 	    ITEM_MEDALLION_SPIRIT, 	                "Spirit Medallion", 					"QUEST_MEDALLION_SPIRIT", 		COLOR_WHITE },
-    { SPLIT_QUEST, 	    ITEM_MEDALLION_SHADOW, 	                "Shadow Medallion", 					"QUEST_MEDALLION_SHADOW", 		COLOR_WHITE },
-    { SPLIT_QUEST, 	    ITEM_MEDALLION_LIGHT, 	                "Light Medallion", 						"QUEST_MEDALLION_LIGHT", 		COLOR_WHITE },
-    { SPLIT_QUEST, 	    ITEM_KOKIRI_EMERALD, 	                "Kokiri's Emerald", 					"QUEST_KOKIRI_EMERALD", 		COLOR_WHITE },
-    { SPLIT_QUEST, 	    ITEM_GORON_RUBY, 		                "Goron's Ruby", 						"QUEST_GORON_RUBY", 			COLOR_WHITE },
-    { SPLIT_QUEST, 	    ITEM_ZORA_SAPPHIRE, 	                "Zora's Sapphire", 						"QUEST_ZORA_SAPPHIRE", 			COLOR_WHITE },
-    { SPLIT_QUEST, 	    ITEM_STONE_OF_AGONY, 	                "Stone of Agony", 						"QUEST_STONE_OF_AGONY", 		COLOR_WHITE },
-    { SPLIT_QUEST, 	    ITEM_GERUDO_CARD, 		                "Gerudo's Card", 						"QUEST_GERUDO_CARD", 			COLOR_WHITE },
-    { SPLIT_QUEST, 	    ITEM_SKULL_TOKEN,                       "Skulltula Token",                      "QUEST_SKULL_TOKEN", 			COLOR_WHITE },
-    { SPLIT_ITEM, 	    ITEM_SINGLE_MAGIC, 		                "Magic Meter", 							"ITEM_MAGIC_SMALL", 			COLOR_WHITE },
-    { SPLIT_UPGRADE, 	ITEM_DOUBLE_MAGIC, 		                "Double Magic", 				        "ITEM_MAGIC_LARGE", 			COLOR_WHITE },
-    { SPLIT_ITEM, 	    ITEM_DOUBLE_DEFENSE, 	                "Double Defense", 						"ITEM_HEART_CONTAINER", 		COLOR_WHITE },
-    { SPLIT_UPGRADE, 	ITEM_STICK_UPGRADE_20, 	                "Deku Stick Upgrade (20)", 				"ITEM_STICK", 					COLOR_WHITE },
-    { SPLIT_UPGRADE, 	ITEM_STICK_UPGRADE_30, 	                "Deku Stick Upgrade (30)", 				"ITEM_STICK", 					COLOR_WHITE },
-    { SPLIT_UPGRADE, 	ITEM_NUT_UPGRADE_30, 	                "Deku Nut Upgrade (30)", 				"ITEM_NUT", 					COLOR_WHITE },
-    { SPLIT_UPGRADE, 	ITEM_NUT_UPGRADE_40, 	                "Deku Nut Upgrade (40)", 				"ITEM_NUT", 					COLOR_WHITE },
-    { SPLIT_BOSS, 	    ACTOR_BOSS_GOMA,                        "Queen Gohma",                          "SPECIAL_TRIFORCE_PIECE_WHITE",	COLOR_LIGHT_GREEN },
-    { SPLIT_BOSS, 	    ACTOR_BOSS_DODONGO,                     "King Dodongo",                         "SPECIAL_TRIFORCE_PIECE_WHITE",	COLOR_LIGHT_RED },
-    { SPLIT_BOSS, 	    ACTOR_BOSS_VA,                          "Barinade",                             "SPECIAL_TRIFORCE_PIECE_WHITE",	COLOR_LIGHT_BLUE },
-    { SPLIT_BOSS, 	    ACTOR_BOSS_GANONDROF,                   "Phantom Ganon",                        "SPECIAL_TRIFORCE_PIECE_WHITE",	COLOR_GREEN },
-    { SPLIT_BOSS, 	    ACTOR_BOSS_FD2,                         "Volvagia",                             "SPECIAL_TRIFORCE_PIECE_WHITE",	COLOR_RED },
-    { SPLIT_BOSS, 	    ACTOR_BOSS_MO,                          "Morpha",                               "SPECIAL_TRIFORCE_PIECE_WHITE",	COLOR_BLUE },
-    { SPLIT_BOSS, 	    ACTOR_BOSS_SST,                         "Bongo Bongo",                          "SPECIAL_TRIFORCE_PIECE_WHITE",	COLOR_PURPLE },
-    { SPLIT_BOSS, 	    ACTOR_BOSS_TW,                          "Twinrova",                             "SPECIAL_TRIFORCE_PIECE_WHITE",	COLOR_ORANGE },
-    { SPLIT_BOSS, 	    ACTOR_BOSS_GANON,                       "Ganondorf",                            "SPECIAL_TRIFORCE_PIECE_WHITE",	COLOR_GREY },
-    { SPLIT_BOSS, 	    ACTOR_BOSS_GANON2,                      "Ganon",                                "SPECIAL_TRIFORCE_PIECE_WHITE",	COLOR_YELLOW },
-    { SPLIT_ENTRANCE,	SCENE_DEKU_TREE,                        "Enter Deku Tree",                      "SPECIAL_SPLIT_ENTRANCE", 		COLOR_WHITE },
-    { SPLIT_ENTRANCE,	SCENE_DODONGOS_CAVERN,                  "Enter Dodongos Cavern",                "SPECIAL_SPLIT_ENTRANCE", 		COLOR_WHITE },
-    { SPLIT_ENTRANCE,	SCENE_JABU_JABU,                        "Enter Jabu Jabu's Belly",              "SPECIAL_SPLIT_ENTRANCE", 		COLOR_WHITE },
-    { SPLIT_ENTRANCE,	SCENE_FOREST_TEMPLE,                    "Enter Forest Temple",                  "SPECIAL_SPLIT_ENTRANCE", 		COLOR_WHITE },
-    { SPLIT_ENTRANCE,	SCENE_FIRE_TEMPLE,                      "Enter Fire Temple",                    "SPECIAL_SPLIT_ENTRANCE", 		COLOR_WHITE },
-    { SPLIT_ENTRANCE,	SCENE_WATER_TEMPLE,                     "Enter Water Temple",                   "SPECIAL_SPLIT_ENTRANCE", 		COLOR_WHITE },
-    { SPLIT_ENTRANCE,	SCENE_SPIRIT_TEMPLE,                    "Enter Spirit Temple",                  "SPECIAL_SPLIT_ENTRANCE", 		COLOR_WHITE },
-    { SPLIT_ENTRANCE,	SCENE_SHADOW_TEMPLE,                    "Enter Shadow Temple",                  "SPECIAL_SPLIT_ENTRANCE", 		COLOR_WHITE },
-    { SPLIT_ENTRANCE,	SCENE_BOTTOM_OF_THE_WELL,               "Enter Bottom of the Well",             "SPECIAL_SPLIT_ENTRANCE", 		COLOR_WHITE },
-    { SPLIT_ENTRANCE,	SCENE_ICE_CAVERN,                       "Enter Ice Cavern",                     "SPECIAL_SPLIT_ENTRANCE", 		COLOR_WHITE },
-    { SPLIT_ENTRANCE,	SCENE_GANONS_TOWER,                     "Enter Ganons Tower",                   "SPECIAL_SPLIT_ENTRANCE", 		COLOR_WHITE },
-    { SPLIT_ENTRANCE,	SCENE_GERUDO_TRAINING_GROUND,           "Enter Gerudo Training Grounds",        "SPECIAL_SPLIT_ENTRANCE", 		COLOR_WHITE },
-    { SPLIT_ENTRANCE,	SCENE_THIEVES_HIDEOUT,                  "Enter Thieves Hideout",                "SPECIAL_SPLIT_ENTRANCE", 		COLOR_WHITE },
-    { SPLIT_ENTRANCE,	SCENE_INSIDE_GANONS_CASTLE,             "Enter Ganons Castle",                  "SPECIAL_SPLIT_ENTRANCE", 		COLOR_WHITE },
-    { SPLIT_ENTRANCE,	SCENE_GANONS_TOWER_COLLAPSE_INTERIOR,   "Enter Tower Collapse Interior",        "SPECIAL_SPLIT_ENTRANCE", 		COLOR_WHITE },
-    { SPLIT_ENTRANCE,	SCENE_INSIDE_GANONS_CASTLE_COLLAPSE,    "Enter Ganons Castle Collapse",         "SPECIAL_SPLIT_ENTRANCE", 		COLOR_WHITE },
-    { SPLIT_MISC,	    SCENE_ZORAS_RIVER,                      "Lost Woods Escape",                    "SPECIAL_SPLIT_ENTRANCE", 		COLOR_WHITE },
-    { SPLIT_MISC,	    SCENE_LOST_WOODS,                       "Forest Escape",                        "SPECIAL_SPLIT_ENTRANCE", 		COLOR_WHITE },
-    { SPLIT_MISC,		SCENE_KAKARIKO_VILLAGE,                 "Watchtower Death",                     "SPECIAL_SPLIT_ENTRANCE", 		COLOR_WHITE },
+    { SPLIT_TYPE_ITEM,      ITEM_STICK,                           "Deku Stick",                       "ITEM_STICK",                   COLOR_WHITE },
+    { SPLIT_TYPE_ITEM,      ITEM_NUT,                             "Deku Nut",                         "ITEM_NUT",                     COLOR_WHITE },
+    { SPLIT_TYPE_ITEM,      ITEM_BOMB,                            "Bomb",                             "ITEM_BOMB",                    COLOR_WHITE },
+    { SPLIT_TYPE_ITEM,      ITEM_BOW,                             "Fairy Bow",                        "ITEM_BOW",                     COLOR_WHITE },
+    { SPLIT_TYPE_ITEM,      ITEM_ARROW_FIRE,                      "Fire Arrow",                       "ITEM_ARROW_FIRE",              COLOR_WHITE },
+    { SPLIT_TYPE_ITEM,      ITEM_DINS_FIRE,                       "Din's Fire",                       "ITEM_DINS_FIRE",               COLOR_WHITE },
+    { SPLIT_TYPE_ITEM,      ITEM_SLINGSHOT,                       "Fairy Slingshot",                  "ITEM_SLINGSHOT",               COLOR_WHITE },
+    { SPLIT_TYPE_ITEM,      ITEM_OCARINA_FAIRY,                   "Fairy Ocarina",                    "ITEM_OCARINA_FAIRY",           COLOR_WHITE },
+    { SPLIT_TYPE_UPGRADE,   ITEM_OCARINA_TIME,                    "Ocarina of Time",                  "ITEM_OCARINA_TIME",            COLOR_WHITE },
+    { SPLIT_TYPE_ITEM,      ITEM_BOMBCHU,                         "Bombchu",                          "ITEM_BOMBCHU",                 COLOR_WHITE },
+    { SPLIT_TYPE_ITEM,      ITEM_HOOKSHOT,                        "Hookshot",                         "ITEM_HOOKSHOT",                COLOR_WHITE },
+    { SPLIT_TYPE_UPGRADE,   ITEM_LONGSHOT,                        "Longshot",                         "ITEM_LONGSHOT",                COLOR_WHITE },
+    { SPLIT_TYPE_ITEM,      ITEM_ARROW_ICE,                       "Ice Arrow",                        "ITEM_ARROW_ICE",               COLOR_WHITE },
+    { SPLIT_TYPE_ITEM,      ITEM_FARORES_WIND,                    "Farore's Wind",                    "ITEM_FARORES_WIND",            COLOR_WHITE },
+    { SPLIT_TYPE_ITEM,      ITEM_BOOMERANG,                       "Boomerang",                        "ITEM_BOOMERANG",               COLOR_WHITE },
+    { SPLIT_TYPE_ITEM,      ITEM_LENS,                            "Lens of Truth",                    "ITEM_LENS",                    COLOR_WHITE },
+    { SPLIT_TYPE_ITEM,      ITEM_BEAN,                            "Magic Bean",                       "ITEM_BEAN",                    COLOR_WHITE },
+    { SPLIT_TYPE_ITEM,      ITEM_HAMMER,                          "Megaton Hammer",                   "ITEM_HAMMER",                  COLOR_WHITE },
+    { SPLIT_TYPE_ITEM,      ITEM_ARROW_LIGHT,                     "Light Arrow",                      "ITEM_ARROW_LIGHT",             COLOR_WHITE },
+    { SPLIT_TYPE_ITEM,      ITEM_NAYRUS_LOVE,                     "Nayru's Love",                     "ITEM_NAYRUS_LOVE",             COLOR_WHITE },
+    { SPLIT_TYPE_ITEM,      ITEM_BOTTLE,                          "Empty Bottle",                     "ITEM_BOTTLE",                  COLOR_WHITE },
+    { SPLIT_TYPE_UPGRADE,   ITEM_POTION_RED,                      "Red Potion",                       "ITEM_POTION_RED",              COLOR_WHITE },
+    { SPLIT_TYPE_UPGRADE,   ITEM_POTION_GREEN,                    "Green Potion",                     "ITEM_POTION_GREEN",            COLOR_WHITE },
+    { SPLIT_TYPE_UPGRADE,   ITEM_POTION_BLUE,                     "Blue Potion",                      "ITEM_POTION_BLUE",             COLOR_WHITE },
+    { SPLIT_TYPE_UPGRADE,   ITEM_FAIRY,                           "Bottled Fairy",                    "ITEM_FAIRY",                   COLOR_WHITE },
+    { SPLIT_TYPE_UPGRADE,   ITEM_FISH,                            "Fish",                             "ITEM_FISH",                    COLOR_WHITE },
+    { SPLIT_TYPE_UPGRADE,   ITEM_MILK_BOTTLE,                     "Milk",                             "ITEM_MILK_BOTTLE",             COLOR_WHITE },
+    { SPLIT_TYPE_UPGRADE,   ITEM_LETTER_RUTO,                     "Ruto's Letter",                    "ITEM_LETTER_RUTO",             COLOR_WHITE },
+    { SPLIT_TYPE_UPGRADE,   ITEM_BLUE_FIRE,                       "Blue Fire",                        "ITEM_BLUE_FIRE",               COLOR_WHITE },
+    { SPLIT_TYPE_UPGRADE,   ITEM_BUG,                             "Bug",                              "ITEM_BUG",                     COLOR_WHITE },
+    { SPLIT_TYPE_UPGRADE,   ITEM_BIG_POE,                         "Big Poe",                          "ITEM_BIG_POE",                 COLOR_WHITE },
+    { SPLIT_TYPE_UPGRADE,   ITEM_POE,                             "Poe",                              "ITEM_POE",                     COLOR_WHITE },
+    { SPLIT_TYPE_ITEM,      ITEM_WEIRD_EGG,                       "Weird Egg",                        "ITEM_WEIRD_EGG",               COLOR_WHITE },
+    { SPLIT_TYPE_UPGRADE,   ITEM_CHICKEN,                         "Chicken",                          "ITEM_CHICKEN",                 COLOR_WHITE },
+    { SPLIT_TYPE_UPGRADE,   ITEM_LETTER_ZELDA,                    "Zelda's Letter",                   "ITEM_LETTER_ZELDA",            COLOR_WHITE },
+    { SPLIT_TYPE_UPGRADE,   ITEM_MASK_KEATON,                     "Keaton Mask",                      "ITEM_MASK_KEATON",             COLOR_WHITE },
+    { SPLIT_TYPE_UPGRADE,   ITEM_MASK_SKULL,                      "Skull Mask",                       "ITEM_MASK_SKULL",              COLOR_WHITE },
+    { SPLIT_TYPE_UPGRADE,   ITEM_MASK_SPOOKY,                     "Spooky Mask",                      "ITEM_MASK_SPOOKY",             COLOR_WHITE },
+    { SPLIT_TYPE_UPGRADE,   ITEM_MASK_BUNNY,                      "Bunny Hood",                       "ITEM_MASK_BUNNY",              COLOR_WHITE },
+    { SPLIT_TYPE_UPGRADE,   ITEM_MASK_GORON,                      "Goron Mask",                       "ITEM_MASK_GORON",              COLOR_WHITE },
+    { SPLIT_TYPE_UPGRADE,   ITEM_MASK_ZORA,                       "Zora Mask",                        "ITEM_MASK_ZORA",               COLOR_WHITE },
+    { SPLIT_TYPE_UPGRADE,   ITEM_MASK_GERUDO,                     "Gerudo Mask",                      "ITEM_MASK_GERUDO",             COLOR_WHITE },
+    { SPLIT_TYPE_UPGRADE,   ITEM_MASK_TRUTH,                      "Mask of Truth",                    "ITEM_MASK_TRUTH",              COLOR_WHITE },
+    { SPLIT_TYPE_ITEM,      ITEM_POCKET_EGG,                      "Pocket Egg",                       "ITEM_POCKET_EGG",              COLOR_WHITE },
+    { SPLIT_TYPE_UPGRADE,   ITEM_POCKET_CUCCO,                    "Pocket Cucco",                     "ITEM_POCKET_CUCCO",            COLOR_WHITE },
+    { SPLIT_TYPE_UPGRADE,   ITEM_COJIRO,                          "Cojiro",                           "ITEM_COJIRO",                  COLOR_WHITE },
+    { SPLIT_TYPE_UPGRADE,   ITEM_ODD_MUSHROOM,                    "Odd Mushroom",                     "ITEM_ODD_MUSHROOM",            COLOR_WHITE },
+    { SPLIT_TYPE_UPGRADE,   ITEM_ODD_POTION,                      "Odd Potion",                       "ITEM_ODD_POTION",              COLOR_WHITE },
+    { SPLIT_TYPE_UPGRADE,   ITEM_SAW,                             "Poacher's Saw",                    "ITEM_SAW",                     COLOR_WHITE },
+    { SPLIT_TYPE_UPGRADE,   ITEM_SWORD_BROKEN,                    "Goron's Sword (Broken)",           "ITEM_SWORD_BROKEN",            COLOR_WHITE },
+    { SPLIT_TYPE_UPGRADE,   ITEM_PRESCRIPTION,                    "Prescription",                     "ITEM_PRESCRIPTION",            COLOR_WHITE },
+    { SPLIT_TYPE_UPGRADE,   ITEM_FROG,                            "Eyeball Frog",                     "ITEM_FROG",                    COLOR_WHITE },
+    { SPLIT_TYPE_UPGRADE,   ITEM_EYEDROPS,                        "Eye Drops",                        "ITEM_EYEDROPS",                COLOR_WHITE },
+    { SPLIT_TYPE_UPGRADE,   ITEM_CLAIM_CHECK,                     "Claim Check",                      "ITEM_CLAIM_CHECK",             COLOR_WHITE },
+    { SPLIT_TYPE_EQUIPMENT, ITEM_SWORD_KOKIRI,                    "Kokiri Sword",                     "ITEM_SWORD_KOKIRI",            COLOR_WHITE },
+    { SPLIT_TYPE_EQUIPMENT, ITEM_SWORD_MASTER,                    "Master Sword",                     "ITEM_SWORD_MASTER",            COLOR_WHITE },
+    { SPLIT_TYPE_EQUIPMENT, ITEM_SWORD_BGS,                       "Giant's Knife & Biggoron's Sword", "ITEM_SWORD_BGS",               COLOR_WHITE },
+    { SPLIT_TYPE_EQUIPMENT, ITEM_SHIELD_DEKU,                     "Deku Shield",                      "ITEM_SHIELD_DEKU",             COLOR_WHITE },
+    { SPLIT_TYPE_EQUIPMENT, ITEM_SHIELD_HYLIAN,                   "Hylian Shield",                    "ITEM_SHIELD_HYLIAN",           COLOR_WHITE },
+    { SPLIT_TYPE_EQUIPMENT, ITEM_SHIELD_MIRROR,                   "Mirror Shield",                    "ITEM_SHIELD_MIRROR",           COLOR_WHITE },
+    { SPLIT_TYPE_EQUIPMENT, ITEM_TUNIC_GORON,                     "Goron Tunic",                      "ITEM_TUNIC_GORON",             COLOR_WHITE },
+    { SPLIT_TYPE_EQUIPMENT, ITEM_TUNIC_ZORA,                      "Zora Tunic",                       "ITEM_TUNIC_ZORA",              COLOR_WHITE },
+    { SPLIT_TYPE_EQUIPMENT, ITEM_BOOTS_IRON,                      "Iron Boots",                       "ITEM_BOOTS_IRON",              COLOR_WHITE },
+    { SPLIT_TYPE_EQUIPMENT, ITEM_BOOTS_HOVER,                     "Hover Boots",                      "ITEM_BOOTS_HOVER",             COLOR_WHITE },
+    { SPLIT_TYPE_UPGRADE,   ITEM_BULLET_BAG_30,                   "Bullet Bag (30)",                  "ITEM_BULLET_BAG_30",           COLOR_WHITE },
+    { SPLIT_TYPE_UPGRADE,   ITEM_BULLET_BAG_40,                   "Bullet Bag (40)",                  "ITEM_BULLET_BAG_40",           COLOR_WHITE },
+    { SPLIT_TYPE_UPGRADE,   ITEM_BULLET_BAG_50,                   "Bullet Bag (50)",                  "ITEM_BULLET_BAG_50",           COLOR_WHITE },
+    { SPLIT_TYPE_UPGRADE,   ITEM_QUIVER_30,                       "Quiver (30)",                      "ITEM_QUIVER_30",               COLOR_WHITE },
+    { SPLIT_TYPE_UPGRADE,   ITEM_QUIVER_40,                       "Big Quiver (40)",                  "ITEM_QUIVER_40",               COLOR_WHITE },
+    { SPLIT_TYPE_UPGRADE,   ITEM_QUIVER_50,                       "Biggest Quiver (50)",              "ITEM_QUIVER_50",               COLOR_WHITE },
+    { SPLIT_TYPE_UPGRADE,   ITEM_BOMB_BAG_20,                     "Bomb Bag (20)",                    "ITEM_BOMB_BAG_20",             COLOR_WHITE },
+    { SPLIT_TYPE_UPGRADE,   ITEM_BOMB_BAG_30,                     "Big Bomb Bag (30)",                "ITEM_BOMB_BAG_30",             COLOR_WHITE },
+    { SPLIT_TYPE_UPGRADE,   ITEM_BOMB_BAG_40,                     "Biggest Bomb Bag (40)",            "ITEM_BOMB_BAG_40",             COLOR_WHITE },
+    { SPLIT_TYPE_ITEM,      ITEM_BRACELET,                        "Goron's Bracelet",                 "ITEM_BRACELET",                COLOR_WHITE },
+    { SPLIT_TYPE_UPGRADE,   ITEM_GAUNTLETS_SILVER,                "Silver Gauntlets",                 "ITEM_GAUNTLETS_SILVER",        COLOR_WHITE },
+    { SPLIT_TYPE_UPGRADE,   ITEM_GAUNTLETS_GOLD,                  "Golden Gauntlets",                 "ITEM_GAUNTLETS_GOLD",          COLOR_WHITE },
+    { SPLIT_TYPE_ITEM,      ITEM_SCALE_SILVER,                    "Silver Scale",                     "ITEM_SCALE_SILVER",            COLOR_WHITE },
+    { SPLIT_TYPE_UPGRADE,   ITEM_SCALE_GOLDEN,                    "Golden Scale",                     "ITEM_SCALE_GOLDEN",            COLOR_WHITE },
+    { SPLIT_TYPE_ITEM,      ITEM_SWORD_KNIFE,                     "Giant's Knife (Broken)",           "ITEM_SWORD_KNIFE",             COLOR_WHITE },
+    { SPLIT_TYPE_ITEM,      ITEM_WALLET_ADULT,                    "Adult's Wallet",                   "ITEM_WALLET_ADULT",            COLOR_WHITE },
+    { SPLIT_TYPE_UPGRADE,   ITEM_WALLET_GIANT,                    "Giant's Wallet",                   "ITEM_WALLET_GIANT",            COLOR_WHITE },
+    { SPLIT_TYPE_ITEM,      ITEM_FISHING_POLE,                    "Fishing Pole",                     "ITEM_FISHING_POLE",            COLOR_WHITE },
+    { SPLIT_TYPE_QUEST,     ITEM_SONG_MINUET,                     "Minuet of Forest",                 "QUEST_SONG_MINUET",            COLOR_WHITE },
+    { SPLIT_TYPE_QUEST,     ITEM_SONG_BOLERO,                     "Bolero of Fire",                   "QUEST_SONG_BOLERO",            COLOR_WHITE },
+    { SPLIT_TYPE_QUEST,     ITEM_SONG_SERENADE,                   "Serenade of Water",                "QUEST_SONG_SERENADE",          COLOR_WHITE },
+    { SPLIT_TYPE_QUEST,     ITEM_SONG_REQUIEM,                    "Requiem of Spirit",                "QUEST_SONG_REQUIEM",           COLOR_WHITE },
+    { SPLIT_TYPE_QUEST,     ITEM_SONG_NOCTURNE,                   "Nocturne of Shadow",               "QUEST_SONG_NOCTURNE",          COLOR_WHITE },
+    { SPLIT_TYPE_QUEST,     ITEM_SONG_PRELUDE,                    "Prelude of Light",                 "QUEST_SONG_PRELUDE",           COLOR_WHITE },
+    { SPLIT_TYPE_QUEST,     ITEM_SONG_LULLABY,                    "Zelda's Lullaby",                  "QUEST_SONG_LULLABY",           COLOR_WHITE },
+    { SPLIT_TYPE_QUEST,     ITEM_SONG_EPONA,                      "Epona's Song",                     "QUEST_SONG_EPONA",             COLOR_WHITE },
+    { SPLIT_TYPE_QUEST,     ITEM_SONG_SARIA,                      "Saria's Song",                     "QUEST_SONG_SARIA",             COLOR_WHITE },
+    { SPLIT_TYPE_QUEST,     ITEM_SONG_SUN,                        "Sun's Song",                       "QUEST_SONG_SUN",               COLOR_WHITE },
+    { SPLIT_TYPE_QUEST,     ITEM_SONG_TIME,                       "Song of Time",                     "QUEST_SONG_TIME",              COLOR_WHITE },
+    { SPLIT_TYPE_QUEST,     ITEM_SONG_STORMS,                     "Song of Storms",                   "QUEST_SONG_STORMS",            COLOR_WHITE },
+    { SPLIT_TYPE_QUEST,     ITEM_MEDALLION_FOREST,                "Forest Medallion",                 "QUEST_MEDALLION_FOREST",       COLOR_WHITE },
+    { SPLIT_TYPE_QUEST,     ITEM_MEDALLION_FIRE,                  "Fire Medallion",                   "QUEST_MEDALLION_FIRE",         COLOR_WHITE },
+    { SPLIT_TYPE_QUEST,     ITEM_MEDALLION_WATER,                 "Water Medallion",                  "QUEST_MEDALLION_WATER",        COLOR_WHITE },
+    { SPLIT_TYPE_QUEST,     ITEM_MEDALLION_SPIRIT,                "Spirit Medallion",                 "QUEST_MEDALLION_SPIRIT",       COLOR_WHITE },
+    { SPLIT_TYPE_QUEST,     ITEM_MEDALLION_SHADOW,                "Shadow Medallion",                 "QUEST_MEDALLION_SHADOW",       COLOR_WHITE },
+    { SPLIT_TYPE_QUEST,     ITEM_MEDALLION_LIGHT,                 "Light Medallion",                  "QUEST_MEDALLION_LIGHT",        COLOR_WHITE },
+    { SPLIT_TYPE_QUEST,     ITEM_KOKIRI_EMERALD,                  "Kokiri's Emerald",                 "QUEST_KOKIRI_EMERALD",         COLOR_WHITE },
+    { SPLIT_TYPE_QUEST,     ITEM_GORON_RUBY,                      "Goron's Ruby",                     "QUEST_GORON_RUBY",             COLOR_WHITE },
+    { SPLIT_TYPE_QUEST,     ITEM_ZORA_SAPPHIRE,                   "Zora's Sapphire",                  "QUEST_ZORA_SAPPHIRE",          COLOR_WHITE },
+    { SPLIT_TYPE_QUEST,     ITEM_STONE_OF_AGONY,                  "Stone of Agony",                   "QUEST_STONE_OF_AGONY",         COLOR_WHITE },
+    { SPLIT_TYPE_QUEST,     ITEM_GERUDO_CARD,                     "Gerudo's Card",                    "QUEST_GERUDO_CARD",            COLOR_WHITE },
+    { SPLIT_TYPE_QUEST,     ITEM_SKULL_TOKEN,                     "Skulltula Token",                  "QUEST_SKULL_TOKEN",            COLOR_WHITE },
+    { SPLIT_TYPE_ITEM,      ITEM_SINGLE_MAGIC,                    "Magic Meter",                      "ITEM_MAGIC_SMALL",             COLOR_WHITE },
+    { SPLIT_TYPE_UPGRADE,   ITEM_DOUBLE_MAGIC,                    "Double Magic",                     "ITEM_MAGIC_LARGE",             COLOR_WHITE },
+    { SPLIT_TYPE_ITEM,      ITEM_DOUBLE_DEFENSE,                  "Double Defense",                   "ITEM_HEART_CONTAINER",         COLOR_WHITE },
+    { SPLIT_TYPE_UPGRADE,   ITEM_STICK_UPGRADE_20,                "Deku Stick Upgrade (20)",          "ITEM_STICK",                   COLOR_WHITE },
+    { SPLIT_TYPE_UPGRADE,   ITEM_STICK_UPGRADE_30,                "Deku Stick Upgrade (30)",          "ITEM_STICK",                   COLOR_WHITE },
+    { SPLIT_TYPE_UPGRADE,   ITEM_NUT_UPGRADE_30,                  "Deku Nut Upgrade (30)",            "ITEM_NUT",                     COLOR_WHITE },
+    { SPLIT_TYPE_UPGRADE,   ITEM_NUT_UPGRADE_40,                  "Deku Nut Upgrade (40)",            "ITEM_NUT",                     COLOR_WHITE },
+    { SPLIT_TYPE_BOSS,      ACTOR_BOSS_GOMA,                      "Queen Gohma",                      "SPECIAL_TRIFORCE_PIECE_WHITE", COLOR_LIGHT_GREEN },
+    { SPLIT_TYPE_BOSS,      ACTOR_BOSS_DODONGO,                   "King Dodongo",                     "SPECIAL_TRIFORCE_PIECE_WHITE", COLOR_LIGHT_RED },
+    { SPLIT_TYPE_BOSS,      ACTOR_BOSS_VA,                        "Barinade",                         "SPECIAL_TRIFORCE_PIECE_WHITE", COLOR_LIGHT_BLUE },
+    { SPLIT_TYPE_BOSS,      ACTOR_BOSS_GANONDROF,                 "Phantom Ganon",                    "SPECIAL_TRIFORCE_PIECE_WHITE", COLOR_GREEN },
+    { SPLIT_TYPE_BOSS,      ACTOR_BOSS_FD2,                       "Volvagia",                         "SPECIAL_TRIFORCE_PIECE_WHITE", COLOR_RED },
+    { SPLIT_TYPE_BOSS,      ACTOR_BOSS_MO,                        "Morpha",                           "SPECIAL_TRIFORCE_PIECE_WHITE", COLOR_BLUE },
+    { SPLIT_TYPE_BOSS,      ACTOR_BOSS_SST,                       "Bongo Bongo",                      "SPECIAL_TRIFORCE_PIECE_WHITE", COLOR_PURPLE },
+    { SPLIT_TYPE_BOSS,      ACTOR_BOSS_TW,                        "Twinrova",                         "SPECIAL_TRIFORCE_PIECE_WHITE", COLOR_ORANGE },
+    { SPLIT_TYPE_BOSS,      ACTOR_BOSS_GANON,                     "Ganondorf",                        "SPECIAL_TRIFORCE_PIECE_WHITE", COLOR_GREY },
+    { SPLIT_TYPE_BOSS,      ACTOR_BOSS_GANON2,                    "Ganon",                            "SPECIAL_TRIFORCE_PIECE_WHITE", COLOR_YELLOW },
+    { SPLIT_TYPE_ENTRANCE,  SCENE_DEKU_TREE,                      "Enter Deku Tree",                  "SPECIAL_SPLIT_ENTRANCE",       COLOR_WHITE },
+    { SPLIT_TYPE_ENTRANCE,  SCENE_DODONGOS_CAVERN,                "Enter Dodongos Cavern",            "SPECIAL_SPLIT_ENTRANCE",       COLOR_WHITE },
+    { SPLIT_TYPE_ENTRANCE,  SCENE_JABU_JABU,                      "Enter Jabu Jabu's Belly",          "SPECIAL_SPLIT_ENTRANCE",       COLOR_WHITE },
+    { SPLIT_TYPE_ENTRANCE,  SCENE_FOREST_TEMPLE,                  "Enter Forest Temple",              "SPECIAL_SPLIT_ENTRANCE",       COLOR_WHITE },
+    { SPLIT_TYPE_ENTRANCE,  SCENE_FIRE_TEMPLE,                    "Enter Fire Temple",                "SPECIAL_SPLIT_ENTRANCE",       COLOR_WHITE },
+    { SPLIT_TYPE_ENTRANCE,  SCENE_WATER_TEMPLE,                   "Enter Water Temple",               "SPECIAL_SPLIT_ENTRANCE",       COLOR_WHITE },
+    { SPLIT_TYPE_ENTRANCE,  SCENE_SPIRIT_TEMPLE,                  "Enter Spirit Temple",              "SPECIAL_SPLIT_ENTRANCE",       COLOR_WHITE },
+    { SPLIT_TYPE_ENTRANCE,  SCENE_SHADOW_TEMPLE,                  "Enter Shadow Temple",              "SPECIAL_SPLIT_ENTRANCE",       COLOR_WHITE },
+    { SPLIT_TYPE_ENTRANCE,  SCENE_BOTTOM_OF_THE_WELL,             "Enter Bottom of the Well",         "SPECIAL_SPLIT_ENTRANCE",       COLOR_WHITE },
+    { SPLIT_TYPE_ENTRANCE,  SCENE_ICE_CAVERN,                     "Enter Ice Cavern",                 "SPECIAL_SPLIT_ENTRANCE",       COLOR_WHITE },
+    { SPLIT_TYPE_ENTRANCE,  SCENE_GANONS_TOWER,                   "Enter Ganons Tower",               "SPECIAL_SPLIT_ENTRANCE",       COLOR_WHITE },
+    { SPLIT_TYPE_ENTRANCE,  SCENE_GERUDO_TRAINING_GROUND,         "Enter Gerudo Training Grounds",    "SPECIAL_SPLIT_ENTRANCE",       COLOR_WHITE },
+    { SPLIT_TYPE_ENTRANCE,  SCENE_THIEVES_HIDEOUT,                "Enter Thieves Hideout",            "SPECIAL_SPLIT_ENTRANCE",       COLOR_WHITE },
+    { SPLIT_TYPE_ENTRANCE,  SCENE_INSIDE_GANONS_CASTLE,           "Enter Ganons Castle",              "SPECIAL_SPLIT_ENTRANCE",       COLOR_WHITE },
+    { SPLIT_TYPE_ENTRANCE,  SCENE_GANONS_TOWER_COLLAPSE_INTERIOR, "Enter Tower Collapse Interior",    "SPECIAL_SPLIT_ENTRANCE",       COLOR_WHITE },
+    { SPLIT_TYPE_ENTRANCE,  SCENE_INSIDE_GANONS_CASTLE_COLLAPSE,  "Enter Ganons Castle Collapse",     "SPECIAL_SPLIT_ENTRANCE",       COLOR_WHITE },
+    { SPLIT_TYPE_MISC,      SCENE_ZORAS_RIVER,                    "Lost Woods Escape",                "SPECIAL_SPLIT_ENTRANCE",       COLOR_WHITE },
+    { SPLIT_TYPE_MISC,      SCENE_LOST_WOODS,                     "Forest Escape",                    "SPECIAL_SPLIT_ENTRANCE",       COLOR_WHITE },
+    { SPLIT_TYPE_MISC,      SCENE_KAKARIKO_VILLAGE,               "Watchtower Death",                 "SPECIAL_SPLIT_ENTRANCE",       COLOR_WHITE },
 };
 
 std::map<uint32_t, std::vector<uint32_t>> popupList = {
@@ -212,10 +212,10 @@ std::map<uint32_t, std::vector<uint32_t>> popupList = {
     { ITEM_SLINGSHOT,       { ITEM_BULLET_BAG_30, ITEM_BULLET_BAG_40, ITEM_BULLET_BAG_50 } },
     { ITEM_OCARINA_FAIRY,   { ITEM_OCARINA_FAIRY, ITEM_OCARINA_TIME } },
     { ITEM_HOOKSHOT,        { ITEM_HOOKSHOT, ITEM_LONGSHOT } },
-    { ITEM_BOTTLE,          { ITEM_BOTTLE, ITEM_POTION_RED, ITEM_POTION_GREEN, ITEM_POTION_BLUE,	
+    { ITEM_BOTTLE,          { ITEM_BOTTLE, ITEM_POTION_RED, ITEM_POTION_GREEN, ITEM_POTION_BLUE,
                               ITEM_FAIRY, ITEM_FISH, ITEM_MILK_BOTTLE, ITEM_LETTER_RUTO,
                               ITEM_BLUE_FIRE, ITEM_BUG, ITEM_BIG_POE, ITEM_POE } },
-    { ITEM_WEIRD_EGG,       { ITEM_WEIRD_EGG, ITEM_CHICKEN, ITEM_LETTER_ZELDA, ITEM_MASK_KEATON, 
+    { ITEM_WEIRD_EGG,       { ITEM_WEIRD_EGG, ITEM_CHICKEN, ITEM_LETTER_ZELDA, ITEM_MASK_KEATON,
                               ITEM_MASK_SKULL, ITEM_MASK_SPOOKY, ITEM_MASK_BUNNY, ITEM_MASK_GORON,
                               ITEM_MASK_ZORA, ITEM_MASK_GERUDO, ITEM_MASK_TRUTH } },
     { ITEM_POCKET_EGG,      { ITEM_POCKET_EGG, ITEM_POCKET_CUCCO, ITEM_COJIRO, ITEM_ODD_MUSHROOM,
@@ -271,7 +271,7 @@ nlohmann::json SplitObject_to_json(const SplitObject& split) {
         {"splitTimeCurrent", split.splitTimeCurrent},
         {"splitTimeBest", split.splitTimeBest},
         {"splitTimePreviousBest", split.splitTimePreviousBest},
-        {"splitTimeStatus", SPLIT_INACTIVE},
+        {"splitTimeStatus", SPLIT_STATUS_INACTIVE},
         {"splitSkullTokenCount", split.splitSkullTokenCount}
     };
 }
@@ -304,15 +304,15 @@ void TimeSplitsGetImageSize(uint32_t item) {
 void TimeSplitsUpdateSplitStatus() {
     uint32_t index = 0;
     for (auto& data : splitList) {
-        if (data.splitTimeStatus == SPLIT_INACTIVE || data.splitTimeStatus == SPLIT_ACTIVE) {
-            data.splitTimeStatus = SPLIT_ACTIVE;
+        if (data.splitTimeStatus == SPLIT_STATUS_INACTIVE || data.splitTimeStatus == SPLIT_STATUS_ACTIVE) {
+            data.splitTimeStatus = SPLIT_STATUS_ACTIVE;
             break;
         }
         index++;
     }
     for (int i = index; i < splitList.size(); i++) {
-        if (splitList[i].splitTimeStatus != SPLIT_ACTIVE && splitList[i].splitTimeStatus != SPLIT_COLLECTED) {
-            splitList[i].splitTimeStatus = SPLIT_INACTIVE;
+        if (splitList[i].splitTimeStatus != SPLIT_STATUS_ACTIVE && splitList[i].splitTimeStatus != SPLIT_STATUS_COLLECTED) {
+            splitList[i].splitTimeStatus = SPLIT_STATUS_INACTIVE;
         }
     }
 }
@@ -340,7 +340,7 @@ void TimeSplitCompleteSplits() {
 }
 
 void TimeSplitsSkipSplit(uint32_t index) {
-    splitList[index].splitTimeStatus = SPLIT_SKIPPED;
+    splitList[index].splitTimeStatus = SPLIT_STATUS_SKIPPED;
     if (index + 1 == splitList.size()) {
         TimeSplitCompleteSplits();
     } else {
@@ -359,7 +359,7 @@ void TimeSplitsFileManagement(uint32_t action, const char* listEntry, std::vecto
         inputFile.close();
     }
 
-    if (action == ACTION_SAVE) {
+    if (action == SPLIT_ACTION_SAVE) {
         for (auto& data : listData) {
             listArray.push_back(SplitObject_to_json(data));
         }
@@ -373,7 +373,7 @@ void TimeSplitsFileManagement(uint32_t action, const char* listEntry, std::vecto
         }
     }
 
-    if (action == ACTION_LOAD) {
+    if (action == SPLIT_ACTION_LOAD) {
         if (saveFile.contains(listEntry)) {
             listArray = saveFile[listEntry];
             splitList.clear();
@@ -381,11 +381,11 @@ void TimeSplitsFileManagement(uint32_t action, const char* listEntry, std::vecto
             for (auto& data : listArray) {
                 splitList.push_back(json_to_SplitObject(data));
             }
-            splitList[0].splitTimeStatus = SPLIT_ACTIVE;
+            splitList[0].splitTimeStatus = SPLIT_STATUS_ACTIVE;
         }
     }
 
-    if (action == ACTION_UPDATE) {
+    if (action == SPLIT_ACTION_UPDATE) {
         for (auto& update : listData) {
             if (update.splitTimeBest < update.splitTimePreviousBest) {
                 update.splitTimePreviousBest = update.splitTimeBest;
@@ -393,7 +393,7 @@ void TimeSplitsFileManagement(uint32_t action, const char* listEntry, std::vecto
         }
     }
 
-    if (action == ACTION_COLLECT) {
+    if (action == SPLIT_ACTION_COLLECT) {
         keys.clear();
         for (auto& data : saveFile.items()) {
             keys.push_back(data.key());
@@ -403,7 +403,7 @@ void TimeSplitsFileManagement(uint32_t action, const char* listEntry, std::vecto
         }
     }
 
-    if (action == ACTION_DELETE) {
+    if (action == SPLIT_ACTION_DELETE) {
         if (saveFile.contains(listEntry)) {
             saveFile.erase(listEntry);
 
@@ -455,16 +455,16 @@ void TimeSplitsPopUpContext() {
                 ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), 2, ImVec4(0, 0, 0, 0), popupObject.splitTint)) {
                     splitList.push_back(popupObject);
                     if (splitList.size() == 1) {
-                        splitList[0].splitTimeStatus = SPLIT_ACTIVE;
+                        splitList[0].splitTimeStatus = SPLIT_STATUS_ACTIVE;
                     } else {
-                        splitList[splitList.size() - 1].splitTimeStatus = SPLIT_INACTIVE;
+                        splitList[splitList.size() - 1].splitTimeStatus = SPLIT_STATUS_INACTIVE;
                     }
                     ImGui::CloseCurrentPopup();
                     popupID = -1;
                 }
                 ImGui::PopID();
 
-                if (popupObject.splitType == SPLIT_UPGRADE) {
+                if (popupObject.splitType == SPLIT_TYPE_UPGRADE) {
                     if (popupID <= ITEM_SLINGSHOT && popupID != -1) {
                         ImVec2 imageMin = ImGui::GetItemRectMin();
                         ImVec2 imageMax = ImGui::GetItemRectMax();
@@ -475,7 +475,7 @@ void TimeSplitsPopUpContext() {
                         ImGui::SetCursorScreenPos(textPos);
                         std::string upgSubstr = popupObject.splitName.substr(popupObject.splitName.size() - 4);
                         std::string upgOutput = removeSpecialCharacters(upgSubstr);
-                        ImGui::Text(upgOutput.c_str());
+                        ImGui::Text("%s", upgOutput.c_str());
                     }
                 }
                 ImGui::EndGroup();
@@ -492,11 +492,11 @@ void TimeSplitsPopUpContext() {
 void TimeSplitsPostDragAndDrop() {
     if (dragTargetIndex != -1) {
         SplitObject tempSourceSplitObject = splitList[dragSourceIndex];
-        if (tempSourceSplitObject.splitTimeStatus == SPLIT_ACTIVE) {
-            tempSourceSplitObject.splitTimeStatus = SPLIT_INACTIVE;
+        if (tempSourceSplitObject.splitTimeStatus == SPLIT_STATUS_ACTIVE) {
+            tempSourceSplitObject.splitTimeStatus = SPLIT_STATUS_INACTIVE;
         }
-        if (splitList[dragTargetIndex].splitTimeStatus == SPLIT_ACTIVE) {
-            splitList[dragTargetIndex].splitTimeStatus = SPLIT_INACTIVE;
+        if (splitList[dragTargetIndex].splitTimeStatus == SPLIT_STATUS_ACTIVE) {
+            splitList[dragTargetIndex].splitTimeStatus = SPLIT_STATUS_INACTIVE;
         }
 
         splitList.erase(splitList.begin() + dragSourceIndex);
@@ -510,7 +510,7 @@ void TimeSplitsPostDragAndDrop() {
 
 void TimeSplitsItemSplitEvent(uint32_t type, u8 item) {
     uint32_t index = 0;
-    if (type <= SPLIT_QUEST) {
+    if (type <= SPLIT_TYPE_QUEST) {
         if (item == ITEM_NUTS_5 || item == ITEM_NUTS_10) {
             item = ITEM_NUT;
         } else if (item == ITEM_STICKS_5 || item == ITEM_STICKS_10) {
@@ -529,20 +529,20 @@ void TimeSplitsItemSplitEvent(uint32_t type, u8 item) {
             }
         }
     }
-    if (type == SPLIT_ENTRANCE) {
-        if ((item == SCENE_ZORAS_RIVER && gSaveContext.entranceIndex == ENTR_ZORAS_RIVER_4) ||
+    if (type == SPLIT_TYPE_ENTRANCE) {
+        if ((item == SCENE_ZORAS_RIVER && gSaveContext.entranceIndex == ENTR_ZORAS_RIVER_UNDERWATER_SHORTCUT) ||
             (item == SCENE_LOST_WOODS &&
-             (gSaveContext.entranceIndex == ENTR_LOST_WOODS_9 || gSaveContext.entranceIndex == ENTR_LOST_WOODS_0))) {
-            type = SPLIT_MISC;
+             (gSaveContext.entranceIndex == ENTR_LOST_WOODS_BRIDGE_EAST_EXIT || gSaveContext.entranceIndex == ENTR_LOST_WOODS_SOUTH_EXIT))) {
+            type = SPLIT_TYPE_MISC;
         }
     }
         
     for (auto& split : splitList) {
         if (split.splitType == type) {
             if (item == split.splitID) {
-                if (split.splitTimeStatus == SPLIT_ACTIVE) {
+                if (split.splitTimeStatus == SPLIT_STATUS_ACTIVE) {
                     split.splitTimeCurrent = GAMEPLAYSTAT_TOTAL_TIME;
-                    split.splitTimeStatus = SPLIT_COLLECTED;
+                    split.splitTimeStatus = SPLIT_STATUS_COLLECTED;
                     if (split.splitTimeBest > GAMEPLAYSTAT_TOTAL_TIME || split.splitTimeBest == 0) {
                         split.splitTimeBest = GAMEPLAYSTAT_TOTAL_TIME;
                     }
@@ -552,7 +552,7 @@ void TimeSplitsItemSplitEvent(uint32_t type, u8 item) {
                     if (index == splitList.size() - 1) {
                         TimeSplitCompleteSplits();
                     } else {
-                        splitList[index + 1].splitTimeStatus = SPLIT_ACTIVE;
+                        splitList[index + 1].splitTimeStatus = SPLIT_STATUS_ACTIVE;
                     }
                 }
             }
@@ -563,7 +563,7 @@ void TimeSplitsItemSplitEvent(uint32_t type, u8 item) {
 
 void TimeSplitsSplitBestTimeDisplay(SplitObject split) {
     activeSplitHighlight = ImVec4(0.0f, 0.0f, 0.0f, 1.0f);
-    if (split.splitTimeStatus == SPLIT_ACTIVE) {
+    if (split.splitTimeStatus == SPLIT_STATUS_ACTIVE) {
         if (GAMEPLAYSTAT_TOTAL_TIME > split.splitTimePreviousBest) {
             splitTimeColor = COLOR_RED;
             splitBestTimeDisplay = (GAMEPLAYSTAT_TOTAL_TIME - split.splitTimePreviousBest);
@@ -578,11 +578,11 @@ void TimeSplitsSplitBestTimeDisplay(SplitObject split) {
         }
         activeSplitHighlight = COLOR_LIGHT_BLUE;
     }
-    if (split.splitTimeStatus == SPLIT_INACTIVE) {
+    if (split.splitTimeStatus == SPLIT_STATUS_INACTIVE) {
         splitTimeColor = COLOR_WHITE;
         splitBestTimeDisplay = split.splitTimeBest;
     }
-    if (split.splitTimeStatus == SPLIT_COLLECTED) {
+    if (split.splitTimeStatus == SPLIT_STATUS_COLLECTED) {
         if (split.splitTimeCurrent > split.splitTimePreviousBest) {
             splitTimeColor = COLOR_RED;
             splitBestTimeDisplay = (split.splitTimeCurrent - split.splitTimePreviousBest);
@@ -619,7 +619,7 @@ void TimeSplitsDrawSplitsList() {
         TimeSplitsSplitBestTimeDisplay(split);
         
         ImGui::PushID(split.splitID);
-        if (split.splitTimeStatus == SPLIT_ACTIVE) {
+        if (split.splitTimeStatus == SPLIT_STATUS_ACTIVE) {
             ImGui::TableSetBgColor(ImGuiTableBgTarget_RowBg0, IM_COL32(47, 79, 90, 255));
         }
         TimeSplitsGetImageSize(split.splitID);
@@ -631,18 +631,18 @@ void TimeSplitsDrawSplitsList() {
         ImGui::TableNextColumn();
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0.0f, 5.0f));
         ImGui::AlignTextToFramePadding();
-        ImGui::TextWrapped(split.splitName.c_str());
+        ImGui::TextWrapped("%s", split.splitName.c_str());
         ImGui::TableNextColumn();
         // Current Time
-        ImGui::Text((split.splitTimeStatus == SPLIT_ACTIVE) 
-            ? formatTimestampTimeSplit(GAMEPLAYSTAT_TOTAL_TIME).c_str() : (split.splitTimeStatus == SPLIT_COLLECTED) 
+        ImGui::Text("%s", (split.splitTimeStatus == SPLIT_STATUS_ACTIVE)
+            ? formatTimestampTimeSplit(GAMEPLAYSTAT_TOTAL_TIME).c_str() : (split.splitTimeStatus == SPLIT_STATUS_COLLECTED) 
             ? formatTimestampTimeSplit(split.splitTimeCurrent).c_str() : "--:--:-");
         ImGui::TableNextColumn();
         // +/- Difference
-        ImGui::TextColored(splitTimeColor, formatTimestampTimeSplit(splitBestTimeDisplay).c_str());
+        ImGui::TextColored(splitTimeColor, "%s", formatTimestampTimeSplit(splitBestTimeDisplay).c_str());
         ImGui::TableNextColumn();
         // Previous Best
-        ImGui::Text((split.splitTimePreviousBest != 0) ? formatTimestampTimeSplit(split.splitTimePreviousBest).c_str() : "--:--:-");
+        ImGui::Text("%s", (split.splitTimePreviousBest != 0) ? formatTimestampTimeSplit(split.splitTimePreviousBest).c_str() : "--:--:-");
         ImGui::PopID();
         ImGui::PopStyleVar(1);
 
@@ -659,11 +659,11 @@ void TimeSplitsDrawSplitsList() {
 
 void TimeSplitsGetTableSize(uint32_t type) {
     switch (type) {
-        case SPLIT_ITEM:
-        case SPLIT_QUEST:
+        case SPLIT_TYPE_ITEM:
+        case SPLIT_TYPE_QUEST:
             tableSize = 6;
             break;
-        case SPLIT_EQUIPMENT:
+        case SPLIT_TYPE_EQUIPMENT:
             tableSize = 3;
             break;
         default:
@@ -681,7 +681,7 @@ void TimeSplitsDrawItemList(uint32_t type) {
         if (i == 0) {
             ImGui::TableSetupColumn("Item Image", ImGuiTableColumnFlags_WidthFixed | ImGuiTableColumnFlags_NoHeaderLabel, 39.0f);
         } else {
-            if (type > SPLIT_QUEST) {
+            if (type > SPLIT_TYPE_QUEST) {
                 ImGui::TableSetupColumn("Item Name");
             } else {
                 ImGui::TableSetupColumn(std::to_string(i).c_str(), ImGuiTableColumnFlags_WidthFixed | ImGuiTableColumnFlags_NoHeaderLabel, 39.0f);
@@ -701,7 +701,7 @@ void TimeSplitsDrawItemList(uint32_t type) {
             if (ImGui::ImageButton(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(split.splitImage),
                                imageSize, ImVec2(0, 0), ImVec2(1, 1), imagePadding, ImVec4(0, 0, 0, 0), split.splitTint)) {
                 
-                if (popupList.contains(split.splitID) && (split.splitType < SPLIT_BOSS)) {
+                if (popupList.contains(split.splitID) && (split.splitType < SPLIT_TYPE_BOSS)) {
                     popupID = split.splitID;
                     ImGui::OpenPopup("TimeSplitsPopUp");
                 } else {
@@ -709,9 +709,9 @@ void TimeSplitsDrawItemList(uint32_t type) {
                     
 
                     if (splitList.size() == 1) {
-                        splitList[0].splitTimeStatus = SPLIT_ACTIVE;
+                        splitList[0].splitTimeStatus = SPLIT_STATUS_ACTIVE;
                     } else {
-                        splitList[splitList.size() - 1].splitTimeStatus = SPLIT_INACTIVE;
+                        splitList[splitList.size() - 1].splitTimeStatus = SPLIT_STATUS_INACTIVE;
                     }
                 }
             }
@@ -719,11 +719,11 @@ void TimeSplitsDrawItemList(uint32_t type) {
             TimeSplitsPopUpContext();
             ImGui::PopID();
             
-            if (type > SPLIT_QUEST) {
+            if (type > SPLIT_TYPE_QUEST) {
                 ImGui::TableNextColumn();
                 ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0.0f, 7.0f));
                 ImGui::AlignTextToFramePadding();
-                ImGui::Text(split.splitName.c_str());
+                ImGui::Text("%s", split.splitName.c_str());
                 ImGui::PopStyleVar(1);
             }
             
@@ -768,11 +768,11 @@ void TimeSplitsDrawOptionsMenu() {
     ImGui::PopItemWidth();
     ImGui::SameLine();
     if (ImGui::Button("Create List")) {
-        TimeSplitsFileManagement(ACTION_SAVE, listNameBuf, splitList);
+        TimeSplitsFileManagement(SPLIT_ACTION_SAVE, listNameBuf, splitList);
     }
     UIWidgets::PaddedSeparator();
 
-    TimeSplitsFileManagement(ACTION_COLLECT, "", emptyList);
+    TimeSplitsFileManagement(SPLIT_ACTION_COLLECT, "", emptyList);
     static uint32_t selectedItem = 0;
     static std::string listItem = keys[0];
     ImGui::Text("Select List to Load: ");
@@ -793,27 +793,27 @@ void TimeSplitsDrawOptionsMenu() {
     ImGui::PopItemWidth();
     ImGui::SameLine();
     if (ImGui::Button("Load List")) {
-        TimeSplitsFileManagement(ACTION_LOAD, keys[selectedItem].c_str(), emptyList);
+        TimeSplitsFileManagement(SPLIT_ACTION_LOAD, keys[selectedItem].c_str(), emptyList);
     }
     ImGui::SameLine();
     if (ImGui::Button("Save List")) {
-        TimeSplitsFileManagement(ACTION_SAVE, keys[selectedItem].c_str(), splitList);
+        TimeSplitsFileManagement(SPLIT_ACTION_SAVE, keys[selectedItem].c_str(), splitList);
     }
     ImGui::SameLine();
     if (ImGui::Button("Delete List")) {
-        TimeSplitsFileManagement(ACTION_DELETE, keys[selectedItem].c_str(), emptyList);
+        TimeSplitsFileManagement(SPLIT_ACTION_DELETE, keys[selectedItem].c_str(), emptyList);
     }
     UIWidgets::PaddedSeparator();
 
     if (ImGui::Button("New Attempt")) {
         for (auto& data : splitList) {
-            data.splitTimeStatus = SPLIT_INACTIVE;
+            data.splitTimeStatus = SPLIT_STATUS_INACTIVE;
         }
-        splitList[0].splitTimeStatus = SPLIT_ACTIVE;
+        splitList[0].splitTimeStatus = SPLIT_STATUS_ACTIVE;
     }
     ImGui::SameLine();
     if (ImGui::Button("Update Splits")) {
-        TimeSplitsFileManagement(ACTION_UPDATE, keys[selectedItem].c_str(), splitList);
+        TimeSplitsFileManagement(SPLIT_ACTION_UPDATE, keys[selectedItem].c_str(), splitList);
     }
 }
 
@@ -864,27 +864,27 @@ void TimeSplitsDrawManageList() {
     ImGui::TableNextColumn();
     ImGui::BeginTabBar("List Options");
     if (ImGui::BeginTabItem("Equipment")) {
-        TimeSplitsDrawItemList(SPLIT_EQUIPMENT);
+        TimeSplitsDrawItemList(SPLIT_TYPE_EQUIPMENT);
         ImGui::EndTabItem();
     }
     if (ImGui::BeginTabItem("Inventory")) {
-        TimeSplitsDrawItemList(SPLIT_ITEM);
+        TimeSplitsDrawItemList(SPLIT_TYPE_ITEM);
         ImGui::EndTabItem();
     }
     if (ImGui::BeginTabItem("Quest")) {
-        TimeSplitsDrawItemList(SPLIT_QUEST);
+        TimeSplitsDrawItemList(SPLIT_TYPE_QUEST);
         ImGui::EndTabItem();
     }
     if (ImGui::BeginTabItem("Entrances")) {
-        TimeSplitsDrawItemList(SPLIT_ENTRANCE);
+        TimeSplitsDrawItemList(SPLIT_TYPE_ENTRANCE);
         ImGui::EndTabItem();
     }
     if (ImGui::BeginTabItem("Bosses")) {
-        TimeSplitsDrawItemList(SPLIT_BOSS);
+        TimeSplitsDrawItemList(SPLIT_TYPE_BOSS);
         ImGui::EndTabItem();
     }
     if (ImGui::BeginTabItem("Miscellaneous")) {
-        TimeSplitsDrawItemList(SPLIT_MISC);
+        TimeSplitsDrawItemList(SPLIT_TYPE_MISC);
         ImGui::EndTabItem();
     }
 
@@ -943,7 +943,7 @@ void TimeSplitWindow::InitElement() {
     
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnTimestamp>([](u8 item) {
         if (item != ITEM_SKULL_TOKEN) {
-            uint32_t tempType = SPLIT_ITEM;
+            uint32_t tempType = SPLIT_TYPE_ITEM;
             for (auto& data : splitList) {
                 if (data.splitID == item) {
                     tempType = data.splitType;
@@ -958,7 +958,7 @@ void TimeSplitWindow::InitElement() {
         GetItemEntry testItem = itemEntry;
         if (itemEntry.itemId == ITEM_SKULL_TOKEN || itemEntry.itemId == ITEM_BOTTLE || itemEntry.itemId == ITEM_POE 
             || itemEntry.itemId == ITEM_BIG_POE) {
-            uint32_t tempType = SPLIT_ITEM;
+            uint32_t tempType = SPLIT_TYPE_ITEM;
             for (auto& data : splitList) {
                 if (data.splitID == itemEntry.itemId) {
                     tempType = data.splitType;
@@ -970,17 +970,17 @@ void TimeSplitWindow::InitElement() {
     });
 
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerBottleUpdate>([](int16_t contents) {
-        TimeSplitsItemSplitEvent(SPLIT_UPGRADE, contents);
+        TimeSplitsItemSplitEvent(SPLIT_TYPE_UPGRADE, contents);
     });
 
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnBossDefeat>([](void* refActor) {
         Actor* bossActor = (Actor*)refActor;
-        TimeSplitsItemSplitEvent(SPLIT_BOSS, bossActor->id);
+        TimeSplitsItemSplitEvent(SPLIT_TYPE_BOSS, bossActor->id);
     });
 
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) {
         if (gPlayState->sceneNum != SCENE_KAKARIKO_VILLAGE) {
-            TimeSplitsItemSplitEvent(SPLIT_ENTRANCE, sceneNum);
+            TimeSplitsItemSplitEvent(SPLIT_TYPE_ENTRANCE, sceneNum);
         }
     });
 
@@ -988,7 +988,7 @@ void TimeSplitWindow::InitElement() {
         if (gPlayState->sceneNum == SCENE_KAKARIKO_VILLAGE) {
             Player* player = GET_PLAYER(gPlayState);
             if (player->fallDistance > 500 && gSaveContext.health <= 0) {
-                TimeSplitsItemSplitEvent(SPLIT_MISC, gPlayState->sceneNum);
+                TimeSplitsItemSplitEvent(SPLIT_TYPE_MISC, gPlayState->sceneNum);
             }
         }
     });

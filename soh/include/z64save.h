@@ -361,7 +361,7 @@ typedef enum {
     /* 4 */ SCENE_LAYER_CUTSCENE_FIRST
 } SceneLayer;
 
-#define IS_CUTSCENE_LAYER (gSaveContext.sceneLayer >= SCENE_LAYER_CUTSCENE_FIRST)
+#define IS_CUTSCENE_LAYER (gSaveContext.sceneSetupIndex >= SCENE_LAYER_CUTSCENE_FIRST)
 
 typedef enum {
     /* 0 */ LINK_AGE_ADULT,

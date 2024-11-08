@@ -327,7 +327,7 @@ void RegionTable_Init_FireTemple() {
                   //Exits
                   Entrance(RR_FIRE_TEMPLE_MQ_FIRST_ROOM_LOWER,  {[]{return true;}}),
                   Entrance(RR_FIRE_TEMPLE_NEAR_BOSS_ROOM,       {[]{return logic->HasFireSource();}}),
-                  Entrance(RR_FIRE_TEMPLE_MQ_BIG_LAVA_ROOM,     {[]{return Here(RR_FIRE_TEMPLE_MQ_FIRST_ROOM_UPPER, {[]{return logic->CanUse(RG_MEGATON_HAMMER);}});}}),
+                  Entrance(RR_FIRE_TEMPLE_MQ_BIG_LAVA_ROOM,     {[]{return Here(RR_FIRE_TEMPLE_MQ_FIRST_ROOM_UPPER, []{return logic->CanUse(RG_MEGATON_HAMMER);});}}),
   });
 
   areaTable[RR_FIRE_TEMPLE_MQ_MAP_ROOM_SOUTH] = Region("Fire Temple MQ Map Room South", "Fire Temple", {RA_FIRE_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {
@@ -335,14 +335,14 @@ void RegionTable_Init_FireTemple() {
                   LOCATION(RC_FIRE_TEMPLE_MQ_MAP_ROOM_SIDE_CHEST, logic->CanKillEnemy(RE_LIKE_LIKE)),
           }, {
                   //Exits
-                  Entrance(RR_FIRE_TEMPLE_MQ_FIRST_ROOM_LOWER, {[]{return Here(RR_FIRE_TEMPLE_MQ_FIRST_ROOM_LOWER, {[]{return logic->CanKillEnemy(RE_LIKE_LIKE);}});}}),
+                  Entrance(RR_FIRE_TEMPLE_MQ_FIRST_ROOM_LOWER, {[]{return Here(RR_FIRE_TEMPLE_MQ_FIRST_ROOM_LOWER, []{return logic->CanKillEnemy(RE_LIKE_LIKE);});}}),
                   Entrance(RR_FIRE_TEMPLE_MQ_MAP_ROOM_CAGE,    {[]{return logic->OpenedLowestGoronCage;}}),
   });
 
   areaTable[RR_FIRE_TEMPLE_MQ_STALFOS_ROOM] = Region("Fire Temple MQ Stalfos Room", "Fire Temple", {RA_FIRE_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_FIRE_TEMPLE_MQ_FIRST_ROOM_LOWER,  {[]{return true;}}),
-                  Entrance(RR_FIRE_TEMPLE_MQ_IRON_KNUCKLE_ROOM, {[]{return Here(RR_FIRE_TEMPLE_MQ_FIRST_ROOM_LOWER, {[]{return logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 2);}});}}),
+                  Entrance(RR_FIRE_TEMPLE_MQ_IRON_KNUCKLE_ROOM, {[]{return Here(RR_FIRE_TEMPLE_MQ_FIRST_ROOM_LOWER, []{return logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 2);});}}),
 });
 
   areaTable[RR_FIRE_TEMPLE_MQ_IRON_KNUCKLE_ROOM] = Region("Fire Temple MQ Iron Knuckle Room", "Fire Temple", {RA_FIRE_TEMPLE}, NO_DAY_NIGHT_CYCLE, {
@@ -351,16 +351,16 @@ void RegionTable_Init_FireTemple() {
   }, {}, {
                   //Exits
                   Entrance(RR_FIRE_TEMPLE_MQ_STALFOS_ROOM,       {[]{return true;}}),
-                  Entrance(RR_FIRE_TEMPLE_MQ_LOWER_FLARE_DANCER, {[]{return Here(RR_FIRE_TEMPLE_MQ_FIRST_ROOM_LOWER, {[]{return logic->CanKillEnemy(RE_IRON_KNUCKLE);}});}}),
+                  Entrance(RR_FIRE_TEMPLE_MQ_LOWER_FLARE_DANCER, {[]{return Here(RR_FIRE_TEMPLE_MQ_FIRST_ROOM_LOWER, []{return logic->CanKillEnemy(RE_IRON_KNUCKLE);});}}),
 });
 
   areaTable[RR_FIRE_TEMPLE_MQ_LOWER_FLARE_DANCER] = Region("Fire Temple MQ Lower Flare Dancer", "Fire Temple", {RA_FIRE_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LOCATION(RC_FIRE_TEMPLE_MQ_MEGATON_HAMMER_CHEST, (logic->IsAdult || logic->CanUse(RG_HOOKSHOT)) && Here(RR_FIRE_TEMPLE_MQ_LOWER_FLARE_DANCER, {[]{return logic->CanKillEnemy(RE_FLARE_DANCER);}})),
+                  LOCATION(RC_FIRE_TEMPLE_MQ_MEGATON_HAMMER_CHEST, (logic->IsAdult || logic->CanUse(RG_HOOKSHOT)) && Here(RR_FIRE_TEMPLE_MQ_LOWER_FLARE_DANCER, []{return logic->CanKillEnemy(RE_FLARE_DANCER);})),
   }, {
                   //Exits
                   Entrance(RR_FIRE_TEMPLE_MQ_IRON_KNUCKLE_ROOM, {[]{return true;}}),
-                  Entrance(RR_FIRE_TEMPLE_MQ_MAP_ROOM_NORTH,    {[]{return Here(RR_FIRE_TEMPLE_MQ_LOWER_FLARE_DANCER, {[]{return logic->CanKillEnemy(RE_FLARE_DANCER);}});}}),
+                  Entrance(RR_FIRE_TEMPLE_MQ_MAP_ROOM_NORTH,    {[]{return Here(RR_FIRE_TEMPLE_MQ_LOWER_FLARE_DANCER, []{return logic->CanKillEnemy(RE_FLARE_DANCER);});}}),
 });
 
   areaTable[RR_FIRE_TEMPLE_MQ_MAP_ROOM_NORTH] = Region("Fire Temple MQ Map Room North", "Fire Temple", {RA_FIRE_TEMPLE}, NO_DAY_NIGHT_CYCLE, {
@@ -404,9 +404,9 @@ void RegionTable_Init_FireTemple() {
                   //Exits
                   Entrance(RR_FIRE_TEMPLE_MQ_FIRST_ROOM_UPPER,  {[]{return true;}}),
                   Entrance(RR_FIRE_TEMPLE_BOSS_ENTRYWAY,        {[]{return logic->HasItem(RG_FIRE_TEMPLE_BOSS_KEY) && logic->FireTimer() >= 15 &&
-                                                                           (logic->IsAdult && (ctx->GetTrickOption(RT_FIRE_BOSS_DOOR_JUMP) || logic->CanUse(RG_HOVER_BOOTS))) || 
+                                                                           ((logic->IsAdult && (ctx->GetTrickOption(RT_FIRE_BOSS_DOOR_JUMP) || logic->CanUse(RG_HOVER_BOOTS))) || 
                                                                            (logic->IsAdult && logic->HitFireTemplePlatform) ||
-                                                                           (logic->HitFireTemplePlatform && logic->CanUse(RG_HOVER_BOOTS))
+                                                                           (logic->HitFireTemplePlatform && logic->CanUse(RG_HOVER_BOOTS)))
                                                                         ;}}),
   });
  
@@ -457,7 +457,7 @@ void RegionTable_Init_FireTemple() {
                   //Exits
                   Entrance(RR_FIRE_TEMPLE_MQ_BIG_TORCH_ROOM,        {[]{return true;}}),
                   //Explosives can also reach this room. Chus is relatively simple, they need to detonate on the first horizontal bar up from the floor while horizontally near the switch, but bombs are much harder
-                  Entrance(RR_FIRE_TEMPLE_MQ_LOWER_MAZE_CRATE_CAGE, {[]{return Here(RR_FIRE_TEMPLE_MQ_LOWER_MAZE, {[]{return logic->CanJumpslash();}});}}),
+                  Entrance(RR_FIRE_TEMPLE_MQ_LOWER_MAZE_CRATE_CAGE, {[]{return Here(RR_FIRE_TEMPLE_MQ_LOWER_MAZE, []{return logic->CanJumpslash();});}}),
                   //it's possible to make the RT_FIRE_MQ_MAZE_HOVERS as child using bunny hood jumps, but not adult as adult bonks
                   Entrance(RR_FIRE_TEMPLE_MQ_UPPER_MAZE,            {[]{return logic->HasExplosives() && logic->CanUse(RG_MEGATON_HAMMER) && logic->CanUse(RG_HOOKSHOT);}}),
   });
@@ -477,7 +477,7 @@ void RegionTable_Init_FireTemple() {
                   Entrance(RR_FIRE_TEMPLE_MQ_LOWER_MAZE,          {[]{return true;}}),
                   //this cage is much more lenient than the lower cage as the switch is close to the front. sling, rang and bow all hit the switch easily, though might be too unintuitive for default logic
                   //This shouldn't come up in most cases anyway as most methods to get here need either a melee weapon or explosives
-                  Entrance(RR_FIRE_TEMPLE_MQ_UPPER_MAZE_BOX_CAGE, {[]{return Here(RR_FIRE_TEMPLE_MQ_UPPER_MAZE, {[]{return logic->CanJumpslash() || logic->HasExplosives();}});}}),
+                  Entrance(RR_FIRE_TEMPLE_MQ_UPPER_MAZE_BOX_CAGE, {[]{return Here(RR_FIRE_TEMPLE_MQ_UPPER_MAZE, []{return logic->CanJumpslash() || logic->HasExplosives();});}}),
                   Entrance(RR_FIRE_TEMPLE_MQ_MAZE_SHORTCUT,       {[]{return logic->HasExplosives();}}),
                   //Implies RR_FIRE_TEMPLE_MQ_LOWER_MAZE access
                   Entrance(RR_FIRE_TEMPLE_MQ_BURNING_BLOCK_CLIMB, {[]{return logic->HasExplosives() && logic->CanUse(RG_MEGATON_HAMMER) && (logic->CanUse(RG_LONGSHOT) || (logic->CanUse(RG_HOOKSHOT) && logic->CanUse(RG_SONG_OF_TIME)));}}),
@@ -540,7 +540,7 @@ void RegionTable_Init_FireTemple() {
                   Entrance(RR_FIRE_TEMPLE_MQ_UPPER_MAZE,       {[]{return logic->SmallKeys(RR_FIRE_TEMPLE, 3);}}),
                   Entrance(RR_FIRE_TEMPLE_MQ_NARROW_PATH_ROOM, {[]{return true;}}),
                   //Child has issues navigating the higher points of this room without an equip swapped hookshot
-                  Entrance(RR_FIRE_TEMPLE_MQ_SOUTH_FIRE_MAZE,  {[]{return Here(RR_FIRE_TEMPLE_MQ_HIGH_TORCH_ROOM, {[]{return logic->CanUse(RG_FIRE_ARROWS) || (logic->CanUse(RG_FAIRY_BOW) && logic->CanUse(RG_HOOKSHOT));}}) &&
+                  Entrance(RR_FIRE_TEMPLE_MQ_SOUTH_FIRE_MAZE,  {[]{return Here(RR_FIRE_TEMPLE_MQ_HIGH_TORCH_ROOM, []{return logic->CanUse(RG_FIRE_ARROWS) || (logic->CanUse(RG_FAIRY_BOW) && logic->CanUse(RG_HOOKSHOT));}) &&
                                                                           (logic->IsAdult || logic->CanUse(RG_HOOKSHOT));}}),
   });
 
@@ -605,7 +605,7 @@ void RegionTable_Init_FireTemple() {
     //This would be a logical method to reach the hammer switch without hookshot, but it practically requires access to the area that switch unlocks already. It could also be first child access to PLATFORMS if tricks ever enable that
     //If a practical use for this drop is found, it should be made a trick
                   Entrance(RR_FIRE_TEMPLE_MQ_UPPER_FLARE_DANCER, {[]{return logic->SmallKeys(RR_FIRE_TEMPLE, 4);}}),
-                  Entrance(RR_FIRE_TEMPLE_MQ_COLLAPSED_STAIRS,   {[]{return Here(RR_FIRE_TEMPLE_MQ_SCARECROW_ROOM, {[]{return logic->CanUse(RG_MEGATON_HAMMER);}}) && logic->SmallKeys(RR_FIRE_TEMPLE, 5);}}),
+                  Entrance(RR_FIRE_TEMPLE_MQ_COLLAPSED_STAIRS,   {[]{return Here(RR_FIRE_TEMPLE_MQ_SCARECROW_ROOM, []{return logic->CanUse(RG_MEGATON_HAMMER);}) && logic->SmallKeys(RR_FIRE_TEMPLE, 5);}}),
   });
 
   //The peg knocked down from here could have logical implications for child in the fire maze if tricks to gain height like bomb jumps exist
@@ -614,7 +614,7 @@ void RegionTable_Init_FireTemple() {
                   //If someone manages to make a trick to get here from fire maze, this needs to be in a separate room as the door back is barred
                   LOCATION(RC_FIRE_TEMPLE_MQ_GS_ABOVE_FIRE_MAZE,  logic->CanUse(RG_HOOKSHOT)),
   }, {
-                  Entrance(RR_FIRE_TEMPLE_MQ_FIRE_MAZE_PLATFORMS, {[]{return logic->CanUse(RG_HOOKSHOT) && Here(RR_FIRE_TEMPLE_MQ_COLLAPSED_STAIRS, {[]{return logic->CanUse(RG_MEGATON_HAMMER);}});}}),
+                  Entrance(RR_FIRE_TEMPLE_MQ_FIRE_MAZE_PLATFORMS, {[]{return logic->CanUse(RG_HOOKSHOT) && Here(RR_FIRE_TEMPLE_MQ_COLLAPSED_STAIRS, []{return logic->CanUse(RG_MEGATON_HAMMER);});}}),
                   Entrance(RR_FIRE_TEMPLE_MQ_SCARECROW_ROOM,      {[]{return logic->IsAdult && logic->CanUse(RG_HOOKSHOT);}}),
   });
   }

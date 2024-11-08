@@ -4,7 +4,6 @@
 #include <string.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include "soh/Enhancements/randomizer/savefile.h"
 
 #define NUM_DUNGEONS 8
@@ -41,20 +40,20 @@ void Sram_InitBossRushSave(void) {
 }
 
 static s16 sDungeonEntrances[] = {
-    ENTR_DEKU_TREE_0,                      // SCENE_DEKU_TREE
-    ENTR_DODONGOS_CAVERN_0,                // SCENE_DODONGOS_CAVERN
-    ENTR_JABU_JABU_0,                      // SCENE_JABU_JABU
-    ENTR_FOREST_TEMPLE_0,                  // SCENE_FOREST_TEMPLE
-    ENTR_FIRE_TEMPLE_0,                    // SCENE_FIRE_TEMPLE
-    ENTR_WATER_TEMPLE_0,                   // SCENE_WATER_TEMPLE
-    ENTR_SPIRIT_TEMPLE_0,                  // SCENE_SPIRIT_TEMPLE
-    ENTR_SHADOW_TEMPLE_0,                  // SCENE_SHADOW_TEMPLE
-    ENTR_BOTTOM_OF_THE_WELL_0,             // SCENE_BOTTOM_OF_THE_WELL
-    ENTR_ICE_CAVERN_0,                     // SCENE_ICE_CAVERN
+    ENTR_DEKU_TREE_ENTRANCE,               // SCENE_DEKU_TREE
+    ENTR_DODONGOS_CAVERN_ENTRANCE,                // SCENE_DODONGOS_CAVERN
+    ENTR_JABU_JABU_ENTRANCE,                      // SCENE_JABU_JABU
+    ENTR_FOREST_TEMPLE_ENTRANCE,           // SCENE_FOREST_TEMPLE
+    ENTR_FIRE_TEMPLE_ENTRANCE,                    // SCENE_FIRE_TEMPLE
+    ENTR_WATER_TEMPLE_ENTRANCE,                   // SCENE_WATER_TEMPLE
+    ENTR_SPIRIT_TEMPLE_ENTRANCE,                  // SCENE_SPIRIT_TEMPLE
+    ENTR_SHADOW_TEMPLE_ENTRANCE,                  // SCENE_SHADOW_TEMPLE
+    ENTR_BOTTOM_OF_THE_WELL_ENTRANCE,      // SCENE_BOTTOM_OF_THE_WELL
+    ENTR_ICE_CAVERN_ENTRANCE,                     // SCENE_ICE_CAVERN
     ENTR_GANONS_TOWER_0,                   // SCENE_GANONS_TOWER
-    ENTR_GERUDO_TRAINING_GROUND_0,         // SCENE_GERUDO_TRAINING_GROUND
+    ENTR_GERUDO_TRAINING_GROUND_ENTRANCE,         // SCENE_GERUDO_TRAINING_GROUND
     ENTR_THIEVES_HIDEOUT_0,                // SCENE_THIEVES_HIDEOUT
-    ENTR_INSIDE_GANONS_CASTLE_0,           // SCENE_INSIDE_GANONS_CASTLE
+    ENTR_INSIDE_GANONS_CASTLE_ENTRANCE,           // SCENE_INSIDE_GANONS_CASTLE
     ENTR_GANONS_TOWER_COLLAPSE_INTERIOR_0, // SCENE_GANONS_TOWER_COLLAPSE_INTERIOR
     ENTR_INSIDE_GANONS_CASTLE_COLLAPSE_0,  // SCENE_INSIDE_GANONS_CASTLE_COLLAPSE
 };
@@ -94,28 +93,28 @@ void Sram_OpenSave() {
             gSaveContext.entranceIndex = sDungeonEntrances[gSaveContext.savedSceneNum];
             break;
         case SCENE_DEKU_TREE_BOSS:
-            gSaveContext.entranceIndex = ENTR_DEKU_TREE_0;
+            gSaveContext.entranceIndex = ENTR_DEKU_TREE_ENTRANCE;
             break;
         case SCENE_DODONGOS_CAVERN_BOSS:
-            gSaveContext.entranceIndex = ENTR_DODONGOS_CAVERN_0;
+            gSaveContext.entranceIndex = ENTR_DODONGOS_CAVERN_ENTRANCE;
             break;
         case SCENE_JABU_JABU_BOSS:
-            gSaveContext.entranceIndex = ENTR_JABU_JABU_0;
+            gSaveContext.entranceIndex = ENTR_JABU_JABU_ENTRANCE;
             break;
         case SCENE_FOREST_TEMPLE_BOSS:
-            gSaveContext.entranceIndex = ENTR_FOREST_TEMPLE_0;
+            gSaveContext.entranceIndex = ENTR_FOREST_TEMPLE_ENTRANCE;
             break;
         case SCENE_FIRE_TEMPLE_BOSS:
-            gSaveContext.entranceIndex = ENTR_FIRE_TEMPLE_0;
+            gSaveContext.entranceIndex = ENTR_FIRE_TEMPLE_ENTRANCE;
             break;
         case SCENE_WATER_TEMPLE_BOSS:
-            gSaveContext.entranceIndex = ENTR_WATER_TEMPLE_0;
+            gSaveContext.entranceIndex = ENTR_WATER_TEMPLE_ENTRANCE;
             break;
         case SCENE_SPIRIT_TEMPLE_BOSS:
-            gSaveContext.entranceIndex = ENTR_SPIRIT_TEMPLE_0;
+            gSaveContext.entranceIndex = ENTR_SPIRIT_TEMPLE_ENTRANCE;
             break;
         case SCENE_SHADOW_TEMPLE_BOSS:
-            gSaveContext.entranceIndex = ENTR_SHADOW_TEMPLE_0;
+            gSaveContext.entranceIndex = ENTR_SHADOW_TEMPLE_ENTRANCE;
             break;
         case SCENE_GANONS_TOWER_COLLAPSE_INTERIOR:
         case SCENE_INSIDE_GANONS_CASTLE_COLLAPSE:
@@ -133,9 +132,9 @@ void Sram_OpenSave() {
             }
 
             if (gSaveContext.savedSceneNum != SCENE_LINKS_HOUSE) {
-                gSaveContext.entranceIndex = (LINK_AGE_IN_YEARS == YEARS_CHILD) ? ENTR_LINKS_HOUSE_0 : ENTR_TEMPLE_OF_TIME_7;
+                gSaveContext.entranceIndex = (LINK_AGE_IN_YEARS == YEARS_CHILD) ? ENTR_LINKS_HOUSE_CHILD_SPAWN : ENTR_TEMPLE_OF_TIME_WARP_PAD;
             } else {
-                gSaveContext.entranceIndex = ENTR_LINKS_HOUSE_0;
+                gSaveContext.entranceIndex = ENTR_LINKS_HOUSE_CHILD_SPAWN;
             }
             break;
     }
@@ -233,7 +232,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         Sram_InitDebugSave();
     }
 
-    gSaveContext.entranceIndex = ENTR_LINKS_HOUSE_0;
+    gSaveContext.entranceIndex = ENTR_LINKS_HOUSE_CHILD_SPAWN;
     gSaveContext.linkAge = 1;
     gSaveContext.dayTime = 0x6AAB;
     gSaveContext.cutsceneIndex = 0xFFF1;
@@ -266,8 +265,4 @@ void Sram_InitSram(GameState* gameState) {
     Save_Init();
 
     func_800F6700(gSaveContext.audioSetting);
-
-    // When going from a rando save to a vanilla save within the same game instance
-    // we need to reset the entrance table back to its vanilla state
-    Entrance_ResetEntranceTable();
 }

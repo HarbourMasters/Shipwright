@@ -83,7 +83,7 @@ void RegionTable_Init_BottomOfTheWell() {
   areaTable[RR_BOTTOM_OF_THE_WELL_LIKE_LIKE_CAGE] = Region("Bottom of the Well Like-Like Cage", "Bottom of the Well", {RA_BOTTOM_OF_THE_WELL}, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LOCATION(RC_BOTTOM_OF_THE_WELL_LIKE_LIKE_CHEST,   true),
-                  LOCATION(RC_BOTTOM_OF_THE_WELL_GS_LIKE_LIKE_CAGE, logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_RANG_OR_HOOKSHOT)),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_GS_LIKE_LIKE_CAGE, logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG)),
                 }, {
                   //Exits
                   Entrance(RR_BOTTOM_OF_THE_WELL_KEESE_BEAMOS_ROOM, {[]{return true;}}),
@@ -96,8 +96,8 @@ void RegionTable_Init_BottomOfTheWell() {
                   EventAccess(&logic->DekuBabaNuts,   {[]{return logic->CanGetDekuBabaNuts();}}),
                 }, {
                   //Locations
-                  LOCATION(RC_BOTTOM_OF_THE_WELL_GS_WEST_INNER_ROOM, logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_RANG_OR_HOOKSHOT)),
-                  LOCATION(RC_BOTTOM_OF_THE_WELL_GS_EAST_INNER_ROOM, logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_RANG_OR_HOOKSHOT)),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_GS_WEST_INNER_ROOM, logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG)),
+                  LOCATION(RC_BOTTOM_OF_THE_WELL_GS_EAST_INNER_ROOM, logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG)),
                 }, {
                   //Exits
                   Entrance(RR_BOTTOM_OF_THE_WELL_BEHIND_FAKE_WALLS, {[]{return logic->SmallKeys(RR_BOTTOM_OF_THE_WELL, 3);}}),

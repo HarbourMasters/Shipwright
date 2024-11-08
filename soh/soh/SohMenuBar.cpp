@@ -712,6 +712,7 @@ void DrawEnhancementsMenu() {
                 UIWidgets::PaddedEnhancementSliderInt("Crawl speed %dx", "##CRAWLSPEED", CVAR_ENHANCEMENT("CrawlSpeed"), 1, 4, "", 1, true, false, true);
                 UIWidgets::PaddedEnhancementCheckbox("Faster Heavy Block Lift", CVAR_ENHANCEMENT("FasterHeavyBlockLift"), false, false);
                 UIWidgets::Tooltip("Speeds up lifting silver rocks and obelisks");
+                UIWidgets::PaddedEnhancementCheckbox("Faster Rupee Accumulator", CVAR_ENHANCEMENT("TimeSavers.FasterRupeeAccumulator"), false, false);
                 UIWidgets::PaddedEnhancementCheckbox("Skip Pickup Messages", CVAR_ENHANCEMENT("FastDrops"), true, false);
                 UIWidgets::Tooltip("Skip pickup messages for new consumable items and bottle swipes");
                 UIWidgets::PaddedEnhancementCheckbox("Fast Ocarina Playback", CVAR_ENHANCEMENT("FastOcarinaPlayback"), true, false);
@@ -1743,7 +1744,7 @@ void DrawCheatsMenu() {
         UIWidgets::EnhancementSliderFloat("Hookshot Reach Multiplier: %.2fx", "##gCheatHookshotReachMultiplier", CVAR_CHEAT("HookshotReachMultiplier"), 1.0f, 5.0f, "", 1.0f, false);
         UIWidgets::Spacer(2.0f);
         if (ImGui::Button("Change Age")) {
-            CVarSetInteger(CVAR_GENERAL("SwitchAge"), 1);
+            SwitchAge();
         }
         UIWidgets::Tooltip("Switches Link's age and reloads the area.");  
         UIWidgets::Spacer(2.0f);

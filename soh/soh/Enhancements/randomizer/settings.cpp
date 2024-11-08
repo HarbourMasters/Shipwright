@@ -302,7 +302,7 @@ void Settings::CreateOptions() {
     mOptions[RSK_STARTING_NOCTURNE_OF_SHADOW] = Option::Bool("Start with Nocturne of Shadow", CVAR_RANDOMIZER_SETTING("StartingNocturneOfShadow"), "", IMFLAG_NONE);
     mOptions[RSK_STARTING_PRELUDE_OF_LIGHT] = Option::Bool("Start with Prelude of Light", CVAR_RANDOMIZER_SETTING("StartingPreludeOfLight"));
     mOptions[RSK_STARTING_SKULLTULA_TOKEN] = Option::U8("Gold Skulltula Tokens", {NumOpts(0, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("StartingSkulltulaToken"), "", WidgetType::Slider);
-    mOptions[RSK_STARTING_HEARTS] = Option::U8("Hearts", {NumOpts(1, 20)}, OptionCategory::Setting, "gRandomizeStartingHearts", "", WidgetType::Slider, 2);
+    mOptions[RSK_STARTING_HEARTS] = Option::U8("Hearts", {NumOpts(1, 20)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("StartingHearts"), "", WidgetType::Slider, 2);
     // TODO: Remainder of Starting Items
     mOptions[RSK_LOGIC_RULES] = Option::U8("Logic", {"Glitchless", "Glitched", "No Logic", "Vanilla"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("LogicRules"), mOptionDescriptions[RSK_LOGIC_RULES], WidgetType::Combobox, RO_LOGIC_GLITCHLESS);
     mOptions[RSK_ALL_LOCATIONS_REACHABLE] = Option::Bool("All Locations Reachable", {"Off", "On"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("AllLocationsReachable"), mOptionDescriptions[RSK_ALL_LOCATIONS_REACHABLE], WidgetType::Checkbox, RO_GENERIC_ON);
@@ -445,6 +445,7 @@ void Settings::CreateOptions() {
     mTrickOptions[RT_WATER_BK_REGION] = TrickOption::LogicTrick(RCQUEST_VANILLA, RA_WATER_TEMPLE, {Tricks::Tag::INTERMEDIATE}, false, "Water Temple Boss Key Region with Hover Boots", "With precise Hover Boots movement it is possible to reach the boss key chest's region without needing the Longshot. It is not necessary to take damage from the spikes. The Gold Skulltula Token in the following room can also be obtained with just the Hover Boots.");
     mTrickOptions[RT_WATER_NORTH_BASEMENT_LEDGE_JUMP] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_WATER_TEMPLE, {Tricks::Tag::INTERMEDIATE}, false, "Water Temple North Basement Ledge with Precise Jump", "In the northern basement there's a ledge from where, in vanilla Water Temple, boulders roll out into the room. Normally to jump directly to this ledge logically requires the Hover Boots, but with precise jump, it can be done without them. This trick applies to both Vanilla and Master Quest.");
     mTrickOptions[RT_WATER_BK_JUMP_DIVE] = TrickOption::LogicTrick(RCQUEST_VANILLA, RA_WATER_TEMPLE, {Tricks::Tag::NOVICE}, false, "Water Temple Boss Key Jump Dive", "Stand on the very edge of the raised corridor leading from the push block room to the rolling boulder corridor. Face the gold skulltula on the waterfall and jump over the boulder corridor floor into the pool of water, swimming right once underwater. This allows access to the boss key room without Iron boots.");
+    //Also used in MQ logic, but won't be relevent unl;ess a way to enter tower without irons exists (likely a clip + swim)
     mTrickOptions[RT_WATER_FW_CENTRAL_GS] = TrickOption::LogicTrick(RCQUEST_VANILLA, RA_WATER_TEMPLE, {Tricks::Tag::NOVICE}, false, "Water Temple Central Pillar GS with Farore\'s Wind", "If you set Farore's Wind inside the central pillar and then return to that warp point after raising the water to the highest level, you can obtain this Skulltula Token with Hookshot or Boomerang.");
     mTrickOptions[RT_WATER_IRONS_CENTRAL_GS] = TrickOption::LogicTrick(RCQUEST_VANILLA, RA_WATER_TEMPLE, {Tricks::Tag::NOVICE}, false, "Water Temple Central Pillar GS with Iron Boots", "After opening the middle water level door into the central pillar, the door will stay unbarred so long as you do not leave the room -- even if you were to raise the water up to the highest level. With the Iron Boots to go through the door after the water has been raised, you can obtain the Skulltula Token with the Hookshot.");
     mTrickOptions[RT_WATER_CENTRAL_BOW] = TrickOption::LogicTrick(RCQUEST_VANILLA, RA_WATER_TEMPLE, {Tricks::Tag::ADVANCED}, false, "Water Temple Central Bow Target without Longshot or Hover Boots", "A very precise Bow shot can hit the eye switch from the floor above. Then, you can jump down into the hallway and make through it before the gate closes. It can also be done as child, using the Slingshot instead of the Bow.");
@@ -3147,6 +3148,12 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
     for (auto it = enabledTricksJson.begin(); it != enabledTricksJson.end(); ++it) {
         const RandomizerTrick rt = mTrickNameToEnum[it.value()];
         GetTrickOption(rt).SetSelectedIndex(RO_GENERIC_ON);
+    }
+}
+
+void Settings::ReloadOptions() {
+    for (int i = 0; i < RSK_MAX; i++) {
+        mOptions[i].SetFromCVar();
     }
 }
 } // namespace Rando
