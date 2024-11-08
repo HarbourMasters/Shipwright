@@ -59,6 +59,7 @@ namespace Rando {
             case RG_PROGRESSIVE_NUT_UPGRADE:
             case RG_NUTS:
                 return CurrentUpgrade(UPG_NUTS);
+            //RANDOTODO handle cases where the scarecrow is persistent between age better when OI is added
             case RG_SCARECROW:
                 return ScarecrowsSong() && CanUse(RG_HOOKSHOT);
             case RG_DISTANT_SCARECROW:
@@ -450,6 +451,7 @@ namespace Rando {
                 }
                 return killed;
             case RE_DODONGO:
+                return CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD) || (quantity <= 5 && CanUse(RG_STICKS)) || HasExplosives() || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_FAIRY_BOW);
             case RE_LIZALFOS:
                 return CanJumpslash() || HasExplosives() || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_FAIRY_BOW);
             case RE_KEESE:
@@ -495,8 +497,31 @@ namespace Rando {
                 return CanDamage();
             case RE_STALFOS:
                 //RANDOTODO Add trick to kill stalfos with sticks, and a second one for bombs without stunning. Higher ammo logic for bombs is also plausible
-                return CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD) || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_FAIRY_BOW) || CanUse(RG_BOMBCHU_5) || 
-                       (quantity <= 2 && !timer && (CanUse(RG_NUTS) || HookshotOrBoomerang()) && CanUse(RG_BOMB_BAG)) || (quantity <= 1 && CanUse(RG_STICKS));
+                switch (distance){
+                    case ED_CLOSE:
+                    case ED_SHORT_JUMPSLASH:
+                        killed = CanUse(RG_MEGATON_HAMMER) || CanUse(RG_KOKIRI_SWORD);
+                        [[fallthrough]];
+                    case ED_MASTER_SWORD_JUMPSLASH:
+                        killed = killed || CanUse(RG_MASTER_SWORD);
+                        [[fallthrough]];
+                    case ED_LONG_JUMPSLASH:
+                        killed = killed || CanUse(RG_BIGGORON_SWORD) || (quantity <= 1 && CanUse(RG_STICKS));
+                        [[fallthrough]];
+                    case ED_BOOMERANG:
+                        //RANDOTODO test dins, bomb and chu range in a practical example
+                        killed = killed || (quantity <= 2 && !timer && !inWater && (CanUse(RG_NUTS) || HookshotOrBoomerang()) && CanUse(RG_BOMB_BAG));
+                        [[fallthrough]];
+                    case ED_HOOKSHOT:
+                        //RANDOTODO test dins, bomb and chu range in a practical example
+                        killed = killed || (wallOrFloor && CanUse(RG_BOMBCHU_5));
+                        [[fallthrough]];
+                    case ED_LONGSHOT:
+                    case ED_FAR:
+                        killed = killed || CanUse(RG_FAIRY_BOW);
+                        break;
+                }
+                return killed;
             //Needs 16 bombs, but is in default logic in N64, probably because getting the hits is quite easy.
             //bow and sling can wake them and damage after they shed their armour, so could reduce ammo requirements for explosives to 10.
             //requires 8 sticks to kill so would be a trick unless we apply higher stick bag logic
@@ -562,6 +587,9 @@ namespace Rando {
             case RE_BIG_OCTO:
                 //If chasing octo is annoying but with rolls you can catch him, and you need rang to get into this room without shenanigains anyway. Bunny makes it free
                 return CanUse(RG_KOKIRI_SWORD) || CanUse(RG_STICKS) || CanUse(RG_MASTER_SWORD);
+            case RE_DARK_LINK:
+            //RNADOTODO Dark link is buggy right now, retest when he is not
+                return CanJumpslash() || CanUse(RG_FAIRY_BOW);
             default:
                 SPDLOG_ERROR("CanKillEnemy reached `default`.");
                 assert(false);
@@ -597,6 +625,7 @@ namespace Rando {
             case RE_ARMOS:
             case RE_FREEZARD:
             case RE_SPIKE:
+            case RE_DARK_LINK:
                 return true;
             case RE_BIG_SKULLTULA:
                 //hammer jumpslash can pass, but only on flat land where you can kill with hammer swing
@@ -648,6 +677,7 @@ namespace Rando {
             case RE_SPIKE:
             case RE_BIG_OCTO:
             case RE_GIBDO:
+            case RE_DARK_LINK:
                 return true;
             case RE_MAD_SCRUB:
             case RE_KEESE:
@@ -723,6 +753,35 @@ namespace Rando {
 
     bool Logic::CanDetonateUprightBombFlower() {
         return CanDetonateBombFlowers() || HasItem(RG_GORONS_BRACELET);
+    }
+
+    bool Logic::MQWaterLevel(RandoWaterLevel level) {
+        //For ease of reading, I will call the triforce emblem that sets the water to WL_LOW the "Low Emblem", the one that sets it to WL_MID the "Mid Emblem", and the one that sets it to WL_HIGH the "High Emblem"
+        switch(level){
+            //While you have to go through WL_LOW to get to Mid, the requirements for WL_LOW are stricter than WL_MID because you can always go up to WL_MID and then could need to go back to WL_HIGH to reach the Low Emblem again
+            //Thanks to this caveat you need to be able to reach and play ZL to both the High and Low Emblems to have WL_LOW in logic.
+            //Alternativly a way to reach WL_LOW from WL_MID could exist, but all glitchless methods need you to do a Low-locked action
+            case WL_LOW:
+                return (CanWaterTempleHigh && CanWaterTempleLowFromHigh) || (CanWaterTempleLowFromMid && CanWaterTempleLowFromHigh);
+            case WL_LOW_OR_MID:
+                return (CanWaterTempleHigh && CanWaterTempleLowFromHigh) || (CanWaterTempleLowFromHigh && CanWaterTempleMiddle) || (CanWaterTempleLowFromMid && CanWaterTempleLowFromHigh);
+            //If we can set it to High out of logic we can just repeat what we did to lower the water in the first place as High is the default. 
+            //Because of this you only need to be able to use the Low and Mid Emblems, WL_LOW could be skipped if it was ever possible to play ZL underwater.
+            case WL_MID:
+                return CanWaterTempleLowFromHigh && CanWaterTempleMiddle;
+            //Despite being the initial state of water temple, WL_HIGH has the extra requirement of making sure that, if we were to lower the water out of logic, we could put it back to WL_HIGH
+            //However because it is the default state, we do not need to check if we can actually change the water level, only to make sure we can return to WL_HIGH if we found the means to play ZL out of logic.
+            //There are 2 methods to lock yourself out after playing ZL already: Not being able to reach the High Emblem and being unable to replay ZL. (I will be ignoring other-age-access shenanigains)
+            //The former check would simply be a check to see if we can reach High Emblem, but we assume the water is WL_MID (as if we can set it to WL_LOW, we can set it to WL_MID, as Mid Emblem has no requirements)
+            //The latter check can be assumed for now but will want a revisit once OI tricks are added.
+            case WL_HIGH:
+                return ReachedWaterHighEmblem;
+            case WL_HIGH_OR_MID:
+                return ReachedWaterHighEmblem || (CanWaterTempleLowFromHigh && CanWaterTempleMiddle);
+        }
+        SPDLOG_ERROR("MQWaterLevel reached `return false;`. Missing case for a Water Level");
+        assert(false);
+        return false;
     }
 
     Logic::Logic() {
@@ -2007,9 +2066,10 @@ namespace Rando {
         GCWoodsWarpOpen           = false;
         GCDaruniasDoorOpenChild   = false;
         StopGCRollingGoronAsAdult = false;
-        WaterTempleLow            = false;
-        WaterTempleMiddle         = false;
-        WaterTempleHigh           = false;
+        CanWaterTempleLowFromHigh = false;
+        CanWaterTempleLowFromMid  = false;
+        CanWaterTempleMiddle      = false;
+        CanWaterTempleHigh        = false;
         KakarikoVillageGateOpen   = false;
         KingZoraThawed            = false;
         ForestTempleJoelle        = false;
@@ -2045,6 +2105,11 @@ namespace Rando {
         MQJabuLiftRoomCow         = false;
         MQShadowFloorSpikeRupees  = false;
         ShadowShortcutBlock       = false;
+        MQWaterStalfosPit         = false;
+        MQWaterDragonTorches      = false;
+        MQWaterB1Switch           = false;
+        //MQWaterPillarSoTBlock     = false;
+        MQWaterOpenedPillarB1     = false;
 
         StopPerformanceTimer(PT_LOGIC_RESET);
     }

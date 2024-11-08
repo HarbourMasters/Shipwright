@@ -64,15 +64,6 @@ static const ALIGN_ASSET(2) char tokinoma_room_0DL_007A70[] = dtokinoma_room_0DL
 #define dtokinoma_room_0DL_007FD0 "__OTR__scenes/shared/tokinoma_scene/tokinoma_room_0DL_007FD0"
 static const ALIGN_ASSET(2) char tokinoma_room_0DL_007FD0[] = dtokinoma_room_0DL_007FD0;
 
-// TODO: When there's more uses of something like this, create a new GI::RawAction?
-void ReloadSceneTogglingLinkAge() {
-    gPlayState->nextEntranceIndex = gSaveContext.entranceIndex;
-    gPlayState->transitionTrigger = TRANS_TRIGGER_START;
-    gPlayState->transitionType = TRANS_TYPE_CIRCLE(TCA_WAVE, TCC_WHITE, TCS_FAST); // Fade Out
-    gSaveContext.nextTransitionType = TRANS_TYPE_CIRCLE(TCA_WAVE, TCC_WHITE, TCS_FAST);
-    gPlayState->linkAgeOnLoad ^= 1; // toggle linkAgeOnLoad
-}
-
 void RegisterInfiniteMoney() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
         if (!GameInteractor::IsSaveLoaded(true)) return;
@@ -219,42 +210,43 @@ void RegisterFreezeTime() {
 }
 
 /// Switches Link's age and respawns him at the last entrance he entered.
-void RegisterSwitchAge() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        static bool warped = false;
+void SwitchAge() {
+    if (gPlayState == NULL) return;
 
-        if (!GameInteractor::IsSaveLoaded(true)) {
-            CVarClear(CVAR_GENERAL("SwitchAge"));
-            warped = false;
-            return;
+    Player* player = GET_PLAYER(gPlayState);
+
+    // Hyrule Castle: Very likely to fall through floor, so we force a specific entrance
+    if (gPlayState->sceneNum == SCENE_HYRULE_CASTLE || gPlayState->sceneNum == SCENE_OUTSIDE_GANONS_CASTLE) {
+        gPlayState->nextEntranceIndex = ENTR_CASTLE_GROUNDS_SOUTH_EXIT;
+    } else {
+        gSaveContext.respawnFlag = 1;
+        gPlayState->nextEntranceIndex = gSaveContext.entranceIndex;
+
+        // Preserve the player's position and orientation
+        gSaveContext.respawn[RESPAWN_MODE_DOWN].entranceIndex = gPlayState->nextEntranceIndex;
+        gSaveContext.respawn[RESPAWN_MODE_DOWN].roomIndex = gPlayState->roomCtx.curRoom.num;
+        gSaveContext.respawn[RESPAWN_MODE_DOWN].pos = player->actor.world.pos;
+        gSaveContext.respawn[RESPAWN_MODE_DOWN].yaw = player->actor.shape.rot.y;
+
+        if (gPlayState->roomCtx.curRoom.behaviorType2 < 4) {
+            gSaveContext.respawn[RESPAWN_MODE_DOWN].playerParams = 0x0DFF;
+        } else {
+            // Scenes with static backgrounds use a special camera we need to preserve
+            Camera* camera = GET_ACTIVE_CAM(gPlayState);
+            s16 camId = camera->camDataIdx;
+            gSaveContext.respawn[RESPAWN_MODE_DOWN].playerParams = 0x0D00 | camId;
         }
+    }
 
-        static Vec3f playerPos;
-        static int16_t playerYaw;
-        static RoomContext* roomCtx;
-        static s32 roomNum;
+    gPlayState->transitionTrigger = TRANS_TRIGGER_START;
+    gPlayState->transitionType = TRANS_TYPE_INSTANT;
+    gSaveContext.nextTransitionType = TRANS_TYPE_FADE_BLACK_FAST;
+    gPlayState->linkAgeOnLoad ^= 1;
 
-        if (CVarGetInteger(CVAR_GENERAL("SwitchAge"), 0) && !warped) {
-            playerPos = GET_PLAYER(gPlayState)->actor.world.pos;
-            playerYaw = GET_PLAYER(gPlayState)->actor.shape.rot.y;
-            roomCtx = &gPlayState->roomCtx;
-            roomNum = roomCtx->curRoom.num;
-            ReloadSceneTogglingLinkAge();
-            warped = true;
-        }
-
-        if (warped && gPlayState->transitionTrigger != TRANS_TRIGGER_START &&
-            gSaveContext.nextTransitionType == TRANS_NEXT_TYPE_DEFAULT) {
-            GET_PLAYER(gPlayState)->actor.shape.rot.y = playerYaw;
-            GET_PLAYER(gPlayState)->actor.world.pos = playerPos;
-            if (roomNum != roomCtx->curRoom.num) {
-                func_8009728C(gPlayState, roomCtx, roomNum); //load original room
-                //func_800973FC(gPlayState, &gPlayState->roomCtx); // commit to room load?
-                func_80097534(gPlayState, roomCtx);  // load map for new room (unloading the previous room)
-            }
-            warped = false;
-            CVarClear(CVAR_GENERAL("SwitchAge"));
-        }
+    static HOOK_ID hookId = 0;
+    hookId = REGISTER_VB_SHOULD(VB_INFLICT_VOID_DAMAGE, {
+        *should = false;
+        GameInteractor::Instance->UnregisterGameHookForID<GameInteractor::OnVanillaBehavior>(hookId);
     });
 }
 
@@ -262,8 +254,7 @@ void RegisterSwitchAge() {
 void RegisterOcarinaTimeTravel() {
 
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnOcarinaSongAction>([]() {
-        if (!GameInteractor::IsSaveLoaded(true)) {
-            CVarClear(CVAR_ENHANCEMENT("TimeTravel"));
+        if (!GameInteractor::IsSaveLoaded(true) || !CVarGetInteger(CVAR_ENHANCEMENT("TimeTravel"), 0)) {
             return;
         }
 
@@ -273,22 +264,14 @@ void RegisterOcarinaTimeTravel() {
         Actor* nearbyOcarinaSpot = Actor_FindNearby(gPlayState, player, ACTOR_EN_OKARINA_TAG, ACTORCAT_PROP, 120.0f);
         Actor* nearbyDoorOfTime = Actor_FindNearby(gPlayState, player, ACTOR_DOOR_TOKI, ACTORCAT_BG, 500.0f);
         Actor* nearbyFrogs = Actor_FindNearby(gPlayState, player, ACTOR_EN_FR, ACTORCAT_NPC, 300.0f);
-        uint8_t hasMasterSword = CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER);
-        uint8_t hasOcarinaOfTime = (INV_CONTENT(ITEM_OCARINA_TIME) == ITEM_OCARINA_TIME);
-        // If TimeTravel + Player have the Ocarina of Time + Have Master Sword + is in proper range
+        bool justPlayedSoT = gPlayState->msgCtx.lastPlayedSong == OCARINA_SONG_TIME;
+        bool notNearAnySource = !nearbyTimeBlockEmpty && !nearbyTimeBlock && !nearbyOcarinaSpot && !nearbyDoorOfTime && !nearbyFrogs;
+        bool hasOcarinaOfTime = (INV_CONTENT(ITEM_OCARINA_TIME) == ITEM_OCARINA_TIME);
+        bool doesntNeedOcarinaOfTime = CVarGetInteger(CVAR_ENHANCEMENT("TimeTravel"), 0) == 2;
+        bool hasMasterSword = CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER);
         // TODO: Once Swordless Adult is fixed: Remove the Master Sword check
-        if (((CVarGetInteger(CVAR_ENHANCEMENT("TimeTravel"), 0) == 1 && hasOcarinaOfTime) || CVarGetInteger(CVAR_ENHANCEMENT("TimeTravel"), 0) == 2) && hasMasterSword &&
-            gPlayState->msgCtx.lastPlayedSong == OCARINA_SONG_TIME && !nearbyTimeBlockEmpty && !nearbyTimeBlock &&
-            !nearbyOcarinaSpot && !nearbyFrogs) {
-
-            if (IS_RANDO) {
-                CVarSetInteger(CVAR_GENERAL("SwitchTimeline"), 1);
-            } else if (!IS_RANDO && !nearbyDoorOfTime) {
-                // This check is made for when Link is learning the Song Of Time in a vanilla save file that load a
-                // Temple of Time scene where the only object present is the Door of Time
-                CVarSetInteger(CVAR_GENERAL("SwitchTimeline"), 1);
-            }
-            ReloadSceneTogglingLinkAge();
+        if (justPlayedSoT && notNearAnySource && (hasOcarinaOfTime || doesntNeedOcarinaOfTime) && hasMasterSword) {
+            SwitchAge();
         }
     });
 }
@@ -1429,7 +1412,6 @@ void InitMods() {
     RegisterEzQPA();
     RegisterUnrestrictedItems();
     RegisterFreezeTime();
-    RegisterSwitchAge();
     RegisterOcarinaTimeTravel();
     RegisterAutoSave();
     RegisterDaytimeGoldSkultullas();

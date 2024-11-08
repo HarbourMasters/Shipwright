@@ -99,6 +99,10 @@ void Grotto_InitExitAndLoadLists(void) {
         grottoLoadList[i] = ENTRANCE_GROTTO_LOAD_START + i;
         grottoExitList[i] = ENTRANCE_GROTTO_EXIT_START + i;
     }
+
+    grottoId = 0xFF;
+    lastEntranceType = NOT_GROTTO;
+    overridingNextEntrance = false;
 }
 
 void Grotto_SetExitOverride(s16 originalIndex, s16 overrideIndex) {

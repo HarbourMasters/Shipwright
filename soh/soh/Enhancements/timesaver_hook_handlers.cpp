@@ -14,6 +14,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Owl/z_en_owl.h"
 #include "src/overlays/actors/ovl_En_Ko/z_en_ko.h"
 #include "src/overlays/actors/ovl_En_Ma1/z_en_ma1.h"
+#include "src/overlays/actors/ovl_En_Ru2/z_en_ru2.h"
 #include "src/overlays/actors/ovl_En_Zl4/z_en_zl4.h"
 #include "src/overlays/actors/ovl_En_Box/z_en_box.h"
 #include "src/overlays/actors/ovl_Demo_Im/z_demo_im.h"
@@ -37,6 +38,8 @@ extern int32_t D_8011D3AC;
 extern void func_808ADEF0(BgSpot03Taki* bgSpot03Taki, PlayState* play);
 extern void BgSpot03Taki_ApplyOpeningAlpha(BgSpot03Taki* bgSpot03Taki, s32 bufferIndex);
 extern void BgSpot03Taki_KeepOpen(BgSpot03Taki* bgSpot03Taki, PlayState* play);
+
+extern void func_80AF36EC(EnRu2* enRu2, PlayState* play);
 }
 
 #define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).GetSelectedOptionIndex()
@@ -849,6 +852,15 @@ void TimeSaverOnActorInitHandler(void* actorRef) {
     if (actor->id == ACTOR_EN_DU && gPlayState->sceneNum == SCENE_FIRE_TEMPLE) {
         if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.GlitchAiding"), 0)) {
             Flags_SetInfTable(INFTABLE_SPOKE_TO_DARUNIA_IN_FIRE_TEMPLE);
+            Actor_Kill(actor);
+        }
+    }
+
+    // Water Temple Ruto cutscene
+    if (actor->id == ACTOR_EN_RU2 && gPlayState->sceneNum == SCENE_WATER_TEMPLE) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO)) {
+            EnRu2* enRu2 = (EnRu2*)actor;
+            func_80AF36EC(enRu2, gPlayState);
             Actor_Kill(actor);
         }
     }

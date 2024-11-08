@@ -10811,7 +10811,7 @@ void Player_Init(Actor* thisx, PlayState* play2) {
         if (respawnFlag == -3) {
             thisx->params = gSaveContext.respawn[RESPAWN_MODE_RETURN].playerParams;
         } else {
-            if ((respawnFlag == 1) || (respawnFlag == -1)) {
+            if (GameInteractor_Should(VB_INFLICT_VOID_DAMAGE, (respawnFlag == 1) || (respawnFlag == -1), respawnFlag)) {
                 this->unk_A86 = -2;
             }
 

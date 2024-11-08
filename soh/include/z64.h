@@ -3,6 +3,7 @@
 
 #include <libultraship/libultra.h>
 #include "unk.h" // this used to get pulled in via ultra64.h
+#include "attributes.h"
 #include "z64save.h"
 #include "z64light.h"
 #include "z64bgcheck.h"

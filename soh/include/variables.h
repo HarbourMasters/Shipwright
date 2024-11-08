@@ -120,7 +120,7 @@ extern "C"
 	extern KaleidoMgrOverlay gKaleidoMgrOverlayTable[KALEIDO_OVL_MAX];
 	extern KaleidoMgrOverlay* gKaleidoMgrCurOvl;
 	extern u8 gBossMarkState;
-	extern void* D_8012D1F0;
+	extern void* gDebugCutsceneScript;
 	extern s32 gScreenWidth;
 	extern s32 gScreenHeight;
 	extern Mtx gMtxClear;

@@ -198,7 +198,7 @@ void Entrance_Init(void) {
             bossSceneSaveDeathWarps[bossScene - SCENE_DEKU_TREE_BOSS] = saveWarpEntrance;
         }
 
-        //Overwrite grotto related indices
+        // Overwrite grotto related indices
         if (originalIndex >= ENTRANCE_GROTTO_EXIT_START) {
             Grotto_SetExitOverride(originalIndex, overrideIndex);
             continue;
@@ -226,7 +226,7 @@ void Entrance_Init(void) {
 
         s16 indicesToSilenceBackgroundMusic[2] = {
             // The lost woods music playing near the GC Woods Warp keeps playing
-            // in the next area if the bvackground music is allowed to keep playing
+            // in the next area if the background music is allowed to keep playing
             entranceOverrideTable[ENTR_LOST_WOODS_TUNNEL_SHORTCUT], // Goron City -> Lost Woods override
 
             // If Malon is singing at night, then her singing will be transferred
@@ -452,7 +452,19 @@ void Entrance_SetWarpSongEntrance(void) {
 }
 
 void Entrance_OverrideBlueWarp(void) {
-    // Handles first time entering bluewarp (with item give)
+    // Remap child 2nd visits in adult dungeons for warp pad -> bluewarp
+    if (gSaveContext.entranceIndex == ENTR_SACRED_FOREST_MEADOW_WARP_PAD) {
+        gSaveContext.entranceIndex = ENTR_SACRED_FOREST_MEADOW_FOREST_TEMPLE_BLUE_WARP;
+    } else if (gSaveContext.entranceIndex == ENTR_DEATH_MOUNTAIN_CRATER_WARP_PAD) {
+        gSaveContext.entranceIndex = ENTR_DEATH_MOUNTAIN_CRATER_FIRE_TEMPLE_BLUE_WARP;
+    } else if (gSaveContext.entranceIndex == ENTR_LAKE_HYLIA_WARP_PAD) {
+        gSaveContext.entranceIndex = ENTR_LAKE_HYLIA_WATER_TEMPLE_BLUE_WARP;
+    } else if (gSaveContext.entranceIndex == ENTR_DESERT_COLOSSUS_WARP_PAD) {
+        gSaveContext.entranceIndex = ENTR_DESERT_COLOSSUS_SPIRIT_TEMPLE_BLUE_WARP;
+    } else if (gSaveContext.entranceIndex == ENTR_GRAVEYARD_WARP_PAD) {
+        gSaveContext.entranceIndex = ENTR_GRAVEYARD_SHADOW_TEMPLE_BLUE_WARP;
+    }
+
     switch (gSaveContext.entranceIndex) {
         case ENTR_KOKIRI_FOREST_DEKU_TREE_BLUE_WARP: // Gohma blue warp
         case ENTR_DEATH_MOUNTAIN_TRAIL_DODONGO_BLUE_WARP: // KD blue warp
@@ -463,20 +475,6 @@ void Entrance_OverrideBlueWarp(void) {
         case ENTR_DESERT_COLOSSUS_SPIRIT_TEMPLE_BLUE_WARP: // Bongo-Bongo blue warp
         case ENTR_GRAVEYARD_SHADOW_TEMPLE_BLUE_WARP: // Twinrova blue warp
             gSaveContext.entranceIndex = Entrance_OverrideNextIndex(gSaveContext.entranceIndex);
-            return;
-    }
-
-    // Handles second+ times entering bluewarp
-    switch (gPlayState->nextEntranceIndex) {
-        case ENTR_KOKIRI_FOREST_DEKU_TREE_BLUE_WARP: // Gohma blue warp
-        case ENTR_DEATH_MOUNTAIN_TRAIL_DODONGO_BLUE_WARP: // KD blue warp
-        case ENTR_ZORAS_FOUNTAIN_JABU_JABU_BLUE_WARP: // Barinade blue warp
-        case ENTR_SACRED_FOREST_MEADOW_FOREST_TEMPLE_BLUE_WARP: // Phantom Ganon blue warp
-        case ENTR_DEATH_MOUNTAIN_CRATER_FIRE_TEMPLE_BLUE_WARP: // Volvagia blue warp
-        case ENTR_LAKE_HYLIA_WATER_TEMPLE_BLUE_WARP: // Morpha blue warp
-        case ENTR_DESERT_COLOSSUS_SPIRIT_TEMPLE_BLUE_WARP: // Bongo-Bongo blue warp
-        case ENTR_GRAVEYARD_SHADOW_TEMPLE_BLUE_WARP: // Twinrova blue warp
-            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(gPlayState->nextEntranceIndex);
             return;
     }
 }
