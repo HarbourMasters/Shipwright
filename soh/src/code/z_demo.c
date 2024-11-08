@@ -350,16 +350,16 @@ void func_80064824(PlayState* play, CutsceneContext* csCtx, CsCmdBase* cmd) {
             Flags_SetEventChkInf(EVENTCHKINF_RAISED_LAKE_HYLIA_WATER);
             break;
         case 22:
-            D_801614B0.r = 255;
-            D_801614B0.g = 255;
-            D_801614B0.b = 255;
-            D_801614B0.a = 255;
+            gVisMonoColor.r = 255;
+            gVisMonoColor.g = 255;
+            gVisMonoColor.b = 255;
+            gVisMonoColor.a = 255;
             break;
         case 23:
-            D_801614B0.r = 255;
-            D_801614B0.g = 180;
-            D_801614B0.b = 100;
-            D_801614B0.a = 255.0f * temp;
+            gVisMonoColor.r = 255;
+            gVisMonoColor.g = 180;
+            gVisMonoColor.b = 100;
+            gVisMonoColor.a = 255.0f * temp;
             break;
         case 24:
             play->roomCtx.curRoom.segment = NULL;

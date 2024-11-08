@@ -196,10 +196,10 @@ void BgHaka_Draw(Actor* thisx, PlayState* play) {
         play->envCtx.adjLight1Color[0] = newColor.r;
         play->envCtx.adjLight1Color[1] = newColor.g;
         play->envCtx.adjLight1Color[2] = newColor.b;
-        D_801614B0.r = newColor.r;
-        D_801614B0.g = newColor.g;
-        D_801614B0.b = newColor.b;
-        D_801614B0.a = 255;
+        gVisMonoColor.r = newColor.r;
+        gVisMonoColor.g = newColor.g;
+        gVisMonoColor.b = newColor.b;
+        gVisMonoColor.a = 255;
         gDPSetGrayscaleColor(POLY_OPA_DISP++, newColor.r, newColor.g, newColor.b, 255);
         gSPGrayscale(POLY_OPA_DISP++, true);
     }

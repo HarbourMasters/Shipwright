@@ -21,7 +21,7 @@
 TransitionUnk sTrnsnUnk;
 s32 gTrnsnUnkState;
 VisMono gPlayVisMono;
-Color_RGBA8_u32 D_801614B0;
+Color_RGBA8_u32 gVisMonoColor;
 
 FaultClient D_801614B8;
 
@@ -567,7 +567,7 @@ void Play_Init(GameState* thisx) {
     TransitionFade_SetColor(&play->transitionFade, RGBA8(160, 160, 160, 255));
     TransitionFade_Start(&play->transitionFade);
     VisMono_Init(&gPlayVisMono);
-    D_801614B0.a = 0;
+    gVisMonoColor.a = 0;
     Flags_UnsetAllEnv(play);
 
     osSyncPrintf("ZELDA ALLOC SIZE=%x\n", THA_GetSize(&play->state.tha));
@@ -1422,11 +1422,15 @@ void Play_Draw(PlayState* play) {
 
             TransitionFade_Draw(&play->transitionFade, &gfxP);
 
-            if (D_801614B0.a > 0) {
-                // gPlayVisMono.vis.primColor.rgba = D_801614B0.rgba;
+            if (gVisMonoColor.a > 0) {
+                // gPlayVisMono.vis.primColor.rgba = gVisMonoColor.rgba;
                 // VisMono_Draw(&gPlayVisMono, &gfxP);
-                gDPSetGrayscaleColor(gfxP++, D_801614B0.r, D_801614B0.g, D_801614B0.b, D_801614B0.a);
+
+                FB_CopyToFramebuffer(&gfxP, 0, gReusableFrameBuffer, false, NULL);
+                gDPSetGrayscaleColor(gfxP++, gVisMonoColor.r, gVisMonoColor.g, gVisMonoColor.b, gVisMonoColor.a);
                 gSPGrayscale(gfxP++, true);
+                FB_DrawFromFramebuffer(&gfxP, gReusableFrameBuffer, 255);
+                gSPGrayscale(gfxP++, false);
             }
 
             gSPEndDisplayList(gfxP++);

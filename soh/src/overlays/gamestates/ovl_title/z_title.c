@@ -293,8 +293,6 @@ void Title_Init(GameState* thisx) {
 
     //ResourceMgr_LoadDirectory("nintendo_rogo_static*");
 
-    // Disable vismono
-    D_801614B0.a = 0;
     R_UPDATE_RATE = 1;
     Matrix_Init(&this->state);
     View_Init(&this->view, this->state.gfxCtx);
