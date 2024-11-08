@@ -12,6 +12,7 @@
 
 #include <string.h> // memset
 #include <assert.h>
+#include "soh/framebuffer_effects.h"
 
 // Upstream TODO: Replace these ones they are served from other headers
 #define ASSERT(cond, msg, file, line) assert(cond)
@@ -150,6 +151,16 @@ void VisMono_Draw(VisMono* this, Gfx** gfxP) {
     Gfx* dList;
     Gfx* dListEnd;
 
+    // SOH [Port] Implement VisMono by performing a framebuffer copy and redraw with an active
+    // grayscale command to set the mono color
+    FB_CopyToFramebuffer(&gfx, 0, gReusableFrameBuffer, false, NULL);
+    gDPSetGrayscaleColor(gfx++, this->vis.primColor.r, this->vis.primColor.g, this->vis.primColor.b,
+                         this->vis.primColor.a);
+    gSPGrayscale(gfx++, true);
+    FB_DrawFromFramebuffer(&gfx, gReusableFrameBuffer, 255);
+    gSPGrayscale(gfx++, false);
+
+#if 0
     if (this->tlut) {
         tlut = this->tlut;
     } else {
@@ -186,6 +197,7 @@ void VisMono_Draw(VisMono* this, Gfx** gfxP) {
     gSPDisplayList(gfx++, dList);
 
     gDPPipeSync(gfx++);
+#endif
 
     *gfxP = gfx;
 }

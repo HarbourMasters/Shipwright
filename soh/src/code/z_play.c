@@ -1423,14 +1423,8 @@ void Play_Draw(PlayState* play) {
             TransitionFade_Draw(&play->transitionFade, &gfxP);
 
             if (gVisMonoColor.a > 0) {
-                // gPlayVisMono.vis.primColor.rgba = gVisMonoColor.rgba;
-                // VisMono_Draw(&gPlayVisMono, &gfxP);
-
-                FB_CopyToFramebuffer(&gfxP, 0, gReusableFrameBuffer, false, NULL);
-                gDPSetGrayscaleColor(gfxP++, gVisMonoColor.r, gVisMonoColor.g, gVisMonoColor.b, gVisMonoColor.a);
-                gSPGrayscale(gfxP++, true);
-                FB_DrawFromFramebuffer(&gfxP, gReusableFrameBuffer, 255);
-                gSPGrayscale(gfxP++, false);
+                gPlayVisMono.vis.primColor.rgba = gVisMonoColor.rgba;
+                VisMono_Draw(&gPlayVisMono, &gfxP);
             }
 
             gSPEndDisplayList(gfxP++);
@@ -1614,7 +1608,7 @@ void Play_Draw(PlayState* play) {
             play->unk_121C7 = 2;
             SREG(33) |= 1;
 
-            // 2S2H [Port] Continue to render the post world for pausing to avoid flashing the HUD
+            // SOH [Port] Continue to render the post world for pausing to avoid flashing the HUD
             if (gTrnsnUnkState == 2) {
                 goto Play_Draw_skip;
             }
