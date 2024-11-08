@@ -166,6 +166,11 @@ class Logic {
     bool MQWaterB1Switch = false;
     //bool MQWaterPillarSoTBlock = false; should be irrelevant. SHOULD.
     bool MQWaterOpenedPillarB1 = false;
+    bool MQSpiritCrawlBoulder = false;
+    bool MQSpiritMapRoomEnemies = false;
+    bool MQSpiritTimeTravelChest = false;
+    bool MQSpirit3SunsEnemies = false;
+    bool Spirit1FSilverRupees = false;
 
     /* --- END OF HELPERS AND LOCATION ACCESS --- */
 
@@ -181,7 +186,7 @@ class Logic {
     bool CanEquipSwap(RandomizerGet itemName);
     bool CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance = ED_CLOSE, bool wallOrFloor = true, uint8_t quantity = 1, bool timer = false, bool inWater = false);
     bool CanPassEnemy(RandomizerEnemy enemy, EnemyDistance distance = ED_CLOSE, bool wallOrFloor = true);
-    bool CanAvoidEnemy(RandomizerEnemy enemy);
+    bool CanAvoidEnemy(RandomizerEnemy enemy, bool grounded = false, uint8_t quantity = 1);
     bool CanGetEnemyDrop(RandomizerEnemy enemy, EnemyDistance distance = ED_CLOSE, bool aboveLink = false);
     bool CanBreakMudWalls();
     bool CanGetDekuBabaSticks();
