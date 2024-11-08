@@ -12,6 +12,7 @@
 #include "soh/ImGuiUtils.h"
 #include "soh/Enhancements/randomizer/logic.h"
 #include "soh/Enhancements/randomizer/randomizer_check_objects.h"
+#include "soh/Enhancements/randomizer/rando_hash.h"
 
 extern "C" {
     extern SaveContext gSaveContext;
@@ -43,6 +44,7 @@ namespace fs = std::filesystem;
 std::vector<std::string> existingSeedList;
 
 std::vector<int32_t> spoilerHash;
+std::vector<int32_t> plandoHash;
 std::vector<SpoilerCheckObject> spoilerLogData;
 std::vector<SpoilerCheckObject> plandoLogData;
 std::vector<std::pair<Rando::Item, int32_t>> drawnItemsList;
@@ -255,23 +257,32 @@ ImVec4 plandomizerGetItemTint(Rando::Item randoItem) {
     itemTint = ImVec4( 1.0f, 1.0f, 1.0f, 1.0f );
     if (randoItem.GetItemType() == ITEMTYPE_SMALLKEY || randoItem.GetItemType() == ITEMTYPE_FORTRESS_SMALLKEY
         || randoItem.GetItemType() == ITEMTYPE_BOSSKEY) {
-        if (randoItem.GetRandomizerGet() == RG_FOREST_TEMPLE_SMALL_KEY) {
+        if (randoItem.GetRandomizerGet() == RG_FOREST_TEMPLE_SMALL_KEY || 
+            randoItem.GetRandomizerGet() == RG_FOREST_TEMPLE_KEY_RING) {
             itemTint = ImVec4( 0.02f, 0.76f, 0.18f, 1.0f );
-        } else if (randoItem.GetRandomizerGet() == RG_FIRE_TEMPLE_SMALL_KEY) {
+        } else if (randoItem.GetRandomizerGet() == RG_FIRE_TEMPLE_SMALL_KEY || 
+            randoItem.GetRandomizerGet() == RG_FIRE_TEMPLE_KEY_RING) {
             itemTint = ImVec4( 0.93f, 0.37f, 0.37f, 1.0f );
-        } else if (randoItem.GetRandomizerGet() == RG_WATER_TEMPLE_SMALL_KEY) {
+        } else if (randoItem.GetRandomizerGet() == RG_WATER_TEMPLE_SMALL_KEY || 
+            randoItem.GetRandomizerGet() == RG_WATER_TEMPLE_KEY_RING) {
             itemTint = ImVec4( 0.33f, 0.71f, 0.87f, 1.0f );
-        } else if (randoItem.GetRandomizerGet() == RG_SPIRIT_TEMPLE_SMALL_KEY) {
+        } else if (randoItem.GetRandomizerGet() == RG_SPIRIT_TEMPLE_SMALL_KEY || 
+            randoItem.GetRandomizerGet() == RG_SPIRIT_TEMPLE_KEY_RING) {
             itemTint = ImVec4( 0.87f, 0.62f, 0.18f, 1.0f );
-        } else if (randoItem.GetRandomizerGet() == RG_SHADOW_TEMPLE_SMALL_KEY) {
+        } else if (randoItem.GetRandomizerGet() == RG_SHADOW_TEMPLE_SMALL_KEY || 
+            randoItem.GetRandomizerGet() == RG_SHADOW_TEMPLE_KEY_RING) {
             itemTint = ImVec4( 0.49f, 0.06f, 0.69f, 1.0f );
-        } else if (randoItem.GetRandomizerGet() == RG_BOTTOM_OF_THE_WELL_SMALL_KEY) {
+        } else if (randoItem.GetRandomizerGet() == RG_BOTTOM_OF_THE_WELL_SMALL_KEY || 
+            randoItem.GetRandomizerGet() == RG_BOTTOM_OF_THE_WELL_KEY_RING) {
             itemTint = ImVec4( 0.89f, 0.43f, 1.0f, 1.0f );
-        } else if (randoItem.GetRandomizerGet() == RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY) {
+        } else if (randoItem.GetRandomizerGet() == RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY || 
+            randoItem.GetRandomizerGet() == RG_GERUDO_TRAINING_GROUNDS_KEY_RING) {
             itemTint = ImVec4( 1.0f, 1.0f, 0, 1.0f );
-        } else if (randoItem.GetRandomizerGet() == RG_GERUDO_FORTRESS_SMALL_KEY) {
+        } else if (randoItem.GetRandomizerGet() == RG_GERUDO_FORTRESS_SMALL_KEY || 
+            randoItem.GetRandomizerGet() == RG_GERUDO_FORTRESS_KEY_RING) {
             itemTint = ImVec4( 1.0f, 1.0f, 1.0f, 1.0f );
-        } else if (randoItem.GetRandomizerGet() == RG_GANONS_CASTLE_SMALL_KEY) {
+        } else if (randoItem.GetRandomizerGet() == RG_GANONS_CASTLE_SMALL_KEY || 
+            randoItem.GetRandomizerGet() == RG_GANONS_CASTLE_KEY_RING) {
             itemTint = ImVec4( 0.5f, 0.5f, 0.5f, 1.0f );
         }
         return itemTint;
@@ -347,13 +358,13 @@ void PlandomizerItemImageCorrection(Rando::Item randoItem) {
 }
 
 void PlandomizerRandomizeHint(int32_t status, int32_t index) {
+    int32_t roll = (rand() % hintPool.size());
     switch (status) {
         case HINT_SINGLE:
-            plandoHintData[index].hintText = "";
+            plandoHintData[index].hintText = hintPool[roll].c_str();
             break;
         case HINT_ALL:
             for (auto& hint : plandoHintData) {
-                int32_t roll = (rand() % hintPool.size());
                 hint.hintText = hintPool[roll].c_str();
             }
             break;
@@ -433,6 +444,10 @@ void PlandomizerSaveSpoilerLog() {
         inputFile.close();
     }
 
+    spoilerSave["file_hash"] = {
+        plandoHash[0], plandoHash[1], plandoHash[2], plandoHash[3], plandoHash[4]
+    };
+
     for (auto& import : plandoHintData) {
         spoilerSave["Gossip Stone Hints"][import.hintName] = {
             { "type", import.hintType.c_str() },
@@ -469,6 +484,7 @@ void PlandomizerSaveSpoilerLog() {
 
 void PlandomizerLoadSpoilerLog(std::string logFile) {
     spoilerHash.clear();
+    plandoHash.clear();
     spoilerLogData.clear();
     plandoLogData.clear();
     spoilerHintData.clear();
@@ -494,6 +510,7 @@ void PlandomizerLoadSpoilerLog(std::string logFile) {
             auto hash = spoilerLogInput["file_hash"];
             for (auto& load : hash) {
                 spoilerHash.push_back(load);
+                plandoHash.push_back(load);
             }
         }
 
@@ -633,6 +650,9 @@ void PlandomizerDrawIceTrapPopUp(uint32_t index) {
     if (shouldTrapPopup && ImGui::BeginPopup("TrapList")) {
         ImGui::BeginTable("Ice Trap Table", 8);
         for (auto& items : itemImageMap) {
+            if (items.first == RG_ICE_TRAP) {
+                continue;
+            }
             ImGui::TableNextColumn();
             ImGui::PushID(items.first);
             PlandomizerItemImageCorrection(Rando::StaticData::RetrieveItem(items.first));
@@ -732,18 +752,46 @@ void PlandomizerDrawOptions() {
 
     ImGui::TableNextColumn();
     ImGui::SeparatorText("Current Seed Hash");
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + (ImGui::GetContentRegionAvail().x * 0.5f) - (34.0f * 5.0f));
     if (spoilerLogData.size() > 0) {
-        ImGui::SetCursorPosX(ImGui::GetCursorPosX() + (ImGui::GetContentRegionAvail().x * 0.5f) - (32.0f * 4.0f));
+        ImGui::BeginTable("HashIcons", 5);
+        ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.0f, 1.0f, 1.0f, 0.0f));
+        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(1.0f, 1.0f, 1.0f, 0.2f));
+        ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(1.0f, 1.0f, 1.0f, 0.1f));
+        for (int i = 0; i < 5; i++) {
+            ImGui::TableSetupColumn("Icon", ImGuiTableColumnFlags_WidthFixed, 34.0f);
+        }
+        ImGui::TableNextColumn();
+    
         int32_t index = 0;
-        for (auto& hash : spoilerHash) {
-            int32_t roll = rand() % itemMapping.size();
-            textureID = Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(itemMapping[roll].name);
-            ImGui::Image(textureID, ImVec2(32.0f, 32.0f));
-            if (index != spoilerHash.size() - 1) {
-                ImGui::SameLine();
+        for (auto& hash : plandoHash) {
+            ImGui::PushID(index);
+            textureID = Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(gSeedTextures[hash].tex);
+            if (ImGui::ImageButton(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("HASH_ARROW_UP"), 
+                ImVec2(35.0f, 18.0f), ImVec2(1, 1), ImVec2(0, 0), 2.0f, ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+                if (hash + 1 >= gSeedTextures.size()) {
+                    hash = 0;
+                } else {
+                    hash++;
+                }
             }
+            ImGui::Image(textureID, ImVec2(35.0f, 35.0f));
+            if (ImGui::ImageButton(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("HASH_ARROW_DWN"), 
+                ImVec2(35.0f, 18.0f), ImVec2(0, 0), ImVec2(1, 1), 2.0f, ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1))) {
+                if (hash == 0) {
+                    hash = gSeedTextures.size() - 1;
+                } else {
+                    hash--;
+                }
+            }
+            if (index != spoilerHash.size() - 1) {
+                ImGui::TableNextColumn();
+            }
+            ImGui::PopID();
             index++;
         }
+        ImGui::PopStyleColor(3);
+        ImGui::EndTable();
     } else {
         ImGui::Text("No Spoiler Log Loaded");
     }
@@ -913,4 +961,6 @@ void PlandomizerWindow::InitElement() {
     Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("ITEM_ARROWS_LARGE", gDropArrows3Tex, ImVec4( 1, 1, 1, 1 ));
     Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("ITEM_ICE_TRAP", gMagicArrowEquipEffectTex, ImVec4( 1, 1, 1, 1 ));
     Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("ITEM_TRIFORCE", gEmptyCDownArrowTex, ImVec4( 1, 1, 0, 1 ));
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("HASH_ARROW_UP", gEmptyCDownArrowTex, ImVec4( 1, 1, 1, 1 ));
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("HASH_ARROW_DWN", gEmptyCDownArrowTex, ImVec4( 1, 1, 1, 1 ));
 }

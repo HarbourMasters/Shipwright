@@ -1,6 +1,7 @@
 #include "ImGuiUtils.h"
 #include <Context.h>
 #include "assets/soh_assets.h"
+#include "soh/Enhancements/randomizer/rando_hash.h"
 
 std::map<uint32_t, ItemMapEntry> itemMapping = {
     ITEM_MAP_ENTRY(ITEM_STICK),
@@ -224,5 +225,9 @@ void RegisterImGuiItemIcons() {
         ImVec4 fadedCol = entry.color;
         fadedCol.w = 0.3f;
         Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.nameFaded, gSongNoteTex, fadedCol);
+    }
+
+    for (const auto& entry : gSeedTextures) {
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.tex, entry.tex, ImVec4(1, 1, 1, 1));
     }
 }
