@@ -434,12 +434,15 @@ namespace Rando {
                     case ED_LONG_JUMPSLASH:
                         killed = killed || CanUse(RG_BIGGORON_SWORD) || CanUse(RG_STICKS);
                         [[fallthrough]];
+                    case ED_BOMB_THROW:
+                        killed = killed || CanUse(RG_BOMB_BAG);
+                        [[fallthrough]];
                     case ED_BOOMERANG:
-                        //RANDOTODO test dins, bomb and chu range in a practical example
-                        killed = killed || CanUse(RG_BOMB_BAG) || CanUse(RG_DINS_FIRE);
+                        //RANDOTODO test dins and chu range in a practical example
+                        killed = killed || CanUse(RG_DINS_FIRE);
                         [[fallthrough]];
                     case ED_HOOKSHOT:
-                        //RANDOTODO test dins, bomb and chu range in a practical example
+                        //RANDOTODO test dins and chu range in a practical example
                         killed = killed || CanUse(RG_HOOKSHOT) || (wallOrFloor && CanUse(RG_BOMBCHU_5));
                         [[fallthrough]];
                     case ED_LONGSHOT:
@@ -467,9 +470,13 @@ namespace Rando {
                     case ED_LONG_JUMPSLASH:
                         killed = killed || CanUse(RG_BIGGORON_SWORD) || CanUse(RG_STICKS);
                         [[fallthrough]];
+                    case ED_BOMB_THROW:
+                        //RANDOTODO test dins and chu range in a practical example
+                        killed = killed || (!inWater && CanUse(RG_BOMB_BAG));
+                        [[fallthrough]];
                     case ED_BOOMERANG:
-                        //RANDOTODO test dins, bomb and chu range in a practical example
-                        killed = killed || CanUse(RG_BOOMERANG) || (!inWater && CanUse(RG_BOMB_BAG));
+                        //RANDOTODO test dins and chu range in a practical example
+                        killed = killed || CanUse(RG_BOOMERANG);
                         [[fallthrough]];
                     case ED_HOOKSHOT:
                         //RANDOTODO test dins, bomb and chu range in a practical example
@@ -508,12 +515,12 @@ namespace Rando {
                     case ED_LONG_JUMPSLASH:
                         killed = killed || CanUse(RG_BIGGORON_SWORD) || (quantity <= 1 && CanUse(RG_STICKS));
                         [[fallthrough]];
-                    case ED_BOOMERANG:
-                        //RANDOTODO test dins, bomb and chu range in a practical example
+                    case ED_BOMB_THROW:
                         killed = killed || (quantity <= 2 && !timer && !inWater && (CanUse(RG_NUTS) || HookshotOrBoomerang()) && CanUse(RG_BOMB_BAG));
                         [[fallthrough]];
+                    case ED_BOOMERANG:
                     case ED_HOOKSHOT:
-                        //RANDOTODO test dins, bomb and chu range in a practical example
+                        //RANDOTODO test dins and chu range in a practical example
                         killed = killed || (wallOrFloor && CanUse(RG_BOMBCHU_5));
                         [[fallthrough]];
                     case ED_LONGSHOT:
@@ -535,6 +542,7 @@ namespace Rando {
                 return CanUse(RG_MEGATON_HAMMER) || CanUse(RG_HOOKSHOT) || (HasExplosives() && (CanJumpslashExceptHammer() || CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_BOOMERANG)));
             case RE_WOLFOS:
             case RE_WHITE_WOLFOS:
+            case RE_WALLMASTER:
                 return CanJumpslash() || CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_BOMBCHU_5) || CanUse(RG_DINS_FIRE) || (CanUse(RG_BOMB_BAG) && (CanUse(RG_NUTS) || CanUse(RG_HOOKSHOT) || CanUse(RG_BOOMERANG)));
             case RE_GIBDO:
             case RE_REDEAD:
@@ -568,10 +576,11 @@ namespace Rando {
                     case ED_LONG_JUMPSLASH:
                         killed = killed || CanUse(RG_BIGGORON_SWORD) || CanUse(RG_STICKS);
                         [[fallthrough]];
-                    case ED_BOOMERANG:
-                        //RANDOTODO test dins, bomb and chu range in a practical example
+                    case ED_BOMB_THROW:
+                        //RANDOTODO test dins and chu range in a practical example
                         killed = killed || (!inWater && CanUse(RG_BOMB_BAG));
                         [[fallthrough]];
+                    case ED_BOOMERANG:
                     case ED_HOOKSHOT:
                         //RANDOTODO test dins, bomb and chu range in a practical example
                         killed = killed || CanUse(RG_HOOKSHOT) || (wallOrFloor && CanUse(RG_BOMBCHU_5));
@@ -587,9 +596,30 @@ namespace Rando {
             case RE_BIG_OCTO:
                 //If chasing octo is annoying but with rolls you can catch him, and you need rang to get into this room without shenanigains anyway. Bunny makes it free
                 return CanUse(RG_KOKIRI_SWORD) || CanUse(RG_STICKS) || CanUse(RG_MASTER_SWORD);
+            case RE_GANONDORF:
+                // RANDOTODO: Trick to use hammer (no jumpslash) or stick (only jumpslash) instead of a sword to reflect the energy ball
+                // and either of them regardless of jumpslashing to damage and kill ganondorf
+
+                // Bottle is not taken into account since a sword, hammer or stick are required
+                // for killing ganondorf and all of those can reflect the energy ball
+                // This will not be the case once ammo logic in taken into account as
+                // sticks are limited and using a bottle might become a requirement in that case
+                return HasBossSoul(RG_GANON_SOUL) && CanUse(RG_LIGHT_ARROWS) && (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD));
+            case RE_GANON:
+                return HasBossSoul(RG_GANON_SOUL) && CanUse(RG_MASTER_SWORD);
             case RE_DARK_LINK:
-            //RNADOTODO Dark link is buggy right now, retest when he is not
+            //RANDOTODO Dark link is buggy right now, retest when he is not
                 return CanJumpslash() || CanUse(RG_FAIRY_BOW);
+            case RE_ANUBIS:
+                //there's a restoration that allows beating them with mirror shield + some way to trigger thier attack
+                return HasFireSource();
+            case RE_BEAMOS:
+                return HasExplosives();
+            case RE_PURPLE_LEEVER:
+              //dies on it's own, so this is the conditions to spawn it (killing 10 normal leevers)
+              //Sticks and Ice arrows work but will need ammo capacity logic
+              //other mothods can damage them but not kill them, and they run when hit, making them impractical
+              return CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD);
             default:
                 SPDLOG_ERROR("CanKillEnemy reached `default`.");
                 assert(false);
@@ -626,6 +656,9 @@ namespace Rando {
             case RE_FREEZARD:
             case RE_SPIKE:
             case RE_DARK_LINK:
+            case RE_ANUBIS:
+            case RE_WALLMASTER:
+            case RE_PURPLE_LEEVER:
                 return true;
             case RE_BIG_SKULLTULA:
                 //hammer jumpslash can pass, but only on flat land where you can kill with hammer swing
@@ -649,48 +682,56 @@ namespace Rando {
     }
 
 //Can we avoid this enemy while climbing up a wall, or doing a difficult platforming challenge?
-    bool Logic::CanAvoidEnemy(RandomizerEnemy enemy) {
-        if (CanKillEnemy(enemy)){
-            return true;
-        }
-        switch(enemy) {
-            case RE_GOLD_SKULLTULA: 
-            case RE_GOHMA_LARVA:
-            case RE_LIZALFOS:
-            case RE_DODONGO: //RANDOTODO do dodongos block the way in tight corridors?
-            case RE_BIG_SKULLTULA:
-            case RE_DEAD_HAND:
-            case RE_DEKU_BABA:
-            case RE_WITHERED_DEKU_BABA:
-            case RE_LIKE_LIKE:
-            case RE_STALFOS:
-            case RE_IRON_KNUCKLE:
-            case RE_FLARE_DANCER:
-            case RE_WOLFOS:
-            case RE_WHITE_WOLFOS:
-            case RE_FLOORMASTER:
-            case RE_REDEAD:
-            case RE_MEG:
-            case RE_ARMOS:
-            case RE_GREEN_BUBBLE:
-            case RE_FREEZARD:
-            case RE_SPIKE:
-            case RE_BIG_OCTO:
-            case RE_GIBDO:
-            case RE_DARK_LINK:
-                return true;
-            case RE_MAD_SCRUB:
-            case RE_KEESE:
-            case RE_FIRE_KEESE:
-                return CanUse(RG_NUTS);
-            case RE_BLUE_BUBBLE:
-                //RANDOTODO Trick to use shield hylian shield as child to stun these guys
-                return CanUse(RG_NUTS) || HookshotOrBoomerang() || CanStandingShield();
-            default:
-                SPDLOG_ERROR("CanPassEnemy reached `default`.");
-                assert(false);
-                return false;
-        }
+//use grounded if the challenge is such that the enemy interfears even if it cannot hit link out of the air
+    bool Logic::CanAvoidEnemy(RandomizerEnemy enemy, bool grounded, uint8_t quantity) {
+      //DISTANCE AND WALL ASSUMED, add more arguments later if needed
+      if (CanKillEnemy(enemy, ED_CLOSE, true, quantity)){
+        return true;
+      }
+      switch(enemy) {
+        case RE_GOLD_SKULLTULA: 
+        case RE_GOHMA_LARVA:
+        case RE_LIZALFOS:
+        case RE_DODONGO:
+        case RE_BIG_SKULLTULA:
+        case RE_DEAD_HAND:
+        case RE_DEKU_BABA:
+        case RE_WITHERED_DEKU_BABA:
+        case RE_LIKE_LIKE:
+        case RE_STALFOS:
+        case RE_IRON_KNUCKLE:
+        case RE_FLARE_DANCER:
+        case RE_WOLFOS:
+        case RE_WHITE_WOLFOS:
+        case RE_FLOORMASTER:
+        case RE_REDEAD:
+        case RE_MEG:
+        case RE_ARMOS:
+        case RE_GREEN_BUBBLE:
+        case RE_FREEZARD:
+        case RE_SPIKE:
+        case RE_BIG_OCTO:
+        case RE_GIBDO:
+        case RE_DARK_LINK:
+        case RE_WALLMASTER:
+        case RE_ANUBIS:
+        case RE_PURPLE_LEEVER:
+          return true;
+        case RE_BEAMOS:
+          return !grounded || CanUse(RG_NUTS) || (quantity == 1 && (CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT)));
+        case RE_MAD_SCRUB:
+          return !grounded || CanUse(RG_NUTS);
+        case RE_KEESE:
+        case RE_FIRE_KEESE:
+          return CanUse(RG_NUTS);
+        case RE_BLUE_BUBBLE:
+          //RANDOTODO Trick to use shield hylian shield as child to stun these guys
+          return !grounded || CanUse(RG_NUTS) || HookshotOrBoomerang() || CanStandingShield();
+        default:
+          SPDLOG_ERROR("CanPassEnemy reached `default`.");
+          assert(false);
+          return false;
+      }
     }
 
     bool Logic::CanGetEnemyDrop(RandomizerEnemy enemy, EnemyDistance distance, bool aboveLink) {
@@ -708,6 +749,7 @@ namespace Rando {
                     case ED_SHORT_JUMPSLASH:
                     case ED_MASTER_SWORD_JUMPSLASH:
                     case ED_LONG_JUMPSLASH:
+                    case ED_BOMB_THROW:
                     case ED_BOOMERANG:
                         drop = drop || CanUse(RG_BOOMERANG);
                         [[fallthrough]];
@@ -718,9 +760,10 @@ namespace Rando {
                         drop = drop || CanUse(RG_LONGSHOT);
                         [[fallthrough]];
                     case ED_FAR:
-                        return drop;
+                        break;
                         //RANDOTODO double check all jumpslash kills that might be out of jump/backflip range
                 }
+                return drop;
                 break;
             case RE_KEESE:
             case RE_FIRE_KEESE:
@@ -832,12 +875,14 @@ namespace Rando {
             case ED_LONG_JUMPSLASH:
                 hit = hit || CanUse(RG_BIGGORON_SWORD) || CanUse(RG_STICKS);
                 [[fallthrough]];
+            case ED_BOMB_THROW:
+                hit = hit || (!inWater && CanUse(RG_BOMB_BAG));
+                [[fallthrough]];
             case ED_BOOMERANG:
-                //RANDOTODO test bomb and chu range in a practical example
-                hit = hit || CanUse(RG_BOOMERANG) || (!inWater && CanUse(RG_BOMB_BAG)) ;
+                hit = hit || CanUse(RG_BOOMERANG);
                 [[fallthrough]];
             case ED_HOOKSHOT:
-                //RANDOTODO test bomb and chu range in a practical example
+                //RANDOTODO test chu range in a practical example
                 hit = hit || CanUse(RG_HOOKSHOT) || CanUse(RG_BOMBCHU_5) ;
                 [[fallthrough]];
             case ED_LONGSHOT:
@@ -2110,6 +2155,9 @@ namespace Rando {
         MQWaterB1Switch           = false;
         //MQWaterPillarSoTBlock     = false;
         MQWaterOpenedPillarB1     = false;
+        MQSpiritCrawlBoulder      = false;
+        MQSpiritMapRoomEnemies    = false;
+        MQSpirit3SunsEnemies      = false;
 
         StopPerformanceTimer(PT_LOGIC_RESET);
     }

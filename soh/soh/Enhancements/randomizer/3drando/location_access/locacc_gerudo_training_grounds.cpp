@@ -209,7 +209,7 @@ void RegionTable_Init_GerudoTrainingGrounds() {
 
   areaTable[RR_GERUDO_TRAINING_GROUNDS_MQ_STATUE_ROOM] = Region("Gerudo Training Grounds MQ Statue ROom", "Gerudo Training Grounds", {RA_GERUDO_TRAINING_GROUND}, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LOCATION(RC_GERUDO_TRAINING_GROUND_MQ_EYE_STATUE_CHEST,          logic->CanUse(RG_FAIRY_BOW)),
+                  LOCATION(RC_GERUDO_TRAINING_GROUND_MQ_EYE_STATUE_CHEST, logic->CanUse(RG_FAIRY_BOW)),
   }, {
                   //Exits
                   Entrance(RR_GERUDO_TRAINING_GROUNDS_MQ_STATUE_ROOM_LEDGE, {[]{return logic->CanUse(RG_LONGSHOT);}}),
@@ -220,7 +220,7 @@ void RegionTable_Init_GerudoTrainingGrounds() {
                   //Locations
                   //implies logic->CanKillEnemy(RE_TORCH_SLUG)
                   LOCATION(RC_GERUDO_TRAINING_GROUND_MQ_SECOND_IRON_KNUCKLE_CHEST, logic->CanKillEnemy(RE_IRON_KNUCKLE)),
-                  LOCATION(RC_GERUDO_TRAINING_GROUND_MQ_FLAME_CIRCLE_CHEST,        logic->CanHitSwitch(ED_BOOMERANG)),
+                  LOCATION(RC_GERUDO_TRAINING_GROUND_MQ_FLAME_CIRCLE_CHEST,        logic->CanHitSwitch(ED_BOMB_THROW)),
   }, {
                   //Exits
                   Entrance(RR_GERUDO_TRAINING_GROUNDS_MQ_STATUE_ROOM,   {[]{return Here(RR_GERUDO_TRAINING_GROUNDS_MQ_TORCH_SLUG_ROOM, []{return logic->CanKillEnemy(RE_IRON_KNUCKLE);});}}),

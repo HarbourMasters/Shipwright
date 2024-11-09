@@ -32,7 +32,7 @@ void RegionTable_Init_GanonsCastle() {
                   Entrance(RR_GANONS_CASTLE_SHADOW_TRIAL, {[]{return true;}}),
                   Entrance(RR_GANONS_CASTLE_SPIRIT_TRIAL, {[]{return true;}}),
                   Entrance(RR_GANONS_CASTLE_LIGHT_TRIAL,  {[]{return logic->CanUse(RG_GOLDEN_GAUNTLETS);}}),
-                  Entrance(RR_GANONS_CASTLE_TOWER,        {[]{return (logic->ForestTrialClear || ctx->GetTrial(TK_FOREST_TRIAL)->IsSkipped()) &&
+                  Entrance(RR_GANONS_TOWER_FLOOR_1,       {[]{return (logic->ForestTrialClear || ctx->GetTrial(TK_FOREST_TRIAL)->IsSkipped()) &&
                                                                          (logic->FireTrialClear   || ctx->GetTrial(TK_FIRE_TRIAL)->IsSkipped())   &&
                                                                          (logic->WaterTrialClear  || ctx->GetTrial(TK_WATER_TRIAL)->IsSkipped())  &&
                                                                          (logic->ShadowTrialClear || ctx->GetTrial(TK_SHADOW_TRIAL)->IsSkipped()) &&
@@ -111,13 +111,6 @@ void RegionTable_Init_GanonsCastle() {
   }, {});
   }
 
-  areaTable[RR_GANONS_CASTLE_TOWER] = Region("Ganon's Castle Tower", "Ganons Castle", {RA_GANONS_CASTLE}, NO_DAY_NIGHT_CYCLE, {}, {
-                  //Locations
-                  LOCATION(RC_GANONS_TOWER_BOSS_KEY_CHEST, logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD)),
-                  LOCATION(RC_GANONDORF_HINT,              logic->HasItem(RG_GANONS_CASTLE_BOSS_KEY) && (logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD))),
-                  LOCATION(RC_GANON,                       logic->HasBossSoul(RG_GANON_SOUL) && logic->HasItem(RG_GANONS_CASTLE_BOSS_KEY) && logic->CanUse(RG_LIGHT_ARROWS) && logic->CanUse(RG_MASTER_SWORD)),
-  }, {});
-
   /*---------------------------
   |   MASTER QUEST DUNGEON    |
   ---------------------------*/
@@ -142,7 +135,7 @@ void RegionTable_Init_GanonsCastle() {
                   Entrance(RR_GANONS_CASTLE_MQ_SPIRIT_TRIAL_CHAIRS_ROOM,    {[]{return true;}}),
                   Entrance(RR_GANONS_CASTLE_MQ_LIGHT_TRIAL_DINOLFOS_ROOM,   {[]{return Here(RR_GANONS_CASTLE_MQ_MAIN, []{return logic->CanUse(RG_GOLDEN_GAUNTLETS);});}}),
                   //RANDOTODO could we just set these events automatically based on the setting?
-                  Entrance(RR_GANONS_CASTLE_TOWER,                          {[]{return (logic->ForestTrialClear || ctx->GetTrial(TK_FOREST_TRIAL)->IsSkipped()) &&
+                  Entrance(RR_GANONS_TOWER_FLOOR_1,                         {[]{return (logic->ForestTrialClear || ctx->GetTrial(TK_FOREST_TRIAL)->IsSkipped()) &&
                                                                                        (logic->FireTrialClear   || ctx->GetTrial(TK_FIRE_TRIAL)->IsSkipped())   &&
                                                                                        (logic->WaterTrialClear  || ctx->GetTrial(TK_WATER_TRIAL)->IsSkipped())  &&
                                                                                        (logic->ShadowTrialClear || ctx->GetTrial(TK_SHADOW_TRIAL)->IsSkipped()) &&
@@ -376,4 +369,53 @@ void RegionTable_Init_GanonsCastle() {
                   EventAccess(&logic->LightTrialClear, {[]{return logic->CanUse(RG_LIGHT_ARROWS);}}),
   }, {}, {});
   }
+
+  /*--------------------------
+  |     TOWER AND ESCAPE     |
+  ---------------------------*/
+  areaTable[RR_GANONS_TOWER_FLOOR_1] = Region("Ganon's Tower Floor 1", "Ganons Castle", {RA_GANONS_CASTLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+                  //Exits
+                  Entrance(RR_GANONS_CASTLE_LOBBY,  {[]{return Here(RR_GANONS_TOWER_FLOOR_1, []{return logic->CanKillEnemy(RE_DINOLFOS, ED_CLOSE, true, 2);});}}),
+                  Entrance(RR_GANONS_TOWER_FLOOR_2, {[]{return Here(RR_GANONS_TOWER_FLOOR_1, []{return logic->CanKillEnemy(RE_DINOLFOS, ED_CLOSE, true, 2);});}}),
+  });
+
+  areaTable[RR_GANONS_TOWER_FLOOR_2] = Region("Ganon's Tower Floor 2", "Ganons Castle", {RA_GANONS_CASTLE}, NO_DAY_NIGHT_CYCLE, {}, {
+                  //Locations
+                  LOCATION(RC_GANONS_TOWER_BOSS_KEY_CHEST, logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 2)),
+  }, {
+                  //Exits
+                  Entrance(RR_GANONS_TOWER_FLOOR_1, {[]{return Here(RR_GANONS_TOWER_FLOOR_2, []{return logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 2);});}}),
+                  Entrance(RR_GANONS_TOWER_FLOOR_3, {[]{return Here(RR_GANONS_TOWER_FLOOR_2, []{return logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 2);});}}),
+  });
+
+  areaTable[RR_GANONS_TOWER_FLOOR_3] = Region("Ganon's Tower Floor 3", "Ganons Castle", {RA_GANONS_CASTLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+                  //Exits
+                  Entrance(RR_GANONS_TOWER_FLOOR_2,        {[]{return Here(RR_GANONS_TOWER_FLOOR_3, []{return logic->CanKillEnemy(RE_IRON_KNUCKLE, ED_CLOSE, true, 2);});}}),
+                  Entrance(RR_GANONS_TOWER_GANONDORF_LAIR, {[]{return Here(RR_GANONS_TOWER_FLOOR_3, []{return logic->CanKillEnemy(RE_IRON_KNUCKLE, ED_CLOSE, true, 2);}) && logic->HasItem(RG_GANONS_CASTLE_BOSS_KEY);}}),
+  });
+
+  areaTable[RR_GANONS_TOWER_GANONDORF_LAIR] = Region("Ganondorf's Lair", "Ganons Castle", {RA_GANONS_CASTLE}, NO_DAY_NIGHT_CYCLE, {}, {
+                  //Locations
+                  LOCATION(RC_GANONDORF_HINT, logic->HasBossSoul(RG_GANON_SOUL)),
+                  //18 pots
+  }, {
+                  //Exits
+                  Entrance(RR_GANONS_CASTLE_ESCAPE, {[]{return logic->CanKillEnemy(RE_GANONDORF);}}),
+  });
+
+  areaTable[RR_GANONS_CASTLE_ESCAPE] = Region("Ganon's Castle Escape", "Ganons Castle", {RA_GANONS_CASTLE}, NO_DAY_NIGHT_CYCLE, {}, {
+                  //Locations
+                  //10 pots
+  }, {
+                  //Exits
+                  //temporary
+                  Entrance(RR_GANONS_CASTLE_GANON_ARENA, {[]{return true;}}),
+                  //real logic once we figure out how to deal with castle escape skip
+                  //Entrance(RR_GANONS_CASTLE_GANON_ARENA, {[]{return logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 2, true);}}),
+  });
+
+  areaTable[RR_GANONS_CASTLE_GANON_ARENA] = Region("Ganon's Arena", "Ganons Castle", {RA_GANONS_CASTLE}, NO_DAY_NIGHT_CYCLE, {}, {
+                  //Locations
+                  LOCATION(RC_GANON, logic->CanKillEnemy(RE_GANON)),
+  }, {});
 }

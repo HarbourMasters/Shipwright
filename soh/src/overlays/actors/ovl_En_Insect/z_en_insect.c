@@ -683,7 +683,7 @@ void func_80A7D460(EnInsect* this, PlayState* play) {
             if (this->soilActor != NULL) {
                 if (!(GET_GS_FLAGS(((this->soilActor->actor.params >> 8) & 0x1F) - 1) &
                       (this->soilActor->actor.params & 0xFF))) {
-                    func_80078884(NA_SE_SY_TRE_BOX_APPEAR);
+                    Sfx_PlaySfxCentered(NA_SE_SY_TRE_BOX_APPEAR);
                 }
             }
             this->unk_314 |= 0x80;

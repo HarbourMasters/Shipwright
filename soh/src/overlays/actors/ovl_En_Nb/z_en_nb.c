@@ -461,7 +461,7 @@ void EnNb_SetupLightArrowOrSealingCs(EnNb* this, PlayState* play) {
 }
 
 void EnNb_PlaySealingSound(void) {
-    func_800788CC(NA_SE_SY_WHITE_OUT_T);
+    Sfx_PlaySfxCentered2(NA_SE_SY_WHITE_OUT_T);
 }
 
 void EnNb_InitializeDemo6K(EnNb* this, PlayState* play) {
@@ -576,13 +576,13 @@ void EnNb_InitKidnap(EnNb* this, PlayState* play) {
 
 void EnNb_PlayCrySFX(EnNb* this, PlayState* play) {
     if (play->csCtx.frames == 3) {
-        func_80078914(&this->actor.projectedPos, NA_SE_VO_NB_CRY_0);
+        Sfx_PlaySfxAtPos(&this->actor.projectedPos, NA_SE_VO_NB_CRY_0);
     }
 }
 
 void EnNb_PlayAgonySFX(EnNb* this, PlayState* play) {
     if (play->csCtx.frames == 420) {
-        func_80078914(&this->actor.projectedPos, NA_SE_VO_NB_AGONY);
+        Sfx_PlaySfxAtPos(&this->actor.projectedPos, NA_SE_VO_NB_AGONY);
     }
 }
 
@@ -708,8 +708,8 @@ void EnNb_PlayKnuckleDefeatSFX(EnNb* this, PlayState* play) {
     s32 pad[2];
 
     if (play->csCtx.frames == 548) {
-        func_80078914(&this->actor.projectedPos, NA_SE_VO_NB_CRY_0);
-        func_80078914(&this->actor.projectedPos, NA_SE_EN_FANTOM_HIT_THUNDER);
+        Sfx_PlaySfxAtPos(&this->actor.projectedPos, NA_SE_VO_NB_CRY_0);
+        Sfx_PlaySfxAtPos(&this->actor.projectedPos, NA_SE_EN_FANTOM_HIT_THUNDER);
     }
 }
 
@@ -718,7 +718,7 @@ void EnNb_PlayKneelingOnGroundSFX(EnNb* this) {
 
     if ((this->skelAnime.mode == 2) &&
         (Animation_OnFrame(&this->skelAnime, 18.0f) || Animation_OnFrame(&this->skelAnime, 25.0f))) {
-        func_80078914(&this->actor.projectedPos, NA_SE_EV_HUMAN_BOUND);
+        Sfx_PlaySfxAtPos(&this->actor.projectedPos, NA_SE_EV_HUMAN_BOUND);
     }
 }
 
@@ -726,7 +726,7 @@ void EnNb_PlayLookRightSFX(EnNb* this) {
     s32 pad[2];
 
     if ((this->skelAnime.mode == 2) && Animation_OnFrame(&this->skelAnime, 9.0f)) {
-        func_80078914(&this->actor.projectedPos, NA_SE_PL_WALK_CONCRETE);
+        Sfx_PlaySfxAtPos(&this->actor.projectedPos, NA_SE_PL_WALK_CONCRETE);
     }
 }
 
@@ -734,7 +734,7 @@ void EnNb_PlayLookLeftSFX(EnNb* this) {
     s32 pad[2];
 
     if (Animation_OnFrame(&this->skelAnime, 9.0f) || Animation_OnFrame(&this->skelAnime, 13.0f)) {
-        func_80078914(&this->actor.projectedPos, NA_SE_PL_WALK_CONCRETE);
+        Sfx_PlaySfxAtPos(&this->actor.projectedPos, NA_SE_PL_WALK_CONCRETE);
     }
 }
 
@@ -1148,7 +1148,7 @@ void func_80AB359C(EnNb* this) {
 }
 
 void EnNb_SetNoticeSFX(EnNb* this) {
-    func_80078914(&this->actor.projectedPos, NA_SE_VO_NB_NOTICE);
+    Sfx_PlaySfxAtPos(&this->actor.projectedPos, NA_SE_VO_NB_NOTICE);
 }
 
 s32 EnNb_GetNoticedStatus(EnNb* this, PlayState* play) {

@@ -211,6 +211,14 @@ bool Here(const RandomizerRegion region, ConditionFn condition) {
   return areaTable[region].Here(condition);
 }
 
+bool MQSpiritSharedStatueRoom(const RandomizerRegion region, ConditionFn condition, bool anyAge) {
+  return areaTable[region].MQSpiritShared(condition, false, anyAge);
+}
+
+bool MQSpiritSharedBrokenWallRoom(const RandomizerRegion region, ConditionFn condition, bool anyAge) {
+  return areaTable[region].MQSpiritShared(condition, true, anyAge);
+}
+
 bool CanPlantBean(const RandomizerRegion region) {
   return areaTable[region].CanPlantBeanCheck();
 }
@@ -256,7 +264,7 @@ void RegionTable_Init() {
                   LOCATION(RC_SARIA_SONG_HINT,    logic->CanUse(RG_SARIAS_SONG)),
                 }, {
                   //Exits
-                  Entrance(RR_ROOT_EXITS, {[]{return true;}})
+                  Entrance(RR_ROOT_EXITS, {[]{return true;}}),
   });
 
   areaTable[RR_ROOT_EXITS] = Region("Root Exits", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {

@@ -45,5 +45,5 @@ void EffectSsDeadSound_Update(PlayState* play, u32 index, EffectSs* this) {
             return;
     }
 
-    Audio_PlaySoundGeneral(this->rSfxId, &this->pos, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+    Audio_PlaySoundGeneral(this->rSfxId, &this->pos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
 }

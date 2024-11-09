@@ -132,6 +132,6 @@ void EffectSsDeadDb_Update(PlayState* play, u32 index, EffectSs* this) {
 
     if (this->rPlaySound && (this->rTextIdx == 1)) {
         SkinMatrix_Vec3fMtxFMultXYZW(&play->viewProjectionMtxF, &this->pos, &this->vec, &w);
-        Audio_PlaySoundGeneral(NA_SE_EN_EXTINCT, &this->vec, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+        Audio_PlaySoundGeneral(NA_SE_EN_EXTINCT, &this->vec, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     }
 }

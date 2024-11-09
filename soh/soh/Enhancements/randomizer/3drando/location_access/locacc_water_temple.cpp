@@ -475,7 +475,7 @@ void RegionTable_Init_WaterTemple() {
   areaTable[RR_WATER_TEMPLE_MQ_STALFOS_PIT] = Region("Water Temple MQ Stalfos Pit", "Water Temple", {RA_WATER_TEMPLE}, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&logic->MQWaterStalfosPit, {[]{return ((logic->IsAdult && logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 3, false, true)) || 
-                                                                    (logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_HOOKSHOT) && logic->CanKillEnemy(RE_STALFOS, ED_BOOMERANG, true, 3, false, true)));}}),
+                                                                    (logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_HOOKSHOT) && logic->CanKillEnemy(RE_STALFOS, ED_BOMB_THROW, true, 3, false, true)));}}),
   }, {}, {
                   //Exits
                   Entrance(RR_WATER_TEMPLE_MQ_WATERFALL,         {[]{return logic->MQWaterStalfosPit && logic->CanUse(RG_HOOKSHOT) && (logic->IsAdult || logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 8);}}),
@@ -577,7 +577,7 @@ void RegionTable_Init_WaterTemple() {
                   LOCATION(RC_WATER_TEMPLE_MQ_BOSS_KEY_CHEST, true),
   }, {
                   //Exits
-                  Entrance(RR_WATER_TEMPLE_MQ_BOSS_KEY_ROOM_SWITCH, {[]{return logic->CanHitSwitch(ED_BOOMERANG) || logic->CanUse(RG_HOVER_BOOTS);}}),
+                  Entrance(RR_WATER_TEMPLE_MQ_BOSS_KEY_ROOM_SWITCH, {[]{return logic->CanHitSwitch(ED_BOMB_THROW) || logic->CanUse(RG_HOVER_BOOTS);}}),
                   Entrance(RR_WATER_TEMPLE_MQ_BOSS_KEY_ROOM_PIT,    {[]{return true;}}),
                   Entrance(RR_WATER_TEMPLE_MQ_B1_GATE_SWITCH,       {[]{return logic->HasItem(RG_SILVER_SCALE) || (logic->CanUse(RG_IRON_BOOTS) && (logic->HasItem(RG_BRONZE_SCALE) || (logic->WaterTimer() >= 24 && logic->CanUse(RG_LONGSHOT))));}}),
   });

@@ -218,7 +218,7 @@ void func_808A3E54(BgMoriHineri* this, PlayState* play) {
             this->moriHineriObjIdx = objBankIndex;
             this->dyna.actor.params ^= 1;
             sBgMoriHineriNextCamIdx = MAIN_CAM;
-            func_80078884(NA_SE_SY_TRE_BOX_APPEAR);
+            Sfx_PlaySfxCentered(NA_SE_SY_TRE_BOX_APPEAR);
         } else {
             this->dyna.actor.draw = NULL;
             this->actionFunc = func_808A3D58;

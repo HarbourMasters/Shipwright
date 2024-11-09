@@ -80,8 +80,8 @@ void EnLightbox_Update(Actor* thisx, PlayState* play) {
             if (thisx->speedXZ) {
                 if (thisx->bgCheckFlags & 8) {
                     thisx->world.rot.y = (thisx->world.rot.y + thisx->wallYaw) - thisx->world.rot.y;
-                    Audio_PlaySoundGeneral(NA_SE_EV_BOMB_BOUND, &thisx->projectedPos, 4, &D_801333E0, &D_801333E0,
-                                           &D_801333E8);
+                    Audio_PlaySoundGeneral(NA_SE_EV_BOMB_BOUND, &thisx->projectedPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                                           &gSfxDefaultReverb);
                     thisx->speedXZ *= 0.7f;
                     thisx->bgCheckFlags &= ~0x8;
                 }
@@ -92,8 +92,8 @@ void EnLightbox_Update(Actor* thisx, PlayState* play) {
             } else {
                 Math_StepToF(&thisx->speedXZ, 0, IREG(58) / 100.0f);
                 if ((thisx->bgCheckFlags & 2) && (thisx->velocity.y < IREG(59) / 100.0f)) {
-                    Audio_PlaySoundGeneral(NA_SE_EV_BOMB_BOUND, &thisx->projectedPos, 4, &D_801333E0, &D_801333E0,
-                                           &D_801333E8);
+                    Audio_PlaySoundGeneral(NA_SE_EV_BOMB_BOUND, &thisx->projectedPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                                           &gSfxDefaultReverb);
                     thisx->velocity.y *= IREG(60) / 100.0f;
                     thisx->bgCheckFlags &= ~0x1;
                 } else {

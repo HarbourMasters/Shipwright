@@ -81,13 +81,13 @@ u8 gSfxChannelLayout = 0;
 
 u16 D_801333D0 = 0;
 
-Vec3f D_801333D4 = { 0.0f, 0.0f, 0.0f }; // default pos
+Vec3f gSfxDefaultPos = { 0.0f, 0.0f, 0.0f }; // default pos
 
-f32 D_801333E0 = 1.0f; // default freqScale
+f32 gSfxDefaultFreqAndVolScale = 1.0f; // default freqScale
 
 s32 D_801333E4 = 0; // unused
 
-s8 D_801333E8 = 0; // default reverbAdd
+s8 gSfxDefaultReverb = 0; // default reverbAdd
 
 s32 D_801333EC = 0; // unused
 
@@ -381,7 +381,7 @@ void Audio_ChooseActiveSounds(u8 bankId)
         } else if (gSoundBanks[bankId][entryIndex].state != SFX_STATE_EMPTY) {
             entry = &gSoundBanks[bankId][entryIndex];
 
-            if (&D_801333D4.x == entry[0].posX) {
+            if (&gSfxDefaultPos.x == entry[0].posX) {
                 entry->dist = 0.0f;
             } else {
                 tempf1 = *entry->posY * 1;

@@ -270,7 +270,7 @@ void EnGe1_SpotPlayer(EnGe1* this, PlayState* play) {
     this->cutsceneTimer = 30;
     this->actionFunc = EnGe1_KickPlayer;
     Player_SetCsActionWithHaltedActors(play, &this->actor, 0x5F);
-    func_80078884(NA_SE_SY_FOUND);
+    Sfx_PlaySfxCentered(NA_SE_SY_FOUND);
     Message_StartTextbox(play, 0x6000, &this->actor);
 }
 
