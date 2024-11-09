@@ -1766,7 +1766,7 @@ void RandomizerOnActorInitHandler(void* actorRef) {
 
     if (actor->id == ACTOR_BG_SPOT03_TAKI) {
         Rando::Option& waterfallOption = Rando::Context::GetInstance()->GetOption(RSK_SLEEPING_WATERFALL);
-        if (waterfallOption.Is(RO_WATERFALL_OPEN) || (waterfallOption.Is(RO_WATERFALL_CLOSED_CHILD) && LINK_IS_ADULT)) {
+        if (waterfallOption.Is(RO_WATERFALL_OPEN)) {
             static uint32_t bgSpot03UpdateHook = 0;
             static uint32_t bgSpot03KillHook = 0;
 

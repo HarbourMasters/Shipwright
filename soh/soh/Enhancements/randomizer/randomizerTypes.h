@@ -4156,10 +4156,9 @@ typedef enum {
     RO_ZF_OPEN,
 } RandoOptionZorasFountain;
 
-//Sleeping Waterfall settings (closed, closed as child, open)
+//Sleeping Waterfall settings (closed, open)
 typedef enum {
     RO_WATERFALL_CLOSED,
-    RO_WATERFALL_CLOSED_CHILD,
     RO_WATERFALL_OPEN,
 } RandoOptionSleepingWaterfall;
 

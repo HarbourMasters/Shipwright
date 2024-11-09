@@ -2584,8 +2584,6 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
                 case RSK_SLEEPING_WATERFALL:
                     if (it.value() == "Closed") {
                         mOptions[index].SetSelectedIndex(RO_WATERFALL_CLOSED);
-                    } else if (it.value() == "Closed as child") {
-                        mOptions[index].SetSelectedIndex(RO_WATERFALL_CLOSED_CHILD);
                     } else if (it.value() == "Open") {
                         mOptions[index].SetSelectedIndex(RO_WATERFALL_OPEN);
                     }
