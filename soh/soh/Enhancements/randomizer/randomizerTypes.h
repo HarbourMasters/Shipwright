@@ -4569,7 +4569,7 @@ typedef enum {
     RE_BIG_OCTO,
     RE_GIBDO,
     RE_GANONDORF,
-    RE_GANON
+    RE_GANON,
     RE_DARK_LINK,
 } RandomizerEnemy;
 
