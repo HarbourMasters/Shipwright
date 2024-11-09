@@ -250,7 +250,7 @@ void EnRiverSound_Draw(Actor* thisx, PlayState* play) {
         Audio_PlaySariaBgm(&this->actor.home.pos, NA_BGM_GREAT_FAIRY, 800);
     } else if ((this->actor.params == RS_SANDSTORM) || (this->actor.params == RS_CHAMBER_OF_SAGES_1) ||
                (this->actor.params == RS_CHAMBER_OF_SAGES_2) || (this->actor.params == RS_RUMBLING)) {
-        func_800788CC(soundEffects[this->actor.params]);
+        Sfx_PlaySfxCentered2(soundEffects[this->actor.params]);
     } else {
         Audio_PlayActorSound2(&this->actor, soundEffects[this->actor.params]);
     }

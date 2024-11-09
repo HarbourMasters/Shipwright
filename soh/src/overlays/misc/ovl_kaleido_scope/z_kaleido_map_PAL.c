@@ -54,7 +54,7 @@ void KaleidoScope_DrawDungeonMap(PlayState* play, GraphicsContext* gfxCtx) {
     s16 stepG;
     s16 stepB;
     u16 rgba16;
-    bool dpad = CVarGetInteger("gDpadPause", 0);
+    bool dpad = CVarGetInteger(CVAR_SETTING("DPadOnPause"), 0);
 
     OPEN_DISPS(gfxCtx);
 
@@ -157,7 +157,7 @@ void KaleidoScope_DrawDungeonMap(PlayState* play, GraphicsContext* gfxCtx) {
                 pauseCtx->cursorX[PAUSE_MAP] = 0;
                 j = 72 + (pauseCtx->cursorSlot[PAUSE_MAP] * 4);
                 KaleidoScope_SetCursorVtx(pauseCtx, j, pauseCtx->mapPageVtx);
-                Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             }
         } else {
             if ((pauseCtx->stickRelX < -30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DLEFT))) {
@@ -187,12 +187,12 @@ void KaleidoScope_DrawDungeonMap(PlayState* play, GraphicsContext* gfxCtx) {
                 osSyncPrintf("kscope->cursor_point====%d\n", pauseCtx->cursorPoint[PAUSE_MAP]);
                 j = 72 + (pauseCtx->cursorSlot[PAUSE_MAP] * 4);
                 KaleidoScope_SetCursorVtx(pauseCtx, j, pauseCtx->mapPageVtx);
-                Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             }
         }
 
         if (oldCursorPoint != pauseCtx->cursorPoint[PAUSE_MAP]) {
-            Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         }
     }
 
@@ -347,7 +347,7 @@ void KaleidoScope_DrawDungeonMap(PlayState* play, GraphicsContext* gfxCtx) {
     gDPLoadTLUT_pal16(POLY_KAL_DISP++, 0, interfaceCtx->mapPalettesPulse[palettePulseIdx]);
     gDPSetTextureLUT(POLY_KAL_DISP++, G_TT_RGBA16);
 
-    u8 mirroredWorld = CVarGetInteger("gMirroredWorld", 0);
+    u8 mirroredWorld = CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0);
     u8 mirrorMode = mirroredWorld ? G_TX_MIRROR : G_TX_NOMIRROR;
     // Offset the U value of each vertex to be in the mirror boundary for the map textures
     if (mirroredWorld) {
@@ -443,8 +443,8 @@ void KaleidoScope_DrawWorldMap(PlayState* play, GraphicsContext* gfxCtx) {
     s16 stepR;
     s16 stepG;
     s16 stepB;
-    bool dpad = CVarGetInteger("gDpadPause", 0);
-    u8 mirroredWorld = CVarGetInteger("gMirroredWorld", 0);
+    bool dpad = CVarGetInteger(CVAR_SETTING("DPadOnPause"), 0);
+    u8 mirroredWorld = CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0);
     u8 mirrorMode = mirroredWorld ? G_TX_MIRROR : G_TX_NOMIRROR;
 
     OPEN_DISPS(gfxCtx);
@@ -506,7 +506,7 @@ void KaleidoScope_DrawWorldMap(PlayState* play, GraphicsContext* gfxCtx) {
                     pauseCtx->cursorItem[PAUSE_MAP] = pauseCtx->cursorPoint[PAUSE_WORLD_MAP];
                     pauseCtx->cursorSlot[PAUSE_MAP] = pauseCtx->cursorPoint[PAUSE_WORLD_MAP] + 0x1F;
                     KaleidoScope_SetCursorVtx(pauseCtx, pauseCtx->cursorSlot[PAUSE_MAP] * 4, pauseCtx->mapPageVtx);
-                    Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                    Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                     D_8082A6D4 = 0;
                 }
             } else {
@@ -528,7 +528,7 @@ void KaleidoScope_DrawWorldMap(PlayState* play, GraphicsContext* gfxCtx) {
                     pauseCtx->cursorItem[PAUSE_MAP] = pauseCtx->cursorPoint[PAUSE_WORLD_MAP];
                     pauseCtx->cursorSlot[PAUSE_MAP] = pauseCtx->cursorPoint[PAUSE_WORLD_MAP] + 0x1F;
                     KaleidoScope_SetCursorVtx(pauseCtx, pauseCtx->cursorSlot[PAUSE_MAP] * 4, pauseCtx->mapPageVtx);
-                    Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                    Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                     D_8082A6D4 = 0;
                 }
             }
@@ -539,7 +539,7 @@ void KaleidoScope_DrawWorldMap(PlayState* play, GraphicsContext* gfxCtx) {
         }
 
         if (oldCursorPoint != pauseCtx->cursorPoint[PAUSE_WORLD_MAP]) {
-            Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         }
     }
 

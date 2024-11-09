@@ -2,6 +2,8 @@
 
 #include <libultraship/libultraship.h>
 
+#define CVAR_INPUT_VIEWER(var) "gInputViewer." var
+
 typedef enum {
     BUTTON_OUTLINE_ALWAYS_SHOWN,
     BUTTON_OUTLINE_NOT_PRESSED,
@@ -19,6 +21,7 @@ class InputViewer : public Ship::GuiWindow {
 public:
     using GuiWindow::GuiWindow;
 
+    void Draw() override;
     void InitElement() override {};
     void DrawElement() override;
     void UpdateElement() override {};
@@ -26,8 +29,6 @@ public:
     InputViewer();
     ~InputViewer();
  
-    void Draw();
-
     private:
         void RenderButton(std::string btn, std::string btnOutline, int state, ImVec2 size, int outlineMode);
 };
@@ -42,6 +43,4 @@ public:
 
     InputViewerSettingsWindow();
     ~InputViewerSettingsWindow();
-
-    void Draw();
 };

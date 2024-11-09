@@ -233,7 +233,8 @@ void func_80A74398(Actor* thisx, PlayState* play) {
     Effect_Add(play, &this->blureIdx, EFFECT_BLURE1, 0, 0, &blureInit);
     func_80A74714(this);
 
-    uint8_t enemyRandoCCActive = CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) || CVarGetInteger("gCrowdControl", 0);
+    uint8_t enemyRandoCCActive = CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) ||
+                                 (CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("Enabled"), 0));
 
     if (this->switchFlags != 0xFF) {
         // In vanilla gameplay, Iron Knuckles are despawned based on specific flags in specific scenarios.
@@ -663,7 +664,8 @@ void func_80A75A38(EnIk* this, PlayState* play) {
                 Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos, 0xB0);
                 // Don't set flag when Enemy Rando or CrowdControl are on.
                 // Instead Iron Knuckles rely on the "clear room" flag.
-                if (this->switchFlags != 0xFF && !CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) && !CVarGetInteger("gCrowdControl", 0)) {
+                if (this->switchFlags != 0xFF && !CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) &&
+                    !(CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("Enabled"), 0))) {
                     Flags_SetSwitch(play, this->switchFlags);
                 }
                 Actor_Kill(&this->actor);
@@ -981,29 +983,29 @@ void EnIk_StartMusic(void) {
 
 void func_80A76C14(EnIk* this) {
     if (Animation_OnFrame(&this->skelAnime, 1.0f)) {
-        Audio_PlaySoundGeneral(NA_SE_EN_IRONNACK_WAKEUP, &this->actor.projectedPos, 4, &D_801333E0, &D_801333E0,
-                               &D_801333E8);
+        Audio_PlaySoundGeneral(NA_SE_EN_IRONNACK_WAKEUP, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                               &gSfxDefaultReverb);
     } else if (Animation_OnFrame(&this->skelAnime, 33.0f)) {
-        Audio_PlaySoundGeneral(NA_SE_EN_IRONNACK_WALK, &this->actor.projectedPos, 4, &D_801333E0, &D_801333E0,
-                               &D_801333E8);
+        Audio_PlaySoundGeneral(NA_SE_EN_IRONNACK_WALK, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                               &gSfxDefaultReverb);
     } else if (Animation_OnFrame(&this->skelAnime, 68.0f) || Animation_OnFrame(&this->skelAnime, 80.0f)) {
-        Audio_PlaySoundGeneral(NA_SE_EN_IRONNACK_ARMOR_DEMO, &this->actor.projectedPos, 4, &D_801333E0, &D_801333E0,
-                               &D_801333E8);
+        Audio_PlaySoundGeneral(NA_SE_EN_IRONNACK_ARMOR_DEMO, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                               &gSfxDefaultReverb);
     } else if (Animation_OnFrame(&this->skelAnime, 107.0f)) {
-        Audio_PlaySoundGeneral(NA_SE_EN_IRONNACK_FINGER_DEMO, &this->actor.projectedPos, 4, &D_801333E0, &D_801333E0,
-                               &D_801333E8);
+        Audio_PlaySoundGeneral(NA_SE_EN_IRONNACK_FINGER_DEMO, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                               &gSfxDefaultReverb);
     } else if (Animation_OnFrame(&this->skelAnime, 156.0f)) {
-        Audio_PlaySoundGeneral(NA_SE_EN_IRONNACK_ARMOR_DEMO, &this->actor.projectedPos, 4, &D_801333E0, &D_801333E0,
-                               &D_801333E8);
+        Audio_PlaySoundGeneral(NA_SE_EN_IRONNACK_ARMOR_DEMO, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                               &gSfxDefaultReverb);
     } else if (Animation_OnFrame(&this->skelAnime, 188.0f)) {
-        Audio_PlaySoundGeneral(NA_SE_EN_IRONNACK_WAVE_DEMO, &this->actor.projectedPos, 4, &D_801333E0, &D_801333E0,
-                               &D_801333E8);
+        Audio_PlaySoundGeneral(NA_SE_EN_IRONNACK_WAVE_DEMO, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                               &gSfxDefaultReverb);
     }
 }
 
 void func_80A76DDC(EnIk* this, PlayState* play, Vec3f* pos) {
-    Audio_PlaySoundGeneral(NA_SE_EN_TWINROBA_TRANSFORM, &this->actor.projectedPos, 4, &D_801333E0, &D_801333E0,
-                           &D_801333E8);
+    Audio_PlaySoundGeneral(NA_SE_EN_TWINROBA_TRANSFORM, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                           &gSfxDefaultReverb);
 }
 
 void func_80A76E2C(EnIk* this, PlayState* play, Vec3f* pos) {
@@ -1054,7 +1056,7 @@ s32 func_80A7707C(EnIk* this) {
     return SkelAnime_Update(&this->skelAnime);
 }
 
-CsCmdActorAction* EnIk_GetNpcAction(PlayState* play, s32 actionIdx) {
+CsCmdActorCue* EnIk_GetNpcAction(PlayState* play, s32 actionIdx) {
     if (play->csCtx.state != CS_STATE_IDLE) {
         return play->csCtx.npcActions[actionIdx];
     } else {
@@ -1063,7 +1065,7 @@ CsCmdActorAction* EnIk_GetNpcAction(PlayState* play, s32 actionIdx) {
 }
 
 void func_80A770C0(EnIk* this, PlayState* play, s32 actionIdx) {
-    CsCmdActorAction* npcAction = EnIk_GetNpcAction(play, actionIdx);
+    CsCmdActorCue* npcAction = EnIk_GetNpcAction(play, actionIdx);
 
     if (npcAction != NULL) {
         this->actor.world.pos.x = npcAction->startPos.x;
@@ -1110,8 +1112,8 @@ void func_80A77264(EnIk* this, PlayState* play, s32 arg2) {
 }
 
 void func_80A772A4(EnIk* this) {
-    Audio_PlaySoundGeneral(NA_SE_EN_IRONNACK_STAGGER_DEMO, &this->actor.projectedPos, 4, &D_801333E0, &D_801333E0,
-                           &D_801333E8);
+    Audio_PlaySoundGeneral(NA_SE_EN_IRONNACK_STAGGER_DEMO, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                           &gSfxDefaultReverb);
 }
 
 void func_80A772EC(EnIk* this, PlayState* play) {
@@ -1120,7 +1122,7 @@ void func_80A772EC(EnIk* this, PlayState* play) {
     f32 wDest;
 
     SkinMatrix_Vec3fMtxFMultXYZW(&play->viewProjectionMtxF, &this->actor.world.pos, &D_80A78FA0, &wDest);
-    Audio_PlaySoundGeneral(NA_SE_EN_IRONNACK_DEAD, &D_80A78FA0, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+    Audio_PlaySoundGeneral(NA_SE_EN_IRONNACK_DEAD, &D_80A78FA0, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
 }
 
 void func_80A7735C(EnIk* this, PlayState* play) {
@@ -1245,7 +1247,7 @@ void func_80A77844(EnIk* this, PlayState* play) {
 }
 
 void func_80A779DC(EnIk* this, PlayState* play) {
-    CsCmdActorAction* npcAction = EnIk_GetNpcAction(play, 4);
+    CsCmdActorCue* npcAction = EnIk_GetNpcAction(play, 4);
     u32 action;
     u32 currentNpcAction;
 
@@ -1439,28 +1441,10 @@ void func_80A781CC(Actor* thisx, PlayState* play) {
     if (!Play_InCsMode(play)) {
         this->actor.update = EnIk_Update;
         this->actor.draw = EnIk_Draw;
-        // Don't initiate nabooru defeat CS in rando
-        if (!(IS_RANDO)) {
+        if (GameInteractor_Should(VB_NABOORU_KNUCKLE_DEATH_SCENE, true, this)) {
             Cutscene_SetSegment(play, gSpiritBossNabooruKnuckleDefeatCs);
             gSaveContext.cutsceneTrigger = 1;
             Actor_SetScale(&this->actor, 0.01f);
-        } else {
-        // Because no CS in rando, we hide the death of the knuckle by spawning flames and kill the actor
-            if ((this->actor.colChkInfo.health <= 10)) {
-                s32 i;
-                Vec3f pos;
-                Vec3f sp7C = { 0.0f, 0.5f, 0.0f };
-                int flameAmount = 100;
-
-                for (i = flameAmount; i >= 0; i--) {
-                    pos.x = this->actor.world.pos.x + Rand_CenteredFloat(120.0f);
-                    pos.z = this->actor.world.pos.z + Rand_CenteredFloat(120.0f);
-                    pos.y = this->actor.world.pos.y + 20.0f + Rand_CenteredFloat(120.0f);
-                    EffectSsDeadDb_Spawn(play, &pos, &sp7C, &sp7C, 100, 0, 255, 255, 255, 255, 0, 0, 255, 1, 9,
-                                            true);
-                }
-                Actor_Kill(&this->actor);
-            }
         }
         Flags_SetEventChkInf(EVENTCHKINF_FINISHED_NABOORU_BATTLE);
         func_80A7735C(this, play);
@@ -1484,7 +1468,8 @@ void EnIk_Init(Actor* thisx, PlayState* play) {
     }
 
     // Immediately trigger Iron Knuckle for Enemy Rando and Crowd Control
-    if ((CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) || CVarGetInteger("gCrowdControl", 0)) && (thisx->params == 2 || thisx->params == 3)) {
+    if ((CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) || (CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("Enabled"), 0)))
+                        && (thisx->params == 2 || thisx->params == 3)) {
         this->skelAnime.playSpeed = 1.0f;
     }
 }

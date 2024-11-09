@@ -214,7 +214,7 @@ void EnHintnuts_SetupFreeze(EnHintnuts* this) {
     this->animFlagAndTimer = 0;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_NUTS_FAINT);
     if (sPuzzleCounter == -3) {
-        func_80078884(NA_SE_SY_ERROR);
+        Sfx_PlaySfxCentered(NA_SE_SY_ERROR);
         sPuzzleCounter = -4;
     }
     this->actionFunc = EnHintnuts_Freeze;

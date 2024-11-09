@@ -270,7 +270,7 @@ void func_80A56994(EnHeishi4* this, PlayState* play) {
     if ((this->unk_282 == Message_GetState(&play->msgCtx)) && Message_ShouldAdvance(play)) {
         Message_CloseTextbox(play);
         Flags_SetInfTable(INFTABLE_6C);
-        func_8002DF54(play, NULL, 8);
+        Player_SetCsActionWithHaltedActors(play, NULL, 8);
         this->actionFunc = func_80A56A50;
     }
 }
@@ -288,7 +288,7 @@ void func_80A56ACC(EnHeishi4* this, PlayState* play) {
 
     SkelAnime_Update(&this->skelAnime);
     if (this->unk_288 <= currentFrame) {
-        func_8002DF54(play, NULL, 7);
+        Player_SetCsActionWithHaltedActors(play, NULL, 7);
         this->actionFunc = func_80A5673C;
     }
 }
@@ -358,9 +358,9 @@ void EnHeishi4_MarketSneak(EnHeishi4* this, PlayState* play) {
         switch (play->msgCtx.choiceIndex) {
             case 0: //yes
                 if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES) != RO_GENERIC_OFF){
-                    play->nextEntranceIndex = Entrance_OverrideNextIndex(ENTR_HYRULE_FIELD_7); // Market Entrance -> HF
+                    play->nextEntranceIndex = Entrance_OverrideNextIndex(ENTR_HYRULE_FIELD_ON_BRIDGE_SPAWN); // Market Entrance -> HF
                 } else {
-                    play->nextEntranceIndex = ENTR_HYRULE_FIELD_0; // HF Near bridge (OoT cutscene entrance) to not fall in the water
+                    play->nextEntranceIndex = ENTR_HYRULE_FIELD_PAST_BRIDGE_SPAWN; // HF Near bridge (OoT cutscene entrance) to not fall in the water
                 } 
                 play->transitionTrigger = TRANS_TRIGGER_START;
                 play->transitionType = TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_WHITE, TCS_FAST);

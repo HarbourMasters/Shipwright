@@ -1,7 +1,7 @@
 #include "OTRGlobals.h"
 #include <libultraship/libultraship.h>
 #include "soh/resource/type/Scene.h"
-#include <Utils/StringHelper.h>
+#include <utils/StringHelper.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "global.h"
 #include "vt.h"
@@ -19,19 +19,19 @@ Ship::IResource* OTRPlay_LoadFile(PlayState* play, const char* fileName)
     return res.get();
 }
 
-extern "C" void OTRPlay_SpawnScene(PlayState* play, s32 sceneNum, s32 spawn) {
-    SceneTableEntry* scene = &gSceneTable[sceneNum];
+extern "C" void OTRPlay_SpawnScene(PlayState* play, s32 sceneId, s32 spawn) {
+    SceneTableEntry* scene = &gSceneTable[sceneId];
 
     scene->unk_13 = 0;
     play->loadedScene = scene;
-    play->sceneNum = sceneNum;
+    play->sceneNum = sceneId;
     play->sceneConfig = scene->config;
 
     //osSyncPrintf("\nSCENE SIZE %fK\n", (scene->sceneFile.vromEnd - scene->sceneFile.vromStart) / 1024.0f);
 
     // Scenes considered "dungeon" with a MQ variant
-    int16_t inNonSharedScene = (sceneNum >= SCENE_DEKU_TREE && sceneNum <= SCENE_ICE_CAVERN) ||
-                               sceneNum == SCENE_GERUDO_TRAINING_GROUND || sceneNum == SCENE_INSIDE_GANONS_CASTLE;
+    int16_t inNonSharedScene = (sceneId >= SCENE_DEKU_TREE && sceneId <= SCENE_ICE_CAVERN) ||
+                               sceneId == SCENE_GERUDO_TRAINING_GROUND || sceneId == SCENE_INSIDE_GANONS_CASTLE;
 
     std::string sceneVersion = "shared";
     if (inNonSharedScene) {
@@ -58,6 +58,9 @@ extern "C" void OTRPlay_SpawnScene(PlayState* play, s32 sceneNum, s32 spawn) {
     auto roomSize = func_80096FE8(play, &play->roomCtx);
 
     osSyncPrintf("ROOM SIZE=%fK\n", roomSize / 1024.0f);
+
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSceneInit>(play->sceneNum);
+    SPDLOG_INFO("Scene Init - sceneNum: {0:#x}, entranceIndex: {1:#x}", play->sceneNum, gSaveContext.entranceIndex);
 }
 
 void OTRPlay_InitScene(PlayState* play, s32 spawn) {
@@ -77,19 +80,12 @@ void OTRPlay_InitScene(PlayState* play, s32 spawn) {
     gSaveContext.worldMapArea = 0;
     OTRScene_ExecuteCommands(play, (SOH::Scene*)play->sceneSegment);
     Play_InitEnvironment(play, play->skyboxId);
-    // Unpause the timer for Boss Rush when the scene loaded isn't the Chamber of Sages.
-    if (IS_BOSS_RUSH && play->sceneNum != SCENE_CHAMBER_OF_THE_SAGES) {
-        gSaveContext.isBossRushPaused = 0;
-    }
     /* auto data = static_cast<LUS::Vertex*>(Ship::Context::GetInstance()
                                                ->GetResourceManager()
                                                ->ResourceLoad("object_link_child\\object_link_childVtx_01FE08")
                                                .get());
 
     auto data2 = ResourceMgr_LoadVtxByCRC(0x68d4ea06044e228f);*/
-    
-    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSceneInit>(play->sceneNum);
-    SPDLOG_INFO("Scene Init - sceneNum: {0:#x}, entranceIndex: {1:#x}", play->sceneNum, gSaveContext.entranceIndex);
 
     volatile int a = 0;
 }

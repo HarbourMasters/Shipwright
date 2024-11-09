@@ -918,7 +918,7 @@ void EnGeldB_SpinAttack(EnGeldB* this, PlayState* play) {
             if (&player->actor == this->swordCollider.base.at) {
                 func_8002F71C(play, &this->actor, 6.0f, this->actor.yawTowardsPlayer, 6.0f);
                 this->spinAttackState = 2;
-                func_8002DF54(play, &this->actor, 0x18);
+                Player_SetCsActionWithHaltedActors(play, &this->actor, 0x18);
                 Message_StartTextbox(play, 0x6003, &this->actor);
                 this->timer = 30;
                 this->actor.speedXZ = 0.0f;
@@ -1383,8 +1383,8 @@ void EnGeldB_CollisionCheck(EnGeldB* this, PlayState* play) {
                         if (key != NULL) {
                             key->actor.world.rot.y = Math_Vec3f_Yaw(&key->actor.world.pos, &this->actor.home.pos);
                             key->actor.speedXZ = 6.0f;
-                            Audio_PlaySoundGeneral(NA_SE_SY_TRE_BOX_APPEAR, &D_801333D4, 4, &D_801333E0, &D_801333E0,
-                                                   &D_801333E8);
+                            Audio_PlaySoundGeneral(NA_SE_SY_TRE_BOX_APPEAR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                                                   &gSfxDefaultReverb);
                         }
                     }
                     EnGeldB_SetupDefeated(this);

@@ -260,7 +260,7 @@ void func_80A8F8D0(EnKakasi* this, PlayState* play) {
 void func_80A8F9C8(EnKakasi* this, PlayState* play) {
     func_80A8F28C(this);
     SkelAnime_Update(&this->skelanime);
-    func_8002DF54(play, NULL, 8);
+    Player_SetCsActionWithHaltedActors(play, NULL, 8);
 
     if (this->unk_196 == Message_GetState(&play->msgCtx) && Message_ShouldAdvance(play)) {
 
@@ -269,7 +269,7 @@ void func_80A8F9C8(EnKakasi* this, PlayState* play) {
         }
         this->camId = OnePointCutscene_Init(play, 2270, -99, &this->actor, MAIN_CAM);
         play->msgCtx.msgMode = MSGMODE_PAUSED;
-        func_8002DF54(play, NULL, 8);
+        Player_SetCsActionWithHaltedActors(play, NULL, 8);
         func_8010BD58(play, OCARINA_ACTION_SCARECROW_LONG_PLAYBACK);
         this->actionFunc = func_80A8FAA4;
     }
@@ -308,7 +308,7 @@ void func_80A8FBB8(EnKakasi* this, PlayState* play) {
     if (this->unk_196 == Message_GetState(&play->msgCtx) && Message_ShouldAdvance(play)) {
         func_8005B1A4(play->cameraPtrs[this->camId]);
         Message_CloseTextbox(play);
-        func_8002DF54(play, NULL, 7);
+        Player_SetCsActionWithHaltedActors(play, NULL, 7);
         this->actionFunc = func_80A8F660;
     }
 }

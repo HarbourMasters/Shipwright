@@ -398,7 +398,8 @@ s32 func_800AAA9C(View* view) {
         }
     }
 
-    if (dont_interpolate) {
+    // Ignore camera heuristics when paused as the camera moves a lot in Kaleido, allowing it to be interpolate
+    if (dont_interpolate && R_PAUSE_MENU_MODE == 0) {
         FrameInterpolation_DontInterpolateCamera();
     }
 
@@ -432,7 +433,7 @@ s32 func_800AAA9C(View* view) {
         }
         osSyncPrintf("\n");
     }
-    if (CVarGetInteger("gMirroredWorld", 0)) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0)) {
         MtxF flipF;
         SkinMatrix_Clear(&flipF);
         flipF.xx = -1.0;
@@ -553,7 +554,7 @@ s32 func_800AB2C4(View* view) {
             (f32)gScreenHeight * 0.5f, -30, view->zFar, view->scale);
 
     // This is for z-targeting
-    if (CVarGetInteger("gMirroredWorld", 0)) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0)) {
         MtxF flipF;
         SkinMatrix_Clear(&flipF);
         flipF.xx = -1.0;

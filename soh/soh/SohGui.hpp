@@ -16,6 +16,7 @@
 #include "Enhancements/debugger/actorViewer.h"
 #include "Enhancements/debugger/colViewer.h"
 #include "Enhancements/debugger/debugSaveEditor.h"
+#include "Enhancements/debugger/hookDebugger.h"
 #include "Enhancements/debugger/dlViewer.h"
 #include "Enhancements/debugger/valueViewer.h"
 #include "Enhancements/gameplaystatswindow.h"
@@ -23,6 +24,7 @@
 #include "Enhancements/randomizer/randomizer_entrance_tracker.h"
 #include "Enhancements/randomizer/randomizer_item_tracker.h"
 #include "Enhancements/randomizer/randomizer_settings_window.h"
+#include "Enhancements/timesplits/TimeSplits.h"
 #include "SohModals.h"
 
 #ifdef __cplusplus

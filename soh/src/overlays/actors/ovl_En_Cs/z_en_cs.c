@@ -248,7 +248,7 @@ void EnCs_HandleTalking(EnCs* this, PlayState* play) {
         }
 
         if (this->actor.textId == 0x2023) {
-            func_80078884(NA_SE_SY_TRE_BOX_APPEAR);
+            Sfx_PlaySfxCentered(NA_SE_SY_TRE_BOX_APPEAR);
         }
 
         this->talkState = 1;

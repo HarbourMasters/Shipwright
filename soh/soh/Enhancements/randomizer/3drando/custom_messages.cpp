@@ -1,5 +1,5 @@
 #include "custom_messages.hpp"
-#include "shops.hpp"
+#include "../../custom-message/CustomMessageManager.h"
 #include "z64item.h"
 
 #include <array>
@@ -158,7 +158,7 @@ constexpr std::array DungeonColors = {
         CreateMessage(textId, unk_04, textBoxType, textBoxPosition, text.GetEnglish(), text.GetFrench(), text.GetSpanish());
     }
 
-    Text AddColorsAndFormat(Text text, const std::vector<uint8_t>& colors /*= {}*/) {
+    Text AddColorsAndFormat(Text text, const std::vector<std::string>& colors /*= {}*/) {
 
       //for each language
       for (std::string* textStr : {&text.english, &text.french, &text.spanish}) {
@@ -280,12 +280,12 @@ constexpr std::array DungeonColors = {
     std::string SET_SPEED(uint8_t x) {
         return "\x7F\x10"s + char(x);
     }
-    std::string SKULLTULAS_DESTROYED() { return  "\x7F\x15"s; }
+    std::string SKULLTULAS_DESTROYED() { return  "\x7F\x15"s; } //RANDOTODO just refernce the versions in CustomMessage
     std::string CURRENT_TIME()         { return  "\x7F\x17"s; }
     std::string UNSKIPPABLE()          { return  "\x7F\x19"s; }
-    std::string TWO_WAY_CHOICE()       { return  "\x7F\x1A\xFF\xFF\xFF\xFF"s; }
+    std::string TWO_WAY_CHOICE()       { return  "\x1B"s; }
     std::string NEWLINE()              { return  "\x7F\x1C"s; }
-    std::string COLOR(uint8_t x)       { return  "\x7F\x1D"s + char(x); }
+    std::string COLOR(std::string x)   { return  "\x7F\x1D"s + x; }
     std::string CENTER_TEXT()          { return  "\x7F\x1E"s; }
     std::string IF_NOT_MQ()            { return  "\x7F\x29"s; }
     std::string MQ_ELSE()              { return  "\x7F\x2A"s; }

@@ -28,7 +28,6 @@ typedef struct EnSyatekiMan {
     /* 0x0220 */ Actor* tempGallery;
     /* 0x0224 */ EnSyatekiManOtherFunc blinkFunc; // Seems to be part of a blink system with unk_20C and unk_20E, but it's unused.
     /* 0x0228 */ s16 csCam;
-    /*        */ GetItemEntry getItemEntry;
 } EnSyatekiMan; // size = 0x022C
 
 #endif

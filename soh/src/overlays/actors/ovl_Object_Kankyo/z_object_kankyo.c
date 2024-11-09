@@ -136,27 +136,6 @@ void ObjectKankyo_Init(Actor* thisx, PlayState* play) {
                 this->effects[5].size = 0.0f;
             }
 
-            if (IS_RANDO) {
-                if (Flags_GetRandomizerInf(RAND_INF_TRIALS_DONE_FOREST_TRIAL)) {
-                    this->effects[0].size = 0.0f;
-                }
-                if (Flags_GetRandomizerInf(RAND_INF_TRIALS_DONE_WATER_TRIAL)) {
-                    this->effects[1].size = 0.0f;
-                }
-                if (Flags_GetRandomizerInf(RAND_INF_TRIALS_DONE_SHADOW_TRIAL)) {
-                    this->effects[2].size = 0.0f;
-                }
-                if (Flags_GetRandomizerInf(RAND_INF_TRIALS_DONE_FIRE_TRIAL)) {
-                    this->effects[3].size = 0.0f;
-                }
-                if (Flags_GetRandomizerInf(RAND_INF_TRIALS_DONE_LIGHT_TRIAL)) {
-                    this->effects[4].size = 0.0f;
-                }
-                if (Flags_GetRandomizerInf(RAND_INF_TRIALS_DONE_SPIRIT_TRIAL)) {
-                    this->effects[5].size = 0.0f;
-                }
-            }
-
             if (gSaveContext.cutsceneTrigger != 0) {
                 if (gSaveContext.entranceIndex == ENTR_INSIDE_GANONS_CASTLE_2) {
                     this->effects[0].size = 0.1f;
@@ -229,19 +208,19 @@ void ObjectKankyo_Fairies(ObjectKankyo* this, PlayState* play) {
         func_800F436C(&sSoundPos, NA_SE_EV_NAVY_FLY - SFX_FLAG, (0.4f * dist) + 0.6f);
         switch (play->csCtx.frames) {
             case 473:
-                func_800788CC(NA_SE_VO_NA_HELLO_3);
+                Sfx_PlaySfxCentered2(NA_SE_VO_NA_HELLO_3);
                 break;
 
             case 583:
-                func_800F4524(&D_801333D4, NA_SE_VO_NA_HELLO_2, 32);
+                func_800F4524(&gSfxDefaultPos, NA_SE_VO_NA_HELLO_2, 32);
                 break;
 
             case 763:
-                func_80078884(NA_SE_EV_NAVY_CRASH - SFX_FLAG);
+                Sfx_PlaySfxCentered(NA_SE_EV_NAVY_CRASH - SFX_FLAG);
                 break;
 
             case 771:
-                func_80078884(NA_SE_VO_RT_THROW);
+                Sfx_PlaySfxCentered(NA_SE_VO_RT_THROW);
                 break;
         }
     }

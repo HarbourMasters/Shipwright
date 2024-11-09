@@ -1,5 +1,6 @@
 #include "z_en_shopnuts.h"
 #include "objects/object_shopnuts/object_shopnuts.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE)
 
@@ -69,18 +70,11 @@ void EnShopnuts_Init(Actor* thisx, PlayState* play) {
     CollisionCheck_SetInfo(&this->actor.colChkInfo, NULL, &sColChkInfoInit);
     Collider_UpdateCylinder(&this->actor, &this->collider);
 
-    if (IS_RANDO) {
-        s16 respawnData = gSaveContext.respawn[RESPAWN_MODE_RETURN].data & ((1 << 8) - 1);
-        ScrubIdentity scrubIdentity = Randomizer_IdentifyScrub(play->sceneNum, this->actor.params, respawnData);
-
-        if (scrubIdentity.isShuffled && Flags_GetRandomizerInf(scrubIdentity.randomizerInf)) {
-            Actor_Kill(&this->actor);
-        }
-    }
-
-    if (((this->actor.params == 0x0002) && (Flags_GetItemGetInf(ITEMGETINF_0B))) ||
+    if (GameInteractor_Should(VB_BUSINESS_SCRUB_DESPAWN,
+        ((this->actor.params == 0x0002) && (Flags_GetItemGetInf(ITEMGETINF_0B))) ||
         ((this->actor.params == 0x0009) && (Flags_GetInfTable(INFTABLE_192))) ||
-        ((this->actor.params == 0x000A) && (Flags_GetInfTable(INFTABLE_193)))) {
+        ((this->actor.params == 0x000A) && (Flags_GetInfTable(INFTABLE_193))),
+    this)) {
         Actor_Kill(&this->actor);
     } else {
         EnShopnuts_SetupWait(this);

@@ -92,10 +92,6 @@ if (NOT TARGET libultraship)
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../libultraship ${CMAKE_BINARY_DIR}/libultraship)
 endif()
 
-if (NOT TARGET ZAPDUtils)
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../ZAPDTR/ZAPDUtils ${CMAKE_BINARY_DIR}/ZAPDUtils)
-endif()
-
 if (NOT TARGET ZAPDLib)
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../ZAPDTR/ZAPD ${CMAKE_BINARY_DIR}/ZAPD)
 endif()
@@ -124,98 +120,60 @@ source_group("include" FILES ${Header_Files__include})
 # }}}
 
 # soh (root)
-file(GLOB soh__ RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "soh/*.c" "soh/*.cpp" "soh/*.h")
-source_group("soh" FILES ${soh__})
+file(GLOB_RECURSE soh__ RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "soh/*.c" "soh/*.cpp" "soh/*.h" "soh/*.hpp")
 
+# Add specific files that don't match the pattern
+list(APPEND soh__ ${CMAKE_CURRENT_SOURCE_DIR}/soh/Enhancements/savestates_extern.inc)
+list(APPEND soh__ ${CMAKE_CURRENT_SOURCE_DIR}/soh/Enhancements/speechsynthesizer/DarwinSpeechSynthesizer.mm)
+
+# Create source groups that match the real file directory paths
+foreach(source IN LISTS soh__)
+    get_filename_component(source_path "${source}" PATH)
+    string(REPLACE "/" "\\" source_path_adjusted "${source_path}")
+    source_group("${source_path_adjusted}" FILES "${source}")
+endforeach()
+
+# Fix UTF-8 issues for MSVC
 if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     set_source_files_properties(soh/OTRGlobals.cpp PROPERTIES COMPILE_FLAGS "/utf-8")
+    set_source_files_properties(soh/Enhancements/tts/tts.cpp PROPERTIES COMPILE_FLAGS "/utf-8")
 endif()
 
-# soh/config {{{
-file(GLOB_RECURSE soh__config RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
-    "soh/config/*.h"
-    "soh/config/*.cpp"
-)
-# }}}
-
-# soh/enhancements {{{
-file(GLOB_RECURSE soh__Enhancements RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
-    "soh/Enhancements/*.c"
-    "soh/Enhancements/*.cpp"
-    "soh/Enhancements/*.h"
-    "soh/Enhancements/*.hpp"
-    "soh/Enhancements/*_extern.inc"
-    "soh/Enhancements/*.mm"
-)
-
-list(REMOVE_ITEM soh__Enhancements "soh/Enhancements/gamecommand.h")
-list(FILTER soh__Enhancements EXCLUDE REGEX "soh/Enhancements/gfx.*")
-
-# handle crowd control removals
-list(REMOVE_ITEM soh__Enhancements "soh/Enhancements/crowd-control/soh.cs")
-list(REMOVE_ITEM soh__Enhancements "soh/Enhancements/crowd-control/soh.ccpak")
+# handle Network removals
 if (!BUILD_REMOTE_CONTROL)
-    list(FILTER soh__Enhancements EXCLUDE REGEX "soh/Enhancements/crowd-control/*")
+    list(FILTER soh__ EXCLUDE REGEX "soh/Enhancements/crowd-control/*")
 endif()
 
 # handle speechsynthesizer removals
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
-    list(FILTER soh__Enhancements EXCLUDE REGEX "soh/Enhancements/speechsynthesizer/Darwin*")
+    list(FILTER soh__ EXCLUDE REGEX "soh/Enhancements/speechsynthesizer/Darwin*")
 elseif (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-    list(FILTER soh__Enhancements EXCLUDE REGEX "soh/Enhancements/speechsynthesizer/SAPI*")
+    list(FILTER soh__ EXCLUDE REGEX "soh/Enhancements/speechsynthesizer/SAPI*")
 else()
-    list(FILTER soh__Enhancements EXCLUDE REGEX "soh/Enhancements/speechsynthesizer/(Darwin|SAPI).*")
+    list(FILTER soh__ EXCLUDE REGEX "soh/Enhancements/speechsynthesizer/(Darwin|SAPI).*")
 endif()
 
-source_group("soh\\Enhancements" REGULAR_EXPRESSION "soh/Enhancements/*")
-source_group("soh\\Enhancements\\audio" REGULAR_EXPRESSION "soh/Enhancements/audio/*")
-source_group("soh\\Enhancements\\controls" REGULAR_EXPRESSION "soh/Enhancements/controls/*")
-source_group("soh\\Enhancements\\cosmetics" REGULAR_EXPRESSION "soh/Enhancements/cosmetics/*")
-source_group("soh\\Enhancements\\crowd-control" REGULAR_EXPRESSION "soh/Enhancements/crowd-control/*")
-source_group("soh\\Enhancements\\custom-message" REGULAR_EXPRESSION "soh/Enhancements/custom-message/*")
-source_group("soh\\Enhancements\\debugger" REGULAR_EXPRESSION "soh/Enhancements/debugger/*")
-source_group("soh\\Enhancements\\game-interactor" REGULAR_EXPRESSION "soh/Enhancements/game-interactor/*")
-source_group("soh\\Enhancements\\item-tables" REGULAR_EXPRESSION "soh/Enhancements/item-tables/*")
-source_group("soh\\Enhancements\\randomizer" REGULAR_EXPRESSION "soh/Enhancements/randomizer/*")
-source_group("soh\\Enhancements\\randomizer\\3drando" REGULAR_EXPRESSION "soh/Enhancements/randomizer/3drando/*")
-source_group("soh\\Enhancements\\randomizer\\3drando\\hint_list" REGULAR_EXPRESSION "soh/Enhancements/randomizer/3drando/hint_list/*")
-source_group("soh\\Enhancements\\randomizer\\3drando\\location_access" REGULAR_EXPRESSION "soh/Enhancements/randomizer/3drando/location_access/*")
-source_group("soh\\Enhancements\\speechsynthesizer" REGULAR_EXPRESSION "soh/Enhancements/speechsynthesizer/*")
-source_group("soh\\Enhancements\\tts" REGULAR_EXPRESSION "soh/Enhancements/tts/*")
-
-if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    set_source_files_properties(soh/Enhancements/tts/tts.cpp PROPERTIES COMPILE_FLAGS "/utf-8")
-endif()
-# }}}
+# soh/Extractor {{{
+list(FILTER ship__ EXCLUDE REGEX "soh/Extractor/*")
 
 if(NOT CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch|CafeOS")
-    # soh/Extractor {{{
     file(GLOB_RECURSE soh__Extractor RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
         "soh/Extractor/*.c"
         "soh/Extractor/*.cpp"
         "soh/Extractor/*.h"
         "soh/Extractor/*.hpp"
     )
-    # }}}
 else()
     file(GLOB_RECURSE soh__Extractor RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
         "soh/Extractor/*.h"
         "soh/Extractor/*.hpp"
     )
-# }}}
 endif()
-
-# soh/resource {{{
-file(GLOB_RECURSE soh__Resource RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "soh/resource/*.cpp" "soh/resource/*.h")
-
-source_group("soh\\resource\\type" REGULAR_EXPRESSION "soh/resource/type/*")
-source_group("soh\\resource\\type\\scenecommand" REGULAR_EXPRESSION "soh/resource/type/scenecommand/*")
-source_group("soh\\resource\\importer" REGULAR_EXPRESSION "soh/resource/importer/*")
-source_group("soh\\resource\\importer\\scenecommand" REGULAR_EXPRESSION "soh/resource/importer/scenecommand/*")
 # }}}
 
 # src (decomp) {{{
 file(GLOB_RECURSE src__ RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "src/*.c" "src/*.h")
+set_source_files_properties(${src__} PROPERTIES COMPILE_OPTIONS "${WARNING_OVERRIDE}")
 
 list(APPEND src__ ${CMAKE_CURRENT_SOURCE_DIR}/Resource.rc)
 list(FILTER src__ EXCLUDE REGEX "src/dmadata/*")
@@ -250,10 +208,7 @@ set(ALL_FILES
     ${Header_Files}
     ${Header_Files__include}
     ${soh__}
-    ${soh__config}
-    ${soh__Enhancements}
     ${soh__Extractor}
-    ${soh__Resource}
     ${src__}
 )
 
@@ -390,7 +345,6 @@ target_include_directories(${PROJECT_NAME} PRIVATE assets
 	${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/Lib/libjpeg/include/
     ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/graphic/Fast3D/U64/PR
     ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/graphic
-	${CMAKE_CURRENT_SOURCE_DIR}/../ZAPDTR/ZAPDUtils
     ${CMAKE_CURRENT_SOURCE_DIR}/../ZAPDTR/ZAPD/resource/type
 	${SDL2-INCLUDE}
     ${SDL2-NET-INCLUDE}
@@ -412,6 +366,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			">"
             "$<$<BOOL:${BUILD_REMOTE_CONTROL}>:ENABLE_REMOTE_CONTROL>"
 			"INCLUDE_GAME_PRINTF;"
+            "F3DEX_GBI_2"
 			"UNICODE;"
 			"_UNICODE"
 			STORMLIB_NO_AUTO_LINK
@@ -430,6 +385,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 				"NDEBUG;"
 			">"
 			"INCLUDE_GAME_PRINTF;"
+            "F3DEX_GBI_2"
 			"WIN32;"
 			"UNICODE;"
 			"_UNICODE"
@@ -445,6 +401,7 @@ elseif (CMAKE_SYSTEM_NAME STREQUAL "CafeOS")
 		"$<$<CONFIG:Release>:"
 			"NDEBUG"
 		">"
+        "F3DEX_GBI_2"
         "SPDLOG_ACTIVE_LEVEL=3;"
 		"SPDLOG_NO_THREAD_ID;"
         "SPDLOG_NO_TLS;"
@@ -458,6 +415,7 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU|Clang|AppleClang")
 		"$<$<CONFIG:Release>:"
 			"NDEBUG"
 		">"
+        "F3DEX_GBI_2"
         "$<$<BOOL:${BUILD_REMOTE_CONTROL}>:ENABLE_REMOTE_CONTROL>"
 		"SPDLOG_ACTIVE_LEVEL=0;"
 		"_CONSOLE;"
@@ -552,6 +510,7 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
             -Wno-parentheses
             -Wno-narrowing
             -Wno-missing-braces
+            -Wno-int-conversion
             $<$<COMPILE_LANGUAGE:C>:
                 -Werror-implicit-function-declaration
                 -Wno-incompatible-pointer-types
@@ -648,6 +607,9 @@ endif()
 ################################################################################
 # Pre build events
 ################################################################################
+if (MSVC)
+	set(MSVC_CMD ${CMAKE_COMMAND} -E copy_directory $<TARGET_FILE_DIR:soh>/assets ${CMAKE_BINARY_DIR}/soh/assets)
+endif()
 if(NOT CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch|CafeOS")
     add_custom_command(
 		TARGET ${PROJECT_NAME}
@@ -660,13 +622,13 @@ if(NOT CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch|CafeOS")
         COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/OTRExporter/CFG/ActorList_OoTMqDbg.txt $<TARGET_FILE_DIR:soh>/assets/extractor/symbols
         COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/OTRExporter/CFG/ObjectList_OoTMqDbg.txt $<TARGET_FILE_DIR:soh>/assets/extractor/symbols
 	    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/OTRExporter/CFG/SymbolMap_OoTMqDbg.txt $<TARGET_FILE_DIR:soh>/assets/extractor/symbols
+		COMMAND ${MSVC_CMD}
     )
 endif()
 ################################################################################
 # Dependencies
 ################################################################################
 add_dependencies(${PROJECT_NAME}
-    ZAPDUtils
     libultraship
 )
 if(NOT CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch|CafeOS")
@@ -680,7 +642,6 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
 		set(ADDITIONAL_LIBRARY_DEPENDENCIES
 			"libultraship;"
-			"ZAPDUtils;"
 			"ZAPDLib;"
 			"glu32;"
 			"SDL2::SDL2;"
@@ -695,7 +656,6 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
 		set(ADDITIONAL_LIBRARY_DEPENDENCIES
 			"libultraship;"
-			"ZAPDUtils;"
 			"ZAPDLib;"
 			"glu32;"
 			"SDL2::SDL2;"
@@ -713,7 +673,6 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "NintendoSwitch")
     find_package(Threads REQUIRED)
     set(ADDITIONAL_LIBRARY_DEPENDENCIES
         "libultraship;"
-        "ZAPDUtils;"
         SDL2::SDL2
         -lglad
         Threads::Threads
@@ -735,7 +694,6 @@ else()
     find_package(Threads REQUIRED)
  	set(ADDITIONAL_LIBRARY_DEPENDENCIES
         "libultraship;"
-        "ZAPDUtils;"
 		"ZAPDLib;"
 		SDL2::SDL2
         "$<$<BOOL:${BUILD_REMOTE_CONTROL}>:SDL2_net::SDL2_net>"

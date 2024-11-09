@@ -196,7 +196,7 @@ void UseBow(Actor* thisx, PlayState* play, u8 started, u8 arrowType) {
         if (this->itemTimer <= 0) {
             if (AMMO(ITEM_BOW) > 0) {
                 if (arrowType >= 1 && !Magic_RequestChange(play, magicArrowCosts[arrowType], MAGIC_CONSUME_NOW)) {
-                    func_80078884(NA_SE_SY_ERROR);
+                    Sfx_PlaySfxCentered(NA_SE_SY_ERROR);
                     this->canMove = 1;
                     return;
                 }
@@ -244,7 +244,7 @@ void UseSlingshot(Actor* thisx, PlayState* play, u8 started) {
                 newarrow->parent = NULL;
                 Inventory_ChangeAmmo(ITEM_SLINGSHOT, -1);
             } else {
-                func_80078884(NA_SE_SY_ERROR);
+                Sfx_PlaySfxCentered(NA_SE_SY_ERROR);
             }
         }
     }
@@ -261,7 +261,7 @@ void UseBombs(Actor* thisx, PlayState* play, u8 started) {
                             this->actor.world.pos.z, 0, 0, 0, 0, false);
                 Inventory_ChangeAmmo(ITEM_BOMB, -1);
             } else {
-                func_80078884(NA_SE_SY_ERROR);
+                Sfx_PlaySfxCentered(NA_SE_SY_ERROR);
             }
         }
     }
@@ -302,7 +302,7 @@ void UseBombchus(Actor* thisx, PlayState* play, u8 started) {
                 bomb->timer = 0;
                 Inventory_ChangeAmmo(ITEM_BOMBCHU, -1);
             } else {
-                func_80078884(NA_SE_SY_ERROR);
+                Sfx_PlaySfxCentered(NA_SE_SY_ERROR);
             }
         }
     }
@@ -322,7 +322,7 @@ void UseDekuStick(Actor* thisx, PlayState* play, u8 started) {
             if (AMMO(ITEM_STICK) > 0) {
                 func_808328EC(this, NA_SE_EV_FLAME_IGNITION);
             } else {
-                func_80078884(NA_SE_SY_ERROR);
+                Sfx_PlaySfxCentered(NA_SE_SY_ERROR);
             }
         }
 
@@ -358,7 +358,7 @@ void UseNuts(Actor* thisx, PlayState* play, u8 started) {
                             this->actor.world.pos.z, 0x1000, this->actor.world.rot.y, 0, ARROW_NUT, false);
                 Inventory_ChangeAmmo(ITEM_NUT, -1);
             } else {
-                func_80078884(NA_SE_SY_ERROR);
+                Sfx_PlaySfxCentered(NA_SE_SY_ERROR);
             }
         }
     }
@@ -415,12 +415,12 @@ void UseLens(Actor* thisx, PlayState* play, u8 started) {
 
     if (this->itemTimer <= 0) {
         if (started == 1) {
-            func_80078884(NA_SE_SY_GLASSMODE_ON);
+            Sfx_PlaySfxCentered(NA_SE_SY_GLASSMODE_ON);
             this->shouldDraw = 0;
         }
 
         if (started == 0) {
-            func_80078884(NA_SE_SY_GLASSMODE_OFF);
+            Sfx_PlaySfxCentered(NA_SE_SY_GLASSMODE_OFF);
             this->shouldDraw = 1;
         }
     }
@@ -436,7 +436,7 @@ void UseBeans(Actor* thisx, PlayState* play, u8 started) {
                 if (gSaveContext.rupees >= 100 && GiveItemEntryWithoutActor(play, this->entry)) {
                     Rupees_ChangeBy(-100);
                 } else {
-                    func_80078884(NA_SE_SY_ERROR);
+                    Sfx_PlaySfxCentered(NA_SE_SY_ERROR);
                 }
             }
         }
@@ -580,7 +580,7 @@ void EnPartner_Update(Actor* thisx, PlayState* play) {
 
     Input sControlInput = play->state.input[this->actor.params];
 
-    f32 relX = sControlInput.cur.stick_x / 10.0f * (CVarGetInteger("gMirroredWorld", 0) ? -1 : 1);
+    f32 relX = sControlInput.cur.stick_x / 10.0f * (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0) ? -1 : 1);
     f32 relY = sControlInput.cur.stick_y / 10.0f;
 
     Vec3f camForward = { GET_ACTIVE_CAM(play)->at.x - GET_ACTIVE_CAM(play)->eye.x, 0.0f,
@@ -689,7 +689,7 @@ void EnPartner_Update(Actor* thisx, PlayState* play) {
 
         uint16_t partnerButtons[7] = { BTN_CLEFT, BTN_CDOWN, BTN_CRIGHT, BTN_DUP, BTN_DDOWN, BTN_DLEFT, BTN_DRIGHT};
         uint8_t buttonMax = 3;
-        if (CVarGetInteger("gDpadEquips", 0) != 0) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("DpadEquips"), 0) != 0) {
             buttonMax = ARRAY_COUNT(gSaveContext.equips.cButtonSlots);
         }
 
@@ -880,7 +880,7 @@ void EnPartner_Draw(Actor* thisx, PlayState* play) {
     gSPEndDisplayList(dListHead++);
     gDPSetEnvColor(POLY_XLU_DISP++, (u8)this->outerColor.r, (u8)this->outerColor.g, (u8)this->outerColor.b,
                    (u8)(envAlpha * alphaScale));
-    POLY_XLU_DISP = SkelAnime_Draw(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
+    POLY_XLU_DISP = SkelAnime_DrawSkeleton2(play, &this->skelAnime,
                                    EnPartner_OverrideLimbDraw, NULL, this, POLY_XLU_DISP);
 
     CLOSE_DISPS(play->state.gfxCtx);

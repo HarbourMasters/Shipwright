@@ -57,4 +57,6 @@ typedef struct EnGe1 {
     /* 0x02B8 */ EnGe1AnimFunc animFunc;
 } EnGe1; // size = 0x02BC
 
+void EnGe1_SetNormalText(EnGe1* enGe1, PlayState* play);
+
 #endif

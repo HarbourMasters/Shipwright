@@ -13,7 +13,7 @@
 
 #define Path _Path
 #define PATH_HACK
-#include <Utils/StringHelper.h>
+#include <utils/StringHelper.h>
 
 #include <Window.h>
 #include <Context.h>
@@ -518,6 +518,8 @@ static bool SaveStateHandler(std::shared_ptr<Ship::Console> Console, const std::
         case SaveStateReturn::FAIL_WRONG_GAMESTATE:
             ERROR_MESSAGE("[SOH] Can not save a state outside of \"GamePlay\"");
             return 1;
+        default:
+            return 1;
     }
 }
 
@@ -537,6 +539,8 @@ static bool LoadStateHandler(std::shared_ptr<Ship::Console> Console, const std::
             return 1;
         case SaveStateReturn::FAIL_WRONG_GAMESTATE:
             ERROR_MESSAGE("[SOH] Can not load a state outside of \"GamePlay\"");
+            return 1;
+        default:
             return 1;
     }
 
@@ -1590,6 +1594,5 @@ void DebugConsole_Init(void) {
             {"group_name", Ship::ArgumentType::TEXT, true},
     }});
 
-    CVarSave();
-    CVarLoad();
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
 }

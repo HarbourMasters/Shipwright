@@ -4,7 +4,8 @@
 #include "objects/object_tw/object_tw.h"
 #include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
 #include "soh/frame_interpolation.h"
-#include "soh/Enhancements/boss-rush/BossRush.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #include <string.h>
 
@@ -535,9 +536,14 @@ void BossTw_Init(Actor* thisx, PlayState* play2) {
         if (Flags_GetClear(play, play->roomCtx.curRoom.num)) {
             // twinrova has been defeated.
             Actor_Kill(&this->actor);
-            Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, 600.0f, 230.0f, 0.0f, 0,
-                               0, 0, WARP_DUNGEON_ADULT);
-            Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, -600.0f, 230.0f, 0.0f, 0, 0, 0, 0, true);
+            if (GameInteractor_Should(VB_SPAWN_BLUE_WARP, true, this)) {
+                Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, 600.0f, 230.0f, 0.0f, 0,
+                                   0, 0, WARP_DUNGEON_ADULT);
+            }
+
+            if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true)) {
+                Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, -600.0f, 230.0f, 0.0f, 0, 0, 0, 0, true);
+            }
         } else {
             sKotakePtr = (BossTw*)Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_BOSS_TW,
                                                      this->actor.world.pos.x, this->actor.world.pos.y,
@@ -847,7 +853,7 @@ s32 BossTw_CheckBeamReflection(BossTw* this, PlayState* play) {
                 BossTw_AddShieldDeflectEffect(play, 10.0f, this->actor.params);
                 play->envCtx.unk_D8 = 1.0f;
                 this->timers[0] = 10;
-                func_80078884(NA_SE_IT_SHIELD_REFLECT_MG2);
+                Sfx_PlaySfxCentered(NA_SE_IT_SHIELD_REFLECT_MG2);
             }
 
             sBeamDivertTimer++;
@@ -1074,7 +1080,7 @@ void BossTw_ShootBeam(BossTw* this, PlayState* play) {
                         }
 
                         this->beamShootState = 1;
-                        func_80078914(&player->actor.projectedPos, NA_SE_IT_SHIELD_REFLECT_MG);
+                        Sfx_PlaySfxAtPos(&player->actor.projectedPos, NA_SE_IT_SHIELD_REFLECT_MG);
                         Matrix_MtxFToYXZRotS(&player->shieldMf, &sp128, 0);
                         sp128.y += 0x8000;
                         sp128.x = -sp128.x;
@@ -1099,11 +1105,11 @@ void BossTw_ShootBeam(BossTw* this, PlayState* play) {
                                              &this->unk_54C, &this->actor.projectedW);
 
                 if (this->actor.params == 1) {
-                    Audio_PlaySoundGeneral(NA_SE_EN_TWINROBA_SHOOT_FIRE - SFX_FLAG, &this->unk_54C, 4, &D_801333E0,
-                                           &D_801333E0, &D_801333E8);
+                    Audio_PlaySoundGeneral(NA_SE_EN_TWINROBA_SHOOT_FIRE - SFX_FLAG, &this->unk_54C, 4, &gSfxDefaultFreqAndVolScale,
+                                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 } else {
-                    Audio_PlaySoundGeneral(NA_SE_EN_TWINROBA_SHOOT_FREEZE - SFX_FLAG, &this->unk_54C, 4, &D_801333E0,
-                                           &D_801333E0, &D_801333E8);
+                    Audio_PlaySoundGeneral(NA_SE_EN_TWINROBA_SHOOT_FREEZE - SFX_FLAG, &this->unk_54C, 4, &gSfxDefaultFreqAndVolScale,
+                                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 }
                 break;
 
@@ -1129,15 +1135,15 @@ void BossTw_ShootBeam(BossTw* this, PlayState* play) {
                                              &this->actor.projectedW);
 
                 if (this->actor.params == 1) {
-                    Audio_PlaySoundGeneral(NA_SE_EN_TWINROBA_SHOOT_FIRE - SFX_FLAG, &this->unk_558, 4U, &D_801333E0,
-                                           &D_801333E0, &D_801333E8);
-                    Audio_PlaySoundGeneral(NA_SE_EN_TWINROBA_REFL_FIRE - SFX_FLAG, &this->unk_558, 4, &D_801333E0,
-                                           &D_801333E0, &D_801333E8);
+                    Audio_PlaySoundGeneral(NA_SE_EN_TWINROBA_SHOOT_FIRE - SFX_FLAG, &this->unk_558, 4U, &gSfxDefaultFreqAndVolScale,
+                                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                    Audio_PlaySoundGeneral(NA_SE_EN_TWINROBA_REFL_FIRE - SFX_FLAG, &this->unk_558, 4, &gSfxDefaultFreqAndVolScale,
+                                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 } else {
-                    Audio_PlaySoundGeneral(NA_SE_EN_TWINROBA_SHOOT_FREEZE - SFX_FLAG, &this->unk_558, 4, &D_801333E0,
-                                           &D_801333E0, &D_801333E8);
-                    Audio_PlaySoundGeneral(NA_SE_EN_TWINROBA_REFL_FREEZE - SFX_FLAG, &this->unk_558, 4, &D_801333E0,
-                                           &D_801333E0, &D_801333E8);
+                    Audio_PlaySoundGeneral(NA_SE_EN_TWINROBA_SHOOT_FREEZE - SFX_FLAG, &this->unk_558, 4, &gSfxDefaultFreqAndVolScale,
+                                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                    Audio_PlaySoundGeneral(NA_SE_EN_TWINROBA_REFL_FREEZE - SFX_FLAG, &this->unk_558, 4, &gSfxDefaultFreqAndVolScale,
+                                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 }
                 break;
         }
@@ -1466,7 +1472,7 @@ void BossTw_TwinrovaMergeCS(BossTw* this, PlayState* play) {
         case 0:
             this->csState2 = 1;
             func_80064520(play, &play->csCtx);
-            func_8002DF54(play, &this->actor, 0x39);
+            Player_SetCsActionWithHaltedActors(play, &this->actor, 0x39);
             this->subCamId = Play_CreateSubCamera(play);
             Play_ChangeCameraStatus(play, 0, CAM_STAT_WAIT);
             Play_ChangeCameraStatus(play, this->subCamId, CAM_STAT_ACTIVE);
@@ -1606,7 +1612,7 @@ void BossTw_TwinrovaMergeCS(BossTw* this, PlayState* play) {
                     Animation_MorphToPlayOnce(&this->skelAnime, &gTwinrovaIntroAnim, 0.0f);
                     this->workf[ANIM_SW_TGT] = Animation_GetLastFrame(&gTwinrovaIntroAnim);
                     this->timers[0] = 50;
-                    func_8002DF54(play, &this->actor, 2);
+                    Player_SetCsActionWithHaltedActors(play, &this->actor, 2);
                     Audio_PlayActorSound2(&this->actor, NA_SE_EN_TWINROBA_TRANSFORM);
                     Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_BOSS);
                 }
@@ -1649,7 +1655,7 @@ void BossTw_TwinrovaMergeCS(BossTw* this, PlayState* play) {
             }
 
             if (this->timers[3] == 19) {
-                func_8002DF54(play, &this->actor, 5);
+                Player_SetCsActionWithHaltedActors(play, &this->actor, 5);
             }
 
             if (this->timers[3] == 16) {
@@ -1665,7 +1671,7 @@ void BossTw_TwinrovaMergeCS(BossTw* this, PlayState* play) {
 
             if (this->timers[1] == 8) {
                 this->work[TW_BLINK_IDX] = 8;
-                func_80078884(NA_SE_EN_TWINROBA_YOUNG_WINK);
+                Sfx_PlaySfxCentered(NA_SE_EN_TWINROBA_YOUNG_WINK);
             }
             if (this->timers[2] == 4) {
                 sEnvType = 0;
@@ -1682,7 +1688,7 @@ void BossTw_TwinrovaMergeCS(BossTw* this, PlayState* play) {
                 this->subCamId = 0;
                 this->csState2 = this->subCamId;
                 func_80064534(play, &play->csCtx);
-                func_8002DF54(play, &this->actor, 7);
+                Player_SetCsActionWithHaltedActors(play, &this->actor, 7);
                 this->work[TW_PLLR_IDX] = 0;
                 this->targetPos = sTwinrovaPillarPos[0];
                 BossTw_TwinrovaSetupFly(this, play);
@@ -1743,12 +1749,12 @@ void BossTw_TwinrovaIntroCS(BossTw* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     if (this->csSfxTimer > 220 && this->csSfxTimer < 630) {
-        func_80078884(NA_SE_EN_TWINROBA_UNARI - SFX_FLAG);
+        Sfx_PlaySfxCentered(NA_SE_EN_TWINROBA_UNARI - SFX_FLAG);
     }
 
     if (this->csSfxTimer == 180) {
-        func_80078914(&D_8094A7D0, NA_SE_EN_TWINROBA_LAUGH);
-        func_80078914(&D_8094A7D0, NA_SE_EN_TWINROBA_LAUGH2);
+        Sfx_PlaySfxAtPos(&D_8094A7D0, NA_SE_EN_TWINROBA_LAUGH);
+        Sfx_PlaySfxAtPos(&D_8094A7D0, NA_SE_EN_TWINROBA_LAUGH2);
         Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_KOTAKE_KOUME);
     }
 
@@ -1762,7 +1768,7 @@ void BossTw_TwinrovaIntroCS(BossTw* this, PlayState* play) {
                 player->actor.world.pos.x = player->actor.world.pos.z = .0f;
                 this->csState2 = 1;
                 func_80064520(play, &play->csCtx);
-                func_8002DF54(play, &this->actor, 0x39);
+                Player_SetCsActionWithHaltedActors(play, &this->actor, 0x39);
                 this->subCamId = Play_CreateSubCamera(play);
                 Play_ChangeCameraStatus(play, 0, CAM_STAT_WAIT);
                 Play_ChangeCameraStatus(play, this->subCamId, CAM_STAT_ACTIVE);
@@ -1809,7 +1815,7 @@ void BossTw_TwinrovaIntroCS(BossTw* this, PlayState* play) {
             }
 
             if (this->work[CS_TIMER_1] == 180) {
-                func_80078884(NA_SE_EN_TWINROBA_APPEAR_MS);
+                Sfx_PlaySfxCentered(NA_SE_EN_TWINROBA_APPEAR_MS);
             }
 
             if (this->work[CS_TIMER_1] > 180) {
@@ -2245,7 +2251,7 @@ void BossTw_TwinrovaIntroCS(BossTw* this, PlayState* play) {
                 this->subCamId = 0;
                 this->csState2 = this->subCamId;
                 func_80064534(play, &play->csCtx);
-                func_8002DF54(play, &this->actor, 7);
+                Player_SetCsActionWithHaltedActors(play, &this->actor, 7);
                 BossTw_SetupWait(this, play);
             }
             break;
@@ -2427,7 +2433,7 @@ void BossTw_DeathCSMsgSfx(BossTw* this, PlayState* play) {
     }
 
     if (this->work[CS_TIMER_2] > 440 && this->work[CS_TIMER_2] < 860) {
-        func_80078884(NA_SE_EN_TWINROBA_FIGHT - SFX_FLAG);
+        Sfx_PlaySfxCentered(NA_SE_EN_TWINROBA_FIGHT - SFX_FLAG);
     }
 
     if (this->work[CS_TIMER_2] == 430) {
@@ -2632,7 +2638,7 @@ void BossTw_TwinrovaDeathCS(BossTw* this, PlayState* play) {
                     Vec3f spBC;
                     Vec3f spB0;
                     Vec3f spA4 = { 0.0f, 0.0f, 0.0f };
-                    func_80078884(NA_SE_EN_TWINROBA_TRANSFORM);
+                    Sfx_PlaySfxCentered(NA_SE_EN_TWINROBA_TRANSFORM);
                     for (i = 0; i < 100; i++) {
                         spB0.x = Rand_CenteredFloat(5.0f);
                         spB0.y = Rand_CenteredFloat(5.0f);
@@ -2666,7 +2672,7 @@ void BossTw_TwinrovaDeathCS(BossTw* this, PlayState* play) {
         case 0:
             this->csState2 = 1;
             func_80064520(play, &play->csCtx);
-            func_8002DF54(play, &this->actor, 8);
+            Player_SetCsActionWithHaltedActors(play, &this->actor, 8);
             this->subCamId = Play_CreateSubCamera(play);
             Play_ChangeCameraStatus(play, 0, CAM_STAT_WAIT);
             Play_ChangeCameraStatus(play, this->subCamId, CAM_STAT_ACTIVE);
@@ -2705,7 +2711,7 @@ void BossTw_TwinrovaDeathCS(BossTw* this, PlayState* play) {
                 sKoumePtr->actor.world.pos.z = sKotakePtr->actor.world.pos.z;
                 sKoumePtr->work[YAW_TGT] = sKotakePtr->work[YAW_TGT] = sKoumePtr->actor.shape.rot.x =
                     sKotakePtr->actor.shape.rot.x = sKoumePtr->actor.shape.rot.y = sKotakePtr->actor.shape.rot.y = 0;
-                func_8002DF54(play, &sKoumePtr->actor, 1);
+                Player_SetCsActionWithHaltedActors(play, &sKoumePtr->actor, 1);
                 sKoumePtr->actor.flags |= ACTOR_FLAG_TARGETABLE;
             }
             break;
@@ -2745,7 +2751,7 @@ void BossTw_TwinrovaDeathCS(BossTw* this, PlayState* play) {
                 Actor_SetScale(&sKotakePtr->actor, 0.0f);
                 sKoumePtr->visible = 1;
                 sKotakePtr->visible = 1;
-                func_80078884(NA_SE_EN_TWINROBA_TRANSFORM);
+                Sfx_PlaySfxCentered(NA_SE_EN_TWINROBA_TRANSFORM);
                 Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_KOTAKE_KOUME);
                 this->csState2 = 3;
                 this->work[CS_TIMER_2] = 0;
@@ -2793,16 +2799,17 @@ void BossTw_TwinrovaDeathCS(BossTw* this, PlayState* play) {
                 this->csState2 = 4;
                 this->subCamId = 0;
                 func_80064534(play, &play->csCtx);
-                func_8002DF54(play, &this->actor, 7);
+                Player_SetCsActionWithHaltedActors(play, &this->actor, 7);
                 Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_BOSS_CLEAR);
-                if (!IS_BOSS_RUSH) {
+                if (GameInteractor_Should(VB_SPAWN_BLUE_WARP, true, this)) {
                     Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, 600.0f, 230.0f, 0.0f, 0,
                                        0, 0, WARP_DUNGEON_ADULT);
-                    Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, -600.0f, 230.f, 0.0f, 0, 0, 0, 0, true);
-                } else {
-                    Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, 600.0f, 230.0f, 0.0f, 0, 0, 0,
-                                WARP_DUNGEON_ADULT, true);
                 }
+
+                if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true)) {
+                    Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, -600.0f, 230.f, 0.0f, 0, 0, 0, 0, true);
+                }
+
                 this->actor.world.pos.y = -2000.0f;
                 this->workf[UNK_F18] = 0.0f;
                 sKoumePtr->visible = sKotakePtr->visible = false;
@@ -3146,8 +3153,8 @@ void BossTw_TwinrovaUpdate(Actor* thisx, PlayState* play2) {
     if (sFreezeState == 1) {
         sFreezeState = 2;
         BossTw_AddPlayerFreezeEffect(play, NULL);
-        func_80078914(&player->actor.projectedPos, NA_SE_VO_LI_FREEZE);
-        func_80078914(&player->actor.projectedPos, NA_SE_PL_FREEZE);
+        Sfx_PlaySfxAtPos(&player->actor.projectedPos, NA_SE_VO_LI_FREEZE);
+        Sfx_PlaySfxAtPos(&player->actor.projectedPos, NA_SE_PL_FREEZE);
 
         if (sShieldFireCharge != 0) {
             sShieldFireCharge = 4;
@@ -3673,11 +3680,11 @@ void BossTw_ShieldChargeDraw(BossTw* this, PlayState* play) {
     temp_t0 = sShieldFireCharge | sShieldIceCharge;
 
     if (temp_t0 == 1) {
-        func_80078884(NA_SE_IT_SHIELD_CHARGE_LV1 & ~SFX_FLAG);
+        Sfx_PlaySfxCentered(NA_SE_IT_SHIELD_CHARGE_LV1 & ~SFX_FLAG);
     } else if (temp_t0 == 2) {
-        func_80078884(NA_SE_IT_SHIELD_CHARGE_LV2 & ~SFX_FLAG);
+        Sfx_PlaySfxCentered(NA_SE_IT_SHIELD_CHARGE_LV2 & ~SFX_FLAG);
     } else if (temp_t0 == 3) {
-        func_80078884(NA_SE_IT_SHIELD_CHARGE_LV3 & ~SFX_FLAG);
+        Sfx_PlaySfxCentered(NA_SE_IT_SHIELD_CHARGE_LV3 & ~SFX_FLAG);
     }
 
     if (temp_t0 != 0 && temp_t0 < 4) {
@@ -4360,7 +4367,7 @@ s32 BossTw_BlastShieldCheck(BossTw* this, PlayState* play) {
                     sEnvType = 0;
                     sShieldIceCharge = 0;
                     sShieldFireCharge = 0;
-                    func_80078884(NA_SE_IT_SHIELD_REFLECT_MG2);
+                    Sfx_PlaySfxCentered(NA_SE_IT_SHIELD_REFLECT_MG2);
                 }
 
                 ret = true;
@@ -5289,8 +5296,7 @@ void BossTw_TwinrovaDamage(BossTw* this, PlayState* play, u8 damage) {
             BossTw_TwinrovaSetupDeathCS(this, play);
             Enemy_StartFinishingBlow(play, &this->actor);
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_TWINROBA_YOUNG_DEAD);
-            gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_TWINROVA] = GAMEPLAYSTAT_TOTAL_TIME;
-            BossRush_HandleCompleteBoss(play);
+            GameInteractor_ExecuteOnBossDefeat(&this->actor);
             return;
         }
 

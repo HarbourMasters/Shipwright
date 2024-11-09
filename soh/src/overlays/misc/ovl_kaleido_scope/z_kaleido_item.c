@@ -6,6 +6,9 @@
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+
 u8 gAmmoItems[] = {
     ITEM_STICK,   ITEM_NUT,  ITEM_BOMB, ITEM_BOW,  ITEM_NONE, ITEM_NONE, ITEM_SLINGSHOT, ITEM_NONE,
     ITEM_BOMBCHU, ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_BEAN,      ITEM_NONE,
@@ -37,6 +40,10 @@ s8 ItemInSlotUsesAmmo(s16 slot) {
 }
 
 void KaleidoScope_DrawAmmoCount(PauseContext* pauseCtx, GraphicsContext* gfxCtx, s16 item, int slot) {
+    if (!GameInteractor_Should(VB_DRAW_AMMO_COUNT, true, &item)) {
+        return;
+    }
+
     s16 ammo;
     s16 i;
 
@@ -141,7 +148,7 @@ static Vtx sCycleAButtonVtx[] = {
 };
 
 // Track animation timers for each inventory slot
-static sSlotCycleActiveAnimTimer[24] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+static int sSlotCycleActiveAnimTimer[24] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
 // Renders a left and/or right item for any item slot that can support cycling
 void KaleidoScope_DrawItemCycleExtras(PlayState* play, u8 slot, u8 canCycle, u8 leftItem, u8 rightItem) {
@@ -252,7 +259,7 @@ void KaleidoScope_DrawItemCycleExtras(PlayState* play, u8 slot, u8 canCycle, u8 
 void KaleidoScope_HandleItemCycleExtras(PlayState* play, u8 slot, bool canCycle, u8 leftItem, u8 rightItem, bool replaceCButtons) {
     Input* input = &play->state.input[0];
     PauseContext* pauseCtx = &play->pauseCtx;
-    bool dpad = (CVarGetInteger("gDpadPause", 0) && !CHECK_BTN_ALL(input->cur.button, BTN_CUP));
+    bool dpad = (CVarGetInteger(CVAR_SETTING("DPadOnPause"), 0) && !CHECK_BTN_ALL(input->cur.button, BTN_CUP));
     u8 slotItem = gSaveContext.inventory.items[slot];
     u8 hasLeftItem = leftItem != ITEM_NONE && slotItem != leftItem;
     u8 hasRightItem = rightItem != ITEM_NONE && slotItem != rightItem && leftItem != rightItem;
@@ -263,14 +270,14 @@ void KaleidoScope_HandleItemCycleExtras(PlayState* play, u8 slot, bool canCycle,
         CHECK_BTN_ALL(input->press.button, BTN_A) &&
         (hasLeftItem || hasRightItem)
     ) {
-        Audio_PlaySoundGeneral(NA_SE_SY_DECIDE, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+        Audio_PlaySoundGeneral(NA_SE_SY_DECIDE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         gCurrentItemCyclingSlot = gCurrentItemCyclingSlot == slot ? -1 : slot;
     }
     if (gCurrentItemCyclingSlot == slot) {
         pauseCtx->cursorColorSet = 8;
         if ((pauseCtx->stickRelX > 30 || pauseCtx->stickRelY > 30) ||
              dpad && CHECK_BTN_ANY(input->press.button, BTN_DRIGHT | BTN_DUP)) {
-            Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             if (replaceCButtons) {
                 for (int i = 1; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
                     if (gSaveContext.equips.buttonItems[i] == gSaveContext.inventory.items[slot]) {
@@ -287,7 +294,7 @@ void KaleidoScope_HandleItemCycleExtras(PlayState* play, u8 slot, bool canCycle,
             gSaveContext.inventory.items[slot] = rightItem;
         } else if ((pauseCtx->stickRelX < -30 || pauseCtx->stickRelY < -30) ||
             dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT | BTN_DDOWN)) {
-            Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             if (replaceCButtons) {
                 for (int i = 1; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
                     if (gSaveContext.equips.buttonItems[i] == gSaveContext.inventory.items[slot]) {
@@ -335,23 +342,24 @@ void KaleidoScope_HandleItemCycles(PlayState* play) {
     );
 
     //the slot age requirement for the child trade slot has to be updated
-    //in case it currently holds the bunny hood
+    //in case it currently holds a mask
     //to allow adult link to wear it if the setting is enabled
     gSlotAgeReqs[SLOT_TRADE_CHILD] =
         (
-            ((CVarGetInteger(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA) && CVarGetInteger(CVAR_ENHANCEMENT("AdultBunnyHood"), 0)) ||
+            CVarGetInteger(CVAR_ENHANCEMENT("AdultMasks"), 0) ||
             CVarGetInteger(CVAR_CHEAT("TimelessEquipment"), 0)
         ) &&
-        INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_MASK_BUNNY
+        INV_CONTENT(ITEM_TRADE_CHILD) >= ITEM_MASK_KEATON &&
+        INV_CONTENT(ITEM_TRADE_CHILD) <= ITEM_MASK_TRUTH
             ? AGE_REQ_NONE
             : AGE_REQ_CHILD;
-    
-    //also update the age requirement for the bunny hood itself
-    gItemAgeReqs[ITEM_MASK_BUNNY] =
-        ((CVarGetInteger(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA) && CVarGetInteger(CVAR_ENHANCEMENT("AdultBunnyHood"), 0)) ||
-        CVarGetInteger(CVAR_CHEAT("TimelessEquipment"), 0)
-            ? AGE_REQ_NONE
-            : AGE_REQ_CHILD;
+
+    //also update the age requirements for the masks itself
+    for (int i = ITEM_MASK_KEATON; i <= ITEM_MASK_TRUTH; i += 1) {
+        gItemAgeReqs[i] = CVarGetInteger(CVAR_ENHANCEMENT("AdultMasks"), 0) || CVarGetInteger(CVAR_CHEAT("TimelessEquipment"), 0)
+                ? AGE_REQ_NONE
+                : AGE_REQ_CHILD;
+    }
 
     //handle the adult trade select
     KaleidoScope_HandleItemCycleExtras(
@@ -414,9 +422,9 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
     s16 cursorY;
     s16 oldCursorPoint;
     s16 moveCursorResult;
-    bool dpad = (CVarGetInteger("gDpadPause", 0) && !CHECK_BTN_ALL(input->cur.button, BTN_CUP));
-    bool pauseAnyCursor = pauseCtx->cursorSpecialPos == 0 && ((CVarGetInteger("gPauseAnyCursor", 0) == PAUSE_ANY_CURSOR_RANDO_ONLY && IS_RANDO) ||
-                          (CVarGetInteger("gPauseAnyCursor", 0) == PAUSE_ANY_CURSOR_ALWAYS_ON));
+    bool dpad = (CVarGetInteger(CVAR_SETTING("DPadOnPause"), 0) && !CHECK_BTN_ALL(input->cur.button, BTN_CUP));
+    bool pauseAnyCursor = pauseCtx->cursorSpecialPos == 0 && ((CVarGetInteger(CVAR_ENHANCEMENT("PauseAnyCursor"), 0) == PAUSE_ANY_CURSOR_RANDO_ONLY && IS_RANDO) ||
+                          (CVarGetInteger(CVAR_ENHANCEMENT("PauseAnyCursor"), 0) == PAUSE_ANY_CURSOR_ALWAYS_ON));
 
     OPEN_DISPS(play->state.gfxCtx);
 
@@ -533,7 +541,7 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
                 pauseCtx->nameDisplayTimer = 0;
                 pauseCtx->cursorSpecialPos = 0;
 
-                Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
 
                 cursorPoint = cursorX = cursorY = 0;
                 while (true) {
@@ -567,7 +575,7 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
                 pauseCtx->nameDisplayTimer = 0;
                 pauseCtx->cursorSpecialPos = 0;
 
-                Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
 
                 cursorPoint = cursorX = 5;
                 cursorY = 0;
@@ -669,7 +677,7 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
                 if ((pauseCtx->debugState == 0) && (pauseCtx->state == 6) && (pauseCtx->unk_1E4 == 0)) {
                     KaleidoScope_HandleItemCycles(play);
                     u16 buttonsToCheck = BTN_CLEFT | BTN_CDOWN | BTN_CRIGHT;
-                    if (CVarGetInteger("gDpadEquips", 0) && (!CVarGetInteger("gDpadPause", 0) || CHECK_BTN_ALL(input->cur.button, BTN_CUP))) {
+                    if (CVarGetInteger(CVAR_ENHANCEMENT("DpadEquips"), 0) && (!CVarGetInteger(CVAR_SETTING("DPadOnPause"), 0) || CHECK_BTN_ALL(input->cur.button, BTN_CUP))) {
                         buttonsToCheck |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
                     }
                     if (CHECK_BTN_ANY(input->press.button, buttonsToCheck)) {
@@ -679,8 +687,8 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
                                                         pauseCtx->itemVtx[index].v.ob[0] * 10,
                                                         pauseCtx->itemVtx[index].v.ob[1] * 10);
                         } else {
-                            Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0,
-                                                   &D_801333E8);
+                            Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                                                   &gSfxDefaultReverb);
                         }
                     }
                 }
@@ -696,7 +704,7 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
         }
 
         if (oldCursorPoint != pauseCtx->cursorPoint[PAUSE_ITEM]) {
-            Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         }
     } else if ((pauseCtx->unk_1E4 == 3) && (pauseCtx->pageIndex == PAUSE_ITEM)) {
         KaleidoScope_SetCursorVtx(pauseCtx, cursorSlot * 4, pauseCtx->itemVtx);
@@ -803,7 +811,7 @@ void KaleidoScope_SetupItemEquip(PlayState* play, u16 item, u16 slot, s16 animX,
         pauseCtx->equipTargetCBtn = 1;
     } else if (CHECK_BTN_ALL(input->press.button, BTN_CRIGHT)) {
         pauseCtx->equipTargetCBtn = 2;
-    } else if (CVarGetInteger("gDpadEquips", 0)) {
+    } else if (CVarGetInteger(CVAR_ENHANCEMENT("DpadEquips"), 0)) {
         if (CHECK_BTN_ALL(input->press.button, BTN_DUP)) {
             pauseCtx->equipTargetCBtn = 3;
         } else if (CHECK_BTN_ALL(input->press.button, BTN_DDOWN)) {
@@ -827,7 +835,7 @@ void KaleidoScope_SetupItemEquip(PlayState* play, u16 item, u16 slot, s16 animX,
     if ((pauseCtx->equipTargetItem == ITEM_ARROW_FIRE) || (pauseCtx->equipTargetItem == ITEM_ARROW_ICE) ||
         (pauseCtx->equipTargetItem == ITEM_ARROW_LIGHT)) {
         if (CVarGetInteger(CVAR_ENHANCEMENT("SkipArrowAnimation"), 0)) {
-            Audio_PlaySoundGeneral(NA_SE_SY_DECIDE, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            Audio_PlaySoundGeneral(NA_SE_SY_DECIDE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         } else {
             u16 index = 0;
             if (pauseCtx->equipTargetItem == ITEM_ARROW_ICE) {
@@ -836,14 +844,14 @@ void KaleidoScope_SetupItemEquip(PlayState* play, u16 item, u16 slot, s16 animX,
             if (pauseCtx->equipTargetItem == ITEM_ARROW_LIGHT) {
                 index = 2;
             }
-            Audio_PlaySoundGeneral(NA_SE_SY_SET_FIRE_ARROW + index, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            Audio_PlaySoundGeneral(NA_SE_SY_SET_FIRE_ARROW + index, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             pauseCtx->equipTargetItem = 0xBF + index;
             sEquipState = 0;
             pauseCtx->equipAnimAlpha = 0;
             sEquipMoveTimer = 6;
         }
     } else {
-        Audio_PlaySoundGeneral(NA_SE_SY_DECIDE, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+        Audio_PlaySoundGeneral(NA_SE_SY_DECIDE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     }
 }
 
@@ -858,10 +866,10 @@ void KaleidoScope_UpdateItemEquip(PlayState* play) {
     u16 offsetX;
     u16 offsetY;
 
-    s16 Top_HUD_Margin = CVarGetInteger("gHUDMargin_T", 0);
-    s16 Left_HUD_Margin = CVarGetInteger("gHUDMargin_L", 0);
-    s16 Right_HUD_Margin = CVarGetInteger("gHUDMargin_R", 0);
-    s16 Bottom_HUD_Margin = CVarGetInteger("gHUDMargin_B", 0);
+    s16 Top_HUD_Margin = CVarGetInteger(CVAR_COSMETIC("HUD.Margin.T"), 0);
+    s16 Left_HUD_Margin = CVarGetInteger(CVAR_COSMETIC("HUD.Margin.L"), 0);
+    s16 Right_HUD_Margin = CVarGetInteger(CVAR_COSMETIC("HUD.Margin.R"), 0);
+    s16 Bottom_HUD_Margin = CVarGetInteger(CVAR_COSMETIC("HUD.Margin.B"), 0);
 
     s16 X_Margins_CL;
     s16 X_Margins_CR;
@@ -873,36 +881,36 @@ void KaleidoScope_UpdateItemEquip(PlayState* play) {
     s16 Y_Margins_BtnB;
     s16 X_Margins_DPad_Items;
     s16 Y_Margins_DPad_Items;
-    if (CVarGetInteger(CVAR_COSMETIC("BButton.UseMargins"), 0) != 0) {
-        if (CVarGetInteger(CVAR_COSMETIC("BButton.PosType"), 0) == 0) {X_Margins_BtnB = Right_HUD_Margin;};
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.BButton.UseMargins"), 0) != 0) {
+        if (CVarGetInteger(CVAR_COSMETIC("HUD.BButton.PosType"), 0) == 0) {X_Margins_BtnB = Right_HUD_Margin;};
         Y_Margins_BtnB = (Top_HUD_Margin*-1);
     } else {
         X_Margins_BtnB = 0;
         Y_Margins_BtnB = 0;
     }
-    if (CVarGetInteger(CVAR_COSMETIC("CLeftButton.UseMargins"), 0) != 0) {
-        if (CVarGetInteger(CVAR_COSMETIC("CLeftButton.PosType"), 0) == 0) {X_Margins_CL = Right_HUD_Margin;};
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.CLeftButton.UseMargins"), 0) != 0) {
+        if (CVarGetInteger(CVAR_COSMETIC("HUD.CLeftButton.PosType"), 0) == 0) {X_Margins_CL = Right_HUD_Margin;};
         Y_Margins_CL = (Top_HUD_Margin*-1);
     } else {
         X_Margins_CL = 0;
         Y_Margins_CL = 0;
     }
-    if (CVarGetInteger(CVAR_COSMETIC("CRightButton.UseMargins"), 0) != 0) {
-        if (CVarGetInteger(CVAR_COSMETIC("CRightButton.PosType"), 0) == 0) {X_Margins_CR = Right_HUD_Margin;};
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.CRightButton.UseMargins"), 0) != 0) {
+        if (CVarGetInteger(CVAR_COSMETIC("HUD.CRightButton.PosType"), 0) == 0) {X_Margins_CR = Right_HUD_Margin;};
         Y_Margins_CR = (Top_HUD_Margin*-1);
     } else {
         X_Margins_CR = 0;
         Y_Margins_CR = 0;
     }
-    if (CVarGetInteger(CVAR_COSMETIC("CDownButton.UseMargins"), 0) != 0) {
-        if (CVarGetInteger(CVAR_COSMETIC("CDownButton.PosType"), 0) == 0) {X_Margins_CD = Right_HUD_Margin;};
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.CDownButton.UseMargins"), 0) != 0) {
+        if (CVarGetInteger(CVAR_COSMETIC("HUD.CDownButton.PosType"), 0) == 0) {X_Margins_CD = Right_HUD_Margin;};
         Y_Margins_CD = (Top_HUD_Margin*-1);
     } else {
         X_Margins_CD = 0;
         Y_Margins_CD = 0;
     }
-    if (CVarGetInteger("gDPadUseMargins", 0) != 0) {
-        if (CVarGetInteger("gDPadPosType", 0) == 0) {X_Margins_DPad_Items = Right_HUD_Margin;};
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.UseMargins"), 0) != 0) {
+        if (CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosType"), 0) == 0) {X_Margins_DPad_Items = Right_HUD_Margin;};
         Y_Margins_DPad_Items = (Top_HUD_Margin*-1);
     } else {
         X_Margins_DPad_Items = 0;
@@ -925,28 +933,28 @@ void KaleidoScope_UpdateItemEquip(PlayState* play) {
     }; //(X,Y) Used with custom position to place it properly.
 
     //DPadItems
-    if (CVarGetInteger("gDPadPosType", 0) != 0) {
-        sCButtonPosY[3] = CVarGetInteger("gDPadPosY", 0)+Y_Margins_DPad_Items+DPad_ItemsOffset[0][1];//Up
-        sCButtonPosY[4] = CVarGetInteger("gDPadPosY", 0)+Y_Margins_DPad_Items+DPad_ItemsOffset[1][1];//Down
-        sCButtonPosY[5] = CVarGetInteger("gDPadPosY", 0)+Y_Margins_DPad_Items+DPad_ItemsOffset[2][1];//Left
-        sCButtonPosY[6] = CVarGetInteger("gDPadPosY", 0)+Y_Margins_DPad_Items+DPad_ItemsOffset[3][1];//Right
-        if (CVarGetInteger("gDPadPosType", 0) == 1) {//Anchor Left
-            if (CVarGetInteger("gDPadUseMargins", 0) != 0) {X_Margins_DPad_Items = Left_HUD_Margin;};
-            sCButtonPosX[3] = OTRGetDimensionFromLeftEdge(CVarGetInteger("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[0][0]);
-            sCButtonPosX[4] = OTRGetDimensionFromLeftEdge(CVarGetInteger("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[1][0]);
-            sCButtonPosX[5] = OTRGetDimensionFromLeftEdge(CVarGetInteger("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[2][0]);
-            sCButtonPosX[6] = OTRGetDimensionFromLeftEdge(CVarGetInteger("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[3][0]);
-        } else if (CVarGetInteger("gDPadPosType", 0) == 2) {//Anchor Right
-            if (CVarGetInteger("gDPadUseMargins", 0) != 0) {X_Margins_DPad_Items = Right_HUD_Margin;};
-            sCButtonPosX[3] = OTRGetDimensionFromRightEdge(CVarGetInteger("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[0][0]);
-            sCButtonPosX[4] = OTRGetDimensionFromRightEdge(CVarGetInteger("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[1][0]);
-            sCButtonPosX[5] = OTRGetDimensionFromRightEdge(CVarGetInteger("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[2][0]);
-            sCButtonPosX[6] = OTRGetDimensionFromRightEdge(CVarGetInteger("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[3][0]);
-        } else if (CVarGetInteger("gDPadPosType", 0) == 3) {//Anchor None
-            sCButtonPosX[3] = CVarGetInteger("gDPadPosX", 0)+DPad_ItemsOffset[0][0];
-            sCButtonPosX[4] = CVarGetInteger("gDPadPosX", 0)+DPad_ItemsOffset[1][0];
-            sCButtonPosX[5] = CVarGetInteger("gDPadPosX", 0)+DPad_ItemsOffset[2][0];
-            sCButtonPosX[6] = CVarGetInteger("gDPadPosX", 0)+DPad_ItemsOffset[3][0];
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosType"), 0) != 0) {
+        sCButtonPosY[3] = CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosY"), 0)+Y_Margins_DPad_Items+DPad_ItemsOffset[0][1];//Up
+        sCButtonPosY[4] = CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosY"), 0)+Y_Margins_DPad_Items+DPad_ItemsOffset[1][1];//Down
+        sCButtonPosY[5] = CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosY"), 0)+Y_Margins_DPad_Items+DPad_ItemsOffset[2][1];//Left
+        sCButtonPosY[6] = CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosY"), 0)+Y_Margins_DPad_Items+DPad_ItemsOffset[3][1];//Right
+        if (CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosType"), 0) == 1) {//Anchor Left
+            if (CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.UseMargins"), 0) != 0) {X_Margins_DPad_Items = Left_HUD_Margin;};
+            sCButtonPosX[3] = OTRGetDimensionFromLeftEdge(CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0)+X_Margins_DPad_Items+DPad_ItemsOffset[0][0]);
+            sCButtonPosX[4] = OTRGetDimensionFromLeftEdge(CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0)+X_Margins_DPad_Items+DPad_ItemsOffset[1][0]);
+            sCButtonPosX[5] = OTRGetDimensionFromLeftEdge(CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0)+X_Margins_DPad_Items+DPad_ItemsOffset[2][0]);
+            sCButtonPosX[6] = OTRGetDimensionFromLeftEdge(CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0)+X_Margins_DPad_Items+DPad_ItemsOffset[3][0]);
+        } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosType"), 0) == 2) {//Anchor Right
+            if (CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.UseMargins"), 0) != 0) {X_Margins_DPad_Items = Right_HUD_Margin;};
+            sCButtonPosX[3] = OTRGetDimensionFromRightEdge(CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0)+X_Margins_DPad_Items+DPad_ItemsOffset[0][0]);
+            sCButtonPosX[4] = OTRGetDimensionFromRightEdge(CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0)+X_Margins_DPad_Items+DPad_ItemsOffset[1][0]);
+            sCButtonPosX[5] = OTRGetDimensionFromRightEdge(CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0)+X_Margins_DPad_Items+DPad_ItemsOffset[2][0]);
+            sCButtonPosX[6] = OTRGetDimensionFromRightEdge(CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0)+X_Margins_DPad_Items+DPad_ItemsOffset[3][0]);
+        } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosType"), 0) == 3) {//Anchor None
+            sCButtonPosX[3] = CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0)+DPad_ItemsOffset[0][0];
+            sCButtonPosX[4] = CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0)+DPad_ItemsOffset[1][0];
+            sCButtonPosX[5] = CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0)+DPad_ItemsOffset[2][0];
+            sCButtonPosX[6] = CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0)+DPad_ItemsOffset[3][0];
         }
     } else {
         sCButtonPosX[3] = OTRGetDimensionFromRightEdge(ItemIconPos_ori[3][0]);
@@ -959,48 +967,48 @@ void KaleidoScope_UpdateItemEquip(PlayState* play) {
         sCButtonPosY[6] = ItemIconPos_ori[6][1];
     }
     //C button Left
-    if (CVarGetInteger(CVAR_COSMETIC("CLeftButton.PosType"), 0) != 0) {
-        sCButtonPosY[0] = CVarGetInteger(CVAR_COSMETIC("CLeftButton.PosY"), 0)+Y_Margins_CL;
-        if (CVarGetInteger(CVAR_COSMETIC("CLeftButton.PosType"), 0) == 1) {//Anchor Left
-            if (CVarGetInteger(CVAR_COSMETIC("CLeftButton.UseMargins"), 0) != 0) {X_Margins_CL = Left_HUD_Margin;};
-            sCButtonPosX[0] = OTRGetDimensionFromLeftEdge(CVarGetInteger(CVAR_COSMETIC("CLeftButton.PosX"), 0)+X_Margins_CL);
-        } else if (CVarGetInteger(CVAR_COSMETIC("CLeftButton.PosType"), 0) == 2) {//Anchor Right
-            if (CVarGetInteger(CVAR_COSMETIC("CLeftButton.UseMargins"), 0) != 0) {X_Margins_CL = Right_HUD_Margin;};
-            sCButtonPosX[0] = OTRGetDimensionFromRightEdge(CVarGetInteger(CVAR_COSMETIC("CLeftButton.PosX"), 0)+X_Margins_CL);
-        } else if (CVarGetInteger(CVAR_COSMETIC("CLeftButton.PosType"), 0) == 3) {//Anchor None
-            sCButtonPosX[0] = CVarGetInteger(CVAR_COSMETIC("CLeftButton.PosX"), 0);
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.CLeftButton.PosType"), 0) != 0) {
+        sCButtonPosY[0] = CVarGetInteger(CVAR_COSMETIC("HUD.CLeftButton.PosY"), 0)+Y_Margins_CL;
+        if (CVarGetInteger(CVAR_COSMETIC("HUD.CLeftButton.PosType"), 0) == 1) {//Anchor Left
+            if (CVarGetInteger(CVAR_COSMETIC("HUD.CLeftButton.UseMargins"), 0) != 0) {X_Margins_CL = Left_HUD_Margin;};
+            sCButtonPosX[0] = OTRGetDimensionFromLeftEdge(CVarGetInteger(CVAR_COSMETIC("HUD.CLeftButton.PosX"), 0)+X_Margins_CL);
+        } else if (CVarGetInteger(CVAR_COSMETIC("HUD.CLeftButton.PosType"), 0) == 2) {//Anchor Right
+            if (CVarGetInteger(CVAR_COSMETIC("HUD.CLeftButton.UseMargins"), 0) != 0) {X_Margins_CL = Right_HUD_Margin;};
+            sCButtonPosX[0] = OTRGetDimensionFromRightEdge(CVarGetInteger(CVAR_COSMETIC("HUD.CLeftButton.PosX"), 0)+X_Margins_CL);
+        } else if (CVarGetInteger(CVAR_COSMETIC("HUD.CLeftButton.PosType"), 0) == 3) {//Anchor None
+            sCButtonPosX[0] = CVarGetInteger(CVAR_COSMETIC("HUD.CLeftButton.PosX"), 0);
         }
     } else {
         sCButtonPosX[0] = OTRGetRectDimensionFromRightEdge(ItemIconPos_ori[0][0]);
         sCButtonPosY[0] = ItemIconPos_ori[0][1];
     }
     //C Button down
-    if (CVarGetInteger(CVAR_COSMETIC("CDownButton.PosType"), 0) != 0) {
-        sCButtonPosY[1] = CVarGetInteger(CVAR_COSMETIC("CDownButton.PosY"), 0)+Y_Margins_CD;
-        if (CVarGetInteger(CVAR_COSMETIC("CDownButton.PosType"), 0) == 1) {//Anchor Left
-            if (CVarGetInteger(CVAR_COSMETIC("CDownButton.UseMargins"), 0) != 0) {X_Margins_CD = Left_HUD_Margin;};
-            sCButtonPosX[1] = OTRGetDimensionFromLeftEdge(CVarGetInteger(CVAR_COSMETIC("CDownButton.PosX"), 0)+X_Margins_CD);
-        } else if (CVarGetInteger(CVAR_COSMETIC("CDownButton.PosType"), 0) == 2) {//Anchor Right
-            if (CVarGetInteger(CVAR_COSMETIC("CDownButton.UseMargins"), 0) != 0) {X_Margins_CD = Right_HUD_Margin;};
-            sCButtonPosX[1] = OTRGetDimensionFromRightEdge(CVarGetInteger(CVAR_COSMETIC("CDownButton.PosX"), 0)+X_Margins_CD);
-        } else if (CVarGetInteger(CVAR_COSMETIC("CDownButton.PosType"), 0) == 3) {//Anchor None
-            sCButtonPosX[1] = CVarGetInteger(CVAR_COSMETIC("CDownButton.PosX"), 0);
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.CDownButton.PosType"), 0) != 0) {
+        sCButtonPosY[1] = CVarGetInteger(CVAR_COSMETIC("HUD.CDownButton.PosY"), 0)+Y_Margins_CD;
+        if (CVarGetInteger(CVAR_COSMETIC("HUD.CDownButton.PosType"), 0) == 1) {//Anchor Left
+            if (CVarGetInteger(CVAR_COSMETIC("HUD.CDownButton.UseMargins"), 0) != 0) {X_Margins_CD = Left_HUD_Margin;};
+            sCButtonPosX[1] = OTRGetDimensionFromLeftEdge(CVarGetInteger(CVAR_COSMETIC("HUD.CDownButton.PosX"), 0)+X_Margins_CD);
+        } else if (CVarGetInteger(CVAR_COSMETIC("HUD.CDownButton.PosType"), 0) == 2) {//Anchor Right
+            if (CVarGetInteger(CVAR_COSMETIC("HUD.CDownButton.UseMargins"), 0) != 0) {X_Margins_CD = Right_HUD_Margin;};
+            sCButtonPosX[1] = OTRGetDimensionFromRightEdge(CVarGetInteger(CVAR_COSMETIC("HUD.CDownButton.PosX"), 0)+X_Margins_CD);
+        } else if (CVarGetInteger(CVAR_COSMETIC("HUD.CDownButton.PosType"), 0) == 3) {//Anchor None
+            sCButtonPosX[1] = CVarGetInteger(CVAR_COSMETIC("HUD.CDownButton.PosX"), 0);
         }
     } else {
         sCButtonPosX[1] = OTRGetRectDimensionFromRightEdge(ItemIconPos_ori[1][0]);
         sCButtonPosY[1] = ItemIconPos_ori[1][1];
     }
     //C button Right
-    if (CVarGetInteger(CVAR_COSMETIC("CRightButton.PosType"), 0) != 0) {
-        sCButtonPosY[2] = CVarGetInteger(CVAR_COSMETIC("CRightButton.PosY"), 0)+Y_Margins_CR;
-        if (CVarGetInteger(CVAR_COSMETIC("CRightButton.PosType"), 0) == 1) {//Anchor Left
-            if (CVarGetInteger(CVAR_COSMETIC("CRightButton.UseMargins"), 0) != 0) {X_Margins_CR = Left_HUD_Margin;};
-            sCButtonPosX[2] = OTRGetDimensionFromLeftEdge(CVarGetInteger(CVAR_COSMETIC("CRightButton.PosX"), 0)+X_Margins_CR);
-        } else if (CVarGetInteger(CVAR_COSMETIC("CRightButton.PosType"), 0) == 2) {//Anchor Right
-            if (CVarGetInteger(CVAR_COSMETIC("CRightButton.UseMargins"), 0) != 0) {X_Margins_CR = Right_HUD_Margin;};
-            sCButtonPosX[2] = OTRGetDimensionFromRightEdge(CVarGetInteger(CVAR_COSMETIC("CRightButton.PosX"), 0)+X_Margins_CR);
-        } else if (CVarGetInteger(CVAR_COSMETIC("CRightButton.PosType"), 0) == 3) {//Anchor None
-            sCButtonPosX[2] = CVarGetInteger(CVAR_COSMETIC("CRightButton.PosX"), 0);
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.CRightButton.PosType"), 0) != 0) {
+        sCButtonPosY[2] = CVarGetInteger(CVAR_COSMETIC("HUD.CRightButton.PosY"), 0)+Y_Margins_CR;
+        if (CVarGetInteger(CVAR_COSMETIC("HUD.CRightButton.PosType"), 0) == 1) {//Anchor Left
+            if (CVarGetInteger(CVAR_COSMETIC("HUD.CRightButton.UseMargins"), 0) != 0) {X_Margins_CR = Left_HUD_Margin;};
+            sCButtonPosX[2] = OTRGetDimensionFromLeftEdge(CVarGetInteger(CVAR_COSMETIC("HUD.CRightButton.PosX"), 0)+X_Margins_CR);
+        } else if (CVarGetInteger(CVAR_COSMETIC("HUD.CRightButton.PosType"), 0) == 2) {//Anchor Right
+            if (CVarGetInteger(CVAR_COSMETIC("HUD.CRightButton.UseMargins"), 0) != 0) {X_Margins_CR = Right_HUD_Margin;};
+            sCButtonPosX[2] = OTRGetDimensionFromRightEdge(CVarGetInteger(CVAR_COSMETIC("HUD.CRightButton.PosX"), 0)+X_Margins_CR);
+        } else if (CVarGetInteger(CVAR_COSMETIC("HUD.CRightButton.PosType"), 0) == 3) {//Anchor None
+            sCButtonPosX[2] = CVarGetInteger(CVAR_COSMETIC("HUD.CRightButton.PosX"), 0);
         }
     } else {
         sCButtonPosX[2] = OTRGetRectDimensionFromRightEdge(ItemIconPos_ori[2][0]);
@@ -1044,7 +1052,7 @@ void KaleidoScope_UpdateItemEquip(PlayState* play) {
             WREG(90) = 320;
             WREG(87) = WREG(91);
             sEquipState++;
-            Audio_PlaySoundGeneral(NA_SE_SY_SYNTH_MAGIC_ARROW, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            Audio_PlaySoundGeneral(NA_SE_SY_SYNTH_MAGIC_ARROW, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         }
         return;
     }

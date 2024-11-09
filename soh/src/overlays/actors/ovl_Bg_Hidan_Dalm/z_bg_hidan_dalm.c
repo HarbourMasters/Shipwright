@@ -138,7 +138,7 @@ void BgHidanDalm_Wait(BgHidanDalm* this, PlayState* play) {
         this->dyna.actor.world.pos.x += 32.5f * Math_SinS(this->dyna.actor.world.rot.y);
         this->dyna.actor.world.pos.z += 32.5f * Math_CosS(this->dyna.actor.world.rot.y);
 
-        func_8002DF54(play, &this->dyna.actor, 8);
+        Player_SetCsActionWithHaltedActors(play, &this->dyna.actor, 8);
         this->dyna.actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
         this->actionFunc = BgHidanDalm_Shrink;
         this->dyna.actor.bgCheckFlags &= ~2;
@@ -159,7 +159,7 @@ void BgHidanDalm_Shrink(BgHidanDalm* this, PlayState* play) {
     Vec3f pos;
 
     if (Math_StepToF(&this->dyna.actor.scale.x, 0.0f, 0.004f)) {
-        func_8002DF54(play, &this->dyna.actor, 7);
+        Player_SetCsActionWithHaltedActors(play, &this->dyna.actor, 7);
         Actor_Kill(&this->dyna.actor);
     }
 

@@ -13,16 +13,16 @@
 #define DELETE_PRESET 6
 #define RESET_TO_DEFAULTS 8
 
-#define RESET   "\x1b[0m"
-#define DIM     "\x1b[2m"
+// #define RESET   "\x1b[0m"
+// #define DIM     "\x1b[2m"
 
-#define BLACK   "\x1b[30m"
-#define RED     "\x1b[31m"
-#define GREEN   "\x1b[32m"
-#define YELLOW  "\x1b[33m"
-#define BLUE    "\x1b[34m"
-#define MEGANTA "\x1b[35m"
-#define CYAN    "\x1b[36m"
-#define WHITE   "\x1b[37m"
+// #define BLACK   "\x1b[30m"
+// #define RED     "\x1b[31m"
+// #define GREEN   "\x1b[32m"
+// #define YELLOW  "\x1b[33m"
+// #define BLUE    "\x1b[34m"
+// #define MEGANTA "\x1b[35m"
+// #define CYAN    "\x1b[36m"
+// #define WHITE   "\x1b[37m"
 
-std::string GenerateRandomizer(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSetting, std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks, std::string seedInput);
+bool GenerateRandomizer(std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks, std::string seedInput);

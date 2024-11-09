@@ -148,6 +148,8 @@ void SkelAnime_DrawFlexLimbLod(PlayState* play, s32 limbIndex, void** skeleton, 
 
     newDList = limbDList = limb->dLists[lod];
 
+    play->flexLimbOverrideMTX = mtx;
+
     if ((overrideLimbDraw == NULL) || !overrideLimbDraw(play, limbIndex, &newDList, &pos, &rot, arg)) {
         Matrix_TranslateRotateZYX(&pos, &rot);
         if (newDList != NULL) {
@@ -219,6 +221,8 @@ void SkelAnime_DrawFlexLod(PlayState* play, void** skeleton, Vec3s* jointTable, 
     rot = jointTable[1];
 
     newDList = limbDList = rootLimb->dLists[lod];
+
+    play->flexLimbOverrideMTX = &mtx;
 
     if ((overrideLimbDraw == 0) || !overrideLimbDraw(play, 1, &newDList, &pos, &rot, arg)) {
         Matrix_TranslateRotateZYX(&pos, &rot);
@@ -306,6 +310,20 @@ void SkelAnime_DrawSkeletonOpa(PlayState* play, SkelAnime* skelAnime, OverrideLi
     }
 }
 
+Gfx* SkelAnime_DrawSkeleton2(PlayState* play, SkelAnime* skelAnime, OverrideLimbDrawOpa overrideLimbDraw,
+                                PostLimbDrawOpa postLimbDraw, void* arg, Gfx* gfx) 
+{
+    if (skelAnime->skeletonHeader->skeletonType == SKELANIME_TYPE_NORMAL) {
+        return SkelAnime_Draw(play, skelAnime->skeleton, skelAnime->jointTable, overrideLimbDraw, postLimbDraw, arg, gfx);
+    } else if (skelAnime->skeletonHeader->skeletonType == SKELANIME_TYPE_FLEX) {
+        FlexSkeletonHeader* flexHeader = (FlexSkeletonHeader*)skelAnime->skeletonHeader;
+        return SkelAnime_DrawFlex(play, skelAnime->skeleton, skelAnime->jointTable, flexHeader->dListCount,
+                              overrideLimbDraw, postLimbDraw, arg, gfx);
+    }
+
+    return gfx;
+}
+
 /**
  * Draw all limbs of type `StandardLimb` in a given skeleton to the polyOpa buffer
  */
@@ -382,6 +400,8 @@ void SkelAnime_DrawFlexLimbOpa(PlayState* play, s32 limbIndex, void** skeleton, 
     pos.z = limb->jointPos.z;
 
     newDList = limbDList = limb->dList;
+
+    play->flexLimbOverrideMTX = limbMatricies;
 
     if ((overrideLimbDraw == NULL) || !overrideLimbDraw(play, limbIndex, &newDList, &pos, &rot, arg)) {
         Matrix_TranslateRotateZYX(&pos, &rot);

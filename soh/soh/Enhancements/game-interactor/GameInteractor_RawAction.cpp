@@ -205,6 +205,23 @@ void GameInteractor::RawAction::UnsetSceneFlag(int16_t sceneNum, int16_t flagTyp
     }
 };
 
+bool GameInteractor::RawAction::CheckFlag(int16_t flagType, int16_t flag) {
+    switch (flagType) {
+        case FlagType::FLAG_EVENT_CHECK_INF:
+            return Flags_GetEventChkInf(flag);
+        case FlagType::FLAG_ITEM_GET_INF:
+            return Flags_GetItemGetInf(flag);
+        case FlagType::FLAG_INF_TABLE:
+            return Flags_GetInfTable(flag);
+        case FlagType::FLAG_EVENT_INF:
+            return Flags_GetEventInf(flag);
+        case FlagType::FLAG_RANDOMIZER_INF:
+            return Flags_GetRandomizerInf(static_cast<RandomizerInf>(flag));
+        case FlagType::FLAG_GS_TOKEN:
+            return GET_GS_FLAGS((flag & 0x1F00) >> 8);
+    }
+}
+
 void GameInteractor::RawAction::SetFlag(int16_t flagType, int16_t flag) {
     switch (flagType) {
         case FlagType::FLAG_EVENT_CHECK_INF:
@@ -324,7 +341,7 @@ void GameInteractor::RawAction::UpdateActor(void* refActor) {
 }
 
 void GameInteractor::RawAction::TeleportPlayer(int32_t nextEntrance) {
-    Audio_PlaySoundGeneral(NA_SE_EN_GANON_LAUGH, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+    Audio_PlaySoundGeneral(NA_SE_EN_GANON_LAUGH, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     gPlayState->nextEntranceIndex = nextEntrance;
     gPlayState->transitionTrigger = TRANS_TRIGGER_START;
     gPlayState->transitionType = TRANS_TYPE_FADE_BLACK;
@@ -353,19 +370,19 @@ void GameInteractor::RawAction::SetTimeOfDay(uint32_t time) {
 }
 
 void GameInteractor::RawAction::SetCollisionViewer(bool active) {
-    CVarSetInteger("gColViewerEnabled", active);
-    CVarSetInteger("gColViewerDecal", active);
+    CVarSetInteger(CVAR_DEVELOPER_TOOLS("ColViewer.Enabled"), active);
+    CVarSetInteger(CVAR_DEVELOPER_TOOLS("ColViewer.Decal"), active);
     
     if (active) {
-        CVarSetInteger("gColViewerScene", COLVIEW_TRANSPARENT);
-        CVarSetInteger("gColViewerBgActors", COLVIEW_TRANSPARENT);
-        CVarSetInteger("gColViewerColCheck", COLVIEW_TRANSPARENT);
-        CVarSetInteger("gColViewerWaterbox", COLVIEW_TRANSPARENT);
+        CVarSetInteger(CVAR_DEVELOPER_TOOLS("ColViewer.Scene"), COLVIEW_TRANSPARENT);
+        CVarSetInteger(CVAR_DEVELOPER_TOOLS("ColViewer.BGActors"), COLVIEW_TRANSPARENT);
+        CVarSetInteger(CVAR_DEVELOPER_TOOLS("ColViewer.ColCheck"), COLVIEW_TRANSPARENT);
+        CVarSetInteger(CVAR_DEVELOPER_TOOLS("ColViewer.Waterbox"), COLVIEW_TRANSPARENT);
     } else {
-        CVarSetInteger("gColViewerScene", COLVIEW_DISABLED);
-        CVarSetInteger("gColViewerBgActors", COLVIEW_DISABLED);
-        CVarSetInteger("gColViewerColCheck", COLVIEW_DISABLED);
-        CVarSetInteger("gColViewerWaterbox", COLVIEW_DISABLED);
+        CVarSetInteger(CVAR_DEVELOPER_TOOLS("ColViewer.Scene"), COLVIEW_DISABLED);
+        CVarSetInteger(CVAR_DEVELOPER_TOOLS("ColViewer.BGActors"), COLVIEW_DISABLED);
+        CVarSetInteger(CVAR_DEVELOPER_TOOLS("ColViewer.ColCheck"), COLVIEW_DISABLED);
+        CVarSetInteger(CVAR_DEVELOPER_TOOLS("ColViewer.Waterbox"), COLVIEW_DISABLED);
     }
 }
 

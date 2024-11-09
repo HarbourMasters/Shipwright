@@ -1,5 +1,6 @@
 #include "global.h"
 #include <stdlib.h>
+#include "soh/framebuffer_effects.h"
 
 uintptr_t sSysCfbFbPtr[2];
 uintptr_t sSysCfbEnd;
@@ -40,6 +41,9 @@ void SysCfb_Init(s32 n64dd) {
 
     // "Frame buffer addresses are %08x and %08x"
     //osSyncPrintf("フレームバッファのアドレスは %08x と %08x です\n", sSysCfbFbPtr[0], sSysCfbFbPtr[1]);
+
+    // SOH [Port] Inform LUS on resolution changes
+    FB_CreateFramebuffers();
 }
 
 void SysCfb_Reset() {

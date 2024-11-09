@@ -311,6 +311,21 @@ typedef enum {
     /* 0xFF */ ITEM_NONE = 0xFF
 } ItemID;
 
+typedef enum {
+    EQUIP_FLAG_SWORD_KOKIRI = 1 << 0,
+    EQUIP_FLAG_SWORD_MASTER = 1 << 1,
+    EQUIP_FLAG_SWORD_BGS = 1 << 2,
+    EQUIP_FLAG_SHIELD_DEKU = 1 << 4,
+    EQUIP_FLAG_SHIELD_HYLIAN = 1 << 5,
+    EQUIP_FLAG_SHIELD_MIRROR = 1 << 6,
+    EQUIP_FLAG_TUNIC_KOKIRI = 1 << 8,
+    EQUIP_FLAG_TUNIC_GORON = 1 << 9,
+    EQUIP_FLAG_TUNIC_ZORA = 1 << 10,
+    EQUIP_FLAG_BOOTS_KOKIRI = 1 << 12,
+    EQUIP_FLAG_BOOTS_IRON = 1 << 13,
+    EQUIP_FLAG_BOOTS_HOVER = 1 << 14,
+} EquipmentFlag;
+
 #define ITEM_TRADE_CHILD ITEM_WEIRD_EGG
 #define ITEM_TRADE_ADULT ITEM_POCKET_EGG
 
@@ -372,7 +387,7 @@ typedef enum {
     /* 0x35 */ GI_GAUNTLETS_SILVER,
     /* 0x36 */ GI_GAUNTLETS_GOLD,
     /* 0x37 */ GI_SCALE_SILVER,
-    /* 0x38 */ GI_SCALE_GOLD,
+    /* 0x38 */ GI_SCALE_GOLDEN,
     /* 0x39 */ GI_STONE_OF_AGONY,
     /* 0x3A */ GI_GERUDO_CARD,
     /* 0x3B */ GI_OCARINA_FAIRY, // uses Ocarina of Time message ID
@@ -574,6 +589,7 @@ typedef enum {
     /* 0x7A */ GID_SONG_TIME,
     /* 0x7B */ GID_SONG_STORM,
     /* 0x7C */ GID_TRIFORCE_PIECE,
+    /*      */ GID_FISHING_POLE,
     /* 0x7C */ GID_MAXIMUM
 
 } GetItemDrawID;

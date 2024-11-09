@@ -27,6 +27,8 @@ static Vtx sStrengthAButtonVtx[] = {
 
 static s16 sEquipTimer = 0;
 
+extern int gPauseLinkFrameBuffer;
+
 void KaleidoScope_DrawEquipmentImage(PlayState* play, void* source, u32 width, u32 height) {
     PauseContext* pauseCtx = &play->pauseCtx;
     u8* curTexture;
@@ -70,13 +72,12 @@ void KaleidoScope_DrawEquipmentImage(PlayState* play, void* source, u32 width, u
     for (i = 0; i < textureCount; i++) {
         gSPVertex(POLY_KAL_DISP++, &pauseCtx->equipVtx[vtxIndex], 4, 0);
 
-        extern int fbTest;
         gDPSetTextureImage(POLY_KAL_DISP++, G_IM_FMT_RGBA, G_IM_SIZ_16b, width, curTexture);
 
         gDPLoadSync(POLY_KAL_DISP++);
         gDPLoadTile(POLY_KAL_DISP++, G_TX_LOADTILE, 0, 0, (width - 1) << 2, (textureHeight - 1) << 2);
 
-        gDPSetTextureImageFB(POLY_KAL_DISP++, G_IM_FMT_RGBA, G_IM_SIZ_16b, width, fbTest);
+        gDPSetTextureImageFB(POLY_KAL_DISP++, G_IM_FMT_RGBA, G_IM_SIZ_16b, width, gPauseLinkFrameBuffer);
         gSP1Quadrangle(POLY_KAL_DISP++, 0, 2, 3, 1, 0);
 
         curTexture += textureSize;
@@ -143,7 +144,7 @@ void KaleidoScope_DrawPlayerWork(PlayState* play) {
         pos.y = -130.0f;
         pos.z = -150.0f;
         scale = 0.046f;
-    } else if (CUR_EQUIP_VALUE(EQUIP_TYPE_SWORD) != EQUIP_VALUE_SWORD_MASTER && !CVarGetInteger("gPauseTriforce", 0)) {
+    } else if (CUR_EQUIP_VALUE(EQUIP_TYPE_SWORD) != EQUIP_VALUE_SWORD_MASTER && !CVarGetInteger(CVAR_GENERAL("PauseTriforce"), 0)) {
         pos.x = 25.0f;
         pos.y = -228.0f;
         pos.z = 60.0f;
@@ -185,8 +186,7 @@ void KaleidoScope_DrawPlayerWork(PlayState* play) {
 
     link_kaleido_rot.x = 0;
 
-    extern int fbTest;
-    gsSPSetFB(play->state.gfxCtx->polyOpa.p++, fbTest);
+    gsSPSetFB(play->state.gfxCtx->polyOpa.p++, gPauseLinkFrameBuffer);
     Player_DrawPause(play, pauseCtx->playerSegment, &pauseCtx->playerSkelAnime, &pos, &link_kaleido_rot, scale,
                      SWORD_EQUIP_TO_PLAYER(CUR_EQUIP_VALUE(EQUIP_TYPE_SWORD)),
                      TUNIC_EQUIP_TO_PLAYER(CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC)),
@@ -213,9 +213,9 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
     s16 cursorX;
     s16 cursorY;
     s16 oldCursorPoint;
-    bool dpad = (CVarGetInteger("gDpadPause", 0) && !CHECK_BTN_ALL(input->cur.button, BTN_CUP));
-    bool pauseAnyCursor = (CVarGetInteger("gPauseAnyCursor", 0) == PAUSE_ANY_CURSOR_RANDO_ONLY && IS_RANDO) ||
-                          (CVarGetInteger("gPauseAnyCursor", 0) == PAUSE_ANY_CURSOR_ALWAYS_ON);
+    bool dpad = (CVarGetInteger(CVAR_SETTING("DPadOnPause"), 0) && !CHECK_BTN_ALL(input->cur.button, BTN_CUP));
+    bool pauseAnyCursor = (CVarGetInteger(CVAR_ENHANCEMENT("PauseAnyCursor"), 0) == PAUSE_ANY_CURSOR_RANDO_ONLY && IS_RANDO) ||
+                          (CVarGetInteger(CVAR_ENHANCEMENT("PauseAnyCursor"), 0) == PAUSE_ANY_CURSOR_ALWAYS_ON);
 
     OPEN_DISPS(play->state.gfxCtx);
 
@@ -385,7 +385,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
                 pauseCtx->nameDisplayTimer = 0;
                 pauseCtx->cursorSpecialPos = 0;
 
-                Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
 
                 cursorPoint = cursorX = cursorY = 0;
                 while (true) {
@@ -431,7 +431,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
             if ((pauseCtx->stickRelX < -30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DLEFT))) {
                 pauseCtx->nameDisplayTimer = 0;
                 pauseCtx->cursorSpecialPos = 0;
-                Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
 
                 cursorPoint = cursorX = 3;
                 cursorY = 0;
@@ -545,14 +545,14 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
             (pauseCtx->cursorX[PAUSE_EQUIP] == 0) && (pauseCtx->cursorY[PAUSE_EQUIP] == 2) && CVarGetInteger(CVAR_ENHANCEMENT("ToggleStrength"), 0)) {
             CVarSetInteger(CVAR_ENHANCEMENT("StrengthDisabled"), !CVarGetInteger(CVAR_ENHANCEMENT("StrengthDisabled"), 0));
             // Equip success sound
-            Audio_PlaySoundGeneral(NA_SE_SY_DECIDE, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            Audio_PlaySoundGeneral(NA_SE_SY_DECIDE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             // Wait 10 frames before accepting input again
             pauseCtx->unk_1E4 = 7;
             sEquipTimer = 10;
         }
 
         u16 buttonsToCheck = BTN_A | BTN_CLEFT | BTN_CDOWN | BTN_CRIGHT;
-        if (CVarGetInteger("gDpadEquips", 0) && (!CVarGetInteger("gDpadPause", 0) || CHECK_BTN_ALL(input->cur.button, BTN_CUP))) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("DpadEquips"), 0) && (!CVarGetInteger(CVAR_SETTING("DPadOnPause"), 0) || CHECK_BTN_ALL(input->cur.button, BTN_CUP))) {
             buttonsToCheck |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
         }
 
@@ -637,7 +637,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
                         Interface_LoadItemIcon1(play, 0);
                     }
 
-                    Audio_PlaySoundGeneral(NA_SE_SY_DECIDE, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                    Audio_PlaySoundGeneral(NA_SE_SY_DECIDE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                     pauseCtx->unk_1E4 = 7;
                     sEquipTimer = 10;
                 } else if (CVarGetInteger(CVAR_ENHANCEMENT("AssignableTunicsAndBoots"), 0) != 0) {
@@ -671,23 +671,23 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
                                                         pauseCtx->equipVtx[cursorSlot * 4].v.ob[0] * 10,
                                                         pauseCtx->equipVtx[cursorSlot * 4].v.ob[1] * 10);
                         } else {
-                            Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0,
-                                                   &D_801333E8);
+                            Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                                                   &gSfxDefaultReverb);
                         }
                     }
                 }
             } else {
                 EQUIP_FAIL:
                 if (CHECK_BTN_ALL(input->press.button, BTN_A)) {
-                    Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                    Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 } else if ((CVarGetInteger(CVAR_ENHANCEMENT("AssignableTunicsAndBoots"), 0) != 0) && (pauseCtx->cursorY[PAUSE_EQUIP] > 1)) {
-                    Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                    Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 }
             }
         }
 
         if (oldCursorPoint != pauseCtx->cursorPoint[PAUSE_EQUIP]) {
-            Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         }
     } else if ((pauseCtx->unk_1E4 == 7) && (pauseCtx->pageIndex == PAUSE_EQUIP)) {
         KaleidoScope_SetCursorVtx(pauseCtx, pauseCtx->cursorSlot[PAUSE_EQUIP] * 4, pauseCtx->equipVtx);
@@ -852,7 +852,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
     //gSPSegment(POLY_KAL_DISP++, 0x0C, pauseCtx->iconItemAltSegment);
 
     Gfx_SetupDL_42Kal(play->state.gfxCtx);
-    KaleidoScope_DrawEquipmentImage(play, pauseCtx->playerSegment, 64, 112);
+    KaleidoScope_DrawEquipmentImage(play, pauseCtx->playerSegment, PAUSE_EQUIP_PLAYER_WIDTH, PAUSE_EQUIP_PLAYER_HEIGHT);
 
     if (gUpgradeMasks[0]) {}
 

@@ -683,7 +683,7 @@ void func_80A7D460(EnInsect* this, PlayState* play) {
             if (this->soilActor != NULL) {
                 if (!(GET_GS_FLAGS(((this->soilActor->actor.params >> 8) & 0x1F) - 1) &
                       (this->soilActor->actor.params & 0xFF))) {
-                    func_80078884(NA_SE_SY_TRE_BOX_APPEAR);
+                    Sfx_PlaySfxCentered(NA_SE_SY_TRE_BOX_APPEAR);
                 }
             }
             this->unk_314 |= 0x80;
@@ -786,7 +786,7 @@ void EnInsect_Update(Actor* thisx, PlayState* play) {
 
             if (!(this->unk_314 & 8) && D_80A7DEB4 < 4 && EnInsect_InBottleRange(this, play) &&
                 // GI_MAX in this case allows the player to catch the actor in a bottle
-                func_8002F434(&this->actor, play, GI_MAX, 60.0f, 30.0f)) {
+                Actor_OfferGetItem(&this->actor, play, GI_MAX, 60.0f, 30.0f)) {
                 D_80A7DEB4++;
             }
         }

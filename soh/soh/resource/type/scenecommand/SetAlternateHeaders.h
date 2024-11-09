@@ -21,6 +21,7 @@ class SetAlternateHeaders : public SceneCommand<void> {
     size_t GetPointerSize();
 
     uint32_t numHeaders;
+    std::vector<std::string> headerFileNames;
     std::vector<std::shared_ptr<Scene>> headers;
 };
 }; // namespace LUS

@@ -33,7 +33,6 @@ typedef struct EnBomBowlPit {
     /* 0x01D4 */ Vec3f unk_1D4; // camera eye (maxsteps)
     /* 0x01E0 */ EnExItem* exItem;
     /* 0x01E4 */ char unk_1E4[0x3520];
-    /*        */ GetItemEntry getItemEntry;
 } EnBomBowlPit; // size = 0x3704
 
 #endif

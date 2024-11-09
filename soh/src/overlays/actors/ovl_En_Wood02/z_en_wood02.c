@@ -101,12 +101,18 @@ static f32 sSpawnSin;
 s32 EnWood02_SpawnZoneCheck(EnWood02* this, PlayState* play, Vec3f* pos) {
     f32 phi_f12;
 
-    if (CVarGetInteger(CVAR_ENHANCEMENT("DisableDrawDistance"), 0) != 0) {
-        return true;
-    }
-
     SkinMatrix_Vec3fMtxFMultXYZW(&play->viewProjectionMtxF, pos, &this->actor.projectedPos,
                                  &this->actor.projectedW);
+
+    // #region SOH [Enhancement] Use the extended culling calculation
+    if (CVarGetInteger(CVAR_ENHANCEMENT("DisableDrawDistance"), 1) > 1 ||
+        CVarGetInteger(CVAR_ENHANCEMENT("WidescreenActorCulling"), 0)) {
+        bool shipShouldDraw = false;
+        bool shipShouldUpdate = false;
+        return Ship_CalcShouldDrawAndUpdate(play, &this->actor, &this->actor.projectedPos, this->actor.projectedW,
+                                            &shipShouldDraw, &shipShouldUpdate);
+    }
+    // #endregion
 
     phi_f12 = ((this->actor.projectedW == 0.0f) ? 1000.0f : fabsf(1.0f / this->actor.projectedW));
 

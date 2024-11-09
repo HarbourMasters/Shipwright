@@ -24,4 +24,6 @@ typedef struct EnGm {
     /* 0x02C4 */ Vec3f talkPos;
 } EnGm; // size = 0x02D0
 
+void func_80A3DC44(EnGm* actor, PlayState* play);
+
 #endif

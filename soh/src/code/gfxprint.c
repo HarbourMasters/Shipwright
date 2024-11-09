@@ -141,7 +141,7 @@ static const ALIGN_ASSET(2) char rGfxPrintFontDataAlt[] = drGfxPrintFontDataAlt;
 // https://github.com/HarbourMasters/Shipwright/issues/2762
 typedef enum {hardcoded, otrDefault, otrAlt} font_texture_t;
 font_texture_t GfxPrint_TextureToUse() {
-    if (CVarGetInteger("gAltAssets", 0) && ResourceMgr_FileExists(rGfxPrintFontDataAlt)) {
+    if (ResourceMgr_IsAltAssetsEnabled() && ResourceMgr_FileExists(rGfxPrintFontDataAlt)) {
         // If we have alt assets enabled, and we have alt prefixed font texture, use that
         return otrAlt;
     } else if (ResourceMgr_FileExists(rGfxPrintFontData)) {
@@ -214,7 +214,7 @@ void GfxPrint_SetColor(GfxPrint* this, u32 r, u32 g, u32 b, u32 a) {
 }
 
 void GfxPrint_SetPosPx(GfxPrint* this, s32 x, s32 y) {
-    this->posX = this->baseX + (x * 4) + CVarGetInteger("gGfxPrintCharStartOffset", 0);
+    this->posX = this->baseX + (x * 4) + CVarGetInteger(CVAR_DEVELOPER_TOOLS("GfxPrintChar.StartOffset"), 0);
     this->posY = this->baseY + (y * 4);
 }
 
@@ -272,7 +272,7 @@ void GfxPrint_PrintCharImpl(GfxPrint* this, u8 c) {
                             (u16)(c >> 3) * 256, 1 << 10, 1 << 10);
     }
 
-    this->posX += CVarGetInteger("gGfxPrintCharSpacing", 32);
+    this->posX += CVarGetInteger(CVAR_DEVELOPER_TOOLS("GfxPrintChar.Spacing"), 32);
 }
 
 void GfxPrint_PrintStringWithSize(GfxPrint* this, const void* buffer, u32 charSize, u32 charCount) {

@@ -91,7 +91,7 @@ void DrawNameTag(PlayState* play, const NameTag* nameTag) {
     // Set position, billboard effect, scale (with mirror mode), then center nametag
     Matrix_Translate(nameTag->actor->world.pos.x, posY, nameTag->actor->world.pos.z, MTXMODE_NEW);
     Matrix_ReplaceRotation(&play->billboardMtxF);
-    Matrix_Scale(scale * (CVarGetInteger("gMirroredWorld", 0) ? -1 : 1), -scale, 1.0f, MTXMODE_APPLY);
+    Matrix_Scale(scale * (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0) ? -1 : 1), -scale, 1.0f, MTXMODE_APPLY);
     Matrix_Translate(-(float)nameTag->width / 2, -nameTag->height, 0, MTXMODE_APPLY);
     Matrix_ToMtx(nameTag->mtx, (char*)__FILE__, __LINE__);
 
@@ -201,7 +201,7 @@ extern "C" void NameTag_RegisterForActorWithOptions(Actor* actor, const char* te
     processedText.erase(std::remove_if(processedText.begin(), processedText.end(), [](const char& c) {
         // 172 is max supported texture for the in-game font system,
         // and filter anything less than a space but not the newline or nul characters
-        return c > 172 || (c < ' ' && c != '\n' && c != '\0');
+        return (unsigned char)c > 172 || (c < ' ' && c != '\n' && c != '\0');
     }), processedText.end());
 
     int16_t numChar = processedText.length();
@@ -213,7 +213,7 @@ extern "C" void NameTag_RegisterForActorWithOptions(Actor* actor, const char* te
     Vtx* vertices = (Vtx*)calloc(sizeof(Vtx[4]), numChar + 1);
 
     // Set all the char vtx first to get the total size for the textbox
-    for (size_t i = 0; i < numChar; i++) {
+    for (int16_t i = 0; i < numChar; i++) {
         if (processedText[i] == '\n') {
             offsetX = 0;
             numLines++;

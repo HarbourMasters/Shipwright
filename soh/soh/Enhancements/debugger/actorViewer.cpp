@@ -12,6 +12,7 @@
 #include <string>
 #include <libultraship/bridge.h>
 #include <libultraship/libultraship.h>
+#include "soh/OTRGlobals.h"
 
 extern "C" {
 #include <z64.h>
@@ -887,7 +888,7 @@ std::vector<u16> GetActorsWithDescriptionContainingString(std::string s) {
 }
 
 void ActorViewer_AddTagForActor(Actor* actor) {
-    int val = CVarGetInteger("gDebugActorViewerNameTags", ACTORVIEWER_NAMETAGS_NONE);
+    int val = CVarGetInteger(CVAR_DEVELOPER_TOOLS("ActorViewer.NameTags"), ACTORVIEWER_NAMETAGS_NONE);
     auto entry = ActorDB::Instance->RetrieveEntry(actor->id);
     std::string tag;
 
@@ -924,12 +925,6 @@ void ActorViewer_AddTagForAllActors() {
 }
 
 void ActorViewerWindow::DrawElement() {
-    ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Actor Viewer", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
-        ImGui::End();
-        return;
-    }
-
     static Actor* display;
     static Actor empty{};
     static Actor* fetch = NULL;
@@ -1065,7 +1060,7 @@ void ActorViewerWindow::DrawElement() {
 
             if (ImGui::Button("Fetch from Target")) {
                 Player* player = GET_PLAYER(gPlayState);
-                fetch = player->targetActor;
+                fetch = player->talkActor;
                 if (fetch != NULL) {
                     display = fetch;
                     category = fetch->category;
@@ -1129,10 +1124,10 @@ void ActorViewerWindow::DrawElement() {
                 newActor.params = 0;
             }
 
-            UIWidgets::EnhancementCheckbox("Advanced mode", "gActorViewerAdvancedParams");
+            UIWidgets::EnhancementCheckbox("Advanced mode", CVAR_DEVELOPER_TOOLS("ActorViewer.AdvancedParams"));
             UIWidgets::InsertHelpHoverText("Changes the actor specific param menus with a direct input");
 
-            if (CVarGetInteger("gActorViewerAdvancedParams", 0)) {
+            if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ActorViewer.AdvancedParams"), 0)) {
                 ImGui::InputScalar("params", ImGuiDataType_S16, &newActor.params, &one);
             } else if (std::find(noParamsActors.begin(), noParamsActors.end(), newActor.id) == noParamsActors.end()) {
                 CreateActorSpecificData();
@@ -1179,7 +1174,7 @@ void ActorViewerWindow::DrawElement() {
                     Actor_Spawn(&gPlayState->actorCtx, gPlayState, newActor.id, newActor.pos.x, newActor.pos.y,
                                 newActor.pos.z, newActor.rot.x, newActor.rot.y, newActor.rot.z, newActor.params, 0);
                 } else {
-                    func_80078884(NA_SE_SY_ERROR);
+                    Sfx_PlaySfxCentered(NA_SE_SY_ERROR);
                 }
             }
 
@@ -1192,7 +1187,7 @@ void ActorViewerWindow::DrawElement() {
                                            newActor.pos.y, newActor.pos.z, newActor.rot.x, newActor.rot.y,
                                            newActor.rot.z, newActor.params);
                     } else {
-                        func_80078884(NA_SE_SY_ERROR);
+                        Sfx_PlaySfxCentered(NA_SE_SY_ERROR);
                     }
                 }
             }
@@ -1214,7 +1209,7 @@ void ActorViewerWindow::DrawElement() {
         UIWidgets::Spacer(0);
 
         ImGui::Text("Actor Name Tags");
-        if (UIWidgets::EnhancementCombobox("gDebugActorViewerNameTags", nameTagOptions, ACTORVIEWER_NAMETAGS_NONE)) {
+        if (UIWidgets::EnhancementCombobox(CVAR_DEVELOPER_TOOLS("ActorViewer.NameTags"), nameTagOptions, ACTORVIEWER_NAMETAGS_NONE)) {
             NameTag_RemoveAllByTag(DEBUG_ACTOR_NAMETAG_TAG);
             ActorViewer_AddTagForAllActors();
         }
@@ -1234,8 +1229,6 @@ void ActorViewerWindow::DrawElement() {
             actors.clear();
         }
     }
-
-    ImGui::End();
 }
 
 void ActorViewerWindow::InitElement() {

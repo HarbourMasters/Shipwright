@@ -115,7 +115,7 @@ s16 func_80AA2BD4(PlayState* play, Actor* thisx) {
     switch (Message_GetState(&play->msgCtx)) {
         case TEXT_STATE_EVENT:
             if (Message_ShouldAdvance(play)) {
-                play->nextEntranceIndex = ENTR_LON_LON_RANCH_0;
+                play->nextEntranceIndex = ENTR_LON_LON_RANCH_ENTRANCE;
                 gSaveContext.nextCutsceneIndex = 0xFFF0;
                 play->transitionType = TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_BLACK, TCS_FAST);
                 play->transitionTrigger = TRANS_TRIGGER_START;

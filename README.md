@@ -70,12 +70,17 @@ Congratulations, you are now sailing with the Ship of Harkinian! Have fun!
 | Tab | Toggle Alternate assets |
 | Ctrl+R | Reset |
 
+# Project Overview
+Ship of Harkinian (SOH) is built atop a custom library dubbed libultraship (LUS). Back in the N64 days, there was an SDK distributed to developers named libultra; LUS is designed to mimic the functionality of libultra on modern hardware. In addition, we are dependant on the source code provided by the OOT decompilation project.
+
+In order for the game to function, you will require a **legally aquired** ROM for Ocarina of Time. Click [here](https://ship.equipment/) to check the compatability of your specific rom. Any copyrighted assets are extracted from the ROM and reformated as a .otr archive file which the code uses.
+
 ### Graphics Backends
 Currently, there are three rendering APIs supported: DirectX11 (Windows), OpenGL (all platforms), and Metal (MacOS). You can change which API to use in the `Settings` menu of the menubar, which requires a restart.  If you're having an issue with crashing, you can change the API in the `shipofharkinian.json` file by finding the line `gfxbackend:""` and changing the value to `sdl` for OpenGL. DirectX 11 is the default on Windows.
 
 # Custom Assets
 
-Custom assets are packed in `.otr` files. To use custom assets, place them in the `mods` folder.
+Custom assets are packed in `.otr` archive files. To use custom assets, place them in the `mods` folder.
 
 If you're interested in creating and/or packing your own custom asset `.otr` files, check out the following tools:
 * [**retro - OTR generator**](https://github.com/HarbourMasters64/retro)
@@ -91,10 +96,16 @@ If you want to playtest a continuous integration build, you can find them at the
 
 * [Windows](https://nightly.link/HarbourMasters/Shipwright/workflows/generate-builds/develop/soh-windows.zip)
 * [macOS](https://nightly.link/HarbourMasters/Shipwright/workflows/generate-builds/develop/soh-mac.zip)
-* [Linux (performance)](https://nightly.link/HarbourMasters/Shipwright/workflows/generate-builds/develop/soh-linux-performance.zip) _(requires `glibc 2.35` or newer, but will be more performant than the compatibility build.)_
-* [Linux (compatibility)](https://nightly.link/HarbourMasters/Shipwright/workflows/generate-builds/develop/soh-linux-compatibility.zip) _(compatible with most Linux distributions, but may not be as performant as the performance build.)_
-* [Switch](https://nightly.link/HarbourMasters/Shipwright/workflows/generate-builds/develop/soh-switch.zip)
-* [Wii U](https://nightly.link/HarbourMasters/Shipwright/workflows/generate-builds/develop/soh-wiiu.zip)
+* [Linux](https://nightly.link/HarbourMasters/Shipwright/workflows/generate-builds/develop/soh-linux.zip)
+
+### Further Reading
+More detailed documentation can be found in the 'docs' directory, including the afformentioned [building instructions](docs/BUILDING.md).
+
+*[Credits](docs/CREDITS.md)
+*[Custom Music](docs/CUSTOM_MUSIC.md)
+*[Controler Maping](docs/GAME_CONTROLLER_DB.md)
+*[Modding](docs/MODDING.md)
+*[Versioning](docs/VERSIONING.md)
 
 <a href="https://github.com/Kenix3/libultraship/">
   <picture>

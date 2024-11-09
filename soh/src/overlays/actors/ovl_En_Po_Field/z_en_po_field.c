@@ -332,7 +332,7 @@ void func_80AD42B0(EnPoField* this) {
     this->actor.scale.y = 0.0f;
     Audio_PlayActorSound2(&this->actor, NA_SE_EV_METAL_BOX_BOUND);
     if (this->actor.params == EN_PO_FIELD_BIG) {
-        func_80078884(NA_SE_SY_TRE_BOX_APPEAR);
+        Sfx_PlaySfxCentered(NA_SE_SY_TRE_BOX_APPEAR);
     }
     this->actionFunc = func_80AD587C;
 }
@@ -944,15 +944,14 @@ void EnPoField_Draw(Actor* thisx, PlayState* play) {
                                     this->lightColor.a));
             gSPSegment(POLY_OPA_DISP++, 0x0C, D_80116280 + 2);
             POLY_OPA_DISP =
-                SkelAnime_Draw(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
+                SkelAnime_DrawSkeleton2(play, &this->skelAnime,
                                EnPoField_OverrideLimbDraw2, EnPoField_PostLimDraw2, &this->actor, POLY_OPA_DISP);
         } else {
             gSPSegment(POLY_XLU_DISP++, 0x08,
                        Gfx_EnvColor(play->state.gfxCtx, this->lightColor.r, this->lightColor.g, this->lightColor.b,
                                     this->lightColor.a));
             gSPSegment(POLY_XLU_DISP++, 0x0C, D_80116280);
-            POLY_XLU_DISP =
-                SkelAnime_Draw(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
+            POLY_XLU_DISP = SkelAnime_DrawSkeleton2(play, &this->skelAnime,
                                EnPoField_OverrideLimbDraw2, EnPoField_PostLimDraw2, &this->actor, POLY_XLU_DISP);
         }
         gDPPipeSync(POLY_OPA_DISP++);

@@ -16,7 +16,7 @@ ActorDB* ActorDB::Instance;
 #undef DEFINE_ACTOR_UNSET
 
 struct AddPair {
-    std::string name;
+    const char* name;
     ActorInit& init;
 };
 
@@ -24,7 +24,7 @@ struct AddPair {
 #define DEFINE_ACTOR(name, _1, allocType) { #name, name##_InitVars },
 #define DEFINE_ACTOR_UNSET(_0)
 
-static const std::vector<AddPair> initialActorTable = {
+static constexpr AddPair initialActorTable[] = {
 #include "tables/actor_table.h"
 };
 
@@ -33,7 +33,7 @@ static const std::vector<AddPair> initialActorTable = {
 #undef DEFINE_ACTOR
 
 // https://wiki.cloudmodding.com/oot/Actor_List_(Variables)
-static std::unordered_map<u16, const char*> actorDescriptions = {
+static constexpr std::pair<u16, const char*> actorDescriptionData[] = {
     { ACTOR_PLAYER, "Link" },
     { ACTOR_EN_TEST, "Stalfos" },
     { ACTOR_EN_GIRLA, "Shop Items" },
@@ -464,6 +464,7 @@ static std::unordered_map<u16, const char*> actorDescriptions = {
     { ACTOR_BG_JYA_BLOCK, "Silver Block (Child Era)" },
     { ACTOR_OBJ_WARP2BLOCK, "Navi Infospot (Green, Time Block)" }
 };
+static std::unordered_map<u16, const char*> actorDescriptions = std::unordered_map<u16, const char*>(std::begin(actorDescriptionData), std::end(actorDescriptionData));
 
 ActorDB::ActorDB() {
     db.reserve(ACTOR_NUMBER_MAX); // reserve size for all initial entries so we don't do it for each

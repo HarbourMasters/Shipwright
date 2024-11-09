@@ -16,7 +16,6 @@ void EnDns_Destroy(Actor* thisx, PlayState* play);
 void EnDns_Update(Actor* thisx, PlayState* play);
 void EnDns_Draw(Actor* thisx, PlayState* play);
 
-u32 EnDns_RandomizerPurchaseableCheck(EnDns* this);
 u32 func_809EF5A4(EnDns* this);
 u32 func_809EF658(EnDns* this);
 u32 func_809EF70C(EnDns* this);
@@ -26,7 +25,6 @@ u32 func_809EF854(EnDns* this);
 u32 func_809EF8F4(EnDns* this);
 u32 func_809EF9A4(EnDns* this);
 
-void EnDns_RandomizerPurchase(EnDns* this);
 void func_809EF9F8(EnDns* this);
 void func_809EFA28(EnDns* this);
 void func_809EFA58(EnDns* this);
@@ -168,32 +166,6 @@ void EnDns_Init(Actor* thisx, PlayState* play) {
     this->actor.gravity = -1.0f;
     this->actor.textId = D_809F040C[this->actor.params];
     this->dnsItemEntry = sItemEntries[this->actor.params];
-    if (IS_RANDO) {
-        // Ugly, but the best way we can identify which grotto we are in, same method 3DRando uses, but we'll need to account for entrance rando
-        s16 respawnData = gSaveContext.respawn[RESPAWN_MODE_RETURN].data & ((1 << 8) - 1);
-        this->scrubIdentity = Randomizer_IdentifyScrub(play->sceneNum, this->actor.params, respawnData);
-
-        if ((Randomizer_GetSettingValue(RSK_SHUFFLE_SCRUBS) == RO_SCRUBS_AFFORDABLE ||
-             Randomizer_GetSettingValue(RSK_SHUFFLE_SCRUBS) == RO_SCRUBS_RANDOM) &&
-            this->scrubIdentity.itemPrice != -1) {
-            this->dnsItemEntry->itemPrice = this->scrubIdentity.itemPrice;
-        }
-
-        if (Randomizer_GetSettingValue(RSK_SHUFFLE_SCRUBS) == RO_SCRUBS_EXPENSIVE) {
-            // temporary workaround: always use 40 rupees as price instead of 70
-            if (this->actor.params == 0x0006) {
-                this->dnsItemEntry->itemPrice = 40;
-            }
-        }
-
-        if (this->scrubIdentity.isShuffled) {
-            this->dnsItemEntry->getItemId = this->scrubIdentity.getItemId;
-            this->dnsItemEntry->purchaseableCheck = EnDns_RandomizerPurchaseableCheck;
-            this->dnsItemEntry->setRupeesAndFlags = EnDns_RandomizerPurchase;
-            this->dnsItemEntry->itemAmount = 1;
-            this->actor.textId = 0x9000 + (this->scrubIdentity.randomizerInf - RAND_INF_SCRUBS_PURCHASED_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_LEFT);
-        }
-    }
     this->actionFunc = EnDns_SetupWait;
 }
 
@@ -215,13 +187,6 @@ void EnDns_ChangeAnim(EnDns* this, u8 index) {
 }
 
 /* Item give checking functions */
-
-u32 EnDns_RandomizerPurchaseableCheck(EnDns* this) {
-    if (gSaveContext.rupees < this->dnsItemEntry->itemPrice || Flags_GetRandomizerInf(this->scrubIdentity.randomizerInf)) {
-        return 0;
-    }
-    return 4;
-}
 
 u32 func_809EF5A4(EnDns* this) {
     if ((CUR_CAPACITY(UPG_NUTS) != 0) && (AMMO(ITEM_NUT) >= CUR_CAPACITY(UPG_NUTS))) {
@@ -319,10 +284,6 @@ u32 func_809EF9A4(EnDns* this) {
 }
 
 /* Paying and flagging functions */
-void EnDns_RandomizerPurchase(EnDns* this) {
-    Rupees_ChangeBy(-this->dnsItemEntry->itemPrice);
-    Flags_SetRandomizerInf(this->scrubIdentity.randomizerInf);
-}
 
 void func_809EF9F8(EnDns* this) {
     Rupees_ChangeBy(-this->dnsItemEntry->itemPrice);
@@ -412,44 +373,39 @@ void EnDns_Talk(EnDns* this, PlayState* play) {
 
 void func_809EFDD0(EnDns* this, PlayState* play) {
     u16 pendingGetItemId;
-    if (!IS_RANDO || !this->scrubIdentity.isShuffled) {
-        if (this->actor.params == 0x9) {
-            if (CUR_UPG_VALUE(UPG_STICKS) < 2) {
-                pendingGetItemId = GI_STICK_UPGRADE_20;
-            } else {
-                pendingGetItemId = GI_STICK_UPGRADE_30;
-            }
-        } else if (this->actor.params == 0xA) {
-            if (CUR_UPG_VALUE(UPG_NUTS) < 2) {
-                pendingGetItemId = GI_NUT_UPGRADE_30;
-            } else {
-                pendingGetItemId = GI_NUT_UPGRADE_40;
-            }
+    if (this->actor.params == 0x9) {
+        if (CUR_UPG_VALUE(UPG_STICKS) < 2) {
+            pendingGetItemId = GI_STICK_UPGRADE_20;
         } else {
-            pendingGetItemId = this->dnsItemEntry->getItemId;
+            pendingGetItemId = GI_STICK_UPGRADE_30;
         }
-        GetItemEntry itemEntry = ItemTable_Retrieve(pendingGetItemId);
-        gSaveContext.pendingSale = itemEntry.itemId;
-        gSaveContext.pendingSaleMod = itemEntry.modIndex;
-        func_8002F434(&this->actor, play, pendingGetItemId, 130.0f, 100.0f);
+    } else if (this->actor.params == 0xA) {
+        if (CUR_UPG_VALUE(UPG_NUTS) < 2) {
+            pendingGetItemId = GI_NUT_UPGRADE_30;
+        } else {
+            pendingGetItemId = GI_NUT_UPGRADE_40;
+        }
     } else {
-        GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(this->scrubIdentity.randomizerCheck, this->scrubIdentity.getItemId);
-        gSaveContext.pendingSale = itemEntry.itemId;
-        gSaveContext.pendingSaleMod = itemEntry.modIndex;
-        GiveItemEntryFromActor(&this->actor, play, itemEntry, 130.0f, 100.0f);
+        pendingGetItemId = this->dnsItemEntry->getItemId;
     }
+    GetItemEntry itemEntry = ItemTable_Retrieve(pendingGetItemId);
+    gSaveContext.pendingSale = itemEntry.itemId;
+    gSaveContext.pendingSaleMod = itemEntry.modIndex;
+    Actor_OfferGetItem(&this->actor, play, pendingGetItemId, 130.0f, 100.0f);
 }
 
 void func_809EFEE8(EnDns* this, PlayState* play) {
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(play)) {
         Message_CloseTextbox(play);
-        func_809EFDD0(this, play);
+        if (GameInteractor_Should(VB_GIVE_ITEM_FROM_BUSINESS_SCRUB, true, this)) {
+            func_809EFDD0(this, play);
+        }
         this->actionFunc = func_809EFF50;
     }
 }
 
 void func_809EFF50(EnDns* this, PlayState* play) {
-    if (Actor_HasParent(&this->actor, play)) {
+    if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(VB_GIVE_ITEM_FROM_BUSINESS_SCRUB, true, this)) {
         this->actor.parent = NULL;
         this->actionFunc = func_809EFF98;
     } else {
@@ -533,9 +489,6 @@ void EnDns_Update(Actor* thisx, PlayState* play) {
 
     this->dustTimer++;
     this->actor.textId = D_809F040C[this->actor.params];
-    if (IS_RANDO && this->scrubIdentity.isShuffled) {
-        this->actor.textId = 0x9000 + (this->scrubIdentity.randomizerInf - RAND_INF_SCRUBS_PURCHASED_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_LEFT);
-    }
     Actor_SetFocus(&this->actor, 60.0f);
     Actor_SetScale(&this->actor, 0.01f);
     SkelAnime_Update(&this->skelAnime);

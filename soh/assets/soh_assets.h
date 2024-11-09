@@ -44,6 +44,21 @@ static const ALIGN_ASSET(2) char gTitleRandomizerSubtitleTex[] = dgTitleRandomiz
 #define dgTitleBossRushSubtitleTex "__OTR__objects/object_mag/gTitleBossRushSubtitleTex"
 static const ALIGN_ASSET(2) char gTitleBossRushSubtitleTex[] = dgTitleBossRushSubtitleTex;
 
+#define dgOcarinaAButtonDL "__OTR__objects/object_ocarina_a_button/gOcarinaAButtonDL"
+static const ALIGN_ASSET(2) char gOcarinaAButtonDL[] = dgOcarinaAButtonDL;
+
+#define dgOcarinaCLeftButtonDL "__OTR__objects/object_ocarina_c_left_button/gOcarinaCLeftButtonDL"
+static const ALIGN_ASSET(2) char gOcarinaCLeftButtonDL[] = dgOcarinaCLeftButtonDL;
+
+#define dgOcarinaCRightButtonDL "__OTR__objects/object_ocarina_c_right_button/gOcarinaCRightButtonDL"
+static const ALIGN_ASSET(2) char gOcarinaCRightButtonDL[] = dgOcarinaCRightButtonDL;
+
+#define dgOcarinaCUpButtonDL "__OTR__objects/object_ocarina_c_up_button/gOcarinaCUpButtonDL"
+static const ALIGN_ASSET(2) char gOcarinaCUpButtonDL[] = dgOcarinaCUpButtonDL;
+
+#define dgOcarinaCDownButtonDL "__OTR__objects/object_ocarina_c_down_button/gOcarinaCDownButtonDL"
+static const ALIGN_ASSET(2) char gOcarinaCDownButtonDL[] = dgOcarinaCDownButtonDL;
+
 #define dgTriforcePiece0DL "__OTR__objects/object_triforce_piece_0/gTriforcePiece0DL"
 static const ALIGN_ASSET(2) char gTriforcePiece0DL[] = dgTriforcePiece0DL;
 
@@ -55,6 +70,15 @@ static const ALIGN_ASSET(2) char gTriforcePiece2DL[] = dgTriforcePiece2DL;
 
 #define dgTriforcePieceCompletedDL "__OTR__objects/object_triforce_completed/gTriforcePieceCompletedDL"
 static const ALIGN_ASSET(2) char gTriforcePieceCompletedDL[] = dgTriforcePieceCompletedDL;
+
+#define dgBossSoulSkullDL "__OTR__objects/object_boss_soul/gGIBossSoulSkullDL"
+static const ALIGN_ASSET(2) char gBossSoulSkullDL[] = dgBossSoulSkullDL;
+
+#define dgFishingPoleGiDL "__OTR__objects/object_gi_fishing_pole/gFishingPoleGiDL"
+static const ALIGN_ASSET(2) char gFishingPoleGiDL[] = dgFishingPoleGiDL;
+
+#define dgMysteryItemDL "__OTR__objects/object_mystery_item/gMysteryItemDL"
+static const ALIGN_ASSET(2) char gMysteryItemDL[] = dgMysteryItemDL;
 
 // overlays
 #define dgOptionsDividerChangeLangVtx "__OTR__overlays/ovl_file_choose/gOptionsDividerChangeLangVtx"
@@ -72,6 +96,15 @@ static const ALIGN_ASSET(2) char gArrowDownTex[] = dgArrowDown;
 
 #define dgTriforcePiece "__OTR__textures/parameter_static/gTriforcePiece"
 static const ALIGN_ASSET(2) char gTriforcePieceTex[] = dgTriforcePiece;
+
+#define dgWTriforcePiece "__OTR__textures/parameter_static/gWTriforcePiece"
+static const ALIGN_ASSET(2) char gWTriforcePieceTex[] = dgWTriforcePiece;
+
+#define dgSplitEntrance "__OTR__textures/parameter_static/gSplitEntrance"
+static const ALIGN_ASSET(2) char gSplitEntranceTex[] = dgSplitEntrance;
+
+#define dgBossSoul "__OTR__textures/parameter_static/gBossSoul"
+static const ALIGN_ASSET(2) char gBossSoulTex[] = dgBossSoul;
 
 #define dgFileSelMQButtonTex "__OTR__textures/title_static/gFileSelMQButtonTex"
 static const ALIGN_ASSET(2) char gFileSelMQButtonTex[] = dgFileSelMQButtonTex;

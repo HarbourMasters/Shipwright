@@ -94,7 +94,7 @@ void Audio_InitNoteSub(Note* note, NoteSubEu* sub, NoteSubAttributes* attrs) {
     vel = 0.0f > vel ? 0.0f : vel;
     vel = 1.0f < vel ? 1.0f : vel;
 
-    float master_vol = CVarGetFloat("gGameMasterVolume", 1.0f);
+    float master_vol = CVarGetFloat(CVAR_SETTING("Volume.Master"), 1.0f);
     sub->targetVolLeft = (s32)((vel * volLeft) * (0x1000 - 0.001f)) * master_vol;
     sub->targetVolRight = (s32)((vel * volRight) * (0x1000 - 0.001f)) * master_vol;
 
@@ -120,7 +120,7 @@ void Audio_NoteSetResamplingRate(NoteSubEu* noteSubEu, f32 resamplingRateInput) 
     } else {
         noteSubEu->bitField1.hasTwoParts = true;
         if (3.99996f < resamplingRateInput) {
-            if (CVarGetInteger("gExperimentalOctaveDrop", 0)) {
+            if (CVarGetInteger(CVAR_AUDIO("ExperimentalOctaveDrop"), 0)) {
                 resamplingRate = resamplingRateInput * 0.25;
             } else {
                 resamplingRate = 1.99998f;

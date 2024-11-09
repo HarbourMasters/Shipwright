@@ -10,7 +10,7 @@ class SohMenuBar : public Ship::GuiMenuBar {
     using Ship::GuiMenuBar::GuiMenuBar;
   protected:
     void DrawElement() override;
-    void InitElement() override {};
+    void InitElement() override;
     void UpdateElement() override {};
 };
 } // namespace SohGui

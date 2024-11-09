@@ -1,7 +1,7 @@
 #include "OTRGlobals.h"
 #include <libultraship/libultraship.h>
 #include "soh/resource/type/Scene.h"
-#include <Utils/StringHelper.h>
+#include <utils/StringHelper.h>
 #include "global.h"
 #include "vt.h"
 #include "soh/resource/type/CollisionHeader.h"
@@ -273,7 +273,7 @@ bool Scene_CommandTimeSettings(PlayState* play, SOH::ISceneCommand* cmd) {
     play->envCtx.sunPos.z = (Math_CosS(((void)0, gSaveContext.dayTime) - 0x8000) * 20.0f) * 25.0f;
 
     if (((play->envCtx.timeIncrement == 0) && (gSaveContext.cutsceneIndex < 0xFFF0)) ||
-        (gSaveContext.entranceIndex == ENTR_LAKE_HYLIA_8)) {
+        (gSaveContext.entranceIndex == ENTR_LAKE_HYLIA_WARP_PAD)) {
         gSaveContext.skyboxTime = ((void)0, gSaveContext.dayTime);
         if ((gSaveContext.skyboxTime >= 0x2AAC) && (gSaveContext.skyboxTime < 0x4555)) {
             gSaveContext.skyboxTime = 0x3556;

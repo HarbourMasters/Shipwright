@@ -12,14 +12,24 @@
 #define GAME_PLATFORM_N64 0
 #define GAME_PLATFORM_GC 1
 
-#define BTN_MODIFIER1 0x00040
-#define BTN_MODIFIER2 0x00080
+#define BTN_CUSTOM_MODIFIER1 0x0040
+#define BTN_CUSTOM_MODIFIER2 0x0080
+
+#define BTN_CUSTOM_OCARINA_NOTE_D4 ((CONTROLLERBUTTONS_T)0x00010000)
+#define BTN_CUSTOM_OCARINA_NOTE_F4 ((CONTROLLERBUTTONS_T)0x00020000)
+#define BTN_CUSTOM_OCARINA_NOTE_A4 ((CONTROLLERBUTTONS_T)0x00040000)
+#define BTN_CUSTOM_OCARINA_NOTE_B4 ((CONTROLLERBUTTONS_T)0x00080000)
+#define BTN_CUSTOM_OCARINA_NOTE_D5 ((CONTROLLERBUTTONS_T)0x00100000)
+#define BTN_CUSTOM_OCARINA_DISABLE_SONGS ((CONTROLLERBUTTONS_T)0x00200000)
+#define BTN_CUSTOM_OCARINA_PITCH_UP ((CONTROLLERBUTTONS_T)0x00400000)
+#define BTN_CUSTOM_OCARINA_PITCH_DOWN ((CONTROLLERBUTTONS_T)0x00800000)
 
 #ifdef __cplusplus
 #include <Context.h>
 #include "Enhancements/savestates.h"
 #include "Enhancements/randomizer/randomizer.h"
 #include <vector>
+#include "Enhancements/randomizer/context.h"
 
 const std::string customMessageTableID = "BaseGameOverrides";
 const std::string appShortName = "soh";
@@ -40,6 +50,7 @@ public:
     std::shared_ptr<Ship::Context> context;
     std::shared_ptr<SaveStateMgr> gSaveStateMgr;
     std::shared_ptr<Randomizer> gRandomizer;
+    std::shared_ptr<Rando::Context> gRandoContext;
 
     ImFont* defaultFontSmaller;
     ImFont* defaultFontLarger;
@@ -65,21 +76,23 @@ private:
 uint32_t IsGameMasterQuest();
 #endif
 
-#define CVAR_RANDOMIZER_ENHANCEMENT(var) "gRandoEnhancements." var
-#define CVAR_RANDOMIZER_SETTING(var) "gRandoSettings." var
-#define CVAR_COSMETIC(var) "gCosmetics." var
-#define CVAR_AUDIO(var) "gAudioEditor." var
-#define CVAR_CHEAT(var) "gCheats." var
-#define CVAR_ENHANCEMENT(var) "gEnhancements." var
-#define CVAR_SETTING(var) "gSettings." var
-#define CVAR_WINDOW(var) "gOpenWindows." var
-#define CVAR_TRACKER(var) "gTrackers." var
-#define CVAR_TRACKER_ITEM(var) CVAR_TRACKER("ItemTracker." var)
-#define CVAR_TRACKER_CHECK(var) CVAR_TRACKER("CheckTracker." var)
-#define CVAR_TRACKER_ENTRANCE(var) CVAR_TRACKER("EntranceTracker." var)
-#define CVAR_DEVELOPER_TOOLS(var) "gDeveloperTools." var
-#define CVAR_GENERAL(var) "gGeneral." var
-#define CVAR_REMOTE(var) "gRemote." var
+#define CVAR_RANDOMIZER_ENHANCEMENT(var) CVAR_PREFIX_RANDOMIZER_ENHANCEMENT "." var
+#define CVAR_RANDOMIZER_SETTING(var) CVAR_PREFIX_RANDOMIZER_SETTING "." var
+#define CVAR_COSMETIC(var) CVAR_PREFIX_COSMETIC "." var
+#define CVAR_AUDIO(var) CVAR_PREFIX_AUDIO "." var
+#define CVAR_CHEAT(var) CVAR_PREFIX_CHEAT "." var
+#define CVAR_ENHANCEMENT(var) CVAR_PREFIX_ENHANCEMENT "." var
+#define CVAR_SETTING(var) CVAR_PREFIX_SETTING "." var
+#define CVAR_WINDOW(var) CVAR_PREFIX_WINDOW "." var
+#define CVAR_TRACKER(var) CVAR_PREFIX_TRACKER "." var
+#define CVAR_TRACKER_ITEM(var) CVAR_TRACKER(".ItemTracker." var)
+#define CVAR_TRACKER_CHECK(var) CVAR_TRACKER(".CheckTracker." var)
+#define CVAR_TRACKER_ENTRANCE(var) CVAR_TRACKER(".EntranceTracker." var)
+#define CVAR_DEVELOPER_TOOLS(var) CVAR_PREFIX_DEVELOPER_TOOLS "." var
+#define CVAR_GENERAL(var) CVAR_PREFIX_GENERAL "." var
+#define CVAR_REMOTE(var) CVAR_PREFIX_REMOTE "." var
+#define CVAR_REMOTE_CROWD_CONTROL(var) CVAR_REMOTE(".CrowdControl." var)
+#define CVAR_REMOTE_SAIL(var) CVAR_REMOTE(".Sail." var)
 
 #ifndef __cplusplus
     void InitOTR(void);
@@ -137,6 +150,7 @@ void Ctx_ReadSaveFile(uintptr_t addr, void* dramAddr, size_t size);
 void Ctx_WriteSaveFile(uintptr_t addr, void* dramAddr, size_t size);
 
 uint64_t GetPerfCounter();
+bool ResourceMgr_IsAltAssetsEnabled();
 struct SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path, SkelAnime* skelAnime);
 void ResourceMgr_UnregisterSkeleton(SkelAnime* skelAnime);
 void ResourceMgr_ClearSkeletons();
@@ -151,6 +165,8 @@ float OTRGetDimensionFromLeftEdge(float v);
 float OTRGetDimensionFromRightEdge(float v);
 int16_t OTRGetRectDimensionFromLeftEdge(float v);
 int16_t OTRGetRectDimensionFromRightEdge(float v);
+uint32_t OTRGetGameRenderWidth();
+uint32_t OTRGetGameRenderHeight();
 int AudioPlayer_Buffered(void);
 int AudioPlayer_GetDesiredBuffered(void);
 void AudioPlayer_Play(const uint8_t* buf, uint32_t len);
@@ -162,31 +178,38 @@ void* getN64WeirdFrame(s32 i);
 int GetEquipNowMessage(char* buffer, char* src, const int maxBufferSize);
 u32 SpoilerFileExists(const char* spoilerFileName);
 Sprite* GetSeedTexture(uint8_t index);
-void Randomizer_LoadSettings(const char* spoilerFileName);
+uint8_t GetSeedIconIndex(uint8_t index);
 u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 RandomizerCheck Randomizer_GetCheckFromActor(s16 actorId, s16 sceneNum, s16 actorParams);
 ScrubIdentity Randomizer_IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respawnData);
+BeehiveIdentity Randomizer_IdentifyBeehive(s32 sceneNum, s16 xPosition, s32 respawnData);
 ShopItemIdentity Randomizer_IdentifyShopItem(s32 sceneNum, u8 slotIndex);
 CowIdentity Randomizer_IdentifyCow(s32 sceneNum, s32 posX, s32 posZ);
-void Randomizer_LoadHintLocations(const char* spoilerFileName);
-void Randomizer_LoadMerchantMessages(const char* spoilerFileName);
-void Randomizer_LoadRequiredTrials(const char* spoilerFileName);
-void Randomizer_LoadMasterQuestDungeons(const char* spoilerFileName);
-void Randomizer_LoadItemLocations(const char* spoilerFileName, bool silent);
-void Randomizer_LoadEntranceOverrides(const char* spoilerFileName, bool silent);
-bool Randomizer_IsTrialRequired(RandomizerInf trial);
+FishIdentity Randomizer_IdentifyFish(s32 sceneNum, s32 actorParams);
+void Randomizer_ParseSpoiler(const char* fileLoc);
+void Randomizer_LoadHintMessages();
+void Randomizer_LoadMerchantMessages();
+bool Randomizer_IsTrialRequired(s32 trialFlag);
 GetItemEntry Randomizer_GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogId);
 GetItemEntry Randomizer_GetItemFromActorWithoutObtainabilityCheck(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogId);
 GetItemEntry Randomizer_GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
 GetItemEntry Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
+RandomizerInf Randomizer_GetRandomizerInfFromCheck(RandomizerCheck randomizerCheck);
+bool Randomizer_IsCheckShuffled(RandomizerCheck check);
+GetItemEntry GetItemMystery();
 ItemObtainability Randomizer_GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck);
+void Randomizer_GenerateSeed();
+uint8_t Randomizer_IsSeedGenerated();
+void Randomizer_SetSeedGenerated(bool seedGenerated);
+uint8_t Randomizer_IsSpoilerLoaded();
+void Randomizer_SetSpoilerLoaded(bool spoilerLoaded);
+uint8_t Randomizer_IsPlandoLoaded();
+void Randomizer_SetPlandoLoaded(bool plandoLoaded);
 int CustomMessage_RetrieveIfExists(PlayState* play);
 void Overlay_DisplayText(float duration, const char* text);
 void Overlay_DisplayText_Seconds(int seconds, const char* text);
 GetItemEntry ItemTable_Retrieve(int16_t getItemID);
 GetItemEntry ItemTable_RetrieveEntry(s16 modIndex, s16 getItemID);
-void Entrance_ClearEntranceTrackingData(void);
-void Entrance_InitEntranceTrackingData(void);
 void EntranceTracker_SetCurrentGrottoID(s16 entranceIndex);
 void EntranceTracker_SetLastEntranceOverride(s16 entranceIndex);
 void Gfx_RegisterBlendedTexture(const char* name, u8* mask, u8* replacement);

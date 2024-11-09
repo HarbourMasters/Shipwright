@@ -12,7 +12,7 @@
         (!gSaveContext.sohStats.fileCreatedAt ? 0 : ((GetUnixTimestamp() - gSaveContext.sohStats.fileCreatedAt) / 100)) :\
         (gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_GANON])) :\
     (gSaveContext.sohStats.playTimer / 2 + gSaveContext.sohStats.pauseTimer / 3))
-#define CURRENT_MODE_TIMER (CVarGetInteger("gGameplayStats.RoomBreakdown", 0) ?\
+#define CURRENT_MODE_TIMER (CVarGetInteger(CVAR_ENHANCEMENT("GameplayStats.RoomBreakdown"), 0) ?\
     gSaveContext.sohStats.roomTimer :\
     gSaveContext.sohStats.sceneTimer)
 

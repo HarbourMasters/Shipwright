@@ -201,7 +201,7 @@ void func_80077D10(f32* arg0, s16* arg1, Input* input) {
     f32 relX = input->rel.stick_x;
     f32 relY = input->rel.stick_y;
 
-    if (CVarGetInteger("gMirroredWorld", 0)) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0)) {
         relX = -input->rel.stick_x;
     }
 
@@ -572,14 +572,17 @@ void Color_RGBA8_Copy(Color_RGBA8* dst, Color_RGBA8* src) {
     dst->a = src->a;
 }
 
-void func_80078884(u16 sfxId) {
-    Audio_PlaySoundGeneral(sfxId, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+void Sfx_PlaySfxCentered(u16 sfxId) {
+    Audio_PlaySoundGeneral(sfxId, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                           &gSfxDefaultReverb);
 }
 
-void func_800788CC(u16 sfxId) {
-    Audio_PlaySoundGeneral(sfxId, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+void Sfx_PlaySfxCentered2(u16 sfxId) {
+    Audio_PlaySoundGeneral(sfxId, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                           &gSfxDefaultReverb);
 }
 
-void func_80078914(Vec3f* arg0, u16 sfxId) {
-    Audio_PlaySoundGeneral(sfxId, arg0, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+void Sfx_PlaySfxAtPos(Vec3f* arg0, u16 sfxId) {
+    Audio_PlaySoundGeneral(sfxId, arg0, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                           &gSfxDefaultReverb);
 }

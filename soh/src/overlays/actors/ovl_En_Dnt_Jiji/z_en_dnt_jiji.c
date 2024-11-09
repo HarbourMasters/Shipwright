@@ -123,10 +123,10 @@ void EnDntJiji_Wait(EnDntJiji* this, PlayState* play) {
 
     SkelAnime_Update(&this->skelAnime);
     if ((this->timer == 1) && (this->actor.xzDistToPlayer < 150.0f) && !Play_InCsMode(play) &&
-        !(player->stateFlags1 & PLAYER_STATE1_ITEM_OVER_HEAD)) {
+        !(player->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR)) {
         OnePointCutscene_Init(play, 2230, -99, &this->actor, MAIN_CAM);
         this->timer = 0;
-        func_8002DF54(play, NULL, 8);
+        Player_SetCsActionWithHaltedActors(play, NULL, 8);
         this->actionFunc = EnDntJiji_SetupUnburrow;
     }
 }
@@ -260,9 +260,9 @@ void EnDntJiji_Talk(EnDntJiji* this, PlayState* play) {
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(play)) {
         func_8005B1A4(GET_ACTIVE_CAM(play));
         Message_CloseTextbox(play);
-        func_8002DF54(play, NULL, 7);
+        Player_SetCsActionWithHaltedActors(play, NULL, 7);
         this->actor.parent = NULL;
-        func_8002F434(&this->actor, play, this->getItemId, 400.0f, 200.0f);
+        Actor_OfferGetItem(&this->actor, play, this->getItemId, 400.0f, 200.0f);
         this->actionFunc = EnDntJiji_SetupGivePrize;
     }
 }
@@ -272,7 +272,7 @@ void EnDntJiji_SetupGivePrize(EnDntJiji* this, PlayState* play) {
     if (Actor_HasParent(&this->actor, play)) {
         this->actionFunc = EnDntJiji_GivePrize;
     } else {
-        func_8002F434(&this->actor, play, this->getItemId, 400.0f, 200.0f);
+        Actor_OfferGetItem(&this->actor, play, this->getItemId, 400.0f, 200.0f);
     }
 }
 

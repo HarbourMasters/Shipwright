@@ -43,4 +43,6 @@ typedef struct EnOwl {
     /* 0x0410 */ OwlFunc unk_410;
 } EnOwl; // size = 0x0414
 
+void func_80ACA62C(EnOwl* enOwl, PlayState* play);
+
 #endif
