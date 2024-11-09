@@ -289,7 +289,7 @@ RandomizerArea GetFirstArea() const{
   - If Child and Adult can get the check (ignoring actual adult access to the location), and the location is either not 6 key locked or we have 6 keys, we can get the check with the overlap*/
   bool MQSpiritShared(ConditionFn condition, bool IsBrokenWall, bool anyAge = false) {
     //if we have Certain Access as child, we can check anyAge and if true, resolve a condition with Here as if adult is here it's also Certain Access
-    if (logic->SmallKeys(RR_SPIRIT_TEMPLE, 7) && anyAge){
+    if (logic->SmallKeys(RR_SPIRIT_TEMPLE, 7)){
       if (anyAge){
         return Here(condition);
       }
