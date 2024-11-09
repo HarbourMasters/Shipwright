@@ -574,7 +574,7 @@ s16 func_80A70058(PlayState* play, Actor* thisx) {
                 case 0x709F:
                     if (!this->unk_215) {
                         Audio_PlaySoundGeneral(this->actor.textId == 0x709F ? NA_SE_SY_CORRECT_CHIME : NA_SE_SY_ERROR,
-                                               &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                                               &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                         this->unk_215 = true;
                     }
                     break;

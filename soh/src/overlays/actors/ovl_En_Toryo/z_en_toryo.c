@@ -243,7 +243,7 @@ u32 func_80B20634(EnToryo* this, PlayState* play) {
 
     if (this->unk_1E0 != 0) {
         if (this->unk_1E0 == 10) {
-            func_80078884(NA_SE_SY_TRE_BOX_APPEAR);
+            Sfx_PlaySfxCentered(NA_SE_SY_TRE_BOX_APPEAR);
             if (Flags_GetInfTable(INFTABLE_171)) {
                 ret = 0x606E;
             } else {

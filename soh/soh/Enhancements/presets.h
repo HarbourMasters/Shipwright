@@ -353,8 +353,6 @@ const std::vector<const char*> cheatCvars = {
     CVAR_DEVELOPER_TOOLS("SaveFileID"),
     CVAR_CHEAT("EnableBetaQuest"),
     CVAR_DEVELOPER_TOOLS("BetterDebugWarpScreen"),
-    CVAR_GENERAL("SwitchAge"),
-    CVAR_GENERAL("SwitchTimeline"),
     CVAR_CHEAT("NoRedeadFreeze"),
     CVAR_CHEAT("NoKeeseGuayTarget"),
     CVAR_CHEAT("BombTimerMultiplier"),

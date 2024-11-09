@@ -1174,7 +1174,7 @@ void ActorViewerWindow::DrawElement() {
                     Actor_Spawn(&gPlayState->actorCtx, gPlayState, newActor.id, newActor.pos.x, newActor.pos.y,
                                 newActor.pos.z, newActor.rot.x, newActor.rot.y, newActor.rot.z, newActor.params, 0);
                 } else {
-                    func_80078884(NA_SE_SY_ERROR);
+                    Sfx_PlaySfxCentered(NA_SE_SY_ERROR);
                 }
             }
 
@@ -1187,7 +1187,7 @@ void ActorViewerWindow::DrawElement() {
                                            newActor.pos.y, newActor.pos.z, newActor.rot.x, newActor.rot.y,
                                            newActor.rot.z, newActor.params);
                     } else {
-                        func_80078884(NA_SE_SY_ERROR);
+                        Sfx_PlaySfxCentered(NA_SE_SY_ERROR);
                     }
                 }
             }

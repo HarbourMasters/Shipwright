@@ -994,7 +994,7 @@ void func_80ACC00C(EnOwl* this, PlayState* play) {
                     break;
             }
 
-            func_80078884(NA_SE_SY_TRE_BOX_APPEAR);
+            Sfx_PlaySfxCentered(NA_SE_SY_TRE_BOX_APPEAR);
             gSaveContext.cutsceneTrigger = 1;
             func_800F44EC(0x14, 0xA);
             this->actionFunc = EnOwl_WaitDefault;

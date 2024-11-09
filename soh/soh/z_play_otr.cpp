@@ -19,19 +19,19 @@ Ship::IResource* OTRPlay_LoadFile(PlayState* play, const char* fileName)
     return res.get();
 }
 
-extern "C" void OTRPlay_SpawnScene(PlayState* play, s32 sceneNum, s32 spawn) {
-    SceneTableEntry* scene = &gSceneTable[sceneNum];
+extern "C" void OTRPlay_SpawnScene(PlayState* play, s32 sceneId, s32 spawn) {
+    SceneTableEntry* scene = &gSceneTable[sceneId];
 
     scene->unk_13 = 0;
     play->loadedScene = scene;
-    play->sceneNum = sceneNum;
+    play->sceneNum = sceneId;
     play->sceneConfig = scene->config;
 
     //osSyncPrintf("\nSCENE SIZE %fK\n", (scene->sceneFile.vromEnd - scene->sceneFile.vromStart) / 1024.0f);
 
     // Scenes considered "dungeon" with a MQ variant
-    int16_t inNonSharedScene = (sceneNum >= SCENE_DEKU_TREE && sceneNum <= SCENE_ICE_CAVERN) ||
-                               sceneNum == SCENE_GERUDO_TRAINING_GROUND || sceneNum == SCENE_INSIDE_GANONS_CASTLE;
+    int16_t inNonSharedScene = (sceneId >= SCENE_DEKU_TREE && sceneId <= SCENE_ICE_CAVERN) ||
+                               sceneId == SCENE_GERUDO_TRAINING_GROUND || sceneId == SCENE_INSIDE_GANONS_CASTLE;
 
     std::string sceneVersion = "shared";
     if (inNonSharedScene) {

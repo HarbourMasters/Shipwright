@@ -110,7 +110,7 @@ void BgMenkuriEye_Update(Actor* thisx, PlayState* play) {
         this->framesUntilDisable = 416;
         if (D_8089C1A0 == 4) {
             Flags_SetSwitch(play, this->actor.params);
-            func_80078884(NA_SE_SY_CORRECT_CHIME);
+            Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
         }
     }
     if (this->framesUntilDisable == -1) {
