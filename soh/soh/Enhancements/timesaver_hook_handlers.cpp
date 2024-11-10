@@ -784,11 +784,21 @@ void TimeSaverOnActorInitHandler(void* actorRef) {
     if (actor->id == ACTOR_BG_SPOT03_TAKI) {
         bgSpot03UpdateHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* innerActorRef) mutable {
             Actor* innerActor = static_cast<Actor*>(innerActorRef);
-            if (innerActor->id == ACTOR_BG_SPOT03_TAKI &&
-                CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SleepingWaterfall"), 0) &&
-                CHECK_QUEST_ITEM(QUEST_SONG_LULLABY) &&
-                (INV_CONTENT(ITEM_OCARINA_TIME) == ITEM_OCARINA_TIME || INV_CONTENT(ITEM_OCARINA_FAIRY) == ITEM_OCARINA_FAIRY)
-            ) {
+            bool shouldKeepOpen;
+
+            if (innerActor->id != ACTOR_BG_SPOT03_TAKI) {
+                shouldKeepOpen = false;
+            } else if (IS_RANDO) {
+                shouldKeepOpen = RAND_GET_OPTION(RSK_SLEEPING_WATERFALL) == RO_WATERFALL_OPEN;
+            } else if (!CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SleepingWaterfall"), 0) ||
+                       !CHECK_QUEST_ITEM(QUEST_SONG_LULLABY)) {
+                shouldKeepOpen = false;
+            } else {
+                shouldKeepOpen = INV_CONTENT(ITEM_OCARINA_TIME) == ITEM_OCARINA_TIME ||
+                                 INV_CONTENT(ITEM_OCARINA_FAIRY) == ITEM_OCARINA_FAIRY;
+            }
+
+            if (shouldKeepOpen) {
                 BgSpot03Taki* bgSpot03 = static_cast<BgSpot03Taki*>(innerActorRef);
                 if (bgSpot03->actionFunc == func_808ADEF0) {
                     bgSpot03->actionFunc = BgSpot03Taki_KeepOpen;

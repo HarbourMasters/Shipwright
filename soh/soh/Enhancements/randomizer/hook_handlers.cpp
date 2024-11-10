@@ -18,7 +18,6 @@ extern "C" {
 #include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include "soh/Enhancements/randomizer/randomizer_grotto.h"
-#include "src/overlays/actors/ovl_Bg_Spot03_Taki/z_bg_spot03_taki.h"
 #include "src/overlays/actors/ovl_Bg_Treemouth/z_bg_treemouth.h"
 #include "src/overlays/actors/ovl_En_Si/z_en_si.h"
 #include "src/overlays/actors/ovl_En_Cow/z_en_cow.h"
@@ -59,10 +58,6 @@ extern void func_8084DFAC(PlayState* play, Player* player);
 extern void Player_SetupActionPreserveAnimMovement(PlayState* play, Player* player, PlayerActionFunc actionFunc, s32 flags);
 extern s32 Player_SetupWaitForPutAway(PlayState* play, Player* player, AfterPutAwayFunc func);
 extern void Play_InitEnvironment(PlayState * play, s16 skyboxId);
-
-extern void func_808ADEF0(BgSpot03Taki* bgSpot03Taki, PlayState* play);
-extern void BgSpot03Taki_ApplyOpeningAlpha(BgSpot03Taki* bgSpot03Taki, s32 bufferIndex);
-extern void BgSpot03Taki_KeepOpen(BgSpot03Taki* bgSpot03Taki, PlayState* play);
 }
 
 #define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).GetSelectedOptionIndex()
@@ -1617,8 +1612,6 @@ void ObjComb_RandomizerWait(ObjComb* objComb, PlayState* play) {
     }    
 }
 
-void BgSpot03Taki_KeepOpen(BgSpot03Taki* bgSpot03Taki, PlayState* play) { }
-
 void RandomizerOnActorInitHandler(void* actorRef) {
     Actor* actor = static_cast<Actor*>(actorRef);
 
@@ -1762,46 +1755,6 @@ void RandomizerOnActorInitHandler(void* actorRef) {
             Flags_GetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD))) {
         BgTreemouth* bgTreemouth = static_cast<BgTreemouth*>(actorRef);
         bgTreemouth->unk_168 = 1.0f;
-    }
-
-    if (actor->id == ACTOR_BG_SPOT03_TAKI) {
-        Rando::Option& waterfallOption = Rando::Context::GetInstance()->GetOption(RSK_SLEEPING_WATERFALL);
-        if (waterfallOption.Is(RO_WATERFALL_OPEN)) {
-            static uint32_t bgSpot03UpdateHook = 0;
-            static uint32_t bgSpot03KillHook = 0;
-
-            bgSpot03UpdateHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>(
-                [](void* innerActorRef) mutable {
-                    Actor* innerActor = static_cast<Actor*>(innerActorRef);
-                    Rando::Option& waterfallOption = Rando::Context::GetInstance()->GetOption(RSK_SLEEPING_WATERFALL);
-                    if (innerActor->id == ACTOR_BG_SPOT03_TAKI && waterfallOption.Is(RO_WATERFALL_OPEN)) {
-                        BgSpot03Taki* bgSpot03 = static_cast<BgSpot03Taki*>(innerActorRef);
-                        if (bgSpot03->actionFunc == func_808ADEF0) {
-                            bgSpot03->actionFunc = BgSpot03Taki_KeepOpen;
-                            bgSpot03->state = WATERFALL_OPENED;
-                            bgSpot03->openingAlpha = 0.0f;
-                            Flags_SetSwitch(gPlayState, bgSpot03->switchFlag);
-                            func_8003EBF8(gPlayState, &gPlayState->colCtx.dyna, bgSpot03->dyna.bgId);
-                            BgSpot03Taki_ApplyOpeningAlpha(bgSpot03, 0);
-                            BgSpot03Taki_ApplyOpeningAlpha(bgSpot03, 1);
-
-                            GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(bgSpot03UpdateHook);
-                            GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(bgSpot03KillHook);
-                            bgSpot03UpdateHook = 0;
-                            bgSpot03KillHook = 0;
-                        }
-                    }
-                }
-            );
-            bgSpot03KillHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>(
-                [](int16_t sceneNum) mutable {
-                    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(bgSpot03UpdateHook);
-                    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(bgSpot03KillHook);
-                    bgSpot03UpdateHook = 0;
-                    bgSpot03KillHook = 0;
-                }
-            );
-        }
     }
 
     //consumable bags
