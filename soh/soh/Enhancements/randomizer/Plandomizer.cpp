@@ -4,6 +4,7 @@
 #include <vector>
 #include "include/z64item.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
+#include <soh_assets.h>
 
 #include <fstream>
 #include <filesystem>
@@ -65,6 +66,19 @@ std::unordered_map<RandomizerGet, std::string> bossKeyShortNames = {
     { RG_SHADOW_TEMPLE_BOSS_KEY,     "Shdw" },
     { RG_GANONS_CASTLE_BOSS_KEY,     "Ganon" },
 };
+
+std::map<RandomizerGet, ImVec4> bossSoulMapping = {
+    { RG_GOHMA_SOUL,          { 0.00f, 1.00f, 0.00f, 1.0f } },
+    { RG_KING_DODONGO_SOUL,   { 1.00f, 0.00f, 0.39f, 1.0f } },
+    { RG_BARINADE_SOUL,       { 0.20f, 1.00f, 1.00f, 1.0f } },
+    { RG_PHANTOM_GANON_SOUL,  { 0.02f, 0.76f, 0.18f, 1.0f } },
+    { RG_VOLVAGIA_SOUL,       { 0.93f, 0.37f, 0.37f, 1.0f } },
+    { RG_MORPHA_SOUL,         { 0.33f, 0.71f, 0.87f, 1.0f } },
+    { RG_BONGO_BONGO_SOUL,    { 0.49f, 0.06f, 0.69f, 1.0f } },
+    { RG_TWINROVA_SOUL,       { 0.87f, 0.62f, 0.18f, 1.0f } },
+    { RG_GANON_SOUL,          { 0.31f, 0.31f, 0.31f, 1.0f } }
+};
+
 
 std::vector<RandomizerGet> infiniteItemList = {
     RG_GREEN_RUPEE, RG_BLUE_RUPEE, RG_RED_RUPEE, RG_PURPLE_RUPEE, RG_HUGE_RUPEE,
@@ -318,6 +332,10 @@ ImVec4 plandomizerGetItemColor(Rando::Item randoItem) {
         }
         return itemColor;
     }
+
+    if (randoItem.GetRandomizerGet() >= RG_GOHMA_SOUL && randoItem.GetRandomizerGet() <= RG_GANON_SOUL) {
+        itemColor = bossSoulMapping.at(randoItem.GetRandomizerGet());
+    }
     
     return itemColor;
 }
@@ -332,6 +350,16 @@ std::string plandomizerHintsTooltip() {
         "   can also be used as color examples.";
 
     return hintTootip;
+}
+
+std::string extractNumberInParentheses(const std::string& text) {
+    size_t start = text.find('(');
+    size_t end = text.find(')');
+
+    if (start != std::string::npos && end != std::string::npos && start < end) {
+        return text.substr(start + 1, end - start - 1);
+    }
+    return "";
 }
 
 void PlandomizerPopulateSeedList() {
@@ -373,6 +401,10 @@ void PlandomizerItemImageCorrection(Rando::Item randoItem) {
             }
             break;
         }
+    }
+
+    if (randoItem.GetRandomizerGet() >= RG_GOHMA_SOUL && randoItem.GetRandomizerGet() <= RG_GANON_SOUL) {
+        textureID = Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("Boss Soul");
     }
 
     if (textureID == 0) {
@@ -616,6 +648,15 @@ void PlandomizerOverlayText(std::pair<Rando::Item, uint32_t> drawObject ) {
         ImGui::SetCursorScreenPos(textPos);
         ImGui::Text("+");
     }
+    if (extractNumberInParentheses(drawObject.first.GetName().english.c_str()) != "" && 
+        extractNumberInParentheses(drawObject.first.GetName().english.c_str()) != "WINNER") {
+        textPos = ImVec2(imageMin.x + 2, imageMin.y + 2);
+
+        ImGui::SetCursorScreenPos(textPos);
+        std::string overlayText = "+";
+        overlayText += extractNumberInParentheses(drawObject.first.GetName().english.c_str());
+        ImGui::Text(overlayText.c_str());
+    }
     if (drawObject.first.GetRandomizerGet() >= RG_FOREST_TEMPLE_BOSS_KEY && 
         drawObject.first.GetRandomizerGet() <= RG_GANONS_CASTLE_BOSS_KEY) {
         textPos = ImVec2(imageMin.x + 1, imageMin.y + 1);
@@ -654,6 +695,7 @@ void PlandomizerDrawItemPopup(uint32_t index) {
                 ImGui::CloseCurrentPopup();
             }
             UIWidgets::Tooltip(plandomizerRandoRetrieveItem(item).GetName().english.c_str());
+            PlandomizerOverlayText(std::make_pair(plandomizerRandoRetrieveItem(item), 1));
             ImGui::PopID();
         }
         
@@ -1049,4 +1091,5 @@ void PlandomizerWindow::InitElement() {
     Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("ITEM_TRIFORCE", gEmptyCDownArrowTex, ImVec4( 1, 1, 0, 1 ));
     Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("HASH_ARROW_UP", gEmptyCDownArrowTex, ImVec4( 1, 1, 1, 1 ));
     Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("HASH_ARROW_DWN", gEmptyCDownArrowTex, ImVec4( 1, 1, 1, 1 ));
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("Boss Soul", gBossSoulTex, ImVec4(1, 1, 1, 1));
 }
