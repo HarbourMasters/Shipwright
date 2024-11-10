@@ -37,7 +37,6 @@ extern int32_t D_8011D3AC;
 
 extern void func_808ADEF0(BgSpot03Taki* bgSpot03Taki, PlayState* play);
 extern void BgSpot03Taki_ApplyOpeningAlpha(BgSpot03Taki* bgSpot03Taki, s32 bufferIndex);
-extern void BgSpot03Taki_KeepOpen(BgSpot03Taki* bgSpot03Taki, PlayState* play);
 
 extern void func_80AF36EC(EnRu2* enRu2, PlayState* play);
 }
@@ -98,6 +97,9 @@ void EnDntDemo_JudgeSkipToReward(EnDntDemo* enDntDemo, PlayState* play) {
             return;
         }
     }
+}
+
+void BgSpot03Taki_KeepOpen(BgSpot03Taki* bgSpot03Taki, PlayState* play) {
 }
 
 static int successChimeCooldown = 0;
