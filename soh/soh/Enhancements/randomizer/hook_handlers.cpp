@@ -1774,7 +1774,7 @@ void RandomizerOnActorInitHandler(void* actorRef) {
                 [](void* innerActorRef) mutable {
                     Actor* innerActor = static_cast<Actor*>(innerActorRef);
                     Rando::Option& waterfallOption = Rando::Context::GetInstance()->GetOption(RSK_SLEEPING_WATERFALL);
-                    if (innerActor->id == ACTOR_BG_SPOT03_TAKI && waterfallOption.IsNot(RO_WATERFALL_CLOSED) && (waterfallOption.Is(RO_WATERFALL_OPEN) || LINK_IS_ADULT)) {
+                    if (innerActor->id == ACTOR_BG_SPOT03_TAKI && waterfallOption.Is(RO_WATERFALL_OPEN)) {
                         BgSpot03Taki* bgSpot03 = static_cast<BgSpot03Taki*>(innerActorRef);
                         if (bgSpot03->actionFunc == func_808ADEF0) {
                             bgSpot03->actionFunc = BgSpot03Taki_KeepOpen;
