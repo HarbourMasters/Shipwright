@@ -761,6 +761,10 @@ void TimeSaverOnActorInitHandler(void* actorRef) {
         });
     }
 
+    if (actor->id == ACTOR_EN_OWL && gPlayState->sceneNum == SCENE_ZORAS_RIVER && CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SleepingWaterfall"), 0) == 2) {
+        Actor_Kill(actor);
+    }
+
     if (actor->id == ACTOR_BG_SPOT02_OBJECTS && actor->params == 2) {
         bgSpot02UpdateHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* innerActorRef) mutable {
             Actor* innerActor = static_cast<Actor*>(innerActorRef);
@@ -792,12 +796,21 @@ void TimeSaverOnActorInitHandler(void* actorRef) {
                 shouldKeepOpen = false;
             } else if (IS_RANDO) {
                 shouldKeepOpen = RAND_GET_OPTION(RSK_SLEEPING_WATERFALL) == RO_WATERFALL_OPEN;
-            } else if (!CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SleepingWaterfall"), 0) ||
-                       !CHECK_QUEST_ITEM(QUEST_SONG_LULLABY)) {
-                shouldKeepOpen = false;
             } else {
-                shouldKeepOpen = INV_CONTENT(ITEM_OCARINA_TIME) == ITEM_OCARINA_TIME ||
-                                 INV_CONTENT(ITEM_OCARINA_FAIRY) == ITEM_OCARINA_FAIRY;
+                switch (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SleepingWaterfall"), 0)) {
+                    case 1:
+                        shouldKeepOpen = Flags_GetEventChkInf(EVENTCHKINF_OPENED_ZORAS_DOMAIN);
+                        break;
+                    case 2:
+                        shouldKeepOpen = CHECK_QUEST_ITEM(QUEST_SONG_LULLABY) &&
+                                         (INV_CONTENT(ITEM_OCARINA_TIME) == ITEM_OCARINA_TIME ||
+                                          INV_CONTENT(ITEM_OCARINA_FAIRY) == ITEM_OCARINA_FAIRY);
+                        break;
+                    default:
+                        shouldKeepOpen = false;
+                        break;
+                }
+                
             }
 
             if (shouldKeepOpen) {
