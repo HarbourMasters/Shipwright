@@ -13,11 +13,14 @@
 #include "soh/Enhancements/randomizer/logic.h"
 #include "soh/Enhancements/randomizer/randomizer_check_objects.h"
 #include "soh/Enhancements/randomizer/rando_hash.h"
+#include "soh/Enhancements/randomizer/3drando/shops.hpp"
 
 extern "C" {
     extern SaveContext gSaveContext;
     extern PlayState* gPlayState;
 }
+
+const std::string randomizeButton = ICON_FA_RANDOM;
 
 static int32_t itemIndexToRemove = -1;
 static int32_t correctedItemID = -1;
@@ -61,6 +64,14 @@ std::unordered_map<RandomizerGet, std::string> bossKeyShortNames = {
     { RG_SPIRIT_TEMPLE_BOSS_KEY,     "Sprt" },
     { RG_SHADOW_TEMPLE_BOSS_KEY,     "Shdw" },
     { RG_GANONS_CASTLE_BOSS_KEY,     "Ganon" },
+};
+
+std::vector<RandomizerGet> infiniteItemList = {
+    RG_GREEN_RUPEE, RG_BLUE_RUPEE, RG_RED_RUPEE, RG_PURPLE_RUPEE, RG_HUGE_RUPEE,
+    RG_ARROWS_5, RG_ARROWS_10, RG_ARROWS_30,
+    RG_DEKU_STICK_1, RG_DEKU_SEEDS_30, RG_DEKU_NUTS_5, RG_DEKU_NUTS_10,
+    RG_BOMBS_5, RG_BOMBS_10, RG_BOMBS_20, RG_BOMBCHU_5, RG_BOMBCHU_10, RG_BOMBCHU_20,
+    RG_RECOVERY_HEART, RG_ICE_TRAP, RG_SOLD_OUT
 };
 
 std::unordered_map<RandomizerGet, std::string> itemImageMap = {
@@ -311,6 +322,18 @@ ImVec4 plandomizerGetItemTint(Rando::Item randoItem) {
     return itemTint;
 }
 
+std::string plandomizerHintsTooltip() {
+    std::string hintTootip;
+    hintTootip = 
+        "The following options are available:\n"
+        "- Use \\n to create New Lines.\n"
+        "- Use %g to change the text color to Green,\n"
+        " - %r for Red, %y for Yellow, and %w for White\n"
+        "   can also be used as color examples.";
+
+    return hintTootip;
+}
+
 void PlandomizerPopulateSeedList() {
     existingSeedList.clear();
 
@@ -358,18 +381,27 @@ void PlandomizerItemImageCorrection(Rando::Item randoItem) {
 }
 
 void PlandomizerRandomizeHint(int32_t status, int32_t index) {
-    int32_t roll = (rand() % hintPool.size());
-    switch (status) {
-        case HINT_SINGLE:
-            plandoHintData[index].hintText = hintPool[roll].c_str();
-            break;
-        case HINT_ALL:
-            for (auto& hint : plandoHintData) {
+    int32_t roll;
+    int32_t poolRoll = rand();
+    if (status == HINT_SINGLE) {
+        if (poolRoll % 2 == 0) {
+            roll = (rand() % hintPool.size());
+        } else {
+            roll = RHT_JUNK02 + ((rand() % RHT_JUNK_SG_8) - RHT_JUNK02);
+        }
+        plandoHintData[index].hintText = hintPool[roll].c_str();
+    } else {
+        for (auto& hint : plandoHintData) {
+            poolRoll = rand();
+            if (poolRoll % 2 == 0) {
+                roll = (rand() % hintPool.size());
                 hint.hintText = hintPool[roll].c_str();
+            } else {
+                roll = RHT_JUNK02 + ((rand() % RHT_JUNK_SG_8) - RHT_JUNK02);
+                hint.hintText = 
+                    Rando::StaticData::hintTextTable[roll].GetHintMessage().GetForCurrentLanguage().c_str();
             }
-            break;
-        default:
-            break;
+        }
     }
 }
 
@@ -386,7 +418,7 @@ void PlandomizerRemoveAllItems() {
         drawnItemsList.clear();
     }
     for (auto& remove : plandoLogData) {
-        if (remove.checkRewardItem != plandomizerRandoRetrieveItem(RG_SOLD_OUT)) {
+        if (std::find(infiniteItemList.begin(), infiniteItemList.end(), remove.checkRewardItem.GetRandomizerGet()) == infiniteItemList.end()) {
             bool itemExists = false;
             for (auto& itemToCheck : drawnItemsList) {
                 if (itemToCheck.first == remove.checkRewardItem) {
@@ -398,40 +430,45 @@ void PlandomizerRemoveAllItems() {
             if (!itemExists) {
                 drawnItemsList.push_back(std::make_pair(remove.checkRewardItem, 1));
             }
-            remove.checkRewardItem = plandomizerRandoRetrieveItem(RG_SOLD_OUT);
         }
+        remove.checkRewardItem = plandomizerRandoRetrieveItem(RG_SOLD_OUT);
     }
 }
 
 void PlandomizerRemoveFromItemList(Rando::Item randoItem) {
-    uint32_t index = 0;
-    for (auto& itemToCheck : drawnItemsList) {
-        if (itemToCheck.first == randoItem) {
-            if (shouldRemove) {
-                drawnItemsList.erase(drawnItemsList.begin() + index);
-                break;
-            } else {
-                itemToCheck.second -= 1;
+    if (std::find(infiniteItemList.begin(), infiniteItemList.end(), randoItem.GetRandomizerGet()) == infiniteItemList.end()) {
+        uint32_t index = 0;
+        for (auto& itemToCheck : drawnItemsList) {
+            if (itemToCheck.first == randoItem) {
+                if (shouldRemove) {
+                    drawnItemsList.erase(drawnItemsList.begin() + index);
+                    break;
+                } else {
+                    itemToCheck.second -= 1;
+                }
             }
+            index++;
         }
-        index++;
+        shouldRemove = false;
+        itemIndexToRemove = -1;
     }
-    shouldRemove = false;
-    itemIndexToRemove = -1;
 }
 
 void PlandomizerAddToItemList(Rando::Item randoItem) {
-    bool itemExists = false;
-    for (auto& itemToCheck : drawnItemsList) {
-        if (itemToCheck.first == randoItem) {
-            itemToCheck.second += 1;
-            itemExists = true;
-            break;
+    if (std::find(infiniteItemList.begin(), infiniteItemList.end(), randoItem.GetRandomizerGet()) == infiniteItemList.end()) {
+        bool itemExists = false;
+        for (auto& itemToCheck : drawnItemsList) {
+            if (itemToCheck.first == randoItem) {
+                itemToCheck.second += 1;
+                itemExists = true;
+                break;
+            }
+        }
+        if (!itemExists) {
+            drawnItemsList.push_back(std::make_pair(randoItem, 1));
         }
     }
-    if (!itemExists) {
-        drawnItemsList.push_back(std::make_pair(randoItem, 1));
-    }
+    
 }
 
 void PlandomizerSaveSpoilerLog() {
@@ -602,6 +639,27 @@ void PlandomizerDrawItemPopup(uint32_t index) {
                 auto typeB = b.first.GetItemType();
                   return typeA < typeB;
               });
+        ImGui::SeparatorText("Resources");
+        ImGui::BeginTable("Infinite Item Table", 7);
+        for (auto& item : infiniteItemList) {
+            ImGui::PushID(item);
+            ImGui::TableNextColumn();
+            PlandomizerItemImageCorrection(plandomizerRandoRetrieveItem(item));
+            if (ImGui::ImageButton(textureID,
+                    ImVec2(32.0f, 32.0f), textureUV0, textureUV1, 2.0f, ImVec4(0, 0, 0, 0), itemTint)) {
+                if (std::find(infiniteItemList.begin(), infiniteItemList.end(), plandoLogData[index].checkRewardItem.GetRandomizerGet()) == infiniteItemList.end()) {
+                    PlandomizerAddToItemList(plandoLogData[index].checkRewardItem);
+                }
+                plandoLogData[index].checkRewardItem = plandomizerRandoRetrieveItem(item);
+                ImGui::CloseCurrentPopup();
+            }
+            UIWidgets::Tooltip(plandomizerRandoRetrieveItem(item).GetName().english.c_str());
+            ImGui::PopID();
+        }
+        
+        
+        ImGui::EndTable();
+        ImGui::SeparatorText("Spoiler Log Rewards");
         ImGui::BeginTable("Item Button Table", 8);
         uint32_t itemIndex = 0;
 
@@ -687,8 +745,9 @@ void PlandomizerDrawItemSlots(uint32_t index) {
 
 void PlandomizerDrawShopSlider(uint32_t index) {
     ImGui::PushID(index);
-    ImGui::PushItemWidth(190.0f);
-    UIWidgets::Spacer(3.0f);
+    ImGui::Text("Price:");
+    ImGui::SameLine();
+    ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x - 20.0f);
     ImGui::SliderInt("", &plandoLogData[index].shopPrice, 0, 999, "%d Rupees");
     ImGui::PopItemWidth();
     ImGui::PopID();
@@ -699,6 +758,12 @@ void PlandomizerDrawIceTrapSetup(uint32_t index) {
     std::strncpy(trapTextBuf, plandoLogData[index].iceTrapName.c_str(), sizeof(trapTextBuf) - 1);
 
     ImGui::PushID(index);
+    ImGui::BeginTable("IceTrap", 2, ImGuiTableFlags_BordersOuter | ImGuiTableFlags_BordersInner);
+    ImGui::TableSetupColumn("Model", ImGuiTableColumnFlags_WidthFixed, 36.0f);
+    ImGui::TableSetupColumn("Trap Options");
+    ImGui::TableHeadersRow();
+
+    ImGui::TableNextColumn();
     PlandomizerItemImageCorrection(plandoLogData[index].iceTrapModel);
     if (ImGui::ImageButton(textureID, ImVec2(32.0f, 32.0f), textureUV0, textureUV1, 2.0f, ImVec4(0, 0, 0, 0), itemTint)) {
         shouldTrapPopup = true;
@@ -707,16 +772,26 @@ void PlandomizerDrawIceTrapSetup(uint32_t index) {
     UIWidgets::Tooltip(plandoLogData[index].iceTrapModel.GetName().english.c_str());
     PlandomizerDrawIceTrapPopUp(index);
     ImGui::SameLine();
-
-    
-    if (ImGui::InputText("##TrapName", trapTextBuf, 25)) {
+    ImGui::TableNextColumn();
+    ImGui::Text("Name: ");
+    ImGui::SameLine();
+    if (plandoLogData[index].iceTrapModel.GetRandomizerGet() != RG_NONE && 
+        plandoLogData[index].iceTrapModel.GetRandomizerGet() != RG_SOLD_OUT) {
+        if (ImGui::Button(randomizeButton.c_str())) {
+            plandoLogData[index].iceTrapName = 
+                GetIceTrapName(plandoLogData[index].iceTrapModel.GetRandomizerGet()).GetForLanguage(CVarGetInteger(CVAR_SETTING("Languages"), 0)).c_str();
+        }
+        ImGui::SameLine();
+    }
+    if (ImGui::InputText("##TrapName", trapTextBuf, 35)) {
         std::string trapName = trapTextBuf;
         plandoLogData[index].iceTrapName = trapName.c_str();
     }
-
+    
     if (plandoLogData[index].shopPrice > -1) {
         PlandomizerDrawShopSlider(index);
     }
+    ImGui::EndTable();
     
     ImGui::PopID();
 }
@@ -725,20 +800,23 @@ void PlandomizerDrawOptions() {
     ImGui::BeginTable("LoadSpoiler", 2);
     ImGui::TableNextColumn();
     ImGui::SeparatorText("Load/Save Spoiler Log");
-    //ImGui::InputText("##logID", logID, 15);
     PlandomizerPopulateSeedList();
     static int32_t selectedList = 0;
-    if (ImGui::BeginCombo("##JsonFiles", existingSeedList[selectedList].c_str())) {
-        for (size_t i = 0; i < existingSeedList.size(); i++) {
-            bool isSelected = (selectedList == i);
-            if (ImGui::Selectable(existingSeedList[i].c_str(), isSelected)) {
-                selectedList = i;
+    if (existingSeedList.size() != 0) {
+        if (ImGui::BeginCombo("##JsonFiles", existingSeedList[selectedList].c_str())) {
+            for (size_t i = 0; i < existingSeedList.size(); i++) {
+                bool isSelected = (selectedList == i);
+                if (ImGui::Selectable(existingSeedList[i].c_str(), isSelected)) {
+                    selectedList = i;
+                }
+                if (isSelected) {
+                    ImGui::SetItemDefaultFocus();
+                }
             }
-            if (isSelected) {
-                ImGui::SetItemDefaultFocus();
-            }
+            ImGui::EndCombo();
         }
-        ImGui::EndCombo();
+    } else {
+        ImGui::Text("No Spoiler Logs found.");
     }
 
     if (ImGui::Button("Load")) {
@@ -818,8 +896,10 @@ void PlandomizerDrawOptions() {
             if (selectedArea == RCAREA_INVALID) {
                 comboLabel = "All";
             }
+            ImGui::Text("Filter by Area:");
+            ImGui::SameLine();
             ImGui::PushItemWidth(300.0f);
-            if (ImGui::BeginCombo("Filter by Area", comboLabel)) {
+            if (ImGui::BeginCombo("##AreaFilter", comboLabel)) {
                 for (const auto& [area, name] : rcAreaNames) {
                     bool isSelected = (selectedArea == area);
 
@@ -860,7 +940,7 @@ void PlandomizerDrawHintsWindow() {
         ImGui::PushID(index);
         ImGui::TableNextColumn();
         ImGui::SeparatorText(hintData.hintName.c_str());
-        ImGui::Text("Default Hint: ");
+        ImGui::Text("Current Hint: ");
         ImGui::SameLine();
         ImGui::TextWrapped(hintData.hintText.c_str());
 
@@ -869,16 +949,17 @@ void PlandomizerDrawHintsWindow() {
         }
         ImGui::Text("New Hint:     ");
         ImGui::SameLine();
+        if (ImGui::Button(randomizeButton.c_str())) {
+            PlandomizerRandomizeHint(HINT_SINGLE, index);
+        }
+        UIWidgets::Tooltip("Randomize Hint");
+        ImGui::SameLine();
         ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x - 10);
         if (ImGui::InputText("##HintMessage", hintTextBuf, 400)) {
             std::string hintMessage = hintTextBuf;
             plandoHintData[index].hintText = hintMessage.c_str();
         }
-        ImGui::SetCursorPosX(ImGui::GetCursorPosX() + (ImGui::GetContentRegionAvail().x * 0.5f) - 75.0f);
-        if (ImGui::Button("Randomize Hint")) {
-            PlandomizerRandomizeHint(HINT_SINGLE, index);
-        }
-        
+        UIWidgets::Tooltip(plandomizerHintsTooltip().c_str());
         index++;
         ImGui::PopID();
     }
@@ -892,7 +973,7 @@ void PlandomizerDrawLocationsWindow(RandomizerCheckArea rcArea) {
     ImGui::BeginChild("Locations");
     ImGui::BeginTable("Locations Window", 4, ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_ScrollY);
     ImGui::TableSetupColumn("Spoiler Log Check Name", ImGuiTableColumnFlags_WidthFixed, 250.0f);
-    ImGui::TableSetupColumn("Default Reward", ImGuiTableColumnFlags_WidthFixed, 190.0f);
+    ImGui::TableSetupColumn("Spoiler Log Reward", ImGuiTableColumnFlags_WidthFixed, 190.0f);
     ImGui::TableSetupColumn("New Reward", ImGuiTableColumnFlags_WidthFixed | ImGuiTableColumnFlags_NoHeaderLabel, 34.0f);
     ImGui::TableSetupColumn("Additional Options");
     ImGui::TableSetupScrollFreeze(0, 1);
@@ -916,7 +997,12 @@ void PlandomizerDrawLocationsWindow(RandomizerCheckArea rcArea) {
                 PlandomizerDrawIceTrapSetup(index);
             } else if (spoilerData.shopPrice != -1) {
                 ImGui::TableNextColumn();
+                ImGui::BeginTable("Shops", 1, ImGuiTableFlags_BordersOuter | ImGuiTableFlags_BordersInner);
+                ImGui::TableSetupColumn("Shop Price");
+                ImGui::TableHeadersRow();
+                ImGui::TableNextColumn();
                 PlandomizerDrawShopSlider(index);
+                ImGui::EndTable();
             } else {
                 ImGui::TableNextColumn();
             }
