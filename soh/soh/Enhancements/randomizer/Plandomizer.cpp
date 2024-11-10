@@ -33,7 +33,7 @@ std::string lastLoadedSpoiler = "";
 int32_t temporaryItemIndex = -1;
 RandomizerCheckArea selectedArea = RCAREA_INVALID; 
 
-ImVec4 itemTint = ImVec4( 1.0f, 1.0f, 1.0f, 1.0f );
+ImVec4 itemColor = ImVec4( 1.0f, 1.0f, 1.0f, 1.0f );
 ImTextureID textureID;
 ImVec2 textureUV0 = ImVec2( 0, 0 );
 ImVec2 textureUV1 = ImVec2( 1, 1 );
@@ -264,62 +264,62 @@ Rando::Item plandomizerRandoRetrieveItem(RandomizerGet randoGetItem) {
     return randoGetItemEntry;
 }
 
-ImVec4 plandomizerGetItemTint(Rando::Item randoItem) {
-    itemTint = ImVec4( 1.0f, 1.0f, 1.0f, 1.0f );
+ImVec4 plandomizerGetItemColor(Rando::Item randoItem) {
+    itemColor = ImVec4( 1.0f, 1.0f, 1.0f, 1.0f );
     if (randoItem.GetItemType() == ITEMTYPE_SMALLKEY || randoItem.GetItemType() == ITEMTYPE_FORTRESS_SMALLKEY
         || randoItem.GetItemType() == ITEMTYPE_BOSSKEY) {
         if (randoItem.GetRandomizerGet() == RG_FOREST_TEMPLE_SMALL_KEY || 
             randoItem.GetRandomizerGet() == RG_FOREST_TEMPLE_KEY_RING) {
-            itemTint = ImVec4( 0.02f, 0.76f, 0.18f, 1.0f );
+            itemColor = ImVec4( 0.02f, 0.76f, 0.18f, 1.0f );
         } else if (randoItem.GetRandomizerGet() == RG_FIRE_TEMPLE_SMALL_KEY || 
             randoItem.GetRandomizerGet() == RG_FIRE_TEMPLE_KEY_RING) {
-            itemTint = ImVec4( 0.93f, 0.37f, 0.37f, 1.0f );
+            itemColor = ImVec4( 0.93f, 0.37f, 0.37f, 1.0f );
         } else if (randoItem.GetRandomizerGet() == RG_WATER_TEMPLE_SMALL_KEY || 
             randoItem.GetRandomizerGet() == RG_WATER_TEMPLE_KEY_RING) {
-            itemTint = ImVec4( 0.33f, 0.71f, 0.87f, 1.0f );
+            itemColor = ImVec4( 0.33f, 0.71f, 0.87f, 1.0f );
         } else if (randoItem.GetRandomizerGet() == RG_SPIRIT_TEMPLE_SMALL_KEY || 
             randoItem.GetRandomizerGet() == RG_SPIRIT_TEMPLE_KEY_RING) {
-            itemTint = ImVec4( 0.87f, 0.62f, 0.18f, 1.0f );
+            itemColor = ImVec4( 0.87f, 0.62f, 0.18f, 1.0f );
         } else if (randoItem.GetRandomizerGet() == RG_SHADOW_TEMPLE_SMALL_KEY || 
             randoItem.GetRandomizerGet() == RG_SHADOW_TEMPLE_KEY_RING) {
-            itemTint = ImVec4( 0.49f, 0.06f, 0.69f, 1.0f );
+            itemColor = ImVec4( 0.49f, 0.06f, 0.69f, 1.0f );
         } else if (randoItem.GetRandomizerGet() == RG_BOTTOM_OF_THE_WELL_SMALL_KEY || 
             randoItem.GetRandomizerGet() == RG_BOTTOM_OF_THE_WELL_KEY_RING) {
-            itemTint = ImVec4( 0.89f, 0.43f, 1.0f, 1.0f );
+            itemColor = ImVec4( 0.89f, 0.43f, 1.0f, 1.0f );
         } else if (randoItem.GetRandomizerGet() == RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY || 
             randoItem.GetRandomizerGet() == RG_GERUDO_TRAINING_GROUNDS_KEY_RING) {
-            itemTint = ImVec4( 1.0f, 1.0f, 0, 1.0f );
+            itemColor = ImVec4( 1.0f, 1.0f, 0, 1.0f );
         } else if (randoItem.GetRandomizerGet() == RG_GERUDO_FORTRESS_SMALL_KEY || 
             randoItem.GetRandomizerGet() == RG_GERUDO_FORTRESS_KEY_RING) {
-            itemTint = ImVec4( 1.0f, 1.0f, 1.0f, 1.0f );
+            itemColor = ImVec4( 1.0f, 1.0f, 1.0f, 1.0f );
         } else if (randoItem.GetRandomizerGet() == RG_GANONS_CASTLE_SMALL_KEY || 
             randoItem.GetRandomizerGet() == RG_GANONS_CASTLE_KEY_RING) {
-            itemTint = ImVec4( 0.5f, 0.5f, 0.5f, 1.0f );
+            itemColor = ImVec4( 0.5f, 0.5f, 0.5f, 1.0f );
         }
-        return itemTint;
+        return itemColor;
     }
     if (randoItem.GetItemType() == ITEMTYPE_SONG) {
         uint32_t questID = Rando::Logic::RandoGetToQuestItem[randoItem.GetRandomizerGet()];
         textureID = Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(songMapping.at((QuestItem)questID).name);
-        itemTint = songMapping.at((QuestItem)questID).color;
-        return itemTint;
+        itemColor = songMapping.at((QuestItem)questID).color;
+        return itemColor;
     }
     if (randoItem.GetRandomizerGet() >= RG_GREEN_RUPEE && randoItem.GetRandomizerGet() <= RG_HUGE_RUPEE) {
         if (randoItem.GetRandomizerGet() == RG_GREG_RUPEE || randoItem.GetRandomizerGet() == RG_GREEN_RUPEE) {
-            itemTint = ImVec4( 0.02f, 0.76f, 0.18f, 1.0f );
+            itemColor = ImVec4( 0.02f, 0.76f, 0.18f, 1.0f );
         } else if (randoItem.GetRandomizerGet() == RG_BLUE_RUPEE) {
-            itemTint = ImVec4( 0.33f, 0.71f, 0.87f, 1.0f );
+            itemColor = ImVec4( 0.33f, 0.71f, 0.87f, 1.0f );
         } else if (randoItem.GetRandomizerGet() == RG_RED_RUPEE) {
-            itemTint = ImVec4( 0.93f, 0.37f, 0.37f, 1.0f );
+            itemColor = ImVec4( 0.93f, 0.37f, 0.37f, 1.0f );
         } else if (randoItem.GetRandomizerGet() == RG_PURPLE_RUPEE) {
-            itemTint = ImVec4( 0.89f, 0.43f, 1.0f, 1.0f );
+            itemColor = ImVec4( 0.89f, 0.43f, 1.0f, 1.0f );
         } else if (randoItem.GetRandomizerGet() == RG_HUGE_RUPEE) {
-            itemTint = ImVec4( 1.0f, 1.0f, 0, 1.0f );
+            itemColor = ImVec4( 1.0f, 1.0f, 0, 1.0f );
         }
-        return itemTint;
+        return itemColor;
     }
     
-    return itemTint;
+    return itemColor;
 }
 
 std::string plandomizerHintsTooltip() {
@@ -349,7 +349,7 @@ void PlandomizerItemImageCorrection(Rando::Item randoItem) {
     textureUV0 = ImVec2( 0, 0 );
     textureUV1 = ImVec2( 1, 1 );
 
-    itemTint = plandomizerGetItemTint(randoItem);
+    itemColor = plandomizerGetItemColor(randoItem);
 
     if (randoItem.GetItemType() == ITEMTYPE_SMALLKEY || randoItem.GetItemType() == ITEMTYPE_FORTRESS_SMALLKEY) {
         textureID = Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_KEY_SMALL");
@@ -646,7 +646,7 @@ void PlandomizerDrawItemPopup(uint32_t index) {
             ImGui::TableNextColumn();
             PlandomizerItemImageCorrection(plandomizerRandoRetrieveItem(item));
             if (ImGui::ImageButton(textureID,
-                    ImVec2(32.0f, 32.0f), textureUV0, textureUV1, 2.0f, ImVec4(0, 0, 0, 0), itemTint)) {
+                    ImVec2(32.0f, 32.0f), textureUV0, textureUV1, 2.0f, ImVec4(0, 0, 0, 0), itemColor)) {
                 if (std::find(infiniteItemList.begin(), infiniteItemList.end(), plandoLogData[index].checkRewardItem.GetRandomizerGet()) == infiniteItemList.end()) {
                     PlandomizerAddToItemList(plandoLogData[index].checkRewardItem);
                 }
@@ -671,7 +671,7 @@ void PlandomizerDrawItemPopup(uint32_t index) {
             auto itemToDraw = drawSlots.first;
             PlandomizerItemImageCorrection(drawSlots.first);
             if (ImGui::ImageButton(textureID,
-                    ImVec2(32.0f, 32.0f), textureUV0, textureUV1, 2.0f, ImVec4(0, 0, 0, 0), itemTint)) {
+                    ImVec2(32.0f, 32.0f), textureUV0, textureUV1, 2.0f, ImVec4(0, 0, 0, 0), itemColor)) {
                 if (itemToDraw.GetRandomizerGet() >= RG_PROGRESSIVE_HOOKSHOT && 
                     itemToDraw.GetRandomizerGet() <= RG_PROGRESSIVE_GORONSWORD) {
                     plandoLogData[index].checkRewardItem = drawSlots.first;
@@ -714,7 +714,7 @@ void PlandomizerDrawIceTrapPopUp(uint32_t index) {
             ImGui::TableNextColumn();
             ImGui::PushID(items.first);
             PlandomizerItemImageCorrection(Rando::StaticData::RetrieveItem(items.first));
-            if (ImGui::ImageButton(textureID, ImVec2(32.0f, 32.0f), textureUV0, textureUV1, 2.0f, ImVec4(0, 0, 0, 0), itemTint)) {
+            if (ImGui::ImageButton(textureID, ImVec2(32.0f, 32.0f), textureUV0, textureUV1, 2.0f, ImVec4(0, 0, 0, 0), itemColor)) {
                 plandoLogData[index].iceTrapModel = Rando::StaticData::RetrieveItem(items.first);
                 ImGui::CloseCurrentPopup();
             };
@@ -733,7 +733,7 @@ void PlandomizerDrawIceTrapPopUp(uint32_t index) {
 void PlandomizerDrawItemSlots(uint32_t index) {
     ImGui::PushID(index);
     PlandomizerItemImageCorrection(plandoLogData[index].checkRewardItem);
-    if (ImGui::ImageButton(textureID, ImVec2(32.0f, 32.0f), textureUV0, textureUV1, 2.0f, ImVec4(0, 0, 0, 0), itemTint)) {
+    if (ImGui::ImageButton(textureID, ImVec2(32.0f, 32.0f), textureUV0, textureUV1, 2.0f, ImVec4(0, 0, 0, 0), itemColor)) {
         shouldPopup = true;
         temporaryItem = plandoLogData[index].checkRewardItem;
         ImGui::OpenPopup("ItemList");
@@ -765,7 +765,7 @@ void PlandomizerDrawIceTrapSetup(uint32_t index) {
 
     ImGui::TableNextColumn();
     PlandomizerItemImageCorrection(plandoLogData[index].iceTrapModel);
-    if (ImGui::ImageButton(textureID, ImVec2(32.0f, 32.0f), textureUV0, textureUV1, 2.0f, ImVec4(0, 0, 0, 0), itemTint)) {
+    if (ImGui::ImageButton(textureID, ImVec2(32.0f, 32.0f), textureUV0, textureUV1, 2.0f, ImVec4(0, 0, 0, 0), itemColor)) {
         shouldTrapPopup = true;
         ImGui::OpenPopup("TrapList");
     };
