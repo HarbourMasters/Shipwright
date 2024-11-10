@@ -2418,10 +2418,7 @@ OSThread* __osGetCurrFaultedThread(void);
 u32* osViGetCurrentFramebuffer(void);
 s32 __osSpSetPc(void* pc);
 f32 absf(f32);
-#ifndef __cplusplus
 void* oot_memmove(void* dest, const void* src, size_t len);
-#define memmove oot_memmove
-#endif
 void Message_UpdateOcarinaGame(PlayState* play);
 u8 Message_ShouldAdvance(PlayState* play);
 u8 Message_ShouldAdvanceSilent(PlayState* play);

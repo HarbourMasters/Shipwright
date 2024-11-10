@@ -9,6 +9,10 @@
 #define OOT_DEBUG 1
 // #endregion
 
+// #region SOH [General] We renamed OoT's memmove to prevent conflicts with the libc version
+#define memmove oot_memmove
+// #endregion
+
 #define FILL_ALLOC_BLOCK_FLAG (1 << 0)
 #define FILL_FREE_BLOCK_FLAG (1 << 1)
 #define CHECK_FREE_BLOCK_FLAG (1 << 2)
@@ -43,7 +47,7 @@
 
 #define FILL_FREE_BLOCK_CONTENTS(arena, node) \
     if ((arena)->flag & FILL_FREE_BLOCK_FLAG) \
-    memset((void*)((u32)(node) + sizeof(ArenaNode)), BLOCK_FREE_MAGIC, (node)->size)
+    memset((void*)((uintptr_t)(node) + sizeof(ArenaNode)), BLOCK_FREE_MAGIC, (node)->size)
 
 #define CHECK_FREE_BLOCK(arena, node)          \
     if ((arena)->flag & CHECK_FREE_BLOCK_FLAG) \
@@ -114,6 +118,7 @@ void ArenaImpl_UnsetCheckFreeBlock(Arena* arena) {
 }
 
 void ArenaImpl_SetDebugInfo(ArenaNode* node, const char* file, int line, Arena* arena) {
+    // Upstream TODO: Figure out why uncommenting this crashes
     /*
     node->filename = file;
     node->line = line;
