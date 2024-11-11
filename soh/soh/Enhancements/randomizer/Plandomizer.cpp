@@ -2,8 +2,7 @@
 #include "soh/UIWidgets.hpp"
 #include "soh/util.h"
 #include <vector>
-#include "include/z64item.h"
-#include "objects/gameplay_keep/gameplay_keep.h"
+#include "soh/Notification/Notification.h"
 #include <soh_assets.h>
 
 #include <fstream>
@@ -17,13 +16,14 @@
 #include "soh/Enhancements/randomizer/3drando/shops.hpp"
 
 extern "C" {
+    #include "include/z64item.h"
+    #include "objects/gameplay_keep/gameplay_keep.h"
     extern SaveContext gSaveContext;
     extern PlayState* gPlayState;
 }
 
 const std::string randomizeButton = ICON_FA_RANDOM;
 
-static int32_t itemIndexToRemove = -1;
 static int32_t correctedItemID = -1;
 static int32_t getTabID = TAB_HINTS;
 
@@ -39,7 +39,6 @@ ImTextureID textureID;
 ImVec2 textureUV0 = ImVec2( 0, 0 );
 ImVec2 textureUV1 = ImVec2( 1, 1 );
 
-char logID[15];
 bool shouldPopup = false;
 bool shouldTrapPopup = false;
 bool shouldRemove = false;
@@ -364,8 +363,9 @@ std::string extractNumberInParentheses(const std::string& text) {
 
 void PlandomizerPopulateSeedList() {
     existingSeedList.clear();
+    auto spoilerPath = Ship::Context::GetPathRelativeToAppDirectory("Randomizer");
 
-    for (const auto& entry : fs::directory_iterator("Randomizer")) {
+    for (const auto& entry : std::filesystem::directory_iterator(spoilerPath)) {
         if (entry.is_regular_file() && entry.path().extension() == ".json") {
             existingSeedList.push_back(entry.path().stem().string());
         }
@@ -404,7 +404,7 @@ void PlandomizerItemImageCorrection(Rando::Item randoItem) {
     }
 
     if (randoItem.GetRandomizerGet() >= RG_GOHMA_SOUL && randoItem.GetRandomizerGet() <= RG_GANON_SOUL) {
-        textureID = Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("Boss Soul");
+        textureID = Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("BOSS_SOUL");
     }
 
     if (textureID == 0) {
@@ -482,7 +482,6 @@ void PlandomizerRemoveFromItemList(Rando::Item randoItem) {
             index++;
         }
         shouldRemove = false;
-        itemIndexToRemove = -1;
     }
 }
 
@@ -561,9 +560,8 @@ void PlandomizerLoadSpoilerLog(std::string logFile) {
     drawnItemsList.clear();
 
     nlohmann::json spoilerLogInput;
-    std::string spoilerStr = "./Randomizer/";
-    spoilerStr += logFile.c_str();
-    spoilerStr += ".json";
+    auto spoilerPath = Ship::Context::GetPathRelativeToAppDirectory("Randomizer");
+    std::string spoilerStr = spoilerPath + "/" + logFile.c_str() + ".json";
 
     if (!std::filesystem::exists(spoilerStr)) {
         return;
@@ -572,59 +570,63 @@ void PlandomizerLoadSpoilerLog(std::string logFile) {
     std::ifstream file(spoilerStr);
 
     if (file.is_open()) {
-        file >> spoilerLogInput;
-        file.close();
+        try {
+            file >> spoilerLogInput;
+            file.close();
 
-        if (spoilerLogInput.contains("file_hash")) {
-            auto hash = spoilerLogInput["file_hash"];
-            for (auto& load : hash) {
-                spoilerHash.push_back(load);
-                plandoHash.push_back(load);
-            }
-        }
-
-        if (spoilerLogInput.contains("Gossip Stone Hints")) {
-            auto hints = spoilerLogInput["Gossip Stone Hints"];
-            for (auto& [key, value] : hints.items()) {
-                SpoilerHintObject hintObject;
-                hintObject.hintName = key.c_str();
-                hintObject.hintType = "Hardcoded Message";
-                hintObject.hintText = value["message"];
-
-                spoilerHintData.push_back(hintObject);
-                plandoHintData.push_back(hintObject);
-            }
-        }
-
-        if (spoilerLogInput.contains("locations")) {
-            auto locations = spoilerLogInput["locations"];
-            for (auto& [key, value] : locations.items()) {
-                SpoilerCheckObject checkObject;
-                checkObject.checkName = key;
-                auto type = value;
-                if (value.is_object()) {
-                    checkObject.checkRewardItem = plandomizerRandoRetrieveItem(Rando::StaticData::itemNameToEnum[value["item"]]);
-                    if (value["price"].is_number()) {
-                        checkObject.shopPrice = value["price"];
-                    } else {
-                        checkObject.shopPrice = -1;
-                    }
-                    if (checkObject.checkRewardItem.GetRandomizerGet() == RG_ICE_TRAP) {
-                        checkObject.iceTrapModel = plandomizerRandoRetrieveItem(Rando::StaticData::itemNameToEnum[value["model"]]);
-                        checkObject.iceTrapName = value["trickName"];
-                    }
-                } else {
-                    checkObject.checkRewardItem = plandomizerRandoRetrieveItem(Rando::StaticData::itemNameToEnum[value.get<std::string>()]);
-                    checkObject.shopPrice = -1;
-                    if (checkObject.shopPrice == -1 
-                        && checkObject.checkRewardItem.GetName().english.find("Buy") != std::string::npos) {
-                        checkObject.shopPrice = checkObject.checkRewardItem.GetPrice();
-                    }
+            if (spoilerLogInput.contains("file_hash")) {
+                auto hash = spoilerLogInput["file_hash"];
+                for (auto& load : hash) {
+                    spoilerHash.push_back(load);
+                    plandoHash.push_back(load);
                 }
-                spoilerLogData.push_back(checkObject);
-                plandoLogData.push_back(checkObject);
-                PlandomizerAddToItemList(plandomizerRandoRetrieveItem(RG_SOLD_OUT));
             }
+
+            if (spoilerLogInput.contains("Gossip Stone Hints")) {
+                auto hints = spoilerLogInput["Gossip Stone Hints"];
+                for (auto& [key, value] : hints.items()) {
+                    SpoilerHintObject hintObject;
+                    hintObject.hintName = key.c_str();
+                    hintObject.hintType = "Hardcoded Message";
+                    hintObject.hintText = value["message"];
+
+                    spoilerHintData.push_back(hintObject);
+                    plandoHintData.push_back(hintObject);
+                }
+            }
+
+            if (spoilerLogInput.contains("locations")) {
+                auto locations = spoilerLogInput["locations"];
+                for (auto& [key, value] : locations.items()) {
+                    SpoilerCheckObject checkObject;
+                    checkObject.checkName = key;
+                    auto type = value;
+                    if (value.is_object()) {
+                        checkObject.checkRewardItem = plandomizerRandoRetrieveItem(Rando::StaticData::itemNameToEnum[value["item"]]);
+                        if (value["price"].is_number()) {
+                            checkObject.shopPrice = value["price"];
+                        } else {
+                            checkObject.shopPrice = -1;
+                        }
+                        if (checkObject.checkRewardItem.GetRandomizerGet() == RG_ICE_TRAP) {
+                            checkObject.iceTrapModel = plandomizerRandoRetrieveItem(Rando::StaticData::itemNameToEnum[value["model"]]);
+                            checkObject.iceTrapName = value["trickName"];
+                        }
+                    } else {
+                        checkObject.checkRewardItem = plandomizerRandoRetrieveItem(Rando::StaticData::itemNameToEnum[value.get<std::string>()]);
+                        checkObject.shopPrice = -1;
+                        if (checkObject.shopPrice == -1 
+                            && checkObject.checkRewardItem.GetName().english.find("Buy") != std::string::npos) {
+                            checkObject.shopPrice = checkObject.checkRewardItem.GetPrice();
+                        }
+                    }
+                    spoilerLogData.push_back(checkObject);
+                    plandoLogData.push_back(checkObject);
+                    PlandomizerAddToItemList(plandomizerRandoRetrieveItem(RG_SOLD_OUT));
+                }
+            }
+        } catch (nlohmann::json::parse_error& e) {
+            Notification::Emit({ .message = "Invalid Spoiler Log Format", .remainingTime = 10.0f });
         }
     }
     lastLoadedSpoiler = spoilerStr;
@@ -796,8 +798,7 @@ void PlandomizerDrawShopSlider(uint32_t index) {
 }
 
 void PlandomizerDrawIceTrapSetup(uint32_t index) {
-    char trapTextBuf[35];
-    std::strncpy(trapTextBuf, plandoLogData[index].iceTrapName.c_str(), sizeof(trapTextBuf) - 1);
+    std::string trapTextInput = plandoLogData[index].iceTrapName.c_str();
 
     ImGui::PushID(index);
     ImGui::BeginTable("IceTrap", 2, ImGuiTableFlags_BordersOuter | ImGuiTableFlags_BordersInner);
@@ -825,10 +826,9 @@ void PlandomizerDrawIceTrapSetup(uint32_t index) {
         }
         ImGui::SameLine();
     }
-    if (ImGui::InputText("##TrapName", trapTextBuf, 35)) {
-        std::string trapName = trapTextBuf;
-        plandoLogData[index].iceTrapName = trapName.c_str();
-    }
+    if (UIWidgets::InputString("##TrapName", &trapTextInput)) {
+            plandoLogData[index].iceTrapName = trapTextInput.c_str();
+        }
     
     if (plandoLogData[index].shopPrice > -1) {
         PlandomizerDrawShopSlider(index);
@@ -970,7 +970,7 @@ void PlandomizerDrawOptions() {
 
 void PlandomizerDrawHintsWindow() {
     uint32_t index = 0;
-    char hintTextBuf[400];
+    std::string hintInputText;
 
     ImGui::BeginChild("Hints");
     ImGui::BeginTable("Hints Window", 1, ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_ScrollY);
@@ -987,7 +987,7 @@ void PlandomizerDrawHintsWindow() {
         ImGui::TextWrapped(hintData.hintText.c_str());
 
         if (spoilerHintData.size() > 0) {
-            std::strncpy(hintTextBuf, plandoHintData[index].hintText.c_str(), sizeof(hintTextBuf) - 1);
+            hintInputText = plandoHintData[index].hintText.c_str();
         }
         ImGui::Text("New Hint:     ");
         ImGui::SameLine();
@@ -997,9 +997,8 @@ void PlandomizerDrawHintsWindow() {
         UIWidgets::Tooltip("Randomize Hint");
         ImGui::SameLine();
         ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x - 10);
-        if (ImGui::InputText("##HintMessage", hintTextBuf, 400)) {
-            std::string hintMessage = hintTextBuf;
-            plandoHintData[index].hintText = hintMessage.c_str();
+        if (UIWidgets::InputString("##HintMessage", &hintInputText)) {
+            plandoHintData[index].hintText = hintInputText.c_str();
         }
         UIWidgets::Tooltip(plandomizerHintsTooltip().c_str());
         index++;
@@ -1091,5 +1090,5 @@ void PlandomizerWindow::InitElement() {
     Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("ITEM_TRIFORCE", gEmptyCDownArrowTex, ImVec4( 1, 1, 0, 1 ));
     Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("HASH_ARROW_UP", gEmptyCDownArrowTex, ImVec4( 1, 1, 1, 1 ));
     Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("HASH_ARROW_DWN", gEmptyCDownArrowTex, ImVec4( 1, 1, 1, 1 ));
-    Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("Boss Soul", gBossSoulTex, ImVec4(1, 1, 1, 1));
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("BOSS_SOUL", gBossSoulTex, ImVec4(1, 1, 1, 1));
 }
