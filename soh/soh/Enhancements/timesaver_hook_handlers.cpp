@@ -310,6 +310,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                     case ACTOR_BG_SPOT05_SOKO:
                     case ACTOR_BG_SPOT18_BASKET:
                     case ACTOR_BG_HIDAN_CURTAIN:
+                    case ACTOR_BG_MORI_HINERI:
                         *should = false;
                         RateLimitedSuccessChime();
                         break;
