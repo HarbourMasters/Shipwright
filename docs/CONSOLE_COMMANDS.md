@@ -3,12 +3,25 @@ Usage: add_heart_container <value>
 Increases Link's health by a number of full hearts equal to the passed value. Will not allow for adding health past 20 hearts.
 
 addammo
+Usage: addammo <type> <amount>
+Adds ammo for the specified item equal to the specified amount. Works for Deku Sticks, Deku Nuts, Deku Seeds, Bombs, Bombchus, Arrows, and Magic Beans (sticks, nuts, seeds, bombs, bombchus, arrows, beans). Will only accept a positive integer for the amount.
+
 bItem
+
 bind
+Usage: bind <key> <command>
+Binds a key to execute an arbitrary command, such as for healing link's health
+#We could use an "unbind" command as well. Right now the best you can do is bind the key again and leave the command argument blank. This returns an error in the consol when the key is pressed
+
 bind-toggle
+
+
 boots
 bottle
+
 burn
+Usage: burn
+sets link on fire
 
 clear
 Usage: clear
