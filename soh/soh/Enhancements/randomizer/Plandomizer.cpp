@@ -240,38 +240,6 @@ std::unordered_map<RandomizerGet, std::string> itemImageMap = {
     { RG_TRIFORCE,                  		"ITEM_TRIFORCE" },
 };
 
-std::vector<std::string> hintPool = {
-    "They say that %gGanondorf's Mom%w is going out with %ySqueak%w!",
-	"They say that %gProxySaw%w is still fixing %yCaladius's Bugs%w...",
-	"They say that %gItsHeckinPat%w is still just %yEyeballing it%w.",
-	"They say that %gCaladius%w is working on %yV2%w of something.",
-	"They say that %gdice%w is a funny name for a %ytaco%w.",
-	"They say %g2Ship Rando%w is still blocked by %yV3%w...",
-	"They say if you click your heels and say %gframebuffer%w 3 times, %yArchez%w appears!",
-	"They say %gVB%w stands for %yVirtual Bananas%w... Probably.",
-	"They say %gZeru%w is still routing his %yHundo%w.",
-	"They say %gRaccoonCloud%w is still looking for his %yHover Boots%w.",
-	"They say %gItsHeckinPat%w foreclosed on his %yHut%w.",
-	"They say %gRaccoonCloud%w is part of the %yInner Circle%w.",
-	"They say %gMoonlitxShadows%w is the %rleader%w of the %yDork Army%w.",
-	"They say %gGanondorf%w hates the %yInternet%w.",
-	"They say %gMido's House%w hoards %yTrash%w.",
-	"They say %gSweettalking Ganondorf%w rewards %yHis Heart%w.",
-	"They say %gaMannus%w said %yGo To Bed%w!",
-	"They say %gCaladius%w is a %yPinhead%w!",
-	"They say %gRaccoonCloud%w loves the %yIce Cavern%w.",
-	"They say %gNo One%w should forget %yHover Scrub%w!",
-	"They say %gMoonlitxShadows%w likes to %ySlide%w.",
-	"They say that %gRaccoonCloud%w is still learning %yB1 Skip%w...",
-	"They say that %gBackwalking%w should be %rBanned%w!",
-	"They say that %gGoron's%w should always have %yLong Necks%w!",
-	"They say that %gCaladius%w has a %ytendency to lose his shirt%w!",
-	"They say that if your %rSkip keeps Failing%w, you're probably an %yESS Off%w.",
-	"They say that %gLogic%w is just a %ySuggestion%w.",
-	"They say there's %gAlways Logic%w in %yNo Logic%w...",
-	"They said that %rFredomato%w has just %yone more push up%w to do!"
-};
-
 Rando::Item plandomizerRandoRetrieveItem(RandomizerGet randoGetItem) {
     auto randoGetItemEntry = Rando::StaticData::RetrieveItem(randoGetItem);
     return randoGetItemEntry;
@@ -414,25 +382,13 @@ void PlandomizerItemImageCorrection(Rando::Item randoItem) {
 
 void PlandomizerRandomizeHint(int32_t status, int32_t index) {
     int32_t roll;
-    int32_t poolRoll = rand();
     if (status == HINT_SINGLE) {
-        if (poolRoll % 2 == 0) {
-            roll = (rand() % hintPool.size());
-        } else {
-            roll = RHT_JUNK02 + ((rand() % RHT_JUNK_SG_8) - RHT_JUNK02);
-        }
-        plandoHintData[index].hintText = hintPool[roll].c_str();
+        roll = (rand() % Rando::StaticData::hintTextTable.size());
+        plandoHintData[index].hintText = Rando::StaticData::hintTextTable[roll].GetHintMessage().GetForCurrentLanguage();
     } else {
         for (auto& hint : plandoHintData) {
-            poolRoll = rand();
-            if (poolRoll % 2 == 0) {
-                roll = (rand() % hintPool.size());
-                hint.hintText = hintPool[roll].c_str();
-            } else {
-                roll = RHT_JUNK02 + ((rand() % RHT_JUNK_SG_8) - RHT_JUNK02);
-                hint.hintText = 
-                    Rando::StaticData::hintTextTable[roll].GetHintMessage().GetForCurrentLanguage().c_str();
-            }
+            roll = (rand() % Rando::StaticData::hintTextTable.size());
+            hint.hintText = Rando::StaticData::hintTextTable[roll].GetHintMessage().GetForCurrentLanguage();
         }
     }
 }
