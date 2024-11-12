@@ -4,6 +4,7 @@
 #include <vector>
 #include "soh/Notification/Notification.h"
 #include <soh_assets.h>
+#include "soh/Enhancements/randomizer/3drando/hints.hpp"
 
 #include <fstream>
 #include <filesystem>
@@ -223,19 +224,26 @@ std::unordered_map<RandomizerGet, std::string> itemImageMap = {
     { RG_BOMBS_5,                   		"ITEM_BOMB" },
     { RG_BOMBS_10,                  		"ITEM_BOMB" },
     { RG_BOMBS_20,                  		"ITEM_BOMB" },
+    { RG_BUY_BOMBS_535,              		"ITEM_BOMB" },
     { RG_BUY_BOMBS_10,              		"ITEM_BOMB" },
     { RG_BUY_BOMBS_20,              		"ITEM_BOMB" },
     { RG_DEKU_NUTS_5,               		"ITEM_NUT" },
     { RG_DEKU_NUTS_10,              		"ITEM_NUT" },
     { RG_BUY_DEKU_NUTS_5,           		"ITEM_NUT" },
+    { RG_BUY_DEKU_NUTS_10,               	"ITEM_NUT" },
     { RG_BOMBCHU_5,                 		"ITEM_BOMBCHU" },
     { RG_BOMBCHU_10,                		"ITEM_BOMBCHU" },
     { RG_BOMBCHU_20,                		"ITEM_BOMBCHU" },
+    { RG_BUY_BOMBCHUS_20,                 	"ITEM_BOMBCHU" },
     { RG_ARROWS_5,                  		"ITEM_ARROWS_SMALL" },
+    { RG_BUY_ARROWS_10,                  	"ITEM_ARROWS_SMALL" },
     { RG_ARROWS_10,                 		"ITEM_ARROWS_MEDIUM" },
+    { RG_BUY_ARROWS_30,                 	"ITEM_ARROWS_MEDIUM" },
     { RG_ARROWS_30,                 		"ITEM_ARROWS_LARGE" },
+    { RG_BUY_ARROWS_50,                 	"ITEM_ARROWS_LARGE" },
     { RG_TREASURE_GAME_HEART,       		"ITEM_HEART_PIECE" },
     { RG_DEKU_SEEDS_30,             		"ITEM_SEEDS" },
+    { RG_BUY_DEKU_SEEDS_30,             	"ITEM_SEEDS" },
     { RG_SOLD_OUT,                  		"ITEM_SOLD_OUT" },
     { RG_TRIFORCE,                  		"ITEM_TRIFORCE" },
 };
@@ -382,10 +390,10 @@ void PlandomizerItemImageCorrection(Rando::Item randoItem) {
 
 void PlandomizerRandomizeHint(int32_t status, int32_t index) {
     if (status == HINT_SINGLE) {
-        plandoHintData[index].hintText = RandomElement(Rando::StaticData::hintTextTable).GetHintMessage().GetForCurrentLanguage();
+        plandoHintData[index].hintText = Rando::StaticData::hintTextTable[GetRandomJunkHint()].GetHintMessage().GetForCurrentLanguage();
     } else {
         for (auto& hint : plandoHintData) {
-            hint.hintText = RandomElement(Rando::StaticData::hintTextTable).GetHintMessage().GetForCurrentLanguage();
+            hint.hintText = Rando::StaticData::hintTextTable[GetRandomJunkHint()].GetHintMessage().GetForCurrentLanguage();
         }
     }
 }
@@ -604,7 +612,8 @@ void PlandomizerOverlayText(std::pair<Rando::Item, uint32_t> drawObject ) {
         ImGui::Text("+");
     }
     if (extractNumberInParentheses(drawObject.first.GetName().english.c_str()) != "" && 
-        extractNumberInParentheses(drawObject.first.GetName().english.c_str()) != "WINNER") {
+        extractNumberInParentheses(drawObject.first.GetName().english.c_str()) != "WINNER" && 
+        extractNumberInParentheses(drawObject.first.GetName().english.c_str()) != "LOSER") {
         textPos = ImVec2(imageMin.x + 2, imageMin.y + 2);
 
         ImGui::SetCursorScreenPos(textPos);

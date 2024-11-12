@@ -72,3 +72,4 @@ struct StaticHintInfo{
 extern void CreateAllHints();
 extern void CreateWarpSongTexts();
 void CreateStaticHints();
+RandomizerHintTextKey GetRandomJunkHint();
