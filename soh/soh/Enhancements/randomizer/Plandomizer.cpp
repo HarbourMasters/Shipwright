@@ -381,14 +381,11 @@ void PlandomizerItemImageCorrection(Rando::Item randoItem) {
 }
 
 void PlandomizerRandomizeHint(int32_t status, int32_t index) {
-    int32_t roll;
     if (status == HINT_SINGLE) {
-        roll = (rand() % Rando::StaticData::hintTextTable.size());
-        plandoHintData[index].hintText = Rando::StaticData::hintTextTable[roll].GetHintMessage().GetForCurrentLanguage();
+        plandoHintData[index].hintText = RandomElement(Rando::StaticData::hintTextTable).GetHintMessage().GetForCurrentLanguage();
     } else {
         for (auto& hint : plandoHintData) {
-            roll = (rand() % Rando::StaticData::hintTextTable.size());
-            hint.hintText = Rando::StaticData::hintTextTable[roll].GetHintMessage().GetForCurrentLanguage();
+            hint.hintText = RandomElement(Rando::StaticData::hintTextTable).GetHintMessage().GetForCurrentLanguage();
         }
     }
 }
