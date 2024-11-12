@@ -15,10 +15,11 @@
 #include "Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/presets.h"
 #include "soh/Enhancements/mods.h"
+#include "soh/Notification/Notification.h"
 #include "Enhancements/cosmetics/authenticGfxPatches.h"
 #ifdef ENABLE_REMOTE_CONTROL
-#include "Enhancements/crowd-control/CrowdControl.h"
-#include "Enhancements/game-interactor/GameInteractor_Sail.h"
+#include "soh/Network/CrowdControl/CrowdControl.h"
+#include "soh/Network/Sail/Sail.h"
 #endif
 
 
@@ -39,6 +40,7 @@
 #include "Enhancements/randomizer/randomizer_settings_window.h"
 #include "Enhancements/resolution-editor/ResolutionEditor.h"
 #include "Enhancements/enemyrandomizer.h"
+#include "Enhancements/timesplits/TimeSplits.h"
 
 // FA icons are kind of wonky, if they worked how I expected them to the "+ 2.0f" wouldn't be needed, but
 // they don't work how I expect them to so I added that because it looked good when I eyeballed it
@@ -217,6 +219,7 @@ void DrawShipMenu() {
 }
 
 extern std::shared_ptr<Ship::GuiWindow> mInputEditorWindow;
+extern std::shared_ptr<Ship::GuiWindow> mGfxDebuggerWindow;
 extern std::shared_ptr<InputViewer> mInputViewer;
 extern std::shared_ptr<InputViewerSettingsWindow> mInputViewerSettings;
 extern std::shared_ptr<AdvancedResolutionSettings::AdvancedResolutionSettingsWindow> mAdvancedResolutionSettingsWindow;
@@ -274,7 +277,7 @@ void DrawSettingsMenu() {
             ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
             ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
             if (mInputEditorWindow) {
-                if (ImGui::Button(GetWindowButtonText("Controller Mapping", CVarGetInteger(CVAR_CONTROLLER_CONFIGURATION_WINDOW_OPEN, 0)).c_str(), ImVec2 (-1.0f, 0.0f))) {
+                if (ImGui::Button(GetWindowButtonText("Controller Mapping", CVarGetInteger(CVAR_WINDOW("ControllerConfiguration"), 0)).c_str(), ImVec2 (-1.0f, 0.0f))) {
                     mInputEditorWindow->ToggleVisibility();
                 }
             }
@@ -563,6 +566,35 @@ void DrawSettingsMenu() {
             
             ImGui::EndMenu();
         }
+
+        UIWidgets::Spacer(0);
+
+        if (ImGui::BeginMenu("Notifications")) {
+            static const char* notificationPosition[] = {
+                "Top Left",
+                "Top Right",
+                "Bottom Left",
+                "Bottom Right",
+                "Hidden",
+            };
+
+            ImGui::Text("Position");
+            UIWidgets::EnhancementCombobox(CVAR_SETTING("Notifications.Position"), notificationPosition, 0);
+            UIWidgets::EnhancementSliderFloat("Duration: %.0f seconds", "##NotificationDuration", CVAR_SETTING("Notifications.Duration"), 3.0f, 30.0f, "", 10.0f, false, false, false);
+            UIWidgets::EnhancementSliderFloat("BG Opacity: %.1f %%", "##NotificaitonBgOpacity", CVAR_SETTING("Notifications.BgOpacity"), 0.0f, 1.0f, "", 0.5f, true, false, false);
+            UIWidgets::EnhancementSliderFloat("Size: %.1f", "##NotificaitonSize", CVAR_SETTING("Notifications.Size"), 1.0f, 5.0f, "", 1.8f, false, false, false);
+
+            UIWidgets::Spacer(0);
+
+            if (ImGui::Button("Test Notification", ImVec2(-1.0f, 0.0f))) {
+                Notification::Emit({
+                    .message = (gPlayState != NULL ? SohUtils::GetSceneName(gPlayState->sceneNum) : "Hyrule") + " looks beautiful today!",
+                });
+            }
+
+            ImGui::EndMenu();
+        }
+
         ImGui::EndMenu();
     }
 }
@@ -570,6 +602,7 @@ void DrawSettingsMenu() {
 extern std::shared_ptr<AudioEditor> mAudioEditorWindow;
 extern std::shared_ptr<CosmeticsEditorWindow> mCosmeticsEditorWindow;
 extern std::shared_ptr<GameplayStatsWindow> mGameplayStatsWindow;
+extern std::shared_ptr<TimeSplitWindow> mTimeSplitWindow;
 
 void DrawEnhancementsMenu() {
     if (ImGui::BeginMenu("Enhancements"))
@@ -665,17 +698,20 @@ void DrawEnhancementsMenu() {
 
                 UIWidgets::PaddedEnhancementSliderInt("Text Speed: %dx", "##TEXTSPEED", CVAR_ENHANCEMENT("TextSpeed"), 1, 5, "", 1, true, false, true);
                 UIWidgets::PaddedEnhancementCheckbox("Skip Text", CVAR_ENHANCEMENT("SkipText"), false, true);
+                UIWidgets::Tooltip("Holding down B skips text");
                 UIWidgets::PaddedEnhancementSliderInt("Slow Text Speed: %dx", "##SLOWTEXTSPEED", CVAR_ENHANCEMENT("SlowTextSpeed"), 1, 5, "", 1, true, false, true);
+                UIWidgets::Tooltip("Changes the speed of sections of text that normally are paced slower than the text surrounding it.");
                 if (ImGui::Button("Match Normal Text")) {
                     CVarSetInteger(CVAR_ENHANCEMENT("SlowTextSpeed"), CVarGetInteger(CVAR_ENHANCEMENT("TextSpeed"), 1));
                 }
-                UIWidgets::Tooltip("Holding down B skips text");
-                UIWidgets::PaddedEnhancementSliderFloat("King Zora Speed: %.2fx", "##MWEEPSPEED", CVAR_ENHANCEMENT("MweepSpeed"), 0.1f, 5.0f, "", 1.0f, false, false, true);
+                UIWidgets::Tooltip("Makes the speed of slow text match the normal text speed above.");
+                UIWidgets::PaddedEnhancementSliderFloat("King Zora Speed: %.2fx", "##MWEEPSPEED", CVAR_ENHANCEMENT("MweepSpeed"), 0.1f, 5.0f, "", 1.0f, false, true, false, true);
                 UIWidgets::PaddedEnhancementSliderInt("Vine/Ladder Climb speed +%d", "##CLIMBSPEED", CVAR_ENHANCEMENT("ClimbSpeed"), 0, 12, "", 0, true, false, true);
                 UIWidgets::PaddedEnhancementSliderInt("Block pushing speed +%d", "##BLOCKSPEED", CVAR_ENHANCEMENT("FasterBlockPush"), 0, 5, "", 0, true, false, true);
                 UIWidgets::PaddedEnhancementSliderInt("Crawl speed %dx", "##CRAWLSPEED", CVAR_ENHANCEMENT("CrawlSpeed"), 1, 4, "", 1, true, false, true);
                 UIWidgets::PaddedEnhancementCheckbox("Faster Heavy Block Lift", CVAR_ENHANCEMENT("FasterHeavyBlockLift"), false, false);
                 UIWidgets::Tooltip("Speeds up lifting silver rocks and obelisks");
+                UIWidgets::PaddedEnhancementCheckbox("Faster Rupee Accumulator", CVAR_ENHANCEMENT("TimeSavers.FasterRupeeAccumulator"), false, false);
                 UIWidgets::PaddedEnhancementCheckbox("Skip Pickup Messages", CVAR_ENHANCEMENT("FastDrops"), true, false);
                 UIWidgets::Tooltip("Skip pickup messages for new consumable items and bottle swipes");
                 UIWidgets::PaddedEnhancementCheckbox("Fast Ocarina Playback", CVAR_ENHANCEMENT("FastOcarinaPlayback"), true, false);
@@ -1649,6 +1685,12 @@ void DrawEnhancementsMenu() {
                 mGameplayStatsWindow->ToggleVisibility();
             }
         }
+
+        if (mTimeSplitWindow) {
+            if (ImGui::Button(GetWindowButtonText("Time Splits", CVarGetInteger(CVAR_WINDOW("TimeSplitEnabled"), 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
+                mTimeSplitWindow->ToggleVisibility();
+            }
+        }
         ImGui::PopStyleVar(3);
         ImGui::PopStyleColor(1);
 
@@ -1703,7 +1745,7 @@ void DrawCheatsMenu() {
         UIWidgets::EnhancementSliderFloat("Hookshot Reach Multiplier: %.2fx", "##gCheatHookshotReachMultiplier", CVAR_CHEAT("HookshotReachMultiplier"), 1.0f, 5.0f, "", 1.0f, false);
         UIWidgets::Spacer(2.0f);
         if (ImGui::Button("Change Age")) {
-            CVarSetInteger(CVAR_GENERAL("SwitchAge"), 1);
+            SwitchAge();
         }
         UIWidgets::Tooltip("Switches Link's age and reloads the area.");  
         UIWidgets::Spacer(2.0f);
@@ -1973,6 +2015,12 @@ void DrawDeveloperToolsMenu() {
                 mMessageViewerWindow->ToggleVisibility();
             }
         }
+        UIWidgets::Spacer(0);
+        if (mGfxDebuggerWindow) {
+            if (ImGui::Button(GetWindowButtonText("Gfx Debugger", CVarGetInteger(CVAR_WINDOW("GfxDebugger"), 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
+                mGfxDebuggerWindow->ToggleVisibility();
+            }
+        }
 
         ImGui::PopStyleVar(3);
         ImGui::PopStyleColor(1);
@@ -1983,132 +2031,11 @@ void DrawDeveloperToolsMenu() {
     }
 }
 
-bool isStringEmpty(std::string str) {
-    // Remove spaces at the beginning of the string
-    std::string::size_type start = str.find_first_not_of(' ');
-    // Remove spaces at the end of the string
-    std::string::size_type end = str.find_last_not_of(' ');
-
-    // Check if the string is empty after stripping spaces
-    if (start == std::string::npos || end == std::string::npos)
-        return true; // The string is empty
-    else
-        return false; // The string is not empty
-}
-
 #ifdef ENABLE_REMOTE_CONTROL
 void DrawRemoteControlMenu() {
     if (ImGui::BeginMenu("Network")) {
-        static std::string ip = CVarGetString(CVAR_REMOTE("IP"), "127.0.0.1");
-        static uint16_t port = CVarGetInteger(CVAR_REMOTE("Port"), 43384);
-        bool isFormValid = !isStringEmpty(CVarGetString(CVAR_REMOTE("IP"), "127.0.0.1")) && port > 1024 && port < 65535;
-
-        const char* remoteOptions[2] = { "Sail", "Crowd Control"};
-
-        ImGui::BeginDisabled(GameInteractor::Instance->isRemoteInteractorEnabled);
-        ImGui::Text("Remote Interaction Scheme");
-        if (UIWidgets::EnhancementCombobox(CVAR_REMOTE("Scheme"), remoteOptions, GI_SCHEME_SAIL)) {
-            auto scheme = CVarGetInteger(CVAR_REMOTE("Scheme"), GI_SCHEME_SAIL);
-            switch (scheme) {
-                case GI_SCHEME_SAIL:
-                case GI_SCHEME_CROWD_CONTROL:
-                    CVarSetString(CVAR_REMOTE("IP"), "127.0.0.1");
-                    CVarSetInteger(CVAR_REMOTE("Port"), 43384);
-                    ip = "127.0.0.1";
-                    port = 43384;
-                    break;
-            }
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-        }
-        switch (CVarGetInteger(CVAR_REMOTE("Scheme"), GI_SCHEME_SAIL)) {
-            case GI_SCHEME_SAIL:
-                UIWidgets::InsertHelpHoverText(
-                    "Sail is a networking protocol designed to facilitate remote "
-                    "control of the Ship of Harkinian client. It is intended to "
-                    "be utilized alongside a Sail server, for which we provide a "
-                    "few straightforward implementations on our GitHub. The current "
-                    "implementations available allow integration with Twitch chat "
-                    "and SAMMI Bot, feel free to contribute your own!\n"
-                    "\n"
-                    "Click the question mark to copy the link to the Sail Github "
-                    "page to your clipboard."
-                );
-                if (ImGui::IsItemClicked()) {
-                    ImGui::SetClipboardText("https://github.com/HarbourMasters/sail");
-                }
-                break;
-            case GI_SCHEME_CROWD_CONTROL:
-                UIWidgets::InsertHelpHoverText(
-                    "Crowd Control is a platform that allows viewers to interact "
-                    "with a streamer's game in real time.\n"
-                    "\n"
-                    "Click the question mark to copy the link to the Crowd Control "
-                    "website to your clipboard."
-                );
-                if (ImGui::IsItemClicked()) {
-                    ImGui::SetClipboardText("https://crowdcontrol.live");
-                }
-                break;
-        }
-
-        ImGui::Text("Remote IP & Port");
-        if (ImGui::InputText("##gRemote.IP", (char*)ip.c_str(), ip.capacity() + 1)) {
-            CVarSetString(CVAR_REMOTE("IP"), ip.c_str());
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-        }
-
-        ImGui::SameLine();
-        ImGui::PushItemWidth(ImGui::GetFontSize() * 5);
-        if (ImGui::InputScalar("##gRemote.Port", ImGuiDataType_U16, &port)) {
-            CVarSetInteger(CVAR_REMOTE("Port"), port);
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-        }
-
-        ImGui::PopItemWidth();
-        ImGui::EndDisabled();
-
-        ImGui::Spacing();
-
-        ImGui::BeginDisabled(!isFormValid);
-        const char* buttonLabel = GameInteractor::Instance->isRemoteInteractorEnabled ? "Disable" : "Enable";
-        if (ImGui::Button(buttonLabel, ImVec2(-1.0f, 0.0f))) {
-            if (GameInteractor::Instance->isRemoteInteractorEnabled) {
-                CVarClear(CVAR_REMOTE("Enabled"));
-                CVarClear(CVAR_REMOTE("CrowdControl"));
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-                switch (CVarGetInteger(CVAR_REMOTE("Scheme"), GI_SCHEME_SAIL)) {
-                    case GI_SCHEME_SAIL:
-                        GameInteractorSail::Instance->Disable();
-                        break;
-                    case GI_SCHEME_CROWD_CONTROL:
-                        CrowdControl::Instance->Disable();
-                        break;
-                }
-            } else {
-                CVarSetInteger(CVAR_REMOTE("Enabled"), 1);
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-                switch (CVarGetInteger(CVAR_REMOTE("Scheme"), GI_SCHEME_SAIL)) {
-                    case GI_SCHEME_SAIL:
-                        GameInteractorSail::Instance->Enable();
-                        break;
-                    case GI_SCHEME_CROWD_CONTROL:
-                        CrowdControl::Instance->Enable();
-                        break;
-                }
-            }
-        }
-        ImGui::EndDisabled();
-
-        if (GameInteractor::Instance->isRemoteInteractorEnabled) {
-            ImGui::Spacing();
-            if (GameInteractor::Instance->isRemoteInteractorConnected) {
-                ImGui::Text("Connected");
-            } else {
-                ImGui::Text("Connecting...");
-            }
-        }
-
-        ImGui::Dummy(ImVec2(0.0f, 0.0f));
+        Sail::Instance->DrawMenu();
+        CrowdControl::Instance->DrawMenu();
         ImGui::EndMenu();
     }
 }

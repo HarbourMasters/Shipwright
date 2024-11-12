@@ -438,7 +438,7 @@ void func_80985860(DemoIm* this, PlayState* play) {
 }
 
 void func_809858A8(void) {
-    func_800788CC(NA_SE_SY_WHITE_OUT_T);
+    Sfx_PlaySfxCentered2(NA_SE_SY_WHITE_OUT_T);
 }
 
 void DemoIm_SpawnLightBall(DemoIm* this, PlayState* play) {
@@ -728,7 +728,7 @@ void func_80986570(DemoIm* this, PlayState* play) {
         u32 sfxId = SFX_FLAG;
 
         sfxId += SurfaceType_GetSfx(&play->colCtx, this->actor.floorPoly, this->actor.floorBgId);
-        Audio_PlaySoundGeneral(sfxId, &this->actor.projectedPos, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+        Audio_PlaySoundGeneral(sfxId, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     }
 }
 
@@ -874,9 +874,9 @@ void func_80986B2C(PlayState* play) {
 
         // In entrance rando have impa bring link back to the front of castle grounds
         if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {
-            play->nextEntranceIndex = ENTR_HYRULE_CASTLE_0;
+            play->nextEntranceIndex = ENTR_CASTLE_GROUNDS_SOUTH_EXIT;
         } else {
-            play->nextEntranceIndex = ENTR_HYRULE_FIELD_0;
+            play->nextEntranceIndex = ENTR_HYRULE_FIELD_PAST_BRIDGE_SPAWN;
         }
         play->transitionType = TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_BLACK, TCS_FAST);
         play->transitionTrigger = TRANS_TRIGGER_START;

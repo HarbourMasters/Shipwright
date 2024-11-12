@@ -682,7 +682,7 @@ void SaveManager::InitMeta(int fileNum) {
     fileMetaInfo[fileNum].gsTokens = gSaveContext.inventory.gsTokens;
     fileMetaInfo[fileNum].isDoubleDefenseAcquired = gSaveContext.isDoubleDefenseAcquired;
     fileMetaInfo[fileNum].gregFound = Flags_GetRandomizerInf(RAND_INF_GREG_FOUND);
-    fileMetaInfo[fileNum].hasWallet = Flags_GetRandomizerInf(RAND_INF_HAS_WALLET);
+    fileMetaInfo[fileNum].hasWallet = Flags_GetRandomizerInf(RAND_INF_HAS_WALLET) || !IS_RANDO;
     fileMetaInfo[fileNum].defense = gSaveContext.inventory.defenseHearts;
     fileMetaInfo[fileNum].health = gSaveContext.health;
     auto randoContext = Rando::Context::GetInstance();
@@ -976,7 +976,7 @@ void SaveManager::InitFileDebug() {
         }
     }
 
-    gSaveContext.entranceIndex = ENTR_HYRULE_FIELD_0;
+    gSaveContext.entranceIndex = ENTR_HYRULE_FIELD_PAST_BRIDGE_SPAWN;
     gSaveContext.magicLevel = 0;
     gSaveContext.sceneFlags[5].swch = 0x40000000;
 }
@@ -1119,7 +1119,7 @@ void SaveManager::InitFileMaxed() {
         }
     }
 
-    gSaveContext.entranceIndex = ENTR_HYRULE_FIELD_0;
+    gSaveContext.entranceIndex = ENTR_HYRULE_FIELD_PAST_BRIDGE_SPAWN;
     gSaveContext.sceneFlags[5].swch = 0x40000000;
 }
 

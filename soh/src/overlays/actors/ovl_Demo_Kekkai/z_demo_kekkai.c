@@ -259,7 +259,7 @@ void DemoKekkai_TrialBarrierIdle(Actor* thisx, PlayState* play) {
     CollisionCheck_SetAT(play, &play->colChkCtx, &this->collider1.base);
     CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider1.base);
     if (this->collider2.base.acFlags & AC_HIT) {
-        func_80078884(NA_SE_SY_CORRECT_CHIME);
+        Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
         // "I got it"
         LOG_STRING("当ったよ");
         this->actor.update = DemoKekkai_TrialBarrierDispel;

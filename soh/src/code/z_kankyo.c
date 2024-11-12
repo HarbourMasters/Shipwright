@@ -914,10 +914,10 @@ void Environment_Update(PlayState* play, EnvironmentContext* envCtx, LightContex
             osSyncPrintf("\nnext_zelda_time=[%x]", ((void)0, gSaveContext.nextDayTime));
 
             if (((void)0, gSaveContext.nextDayTime) == 0xFF0E) {
-                func_80078884(NA_SE_EV_CHICKEN_CRY_M);
+                Sfx_PlaySfxCentered(NA_SE_EV_CHICKEN_CRY_M);
                 gSaveContext.nextDayTime = 0xFFFF;
             } else if (((void)0, gSaveContext.nextDayTime) == 0xFF0D) {
-                func_800788CC(NA_SE_EV_DOG_CRY_EVENING);
+                Sfx_PlaySfxCentered2(NA_SE_EV_DOG_CRY_EVENING);
                 gSaveContext.nextDayTime = 0xFFFF;
             }
         }
@@ -1322,7 +1322,7 @@ void Environment_DrawSunAndMoon(PlayState* play) {
         play->envCtx.sunPos.z = +(Math_CosS(((void)0, gSaveContext.dayTime) - 0x8000) * 20.0f) * 25.0f;
     }
 
-    if (gSaveContext.entranceIndex != ENTR_HYRULE_FIELD_0 || ((void)0, gSaveContext.sceneSetupIndex) != 5) {
+    if (gSaveContext.entranceIndex != ENTR_HYRULE_FIELD_PAST_BRIDGE_SPAWN || ((void)0, gSaveContext.sceneSetupIndex) != 5) {
         Matrix_Translate(play->view.eye.x + play->envCtx.sunPos.x,
                          play->view.eye.y + play->envCtx.sunPos.y,
                          play->view.eye.z + play->envCtx.sunPos.z, MTXMODE_NEW);
@@ -2004,7 +2004,7 @@ void Environment_PlaySceneSequence(PlayState* play) {
     play->envCtx.unk_E0 = 0xFF;
 
     // both lost woods exits on the bridge from kokiri to hyrule field
-    if (((void)0, gSaveContext.entranceIndex) == ENTR_LOST_WOODS_8 || ((void)0, gSaveContext.entranceIndex) == ENTR_LOST_WOODS_9) {
+    if (((void)0, gSaveContext.entranceIndex) == ENTR_LOST_WOODS_BRIDGE_WEST_EXIT || ((void)0, gSaveContext.entranceIndex) == ENTR_LOST_WOODS_BRIDGE_EAST_EXIT) {
         Audio_PlayNatureAmbienceSequence(NATURE_ID_KOKIRI_REGION);
     } else if (((void)0, gSaveContext.forcedSeqId) != NA_BGM_GENERAL_SFX) {
         if (!Environment_IsForcedSequenceDisabled()) {
@@ -2076,7 +2076,7 @@ void func_80075B44(PlayState* play) {
             break;
         case 2:
             if (gSaveContext.dayTime > 0xC000) {
-                func_800788CC(NA_SE_EV_DOG_CRY_EVENING);
+                Sfx_PlaySfxCentered2(NA_SE_EV_DOG_CRY_EVENING);
                 play->envCtx.unk_E0++;
             }
             break;
@@ -2105,7 +2105,7 @@ void func_80075B44(PlayState* play) {
                 gSaveContext.totalDays++;
                 gSaveContext.bgsDayCount++;
                 gSaveContext.dogIsLost = true;
-                func_80078884(NA_SE_EV_CHICKEN_CRY_M);
+                Sfx_PlaySfxCentered(NA_SE_EV_CHICKEN_CRY_M);
                 if ((Inventory_ReplaceItem(play, ITEM_WEIRD_EGG, ITEM_CHICKEN) ||
                      Inventory_HatchPocketCucco(play)) &&
                     play->csCtx.state == 0 && !Player_InCsMode(play)) {
@@ -2546,22 +2546,22 @@ void Environment_WarpSongLeave(PlayState* play) {
     gSaveContext.nextTransitionType = TRANS_TYPE_FADE_WHITE;
 
     switch (play->nextEntranceIndex) {
-        case ENTR_DEATH_MOUNTAIN_CRATER_0:
+        case ENTR_DEATH_MOUNTAIN_CRATER_UPPER_EXIT:
             Flags_SetEventChkInf(EVENTCHKINF_ENTERED_DEATH_MOUNTAIN_CRATER);
             break;
-        case ENTR_LAKE_HYLIA_0:
+        case ENTR_LAKE_HYLIA_NORTH_EXIT:
             Flags_SetEventChkInf(EVENTCHKINF_ENTERED_LAKE_HYLIA);
             break;
-        case ENTR_DESERT_COLOSSUS_0:
+        case ENTR_DESERT_COLOSSUS_EAST_EXIT:
             Flags_SetEventChkInf(EVENTCHKINF_ENTERED_DESERT_COLOSSUS);
             break;
-        case ENTR_GRAVEYARD_0:
+        case ENTR_GRAVEYARD_ENTRANCE:
             Flags_SetEventChkInf(EVENTCHKINF_ENTERED_GRAVEYARD);
             break;
-        case ENTR_TEMPLE_OF_TIME_0:
+        case ENTR_TEMPLE_OF_TIME_ENTRANCE:
             Flags_SetEventChkInf(EVENTCHKINF_ENTERED_TEMPLE_OF_TIME);
             break;
-        case ENTR_SACRED_FOREST_MEADOW_0:
+        case ENTR_SACRED_FOREST_MEADOW_SOUTH_EXIT:
             break;
     }
 }

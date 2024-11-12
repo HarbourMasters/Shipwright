@@ -20,8 +20,6 @@ void DoorAna_WaitClosed(DoorAna* this, PlayState* play);
 void DoorAna_WaitOpen(DoorAna* this, PlayState* play);
 void DoorAna_GrabPlayer(DoorAna* this, PlayState* play);
 
-void Grotto_OverrideActorEntrance(Actor* thisx);
-
 const ActorInit Door_Ana_InitVars = {
     ACTOR_DOOR_ANA,
     ACTORCAT_ITEMACTION,
@@ -121,7 +119,7 @@ void DoorAna_WaitClosed(DoorAna* this, PlayState* play) {
     if (openGrotto) {
         this->actor.params &= ~0x0300;
         DoorAna_SetupAction(this, DoorAna_WaitOpen);
-        Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+        Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     }
     func_8002F5F0(&this->actor, play);
 }

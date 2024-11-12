@@ -225,30 +225,30 @@ void BossRush_HandleBlueWarp(PlayState* play, f32 warpPosX, f32 warpPosZ) {
         // Gohma & Phantom Ganon
         if (warpPosX == -100 && warpPosZ == -170) {
             if (gSaveContext.linkAge == LINK_AGE_CHILD) {
-                play->nextEntranceIndex = ENTR_DEKU_TREE_BOSS_0;
+                play->nextEntranceIndex = ENTR_DEKU_TREE_BOSS_ENTRANCE;
             } else {
-                play->nextEntranceIndex = ENTR_FOREST_TEMPLE_BOSS_0;
+                play->nextEntranceIndex = ENTR_FOREST_TEMPLE_BOSS_ENTRANCE;
             }
         // King Dodongo & Volvagia
         } else if (warpPosX == 100 && warpPosZ == -170) {
             if (gSaveContext.linkAge == LINK_AGE_CHILD) {
-                play->nextEntranceIndex = ENTR_DODONGOS_CAVERN_BOSS_0;
+                play->nextEntranceIndex = ENTR_DODONGOS_CAVERN_BOSS_ENTRANCE;
             } else {
-                play->nextEntranceIndex = ENTR_FIRE_TEMPLE_BOSS_0;
+                play->nextEntranceIndex = ENTR_FIRE_TEMPLE_BOSS_ENTRANCE;
             }
         // Barinade & Morb
         } else if (warpPosX == 199 && warpPosZ == 0) {
             if (gSaveContext.linkAge == LINK_AGE_CHILD) {
-                play->nextEntranceIndex = ENTR_JABU_JABU_BOSS_0;
+                play->nextEntranceIndex = ENTR_JABU_JABU_BOSS_ENTRANCE;
             } else {
-                play->nextEntranceIndex = ENTR_WATER_TEMPLE_BOSS_0;
+                play->nextEntranceIndex = ENTR_WATER_TEMPLE_BOSS_ENTRANCE;
             }
         // Twinrova
         } else if (warpPosX == 100 && warpPosZ == 170) {
             play->nextEntranceIndex = ENTR_SPIRIT_TEMPLE_BOSS_2;
         // Bongo Bongo
         } else if (warpPosX == -100 && warpPosZ == 170) {
-            play->nextEntranceIndex = ENTR_SHADOW_TEMPLE_BOSS_0;
+            play->nextEntranceIndex = ENTR_SHADOW_TEMPLE_BOSS_ENTRANCE;
         // Ganondork
         } else if (warpPosX == -199 && warpPosZ == 0) {
             play->nextEntranceIndex = ENTR_GANONDORF_BOSS_0;

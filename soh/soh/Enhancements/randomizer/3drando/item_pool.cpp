@@ -850,6 +850,7 @@ void GenerateItemPool() {
     }
   } else {
     PlaceVanillaOverworldFish();
+    ctx->PlaceItemInLocation(RC_LH_HYRULE_LOACH, RG_PURPLE_RUPEE, false, true);
   }
 
   if (ctx->GetOption(RSK_SHUFFLE_FISHING_POLE)) {

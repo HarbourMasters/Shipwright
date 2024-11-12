@@ -254,7 +254,7 @@ void func_80AE2744(EnRd* this, PlayState* play) {
             // Add a height check to redeads/gibdos freeze when Enemy Randomizer is on.
             // Without the height check, redeads/gibdos can freeze the player from insane distances in
             // vertical rooms (like the first room in Deku Tree), making these rooms nearly unplayable.
-            s8 enemyRandoCCActive = CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) || (CVarGetInteger(CVAR_REMOTE("Scheme"), GI_SCHEME_SAIL) == GI_SCHEME_CROWD_CONTROL && CVarGetInteger(CVAR_REMOTE("Enabled"), 0));
+            s8 enemyRandoCCActive = CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) || (CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("Enabled"), 0));
             if (!enemyRandoCCActive || (enemyRandoCCActive && this->actor.yDistToPlayer <= 100.0f && this->actor.yDistToPlayer >= -100.0f)) {
                 if ((this->actor.params != 2) && (this->unk_305 == 0)) {
                     func_80AE37BC(this);
@@ -668,7 +668,7 @@ void func_80AE3C98(EnRd* this, PlayState* play) {
 
     if (SkelAnime_Update(&this->skelAnime)) {
         if (this->unk_30C == 0) {
-            s8 enemyRandoCCActive = CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) || (CVarGetInteger(CVAR_REMOTE("Scheme"), GI_SCHEME_SAIL) == GI_SCHEME_CROWD_CONTROL && CVarGetInteger(CVAR_REMOTE("Enabled"), 0));
+            s8 enemyRandoCCActive = CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) || (CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("Enabled"), 0));
             // Don't set this flag in Enemy Rando as it can overlap with other objects using the same flag.
             if (!Flags_GetSwitch(play, this->unk_312 & 0x7F) && !enemyRandoCCActive) {
                 Flags_SetSwitch(play, this->unk_312 & 0x7F);

@@ -150,7 +150,7 @@ void func_808A9234(BgRelayObjects* this, PlayState* play) {
         func_800AA000(this->dyna.actor.xyzDistToPlayerSq, 180, 20, 100);
         Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_STONE_BOUND);
         if (this->unk_169 != play->roomCtx.curRoom.num) {
-            func_800788CC(NA_SE_EN_PO_LAUGH);
+            Sfx_PlaySfxCentered2(NA_SE_EN_PO_LAUGH);
             this->timer = 5;
             this->actionFunc = func_808A932C;
             return;
@@ -173,7 +173,7 @@ void func_808A932C(BgRelayObjects* this, PlayState* play) {
     }
     if (this->timer == 0) {
         if (!Player_InCsMode(play)) {
-            func_80078884(NA_SE_OC_ABYSS);
+            Sfx_PlaySfxCentered(NA_SE_OC_ABYSS);
             Play_TriggerRespawn(play);
             this->actionFunc = BgRelayObjects_DoNothing;
         }

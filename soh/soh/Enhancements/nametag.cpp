@@ -201,7 +201,7 @@ extern "C" void NameTag_RegisterForActorWithOptions(Actor* actor, const char* te
     processedText.erase(std::remove_if(processedText.begin(), processedText.end(), [](const char& c) {
         // 172 is max supported texture for the in-game font system,
         // and filter anything less than a space but not the newline or nul characters
-        return c > 172 || (c < ' ' && c != '\n' && c != '\0');
+        return (unsigned char)c > 172 || (c < ' ' && c != '\n' && c != '\0');
     }), processedText.end());
 
     int16_t numChar = processedText.length();
@@ -213,7 +213,7 @@ extern "C" void NameTag_RegisterForActorWithOptions(Actor* actor, const char* te
     Vtx* vertices = (Vtx*)calloc(sizeof(Vtx[4]), numChar + 1);
 
     // Set all the char vtx first to get the total size for the textbox
-    for (size_t i = 0; i < numChar; i++) {
+    for (int16_t i = 0; i < numChar; i++) {
         if (processedText[i] == '\n') {
             offsetX = 0;
             numLines++;

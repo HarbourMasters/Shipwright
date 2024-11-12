@@ -844,7 +844,7 @@ void BossDodongo_Walk(BossDodongo* this, PlayState* play) {
             }
 
             if (this->unk_1BC != 0) {
-                func_80078884(NA_SE_EN_DODO_K_WALK);
+                Sfx_PlaySfxCentered(NA_SE_EN_DODO_K_WALK);
             } else {
                 Audio_PlayActorSound2(&this->actor, NA_SE_EN_DODO_K_WALK);
             }

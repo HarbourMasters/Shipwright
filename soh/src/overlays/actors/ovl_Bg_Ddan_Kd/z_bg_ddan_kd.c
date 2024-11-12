@@ -173,8 +173,8 @@ void BgDdanKd_LowerStairs(BgDdanKd* this, PlayState* play) {
             func_8003555C(play, &pos1, &sBgDdanKdVelocity, &sBgDdanKdAccel);
         }
         Camera_AddQuake(&play->mainCamera, 0, effectStrength * 0.6f, 3);
-        Audio_PlaySoundGeneral(NA_SE_EV_PILLAR_SINK - SFX_FLAG, &this->dyna.actor.projectedPos, 4, &D_801333E0,
-                               &D_801333E0, &D_801333E8);
+        Audio_PlaySoundGeneral(NA_SE_EV_PILLAR_SINK - SFX_FLAG, &this->dyna.actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
+                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     }
 }
 

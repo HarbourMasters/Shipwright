@@ -91,6 +91,8 @@ uint32_t IsGameMasterQuest();
 #define CVAR_DEVELOPER_TOOLS(var) CVAR_PREFIX_DEVELOPER_TOOLS "." var
 #define CVAR_GENERAL(var) CVAR_PREFIX_GENERAL "." var
 #define CVAR_REMOTE(var) CVAR_PREFIX_REMOTE "." var
+#define CVAR_REMOTE_CROWD_CONTROL(var) CVAR_REMOTE(".CrowdControl." var)
+#define CVAR_REMOTE_SAIL(var) CVAR_REMOTE(".Sail." var)
 
 #ifndef __cplusplus
     void InitOTR(void);
@@ -208,8 +210,6 @@ void Overlay_DisplayText(float duration, const char* text);
 void Overlay_DisplayText_Seconds(int seconds, const char* text);
 GetItemEntry ItemTable_Retrieve(int16_t getItemID);
 GetItemEntry ItemTable_RetrieveEntry(s16 modIndex, s16 getItemID);
-void Entrance_ClearEntranceTrackingData(void);
-void Entrance_InitEntranceTrackingData(void);
 void EntranceTracker_SetCurrentGrottoID(s16 entranceIndex);
 void EntranceTracker_SetLastEntranceOverride(s16 entranceIndex);
 void Gfx_RegisterBlendedTexture(const char* name, u8* mask, u8* replacement);

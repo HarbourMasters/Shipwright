@@ -48,39 +48,39 @@ static const GrottoLoadInfo grottoLoadTable[NUM_GROTTOS] = {
 
 // Information necessary for setting up returning from a grotto
 static const GrottoReturnInfo grottoReturnTable[NUM_GROTTOS] = {
-    {.entranceIndex = ENTR_DESERT_COLOSSUS_0,       .room = 0x00, .angle = 0xA71C, .pos = {.x =    62.5078f, .y =   -32.0f, .z = -1296.2f}},   // Colossus Grotto -> Desert Colossus
-    {.entranceIndex = ENTR_LAKE_HYLIA_0,            .room = 0x00, .angle = 0x0000, .pos = {.x = -3039.34f,   .y = -1033.0f, .z =  6080.74f}},  // LH Grotto -> Lake Hylia
-    {.entranceIndex = ENTR_ZORAS_RIVER_0,           .room = 0x00, .angle = 0x0000, .pos = {.x = -1630.05f,   .y =   100.0f, .z =  -132.104f}}, // ZR Storms Grotto -> Zora River
-    {.entranceIndex = ENTR_ZORAS_RIVER_0,           .room = 0x00, .angle = 0xE000, .pos = {.x =   649.507f,  .y =   570.0f, .z =  -346.853f}}, // ZR Fairy Grotto -> Zora River
-    {.entranceIndex = ENTR_ZORAS_RIVER_0,           .room = 0x00, .angle = 0x8000, .pos = {.x =   362.29f,   .y =   570.0f, .z =   111.48f}},  // ZR Open Grotto -> Zora River
-    {.entranceIndex = ENTR_DEATH_MOUNTAIN_CRATER_1, .room = 0x01, .angle = 0x31C7, .pos = {.x = -1666.73f,   .y =   721.0f, .z =  -459.21f}},  // DMC Hammer Grotto -> DMC Lower Local
-    {.entranceIndex = ENTR_DEATH_MOUNTAIN_CRATER_0, .room = 0x01, .angle = 0x238E, .pos = {.x =    63.723f,  .y =  1265.0f, .z =  1791.39f}},  // DMC Upper Grotto -> DMC Upper Local
-    {.entranceIndex = ENTR_GORON_CITY_0,            .room = 0x03, .angle = 0x0000, .pos = {.x =  1104.73f,   .y =   580.0f, .z = -1159.95f}},  // GC Grotto -> GC Grotto Platform
-    {.entranceIndex = ENTR_DEATH_MOUNTAIN_TRAIL_1,  .room = 0x00, .angle = 0x8000, .pos = {.x =  -387.584f,  .y =  1386.0f, .z = -1213.05f}},  // DMT Storms Grotto -> Death Mountain
-    {.entranceIndex = ENTR_DEATH_MOUNTAIN_TRAIL_1,  .room = 0x00, .angle = 0x8000, .pos = {.x =  -691.022f,  .y =  1946.0f, .z =  -312.969f}}, // DMT Cow Grotto -> Death Mountain Summit
-    {.entranceIndex = ENTR_KAKARIKO_VILLAGE_0,      .room = 0x00, .angle = 0x0000, .pos = {.x =   855.238f,  .y =    80.0f, .z =  -234.095f}}, // Kak Open Grotto -> Kak Backyard
-    {.entranceIndex = ENTR_KAKARIKO_VILLAGE_0,      .room = 0x00, .angle = 0x0000, .pos = {.x =  -401.873f,  .y =     0.0f, .z =   402.792f}}, // Kak Redead Grotto -> Kakariko Village
-    {.entranceIndex = ENTR_HYRULE_CASTLE_0,         .room = 0x00, .angle = 0x9555, .pos = {.x =  1009.02f,   .y =  1571.0f, .z =   855.532f}}, // HC Storms Grotto -> Castle Grounds
-    {.entranceIndex = ENTR_HYRULE_FIELD_6,          .room = 0x00, .angle = 0x1555, .pos = {.x = -4949.58f,   .y =  -300.0f, .z =  2837.59f}},  // HF Tektite Grotto -> Hyrule Field
-    {.entranceIndex = ENTR_HYRULE_FIELD_6,          .room = 0x00, .angle = 0xC000, .pos = {.x =  2050.6f,    .y =    20.0f, .z =  -160.397f}}, // HF Near Kak Grotto -> Hyrule Field
-    {.entranceIndex = ENTR_HYRULE_FIELD_6,          .room = 0x00, .angle = 0x0000, .pos = {.x = -4447.66f,   .y =  -300.0f, .z =  -393.191f}}, // HF Fairy Grotto -> Hyrule Field
-    {.entranceIndex = ENTR_HYRULE_FIELD_6,          .room = 0x00, .angle = 0xE000, .pos = {.x = -1446.56f,   .y =     0.0f, .z =   830.775f}}, // HF Near Market Grotto -> Hyrule Field
-    {.entranceIndex = ENTR_HYRULE_FIELD_6,          .room = 0x00, .angle = 0x0000, .pos = {.x = -7874.07f,   .y =  -300.0f, .z =  6921.31f}},  // HF Cow Grotto -> Hyrule Field
-    {.entranceIndex = ENTR_HYRULE_FIELD_6,          .room = 0x00, .angle = 0xEAAB, .pos = {.x = -4989.13f,   .y =  -700.0f, .z = 13821.1f}},   // HF Inside Fence Grotto -> Hyrule Field
-    {.entranceIndex = ENTR_HYRULE_FIELD_6,          .room = 0x00, .angle = 0x8000, .pos = {.x = -4032.61f,   .y =  -700.0f, .z = 13831.5f}},   // HF Open Grotto -> Hyrule Field
-    {.entranceIndex = ENTR_HYRULE_FIELD_6,          .room = 0x00, .angle = 0x9555, .pos = {.x =  -288.313f,  .y =  -500.0f, .z = 12320.2f}},   // HF Southeast Grotto -> Hyrule Field
-    {.entranceIndex = ENTR_LON_LON_RANCH_0,         .room = 0x00, .angle = 0xAAAB, .pos = {.x =  1775.92f,   .y =     0.0f, .z =  1486.82f}},  // LLR Grotto -> Lon Lon Ranch
-    {.entranceIndex = ENTR_SACRED_FOREST_MEADOW_0,  .room = 0x00, .angle = 0x8000, .pos = {.x =  -189.861f,  .y =     0.0f, .z =  1898.09f}},  // SFM Wolfos Grotto -> SFM Entryway
-    {.entranceIndex = ENTR_SACRED_FOREST_MEADOW_0,  .room = 0x00, .angle = 0xAAAB, .pos = {.x =   314.853f,  .y =   480.0f, .z = -2300.39f}},  // SFM Storms Grotto -> Sacred Forest Meadow
-    {.entranceIndex = ENTR_SACRED_FOREST_MEADOW_0,  .room = 0x00, .angle = 0x0000, .pos = {.x =    55.034f,  .y =     0.0f, .z =   250.595f}}, // SFM Fairy Grotto -> Sacred Forest Meadow
-    {.entranceIndex = ENTR_LOST_WOODS_1,            .room = 0x08, .angle = 0x2000, .pos = {.x =   691.994f,  .y =     0.0f, .z = -2502.2f}},   // LW Scrubs Grotto -> LW Beyond Mido
-    {.entranceIndex = ENTR_LOST_WOODS_0,            .room = 0x02, .angle = 0xE000, .pos = {.x =   905.755f,  .y =     0.0f, .z =  -901.43f}},  // LW Near Shortcuts Grotto -> Lost Woods
-    {.entranceIndex = ENTR_KOKIRI_FOREST_6,         .room = 0x00, .angle = 0x4000, .pos = {.x =  -507.065f,  .y =   380.0f, .z = -1220.43f}},  // KF Storms Grotto -> Kokiri Forest
-    {.entranceIndex = ENTR_ZORAS_DOMAIN_0,          .room = 0x01, .angle = 0xD555, .pos = {.x =  -855.68f,   .y =    14.0f, .z =  -474.422f}}, // ZD Storms Grotto -> Zoras Domain
-    {.entranceIndex = ENTR_GERUDOS_FORTRESS_0,      .room = 0x00, .angle = 0x4000, .pos = {.x =   380.521f,  .y =   333.0f, .z = -1560.74f}},  // GF Storms Grotto -> Gerudo Fortress
-    {.entranceIndex = ENTR_GERUDO_VALLEY_3,         .room = 0x00, .angle = 0x9555, .pos = {.x = -1326.34f,   .y =    15.0f, .z =  -983.994f}}, // GV Storms Grotto -> GV Fortress Side
-    {.entranceIndex = ENTR_GERUDO_VALLEY_0,         .room = 0x00, .angle = 0x8000, .pos = {.x =   291.513f,  .y =  -555.0f, .z =  1478.39f}},  // GV Octorok Grotto -> GV Grotto Ledge
-    {.entranceIndex = ENTR_LOST_WOODS_1,            .room = 0x06, .angle = 0x4000, .pos = {.x =   109.281f,  .y =   -20.0f, .z = -1601.42f}},  // Deku Theater -> LW Beyond Mido
+    {.entranceIndex = ENTR_DESERT_COLOSSUS_EAST_EXIT,       .room = 0x00, .angle = 0xA71C, .pos = {.x =    62.5078f, .y =   -32.0f, .z = -1296.2f}},   // Colossus Grotto -> Desert Colossus
+    {.entranceIndex = ENTR_LAKE_HYLIA_NORTH_EXIT,            .room = 0x00, .angle = 0x0000, .pos = {.x = -3039.34f,   .y = -1033.0f, .z =  6080.74f}},  // LH Grotto -> Lake Hylia
+    {.entranceIndex = ENTR_ZORAS_RIVER_WEST_EXIT,           .room = 0x00, .angle = 0x0000, .pos = {.x = -1630.05f,   .y =   100.0f, .z =  -132.104f}}, // ZR Storms Grotto -> Zora River
+    {.entranceIndex = ENTR_ZORAS_RIVER_WEST_EXIT,           .room = 0x00, .angle = 0xE000, .pos = {.x =   649.507f,  .y =   570.0f, .z =  -346.853f}}, // ZR Fairy Grotto -> Zora River
+    {.entranceIndex = ENTR_ZORAS_RIVER_WEST_EXIT,           .room = 0x00, .angle = 0x8000, .pos = {.x =   362.29f,   .y =   570.0f, .z =   111.48f}},  // ZR Open Grotto -> Zora River
+    {.entranceIndex = ENTR_DEATH_MOUNTAIN_CRATER_GC_EXIT, .room = 0x01, .angle = 0x31C7, .pos = {.x = -1666.73f,   .y =   721.0f, .z =  -459.21f}},  // DMC Hammer Grotto -> DMC Lower Local
+    {.entranceIndex = ENTR_DEATH_MOUNTAIN_CRATER_UPPER_EXIT, .room = 0x01, .angle = 0x238E, .pos = {.x =    63.723f,  .y =  1265.0f, .z =  1791.39f}},  // DMC Upper Grotto -> DMC Upper Local
+    {.entranceIndex = ENTR_GORON_CITY_UPPER_EXIT,            .room = 0x03, .angle = 0x0000, .pos = {.x =  1104.73f,   .y =   580.0f, .z = -1159.95f}},  // GC Grotto -> GC Grotto Platform
+    {.entranceIndex = ENTR_DEATH_MOUNTAIN_TRAIL_GC_EXIT,  .room = 0x00, .angle = 0x8000, .pos = {.x =  -387.584f,  .y =  1386.0f, .z = -1213.05f}},  // DMT Storms Grotto -> Death Mountain
+    {.entranceIndex = ENTR_DEATH_MOUNTAIN_TRAIL_GC_EXIT,  .room = 0x00, .angle = 0x8000, .pos = {.x =  -691.022f,  .y =  1946.0f, .z =  -312.969f}}, // DMT Cow Grotto -> Death Mountain Summit
+    {.entranceIndex = ENTR_KAKARIKO_VILLAGE_FRONT_GATE,      .room = 0x00, .angle = 0x0000, .pos = {.x =   855.238f,  .y =    80.0f, .z =  -234.095f}}, // Kak Open Grotto -> Kak Backyard
+    {.entranceIndex = ENTR_KAKARIKO_VILLAGE_FRONT_GATE,      .room = 0x00, .angle = 0x0000, .pos = {.x =  -401.873f,  .y =     0.0f, .z =   402.792f}}, // Kak Redead Grotto -> Kakariko Village
+    {.entranceIndex = ENTR_CASTLE_GROUNDS_SOUTH_EXIT,         .room = 0x00, .angle = 0x9555, .pos = {.x =  1009.02f,   .y =  1571.0f, .z =   855.532f}}, // HC Storms Grotto -> Castle Grounds
+    {.entranceIndex = ENTR_HYRULE_FIELD_CENTER_EXIT,          .room = 0x00, .angle = 0x1555, .pos = {.x = -4949.58f,   .y =  -300.0f, .z =  2837.59f}},  // HF Tektite Grotto -> Hyrule Field
+    {.entranceIndex = ENTR_HYRULE_FIELD_CENTER_EXIT,          .room = 0x00, .angle = 0xC000, .pos = {.x =  2050.6f,    .y =    20.0f, .z =  -160.397f}}, // HF Near Kak Grotto -> Hyrule Field
+    {.entranceIndex = ENTR_HYRULE_FIELD_CENTER_EXIT,          .room = 0x00, .angle = 0x0000, .pos = {.x = -4447.66f,   .y =  -300.0f, .z =  -393.191f}}, // HF Fairy Grotto -> Hyrule Field
+    {.entranceIndex = ENTR_HYRULE_FIELD_CENTER_EXIT,          .room = 0x00, .angle = 0xE000, .pos = {.x = -1446.56f,   .y =     0.0f, .z =   830.775f}}, // HF Near Market Grotto -> Hyrule Field
+    {.entranceIndex = ENTR_HYRULE_FIELD_CENTER_EXIT,          .room = 0x00, .angle = 0x0000, .pos = {.x = -7874.07f,   .y =  -300.0f, .z =  6921.31f}},  // HF Cow Grotto -> Hyrule Field
+    {.entranceIndex = ENTR_HYRULE_FIELD_CENTER_EXIT,          .room = 0x00, .angle = 0xEAAB, .pos = {.x = -4989.13f,   .y =  -700.0f, .z = 13821.1f}},   // HF Inside Fence Grotto -> Hyrule Field
+    {.entranceIndex = ENTR_HYRULE_FIELD_CENTER_EXIT,          .room = 0x00, .angle = 0x8000, .pos = {.x = -4032.61f,   .y =  -700.0f, .z = 13831.5f}},   // HF Open Grotto -> Hyrule Field
+    {.entranceIndex = ENTR_HYRULE_FIELD_CENTER_EXIT,          .room = 0x00, .angle = 0x9555, .pos = {.x =  -288.313f,  .y =  -500.0f, .z = 12320.2f}},   // HF Southeast Grotto -> Hyrule Field
+    {.entranceIndex = ENTR_LON_LON_RANCH_ENTRANCE,         .room = 0x00, .angle = 0xAAAB, .pos = {.x =  1775.92f,   .y =     0.0f, .z =  1486.82f}},  // LLR Grotto -> Lon Lon Ranch
+    {.entranceIndex = ENTR_SACRED_FOREST_MEADOW_SOUTH_EXIT,  .room = 0x00, .angle = 0x8000, .pos = {.x =  -189.861f,  .y =     0.0f, .z =  1898.09f}},  // SFM Wolfos Grotto -> SFM Entryway
+    {.entranceIndex = ENTR_SACRED_FOREST_MEADOW_SOUTH_EXIT,  .room = 0x00, .angle = 0xAAAB, .pos = {.x =   314.853f,  .y =   480.0f, .z = -2300.39f}},  // SFM Storms Grotto -> Sacred Forest Meadow
+    {.entranceIndex = ENTR_SACRED_FOREST_MEADOW_SOUTH_EXIT,  .room = 0x00, .angle = 0x0000, .pos = {.x =    55.034f,  .y =     0.0f, .z =   250.595f}}, // SFM Fairy Grotto -> Sacred Forest Meadow
+    {.entranceIndex = ENTR_LOST_WOODS_NORTH_EXIT,            .room = 0x08, .angle = 0x2000, .pos = {.x =   691.994f,  .y =     0.0f, .z = -2502.2f}},   // LW Scrubs Grotto -> LW Beyond Mido
+    {.entranceIndex = ENTR_LOST_WOODS_SOUTH_EXIT,            .room = 0x02, .angle = 0xE000, .pos = {.x =   905.755f,  .y =     0.0f, .z =  -901.43f}},  // LW Near Shortcuts Grotto -> Lost Woods
+    {.entranceIndex = ENTR_KOKIRI_FOREST_UPPER_EXIT,         .room = 0x00, .angle = 0x4000, .pos = {.x =  -507.065f,  .y =   380.0f, .z = -1220.43f}},  // KF Storms Grotto -> Kokiri Forest
+    {.entranceIndex = ENTR_ZORAS_DOMAIN_ENTRANCE,          .room = 0x01, .angle = 0xD555, .pos = {.x =  -855.68f,   .y =    14.0f, .z =  -474.422f}}, // ZD Storms Grotto -> Zoras Domain
+    {.entranceIndex = ENTR_GERUDOS_FORTRESS_EAST_EXIT,      .room = 0x00, .angle = 0x4000, .pos = {.x =   380.521f,  .y =   333.0f, .z = -1560.74f}},  // GF Storms Grotto -> Gerudo Fortress
+    {.entranceIndex = ENTR_GERUDO_VALLEY_WEST_EXIT,         .room = 0x00, .angle = 0x9555, .pos = {.x = -1326.34f,   .y =    15.0f, .z =  -983.994f}}, // GV Storms Grotto -> GV Fortress Side
+    {.entranceIndex = ENTR_GERUDO_VALLEY_EAST_EXIT,         .room = 0x00, .angle = 0x8000, .pos = {.x =   291.513f,  .y =  -555.0f, .z =  1478.39f}},  // GV Octorok Grotto -> GV Grotto Ledge
+    {.entranceIndex = ENTR_LOST_WOODS_NORTH_EXIT,            .room = 0x06, .angle = 0x4000, .pos = {.x =   109.281f,  .y =   -20.0f, .z = -1601.42f}},  // Deku Theater -> LW Beyond Mido
 };
 
 static s16 grottoExitList[NUM_GROTTOS] = {0};
@@ -96,9 +96,13 @@ static u8 overridingNextEntrance = false;
 // For the grotto exit list, the entrance index is 0x0800 + the grotto id
 void Grotto_InitExitAndLoadLists(void) {
     for (u8 i = 0; i < NUM_GROTTOS; i++) {
-        grottoLoadList[i] = ENTRANCE_RANDO_GROTTO_LOAD_START + i;
-        grottoExitList[i] = ENTRANCE_RANDO_GROTTO_EXIT_START + i;
+        grottoLoadList[i] = ENTRANCE_GROTTO_LOAD_START + i;
+        grottoExitList[i] = ENTRANCE_GROTTO_EXIT_START + i;
     }
+
+    grottoId = 0xFF;
+    lastEntranceType = NOT_GROTTO;
+    overridingNextEntrance = false;
 }
 
 void Grotto_SetExitOverride(s16 originalIndex, s16 overrideIndex) {
@@ -146,7 +150,7 @@ s16 Grotto_GetEntranceValueHandlingGrottoRando(s16 nextEntranceIndex) {
     s8 tempGrottoId = nextEntranceIndex & 0x00FF;
 
     // Grotto Returns
-    if (nextEntranceIndex >= ENTRANCE_RANDO_GROTTO_EXIT_START && nextEntranceIndex < ENTRANCE_RANDO_GROTTO_EXIT_START + NUM_GROTTOS) {
+    if (nextEntranceIndex >= ENTRANCE_GROTTO_EXIT_START && nextEntranceIndex < ENTRANCE_GROTTO_EXIT_START + NUM_GROTTOS) {
         GrottoReturnInfo grotto = grottoReturnTable[tempGrottoId];
 
         // When the nextEntranceIndex is determined by a dynamic exit,
@@ -161,7 +165,7 @@ s16 Grotto_GetEntranceValueHandlingGrottoRando(s16 nextEntranceIndex) {
             nextEntranceIndex = ENTR_RETURN_GROTTO;
         }
     // Grotto Loads
-    } else if (nextEntranceIndex >= ENTRANCE_RANDO_GROTTO_LOAD_START && nextEntranceIndex < ENTRANCE_RANDO_GROTTO_EXIT_START) {
+    } else if (nextEntranceIndex >= ENTRANCE_GROTTO_LOAD_START && nextEntranceIndex < ENTRANCE_GROTTO_EXIT_START) {
         GrottoLoadInfo grotto = grottoLoadTable[tempGrottoId];
         nextEntranceIndex = grotto.entranceIndex;
     }
@@ -181,8 +185,8 @@ s16 Grotto_OverrideSpecialEntrance(s16 nextEntranceIndex) {
     // If Link hits a grotto exit, load the entrance index from the grotto exit list
     // based on the current grotto ID
     if (nextEntranceIndex == ENTR_RETURN_GROTTO) {
-        Entrance_SetEntranceDiscovered(ENTRANCE_RANDO_GROTTO_EXIT_START + grottoId, false);
-        EntranceTracker_SetLastEntranceOverride(ENTRANCE_RANDO_GROTTO_EXIT_START + grottoId);
+        Entrance_SetEntranceDiscovered(ENTRANCE_GROTTO_EXIT_START + grottoId, false);
+        EntranceTracker_SetLastEntranceOverride(ENTRANCE_GROTTO_EXIT_START + grottoId);
         nextEntranceIndex = grottoExitList[grottoId];
     }
 
@@ -190,7 +194,7 @@ s16 Grotto_OverrideSpecialEntrance(s16 nextEntranceIndex) {
     grottoId = nextEntranceIndex & 0x00FF;
 
     // Grotto Returns
-    if (nextEntranceIndex >= ENTRANCE_RANDO_GROTTO_EXIT_START && nextEntranceIndex < ENTRANCE_RANDO_GROTTO_EXIT_START + NUM_GROTTOS) {
+    if (nextEntranceIndex >= ENTRANCE_GROTTO_EXIT_START && nextEntranceIndex < ENTRANCE_GROTTO_EXIT_START + NUM_GROTTOS) {
 
         GrottoReturnInfo grotto = grottoReturnTable[grottoId];
         Grotto_SetupReturnInfo(grotto, RESPAWN_MODE_RETURN);
@@ -215,7 +219,7 @@ s16 Grotto_OverrideSpecialEntrance(s16 nextEntranceIndex) {
 
         lastEntranceType = GROTTO_RETURN;
     // Grotto Loads
-    } else if (nextEntranceIndex >= ENTRANCE_RANDO_GROTTO_LOAD_START && nextEntranceIndex < ENTRANCE_RANDO_GROTTO_EXIT_START) {
+    } else if (nextEntranceIndex >= ENTRANCE_GROTTO_LOAD_START && nextEntranceIndex < ENTRANCE_GROTTO_EXIT_START) {
 
         // Set the respawn data to load the correct grotto
         GrottoLoadInfo grotto = grottoLoadTable[grottoId];
@@ -252,8 +256,8 @@ void Grotto_OverrideActorEntrance(Actor* thisx) {
 
         if (grottoContent == grottoLoadTable[index].content && gPlayState->sceneNum == grottoLoadTable[index].scene) {
             // Find the override for the matching index from the grotto Load List
-            Entrance_SetEntranceDiscovered(ENTRANCE_RANDO_GROTTO_LOAD_START + index, false);
-            EntranceTracker_SetLastEntranceOverride(ENTRANCE_RANDO_GROTTO_LOAD_START + index);
+            Entrance_SetEntranceDiscovered(ENTRANCE_GROTTO_LOAD_START + index, false);
+            EntranceTracker_SetLastEntranceOverride(ENTRANCE_GROTTO_LOAD_START + index);
             index = grottoLoadList[index];
 
             // Run the index through the special entrances override check
@@ -326,9 +330,9 @@ void Grotto_SanitizeEntranceType(void) {
 s16 Grotto_GetRenamedGrottoIndexFromOriginal(s8 content, s8 scene) {
     for (s16 index = 0; index < NUM_GROTTOS; index++) {
         if (content == grottoLoadTable[index].content && scene == grottoLoadTable[index].scene) {
-            return ENTRANCE_RANDO_GROTTO_LOAD_START | index;
+            return ENTRANCE_GROTTO_LOAD_START | index;
         }
     }
 
-    return ENTRANCE_RANDO_GROTTO_LOAD_START;
+    return ENTRANCE_GROTTO_LOAD_START;
 }

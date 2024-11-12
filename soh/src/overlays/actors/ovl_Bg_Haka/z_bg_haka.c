@@ -115,7 +115,7 @@ void func_8087B938(BgHaka* this, PlayState* play) {
         player->stateFlags2 &= ~PLAYER_STATE2_MOVING_DYNAPOLY;
 
         if (this->dyna.actor.params == 1) {
-            func_80078884(NA_SE_SY_CORRECT_CHIME);
+            Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
         } else if (!IS_DAY && play->sceneNum == SCENE_GRAVEYARD) {
             Actor_Spawn(&play->actorCtx, play, ACTOR_EN_POH, this->dyna.actor.home.pos.x,
                         this->dyna.actor.home.pos.y, this->dyna.actor.home.pos.z, 0, this->dyna.actor.shape.rot.y, 0,
@@ -124,7 +124,7 @@ void func_8087B938(BgHaka* this, PlayState* play) {
 
         // un tss un tss
         if (play->sceneNum == SCENE_GRAVEYARD && allPulled) {
-            func_80078884(NA_SE_SY_CORRECT_CHIME);
+            Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
             func_800F5ACC(NA_BGM_STAFF_2);
             Actor* actor2 = play->actorCtx.actorLists[ACTORCAT_BG].head;
 
@@ -196,10 +196,10 @@ void BgHaka_Draw(Actor* thisx, PlayState* play) {
         play->envCtx.adjLight1Color[0] = newColor.r;
         play->envCtx.adjLight1Color[1] = newColor.g;
         play->envCtx.adjLight1Color[2] = newColor.b;
-        D_801614B0.r = newColor.r;
-        D_801614B0.g = newColor.g;
-        D_801614B0.b = newColor.b;
-        D_801614B0.a = 255;
+        gVisMonoColor.r = newColor.r;
+        gVisMonoColor.g = newColor.g;
+        gVisMonoColor.b = newColor.b;
+        gVisMonoColor.a = 255;
         gDPSetGrayscaleColor(POLY_OPA_DISP++, newColor.r, newColor.g, newColor.b, 255);
         gSPGrayscale(POLY_OPA_DISP++, true);
     }

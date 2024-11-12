@@ -963,9 +963,9 @@ void func_80ACC00C(EnOwl* this, PlayState* play) {
                     osSyncPrintf(VT_RST);
                     if (IS_RANDO) {
                         if (Randomizer_GetSettingValue(RSK_SHUFFLE_OWL_DROPS)) {
-                            play->nextEntranceIndex = Entrance_OverrideNextIndex(ENTR_HYRULE_FIELD_9);
+                            play->nextEntranceIndex = Entrance_OverrideNextIndex(ENTR_HYRULE_FIELD_OWL_DROP);
                         } else {
-                            play->nextEntranceIndex = ENTR_HYRULE_FIELD_9;
+                            play->nextEntranceIndex = ENTR_HYRULE_FIELD_OWL_DROP;
                         }
                         play->transitionTrigger = TRANS_TRIGGER_START;
                         play->transitionType = TRANS_TYPE_FADE_BLACK;
@@ -978,9 +978,9 @@ void func_80ACC00C(EnOwl* this, PlayState* play) {
                 case 9:
                     if (IS_RANDO) {
                         if (Randomizer_GetSettingValue(RSK_SHUFFLE_OWL_DROPS)) {
-                            play->nextEntranceIndex = Entrance_OverrideNextIndex(ENTR_KAKARIKO_VILLAGE_14);
+                            play->nextEntranceIndex = Entrance_OverrideNextIndex(ENTR_KAKARIKO_VILLAGE_OWL_DROP);
                         } else {
-                            play->nextEntranceIndex = ENTR_KAKARIKO_VILLAGE_14;
+                            play->nextEntranceIndex = ENTR_KAKARIKO_VILLAGE_OWL_DROP;
                         }
                         play->transitionTrigger = TRANS_TRIGGER_START;
                         play->transitionType = TRANS_TYPE_FADE_BLACK;
@@ -994,7 +994,7 @@ void func_80ACC00C(EnOwl* this, PlayState* play) {
                     break;
             }
 
-            func_80078884(NA_SE_SY_TRE_BOX_APPEAR);
+            Sfx_PlaySfxCentered(NA_SE_SY_TRE_BOX_APPEAR);
             gSaveContext.cutsceneTrigger = 1;
             func_800F44EC(0x14, 0xA);
             this->actionFunc = EnOwl_WaitDefault;

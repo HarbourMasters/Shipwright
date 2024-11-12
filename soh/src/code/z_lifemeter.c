@@ -648,7 +648,7 @@ void HealthMeter_HandleCriticalAlarm(PlayState* play) {
             interfaceCtx->unk_22C = 0;
             if (CVarGetInteger(CVAR_ENHANCEMENT("LowHpAlarm"), 0) == 0 && !Player_InCsMode(play) && (play->pauseCtx.state == 0) &&
             (play->pauseCtx.debugState == 0) && HealthMeter_IsCritical() && !Play_InCsMode(play)) {
-                func_80078884(NA_SE_SY_HITPOINT_ALARM);
+                Sfx_PlaySfxCentered(NA_SE_SY_HITPOINT_ALARM);
             }
         }
     } else {

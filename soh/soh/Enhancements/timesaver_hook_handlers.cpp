@@ -14,6 +14,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Owl/z_en_owl.h"
 #include "src/overlays/actors/ovl_En_Ko/z_en_ko.h"
 #include "src/overlays/actors/ovl_En_Ma1/z_en_ma1.h"
+#include "src/overlays/actors/ovl_En_Ru2/z_en_ru2.h"
 #include "src/overlays/actors/ovl_En_Zl4/z_en_zl4.h"
 #include "src/overlays/actors/ovl_En_Box/z_en_box.h"
 #include "src/overlays/actors/ovl_Demo_Im/z_demo_im.h"
@@ -22,6 +23,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Tk/z_en_tk.h"
 #include "src/overlays/actors/ovl_En_Fu/z_en_fu.h"
 #include "src/overlays/actors/ovl_Bg_Spot02_Objects/z_bg_spot02_objects.h"
+#include "src/overlays/actors/ovl_Bg_Spot03_Taki/z_bg_spot03_taki.h"
 #include "src/overlays/actors/ovl_Bg_Hidan_Kousi/z_bg_hidan_kousi.h"
 #include "src/overlays/actors/ovl_Bg_Dy_Yoseizo/z_bg_dy_yoseizo.h"
 #include "src/overlays/actors/ovl_En_Dnt_Demo/z_en_dnt_demo.h"
@@ -32,6 +34,8 @@ extern "C" {
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 extern int32_t D_8011D3AC;
+
+extern void func_80AF36EC(EnRu2* enRu2, PlayState* play);
 }
 
 #define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).GetSelectedOptionIndex()
@@ -39,7 +43,7 @@ extern int32_t D_8011D3AC;
 void EnMa1_EndTeachSong(EnMa1* enMa1, PlayState* play) {
     if (Message_GetState(&gPlayState->msgCtx) == TEXT_STATE_CLOSING) {
         Flags_SetRandomizerInf(RAND_INF_LEARNED_EPONA_SONG);
-        func_80078884(NA_SE_SY_CORRECT_CHIME);
+        Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
         enMa1->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
         play->msgCtx.ocarinaMode = OCARINA_MODE_04;
         enMa1->actionFunc = func_80AA0D88;
@@ -51,7 +55,7 @@ void EnMa1_EndTeachSong(EnMa1* enMa1, PlayState* play) {
 
 void EnFu_EndTeachSong(EnFu* enFu, PlayState* play) {
     if (Message_GetState(&gPlayState->msgCtx) == TEXT_STATE_CLOSING) {
-        func_80078884(NA_SE_SY_CORRECT_CHIME);
+        Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
         enFu->actionFunc = EnFu_WaitAdult;
         enFu->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
 
@@ -121,7 +125,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
         case VB_PLAY_TRANSITION_CS: {
             if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.LearnSong"), IS_RANDO) || IS_RANDO) {
                 // Song of Time
-                if (gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_0 && gSaveContext.cutsceneIndex == 0xFFF7) {
+                if (gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_ENTRANCE && gSaveContext.cutsceneIndex == 0xFFF7) {
                     gSaveContext.entranceIndex = ENTR_HYRULE_FIELD_16;
                     gSaveContext.cutsceneIndex = 0;
                     gSaveContext.nextTransitionType = 3;
@@ -129,7 +133,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                 }
 
                 // Requiem of Spirit
-                if ((gSaveContext.entranceIndex == ENTR_DESERT_COLOSSUS_1) && !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_REQUIEM_OF_SPIRIT)) {
+                if ((gSaveContext.entranceIndex == ENTR_DESERT_COLOSSUS_OUTSIDE_TEMPLE) && !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_REQUIEM_OF_SPIRIT)) {
                     Flags_SetEventChkInf(EVENTCHKINF_LEARNED_REQUIEM_OF_SPIRIT);
                     // Normally happens in the cutscene
                     gSaveContext.dayTime = gSaveContext.skyboxTime = 0xAC60;
@@ -141,7 +145,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                 
                 u8 meetsBurningKakRequirements = 
                     LINK_IS_ADULT &&
-                    gSaveContext.entranceIndex == ENTR_KAKARIKO_VILLAGE_0 &&
+                    gSaveContext.entranceIndex == ENTR_KAKARIKO_VILLAGE_FRONT_GATE &&
                     Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP) &&
                     Flags_GetEventChkInf(EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP) &&
                     Flags_GetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP) &&
@@ -200,11 +204,17 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
         case VB_PLAY_ONEPOINT_CS: {
             if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint"), IS_RANDO)) {
                 s16* csId = va_arg(args, s16*);
+                BgSpot03Taki* taki = NULL;
                 switch (*csId) {
                     case 4180:
                     case 4100:
                         *should = false;
                         RateLimitedSuccessChime();
+                        taki = (BgSpot03Taki*)Actor_FindNearby(gPlayState, &GET_PLAYER(gPlayState)->actor,
+                                                               ACTOR_BG_SPOT03_TAKI, ACTORCAT_BG, 999.0f);
+                        if (taki != NULL) {
+                            func_8003EBF8(gPlayState, &gPlayState->colCtx.dyna, taki->dyna.bgId);
+                        }
                         break;
                     default:
                         SPDLOG_INFO("VB_PLAY_ONEPOINT_CS {}", *csId);
@@ -300,6 +310,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                     case ACTOR_BG_SPOT05_SOKO:
                     case ACTOR_BG_SPOT18_BASKET:
                     case ACTOR_BG_HIDAN_CURTAIN:
+                    case ACTOR_BG_MORI_HINERI:
                         *should = false;
                         RateLimitedSuccessChime();
                         break;
@@ -326,8 +337,9 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
         case VB_NAVI_TALK: {
             if (ForcedDialogIsDisabled(FORCED_DIALOG_SKIP_NAVI)) {
                 ElfMsg* naviTalk = va_arg(args, ElfMsg*);
-                if (((naviTalk->actor.params >> 8) & 0x3F) != 0x3F) {
-                    Flags_SetSwitch(gPlayState, (naviTalk->actor.params >> 8) & 0x3F);
+                int32_t paramsHighByte = naviTalk->actor.params >> 8;
+                if ((paramsHighByte & 0x80) == 0 && (paramsHighByte & 0x3F) != 0x3F) {
+                    Flags_SetSwitch(gPlayState, paramsHighByte & 0x3F);
                     Actor_Kill(&naviTalk->actor);
                     *should = false;
                 }
@@ -419,7 +431,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                         player->stateFlags1 |= PLAYER_STATE1_GETTING_ITEM;
 
                         if (Animation_OnFrame(&demoIm->skelAnime, 25.0f)) {
-                            Audio_PlaySoundGeneral(NA_SE_IT_DEKU, &demoIm->actor.projectedPos, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                            Audio_PlaySoundGeneral(NA_SE_IT_DEKU, &demoIm->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                             GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(demoImUpdateHook);
                             GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(demoImKillHook);
                             demoImUpdateHook = 0;
@@ -428,7 +440,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                             Player* player = GET_PLAYER(gPlayState);
                             // SOH [Randomizer] In entrance rando have impa bring link back to the front of castle grounds
                             if (IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {
-                                gPlayState->nextEntranceIndex = ENTR_HYRULE_CASTLE_0;
+                                gPlayState->nextEntranceIndex = ENTR_CASTLE_GROUNDS_SOUTH_EXIT;
                             } else {
                                 gPlayState->nextEntranceIndex = ENTR_HYRULE_FIELD_17;
                             }
@@ -498,7 +510,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
             if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO)) {
                 *should = false;
                 Flags_SetEnv(gPlayState, 2);
-                func_80078884(NA_SE_SY_CORRECT_CHIME);
+                Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
             }
             break;
         }
@@ -519,6 +531,11 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
         case VB_PLAY_SERENADE_OF_WATER_CS:
         case VB_PLAY_PRELUDE_OF_LIGHT_CS:
             if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.LearnSong"), IS_RANDO) || IS_RANDO) {
+                *should = false;
+            }
+            break;
+        case VB_FREEZE_ON_SKULL_TOKEN:
+            if (CVarGetInteger(CVAR_ENHANCEMENT("SkulltulaFreeze"), 0)) {
                 *should = false;
             }
             break;
@@ -598,7 +615,11 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
         case VB_PLAY_RAINBOW_BRIDGE_CS: {
             if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO)) {
                 *should = false;
-                func_800F595C(NA_BGM_BRIDGE_TO_GANONS);
+                if (!Flags_GetEventChkInf(EVENTCHKINF_RAINBOW_BRIDGE_BUILT)) {
+                    func_800F595C(NA_BGM_BRIDGE_TO_GANONS);
+                    // This would have been set 2 frames later, but we're skipping now so the sound doesn't play twice
+                    Flags_SetEventChkInf(EVENTCHKINF_RAINBOW_BRIDGE_BUILT);
+                }
             }
             break;
         }
@@ -607,7 +628,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                 *should = false;
                 BossGanondrof* pg = va_arg(args, BossGanondrof*);
                 Player* player = GET_PLAYER(gPlayState);
-                if (pg != nullptr && pg->work[GND_ACTION_STATE] == DEATH_SPASM) {
+                if (pg->work[GND_ACTION_STATE] == DEATH_SPASM) {
                     // Skip to death scream animation and move ganondrof to middle
                     pg->deathState = DEATH_SCREAM;
                     pg->timers[0] = 50;
@@ -665,6 +686,8 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
             }
             break;
         }
+        default:
+            break;
     }
 
     va_end(args);
@@ -794,6 +817,15 @@ void TimeSaverOnActorInitHandler(void* actorRef) {
             Actor_Kill(actor);
         }
     }
+
+    // Water Temple Ruto cutscene
+    if (actor->id == ACTOR_EN_RU2 && gPlayState->sceneNum == SCENE_WATER_TEMPLE) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO)) {
+            EnRu2* enRu2 = (EnRu2*)actor;
+            func_80AF36EC(enRu2, gPlayState);
+            Actor_Kill(actor);
+        }
+    }
 }
 
 void TimeSaverOnSceneInitHandler(int16_t sceneNum) {
@@ -876,114 +908,136 @@ void TimeSaverOnSceneInitHandler(int16_t sceneNum) {
 static GetItemEntry vanillaQueuedItemEntry = GET_ITEM_NONE;
 
 void TimeSaverOnFlagSetHandler(int16_t flagType, int16_t flag) {
-    if (!CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO)) return;
+    if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO)) {
+        switch (flagType) {
+            case FLAG_EVENT_CHECK_INF:
+                switch (flag) {
+                    case EVENTCHKINF_SPOKE_TO_SARIA_ON_BRIDGE:
+                        vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_FAIRY_OCARINA).GetGIEntry_Copy();
+                        break;
+                    case EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD:
+                        vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_KOKIRI_EMERALD).GetGIEntry_Copy();
+                        break;
+                    case EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP:
+                        vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_GORON_RUBY).GetGIEntry_Copy();
+                        break;
+                    case EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP:
+                        vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_ZORA_SAPPHIRE).GetGIEntry_Copy();
+                        break;
+                    case EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP:
+                        vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_FOREST_MEDALLION).GetGIEntry_Copy();
+                        break;
+                    case EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP:
+                        vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_FIRE_MEDALLION).GetGIEntry_Copy();
+                        break;
+                    case EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP:
+                        vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_WATER_MEDALLION).GetGIEntry_Copy();
+                        break;
+                    case EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS:
+                        vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_LIGHT_ARROWS).GetGIEntry_Copy();
+                        break;
+                    case EVENTCHKINF_TIME_TRAVELED_TO_ADULT:
+                        vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_LIGHT_MEDALLION).GetGIEntry_Copy();
+                        break;
+                }
+                break;
+            case FLAG_RANDOMIZER_INF:
+                switch (flag) {
+                    case RAND_INF_DUNGEONS_DONE_SHADOW_TEMPLE:
+                        vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_SHADOW_MEDALLION).GetGIEntry_Copy();
+                        break;
+                    case RAND_INF_DUNGEONS_DONE_SPIRIT_TEMPLE:
+                        vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_SPIRIT_MEDALLION).GetGIEntry_Copy();
+                        break;
+                }
+                break;
+        }
+    }
 
-    switch (flagType) {
-        case FLAG_EVENT_CHECK_INF:
-            switch (flag) {
-                case EVENTCHKINF_SPOKE_TO_SARIA_ON_BRIDGE:
-                    vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_FAIRY_OCARINA).GetGIEntry_Copy();
-                    break;
-                case EVENTCHKINF_LEARNED_ZELDAS_LULLABY:
-                    vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_ZELDAS_LULLABY).GetGIEntry_Copy();
-                    break;
-                case EVENTCHKINF_LEARNED_MINUET_OF_FOREST:
-                    vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_MINUET_OF_FOREST).GetGIEntry_Copy();
-                    break;
-                case EVENTCHKINF_LEARNED_BOLERO_OF_FIRE:
-                    vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_BOLERO_OF_FIRE).GetGIEntry_Copy();
-                    break;
-                case EVENTCHKINF_LEARNED_SERENADE_OF_WATER:
-                    vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_SERENADE_OF_WATER).GetGIEntry_Copy();
-                    break;
-                case EVENTCHKINF_LEARNED_REQUIEM_OF_SPIRIT:
-                    vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_REQUIEM_OF_SPIRIT).GetGIEntry_Copy();
-                    break;
-                case EVENTCHKINF_BONGO_BONGO_ESCAPED_FROM_WELL:
-                    vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_NOCTURNE_OF_SHADOW).GetGIEntry_Copy();
-                    break;
-                case EVENTCHKINF_LEARNED_PRELUDE_OF_LIGHT:
-                    vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_PRELUDE_OF_LIGHT).GetGIEntry_Copy();
-                    break;
-                case EVENTCHKINF_LEARNED_SARIAS_SONG:
-                    vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_SARIAS_SONG).GetGIEntry_Copy();
-                    break;
-                case EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD:
-                    vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_KOKIRI_EMERALD).GetGIEntry_Copy();
-                    break;
-                case EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP:
-                    vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_GORON_RUBY).GetGIEntry_Copy();
-                    break;
-                case EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP:
-                    vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_ZORA_SAPPHIRE).GetGIEntry_Copy();
-                    break;
-                case EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP:
-                    vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_FOREST_MEDALLION).GetGIEntry_Copy();
-                    break;
-                case EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP:
-                    vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_FIRE_MEDALLION).GetGIEntry_Copy();
-                    break;
-                case EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP:
-                    vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_WATER_MEDALLION).GetGIEntry_Copy();
-                    break;
-                case EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS:
-                    vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_LIGHT_ARROWS).GetGIEntry_Copy();
-                    break;
-                case EVENTCHKINF_TIME_TRAVELED_TO_ADULT:
-                    vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_LIGHT_MEDALLION).GetGIEntry_Copy();
-                    break;
-                case EVENTCHKINF_LEARNED_SONG_OF_TIME:
-                    vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_SONG_OF_TIME).GetGIEntry_Copy();
-                    break;
-                case EVENTCHKINF_LEARNED_SONG_OF_STORMS:
-                    vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_SONG_OF_STORMS).GetGIEntry_Copy();
-                    break;
-                case EVENTCHKINF_LEARNED_SUNS_SONG:
-                    vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_SUNS_SONG).GetGIEntry_Copy();
-                    break;
-            }
-            break;
-        case FLAG_RANDOMIZER_INF:
-            switch (flag) {
-                case RAND_INF_LEARNED_EPONA_SONG:
-                    vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_EPONAS_SONG).GetGIEntry_Copy();
-                    break;
-                case RAND_INF_DUNGEONS_DONE_SHADOW_TEMPLE:
-                    vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_SHADOW_MEDALLION).GetGIEntry_Copy();
-                    break;
-                case RAND_INF_DUNGEONS_DONE_SPIRIT_TEMPLE:
-                    vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_SPIRIT_MEDALLION).GetGIEntry_Copy();
-                    break;
-                case RAND_INF_ZF_GREAT_FAIRY_REWARD:
-                    vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_FARORES_WIND).GetGIEntry_Copy();
-                    break;
-                case RAND_INF_HC_GREAT_FAIRY_REWARD:
-                    vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_DINS_FIRE).GetGIEntry_Copy();
-                    break;
-                case RAND_INF_COLOSSUS_GREAT_FAIRY_REWARD:
-                    vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_NAYRUS_LOVE).GetGIEntry_Copy();
-                    break;
-                case RAND_INF_DMT_GREAT_FAIRY_REWARD:
-                    vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_MAGIC_SINGLE).GetGIEntry_Copy();
-                    break;
-                case RAND_INF_DMC_GREAT_FAIRY_REWARD:
-                    vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_MAGIC_DOUBLE).GetGIEntry_Copy();
-                    break;
-                case RAND_INF_OGC_GREAT_FAIRY_REWARD:
-                    vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_DOUBLE_DEFENSE).GetGIEntry_Copy();
-                    break;
-            }
-            break;
-        case FLAG_ITEM_GET_INF:
-            switch (flag) {
-                case ITEMGETINF_OBTAINED_STICK_UPGRADE_FROM_STAGE:
-                    vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_DEKU_STICK_CAPACITY_30).GetGIEntry_Copy();
-                    break;
-                case ITEMGETINF_OBTAINED_NUT_UPGRADE_FROM_STAGE:
-                    vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_DEKU_NUT_CAPACITY_40).GetGIEntry_Copy();
-                    break;
-            }
-            break;
+    if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO)) {
+        switch (flagType) {
+            case FLAG_RANDOMIZER_INF:
+                switch (flag) {
+                    case RAND_INF_ZF_GREAT_FAIRY_REWARD:
+                        vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_FARORES_WIND).GetGIEntry_Copy();
+                        break;
+                    case RAND_INF_HC_GREAT_FAIRY_REWARD:
+                        vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_DINS_FIRE).GetGIEntry_Copy();
+                        break;
+                    case RAND_INF_COLOSSUS_GREAT_FAIRY_REWARD:
+                        vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_NAYRUS_LOVE).GetGIEntry_Copy();
+                        break;
+                    case RAND_INF_DMT_GREAT_FAIRY_REWARD:
+                        vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_MAGIC_SINGLE).GetGIEntry_Copy();
+                        break;
+                    case RAND_INF_DMC_GREAT_FAIRY_REWARD:
+                        vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_MAGIC_DOUBLE).GetGIEntry_Copy();
+                        break;
+                    case RAND_INF_OGC_GREAT_FAIRY_REWARD:
+                        vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_DOUBLE_DEFENSE).GetGIEntry_Copy();
+                        break;
+                }
+                break;
+            case FLAG_ITEM_GET_INF:
+                switch (flag) {
+                    case ITEMGETINF_OBTAINED_STICK_UPGRADE_FROM_STAGE:
+                        vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_DEKU_STICK_CAPACITY_30).GetGIEntry_Copy();
+                        break;
+                    case ITEMGETINF_OBTAINED_NUT_UPGRADE_FROM_STAGE:
+                        vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_DEKU_NUT_CAPACITY_40).GetGIEntry_Copy();
+                        break;
+                }
+                break;
+        }
+    }
+
+    if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.LearnSong"), IS_RANDO)) {
+        switch (flagType) {
+            case FLAG_EVENT_CHECK_INF:
+                switch (flag) {
+                    case EVENTCHKINF_LEARNED_ZELDAS_LULLABY:
+                        vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_ZELDAS_LULLABY).GetGIEntry_Copy();
+                        break;
+                    case EVENTCHKINF_LEARNED_MINUET_OF_FOREST:
+                        vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_MINUET_OF_FOREST).GetGIEntry_Copy();
+                        break;
+                    case EVENTCHKINF_LEARNED_BOLERO_OF_FIRE:
+                        vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_BOLERO_OF_FIRE).GetGIEntry_Copy();
+                        break;
+                    case EVENTCHKINF_LEARNED_SERENADE_OF_WATER:
+                        vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_SERENADE_OF_WATER).GetGIEntry_Copy();
+                        break;
+                    case EVENTCHKINF_LEARNED_REQUIEM_OF_SPIRIT:
+                        vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_REQUIEM_OF_SPIRIT).GetGIEntry_Copy();
+                        break;
+                    case EVENTCHKINF_BONGO_BONGO_ESCAPED_FROM_WELL:
+                        vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_NOCTURNE_OF_SHADOW).GetGIEntry_Copy();
+                        break;
+                    case EVENTCHKINF_LEARNED_PRELUDE_OF_LIGHT:
+                        vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_PRELUDE_OF_LIGHT).GetGIEntry_Copy();
+                        break;
+                    case EVENTCHKINF_LEARNED_SARIAS_SONG:
+                        vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_SARIAS_SONG).GetGIEntry_Copy();
+                        break;
+                    case EVENTCHKINF_LEARNED_SONG_OF_TIME:
+                        vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_SONG_OF_TIME).GetGIEntry_Copy();
+                        break;
+                    case EVENTCHKINF_LEARNED_SONG_OF_STORMS:
+                        vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_SONG_OF_STORMS).GetGIEntry_Copy();
+                        break;
+                    case EVENTCHKINF_LEARNED_SUNS_SONG:
+                        vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_SUNS_SONG).GetGIEntry_Copy();
+                        break;
+                }
+                break;
+            case FLAG_RANDOMIZER_INF:
+                switch (flag) {
+                    case RAND_INF_LEARNED_EPONA_SONG:
+                        vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_EPONAS_SONG).GetGIEntry_Copy();
+                        break;
+                }
+                break;
+        }
     }
 }
 

@@ -368,7 +368,7 @@ Dungeons::Dungeons() {
                         RC_FIRE_TEMPLE_MQ_BIG_LAVA_ROOM_BLOCKED_DOOR_CHEST,
                         RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_SIDE_ROOM_CHEST,
                         RC_FIRE_TEMPLE_MQ_FREESTANDING_KEY,
-                        RC_FIRE_TEMPLE_MQ_GS_ABOVE_FIRE_WALL_MAZE,
+                        RC_FIRE_TEMPLE_MQ_GS_ABOVE_FIRE_MAZE,
                         RC_FIRE_TEMPLE_MQ_GS_FIRE_WALL_MAZE_CENTER,
                         RC_FIRE_TEMPLE_MQ_GS_BIG_LAVA_ROOM_OPEN_DOOR,
                         RC_FIRE_TEMPLE_MQ_GS_FIRE_WALL_MAZE_SIDE_ROOM,
