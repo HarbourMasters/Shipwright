@@ -1394,7 +1394,7 @@ void DrawSillyTab() {
     Reset_Option_Single("Reset##BunnyHood_EarLength", CVAR_COSMETIC("BunnyHood.EarLength"));
     UIWidgets::EnhancementSliderFloat("Bunny Hood Spread: %f", "##BunnyHood_EarSpread", CVAR_COSMETIC("BunnyHood.EarSpread"), -300.0f, 500.0f, "", 0.0f, false);
     Reset_Option_Single("Reset##BunnyHood_EarSpread", CVAR_COSMETIC("BunnyHood.EarSpread"));
-    UIWidgets::EnhancementSliderFloat("Goron Neck Length: %f", "##Goron_NeckLength", CVAR_COSMETIC("Goron.NeckLength"), 0.0f, 1000.0f, "", 0.0f, false);
+    UIWidgets::EnhancementSliderFloat("Goron Neck Length: %f", "##Goron_NeckLength", CVAR_COSMETIC("Goron.NeckLength"), 0.0f, 5000.0f, "", 0.0f, false);
     Reset_Option_Single("Reset##Goron_NeckLength", CVAR_COSMETIC("Goron.NeckLength"));
     UIWidgets::EnhancementCheckbox("Unfix Goron Spin", CVAR_COSMETIC("UnfixGoronSpin"));
     UIWidgets::EnhancementSliderFloat("Fairies Size: %f", "##Fairies_Size", CVAR_COSMETIC("Fairies.Size"), 0.25f, 5.0f, "", 1.0f, false);
