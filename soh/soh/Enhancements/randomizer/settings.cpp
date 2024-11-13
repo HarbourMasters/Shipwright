@@ -1773,22 +1773,67 @@ void Settings::UpdateOptionProperties() {
         }
     }
 
-    // Show mixed entrance pool options if mixed entrance pools are enabled at all.
-    if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("MixedEntrances"), RO_GENERIC_OFF)) {
-        mOptions[RSK_MIXED_ENTRANCE_POOLS].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
-        mOptions[RSK_MIX_DUNGEON_ENTRANCES].Unhide();
-        mOptions[RSK_MIX_BOSS_ENTRANCES].Unhide();
-        mOptions[RSK_MIX_OVERWORLD_ENTRANCES].Unhide();
-        mOptions[RSK_MIX_INTERIOR_ENTRANCES].Unhide();
-        mOptions[RSK_MIX_GROTTO_ENTRANCES].Unhide();
+    int dungeonShuffle = CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleDungeonsEntrances"), RO_DUNGEON_ENTRANCE_SHUFFLE_OFF);
+    int bossShuffle = CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleBossEntrances"), RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF);
+    int overworldShuffle = CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleOverworldEntrances"), RO_GENERIC_OFF);
+    int interiorShuffle = CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleInteriorsEntrances"), RO_GENERIC_OFF);
+    int grottoShuffle = CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleGrottosEntrances"), RO_GENERIC_OFF);
+    
+    // Hide Mixed Entrances option if no applicable entrance shuffles are visible
+    if (!dungeonShuffle && !bossShuffle && !overworldShuffle && !interiorShuffle && !grottoShuffle) {
+        mOptions[RSK_MIXED_ENTRANCE_POOLS].Hide();
     } else {
+        mOptions[RSK_MIXED_ENTRANCE_POOLS].Unhide();
+    }
+    // Show mixed entrance pool options if mixed entrance pools are enabled, but only the ones that aren't off
+    if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("MixedEntrances"), RO_GENERIC_OFF) == RO_GENERIC_OFF || mOptions[RSK_MIXED_ENTRANCE_POOLS].IsHidden()) {
         mOptions[RSK_MIXED_ENTRANCE_POOLS].AddFlag(IMFLAG_SEPARATOR_BOTTOM);
         mOptions[RSK_MIX_DUNGEON_ENTRANCES].Hide();
         mOptions[RSK_MIX_BOSS_ENTRANCES].Hide();
         mOptions[RSK_MIX_OVERWORLD_ENTRANCES].Hide();
         mOptions[RSK_MIX_INTERIOR_ENTRANCES].Hide();
         mOptions[RSK_MIX_GROTTO_ENTRANCES].Hide();
+    } else {
+        mOptions[RSK_MIXED_ENTRANCE_POOLS].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
+        mOptions[RSK_MIX_DUNGEON_ENTRANCES].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
+        mOptions[RSK_MIX_BOSS_ENTRANCES].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
+        mOptions[RSK_MIX_OVERWORLD_ENTRANCES].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
+        mOptions[RSK_MIX_INTERIOR_ENTRANCES].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
+        mOptions[RSK_MIX_GROTTO_ENTRANCES].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
+        RandomizerSettingKey lastKey = RSK_MIXED_ENTRANCE_POOLS;
+        if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleDungeonsEntrances"), RO_DUNGEON_ENTRANCE_SHUFFLE_OFF) == RO_DUNGEON_ENTRANCE_SHUFFLE_OFF) {
+            mOptions[RSK_MIX_DUNGEON_ENTRANCES].Hide();
+        } else {
+            mOptions[RSK_MIX_DUNGEON_ENTRANCES].Unhide();
+            lastKey = RSK_MIX_DUNGEON_ENTRANCES;
+        }
+        if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleBossEntrances"), RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF) == RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF) {
+            mOptions[RSK_MIX_BOSS_ENTRANCES].Hide();
+        } else {
+            mOptions[RSK_MIX_BOSS_ENTRANCES].Unhide();
+            lastKey = RSK_MIX_BOSS_ENTRANCES;
+        }
+        if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleOverworldEntrances"), RO_GENERIC_OFF) == RO_GENERIC_OFF) {
+            mOptions[RSK_MIX_OVERWORLD_ENTRANCES].Hide();
+        } else {
+            mOptions[RSK_MIX_OVERWORLD_ENTRANCES].Unhide();
+            lastKey = RSK_MIX_OVERWORLD_ENTRANCES;
+        }
+        if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleInteriorsEntrances"), RO_GENERIC_OFF) == RO_GENERIC_OFF) {
+            mOptions[RSK_MIX_INTERIOR_ENTRANCES].Hide();
+        } else {
+            mOptions[RSK_MIX_INTERIOR_ENTRANCES].Unhide();
+            lastKey = RSK_MIX_INTERIOR_ENTRANCES;
+        }
+        if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleGrottosEntrances"), RO_GENERIC_OFF) == RO_GENERIC_OFF) {
+            mOptions[RSK_MIX_GROTTO_ENTRANCES].Hide();
+        } else {
+            mOptions[RSK_MIX_GROTTO_ENTRANCES].Unhide();
+            lastKey = RSK_MIX_GROTTO_ENTRANCES;
+        }
+        mOptions[lastKey].AddFlag(IMFLAG_SEPARATOR_BOTTOM);
     }
+
     // Shuffle Weird Egg - Disabled when Skip Child Zelda is active
     if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("SkipChildZelda"), RO_GENERIC_DONT_SKIP)) {
         mOptions[RSK_SHUFFLE_WEIRD_EGG].Disable("This option is disabled because \"Skip Child Zelda\" is enabled.");
