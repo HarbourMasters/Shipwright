@@ -382,10 +382,10 @@ void PlandomizerItemImageCorrection(Rando::Item randoItem) {
 
 void PlandomizerRandomizeHint(int32_t status, int32_t index) {
     if (status == HINT_SINGLE) {
-        plandoHintData[index].hintText = RandomElement(Rando::StaticData::hintTextTable).GetHintMessage().GetForCurrentLanguage();
+        plandoHintData[index].hintText = Rando::StaticData::hintTextTable[GetRandomJunkHint()].GetHintMessage().GetForCurrentLanguage(MF_ENCODE);
     } else {
         for (auto& hint : plandoHintData) {
-            hint.hintText = RandomElement(Rando::StaticData::hintTextTable).GetHintMessage().GetForCurrentLanguage();
+            hint.hintText = Rando::StaticData::hintTextTable[GetRandomJunkHint()].GetHintMessage().GetForCurrentLanguage(MF_ENCODE);
         }
     }
 }
