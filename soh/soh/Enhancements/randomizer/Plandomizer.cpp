@@ -406,6 +406,15 @@ void PlandomizerRemoveAllHints() {
     }
 }
 
+void PlandomizerSortDrawnItems() {
+    std::sort(drawnItemsList.begin(), drawnItemsList.end(),
+      [](const auto& a, const auto& b) {
+        auto typeA = a.first.GetItemType();
+        auto typeB = b.first.GetItemType();
+          return typeA < typeB;
+      });
+}
+
 void PlandomizerRemoveAllItems() {
     if (drawnItemsList.size() == 1) {
         drawnItemsList.clear();
@@ -426,6 +435,7 @@ void PlandomizerRemoveAllItems() {
         }
         remove.checkRewardItem = plandomizerRandoRetrieveItem(RG_SOLD_OUT);
     }
+    PlandomizerSortDrawnItems();
 }
 
 void PlandomizerRemoveFromItemList(Rando::Item randoItem) {
@@ -444,6 +454,7 @@ void PlandomizerRemoveFromItemList(Rando::Item randoItem) {
         }
         shouldRemove = false;
     }
+    PlandomizerSortDrawnItems();
 }
 
 void PlandomizerAddToItemList(Rando::Item randoItem) {
@@ -460,7 +471,7 @@ void PlandomizerAddToItemList(Rando::Item randoItem) {
             drawnItemsList.push_back(std::make_pair(randoItem, 1));
         }
     }
-    
+    PlandomizerSortDrawnItems();
 }
 
 void PlandomizerSaveSpoilerLog() {
@@ -638,12 +649,6 @@ void PlandomizerOverlayText(std::pair<Rando::Item, uint32_t> drawObject ) {
 
 void PlandomizerDrawItemPopup(uint32_t index) {
     if (shouldPopup && ImGui::BeginPopup("ItemList")) {
-        std::sort(drawnItemsList.begin(), drawnItemsList.end(),
-              [](const auto& a, const auto& b) {
-                auto typeA = a.first.GetItemType();
-                auto typeB = b.first.GetItemType();
-                  return typeA < typeB;
-              });
         ImGui::SeparatorText("Resources");
         ImGui::BeginTable("Infinite Item Table", 7);
         for (auto& item : infiniteItemList) {
