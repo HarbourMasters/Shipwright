@@ -67,6 +67,14 @@ std::unordered_map<RandomizerGet, std::string> bossKeyShortNames = {
     { RG_GANONS_CASTLE_BOSS_KEY,     "Ganon" },
 };
 
+std::unordered_map<RandomizerGet, std::string> ocarinaButtonNames = {
+    { RG_OCARINA_A_BUTTON,          "A" },
+    { RG_OCARINA_C_UP_BUTTON,       "C-UP" },
+    { RG_OCARINA_C_DOWN_BUTTON,     "C-DWN" },
+    { RG_OCARINA_C_LEFT_BUTTON,     "C-LFT" },
+    { RG_OCARINA_C_RIGHT_BUTTON,    "C-RHT" },
+};
+
 std::map<RandomizerGet, ImVec4> bossSoulMapping = {
     { RG_GOHMA_SOUL,          { 0.00f, 1.00f, 0.00f, 1.0f } },
     { RG_KING_DODONGO_SOUL,   { 1.00f, 0.00f, 0.39f, 1.0f } },
@@ -218,15 +226,19 @@ std::unordered_map<RandomizerGet, std::string> itemImageMap = {
     { RG_RED_RUPEE,                 		"ITEM_RUPEE_GRAYSCALE" },
     { RG_PURPLE_RUPEE,              		"ITEM_RUPEE_GRAYSCALE" },
     { RG_HUGE_RUPEE,                		"ITEM_RUPEE_GRAYSCALE" },
+    { RG_TREASURE_GAME_GREEN_RUPEE,         "ITEM_RUPEE_GRAYSCALE" },
     { RG_PIECE_OF_HEART,            		"ITEM_HEART_PIECE" },
     { RG_HEART_CONTAINER,           		"ITEM_HEART_CONTAINER" },
     { RG_ICE_TRAP,                  		"ITEM_ICE_TRAP" },
+    { RG_MILK,                              "ITEM_MILK_BOTTLE"},
     { RG_BOMBS_5,                   		"ITEM_BOMB" },
     { RG_BOMBS_10,                  		"ITEM_BOMB" },
     { RG_BOMBS_20,                  		"ITEM_BOMB" },
+    { RG_BUY_BOMBS_525,              		"ITEM_BOMB" },
     { RG_BUY_BOMBS_535,              		"ITEM_BOMB" },
     { RG_BUY_BOMBS_10,              		"ITEM_BOMB" },
     { RG_BUY_BOMBS_20,              		"ITEM_BOMB" },
+    { RG_BUY_BOMBS_30,                      "ITEM_BOMB" },
     { RG_DEKU_NUTS_5,               		"ITEM_NUT" },
     { RG_DEKU_NUTS_10,              		"ITEM_NUT" },
     { RG_BUY_DEKU_NUTS_5,           		"ITEM_NUT" },
@@ -244,8 +256,11 @@ std::unordered_map<RandomizerGet, std::string> itemImageMap = {
     { RG_TREASURE_GAME_HEART,       		"ITEM_HEART_PIECE" },
     { RG_DEKU_SEEDS_30,             		"ITEM_SEEDS" },
     { RG_BUY_DEKU_SEEDS_30,             	"ITEM_SEEDS" },
+    { RG_BUY_HEART,                         "ITEM_HEART_GRAYSCALE" },
+    { RG_FISHING_POLE,             	        "ITEM_FISHING_POLE" },
     { RG_SOLD_OUT,                  		"ITEM_SOLD_OUT" },
     { RG_TRIFORCE,                  		"ITEM_TRIFORCE" },
+    { RG_SKELETON_KEY,                      "ITEM_KEY_SMALL" }
 };
 
 Rando::Item plandomizerRandoRetrieveItem(RandomizerGet randoGetItem) {
@@ -294,7 +309,8 @@ ImVec4 plandomizerGetItemColor(Rando::Item randoItem) {
         return itemColor;
     }
     if (randoItem.GetRandomizerGet() >= RG_GREEN_RUPEE && randoItem.GetRandomizerGet() <= RG_HUGE_RUPEE) {
-        if (randoItem.GetRandomizerGet() == RG_GREG_RUPEE || randoItem.GetRandomizerGet() == RG_GREEN_RUPEE) {
+        if (randoItem.GetRandomizerGet() == RG_GREG_RUPEE || randoItem.GetRandomizerGet() == RG_GREEN_RUPEE 
+            || randoItem.GetRandomizerGet() == RG_TREASURE_GAME_GREEN_RUPEE) {
             itemColor = ImVec4( 0.02f, 0.76f, 0.18f, 1.0f );
         } else if (randoItem.GetRandomizerGet() == RG_BLUE_RUPEE) {
             itemColor = ImVec4( 0.33f, 0.71f, 0.87f, 1.0f );
@@ -371,7 +387,7 @@ void PlandomizerItemImageCorrection(Rando::Item randoItem) {
                 textureUV0 = ImVec2( 0, 1 );
                 textureUV1 = ImVec2( 1, 0 );
             }
-            if (map.second.find("ITEM_TRIFORCE") != std::string::npos) {
+            if (map.second == "ITEM_TRIFORCE" || map.first == RG_SKELETON_KEY) {
                 textureUV0 = ImVec2( 1, 1 );
                 textureUV1 = ImVec2( 0, 0 );
             }
@@ -381,6 +397,10 @@ void PlandomizerItemImageCorrection(Rando::Item randoItem) {
 
     if (randoItem.GetRandomizerGet() >= RG_GOHMA_SOUL && randoItem.GetRandomizerGet() <= RG_GANON_SOUL) {
         textureID = Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("BOSS_SOUL");
+    }
+
+    if (randoItem.GetRandomizerGet() >= RG_OCARINA_A_BUTTON && randoItem.GetRandomizerGet() <= RG_OCARINA_C_RIGHT_BUTTON) {
+        textureID = Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ITEM_OCARINA_TIME");
     }
 
     if (textureID == 0) {
@@ -423,7 +443,7 @@ void PlandomizerRemoveAllItems() {
         if (std::find(infiniteItemList.begin(), infiniteItemList.end(), remove.checkRewardItem.GetRandomizerGet()) == infiniteItemList.end()) {
             bool itemExists = false;
             for (auto& itemToCheck : drawnItemsList) {
-                if (itemToCheck.first == remove.checkRewardItem) {
+                if (itemToCheck.first.GetRandomizerGet() == remove.checkRewardItem.GetRandomizerGet()) {
                     itemToCheck.second += 1;
                     itemExists = true;
                     break;
@@ -442,7 +462,7 @@ void PlandomizerRemoveFromItemList(Rando::Item randoItem) {
     if (std::find(infiniteItemList.begin(), infiniteItemList.end(), randoItem.GetRandomizerGet()) == infiniteItemList.end()) {
         uint32_t index = 0;
         for (auto& itemToCheck : drawnItemsList) {
-            if (itemToCheck.first == randoItem) {
+            if (itemToCheck.first.GetRandomizerGet() == randoItem.GetRandomizerGet()) {
                 if (shouldRemove) {
                     drawnItemsList.erase(drawnItemsList.begin() + index);
                     break;
@@ -461,12 +481,13 @@ void PlandomizerAddToItemList(Rando::Item randoItem) {
     if (std::find(infiniteItemList.begin(), infiniteItemList.end(), randoItem.GetRandomizerGet()) == infiniteItemList.end()) {
         bool itemExists = false;
         for (auto& itemToCheck : drawnItemsList) {
-            if (itemToCheck.first == randoItem) {
+            if (itemToCheck.first.GetRandomizerGet() == randoItem.GetRandomizerGet()) {
                 itemToCheck.second += 1;
                 itemExists = true;
                 break;
             }
         }
+        
         if (!itemExists) {
             drawnItemsList.push_back(std::make_pair(randoItem, 1));
         }
@@ -645,6 +666,19 @@ void PlandomizerOverlayText(std::pair<Rando::Item, uint32_t> drawObject ) {
         }
         ImGui::Text(shortName.c_str());
     }
+    if (drawObject.first.GetRandomizerGet() >= RG_OCARINA_A_BUTTON &&
+        drawObject.first.GetRandomizerGet() <= RG_OCARINA_C_RIGHT_BUTTON) {
+        textPos = ImVec2(imageMin.x + 1, imageMin.y + 1);
+        ImGui::SetCursorScreenPos(textPos);
+        shortName = "";
+        for (auto& name : ocarinaButtonNames) {
+            if (name.first == drawObject.first.GetRandomizerGet()) {
+                shortName = name.second;
+                break;
+            }
+        }
+        ImGui::Text(shortName.c_str());
+    }
 }
 
 void PlandomizerDrawItemPopup(uint32_t index) {
@@ -750,6 +784,7 @@ void PlandomizerDrawItemSlots(uint32_t index) {
         ImGui::OpenPopup("ItemList");
     };
     UIWidgets::Tooltip(plandoLogData[index].checkRewardItem.GetName().english.c_str());
+    PlandomizerOverlayText(std::make_pair(plandoLogData[index].checkRewardItem, 1));
     PlandomizerDrawItemPopup(index);
     ImGui::PopID();
 }
