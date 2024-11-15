@@ -4,9 +4,6 @@
  */
 
 #include "randomizer_grotto.h"
-#include "randomizerTypes.h"
-#include "soh/Enhancements/item-tables/ItemTableTypes.h"
-#include "z64.h"
 #include "soh/OTRGlobals.h"
 
 #include "global.h"

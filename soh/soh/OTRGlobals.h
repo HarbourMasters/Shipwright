@@ -3,9 +3,6 @@
 
 #pragma once
 
-#include "SaveManager.h"
-#include <soh/Enhancements/item-tables/ItemTableTypes.h>
-
 #define BTN_CUSTOM_MODIFIER1 0x0040
 #define BTN_CUSTOM_MODIFIER2 0x0080
 
