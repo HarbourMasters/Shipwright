@@ -795,8 +795,14 @@ void DrawEnhancementsMenu() {
                     "- Not within range of Ocarina playing spots");
                 UIWidgets::PaddedEnhancementCheckbox("Pause Warp", CVAR_ENHANCEMENT("PauseWarp"), true, false);
                 UIWidgets::Tooltip("Selection of warp song in pause menu initiates warp. Disables song playback.");
+
+                uint8_t forceSleepingWaterfallValue =
+                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SLEEPING_WATERFALL) + 1;
+                static const char* forceSleepingWaterfallText =
+                    "This setting is forcefully enabled because you are playing a randomizer.";
                 UIWidgets::PaddedText("Play Zelda's Lullaby to open Sleeping Waterfall", true, false);
-                UIWidgets::EnhancementCombobox(CVAR_ENHANCEMENT("TimeSavers.SleepingWaterfall"), sleepingWaterfallOptions, 0);
+                UIWidgets::EnhancementCombobox(CVAR_ENHANCEMENT("TimeSavers.SleepingWaterfall"),
+                                               sleepingWaterfallOptions, 0, IS_RANDO, forceSleepingWaterfallText, forceSleepingWaterfallValue);
                 UIWidgets::Tooltip(
                     "Always: Link must always play Zelda's Lullaby to open "
                     "the waterfall entrance to Zora's Domain.\n"

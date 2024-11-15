@@ -790,45 +790,44 @@ void TimeSaverOnActorInitHandler(void* actorRef) {
     if (actor->id == ACTOR_BG_SPOT03_TAKI) {
         bgSpot03UpdateHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* innerActorRef) mutable {
             Actor* innerActor = static_cast<Actor*>(innerActorRef);
-            bool shouldKeepOpen;
 
             if (innerActor->id != ACTOR_BG_SPOT03_TAKI) {
-                shouldKeepOpen = false;
-            } else if (IS_RANDO) {
-                shouldKeepOpen = RAND_GET_OPTION(RSK_SLEEPING_WATERFALL) == RO_WATERFALL_OPEN;
-            } else {
-                switch (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SleepingWaterfall"), 0)) {
-                    case 1:
-                        shouldKeepOpen = Flags_GetEventChkInf(EVENTCHKINF_OPENED_ZORAS_DOMAIN);
-                        break;
-                    case 2:
-                        shouldKeepOpen = CHECK_QUEST_ITEM(QUEST_SONG_LULLABY) &&
-                                         (INV_CONTENT(ITEM_OCARINA_TIME) == ITEM_OCARINA_TIME ||
-                                          INV_CONTENT(ITEM_OCARINA_FAIRY) == ITEM_OCARINA_FAIRY);
-                        break;
-                    default:
-                        shouldKeepOpen = false;
-                        break;
-                }
-                
+                return;
             }
 
-            if (shouldKeepOpen) {
-                BgSpot03Taki* bgSpot03 = static_cast<BgSpot03Taki*>(innerActorRef);
-                if (bgSpot03->actionFunc == func_808ADEF0) {
-                    bgSpot03->actionFunc = BgSpot03Taki_KeepOpen;
-                    bgSpot03->state = WATERFALL_OPENED;
-                    bgSpot03->openingAlpha = 0.0f;
-                    Flags_SetSwitch(gPlayState, bgSpot03->switchFlag);
-                    func_8003EBF8(gPlayState, &gPlayState->colCtx.dyna, bgSpot03->dyna.bgId);
-                    BgSpot03Taki_ApplyOpeningAlpha(bgSpot03, 0);
-                    BgSpot03Taki_ApplyOpeningAlpha(bgSpot03, 1);
+            bool shouldKeepOpen;
+            switch (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SleepingWaterfall"), 0)) {
+                case 1:
+                    shouldKeepOpen = Flags_GetEventChkInf(EVENTCHKINF_OPENED_ZORAS_DOMAIN);
+                    break;
+                case 2:
+                    shouldKeepOpen = CHECK_QUEST_ITEM(QUEST_SONG_LULLABY) &&
+                                        (INV_CONTENT(ITEM_OCARINA_TIME) == ITEM_OCARINA_TIME ||
+                                        INV_CONTENT(ITEM_OCARINA_FAIRY) == ITEM_OCARINA_FAIRY);
+                    break;
+                default:
+                    shouldKeepOpen = false;
+                    break;
+            }
 
-                    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(bgSpot03UpdateHook);
-                    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(bgSpot03KillHook);
-                    bgSpot03UpdateHook = 0;
-                    bgSpot03KillHook = 0;
-                }
+            if (!shouldKeepOpen) {
+                return;
+            }
+
+            BgSpot03Taki* bgSpot03 = static_cast<BgSpot03Taki*>(innerActorRef);
+            if (bgSpot03->actionFunc == func_808ADEF0) {
+                bgSpot03->actionFunc = BgSpot03Taki_KeepOpen;
+                bgSpot03->state = WATERFALL_OPENED;
+                bgSpot03->openingAlpha = 0.0f;
+                Flags_SetSwitch(gPlayState, bgSpot03->switchFlag);
+                func_8003EBF8(gPlayState, &gPlayState->colCtx.dyna, bgSpot03->dyna.bgId);
+                BgSpot03Taki_ApplyOpeningAlpha(bgSpot03, 0);
+                BgSpot03Taki_ApplyOpeningAlpha(bgSpot03, 1);
+
+                GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(bgSpot03UpdateHook);
+                GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(bgSpot03KillHook);
+                bgSpot03UpdateHook = 0;
+                bgSpot03KillHook = 0;
             }
         });
         bgSpot03KillHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) mutable {
