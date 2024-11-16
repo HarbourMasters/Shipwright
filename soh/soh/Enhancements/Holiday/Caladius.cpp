@@ -29,11 +29,11 @@ void OnTimeOver() {
     gSaveContext.health = 0;
 }
 
-uint32_t calculateRemainingTime() {
-    uint32_t timeRemaining = 
+int32_t calculateRemainingTime() {
+    int32_t timeRemaining = 
         ((gSaveContext.sohStats.count[COUNT_ICE_TRAPS] * (CVarGetInteger(CVAR("ExtendTimer"), 0) * 600)) +
             (CVarGetInteger(CVAR("StartTimer"), 0) * 600) - GAMEPLAYSTAT_TOTAL_TIME);
-    if (timeRemaining == 0) {
+    if (timeRemaining <= 0) {
         OnTimeOver();
         timeRemaining = 0;
     }
