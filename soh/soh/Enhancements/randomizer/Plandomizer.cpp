@@ -38,6 +38,7 @@ RandomizerCheckArea selectedArea = RCAREA_INVALID;
 ImVec4 itemColor = ImVec4( 1.0f, 1.0f, 1.0f, 1.0f );
 ImTextureID textureID;
 ImVec2 imageSize = ImVec2(32.0f, 32.0f);
+float imagePadding = 2.0f;
 ImVec2 textureUV0 = ImVec2( 0, 0 );
 ImVec2 textureUV1 = ImVec2( 1, 1 );
 
@@ -260,7 +261,7 @@ std::unordered_map<RandomizerGet, std::string> itemImageMap = {
     { RG_BUY_HEART,                         "ITEM_HEART_GRAYSCALE" },
     { RG_FISHING_POLE,             	        "ITEM_FISHING_POLE" },
     { RG_SOLD_OUT,                  		"ITEM_SOLD_OUT" },
-    { RG_TRIFORCE,                  		"ITEM_TRIFORCE" },
+    { RG_TRIFORCE_PIECE,                  	"TRIFORCE_PIECE" },
     { RG_SKELETON_KEY,                      "ITEM_KEY_SMALL" }
 };
 
@@ -308,6 +309,7 @@ ImVec4 plandomizerGetItemColor(Rando::Item randoItem) {
         textureID = Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(songMapping.at((QuestItem)questID).name);
         itemColor = songMapping.at((QuestItem)questID).color;
         imageSize = ImVec2(24.0f, 32.0f);
+        imagePadding = 6.0f;
         return itemColor;
     }
     if (randoItem.GetRandomizerGet() >= RG_GREEN_RUPEE && randoItem.GetRandomizerGet() <= RG_HUGE_RUPEE) {
@@ -369,6 +371,7 @@ void PlandomizerPopulateSeedList() {
 void PlandomizerItemImageCorrection(Rando::Item randoItem) {
     textureID = 0;
     imageSize = ImVec2( 32.0f, 32.0f );
+    imagePadding = 2.0f;
     textureUV0 = ImVec2( 0, 0 );
     textureUV1 = ImVec2( 1, 1 );
     
@@ -595,6 +598,9 @@ void PlandomizerLoadSpoilerLog(std::string logFile) {
             if (spoilerLogInput.contains("locations")) {
                 auto locations = spoilerLogInput["locations"];
                 for (auto& [key, value] : locations.items()) {
+                    if (key == "Ganon" || key == "Completed Triforce") {
+                        continue;
+                    }
                     SpoilerCheckObject checkObject;
                     checkObject.checkName = key;
                     auto type = value;
@@ -694,7 +700,7 @@ void PlandomizerDrawItemPopup(uint32_t index) {
             ImGui::TableNextColumn();
             PlandomizerItemImageCorrection(plandomizerRandoRetrieveItem(item));
             if (ImGui::ImageButton(textureID,
-                    imageSize, textureUV0, textureUV1, 2.0f, ImVec4(0, 0, 0, 0), itemColor)) {
+                    imageSize, textureUV0, textureUV1, imagePadding, ImVec4(0, 0, 0, 0), itemColor)) {
                 if (std::find(infiniteItemList.begin(), infiniteItemList.end(), plandoLogData[index].checkRewardItem.GetRandomizerGet()) == infiniteItemList.end()) {
                     PlandomizerAddToItemList(plandoLogData[index].checkRewardItem);
                 }
@@ -720,7 +726,7 @@ void PlandomizerDrawItemPopup(uint32_t index) {
             auto itemToDraw = drawSlots.first;
             PlandomizerItemImageCorrection(drawSlots.first);
             if (ImGui::ImageButton(textureID,
-                    imageSize, textureUV0, textureUV1, 2.0f, ImVec4(0, 0, 0, 0), itemColor)) {
+                    imageSize, textureUV0, textureUV1, imagePadding, ImVec4(0, 0, 0, 0), itemColor)) {
                 if (itemToDraw.GetRandomizerGet() >= RG_PROGRESSIVE_HOOKSHOT && 
                     itemToDraw.GetRandomizerGet() <= RG_PROGRESSIVE_GORONSWORD) {
                     plandoLogData[index].checkRewardItem = drawSlots.first;
@@ -763,7 +769,7 @@ void PlandomizerDrawIceTrapPopUp(uint32_t index) {
             ImGui::TableNextColumn();
             ImGui::PushID(items.first);
             PlandomizerItemImageCorrection(Rando::StaticData::RetrieveItem(items.first));
-            if (ImGui::ImageButton(textureID, imageSize, textureUV0, textureUV1, 2.0f, ImVec4(0, 0, 0, 0), itemColor)) {
+            if (ImGui::ImageButton(textureID, imageSize, textureUV0, textureUV1, imagePadding, ImVec4(0, 0, 0, 0), itemColor)) {
                 plandoLogData[index].iceTrapModel = Rando::StaticData::RetrieveItem(items.first);
                 ImGui::CloseCurrentPopup();
             };
@@ -782,7 +788,7 @@ void PlandomizerDrawIceTrapPopUp(uint32_t index) {
 void PlandomizerDrawItemSlots(uint32_t index) {
     ImGui::PushID(index);
     PlandomizerItemImageCorrection(plandoLogData[index].checkRewardItem);
-    if (ImGui::ImageButton(textureID, imageSize, textureUV0, textureUV1, 2.0f, ImVec4(0, 0, 0, 0), itemColor)) {
+    if (ImGui::ImageButton(textureID, imageSize, textureUV0, textureUV1, imagePadding, ImVec4(0, 0, 0, 0), itemColor)) {
         shouldPopup = true;
         temporaryItem = plandoLogData[index].checkRewardItem;
         ImGui::OpenPopup("ItemList");
@@ -814,7 +820,7 @@ void PlandomizerDrawIceTrapSetup(uint32_t index) {
 
     ImGui::TableNextColumn();
     PlandomizerItemImageCorrection(plandoLogData[index].iceTrapModel);
-    if (ImGui::ImageButton(textureID, imageSize, textureUV0, textureUV1, 2.0f, ImVec4(0, 0, 0, 0), itemColor)) {
+    if (ImGui::ImageButton(textureID, imageSize, textureUV0, textureUV1, imagePadding, ImVec4(0, 0, 0, 0), itemColor)) {
         shouldTrapPopup = true;
         ImGui::OpenPopup("TrapList");
     };
@@ -1093,8 +1099,8 @@ void PlandomizerWindow::InitElement() {
     Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("ITEM_ARROWS_MEDIUM", gDropArrows2Tex, ImVec4( 1, 1, 1, 1 ));
     Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("ITEM_ARROWS_LARGE", gDropArrows3Tex, ImVec4( 1, 1, 1, 1 ));
     Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("ITEM_ICE_TRAP", gMagicArrowEquipEffectTex, ImVec4( 1, 1, 1, 1 ));
-    Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("ITEM_TRIFORCE", gEmptyCDownArrowTex, ImVec4( 1, 1, 0, 1 ));
     Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("HASH_ARROW_UP", gEmptyCDownArrowTex, ImVec4( 1, 1, 1, 1 ));
     Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("HASH_ARROW_DWN", gEmptyCDownArrowTex, ImVec4( 1, 1, 1, 1 ));
     Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("BOSS_SOUL", gBossSoulTex, ImVec4(1, 1, 1, 1));
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("TRIFORCE_PIECE", gTriforcePieceTex, ImVec4(1, 1, 1, 1));
 }
