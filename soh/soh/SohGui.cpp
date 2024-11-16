@@ -38,6 +38,7 @@
 #include "Enhancements/resolution-editor/ResolutionEditor.h"
 #include "Enhancements/debugger/MessageViewer.h"
 #include "soh/Notification/Notification.h"
+#include "soh/Enhancements/Holiday/Caladius.h"
 
 bool isBetaQuestEnabled = false;
 
@@ -135,6 +136,7 @@ namespace SohGui {
     std::shared_ptr<AdvancedResolutionSettings::AdvancedResolutionSettingsWindow> mAdvancedResolutionSettingsWindow;
     std::shared_ptr<SohModalWindow> mModalWindow;
     std::shared_ptr<Notification::Window> mNotificationWindow;
+    std::shared_ptr<CaladiusWindow> mCaladiusWindow;
 
     void SetupGuiElements() {
         auto gui = Ship::Context::GetInstance()->GetWindow()->GetGui();
@@ -218,6 +220,9 @@ namespace SohGui {
         mNotificationWindow = std::make_shared<Notification::Window>(CVAR_WINDOW("Notifications"), "Notifications Window");
         gui->AddGuiWindow(mNotificationWindow);
         mNotificationWindow->Show();
+        mCaladiusWindow = std::make_shared<CaladiusWindow>(CVAR_WINDOW("Holiday Cal"), "Holiday Cal");
+        gui->AddGuiWindow(mCaladiusWindow);
+        mCaladiusWindow->Show();
     }
 
     void Destroy() {
@@ -252,6 +257,7 @@ namespace SohGui {
         mInputViewer = nullptr;
         mInputViewerSettings = nullptr;
         mTimeSplitWindow = nullptr;
+        mCaladiusWindow = nullptr;
     }
 
     void RegisterPopup(std::string title, std::string message, std::string button1, std::string button2, std::function<void()> button1callback, std::function<void()> button2callback) {
