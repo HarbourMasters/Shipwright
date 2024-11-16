@@ -37,6 +37,7 @@ RandomizerCheckArea selectedArea = RCAREA_INVALID;
 
 ImVec4 itemColor = ImVec4( 1.0f, 1.0f, 1.0f, 1.0f );
 ImTextureID textureID;
+ImVec2 imageSize = ImVec2(32.0f, 32.0f);
 ImVec2 textureUV0 = ImVec2( 0, 0 );
 ImVec2 textureUV1 = ImVec2( 1, 1 );
 
@@ -306,6 +307,7 @@ ImVec4 plandomizerGetItemColor(Rando::Item randoItem) {
         uint32_t questID = Rando::Logic::RandoGetToQuestItem[randoItem.GetRandomizerGet()];
         textureID = Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(songMapping.at((QuestItem)questID).name);
         itemColor = songMapping.at((QuestItem)questID).color;
+        imageSize = ImVec2(24.0f, 32.0f);
         return itemColor;
     }
     if (randoItem.GetRandomizerGet() >= RG_GREEN_RUPEE && randoItem.GetRandomizerGet() <= RG_HUGE_RUPEE) {
@@ -366,8 +368,10 @@ void PlandomizerPopulateSeedList() {
 
 void PlandomizerItemImageCorrection(Rando::Item randoItem) {
     textureID = 0;
+    imageSize = ImVec2( 32.0f, 32.0f );
     textureUV0 = ImVec2( 0, 0 );
     textureUV1 = ImVec2( 1, 1 );
+    
 
     itemColor = plandomizerGetItemColor(randoItem);
 
@@ -690,7 +694,7 @@ void PlandomizerDrawItemPopup(uint32_t index) {
             ImGui::TableNextColumn();
             PlandomizerItemImageCorrection(plandomizerRandoRetrieveItem(item));
             if (ImGui::ImageButton(textureID,
-                    ImVec2(32.0f, 32.0f), textureUV0, textureUV1, 2.0f, ImVec4(0, 0, 0, 0), itemColor)) {
+                    imageSize, textureUV0, textureUV1, 2.0f, ImVec4(0, 0, 0, 0), itemColor)) {
                 if (std::find(infiniteItemList.begin(), infiniteItemList.end(), plandoLogData[index].checkRewardItem.GetRandomizerGet()) == infiniteItemList.end()) {
                     PlandomizerAddToItemList(plandoLogData[index].checkRewardItem);
                 }
@@ -716,7 +720,7 @@ void PlandomizerDrawItemPopup(uint32_t index) {
             auto itemToDraw = drawSlots.first;
             PlandomizerItemImageCorrection(drawSlots.first);
             if (ImGui::ImageButton(textureID,
-                    ImVec2(32.0f, 32.0f), textureUV0, textureUV1, 2.0f, ImVec4(0, 0, 0, 0), itemColor)) {
+                    imageSize, textureUV0, textureUV1, 2.0f, ImVec4(0, 0, 0, 0), itemColor)) {
                 if (itemToDraw.GetRandomizerGet() >= RG_PROGRESSIVE_HOOKSHOT && 
                     itemToDraw.GetRandomizerGet() <= RG_PROGRESSIVE_GORONSWORD) {
                     plandoLogData[index].checkRewardItem = drawSlots.first;
@@ -759,7 +763,7 @@ void PlandomizerDrawIceTrapPopUp(uint32_t index) {
             ImGui::TableNextColumn();
             ImGui::PushID(items.first);
             PlandomizerItemImageCorrection(Rando::StaticData::RetrieveItem(items.first));
-            if (ImGui::ImageButton(textureID, ImVec2(32.0f, 32.0f), textureUV0, textureUV1, 2.0f, ImVec4(0, 0, 0, 0), itemColor)) {
+            if (ImGui::ImageButton(textureID, imageSize, textureUV0, textureUV1, 2.0f, ImVec4(0, 0, 0, 0), itemColor)) {
                 plandoLogData[index].iceTrapModel = Rando::StaticData::RetrieveItem(items.first);
                 ImGui::CloseCurrentPopup();
             };
@@ -778,7 +782,7 @@ void PlandomizerDrawIceTrapPopUp(uint32_t index) {
 void PlandomizerDrawItemSlots(uint32_t index) {
     ImGui::PushID(index);
     PlandomizerItemImageCorrection(plandoLogData[index].checkRewardItem);
-    if (ImGui::ImageButton(textureID, ImVec2(32.0f, 32.0f), textureUV0, textureUV1, 2.0f, ImVec4(0, 0, 0, 0), itemColor)) {
+    if (ImGui::ImageButton(textureID, imageSize, textureUV0, textureUV1, 2.0f, ImVec4(0, 0, 0, 0), itemColor)) {
         shouldPopup = true;
         temporaryItem = plandoLogData[index].checkRewardItem;
         ImGui::OpenPopup("ItemList");
@@ -810,7 +814,7 @@ void PlandomizerDrawIceTrapSetup(uint32_t index) {
 
     ImGui::TableNextColumn();
     PlandomizerItemImageCorrection(plandoLogData[index].iceTrapModel);
-    if (ImGui::ImageButton(textureID, ImVec2(32.0f, 32.0f), textureUV0, textureUV1, 2.0f, ImVec4(0, 0, 0, 0), itemColor)) {
+    if (ImGui::ImageButton(textureID, imageSize, textureUV0, textureUV1, 2.0f, ImVec4(0, 0, 0, 0), itemColor)) {
         shouldTrapPopup = true;
         ImGui::OpenPopup("TrapList");
     };
