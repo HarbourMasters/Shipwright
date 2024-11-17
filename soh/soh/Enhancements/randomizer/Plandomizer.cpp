@@ -438,7 +438,10 @@ void PlandomizerSortDrawnItems() {
       [](const auto& a, const auto& b) {
         auto typeA = a.first.GetItemType();
         auto typeB = b.first.GetItemType();
+        if (typeA != typeB){
           return typeA < typeB;
+        }
+        return a.first.GetRandomizerGet() < b.first.GetRandomizerGet();```
       });
 }
 
