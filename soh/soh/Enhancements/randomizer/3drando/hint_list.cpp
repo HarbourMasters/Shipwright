@@ -2337,15 +2337,11 @@ void StaticData::HintTable_Init() {
                                                /*german*/ "",
                                                /*french*/ HINT_TEXT_NEEDS_TRANSLATION_FR));
 
-    hintTextTable[RHT_JUNK_CREW_22] = HintText(CustomMessage("They say that %gRaccoonCloud%w is still learning %yB1 Skip%w...",
-                                               /*german*/ "",
-                                               /*french*/ HINT_TEXT_NEEDS_TRANSLATION_FR));
-
     hintTextTable[RHT_JUNK_CREW_23] = HintText(CustomMessage("They say that %gBackwalking%w should be %rBanned%w!",
                                                /*german*/ "",
                                                /*french*/ HINT_TEXT_NEEDS_TRANSLATION_FR));
 
-    hintTextTable[RHT_JUNK_CREW_24] = HintText(CustomMessage("They say that %gGoron's%w should always have %yLong Necks%w!",
+    hintTextTable[RHT_JUNK_CREW_24] = HintText(CustomMessage("They say that %gGorons%w should always have %yLong Necks%w!",
                                                /*german*/ "",
                                                /*french*/ HINT_TEXT_NEEDS_TRANSLATION_FR));
 
