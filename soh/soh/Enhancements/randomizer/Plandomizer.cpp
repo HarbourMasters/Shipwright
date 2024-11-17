@@ -441,7 +441,7 @@ void PlandomizerSortDrawnItems() {
         if (typeA != typeB){
           return typeA < typeB;
         }
-        return a.first.GetRandomizerGet() < b.first.GetRandomizerGet();```
+        return a.first.GetRandomizerGet() < b.first.GetRandomizerGet();
       });
 }
 
