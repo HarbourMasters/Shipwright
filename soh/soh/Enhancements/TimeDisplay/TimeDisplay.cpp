@@ -88,7 +88,7 @@ void TimeDisplayWindow::Draw() {
 		ImGui::Text("No Enabled Timers...");
 	} else {
 		ImGui::SetWindowFontScale(fontScale);
-		ImGui::BeginTable("Timer List", 2);
+		ImGui::BeginTable("Timer List", 2, ImGuiTableFlags_NoClip);
 		for (auto& timers : activeTimers) {
 			ImGui::PushID(timers.timeID);
 			ImGui::TableNextRow();
