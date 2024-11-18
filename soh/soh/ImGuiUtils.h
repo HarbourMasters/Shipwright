@@ -67,11 +67,11 @@ typedef struct {
 
 #define SONG_MAP_ENTRY(id, r, g, b) \
     {                               \
-            id, #id, #id "_Faded", ImVec4(r / 255.0f, g / 255.0f, b / 255.0f, 1.0f) \
+            id, { id, #id, #id "_Faded", ImVec4(r / 255.0f, g / 255.0f, b / 255.0f, 1.0f) } \
     }
 
 // Maps song ids to info for use in ImGui
-extern std::array<SongMapEntry, 12> songMapping;
+extern std::map<QuestItem, SongMapEntry> songMapping;
 
 #define VANILLA_SONG_MAP_ENTRY(id, r, g, b) \
     {                                       \

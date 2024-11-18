@@ -10,7 +10,7 @@
 #include <textures/icon_item_static/icon_item_static.h>
 #include <textures/icon_item_24_static/icon_item_24_static.h>
 
-std::array<Sprite, 100> gSeedTextures = { {
+inline std::array<Sprite, 100> gSeedTextures = { {
     { dgItemIconDekuNutTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 0 },
     { dgItemIconDekuStickTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 1 },
     { dgItemIconBombTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 2 },

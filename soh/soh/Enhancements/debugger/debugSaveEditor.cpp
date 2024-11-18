@@ -1206,7 +1206,7 @@ void DrawQuestStatusTab() {
     ImGui::SameLine();
     DrawQuestItemButton(QUEST_GERUDO_CARD);
 
-    for (const SongMapEntry& entry : songMapping) {
+    for (const auto& [quest, entry] : songMapping) {
         if ((entry.id != QUEST_SONG_MINUET) && (entry.id != QUEST_SONG_LULLABY)) {
             ImGui::SameLine();
         }

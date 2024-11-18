@@ -113,8 +113,8 @@ StaticHintInfo::StaticHintInfo(HintType _type, std::vector<RandomizerHintTextKey
 
 RandomizerHintTextKey GetRandomJunkHint(){ 
   //temp code to handle random junk hints now I work in keys instead of a vector of HintText
-  // Will be replaced with a better system once more customisable hint pools are added
-  uint32_t range = RHT_JUNK_SG_8 - RHT_JUNK02;
+  //Will be replaced with a better system once more customisable hint pools are added
+  uint32_t range = RHT_JUNK_CREW_29 - RHT_JUNK02;
   return (RandomizerHintTextKey)(Random(0, range) + RHT_JUNK02);
 }
 

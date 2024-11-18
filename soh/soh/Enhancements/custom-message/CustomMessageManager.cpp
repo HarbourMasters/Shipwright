@@ -20,6 +20,10 @@ static const std::unordered_map<std::string, std::string> percentColors = { { "w
                                                               { "b", QM_BLUE },   { "c", QM_LBLUE }, { "p", QM_PINK },
                                                               { "y", QM_YELLOW }, { "B", QM_BLACK } };
 
+static const std::unordered_map<std::string, std::string> colorToPercent = { { QM_WHITE, "%w" },  { QM_RED, "%r"},   { QM_GREEN, "%g" },
+                                                              { QM_BLUE, "%b" },   { QM_LBLUE, "%c"}, { QM_PINK, "%p" },
+                                                              { QM_YELLOW, "%y" }, { QM_BLACK, "%B" } };
+
 static const std::unordered_map<std::string, ItemID> altarIcons = {
     { "0", ITEM_KOKIRI_EMERALD },
     { "1", ITEM_GORON_RUBY },
@@ -147,6 +151,8 @@ void CustomMessage::ProcessMessageFormat(std::string& str, MessageFormat format)
         CleanString(str);
     } else if (format == MF_AUTO_FORMAT){
         AutoFormatString(str);
+    }else if (format == MF_ENCODE){
+        EncodeColors(str);
     }
 }
 
@@ -278,6 +284,12 @@ void CustomMessage::AutoFormat() {
 void CustomMessage::Clean() {
     for (std::string& str : messages) {
         CleanString(str);
+    }
+}
+
+void CustomMessage::Encode() {
+    for (std::string& str : messages) {
+        EncodeColors(str);
     }
 }
 
@@ -506,7 +518,23 @@ const char* Interface_ReplaceSpecialCharacters(char text[]) {
     return textChar;
 }
 
+void CustomMessage::EncodeColors(std::string& str) const {
+    for (std::string color: colors) {
+        if (const size_t firstHashtag = str.find('#'); firstHashtag != std::string::npos) {
+            str.replace(firstHashtag, 1, colorToPercent.at(color));
+            if (const size_t secondHashtag = str.find('#', firstHashtag + 1); secondHashtag != std::string::npos) {
+                str.replace(secondHashtag, 1, "%w");
+            } else {
+                SPDLOG_DEBUG("non-matching hashtags in string: \"%s\"", str);
+            }
+        }
+    }
+    // Remove any remaining '#' characters.
+    std::erase(str, '#');
+}
+
 void CustomMessage::ReplaceColors(std::string& str) const {
+    EncodeColors(str);
     for (const auto& colorPair : percentColors) {
         std::string textToReplace = "%";
         textToReplace += colorPair.first;
@@ -516,18 +544,6 @@ void CustomMessage::ReplaceColors(std::string& str) const {
             start_pos += textToReplace.length();
         }
     }
-    for (auto color: colors) {
-        if (const size_t firstHashtag = str.find('#'); firstHashtag != std::string::npos) {
-            str.replace(firstHashtag, 1, COLOR(color));
-        if (const size_t secondHashtag = str.find('#', firstHashtag + 1); secondHashtag != std::string::npos) {
-            str.replace(secondHashtag, 1, COLOR(QM_WHITE));
-        } else {
-            SPDLOG_DEBUG("non-matching hashtags in string: \"%s\"", str);
-        }
-        }
-    }
-    // Remove any remaining '#' characters.
-    std::erase(str, '#');
 }
 
 void CustomMessage::ReplaceAltarIcons(std::string& str) const {
@@ -619,6 +635,8 @@ CustomMessage CustomMessageManager::RetrieveMessage(std::string tableID, uint16_
         message.AutoFormat();
     } else if (format == MF_CLEAN){
         message.Clean();
+    } else if (format == MF_ENCODE){
+        message.Encode();
     }
     
     return message;
