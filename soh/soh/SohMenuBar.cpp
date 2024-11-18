@@ -41,6 +41,7 @@
 #include "Enhancements/resolution-editor/ResolutionEditor.h"
 #include "Enhancements/enemyrandomizer.h"
 #include "Enhancements/timesplits/TimeSplits.h"
+#include "Enhancements/TimeDisplay/TimeDisplay.h"
 
 // FA icons are kind of wonky, if they worked how I expected them to the "+ 2.0f" wouldn't be needed, but
 // they don't work how I expect them to so I added that because it looked good when I eyeballed it
@@ -603,6 +604,7 @@ extern std::shared_ptr<AudioEditor> mAudioEditorWindow;
 extern std::shared_ptr<CosmeticsEditorWindow> mCosmeticsEditorWindow;
 extern std::shared_ptr<GameplayStatsWindow> mGameplayStatsWindow;
 extern std::shared_ptr<TimeSplitWindow> mTimeSplitWindow;
+extern std::shared_ptr<TimeDisplayWindow> mTimeDisplayWindow;
 
 void DrawEnhancementsMenu() {
     if (ImGui::BeginMenu("Enhancements"))
@@ -1687,6 +1689,48 @@ void DrawEnhancementsMenu() {
         if (mTimeSplitWindow) {
             if (ImGui::Button(GetWindowButtonText("Time Splits", CVarGetInteger(CVAR_WINDOW("TimeSplitEnabled"), 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
                 mTimeSplitWindow->ToggleVisibility();
+            }
+        }
+
+        if (mTimeDisplayWindow) {
+            if (ImGui::Button(GetWindowButtonText("Additional Timers", CVarGetInteger(CVAR_WINDOW("TimeDisplayEnabled"), 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
+                mTimeDisplayWindow->ToggleVisibility();
+            }
+        }
+        if (mTimeDisplayWindow->IsVisible()) {
+            ImGui::SeparatorText("Timer Display Options");
+            ImGui::Text("Font Scale");
+            ImGui::SetNextItemWidth(150.0f);
+            if (UIWidgets::PaddedEnhancementSliderFloat("", "##TimeDisplayScale", CVAR_ENHANCEMENT("TimeDisplay.FontScale"), 
+                1.0f, 5.0f, "%.2fx", 1.0f, false, true, false, false)) {
+                TimeDisplayInitSettings();
+            }
+            if (UIWidgets::PaddedEnhancementCheckbox("Hide Background", CVAR_ENHANCEMENT("TimeDisplay.ShowWindowBG"), 
+                false, false)) {
+                TimeDisplayInitSettings();
+            }
+            ImGui::Separator();
+            if (UIWidgets::PaddedEnhancementCheckbox("Display Gameplay Timer", CVAR_ENHANCEMENT("TimeDisplay.Timers.InGameTimer"), 
+                false, false)) {
+                TimeDisplayUpdateDisplayOptions(DISPLAY_IN_GAME_TIMER, CVarGetInteger(CVAR_ENHANCEMENT("TimeDisplay.Timers.InGameTimer"), 0));
+            }
+            if (CVarGetInteger(CVAR_ENHANCEMENT("TimeDisplay.Timers.InGameTimer"), 0)) {
+                ImGui::PushID(DISPLAY_IN_GAME_TIMER);
+                UIWidgets::PaddedEnhancementCheckbox("Display Label", CVAR_ENHANCEMENT("TimeDisplay.Label.InGameTimer"), 
+                false, false);
+                ImGui::Separator();
+                ImGui::PopID();
+            }
+            if (UIWidgets::PaddedEnhancementCheckbox("Display Time of Day", CVAR_ENHANCEMENT("TimeDisplay.Timers.TimeofDay"), 
+                false, false)) {
+                TimeDisplayUpdateDisplayOptions(DISPLAY_TIME_OF_DAY, CVarGetInteger(CVAR_ENHANCEMENT("TimeDisplay.Timers.TimeofDay"), 0));
+            }
+            if (CVarGetInteger(CVAR_ENHANCEMENT("TimeDisplay.Timers.TimeofDay"), 0)) {
+                ImGui::PushID(DISPLAY_TIME_OF_DAY);
+                UIWidgets::PaddedEnhancementCheckbox("Display Label", CVAR_ENHANCEMENT("TimeDisplay.Label.TimeofDay"), 
+                false, false);
+                ImGui::Separator();
+                ImGui::PopID();
             }
         }
         ImGui::PopStyleVar(3);
