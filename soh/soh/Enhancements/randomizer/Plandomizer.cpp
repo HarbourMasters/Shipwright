@@ -361,13 +361,11 @@ void PlandomizerPopulateSeedList() {
     existingSeedList.clear();
     auto spoilerPath = Ship::Context::GetPathRelativeToAppDirectory("Randomizer");
 
-    if (!std::filesystem::exists(spoilerPath)) {
-        std::filesystem::create_directory(spoilerPath);
-    }
-
-    for (const auto& entry : std::filesystem::directory_iterator(spoilerPath)) {
-        if (entry.is_regular_file() && entry.path().extension() == ".json") {
-            existingSeedList.push_back(entry.path().stem().string());
+    if (std::filesystem::exists(spoilerPath)) {
+        for (const auto& entry : std::filesystem::directory_iterator(spoilerPath)) {
+            if (entry.is_regular_file() && entry.path().extension() == ".json") {
+                existingSeedList.push_back(entry.path().stem().string());
+            }
         }
     }
 }
@@ -879,15 +877,18 @@ void PlandomizerDrawOptions() {
     } else {
         ImGui::Text("No Spoiler Logs found.");
     }
-
+    ImGui::BeginDisabled(existingSeedList.empty());
     if (ImGui::Button("Load")) {
         logTemp = existingSeedList[selectedList].c_str();
         PlandomizerLoadSpoilerLog(logTemp.c_str());
     }
+    ImGui::EndDisabled();
+    ImGui::BeginDisabled(spoilerLogData.empty());
     ImGui::SameLine();
     if (ImGui::Button("Save")) {
         PlandomizerSaveSpoilerLog();
     }
+    ImGui::EndDisabled();
 
     ImGui::TableNextColumn();
     ImGui::SeparatorText("Current Seed Hash");
