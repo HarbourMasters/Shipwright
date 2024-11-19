@@ -796,13 +796,17 @@ void DrawEnhancementsMenu() {
                 UIWidgets::PaddedEnhancementCheckbox("Pause Warp", CVAR_ENHANCEMENT("PauseWarp"), true, false);
                 UIWidgets::Tooltip("Selection of warp song in pause menu initiates warp. Disables song playback.");
 
+                bool forceSleepingWaterfallEnhancement =
+                    IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SLEEPING_WATERFALL) ==
+                                    RO_WATERFALL_OPEN;
                 uint8_t forceSleepingWaterfallValue =
                     OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SLEEPING_WATERFALL) + 1;
                 static const char* forceSleepingWaterfallText =
-                    "This setting is forcefully enabled because you are playing a randomizer.";
+                    "This setting is forcefully enabled because a randomizer savefile with \"Sleeping Waterfall: Open\" is loaded.";
                 UIWidgets::PaddedText("Play Zelda's Lullaby to open Sleeping Waterfall", true, false);
                 UIWidgets::EnhancementCombobox(CVAR_ENHANCEMENT("TimeSavers.SleepingWaterfall"),
-                                               sleepingWaterfallOptions, 0, IS_RANDO, forceSleepingWaterfallText, forceSleepingWaterfallValue);
+                                               sleepingWaterfallOptions, 0, forceSleepingWaterfallEnhancement,
+                                               forceSleepingWaterfallText, forceSleepingWaterfallValue);
                 UIWidgets::Tooltip(
                     "Always: Link must always play Zelda's Lullaby to open "
                     "the waterfall entrance to Zora's Domain.\n"
