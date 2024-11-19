@@ -74,7 +74,6 @@ void DrawPresetSelector(PresetType presetTypeId) {
             applyPreset(selectedPresetDef.entries);
         }
         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-        Rando::Context::GetInstance()->GetSettings()->ReloadOptions();
     }
     ImGui::PopStyleVar(1);
 }
