@@ -361,6 +361,10 @@ void PlandomizerPopulateSeedList() {
     existingSeedList.clear();
     auto spoilerPath = Ship::Context::GetPathRelativeToAppDirectory("Randomizer");
 
+    if (!std::filesystem::exists(spoilerPath)) {
+        std::filesystem::create_directory(spoilerPath);
+    }
+
     for (const auto& entry : std::filesystem::directory_iterator(spoilerPath)) {
         if (entry.is_regular_file() && entry.path().extension() == ".json") {
             existingSeedList.push_back(entry.path().stem().string());
