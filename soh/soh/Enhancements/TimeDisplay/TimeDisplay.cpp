@@ -2,6 +2,8 @@
 #include "soh/Enhancements/gameplaystats.h"
 #include <global.h>
 
+#include "assets/textures/parameter_static/parameter_static.h"
+
 extern "C" {
 #include "macros.h"
 #include "functions.h"
@@ -12,10 +14,11 @@ uint64_t GetUnixTimestamp();
 
 float fontScale = 1.0f;
 ImVec4 windowBG = ImVec4(0, 0, 0, 0.5f);
+ImTextureID textureDisplay;
 
 std::vector<TimeObject> timeDisplayList = {
-    { DISPLAY_IN_GAME_TIMER,    "Gameplay Time",    CVAR_ENHANCEMENT("TimeDisplay.Timers.InGameTimer"), CVAR_ENHANCEMENT("TimeDisplay.Label.InGameTimer") },
-    { DISPLAY_TIME_OF_DAY,      "Time of Day",      CVAR_ENHANCEMENT("TimeDisplay.Timers.TimeofDay"),   CVAR_ENHANCEMENT("TimeDisplay.Label.TimeofDay") }
+    { DISPLAY_IN_GAME_TIMER, CVAR_ENHANCEMENT("TimeDisplay.Timers.InGameTimer") },
+    { DISPLAY_TIME_OF_DAY,   CVAR_ENHANCEMENT("TimeDisplay.Timers.TimeofDay") }
 };
 
 std::vector<TimeObject> activeTimers;
@@ -42,9 +45,11 @@ std::string timeDisplayGetTime(uint32_t timeID) {
     switch (timeID) {
         case DISPLAY_IN_GAME_TIMER:
             timeDisplayTime = formatTimeDisplay(GAMEPLAYSTAT_TOTAL_TIME).c_str();
+            textureDisplay = Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("GAMEPLAY_TIMER");
             break;
         case DISPLAY_TIME_OF_DAY:
             timeDisplayTime = convertDayTime(gSaveContext.dayTime).c_str();
+            textureDisplay = Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("GAMEPLAY_TIMER");
             break;
         default:
             break;
@@ -83,20 +88,16 @@ void TimeDisplayWindow::Draw() {
             ImGuiWindowFlags_NoTitleBar |
             ImGuiWindowFlags_NoScrollWithMouse |
             ImGuiWindowFlags_NoScrollbar);
-
+    ImGui::SetWindowFontScale(fontScale);
 	if (activeTimers.size() == 0) {
 		ImGui::Text("No Enabled Timers...");
 	} else {
-		ImGui::SetWindowFontScale(fontScale);
 		ImGui::BeginTable("Timer List", 2, ImGuiTableFlags_NoClip);
 		for (auto& timers : activeTimers) {
 			ImGui::PushID(timers.timeID);
-			ImGui::TableNextRow();
-			ImGui::TableSetColumnIndex(0);
-			if (CVarGetInteger(timers.timeLabel, 0)) {
-				ImGui::Text(timers.timeName.c_str());
-				ImGui::TableNextColumn();
-			}
+            ImGui::TableNextColumn();
+            ImGui::Image(textureDisplay, ImVec2(16.0f * fontScale, 16.0f * fontScale));
+            ImGui::TableNextColumn();
 			ImGui::Text(timeDisplayGetTime(timers.timeID).c_str());
 			ImGui::PopID();
 		}
@@ -129,6 +130,8 @@ void TimeDisplayInitTimers() {
 }
 
 void TimeDisplayWindow::InitElement() {
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("GAMEPLAY_TIMER", gClockIconTex, ImVec4(1, 1, 1, 1));
+
     TimeDisplayInitSettings();
     TimeDisplayInitTimers();
 }

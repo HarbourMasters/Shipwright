@@ -1715,23 +1715,9 @@ void DrawEnhancementsMenu() {
                 false, false)) {
                 TimeDisplayUpdateDisplayOptions(DISPLAY_IN_GAME_TIMER, CVarGetInteger(CVAR_ENHANCEMENT("TimeDisplay.Timers.InGameTimer"), 0));
             }
-            if (CVarGetInteger(CVAR_ENHANCEMENT("TimeDisplay.Timers.InGameTimer"), 0)) {
-                ImGui::PushID(DISPLAY_IN_GAME_TIMER);
-                UIWidgets::PaddedEnhancementCheckbox("Display Label", CVAR_ENHANCEMENT("TimeDisplay.Label.InGameTimer"), 
-                false, false);
-                ImGui::Separator();
-                ImGui::PopID();
-            }
             if (UIWidgets::PaddedEnhancementCheckbox("Display Time of Day", CVAR_ENHANCEMENT("TimeDisplay.Timers.TimeofDay"), 
                 false, false)) {
                 TimeDisplayUpdateDisplayOptions(DISPLAY_TIME_OF_DAY, CVarGetInteger(CVAR_ENHANCEMENT("TimeDisplay.Timers.TimeofDay"), 0));
-            }
-            if (CVarGetInteger(CVAR_ENHANCEMENT("TimeDisplay.Timers.TimeofDay"), 0)) {
-                ImGui::PushID(DISPLAY_TIME_OF_DAY);
-                UIWidgets::PaddedEnhancementCheckbox("Display Label", CVAR_ENHANCEMENT("TimeDisplay.Label.TimeofDay"), 
-                false, false);
-                ImGui::Separator();
-                ImGui::PopID();
             }
         }
         ImGui::PopStyleVar(3);

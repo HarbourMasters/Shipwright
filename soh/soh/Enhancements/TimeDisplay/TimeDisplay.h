@@ -20,7 +20,5 @@ typedef enum {
 
 typedef struct {
     uint32_t timeID;
-    std::string timeName;
     const char* timeEnable;
-    const char* timeLabel;
 } TimeObject;

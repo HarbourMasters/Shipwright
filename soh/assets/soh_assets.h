@@ -106,6 +106,12 @@ static const ALIGN_ASSET(2) char gSplitEntranceTex[] = dgSplitEntrance;
 #define dgBossSoul "__OTR__textures/parameter_static/gBossSoul"
 static const ALIGN_ASSET(2) char gBossSoulTex[] = dgBossSoul;
 
+#define dgMoon "__OTR__textures/parameter_static/gMoon"
+static const ALIGN_ASSET(2) char gMoonTex[] = dgMoon;
+
+#define dgSun "__OTR__textures/parameter_static/gSun"
+static const ALIGN_ASSET(2) char gSunTex[] = dgSun;
+
 #define dgFileSelMQButtonTex "__OTR__textures/title_static/gFileSelMQButtonTex"
 static const ALIGN_ASSET(2) char gFileSelMQButtonTex[] = dgFileSelMQButtonTex;
 
