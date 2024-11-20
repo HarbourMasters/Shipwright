@@ -3,6 +3,7 @@
 #include <global.h>
 
 #include "assets/textures/parameter_static/parameter_static.h"
+#include "assets/soh_assets.h"
 
 extern "C" {
 #include "macros.h"
@@ -14,7 +15,6 @@ uint64_t GetUnixTimestamp();
 
 float fontScale = 1.0f;
 ImVec4 windowBG = ImVec4(0, 0, 0, 0.5f);
-ImTextureID textureDisplay;
 
 std::vector<TimeObject> timeDisplayList = {
     { DISPLAY_IN_GAME_TIMER, CVAR_ENHANCEMENT("TimeDisplay.Timers.InGameTimer") },
@@ -45,16 +45,33 @@ std::string timeDisplayGetTime(uint32_t timeID) {
     switch (timeID) {
         case DISPLAY_IN_GAME_TIMER:
             timeDisplayTime = formatTimeDisplay(GAMEPLAYSTAT_TOTAL_TIME).c_str();
-            textureDisplay = Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("GAMEPLAY_TIMER");
             break;
         case DISPLAY_TIME_OF_DAY:
             timeDisplayTime = convertDayTime(gSaveContext.dayTime).c_str();
-            textureDisplay = Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("GAMEPLAY_TIMER");
             break;
         default:
             break;
     }
     return timeDisplayTime;
+}
+
+ImTextureID timeDisplayGetIcon(uint32_t timeID) {
+    ImTextureID textureDisplay;
+    switch (timeID) {
+        case DISPLAY_IN_GAME_TIMER:
+            textureDisplay = Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("GAMEPLAY_TIMER");
+            break;
+        case DISPLAY_TIME_OF_DAY:
+            if (gSaveContext.dayTime >= 17759 && !(gSaveContext.dayTime >= 49155)) {
+                textureDisplay = Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("DAY_TIME_TIMER");
+            } else {
+                textureDisplay = Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("NIGHT_TIME_TIMER");
+            }
+            break;
+        default:
+            break;
+    }
+    return textureDisplay;
 }
 
 void TimeDisplayUpdateDisplayOptions(uint32_t timeID, bool pushBack) {
@@ -96,7 +113,7 @@ void TimeDisplayWindow::Draw() {
 		for (auto& timers : activeTimers) {
 			ImGui::PushID(timers.timeID);
             ImGui::TableNextColumn();
-            ImGui::Image(textureDisplay, ImVec2(16.0f * fontScale, 16.0f * fontScale));
+            ImGui::Image(timeDisplayGetIcon(timers.timeID), ImVec2(16.0f * fontScale, 16.0f * fontScale));
             ImGui::TableNextColumn();
 			ImGui::Text(timeDisplayGetTime(timers.timeID).c_str());
 			ImGui::PopID();
@@ -131,6 +148,8 @@ void TimeDisplayInitTimers() {
 
 void TimeDisplayWindow::InitElement() {
     Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("GAMEPLAY_TIMER", gClockIconTex, ImVec4(1, 1, 1, 1));
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("DAY_TIME_TIMER", gSunIcoTex, ImVec4(1, 1, 1, 1));
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("NIGHT_TIME_TIMER", gMoonIcoTex, ImVec4(1, 1, 1, 1));
 
     TimeDisplayInitSettings();
     TimeDisplayInitTimers();
