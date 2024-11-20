@@ -801,9 +801,13 @@ void TimeSaverOnActorInitHandler(void* actorRef) {
                     shouldKeepOpen = Flags_GetEventChkInf(EVENTCHKINF_OPENED_ZORAS_DOMAIN);
                     break;
                 case 2:
-                    shouldKeepOpen = CHECK_QUEST_ITEM(QUEST_SONG_LULLABY) &&
-                                        (INV_CONTENT(ITEM_OCARINA_TIME) == ITEM_OCARINA_TIME ||
-                                        INV_CONTENT(ITEM_OCARINA_FAIRY) == ITEM_OCARINA_FAIRY);
+                    if (IS_RANDO) {
+                        shouldKeepOpen = RAND_GET_OPTION(RSK_SLEEPING_WATERFALL) == RO_WATERFALL_OPEN;
+                    } else {
+                        shouldKeepOpen = CHECK_QUEST_ITEM(QUEST_SONG_LULLABY) &&
+                                         (INV_CONTENT(ITEM_OCARINA_TIME) == ITEM_OCARINA_TIME ||
+                                          INV_CONTENT(ITEM_OCARINA_FAIRY) == ITEM_OCARINA_FAIRY);
+                    }
                     break;
                 default:
                     shouldKeepOpen = false;
