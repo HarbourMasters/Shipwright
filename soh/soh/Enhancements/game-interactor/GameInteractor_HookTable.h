@@ -23,6 +23,7 @@ DEFINE_HOOK(OnShopSlotChange, (uint8_t cursorIndex, int16_t price));
 DEFINE_HOOK(ShouldActorInit, (void* actor, bool* result));
 DEFINE_HOOK(OnActorInit, (void* actor));
 DEFINE_HOOK(OnActorUpdate, (void* actor));
+DEFINE_HOOK(OnActorDraw, (void* actor));
 DEFINE_HOOK(OnActorKill, (void* actor));
 DEFINE_HOOK(OnEnemyDefeat, (void* actor));
 DEFINE_HOOK(OnBossDefeat, (void* actor));

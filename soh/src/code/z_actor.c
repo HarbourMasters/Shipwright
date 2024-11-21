@@ -2744,6 +2744,7 @@ void Actor_Draw(PlayState* play, Actor* actor) {
     }
 
     actor->draw(actor, play);
+    GameInteractor_ExecuteOnActorDraw(actor);
 
     if (actor->colorFilterTimer != 0) {
         if (actor->colorFilterParams & 0x2000) {

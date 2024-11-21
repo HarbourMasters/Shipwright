@@ -22,6 +22,7 @@ void GameInteractor_ExecuteOnOcarinaSongAction();
 bool GameInteractor_ShouldActorInit(void* actor);
 void GameInteractor_ExecuteOnActorInit(void* actor);
 void GameInteractor_ExecuteOnActorUpdate(void* actor);
+void GameInteractor_ExecuteOnActorDraw(void* actor);
 void GameInteractor_ExecuteOnActorKill(void* actor);
 void GameInteractor_ExecuteOnEnemyDefeat(void* actor);
 void GameInteractor_ExecuteOnBossDefeat(void* actor);

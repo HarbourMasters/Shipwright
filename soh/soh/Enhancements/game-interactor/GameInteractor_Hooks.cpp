@@ -95,6 +95,13 @@ void GameInteractor_ExecuteOnActorUpdate(void* actor) {
     GameInteractor::Instance->ExecuteHooksForFilter<GameInteractor::OnActorUpdate>(actor);
 }
 
+void GameInteractor_ExecuteOnActorDraw(void* actor) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnActorDraw>(actor);
+    GameInteractor::Instance->ExecuteHooksForID<GameInteractor::OnActorDraw>(((Actor*)actor)->id, actor);
+    GameInteractor::Instance->ExecuteHooksForPtr<GameInteractor::OnActorDraw>((uintptr_t)actor, actor);
+    GameInteractor::Instance->ExecuteHooksForFilter<GameInteractor::OnActorDraw>(actor);
+}
+
 void GameInteractor_ExecuteOnActorKill(void* actor) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnActorKill>(actor);
     GameInteractor::Instance->ExecuteHooksForID<GameInteractor::OnActorKill>(((Actor*)actor)->id, actor);
