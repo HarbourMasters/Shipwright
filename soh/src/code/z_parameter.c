@@ -5682,17 +5682,19 @@ void Interface_Draw(PlayState* play) {
             }
 
             // Revert any spoiling trade quest items
-            for (svar1 = 0; svar1 < ARRAY_COUNT(gSpoilingItems); svar1++) {
-                if (INV_CONTENT(ITEM_TRADE_ADULT) == gSpoilingItems[svar1]) {
-                    gSaveContext.eventInf[0] &= 0x7F80;
-                    osSyncPrintf("EVENT_INF=%x\n", gSaveContext.eventInf[0]);
-                    play->nextEntranceIndex = spoilingItemEntrances[svar1];
-                    INV_CONTENT(gSpoilingItemReverts[svar1]) = gSpoilingItemReverts[svar1];
+            if (GameInteractor_Should(VB_REVERT_SPOILING_ITEMS, true)) {
+                for (svar1 = 0; svar1 < ARRAY_COUNT(gSpoilingItems); svar1++) {
+                    if (INV_CONTENT(ITEM_TRADE_ADULT) == gSpoilingItems[svar1]) {
+                        gSaveContext.eventInf[0] &= 0x7F80;
+                        osSyncPrintf("EVENT_INF=%x\n", gSaveContext.eventInf[0]);
+                        play->nextEntranceIndex = spoilingItemEntrances[svar1];
+                        INV_CONTENT(gSpoilingItemReverts[svar1]) = gSpoilingItemReverts[svar1];
 
-                    for (svar2 = 1; svar2 < ARRAY_COUNT(gSaveContext.equips.buttonItems); svar2++) {
-                        if (gSaveContext.equips.buttonItems[svar2] == gSpoilingItems[svar1]) {
-                            gSaveContext.equips.buttonItems[svar2] = gSpoilingItemReverts[svar1];
-                            Interface_LoadItemIcon1(play, svar2);
+                        for (svar2 = 1; svar2 < ARRAY_COUNT(gSaveContext.equips.buttonItems); svar2++) {
+                            if (gSaveContext.equips.buttonItems[svar2] == gSpoilingItems[svar1]) {
+                                gSaveContext.equips.buttonItems[svar2] = gSpoilingItemReverts[svar1];
+                                Interface_LoadItemIcon1(play, svar2);
+                            }
                         }
                     }
                 }

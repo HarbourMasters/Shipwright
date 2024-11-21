@@ -34,7 +34,7 @@ void GameOver_Update(PlayState* play) {
             gSaveContext.eventInf[1] &= ~1;
 
             // search inventory for spoiling items and revert if necessary
-            if (!(IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE))) {
+            if (GameInteractor_Should(VB_REVERT_SPOILING_ITEMS, true)) {
                 for (i = 0; i < ARRAY_COUNT(gSpoilingItems); i++) {
                     if (INV_CONTENT(ITEM_POCKET_EGG) == gSpoilingItems[i]) {
                         INV_CONTENT(gSpoilingItemReverts[i]) = gSpoilingItemReverts[i];
