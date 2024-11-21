@@ -161,7 +161,7 @@ void Entrance_Init(void) {
     }
 
     // Initialize all boss room save/death warps with their vanilla dungeon entryway
-    for (s16 i = 1; i < SHUFFLEABLE_BOSS_COUNT; i++) {
+    for (s16 i = 0; i < SHUFFLEABLE_BOSS_COUNT; i++) {
         bossSceneSaveDeathWarps[i] = dungeons[i].entryway;
     }
 
@@ -185,7 +185,7 @@ void Entrance_Init(void) {
         // Search for boss room overrides and look for the matching save/death warp value to use
         // If the boss room is in a dungeon, use the dungeons entryway as the save warp
         // Otherwise use the "exit" value for the entrance that lead to the boss room
-        for (int j = 0; j <= SHUFFLEABLE_BOSS_COUNT; j++) {
+        for (int j = 0; j < SHUFFLEABLE_BOSS_COUNT; j++) {
             if (overrideIndex == dungeons[j].bossDoor) {
                 bossScene = dungeons[j].bossScene;
             }
