@@ -112,6 +112,9 @@ static const ALIGN_ASSET(2) char gMoonIcoTex[] = dgMoonIco;
 #define dgSunIco "__OTR__textures/parameter_static/gSun"
 static const ALIGN_ASSET(2) char gSunIcoTex[] = dgSunIco;
 
+#define dgNaviIco "__OTR__textures/parameter_static/gNavi"
+static const ALIGN_ASSET(2) char dgNaviIcoTex[] = dgNaviIco;
+
 #define dgFileSelMQButtonTex "__OTR__textures/title_static/gFileSelMQButtonTex"
 static const ALIGN_ASSET(2) char gFileSelMQButtonTex[] = dgFileSelMQButtonTex;
 

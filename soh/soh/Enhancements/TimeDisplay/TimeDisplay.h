@@ -15,10 +15,15 @@ void TimeDisplayInitSettings();
 
 typedef enum {
     DISPLAY_IN_GAME_TIMER,
-    DISPLAY_TIME_OF_DAY
+    DISPLAY_TIME_OF_DAY,
+    DISPLAY_CONDITIONAL_TIMER,
+    DISPLAY_NAVI_TIMER
 };
 
 typedef struct {
     uint32_t timeID;
+    std::string timeLabel;
     const char* timeEnable;
 } TimeObject;
+
+extern std::vector<TimeObject> timeDisplayList;

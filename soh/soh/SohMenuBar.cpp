@@ -1701,9 +1701,10 @@ void DrawEnhancementsMenu() {
         if (mTimeDisplayWindow->IsVisible()) {
             ImGui::SeparatorText("Timer Display Options");
             ImGui::Text("Font Scale");
-            ImGui::SetNextItemWidth(150.0f);
-            if (UIWidgets::PaddedEnhancementSliderFloat("", "##TimeDisplayScale", CVAR_ENHANCEMENT("TimeDisplay.FontScale"), 
-                1.0f, 5.0f, "%.2fx", 1.0f, false, true, false, false)) {
+            ImGui::SameLine();
+            ImGui::SetNextItemWidth(90.0f);
+            if (UIWidgets::EnhancementSliderFloat("", "##TimeDisplayScale", CVAR_ENHANCEMENT("TimeDisplay.FontScale"), 
+                1.0f, 5.0f, "%.2fx", 1.0f, false, true)) {
                 TimeDisplayInitSettings();
             }
             if (UIWidgets::PaddedEnhancementCheckbox("Hide Background", CVAR_ENHANCEMENT("TimeDisplay.ShowWindowBG"), 
@@ -1711,13 +1712,10 @@ void DrawEnhancementsMenu() {
                 TimeDisplayInitSettings();
             }
             ImGui::Separator();
-            if (UIWidgets::PaddedEnhancementCheckbox("Display Gameplay Timer", CVAR_ENHANCEMENT("TimeDisplay.Timers.InGameTimer"), 
-                false, false)) {
-                TimeDisplayUpdateDisplayOptions(DISPLAY_IN_GAME_TIMER, CVarGetInteger(CVAR_ENHANCEMENT("TimeDisplay.Timers.InGameTimer"), 0));
-            }
-            if (UIWidgets::PaddedEnhancementCheckbox("Display Time of Day", CVAR_ENHANCEMENT("TimeDisplay.Timers.TimeofDay"), 
-                false, false)) {
-                TimeDisplayUpdateDisplayOptions(DISPLAY_TIME_OF_DAY, CVarGetInteger(CVAR_ENHANCEMENT("TimeDisplay.Timers.TimeofDay"), 0));
+            for (auto& timer : timeDisplayList) {
+                if (UIWidgets::PaddedEnhancementCheckbox(timer.timeLabel.c_str(), timer.timeEnable, false, false)) {
+                    TimeDisplayUpdateDisplayOptions(timer.timeID, CVarGetInteger(timer.timeEnable, 0));
+                }
             }
         }
         ImGui::PopStyleVar(3);
