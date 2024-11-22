@@ -1753,7 +1753,7 @@ Vec3f sLeftHandArrowVec3 = { 398.0f, 1419.0f, 244.0f };
 
 BowStringData sBowStringData[] = {
     { gLinkAdultBowStringDL, { 0.0f, -360.4f, 0.0f } },       // bow
-    { gLinkChildSlinghotStringDL, { 606.0f, 236.0f, 0.0f } }, // slingshot
+    { gLinkChildSlingshotStringDL, { 606.0f, 236.0f, 0.0f } }, // slingshot
 };
 
 Vec3f sRightHandLimbModelShieldQuadVertices[] = {

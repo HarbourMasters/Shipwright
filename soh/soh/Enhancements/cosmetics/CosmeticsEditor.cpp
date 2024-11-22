@@ -851,7 +851,7 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
         Color_RGBA8 color = CVarGetColor(equipmentSlingshotString.cvar, defaultColor);
         PATCH_GFX(gGiSlingshotDL,                                 "Equipment_SlingshotString1",equipmentSlingshotString.changedCvar, 75, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
         PATCH_GFX(gGiSlingshotDL,                                 "Equipment_SlingshotString2",equipmentSlingshotString.changedCvar, 76, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
-        PATCH_GFX(gLinkChildSlinghotStringDL,                     "Equipment_SlingshotString3",equipmentSlingshotString.changedCvar,  9, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkChildSlingshotStringDL,                    "Equipment_SlingshotString3",equipmentSlingshotString.changedCvar,  9, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
     }
 
     static CosmeticOption& equipmentBowTips = cosmeticOptions.at("Equipment.BowTips");
