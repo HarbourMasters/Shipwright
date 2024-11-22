@@ -918,8 +918,9 @@ static bool initialized = false;
 void TimeSplitWindow::DrawElement() {
     ImGui::SetWindowFontScale(timeSplitsWindowSize);
     if (!initialized) {
-        Color_RGBA8 color = CVarGetColor("TimeSplits.WindowColor", Color_RGBA8(0, 0, 0, 1));
-        windowColor = {(float)color.r / 255.0, (float)color.g / 255.0, (float)color.b / 255.0, (float)color.a / 255.0};
+        Color_RGBA8 defaultColour = {0, 0, 0, 255};
+        Color_RGBA8 color = CVarGetColor("TimeSplits.WindowColor", defaultColour);
+        windowColor = {(float)color.r / 255.0f, (float)color.g / 255.0f, (float)color.b / 255.0f, (float)color.a / 255.0f};
         InitializeSplitDataFile();
         initialized = true;
     }
