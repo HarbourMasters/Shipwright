@@ -425,7 +425,24 @@ void TimeSplitsPopUpContext() {
                     ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), 2.0f, ImVec4(0, 0, 0, 0));
             ImGui::TableNextColumn();
             ImGui::PushItemWidth(150.0f);
+
+            //Going back 3 pops in order to get the original button colours for the non-image buttons
+            ImGui::PopStyleColor(3);
+            ImGui::BeginGroup();
+            std::string MinusBTNName = " - ##Set Tokens";
+            ImGui::SameLine();
+            if (ImGui::Button(MinusBTNName.c_str()) && skullTokenCount > 0) {
+                skullTokenCount--;
+            }
+            ImGui::SameLine();
             ImGui::SliderInt("##count", &skullTokenCount, 0, 100, "%d Tokens");
+            std::string PlusBTNName = " + ##Set Tokens";
+            ImGui::SameLine();
+            if (ImGui::Button(PlusBTNName.c_str()) && skullTokenCount < 100) {
+                skullTokenCount++;
+            }
+            ImGui::EndGroup();
+
             ImGui::PopItemWidth();
             if (ImGui::Button("Set Tokens")) {
                 auto findID = std::find_if(splitObjectList.begin(), splitObjectList.end(), [&](const SplitObject& obj) { return obj.splitID == ITEM_SKULL_TOKEN; });
@@ -439,6 +456,9 @@ void TimeSplitsPopUpContext() {
                 ImGui::CloseCurrentPopup();
                 popupID = -1;
             }
+            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.0f, 1.0f, 1.0f, 0.0f));
+            ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(1.0f, 1.0f, 1.0f, 0.2f));
+            ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(1.0f, 1.0f, 1.0f, 0.1f));
             ImGui::EndTable();
         }  else {
             int rowIndex = 0;

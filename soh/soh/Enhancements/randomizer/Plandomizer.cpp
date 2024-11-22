@@ -805,13 +805,28 @@ void PlandomizerDrawItemSlots(uint32_t index) {
 }
 
 void PlandomizerDrawShopSlider(uint32_t index) {
+    //Going back 3 pops in order to get the original button colours for the non-image buttons
+    ImGui::PopStyleColor(3);
     ImGui::PushID(index);
     ImGui::Text("Price:");
     ImGui::SameLine();
-    ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x - 20.0f);
+    std::string MinusBTNName = " - ##Price";
+    if (ImGui::Button(MinusBTNName.c_str()) && plandoLogData[index].shopPrice > 0) {
+        plandoLogData[index].shopPrice--;
+    }
+    ImGui::SameLine();
+    ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x - 40.0f);
     ImGui::SliderInt("", &plandoLogData[index].shopPrice, 0, 999, "%d Rupees");
     ImGui::PopItemWidth();
+    ImGui::SameLine();
+    std::string PlusBTNName = " + ##Price";
+    if (ImGui::Button(PlusBTNName.c_str()) && plandoLogData[index].shopPrice < 999) {
+        plandoLogData[index].shopPrice++;
+    }
     ImGui::PopID();
+    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.0f, 1.0f, 1.0f, 0.0f));
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(1.0f, 1.0f, 1.0f, 0.2f));
+    ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(1.0f, 1.0f, 1.0f, 0.1f));
 }
 
 void PlandomizerDrawIceTrapSetup(uint32_t index) {

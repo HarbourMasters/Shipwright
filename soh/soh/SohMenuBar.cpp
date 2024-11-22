@@ -583,9 +583,9 @@ void DrawSettingsMenu() {
 
             ImGui::Text("Position");
             UIWidgets::EnhancementCombobox(CVAR_SETTING("Notifications.Position"), notificationPosition, 0);
-            UIWidgets::EnhancementSliderFloat("Duration: %.0f seconds", "##NotificationDuration", CVAR_SETTING("Notifications.Duration"), 3.0f, 30.0f, "", 10.0f, false, false, false);
-            UIWidgets::EnhancementSliderFloat("BG Opacity: %.1f %%", "##NotificaitonBgOpacity", CVAR_SETTING("Notifications.BgOpacity"), 0.0f, 1.0f, "", 0.5f, true, false, false);
-            UIWidgets::EnhancementSliderFloat("Size: %.1f", "##NotificaitonSize", CVAR_SETTING("Notifications.Size"), 1.0f, 5.0f, "", 1.8f, false, false, false);
+            UIWidgets::EnhancementSliderFloat("Duration: %.1f seconds", "##NotificationDuration", CVAR_SETTING("Notifications.Duration"), 3.0f, 30.0f, "", 10.0f, false, true, false);
+            UIWidgets::EnhancementSliderFloat("BG Opacity: %.1f %%", "##NotificaitonBgOpacity", CVAR_SETTING("Notifications.BgOpacity"), 0.0f, 1.0f, "", 0.5f, true, true, false);
+            UIWidgets::EnhancementSliderFloat("Size: %.1f", "##NotificaitonSize", CVAR_SETTING("Notifications.Size"), 1.0f, 20.0f, "", 1.8f, false, true, false);
 
             UIWidgets::Spacer(0);
 
@@ -714,23 +714,15 @@ void DrawEnhancementsMenu() {
                 UIWidgets::PaddedEnhancementSliderInt("Crawl speed %dx", "##CRAWLSPEED", CVAR_ENHANCEMENT("CrawlSpeed"), 1, 4, "", 1, true, false, true);
                 UIWidgets::PaddedEnhancementCheckbox("Faster Heavy Block Lift", CVAR_ENHANCEMENT("FasterHeavyBlockLift"), false, false);
                 UIWidgets::Tooltip("Speeds up lifting silver rocks and obelisks");
-                UIWidgets::PaddedEnhancementCheckbox("Faster Rupee Accumulator", CVAR_ENHANCEMENT("TimeSavers.FasterRupeeAccumulator"), false, false);
                 UIWidgets::PaddedEnhancementCheckbox("Skip Pickup Messages", CVAR_ENHANCEMENT("FastDrops"), true, false);
                 UIWidgets::Tooltip("Skip pickup messages for new consumable items and bottle swipes");
                 UIWidgets::PaddedEnhancementCheckbox("Fast Ocarina Playback", CVAR_ENHANCEMENT("FastOcarinaPlayback"), true, false);
                 UIWidgets::Tooltip("Skip the part where the Ocarina playback is called when you play a song");
-                bool forceSkipScarecrow = IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SKIP_SCARECROWS_SONG);
-                static const char* forceSkipScarecrowText = "This setting is forcefully enabled because a savefile\nwith \"Skip Scarecrow Song\" is loaded";
-                UIWidgets::PaddedEnhancementCheckbox("Skip Scarecrow Song", CVAR_ENHANCEMENT("InstantScarecrow"), true, false,
-                                                        forceSkipScarecrow, forceSkipScarecrowText, UIWidgets::CheckboxGraphics::Checkmark);
-                UIWidgets::Tooltip("Pierre appears when Ocarina is pulled out. Requires learning scarecrow song.");
                 UIWidgets::PaddedEnhancementCheckbox("Skip Magic Arrow Equip Animation", CVAR_ENHANCEMENT("SkipArrowAnimation"), true, false);
                 UIWidgets::PaddedEnhancementCheckbox("Skip save confirmation", CVAR_ENHANCEMENT("SkipSaveConfirmation"), true, false);
                 UIWidgets::Tooltip("Skip the \"Game saved.\" confirmation screen");
                 UIWidgets::PaddedEnhancementCheckbox("Faster Farore's Wind", CVAR_ENHANCEMENT("FastFarores"), true, false);
                 UIWidgets::Tooltip("Greatly decreases cast time of Farore's Wind magic spell.");
-                UIWidgets::PaddedEnhancementCheckbox("Skip water take breath animation", CVAR_ENHANCEMENT("SkipSwimDeepEndAnim"), true, false);
-                UIWidgets::Tooltip("Skips Link's taking breath animation after coming up from water. This setting does not interfere with getting items from underwater.");
 
                 ImGui::TableNextColumn();
                 UIWidgets::Spacer(0);
@@ -797,6 +789,14 @@ void DrawEnhancementsMenu() {
                     "- Not within range of Ocarina playing spots");
                 UIWidgets::PaddedEnhancementCheckbox("Pause Warp", CVAR_ENHANCEMENT("PauseWarp"), true, false);
                 UIWidgets::Tooltip("Selection of warp song in pause menu initiates warp. Disables song playback.");
+                UIWidgets::PaddedEnhancementCheckbox("Skip water take breath animation", CVAR_ENHANCEMENT("SkipSwimDeepEndAnim"), true, false);
+                UIWidgets::Tooltip("Skips Link's taking breath animation after coming up from water. This setting does not interfere with getting items from underwater.");
+                bool forceSkipScarecrow = IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SKIP_SCARECROWS_SONG);
+                static const char* forceSkipScarecrowText = "This setting is forcefully enabled because a savefile\nwith \"Skip Scarecrow Song\" is loaded";
+                UIWidgets::PaddedEnhancementCheckbox("Skip Scarecrow Song", CVAR_ENHANCEMENT("InstantScarecrow"), true, false,
+                                                        forceSkipScarecrow, forceSkipScarecrowText, UIWidgets::CheckboxGraphics::Checkmark);
+                UIWidgets::Tooltip("Pierre appears when Ocarina is pulled out. Requires learning scarecrow song.");
+
                 
                 ImGui::EndTable();
                 ImGui::EndMenu();
@@ -1268,6 +1268,9 @@ void DrawEnhancementsMenu() {
 
             UIWidgets::PaddedEnhancementCheckbox("Targetable Hookshot Reticle", CVAR_ENHANCEMENT("HookshotableReticle"), true, false);
             UIWidgets::Tooltip("Use a different color when aiming at hookshotable collision");
+
+            UIWidgets::PaddedEnhancementCheckbox("Faster Rupee Accumulator", CVAR_ENHANCEMENT("TimeSavers.FasterRupeeAccumulator"), true, false);
+            UIWidgets::Tooltip("Causes your wallet to fill and empty faster when you gain or lose money.");
 
             ImGui::EndMenu();
         }
