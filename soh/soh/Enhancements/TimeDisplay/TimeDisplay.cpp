@@ -131,7 +131,7 @@ void TimeDisplayGetTimer(uint32_t timeID) {
             } else {
                 timeDisplayTime = convertNaviTime(25800 - gSaveContext.naviTimer).c_str();
             }
-            textureDisplay = Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("GAMEPLAY_TIMER");
+            textureDisplay = Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("NAVI_TIMER");
             break;
         default:
             break;
@@ -242,6 +242,7 @@ void TimeDisplayWindow::InitElement() {
     Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("GAMEPLAY_TIMER", gClockIconTex, ImVec4(1, 1, 1, 1));
     Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("DAY_TIME_TIMER", gSunIcoTex, ImVec4(1, 1, 1, 1));
     Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("NIGHT_TIME_TIMER", gMoonIcoTex, ImVec4(1, 1, 1, 1));
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("NAVI_TIMER", gNaviIcoTex, ImVec4(1, 1, 1, 1));
 
     for (auto& load : digitList) {
         Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(load.first.c_str(), load.second, ImVec4(1, 1, 1, 1));
