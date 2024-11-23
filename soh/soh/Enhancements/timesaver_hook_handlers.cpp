@@ -263,7 +263,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                         // The switch in jabu that you are intended to press with a box to reach barrinade
                         // can be skipped by either a frame perfect roll open or with OI
                         // The One Point for that switch is used in common setups for the former and is required for the latter to work
-                        if (actor->params == 14848 && gPlayState->sceneNum == SCENE_JABU_JABU && !CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.GlitchAiding"), 0)){
+                        if (actor->params == 14848 && gPlayState->sceneNum == SCENE_JABU_JABU && CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.GlitchAiding"), 0)){
                             break;
                         }
                         BgBdanSwitch* switchActor = (BgBdanSwitch*)actor;
@@ -279,7 +279,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                         *should = false;
                         RateLimitedSuccessChime();
                         break;
-                    }
+                    }//is there a reason these aren't combined?
                     case ACTOR_BG_HIDAN_FWBIG: {
                         *should = false;
                         break;
@@ -311,6 +311,8 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                     case ACTOR_BG_SPOT18_BASKET:
                     case ACTOR_BG_HIDAN_CURTAIN:
                     case ACTOR_BG_MORI_HINERI:
+                    case ACTOR_BG_MIZU_SHUTTER:
+                    case ACTOR_SHOT_SUN:
                         *should = false;
                         RateLimitedSuccessChime();
                         break;
@@ -786,7 +788,7 @@ void TimeSaverOnActorInitHandler(void* actorRef) {
     // or poes from which the cutscene is triggered until we can have a "BeforeActorInit" hook.
     // So for now we're just going to set the flag before they get to the room the cutscene is in
     if (gPlayState->sceneNum == SCENE_FOREST_TEMPLE && actor->id == ACTOR_EN_ST && !Flags_GetSwitch(gPlayState, 0x1B)) {
-        if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.GlitchAiding"), 0)) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), 0) && !CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.GlitchAiding"), 0)) {
             Flags_SetSwitch(gPlayState, 0x1B);
         }
     }
@@ -812,7 +814,7 @@ void TimeSaverOnActorInitHandler(void* actorRef) {
 
     // Fire Temple Darunia cutscene
     if (actor->id == ACTOR_EN_DU && gPlayState->sceneNum == SCENE_FIRE_TEMPLE) {
-        if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.GlitchAiding"), 0)) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), 0) && !CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.GlitchAiding"), 0)) {
             Flags_SetInfTable(INFTABLE_SPOKE_TO_DARUNIA_IN_FIRE_TEMPLE);
             Actor_Kill(actor);
         }
