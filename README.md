@@ -101,11 +101,11 @@ If you want to playtest a continuous integration build, you can find them at the
 ### Further Reading
 More detailed documentation can be found in the 'docs' directory, including the afformentioned [building instructions](docs/BUILDING.md).
 
-*[Credits](docs/CREDITS.md)
-*[Custom Music](docs/CUSTOM_MUSIC.md)
-*[Controler Maping](docs/GAME_CONTROLLER_DB.md)
-*[Modding](docs/MODDING.md)
-*[Versioning](docs/VERSIONING.md)
+* [Credits](docs/CREDITS.md)
+* [Custom Music](docs/CUSTOM_MUSIC.md)
+* [Controler Maping](docs/GAME_CONTROLLER_DB.md)
+* [Modding](docs/MODDING.md)
+* [Versioning](docs/VERSIONING.md)
 
 <a href="https://github.com/Kenix3/libultraship/">
   <picture>
