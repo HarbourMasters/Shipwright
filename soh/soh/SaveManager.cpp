@@ -860,6 +860,12 @@ void SaveManager::InitFileNormal() {
     gSaveContext.pendingIceTrapCount = 0;
     gSaveContext.maskMemory = PLAYER_MASK_NONE;
 
+    // Used for keeping track to also switch to Roc's Feather.
+    gSaveContext.nayrusCollected = 0;
+    if (CVarGetInteger("gHoliday.aMannus.RocsFeather", 0)) {
+        INV_CONTENT(ITEM_NAYRUS_LOVE) = ITEM_ROCS_FEATHER;
+    }
+
     // Init with normal quest unless only an MQ rom is provided
     gSaveContext.questId = OTRGlobals::Instance->HasOriginal() ? QUEST_NORMAL : QUEST_MASTER;
 
@@ -979,6 +985,8 @@ void SaveManager::InitFileDebug() {
     gSaveContext.entranceIndex = ENTR_HYRULE_FIELD_PAST_BRIDGE_SPAWN;
     gSaveContext.magicLevel = 0;
     gSaveContext.sceneFlags[5].swch = 0x40000000;
+
+    gSaveContext.nayrusCollected = 1;
 }
 
 void SaveManager::InitFileMaxed() {
@@ -1121,6 +1129,8 @@ void SaveManager::InitFileMaxed() {
 
     gSaveContext.entranceIndex = ENTR_HYRULE_FIELD_PAST_BRIDGE_SPAWN;
     gSaveContext.sceneFlags[5].swch = 0x40000000;
+
+    gSaveContext.nayrusCollected = 1;
 }
 
 #if defined(__WIIU__) || defined(__SWITCH__)
@@ -2180,6 +2190,7 @@ void SaveManager::LoadBaseVersion4() {
     });
     SaveManager::Instance->LoadData("dogParams", gSaveContext.dogParams);
     SaveManager::Instance->LoadData("maskMemory", gSaveContext.maskMemory);
+    SaveManager::Instance->LoadData("nayrusCollected", gSaveContext.nayrusCollected);
 }
 
 void SaveManager::SaveBase(SaveContext* saveContext, int sectionID, bool fullSave) {
@@ -2350,6 +2361,7 @@ void SaveManager::SaveBase(SaveContext* saveContext, int sectionID, bool fullSav
     });
     SaveManager::Instance->SaveData("dogParams", saveContext->dogParams);
     SaveManager::Instance->SaveData("maskMemory", saveContext->maskMemory);
+    SaveManager::Instance->SaveData("nayrusCollected", saveContext->nayrusCollected);
 }
 
 // Load a string into a char array based on size and ensuring it is null terminated when overflowed

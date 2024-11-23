@@ -1888,6 +1888,10 @@ u8 Return_Item(u8 itemID, ModIndex modId, ItemID returnItem) {
  * @return u8 
  */
 u8 Item_Give(PlayState* play, u8 item) {
+    if (item == ITEM_NAYRUS_LOVE) {
+        gSaveContext.nayrusCollected = 1;
+    }
+
     //prevents getting sticks without the bag in case something got missed
     if (
         IS_RANDO &&

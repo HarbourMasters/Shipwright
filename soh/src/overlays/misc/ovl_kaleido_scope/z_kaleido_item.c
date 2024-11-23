@@ -2,6 +2,7 @@
 #include "textures/parameter_static/parameter_static.h"
 #include "textures/icon_item_static/icon_item_static.h"
 #include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
+#include "soh/Enhancements/rocs_feather.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
@@ -370,6 +371,16 @@ void KaleidoScope_HandleItemCycles(PlayState* play) {
         Randomizer_GetNextAdultTradeItem(),
         true
     );
+
+    // Handle Nayru's Love/Roc's Feather
+    KaleidoScope_HandleItemCycleExtras(
+        play,
+        SLOT_NAYRUS_LOVE,
+        CVarGetInteger("gHoliday.aMannus.RocsFeather", 0),
+        Enhancement_GetPrevNayrusItem(),
+        Enhancement_GetNextNayrusItem(),
+        true
+    );
 }
 
 void KaleidoScope_DrawItemCycles(PlayState* play) {
@@ -393,6 +404,16 @@ void KaleidoScope_DrawItemCycles(PlayState* play) {
         IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE),
         Randomizer_GetPrevAdultTradeItem(),
         Randomizer_GetNextAdultTradeItem()
+    );
+
+    // Draw Nayru's Love/Roc's Feather
+    KaleidoScope_DrawItemCycleExtras(
+        play,
+        SLOT_NAYRUS_LOVE,
+        CVarGetInteger("gHoliday.aMannus.RocsFeather", 0),
+        Enhancement_GetPrevNayrusItem(),
+        Enhancement_GetNextNayrusItem(),
+        true
     );
 }
 

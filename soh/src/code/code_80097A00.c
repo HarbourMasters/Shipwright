@@ -3,6 +3,8 @@
 #include "textures/icon_item_24_static/icon_item_24_static.h"
 #include "textures/parameter_static/parameter_static.h"
 
+#include "soh_assets.h"
+
 // Bit Flag array in which gBitFlags[n] is literally (1 << n)
 u32 gBitFlags[] = {
     (1 << 0),  (1 << 1),  (1 << 2),  (1 << 3),  (1 << 4),  (1 << 5),  (1 << 6),  (1 << 7),
@@ -167,6 +169,34 @@ void* gItemIcons[] = {
     gOcarinaBtnIconCLeftTex,
     gOcarinaBtnIconCRightTex,
     gOcarinaBtnIconATex,
+    // Push down array to reach newly added item IDs
+    gItemIconDekuStickTex,
+    gItemIconDekuStickTex,
+    gItemIconDekuStickTex,
+    gItemIconDekuStickTex,
+    gItemIconDekuStickTex,
+    gItemIconDekuStickTex,
+    gItemIconDekuStickTex,
+    gItemIconDekuStickTex,
+    gItemIconDekuStickTex,
+    gItemIconDekuStickTex,
+    gItemIconDekuStickTex,
+    gItemIconDekuStickTex,
+    gItemIconDekuStickTex,
+    gItemIconDekuStickTex,
+    gItemIconDekuStickTex,
+    gItemIconDekuStickTex,
+    gItemIconDekuStickTex,
+    gItemIconDekuStickTex,
+    gItemIconDekuStickTex,
+    gItemIconDekuStickTex,
+    gItemIconDekuStickTex,
+    gItemIconDekuStickTex,
+    gItemIconDekuStickTex,
+    gItemIconDekuStickTex,
+    gItemIconDekuStickTex,
+    gItemIconDekuStickTex,
+    gRocsFeather,
 };
 
 // Used to map item IDs to inventory slots
