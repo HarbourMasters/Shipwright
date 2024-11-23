@@ -99,11 +99,11 @@ If you want to playtest a continuous integration build, you can find them at the
 * [Linux](https://nightly.link/HarbourMasters/Shipwright/workflows/generate-builds/develop/soh-linux.zip)
 
 ### Further Reading
-More detailed documentation can be found in the 'docs' directory, including the afformentioned [building instructions](docs/BUILDING.md).
+More detailed documentation can be found in the 'docs' directory, including the aformentioned [building instructions](docs/BUILDING.md).
 
 * [Credits](docs/CREDITS.md)
 * [Custom Music](docs/CUSTOM_MUSIC.md)
-* [Controler Maping](docs/GAME_CONTROLLER_DB.md)
+* [Controler Mapping](docs/GAME_CONTROLLER_DB.md)
 * [Modding](docs/MODDING.md)
 * [Versioning](docs/VERSIONING.md)
 
