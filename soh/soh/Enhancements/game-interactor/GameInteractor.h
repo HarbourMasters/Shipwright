@@ -344,6 +344,7 @@ typedef enum {
     VB_PLAY_THROW_ANIMATION,
     VB_INFLICT_VOID_DAMAGE,
     VB_GANONDORF_DECIDE_TO_FIGHT,
+    VB_USE_ITEM,
 
     /*** Give Items ***/
 

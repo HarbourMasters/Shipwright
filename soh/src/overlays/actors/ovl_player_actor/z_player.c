@@ -2572,8 +2572,10 @@ void Player_ProcessItemButtons(Player* this, PlayState* play) {
                 sHeldItemButtonIsHeldDown = true;
             }
         } else {
-            this->heldItemButton = i;
-            Player_UseItem(play, this, item);
+            if (GameInteractor_Should(VB_USE_ITEM, true, &item)) {
+                this->heldItemButton = i;
+                Player_UseItem(play, this, item);
+            }
         }
     }
 }
