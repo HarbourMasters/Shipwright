@@ -7,6 +7,7 @@
 #include "z_en_elf.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include <assert.h>
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA)
 
@@ -1047,11 +1048,11 @@ void func_80A04414(EnElf* this, PlayState* play) {
     }
 
     if (this->fairyFlags & 1) {
-        if ((arrowPointedActor == NULL) || (player->unk_664 == NULL)) {
+        if ((arrowPointedActor == NULL) || (player->focusActor == NULL)) {
             this->fairyFlags ^= 1;
         }
     } else {
-        if ((arrowPointedActor != NULL) && (player->unk_664 != NULL)) {
+        if ((arrowPointedActor != NULL) && (player->focusActor != NULL)) {
             if (arrowPointedActor->category == ACTORCAT_NPC) {
                 targetSound = NA_SE_VO_NAVY_HELLO;
             } else {
@@ -1097,13 +1098,13 @@ void func_80A0461C(EnElf* this, PlayState* play) {
     } else {
         arrowPointedActor = play->actorCtx.targetCtx.arrowPointedActor;
 
-        if ((player->stateFlags1 & PLAYER_STATE1_GETTING_ITEM) || ((YREG(15) & 0x10) && func_800BC56C(play, 2))) {
+        if ((player->stateFlags1 & PLAYER_STATE1_GETTING_ITEM) || ((YREG(15) & 0x10) && Play_CheckViewpoint(play, 2))) {
             temp = 12;
             this->unk_2C0 = 100;
         } else if (arrowPointedActor == NULL || arrowPointedActor->category == ACTORCAT_NPC) {
             if (arrowPointedActor != NULL) {
                 this->unk_2C0 = 100;
-                player->stateFlags2 |= PLAYER_STATE2_NAVI_OUT;
+                player->stateFlags2 |= PLAYER_STATE2_NAVI_ACTIVE;
                 temp = 0;
             } else {
                 switch (this->unk_2A8) {
@@ -1124,7 +1125,7 @@ void func_80A0461C(EnElf* this, PlayState* play) {
                                 this->unk_2AE--;
                                 temp = 7;
                             } else {
-                                player->stateFlags2 |= PLAYER_STATE2_NAVI_OUT;
+                                player->stateFlags2 |= PLAYER_STATE2_NAVI_ACTIVE;
                                 temp = 0;
                             }
                         } else {
@@ -1154,7 +1155,7 @@ void func_80A0461C(EnElf* this, PlayState* play) {
 
         switch (temp) {
             case 0:
-                if (!(player->stateFlags2 & PLAYER_STATE2_NAVI_OUT)) {
+                if (!(player->stateFlags2 & PLAYER_STATE2_NAVI_ACTIVE)) {
                     temp = 7;
                     if (this->unk_2C7 == 0) {
                         Audio_PlayActorSound2(&this->actor, NA_SE_EV_NAVY_VANISH);
@@ -1162,7 +1163,7 @@ void func_80A0461C(EnElf* this, PlayState* play) {
                 }
                 break;
             case 8:
-                if (player->stateFlags2 & PLAYER_STATE2_NAVI_OUT) {
+                if (player->stateFlags2 & PLAYER_STATE2_NAVI_ACTIVE) {
                     func_80A0299C(this, 0x32);
                     this->unk_2C0 = 42;
                     temp = 11;
@@ -1172,10 +1173,10 @@ void func_80A0461C(EnElf* this, PlayState* play) {
                 }
                 break;
             case 7:
-                player->stateFlags2 &= ~PLAYER_STATE2_NAVI_OUT;
+                player->stateFlags2 &= ~PLAYER_STATE2_NAVI_ACTIVE;
                 break;
             default:
-                player->stateFlags2 |= PLAYER_STATE2_NAVI_OUT;
+                player->stateFlags2 |= PLAYER_STATE2_NAVI_ACTIVE;
                 break;
         }
     }
@@ -1232,7 +1233,7 @@ void func_80A04DE4(EnElf* this, PlayState* play) {
     if (this->fairyFlags & 0x10) {
         naviRefPos = play->actorCtx.targetCtx.naviRefPos;
 
-        if ((player->unk_664 == NULL) || (&player->actor == player->unk_664) || (&this->actor == player->unk_664)) {
+        if ((player->focusActor == NULL) || (&player->actor == player->focusActor) || (&this->actor == player->focusActor)) {
             naviRefPos.x = player->bodyPartsPos[7].x + (Math_SinS(player->actor.shape.rot.y) * 20.0f);
             naviRefPos.y = player->bodyPartsPos[7].y + 5.0f;
             naviRefPos.z = player->bodyPartsPos[7].z + (Math_CosS(player->actor.shape.rot.y) * 20.0f);
@@ -1384,7 +1385,7 @@ void func_80A053F0(Actor* thisx, PlayState* play) {
     EnElf* this = (EnElf*)thisx;
 
     if (player->naviTextId == 0) {
-        if (player->unk_664 == NULL) {
+        if (player->focusActor == NULL) {
             if (((gSaveContext.naviTimer >= 600) && (gSaveContext.naviTimer <= 3000)) || (nREG(89) != 0)) {
                 player->naviTextId = ElfMessage_GetCUpText(play);
 
@@ -1399,7 +1400,7 @@ void func_80A053F0(Actor* thisx, PlayState* play) {
     }
 
     if (Actor_ProcessTalkRequest(thisx, play)) {
-        func_800F4524(&D_801333D4, NA_SE_VO_SK_LAUGH, 0x20);
+        func_800F4524(&gSfxDefaultPos, NA_SE_VO_SK_LAUGH, 0x20);
         thisx->focus.pos = thisx->world.pos;
 
         if (thisx->textId == ElfMessage_GetCUpText(play)) {
@@ -1551,7 +1552,7 @@ void EnElf_Draw(Actor* thisx, PlayState* play) {
 void EnElf_GetCutsceneNextPos(Vec3f* vec, PlayState* play, s32 action) {
     Vec3f startPos;
     Vec3f endPos;
-    CsCmdActorAction* npcAction = play->csCtx.npcActions[action];
+    CsCmdActorCue* npcAction = play->csCtx.npcActions[action];
     f32 lerp;
 
     startPos.x = npcAction->startPos.x;

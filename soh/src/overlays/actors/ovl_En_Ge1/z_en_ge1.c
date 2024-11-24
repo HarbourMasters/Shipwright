@@ -8,6 +8,8 @@
 #include "vt.h"
 #include "objects/object_ge1/object_ge1.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
@@ -134,7 +136,7 @@ void EnGe1_Init(Actor* thisx, PlayState* play) {
         case GE1_TYPE_GATE_OPERATOR:
             this->hairstyle = GE1_HAIR_STRAIGHT;
 
-            if (GameInteractor_Should(VB_GERUDOS_BE_FRIENDLY, EnGe1_CheckCarpentersFreed(), NULL)) {
+            if (GameInteractor_Should(VB_GERUDOS_BE_FRIENDLY, EnGe1_CheckCarpentersFreed())) {
                 this->actionFunc = EnGe1_CheckGate_GateOp;
             } else {
                 this->actionFunc = EnGe1_WatchForPlayerFrontOnly;
@@ -144,7 +146,7 @@ void EnGe1_Init(Actor* thisx, PlayState* play) {
         case GE1_TYPE_NORMAL:
             this->hairstyle = GE1_HAIR_STRAIGHT;
 
-            if (GameInteractor_Should(VB_GERUDOS_BE_FRIENDLY, EnGe1_CheckCarpentersFreed(), NULL)) {
+            if (GameInteractor_Should(VB_GERUDOS_BE_FRIENDLY, EnGe1_CheckCarpentersFreed())) {
                 this->actionFunc = EnGe1_SetNormalText;
             } else {
                 this->actionFunc = EnGe1_WatchForAndSensePlayer;
@@ -174,7 +176,7 @@ void EnGe1_Init(Actor* thisx, PlayState* play) {
 
             if (gSaveContext.eventInf[0] & 0x100) {
                 this->actionFunc = EnGe1_TalkAfterGame_Archery;
-            } else if (GameInteractor_Should(VB_GERUDOS_BE_FRIENDLY, EnGe1_CheckCarpentersFreed(), NULL)) {
+            } else if (GameInteractor_Should(VB_GERUDOS_BE_FRIENDLY, EnGe1_CheckCarpentersFreed())) {
                 this->actionFunc = EnGe1_Wait_Archery;
             } else {
                 this->actionFunc = EnGe1_WatchForPlayerFrontOnly;
@@ -184,7 +186,7 @@ void EnGe1_Init(Actor* thisx, PlayState* play) {
         case GE1_TYPE_TRAINING_GROUNDS_GUARD:
             this->hairstyle = GE1_HAIR_STRAIGHT;
 
-            if (GameInteractor_Should(VB_GERUDOS_BE_FRIENDLY, EnGe1_CheckCarpentersFreed(), NULL)) {
+            if (GameInteractor_Should(VB_GERUDOS_BE_FRIENDLY, EnGe1_CheckCarpentersFreed())) {
                 this->actionFunc = EnGe1_CheckForCard_GTGGuard;
             } else {
                 this->actionFunc = EnGe1_WatchForPlayerFrontOnly;
@@ -270,7 +272,7 @@ void EnGe1_SpotPlayer(EnGe1* this, PlayState* play) {
     this->cutsceneTimer = 30;
     this->actionFunc = EnGe1_KickPlayer;
     Player_SetCsActionWithHaltedActors(play, &this->actor, 0x5F);
-    func_80078884(NA_SE_SY_FOUND);
+    Sfx_PlaySfxCentered(NA_SE_SY_FOUND);
     Message_StartTextbox(play, 0x6000, &this->actor);
 }
 
@@ -610,7 +612,7 @@ void EnGe1_BeginGame_Archery(EnGe1* this, PlayState* play) {
                     this->actionFunc = EnGe1_TalkTooPoor_Archery;
                 } else {
                     Rupees_ChangeBy(-20);
-                    play->nextEntranceIndex = ENTR_GERUDOS_FORTRESS_0;
+                    play->nextEntranceIndex = ENTR_GERUDOS_FORTRESS_EAST_EXIT;
                     gSaveContext.nextCutsceneIndex = 0xFFF0;
                     play->transitionType = TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_BLACK, TCS_FAST);
                     play->transitionTrigger = TRANS_TRIGGER_START;

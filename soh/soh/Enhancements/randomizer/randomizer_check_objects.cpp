@@ -6,6 +6,7 @@
 #include <libultraship/bridge.h>
 #include "z64.h"
 #include "soh/OTRGlobals.h"
+#include "soh/cvar_prefixes.h"
 #include "fishsanity.h"
 
 std::map<RandomizerCheckArea, std::string> rcAreaNames = {
@@ -119,8 +120,16 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
                  (CVarGetInteger(CVAR_RANDOMIZER_SETTING("MQDungeons"), RO_MQ_DUNGEONS_NONE) != RO_MQ_DUNGEONS_SET_NUMBER ||
                   CVarGetInteger(CVAR_RANDOMIZER_SETTING("MQDungeonCount"), 12) < 12) // at least one vanilla dungeon
              ) &&
-            (location.GetRCType() != RCTYPE_SHOP ||
-             CVarGetInteger(CVAR_RANDOMIZER_SETTING("Shopsanity"), RO_SHOPSANITY_OFF) > RO_SHOPSANITY_ZERO_ITEMS) &&
+            (
+                location.GetRCType() != RCTYPE_SHOP ||
+                !(
+                    ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_OFF) ||
+                    (
+                        ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_SPECIFIC_COUNT) &&
+                        ctx->GetOption(RSK_SHOPSANITY_COUNT).Is(RO_SHOPSANITY_COUNT_ZERO_ITEMS)
+                    )
+                )
+            ) &&
             (location.GetRCType() != RCTYPE_SCRUB ||
              CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleScrubs"), RO_SCRUBS_OFF) != RO_SCRUBS_OFF ||
              location.GetRandomizerCheck() == RC_HF_DEKU_SCRUB_GROTTO ||
@@ -143,8 +152,8 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
             (location.GetRCType() != RCTYPE_OCARINA ||
              CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleOcarinas"), RO_GENERIC_NO)) && // ocarina locations
             (location.GetRandomizerCheck() != RC_HC_ZELDAS_LETTER) && // don't show until we support shuffling letter
-            (location.GetRCType() !=
-             RCTYPE_GOSSIP_STONE) && // don't show gossip stones (maybe gossipsanity will be a thing eventually?)
+            (location.GetRCType() != RCTYPE_GOSSIP_STONE) && // don't show gossip stones (maybe gossipsanity will be a thing eventually?)
+            (location.GetRCType() != RCTYPE_STATIC_HINT) && // don't show static hints
             (location.GetRCType() != RCTYPE_LINKS_POCKET) && // links pocket can be set to nothing if needed
             (location.GetRCType() !=
              RCTYPE_CHEST_GAME) && // don't show non final reward chest game checks until we support shuffling them
@@ -165,12 +174,12 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
             (location.GetRandomizerCheck() != RC_LH_HYRULE_LOACH ||
              CVarGetInteger(CVAR_RANDOMIZER_SETTING("Fishsanity"), RO_GENERIC_NO) == RO_FISHSANITY_HYRULE_LOACH) &&
             (location.GetRandomizerCheck() != RC_ZR_MAGIC_BEAN_SALESMAN ||
-             CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleBeans"), RO_GENERIC_NO)) &&
+             CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleMerchants"), RO_SHUFFLE_MERCHANTS_OFF) % 2) &&
             (location.GetRandomizerCheck() != RC_HC_MALON_EGG ||
              CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleWeirdEgg"), RO_GENERIC_NO)) &&
             (location.GetRCType() != RCTYPE_FROG_SONG ||
              CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleFrogSongRupees"), RO_GENERIC_NO)) &&
-            (location.GetRCType() != RCTYPE_MAP_COMPASS ||
+            ((location.GetRCType() != RCTYPE_MAP && location.GetRCType() != RCTYPE_COMPASS) ||
              CVarGetInteger(CVAR_RANDOMIZER_SETTING("StartingMapsCompasses"), RO_DUNGEON_ITEM_LOC_OWN_DUNGEON) !=
                  RO_DUNGEON_ITEM_LOC_VANILLA) &&
             (location.GetRCType() != RCTYPE_SMALL_KEY ||

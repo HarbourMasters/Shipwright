@@ -398,7 +398,8 @@ s32 func_800AAA9C(View* view) {
         }
     }
 
-    if (dont_interpolate) {
+    // Ignore camera heuristics when paused as the camera moves a lot in Kaleido, allowing it to be interpolate
+    if (dont_interpolate && R_PAUSE_MENU_MODE == 0) {
         FrameInterpolation_DontInterpolateCamera();
     }
 

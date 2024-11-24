@@ -7,6 +7,7 @@
 #include "z_bg_gjyo_bridge.h"
 #include "objects/object_gjyo_objects/object_gjyo_objects.h"
 #include "scenes/dungeons/ganon_tou/ganon_tou_scene.h"
+#include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS 0
@@ -70,7 +71,7 @@ void func_808787A4(BgGjyoBridge* this, PlayState* play) {
 }
 
 void LaunchBridgeCutscene(BgGjyoBridge* this, PlayState* play) {
-    if (GameInteractor_Should(VB_PLAY_RAINBOW_BRIDGE_CS, true, NULL)) {
+    if (GameInteractor_Should(VB_PLAY_RAINBOW_BRIDGE_CS, true)) {
         play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gRainbowBridgeCs);
         gSaveContext.cutsceneTrigger = 1;
     }
@@ -92,7 +93,7 @@ void BgGjyoBridge_TriggerCutscene(BgGjyoBridge* this, PlayState* play) {
         (INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT) &&
         CheckPlayerPosition(player, play);
 
-    if (GameInteractor_Should(VB_BE_ELIGIBLE_FOR_RAINBOW_BRIDGE, vanillaBridgeCondition, NULL)) {
+    if (GameInteractor_Should(VB_BE_ELIGIBLE_FOR_RAINBOW_BRIDGE, vanillaBridgeCondition)) {
         LaunchBridgeCutscene(this, play);
     }
 }
@@ -103,7 +104,7 @@ void BgGjyoBridge_SpawnBridge(BgGjyoBridge* this, PlayState* play) {
         (play->csCtx.npcActions[2] != NULL) &&
         (play->csCtx.npcActions[2]->action == 2);
 
-    if (!GameInteractor_Should(VB_PLAY_RAINBOW_BRIDGE_CS, true, NULL) || vanillaBridgeCondition) {
+    if (!GameInteractor_Should(VB_PLAY_RAINBOW_BRIDGE_CS, true) || vanillaBridgeCondition) {
         this->dyna.actor.draw = BgGjyoBridge_Draw;
         func_8003EC50(play, &play->colCtx.dyna, this->dyna.bgId);
         Flags_SetEventChkInf(EVENTCHKINF_RAINBOW_BRIDGE_BUILT);

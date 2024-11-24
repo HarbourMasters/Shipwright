@@ -8,6 +8,8 @@
 #include "scenes/dungeons/ddan/ddan_scene.h"
 #include "objects/object_bwall/object_bwall.h"
 #include "objects/object_kingdodongo/object_kingdodongo.h"
+#include "soh/OTRGlobals.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
@@ -274,9 +276,8 @@ void BgBreakwall_Wait(BgBreakwall* this, PlayState* play) {
             }
         }
     }
-    
-    // Break the floor immediately in Boss Rush so the player can jump in the hole immediately.
-    if (this->collider.base.acFlags & 2 || blueFireArrowHit || IS_BOSS_RUSH) {
+
+    if (GameInteractor_Should(VB_BG_BREAKWALL_BREAK, this->collider.base.acFlags & 2 || blueFireArrowHit)) {
         Vec3f effectPos;
         s32 wallType = ((this->dyna.actor.params >> 13) & 3) & 0xFF;
 
@@ -307,11 +308,11 @@ void BgBreakwall_Wait(BgBreakwall* this, PlayState* play) {
                 gSaveContext.cutsceneTrigger = 1;
                 Player_SetCsActionWithHaltedActors(play, NULL, 0x31);
             }
-            Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         }
 
         if (this->dyna.actor.params < 0) {
-            Audio_PlaySoundGeneral(NA_SE_SY_TRE_BOX_APPEAR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            Audio_PlaySoundGeneral(NA_SE_SY_TRE_BOX_APPEAR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         }
 
         Actor_Kill(&this->dyna.actor);

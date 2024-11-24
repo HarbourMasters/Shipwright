@@ -200,12 +200,7 @@ void ObjComb_Update(Actor* thisx, PlayState* play) {
 
     this->unk_1B2 += 0x2EE0;
     this->actionFunc(this, play);
-    s16 wiggleOffset = this->unk_1B0;
-    
-    if (IS_RANDO && this->unk_1B0 < 0) {
-        wiggleOffset = 0;
-    }
-    this->actor.shape.rot.x = Math_SinS(this->unk_1B2) * wiggleOffset + this->actor.home.rot.x;
+    this->actor.shape.rot.x = Math_SinS(this->unk_1B2) * this->unk_1B0 + this->actor.home.rot.x;
 }
 
 void ObjComb_Draw(Actor* thisx, PlayState* play) {

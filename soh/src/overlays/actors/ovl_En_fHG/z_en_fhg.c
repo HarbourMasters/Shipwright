@@ -290,11 +290,11 @@ void EnfHG_Intro(EnfHG* this, PlayState* play) {
                 bossGnd->work[GND_EYE_STATE] = GND_EYESTATE_BRIGHTEN;
             }
             if (this->timers[0] == 35) {
-                func_80078914(&audioVec, NA_SE_EN_FANTOM_EYE);
+                Sfx_PlaySfxAtPos(&audioVec, NA_SE_EN_FANTOM_EYE);
             }
             if (this->timers[0] == 130) {
                 bossGnd->work[GND_EYE_STATE] = GND_EYESTATE_FADE;
-                func_80078914(&audioVec, NA_SE_EN_FANTOM_ST_LAUGH);
+                Sfx_PlaySfxAtPos(&audioVec, NA_SE_EN_FANTOM_ST_LAUGH);
             }
             if (this->timers[0] == 20) {
                 Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_BOSS);
@@ -468,7 +468,7 @@ void EnfHG_Approach(EnfHG* this, PlayState* play) {
         this->hoofSfxPos.y = this->actor.projectedPos.y / (this->actor.scale.x * 100.0f);
         this->hoofSfxPos.z = this->actor.projectedPos.z / (this->actor.scale.x * 100.0f);
         if ((this->gallopTimer % 8) == 0) {
-            func_80078914(&this->hoofSfxPos, NA_SE_EV_HORSE_RUN);
+            Sfx_PlaySfxAtPos(&this->hoofSfxPos, NA_SE_EV_HORSE_RUN);
         }
     }
     SkelAnime_Update(&this->skin.skelAnime);
@@ -637,7 +637,7 @@ void EnfHG_Retreat(EnfHG* this, PlayState* play) {
         this->hoofSfxPos.y = this->actor.projectedPos.y / (this->actor.scale.x * 100.0f);
         this->hoofSfxPos.z = this->actor.projectedPos.z / (this->actor.scale.x * 100.0f);
         if ((this->gallopTimer % 8) == 0) {
-            func_80078914(&this->hoofSfxPos, NA_SE_EV_HORSE_RUN);
+            Sfx_PlaySfxAtPos(&this->hoofSfxPos, NA_SE_EV_HORSE_RUN);
         }
     }
     SkelAnime_Update(&this->skin.skelAnime);

@@ -10,10 +10,10 @@
 #include "Enhancements/randomizer/item.h"
 
 #include "z64.h"
+#include "cvar_prefixes.h"
 #include "functions.h"
 #include "macros.h"
 #include <variables.h>
-#include "soh/Enhancements/boss-rush/BossRush.h"
 #include <libultraship/libultraship.h>
 #include "SohGui.hpp"
 
@@ -23,6 +23,7 @@
 #include <fstream>
 #include <filesystem>
 #include <array>
+#include <mutex>
 
 extern "C" SaveContext gSaveContext;
 using namespace std::string_literals;
@@ -110,6 +111,7 @@ SaveManager::SaveManager() {
     coreSectionIDsByName["sohStats"] = SECTION_ID_STATS;
     coreSectionIDsByName["entrances"] = SECTION_ID_ENTRANCES;
     coreSectionIDsByName["scenes"] = SECTION_ID_SCENES;
+    coreSectionIDsByName["trackerData"] = SECTION_ID_TRACKER_DATA;
     AddLoadFunction("base", 1, LoadBaseVersion1);
     AddLoadFunction("base", 2, LoadBaseVersion2);
     AddLoadFunction("base", 3, LoadBaseVersion3);
@@ -403,13 +405,6 @@ void SaveManager::LoadRandomizerVersion3() {
                 // all ItemLocations is 0 anyway.
                 randoContext->GetItemLocation(i)->SetCustomPrice(price);
             }
-            uint16_t obtained = 0; 
-            SaveManager::Instance->LoadData("obtained", obtained, (uint16_t)0);
-            if (obtained) {
-                randoContext->GetItemLocation(i)->MarkAsObtained();
-            } else {
-                randoContext->GetItemLocation(i)->MarkAsNotObtained();
-            }
         });
     });
 
@@ -495,7 +490,6 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool f
             if (randoContext->GetItemLocation(i)->HasCustomPrice()) {
                 SaveManager::Instance->SaveData("price", randoContext->GetItemLocation(i)->GetPrice());
             }
-            SaveManager::Instance->SaveData("obtained", randoContext->GetItemLocation(i)->HasObtained());
         });
     });
 
@@ -665,8 +659,8 @@ void SaveManager::Init() {
         if (std::filesystem::exists(GetFileName(fileNum))) {
             LoadFile(fileNum);
             saveBlock = nlohmann::json::object();
+            OTRGlobals::Instance->gRandoContext->ClearItemLocations();
         }
-
     }
 }
 
@@ -689,7 +683,7 @@ void SaveManager::InitMeta(int fileNum) {
     fileMetaInfo[fileNum].gsTokens = gSaveContext.inventory.gsTokens;
     fileMetaInfo[fileNum].isDoubleDefenseAcquired = gSaveContext.isDoubleDefenseAcquired;
     fileMetaInfo[fileNum].gregFound = Flags_GetRandomizerInf(RAND_INF_GREG_FOUND);
-    fileMetaInfo[fileNum].hasWallet = Flags_GetRandomizerInf(RAND_INF_HAS_WALLET);
+    fileMetaInfo[fileNum].hasWallet = Flags_GetRandomizerInf(RAND_INF_HAS_WALLET) || !IS_RANDO;
     fileMetaInfo[fileNum].defense = gSaveContext.inventory.defenseHearts;
     fileMetaInfo[fileNum].health = gSaveContext.health;
     auto randoContext = Rando::Context::GetInstance();
@@ -865,6 +859,7 @@ void SaveManager::InitFileNormal() {
     gSaveContext.pendingSaleMod = MOD_NONE;
     gSaveContext.isBossRushPaused = 0;
     gSaveContext.pendingIceTrapCount = 0;
+    gSaveContext.maskMemory = PLAYER_MASK_NONE;
 
     // Init with normal quest unless only an MQ rom is provided
     gSaveContext.questId = OTRGlobals::Instance->HasOriginal() ? QUEST_NORMAL : QUEST_MASTER;
@@ -982,7 +977,7 @@ void SaveManager::InitFileDebug() {
         }
     }
 
-    gSaveContext.entranceIndex = ENTR_HYRULE_FIELD_0;
+    gSaveContext.entranceIndex = ENTR_HYRULE_FIELD_PAST_BRIDGE_SPAWN;
     gSaveContext.magicLevel = 0;
     gSaveContext.sceneFlags[5].swch = 0x40000000;
 }
@@ -1125,7 +1120,7 @@ void SaveManager::InitFileMaxed() {
         }
     }
 
-    gSaveContext.entranceIndex = ENTR_HYRULE_FIELD_0;
+    gSaveContext.entranceIndex = ENTR_HYRULE_FIELD_PAST_BRIDGE_SPAWN;
     gSaveContext.sceneFlags[5].swch = 0x40000000;
 }
 
@@ -1158,6 +1153,7 @@ int copy_file(const char* src, const char* dst) {
 // Threaded SaveFile takes copy of gSaveContext for local unmodified storage
 
 void SaveManager::SaveFileThreaded(int fileNum, SaveContext* saveContext, int sectionID) {
+    saveMtx.lock();
     SPDLOG_INFO("Save File - fileNum: {}", fileNum);
     // Needed for first time save, hasn't changed in forever anyway
     saveBlock["version"] = 1;
@@ -1165,17 +1161,14 @@ void SaveManager::SaveFileThreaded(int fileNum, SaveContext* saveContext, int se
         for (auto& sectionHandlerPair : sectionSaveHandlers) {
             auto& saveFuncInfo = sectionHandlerPair.second;
             // Don't call SaveFuncs for sections that aren't tied to game save
-            if (!saveFuncInfo.saveWithBase) {
+            if (!saveFuncInfo.saveWithBase || (saveFuncInfo.name == "randomizer" && !IS_RANDO)) {
                 continue;
             }
             nlohmann::json& sectionBlock = saveBlock["sections"][saveFuncInfo.name];
             sectionBlock["version"] = sectionHandlerPair.second.version;
             // If any save file is loaded for medatata, or a spoiler log is loaded (not sure which at this point), there is still data in the "randomizer" section
             // This clears the randomizer data block if and only if the section being called is "randomizer" and the current save file is not a randomizer save file.
-            if (sectionHandlerPair.second.name == "randomizer" && !IS_RANDO) {
-                sectionBlock["data"] = nlohmann::json::object();
-                continue;
-            }
+
 
             currentJsonContext = &sectionBlock["data"];
             sectionHandlerPair.second.func(saveContext, sectionID, true);
@@ -1232,6 +1225,7 @@ void SaveManager::SaveFileThreaded(int fileNum, SaveContext* saveContext, int se
     InitMeta(fileNum);
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSaveFile>(fileNum);
     SPDLOG_INFO("Save File Finish - fileNum: {}", fileNum);
+    saveMtx.unlock();
 }
 
 // SaveSection creates a copy of gSaveContext to prevent mid-save data modification, and passes its reference to SaveFileThreaded
@@ -1274,6 +1268,7 @@ void SaveManager::SaveGlobal() {
 }
 
 void SaveManager::LoadFile(int fileNum) {
+    saveMtx.lock();
     SPDLOG_INFO("Load File - fileNum: {}", fileNum);
     std::filesystem::path fileName = GetFileName(fileNum);
     assert(std::filesystem::exists(fileName));
@@ -1312,6 +1307,9 @@ void SaveManager::LoadFile(int fileNum) {
                         continue;
                     }
                     currentJsonContext = &block.value()["data"];
+                    if (currentJsonContext->empty()) {
+                        continue;
+                    }
                     handler[sectionVersion]();
                 }
                 break;
@@ -1336,6 +1334,7 @@ void SaveManager::LoadFile(int fileNum) {
         SohGui::RegisterPopup("Error loading save file", "A problem occurred loading the save in slot " + std::to_string(fileNum + 1) + ".\nSave file corruption is suspected.\n" +
             "The file has been renamed to prevent further issues.");
     }
+    saveMtx.unlock();
 }
 
 void SaveManager::ThreadPoolWait() {
@@ -2181,6 +2180,7 @@ void SaveManager::LoadBaseVersion4() {
         SaveManager::Instance->LoadData("tempCollectFlags", gSaveContext.backupFW.tempCollectFlags);
     });
     SaveManager::Instance->LoadData("dogParams", gSaveContext.dogParams);
+    SaveManager::Instance->LoadData("maskMemory", gSaveContext.maskMemory);
 }
 
 void SaveManager::SaveBase(SaveContext* saveContext, int sectionID, bool fullSave) {
@@ -2350,6 +2350,7 @@ void SaveManager::SaveBase(SaveContext* saveContext, int sectionID, bool fullSav
         SaveManager::Instance->SaveData("tempCollectFlags", saveContext->backupFW.tempCollectFlags);
     });
     SaveManager::Instance->SaveData("dogParams", saveContext->dogParams);
+    SaveManager::Instance->SaveData("maskMemory", saveContext->maskMemory);
 }
 
 // Load a string into a char array based on size and ensuring it is null terminated when overflowed
@@ -2841,11 +2842,13 @@ extern "C" void Save_SaveGlobal(void) {
 }
 
 extern "C" void Save_LoadFile(void) {
+    // Handle vanilla context reset
+    OTRGlobals::Instance->gRandoContext->GetLogic()->SetContext(nullptr);
+    OTRGlobals::Instance->gRandoContext.reset();
+    OTRGlobals::Instance->gRandoContext = Rando::Context::CreateInstance();
+    OTRGlobals::Instance->gRandoContext->GetLogic()->SetSaveContext(&gSaveContext);
+
     if (SaveManager::Instance->fileMetaInfo[gSaveContext.fileNum].randoSave) {
-        // Reset rando context for rando saves.
-        OTRGlobals::Instance->gRandoContext.reset();
-        OTRGlobals::Instance->gRandoContext = Rando::Context::CreateInstance();
-        OTRGlobals::Instance->gRandoContext->SetSaveContext(&gSaveContext);
         OTRGlobals::Instance->gRandoContext->AddExcludedOptions();
         OTRGlobals::Instance->gRandoContext->GetSettings()->CreateOptions();
     }

@@ -15,6 +15,11 @@ class Settings {
     Settings();
 
     /**
+     * @brief Hides or Unhides the price UI of Shopsanity based on settings.
+     */
+    void HandleShopsanityPriceUI();
+
+    /**
      * @brief Creates the `Option` and `OptionGroup` objects. This happens after construction because certain
      * other events in the codebase need to happen before all of the `Option`s can be created.
      */
@@ -50,12 +55,12 @@ class Settings {
 
     /**
      * @brief Get a list of Location Exclude `Option`s for the given
-     * SpoilerCollectionCheckGroup
+     * RandomizerCheckArea
      *
      * @param group
      * @return std::vector<Option*>&
      */
-    std::vector<Option*>& GetExcludeOptionsForGroup(SpoilerCollectionCheckGroup group);
+    std::vector<Option*>& GetExcludeOptionsForArea(RandomizerCheckArea area);
 
     /**
      * @brief Get a reference to all of the Exclude Location `Option` lists.
@@ -175,6 +180,7 @@ class Settings {
     void ParseJson(nlohmann::json spoilerFileJson);
     std::vector<Option*> VanillaLogicDefaults = {};
     std::map<RandomizerArea, std::vector<RandomizerTrick>> mTricksByArea = {};
+    void ReloadOptions();
 
   private:
     /**
@@ -185,7 +191,7 @@ class Settings {
     std::array<std::string, RSK_MAX> mOptionDescriptions = {};
     std::array<OptionGroup, RSG_MAX> mOptionGroups = {};
     std::array<TrickOption, RT_MAX> mTrickOptions = {};
-    std::vector<std::vector<Option*>> mExcludeLocationsOptionsGroups = {};
+    std::vector<std::vector<Option*>> mExcludeLocationsOptionsAreas = {};
     std::unordered_map<std::string, RandomizerSettingKey> mSpoilerfileSettingNameToEnum;
     RandoOptionStartingAge mResolvedStartingAge =  RO_AGE_CHILD;
     RandoOptionLACSCondition mLACSCondition = RO_LACS_VANILLA;

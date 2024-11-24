@@ -19,14 +19,12 @@
 
 #define MAX_SEED_STRING_SIZE 1024
 #define NUM_TRIFORCE_PIECE_MESSAGES 6
-#define NUM_NAVI_MESSAGES 19
-#define NUM_ICE_TRAP_MESSAGES 23
+#define NUM_NAVI_MESSAGES 18
 #define NUM_GORON_MESSAGES 9
 
 class Randomizer {
   private:
     std::unordered_map<RandomizerSettingKey, u8> randoSettings;
-    bool IsItemVanilla(RandomizerGet randoGet);
 
   public:
     Randomizer();
@@ -58,19 +56,18 @@ class Randomizer {
     FishIdentity IdentifyFish(s32 sceneNum, s32 actorParams);
     GetItemEntry GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogItemId, bool checkObtainability = true);
     GetItemEntry GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogItemId, bool checkObtainability = true);
-    GetItemID GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItemID ogItemId);
     ItemObtainability GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck);
     ItemObtainability GetItemObtainabilityFromRandomizerGet(RandomizerGet randomizerCheck);
     CustomMessage GetSheikMessage(s16 scene, u16 originalTextId);
     CustomMessage GetFishingPondOwnerMessage(u16 originalTextId);
-    CustomMessage GetMerchantMessage(RandomizerInf randomizerInf, u16 textId, bool mysterious = false);
+    CustomMessage GetMerchantMessage(RandomizerCheck rc, TextIDs textId, TextIDs freeTextId = TEXT_NONE, bool mysterious = false);
     RandomizerCheck GetCheckFromActor(s16 actorId, s16 sceneNum, s16 actorParams);
     CustomMessage GetGoronMessage(u16 index);
     CustomMessage GetMapGetItemMessageWithHint(GetItemEntry itemEntry);
     static void CreateCustomMessages();
     static CustomMessage GetRupeeMessage(u16 rupeeTextId);
+    static CustomMessage GetIceTrapMessage();
     static CustomMessage GetTriforcePieceMessage();
-    bool CheckContainsVanillaItem(RandomizerCheck randoCheck);
 };
 
 #ifdef __cplusplus

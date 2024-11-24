@@ -60,12 +60,36 @@ RandomizerRegion ItemLocation::GetParentRegionKey() const {
     return parentRegion;
 }
 
-void ItemLocation::SetArea(RandomizerArea newArea) {
-    area = newArea;
+void ItemLocation::MergeAreas(std::set<RandomizerArea> newAreas) {
+    areas.merge(newAreas);
+    if (areas.size() >= 2){
+        //if we have more than 1 area, remove any RA_NONE as that's not a real area. can happen if an entrance is in 2 regions and 1 is disconnected
+        areas.erase(RA_NONE);
+    }
 }
 
-RandomizerArea ItemLocation::GetArea() const {
-    return area;
+std::set<RandomizerArea> ItemLocation::GetAreas() const {
+    return areas;
+}
+
+RandomizerArea ItemLocation::GetFirstArea() const {
+    if (areas.empty()){
+        assert(false);
+        return RA_NONE;
+    } else {
+        return *areas.begin();
+    }
+}
+
+RandomizerArea ItemLocation::GetRandomArea() const {
+    if (areas.empty()){
+        SPDLOG_DEBUG("Attempted to get random area of location with no areas: ");
+        SPDLOG_DEBUG(Rando::StaticData::GetLocation(rc)->GetName());
+        assert(false);
+        return RA_NONE;
+    } else {
+        return RandomElementFromSet(areas);
+    }
 }
 
 void ItemLocation::PlaceVanillaItem() {
@@ -74,11 +98,10 @@ void ItemLocation::PlaceVanillaItem() {
 
 void ItemLocation::ApplyPlacedItemEffect() const {
     StaticData::RetrieveItem(placedItem).ApplyEffect();
-    auto ctx = Context::GetInstance();
-    ctx->GetLogic()->UpdateHelpers();
 }
 
 uint16_t ItemLocation::GetPrice() const {
+    //RANDOTODO if we ever change price of shop items, this needs replacing with proper price assignment in Fill
     if (StaticData::RetrieveItem(placedItem).GetItemType() == ITEMTYPE_SHOP) {
         return StaticData::RetrieveItem(placedItem).GetPrice();
     }
@@ -102,15 +125,23 @@ void ItemLocation::SetCustomPrice(const uint16_t price_) {
 }
 
 bool ItemLocation::HasObtained() const {
-    return obtained;
+    return status == RCSHOW_COLLECTED || status == RCSHOW_SAVED;
 }
 
-void ItemLocation::MarkAsObtained() {
-    obtained = true;
+void ItemLocation::SetCheckStatus(RandomizerCheckStatus status_) {
+    status = status_;
 }
 
-void ItemLocation::MarkAsNotObtained() {
-    obtained = false;
+RandomizerCheckStatus ItemLocation::GetCheckStatus() {
+    return status;
+}
+
+void ItemLocation::SetIsSkipped(bool isSkipped_) {
+    isSkipped = isSkipped_;
+}
+
+bool ItemLocation::GetIsSkipped() {
+    return isSkipped;
 }
 
 bool ItemLocation::IsHintable() const {
@@ -166,13 +197,13 @@ void ItemLocation::AddExcludeOption() {
     // RANDOTODO: this without string compares and loops
     bool alreadyAdded = false;
     const Location* loc = StaticData::GetLocation(rc);
-    for (const Option* location : Context::GetInstance()->GetSettings()->GetExcludeOptionsForGroup(loc->GetCollectionCheckGroup())) {
+    for (const Option* location : Context::GetInstance()->GetSettings()->GetExcludeOptionsForArea(loc->GetArea())) {
         if (location->GetName() == excludedOption.GetName()) {
             alreadyAdded = true;
         }
     }
     if (!alreadyAdded) {
-        Context::GetInstance()->GetSettings()->GetExcludeOptionsForGroup(loc->GetCollectionCheckGroup()).push_back(&excludedOption);
+        Context::GetInstance()->GetSettings()->GetExcludeOptionsForArea(loc->GetArea()).push_back(&excludedOption);
     }
 }
 
@@ -212,7 +243,8 @@ void ItemLocation::ResetVariables() {
     hidden = false;
     wothCandidate = false;
     barrenCandidate = false;
-    area = RA_NONE;
-    obtained = false;
+    areas = {};
+    status = RCSHOW_UNCHECKED;
+    isSkipped = false;
 }
 }

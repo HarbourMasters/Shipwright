@@ -22,8 +22,10 @@ class ItemLocation {
     void SetDelayedItem(RandomizerGet item);
     RandomizerRegion GetParentRegionKey() const;
     void SetParentRegion (RandomizerRegion region);
-    RandomizerArea GetArea() const;
-    void SetArea (RandomizerArea region);
+    std::set<RandomizerArea> GetAreas() const;
+    RandomizerArea GetFirstArea() const;
+    RandomizerArea GetRandomArea() const;
+    void MergeAreas (std::set<RandomizerArea> newAreas);
     void PlaceVanillaItem();
     void ApplyPlacedItemEffect() const;
     void SaveDelayedItem();
@@ -32,8 +34,10 @@ class ItemLocation {
     bool HasCustomPrice() const;
     void SetCustomPrice(uint16_t price_);
     bool HasObtained() const;
-    void MarkAsObtained();
-    void MarkAsNotObtained();
+    void SetCheckStatus(RandomizerCheckStatus status_);
+    RandomizerCheckStatus GetCheckStatus();
+    void SetIsSkipped(bool isSkipped_);
+    bool GetIsSkipped();
     bool IsHintable() const;
     void SetAsHintable();
     bool IsAHintAccessible() const;
@@ -64,12 +68,13 @@ class ItemLocation {
     Option excludedOption = Option::Bool(StaticData::GetLocation(rc)->GetName(), {"Include", "Exclude"}, OptionCategory::Setting, "", "", WidgetType::Checkbox, RO_LOCATION_INCLUDE);
     uint16_t price = 0;
     RandomizerRegion parentRegion = RR_NONE;
-    RandomizerArea area = RA_NONE;
+    std::set<RandomizerArea> areas = {};
     bool hasCustomPrice = false;
     bool hidden = false;
     bool visibleInImGui = false;
     bool wothCandidate = false;
     bool barrenCandidate = false;
-    bool obtained = false;
+    RandomizerCheckStatus status = RCSHOW_UNCHECKED;
+    bool isSkipped = false;
 };
 } // namespace Rando

@@ -3,6 +3,8 @@
 #include "objects/object_sa/object_sa.h"
 #include "scenes/overworld/spot04/spot04_scene.h"
 #include "scenes/overworld/spot05/spot05_scene.h"
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA)
@@ -391,10 +393,10 @@ s32 func_80AF5DFC(EnSa* this, PlayState* play) {
         return 1;
     }
     if (play->sceneNum == SCENE_SACRED_FOREST_MEADOW && (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER))) {
-        return GameInteractor_Should(VB_BE_ELIGIBLE_FOR_SARIAS_SONG, !CHECK_QUEST_ITEM(QUEST_SONG_SARIA), NULL) ? 5 : 2;
+        return GameInteractor_Should(VB_BE_ELIGIBLE_FOR_SARIAS_SONG, !CHECK_QUEST_ITEM(QUEST_SONG_SARIA)) ? 5 : 2;
     }
     if (play->sceneNum == SCENE_KOKIRI_FOREST && !CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) {
-        if (GameInteractor_Should(VB_NOT_BE_GREETED_BY_SARIA, Flags_GetInfTable(INFTABLE_GREETED_BY_SARIA), NULL)) {
+        if (GameInteractor_Should(VB_NOT_BE_GREETED_BY_SARIA, Flags_GetInfTable(INFTABLE_GREETED_BY_SARIA))) {
             return 1;
         }
         return 4;
@@ -463,13 +465,13 @@ void func_80AF609C(EnSa* this) {
     }
 }
 
-void func_80AF6130(CsCmdActorAction* csAction, Vec3f* dst) {
+void func_80AF6130(CsCmdActorCue* csAction, Vec3f* dst) {
     dst->x = csAction->startPos.x;
     dst->y = csAction->startPos.y;
     dst->z = csAction->startPos.z;
 }
 
-void func_80AF6170(CsCmdActorAction* csAction, Vec3f* dst) {
+void func_80AF6170(CsCmdActorCue* csAction, Vec3f* dst) {
     dst->x = csAction->endPos.x;
     dst->y = csAction->endPos.y;
     dst->z = csAction->endPos.z;
@@ -639,7 +641,7 @@ void func_80AF68E4(EnSa* this, PlayState* play) {
     Vec3f startPos;
     Vec3f endPos;
     Vec3f D_80AF7448 = { 0.0f, 0.0f, 0.0f };
-    CsCmdActorAction* csAction;
+    CsCmdActorCue* csAction;
     f32 temp_f0;
     f32 gravity;
 
@@ -679,8 +681,8 @@ void func_80AF68E4(EnSa* this, PlayState* play) {
                 phi_v0 = this->unk_20C;
             }
             if (phi_v0 == 0) {
-                Audio_PlaySoundGeneral(NA_SE_PL_WALK_GROUND, &this->actor.projectedPos, 4, &D_801333E0, &D_801333E0,
-                                       &D_801333E8);
+                Audio_PlaySoundGeneral(NA_SE_PL_WALK_GROUND, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                                       &gSfxDefaultReverb);
                 this->unk_20C = 8;
             }
         }
@@ -708,7 +710,7 @@ void func_80AF68E4(EnSa* this, PlayState* play) {
 
 void func_80AF6B20(EnSa* this, PlayState* play) {
     if (play->sceneNum == SCENE_SACRED_FOREST_MEADOW) {
-        if (GameInteractor_Should(VB_GIVE_ITEM_SARIAS_SONG, true, NULL)) {
+        if (GameInteractor_Should(VB_GIVE_ITEM_SARIAS_SONG, true)) {
             Item_Give(play, ITEM_SONG_SARIA);
         }
         EnSa_ChangeAnim(this, ENSA_ANIM1_6);

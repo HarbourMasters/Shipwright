@@ -14,10 +14,12 @@
 
 #include "soh/UIWidgets.hpp"
 #include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 
 extern "C" {
 #include <z64.h>
 #include "macros.h"
+#include "soh/cvar_prefixes.h"
 extern PlayState* gPlayState;
 #include "objects/object_link_boy/object_link_boy.h"
 #include "objects/object_link_child/object_link_child.h"
@@ -48,9 +50,6 @@ extern PlayState* gPlayState;
 #include "objects/object_gjyo_objects/object_gjyo_objects.h"
 #include "textures/nintendo_rogo_static/nintendo_rogo_static.h"
 #include "objects/object_gi_rabit_mask/object_gi_rabit_mask.h"
-void ResourceMgr_PatchGfxByName(const char* path, const char* patchName, int index, Gfx instruction);
-void ResourceMgr_PatchGfxCopyCommandByName(const char* path, const char* patchName, int destinationIndex, int sourceIndex);
-void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName);
 u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 }
 
@@ -852,7 +851,7 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
         Color_RGBA8 color = CVarGetColor(equipmentSlingshotString.cvar, defaultColor);
         PATCH_GFX(gGiSlingshotDL,                                 "Equipment_SlingshotString1",equipmentSlingshotString.changedCvar, 75, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
         PATCH_GFX(gGiSlingshotDL,                                 "Equipment_SlingshotString2",equipmentSlingshotString.changedCvar, 76, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
-        PATCH_GFX(gLinkChildSlinghotStringDL,                     "Equipment_SlingshotString3",equipmentSlingshotString.changedCvar,  9, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkChildSlingshotStringDL,                    "Equipment_SlingshotString3",equipmentSlingshotString.changedCvar,  9, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
     }
 
     static CosmeticOption& equipmentBowTips = cosmeticOptions.at("Equipment.BowTips");
@@ -1202,6 +1201,19 @@ void C_Button_Dropdown(const char* Header_Title, const char* Table_ID, const cha
             ImGui::NewLine();
             ImGui::EndTable();
         }
+        std::shared_ptr<Ship::Controller> controller = Ship::Context::GetInstance()->GetControlDeck()->GetControllerByPort(0);
+        for (auto [id, mapping] : controller->GetButton(BTN_DDOWN)->GetAllButtonMappings()) {
+            controller->GetButton(BTN_CUSTOM_OCARINA_NOTE_F4)->AddButtonMapping(mapping);
+        }
+        for (auto [id, mapping] : controller->GetButton(BTN_DRIGHT)->GetAllButtonMappings()) {
+            controller->GetButton(BTN_CUSTOM_OCARINA_NOTE_A4)->AddButtonMapping(mapping);
+        }
+        for (auto [id, mapping] : controller->GetButton(BTN_DLEFT)->GetAllButtonMappings()) {
+            controller->GetButton(BTN_CUSTOM_OCARINA_NOTE_B4)->AddButtonMapping(mapping);
+        }
+        for (auto [id, mapping] : controller->GetButton(BTN_DUP)->GetAllButtonMappings()) {
+            controller->GetButton(BTN_CUSTOM_OCARINA_NOTE_D5)->AddButtonMapping(mapping);
+        }
     }
 }
 void Draw_Placements(){
@@ -1277,7 +1289,7 @@ void Draw_Placements(){
     C_Button_Dropdown("C Button Down position", "tablecdbtn", "C Button Down settings", "C Button Down", CVAR_COSMETIC("HUD.CDownButton"), CVAR_COSMETIC("HUD.CDownButton.PosType"), 0.87f);
     C_Button_Dropdown("C Button Left position", "tableclbtn", "C Button Left settings", "C Button Left", CVAR_COSMETIC("HUD.CLeftButton"), CVAR_COSMETIC("HUD.CLeftButton.PosType"), 0.87f);
     C_Button_Dropdown("C Button Right position", "tablecrbtn", "C Button Right settings", "C Button Right", CVAR_COSMETIC("HUD.CRightButton"), CVAR_COSMETIC("HUD.CRightButton.PosType"), 0.87f);
-    if (CVarGetInteger(CVAR_SETTING("DpadEquips"),0) && ImGui::CollapsingHeader("DPad items position")) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("DpadEquips"), 0) && ImGui::CollapsingHeader("DPad items position")) {
         if (ImGui::BeginTable("tabledpaditems", 1, FlagsTable)) {
             ImGui::TableSetupColumn("DPad items settings", FlagsCell, TablesCellsWidth);
             Table_InitHeader(false);
@@ -1381,7 +1393,7 @@ void DrawSillyTab() {
     Reset_Option_Single("Reset##BunnyHood_EarLength", CVAR_COSMETIC("BunnyHood.EarLength"));
     UIWidgets::EnhancementSliderFloat("Bunny Hood Spread: %f", "##BunnyHood_EarSpread", CVAR_COSMETIC("BunnyHood.EarSpread"), -300.0f, 500.0f, "", 0.0f, false);
     Reset_Option_Single("Reset##BunnyHood_EarSpread", CVAR_COSMETIC("BunnyHood.EarSpread"));
-    UIWidgets::EnhancementSliderFloat("Goron Neck Length: %f", "##Goron_NeckLength", CVAR_COSMETIC("Goron.NeckLength"), 0.0f, 1000.0f, "", 0.0f, false);
+    UIWidgets::EnhancementSliderFloat("Goron Neck Length: %f", "##Goron_NeckLength", CVAR_COSMETIC("Goron.NeckLength"), 0.0f, 5000.0f, "", 0.0f, false);
     Reset_Option_Single("Reset##Goron_NeckLength", CVAR_COSMETIC("Goron.NeckLength"));
     UIWidgets::EnhancementCheckbox("Unfix Goron Spin", CVAR_COSMETIC("UnfixGoronSpin"));
     UIWidgets::EnhancementSliderFloat("Fairies Size: %f", "##Fairies_Size", CVAR_COSMETIC("Fairies.Size"), 0.25f, 5.0f, "", 1.0f, false);
@@ -1688,12 +1700,6 @@ static const char* colorSchemes[2] = {
 };
 
 void CosmeticsEditorWindow::DrawElement() {
-    ImGui::SetNextWindowSize(ImVec2(550, 520), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Cosmetics Editor", &mIsVisible)) {
-        ImGui::End();
-        return;
-    }
-
     ImGui::Text("Color Scheme");
     ImGui::SameLine();
     UIWidgets::EnhancementCombobox(CVAR_COSMETIC("DefaultColorScheme"), colorSchemes, COLORSCHEME_N64);
@@ -1812,7 +1818,6 @@ void CosmeticsEditorWindow::DrawElement() {
         }
         ImGui::EndTabBar();
     }
-    ImGui::End();
 }
 
 void RegisterOnLoadGameHook() {

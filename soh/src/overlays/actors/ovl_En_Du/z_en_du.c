@@ -1,6 +1,7 @@
 #include "z_en_du.h"
 #include "objects/object_du/object_du.h"
 #include "scenes/overworld/spot18/spot18_scene.h"
+#include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_NO_FREEZE_OCARINA)
@@ -254,13 +255,13 @@ void func_809FDE9C(EnDu* this) {
     }
 }
 
-void func_809FDFC0(CsCmdActorAction* csAction, Vec3f* dst) {
+void func_809FDFC0(CsCmdActorCue* csAction, Vec3f* dst) {
     dst->x = csAction->startPos.x;
     dst->y = csAction->startPos.y;
     dst->z = csAction->startPos.z;
 }
 
-void func_809FE000(CsCmdActorAction* csAction, Vec3f* dst) {
+void func_809FE000(CsCmdActorCue* csAction, Vec3f* dst) {
     dst->x = csAction->endPos.x;
     dst->y = csAction->endPos.y;
     dst->z = csAction->endPos.z;
@@ -377,7 +378,7 @@ void func_809FE4A4(EnDu* this, PlayState* play) {
         play->msgCtx.ocarinaMode = OCARINA_MODE_00;
         EnDu_SetupAction(this, func_809FE3C0);
     } else if (play->msgCtx.ocarinaMode >= OCARINA_MODE_06) {
-        if (GameInteractor_Should(VB_PLAY_DARUNIAS_JOY_CS, true, NULL)) {
+        if (GameInteractor_Should(VB_PLAY_DARUNIAS_JOY_CS, true)) {
             play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gGoronCityDaruniaWrongCs);
             gSaveContext.cutsceneTrigger = 1;
         }
@@ -385,8 +386,8 @@ void func_809FE4A4(EnDu* this, PlayState* play) {
         EnDu_SetupAction(this, func_809FE890);
         play->msgCtx.ocarinaMode = OCARINA_MODE_04;
     } else if (play->msgCtx.ocarinaMode == OCARINA_MODE_03) {
-        Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-        if (GameInteractor_Should(VB_PLAY_DARUNIAS_JOY_CS, true, NULL)) {
+        Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        if (GameInteractor_Should(VB_PLAY_DARUNIAS_JOY_CS, true)) {
             play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gGoronCityDaruniaCorrectCs);
             gSaveContext.cutsceneTrigger = 1;
         }
@@ -473,7 +474,7 @@ void func_809FE890(EnDu* this, PlayState* play) {
     Vec3f startPos;
     Vec3f endPos;
     Vec3f velocity = { 0.0f, 0.0f, 0.0f };
-    CsCmdActorAction* csAction;
+    CsCmdActorCue* csAction;
 
     if (play->csCtx.state == CS_STATE_IDLE) {
         Player_SetCsActionWithHaltedActors(play, &this->actor, 1);
@@ -554,7 +555,7 @@ void func_809FEB08(EnDu* this, PlayState* play) {
         EnDu_SetupAction(this, func_809FE3C0);
         return;
     }
-    if (GameInteractor_Should(VB_BE_ELIGIBLE_FOR_DARUNIAS_JOY_REWARD, CUR_UPG_VALUE(UPG_STRENGTH) <= 0, NULL)) {
+    if (GameInteractor_Should(VB_BE_ELIGIBLE_FOR_DARUNIAS_JOY_REWARD, CUR_UPG_VALUE(UPG_STRENGTH) <= 0)) {
         Flags_SetRandomizerInf(RAND_INF_DARUNIAS_JOY);
         this->actor.textId = 0x301C;
         EnDu_SetupAction(this, func_809FEC14);
@@ -576,7 +577,7 @@ void func_809FEC14(EnDu* this, PlayState* play) {
 }
 
 void func_809FEC70(EnDu* this, PlayState* play) {
-    if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(VB_GIVE_ITEM_STRENGTH_1, true, NULL)) {
+    if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(VB_GIVE_ITEM_STRENGTH_1, true)) {
         this->actor.parent = NULL;
         EnDu_SetupAction(this, func_809FECE4);
     } else {

@@ -4,24 +4,25 @@
 
 #include <z64.h>
 #include "randomizerTypes.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-typedef struct FishsanityPondOptions {
+typedef struct {
     u8 mode;
     u8 numFish;
     bool ageSplit;
 } FishsanityPondOptions;
 
-typedef enum FishsanityOptionsSource {
+typedef enum {
     FSO_SOURCE_RANDO,
     FSO_SOURCE_CVARS
-};
+} FishsanityOptionsSource;
 
-typedef enum FishsanityCheckType {
+typedef enum {
     FSC_NONE,
     FSC_POND,
     FSC_GROTTO,
     FSC_ZD,
-};
+} FishsanityCheckType;
 
 #ifdef __cplusplus
 namespace Rando {
@@ -128,15 +129,34 @@ class Fishsanity {
     FishIdentity AdvancePond();
 
     /**
-     * @brief Set the currently held fish
-     * @param fish Pointer to FishIdentity to copy
+     * @brief ActorInit hook handler for fishsanity
     */
-    void SetPendingFish(FishIdentity* fish);
+    static void OnActorInitHandler(void* refActor);
 
     /**
-     * @brief Get the currently held fish
+     * @brief FlagSet hook handler for fishsanity
     */
-    FishIdentity GetPendingFish();
+    static void OnFlagSetHandler(int16_t flagType, int16_t flag);
+
+    /**
+     * @brief PlayerUpdate hook handler for fishsanity
+    */
+    static void OnPlayerUpdateHandler();
+
+    /**
+     * @brief ActorUpdate hook handler for fishsanity
+    */
+    static void OnActorUpdateHandler(void* refActor);
+
+    /**
+     * @brief SceneInit hook handler for fishsanity
+    */
+    static void OnSceneInitHandler(int16_t sceneNum);
+
+    /**
+     * @brief VB hook handler for fishsanity
+    */
+    static void OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_list originalArgs);
 
   private:
     /**
@@ -152,21 +172,18 @@ class Fishsanity {
      * @return The FishIdentity for the described fish
     */
     static FishIdentity GetPondFish(s16 params, bool adultPond);
-    
+
     /**
      * @brief Current pond fish when all pond fish are not randomized
     */
     std::pair<FishIdentity, FishIdentity> mCurrPondFish;
     
     /**
-     * @brief Identity of the last-caught fish in the fishing pond minigame awaiting reward
-    */
-    FishIdentity mPendingFish;
-    
-    /**
      * @brief True if fishsanity helpers have been initialized
     */
     static bool fishsanityHelpersInit;
+
+    static s16 fishGroupCounter;
 
     /////////////////////////////////////////////////////////
     //// Helper data structures derived from static data ////
@@ -197,10 +214,12 @@ bool Randomizer_GetPondFishShuffled();
 bool Randomizer_GetOverworldFishShuffled();
 /// Returns true if the adult fishing pond should be used for fishsanity.
 bool Randomizer_IsAdultPond();
-/// Sets the pending fish
-void Randomizer_SetPendingFish(FishIdentity* fish);
 /// Custom shadow draw function to add effect to uncollected fish
 void Fishsanity_DrawEffShadow(Actor* actor, Lights* lights, PlayState* play);
+/// Overriden actor draw function for bottleable fish
+void Fishsanity_DrawEnFish(struct Actor* actor, struct PlayState* play);
+/// Overriden actor draw function for the fishing pond
+void Fishsanity_DrawFishing(struct Actor* actor, struct PlayState* play);
 void Fishsanity_OpenGreyscaleColor(PlayState* play, Color_RGBA16* color, int16_t frameOffset);
 void Fishsanity_CloseGreyscaleColor(PlayState* play);
 #ifdef __cplusplus

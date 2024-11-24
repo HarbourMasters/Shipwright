@@ -100,7 +100,7 @@ void DungeonInfo::PlaceVanillaMap() const {
 
     auto dungeonLocations = GetDungeonLocations();
     const auto mapLocation = FilterFromPool(dungeonLocations, [](const RandomizerCheck loc) {
-        return StaticData::GetLocation(loc)->IsCategory(Category::cVanillaMap);
+        return StaticData::GetLocation(loc)->GetRCType() == RCTYPE_MAP;
     })[0];
     Context::GetInstance()->PlaceItemInLocation(mapLocation, map);
 }
@@ -112,7 +112,7 @@ void DungeonInfo::PlaceVanillaCompass() const {
 
     auto dungeonLocations = GetDungeonLocations();
     const auto compassLocation = FilterFromPool(dungeonLocations, [](const RandomizerCheck loc) {
-        return StaticData::GetLocation(loc)->IsCategory(Category::cVanillaCompass);
+        return StaticData::GetLocation(loc)->GetRCType() == RCTYPE_COMPASS;
     })[0];
     Context::GetInstance()->PlaceItemInLocation(compassLocation, compass);
 }
@@ -124,7 +124,7 @@ void DungeonInfo::PlaceVanillaBossKey() const {
 
     auto dungeonLocations = GetDungeonLocations();
     const auto bossKeyLocation = FilterFromPool(dungeonLocations, [](const RandomizerCheck loc) {
-        return StaticData::GetLocation(loc)->IsCategory(Category::cVanillaBossKey);
+        return StaticData::GetLocation(loc)->GetRCType() == RCTYPE_BOSS_KEY;
     })[0];
     Context::GetInstance()->PlaceItemInLocation(bossKeyLocation, bossKey);
 }
@@ -136,7 +136,7 @@ void DungeonInfo::PlaceVanillaSmallKeys() const {
 
     auto dungeonLocations = GetDungeonLocations();
     const auto smallKeyLocations = FilterFromPool(dungeonLocations, [](const RandomizerCheck loc) {
-        return StaticData::GetLocation(loc)->IsCategory(Category::cVanillaSmallKey);
+        return StaticData::GetLocation(loc)->GetRCType() == RCTYPE_SMALL_KEY;
     });
     for (const auto location : smallKeyLocations) {
         Context::GetInstance()->PlaceItemInLocation(location, smallKey);
@@ -187,7 +187,7 @@ Dungeons::Dungeons() {
                         RC_DEKU_TREE_MQ_AFTER_SPINNING_LOG_CHEST,
                         RC_DEKU_TREE_MQ_DEKU_SCRUB,
                         RC_DEKU_TREE_MQ_GS_LOBBY,
-                        RC_DEKU_TREE_MQ_GS_COMPASS_ROOM,
+                        RC_DEKU_TREE_MQ_GS_PAST_BOULDER_VINES,
                         RC_DEKU_TREE_MQ_GS_BASEMENT_GRAVES_ROOM,
                         RC_DEKU_TREE_MQ_GS_BASEMENT_BACK_ROOM,
                     },
@@ -523,7 +523,7 @@ Dungeons::Dungeons() {
                         RC_FIRE_TEMPLE_MQ_BIG_LAVA_ROOM_BLOCKED_DOOR_CHEST,
                         RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_SIDE_ROOM_CHEST,
                         RC_FIRE_TEMPLE_MQ_FREESTANDING_KEY,
-                        RC_FIRE_TEMPLE_MQ_GS_ABOVE_FIRE_WALL_MAZE,
+                        RC_FIRE_TEMPLE_MQ_GS_ABOVE_FIRE_MAZE,
                         RC_FIRE_TEMPLE_MQ_GS_FIRE_WALL_MAZE_CENTER,
                         RC_FIRE_TEMPLE_MQ_GS_BIG_LAVA_ROOM_OPEN_DOOR,
                         RC_FIRE_TEMPLE_MQ_GS_FIRE_WALL_MAZE_SIDE_ROOM,

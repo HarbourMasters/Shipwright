@@ -6,6 +6,7 @@
 
 #include "z_item_etcetera.h"
 #include <assert.h>
+#include "soh/OTRGlobals.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
@@ -50,7 +51,7 @@ static s16 sDrawItemIndexes[] = {
 };
 
 static s16 sGetItemIds[] = {
-    GI_BOTTLE,     GI_LETTER_RUTO, GI_SHIELD_HYLIAN, GI_QUIVER_40, GI_SCALE_SILVER, GI_SCALE_GOLD, GI_KEY_SMALL,
+    GI_BOTTLE,     GI_LETTER_RUTO, GI_SHIELD_HYLIAN, GI_QUIVER_40, GI_SCALE_SILVER, GI_SCALE_GOLDEN, GI_KEY_SMALL,
     GI_ARROW_FIRE, GI_NONE,        GI_NONE,          GI_NONE,      GI_NONE,         GI_NONE,       GI_NONE,
 };
 

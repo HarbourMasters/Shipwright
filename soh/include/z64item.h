@@ -387,7 +387,7 @@ typedef enum {
     /* 0x35 */ GI_GAUNTLETS_SILVER,
     /* 0x36 */ GI_GAUNTLETS_GOLD,
     /* 0x37 */ GI_SCALE_SILVER,
-    /* 0x38 */ GI_SCALE_GOLD,
+    /* 0x38 */ GI_SCALE_GOLDEN,
     /* 0x39 */ GI_STONE_OF_AGONY,
     /* 0x3A */ GI_GERUDO_CARD,
     /* 0x3B */ GI_OCARINA_FAIRY, // uses Ocarina of Time message ID

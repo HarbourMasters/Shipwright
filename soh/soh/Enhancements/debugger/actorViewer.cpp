@@ -13,6 +13,7 @@
 #include <libultraship/bridge.h>
 #include <libultraship/libultraship.h>
 #include "soh/OTRGlobals.h"
+#include "soh/cvar_prefixes.h"
 
 extern "C" {
 #include <z64.h>
@@ -925,12 +926,6 @@ void ActorViewer_AddTagForAllActors() {
 }
 
 void ActorViewerWindow::DrawElement() {
-    ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Actor Viewer", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
-        ImGui::End();
-        return;
-    }
-
     static Actor* display;
     static Actor empty{};
     static Actor* fetch = NULL;
@@ -1066,7 +1061,7 @@ void ActorViewerWindow::DrawElement() {
 
             if (ImGui::Button("Fetch from Target")) {
                 Player* player = GET_PLAYER(gPlayState);
-                fetch = player->targetActor;
+                fetch = player->talkActor;
                 if (fetch != NULL) {
                     display = fetch;
                     category = fetch->category;
@@ -1180,7 +1175,7 @@ void ActorViewerWindow::DrawElement() {
                     Actor_Spawn(&gPlayState->actorCtx, gPlayState, newActor.id, newActor.pos.x, newActor.pos.y,
                                 newActor.pos.z, newActor.rot.x, newActor.rot.y, newActor.rot.z, newActor.params, 0);
                 } else {
-                    func_80078884(NA_SE_SY_ERROR);
+                    Sfx_PlaySfxCentered(NA_SE_SY_ERROR);
                 }
             }
 
@@ -1193,7 +1188,7 @@ void ActorViewerWindow::DrawElement() {
                                            newActor.pos.y, newActor.pos.z, newActor.rot.x, newActor.rot.y,
                                            newActor.rot.z, newActor.params);
                     } else {
-                        func_80078884(NA_SE_SY_ERROR);
+                        Sfx_PlaySfxCentered(NA_SE_SY_ERROR);
                     }
                 }
             }
@@ -1235,8 +1230,6 @@ void ActorViewerWindow::DrawElement() {
             actors.clear();
         }
     }
-
-    ImGui::End();
 }
 
 void ActorViewerWindow::InitElement() {

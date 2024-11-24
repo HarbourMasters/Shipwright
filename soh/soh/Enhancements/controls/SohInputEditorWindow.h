@@ -12,7 +12,7 @@
 #include <set>
 #include <list>
 
-typedef uint32_t N64ButtonMask;
+typedef CONTROLLERBUTTONS_T N64ButtonMask;
 
 typedef struct {
     const char* label;
@@ -40,9 +40,9 @@ class SohInputEditorWindow : public Ship::GuiWindow {
   private:
     void DrawStickDirectionLine(const char* axisDirectionName, uint8_t port, uint8_t stick, Ship::Direction direction,
                                 ImVec4 color);
-    void DrawButtonLine(const char* buttonName, uint8_t port, uint16_t bitmask, ImVec4 color);
-    void DrawButtonLineEditMappingButton(uint8_t port, uint16_t bitmask, std::string id);
-    void DrawButtonLineAddMappingButton(uint8_t port, uint16_t bitmask);
+    void DrawButtonLine(const char* buttonName, uint8_t port, N64ButtonMask bitmask, ImVec4 color);
+    void DrawButtonLineEditMappingButton(uint8_t port, N64ButtonMask bitmask, std::string id);
+    void DrawButtonLineAddMappingButton(uint8_t port, N64ButtonMask bitmask);
 
     void DrawStickDirectionLineEditMappingButton(uint8_t port, uint8_t stick, Ship::Direction direction, std::string id);
     void DrawStickDirectionLineAddMappingButton(uint8_t port, uint8_t stick, Ship::Direction direction);
@@ -69,7 +69,6 @@ class SohInputEditorWindow : public Ship::GuiWindow {
     void DrawOcarinaControlPanel();
     void DrawCameraControlPanel();
     void DrawDpadControlPanel();
-    void DrawMiscControlPanel();
 
     int32_t mGameInputBlockTimer;
     int32_t mMappingInputBlockTimer;
@@ -77,7 +76,7 @@ class SohInputEditorWindow : public Ship::GuiWindow {
     std::shared_ptr<Ship::ControllerRumbleMapping> mRumbleMappingToTest;
 
     // mBitmaskToMappingIds[port][bitmask] = { id0, id1, ... }
-    std::unordered_map<uint8_t, std::unordered_map<uint16_t, std::vector<std::string>>> mBitmaskToMappingIds;
+    std::unordered_map<uint8_t, std::unordered_map<N64ButtonMask, std::vector<std::string>>> mBitmaskToMappingIds;
 
     // mStickDirectionToMappingIds[port][stick][direction] = { id0, id1, ... }
     std::unordered_map<uint8_t,
@@ -92,10 +91,11 @@ class SohInputEditorWindow : public Ship::GuiWindow {
     void DrawLinkTab();
     void DrawIvanTab();
     void DrawDebugPortTab(uint8_t portIndex, std::string customName = "");
-    std::set<uint16_t> mButtonsBitmasks;
-    std::set<uint16_t> mDpadBitmasks;
-    std::set<uint16_t> mModifierButtonsBitmasks;
-    void DrawButtonDeviceIcons(uint8_t portIndex, std::set<uint16_t> bitmasks);
+    std::set<N64ButtonMask> mButtonsBitmasks;
+    std::set<N64ButtonMask> mDpadBitmasks;
+    std::set<N64ButtonMask> mModifierButtonsBitmasks;
+    std::set<N64ButtonMask> mCustomOcarinaButtonsBitmasks;
+    void DrawButtonDeviceIcons(uint8_t portIndex, std::set<N64ButtonMask> bitmasks);
     void DrawAnalogStickDeviceIcons(uint8_t portIndex, Ship::Stick stick);
     void DrawRumbleDeviceIcons(uint8_t portIndex);
     void DrawGyroDeviceIcons(uint8_t portIndex);

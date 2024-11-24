@@ -13,5 +13,7 @@ void TimeSavers_Register();
     void SkipIntro_Register();
 // SkipMiscInteractions
     void MoveMidoInKokiriForest_Register();
+void FasterHeavyBlockLift_Register();
+void FasterRupeeAccumulator_Register();
 
 #endif // TIME_SAVERS_H

@@ -5,6 +5,7 @@
 #include "objects/object_toki_objects/object_toki_objects.h"
 #include "soh/frame_interpolation.h"
 #include <assert.h>
+#include "soh/OTRGlobals.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
@@ -257,7 +258,7 @@ void DemoKankyo_Init(Actor* thisx, PlayState* play) {
             this->sparkleCounter = 0;
             this->actor.scale.x = this->actor.scale.y = this->actor.scale.z = 1.0f;
             if (this->actor.params == DEMOKANKYO_WARP_OUT) {
-                Audio_PlaySoundGeneral(NA_SE_EV_SARIA_MELODY, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                Audio_PlaySoundGeneral(NA_SE_EV_SARIA_MELODY, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             }
             break;
         case DEMOKANKYO_SPARKLES:
@@ -376,7 +377,7 @@ void DemoKankyo_DoNothing2(DemoKankyo* this, PlayState* play) {
 void DemoKankyo_SetRockPos(DemoKankyo* this, PlayState* play, s32 params) {
     Vec3f startPos;
     Vec3f endPos;
-    CsCmdActorAction* csAction = play->csCtx.npcActions[params];
+    CsCmdActorCue* csAction = play->csCtx.npcActions[params];
     f32 temp_f0;
 
     startPos.x = csAction->startPos.x;
@@ -426,12 +427,6 @@ void DemoKankyo_KillDoorOfTimeCollision(DemoKankyo* this, PlayState* play) {
 void DemoKankyo_Update(Actor* thisx, PlayState* play) {
     DemoKankyo* this = (DemoKankyo*)thisx;
     this->actionFunc(this, play);
-
-    // In ER, override the warp song locations. Also removes the warp song cutscene
-    if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES) &&
-        thisx->params == 0x000F) { // Warp Song particles
-        Entrance_SetWarpSongEntrance();
-    }
 }
 
 void DemoKankyo_Draw(Actor* thisx, PlayState* play) {
@@ -567,7 +562,7 @@ void DemoKankyo_DrawRain(Actor* thisx, PlayState* play) {
                     if (this->unk_150[i].unk_C.y + this->unk_150[i].unk_0.y < temp_f12_2 - 300.0f) {
                         this->unk_150[i].unk_22++;
                     }
-                } else if (gSaveContext.entranceIndex == ENTR_HYRULE_FIELD_0) { // Hyrule Field
+                } else if (gSaveContext.entranceIndex == ENTR_HYRULE_FIELD_PAST_BRIDGE_SPAWN) { // Hyrule Field
                     if (temp_f12_2 + 300.0f < this->unk_150[i].unk_C.y + this->unk_150[i].unk_0.y) {
                         this->unk_150[i].unk_22++;
                     }
@@ -591,7 +586,7 @@ void DemoKankyo_DrawRain(Actor* thisx, PlayState* play) {
         }
 
         gDPPipeSync(POLY_XLU_DISP++);
-        if (gSaveContext.entranceIndex == ENTR_HYRULE_FIELD_0) { // Hyrule Field
+        if (gSaveContext.entranceIndex == ENTR_HYRULE_FIELD_PAST_BRIDGE_SPAWN) { // Hyrule Field
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, 255);
             gDPSetEnvColor(POLY_XLU_DISP++, 255, 255, 0, 255);
         } else {
@@ -824,8 +819,8 @@ void DemoKankyo_DrawWarpSparkles(Actor* thisx, PlayState* play) {
                         this->unk_150[i].unk_22++;
                     }
                 } else {
-                    Audio_PlaySoundGeneral(NA_SE_EV_LINK_WARP_OUT - SFX_FLAG, &D_801333D4, 4, &D_801333E0, &D_801333E0,
-                                           &D_801333E8);
+                    Audio_PlaySoundGeneral(NA_SE_EV_LINK_WARP_OUT - SFX_FLAG, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                                           &gSfxDefaultReverb);
                     if (func_800BB2B4(&camPos, &sWarpRoll, &sWarpFoV, sWarpInCameraPoints, &this->unk_150[i].unk_20,
                                       &this->unk_150[i].unk_1C) != 0) {
                         this->unk_150[i].unk_22++;

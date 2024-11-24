@@ -1,5 +1,6 @@
 #include "savefile.h"
 #include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 extern "C" {
@@ -8,7 +9,6 @@ extern "C" {
 #include "functions.h"
 #include "macros.h"
 
-uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
 uint8_t Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 GetItemEntry Randomizer_GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
 }
@@ -32,7 +32,7 @@ void StartingItemGive(GetItemEntry getItemEntry) {
 // Item_Give in z_parameter, we'll need to update Item_Give to ensure
 // nothing breaks when calling it without a valid play first
 void GiveLinkRupees(int numOfRupees) {
-    int maxRupeeCount;
+    int maxRupeeCount = 0;
     if (CUR_UPG_VALUE(UPG_WALLET) == 0) {
         maxRupeeCount = 99;
     } else if (CUR_UPG_VALUE(UPG_WALLET) == 1) {
@@ -52,7 +52,7 @@ void GiveLinkRupees(int numOfRupees) {
 }
 
 void GiveLinkDekuSticks(int howManySticks) {
-    int maxStickCount;
+    int maxStickCount = 0;
     if (CUR_UPG_VALUE(UPG_STICKS) == 0) {
         INV_CONTENT(ITEM_STICK) = ITEM_STICK;
         Inventory_ChangeUpgrade(UPG_STICKS, 1);
@@ -73,7 +73,7 @@ void GiveLinkDekuSticks(int howManySticks) {
 }
 
 void GiveLinkDekuNuts(int howManyNuts) {
-    int maxNutCount;
+    int maxNutCount = 0;
     if (CUR_UPG_VALUE(UPG_NUTS) == 0) {
         INV_CONTENT(ITEM_NUT) = ITEM_NUT;
         Inventory_ChangeUpgrade(UPG_NUTS, 1);
@@ -97,7 +97,7 @@ void GiveLinksPocketItem() {
     if (Randomizer_GetSettingValue(RSK_LINKS_POCKET) != RO_LINKS_POCKET_NOTHING) {
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LINKS_POCKET, (GetItemID)RG_NONE);
         StartingItemGive(getItemEntry);
-        Rando::Context::GetInstance()->GetItemLocation(RC_LINKS_POCKET)->MarkAsObtained();
+        Rando::Context::GetInstance()->GetItemLocation(RC_LINKS_POCKET)->SetCheckStatus(RCSHOW_SAVED);
         // If we re-add the above, we'll get the item on save creation, now it's given on first load
         Flags_SetRandomizerInf(RAND_INF_LINKS_POCKET);
     }
@@ -327,6 +327,10 @@ extern "C" void Randomizer_InitSaveFile() {
         Flags_SetRandomizerInf(RAND_INF_HAS_WALLET);
     }
 
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_FISHING_POLE) == RO_GENERIC_OFF) {
+        Flags_SetRandomizerInf(RAND_INF_FISHING_POLE_FOUND);
+    }
+
     // Give Link's pocket item
     GiveLinksPocketItem();
 
@@ -335,11 +339,18 @@ extern "C" void Randomizer_InitSaveFile() {
         gSaveContext.adultTradeItems = 0;
     }
 
+    // remove One Time scrubs with scrubsanity off
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_SCRUBS) == RO_SCRUBS_OFF) {
+        Flags_SetRandomizerInf(RAND_INF_SCRUBS_PURCHASED_LW_DEKU_SCRUB_NEAR_BRIDGE);
+        Flags_SetRandomizerInf(RAND_INF_SCRUBS_PURCHASED_LW_DEKU_SCRUB_GROTTO_FRONT);
+        Flags_SetRandomizerInf(RAND_INF_SCRUBS_PURCHASED_HF_DEKU_SCRUB_GROTTO);
+    }
+
     int startingAge = OTRGlobals::Instance->gRandoContext->GetSettings()->ResolvedStartingAge();
     switch (startingAge) {
         case RO_AGE_ADULT: // Adult
             gSaveContext.linkAge = LINK_AGE_ADULT;
-            gSaveContext.entranceIndex = ENTR_TEMPLE_OF_TIME_7;
+            gSaveContext.entranceIndex = ENTR_TEMPLE_OF_TIME_WARP_PAD;
             gSaveContext.savedSceneNum = SCENE_LON_LON_RANCH; // Set scene num manually to ToT
             break;
         case RO_AGE_CHILD: // Child

@@ -6,6 +6,8 @@
 
 #include "z_item_b_heart.h"
 #include "objects/object_gi_hearts/object_gi_hearts.h"
+#include "soh/OTRGlobals.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS 0
 
@@ -39,7 +41,7 @@ static InitChainEntry sInitChain[] = {
 void ItemBHeart_Init(Actor* thisx, PlayState* play) {
     ItemBHeart* this = (ItemBHeart*)thisx;
 
-    if (Flags_GetCollectible(play, 0x1F)) {
+    if (GameInteractor_Should(VB_ITEM_B_HEART_DESPAWN, Flags_GetCollectible(play, 0x1F), this)) {
         Actor_Kill(&this->actor);
     } else {
         Actor_ProcessInitChain(&this->actor, sInitChain);

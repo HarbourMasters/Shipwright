@@ -10,6 +10,8 @@
 #include "scenes/indoors/nakaniwa/nakaniwa_scene.h"
 #include "objects/object_im/object_im.h"
 #include "vt.h"
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_UPDATE_WHILE_CULLED)
@@ -223,9 +225,9 @@ s32 DemoIm_IsCsStateIdle(PlayState* play) {
     }
 }
 
-CsCmdActorAction* DemoIm_GetNpcAction(PlayState* play, s32 actionIdx) {
+CsCmdActorCue* DemoIm_GetNpcAction(PlayState* play, s32 actionIdx) {
     s32 pad[2];
-    CsCmdActorAction* ret = NULL;
+    CsCmdActorCue* ret = NULL;
 
     if (!DemoIm_IsCsStateIdle(play)) {
         ret = play->csCtx.npcActions[actionIdx];
@@ -234,7 +236,7 @@ CsCmdActorAction* DemoIm_GetNpcAction(PlayState* play, s32 actionIdx) {
 }
 
 s32 func_809850E8(DemoIm* this, PlayState* play, u16 action, s32 actionIdx) {
-    CsCmdActorAction* npcAction = DemoIm_GetNpcAction(play, actionIdx);
+    CsCmdActorCue* npcAction = DemoIm_GetNpcAction(play, actionIdx);
 
     if (npcAction != NULL) {
         if (npcAction->action == action) {
@@ -245,7 +247,7 @@ s32 func_809850E8(DemoIm* this, PlayState* play, u16 action, s32 actionIdx) {
 }
 
 s32 func_80985134(DemoIm* this, PlayState* play, u16 action, s32 actionIdx) {
-    CsCmdActorAction* npcAction = DemoIm_GetNpcAction(play, actionIdx);
+    CsCmdActorCue* npcAction = DemoIm_GetNpcAction(play, actionIdx);
 
     if (npcAction != NULL) {
         if (npcAction->action != action) {
@@ -256,7 +258,7 @@ s32 func_80985134(DemoIm* this, PlayState* play, u16 action, s32 actionIdx) {
 }
 
 void func_80985180(DemoIm* this, PlayState* play, s32 actionIdx) {
-    CsCmdActorAction* npcAction = DemoIm_GetNpcAction(play, actionIdx);
+    CsCmdActorCue* npcAction = DemoIm_GetNpcAction(play, actionIdx);
 
     if (npcAction != NULL) {
         this->actor.world.pos.x = npcAction->startPos.x;
@@ -267,7 +269,7 @@ void func_80985180(DemoIm* this, PlayState* play, s32 actionIdx) {
 }
 
 void func_80985200(DemoIm* this, PlayState* play, s32 actionIdx) {
-    CsCmdActorAction* npcAction = DemoIm_GetNpcAction(play, actionIdx);
+    CsCmdActorCue* npcAction = DemoIm_GetNpcAction(play, actionIdx);
 
     if (npcAction != NULL) {
         this->actor.world.pos.x = npcAction->startPos.x;
@@ -319,7 +321,7 @@ void func_809853B4(DemoIm* this, PlayState* play) {
 
     Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DEMO_EFFECT, playerX, playerY, playerZ, 0,
                        0, 0, 0xD);
-    if (GameInteractor_Should(VB_GIVE_ITEM_SHADOW_MEDALLION, true, NULL)) {
+    if (GameInteractor_Should(VB_GIVE_ITEM_SHADOW_MEDALLION, true)) {
         Item_Give(play, ITEM_MEDALLION_SHADOW);
     }
 }
@@ -337,7 +339,7 @@ void func_8098544C(DemoIm* this, PlayState* play) {
         this->action = 1;
         play->csCtx.segment = D_8098786C;
         gSaveContext.cutsceneTrigger = 2;
-        if (GameInteractor_Should(VB_GIVE_ITEM_SHADOW_MEDALLION, true, NULL)) {
+        if (GameInteractor_Should(VB_GIVE_ITEM_SHADOW_MEDALLION, true)) {
             Item_Give(play, ITEM_MEDALLION_SHADOW);
         }
         player->actor.world.rot.y = player->actor.shape.rot.y = this->actor.world.rot.y + 0x8000;
@@ -438,7 +440,7 @@ void func_80985860(DemoIm* this, PlayState* play) {
 }
 
 void func_809858A8(void) {
-    func_800788CC(NA_SE_SY_WHITE_OUT_T);
+    Sfx_PlaySfxCentered2(NA_SE_SY_WHITE_OUT_T);
 }
 
 void DemoIm_SpawnLightBall(DemoIm* this, PlayState* play) {
@@ -614,7 +616,7 @@ void func_80986148(DemoIm* this) {
 }
 
 void func_809861C4(DemoIm* this, PlayState* play) {
-    CsCmdActorAction* npcAction = DemoIm_GetNpcAction(play, 5);
+    CsCmdActorCue* npcAction = DemoIm_GetNpcAction(play, 5);
 
     if (npcAction != NULL) {
         u32 action = npcAction->action;
@@ -647,7 +649,7 @@ void func_8098629C(DemoIm* this, PlayState* play) {
 }
 
 void func_809862E0(DemoIm* this, PlayState* play) {
-    CsCmdActorAction* npcAction = DemoIm_GetNpcAction(play, 5);
+    CsCmdActorCue* npcAction = DemoIm_GetNpcAction(play, 5);
 
     if (npcAction != NULL) {
         u32 action = npcAction->action;
@@ -728,7 +730,7 @@ void func_80986570(DemoIm* this, PlayState* play) {
         u32 sfxId = SFX_FLAG;
 
         sfxId += SurfaceType_GetSfx(&play->colCtx, this->actor.floorPoly, this->actor.floorBgId);
-        Audio_PlaySoundGeneral(sfxId, &this->actor.projectedPos, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+        Audio_PlaySoundGeneral(sfxId, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     }
 }
 
@@ -777,7 +779,7 @@ void func_80986794(DemoIm* this) {
 }
 
 void func_8098680C(DemoIm* this, PlayState* play) {
-    CsCmdActorAction* npcAction = DemoIm_GetNpcAction(play, 5);
+    CsCmdActorCue* npcAction = DemoIm_GetNpcAction(play, 5);
 
     if (npcAction != NULL) {
         u32 action = npcAction->action;
@@ -874,9 +876,9 @@ void func_80986B2C(PlayState* play) {
 
         // In entrance rando have impa bring link back to the front of castle grounds
         if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {
-            play->nextEntranceIndex = ENTR_HYRULE_CASTLE_0;
+            play->nextEntranceIndex = ENTR_CASTLE_GROUNDS_SOUTH_EXIT;
         } else {
-            play->nextEntranceIndex = ENTR_HYRULE_FIELD_0;
+            play->nextEntranceIndex = ENTR_HYRULE_FIELD_PAST_BRIDGE_SPAWN;
         }
         play->transitionType = TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_BLACK, TCS_FAST);
         play->transitionTrigger = TRANS_TRIGGER_START;
@@ -916,7 +918,7 @@ void func_80986C30(DemoIm* this, PlayState* play) {
             func_80985F54(this);
         }
         Flags_SetEventChkInf(EVENTCHKINF_LEARNED_ZELDAS_LULLABY);
-        if (GameInteractor_Should(VB_GIVE_ITEM_ZELDAS_LULLABY, true, NULL)) {
+        if (GameInteractor_Should(VB_GIVE_ITEM_ZELDAS_LULLABY, true)) {
             Item_Give(play, ITEM_SONG_LULLABY);
         }
     }
@@ -1055,7 +1057,7 @@ void func_809871B4(DemoIm* this, s32 arg1) {
 }
 
 void func_809871E8(DemoIm* this, PlayState* play) {
-    CsCmdActorAction* npcAction = DemoIm_GetNpcAction(play, 5);
+    CsCmdActorCue* npcAction = DemoIm_GetNpcAction(play, 5);
 
     if (npcAction != NULL) {
         u32 action = npcAction->action;

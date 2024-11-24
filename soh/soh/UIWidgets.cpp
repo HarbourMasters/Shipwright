@@ -170,7 +170,7 @@ namespace UIWidgets {
             ImGui::RenderCheckMark(window->DrawList, check_bb.Min + ImVec2(pad, pad), check_col, square_sz - pad * 2.0f);
         } else if ((!disabled && !*v && renderCrossWhenOff) || (disabled && disabledGraphic == CheckboxGraphics::Cross)) {
             const float pad = ImMax(1.0f, IM_FLOOR(square_sz / 6.0f));
-            RenderCross(window->DrawList, check_bb.Min + ImVec2(pad, pad), disabled ? cross_col : check_col, square_sz - pad * 2.0f);
+            //RenderCross(window->DrawList, check_bb.Min + ImVec2(pad, pad), disabled ? cross_col : check_col, square_sz - pad * 2.0f); // Caused confusion as to status
         }
 
         ImVec2 label_pos = ImVec2(check_bb.Max.x + style.ItemInnerSpacing.x, check_bb.Min.y + style.FramePadding.y);
@@ -813,5 +813,19 @@ namespace UIWidgets {
     bool StateButton(const char* str_id, const char* label) {
         float sz = ImGui::GetFrameHeight();
         return StateButtonEx(str_id, label, ImVec2(sz, sz), ImGuiButtonFlags_None);
+    }
+
+    // Reference: imgui-src/misc/cpp/imgui_stdlib.cpp
+    int InputTextResizeCallback(ImGuiInputTextCallbackData* data) {
+        std::string* value = (std::string*)data->UserData;
+        if (data->EventFlag == ImGuiInputTextFlags_CallbackResize) {
+            value->resize(data->BufTextLen);
+            data->Buf = (char*)value->c_str();
+        }
+        return 0;
+    }
+
+    bool InputString(const char* label, std::string* value) {
+        return ImGui::InputText(label, (char*)value->c_str(), value->capacity() + 1, ImGuiInputTextFlags_CallbackResize, InputTextResizeCallback, value);
     }
 }

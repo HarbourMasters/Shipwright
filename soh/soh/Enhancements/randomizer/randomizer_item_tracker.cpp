@@ -1,7 +1,10 @@
 #include "randomizer_item_tracker.h"
-#include "../../util.h"
-#include "../../OTRGlobals.h"
-#include "../../UIWidgets.hpp"
+#include "soh/util.h"
+#include "soh/OTRGlobals.h"
+#include "soh/cvar_prefixes.h"
+#include "soh/SaveManager.h"
+#include "soh/ResourceManagerHelpers.h"
+#include "soh/UIWidgets.hpp"
 #include "randomizerTypes.h"
 
 #include <map>
@@ -22,7 +25,6 @@ extern PlayState* gPlayState;
 #include "textures/icon_item_static/icon_item_static.h"
 #include "textures/icon_item_24_static/icon_item_24_static.h"
 }
-extern "C" uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
 
 void DrawEquip(ItemTrackerItem item);
 void DrawItem(ItemTrackerItem item);
@@ -390,7 +392,7 @@ ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
         case ITEM_WALLET_ADULT:
         case ITEM_WALLET_GIANT:
             result.currentCapacity = IS_RANDO && !Flags_GetRandomizerInf(RAND_INF_HAS_WALLET) ? 0 : CUR_CAPACITY(UPG_WALLET);
-            result.maxCapacity = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHOPSANITY) > RO_SHOPSANITY_ZERO_ITEMS ? 999 : 500;
+            result.maxCapacity = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_INCLUDE_TYCOON_WALLET) ? 999 : 500;
             result.currentAmmo = gSaveContext.rupees;
             break;
         case ITEM_BOMBCHU:
@@ -598,11 +600,11 @@ void DrawItemCount(ItemTrackerItem item, bool hideMax) {
         ImGui::SetCursorScreenPos(
             ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize((currentString + maxString).c_str()).x / 2), p.y - 14));
         ImGui::PushStyleColor(ImGuiCol_Text, currentColor);
-        ImGui::Text(currentString.c_str());
+        ImGui::Text("%s", currentString.c_str());
         ImGui::PopStyleColor();
         ImGui::SameLine(0, 0.0f);
         ImGui::PushStyleColor(ImGuiCol_Text, maxColor);
-        ImGui::Text(maxString.c_str());
+        ImGui::Text("%s", maxString.c_str());
         ImGui::PopStyleColor();
     } else {
         ImGui::SetCursorScreenPos(ImVec2(p.x, p.y - 14));
@@ -1206,6 +1208,15 @@ void ItemTrackerLoadFile() {
     }
 }
 
+void ItemTrackerWindow::Draw() {
+    if (!IsVisible()) {
+        return;
+    }
+    DrawElement();
+    // Sync up the IsVisible flag if it was changed by ImGui
+    SyncVisibilityConsoleVariable();
+}
+
 void ItemTrackerWindow::DrawElement() {
     UpdateVectors();
 
@@ -1350,13 +1361,6 @@ static const char* extendedDisplayTypes[4] = { "Hidden", "Main Window", "Misc Wi
 static const char* minimalDisplayTypes[2] = { "Hidden", "Separate" };
 
 void ItemTrackerSettingsWindow::DrawElement() {
-    ImGui::SetNextWindowSize(ImVec2(733, 472), ImGuiCond_FirstUseEver);
-
-    if (!ImGui::Begin("Item Tracker Settings", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
-        ImGui::End();
-        return;
-    }
-
     ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 8.0f, 8.0f });
     ImGui::BeginTable("itemTrackerSettingsTable", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV);
     ImGui::TableSetupColumn("General settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
@@ -1499,8 +1503,6 @@ void ItemTrackerSettingsWindow::DrawElement() {
 
     ImGui::PopStyleVar(1);
     ImGui::EndTable();
-
-    ImGui::End();
 }
 
 void ItemTrackerWindow::InitElement() {

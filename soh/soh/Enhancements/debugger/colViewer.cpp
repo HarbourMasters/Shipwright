@@ -8,12 +8,14 @@
 #include <libultraship/bridge.h>
 #include <libultraship/libultraship.h>
 #include "soh/OTRGlobals.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 extern "C" {
 #include <z64.h>
 #include "variables.h"
 #include "functions.h"
 #include "macros.h"
+#include "soh/cvar_prefixes.h"
 extern PlayState* gPlayState;
 }
 
@@ -53,11 +55,6 @@ static std::vector<Vtx> sphereVtx;
 
 // Draws the ImGui window for the collision viewer
 void ColViewerWindow::DrawElement() {
-    ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Collision Viewer", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
-        ImGui::End();
-        return;
-    }
     UIWidgets::EnhancementCheckbox("Enabled", CVAR_DEVELOPER_TOOLS("ColViewer.Enabled"));
 
     UIWidgets::LabeledRightAlignedEnhancementCombobox("Scene", CVAR_DEVELOPER_TOOLS("ColViewer.Scene"), ColRenderSettingNames, COLVIEW_DISABLED);
@@ -95,8 +92,6 @@ void ColViewerWindow::DrawElement() {
     } else {
         UIWidgets::InsertHelpHoverText(colorHelpText);
     }
-
-    ImGui::End();
 }
 
 // Calculates the normal for a triangle at the 3 specified points
@@ -281,11 +276,6 @@ void CreateSphereData() {
     }
 
     sphereGfx.push_back(gsSPEndDisplayList());
-}
-
-void ColViewerWindow::InitElement() {
-    CreateCylinderData();
-    CreateSphereData();
 }
 
 // Initializes the display list for a ColRenderSetting
@@ -695,4 +685,11 @@ extern "C" void DrawColViewer() {
     }
 
     CLOSE_DISPS(gPlayState->state.gfxCtx);
+}
+
+void ColViewerWindow::InitElement() {
+    CreateCylinderData();
+    CreateSphereData();
+
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayDrawEnd>(DrawColViewer);
 }

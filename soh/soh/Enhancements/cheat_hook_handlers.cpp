@@ -12,16 +12,16 @@ extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 }
 
-void CheatsOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void* opt) {
+void CheatsOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_list originalArgs) {
     switch (id) {
         case VB_DEKU_STICK_BREAK: {
-            if (CVarGetInteger(CVAR_CHEAT("DekuStickCheat"), DEKU_STICK_NORMAL) != DEKU_STICK_NORMAL) {
+            if (CVarGetInteger(CVAR_CHEAT("DekuStick"), DEKU_STICK_NORMAL) != DEKU_STICK_NORMAL) {
                 *should = false;
             }
             break;
         }
         case VB_DEKU_STICK_BE_ON_FIRE: {
-            if (CVarGetInteger(CVAR_CHEAT("DekuStickCheat"), DEKU_STICK_NORMAL) == DEKU_STICK_UNBREAKABLE_AND_ALWAYS_ON_FIRE) {
+            if (CVarGetInteger(CVAR_CHEAT("DekuStick"), DEKU_STICK_NORMAL) == DEKU_STICK_UNBREAKABLE_AND_ALWAYS_ON_FIRE) {
                 Player* player = GET_PLAYER(gPlayState);
                 player->unk_860 = 200;    // Keeps the stick's flame lit
                 player->unk_85C = 1.0f;   // Ensures the stick is the proper length
@@ -30,17 +30,19 @@ void CheatsOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void* op
             break;
         }
         case VB_DEKU_STICK_BURN_OUT: {
-            if (CVarGetInteger(CVAR_CHEAT("DekuStickCheat"), DEKU_STICK_NORMAL) != DEKU_STICK_NORMAL) {
+            if (CVarGetInteger(CVAR_CHEAT("DekuStick"), DEKU_STICK_NORMAL) != DEKU_STICK_NORMAL) {
                 *should = false;
             }
             break;
         }
         case VB_DEKU_STICK_BURN_DOWN: {
-            if (CVarGetInteger(CVAR_CHEAT("DekuStickCheat"), DEKU_STICK_NORMAL) != DEKU_STICK_NORMAL) {
+            if (CVarGetInteger(CVAR_CHEAT("DekuStick"), DEKU_STICK_NORMAL) != DEKU_STICK_NORMAL) {
                 *should = false;
             }
             break;
         }
+        default:
+            break;
     }
 }
 

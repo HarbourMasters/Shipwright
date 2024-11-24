@@ -10,7 +10,9 @@
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "variables.h"
 #include "soh/OTRGlobals.h"
+#include "soh/cvar_prefixes.h"
 #include "../option.h"
+#include "soh/Enhancements/debugger/performanceTimer.h"
 
 namespace Playthrough {
 
@@ -25,7 +27,9 @@ int Playthrough_Init(uint32_t seed, std::set<RandomizerCheck> excludedLocations,
     ctx->ItemReset();
     ctx->HintReset();
     ctx->GetLogic()->Reset();
-    Areas::AccessReset();
+    StartPerformanceTimer(PT_REGION_RESET);
+    Regions::AccessReset();
+    StopPerformanceTimer(PT_REGION_RESET);
 
     ctx->GetSettings()->FinalizeSettings(excludedLocations, enabledTricks);
     // once the settings have been finalized turn them into a string for hashing
@@ -53,7 +57,6 @@ int Playthrough_Init(uint32_t seed, std::set<RandomizerCheck> excludedLocations,
     Random_Init(finalHash);
     ctx->GetSettings()->SetHash(std::to_string(finalHash));
 
-    ctx->GetLogic()->UpdateHelpers();
 
     if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_VANILLA)) {
         VanillaFill(); // Just place items in their vanilla locations
@@ -65,17 +68,18 @@ int Playthrough_Init(uint32_t seed, std::set<RandomizerCheck> excludedLocations,
     }
 
     GenerateHash();
-    WriteIngameSpoilerLog();
 
     if (true) {
         //TODO: Handle different types of file output (i.e. Spoiler Log, Plando Template, Patch Files, Race Files, etc.)
         // write logs
         SPDLOG_INFO("Writing Spoiler Log...");
+        StartPerformanceTimer(PT_SPOILER_LOG);
         if (SpoilerLog_Write()) {
             SPDLOG_INFO("Writing Spoiler Log Done");
         } else {
             SPDLOG_ERROR("Writing Spoiler Log Failed");
         }
+        StopPerformanceTimer(PT_SPOILER_LOG);
 #ifdef ENABLE_DEBUG
         SPDLOG_INFO("Writing Placement Log...");
         if (PlacementLog_Write()) {

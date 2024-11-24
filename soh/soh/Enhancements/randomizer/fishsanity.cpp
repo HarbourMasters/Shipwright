@@ -1,12 +1,23 @@
 #include "3drando/pool_functions.hpp"
 #include "../../OTRGlobals.h"
 #include "fishsanity.h"
+#include "draw.h"
 #include "variables.h"
 #include "functions.h"
 #include "macros.h"
 #include <consolevariablebridge.h>
 
+extern "C" {
+#include "src/overlays/actors/ovl_Fishing/z_fishing.h"
+#include "src/overlays/actors/ovl_En_Fish/z_en_fish.h"
+
+extern SaveContext gSaveContext;
+extern PlayState* gPlayState;
+}
+
 #define FSi OTRGlobals::Instance->gRandoContext->GetFishsanity()
+
+#define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).GetSelectedOptionIndex()
 
 /**
  * @brief Parallel list of pond fish checks for both ages
@@ -40,9 +51,14 @@ std::unordered_map<int8_t, RandomizerCheck> Rando::StaticData::randomizerGrottoF
     { 0x29, RC_ZR_OPEN_GROTTO_FISH }
 };
 
+ActorFunc drawFishing = NULL;
+ActorFunc drawEnFish = NULL;
+Color_RGBA16 fsPulseColor = { 30, 240, 200 };
+
 namespace Rando {
     const FishIdentity Fishsanity::defaultIdentity = { RAND_INF_MAX, RC_UNKNOWN_CHECK };
     bool Fishsanity::fishsanityHelpersInit = false;
+    s16 Fishsanity::fishGroupCounter = 0;
     std::unordered_map<RandomizerCheck, LinkAge> Fishsanity::pondFishAgeMap;
     std::vector<RandomizerCheck> Fishsanity::childPondFish;
     std::vector<RandomizerCheck> Fishsanity::adultPondFish;
@@ -59,23 +75,26 @@ namespace Rando {
                                              FishsanityOptionsSource optionsSource) {
         auto [mode, numFish, ageSplit] = GetOptions(optionsSource);
 
-        if (loc->GetRCType() != RCTYPE_FISH || mode == RO_FISHSANITY_OFF)
+        if (loc->GetRCType() != RCTYPE_FISH || mode == RO_FISHSANITY_OFF) {
             return false;
+        }
         RandomizerCheck rc = loc->GetRandomizerCheck();
         // Are pond fish enabled, and is this a pond fish location?
         if (mode != RO_FISHSANITY_OVERWORLD && numFish > 0 && loc->GetScene() == SCENE_FISHING_POND &&
             loc->GetActorID() == ACTOR_FISHING) {
             // Is this a child fish location? If so, is it within the defined number of pond fish checks?
-            if (rc >= RC_LH_CHILD_FISH_1 && rc <= RC_LH_CHILD_LOACH_2 && numFish > (loc->GetActorParams() - 100))
+            if (rc >= RC_LH_CHILD_FISH_1 && rc <= RC_LH_CHILD_LOACH_2 && numFish > (loc->GetActorParams() - 100)) {
                 return true;
+            }
             // Are adult fish available, and is this an adult fish location? If so, is it within the defined number of pond
             // fish checks?
-            if (ageSplit && rc >= RC_LH_ADULT_FISH_1 && rc <= RC_LH_ADULT_LOACH && numFish > (loc->GetActorParams() - 100))
+            if (ageSplit && rc >= RC_LH_ADULT_FISH_1 && rc <= RC_LH_ADULT_LOACH && numFish > (loc->GetActorParams() - 100)) {
                 return true;
+            }
         }
         // Are overworld fish enabled, and is this an overworld fish location?
         if (mode != RO_FISHSANITY_POND && (loc->GetScene() == SCENE_GROTTOS || loc->GetScene() == SCENE_ZORAS_DOMAIN)
-            && loc->GetActorID() == ACTOR_EN_FISH && (loc->GetActorParams() == 1 || loc->GetActorParams() < 0)) {
+            && loc->GetActorID() == ACTOR_EN_FISH && (loc->GetActorParams() >> 8)) {
             return true;
         }
         // Must not be an included fish location!
@@ -87,10 +106,10 @@ namespace Rando {
         auto [mode, numFish, ageSplit] = GetOptions(optionsSource);
         std::vector<RandomizerCheck> activeFish;
         std::vector<RandomizerCheck> remainingFish;
+        std::vector<RandomizerCheck> pondFish = Rando::StaticData::GetPondFishLocations();
 
         // Fishsanity_InitializeHelpers();
-        remainingFish.insert(remainingFish.end(), Rando::StaticData::pondFishLocations.begin(),
-                             Rando::StaticData::pondFishLocations.end());
+        remainingFish.insert(remainingFish.end(), pondFish.begin(), pondFish.end());
 
         // No pond fish shuffled
         if (numFish == 0) {
@@ -138,8 +157,8 @@ namespace Rando {
 
         // Add overworld fish
         if (mode == RO_FISHSANITY_OVERWORLD || mode == RO_FISHSANITY_BOTH) {
-            activeFish.insert(activeFish.end(), Rando::StaticData::overworldFishLocations.begin(),
-                              Rando::StaticData::overworldFishLocations.end());
+            std::vector<RandomizerCheck> overworldFish = Rando::StaticData::GetOverworldFishLocations();
+            activeFish.insert(activeFish.end(), overworldFish.begin(), overworldFish.end());
         }
 
         return std::make_pair(activeFish, remainingFish);
@@ -222,7 +241,7 @@ namespace Rando {
     bool Fishsanity::GetPondFishShuffled() {
         u8 fsMode = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY);
         return OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY_POND_COUNT) > 0 &&
-           (fsMode == RO_FISHSANITY_POND || fsMode == RO_FISHSANITY_BOTH);
+            (fsMode == RO_FISHSANITY_POND || fsMode == RO_FISHSANITY_BOTH);
     }
 
     bool Fishsanity::GetOverworldFishShuffled() {
@@ -237,8 +256,9 @@ namespace Rando {
     bool Fishsanity::GetPondCleared() {
         auto [mode, pondCount, ageSplit] = GetOptions();
         // no fish shuffled, so pond is always cleared :thumbsup:
-        if (pondCount == 0)
+        if (pondCount == 0) {
             return true;
+        }
 
         bool adultPond = LINK_IS_ADULT && ageSplit;
         // if we've collected the final shuffled fish, pond is complete
@@ -252,23 +272,26 @@ namespace Rando {
         for (auto tableEntry : Rando::StaticData::randomizerFishingPondFish) {
             RandomizerCheck rc = adultPond ? tableEntry.second : tableEntry.first;
             // if we haven't collected this fish, then we're not done yet! get back in there, soldier
-            if (rc != RC_UNKNOWN_CHECK && !Flags_GetRandomizerInf(OTRGlobals::Instance->gRandomizer->GetRandomizerInfFromCheck(rc)))
+            if (rc != RC_UNKNOWN_CHECK && !Flags_GetRandomizerInf(OTRGlobals::Instance->gRandomizer->GetRandomizerInfFromCheck(rc))) {
                 return false;
+            }
         }
         return true;
     }
 
     bool Fishsanity::GetDomainCleared() {
         for (RandomizerInf i = RAND_INF_ZD_FISH_1; i <= RAND_INF_ZD_FISH_5; i = (RandomizerInf)(i + 1)) {
-            if (!Flags_GetRandomizerInf(i))
+            if (!Flags_GetRandomizerInf(i)) {
                 return false;
+            }
         }
         return true;
     }
 
     void Fishsanity::InitializeHelpers() {
-        if (fishsanityHelpersInit)
+        if (fishsanityHelpersInit) {
             return;
+        }
 
         for (auto pair : Rando::StaticData::randomizerFishingPondFish) {
             pondFishAgeMap[pair.first] = LINK_AGE_CHILD;
@@ -298,35 +321,167 @@ namespace Rando {
     }
 
     FishsanityCheckType Fishsanity::GetCheckType(RandomizerCheck rc) {
-        // Is this a pond fish?
-        if (std::binary_search(Rando::StaticData::pondFishLocations.begin(), Rando::StaticData::pondFishLocations.end(), rc))
-            return FSC_POND;
-
-        // Is this an overworld fish?
-        if (std::binary_search(Rando::StaticData::overworldFishLocations.begin(), Rando::StaticData::overworldFishLocations.end(), rc)) {
-            if (rc < RC_ZD_FISH_1)
-                return FSC_GROTTO;
-            else
-                return FSC_ZD;
+        // if it's not RCTYPE_FISH, obviously it's not a fish
+        if (Rando::StaticData::GetLocation(rc)->GetRCType() != RCTYPE_FISH) {
+            return FSC_NONE;
         }
-        
-        // Must not be a fishsanity check
-        return FSC_NONE;
+
+        auto loc = Rando::StaticData::GetLocation(rc);
+        switch (loc->GetScene()) {
+        case SCENE_FISHING_POND:
+            return FSC_POND;
+        case SCENE_ZORAS_DOMAIN:
+            return FSC_ZD;
+        case SCENE_GROTTOS:
+            return FSC_GROTTO;
+        default:
+            return FSC_NONE;
+        }
     }
 
     bool Fishsanity::IsFish(FishIdentity* fish) {
-        if (fish->randomizerCheck == RC_UNKNOWN_CHECK || fish->randomizerInf == RAND_INF_MAX)
+        if (fish->randomizerCheck == RC_UNKNOWN_CHECK || fish->randomizerInf == RAND_INF_MAX) {
             return false;
+        }
 
         return GetCheckType(fish->randomizerCheck) != FSC_NONE;
     }
 
-    void Fishsanity::SetPendingFish(FishIdentity* fish) {
-        mPendingFish = fish == NULL ? defaultIdentity : *fish;
+    void Fishsanity::OnActorInitHandler(void* refActor) {
+        Actor* actor = static_cast<Actor*>(refActor);
+
+        auto fs = OTRGlobals::Instance->gRandoContext->GetFishsanity();
+        FishIdentity fish;
+
+        if (actor->id == ACTOR_EN_FISH && fs->GetOverworldFishShuffled()) {
+            // Set fish ID for ZD fish
+            if (gPlayState->sceneNum == SCENE_ZORAS_DOMAIN && actor->params == -1) {
+                actor->params ^= fishGroupCounter++;
+            } else if (gPlayState->sceneNum == SCENE_GROTTOS && actor->params == 1) {
+                actor->params = 0x100 | gSaveContext.respawn[RESPAWN_MODE_RETURN].data;
+            }
+
+            fish = OTRGlobals::Instance->gRandomizer->IdentifyFish(gPlayState->sceneNum, actor->params);
+            // Render fish as randomized item
+            if (Rando::Fishsanity::IsFish(&fish) && !Flags_GetRandomizerInf(fish.randomizerInf)) {
+                if (!drawEnFish) {
+                    drawEnFish = actor->draw;
+                }
+                actor->draw = Fishsanity_DrawEnFish;
+            }
+            return;
+        }
+
+        if (actor->id == ACTOR_FISHING && gPlayState->sceneNum == SCENE_FISHING_POND && actor->params >= 100 &&
+            actor->params <= 117 && fs->GetPondFishShuffled()) {
+            // Initialize pond fish for fishsanity
+            // Initialize fishsanity metadata on this actor
+            Fishing* fishActor = static_cast<Fishing*>(refActor);
+            //fishActor->fishsanityParams = actor->params;
+            fish = OTRGlobals::Instance->gRandomizer->IdentifyFish(gPlayState->sceneNum, actor->params);
+
+            // With every pond fish shuffled, caught fish will not spawn unless all fish have been caught.
+            if (RAND_GET_OPTION(RSK_FISHSANITY_POND_COUNT) > 16 &&
+                !fs->GetPondCleared()) {
+                // Create effect for uncaught fish
+                if (!Flags_GetRandomizerInf(fish.randomizerInf)) {
+                    actor->shape.shadowDraw = Fishsanity_DrawEffShadow;
+                    if (!drawFishing) {
+                        drawFishing = actor->draw;
+                    }
+                    actor->draw = Fishsanity_DrawFishing;
+                }
+            }
+        }
     }
 
-    FishIdentity Fishsanity::GetPendingFish() {
-        return mPendingFish;
+    void Fishsanity::OnFlagSetHandler(int16_t flagType, int16_t flag) {
+        if (flagType != FLAG_RANDOMIZER_INF) {
+            return;
+        }
+        RandomizerCheck rc = OTRGlobals::Instance->gRandomizer->GetCheckFromRandomizerInf((RandomizerInf)flag);
+        FishsanityCheckType fsType = Rando::Fishsanity::GetCheckType(rc);
+        if (fsType == FSC_NONE) {
+            return;
+        }
+
+        // When a pond fish is caught, advance the pond.
+        if (fsType == FSC_POND) {
+            OTRGlobals::Instance->gRandoContext->GetFishsanity()->AdvancePond();
+        }
+    }
+
+    void Fishsanity::OnActorUpdateHandler(void* refActor) {
+        if (gPlayState->sceneNum != SCENE_GROTTOS && gPlayState->sceneNum != SCENE_ZORAS_DOMAIN && gPlayState->sceneNum != SCENE_FISHING_POND) {
+            return;
+        }
+
+        Actor* actor = static_cast<Actor*>(refActor);
+        auto fs = OTRGlobals::Instance->gRandoContext->GetFishsanity();
+
+        // Detect fish catch
+        if (actor->id == ACTOR_FISHING && fs->GetPondFishShuffled()) {
+            Fishing* fish = static_cast<Fishing*>(refActor);
+
+            // State 6 -> Fish caught and hoisted
+            if (fish->fishState == 6) {
+                FishIdentity identity = OTRGlobals::Instance->gRandomizer->IdentifyFish(gPlayState->sceneNum, actor->params);
+                if (identity.randomizerCheck != RC_UNKNOWN_CHECK) {
+                    Flags_SetRandomizerInf(identity.randomizerInf);
+                    // Remove uncaught effect
+                    if (actor->shape.shadowDraw != NULL) {
+                        actor->shape.shadowDraw = NULL;
+                        actor->draw = drawFishing;
+                    }
+                }
+            }
+        }
+
+        if (actor->id == ACTOR_EN_FISH && fs->GetOverworldFishShuffled()) {
+            FishIdentity fish = OTRGlobals::Instance->gRandomizer->IdentifyFish(gPlayState->sceneNum, actor->params);
+            EnFish* fishActor = static_cast<EnFish*>(refActor);
+            if (Rando::Fishsanity::IsFish(&fish) && Flags_GetRandomizerInf(fish.randomizerInf)) {
+                // Reset draw method
+                if (actor->draw == Fishsanity_DrawEnFish) {
+                    actor->draw = drawEnFish;
+                }
+            }
+
+            if (((actor->params >> 8) > 0) && fishActor->respawnTimer > 0) {
+                Actor_Kill(actor);
+            }
+        }
+
+        // Reset fish group counter when the group gets culled
+        if (actor->id == ACTOR_OBJ_MURE && gPlayState->sceneNum == SCENE_ZORAS_DOMAIN && fishGroupCounter > 0 &&
+            !(actor->flags & ACTOR_FLAG_UPDATE_WHILE_CULLED) && fs->GetOverworldFishShuffled()) {
+            fishGroupCounter = 0;
+        }
+    }
+
+    void Fishsanity::OnSceneInitHandler(int16_t sceneNum) {
+        if (sceneNum == SCENE_ZORAS_DOMAIN) {
+            fishGroupCounter = 0;
+        }
+    }
+
+    void Fishsanity::OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_list originalArgs) {
+        va_list args;
+        va_copy(args, originalArgs);
+
+        Actor* actor = va_arg(args, Actor*);
+        auto fs = OTRGlobals::Instance->gRandoContext->GetFishsanity();
+
+        va_end(args);
+
+        if (id == VB_BOTTLE_ACTOR && actor->id == ACTOR_EN_FISH && fs->GetOverworldFishShuffled()) {
+            FishIdentity fish = OTRGlobals::Instance->gRandomizer->IdentifyFish(gPlayState->sceneNum, actor->params);
+            if (fish.randomizerCheck != RC_UNKNOWN_CHECK && !Flags_GetRandomizerInf(fish.randomizerInf)) {
+                Flags_SetRandomizerInf(fish.randomizerInf);
+                actor->parent = &GET_PLAYER(gPlayState)->actor;
+                *should = false;
+            }
+        }
     }
 } // namespace Rando
 
@@ -342,10 +497,6 @@ extern "C" {
 
     bool Randomizer_IsAdultPond() {
         return FSi->IsAdultPond();
-    }
-
-    void Randomizer_SetPendingFish(FishIdentity* fish) {
-        return FSi->SetPendingFish(fish);
     }
 
     void Fishsanity_DrawEffShadow(Actor* actor, Lights* lights, PlayState* play) {
@@ -392,6 +543,28 @@ extern "C" {
         if (actor->bgCheckFlags & 0x20 && Rand_ZeroOne() < 0.15f) {
             EffectSsGRipple_Spawn(play, &ripplePos, 100, 200, 2);
         }
+    }
+
+    void Fishsanity_DrawEnFish(struct Actor* actor, struct PlayState* play) {
+        FishIdentity fish = OTRGlobals::Instance->gRandomizer->IdentifyFish(play->sceneNum, actor->params);
+        GetItemEntry randoItem = Rando::Context::GetInstance()->GetFinalGIEntry(fish.randomizerCheck, true, GI_FISH);
+        if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0)) {
+            randoItem = GET_ITEM_MYSTERY;
+        }
+
+        Matrix_Push();
+        Matrix_Scale(30.0, 30.0, 30.0, MTXMODE_APPLY);
+
+        EnItem00_CustomItemsParticles(actor, play, randoItem);
+        GetItemEntry_Draw(play, randoItem);
+
+        Matrix_Pop();
+    }
+
+    void Fishsanity_DrawFishing(struct Actor* actor, struct PlayState* play) {
+        Fishsanity_OpenGreyscaleColor(play, &fsPulseColor, (actor->params - 100) * 20);
+        drawFishing(actor, play);
+        Fishsanity_CloseGreyscaleColor(play);
     }
 
     void Fishsanity_OpenGreyscaleColor(PlayState* play, Color_RGBA16* color, int16_t frameOffset) {

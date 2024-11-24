@@ -69,7 +69,7 @@ void KaleidoScopeCall_Update(PlayState* play) {
             if (ShrinkWindow_GetCurrentVal() == 0) {
                 HREG(80) = 7;
                 HREG(82) = 3;
-                R_PAUSE_MENU_MODE = 3;
+                R_PAUSE_MENU_MODE = 1;
                 pauseCtx->unk_1E4 = 0;
                 pauseCtx->unk_1EC = 0;
                 pauseCtx->state = (pauseCtx->state & 0xFFFF) + 1;

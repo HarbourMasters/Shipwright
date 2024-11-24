@@ -6,6 +6,9 @@
 
 #include "z_en_ds.h"
 #include "objects/object_ds/object_ds.h"
+#include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
@@ -164,9 +167,9 @@ void EnDs_OfferOddPotion(EnDs* this, PlayState* play) {
 }
 
 s32 EnDs_CheckRupeesAndBottle() {
-    if (gSaveContext.rupees < 100) {
+    if (GameInteractor_Should(VB_GRANNY_SAY_INSUFFICIENT_RUPEES, gSaveContext.rupees < 100, NULL)) {
         return 0;
-    } else if (GameInteractor_Should(VB_NEED_BOTTLE_FOR_GRANNYS_ITEM, Inventory_HasEmptyBottle() == 0, NULL)) {
+    } else if (GameInteractor_Should(VB_NEED_BOTTLE_FOR_GRANNYS_ITEM, Inventory_HasEmptyBottle() == 0)) {
         return 1;
     } else {
         return 2;
@@ -174,7 +177,7 @@ s32 EnDs_CheckRupeesAndBottle() {
 }
 
 void EnDs_GiveBluePotion(EnDs* this, PlayState* play) {
-    if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(VB_GIVE_ITEM_FROM_GRANNYS_SHOP, true, this)) {
+    if (Actor_HasParent(&this->actor, play)) {
         this->actor.parent = NULL;
         this->actionFunc = EnDs_Talk;
     } else {
@@ -195,7 +198,9 @@ void EnDs_OfferBluePotion(EnDs* this, PlayState* play) {
                         this->actionFunc = EnDs_TalkNoEmptyBottle;
                         return;
                     case 2: // have 100 rupees and empty bottle
-                        Rupees_ChangeBy(-100);
+                        if(GameInteractor_Should(VB_GRANNY_TAKE_MONEY, true, this)){
+                            Rupees_ChangeBy(-100);
+                        }
                         this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
 
                         if (GameInteractor_Should(VB_GIVE_ITEM_FROM_GRANNYS_SHOP, true, this)) {
@@ -203,9 +208,9 @@ void EnDs_OfferBluePotion(EnDs* this, PlayState* play) {
                             Actor_OfferGetItem(&this->actor, play, GI_POTION_BLUE, 10000.0f, 50.0f);
                             gSaveContext.pendingSale = itemEntry.itemId;
                             gSaveContext.pendingSaleMod = itemEntry.modIndex;
+                            this->actionFunc = EnDs_GiveBluePotion;
                         }
-
-                        this->actionFunc = EnDs_GiveBluePotion;
+                        
                         return;
                 }
                 break;
@@ -222,7 +227,7 @@ void EnDs_Wait(EnDs* this, PlayState* play) {
 
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
         if (func_8002F368(play) == EXCH_ITEM_ODD_MUSHROOM) {
-            Audio_PlaySoundGeneral(NA_SE_SY_TRE_BOX_APPEAR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            Audio_PlaySoundGeneral(NA_SE_SY_TRE_BOX_APPEAR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             player->actor.textId = 0x504A;
             this->actionFunc = EnDs_OfferOddPotion;
         } else if (GameInteractor_Should(VB_OFFER_BLUE_POTION, Flags_GetItemGetInf(ITEMGETINF_30), this)) { // Traded odd mushroom

@@ -1,6 +1,7 @@
 #include "z_demo_ik.h"
 #include "vt.h"
 #include "objects/object_ik/object_ik.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
@@ -37,7 +38,7 @@ s32 DemoIk_UpdateSkelAnime(DemoIk* this) {
     return SkelAnime_Update(&this->skelAnime);
 }
 
-CsCmdActorAction* DemoIk_GetCue(PlayState* play, s32 index) {
+CsCmdActorCue* DemoIk_GetCue(PlayState* play, s32 index) {
     if (play->csCtx.state != CS_STATE_IDLE) {
         return play->csCtx.npcActions[index];
     }
@@ -45,7 +46,7 @@ CsCmdActorAction* DemoIk_GetCue(PlayState* play, s32 index) {
 }
 
 s32 DemoIk_CheckCue(PlayState* play, u16 action, s32 index) {
-    CsCmdActorAction* cue = DemoIk_GetCue(play, index);
+    CsCmdActorCue* cue = DemoIk_GetCue(play, index);
 
     if ((cue != NULL) && (cue->action == action)) {
         return 1;
@@ -93,20 +94,20 @@ void DemoIk_Type1PlaySound(DemoIk* this) {
     switch (this->actor.params) {
         case 0:
             if (Animation_OnFrame(&this->skelAnime, 5.0f)) {
-                Audio_PlaySoundGeneral(NA_SE_EN_IRONNACK_ARMOR_LAND1_DEMO, &this->actor.projectedPos, 4, &D_801333E0,
-                                       &D_801333E0, &D_801333E8);
+                Audio_PlaySoundGeneral(NA_SE_EN_IRONNACK_ARMOR_LAND1_DEMO, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
+                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             }
             break;
         case 1:
             if (Animation_OnFrame(&this->skelAnime, 10.0f)) {
-                Audio_PlaySoundGeneral(NA_SE_EN_IRONNACK_ARMOR_LAND3_DEMO, &this->actor.projectedPos, 4, &D_801333E0,
-                                       &D_801333E0, &D_801333E8);
+                Audio_PlaySoundGeneral(NA_SE_EN_IRONNACK_ARMOR_LAND3_DEMO, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
+                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             }
             break;
         case 2:
             if (Animation_OnFrame(&this->skelAnime, 9.0f)) {
-                Audio_PlaySoundGeneral(NA_SE_EN_IRONNACK_ARMOR_LAND2_DEMO, &this->actor.projectedPos, 4, &D_801333E0,
-                                       &D_801333E0, &D_801333E8);
+                Audio_PlaySoundGeneral(NA_SE_EN_IRONNACK_ARMOR_LAND2_DEMO, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
+                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             }
             break;
     }
@@ -147,7 +148,7 @@ void DemoIk_SpawnDeadDb(DemoIk* this, PlayState* play) {
 }
 
 void DemoIk_MoveToStartPos(DemoIk* this, PlayState* play, s32 index) {
-    CsCmdActorAction* cue = DemoIk_GetCue(play, index);
+    CsCmdActorCue* cue = DemoIk_GetCue(play, index);
 
     if (cue != NULL) {
         this->actor.world.pos.x = cue->startPos.x;
@@ -208,7 +209,7 @@ void func_809839AC(DemoIk* this) {
 }
 
 void func_809839D0(DemoIk* this, PlayState* play) {
-    CsCmdActorAction* cue = DemoIk_GetCue(play, DemoIk_GetIndexFromParams(this->actor.params));
+    CsCmdActorCue* cue = DemoIk_GetCue(play, DemoIk_GetIndexFromParams(this->actor.params));
 
     if (cue != NULL) {
         s32 nextCsAction = cue->action;
@@ -327,8 +328,8 @@ void DemoIk_Type2Init(DemoIk* this, PlayState* play) {
 
 void DemoIk_Type2PlaySoundOnFrame(DemoIk* this, f32 frame) {
     if (Animation_OnFrame(&this->skelAnime, frame)) {
-        Audio_PlaySoundGeneral(NA_SE_EN_IRONNACK_ARMOR_OFF_DEMO, &this->actor.projectedPos, 4, &D_801333E0, &D_801333E0,
-                               &D_801333E8);
+        Audio_PlaySoundGeneral(NA_SE_EN_IRONNACK_ARMOR_OFF_DEMO, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                               &gSfxDefaultReverb);
     }
 }
 
@@ -362,7 +363,7 @@ void func_8098402C(DemoIk* this) {
 }
 
 void func_80984048(DemoIk* this, PlayState* play) {
-    CsCmdActorAction* cue = DemoIk_GetCue(play, 4);
+    CsCmdActorCue* cue = DemoIk_GetCue(play, 4);
 
     if (cue != NULL) {
         s32 nextCsAction = cue->action;

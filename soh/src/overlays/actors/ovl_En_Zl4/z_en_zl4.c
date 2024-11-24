@@ -7,6 +7,8 @@
 #include "z_en_zl4.h"
 #include "objects/object_zl4/object_zl4.h"
 #include "scenes/indoors/nakaniwa/nakaniwa_scene.h"
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
@@ -314,7 +316,7 @@ void func_80B5BB78(EnZl4* this, PlayState* play) {
     Npc_TrackPoint(&this->actor, &this->interactInfo, 2, NPC_TRACKING_HEAD_AND_TORSO);
 }
 
-void EnZl4_GetActionStartPos(CsCmdActorAction* action, Vec3f* vec) {
+void EnZl4_GetActionStartPos(CsCmdActorCue* action, Vec3f* vec) {
     vec->x = action->startPos.x;
     vec->y = action->startPos.y;
     vec->z = action->startPos.z;
@@ -1108,7 +1110,7 @@ s32 EnZl4_CsMakePlan(EnZl4* this, PlayState* play) {
                 Camera_ChangeSetting(GET_ACTIVE_CAM(play), 1);
                 this->talkState = 7;
                 play->talkWithPlayer(play, &this->actor);
-                if (GameInteractor_Should(VB_GIVE_ITEM_ZELDAS_LETTER, true, NULL)) {
+                if (GameInteractor_Should(VB_GIVE_ITEM_ZELDAS_LETTER, true)) {
                     Actor_OfferGetItem(&this->actor, play, GI_LETTER_ZELDA, fabsf(this->actor.xzDistToPlayer) + 1.0f,
                                 fabsf(this->actor.yDistToPlayer) + 1.0f);
                 }
@@ -1117,7 +1119,7 @@ s32 EnZl4_CsMakePlan(EnZl4* this, PlayState* play) {
             }
             break;
         case 7:
-            if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(VB_GIVE_ITEM_ZELDAS_LETTER, true, NULL)) {
+            if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(VB_GIVE_ITEM_ZELDAS_LETTER, true)) {
                 Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ZL4_ANIM_0);
                 this->talkState++;
             } else {
@@ -1213,7 +1215,7 @@ void EnZl4_Idle(EnZl4* this, PlayState* play) {
 void EnZl4_TheEnd(EnZl4* this, PlayState* play) {
     s32 animIndex[] = { ZL4_ANIM_0, ZL4_ANIM_0, ZL4_ANIM_0,  ZL4_ANIM_0,  ZL4_ANIM_0,
                         ZL4_ANIM_0, ZL4_ANIM_0, ZL4_ANIM_26, ZL4_ANIM_21, ZL4_ANIM_3 };
-    CsCmdActorAction* npcAction;
+    CsCmdActorCue* npcAction;
     Vec3f pos;
 
     if (SkelAnime_Update(&this->skelAnime) && (this->skelAnime.animation == &gChildZeldaAnim_010DF8)) {

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <libultraship/libultra/gbi.h>
+#include "z64save.h"
 
 #define SECTION_PARENT_NONE -1
 typedef struct {
@@ -28,8 +29,8 @@ typedef struct {
     s16 rupees;
     s16 gsTokens;
     u8 isDoubleDefenseAcquired;
-    u8 gregFound;
-    u8 hasWallet;
+    s32 gregFound;
+    s32 hasWallet;
 } SaveFileMetaInfo;
 
 #ifdef __cplusplus
@@ -44,8 +45,6 @@ typedef struct {
 #define BS_THREAD_POOL_ENABLE_PRIORITY
 #define BS_THREAD_POOL_ENABLE_PAUSE
 #include <BS_thread_pool.hpp>
-
-#include "z64save.h"
 
 #include <nlohmann/json.hpp>
 
@@ -163,6 +162,8 @@ class SaveManager {
     static void LoadRandomizerVersion1();
     static void LoadRandomizerVersion2();
     static void LoadRandomizerVersion3();
+    static void LoadTrackerData();
+    static void SaveTrackerData(SaveContext* saveContext, int sectionID, bool fullSave);
     static void SaveRandomizer(SaveContext* saveContext, int sectionID, bool fullSave);
 
     static void LoadBaseVersion1();
@@ -186,7 +187,7 @@ class SaveManager {
     nlohmann::json* currentJsonContext = nullptr;
     nlohmann::json::iterator currentJsonArrayContext;
     std::shared_ptr<BS::thread_pool> smThreadPool;
-
+    std::mutex saveMtx;
 };
 
 #else

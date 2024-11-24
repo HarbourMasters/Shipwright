@@ -22,6 +22,9 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include <assert.h>
 #include "z64save.h"
+#include "soh/SaveManager.h"
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 
 typedef struct {
     s16 left;
@@ -963,7 +966,7 @@ void DrawSeedHashSprites(FileChooseContext* this) {
     if (this->configMode == CM_MAIN_MENU &&
          (this->selectMode != SM_CONFIRM_FILE || Save_GetSaveMetaInfo(this->selectedFileIndex)->randoSave == 1)) {
 
-        if (this->fileInfoAlpha[this->selectedFileIndex] > 0) {
+        if (this->fileInfoAlpha[this->selectedFileIndex] > 0 && Save_GetSaveMetaInfo(this->selectedFileIndex)->randoSave) {
             // Use file info alpha to match fading
             gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 0xFF, 0xFF, 0xFF, this->fileInfoAlpha[this->selectedFileIndex]);
 
@@ -1005,6 +1008,7 @@ void DrawSeedHashSprites(FileChooseContext* this) {
 }
 
 u8 generating;
+int retries = 0;
 bool fileSelectSpoilerFileLoaded = false;
 
 void FileChoose_UpdateRandomizer() {
@@ -1015,8 +1019,9 @@ void FileChoose_UpdateRandomizer() {
     } else if (CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0) == 0 && generating) {
             if (Randomizer_IsSeedGenerated()) {
                 Audio_PlayFanfare(NA_BGM_HORSE_GOAL);
+                retries = 0;
             } else {
-                func_80078884(NA_SE_SY_OCARINA_ERROR);
+                Sfx_PlaySfxCentered(NA_SE_SY_OCARINA_ERROR);
             }
             func_800F5E18(SEQ_PLAYER_BGM_MAIN, NA_BGM_FILE_SELECT, 0, 7, 1);
             generating = 0;
@@ -1068,25 +1073,25 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
     if (CHECK_BTN_ALL(input->press.button, BTN_START) || CHECK_BTN_ALL(input->press.button, BTN_A)) {
         if (this->buttonIndex <= FS_BTN_MAIN_FILE_3) {
             if (!Save_GetSaveMetaInfo(this->buttonIndex)->valid) {
-                Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 this->prevConfigMode = this->configMode;
                 this->configMode = CM_ROTATE_TO_QUEST_MENU;
                 this->logoAlpha = 0;
             } else if(!FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(this->buttonIndex))) {
-                Audio_PlaySoundGeneral(NA_SE_SY_FSEL_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                Audio_PlaySoundGeneral(NA_SE_SY_FSEL_ERROR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             } else if (this->n64ddFlags[this->buttonIndex] == this->n64ddFlag) {
-                Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 this->actionTimer = 8;
                 this->selectMode = SM_FADE_MAIN_TO_SELECT;
                 this->selectedFileIndex = this->buttonIndex;
                 this->menuMode = FS_MENU_MODE_SELECT;
                 this->nextTitleLabel = FS_TITLE_OPEN_FILE;
             } else if (!this->n64ddFlags[this->buttonIndex]) {
-                Audio_PlaySoundGeneral(NA_SE_SY_FSEL_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                Audio_PlaySoundGeneral(NA_SE_SY_FSEL_ERROR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             }
         } else {
             if (this->warningLabel == FS_WARNING_NONE) {
-                Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 this->prevConfigMode = this->configMode;
 
                 if (this->buttonIndex == FS_BTN_MAIN_COPY) {
@@ -1109,12 +1114,12 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
 
                 this->actionTimer = 8;
             } else {
-                Audio_PlaySoundGeneral(NA_SE_SY_FSEL_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                Audio_PlaySoundGeneral(NA_SE_SY_FSEL_ERROR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             }
         }
     } else {
         if ((ABS(this->stickRelY) > 30) || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DDOWN | BTN_DUP))) {
-            Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
 
             if ((this->stickRelY > 30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DUP))) {
                 this->buttonIndex--;
@@ -1277,7 +1282,7 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
             this->questType[this->buttonIndex] = MAX_QUEST;
         }
 
-        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
 
         GameInteractor_ExecuteOnUpdateFileQuestSelection(this->questType[this->buttonIndex]);
     }
@@ -1294,16 +1299,16 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
         gSaveContext.questId = this->questType[this->buttonIndex];
 
         if (this->questType[this->buttonIndex] == QUEST_BOSSRUSH) {
-            Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             this->prevConfigMode = this->configMode;
             this->configMode = CM_ROTATE_TO_BOSS_RUSH_MENU;
             return;
         } else if (this->questType[this->buttonIndex] == QUEST_RANDOMIZER) {
-            Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             this->prevConfigMode = this->configMode;
             this->configMode = CM_GENERATE_SEED;
         } else {
-            Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             osSyncPrintf("Selected Dungeon Quest: %d\n", IS_MASTER_QUEST);
             this->prevConfigMode = this->configMode;
             this->configMode = CM_ROTATE_TO_NAME_ENTRY;
@@ -1337,6 +1342,7 @@ void FileChoose_GenerateRandoSeed(GameState* thisx) {
         Audio_PlayFanfare(NA_BGM_HORSE_GOAL);
         func_800F5E18(SEQ_PLAYER_BGM_MAIN, NA_BGM_FILE_SELECT, 0, 7, 1);
         generating = 0;
+        retries = 0;
         Randomizer_SetSpoilerLoaded(true);
         static u8 emptyName[] = { 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E };
         static u8 linkName[] = { 0x15, 0x2C, 0x31, 0x2E, 0x3E, 0x3E, 0x3E, 0x3E };
@@ -1358,7 +1364,13 @@ void FileChoose_GenerateRandoSeed(GameState* thisx) {
         return;
     }
     if (!generating) {
-        Randomizer_GenerateSeed();
+        if (retries >= 5 || (retries >= 1 && Randomizer_IsSpoilerLoaded())){
+            this->configMode = CM_QUEST_MENU;
+            retries = 0;
+        } else {
+            Randomizer_GenerateSeed();
+            retries++;
+        }
     }
 }
 
@@ -1388,7 +1400,7 @@ void FileChoose_UpdateBossRushMenu(GameState* thisx) {
         // Move down
         if (this->stickRelY < -30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DDOWN))) {
             // When selecting past the last option, cycle back to the first option.
-            if ((this->bossRushIndex + 1) > BOSSRUSH_OPTIONS_AMOUNT - 1) {
+            if ((this->bossRushIndex + 1) > BR_OPTIONS_MAX - 1) {
                 this->bossRushIndex = 0;
                 this->bossRushOffset = 0;
             } else {
@@ -1401,7 +1413,7 @@ void FileChoose_UpdateBossRushMenu(GameState* thisx) {
         } else if (this->stickRelY > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DUP))) {
             // When selecting past the first option, cycle back to the last option and offset the list to view it properly.
             if ((this->bossRushIndex - 1) < 0) {
-                this->bossRushIndex = BOSSRUSH_OPTIONS_AMOUNT - 1;
+                this->bossRushIndex = BR_OPTIONS_MAX - 1;
                 this->bossRushOffset = this->bossRushIndex - BOSSRUSH_MAX_OPTIONS_ON_SCREEN + 1;
             } else {
                 // When first visible option is selected when moving up, offset the list up by one.
@@ -1412,7 +1424,7 @@ void FileChoose_UpdateBossRushMenu(GameState* thisx) {
             }
         }
 
-        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     }
 
     // Cycle through choices for currently selected option.
@@ -1433,7 +1445,7 @@ void FileChoose_UpdateBossRushMenu(GameState* thisx) {
             }
         }
 
-        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     }
 
     if (sLastBossRushOptionIndex != this->bossRushIndex ||
@@ -1450,7 +1462,7 @@ void FileChoose_UpdateBossRushMenu(GameState* thisx) {
 
     // Load into the game.
     if (CHECK_BTN_ALL(input->press.button, BTN_START) || CHECK_BTN_ALL(input->press.button, BTN_A)) {
-        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         this->buttonIndex = 0xFE;
         this->menuMode = FS_MENU_MODE_SELECT;
         this->selectMode = SM_FADE_OUT;
@@ -2306,7 +2318,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
                                     (arrowUpY + 8) << 2, G_TX_RENDERTILE, 0, 0, (1 << 11), (1 << 11));
         }
         // Arrow down
-        if (BOSSRUSH_OPTIONS_AMOUNT - listOffset > BOSSRUSH_MAX_OPTIONS_ON_SCREEN) {
+        if (BR_OPTIONS_MAX - listOffset > BOSSRUSH_MAX_OPTIONS_ON_SCREEN) {
             uint16_t arrowDownX = 140;
             uint16_t arrowDownY = 181 + (this->bossRushArrowOffset / 10);
             gDPLoadTextureBlock(POLY_OPA_DISP++, gArrowDownTex, G_IM_FMT_IA,
@@ -2855,18 +2867,18 @@ void FileChoose_ConfirmFile(GameState* thisx) {
     if (CHECK_BTN_ALL(input->press.button, BTN_START) || (CHECK_BTN_ALL(input->press.button, BTN_A))) {
         if (this->confirmButtonIndex == FS_BTN_CONFIRM_YES) {
             func_800AA000(300.0f, 180, 20, 100);
-            Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             this->selectMode = SM_FADE_OUT;
             func_800F6964(0xF);
         } else {
-            Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CLOSE, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CLOSE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             this->selectMode++;
         }
     } else if (CHECK_BTN_ALL(input->press.button, BTN_B)) {
-        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CLOSE, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CLOSE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         this->selectMode++;
     } else if ((ABS(this->stickRelY) >= 30) || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DDOWN | BTN_DUP))) {
-        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         this->confirmButtonIndex ^= 1;
     }
 
@@ -2975,7 +2987,7 @@ void FileChoose_LoadGame(GameState* thisx) {
     u16 swordEquipValue;
     s32 pad;
 
-    Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+    Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     gSaveContext.fileNum = this->buttonIndex;
     gSaveContext.gameMode = 0;
 
@@ -3044,16 +3056,6 @@ void FileChoose_LoadGame(GameState* thisx) {
     osSyncPrintf(VT_RST);
 
     gSaveContext.naviTimer = 0;
-
-    if (IS_RANDO) {
-        // Setup the modified entrance table and entrance shuffle table for rando
-        Entrance_Init();
-
-        // Handle randomized spawn positions after the save context has been setup from load
-        if (Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
-            Entrance_SetSavewarpEntrance();
-        }
-    }
 
     GameInteractor_ExecuteOnLoadGame(gSaveContext.fileNum);
 }

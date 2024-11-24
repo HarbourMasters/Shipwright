@@ -15,23 +15,22 @@ void SkipIntro_Register() {
         // If we're playing rando and if starting age is adult and/or overworld spawns are shuffled we need to skip
         // the cutscene regardless of the enhancement being on.
         bool adultStart = gSaveContext.linkAge == LINK_AGE_ADULT;
-        bool shuffleOverworldSpawns =
-            OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_OVERWORLD_SPAWNS).Is(true);
+        bool shuffleEntrances = OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_ENTRANCES).Is(true);
         if ((CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Intro"), IS_RANDO) ||
-             (IS_RANDO && (adultStart || shuffleOverworldSpawns))) &&
+             (IS_RANDO && (adultStart || shuffleEntrances))) &&
             gSaveContext.cutsceneIndex == 0xFFF1) {
             // Calculate spawn location. Start with vanilla, Link's house.
-            int32_t spawnEntrance = ENTR_LINKS_HOUSE_0;
+            int32_t spawnEntrance = ENTR_LINKS_HOUSE_CHILD_SPAWN;
             // If we're not in rando, we can skip all of the below.
             if (IS_RANDO) {
                 // If starting age is shuffled, use vanilla adult spawn/prelude warp.
                 if (adultStart) {
-                    spawnEntrance = ENTR_TEMPLE_OF_TIME_7;
+                    spawnEntrance = ENTR_TEMPLE_OF_TIME_WARP_PAD;
                 }
-                // If we're shuffling overworld spawns we'll need to get the Entrance Override
-                if (shuffleOverworldSpawns) {
-                    // If we're shuffling overworld spawns the adult spawn is ENTR_HYRULE_FIELD_10 instead of
-                    // ENTR_TEMPLE_OF_TIME_7, so that spawn and Prelude don't share an entrance.
+                // If we're shuffling any entrances we'll need to get the Entrance Override
+                if (shuffleEntrances) {
+                    // If we're shuffling any entrances, the adult spawn is ENTR_HYRULE_FIELD_10 instead of
+                    // ENTR_TEMPLE_OF_TIME_WARP_PAD, so that spawn and Prelude don't share an entrance.
                     if (adultStart) {
                         spawnEntrance = ENTR_HYRULE_FIELD_10;
                     }

@@ -7,6 +7,9 @@
 #include "z_en_hs.h"
 #include "vt.h"
 #include "objects/object_hs/object_hs.h"
+#include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
@@ -130,7 +133,7 @@ void func_80A6E5EC(EnHs* this, PlayState* play) {
 
 void func_80A6E630(EnHs* this, PlayState* play) {
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) {
-        if (GameInteractor_Should(VB_TRADE_TIMER_ODD_MUSHROOM, true, NULL)) {
+        if (GameInteractor_Should(VB_TRADE_TIMER_ODD_MUSHROOM, true)) {
             func_80088AA0(180);
             gSaveContext.eventInf[1] &= ~1;
         }
@@ -221,7 +224,7 @@ void func_80A6E9AC(EnHs* this, PlayState* play) {
             Animation_Change(&this->skelAnime, &object_hs_Anim_000304, 1.0f, 0.0f,
                              Animation_GetLastFrame(&object_hs_Anim_000304), ANIMMODE_LOOP, 8.0f);
             this->unk_2AA = 40;
-            func_80078884(NA_SE_SY_TRE_BOX_APPEAR);
+            Sfx_PlaySfxCentered(NA_SE_SY_TRE_BOX_APPEAR);
         } else {
             player->actor.textId = 0x10B1;
             func_80A6E3A0(this, func_80A6E6D8);

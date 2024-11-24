@@ -7,6 +7,7 @@ extern "C" {
 #include "variables.h"
 #include "functions.h"
 #include "macros.h"
+#include "soh/cvar_prefixes.h"
 extern PlayState* gPlayState;
 void GfxPrint_SetColor(GfxPrint* printer, u32 r, u32 g, u32 b, u32 a);
 void GfxPrint_SetPos(GfxPrint* printer, s32 x, s32 y);
@@ -104,12 +105,6 @@ extern "C" void ValueViewer_Draw(GfxPrint* printer) {
 }
 
 void ValueViewerWindow::DrawElement() {
-    ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Value Viewer", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
-        ImGui::End();
-        return;
-    }
-
     UIWidgets::PaddedEnhancementCheckbox("Enable Printing", CVAR_DEVELOPER_TOOLS("ValueViewerEnablePrinting"));
 
     ImGui::BeginGroup();
@@ -214,8 +209,6 @@ void ValueViewerWindow::DrawElement() {
         }
         ImGui::EndGroup();
     }
-
-    ImGui::End();
 }
 
 void ValueViewerWindow::InitElement() {

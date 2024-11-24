@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+using ConnectorLib.SimpleTCP;
 using CrowdControl.Common;
 using ConnectorType = CrowdControl.Common.ConnectorType;
 
-namespace CrowdControl.Games.Packs;
+namespace CrowdControl.Games.Packs.ShipOfHarkinian;
 
-public class ShipOfHarkinian : SimpleTCPPack
+public class ShipOfHarkinian : SimpleTCPPack<SimpleTCPServerConnector>
 {
     public override string Host => "127.0.0.1";
 
@@ -19,9 +18,8 @@ public class ShipOfHarkinian : SimpleTCPPack
 
     public override Game Game { get; } = new("Ship of Harkinian", "ShipOfHarkinian", "PC", ConnectorType.SimpleTCPServerConnector);
 
-    public override EffectList Effects => new List<Effect>
+    public override EffectList Effects { get; } = new List<Effect>
     {
-
         // Spawn Enemies and Objects
         new("Cucco Storm", "spawn_cucco_storm") { Category = "Spawn Enemies/Objects", Price = 35, Description = "Spawns an angry cucco that summons his friends to attack the poor streamer." },
         new("Lit Bomb", "spawn_lit_bomb") { Category = "Spawn Enemies/Objects", Price = 15, Description = "Spawns a bomb that is already lit." },
@@ -38,8 +36,7 @@ public class ShipOfHarkinian : SimpleTCPPack
         new("Fire Keese", "spawn_fire_keese") { Category = "Spawn Enemies/Objects", Price = 15, Description = "Do not bring close to Deku Shields. Or do, we're not your parents." },
         new("Wolfos", "spawn_wolfos") { Category = "Spawn Enemies/Objects", Price = 15, Description = "Awooooooo" },
         new("Wallmaster", "spawn_wallmaster") { Category = "Spawn Enemies/Objects", Price = 30, Description = "Need a hand? Try it together with electrocuting Link." },
-
-
+        
         // Link Modifiers
         new("Take Half Damage", "take_half_damage") { Category = "Link Modifiers", Duration = 30, Price = 20, Description = "Halves the damage Link takes. Won't save the streamer if they're bad at the game though." },
         new("Take Double Damage", "take_double_damage") { Category = "Link Modifiers", Duration = 30, Price = 30, Description = "Doubles the damage Link takes. Turns OoT into Dark Souls.. kinda." },
@@ -55,8 +52,7 @@ public class ShipOfHarkinian : SimpleTCPPack
         new("Disable Ledge Grabs", "no_ledge_grabs") { Category = "Link Modifiers", Duration = 30, Price = 15, Description = "Jump! Pull up-- Oh, woops." },
         new("Random Wind", "random_wind") { Category = "Link Modifiers", Duration = 30, Price = 30, Description = "A wind blows, which changes to a random direction every 5 seconds." },
         new("Random Bonks When Rolling", "random_bonks") { Category = "Link Modifiers", Duration = 60, Price = 15, Description = "Why do I keep bonking while there's nothing here!?" },
-
-
+        
         // Hurt or Heal Link
         new("Empty Heart", "empty_heart") { Category = "Hurt/Heal Link", Quantity = 20, Price = 10, Description = "Damage Link for however many hearts you choose." },
         new("Fill Heart", "fill_heart") { Category = "Hurt/Heal Link", Quantity = 20, Price = 5, Description = "Heal Link for however many hearts you choose." },
@@ -67,8 +63,7 @@ public class ShipOfHarkinian : SimpleTCPPack
         new("Freeze Link", "freeze_link") { Category = "Hurt/Heal Link", Price = 20, Description = "FREEZE! Don't move!" },
         new("Electrocute Link", "electrocute_link") { Category = "Hurt/Heal Link", Price = 20, Description = "Ganon used Thundershock!" },
         new("Kill Link", "kill_link") { Category = "Hurt/Heal Link", Price = 150, Description = "Rest in RIP." },
-
-
+        
         // Give Items and Consumables
         new("Add Heart Container", "add_heart_container") { Category = "Give Items/Consumables", Price = 25, Description = "The limit is 20 heart containers." },
         new("Fill Magic", "fill_magic") { Category = "Give Items/Consumables", Price = 20, Description = "Fills the entire magic bar. Abra-kadabra." },
@@ -81,8 +76,7 @@ public class ShipOfHarkinian : SimpleTCPPack
         new("Refill Slingshot Seeds", "refill_seeds") { Category = "Give Items/Consumables", Quantity = 30, Price = 1, Description = "Only works when the player already has a Slingshot." },
         new("Refill Arrows", "refill_arrows") { Category = "Give Items/Consumables", Price = 1, Description = "Only works when the player already has a bow." },
         new("Refill Bombchus", "refill_bombchus") { Category = "Give Items/Consumables", Quantity = 30, Price = 5, Description = "Only works when the player already had Bombchus before." },
-
-
+        
         // Take Items and Consumables
         new("Remove Heart Container", "remove_heart_container") { Category = "Take Items/Consumables", Price = 35, Description = "The limit is 1 heart. But you wouldn't go that far, would you?" },
         new("Empty Magic", "empty_magic") { Category = "Take Items/Consumables", Price = 25, Description = "Empties the entire magic bar. They didn't need it anyway." },
@@ -95,29 +89,25 @@ public class ShipOfHarkinian : SimpleTCPPack
         new("Take Slingshot Seeds", "take_seeds") { Category = "Take Items/Consumables", Quantity = 30, Price = 2, Description = "Who even uses the Slingshot?" },
         new("Take Arrows", "take_arrows") { Category = "Take Items/Consumables", Quantity = 30, Price = 2, Description = "*ploink*" },
         new("Take Bombchus", "take_bombchus") { Category = "Take Items/Consumables", Quantity = 30, Price = 10, Description = "Hopefully they still have some regular bombs." },
-
-
+        
         // Link Size Modifiers
         new("Giant Lonk", "giant_link") { Category = "Change Link's Size", Duration = 30, Price = 20, Description = "Big Lonk equals big sword." },
         new("Minish Link", "minish_link") { Category = "Change Link's Size", Duration = 30, Price = 20, Description = "They say size doesn't matter." },
         new("Paper Link", "paper_link") { Category = "Change Link's Size", Duration = 30, Price = 20, Description = "We might not have a Zelda variant of Paper Mario, but this gets pretty close." },
         new("Squished Link", "squished_link") { Category = "Change Link's Size", Duration = 30, Price = 20, Description = "Drop an anvil on Link, but the anvil is invisible." },
         new("Invisible Link", "invisible_link") { Category = "Change Link's Size", Duration = 30, Price = 20, Description = "Now you see me, now you don't." },
-
-
+        
         // Generic Effects
         new("Random Bomb Fuse Timer", "random_bomb_timer") { Category = "Generic Effects", Duration = 60, Price = 5, Description = "Sets the timer for new bombs to either super short, super long or something inbetween (does not work for bombchus)." },
         new("Set Time to Dawn", "set_time_to_dawn") { Category = "Generic Effects", Price = 25, Description = "Sets the time to early day. Might require an area reload to take effect." },
         new("Set Time to Dusk", "set_time_to_dusk") { Category = "Generic Effects", Price = 25, Description = "Sets the time to early night. Might require an area reload to take effect." },
-
-
+        
         // Visual Effects
         new("No UI", "no_ui") { Category = "Visual Effects", Duration = 60, Price = 20, Description = "No need to see ammo counts. The cinematic experience." },
         new("Rainstorm", "rainstorm") { Category = "Visual Effects", Duration = 30, Price = 5, Description = "Summon a rainstorm for a sad moment." },
         new("Debug Mode", "debug_mode") { Category = "Visual Effects", Duration = 30, Price = 20, Description = "if (debug_mode) { ShowCollision(); }" },
         new("Randomize Cosmetics", "random_cosmetics") { Category = "Visual Effects", Price = 30, Description = "Randomize most cosmetics options. Cosmetics changed by bidding wars are unaffected." },
-
-
+        
         // Controls
         new("No Z Button", "no_z_button") { Category = "Controls", Duration = 30, Price = 20, Description = "No sidehops, no backflips, no jump attacks, no camera adjustments." },
         new("Reverse Controls", "reverse_controls") { Category = "Controls", Duration = 60, Price = 25, Description = "Just hold the controller upside down." },
@@ -125,8 +115,7 @@ public class ShipOfHarkinian : SimpleTCPPack
         new("Press Random Buttons", "press_random_buttons") { Category = "Controls", Duration = 30, Price = 25, Description = "Press random buttons on the controller for the duration. Maybe it'll help (spoiler: probably not)." },
         new("Clear C-Buttons", "clear_cbuttons") { Category = "Controls", Price = 10, Description = "Clear the assigned items from the C-buttons." },
         new("Clear D-pad", "clear_dpad") { Category = "Controls", Price = 10, Description = "Clear the assigned items from the D-pad." },
-
-
+        
         // Teleport Player
         new("Link's House", "tp_links_house") { Category = "Teleport Player", Price = 100, Description = "Teleport the player to Link's House. Welcome Home!" },
         new("Minuet Destination", "tp_minuet") { Category = "Teleport Player", Price = 100, Description = "Teleport the player to Sacred Forest Meadow." },
@@ -135,53 +124,50 @@ public class ShipOfHarkinian : SimpleTCPPack
         new("Requiem Destination", "tp_requiem") { Category = "Teleport Player", Price = 100, Description = "Teleport the player to Desert Colossus." },
         new("Nocturne Destination", "tp_nocturne") { Category = "Teleport Player", Price = 100, Description = "Teleport the player to the Raveyard." },
         new("Prelude Destination", "tp_prelude") { Category = "Teleport Player", Price = 100, Description = "Teleport the player to the Temple of Time." },
-
-
+        
         // Tunic Color (Bidding War)
         new("Tunic Color", "tunic", ItemKind.BidWar)
         {
             Parameters = new ParameterDef("Color", "color_tunic_param",
-                new("Red", "red"),
-                new("Green", "green"),
-                new("Blue", "blue"),
-                new("Orange", "orange"),
-                new("Yellow", "yellow"),
-                new("Purple", "purple"),
-                new("Pink", "pink"),
-                new("Brown", "brown"),
-                new("Black", "black"))
+                new Parameter("Red", "red"),
+                new Parameter("Green", "green"),
+                new Parameter("Blue", "blue"),
+                new Parameter("Orange", "orange"),
+                new Parameter("Yellow", "yellow"),
+                new Parameter("Purple", "purple"),
+                new Parameter("Pink", "pink"),
+                new Parameter("Brown", "brown"),
+                new Parameter("Black", "black"))
         },
-
-
+        
         // Navi Color (Bidding War)
         new("Navi Color", "navi", ItemKind.BidWar)
         {
             Parameters = new ParameterDef("Color", "color_navi_param",
-                new("Red", "red"),
-                new("Green", "green"),
-                new("Blue", "blue"),
-                new("Orange", "orange"),
-                new("Yellow", "yellow"),
-                new("Purple", "purple"),
-                new("Pink", "pink"),
-                new("Brown", "brown"),
-                new("Black", "black"))
+                new Parameter("Red", "red"),
+                new Parameter("Green", "green"),
+                new Parameter("Blue", "blue"),
+                new Parameter("Orange", "orange"),
+                new Parameter("Yellow", "yellow"),
+                new Parameter("Purple", "purple"),
+                new Parameter("Pink", "pink"),
+                new Parameter("Brown", "brown"),
+                new Parameter("Black", "black"))
         },
-
-
+        
         // Link's Hair Color (Bidding War)
         new("Link's Hair Color", "hair", ItemKind.BidWar)
         {
             Parameters = new ParameterDef("Color", "color_hair_param",
-                new("Red", "red"),
-                new("Green", "green"),
-                new("Blue", "blue"),
-                new("Orange", "orange"),
-                new("Yellow", "yellow"),
-                new("Purple", "purple"),
-                new("Pink", "pink"),
-                new("Brown", "brown"),
-                new("Black", "black"))
+                new Parameter("Red", "red"),
+                new Parameter("Green", "green"),
+                new Parameter("Blue", "blue"),
+                new Parameter("Orange", "orange"),
+                new Parameter("Yellow", "yellow"),
+                new Parameter("Purple", "purple"),
+                new Parameter("Pink", "pink"),
+                new Parameter("Brown", "brown"),
+                new Parameter("Black", "black"))
         }
     };
 }

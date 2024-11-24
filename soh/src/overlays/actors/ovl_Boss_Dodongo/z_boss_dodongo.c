@@ -4,8 +4,9 @@
 #include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
 #include "scenes/dungeons/ddan_boss/ddan_boss_room_1.h"
 #include "soh/frame_interpolation.h"
-#include "soh/Enhancements/boss-rush/BossRush.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #include <stdlib.h> // malloc
 #include <string.h> // memcpy
@@ -341,7 +342,9 @@ void BossDodongo_Init(Actor* thisx, PlayState* play) {
         Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, -890.0f, -1523.76f,
                            -3304.0f, 0, 0, 0, WARP_DUNGEON_CHILD);
         Actor_Spawn(&play->actorCtx, play, ACTOR_BG_BREAKWALL, -890.0f, -1523.76f, -3304.0f, 0, 0, 0, 0x6000, true);
-        Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, -690.0f, -1523.76f, -3304.0f, 0, 0, 0, 0, true);
+        if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true)) {
+            Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, -690.0f, -1523.76f, -3304.0f, 0, 0, 0, 0, true);
+        }
     }
 
     this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
@@ -843,7 +846,7 @@ void BossDodongo_Walk(BossDodongo* this, PlayState* play) {
             }
 
             if (this->unk_1BC != 0) {
-                func_80078884(NA_SE_EN_DODO_K_WALK);
+                Sfx_PlaySfxCentered(NA_SE_EN_DODO_K_WALK);
             } else {
                 Audio_PlayActorSound2(&this->actor, NA_SE_EN_DODO_K_WALK);
             }
@@ -1559,8 +1562,7 @@ void BossDodongo_DeathCutscene(BossDodongo* this, PlayState* play) {
             this->cameraAt.x = camera->at.x;
             this->cameraAt.y = camera->at.y;
             this->cameraAt.z = camera->at.z;
-            gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_KING_DODONGO] = GAMEPLAYSTAT_TOTAL_TIME;
-            BossRush_HandleCompleteBoss(play);
+            GameInteractor_ExecuteOnBossDefeat(&this->actor);
             break;
         case 5:
             tempSin = Math_SinS(this->actor.shape.rot.y - 0x1388) * 150.0f;
@@ -1845,7 +1847,7 @@ void BossDodongo_DeathCutscene(BossDodongo* this, PlayState* play) {
 
             if (this->unk_1DA == 820) {
                 Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_BOSS_CLEAR);
-                if (!IS_BOSS_RUSH) {
+                if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true)) {
                     Actor_Spawn(
                         &play->actorCtx, play, ACTOR_ITEM_B_HEART,
                         Math_SinS(this->actor.shape.rot.y) * -50.0f + this->actor.world.pos.x, this->actor.world.pos.y,
@@ -1864,10 +1866,8 @@ void BossDodongo_DeathCutscene(BossDodongo* this, PlayState* play) {
                 Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_ACTIVE);
                 func_80064534(play, &play->csCtx);
                 Player_SetCsActionWithHaltedActors(play, &this->actor, 7);
-                if (!IS_BOSS_RUSH) {
+                if (GameInteractor_Should(VB_SPAWN_BLUE_WARP, true, this)) {
                     Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, -890.0f, -1523.76f, -3304.0f, 0, 0, 0, WARP_DUNGEON_CHILD);
-                } else {
-                    Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, -890.0f, -1523.76f, -3304.0f, 0, 0, 0, WARP_DUNGEON_ADULT, false);
                 }
                 this->skelAnime.playSpeed = 0.0f;
                 Flags_SetClear(play, play->roomCtx.curRoom.num);

@@ -7,6 +7,7 @@
 #include "z_obj_oshihiki.h"
 #include "overlays/actors/ovl_Obj_Switch/z_obj_switch.h"
 #include "objects/gameplay_dangeon_keep/gameplay_dangeon_keep.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
@@ -272,15 +273,6 @@ void ObjOshihiki_SetColor(ObjOshihiki* this, PlayState* play) {
 void ObjOshihiki_Init(Actor* thisx, PlayState* play2) {
     PlayState* play = play2;
     ObjOshihiki* this = (ObjOshihiki*)thisx;
-
-    // In MQ Spirit, remove the large silver block in the hole as child so the chest in the silver block hallway
-    // can be guaranteed accessible
-    if (IS_RANDO && LINK_IS_CHILD && ResourceMgr_IsGameMasterQuest() &&
-        play->sceneNum == SCENE_SPIRIT_TEMPLE && thisx->room == 6 && // Spirit Temple silver block hallway
-        thisx->params == 0x9C7) { // Silver block that is marked as in the hole
-        Actor_Kill(thisx);
-        return;
-    }
 
     ObjOshihiki_CheckType(this, play);
 

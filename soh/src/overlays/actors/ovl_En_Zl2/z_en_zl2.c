@@ -212,7 +212,7 @@ s32 EnZl2_UpdateSkelAnime(EnZl2* this) {
     return SkelAnime_Update(&this->skelAnime);
 }
 
-CsCmdActorAction* EnZl2_GetNpcAction(PlayState* play, s32 idx) {
+CsCmdActorCue* EnZl2_GetNpcAction(PlayState* play, s32 idx) {
     if (play->csCtx.state != CS_STATE_IDLE) {
         return play->csCtx.npcActions[idx];
     }
@@ -220,7 +220,7 @@ CsCmdActorAction* EnZl2_GetNpcAction(PlayState* play, s32 idx) {
 }
 
 void func_80B4EDB8(EnZl2* this, PlayState* play, s32 arg2) {
-    CsCmdActorAction* npcAction = EnZl2_GetNpcAction(play, arg2);
+    CsCmdActorCue* npcAction = EnZl2_GetNpcAction(play, arg2);
 
     if (npcAction != NULL) {
         this->actor.world.pos.x = npcAction->startPos.x;
@@ -592,34 +592,34 @@ void func_80B4FD90(EnZl2* this, PlayState* play) {
 
 void func_80B4FDD4(EnZl2* this) {
     if (Animation_OnFrame(&this->skelAnime, 14.0f)) {
-        func_80078914(&this->actor.projectedPos, NA_SE_PL_WALK_CONCRETE);
+        Sfx_PlaySfxAtPos(&this->actor.projectedPos, NA_SE_PL_WALK_CONCRETE);
     }
 }
 
 void func_80B4FE10(PlayState* play) {
     if ((play->csCtx.frames >= 830) && (play->csCtx.frames < 1081)) {
-        func_800788CC(NA_SE_EV_EARTHQUAKE - SFX_FLAG);
+        Sfx_PlaySfxCentered2(NA_SE_EV_EARTHQUAKE - SFX_FLAG);
     }
 }
 
 void func_80B4FE48(EnZl2* this) {
-    func_80078914(&this->actor.projectedPos, NA_SE_EV_GOTO_HEAVEN - SFX_FLAG);
+    Sfx_PlaySfxAtPos(&this->actor.projectedPos, NA_SE_EV_GOTO_HEAVEN - SFX_FLAG);
 }
 
 void func_80B4FE6C(EnZl2* this) {
-    func_80078914(&this->actor.projectedPos, NA_SE_EN_GANON_LAUGH);
+    Sfx_PlaySfxAtPos(&this->actor.projectedPos, NA_SE_EN_GANON_LAUGH);
 }
 
 void func_80B4FE90(EnZl2* this) {
-    func_80078914(&this->actor.projectedPos, NA_SE_VO_Z1_SURPRISE);
+    Sfx_PlaySfxAtPos(&this->actor.projectedPos, NA_SE_VO_Z1_SURPRISE);
 }
 
 void func_80B4FEB4(EnZl2* this) {
-    func_80078914(&this->actor.projectedPos, NA_SE_VO_Z1_PAIN);
+    Sfx_PlaySfxAtPos(&this->actor.projectedPos, NA_SE_VO_Z1_PAIN);
 }
 
 void func_80B4FED8(EnZl2* this) {
-    func_80078914(&this->actor.projectedPos, NA_SE_VO_Z1_CRY_0);
+    Sfx_PlaySfxAtPos(&this->actor.projectedPos, NA_SE_VO_Z1_CRY_0);
 }
 
 void EnZl2_GiveLightArrows(EnZl2* this, PlayState* play) {
@@ -634,7 +634,7 @@ void EnZl2_GiveLightArrows(EnZl2* this, PlayState* play) {
         posY = player->actor.world.pos.y + 80.0f;
         posZ = player->actor.world.pos.z;
         Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_EFFECT, posX, posY, posZ, 0, 0, 0, 0x17, true);
-        if (GameInteractor_Should(VB_GIVE_ITEM_LIGHT_ARROW, true, NULL)) {
+        if (GameInteractor_Should(VB_GIVE_ITEM_LIGHT_ARROW, true)) {
             Item_Give(play, ITEM_ARROW_LIGHT);
         }
         this->unk_244 = 1;
@@ -683,7 +683,7 @@ void func_80B5008C(EnZl2* this) {
 }
 
 void func_80B500E0(EnZl2* this, PlayState* play) {
-    CsCmdActorAction* npcAction = EnZl2_GetNpcAction(play, 0);
+    CsCmdActorCue* npcAction = EnZl2_GetNpcAction(play, 0);
     Vec3f* thisPos = &this->actor.world.pos;
     f32 startX;
     f32 startY;
@@ -715,7 +715,7 @@ void func_80B501C4(EnZl2* this, s32 alpha) {
 }
 
 void func_80B501E8(EnZl2* this, PlayState* play) {
-    CsCmdActorAction* npcAction = EnZl2_GetNpcAction(play, 0);
+    CsCmdActorCue* npcAction = EnZl2_GetNpcAction(play, 0);
 
     if (npcAction != NULL) {
         this->actor.shape.shadowAlpha = this->alpha =
@@ -732,7 +732,7 @@ void func_80B50260(EnZl2* this, PlayState* play) {
 }
 
 void func_80B50278(EnZl2* this, PlayState* play) {
-    CsCmdActorAction* npcAction = EnZl2_GetNpcAction(play, 0);
+    CsCmdActorCue* npcAction = EnZl2_GetNpcAction(play, 0);
 
     this->actor.world.pos.x = npcAction->startPos.x;
     this->actor.world.pos.y = npcAction->startPos.y;
@@ -746,7 +746,7 @@ void func_80B50278(EnZl2* this, PlayState* play) {
 void func_80B50304(EnZl2* this, PlayState* play) {
     s32 pad[2];
     ActorShape* shape = &this->actor.shape;
-    CsCmdActorAction* npcAction = EnZl2_GetNpcAction(play, 0);
+    CsCmdActorCue* npcAction = EnZl2_GetNpcAction(play, 0);
     f32 actionXDelta;
     f32 actionZDelta;
 
@@ -761,7 +761,7 @@ void func_80B50304(EnZl2* this, PlayState* play) {
 }
 
 void func_80B503DC(EnZl2* this, PlayState* play) {
-    CsCmdActorAction* npcAction = EnZl2_GetNpcAction(play, 0);
+    CsCmdActorCue* npcAction = EnZl2_GetNpcAction(play, 0);
 
     if ((npcAction != NULL) && (play->csCtx.frames >= npcAction->endFrame)) {
         this->action = 4;
@@ -906,7 +906,7 @@ void func_80B50980(EnZl2* this, PlayState* play) {
 }
 
 void func_80B509A0(EnZl2* this, PlayState* play) {
-    CsCmdActorAction* npcAction = EnZl2_GetNpcAction(play, 0);
+    CsCmdActorCue* npcAction = EnZl2_GetNpcAction(play, 0);
 
     if (npcAction != NULL) {
         if (play->csCtx.frames >= npcAction->endFrame) {
@@ -918,7 +918,7 @@ void func_80B509A0(EnZl2* this, PlayState* play) {
 }
 
 void func_80B50A04(EnZl2* this, PlayState* play) {
-    CsCmdActorAction* npcAction = EnZl2_GetNpcAction(play, 0);
+    CsCmdActorCue* npcAction = EnZl2_GetNpcAction(play, 0);
     s32 newAction;
     s32 unk_240;
 
@@ -1329,7 +1329,7 @@ void func_80B518C0(EnZl2* this) {
 }
 
 void func_80B51948(EnZl2* this, PlayState* play) {
-    CsCmdActorAction* npcAction = EnZl2_GetNpcAction(play, 0);
+    CsCmdActorCue* npcAction = EnZl2_GetNpcAction(play, 0);
     s32 newAction;
     s32 unk_240;
 
@@ -1444,13 +1444,13 @@ void func_80B51D24(EnZl2* this, PlayState* play) {
         if (this->actor.bgCheckFlags & 1) {
             sfxId = SFX_FLAG;
             sfxId += SurfaceType_GetSfx(&play->colCtx, this->actor.floorPoly, this->actor.floorBgId);
-            func_80078914(&this->actor.projectedPos, sfxId);
+            Sfx_PlaySfxAtPos(&this->actor.projectedPos, sfxId);
         }
     }
 }
 
 void func_80B51DA4(EnZl2* this, PlayState* play) {
-    CsCmdActorAction* npcAction = EnZl2_GetNpcAction(play, 0);
+    CsCmdActorCue* npcAction = EnZl2_GetNpcAction(play, 0);
     Vec3f* thisPos = &this->actor.world.pos;
     f32 startX;
     f32 startY;
@@ -1486,7 +1486,7 @@ void func_80B51EA8(EnZl2* this) {
 
 void func_80B51EBC(EnZl2* this, PlayState* play) {
     ActorShape* shape = &this->actor.shape;
-    CsCmdActorAction* npcAction = EnZl2_GetNpcAction(play, 0);
+    CsCmdActorCue* npcAction = EnZl2_GetNpcAction(play, 0);
     s32 pad[2];
 
     this->actor.world.rot.y = shape->rot.y = npcAction->rot.y;
@@ -1497,7 +1497,7 @@ void func_80B51EBC(EnZl2* this, PlayState* play) {
 }
 
 void func_80B51F38(EnZl2* this, PlayState* play) {
-    CsCmdActorAction* npcAction = EnZl2_GetNpcAction(play, 0);
+    CsCmdActorCue* npcAction = EnZl2_GetNpcAction(play, 0);
 
     if (npcAction != NULL) {
         if (play->csCtx.frames - 8 >= npcAction->endFrame) {
@@ -1508,7 +1508,7 @@ void func_80B51F38(EnZl2* this, PlayState* play) {
 }
 
 void func_80B51FA8(EnZl2* this, PlayState* play) {
-    CsCmdActorAction* npcAction = EnZl2_GetNpcAction(play, 0);
+    CsCmdActorCue* npcAction = EnZl2_GetNpcAction(play, 0);
     s32 action;
     s32 unk_240;
 

@@ -1,5 +1,6 @@
 #include <libultraship/libultra.h>
 #include "global.h"
+#include "soh/OTRGlobals.h"
 
 #include <stdio.h>
 #include <assert.h>

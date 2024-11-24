@@ -1,11 +1,10 @@
-extern "C" {
 #include "gameplaystats.h"
-}
 #include "gameplaystatswindow.h"
 
 #include "soh/SaveManager.h"
 #include "functions.h"
 #include "macros.h"
+#include "soh/cvar_prefixes.h"
 #include "../UIWidgets.hpp"
 #include "soh/util.h"
 
@@ -437,7 +436,13 @@ void DrawGameplayStatsHeader() {
     ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 4.0f, 4.0f });
     ImGui::BeginTable("gameplayStatsHeader", 1, ImGuiTableFlags_BordersOuter);
     ImGui::TableSetupColumn("stat", ImGuiTableColumnFlags_WidthStretch);
-    GameplayStatsRow("Build Version:", (char*) gBuildVersion);
+    //if tag is empty (not a release build)
+    if (gGitCommitTag[0] == 0) {
+        GameplayStatsRow("Git Branch:", (char*)gGitBranch);
+        GameplayStatsRow("Git Commit Hash:", (char*)gGitCommitHash);
+    } else {
+        GameplayStatsRow("Build Version:", (char*)gBuildVersion);
+    }
     if (gSaveContext.sohStats.rtaTiming) {
         GameplayStatsRow("Total Time (RTA):", formatTimestampGameplayStat(GAMEPLAYSTAT_TOTAL_TIME), gSaveContext.sohStats.gameComplete ? COLOR_GREEN : COLOR_WHITE);
     } else {
@@ -619,12 +624,6 @@ void DrawGameplayStatsOptionsTab() {
 }
 
 void GameplayStatsWindow::DrawElement() {
-    ImGui::SetNextWindowSize(ImVec2(480, 550), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Gameplay Stats", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
-        ImGui::End();
-        return;
-    }
-
     DrawGameplayStatsHeader();
 
     if (ImGui::BeginTabBar("Stats", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
@@ -648,8 +647,6 @@ void GameplayStatsWindow::DrawElement() {
     }
    
     ImGui::Text("Note: Gameplay stats are saved to the current file and will be\nlost if you quit without saving.");
-
-    ImGui::End();
 }
 void InitStats(bool isDebug) {
     gSaveContext.sohStats.heartPieces = isDebug ? 8 : 0;

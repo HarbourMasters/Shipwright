@@ -7,6 +7,8 @@
 #include "z_en_ta.h"
 #include "vt.h"
 #include "objects/object_ta/object_ta.h"
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
@@ -580,7 +582,7 @@ s32 func_80B150AC(EnTa* this, PlayState* play, s32 idx) {
     Player* player = GET_PLAYER(play);
     Actor* interactRangeActor;
 
-    if (player->stateFlags1 & PLAYER_STATE1_ITEM_OVER_HEAD) {
+    if (player->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR) {
         interactRangeActor = player->interactRangeActor;
         if (interactRangeActor != NULL && interactRangeActor->id == ACTOR_EN_NIW &&
             interactRangeActor == &this->superCuccos[idx]->actor) {
@@ -614,7 +616,7 @@ void func_80B15100(EnTa* this, PlayState* play) {
         if (player->heldActor == &this->superCuccos[unk_2CA]->actor) {
             player->heldActor = NULL;
         }
-        player->stateFlags1 &= ~PLAYER_STATE1_ITEM_OVER_HEAD;
+        player->stateFlags1 &= ~PLAYER_STATE1_CARRYING_ACTOR;
         this->superCuccos[unk_2CA] = NULL;
     }
     this->unk_2E0 |= 1;
@@ -747,7 +749,7 @@ void EnTa_RunCuccoGame(EnTa* this, PlayState* play) {
     if (gSaveContext.timer1Value == 0 && !Play_InCsMode(play)) {
         Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_STOP);
         this->unk_2E0 &= ~0x200;
-        func_80078884(NA_SE_SY_FOUND);
+        Sfx_PlaySfxCentered(NA_SE_SY_FOUND);
         gSaveContext.timer1State = 0;
         Player_SetCsActionWithHaltedActors(play, &this->actor, 1);
         Message_StartTextbox(play, 0x2081, &this->actor);

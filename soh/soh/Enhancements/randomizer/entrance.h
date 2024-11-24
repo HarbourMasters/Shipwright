@@ -38,7 +38,7 @@ enum class EntranceType {
 
 class Entrance {
   public:
-    Entrance(RandomizerRegion connectedRegion_, std::vector<ConditionFn> conditions_met_);
+    Entrance(RandomizerRegion connectedRegion_, std::vector<ConditionFn> conditions_met_, bool spreadsAreasWithPriority_ = true);
     void SetCondition(ConditionFn newCondition);
     bool GetConditionsMet() const;
     std::string to_string() const;
@@ -50,10 +50,10 @@ class Entrance {
     bool CheckConditionAtAgeTime(bool& age, bool& time, bool passAnyway = false) const;
     RandomizerRegion GetConnectedRegionKey() const;
     RandomizerRegion GetOriginalConnectedRegionKey() const;
-    Area* GetConnectedRegion() const;
+    Region* GetConnectedRegion() const;
     void SetParentRegion(RandomizerRegion newParent);
     RandomizerRegion GetParentRegionKey() const;
-    Area* GetParentRegion() const;
+    Region* GetParentRegion() const;
     void SetNewEntrance(RandomizerRegion newRegion);
     void SetAsShuffled();
     bool IsShuffled() const;
@@ -77,6 +77,7 @@ class Entrance {
     void BindTwoWay(Entrance* otherEntrance);
     Entrance* GetNewTarget();
     Entrance* AssumeReachable();
+    bool DoesSpreadAreas();
 
   private:
     RandomizerRegion parentRegion;
@@ -95,6 +96,9 @@ class Entrance {
     bool addedToPool = false;
     bool decoupled = false;
     std::string name = "";
+    //If this is false, areas only spread to interiors through this entrance if there is no other choice
+    //Set to false for owl drops, the windmill path between dampe's grave and windmill and blue warps
+    bool spreadsAreasWithPriority = true; 
 };
 
 typedef struct {
@@ -137,8 +141,6 @@ class EntranceShuffler {
                              int retryCount = 20);
     bool ShuffleEntrances(std::vector<Entrance*>& entrances, std::vector<Entrance*>& targetEntrances,
                           std::vector<EntrancePair>& rollbacks);
-    bool PlaceOtherImpasHouseEntrance(std::vector<Entrance*> entrances, std::vector<Entrance*> targetEntrances,
-                                      std::vector<EntrancePair>& rollbacks);
     bool mNoRandomEntrances;
     int mTotalRandomizableEntrances = 0;
     int mCurNumRandomizedEntrances = 0;

@@ -49,7 +49,10 @@ extern "C"
 	extern u16 gBuildVersionMajor;
 	extern u16 gBuildVersionMinor;
 	extern u16 gBuildVersionPatch;
-    extern u8 gBuildTeam[];
+	extern u8 gGitBranch[];
+	extern u8 gGitCommitHash[];
+	extern u8 gGitCommitTag[];
+	extern u8 gBuildTeam[];
 	extern u8 gBuildDate[];
 	extern u8 gBuildMakeOption[];
 	extern OSMesgQueue gPiMgrCmdQ;
@@ -117,7 +120,7 @@ extern "C"
 	extern KaleidoMgrOverlay gKaleidoMgrOverlayTable[KALEIDO_OVL_MAX];
 	extern KaleidoMgrOverlay* gKaleidoMgrCurOvl;
 	extern u8 gBossMarkState;
-	extern void* D_8012D1F0;
+	extern void* gDebugCutsceneScript;
 	extern s32 gScreenWidth;
 	extern s32 gScreenHeight;
 	extern Mtx gMtxClear;
@@ -155,9 +158,9 @@ extern "C"
 	extern char D_80133398[];
 	extern SoundBankEntry* gSoundBanks[7];
 	extern u8 gSfxChannelLayout;
-	extern Vec3f D_801333D4;
-	extern f32 D_801333E0;
-	extern s8 D_801333E8;
+	extern Vec3f gSfxDefaultPos;
+	extern f32 gSfxDefaultFreqAndVolScale;
+	extern s8 gSfxDefaultReverb;
 	extern u8 D_801333F0;
 	extern u8 gAudioSfxSwapOff;
 	extern u8 D_80133408;
@@ -200,7 +203,7 @@ extern "C"
 	extern f32 gBossMarkScale;
 	extern PauseMapMarksData* gLoadedPauseMarkDataTable;
 	extern s32 gTrnsnUnkState;
-	extern Color_RGBA8_u32 D_801614B0;
+	extern Color_RGBA8_u32 gVisMonoColor;
 	extern PreNmiBuff* gAppNmiBufferPtr;
 	extern SchedContext gSchedContext;
 	extern PadMgr gPadMgr;

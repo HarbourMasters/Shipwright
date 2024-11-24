@@ -230,6 +230,6 @@ void BgHakaShip_Draw(Actor* thisx, PlayState* play) {
         sp2C.z = this->dyna.actor.world.pos.z;
 
         SkinMatrix_Vec3fMtxFMultXYZ(&play->viewProjectionMtxF, &sp2C, &this->bellSoundPos);
-        func_80078914(&this->bellSoundPos, NA_SE_EV_SHIP_BELL - SFX_FLAG);
+        Sfx_PlaySfxAtPos(&this->bellSoundPos, NA_SE_EV_SHIP_BELL - SFX_FLAG);
     }
 }

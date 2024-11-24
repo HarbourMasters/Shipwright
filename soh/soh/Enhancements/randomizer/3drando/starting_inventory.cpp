@@ -132,7 +132,8 @@ void GenerateStartingInventory() {
   //   AddItemToInventory(RG_GIANTS_KNIFE, (StartingBiggoronSword.Is(STARTINGBGS_GIANTS_KNIFE)) ? 1 : 0);
   //   AddItemToInventory(RG_BIGGORON_SWORD, (StartingBiggoronSword.Is(STARTINGBGS_BIGGORON_SWORD)) ? 1 : 0);
   // }
-  AddItemToInventory(RG_DEKU_SHIELD, ctx->GetOption(RSK_STARTING_DEKU_SHIELD) ? 1 : 0);
+  AddItemToInventory(RG_MASTER_SWORD,              ctx->GetOption(RSK_STARTING_MASTER_SWORD) ? 1 : 0);
+  AddItemToInventory(RG_DEKU_SHIELD,               ctx->GetOption(RSK_STARTING_DEKU_SHIELD) ? 1 : 0);
   // AddItemToInventory(RG_HYLIAN_SHIELD,             StartingHylianShield.Value<uint8_t>());
   // AddItemToInventory(RG_MIRROR_SHIELD,             StartingMirrorShield.Value<uint8_t>());
   // AddItemToInventory(RG_GORON_TUNIC,               StartingGoronTunic.Value<uint8_t>());

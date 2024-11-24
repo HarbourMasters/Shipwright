@@ -8,8 +8,65 @@ set(CMAKE_OSX_DEPLOYMENT_TARGET "10.15" CACHE STRING "Minimum OS X deployment ve
 project(Ship VERSION 8.0.6 LANGUAGES C CXX)
 include(CMake/soh-cvars.cmake)
 include(CMake/lus-cvars.cmake)
-set(PROJECT_BUILD_NAME "MacReady Golf" CACHE STRING "" FORCE)
+
+option(SUPPRESS_WARNINGS "Suppress warnings in LUS and src (decomp)" ON)
+if(SUPPRESS_WARNINGS)
+    MESSAGE("Suppressing warnings in LUS and src")
+    if(MSVC)
+        set(WARNING_OVERRIDE /w)
+    else()
+        set(WARNING_OVERRIDE -w)
+    endif()
+else()
+    MESSAGE("Skipping warning suppression")
+endif()
+
+set(NATO_PHONETIC_ALPHABET
+  "Alfa" "Bravo" "Charlie" "Delta" "Echo" "Foxtrot" "Golf" "Hotel"
+  "India" "Juliett" "Kilo" "Lima" "Mike" "November" "Oscar" "Papa"
+  "Quebec" "Romeo" "Sierra" "Tango" "Uniform" "Victor" "Whiskey"
+  "Xray" "Yankee" "Zulu"
+)
+
+# Get the patch version number from the project version
+math(EXPR PATCH_INDEX "${PROJECT_VERSION_PATCH}")
+
+# Use the patch number to select the correct word
+list(GET NATO_PHONETIC_ALPHABET ${PATCH_INDEX} PROJECT_PATCH_WORD)
+
+set(PROJECT_BUILD_NAME "MacReady ${PROJECT_PATCH_WORD}" CACHE STRING "" FORCE)
 set(PROJECT_TEAM "github.com/harbourmasters" CACHE STRING "" FORCE)
+
+execute_process(
+    COMMAND git branch --show-current
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    OUTPUT_VARIABLE GIT_BRANCH
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+set(CMAKE_PROJECT_GIT_BRANCH "${GIT_BRANCH}" CACHE STRING "Git branch" FORCE)
+
+execute_process(
+    COMMAND git rev-parse HEAD
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    OUTPUT_VARIABLE GIT_COMMIT_HASH
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+set(CMAKE_PROJECT_GIT_COMMIT_HASH "${GIT_COMMIT_HASH}" CACHE STRING "Git commit hash" FORCE)
+
+execute_process(
+    COMMAND git describe --tags --abbrev=0 --exact-match HEAD
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    OUTPUT_VARIABLE GIT_COMMIT_TAG
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+if(NOT GIT_COMMIT_TAG)
+    set(GIT_COMMIT_TAG "" CACHE STRING "Git commit tag" FORCE)
+endif()
+
+set(CMAKE_PROJECT_GIT_COMMIT_TAG "${GIT_COMMIT_TAG}" CACHE STRING "Git commit tag" FORCE)
 
 set_property(DIRECTORY ${CMAKE_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT soh)
 add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/MP>)
@@ -85,15 +142,25 @@ include(CMake/GlobalSettingsInclude.cmake OPTIONAL)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 ################################################################################
-# Set GBI version
+# Set LUS vars
 ################################################################################
 
+# Enable the Gfx debugger in LUS to use libgfxd from ZAPDTR
+set(GFX_DEBUG_DISASSEMBLER ON)
+
+# Tell LUS we're using F3DEX_GBI_2 (in a way that doesn't break libgfxd)
 set(GBI_UCODE F3DEX_GBI_2)
+
+################################################################################
+# Set CONTROLLERBUTTONS_T
+################################################################################
+add_compile_definitions(CONTROLLERBUTTONS_T=uint32_t)
 
 ################################################################################
 # Sub-projects
 ################################################################################
 add_subdirectory(libultraship ${CMAKE_BINARY_DIR}/libultraship)
+target_compile_options(libultraship PRIVATE "${WARNING_OVERRIDE}")
 add_subdirectory(ZAPDTR/ZAPD ${CMAKE_BINARY_DIR}/ZAPD)
 add_subdirectory(OTRExporter)
 add_subdirectory(soh)
