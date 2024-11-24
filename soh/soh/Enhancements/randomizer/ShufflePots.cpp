@@ -1,8 +1,8 @@
 #include "ShufflePots.h"
 #include "soh_assets.h"
+#include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/OTRGlobals.h"
 
 extern "C" {
 #include "z64.h"
@@ -69,10 +69,13 @@ void ObjTsubo_RandomizerInit(void* actorRef) {
         Randomizer_IdentifyPot(gPlayState->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z);
 }
 
-void PotOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void* optionalArg) {
+void ShufflePots_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_list originalArgs) {
+    va_list args;
+    va_copy(args, originalArgs);
+
     // Draw custom model for pot to indicate it holding a randomized item.
     if (id == VB_POT_DRAW) {
-        ObjTsubo* potActor = static_cast<ObjTsubo*>(optionalArg);
+        ObjTsubo* potActor = va_arg(args, ObjTsubo*);
         if (ObjTsubo_RandomizerHoldsItem(potActor, gPlayState)) {
             potActor->actor.draw = (ActorFunc)ObjTsubo_RandomizerDraw;
             *should = false;
@@ -81,7 +84,7 @@ void PotOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void* optio
 
     // Do not spawn vanilla item from pot, instead spawn the ranomized item.
     if (id == VB_POT_DROP_ITEM) {
-        ObjTsubo* potActor = static_cast<ObjTsubo*>(optionalArg);
+        ObjTsubo* potActor = va_arg(args, ObjTsubo*);
         if (ObjTsubo_RandomizerHoldsItem(potActor, gPlayState)) {
             ObjTsubo_RandomizerSpawnCollectible(potActor, gPlayState);
             *should = false;
@@ -90,13 +93,15 @@ void PotOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void* optio
 
     // Unlock early Ganon's Boss Key doors to allow access to the pots there when pots are shuffled in dungeon
     if (id == VB_LOCK_DOOR) {
-        DoorShutter* doorActor = static_cast<DoorShutter*>(optionalArg);
+        DoorShutter* doorActor = va_arg(args, DoorShutter*);
         uint8_t shufflePotSetting = Randomizer_GetSettingValue(RSK_SHUFFLE_POTS);
         if (gPlayState->sceneNum == SCENE_GANONS_TOWER && doorActor->dyna.actor.world.pos.y == 800 &&
             (shufflePotSetting == RO_SHUFFLE_POTS_DUNGEONS || shufflePotSetting == RO_SHUFFLE_POTS_ALL)) {
             *should = false;
         }
     }
+
+    va_end(args);
 }
 
 void RegisterShufflePots() {
@@ -115,7 +120,7 @@ void RegisterShufflePots() {
         if (!Randomizer_GetSettingValue(RSK_SHUFFLE_POTS)) return;
 
         onActorInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>(ObjTsubo_RandomizerInit);
-        onVanillaBehaviorHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnVanillaBehavior>(PotOnVanillaBehaviorHandler);
+        onVanillaBehaviorHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnVanillaBehavior>(ShufflePots_OnVanillaBehaviorHandler);
 
     });
 }

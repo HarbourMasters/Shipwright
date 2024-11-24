@@ -2092,7 +2092,7 @@ namespace Rando {
         IsAdult          = false;
         //CanPlantBean        = false;
         BigPoeKill            = false;
-        
+
         BaseHearts      = ctx->GetOption(RSK_STARTING_HEARTS).Value<uint8_t>() + 1;
         
 
