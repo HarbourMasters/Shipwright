@@ -64,6 +64,7 @@ static void DrawMenu() {
     if (UIWidgets::EnhancementCheckbox("Roc's Feather", CVAR("RocsFeather"))) {
         ConfigurationChanged();
     }
+    UIWidgets::Tooltip("Using Nayru's Love will now act as Roc's Feather instead! No magic required.");
 }
 
 static void RegisterMod() {
