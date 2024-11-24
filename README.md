@@ -103,7 +103,7 @@ More detailed documentation can be found in the 'docs' directory, including the 
 
 * [Credits](docs/CREDITS.md)
 * [Custom Music](docs/CUSTOM_MUSIC.md)
-* [Controler Mapping](docs/GAME_CONTROLLER_DB.md)
+* [Controller Mapping](docs/GAME_CONTROLLER_DB.md)
 * [Modding](docs/MODDING.md)
 * [Versioning](docs/VERSIONING.md)
 
