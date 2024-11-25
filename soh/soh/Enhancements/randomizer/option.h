@@ -132,9 +132,9 @@ class Option {
      * @tparam T uint8_t or bool, depending on how the option was constructed.
      * @return T
      */
-    template <typename T> T Value() const {
-        return std::get<T>(var);
-    }
+    //template <typename T> T Value() {
+    //    return std::get<T>(var);
+    //}
 
     /**
      * @brief Determines if the value/selected index of this Option matches the provided value.
@@ -144,13 +144,8 @@ class Option {
      * @return true
      * @return false
      */
-    template <typename T> bool Is(T other) const {
-        static_assert(std::is_integral_v<T> || std::is_enum_v<T>, "T must be an integral type or an enum.");
-        if constexpr ((std::is_integral_v<T> && !std::is_same_v<bool, T>) || std::is_enum_v<T>) {
-            return Value<uint8_t>() == static_cast<uint8_t>(other);
-        } else {
-            return Value<bool>() == static_cast<bool>(other);
-        }
+    bool Is(uint32_t other) {
+        return contextSelection == other;
     }
 
     /**
@@ -161,7 +156,7 @@ class Option {
      * @return true
      * @return false
      */
-    template <typename T> bool IsNot(T other) const {
+    bool IsNot(uint32_t other) {
         return !Is(other);
     }
 
@@ -171,43 +166,50 @@ class Option {
      * @return true
      * @return false
      */
-    explicit operator bool() const;
+    explicit operator bool();
 
     /**
      * @brief Get the size of the options array.
      *
      * @return size_t
      */
-    size_t GetOptionCount() const;
+    size_t GetOptionCount();
 
     /**
      * @brief Get the name of the Option.
      *
      * @return const std::string&
      */
-    const std::string& GetName() const;
-    const std::string& GetDescription() const;
+    std::string& GetName();
+    std::string& GetDescription();
 
     /**
      * @brief Get the value name corresponding to the selected index.
      *
      * @return const std::string&
      */
-    const std::string& GetSelectedOptionText() const;
+    std::string& GetSelectedOptionText();
 
     /**
      * @brief Get the CVar name for this Option.
      *
      * @return const std::string&
      */
-    const std::string& GetCVarName() const;
+    std::string& GetCVarName();
 
     /**
-     * @brief Get the selected index for this Option.
+     * @brief Get the menu index for this Option.
      *
      * @return uint8_t
      */
-    uint8_t GetSelectedOptionIndex() const;
+    uint8_t GetMenuOptionIndex();
+
+    /**
+     * @brief Get the rando context index for this Option.
+     *
+     * @return uint8_t
+     */
+    uint8_t GetContextOptionIndex();
 
     /**
      * @brief Sets the variable to the currently selected index for this Option.
@@ -218,7 +220,7 @@ class Option {
      * @brief Sets the CVar corresponding to the property `cvarName` equal to the value
      * of the property `selectedValue`.
     */
-    void SetCVar() const;
+    void SetCVar();
 
     /**
      * @brief Sets the value of property `selectedValue` equal to the CVar corresponding
@@ -237,11 +239,18 @@ class Option {
     void RestoreDelayedOption();
 
     /**
-     * @brief Set the selected index for this Option. Also calls `SetVariable()`.
+     * @brief Set the menu index for this Option. Also calls `SetVariable()`.
      *
      * @param idx the index to set as the selected index.
      */
-    void SetSelectedIndex(size_t idx);
+    void SetMenuIndex(size_t idx);
+
+    /**
+     * @brief Set the rando context index for this Option. Also calls `SetVariable()`.
+     *
+     * @param idx the index to set as the selected index.
+     */
+    void SetContextIndex(size_t idx);
 
     /**
      * @brief Hides this Option in the menu. (Not currently being used afaik, we prefer to
@@ -261,7 +270,7 @@ class Option {
      * @return false
      */
 
-    bool IsHidden() const;
+    bool IsHidden();
     /**
      * @brief Replaces the `options` vector for this Option with a new one.
      * If the new vector is smaller than the old one and the current selected
@@ -303,7 +312,7 @@ class Option {
      */
     bool RenderImGui();
 
-    bool HasFlag(int imFlag_) const;
+    bool HasFlag(int imFlag_);
     void AddFlag(int imFlag_);
     void SetFlag(int imFlag_);
     void RemoveFlag(int imFlag_);
@@ -324,8 +333,9 @@ protected:
     std::variant<bool, uint8_t> var;
     std::string name;
     std::vector<std::string> options;
-    uint8_t selectedOption = 0;
-    uint8_t delayedOption = 0;
+    uint8_t menuSelection = 0;
+    uint8_t contextSelection = 0;
+    uint8_t delayedSelection = 0;
     bool hidden = false;
     OptionCategory category = OptionCategory::Setting;
     std::string cvarName;

@@ -260,7 +260,7 @@ void RegionTable_Init() {
   areaTable[RR_ROOT] = Region("Root", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LOCATION(RC_LINKS_POCKET,       true),
-                  LOCATION(RC_TRIFORCE_COMPLETED, logic->GetSaveContext()->triforcePiecesCollected >= ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_REQUIRED).Value<uint8_t>();),
+                  LOCATION(RC_TRIFORCE_COMPLETED, logic->GetSaveContext()->triforcePiecesCollected >= ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_REQUIRED).GetContextOptionIndex();),
                   LOCATION(RC_SARIA_SONG_HINT,    logic->CanUse(RG_SARIAS_SONG)),
                 }, {
                   //Exits

@@ -1468,7 +1468,7 @@ TrickOption& Settings::GetTrickOption(const RandomizerTrick key) {
 
 void Settings::ResetTrickOptions() {
     for (int count = 0; count < RT_MAX; count++){
-        mTrickOptions[count].SetSelectedIndex(0); //RANDOTODO this can probably be done better
+        mTrickOptions[count].SetContextIndex(0); //RANDOTODO this can probably be done better
     };
 }
 
@@ -2212,6 +2212,9 @@ void Settings::UpdateOptionProperties() {
 void Settings::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocations, const std::set<RandomizerTrick>& enabledTricks) {
     const auto ctx = Rando::Context::GetInstance();
     if (!ctx->IsSpoilerLoaded()) {
+        for (Option& option : mOptions) {
+            option.SetContextIndex(option.GetMenuOptionIndex());
+        }
         // If we've loaded a spoiler file, the settings have already been populated, so we
         // only need to do things like resolve the starting age or determine MQ dungeons.
         // Any logic dependent on cvarSettings should go in this if statement
@@ -2219,39 +2222,39 @@ void Settings::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocatio
         // if we skip child zelda, we start with zelda's letter, and malon starts
         // at the ranch, so we should *not* shuffle the weird egg
         if (mOptions[RSK_SKIP_CHILD_ZELDA]) {
-            mOptions[RSK_SHUFFLE_WEIRD_EGG].SetSelectedIndex(RO_GENERIC_OFF);
+            mOptions[RSK_SHUFFLE_WEIRD_EGG].SetContextIndex(RO_GENERIC_OFF);
         }
 
         // With certain access settings, the seed is only beatable if Starting Age is set to Child.
         if (mOptions[RSK_FOREST].Is(RO_FOREST_CLOSED) || (mOptions[RSK_DOOR_OF_TIME].Is(RO_DOOROFTIME_CLOSED) &&
             !mOptions[RSK_SHUFFLE_OCARINA])) {
-            mOptions[RSK_STARTING_AGE].SetSelectedIndex(RO_AGE_CHILD);
+            mOptions[RSK_STARTING_AGE].SetContextIndex(RO_AGE_CHILD);
         }
 
         if (mOptions[RSK_TRIFORCE_HUNT]) {
-            mOptions[RSK_GANONS_BOSS_KEY].SetSelectedIndex(RO_GANON_BOSS_KEY_TRIFORCE_HUNT);
+            mOptions[RSK_GANONS_BOSS_KEY].SetContextIndex(RO_GANON_BOSS_KEY_TRIFORCE_HUNT);
         }
 
         // Force 100 GS Shuffle if that's where Ganon's Boss Key is
         if (mOptions[RSK_GANONS_BOSS_KEY].Is(RO_GANON_BOSS_KEY_KAK_TOKENS)) {
-            mOptions[RSK_SHUFFLE_100_GS_REWARD].SetSelectedIndex(1);
+            mOptions[RSK_SHUFFLE_100_GS_REWARD].SetContextIndex(1);
         }
 
         // If we only have MQ, set all dungeons to MQ
         if (OTRGlobals::Instance->HasMasterQuest() && !OTRGlobals::Instance->HasOriginal()) {
-            mOptions[RSK_MQ_DUNGEON_RANDOM].SetSelectedIndex(RO_MQ_DUNGEONS_SET_NUMBER);
-            mOptions[RSK_MQ_DUNGEON_COUNT].SetSelectedIndex(12);
-            mOptions[RSK_MQ_DUNGEON_SET].SetSelectedIndex(RO_GENERIC_OFF);
+            mOptions[RSK_MQ_DUNGEON_RANDOM].SetContextIndex(RO_MQ_DUNGEONS_SET_NUMBER);
+            mOptions[RSK_MQ_DUNGEON_COUNT].SetContextIndex(12);
+            mOptions[RSK_MQ_DUNGEON_SET].SetContextIndex(RO_GENERIC_OFF);
         }
 
         // If we don't have MQ, set all dungeons to Vanilla
         if (OTRGlobals::Instance->HasOriginal() && !OTRGlobals::Instance->HasMasterQuest()) {
-            mOptions[RSK_MQ_DUNGEON_RANDOM].SetSelectedIndex(RO_MQ_DUNGEONS_NONE);
+            mOptions[RSK_MQ_DUNGEON_RANDOM].SetContextIndex(RO_MQ_DUNGEONS_NONE);
         }
 
         if (mOptions[RSK_MQ_DUNGEON_RANDOM].Is(RO_MQ_DUNGEONS_NONE)) {
-            mOptions[RSK_MQ_DUNGEON_COUNT].SetSelectedIndex(0);
-            mOptions[RSK_MQ_DUNGEON_SET].SetSelectedIndex(RO_GENERIC_OFF);
+            mOptions[RSK_MQ_DUNGEON_COUNT].SetContextIndex(0);
+            mOptions[RSK_MQ_DUNGEON_SET].SetContextIndex(RO_GENERIC_OFF);
         }
 
         // If any of the individual shuffle settings are on, turn on the main Shuffle Entrances option
@@ -2261,53 +2264,53 @@ void Settings::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocatio
             || mOptions[RSK_SHUFFLE_INTERIOR_ENTRANCES].IsNot(RO_INTERIOR_ENTRANCE_SHUFFLE_OFF)
             || mOptions[RSK_SHUFFLE_GROTTO_ENTRANCES] || mOptions[RSK_SHUFFLE_OWL_DROPS]
             || mOptions[RSK_SHUFFLE_WARP_SONGS] || mOptions[RSK_SHUFFLE_OVERWORLD_SPAWNS]) {
-            mOptions[RSK_SHUFFLE_ENTRANCES].SetSelectedIndex(RO_GENERIC_ON);
+            mOptions[RSK_SHUFFLE_ENTRANCES].SetContextIndex(RO_GENERIC_ON);
         } else {
-            mOptions[RSK_SHUFFLE_ENTRANCES].SetSelectedIndex(RO_GENERIC_OFF);
+            mOptions[RSK_SHUFFLE_ENTRANCES].SetContextIndex(RO_GENERIC_OFF);
         }
 
         if (mOptions[RSK_SHUFFLE_DUNGEON_REWARDS].Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON)) {
-            mOptions[RSK_LINKS_POCKET].SetSelectedIndex(RO_LINKS_POCKET_DUNGEON_REWARD);
+            mOptions[RSK_LINKS_POCKET].SetContextIndex(RO_LINKS_POCKET_DUNGEON_REWARD);
         }
 
         if (!ctx->IsSpoilerLoaded()) {
             ctx->AddExcludedOptions();
             for (const auto locationKey : ctx->everyPossibleLocation) {
                 if (const auto location = ctx->GetItemLocation(locationKey); excludedLocations.contains(location->GetRandomizerCheck())) {
-                    location->GetExcludedOption()->SetSelectedIndex(1);
+                    location->GetExcludedOption()->SetContextIndex(1);
                 } else {
-                    location->GetExcludedOption()->SetSelectedIndex(0);
+                    location->GetExcludedOption()->SetContextIndex(0);
                 }
             }
             // Tricks
             ResetTrickOptions();
             for (const auto randomizerTrick : enabledTricks) {
-                mTrickOptions[randomizerTrick].SetSelectedIndex(1);
+                mTrickOptions[randomizerTrick].SetContextIndex(1);
             }
         }
         if (!mOptions[RSK_SHUFFLE_KOKIRI_SWORD]) {
             if (mOptions[RSK_STARTING_KOKIRI_SWORD]) {
-                ctx->GetItemLocation(RC_KF_KOKIRI_SWORD_CHEST)->GetExcludedOption()->SetSelectedIndex(1);
+                ctx->GetItemLocation(RC_KF_KOKIRI_SWORD_CHEST)->GetExcludedOption()->SetContextIndex(1);
             }
         }
         if (!mOptions[RSK_SHUFFLE_MASTER_SWORD]) {
             if (mOptions[RSK_STARTING_MASTER_SWORD]) {
-                ctx->GetItemLocation(RC_MASTER_SWORD_PEDESTAL)->GetExcludedOption()->SetSelectedIndex(1);
+                ctx->GetItemLocation(RC_MASTER_SWORD_PEDESTAL)->GetExcludedOption()->SetContextIndex(1);
             }
         }
         if (!mOptions[RSK_SHUFFLE_OCARINA]) {
             if (mOptions[RSK_STARTING_OCARINA].IsNot(RO_STARTING_OCARINA_OFF)) {
-                ctx->GetItemLocation(RC_LW_GIFT_FROM_SARIA)->GetExcludedOption()->SetSelectedIndex(1);
+                ctx->GetItemLocation(RC_LW_GIFT_FROM_SARIA)->GetExcludedOption()->SetContextIndex(1);
                 if (mOptions[RSK_STARTING_OCARINA].Is(RO_STARTING_OCARINA_TIME)) {
-                    ctx->GetItemLocation(RC_HF_OCARINA_OF_TIME_ITEM)->GetExcludedOption()->SetSelectedIndex(1);
+                    ctx->GetItemLocation(RC_HF_OCARINA_OF_TIME_ITEM)->GetExcludedOption()->SetContextIndex(1);
                 }
             }
         }
     }
 
     // RANDOTODO implement chest shuffle with keysanity
-    // ShuffleChestMinigame.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_CHEST_MINIGAME]);
-    mOptions[RSK_SHUFFLE_CHEST_MINIGAME].SetSelectedIndex(RO_CHEST_GAME_OFF);
+    // ShuffleChestMinigame.SetContextIndex(cvarSettings[RSK_SHUFFLE_CHEST_MINIGAME]);
+    mOptions[RSK_SHUFFLE_CHEST_MINIGAME].SetContextIndex(RO_CHEST_GAME_OFF);
     
     //TODO: RandomizeAllSettings(true) when implementing the ability to randomize the options themselves.
     std::array<DungeonInfo*, 12> dungeons = ctx->GetDungeons()->GetDungeonList();
@@ -2318,12 +2321,12 @@ void Settings::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocatio
         dungeon->SetDungeonKnown(true);
     }
     //if it's selection mode, process the selection directly
-    if (mOptions[RSK_MQ_DUNGEON_RANDOM].Value<uint8_t>() == RO_MQ_DUNGEONS_SELECTION){
-        mOptions[RSK_MQ_DUNGEON_SET].SetSelectedIndex(RO_GENERIC_ON);
+    if (mOptions[RSK_MQ_DUNGEON_RANDOM].GetContextOptionIndex() == RO_MQ_DUNGEONS_SELECTION){
+        mOptions[RSK_MQ_DUNGEON_SET].SetContextIndex(RO_GENERIC_ON);
         //How many dungeons are set to MQ in selection
         uint8_t mqSet = 0;
         for (auto dungeon: dungeons) {
-            switch (mOptions[dungeon->GetMQSetting()].Value<uint8_t>()) {
+            switch (mOptions[dungeon->GetMQSetting()].GetContextOptionIndex()) {
                 case RO_MQ_SET_MQ:
                     dungeon->SetMQ();
                     mqSet += 1;
@@ -2342,11 +2345,11 @@ void Settings::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocatio
             }
         }
         //override the dungeons set with the ones set by selection, so it's accurate for anything that wants to know MQ dungeon count
-        mOptions[RSK_MQ_DUNGEON_COUNT].SetSelectedIndex(mqSet);
+        mOptions[RSK_MQ_DUNGEON_COUNT].SetContextIndex(mqSet);
     //handling set number and random number together
-    } else if (mOptions[RSK_MQ_DUNGEON_RANDOM].Value<uint8_t>() != RO_MQ_DUNGEONS_NONE){
+    } else if (mOptions[RSK_MQ_DUNGEON_RANDOM].GetContextOptionIndex() != RO_MQ_DUNGEONS_NONE){
         // so we don't have to call this repeatedly
-        uint8_t mqCount = mOptions[RSK_MQ_DUNGEON_COUNT].Value<uint8_t>();
+        uint8_t mqCount = mOptions[RSK_MQ_DUNGEON_COUNT].GetContextOptionIndex();
         //How many dungeons are set to MQ in selection
         uint8_t mqSet = 0;
         //the number of random 
@@ -2356,7 +2359,7 @@ void Settings::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocatio
         //if dungeons have been preset, process them
         if (mOptions[RSK_MQ_DUNGEON_SET]){
             for (size_t i = 0; i < dungeons.size(); i++) {
-                switch (mOptions[dungeons[i]->GetMQSetting()].Value<uint8_t>()) {
+                switch (mOptions[dungeons[i]->GetMQSetting()].GetContextOptionIndex()) {
                 case RO_MQ_SET_MQ:
                     dungeons[i]->SetMQ();
                     mqSet += 1;
@@ -2372,22 +2375,22 @@ void Settings::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocatio
         //otherwise, every dungeon is possible
         } else {
             //if the count is fixed to 12, we know everything is MQ, so can skip some setps and do not set Known
-            if (mOptions[RSK_MQ_DUNGEON_RANDOM].Value<uint8_t>() == RO_MQ_DUNGEONS_SET_NUMBER &&
+            if (mOptions[RSK_MQ_DUNGEON_RANDOM].GetContextOptionIndex() == RO_MQ_DUNGEONS_SET_NUMBER &&
                 mqCount == 12) {
                 randMQOption = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
                 for (auto dungeon: dungeons) {
-                    mOptions[dungeon->GetMQSetting()].SetSelectedIndex(RO_MQ_SET_MQ);
+                    mOptions[dungeon->GetMQSetting()].SetContextIndex(RO_MQ_SET_MQ);
                 }
             //if it's fixed to zero, set it to None instead. the rest is processed after
-            } else if (mOptions[RSK_MQ_DUNGEON_RANDOM].Value<uint8_t>() == RO_MQ_DUNGEONS_SET_NUMBER &&
+            } else if (mOptions[RSK_MQ_DUNGEON_RANDOM].GetContextOptionIndex() == RO_MQ_DUNGEONS_SET_NUMBER &&
                        mqCount == 0){
-                mOptions[RSK_MQ_DUNGEON_RANDOM].SetSelectedIndex(RO_MQ_DUNGEONS_NONE);
+                mOptions[RSK_MQ_DUNGEON_RANDOM].SetContextIndex(RO_MQ_DUNGEONS_NONE);
             //otherwise, make everything a possibility and unknown
             } else {
                 for (size_t i = 0; i < dungeons.size(); i++) {
                     randMQOption.push_back(i);
                     dungeons[i]->SetDungeonKnown(false);
-                    mOptions[dungeons[i]->GetMQSetting()].SetSelectedIndex(RO_MQ_SET_RANDOM);
+                    mOptions[dungeons[i]->GetMQSetting()].SetContextIndex(RO_MQ_SET_RANDOM);
                 }
             }
         }
@@ -2409,20 +2412,20 @@ void Settings::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocatio
         } else {
             //if there's no random options, check if we can collapse the setting into None or Selection
             if (mqSet == 0){   
-                mOptions[RSK_MQ_DUNGEON_RANDOM].SetSelectedIndex(RO_MQ_DUNGEONS_NONE);
+                mOptions[RSK_MQ_DUNGEON_RANDOM].SetContextIndex(RO_MQ_DUNGEONS_NONE);
             } else {
-                mOptions[RSK_MQ_DUNGEON_RANDOM].SetSelectedIndex(RO_MQ_DUNGEONS_SELECTION);
+                mOptions[RSK_MQ_DUNGEON_RANDOM].SetContextIndex(RO_MQ_DUNGEONS_SELECTION);
             }
         }
         //reset the value set based on what was actually set
-        mOptions[RSK_MQ_DUNGEON_COUNT].SetSelectedIndex(mqToSet + mqSet);
+        mOptions[RSK_MQ_DUNGEON_COUNT].SetContextIndex(mqToSet + mqSet);
     } 
     //Not an if else as other settings can become None in processing
-    if (mOptions[RSK_MQ_DUNGEON_RANDOM].Value<uint8_t>() == RO_MQ_DUNGEONS_NONE) {
-        mOptions[RSK_MQ_DUNGEON_SET].SetSelectedIndex(RO_GENERIC_OFF);
-        mOptions[RSK_MQ_DUNGEON_COUNT].SetSelectedIndex(0);
+    if (mOptions[RSK_MQ_DUNGEON_RANDOM].GetContextOptionIndex() == RO_MQ_DUNGEONS_NONE) {
+        mOptions[RSK_MQ_DUNGEON_SET].SetContextIndex(RO_GENERIC_OFF);
+        mOptions[RSK_MQ_DUNGEON_COUNT].SetContextIndex(0);
         for (auto dungeon: dungeons) {
-            mOptions[dungeon->GetMQSetting()].SetSelectedIndex(RO_MQ_SET_VANILLA);
+            mOptions[dungeon->GetMQSetting()].SetContextIndex(RO_MQ_SET_VANILLA);
         }
     }
 
@@ -2448,16 +2451,16 @@ void Settings::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocatio
         if (mOptions[RSK_GERUDO_FORTRESS].Is(RO_GF_NORMAL) && mOptions[RSK_GERUDO_KEYS].IsNot(RO_GERUDO_KEYS_VANILLA)) {
             keyrings.push_back(&mOptions[RSK_KEYRINGS_GERUDO_FORTRESS]);
         } else {
-            mOptions[RSK_KEYRINGS_GERUDO_FORTRESS].SetSelectedIndex(RO_KEYRING_FOR_DUNGEON_OFF);
+            mOptions[RSK_KEYRINGS_GERUDO_FORTRESS].SetContextIndex(RO_KEYRING_FOR_DUNGEON_OFF);
         }
         if (mOptions[RSK_KEYRINGS].Is(RO_KEYRINGS_RANDOM) || mOptions[RSK_KEYRINGS].Is(RO_KEYRINGS_COUNT)) {
-            const uint32_t keyRingCount = mOptions[RSK_KEYRINGS].Is(RO_KEYRINGS_COUNT) ? mOptions[RSK_KEYRINGS_RANDOM_COUNT].Value<uint8_t>() : Random(0, static_cast<int>(keyrings.size()));
+            const uint32_t keyRingCount = mOptions[RSK_KEYRINGS].Is(RO_KEYRINGS_COUNT) ? mOptions[RSK_KEYRINGS_RANDOM_COUNT].GetContextOptionIndex() : Random(0, static_cast<int>(keyrings.size()));
             Shuffle(keyrings);
             for (size_t i = 0; i < keyRingCount; i++) {
-                keyrings[i]->SetSelectedIndex(RO_KEYRING_FOR_DUNGEON_ON);
+                keyrings[i]->SetContextIndex(RO_KEYRING_FOR_DUNGEON_ON);
             }
             for (size_t i = keyRingCount; i < keyrings.size(); i++) {
-                keyrings[i]->SetSelectedIndex(RO_KEYRING_FOR_DUNGEON_OFF);
+                keyrings[i]->SetContextIndex(RO_KEYRING_FOR_DUNGEON_OFF);
             }
         }
         if (mOptions[RSK_KEYRINGS_BOTTOM_OF_THE_WELL].Is(RO_KEYRING_FOR_DUNGEON_ON) || (mOptions[RSK_KEYRINGS_BOTTOM_OF_THE_WELL].Is(RO_KEYRING_FOR_DUNGEON_RANDOM) && Random(0, 2) == 1)) {
@@ -2492,11 +2495,11 @@ void Settings::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocatio
         trial->SetAsSkipped();
     }
     if(mOptions[RSK_GANONS_TRIALS].Is(RO_GANONS_TRIALS_SKIP)){
-        mOptions[RSK_TRIAL_COUNT].SetSelectedIndex(0);
+        mOptions[RSK_TRIAL_COUNT].SetContextIndex(0);
     } else if(mOptions[RSK_GANONS_TRIALS].Is(RO_GANONS_TRIALS_RANDOM_NUMBER)) {
-        mOptions[RSK_TRIAL_COUNT].SetSelectedIndex(Random(0, static_cast<int>(mOptions[RSK_TRIAL_COUNT].GetOptionCount())));
+        mOptions[RSK_TRIAL_COUNT].SetContextIndex(Random(0, static_cast<int>(mOptions[RSK_TRIAL_COUNT].GetOptionCount())));
     }
-    for (uint8_t i = 0; i < mOptions[RSK_TRIAL_COUNT].Value<uint8_t>(); i++) {
+    for (uint8_t i = 0; i < mOptions[RSK_TRIAL_COUNT].GetContextOptionIndex(); i++) {
         trials[i]->SetAsRequired();
     }
 
@@ -2504,7 +2507,7 @@ void Settings::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocatio
         (mOptions[RSK_SHUFFLE_INTERIOR_ENTRANCES].Is(RO_INTERIOR_ENTRANCE_SHUFFLE_ALL) ||
          mOptions[RSK_SHUFFLE_OVERWORLD_ENTRANCES] || mOptions[RSK_SHUFFLE_OVERWORLD_SPAWNS] ||
          mOptions[RSK_DECOUPLED_ENTRANCES] || mOptions[RSK_MIXED_ENTRANCE_POOLS])) {
-        mOptions[RSK_FOREST].SetSelectedIndex(RO_FOREST_CLOSED_DEKU);
+        mOptions[RSK_FOREST].SetContextIndex(RO_FOREST_CLOSED_DEKU);
     }
 
     if (mOptions[RSK_STARTING_AGE].Is(RO_AGE_RANDOM)) {
@@ -2514,7 +2517,7 @@ void Settings::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocatio
             mResolvedStartingAge = RO_AGE_ADULT;
         }
     } else {
-        mResolvedStartingAge = static_cast<RandoOptionStartingAge>(mOptions[RSK_STARTING_AGE].Value<uint8_t>());
+        mResolvedStartingAge = static_cast<RandoOptionStartingAge>(mOptions[RSK_STARTING_AGE].GetContextOptionIndex());
     }
 
     // TODO: Random Starting Time
@@ -2535,35 +2538,35 @@ void Settings::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocatio
 
     if (mOptions[RSK_LOGIC_RULES].Is(RO_LOGIC_VANILLA)) {
         for (Option* setting : VanillaLogicDefaults) {
-            setting->SetDelayedOption();
-            setting->SetSelectedIndex(0);
+            //setting->SetDelayedOption();
+            setting->SetContextIndex(0);
         }
-        mOptions[RSK_KEYSANITY].SetDelayedOption();
-        mOptions[RSK_KEYSANITY].SetSelectedIndex(3);
+        //mOptions[RSK_KEYSANITY].SetDelayedOption();
+        mOptions[RSK_KEYSANITY].SetContextIndex(3);
     }
 
     if (!mOptions[RSK_SHUFFLE_WARP_SONGS]) {
-        mOptions[RSK_WARP_SONG_HINTS].SetSelectedIndex(RO_GENERIC_OFF);
+        mOptions[RSK_WARP_SONG_HINTS].SetContextIndex(RO_GENERIC_OFF);
     }
 
     if (!mOptions[RSK_SHUFFLE_COWS]) {
-        mOptions[RSK_MALON_HINT].SetSelectedIndex(RO_GENERIC_OFF);
+        mOptions[RSK_MALON_HINT].SetContextIndex(RO_GENERIC_OFF);
     }
 
     if (!mOptions[RSK_SHUFFLE_100_GS_REWARD]) {
-        mOptions[RSK_KAK_100_SKULLS_HINT].SetSelectedIndex(RO_GENERIC_OFF);
+        mOptions[RSK_KAK_100_SKULLS_HINT].SetContextIndex(RO_GENERIC_OFF);
     }
 
     if (!mOptions[RSK_SHUFFLE_FISHING_POLE]) {
-        mOptions[RSK_FISHING_POLE_HINT].SetSelectedIndex(RO_GENERIC_OFF);
+        mOptions[RSK_FISHING_POLE_HINT].SetContextIndex(RO_GENERIC_OFF);
     }
 
     if (mOptions[RSK_FISHSANITY].IsNot(RO_FISHSANITY_HYRULE_LOACH)) {
-        mOptions[RSK_LOACH_HINT].SetSelectedIndex(RO_GENERIC_OFF);
+        mOptions[RSK_LOACH_HINT].SetContextIndex(RO_GENERIC_OFF);
     }
 
     if (mOptions[RSK_CUCCO_COUNT].Is(0)) {
-        mOptions[RSK_CHICKENS_HINT].SetSelectedIndex(RO_GENERIC_OFF);
+        mOptions[RSK_CHICKENS_HINT].SetContextIndex(RO_GENERIC_OFF);
     }
 }
 void Settings::ParseJson(nlohmann::json spoilerFileJson) {
@@ -2581,115 +2584,115 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
             switch (const RandomizerSettingKey index = mSpoilerfileSettingNameToEnum[it.key()]) {
                 case RSK_LOGIC_RULES:
                     if (it.value() == "Glitchless") {
-                        mOptions[index].SetSelectedIndex(RO_LOGIC_GLITCHLESS);
+                        mOptions[index].SetContextIndex(RO_LOGIC_GLITCHLESS);
                     } else if (it.value() == "No Logic") {
-                        mOptions[index].SetSelectedIndex(RO_LOGIC_NO_LOGIC);
+                        mOptions[index].SetContextIndex(RO_LOGIC_NO_LOGIC);
                     } else if (it.value() == "Vanilla") {
-                        mOptions[index].SetSelectedIndex(RO_LOGIC_VANILLA);
+                        mOptions[index].SetContextIndex(RO_LOGIC_VANILLA);
                     }
                     break;
                 case RSK_FOREST:
                     if (it.value() == "Closed") {
-                        mOptions[index].SetSelectedIndex(RO_FOREST_CLOSED);
+                        mOptions[index].SetContextIndex(RO_FOREST_CLOSED);
                     } else if (it.value() == "Open") {
-                        mOptions[index].SetSelectedIndex(RO_FOREST_OPEN);
+                        mOptions[index].SetContextIndex(RO_FOREST_OPEN);
                     } else if (it.value() == "Closed Deku") {
-                        mOptions[index].SetSelectedIndex(RO_FOREST_CLOSED_DEKU);
+                        mOptions[index].SetContextIndex(RO_FOREST_CLOSED_DEKU);
                     }
                     break;
                 case RSK_KAK_GATE:
                     if (it.value() == "Closed") {
-                        mOptions[index].SetSelectedIndex(RO_KAK_GATE_CLOSED);
+                        mOptions[index].SetContextIndex(RO_KAK_GATE_CLOSED);
                     } else if (it.value() == "Open") {
-                        mOptions[index].SetSelectedIndex(RO_KAK_GATE_OPEN);
+                        mOptions[index].SetContextIndex(RO_KAK_GATE_OPEN);
                     }
                     break;
                 case RSK_DOOR_OF_TIME:
                     if (it.value() == "Open") {
-                        mOptions[index].SetSelectedIndex(RO_DOOROFTIME_OPEN);
+                        mOptions[index].SetContextIndex(RO_DOOROFTIME_OPEN);
                     } else if (it.value() == "Song only") {
-                        mOptions[index].SetSelectedIndex(RO_DOOROFTIME_SONGONLY);
+                        mOptions[index].SetContextIndex(RO_DOOROFTIME_SONGONLY);
                     } else if (it.value() == "Closed") {
-                        mOptions[index].SetSelectedIndex(RO_DOOROFTIME_CLOSED);
+                        mOptions[index].SetContextIndex(RO_DOOROFTIME_CLOSED);
                     }
                     break;
                 case RSK_ZORAS_FOUNTAIN:
                     if (it.value() == "Closed") {
-                        mOptions[index].SetSelectedIndex(RO_ZF_CLOSED);
+                        mOptions[index].SetContextIndex(RO_ZF_CLOSED);
                     } else if (it.value() == "Closed as child") {
-                        mOptions[index].SetSelectedIndex(RO_ZF_CLOSED_CHILD);
+                        mOptions[index].SetContextIndex(RO_ZF_CLOSED_CHILD);
                     } else if (it.value() == "Open") {
-                        mOptions[index].SetSelectedIndex(RO_ZF_OPEN);
+                        mOptions[index].SetContextIndex(RO_ZF_OPEN);
                     }
                     break;
                 case RSK_STARTING_AGE:
                     if (it.value() == "Child") {
-                        mOptions[index].SetSelectedIndex(RO_AGE_CHILD);
+                        mOptions[index].SetContextIndex(RO_AGE_CHILD);
                     } else if (it.value() == "Adult") {
-                        mOptions[index].SetSelectedIndex(RO_AGE_ADULT);
+                        mOptions[index].SetContextIndex(RO_AGE_ADULT);
                     }
                     break;
                 case RSK_GERUDO_FORTRESS:
                     if (it.value() == "Normal") {
-                        mOptions[index].SetSelectedIndex(RO_GF_NORMAL);
+                        mOptions[index].SetContextIndex(RO_GF_NORMAL);
                     } else if (it.value() == "Fast") {
-                        mOptions[index].SetSelectedIndex(RO_GF_FAST);
+                        mOptions[index].SetContextIndex(RO_GF_FAST);
                     } else if (it.value() == "Open") {
-                        mOptions[index].SetSelectedIndex(RO_GF_OPEN);
+                        mOptions[index].SetContextIndex(RO_GF_OPEN);
                     }
                     break;
                 case RSK_RAINBOW_BRIDGE:
                     if (it.value() == "Vanilla") {
-                        mOptions[index].SetSelectedIndex(RO_BRIDGE_VANILLA);
+                        mOptions[index].SetContextIndex(RO_BRIDGE_VANILLA);
                     } else if (it.value() == "Always open") {
-                        mOptions[index].SetSelectedIndex(RO_BRIDGE_ALWAYS_OPEN);
+                        mOptions[index].SetContextIndex(RO_BRIDGE_ALWAYS_OPEN);
                     } else if (it.value() == "Stones") {
-                        mOptions[index].SetSelectedIndex(RO_BRIDGE_STONES);
+                        mOptions[index].SetContextIndex(RO_BRIDGE_STONES);
                     } else if (it.value() == "Medallions") {
-                        mOptions[index].SetSelectedIndex(RO_BRIDGE_MEDALLIONS);
+                        mOptions[index].SetContextIndex(RO_BRIDGE_MEDALLIONS);
                     } else if (it.value() == "Dungeon rewards") {
-                        mOptions[index].SetSelectedIndex(RO_BRIDGE_DUNGEON_REWARDS);
+                        mOptions[index].SetContextIndex(RO_BRIDGE_DUNGEON_REWARDS);
                     } else if (it.value() == "Dungeons") {
-                        mOptions[index].SetSelectedIndex(RO_BRIDGE_DUNGEONS);
+                        mOptions[index].SetContextIndex(RO_BRIDGE_DUNGEONS);
                     } else if (it.value() == "Tokens") {
-                        mOptions[index].SetSelectedIndex(RO_BRIDGE_TOKENS);
+                        mOptions[index].SetContextIndex(RO_BRIDGE_TOKENS);
                     } else if (it.value() == "Greg") {
-                        mOptions[index].SetSelectedIndex(RO_BRIDGE_GREG);
+                        mOptions[index].SetContextIndex(RO_BRIDGE_GREG);
                     }
                     break;
                 case RSK_BRIDGE_OPTIONS:
                     if (it.value() == "Standard Rewards") {
-                        mOptions[index].SetSelectedIndex(RO_BRIDGE_STANDARD_REWARD);
+                        mOptions[index].SetContextIndex(RO_BRIDGE_STANDARD_REWARD);
                     } else if (it.value() == "Greg as Reward") {
-                        mOptions[index].SetSelectedIndex(RO_BRIDGE_GREG_REWARD);
+                        mOptions[index].SetContextIndex(RO_BRIDGE_GREG_REWARD);
                     } else if (it.value() == "Greg as Wildcard") {
-                        mOptions[index].SetSelectedIndex(RO_BRIDGE_WILDCARD_REWARD);
+                        mOptions[index].SetContextIndex(RO_BRIDGE_WILDCARD_REWARD);
                     }
                     break;
                 case RSK_LACS_OPTIONS:
                     if (it.value() == "Standard Reward") {
-                        mOptions[index].SetSelectedIndex(RO_LACS_STANDARD_REWARD);
+                        mOptions[index].SetContextIndex(RO_LACS_STANDARD_REWARD);
                     } else if (it.value() == "Greg as Reward") {
-                        mOptions[index].SetSelectedIndex(RO_LACS_GREG_REWARD);
+                        mOptions[index].SetContextIndex(RO_LACS_GREG_REWARD);
                     } else if (it.value() == "Greg as Wildcard") {
-                        mOptions[index].SetSelectedIndex(RO_LACS_WILDCARD_REWARD);
+                        mOptions[index].SetContextIndex(RO_LACS_WILDCARD_REWARD);
                     }
                     break;
                 case RSK_DAMAGE_MULTIPLIER:
                     if (it.value() == "x1/2") {
-                        mOptions[index].SetSelectedIndex(RO_DAMAGE_MULTIPLIER_HALF);
+                        mOptions[index].SetContextIndex(RO_DAMAGE_MULTIPLIER_HALF);
                     } else if (it.value() == "x1") {
-                        mOptions[index].SetSelectedIndex(RO_DAMAGE_MULTIPLIER_DEFAULT);
+                        mOptions[index].SetContextIndex(RO_DAMAGE_MULTIPLIER_DEFAULT);
                     } else if (it.value() == "x2") {
-                        mOptions[index].SetSelectedIndex(RO_DAMAGE_MULTIPLIER_DOUBLE);
+                        mOptions[index].SetContextIndex(RO_DAMAGE_MULTIPLIER_DOUBLE);
                     } else if (it.value() == "x4") {
-                        mOptions[index].SetSelectedIndex(RO_DAMAGE_MULTIPLIER_QUADRUPLE);
+                        mOptions[index].SetContextIndex(RO_DAMAGE_MULTIPLIER_QUADRUPLE);
                     } else if (it.value() == "x8") {
-                        mOptions[index].SetSelectedIndex(RO_DAMAGE_MULTIPLIER_OCTUPLE);
+                        mOptions[index].SetContextIndex(RO_DAMAGE_MULTIPLIER_OCTUPLE);
                     } else if (it.value() == "x16") {
-                        mOptions[index].SetSelectedIndex(RO_DAMAGE_MULTIPLIER_SEXDECUPLE);
+                        mOptions[index].SetContextIndex(RO_DAMAGE_MULTIPLIER_SEXDECUPLE);
                     } else if (it.value() == "OHKO") {
-                        mOptions[index].SetSelectedIndex(RO_DAMAGE_MULTIPLIER_OHKO);
+                        mOptions[index].SetContextIndex(RO_DAMAGE_MULTIPLIER_OHKO);
                     }
                     break;
                 case RSK_RAINBOW_BRIDGE_STONE_COUNT:
@@ -2709,7 +2712,7 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
                 case RSK_STARTING_SKULLTULA_TOKEN:
                 case RSK_SHOPSANITY_COUNT:
                     numericValueString = it.value();
-                    mOptions[index].SetSelectedIndex(std::stoi(numericValueString));
+                    mOptions[index].SetContextIndex(std::stoi(numericValueString));
                     break;
                 // Same as the above section, but the indexes are off by one from the text
                 // (i.e. 10 Big Poes is index 9).
@@ -2718,49 +2721,49 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
                 case RSK_TRIFORCE_HUNT_PIECES_REQUIRED:
                 case RSK_STARTING_HEARTS:
                     numericValueString = it.value();
-                    mOptions[index].SetSelectedIndex(std::stoi(numericValueString) - 1);
+                    mOptions[index].SetContextIndex(std::stoi(numericValueString) - 1);
                     break;
                 case RSK_GANONS_TRIALS:
                     if (it.value() == "Skip") {
-                        mOptions[index].SetSelectedIndex(RO_GANONS_TRIALS_SKIP);
+                        mOptions[index].SetContextIndex(RO_GANONS_TRIALS_SKIP);
                     } else if (it.value() == "Set Number") {
-                        mOptions[index].SetSelectedIndex(RO_GANONS_TRIALS_SET_NUMBER);
+                        mOptions[index].SetContextIndex(RO_GANONS_TRIALS_SET_NUMBER);
                     } else if (it.value() == "Random Number") {
-                        mOptions[index].SetSelectedIndex(RO_GANONS_TRIALS_RANDOM_NUMBER);
+                        mOptions[index].SetContextIndex(RO_GANONS_TRIALS_RANDOM_NUMBER);
                     }
                 case RSK_SHOPSANITY:
                     if (it.value() == "Off") {
-                        mOptions[index].SetSelectedIndex(RO_SHOPSANITY_OFF);
+                        mOptions[index].SetContextIndex(RO_SHOPSANITY_OFF);
                     } else if (it.value() == "Specific Count") {
-                        mOptions[index].SetSelectedIndex(RO_SHOPSANITY_SPECIFIC_COUNT);
+                        mOptions[index].SetContextIndex(RO_SHOPSANITY_SPECIFIC_COUNT);
                     } else if (it.value() == "Random") {
-                        mOptions[index].SetSelectedIndex(RO_SHOPSANITY_RANDOM);
+                        mOptions[index].SetContextIndex(RO_SHOPSANITY_RANDOM);
                     }
                     break;
                 case RSK_SHOPSANITY_PRICES:
                 case RSK_SCRUBS_PRICES:
                 case RSK_MERCHANT_PRICES:
                     if (it.value() == "Vanilla") {
-                        mOptions[index].SetSelectedIndex(RO_PRICE_VANILLA);
+                        mOptions[index].SetContextIndex(RO_PRICE_VANILLA);
                     } else if (it.value() == "Cheap Balanced") {
-                        mOptions[index].SetSelectedIndex(RO_PRICE_CHEAP_BALANCED);
+                        mOptions[index].SetContextIndex(RO_PRICE_CHEAP_BALANCED);
                     } else if (it.value() == "Balanced") {
-                        mOptions[index].SetSelectedIndex(RO_PRICE_BALANCED);
+                        mOptions[index].SetContextIndex(RO_PRICE_BALANCED);
                     } else if (it.value() == "Fixed") {
-                        mOptions[index].SetSelectedIndex(RO_PRICE_FIXED);
+                        mOptions[index].SetContextIndex(RO_PRICE_FIXED);
                     } else if (it.value() == "Range") {
-                        mOptions[index].SetSelectedIndex(RO_PRICE_RANGE);
+                        mOptions[index].SetContextIndex(RO_PRICE_RANGE);
                     } else if (it.value() == "Set By Wallet") {
-                        mOptions[index].SetSelectedIndex(RO_PRICE_SET_BY_WALLET);
+                        mOptions[index].SetContextIndex(RO_PRICE_SET_BY_WALLET);
                     }
                     break;
                 case RSK_SHUFFLE_SCRUBS:
                     if (it.value() == "Off") {
-                        mOptions[index].SetSelectedIndex(RO_SCRUBS_OFF);
+                        mOptions[index].SetContextIndex(RO_SCRUBS_OFF);
                     } else if (it.value() == "Major Items Only") {
-                        mOptions[index].SetSelectedIndex(RO_SCRUBS_MAJOR_ONLY);
+                        mOptions[index].SetContextIndex(RO_SCRUBS_MAJOR_ONLY);
                     } else if (it.value() == "All") {
-                        mOptions[index].SetSelectedIndex(RO_SCRUBS_ALL);
+                        mOptions[index].SetContextIndex(RO_SCRUBS_ALL);
                     }
                     break;
                 case RSK_SHUFFLE_FISHING_POLE:
@@ -2848,20 +2851,20 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
                 case RSK_SHUFFLE_DEKU_NUT_BAG:
                 case RSK_SHUFFLE_DEKU_STICK_BAG:
                     if (it.value() == "Off") {
-                        mOptions[index].SetSelectedIndex(RO_GENERIC_OFF);
+                        mOptions[index].SetContextIndex(RO_GENERIC_OFF);
                     } else if (it.value() == "On") {
-                        mOptions[index].SetSelectedIndex(RO_GENERIC_ON);
+                        mOptions[index].SetContextIndex(RO_GENERIC_ON);
                     }
                     break;
                 case RSK_KEYRINGS:
                     if (it.value() == "Off") {
-                        mOptions[index].SetSelectedIndex(RO_KEYRINGS_OFF);
+                        mOptions[index].SetContextIndex(RO_KEYRINGS_OFF);
                     } else if (it.value() == "Random") {
-                        mOptions[index].SetSelectedIndex(RO_KEYRINGS_RANDOM);
+                        mOptions[index].SetContextIndex(RO_KEYRINGS_RANDOM);
                     } else if (it.value() == "Count") {
-                        mOptions[index].SetSelectedIndex(RO_KEYRINGS_COUNT);
+                        mOptions[index].SetContextIndex(RO_KEYRINGS_COUNT);
                     } else if (it.value() == "Selection") {
-                        mOptions[index].SetSelectedIndex(RO_KEYRINGS_SELECTION);
+                        mOptions[index].SetContextIndex(RO_KEYRINGS_SELECTION);
                     }
                     break;
                 case RSK_KEYRINGS_GERUDO_FORTRESS:
@@ -2874,283 +2877,283 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
                 case RSK_KEYRINGS_GTG:
                 case RSK_KEYRINGS_GANONS_CASTLE:
                     if (it.value() == "No") {
-                        mOptions[index].SetSelectedIndex(RO_KEYRING_FOR_DUNGEON_OFF);
+                        mOptions[index].SetContextIndex(RO_KEYRING_FOR_DUNGEON_OFF);
                     } else if (it.value() == "Random") {
-                        mOptions[index].SetSelectedIndex(RO_KEYRING_FOR_DUNGEON_RANDOM);
+                        mOptions[index].SetContextIndex(RO_KEYRING_FOR_DUNGEON_RANDOM);
                     } else if (it.value() == "Yes") {
-                        mOptions[index].SetSelectedIndex(RO_KEYRING_FOR_DUNGEON_ON);
+                        mOptions[index].SetContextIndex(RO_KEYRING_FOR_DUNGEON_ON);
                     }
                     break;
                 case RSK_SHUFFLE_MERCHANTS:
                     if (it.value() == "Off") {
-                        mOptions[index].SetSelectedIndex(RO_SHUFFLE_MERCHANTS_OFF);
+                        mOptions[index].SetContextIndex(RO_SHUFFLE_MERCHANTS_OFF);
                     } else if (it.value() == "Beans Only") {
-                        mOptions[index].SetSelectedIndex(RO_SHUFFLE_MERCHANTS_BEANS_ONLY);
+                        mOptions[index].SetContextIndex(RO_SHUFFLE_MERCHANTS_BEANS_ONLY);
                     } else if (it.value() == "All but Beans") {
-                        mOptions[index].SetSelectedIndex(RO_SHUFFLE_MERCHANTS_ALL_BUT_BEANS);
+                        mOptions[index].SetContextIndex(RO_SHUFFLE_MERCHANTS_ALL_BUT_BEANS);
                     } else if (it.value() == "All") {
-                        mOptions[index].SetSelectedIndex(RO_SHUFFLE_MERCHANTS_ALL);
+                        mOptions[index].SetContextIndex(RO_SHUFFLE_MERCHANTS_ALL);
                     }
                     break;
                 // Uses Ammo Drops option for now. "Off" not yet implemented
                 // TODO: Change to Ammo Drops
                 case RSK_ENABLE_BOMBCHU_DROPS:
                     if (it.value() == "Yes") {
-                        mOptions[index].SetSelectedIndex(RO_AMMO_DROPS_ON);
+                        mOptions[index].SetContextIndex(RO_AMMO_DROPS_ON);
                     // } else if (it.value() == "On + Bombchu") {
-                    //     mOptions[index].SetSelectedIndex(RO_AMMO_DROPS_ON_PLUS_BOMBCHU);
+                    //     mOptions[index].SetContextIndex(RO_AMMO_DROPS_ON_PLUS_BOMBCHU);
                     } else if (it.value() == "No") {
-                        mOptions[index].SetSelectedIndex(RO_AMMO_DROPS_OFF);
+                        mOptions[index].SetContextIndex(RO_AMMO_DROPS_OFF);
                     }
                     break;
                 case RSK_FISHSANITY:
                     if (it.value() == "Off") {
-                        mOptions[index].SetSelectedIndex(RO_FISHSANITY_OFF);
+                        mOptions[index].SetContextIndex(RO_FISHSANITY_OFF);
                     } else if (it.value() == "Shuffle Fishing Pond") {
-                        mOptions[index].SetSelectedIndex(RO_FISHSANITY_POND);
+                        mOptions[index].SetContextIndex(RO_FISHSANITY_POND);
                     } else if (it.value() == "Shuffle Overworld Fish") {
-                        mOptions[index].SetSelectedIndex(RO_FISHSANITY_OVERWORLD);
+                        mOptions[index].SetContextIndex(RO_FISHSANITY_OVERWORLD);
                     } else if (it.value() == "Shuffle Both") {
-                        mOptions[index].SetSelectedIndex(RO_FISHSANITY_BOTH);
+                        mOptions[index].SetContextIndex(RO_FISHSANITY_BOTH);
                     }
                     break;
                 case RSK_SHUFFLE_BOSS_SOULS:
                     if (it.value() == "Off") {
-                        mOptions[index].SetSelectedIndex(RO_BOSS_SOULS_OFF);
+                        mOptions[index].SetContextIndex(RO_BOSS_SOULS_OFF);
                     } else if (it.value() == "On") {
-                        mOptions[index].SetSelectedIndex(RO_BOSS_SOULS_ON);
+                        mOptions[index].SetContextIndex(RO_BOSS_SOULS_ON);
                     } else if (it.value() == "On + Ganon") {
-                        mOptions[index].SetSelectedIndex(RO_BOSS_SOULS_ON_PLUS_GANON);
+                        mOptions[index].SetContextIndex(RO_BOSS_SOULS_ON_PLUS_GANON);
                     }
                 case RSK_STARTING_OCARINA:
                     if (it.value() == "Off") {
-                        mOptions[index].SetSelectedIndex(RO_STARTING_OCARINA_OFF);
+                        mOptions[index].SetContextIndex(RO_STARTING_OCARINA_OFF);
                     } else if (it.value() == "Fairy Ocarina") {
-                        mOptions[index].SetSelectedIndex(RO_STARTING_OCARINA_FAIRY);
+                        mOptions[index].SetContextIndex(RO_STARTING_OCARINA_FAIRY);
                     }
                     break;
                 case RSK_ITEM_POOL:
                     if (it.value() == "Plentiful") {
-                        mOptions[index].SetSelectedIndex(RO_ITEM_POOL_PLENTIFUL);
+                        mOptions[index].SetContextIndex(RO_ITEM_POOL_PLENTIFUL);
                     } else if (it.value() == "Balanced") {
-                        mOptions[index].SetSelectedIndex(RO_ITEM_POOL_BALANCED);
+                        mOptions[index].SetContextIndex(RO_ITEM_POOL_BALANCED);
                     } else if (it.value() == "Scarce") {
-                        mOptions[index].SetSelectedIndex(RO_ITEM_POOL_SCARCE);
+                        mOptions[index].SetContextIndex(RO_ITEM_POOL_SCARCE);
                     } else if (it.value() == "Minimal") {
-                        mOptions[index].SetSelectedIndex(RO_ITEM_POOL_MINIMAL);
+                        mOptions[index].SetContextIndex(RO_ITEM_POOL_MINIMAL);
                     }
                     break;
                 case RSK_ICE_TRAPS:
                     if (it.value() == "Off") {
-                        mOptions[index].SetSelectedIndex(RO_ICE_TRAPS_OFF);
+                        mOptions[index].SetContextIndex(RO_ICE_TRAPS_OFF);
                     } else if (it.value() == "Normal") {
-                        mOptions[index].SetSelectedIndex(RO_ICE_TRAPS_NORMAL);
+                        mOptions[index].SetContextIndex(RO_ICE_TRAPS_NORMAL);
                     } else if (it.value() == "Extra") {
-                        mOptions[index].SetSelectedIndex(RO_ICE_TRAPS_EXTRA);
+                        mOptions[index].SetContextIndex(RO_ICE_TRAPS_EXTRA);
                     } else if (it.value() == "Mayhem") {
-                        mOptions[index].SetSelectedIndex(RO_ICE_TRAPS_MAYHEM);
+                        mOptions[index].SetContextIndex(RO_ICE_TRAPS_MAYHEM);
                     } else if (it.value() == "Onslaught") {
-                        mOptions[index].SetSelectedIndex(RO_ICE_TRAPS_ONSLAUGHT);
+                        mOptions[index].SetContextIndex(RO_ICE_TRAPS_ONSLAUGHT);
                     }
                     break;
                 case RSK_GOSSIP_STONE_HINTS:
                     if (it.value() == "No Hints") {
-                        mOptions[index].SetSelectedIndex(RO_GOSSIP_STONES_NONE);
+                        mOptions[index].SetContextIndex(RO_GOSSIP_STONES_NONE);
                     } else if (it.value() == "Need Nothing") {
-                        mOptions[index].SetSelectedIndex(RO_GOSSIP_STONES_NEED_NOTHING);
+                        mOptions[index].SetContextIndex(RO_GOSSIP_STONES_NEED_NOTHING);
                     } else if (it.value() == "Mask of Truth") {
-                        mOptions[index].SetSelectedIndex(RO_GOSSIP_STONES_NEED_TRUTH);
+                        mOptions[index].SetContextIndex(RO_GOSSIP_STONES_NEED_TRUTH);
                     } else if (it.value() == "Stone of Agony") {
-                        mOptions[index].SetSelectedIndex(RO_GOSSIP_STONES_NEED_STONE);
+                        mOptions[index].SetContextIndex(RO_GOSSIP_STONES_NEED_STONE);
                     }
                     break;
                 case RSK_HINT_CLARITY:
                     if (it.value() == "Obscure") {
-                        mOptions[index].SetSelectedIndex(RO_HINT_CLARITY_OBSCURE);
+                        mOptions[index].SetContextIndex(RO_HINT_CLARITY_OBSCURE);
                     } else if (it.value() == "Ambiguous") {
-                        mOptions[index].SetSelectedIndex(RO_HINT_CLARITY_AMBIGUOUS);
+                        mOptions[index].SetContextIndex(RO_HINT_CLARITY_AMBIGUOUS);
                     } else if (it.value() == "Clear") {
-                        mOptions[index].SetSelectedIndex(RO_HINT_CLARITY_CLEAR);
+                        mOptions[index].SetContextIndex(RO_HINT_CLARITY_CLEAR);
                     }
                     break;
                 case RSK_HINT_DISTRIBUTION:
                     if (it.value() == "Useless") {
-                        mOptions[index].SetSelectedIndex(RO_HINT_DIST_USELESS);
+                        mOptions[index].SetContextIndex(RO_HINT_DIST_USELESS);
                     } else if (it.value() == "Balanced") {
-                        mOptions[index].SetSelectedIndex(RO_HINT_DIST_BALANCED);
+                        mOptions[index].SetContextIndex(RO_HINT_DIST_BALANCED);
                     } else if (it.value() == "Strong") {
-                        mOptions[index].SetSelectedIndex(RO_HINT_DIST_STRONG);
+                        mOptions[index].SetContextIndex(RO_HINT_DIST_STRONG);
                     } else if (it.value() == "Very Strong") {
-                        mOptions[index].SetSelectedIndex(RO_HINT_DIST_VERY_STRONG);
+                        mOptions[index].SetContextIndex(RO_HINT_DIST_VERY_STRONG);
                     }
                     break;
                 case RSK_GERUDO_KEYS:
                     if (it.value() == "Vanilla") {
-                        mOptions[index].SetSelectedIndex(RO_GERUDO_KEYS_VANILLA);
+                        mOptions[index].SetContextIndex(RO_GERUDO_KEYS_VANILLA);
                     } else if (it.value() == "Any Dungeon") {
-                        mOptions[index].SetSelectedIndex(RO_GERUDO_KEYS_ANY_DUNGEON);
+                        mOptions[index].SetContextIndex(RO_GERUDO_KEYS_ANY_DUNGEON);
                     } else if (it.value() == "Overworld") {
-                        mOptions[index].SetSelectedIndex(RO_GERUDO_KEYS_OVERWORLD);
+                        mOptions[index].SetContextIndex(RO_GERUDO_KEYS_OVERWORLD);
                     } else if (it.value() == "Anywhere") {
-                        mOptions[index].SetSelectedIndex(RO_GERUDO_KEYS_ANYWHERE);
+                        mOptions[index].SetContextIndex(RO_GERUDO_KEYS_ANYWHERE);
                     }
                     break;
                 case RSK_KEYSANITY:
                 case RSK_BOSS_KEYSANITY:
                 case RSK_SHUFFLE_MAPANDCOMPASS:
                     if (it.value() == "Start With") {
-                        mOptions[index].SetSelectedIndex(RO_DUNGEON_ITEM_LOC_STARTWITH);
+                        mOptions[index].SetContextIndex(RO_DUNGEON_ITEM_LOC_STARTWITH);
                     } else if (it.value() == "Vanilla") {
-                        mOptions[index].SetSelectedIndex(RO_DUNGEON_ITEM_LOC_VANILLA);
+                        mOptions[index].SetContextIndex(RO_DUNGEON_ITEM_LOC_VANILLA);
                     } else if (it.value() == "Own Dungeon") {
-                        mOptions[index].SetSelectedIndex(RO_DUNGEON_ITEM_LOC_OWN_DUNGEON);
+                        mOptions[index].SetContextIndex(RO_DUNGEON_ITEM_LOC_OWN_DUNGEON);
                     } else if (it.value() == "Any Dungeon") {
-                        mOptions[index].SetSelectedIndex(RO_DUNGEON_ITEM_LOC_ANY_DUNGEON);
+                        mOptions[index].SetContextIndex(RO_DUNGEON_ITEM_LOC_ANY_DUNGEON);
                     } else if (it.value() == "Overworld") {
-                        mOptions[index].SetSelectedIndex(RO_DUNGEON_ITEM_LOC_OVERWORLD);
+                        mOptions[index].SetContextIndex(RO_DUNGEON_ITEM_LOC_OVERWORLD);
                     } else if (it.value() == "Anywhere") {
-                        mOptions[index].SetSelectedIndex(RO_DUNGEON_ITEM_LOC_ANYWHERE);
+                        mOptions[index].SetContextIndex(RO_DUNGEON_ITEM_LOC_ANYWHERE);
                     }
                     break;
                 case RSK_GANONS_BOSS_KEY:
                     if (it.value() == "Vanilla") {
-                        mOptions[index].SetSelectedIndex(RO_GANON_BOSS_KEY_VANILLA);
+                        mOptions[index].SetContextIndex(RO_GANON_BOSS_KEY_VANILLA);
                     } else if (it.value() == "Own dungeon") {
-                        mOptions[index].SetSelectedIndex(RO_GANON_BOSS_KEY_OWN_DUNGEON);
+                        mOptions[index].SetContextIndex(RO_GANON_BOSS_KEY_OWN_DUNGEON);
                     } else if (it.value() == "Start with") {
-                        mOptions[index].SetSelectedIndex(RO_GANON_BOSS_KEY_STARTWITH);
+                        mOptions[index].SetContextIndex(RO_GANON_BOSS_KEY_STARTWITH);
                     } else if (it.value() == "Any Dungeon") {
-                        mOptions[index].SetSelectedIndex(RO_GANON_BOSS_KEY_ANY_DUNGEON);
+                        mOptions[index].SetContextIndex(RO_GANON_BOSS_KEY_ANY_DUNGEON);
                     } else if (it.value() == "Overworld") {
-                        mOptions[index].SetSelectedIndex(RO_GANON_BOSS_KEY_OVERWORLD);
+                        mOptions[index].SetContextIndex(RO_GANON_BOSS_KEY_OVERWORLD);
                     } else if (it.value() == "Anywhere") {
-                        mOptions[index].SetSelectedIndex(RO_GANON_BOSS_KEY_ANYWHERE);
+                        mOptions[index].SetContextIndex(RO_GANON_BOSS_KEY_ANYWHERE);
                     } else if (it.value() == "LACS-Vanilla") {
-                        mOptions[index].SetSelectedIndex(RO_GANON_BOSS_KEY_LACS_VANILLA);
+                        mOptions[index].SetContextIndex(RO_GANON_BOSS_KEY_LACS_VANILLA);
                     } else if (it.value() == "LACS-Stones") {
-                        mOptions[index].SetSelectedIndex(RO_GANON_BOSS_KEY_LACS_STONES);
+                        mOptions[index].SetContextIndex(RO_GANON_BOSS_KEY_LACS_STONES);
                     } else if (it.value() == "LACS-Medallions") {
-                        mOptions[index].SetSelectedIndex(RO_GANON_BOSS_KEY_LACS_MEDALLIONS);
+                        mOptions[index].SetContextIndex(RO_GANON_BOSS_KEY_LACS_MEDALLIONS);
                     } else if (it.value() == "LACS-Rewards") {
-                        mOptions[index].SetSelectedIndex(RO_GANON_BOSS_KEY_LACS_REWARDS);
+                        mOptions[index].SetContextIndex(RO_GANON_BOSS_KEY_LACS_REWARDS);
                     } else if (it.value() == "LACS-Dungeons") {
-                        mOptions[index].SetSelectedIndex(RO_GANON_BOSS_KEY_LACS_DUNGEONS);
+                        mOptions[index].SetContextIndex(RO_GANON_BOSS_KEY_LACS_DUNGEONS);
                     } else if (it.value() == "LACS-Tokens") {
-                        mOptions[index].SetSelectedIndex(RO_GANON_BOSS_KEY_LACS_TOKENS);
+                        mOptions[index].SetContextIndex(RO_GANON_BOSS_KEY_LACS_TOKENS);
                     } else if (it.value() == "100 GS Reward") {
-                        mOptions[index].SetSelectedIndex(RO_GANON_BOSS_KEY_KAK_TOKENS);
+                        mOptions[index].SetContextIndex(RO_GANON_BOSS_KEY_KAK_TOKENS);
                     } else if (it.value() == "Triforce Hunt") {
-                        mOptions[index].SetSelectedIndex(RO_GANON_BOSS_KEY_TRIFORCE_HUNT);
+                        mOptions[index].SetContextIndex(RO_GANON_BOSS_KEY_TRIFORCE_HUNT);
                     }
                     break;
                 case RSK_MQ_DUNGEON_RANDOM:
                     if (it.value() == "None") {
-                        mOptions[index].SetSelectedIndex(RO_MQ_DUNGEONS_NONE);
+                        mOptions[index].SetContextIndex(RO_MQ_DUNGEONS_NONE);
                     } else if (it.value() == "Random Number") {
-                        mOptions[index].SetSelectedIndex(RO_MQ_DUNGEONS_RANDOM_NUMBER);
+                        mOptions[index].SetContextIndex(RO_MQ_DUNGEONS_RANDOM_NUMBER);
                     } else if (it.value() == "Set Number") {
-                        mOptions[index].SetSelectedIndex(RO_MQ_DUNGEONS_SET_NUMBER);
+                        mOptions[index].SetContextIndex(RO_MQ_DUNGEONS_SET_NUMBER);
                     } else if (it.value() == "Selection Only") {
-                        mOptions[index].SetSelectedIndex(RO_MQ_DUNGEONS_SELECTION);
+                        mOptions[index].SetContextIndex(RO_MQ_DUNGEONS_SELECTION);
                     }
                     break;
                 case RSK_STARTING_CONSUMABLES:
                 case RSK_FULL_WALLETS:
                     if (it.value() == "No") {
-                        mOptions[index].SetSelectedIndex(RO_GENERIC_NO);
+                        mOptions[index].SetContextIndex(RO_GENERIC_NO);
                     } else if (it.value() == "Yes") {
-                        mOptions[index].SetSelectedIndex(RO_GENERIC_YES);
+                        mOptions[index].SetContextIndex(RO_GENERIC_YES);
                     }
                     break;
                 case RSK_SKIP_CHILD_ZELDA:
                 case RSK_SKIP_CHILD_STEALTH:
                 case RSK_SKIP_EPONA_RACE:
                     if (it.value() == "Don't Skip") {
-                        mOptions[index].SetSelectedIndex(RO_GENERIC_DONT_SKIP);
+                        mOptions[index].SetContextIndex(RO_GENERIC_DONT_SKIP);
                     } else if (it.value() == "Skip") {
-                        mOptions[index].SetSelectedIndex(RO_GENERIC_SKIP);
+                        mOptions[index].SetContextIndex(RO_GENERIC_SKIP);
                     }
                     break;
                 case RSK_SHUFFLE_DUNGEON_REWARDS:
                     if (it.value() == "End of dungeons") {
-                        mOptions[index].SetSelectedIndex(RO_DUNGEON_REWARDS_END_OF_DUNGEON);
+                        mOptions[index].SetContextIndex(RO_DUNGEON_REWARDS_END_OF_DUNGEON);
                     } else if (it.value() == "Any dungeon") {
-                        mOptions[index].SetSelectedIndex(RO_DUNGEON_REWARDS_ANY_DUNGEON);
+                        mOptions[index].SetContextIndex(RO_DUNGEON_REWARDS_ANY_DUNGEON);
                     } else if (it.value() == "Overworld") {
-                        mOptions[index].SetSelectedIndex(RO_DUNGEON_REWARDS_OVERWORLD);
+                        mOptions[index].SetContextIndex(RO_DUNGEON_REWARDS_OVERWORLD);
                     } else if (it.value() == "Anywhere") {
-                        mOptions[index].SetSelectedIndex(RO_DUNGEON_REWARDS_ANYWHERE);
+                        mOptions[index].SetContextIndex(RO_DUNGEON_REWARDS_ANYWHERE);
                     }
                     break;
                 case RSK_SHUFFLE_SONGS:
                     if (it.value() == "Song locations") {
-                        mOptions[index].SetSelectedIndex(RO_SONG_SHUFFLE_SONG_LOCATIONS);
+                        mOptions[index].SetContextIndex(RO_SONG_SHUFFLE_SONG_LOCATIONS);
                     } else if (it.value() == "Dungeon rewards") {
-                        mOptions[index].SetSelectedIndex(RO_SONG_SHUFFLE_DUNGEON_REWARDS);
+                        mOptions[index].SetContextIndex(RO_SONG_SHUFFLE_DUNGEON_REWARDS);
                     } else if (it.value() == "Anywhere") {
-                        mOptions[index].SetSelectedIndex(RO_SONG_SHUFFLE_ANYWHERE);
+                        mOptions[index].SetContextIndex(RO_SONG_SHUFFLE_ANYWHERE);
                     }
                     break;
                 case RSK_SHUFFLE_TOKENS:
                     if (it.value() == "Off") {
-                        mOptions[index].SetSelectedIndex(RO_TOKENSANITY_OFF);
+                        mOptions[index].SetContextIndex(RO_TOKENSANITY_OFF);
                     } else if (it.value() == "Dungeons") {
-                        mOptions[index].SetSelectedIndex(RO_TOKENSANITY_DUNGEONS);
+                        mOptions[index].SetContextIndex(RO_TOKENSANITY_DUNGEONS);
                     } else if (it.value() == "Overworld") {
-                        mOptions[index].SetSelectedIndex(RO_TOKENSANITY_OVERWORLD);
+                        mOptions[index].SetContextIndex(RO_TOKENSANITY_OVERWORLD);
                     } else if (it.value() == "All Tokens") {
-                        mOptions[index].SetSelectedIndex(RO_TOKENSANITY_ALL);
+                        mOptions[index].SetContextIndex(RO_TOKENSANITY_ALL);
                     }
                     break;
                 case RSK_LINKS_POCKET:
                     if (it.value() == "Dungeon Reward") {
-                        mOptions[index].SetSelectedIndex(RO_LINKS_POCKET_DUNGEON_REWARD);
+                        mOptions[index].SetContextIndex(RO_LINKS_POCKET_DUNGEON_REWARD);
                     } else if (it.value() == "Advancement") {
-                        mOptions[index].SetSelectedIndex(RO_LINKS_POCKET_ADVANCEMENT);
+                        mOptions[index].SetContextIndex(RO_LINKS_POCKET_ADVANCEMENT);
                     } else if (it.value() == "Anything") {
-                        mOptions[index].SetSelectedIndex(RO_LINKS_POCKET_ANYTHING);
+                        mOptions[index].SetContextIndex(RO_LINKS_POCKET_ANYTHING);
                     } else if (it.value() == "Nothing") {
-                        mOptions[index].SetSelectedIndex(RO_LINKS_POCKET_NOTHING);
+                        mOptions[index].SetContextIndex(RO_LINKS_POCKET_NOTHING);
                     }
                     break;
                 case RSK_MQ_DUNGEON_COUNT:
                     numericValueString = it.value();
-                    mOptions[index].SetSelectedIndex(std::stoi(numericValueString));
+                    mOptions[index].SetContextIndex(std::stoi(numericValueString));
                     break;
                 case RSK_SHUFFLE_DUNGEON_ENTRANCES:
                     if (it.value() == "Off") {
-                        mOptions[index].SetSelectedIndex(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF);
+                        mOptions[index].SetContextIndex(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF);
                     } else if (it.value() == "On") {
-                        mOptions[index].SetSelectedIndex(RO_DUNGEON_ENTRANCE_SHUFFLE_ON);
+                        mOptions[index].SetContextIndex(RO_DUNGEON_ENTRANCE_SHUFFLE_ON);
                     } else if (it.value() == "On + Ganon") {
-                        mOptions[index].SetSelectedIndex(RO_DUNGEON_ENTRANCE_SHUFFLE_ON_PLUS_GANON);
+                        mOptions[index].SetContextIndex(RO_DUNGEON_ENTRANCE_SHUFFLE_ON_PLUS_GANON);
                     }
                     break;
                 case RSK_SHUFFLE_BOSS_ENTRANCES:
                     if (it.value() == "Off") {
-                        mOptions[index].SetSelectedIndex(RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF);
+                        mOptions[index].SetContextIndex(RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF);
                     } else if (it.value() == "Age Restricted") {
-                        mOptions[index].SetSelectedIndex(RO_BOSS_ROOM_ENTRANCE_SHUFFLE_AGE_RESTRICTED);
+                        mOptions[index].SetContextIndex(RO_BOSS_ROOM_ENTRANCE_SHUFFLE_AGE_RESTRICTED);
                     } else if (it.value() == "Full") {
-                        mOptions[index].SetSelectedIndex(RO_BOSS_ROOM_ENTRANCE_SHUFFLE_FULL);
+                        mOptions[index].SetContextIndex(RO_BOSS_ROOM_ENTRANCE_SHUFFLE_FULL);
                     }
                     break;
                 case RSK_SHUFFLE_INTERIOR_ENTRANCES:
                     if (it.value() == "Off") {
-                        mOptions[index].SetSelectedIndex(RO_INTERIOR_ENTRANCE_SHUFFLE_OFF);
+                        mOptions[index].SetContextIndex(RO_INTERIOR_ENTRANCE_SHUFFLE_OFF);
                     } else if (it.value() == "Simple") {
-                        mOptions[index].SetSelectedIndex(RO_INTERIOR_ENTRANCE_SHUFFLE_SIMPLE);
+                        mOptions[index].SetContextIndex(RO_INTERIOR_ENTRANCE_SHUFFLE_SIMPLE);
                     } else if (it.value() == "All") {
-                        mOptions[index].SetSelectedIndex(RO_INTERIOR_ENTRANCE_SHUFFLE_ALL);
+                        mOptions[index].SetContextIndex(RO_INTERIOR_ENTRANCE_SHUFFLE_ALL);
                     }
                     break;
                 case RSK_SHUFFLE_CHEST_MINIGAME:
                     if (it.value() == "Off") {
-                        mOptions[index].SetSelectedIndex(RO_CHEST_GAME_OFF);
+                        mOptions[index].SetContextIndex(RO_CHEST_GAME_OFF);
                     } else if (it.value() == "On (Separate)") {
-                        mOptions[index].SetSelectedIndex(RO_CHEST_GAME_SINGLE_KEYS);
+                        mOptions[index].SetContextIndex(RO_CHEST_GAME_SINGLE_KEYS);
                     } else if (it.value() == "On (Pack)") {
-                        mOptions[index].SetSelectedIndex(RO_CHEST_GAME_PACK);
+                        mOptions[index].SetContextIndex(RO_CHEST_GAME_PACK);
                     }
                     break;
                 case RSK_MQ_DEKU_TREE:
@@ -3166,11 +3169,11 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
                 case RSK_MQ_GTG:
                 case RSK_MQ_GANONS_CASTLE:
                     if (it.value() == "Vanilla") {
-                        mOptions[index].SetSelectedIndex(RO_MQ_SET_VANILLA);
+                        mOptions[index].SetContextIndex(RO_MQ_SET_VANILLA);
                     } else if (it.value() == "Master Quest") {
-                        mOptions[index].SetSelectedIndex(RO_MQ_SET_MQ);
+                        mOptions[index].SetContextIndex(RO_MQ_SET_MQ);
                     } else if (it.value() == "Random") {
-                        mOptions[index].SetSelectedIndex(RO_MQ_SET_RANDOM);
+                        mOptions[index].SetContextIndex(RO_MQ_SET_RANDOM);
                     }
                     break;
                 default:
@@ -3186,13 +3189,13 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
     ctx->AddExcludedOptions();
     for (auto it = jsonExcludedLocations.begin(); it != jsonExcludedLocations.end(); ++it) {
         const RandomizerCheck rc = Rando::StaticData::locationNameToEnum[it.value()];
-        ctx->GetItemLocation(rc)->GetExcludedOption()->SetSelectedIndex(RO_GENERIC_ON);
+        ctx->GetItemLocation(rc)->GetExcludedOption()->SetContextIndex(RO_GENERIC_ON);
     }
 
     nlohmann::json enabledTricksJson = spoilerFileJson["enabledTricks"];
     for (auto it = enabledTricksJson.begin(); it != enabledTricksJson.end(); ++it) {
         const RandomizerTrick rt = mTrickNameToEnum[it.value()];
-        GetTrickOption(rt).SetSelectedIndex(RO_GENERIC_ON);
+        GetTrickOption(rt).SetContextIndex(RO_GENERIC_ON);
     }
 }
 
