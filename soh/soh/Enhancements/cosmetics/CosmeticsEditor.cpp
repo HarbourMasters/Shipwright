@@ -97,7 +97,7 @@ typedef struct {
     std::string label;
     CosmeticGroup group;
     ImVec4 currentColor;
-    ImVec4 defaultColor;
+    Color_RGBA8 defaultColor;
     bool supportsAlpha;
     bool supportsRainbow;
     bool advancedOption;
@@ -106,7 +106,7 @@ typedef struct {
 #define COSMETIC_OPTION(id, label, group, defaultColor, supportsAlpha, supportsRainbow, advancedOption)                                    \
     { id, {                                                                                                                                \
         CVAR_COSMETIC(id ".Value"), CVAR_COSMETIC(id ".Rainbow"), CVAR_COSMETIC(id ".Locked"), CVAR_COSMETIC(id ".Changed"), label, group, \
-        defaultColor, defaultColor,                                                                                                        \
+        ImVec4(defaultColor.r / 255.0f, defaultColor.g / 255.0f, defaultColor.b / 255.0f, defaultColor.a / 255.0f), defaultColor,          \
         supportsAlpha, supportsRainbow, advancedOption                                                                                     \
     } }
 
@@ -184,91 +184,91 @@ typedef struct {
     colors were darker than the gDPSetPrimColor. You will see many more examples of this below in the `ApplyOrResetCustomGfxPatches` method
 */
 static std::map<std::string, CosmeticOption> cosmeticOptions = {
-    COSMETIC_OPTION("Link.KokiriTunic",             "Kokiri Tunic",             COSMETICS_GROUP_LINK,         ImVec4( 30, 105,  27, 255), false, true, false),
-    COSMETIC_OPTION("Link.GoronTunic",              "Goron Tunic",              COSMETICS_GROUP_LINK,         ImVec4(100,  20,   0, 255), false, true, false),
-    COSMETIC_OPTION("Link.ZoraTunic",               "Zora Tunic",               COSMETICS_GROUP_LINK,         ImVec4(  0,  60, 100, 255), false, true, false),
-    COSMETIC_OPTION("Link.Hair",                    "Hair",                     COSMETICS_GROUP_LINK,         ImVec4(255, 173,  27, 255), false, true, true),
-    COSMETIC_OPTION("Link.Linen",                   "Linen",                    COSMETICS_GROUP_LINK,         ImVec4(255, 255, 255, 255), false, true, true),
-    COSMETIC_OPTION("Link.Boots",                   "Boots",                    COSMETICS_GROUP_LINK,         ImVec4( 93,  44,  18, 255), false, true, true),
+    COSMETIC_OPTION("Link.KokiriTunic",             "Kokiri Tunic",             COSMETICS_GROUP_LINK,         Color_RGBA8( 30, 105,  27, 255), false, true, false),
+    COSMETIC_OPTION("Link.GoronTunic",              "Goron Tunic",              COSMETICS_GROUP_LINK,         Color_RGBA8(100,  20,   0, 255), false, true, false),
+    COSMETIC_OPTION("Link.ZoraTunic",               "Zora Tunic",               COSMETICS_GROUP_LINK,         Color_RGBA8(  0,  60, 100, 255), false, true, false),
+    COSMETIC_OPTION("Link.Hair",                    "Hair",                     COSMETICS_GROUP_LINK,         Color_RGBA8(255, 173,  27, 255), false, true, true),
+    COSMETIC_OPTION("Link.Linen",                   "Linen",                    COSMETICS_GROUP_LINK,         Color_RGBA8(255, 255, 255, 255), false, true, true),
+    COSMETIC_OPTION("Link.Boots",                   "Boots",                    COSMETICS_GROUP_LINK,         Color_RGBA8( 93,  44,  18, 255), false, true, true),
     
-    COSMETIC_OPTION("MirrorShield.Body",            "Body",                     COSMETICS_GROUP_MIRRORSHIELD, ImVec4(215,   0,   0, 255), false, true, false),
-    COSMETIC_OPTION("MirrorShield.Mirror",          "Mirror",                   COSMETICS_GROUP_MIRRORSHIELD, ImVec4(255, 255, 255, 255), false, true, true),
-    COSMETIC_OPTION("MirrorShield.Emblem",          "Emblem",                   COSMETICS_GROUP_MIRRORSHIELD, ImVec4(205, 225, 255, 255), false, true, true),
+    COSMETIC_OPTION("MirrorShield.Body",            "Body",                     COSMETICS_GROUP_MIRRORSHIELD, Color_RGBA8(215,   0,   0, 255), false, true, false),
+    COSMETIC_OPTION("MirrorShield.Mirror",          "Mirror",                   COSMETICS_GROUP_MIRRORSHIELD, Color_RGBA8(255, 255, 255, 255), false, true, true),
+    COSMETIC_OPTION("MirrorShield.Emblem",          "Emblem",                   COSMETICS_GROUP_MIRRORSHIELD, Color_RGBA8(205, 225, 255, 255), false, true, true),
 
-    COSMETIC_OPTION("Swords.KokiriBlade",           "Kokiri Sword Blade",       COSMETICS_GROUP_SWORDS,       ImVec4(255, 255, 255, 255), false, true, false),
-    COSMETIC_OPTION("Swords.MasterBlade",           "Master Sword Blade",       COSMETICS_GROUP_SWORDS,       ImVec4(255, 255, 255, 255), false, true, false),
-    COSMETIC_OPTION("Swords.BiggoronBlade",         "Biggoron Sword Blade",     COSMETICS_GROUP_SWORDS,       ImVec4(255, 255, 255, 255), false, true, false),
+    COSMETIC_OPTION("Swords.KokiriBlade",           "Kokiri Sword Blade",       COSMETICS_GROUP_SWORDS,       Color_RGBA8(255, 255, 255, 255), false, true, false),
+    COSMETIC_OPTION("Swords.MasterBlade",           "Master Sword Blade",       COSMETICS_GROUP_SWORDS,       Color_RGBA8(255, 255, 255, 255), false, true, false),
+    COSMETIC_OPTION("Swords.BiggoronBlade",         "Biggoron Sword Blade",     COSMETICS_GROUP_SWORDS,       Color_RGBA8(255, 255, 255, 255), false, true, false),
     /* Todo (Cosmetics): Broken, need a better way to grayscale
-    COSMETIC_OPTION("Swords.KokiriHilt",            "Kokiri Sword Hilt",        COSMETICS_GROUP_SWORDS,       ImVec4(160, 100,  15, 255), false, true, true),
-    COSMETIC_OPTION("Swords.MasterHilt",            "Master Sword Hilt",        COSMETICS_GROUP_SWORDS,       ImVec4( 80,  80, 168, 255), false, true, true),
-    COSMETIC_OPTION("Swords.BiggoronHilt",          "Biggoron Sword Hilt",      COSMETICS_GROUP_SWORDS,       ImVec4( 80,  80, 168, 255), false, true, true),
+    COSMETIC_OPTION("Swords.KokiriHilt",            "Kokiri Sword Hilt",        COSMETICS_GROUP_SWORDS,       Color_RGBA8(160, 100,  15, 255), false, true, true),
+    COSMETIC_OPTION("Swords.MasterHilt",            "Master Sword Hilt",        COSMETICS_GROUP_SWORDS,       Color_RGBA8( 80,  80, 168, 255), false, true, true),
+    COSMETIC_OPTION("Swords.BiggoronHilt",          "Biggoron Sword Hilt",      COSMETICS_GROUP_SWORDS,       Color_RGBA8( 80,  80, 168, 255), false, true, true),
     */
 
-    COSMETIC_OPTION("Gloves.GoronBracelet",         "Goron Bracelet",           COSMETICS_GROUP_GLOVES,       ImVec4(255, 255, 170, 255), false, true, false),
-    COSMETIC_OPTION("Gloves.SilverGauntlets",       "Silver Gauntlets",         COSMETICS_GROUP_GLOVES,       ImVec4(255, 255, 255, 255), false, true, false),
-    COSMETIC_OPTION("Gloves.GoldenGauntlets",       "Golden Gauntlets",         COSMETICS_GROUP_GLOVES,       ImVec4(254, 207,  15, 255), false, true, false),
-    COSMETIC_OPTION("Gloves.GauntletsGem",          "Gauntlets Gem",            COSMETICS_GROUP_GLOVES,       ImVec4(255,  60, 100, 255), false, true, true),
+    COSMETIC_OPTION("Gloves.GoronBracelet",         "Goron Bracelet",           COSMETICS_GROUP_GLOVES,       Color_RGBA8(255, 255, 170, 255), false, true, false),
+    COSMETIC_OPTION("Gloves.SilverGauntlets",       "Silver Gauntlets",         COSMETICS_GROUP_GLOVES,       Color_RGBA8(255, 255, 255, 255), false, true, false),
+    COSMETIC_OPTION("Gloves.GoldenGauntlets",       "Golden Gauntlets",         COSMETICS_GROUP_GLOVES,       Color_RGBA8(254, 207,  15, 255), false, true, false),
+    COSMETIC_OPTION("Gloves.GauntletsGem",          "Gauntlets Gem",            COSMETICS_GROUP_GLOVES,       Color_RGBA8(255,  60, 100, 255), false, true, true),
     
-    COSMETIC_OPTION("Equipment.BoomerangBody",      "Boomerang Body",           COSMETICS_GROUP_EQUIPMENT,    ImVec4(160, 100,   0, 255), false, true, false),
-    COSMETIC_OPTION("Equipment.BoomerangGem",       "Boomerang Gem",            COSMETICS_GROUP_EQUIPMENT,    ImVec4(255,  50, 150, 255), false, true, true),
+    COSMETIC_OPTION("Equipment.BoomerangBody",      "Boomerang Body",           COSMETICS_GROUP_EQUIPMENT,    Color_RGBA8(160, 100,   0, 255), false, true, false),
+    COSMETIC_OPTION("Equipment.BoomerangGem",       "Boomerang Gem",            COSMETICS_GROUP_EQUIPMENT,    Color_RGBA8(255,  50, 150, 255), false, true, true),
     /* Todo (Cosmetics): Broken, need a better way to grayscale
-    COSMETIC_OPTION("Equipment.SlingshotBody",      "Slingshot Body",           COSMETICS_GROUP_EQUIPMENT,    ImVec4(160, 100,   0, 255), false, true, true),
+    COSMETIC_OPTION("Equipment.SlingshotBody",      "Slingshot Body",           COSMETICS_GROUP_EQUIPMENT,    Color_RGBA8(160, 100,   0, 255), false, true, true),
     */
-    COSMETIC_OPTION("Equipment.SlingshotString",    "Slingshot String",         COSMETICS_GROUP_EQUIPMENT,    ImVec4(255, 255, 255, 255), false, true, true),
-    COSMETIC_OPTION("Equipment.HammerHead",         "Hammer Head",              COSMETICS_GROUP_EQUIPMENT,    ImVec4(155, 192, 201, 255), false, true, false),
-    COSMETIC_OPTION("Equipment.HammerHandle",       "Hammer Handle",            COSMETICS_GROUP_EQUIPMENT,    ImVec4(110,  60,   0, 255), false, true, true),
-    COSMETIC_OPTION("Equipment.HookshotChain",      "Hookshot Chain",           COSMETICS_GROUP_EQUIPMENT,    ImVec4(255, 255, 255, 255), false, true, true),
+    COSMETIC_OPTION("Equipment.SlingshotString",    "Slingshot String",         COSMETICS_GROUP_EQUIPMENT,    Color_RGBA8(255, 255, 255, 255), false, true, true),
+    COSMETIC_OPTION("Equipment.HammerHead",         "Hammer Head",              COSMETICS_GROUP_EQUIPMENT,    Color_RGBA8(155, 192, 201, 255), false, true, false),
+    COSMETIC_OPTION("Equipment.HammerHandle",       "Hammer Handle",            COSMETICS_GROUP_EQUIPMENT,    Color_RGBA8(110,  60,   0, 255), false, true, true),
+    COSMETIC_OPTION("Equipment.HookshotChain",      "Hookshot Chain",           COSMETICS_GROUP_EQUIPMENT,    Color_RGBA8(255, 255, 255, 255), false, true, true),
     /* Todo (Cosmetics): Implement
-    COSMETIC_OPTION("Equipment.HookshotTip",        "Hookshot Tip",             COSMETICS_GROUP_EQUIPMENT,    ImVec4(255, 255, 255, 255), false, true, false),
+    COSMETIC_OPTION("Equipment.HookshotTip",        "Hookshot Tip",             COSMETICS_GROUP_EQUIPMENT,    Color_RGBA8(255, 255, 255, 255), false, true, false),
     */
-    COSMETIC_OPTION("HookshotReticle.Target",       "Hookshotable Reticle",     COSMETICS_GROUP_EQUIPMENT,    ImVec4(  0, 255,   0, 255), false, true, false),
-    COSMETIC_OPTION("HookshotReticle.NonTarget",    "Non-Hookshotable Reticle", COSMETICS_GROUP_EQUIPMENT,    ImVec4(255,   0,   0, 255), false, true, false),
-    COSMETIC_OPTION("Equipment.BowTips",            "Bow Tips",                 COSMETICS_GROUP_EQUIPMENT,    ImVec4(200,   0,   0, 255), false, true, true),
-    COSMETIC_OPTION("Equipment.BowString",          "Bow String",               COSMETICS_GROUP_EQUIPMENT,    ImVec4(255, 255, 255, 255), false, true, true),
-    COSMETIC_OPTION("Equipment.BowBody",            "Bow Body",                 COSMETICS_GROUP_EQUIPMENT,    ImVec4(140,  90,  10, 255), false, true, false),
-    COSMETIC_OPTION("Equipment.BowHandle",          "Bow Handle",               COSMETICS_GROUP_EQUIPMENT,    ImVec4( 50, 150, 255, 255), false, true, true),
-    COSMETIC_OPTION("Equipment.ChuFace",            "Bombchu Face",             COSMETICS_GROUP_EQUIPMENT,    ImVec4(  0, 100, 150, 255), false, true, true),
-    COSMETIC_OPTION("Equipment.ChuBody",            "Bombchu Body",             COSMETICS_GROUP_EQUIPMENT,    ImVec4(180, 130,  50, 255), false, true, true), 
-    COSMETIC_OPTION("Equipment.BunnyHood",          "Bunny Hood",               COSMETICS_GROUP_EQUIPMENT,    ImVec4(255, 235, 109, 255), false, true, true), 
+    COSMETIC_OPTION("HookshotReticle.Target",       "Hookshotable Reticle",     COSMETICS_GROUP_EQUIPMENT,    Color_RGBA8(  0, 255,   0, 255), false, true, false),
+    COSMETIC_OPTION("HookshotReticle.NonTarget",    "Non-Hookshotable Reticle", COSMETICS_GROUP_EQUIPMENT,    Color_RGBA8(255,   0,   0, 255), false, true, false),
+    COSMETIC_OPTION("Equipment.BowTips",            "Bow Tips",                 COSMETICS_GROUP_EQUIPMENT,    Color_RGBA8(200,   0,   0, 255), false, true, true),
+    COSMETIC_OPTION("Equipment.BowString",          "Bow String",               COSMETICS_GROUP_EQUIPMENT,    Color_RGBA8(255, 255, 255, 255), false, true, true),
+    COSMETIC_OPTION("Equipment.BowBody",            "Bow Body",                 COSMETICS_GROUP_EQUIPMENT,    Color_RGBA8(140,  90,  10, 255), false, true, false),
+    COSMETIC_OPTION("Equipment.BowHandle",          "Bow Handle",               COSMETICS_GROUP_EQUIPMENT,    Color_RGBA8( 50, 150, 255, 255), false, true, true),
+    COSMETIC_OPTION("Equipment.ChuFace",            "Bombchu Face",             COSMETICS_GROUP_EQUIPMENT,    Color_RGBA8(  0, 100, 150, 255), false, true, true),
+    COSMETIC_OPTION("Equipment.ChuBody",            "Bombchu Body",             COSMETICS_GROUP_EQUIPMENT,    Color_RGBA8(180, 130,  50, 255), false, true, true), 
+    COSMETIC_OPTION("Equipment.BunnyHood",          "Bunny Hood",               COSMETICS_GROUP_EQUIPMENT,    Color_RGBA8(255, 235, 109, 255), false, true, true), 
 
-    COSMETIC_OPTION("Consumable.Hearts",            "Hearts",                   COSMETICS_GROUP_CONSUMABLE,   ImVec4(255,  70,  50, 255), false, true, false),
-    COSMETIC_OPTION("Consumable.HeartBorder",       "Heart Border",             COSMETICS_GROUP_CONSUMABLE,   ImVec4( 50,  40,  60, 255), false, true, true),
-    COSMETIC_OPTION("Consumable.DDHearts",          "DD Hearts",                COSMETICS_GROUP_CONSUMABLE,   ImVec4(200,   0,   0, 255), false, true, false),
-    COSMETIC_OPTION("Consumable.DDHeartBorder",     "DD Heart Border",          COSMETICS_GROUP_CONSUMABLE,   ImVec4(255, 255, 255, 255), false, true, true),
-    COSMETIC_OPTION("Consumable.Magic",             "Magic",                    COSMETICS_GROUP_CONSUMABLE,   ImVec4(  0, 200,   0, 255), false, true, false),
-    COSMETIC_OPTION("Consumable.MagicActive",       "Magic Active",             COSMETICS_GROUP_CONSUMABLE,   ImVec4(250, 250,   0, 255), false, true, true),
-    COSMETIC_OPTION("Consumable_MagicInfinite",     "Infinite Magic",           COSMETICS_GROUP_CONSUMABLE,   ImVec4(  0,   0, 200, 255), false, true, true),
-    COSMETIC_OPTION("Consumable.MagicBorder",       "Magic Border",             COSMETICS_GROUP_CONSUMABLE,   ImVec4(255, 255, 255, 255), false, true, true),
-    COSMETIC_OPTION("Consumable.MagicBorderActive", "Magic Border Active",      COSMETICS_GROUP_CONSUMABLE,   ImVec4(255, 255, 255, 255), false, true, true),
-    COSMETIC_OPTION("Consumable.GreenRupee",        "Green Rupee",              COSMETICS_GROUP_CONSUMABLE,   ImVec4( 50, 255,  50, 255), false, true, true),
-    COSMETIC_OPTION("Consumable.BlueRupee",         "Blue Rupee",               COSMETICS_GROUP_CONSUMABLE,   ImVec4( 50,  50, 255, 255), false, true, true),
-    COSMETIC_OPTION("Consumable.RedRupee",          "Red Rupee",                COSMETICS_GROUP_CONSUMABLE,   ImVec4(255,  50,  50, 255), false, true, true),
-    COSMETIC_OPTION("Consumable.PurpleRupee",       "Purple Rupee",             COSMETICS_GROUP_CONSUMABLE,   ImVec4(150,  50, 255, 255), false, true, true),
-    COSMETIC_OPTION("Consumable.GoldRupee",         "Gold Rupee",               COSMETICS_GROUP_CONSUMABLE,   ImVec4(255, 190,  55, 255), false, true, true),
-    COSMETIC_OPTION("Consumable.SilverRupee",       "Silver Rupee",             COSMETICS_GROUP_CONSUMABLE,   ImVec4(255, 255, 255, 255), false, true, true),
+    COSMETIC_OPTION("Consumable.Hearts",            "Hearts",                   COSMETICS_GROUP_CONSUMABLE,   Color_RGBA8(255,  70,  50, 255), false, true, false),
+    COSMETIC_OPTION("Consumable.HeartBorder",       "Heart Border",             COSMETICS_GROUP_CONSUMABLE,   Color_RGBA8( 50,  40,  60, 255), false, true, true),
+    COSMETIC_OPTION("Consumable.DDHearts",          "DD Hearts",                COSMETICS_GROUP_CONSUMABLE,   Color_RGBA8(200,   0,   0, 255), false, true, false),
+    COSMETIC_OPTION("Consumable.DDHeartBorder",     "DD Heart Border",          COSMETICS_GROUP_CONSUMABLE,   Color_RGBA8(255, 255, 255, 255), false, true, true),
+    COSMETIC_OPTION("Consumable.Magic",             "Magic",                    COSMETICS_GROUP_CONSUMABLE,   Color_RGBA8(  0, 200,   0, 255), false, true, false),
+    COSMETIC_OPTION("Consumable.MagicActive",       "Magic Active",             COSMETICS_GROUP_CONSUMABLE,   Color_RGBA8(250, 250,   0, 255), false, true, true),
+    COSMETIC_OPTION("Consumable_MagicInfinite",     "Infinite Magic",           COSMETICS_GROUP_CONSUMABLE,   Color_RGBA8(  0,   0, 200, 255), false, true, true),
+    COSMETIC_OPTION("Consumable.MagicBorder",       "Magic Border",             COSMETICS_GROUP_CONSUMABLE,   Color_RGBA8(255, 255, 255, 255), false, true, true),
+    COSMETIC_OPTION("Consumable.MagicBorderActive", "Magic Border Active",      COSMETICS_GROUP_CONSUMABLE,   Color_RGBA8(255, 255, 255, 255), false, true, true),
+    COSMETIC_OPTION("Consumable.GreenRupee",        "Green Rupee",              COSMETICS_GROUP_CONSUMABLE,   Color_RGBA8( 50, 255,  50, 255), false, true, true),
+    COSMETIC_OPTION("Consumable.BlueRupee",         "Blue Rupee",               COSMETICS_GROUP_CONSUMABLE,   Color_RGBA8( 50,  50, 255, 255), false, true, true),
+    COSMETIC_OPTION("Consumable.RedRupee",          "Red Rupee",                COSMETICS_GROUP_CONSUMABLE,   Color_RGBA8(255,  50,  50, 255), false, true, true),
+    COSMETIC_OPTION("Consumable.PurpleRupee",       "Purple Rupee",             COSMETICS_GROUP_CONSUMABLE,   Color_RGBA8(150,  50, 255, 255), false, true, true),
+    COSMETIC_OPTION("Consumable.GoldRupee",         "Gold Rupee",               COSMETICS_GROUP_CONSUMABLE,   Color_RGBA8(255, 190,  55, 255), false, true, true),
+    COSMETIC_OPTION("Consumable.SilverRupee",       "Silver Rupee",             COSMETICS_GROUP_CONSUMABLE,   Color_RGBA8(255, 255, 255, 255), false, true, true),
 
-    COSMETIC_OPTION("HUD.AButton",                  "A Button",                 COSMETICS_GROUP_HUD,          ImVec4( 90,  90, 255, 255), false, true, false),
-    COSMETIC_OPTION("HUD.BButton",                  "B Button",                 COSMETICS_GROUP_HUD,          ImVec4(  0, 150,   0, 255), false, true, false),
-    COSMETIC_OPTION("HUD.CButtons",                 "C Buttons",                COSMETICS_GROUP_HUD,          ImVec4(255, 160,   0, 255), false, true, false),
-    COSMETIC_OPTION("HUD.CUpButton",                "C Up Button",              COSMETICS_GROUP_HUD,          ImVec4(255, 160,   0, 255), false, true, true),
-    COSMETIC_OPTION("HUD.CDownButton",              "C Down Button",            COSMETICS_GROUP_HUD,          ImVec4(255, 160,   0, 255), false, true, true),
-    COSMETIC_OPTION("HUD.CLeftButton",              "C Left Button",            COSMETICS_GROUP_HUD,          ImVec4(255, 160,   0, 255), false, true, true),
-    COSMETIC_OPTION("HUD.CRightButton",             "C Right Button",           COSMETICS_GROUP_HUD,          ImVec4(255, 160,   0, 255), false, true, true),
-    COSMETIC_OPTION("HUD.StartButton",              "Start Button",             COSMETICS_GROUP_HUD,          ImVec4(200,   0,   0, 255), false, true, false),
-    COSMETIC_OPTION("HUD.Dpad",                     "Dpad",                     COSMETICS_GROUP_HUD,          ImVec4(255, 255, 255, 255), false, true, false),
-    COSMETIC_OPTION("HUD.KeyCount",                 "Key Count",                COSMETICS_GROUP_HUD,          ImVec4(200, 230, 255, 255), false, true, true),
-    COSMETIC_OPTION("HUD.StoneOfAgony",             "Stone of Agony",           COSMETICS_GROUP_HUD,          ImVec4(255, 255, 255, 255), false, true, true),
-    COSMETIC_OPTION("HUD.Minimap",                  "Minimap",                  COSMETICS_GROUP_HUD,          ImVec4(  0, 255, 255, 255), false, true, false),
-    COSMETIC_OPTION("HUD.MinimapPosition",          "Minimap Position",         COSMETICS_GROUP_HUD,          ImVec4(200, 255,   0, 255), false, true, true),
-    COSMETIC_OPTION("HUD.MinimapEntrance",          "Minimap Entrance",         COSMETICS_GROUP_HUD,          ImVec4(200,   0,   0, 255), false, true, true),
-    COSMETIC_OPTION("HUD.EnemyHealthBar",           "Enemy Health Bar",         COSMETICS_GROUP_HUD,          ImVec4(255,   0,   0, 255), true,  true, false),
-    COSMETIC_OPTION("HUD.EnemyHealthBorder",        "Enemy Health Border",      COSMETICS_GROUP_HUD,          ImVec4(255, 255, 255, 255), true,  true, true),
-    COSMETIC_OPTION("HUD.NameTagActorText",         "Nametag Text",             COSMETICS_GROUP_HUD,          ImVec4(255, 255, 255, 255), true,  true, false),
-    COSMETIC_OPTION("HUD.NameTagActorBackground",   "Nametag Background",       COSMETICS_GROUP_HUD,          ImVec4(  0,   0,   0,  80), true,  true, true),
-    COSMETIC_OPTION("HUD.TitleCard.Map",            "Map Title Card",           COSMETICS_GROUP_HUD,          ImVec4(255, 255, 255, 255), false, true, false),
-    COSMETIC_OPTION("HUD.TitleCard.Boss",           "Boss Title Card",          COSMETICS_GROUP_HUD,          ImVec4(255, 255, 255, 255), false, true, false),
+    COSMETIC_OPTION("HUD.AButton",                  "A Button",                 COSMETICS_GROUP_HUD,          Color_RGBA8( 90,  90, 255, 255), false, true, false),
+    COSMETIC_OPTION("HUD.BButton",                  "B Button",                 COSMETICS_GROUP_HUD,          Color_RGBA8(  0, 150,   0, 255), false, true, false),
+    COSMETIC_OPTION("HUD.CButtons",                 "C Buttons",                COSMETICS_GROUP_HUD,          Color_RGBA8(255, 160,   0, 255), false, true, false),
+    COSMETIC_OPTION("HUD.CUpButton",                "C Up Button",              COSMETICS_GROUP_HUD,          Color_RGBA8(255, 160,   0, 255), false, true, true),
+    COSMETIC_OPTION("HUD.CDownButton",              "C Down Button",            COSMETICS_GROUP_HUD,          Color_RGBA8(255, 160,   0, 255), false, true, true),
+    COSMETIC_OPTION("HUD.CLeftButton",              "C Left Button",            COSMETICS_GROUP_HUD,          Color_RGBA8(255, 160,   0, 255), false, true, true),
+    COSMETIC_OPTION("HUD.CRightButton",             "C Right Button",           COSMETICS_GROUP_HUD,          Color_RGBA8(255, 160,   0, 255), false, true, true),
+    COSMETIC_OPTION("HUD.StartButton",              "Start Button",             COSMETICS_GROUP_HUD,          Color_RGBA8(200,   0,   0, 255), false, true, false),
+    COSMETIC_OPTION("HUD.Dpad",                     "Dpad",                     COSMETICS_GROUP_HUD,          Color_RGBA8(255, 255, 255, 255), false, true, false),
+    COSMETIC_OPTION("HUD.KeyCount",                 "Key Count",                COSMETICS_GROUP_HUD,          Color_RGBA8(200, 230, 255, 255), false, true, true),
+    COSMETIC_OPTION("HUD.StoneOfAgony",             "Stone of Agony",           COSMETICS_GROUP_HUD,          Color_RGBA8(255, 255, 255, 255), false, true, true),
+    COSMETIC_OPTION("HUD.Minimap",                  "Minimap",                  COSMETICS_GROUP_HUD,          Color_RGBA8(  0, 255, 255, 255), false, true, false),
+    COSMETIC_OPTION("HUD.MinimapPosition",          "Minimap Position",         COSMETICS_GROUP_HUD,          Color_RGBA8(200, 255,   0, 255), false, true, true),
+    COSMETIC_OPTION("HUD.MinimapEntrance",          "Minimap Entrance",         COSMETICS_GROUP_HUD,          Color_RGBA8(200,   0,   0, 255), false, true, true),
+    COSMETIC_OPTION("HUD.EnemyHealthBar",           "Enemy Health Bar",         COSMETICS_GROUP_HUD,          Color_RGBA8(255,   0,   0, 255), true,  true, false),
+    COSMETIC_OPTION("HUD.EnemyHealthBorder",        "Enemy Health Border",      COSMETICS_GROUP_HUD,          Color_RGBA8(255, 255, 255, 255), true,  true, true),
+    COSMETIC_OPTION("HUD.NameTagActorText",         "Nametag Text",             COSMETICS_GROUP_HUD,          Color_RGBA8(255, 255, 255, 255), true,  true, false),
+    COSMETIC_OPTION("HUD.NameTagActorBackground",   "Nametag Background",       COSMETICS_GROUP_HUD,          Color_RGBA8(  0,   0,   0,  80), true,  true, true),
+    COSMETIC_OPTION("HUD.TitleCard.Map",            "Map Title Card",           COSMETICS_GROUP_HUD,          Color_RGBA8(255, 255, 255, 255), false, true, false),
+    COSMETIC_OPTION("HUD.TitleCard.Boss",           "Boss Title Card",          COSMETICS_GROUP_HUD,          Color_RGBA8(255, 255, 255, 255), false, true, false),
 
-    #define MESSAGE_COSMETIC_OPTION(id, label, r, g, b) COSMETIC_OPTION("Message." id, label, COSMETICS_GROUP_MESSAGE,  ImVec4(r, g, b, 255), false, true, true)
+    #define MESSAGE_COSMETIC_OPTION(id, label, r, g, b) COSMETIC_OPTION("Message." id, label, COSMETICS_GROUP_MESSAGE,  Color_RGBA8(r, g, b, 255), false, true, true)
 
     MESSAGE_COSMETIC_OPTION("Default.Normal",                   "Message Default Color",                     255, 255, 255),
     MESSAGE_COSMETIC_OPTION("Default.NoneNoShadow",             "Message Default (None No Shadow) Color",      0,   0,   0),
@@ -289,110 +289,110 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
 
     #undef MESSAGE_COSMETIC_OPTION
 
-    COSMETIC_OPTION("Kaleido.ItemSelA",             "Item Select Color",        COSMETICS_GROUP_KALEIDO,      ImVec4( 10,  50,  80, 255), false, true, false),
-    COSMETIC_OPTION("Kaleido.ItemSelB",             "Item Select Color B",      COSMETICS_GROUP_KALEIDO,      ImVec4( 70, 100, 130, 255), false, true, true),
-    COSMETIC_OPTION("Kaleido.ItemSelC",             "Item Select Color C",      COSMETICS_GROUP_KALEIDO,      ImVec4( 70, 100, 130, 255), false, true, true),
-    COSMETIC_OPTION("Kaleido.ItemSelD",             "Item Select Color D",      COSMETICS_GROUP_KALEIDO,      ImVec4( 10,  50,  80, 255), false, true, true),
+    COSMETIC_OPTION("Kaleido.ItemSelA",             "Item Select Color",        COSMETICS_GROUP_KALEIDO,      Color_RGBA8( 10,  50,  80, 255), false, true, false),
+    COSMETIC_OPTION("Kaleido.ItemSelB",             "Item Select Color B",      COSMETICS_GROUP_KALEIDO,      Color_RGBA8( 70, 100, 130, 255), false, true, true),
+    COSMETIC_OPTION("Kaleido.ItemSelC",             "Item Select Color C",      COSMETICS_GROUP_KALEIDO,      Color_RGBA8( 70, 100, 130, 255), false, true, true),
+    COSMETIC_OPTION("Kaleido.ItemSelD",             "Item Select Color D",      COSMETICS_GROUP_KALEIDO,      Color_RGBA8( 10,  50,  80, 255), false, true, true),
 
-    COSMETIC_OPTION("Kaleido.EquipSelA",            "Equip Select Color",       COSMETICS_GROUP_KALEIDO,      ImVec4( 10,  50,  40, 255), false, true, false),
-    COSMETIC_OPTION("Kaleido.EquipSelB",            "Equip Select Color B",     COSMETICS_GROUP_KALEIDO,      ImVec4( 90, 100,  60, 255), false, true, true),
-    COSMETIC_OPTION("Kaleido.EquipSelC",            "Equip Select Color C",     COSMETICS_GROUP_KALEIDO,      ImVec4( 90, 100,  60, 255), false, true, true),
-    COSMETIC_OPTION("Kaleido.EquipSelD",            "Equip Select Color D",     COSMETICS_GROUP_KALEIDO,      ImVec4( 10,  50,  80, 255), false, true, true),
+    COSMETIC_OPTION("Kaleido.EquipSelA",            "Equip Select Color",       COSMETICS_GROUP_KALEIDO,      Color_RGBA8( 10,  50,  40, 255), false, true, false),
+    COSMETIC_OPTION("Kaleido.EquipSelB",            "Equip Select Color B",     COSMETICS_GROUP_KALEIDO,      Color_RGBA8( 90, 100,  60, 255), false, true, true),
+    COSMETIC_OPTION("Kaleido.EquipSelC",            "Equip Select Color C",     COSMETICS_GROUP_KALEIDO,      Color_RGBA8( 90, 100,  60, 255), false, true, true),
+    COSMETIC_OPTION("Kaleido.EquipSelD",            "Equip Select Color D",     COSMETICS_GROUP_KALEIDO,      Color_RGBA8( 10,  50,  80, 255), false, true, true),
 
-    COSMETIC_OPTION("Kaleido.MapSelDunA",           "Map Dungeon Color",        COSMETICS_GROUP_KALEIDO,      ImVec4( 80,  40,  30, 255), false, true, true),
-    COSMETIC_OPTION("Kaleido.MapSelDunB",           "Map Dungeon Color B",      COSMETICS_GROUP_KALEIDO,      ImVec4(140,  60,  60, 255), false, true, true),
-    COSMETIC_OPTION("Kaleido.MapSelDunC",           "Map Dungeon Color C",      COSMETICS_GROUP_KALEIDO,      ImVec4(140,  60,  60, 255), false, true, true),
-    COSMETIC_OPTION("Kaleido.MapSelDunD",           "Map Dungeon Color D",      COSMETICS_GROUP_KALEIDO,      ImVec4( 80,  40,  30, 255), false, true, true),
+    COSMETIC_OPTION("Kaleido.MapSelDunA",           "Map Dungeon Color",        COSMETICS_GROUP_KALEIDO,      Color_RGBA8( 80,  40,  30, 255), false, true, true),
+    COSMETIC_OPTION("Kaleido.MapSelDunB",           "Map Dungeon Color B",      COSMETICS_GROUP_KALEIDO,      Color_RGBA8(140,  60,  60, 255), false, true, true),
+    COSMETIC_OPTION("Kaleido.MapSelDunC",           "Map Dungeon Color C",      COSMETICS_GROUP_KALEIDO,      Color_RGBA8(140,  60,  60, 255), false, true, true),
+    COSMETIC_OPTION("Kaleido.MapSelDunD",           "Map Dungeon Color D",      COSMETICS_GROUP_KALEIDO,      Color_RGBA8( 80,  40,  30, 255), false, true, true),
     
-    COSMETIC_OPTION("Kaleido.QuestStatusA",         "Quest Status Color",       COSMETICS_GROUP_KALEIDO,      ImVec4( 80,  80,  50, 255), false, true, false),
-    COSMETIC_OPTION("Kaleido.QuestStatusB",         "Quest Status Color B",     COSMETICS_GROUP_KALEIDO,      ImVec4(120, 120,  70, 255), false, true, true),
-    COSMETIC_OPTION("Kaleido.QuestStatusC",         "Quest Status Color C",     COSMETICS_GROUP_KALEIDO,      ImVec4(120, 120,  70, 255), false, true, true),
-    COSMETIC_OPTION("Kaleido.QuestStatusD",         "Quest Status Color D",     COSMETICS_GROUP_KALEIDO,      ImVec4( 80,  80,  50, 255), false, true, true),
+    COSMETIC_OPTION("Kaleido.QuestStatusA",         "Quest Status Color",       COSMETICS_GROUP_KALEIDO,      Color_RGBA8( 80,  80,  50, 255), false, true, false),
+    COSMETIC_OPTION("Kaleido.QuestStatusB",         "Quest Status Color B",     COSMETICS_GROUP_KALEIDO,      Color_RGBA8(120, 120,  70, 255), false, true, true),
+    COSMETIC_OPTION("Kaleido.QuestStatusC",         "Quest Status Color C",     COSMETICS_GROUP_KALEIDO,      Color_RGBA8(120, 120,  70, 255), false, true, true),
+    COSMETIC_OPTION("Kaleido.QuestStatusD",         "Quest Status Color D",     COSMETICS_GROUP_KALEIDO,      Color_RGBA8( 80,  80,  50, 255), false, true, true),
 
-    COSMETIC_OPTION("Kaleido.MapSelectA",           "Map Color",                COSMETICS_GROUP_KALEIDO,      ImVec4( 80,  40,  30, 255), false, true, false),
-    COSMETIC_OPTION("Kaleido.MapSelectB",           "Map Color B",              COSMETICS_GROUP_KALEIDO,      ImVec4(140,  60,  60, 255), false, true, true),
-    COSMETIC_OPTION("Kaleido.MapSelectC",           "Map Color C",              COSMETICS_GROUP_KALEIDO,      ImVec4(140,  60,  60, 255), false, true, true),
-    COSMETIC_OPTION("Kaleido.MapSelectD",           "Map Color D",              COSMETICS_GROUP_KALEIDO,      ImVec4( 80,  40,  30, 255), false, true, true),
+    COSMETIC_OPTION("Kaleido.MapSelectA",           "Map Color",                COSMETICS_GROUP_KALEIDO,      Color_RGBA8( 80,  40,  30, 255), false, true, false),
+    COSMETIC_OPTION("Kaleido.MapSelectB",           "Map Color B",              COSMETICS_GROUP_KALEIDO,      Color_RGBA8(140,  60,  60, 255), false, true, true),
+    COSMETIC_OPTION("Kaleido.MapSelectC",           "Map Color C",              COSMETICS_GROUP_KALEIDO,      Color_RGBA8(140,  60,  60, 255), false, true, true),
+    COSMETIC_OPTION("Kaleido.MapSelectD",           "Map Color D",              COSMETICS_GROUP_KALEIDO,      Color_RGBA8( 80,  40,  30, 255), false, true, true),
     
-    COSMETIC_OPTION("Kaleido.SaveA",                "Save Color",               COSMETICS_GROUP_KALEIDO,      ImVec4( 50,  50,  50, 255), false, true, false),
-    COSMETIC_OPTION("Kaleido.SaveB",                "Save Color B",             COSMETICS_GROUP_KALEIDO,      ImVec4(110, 110, 110, 255), false, true, true),
-    COSMETIC_OPTION("Kaleido.SaveC",                "Save Color C",             COSMETICS_GROUP_KALEIDO,      ImVec4(110, 110, 110, 255), false, true, true),
-    COSMETIC_OPTION("Kaleido.SaveD",                "Save Color D",             COSMETICS_GROUP_KALEIDO,      ImVec4( 50,  50,  50, 255), false, true, true),
+    COSMETIC_OPTION("Kaleido.SaveA",                "Save Color",               COSMETICS_GROUP_KALEIDO,      Color_RGBA8( 50,  50,  50, 255), false, true, false),
+    COSMETIC_OPTION("Kaleido.SaveB",                "Save Color B",             COSMETICS_GROUP_KALEIDO,      Color_RGBA8(110, 110, 110, 255), false, true, true),
+    COSMETIC_OPTION("Kaleido.SaveC",                "Save Color C",             COSMETICS_GROUP_KALEIDO,      Color_RGBA8(110, 110, 110, 255), false, true, true),
+    COSMETIC_OPTION("Kaleido.SaveD",                "Save Color D",             COSMETICS_GROUP_KALEIDO,      Color_RGBA8( 50,  50,  50, 255), false, true, true),
     
-    COSMETIC_OPTION("Kaleido.NamePanel",            "Name Panel",               COSMETICS_GROUP_KALEIDO,      ImVec4( 90, 100, 130, 255), true,  true, false),
+    COSMETIC_OPTION("Kaleido.NamePanel",            "Name Panel",               COSMETICS_GROUP_KALEIDO,      Color_RGBA8( 90, 100, 130, 255), true,  true, false),
     
-    COSMETIC_OPTION("Title.FileChoose",             "File Choose",              COSMETICS_GROUP_TITLE,        ImVec4(100, 150, 255, 255), false, true, false),
-    COSMETIC_OPTION("Title.NintendoLogo",           "Nintendo Logo",            COSMETICS_GROUP_TITLE,        ImVec4(  0,   0, 255, 255), false, true, true),
-    COSMETIC_OPTION("Title.N64LogoRed",             "N64 Red",                  COSMETICS_GROUP_TITLE,        ImVec4(150,   0,   0, 255), false, true, true),
-    COSMETIC_OPTION("Title.N64LogoBlue",            "N64 Blue",                 COSMETICS_GROUP_TITLE,        ImVec4(  0,  50, 150, 255), false, true, true),
-    COSMETIC_OPTION("Title.N64LogoGreen",           "N64 Green",                COSMETICS_GROUP_TITLE,        ImVec4( 50, 100,   0, 255), false, true, true),
-    COSMETIC_OPTION("Title.N64LogoYellow",          "N64 Yellow",               COSMETICS_GROUP_TITLE,        ImVec4(200, 150,   0, 255), false, true, true),
+    COSMETIC_OPTION("Title.FileChoose",             "File Choose",              COSMETICS_GROUP_TITLE,        Color_RGBA8(100, 150, 255, 255), false, true, false),
+    COSMETIC_OPTION("Title.NintendoLogo",           "Nintendo Logo",            COSMETICS_GROUP_TITLE,        Color_RGBA8(  0,   0, 255, 255), false, true, true),
+    COSMETIC_OPTION("Title.N64LogoRed",             "N64 Red",                  COSMETICS_GROUP_TITLE,        Color_RGBA8(150,   0,   0, 255), false, true, true),
+    COSMETIC_OPTION("Title.N64LogoBlue",            "N64 Blue",                 COSMETICS_GROUP_TITLE,        Color_RGBA8(  0,  50, 150, 255), false, true, true),
+    COSMETIC_OPTION("Title.N64LogoGreen",           "N64 Green",                COSMETICS_GROUP_TITLE,        Color_RGBA8( 50, 100,   0, 255), false, true, true),
+    COSMETIC_OPTION("Title.N64LogoYellow",          "N64 Yellow",               COSMETICS_GROUP_TITLE,        Color_RGBA8(200, 150,   0, 255), false, true, true),
 
     /* Todo (Cosmetics): Kinda complicated
-    COSMETIC_OPTION("Title.FirePrimary",            "Title Fire Primary",       COSMETICS_GROUP_TITLE,        ImVec4(255, 255, 170, 255), false, true, false),
-    COSMETIC_OPTION("Title.FireSecondary",          "Title Fire Secondary",     COSMETICS_GROUP_TITLE,        ImVec4(255, 100,   0, 255), false, true, true),
+    COSMETIC_OPTION("Title.FirePrimary",            "Title Fire Primary",       COSMETICS_GROUP_TITLE,        Color_RGBA8(255, 255, 170, 255), false, true, false),
+    COSMETIC_OPTION("Title.FireSecondary",          "Title Fire Secondary",     COSMETICS_GROUP_TITLE,        Color_RGBA8(255, 100,   0, 255), false, true, true),
     */
-    COSMETIC_OPTION("Title.Copyright",              "Copyright Text",           COSMETICS_GROUP_TITLE,        ImVec4(255, 255, 255, 255), true,  true, false),
+    COSMETIC_OPTION("Title.Copyright",              "Copyright Text",           COSMETICS_GROUP_TITLE,        Color_RGBA8(255, 255, 255, 255), true,  true, false),
     
-    COSMETIC_OPTION("Arrows.NormalPrimary",         "Normal Primary",           COSMETICS_GROUP_ARROWS,       ImVec4(  0, 150,   0,   0), false, true, false),
-    COSMETIC_OPTION("Arrows.NormalSecondary",       "Normal Secondary",         COSMETICS_GROUP_ARROWS,       ImVec4(255, 255, 170, 255), false, true, true),
-    COSMETIC_OPTION("Arrows.FirePrimary",           "Fire Primary",             COSMETICS_GROUP_ARROWS,       ImVec4(255, 200,   0,   0), false, true, false),
-    COSMETIC_OPTION("Arrows.FireSecondary",         "Fire Secondary",           COSMETICS_GROUP_ARROWS,       ImVec4(255,   0,   0, 255), false, true, true),
-    COSMETIC_OPTION("Arrows.IcePrimary",            "Ice Primary",              COSMETICS_GROUP_ARROWS,       ImVec4(  0,   0, 255, 255), false, true, false),
-    COSMETIC_OPTION("Arrows.IceSecondary",          "Ice Secondary",            COSMETICS_GROUP_ARROWS,       ImVec4(255, 255, 255, 255), false, true, true),
-    COSMETIC_OPTION("Arrows.LightPrimary",          "Light Primary",            COSMETICS_GROUP_ARROWS,       ImVec4(255, 255,   0, 255), false, true, false),
-    COSMETIC_OPTION("Arrows.LightSecondary",        "Light Secondary",          COSMETICS_GROUP_ARROWS,       ImVec4(255, 255, 170,   0), false, true, true),
+    COSMETIC_OPTION("Arrows.NormalPrimary",         "Normal Primary",           COSMETICS_GROUP_ARROWS,       Color_RGBA8(  0, 150,   0,   0), false, true, false),
+    COSMETIC_OPTION("Arrows.NormalSecondary",       "Normal Secondary",         COSMETICS_GROUP_ARROWS,       Color_RGBA8(255, 255, 170, 255), false, true, true),
+    COSMETIC_OPTION("Arrows.FirePrimary",           "Fire Primary",             COSMETICS_GROUP_ARROWS,       Color_RGBA8(255, 200,   0,   0), false, true, false),
+    COSMETIC_OPTION("Arrows.FireSecondary",         "Fire Secondary",           COSMETICS_GROUP_ARROWS,       Color_RGBA8(255,   0,   0, 255), false, true, true),
+    COSMETIC_OPTION("Arrows.IcePrimary",            "Ice Primary",              COSMETICS_GROUP_ARROWS,       Color_RGBA8(  0,   0, 255, 255), false, true, false),
+    COSMETIC_OPTION("Arrows.IceSecondary",          "Ice Secondary",            COSMETICS_GROUP_ARROWS,       Color_RGBA8(255, 255, 255, 255), false, true, true),
+    COSMETIC_OPTION("Arrows.LightPrimary",          "Light Primary",            COSMETICS_GROUP_ARROWS,       Color_RGBA8(255, 255,   0, 255), false, true, false),
+    COSMETIC_OPTION("Arrows.LightSecondary",        "Light Secondary",          COSMETICS_GROUP_ARROWS,       Color_RGBA8(255, 255, 170,   0), false, true, true),
     
-    COSMETIC_OPTION("Magic.DinsPrimary",            "Din's Primary",            COSMETICS_GROUP_MAGIC,        ImVec4(255, 200,   0, 255), false, true, false),
-    COSMETIC_OPTION("Magic.DinsSecondary",          "Din's Secondary",          COSMETICS_GROUP_MAGIC,        ImVec4(255,   0,   0, 255), false, true, true),
-    COSMETIC_OPTION("Magic.FaroresPrimary",         "Farore's Primary",         COSMETICS_GROUP_MAGIC,        ImVec4(255, 255,   0, 255), false, true, false),
-    COSMETIC_OPTION("Magic.FaroresSecondary",       "Farore's Secondary",       COSMETICS_GROUP_MAGIC,        ImVec4(100, 200,   0, 255), false, true, true),
-    COSMETIC_OPTION("Magic.NayrusPrimary",          "Nayru's Primary",          COSMETICS_GROUP_MAGIC,        ImVec4(170, 255, 255, 255), false, true, false),
-    COSMETIC_OPTION("Magic.NayrusSecondary",        "Nayru's Secondary",        COSMETICS_GROUP_MAGIC,        ImVec4(  0, 100, 255, 255), false, true, true),
+    COSMETIC_OPTION("Magic.DinsPrimary",            "Din's Primary",            COSMETICS_GROUP_MAGIC,        Color_RGBA8(255, 200,   0, 255), false, true, false),
+    COSMETIC_OPTION("Magic.DinsSecondary",          "Din's Secondary",          COSMETICS_GROUP_MAGIC,        Color_RGBA8(255,   0,   0, 255), false, true, true),
+    COSMETIC_OPTION("Magic.FaroresPrimary",         "Farore's Primary",         COSMETICS_GROUP_MAGIC,        Color_RGBA8(255, 255,   0, 255), false, true, false),
+    COSMETIC_OPTION("Magic.FaroresSecondary",       "Farore's Secondary",       COSMETICS_GROUP_MAGIC,        Color_RGBA8(100, 200,   0, 255), false, true, true),
+    COSMETIC_OPTION("Magic.NayrusPrimary",          "Nayru's Primary",          COSMETICS_GROUP_MAGIC,        Color_RGBA8(170, 255, 255, 255), false, true, false),
+    COSMETIC_OPTION("Magic.NayrusSecondary",        "Nayru's Secondary",        COSMETICS_GROUP_MAGIC,        Color_RGBA8(  0, 100, 255, 255), false, true, true),
     
-    COSMETIC_OPTION("SpinAttack.Level1Primary",     "Level 1 Primary",          COSMETICS_GROUP_SPIN_ATTACK,  ImVec4(170, 255, 255, 255), false, true, true),
-    COSMETIC_OPTION("SpinAttack.Level1Secondary",   "Level 1 Secondary",        COSMETICS_GROUP_SPIN_ATTACK,  ImVec4(  0, 100, 255, 255), false, true, false),
-    COSMETIC_OPTION("SpinAttack.Level2Primary",     "Level 2 Primary",          COSMETICS_GROUP_SPIN_ATTACK,  ImVec4(255, 255, 170, 255), false, true, true),
-    COSMETIC_OPTION("SpinAttack.Level2Secondary",   "Level 2 Secondary",        COSMETICS_GROUP_SPIN_ATTACK,  ImVec4(255, 100,   0, 255), false, true, false),
+    COSMETIC_OPTION("SpinAttack.Level1Primary",     "Level 1 Primary",          COSMETICS_GROUP_SPIN_ATTACK,  Color_RGBA8(170, 255, 255, 255), false, true, true),
+    COSMETIC_OPTION("SpinAttack.Level1Secondary",   "Level 1 Secondary",        COSMETICS_GROUP_SPIN_ATTACK,  Color_RGBA8(  0, 100, 255, 255), false, true, false),
+    COSMETIC_OPTION("SpinAttack.Level2Primary",     "Level 2 Primary",          COSMETICS_GROUP_SPIN_ATTACK,  Color_RGBA8(255, 255, 170, 255), false, true, true),
+    COSMETIC_OPTION("SpinAttack.Level2Secondary",   "Level 2 Secondary",        COSMETICS_GROUP_SPIN_ATTACK,  Color_RGBA8(255, 100,   0, 255), false, true, false),
 
-    COSMETIC_OPTION("Trails.Bombchu",               "Bombchu",                  COSMETICS_GROUP_TRAILS,       ImVec4(250,   0,   0, 255), false, true, true),
-    COSMETIC_OPTION("Trails.Boomerang",             "Boomerang",                COSMETICS_GROUP_TRAILS,       ImVec4(255, 255, 100, 255), false, true, true),
-    COSMETIC_OPTION("Trails.KokiriSword",           "Kokiri Sword",             COSMETICS_GROUP_TRAILS,       ImVec4(255, 255, 255, 255), false, true, false),
-    COSMETIC_OPTION("Trails.MasterSword",           "Master Sword",             COSMETICS_GROUP_TRAILS,       ImVec4(255, 255, 255, 255), false, true, false),
-    COSMETIC_OPTION("Trails.BiggoronSword",         "Biggoron Sword",           COSMETICS_GROUP_TRAILS,       ImVec4(255, 255, 255, 255), false, true, true),
-    COSMETIC_OPTION("Trails.Stick",                 "Stick",                    COSMETICS_GROUP_TRAILS,       ImVec4(255, 255, 255, 255), false, true, true),
-    COSMETIC_OPTION("Trails.Hammer",                "Hammer",                   COSMETICS_GROUP_TRAILS,       ImVec4(255, 255, 255, 255), false, true, true),
+    COSMETIC_OPTION("Trails.Bombchu",               "Bombchu",                  COSMETICS_GROUP_TRAILS,       Color_RGBA8(250,   0,   0, 255), false, true, true),
+    COSMETIC_OPTION("Trails.Boomerang",             "Boomerang",                COSMETICS_GROUP_TRAILS,       Color_RGBA8(255, 255, 100, 255), false, true, true),
+    COSMETIC_OPTION("Trails.KokiriSword",           "Kokiri Sword",             COSMETICS_GROUP_TRAILS,       Color_RGBA8(255, 255, 255, 255), false, true, false),
+    COSMETIC_OPTION("Trails.MasterSword",           "Master Sword",             COSMETICS_GROUP_TRAILS,       Color_RGBA8(255, 255, 255, 255), false, true, false),
+    COSMETIC_OPTION("Trails.BiggoronSword",         "Biggoron Sword",           COSMETICS_GROUP_TRAILS,       Color_RGBA8(255, 255, 255, 255), false, true, true),
+    COSMETIC_OPTION("Trails.Stick",                 "Stick",                    COSMETICS_GROUP_TRAILS,       Color_RGBA8(255, 255, 255, 255), false, true, true),
+    COSMETIC_OPTION("Trails.Hammer",                "Hammer",                   COSMETICS_GROUP_TRAILS,       Color_RGBA8(255, 255, 255, 255), false, true, true),
 
-    COSMETIC_OPTION("World.BlockOfTime",            "Block of Time",            COSMETICS_GROUP_WORLD,        ImVec4(255, 255, 255, 255), false, true, true),
-    COSMETIC_OPTION("World.Moon",                   "Moon",                     COSMETICS_GROUP_WORLD,        ImVec4(240, 255, 180, 255), false, true, true),
-    COSMETIC_OPTION("World.GossipStone",            "Gossip Stone",             COSMETICS_GROUP_WORLD,        ImVec4(200, 200, 200, 255), false, true, true),
-    COSMETIC_OPTION("World.RedIce",                 "Red Ice",                  COSMETICS_GROUP_WORLD,        ImVec4(255,   0,   0, 255), false, true, false),
-    COSMETIC_OPTION("World.MysteryItem",            "Mystery Item",             COSMETICS_GROUP_WORLD,        ImVec4(  0,  60, 100, 255), false, true, false),
+    COSMETIC_OPTION("World.BlockOfTime",            "Block of Time",            COSMETICS_GROUP_WORLD,        Color_RGBA8(255, 255, 255, 255), false, true, true),
+    COSMETIC_OPTION("World.Moon",                   "Moon",                     COSMETICS_GROUP_WORLD,        Color_RGBA8(240, 255, 180, 255), false, true, true),
+    COSMETIC_OPTION("World.GossipStone",            "Gossip Stone",             COSMETICS_GROUP_WORLD,        Color_RGBA8(200, 200, 200, 255), false, true, true),
+    COSMETIC_OPTION("World.RedIce",                 "Red Ice",                  COSMETICS_GROUP_WORLD,        Color_RGBA8(255,   0,   0, 255), false, true, false),
+    COSMETIC_OPTION("World.MysteryItem",            "Mystery Item",             COSMETICS_GROUP_WORLD,        Color_RGBA8(  0,  60, 100, 255), false, true, false),
 
-    COSMETIC_OPTION("Navi.IdlePrimary",             "Idle Primary",             COSMETICS_GROUP_NAVI,         ImVec4(255, 255, 255, 255), false, true, false),
-    COSMETIC_OPTION("Navi.IdleSecondary",           "Idle Secondary",           COSMETICS_GROUP_NAVI,         ImVec4(  0,   0, 255,   0), false, true, true),
-    COSMETIC_OPTION("Navi.NPCPrimary",              "NPC Primary",              COSMETICS_GROUP_NAVI,         ImVec4(150, 150, 255, 255), false, true, false),
-    COSMETIC_OPTION("Navi.NPCSecondary",            "NPC Secondary",            COSMETICS_GROUP_NAVI,         ImVec4(150, 150, 255,   0), false, true, true),
-    COSMETIC_OPTION("Navi.EnemyPrimary",            "Enemy Primary",            COSMETICS_GROUP_NAVI,         ImVec4(255, 255,   0, 255), false, true, false),
-    COSMETIC_OPTION("Navi.EnemySecondary",          "Enemy Secondary",          COSMETICS_GROUP_NAVI,         ImVec4(200, 155,   0,   0), false, true, true),
-    COSMETIC_OPTION("Navi.PropsPrimary",            "Props Primary",            COSMETICS_GROUP_NAVI,         ImVec4(  0, 255,   0, 255), false, true, false),
-    COSMETIC_OPTION("Navi.PropsSecondary",          "Props Secondary",          COSMETICS_GROUP_NAVI,         ImVec4(  0, 255,   0,   0), false, true, true),
+    COSMETIC_OPTION("Navi.IdlePrimary",             "Idle Primary",             COSMETICS_GROUP_NAVI,         Color_RGBA8(255, 255, 255, 255), false, true, false),
+    COSMETIC_OPTION("Navi.IdleSecondary",           "Idle Secondary",           COSMETICS_GROUP_NAVI,         Color_RGBA8(  0,   0, 255,   0), false, true, true),
+    COSMETIC_OPTION("Navi.NPCPrimary",              "NPC Primary",              COSMETICS_GROUP_NAVI,         Color_RGBA8(150, 150, 255, 255), false, true, false),
+    COSMETIC_OPTION("Navi.NPCSecondary",            "NPC Secondary",            COSMETICS_GROUP_NAVI,         Color_RGBA8(150, 150, 255,   0), false, true, true),
+    COSMETIC_OPTION("Navi.EnemyPrimary",            "Enemy Primary",            COSMETICS_GROUP_NAVI,         Color_RGBA8(255, 255,   0, 255), false, true, false),
+    COSMETIC_OPTION("Navi.EnemySecondary",          "Enemy Secondary",          COSMETICS_GROUP_NAVI,         Color_RGBA8(200, 155,   0,   0), false, true, true),
+    COSMETIC_OPTION("Navi.PropsPrimary",            "Props Primary",            COSMETICS_GROUP_NAVI,         Color_RGBA8(  0, 255,   0, 255), false, true, false),
+    COSMETIC_OPTION("Navi.PropsSecondary",          "Props Secondary",          COSMETICS_GROUP_NAVI,         Color_RGBA8(  0, 255,   0,   0), false, true, true),
     
-    COSMETIC_OPTION("Ivan.IdlePrimary",             "Ivan Idle Primary",        COSMETICS_GROUP_IVAN,         ImVec4(255, 255, 255, 255), false, true, false),
-    COSMETIC_OPTION("Ivan.IdleSecondary",           "Ivan Idle Secondary",      COSMETICS_GROUP_IVAN,         ImVec4(  0, 255,   0, 255), false, true, true),
+    COSMETIC_OPTION("Ivan.IdlePrimary",             "Ivan Idle Primary",        COSMETICS_GROUP_IVAN,         Color_RGBA8(255, 255, 255, 255), false, true, false),
+    COSMETIC_OPTION("Ivan.IdleSecondary",           "Ivan Idle Secondary",      COSMETICS_GROUP_IVAN,         Color_RGBA8(  0, 255,   0, 255), false, true, true),
 
-    COSMETIC_OPTION("NPC.FireKeesePrimary",         "Fire Keese Primary",       COSMETICS_GROUP_NPC,          ImVec4(255, 255, 255, 255), false, true, false),
-    COSMETIC_OPTION("NPC.FireKeeseSecondary",       "Fire Keese Secondary",     COSMETICS_GROUP_NPC,          ImVec4(255, 255, 255, 255), false, true, true),
-    COSMETIC_OPTION("NPC.IceKeesePrimary",          "Ice Keese Primary",        COSMETICS_GROUP_NPC,          ImVec4(255, 255, 255, 255), false, true, false),
-    COSMETIC_OPTION("NPC.IceKeeseSecondary",        "Ice Keese Secondary",      COSMETICS_GROUP_NPC,          ImVec4(255, 255, 255, 255), false, true, true),
+    COSMETIC_OPTION("NPC.FireKeesePrimary",         "Fire Keese Primary",       COSMETICS_GROUP_NPC,          Color_RGBA8(255, 255, 255, 255), false, true, false),
+    COSMETIC_OPTION("NPC.FireKeeseSecondary",       "Fire Keese Secondary",     COSMETICS_GROUP_NPC,          Color_RGBA8(255, 255, 255, 255), false, true, true),
+    COSMETIC_OPTION("NPC.IceKeesePrimary",          "Ice Keese Primary",        COSMETICS_GROUP_NPC,          Color_RGBA8(255, 255, 255, 255), false, true, false),
+    COSMETIC_OPTION("NPC.IceKeeseSecondary",        "Ice Keese Secondary",      COSMETICS_GROUP_NPC,          Color_RGBA8(255, 255, 255, 255), false, true, true),
     // Todo (Cosmetics): Health fairy
-    COSMETIC_OPTION("NPC.Dog1",                     "Dog 1",                    COSMETICS_GROUP_NPC,          ImVec4(255, 255, 200, 255), false, true, true),
-    COSMETIC_OPTION("NPC.Dog2",                     "Dog 2",                    COSMETICS_GROUP_NPC,          ImVec4(150, 100,  50, 255), false, true, true),
-    COSMETIC_OPTION("NPC.GoldenSkulltula",          "Golden Skulltula",         COSMETICS_GROUP_NPC,          ImVec4(255, 255, 255, 255), false, true, false),
-    COSMETIC_OPTION("NPC.Kokiri",                   "Kokiri",                   COSMETICS_GROUP_NPC,          ImVec4(  0, 130,  70, 255), false, true, false),
-    COSMETIC_OPTION("NPC.Gerudo",                   "Gerudo",                   COSMETICS_GROUP_NPC,          ImVec4( 90,   0, 140, 255), false, true, false),
-    COSMETIC_OPTION("NPC.MetalTrap",                "Metal Trap",               COSMETICS_GROUP_NPC,          ImVec4(255, 255, 255, 255), false, true, true),
-    COSMETIC_OPTION("NPC.IronKnuckles",             "Iron Knuckles",            COSMETICS_GROUP_NPC,          ImVec4(245, 255, 205, 255), false, true, false),
+    COSMETIC_OPTION("NPC.Dog1",                     "Dog 1",                    COSMETICS_GROUP_NPC,          Color_RGBA8(255, 255, 200, 255), false, true, true),
+    COSMETIC_OPTION("NPC.Dog2",                     "Dog 2",                    COSMETICS_GROUP_NPC,          Color_RGBA8(150, 100,  50, 255), false, true, true),
+    COSMETIC_OPTION("NPC.GoldenSkulltula",          "Golden Skulltula",         COSMETICS_GROUP_NPC,          Color_RGBA8(255, 255, 255, 255), false, true, false),
+    COSMETIC_OPTION("NPC.Kokiri",                   "Kokiri",                   COSMETICS_GROUP_NPC,          Color_RGBA8(  0, 130,  70, 255), false, true, false),
+    COSMETIC_OPTION("NPC.Gerudo",                   "Gerudo",                   COSMETICS_GROUP_NPC,          Color_RGBA8( 90,   0, 140, 255), false, true, false),
+    COSMETIC_OPTION("NPC.MetalTrap",                "Metal Trap",               COSMETICS_GROUP_NPC,          Color_RGBA8(255, 255, 255, 255), false, true, true),
+    COSMETIC_OPTION("NPC.IronKnuckles",             "Iron Knuckles",            COSMETICS_GROUP_NPC,          Color_RGBA8(245, 255, 205, 255), false, true, false),
 };
 
 static const char* MarginCvarList[] {
@@ -531,7 +531,7 @@ void CosmeticsUpdateTick() {
 void ApplyOrResetCustomGfxPatches(bool manualChange) {
     static CosmeticOption& magicFaroresPrimary = cosmeticOptions.at("Magic.FaroresPrimary");
     if (manualChange || CVarGetInteger(magicFaroresPrimary.rainbowCvar, 0)) {
-        static Color_RGBA8 defaultColor = {magicFaroresPrimary.defaultColor.x, magicFaroresPrimary.defaultColor.y, magicFaroresPrimary.defaultColor.z, magicFaroresPrimary.defaultColor.w};
+        static Color_RGBA8 defaultColor = {magicFaroresPrimary.defaultColor.r, magicFaroresPrimary.defaultColor.g, magicFaroresPrimary.defaultColor.b, magicFaroresPrimary.defaultColor.w};
         Color_RGBA8 color = CVarGetColor(magicFaroresPrimary.cvar, defaultColor);
         PATCH_GFX(sInnerCylinderDL,                               "Magic_FaroresPrimary1",    magicFaroresPrimary.changedCvar,     24, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
         PATCH_GFX(sOuterCylinderDL,                               "Magic_FaroresPrimary2",    magicFaroresPrimary.changedCvar,     24, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
@@ -539,7 +539,7 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
     
     static CosmeticOption& magicFaroresSecondary = cosmeticOptions.at("Magic.FaroresSecondary");
     if (manualChange || CVarGetInteger(magicFaroresSecondary.rainbowCvar, 0)) {
-        static Color_RGBA8 defaultColor = {magicFaroresSecondary.defaultColor.x, magicFaroresSecondary.defaultColor.y, magicFaroresSecondary.defaultColor.z, magicFaroresSecondary.defaultColor.w};
+        static Color_RGBA8 defaultColor = {magicFaroresSecondary.defaultColor.r, magicFaroresSecondary.defaultColor.g, magicFaroresSecondary.defaultColor.b, magicFaroresSecondary.defaultColor.w};
         Color_RGBA8 color = CVarGetColor(magicFaroresSecondary.cvar, defaultColor);
         PATCH_GFX(sInnerCylinderDL,                               "Magic_FaroresSecondary1",  magicFaroresSecondary.changedCvar,   25, gsDPSetEnvColor(color.r, color.g, color.b, 255));
         PATCH_GFX(sOuterCylinderDL,                               "Magic_FaroresSecondary2",  magicFaroresSecondary.changedCvar,   25, gsDPSetEnvColor(color.r, color.g, color.b, 255));
@@ -547,7 +547,7 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
 
     static CosmeticOption& linkGoronTunic = cosmeticOptions.at("Link.GoronTunic");
     if (manualChange || CVarGetInteger(linkGoronTunic.rainbowCvar, 0)) {
-        static Color_RGBA8 defaultColor = {linkGoronTunic.defaultColor.x, linkGoronTunic.defaultColor.y, linkGoronTunic.defaultColor.z, linkGoronTunic.defaultColor.w};
+        static Color_RGBA8 defaultColor = {linkGoronTunic.defaultColor.r, linkGoronTunic.defaultColor.g, linkGoronTunic.defaultColor.b, linkGoronTunic.defaultColor.w};
         Color_RGBA8 color = CVarGetColor(linkGoronTunic.cvar, defaultColor);
         PATCH_GFX(gGiGoronTunicColorDL,                           "Link_GoronTunic1",         linkGoronTunic.changedCvar,           3, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
         PATCH_GFX(gGiGoronCollarColorDL,                          "Link_GoronTunic2",         linkGoronTunic.changedCvar,           3, gsDPSetPrimColor(0, 0, color.r / 2, color.g / 2, color.b / 2, 255));
@@ -557,7 +557,7 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
 
     static CosmeticOption& linkZoraTunic = cosmeticOptions.at("Link.ZoraTunic");
     if (manualChange || CVarGetInteger(linkZoraTunic.rainbowCvar, 0)) {
-        static Color_RGBA8 defaultColor = {linkZoraTunic.defaultColor.x, linkZoraTunic.defaultColor.y, linkZoraTunic.defaultColor.z, linkZoraTunic.defaultColor.w};
+        static Color_RGBA8 defaultColor = {linkZoraTunic.defaultColor.r, linkZoraTunic.defaultColor.g, linkZoraTunic.defaultColor.b, linkZoraTunic.defaultColor.w};
         Color_RGBA8 color = CVarGetColor(linkZoraTunic.cvar, defaultColor);
         PATCH_GFX(gGiZoraTunicColorDL,                            "Link_ZoraTunic1",          linkZoraTunic.changedCvar,            3, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
         PATCH_GFX(gGiZoraCollarColorDL,                           "Link_ZoraTunic2",          linkZoraTunic.changedCvar,            3, gsDPSetPrimColor(0, 0, color.r / 2, color.g / 2, color.b / 2, 255));
@@ -567,7 +567,7 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
 
     static CosmeticOption& linkHair = cosmeticOptions.at("Link.Hair");
     if (manualChange || CVarGetInteger(linkHair.rainbowCvar, 0)) {
-        static Color_RGBA8 defaultColor = {linkHair.defaultColor.x, linkHair.defaultColor.y, linkHair.defaultColor.z, linkHair.defaultColor.w};
+        static Color_RGBA8 defaultColor = {linkHair.defaultColor.r, linkHair.defaultColor.g, linkHair.defaultColor.b, linkHair.defaultColor.w};
         Color_RGBA8 color = CVarGetColor(linkHair.cvar, defaultColor);
         PATCH_GFX(gLinkChildHeadNearDL,                           "Link_Hair1",               linkHair.changedCvar,                10, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
         PATCH_GFX(gLinkChildHeadFarDL,                            "Link_Hair2",               linkHair.changedCvar,                10, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
@@ -590,7 +590,7 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
 
     static CosmeticOption& linkLinen = cosmeticOptions.at("Link.Linen");
     if (manualChange || CVarGetInteger(linkLinen.rainbowCvar, 0)) {
-        static Color_RGBA8 defaultColor = {linkLinen.defaultColor.x, linkLinen.defaultColor.y, linkLinen.defaultColor.z, linkLinen.defaultColor.w};
+        static Color_RGBA8 defaultColor = {linkLinen.defaultColor.r, linkLinen.defaultColor.g, linkLinen.defaultColor.b, linkLinen.defaultColor.w};
         Color_RGBA8 color = CVarGetColor(linkLinen.cvar, defaultColor);
         PATCH_GFX(gLinkAdultLeftArmNearDL,                        "Link_Linen1",              linkLinen.changedCvar,               30, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
         PATCH_GFX(gLinkAdultLeftArmNearDL,                        "Link_Linen2",              linkLinen.changedCvar,               83, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
@@ -632,7 +632,7 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
 
     static CosmeticOption& linkBoots = cosmeticOptions.at("Link.Boots");
     if (manualChange || CVarGetInteger(linkBoots.rainbowCvar, 0)) {
-        static Color_RGBA8 defaultColor = {linkBoots.defaultColor.x, linkBoots.defaultColor.y, linkBoots.defaultColor.z, linkBoots.defaultColor.w};
+        static Color_RGBA8 defaultColor = {linkBoots.defaultColor.r, linkBoots.defaultColor.g, linkBoots.defaultColor.b, linkBoots.defaultColor.w};
         Color_RGBA8 color = CVarGetColor(linkBoots.cvar, defaultColor);
         PATCH_GFX(gLinkChildRightShinNearDL,                      "Link_Boots1",              linkBoots.changedCvar,               10, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
         PATCH_GFX(gLinkChildRightShinFarDL,                       "Link_Boots2",              linkBoots.changedCvar,               10, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
@@ -669,7 +669,7 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
 
     static CosmeticOption& mirrorShieldBody = cosmeticOptions.at("MirrorShield.Body");
     if (manualChange || CVarGetInteger(mirrorShieldBody.rainbowCvar, 0)) {
-        static Color_RGBA8 defaultColor = {mirrorShieldBody.defaultColor.x, mirrorShieldBody.defaultColor.y, mirrorShieldBody.defaultColor.z, mirrorShieldBody.defaultColor.w};
+        static Color_RGBA8 defaultColor = {mirrorShieldBody.defaultColor.r, mirrorShieldBody.defaultColor.g, mirrorShieldBody.defaultColor.b, mirrorShieldBody.defaultColor.w};
         Color_RGBA8 color = CVarGetColor(mirrorShieldBody.cvar, defaultColor);
         PATCH_GFX(gGiMirrorShieldDL,                              "MirrorShield_Body1",       mirrorShieldBody.changedCvar,         5, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
         PATCH_GFX(gGiMirrorShieldDL,                              "MirrorShield_Body2",       mirrorShieldBody.changedCvar,         6, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
@@ -682,7 +682,7 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
     }
     static CosmeticOption& mirrorShieldMirror = cosmeticOptions.at("MirrorShield.Mirror");
     if (manualChange || CVarGetInteger(mirrorShieldMirror.rainbowCvar, 0)) {
-        static Color_RGBA8 defaultColor = {mirrorShieldMirror.defaultColor.x, mirrorShieldMirror.defaultColor.y, mirrorShieldMirror.defaultColor.z, mirrorShieldMirror.defaultColor.w};
+        static Color_RGBA8 defaultColor = {mirrorShieldMirror.defaultColor.r, mirrorShieldMirror.defaultColor.g, mirrorShieldMirror.defaultColor.b, mirrorShieldMirror.defaultColor.w};
         Color_RGBA8 color = CVarGetColor(mirrorShieldMirror.cvar, defaultColor);
         PATCH_GFX(gGiMirrorShieldDL,                              "MirrorShield_Mirror1",     mirrorShieldMirror.changedCvar,      47, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
         PATCH_GFX(gGiMirrorShieldDL,                              "MirrorShield_Mirror2",     mirrorShieldMirror.changedCvar,      48, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
@@ -695,7 +695,7 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
     }
     static CosmeticOption& mirrorShieldEmblem = cosmeticOptions.at("MirrorShield.Emblem");
     if (manualChange || CVarGetInteger(mirrorShieldEmblem.rainbowCvar, 0)) {
-        static Color_RGBA8 defaultColor = {mirrorShieldEmblem.defaultColor.x, mirrorShieldEmblem.defaultColor.y, mirrorShieldEmblem.defaultColor.z, mirrorShieldEmblem.defaultColor.w};
+        static Color_RGBA8 defaultColor = {mirrorShieldEmblem.defaultColor.r, mirrorShieldEmblem.defaultColor.g, mirrorShieldEmblem.defaultColor.b, mirrorShieldEmblem.defaultColor.w};
         Color_RGBA8 color = CVarGetColor(mirrorShieldEmblem.cvar, defaultColor);
         PATCH_GFX(gGiMirrorShieldSymbolDL,                        "MirrorShield_Emblem1",     mirrorShieldEmblem.changedCvar,       5, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 140));
         PATCH_GFX(gGiMirrorShieldSymbolDL,                        "MirrorShield_Emblem2",     mirrorShieldEmblem.changedCvar,       6, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
@@ -709,7 +709,7 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
 
     static CosmeticOption& swordsKokiriBlade = cosmeticOptions.at("Swords.KokiriBlade");
     if (manualChange || CVarGetInteger(swordsKokiriBlade.rainbowCvar, 0)) {
-        static Color_RGBA8 defaultColor = {swordsKokiriBlade.defaultColor.x, swordsKokiriBlade.defaultColor.y, swordsKokiriBlade.defaultColor.z, swordsKokiriBlade.defaultColor.w};
+        static Color_RGBA8 defaultColor = {swordsKokiriBlade.defaultColor.r, swordsKokiriBlade.defaultColor.g, swordsKokiriBlade.defaultColor.b, swordsKokiriBlade.defaultColor.w};
         Color_RGBA8 color = CVarGetColor(swordsKokiriBlade.cvar, defaultColor);
         PATCH_GFX(gLinkChildLeftFistAndKokiriSwordNearDL,         "Swords_KokiriBlade1",      swordsKokiriBlade.changedCvar,       79, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
         PATCH_GFX(gLinkChildLeftFistAndKokiriSwordFarDL,          "Swords_KokiriBlade2",      swordsKokiriBlade.changedCvar,       75, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
@@ -719,7 +719,7 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
     /*
     static CosmeticOption& swordsKokiriHilt = cosmeticOptions.at("Swords.KokiriHilt");
     if (manualChange || CVarGetInteger(swordsKokiriHilt.rainbowCvar, 0)) {
-        static Color_RGBA8 defaultColor = {swordsKokiriHilt.defaultColor.x, swordsKokiriHilt.defaultColor.y, swordsKokiriHilt.defaultColor.z, swordsKokiriHilt.defaultColor.w};
+        static Color_RGBA8 defaultColor = {swordsKokiriHilt.defaultColor.r, swordsKokiriHilt.defaultColor.g, swordsKokiriHilt.defaultColor.b, swordsKokiriHilt.defaultColor.w};
         Color_RGBA8 color = CVarGetColor(swordsKokiriHilt.cvar, defaultColor);
         PATCH_GFX(gLinkChildLeftFistAndKokiriSwordNearDL,         "Swords_KokiriHilt1",       swordsKokiriHilt.changedCvar,         4, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
         PATCH_GFX(gLinkChildLeftFistAndKokiriSwordFarDL,          "Swords_KokiriHilt2",       swordsKokiriHilt.changedCvar,         4, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
@@ -761,7 +761,7 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
     */
     static CosmeticOption& swordsMasterBlade = cosmeticOptions.at("Swords.MasterBlade");
     if (manualChange || CVarGetInteger(swordsMasterBlade.rainbowCvar, 0)) {
-        static Color_RGBA8 defaultColor = {swordsMasterBlade.defaultColor.x, swordsMasterBlade.defaultColor.y, swordsMasterBlade.defaultColor.z, swordsMasterBlade.defaultColor.w};
+        static Color_RGBA8 defaultColor = {swordsMasterBlade.defaultColor.r, swordsMasterBlade.defaultColor.g, swordsMasterBlade.defaultColor.b, swordsMasterBlade.defaultColor.w};
         Color_RGBA8 color = CVarGetColor(swordsMasterBlade.cvar, defaultColor);
         PATCH_GFX(gLinkAdultLeftHandHoldingMasterSwordFarDL,      "Swords_MasterBlade1",      swordsMasterBlade.changedCvar,       60, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
         PATCH_GFX(gLinkAdultLeftHandHoldingMasterSwordNearDL,     "Swords_MasterBlade2",      swordsMasterBlade.changedCvar,       17, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
@@ -773,7 +773,7 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
     /*
     static CosmeticOption& swordsMasterHilt = cosmeticOptions.at("Swords.MasterHilt");
     if (manualChange || CVarGetInteger(swordsMasterHilt.rainbowCvar, 0)) {
-        static Color_RGBA8 defaultColor = {swordsMasterHilt.defaultColor.x, swordsMasterHilt.defaultColor.y, swordsMasterHilt.defaultColor.z, swordsMasterHilt.defaultColor.w};
+        static Color_RGBA8 defaultColor = {swordsMasterHilt.defaultColor.r, swordsMasterHilt.defaultColor.g, swordsMasterHilt.defaultColor.b, swordsMasterHilt.defaultColor.w};
         Color_RGBA8 color = CVarGetColor(swordsMasterHilt.cvar, defaultColor);
         PATCH_GFX(gLinkAdultLeftHandHoldingMasterSwordNearDL,     "Swords_MasterHilt1",       swordsMasterHilt.changedCvar,        20, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
         PATCH_GFX(gLinkAdultLeftHandHoldingMasterSwordFarDL,      "Swords_MasterHilt2",       swordsMasterHilt.changedCvar,        20, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
@@ -821,7 +821,7 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
     */
     static CosmeticOption& swordsBiggoronBlade = cosmeticOptions.at("Swords.BiggoronBlade");
     if (manualChange || CVarGetInteger(swordsBiggoronBlade.rainbowCvar, 0)) {
-        static Color_RGBA8 defaultColor = {swordsBiggoronBlade.defaultColor.x, swordsBiggoronBlade.defaultColor.y, swordsBiggoronBlade.defaultColor.z, swordsBiggoronBlade.defaultColor.w};
+        static Color_RGBA8 defaultColor = {swordsBiggoronBlade.defaultColor.r, swordsBiggoronBlade.defaultColor.g, swordsBiggoronBlade.defaultColor.b, swordsBiggoronBlade.defaultColor.w};
         Color_RGBA8 color = CVarGetColor(swordsBiggoronBlade.cvar, defaultColor);
         PATCH_GFX(gLinkAdultLeftHandHoldingBgsFarDL,              "Swords_BiggoronBlade1",    swordsBiggoronBlade.changedCvar,    108, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
         PATCH_GFX(gLinkAdultLeftHandHoldingBgsNearDL,             "Swords_BiggoronBlade2",    swordsBiggoronBlade.changedCvar,     63, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
@@ -831,7 +831,7 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
     /*
     static CosmeticOption& swordsBiggoronHilt = cosmeticOptions.at("Swords.BiggoronHilt");
     if (manualChange || CVarGetInteger(swordsBiggoronHilt.rainbowCvar, 0)) {
-        static Color_RGBA8 defaultColor = {swordsBiggoronHilt.defaultColor.x, swordsBiggoronHilt.defaultColor.y, swordsBiggoronHilt.defaultColor.z, swordsBiggoronHilt.defaultColor.w};
+        static Color_RGBA8 defaultColor = {swordsBiggoronHilt.defaultColor.r, swordsBiggoronHilt.defaultColor.g, swordsBiggoronHilt.defaultColor.b, swordsBiggoronHilt.defaultColor.w};
         Color_RGBA8 color = CVarGetColor(swordsBiggoronHilt.cvar, defaultColor);
         PATCH_GFX(gLinkAdultLeftHandHoldingBgsNearDL,             "Swords_BiggoronHilt1",     swordsBiggoronHilt.changedCvar,      20, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
         PATCH_GFX(gLinkAdultLeftHandHoldingBgsFarDL,              "Swords_BiggoronHilt2",     swordsBiggoronHilt.changedCvar,      20, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
@@ -851,7 +851,7 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
     */
     static CosmeticOption& glovesGoronBracelet = cosmeticOptions.at("Gloves.GoronBracelet");
     if (manualChange || CVarGetInteger(glovesGoronBracelet.rainbowCvar, 0)) {
-        static Color_RGBA8 defaultColor = {glovesGoronBracelet.defaultColor.x, glovesGoronBracelet.defaultColor.y, glovesGoronBracelet.defaultColor.z, glovesGoronBracelet.defaultColor.w};
+        static Color_RGBA8 defaultColor = {glovesGoronBracelet.defaultColor.r, glovesGoronBracelet.defaultColor.g, glovesGoronBracelet.defaultColor.b, glovesGoronBracelet.defaultColor.w};
         Color_RGBA8 color = CVarGetColor(glovesGoronBracelet.cvar, defaultColor);
         PATCH_GFX(gGiGoronBraceletDL,                             "Gloves_GoronBracelet1",    glovesGoronBracelet.changedCvar,      5, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
         PATCH_GFX(gGiGoronBraceletDL,                             "Gloves_GoronBracelet2",    glovesGoronBracelet.changedCvar,      6, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
@@ -864,21 +864,21 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
     }
     static CosmeticOption& glovesSilverGauntlets = cosmeticOptions.at("Gloves.SilverGauntlets");
     if (manualChange || CVarGetInteger(glovesSilverGauntlets.rainbowCvar, 0)) {
-        static Color_RGBA8 defaultColor = {glovesSilverGauntlets.defaultColor.x, glovesSilverGauntlets.defaultColor.y, glovesSilverGauntlets.defaultColor.z, glovesSilverGauntlets.defaultColor.w};
+        static Color_RGBA8 defaultColor = {glovesSilverGauntlets.defaultColor.r, glovesSilverGauntlets.defaultColor.g, glovesSilverGauntlets.defaultColor.b, glovesSilverGauntlets.defaultColor.w};
         Color_RGBA8 color = CVarGetColor(glovesSilverGauntlets.cvar, defaultColor);
         PATCH_GFX(gGiSilverGauntletsColorDL,                      "Gloves_SilverGauntlets1",  glovesSilverGauntlets.changedCvar,    3, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
         PATCH_GFX(gGiSilverGauntletsColorDL,                      "Gloves_SilverGauntlets2",  glovesSilverGauntlets.changedCvar,    4, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
     }
     static CosmeticOption& glovesGoldenGauntlets = cosmeticOptions.at("Gloves.GoldenGauntlets");
     if (manualChange || CVarGetInteger(glovesGoldenGauntlets.rainbowCvar, 0)) {
-        static Color_RGBA8 defaultColor = {glovesGoldenGauntlets.defaultColor.x, glovesGoldenGauntlets.defaultColor.y, glovesGoldenGauntlets.defaultColor.z, glovesGoldenGauntlets.defaultColor.w};
+        static Color_RGBA8 defaultColor = {glovesGoldenGauntlets.defaultColor.r, glovesGoldenGauntlets.defaultColor.g, glovesGoldenGauntlets.defaultColor.b, glovesGoldenGauntlets.defaultColor.w};
         Color_RGBA8 color = CVarGetColor(glovesGoldenGauntlets.cvar, defaultColor);
         PATCH_GFX(gGiGoldenGauntletsColorDL,                      "Gloves_GoldenGauntlets1",  glovesGoldenGauntlets.changedCvar,    3, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
         PATCH_GFX(gGiGoldenGauntletsColorDL,                      "Gloves_GoldenGauntlets2",  glovesGoldenGauntlets.changedCvar,    4, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
     }
     static CosmeticOption& glovesGauntletsGem = cosmeticOptions.at("Gloves.GauntletsGem");
     if (manualChange || CVarGetInteger(glovesGauntletsGem.rainbowCvar, 0)) {
-        static Color_RGBA8 defaultColor = {glovesGauntletsGem.defaultColor.x, glovesGauntletsGem.defaultColor.y, glovesGauntletsGem.defaultColor.z, glovesGauntletsGem.defaultColor.w};
+        static Color_RGBA8 defaultColor = {glovesGauntletsGem.defaultColor.r, glovesGauntletsGem.defaultColor.g, glovesGauntletsGem.defaultColor.b, glovesGauntletsGem.defaultColor.w};
         Color_RGBA8 color = CVarGetColor(glovesGauntletsGem.cvar, defaultColor);
         PATCH_GFX(gGiGauntletsDL,                                 "Gloves_GauntletsGem1",     glovesGauntletsGem.changedCvar,      84, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
         PATCH_GFX(gGiGauntletsDL,                                 "Gloves_GauntletsGem2",     glovesGauntletsGem.changedCvar,      85, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
@@ -890,7 +890,7 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
 
     static CosmeticOption& equipmentBoomerangBody = cosmeticOptions.at("Equipment.BoomerangBody");
     if (manualChange || CVarGetInteger(equipmentBoomerangBody.rainbowCvar, 0)) {
-        static Color_RGBA8 defaultColor = {equipmentBoomerangBody.defaultColor.x, equipmentBoomerangBody.defaultColor.y, equipmentBoomerangBody.defaultColor.z, equipmentBoomerangBody.defaultColor.w};
+        static Color_RGBA8 defaultColor = {equipmentBoomerangBody.defaultColor.r, equipmentBoomerangBody.defaultColor.g, equipmentBoomerangBody.defaultColor.b, equipmentBoomerangBody.defaultColor.w};
         Color_RGBA8 color = CVarGetColor(equipmentBoomerangBody.cvar, defaultColor);
         PATCH_GFX(gGiBoomerangDL,                                 "Equipment_BoomerangBody1", equipmentBoomerangBody.changedCvar,   5, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
         PATCH_GFX(gGiBoomerangDL,                                 "Equipment_BoomerangBody2", equipmentBoomerangBody.changedCvar,   6, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
@@ -900,7 +900,7 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
     }
     static CosmeticOption& equipmentBoomerangGem = cosmeticOptions.at("Equipment.BoomerangGem");
     if (manualChange || CVarGetInteger(equipmentBoomerangGem.rainbowCvar, 0)) {
-        static Color_RGBA8 defaultColor = {equipmentBoomerangGem.defaultColor.x, equipmentBoomerangGem.defaultColor.y, equipmentBoomerangGem.defaultColor.z, equipmentBoomerangGem.defaultColor.w};
+        static Color_RGBA8 defaultColor = {equipmentBoomerangGem.defaultColor.r, equipmentBoomerangGem.defaultColor.g, equipmentBoomerangGem.defaultColor.b, equipmentBoomerangGem.defaultColor.w};
         Color_RGBA8 color = CVarGetColor(equipmentBoomerangGem.cvar, defaultColor);
         PATCH_GFX(gGiBoomerangDL,                                 "Equipment_BoomerangGem1",  equipmentBoomerangGem.changedCvar,   84, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
         PATCH_GFX(gGiBoomerangDL,                                 "Equipment_BoomerangGem2",  equipmentBoomerangGem.changedCvar,   85, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
@@ -912,7 +912,7 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
     /*
     static CosmeticOption& equipmentSlingshotBody = cosmeticOptions.at("Equipment.SlingshotBody");
     if (manualChange || CVarGetInteger(equipmentSlingshotBody.rainbowCvar, 0)) {
-        static Color_RGBA8 defaultColor = {equipmentSlingshotBody.defaultColor.x, equipmentSlingshotBody.defaultColor.y, equipmentSlingshotBody.defaultColor.z, equipmentSlingshotBody.defaultColor.w};
+        static Color_RGBA8 defaultColor = {equipmentSlingshotBody.defaultColor.r, equipmentSlingshotBody.defaultColor.g, equipmentSlingshotBody.defaultColor.b, equipmentSlingshotBody.defaultColor.w};
         Color_RGBA8 color = CVarGetColor(equipmentSlingshotBody.cvar, defaultColor);
         PATCH_GFX(gGiSlingshotDL,                                 "Equipment_SlingshotBody1", equipmentSlingshotBody.changedCvar,  10, gsDPSetPrimColor(0, 0, MAX(color.r - 100, 0), MAX(color.g - 100, 0), MAX(color.b - 100, 0), 255));
         PATCH_GFX(gGiSlingshotDL,                                 "Equipment_SlingshotBody2", equipmentSlingshotBody.changedCvar,  12, gsDPSetEnvColor(MAX(color.r - 100, 0) / 3, MAX(color.g - 100, 0) / 3, MAX(color.b - 100, 0) / 3, 255));
@@ -937,7 +937,7 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
     */
     static CosmeticOption& equipmentSlingshotString = cosmeticOptions.at("Equipment.SlingshotString");
     if (manualChange || CVarGetInteger(equipmentSlingshotString.rainbowCvar, 0)) {
-        static Color_RGBA8 defaultColor = {equipmentSlingshotString.defaultColor.x, equipmentSlingshotString.defaultColor.y, equipmentSlingshotString.defaultColor.z, equipmentSlingshotString.defaultColor.w};
+        static Color_RGBA8 defaultColor = {equipmentSlingshotString.defaultColor.r, equipmentSlingshotString.defaultColor.g, equipmentSlingshotString.defaultColor.b, equipmentSlingshotString.defaultColor.w};
         Color_RGBA8 color = CVarGetColor(equipmentSlingshotString.cvar, defaultColor);
         PATCH_GFX(gGiSlingshotDL,                                 "Equipment_SlingshotString1",equipmentSlingshotString.changedCvar, 75, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
         PATCH_GFX(gGiSlingshotDL,                                 "Equipment_SlingshotString2",equipmentSlingshotString.changedCvar, 76, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
@@ -946,7 +946,7 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
 
     static CosmeticOption& equipmentBowTips = cosmeticOptions.at("Equipment.BowTips");
     if (manualChange || CVarGetInteger(equipmentBowTips.rainbowCvar, 0)) {
-        static Color_RGBA8 defaultColor = {equipmentBowTips.defaultColor.x, equipmentBowTips.defaultColor.y, equipmentBowTips.defaultColor.z, equipmentBowTips.defaultColor.w};
+        static Color_RGBA8 defaultColor = {equipmentBowTips.defaultColor.r, equipmentBowTips.defaultColor.g, equipmentBowTips.defaultColor.b, equipmentBowTips.defaultColor.w};
         Color_RGBA8 color = CVarGetColor(equipmentBowTips.cvar, defaultColor);
         PATCH_GFX(gGiBowDL,                                       "Equipment_BowTips1",       equipmentBowTips.changedCvar,        86, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
         PATCH_GFX(gGiBowDL,                                       "Equipment_BowTips2",       equipmentBowTips.changedCvar,        87, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
@@ -956,7 +956,7 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
     }
     static CosmeticOption& equipmentBowString = cosmeticOptions.at("Equipment.BowString");
     if (manualChange || CVarGetInteger(equipmentBowString.rainbowCvar, 0)) {
-        static Color_RGBA8 defaultColor = {equipmentBowString.defaultColor.x, equipmentBowString.defaultColor.y, equipmentBowString.defaultColor.z, equipmentBowString.defaultColor.w};
+        static Color_RGBA8 defaultColor = {equipmentBowString.defaultColor.r, equipmentBowString.defaultColor.g, equipmentBowString.defaultColor.b, equipmentBowString.defaultColor.w};
         Color_RGBA8 color = CVarGetColor(equipmentBowString.cvar, defaultColor);
         PATCH_GFX(gGiBowDL,                                       "Equipment_BowString1",     equipmentBowString.changedCvar,     105, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
         PATCH_GFX(gGiBowDL,                                       "Equipment_BowString2",     equipmentBowString.changedCvar,     106, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
@@ -964,7 +964,7 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
     }
     static CosmeticOption& equipmentBowBody = cosmeticOptions.at("Equipment.BowBody");
     if (manualChange || CVarGetInteger(equipmentBowBody.rainbowCvar, 0)) {
-        static Color_RGBA8 defaultColor = {equipmentBowBody.defaultColor.x, equipmentBowBody.defaultColor.y, equipmentBowBody.defaultColor.z, equipmentBowBody.defaultColor.w};
+        static Color_RGBA8 defaultColor = {equipmentBowBody.defaultColor.r, equipmentBowBody.defaultColor.g, equipmentBowBody.defaultColor.b, equipmentBowBody.defaultColor.w};
         Color_RGBA8 color = CVarGetColor(equipmentBowBody.cvar, defaultColor);
         PATCH_GFX(gGiBowDL,                                       "Equipment_BowBody1",       equipmentBowBody.changedCvar,         5, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
         PATCH_GFX(gGiBowDL,                                       "Equipment_BowBody2",       equipmentBowBody.changedCvar,         6, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
@@ -974,7 +974,7 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
     }
     static CosmeticOption& equipmentBowHandle = cosmeticOptions.at("Equipment.BowHandle");
     if (manualChange || CVarGetInteger(equipmentBowHandle.rainbowCvar, 0)) {
-        static Color_RGBA8 defaultColor = {equipmentBowHandle.defaultColor.x, equipmentBowHandle.defaultColor.y, equipmentBowHandle.defaultColor.z, equipmentBowHandle.defaultColor.w};
+        static Color_RGBA8 defaultColor = {equipmentBowHandle.defaultColor.r, equipmentBowHandle.defaultColor.g, equipmentBowHandle.defaultColor.b, equipmentBowHandle.defaultColor.w};
         Color_RGBA8 color = CVarGetColor(equipmentBowHandle.cvar, defaultColor);
         PATCH_GFX(gGiBowDL,                                       "Equipment_BowHandle1",     equipmentBowHandle.changedCvar,      51, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
         PATCH_GFX(gGiBowDL,                                       "Equipment_BowHandle2",     equipmentBowHandle.changedCvar,      52, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
@@ -985,7 +985,7 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
 
     static CosmeticOption& equipmentHammerHead = cosmeticOptions.at("Equipment.HammerHead");
     if (manualChange || CVarGetInteger(equipmentHammerHead.rainbowCvar, 0)) {
-        static Color_RGBA8 defaultColor = {equipmentHammerHead.defaultColor.x, equipmentHammerHead.defaultColor.y, equipmentHammerHead.defaultColor.z, equipmentHammerHead.defaultColor.w};
+        static Color_RGBA8 defaultColor = {equipmentHammerHead.defaultColor.r, equipmentHammerHead.defaultColor.g, equipmentHammerHead.defaultColor.b, equipmentHammerHead.defaultColor.w};
         Color_RGBA8 color = CVarGetColor(equipmentHammerHead.cvar, defaultColor);
         PATCH_GFX(gGiHammerDL,                                    "Equipment_HammerHead1",    equipmentHammerHead.changedCvar,      5, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
         PATCH_GFX(gGiHammerDL,                                    "Equipment_HammerHead2",    equipmentHammerHead.changedCvar,      6, gsDPSetEnvColor(color.r / 5, color.g / 5, color.b / 5, 255));
@@ -996,7 +996,7 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
     }
     static CosmeticOption& equipmentHammerHandle = cosmeticOptions.at("Equipment.HammerHandle");
     if (manualChange || CVarGetInteger(equipmentHammerHandle.rainbowCvar, 0)) {
-        static Color_RGBA8 defaultColor = {equipmentHammerHandle.defaultColor.x, equipmentHammerHandle.defaultColor.y, equipmentHammerHandle.defaultColor.z, equipmentHammerHandle.defaultColor.w};
+        static Color_RGBA8 defaultColor = {equipmentHammerHandle.defaultColor.r, equipmentHammerHandle.defaultColor.g, equipmentHammerHandle.defaultColor.b, equipmentHammerHandle.defaultColor.w};
         Color_RGBA8 color = CVarGetColor(equipmentHammerHandle.cvar, defaultColor);
         PATCH_GFX(gGiHammerDL,                                    "Equipment_HammerHandle1",  equipmentHammerHandle.changedCvar,   84, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
         PATCH_GFX(gGiHammerDL,                                    "Equipment_HammerHandle2",  equipmentHammerHandle.changedCvar,   85, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
@@ -1006,14 +1006,14 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
     
     static CosmeticOption& equipmentHookshotChain = cosmeticOptions.at("Equipment.HookshotChain");
     if (manualChange || CVarGetInteger(equipmentHookshotChain.rainbowCvar, 0)) {
-        static Color_RGBA8 defaultColor = {equipmentHookshotChain.defaultColor.x, equipmentHookshotChain.defaultColor.y, equipmentHookshotChain.defaultColor.z, equipmentHookshotChain.defaultColor.w};
+        static Color_RGBA8 defaultColor = {equipmentHookshotChain.defaultColor.r, equipmentHookshotChain.defaultColor.g, equipmentHookshotChain.defaultColor.b, equipmentHookshotChain.defaultColor.w};
         Color_RGBA8 color = CVarGetColor(equipmentHookshotChain.cvar, defaultColor);
         PATCH_GFX(gLinkAdultHookshotChainDL,                      "Equipment_HookshotChain1",  equipmentHookshotChain.changedCvar,   17, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
     }
 
     static CosmeticOption& equipmentChuFace = cosmeticOptions.at("Equipment.ChuFace");
     if (manualChange || CVarGetInteger(equipmentChuFace.rainbowCvar, 0)) {
-        static Color_RGBA8 defaultColor = {equipmentChuFace.defaultColor.x, equipmentChuFace.defaultColor.y, equipmentChuFace.defaultColor.z, equipmentChuFace.defaultColor.w};
+        static Color_RGBA8 defaultColor = {equipmentChuFace.defaultColor.r, equipmentChuFace.defaultColor.g, equipmentChuFace.defaultColor.b, equipmentChuFace.defaultColor.w};
         Color_RGBA8 color = CVarGetColor(equipmentChuFace.cvar, defaultColor);
         PATCH_GFX(gGiBombchuDL,                                   "Equipment_ChuFace1",       equipmentChuFace.changedCvar,         5, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
         PATCH_GFX(gGiBombchuDL,                                   "Equipment_ChuFace2",       equipmentChuFace.changedCvar,         6, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
@@ -1026,7 +1026,7 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
     }
     static CosmeticOption& equipmentChuBody = cosmeticOptions.at("Equipment.ChuBody");
     if (manualChange || CVarGetInteger(equipmentChuBody.rainbowCvar, 0)) {
-        static Color_RGBA8 defaultColor = {equipmentChuBody.defaultColor.x, equipmentChuBody.defaultColor.y, equipmentChuBody.defaultColor.z, equipmentChuBody.defaultColor.w};
+        static Color_RGBA8 defaultColor = {equipmentChuBody.defaultColor.r, equipmentChuBody.defaultColor.g, equipmentChuBody.defaultColor.b, equipmentChuBody.defaultColor.w};
         Color_RGBA8 color = CVarGetColor(equipmentChuBody.cvar, defaultColor);
         PATCH_GFX(gGiBombchuDL,                                   "Equipment_ChuBody1",       equipmentChuBody.changedCvar,        39, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
         PATCH_GFX(gGiBombchuDL,                                   "Equipment_ChuBody2",       equipmentChuBody.changedCvar,        40, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
@@ -1037,7 +1037,7 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
 
     static CosmeticOption& equipmentBunnyHood = cosmeticOptions.at("Equipment.BunnyHood");
     if (manualChange || CVarGetInteger(equipmentBunnyHood.rainbowCvar, 0)) {
-        static Color_RGBA8 defaultColor = {equipmentBunnyHood.defaultColor.x, equipmentBunnyHood.defaultColor.y, equipmentBunnyHood.defaultColor.z, equipmentBunnyHood.defaultColor.w};
+        static Color_RGBA8 defaultColor = {equipmentBunnyHood.defaultColor.r, equipmentBunnyHood.defaultColor.g, equipmentBunnyHood.defaultColor.b, equipmentBunnyHood.defaultColor.w};
         Color_RGBA8 color = CVarGetColor(equipmentBunnyHood.cvar, defaultColor);
         PATCH_GFX(gGiBunnyHoodDL,                                 "Equipment_BunnyHood1",       equipmentBunnyHood.changedCvar,        5, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
         PATCH_GFX(gGiBunnyHoodDL,                                 "Equipment_BunnyHood2",       equipmentBunnyHood.changedCvar,        6, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
@@ -1057,7 +1057,7 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
 
     static CosmeticOption& consumableGreenRupee = cosmeticOptions.at("Consumable.GreenRupee");
     if (manualChange || CVarGetInteger(consumableGreenRupee.rainbowCvar, 0)) {
-        static Color_RGBA8 defaultColor = {consumableGreenRupee.defaultColor.x, consumableGreenRupee.defaultColor.y, consumableGreenRupee.defaultColor.z, consumableGreenRupee.defaultColor.w};
+        static Color_RGBA8 defaultColor = {consumableGreenRupee.defaultColor.r, consumableGreenRupee.defaultColor.g, consumableGreenRupee.defaultColor.b, consumableGreenRupee.defaultColor.w};
         Color_RGBA8 color = CVarGetColor(consumableGreenRupee.cvar, defaultColor);
         PATCH_GFX(gGiGreenRupeeInnerColorDL,                      "Consumable_GreenRupee1",   consumableGreenRupee.changedCvar,     3, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
         PATCH_GFX(gGiGreenRupeeInnerColorDL,                      "Consumable_GreenRupee2",   consumableGreenRupee.changedCvar,     4, gsDPSetEnvColor(color.r / 5, color.g / 5, color.b / 5, 255));
@@ -1077,7 +1077,7 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
     }
     static CosmeticOption& consumableBlueRupee = cosmeticOptions.at("Consumable.BlueRupee");
     if (manualChange || CVarGetInteger(consumableBlueRupee.rainbowCvar, 0)) {
-        static Color_RGBA8 defaultColor = {consumableBlueRupee.defaultColor.x, consumableBlueRupee.defaultColor.y, consumableBlueRupee.defaultColor.z, consumableBlueRupee.defaultColor.w};
+        static Color_RGBA8 defaultColor = {consumableBlueRupee.defaultColor.r, consumableBlueRupee.defaultColor.g, consumableBlueRupee.defaultColor.b, consumableBlueRupee.defaultColor.w};
         Color_RGBA8 color = CVarGetColor(consumableBlueRupee.cvar, defaultColor);
         PATCH_GFX(gGiBlueRupeeInnerColorDL,                       "Consumable_BlueRupee1",    consumableBlueRupee.changedCvar,      3, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
         PATCH_GFX(gGiBlueRupeeInnerColorDL,                       "Consumable_BlueRupee2",    consumableBlueRupee.changedCvar,      4, gsDPSetEnvColor(color.r / 5, color.g / 5, color.b / 5, 255));
@@ -1086,7 +1086,7 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
     }
     static CosmeticOption& consumableRedRupee = cosmeticOptions.at("Consumable.RedRupee");
     if (manualChange || CVarGetInteger(consumableRedRupee.rainbowCvar, 0)) {
-        static Color_RGBA8 defaultColor = {consumableRedRupee.defaultColor.x, consumableRedRupee.defaultColor.y, consumableRedRupee.defaultColor.z, consumableRedRupee.defaultColor.w};
+        static Color_RGBA8 defaultColor = {consumableRedRupee.defaultColor.r, consumableRedRupee.defaultColor.g, consumableRedRupee.defaultColor.b, consumableRedRupee.defaultColor.w};
         Color_RGBA8 color = CVarGetColor(consumableRedRupee.cvar, defaultColor);
         PATCH_GFX(gGiRedRupeeInnerColorDL,                        "Consumable_RedRupee1",     consumableRedRupee.changedCvar,       3, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
         PATCH_GFX(gGiRedRupeeInnerColorDL,                        "Consumable_RedRupee2",     consumableRedRupee.changedCvar,       4, gsDPSetEnvColor(color.r / 5, color.g / 5, color.b / 5, 255));
@@ -1095,7 +1095,7 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
     }
     static CosmeticOption& consumablePurpleRupee = cosmeticOptions.at("Consumable.PurpleRupee");
     if (manualChange || CVarGetInteger(consumablePurpleRupee.rainbowCvar, 0)) {
-        static Color_RGBA8 defaultColor = {consumablePurpleRupee.defaultColor.x, consumablePurpleRupee.defaultColor.y, consumablePurpleRupee.defaultColor.z, consumablePurpleRupee.defaultColor.w};
+        static Color_RGBA8 defaultColor = {consumablePurpleRupee.defaultColor.r, consumablePurpleRupee.defaultColor.g, consumablePurpleRupee.defaultColor.b, consumablePurpleRupee.defaultColor.w};
         Color_RGBA8 color = CVarGetColor(consumablePurpleRupee.cvar, defaultColor);
         PATCH_GFX(gGiPurpleRupeeInnerColorDL,                     "Consumable_PurpleRupee1",  consumablePurpleRupee.changedCvar,    3, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
         PATCH_GFX(gGiPurpleRupeeInnerColorDL,                     "Consumable_PurpleRupee2",  consumablePurpleRupee.changedCvar,    4, gsDPSetEnvColor(color.r / 5, color.g / 5, color.b / 5, 255));
@@ -1104,7 +1104,7 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
     }
     static CosmeticOption& consumableGoldRupee = cosmeticOptions.at("Consumable.GoldRupee");
     if (manualChange || CVarGetInteger(consumableGoldRupee.rainbowCvar, 0)) {
-        static Color_RGBA8 defaultColor = {consumableGoldRupee.defaultColor.x, consumableGoldRupee.defaultColor.y, consumableGoldRupee.defaultColor.z, consumableGoldRupee.defaultColor.w};
+        static Color_RGBA8 defaultColor = {consumableGoldRupee.defaultColor.r, consumableGoldRupee.defaultColor.g, consumableGoldRupee.defaultColor.b, consumableGoldRupee.defaultColor.w};
         Color_RGBA8 color = CVarGetColor(consumableGoldRupee.cvar, defaultColor);
         PATCH_GFX(gGiGoldRupeeInnerColorDL,                       "Consumable_GoldRupee1",    consumableGoldRupee.changedCvar,      3, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
         PATCH_GFX(gGiGoldRupeeInnerColorDL,                       "Consumable_GoldRupee2",    consumableGoldRupee.changedCvar,      4, gsDPSetEnvColor(color.r / 5, color.g / 5, color.b / 5, 255));
@@ -1114,7 +1114,7 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
 
     static CosmeticOption& consumableHearts = cosmeticOptions.at("Consumable.Hearts");
     if (manualChange || CVarGetInteger(consumableHearts.rainbowCvar, 0)) {
-        static Color_RGBA8 defaultColor = {consumableHearts.defaultColor.x, consumableHearts.defaultColor.y, consumableHearts.defaultColor.z, consumableHearts.defaultColor.w};
+        static Color_RGBA8 defaultColor = {consumableHearts.defaultColor.r, consumableHearts.defaultColor.g, consumableHearts.defaultColor.b, consumableHearts.defaultColor.w};
         Color_RGBA8 color = CVarGetColor(consumableHearts.cvar, defaultColor);
         /*
         PATCH_GFX(gGiRecoveryHeartDL,                             "Consumable_Hearts1",       consumableHearts.changedCvar,         4, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
@@ -1131,7 +1131,7 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
     }
     static CosmeticOption& consumableMagic = cosmeticOptions.at("Consumable.Magic");
     if (manualChange || CVarGetInteger(consumableMagic.rainbowCvar, 0)) {
-        static Color_RGBA8 defaultColor = {consumableMagic.defaultColor.x, consumableMagic.defaultColor.y, consumableMagic.defaultColor.z, consumableMagic.defaultColor.w};
+        static Color_RGBA8 defaultColor = {consumableMagic.defaultColor.r, consumableMagic.defaultColor.g, consumableMagic.defaultColor.b, consumableMagic.defaultColor.w};
         Color_RGBA8 color = CVarGetColor(consumableMagic.cvar, defaultColor);
         PATCH_GFX(gGiMagicJarSmallDL,                             "Consumable_Magic1",        consumableMagic.changedCvar,         31, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
         PATCH_GFX(gGiMagicJarSmallDL,                             "Consumable_Magic2",        consumableMagic.changedCvar,         32, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
@@ -1143,7 +1143,7 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
 
     static CosmeticOption& npcGoldenSkulltula = cosmeticOptions.at("NPC.GoldenSkulltula");
     if (manualChange || CVarGetInteger(npcGoldenSkulltula.rainbowCvar, 0)) {
-        static Color_RGBA8 defaultColor = {npcGoldenSkulltula.defaultColor.x, npcGoldenSkulltula.defaultColor.y, npcGoldenSkulltula.defaultColor.z, npcGoldenSkulltula.defaultColor.w};
+        static Color_RGBA8 defaultColor = {npcGoldenSkulltula.defaultColor.r, npcGoldenSkulltula.defaultColor.g, npcGoldenSkulltula.defaultColor.b, npcGoldenSkulltula.defaultColor.w};
         Color_RGBA8 color = CVarGetColor(npcGoldenSkulltula.cvar, defaultColor);
         PATCH_GFX(gSkulltulaTokenDL,                              "NPC_GoldenSkulltula1",     npcGoldenSkulltula.changedCvar,       5, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
         PATCH_GFX(gSkulltulaTokenDL,                              "NPC_GoldenSkulltula2",     npcGoldenSkulltula.changedCvar,       6, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
@@ -1159,7 +1159,7 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
 
     static CosmeticOption& npcGerudo = cosmeticOptions.at("NPC.Gerudo");
     if (manualChange || CVarGetInteger(npcGerudo.rainbowCvar, 0)) {
-        static Color_RGBA8 defaultColor = {npcGerudo.defaultColor.x, npcGerudo.defaultColor.y, npcGerudo.defaultColor.z, npcGerudo.defaultColor.w};
+        static Color_RGBA8 defaultColor = {npcGerudo.defaultColor.r, npcGerudo.defaultColor.g, npcGerudo.defaultColor.b, npcGerudo.defaultColor.w};
         Color_RGBA8 color = CVarGetColor(npcGerudo.cvar, defaultColor);
         PATCH_GFX(gGerudoPurpleTorsoDL,                           "NPC_Gerudo1",              npcGerudo.changedCvar,              139, gsDPSetEnvColor( color.r, color.g, color.b, 255));
         PATCH_GFX(gGerudoPurpleRightThighDL,                      "NPC_Gerudo2",              npcGerudo.changedCvar,               11, gsDPSetEnvColor(color.r, color.g, color.b, 255));
@@ -1173,35 +1173,35 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
 
     static CosmeticOption& npcMetalTrap = cosmeticOptions.at("NPC.MetalTrap");
     if (manualChange || CVarGetInteger(npcMetalTrap.rainbowCvar, 0)) {
-        static Color_RGBA8 defaultColor = {npcMetalTrap.defaultColor.x, npcMetalTrap.defaultColor.y, npcMetalTrap.defaultColor.z, npcMetalTrap.defaultColor.w};
+        static Color_RGBA8 defaultColor = {npcMetalTrap.defaultColor.r, npcMetalTrap.defaultColor.g, npcMetalTrap.defaultColor.b, npcMetalTrap.defaultColor.w};
         Color_RGBA8 color = CVarGetColor(npcMetalTrap.cvar, defaultColor);
         PATCH_GFX(gSlidingBladeTrapDL,                            "NPC_MetalTrap1",           npcMetalTrap.changedCvar,            59, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
     }
 
     static CosmeticOption& n64LogoRed = cosmeticOptions.at("Title.N64LogoRed");
     if (manualChange || CVarGetInteger(n64LogoRed.rainbowCvar, 0)) {
-        static Color_RGBA8 defaultColor = {n64LogoRed.defaultColor.x, n64LogoRed.defaultColor.y, n64LogoRed.defaultColor.z, n64LogoRed.defaultColor.w};
+        static Color_RGBA8 defaultColor = {n64LogoRed.defaultColor.r, n64LogoRed.defaultColor.g, n64LogoRed.defaultColor.b, n64LogoRed.defaultColor.w};
         Color_RGBA8 color = CVarGetColor(n64LogoRed.cvar, defaultColor);
         PATCH_GFX(gNintendo64LogoDL,                              "Title_N64LogoRed1",          n64LogoRed.changedCvar,              17, gsDPSetPrimColor(0, 0, 255, 255, 255, 255))
         PATCH_GFX(gNintendo64LogoDL,                              "Title_N64LogoRed2",          n64LogoRed.changedCvar,              18, gsDPSetEnvColor(color.r, color.g, color.b, 128));
     }
     static CosmeticOption& n64LogoBlue = cosmeticOptions.at("Title.N64LogoBlue");
     if (manualChange || CVarGetInteger(n64LogoBlue.rainbowCvar, 0)) {
-        static Color_RGBA8 defaultColor = {n64LogoBlue.defaultColor.x, n64LogoBlue.defaultColor.y, n64LogoBlue.defaultColor.z, n64LogoBlue.defaultColor.w};
+        static Color_RGBA8 defaultColor = {n64LogoBlue.defaultColor.r, n64LogoBlue.defaultColor.g, n64LogoBlue.defaultColor.b, n64LogoBlue.defaultColor.w};
         Color_RGBA8 color = CVarGetColor(n64LogoBlue.cvar, defaultColor);
         PATCH_GFX(gNintendo64LogoDL,                              "Title_N64LogoBlue1",         n64LogoBlue.changedCvar,             29, gsDPSetPrimColor(0, 0, 255, 255, 255, 255))
         PATCH_GFX(gNintendo64LogoDL,                              "Title_N64LogoBlue2",         n64LogoBlue.changedCvar,             30, gsDPSetEnvColor(color.r, color.g, color.b, 128));
     }
     static CosmeticOption& n64LogoGreen = cosmeticOptions.at("Title.N64LogoGreen");
     if (manualChange || CVarGetInteger(n64LogoGreen.rainbowCvar, 0)) {
-        static Color_RGBA8 defaultColor = {n64LogoGreen.defaultColor.x, n64LogoGreen.defaultColor.y, n64LogoGreen.defaultColor.z, n64LogoGreen.defaultColor.w};
+        static Color_RGBA8 defaultColor = {n64LogoGreen.defaultColor.r, n64LogoGreen.defaultColor.g, n64LogoGreen.defaultColor.b, n64LogoGreen.defaultColor.w};
         Color_RGBA8 color = CVarGetColor(n64LogoGreen.cvar, defaultColor);
         PATCH_GFX(gNintendo64LogoDL,                              "Title_N64LogoGreen1",        n64LogoGreen.changedCvar,            56, gsDPSetPrimColor(0, 0, 255, 255, 255, 255))
         PATCH_GFX(gNintendo64LogoDL,                              "Title_N64LogoGreen2",        n64LogoGreen.changedCvar,            57, gsDPSetEnvColor(color.r, color.g, color.b, 128));
     }
     static CosmeticOption& n64LogoYellow = cosmeticOptions.at("Title.N64LogoYellow");
     if (manualChange || CVarGetInteger(n64LogoYellow.rainbowCvar, 0)) {
-        static Color_RGBA8 defaultColor = {n64LogoYellow.defaultColor.x, n64LogoYellow.defaultColor.y, n64LogoYellow.defaultColor.z, n64LogoYellow.defaultColor.w};
+        static Color_RGBA8 defaultColor = {n64LogoYellow.defaultColor.r, n64LogoYellow.defaultColor.g, n64LogoYellow.defaultColor.b, n64LogoYellow.defaultColor.w};
         Color_RGBA8 color = CVarGetColor(n64LogoYellow.cvar, defaultColor);
         PATCH_GFX(gNintendo64LogoDL,                              "Title_N64LogoYellow1",       n64LogoYellow.changedCvar,           81, gsDPSetPrimColor(0, 0, 255, 255, 255, 255))
         PATCH_GFX(gNintendo64LogoDL,                              "Title_N64LogoYellow2",       n64LogoYellow.changedCvar,           82, gsDPSetEnvColor(color.r, color.g, color.b, 128));
@@ -1220,9 +1220,9 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
 
 extern "C" Color_RGBA8 CosmeticsEditor_GetDefaultValue(const char* id) {
     return Color_RGBA8 {
-        (uint8_t)(cosmeticOptions[id].defaultColor.x * 255.0f),
-        (uint8_t)(cosmeticOptions[id].defaultColor.y * 255.0f),
-        (uint8_t)(cosmeticOptions[id].defaultColor.z * 255.0f),
+        (uint8_t)(cosmeticOptions[id].defaultColor.r * 255.0f),
+        (uint8_t)(cosmeticOptions[id].defaultColor.g * 255.0f),
+        (uint8_t)(cosmeticOptions[id].defaultColor.b * 255.0f),
         (uint8_t)(cosmeticOptions[id].defaultColor.w * 255.0f)
     };
 }
@@ -1668,7 +1668,7 @@ void RandomizeColor(CosmeticOption& cosmeticOption) {
 }
 
 void ResetColor(CosmeticOption& cosmeticOption) {
-    Color_RGBA8 defaultColor = {cosmeticOption.defaultColor.x, cosmeticOption.defaultColor.y, cosmeticOption.defaultColor.z, cosmeticOption.defaultColor.w};
+    Color_RGBA8 defaultColor = {cosmeticOption.defaultColor.r, cosmeticOption.defaultColor.g, cosmeticOption.defaultColor.b, cosmeticOption.defaultColor.w};
     cosmeticOption.currentColor.x = defaultColor.r / 255.0;
     cosmeticOption.currentColor.y = defaultColor.g / 255.0;
     cosmeticOption.currentColor.z = defaultColor.b / 255.0;
@@ -1999,7 +1999,7 @@ void Cosmetics_RegisterOnSceneInitHook() {
 void CosmeticsEditorWindow::InitElement() {
     // Convert the `current color` into the format that the ImGui color picker expects
     for (auto& [id, cosmeticOption] : cosmeticOptions) {
-        Color_RGBA8 defaultColor = {cosmeticOption.defaultColor.x, cosmeticOption.defaultColor.y, cosmeticOption.defaultColor.z, cosmeticOption.defaultColor.w};
+        Color_RGBA8 defaultColor = {cosmeticOption.defaultColor.r, cosmeticOption.defaultColor.g, cosmeticOption.defaultColor.b, cosmeticOption.defaultColor.w};
         Color_RGBA8 cvarColor = CVarGetColor(cosmeticOption.cvar, defaultColor);
 
         cosmeticOption.currentColor.x = cvarColor.r / 255.0;
