@@ -279,19 +279,10 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                         *should = false;
                         RateLimitedSuccessChime();
                         break;
-                    }//is there a reason these aren't combined?
-                    case ACTOR_BG_HIDAN_FWBIG: {
-                        *should = false;
-                        break;
                     }
-                    case ACTOR_EN_EX_ITEM: {
-                        *should = false;
-                        break;
-                    }
-                    case ACTOR_EN_DNT_NOMAL: {
-                        *should = false;
-                        break;
-                    }
+                    case ACTOR_BG_HIDAN_FWBIG:
+                    case ACTOR_EN_EX_ITEM:
+                    case ACTOR_EN_DNT_NOMAL:
                     case ACTOR_EN_DNT_DEMO: {
                         *should = false;
                         break;
