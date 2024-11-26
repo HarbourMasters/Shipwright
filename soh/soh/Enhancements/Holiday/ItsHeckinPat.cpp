@@ -74,7 +74,7 @@ void Present_Destroy(Actor* actor, PlayState* play) {
 static CollisionPoly presentPoly;
 static f32 raycastResult;
 
-static void OnConfigurationChanged() {
+void OnConfigChanged() {
     COND_HOOK(OnSceneSpawnActors, CVarGetInteger(CVAR("GiftsForNPCs"), 0), []() {
         presents.clear();
         Vec3f pos;
@@ -134,13 +134,13 @@ static void OnConfigurationChanged() {
 static void DrawMenu() {
     ImGui::SeparatorText(AUTHOR);
     if (UIWidgets::EnhancementCheckbox("Gifts for NPCs", CVAR("GiftsForNPCs"))) {
-        OnConfigurationChanged();
+        OnConfigChanged();
     }
 }
 
 static void RegisterMod() {
     // #region Leave this alone unless you know what you are doing
-    OnConfigurationChanged();
+    OnConfigChanged();
     // #endregion
 
     // TODO: Anything you want to run once on startup

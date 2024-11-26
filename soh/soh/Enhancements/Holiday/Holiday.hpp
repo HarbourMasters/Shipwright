@@ -8,6 +8,8 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/cosmetics/CosmeticsEditor.h"
 
+void OnConfigChanged();
+
 inline std::vector<std::function<void()>> holidayDrawFuncs = {};
 inline std::vector<std::function<void()>> holidayRegisterFuncs = {};
 

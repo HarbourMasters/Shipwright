@@ -3,6 +3,8 @@
 #include "soh/Notification/Notification.h"
 #include "soh/Enhancements/gameplaystats.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/custom-message/CustomMessageManager.h"
+#include "soh/Enhancements/randomizer/randomizer.h"
 
 extern "C" {
 #include "macros.h"
@@ -15,8 +17,11 @@ uint64_t GetUnixTimestamp();
 #define AUTHOR "Caladius"
 #define CVAR(v) "gHoliday." AUTHOR "." v
 
-bool isDisabled = false;
+bool isFeverDisabled = false;
+bool isExchangeDisabled = false;
 float fontScale = 1.0f;
+
+extern GetItemEntry vanillaQueuedItemEntry;
 
 std::vector<ActorID> boulderList = { ACTOR_OBJ_BOMBIWA, ACTOR_BG_ICE_SHELTER, ACTOR_EN_ISHI, ACTOR_OBJ_HAMISHI };
 
@@ -69,16 +74,59 @@ void RandomizeBoulder(Actor* refActor) {
         param = 3;
     }
     yAdj = ActorSnapToFloor(actor, gPlayState, 0.0f);
-    //if (actor->id != ACTOR_EN_ISHI && boulderList[roll] == ACTOR_EN_ISHI) {
-    //    yAdj = 20;
-    //}
-    //if (actor->id == ACTOR_EN_ISHI && boulderList[roll] != ACTOR_EN_ISHI) {
-    //    yAdj = -20;
-    //}
 
     Actor_Spawn(&gPlayState->actorCtx, gPlayState, boulderList[roll], actor->world.pos.x, ActorSnapToFloor(actor, gPlayState, 0.0f), 
         actor->world.pos.z, 0, 0, 0, param, false);
     Actor_Kill(actor);
+}
+
+static void OnPresentChange() {
+    isExchangeDisabled = !CVarGetInteger(CVAR("OrnExch.Enabled"), 0);
+    COND_ID_HOOK(OnActorKill, ACTOR_EN_OE2, CVarGetInteger(CVAR("OrnExch.Enabled"), 0), [](void* actorRef) {
+        uint32_t giftsCollected = CVarGetInteger(CVAR("GiftsCollected"), 0);
+        giftsCollected++;
+        CVarSetInteger(CVAR("GiftsCollected"), giftsCollected);
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        std::string msg = std::to_string(giftsCollected).c_str();
+        msg += " Gifts in Inventory.";
+        Notification::Emit({
+            .itemIcon = "RG_TRIFORCE_PIECE",
+            .message = msg
+        });
+    });
+    COND_ID_HOOK(OnOpenText, 0x204A, CVarGetInteger(CVAR("OrnExch.Enabled"), 0), [](u16 * textId, bool* loadFromMessageTable) {
+        auto messageEntry = CustomMessage("");
+        bool reduceGifts = false;
+        uint32_t giftsCollected = CVarGetInteger(CVAR("GiftsCollected"), 0);
+        uint32_t giftsRequired = CVarGetInteger(CVAR("OrnExch.Amount"), 15);
+        if (giftsCollected < giftsRequired) {
+            std::string msg = "You only have %r " + std::to_string(giftsCollected) + "%w If you bring me %g" 
+                + std::to_string(giftsRequired) + "%w I'll give you a reward!";
+            messageEntry = CustomMessage(msg);
+        } else {
+            std::string msg = "A present? And %g" + std::to_string(giftsRequired) + 
+                "%w to boot? Here's your reward, bring me more if you find any!";
+            messageEntry = CustomMessage(msg);
+            reduceGifts = true;
+        }
+        messageEntry.AutoFormat();
+        messageEntry.LoadIntoFont();
+        *loadFromMessageTable = false;
+
+        if (reduceGifts) {
+            vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_TRIFORCE_PIECE).GetGIEntry_Copy();
+            giftsCollected -= giftsRequired;
+            CVarSetInteger(CVAR("GiftsCollected"), giftsCollected);
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+
+            std::string msg = std::to_string(giftsCollected).c_str();
+            msg += " Gifts in Inventory.";
+            Notification::Emit({
+                .itemIcon = "RG_TRIFORCE_PIECE",
+                .message = msg
+            });
+        }
+    });
 }
 
 static void OnBlitzChange() {
@@ -102,7 +150,7 @@ static void OnBlitzChange() {
 }
 
 static void OnFeverConfigurationChanged() {
-    isDisabled = !CVarGetInteger(CVAR("Fever.Enabled"), 0);
+    isFeverDisabled = !CVarGetInteger(CVAR("Fever.Enabled"), 0);
     fontScale = CVarGetFloat(CVAR("FontScale"), 1.0f);
     if (fontScale < 1.0f) {
         fontScale = 1.0f;
@@ -146,26 +194,39 @@ static void DrawMenu() {
     }
     UIWidgets::Tooltip("Can you beat your objective before the Fever sets in?/n"
                        "- Obtaining Ice Traps extends your timer.");
-    ImGui::Text("Options");
-    if (UIWidgets::PaddedEnhancementSliderFloat("", "##FontScale", CVAR("FontScale"), 
-        1.0f, 5.0f, "%.1fx", 1.0f, false, false, false, false, isDisabled)) {
+    if (UIWidgets::EnhancementSliderFloat("", "##FontScale", CVAR("FontScale"), 
+        1.0f, 5.0f, "Font: %.1fx", 1.0f, false, false, isFeverDisabled)) {
         OnFeverConfigurationChanged();
     }
     UIWidgets::PaddedEnhancementSliderInt("Starting Timer: %d minutes", "##StartTime", CVAR("StartTimer"),
-        5, 30, "", 15, true, true, false, isDisabled);
+        5, 30, "", 15, true, true, false, isFeverDisabled);
     UIWidgets::PaddedEnhancementSliderInt("Time Extensions: %d minutes", "##ExtendTime", CVAR("ExtendTimer"),
-        1, 10, "", 5, true, true, false, isDisabled);
+        1, 10, "", 5, true, true, false, isFeverDisabled);
     UIWidgets::PaddedSeparator();
 
     if (UIWidgets::EnhancementCheckbox("Boulder Blitz", CVAR("Blitz.Enabled"))) {
         OnBlitzChange();
     }
+    UIWidgets::PaddedSeparator();
+
+    if (UIWidgets::EnhancementCheckbox("Ornament Exchange", CVAR("OrnExch.Enabled"))) {
+        OnPresentChange();
+        bool toggle = CVarGetInteger(CVAR("OrnExch.Enabled"), 0);
+        CVarSetInteger("gHoliday.ItsHeckinPat.GiftsForNPCs", toggle);
+        OnConfigChanged();
+    }
+    UIWidgets::Tooltip("See Malon as Young Link in Lon Lon Ranch to exchange Gifts for Ornaments!\n"
+                       "Note: Enabling this will set \"Gifts For NPCs\" to match.");
+    UIWidgets::PaddedEnhancementSliderInt("Gifts Required: %d Gifts", "##GiftsReq", CVAR("OrnExch.Amount"),
+        5, 30, "", 15, true, true, false, isExchangeDisabled);
+
 }
 
 
 static void RegisterMod() {
     OnFeverConfigurationChanged();
     OnBlitzChange();
+    OnPresentChange();
 }
 
 static Holiday holiday(DrawMenu, RegisterMod);
