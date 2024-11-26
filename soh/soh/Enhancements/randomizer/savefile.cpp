@@ -149,13 +149,11 @@ void SetStartingItems() {
         INV_CONTENT(ITEM_OCARINA_FAIRY) = ITEM_OCARINA_FAIRY;
     }
 
-    if (Randomizer_GetSettingValue(RSK_STARTING_CONSUMABLES)) {
-        if (!Randomizer_GetSettingValue(RSK_SHUFFLE_DEKU_STICK_BAG)) {
-            GiveLinkDekuSticks(10);
-        }
-        if (!Randomizer_GetSettingValue(RSK_SHUFFLE_DEKU_NUT_BAG)) {
-            GiveLinkDekuNuts(20);
-        }
+    if (Randomizer_GetSettingValue(RSK_STARTING_STICKS) && !Randomizer_GetSettingValue(RSK_SHUFFLE_DEKU_STICK_BAG)) {
+        GiveLinkDekuSticks(10);
+    }
+    if (Randomizer_GetSettingValue(RSK_STARTING_NUTS) && !Randomizer_GetSettingValue(RSK_SHUFFLE_DEKU_NUT_BAG)) {
+        GiveLinkDekuNuts(20);
     }
 
     if (Randomizer_GetSettingValue(RSK_FULL_WALLETS)) {
