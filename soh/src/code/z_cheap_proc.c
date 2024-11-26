@@ -1,4 +1,5 @@
 #include "global.h"
+#include "soh/ResourceManagerHelpers.h"
 
 void Gfx_DrawDListOpa(PlayState* play, Gfx* dlist) {
     OPEN_DISPS(play->state.gfxCtx);

@@ -102,7 +102,7 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
                                                            /*french*/ "Selon moi, une #Skulltula dans une boîte dans l'Arbre Mojo# a #[[1]]#.", {QM_RED, QM_GREEN}));
                                                         // /*spanish*/ Según dicen, una #Skulltula bajo una caja# del Árbol Deku otorga #[[1]]#.
 
-    hintTextTable[RHT_DEKU_TREE_MQ_GS_COMPASS_ROOM] = HintText(CustomMessage("They say that a #wall of rock protects a spider# within the Deku Tree holding #[[1]]#.",
+    hintTextTable[RHT_DEKU_TREE_MQ_GS_PAST_BOULDER_VINES] = HintText(CustomMessage("They say that a #wall of rock protects a spider# within the Deku Tree holding #[[1]]#.",
                                                                   /*german*/ "Man erzählt sich, daß eine #von einer Steinwand geschützte Spinne# innerhalb des Deku-Baums #[[1]]# hielte.",
                                                                   /*french*/ "Selon moi, une #Skulltula derrière des rochers dans l'Arbre Mojo# a #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                // /*spanish*/ Según dicen, una #Skulltula protegida por una pared rocosa# del Árbol Deku otorga #[[1]]#.

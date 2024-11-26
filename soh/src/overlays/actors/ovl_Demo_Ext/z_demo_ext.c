@@ -45,12 +45,12 @@ void DemoExt_Init(Actor* thisx, PlayState* play) {
 
 void DemoExt_PlayVortexSFX(DemoExt* this) {
     if (this->alphaTimer <= (kREG(35) + 40.0f) - 15.0f) {
-        Audio_PlaySoundGeneral(NA_SE_EV_FANTOM_WARP_L - SFX_FLAG, &this->actor.projectedPos, 4, &D_801333E0,
-                               &D_801333E0, &D_801333E8);
+        Audio_PlaySoundGeneral(NA_SE_EV_FANTOM_WARP_L - SFX_FLAG, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
+                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     }
 }
 
-CsCmdActorAction* DemoExt_GetNpcAction(PlayState* play, s32 npcActionIndex) {
+CsCmdActorCue* DemoExt_GetNpcAction(PlayState* play, s32 npcActionIndex) {
     if (play->csCtx.state != CS_STATE_IDLE) {
         return play->csCtx.npcActions[npcActionIndex];
     }
@@ -63,7 +63,7 @@ void DemoExt_SetupWait(DemoExt* this) {
 }
 
 void DemoExt_SetupMaintainVortex(DemoExt* this, PlayState* play) {
-    CsCmdActorAction* npcAction = DemoExt_GetNpcAction(play, 5);
+    CsCmdActorCue* npcAction = DemoExt_GetNpcAction(play, 5);
 
     if (npcAction != NULL) {
         this->actor.world.pos.x = npcAction->startPos.x;
@@ -88,7 +88,7 @@ void DemoExt_FinishClosing(DemoExt* this) {
 }
 
 void DemoExt_CheckCsMode(DemoExt* this, PlayState* play) {
-    CsCmdActorAction* csCmdNPCAction = DemoExt_GetNpcAction(play, 5);
+    CsCmdActorCue* csCmdNPCAction = DemoExt_GetNpcAction(play, 5);
     s32 csAction;
     s32 previousCsAction;
 

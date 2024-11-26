@@ -242,7 +242,7 @@ void BgHakaGate_FloorClosed(BgHakaGate* this, PlayState* play) {
                 sBgPoEventPuzzleState = SKULL_OF_TRUTH_FOUND;
                 this->actionFunc = BgHakaGate_DoNothing;
             } else {
-                func_80078884(NA_SE_SY_ERROR);
+                Sfx_PlaySfxCentered(NA_SE_SY_ERROR);
                 Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_GROUND_GATE_OPEN);
                 func_8003EBF8(play, &play->colCtx.dyna, this->dyna.bgId);
                 this->vTimer = 60;

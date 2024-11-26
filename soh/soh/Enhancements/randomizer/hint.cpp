@@ -148,7 +148,7 @@ void Hint::FillGapsInData(){
   for(uint8_t c = 0; c < locations.size(); c++){
     //if area matters for the hint, it should be specified and not left to this
     if (fillAreas){
-      areas.push_back(*ctx->GetItemLocation(locations[c])->GetAreas().begin());
+      areas.push_back(ctx->GetItemLocation(locations[c])->GetFirstArea());
     }
     if (fillItems){
       items.push_back(ctx->GetItemLocation(locations[c])->GetPlacedRandomizerGet());

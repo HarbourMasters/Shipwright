@@ -180,6 +180,7 @@ class Settings {
     void ParseJson(nlohmann::json spoilerFileJson);
     std::vector<Option*> VanillaLogicDefaults = {};
     std::map<RandomizerArea, std::vector<RandomizerTrick>> mTricksByArea = {};
+    void ReloadOptions();
 
   private:
     /**

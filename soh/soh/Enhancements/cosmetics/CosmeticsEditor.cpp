@@ -12,10 +12,12 @@
 
 #include "soh/UIWidgets.hpp"
 #include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 
 extern "C" {
     #include "z64.h"
     #include "macros.h"
+    #include "soh/cvar_prefixes.h"
     #include "objects/object_link_boy/object_link_boy.h"
     #include "objects/object_link_child/object_link_child.h"
     #include "objects/object_gi_shield_3/object_gi_shield_3.h"
@@ -41,7 +43,9 @@ extern "C" {
     #include "objects/object_toki_objects/object_toki_objects.h"
     #include "objects/object_gi_pachinko/object_gi_pachinko.h"
     #include "objects/object_trap/object_trap.h"
+    #include "overlays/ovl_Boss_Ganon2/ovl_Boss_Ganon2.h"
     #include "objects/object_gjyo_objects/object_gjyo_objects.h"
+    #include "textures/nintendo_rogo_static/nintendo_rogo_static.h"
     #include "objects/object_gi_rabit_mask/object_gi_rabit_mask.h"
     #include "overlays/ovl_Boss_Ganon2/ovl_Boss_Ganon2.h"
     #include "overlays/ovl_Magic_Wind/ovl_Magic_Wind.h"
@@ -937,7 +941,7 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
         Color_RGBA8 color = CVarGetColor(equipmentSlingshotString.cvar, defaultColor);
         PATCH_GFX(gGiSlingshotDL,                                 "Equipment_SlingshotString1",equipmentSlingshotString.changedCvar, 75, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
         PATCH_GFX(gGiSlingshotDL,                                 "Equipment_SlingshotString2",equipmentSlingshotString.changedCvar, 76, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
-        PATCH_GFX(gLinkChildSlinghotStringDL,                     "Equipment_SlingshotString3",equipmentSlingshotString.changedCvar,  9, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkChildSlingshotStringDL,                    "Equipment_SlingshotString3",equipmentSlingshotString.changedCvar,  9, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
     }
 
     static CosmeticOption& equipmentBowTips = cosmeticOptions.at("Equipment.BowTips");
@@ -1311,6 +1315,19 @@ void C_Button_Dropdown(const char* Header_Title, const char* Table_ID, const cha
             ImGui::NewLine();
             ImGui::EndTable();
         }
+        std::shared_ptr<Ship::Controller> controller = Ship::Context::GetInstance()->GetControlDeck()->GetControllerByPort(0);
+        for (auto [id, mapping] : controller->GetButton(BTN_DDOWN)->GetAllButtonMappings()) {
+            controller->GetButton(BTN_CUSTOM_OCARINA_NOTE_F4)->AddButtonMapping(mapping);
+        }
+        for (auto [id, mapping] : controller->GetButton(BTN_DRIGHT)->GetAllButtonMappings()) {
+            controller->GetButton(BTN_CUSTOM_OCARINA_NOTE_A4)->AddButtonMapping(mapping);
+        }
+        for (auto [id, mapping] : controller->GetButton(BTN_DLEFT)->GetAllButtonMappings()) {
+            controller->GetButton(BTN_CUSTOM_OCARINA_NOTE_B4)->AddButtonMapping(mapping);
+        }
+        for (auto [id, mapping] : controller->GetButton(BTN_DUP)->GetAllButtonMappings()) {
+            controller->GetButton(BTN_CUSTOM_OCARINA_NOTE_D5)->AddButtonMapping(mapping);
+        }
     }
 }
 
@@ -1494,7 +1511,7 @@ void DrawSillyTab() {
     Reset_Option_Single("Reset##BunnyHood_EarLength", CVAR_COSMETIC("BunnyHood.EarLength"));
     UIWidgets::EnhancementSliderFloat("Bunny Hood Spread: %f", "##BunnyHood_EarSpread", CVAR_COSMETIC("BunnyHood.EarSpread"), -300.0f, 500.0f, "", 0.0f, false);
     Reset_Option_Single("Reset##BunnyHood_EarSpread", CVAR_COSMETIC("BunnyHood.EarSpread"));
-    UIWidgets::EnhancementSliderFloat("Goron Neck Length: %f", "##Goron_NeckLength", CVAR_COSMETIC("Goron.NeckLength"), 0.0f, 1000.0f, "", 0.0f, false);
+    UIWidgets::EnhancementSliderFloat("Goron Neck Length: %f", "##Goron_NeckLength", CVAR_COSMETIC("Goron.NeckLength"), 0.0f, 5000.0f, "", 0.0f, false);
     Reset_Option_Single("Reset##Goron_NeckLength", CVAR_COSMETIC("Goron.NeckLength"));
     UIWidgets::EnhancementCheckbox("Unfix Goron Spin", CVAR_COSMETIC("UnfixGoronSpin"));
     UIWidgets::EnhancementSliderFloat("Fairies Size: %f", "##Fairies_Size", CVAR_COSMETIC("Fairies.Size"), 0.25f, 5.0f, "", 1.0f, false);

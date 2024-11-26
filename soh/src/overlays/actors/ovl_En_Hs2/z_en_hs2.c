@@ -7,6 +7,7 @@
 #include "z_en_hs2.h"
 #include "vt.h"
 #include "objects/object_hs/object_hs.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
 

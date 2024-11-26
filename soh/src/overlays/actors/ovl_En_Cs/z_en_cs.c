@@ -1,6 +1,7 @@
 #include "z_en_cs.h"
 #include "objects/object_cs/object_cs.h"
 #include "objects/object_link_child/object_link_child.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
 
@@ -248,7 +249,7 @@ void EnCs_HandleTalking(EnCs* this, PlayState* play) {
         }
 
         if (this->actor.textId == 0x2023) {
-            func_80078884(NA_SE_SY_TRE_BOX_APPEAR);
+            Sfx_PlaySfxCentered(NA_SE_SY_TRE_BOX_APPEAR);
         }
 
         this->talkState = 1;

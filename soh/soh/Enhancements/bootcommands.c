@@ -10,6 +10,7 @@
 #include <stdarg.h>
 #include <z64.h>
 #include "soh/OTRGlobals.h"
+#include "soh/cvar_prefixes.h"
 
 uint8_t gLoadFileSelect = 0, gSkipLogoTest = 0;
 

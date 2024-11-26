@@ -22,6 +22,13 @@ typedef enum {
 } SkipGetItemAnimationType;
 
 typedef enum {
+    FORCED_DIALOG_SKIP_NONE,
+    FORCED_DIALOG_SKIP_NAVI,
+    FORCED_DIALOG_SKIP_NPC,
+    FORCED_DIALOG_SKIP_ALL
+} ForcedDialogMode;
+
+typedef enum {
     BUNNY_HOOD_VANILLA,
     BUNNY_HOOD_FAST_AND_JUMP,
     BUNNY_HOOD_FAST

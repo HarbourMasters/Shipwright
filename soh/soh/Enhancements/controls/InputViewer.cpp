@@ -4,6 +4,7 @@
 #include "libultraship/libultra/controller.h"
 #include "Context.h"
 #include "soh/OTRGlobals.h"
+#include "soh/cvar_prefixes.h"
 #ifndef IMGUI_DEFINE_MATH_OPERATORS
 #define IMGUI_DEFINE_MATH_OPERATORS
 #endif

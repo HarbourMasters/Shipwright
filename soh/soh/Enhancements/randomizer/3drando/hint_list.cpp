@@ -1101,7 +1101,7 @@ void StaticData::HintTable_Init() {
                                             /*french*/ "le #Laboratoire du Lac#"));
                                          // /*spanish*/el laboratorio del lago
 
-    hintTextTable[RHT_LH_FISHING_HOLE] = HintText(CustomMessage("the #Fishing Pond#",
+    hintTextTable[RHT_LH_FISHING_POND] = HintText(CustomMessage("the #Fishing Pond#",
                                                      /*german*/ "der #Angelteich#",
                                                      /*french*/ "l'#Étang#"));
                                                   // /*spanish*/el estanque
@@ -2250,6 +2250,118 @@ void StaticData::HintTable_Init() {
                                                /*french*/ HINT_TEXT_NEEDS_TRANSLATION_FR));
 
     hintTextTable[RHT_JUNK_SG_8] = HintText(CustomMessage("Juicy Chicken #1! Wow!.",
+                                               /*german*/ "",
+                                               /*french*/ HINT_TEXT_NEEDS_TRANSLATION_FR));
+
+    hintTextTable[RHT_JUNK_CREW_1] = HintText(CustomMessage("They say that %gGanondorf's Mom%w is going out with %ySqueak%w!",
+                                               /*german*/ "",
+                                               /*french*/ HINT_TEXT_NEEDS_TRANSLATION_FR));
+
+    hintTextTable[RHT_JUNK_CREW_2] = HintText(CustomMessage("They say that %gProxySaw%w is still fixing %yCaladius's Bugs%w...",
+                                               /*german*/ "",
+                                               /*french*/ HINT_TEXT_NEEDS_TRANSLATION_FR));
+
+    hintTextTable[RHT_JUNK_CREW_3] = HintText(CustomMessage("They say that %gItsHeckinPat%w is still just %yEyeballing it%w.",
+                                               /*german*/ "",
+                                               /*french*/ HINT_TEXT_NEEDS_TRANSLATION_FR));
+
+    hintTextTable[RHT_JUNK_CREW_4] = HintText(CustomMessage("They say that %gCaladius%w is working on %yV2%w of something.",
+                                               /*german*/ "",
+                                               /*french*/ HINT_TEXT_NEEDS_TRANSLATION_FR));
+
+    hintTextTable[RHT_JUNK_CREW_5] = HintText(CustomMessage("They say that %gdice%w is a funny name for a %ytaco%w.",
+                                               /*german*/ "",
+                                               /*french*/ HINT_TEXT_NEEDS_TRANSLATION_FR));
+
+    hintTextTable[RHT_JUNK_CREW_6] = HintText(CustomMessage("They say %g2Ship Rando%w is still blocked by %yV3%w...",
+                                               /*german*/ "",
+                                               /*french*/ HINT_TEXT_NEEDS_TRANSLATION_FR));
+
+    hintTextTable[RHT_JUNK_CREW_7] = HintText(CustomMessage("They say if you click your heels and say %gframebuffer%w 3 times, %yArchez%w appears!",
+                                               /*german*/ "",
+                                               /*french*/ HINT_TEXT_NEEDS_TRANSLATION_FR));
+
+    hintTextTable[RHT_JUNK_CREW_8] = HintText(CustomMessage("They say %gVB%w stands for %yVirtual Bananas%w... Probably.",
+                                               /*german*/ "",
+                                               /*french*/ HINT_TEXT_NEEDS_TRANSLATION_FR));
+
+    hintTextTable[RHT_JUNK_CREW_9] = HintText(CustomMessage("They say %gZeru%w is still routing his %yHundo%w.",
+                                               /*german*/ "",
+                                               /*french*/ HINT_TEXT_NEEDS_TRANSLATION_FR));
+
+    hintTextTable[RHT_JUNK_CREW_10] = HintText(CustomMessage("They say %gRaccoonCloud%w is still looking for his %yHover Boots%w.",
+                                               /*german*/ "",
+                                               /*french*/ HINT_TEXT_NEEDS_TRANSLATION_FR));
+
+    hintTextTable[RHT_JUNK_CREW_11] = HintText(CustomMessage("They say %gItsHeckinPat%w foreclosed on his %yHut%w.",
+                                               /*german*/ "",
+                                               /*french*/ HINT_TEXT_NEEDS_TRANSLATION_FR));
+
+    hintTextTable[RHT_JUNK_CREW_12] = HintText(CustomMessage("They say %gRaccoonCloud%w is part of the %yInner Circle%w.",
+                                               /*german*/ "",
+                                               /*french*/ HINT_TEXT_NEEDS_TRANSLATION_FR));
+
+    hintTextTable[RHT_JUNK_CREW_13] = HintText(CustomMessage("They say %gMoonlitxShadows%w is the %rleader%w of the %yDork Army%w.",
+                                               /*german*/ "",
+                                               /*french*/ HINT_TEXT_NEEDS_TRANSLATION_FR));
+
+    hintTextTable[RHT_JUNK_CREW_14] = HintText(CustomMessage("They say %gGanondorf%w hates the %yInternet%w.",
+                                               /*german*/ "",
+                                               /*french*/ HINT_TEXT_NEEDS_TRANSLATION_FR));
+
+    hintTextTable[RHT_JUNK_CREW_15] = HintText(CustomMessage("They say %gMido's House%w hoards %yTrash%w.",
+                                               /*german*/ "",
+                                               /*french*/ HINT_TEXT_NEEDS_TRANSLATION_FR));
+
+    hintTextTable[RHT_JUNK_CREW_16] = HintText(CustomMessage("They say %gSweettalking Ganondorf%w rewards %yHis Heart%w.",
+                                               /*german*/ "",
+                                               /*french*/ HINT_TEXT_NEEDS_TRANSLATION_FR));
+
+    hintTextTable[RHT_JUNK_CREW_17] = HintText(CustomMessage("They say %gaMannus%w said %yGo To Bed%w!",
+                                               /*german*/ "",
+                                               /*french*/ HINT_TEXT_NEEDS_TRANSLATION_FR));
+
+    hintTextTable[RHT_JUNK_CREW_18] = HintText(CustomMessage("They say %gCaladius%w is a %yPinhead%w!",
+                                               /*german*/ "",
+                                               /*french*/ HINT_TEXT_NEEDS_TRANSLATION_FR));
+
+    hintTextTable[RHT_JUNK_CREW_19] = HintText(CustomMessage("They say %gRaccoonCloud%w loves the %yIce Cavern%w.",
+                                               /*german*/ "",
+                                               /*french*/ HINT_TEXT_NEEDS_TRANSLATION_FR));
+
+    hintTextTable[RHT_JUNK_CREW_20] = HintText(CustomMessage("They say %gNo One%w should forget %yHover Scrub%w!",
+                                               /*german*/ "",
+                                               /*french*/ HINT_TEXT_NEEDS_TRANSLATION_FR));
+
+    hintTextTable[RHT_JUNK_CREW_21] = HintText(CustomMessage("They say %gMoonlitxShadows%w likes to %ySlide%w.",
+                                               /*german*/ "",
+                                               /*french*/ HINT_TEXT_NEEDS_TRANSLATION_FR));
+
+    hintTextTable[RHT_JUNK_CREW_23] = HintText(CustomMessage("They say that %gBackwalking%w should be %rBanned%w!",
+                                               /*german*/ "",
+                                               /*french*/ HINT_TEXT_NEEDS_TRANSLATION_FR));
+
+    hintTextTable[RHT_JUNK_CREW_24] = HintText(CustomMessage("They say that %gGorons%w should always have %yLong Necks%w!",
+                                               /*german*/ "",
+                                               /*french*/ HINT_TEXT_NEEDS_TRANSLATION_FR));
+
+    hintTextTable[RHT_JUNK_CREW_25] = HintText(CustomMessage("They say that %gCaladius%w has a %ytendency to lose his shirt%w!",
+                                               /*german*/ "",
+                                               /*french*/ HINT_TEXT_NEEDS_TRANSLATION_FR));
+
+    hintTextTable[RHT_JUNK_CREW_26] = HintText(CustomMessage("They say that if your %rSkip keeps Failing%w, you're probably an %yESS Off%w.",
+                                               /*german*/ "",
+                                               /*french*/ HINT_TEXT_NEEDS_TRANSLATION_FR));
+
+    hintTextTable[RHT_JUNK_CREW_27] = HintText(CustomMessage("They say that %gLogic%w is just a %ySuggestion%w.",
+                                               /*german*/ "",
+                                               /*french*/ HINT_TEXT_NEEDS_TRANSLATION_FR));
+
+    hintTextTable[RHT_JUNK_CREW_28] = HintText(CustomMessage("They say there's %gAlways Logic%w in %yNo Logic%w...",
+                                               /*german*/ "",
+                                               /*french*/ HINT_TEXT_NEEDS_TRANSLATION_FR));
+
+    hintTextTable[RHT_JUNK_CREW_29] = HintText(CustomMessage("They said that %rFredomato%w has just %yone more push up%w to do!",
                                                /*german*/ "",
                                                /*french*/ HINT_TEXT_NEEDS_TRANSLATION_FR));
 

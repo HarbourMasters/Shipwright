@@ -3,15 +3,6 @@
 
 #pragma once
 
-#include "SaveManager.h"
-#include <soh/Enhancements/item-tables/ItemTableTypes.h>
-
-#define GAME_REGION_NTSC 0
-#define GAME_REGION_PAL 1
-
-#define GAME_PLATFORM_N64 0
-#define GAME_PLATFORM_GC 1
-
 #define BTN_CUSTOM_MODIFIER1 0x0040
 #define BTN_CUSTOM_MODIFIER2 0x0080
 
@@ -29,6 +20,14 @@
 #include "Enhancements/savestates.h"
 #include "Enhancements/randomizer/randomizer.h"
 #include <vector>
+#include <string>
+
+struct ExtensionEntry {
+    std::string path;
+    std::string ext;
+};
+
+extern std::unordered_map<std::string, ExtensionEntry> ExtensionCache;
 #include "Enhancements/randomizer/context.h"
 
 const std::string customMessageTableID = "BaseGameOverrides";
@@ -42,58 +41,39 @@ const uint32_t defaultImGuiScale = 1;
 
 const float imguiScaleOptionToValue[4] = { 0.75f, 1.0f, 1.5f, 2.0f };
 
-class OTRGlobals
-{
-public:
-    static OTRGlobals* Instance;
+class OTRGlobals {
+    public:
+        static OTRGlobals* Instance;
 
     std::shared_ptr<Ship::Context> context;
     std::shared_ptr<SaveStateMgr> gSaveStateMgr;
     std::shared_ptr<Randomizer> gRandomizer;
     std::shared_ptr<Rando::Context> gRandoContext;
 
-    ImFont* defaultFontSmaller;
-    ImFont* defaultFontLarger;
-    ImFont* defaultFontLargest;
+        ImFont* defaultFontSmaller;
+        ImFont* defaultFontLarger;
+        ImFont* defaultFontLargest;
 
-    OTRGlobals();
-    ~OTRGlobals();
-    
-    void ScaleImGui();
+        OTRGlobals();
+        ~OTRGlobals();
 
-    bool HasMasterQuest();
-    bool HasOriginal();
-    uint32_t GetInterpolationFPS();
-    std::shared_ptr<std::vector<std::string>> ListFiles(std::string path);
+        void ScaleImGui();
 
-private:
-	void CheckSaveFile(size_t sramSize) const;
-    bool hasMasterQuest;
-    bool hasOriginal;
-    ImFont* CreateDefaultFontWithSize(float size);
+        bool HasMasterQuest();
+        bool HasOriginal();
+        uint32_t GetInterpolationFPS();
+        std::shared_ptr<std::vector<std::string>> ListFiles(std::string path);
+
+    private:
+    	void CheckSaveFile(size_t sramSize) const;
+        bool hasMasterQuest;
+        bool hasOriginal;
+        ImFont* CreateDefaultFontWithSize(float size);
 };
-
-uint32_t IsGameMasterQuest();
 #endif
 
-#define CVAR_RANDOMIZER_ENHANCEMENT(var) CVAR_PREFIX_RANDOMIZER_ENHANCEMENT "." var
-#define CVAR_RANDOMIZER_SETTING(var) CVAR_PREFIX_RANDOMIZER_SETTING "." var
-#define CVAR_COSMETIC(var) CVAR_PREFIX_COSMETIC "." var
-#define CVAR_AUDIO(var) CVAR_PREFIX_AUDIO "." var
-#define CVAR_CHEAT(var) CVAR_PREFIX_CHEAT "." var
-#define CVAR_ENHANCEMENT(var) CVAR_PREFIX_ENHANCEMENT "." var
-#define CVAR_SETTING(var) CVAR_PREFIX_SETTING "." var
-#define CVAR_WINDOW(var) CVAR_PREFIX_WINDOW "." var
-#define CVAR_TRACKER(var) CVAR_PREFIX_TRACKER "." var
-#define CVAR_TRACKER_ITEM(var) CVAR_TRACKER(".ItemTracker." var)
-#define CVAR_TRACKER_CHECK(var) CVAR_TRACKER(".CheckTracker." var)
-#define CVAR_TRACKER_ENTRANCE(var) CVAR_TRACKER(".EntranceTracker." var)
-#define CVAR_DEVELOPER_TOOLS(var) CVAR_PREFIX_DEVELOPER_TOOLS "." var
-#define CVAR_GENERAL(var) CVAR_PREFIX_GENERAL "." var
-#define CVAR_REMOTE(var) CVAR_PREFIX_REMOTE "." var
-
 #ifndef __cplusplus
-    void InitOTR(void);
+void InitOTR(void);
 void DeinitOTR(void);
 void VanillaItemTable_Init();
 void OTRAudio_Init();
@@ -107,53 +87,12 @@ void OTRGfxPrint(const char* str, void* printer, void (*printImpl)(void*, char))
 void OTRGetPixelDepthPrepare(float x, float y);
 uint16_t OTRGetPixelDepth(float x, float y);
 int32_t OTRGetLastScancode();
-uint32_t ResourceMgr_IsGameMasterQuest();
-uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
-uint32_t ResourceMgr_GameHasMasterQuest();
-uint32_t ResourceMgr_GameHasOriginal();
-uint32_t ResourceMgr_GetNumGameVersions();
-uint32_t ResourceMgr_GetGameVersion(int index);
-uint32_t ResourceMgr_GetGamePlatform(int index);
-uint32_t ResourceMgr_GetGameRegion(int index);
-void ResourceMgr_LoadDirectory(const char* resName);
-void ResourceMgr_UnloadResource(const char* resName);
-char** ResourceMgr_ListFiles(const char* searchMask, int* resultSize);
-uint8_t ResourceMgr_FileExists(const char* resName);
-uint8_t ResourceMgr_FileAltExists(const char* resName);
-void ResourceMgr_UnloadOriginalWhenAltExists(const char* resName);
 char* GetResourceDataByNameHandlingMQ(const char* path);
-uint8_t ResourceMgr_TexIsRaw(const char* texPath);
-uint8_t ResourceMgr_ResourceIsBackground(char* texPath);
-char* ResourceMgr_LoadJPEG(char* data, size_t dataSize);
-uint16_t ResourceMgr_LoadTexWidthByName(char* texPath);
-uint16_t ResourceMgr_LoadTexHeightByName(char* texPath);
-char* ResourceMgr_LoadTexOrDListByName(const char* filePath);
-char* ResourceMgr_LoadPlayerAnimByName(const char* animPath);
-AnimationHeaderCommon* ResourceMgr_LoadAnimByName(const char* path);
-char* ResourceMgr_GetNameByCRC(uint64_t crc, char* alloc);
-Gfx* ResourceMgr_LoadGfxByCRC(uint64_t crc);
-Gfx* ResourceMgr_LoadGfxByName(const char* path);
-uint8_t ResourceMgr_FileIsCustomByName(const char* path);
-void ResourceMgr_PatchGfxByName(const char* path, const char* patchName, int index, Gfx instruction);
-void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName);
-char* ResourceMgr_LoadArrayByNameAsVec3s(const char* path);
-Vtx* ResourceMgr_LoadVtxByCRC(uint64_t crc);
 
-Vtx* ResourceMgr_LoadVtxByName(char* path);
-SoundFont* ResourceMgr_LoadAudioSoundFont(const char* path);
-SequenceData ResourceMgr_LoadSeqByName(const char* path);
-SoundFontSample* ResourceMgr_LoadAudioSample(const char* path);
-CollisionHeader* ResourceMgr_LoadColByName(const char* path);
 void Ctx_ReadSaveFile(uintptr_t addr, void* dramAddr, size_t size);
 void Ctx_WriteSaveFile(uintptr_t addr, void* dramAddr, size_t size);
 
 uint64_t GetPerfCounter();
-bool ResourceMgr_IsAltAssetsEnabled();
-struct SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path, SkelAnime* skelAnime);
-void ResourceMgr_UnregisterSkeleton(SkelAnime* skelAnime);
-void ResourceMgr_ClearSkeletons();
-s32* ResourceMgr_LoadCSByName(const char* path);
-int ResourceMgr_OTRSigCheck(char* imgData);
 uint64_t osGetTime(void);
 uint32_t osGetCount(void);
 uint32_t OTRGetCurrentWidth(void);
@@ -208,8 +147,6 @@ void Overlay_DisplayText(float duration, const char* text);
 void Overlay_DisplayText_Seconds(int seconds, const char* text);
 GetItemEntry ItemTable_Retrieve(int16_t getItemID);
 GetItemEntry ItemTable_RetrieveEntry(s16 modIndex, s16 getItemID);
-void Entrance_ClearEntranceTrackingData(void);
-void Entrance_InitEntranceTrackingData(void);
 void EntranceTracker_SetCurrentGrottoID(s16 entranceIndex);
 void EntranceTracker_SetLastEntranceOverride(s16 entranceIndex);
 void Gfx_RegisterBlendedTexture(const char* name, u8* mask, u8* replacement);

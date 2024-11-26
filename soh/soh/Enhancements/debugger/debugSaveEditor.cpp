@@ -18,6 +18,7 @@ extern "C" {
 #include "variables.h"
 #include "functions.h"
 #include "macros.h"
+#include "soh/cvar_prefixes.h"
 #include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 extern PlayState* gPlayState;
 
@@ -613,8 +614,8 @@ void DrawFlagsTab() {
             ImGui::SameLine();
             
             DrawGroupWithBorder([&]() {
-                ImGui::Text("unk_6AE");
-                UIWidgets::DrawFlagArray16("unk_6AE", player->unk_6AE);
+                ImGui::Text("unk_6AE_rotFlags");
+                UIWidgets::DrawFlagArray16("unk_6AE_rotFlags", player->unk_6AE_rotFlags);
             });
         }
         ImGui::TreePop();
@@ -1206,7 +1207,7 @@ void DrawQuestStatusTab() {
     ImGui::SameLine();
     DrawQuestItemButton(QUEST_GERUDO_CARD);
 
-    for (const SongMapEntry& entry : songMapping) {
+    for (const auto& [quest, entry] : songMapping) {
         if ((entry.id != QUEST_SONG_MINUET) && (entry.id != QUEST_SONG_LULLABY)) {
             ImGui::SameLine();
         }
