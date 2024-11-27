@@ -134,11 +134,6 @@ class Fishsanity {
     static void OnActorInitHandler(void* refActor);
 
     /**
-     * @brief FlagSet hook handler for fishsanity
-    */
-    static void OnFlagSetHandler(int16_t flagType, int16_t flag);
-
-    /**
      * @brief PlayerUpdate hook handler for fishsanity
     */
     static void OnPlayerUpdateHandler();
@@ -157,6 +152,8 @@ class Fishsanity {
      * @brief VB hook handler for fishsanity
     */
     static void OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_list originalArgs);
+
+    static void OnItemReceiveHandler(GetItemEntry itemEntry);
 
   private:
     /**
@@ -184,6 +181,7 @@ class Fishsanity {
     static bool fishsanityHelpersInit;
 
     static s16 fishGroupCounter;
+    static bool enableAdvance;
 
     /////////////////////////////////////////////////////////
     //// Helper data structures derived from static data ////

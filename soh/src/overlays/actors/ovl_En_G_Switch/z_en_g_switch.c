@@ -215,7 +215,7 @@ void EnGSwitch_SilverRupeeTracker(EnGSwitch* this, PlayState* play) {
         if (sCollectedCount < (CVarGetInteger(CVAR_ENHANCEMENT("SilverRupeeJingleExtend"), 0) ? 10 : 5)) {
             // "sound?"
             osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ 音？ ☆☆☆☆☆ %d\n" VT_RST, this->noteIndex);
-            Audio_PlaySoundTransposed(&D_801333D4, NA_SE_EV_FIVE_COUNT_LUPY, majorScale[this->noteIndex]);
+            Audio_PlaySoundTransposed(&gSfxDefaultPos, NA_SE_EV_FIVE_COUNT_LUPY, majorScale[this->noteIndex]);
             this->noteIndex = sCollectedCount;
         }
     }
@@ -228,10 +228,10 @@ void EnGSwitch_SilverRupeeTracker(EnGSwitch* this, PlayState* play) {
         if ((play->sceneNum == SCENE_GERUDO_TRAINING_GROUND) && (this->actor.room == 2)) {
             Flags_SetTempClear(play, this->actor.room);
         } else {
-            func_80078884(NA_SE_SY_CORRECT_CHIME);
+            Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
             Flags_SetSwitch(play, this->switchFlag);
         }
-        func_80078884(NA_SE_SY_GET_RUPY);
+        Sfx_PlaySfxCentered(NA_SE_SY_GET_RUPY);
         Actor_Kill(&this->actor);
     }
 }
@@ -243,7 +243,7 @@ void EnGSwitch_SilverRupeeIdle(EnGSwitch* this, PlayState* play) {
     if (this->actor.xyzDistToPlayerSq < 900.0f) {
         Rupees_ChangeBy(5);
         sCollectedCount++;
-        func_80078884(NA_SE_SY_GET_RUPY);
+        Sfx_PlaySfxCentered(NA_SE_SY_GET_RUPY);
         this->actor.world.pos = player->actor.world.pos;
         this->actor.world.pos.y += 40.0f;
         if (LINK_IS_ADULT) {
@@ -345,8 +345,8 @@ void EnGSwitch_GalleryRupee(EnGSwitch* this, PlayState* play) {
             if (gallery->actor.update != NULL) {
                 gallery->hitCount++;
                 gallery->targetState[this->index] = ENSYATEKIHIT_HIT;
-                func_80078884(NA_SE_EV_HIT_SOUND);
-                func_80078884(NA_SE_SY_GET_RUPY);
+                Sfx_PlaySfxCentered(NA_SE_EV_HIT_SOUND);
+                Sfx_PlaySfxCentered(NA_SE_SY_GET_RUPY);
                 // "Yeah !"
                 osSyncPrintf(VT_FGCOL(YELLOW) "☆☆☆☆☆ いぇぇーす！ＨＩＴ！！ ☆☆☆☆☆ %d\n" VT_RST, gallery->hitCount);
                 EnGSwitch_Break(this, play);

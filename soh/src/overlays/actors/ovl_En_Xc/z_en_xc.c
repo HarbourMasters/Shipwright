@@ -13,6 +13,8 @@
 #include "scenes/indoors/tokinoma/tokinoma_scene.h"
 #include "scenes/dungeons/ice_doukutu/ice_doukutu_scene.h"
 #include "vt.h"
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
@@ -122,8 +124,8 @@ s32 EnXc_AnimIsFinished(EnXc* this) {
     return SkelAnime_Update(&this->skelAnime);
 }
 
-CsCmdActorAction* EnXc_GetCsCmd(PlayState* play, s32 npcActionIdx) {
-    CsCmdActorAction* action = NULL;
+CsCmdActorCue* EnXc_GetCsCmd(PlayState* play, s32 npcActionIdx) {
+    CsCmdActorCue* action = NULL;
 
     if (play->csCtx.state != 0) {
         action = play->csCtx.npcActions[npcActionIdx];
@@ -132,7 +134,7 @@ CsCmdActorAction* EnXc_GetCsCmd(PlayState* play, s32 npcActionIdx) {
 }
 
 s32 EnXc_CompareCsAction(EnXc* this, PlayState* play, u16 action, s32 npcActionIdx) {
-    CsCmdActorAction* csCmdActorAction = EnXc_GetCsCmd(play, npcActionIdx);
+    CsCmdActorCue* csCmdActorAction = EnXc_GetCsCmd(play, npcActionIdx);
 
     if (csCmdActorAction != NULL && csCmdActorAction->action == action) {
         return true;
@@ -141,7 +143,7 @@ s32 EnXc_CompareCsAction(EnXc* this, PlayState* play, u16 action, s32 npcActionI
 }
 
 s32 EnXc_CsActionsAreNotEqual(EnXc* this, PlayState* play, u16 action, s32 npcActionIdx) {
-    CsCmdActorAction* csCmdNPCAction = EnXc_GetCsCmd(play, npcActionIdx);
+    CsCmdActorCue* csCmdNPCAction = EnXc_GetCsCmd(play, npcActionIdx);
 
     if (csCmdNPCAction && csCmdNPCAction->action != action) {
         return true;
@@ -150,7 +152,7 @@ s32 EnXc_CsActionsAreNotEqual(EnXc* this, PlayState* play, u16 action, s32 npcAc
 }
 
 void func_80B3C588(EnXc* this, PlayState* play, u32 npcActionIdx) {
-    CsCmdActorAction* csCmdNPCAction = EnXc_GetCsCmd(play, npcActionIdx);
+    CsCmdActorCue* csCmdNPCAction = EnXc_GetCsCmd(play, npcActionIdx);
     Actor* thisx = &this->actor;
 
     if (csCmdNPCAction != NULL) {
@@ -164,7 +166,7 @@ void func_80B3C588(EnXc* this, PlayState* play, u32 npcActionIdx) {
 }
 
 void func_80B3C620(EnXc* this, PlayState* play, s32 npcActionIdx) {
-    CsCmdActorAction* npcAction = EnXc_GetCsCmd(play, npcActionIdx);
+    CsCmdActorCue* npcAction = EnXc_GetCsCmd(play, npcActionIdx);
     Vec3f* xcPos = &this->actor.world.pos;
     f32 startX;
     f32 startY;
@@ -415,7 +417,7 @@ void EnXc_SetWalkingSFX(EnXc* this, PlayState* play) {
         if (this->actor.bgCheckFlags & 1) {
             sfxId = SFX_FLAG;
             sfxId += SurfaceType_GetSfx(&play->colCtx, this->actor.floorPoly, this->actor.floorBgId);
-            func_80078914(&this->actor.projectedPos, sfxId);
+            Sfx_PlaySfxAtPos(&this->actor.projectedPos, sfxId);
         }
     }
 }
@@ -429,11 +431,11 @@ void EnXc_SetNutThrowSFX(EnXc* this, PlayState* play) {
         if (this->actor.bgCheckFlags & 1) {
             sfxId = SFX_FLAG;
             sfxId += SurfaceType_GetSfx(&play->colCtx, this->actor.floorPoly, this->actor.floorBgId);
-            func_80078914(&this->actor.projectedPos, sfxId);
+            Sfx_PlaySfxAtPos(&this->actor.projectedPos, sfxId);
         }
     }
     if (Animation_OnFrame(&this->skelAnime, 20.0f)) {
-        func_80078914(&this->actor.projectedPos, NA_SE_VO_SK_SHOUT);
+        Sfx_PlaySfxAtPos(&this->actor.projectedPos, NA_SE_VO_SK_SHOUT);
     }
 }
 
@@ -445,7 +447,7 @@ void EnXc_SetLandingSFX(EnXc* this, PlayState* play) {
         if (Animation_OnFrame(&this->skelAnime, 11.0f)) {
             sfxId = SFX_FLAG;
             sfxId += SurfaceType_GetSfx(&play->colCtx, this->actor.floorPoly, this->actor.floorBgId);
-            func_80078914(&this->actor.projectedPos, sfxId);
+            Sfx_PlaySfxAtPos(&this->actor.projectedPos, sfxId);
         }
     }
 }
@@ -465,13 +467,13 @@ void EnXc_SetColossusAppearSFX(EnXc* this, PlayState* play) {
                 Vec3f pos = { -611.0f, 728.0f, -2.0f };
 
                 SkinMatrix_Vec3fMtxFMultXYZW(&play->viewProjectionMtxF, &pos, &sXyzDist, wDest);
-                func_80078914(&sXyzDist, NA_SE_EV_JUMP_CONC);
+                Sfx_PlaySfxAtPos(&sXyzDist, NA_SE_EV_JUMP_CONC);
             } else if (frameCount == 164) {
                 Vec3f pos = { -1069.0f, 38.0f, 0.0f };
                 s32 pad;
 
                 SkinMatrix_Vec3fMtxFMultXYZW(&play->viewProjectionMtxF, &pos, &sXyzDist, wDest);
-                func_80078914(&sXyzDist, NA_SE_PL_WALK_CONCRETE);
+                Sfx_PlaySfxAtPos(&sXyzDist, NA_SE_PL_WALK_CONCRETE);
             }
         }
     }
@@ -481,7 +483,7 @@ void func_80B3D118(PlayState* play) {
     s16 sceneNum;
 
     if ((gSaveContext.sceneSetupIndex != 4) || (sceneNum = play->sceneNum, sceneNum != SCENE_DESERT_COLOSSUS)) {
-        func_800788CC(NA_SE_PL_SKIP);
+        Sfx_PlaySfxCentered2(NA_SE_PL_SKIP);
     }
 }
 
@@ -528,7 +530,7 @@ s32 sEnXcFlameSpawned = false;
 void EnXc_SpawnFlame(EnXc* this, PlayState* play) {
 
     if (!sEnXcFlameSpawned) {
-        CsCmdActorAction* npcAction = EnXc_GetCsCmd(play, 0);
+        CsCmdActorCue* npcAction = EnXc_GetCsCmd(play, 0);
         f32 xPos = npcAction->startPos.x;
         f32 yPos = npcAction->startPos.y;
         f32 zPos = npcAction->startPos.z;
@@ -540,7 +542,7 @@ void EnXc_SpawnFlame(EnXc* this, PlayState* play) {
 
 void EnXc_SetupFlamePos(EnXc* this, PlayState* play) {
     Vec3f* attachedPos;
-    CsCmdActorAction* npcAction = EnXc_GetCsCmd(play, 0);
+    CsCmdActorCue* npcAction = EnXc_GetCsCmd(play, 0);
 
     if (this->flameActor != NULL) {
         attachedPos = &this->flameActor->world.pos;
@@ -565,7 +567,7 @@ void EnXc_InitFlame(EnXc* this, PlayState* play) {
     s16 sceneNum = play->sceneNum;
 
     if (sceneNum == SCENE_DEATH_MOUNTAIN_CRATER) {
-        CsCmdActorAction* npcAction = EnXc_GetCsCmd(play, 0);
+        CsCmdActorCue* npcAction = EnXc_GetCsCmd(play, 0);
         if (npcAction != NULL) {
             s32 action = npcAction->action;
 
@@ -588,7 +590,7 @@ void EnXc_InitFlame(EnXc* this, PlayState* play) {
 
 void func_80B3D48C(EnXc* this, PlayState* play) {
     CutsceneContext* csCtx = &play->csCtx;
-    CsCmdActorAction* linkAction = csCtx->linkAction;
+    CsCmdActorCue* linkAction = csCtx->linkAction;
     s16 yaw;
 
     if (linkAction != NULL) {
@@ -603,7 +605,7 @@ void func_80B3D48C(EnXc* this, PlayState* play) {
 
 AnimationHeader* EnXc_GetCurrentHarpAnim(PlayState* play, s32 index) {
     AnimationHeader* animation = &gSheikPlayingHarp5Anim;
-    CsCmdActorAction* npcAction = EnXc_GetCsCmd(play, index);
+    CsCmdActorCue* npcAction = EnXc_GetCsCmd(play, index);
 
     if (npcAction != NULL) {
         u16 action = npcAction->action;
@@ -677,7 +679,7 @@ void EnXc_SetupFallFromSkyAction(EnXc* this, PlayState* play) {
     CutsceneContext* csCtx = &play->csCtx;
 
     if (csCtx->state != 0) {
-        CsCmdActorAction* npcAction = csCtx->npcActions[4];
+        CsCmdActorCue* npcAction = csCtx->npcActions[4];
 
         if (npcAction && npcAction->action == 2) {
             s32 pad;
@@ -752,7 +754,7 @@ void EnXc_SetupStoppedAction(EnXc* this) {
 }
 
 void func_80B3DAF0(EnXc* this, PlayState* play) {
-    CsCmdActorAction* npcAction = EnXc_GetCsCmd(play, 4);
+    CsCmdActorCue* npcAction = EnXc_GetCsCmd(play, 4);
     u16 action;
 
     if (npcAction &&
@@ -799,7 +801,7 @@ void func_80B3DCA8(EnXc* this, PlayState* play) {
     f32 frameCount;
 
     if (play->csCtx.state != 0) {
-        CsCmdActorAction* npcAction = play->csCtx.npcActions[4];
+        CsCmdActorCue* npcAction = play->csCtx.npcActions[4];
 
         if (npcAction != NULL && npcAction->action == 8) {
             frameCount = Animation_GetLastFrame(&gSheikInitialHarpAnim);
@@ -848,7 +850,7 @@ void func_80B3DE78(EnXc* this, s32 animFinished) {
 
 void EnXc_SetupReverseAccel(EnXc* this, PlayState* play) {
     if (play->csCtx.state != 0) {
-        CsCmdActorAction* npcAction = play->csCtx.npcActions[4];
+        CsCmdActorCue* npcAction = play->csCtx.npcActions[4];
 
         if (npcAction != NULL && npcAction->action == 4) {
             Animation_Change(&this->skelAnime, &gSheikWalkingAnim, -1.0f, Animation_GetLastFrame(&gSheikWalkingAnim),
@@ -900,7 +902,7 @@ void func_80B3E164(EnXc* this, PlayState* play) {
 
 void EnXc_SetupDisappear(EnXc* this, PlayState* play) {
     if (play->csCtx.state != 0) {
-        CsCmdActorAction* npcAction = play->csCtx.npcActions[4];
+        CsCmdActorCue* npcAction = play->csCtx.npcActions[4];
 
         if (npcAction != NULL && npcAction->action == 9) {
             s16 sceneNum = play->sceneNum;
@@ -1164,7 +1166,7 @@ void func_80B3EC0C(EnXc* this, PlayState* play) {
     CutsceneContext* csCtx = &play->csCtx;
 
     if (csCtx->state != 0) {
-        CsCmdActorAction* npcAction = csCtx->npcActions[4];
+        CsCmdActorCue* npcAction = csCtx->npcActions[4];
 
         if ((npcAction != NULL) && (npcAction->action != 1)) {
             PosRot* posRot = &this->actor.world;
@@ -1187,7 +1189,7 @@ void func_80B3EC90(EnXc* this, PlayState* play) {
     CutsceneContext* csCtx = &play->csCtx;
 
     if (csCtx->state != 0) {
-        CsCmdActorAction* npcAction = csCtx->npcActions[4];
+        CsCmdActorCue* npcAction = csCtx->npcActions[4];
 
         if (npcAction != NULL && npcAction->action != 6) {
             func_80B3C9EC(this);
@@ -1402,18 +1404,18 @@ void func_80B3F3C8(EnXc* this, PlayState* play) {
 }
 
 void func_80B3F3D8() {
-    func_800788CC(NA_SE_PL_SKIP);
+    Sfx_PlaySfxCentered2(NA_SE_PL_SKIP);
 }
 
 void EnXc_PlayDiveSFX(Vec3f* src, PlayState* play) {
     f32 wDest[2];
 
     SkinMatrix_Vec3fMtxFMultXYZW(&play->viewProjectionMtxF, src, &D_80B42DA0, wDest);
-    func_80078914(&D_80B42DA0, NA_SE_EV_DIVE_INTO_WATER);
+    Sfx_PlaySfxAtPos(&D_80B42DA0, NA_SE_EV_DIVE_INTO_WATER);
 }
 
 void EnXc_LakeHyliaDive(PlayState* play) {
-    CsCmdActorAction* npcAction = npcAction = EnXc_GetCsCmd(play, 0);
+    CsCmdActorCue* npcAction = npcAction = EnXc_GetCsCmd(play, 0);
 
     if (npcAction != NULL) {
         Vec3f startPos;
@@ -1442,7 +1444,7 @@ void func_80B3F534(PlayState* play) {
 
 s32 D_80B41DAC = 1;
 void func_80B3F59C(EnXc* this, PlayState* play) {
-    CsCmdActorAction* npcAction = EnXc_GetCsCmd(play, 0);
+    CsCmdActorCue* npcAction = EnXc_GetCsCmd(play, 0);
 
     if (npcAction != NULL) {
         s32 action = npcAction->action;
@@ -1586,7 +1588,7 @@ void EnXc_PlayTriforceSFX(Actor* thisx, PlayState* play) {
 
 void func_80B3FAE0(EnXc* this) {
     if (Animation_OnFrame(&this->skelAnime, 38.0f)) {
-        func_80078914(&this->actor.projectedPos, NA_SE_VO_SK_SHOUT);
+        Sfx_PlaySfxAtPos(&this->actor.projectedPos, NA_SE_VO_SK_SHOUT);
         func_80B3FA2C();
     }
 }
@@ -1649,7 +1651,7 @@ void func_80B3FF0C(EnXc* this, PlayState* play) {
         CutsceneContext* csCtx = &play->csCtx;
 
         if (csCtx->state != 0) {
-            CsCmdActorAction* npcAction = play->csCtx.npcActions[4];
+            CsCmdActorCue* npcAction = play->csCtx.npcActions[4];
 
             if (npcAction != NULL) {
                 PosRot* posRot = &this->actor.world;
@@ -1788,14 +1790,14 @@ void EnXc_SetThrownAroundSFX(EnXc* this) {
     SkelAnime* skelAnime = &this->skelAnime;
 
     if (Animation_OnFrame(skelAnime, 9.0f)) {
-        func_80078914(&this->actor.projectedPos, NA_SE_PL_BOUND_GRASS);
-        func_80078914(&this->actor.projectedPos, NA_SE_VO_SK_CRASH);
+        Sfx_PlaySfxAtPos(&this->actor.projectedPos, NA_SE_PL_BOUND_GRASS);
+        Sfx_PlaySfxAtPos(&this->actor.projectedPos, NA_SE_VO_SK_CRASH);
     } else if (Animation_OnFrame(skelAnime, 26.0f)) {
-        func_80078914(&this->actor.projectedPos, NA_SE_PL_BOUND_GRASS);
+        Sfx_PlaySfxAtPos(&this->actor.projectedPos, NA_SE_PL_BOUND_GRASS);
     } else if (Animation_OnFrame(skelAnime, 28.0f)) {
-        func_80078914(&this->actor.projectedPos, NA_SE_PL_WALK_GRASS);
+        Sfx_PlaySfxAtPos(&this->actor.projectedPos, NA_SE_PL_WALK_GRASS);
     } else if (Animation_OnFrame(skelAnime, 34.0f)) {
-        func_80078914(&this->actor.projectedPos, NA_SE_PL_WALK_GRASS);
+        Sfx_PlaySfxAtPos(&this->actor.projectedPos, NA_SE_PL_WALK_GRASS);
     }
 }
 
@@ -1809,9 +1811,9 @@ void EnXc_SetCrySFX(EnXc* this, PlayState* play) {
     CutsceneContext* csCtx = &play->csCtx;
 
     if (csCtx->frames == 869) {
-        func_80078914(&this->actor.projectedPos, NA_SE_VO_SK_CRY_0);
+        Sfx_PlaySfxAtPos(&this->actor.projectedPos, NA_SE_VO_SK_CRY_0);
     } else if (csCtx->frames == 939) {
-        func_80078914(&this->actor.projectedPos, NA_SE_VO_SK_CRY_1);
+        Sfx_PlaySfxAtPos(&this->actor.projectedPos, NA_SE_VO_SK_CRY_1);
     }
 }
 
@@ -1984,7 +1986,7 @@ void func_80B40E88(EnXc* this) {
 }
 
 s32 EnXc_SetupNocturneState(Actor* thisx, PlayState* play) {
-    CsCmdActorAction* npcAction = EnXc_GetCsCmd(play, 4);
+    CsCmdActorCue* npcAction = EnXc_GetCsCmd(play, 4);
 
     if (npcAction != NULL) {
         s32 action = npcAction->action;

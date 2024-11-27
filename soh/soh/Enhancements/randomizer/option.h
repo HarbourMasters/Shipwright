@@ -301,7 +301,7 @@ class Option {
      * U8 options are rendered as Comboboxes, but this can be overriden during construction with
      * the `widgetType` property.
      */
-    bool RenderImGui() const;
+    bool RenderImGui();
 
     bool HasFlag(int imFlag_) const;
     void AddFlag(int imFlag_);
@@ -317,10 +317,10 @@ protected:
            bool defaultHidden_, int imFlags_);
 
   private:
-    bool RenderCheckbox() const;
-    bool RenderTristateCheckbox() const;
-    bool RenderCombobox() const;
-    bool RenderSlider() const;
+    bool RenderCheckbox();
+    bool RenderTristateCheckbox();
+    bool RenderCombobox();
+    bool RenderSlider();
     std::variant<bool, uint8_t> var;
     std::string name;
     std::vector<std::string> options;

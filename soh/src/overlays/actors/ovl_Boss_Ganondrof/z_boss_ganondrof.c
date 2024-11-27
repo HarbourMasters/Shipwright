@@ -11,6 +11,7 @@
 #include "overlays/effects/ovl_Effect_Ss_Fhg_Flash/z_eff_ss_fhg_flash.h"
 #include "overlays/effects/ovl_Effect_Ss_Hahen/z_eff_ss_hahen.h"
 #include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
+#include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
@@ -316,7 +317,7 @@ void BossGanondrof_Intro(BossGanondrof* this, PlayState* play) {
     }
 
     if (this->timers[1] == 30) {
-        func_80078914(&sAudioVec, NA_SE_EN_FANTOM_TRANSFORM);
+        Sfx_PlaySfxAtPos(&sAudioVec, NA_SE_EN_FANTOM_TRANSFORM);
     }
 
     if (horse->bossGndSignal == FHG_LIGHTNING) {
@@ -966,7 +967,7 @@ void BossGanondrof_Death(BossGanondrof* this, PlayState* play) {
                     bodyDecayLevel = 1;
                     break;
             }
-            if (GameInteractor_Should(VB_PHANTOM_GANON_DEATH_SCENE, true)) {
+            if (GameInteractor_Should(VB_PHANTOM_GANON_DEATH_SCENE, true, this)) {
                 Math_ApproachS(&this->actor.shape.rot.y, this->work[GND_VARIANCE_TIMER] * -100, 5, 0xBB8);
                 Math_ApproachF(&this->cameraNextEye.z, this->targetPos.z + 60.0f, 0.02f, 0.5f);
                 Math_ApproachF(&this->actor.world.pos.y, GND_BOSSROOM_CENTER_Y + 133.0f, 0.05f, 100.0f);

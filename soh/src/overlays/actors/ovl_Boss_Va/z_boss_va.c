@@ -14,6 +14,7 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
 
+#include "soh/OTRGlobals.h"
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
@@ -3937,7 +3938,7 @@ void BossVa_SpawnTumor(PlayState* play, BossVaEffect* effect, BossVa* this, Vec3
             effect->scale = 0.0f;
 
             if (((i % 4) == 0) || (mode == 2)) {
-                Audio_PlaySoundGeneral(NA_SE_EN_BALINADE_BREAK, &effect->pos, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                Audio_PlaySoundGeneral(NA_SE_EN_BALINADE_BREAK, &effect->pos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             }
             break;
         }

@@ -593,7 +593,7 @@ namespace UIWidgets {
 #if defined(__SWITCH__) || defined(__WIIU__)
             srand(time(NULL));
 #endif
-            ImVec4 color = GetRandomValue(255);
+            ImVec4 color = GetRandomValue();
             colors->x = color.x;
             colors->y = color.y;
             colors->z = color.z;
@@ -813,5 +813,19 @@ namespace UIWidgets {
     bool StateButton(const char* str_id, const char* label) {
         float sz = ImGui::GetFrameHeight();
         return StateButtonEx(str_id, label, ImVec2(sz, sz), ImGuiButtonFlags_None);
+    }
+
+    // Reference: imgui-src/misc/cpp/imgui_stdlib.cpp
+    int InputTextResizeCallback(ImGuiInputTextCallbackData* data) {
+        std::string* value = (std::string*)data->UserData;
+        if (data->EventFlag == ImGuiInputTextFlags_CallbackResize) {
+            value->resize(data->BufTextLen);
+            data->Buf = (char*)value->c_str();
+        }
+        return 0;
+    }
+
+    bool InputString(const char* label, std::string* value) {
+        return ImGui::InputText(label, (char*)value->c_str(), value->capacity() + 1, ImGuiInputTextFlags_CallbackResize, InputTextResizeCallback, value);
     }
 }

@@ -110,7 +110,7 @@ void func_808B29F0(BgSpot11Oasis* this, PlayState* play) {
         func_808B2AA8(this);
         Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ELF, this->actor.world.pos.x,
                     this->actor.world.pos.y + 40.0f, this->actor.world.pos.z, 0, 0, 0, FAIRY_SPAWNER, true);
-        func_80078884(NA_SE_SY_CORRECT_CHIME);
+        Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
     }
     func_808B27F0(play, this->actor.world.pos.y);
 }

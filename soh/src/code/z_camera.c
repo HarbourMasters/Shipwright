@@ -6168,7 +6168,7 @@ s32 Camera_Demo5(Camera* camera) {
 
     pad = sDemo5PrevSfxFrame - camera->play->state.frames;
     if ((pad >= 0x33) || (pad < -0x32)) {
-        func_80078884(camera->data1);
+        Sfx_PlaySfxCentered(camera->data1);
     }
 
     sDemo5PrevSfxFrame = camera->play->state.frames;
@@ -6182,7 +6182,7 @@ s32 Camera_Demo5(Camera* camera) {
         sp4A = playerhead.rot.y - playerTargetGeo.yaw;
         if (camera->target->category == ACTORCAT_PLAYER) {
             pad = camera->play->state.frames - sDemo5PrevAction12Frame;
-            if (player->stateFlags1 & PLAYER_STATE1_ITEM_OVER_HEAD) {
+            if (player->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR) {
                 // holding object over head.
                 Player_SetCsActionWithHaltedActors(camera->play, camera->target, 8);
             } else if (ABS(pad) > 3000) {
@@ -7362,11 +7362,11 @@ s32 Camera_DbgChangeMode(Camera* camera) {
     if (!gDbgCamEnabled && camera->play->activeCamera == MAIN_CAM) {
         if (CHECK_BTN_ALL(D_8015BD7C->state.input[2].press.button, BTN_CUP)) {
             osSyncPrintf("attention sound URGENCY\n");
-            func_80078884(NA_SE_SY_ATTENTION_URGENCY);
+            Sfx_PlaySfxCentered(NA_SE_SY_ATTENTION_URGENCY);
         }
         if (CHECK_BTN_ALL(D_8015BD7C->state.input[2].press.button, BTN_CDOWN)) {
             osSyncPrintf("attention sound NORMAL\n");
-            func_80078884(NA_SE_SY_ATTENTION_ON);
+            Sfx_PlaySfxCentered(NA_SE_SY_ATTENTION_ON);
         }
 
         if (CHECK_BTN_ALL(D_8015BD7C->state.input[2].press.button, BTN_CRIGHT)) {
@@ -7783,7 +7783,7 @@ s32 Camera_ChangeModeFlags(Camera* camera, s16 mode, u8 flags) {
     if (!((sCameraSettings[camera->setting].unk_00 & 0x3FFFFFFF) & (1 << mode))) {
         if (mode == CAM_MODE_FIRSTPERSON) {
             osSyncPrintf("camera: error sound\n");
-            func_80078884(NA_SE_SY_ERROR);
+            Sfx_PlaySfxCentered(NA_SE_SY_ERROR);
         }
 
         if (camera->mode != CAM_MODE_NORMAL) {
@@ -7871,20 +7871,20 @@ s32 Camera_ChangeModeFlags(Camera* camera, s16 mode, u8 flags) {
         if (camera->status == CAM_STAT_ACTIVE) {
             switch (modeChangeFlags) {
                 case 1:
-                    func_80078884(0);
+                    Sfx_PlaySfxCentered(0);
                     break;
                 case 2:
                     if (camera->play->roomCtx.curRoom.behaviorType1 == ROOM_BEHAVIOR_TYPE1_1) {
-                        func_80078884(NA_SE_SY_ATTENTION_URGENCY);
+                        Sfx_PlaySfxCentered(NA_SE_SY_ATTENTION_URGENCY);
                     } else {
-                        func_80078884(NA_SE_SY_ATTENTION_ON);
+                        Sfx_PlaySfxCentered(NA_SE_SY_ATTENTION_ON);
                     }
                     break;
                 case 4:
-                    func_80078884(NA_SE_SY_ATTENTION_URGENCY);
+                    Sfx_PlaySfxCentered(NA_SE_SY_ATTENTION_URGENCY);
                     break;
                 case 8:
-                    func_80078884(NA_SE_SY_ATTENTION_ON);
+                    Sfx_PlaySfxCentered(NA_SE_SY_ATTENTION_ON);
                     break;
             }
         }

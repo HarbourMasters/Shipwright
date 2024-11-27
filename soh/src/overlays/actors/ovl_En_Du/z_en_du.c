@@ -1,6 +1,7 @@
 #include "z_en_du.h"
 #include "objects/object_du/object_du.h"
 #include "scenes/overworld/spot18/spot18_scene.h"
+#include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_NO_FREEZE_OCARINA)
@@ -254,13 +255,13 @@ void func_809FDE9C(EnDu* this) {
     }
 }
 
-void func_809FDFC0(CsCmdActorAction* csAction, Vec3f* dst) {
+void func_809FDFC0(CsCmdActorCue* csAction, Vec3f* dst) {
     dst->x = csAction->startPos.x;
     dst->y = csAction->startPos.y;
     dst->z = csAction->startPos.z;
 }
 
-void func_809FE000(CsCmdActorAction* csAction, Vec3f* dst) {
+void func_809FE000(CsCmdActorCue* csAction, Vec3f* dst) {
     dst->x = csAction->endPos.x;
     dst->y = csAction->endPos.y;
     dst->z = csAction->endPos.z;
@@ -385,7 +386,7 @@ void func_809FE4A4(EnDu* this, PlayState* play) {
         EnDu_SetupAction(this, func_809FE890);
         play->msgCtx.ocarinaMode = OCARINA_MODE_04;
     } else if (play->msgCtx.ocarinaMode == OCARINA_MODE_03) {
-        Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+        Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         if (GameInteractor_Should(VB_PLAY_DARUNIAS_JOY_CS, true)) {
             play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gGoronCityDaruniaCorrectCs);
             gSaveContext.cutsceneTrigger = 1;
@@ -473,7 +474,7 @@ void func_809FE890(EnDu* this, PlayState* play) {
     Vec3f startPos;
     Vec3f endPos;
     Vec3f velocity = { 0.0f, 0.0f, 0.0f };
-    CsCmdActorAction* csAction;
+    CsCmdActorCue* csAction;
 
     if (play->csCtx.state == CS_STATE_IDLE) {
         Player_SetCsActionWithHaltedActors(play, &this->actor, 1);

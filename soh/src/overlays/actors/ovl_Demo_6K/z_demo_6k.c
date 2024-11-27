@@ -12,6 +12,7 @@
 #include "overlays/actors/ovl_Eff_Dust/z_eff_dust.h"
 #include "soh/frame_interpolation.h"
 #include <assert.h>
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
@@ -236,7 +237,7 @@ void func_80966E98(Demo6K* this, PlayState* play) {
     }
 
     if (this->timer1 == 39) {
-        func_800788CC(NA_SE_EV_CONSENTRATION);
+        Sfx_PlaySfxCentered2(NA_SE_EV_CONSENTRATION);
         Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_6K, this->actor.world.pos.x,
                     this->actor.world.pos.y + 10.0f, this->actor.world.pos.z, 0, 0, 0, 2, true);
     }
@@ -807,7 +808,7 @@ void func_809691BC(Demo6K* this, PlayState* play, s32 params) {
     Vec3f startPos;
     Vec3f endPos;
     f32 temp;
-    CsCmdActorAction* csAction = play->csCtx.npcActions[params];
+    CsCmdActorCue* csAction = play->csCtx.npcActions[params];
 
     startPos.x = csAction->startPos.x;
     startPos.y = csAction->startPos.y;

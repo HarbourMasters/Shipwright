@@ -96,7 +96,7 @@ void RegionTable_Init_ZorasDomain() {
                   LOCATION(RC_ZD_CHEST,                               logic->IsChild && logic->CanUse(RG_STICKS)),
                   LOCATION(RC_ZD_KING_ZORA_THAWED,                    logic->KingZoraThawed),
                   LOCATION(RC_ZD_TRADE_PRESCRIPTION,                  logic->KingZoraThawed && logic->CanUse(RG_PRESCRIPTION)),
-                  LOCATION(RC_ZD_GS_FROZEN_WATERFALL,                 logic->IsAdult && logic->AtNight && (logic->HookshotOrBoomerang() || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_FAIRY_BOW) || (logic->CanUse(RG_MAGIC_SINGLE) && (logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_BIGGORON_SWORD))) || (ctx->GetTrickOption(RT_ZD_GS) && logic->CanJumpslash())) && logic->CanGetNightTimeGS()),
+                  LOCATION(RC_ZD_GS_FROZEN_WATERFALL,                 logic->IsAdult && logic->AtNight && (logic->HookshotOrBoomerang() || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_FAIRY_BOW) || (logic->CanUse(RG_MAGIC_SINGLE) && (logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_BIGGORON_SWORD))) || (ctx->GetTrickOption(RT_ZD_GS) && logic->CanJumpslashExceptHammer())) && logic->CanGetNightTimeGS()),
                   LOCATION(RC_ZD_FISH_1,                              logic->IsChild && logic->HasBottle()),
                   LOCATION(RC_ZD_FISH_2,                              logic->IsChild && logic->HasBottle()),
                   LOCATION(RC_ZD_FISH_3,                              logic->IsChild && logic->HasBottle()),

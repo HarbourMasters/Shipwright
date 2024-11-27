@@ -3,14 +3,16 @@
 #include "soh/OTRGlobals.h"
 
 extern "C" {
-    #include "macros.h"
-    #include "src/overlays/actors/ovl_En_Ko/z_en_ko.h"
-    #include "z64save.h"
-    #include "functions.h"
-    #include "variables.h"
+#include "macros.h"
+#include "src/overlays/actors/ovl_En_Ko/z_en_ko.h"
+#include "z64save.h"
+#include "functions.h"
+#include "variables.h"
 }
 
 #define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).GetSelectedOptionIndex()
+
+static bool sEnteredBlueWarp = false;
 
 /**
  * This will override the transitions into the blue warp cutscenes, set any appropriate flags, and
@@ -18,59 +20,65 @@ extern "C" {
  * should also account for the difference between your first and following visits to the blue warp.
  */
 void SkipBlueWarp_ShouldPlayTransitionCS(GIVanillaBehavior _, bool* should, va_list originalArgs) {
-    if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO)) {
-        uint8_t isBlueWarpCutscene = 0;
+    bool overrideBlueWarpDestinations =
+        IS_RANDO && (RAND_GET_OPTION(RSK_SHUFFLE_DUNGEON_ENTRANCES) != RO_DUNGEON_ENTRANCE_SHUFFLE_OFF ||
+                     RAND_GET_OPTION(RSK_SHUFFLE_BOSS_ENTRANCES) != RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF);
+
+    // Force blue warp skip on when ER needs to place Link somewhere else.
+    // This is preferred over having story cutscenes play in the overworld and then reloading Link somewhere else after.
+    if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO) || overrideBlueWarpDestinations) {
+        bool isBlueWarpCutscene = false;
         // Deku Tree Blue warp
         if (gSaveContext.entranceIndex == ENTR_KOKIRI_FOREST_0 && gSaveContext.cutsceneIndex == 0xFFF1) {
-            gSaveContext.entranceIndex = ENTR_KOKIRI_FOREST_11;
-            isBlueWarpCutscene = 1;
+            gSaveContext.entranceIndex = ENTR_KOKIRI_FOREST_DEKU_TREE_BLUE_WARP;
+            isBlueWarpCutscene = true;
         // Dodongo's Cavern Blue warp
-        } else if (gSaveContext.entranceIndex == ENTR_DEATH_MOUNTAIN_TRAIL_0 && gSaveContext.cutsceneIndex == 0xFFF1) {
-            gSaveContext.entranceIndex = ENTR_DEATH_MOUNTAIN_TRAIL_5;
-            isBlueWarpCutscene = 1;
+        } else if (gSaveContext.entranceIndex == ENTR_DEATH_MOUNTAIN_TRAIL_BOTTOM_EXIT && gSaveContext.cutsceneIndex == 0xFFF1) {
+            gSaveContext.entranceIndex = ENTR_DEATH_MOUNTAIN_TRAIL_DODONGO_BLUE_WARP;
+            isBlueWarpCutscene = true;
         // Jabu Jabu's Blue warp
-        } else if (gSaveContext.entranceIndex == ENTR_ZORAS_FOUNTAIN_0 && gSaveContext.cutsceneIndex == 0xFFF0) {
-            gSaveContext.entranceIndex = ENTR_ZORAS_FOUNTAIN_0;
-            isBlueWarpCutscene = 1;
+        } else if (gSaveContext.entranceIndex == ENTR_ZORAS_FOUNTAIN_JABU_JABU_BLUE_WARP && gSaveContext.cutsceneIndex == 0xFFF0) {
+            gSaveContext.entranceIndex = ENTR_ZORAS_FOUNTAIN_JABU_JABU_BLUE_WARP;
+            isBlueWarpCutscene = true;
         // Forest Temple Blue warp
         } else if (gSaveContext.entranceIndex == ENTR_CHAMBER_OF_THE_SAGES_0 && gSaveContext.cutsceneIndex == 0x0 && gSaveContext.chamberCutsceneNum == CHAMBER_CS_FOREST) {
             // Normally set in the blue warp cutscene
             Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_DEKU_TREE_SPROUT);
 
             if (IS_RANDO) {
-                gSaveContext.entranceIndex = ENTR_SACRED_FOREST_MEADOW_3;
+                gSaveContext.entranceIndex = ENTR_SACRED_FOREST_MEADOW_FOREST_TEMPLE_BLUE_WARP;
             } else {
                 gSaveContext.entranceIndex = ENTR_KOKIRI_FOREST_12;
             }
 
-            isBlueWarpCutscene = 1;
+            isBlueWarpCutscene = true;
         // Fire Temple Blue warp
-        } else if (gSaveContext.entranceIndex == ENTR_KAKARIKO_VILLAGE_0 && gSaveContext.cutsceneIndex == 0xFFF3) {
+        } else if (gSaveContext.entranceIndex == ENTR_KAKARIKO_VILLAGE_FRONT_GATE && gSaveContext.cutsceneIndex == 0xFFF3) {
             // Normally set in the blue warp cutscene
             Flags_SetEventChkInf(EVENTCHKINF_DEATH_MOUNTAIN_ERUPTED);
 
-            gSaveContext.entranceIndex = ENTR_DEATH_MOUNTAIN_CRATER_5;
-            isBlueWarpCutscene = 1;
+            gSaveContext.entranceIndex = ENTR_DEATH_MOUNTAIN_CRATER_FIRE_TEMPLE_BLUE_WARP;
+            isBlueWarpCutscene = true;
         // Water Temple Blue warp
         } else if (gSaveContext.entranceIndex == ENTR_CHAMBER_OF_THE_SAGES_0 && gSaveContext.cutsceneIndex == 0x0 && gSaveContext.chamberCutsceneNum == CHAMBER_CS_WATER) {
             // Normally set in the blue warp cutscene
             gSaveContext.dayTime = gSaveContext.skyboxTime = 0x4800;
             Flags_SetEventChkInf(EVENTCHKINF_RAISED_LAKE_HYLIA_WATER);
 
-            gSaveContext.entranceIndex = ENTR_LAKE_HYLIA_9;
-            isBlueWarpCutscene = 1;
+            gSaveContext.entranceIndex = ENTR_LAKE_HYLIA_WATER_TEMPLE_BLUE_WARP;
+            isBlueWarpCutscene = true;
         // Spirit Temple Blue warp
         } else if (gSaveContext.entranceIndex == ENTR_CHAMBER_OF_THE_SAGES_0 && gSaveContext.cutsceneIndex == 0x0 && gSaveContext.chamberCutsceneNum == CHAMBER_CS_SPIRIT) {
-            gSaveContext.entranceIndex = ENTR_DESERT_COLOSSUS_8;
-            isBlueWarpCutscene = 1;
+            gSaveContext.entranceIndex = ENTR_DESERT_COLOSSUS_SPIRIT_TEMPLE_BLUE_WARP;
+            isBlueWarpCutscene = true;
         // Shadow Temple Blue warp
         } else if (gSaveContext.entranceIndex == ENTR_CHAMBER_OF_THE_SAGES_0 && gSaveContext.cutsceneIndex == 0x0 && gSaveContext.chamberCutsceneNum == CHAMBER_CS_SHADOW) {
-            gSaveContext.entranceIndex = ENTR_GRAVEYARD_8;
-            isBlueWarpCutscene = 1;
+            gSaveContext.entranceIndex = ENTR_GRAVEYARD_SHADOW_TEMPLE_BLUE_WARP;
+            isBlueWarpCutscene = true;
         }
 
         if (isBlueWarpCutscene) {
-            if (gSaveContext.entranceIndex != ENTR_LAKE_HYLIA_9) {
+            if (gSaveContext.entranceIndex != ENTR_LAKE_HYLIA_WATER_TEMPLE_BLUE_WARP) {
                 // Normally set in the blue warp cutscene
                 gSaveContext.dayTime = gSaveContext.skyboxTime = 0x8000;
             }
@@ -80,10 +88,20 @@ void SkipBlueWarp_ShouldPlayTransitionCS(GIVanillaBehavior _, bool* should, va_l
         }
 
         // This is outside the above condition because we want to handle both first and following visits to the blue warp
-        if (IS_RANDO && (RAND_GET_OPTION(RSK_SHUFFLE_DUNGEON_ENTRANCES) != RO_DUNGEON_ENTRANCE_SHUFFLE_OFF || RAND_GET_OPTION(RSK_SHUFFLE_BOSS_ENTRANCES) != RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF)) {
+        if (sEnteredBlueWarp && overrideBlueWarpDestinations) {
             Entrance_OverrideBlueWarp();
         }
     }
+
+    sEnteredBlueWarp = false;
+}
+
+/**
+ * Using this hook to simply observe that Link has entered a bluewarp
+ * This way we know to allow entrance rando overrides to be processed on the next tranisition hook
+ */
+void SkipBlueWarp_ShouldPlayBlueWarpCS(GIVanillaBehavior _, bool* should, va_list originalArgs) {
+    sEnteredBlueWarp = true;
 }
 
 /**
@@ -134,7 +152,7 @@ void SkipBlueWarp_OnActorUpdate(void* actorPtr) {
  */
 void SkipBlueWarp_ShouldDekuJrConsiderForestTempleFinished(GIVanillaBehavior _, bool* should, va_list originalArgs) {
     if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO)) {
-        if (gSaveContext.entranceIndex == ENTR_KOKIRI_FOREST_11 && gSaveContext.cutsceneIndex == 0xFFF1) {
+        if (gSaveContext.entranceIndex == ENTR_KOKIRI_FOREST_DEKU_TREE_BLUE_WARP && gSaveContext.cutsceneIndex == 0xFFF1) {
             *should = Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP);
         }
     }
@@ -143,6 +161,7 @@ void SkipBlueWarp_ShouldDekuJrConsiderForestTempleFinished(GIVanillaBehavior _, 
 void SkipBlueWarp_Register() {
     GameInteractor::Instance->RegisterGameHookForID<GameInteractor::OnActorUpdate>(ACTOR_EN_KO, SkipBlueWarp_OnActorUpdate);
     GameInteractor::Instance->RegisterGameHookForID<GameInteractor::OnVanillaBehavior>(VB_PLAY_TRANSITION_CS, SkipBlueWarp_ShouldPlayTransitionCS);
+    GameInteractor::Instance->RegisterGameHookForID<GameInteractor::OnVanillaBehavior>(VB_PLAY_BLUE_WARP_CS, SkipBlueWarp_ShouldPlayBlueWarpCS);
     GameInteractor::Instance->RegisterGameHookForID<GameInteractor::OnVanillaBehavior>(VB_DEKU_JR_CONSIDER_FOREST_TEMPLE_FINISHED, SkipBlueWarp_ShouldDekuJrConsiderForestTempleFinished);
     GameInteractor::Instance->RegisterGameHookForID<GameInteractor::OnVanillaBehavior>(VB_GIVE_ITEM_FROM_BLUE_WARP, SkipBlueWarp_ShouldGiveItem);
 }

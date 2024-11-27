@@ -3,6 +3,9 @@
 #include "game-interactor/GameInteractor.h"
 #include "tts/tts.h"
 #include "soh/OTRGlobals.h"
+#include "soh/SaveManager.h"
+#include "soh/ResourceManagerHelpers.h"
+#include "soh/Enhancements/boss-rush/BossRushTypes.h"
 #include "soh/Enhancements/boss-rush/BossRush.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/randomizer/3drando/random.hpp"
@@ -41,17 +44,15 @@ extern "C" {
 #include <z64.h>
 #include "align_asset_macro.h"
 #include "macros.h"
+#include "soh/cvar_prefixes.h"
 #include "functions.h"
 #include "variables.h"
 #include "functions.h"
 #include "src/overlays/actors/ovl_En_Door/z_en_door.h"
-void ResourceMgr_PatchGfxByName(const char* path, const char* patchName, int index, Gfx instruction);
-void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName);
 
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 extern void Overlay_DisplayText(float duration, const char* text);
-uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
 }
 
 // GreyScaleEndDlist
@@ -63,15 +64,6 @@ static const ALIGN_ASSET(2) char gEndGrayscaleAndEndDlistDL[] = dgEndGrayscaleAn
 static const ALIGN_ASSET(2) char tokinoma_room_0DL_007A70[] = dtokinoma_room_0DL_007A70;
 #define dtokinoma_room_0DL_007FD0 "__OTR__scenes/shared/tokinoma_scene/tokinoma_room_0DL_007FD0"
 static const ALIGN_ASSET(2) char tokinoma_room_0DL_007FD0[] = dtokinoma_room_0DL_007FD0;
-
-// TODO: When there's more uses of something like this, create a new GI::RawAction?
-void ReloadSceneTogglingLinkAge() {
-    gPlayState->nextEntranceIndex = gSaveContext.entranceIndex;
-    gPlayState->transitionTrigger = TRANS_TRIGGER_START;
-    gPlayState->transitionType = TRANS_TYPE_CIRCLE(TCA_WAVE, TCC_WHITE, TCS_FAST); // Fade Out
-    gSaveContext.nextTransitionType = TRANS_TYPE_CIRCLE(TCA_WAVE, TCC_WHITE, TCS_FAST);
-    gPlayState->linkAgeOnLoad ^= 1; // toggle linkAgeOnLoad
-}
 
 void RegisterInfiniteMoney() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
@@ -219,42 +211,43 @@ void RegisterFreezeTime() {
 }
 
 /// Switches Link's age and respawns him at the last entrance he entered.
-void RegisterSwitchAge() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        static bool warped = false;
+void SwitchAge() {
+    if (gPlayState == NULL) return;
 
-        if (!GameInteractor::IsSaveLoaded(true)) {
-            CVarClear(CVAR_GENERAL("SwitchAge"));
-            warped = false;
-            return;
+    Player* player = GET_PLAYER(gPlayState);
+
+    // Hyrule Castle: Very likely to fall through floor, so we force a specific entrance
+    if (gPlayState->sceneNum == SCENE_HYRULE_CASTLE || gPlayState->sceneNum == SCENE_OUTSIDE_GANONS_CASTLE) {
+        gPlayState->nextEntranceIndex = ENTR_CASTLE_GROUNDS_SOUTH_EXIT;
+    } else {
+        gSaveContext.respawnFlag = 1;
+        gPlayState->nextEntranceIndex = gSaveContext.entranceIndex;
+
+        // Preserve the player's position and orientation
+        gSaveContext.respawn[RESPAWN_MODE_DOWN].entranceIndex = gPlayState->nextEntranceIndex;
+        gSaveContext.respawn[RESPAWN_MODE_DOWN].roomIndex = gPlayState->roomCtx.curRoom.num;
+        gSaveContext.respawn[RESPAWN_MODE_DOWN].pos = player->actor.world.pos;
+        gSaveContext.respawn[RESPAWN_MODE_DOWN].yaw = player->actor.shape.rot.y;
+
+        if (gPlayState->roomCtx.curRoom.behaviorType2 < 4) {
+            gSaveContext.respawn[RESPAWN_MODE_DOWN].playerParams = 0x0DFF;
+        } else {
+            // Scenes with static backgrounds use a special camera we need to preserve
+            Camera* camera = GET_ACTIVE_CAM(gPlayState);
+            s16 camId = camera->camDataIdx;
+            gSaveContext.respawn[RESPAWN_MODE_DOWN].playerParams = 0x0D00 | camId;
         }
+    }
 
-        static Vec3f playerPos;
-        static int16_t playerYaw;
-        static RoomContext* roomCtx;
-        static s32 roomNum;
+    gPlayState->transitionTrigger = TRANS_TRIGGER_START;
+    gPlayState->transitionType = TRANS_TYPE_INSTANT;
+    gSaveContext.nextTransitionType = TRANS_TYPE_FADE_BLACK_FAST;
+    gPlayState->linkAgeOnLoad ^= 1;
 
-        if (CVarGetInteger(CVAR_GENERAL("SwitchAge"), 0) && !warped) {
-            playerPos = GET_PLAYER(gPlayState)->actor.world.pos;
-            playerYaw = GET_PLAYER(gPlayState)->actor.shape.rot.y;
-            roomCtx = &gPlayState->roomCtx;
-            roomNum = roomCtx->curRoom.num;
-            ReloadSceneTogglingLinkAge();
-            warped = true;
-        }
-
-        if (warped && gPlayState->transitionTrigger != TRANS_TRIGGER_START &&
-            gSaveContext.nextTransitionType == TRANS_NEXT_TYPE_DEFAULT) {
-            GET_PLAYER(gPlayState)->actor.shape.rot.y = playerYaw;
-            GET_PLAYER(gPlayState)->actor.world.pos = playerPos;
-            if (roomNum != roomCtx->curRoom.num) {
-                func_8009728C(gPlayState, roomCtx, roomNum); //load original room
-                //func_800973FC(gPlayState, &gPlayState->roomCtx); // commit to room load?
-                func_80097534(gPlayState, roomCtx);  // load map for new room (unloading the previous room)
-            }
-            warped = false;
-            CVarClear(CVAR_GENERAL("SwitchAge"));
-        }
+    static HOOK_ID hookId = 0;
+    hookId = REGISTER_VB_SHOULD(VB_INFLICT_VOID_DAMAGE, {
+        *should = false;
+        GameInteractor::Instance->UnregisterGameHookForID<GameInteractor::OnVanillaBehavior>(hookId);
     });
 }
 
@@ -262,8 +255,7 @@ void RegisterSwitchAge() {
 void RegisterOcarinaTimeTravel() {
 
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnOcarinaSongAction>([]() {
-        if (!GameInteractor::IsSaveLoaded(true)) {
-            CVarClear(CVAR_ENHANCEMENT("TimeTravel"));
+        if (!GameInteractor::IsSaveLoaded(true) || !CVarGetInteger(CVAR_ENHANCEMENT("TimeTravel"), 0)) {
             return;
         }
 
@@ -273,22 +265,14 @@ void RegisterOcarinaTimeTravel() {
         Actor* nearbyOcarinaSpot = Actor_FindNearby(gPlayState, player, ACTOR_EN_OKARINA_TAG, ACTORCAT_PROP, 120.0f);
         Actor* nearbyDoorOfTime = Actor_FindNearby(gPlayState, player, ACTOR_DOOR_TOKI, ACTORCAT_BG, 500.0f);
         Actor* nearbyFrogs = Actor_FindNearby(gPlayState, player, ACTOR_EN_FR, ACTORCAT_NPC, 300.0f);
-        uint8_t hasMasterSword = CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER);
-        uint8_t hasOcarinaOfTime = (INV_CONTENT(ITEM_OCARINA_TIME) == ITEM_OCARINA_TIME);
-        // If TimeTravel + Player have the Ocarina of Time + Have Master Sword + is in proper range
+        bool justPlayedSoT = gPlayState->msgCtx.lastPlayedSong == OCARINA_SONG_TIME;
+        bool notNearAnySource = !nearbyTimeBlockEmpty && !nearbyTimeBlock && !nearbyOcarinaSpot && !nearbyDoorOfTime && !nearbyFrogs;
+        bool hasOcarinaOfTime = (INV_CONTENT(ITEM_OCARINA_TIME) == ITEM_OCARINA_TIME);
+        bool doesntNeedOcarinaOfTime = CVarGetInteger(CVAR_ENHANCEMENT("TimeTravel"), 0) == 2;
+        bool hasMasterSword = CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER);
         // TODO: Once Swordless Adult is fixed: Remove the Master Sword check
-        if (((CVarGetInteger(CVAR_ENHANCEMENT("TimeTravel"), 0) == 1 && hasOcarinaOfTime) || CVarGetInteger(CVAR_ENHANCEMENT("TimeTravel"), 0) == 2) && hasMasterSword &&
-            gPlayState->msgCtx.lastPlayedSong == OCARINA_SONG_TIME && !nearbyTimeBlockEmpty && !nearbyTimeBlock &&
-            !nearbyOcarinaSpot && !nearbyFrogs) {
-
-            if (IS_RANDO) {
-                CVarSetInteger(CVAR_GENERAL("SwitchTimeline"), 1);
-            } else if (!IS_RANDO && !nearbyDoorOfTime) {
-                // This check is made for when Link is learning the Song Of Time in a vanilla save file that load a
-                // Temple of Time scene where the only object present is the Door of Time
-                CVarSetInteger(CVAR_GENERAL("SwitchTimeline"), 1);
-            }
-            ReloadSceneTogglingLinkAge();
+        if (justPlayedSoT && notNearAnySource && (hasOcarinaOfTime || doesntNeedOcarinaOfTime) && hasMasterSword) {
+            SwitchAge();
         }
     });
 }
@@ -467,7 +451,7 @@ void RegisterPermanentHeartLoss() {
 
 void RegisterDeleteFileOnDeath() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!CVarGetInteger(CVAR_ENHANCEMENT("DeleteFileOnDeath"), 0) || !GameInteractor::IsSaveLoaded() || &gPlayState->gameOverCtx == NULL || &gPlayState->pauseCtx == NULL) return;
+        if (!CVarGetInteger(CVAR_ENHANCEMENT("DeleteFileOnDeath"), 0) || !GameInteractor::IsSaveLoaded() || gPlayState == NULL) return;
 
         if (gPlayState->gameOverCtx.state == GAMEOVER_DEATH_MENU && gPlayState->pauseCtx.state == 9) {
             SaveManager::Instance->DeleteZeldaFile(gSaveContext.fileNum);
@@ -729,7 +713,7 @@ void RegisterMirrorModeHandler() {
 }
 
 void UpdatePatchHand() {
-    if ((CVarGetInteger(CVAR_ENHANCEMENT("EquimentAlwaysVisible"), 0)) && LINK_IS_CHILD) {
+    if ((CVarGetInteger(CVAR_ENHANCEMENT("EquipmentAlwaysVisible"), 0)) && LINK_IS_CHILD) {
         ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "childHammer1", 92, gsSPDisplayListOTRFilePath(gLinkChildLeftFistNearDL));
         ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "childHammer2", 93, gsSPEndDisplayList());
         ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingHookshotNearDL, "childHookshot1", 84, gsSPDisplayListOTRFilePath(gLinkChildRightHandClosedNearDL));
@@ -757,7 +741,7 @@ void UpdatePatchHand() {
         ResourceMgr_UnpatchGfxByName(gLinkAdultHandHoldingBrokenGiantsKnifeDL, "childBrokenGiantsKnife1");
         ResourceMgr_UnpatchGfxByName(gLinkAdultHandHoldingBrokenGiantsKnifeDL, "childBrokenGiantsKnife2");
 	}
-    if ((CVarGetInteger(CVAR_ENHANCEMENT("EquimentAlwaysVisible"), 0)) && LINK_IS_ADULT) {
+    if ((CVarGetInteger(CVAR_ENHANCEMENT("EquipmentAlwaysVisible"), 0)) && LINK_IS_ADULT) {
         ResourceMgr_PatchGfxByName(gLinkChildLeftFistAndKokiriSwordNearDL, "adultKokiriSword", 13, gsSPDisplayListOTRFilePath(gLinkAdultLeftHandClosedNearDL));
         ResourceMgr_PatchGfxByName(gLinkChildRightHandHoldingSlingshotNearDL, "adultSlingshot", 13, gsSPDisplayListOTRFilePath(gLinkAdultRightHandClosedNearDL));
         ResourceMgr_PatchGfxByName(gLinkChildLeftFistAndBoomerangNearDL, "adultBoomerang", 50, gsSPDisplayListOTRFilePath(gLinkAdultLeftHandClosedNearDL));
@@ -1052,6 +1036,9 @@ std::vector<AltTrapType> getEnabledAddTraps () {
     std::vector<AltTrapType> enabledAddTraps;
     for (int i = 0; i < ADD_TRAP_MAX; i++) {
         if (CVarGetInteger(altTrapTypeCvars[i], 0)) {
+            if (gSaveContext.equips.buttonItems[0] == ITEM_FISHING_POLE && (i == ADD_VOID_TRAP || i == ADD_TELEPORT_TRAP)) {
+                continue; // don't add void or teleport if you're holding the fishing pole, as this causes issues
+            }
             enabledAddTraps.push_back(static_cast<AltTrapType>(i));
         }
     }
@@ -1085,7 +1072,7 @@ void RegisterAltTrapTypes() {
                 eventTimer = 3;
                 break;
             case ADD_SPEED_TRAP:
-                Audio_PlaySoundGeneral(NA_SE_VO_KZ_MOVE, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                Audio_PlaySoundGeneral(NA_SE_VO_KZ_MOVE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 GameInteractor::State::RunSpeedModifier = -2;
                 statusTimer = 200;
                 Overlay_DisplayText(10, "Speed Decreased!");
@@ -1094,8 +1081,8 @@ void RegisterAltTrapTypes() {
                 eventTimer = 3;
                 break;
             case ADD_VOID_TRAP:
-                Audio_PlaySoundGeneral(NA_SE_EN_GANON_LAUGH, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-                eventTimer = 3;                    
+                Audio_PlaySoundGeneral(NA_SE_EN_GANON_LAUGH, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                eventTimer = 3;
                 break;
             case ADD_AMMO_TRAP:
                 eventTimer = 3;
@@ -1106,6 +1093,8 @@ void RegisterAltTrapTypes() {
                 break;
             case ADD_TELEPORT_TRAP:
                 eventTimer = 3;
+                break;
+            default:
                 break;
         }
     });
@@ -1132,9 +1121,9 @@ void RegisterAltTrapTypes() {
                     AMMO(ITEM_BOW) = AMMO(ITEM_BOW) * 0.5;
                     AMMO(ITEM_BOMB) = AMMO(ITEM_BOMB) * 0.5;
                     AMMO(ITEM_BOMBCHU) = AMMO(ITEM_BOMBCHU) * 0.5;
-                    Audio_PlaySoundGeneral(NA_SE_VO_FR_SMILE_0, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                    Audio_PlaySoundGeneral(NA_SE_VO_FR_SMILE_0, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                     break;
-                case ADD_TELEPORT_TRAP:
+                case ADD_TELEPORT_TRAP: {
                     int entrance;
                     int index = 1 + rand() % 10;
                     switch (index) {
@@ -1161,6 +1150,9 @@ void RegisterAltTrapTypes() {
                             break;
                     }
                     GameInteractor::RawAction::TeleportPlayer(entrance);
+                    break;
+                }
+                default:
                     break;
             }
         }
@@ -1424,7 +1416,6 @@ void InitMods() {
     RegisterEzQPA();
     RegisterUnrestrictedItems();
     RegisterFreezeTime();
-    RegisterSwitchAge();
     RegisterOcarinaTimeTravel();
     RegisterAutoSave();
     RegisterDaytimeGoldSkultullas();

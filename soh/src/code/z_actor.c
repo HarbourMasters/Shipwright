@@ -13,6 +13,7 @@
 #include "soh/Enhancements/nametag.h"
 
 #include "soh/ActorDB.h"
+#include "soh/OTRGlobals.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -486,7 +487,7 @@ void func_8002C124(TargetContext* targetCtx, PlayState* play) {
 
         func_8002BE64(targetCtx, targetCtx->unk_4C, spBC.x, spBC.y, spBC.z);
 
-        if ((!(player->stateFlags1 & PLAYER_STATE1_TEXT_ON_SCREEN)) || (actor != player->unk_664)) {
+        if ((!(player->stateFlags1 & PLAYER_STATE1_TALKING)) || (actor != player->focusActor)) {
             OVERLAY_DISP = Gfx_SetupDL(OVERLAY_DISP, 0x39);
 
             for (spB0 = 0, spAC = targetCtx->unk_4C; spB0 < spB8; spB0++, spAC = (spAC + 1) % 3) {
@@ -564,7 +565,7 @@ void func_8002C7BC(TargetContext* targetCtx, Player* player, Actor* actorArg, Pl
 
     unkActor = NULL;
 
-    if ((player->unk_664 != NULL) && (player->unk_84B[player->unk_846] == 2)) {
+    if ((player->focusActor != NULL) && (player->controlStickDirections[player->controlStickDataIndex] == 2)) {
         targetCtx->unk_94 = NULL;
     } else {
         func_80032AF0(play, &play->actorCtx, &unkActor, player);
@@ -624,7 +625,7 @@ void func_8002C7BC(TargetContext* targetCtx, Player* player, Actor* actorArg, Pl
 
             lockOnSfxId = CHECK_FLAG_ALL(actorArg->flags, ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE) ? NA_SE_SY_LOCK_ON
                                                                                        : NA_SE_SY_LOCK_ON_HUMAN;
-            func_80078884(lockOnSfxId);
+            Sfx_PlaySfxCentered(lockOnSfxId);
         }
 
         targetCtx->targetCenterPos.x = actorArg->world.pos.x;
@@ -1080,14 +1081,11 @@ void TitleCard_InitPlaceName(PlayState* play, TitleCardContext* titleCtx, void* 
 }
 
 void TitleCard_Update(PlayState* play, TitleCardContext* titleCtx) {
-    const Color_RGB8 TitleCard_Colors_ori = {255,255,255};
-    Color_RGB8 TitleCard_Colors = {255,255,255};
-    if (titleCtx->isBossCard && CVarGetInteger(CVAR_COSMETIC("HUD.TitleCard.Boss.Changed"), 1) == 2) {
-        TitleCard_Colors = CVarGetColor24(CVAR_COSMETIC("HUD.TitleCard.Boss.Value"), TitleCard_Colors_ori);
-    } else if (!titleCtx->isBossCard && CVarGetInteger(CVAR_COSMETIC("HUD.TitleCard.Map.Changed"), 1) == 2) {
-        TitleCard_Colors = CVarGetColor24(CVAR_COSMETIC("HUD.TitleCard.Map.Value"), TitleCard_Colors_ori);
-    } else {
-        TitleCard_Colors = TitleCard_Colors_ori;
+    Color_RGB8 TitleCard_Colors = { 255, 255, 255 };
+    if (titleCtx->isBossCard && CVarGetInteger(CVAR_COSMETIC("HUD.TitleCard.Boss.Changed"), 0) == 1) {
+        TitleCard_Colors = CVarGetColor24(CVAR_COSMETIC("HUD.TitleCard.Boss.Value"), TitleCard_Colors);
+    } else if (!titleCtx->isBossCard && CVarGetInteger(CVAR_COSMETIC("HUD.TitleCard.Map.Changed"), 0) == 1) {
+        TitleCard_Colors = CVarGetColor24(CVAR_COSMETIC("HUD.TitleCard.Map.Value"), TitleCard_Colors);
     }
 
     if (DECR(titleCtx->delayTimer) == 0) {
@@ -1397,7 +1395,7 @@ s32 func_8002DD78(Player* player) {
 s32 func_8002DDA8(PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    return (player->stateFlags1 & PLAYER_STATE1_ITEM_OVER_HEAD) || func_8002DD78(player);
+    return (player->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR) || func_8002DD78(player);
 }
 
 s32 func_8002DDE4(PlayState* play) {
@@ -1448,7 +1446,7 @@ s32 func_8002DF38(PlayState* play, Actor* actor, u8 csAction) {
 
     player->csAction = csAction;
     player->csActor = actor;
-    player->doorBgCamIndex = 0;
+    player->cv.haltActorsDuringCsAction = false;
 
     return true;
 }
@@ -1457,7 +1455,7 @@ s32 Player_SetCsActionWithHaltedActors(PlayState* play, Actor* actor, u8 csActio
     Player* player = GET_PLAYER(play);
 
     func_8002DF38(play, actor, csAction);
-    player->doorBgCamIndex = 1;
+    player->cv.haltActorsDuringCsAction = true;
 
     return true;
 }
@@ -1854,7 +1852,7 @@ f32 func_8002EFC0(Actor* actor, Player* player, s16 arg2) {
     s16 yawTemp = (s16)(actor->yawTowardsPlayer - 0x8000) - arg2;
     s16 yawTempAbs = ABS(yawTemp);
 
-    if (player->unk_664 != NULL) {
+    if (player->focusActor != NULL) {
         if ((yawTempAbs > 0x4000) || (actor->flags & ACTOR_FLAG_NO_LOCKON)) {
             return FLT_MAX;
         } else {
@@ -1900,7 +1898,7 @@ s32 func_8002F0C8(Actor* actor, Player* player, s32 flag) {
         s16 abs_var = ABS(var);
         f32 dist;
 
-        if ((player->unk_664 == NULL) && (abs_var > 0x2AAA)) {
+        if ((player->focusActor == NULL) && (abs_var > 0x2AAA)) {
             dist = FLT_MAX;
         } else {
             dist = actor->xyzDistToPlayerSq;
@@ -1927,13 +1925,13 @@ s32 func_8002F1C4(Actor* actor, PlayState* play, f32 arg2, f32 arg3, u32 exchang
     // This is convoluted but it seems like it must be a single if statement to match
     if ((player->actor.flags & ACTOR_FLAG_PLAYER_TALKED_TO) || ((exchangeItemId != EXCH_ITEM_NONE) && Player_InCsMode(play)) ||
         (!actor->isTargeted &&
-         ((arg3 < fabsf(actor->yDistToPlayer)) || (player->targetActorDistance < actor->xzDistToPlayer) ||
+         ((arg3 < fabsf(actor->yDistToPlayer)) || (player->talkActorDistance < actor->xzDistToPlayer) ||
           (arg2 < actor->xzDistToPlayer)))) {
         return false;
     }
 
-    player->targetActor = actor;
-    player->targetActorDistance = actor->xzDistToPlayer;
+    player->talkActor = actor;
+    player->talkActorDistance = actor->xzDistToPlayer;
     player->exchangeItemId = exchangeItemId;
 
     return true;
@@ -2002,7 +2000,7 @@ s32 GiveItemEntryWithoutActor(PlayState* play, GetItemEntry getItemEntry) {
          Player_GetExplosiveHeld(player) < 0) {
         if (((player->heldActor != NULL) && ((getItemEntry.getItemId > GI_NONE) && (getItemEntry.getItemId < GI_MAX)) || 
             (IS_RANDO && (getItemEntry.getItemId > RG_NONE) && (getItemEntry.getItemId < RG_MAX))) ||
-            (!(player->stateFlags1 & (PLAYER_STATE1_ITEM_OVER_HEAD | PLAYER_STATE1_IN_CUTSCENE)))) {
+            (!(player->stateFlags1 & (PLAYER_STATE1_CARRYING_ACTOR | PLAYER_STATE1_IN_CUTSCENE)))) {
             if ((getItemEntry.getItemId != GI_NONE)) {
                 player->getItemEntry = getItemEntry;
                 player->getItemId = getItemEntry.getItemId;
@@ -2039,10 +2037,10 @@ s32 GiveItemEntryFromActor(Actor* actor, PlayState* play, GetItemEntry getItemEn
         (PLAYER_STATE1_DEAD | PLAYER_STATE1_CHARGING_SPIN_ATTACK | PLAYER_STATE1_HANGING_OFF_LEDGE | PLAYER_STATE1_CLIMBING_LEDGE |
          PLAYER_STATE1_JUMPING | PLAYER_STATE1_FREEFALL | PLAYER_STATE1_FIRST_PERSON | PLAYER_STATE1_CLIMBING_LADDER)) && 
          Player_GetExplosiveHeld(player) < 0) {
-        if ((((player->heldActor != NULL) || (actor == player->targetActor)) && 
+        if ((((player->heldActor != NULL) || (actor == player->talkActor)) && 
             ((!IS_RANDO && ((getItemEntry.getItemId > GI_NONE) && (getItemEntry.getItemId < GI_MAX))) || 
                 (IS_RANDO && ((getItemEntry.getItemId > RG_NONE) && (getItemEntry.getItemId < RG_MAX))))) ||
-                    (!(player->stateFlags1 & (PLAYER_STATE1_ITEM_OVER_HEAD | PLAYER_STATE1_IN_CUTSCENE)))) {
+                    (!(player->stateFlags1 & (PLAYER_STATE1_CARRYING_ACTOR | PLAYER_STATE1_IN_CUTSCENE)))) {
             if ((actor->xzDistToPlayer < xzRange) && (fabsf(actor->yDistToPlayer) < yRange)) {
                 s16 yawDiff = actor->yawTowardsPlayer - player->actor.shape.rot.y;
                 s32 absYawDiff = ABS(yawDiff);
@@ -2083,9 +2081,9 @@ s32 Actor_OfferGetItem(Actor* actor, PlayState* play, s32 getItemId, f32 xzRange
         (PLAYER_STATE1_DEAD | PLAYER_STATE1_CHARGING_SPIN_ATTACK | PLAYER_STATE1_HANGING_OFF_LEDGE | PLAYER_STATE1_CLIMBING_LEDGE |
          PLAYER_STATE1_JUMPING | PLAYER_STATE1_FREEFALL | PLAYER_STATE1_FIRST_PERSON | PLAYER_STATE1_CLIMBING_LADDER)) && 
          Player_GetExplosiveHeld(player) < 0) {
-        if ((((player->heldActor != NULL) || (actor == player->targetActor)) && 
+        if ((((player->heldActor != NULL) || (actor == player->talkActor)) && 
             ((!IS_RANDO && ((getItemId > GI_NONE) && (getItemId < GI_MAX))) || (IS_RANDO && ((getItemId > RG_NONE) && (getItemId < RG_MAX))))) ||
-            (!(player->stateFlags1 & (PLAYER_STATE1_ITEM_OVER_HEAD | PLAYER_STATE1_IN_CUTSCENE)))) {
+            (!(player->stateFlags1 & (PLAYER_STATE1_CARRYING_ACTOR | PLAYER_STATE1_IN_CUTSCENE)))) {
             if ((actor->xzDistToPlayer < xzRange) && (fabsf(actor->yDistToPlayer) < yRange)) {
                 s16 yawDiff = actor->yawTowardsPlayer - player->actor.shape.rot.y;
                 s32 absYawDiff = ABS(yawDiff);
@@ -2156,7 +2154,7 @@ u32 Actor_SetRideActor(PlayState* play, Actor* horse, s32 mountSide) {
     Player* player = GET_PLAYER(play);
 
     if (!(player->stateFlags1 & 
-        (PLAYER_STATE1_DEAD | PLAYER_STATE1_ITEM_OVER_HEAD | PLAYER_STATE1_CHARGING_SPIN_ATTACK | PLAYER_STATE1_HANGING_OFF_LEDGE |
+        (PLAYER_STATE1_DEAD | PLAYER_STATE1_CARRYING_ACTOR | PLAYER_STATE1_CHARGING_SPIN_ATTACK | PLAYER_STATE1_HANGING_OFF_LEDGE |
          PLAYER_STATE1_CLIMBING_LEDGE | PLAYER_STATE1_JUMPING | PLAYER_STATE1_FREEFALL | PLAYER_STATE1_FIRST_PERSON | PLAYER_STATE1_CLIMBING_LADDER))) {
         player->rideActor = horse;
         player->mountSide = mountSide;
@@ -2177,11 +2175,11 @@ s32 Actor_NotMounted(PlayState* play, Actor* horse) {
 void func_8002F698(PlayState* play, Actor* actor, f32 arg2, s16 arg3, f32 arg4, u32 arg5, u32 arg6) {
     Player* player = GET_PLAYER(play);
 
-    player->unk_8A0 = arg6;
-    player->unk_8A1 = arg5;
-    player->unk_8A2 = arg3;
-    player->unk_8A4 = arg2;
-    player->unk_8A8 = arg4;
+    player->knockbackDamage = arg6;
+    player->knockbackType = arg5;
+    player->knockbackRot = arg3;
+    player->knockbackSpeed = arg2;
+    player->knockbackYVelocity = arg4;
 }
 
 void func_8002F6D4(PlayState* play, Actor* actor, f32 arg2, s16 arg3, f32 arg4, u32 arg5) {
@@ -2202,7 +2200,7 @@ void func_8002F7A0(PlayState* play, Actor* actor, f32 arg2, s16 arg3, f32 arg4) 
 
 void Player_PlaySfx(Actor* actor, u16 sfxId) {
     if (actor->id != ACTOR_PLAYER || sfxId < NA_SE_VO_LI_SWORD_N || sfxId > NA_SE_VO_LI_ELECTRIC_SHOCK_LV_KID) {
-        Audio_PlaySoundGeneral(sfxId, &actor->projectedPos, 4, &D_801333E0 , &D_801333E0, &D_801333E8);
+        Audio_PlaySoundGeneral(sfxId, &actor->projectedPos, 4, &gSfxDefaultFreqAndVolScale , &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     } else {
         freqMultiplier = CVarGetFloat(CVAR_AUDIO("LinkVoiceFreqMultiplier"), 1.0);
         if (freqMultiplier <= 0) { 
@@ -2210,12 +2208,12 @@ void Player_PlaySfx(Actor* actor, u16 sfxId) {
         }
         // Authentic behavior uses D_801333E0 for both freqScale and a4
         // Audio_PlaySoundGeneral(sfxId, &actor->projectedPos, 4, &D_801333E0 , &D_801333E0, &D_801333E8);
-        Audio_PlaySoundGeneral(sfxId, &actor->projectedPos, 4, &freqMultiplier, &D_801333E0, &D_801333E8);
+        Audio_PlaySoundGeneral(sfxId, &actor->projectedPos, 4, &freqMultiplier, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     }
 }
 
 void Audio_PlayActorSound2(Actor* actor, u16 sfxId) {
-    func_80078914(&actor->projectedPos, sfxId);
+    Sfx_PlaySfxAtPos(&actor->projectedPos, sfxId);
 }
 
 void func_8002F850(PlayState* play, Actor* actor) {
@@ -2231,8 +2229,8 @@ void func_8002F850(PlayState* play, Actor* actor) {
         sfxId = SurfaceType_GetSfx(&play->colCtx, actor->floorPoly, actor->floorBgId);
     }
 
-    func_80078914(&actor->projectedPos, NA_SE_EV_BOMB_BOUND);
-    func_80078914(&actor->projectedPos, sfxId + SFX_FLAG);
+    Sfx_PlaySfxAtPos(&actor->projectedPos, NA_SE_EV_BOMB_BOUND);
+    Sfx_PlaySfxAtPos(&actor->projectedPos, sfxId + SFX_FLAG);
 }
 
 void func_8002F8F0(Actor* actor, u16 sfxId) {
@@ -2344,8 +2342,14 @@ void Actor_DrawFaroresWindPointer(PlayState* play) {
         } else if (D_8015BC18 > 0.0f) {
             static Vec3f effectVel = { 0.0f, -0.05f, 0.0f };
             static Vec3f effectAccel = { 0.0f, -0.025f, 0.0f };
-            static Color_RGBA8 effectPrimCol = { 255, 255, 255, 0 };
-            static Color_RGBA8 effectEnvCol = { 100, 200, 0, 0 };
+            Color_RGBA8 effectPrimCol = { 255, 255, 255, 0 };
+            Color_RGBA8 effectEnvCol = { 100, 200, 0, 0 };
+            if (CVarGetInteger(CVAR_COSMETIC("Magic.FaroresSecondary.Changed"), 0)) {
+                effectEnvCol = CVarGetColor(CVAR_COSMETIC("Magic.FaroresSecondary.Value"), effectEnvCol);
+            }
+            if (CVarGetInteger(CVAR_COSMETIC("Magic.FaroresPrimary.Changed"), 0)) {
+                effectPrimCol = CVarGetColor(CVAR_COSMETIC("Magic.FaroresPrimary.Value"), effectPrimCol);
+            }
             Vec3f* curPos = &gSaveContext.respawn[RESPAWN_MODE_TOP].pos;
             Vec3f* nextPos = &gSaveContext.respawn[RESPAWN_MODE_DOWN].pos;
             f32 prevNum = D_8015BC18;
@@ -2440,8 +2444,16 @@ void Actor_DrawFaroresWindPointer(PlayState* play) {
             Matrix_Push();
 
             gDPPipeSync(POLY_XLU_DISP++);
-            gDPSetPrimColor(POLY_XLU_DISP++, 128, 128, 255, 255, 200, alpha);
-            gDPSetEnvColor(POLY_XLU_DISP++, 100, 200, 0, 255);
+            Color_RGB8 Spell_env = { 100, 200, 0 };
+            Color_RGB8 Spell_col = { 255, 255, 200 };
+            if (CVarGetInteger(CVAR_COSMETIC("Magic.FaroresSecondary.Changed"), 0)) {
+                Spell_env = CVarGetColor24(CVAR_COSMETIC("Magic.FaroresSecondary.Value"), Spell_env);
+            }
+            if (CVarGetInteger(CVAR_COSMETIC("Magic.FaroresPrimary.Changed"), 0)) {
+                Spell_col = CVarGetColor24(CVAR_COSMETIC("Magic.FaroresPrimary.Value"), Spell_col);
+            }
+            gDPSetPrimColor(POLY_XLU_DISP++, 128, 128, Spell_col.r, Spell_col.g, Spell_col.b, alpha);
+            gDPSetEnvColor(POLY_XLU_DISP++, Spell_env.r, Spell_env.g, Spell_env.b, 255);
 
             Matrix_RotateZ(((play->gameplayFrames * 1500) & 0xFFFF) * M_PI / 32768.0f, MTXMODE_APPLY);
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
@@ -2502,18 +2514,18 @@ void func_800304DC(PlayState* play, ActorContext* actorCtx, ActorEntry* actorEnt
 }
 
 u32 D_80116068[ACTORCAT_MAX] = {
-    PLAYER_STATE1_TEXT_ON_SCREEN | PLAYER_STATE1_DEAD | PLAYER_STATE1_IN_ITEM_CS,
-    PLAYER_STATE1_TEXT_ON_SCREEN | PLAYER_STATE1_DEAD | PLAYER_STATE1_IN_ITEM_CS,
+    PLAYER_STATE1_TALKING | PLAYER_STATE1_DEAD | PLAYER_STATE1_IN_ITEM_CS,
+    PLAYER_STATE1_TALKING | PLAYER_STATE1_DEAD | PLAYER_STATE1_IN_ITEM_CS,
     0,
-    PLAYER_STATE1_TEXT_ON_SCREEN | PLAYER_STATE1_GETTING_ITEM | PLAYER_STATE1_DEAD | PLAYER_STATE1_IN_ITEM_CS,
+    PLAYER_STATE1_TALKING | PLAYER_STATE1_GETTING_ITEM | PLAYER_STATE1_DEAD | PLAYER_STATE1_IN_ITEM_CS,
     PLAYER_STATE1_DEAD,
-    PLAYER_STATE1_TEXT_ON_SCREEN | PLAYER_STATE1_DEAD | PLAYER_STATE1_IN_ITEM_CS | PLAYER_STATE1_IN_CUTSCENE,
+    PLAYER_STATE1_TALKING | PLAYER_STATE1_DEAD | PLAYER_STATE1_IN_ITEM_CS | PLAYER_STATE1_IN_CUTSCENE,
     PLAYER_STATE1_DEAD | PLAYER_STATE1_IN_ITEM_CS,
     0,
-    PLAYER_STATE1_TEXT_ON_SCREEN | PLAYER_STATE1_DEAD | PLAYER_STATE1_IN_ITEM_CS | PLAYER_STATE1_IN_CUTSCENE,
-    PLAYER_STATE1_TEXT_ON_SCREEN | PLAYER_STATE1_GETTING_ITEM | PLAYER_STATE1_DEAD | PLAYER_STATE1_IN_ITEM_CS,
+    PLAYER_STATE1_TALKING | PLAYER_STATE1_DEAD | PLAYER_STATE1_IN_ITEM_CS | PLAYER_STATE1_IN_CUTSCENE,
+    PLAYER_STATE1_TALKING | PLAYER_STATE1_GETTING_ITEM | PLAYER_STATE1_DEAD | PLAYER_STATE1_IN_ITEM_CS,
     0,
-    PLAYER_STATE1_TEXT_ON_SCREEN | PLAYER_STATE1_DEAD | PLAYER_STATE1_IN_ITEM_CS,
+    PLAYER_STATE1_TALKING | PLAYER_STATE1_DEAD | PLAYER_STATE1_IN_ITEM_CS,
 };
 
 void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
@@ -2558,8 +2570,8 @@ void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
         unkFlag = ACTOR_FLAG_NO_FREEZE_OCARINA;
     }
 
-    if ((player->stateFlags1 & PLAYER_STATE1_TEXT_ON_SCREEN) && ((player->actor.textId & 0xFF00) != 0x600)) {
-        sp74 = player->targetActor;
+    if ((player->stateFlags1 & PLAYER_STATE1_TALKING) && ((player->actor.textId & 0xFF00) != 0x600)) {
+        sp74 = player->talkActor;
     }
 
     for (i = 0; i < ARRAY_COUNT(actorCtx->actorLists); i++, sp80++) {
@@ -2613,13 +2625,13 @@ void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
                 actor->flags &= ~ACTOR_FLAG_PLAY_HIT_SFX;
 
                 if ((DECR(actor->freezeTimer) == 0) && (actor->flags & (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_ACTIVE))) {
-                    if (actor == player->unk_664) {
+                    if (actor == player->focusActor) {
                         actor->isTargeted = true;
                     } else {
                         actor->isTargeted = false;
                     }
 
-                    if ((actor->targetPriority != 0) && (player->unk_664 == NULL)) {
+                    if ((actor->targetPriority != 0) && (player->focusActor == NULL)) {
                         actor->targetPriority = 0;
                     }
 
@@ -2643,18 +2655,18 @@ void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
         }
     }
 
-    actor = player->unk_664;
+    actor = player->focusActor;
 
     if ((actor != NULL) && (actor->update == NULL)) {
         actor = NULL;
-        func_8008EDF0(player);
+        Player_ReleaseLockOn(player);
     }
 
-    if ((actor == NULL) || (player->unk_66C < 5)) {
+    if ((actor == NULL) || (player->zTargetActiveTimer < 5)) {
         actor = NULL;
         if (actorCtx->targetCtx.unk_4B != 0) {
             actorCtx->targetCtx.unk_4B = 0;
-            func_80078884(NA_SE_SY_LOCK_OFF);
+            Sfx_PlaySfxCentered(NA_SE_SY_LOCK_OFF);
         }
     }
 
@@ -2755,15 +2767,15 @@ void Actor_Draw(PlayState* play, Actor* actor) {
 
 void func_80030ED8(Actor* actor) {
     if (actor->flags & ACTOR_FLAG_SFX_AT_POS) {
-        Audio_PlaySoundGeneral(actor->sfx, &actor->projectedPos, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+        Audio_PlaySoundGeneral(actor->sfx, &actor->projectedPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     } else if (actor->flags & ACTOR_FLAG_SFX_AT_CENTER) {
-        func_80078884(actor->sfx);
+        Sfx_PlaySfxCentered(actor->sfx);
     } else if (actor->flags & ACTOR_FLAG_SFX_AT_CENTER2) {
-        func_800788CC(actor->sfx);
+        Sfx_PlaySfxCentered2(actor->sfx);
     } else if (actor->flags & ACTOR_FLAG_SFX_AS_TIMER) {
-        func_800F4C58(&D_801333D4, NA_SE_SY_TIMER - SFX_FLAG, (s8)(actor->sfx - 1));
+        func_800F4C58(&gSfxDefaultPos, NA_SE_SY_TIMER - SFX_FLAG, (s8)(actor->sfx - 1));
     } else {
-        func_80078914(&actor->projectedPos, actor->sfx);
+        Sfx_PlaySfxAtPos(&actor->projectedPos, actor->sfx);
     }
 }
 
@@ -3429,8 +3441,8 @@ Actor* Actor_Delete(ActorContext* actorCtx, Actor* actor, PlayState* play) {
         osSyncPrintf("アクタークラス削除 [%s]\n", dbEntry->name); // "Actor class deleted [%s]"
     }
 
-    if ((player != NULL) && (actor == player->unk_664)) {
-        func_8008EDF0(player);
+    if ((player != NULL) && (actor == player->focusActor)) {
+        Player_ReleaseLockOn(player);
         Camera_ChangeMode(Play_GetCamera(play, Play_GetActiveCamId(play)), 0);
     }
 
@@ -3484,7 +3496,7 @@ void func_800328D4(PlayState* play, ActorContext* actorCtx, Player* player, u32 
     Vec3f sp70;
 
     actor = actorCtx->actorLists[actorCategory].head;
-    sp84 = player->unk_664;
+    sp84 = player->focusActor;
 
     while (actor != NULL) {
         if ((actor->update != NULL) && ((Player*)actor != player) && CHECK_FLAG_ALL(actor->flags, ACTOR_FLAG_TARGETABLE)) {
@@ -3985,7 +3997,7 @@ s16 Actor_TestFloorInDirection(Actor* actor, PlayState* play, f32 distance, s16 
 s32 Actor_IsTargeted(PlayState* play, Actor* actor) {
     Player* player = GET_PLAYER(play);
 
-    if ((player->stateFlags1 & PLAYER_STATE1_ENEMY_TARGET) && actor->isTargeted) {
+    if ((player->stateFlags1 & PLAYER_STATE1_HOSTILE_LOCK_ON) && actor->isTargeted) {
         return true;
     } else {
         return false;
@@ -3998,7 +4010,7 @@ s32 Actor_IsTargeted(PlayState* play, Actor* actor) {
 s32 Actor_OtherIsTargeted(PlayState* play, Actor* actor) {
     Player* player = GET_PLAYER(play);
 
-    if ((player->stateFlags1 & PLAYER_STATE1_ENEMY_TARGET) && !actor->isTargeted) {
+    if ((player->stateFlags1 & PLAYER_STATE1_HOSTILE_LOCK_ON) && !actor->isTargeted) {
         return true;
     } else {
         return false;
@@ -4971,7 +4983,7 @@ s32 Flags_GetRandomizerInf(RandomizerInf flag) {
  * Sets "randomizerInf" flag.
  */
 void Flags_SetRandomizerInf(RandomizerInf flag) {
-    u8 previouslyOff = !Flags_GetRandomizerInf(flag);
+    s32 previouslyOff = !Flags_GetRandomizerInf(flag);
     gSaveContext.randomizerInf[flag >> 4] |= (1 << (flag & 0xF));
     if (previouslyOff) {
         LUSLOG_INFO("RandomizerInf Flag Set - %#x", flag);
@@ -4983,7 +4995,7 @@ void Flags_SetRandomizerInf(RandomizerInf flag) {
  * Unsets "randomizerInf" flag.
  */
 void Flags_UnsetRandomizerInf(RandomizerInf flag) {
-    u8 previouslyOn = Flags_GetRandomizerInf(flag);
+    s32 previouslyOn = Flags_GetRandomizerInf(flag);
     gSaveContext.randomizerInf[flag >> 4] &= ~(1 << (flag & 0xF));
     if (previouslyOn) {
         LUSLOG_INFO("RandomizerInf Flag Unset - %#x", flag);
@@ -5737,8 +5749,8 @@ void func_80036E50(u16 textId, s16 arg1) {
                     Flags_SetInfTable(INFTABLE_0C);
                     return;
                 case 0x1033:
-                    Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &D_801333D4, 4, &D_801333E0, &D_801333E0,
-                                           &D_801333E8);
+                    Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                                           &gSfxDefaultReverb);
                     Flags_SetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD);
                     Flags_SetInfTable(INFTABLE_0E);
                     return;
@@ -6201,7 +6213,7 @@ s32 func_80037CB8(PlayState* play, Actor* actor, s16 arg2) {
         case TEXT_STATE_CHOICE:
         case TEXT_STATE_EVENT:
             if (Message_ShouldAdvance(play) && func_80037C94(play, actor, arg2)) {
-                Audio_PlaySoundGeneral(NA_SE_SY_CANCEL, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                Audio_PlaySoundGeneral(NA_SE_SY_CANCEL, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 msgCtx->msgMode = MSGMODE_TEXT_CLOSING;
                 ret = true;
             }

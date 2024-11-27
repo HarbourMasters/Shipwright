@@ -149,7 +149,7 @@ void func_808BF078(BgYdanMaruta* this, PlayState* play) {
     if (this->collider.base.acFlags & AC_HIT) {
         this->unk_16A = 20;
         Flags_SetSwitch(play, this->switchFlag);
-        func_80078884(NA_SE_SY_CORRECT_CHIME);
+        Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
         this->actionFunc = func_808BF108;
         OnePointCutscene_Init(play, 3010, 50, &this->dyna.actor, MAIN_CAM);
     } else {

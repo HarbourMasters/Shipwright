@@ -75,7 +75,7 @@ void EnWonderItem_DropCollectible(EnWonderItem* this, PlayState* play, s32 autoC
     s32 i;
     s32 randomDrop;
 
-    func_80078884(NA_SE_SY_GET_ITEM);
+    Sfx_PlaySfxCentered(NA_SE_SY_GET_ITEM);
 
     if (this->dropCount == 0) {
         this->dropCount++;

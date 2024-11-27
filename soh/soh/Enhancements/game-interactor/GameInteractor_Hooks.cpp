@@ -107,8 +107,20 @@ void GameInteractor_ExecuteOnBossDefeat(void* actor) {
     GameInteractor::Instance->ExecuteHooksForFilter<GameInteractor::OnBossDefeat>(actor);
 }
 
+void GameInteractor_ExecuteOnTimestamp (u8 item) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnTimestamp>(item);
+}
+
 void GameInteractor_ExecuteOnPlayerBonk() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerBonk>();
+}
+
+void GameInteractor_ExecuteOnPlayerHealthChange(int16_t amount) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerHealthChange>(amount);
+}
+
+void GameInteractor_ExecuteOnPlayerBottleUpdate(int16_t contents) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerBottleUpdate>(contents);
 }
 
 void GameInteractor_ExecuteOnPlayDestroy() {

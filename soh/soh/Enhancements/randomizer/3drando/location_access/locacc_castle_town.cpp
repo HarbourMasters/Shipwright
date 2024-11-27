@@ -138,7 +138,7 @@ void RegionTable_Init_CastleTown() {
                   EventAccess(&logic->BuiltRainbowBridge, {[]{return logic->CanBuildRainbowBridge();}}),
                 }, {
                   //Locations                                   
-                  LOCATION(RC_OGC_GS, logic->CanJumpslash() || logic->CanUseProjectile() || (logic->CanShield() && logic->CanUse(RG_MEGATON_HAMMER)) || logic->CanUse(RG_DINS_FIRE)),
+                  LOCATION(RC_OGC_GS, logic->CanJumpslashExceptHammer() || logic->CanUseProjectile() || (logic->CanShield() && logic->CanUse(RG_MEGATON_HAMMER)) || logic->CanUse(RG_DINS_FIRE)),
                 }, {
                   //Exits
                   Entrance(RR_CASTLE_GROUNDS,           {[]{return logic->AtNight;}}),

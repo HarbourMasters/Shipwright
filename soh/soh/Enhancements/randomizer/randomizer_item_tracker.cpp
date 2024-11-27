@@ -1,7 +1,10 @@
 #include "randomizer_item_tracker.h"
-#include "../../util.h"
-#include "../../OTRGlobals.h"
-#include "../../UIWidgets.hpp"
+#include "soh/util.h"
+#include "soh/OTRGlobals.h"
+#include "soh/cvar_prefixes.h"
+#include "soh/SaveManager.h"
+#include "soh/ResourceManagerHelpers.h"
+#include "soh/UIWidgets.hpp"
 #include "randomizerTypes.h"
 
 #include <map>
@@ -22,7 +25,6 @@ extern PlayState* gPlayState;
 #include "textures/icon_item_static/icon_item_static.h"
 #include "textures/icon_item_24_static/icon_item_24_static.h"
 }
-extern "C" uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
 
 void DrawEquip(ItemTrackerItem item);
 void DrawItem(ItemTrackerItem item);
@@ -598,11 +600,11 @@ void DrawItemCount(ItemTrackerItem item, bool hideMax) {
         ImGui::SetCursorScreenPos(
             ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize((currentString + maxString).c_str()).x / 2), p.y - 14));
         ImGui::PushStyleColor(ImGuiCol_Text, currentColor);
-        ImGui::Text(currentString.c_str());
+        ImGui::Text("%s", currentString.c_str());
         ImGui::PopStyleColor();
         ImGui::SameLine(0, 0.0f);
         ImGui::PushStyleColor(ImGuiCol_Text, maxColor);
-        ImGui::Text(maxString.c_str());
+        ImGui::Text("%s", maxString.c_str());
         ImGui::PopStyleColor();
     } else {
         ImGui::SetCursorScreenPos(ImVec2(p.x, p.y - 14));

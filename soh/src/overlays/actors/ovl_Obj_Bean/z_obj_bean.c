@@ -706,7 +706,7 @@ void ObjBean_GrowWaterPhase3(ObjBean* this, PlayState* play) {
             }
             this->stateFlags |= BEAN_STATE_BEEN_WATERED;
             Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_BUTTERFRY_TO_FAIRY);
-            func_80078884(NA_SE_SY_TRE_BOX_APPEAR);
+            Sfx_PlaySfxCentered(NA_SE_SY_TRE_BOX_APPEAR);
         }
     } else if (this->timer <= 0) {
         ObjBean_SetupGrowWaterPhase4(this);

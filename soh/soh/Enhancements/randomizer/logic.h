@@ -118,21 +118,59 @@ class Logic {
     bool GCWoodsWarpOpen = false;
     bool GCDaruniasDoorOpenChild = false;
     bool StopGCRollingGoronAsAdult = false;
-    bool WaterTempleLow = false;
-    bool WaterTempleMiddle = false;
-    bool WaterTempleHigh = false;
+    bool CanWaterTempleLowFromHigh = false;
+    bool CanWaterTempleMiddle = false;
+    bool CanWaterTempleHigh = false;
+    bool CanWaterTempleLowFromMid = false;
+    bool CouldWaterTempleLow = false;
+    bool CouldWaterTempleMiddle = false;
+    bool ReachedWaterHighEmblem = false;
     bool KakarikoVillageGateOpen = false;
     bool KingZoraThawed = false;
     bool ForestTempleJoelle = false;
     bool ForestTempleBeth = false;
-    bool ForestTempleJoAndBeth = false;
     bool ForestTempleAmy = false;
     bool ForestTempleMeg = false;
-    bool ForestTempleAmyAndMeg = false;
     bool FireLoopSwitch = false;
     bool LinksCow = false;
     bool DeliverLetter = false;
     bool ClearMQDCUpperLobbyRocks = false;
+    bool LoweredWaterInsideBotw = false;
+    bool OpenedWestRoomMQBotw = false;
+    bool OpenedMiddleHoleMQBotw = false;
+    bool BrokeDeku1FWeb = false;
+    bool ClearedMQDekuSERoom = false;
+    bool MQDekuWaterRoomTorches = false;
+    bool PushedDekuBasementBlock = false;
+    bool OpenedLowestGoronCage = false;
+    bool OpenedUpperFireShortcut = false;
+    bool HitFireTemplePlatform = false;
+    bool OpenedFireMQFireMazeDoor = false;
+    bool MQForestBlockRoomTargets = false;
+    bool ForestCanTwistHallway = false;
+    bool ForestClearBelowBowChest = false; //a better name that covers both versions would be nice
+    bool ForestOpenBossCorridor = false;
+    bool ShadowTrialFirstChest = false;
+    bool MQGTGMazeSwitch = false;
+    bool MQGTGRightSideSwitch = false;
+    bool GTGPlatformSilverRupees = false;
+    bool MQJabuHolesRoomDoor = false;
+    bool JabuWestTentacle = false;
+    bool JabuNorthTentacle = false;
+    bool LoweredJabuPath = false;
+    bool MQJabuLiftRoomCow = false;
+    bool MQShadowFloorSpikeRupees = false;
+    bool ShadowShortcutBlock = false;
+    bool MQWaterStalfosPit = false;
+    bool MQWaterDragonTorches = false;
+    bool MQWaterB1Switch = false;
+    //bool MQWaterPillarSoTBlock = false; should be irrelevant. SHOULD.
+    bool MQWaterOpenedPillarB1 = false;
+    bool MQSpiritCrawlBoulder = false;
+    bool MQSpiritMapRoomEnemies = false;
+    bool MQSpiritTimeTravelChest = false;
+    bool MQSpirit3SunsEnemies = false;
+    bool Spirit1FSilverRupees = false;
 
     /* --- END OF HELPERS AND LOCATION ACCESS --- */
 
@@ -146,19 +184,23 @@ class Logic {
     bool SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmountGlitchless, uint8_t requiredAmountGlitched);
     bool CanDoGlitch(GlitchType glitch);
     bool CanEquipSwap(RandomizerGet itemName);
-    bool CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance = ED_CLOSE);
-    bool CanPassEnemy(RandomizerEnemy enemy);
-    bool CanAvoidEnemy(RandomizerEnemy enemy);
+    bool CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance = ED_CLOSE, bool wallOrFloor = true, uint8_t quantity = 1, bool timer = false, bool inWater = false);
+    bool CanPassEnemy(RandomizerEnemy enemy, EnemyDistance distance = ED_CLOSE, bool wallOrFloor = true);
+    bool CanAvoidEnemy(RandomizerEnemy enemy, bool grounded = false, uint8_t quantity = 1);
     bool CanGetEnemyDrop(RandomizerEnemy enemy, EnemyDistance distance = ED_CLOSE, bool aboveLink = false);
     bool CanBreakMudWalls();
     bool CanGetDekuBabaSticks();
+    bool CanGetDekuBabaNuts();
     bool CanHitEyeTargets();
     bool CanDetonateBombFlowers();
     bool CanDetonateUprightBombFlower();
+    bool MQWaterLevel(RandoWaterLevel level);
     uint8_t BottleCount();
     uint8_t OcarinaButtons();
     bool HasBottle();
+    bool CanJumpslashExceptHammer();
     bool CanJumpslash();
+    bool CanHitSwitch(EnemyDistance distance = ED_CLOSE, bool inWater = false);
     bool CanDamage();
     bool CanAttack();
     bool BombchusEnabled();
@@ -234,8 +276,6 @@ class Logic {
     static std::map<RandomizerGet, uint32_t> RandoGetToRandInf;
 
   private:
-    static bool IsMagicItem(RandomizerGet item);
-    static bool IsMagicArrow(RandomizerGet item);
     std::shared_ptr<Context> ctx;
     bool inLogic[LOGIC_MAX];
 }; // class Logic

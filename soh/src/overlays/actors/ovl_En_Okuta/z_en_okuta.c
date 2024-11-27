@@ -2,6 +2,7 @@
 #include "objects/object_okuta/object_okuta.h"
 #include "objects/gameplay_field_keep/gameplay_field_keep.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE)
 
@@ -629,7 +630,7 @@ void EnOkuta_Update(Actor* thisx, PlayState* play2) {
     Vec3f sp38;
     s32 sp34;
 
-    if (!(player->stateFlags1 & (PLAYER_STATE1_TEXT_ON_SCREEN | PLAYER_STATE1_DEAD | PLAYER_STATE1_IN_ITEM_CS | PLAYER_STATE1_IN_CUTSCENE))) {
+    if (!(player->stateFlags1 & (PLAYER_STATE1_TALKING | PLAYER_STATE1_DEAD | PLAYER_STATE1_IN_ITEM_CS | PLAYER_STATE1_IN_CUTSCENE))) {
         if (this->actor.params == 0) {
             EnOkuta_ColliderCheck(this, play);
             if (!WaterBox_GetSurfaceImpl(play, &play->colCtx, this->actor.world.pos.x,
