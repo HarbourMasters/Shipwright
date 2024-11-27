@@ -1573,7 +1573,7 @@ namespace Rando {
                 SetRandoInf(RandoGetToRandInf.at(randoGet), state);
                 break;
             case RG_TRIFORCE_PIECE:
-                mSaveContext->triforcePiecesCollected += (!state ? -1 : 1);
+                mSaveContext->ship.quest.data.randomizer.triforcePiecesCollected += (!state ? -1 : 1);
                 break;
             case RG_BOMBCHU_5:
             case RG_BOMBCHU_10:
@@ -1829,14 +1829,13 @@ namespace Rando {
         mSaveContext->sceneFlags[5].swch = 0x40000000;
 
         // SoH specific
-        mSaveContext->backupFW = mSaveContext->fw;
-        mSaveContext->pendingSale = ITEM_NONE;
-        mSaveContext->pendingSaleMod = MOD_NONE;
-        mSaveContext->isBossRushPaused = 0;
-        mSaveContext->pendingIceTrapCount = 0;
+        mSaveContext->ship.backupFW = mSaveContext->fw;
+        mSaveContext->ship.pendingSale = ITEM_NONE;
+        mSaveContext->ship.pendingSaleMod = MOD_NONE;
+        mSaveContext->ship.pendingIceTrapCount = 0;
 
         // Init with normal quest unless only an MQ rom is provided
-        mSaveContext->questId = OTRGlobals::Instance->HasOriginal() ? QUEST_NORMAL : QUEST_MASTER;
+        mSaveContext->ship.quest.id = OTRGlobals::Instance->HasOriginal() ? QUEST_NORMAL : QUEST_MASTER;
 
         //RANDOTODO (ADD ITEMLOCATIONS TO GSAVECONTEXT)
     }
@@ -1885,16 +1884,16 @@ namespace Rando {
 
     bool Logic::HasAdultTrade(uint32_t itemID) {
         int tradeIndex = itemID - ITEM_POCKET_EGG;
-        return mSaveContext->adultTradeItems & (1 << tradeIndex);
+        return mSaveContext->ship.quest.data.randomizer.adultTradeItems & (1 << tradeIndex);
     }
 
     void Logic::SetAdultTrade(uint32_t itemID, bool state) {
         int tradeIndex = itemID - ITEM_POCKET_EGG;
         if (!state) {
-            mSaveContext->adultTradeItems &= ~(1 << tradeIndex);
+            mSaveContext->ship.quest.data.randomizer.adultTradeItems &= ~(1 << tradeIndex);
         }
         else {
-            mSaveContext->adultTradeItems |= (1 << tradeIndex);
+            mSaveContext->ship.quest.data.randomizer.adultTradeItems |= (1 << tradeIndex);
         }
     }
 
@@ -1929,15 +1928,15 @@ namespace Rando {
     }
 
     bool Logic::CheckRandoInf(uint32_t flag) {
-        return mSaveContext->randomizerInf[flag >> 4] & (1 << (flag & 0xF));
+        return mSaveContext->ship.quest.data.randomizer.randomizerInf[flag >> 4] & (1 << (flag & 0xF));
     }
 
     void Logic::SetRandoInf(uint32_t flag, bool state) {
         if (!state) {
-            mSaveContext->randomizerInf[flag >> 4] &= ~(1 << (flag & 0xF));
+            mSaveContext->ship.quest.data.randomizer.randomizerInf[flag >> 4] &= ~(1 << (flag & 0xF));
         }
         else {
-            mSaveContext->randomizerInf[flag >> 4] |= (1 << (flag & 0xF));
+            mSaveContext->ship.quest.data.randomizer.randomizerInf[flag >> 4] |= (1 << (flag & 0xF));
         }
     }
 

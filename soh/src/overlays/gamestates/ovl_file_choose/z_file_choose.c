@@ -984,7 +984,7 @@ void DrawSeedHashSprites(FileChooseContext* this) {
     // 1. On Name Entry if a rando seed has been generated
     // 2. On Quest Menu if a spoiler has been dropped and the Randomizer quest option is currently hovered.
     if ((Randomizer_IsSeedGenerated() || Randomizer_IsSpoilerLoaded()) &&
-        ((this->configMode == CM_NAME_ENTRY && gSaveContext.questId == QUEST_RANDOMIZER) ||
+        ((this->configMode == CM_NAME_ENTRY && gSaveContext.ship.quest.id == QUEST_RANDOMIZER) ||
         (this->configMode == CM_GENERATE_SEED && Randomizer_IsSpoilerLoaded()) ||
         (this->configMode == CM_QUEST_MENU && this->questType[this->buttonIndex] == QUEST_RANDOMIZER))) {
         // Fade top seed icons based on main menu fade and if save supports rando
@@ -1294,7 +1294,7 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
     }
 
     if (CHECK_BTN_ALL(input->press.button, BTN_A)) {
-        gSaveContext.questId = this->questType[this->buttonIndex];
+        gSaveContext.ship.quest.id = this->questType[this->buttonIndex];
 
         if (this->questType[this->buttonIndex] == QUEST_BOSSRUSH) {
             Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
@@ -1422,17 +1422,17 @@ void FileChoose_UpdateBossRushMenu(GameState* thisx) {
     if (ABS(this->stickRelX) > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT | BTN_DRIGHT))) {
         if (this->stickRelX > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DRIGHT))) {
             // If exceeding the amount of choices for the selected option, cycle back to the first.
-            if ((gSaveContext.bossRushOptions[this->bossRushIndex] + 1) == BossRush_GetSettingOptionsAmount(this->bossRushIndex)) {
-                gSaveContext.bossRushOptions[this->bossRushIndex] = 0;
+            if ((gSaveContext.ship.quest.data.bossRush.options[this->bossRushIndex] + 1) == BossRush_GetSettingOptionsAmount(this->bossRushIndex)) {
+                gSaveContext.ship.quest.data.bossRush.options[this->bossRushIndex] = 0;
             } else {
-                gSaveContext.bossRushOptions[this->bossRushIndex]++;
+                gSaveContext.ship.quest.data.bossRush.options[this->bossRushIndex]++;
             }
         } else if (this->stickRelX < -30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT))) {
             // If cycling back when already at the first choice for the selected option, cycle back to the last choice.
-            if ((gSaveContext.bossRushOptions[this->bossRushIndex] - 1) < 0) {
-                gSaveContext.bossRushOptions[this->bossRushIndex] = BossRush_GetSettingOptionsAmount(this->bossRushIndex) - 1;
+            if ((gSaveContext.ship.quest.data.bossRush.options[this->bossRushIndex] - 1) < 0) {
+                gSaveContext.ship.quest.data.bossRush.options[this->bossRushIndex] = BossRush_GetSettingOptionsAmount(this->bossRushIndex) - 1;
             } else {
-                gSaveContext.bossRushOptions[this->bossRushIndex]--;
+                gSaveContext.ship.quest.data.bossRush.options[this->bossRushIndex]--;
             }
         }
 
@@ -1440,10 +1440,10 @@ void FileChoose_UpdateBossRushMenu(GameState* thisx) {
     }
 
     if (sLastBossRushOptionIndex != this->bossRushIndex ||
-        sLastBossRushOptionValue != gSaveContext.bossRushOptions[this->bossRushIndex]) {
-        GameInteractor_ExecuteOnUpdateFileBossRushOptionSelection(this->bossRushIndex, gSaveContext.bossRushOptions[this->bossRushIndex]);
+        sLastBossRushOptionValue != gSaveContext.ship.quest.data.bossRush.options[this->bossRushIndex]) {
+        GameInteractor_ExecuteOnUpdateFileBossRushOptionSelection(this->bossRushIndex, gSaveContext.ship.quest.data.bossRush.options[this->bossRushIndex]);
         sLastBossRushOptionIndex = this->bossRushIndex;
-        sLastBossRushOptionValue = gSaveContext.bossRushOptions[this->bossRushIndex];
+        sLastBossRushOptionValue = gSaveContext.ship.quest.data.bossRush.options[this->bossRushIndex];
     }
 
     if (CHECK_BTN_ALL(input->press.button, BTN_B)) {
@@ -2331,7 +2331,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
                 65, (87 + textYOffset), 255, 255, 80, textAlpha, 0.8f, true);
 
             // Selected choice for option.
-            uint16_t finalKerning = Interface_DrawTextLine(this->state.gfxCtx, BossRush_GetSettingChoiceName(i, gSaveContext.bossRushOptions[i], gSaveContext.language), 
+            uint16_t finalKerning = Interface_DrawTextLine(this->state.gfxCtx, BossRush_GetSettingChoiceName(i, gSaveContext.ship.quest.data.bossRush.options[i], gSaveContext.language), 
                 165, (87 + textYOffset), 255, 255, 255, textAlpha, 0.8f, true);
 
             // Draw arrows around selected option.

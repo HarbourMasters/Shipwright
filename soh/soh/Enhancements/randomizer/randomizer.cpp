@@ -2225,7 +2225,7 @@ void CreateTriforcePieceMessages() {
 
 CustomMessage Randomizer::GetTriforcePieceMessage() {
     // Item is only given after the textbox, so reflect that inside the textbox.
-    uint8_t current = gSaveContext.triforcePiecesCollected + 1;
+    uint8_t current = gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected + 1;
     uint8_t required = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED) + 1;
     uint8_t remaining = required - current;
     float percentageCollected = (float)current / (float)required;
@@ -2708,7 +2708,7 @@ void CreateFireTempleGoronMessages() {
 CustomMessage Randomizer::GetGoronMessage(u16 index) {
     CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, goronIDs[index]);
     messageEntry.Replace("[[days]]", std::to_string(gSaveContext.totalDays));
-    messageEntry.Replace("[[a_btn]]", std::to_string(gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_A]));
+    messageEntry.Replace("[[a_btn]]", std::to_string(gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_A]));
     messageEntry.Format();
     return messageEntry;
 }
@@ -2717,15 +2717,15 @@ void Randomizer::CreateCustomMessages() {
     // RANDTODO: Translate into french and german and replace GIMESSAGE_UNTRANSLATED
     // with GIMESSAGE(getItemID, itemID, english, german, french).
     const std::array<GetItemMessage, 85> getItemMessages = {{
-        GIMESSAGE(RG_GREG_RUPEE, ITEM_MASK_GORON, 
+        GIMESSAGE(RG_GREG_RUPEE, ITEM_MASK_GORON,
 			"You found %gGreg%w!",
 			"%gGreg%w! Du hast ihn wirklich gefunden!",
             "Félicitation! Vous avez trouvé %gGreg%w!"),
-        GIMESSAGE(RG_MASTER_SWORD, ITEM_SWORD_MASTER, 
+        GIMESSAGE(RG_MASTER_SWORD, ITEM_SWORD_MASTER,
             "You found the %gMaster Sword%w!",
             "Du erhältst das %gMaster-Schwert%w!",
             "Vous obtenez %gl'Épée de Légende%w!"),
-        GIMESSAGE(RG_BOTTLE_WITH_BLUE_FIRE, ITEM_BLUE_FIRE, 
+        GIMESSAGE(RG_BOTTLE_WITH_BLUE_FIRE, ITEM_BLUE_FIRE,
 			"You got a %rBottle with Blue &Fire%w! Use it to melt Red Ice!",
 			"Du erhältst eine %rFlasche mit&blauem Feuer%w! Nutze es um&%rRotes Eis%w zu schmelzen!",
             "Vous obtenez une %rBouteille avec&une Flamme Bleue%w! Utilisez-la&pour faire fondre la %rGlace&Rouge%w!"),
@@ -2831,7 +2831,7 @@ void Randomizer::CreateCustomMessages() {
 			"You found a %yGerudo Training &Grounds %wKeyring!",
 			"Du erhältst ein %rSchlüsselbund%w&für die %yGerudo-Trainingsarena%w!",
 			"Vous obtenez un trousseau de&clés du %yGymnase Gerudo%w!"),
-        GIMESSAGE(RG_GANONS_CASTLE_KEY_RING, ITEM_KEY_SMALL, 
+        GIMESSAGE(RG_GANONS_CASTLE_KEY_RING, ITEM_KEY_SMALL,
 			"You found a %rGanon's Castle &%wKeyring!",
 			"Du erhältst ein %rSchlüsselbund%w&für %rGanons Schloß%w!",
 			"Vous obtenez un trousseau de&clés du %rChâteau de Ganon%w!"),
@@ -3039,28 +3039,28 @@ void Randomizer_GameplayStats_SetTimestamp(uint16_t item) {
 
     // Use ITEM_KEY_BOSS to timestamp Ganon's boss key
     if (item == RG_GANONS_CASTLE_BOSS_KEY) {
-        gSaveContext.sohStats.itemTimestamp[ITEM_KEY_BOSS] = time;
+        gSaveContext.ship.stats.itemTimestamp[ITEM_KEY_BOSS] = time;
     }
 
     // Count any bottled item as a bottle
     if (item >= RG_EMPTY_BOTTLE && item <= RG_BOTTLE_WITH_BIG_POE) {
-        if (gSaveContext.sohStats.itemTimestamp[ITEM_BOTTLE] == 0) {
-            gSaveContext.sohStats.itemTimestamp[ITEM_BOTTLE] = time;
+        if (gSaveContext.ship.stats.itemTimestamp[ITEM_BOTTLE] == 0) {
+            gSaveContext.ship.stats.itemTimestamp[ITEM_BOTTLE] = time;
         }
         return;
     }
     // Count any bombchu pack as bombchus
     if ((item >= RG_BOMBCHU_5 && item <= RG_BOMBCHU_20) || item == RG_PROGRESSIVE_BOMBCHUS) {
-        if (gSaveContext.sohStats.itemTimestamp[ITEM_BOMBCHU] = 0) {
-            gSaveContext.sohStats.itemTimestamp[ITEM_BOMBCHU] = time;
+        if (gSaveContext.ship.stats.itemTimestamp[ITEM_BOMBCHU] = 0) {
+            gSaveContext.ship.stats.itemTimestamp[ITEM_BOMBCHU] = time;
         }
         return;
     }
     if (item == RG_MAGIC_SINGLE) {
-        gSaveContext.sohStats.itemTimestamp[ITEM_SINGLE_MAGIC] = time;
+        gSaveContext.ship.stats.itemTimestamp[ITEM_SINGLE_MAGIC] = time;
     }
     if (item == RG_DOUBLE_DEFENSE) {
-        gSaveContext.sohStats.itemTimestamp[ITEM_DOUBLE_DEFENSE] = time;
+        gSaveContext.ship.stats.itemTimestamp[ITEM_DOUBLE_DEFENSE] = time;
     }
 }
 
@@ -3253,7 +3253,7 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         }
 
         if ((item >= RG_FOREST_TEMPLE_SMALL_KEY) && (item <= RG_GANONS_CASTLE_SMALL_KEY)) {
-            gSaveContext.sohStats.dungeonKeys[mapIndex]++;
+            gSaveContext.ship.stats.dungeonKeys[mapIndex]++;
             if (gSaveContext.inventory.dungeonKeys[mapIndex] < 0) {
                 gSaveContext.inventory.dungeonKeys[mapIndex] = 1;
             } else {
@@ -3263,7 +3263,7 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         }
 
         if ((item >= RG_FOREST_TEMPLE_KEY_RING) && (item <= RG_GANONS_CASTLE_KEY_RING)) {
-            gSaveContext.sohStats.dungeonKeys[mapIndex] = numOfKeysOnKeyring;
+            gSaveContext.ship.stats.dungeonKeys[mapIndex] = numOfKeysOnKeyring;
             gSaveContext.inventory.dungeonKeys[mapIndex] = numOfKeysOnKeyring;
             return Return_Item_Entry(giEntry, RG_NONE);
         }
@@ -3322,16 +3322,16 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         case RG_GREG_RUPEE:
             Rupees_ChangeBy(1);
             Flags_SetRandomizerInf(RAND_INF_GREG_FOUND);
-            gSaveContext.sohStats.itemTimestamp[TIMESTAMP_FOUND_GREG] = GAMEPLAYSTAT_TOTAL_TIME;
+            gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_FOUND_GREG] = GAMEPLAYSTAT_TOTAL_TIME;
             break;
         case RG_TRIFORCE_PIECE:
-            gSaveContext.triforcePiecesCollected++;
+            gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected++;
             GameInteractor_SetTriforceHuntPieceGiven(true);
 
             // Teleport to credits when goal is reached.
-            if (gSaveContext.triforcePiecesCollected == (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED) + 1)) {
-                gSaveContext.sohStats.itemTimestamp[TIMESTAMP_TRIFORCE_COMPLETED] = GAMEPLAYSTAT_TOTAL_TIME;
-                gSaveContext.sohStats.gameComplete = 1;
+            if (gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected == (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED) + 1)) {
+                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_TRIFORCE_COMPLETED] = GAMEPLAYSTAT_TOTAL_TIME;
+                gSaveContext.ship.stats.gameComplete = 1;
                 Flags_SetRandomizerInf(RAND_INF_GRANT_GANONS_BOSSKEY);
                 Play_PerformSave(play);
                 GameInteractor_SetTriforceHuntCreditsWarpActive(true);

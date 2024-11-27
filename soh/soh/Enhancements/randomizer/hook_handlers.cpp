@@ -839,7 +839,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
                     Item_Give(gPlayState, item00->itemEntry.itemId);
                 } else if (item00->itemEntry.modIndex == MOD_RANDOMIZER) {
                     if (item00->itemEntry.getItemId == RG_ICE_TRAP) {
-                        gSaveContext.pendingIceTrapCount++;
+                        gSaveContext.ship.pendingIceTrapCount++;
                     } else {
                         Randomizer_Item_Give(gPlayState, item00->itemEntry);
                     }

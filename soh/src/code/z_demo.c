@@ -626,8 +626,8 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                 break;
             case 8:
                 if (CVarGetInteger(CVAR_ENHANCEMENT("BetterFarore"), 0)) {
-                    FaroresWindData tempFW = gSaveContext.backupFW;
-                    gSaveContext.backupFW = gSaveContext.fw;
+                    FaroresWindData tempFW = gSaveContext.ship.backupFW;
+                    gSaveContext.ship.backupFW = gSaveContext.fw;
                     gSaveContext.fw = tempFW;
                 } else {
                     gSaveContext.fw.set = 0;

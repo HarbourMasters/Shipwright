@@ -59,9 +59,9 @@ void KaleidoScopeCall_Update(PlayState* play) {
 
     GameInteractor_ExecuteOnKaleidoUpdate();
 
-    if (!gSaveContext.sohStats.gameComplete &&
-        (!IS_BOSS_RUSH || !gSaveContext.isBossRushPaused)) {
-        gSaveContext.sohStats.pauseTimer++;
+    if (!gSaveContext.ship.stats.gameComplete &&
+        (!IS_BOSS_RUSH || !gSaveContext.ship.quest.data.bossRush.isPaused)) {
+        gSaveContext.ship.stats.pauseTimer++;
     }
 
     if ((pauseCtx->state != 0) || (pauseCtx->debugState != 0)) {
@@ -73,7 +73,7 @@ void KaleidoScopeCall_Update(PlayState* play) {
                 pauseCtx->unk_1E4 = 0;
                 pauseCtx->unk_1EC = 0;
                 pauseCtx->state = (pauseCtx->state & 0xFFFF) + 1;
-                gSaveContext.sohStats.count[COUNT_PAUSES]++;
+                gSaveContext.ship.stats.count[COUNT_PAUSES]++;
             }
         } else if (pauseCtx->state == 8) {
             HREG(80) = 7;
