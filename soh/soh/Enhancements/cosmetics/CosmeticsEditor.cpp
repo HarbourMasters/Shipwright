@@ -69,24 +69,24 @@ u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 static const ALIGN_ASSET(2) char gEndGrayscaleAndEndDlistDL[] = dgEndGrayscaleAndEndDlistDL;
 
 std::map<CosmeticGroup, const char*> groupLabels = {
-    { COSMETICS_GROUP_LINK, "Link" },
+    { COSMETICS_GROUP_LINK,         "Link" },
     { COSMETICS_GROUP_MIRRORSHIELD, "Mirror Shield" },
-    { COSMETICS_GROUP_SWORDS, "Swords" },
-    { COSMETICS_GROUP_GLOVES, "Gloves" },
-    { COSMETICS_GROUP_EQUIPMENT, "Equipment" },
-    { COSMETICS_GROUP_CONSUMABLE, "Consumables" },
-    { COSMETICS_GROUP_HUD, "HUD" },
-    { COSMETICS_GROUP_KALEIDO, "Pause Menu" },
-    { COSMETICS_GROUP_TITLE, "Title Screen" },
-    { COSMETICS_GROUP_NPC, "NPCs" },
-    { COSMETICS_GROUP_WORLD, "World" },
-    { COSMETICS_GROUP_MAGIC, "Magic Effects" },
-    { COSMETICS_GROUP_ARROWS, "Arrow Effects" },
-    { COSMETICS_GROUP_SPIN_ATTACK, "Spin Attack" },
-    { COSMETICS_GROUP_TRAILS, "Trails" },
-    { COSMETICS_GROUP_NAVI, "Navi" },
-    { COSMETICS_GROUP_IVAN, "Ivan" },
-    { COSMETICS_GROUP_MESSAGE, "Message" },
+    { COSMETICS_GROUP_SWORDS,       "Swords" },
+    { COSMETICS_GROUP_GLOVES,       "Gloves" },
+    { COSMETICS_GROUP_EQUIPMENT,    "Equipment" },
+    { COSMETICS_GROUP_CONSUMABLE,   "Consumables" },
+    { COSMETICS_GROUP_HUD,          "HUD" },
+    { COSMETICS_GROUP_KALEIDO,      "Pause Menu" },
+    { COSMETICS_GROUP_TITLE,        "Title Screen" },
+    { COSMETICS_GROUP_NPC,          "NPCs" },
+    { COSMETICS_GROUP_WORLD,        "World" },
+    { COSMETICS_GROUP_MAGIC,        "Magic Effects" },
+    { COSMETICS_GROUP_ARROWS,       "Arrow Effects" },
+    { COSMETICS_GROUP_SPIN_ATTACK,  "Spin Attack" },
+    { COSMETICS_GROUP_TRAILS,       "Trails" },
+    { COSMETICS_GROUP_NAVI,         "Navi" },
+    { COSMETICS_GROUP_IVAN,         "Ivan" },
+    { COSMETICS_GROUP_MESSAGE,      "Message" },
 };
 
 typedef struct {
@@ -438,9 +438,9 @@ ImVec4 GetRandomValue() {
     std::uniform_int_distribution<int> dist(0, 255 - 1);
 
     ImVec4 NewColor;
-    NewColor.x = (float)(dist(rng)) / 255;
-    NewColor.y = (float)(dist(rng)) / 255;
-    NewColor.z = (float)(dist(rng)) / 255;
+    NewColor.x = (float)(dist(rng)) / 255.0f;
+    NewColor.y = (float)(dist(rng)) / 255.0f;
+    NewColor.z = (float)(dist(rng)) / 255.0f;
     return NewColor;
 }
 
@@ -487,21 +487,21 @@ void CosmeticsUpdateTick() {
     float rainbowSpeed = CVarGetFloat(CVAR_COSMETIC("RainbowSpeed"), 0.6f);
     for (auto& [id, cosmeticOption] : cosmeticOptions) {
         if (cosmeticOption.supportsRainbow && CVarGetInteger(cosmeticOption.rainbowCvar, 0)) {
-            float frequency = 2 * M_PI / (360 * rainbowSpeed);
+            double frequency = 2 * M_PI / (360 * rainbowSpeed);
             Color_RGBA8 newColor;
-            newColor.r = sin(frequency * (hue + index) + 0) * 127 + 128;
-            newColor.g = sin(frequency * (hue + index) + (2 * M_PI / 3)) * 127 + 128;
-            newColor.b = sin(frequency * (hue + index) + (4 * M_PI / 3)) * 127 + 128;
+            newColor.r = static_cast<uint8_t>(sin(frequency * (hue + index) + 0) * 127) + 128;
+            newColor.g = static_cast<uint8_t>(sin(frequency * (hue + index) + (2 * M_PI / 3)) * 127) + 128;
+            newColor.b = static_cast<uint8_t>(sin(frequency * (hue + index) + (4 * M_PI / 3)) * 127) + 128;
             newColor.a = 255;
             // For alpha supported options, retain the last set alpha instead of overwriting
             if (cosmeticOption.supportsAlpha) {
-                newColor.a = cosmeticOption.currentColor.w * 255;
+                newColor.a = static_cast<uint8_t>(cosmeticOption.currentColor.w * 255.0f);
             }
 
-            cosmeticOption.currentColor.x = newColor.r / 255.0;
-            cosmeticOption.currentColor.y = newColor.g / 255.0;
-            cosmeticOption.currentColor.z = newColor.b / 255.0;
-            cosmeticOption.currentColor.w = newColor.a / 255.0;
+            cosmeticOption.currentColor.x = newColor.r / 255.0f;
+            cosmeticOption.currentColor.y = newColor.g / 255.0f;
+            cosmeticOption.currentColor.z = newColor.b / 255.0f;
+            cosmeticOption.currentColor.w = newColor.a / 255.0f;
 
             CVarSetColor(cosmeticOption.cvar, newColor);
         }
@@ -509,7 +509,7 @@ void CosmeticsUpdateTick() {
         // Technically this would work if you replaced "60" with 1 but the hue would be so close it's 
         // indistinguishable, 60 gives us a big enough gap to notice the difference.
         if (!CVarGetInteger(CVAR_COSMETIC("RainbowSync"), 0)) {
-            index += (60 * rainbowSpeed);
+            index += static_cast<int>(60 * rainbowSpeed);
         }
     }
     ApplyOrResetCustomGfxPatches(false);
@@ -1235,7 +1235,7 @@ void Table_InitHeader(bool has_header = true) {
     ImGui::TableNextColumn();
     ImGui::AlignTextToFramePadding(); //This is to adjust Vertical pos of item in a cell to be normlized.
     ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 2);
-    ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x-60);
+    ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x - 60);
 }
 
 void DrawUseMarginsSlider(const std::string ElementName, const std::string CvarName){
@@ -1264,16 +1264,16 @@ void DrawPositionsRadioBoxes(const std::string CvarName, bool NoAnchorEnabled = 
 void DrawPositionSlider(const std::string CvarName, int MinY, int MaxY, int MinX, int MaxX){
     std::string PosXCvar = CvarName + ".PosX";
     std::string PosYCvar = CvarName + ".PosY";
-    std::string InvisibleLabelX = "##"+PosXCvar;
-    std::string InvisibleLabelY = "##"+PosYCvar;
+    std::string InvisibleLabelX = "##" + PosXCvar;
+    std::string InvisibleLabelY = "##" + PosYCvar;
     UIWidgets::EnhancementSliderInt("Up <-> Down : %d", InvisibleLabelY.c_str(), PosYCvar.c_str(), MinY, MaxY, "", 0);
     UIWidgets::Tooltip("This slider is used to move Up and Down your elements.");
     UIWidgets::EnhancementSliderInt("Left <-> Right : %d", InvisibleLabelX.c_str(), PosXCvar.c_str(), MinX, MaxX, "", 0);
     UIWidgets::Tooltip("This slider is used to move Left and Right your elements.");
 }
 
-void DrawScaleSlider(const std::string CvarName,float DefaultValue){
-    std::string InvisibleLabel = "##"+CvarName;
+void DrawScaleSlider(const std::string CvarName, float DefaultValue){
+    std::string InvisibleLabel = "##" + CvarName;
     std::string CvarLabel = CvarName + ".Scale";
     //Disabled for now. feature not done and several fixes needed to be merged.
     //UIWidgets::EnhancementSliderFloat("Scale : %dx", InvisibleLabel.c_str(), CvarLabel.c_str(), 0.1f, 3.0f,"",DefaultValue,true);
@@ -1302,15 +1302,15 @@ void C_Button_Dropdown(const char* Header_Title, const char* Table_ID, const cha
             DrawUseMarginsSlider(Slider_Title, Slider_ID);
             DrawPositionsRadioBoxes(Slider_ID);
             s16 Min_X_CU = 0;
-            s16 Max_X_CU = ImGui::GetWindowViewport()->Size.x/2;
-            if(CVarGetInteger(Int_Type,0) == 2){
+            s16 Max_X_CU = static_cast<s16>(ImGui::GetWindowViewport()->Size.x / 2);
+            if(CVarGetInteger(Int_Type, 0) == 2){
                 Max_X_CU = 294;
-            } else if(CVarGetInteger(Int_Type,0) == 3){
-                Max_X_CU = ImGui::GetWindowViewport()->Size.x/2;
-            } else if(CVarGetInteger(Int_Type,0) == 4){
-                Min_X_CU = (ImGui::GetWindowViewport()->Size.x/2)*-1;
+            } else if(CVarGetInteger(Int_Type, 0) == 3){
+                Max_X_CU = static_cast<s16>(ImGui::GetWindowViewport()->Size.x / 2);
+            } else if(CVarGetInteger(Int_Type, 0) == 4){
+                Min_X_CU = static_cast<s16>(ImGui::GetWindowViewport()->Size.x / 2) * -1;
             }
-            DrawPositionSlider(Slider_ID, 0, ImGui::GetWindowViewport()->Size.y/2, Min_X_CU, Max_X_CU);
+            DrawPositionSlider(Slider_ID, 0, static_cast<s16>(ImGui::GetWindowViewport()->Size.y / 2), Min_X_CU, Max_X_CU);
             DrawScaleSlider(Slider_ID, Slider_Scale_Value);
             ImGui::NewLine();
             ImGui::EndTable();
@@ -1335,10 +1335,10 @@ void Draw_Placements(){
     if (ImGui::BeginTable("tableMargins", 1, FlagsTable)) {
         ImGui::TableSetupColumn("General margins settings", FlagsCell, TablesCellsWidth);
         Table_InitHeader();
-        UIWidgets::EnhancementSliderInt("Top : %dx", "##UIMARGINT", CVAR_COSMETIC("HUD.Margin.T"), (ImGui::GetWindowViewport()->Size.y/2)*-1, 25, "", 0);
-        UIWidgets::EnhancementSliderInt("Left: %dx", "##UIMARGINL", CVAR_COSMETIC("HUD.Margin.L"), -25, ImGui::GetWindowViewport()->Size.x, "", 0);
-        UIWidgets::EnhancementSliderInt("Right: %dx", "##UIMARGINR", CVAR_COSMETIC("HUD.Margin.R"), (ImGui::GetWindowViewport()->Size.x)*-1, 25, "", 0);
-        UIWidgets::EnhancementSliderInt("Bottom: %dx", "##UIMARGINB", CVAR_COSMETIC("HUD.Margin.B"), (ImGui::GetWindowViewport()->Size.y/2)*-1, 25, "", 0);
+        UIWidgets::EnhancementSliderInt("Top : %dx", "##UIMARGINT", CVAR_COSMETIC("HUD.Margin.T"), static_cast<s16>(ImGui::GetWindowViewport()->Size.y / 2) * -1, 25, "", 0);
+        UIWidgets::EnhancementSliderInt("Left: %dx", "##UIMARGINL", CVAR_COSMETIC("HUD.Margin.L"), -25, static_cast<s16>(ImGui::GetWindowViewport()->Size.x), "", 0);
+        UIWidgets::EnhancementSliderInt("Right: %dx", "##UIMARGINR", CVAR_COSMETIC("HUD.Margin.R"), static_cast<s16>(ImGui::GetWindowViewport()->Size.x) * -1, 25, "", 0);
+        UIWidgets::EnhancementSliderInt("Bottom: %dx", "##UIMARGINB", CVAR_COSMETIC("HUD.Margin.B"), static_cast<s16>(ImGui::GetWindowViewport()->Size.y / 2) * -1, 25, "", 0);
         SetMarginAll("All margins on",true);
         UIWidgets::Tooltip("Set most of the elements to use margins\nSome elements with default position will not be affected\nElements without Anchor or Hidden will not be turned on");
         ImGui::SameLine();
@@ -1356,8 +1356,8 @@ void Draw_Placements(){
             Table_InitHeader(false);
             DrawUseMarginsSlider("Hearts counts", CVAR_COSMETIC("HUD.Hearts"));
             DrawPositionsRadioBoxes(CVAR_COSMETIC("HUD.HeartsCount"));
-            DrawPositionSlider(CVAR_COSMETIC("HUD.HeartsCount"),-22,ImGui::GetWindowViewport()->Size.y,-125,ImGui::GetWindowViewport()->Size.x);
-            DrawScaleSlider(CVAR_COSMETIC("HUD.HeartsCount"),0.7f);
+            DrawPositionSlider(CVAR_COSMETIC("HUD.HeartsCount"), -22, static_cast<s16>(ImGui::GetWindowViewport()->Size.y), -125, static_cast<s16>(ImGui::GetWindowViewport()->Size.x));
+            DrawScaleSlider(CVAR_COSMETIC("HUD.HeartsCount"), 0.7f);
             UIWidgets::EnhancementSliderInt("Heart line length : %d", "##HeartLineLength", CVAR_COSMETIC("HUD.Hearts.LineLength"), 0, 20, "", 10);
             UIWidgets::Tooltip("This will set the length of a row of hearts. Set to 0 for unlimited length.");
             ImGui::NewLine();
@@ -1372,34 +1372,34 @@ void Draw_Placements(){
             DrawPositionsRadioBoxes(CVAR_COSMETIC("HUD.MagicBar"));
             UIWidgets::EnhancementRadioButton("Anchor to life bar", CVAR_COSMETIC("HUD.MagicBar.PosType"), 5);
             UIWidgets::Tooltip("This will make your elements follow the bottom of the life meter");
-            DrawPositionSlider(CVAR_COSMETIC("HUD.MagicBar"), 0, ImGui::GetWindowViewport()->Size.y/2, -5, ImGui::GetWindowViewport()->Size.x/2);
-            DrawScaleSlider(CVAR_COSMETIC("HUD.MagicBar"),1.0f);
+            DrawPositionSlider(CVAR_COSMETIC("HUD.MagicBar"), 0, static_cast<s16>(ImGui::GetWindowViewport()->Size.y / 2), -5, static_cast<s16>(ImGui::GetWindowViewport()->Size.x / 2));
+            DrawScaleSlider(CVAR_COSMETIC("HUD.MagicBar"), 1.0f);
             ImGui::NewLine();
             ImGui::EndTable();
         }
     }
-    if (CVarGetInteger(CVAR_ENHANCEMENT("VisualAgony"),0) && ImGui::CollapsingHeader("Visual stone of agony position")) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("VisualAgony"), 0) && ImGui::CollapsingHeader("Visual stone of agony position")) {
         if (ImGui::BeginTable("tabledvisualstoneofagony", 1, FlagsTable)) {
             ImGui::TableSetupColumn("Visual stone of agony settings", FlagsCell, TablesCellsWidth);
             Table_InitHeader(false);
             DrawUseMarginsSlider("Visual stone of agony", CVAR_COSMETIC("HUD.VisualSoA"));
             DrawPositionsRadioBoxes(CVAR_COSMETIC("HUD.VisualSoA"));
             s16 Min_X_VSOA = 0;
-            s16 Max_X_VSOA = ImGui::GetWindowViewport()->Size.x/2;
-            if(CVarGetInteger(CVAR_COSMETIC("HUD.VisualSoA.PosType"),0) == 2){
+            s16 Max_X_VSOA = static_cast<s16>(ImGui::GetWindowViewport()->Size.x / 2);
+            if(CVarGetInteger(CVAR_COSMETIC("HUD.VisualSoA.PosType"), 0) == 2){
                 Max_X_VSOA = 290;
-            } else if(CVarGetInteger(CVAR_COSMETIC("HUD.VisualSoA.PosType"),0) == 4){
-                Min_X_VSOA = (ImGui::GetWindowViewport()->Size.x/2)*-1;
+            } else if(CVarGetInteger(CVAR_COSMETIC("HUD.VisualSoA.PosType"), 0) == 4){
+                Min_X_VSOA = static_cast<s16>(ImGui::GetWindowViewport()->Size.x / 2) * -1;
             }
-            DrawPositionSlider(CVAR_COSMETIC("HUD.VisualSoA"), 0, ImGui::GetWindowViewport()->Size.y/2, Min_X_VSOA, Max_X_VSOA);
-            DrawScaleSlider(CVAR_COSMETIC("HUD.VisualSoA"),1.0f);
+            DrawPositionSlider(CVAR_COSMETIC("HUD.VisualSoA"), 0, static_cast<s16>(ImGui::GetWindowViewport()->Size.y / 2), Min_X_VSOA, Max_X_VSOA);
+            DrawScaleSlider(CVAR_COSMETIC("HUD.VisualSoA"), 1.0f);
             ImGui::NewLine();
             ImGui::EndTable();
         }
     }
-    Draw_Table_Dropdown("B Button position", "tablebbtn", "B Button settings", "B Button", CVAR_COSMETIC("HUD.BButton"), 0, ImGui::GetWindowViewport()->Size.y/4+50, -1, ImGui::GetWindowViewport()->Size.x-50, 0.95f);
-    Draw_Table_Dropdown("A Button position", "tableabtn", "A Button settings", "A Button", CVAR_COSMETIC("HUD.AButton"), -10, ImGui::GetWindowViewport()->Size.y/4+50, -20, ImGui::GetWindowViewport()->Size.x-50, 0.95f);
-    Draw_Table_Dropdown("Start Button position", "tablestartbtn", "Start Button settings", "Start Button", CVAR_COSMETIC("HUD.StartButton"), 0, ImGui::GetWindowViewport()->Size.y/2, 0, ImGui::GetWindowViewport()->Size.x/2+70, 0.75f);
+    Draw_Table_Dropdown("B Button position", "tablebbtn", "B Button settings", "B Button", CVAR_COSMETIC("HUD.BButton"), 0, static_cast<int>(ImGui::GetWindowViewport()->Size.y / 4) + 50, -1, static_cast<int>(ImGui::GetWindowViewport()->Size.x) - 50, 0.95f);
+    Draw_Table_Dropdown("A Button position", "tableabtn", "A Button settings", "A Button", CVAR_COSMETIC("HUD.AButton"), -10, static_cast<int>(ImGui::GetWindowViewport()->Size.y / 4) + 50, -20, static_cast<int>(ImGui::GetWindowViewport()->Size.x) - 50, 0.95f);
+    Draw_Table_Dropdown("Start Button position", "tablestartbtn", "Start Button settings", "Start Button", CVAR_COSMETIC("HUD.StartButton"), 0, static_cast<int>(ImGui::GetWindowViewport()->Size.y / 2), 0, static_cast<int>(ImGui::GetWindowViewport()->Size.x / 2) + 70, 0.75f);
     C_Button_Dropdown("C Button Up position", "tablecubtn", "C Button Up settings", "C Button Up", CVAR_COSMETIC("HUD.CUpButton"), CVAR_COSMETIC("HUD.CUpButton.PosType"), 0.5f);
     C_Button_Dropdown("C Button Down position", "tablecdbtn", "C Button Down settings", "C Button Down", CVAR_COSMETIC("HUD.CDownButton"), CVAR_COSMETIC("HUD.CDownButton.PosType"), 0.87f);
     C_Button_Dropdown("C Button Left position", "tableclbtn", "C Button Left settings", "C Button Left", CVAR_COSMETIC("HUD.CLeftButton"), CVAR_COSMETIC("HUD.CLeftButton.PosType"), 0.87f);
@@ -1411,27 +1411,36 @@ void Draw_Placements(){
             DrawUseMarginsSlider("DPad items", CVAR_COSMETIC("HUD.Dpad"));
             DrawPositionsRadioBoxes(CVAR_COSMETIC("HUD.Dpad"));
             s16 Min_X_Dpad = 0;
-            s16 Max_X_Dpad = ImGui::GetWindowViewport()->Size.x/2;
-            if(CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosType"),0) == 2){
+            s16 Max_X_Dpad = static_cast<s16>(ImGui::GetWindowViewport()->Size.x / 2);
+            if(CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosType"), 0) == 2){
                 Max_X_Dpad = 290;
-            } else if(CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosType"),0) == 4){
-                Min_X_Dpad = (ImGui::GetWindowViewport()->Size.x/2)*-1;
+            } else if(CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosType"), 0) == 4){
+                Min_X_Dpad = static_cast<s16>(ImGui::GetWindowViewport()->Size.x / 2) * -1;
             }
-            DrawPositionSlider(CVAR_COSMETIC("HUD.Dpad"), 0, ImGui::GetWindowViewport()->Size.y/2, Min_X_Dpad, Max_X_Dpad);
-            DrawScaleSlider(CVAR_COSMETIC("HUD.Dpad"),1.0f);
+            DrawPositionSlider(CVAR_COSMETIC("HUD.Dpad"), 0, static_cast<s16>(ImGui::GetWindowViewport()->Size.y / 2), Min_X_Dpad, Max_X_Dpad);
+            DrawScaleSlider(CVAR_COSMETIC("HUD.Dpad"), 1.0f);
             ImGui::NewLine();
             ImGui::EndTable();
         }
     }
-    Draw_Table_Dropdown("Minimaps position", "tableminimapspos", "minimaps settings", "Minimap", CVAR_COSMETIC("HUD.Minimap"), (ImGui::GetWindowViewport()->Size.y/3)*-1, ImGui::GetWindowViewport()->Size.y/3, ImGui::GetWindowViewport()->Size.x*-1, ImGui::GetWindowViewport()->Size.x/2, 1.0f);
-    Draw_Table_Dropdown("Small Keys counter position", "tablesmolekeys", "Small Keys counter settings", "Small Keys counter", CVAR_COSMETIC("HUD.SmallKey"), 0, ImGui::GetWindowViewport()->Size.y/3, -1, ImGui::GetWindowViewport()->Size.x/2, 1.0f);
-    Draw_Table_Dropdown("Rupee counter position", "tablerupeecount", "Rupee counter settings", "Rupee counter", CVAR_COSMETIC("HUD.Rupees"), -2, ImGui::GetWindowViewport()->Size.y/3, -3, ImGui::GetWindowViewport()->Size.x/2, 1.0f);
-    Draw_Table_Dropdown("Carrots position", "tableCarrots", "Carrots settings", "Carrots", CVAR_COSMETIC("HUD.Carrots"), 0, ImGui::GetWindowViewport()->Size.y/2, -50, ImGui::GetWindowViewport()->Size.x/2+25, 1.0f);
-    Draw_Table_Dropdown("Timers position", "tabletimers", "Timers settings", "Timers", CVAR_COSMETIC("HUD.Timers"), 0, ImGui::GetWindowViewport()->Size.y/2, -50, ImGui::GetWindowViewport()->Size.x/2-50, 1.0f);
-    Draw_Table_Dropdown("Archery Scores position", "tablearchery", "Archery Scores settings", "Archery scores", CVAR_COSMETIC("HUD.ArcheryScore"), 0, ImGui::GetWindowViewport()->Size.y/2, -50, ImGui::GetWindowViewport()->Size.x/2-50, 1.0f);
-    Draw_Table_Dropdown("Title cards (Maps) position", "tabletcmaps", "Titlecard maps settings", "Title cards (overworld)", CVAR_COSMETIC("HUD.TitleCard.Map"), 0, ImGui::GetWindowViewport()->Size.y/2, -50, ImGui::GetWindowViewport()->Size.x/2+10, 1.0f);
-    Draw_Table_Dropdown("Title cards (Bosses) position", "tabletcbosses", "Title cards (Bosses) settings", "Title cards (Bosses)", CVAR_COSMETIC("HUD.TitleCard.Boss"), 0, ImGui::GetWindowViewport()->Size.y/2, -50, ImGui::GetWindowViewport()->Size.x/2+10, 1.0f);
-    Draw_Table_Dropdown("In-game Gameplay Timer position", "tablegameplaytimer", "In-game Gameplay Timer settings", "In-game Gameplay Timer", CVAR_COSMETIC("HUD.IGT"), 0, ImGui::GetWindowViewport()->Size.y / 2, -50, ImGui::GetWindowViewport()->Size.x / 2 + 10, 1.0f);
+    Draw_Table_Dropdown("Minimaps position", "tableminimapspos", "minimaps settings", "Minimap", CVAR_COSMETIC("HUD.Minimap"),
+        static_cast<int>(ImGui::GetWindowViewport()->Size.y / 3) * -1, static_cast<int>(ImGui::GetWindowViewport()->Size.y / 3), static_cast<int>(ImGui::GetWindowViewport()->Size.x) * -1, static_cast<int>(ImGui::GetWindowViewport()->Size.x / 2), 1.0f);
+    Draw_Table_Dropdown("Small Keys counter position", "tablesmolekeys", "Small Keys counter settings", "Small Keys counter", CVAR_COSMETIC("HUD.SmallKey"),
+        0, static_cast<int>(ImGui::GetWindowViewport()->Size.y / 3), -1, static_cast<int>(ImGui::GetWindowViewport()->Size.x / 2), 1.0f);
+    Draw_Table_Dropdown("Rupee counter position", "tablerupeecount", "Rupee counter settings", "Rupee counter", CVAR_COSMETIC("HUD.Rupees"),
+        -2, static_cast<int>(ImGui::GetWindowViewport()->Size.y / 3), -3, static_cast<int>(ImGui::GetWindowViewport()->Size.x / 2), 1.0f);
+    Draw_Table_Dropdown("Carrots position", "tableCarrots", "Carrots settings", "Carrots", CVAR_COSMETIC("HUD.Carrots"),
+        0, static_cast<int>(ImGui::GetWindowViewport()->Size.y / 2), -50, static_cast<int>(ImGui::GetWindowViewport()->Size.x / 2) + 25, 1.0f);
+    Draw_Table_Dropdown("Timers position", "tabletimers", "Timers settings", "Timers", CVAR_COSMETIC("HUD.Timers"),
+        0, static_cast<int>(ImGui::GetWindowViewport()->Size.y / 2), -50, static_cast<int>(ImGui::GetWindowViewport()->Size.x / 2) - 50, 1.0f);
+    Draw_Table_Dropdown("Archery Scores position", "tablearchery", "Archery Scores settings", "Archery scores", CVAR_COSMETIC("HUD.ArcheryScore"),
+        0, static_cast<int>(ImGui::GetWindowViewport()->Size.y / 2), -50, static_cast<int>(ImGui::GetWindowViewport()->Size.x / 2) - 50, 1.0f);
+    Draw_Table_Dropdown("Title cards (Maps) position", "tabletcmaps", "Titlecard maps settings", "Title cards (overworld)", CVAR_COSMETIC("HUD.TitleCard.Map"),
+        0, static_cast<int>(ImGui::GetWindowViewport()->Size.y / 2), -50, static_cast<int>(ImGui::GetWindowViewport()->Size.x / 2) + 10, 1.0f);
+    Draw_Table_Dropdown("Title cards (Bosses) position", "tabletcbosses", "Title cards (Bosses) settings", "Title cards (Bosses)", CVAR_COSMETIC("HUD.TitleCard.Boss"),
+        0, static_cast<int>(ImGui::GetWindowViewport()->Size.y / 2), -50, static_cast<int>(ImGui::GetWindowViewport()->Size.x / 2) + 10, 1.0f);
+    Draw_Table_Dropdown("In-game Gameplay Timer position", "tablegameplaytimer", "In-game Gameplay Timer settings", "In-game Gameplay Timer", CVAR_COSMETIC("HUD.IGT"),
+        0, static_cast<int>(ImGui::GetWindowViewport()->Size.y / 2), -50, static_cast<int>(ImGui::GetWindowViewport()->Size.x / 2) + 10, 1.0f);
     if (ImGui::CollapsingHeader("Enemy Health Bar position")) {
         if (ImGui::BeginTable("enemyhealthbar", 1, FlagsTable)) {
             ImGui::TableSetupColumn("Enemy Health Bar settings", FlagsCell, TablesCellsWidth);
@@ -1443,7 +1452,7 @@ void Draw_Placements(){
             UIWidgets::Tooltip("This will make your elements follow the top edge of your game window");
             UIWidgets::EnhancementRadioButton("Anchor to the bottom", posTypeCVar.c_str(), ENEMYHEALTH_ANCHOR_BOTTOM);
             UIWidgets::Tooltip("This will make your elements follow the bottom edge of your game window");
-            DrawPositionSlider(CVAR_COSMETIC("HUD.EnemyHealthBar."), -SCREEN_HEIGHT, SCREEN_HEIGHT, -ImGui::GetWindowViewport()->Size.x / 2, ImGui::GetWindowViewport()->Size.x / 2);
+            DrawPositionSlider(CVAR_COSMETIC("HUD.EnemyHealthBar."), -SCREEN_HEIGHT, SCREEN_HEIGHT, -static_cast<int>(ImGui::GetWindowViewport()->Size.x / 2), static_cast<int>(ImGui::GetWindowViewport()->Size.x / 2));
             if (UIWidgets::EnhancementSliderInt("Health Bar Width: %d", "##EnemyHealthBarWidth", CVAR_COSMETIC("HUD.EnemyHealthBar.Width.Value"), 32, 128, "", 64)) {
                 CVarSetInteger(CVAR_COSMETIC("HUD.EnemyHealthBar.Width.Changed"), 1);
             }
@@ -1531,15 +1540,15 @@ void DrawSillyTab() {
 // allows you create and use multiple shades of the same color.
 void CopyMultipliedColor(CosmeticOption& cosmeticOptionSrc, CosmeticOption& cosmeticOptionTarget, float amount = 0.75f) {
     Color_RGBA8 newColor;
-    newColor.r = MIN((cosmeticOptionSrc.currentColor.x * 255.0) * amount, 255);
-    newColor.g = MIN((cosmeticOptionSrc.currentColor.y * 255.0) * amount, 255);
-    newColor.b = MIN((cosmeticOptionSrc.currentColor.z * 255.0) * amount, 255);
+    newColor.r = static_cast<uint8_t>(MIN((cosmeticOptionSrc.currentColor.x * 255.0f) * amount, 255));
+    newColor.g = static_cast<uint8_t>(MIN((cosmeticOptionSrc.currentColor.y * 255.0f) * amount, 255));
+    newColor.b = static_cast<uint8_t>(MIN((cosmeticOptionSrc.currentColor.z * 255.0f) * amount, 255));
     newColor.a = 255;
 
-    cosmeticOptionTarget.currentColor.x = newColor.r / 255.0;
-    cosmeticOptionTarget.currentColor.y = newColor.g / 255.0;
-    cosmeticOptionTarget.currentColor.z = newColor.b / 255.0;
-    cosmeticOptionTarget.currentColor.w = newColor.a / 255.0;
+    cosmeticOptionTarget.currentColor.x = newColor.r / 255.0f;
+    cosmeticOptionTarget.currentColor.y = newColor.g / 255.0f;
+    cosmeticOptionTarget.currentColor.z = newColor.b / 255.0f;
+    cosmeticOptionTarget.currentColor.w = newColor.a / 255.0f;
 
     CVarSetColor(cosmeticOptionTarget.cvar, newColor);
     CVarSetInteger((cosmeticOptionTarget.rainbowCvar), 0);
@@ -1647,19 +1656,19 @@ void ApplySideEffects(CosmeticOption& cosmeticOption) {
 void RandomizeColor(CosmeticOption& cosmeticOption) {
     ImVec4 randomColor = GetRandomValue();
     Color_RGBA8 newColor;
-    newColor.r = randomColor.x * 255;
-    newColor.g = randomColor.y * 255;
-    newColor.b = randomColor.z * 255;
+    newColor.r = static_cast<uint8_t>(randomColor.x * 255.0f);
+    newColor.g = static_cast<uint8_t>(randomColor.y * 255.0f);
+    newColor.b = static_cast<uint8_t>(randomColor.z * 255.0f);
     newColor.a = 255;
     // For alpha supported options, retain the last set alpha instead of overwriting
     if (cosmeticOption.supportsAlpha) {
-        newColor.a = cosmeticOption.currentColor.w * 255;
+        newColor.a = static_cast<uint8_t>(cosmeticOption.currentColor.w * 255.0f);
     }
 
-    cosmeticOption.currentColor.x = newColor.r / 255.0;
-    cosmeticOption.currentColor.y = newColor.g / 255.0;
-    cosmeticOption.currentColor.z = newColor.b / 255.0;
-    cosmeticOption.currentColor.w = newColor.a / 255.0;
+    cosmeticOption.currentColor.x = newColor.r / 255.0f;
+    cosmeticOption.currentColor.y = newColor.g / 255.0f;
+    cosmeticOption.currentColor.z = newColor.b / 255.0f;
+    cosmeticOption.currentColor.w = newColor.a / 255.0f;
 
     CVarSetColor(cosmeticOption.cvar, newColor);
     CVarSetInteger(cosmeticOption.rainbowCvar, 0);
@@ -1669,10 +1678,10 @@ void RandomizeColor(CosmeticOption& cosmeticOption) {
 
 void ResetColor(CosmeticOption& cosmeticOption) {
     Color_RGBA8 defaultColor = {cosmeticOption.defaultColor.r, cosmeticOption.defaultColor.g, cosmeticOption.defaultColor.b, cosmeticOption.defaultColor.a};
-    cosmeticOption.currentColor.x = defaultColor.r / 255.0;
-    cosmeticOption.currentColor.y = defaultColor.g / 255.0;
-    cosmeticOption.currentColor.z = defaultColor.b / 255.0;
-    cosmeticOption.currentColor.w = defaultColor.a / 255.0;
+    cosmeticOption.currentColor.x = defaultColor.r / 255.0f;
+    cosmeticOption.currentColor.y = defaultColor.g / 255.0f;
+    cosmeticOption.currentColor.z = defaultColor.b / 255.0f;
+    cosmeticOption.currentColor.w = defaultColor.a / 255.0f;
 
     CVarClear(cosmeticOption.changedCvar);
     CVarClear(cosmeticOption.rainbowCvar);
@@ -1736,10 +1745,10 @@ void DrawCosmeticRow(CosmeticOption& cosmeticOption) {
     }
     if (colorChanged) {
         Color_RGBA8 color;
-        color.r = cosmeticOption.currentColor.x * 255.0;
-        color.g = cosmeticOption.currentColor.y * 255.0;
-        color.b = cosmeticOption.currentColor.z * 255.0;
-        color.a = cosmeticOption.currentColor.w * 255.0;
+        color.r = static_cast<uint8_t>(cosmeticOption.currentColor.x * 255.0f);
+        color.g = static_cast<uint8_t>(cosmeticOption.currentColor.y * 255.0f);
+        color.b = static_cast<uint8_t>(cosmeticOption.currentColor.z * 255.0f);
+        color.a = static_cast<uint8_t>(cosmeticOption.currentColor.w * 255.0f);
 
         CVarSetColor(cosmeticOption.cvar, color);
         CVarSetInteger((cosmeticOption.rainbowCvar), 0);
@@ -2004,10 +2013,10 @@ void CosmeticsEditorWindow::InitElement() {
         Color_RGBA8 defaultColor = {cosmeticOption.defaultColor.r, cosmeticOption.defaultColor.g, cosmeticOption.defaultColor.b, cosmeticOption.defaultColor.a};
         Color_RGBA8 cvarColor = CVarGetColor(cosmeticOption.cvar, defaultColor);
 
-        cosmeticOption.currentColor.x = cvarColor.r / 255.0;
-        cosmeticOption.currentColor.y = cvarColor.g / 255.0;
-        cosmeticOption.currentColor.z = cvarColor.b / 255.0;
-        cosmeticOption.currentColor.w = cvarColor.a / 255.0;
+        cosmeticOption.currentColor.x = cvarColor.r / 255.0f;
+        cosmeticOption.currentColor.y = cvarColor.g / 255.0f;
+        cosmeticOption.currentColor.z = cvarColor.b / 255.0f;
+        cosmeticOption.currentColor.w = cvarColor.a / 255.0f;
     }
     Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     ApplyOrResetCustomGfxPatches();
