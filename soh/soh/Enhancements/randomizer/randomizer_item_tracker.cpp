@@ -1,7 +1,10 @@
 #include "randomizer_item_tracker.h"
-#include "../../util.h"
-#include "../../OTRGlobals.h"
-#include "../../UIWidgets.hpp"
+#include "soh/util.h"
+#include "soh/OTRGlobals.h"
+#include "soh/cvar_prefixes.h"
+#include "soh/SaveManager.h"
+#include "soh/ResourceManagerHelpers.h"
+#include "soh/UIWidgets.hpp"
 #include "randomizerTypes.h"
 
 #include <map>
@@ -22,7 +25,6 @@ extern PlayState* gPlayState;
 #include "textures/icon_item_static/icon_item_static.h"
 #include "textures/icon_item_24_static/icon_item_24_static.h"
 }
-extern "C" uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
 
 void DrawEquip(ItemTrackerItem item);
 void DrawItem(ItemTrackerItem item);

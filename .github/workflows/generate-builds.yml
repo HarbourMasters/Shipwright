@@ -244,7 +244,6 @@ jobs:
     - name: Cache build folder
       uses: actions/cache@v4
       with:
-        save-always: true
         key: ${{ runner.os }}-build-${{ github.ref }}-${{ github.sha }}
         restore-keys: |
           ${{ runner.os }}-build-${{ github.ref }}

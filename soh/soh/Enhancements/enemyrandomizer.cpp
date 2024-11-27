@@ -6,12 +6,12 @@
 #include "soh/Enhancements/enhancementTypes.h"
 #include "variables.h"
 #include "soh/OTRGlobals.h"
+#include "soh/cvar_prefixes.h"
+#include "soh/ResourceManagerHelpers.h"
 
 extern "C" {
 #include <z64.h>
 }
-
-extern "C" uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
 
 const char* enemyCVarList[] = {
     CVAR_ENHANCEMENT("RandomizedEnemyList.Armos"),        CVAR_ENHANCEMENT("RandomizedEnemyList.Arwing"),

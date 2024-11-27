@@ -32,6 +32,8 @@
 #include "scenes/misc/hakaana_ouke/hakaana_ouke_scene.h"
 
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 u16 D_8011E1C0 = 0;

@@ -6,6 +6,7 @@
 
 #include "z_en_po_desert.h"
 #include "objects/object_po_field/object_po_field.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_LENS | ACTOR_FLAG_IGNORE_QUAKE)
 

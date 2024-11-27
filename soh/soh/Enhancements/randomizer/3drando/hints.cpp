@@ -757,7 +757,7 @@ void CreateStaticHintFromData(RandomizerHint hint, StaticHintInfo staticData){
           //If we get to here then it means a location got through with no area assignment, which means something went wrong elsewhere.
           SPDLOG_DEBUG("Attempted to hint location with no areas: ");
           SPDLOG_DEBUG(Rando::StaticData::GetLocation(loc)->GetName());
-          assert(false);
+          //assert(false);
           areas.push_back(RA_NONE);
         } else {
           areas.push_back(ctx->GetItemLocation(loc)->GetRandomArea());

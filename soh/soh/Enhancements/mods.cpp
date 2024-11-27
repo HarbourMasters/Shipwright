@@ -3,6 +3,9 @@
 #include "game-interactor/GameInteractor.h"
 #include "tts/tts.h"
 #include "soh/OTRGlobals.h"
+#include "soh/SaveManager.h"
+#include "soh/ResourceManagerHelpers.h"
+#include "soh/Enhancements/boss-rush/BossRushTypes.h"
 #include "soh/Enhancements/boss-rush/BossRush.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/randomizer/3drando/random.hpp"
@@ -41,17 +44,15 @@ extern "C" {
 #include <z64.h>
 #include "align_asset_macro.h"
 #include "macros.h"
+#include "soh/cvar_prefixes.h"
 #include "functions.h"
 #include "variables.h"
 #include "functions.h"
 #include "src/overlays/actors/ovl_En_Door/z_en_door.h"
-void ResourceMgr_PatchGfxByName(const char* path, const char* patchName, int index, Gfx instruction);
-void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName);
 
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 extern void Overlay_DisplayText(float duration, const char* text);
-uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
 }
 
 // GreyScaleEndDlist
@@ -1035,6 +1036,9 @@ std::vector<AltTrapType> getEnabledAddTraps () {
     std::vector<AltTrapType> enabledAddTraps;
     for (int i = 0; i < ADD_TRAP_MAX; i++) {
         if (CVarGetInteger(altTrapTypeCvars[i], 0)) {
+            if (gSaveContext.equips.buttonItems[0] == ITEM_FISHING_POLE && (i == ADD_VOID_TRAP || i == ADD_TELEPORT_TRAP)) {
+                continue; // don't add void or teleport if you're holding the fishing pole, as this causes issues
+            }
             enabledAddTraps.push_back(static_cast<AltTrapType>(i));
         }
     }

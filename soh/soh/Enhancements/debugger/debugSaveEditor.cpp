@@ -18,6 +18,7 @@ extern "C" {
 #include "variables.h"
 #include "functions.h"
 #include "macros.h"
+#include "soh/cvar_prefixes.h"
 #include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 extern PlayState* gPlayState;
 

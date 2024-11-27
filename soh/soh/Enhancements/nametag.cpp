@@ -10,6 +10,7 @@
 extern "C" {
 #include "z64.h"
 #include "macros.h"
+#include "soh/cvar_prefixes.h"
 #include "functions.h"
 #include "variables.h"
 #include "textures/message_static/message_static.h"

@@ -4,6 +4,7 @@
  */
 
 #include "randomizer_grotto.h"
+#include "soh/OTRGlobals.h"
 
 #include "global.h"
 
@@ -272,7 +273,7 @@ void Grotto_OverrideActorEntrance(Actor* thisx) {
 void Grotto_ForceGrottoReturnOnSpecialEntrance(void) {
     if (lastEntranceType == GROTTO_RETURN && (Randomizer_GetSettingValue(RSK_SHUFFLE_GROTTO_ENTRANCES) || Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_SPAWNS) || Randomizer_GetSettingValue(RSK_SHUFFLE_WARP_SONGS))) {
         gSaveContext.respawnFlag = 2;
-        gSaveContext.respawn[RESPAWN_MODE_RETURN].playerParams = 0x4FF;
+        gSaveContext.respawn[RESPAWN_MODE_RETURN].playerParams = 0x04FF;
         gSaveContext.respawn[RESPAWN_MODE_RETURN].pos = grottoReturnTable[grottoId].pos;
         // Clear current temp flags
         gSaveContext.respawn[RESPAWN_MODE_RETURN].tempSwchFlags = 0;
@@ -307,7 +308,7 @@ void Grotto_ForceRegularVoidOut(void) {
 // so that Sun's Song and Game Over will behave correctly
 void Grotto_SetupReturnInfoOnFWReturn(void) {
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_GROTTO_ENTRANCES) || Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_SPAWNS) || Randomizer_GetSettingValue(RSK_SHUFFLE_WARP_SONGS) &&
-        gSaveContext.fw.playerParams == 0x4FF) {
+        gSaveContext.fw.playerParams == 0x04FF) {
         gSaveContext.respawn[RESPAWN_MODE_RETURN] = gSaveContext.respawn[RESPAWN_MODE_TOP];
         gSaveContext.respawn[RESPAWN_MODE_RETURN].playerParams = 0x0DFF;
         lastEntranceType = GROTTO_RETURN;

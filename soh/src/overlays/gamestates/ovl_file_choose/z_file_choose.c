@@ -22,6 +22,9 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include <assert.h>
 #include "z64save.h"
+#include "soh/SaveManager.h"
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 
 typedef struct {
     s16 left;
@@ -1005,6 +1008,7 @@ void DrawSeedHashSprites(FileChooseContext* this) {
 }
 
 u8 generating;
+int retries = 0;
 bool fileSelectSpoilerFileLoaded = false;
 
 void FileChoose_UpdateRandomizer() {
@@ -1015,6 +1019,7 @@ void FileChoose_UpdateRandomizer() {
     } else if (CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0) == 0 && generating) {
             if (Randomizer_IsSeedGenerated()) {
                 Audio_PlayFanfare(NA_BGM_HORSE_GOAL);
+                retries = 0;
             } else {
                 Sfx_PlaySfxCentered(NA_SE_SY_OCARINA_ERROR);
             }
@@ -1337,6 +1342,7 @@ void FileChoose_GenerateRandoSeed(GameState* thisx) {
         Audio_PlayFanfare(NA_BGM_HORSE_GOAL);
         func_800F5E18(SEQ_PLAYER_BGM_MAIN, NA_BGM_FILE_SELECT, 0, 7, 1);
         generating = 0;
+        retries = 0;
         Randomizer_SetSpoilerLoaded(true);
         static u8 emptyName[] = { 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E };
         static u8 linkName[] = { 0x15, 0x2C, 0x31, 0x2E, 0x3E, 0x3E, 0x3E, 0x3E };
@@ -1358,7 +1364,13 @@ void FileChoose_GenerateRandoSeed(GameState* thisx) {
         return;
     }
     if (!generating) {
-        Randomizer_GenerateSeed();
+        if (retries >= 5 || (retries >= 1 && Randomizer_IsSpoilerLoaded())){
+            this->configMode = CM_QUEST_MENU;
+            retries = 0;
+        } else {
+            Randomizer_GenerateSeed();
+            retries++;
+        }
     }
 }
 

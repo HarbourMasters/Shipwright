@@ -7,6 +7,7 @@
 #include "z_en_heishi1.h"
 #include "objects/object_sd/object_sd.h"
 #include "vt.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 

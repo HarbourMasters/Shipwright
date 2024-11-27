@@ -2,9 +2,12 @@
 #include "randomizer_entrance_tracker.h"
 #include "randomizer_item_tracker.h"
 #include "randomizerTypes.h"
+#include "soh/OTRGlobals.h"
+#include "soh/cvar_prefixes.h"
+#include "soh/SaveManager.h"
+#include "soh/ResourceManagerHelpers.h"
+#include "soh/UIWidgets.hpp"
 #include "dungeon.h"
-#include "../../OTRGlobals.h"
-#include "../../UIWidgets.hpp"
 #include "3drando/location_access.hpp"
 
 #include <string>
@@ -24,15 +27,12 @@ extern "C" {
 #include "macros.h"
 extern PlayState* gPlayState;
 }
-extern "C" uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
 extern "C" GetItemEntry ItemTable_RetrieveEntry(s16 modIndex, s16 getItemID);
 
 extern std::vector<ItemTrackerItem> dungeonRewardStones;
 extern std::vector<ItemTrackerItem> dungeonRewardMedallions;
 extern std::vector<ItemTrackerItem> songItems;
 extern std::vector<ItemTrackerItem> equipmentItems;
-
-#define RCO_RAORU { RC_GIFT_FROM_SAGES, RCVORMQ_BOTH, RCTYPE_DUNGEON_REWARD, RCAREA_MARKET, ACTOR_ID_MAX, SCENE_ID_MAX, 0x00, GI_NONE, false, "Gift from Raoru", "Gift from Raoru", true };
 
 using json = nlohmann::json;
 
@@ -215,34 +215,6 @@ std::vector<uint32_t> buttons = { BTN_A, BTN_B, BTN_CUP,   BTN_CDOWN, BTN_CLEFT,
 static ImGuiTextFilter checkSearch;
 std::array<bool, RCAREA_INVALID> filterAreasHidden = { 0 };
 std::array<bool, RC_MAX> filterChecksHidden = { 0 };
-
-void SongFromImpa() {
-    if (IS_RANDO) {
-        if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SKIP_CHILD_ZELDA) == RO_GENERIC_ON && IS_RANDO) {
-            //if (gSaveContext.checkTrackerData[RC_SONG_FROM_IMPA].status != RCSHOW_SAVED) {
-            //    gSaveContext.checkTrackerData[RC_SONG_FROM_IMPA].status = RCSHOW_SAVED;
-            //}
-        }
-    }
-}
-
-void GiftFromSages() {
-    if (!IS_RANDO) {
-        //DefaultCheckData(RC_GIFT_FROM_SAGES);
-    }
-}
-
-std::vector<RandomizerCheck> checks;
-// Function for adding Link's Pocket check
-void LinksPocket() {
-    /*if (IS_RANDO) {
-        if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LINKS_POCKET) != RO_LINKS_POCKET_NOTHING ||
-            OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_DUNGEON_REWARDS) == RO_DUNGEON_REWARDS_END_OF_DUNGEON) {
-            DefaultCheckData(RC_LINKS_POCKET);
-            gSaveContext.checkTrackerData[RC_LINKS_POCKET].status = RCSHOW_SAVED;
-        }
-    }*/
-}
 
 void TrySetAreas() {
     if (checksByArea.empty()) {
@@ -507,9 +479,6 @@ void CheckTrackerLoadGame(int32_t fileNum) {
     showVOrMQ = (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_RANDOM) == RO_MQ_DUNGEONS_RANDOM_NUMBER ||
                 (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_RANDOM) == RO_MQ_DUNGEONS_SET_NUMBER &&
                 OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_COUNT) < 12));
-    LinksPocket();
-    SongFromImpa();
-    GiftFromSages();
     initialized = true;
     UpdateAllOrdering();
     UpdateInventoryChecks();
@@ -1254,7 +1223,6 @@ bool IsCheckShuffled(RandomizerCheck rc) {
             (loc->GetRCType() != RCTYPE_SHOP ||
                 (showShops && OTRGlobals::Instance->gRandomizer->IdentifyShopItem(loc->GetScene(), loc->GetActorParams() + 1).enGirlAShopItem == 50)) &&
             (rc != RC_TRIFORCE_COMPLETED || !hideTriforceCompleted) &&
-            (rc != RC_GIFT_FROM_SAGES || !IS_RANDO) &&
             (loc->GetRCType() != RCTYPE_SCRUB ||
                 showScrubs ||
                 (showMajorScrubs && (rc == RC_LW_DEKU_SCRUB_NEAR_BRIDGE || // The 3 scrubs that are always randomized

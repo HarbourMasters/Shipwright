@@ -4,6 +4,7 @@
 #include "libultraship/bridge.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/ResourceManagerHelpers.h"
 
 SpeedMeter D_801664D0;
 VisCvg sVisCvg;
