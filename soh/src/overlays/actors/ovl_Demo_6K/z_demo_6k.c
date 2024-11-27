@@ -12,6 +12,7 @@
 #include "overlays/actors/ovl_Eff_Dust/z_eff_dust.h"
 #include "soh/frame_interpolation.h"
 #include <assert.h>
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 

@@ -11,6 +11,7 @@
 #include "vt.h"
 
 #include "soh/frame_interpolation.h"
+#include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
@@ -5090,16 +5091,14 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
                     
                     if (sLinkAge == LINK_AGE_CHILD) { // 9 lbs
                         //if we should give the main prize AND it's not rando
-                        if (GameInteractor_Should(VB_SHOULD_GIVE_VANILLA_FISHING_PRIZE, false, &fishData)){
-                        //((sFishingRecordLength >= 50.0f) && !(HIGH_SCORE(HS_FISHING) & HS_FISH_PRIZE_CHILD)) {
+                        if (GameInteractor_Should(VB_SHOULD_GIVE_VANILLA_FISHING_PRIZE, (sFishingRecordLength >= 50.0f) && !(HIGH_SCORE(HS_FISHING) & HS_FISH_PRIZE_CHILD), &fishData)){
                             HIGH_SCORE(HS_FISHING) |= HS_FISH_PRIZE_CHILD;
                             getItemId = GI_HEART_PIECE;
                             sSinkingLureLocation = (u8)Rand_ZeroFloat(3.999f) + 1;
                         }
                     } else { // 13 lbs
                         //if we should give the main prize AND it's not rando
-                        if (GameInteractor_Should(VB_SHOULD_GIVE_VANILLA_FISHING_PRIZE, false, &fishData)){
-                        //(sFishingRecordLength >= 60.0f) && !(HIGH_SCORE(HS_FISHING) & HS_FISH_PRIZE_ADULT)) {
+                        if (GameInteractor_Should(VB_SHOULD_GIVE_VANILLA_FISHING_PRIZE, (sFishingRecordLength >= 60.0f) && !(HIGH_SCORE(HS_FISHING) & HS_FISH_PRIZE_ADULT), &fishData)){
                             HIGH_SCORE(HS_FISHING) |= HS_FISH_PRIZE_ADULT;
                             getItemId = GI_SCALE_GOLDEN;
                             sSinkingLureLocation = (u8)Rand_ZeroFloat(3.999f) + 1;

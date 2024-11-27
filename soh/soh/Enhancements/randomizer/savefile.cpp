@@ -1,5 +1,6 @@
 #include "savefile.h"
 #include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 extern "C" {
@@ -8,7 +9,6 @@ extern "C" {
 #include "functions.h"
 #include "macros.h"
 
-uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
 uint8_t Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 GetItemEntry Randomizer_GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
 }

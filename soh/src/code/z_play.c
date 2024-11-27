@@ -11,6 +11,8 @@
 #include <overlays/misc/ovl_kaleido_scope/z_kaleido_scope.h>
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/OTRGlobals.h"
+#include "soh/SaveManager.h"
 #include "soh/framebuffer_effects.h"
 
 #include <libultraship/libultraship.h>
@@ -21,7 +23,7 @@
 TransitionUnk sTrnsnUnk;
 s32 gTrnsnUnkState;
 VisMono gPlayVisMono;
-Color_RGBA8_u32 D_801614B0;
+Color_RGBA8_u32 gVisMonoColor;
 
 FaultClient D_801614B8;
 
@@ -567,7 +569,7 @@ void Play_Init(GameState* thisx) {
     TransitionFade_SetColor(&play->transitionFade, RGBA8(160, 160, 160, 255));
     TransitionFade_Start(&play->transitionFade);
     VisMono_Init(&gPlayVisMono);
-    D_801614B0.a = 0;
+    gVisMonoColor.a = 0;
     Flags_UnsetAllEnv(play);
 
     osSyncPrintf("ZELDA ALLOC SIZE=%x\n", THA_GetSize(&play->state.tha));
@@ -1422,11 +1424,9 @@ void Play_Draw(PlayState* play) {
 
             TransitionFade_Draw(&play->transitionFade, &gfxP);
 
-            if (D_801614B0.a > 0) {
-                // gPlayVisMono.vis.primColor.rgba = D_801614B0.rgba;
-                // VisMono_Draw(&gPlayVisMono, &gfxP);
-                gDPSetGrayscaleColor(gfxP++, D_801614B0.r, D_801614B0.g, D_801614B0.b, D_801614B0.a);
-                gSPGrayscale(gfxP++, true);
+            if (gVisMonoColor.a > 0) {
+                gPlayVisMono.vis.primColor.rgba = gVisMonoColor.rgba;
+                VisMono_Draw(&gPlayVisMono, &gfxP);
             }
 
             gSPEndDisplayList(gfxP++);
@@ -1610,7 +1610,7 @@ void Play_Draw(PlayState* play) {
             play->unk_121C7 = 2;
             SREG(33) |= 1;
 
-            // 2S2H [Port] Continue to render the post world for pausing to avoid flashing the HUD
+            // SOH [Port] Continue to render the post world for pausing to avoid flashing the HUD
             if (gTrnsnUnkState == 2) {
                 goto Play_Draw_skip;
             }

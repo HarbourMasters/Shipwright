@@ -7,6 +7,7 @@
 #include "z_en_insect.h"
 #include "vt.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS 0
 

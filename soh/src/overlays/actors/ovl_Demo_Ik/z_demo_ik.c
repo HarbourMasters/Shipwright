@@ -1,6 +1,7 @@
 #include "z_demo_ik.h"
 #include "vt.h"
 #include "objects/object_ik/object_ik.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 

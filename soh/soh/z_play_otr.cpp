@@ -1,4 +1,5 @@
 #include "OTRGlobals.h"
+#include "ResourceManagerHelpers.h"
 #include <libultraship/libultraship.h>
 #include "soh/resource/type/Scene.h"
 #include <utils/StringHelper.h>
@@ -35,7 +36,7 @@ extern "C" void OTRPlay_SpawnScene(PlayState* play, s32 sceneId, s32 spawn) {
 
     std::string sceneVersion = "shared";
     if (inNonSharedScene) {
-        sceneVersion = IsGameMasterQuest() ? "mq" : "nonmq";
+        sceneVersion = ResourceMgr_IsGameMasterQuest() ? "mq" : "nonmq";
     }
     std::string scenePath = StringHelper::Sprintf("scenes/%s/%s/%s", sceneVersion.c_str(), scene->sceneFile.fileName, scene->sceneFile.fileName);
 

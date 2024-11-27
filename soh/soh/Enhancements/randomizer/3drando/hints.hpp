@@ -69,6 +69,8 @@ struct StaticHintInfo{
                  std::vector<RandomizerCheck> _hintChecks = {}, bool _yourPocket = false, int _num = 0);
 };
 
+RandomizerHintTextKey GetRandomJunkHint();
 extern void CreateAllHints();
 extern void CreateWarpSongTexts();
 void CreateStaticHints();
+RandomizerHintTextKey GetRandomJunkHint();

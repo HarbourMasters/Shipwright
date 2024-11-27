@@ -4,6 +4,7 @@
 #include "global.h"
 
 #include "soh/Enhancements/audio/AudioEditor.h"
+#include "soh/ResourceManagerHelpers.h"
 
 extern char** sequenceMap;
 

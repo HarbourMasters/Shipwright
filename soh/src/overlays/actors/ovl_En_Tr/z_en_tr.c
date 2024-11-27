@@ -7,6 +7,7 @@
 #include "z_en_tr.h"
 #include "objects/object_tr/object_tr.h"
 #include <assert.h>
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 

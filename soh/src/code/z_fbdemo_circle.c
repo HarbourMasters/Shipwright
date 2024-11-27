@@ -1,5 +1,7 @@
 #include "global.h"
 #include <string.h>
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 
 // unused
 Gfx sCircleNullDList[] = {

@@ -9,6 +9,8 @@
 #include <assert.h>
 
 #include "public/bridge/gfxbridge.h"
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 
 void func_80095AB4(PlayState* play, Room* room, u32 flags);
 void func_80095D04(PlayState* play, Room* room, u32 flags);

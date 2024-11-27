@@ -7,6 +7,8 @@
 #include "z_en_ta.h"
 #include "vt.h"
 #include "objects/object_ta/object_ta.h"
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)

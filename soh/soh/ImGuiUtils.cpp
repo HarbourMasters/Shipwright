@@ -1,6 +1,7 @@
 #include "ImGuiUtils.h"
 #include <Context.h>
 #include "assets/soh_assets.h"
+#include "soh/Enhancements/randomizer/rando_hash.h"
 
 std::map<uint32_t, ItemMapEntry> itemMapping = {
     ITEM_MAP_ENTRY(ITEM_STICK),
@@ -150,7 +151,7 @@ std::map<uint32_t, QuestMapEntry> questMapping = {
     QUEST_MAP_ENTRY(QUEST_SKULL_TOKEN, dgQuestIconGoldSkulltulaTex),
 };
 
-std::array<SongMapEntry, 12> songMapping = { {
+std::map<QuestItem, SongMapEntry> songMapping = {
     SONG_MAP_ENTRY(QUEST_SONG_LULLABY,  224, 107, 255),
     SONG_MAP_ENTRY(QUEST_SONG_EPONA,    255, 195, 60),
     SONG_MAP_ENTRY(QUEST_SONG_SARIA,    127, 255, 137),
@@ -163,7 +164,7 @@ std::array<SongMapEntry, 12> songMapping = { {
     SONG_MAP_ENTRY(QUEST_SONG_REQUIEM,  255, 160, 0),
     SONG_MAP_ENTRY(QUEST_SONG_NOCTURNE, 255, 100, 255),
     SONG_MAP_ENTRY(QUEST_SONG_PRELUDE,  255, 240, 100),
-} };
+};
 
 std::array<SongMapEntry, 12> vanillaSongMapping = { {
     VANILLA_SONG_MAP_ENTRY(QUEST_SONG_LULLABY,  255, 255, 255),
@@ -212,7 +213,7 @@ void RegisterImGuiItemIcons() {
         Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.nameFaded, entry.second.texturePath, ImVec4(1, 1, 1, 0.3f));
     }
 
-    for (const auto& entry : songMapping) {
+    for (const auto& [quest, entry] : songMapping) {
         Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.name, gSongNoteTex, entry.color);
         ImVec4 fadedCol = entry.color;
         fadedCol.w = 0.3f;
@@ -224,5 +225,9 @@ void RegisterImGuiItemIcons() {
         ImVec4 fadedCol = entry.color;
         fadedCol.w = 0.3f;
         Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.nameFaded, gSongNoteTex, fadedCol);
+    }
+
+    for (const auto& entry : gSeedTextures) {
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.tex, entry.tex, ImVec4(1, 1, 1, 1));
     }
 }

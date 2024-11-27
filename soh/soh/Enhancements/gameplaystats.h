@@ -1,5 +1,17 @@
 #pragma once
 
+#include "soh/cvar_prefixes.h"
+#include <stdint.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+    uint64_t GetUnixTimestamp(void);
+    char* GameplayStats_GetCurrentTime();
+#ifdef __cplusplus
+};
+#endif
+
 // When using RTA timing
     // get the diff since the save was created,
     // unless the game is complete in which we use the defeated ganon timestamp
@@ -17,7 +29,6 @@
     gSaveContext.sohStats.sceneTimer)
 
 void InitStatTracker();
-char* GameplayStats_GetCurrentTime();
 
 typedef enum {
     // 0x00 to 0x9B (0 to 155) used for getting items,

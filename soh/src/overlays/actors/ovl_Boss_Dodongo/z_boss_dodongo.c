@@ -5,6 +5,8 @@
 #include "scenes/dungeons/ddan_boss/ddan_boss_room_1.h"
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #include <stdlib.h> // malloc
 #include <string.h> // memcpy

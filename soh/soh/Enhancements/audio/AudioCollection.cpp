@@ -1,6 +1,7 @@
 #include "AudioCollection.h"
 #include "sequence.h"
 #include "sfx.h"
+#include "soh/cvar_prefixes.h"
 #include <vector>
 #include <utils/StringHelper.h>
 #include <libultraship/bridge.h>

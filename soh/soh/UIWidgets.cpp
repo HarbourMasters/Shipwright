@@ -593,7 +593,7 @@ namespace UIWidgets {
 #if defined(__SWITCH__) || defined(__WIIU__)
             srand(time(NULL));
 #endif
-            ImVec4 color = GetRandomValue(255);
+            ImVec4 color = GetRandomValue();
             colors->x = color.x;
             colors->y = color.y;
             colors->z = color.z;
