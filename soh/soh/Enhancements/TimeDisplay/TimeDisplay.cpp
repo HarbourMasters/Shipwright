@@ -23,15 +23,7 @@ ImVec4 textColor = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
 // ImVec4 Colors
 #define COLOR_WHITE ImVec4(1.0f, 1.0f, 1.0f, 1.0f)
 #define COLOR_LIGHT_RED ImVec4(1.0f, 0.05f, 0, 1.0f)
-#define COLOR_RED ImVec4(1.0f, 0, 0, 1.0f)
-#define COLOR_LIGHT_GREEN ImVec4(0.52f, 1.0f, 0.23f, 1.0f)
-#define COLOR_GREEN ImVec4(0.10f, 1.0f, 0.10f, 1.0f)
-#define COLOR_BLUE ImVec4(0, 0.33f, 1.0f, 1.0f)
-#define COLOR_PURPLE ImVec4(0.54f, 0.19f, 0.89f, 1.0f)
-#define COLOR_YELLOW ImVec4(1.0f, 1.0f, 0, 1.0f)
-#define COLOR_ORANGE ImVec4(1.0f, 0.67f, 0.11f, 1.0f)
 #define COLOR_LIGHT_BLUE ImVec4(0, 0.88f, 1.0f, 1.0f)
-#define COLOR_GREY ImVec4(0.78f, 0.78f, 0.78f, 1.0f)
 
 std::vector<std::pair<std::string, const char*>> digitList = {
     { "DIGIT_0_TEXTURE", gCounterDigit0Tex },
@@ -160,6 +152,7 @@ void TimeDisplayWindow::Draw() {
     if (!CVarGetInteger(CVAR_WINDOW("TimeDisplayEnabled"), 0)) {
         return;
     }
+
     ImGui::PushStyleColor(ImGuiCol_WindowBg, windowBG);
     ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
     ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 4.0f);
