@@ -24,6 +24,8 @@ ImVec4 textColor = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
 #define COLOR_WHITE ImVec4(1.0f, 1.0f, 1.0f, 1.0f)
 #define COLOR_LIGHT_RED ImVec4(1.0f, 0.05f, 0, 1.0f)
 #define COLOR_LIGHT_BLUE ImVec4(0, 0.88f, 1.0f, 1.0f)
+#define COLOR_LIGHT_GREEN ImVec4(0.52f, 1.0f, 0.23f, 1.0f)
+#define COLOR_GREY ImVec4(0.78f, 0.78f, 0.78f, 1.0f)
 
 std::vector<std::pair<std::string, const char*>> digitList = {
     { "DIGIT_0_TEXTURE", gCounterDigit0Tex },
@@ -102,15 +104,18 @@ void TimeDisplayGetTimer(uint32_t timeID) {
         case DISPLAY_CONDITIONAL_TIMER:
             if (gSaveContext.timer1State > 0) {
                 timeDisplayTime = formatHotWaterDisplay(gSaveContext.timer1Value).c_str();
-                textColor = gSaveContext.timer1State == 4 ? 
+                textColor = gSaveContext.timer1State <= 4 ? 
                     (gPlayState->roomCtx.curRoom.behaviorType2 == ROOM_BEHAVIOR_TYPE2_3 ? 
-                    COLOR_LIGHT_RED : COLOR_LIGHT_BLUE) : COLOR_WHITE;
-                textureDisplay = gSaveContext.timer1State == 4 ? 
-                    (Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
-                    itemMapping[gPlayState->roomCtx.curRoom.behaviorType2 == ROOM_BEHAVIOR_TYPE2_3 ? 
-                        ITEM_TUNIC_GORON : ITEM_TUNIC_ZORA].name)) : 
-                    Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
-                    itemMapping[ITEM_SWORD_MASTER].name);
+                        COLOR_LIGHT_RED : COLOR_LIGHT_BLUE) : COLOR_WHITE;
+                if (gSaveContext.timer1State <= 4) {
+                    textureDisplay = Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
+                        gPlayState->roomCtx.curRoom.behaviorType2 == ROOM_BEHAVIOR_TYPE2_3 ? 
+                        itemMapping[ITEM_TUNIC_GORON].name : itemMapping[ITEM_TUNIC_ZORA].name);
+                }                
+                if (gSaveContext.timer1State >= 6) {
+                    textureDisplay = Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
+                        itemMapping[ITEM_SWORD_MASTER].name);
+                }
             } else {
                 textureDisplay = Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
                     itemMapping[ITEM_TUNIC_KOKIRI].name);
@@ -119,9 +124,13 @@ void TimeDisplayGetTimer(uint32_t timeID) {
             break;
         case DISPLAY_NAVI_TIMER:
             if (gSaveContext.naviTimer <= 600) {
-                timeDisplayTime = convertNaviTime(gSaveContext.naviTimer).c_str();
+                timeDisplayTime = convertNaviTime(600 - gSaveContext.naviTimer).c_str();
+            } else if (gSaveContext.naviTimer <= 3000) {
+                timeDisplayTime = convertNaviTime(3000 - gSaveContext.naviTimer).c_str();
+                textColor = COLOR_LIGHT_GREEN;
             } else {
                 timeDisplayTime = convertNaviTime(25800 - gSaveContext.naviTimer).c_str();
+                textColor = COLOR_GREY;
             }
             textureDisplay = Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("NAVI_TIMER");
             break;

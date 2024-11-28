@@ -1705,21 +1705,30 @@ void DrawEnhancementsMenu() {
         }
         if (mTimeDisplayWindow->IsVisible()) {
             ImGui::SeparatorText("Timer Display Options");
-            ImGui::Text("Font Scale");
-            ImGui::SameLine();
-            ImGui::SetNextItemWidth(90.0f);
-            if (UIWidgets::EnhancementSliderFloat("", "##TimeDisplayScale", CVAR_ENHANCEMENT("TimeDisplay.FontScale"), 
-                1.0f, 5.0f, "%.2fx", 1.0f, false, true)) {
-                TimeDisplayInitSettings();
-            }
-            if (UIWidgets::PaddedEnhancementCheckbox("Hide Background", CVAR_ENHANCEMENT("TimeDisplay.ShowWindowBG"), 
-                false, false)) {
-                TimeDisplayInitSettings();
-            }
-            ImGui::Separator();
-            for (auto& timer : timeDisplayList) {
-                if (UIWidgets::PaddedEnhancementCheckbox(timer.timeLabel.c_str(), timer.timeEnable, false, false)) {
-                    TimeDisplayUpdateDisplayOptions(timer.timeID, CVarGetInteger(timer.timeEnable, 0));
+
+            if (!gPlayState) {
+                ImGui::Text("Additional Timer options\n"
+                            "available when a file is\n"
+                            "loaded...");
+            } else {
+                ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
+                ImGui::Text("Font Scale");
+                ImGui::SetNextItemWidth(120.0f);
+                if (UIWidgets::EnhancementSliderFloat("", "##TimeDisplayScale", CVAR_ENHANCEMENT("TimeDisplay.FontScale"), 
+                    1.0f, 5.0f, "%.2fx", 1.0f, false, false)) {
+                    TimeDisplayInitSettings();
+                }
+                ImGui::PopStyleVar(1);
+                ImGui::Separator();
+                if (UIWidgets::PaddedEnhancementCheckbox("Hide Background", CVAR_ENHANCEMENT("TimeDisplay.ShowWindowBG"), 
+                    false, false)) {
+                    TimeDisplayInitSettings();
+                }
+                ImGui::Separator();
+                for (auto& timer : timeDisplayList) {
+                    if (UIWidgets::PaddedEnhancementCheckbox(timer.timeLabel.c_str(), timer.timeEnable, false, false)) {
+                        TimeDisplayUpdateDisplayOptions(timer.timeID, CVarGetInteger(timer.timeEnable, 0));
+                    }
                 }
             }
         }
