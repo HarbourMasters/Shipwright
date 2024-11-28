@@ -138,7 +138,6 @@ void Context::GenerateLocationPool() {
     }
 
     AddLocations(StaticData::GetAllDungeonLocations());
-    // RANDOTODO: Pots aren't excluded from GetAllDungeonLocations() yet if dungeon pots aren't on.
 }
 
 void Context::AddExcludedOptions() {
