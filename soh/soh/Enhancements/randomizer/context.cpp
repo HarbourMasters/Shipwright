@@ -132,7 +132,13 @@ void Context::GenerateLocationPool() {
         AddLocations(mFishsanity->GetFishsanityLocations().first);
     }
 
+    if (mSettings->GetOption(RSK_SHUFFLE_POTS).Is(RO_SHUFFLE_POTS_OVERWORLD) ||
+        mSettings->GetOption(RSK_SHUFFLE_POTS).Is(RO_SHUFFLE_POTS_ALL)) {
+        AddLocations(StaticData::GetOverworldPotLocations());
+    }
+
     AddLocations(StaticData::GetAllDungeonLocations());
+    // RANDOTODO: Pots aren't excluded from GetAllDungeonLocations() yet if dungeon pots aren't on.
 }
 
 void Context::AddExcludedOptions() {

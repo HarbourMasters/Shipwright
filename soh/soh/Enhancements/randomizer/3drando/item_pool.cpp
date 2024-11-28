@@ -818,29 +818,39 @@ void GenerateItemPool() {
   }
 
   // Shuffle Pots
-  if (ctx->GetOption(RSK_SHUFFLE_POTS).Is(RO_SHUFFLE_POTS_OFF)) {
+  if (ctx->GetOption(RSK_SHUFFLE_POTS).IsNot(RO_SHUFFLE_POTS_OFF)) {
+    bool overworldPotsActive = ctx->GetOption(RSK_SHUFFLE_POTS).Is(RO_SHUFFLE_POTS_OVERWORLD) ||
+                               ctx->GetOption(RSK_SHUFFLE_POTS).Is(RO_SHUFFLE_POTS_ALL);
+    bool dungeonPotsActive = ctx->GetOption(RSK_SHUFFLE_POTS).Is(RO_SHUFFLE_POTS_DUNGEONS) ||
+                             ctx->GetOption(RSK_SHUFFLE_POTS).Is(RO_SHUFFLE_POTS_ALL);
+    
     for (RandomizerCheck loc : ctx->GetLocations(ctx->allLocations, RCTYPE_POT)) {
-      ctx->PlaceItemInLocation(loc, Rando::StaticData::GetLocation(loc)->GetVanillaItem(), false, true);
-    }
-  } else if (ctx->GetOption(RSK_SHUFFLE_POTS).Is(RO_SHUFFLE_POTS_DUNGEONS)) {
-    for (RandomizerCheck loc : ctx->GetLocations(ctx->allLocations, RCTYPE_POT)) {
-      if (Rando::StaticData::GetLocation(loc)->IsOverworld()) {
-        ctx->PlaceItemInLocation(loc, Rando::StaticData::GetLocation(loc)->GetVanillaItem(), false, true);
-      } else {
+      bool overworldPot = Rando::StaticData::GetLocation(loc)->IsOverworld();
+      bool dungeonPot = !overworldPot;
+
+      // If pot is in the overworld and shuffled, add its item to the pool
+      if (overworldPotsActive && overworldPot) {
         AddItemToMainPool(Rando::StaticData::GetLocation(loc)->GetVanillaItem());
+      } else if (dungeonPotsActive && dungeonPot) {
+        // If pot is the same in MQ and vanilla, add.
+        RandomizerCheckQuest currentQuest = Rando::StaticData::GetLocation(loc)->GetQuest();
+        if (currentQuest == RCQUEST_BOTH) {
+          AddItemToMainPool(Rando::StaticData::GetLocation(loc)->GetVanillaItem());
+        } else {
+          // Check if current pot's dungeon is vanilla or MQ, and only add if quest corresponds to it.
+          SceneID potScene = Rando::StaticData::GetLocation(loc)->GetScene();
+
+          for (uint8_t i = SCENE_DEKU_TREE; i <= SCENE_GERUDO_TRAINING_GROUND; i++) {
+            if (i == potScene) {
+              bool isMQ = ctx->GetDungeon(SCENE_DEKU_TREE)->IsMQ();
+
+              if ((isMQ && currentQuest == RCQUEST_MQ) || (!isMQ && currentQuest == RCQUEST_VANILLA)) {
+                AddItemToMainPool(Rando::StaticData::GetLocation(loc)->GetVanillaItem());
+              }
+            }
+          }
+        }
       }
-    }
-  } else if (ctx->GetOption(RSK_SHUFFLE_POTS).Is(RO_SHUFFLE_POTS_OVERWORLD)) {
-    for (RandomizerCheck loc : ctx->GetLocations(ctx->allLocations, RCTYPE_POT)) {
-      if (Rando::StaticData::GetLocation(loc)->IsDungeon()) {
-        ctx->PlaceItemInLocation(loc, Rando::StaticData::GetLocation(loc)->GetVanillaItem(), false, true);
-      } else {
-        AddItemToMainPool(Rando::StaticData::GetLocation(loc)->GetVanillaItem());
-      }
-    }
-  } else {
-    for (RandomizerCheck loc : ctx->GetLocations(ctx->allLocations, RCTYPE_POT)) {
-      AddItemToMainPool(Rando::StaticData::GetLocation(loc)->GetVanillaItem());
     }
   }
   

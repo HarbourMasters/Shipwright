@@ -76,8 +76,8 @@ typedef enum {
     SHADOW_TEMPLE,
     BOTTOM_OF_THE_WELL,
     ICE_CAVERN,
-    GERUDO_TRAINING_GROUNDS,
-    GANONS_CASTLE
+    GANONS_CASTLE,
+    GERUDO_TRAINING_GROUNDS
 } DungeonKey;
 
 class Dungeons {
