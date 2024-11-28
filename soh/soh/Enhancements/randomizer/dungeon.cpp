@@ -148,7 +148,8 @@ void DungeonInfo::PlaceVanillaSmallKeys() const {
 // Gets the chosen dungeon locations for a playthrough (so either MQ or Vanilla)
 std::vector<RandomizerCheck> DungeonInfo::GetDungeonLocations() const {
     auto locations = masterQuest ? mqLocations : vanillaLocations;
-    if (true /*RANDOTODO: Check for if dungeon pots are shuffled*/) {
+    if (Context::GetInstance()->GetSettings()->GetOption(RSK_SHUFFLE_POTS).Is(RO_SHUFFLE_POTS_DUNGEONS) ||
+        Context::GetInstance()->GetSettings()->GetOption(RSK_SHUFFLE_POTS).Is(RO_SHUFFLE_POTS_ALL)) {
         auto potLocations = masterQuest ? mqPots : vanillaPots;
         AddElementsToPool(locations, potLocations);
     }
@@ -358,6 +359,14 @@ Dungeons::Dungeons() {
                                                     RC_JABU_JABUS_BELLY_TWO_OCTOROK_POT_3,
                                                     RC_JABU_JABUS_BELLY_TWO_OCTOROK_POT_4,
                                                     RC_JABU_JABUS_BELLY_TWO_OCTOROK_POT_5,
+
+                                                    // Shared Pots so in both vanilla and MQ
+                                                    RC_JABU_JABUS_BELLY_BARINADE_POT_1,
+                                                    RC_JABU_JABUS_BELLY_BARINADE_POT_2,
+                                                    RC_JABU_JABUS_BELLY_BARINADE_POT_3,
+                                                    RC_JABU_JABUS_BELLY_BARINADE_POT_4,
+                                                    RC_JABU_JABUS_BELLY_BARINADE_POT_5,
+                                                    RC_JABU_JABUS_BELLY_BARINADE_POT_6,
                                                 }, 
                                                 {
                                                     // MQ Pots
@@ -370,20 +379,20 @@ Dungeons::Dungeons() {
                                                     RC_JABU_JABUS_BELLY_MQ_LIKE_LIKES_POT_1,
                                                     RC_JABU_JABUS_BELLY_MQ_LIKE_LIKES_POT_2,
                                                     RC_JABU_JABUS_BELLY_MQ_BEFORE_BOSS_POT_1,
-                                                }, 
-                                                {},
-                                                {
-                                                    // Boss Room Locations
-                                                    RC_JABU_JABUS_BELLY_BARINADE_HEART,
-                                                    RC_BARINADE,
 
-                                                    // Boss Room Pots
+                                                    // Shared Pots so in both vanilla and MQ
                                                     RC_JABU_JABUS_BELLY_BARINADE_POT_1,
                                                     RC_JABU_JABUS_BELLY_BARINADE_POT_2,
                                                     RC_JABU_JABUS_BELLY_BARINADE_POT_3,
                                                     RC_JABU_JABUS_BELLY_BARINADE_POT_4,
                                                     RC_JABU_JABUS_BELLY_BARINADE_POT_5,
                                                     RC_JABU_JABUS_BELLY_BARINADE_POT_6,
+                                                }, 
+                                                {},
+                                                {
+                                                    // Boss Room Locations
+                                                    RC_JABU_JABUS_BELLY_BARINADE_HEART,
+                                                    RC_BARINADE,
                                                 });
     dungeonList[FOREST_TEMPLE] =
         DungeonInfo("Forest Temple", RHT_FOREST_TEMPLE, RG_FOREST_TEMPLE_MAP, RG_FOREST_TEMPLE_COMPASS,
@@ -1138,9 +1147,7 @@ Dungeons::Dungeons() {
                         RC_GANONS_CASTLE_LIGHT_TRIAL_POT_1,
                         RC_GANONS_CASTLE_LIGHT_TRIAL_POT_2,
 
-                        // The only shared dungeon pots in the whole game.
-                        // Adding them to both vanilla and MQ instead of a separate
-                        // shared object means they don't need special handling.
+                        // Shared Pots so in both vanilla and MQ
                         RC_GANONS_CASTLE_GANONS_TOWER_POT_1,
                         RC_GANONS_CASTLE_GANONS_TOWER_POT_2,
                         RC_GANONS_CASTLE_GANONS_TOWER_POT_3,
@@ -1175,9 +1182,7 @@ Dungeons::Dungeons() {
                         RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_POT_1,
                         RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_POT_2,
 
-                        // The only shared dungeon pots in the whole game.
-                        // Adding them to both vanilla and MQ instead of a separate
-                        // shared object means they don't need special handling.
+                        // Shared Pots so in both vanilla and MQ
                         RC_GANONS_CASTLE_GANONS_TOWER_POT_1,
                         RC_GANONS_CASTLE_GANONS_TOWER_POT_2,
                         RC_GANONS_CASTLE_GANONS_TOWER_POT_3,
