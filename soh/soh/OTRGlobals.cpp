@@ -874,6 +874,7 @@ std::unordered_map<ItemID, RandomizerGet> ItemIDtoRandomizerGetMap {
     { ITEM_KOKIRI_EMERALD, RG_KOKIRI_EMERALD },
     { ITEM_GORON_RUBY, RG_GORON_RUBY },
     { ITEM_ZORA_SAPPHIRE, RG_ZORA_SAPPHIRE },
+    { ITEM_SWORD_MASTER, RG_MASTER_SWORD },
 };
 
 extern "C" RandomizerGet RetrieveRandomizerGetFromItemID(ItemID itemID) {

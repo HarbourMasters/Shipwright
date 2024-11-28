@@ -3388,6 +3388,9 @@ void Interface_UpdateMagicBar(PlayState* play) {
 
         default:
             gSaveContext.magicState = MAGIC_STATE_IDLE;
+            if (CVarGetInteger(CVAR_COSMETIC("Consumable.MagicBorder.Changed"), 0)) {
+                sMagicBorder = CVarGetColor24(CVAR_COSMETIC("Consumable.MagicBorder.Value"), sMagicBorder_ori);
+            }
             break;
     }
 }
@@ -3617,8 +3620,8 @@ void Interface_DrawEnemyHealthBar(TargetContext* targetCtx, PlayState* play) {
     s32 healthbar_offsetY = CVarGetInteger(CVAR_COSMETIC("HUD.EnemyHealthBar.PosY"), 0);
     s8 anchorType = CVarGetInteger(CVAR_COSMETIC("HUD.EnemyHealthBar.PosType"), ENEMYHEALTH_ANCHOR_ACTOR);
 
-    if (CVarGetInteger(CVAR_COSMETIC("HUD.EnemyHealthBar..Changed"), 0)) {
-        healthbar_red = CVarGetColor(CVAR_COSMETIC("HUD.EnemyHealthBar..Value"), healthbar_red);
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.EnemyHealthBar.Changed"), 0)) {
+        healthbar_red = CVarGetColor(CVAR_COSMETIC("HUD.EnemyHealthBar.Value"), healthbar_red);
     }
     if (CVarGetInteger(CVAR_COSMETIC("HUD.EnemyHealthBorder.Changed"), 0)) {
         healthbar_border = CVarGetColor(CVAR_COSMETIC("HUD.EnemyHealthBorder.Value"), healthbar_border);
@@ -5682,17 +5685,19 @@ void Interface_Draw(PlayState* play) {
             }
 
             // Revert any spoiling trade quest items
-            for (svar1 = 0; svar1 < ARRAY_COUNT(gSpoilingItems); svar1++) {
-                if (INV_CONTENT(ITEM_TRADE_ADULT) == gSpoilingItems[svar1]) {
-                    gSaveContext.eventInf[0] &= 0x7F80;
-                    osSyncPrintf("EVENT_INF=%x\n", gSaveContext.eventInf[0]);
-                    play->nextEntranceIndex = spoilingItemEntrances[svar1];
-                    INV_CONTENT(gSpoilingItemReverts[svar1]) = gSpoilingItemReverts[svar1];
+            if (GameInteractor_Should(VB_REVERT_SPOILING_ITEMS, true)) {
+                for (svar1 = 0; svar1 < ARRAY_COUNT(gSpoilingItems); svar1++) {
+                    if (INV_CONTENT(ITEM_TRADE_ADULT) == gSpoilingItems[svar1]) {
+                        gSaveContext.eventInf[0] &= 0x7F80;
+                        osSyncPrintf("EVENT_INF=%x\n", gSaveContext.eventInf[0]);
+                        play->nextEntranceIndex = spoilingItemEntrances[svar1];
+                        INV_CONTENT(gSpoilingItemReverts[svar1]) = gSpoilingItemReverts[svar1];
 
-                    for (svar2 = 1; svar2 < ARRAY_COUNT(gSaveContext.equips.buttonItems); svar2++) {
-                        if (gSaveContext.equips.buttonItems[svar2] == gSpoilingItems[svar1]) {
-                            gSaveContext.equips.buttonItems[svar2] = gSpoilingItemReverts[svar1];
-                            Interface_LoadItemIcon1(play, svar2);
+                        for (svar2 = 1; svar2 < ARRAY_COUNT(gSaveContext.equips.buttonItems); svar2++) {
+                            if (gSaveContext.equips.buttonItems[svar2] == gSpoilingItems[svar1]) {
+                                gSaveContext.equips.buttonItems[svar2] = gSpoilingItemReverts[svar1];
+                                Interface_LoadItemIcon1(play, svar2);
+                            }
                         }
                     }
                 }

@@ -301,6 +301,16 @@ void TimeSplitsGetImageSize(uint32_t item) {
     }
 }
 
+void SplitsPushImageButtonStyle(){
+    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.0f, 1.0f, 1.0f, 0.0f));
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(1.0f, 1.0f, 1.0f, 0.2f));
+    ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(1.0f, 1.0f, 1.0f, 0.1f));
+}
+
+void SplitsPopImageButtonStyle(){
+    ImGui::PopStyleColor(3);
+}
+
 void TimeSplitsUpdateSplitStatus() {
     uint32_t index = 0;
     for (auto& data : splitList) {
@@ -310,7 +320,7 @@ void TimeSplitsUpdateSplitStatus() {
         }
         index++;
     }
-    for (int i = index; i < splitList.size(); i++) {
+    for (size_t i = index; i < splitList.size(); i++) {
         if (splitList[i].splitTimeStatus != SPLIT_STATUS_ACTIVE && splitList[i].splitTimeStatus != SPLIT_STATUS_COLLECTED) {
             splitList[i].splitTimeStatus = SPLIT_STATUS_INACTIVE;
         }
@@ -421,11 +431,28 @@ void TimeSplitsPopUpContext() {
         if (popupID == ITEM_SKULL_TOKEN) {
             ImGui::BeginTable("Token Table", 2);
             ImGui::TableNextColumn();
+            SplitsPushImageButtonStyle();
             ImGui::ImageButton(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("QUEST_SKULL_TOKEN"),
                     ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), 2.0f, ImVec4(0, 0, 0, 0));
             ImGui::TableNextColumn();
+            SplitsPopImageButtonStyle();
             ImGui::PushItemWidth(150.0f);
+
+            ImGui::BeginGroup();
+            std::string MinusBTNName = " - ##Set Tokens";
+            ImGui::SameLine();
+            if (ImGui::Button(MinusBTNName.c_str()) && skullTokenCount > 0) {
+                skullTokenCount--;
+            }
+            ImGui::SameLine();
             ImGui::SliderInt("##count", &skullTokenCount, 0, 100, "%d Tokens");
+            std::string PlusBTNName = " + ##Set Tokens";
+            ImGui::SameLine();
+            if (ImGui::Button(PlusBTNName.c_str()) && skullTokenCount < 100) {
+                skullTokenCount++;
+            }
+            ImGui::EndGroup();
+
             ImGui::PopItemWidth();
             if (ImGui::Button("Set Tokens")) {
                 auto findID = std::find_if(splitObjectList.begin(), splitObjectList.end(), [&](const SplitObject& obj) { return obj.splitID == ITEM_SKULL_TOKEN; });
@@ -442,6 +469,7 @@ void TimeSplitsPopUpContext() {
             ImGui::EndTable();
         }  else {
             int rowIndex = 0;
+            SplitsPushImageButtonStyle();
             for (auto item : popupList[popupID]) {
                 auto findID = std::find_if(splitObjectList.begin(), splitObjectList.end(), [&](const SplitObject& obj) { return obj.splitID == item; });
                 if (findID == splitObjectList.end()) {
@@ -468,7 +496,7 @@ void TimeSplitsPopUpContext() {
                     if (popupID <= ITEM_SLINGSHOT && popupID != -1) {
                         ImVec2 imageMin = ImGui::GetItemRectMin();
                         ImVec2 imageMax = ImGui::GetItemRectMax();
-                        ImVec2 imageSize = ImVec2(imageMax.x - imageMin.x, imageMax.y - imageMin.y);
+                        //ImVec2 imageSize = ImVec2(imageMax.x - imageMin.x, imageMax.y - imageMin.y); UNUSED
                         ImVec2 textPos = ImVec2(imageMax.x - ImGui::CalcTextSize("00").x - 5,
                                                 imageMax.y - ImGui::CalcTextSize("00").y - 5);
 
@@ -484,6 +512,7 @@ void TimeSplitsPopUpContext() {
                 }
                 rowIndex++;
             }
+            SplitsPopImageButtonStyle();
         }
         ImGui::EndPopup();
     }
@@ -610,10 +639,8 @@ void TimeSplitsDrawSplitsList() {
     ImGui::TableSetupColumn("Prev. Best");
     ImGui::TableHeadersRow();
 
-    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.0f, 1.0f, 1.0f, 0.0f));
-    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(1.0f, 1.0f, 1.0f, 0.2f));
-    ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(1.0f, 1.0f, 1.0f, 0.1f));
 
+    SplitsPushImageButtonStyle();
     for (auto& split : splitList) {
         ImGui::TableNextColumn();
         TimeSplitsSplitBestTimeDisplay(split);
@@ -648,10 +675,10 @@ void TimeSplitsDrawSplitsList() {
 
         dragIndex++;
     }
+    SplitsPopImageButtonStyle();
 
     TimeSplitsPostDragAndDrop();
 
-    ImGui::PopStyleColor(3);
     ImGui::PopStyleVar(1);
     ImGui::EndTable();
     ImGui::EndChild();
@@ -677,7 +704,7 @@ void TimeSplitsDrawItemList(uint32_t type) {
 
     ImGui::BeginChild("Item Child");
     ImGui::BeginTable("Item List", tableSize);
-    for (int i = 0; i < tableSize; i++) {
+    for (size_t i = 0; i < tableSize; i++) {
         if (i == 0) {
             ImGui::TableSetupColumn("Item Image", ImGuiTableColumnFlags_WidthFixed | ImGuiTableColumnFlags_NoHeaderLabel, 39.0f);
         } else {
@@ -689,15 +716,12 @@ void TimeSplitsDrawItemList(uint32_t type) {
         }
     }
 
-    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.0f, 1.0f, 1.0f, 0.0f));
-    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(1.0f, 1.0f, 1.0f, 0.2f));
-    ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(1.0f, 1.0f, 1.0f, 0.1f));
-
     for (auto& split : splitObjectList) {
         if (split.splitType == type) {
             ImGui::TableNextColumn();
             ImGui::PushID(split.splitID);
             TimeSplitsGetImageSize(split.splitID);
+            SplitsPushImageButtonStyle();
             if (ImGui::ImageButton(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(split.splitImage),
                                imageSize, ImVec2(0, 0), ImVec2(1, 1), imagePadding, ImVec4(0, 0, 0, 0), split.splitTint)) {
                 
@@ -715,6 +739,7 @@ void TimeSplitsDrawItemList(uint32_t type) {
                     }
                 }
             }
+            SplitsPopImageButtonStyle();
 
             TimeSplitsPopUpContext();
             ImGui::PopID();
@@ -729,7 +754,6 @@ void TimeSplitsDrawItemList(uint32_t type) {
             
         }
     }
-    ImGui::PopStyleColor(3);
     ImGui::EndTable();
     ImGui::EndChild();
 }
