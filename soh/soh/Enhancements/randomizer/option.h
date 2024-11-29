@@ -127,19 +127,8 @@ class Option {
     static Option LogicTrick(std::string name_);
 
     /**
-     * @brief Gets the selected index or boolean value of the Option.
-     *
-     * @tparam T uint8_t or bool, depending on how the option was constructed.
-     * @return T
-     */
-    //template <typename T> T Value() {
-    //    return std::get<T>(var);
-    //}
-
-    /**
      * @brief Determines if the value/selected index of this Option matches the provided value.
      *
-     * @tparam T uint8_t, bool, or an enum (which will be cast to uint8_t).
      * @param other The value to compare.
      * @return true
      * @return false
@@ -151,7 +140,6 @@ class Option {
     /**
      * @brief Determines if the value/selected index of this Option does not match the provided value.
      *
-     * @tparam T uint8_t, book, or an enum (which will be cast to uint8_t).
      * @param other The value to compare.
      * @return true
      * @return false
@@ -166,7 +154,7 @@ class Option {
      * @return true
      * @return false
      */
-    explicit operator bool();
+    explicit operator bool() const;
 
     /**
      * @brief Get the size of the options array.
@@ -220,7 +208,7 @@ class Option {
      * @brief Sets the CVar corresponding to the property `cvarName` equal to the value
      * of the property `selectedValue`.
     */
-    void SetCVar();
+    void SetCVar() const;
 
     /**
      * @brief Sets the value of property `selectedValue` equal to the CVar corresponding

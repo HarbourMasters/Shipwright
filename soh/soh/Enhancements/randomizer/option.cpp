@@ -30,7 +30,7 @@ Option Option::LogicTrick(std::string name_) {
                   "", WidgetType::Checkbox, 0, false, IMFLAG_NONE);
 }
 
-Option::operator bool() {
+Option::operator bool() const {
     return contextSelection != 0;
 }
 
@@ -70,7 +70,7 @@ void Option::SetVariable() {
     }
 }
 
-void Option::SetCVar() {
+void Option::SetCVar() const {
     if (!cvarName.empty()) {
         CVarSetInteger(cvarName.c_str(), GetMenuOptionIndex());
     }
