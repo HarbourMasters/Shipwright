@@ -34,31 +34,31 @@ Option::operator bool() {
     return contextSelection != 0;
 }
 
-size_t Option::GetOptionCount() {
+size_t Option::GetOptionCount() const {
     return options.size();
 }
 
-const std::string& Option::GetName() {
+const std::string& Option::GetName() const {
     return name;
 }
 
-const std::string& Option::GetDescription() {
+const std::string& Option::GetDescription() const {
     return description;
 }
 
-uint8_t Option::GetMenuOptionIndex() {
+uint8_t Option::GetMenuOptionIndex() const {
     return menuSelection;
 }
 
-uint8_t Option::GetContextOptionIndex() {
+uint8_t Option::GetContextOptionIndex() const {
     return contextSelection;
 }
 
-const std::string& Option::GetSelectedOptionText() {
+const std::string& Option::GetSelectedOptionText() const {
     return options[menuSelection];
 }
 
-const std::string& Option::GetCVarName() {
+const std::string& Option::GetCVarName() const {
     return cvarName;
 }
 
@@ -162,7 +162,7 @@ bool Option::RenderImGui() {
     return changed;
 }
 
-bool Option::HasFlag(const int imFlag_) {
+bool Option::HasFlag(const int imFlag_) const {
     return imFlag_ & imFlags;
 }
 

@@ -173,43 +173,43 @@ class Option {
      *
      * @return size_t
      */
-    size_t GetOptionCount();
+    size_t GetOptionCount() const;
 
     /**
      * @brief Get the name of the Option.
      *
      * @return const std::string&
      */
-    const std::string& GetName();
-    const std::string& GetDescription();
+    const std::string& GetName() const;
+    const std::string& GetDescription() const;
 
     /**
      * @brief Get the value name corresponding to the selected index.
      *
      * @return const std::string&
      */
-    const std::string& GetSelectedOptionText();
+    const std::string& GetSelectedOptionText() const;
 
     /**
      * @brief Get the CVar name for this Option.
      *
      * @return const std::string&
      */
-    const std::string& GetCVarName();
+    const std::string& GetCVarName() const;
 
     /**
      * @brief Get the menu index for this Option.
      *
      * @return uint8_t
      */
-    uint8_t GetMenuOptionIndex();
+    uint8_t GetMenuOptionIndex() const;
 
     /**
      * @brief Get the rando context index for this Option.
      *
      * @return uint8_t
      */
-    uint8_t GetContextOptionIndex();
+    uint8_t GetContextOptionIndex() const;
 
     /**
      * @brief Sets the variable to the currently selected index for this Option.
@@ -312,7 +312,7 @@ class Option {
      */
     bool RenderImGui();
 
-    bool HasFlag(int imFlag_);
+    bool HasFlag(int imFlag_) const;
     void AddFlag(int imFlag_);
     void SetFlag(int imFlag_);
     void RemoveFlag(int imFlag_);
