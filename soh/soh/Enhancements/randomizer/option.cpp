@@ -38,11 +38,11 @@ size_t Option::GetOptionCount() {
     return options.size();
 }
 
-std::string& Option::GetName() {
+const std::string& Option::GetName() {
     return name;
 }
 
-std::string& Option::GetDescription() {
+const std::string& Option::GetDescription() {
     return description;
 }
 
@@ -54,11 +54,11 @@ uint8_t Option::GetContextOptionIndex() {
     return contextSelection;
 }
 
-std::string& Option::GetSelectedOptionText() {
+const std::string& Option::GetSelectedOptionText() {
     return options[menuSelection];
 }
 
-std::string& Option::GetCVarName() {
+const std::string& Option::GetCVarName() {
     return cvarName;
 }
 

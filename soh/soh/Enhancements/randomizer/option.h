@@ -180,22 +180,22 @@ class Option {
      *
      * @return const std::string&
      */
-    std::string& GetName();
-    std::string& GetDescription();
+    const std::string& GetName();
+    const std::string& GetDescription();
 
     /**
      * @brief Get the value name corresponding to the selected index.
      *
      * @return const std::string&
      */
-    std::string& GetSelectedOptionText();
+    const std::string& GetSelectedOptionText();
 
     /**
      * @brief Get the CVar name for this Option.
      *
      * @return const std::string&
      */
-    std::string& GetCVarName();
+    const std::string& GetCVarName();
 
     /**
      * @brief Get the menu index for this Option.
