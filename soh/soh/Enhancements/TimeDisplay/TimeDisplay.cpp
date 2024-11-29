@@ -28,24 +28,19 @@ ImVec4 textColor = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
 #define COLOR_GREY ImVec4(0.78f, 0.78f, 0.78f, 1.0f)
 
 const static std::vector<std::pair<std::string, const char*>> digitList = {
-    { "DIGIT_0_TEXTURE", gCounterDigit0Tex },
-    { "DIGIT_1_TEXTURE", gCounterDigit1Tex },
-    { "DIGIT_2_TEXTURE", gCounterDigit2Tex },
-    { "DIGIT_3_TEXTURE", gCounterDigit3Tex },
-    { "DIGIT_4_TEXTURE", gCounterDigit4Tex },
-    { "DIGIT_5_TEXTURE", gCounterDigit5Tex },
-    { "DIGIT_6_TEXTURE", gCounterDigit6Tex },
-    { "DIGIT_7_TEXTURE", gCounterDigit7Tex },
-    { "DIGIT_8_TEXTURE", gCounterDigit8Tex },
-    { "DIGIT_9_TEXTURE", gCounterDigit9Tex },
-    { "COLON_TEXTURE",   gCounterColonTex },
+    { "DIGIT_0_TEXTURE", gCounterDigit0Tex }, { "DIGIT_1_TEXTURE", gCounterDigit1Tex },
+    { "DIGIT_2_TEXTURE", gCounterDigit2Tex }, { "DIGIT_3_TEXTURE", gCounterDigit3Tex },
+    { "DIGIT_4_TEXTURE", gCounterDigit4Tex }, { "DIGIT_5_TEXTURE", gCounterDigit5Tex },
+    { "DIGIT_6_TEXTURE", gCounterDigit6Tex }, { "DIGIT_7_TEXTURE", gCounterDigit7Tex },
+    { "DIGIT_8_TEXTURE", gCounterDigit8Tex }, { "DIGIT_9_TEXTURE", gCounterDigit9Tex },
+    { "COLON_TEXTURE", gCounterColonTex },
 };
 
 const std::vector<TimeObject> timeDisplayList = {
-    { DISPLAY_IN_GAME_TIMER,        "Display Gameplay Timer",       CVAR_ENHANCEMENT("TimeDisplay.Timers.InGameTimer") },
-    { DISPLAY_TIME_OF_DAY,          "Display Time of Day",          CVAR_ENHANCEMENT("TimeDisplay.Timers.TimeofDay") },
-    { DISPLAY_CONDITIONAL_TIMER,    "Display Conditional Timer",    CVAR_ENHANCEMENT("TimeDisplay.Timers.HotWater") },
-    { DISPLAY_NAVI_TIMER,           "Display Navi Timer",           CVAR_ENHANCEMENT("TimeDisplay.Timers.NaviTimer") }
+    { DISPLAY_IN_GAME_TIMER, "Display Gameplay Timer", CVAR_ENHANCEMENT("TimeDisplay.Timers.InGameTimer") },
+    { DISPLAY_TIME_OF_DAY, "Display Time of Day", CVAR_ENHANCEMENT("TimeDisplay.Timers.TimeofDay") },
+    { DISPLAY_CONDITIONAL_TIMER, "Display Conditional Timer", CVAR_ENHANCEMENT("TimeDisplay.Timers.HotWater") },
+    { DISPLAY_NAVI_TIMER, "Display Navi Timer", CVAR_ENHANCEMENT("TimeDisplay.Timers.NaviTimer") }
 };
 
 static std::vector<TimeObject> activeTimers;
@@ -60,7 +55,7 @@ std::string convertDayTime(uint32_t dayTime) {
 
 std::string convertNaviTime(uint32_t value) {
     uint32_t totalSeconds = value * 0.05;
-    uint32_t ss = totalSeconds % 60; 
+    uint32_t ss = totalSeconds % 60;
     uint32_t mm = totalSeconds / 60;
     return fmt::format("{:0>2}:{:0>2}", mm, ss);
 }
@@ -94,24 +89,29 @@ static void TimeDisplayGetTimer(uint32_t timeID) {
             timeDisplayTime = formatTimeDisplay(GAMEPLAYSTAT_TOTAL_TIME).c_str();
             break;
         case DISPLAY_TIME_OF_DAY:
-            if (gSaveContext.dayTime >= 17759 && !(gSaveContext.dayTime >= 49155)) {
-                textureDisplay = Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("DAY_TIME_TIMER");
+            if (gSaveContext.dayTime >= DAY_BEGINS && !(gSaveContext.dayTime >= NIGHT_BEGINS)) {
+                textureDisplay =
+                    Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("DAY_TIME_TIMER");
             } else {
-                textureDisplay = Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("NIGHT_TIME_TIMER");
+                textureDisplay =
+                    Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("NIGHT_TIME_TIMER");
             }
             timeDisplayTime = convertDayTime(gSaveContext.dayTime).c_str();
             break;
         case DISPLAY_CONDITIONAL_TIMER:
             if (gSaveContext.timer1State > 0) {
                 timeDisplayTime = formatHotWaterDisplay(gSaveContext.timer1Value).c_str();
-                textColor = gSaveContext.timer1State <= 4 ? 
-                    (gPlayState->roomCtx.curRoom.behaviorType2 == ROOM_BEHAVIOR_TYPE2_3 ? 
-                        COLOR_LIGHT_RED : COLOR_LIGHT_BLUE) : COLOR_WHITE;
+                textColor =
+                    gSaveContext.timer1State <= 4
+                        ? (gPlayState->roomCtx.curRoom.behaviorType2 == ROOM_BEHAVIOR_TYPE2_3 ? COLOR_LIGHT_RED
+                                                                                              : COLOR_LIGHT_BLUE)
+                        : COLOR_WHITE;
                 if (gSaveContext.timer1State <= 4) {
                     textureDisplay = Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
-                        gPlayState->roomCtx.curRoom.behaviorType2 == ROOM_BEHAVIOR_TYPE2_3 ? 
-                        itemMapping[ITEM_TUNIC_GORON].name : itemMapping[ITEM_TUNIC_ZORA].name);
-                }                
+                        gPlayState->roomCtx.curRoom.behaviorType2 == ROOM_BEHAVIOR_TYPE2_3
+                            ? itemMapping[ITEM_TUNIC_GORON].name
+                            : itemMapping[ITEM_TUNIC_ZORA].name);
+                }
                 if (gSaveContext.timer1State >= 6) {
                     textureDisplay = Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
                         itemMapping[ITEM_SWORD_MASTER].name);
@@ -123,13 +123,13 @@ static void TimeDisplayGetTimer(uint32_t timeID) {
             }
             break;
         case DISPLAY_NAVI_TIMER:
-            if (gSaveContext.naviTimer <= 600) {
-                timeDisplayTime = convertNaviTime(600 - gSaveContext.naviTimer).c_str();
-            } else if (gSaveContext.naviTimer <= 3000) {
-                timeDisplayTime = convertNaviTime(3000 - gSaveContext.naviTimer).c_str();
+            if (gSaveContext.naviTimer <= NAVI_PREPARE) {
+                timeDisplayTime = convertNaviTime(NAVI_PREPARE - gSaveContext.naviTimer).c_str();
+            } else if (gSaveContext.naviTimer <= NAVI_ACTIVE) {
+                timeDisplayTime = convertNaviTime(NAVI_ACTIVE - gSaveContext.naviTimer).c_str();
                 textColor = COLOR_LIGHT_GREEN;
             } else {
-                timeDisplayTime = convertNaviTime(25800 - gSaveContext.naviTimer).c_str();
+                timeDisplayTime = convertNaviTime(NAVI_COOLDOWN - gSaveContext.naviTimer).c_str();
                 textColor = COLOR_GREY;
             }
             textureDisplay = Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("NAVI_TIMER");
@@ -166,32 +166,28 @@ void TimeDisplayWindow::Draw() {
     ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
     ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 4.0f);
 
-    ImGui::Begin("TimerDisplay", nullptr, ImGuiWindowFlags_AlwaysAutoResize |
-            ImGuiWindowFlags_NoNav |
-            ImGuiWindowFlags_NoFocusOnAppearing |
-            ImGuiWindowFlags_NoResize |
-            ImGuiWindowFlags_NoDocking |
-            ImGuiWindowFlags_NoTitleBar |
-            ImGuiWindowFlags_NoScrollWithMouse |
-            ImGuiWindowFlags_NoScrollbar);
+    ImGui::Begin("TimerDisplay", nullptr,
+                    ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoFocusOnAppearing |
+                    ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoTitleBar |
+                    ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoScrollbar);
     ImGui::SetWindowFontScale(fontScale);
-	if (activeTimers.size() == 0) {
-		ImGui::Text("No Enabled Timers...");
-	} else {
-		ImGui::BeginTable("Timer List", 2, ImGuiTableFlags_NoClip);
-		for (auto& timers : activeTimers) {
-			ImGui::PushID(timers.timeID);
+    if (activeTimers.size() == 0) {
+        ImGui::Text("No Enabled Timers...");
+    } else {
+        ImGui::BeginTable("Timer List", 2, ImGuiTableFlags_NoClip);
+        for (auto& timers : activeTimers) {
+            ImGui::PushID(timers.timeID);
             TimeDisplayGetTimer(timers.timeID);
             ImGui::TableNextColumn();
             ImGui::Image(textureDisplay, ImVec2(16.0f * fontScale, 16.0f * fontScale));
             ImGui::TableNextColumn();
-            
+
             if (timeDisplayTime != "-:--") {
                 char* textToDecode = new char[timeDisplayTime.size() + 1];
                 textToDecode = std::strcpy(textToDecode, timeDisplayTime.c_str());
                 size_t textLength = timeDisplayTime.length();
                 uint16_t textureIndex = 0;
-            
+
                 for (size_t i = 0; i < textLength; i++) {
                     ImVec2 originalCursorPos = ImGui::GetCursorPos();
                     if (textToDecode[i] == ':' || textToDecode[i] == '.') {
@@ -201,19 +197,23 @@ void TimeDisplayWindow::Draw() {
                     }
                     if (textToDecode[i] == '.') {
                         ImGui::SetCursorPosY(ImGui::GetCursorPosY() + (8.0f * fontScale));
-                        ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(digitList[textureIndex].first),
-                            ImVec2(8.0f * fontScale, 8.0f * fontScale), ImVec2(0, 0.5f), ImVec2(1, 1), textColor, ImVec4(0, 0, 0, 0));
+                        ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
+                                         digitList[textureIndex].first),
+                                     ImVec2(8.0f * fontScale, 8.0f * fontScale), ImVec2(0, 0.5f), ImVec2(1, 1),
+                                     textColor, ImVec4(0, 0, 0, 0));
                     } else {
-                        ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(digitList[textureIndex].first),
-                            ImVec2(8.0f * fontScale, 16.0f * fontScale), ImVec2(0, 0), ImVec2(1, 1), textColor, ImVec4(0, 0, 0, 0));
+                        ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
+                                         digitList[textureIndex].first),
+                                     ImVec2(8.0f * fontScale, 16.0f * fontScale), ImVec2(0, 0), ImVec2(1, 1), textColor,
+                                     ImVec4(0, 0, 0, 0));
                     }
                     ImGui::SameLine(0, 0);
                 }
             }
-			ImGui::PopID();
-		}
-		ImGui::EndTable();
-	}    
+            ImGui::PopID();
+        }
+        ImGui::EndTable();
+    }
     ImGui::End();
 
     ImGui::PopStyleColor(2);

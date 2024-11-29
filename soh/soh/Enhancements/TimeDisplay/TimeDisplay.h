@@ -20,6 +20,14 @@ typedef enum {
     DISPLAY_NAVI_TIMER
 };
 
+typedef enum {
+    NAVI_PREPARE = 600,
+    NAVI_ACTIVE = 3000,
+    NAVI_COOLDOWN = 25800,
+    DAY_BEGINS = 17759,
+    NIGHT_BEGINS = 49155
+};
+
 typedef struct {
     uint32_t timeID;
     std::string timeLabel;
