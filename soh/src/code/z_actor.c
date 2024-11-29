@@ -4966,7 +4966,7 @@ void Flags_UnsetEventInf(s32 flag) {
  */
 s32 Flags_GetRandomizerInf(RandomizerInf flag) {
     if (!IS_RANDO) {
-        //LUSLOG_ERROR("Tried to get randomizerInf flag outside of rando");
+        //LUSLOG_ERROR("Tried to get randomizerInf flag \"%d\" outside of rando", flag);
         //assert(false);
         return 0;
     }
@@ -4979,7 +4979,7 @@ s32 Flags_GetRandomizerInf(RandomizerInf flag) {
  */
 void Flags_SetRandomizerInf(RandomizerInf flag) {
     if (!IS_RANDO) {
-        LUSLOG_ERROR("Tried to set randomizerInf flag outside of rando");
+        LUSLOG_ERROR("Tried to set randomizerInf flag \"%d\" outside of rando", flag);
         assert(false);
         return;
     }
@@ -4997,7 +4997,7 @@ void Flags_SetRandomizerInf(RandomizerInf flag) {
  */
 void Flags_UnsetRandomizerInf(RandomizerInf flag) {
     if (!IS_RANDO) {
-        LUSLOG_ERROR("Tried to unset randomizerInf flag outside of rando");
+        LUSLOG_ERROR("Tried to unset randomizerInf flag \"%d\" outside of rando", flag);
         assert(false);
         return;
     }
