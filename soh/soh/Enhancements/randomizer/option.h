@@ -133,7 +133,7 @@ class Option {
      * @return true
      * @return false
      */
-    bool Is(uint32_t other) {
+    bool Is(uint32_t other) const {
         return contextSelection == other;
     }
 
@@ -144,7 +144,7 @@ class Option {
      * @return true
      * @return false
      */
-    bool IsNot(uint32_t other) {
+    bool IsNot(uint32_t other) const {
         return !Is(other);
     }
 
@@ -208,7 +208,7 @@ class Option {
      * @brief Sets the CVar corresponding to the property `cvarName` equal to the value
      * of the property `selectedValue`.
     */
-    void SetCVar() const;
+    void SaveCVar() const;
 
     /**
      * @brief Sets the value of property `selectedValue` equal to the CVar corresponding
@@ -258,7 +258,7 @@ class Option {
      * @return false
      */
 
-    bool IsHidden();
+    bool IsHidden() const;
     /**
      * @brief Replaces the `options` vector for this Option with a new one.
      * If the new vector is smaller than the old one and the current selected

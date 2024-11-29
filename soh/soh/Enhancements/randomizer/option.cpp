@@ -70,7 +70,7 @@ void Option::SetVariable() {
     }
 }
 
-void Option::SetCVar() const {
+void Option::SaveCVar() const {
     if (!cvarName.empty()) {
         CVarSetInteger(cvarName.c_str(), GetMenuOptionIndex());
     }
@@ -113,7 +113,7 @@ void Option::Unhide() {
     hidden = false;
 }
 
-bool Option::IsHidden() {
+bool Option::IsHidden() const {
     return hidden;
 }
 
