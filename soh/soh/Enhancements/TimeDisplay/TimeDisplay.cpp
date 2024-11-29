@@ -27,7 +27,7 @@ ImVec4 textColor = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
 #define COLOR_LIGHT_GREEN ImVec4(0.52f, 1.0f, 0.23f, 1.0f)
 #define COLOR_GREY ImVec4(0.78f, 0.78f, 0.78f, 1.0f)
 
-std::vector<std::pair<std::string, const char*>> digitList = {
+const static std::vector<std::pair<std::string, const char*>> digitList = {
     { "DIGIT_0_TEXTURE", gCounterDigit0Tex },
     { "DIGIT_1_TEXTURE", gCounterDigit1Tex },
     { "DIGIT_2_TEXTURE", gCounterDigit2Tex },
@@ -41,14 +41,14 @@ std::vector<std::pair<std::string, const char*>> digitList = {
     { "COLON_TEXTURE",   gCounterColonTex },
 };
 
-std::vector<TimeObject> timeDisplayList = {
+const std::vector<TimeObject> timeDisplayList = {
     { DISPLAY_IN_GAME_TIMER,        "Display Gameplay Timer",       CVAR_ENHANCEMENT("TimeDisplay.Timers.InGameTimer") },
     { DISPLAY_TIME_OF_DAY,          "Display Time of Day",          CVAR_ENHANCEMENT("TimeDisplay.Timers.TimeofDay") },
     { DISPLAY_CONDITIONAL_TIMER,    "Display Conditional Timer",    CVAR_ENHANCEMENT("TimeDisplay.Timers.HotWater") },
     { DISPLAY_NAVI_TIMER,           "Display Navi Timer",           CVAR_ENHANCEMENT("TimeDisplay.Timers.NaviTimer") }
 };
 
-std::vector<TimeObject> activeTimers;
+static std::vector<TimeObject> activeTimers;
 
 std::string convertDayTime(uint32_t dayTime) {
     uint32_t totalSeconds = 24 * 60 * 60;
@@ -80,7 +80,7 @@ std::string formatTimeDisplay(uint32_t value) {
     return fmt::format("{}:{:0>2}:{:0>2}.{}", hh, mm, ss, ds);
 }
 
-void TimeDisplayGetTimer(uint32_t timeID) {
+static void TimeDisplayGetTimer(uint32_t timeID) {
     timeDisplayTime = "";
     textureDisplay = 0;
     textColor = COLOR_WHITE;
@@ -197,7 +197,7 @@ void TimeDisplayWindow::Draw() {
                     if (textToDecode[i] == ':' || textToDecode[i] == '.') {
                         textureIndex = 10;
                     } else {
-                        textureIndex = textToDecode[i] - 48;
+                        textureIndex = textToDecode[i] - '0';
                     }
                     if (textToDecode[i] == '.') {
                         ImGui::SetCursorPosY(ImGui::GetCursorPosY() + (8.0f * fontScale));
@@ -232,7 +232,7 @@ void TimeDisplayInitSettings() {
     }
 }
 
-void TimeDisplayInitTimers() {
+static void TimeDisplayInitTimers() {
     for (auto& update : timeDisplayList) {
         if (CVarGetInteger(update.timeEnable, 0)) {
             activeTimers.push_back(update);
@@ -242,9 +242,9 @@ void TimeDisplayInitTimers() {
 
 void TimeDisplayWindow::InitElement() {
     Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("GAMEPLAY_TIMER", gClockIconTex, ImVec4(1, 1, 1, 1));
-    Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("DAY_TIME_TIMER", gSunIcoTex, ImVec4(1, 1, 1, 1));
-    Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("NIGHT_TIME_TIMER", gMoonIcoTex, ImVec4(1, 1, 1, 1));
-    Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("NAVI_TIMER", gNaviIcoTex, ImVec4(1, 1, 1, 1));
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("DAY_TIME_TIMER", gSunIconTex, ImVec4(1, 1, 1, 1));
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("NIGHT_TIME_TIMER", gMoonIconTex, ImVec4(1, 1, 1, 1));
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("NAVI_TIMER", gNaviIconTex, ImVec4(1, 1, 1, 1));
 
     for (auto& load : digitList) {
         Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(load.first.c_str(), load.second, ImVec4(1, 1, 1, 1));

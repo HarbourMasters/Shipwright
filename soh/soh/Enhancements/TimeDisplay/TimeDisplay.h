@@ -26,4 +26,4 @@ typedef struct {
     const char* timeEnable;
 } TimeObject;
 
-extern std::vector<TimeObject> timeDisplayList;
+extern const std::vector<TimeObject> timeDisplayList;

@@ -106,14 +106,14 @@ static const ALIGN_ASSET(2) char gSplitEntranceTex[] = dgSplitEntrance;
 #define dgBossSoul "__OTR__textures/parameter_static/gBossSoul"
 static const ALIGN_ASSET(2) char gBossSoulTex[] = dgBossSoul;
 
-#define dgMoonIco "__OTR__textures/parameter_static/gMoon"
-static const ALIGN_ASSET(2) char gMoonIcoTex[] = dgMoonIco;
+#define dgMoonIcon "__OTR__textures/parameter_static/gMoon"
+static const ALIGN_ASSET(2) char gMoonIconTex[] = dgMoonIcon;
 
-#define dgSunIco "__OTR__textures/parameter_static/gSun"
-static const ALIGN_ASSET(2) char gSunIcoTex[] = dgSunIco;
+#define dgSunIcon "__OTR__textures/parameter_static/gSun"
+static const ALIGN_ASSET(2) char gSunIconTex[] = dgSunIcon;
 
-#define dgNaviIco "__OTR__textures/parameter_static/gNavi"
-static const ALIGN_ASSET(2) char gNaviIcoTex[] = dgNaviIco;
+#define dgNaviIcon "__OTR__textures/parameter_static/gNavi"
+static const ALIGN_ASSET(2) char gNaviIconTex[] = dgNaviIcon;
 
 #define dgFileSelMQButtonTex "__OTR__textures/title_static/gFileSelMQButtonTex"
 static const ALIGN_ASSET(2) char gFileSelMQButtonTex[] = dgFileSelMQButtonTex;
