@@ -138,67 +138,6 @@ u8 BossRush_GetSettingOptionsAmount(u8 optionIndex) {
     return BossRushOptions[optionIndex].choices.size();
 }
 
-typedef enum {
-    BOSS_RUSH_INF_DUNGEONS_DONE_SPIRIT_TEMPLE,
-    BOSS_RUSH_INF_DUNGEONS_DONE_SHADOW_TEMPLE,
-    // If you add anything to this list, you need to update the size of bossRushInf in z64save.h to be ceil(BOSS_RUSH_INF_MAX / 16)
-
-    BOSS_RUSH_INF_MAX,
-} BossRushInf;
-
-
-/**
- * Tests if "bossRushInf" flag is set.
- */
-s32 Flags_GetBossRushInf(BossRushInf flag) {
-    if (!IS_BOSS_RUSH) {
-        LUSLOG_ERROR("Tried to get bossRushInf flag outside of boss rush");
-        assert(false);
-        return 0;
-    }
-
-    return gSaveContext.ship.quest.data.bossRush.bossRushInf[flag >> 4] & (1 << (flag & 0xF));
-}
-
-/**
- * Sets "bossRushInf" flag.
- */
-void Flags_SetBossRushInf(BossRushInf flag) {
-    if (!IS_BOSS_RUSH) {
-        LUSLOG_ERROR("Tried to set bossRushInf flag outside of boss rush");
-        assert(false);
-        return;
-    }
-
-    s32 previouslyOff = !Flags_GetBossRushInf(flag);
-    gSaveContext.ship.quest.data.bossRush.bossRushInf[flag >> 4] |= (1 << (flag & 0xF));
-    if (previouslyOff) {
-        LUSLOG_INFO("BossRushInf Flag Set - %#x", flag);
-        GameInteractor_ExecuteOnFlagSet(FLAG_RANDOMIZER_INF, flag);
-    }
-}
-
-/**
- * Unsets "bossRushInf" flag.
- */
-void Flags_UnsetBossRushInf(BossRushInf flag) {
-    if (!IS_BOSS_RUSH) {
-        LUSLOG_ERROR("Tried to unset bossRushInf flag outside of boss rush");
-        assert(false);
-        return;
-    }
-
-    s32 previouslyOn = Flags_GetBossRushInf(flag);
-    gSaveContext.ship.quest.data.bossRush.bossRushInf[flag >> 4] &= ~(1 << (flag & 0xF));
-    if (previouslyOn) {
-        LUSLOG_INFO("BossRushInf Flag Unset - %#x", flag);
-        GameInteractor_ExecuteOnFlagUnset(FLAG_RANDOMIZER_INF, flag);
-    }
-}
-
-
-
-
 void BossRush_SpawnBlueWarps(PlayState* play) {
 
     // Spawn blue warps in Chamber of Sages based on what bosses have been defeated.
@@ -233,11 +172,11 @@ void BossRush_SpawnBlueWarps(PlayState* play) {
             Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, 199, 6, 0, 0, 0, 0, -1, false);
         }
         // Spirit Medallion (Twinrova)
-        if (!Flags_GetBossRushInf(BOSS_RUSH_INF_DUNGEONS_DONE_SPIRIT_TEMPLE)) {
+        if (!Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_SPIRIT_TEMPLE)) {
             Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, 100, 6, 170, 0, 0, 0, -1, false);
         }
         // Shadow Medallion (Bongo Bongo)
-        if (!Flags_GetBossRushInf(BOSS_RUSH_INF_DUNGEONS_DONE_SHADOW_TEMPLE)) {
+        if (!Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_SHADOW_TEMPLE)) {
             Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, -100, 6, 170, 0, 0, 0, -1, false);
         }
     }
@@ -374,10 +313,10 @@ void BossRush_HandleCompleteBoss(PlayState* play) {
             Flags_SetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP);
             break;
         case SCENE_SPIRIT_TEMPLE_BOSS:
-            Flags_SetBossRushInf(BOSS_RUSH_INF_DUNGEONS_DONE_SPIRIT_TEMPLE);
+            Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_SPIRIT_TEMPLE);
             break;
         case SCENE_SHADOW_TEMPLE_BOSS:
-            Flags_SetBossRushInf(BOSS_RUSH_INF_DUNGEONS_DONE_SHADOW_TEMPLE);
+            Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_SHADOW_TEMPLE);
             break;
         default:
             break;
@@ -548,8 +487,8 @@ void BossRush_InitSave() {
             Flags_SetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP);
             Flags_SetEventChkInf(EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP);
             Flags_SetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP);
-            Flags_SetBossRushInf(BOSS_RUSH_INF_DUNGEONS_DONE_SPIRIT_TEMPLE);
-            Flags_SetBossRushInf(BOSS_RUSH_INF_DUNGEONS_DONE_SHADOW_TEMPLE);
+            Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_SPIRIT_TEMPLE);
+            Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_SHADOW_TEMPLE);
         }
         gSaveContext.linkAge = LINK_AGE_ADULT;
         BossRush_SetEquipment(LINK_AGE_ADULT);

@@ -160,7 +160,6 @@ typedef struct {
 #pragma region SoH
 
 typedef struct ShipRandomizerSaveContextData {
-    u16 randomizerInf[17];
     u16 adultTradeItems;
     u8 triforcePiecesCollected;
 } ShipRandomizerSaveContextData;
@@ -168,8 +167,6 @@ typedef struct ShipRandomizerSaveContextData {
 typedef struct ShipBossRushSaveContextData {
     u32 isPaused;
     u8 options[BR_OPTIONS_MAX];
-    //for now only holds whether or not the spirit and shadow bosses are done as there's no equivalent flags in vanilla
-    u16 bossRushInf[1];
 } ShipBossRushSaveContextData;
 
 typedef union ShipQuestSpecificSaveContextData {
@@ -190,6 +187,8 @@ typedef struct ShipSaveContextData {
     FaroresWindData backupFW;
     ShipQuestSaveContextData quest;
     u8 maskMemory;
+    //TODO: Move non-rando specific flags to a new sohInf and move the remaining randomizerInf to ShipRandomizerSaveContextData
+    u16 randomizerInf[17];
 } ShipSaveContextData;
 
 #pragma endregion

@@ -1555,8 +1555,8 @@ void SaveManager::LoadBaseVersion1() {
         SaveManager::Instance->LoadData("angle", gSaveContext.horseData.angle);
     });
 
-    SaveManager::Instance->LoadArray("randomizerInf", ARRAY_COUNT(gSaveContext.ship.quest.data.randomizer.randomizerInf), [](size_t i) {
-        SaveManager::Instance->LoadData("", gSaveContext.ship.quest.data.randomizer.randomizerInf[i]);
+    SaveManager::Instance->LoadArray("randomizerInf", ARRAY_COUNT(gSaveContext.ship.randomizerInf), [](size_t i) {
+        SaveManager::Instance->LoadData("", gSaveContext.ship.randomizerInf[i]);
     });
 }
 
@@ -1739,8 +1739,8 @@ void SaveManager::LoadBaseVersion2() {
         SaveManager::Instance->LoadData("angle", gSaveContext.horseData.angle);
     });
 
-    SaveManager::Instance->LoadArray("randomizerInf", ARRAY_COUNT(gSaveContext.ship.quest.data.randomizer.randomizerInf), [](size_t i) {
-        SaveManager::Instance->LoadData("", gSaveContext.ship.quest.data.randomizer.randomizerInf[i]);
+    SaveManager::Instance->LoadArray("randomizerInf", ARRAY_COUNT(gSaveContext.ship.randomizerInf), [](size_t i) {
+        SaveManager::Instance->LoadData("", gSaveContext.ship.randomizerInf[i]);
     });
     int isMQ = 0;
     SaveManager::Instance->LoadData("isMasterQuest", isMQ);
@@ -1972,8 +1972,8 @@ void SaveManager::LoadBaseVersion3() {
         SaveManager::Instance->LoadData("angle", gSaveContext.horseData.angle);
     });
 
-    SaveManager::Instance->LoadArray("randomizerInf", ARRAY_COUNT(gSaveContext.ship.quest.data.randomizer.randomizerInf), [](size_t i) {
-        SaveManager::Instance->LoadData("", gSaveContext.ship.quest.data.randomizer.randomizerInf[i]);
+    SaveManager::Instance->LoadArray("randomizerInf", ARRAY_COUNT(gSaveContext.ship.randomizerInf), [](size_t i) {
+        SaveManager::Instance->LoadData("", gSaveContext.ship.randomizerInf[i]);
     });
     int isMQ = 0;
     SaveManager::Instance->LoadData("isMasterQuest", isMQ);
@@ -2153,8 +2153,8 @@ void SaveManager::LoadBaseVersion4() {
         SaveManager::Instance->LoadData("angle", gSaveContext.horseData.angle);
     });
 
-    SaveManager::Instance->LoadArray("randomizerInf", ARRAY_COUNT(gSaveContext.ship.quest.data.randomizer.randomizerInf), [](size_t i) {
-        SaveManager::Instance->LoadData("", gSaveContext.ship.quest.data.randomizer.randomizerInf[i]);
+    SaveManager::Instance->LoadArray("randomizerInf", ARRAY_COUNT(gSaveContext.ship.randomizerInf), [](size_t i) {
+        SaveManager::Instance->LoadData("", gSaveContext.ship.randomizerInf[i]);
     });
     int isMQ = 0;
     SaveManager::Instance->LoadData("isMasterQuest", isMQ);
@@ -2327,8 +2327,8 @@ void SaveManager::SaveBase(SaveContext* saveContext, int sectionID, bool fullSav
         SaveManager::Instance->SaveData("angle", saveContext->horseData.angle);
     });
 
-    SaveManager::Instance->SaveArray("randomizerInf", ARRAY_COUNT(saveContext->ship.quest.data.randomizer.randomizerInf), [&](size_t i) {
-        SaveManager::Instance->SaveData("", saveContext->ship.quest.data.randomizer.randomizerInf[i]);
+    SaveManager::Instance->SaveArray("randomizerInf", ARRAY_COUNT(saveContext->ship.randomizerInf), [&](size_t i) {
+        SaveManager::Instance->SaveData("", saveContext->ship.randomizerInf[i]);
     });
     SaveManager::Instance->SaveData("isMasterQuest", saveContext->ship.quest.id == QUEST_MASTER);
     SaveManager::Instance->SaveStruct("backupFW", [&]() {

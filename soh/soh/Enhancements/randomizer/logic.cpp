@@ -1928,15 +1928,15 @@ namespace Rando {
     }
 
     bool Logic::CheckRandoInf(uint32_t flag) {
-        return mSaveContext->ship.quest.data.randomizer.randomizerInf[flag >> 4] & (1 << (flag & 0xF));
+        return mSaveContext->ship.randomizerInf[flag >> 4] & (1 << (flag & 0xF));
     }
 
     void Logic::SetRandoInf(uint32_t flag, bool state) {
         if (!state) {
-            mSaveContext->ship.quest.data.randomizer.randomizerInf[flag >> 4] &= ~(1 << (flag & 0xF));
+            mSaveContext->ship.randomizerInf[flag >> 4] &= ~(1 << (flag & 0xF));
         }
         else {
-            mSaveContext->ship.quest.data.randomizer.randomizerInf[flag >> 4] |= (1 << (flag & 0xF));
+            mSaveContext->ship.randomizerInf[flag >> 4] |= (1 << (flag & 0xF));
         }
     }
 
