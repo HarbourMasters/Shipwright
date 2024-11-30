@@ -21,6 +21,4 @@ typedef struct EnMk {
     /* 0x0284 */ EnMkActionFunc actionFunc;
 } EnMk; // size = 0x0288
 
-void EnMk_Wait(EnMk* enMk, PlayState* play);
-
 #endif
