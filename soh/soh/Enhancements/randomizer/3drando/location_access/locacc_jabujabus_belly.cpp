@@ -45,8 +45,7 @@ void RegionTable_Init_JabuJabusBelly() {
                   Entrance(RR_JABU_JABUS_BELLY_GREEN_TENTACLE, {[]{return logic->JabuEastTentacle;}}),
                   Entrance(RR_JABU_JABUS_BELLY_BIGOCTO_LEDGE,  {[]{return logic->JabuNorthTentacle;}}),
                   Entrance(RR_JABU_JABUS_BELLY_NEAR_BOSS_ROOM, {[]{return logic->LoweredJabuPath || (ctx->GetTrickOption(RT_JABU_BOSS_HOVER) && logic->CanUse(RG_HOVER_BOOTS));}}),
-
-                  });
+ });
 
 //contains B1 of hole room (aside from the ledge leading to big octo), 2 octorock room and north water switch room
   areaTable[RR_JABU_JABUS_BELLY_B1_NORTH] = Region("Jabu Jabus Belly B1 North", "Jabu Jabus Belly", {RA_JABU_JABUS_BELLY}, NO_DAY_NIGHT_CYCLE, {
