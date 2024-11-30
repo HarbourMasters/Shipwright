@@ -2324,10 +2324,10 @@ void Settings::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocatio
     }
 
     if (mOptions[RSK_SHUFFLE_DEKU_STICK_BAG]) {
-        mOptions[RSK_STARTING_STICKS].SetSelectedIndex(false);
+        mOptions[RSK_STARTING_STICKS].SetContextIndex(false);
     }
     if (mOptions[RSK_SHUFFLE_DEKU_NUT_BAG]) {
-        mOptions[RSK_STARTING_NUTS].SetSelectedIndex(false);
+        mOptions[RSK_STARTING_NUTS].SetContextIndex(false);
     }
 
     // RANDOTODO implement chest shuffle with keysanity
