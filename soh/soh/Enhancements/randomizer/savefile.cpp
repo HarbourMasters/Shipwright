@@ -253,10 +253,11 @@ extern "C" void Randomizer_InitSaveFile() {
     // Flags_SetInfTable(INFTABLE_CHILD_MALON_SAID_EPONA_WAS_AFRAID_OF_YOU);
     // Flags_SetInfTable(INFTABLE_SPOKE_TO_INGO_ONCE_AS_ADULT);
 
+    // Now handled by cutscene skips
     // Ruto already met in jabu and spawns down the hole immediately
-    Flags_SetInfTable(INFTABLE_RUTO_IN_JJ_MEET_RUTO);
-    Flags_SetInfTable(INFTABLE_RUTO_IN_JJ_TALK_FIRST_TIME);
-    Flags_SetInfTable(INFTABLE_RUTO_IN_JJ_WANTS_TO_BE_TOSSED_TO_SAPPHIRE);
+    // Flags_SetInfTable(INFTABLE_RUTO_IN_JJ_MEET_RUTO);
+    // Flags_SetInfTable(INFTABLE_RUTO_IN_JJ_TALK_FIRST_TIME);
+    // Flags_SetInfTable(INFTABLE_RUTO_IN_JJ_WANTS_TO_BE_TOSSED_TO_SAPPHIRE);
 
     // Now handled by cutscene skips
     // Skip cutscenes before Nabooru fight

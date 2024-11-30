@@ -1552,6 +1552,12 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             *should = false;
             break;
         }
+        // We need to override the vanilla behavior here because the player might sequence break and get Ruto kidnapped before accessing other 
+        // checks that require Ruto. So if she's kidnapped we allow her to spawn again
+        case VB_RUTO_BE_CONSIDERED_NOT_KIDNAPPED: {
+            *should = !Flags_GetInfTable(INFTABLE_145) || Flags_GetInfTable(INFTABLE_146);
+            break;
+        }
         case VB_FREEZE_ON_SKULL_TOKEN:
         case VB_TRADE_TIMER_ODD_MUSHROOM:
         case VB_TRADE_TIMER_FROG:
