@@ -176,8 +176,8 @@ void ItemLocation::SetHidden(const bool hidden_) {
     hidden = hidden_;
 }
 
-bool ItemLocation::IsExcluded() const {
-    return excludedOption.Value<bool>();
+bool ItemLocation::IsExcluded() {
+    return excludedOption.GetContextOptionIndex();
 }
 
 Option* ItemLocation::GetExcludedOption() {
@@ -197,7 +197,7 @@ void ItemLocation::AddExcludeOption() {
     // RANDOTODO: this without string compares and loops
     bool alreadyAdded = false;
     const Location* loc = StaticData::GetLocation(rc);
-    for (const Option* location : Context::GetInstance()->GetSettings()->GetExcludeOptionsForArea(loc->GetArea())) {
+    for (Option* location : Context::GetInstance()->GetSettings()->GetExcludeOptionsForArea(loc->GetArea())) {
         if (location->GetName() == excludedOption.GetName()) {
             alreadyAdded = true;
         }

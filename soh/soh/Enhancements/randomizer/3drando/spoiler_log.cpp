@@ -176,7 +176,7 @@ static void WriteSettings() {
     auto allOptionGroups = ctx->GetSettings()->GetOptionGroups();
     for (const Rando::OptionGroup& optionGroup : allOptionGroups) {
         if (optionGroup.GetContainsType() == Rando::OptionGroupType::DEFAULT && optionGroup.PrintInSpoiler()) {
-            for (const Rando::Option* option : optionGroup.GetOptions()) {
+            for (Rando::Option* option : optionGroup.GetOptions()) {
                 std::string settingName = optionGroup.GetName() + ":" + option->GetName();
                 jsonData["settings"][settingName] = option->GetSelectedOptionText();
             }
@@ -191,7 +191,7 @@ static void WriteExcludedLocations() {
 
   for (size_t i = 1; i < ctx->GetSettings()->GetExcludeLocationsOptions().size(); i++) {
     for (const auto& location : ctx->GetSettings()->GetExcludeLocationsOptions()[i]) {
-      if (location->GetSelectedOptionIndex() == RO_LOCATION_INCLUDE) {
+      if (location->GetContextOptionIndex() == RO_LOCATION_INCLUDE) {
         continue;
       }
 
@@ -214,7 +214,7 @@ static void WriteStartingInventory() {
     const Rando::OptionGroup& optionGroup = ctx->GetSettings()->GetOptionGroup(RSG_STARTING_INVENTORY);
     for (const Rando::OptionGroup* subGroup : optionGroup.GetSubGroups()) {
         if (subGroup->GetContainsType() == Rando::OptionGroupType::DEFAULT) {
-            for (const Rando::Option* option : subGroup->GetOptions()) {
+            for (Rando::Option* option : subGroup->GetOptions()) {
                 jsonData["settings"][option->GetName()] = option->GetSelectedOptionText();
             }
         }
@@ -227,7 +227,7 @@ static void WriteEnabledTricks(tinyxml2::XMLDocument& spoilerLog) {
   auto ctx = Rando::Context::GetInstance();
 
   for (const auto& setting : ctx->GetSettings()->GetOptionGroup(RSG_TRICKS).GetOptions()) {
-    if (setting->GetSelectedOptionIndex() != RO_GENERIC_ON/* || !setting->IsCategory(OptionCategory::Setting)*/) {
+    if (setting->GetContextOptionIndex() != RO_GENERIC_ON/* || !setting->IsCategory(OptionCategory::Setting)*/) {
       continue;
     }
     jsonData["enabledTricks"].push_back(RemoveLineBreaks(setting->GetName()).c_str());

@@ -180,7 +180,7 @@ void SaveManager::LoadRandomizerVersion1() {
         int key, value;
         SaveManager::Instance->LoadData("sk" + std::to_string(i), key);
         SaveManager::Instance->LoadData("sv" + std::to_string(i), value);
-        randoContext->GetOption(RandomizerSettingKey(key)).SetSelectedIndex(value);
+        randoContext->GetOption(RandomizerSettingKey(key)).SetContextIndex(value);
     }
 
     for (int i = 0; i < 50; i++) {
@@ -286,7 +286,7 @@ void SaveManager::LoadRandomizerVersion2() {
     SaveManager::Instance->LoadArray("randoSettings", RSK_MAX, [&](size_t i) {
         int value = 0;
         SaveManager::Instance->LoadData("", value);
-        randoContext->GetOption(RandomizerSettingKey(i)).SetSelectedIndex(value);
+        randoContext->GetOption(RandomizerSettingKey(i)).SetContextIndex(value);
     });
 
     SaveManager::Instance->LoadArray("hintLocations", RH_ZR_OPEN_GROTTO_GOSSIP_STONE + 1, [&](size_t i) {
@@ -435,7 +435,7 @@ void SaveManager::LoadRandomizerVersion3() {
     SaveManager::Instance->LoadArray("randoSettings", RSK_MAX, [&](size_t i) {
         int value = 0;
         SaveManager::Instance->LoadData("", value);
-        randoContext->GetOption(RandomizerSettingKey(i)).SetSelectedIndex(value);
+        randoContext->GetOption(RandomizerSettingKey(i)).SetContextIndex(value);
     });
 
     SaveManager::Instance->LoadArray("hintLocations", RH_MAX, [&](size_t i) {
@@ -464,7 +464,7 @@ void SaveManager::LoadRandomizerVersion3() {
     });
 
     randoContext->GetTrials()->SkipAll();
-    SaveManager::Instance->LoadArray("requiredTrials", randoContext->GetOption(RSK_TRIAL_COUNT).GetSelectedOptionIndex()+1, [&](size_t i) {
+    SaveManager::Instance->LoadArray("requiredTrials", randoContext->GetOption(RSK_TRIAL_COUNT).GetContextOptionIndex() + 1, [&](size_t i) {
         size_t trialId;
         SaveManager::Instance->LoadData("", trialId);
         randoContext->GetTrial(trialId)->SetAsRequired();
@@ -513,7 +513,7 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool f
     SaveManager::Instance->SaveData("finalSeed", randoContext->GetSettings()->GetSeed());
 
     SaveManager::Instance->SaveArray("randoSettings", RSK_MAX, [&](size_t i) {
-        SaveManager::Instance->SaveData("", randoContext->GetOption((RandomizerSettingKey(i))).GetSelectedOptionIndex());
+        SaveManager::Instance->SaveData("", randoContext->GetOption((RandomizerSettingKey(i))).GetContextOptionIndex());
     });
 
     SaveManager::Instance->SaveArray("hintLocations", RH_MAX, [&](size_t i) {

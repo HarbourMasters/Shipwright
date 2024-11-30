@@ -3390,6 +3390,8 @@ void Interface_UpdateMagicBar(PlayState* play) {
             gSaveContext.magicState = MAGIC_STATE_IDLE;
             if (CVarGetInteger(CVAR_COSMETIC("Consumable.MagicBorder.Changed"), 0)) {
                 sMagicBorder = CVarGetColor24(CVAR_COSMETIC("Consumable.MagicBorder.Value"), sMagicBorder_ori);
+            } else {
+                sMagicBorder = sMagicBorder_ori;
             }
             break;
     }

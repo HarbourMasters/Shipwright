@@ -62,7 +62,7 @@ extern s32 Player_SetupWaitForPutAway(PlayState* play, Player* player, AfterPutA
 extern void Play_InitEnvironment(PlayState * play, s16 skyboxId);
 }
 
-#define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).GetSelectedOptionIndex()
+#define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).GetContextOptionIndex()
 
 bool LocMatchesQuest(Rando::Location loc) {
     if (loc.GetQuest() == RCQUEST_BOTH) {
