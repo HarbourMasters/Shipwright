@@ -51,6 +51,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_Door_Gerudo/z_door_gerudo.h"
 #include "src/overlays/actors/ovl_En_Xc/z_en_xc.h"
 #include "src/overlays/actors/ovl_Fishing/z_fishing.h"
+#include "src/overlays/actors/ovl_En_Mk/z_en_mk.h"
 #include "adult_trade_shuffle.h"
 #include "draw.h"
 
@@ -860,7 +861,8 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
 
                 // This is typically called when you close the text box after getting an item, in case a previous
                 // function hid the interface.
-                Interface_ChangeAlpha(gSaveContext.unk_13EE);
+                gSaveContext.unk_13EA = 0;
+                Interface_ChangeAlpha(0x32);
                 // EnItem00_SetupAction(item00, func_8001E5C8);
                 // *should = false;
             } else if (item00->actor.params == ITEM00_SOH_GIVE_ITEM_ENTRY_GI) {
@@ -1399,9 +1401,17 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             }
             break;
         }
+        case VB_TRADE_TIMER_EYEDROPS:{
+            EnMk* enMk = va_arg(args, EnMk*);
+            Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_LH_TRADE_FROG);
+            enMk->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
+            enMk->actionFunc = EnMk_Wait;
+            enMk->flags |= 1;
+            *should = false;
+            break;
+        }
         case VB_FREEZE_ON_SKULL_TOKEN:
         case VB_TRADE_TIMER_ODD_MUSHROOM:
-        case VB_TRADE_TIMER_EYEDROPS:
         case VB_TRADE_TIMER_FROG:
         case VB_ANJU_SET_OBTAINED_TRADE_ITEM:
         case VB_GIVE_ITEM_FROM_TARGET_IN_WOODS:
