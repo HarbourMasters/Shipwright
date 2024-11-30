@@ -44,8 +44,8 @@ void RegionTable_Init_ZorasDomain() {
                   Entrance(RR_THE_LOST_WOODS,      {[]{return logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS);}}),
                   Entrance(RR_ZR_STORMS_GROTTO,    {[]{return logic->CanOpenStormsGrotto();}}),
                   Entrance(RR_ZR_BEHIND_WATERFALL, {[]{
-                       return Here(RR_ZORAS_RIVER, []{return ctx->GetOption(RSK_SLEEPING_WATERFALL).Is(RO_WATERFALL_OPEN);}) ||
-                              logic->CanUse(RG_ZELDAS_LULLABY) ||
+                       return ctx->GetOption(RSK_SLEEPING_WATERFALL).Is(RO_WATERFALL_OPEN) ||
+                              Here(RR_ZORAS_RIVER, []{return logic->CanUse(RG_ZELDAS_LULLABY);}) ||
                               (logic->IsChild && ctx->GetTrickOption(RT_ZR_CUCCO)) ||
                               (logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS) && ctx->GetTrickOption(RT_ZR_HOVERS));
                   }}),
