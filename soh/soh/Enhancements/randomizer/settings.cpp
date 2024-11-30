@@ -2631,9 +2631,9 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
                     break;
                 case RSK_SLEEPING_WATERFALL:
                     if (it.value() == "Closed") {
-                        mOptions[index].SetSelectedIndex(RO_WATERFALL_CLOSED);
+                        mOptions[index].SetContextIndex(RO_WATERFALL_CLOSED);
                     } else if (it.value() == "Open") {
-                        mOptions[index].SetSelectedIndex(RO_WATERFALL_OPEN);
+                        mOptions[index].SetContextIndex(RO_WATERFALL_OPEN);
                     }
                     break;
                 case RSK_STARTING_AGE:
