@@ -139,19 +139,26 @@ static void TimeDisplayGetTimer(uint32_t timeID) {
     }
 }
 
-void TimeDisplayUpdateDisplayOptions(uint32_t timeID, bool pushBack) {
-    if (pushBack) {
-        activeTimers.push_back(timeDisplayList[timeID]);
-    } else {
-        uint32_t index = 0;
-        for (auto& check : activeTimers) {
-            if (check.timeID == timeID) {
-                activeTimers.erase(activeTimers.begin() + index);
-                return;
-            }
-            index++;
+void TimeDisplayUpdateDisplayOptions() {
+    activeTimers.clear();
+    for (auto& timer : timeDisplayList) {
+        if (CVarGetInteger(timer.timeEnable, 0)) {
+            activeTimers.push_back(timer);
         }
     }
+
+    //if (pushBack) {
+    //    activeTimers.push_back(timeDisplayList[timeID]);
+    //} else {
+    //    uint32_t index = 0;
+    //    for (auto& check : activeTimers) {
+    //        if (check.timeID == timeID) {
+    //            activeTimers.erase(activeTimers.begin() + index);
+    //            return;
+    //        }
+    //        index++;
+    //    }
+    //}
 }
 
 void TimeDisplayWindow::Draw() {

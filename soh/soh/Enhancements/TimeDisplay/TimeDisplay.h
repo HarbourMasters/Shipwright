@@ -10,7 +10,7 @@ class TimeDisplayWindow : public Ship::GuiWindow {
     void UpdateElement() override {};
 };
 
-void TimeDisplayUpdateDisplayOptions(uint32_t timeID, bool pushBack);
+void TimeDisplayUpdateDisplayOptions();
 void TimeDisplayInitSettings();
 
 typedef enum {

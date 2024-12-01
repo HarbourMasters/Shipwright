@@ -1711,15 +1711,10 @@ void DrawEnhancementsMenu() {
                             "available when a file is\n"
                             "loaded...");
             } else {
-                ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
-                ImGui::Text("Font Scale");
-                ImGui::SetNextItemWidth(120.0f);
-                if (UIWidgets::EnhancementSliderFloat("", "##TimeDisplayScale", CVAR_ENHANCEMENT("TimeDisplay.FontScale"), 
-                    1.0f, 5.0f, "%.2fx", 1.0f, false, false)) {
+                if (UIWidgets::PaddedEnhancementSliderFloat("Font Scale: %.2fx", "##FontScale", CVAR_ENHANCEMENT("TimeDisplay.FontScale"), 
+                    1.0f, 5.0f, "", 1.0f, false, true, false, true)) {
                     TimeDisplayInitSettings();
                 }
-                ImGui::PopStyleVar(1);
-                ImGui::Separator();
                 if (UIWidgets::PaddedEnhancementCheckbox("Hide Background", CVAR_ENHANCEMENT("TimeDisplay.ShowWindowBG"), 
                     false, false)) {
                     TimeDisplayInitSettings();
@@ -1727,7 +1722,7 @@ void DrawEnhancementsMenu() {
                 ImGui::Separator();
                 for (auto& timer : timeDisplayList) {
                     if (UIWidgets::PaddedEnhancementCheckbox(timer.timeLabel.c_str(), timer.timeEnable, false, false)) {
-                        TimeDisplayUpdateDisplayOptions(timer.timeID, CVarGetInteger(timer.timeEnable, 0));
+                        TimeDisplayUpdateDisplayOptions();
                     }
                 }
             }
