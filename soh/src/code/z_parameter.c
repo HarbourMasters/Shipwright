@@ -6056,11 +6056,7 @@ void Interface_Draw(PlayState* play) {
                 }
                 svar5 = OTRGetRectDimensionFromLeftEdge(gSaveContext.timerX[svar6]+X_Margins_Timer);
                 svar2 = gSaveContext.timerY[svar6];
-                if (CVarGetInteger(CVAR_COSMETIC("HUD.Timers.PosType"), 0) == 4 || // Hidden
-                    (CVarGetInteger(CVAR_WINDOW("TimeDisplayEnabled"), 0) && 
-                        CVarGetInteger(CVAR_ENHANCEMENT("TimeDisplay.Timers.HotWater"), 0))) {
-                    svar5 = -9999;
-                } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Timers.PosType"), 0) != 0) {
+                if (CVarGetInteger(CVAR_COSMETIC("HUD.Timers.PosType"), 0) != 0) {
                     svar2 = (CVarGetInteger(CVAR_COSMETIC("HUD.Timers.PosY"), 0));
                     if (CVarGetInteger(CVAR_COSMETIC("HUD.Timers.PosType"), 0) == 1) {//Anchor Left
                         if (CVarGetInteger(CVAR_COSMETIC("HUD.Timers.UseMargins"), 0) != 0) {X_Margins_Timer = Left_HUD_Margin;};
@@ -6070,7 +6066,9 @@ void Interface_Draw(PlayState* play) {
                         svar5 = OTRGetRectDimensionFromRightEdge(CVarGetInteger(CVAR_COSMETIC("HUD.Timers.PosX"), 0)+X_Margins_Timer);
                     } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Timers.PosType"), 0) == 3) {//Anchor None
                         svar5 = CVarGetInteger(CVAR_COSMETIC("HUD.Timers.PosX"), 0)+204+X_Margins_Timer;
-                    }
+                    } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Timers.PosType"), 0) == 4) {//Hidden
+                        svar5 = -9999;
+                    }                
                 }
 
                 OVERLAY_DISP =
