@@ -621,15 +621,156 @@ void func_8083A434_override(PlayState* play, Player* player) {
 bool ShouldGiveFishingPrize(f32 sFishOnHandLength){
     // RANDOTODO: update the enhancement sliders to not allow
     // values above rando fish weight values when rando'd
-    if(LINK_IS_CHILD) { 
+    if(LINK_IS_CHILD) {
         int32_t weight = CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFishing"), 0) ? CVarGetInteger(CVAR_ENHANCEMENT("MinimumFishWeightChild"), 10) : 10;
         f32 score = sqrt(((f32)weight - 0.5f) / 0.0036f);
         return sFishOnHandLength >= score && (IS_RANDO ? !Flags_GetRandomizerInf(RAND_INF_CHILD_FISHING) : !(HIGH_SCORE(HS_FISHING) & HS_FISH_PRIZE_CHILD));
-    } else 
+    } else
     {
         int32_t weight = CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFishing"), 0) ? CVarGetInteger(CVAR_ENHANCEMENT("MinimumFishWeightAdult"), 13) : 13;
         f32 score = sqrt(((f32)weight - 0.5f) / 0.0036f);
         return sFishOnHandLength >= score && (IS_RANDO ? !Flags_GetRandomizerInf(RAND_INF_ADULT_FISHING) : !(HIGH_SCORE(HS_FISHING) & HS_FISH_PRIZE_ADULT));
+    }
+}
+
+void RandomizerOnDialogMessageHandler() {
+    MessageContext *msgCtx = &gPlayState->msgCtx;
+    Actor *actor = msgCtx->talkActor;
+    auto ctx = Rando::Context::GetInstance();
+    bool revealMerchant = ctx->GetOption(RSK_MERCHANT_TEXT_HINT).GetSelectedOptionIndex() != RO_GENERIC_OFF;
+    bool nonBeanMerchants = ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL_BUT_BEANS) ||
+                             ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL);
+
+    RandomizerCheck reveal = RC_UNKNOWN_CHECK;
+    if (ctx->GetOption(RSK_CHICKENS_HINT) && (msgCtx->textId >= TEXT_ANJU_PLEASE_BRING_MY_CUCCOS_BACK && msgCtx->textId <= TEXT_ANJU_PLEASE_BRING_1_CUCCO)) {
+        reveal = RC_KAK_ANJU_AS_CHILD;
+    } else {
+        switch (msgCtx->textId) {
+            case TEXT_SKULLTULA_PEOPLE_IM_CURSED:
+                if (actor->params == 1 && ctx->GetOption(RSK_KAK_10_SKULLS_HINT)){
+                    reveal = RC_KAK_10_GOLD_SKULLTULA_REWARD;
+                } else if (actor->params == 2 && ctx->GetOption(RSK_KAK_20_SKULLS_HINT)){
+                    reveal = RC_KAK_20_GOLD_SKULLTULA_REWARD;
+                } else if (actor->params == 3 && ctx->GetOption(RSK_KAK_30_SKULLS_HINT)){
+                    reveal = RC_KAK_30_GOLD_SKULLTULA_REWARD;
+                } else if (actor->params == 4 && ctx->GetOption(RSK_KAK_40_SKULLS_HINT)){
+                    reveal = RC_KAK_40_GOLD_SKULLTULA_REWARD;
+                } else if (ctx->GetOption(RSK_KAK_50_SKULLS_HINT)){
+                    reveal = RC_KAK_50_GOLD_SKULLTULA_REWARD;
+                }
+                break;
+            case TEXT_SKULLTULA_PEOPLE_MAKE_YOU_VERY_RICH:
+                if (ctx->GetOption(RSK_KAK_100_SKULLS_HINT)) {
+                    reveal = RC_KAK_100_GOLD_SKULLTULA_REWARD;
+                }
+                break;
+            case TEXT_MASK_SHOP_SIGN:
+                if (ctx->GetOption(RSK_MASK_SHOP_HINT)) {
+                    auto itemSkull_loc = ctx->GetItemLocation(RC_DEKU_THEATER_SKULL_MASK);
+                    if (itemSkull_loc->GetCheckStatus() == RCSHOW_UNCHECKED) {
+                        itemSkull_loc->SetCheckStatus(RCSHOW_IDENTIFIED);
+                    }
+                    reveal = RC_DEKU_THEATER_MASK_OF_TRUTH;
+                }
+                break;
+            case TEXT_GHOST_SHOP_EXPLAINATION:
+            case TEXT_GHOST_SHOP_CARD_HAS_POINTS:
+                if (ctx->GetOption(RSK_BIG_POES_HINT)) {
+                    reveal = RC_MARKET_10_BIG_POES;
+                }
+                break;
+            case TEXT_MALON_EVERYONE_TURNING_EVIL:
+            case TEXT_MALON_I_SING_THIS_SONG:
+            case TEXT_MALON_HOW_IS_EPONA_DOING:
+            case TEXT_MALON_OBSTICLE_COURSE:
+            case TEXT_MALON_INGO_MUST_HAVE_BEEN_TEMPTED:
+                if (ctx->GetOption(RSK_MALON_HINT)) {
+                    reveal = RC_KF_LINKS_HOUSE_COW;
+                }
+                break;
+            case TEXT_FROGS_UNDERWATER:
+                if (ctx->GetOption(RSK_FROGS_HINT)) {
+                    reveal = RC_ZR_FROGS_OCARINA_GAME;
+                }
+                break;
+            case TEXT_GF_HBA_SIGN:
+            case TEXT_HBA_NOT_ON_HORSE:
+            case TEXT_HBA_INITIAL_EXPLAINATION:
+            case TEXT_HBA_ALREADY_HAVE_1000:
+                if (ctx->GetOption(RSK_HBA_HINT)) {
+                    auto item1000_loc = ctx->GetItemLocation(RC_GF_HBA_1000_POINTS);
+                    if (item1000_loc->GetCheckStatus() == RCSHOW_UNCHECKED) {
+                        item1000_loc->SetCheckStatus(RCSHOW_IDENTIFIED);
+                    }
+                    reveal = RC_GF_HBA_1500_POINTS;
+                }
+                break;
+            case TEXT_SCRUB_RANDOM:
+                if (ctx->GetOption(RSK_SCRUB_TEXT_HINT).GetSelectedOptionIndex() != RO_GENERIC_OFF) {
+                    EnDns* enDns = (EnDns*)actor;
+                    reveal = OTRGlobals::Instance->gRandomizer->GetCheckFromRandomizerInf((RandomizerInf)enDns->sohScrubIdentity.randomizerInf);
+                }
+                break;
+            case TEXT_BEAN_SALESMAN_BUY_FOR_10:
+                if (revealMerchant && (ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_BEANS_ONLY) ||
+                  ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL))) {
+                    reveal = RC_ZR_MAGIC_BEAN_SALESMAN;
+                }
+                break;
+            case TEXT_GRANNYS_SHOP:
+                if (revealMerchant && nonBeanMerchants &&
+                  (ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) || INV_CONTENT(ITEM_CLAIM_CHECK) == ITEM_CLAIM_CHECK)) {
+                     reveal = RC_KAK_GRANNYS_SHOP;
+                 }
+                break;
+            case TEXT_MEDIGORON:
+                if (revealMerchant && nonBeanMerchants) {
+                    reveal = RC_GC_MEDIGORON;
+                }
+                break;
+            case TEXT_CARPET_SALESMAN_1:
+                if (revealMerchant && nonBeanMerchants) {
+                    reveal = RC_WASTELAND_BOMBCHU_SALESMAN;
+                }
+                break;
+            case TEXT_BIGGORON_BETTER_AT_SMITHING:
+            case TEXT_BIGGORON_WAITING_FOR_YOU:
+            case TEXT_BIGGORON_RETURN_AFTER_A_FEW_DAYS:
+            case TEXT_BIGGORON_I_MAAAADE_THISSSS:
+                if (ctx->GetOption(RSK_BIGGORON_HINT)) {
+                    reveal = RC_DMT_TRADE_CLAIM_CHECK;
+                }
+                break;
+            case TEXT_SHEIK_NEED_HOOK:
+            case TEXT_SHEIK_HAVE_HOOK:
+                if (ctx->GetOption(RSK_OOT_HINT) && gPlayState->sceneNum == SCENE_TEMPLE_OF_TIME &&
+                  !ctx->GetItemLocation(RC_SONG_FROM_OCARINA_OF_TIME)->HasObtained()) {
+                    auto itemoot_loc = ctx->GetItemLocation(RC_HF_OCARINA_OF_TIME_ITEM);
+                    if (itemoot_loc->GetCheckStatus() == RCSHOW_UNCHECKED) {
+                        itemoot_loc->SetCheckStatus(RCSHOW_IDENTIFIED);
+                    }
+                    reveal = RC_SONG_FROM_OCARINA_OF_TIME;
+                }
+                break;
+            case TEXT_FISHING_CLOUDY:
+            case TEXT_FISHING_TRY_ANOTHER_LURE:
+            case TEXT_FISHING_SECRETS:
+            case TEXT_FISHING_GOOD_FISHERMAN:
+            case TEXT_FISHING_DIFFERENT_POND:
+            case TEXT_FISHING_SCRATCHING:
+            case TEXT_FISHING_TRY_ANOTHER_LURE_WITH_SINKING_LURE:
+                if (ctx->GetOption(RSK_LOACH_HINT)) {
+                    reveal = RC_LH_HYRULE_LOACH;
+                }
+                break;
+        }
+    }
+
+    if (reveal != RC_UNKNOWN_CHECK) {
+        auto item_loc = ctx->GetItemLocation(reveal);
+        if (item_loc->GetCheckStatus() == RCSHOW_UNCHECKED) {
+            item_loc->SetCheckStatus(RCSHOW_IDENTIFIED);
+        }
     }
 }
 
@@ -2118,6 +2259,7 @@ void RandomizerRegisterHooks() {
     static uint32_t onPlayerUpdateForRCQueueHook = 0;
     static uint32_t onPlayerUpdateForItemQueueHook = 0;
     static uint32_t onItemReceiveHook = 0;
+    static uint32_t onDialogMessageHook = 0;
     static uint32_t onVanillaBehaviorHook = 0;
     static uint32_t onSceneInitHook = 0;
     static uint32_t onActorInitHook = 0;
@@ -2145,6 +2287,7 @@ void RandomizerRegisterHooks() {
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnPlayerUpdate>(onPlayerUpdateForRCQueueHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnPlayerUpdate>(onPlayerUpdateForItemQueueHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnItemReceive>(onItemReceiveHook);
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnItemReceive>(onDialogMessageHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnVanillaBehavior>(onVanillaBehaviorHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(onSceneInitHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorInit>(onActorInitHook);
@@ -2167,6 +2310,7 @@ void RandomizerRegisterHooks() {
         onPlayerUpdateForRCQueueHook = 0;
         onPlayerUpdateForItemQueueHook = 0;
         onItemReceiveHook = 0;
+        onDialogMessageHook = 0;
         onVanillaBehaviorHook = 0;
         onSceneInitHook = 0;
         onActorInitHook = 0;
@@ -2199,6 +2343,7 @@ void RandomizerRegisterHooks() {
         onPlayerUpdateForRCQueueHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>(RandomizerOnPlayerUpdateForRCQueueHandler);
         onPlayerUpdateForItemQueueHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>(RandomizerOnPlayerUpdateForItemQueueHandler);
         onItemReceiveHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>(RandomizerOnItemReceiveHandler);
+        onDialogMessageHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnDialogMessage>(RandomizerOnDialogMessageHandler);
         onVanillaBehaviorHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnVanillaBehavior>(RandomizerOnVanillaBehaviorHandler);
         onSceneInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>(RandomizerOnSceneInitHandler);
         onActorInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>(RandomizerOnActorInitHandler);

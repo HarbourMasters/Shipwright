@@ -2893,7 +2893,7 @@ void StaticData::HintTable_Init() {
                                                                  {QM_RED, QM_GREEN, QM_GREEN}));
 
     hintTextTable[RHT_HBA_HINT_HAVE_1000] = HintText(CustomMessage("Hey, newcomer!&Want to take on the #Horseback Archery# challenge?^"
-                                                                   "Prove yourself to be a horsemaster by scoring 1500 points to win  my #[[1]]#!\x0B",
+                                                                   "Prove yourself to be a horsemaster by scoring 1500 points to win my #[[1]]#!\x0B",
                                                                    {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_MALON_HINT_HOW_IS_EPONA] = HintText(CustomMessage("@! You should come back with Epona and try to beat my time on the #Obstacle Course#!^"

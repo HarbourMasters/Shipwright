@@ -1503,7 +1503,10 @@ void DrawLocation(RandomizerCheck rc) {
                         txt = itemLoc->GetPlacedItem().GetName().GetForLanguage(gSaveContext.language);
                     }
                     if (IsVisibleInCheckTracker(rc) && status == RCSHOW_IDENTIFIED && !mystery && !itemLoc->IsAddedToPool()) {
-                        txt += fmt::format(" - {}", OTRGlobals::Instance->gRandoContext->GetItemLocation(rc)->GetPrice());
+                        auto price = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc)->GetPrice();
+                        if (price) {
+                            txt += fmt::format(" - {}", price);
+                        }
                     }
                 } else {
                     if (IsHeartPiece((GetItemID)Rando::StaticData::RetrieveItem(loc->GetVanillaItem()).GetItemID())) {
