@@ -15,7 +15,7 @@ void Settings::CreateOptionDescriptions() {
     mOptionDescriptions[RSK_KAK_GATE] = "Closed - The gate will remain closed until Zelda's Letter "
                                         "is shown to the guard.\n"
                                         "\n"
-                                        "Open - The gate is always open. The happy mask shop "
+                                        "Open - The gate is always open. The Happy Mask Shop "
                                         "will open immediately after obtaining Zelda's Letter.";
     mOptionDescriptions[RSK_DOOR_OF_TIME] = "Closed - The Ocarina of Time, the Song of Time and all "
                                             "three Spiritual Stones are required to open the Door of Time.\n"
@@ -439,7 +439,7 @@ void Settings::CreateOptionDescriptions() {
         "\n"
         "Own dungeon - Maps & Compasses can only appear in their respective dungeon.\n"
         "\n"
-        "Any dungeon - Maps & Compasses can only appear inside of any dungon.\n"
+        "Any dungeon - Maps & Compasses can only appear inside of any dungeon.\n"
         "\n"
         "Overworld - Maps & Compasses can only appear outside of dungeons.\n"
         "\n"
@@ -453,7 +453,7 @@ void Settings::CreateOptionDescriptions() {
         "Own dungeon - Small Keys can only appear in their respective dungeon. "
         "If Fire Temple is not a Master Quest dungeon, the door to the Boss Key chest will be unlocked.\n"
         "\n"
-        "Any dungeon - Small Keys can only appear inside of any dungon.\n"
+        "Any dungeon - Small Keys can only appear inside of any dungeon.\n"
         "\n"
         "Overworld - Small Keys can only appear outside of dungeons.\n"
         "\n"
@@ -538,7 +538,7 @@ void Settings::CreateOptionDescriptions() {
         "until after meeting Zelda. Disables the ability to shuffle Weird Egg.";
     mOptionDescriptions[RSK_SKIP_EPONA_RACE] = "Epona can be summoned with Epona's Song without needing to race Ingo.";
     mOptionDescriptions[RSK_COMPLETE_MASK_QUEST] =
-        "Once the happy mask shop is opened, all masks will be available to be borrowed.";
+        "Once the Happy Mask Shop is opened, all masks will be available to be borrowed.";
     mOptionDescriptions[RSK_SKIP_SCARECROWS_SONG] =
         "Start with the ability to summon Pierre the Scarecrow. Pulling out an Ocarina in the usual locations will "
         "automatically summon him.\n"
