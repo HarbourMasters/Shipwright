@@ -2,7 +2,7 @@
 
 namespace Rando {
 void Settings::CreateOptionDescriptions() {
-    mOptionDescriptions[RSK_FOREST] = "Closed - Kokiri Sword & Shield are required to access "
+    mOptionDescriptions[RSK_FOREST] = "Closed - Kokiri Sword & Deku Shield are required to access "
                                       "the Deku Tree, and completing the Deku Tree is required to "
                                       "access the Hyrule Field exit.\n"
                                       "\n"
@@ -469,7 +469,7 @@ void Settings::CreateOptionDescriptions() {
         "Count - A specified amount of randomly selected dungeons will have their keys replaced with keyrings.\n"
         "\n"
         "Selection - Hand select which dungeons will have their keys replaced with keyrings\n"
-        "(can also be left as random, in which case each one will have a 50 % chance of being a keyring).\n"
+        "(can also be left as random, in which case each one will have a 50% chance of being a keyring).\n"
         "\n"
         "Selecting key ring for dungeons will have no effect if Small Keys are set to Start With or Vanilla.\n"
         "\n"
@@ -529,7 +529,7 @@ void Settings::CreateOptionDescriptions() {
         "\n"
         "Greg as Wildcard - Greg does not change logic, Greg helps obtain GBK, max number of "
         "rewards on slider does not change.";
-    mOptionDescriptions[RSK_CUCCO_COUNT] = "The amount of Cuccos needed to claim the reward from Anju the Cucco lady.";
+    mOptionDescriptions[RSK_CUCCO_COUNT] = "The amount of cuccos needed to claim the reward from Anju the Cucco Lady.";
     mOptionDescriptions[RSK_BIG_POE_COUNT] = "The Poe collector will give a reward for turning in this many Big Poes.";
     mOptionDescriptions[RSK_SKIP_CHILD_STEALTH] =
         "The crawlspace into Hyrule Castle goes straight to Zelda, skipping the guards.";
@@ -622,7 +622,7 @@ void Settings::CreateOptionDescriptions() {
                                           "reward for the frogs' Ocarina game.";
     mOptionDescriptions[RSK_BIGGORON_HINT] = "Talking to Biggoron will tell you the item he will give you in exchange for the Claim Check.";
     mOptionDescriptions[RSK_BIG_POES_HINT] = "Talking to the Poe Collector in the Market Guardhouse while adult will tell you what you receive for handing in Big Poes.";
-    mOptionDescriptions[RSK_CHICKENS_HINT] = "Talking to Anju as a child will tell you the item she will give you for delivering her Cuccos to the pen.";
+    mOptionDescriptions[RSK_CHICKENS_HINT] = "Talking to Anju as a child will tell you the item she will give you for delivering her cuccos to the pen.";
     mOptionDescriptions[RSK_MALON_HINT] = "Talking to Malon as adult will tell you the item on \"Link's cow\", the cow you win from beating her time on the Lon Lon Obstacle Course.";
     mOptionDescriptions[RSK_HBA_HINT] = "Talking to the Horseback Archery gerudo in Gerudo Fortress, or the nearby sign, will tell you what you win for scoring 1000 and 1500 points on Horseback Archery.";
     mOptionDescriptions[RSK_WARP_SONG_HINTS] = "Playing a warp song will tell you where it leads. (If warp song destinations are vanilla, this is always enabled.)";
