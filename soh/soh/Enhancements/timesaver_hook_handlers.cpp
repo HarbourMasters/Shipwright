@@ -112,6 +112,8 @@ void RateLimitedSuccessChime() {
 }
 
 bool ForcedDialogIsDisabled(ForcedDialogMode type) {
+    auto test = CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipForcedDialog"),0);
+    auto test2 = test & type;
     return (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipForcedDialog"),
                            IS_RANDO ? FORCED_DIALOG_SKIP_ALL : FORCED_DIALOG_SKIP_NONE) &
             type) != 0;
@@ -289,7 +291,8 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                     case ACTOR_BG_HIDAN_FWBIG:
                     case ACTOR_EN_EX_ITEM:
                     case ACTOR_EN_DNT_NOMAL:
-                    case ACTOR_EN_DNT_DEMO: {
+                    case ACTOR_EN_DNT_DEMO:
+                    case ACTOR_BG_HAKA_ZOU: {
                         *should = false;
                         break;
                     }
