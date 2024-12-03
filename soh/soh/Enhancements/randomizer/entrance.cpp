@@ -672,6 +672,8 @@ bool EntranceShuffler::PlaceOneWayPriorityEntrance(
             }
         }
     }
+    SPDLOG_DEBUG("ERROR: Unable to place priority one-way entrance for " + priorityName + "\n");
+    assert(false);
     return false;
 }
 
