@@ -112,8 +112,6 @@ void RateLimitedSuccessChime() {
 }
 
 bool ForcedDialogIsDisabled(ForcedDialogMode type) {
-    auto test = CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipForcedDialog"),0);
-    auto test2 = test & type;
     return (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipForcedDialog"),
                            IS_RANDO ? FORCED_DIALOG_SKIP_ALL : FORCED_DIALOG_SKIP_NONE) &
             type) != 0;
