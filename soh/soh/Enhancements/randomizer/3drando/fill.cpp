@@ -856,11 +856,6 @@ static void AssumedFill(const std::vector<RandomizerGet>& items, const std::vect
                 SPDLOG_DEBUG(Rando::StaticData::RetrieveItem(item).GetName().GetEnglish());
                 SPDLOG_DEBUG(". TRYING AGAIN...\n");
 
-#ifdef ENABLE_DEBUG
-                Regions::DumpWorldGraph(Rando::StaticData::RetrieveItem(item).GetName().GetEnglish());
-                PlacementLog_Write();
-#endif
-
                 // reset any locations that got an item
                 for (RandomizerCheck loc : attemptedLocations) {
                     ctx->GetItemLocation(loc)->SetPlacedItem(RG_NONE);

@@ -221,56 +221,20 @@ static void WriteStartingInventory() {
     }
 }
 
-// Writes the enabled tricks to the spoiler log, if there are any.
-static void WriteEnabledTricks(tinyxml2::XMLDocument& spoilerLog) {
-  //auto parentNode = spoilerLog.NewElement("enabled-tricks");
+//Writes the enabled tricks to the spoiler log, if there are any.
+static void WriteEnabledTricks() {
   auto ctx = Rando::Context::GetInstance();
 
   for (const auto& setting : ctx->GetSettings()->GetOptionGroup(RSG_TRICKS).GetOptions()) {
-    if (setting->GetContextOptionIndex() != RO_GENERIC_ON/* || !setting->IsCategory(OptionCategory::Setting)*/) {
+    if (setting->GetContextOptionIndex() != RO_GENERIC_ON) {
       continue;
     }
     jsonData["enabledTricks"].push_back(RemoveLineBreaks(setting->GetName()).c_str());
-    //auto node = parentNode->InsertNewChildElement("trick");
-    //node->SetAttribute("name", RemoveLineBreaks(setting->GetName()).c_str());
   }
-
-  // if (!parentNode->NoChildren()) {
-  //  spoilerLog.RootElement()->InsertEndChild(parentNode);
-  //}
 }
 
-// Writes the enabled glitches to the spoiler log, if there are any.
-// TODO: Implement Glitches
-// static void WriteEnabledGlitches(tinyxml2::XMLDocument& spoilerLog) {
-//   auto parentNode = spoilerLog.NewElement("enabled-glitches");
-
-//   for (const auto& setting : Settings::glitchCategories) {
-//     if (setting->Value<uint8_t>() == 0) {
-//       continue;
-//     }
-
-//     auto node = parentNode->InsertNewChildElement("glitch-category");
-//     node->SetAttribute("name", setting->GetName().c_str());
-//     node->SetText(setting->GetSelectedOptionText().c_str());
-//   }
-
-//   for (const auto& setting : Settings::miscGlitches) {
-//     if (!setting->Value<bool>()) {
-//       continue;
-//     }
-
-//     auto node = parentNode->InsertNewChildElement("misc-glitch");
-//     node->SetAttribute("name", RemoveLineBreaks(setting->GetName()).c_str());
-//   }
-
-//   if (!parentNode->NoChildren()) {
-//     spoilerLog.RootElement()->InsertEndChild(parentNode);
-//   }
-// }
-
 // Writes the Master Quest dungeons to the spoiler log, if there are any.
-static void WriteMasterQuestDungeons(tinyxml2::XMLDocument& spoilerLog) {
+static void WriteMasterQuestDungeons() {
     auto ctx = Rando::Context::GetInstance();
     for (const auto* dungeon : ctx->GetDungeons()->GetDungeonList()) {
         std::string dungeonName;
@@ -389,11 +353,6 @@ static void WriteAllLocations() {
 
 const char* SpoilerLog_Write() {
     auto ctx = Rando::Context::GetInstance();
-    auto spoilerLog = tinyxml2::XMLDocument(false);
-    spoilerLog.InsertEndChild(spoilerLog.NewDeclaration());
-
-    auto rootNode = spoilerLog.NewElement("spoiler-log");
-    spoilerLog.InsertEndChild(rootNode);
 
     jsonData.clear();
 
@@ -413,11 +372,8 @@ const char* SpoilerLog_Write() {
     WriteSettings();
     WriteExcludedLocations();
     WriteStartingInventory();
-    WriteEnabledTricks(spoilerLog); //RANDOTODO clean up spoilerLog refernces
-    //if (Settings::Logic.Is(LOGIC_GLITCHED)) {
-    //    WriteEnabledGlitches(spoilerLog);
-    //}
-    WriteMasterQuestDungeons(spoilerLog);
+    WriteEnabledTricks(); 
+    WriteMasterQuestDungeons();
     WriteRequiredTrials();
     WritePlaythrough();
 
@@ -466,30 +422,3 @@ void PlacementLog_Clear() {
     placementtxt = "";
 }
 
-// RANDOTODO: Do we even use this?
-bool PlacementLog_Write() {
-    auto placementLog = tinyxml2::XMLDocument(false);
-    placementLog.InsertEndChild(placementLog.NewDeclaration());
-
-    auto rootNode = placementLog.NewElement("placement-log");
-    placementLog.InsertEndChild(rootNode);
-
-    // rootNode->SetAttribute("version", Settings::version.c_str());
-    // rootNode->SetAttribute("seed", Settings::seed);
-
-    // WriteSettings(placementLog, true); // Include hidden settings.
-    // WriteExcludedLocations(placementLog);
-    // WriteStartingInventory(placementLog);
-    WriteEnabledTricks(placementLog);
-    //WriteEnabledGlitches(placementLog);
-    WriteMasterQuestDungeons(placementLog);
-    //WriteRequiredTrials(placementLog);
-
-    placementtxt = "\n" + placementtxt;
-
-    auto node = rootNode->InsertNewChildElement("log");
-    auto contentNode = node->InsertNewText(placementtxt.c_str());
-    contentNode->SetCData(true);
-
-    return true;
-}

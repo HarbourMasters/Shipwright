@@ -55,7 +55,7 @@ uint8_t Option::GetContextOptionIndex() const {
 }
 
 const std::string& Option::GetSelectedOptionText() const {
-    return options[menuSelection];
+    return options[contextSelection];
 }
 
 const std::string& Option::GetCVarName() const {
@@ -184,7 +184,7 @@ Option::Option(uint8_t var_, std::string name_, std::vector<std::string> options
     : var(var_), name(std::move(name_)), options(std::move(options_)), category(category_),
       cvarName(std::move(cvarName_)), description(std::move(description_)), widgetType(widgetType_),
       defaultOption(defaultOption_), defaultHidden(defaultHidden_), imFlags(imFlags_) {
-    menuSelection = contextSelection =  defaultOption;
+    menuSelection = contextSelection = defaultOption;
     hidden = defaultHidden;
     SetFromCVar();
 }
