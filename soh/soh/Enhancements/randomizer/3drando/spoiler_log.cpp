@@ -6,7 +6,6 @@
 #include "../entrance.h"
 #include "random.hpp"
 #include "../trial.h"
-#include "tinyxml2.h"
 #include "utils.hpp"
 #include "hints.hpp"
 #include "pool_functions.hpp"
@@ -56,9 +55,6 @@ void GenerateHash() {
         int number = std::stoi(hash.substr(j, 2));
         ctx->hashIconIndexes[i] = number;
     }
-
-    // Clear out spoiler log data here, in case we aren't going to re-generate it
-    // spoilerData = { 0 };
 }
 
 static auto GetGeneralPath() {
@@ -79,7 +75,6 @@ static void WriteLocation(
   Rando::Location* location = Rando::StaticData::GetLocation(locationKey);
   Rando::ItemLocation* itemLocation = Rando::Context::GetInstance()->GetItemLocation(locationKey);
 
-  // auto node = parentNode->InsertNewChildElement("location");
   switch (gSaveContext.language) {
         case LANGUAGE_ENG:
         default:
@@ -89,35 +84,6 @@ static void WriteLocation(
             jsonData["playthrough"][sphere][location->GetName()] = itemLocation->GetPlacedItemName().GetFrench();
             break;
     }
-  // node->SetAttribute("name", location->GetName().c_str());
-  // node->SetText(location->GetPlacedItemName().GetEnglish().c_str());
-
-  // if (withPadding) {
-  //   constexpr int16_t LONGEST_NAME = 56; // The longest name of a location.
-  //   constexpr int16_t PRICE_ATTRIBUTE = 12; // Length of a 3-digit price attribute.
-
-  //   // Insert a padding so we get a kind of table in the XML document.
-  //   int16_t requiredPadding = LONGEST_NAME - location->GetName().length();
-  //   if (location->GetRCType() == RCTYPE_SHOP) {
-  //     // Shop items have short location names, but come with an additional price attribute.
-  //     requiredPadding -= PRICE_ATTRIBUTE;
-  //   }
-  //   if (requiredPadding >= 0) {
-  //     std::string padding(requiredPadding, ' ');
-  //     node->SetAttribute("_", padding.c_str());
-  //   }
-  // }
-
-  // if (location->GetRCType() == RCTYPE_SHOP) {
-  //   char price[6];
-  //   sprintf(price, "%03d", location->GetPrice());
-  //   node->SetAttribute("price", price);
-  // }
-  // if (!location->IsAddedToPool()) {
-  //   #ifdef ENABLE_DEBUG
-  //     node->SetAttribute("not-added", true);
-  //   #endif
-  // }
 }
 
 //Writes a shuffled entrance to the specified node
@@ -186,7 +152,6 @@ static void WriteSettings() {
 
 // Writes the excluded locations to the spoiler log, if there are any.
 static void WriteExcludedLocations() {
-  // auto parentNode = spoilerLog.NewElement("excluded-locations");
   auto ctx = Rando::Context::GetInstance();
 
   for (size_t i = 1; i < ctx->GetSettings()->GetExcludeLocationsOptions().size(); i++) {
@@ -197,15 +162,8 @@ static void WriteExcludedLocations() {
 
       jsonData["excludedLocations"].push_back(RemoveLineBreaks(location->GetName()));
 
-      // tinyxml2::XMLElement* node = spoilerLog.NewElement("location");
-      // node->SetAttribute("name", RemoveLineBreaks(location->GetName()).c_str());
-      // parentNode->InsertEndChild(node);
     }
   }
-
-  // if (!parentNode->NoChildren()) {
-  //   spoilerLog.RootElement()->InsertEndChild(parentNode);
-  // }
 }
 
 // Writes the starting inventory to the spoiler log, if there is any.
@@ -258,7 +216,6 @@ static void WriteRequiredTrials() {
 
 // Writes the intended playthrough to the spoiler log, separated into spheres.
 static void WritePlaythrough() {
-  // auto playthroughNode = spoilerLog.NewElement("playthrough");
   auto ctx = Rando::Context::GetInstance();
 
   for (uint32_t i = 0; i < ctx->playthroughLocations.size(); ++i) {
@@ -270,8 +227,6 @@ static void WritePlaythrough() {
       WriteLocation(sphereString, key, true);
     }
   }
-
-  // spoilerLog.RootElement()->InsertEndChild(playthroughNode);
 }
 
 //Write the randomized entrance playthrough to the spoiler log, if applicable
