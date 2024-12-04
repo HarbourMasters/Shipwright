@@ -1,17 +1,12 @@
 #include "ShufflePots.h"
 #include "soh_assets.h"
-#include "soh/OTRGlobals.h"
-#include "soh/Enhancements/game-interactor/GameInteractor.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 extern "C" {
-#include "z64.h"
 #include "variables.h"
 #include "overlays/actors/ovl_Obj_Tsubo/z_obj_tsubo.h"
 #include "overlays/actors/ovl_Door_Shutter/z_door_shutter.h"
 
 u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
-GetItemEntry Randomizer_GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
 PotIdentity Randomizer_IdentifyPot(s32 sceneNum, s32 posX, s32 posZ);
 extern PlayState* gPlayState;
 }
@@ -50,8 +45,7 @@ uint8_t ObjTsubo_RandomizerHoldsItem(ObjTsubo* potActor, PlayState* play) {
 void ObjTsubo_RandomizerSpawnCollectible(ObjTsubo* potActor, PlayState* play) {
     EnItem00* item00 = (EnItem00*)Item_DropCollectible2(play, &potActor->actor.world.pos, ITEM00_SOH_DUMMY);
     item00->randoInf = potActor->potIdentity.randomizerInf;
-    item00->itemEntry =
-        OTRGlobals::Instance->gRandomizer->GetItemFromKnownCheck(potActor->potIdentity.randomizerCheck, GI_NONE);
+    item00->itemEntry = Rando::Context::GetInstance()->GetFinalGIEntry(potActor->potIdentity.randomizerCheck, true, GI_NONE);
     item00->actor.draw = (ActorFunc)EnItem00_DrawRandomizedItem;
     item00->actor.velocity.y = 8.0f;
     item00->actor.speedXZ = 2.0f;
@@ -92,7 +86,7 @@ void ShufflePots_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va
     }
 
     // Unlock early Ganon's Boss Key doors to allow access to the pots there when pots are shuffled in dungeon
-    if (id == VB_LOCK_DOOR) {
+    if (id == VB_LOCK_BOSS_DOOR) {
         DoorShutter* doorActor = va_arg(args, DoorShutter*);
         uint8_t shufflePotSetting = Randomizer_GetSettingValue(RSK_SHUFFLE_POTS);
         if (gPlayState->sceneNum == SCENE_GANONS_TOWER && doorActor->dyna.actor.world.pos.y == 800 &&
@@ -102,25 +96,4 @@ void ShufflePots_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va
     }
 
     va_end(args);
-}
-
-void RegisterShufflePots() {
-    static uint32_t onActorInitHook = 0;
-    static uint32_t onVanillaBehaviorHook = 0;
-
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) {
-
-        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorInit>(onActorInitHook);
-        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnVanillaBehavior>(onVanillaBehaviorHook);
-
-        onActorInitHook = 0;
-        onVanillaBehaviorHook = 0;
-
-        if (!IS_RANDO) return;
-        if (!Randomizer_GetSettingValue(RSK_SHUFFLE_POTS)) return;
-
-        onActorInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>(ObjTsubo_RandomizerInit);
-        onVanillaBehaviorHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnVanillaBehavior>(ShufflePots_OnVanillaBehaviorHandler);
-
-    });
 }

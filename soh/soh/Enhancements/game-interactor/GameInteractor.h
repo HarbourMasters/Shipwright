@@ -249,7 +249,7 @@ typedef enum {
     VB_POT_DRAW,
     VB_POT_DROP_ITEM,
     // Opt: *ActorDoorShutter
-    VB_LOCK_DOOR,
+    VB_LOCK_BOSS_DOOR,
     // Vanilla condition: true
     VB_HAVE_OCARINA_NOTE_D4,
     // Vanilla condition: true

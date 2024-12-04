@@ -19,7 +19,6 @@ typedef enum {
     SPOILER_CHK_INF_TABLE,
     SPOILER_CHK_GRAVEDIGGER,
     SPOILER_CHK_RANDOMIZER_INF,
-    SPOILER_CHK_POT,
 } SpoilerCollectionCheckType;
 
 void GenerateHash();

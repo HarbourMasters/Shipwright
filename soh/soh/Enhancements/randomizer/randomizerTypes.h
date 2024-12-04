@@ -263,7 +263,7 @@ typedef enum {
     RCTYPE_STATIC_HINT,                // RANDOTODO make these into event access
     RCTYPE_SONG_LOCATION,              // Song locations
     RCTYPE_BOSS_HEART_OR_OTHER_REWARD, // Boss heart container or lesser dungeon rewards (lens, ice arrow)
-    RCTYPE_POT,                        // Shuffle Pots
+    RCTYPE_POT,                        // Pots
     RCTYPE_DUNGEON_REWARD,             // Dungeon rewards (blue warps)
     RCTYPE_OCARINA,                    // Ocarina locations
     RCTYPE_BEEHIVE,                    // Beehives

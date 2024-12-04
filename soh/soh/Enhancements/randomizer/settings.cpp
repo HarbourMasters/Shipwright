@@ -3146,13 +3146,13 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
                     break;
                 case RSK_SHUFFLE_POTS:
                     if (it.value() == "Off") {
-                        mOptions[index].SetSelectedIndex(RO_SHUFFLE_POTS_OFF);
+                        mOptions[index].SetContextIndex(RO_SHUFFLE_POTS_OFF);
                     } else if (it.value() == "Dungeons") {
-                        mOptions[index].SetSelectedIndex(RO_SHUFFLE_POTS_DUNGEONS);
+                        mOptions[index].SetContextIndex(RO_SHUFFLE_POTS_DUNGEONS);
                     } else if (it.value() == "Overworld") {
-                        mOptions[index].SetSelectedIndex(RO_SHUFFLE_POTS_OVERWORLD);
+                        mOptions[index].SetContextIndex(RO_SHUFFLE_POTS_OVERWORLD);
                     } else if (it.value() == "All Pots") {
-                        mOptions[index].SetSelectedIndex(RO_SHUFFLE_POTS_ALL);
+                        mOptions[index].SetContextIndex(RO_SHUFFLE_POTS_ALL);
                     }
                     break;
                 case RSK_LINKS_POCKET:

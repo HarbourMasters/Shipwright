@@ -255,7 +255,7 @@ void Settings::CreateOptionDescriptions() {
         "\n"
         "The Gerudo Card is required to enter the Gerudo Training Ground, opening "
         "the gate to Haunted Wasteland and the Horseback Archery minigame.";
-    mOptionDescriptions[RSK_SHUFFLE_POTS] = "Freestanding pots will drop a randomized item the first time they're broken and collected."
+    mOptionDescriptions[RSK_SHUFFLE_POTS] = "Pots will drop a randomized item the first time they're broken and collected. This does not include the flying pots."
                                               " Pots will have a different appearance when they hold a randomized item.\n"
                                               "With this option enabled, Ganon's boss key door is moved further up the stairs to\n"
                                               "allow access to the pots before obtaining Ganon's Boss Key.\n"

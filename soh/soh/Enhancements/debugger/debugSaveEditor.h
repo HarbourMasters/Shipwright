@@ -348,7 +348,7 @@ const std::vector<FlagTable> flagTables = {
         { 0x24, "Market Crowd Text Randomizer" },
         { 0x30, "Entered the Market" },
     } },
-    { "Randomizer Inf Flags", RANDOMIZER_INF, RAND_INF_MAX / 16, {
+    { "Randomizer Inf Flags", RANDOMIZER_INF, (RAND_INF_MAX + 15) / 16, {
         { RAND_INF_DUNGEONS_DONE_SPIRIT_TEMPLE, "DUNGEONS_DONE_SPIRIT_TEMPLE" },
         { RAND_INF_DUNGEONS_DONE_SHADOW_TEMPLE, "DUNGEONS_DONE_SHADOW_TEMPLE" },
 

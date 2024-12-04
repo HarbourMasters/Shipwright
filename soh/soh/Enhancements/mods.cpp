@@ -16,7 +16,6 @@
 #include "soh/Enhancements/TimeSavers/TimeSavers.h"
 #include "soh/Enhancements/cheat_hook_handlers.h"
 #include "soh/Enhancements/randomizer/hook_handlers.h"
-#include "soh/Enhancements/randomizer/ShufflePots.h"
 #include "objects/object_gi_compass/object_gi_compass.h"
 
 #include "src/overlays/actors/ovl_En_Bb/z_en_bb.h"
@@ -1442,6 +1441,5 @@ void InitMods() {
     RegisterPatchHandHandler();
     RegisterHurtContainerModeHandler();
     RegisterPauseMenuHooks();
-    RegisterShufflePots();
     RandoKaleido_RegisterHooks();
 }
