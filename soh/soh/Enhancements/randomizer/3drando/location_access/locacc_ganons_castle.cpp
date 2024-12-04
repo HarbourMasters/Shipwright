@@ -431,21 +431,20 @@ void RegionTable_Init_GanonsCastle() {
   areaTable[RR_GANONS_TOWER_FLOOR_3] = Region("Ganon's Tower Floor 3", "Ganons Castle", {RA_GANONS_CASTLE}, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_GANONS_TOWER_FLOOR_2,        {[]{return Here(RR_GANONS_TOWER_FLOOR_3, []{return logic->CanKillEnemy(RE_IRON_KNUCKLE, ED_CLOSE, true, 2);});}}),
-                  Entrance(RR_GANONS_TOWER_GANONDORF_LAIR, {[]{return Here(RR_GANONS_TOWER_FLOOR_3, []{return logic->CanKillEnemy(RE_IRON_KNUCKLE, ED_CLOSE, true, 2);}) && logic->HasItem(RG_GANONS_CASTLE_BOSS_KEY);}}),
+                  Entrance(RR_GANONS_TOWER_BEFORE_GANONDORF_LAIR, {[]{return Here(RR_GANONS_TOWER_FLOOR_3, []{return logic->CanKillEnemy(RE_IRON_KNUCKLE, ED_CLOSE, true, 2);});}}),
   });
 
-  areaTable[RR_GANONS_TOWER_GANONDORF_LAIR] = Region("Ganondorf's Lair", "Ganons Castle", {RA_GANONS_CASTLE}, NO_DAY_NIGHT_CYCLE, {}, {
-                  //Locations
-                  LOCATION(RC_GANONDORF_HINT, logic->HasBossSoul(RG_GANON_SOUL)),
-                  LOCATION(RC_GANONS_CASTLE_GANONS_TOWER_POT_1,  logic->CanBreakPots()),
-                  LOCATION(RC_GANONS_CASTLE_GANONS_TOWER_POT_2,  logic->CanBreakPots()),
-                  LOCATION(RC_GANONS_CASTLE_GANONS_TOWER_POT_3,  logic->CanBreakPots()),
-                  LOCATION(RC_GANONS_CASTLE_GANONS_TOWER_POT_4,  logic->CanBreakPots()),
-                  LOCATION(RC_GANONS_CASTLE_GANONS_TOWER_POT_5,  logic->CanBreakPots()),
-                  LOCATION(RC_GANONS_CASTLE_GANONS_TOWER_POT_6,  logic->CanBreakPots()),
-                  LOCATION(RC_GANONS_CASTLE_GANONS_TOWER_POT_7,  logic->CanBreakPots()),
-                  LOCATION(RC_GANONS_CASTLE_GANONS_TOWER_POT_8,  logic->CanBreakPots()),
-                  LOCATION(RC_GANONS_CASTLE_GANONS_TOWER_POT_9,  logic->CanBreakPots()),
+  areaTable[RR_GANONS_TOWER_BEFORE_GANONDORF_LAIR] = Region("Ganon's Tower Before Ganondorf's Lair", "Ganons Castle", {RA_GANONS_CASTLE}, NO_DAY_NIGHT_CYCLE, {}, {
+                  // Locations
+                  LOCATION(RC_GANONS_CASTLE_GANONS_TOWER_POT_1, logic->CanBreakPots()),
+                  LOCATION(RC_GANONS_CASTLE_GANONS_TOWER_POT_2, logic->CanBreakPots()),
+                  LOCATION(RC_GANONS_CASTLE_GANONS_TOWER_POT_3, logic->CanBreakPots()),
+                  LOCATION(RC_GANONS_CASTLE_GANONS_TOWER_POT_4, logic->CanBreakPots()),
+                  LOCATION(RC_GANONS_CASTLE_GANONS_TOWER_POT_5, logic->CanBreakPots()),
+                  LOCATION(RC_GANONS_CASTLE_GANONS_TOWER_POT_6, logic->CanBreakPots()),
+                  LOCATION(RC_GANONS_CASTLE_GANONS_TOWER_POT_7, logic->CanBreakPots()),
+                  LOCATION(RC_GANONS_CASTLE_GANONS_TOWER_POT_8, logic->CanBreakPots()),
+                  LOCATION(RC_GANONS_CASTLE_GANONS_TOWER_POT_9, logic->CanBreakPots()),
                   LOCATION(RC_GANONS_CASTLE_GANONS_TOWER_POT_10, logic->CanBreakPots()),
                   LOCATION(RC_GANONS_CASTLE_GANONS_TOWER_POT_11, logic->CanBreakPots()),
                   LOCATION(RC_GANONS_CASTLE_GANONS_TOWER_POT_12, logic->CanBreakPots()),
@@ -455,6 +454,15 @@ void RegionTable_Init_GanonsCastle() {
                   LOCATION(RC_GANONS_CASTLE_GANONS_TOWER_POT_16, logic->CanBreakPots()),
                   LOCATION(RC_GANONS_CASTLE_GANONS_TOWER_POT_17, logic->CanBreakPots()),
                   LOCATION(RC_GANONS_CASTLE_GANONS_TOWER_POT_18, logic->CanBreakPots()),
+  }, {
+                  //Exits
+                  Entrance(RR_GANONS_TOWER_FLOOR_3,        {[]{return Here(RR_GANONS_TOWER_BEFORE_GANONDORF_LAIR, []{return true;});}}),
+                  Entrance(RR_GANONS_TOWER_GANONDORF_LAIR, {[]{return Here(RR_GANONS_TOWER_BEFORE_GANONDORF_LAIR, []{return logic->HasItem(RG_GANONS_CASTLE_BOSS_KEY);});}}),
+  });
+
+  areaTable[RR_GANONS_TOWER_GANONDORF_LAIR] = Region("Ganondorf's Lair", "Ganons Castle", {RA_GANONS_CASTLE}, NO_DAY_NIGHT_CYCLE, {}, {
+                  //Locations
+                  LOCATION(RC_GANONDORF_HINT, logic->HasBossSoul(RG_GANON_SOUL)),
   }, {
                   //Exits
                   Entrance(RR_GANONS_CASTLE_ESCAPE, {[]{return logic->CanKillEnemy(RE_GANONDORF);}}),

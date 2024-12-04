@@ -105,6 +105,7 @@ void RegionTable_Init_DeathMountain() {
                   LOCATION(RC_GC_UPPER_STAIRCASE_POT_1,  logic->CanBreakPots()),
                   LOCATION(RC_GC_UPPER_STAIRCASE_POT_2,  logic->CanBreakPots()),
                   LOCATION(RC_GC_UPPER_STAIRCASE_POT_3,  logic->CanBreakPots()),
+                  // Implied CanBreakPots as when we shuffle strength 0 in the future, the GORONS_BRACELET check will have to check for specifically strength 1 anyway.
                   LOCATION(RC_GC_MEDIGORON_POT_1,        logic->BlastOrSmash() || logic->HasItem(RG_GORONS_BRACELET)),
                 }, {
                   //Exits
