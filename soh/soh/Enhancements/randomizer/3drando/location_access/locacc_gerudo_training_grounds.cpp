@@ -119,6 +119,10 @@ void RegionTable_Init_GerudoTrainingGrounds() {
                   LOCATION(RC_GERUDO_TRAINING_GROUND_MQ_LOBBY_RIGHT_CHEST,      true),
                   LOCATION(RC_GERUDO_TRAINING_GROUND_MQ_MAZE_PATH_FIRST_CHEST,  true),
                   LOCATION(RC_GERUDO_TRAINING_GROUND_MQ_MAZE_PATH_SECOND_CHEST, true),
+                  LOCATION(RC_GERUDO_TRAINING_GROUNDS_MQ_LOBBY_LEFT_POT_1,      logic->CanBreakPots()),
+                  LOCATION(RC_GERUDO_TRAINING_GROUNDS_MQ_LOBBY_LEFT_POT_2,      logic->CanBreakPots()),
+                  LOCATION(RC_GERUDO_TRAINING_GROUNDS_MQ_LOBBY_RIGHT_POT_1,     logic->CanBreakPots()),
+                  LOCATION(RC_GERUDO_TRAINING_GROUNDS_MQ_LOBBY_RIGHT_POT_2,     logic->CanBreakPots()),
   }, {
                   //Exits
                   Entrance(RR_GERUDO_TRAINING_GROUNDS_ENTRYWAY,            {[]{return true;}}),
