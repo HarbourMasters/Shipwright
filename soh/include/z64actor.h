@@ -7,7 +7,6 @@
 #include "z64collision_check.h"
 #include "z64bgcheck.h"
 #include "soh/Enhancements/item-tables/ItemTableTypes.h"
-#include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "z64actor_enum.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 
