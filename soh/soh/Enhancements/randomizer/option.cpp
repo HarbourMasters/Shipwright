@@ -31,10 +31,7 @@ Option Option::LogicTrick(std::string name_) {
 }
 
 Option::operator bool() const {
-    if (std::holds_alternative<bool>(var)) {
-        return Value<bool>();
-    }
-    return Value<uint8_t>() != 0;
+    return contextSelection != 0;
 }
 
 size_t Option::GetOptionCount() const {
@@ -49,12 +46,16 @@ const std::string& Option::GetDescription() const {
     return description;
 }
 
-uint8_t Option::GetSelectedOptionIndex() const {
-    return selectedOption;
+uint8_t Option::GetMenuOptionIndex() const {
+    return menuSelection;
+}
+
+uint8_t Option::GetContextOptionIndex() const {
+    return contextSelection;
 }
 
 const std::string& Option::GetSelectedOptionText() const {
-    return options[selectedOption];
+    return options[menuSelection];
 }
 
 const std::string& Option::GetCVarName() const {
@@ -63,39 +64,45 @@ const std::string& Option::GetCVarName() const {
 
 void Option::SetVariable() {
     if (std::holds_alternative<bool>(var)) {
-        var.emplace<bool>(selectedOption != 0);
+        var.emplace<bool>(menuSelection != 0);
     } else {
-        var.emplace<uint8_t>(selectedOption);
+        var.emplace<uint8_t>(menuSelection);
     }
 }
 
-void Option::SetCVar() const {
+void Option::SaveCVar() const {
     if (!cvarName.empty()) {
-        CVarSetInteger(cvarName.c_str(), GetSelectedOptionIndex());
+        CVarSetInteger(cvarName.c_str(), GetMenuOptionIndex());
     }
 }
 
 void Option::SetFromCVar() {
     if (!cvarName.empty()) {
-        SetSelectedIndex(CVarGetInteger(cvarName.c_str(), defaultOption));
+        SetMenuIndex(CVarGetInteger(cvarName.c_str(), defaultOption));
     }
 }
 
 void Option::SetDelayedOption() {
-    delayedOption = selectedOption;
+    delayedSelection = contextSelection;
 }
 
 void Option::RestoreDelayedOption() {
-    selectedOption = delayedOption;
+    contextSelection = delayedSelection;
+}
+
+void Option::SetMenuIndex(size_t idx) {
+    menuSelection = idx;
+    if (menuSelection > options.size() - 1) {
+        menuSelection = options.size() - 1;
+    }
     SetVariable();
 }
 
-void Option::SetSelectedIndex(size_t idx) {
-    selectedOption = idx;
-    if (selectedOption > options.size() - 1) {
-        selectedOption = options.size() - 1;
+void Option::SetContextIndex(size_t idx) {
+    contextSelection = idx;
+    if (contextSelection > options.size() - 1) {
+        contextSelection = options.size() - 1;
     }
-    SetVariable();
 }
 
 void Option::Hide() {
@@ -111,8 +118,8 @@ bool Option::IsHidden() const {
 }
 
 void Option::ChangeOptions(std::vector<std::string> opts) {
-    if (selectedOption >= opts.size()) {
-        selectedOption = opts.size() - 1;
+    if (menuSelection >= opts.size()) {
+        menuSelection = opts.size() - 1;
     }
     options = std::move(opts);
 }
@@ -177,7 +184,7 @@ Option::Option(uint8_t var_, std::string name_, std::vector<std::string> options
     : var(var_), name(std::move(name_)), options(std::move(options_)), category(category_),
       cvarName(std::move(cvarName_)), description(std::move(description_)), widgetType(widgetType_),
       defaultOption(defaultOption_), defaultHidden(defaultHidden_), imFlags(imFlags_) {
-    selectedOption = defaultOption;
+    menuSelection = contextSelection =  defaultOption;
     hidden = defaultHidden;
     SetFromCVar();
 }
@@ -187,7 +194,7 @@ Option::Option(bool var_, std::string name_, std::vector<std::string> options_, 
     : var(var_), name(std::move(name_)), options(std::move(options_)), category(category_),
       cvarName(std::move(cvarName_)), description(std::move(description_)), widgetType(widgetType_),
       defaultOption(defaultOption_), defaultHidden(defaultHidden_), imFlags(imFlags_) {
-    selectedOption = defaultOption;
+    menuSelection = contextSelection = defaultOption;
     hidden = defaultHidden;
     SetFromCVar();
 }
@@ -270,7 +277,7 @@ bool Option::RenderCombobox() {
 
 bool Option::RenderSlider() {
     bool changed = false;
-    int val = GetSelectedOptionIndex();
+    int val = GetMenuOptionIndex();
     if (val > options.size() - 1) {
         val = options.size() - 1;
         CVarSetInteger(cvarName.c_str(), val);

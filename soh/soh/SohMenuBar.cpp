@@ -44,6 +44,7 @@
 #include "Enhancements/enemyrandomizer.h"
 #include "Enhancements/timesplits/TimeSplits.h"
 #include "Enhancements/randomizer/Plandomizer.h"
+#include "Enhancements/TimeDisplay/TimeDisplay.h"
 
 // FA icons are kind of wonky, if they worked how I expected them to the "+ 2.0f" wouldn't be needed, but
 // they don't work how I expect them to so I added that because it looked good when I eyeballed it
@@ -83,6 +84,7 @@ static const char* imguiScaleOptions[4] = { "Small", "Normal", "Large", "X-Large
     static const char* chestStyleMatchesContentsOptions[4] = { "Disabled", "Both", "Texture Only", "Size Only" };
     static const char* skipGetItemAnimationOptions[3] = { "Disabled", "Junk Items", "All Items" };
     static const char* skipForcedDialogOptions[4] = { "None", "Navi Only", "NPCs Only", "All" };
+    static const char* sleepingWaterfallOptions[3] = { "Always", "Once", "Never" };
     static const char* bunnyHoodOptions[3] = { "Disabled", "Faster Run & Longer Jump", "Faster Run" };
     static const char* mirroredWorldModes[9] = {
         "Disabled",           "Always",        "Random",          "Random (Seeded)",          "Dungeons",
@@ -123,7 +125,7 @@ static const char* imguiScaleOptions[4] = { "Small", "Normal", "Large", "X-Large
         CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"),
         CVAR_ENHANCEMENT("InjectItemCounts.HeartContainer"),
     };
-    static const char* itemCountMessageOptions[sizeof(itemCountMessageCVars) / sizeof(const char*)] = {
+    static const char* itemCountMessageOptions[ARRAY_COUNT(itemCountMessageCVars)] = {
         "Gold Skulltula Tokens",
         "Pieces of Heart",
         "Heart Containers",
@@ -606,6 +608,7 @@ extern std::shared_ptr<AudioEditor> mAudioEditorWindow;
 extern std::shared_ptr<CosmeticsEditorWindow> mCosmeticsEditorWindow;
 extern std::shared_ptr<GameplayStatsWindow> mGameplayStatsWindow;
 extern std::shared_ptr<TimeSplitWindow> mTimeSplitWindow;
+extern std::shared_ptr<TimeDisplayWindow> mTimeDisplayWindow;
 
 void DrawEnhancementsMenu() {
     if (ImGui::BeginMenu("Enhancements"))
@@ -796,7 +799,23 @@ void DrawEnhancementsMenu() {
                 UIWidgets::PaddedEnhancementCheckbox("Skip Scarecrow Song", CVAR_ENHANCEMENT("InstantScarecrow"), true, false,
                                                         forceSkipScarecrow, forceSkipScarecrowText, UIWidgets::CheckboxGraphics::Checkmark);
                 UIWidgets::Tooltip("Pierre appears when Ocarina is pulled out. Requires learning scarecrow song.");
-
+                bool forceSleepingWaterfallEnhancement =
+                    IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SLEEPING_WATERFALL) == RO_WATERFALL_OPEN;
+                uint8_t forceSleepingWaterfallValue = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SLEEPING_WATERFALL) + 1;
+                static const char* forceSleepingWaterfallText =
+                    "This setting is forcefully enabled because a randomizer savefile with \"Sleeping Waterfall: Open\" is loaded.";
+                UIWidgets::PaddedText("Play Zelda's Lullaby to open Sleeping Waterfall", true, false);
+                UIWidgets::EnhancementCombobox(CVAR_ENHANCEMENT("TimeSavers.SleepingWaterfall"),
+                                               sleepingWaterfallOptions, 0, forceSleepingWaterfallEnhancement,
+                                               forceSleepingWaterfallText, forceSleepingWaterfallValue);
+                UIWidgets::Tooltip(
+                    "Always: Link must always play Zelda's Lullaby to open "
+                    "the waterfall entrance to Zora's Domain.\n"
+                    "Once: Link only needs to play Zelda's Lullaby once to "
+                    "open the waterfall; after that, it stays open permanently.\n"
+                    "Never: Link never needs to play Zelda's Lullaby to open the "
+                    "waterfall; he only needs to have learned it and have an ocarina."
+                );
                 
                 ImGui::EndTable();
                 ImGui::EndMenu();
@@ -855,6 +874,17 @@ void DrawEnhancementsMenu() {
                 "Toggling while inside the shop will not change prices or restock any SOLD OUTs");
                 UIWidgets::PaddedEnhancementCheckbox("Aiming reticle for the bow/slingshot", CVAR_ENHANCEMENT("BowReticle"), true, false);
                 UIWidgets::Tooltip("Aiming with a bow or slingshot will display a reticle as with the hookshot when the projectile is ready to fire.");
+                if (UIWidgets::PaddedEnhancementCheckbox("Aim boomerang in first-person mode", CVAR_ENHANCEMENT("BoomerangFirstPerson"), true, false)) {
+                    if (!CVarGetInteger(CVAR_ENHANCEMENT("BoomerangFirstPerson"), 0)) {
+                        CVarSetInteger(CVAR_ENHANCEMENT("BoomerangReticle"), 0);
+                    }
+                }
+                UIWidgets::Tooltip(
+                    "Change aiming for the boomerang from third person to first person to see past Link's head");
+                if (CVarGetInteger(CVAR_ENHANCEMENT("BoomerangFirstPerson"), 0)) {
+                    UIWidgets::PaddedEnhancementCheckbox("Aiming reticle for boomerang", CVAR_ENHANCEMENT("BoomerangReticle"), true, false);
+                    UIWidgets::Tooltip("Aiming with the boomerang will display a reticle as with the hookshot");
+                }
                 if (UIWidgets::PaddedEnhancementCheckbox("Allow strength equipment to be toggled", CVAR_ENHANCEMENT("ToggleStrength"), true, false)) {
                     if (!CVarGetInteger(CVAR_ENHANCEMENT("ToggleStrength"), 0)) {
                         CVarSetInteger(CVAR_ENHANCEMENT("StrengthDisabled"), 0);
@@ -867,7 +897,7 @@ void DrawEnhancementsMenu() {
             UIWidgets::Spacer(0);
 
             if (ImGui::BeginMenu("Item Count Messages")) {
-                int numOptions = sizeof(itemCountMessageCVars) / sizeof(const char*);
+                int numOptions = ARRAY_COUNT(itemCountMessageCVars);
                 bool allItemCountsChecked = std::all_of(itemCountMessageCVars, itemCountMessageCVars + numOptions,
                                                         [](const char* cvar) { return CVarGetInteger(cvar, 0); });
                 bool someItemCountsChecked = std::any_of(itemCountMessageCVars, itemCountMessageCVars + numOptions,
@@ -1693,6 +1723,36 @@ void DrawEnhancementsMenu() {
         if (mTimeSplitWindow) {
             if (ImGui::Button(GetWindowButtonText("Time Splits", CVarGetInteger(CVAR_WINDOW("TimeSplitEnabled"), 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
                 mTimeSplitWindow->ToggleVisibility();
+            }
+        }
+
+        if (mTimeDisplayWindow) {
+            if (ImGui::Button(GetWindowButtonText("Additional Timers", CVarGetInteger(CVAR_WINDOW("TimeDisplayEnabled"), 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
+                mTimeDisplayWindow->ToggleVisibility();
+            }
+        }
+        if (mTimeDisplayWindow->IsVisible()) {
+            ImGui::SeparatorText("Timer Display Options");
+
+            if (!gPlayState) {
+                ImGui::Text("Additional Timer options\n"
+                            "available when a file is\n"
+                            "loaded...");
+            } else {
+                if (UIWidgets::PaddedEnhancementSliderFloat("Font Scale: %.2fx", "##FontScale", CVAR_ENHANCEMENT("TimeDisplay.FontScale"), 
+                    1.0f, 5.0f, "", 1.0f, false, true, false, true)) {
+                    TimeDisplayInitSettings();
+                }
+                if (UIWidgets::PaddedEnhancementCheckbox("Hide Background", CVAR_ENHANCEMENT("TimeDisplay.ShowWindowBG"), 
+                    false, false)) {
+                    TimeDisplayInitSettings();
+                }
+                ImGui::Separator();
+                for (auto& timer : timeDisplayList) {
+                    if (UIWidgets::PaddedEnhancementCheckbox(timer.timeLabel.c_str(), timer.timeEnable, false, false)) {
+                        TimeDisplayUpdateDisplayOptions();
+                    }
+                }
             }
         }
         ImGui::PopStyleVar(3);

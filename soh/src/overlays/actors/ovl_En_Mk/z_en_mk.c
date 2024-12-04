@@ -98,9 +98,8 @@ void func_80AACA40(EnMk* this, PlayState* play) {
 void func_80AACA94(EnMk* this, PlayState* play) {
     if (Actor_HasParent(&this->actor, play) != 0 || !GameInteractor_Should(VB_TRADE_FROG, true, this)) {
         this->actor.parent = NULL;
-        this->actionFunc = func_80AACA40;
-        Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_LH_TRADE_FROG);
-        if (GameInteractor_Should(VB_TRADE_TIMER_EYEDROPS, true)) {
+        if (GameInteractor_Should(VB_TRADE_TIMER_EYEDROPS, true, this)) {
+            this->actionFunc = func_80AACA40;
             func_80088AA0(240);
             gSaveContext.eventInf[1] &= ~1;
         }

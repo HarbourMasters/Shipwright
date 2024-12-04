@@ -1177,7 +1177,7 @@ void StaticData::HintTable_Init() {
                                                           // /*spanish*/la tienda de pociones de la abuela
 
     hintTextTable[RHT_GRAVEYARD_DAMPES_HOUSE] = HintText(CustomMessage("Dampé's Hut",
-                                                            /*german*/ "der #Hut von Boris#",
+                                                            /*german*/ "die #Hütte von Boris#",
                                                             /*french*/ "la #Cabane du Fossoyeur#"));
                                                          // /*spanish*/la cabaña de Dampé
 
@@ -1277,12 +1277,12 @@ void StaticData::HintTable_Init() {
                                                               // /*spanish*/la #tumba de la Canción del Sol#
 
     hintTextTable[RHT_GRAVEYARD_COMPOSERS_GRAVE] = HintText(CustomMessage("the #Composers' Grave#",
-                                                               /*german*/ "das Königsgrab",
+                                                               /*german*/ "das #Königsgrab#",
                                                                /*french*/ "la #Tombe royale#"));
                                                             // /*spanish*/el #Panteón Real#
 
     hintTextTable[RHT_GRAVEYARD_DAMPES_GRAVE] = HintText(CustomMessage("Dampé's Grave",
-                                                            /*german*/ "das Grab von Boris",
+                                                            /*german*/ "das #Grab von Boris#",
                                                             /*french*/ "la #Tombe d'Igor#"));
                                                          // /*spanish*/la #tumba de Dampé#
 
@@ -2893,7 +2893,7 @@ void StaticData::HintTable_Init() {
                                                                  {QM_RED, QM_GREEN, QM_GREEN}));
 
     hintTextTable[RHT_HBA_HINT_HAVE_1000] = HintText(CustomMessage("Hey, newcomer!&Want to take on the #Horseback Archery# challenge?^"
-                                                                   "Prove yourself to be a horsemaster by scoring 1500 points to win  my #[[1]]#!\x0B",
+                                                                   "Prove yourself to be a horsemaster by scoring 1500 points to win my #[[1]]#!\x0B",
                                                                    {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_MALON_HINT_HOW_IS_EPONA] = HintText(CustomMessage("@! You should come back with Epona and try to beat my time on the #Obstacle Course#!^"

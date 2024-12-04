@@ -13,7 +13,10 @@ uint8_t Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 GetItemEntry Randomizer_GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
 }
 
-void StartingItemGive(GetItemEntry getItemEntry) {
+void StartingItemGive(GetItemEntry getItemEntry, RandomizerCheck randomizerCheck) {
+    if (randomizerCheck != RC_MAX) {
+        OTRGlobals::Instance->gRandoContext->GetItemLocation(randomizerCheck)->SetCheckStatus(RCSHOW_SAVED);
+    }
     if (getItemEntry.modIndex == MOD_NONE) {
         if (getItemEntry.getItemId == GI_SWORD_BGS) {
             gSaveContext.bgsFlag = true;
@@ -96,8 +99,7 @@ void GiveLinkDekuNuts(int howManyNuts) {
 void GiveLinksPocketItem() {
     if (Randomizer_GetSettingValue(RSK_LINKS_POCKET) != RO_LINKS_POCKET_NOTHING) {
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LINKS_POCKET, (GetItemID)RG_NONE);
-        StartingItemGive(getItemEntry);
-        Rando::Context::GetInstance()->GetItemLocation(RC_LINKS_POCKET)->SetCheckStatus(RCSHOW_SAVED);
+        StartingItemGive(getItemEntry, RC_LINKS_POCKET);
         // If we re-add the above, we'll get the item on save creation, now it's given on first load
         Flags_SetRandomizerInf(RAND_INF_LINKS_POCKET);
     }
@@ -149,13 +151,11 @@ void SetStartingItems() {
         INV_CONTENT(ITEM_OCARINA_FAIRY) = ITEM_OCARINA_FAIRY;
     }
 
-    if (Randomizer_GetSettingValue(RSK_STARTING_CONSUMABLES)) {
-        if (!Randomizer_GetSettingValue(RSK_SHUFFLE_DEKU_STICK_BAG)) {
-            GiveLinkDekuSticks(10);
-        }
-        if (!Randomizer_GetSettingValue(RSK_SHUFFLE_DEKU_NUT_BAG)) {
-            GiveLinkDekuNuts(20);
-        }
+    if (Randomizer_GetSettingValue(RSK_STARTING_STICKS) && !Randomizer_GetSettingValue(RSK_SHUFFLE_DEKU_STICK_BAG)) {
+        GiveLinkDekuSticks(10);
+    }
+    if (Randomizer_GetSettingValue(RSK_STARTING_NUTS) && !Randomizer_GetSettingValue(RSK_SHUFFLE_DEKU_NUT_BAG)) {
+        GiveLinkDekuNuts(20);
     }
 
     if (Randomizer_GetSettingValue(RSK_FULL_WALLETS)) {
@@ -251,10 +251,11 @@ extern "C" void Randomizer_InitSaveFile() {
     // Flags_SetInfTable(INFTABLE_CHILD_MALON_SAID_EPONA_WAS_AFRAID_OF_YOU);
     // Flags_SetInfTable(INFTABLE_SPOKE_TO_INGO_ONCE_AS_ADULT);
 
+    // Now handled by cutscene skips
     // Ruto already met in jabu and spawns down the hole immediately
-    Flags_SetInfTable(INFTABLE_RUTO_IN_JJ_MEET_RUTO);
-    Flags_SetInfTable(INFTABLE_RUTO_IN_JJ_TALK_FIRST_TIME);
-    Flags_SetInfTable(INFTABLE_RUTO_IN_JJ_WANTS_TO_BE_TOSSED_TO_SAPPHIRE);
+    // Flags_SetInfTable(INFTABLE_RUTO_IN_JJ_MEET_RUTO);
+    // Flags_SetInfTable(INFTABLE_RUTO_IN_JJ_TALK_FIRST_TIME);
+    // Flags_SetInfTable(INFTABLE_RUTO_IN_JJ_WANTS_TO_BE_TOSSED_TO_SAPPHIRE);
 
     // Now handled by cutscene skips
     // Skip cutscenes before Nabooru fight
@@ -381,7 +382,7 @@ extern "C" void Randomizer_InitSaveFile() {
 
     if (Randomizer_GetSettingValue(RSK_SKIP_CHILD_ZELDA)) {
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_SONG_FROM_IMPA, (GetItemID)RG_ZELDAS_LULLABY);
-        StartingItemGive(getItemEntry);
+        StartingItemGive(getItemEntry, RC_SONG_FROM_IMPA);
 
         // malon/talon back at ranch
         Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_POCKET_EGG);
@@ -403,7 +404,7 @@ extern "C" void Randomizer_InitSaveFile() {
 
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) && startingAge == RO_AGE_ADULT) {
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_TOT_MASTER_SWORD, GI_NONE);
-        StartingItemGive(getItemEntry);
+        StartingItemGive(getItemEntry, RC_TOT_MASTER_SWORD);
         Flags_SetRandomizerInf(RAND_INF_TOT_MASTER_SWORD);
     }
 

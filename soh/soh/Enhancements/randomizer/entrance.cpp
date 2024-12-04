@@ -1333,12 +1333,12 @@ int EntranceShuffler::ShuffleAllEntrances() {
         (ctx->GetOption(RSK_MIX_OVERWORLD_ENTRANCES) ? 1 : 0) + (ctx->GetOption(RSK_MIX_INTERIOR_ENTRANCES) ? 1 : 0) +
         (ctx->GetOption(RSK_MIX_GROTTO_ENTRANCES) ? 1 : 0);
     if (totalMixedPools < 2) {
-        ctx->GetOption(RSK_MIXED_ENTRANCE_POOLS).SetSelectedIndex(RO_GENERIC_OFF);
-        ctx->GetOption(RSK_MIX_DUNGEON_ENTRANCES).SetSelectedIndex(RO_GENERIC_OFF);
-        ctx->GetOption(RSK_MIX_BOSS_ENTRANCES).SetSelectedIndex(RO_GENERIC_OFF);
-        ctx->GetOption(RSK_MIX_OVERWORLD_ENTRANCES).SetSelectedIndex(RO_GENERIC_OFF);
-        ctx->GetOption(RSK_MIX_INTERIOR_ENTRANCES).SetSelectedIndex(RO_GENERIC_OFF);
-        ctx->GetOption(RSK_MIX_GROTTO_ENTRANCES).SetSelectedIndex(RO_GENERIC_OFF);
+        ctx->GetOption(RSK_MIXED_ENTRANCE_POOLS).SetContextIndex(RO_GENERIC_OFF);
+        ctx->GetOption(RSK_MIX_DUNGEON_ENTRANCES).SetContextIndex(RO_GENERIC_OFF);
+        ctx->GetOption(RSK_MIX_BOSS_ENTRANCES).SetContextIndex(RO_GENERIC_OFF);
+        ctx->GetOption(RSK_MIX_OVERWORLD_ENTRANCES).SetContextIndex(RO_GENERIC_OFF);
+        ctx->GetOption(RSK_MIX_INTERIOR_ENTRANCES).SetContextIndex(RO_GENERIC_OFF);
+        ctx->GetOption(RSK_MIX_GROTTO_ENTRANCES).SetContextIndex(RO_GENERIC_OFF);
     }
     if (ctx->GetOption(RSK_MIXED_ENTRANCE_POOLS)) {
         std::set<EntranceType> poolsToMix = {};

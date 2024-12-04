@@ -3390,6 +3390,8 @@ void Interface_UpdateMagicBar(PlayState* play) {
             gSaveContext.magicState = MAGIC_STATE_IDLE;
             if (CVarGetInteger(CVAR_COSMETIC("Consumable.MagicBorder.Changed"), 0)) {
                 sMagicBorder = CVarGetColor24(CVAR_COSMETIC("Consumable.MagicBorder.Value"), sMagicBorder_ori);
+            } else {
+                sMagicBorder = sMagicBorder_ori;
             }
             break;
     }
@@ -6068,7 +6070,7 @@ void Interface_Draw(PlayState* play) {
                         svar5 = CVarGetInteger(CVAR_COSMETIC("HUD.Timers.PosX"), 0)+204+X_Margins_Timer;
                     } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Timers.PosType"), 0) == 4) {//Hidden
                         svar5 = -9999;
-                    }
+                    }                
                 }
 
                 OVERLAY_DISP =
