@@ -376,56 +376,62 @@ static size_t NextLineLength(const std::string* textStr, const size_t lastNewlin
   }
 }
 
-
 size_t CustomMessage::FindNEWLINE(std::string& str, size_t lastNewline) const {
     size_t newLine = str.find(NEWLINE()[0], lastNewline);
     bool done;
+
+    // Bail out early
+    if (newLine == std::string::npos) {
+        return newLine;
+    }
+
     do {
         done = true;
-        if (newLine != 0){
-            switch (str[newLine - 1]){
-                case '\x05'://COLOR
-                case '\x06'://SHIFT
-                case '\x07'://TEXTID
-                case '\x0C'://BOX_BREAK_DELAYED
-                case '\x0E'://FADE
-                case '\x11'://FADE2
-                case '\x12'://SFX
-                case '\x13'://ITEM_ICON
-                case '\x14'://TEXT_SPEED
-                case '\x15'://BACKGROUND
-                case '\x1E'://POINTS/HIGH_SCORE
+        if (newLine != 0) {
+            switch (str[newLine - 1]) {
+                case '\x05': // COLOR
+                case '\x06': // SHIFT
+                case '\x07': // TEXTID
+                case '\x0C': // BOX_BREAK_DELAYED
+                case '\x0E': // FADE
+                case '\x11': // FADE2
+                case '\x12': // SFX
+                case '\x13': // ITEM_ICON
+                case '\x14': // TEXT_SPEED
+                case '\x15': // BACKGROUND
+                case '\x1E': // POINTS/HIGH_SCORE
                     done = false;
                     break;
                 default:
                     break;
             }
-            if (newLine > 1){
-                switch (str[newLine - 2]){
-                    case '\x07'://TEXTID
-                    case '\x11'://FADE2
-                    case '\x12'://SFX
-                    case '\x15'://BACKGROUND
+            if (newLine > 1) {
+                switch (str[newLine - 2]) {
+                    case '\x07': // TEXTID
+                    case '\x11': // FADE2
+                    case '\x12': // SFX
+                    case '\x15': // BACKGROUND
                         done = false;
                         break;
                     default:
                         break;
                 }
-                if (newLine > 2){
-                    if (str[newLine - 3] == '\x15'){//BACKGROUND
+                if (newLine > 2) {
+                    if (str[newLine - 3] == '\x15') { // BACKGROUND
                         done = false;
                     }
                 }
             }
         }
-        if (!done){
+        if (!done) {
             newLine = str.find(NEWLINE()[0], newLine + 1);
-            if (newLine != std::string::npos){
-                //if we reach the end of the string, quit now to save a loop
+            if (newLine == std::string::npos) {
+                // if we reach the end of the string, quit now to save a loop
                 done = true;
             }
         }
     } while (!done);
+
     return newLine;
 }
 
