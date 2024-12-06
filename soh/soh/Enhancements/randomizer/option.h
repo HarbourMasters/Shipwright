@@ -56,9 +56,9 @@ class Option {
      * @param options_ A vector of value names for this Option. This vector should have a size of 2.
      * The name corresponding to the selected index for this option will be printed to the spoiler/patch file.
      * @param category_ The desired `OptionCategory` for this option.
-     * @param cvarName_ The name ofthe CVar this option should correspond with. Set as an empty string to not
+     * @param cvarName_ The name of the CVar this option should correspond with. Set as an empty string to not
      * link to any Cvar.
-     * @param description_ A description of what this option affects. Will be rendered in a toolip in ImGui.
+     * @param description_ A description of what this option affects. Will be rendered in a tooltip in ImGui.
      * Can be left as an empty string if desired, no tooltip will be rendered.
      * @param widgetType_ What type of widget should be rendered. Should probably be `Checkbox` but technically
      * `Combobox` or `Slider` would render and function correctly.
@@ -305,6 +305,8 @@ class Option {
     void SetFlag(int imFlag_);
     void RemoveFlag(int imFlag_);
 
+    void SetContextIndexFromText(std::string text);
+
 protected:
     Option(uint8_t var_, std::string name_, std::vector<std::string> options_, OptionCategory category_,
            std::string cvarName_, std::string description_, WidgetType widgetType_, uint8_t defaultOption_,
@@ -318,6 +320,7 @@ protected:
     bool RenderTristateCheckbox();
     bool RenderCombobox();
     bool RenderSlider();
+    void PopulateTextToNum();
     std::variant<bool, uint8_t> var;
     std::string name;
     std::vector<std::string> options;
@@ -335,6 +338,7 @@ protected:
     bool disabled = false;
     UIWidgets::CheckboxGraphics disabledGraphic = UIWidgets::CheckboxGraphics::Cross;
     std::string disabledText;
+    std::unordered_map<std::string, uint8_t> optionsTextToVar = {};
 };
 
 class TrickOption : public Option {

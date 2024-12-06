@@ -178,6 +178,15 @@ void Option::RemoveFlag(const int imFlag_) {
     imFlags &= ~imFlag_;
 }
 
+void Option::SetContextIndexFromText(const std::string text) {
+    if (optionsTextToVar.contains(text)){
+        SetContextIndex(optionsTextToVar[text]);
+    } else {
+        SPDLOG_ERROR("Option {} does not have a var named {}.", name, text);
+        assert(false);
+    }
+}
+
 Option::Option(uint8_t var_, std::string name_, std::vector<std::string> options_, OptionCategory category_,
                std::string cvarName_, std::string description_, WidgetType widgetType_, uint8_t defaultOption_,
                bool defaultHidden_, int imFlags_)
@@ -186,6 +195,7 @@ Option::Option(uint8_t var_, std::string name_, std::vector<std::string> options
       defaultOption(defaultOption_), defaultHidden(defaultHidden_), imFlags(imFlags_) {
     menuSelection = contextSelection = defaultOption;
     hidden = defaultHidden;
+    PopulateTextToNum();
     SetFromCVar();
 }
 Option::Option(bool var_, std::string name_, std::vector<std::string> options_, const OptionCategory category_,
@@ -196,6 +206,7 @@ Option::Option(bool var_, std::string name_, std::vector<std::string> options_, 
       defaultOption(defaultOption_), defaultHidden(defaultHidden_), imFlags(imFlags_) {
     menuSelection = contextSelection = defaultOption;
     hidden = defaultHidden;
+    PopulateTextToNum();
     SetFromCVar();
 }
 
@@ -331,6 +342,12 @@ bool Option::RenderSlider() {
         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
     return changed;
+}
+
+void Option::PopulateTextToNum(){
+    for (uint8_t count = 0; count < options.size(); count++){
+        optionsTextToVar[options[count]] = count;
+    }
 }
 
 TrickOption::TrickOption(const RandomizerCheckQuest quest_, const RandomizerArea area_, std::set<Tricks::Tag> tags_, const bool glitch_, const std::string& name_, std::string description_) :
