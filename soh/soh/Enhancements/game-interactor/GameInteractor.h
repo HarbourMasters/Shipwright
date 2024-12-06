@@ -281,6 +281,9 @@ typedef enum {
     VB_SPAWN_BLUE_WARP,
     // Vanilla condition: this->warpTimer > sWarpTimerTarget && gSaveContext.nextCutsceneIndex == 0xFFEF
     VB_BLUE_WARP_APPLY_ENTRANCE_AND_CUTSCENE,
+    // Vanilla condition: SurfaceType_GetSlope(&play->colCtx, poly, bgId) == 2
+    // Opt: int (original next entrance index)
+    VB_SET_VOIDOUT_FROM_SURFACE,
     // Vanilla condition: this->collider.base.acFlags & 2
     VB_BG_BREAKWALL_BREAK,
     // Vanilla condition: true

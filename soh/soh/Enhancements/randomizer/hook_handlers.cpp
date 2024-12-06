@@ -1558,6 +1558,40 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             *should = !Flags_GetInfTable(INFTABLE_145) || Flags_GetInfTable(INFTABLE_146);
             break;
         }
+        case VB_SET_VOIDOUT_FROM_SURFACE: {
+            // ENTRTODO: Move all entrance rando handling to a dedicated file
+            std::vector<s16> entrPersistTempFlags = {
+                ENTR_DEKU_TREE_BOSS_ENTRANCE,     ENTR_DEKU_TREE_BOSS_DOOR,        ENTR_DODONGOS_CAVERN_BOSS_ENTRANCE,
+                ENTR_DODONGOS_CAVERN_BOSS_DOOR,   ENTR_JABU_JABU_BOSS_ENTRANCE,    ENTR_JABU_JABU_BOSS_DOOR,
+                ENTR_FOREST_TEMPLE_BOSS_ENTRANCE, ENTR_FOREST_TEMPLE_BOSS_DOOR,    ENTR_FIRE_TEMPLE_BOSS_ENTRANCE,
+                ENTR_FIRE_TEMPLE_BOSS_DOOR,       ENTR_WATER_TEMPLE_BOSS_ENTRANCE, ENTR_WATER_TEMPLE_BOSS_DOOR,
+                ENTR_SPIRIT_TEMPLE_BOSS_ENTRANCE, ENTR_SPIRIT_TEMPLE_BOSS_DOOR,    ENTR_SHADOW_TEMPLE_BOSS_ENTRANCE,
+                ENTR_SHADOW_TEMPLE_BOSS_DOOR,     ENTR_SPIRIT_TEMPLE_ENTRANCE,
+            };
+
+            s16 originalEntrance = (s16)va_arg(args, int);
+
+            // In Entrance rando, if our respawnFlag is set for a grotto return, we don't want the void out to happen
+            if (*should == true && RAND_GET_OPTION(RSK_SHUFFLE_ENTRANCES)) {
+                // Check for dungeon special entrances that are randomized to a new location
+                if (std::find(entrPersistTempFlags.begin(), entrPersistTempFlags.end(), originalEntrance) !=
+                    entrPersistTempFlags.end() && originalEntrance != gPlayState->nextEntranceIndex) {
+                    // Normally dungeons use a special voidout between scenes so that entering/exiting a boss room,
+                    // or leaving via Spirit Hands and going back in persist temp flags across scenes.
+                    // For ER, the temp flags should be wiped out so that they aren't transferred to the new location.
+                    gPlayState->actorCtx.flags.tempSwch = 0;
+                    gPlayState->actorCtx.flags.tempCollect = 0;
+
+                    // If the respawnFlag is set for a grotto return, we don't want the void out to happen.
+                    // Set the data flag to one to prevent the respawn point from being overriden by dungeon doors.
+                    if (gSaveContext.respawnFlag == 2) {
+                        gSaveContext.respawn[RESPAWN_MODE_DOWN].data = 1;
+                        *should = false;
+                    }
+                }
+            }
+            break;
+        }
         case VB_FREEZE_ON_SKULL_TOKEN:
         case VB_TRADE_TIMER_ODD_MUSHROOM:
         case VB_TRADE_TIMER_FROG:
@@ -1623,6 +1657,7 @@ void RandomizerOnSceneInitHandler(int16_t sceneNum) {
         CheckTracker::RecalculateAllAreaTotals();
     }
 
+    // ENTRTODO: Move all entrance rando handling to a dedicated file
     if (RAND_GET_OPTION(RSK_SHUFFLE_ENTRANCES)) {
         // In ER, override roomNum to load based on scene and spawn during scene init
         if (gSaveContext.respawnFlag <= 0) {
@@ -2336,6 +2371,7 @@ void RandomizerRegisterHooks() {
 
         if (!IS_RANDO) return;
 
+        // ENTRTODO: Move all entrance rando handling to a dedicated file
         // Setup the modified entrance table and entrance shuffle table for rando
         Entrance_Init();
 
