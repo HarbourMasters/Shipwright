@@ -420,13 +420,11 @@ class OptionGroup {
      * @param options A vector of Option pointers
      * @param groupType `DEFAULT` if this group is not contained within any other groups, `SUBGROUP` if it is a
      * subgroup of another group.
-     * @param printInSpoiler Whether or not to print the contents of this group to the spoiler/patch file.
      * @param containerType Specifies the type of container this widget should render as in ImGui.
      * @param description A description that can appear in a tooltip in ImGui.
      */
     OptionGroup(std::string name, std::vector<Option*> options, OptionGroupType groupType = OptionGroupType::DEFAULT,
-                bool printInSpoiler = true, WidgetContainerType containerType = WidgetContainerType::BASIC,
-                std::string description = "");
+                WidgetContainerType containerType = WidgetContainerType::BASIC, std::string description = "");
 
     /**
      * @brief Construct a new Option Group containing a list of `OptionGroup` pointers.
@@ -435,13 +433,11 @@ class OptionGroup {
      * @param subGroups A vector of OptionGroup pointers that will be subgroups of this group.
      * @param groupType `DEFAULT` if this group is not contained within any other groups, `SUBGROUP` if it is a
      * subgroup of another group.
-     * @param printInSpoiler Whether or not to print the contents of this group to spoiler/patch file.
      * @param containerType Specifies the type of container this widget should render as in ImGui.
      * @param description A description that can appear in a tooltip in ImGui.
      */
     OptionGroup(std::string name, std::vector<OptionGroup*> subGroups, OptionGroupType groupType = OptionGroupType::DEFAULT,
-                bool printInSpoiler = true, WidgetContainerType containerType = WidgetContainerType::BASIC,
-                std::string description = "");
+                WidgetContainerType containerType = WidgetContainerType::BASIC, std::string description = "");
 
     /**
      * @brief Convenience function for constructing an OptionGroup of groupType `SUBGROUP` with
@@ -449,13 +445,11 @@ class OptionGroup {
      *
      * @param name The name of this option group. Appears in the spoiler/patch file.
      * @param options A vector of Option pointers.
-     * @param printInSpoiler Whether or not to print the options of this group to the spoiler/patch file.
      * @param containerType Specifies the type of container this widget should render as in ImGui.
      * @param description A description that can appear in a tooltip in ImGui.
      * @return OptionGroup
      */
-    static OptionGroup SubGroup(std::string name, std::vector<Option*> options, bool printInSpoiler = true,
-                                WidgetContainerType containerType = WidgetContainerType::BASIC,
+    static OptionGroup SubGroup(std::string name, std::vector<Option*> options, WidgetContainerType containerType = WidgetContainerType::BASIC,
                                 std::string description = "");
 
     /**
@@ -464,13 +458,11 @@ class OptionGroup {
      *
      * @param name The name of this option group. Appears in the spoiler/patch file.
      * @param subGroups A vector of OptionGroup pointers.
-     * @param printInSpoiler Whether or not to print the options of this group to the spoiler/patch file.
      * @param containerType Specifies the type of container this widget should render as in ImGui.
      * @param description A description that can appear in a tooltip in ImGui.
      * @return OptionGroup
      */
-    static OptionGroup SubGroup(std::string name, std::vector<OptionGroup*> subGroups, bool printInSpoiler = true,
-                                WidgetContainerType containerType = WidgetContainerType::BASIC,
+    static OptionGroup SubGroup(std::string name, std::vector<OptionGroup*> subGroups, WidgetContainerType containerType = WidgetContainerType::BASIC,
                                 std::string description = "");
 
     /**
@@ -493,15 +485,6 @@ class OptionGroup {
      * @return const std::vector<OptionGroup*>&
      */
     const std::vector<OptionGroup*>& GetSubGroups() const;
-
-    /**
-     * @brief Returns whether or not this `OptionGroup`'s contents should be printed to the
-     * spoiler/patch file.
-     *
-     * @return true
-     * @return false
-     */
-    bool PrintInSpoiler() const;
 
     /**
      * @brief Get the Group Type of this `OptionGroup`. `DEFAULT` means this group is not contained
@@ -536,7 +519,6 @@ class OptionGroup {
     std::vector<Option*> mOptions;
     std::vector<OptionGroup*> mSubGroups;
     OptionGroupType mGroupType = OptionGroupType::DEFAULT;
-    bool mPrintInSpoiler = true;
     OptionGroupType mContainsType = OptionGroupType::DEFAULT;
     WidgetContainerType mContainerType = WidgetContainerType::BASIC;
     std::string mDescription;

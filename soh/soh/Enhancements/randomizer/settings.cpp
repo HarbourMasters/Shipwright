@@ -110,7 +110,7 @@ void Settings::CreateOptions() {
     mOptions[RSK_DOOR_OF_TIME] = Option::U8("Door of Time", {"Closed", "Song only", "Open"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("DoorOfTime"), mOptionDescriptions[RSK_DOOR_OF_TIME], WidgetType::Combobox);
     mOptions[RSK_ZORAS_FOUNTAIN] = Option::U8("Zora's Fountain", {"Closed", "Closed as child", "Open"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ZorasFountain"), mOptionDescriptions[RSK_ZORAS_FOUNTAIN]);
     mOptions[RSK_SLEEPING_WATERFALL] = Option::U8("Sleeping Waterfall", {"Closed", "Open"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("SleepingWaterfall"), mOptionDescriptions[RSK_SLEEPING_WATERFALL]);
-    mOptions[RSK_GERUDO_FORTRESS] = Option::U8("Gerudo Fortress", {"Normal", "Fast", "Open"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("GerudoFortress"), mOptionDescriptions[RSK_GERUDO_FORTRESS]);
+    mOptions[RSK_GERUDO_FORTRESS] = Option::U8("Fortress Carpenters", {"Normal", "Fast", "Free"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("GerudoFortress"), mOptionDescriptions[RSK_GERUDO_FORTRESS]);
     mOptions[RSK_RAINBOW_BRIDGE] = Option::U8("Rainbow Bridge", {"Vanilla", "Always open", "Stones", "Medallions", "Dungeon rewards", "Dungeons", "Tokens", "Greg"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("RainbowBridge"), mOptionDescriptions[RSK_RAINBOW_BRIDGE], WidgetType::Combobox, RO_BRIDGE_VANILLA, false, IMFLAG_NONE);
     mOptions[RSK_RAINBOW_BRIDGE_STONE_COUNT] = Option::U8("Bridge Stone Count", {NumOpts(0, 4)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("StoneCount"), "", WidgetType::Slider, 3, true);
     mOptions[RSK_RAINBOW_BRIDGE_MEDALLION_COUNT] = Option::U8("Bridge Medallion Count", {NumOpts(0, 7)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("MedallionCount"), "", WidgetType::Slider, 6, true);
@@ -219,9 +219,9 @@ void Settings::CreateOptions() {
     mOptions[RSK_FISHSANITY_POND_COUNT] = Option::U8("Pond Fish Count", {NumOpts(0,17,1)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("FishsanityPondCount"), mOptionDescriptions[RSK_FISHSANITY_POND_COUNT], WidgetType::Slider, 0, true, IMFLAG_NONE);
     mOptions[RSK_FISHSANITY_AGE_SPLIT] = Option::Bool("Pond Age Split", CVAR_RANDOMIZER_SETTING("FishsanityAgeSplit"), mOptionDescriptions[RSK_FISHSANITY_AGE_SPLIT]);
     mOptions[RSK_SHUFFLE_MAPANDCOMPASS] = Option::U8("Maps/Compasses", {"Start With", "Vanilla", "Own Dungeon", "Any Dungeon", "Overworld", "Anywhere"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("StartingMapsCompasses"), mOptionDescriptions[RSK_SHUFFLE_MAPANDCOMPASS], WidgetType::Combobox, RO_DUNGEON_ITEM_LOC_OWN_DUNGEON);
-    mOptions[RSK_KEYSANITY] = Option::U8("Small Keys", {"Start With", "Vanilla", "Own Dungeon", "Any Dungeon", "Overworld", "Anywhere"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("Keysanity"), mOptionDescriptions[RSK_KEYSANITY], WidgetType::Combobox, RO_DUNGEON_ITEM_LOC_OWN_DUNGEON);
+    mOptions[RSK_KEYSANITY] = Option::U8("Small Key Shuffle", {"Start With", "Vanilla", "Own Dungeon", "Any Dungeon", "Overworld", "Anywhere"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("Keysanity"), mOptionDescriptions[RSK_KEYSANITY], WidgetType::Combobox, RO_DUNGEON_ITEM_LOC_OWN_DUNGEON);
     mOptions[RSK_GERUDO_KEYS] = Option::U8("Gerudo Fortress Keys", {"Vanilla", "Any Dungeon", "Overworld", "Anywhere"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("GerudoKeys"), mOptionDescriptions[RSK_GERUDO_KEYS], WidgetType::Combobox, RO_GERUDO_KEYS_VANILLA);
-    mOptions[RSK_BOSS_KEYSANITY] = Option::U8("Boss Keys", {"Start With", "Vanilla", "Own Dungeon", "Any Dungeon", "Overworld", "Anywhere"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("BossKeysanity"), mOptionDescriptions[RSK_BOSS_KEYSANITY], WidgetType::Combobox, RO_DUNGEON_ITEM_LOC_OWN_DUNGEON);
+    mOptions[RSK_BOSS_KEYSANITY] = Option::U8("Boss Key Shuffle", {"Start With", "Vanilla", "Own Dungeon", "Any Dungeon", "Overworld", "Anywhere"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("BossKeysanity"), mOptionDescriptions[RSK_BOSS_KEYSANITY], WidgetType::Combobox, RO_DUNGEON_ITEM_LOC_OWN_DUNGEON);
     mOptions[RSK_GANONS_BOSS_KEY] = Option::U8("Ganon's Boss Key", {"Vanilla", "Own Dungeon", "Start With", "Any Dungeon", "Overworld", "Anywhere", "LACS-Vanilla", "LACS-Stones", "LACS-Medallions", "LACS-Rewards", "LACS-Dungeons", "LACS-Tokens", "100 GS Reward", "Triforce Hunt"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleGanonBossKey"), mOptionDescriptions[RSK_GANONS_BOSS_KEY], WidgetType::Combobox, RO_GANON_BOSS_KEY_VANILLA);
     mOptions[RSK_LACS_STONE_COUNT] = Option::U8("GCBK Stone Count", {NumOpts(0, 4)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("LacsStoneCount"), "", WidgetType::Slider, 3, true);
     mOptions[RSK_LACS_MEDALLION_COUNT] = Option::U8("GCBK Medallion Count", {NumOpts(0, 7)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("LacsMedallionCount"), "", WidgetType::Slider, 6, true);
@@ -686,7 +686,7 @@ void Settings::CreateOptions() {
         &mTrickOptions[RT_GANON_MQ_FIRE_TRIAL],
         &mTrickOptions[RT_GANON_MQ_SHADOW_TRIAL],
         &mTrickOptions[RT_GANON_MQ_LIGHT_TRIAL],
-    }, false);
+    });
     for (int i = 0; i < RT_MAX; i++) {
         auto& trick = mTrickOptions[i];
         if (!trick.GetName().empty()) {
@@ -701,7 +701,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_DOOR_OF_TIME],
         &mOptions[RSK_ZORAS_FOUNTAIN],
         &mOptions[RSK_SLEEPING_WATERFALL],
-    }, false, WidgetContainerType::COLUMN);
+    }, WidgetContainerType::COLUMN);
     mOptionGroups[RSG_WORLD_IMGUI] = OptionGroup::SubGroup("World Settings", {
         &mOptions[RSK_STARTING_AGE],
         &mOptions[RSK_GERUDO_FORTRESS],
@@ -732,7 +732,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_TRIFORCE_HUNT],
         &mOptions[RSK_TRIFORCE_HUNT_PIECES_TOTAL],
         &mOptions[RSK_TRIFORCE_HUNT_PIECES_REQUIRED]
-    }, false, WidgetContainerType::COLUMN);
+    }, WidgetContainerType::COLUMN);
     mOptionGroups[RSG_SHUFFLE_ENTRANCES_IMGUI] = OptionGroup::SubGroup("Shuffle Entrances", {
         &mOptions[RSK_SHUFFLE_DUNGEON_ENTRANCES],
         &mOptions[RSK_SHUFFLE_BOSS_ENTRANCES],
@@ -749,12 +749,12 @@ void Settings::CreateOptions() {
         &mOptions[RSK_MIX_OVERWORLD_ENTRANCES],
         &mOptions[RSK_MIX_INTERIOR_ENTRANCES],
         &mOptions[RSK_MIX_GROTTO_ENTRANCES]
-    }, false, WidgetContainerType::COLUMN);
+    }, WidgetContainerType::COLUMN);
     mOptionGroups[RSG_WORLD_IMGUI_TABLE] = OptionGroup::SubGroup("World", {
         &mOptionGroups[RSG_AREA_ACCESS_IMGUI],
         &mOptionGroups[RSG_WORLD_IMGUI],
         &mOptionGroups[RSG_SHUFFLE_ENTRANCES_IMGUI],
-    }, false, WidgetContainerType::TABLE);
+    }, WidgetContainerType::TABLE);
     mOptionGroups[RSG_SHUFFLE_ITEMS_IMGUI] = OptionGroup::SubGroup("Shuffle Items", {
         &mOptions[RSK_SHUFFLE_SONGS],
         &mOptions[RSK_SHUFFLE_TOKENS],
@@ -771,7 +771,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_SHUFFLE_FISHING_POLE],
         &mOptions[RSK_SHUFFLE_DEKU_STICK_BAG],
         &mOptions[RSK_SHUFFLE_DEKU_NUT_BAG],
-    }, false, WidgetContainerType::COLUMN);
+    }, WidgetContainerType::COLUMN);
     mOptionGroups[RSG_SHUFFLE_NPCS_IMGUI] = OptionGroup::SubGroup("Shuffle NPCs & Merchants", {
         &mOptions[RSK_SHOPSANITY],
         &mOptions[RSK_SHOPSANITY_COUNT],
@@ -816,7 +816,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_SHUFFLE_ADULT_TRADE],
         &mOptions[RSK_SHUFFLE_100_GS_REWARD],
         &mOptions[RSK_SHUFFLE_BOSS_SOULS],
-    }, false, WidgetContainerType::COLUMN);
+    }, WidgetContainerType::COLUMN);
     mOptionGroups[RSG_SHUFFLE_DUNGEON_ITEMS_IMGUI] = OptionGroup::SubGroup("Shuffle Dungeon Items", {
         &mOptions[RSK_SHUFFLE_DUNGEON_REWARDS],
         &mOptions[RSK_SHUFFLE_MAPANDCOMPASS],
@@ -841,12 +841,12 @@ void Settings::CreateOptions() {
         &mOptions[RSK_KEYRINGS_BOTTOM_OF_THE_WELL],
         &mOptions[RSK_KEYRINGS_GTG],
         &mOptions[RSK_KEYRINGS_GANONS_CASTLE],
-    }, false, WidgetContainerType::COLUMN);
+    }, WidgetContainerType::COLUMN);
     mOptionGroups[RSG_ITEMS_IMGUI_TABLE] = OptionGroup::SubGroup("Items", {
         &mOptionGroups[RSG_SHUFFLE_ITEMS_IMGUI],
         &mOptionGroups[RSG_SHUFFLE_NPCS_IMGUI],
         &mOptionGroups[RSG_SHUFFLE_DUNGEON_ITEMS_IMGUI],
-    }, false, WidgetContainerType::TABLE);
+    }, WidgetContainerType::TABLE);
     mOptionGroups[RSG_TIMESAVERS_IMGUI] = OptionGroup::SubGroup("Timesavers", {
         &mOptions[RSK_CUCCO_COUNT],
         &mOptions[RSK_BIG_POE_COUNT],
@@ -855,14 +855,14 @@ void Settings::CreateOptions() {
         &mOptions[RSK_SKIP_EPONA_RACE],
         &mOptions[RSK_COMPLETE_MASK_QUEST],
         &mOptions[RSK_SKIP_SCARECROWS_SONG]
-    }, false, WidgetContainerType::COLUMN);
+    }, WidgetContainerType::COLUMN);
     mOptionGroups[RSG_ITEM_POOL_HINTS_IMGUI] = OptionGroup::SubGroup("", {
         &mOptions[RSK_ITEM_POOL],
         &mOptions[RSK_ICE_TRAPS],
         &mOptions[RSK_GOSSIP_STONE_HINTS],
         &mOptions[RSK_HINT_CLARITY],
         &mOptions[RSK_HINT_DISTRIBUTION],
-    }, false, WidgetContainerType::SECTION);
+    }, WidgetContainerType::SECTION);
     mOptionGroups[RSG_EXTRA_HINTS_IMGUI] = OptionGroup::SubGroup("Extra Hints", {
         &mOptions[RSK_TOT_ALTAR_HINT],
         &mOptions[RSK_GANONDORF_HINT],
@@ -889,11 +889,11 @@ void Settings::CreateOptions() {
         &mOptions[RSK_KAK_50_SKULLS_HINT],
         &mOptions[RSK_KAK_100_SKULLS_HINT],
         &mOptions[RSK_MASK_SHOP_HINT]
-    }, false, WidgetContainerType::SECTION, "This setting adds some hints at locations other than Gossip Stones.");
+    }, WidgetContainerType::SECTION, "This setting adds some hints at locations other than Gossip Stones.");
     mOptionGroups[RSG_ITEM_POOL_HINTS_IMGUI_COLUMN] = OptionGroup::SubGroup("Item Pool & Hints", std::initializer_list<OptionGroup*>{
         &mOptionGroups[RSG_ITEM_POOL_HINTS_IMGUI],
         &mOptionGroups[RSG_EXTRA_HINTS_IMGUI],
-    }, false, WidgetContainerType::COLUMN);
+    }, WidgetContainerType::COLUMN);
     mOptionGroups[RSG_ADDITIONAL_FEATURES_IMGUI] = OptionGroup::SubGroup("Additional Features", {
         &mOptions[RSK_FULL_WALLETS],
         &mOptions[RSK_BOMBCHUS_IN_LOGIC],
@@ -902,25 +902,25 @@ void Settings::CreateOptions() {
         &mOptions[RSK_SUNLIGHT_ARROWS],
         &mOptions[RSK_INFINITE_UPGRADES],
         &mOptions[RSK_SKELETON_KEY],
-    }, false, WidgetContainerType::COLUMN);
+    }, WidgetContainerType::COLUMN);
     mOptionGroups[RSG_GAMEPLAY_IMGUI_TABLE] = OptionGroup::SubGroup("Gameplay", {
         &mOptionGroups[RSG_TIMESAVERS_IMGUI],
         &mOptionGroups[RSG_ITEM_POOL_HINTS_IMGUI_COLUMN],
         &mOptionGroups[RSG_ADDITIONAL_FEATURES_IMGUI]
-    }, false, WidgetContainerType::TABLE);
+    }, WidgetContainerType::TABLE);
     mOptionGroups[RSG_STARTING_EQUIPMENT_IMGUI] = OptionGroup::SubGroup("Starting Equipment", {
         &mOptions[RSK_LINKS_POCKET],
         &mOptions[RSK_STARTING_KOKIRI_SWORD],
         &mOptions[RSK_STARTING_MASTER_SWORD],
         &mOptions[RSK_STARTING_DEKU_SHIELD]
-    }, false, WidgetContainerType::COLUMN);
+    }, WidgetContainerType::COLUMN);
     mOptionGroups[RSG_STARTING_ITEMS_IMGUI] = OptionGroup::SubGroup("Starting Items", {
         &mOptions[RSK_STARTING_OCARINA],
         &mOptions[RSK_STARTING_STICKS],
         &mOptions[RSK_STARTING_NUTS],
         &mOptions[RSK_STARTING_SKULLTULA_TOKEN],
         &mOptions[RSK_STARTING_HEARTS],
-    }, false, WidgetContainerType::COLUMN);
+    }, WidgetContainerType::COLUMN);
     mOptionGroups[RSG_STARTING_NORMAL_SONGS_IMGUI] = OptionGroup::SubGroup("Normal Songs", {
         &mOptions[RSK_STARTING_ZELDAS_LULLABY],
         &mOptions[RSK_STARTING_EPONAS_SONG],
@@ -928,7 +928,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_STARTING_SUNS_SONG],
         &mOptions[RSK_STARTING_SONG_OF_TIME],
         &mOptions[RSK_STARTING_SONG_OF_STORMS],
-    }, false, WidgetContainerType::SECTION);
+    }, WidgetContainerType::SECTION);
     mOptionGroups[RSG_STARTING_WARP_SONGS_IMGUI] = OptionGroup::SubGroup("Warp Songs", {
         &mOptions[RSK_STARTING_MINUET_OF_FOREST],
         &mOptions[RSK_STARTING_BOLERO_OF_FIRE],
@@ -936,16 +936,16 @@ void Settings::CreateOptions() {
         &mOptions[RSK_STARTING_REQUIEM_OF_SPIRIT],
         &mOptions[RSK_STARTING_NOCTURNE_OF_SHADOW],
         &mOptions[RSK_STARTING_PRELUDE_OF_LIGHT]
-    }, false, WidgetContainerType::SECTION);
+    }, WidgetContainerType::SECTION);
     mOptionGroups[RSG_STARTING_SONGS_IMGUI] = OptionGroup::SubGroup("Starting Songs", std::initializer_list<OptionGroup*>({
         &mOptionGroups[RSG_STARTING_NORMAL_SONGS_IMGUI],
         &mOptionGroups[RSG_STARTING_WARP_SONGS_IMGUI],
-    }), false, WidgetContainerType::COLUMN);
+    }), WidgetContainerType::COLUMN);
     mOptionGroups[RSG_STARTING_INVENTORY_IMGUI_TABLE] = OptionGroup::SubGroup("Starting Inventory", {
         &mOptionGroups[RSG_STARTING_EQUIPMENT_IMGUI],
         &mOptionGroups[RSG_STARTING_ITEMS_IMGUI],
         &mOptionGroups[RSG_STARTING_SONGS_IMGUI]
-    }, false, WidgetContainerType::TABLE);
+    }, WidgetContainerType::TABLE);
     mOptionGroups[RSG_OPEN] = OptionGroup("Open Settings", {
         &mOptions[RSK_FOREST],
         &mOptions[RSK_KAK_GATE],
@@ -1091,7 +1091,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_STARTING_OCARINA],
         &mOptions[RSK_STARTING_KOKIRI_SWORD],
         &mOptions[RSK_STARTING_DEKU_SHIELD]
-    }, false);
+    });
     mOptionGroups[RSG_STARTING_SONGS] = OptionGroup::SubGroup("Ocarina Songs", {
         &mOptions[RSK_STARTING_ZELDAS_LULLABY],
         &mOptions[RSK_STARTING_EPONAS_SONG],
@@ -1106,19 +1106,19 @@ void Settings::CreateOptions() {
         &mOptions[RSK_STARTING_REQUIEM_OF_SPIRIT],
         &mOptions[RSK_STARTING_NOCTURNE_OF_SHADOW],
         &mOptions[RSK_STARTING_PRELUDE_OF_LIGHT],
-    }, false);
+    });
     mOptionGroups[RSG_STARTING_OTHER] = OptionGroup::SubGroup("Other", {
         &mOptions[RSK_STARTING_STICKS],
         &mOptions[RSK_STARTING_NUTS],
         &mOptions[RSK_FULL_WALLETS],
         &mOptions[RSK_STARTING_SKULLTULA_TOKEN],
         &mOptions[RSK_STARTING_HEARTS],
-    }, false);
+    });
     mOptionGroups[RSG_STARTING_INVENTORY] = OptionGroup("Starting Inventory", {
         &mOptionGroups[RSG_STARTING_ITEMS],
         &mOptionGroups[RSG_STARTING_SONGS],
         &mOptionGroups[RSG_STARTING_OTHER],
-    }, OptionGroupType::DEFAULT, false);
+    }, OptionGroupType::DEFAULT);
     mOptionGroups[RSG_TIMESAVERS] = OptionGroup("Timesaver Settings", {
         &mOptions[RSK_SKIP_CHILD_STEALTH],
         &mOptions[RSK_SKIP_CHILD_ZELDA],
@@ -1170,38 +1170,38 @@ void Settings::CreateOptions() {
         &mOptions[RSK_ICE_TRAPS]
     }));
     // TODO: Progressive Goron Sword, Remove Double Defense
-    mOptionGroups[RSG_EXCLUDES_KOKIRI_FOREST] = OptionGroup::SubGroup("Kokiri Forest", mExcludeLocationsOptionsAreas[RCAREA_KOKIRI_FOREST], false);
-    mOptionGroups[RSG_EXCLUDES_LOST_WOODS] = OptionGroup::SubGroup("Lost Woods", mExcludeLocationsOptionsAreas[RCAREA_LOST_WOODS], false);
-    mOptionGroups[RSG_EXCLUDES_SACRED_FOREST_MEADOW] = OptionGroup::SubGroup("Sacred Forest Meadow", mExcludeLocationsOptionsAreas[RCAREA_SACRED_FOREST_MEADOW], false);
-    mOptionGroups[RSG_EXCLUDES_DEKU_TREE] = OptionGroup::SubGroup("Deku Tree", mExcludeLocationsOptionsAreas[RCAREA_DEKU_TREE], false);
-    mOptionGroups[RSG_EXCLUDES_FOREST_TEMPLE] = OptionGroup::SubGroup("Forest Temple", mExcludeLocationsOptionsAreas[RCAREA_FOREST_TEMPLE], false);
-    mOptionGroups[RSG_EXCLUDES_KAKARIKO_VILLAGE] = OptionGroup::SubGroup("Kakariko Village", mExcludeLocationsOptionsAreas[RCAREA_KAKARIKO_VILLAGE], false);
-    mOptionGroups[RSG_EXCLUDES_GRAVEYARD] = OptionGroup::SubGroup("Graveyard", mExcludeLocationsOptionsAreas[RCAREA_GRAVEYARD], false);
-    mOptionGroups[RSG_EXCLUDES_BOTTOM_OF_THE_WELL] = OptionGroup::SubGroup("Bottom of the Well", mExcludeLocationsOptionsAreas[RCAREA_BOTTOM_OF_THE_WELL], false);
-    mOptionGroups[RSG_EXCLUDES_SHADOW_TEMPLE] = OptionGroup::SubGroup("Shadow Temple", mExcludeLocationsOptionsAreas[RCAREA_SHADOW_TEMPLE], false);
-    mOptionGroups[RSG_EXCLUDES_DEATH_MOUNTAIN_TRAIL] = OptionGroup::SubGroup("Death Mountain Trail", mExcludeLocationsOptionsAreas[RCAREA_DEATH_MOUNTAIN_TRAIL], false);
-    mOptionGroups[RSG_EXCLUDES_DEATH_MOUNTAIN_CRATER] = OptionGroup::SubGroup("Death Mountain Crater", mExcludeLocationsOptionsAreas[RCAREA_DEATH_MOUNTAIN_CRATER], false);
-    mOptionGroups[RSG_EXCLUDES_GORON_CITY] = OptionGroup::SubGroup("Goron City", mExcludeLocationsOptionsAreas[RCAREA_GORON_CITY], false);
-    mOptionGroups[RSG_EXCLUDES_DODONGOS_CAVERN] = OptionGroup::SubGroup("Dodongo's Cavern", mExcludeLocationsOptionsAreas[RCAREA_DODONGOS_CAVERN], false);
-    mOptionGroups[RSG_EXCLUDES_FIRE_TEMPLE] = OptionGroup::SubGroup("Fire Temple", mExcludeLocationsOptionsAreas[RCAREA_FIRE_TEMPLE], false);
-    mOptionGroups[RSG_EXCLUDES_ZORAS_RIVER] = OptionGroup::SubGroup("Zora's River", mExcludeLocationsOptionsAreas[RCAREA_ZORAS_RIVER], false);
-    mOptionGroups[RSG_EXCLUDES_ZORAS_DOMAIN] = OptionGroup::SubGroup("Zora's Domain", mExcludeLocationsOptionsAreas[RCAREA_ZORAS_DOMAIN], false);
-    mOptionGroups[RSG_EXCLUDES_ZORAS_FOUNTAIN] = OptionGroup::SubGroup("Zora's Fountain", mExcludeLocationsOptionsAreas[RCAREA_ZORAS_FOUNTAIN], false);
-    mOptionGroups[RSG_EXCLUDES_JABU_JABU] = OptionGroup::SubGroup("Jabu Jabu's Belly", mExcludeLocationsOptionsAreas[RCAREA_JABU_JABUS_BELLY], false);
-    mOptionGroups[RSG_EXCLUDES_ICE_CAVERN] = OptionGroup::SubGroup("Ice Cavern", mExcludeLocationsOptionsAreas[RCAREA_ICE_CAVERN], false);
-    mOptionGroups[RSG_EXCLUDES_HYRULE_FIELD] = OptionGroup::SubGroup("Hyrule Field", mExcludeLocationsOptionsAreas[RCAREA_HYRULE_FIELD], false);
-    mOptionGroups[RSG_EXCLUDES_LON_LON_RANCH] = OptionGroup::SubGroup("Lon Lon Ranch", mExcludeLocationsOptionsAreas[RCAREA_LON_LON_RANCH], false);
-    mOptionGroups[RSG_EXCLUDES_LAKE_HYLIA] = OptionGroup::SubGroup("Lake Hylia", mExcludeLocationsOptionsAreas[RCAREA_LAKE_HYLIA], false);
-    mOptionGroups[RSG_EXCLUDES_WATER_TEMPLE] = OptionGroup::SubGroup("Water Temple", mExcludeLocationsOptionsAreas[RCAREA_WATER_TEMPLE], false);
-    mOptionGroups[RSG_EXCLUDES_GERUDO_VALLEY] = OptionGroup::SubGroup("Gerudo Valley", mExcludeLocationsOptionsAreas[RCAREA_GERUDO_VALLEY], false);
-    mOptionGroups[RSG_EXCLUDES_GERUDO_FORTRESS] = OptionGroup::SubGroup("Gerudo Fortress", mExcludeLocationsOptionsAreas[RCAREA_GERUDO_FORTRESS], false);
-    mOptionGroups[RSG_EXCLUDES_HAUNTED_WASTELAND] = OptionGroup::SubGroup("Haunted Wasteland", mExcludeLocationsOptionsAreas[RCAREA_WASTELAND], false);
-    mOptionGroups[RSG_EXCLUDES_DESERT_COLOSSUS] = OptionGroup::SubGroup("Desert Colossus", mExcludeLocationsOptionsAreas[RCAREA_DESERT_COLOSSUS], false);
-    mOptionGroups[RSG_EXCLUDES_GERUDO_TRAINING_GROUNDS] = OptionGroup::SubGroup("Gerudo Training Grounds", mExcludeLocationsOptionsAreas[RCAREA_GERUDO_TRAINING_GROUND], false);
-    mOptionGroups[RSG_EXCLUDES_SPIRIT_TEMPLE] = OptionGroup::SubGroup("Spirit Temple", mExcludeLocationsOptionsAreas[RCAREA_SPIRIT_TEMPLE], false);
-    mOptionGroups[RSG_EXCLUDES_HYRULE_CASTLE] = OptionGroup::SubGroup("Hyrule Castle", mExcludeLocationsOptionsAreas[RCAREA_HYRULE_CASTLE], false);
-    mOptionGroups[RSG_EXCLUDES_MARKET] = OptionGroup::SubGroup("Market", mExcludeLocationsOptionsAreas[RCAREA_MARKET], false);
-    mOptionGroups[RSG_EXCLUDES_GANONS_CASTLE] = OptionGroup::SubGroup("Ganon's Castle", mExcludeLocationsOptionsAreas[RCAREA_GANONS_CASTLE], false);
+    mOptionGroups[RSG_EXCLUDES_KOKIRI_FOREST] = OptionGroup::SubGroup("Kokiri Forest", mExcludeLocationsOptionsAreas[RCAREA_KOKIRI_FOREST]);
+    mOptionGroups[RSG_EXCLUDES_LOST_WOODS] = OptionGroup::SubGroup("Lost Woods", mExcludeLocationsOptionsAreas[RCAREA_LOST_WOODS]);
+    mOptionGroups[RSG_EXCLUDES_SACRED_FOREST_MEADOW] = OptionGroup::SubGroup("Sacred Forest Meadow", mExcludeLocationsOptionsAreas[RCAREA_SACRED_FOREST_MEADOW]);
+    mOptionGroups[RSG_EXCLUDES_DEKU_TREE] = OptionGroup::SubGroup("Deku Tree", mExcludeLocationsOptionsAreas[RCAREA_DEKU_TREE]);
+    mOptionGroups[RSG_EXCLUDES_FOREST_TEMPLE] = OptionGroup::SubGroup("Forest Temple", mExcludeLocationsOptionsAreas[RCAREA_FOREST_TEMPLE]);
+    mOptionGroups[RSG_EXCLUDES_KAKARIKO_VILLAGE] = OptionGroup::SubGroup("Kakariko Village", mExcludeLocationsOptionsAreas[RCAREA_KAKARIKO_VILLAGE]);
+    mOptionGroups[RSG_EXCLUDES_GRAVEYARD] = OptionGroup::SubGroup("Graveyard", mExcludeLocationsOptionsAreas[RCAREA_GRAVEYARD]);
+    mOptionGroups[RSG_EXCLUDES_BOTTOM_OF_THE_WELL] = OptionGroup::SubGroup("Bottom of the Well", mExcludeLocationsOptionsAreas[RCAREA_BOTTOM_OF_THE_WELL]);
+    mOptionGroups[RSG_EXCLUDES_SHADOW_TEMPLE] = OptionGroup::SubGroup("Shadow Temple", mExcludeLocationsOptionsAreas[RCAREA_SHADOW_TEMPLE]);
+    mOptionGroups[RSG_EXCLUDES_DEATH_MOUNTAIN_TRAIL] = OptionGroup::SubGroup("Death Mountain Trail", mExcludeLocationsOptionsAreas[RCAREA_DEATH_MOUNTAIN_TRAIL]);
+    mOptionGroups[RSG_EXCLUDES_DEATH_MOUNTAIN_CRATER] = OptionGroup::SubGroup("Death Mountain Crater", mExcludeLocationsOptionsAreas[RCAREA_DEATH_MOUNTAIN_CRATER]);
+    mOptionGroups[RSG_EXCLUDES_GORON_CITY] = OptionGroup::SubGroup("Goron City", mExcludeLocationsOptionsAreas[RCAREA_GORON_CITY]);
+    mOptionGroups[RSG_EXCLUDES_DODONGOS_CAVERN] = OptionGroup::SubGroup("Dodongo's Cavern", mExcludeLocationsOptionsAreas[RCAREA_DODONGOS_CAVERN]);
+    mOptionGroups[RSG_EXCLUDES_FIRE_TEMPLE] = OptionGroup::SubGroup("Fire Temple", mExcludeLocationsOptionsAreas[RCAREA_FIRE_TEMPLE]);
+    mOptionGroups[RSG_EXCLUDES_ZORAS_RIVER] = OptionGroup::SubGroup("Zora's River", mExcludeLocationsOptionsAreas[RCAREA_ZORAS_RIVER]);
+    mOptionGroups[RSG_EXCLUDES_ZORAS_DOMAIN] = OptionGroup::SubGroup("Zora's Domain", mExcludeLocationsOptionsAreas[RCAREA_ZORAS_DOMAIN]);
+    mOptionGroups[RSG_EXCLUDES_ZORAS_FOUNTAIN] = OptionGroup::SubGroup("Zora's Fountain", mExcludeLocationsOptionsAreas[RCAREA_ZORAS_FOUNTAIN]);
+    mOptionGroups[RSG_EXCLUDES_JABU_JABU] = OptionGroup::SubGroup("Jabu Jabu's Belly", mExcludeLocationsOptionsAreas[RCAREA_JABU_JABUS_BELLY]);
+    mOptionGroups[RSG_EXCLUDES_ICE_CAVERN] = OptionGroup::SubGroup("Ice Cavern", mExcludeLocationsOptionsAreas[RCAREA_ICE_CAVERN]);
+    mOptionGroups[RSG_EXCLUDES_HYRULE_FIELD] = OptionGroup::SubGroup("Hyrule Field", mExcludeLocationsOptionsAreas[RCAREA_HYRULE_FIELD]);
+    mOptionGroups[RSG_EXCLUDES_LON_LON_RANCH] = OptionGroup::SubGroup("Lon Lon Ranch", mExcludeLocationsOptionsAreas[RCAREA_LON_LON_RANCH]);
+    mOptionGroups[RSG_EXCLUDES_LAKE_HYLIA] = OptionGroup::SubGroup("Lake Hylia", mExcludeLocationsOptionsAreas[RCAREA_LAKE_HYLIA]);
+    mOptionGroups[RSG_EXCLUDES_WATER_TEMPLE] = OptionGroup::SubGroup("Water Temple", mExcludeLocationsOptionsAreas[RCAREA_WATER_TEMPLE]);
+    mOptionGroups[RSG_EXCLUDES_GERUDO_VALLEY] = OptionGroup::SubGroup("Gerudo Valley", mExcludeLocationsOptionsAreas[RCAREA_GERUDO_VALLEY]);
+    mOptionGroups[RSG_EXCLUDES_GERUDO_FORTRESS] = OptionGroup::SubGroup("Gerudo Fortress", mExcludeLocationsOptionsAreas[RCAREA_GERUDO_FORTRESS]);
+    mOptionGroups[RSG_EXCLUDES_HAUNTED_WASTELAND] = OptionGroup::SubGroup("Haunted Wasteland", mExcludeLocationsOptionsAreas[RCAREA_WASTELAND]);
+    mOptionGroups[RSG_EXCLUDES_DESERT_COLOSSUS] = OptionGroup::SubGroup("Desert Colossus", mExcludeLocationsOptionsAreas[RCAREA_DESERT_COLOSSUS]);
+    mOptionGroups[RSG_EXCLUDES_GERUDO_TRAINING_GROUNDS] = OptionGroup::SubGroup("Gerudo Training Grounds", mExcludeLocationsOptionsAreas[RCAREA_GERUDO_TRAINING_GROUND]);
+    mOptionGroups[RSG_EXCLUDES_SPIRIT_TEMPLE] = OptionGroup::SubGroup("Spirit Temple", mExcludeLocationsOptionsAreas[RCAREA_SPIRIT_TEMPLE]);
+    mOptionGroups[RSG_EXCLUDES_HYRULE_CASTLE] = OptionGroup::SubGroup("Hyrule Castle", mExcludeLocationsOptionsAreas[RCAREA_HYRULE_CASTLE]);
+    mOptionGroups[RSG_EXCLUDES_MARKET] = OptionGroup::SubGroup("Market", mExcludeLocationsOptionsAreas[RCAREA_MARKET]);
+    mOptionGroups[RSG_EXCLUDES_GANONS_CASTLE] = OptionGroup::SubGroup("Ganon's Castle", mExcludeLocationsOptionsAreas[RCAREA_GANONS_CASTLE]);
     mOptionGroups[RSG_EXCLUDES] = OptionGroup::SubGroup("Exclude Locations", {
         &mOptionGroups[RSG_EXCLUDES_KOKIRI_FOREST],
         &mOptionGroups[RSG_EXCLUDES_LOST_WOODS],
@@ -1235,7 +1235,7 @@ void Settings::CreateOptions() {
         &mOptionGroups[RSG_EXCLUDES_HYRULE_CASTLE],
         &mOptionGroups[RSG_EXCLUDES_MARKET],
         &mOptionGroups[RSG_EXCLUDES_GANONS_CASTLE],
-    }, false);
+    });
     mOptionGroups[RSG_DETAILED_LOGIC] = OptionGroup("Detailed Logic Settings", {
         &mOptionGroups[RSG_LOGIC],
         &mOptionGroups[RSG_TRICKS],

@@ -43,14 +43,15 @@ void Settings::CreateOptionDescriptions() {
         "Choose which age Link will start as.\n\n"
         "Starting as adult means you start with the Master Sword in your inventory.\n"
         "The child option is forcefully set if it would conflict with other options.";
-    mOptionDescriptions[RSK_GERUDO_FORTRESS] = "Sets the amount of carpenters required to repair the bridge "
-                                               "in Gerudo Valley.\n"
+    mOptionDescriptions[RSK_GERUDO_FORTRESS] = "Sets the state of the carpenters captured by Gerudo "
+                                               "in Gerudo Fortress, and with it the number of guards that spawn.\n"
                                                "\n"
                                                "Normal - All 4 carpenters are required to be saved.\n"
                                                "\n"
                                                "Fast - Only the bottom left carpenter requires rescuing.\n"
                                                "\n"
-                                               "Open - The bridge is repaired from the start.\n"
+                                               "Free - The bridge is repaired from the start, and Nabooru cannot spawn.\n"
+                                               "If the Gerudo Membership Card isn't shuffled, you start with it.\n"
                                                "\n"
                                                "Only \"Normal\" is compatible with Gerudo Fortress Key Rings.";
     mOptionDescriptions[RSK_RAINBOW_BRIDGE] =

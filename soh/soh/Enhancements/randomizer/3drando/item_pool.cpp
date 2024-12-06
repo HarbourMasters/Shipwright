@@ -1026,7 +1026,7 @@ void GenerateItemPool() {
   }
 
   //Gerudo Fortress
-  if (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_OPEN)) {
+  if (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_FREE)) {
     ctx->PlaceItemInLocation(RC_GF_NORTH_F1_CARPENTER, RG_RECOVERY_HEART, false, true);
     ctx->PlaceItemInLocation(RC_GF_NORTH_F2_CARPENTER, RG_RECOVERY_HEART, false, true);
     ctx->PlaceItemInLocation(RC_GF_SOUTH_F1_CARPENTER, RG_RECOVERY_HEART, false, true);
@@ -1071,7 +1071,7 @@ void GenerateItemPool() {
   }
 
   //Gerudo Membership Card
-  if (ctx->GetOption(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD) && ctx->GetOption(RSK_GERUDO_FORTRESS).IsNot(RO_GF_OPEN)) {
+  if (ctx->GetOption(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD) && ctx->GetOption(RSK_GERUDO_FORTRESS).IsNot(RO_GF_FREE)) {
     AddItemToMainPool(RG_GERUDO_MEMBERSHIP_CARD);
     ctx->possibleIceTrapModels.push_back(RG_GERUDO_MEMBERSHIP_CARD);
   } else if (ctx->GetOption(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD)) {

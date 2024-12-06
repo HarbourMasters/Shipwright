@@ -453,7 +453,7 @@ extern "C" void Randomizer_InitSaveFile() {
     }
 
     if (Randomizer_GetSettingValue(RSK_GERUDO_FORTRESS) == RO_GF_FAST ||
-        Randomizer_GetSettingValue(RSK_GERUDO_FORTRESS) == RO_GF_OPEN) {
+        Randomizer_GetSettingValue(RSK_GERUDO_FORTRESS) == RO_GF_FREE) {
         Flags_SetEventChkInf(EVENTCHKINF_CARPENTERS_FREE(1));
         Flags_SetEventChkInf(EVENTCHKINF_CARPENTERS_FREE(2));
         Flags_SetEventChkInf(EVENTCHKINF_CARPENTERS_FREE(3));
@@ -471,7 +471,7 @@ extern "C" void Randomizer_InitSaveFile() {
         gSaveContext.sceneFlags[SCENE_THIEVES_HIDEOUT].collect |= (1 << 0x0F);
     }
 
-    if (Randomizer_GetSettingValue(RSK_GERUDO_FORTRESS) == RO_GF_OPEN) {
+    if (Randomizer_GetSettingValue(RSK_GERUDO_FORTRESS) == RO_GF_FREE) {
         Flags_SetEventChkInf(EVENTCHKINF_CARPENTERS_FREE(0));
         gSaveContext.sceneFlags[SCENE_THIEVES_HIDEOUT].swch |= (1 << 0x01); // heard yell and unlocked door
         gSaveContext.sceneFlags[SCENE_THIEVES_HIDEOUT].swch |= (1 << 0x05);

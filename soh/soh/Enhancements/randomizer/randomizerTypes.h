@@ -4198,7 +4198,7 @@ typedef enum {
 typedef enum {
     RO_GF_NORMAL,
     RO_GF_FAST,
-    RO_GF_OPEN,
+    RO_GF_FREE,
 } RandoOptionGerudoFortress;
 
 //Kakariko Gate settings (closed/open)

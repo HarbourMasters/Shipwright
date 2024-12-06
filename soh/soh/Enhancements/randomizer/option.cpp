@@ -380,26 +380,26 @@ const std::set<Tricks::Tag>& TrickOption::GetTags() const {
 }
 
 OptionGroup::OptionGroup(std::string name, std::vector<Option*> options, const OptionGroupType groupType,
-                         const bool printInSpoiler, const WidgetContainerType containerType, std::string description)
-    : mName(std::move(name)), mOptions(std::move(options)), mGroupType(groupType), mPrintInSpoiler(printInSpoiler),
+                         const WidgetContainerType containerType, std::string description)
+    : mName(std::move(name)), mOptions(std::move(options)), mGroupType(groupType),
       mContainerType(containerType), mDescription(std::move(description)) {
 }
 
 OptionGroup::OptionGroup(std::string name, std::vector<OptionGroup*> subGroups, const OptionGroupType groupType,
-                         const bool printInSpoiler, const WidgetContainerType containerType, std::string description)
-    : mName(std::move(name)), mSubGroups(std::move(subGroups)), mGroupType(groupType), mPrintInSpoiler(printInSpoiler),
+                         const WidgetContainerType containerType, std::string description)
+    : mName(std::move(name)), mSubGroups(std::move(subGroups)), mGroupType(groupType),
       mContainsType(OptionGroupType::SUBGROUP), mContainerType(containerType), mDescription(std::move(description)) {
 }
 
-OptionGroup OptionGroup::SubGroup(std::string name, std::vector<Option*> options, const bool printInSpoiler,
+OptionGroup OptionGroup::SubGroup(std::string name, std::vector<Option*> options,
                                   const WidgetContainerType containerType, std::string description) {
-    return {std::move(name), std::move(options), OptionGroupType::SUBGROUP, printInSpoiler, containerType,
+    return {std::move(name), std::move(options), OptionGroupType::SUBGROUP, containerType,
                        std::move(description)};
 }
 
-OptionGroup OptionGroup::SubGroup(std::string name, std::vector<OptionGroup*> subGroups, const bool printInSpoiler,
+OptionGroup OptionGroup::SubGroup(std::string name, std::vector<OptionGroup*> subGroups,
                                   const WidgetContainerType containerType, std::string description) {
-    return {std::move(name), std::move(subGroups), OptionGroupType::SUBGROUP, printInSpoiler, containerType,
+    return {std::move(name), std::move(subGroups), OptionGroupType::SUBGROUP, containerType,
                        std::move(description)};
 }
 
@@ -413,10 +413,6 @@ const std::vector<Option*>& OptionGroup::GetOptions() const {
 
 const std::vector<OptionGroup*>& OptionGroup::GetSubGroups() const {
     return mSubGroups;
-}
-
-bool OptionGroup::PrintInSpoiler() const {
-    return mPrintInSpoiler;
 }
 
 OptionGroupType OptionGroup::GetGroupType() const {
