@@ -7,6 +7,7 @@
 #include "z_shot_sun.h"
 #include "overlays/actors/ovl_En_Elf/z_en_elf.h"
 #include "scenes/overworld/spot06/spot06_scene.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "vt.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
@@ -162,8 +163,7 @@ void ShotSun_UpdateHyliaSun(ShotSun* this, PlayState* play) {
     if (this->collider.base.acFlags & AC_HIT) {
         Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
         osSyncPrintf(VT_FGCOL(CYAN) "SHOT_SUN HIT!!!!!!!\n" VT_RST);
-        if ((INV_CONTENT(ITEM_ARROW_FIRE) == ITEM_NONE && !IS_RANDO) ||
-            (!Flags_GetTreasure(play, 0x1F) && IS_RANDO)) {
+        if (GameInteractor_Should(VB_PLAY_FIRE_ARROW_CS, INV_CONTENT(ITEM_ARROW_FIRE) == ITEM_NONE, this)) {
             Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_ETCETERA, 700.0f, -800.0f, 7261.0f, 0, 0, 0, 7, true);
             play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gLakeHyliaFireArrowsCS);
             gSaveContext.cutsceneTrigger = 1;

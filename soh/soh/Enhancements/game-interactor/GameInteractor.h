@@ -344,6 +344,8 @@ typedef enum {
     VB_PLAY_RAINBOW_BRIDGE_CS,
     // Opt: *EnBox
     VB_PLAY_SLOW_CHEST_CS,
+    // Opt: *ShotSun
+    VB_PLAY_FIRE_ARROW_CS,
     //*Opt f32 sFishOnHandLength
     // Vanilla condition: (s16)sFishingRecordLength < (s16)sFishOnHandLength
     VB_SHOULD_CHECK_FOR_FISHING_RECORD,

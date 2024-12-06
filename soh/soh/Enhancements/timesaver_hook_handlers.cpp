@@ -535,6 +535,14 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
             }
             break;
         }
+        case VB_PLAY_FIRE_ARROW_CS: {
+            if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), 0)) {
+                *should = false;
+            } else if (IS_RANDO) {
+                *should = !Flags_GetTreasure(gPlayState, 0x1F);
+            }
+            break;
+        }
         case VB_GIVE_ITEM_MINUET_OF_FOREST:
         case VB_GIVE_ITEM_BOLERO_OF_FIRE:
         case VB_GIVE_ITEM_SERENADE_OF_WATER:
