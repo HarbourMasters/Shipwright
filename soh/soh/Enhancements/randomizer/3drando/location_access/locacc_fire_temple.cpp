@@ -35,10 +35,10 @@ void RegionTable_Init_FireTemple() {
                 }, {
                   //Locations
                   LOCATION(RC_FIRE_TEMPLE_NEAR_BOSS_CHEST, true),
-                  LOCATION(RC_FIRE_TEMPLE_NEAR_BOSS_POT_1, logic->CanBreakPots()),
-                  LOCATION(RC_FIRE_TEMPLE_NEAR_BOSS_POT_2, logic->CanBreakPots()),
-                  LOCATION(RC_FIRE_TEMPLE_NEAR_BOSS_POT_3, logic->CanBreakPots()),
-                  LOCATION(RC_FIRE_TEMPLE_NEAR_BOSS_POT_4, logic->CanBreakPots()),
+                  LOCATION(RC_FIRE_TEMPLE_NEAR_BOSS_POT_1, (logic->CanBreakPots() && (logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_HOOKSHOT)))),
+                  LOCATION(RC_FIRE_TEMPLE_NEAR_BOSS_POT_2, (logic->CanBreakPots() && (logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_HOOKSHOT)))),
+                  LOCATION(RC_FIRE_TEMPLE_NEAR_BOSS_POT_3, (logic->CanBreakPots() && (logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_HOOKSHOT)))),
+                  LOCATION(RC_FIRE_TEMPLE_NEAR_BOSS_POT_4, (logic->CanBreakPots() && (logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_HOOKSHOT)))),
                 }, {
                   //Exits
                   Entrance(RR_FIRE_TEMPLE_FIRST_ROOM, {[]{return true;}}),
