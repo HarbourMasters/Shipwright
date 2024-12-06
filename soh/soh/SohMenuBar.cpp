@@ -1525,7 +1525,11 @@ void DrawEnhancementsMenu() {
                 UpdatePatchHand();
             }
             UIWidgets::Tooltip("Fixes Adult Link having a backwards left hand when holding the Megaton Hammer.");
-            UIWidgets::PaddedEnhancementCheckbox("Fix Broken Giant's Knife bug", CVAR_ENHANCEMENT("FixBrokenGiantsKnife"), true, false);
+            UIWidgets::PaddedEnhancementCheckbox(
+                "Fix Broken Giant's Knife bug", CVAR_ENHANCEMENT("FixBrokenGiantsKnife"), true, false, IS_RANDO,
+                "This setting is forcefully enabled when you are playing a randomizer.",
+                UIWidgets::CheckboxGraphics::Checkmark
+            );
             UIWidgets::Tooltip("Fixes the Broken Giant's Knife flag not being reset when Medigoron fixes it");
 
             ImGui::EndMenu();

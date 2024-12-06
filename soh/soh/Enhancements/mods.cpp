@@ -783,17 +783,12 @@ void RegisterBrokenGiantsKnifeFix() {
 
         int32_t bypassEquipmentChecks = 0;
 
-        if (CVarGetInteger(CVAR_ENHANCEMENT("FixBrokenGiantsKnife"), 0)) {
-            // Flag wasn't reset because Kokiri or Master Sword
-            // was missing, so we need to bypass those checks
+        if (IS_RANDO || CVarGetInteger(CVAR_ENHANCEMENT("FixBrokenGiantsKnife"), 0)) {
+            // Flag wasn't reset because Kokiri or Master Sword was missing, so we need to
+            // bypass those checks
             bypassEquipmentChecks |= (1 << EQUIP_INV_SWORD_KOKIRI) | (1 << EQUIP_INV_SWORD_MASTER);
-        } else if (IS_RANDO) {
-            // In rando, when buying Giant's Knife, bypass check
-            // for the Kokiri Sword in case we don't have it
-            bypassEquipmentChecks |= (1 << EQUIP_INV_SWORD_KOKIRI);
         } else {
-            // If neither of the above cases was true, flag should
-            // be handled exclusively by vanilla behaviour
+            // If enhancement is off, flag should be handled exclusively by vanilla behaviour
             return;
         }
 
