@@ -212,6 +212,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                 s16* csId = va_arg(args, s16*);
                 BgSpot03Taki* taki = NULL;
                 switch (*csId) {
+                    case 3150:
                     case 4180:
                     case 4100:
                         *should = false;
