@@ -342,6 +342,15 @@ static size_t NextLineLength(const std::string* textStr, const size_t lastNewlin
       nextPosJump = 1;
       // Assume worst case for player name 12 * 8 (widest character * longest name length)
       totalPixelWidth += 96;
+    } else if (textStr->at(currentPos) == '\x05') {
+      // Skip colour control characters.
+      nextPosJump = 2;
+    } else if (textStr->at(currentPos) == '\x1E') {
+        //For the high score char, we have to take the next Char, then use that to get a worst case scenario.
+        if (textStr->at(currentPos+1) == '\x01'){
+            totalPixelWidth += 28;
+        } 
+        nextPosJump = 2;
     } else {
       // Some characters only one byte while others are two bytes
       // So check both possibilities when checking for a character
@@ -367,6 +376,65 @@ static size_t NextLineLength(const std::string* textStr, const size_t lastNewlin
   }
 }
 
+size_t CustomMessage::FindNEWLINE(std::string& str, size_t lastNewline) const {
+    size_t newLine = str.find(NEWLINE()[0], lastNewline);
+    bool done;
+
+    // Bail out early
+    if (newLine == std::string::npos) {
+        return newLine;
+    }
+
+    do {
+        done = true;
+        if (newLine != 0) {
+            switch (str[newLine - 1]) {
+                case '\x05': // COLOR
+                case '\x06': // SHIFT
+                case '\x07': // TEXTID
+                case '\x0C': // BOX_BREAK_DELAYED
+                case '\x0E': // FADE
+                case '\x11': // FADE2
+                case '\x12': // SFX
+                case '\x13': // ITEM_ICON
+                case '\x14': // TEXT_SPEED
+                case '\x15': // BACKGROUND
+                case '\x1E': // POINTS/HIGH_SCORE
+                    done = false;
+                    break;
+                default:
+                    break;
+            }
+            if (newLine > 1) {
+                switch (str[newLine - 2]) {
+                    case '\x07': // TEXTID
+                    case '\x11': // FADE2
+                    case '\x12': // SFX
+                    case '\x15': // BACKGROUND
+                        done = false;
+                        break;
+                    default:
+                        break;
+                }
+                if (newLine > 2) {
+                    if (str[newLine - 3] == '\x15') { // BACKGROUND
+                        done = false;
+                    }
+                }
+            }
+        }
+        if (!done) {
+            newLine = str.find(NEWLINE()[0], newLine + 1);
+            if (newLine == std::string::npos) {
+                // if we reach the end of the string, quit now to save a loop
+                done = true;
+            }
+        }
+    } while (!done);
+
+    return newLine;
+}
+
 void CustomMessage::AutoFormatString(std::string& str) const {
     ReplaceAltarIcons(str);
     ReplaceColors(str);
@@ -381,7 +449,7 @@ void CustomMessage::AutoFormatString(std::string& str) const {
         const size_t ampersand = str.find('&', lastNewline);
         const size_t lastSpace = str.rfind(' ', lastNewline + lineLength);
         size_t waitForInput = str.find(WAIT_FOR_INPUT()[0], lastNewline);
-        size_t newLine = str.find(NEWLINE()[0], lastNewline);
+        size_t newLine = FindNEWLINE(str, lastNewline);
         if (carrot < waitForInput){
             waitForInput = carrot;
         }

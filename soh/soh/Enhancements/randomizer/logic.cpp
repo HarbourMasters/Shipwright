@@ -415,6 +415,38 @@ namespace Rando {
         bool killed = false;
         switch(enemy) {
             case RE_GOLD_SKULLTULA:
+                switch (distance){
+                    case ED_CLOSE:
+                        //hammer jumpslash cannot damage these, but hammer swing can
+                        killed = CanUse(RG_MEGATON_HAMMER);
+                        [[fallthrough]];
+                    case ED_SHORT_JUMPSLASH:
+                        killed = killed || CanUse(RG_KOKIRI_SWORD);
+                        [[fallthrough]];
+                    case ED_MASTER_SWORD_JUMPSLASH:
+                        killed = killed || CanUse(RG_MASTER_SWORD);
+                        [[fallthrough]];
+                    case ED_LONG_JUMPSLASH:
+                        killed = killed || CanUse(RG_BIGGORON_SWORD) || CanUse(RG_STICKS);
+                        [[fallthrough]];
+                    case ED_BOMB_THROW:
+                        killed = killed || CanUse(RG_BOMB_BAG);
+                        [[fallthrough]];
+                    case ED_BOOMERANG:
+                        killed = killed || CanUse(RG_BOOMERANG) || CanUse(RG_DINS_FIRE);
+                        [[fallthrough]];
+                    case ED_HOOKSHOT:
+                        //RANDOTODO test dins and chu range in a practical example
+                        killed = killed || CanUse(RG_HOOKSHOT) || (wallOrFloor && CanUse(RG_BOMBCHU_5));
+                        [[fallthrough]];
+                    case ED_LONGSHOT:
+                        killed = killed || CanUse(RG_LONGSHOT);
+                        [[fallthrough]];
+                    case ED_FAR:
+                        killed = killed || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_FAIRY_BOW);
+                        break;
+                }
+                return killed;
             case RE_GOHMA_LARVA:
             case RE_MAD_SCRUB:
             case RE_DEKU_BABA:
@@ -618,8 +650,15 @@ namespace Rando {
             case RE_PURPLE_LEEVER:
               //dies on it's own, so this is the conditions to spawn it (killing 10 normal leevers)
               //Sticks and Ice arrows work but will need ammo capacity logic
-              //other mothods can damage them but not kill them, and they run when hit, making them impractical
-              return CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD);
+              //other methods can damage them but not kill them, and they run when hit, making them impractical
+                return CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD);
+            case RE_TENTACLE:
+                return CanUse(RG_BOOMERANG);
+            case RE_BARI:
+                return HookshotOrBoomerang() || CanUse(RG_FAIRY_BOW) || HasExplosives() || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_STICKS) || CanUse(RG_DINS_FIRE) || (TakeDamage() && (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD)));
+            case RE_SHABOM:
+            //RANDOTODO when you add better damage logic, you can kill this by taking hits
+                return CanUse(RG_BOOMERANG) || CanUse(RG_NUTS) || CanJumpslash() || CanUse(RG_DINS_FIRE) || CanUse(RG_ICE_ARROWS);
             default:
                 SPDLOG_ERROR("CanKillEnemy reached `default`.");
                 assert(false);
@@ -2145,6 +2184,7 @@ namespace Rando {
         GTGPlatformSilverRupees   = false;
         MQJabuHolesRoomDoor       = false;
         JabuWestTentacle          = false;
+        JabuEastTentacle          = false;
         JabuNorthTentacle         = false;
         LoweredJabuPath           = false;
         MQJabuLiftRoomCow         = false;
@@ -2158,6 +2198,9 @@ namespace Rando {
         MQSpiritCrawlBoulder      = false;
         MQSpiritMapRoomEnemies    = false;
         MQSpirit3SunsEnemies      = false;
+        Spirit1FSilverRupees      = false;
+        JabuRutoInB1              = false;
+        JabuRutoIn1F              = false;
 
         StopPerformanceTimer(PT_LOGIC_RESET);
     }

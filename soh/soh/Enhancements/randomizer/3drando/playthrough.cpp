@@ -80,14 +80,6 @@ int Playthrough_Init(uint32_t seed, std::set<RandomizerCheck> excludedLocations,
             SPDLOG_ERROR("Writing Spoiler Log Failed");
         }
         StopPerformanceTimer(PT_SPOILER_LOG);
-#ifdef ENABLE_DEBUG
-        SPDLOG_INFO("Writing Placement Log...");
-        if (PlacementLog_Write()) {
-            SPDLOG_INFO("Writing Placement Log Done");
-        } else {
-            SPDLOG_ERROR("Writing Placement Log Failed");
-        }
-#endif
     }
 
     ctx->playthroughLocations.clear();

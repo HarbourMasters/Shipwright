@@ -44,6 +44,7 @@
 #include "Enhancements/enemyrandomizer.h"
 #include "Enhancements/timesplits/TimeSplits.h"
 #include "Enhancements/randomizer/Plandomizer.h"
+#include "Enhancements/TimeDisplay/TimeDisplay.h"
 
 // FA icons are kind of wonky, if they worked how I expected them to the "+ 2.0f" wouldn't be needed, but
 // they don't work how I expect them to so I added that because it looked good when I eyeballed it
@@ -607,6 +608,7 @@ extern std::shared_ptr<AudioEditor> mAudioEditorWindow;
 extern std::shared_ptr<CosmeticsEditorWindow> mCosmeticsEditorWindow;
 extern std::shared_ptr<GameplayStatsWindow> mGameplayStatsWindow;
 extern std::shared_ptr<TimeSplitWindow> mTimeSplitWindow;
+extern std::shared_ptr<TimeDisplayWindow> mTimeDisplayWindow;
 
 void DrawEnhancementsMenu() {
     if (ImGui::BeginMenu("Enhancements"))
@@ -1727,6 +1729,36 @@ void DrawEnhancementsMenu() {
         if (mTimeSplitWindow) {
             if (ImGui::Button(GetWindowButtonText("Time Splits", CVarGetInteger(CVAR_WINDOW("TimeSplitEnabled"), 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
                 mTimeSplitWindow->ToggleVisibility();
+            }
+        }
+
+        if (mTimeDisplayWindow) {
+            if (ImGui::Button(GetWindowButtonText("Additional Timers", CVarGetInteger(CVAR_WINDOW("TimeDisplayEnabled"), 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
+                mTimeDisplayWindow->ToggleVisibility();
+            }
+        }
+        if (mTimeDisplayWindow->IsVisible()) {
+            ImGui::SeparatorText("Timer Display Options");
+
+            if (!gPlayState) {
+                ImGui::Text("Additional Timer options\n"
+                            "available when a file is\n"
+                            "loaded...");
+            } else {
+                if (UIWidgets::PaddedEnhancementSliderFloat("Font Scale: %.2fx", "##FontScale", CVAR_ENHANCEMENT("TimeDisplay.FontScale"), 
+                    1.0f, 5.0f, "", 1.0f, false, true, false, true)) {
+                    TimeDisplayInitSettings();
+                }
+                if (UIWidgets::PaddedEnhancementCheckbox("Hide Background", CVAR_ENHANCEMENT("TimeDisplay.ShowWindowBG"), 
+                    false, false)) {
+                    TimeDisplayInitSettings();
+                }
+                ImGui::Separator();
+                for (auto& timer : timeDisplayList) {
+                    if (UIWidgets::PaddedEnhancementCheckbox(timer.timeLabel.c_str(), timer.timeEnable, false, false)) {
+                        TimeDisplayUpdateDisplayOptions();
+                    }
+                }
             }
         }
         ImGui::PopStyleVar(3);

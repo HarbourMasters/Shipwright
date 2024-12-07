@@ -1177,7 +1177,7 @@ void StaticData::HintTable_Init() {
                                                           // /*spanish*/la tienda de pociones de la abuela
 
     hintTextTable[RHT_GRAVEYARD_DAMPES_HOUSE] = HintText(CustomMessage("Dampé's Hut",
-                                                            /*german*/ "der #Hut von Boris#",
+                                                            /*german*/ "die #Hütte von Boris#",
                                                             /*french*/ "la #Cabane du Fossoyeur#"));
                                                          // /*spanish*/la cabaña de Dampé
 
@@ -1277,12 +1277,12 @@ void StaticData::HintTable_Init() {
                                                               // /*spanish*/la #tumba de la Canción del Sol#
 
     hintTextTable[RHT_GRAVEYARD_COMPOSERS_GRAVE] = HintText(CustomMessage("the #Composers' Grave#",
-                                                               /*german*/ "das Königsgrab",
+                                                               /*german*/ "das #Königsgrab#",
                                                                /*french*/ "la #Tombe royale#"));
                                                             // /*spanish*/el #Panteón Real#
 
     hintTextTable[RHT_GRAVEYARD_DAMPES_GRAVE] = HintText(CustomMessage("Dampé's Grave",
-                                                            /*german*/ "das Grab von Boris",
+                                                            /*german*/ "das #Grab von Boris#",
                                                             /*french*/ "la #Tombe d'Igor#"));
                                                          // /*spanish*/la #tumba de Dampé#
 

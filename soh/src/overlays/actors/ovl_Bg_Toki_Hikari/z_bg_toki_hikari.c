@@ -179,7 +179,8 @@ void func_808BA2CC(BgTokiHikari* this, PlayState* play) {
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    gSPDisplayListOffset(POLY_XLU_DISP++, object_toki_objects_DL_0009C0, 10);
+    // SOH [Port] Index adjust 11 -> 14 (for LUS marker and gsSPVertex) to account for our extraction size changes
+    gSPDisplayListOffset(POLY_XLU_DISP++, object_toki_objects_DL_0009C0, 10 + 2 + 1);
     Matrix_Pop();
     CLOSE_DISPS(play->state.gfxCtx);
 }
