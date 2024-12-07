@@ -208,7 +208,7 @@ bool Option::RenderCheckbox() {
     if (CustomCheckbox(name.c_str(), &val, disabled, disabledGraphic)) {
         CVarSetInteger(cvarName.c_str(), val);
         changed = true;
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     }
     if (!description.empty()) {
         UIWidgets::InsertHelpHoverText(description.c_str());
@@ -228,7 +228,7 @@ bool Option::RenderTristateCheckbox() {
     if (CustomCheckboxTristate(name.c_str(), &val, disabled, disabledGraphic)) {
         CVarSetInteger(cvarName.c_str(), val);
         changed = true;
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     }
     if (!description.empty()) {
         UIWidgets::InsertHelpHoverText(description.c_str());
@@ -250,7 +250,7 @@ bool Option::RenderCombobox() {
         selected = options.size();
         CVarSetInteger(cvarName.c_str(), selected);
         changed = true;
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     }
     if (!description.empty()) {
         UIWidgets::InsertHelpHoverText(description.c_str());
@@ -263,7 +263,7 @@ bool Option::RenderCombobox() {
                     CVarSetInteger(cvarName.c_str(), static_cast<int>(i));
                     changed = true;
                     selected = i;
-                    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                 }
             }
         }
@@ -328,7 +328,7 @@ bool Option::RenderSlider() {
     if (changed) {
         CVarSetInteger(cvarName.c_str(), val);
         SetFromCVar();
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     }
     return changed;
 }
