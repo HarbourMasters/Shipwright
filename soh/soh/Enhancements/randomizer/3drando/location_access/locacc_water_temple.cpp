@@ -22,10 +22,8 @@ void RegionTable_Init_WaterTemple() {
   //Water Temple logic currently assumes that the locked door leading to the upper water raising location is unlocked from the start
   areaTable[RR_WATER_TEMPLE_LOBBY] = Region("Water Temple Lobby", "Water Temple", {RA_WATER_TEMPLE}, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LOCATION(RC_WATER_TEMPLE_MAIN_LEVEL_2_POT_1, logic->CanBreakPots()),
-                  LOCATION(RC_WATER_TEMPLE_MAIN_LEVEL_2_POT_2, logic->CanBreakPots()),
-                  LOCATION(RC_WATER_TEMPLE_MAIN_LEVEL_1_POT_1, logic->CanBreakPots()),
-                  LOCATION(RC_WATER_TEMPLE_MAIN_LEVEL_1_POT_2, logic->CanBreakPots()),
+                  LOCATION(RC_WATER_TEMPLE_MAIN_LEVEL_2_POT_1, logic->CanBreakPots() && (logic->CanWaterTempleLowFromHigh || logic->CanWaterTempleMiddle || (logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_HOOKSHOT)))),
+                  LOCATION(RC_WATER_TEMPLE_MAIN_LEVEL_2_POT_2, logic->CanBreakPots() && (logic->CanWaterTempleLowFromHigh || logic->CanWaterTempleMiddle || (logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_HOOKSHOT)))),
                 }, {
                   //Exits
                   Entrance(RR_WATER_TEMPLE_ENTRYWAY,              {[]{return true;}}),
@@ -271,7 +269,11 @@ void RegionTable_Init_WaterTemple() {
   areaTable[RR_WATER_TEMPLE_PRE_BOSS_ROOM] = Region("Water Temple Pre Boss Room", "Water Temple", {RA_WATER_TEMPLE}, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&logic->FairyPot, {[]{return true;}}),
-                }, {}, {
+                }, {
+                  // Locations
+                  LOCATION(RC_WATER_TEMPLE_MAIN_LEVEL_1_POT_1, logic->CanBreakPots()),
+                  LOCATION(RC_WATER_TEMPLE_MAIN_LEVEL_1_POT_2, logic->CanBreakPots()),
+                }, {
                   //Exits
                   Entrance(RR_WATER_TEMPLE_LOBBY,     {[]{return true;}}),
                   Entrance(RR_WATER_TEMPLE_BOSS_ENTRYWAY, {[]{return logic->HasItem(RG_WATER_TEMPLE_BOSS_KEY);}}),

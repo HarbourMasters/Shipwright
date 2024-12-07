@@ -1081,7 +1081,14 @@ Dungeons::Dungeons() {
                         RC_GERUDO_TRAINING_GROUND_MQ_UNDERWATER_SILVER_RUPEE_CHEST,
                         RC_GERUDO_TRAINING_GROUND_MQ_HEAVY_BLOCK_CHEST,
                     },
-                    {}, {}, {}, {});
+                    {}, 
+                    {
+                        // MQ Pots
+                        RC_GERUDO_TRAINING_GROUNDS_MQ_LOBBY_LEFT_POT_1,
+                        RC_GERUDO_TRAINING_GROUNDS_MQ_LOBBY_LEFT_POT_2,
+                        RC_GERUDO_TRAINING_GROUNDS_MQ_LOBBY_RIGHT_POT_1,
+                        RC_GERUDO_TRAINING_GROUNDS_MQ_LOBBY_RIGHT_POT_2,
+                    }, {}, {});
     dungeonList[GANONS_CASTLE] =
         DungeonInfo("Ganon's Castle", RHT_GANONS_CASTLE, RG_NONE, RG_NONE, RG_GANONS_CASTLE_SMALL_KEY,
                     RG_GANONS_CASTLE_KEY_RING, RG_GANONS_CASTLE_BOSS_KEY, RA_GANONS_CASTLE, 2, 3, RSK_MQ_GANONS_CASTLE,
