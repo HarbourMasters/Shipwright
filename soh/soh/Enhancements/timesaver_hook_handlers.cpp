@@ -509,9 +509,6 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
         }
         case VB_PLAY_GORON_FREE_CS: {
             if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), 0)) {
-                Audio_PlayFanfare(NA_BGM_APPEAR);
-                EnGo2* enGo2 = va_arg(args, EnGo2*);
-                Actor_Kill(&enGo2->actor);
                 *should = false;
             }
             break;
