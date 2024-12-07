@@ -1249,6 +1249,19 @@ void FileChoose_StartBossRushMenu(GameState* thisx) {
     }
 }
 
+void FileChoose_StartRandomizerMenu(GameState* thisx) {
+    FileChooseContext* this = (FileChooseContext*)thisx;
+
+    this->logoAlpha -= 25;
+    this->randomizerUIAlpha = 0;
+    this->randomizerArrowOffset = 0;
+
+    if (this->logoAlpha >= 0) {
+        this->logoAlpha = 0;
+        this->configMode = CM_RANDOMIZER_MENU;
+    }
+}
+
 void FileChoose_UpdateQuestMenu(GameState* thisx) {
     static u8 emptyName[] = { 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E };
     static u8 linkName[] = { 0x15, 0x2C, 0x31, 0x2E, 0x3E, 0x3E, 0x3E, 0x3E };
@@ -1306,7 +1319,7 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
         } else if (this->questType[this->buttonIndex] == QUEST_RANDOMIZER) {
             Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             this->prevConfigMode = this->configMode;
-            this->configMode = CM_GENERATE_SEED;
+            this->configMode = CM_ROTATE_TO_RANDOMIZER_MENU;
         } else {
             Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             osSyncPrintf("Selected Dungeon Quest: %d\n", IS_MASTER_QUEST);
@@ -1471,6 +1484,73 @@ void FileChoose_UpdateBossRushMenu(GameState* thisx) {
     }
 }
 
+void FileChoose_UpdateRandomizerMenu(GameState* thisx) {
+    FileChoose_UpdateStickDirectionPromptAnim(thisx);
+    FileChooseContext* this = (FileChooseContext*)thisx;
+    Input* input = &this->state.input[0];
+    bool dpad = CVarGetInteger(CVAR_SETTING("DpadInText"), 0);
+
+    // Fade in elements after opening Boss Rush options menu
+    this->randomizerUIAlpha += 25;
+    if (this->randomizerUIAlpha > 255) {
+        this->randomizerUIAlpha = 255;
+    }
+    
+    // Move menu selection up or down.
+    if (ABS(this->stickRelY) > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DDOWN | BTN_DUP))) {
+        // Move down
+        if (this->stickRelY < -30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DDOWN))) {
+            // When selecting past the last option, cycle back to the first option.
+            if ((this->randomizerIndex + 1) > 3) {
+                this->randomizerIndex = 0;
+            } else {
+                this->randomizerIndex++;
+            }
+        } else if (this->stickRelY > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DUP))) {
+            // When selecting past the first option, cycle back to the last option and offset the list to view it properly.
+            if ((this->randomizerIndex - 1) < 0) {
+                this->randomizerIndex = 3;
+            } else {
+                this->randomizerIndex--;
+            }
+        }
+
+        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+    }
+
+    // Cycle through spoiler log
+    if (ABS(this->stickRelX) > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT | BTN_DRIGHT))) {
+        if (this->stickRelX > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DRIGHT))) {
+            // If exceeding the amount of choices for the selected option, cycle back to the first.
+            if ((gSaveContext.bossRushOptions[this->bossRushIndex] + 1) == BossRush_GetSettingOptionsAmount(this->bossRushIndex)) {
+                gSaveContext.bossRushOptions[this->bossRushIndex] = 0;
+            } else {
+                gSaveContext.bossRushOptions[this->bossRushIndex]++;
+            }
+        } else if (this->stickRelX < -30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT))) {
+            // If cycling back when already at the first choice for the selected option, cycle back to the last choice.
+            if ((gSaveContext.bossRushOptions[this->bossRushIndex] - 1) < 0) {
+                gSaveContext.bossRushOptions[this->bossRushIndex] = BossRush_GetSettingOptionsAmount(this->bossRushIndex) - 1;
+            } else {
+                gSaveContext.bossRushOptions[this->bossRushIndex]--;
+            }
+        }
+
+        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+    }
+
+    if (CHECK_BTN_ALL(input->press.button, BTN_B)) {
+        this->configMode = CM_RANDOMIZER_TO_QUEST;
+        return;
+    }
+
+    // Handle executing options
+    if (CHECK_BTN_ALL(input->press.button, BTN_START) || CHECK_BTN_ALL(input->press.button, BTN_A)) {
+        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        
+    }
+}
+
 /**
  * Update function for `CM_UNUSED_31`
  */
@@ -1552,7 +1632,8 @@ void FileChoose_RotateToMain(GameState* thisx) {
 void FileChoose_RotateToQuest(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
 
-    if (this->configMode == CM_NAME_ENTRY_TO_QUEST_MENU || this->configMode == CM_BOSS_RUSH_TO_QUEST) {
+    if (this->configMode == CM_NAME_ENTRY_TO_QUEST_MENU || this->configMode == CM_BOSS_RUSH_TO_QUEST ||
+        this->configMode == CM_RANDOMIZER_TO_QUEST) {
         this->windowRot -= VREG(16);
 
         if (this->windowRot <= 314.0f) {
@@ -1577,6 +1658,17 @@ void FileChoose_RotateToBossRush(GameState* thisx) {
     if (this->windowRot >= 628.0f) {
         this->windowRot = 628.0f;
         this->configMode = CM_START_BOSS_RUSH_MENU;
+    }
+}
+
+void FileChoose_RotateToRandomizer(GameState* thisx) {
+    FileChooseContext* this = (FileChooseContext*)thisx;
+
+    this->windowRot += VREG(16);
+
+    if (this->windowRot >= 628.0f) {
+        this->windowRot = 628.0f;
+        this->configMode = CM_START_RANDOMIZER_MENU;
     }
 }
 
@@ -1606,7 +1698,8 @@ static void (*gConfigModeUpdateFuncs[])(GameState*) = {
     FileChoose_RotateToMain,       FileChoose_RotateToQuest,
     FileChoose_RotateToBossRush,   FileChoose_UpdateBossRushMenu,
     FileChoose_StartBossRushMenu,  FileChoose_RotateToQuest,
-    FileChoose_GenerateRandoSeed,
+    FileChoose_RotateToRandomizer, FileChoose_UpdateRandomizerMenu,
+    FileChoose_StartRandomizerMenu,FileChoose_RotateToQuest,
 };
 
 /**
@@ -2206,12 +2299,17 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
         case CM_QUEST_TO_MAIN:
         case CM_NAME_ENTRY_TO_QUEST_MENU:
         case CM_ROTATE_TO_BOSS_RUSH_MENU:
-        case CM_GENERATE_SEED:
+        case CM_ROTATE_TO_RANDOMIZER_MENU:
             tex = FileChoose_GetQuestChooseTitleTexName(gSaveContext.language);
             break;
         case CM_BOSS_RUSH_MENU:
         case CM_START_BOSS_RUSH_MENU:
         case CM_BOSS_RUSH_TO_QUEST:
+            tex = FileChoose_GetBossRushOptionsTitleTexName(gSaveContext.language);
+            break;
+        case CM_RANDOMIZER_MENU:
+        case CM_START_RANDOMIZER_MENU:
+        case CM_RANDOMIZER_TO_QUEST:
             tex = FileChoose_GetBossRushOptionsTitleTexName(gSaveContext.language);
             break;
         default:
@@ -2282,11 +2380,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
                 break;
             
             case QUEST_RANDOMIZER:
-                if (this->configMode == CM_GENERATE_SEED) {
-                    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, this->logoAlpha / 2);
-                } else {
-                    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, this->logoAlpha);
-                }
+                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, this->logoAlpha);
                 FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleTheLegendOfTextTex, 72, 8, 156, 108, 72, 8, 1024, 1024);
                 FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleOcarinaOfTimeTMTextTex, 96, 8, 154, 163, 96, 8, 1024, 1024);
                 FileChoose_DrawImageRGBA32(this->state.gfxCtx, 160, 135, ResourceMgr_GameHasOriginal() ? gTitleZeldaShieldLogoTex : gTitleZeldaShieldLogoMQTex, 160, 160);
@@ -2360,9 +2454,55 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
                                        (92 + textYOffset), 0.42f, 0, 0, 1.0f, 1.0f);
             }
         }
+    } else if (this->configMode == CM_RANDOMIZER_MENU) {
+
+        uint8_t textAlpha = this->randomizerUIAlpha;
+        uint8_t textColorB = 0;
+
+        textColorB = this->randomizerIndex == 0 ? 80 : 255;
+        Interface_DrawTextLine(this->state.gfxCtx, "Create New Randomizer", 70, (80 + 0), 255, 255, textColorB, textAlpha, 0.8f, true);
+
+        textColorB = this->randomizerIndex == 1 ? 80 : 255;
+        Interface_DrawTextLine(this->state.gfxCtx, "Generate New Seed", 70, (80 + 16), 255, 255, textColorB, textAlpha, 0.8f, true);
+
+        textColorB = this->randomizerIndex == 2 ? 80 : 255;
+        Interface_DrawTextLine(this->state.gfxCtx, "Open Randomizer Settings", 70, (80 + 32), 255, 255, textColorB, textAlpha, 0.8f, true);
+
+        textColorB = this->randomizerIndex == 3 ? 80 : 255;
+        Interface_DrawTextLine(this->state.gfxCtx, "Select Seed:", 70, (80 + 48), 255, 255, textColorB, textAlpha, 0.8f, true);
+
+        uint16_t finalKerning = Interface_DrawTextLine(this->state.gfxCtx, "10-10-10-10-10.json", 140, (80 + 48), 255, 255, 255, textAlpha, 0.8f, true);
+
+        if (this->randomizerIndex != 3) {
+            uint16_t textOffset = 16 * this->randomizerIndex;
+            Gfx_SetupDL_39Opa(this->state.gfxCtx);
+            gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
+            gDPLoadTextureBlock(POLY_OPA_DISP++, gArrowCursorTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 24, 0,
+                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 4, G_TX_NOMASK, G_TX_NOLOD,
+                                G_TX_NOLOD);
+            FileChoose_DrawTextRec(this->state.gfxCtx, this->stickRightPrompt.arrowColorR,
+                                   this->stickRightPrompt.arrowColorG, this->stickRightPrompt.arrowColorB, textAlpha,
+                                   62, (85 + textOffset), 0.42f, 0, 0, 1.0f, 1.0f);
+        } else {
+            Gfx_SetupDL_39Opa(this->state.gfxCtx);
+            gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
+            gDPLoadTextureBlock(POLY_OPA_DISP++, gArrowCursorTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 24, 0,
+                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 4, G_TX_NOMASK, G_TX_NOLOD,
+                                G_TX_NOLOD);
+            FileChoose_DrawTextRec(this->state.gfxCtx, this->stickLeftPrompt.arrowColorR,
+                                    this->stickLeftPrompt.arrowColorG, this->stickLeftPrompt.arrowColorB,
+                                    textAlpha, 135, (85 + 48), 0.42f, 0, 0, -1.0f,
+                                    1.0f);
+            FileChoose_DrawTextRec(this->state.gfxCtx, this->stickRightPrompt.arrowColorR,
+                                    this->stickRightPrompt.arrowColorG, this->stickRightPrompt.arrowColorB,
+                                    textAlpha, (146 + finalKerning),
+                                    (85 + 48), 0.42f, 0, 0, 1.0f, 1.0f);
+        }
 
     } else if (this->configMode != CM_ROTATE_TO_NAME_ENTRY && this->configMode != CM_START_BOSS_RUSH_MENU &&
-               this->configMode != CM_ROTATE_TO_BOSS_RUSH_MENU && this->configMode != CM_BOSS_RUSH_TO_QUEST) {
+               this->configMode != CM_ROTATE_TO_BOSS_RUSH_MENU && this->configMode != CM_BOSS_RUSH_TO_QUEST &&
+               this->configMode != CM_START_RANDOMIZER_MENU && this->configMode != CM_ROTATE_TO_RANDOMIZER_MENU &&
+               this->configMode != CM_RANDOMIZER_TO_QUEST) {
         gDPPipeSync(POLY_OPA_DISP++);
         gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, this->titleAlpha[1]);
         gDPLoadTextureBlock(POLY_OPA_DISP++, sTitleLabels[gSaveContext.language][this->nextTitleLabel], G_IM_FMT_IA,
@@ -2707,7 +2847,7 @@ void FileChoose_ConfigModeDraw(GameState* thisx) {
     if ((this->configMode == CM_QUEST_MENU) || (this->configMode == CM_ROTATE_TO_QUEST_MENU) || 
         (this->configMode == CM_ROTATE_TO_NAME_ENTRY) || this->configMode == CM_QUEST_TO_MAIN ||
         this->configMode == CM_NAME_ENTRY_TO_QUEST_MENU || this->configMode == CM_ROTATE_TO_BOSS_RUSH_MENU ||
-        this->configMode == CM_GENERATE_SEED) {
+        this->configMode == CM_ROTATE_TO_RANDOMIZER_MENU) {
         // window
         gDPPipeSync(POLY_OPA_DISP++);
         gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
@@ -2739,6 +2879,36 @@ void FileChoose_ConfigModeDraw(GameState* thisx) {
     // Draw Boss Rush Options Menu
     if (this->configMode == CM_BOSS_RUSH_MENU || this->configMode == CM_ROTATE_TO_BOSS_RUSH_MENU ||
         this->configMode == CM_START_BOSS_RUSH_MENU || this->configMode == CM_BOSS_RUSH_TO_QUEST) {
+        // window
+        gDPPipeSync(POLY_OPA_DISP++);
+        gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
+        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->windowColor[0], this->windowColor[1], this->windowColor[2],
+                        this->windowAlpha);
+        gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 0);
+
+        Matrix_Translate(0.0f, 0.0f, -93.6f, MTXMODE_NEW);
+        Matrix_Scale(0.78f, 0.78f, 0.78f, MTXMODE_APPLY);
+        Matrix_RotateX((this->windowRot - 628.0f) / 100.0f, MTXMODE_APPLY);
+
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(this->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+
+        gSPVertex(POLY_OPA_DISP++, &this->windowVtx[0], 32, 0);
+        gSPDisplayList(POLY_OPA_DISP++, gFileSelWindow1DL);
+
+        gSPVertex(POLY_OPA_DISP++, &this->windowVtx[32], 32, 0);
+        gSPDisplayList(POLY_OPA_DISP++, gFileSelWindow2DL);
+
+        gSPVertex(POLY_OPA_DISP++, &this->windowVtx[64], 16, 0);
+        gSPDisplayList(POLY_OPA_DISP++, gFileSelWindow3DL);
+
+        gDPPipeSync(POLY_OPA_DISP++);
+
+        FileChoose_DrawWindowContents(&this->state);
+    }
+
+    // Draw Randomizer Options Menu
+    if (this->configMode == CM_RANDOMIZER_MENU || this->configMode == CM_ROTATE_TO_RANDOMIZER_MENU ||
+        this->configMode == CM_START_RANDOMIZER_MENU || this->configMode == CM_RANDOMIZER_TO_QUEST) {
         // window
         gDPPipeSync(POLY_OPA_DISP++);
         gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
@@ -3629,6 +3799,7 @@ void FileChoose_InitContext(GameState* thisx) {
 
     this->bossRushIndex = 0;
     this->bossRushOffset = 0;
+    this->randomizerIndex = 0;
 
     ShrinkWindow_SetVal(0);
 
