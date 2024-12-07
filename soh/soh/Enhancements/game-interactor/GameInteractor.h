@@ -319,6 +319,8 @@ typedef enum {
     VB_PLAY_BOLERO_OF_FIRE_CS,
     VB_PLAY_SERENADE_OF_WATER_CS,
     VB_PLAY_EYEDROPS_CS,
+    // Opt: *EnGo2
+    VB_PLAY_GORON_FREE_CS,
     // Opt: *EnOkarinaTag
     VB_PLAY_DRAIN_WELL_CS,
     // Opt: *EnOkarinaTag
