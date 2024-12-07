@@ -800,6 +800,9 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             *should = false;
             break;
         }
+        case VB_SPAWN_FIRE_ARROW:
+            *should = !Flags_GetTreasure(gPlayState, 0x1F);
+            break;
         case VB_PLAY_NABOORU_CAPTURED_CS:
             // This behavior is replicated for randomizer in RandomizerOnItemReceiveHandler
             *should = false;
