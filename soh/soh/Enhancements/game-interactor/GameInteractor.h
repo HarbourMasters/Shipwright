@@ -309,6 +309,8 @@ typedef enum {
     // Vanilla condition: !EVENTCHKINF_PULLED_MASTER_SWORD_FROM_PEDESTAL
     VB_PLAY_PULL_MASTER_SWORD_CS,
     VB_PLAY_DROP_FISH_FOR_JABU_CS,
+    // Opt: *EnKz
+    VB_PLAY_MWEEP_CS,
     // Vanilla condition: player->getItemId == GI_GAUNTLETS_SILVER
     VB_PLAY_NABOORU_CAPTURED_CS,
     VB_PLAY_ZELDAS_LULLABY_CS,
