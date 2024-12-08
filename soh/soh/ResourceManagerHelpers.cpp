@@ -604,9 +604,12 @@ extern "C" void ResourceMgr_UnloadSceneAssets() {
 }
 
 extern "C" void ResourceMgr_LoadDelayedPersistentAltAssets() {
-    ResourceLoadDirectoryAsync("alt/textures/vr_cloud*");
+    Ship::Context::GetInstance()->GetResourceManager()->LoadResourceAsync("audio/fonts/00_Sound_Effects_1");
+    Ship::Context::GetInstance()->GetResourceManager()->LoadResourceAsync("audio/fonts/00_Sound_Effects_2");
+    ResourceLoadDirectoryAsync("audio/*");
     ResourceLoadDirectoryAsync("alt/overlays/*");
     ResourceLoadDirectoryAsync("alt/textures/*");
+    ResourceLoadDirectoryAsync("alt/textures/vr_cloud*");
     ResourceLoadDirectoryAsync("alt/objects/gameplay_*");
     ResourceLoadDirectoryAsync("alt/scenes/*/spot00*");
     ResourceLoadDirectoryAsync("alt/code/*");
@@ -621,26 +624,27 @@ extern "C" void ResourceMgr_LoadPersistentAltAssets() {
         ResourceLoadDirectoryAsync("alt/scenes/*/spot00*");
         ResourceLoadDirectoryAsync("alt/objects/object_mag/*");
         ResourceLoadDirectoryAsync("alt/objects/gameplay_keep/*");
-        rmhThreadPool->submit_task(ResourceMgr_LoadDelayedPersistentAltAssets);
+        Ship::Context::GetInstance()->GetResourceManager()->LoadResourceAsync("audio/sequences/030_Title_Theme");
+        Ship::Context::GetInstance()->GetResourceManager()->LoadResourceAsync("audio/fonts/06_Title_Theme");
     }
     else if (skipTitle && fastFile == 4) {
         ResourceLoadDirectoryAsync("alt/overlays/ovl_file_choose/*");
         ResourceLoadDirectoryAsync("alt/textures/title_static/*");
         ResourceLoadDirectoryAsync("alt/objects/gameplay_keep/*");
+        Ship::Context::GetInstance()->GetResourceManager()->LoadResourceAsync("audio/sequences/087_File_Select");
+        Ship::Context::GetInstance()->GetResourceManager()->LoadResourceAsync("audio/fonts/09_Fairy_Fountain");
     }
     else if (skipTitle && fastFile < 3) {
-        ResourceLoadDirectoryAsync("alt/textures/icon*/*");
+        ResourceLoadDirectoryAsync("alt/textures/icon*");
+        ResourceLoadDirectoryAsync("alt/textures/do_action_static/*");
+        ResourceLoadDirectoryAsync("alt/textures/map*");
+        ResourceLoadDirectoryAsync("alt/textures/parameter_Static/*");
         ResourceLoadDirectoryAsync("alt/objects/gameplay_*");
     }
+    rmhThreadPool->submit_task(ResourceMgr_LoadDelayedPersistentAltAssets);
 }
 
 extern "C" void ResourceMgr_RegisterHooks() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPresentFileSelect>([]() {
-        if (delayedAltAssetLoad) {
-            delayedAltAssetLoad = false;
-            rmhThreadPool->submit_task(ResourceMgr_LoadDelayedPersistentAltAssets);
-        }
-        });
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnTransitionEnd>([](int32_t sceneNum) {
         if (delayedAltAssetLoad) {
             delayedAltAssetLoad = false;
