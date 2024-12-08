@@ -1,6 +1,7 @@
 #include "OTRGlobals.h"
 #include "ResourceManagerHelpers.h"
 #include <libultraship/libultraship.h>
+#include "soh/ResourceManagerHelpers.h"
 #include "soh/resource/type/Scene.h"
 #include <utils/StringHelper.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
@@ -14,7 +15,7 @@ void OTRPlay_InitScene(PlayState* play, s32 spawn);
 s32 OTRScene_ExecuteCommands(PlayState* play, SOH::Scene* scene);
 
 //LUS::OTRResource* OTRPlay_LoadFile(PlayState* play, RomFile* file) {
-Ship::IResource* OTRPlay_LoadFile(PlayState* play, const char* fileName)
+Ship::IResource* OTRPlay_LoadFile(const char* fileName)
 {
     auto res = Ship::Context::GetInstance()->GetResourceManager()->LoadResource(fileName);
     return res.get();
@@ -40,7 +41,7 @@ extern "C" void OTRPlay_SpawnScene(PlayState* play, s32 sceneId, s32 spawn) {
     }
     std::string scenePath = StringHelper::Sprintf("scenes/%s/%s/%s", sceneVersion.c_str(), scene->sceneFile.fileName, scene->sceneFile.fileName);
 
-    play->sceneSegment = OTRPlay_LoadFile(play, scenePath.c_str());
+    play->sceneSegment = OTRPlay_LoadFile(scenePath.c_str());
 
     // Failed to load scene... default to doodongs cavern
     if (play->sceneSegment == nullptr) 
@@ -76,6 +77,9 @@ void OTRPlay_InitScene(PlayState* play, s32 spawn) {
     Object_InitBank(play, &play->objectCtx);
     LightContext_Init(play, &play->lightCtx);
     TransitionActor_InitContext(&play->state, &play->transiActorCtx);
+    //ResourceMgr_LoadAllSceneResources(play->sceneNum, false);
+    ResourceMgr_UnloadSceneAssets();
+
     func_80096FD4(play, &play->roomCtx.curRoom);
     YREG(15) = 0;
     gSaveContext.worldMapArea = 0;

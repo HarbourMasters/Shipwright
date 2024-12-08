@@ -62,7 +62,6 @@ class OTRGlobals {
         bool HasMasterQuest();
         bool HasOriginal();
         uint32_t GetInterpolationFPS();
-        std::shared_ptr<std::vector<std::string>> ListFiles(std::string path);
 
     private:
     	void CheckSaveFile(size_t sramSize) const;

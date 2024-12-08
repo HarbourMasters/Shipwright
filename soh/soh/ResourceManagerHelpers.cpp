@@ -11,8 +11,17 @@
 #include "resource/type/Array.h"
 #include "resource/type/Skeleton.h"
 #include "resource/type/PlayerAnimation.h"
+#include "soh/ActorDB.h"
+#include "soh/resource/type/Scene.h"
+#include "soh/resource/type/scenecommand/SetRoomList.h"
+#include "soh/resource/type/scenecommand/SetActorList.h"
+#include "soh/resource/type/scenecommand/SetObjectList.h"
 #include <Fast3D/gfx_pc.h>
 #include <DisplayList.h>
+
+bool delayedAltAssetLoad = false;
+s16 unloadScene = -1;
+std::shared_ptr<BS::thread_pool> rmhThreadPool = std::make_shared<BS::thread_pool>(1);
 
 extern "C" PlayState* gPlayState;
 
@@ -151,7 +160,7 @@ extern "C" char** ResourceMgr_ListFiles(const char* searchMask, int* resultSize)
 
 extern "C" uint8_t ResourceMgr_FileExists(const char* filePath) {
     std::string path = filePath;
-    if(path.substr(0, 7) == "__OTR__"){
+    if (path.substr(0, 7) == "__OTR__") {
         path = path.substr(7);
     }
 
@@ -179,7 +188,7 @@ extern "C" bool ResourceMgr_IsAltAssetsEnabled() {
 // The resource is only removed from the internal cache to prevent it from used in the next resource lookup
 extern "C" void ResourceMgr_UnloadOriginalWhenAltExists(const char* resName) {
     if (ResourceMgr_IsAltAssetsEnabled() && ResourceMgr_FileAltExists((char*)resName)) {
-        ResourceMgr_UnloadResource((char*) resName);
+        ResourceMgr_UnloadResource((char*)resName);
     }
 }
 
@@ -395,49 +404,49 @@ extern "C" char* ResourceMgr_LoadArrayByNameAsVec3s(const char* path) {
     //     return (char*)res->CachedGameAsset;
     // else
     // {
-        Vec3s* data = (Vec3s*)malloc(sizeof(Vec3s) * res->Scalars.size());
+    Vec3s* data = (Vec3s*)malloc(sizeof(Vec3s) * res->Scalars.size());
 
-        for (size_t i = 0; i < res->Scalars.size(); i += 3) {
-            data[(i / 3)].x = res->Scalars[i + 0].s16;
-            data[(i / 3)].y = res->Scalars[i + 1].s16;
-            data[(i / 3)].z = res->Scalars[i + 2].s16;
-        }
+    for (size_t i = 0; i < res->Scalars.size(); i += 3) {
+        data[(i / 3)].x = res->Scalars[i + 0].s16;
+        data[(i / 3)].y = res->Scalars[i + 1].s16;
+        data[(i / 3)].z = res->Scalars[i + 2].s16;
+    }
 
-        // res->CachedGameAsset = data;
+    // res->CachedGameAsset = data;
 
-        return (char*)data;
+    return (char*)data;
     // }
 }
 
 extern "C" CollisionHeader* ResourceMgr_LoadColByName(const char* path) {
-    return (CollisionHeader*) ResourceGetDataByName(path);
+    return (CollisionHeader*)ResourceGetDataByName(path);
 }
 
 extern "C" Vtx* ResourceMgr_LoadVtxByName(char* path) {
-    return (Vtx*) ResourceGetDataByName(path);
+    return (Vtx*)ResourceGetDataByName(path);
 }
 
 extern "C" SequenceData ResourceMgr_LoadSeqByName(const char* path) {
-    SequenceData* sequence = (SequenceData*) ResourceGetDataByName(path);
+    SequenceData* sequence = (SequenceData*)ResourceGetDataByName(path);
     return *sequence;
 }
 
 extern "C" SoundFontSample* ResourceMgr_LoadAudioSample(const char* path) {
-    return (SoundFontSample*) ResourceGetDataByName(path);
+    return (SoundFontSample*)ResourceGetDataByName(path);
 }
 
 extern "C" SoundFont* ResourceMgr_LoadAudioSoundFont(const char* path) {
-    return (SoundFont*) ResourceGetDataByName(path);
+    return (SoundFont*)ResourceGetDataByName(path);
 }
 
 extern "C" int ResourceMgr_OTRSigCheck(char* imgData) {
-	uintptr_t i = (uintptr_t)(imgData);
+    uintptr_t i = (uintptr_t)(imgData);
 
-// if (i == 0xD9000000 || i == 0xE7000000 || (i & 1) == 1)
+    // if (i == 0xD9000000 || i == 0xE7000000 || (i & 1) == 1)
     if ((i & 1) == 1)
         return 0;
 
-// if ((i & 0xFF000000) != 0xAB000000 && (i & 0xFF000000) != 0xCD000000 && i != 0) {
+    // if ((i & 0xFF000000) != 0xAB000000 && (i & 0xFF000000) != 0xCD000000 && i != 0) {
     if (i != 0) {
         if (
             imgData[0] == '_' &&
@@ -447,7 +456,7 @@ extern "C" int ResourceMgr_OTRSigCheck(char* imgData) {
             imgData[4] == 'R' &&
             imgData[5] == '_' &&
             imgData[6] == '_'
-        ) {
+            ) {
             return 1;
         }
     }
@@ -456,7 +465,7 @@ extern "C" int ResourceMgr_OTRSigCheck(char* imgData) {
 }
 
 extern "C" AnimationHeaderCommon* ResourceMgr_LoadAnimByName(const char* path) {
-    return (AnimationHeaderCommon*) ResourceGetDataByName(path);
+    return (AnimationHeaderCommon*)ResourceGetDataByName(path);
 }
 
 extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path, SkelAnime* skelAnime) {
@@ -473,11 +482,11 @@ extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path, Skel
         pathStr = Ship::IResource::gAltAssetPrefix + pathStr;
     }
 
-    SkeletonHeader* skelHeader = (SkeletonHeader*) ResourceGetDataByName(pathStr.c_str());
+    SkeletonHeader* skelHeader = (SkeletonHeader*)ResourceGetDataByName(pathStr.c_str());
 
     // If there isn't an alternate model, load the regular one
     if (isAlt && skelHeader == NULL) {
-        skelHeader = (SkeletonHeader*) ResourceGetDataByName(path);
+        skelHeader = (SkeletonHeader*)ResourceGetDataByName(path);
     }
 
     // This function is only called when a skeleton is initialized.
@@ -502,4 +511,140 @@ extern "C" void ResourceMgr_ClearSkeletons() {
 
 extern "C" s32* ResourceMgr_LoadCSByName(const char* path) {
     return (s32*)ResourceMgr_GetResourceDataByNameHandlingMQ(path);
+}
+
+bool IsSharedScene(int16_t sceneNum) {
+    return sceneNum > SCENE_INSIDE_GANONS_CASTLE || sceneNum == SCENE_GANONS_TOWER || sceneNum == SCENE_THIEVES_HIDEOUT;
+}
+
+std::string GetScenePath(int16_t sceneNum) {
+    std::string sceneName = gSceneTable[sceneNum].sceneFile.fileName;
+    std::string path = "alt/scenes/shared/" + sceneName + "/*";
+    if (!IsSharedScene(sceneNum)) {
+        size_t pos = 0;
+        if ((pos = path.find("/shared/", 0)) != std::string::npos) {
+            if (ResourceMgr_IsGameMasterQuest()) {
+                path.replace(pos, 8, "/mq/");
+            }
+            else {
+                path.replace(pos, 8, "/nonmq/");
+            }
+        }
+    }
+    return path;
+}
+
+std::array<std::unordered_set<std::string>, SCENE_TESTROOM + 1> sceneObjects;
+
+extern "C" void LoadSceneResourcesProcess(int16_t sceneNum) {
+
+    for (auto objectName : sceneObjects[sceneNum]) {
+        if (!sceneObjects[gPlayState->sceneNum].contains(objectName)) {
+            OTRGlobals::Instance->context->GetResourceManager()->LoadDirectoryAsync("alt/objects/" + objectName + "/*");
+        }
+    }
+    OTRGlobals::Instance->context->GetResourceManager()->LoadDirectoryAsync(GetScenePath(sceneNum));
+}
+
+extern "C" void ResourceMgr_LoadAllSceneResources(int16_t sceneNum, bool now) {
+    auto play = gPlayState;
+    if (sceneObjects[sceneNum].empty()) {
+        SOH::SceneCommandID cmdCode;
+        auto scene = (SOH::Scene*)play->sceneSegment;
+        for (auto sceneCmd : scene->commands) {
+            if (sceneCmd->cmdId == SOH::SceneCommandID::SetRoomList) {
+                auto setRoomListCmd = std::dynamic_pointer_cast<SOH::SetRoomList>(sceneCmd);
+                for (auto room : setRoomListCmd->rooms) {
+                    auto roomScene = (SOH::Scene*)Ship::Context::GetInstance()->GetResourceManager()->LoadResource(room.fileName).get();
+                    for (auto roomSceneCmd : roomScene->commands) {
+                        if (roomSceneCmd->cmdId == SOH::SceneCommandID::SetObjectList) {
+                            auto setObjectCmd = std::dynamic_pointer_cast<SOH::SetObjectList>(roomSceneCmd);
+                            for (auto objectId : setObjectCmd->objects) {
+                                std::string objectName = gObjectTable[objectId].fileName;
+                                sceneObjects[sceneNum].insert(objectName);
+                            }
+                        }
+                        else if (roomSceneCmd->cmdId == SOH::SceneCommandID::SetActorList) {
+                            auto setActorCmd = std::dynamic_pointer_cast<SOH::SetActorList>(roomSceneCmd);
+                            if (setActorCmd->numActors > 0) {
+                                for (uint16_t i = 0; i < setActorCmd->numActors; i++) {
+                                    auto actorEntry = (ActorEntry*)setActorCmd->GetRawPointer();
+                                    std::string objectName = gObjectTable[ActorDB::Instance->RetrieveEntry(actorEntry->id).entry.objectId].fileName;
+                                    sceneObjects[sceneNum].insert(objectName);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    rmhThreadPool->submit_task(std::bind(LoadSceneResourcesProcess, sceneNum));
+}
+
+extern "C" void ResourceMgr_RegisterUnloadSceneAssets(s16 prevScene) {
+    unloadScene = prevScene;
+}
+
+void UnloadSceneAssetsProcess() {
+    for (auto objectName : sceneObjects[unloadScene]) {
+        if (!sceneObjects[gPlayState->sceneNum].contains(objectName)) {
+            std::string objectPath = fmt::format("alt/objects/{}/*", objectName);
+            OTRGlobals::Instance->context->GetResourceManager()->UnloadDirectory(objectPath);
+        }
+    }
+    OTRGlobals::Instance->context->GetResourceManager()->UnloadDirectory(GetScenePath(unloadScene));
+    unloadScene = -1;
+}
+
+extern "C" void ResourceMgr_UnloadSceneAssets() {
+    if (unloadScene != -1) {
+        rmhThreadPool->submit_task(UnloadSceneAssetsProcess);
+    }
+}
+
+extern "C" void ResourceMgr_LoadDelayedPersistentAltAssets() {
+    ResourceLoadDirectoryAsync("alt/textures/vr_cloud*");
+    ResourceLoadDirectoryAsync("alt/overlays/*");
+    ResourceLoadDirectoryAsync("alt/textures/*");
+    ResourceLoadDirectoryAsync("alt/objects/gameplay_*");
+    ResourceLoadDirectoryAsync("alt/scenes/*/spot00*");
+    ResourceLoadDirectoryAsync("alt/code/*");
+}
+
+extern "C" void ResourceMgr_LoadPersistentAltAssets() {
+    bool skipTitle = CVarGetInteger(CVAR_DEVELOPER_TOOLS("SkipLogoTitle"), 0);
+    int fastFile = CVarGetInteger(CVAR_DEVELOPER_TOOLS("SaveFileID"), 0);
+
+    if (!skipTitle) {
+        ResourceLoadDirectoryAsync("alt/textures/nintendo_rogo_static/*");
+        ResourceLoadDirectoryAsync("alt/scenes/*/spot00*");
+        ResourceLoadDirectoryAsync("alt/objects/object_mag/*");
+        ResourceLoadDirectoryAsync("alt/objects/gameplay_keep/*");
+        rmhThreadPool->submit_task(ResourceMgr_LoadDelayedPersistentAltAssets);
+    }
+    else if (skipTitle && fastFile == 4) {
+        ResourceLoadDirectoryAsync("alt/overlays/ovl_file_choose/*");
+        ResourceLoadDirectoryAsync("alt/textures/title_static/*");
+        ResourceLoadDirectoryAsync("alt/objects/gameplay_keep/*");
+    }
+    else if (skipTitle && fastFile < 3) {
+        ResourceLoadDirectoryAsync("alt/textures/icon*/*");
+        ResourceLoadDirectoryAsync("alt/objects/gameplay_*");
+    }
+}
+
+extern "C" void ResourceMgr_RegisterHooks() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPresentFileSelect>([]() {
+        if (delayedAltAssetLoad) {
+            delayedAltAssetLoad = false;
+            rmhThreadPool->submit_task(ResourceMgr_LoadDelayedPersistentAltAssets);
+        }
+        });
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnTransitionEnd>([](int32_t sceneNum) {
+        if (delayedAltAssetLoad) {
+            delayedAltAssetLoad = false;
+            rmhThreadPool->submit_task(ResourceMgr_LoadDelayedPersistentAltAssets);
+        }
+        });
 }

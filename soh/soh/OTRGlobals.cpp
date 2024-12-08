@@ -1196,6 +1196,9 @@ extern "C" void InitOTR() {
         Sail::Instance->Enable();
     }
 #endif
+
+    ResourceMgr_LoadPersistentAltAssets();
+    ResourceMgr_RegisterHooks();
 }
 
 extern "C" void SaveManager_ThreadPoolWait() {

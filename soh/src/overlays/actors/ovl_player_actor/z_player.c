@@ -5155,6 +5155,7 @@ s32 Player_HandleExitsAndVoids(PlayState* play, Player* this, CollisionPoly* pol
                     gSaveContext.retainWeatherMode = 1;
                     Scene_SetTransitionForNextEntrance(play);
                 }
+                ResourceMgr_LoadAllSceneResources(gEntranceTable[((void)0, play->nextEntranceIndex)].scene, false);
                 play->transitionTrigger = TRANS_TRIGGER_START;
             }
 

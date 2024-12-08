@@ -469,11 +469,21 @@ void GameState_Destroy(GameState* gameState) {
     osSyncPrintf("game デストラクタ終了\n"); // "game destructor end"
 
     // Performing clear skeletons before unload resources fixes an actor heap corruption crash due to the skeleton patching system.
-    ResourceMgr_ClearSkeletons();
+    PlayState* play = (PlayState*)gameState;
+    static s16 sceneNum = -1;
+    if (play->sceneNum != sceneNum) {
 
-    if (ResourceMgr_IsAltAssetsEnabled()) {
-        ResourceUnloadDirectory("alt/*");
-        gfx_texture_cache_clear();
+        // Performing clear skeletons before unload resources fixes an actor heap corruption crash due to the skeleton patching system.
+        ResourceMgr_ClearSkeletons();
+
+        if (sceneNum > -0 && sceneNum <= SCENE_TESTROOM) {
+            ResourceMgr_RegisterUnloadSceneAssets(sceneNum);
+        }
+
+        if (ResourceMgr_IsAltAssetsEnabled()) {
+            gfx_texture_cache_clear();
+        }
+        sceneNum = play->sceneNum;
     }
 }
 

@@ -61,6 +61,12 @@ extern "C" {
     s32* ResourceMgr_LoadCSByName(const char* path);
     int ResourceMgr_OTRSigCheck(char* imgData);
     char* ResourceMgr_GetResourceDataByNameHandlingMQ(const char* path);
+    void ResourceMgr_LoadAllSceneResources(int16_t sceneNum, bool now);
+    void ResourceMgr_UnloadSceneAssets();
+    void ResourceMgr_LoadDelayedPersistentAltAssets();
+    void ResourceMgr_LoadPersistentAltAssets();
+    void ResourceMgr_RegisterHooks();
+    void ResourceMgr_RegisterUnloadSceneAssets(s16 prevScene);
 #ifdef __cplusplus
 }
 #endif // __cplusplus
