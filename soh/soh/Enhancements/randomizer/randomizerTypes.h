@@ -5232,6 +5232,7 @@ typedef enum {
     RE_TENTACLE,
     RE_BARI,
     RE_SHABOM,
+    RE_OCTOROK,
 } RandomizerEnemy;
 
 //RANDOTODO compare child long jumpslash range with adult short

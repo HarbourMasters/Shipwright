@@ -5,11 +5,10 @@ extern "C" {
 #include "variables.h"
 #include "overlays/actors/ovl_Obj_Tsubo/z_obj_tsubo.h"
 #include "overlays/actors/ovl_Door_Shutter/z_door_shutter.h"
-
-u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
-PotIdentity Randomizer_IdentifyPot(s32 sceneNum, s32 posX, s32 posZ);
 extern PlayState* gPlayState;
 }
+
+extern void EnItem00_DrawRandomizedItem(EnItem00* enItem00, PlayState* play);
 
 
 extern "C" void ObjTsubo_RandomizerDraw(Actor* thisx, PlayState* play) {
@@ -29,7 +28,7 @@ uint8_t ObjTsubo_RandomizerHoldsItem(ObjTsubo* potActor, PlayState* play) {
     uint8_t isDungeon =
         play->sceneNum < SCENE_GANONS_TOWER_COLLAPSE_INTERIOR ||
         (play->sceneNum > SCENE_TREASURE_BOX_SHOP && play->sceneNum < SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR);
-    uint8_t potSetting = Randomizer_GetSettingValue(RSK_SHUFFLE_POTS);
+    uint8_t potSetting = Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_POTS).GetContextOptionIndex();
 
     // Don't pull randomized item if pot isn't randomized or is already checked
     if (!IS_RANDO || (potSetting == RO_SHUFFLE_POTS_OVERWORLD && isDungeon) ||
@@ -59,8 +58,7 @@ void ObjTsubo_RandomizerInit(void* actorRef) {
 
     ObjTsubo* potActor = static_cast<ObjTsubo*>(actorRef);
 
-    potActor->potIdentity =
-        Randomizer_IdentifyPot(gPlayState->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z);
+    potActor->potIdentity = OTRGlobals::Instance->gRandomizer->IdentifyPot(gPlayState->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z);
 }
 
 void ShufflePots_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_list originalArgs) {
@@ -68,7 +66,7 @@ void ShufflePots_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va
     va_copy(args, originalArgs);
 
     // Draw custom model for pot to indicate it holding a randomized item.
-    if (id == VB_POT_DRAW) {
+    if (id == VB_POT_SETUP_DRAW) {
         ObjTsubo* potActor = va_arg(args, ObjTsubo*);
         if (ObjTsubo_RandomizerHoldsItem(potActor, gPlayState)) {
             potActor->actor.draw = (ActorFunc)ObjTsubo_RandomizerDraw;
@@ -88,7 +86,7 @@ void ShufflePots_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va
     // Unlock early Ganon's Boss Key doors to allow access to the pots there when pots are shuffled in dungeon
     if (id == VB_LOCK_BOSS_DOOR) {
         DoorShutter* doorActor = va_arg(args, DoorShutter*);
-        uint8_t shufflePotSetting = Randomizer_GetSettingValue(RSK_SHUFFLE_POTS);
+        uint8_t shufflePotSetting = Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_POTS).GetContextOptionIndex();
         if (gPlayState->sceneNum == SCENE_GANONS_TOWER && doorActor->dyna.actor.world.pos.y == 800 &&
             (shufflePotSetting == RO_SHUFFLE_POTS_DUNGEONS || shufflePotSetting == RO_SHUFFLE_POTS_ALL)) {
             *should = false;

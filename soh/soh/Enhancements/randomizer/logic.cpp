@@ -659,6 +659,8 @@ namespace Rando {
             case RE_SHABOM:
             //RANDOTODO when you add better damage logic, you can kill this by taking hits
                 return CanUse(RG_BOOMERANG) || CanUse(RG_NUTS) || CanJumpslash() || CanUse(RG_DINS_FIRE) || CanUse(RG_ICE_ARROWS);
+            case RE_OCTOROK:
+                return CanReflectNuts() || HookshotOrBoomerang() || CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT);
             default:
                 SPDLOG_ERROR("CanKillEnemy reached `default`.");
                 assert(false);
@@ -698,6 +700,7 @@ namespace Rando {
             case RE_ANUBIS:
             case RE_WALLMASTER:
             case RE_PURPLE_LEEVER:
+            case RE_OCTOROK:
                 return true;
             case RE_BIG_SKULLTULA:
                 //hammer jumpslash can pass, but only on flat land where you can kill with hammer swing

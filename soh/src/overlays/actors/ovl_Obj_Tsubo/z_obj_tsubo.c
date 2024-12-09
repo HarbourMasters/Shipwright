@@ -227,7 +227,7 @@ void ObjTsubo_SetupWaitForObject(ObjTsubo* this) {
 
 void ObjTsubo_WaitForObject(ObjTsubo* this, PlayState* play) {
     if (Object_IsLoaded(&play->objectCtx, this->objTsuboBankIndex)) {
-        if (GameInteractor_Should(VB_POT_DRAW, true, this)) {
+        if (GameInteractor_Should(VB_POT_SETUP_DRAW, true, this)) {
             this->actor.draw = ObjTsubo_Draw;
         }
         this->actor.objBankIndex = this->objTsuboBankIndex;

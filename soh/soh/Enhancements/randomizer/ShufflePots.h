@@ -2,7 +2,7 @@
 #define SHUFFLEPOTS_H
 
 #include <z64.h>
-#include "randomizer.h"
+#include <soh/OTRGlobals.h>
 
 #ifdef __cplusplus
 extern "C" {

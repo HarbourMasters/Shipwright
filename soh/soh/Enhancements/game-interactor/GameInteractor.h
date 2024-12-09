@@ -246,7 +246,7 @@ typedef enum {
     */
     VB_DRAW_AMMO_COUNT,
     // Opt: *ObjTsubo
-    VB_POT_DRAW,
+    VB_POT_SETUP_DRAW,
     VB_POT_DROP_ITEM,
     // Opt: *ActorDoorShutter
     VB_LOCK_BOSS_DOOR,

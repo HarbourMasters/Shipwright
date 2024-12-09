@@ -69,9 +69,6 @@ void GameInteractor_RegisterOnAssetAltChange(void (*fn)(void));
 //Mark: - Pause Menu
 void GameInteractor_ExecuteOnKaleidoUpdate();
 
-//Mark - Randomizer options spawning EnItem00 actors
-void EnItem00_DrawRandomizedItem(EnItem00* enItem00, PlayState* play);
-
 #ifdef __cplusplus
 }
 #endif
