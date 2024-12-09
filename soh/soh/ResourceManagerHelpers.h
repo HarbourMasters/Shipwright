@@ -65,7 +65,6 @@ extern "C" {
     void ResourceMgr_UnloadSceneAssets();
     void ResourceMgr_LoadDelayedPersistentAltAssets();
     void ResourceMgr_LoadPersistentAltAssets();
-    void ResourceMgr_RegisterHooks();
     void ResourceMgr_RegisterUnloadSceneAssets(s16 prevScene);
 #ifdef __cplusplus
 }

@@ -19,9 +19,8 @@
 #include <Fast3D/gfx_pc.h>
 #include <DisplayList.h>
 
-bool delayedAltAssetLoad = false;
 s16 unloadScene = -1;
-std::shared_ptr<BS::thread_pool> rmhThreadPool = std::make_shared<BS::thread_pool>(1);
+std::shared_ptr<BS::thread_pool> helperThreads = std::make_shared<BS::thread_pool>(1);
 
 extern "C" PlayState* gPlayState;
 
@@ -400,10 +399,6 @@ extern "C" char* ResourceMgr_LoadArrayByName(const char* path) {
 extern "C" char* ResourceMgr_LoadArrayByNameAsVec3s(const char* path) {
     auto res = std::static_pointer_cast<SOH::Array>(ResourceMgr_GetResourceByNameHandlingMQ(path));
 
-    // if (res->CachedGameAsset != nullptr)
-    //     return (char*)res->CachedGameAsset;
-    // else
-    // {
     Vec3s* data = (Vec3s*)malloc(sizeof(Vec3s) * res->Scalars.size());
 
     for (size_t i = 0; i < res->Scalars.size(); i += 3) {
@@ -412,10 +407,7 @@ extern "C" char* ResourceMgr_LoadArrayByNameAsVec3s(const char* path) {
         data[(i / 3)].z = res->Scalars[i + 2].s16;
     }
 
-    // res->CachedGameAsset = data;
-
     return (char*)data;
-    // }
 }
 
 extern "C" CollisionHeader* ResourceMgr_LoadColByName(const char* path) {
@@ -514,21 +506,30 @@ extern "C" s32* ResourceMgr_LoadCSByName(const char* path) {
 }
 
 bool IsSharedScene(int16_t sceneNum) {
-    return sceneNum > SCENE_INSIDE_GANONS_CASTLE || sceneNum == SCENE_GANONS_TOWER || sceneNum == SCENE_THIEVES_HIDEOUT;
+    return sceneNum != SCENE_DEKU_TREE &&
+           sceneNum != SCENE_DODONGOS_CAVERN &&
+           sceneNum != SCENE_JABU_JABU &&
+           sceneNum != SCENE_FOREST_TEMPLE &&
+           sceneNum != SCENE_FIRE_TEMPLE &&
+           sceneNum != SCENE_WATER_TEMPLE &&
+           sceneNum != SCENE_SPIRIT_TEMPLE &&
+           sceneNum != SCENE_SHADOW_TEMPLE &&
+           sceneNum != SCENE_BOTTOM_OF_THE_WELL &&
+           sceneNum != SCENE_ICE_CAVERN &&
+           sceneNum != SCENE_GERUDO_TRAINING_GROUND &&
+           sceneNum != SCENE_INSIDE_GANONS_CASTLE;
 }
 
 std::string GetScenePath(int16_t sceneNum) {
     std::string sceneName = gSceneTable[sceneNum].sceneFile.fileName;
     std::string path = "alt/scenes/shared/" + sceneName + "/*";
     if (!IsSharedScene(sceneNum)) {
-        size_t pos = 0;
-        if ((pos = path.find("/shared/", 0)) != std::string::npos) {
-            if (ResourceMgr_IsGameMasterQuest()) {
-                path.replace(pos, 8, "/mq/");
-            }
-            else {
-                path.replace(pos, 8, "/nonmq/");
-            }
+        size_t pos = path.find("/shared/", 0);
+        if (IS_MASTER_QUEST || (IS_RANDO && OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(sceneNum)->IsMQ())) {
+            path.replace(pos, 8, "/mq/");
+        }
+        else {
+            path.replace(pos, 8, "/nonmq/");
         }
     }
     return path;
@@ -579,7 +580,7 @@ extern "C" void ResourceMgr_LoadAllSceneResources(int16_t sceneNum, bool now) {
             }
         }
     }
-    rmhThreadPool->submit_task(std::bind(LoadSceneResourcesProcess, sceneNum));
+    helperThreads->submit_task(std::bind(LoadSceneResourcesProcess, sceneNum));
 }
 
 extern "C" void ResourceMgr_RegisterUnloadSceneAssets(s16 prevScene) {
@@ -599,7 +600,7 @@ void UnloadSceneAssetsProcess() {
 
 extern "C" void ResourceMgr_UnloadSceneAssets() {
     if (unloadScene != -1) {
-        rmhThreadPool->submit_task(UnloadSceneAssetsProcess);
+        helperThreads->submit_task(UnloadSceneAssetsProcess);
     }
 }
 
@@ -641,14 +642,5 @@ extern "C" void ResourceMgr_LoadPersistentAltAssets() {
         ResourceLoadDirectoryAsync("alt/textures/parameter_Static/*");
         ResourceLoadDirectoryAsync("alt/objects/gameplay_*");
     }
-    rmhThreadPool->submit_task(ResourceMgr_LoadDelayedPersistentAltAssets);
-}
-
-extern "C" void ResourceMgr_RegisterHooks() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnTransitionEnd>([](int32_t sceneNum) {
-        if (delayedAltAssetLoad) {
-            delayedAltAssetLoad = false;
-            rmhThreadPool->submit_task(ResourceMgr_LoadDelayedPersistentAltAssets);
-        }
-        });
+    helperThreads->submit_task(ResourceMgr_LoadDelayedPersistentAltAssets);
 }

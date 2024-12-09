@@ -1198,7 +1198,6 @@ extern "C" void InitOTR() {
 #endif
 
     ResourceMgr_LoadPersistentAltAssets();
-    ResourceMgr_RegisterHooks();
 }
 
 extern "C" void SaveManager_ThreadPoolWait() {
