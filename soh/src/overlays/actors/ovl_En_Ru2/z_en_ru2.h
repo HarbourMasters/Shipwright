@@ -21,7 +21,7 @@ typedef struct EnRu2 {
     /* 0x02B0 */ f32 fadeTimer;
     /* 0x02B4 */ u32 alpha;
     /* 0x02B8 */ s32 isLightBall;
-    /* 0x02BC */ s32 lastCreditsAction;
+    /* 0x02BC */ s32 cueId;
     /* 0x02C0 */ u16 swimmingUpFrame;
     /* 0x02C2 */ u8 textboxCount;
     /* 0x02C3 */ u8 lastDialogState;

@@ -224,26 +224,26 @@ s32 EnRu2_UpdateSkelAnime(EnRu2* this) {
     return SkelAnime_Update(&this->skelAnime);
 }
 
-CsCmdActorCue* EnRu2_GetCutsceneAction(PlayState* play, s32 npcActionIdx) {
+CsCmdActorCue* EnRu2_GetCue(PlayState* play, s32 cueChannel) {
     if (play->csCtx.state != CS_STATE_IDLE) {
-        return play->csCtx.npcActions[npcActionIdx];
+        return play->csCtx.npcActions[cueChannel];
     }
     return NULL;
 }
 
-s32 EnRu2_CheckCueMatchingId(EnRu2* this, PlayState* play, u16 action, s32 npcActionIdx) {
-    CsCmdActorCue* csCmdActorAction = EnRu2_GetCutsceneAction(play, npcActionIdx);
+s32 EnRu2_CheckCueMatchingId(EnRu2* this, PlayState* play, u16 cueId, s32 cueChannel) {
+    CsCmdActorCue* cue = EnRu2_GetCue(play, cueChannel);
 
-    if ((csCmdActorAction != NULL) && (csCmdActorAction->action == action)) {
+    if ((cue != NULL) && (cue->action == cueId)) {
         return true;
     }
     return false;
 }
 
-s32 EnRu2_CheckCueNotMatchingId(EnRu2* this, PlayState* play, u16 action, s32 npcActionIdx) {
-    CsCmdActorCue* csCmdNPCAction = EnRu2_GetCutsceneAction(play, npcActionIdx);
+s32 EnRu2_CheckCueNotMatchingId(EnRu2* this, PlayState* play, u16 cueId, s32 cueChannel) {
+    CsCmdActorCue* cue = EnRu2_GetCue(play, cueChannel);
 
-    if ((csCmdNPCAction != NULL) && (csCmdNPCAction->action != action)) {
+    if ((cue != NULL) && (cue->action != cueId)) {
         return true;
     }
     return false;
@@ -252,16 +252,16 @@ s32 EnRu2_CheckCueNotMatchingId(EnRu2* this, PlayState* play, u16 action, s32 np
 /**
  * Checks cutscene data and, if applicable, configures Ruto's position accordingly.
  */
-void EnRu2_InitCutscenePosition(EnRu2* this, PlayState* play, u32 npcActionIdx) {
-    CsCmdActorCue* csCmdNPCAction = EnRu2_GetCutsceneAction(play, npcActionIdx);
+void EnRu2_InitPositionFromCue(EnRu2* this, PlayState* play, u32 npcActionIdx) {
+    CsCmdActorCue* cue = EnRu2_GetCue(play, npcActionIdx);
     s16 newRotY;
     Actor* thisx = &this->actor;
 
-    if (csCmdNPCAction != NULL) {
-        thisx->world.pos.x = csCmdNPCAction->startPos.x;
-        thisx->world.pos.y = csCmdNPCAction->startPos.y;
-        thisx->world.pos.z = csCmdNPCAction->startPos.z;
-        newRotY = csCmdNPCAction->rot.y;
+    if (cue != NULL) {
+        thisx->world.pos.x = cue->startPos.x;
+        thisx->world.pos.y = cue->startPos.y;
+        thisx->world.pos.z = cue->startPos.z;
+        newRotY = cue->rot.y;
         thisx->shape.rot.y = newRotY;
         thisx->world.rot.y = newRotY;
     }
@@ -349,7 +349,7 @@ void EnRu2_CheckWaterMedallionCutscene(EnRu2* this, PlayState* play) {
     if ((gSaveContext.chamberCutsceneNum == 2) && (gSaveContext.sceneSetupIndex < 4)) {
         player = GET_PLAYER(play);
         this->action = ENRU2_AWAIT_BLUE_WARP;
-        play->csCtx.segment = &gWaterMedallionCS;
+        play->csCtx.segment = &gWaterMedallionCs;
         gSaveContext.cutsceneTrigger = 2;
         if (GameInteractor_Should(VB_GIVE_ITEM_WATER_MEDALLION, true)) {
             Item_Give(play, ITEM_MEDALLION_WATER);
@@ -362,11 +362,11 @@ void EnRu2_CheckWaterMedallionCutscene(EnRu2* this, PlayState* play) {
 
 void EnRu2_CheckIfBlueWarpShouldSpawn(EnRu2* this, PlayState* play) {
     CutsceneContext* csCtx = &play->csCtx;
-    CsCmdActorCue* csCmdNPCAction;
+    CsCmdActorCue* cue;
 
     if (csCtx->state != CS_STATE_IDLE) {
-        csCmdNPCAction = csCtx->npcActions[3];
-        if ((csCmdNPCAction != NULL) && (csCmdNPCAction->action == 2)) {
+        cue = csCtx->npcActions[3];
+        if ((cue != NULL) && (cue->action == 2)) {
             this->action = ENRU2_RISE_THROUGH_BLUE_WARP;
             this->drawConfig = ENRU2_DRAW_OPA;
             EnRu2_SpawnBlueWarp(this, play);
@@ -387,11 +387,11 @@ void EnRu2_EndRise(EnRu2* this) {
  */
 void EnRu2_CheckStartRaisingArms(EnRu2* this, PlayState* play) {
     AnimationHeader* animation = &gAdultRutoRaisingArmsUpAnim;
-    CsCmdActorCue* csCmdNPCAction;
+    CsCmdActorCue* cue;
 
     if (play->csCtx.state != CS_STATE_IDLE) {
-        csCmdNPCAction = play->csCtx.npcActions[3];
-        if ((csCmdNPCAction != NULL) && (csCmdNPCAction->action == 3)) {
+        cue = play->csCtx.npcActions[3];
+        if ((cue != NULL) && (cue->action == 3)) {
             Animation_Change(&this->skelAnime, animation, 1.0f, 0.0f, Animation_GetLastFrame(animation), ANIMMODE_ONCE,
                              0.0f);
             this->action = ENRU2_RAISE_ARMS;
@@ -413,11 +413,11 @@ void EnRu2_HoldArmsUp(EnRu2* this, s32 doneRaising) {
  * Checks to see if the Water Medallion should spawn.
  */
 void EnRu2_CheckIfWaterMedallionShouldSpawn(EnRu2* this, PlayState* play) {
-    CsCmdActorCue* csCmdNPCAction;
+    CsCmdActorCue* cue;
 
     if (play->csCtx.state != CS_STATE_IDLE) {
-        csCmdNPCAction = play->csCtx.npcActions[6];
-        if ((csCmdNPCAction != NULL) && (csCmdNPCAction->action == 2)) {
+        cue = play->csCtx.npcActions[6];
+        if ((cue != NULL) && (cue->action == 2)) {
             this->action = ENRU2_FINISH_WATER_MEDALLION_CS;
             EnRu2_SpawnWaterMedallion(this, play);
         }
@@ -577,8 +577,8 @@ void EnRu2_AwaitSpawnLightBall(EnRu2* this, PlayState* play) {
 
 void EnRu2_DrawXlu(EnRu2* this, PlayState* play) {
     s32 pad[2];
-    s16 temp = this->eyeIndex;
-    void* tex = sEyeTextures[temp];
+    s16 eyeIndex = this->eyeIndex;
+    void* tex = sEyeTextures[eyeIndex];
     SkelAnime* skelAnime = &this->skelAnime;
 
     OPEN_DISPS(play->state.gfxCtx);
@@ -611,24 +611,24 @@ void EnRu2_InitCredits(EnRu2* this, PlayState* play) {
  */
 void EnRu2_FadeInCredits(EnRu2* this) {
     f32* fadeTimer = &this->fadeTimer;
-    f32 temp_f0;
-    s32 temp_f18;
+    f32 fadeDuration;
+    s32 alpha;
 
     *fadeTimer += 1.0f;
 
-    temp_f0 = kREG(17) + 10.0f;
-    if (temp_f0 <= *fadeTimer) {
+    fadeDuration = kREG(17) + 10.0f;
+    if (fadeDuration <= *fadeTimer) {
         this->alpha = 255;
         this->actor.shape.shadowAlpha = 0xFF;
     } else {
-        temp_f18 = (*fadeTimer / temp_f0) * 255.0f;
-        this->alpha = temp_f18;
-        this->actor.shape.shadowAlpha = temp_f18;
+        alpha = (*fadeTimer / fadeDuration) * 255.0f;
+        this->alpha = alpha;
+        this->actor.shape.shadowAlpha = alpha;
     }
 }
 
 void EnRu2_InitCreditsPosition(EnRu2* this, PlayState* play) {
-    EnRu2_InitCutscenePosition(this, play, 3);
+    EnRu2_InitPositionFromCue(this, play, 3);
     this->action = ENRU2_CREDITS_FADE_IN;
     this->drawConfig = ENRU2_DRAW_XLU;
 }
@@ -664,15 +664,15 @@ void EnRu2_HoldLookingDownLeftPose(EnRu2* this, s32 isDoneTurning) {
  * Advances Ruto's actions in two different places.
  */
 void EnRu2_NextCreditsAction(EnRu2* this, PlayState* play) {
-    CsCmdActorCue* csCmdNPCAction = EnRu2_GetCutsceneAction(play, 3);
-    s32 action;
-    s32 lastAction;
+    CsCmdActorCue* cue = EnRu2_GetCue(play, 3);
+    s32 nextCueId;
+    s32 currentCueId;
 
-    if (csCmdNPCAction != NULL) {
-        action = csCmdNPCAction->action;
-        lastAction = this->lastCreditsAction;
-        if (action != lastAction) {
-            switch (action) {
+    if (cue != NULL) {
+        nextCueId = cue->action;
+        currentCueId = this->cueId;
+        if (nextCueId != currentCueId) {
+            switch (nextCueId) {
                 case 7:
                     EnRu2_InitCreditsPosition(this, play);
                     break;
@@ -684,7 +684,7 @@ void EnRu2_NextCreditsAction(EnRu2* this, PlayState* play) {
                     osSyncPrintf("En_Ru2_inEnding_Check_DemoMode:そんな動作は無い!!!!!!!!\n");
                     break;
             }
-            this->lastCreditsAction = action;
+            this->cueId = nextCueId;
         }
     }
 }
