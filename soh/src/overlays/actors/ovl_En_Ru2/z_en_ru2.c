@@ -344,7 +344,7 @@ void EnRu2_SpawnWaterMedallion(EnRu2* this, PlayState* play) {
 void EnRu2_CheckWaterMedallionCutscene(EnRu2* this, PlayState* play) {
     s32 pad[2];
     Player* player;
-    s16 temp;
+    s16 yaw;
 
     if ((gSaveContext.chamberCutsceneNum == 2) && (gSaveContext.sceneSetupIndex < 4)) {
         player = GET_PLAYER(play);
@@ -354,9 +354,9 @@ void EnRu2_CheckWaterMedallionCutscene(EnRu2* this, PlayState* play) {
         if (GameInteractor_Should(VB_GIVE_ITEM_WATER_MEDALLION, true)) {
             Item_Give(play, ITEM_MEDALLION_WATER);
         }
-        temp = this->actor.world.rot.y + 0x8000;
-        player->actor.shape.rot.y = temp;
-        player->actor.world.rot.y = temp;
+        yaw = this->actor.world.rot.y + 0x8000;
+        player->actor.shape.rot.y = yaw;
+        player->actor.world.rot.y = yaw;
     }
 }
 
@@ -942,8 +942,8 @@ void EnRu2_DrawNothing(EnRu2* this, PlayState* play) {
 
 void EnRu2_DrawOpa(EnRu2* this, PlayState* play) {
     s32 pad[2];
-    s16 temp = this->eyeIndex;
-    void* tex = sEyeTextures[temp];
+    s16 eyeIndex = this->eyeIndex;
+    void* tex = sEyeTextures[eyeIndex];
     SkelAnime* skelAnime = &this->skelAnime;
 
     OPEN_DISPS(play->state.gfxCtx);
