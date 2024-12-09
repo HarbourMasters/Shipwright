@@ -629,7 +629,7 @@ void func_80AAB5A4(EnMd* this, PlayState* play) {
                        : 400.0f;
         }
         
-        this->alpha = func_80034DD4(&this->actor, play, this->alpha, temp);
+        this->alpha = Actor_UpdateAlphaByDistance(&this->actor, play, this->alpha, temp);
         this->actor.shape.shadowAlpha = this->alpha;
     } else {
         this->alpha = 255;
