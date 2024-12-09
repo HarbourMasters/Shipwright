@@ -340,12 +340,14 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
             if (ForcedDialogIsDisabled(FORCED_DIALOG_SKIP_NAVI)) {
                 ElfMsg* naviTalk = va_arg(args, ElfMsg*);
                 int32_t paramsHighByte = naviTalk->actor.params >> 8;
-                if ((paramsHighByte & 0x80) == 0 &&
-                    ((paramsHighByte & 0x3F) != 0x3F || gPlayState->sceneNum != SCENE_DODONGOS_CAVERN)) {
+                if ((paramsHighByte & 0x80) != 0) {
+                    break;
+                }
+                if ((paramsHighByte & 0x3F) != 0x3F) {
                     Flags_SetSwitch(gPlayState, paramsHighByte & 0x3F);
-                    Actor_Kill(&naviTalk->actor);
                     *should = false;
                 }
+                Actor_Kill(&naviTalk->actor);
             }
             break;
         }
