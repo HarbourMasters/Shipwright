@@ -345,9 +345,9 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                 }
                 if ((paramsHighByte & 0x3F) != 0x3F) {
                     Flags_SetSwitch(gPlayState, paramsHighByte & 0x3F);
-                    *should = false;
                 }
                 Actor_Kill(&naviTalk->actor);
+                *should = false;
             }
             break;
         }
