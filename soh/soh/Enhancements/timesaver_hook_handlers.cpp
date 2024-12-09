@@ -35,7 +35,7 @@ extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 extern int32_t D_8011D3AC;
 
-extern void func_808ADEF0(BgSpot03Taki* bgSpot03Taki, PlayState* play);
+extern void BgSpot03Taki_HandleWaterfallState(BgSpot03Taki* bgSpot03Taki, PlayState* play);
 extern void BgSpot03Taki_ApplyOpeningAlpha(BgSpot03Taki* bgSpot03Taki, s32 bufferIndex);
 
 extern void func_80AF36EC(EnRu2* enRu2, PlayState* play);
@@ -212,6 +212,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                 s16* csId = va_arg(args, s16*);
                 BgSpot03Taki* taki = NULL;
                 switch (*csId) {
+                    case 3150:
                     case 4180:
                     case 4100:
                         *should = false;
@@ -306,6 +307,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                     case ACTOR_BG_YDAN_MARUTA:
                     case ACTOR_BG_SPOT18_SHUTTER:
                     case ACTOR_BG_SPOT05_SOKO:
+                    case ACTOR_BG_SPOT06_OBJECTS:
                     case ACTOR_BG_SPOT18_BASKET:
                     case ACTOR_BG_HIDAN_CURTAIN:
                     case ACTOR_BG_MORI_HINERI:
@@ -402,6 +404,14 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                     *textId = 0x3036;
                     *should = true;
                 }
+            }
+            break;
+        }
+        case VB_PLAY_MWEEP_CS: {
+            if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), 0)) {
+                *should = false;
+                Inventory_ReplaceItem(gPlayState, ITEM_LETTER_RUTO, ITEM_BOTTLE);
+                Flags_SetEventChkInf(EVENTCHKINF_KING_ZORA_MOVED);
             }
             break;
         }
@@ -815,7 +825,7 @@ void TimeSaverOnActorInitHandler(void* actorRef) {
             }
 
             BgSpot03Taki* bgSpot03 = static_cast<BgSpot03Taki*>(innerActorRef);
-            if (bgSpot03->actionFunc == func_808ADEF0) {
+            if (bgSpot03->actionFunc == BgSpot03Taki_HandleWaterfallState) {
                 bgSpot03->actionFunc = BgSpot03Taki_KeepOpen;
                 bgSpot03->state = WATERFALL_OPENED;
                 bgSpot03->openingAlpha = 0.0f;
