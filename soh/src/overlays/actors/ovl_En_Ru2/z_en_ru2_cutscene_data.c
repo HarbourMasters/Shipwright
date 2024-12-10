@@ -2,7 +2,7 @@
 #include "z64cutscene_commands.h"
 
 // clang-format off
-static CutsceneData D_80AF411C[] = {
+static CutsceneData gWaterMedallionCs[] = {
     CS_BEGIN_CUTSCENE(35, 3338),
     CS_UNK_DATA_LIST(0x00000020, 1),
         CS_UNK_DATA(0x00010000, 0x0BB80000, 0x00000000, 0x00000000, 0xFFFFFFFC, 0x00000002, 0x00000000, 0xFFFFFFFC, 0x00000002, 0x00000000, 0x00000000, 0x00000000),

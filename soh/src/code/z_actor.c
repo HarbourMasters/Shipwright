@@ -4547,25 +4547,25 @@ void func_80034CC4(PlayState* play, SkelAnime* skelAnime, OverrideLimbDraw overr
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
-s16 func_80034DD4(Actor* actor, PlayState* play, s16 arg2, f32 arg3) {
+s16 Actor_UpdateAlphaByDistance(Actor* actor, PlayState* play, s16 alpha, f32 radius) {
     Player* player = GET_PLAYER(play);
-    f32 var;
+    f32 distance;
 
     if ((play->csCtx.state != CS_STATE_IDLE) || (gDbgCamEnabled)) {
-        var = Math_Vec3f_DistXYZ(&actor->world.pos, &play->view.eye) * 0.25f;
+        distance = Math_Vec3f_DistXYZ(&actor->world.pos, &play->view.eye) * 0.25f;
     } else {
-        var = Math_Vec3f_DistXYZ(&actor->world.pos, &player->actor.world.pos);
+        distance = Math_Vec3f_DistXYZ(&actor->world.pos, &player->actor.world.pos);
     }
 
-    if (arg3 < var) {
+    if (radius < distance) {
         actor->flags &= ~ACTOR_FLAG_TARGETABLE;
-        Math_SmoothStepToS(&arg2, 0, 6, 0x14, 1);
+        Math_SmoothStepToS(&alpha, 0, 6, 0x14, 1);
     } else {
         actor->flags |= ACTOR_FLAG_TARGETABLE;
-        Math_SmoothStepToS(&arg2, 0xFF, 6, 0x14, 1);
+        Math_SmoothStepToS(&alpha, 0xFF, 6, 0x14, 1);
     }
 
-    return arg2;
+    return alpha;
 }
 
 void Animation_ChangeByInfo(SkelAnime* skelAnime, AnimationInfo* animationInfo, s32 index) {

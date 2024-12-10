@@ -253,7 +253,7 @@ void DrawSettingsMenu() {
             };
 
             ImGui::Text("Audio API (Needs reload)");
-            auto currentAudioBackend = Ship::Context::GetInstance()->GetAudio()->GetAudioBackend();
+            auto currentAudioBackend = Ship::Context::GetInstance()->GetAudio()->GetCurrentAudioBackend();
 
             if (Ship::Context::GetInstance()->GetAudio()->GetAvailableAudioBackends()->size() <= 1) {
                 UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
@@ -262,7 +262,7 @@ void DrawSettingsMenu() {
                 for (uint8_t i = 0; i < Ship::Context::GetInstance()->GetAudio()->GetAvailableAudioBackends()->size(); i++) {
                     auto backend = Ship::Context::GetInstance()->GetAudio()->GetAvailableAudioBackends()->data()[i];
                     if (ImGui::Selectable(audioBackendNames[backend], backend == currentAudioBackend)) {
-                        Ship::Context::GetInstance()->GetAudio()->SetAudioBackend(backend);
+                        Ship::Context::GetInstance()->GetAudio()->SetCurrentAudioBackend(backend);
                     }
                 }
                 ImGui::EndCombo();
@@ -434,7 +434,7 @@ void DrawSettingsMenu() {
                     currentFps = 60;
                 }
                 CVarSetInteger(CVAR_SETTING("InterpolationFPS"), currentFps);
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
             #else
                 bool matchingRefreshRate =
                     CVarGetInteger(CVAR_SETTING("MatchRefreshRate"), 0) && Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() != Ship::WindowBackend::FAST3D_DXGI_DX11;
@@ -463,7 +463,7 @@ void DrawSettingsMenu() {
                     int hz = Ship::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate();
                     if (hz >= 20 && hz <= 360) {
                         CVarSetInteger(CVAR_SETTING("InterpolationFPS"), hz);
-                        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                     }
                 }
             } else {
@@ -671,7 +671,7 @@ void DrawEnhancementsMenu() {
                     CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), newValue);
                     CVarSetInteger(CVAR_ENHANCEMENT("TimeSavers.DisableTitleCard"), newValue);
 
-                    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                 }
                 g->CurrentItemFlags = backup_item_flags;
                 UIWidgets::PaddedEnhancementCheckbox("Skip Intro", CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Intro"), false, false, false, "", UIWidgets::CheckboxGraphics::Cross, IS_RANDO);
@@ -912,7 +912,7 @@ void DrawEnhancementsMenu() {
                     std::for_each(itemCountMessageCVars, itemCountMessageCVars + numOptions,
                                   [newValue](const char* cvar) { CVarSetInteger(cvar, newValue); });
 
-                    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                 }
                 g->CurrentItemFlags = backup_item_flags;
 
@@ -1848,7 +1848,7 @@ void DrawCheatsMenu() {
             if (UIWidgets::PaddedEnhancementCheckbox("I promise I have read the warning", CVAR_CHEAT("SaveStatePromise"), true,
                                                      false)) {
                 CVarSetInteger(CVAR_CHEAT("SaveStatesEnabled"), 0);
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
             }
             if (CVarGetInteger(CVAR_CHEAT("SaveStatePromise"), 0) == 1) {
                 UIWidgets::PaddedEnhancementCheckbox("I understand, enable save states", CVAR_CHEAT("SaveStatesEnabled"), true,
@@ -1943,7 +1943,7 @@ void DrawCheatsMenu() {
                 CVarSetInteger(CVAR_CHEAT("BetaQuestWorld"), betaQuestWorld);
 
                 std::reinterpret_pointer_cast<Ship::ConsoleWindow>(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->Dispatch("reset");
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
             }
 
             if (!isBetaQuestEnabled) {
