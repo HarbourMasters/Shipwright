@@ -1185,14 +1185,14 @@ void LoadSettings() {
     fortressFast = false;
     fortressNormal = false;
     switch (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GERUDO_FORTRESS)) {
-        case RO_GF_FREE:
+        case RO_GF_CARPENTERS_FREE:
             showGerudoFortressKeys = false;
             showGerudoCard = false;
             break;
-        case RO_GF_FAST:
+        case RO_GF_CARPENTERS_FAST:
             fortressFast = true;
             break;
-        case RO_GF_NORMAL:
+        case RO_GF_CARPENTERS_NORMAL:
             fortressNormal = true;
             break;
     }

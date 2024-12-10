@@ -4160,11 +4160,11 @@ typedef enum {
     RO_GENERIC_SKIP,
 } RandoOptionGenericSkip;
 
-//Forest settings (closed, closed deku, open)
+//Closed Forest settings (On, Deku Only, Off)
 typedef enum {
-    RO_FOREST_CLOSED,
-    RO_FOREST_CLOSED_DEKU,
-    RO_FOREST_OPEN,
+    RO_CLOSED_FOREST_ON,
+    RO_CLOSED_FOREST_DEKU_ONLY,
+    RO_CLOSED_FOREST_OFF,
 } RandoOptionForest;
 
 //Door of Time settings (closed, song only, open)
@@ -4194,11 +4194,11 @@ typedef enum {
     RO_AGE_RANDOM,
 } RandoOptionStartingAge;
 
-//Gerudo Fortress settings (normal, fast, open)
+//Fortress Carpenters settings (normal, fast, free)
 typedef enum {
-    RO_GF_NORMAL,
-    RO_GF_FAST,
-    RO_GF_FREE,
+    RO_GF_CARPENTERS_NORMAL,
+    RO_GF_CARPENTERS_FAST,
+    RO_GF_CARPENTERS_FREE,
 } RandoOptionGerudoFortress;
 
 //Kakariko Gate settings (closed/open)

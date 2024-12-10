@@ -105,12 +105,12 @@ Settings::Settings() : mExcludeLocationsOptionsAreas(RCAREA_INVALID) {
 void Settings::CreateOptions() {
     CreateOptionDescriptions();
     // clang-format off
-    mOptions[RSK_FOREST] = Option::U8("Forest", {"Closed", "Closed Deku", "Open"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("Forest"), mOptionDescriptions[RSK_FOREST], WidgetType::Combobox, RO_FOREST_CLOSED);
+    mOptions[RSK_FOREST] = Option::U8("Closed Forest", {"On", "Deku Only", "Off"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ClosedForest"), mOptionDescriptions[RSK_FOREST], WidgetType::Combobox, RO_CLOSED_FOREST_ON);
     mOptions[RSK_KAK_GATE] = Option::U8("Kakariko Gate", {"Closed", "Open"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("KakarikoGate"), mOptionDescriptions[RSK_KAK_GATE]);
     mOptions[RSK_DOOR_OF_TIME] = Option::U8("Door of Time", {"Closed", "Song only", "Open"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("DoorOfTime"), mOptionDescriptions[RSK_DOOR_OF_TIME], WidgetType::Combobox);
     mOptions[RSK_ZORAS_FOUNTAIN] = Option::U8("Zora's Fountain", {"Closed", "Closed as child", "Open"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ZorasFountain"), mOptionDescriptions[RSK_ZORAS_FOUNTAIN]);
     mOptions[RSK_SLEEPING_WATERFALL] = Option::U8("Sleeping Waterfall", {"Closed", "Open"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("SleepingWaterfall"), mOptionDescriptions[RSK_SLEEPING_WATERFALL]);
-    mOptions[RSK_GERUDO_FORTRESS] = Option::U8("Fortress Carpenters", {"Normal", "Fast", "Free"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("GerudoFortress"), mOptionDescriptions[RSK_GERUDO_FORTRESS]);
+    mOptions[RSK_GERUDO_FORTRESS] = Option::U8("Fortress Carpenters", {"Normal", "Fast", "Free"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("FortressCarpenters"), mOptionDescriptions[RSK_GERUDO_FORTRESS]);
     mOptions[RSK_RAINBOW_BRIDGE] = Option::U8("Rainbow Bridge", {"Vanilla", "Always open", "Stones", "Medallions", "Dungeon rewards", "Dungeons", "Tokens", "Greg"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("RainbowBridge"), mOptionDescriptions[RSK_RAINBOW_BRIDGE], WidgetType::Combobox, RO_BRIDGE_VANILLA, false, IMFLAG_NONE);
     mOptions[RSK_RAINBOW_BRIDGE_STONE_COUNT] = Option::U8("Bridge Stone Count", {NumOpts(0, 4)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("StoneCount"), "", WidgetType::Slider, 3, true);
     mOptions[RSK_RAINBOW_BRIDGE_MEDALLION_COUNT] = Option::U8("Bridge Medallion Count", {NumOpts(0, 7)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("MedallionCount"), "", WidgetType::Slider, 6, true);
@@ -1376,7 +1376,7 @@ void Settings::UpdateOptionProperties() {
     } else {
         mOptionGroups[RSG_AREA_ACCESS_IMGUI].Enable();
         // Starting Age - Disabled when Forest is set to Closed or under very specific conditions
-        if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("Forest"), RO_FOREST_CLOSED) == RO_FOREST_CLOSED ||
+        if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ClosedForest"), RO_CLOSED_FOREST_ON) == RO_CLOSED_FOREST_ON ||
             (CVarGetInteger(CVAR_RANDOMIZER_SETTING("DoorOfTime"), RO_DOOROFTIME_CLOSED) == RO_DOOROFTIME_CLOSED &&
             CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleOcarinas"), RO_GENERIC_OFF) == RO_GENERIC_OFF)) /* closed door of time with ocarina shuffle off */ {
             mOptions[RSK_STARTING_AGE].Disable("This option is disabled due to other options making the game unbeatable");
@@ -1902,12 +1902,12 @@ void Settings::UpdateOptionProperties() {
         default:
             break;
     }
-    const uint8_t maxKeyringCount = (CVarGetInteger(CVAR_RANDOMIZER_SETTING("GerudoFortress"), RO_GF_NORMAL) == RO_GF_NORMAL &&
+    const uint8_t maxKeyringCount = (CVarGetInteger(CVAR_RANDOMIZER_SETTING("FortressCarpenters"), RO_GF_CARPENTERS_NORMAL) == RO_GF_CARPENTERS_NORMAL &&
                                CVarGetInteger(CVAR_RANDOMIZER_SETTING("GerudoKeys"), RO_GERUDO_KEYS_VANILLA) != RO_GERUDO_KEYS_VANILLA) ? 9 : 8;
     if (mOptions[RSK_KEYRINGS_RANDOM_COUNT].GetOptionCount() != maxKeyringCount + 1) {
         mOptions[RSK_KEYRINGS_RANDOM_COUNT].ChangeOptions(NumOpts(0, maxKeyringCount));
     }
-    if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("GerudoFortress"), RO_GF_NORMAL) != RO_GF_NORMAL ||
+    if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("FortressCarpenters"), RO_GF_CARPENTERS_NORMAL) != RO_GF_CARPENTERS_NORMAL ||
         CVarGetInteger(CVAR_RANDOMIZER_SETTING("GerudoKeys"), RO_GERUDO_KEYS_VANILLA) == RO_GERUDO_KEYS_VANILLA) {
         mOptions[RSK_KEYRINGS_GERUDO_FORTRESS].Disable("Disabled because the currently selected Gerudo Fortress Carpenters\n"
             "setting and/or Gerudo Fortress Keys setting is incompatible with\n"
@@ -2051,7 +2051,7 @@ void Settings::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocatio
         }
 
         // With certain access settings, the seed is only beatable if Starting Age is set to Child.
-        if (mOptions[RSK_FOREST].Is(RO_FOREST_CLOSED) || (mOptions[RSK_DOOR_OF_TIME].Is(RO_DOOROFTIME_CLOSED) &&
+        if (mOptions[RSK_FOREST].Is(RO_CLOSED_FOREST_ON) || (mOptions[RSK_DOOR_OF_TIME].Is(RO_DOOROFTIME_CLOSED) &&
             !mOptions[RSK_SHUFFLE_OCARINA])) {
             mOptions[RSK_STARTING_AGE].SetContextIndex(RO_AGE_CHILD);
         }
@@ -2280,7 +2280,7 @@ void Settings::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocatio
     if (mOptions[RSK_KEYRINGS]) {
         // Random Key Rings
         auto keyrings = keyRingOptions;
-        if (mOptions[RSK_GERUDO_FORTRESS].Is(RO_GF_NORMAL) && mOptions[RSK_GERUDO_KEYS].IsNot(RO_GERUDO_KEYS_VANILLA)) {
+        if (mOptions[RSK_GERUDO_FORTRESS].Is(RO_GF_CARPENTERS_NORMAL) && mOptions[RSK_GERUDO_KEYS].IsNot(RO_GERUDO_KEYS_VANILLA)) {
             keyrings.push_back(&mOptions[RSK_KEYRINGS_GERUDO_FORTRESS]);
         } else {
             mOptions[RSK_KEYRINGS_GERUDO_FORTRESS].SetContextIndex(RO_KEYRING_FOR_DUNGEON_OFF);
@@ -2335,11 +2335,11 @@ void Settings::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocatio
         trials[i]->SetAsRequired();
     }
 
-    if (mOptions[RSK_FOREST].Is(RO_FOREST_CLOSED) &&
+    if (mOptions[RSK_FOREST].Is(RO_CLOSED_FOREST_ON) &&
         (mOptions[RSK_SHUFFLE_INTERIOR_ENTRANCES].Is(RO_INTERIOR_ENTRANCE_SHUFFLE_ALL) ||
          mOptions[RSK_SHUFFLE_OVERWORLD_ENTRANCES] || mOptions[RSK_SHUFFLE_OVERWORLD_SPAWNS] ||
          mOptions[RSK_DECOUPLED_ENTRANCES] || mOptions[RSK_MIXED_ENTRANCE_POOLS])) {
-        mOptions[RSK_FOREST].SetContextIndex(RO_FOREST_CLOSED_DEKU);
+        mOptions[RSK_FOREST].SetContextIndex(RO_CLOSED_FOREST_DEKU_ONLY);
     }
 
     if (mOptions[RSK_STARTING_AGE].Is(RO_AGE_RANDOM)) {
@@ -2409,8 +2409,6 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
         // todo load into cvars for UI
         //RANDOTODO handle numeric value to options conversion better than brute froce
         if (StaticData::optionNameToEnum.contains(it.key())) {
-            auto test = it.key();
-            auto test2 = it.value();
             const RandomizerSettingKey index = StaticData::optionNameToEnum[it.key()];
             mOptions[index].SetContextIndexFromText(it.value());
         }
