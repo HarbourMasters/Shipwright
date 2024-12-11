@@ -931,8 +931,21 @@ void EnMag_DrawInnerVanilla(Actor* thisx, PlayState* play, Gfx** gfxp) {
     gDPSetAlphaCompare(gfx++, G_AC_NONE);
     gDPSetCombineMode(gfx++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
 
-    gDPSetPrimColor(gfx++, 0, 0, (s16)this->copyrightAlpha, (s16)this->copyrightAlpha, (s16)this->copyrightAlpha,
-                    (s16)this->copyrightAlpha);
+    if (CVarGetInteger(CVAR_COSMETIC("Title.Copyright.Changed"), 0)) {
+        Color_RGBA8 copyrightColor = CVarGetColor(CVAR_COSMETIC("Title.Copyright.Value"), (Color_RGBA8){ 255, 255, 255, 255 });
+        gDPSetPrimColor(
+            gfx++,
+            0,
+            0,
+            (s16)(((f32)copyrightColor.r / 255.0f) * this->copyrightAlpha),
+            (s16)(((f32)copyrightColor.g / 255.0f) * this->copyrightAlpha),
+            (s16)(((f32)copyrightColor.b / 255.0f) * this->copyrightAlpha),
+            (s16)(((f32)copyrightColor.a / 255.0f) * this->copyrightAlpha)
+        );
+    } else {
+        gDPSetPrimColor(gfx++, 0, 0, (s16)this->copyrightAlpha, (s16)this->copyrightAlpha, (s16)this->copyrightAlpha,
+                        (s16)this->copyrightAlpha);
+    }
 
     if ((s16)this->copyrightAlpha != 0) {
         gDPLoadTextureBlock(gfx++, copy_tex, G_IM_FMT_IA, G_IM_SIZ_8b, copy_width, 16, 0, G_TX_NOMIRROR | G_TX_CLAMP,

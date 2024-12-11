@@ -270,6 +270,16 @@ Rando::Item plandomizerRandoRetrieveItem(RandomizerGet randoGetItem) {
     return randoGetItemEntry;
 }
 
+void PlandoPushImageButtonStyle(){
+    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.0f, 1.0f, 1.0f, 0.0f));
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(1.0f, 1.0f, 1.0f, 0.2f));
+    ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(1.0f, 1.0f, 1.0f, 0.1f));
+}
+
+void PlandoPopImageButtonStyle(){
+    ImGui::PopStyleColor(3);
+}
+
 ImVec4 plandomizerGetItemColor(Rando::Item randoItem) {
     itemColor = ImVec4( 1.0f, 1.0f, 1.0f, 1.0f );
     if (randoItem.GetItemType() == ITEMTYPE_SMALLKEY || randoItem.GetItemType() == ITEMTYPE_FORTRESS_SMALLKEY
@@ -698,6 +708,7 @@ void PlandomizerOverlayText(std::pair<Rando::Item, uint32_t> drawObject ) {
 
 void PlandomizerDrawItemPopup(uint32_t index) {
     if (shouldPopup && ImGui::BeginPopup("ItemList")) {
+        PlandoPushImageButtonStyle();
         ImGui::SeparatorText("Resources");
         ImGui::BeginTable("Infinite Item Table", 7);
         for (auto& item : infiniteItemList) {
@@ -759,6 +770,7 @@ void PlandomizerDrawItemPopup(uint32_t index) {
             PlandomizerRemoveFromItemList(drawnItemsList[temporaryItemIndex].first);
             PlandomizerAddToItemList(temporaryItem);
         }
+        PlandoPopImageButtonStyle();
         ImGui::EndTable();
         ImGui::EndPopup();
     }
@@ -767,6 +779,7 @@ void PlandomizerDrawItemPopup(uint32_t index) {
 void PlandomizerDrawIceTrapPopUp(uint32_t index) {
     if (shouldTrapPopup && ImGui::BeginPopup("TrapList")) {
         ImGui::BeginTable("Ice Trap Table", 8);
+        PlandoPushImageButtonStyle();
         for (auto& items : itemImageMap) {
             if (items.first == RG_ICE_TRAP) {
                 continue;
@@ -785,6 +798,7 @@ void PlandomizerDrawIceTrapPopUp(uint32_t index) {
 
             ImGui::PopID();
         }
+        PlandoPopImageButtonStyle();
         ImGui::EndTable();
         ImGui::EndPopup();
     }
@@ -792,12 +806,14 @@ void PlandomizerDrawIceTrapPopUp(uint32_t index) {
 
 void PlandomizerDrawItemSlots(uint32_t index) {
     ImGui::PushID(index);
+    PlandoPushImageButtonStyle();
     PlandomizerItemImageCorrection(plandoLogData[index].checkRewardItem);
     if (ImGui::ImageButton(textureID, imageSize, textureUV0, textureUV1, imagePadding, ImVec4(0, 0, 0, 0), itemColor)) {
         shouldPopup = true;
         temporaryItem = plandoLogData[index].checkRewardItem;
         ImGui::OpenPopup("ItemList");
     };
+    PlandoPopImageButtonStyle();
     UIWidgets::Tooltip(plandoLogData[index].checkRewardItem.GetName().english.c_str());
     PlandomizerOverlayText(std::make_pair(plandoLogData[index].checkRewardItem, 1));
     PlandomizerDrawItemPopup(index);
@@ -808,9 +824,19 @@ void PlandomizerDrawShopSlider(uint32_t index) {
     ImGui::PushID(index);
     ImGui::Text("Price:");
     ImGui::SameLine();
-    ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x - 20.0f);
+    std::string MinusBTNName = " - ##Price";
+    if (ImGui::Button(MinusBTNName.c_str()) && plandoLogData[index].shopPrice > 0) {
+        plandoLogData[index].shopPrice--;
+    }
+    ImGui::SameLine();
+    ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x - 40.0f);
     ImGui::SliderInt("", &plandoLogData[index].shopPrice, 0, 999, "%d Rupees");
     ImGui::PopItemWidth();
+    ImGui::SameLine();
+    std::string PlusBTNName = " + ##Price";
+    if (ImGui::Button(PlusBTNName.c_str()) && plandoLogData[index].shopPrice < 999) {
+        plandoLogData[index].shopPrice++;
+    }
     ImGui::PopID();
 }
 
@@ -825,10 +851,12 @@ void PlandomizerDrawIceTrapSetup(uint32_t index) {
 
     ImGui::TableNextColumn();
     PlandomizerItemImageCorrection(plandoLogData[index].iceTrapModel);
+    PlandoPushImageButtonStyle();
     if (ImGui::ImageButton(textureID, imageSize, textureUV0, textureUV1, imagePadding, ImVec4(0, 0, 0, 0), itemColor)) {
         shouldTrapPopup = true;
         ImGui::OpenPopup("TrapList");
     };
+    PlandoPopImageButtonStyle();
     UIWidgets::Tooltip(plandoLogData[index].iceTrapModel.GetName().english.c_str());
     PlandomizerDrawIceTrapPopUp(index);
     ImGui::SameLine();
@@ -847,7 +875,7 @@ void PlandomizerDrawIceTrapSetup(uint32_t index) {
             plandoLogData[index].iceTrapName = trapTextInput.c_str();
         }
     
-    if (plandoLogData[index].shopPrice > -1) {
+    if (plandoLogData[index].shopPrice >= 0) {
         PlandomizerDrawShopSlider(index);
     }
     ImGui::EndTable();
@@ -860,7 +888,7 @@ void PlandomizerDrawOptions() {
     ImGui::TableNextColumn();
     ImGui::SeparatorText("Load/Save Spoiler Log");
     PlandomizerPopulateSeedList();
-    static int32_t selectedList = 0;
+    static size_t selectedList = 0;
     if (existingSeedList.size() != 0) {
         if (ImGui::BeginCombo("##JsonFiles", existingSeedList[selectedList].c_str())) {
             for (size_t i = 0; i < existingSeedList.size(); i++) {
@@ -895,15 +923,13 @@ void PlandomizerDrawOptions() {
     ImGui::SetCursorPosX(ImGui::GetCursorPosX() + (ImGui::GetContentRegionAvail().x * 0.5f) - (34.0f * 5.0f));
     if (spoilerLogData.size() > 0) {
         ImGui::BeginTable("HashIcons", 5);
-        ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.0f, 1.0f, 1.0f, 0.0f));
-        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(1.0f, 1.0f, 1.0f, 0.2f));
-        ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(1.0f, 1.0f, 1.0f, 0.1f));
         for (int i = 0; i < 5; i++) {
             ImGui::TableSetupColumn("Icon", ImGuiTableColumnFlags_WidthFixed, 34.0f);
         }
         ImGui::TableNextColumn();
     
-        int32_t index = 0;
+        size_t index = 0;
+        PlandoPushImageButtonStyle();
         for (auto& hash : plandoHash) {
             ImGui::PushID(index);
             textureID = Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(gSeedTextures[hash].tex);
@@ -930,7 +956,7 @@ void PlandomizerDrawOptions() {
             ImGui::PopID();
             index++;
         }
-        ImGui::PopStyleColor(3);
+        PlandoPopImageButtonStyle();
         ImGui::EndTable();
     } else {
         ImGui::Text("No Spoiler Log Loaded");
@@ -1039,9 +1065,6 @@ void PlandomizerDrawLocationsWindow(RandomizerCheckArea rcArea) {
     ImGui::TableSetupColumn("Additional Options");
     ImGui::TableSetupScrollFreeze(0, 1);
     ImGui::TableHeadersRow();
-    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.0f, 1.0f, 1.0f, 0.0f));
-    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(1.0f, 1.0f, 1.0f, 0.2f));
-    ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(1.0f, 1.0f, 1.0f, 0.1f));
 
     for (auto& spoilerData : spoilerLogData) {
         auto checkID = Rando::StaticData::locationNameToEnum[spoilerData.checkName];
@@ -1070,7 +1093,6 @@ void PlandomizerDrawLocationsWindow(RandomizerCheckArea rcArea) {
         }
         index++;
     }
-    ImGui::PopStyleColor(3);
     ImGui::EndTable();
     ImGui::EndChild();
 }

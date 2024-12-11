@@ -1036,6 +1036,9 @@ std::vector<AltTrapType> getEnabledAddTraps () {
     std::vector<AltTrapType> enabledAddTraps;
     for (int i = 0; i < ADD_TRAP_MAX; i++) {
         if (CVarGetInteger(altTrapTypeCvars[i], 0)) {
+            if (gSaveContext.equips.buttonItems[0] == ITEM_FISHING_POLE && (i == ADD_VOID_TRAP || i == ADD_TELEPORT_TRAP)) {
+                continue; // don't add void or teleport if you're holding the fishing pole, as this causes issues
+            }
             enabledAddTraps.push_back(static_cast<AltTrapType>(i));
         }
     }
