@@ -239,7 +239,7 @@ void GameInteractor::RawAction::SetFlag(int16_t flagType, int16_t flag) {
             break;
         case FlagType::FLAG_RANDOMIZER_INF:
             if (!IS_RANDO) {
-                LUSLOG_ERROR("Tried to set randomizerInf flag outside of rando");
+                LUSLOG_ERROR("Tried to set randomizerInf flag outside of rando (%d)", flag);
                 assert(false);
                 break;
             }
@@ -267,7 +267,7 @@ void GameInteractor::RawAction::UnsetFlag(int16_t flagType, int16_t flag) {
             break;
         case FlagType::FLAG_RANDOMIZER_INF:
             if (!IS_RANDO) {
-                LUSLOG_ERROR("Tried to unset randomizerInf flag outside of rando");
+                LUSLOG_ERROR("Tried to unset randomizerInf flag outside of rando (%d)", flag);
                 assert(false);
                 break;
             }
